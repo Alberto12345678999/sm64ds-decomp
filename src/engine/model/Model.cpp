@@ -1,6 +1,6 @@
 //cpp
-/* Model -- the concrete model class; the cartridge calls it dExtModel_c
-   (_ZTI11dExtModel_c at 0x0208e73c, _ZTV5Model at 0x0208e90c). TU claims
+/* Model -- the concrete model class; the cartridge calls it dExtSimpleModel_c
+   (_ZTI17dExtSimpleModel_c at 0x0208e794, _ZTV5Model at 0x0208e90c). TU claims
    0x02016b78..0x02016df8, the whole class run in delinks order: Render,
    Virtual10, DoSetFile, UpdateVerts, then the full lifecycle D2,D0,D1,C1,C2
    -- every emitted variant has a cartridge home, so nothing deadstrips.
@@ -14,7 +14,7 @@
 #include "common.h"
 #include "Model.h"
 
-/* The cartridge homes this class's RTTI under the dExtModel_c spelling, so
+/* The cartridge homes this class's RTTI under the dExtSimpleModel_c spelling, so
    _ZTS5Model/_ZTI5Model records emitted under the project spelling would
    have no configured home. Compiling with RTTI off emits no records at
    all; the vtable preamble's typeinfo word deadstrips with the rest of the
