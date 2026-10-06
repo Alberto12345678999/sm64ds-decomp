@@ -36593,16 +36593,6 @@
         "kind:data"
       ]
     },
-    "func_ov095_02135cdc": {
-      "src/func_ov095_02135e90.c": [
-        "return:int"
-      ]
-    },
-    "func_ov095_02135e90": {
-      "include/decl_common.h": [
-        "kind:data"
-      ]
-    },
     "func_ov098_02138b70": {
       "include/decl_common.h": [
         "param:#1 char *"

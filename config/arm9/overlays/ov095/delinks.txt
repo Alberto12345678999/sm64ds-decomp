@@ -6,43 +6,7 @@
     .bss        start:0x02137780 end:0x02137940 kind:bss align:32
 src/actors/daObjSeesaw_c.cpp:
     complete
-    .text start:0x02135700 end:0x02135cdc
-
-src/func_ov095_02135cdc.c:
-    complete
-    .text start:0x02135cdc end:0x02135e90
-
-src/func_ov095_02135e90.c:
-    complete
-    .text start:0x02135e90 end:0x02135ea4
-
-src/d_a_obj_seesaw_rc_seesaw.c:
-    complete
-    .text start:0x02135ea4 end:0x02135ed4
-
-src/d_a_obj_seesaw_km3_yokoseesaw.c:
-    complete
-    .text start:0x02135ed4 end:0x02135f04
-
-src/d_a_obj_seesaw_km3_seesaw.c:
-    complete
-    .text start:0x02135f04 end:0x02135f34
-
-src/d_a_obj_seesaw_km2_yokoseesaw.c:
-    complete
-    .text start:0x02135f34 end:0x02135f64
-
-src/d_a_obj_seesaw_km1_seesaw.c:
-    complete
-    .text start:0x02135f64 end:0x02135f94
-
-src/d_a_obj_seesaw_bomb_seesaw.c:
-    complete
-    .text start:0x02135f94 end:0x02135fc4
-
-src/d_a_obj_seesaw_seesaw.c:
-    complete
-    .text start:0x02135fc4 end:0x02135ff4
+    .text start:0x02135700 end:0x02135ff4
 
 src/actors/daUdlift_c.cpp:
     complete
