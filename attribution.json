@@ -8310,6 +8310,13 @@
     "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0a4": "andrewboudreau",
     "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0b0": "andrewboudreau",
     "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0bc": "andrewboudreau",
-    "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0c8": "andrewboudreau"
+    "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0c8": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1514FlushDataCacheEv": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1527FlushAndInvalidateDataCacheEv": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1519InvalidateDataCacheEjj": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1514FlushDataCacheEjj": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1527FlushAndInvalidateDataCacheEjj": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1516DrainWriteBufferEv": "andrewboudreau",
+    "src/engine/cp15/CP15.cpp#_ZN4CP1526InvalidateInstructionCacheEjj": "andrewboudreau"
   }
 }
