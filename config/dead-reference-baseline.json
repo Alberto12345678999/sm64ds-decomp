@@ -6,13 +6,10 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
-<<<<<<< HEAD
-=======
    "file": "notes/actor-core-provenance.md",
    "ref": "src/_ZN8dActor_cD1Ev.cpp"
   },
   {
->>>>>>> 527c0903619170b779ea7cfd8dc48155f6889fbb
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },
@@ -66,15 +63,15 @@
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
-<<<<<<< HEAD
-   "ref": "src_tu/actors/Koopa+KoopaSmall.cpp"
-=======
    "ref": "src_tu/actors/Actor.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src_tu/actors/Koopa"
->>>>>>> 527c0903619170b779ea7cfd8dc48155f6889fbb
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
+   "ref": "src_tu/actors/Koopa+KoopaSmall.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
@@ -321,13 +318,10 @@
    "ref": "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp"
   },
   {
-<<<<<<< HEAD
-=======
    "file": "notes/bgobject-provenance.md",
    "ref": "src/_ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h.cpp"
   },
   {
->>>>>>> 527c0903619170b779ea7cfd8dc48155f6889fbb
    "file": "notes/collision-query-classes.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
