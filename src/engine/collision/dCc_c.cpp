@@ -106,6 +106,7 @@ void dCc_c::Unlink()
     next = 0;
 }
 
+// @symbol func_02014f5c
 #pragma cplusplus off
 /* The two helpers are compiled by the C front end -- their shard files are
    .c and the bodies below are byte-identical only under it. `self` is a
@@ -124,7 +125,6 @@ extern struct dActor_c* _ZN8dActor_c10FindWithIDEj(u32 id);
 #define PLAYER_ACTOR_ID 0xbf
 
 /* find the hitting owner by actor ID and, when it is the player, notify him */
-// @symbol func_02014f5c
 void func_02014f5c(struct dCc_c* self, u32 id) {
     struct dActor_c* player;
     u32 isPlayer;
