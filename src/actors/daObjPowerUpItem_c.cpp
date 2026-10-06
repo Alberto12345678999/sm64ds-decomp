@@ -100,10 +100,10 @@ extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern int _ZNK10dBgCh_Actr12TouchesWaterEv(void* self);
-extern void *_ZN9dBgCh_GndC1Ev(struct RG*);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(struct RG*, const Vector3*, void*);
+extern void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd*);
+extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd*, Vector3*, void*);
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(struct RG*);
-extern void _ZN9dBgCh_GndD1Ev(struct RG*);
+extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd*);
 extern void _ZN10dBgCh_Actr18StopDetectingWaterEv(void* self);
 extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void* self);
 extern int func_0200fccc(char* s, int r1);
@@ -275,8 +275,8 @@ extern "C" void func_ov002_020b94c4(daObjPowerUpItem_c *item)
         pos.x = item->mPosX;
         pos.y = item->mPosY;
         pos.z = item->mPosZ;
-        _ZN9dBgCh_GndC1Ev(&rg);
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &pos, 0);
+        _ZN9dBgCh_GndC1Ev((dBgCh_Gnd*)&rg);
+        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c((dBgCh_Gnd*)&rg, &pos, 0);
         if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg)) {
             gy = rg.detect[12];
             pos.y = gy;
@@ -286,17 +286,17 @@ extern "C" void func_ov002_020b94c4(daObjPowerUpItem_c *item)
             if (diff > 0x64000) {
                 item->SmallPoofDust();
                 _ZN7fBase_c18MarkForDestructionEv(item);
-                _ZN9dBgCh_GndD1Ev(&rg);
+                _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rg);
                 return;
             }
             _ZN10dBgCh_Actr18StopDetectingWaterEv((void*)&item->mWithMeshClsn);
         } else {
             item->SmallPoofDust();
             _ZN7fBase_c18MarkForDestructionEv(item);
-            _ZN9dBgCh_GndD1Ev(&rg);
+            _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rg);
             return;
         }
-        _ZN9dBgCh_GndD1Ev(&rg);
+        _ZN9dBgCh_GndD1Ev((dBgCh_Gnd*)&rg);
         return;
     }
 

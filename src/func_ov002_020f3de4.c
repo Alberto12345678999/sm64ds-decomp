@@ -1,5 +1,5 @@
 // @symbol func_ov002_020f3de4
-/* recovered: cutscene objects (daDemo_c / CutsceneObject block): the facing angle of one 0x4c-byte object record via atan2. */
+/* recovered: cutscene objects (daDemo_c / daDemo_c block): the facing angle of one 0x4c-byte object record via atan2. */
 // NONMATCHING: div 44 of 198 words. mwccarm 2004/b56, --module ov002,
 // @ 0x020f3de4 size 0x318. Residue class: ordering (parameter-home class).
 // Draft from nearmiss/db.jsonl (stored divergence 44), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
