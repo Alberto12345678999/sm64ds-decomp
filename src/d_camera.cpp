@@ -5,9 +5,9 @@
  * must consume the incoming storage pointer. The factory table at 0x02086d78
  * independently confirms this is a maker function, not a C1 ABI variant.
  *
- * The typed hierarchy exposes the otherwise hand-written offsets: View's
+ * The typed hierarchy exposes the otherwise hand-written offsets: dView_c's
  * matrix is the object at +0x50, and the three vptr transitions are dBase_c,
- * View, then Camera. The allocation fold itself remains explicit because the
+ * dView_c, then Camera. The allocation fold itself remains explicit because the
  * pinned compiler rejects the required custom/placement operator-new source. */
 #include "Camera.h"
 
@@ -16,7 +16,7 @@ void *_ZN7fBase_cnwEj(unsigned int size);
 void *_ZN7fBase_cC2Ev(void *self);
 void Matrix4x3_LoadIdentity(Matrix4x3 *matrix);
 extern void *_ZTV7dBase_c[];
-extern void *_ZTV4View[];
+extern void *_ZTV7dView_c[];
 extern void *_ZTV6Camera[];
 }
 
@@ -30,7 +30,7 @@ extern "C" Camera *dCamera_c_classInit()
     if (camera) {
         _ZN7fBase_cC2Ev(camera);
         *(void ***)camera = _ZTV7dBase_c;
-        *(void ***)camera = _ZTV4View;
+        *(void ***)camera = _ZTV7dView_c;
         Matrix4x3_LoadIdentity(&camera->viewMat);
         *(void ***)camera = _ZTV6Camera;
     }

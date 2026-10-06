@@ -170,6 +170,18 @@
    "ref": "src/d_a_luigi.cpp"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_rc_rift02.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_udlift.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_udlift_teresa.c"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
    "ref": "src/d_a_luigi.cpp"
   },
@@ -223,6 +235,10 @@
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "src/d_a_book_killer_book.c"
   },
   {
@@ -254,6 +270,10 @@
    "ref": "src/_ZN9FaderWipeC1Ev.c"
   },
   {
+   "file": "notes/ask-the-compiler.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/Eyerok_Spawn.cpp"
   },
@@ -274,10 +294,6 @@
    "ref": "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp"
   },
   {
-   "file": "notes/bgobject-provenance.md",
-   "ref": "src/func_ov025_02111898.c"
-  },
-  {
    "file": "notes/collision-query-classes.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
@@ -286,12 +302,28 @@
    "ref": "src/_ZN12MeshCollider10DetectClsnER13RaycastGround.cpp"
   },
   {
+   "file": "notes/collision-query-classes.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
    "file": "notes/collision-system.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
   {
    "file": "notes/collision-system.md",
    "ref": "port/unmatched/MeshCollider_DetectClsn_Sphere.cpp"
+  },
+  {
+   "file": "notes/collision-system.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
+   "file": "notes/collision-system.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp"
+  },
+  {
+   "file": "notes/collision-system.md",
+   "ref": "src/_ZN7dBgW_KcD1Ev.cpp"
   },
   {
    "file": "notes/ctor-migration.md",
@@ -394,6 +426,10 @@
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
   {
+   "file": "notes/handoff-sphereclsn-detectclsn.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
    "file": "notes/handoff-validator-and-tests.md",
    "ref": "tools/test_"
   },
@@ -467,10 +503,6 @@
   },
   {
    "file": "notes/rom-build.md",
-   "ref": "src/func_ov013_021112a8.c"
-  },
-  {
-   "file": "notes/rom-build.md",
    "ref": "src/func_ov091_02132a0c.c"
   },
   {
@@ -500,10 +532,6 @@
   {
    "file": "notes/src-domain-buckets.md",
    "ref": "src/ui/messages"
-  },
-  {
-   "file": "notes/translation-unit-reconstruction-plan.md",
-   "ref": "src/game/actors/d_a_holhei.cpp"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
@@ -616,14 +644,6 @@
   {
    "file": "tools/chaos_db_ci.py",
    "ref": "src/x.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
-   "ref": "src/f.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
-   "ref": "src/game/mario.c"
   },
   {
    "file": "tools/check_dead_references.py",

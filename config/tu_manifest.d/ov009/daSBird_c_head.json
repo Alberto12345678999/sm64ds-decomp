@@ -1,0 +1,81 @@
+{
+  "id": "ov009/daSBird_c_head",
+  "module": "ov009",
+  "source": "src/game/actors/d_a_s_bird_head.cpp",
+  "promoted_source": "src/game/actors/d_a_s_bird_head.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "partial linker run below hatch hole: 0x02111224..0x0211145c, 2 function(s). func_ov009_0211145c (0x0211145c, 0x17c) is an unenrolled draft above this run; D1/D0 (0x021111a0..0x02111224) stay leftover enrolled files below it and emit the class vtable/RTTI.",
+    "class label(s): daSBird_c",
+    "membership: 02111234 is ordinal 3 of the data_ov009_02113c48 PMF table (ROM record at 0x02113914); 02111224 is the follower-attach the two spawn loops call on the spawned daSBird_c (profile SBIRD, actor id 0x157)"
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02111224",
+      "end": "0x0211145c"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZN9daSBird_c19func_ov009_02111224Ei",
+      "address": "0x02111224",
+      "size": "0x00000010",
+      "legacy_source": "src/func_ov009_02111224.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN9daSBird_c19func_ov009_02111234Ev",
+      "address": "0x02111234",
+      "size": "0x00000228",
+      "legacy_source": "src/func_ov009_02111234.cpp",
+      "ordinal": 1
+    }
+  ],
+  "data": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "include/types.h gives Vector3 a deliberately empty inline destructor, so every TU that destroys a Vector3 re-emits it as vague linkage -- here the stack Vector3 automatics in func_ov009_02111234 pull it in. The cartridge keeps one copy at arm9:0x020072c0 and src/_ZN7Vector3D1Ev.cpp owns it; this object's copy is the identical 4-byte bx lr body."
+    }
+  ],
+  "bss": [],
+  "notes": [
+    "Head run of the daSBird_c linker unit (0x021111a0..0x02111a70), split from ov009/daSBird_c by the func_ov009_0211145c hatch (proven mwccarm 1.2/2004/b56 register-allocation wall, kept as an unenrolled draft). D1/D0 stay their own enrolled files per the destructor-pair convention -- this TU does not synthesise the destructor, so it emits no vtable/RTTI.",
+    "Helper names are not recovered, so the folded members keep their addresses as method names (S33): daSBird_c::func_ov009_02111224 / func_ov009_02111234. Callers updated: d_a_s_bird.cpp's spawn loop member-calls the child; the unenrolled hatch file externs the mangled spelling.",
+    "tubuild linkcheck is not applicable to this text-only promoted TU (same shape as ov006/dScMgCurling_c); the link proof is rombuild plus prepush_linkcheck --range."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov009-daSBird_c_head/d_a_s_bird_head.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 2,
+    "functions_declared": 2,
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    },
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        8
+      ],
+      "data": [],
+      "dataExternalized": []
+    }
+  }
+}

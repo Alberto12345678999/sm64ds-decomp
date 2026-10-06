@@ -10,11 +10,6 @@
  * WC_OBJ01 registry). Retail does not store that spelling.
  *
  * deslop
- * Leftover: func_ov002_020b5e58 is still the linker name. It is the
- *   shared float-board file-load helper in ov002, not this class's
- *   InitResources (slot 0 is pure virtual on the base). Naming
- *   belongs in ov002. That helper loads **(SharedFilePtr**)fp, fp+4,
- *   fp+8 as model/KCL/CLPS.
  * Leftover: GetClsnPos is still the mangled call (Vector3-by-value
  *   return emits D1). startEnd is two Vector3 copies flattened
  *   (start = pos; end = pos; start.y += 20; end.y = waterY); the
@@ -26,18 +21,7 @@
 #include "dBgCh_Lin.h"
 #include "SharedFilePtr.h"
 
-struct CLPS_Block;
-
-struct ResourceDescriptor {
-    SharedFilePtr *model;
-    SharedFilePtr *collision;
-    CLPS_Block *clps;
-};
-typedef char ResourceDescriptor_size_must_be_0x0c[
-    sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
-
-extern "C" int func_ov002_020b5e58(void *self, ResourceDescriptor *data);
-extern "C" ResourceDescriptor data_ov029_02113be8;
+extern "C" daObjFloatBoard_c_Resources data_ov029_02113be8;
 /* local extern: the header returns Vector3 by value, and the temporary emits a
    Vector3 destructor this TU does not own (rombuild isolate refuses it) */
 extern "C" void _ZN9dBgCh_Lin10GetClsnPosEv(Vector3 *out, dBgCh_Lin *self);
@@ -60,7 +44,7 @@ int daObjWcObj01_c::InitResources()
     int waterY;
     int x, y, z;
 
-    if (func_ov002_020b5e58(this, &data_ov029_02113be8) != 0) {
+    if (func_ov002_020b5e58(&data_ov029_02113be8) != 0) {
         waterY = GetWaterHeightWDW();
         if (mPosY > waterY) {
             dBgCh_Lin line;

@@ -58,11 +58,11 @@ struct G3i {
 extern "C" void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(int, int, int, int, int, int, bool, Matrix4x3 *);
 
 
-struct View {
+struct dView_c {
     int render();
     int Render();
 };
-struct Camera : View {
+struct Camera : dView_c {
     int Render();
 };
 
@@ -176,6 +176,6 @@ int Camera::Render()
         MulMat4x3Mat4x3((Matrix4x3 *)((char *)self + 0x50), &data_020a0e68, (Matrix4x3 *)((char *)self + 0x50));
     }
 
-    View::Render();
+    dView_c::Render();
     return 1;
 }
