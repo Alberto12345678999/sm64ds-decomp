@@ -11429,7 +11429,33 @@
       ]
     },
     "_ZN8dActor_c10FindWithIDEj": {
+      "src/actors/Eyerok.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daIbl_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daKpa3Bg_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daKpaFire_c.cpp": [
+        "return:char *"
+      ],
+      "src/actors/daKpa_c.cpp": [
+        "return:char *",
+        "return:dActor_c *",
+        "return:void *"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "return:void *"
+      ],
       "src/actors/daObjFl_Coin_c.cpp": [
+        "return:char *"
+      ],
+      "src/actors/daObjTatefuda_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
         "return:char *"
       ],
       "src/actors/daSnowball_c.cpp": [
@@ -11441,8 +11467,26 @@
       "src/actors/daTrs_c.cpp": [
         "return:char *"
       ],
+      "src/actors/daWanwan2_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daYegg_c.cpp": [
+        "return:char *"
+      ],
+      "src/engine/collision/dCc_c.cpp": [
+        "return:dActor_c *"
+      ],
+      "src/func_0200e55c.c": [
+        "return:dActor_c *"
+      ],
+      "src/func_0200e6d8.c": [
+        "return:dActor_c *"
+      ],
       "src/func_02010304.cpp": [
         "return:void *"
+      ],
+      "src/func_02014f5c.c": [
+        "return:dActor_c *"
       ],
       "src/func_ov002_020cfea4.cpp": [
         "return:void *"
@@ -11468,6 +11512,9 @@
       "src/func_ov002_020eeca8.cpp": [
         "return:void *"
       ],
+      "src/func_ov002_020eed24.cpp": [
+        "return:dActor_c *"
+      ],
       "src/func_ov002_020eedc0.cpp": [
         "return:void *"
       ],
@@ -11484,50 +11531,6 @@
         "return:void *"
       ],
       "src/func_ov002_020ef2a4.cpp": [
-        "return:void *"
-      ],
-      "src/actors/daObjBlockS_c.cpp": [
-        "return:void *"
-      ],
-      "src/actors/Eyerok.cpp": [
-        "return:void *"
-      ],
-      "src/actors/daYegg_c.cpp": [
-        "return:char *"
-      ],
-      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
-        "return:char *"
-      ],
-      "src/actors/daIbl_c.cpp": [
-        "return:void *"
-      ],
-      "src/actors/daWanwan2_c.cpp": [
-        "return:void *"
-      ],
-      "src/actors/daKpaFire_c.cpp": [
-        "return:char *"
-      ],
-      "src/actors/daObjTatefuda_c.cpp": [
-        "return:void *"
-      ],
-      "src/actors/daKpa3Bg_c.cpp": [
-        "return:void *"
-      ],
-      "src/func_0200e55c.c": [
-        "return:dActor_c *"
-      ],
-      "src/func_0200e6d8.c": [
-        "return:dActor_c *"
-      ],
-      "src/func_02014f5c.c": [
-        "return:dActor_c *"
-      ],
-      "src/func_ov002_020eed24.cpp": [
-        "return:dActor_c *"
-      ],
-      "src/actors/daKpa_c.cpp": [
-        "return:char *",
-        "return:dActor_c *",
         "return:void *"
       ]
     },
@@ -11987,7 +11990,8 @@
       "src/actors/dCapEnemy_c_arm9.cpp": [
         "param:#3 const Vector3 *",
         "param:#5 int",
-        "param:#6 int"
+        "param:#6 int",
+        "return:dActor_c *"
       ],
       "src/actors/daChoropu_c.cpp": [
         "param:#3 const Vector3 &",
