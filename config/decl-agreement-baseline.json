@@ -596,9 +596,6 @@
       ]
     },
     "DMASyncHalfTransfer": {
-      "src/_ZN2GX10LoadBGPlttEPKvjj.cpp": [
-        "param:#1 int"
-      ],
       "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
         "param:#1 int"
       ],
@@ -644,11 +641,6 @@
         "param:#2 const void *",
         "param:#3 void *"
       ],
-      "src/_ZN2GX7LoadTexEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
       "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
         "param:#1 unsigned int",
         "param:#2 const void *",
@@ -690,6 +682,11 @@
         "param:#3 void *"
       ],
       "src/func_020566dc.c": [
+        "param:#1 unsigned int",
+        "param:#2 const void *",
+        "param:#3 void *"
+      ],
+      "src/engine/gx/GX.cpp": [
         "param:#1 unsigned int",
         "param:#2 const void *",
         "param:#3 void *"
@@ -2014,9 +2011,6 @@
       ]
     },
     "MultiCopyHalf": {
-      "src/_ZN2GX10LoadBGPlttEPKvjj.cpp": [
-        "param:#3 unsigned int"
-      ],
       "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
         "param:#3 unsigned int"
       ],
@@ -2075,10 +2069,6 @@
         "param:#3 unsigned int"
       ],
       "src/_ZN2GX11LoadBG1CharEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN2GX11LoadTexPlttEPKvjj.cpp": [
         "param:#1 const void *",
         "param:#3 unsigned int"
       ],
@@ -7048,7 +7038,7 @@
       ]
     },
     "_ZN2GX13SetBankForTexEt": {
-      "src/_ZN2GX10EndLoadTexEv.cpp": [
+      "src/engine/gx/GX.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -7063,7 +7053,7 @@
       ]
     },
     "_ZN2GX17SetBankForTexPlttEt": {
-      "src/_ZN2GX14EndLoadTexPlttEv.cpp": [
+      "src/engine/gx/GX.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -12218,7 +12208,6 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation12SetAnimationEti5Fix12IiEt": {},
     "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
@@ -13739,19 +13728,7 @@
       ]
     },
     "data_02099fd0": {
-      "src/_ZN2GX10EndLoadTexEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN2GX10LoadBGPlttEPKvjj.cpp": [
-        "return:int"
-      ],
       "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
-        "return:int"
-      ],
-      "src/_ZN2GX11LoadTexPlttEPKvjj.cpp": [
-        "return:int"
-      ],
-      "src/_ZN2GX7LoadTexEPKvjj.cpp": [
         "return:int"
       ],
       "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp": [
@@ -16699,36 +16676,6 @@
     "data_020a60a8": {
       "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
         "return:void *"
-      ]
-    },
-    "data_020a60ac": {
-      "src/_ZN2GX12BeginLoadTexEv.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a60b0": {
-      "src/_ZN2GX16BeginLoadTexPlttEv.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a60b4": {
-      "src/_ZN2GX16BeginLoadTexPlttEv.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a60b8": {
-      "src/_ZN2GX12BeginLoadTexEv.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a60bc": {
-      "src/_ZN2GX12BeginLoadTexEv.cpp": [
-        "return:int"
-      ]
-    },
-    "data_020a60c0": {
-      "src/_ZN2GX12BeginLoadTexEv.cpp": [
-        "return:int"
       ]
     },
     "data_020a60c4": {
@@ -26873,7 +26820,6 @@
         "param:#2 int"
       ]
     },
-    "func_02035394": {},
     "func_020353b0": {
       "src/_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c.cpp": [
         "param:#2 dActor_c *"
@@ -26917,7 +26863,6 @@
         "param:#2 const Vector3 *"
       ]
     },
-    "func_020375ec": {},
     "func_02037608": {
       "src/_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c.cpp": [
         "param:#1 dBgCh_Lin *"
@@ -26953,8 +26898,6 @@
         "return:dBgPi *"
       ]
     },
-    "func_02037940": {},
-    "func_0203794c": {},
     "func_02037968": {
       "src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp": [
         "param:#5 void *"
@@ -26991,7 +26934,6 @@
         "param:#5 A *"
       ]
     },
-    "func_02037a04": {},
     "func_02037a38": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -27000,7 +26942,6 @@
         "param:#1 char *"
       ]
     },
-    "func_02037a6c": {},
     "func_02037dc4": {
       "src/_ZN8dActor_c17DetectRaycastClsnER7Vector3S1_b.cpp": [
         "param:#1 SurfaceInfo *",
@@ -29089,17 +29030,11 @@
       ]
     },
     "func_02054168": {
-      "src/_ZN2GX16BeginLoadTexPlttEv.cpp": [
-        "return:int"
-      ],
       "src/func_ov007_020bd960.c": [
         "return:void"
       ]
     },
     "func_0205417c": {
-      "src/_ZN2GX12BeginLoadTexEv.cpp": [
-        "return:int"
-      ],
       "src/func_ov007_020bd960.c": [
         "return:void"
       ]
@@ -29556,9 +29491,6 @@
       ]
     },
     "func_02059fa8": {
-      "src/_ZN2GX14EndLoadTexPlttEv.cpp": [
-        "param:#1 unsigned int"
-      ],
       "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
         "param:#1 unsigned int"
       ],
@@ -29567,12 +29499,6 @@
       ]
     },
     "func_02059fd0": {
-      "src/_ZN2GX11LoadTexPlttEPKvjj.cpp": [
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
-      ],
       "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
         "param:#1 unsigned int",
         "param:#2 const void *",
