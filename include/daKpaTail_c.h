@@ -34,7 +34,7 @@ struct daKpaTail_c : dActor_c {
     dCcAc_c mdCcAc_c;     /* 0x0d4 */
     /* daKpa_c's fBase_c::uniqueID. Behavior resolves it with
        dActor_c::FindWithID and parks the tail 0x8c units out from his position
-       along his facing angle. [_ZN11daKpaTail_c8BehaviorEv.cpp] */
+       along his facing angle. [_ZN11daKpaTail_c8BehaviorEv, now in src/actors/daKpa_c.cpp] */
     u32 mBowserUniqueID;                                /* 0x108 */
     u8  pad_10c[0xc];
 
@@ -63,7 +63,7 @@ struct daKpaTail_c {
     u8  pad_068[0x6c];
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN11daKpaTail_cD0Ev.c] */
+       checks. Was a u8 marker. [_ZN11daKpaTail_cD0Ev, now in src/actors/daKpa_c.cpp] */
     dCcAc_c mdCcAc_c;            /* 0x0d4 */
     u32 mBowserUniqueID;            /* 0x108 */
     u8  pad_10c[0xc];
