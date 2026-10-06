@@ -157,7 +157,8 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, in
 void _ZN5dCc_c5ClearEv(void *thiz);
 int _ZN5dCc_c6UpdateEv(void *thiz);
 int func_02012694(int, void *);
-void _ZN9Animation7AdvanceEv(void *anim);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
 void *_ZN7PathPtrC1Ev(void *thiz);
 void _ZN7PathPtr6FromIDEj(void *thiz, unsigned int id);
@@ -505,7 +506,7 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
     c->mModelAnim.speed = 4096;     /* 1.0 */
-    _ZN9Animation7AdvanceEv((Animation *)&c->mModelAnim);
+    _ZN15dExtFrameCtrl_c7AdvanceEv((dExtFrameCtrl_c *)&c->mModelAnim);
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
     func_ov100_021435e8(c);
@@ -771,8 +772,8 @@ int daWanwan2_c::InitResources()
     Model::LoadFile(data_ov002_0211092c);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov100_021486bc), 1, -1);
     Model::LoadFile(data_ov100_021486a4);
-    Animation::LoadFile(data_ov100_021486ac);
-    Animation::LoadFile(data_ov100_021486b4);
+    dExtFrameCtrl_c::LoadFile(data_ov100_021486ac);
+    dExtFrameCtrl_c::LoadFile(data_ov100_021486b4);
     LoadSilverStarAndNumber();
 
     {

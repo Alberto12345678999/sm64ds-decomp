@@ -6,7 +6,7 @@
    multiple-inheritance argument conversion in the tree. */
 void ModelAnim::Copy(const ModelAnim &src, char *newFile)
 {
-    Animation::Copy(src);
+    dExtFrameCtrl_c::Copy(src);
     if (newFile != 0)
         file = (BCA_File *)newFile;
     else

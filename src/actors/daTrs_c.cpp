@@ -3288,8 +3288,8 @@ int daTrs_c::InitResources()
         unk_5cf = (param1 & 0xf) + 0xc;
         if (unk_5cf == 0xf) {
             LoadKeyModels(3);
-            Animation::LoadFile(data_ov063_0211edd4);
-            Animation::LoadFile(data_ov063_0211edcc);
+            dExtFrameCtrl_c::LoadFile(data_ov063_0211edd4);
+            dExtFrameCtrl_c::LoadFile(data_ov063_0211edcc);
         } else if (unk_5cf == 0xc) {
             mFoundActor = dActor_c::Spawn(0xd3, param1, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
             if (mFoundActor != 0) {
@@ -3297,7 +3297,7 @@ int daTrs_c::InitResources()
             }
             mFoundActor = 0;
         }
-        Animation::LoadFile(data_ov063_0211ede4);
+        dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edf4), 1, 1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211ede4 + 4), 0, 0x1000, 0);
         mDataIdx = 3;
@@ -3316,7 +3316,7 @@ int daTrs_c::InitResources()
         }
     } else {
         unk_5cf = param1 & 0xf;
-        Animation::LoadFile(data_ov063_0211eddc);
+        dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edc4), 1, 0x16);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211eddc + 4), 0, 0x1000, 0);
         mDataIdx = 1;

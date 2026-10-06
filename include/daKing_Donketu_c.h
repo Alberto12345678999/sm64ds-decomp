@@ -27,7 +27,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
     dBgCh_Actr mWithMeshClsn;                              /* 0x150 */
     /* The boss's model and skeleton animation. The state handlers read the
        bone-matrix array (data.transforms, 0x320) and the model's own matrix
-       (mat4x3, 0x328) to find where to put particles, treat its Animation
+       (mat4x3, 0x328) to find where to put particles, treat its dExtFrameCtrl_c
        base (0x35c) as the clock they wait on, and set its playback speed
        (speed, 0x368; 0x1000 is 1.0). */
     BlendModelAnim mBlendModelAnim;                        /* 0x30c */
