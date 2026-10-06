@@ -25,10 +25,10 @@
  *
  * THE THREE MEMBERS ARE PLACED BY THE FACTORY, not by field-span guesswork:
  * daObjTatefuda_c_classInit runs dCcAc_c's constructor at this+0x320,
- * ShadowModel's at this+0x358 and dBgCh_Actr's at this+0x3c8, and the
+ * dExtShadowModel_c's at this+0x358 and dBgCh_Actr's at this+0x3c8, and the
  * destructor tears the same three down in reverse. Two of them are typed here
  * and each closes on its own class's size assert -- dCcAc_c 0x34 ends
- * at 0x354, ShadowModel 0x28 ends at 0x380 -- which is a second check on both
+ * at 0x354, dExtShadowModel_c 0x28 ends at 0x380 -- which is a second check on both
  * offsets. Typing them is not cosmetic: `(char *)&member` on a u8 marker in the
  * DERIVED part of this object made mwcc materialise the offset through the
  * literal pool (ldr + add where the ROM has a single add), and InitResources
@@ -68,7 +68,7 @@ typedef struct Player Player;
 
 #include "dBgActor_c.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjTatefuda_c : dBgActor_c {
     dCcAc_c mdCcAc_c;                /* 0x320 */
@@ -83,7 +83,7 @@ struct daObjTatefuda_c : dBgActor_c {
        Behavior was read, and was first named for a collider result code,
        which it is not: the collider is mdCcAc_c, ahead of it. */
     s32 mState;                      /* 0x354 */
-    ShadowModel mShadowModel;        /* 0x358 */
+    dExtShadowModel_c mShadowModel;        /* 0x358 */
     /* Behavior hands this to dActor_c::DropShadowScaleXYZ as its Matrix4x3 &
        argument, right after mShadowModel -- the drop shadow's own matrix. A
        Matrix4x3 is 0x30 bytes and closes exactly on 0x3b0. Was pad_380. */

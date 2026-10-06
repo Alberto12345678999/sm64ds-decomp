@@ -95,7 +95,7 @@ void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 &v
 void Matrix4x3_ApplyInPlaceToTranslation(Mtx43 *m, int x, int y, int z);
 void Vec3_LslInPlace(Vector3 *v, int sh);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int r, int t5, int t6, unsigned int u);
 void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *w);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
@@ -215,7 +215,7 @@ void daBttBk_c::func_ov080_02124c3c()
         int sv = data_02082214[((unsigned short)(short)(a << 1) >> 4) * 2];
         if (sv < 0) sv = -sv;
         int result = (int)(((s64)sv * 0x28000 + 0x800) >> 12);
-        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             this, &mShadowModel, mShadowMtx, 0x96000, 0x32000, result + 0x96000, 0xf);
     }
 }

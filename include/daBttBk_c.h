@@ -3,7 +3,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -50,9 +50,9 @@ struct daBttBk_c : dActor_c {
     /* Model member, named by the class's own destructor calling
        Model's D1 at +0x0d4. [daBttBk_c D0, src/actors/daBttBk_c.cpp] */
     Model mModel;            /* 0x0d4 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x124. [daBttBk_c D0, src/actors/daBttBk_c.cpp] */
-    ShadowModel mShadowModel;            /* 0x124 */
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x124. [daBttBk_c D0, src/actors/daBttBk_c.cpp] */
+    dExtShadowModel_c mShadowModel;            /* 0x124 */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x14c. [daBttBk_c D0, src/actors/daBttBk_c.cpp] */
     dCcAc_c mdCcAc_c;            /* 0x14c */

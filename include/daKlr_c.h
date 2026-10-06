@@ -4,7 +4,7 @@
 #include "types.h"
 #include "dEnemyBase_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
 
@@ -18,7 +18,7 @@
  *     dBgCh_Actr   0x150 + 0x1bc = 0x30c  -> the body Model
  *     Model        0x30c + 0x050 = 0x35c  -> the second Model
  *     Model        0x35c + 0x050 = 0x3ac  -> the shadow
- *     ShadowModel  0x3ac + 0x028 = 0x3d4  -> mState
+ *     dExtShadowModel_c  0x3ac + 0x028 = 0x3d4  -> mState
  *
  * The vtable overrides slots 0, 3, 6, 9 (InitResources, CleanupResources,
  * Behavior, Render), 16/17 (D1, D0) and 29 (OnAimedAtWithEgg); every other
@@ -33,7 +33,7 @@ struct daKlr_c : dEnemyBase_c {
     dBgCh_Actr  mWallClsn;         /* 0x150 */
     Model       mModel;            /* 0x30c */
     Model       mModel2;           /* 0x35c -- same matrix, second file */
-    ShadowModel mShadow;           /* 0x3ac */
+    dExtShadowModel_c mShadow;           /* 0x3ac */
     s32         mState;            /* 0x3d4 -- 0 flying, 1 shot down */
     u32         mSmokeTrailID;     /* 0x3d8 -- Particle::System unique ID */
     /* Written by daObjBkKillerdai_c::Behavior right after the spawn: the

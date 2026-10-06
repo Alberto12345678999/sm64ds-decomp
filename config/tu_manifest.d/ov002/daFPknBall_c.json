@@ -95,7 +95,7 @@
   "notes": [
     "Text span 0x020f8858..0x020f934c, 10 functions, class daFPknBall_c only; the last is its registry factory daFPknBall_c_classInit (0x020f9304), folded in the 0930c classInit tail pass.",
     "One out-of-line destructor under #pragma defer_codegen off. D2 is homeless deadstrip. The vtable and the ancestor RTTI chain are deadstrip-data at their existing addresses. The coined _ZTV8Fireball alias was deleted.",
-    "classInit tail fold (0930c): folded the registry factory daFPknBall_c_classInit (0x020f9304..0x020f934c) into this promoted TU and widened the complete delinks.txt claim to 0x020f8858..0x020f934c. The loose source hand-called fBase_c::operator new(888), dEnemyBase_c's base constructor, stored _ZTV12daFPknBall_c, then constructed the dCcAc_c, dBgCh_Actr and ShadowModel members. daFPknBall_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daFPknBall_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
+    "classInit tail fold (0930c): folded the registry factory daFPknBall_c_classInit (0x020f9304..0x020f934c) into this promoted TU and widened the complete delinks.txt claim to 0x020f8858..0x020f934c. The loose source hand-called fBase_c::operator new(888), dEnemyBase_c's base constructor, stored _ZTV12daFPknBall_c, then constructed the dCcAc_c, dBgCh_Actr and dExtShadowModel_c members. daFPknBall_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daFPknBall_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
   ],
   "compiler_only_output": [
     {

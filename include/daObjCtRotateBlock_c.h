@@ -2,7 +2,7 @@
 #define DAOBJCTROTATEBLOCK_C_H
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 /* daObjCtRotateBlock_c -- the rotating cube on Tick Tock Clock.
  *
@@ -16,8 +16,8 @@
  * BASE: dBgActor_c, direct, at offset zero -- the record's third word is
  * _ZTI10dBgActor_c at ov002 0x021089ec.
  *
- * MEMBERS: the factories construct a Model at 0x320 and a ShadowModel at
- * 0x380; D1/D0 destroy them in reverse (_ZN11ShadowModelD1Ev at +0x380,
+ * MEMBERS: the factories construct a Model at 0x320 and a dExtShadowModel_c at
+ * 0x380; D1/D0 destroy them in reverse (_ZN17dExtShadowModel_cD1Ev at +0x380,
  * _ZN5ModelD1Ev at +0x320) before dBgActor_c's inlined destructor takes down
  * its dBgW_KcMbg (0x124) and Model (0xd4).
  *
@@ -41,7 +41,7 @@ struct daObjCtRotateBlock_c : dBgActor_c {
     u8 mUnevenGround;          /* 0x37a the two floor probes disagreed */
     u8 mPad37b;                /* 0x37b */
     s32 mFloorY;               /* 0x37c ground height under the cube */
-    ShadowModel mShadowModel;  /* 0x380 */
+    dExtShadowModel_c mShadowModel;  /* 0x380 */
     Matrix4x3 mShadowMat;      /* 0x3a8 */
 
     /* OUT OF LINE, DECLARED FIRST: the key function. The TU defines it first

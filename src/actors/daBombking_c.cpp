@@ -148,7 +148,7 @@ extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
 extern int Vec3_HorzLen(void* v);
 extern int func_ov002_020db5f4(char* c, char* arg);
 extern void func_0200d8c8(void* cam, void* v, int strength);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
@@ -1512,7 +1512,7 @@ extern "C" void func_ov078_02125c98(void* cv) {
   k->mShadowMtx[9] = k->mPosX >> 3;
   k->mShadowMtx[10] = k->mPosY >> 3;
   k->mShadowMtx[11] = k->mPosZ >> 3;
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
       k, &k->mShadowModel, k->mShadowMtx, scale, ip + 0x28000, 0xf);
 }
 

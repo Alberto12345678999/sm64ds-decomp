@@ -108,7 +108,7 @@ extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
 extern "C" void _ZN9Animation7AdvanceEv(void *anim);
 extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, void *v, int f);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
 extern "C" int data_ov074_02122e24[];
 extern "C" char data_ov074_02122f3c[];
@@ -1378,7 +1378,7 @@ void daKuriKing_c::func_ov074_02121800()
         fp = *(int *)(src + 0x3b4);
         sl += 0x28000;
         *(int *)(self + 0x318) = fp >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, sm, m, r3_318, sl, 0xf);
         self += 0x30;
         src += 0xc;
@@ -1792,7 +1792,7 @@ int daKuriKing_c::func_ov074_021223bc()
     *(int *)((char *)this + 0x314) = this->mPosY >> 3;
     *(int *)((char *)this + 0x318) = this->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, (char *)this + 0x274, (char *)this + 0x2ec, 0x8c000, 0x3e8000, 0xf);
 
     return 1;

@@ -156,7 +156,7 @@ void _ZN9FaderWipe14LoadAndSetFileEt(int thiz, u16 fileID);
 void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int x);
 int _ZN5Sound8SetMusicEjj(u32 a, u32 b);
 void _ZN8Particle10SysTracker10InitialiseEv(void *thiz);
-void _ZN11ShadowModel8CleanAllEv(void);
+void _ZN17dExtShadowModel_c8CleanAllEv(void); // local extern: include-free shard; every callee is declared locally by design
 }
 
 int dScStage_c::InitResources()
@@ -430,7 +430,7 @@ L_after304:
             *p1 = (*p1 & ~0x1F00) | (data_0209d454 << 8);
         }
         data_0209cee8 = 0;
-        _ZN11ShadowModel8CleanAllEv();
+        _ZN17dExtShadowModel_c8CleanAllEv();
         data_02092110 = -1;
 
         if (data_0209fc68 != 0) {
