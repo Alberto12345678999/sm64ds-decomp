@@ -1083,6 +1083,17 @@
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c16CleanupResourcesEv",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_cD0Ev",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_cD1Ev",
+    "src/actors/daObjTatefuda_c.cpp#RebuildModelMatrix",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c10InitThrownEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11InitCarriedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11InitDroppedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11UpdateStateEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c18UpdateShadowMatrixEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c4IdleEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c7CarriedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitIdleEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitTalkEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8SetStateEi",
     "src/actors/daSnowball_c.cpp#_ZN12daSnowball_c16CleanupResourcesEv",
     "src/actors/daSnowball_c.cpp#_ZN12daSnowball_c16OnPendingDestroyEv",
     "src/actors/daSnowball_c.cpp#_ZN12daSnowball_c6RenderEv",
@@ -3517,5 +3528,5 @@
     "src/_ZN15dExtFrameCtrl_cD2Ev.cpp",
     "src/actors/daObjFl_Seesaw_c.cpp#daObjFl_Seesaw_c_classInit"
   ],
-  "count": 3508
+  "count": 3519
 }
