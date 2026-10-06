@@ -24239,12 +24239,6 @@
         "return:int"
       ]
     },
-    "func_020165c4": {
-      "src/_ZN14BlendModelAnim9DoSetFileEPcii.cpp": [
-        "param:#1 BlendModelAnim *",
-        "param:#2 char *"
-      ]
-    },
     "func_020167a4": {
       "src/actors/daMoray_c.cpp": [
         "param:#1 BlendModelAnim *"
@@ -27938,10 +27932,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN14BlendModelAnim11UpdateVertsEv.cpp": [
-        "param:#1 ModelComponents *"
-      ],
-      "src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.cpp": [
+      "src/engine/model/BlendModelAnim.cpp": [
         "param:#1 ModelComponents *"
       ],
       "src/actors/daMoray_c.cpp": [
@@ -28019,8 +28010,7 @@
       ]
     },
     "func_020462bc": {
-      "src/func_020165c4.c": [
-        "param:#1 int",
+      "src/engine/model/BlendModelAnim.cpp": [
         "return:unsigned int"
       ],
       "src/func_ov007_020bc6d4.c": [
