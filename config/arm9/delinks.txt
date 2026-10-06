@@ -1885,29 +1885,9 @@ src/_ZN18TextureTransformerC1Ev.cpp:
     complete
     .text start:0x02015950 end:0x0201597c
 
-src/_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File.cpp:
+src/engine/model/TextureSequence.cpp:
     complete
-    .text start:0x0201597c end:0x02015988
-
-src/_ZN15TextureSequence6UpdateER15ModelComponents.cpp:
-    complete
-    .text start:0x02015988 end:0x020159ac
-
-src/_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj.c:
-    complete
-    .text start:0x020159ac end:0x02015a00
-
-src/_ZN15TextureSequenceD0Ev.cpp:
-    complete
-    .text start:0x02015a00 end:0x02015a2c
-
-src/_ZN15TextureSequenceD1Ev.cpp:
-    complete
-    .text start:0x02015a2c end:0x02015a50
-
-src/_ZN15TextureSequenceC1Ev.cpp:
-    complete
-    .text start:0x02015a50 end:0x02015a7c
+    .text start:0x0201597c end:0x02015a7c
 
 src/_ZN9Animation4CopyERKS_.cpp:
     complete

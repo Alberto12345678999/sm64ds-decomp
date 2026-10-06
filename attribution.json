@@ -8271,6 +8271,12 @@
     "src/engine/collision/dBgPi.cpp#_ZN5dBgPiD0Ev": "tangosdev",
     "src/engine/collision/dBgPi.cpp#_ZN5dBgPiD1Ev": "tangosdev",
     "src/engine/collision/dBgPi.cpp#_ZN5dBgPiC1Ev": "tangosdev",
-    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiC2Ev": "tangosdev"
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiC2Ev": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File": "ruspecial",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence6UpdateER15ModelComponents": "ruspecial",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceD0Ev": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceD1Ev": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceC1Ev": "tangosdev"
   }
 }
