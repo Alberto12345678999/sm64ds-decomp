@@ -106,12 +106,16 @@ void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 /* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8FinishedEv(void *);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 void *_ZN9ModelAnimC1Ev(void *);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *, void *, int, int);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *, int);
 void *__cxa_vec_ctor(void *, int, int, void *, void *);
 void func_02012174(int, int);

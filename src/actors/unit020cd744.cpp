@@ -813,6 +813,7 @@ extern "C" void func_ov006_020ce988(char* c){
 namespace s020cea2c {
 extern "C" {
 void AddVec3(void *a, void *b, void *c);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 }
 

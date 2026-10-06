@@ -55,10 +55,14 @@ extern SharedFilePtr data_ov006_02141e9c;
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 int _Z15ApproachLinear2Rsss(short* p, short a, short b);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
 void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* r);
 void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);

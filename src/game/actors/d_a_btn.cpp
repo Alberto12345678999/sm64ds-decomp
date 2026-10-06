@@ -158,7 +158,9 @@ void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5
 void _ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h(
     void *actor, signed char *flag, unsigned int id, const void *pos, unsigned int j);
 u8 _ZN8dActor_c9TrackStarEjj(void *self, unsigned int a, unsigned int b);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *shared);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void _ZN15dExtFrameCtrl_c8SetFlagsEi(void *self, int flags);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fix, unsigned int b);
 void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *mb, void *bmd, int a, int b);

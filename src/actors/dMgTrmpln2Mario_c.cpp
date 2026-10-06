@@ -308,6 +308,7 @@ namespace ns_020c91ac {
 
 extern "C" {
 void func_ov006_020ca2ec(void *c);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thisPtr, int frame);
 void func_ov006_020e6e3c(int a0, int a1);
 void func_ov006_020bfec0(void *a0, void *a1, short *a2);
@@ -1201,6 +1202,7 @@ extern "C" void* data_ov006_021405c4;
 extern "C" char* data_ov006_02141a40;
 
 extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
 extern void func_ov006_020bfec0(char* p, void* q, short* s);
@@ -1862,6 +1864,7 @@ extern "C" Triple data_ov006_02140778[];
 extern "C" Triple data_020a0ebc;
 
 extern void _Z11UpdateAngleRssis(short *, short, int, short);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 extern void _Z14ApproachLinearRiii(int *, int, int);
@@ -1986,6 +1989,7 @@ extern "C" int data_ov006_021405c0;
 extern "C" short data_ov006_02140538;
 extern void _Z14ApproachLinearRiii(int* p, int b, int c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 extern void func_ov006_020cb528(char* c);
 extern void func_ov006_020cc8c8(char* c);
@@ -2895,6 +2899,7 @@ void func_ov006_020cc698(char *c) {
 // ---- func_ov006_020cc724
 namespace ns_020cc724 {
 extern "C" {
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
@@ -3040,6 +3045,7 @@ extern "C" void func_ov006_020cc9fc(char *c)
 // ---- func_ov006_020ccae0
 namespace ns_020ccae0 {
 extern "C" {
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
@@ -3203,6 +3209,7 @@ extern "C" void* data_ov006_02140540;
 extern "C" char* data_ov006_02141a40;
 
 extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
 extern void func_ov006_020bfec0(char* p, void* q, short* s);

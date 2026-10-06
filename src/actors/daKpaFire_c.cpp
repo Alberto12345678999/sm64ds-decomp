@@ -166,6 +166,7 @@ void* _ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void* prev);
 int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 extern char* _ZN8dActor_c10FindWithIDEj(unsigned int id);
 extern int func_ov060_02111c68(char *c);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
 extern u16 data_ov060_02119364[];

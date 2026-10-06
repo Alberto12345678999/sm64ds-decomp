@@ -33,6 +33,7 @@ extern void func_ov002_020d71ec(char*, int);
 extern void _Z15ApproachLinear2Rsss(short*, short, short);
 extern void MulVec3Mat4x3(void*, void*, void*);
 extern void Vec3_MulScalarInPlace(void*, int);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void*, int);
 extern int func_ov002_020d5ed0(void*);
 extern void func_ov002_020d718c(char*);
@@ -50,6 +51,7 @@ extern void _ZN5dCc_c6UpdateEv(void*);
 extern void ApproachAngle(void*, short, int, int, int);
 extern void func_ov002_020daa74(char*);
 extern void Player_AdvanceAnims(char*);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void*);
 
 extern short data_02082214[];

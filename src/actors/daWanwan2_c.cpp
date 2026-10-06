@@ -157,6 +157,7 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, in
 void _ZN5dCc_c5ClearEv(void *thiz);
 int _ZN5dCc_c6UpdateEv(void *thiz);
 int func_02012694(int, void *);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
 void *_ZN7PathPtrC1Ev(void *thiz);

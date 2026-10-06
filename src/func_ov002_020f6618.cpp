@@ -6,6 +6,7 @@ extern "C" {
 struct SharedFilePtr { int a, file; };
 void* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* f, int a, int b);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* f, int a, int fx, unsigned int e);
 void* _Znwj(unsigned int sz);

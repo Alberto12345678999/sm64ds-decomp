@@ -309,6 +309,7 @@ extern short Vec3_HorzAngle(const struct Vector3*, const struct Vector3*);
 extern int func_020092c4(void*, void*, void*);
 extern int _ZN6Player7IsInAirEv(void*);
 extern int _Z14ApproachLinearRiii(int*, int, int);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void*);
 /* Switch the model to animation `idx`; `animFlags` is forwarded to
  * ModelAnim::SetAnim (see the definition). The shards disagreed on the arity --
@@ -392,6 +393,7 @@ extern int func_ov060_02113d20(dActor_c *self);
 /* Defined below; the second parameter is a frame count, read as an unsigned
  * halfword (the one caller passes 0x3e). */
 extern int func_ov060_02113ff4(daKpa_c *kpa, unsigned short a, int b);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
 extern int _ZN6Player9GetHealthEv(void* player);
@@ -450,6 +452,7 @@ extern SharedFilePtr *data_ov060_0211927c[];
 extern SharedFilePtr data_ov089_02132c50;
 extern SharedFilePtr *data_ov060_0211ac78[];
 extern SharedFilePtr *data_ov060_0211ac28[];
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
 /* Model::LoadFile is declared in include/Model.h as taking SharedFilePtr&.
@@ -459,9 +462,11 @@ extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
  * handles themselves rather than casting to void*. */
 extern void *_ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr &f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, unsigned int d);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(void *self, int flags);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
@@ -4018,6 +4023,7 @@ extern SharedFilePtr *data_ov060_0211ac30[];
 extern SharedFilePtr *data_ov060_0211ac28[];
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int d, unsigned e);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *file, int a, int d, unsigned e);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(void *anim, int flags);
 
 void func_ov060_02111cc0(daKpa_c *kpa, int idx, int animFlags)

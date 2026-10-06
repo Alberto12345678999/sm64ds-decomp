@@ -174,6 +174,7 @@ extern short data_02082214[];
 extern void func_02012694(int a, void* p);
 extern void _ZN5dCc_c5ClearEv(char* t);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int d);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* anim);
 extern void func_ov002_020e8244(void *out, daStar_c *b);
 extern "C" void SubVec3(Vector3* a, Vector3* b, Vector3* c);
@@ -269,6 +270,7 @@ extern s32 data_02092138;
 extern SharedFilePtrRaw data_ov002_0211094c;
 extern SharedFilePtrRaw data_ov002_02110954;
 extern SharedFilePtrRaw data_ov002_0211095c;
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void LoadSilverStarAndNumber(void);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(

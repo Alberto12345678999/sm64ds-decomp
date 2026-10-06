@@ -6,6 +6,7 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int
 int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
 void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int, int, int);
 int Player_ScaleByCharFactor(void*, int);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void*, int);
 void func_ov002_020d4c30(void*);
 }
