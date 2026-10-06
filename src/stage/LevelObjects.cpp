@@ -20,6 +20,7 @@
 #include "LVL_Overlay.h"
 #include "Stage.h"
 #include "dBgW.h"
+#include "PathPtr.h"
 
 /* ------------------------------------------------------------------------- *
  * Reconciled declarations.
@@ -269,38 +270,16 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable& tbl, int p2, u32 p3)
     StartEntranceFaderWipe(wipe);
 }
 
-/* CONFLICT 4 -- func_0203accc's arity, and this is the one consolidation could
- * not paper over.
- *
- * This file declared `void func_0203accc(void *entries, int areaID, u32 param)`
- * and called it with three arguments; Stage::LoadClsnAndObjects (bottom of this
- * file) includes decl_common.h, which declares `void func_0203accc(int)`, and
- * calls it with one. Two `extern "C"` declarations of one symbol with different
- * arity cannot coexist, and no cast reconciles them.
- *
- * The ROM decides it. Stage's call site is `mov r0, #0` then `bl` -- r1 and r2
- * are never set -- so a three-argument declaration would cost two extra
- * instructions there. This function is a tail call, `ldr r0, [r0, #4]` then
- * `bx ip`, which passes r1/r2 through by accident of the ABI rather than by
- * intent: the same four instructions come out whether the callee is declared to
- * take them or not. So the one-argument declaration is the one that can be
- * true of both call sites, and the three-argument spelling was an inference
- * from the tail-call shape that the other caller contradicts. Measured
- * byte-free here. */
 // @symbol _Z19LoadPathNodeObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadPathNodeObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
-    func_0203accc((int)tbl.entries);
+    PathPtr::SetNodeTable(tbl.entries);
 }
 
-/* Hand the category's entry array and count straight to func_0203aca0.
- * decl_common.h declares that one `(int, int)`; this file used to declare it
- * `(void *, u32)`. Same arity, so a cast settles it -- unlike func_0203accc
- * above. */
 // @symbol _Z15LoadPathObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadPathObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
-    func_0203aca0((int)tbl.entries, tbl.count);
+    PathPtr::SetPathTable((PathDef*)tbl.entries, tbl.count);
 }
 
 // @symbol _Z15LoadViewObjectsRN11LVL_Overlay11ObjSubTableEij
@@ -510,8 +489,8 @@ void Stage::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
     int t2;
     int isTwo;
 
-    func_0203accc(0);
-    func_0203aca0(0, 0);
+    PathPtr::SetNodeTable(0);
+    PathPtr::SetPathTable(0, 0);
 
     if (ovl->kclFileId != 0) {
         f = LoadFile(ovl->kclFileId);
