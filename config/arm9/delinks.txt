@@ -7150,29 +7150,9 @@ src/engine/gx/G3i.cpp:
     complete
     .text start:0x02055a64 end:0x02055dec
 
-src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp:
+src/engine/gx/GXS.cpp:
     complete
-    .text start:0x02055dec end:0x02055e38
-
-src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp:
-    complete
-    .text start:0x02055e38 end:0x02055eac
-
-src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp:
-    complete
-    .text start:0x02055eac end:0x02055ed0
-
-src/_ZN3GXS16EndLoadBGExtPlttEv.cpp:
-    complete
-    .text start:0x02055ed0 end:0x02055f1c
-
-src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp:
-    complete
-    .text start:0x02055f1c end:0x02055f90
-
-src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp:
-    complete
-    .text start:0x02055f90 end:0x02055fb4
+    .text start:0x02055dec end:0x02055fb4
 
 src/func_02055fb4.c:
     complete

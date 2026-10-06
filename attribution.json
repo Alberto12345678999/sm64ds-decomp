@@ -8615,6 +8615,12 @@
     "src/actors/dScStage_c.cpp#_ZN10dScStage_c9VE_UpdateEv": "ruspecial",
     "src/actors/dScStage_c.cpp#_ZN10dScStage_cD0Ev": "tangosdev",
     "src/actors/dScStage_c.cpp#_ZN10dScStage_cD1Ev": "tangosdev",
-    "src/actors/dScStage_c.cpp#_ZN10dScStage_c9PS_UpdateEv": "andrewboudreau"
+    "src/actors/dScStage_c.cpp#_ZN10dScStage_c9PS_UpdateEv": "andrewboudreau",
+    "src/engine/gx/GXS.cpp#_ZN3GXS17EndLoadOBJExtPlttEv": "mitchellcairns",
+    "src/engine/gx/GXS.cpp#_ZN3GXS14LoadOBJExtPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS19BeginLoadOBJExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS16EndLoadBGExtPlttEv": "mitchellcairns",
+    "src/engine/gx/GXS.cpp#_ZN3GXS13LoadBGExtPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS18BeginLoadBGExtPlttEv": "tangosdev"
   }
 }

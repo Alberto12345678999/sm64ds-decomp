@@ -2094,14 +2094,6 @@
         "param:#1 const void *",
         "param:#3 unsigned int"
       ],
-      "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
       "src/func_0202f2c4.c": [
         "param:#3 unsigned int"
       ],
@@ -7068,12 +7060,12 @@
       ]
     },
     "_ZN2GX22SetBankForSubBGExtPlttEt": {
-      "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
     "_ZN2GX23SetBankForSubOBJExtPlttEt": {
-      "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -16689,16 +16681,6 @@
       ],
       "src/func_02054430.c": [
         "return:unsigned short"
-      ]
-    },
-    "data_020a60a4": {
-      "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
-    "data_020a60a8": {
-      "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
-        "return:void *"
       ]
     },
     "data_020a60ac": {
@@ -29062,16 +29044,6 @@
         "return:void"
       ]
     },
-    "func_020540f0": {
-      "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02054118": {
-      "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
     "func_02054140": {
       "src/actors/dScMgD3DBase_c.cpp": [
         "return:void"
@@ -29558,30 +29530,10 @@
     "func_02059fa8": {
       "src/_ZN2GX14EndLoadTexPlttEv.cpp": [
         "param:#1 unsigned int"
-      ],
-      "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
-        "param:#1 unsigned int"
-      ],
-      "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp": [
-        "param:#1 unsigned int"
       ]
     },
     "func_02059fd0": {
       "src/_ZN2GX11LoadTexPlttEPKvjj.cpp": [
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
-      ],
-      "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
-      ],
-      "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp": [
-        "param:#1 unsigned int",
         "param:#2 const void *",
         "param:#3 void *",
         "param:#5 unsigned int",
