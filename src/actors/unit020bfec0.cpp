@@ -32,7 +32,7 @@
 struct Sound { static void PlayBank2_2D(unsigned int); };
 struct Model { int d; void HideMaterial(int, int); void ShowMaterial(int, int); void Render(const Vector3 *); };
 struct Animation { int d; int Finished(); int WillHitFrame(int f) const; };
-namespace ShadowModel { void RenderAll(); }
+namespace dExtShadowModel_c { void RenderAll(); }
 void UpdateAngle(short &, short, int, short);
 int ApproachLinear(int &, int, int);
 int ApproachLinear2(short &, short, short);
@@ -47,7 +47,7 @@ void _ZN9ModelAnimD1Ev(void *);
 void *__cxa_vec_cleanup(void *, int, int, void *);
 void func_020169d8(void *, int, unsigned int);
 void func_0203cebc(void *, void *, void *, void *);
-void _ZN11ShadowModel8CleanAllEv(void); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
+void _ZN17dExtShadowModel_c8CleanAllEv(void); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
 void AddVec3(void *, void *, void *);
 int DotVec3(void *, void *);
 void Matrix4x3_ApplyInPlaceToRotationX(void *, short);
@@ -72,10 +72,10 @@ void _Z13CopyToViewMatPK9Matrix4x3(void *);
 void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
-void _ZN11ShadowModel12InitCylinderEv(void *);
-void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int, unsigned int);
-void *_ZN11ShadowModelC1Ev(void *);
-void _ZN11ShadowModelD1Ev(void *);
+void _ZN17dExtShadowModel_c12InitCylinderEv(void *); // local extern: receiver is a char* cursor over actor memory (c + 0x88), not the class object
+void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int, unsigned int);
+void *_ZN17dExtShadowModel_cC1Ev(void *);
+void _ZN17dExtShadowModel_cD1Ev(void *);
 void _ZN13SharedFilePtr7ReleaseEv(void *);
 void _ZN13SharedFilePtr9ConstructEj(void *, unsigned int);
 void *_ZN14BlendModelAnimC1Ev(void *);
@@ -1649,7 +1649,7 @@ int func_ov006_020c1a88(char *c)
     void *f;
     void *ip;
 
-    _ZN11ShadowModel8CleanAllEv();
+    _ZN17dExtShadowModel_c8CleanAllEv();
     *(void **)(c + 0x260) = _ZN5Model8LoadFileER13SharedFilePtr(c + 0x1e8);
     *(void **)(c + 0x264) = _ZN5Model8LoadFileER13SharedFilePtr(c + 0x1f0);
     f = *(void **)(c + 0x260);
@@ -1800,7 +1800,7 @@ extern "C" void func_ov006_020c1804(void *self)
     func_ov006_020c07a0(c + 0xdc);
     ((Obj*)(c + 0x8c))->f5(0);
 
-    ShadowModel::RenderAll();
+    dExtShadowModel_c::RenderAll();
 }
 }
 
@@ -2354,7 +2354,7 @@ int func_ov006_020c0a48(char *t)
     _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
     _ZN13SharedFilePtr9ConstructEj(t + 0x10, 0x207);
     _ZN14BlendModelAnimC1Ev(t + 0x18);
-    _ZN11ShadowModelC1Ev(t + 0x88);
+    _ZN17dExtShadowModel_cC1Ev(t + 0x88);
     *(int *)(t + 0xe4) = 0;
     *(short *)(t + 0xf0) = 0;
     *(int *)(t + 0xf4) = 0;
@@ -2371,7 +2371,7 @@ int func_ov006_020c09f8(char *t)
     _ZN13SharedFilePtr7ReleaseEv(t);
     _ZN13SharedFilePtr7ReleaseEv(t + 0x10);
     _ZN13SharedFilePtr7ReleaseEv(t + 8);
-    _ZN11ShadowModelD1Ev(t + 0x88);
+    _ZN17dExtShadowModel_cD1Ev(t + 0x88);
     _ZN14BlendModelAnimD1Ev(t + 0x18);
     SharedFilePtr_Destruct_Anim(t + 0x10);
     SharedFilePtr_Destruct_Anim(t + 8);
@@ -2410,7 +2410,7 @@ extern "C" void func_ov006_020c092c(char* thiz)
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
         (BlendModelAnim*)(c + 0x18), **(BCA_File**)(c + 0xc), 0, 0, 0x800, 0);
     _ZN5Model12SetPolygonIDEi((Model*)(c + 0x18), 1);
-    _ZN11ShadowModel12InitCylinderEv((void*)(c + 0x88));
+    _ZN17dExtShadowModel_c12InitCylinderEv((void*)(c + 0x88));
     *(int*)(c + 0xbc) = 0x1000;
     *(int*)(c + 0xc0) = 0x1000;
     *(int*)(c + 0xc4) = 0x1000;
@@ -2492,7 +2492,7 @@ extern "C" {
 void func_ov006_020c07a0(char *t)
 {
     func_ov006_020c06dc(t);
-    _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(t + 0x88, t + 0x34, 0x3c000, 0x14000, 0x3c000, 0xc);
+    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(t + 0x88, t + 0x34, 0x3c000, 0x14000, 0x3c000, 0xc);
     _ZN5Model6RenderEPK7Vector3(t + 0x18, 0);
 }
 }

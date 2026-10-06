@@ -66,7 +66,7 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, dActor_c *a, int b, int c, Vector3_16 *d, Vector3_16 *e);
 
 /* actor plumbing */
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, dActor_c *a, int b, int c, unsigned int d, unsigned int e);
@@ -98,7 +98,7 @@ extern daPeach_c::StateFunc data_ov085_0213055c[];
  * in the cartridge's order, D1 first at 0x02129d18 and D0 at 0x02129d60.
  *
  * There is nothing to write. The vptr store and the four member destructor
- * calls -- dBgCh_Actr at 0x194, dCcAc_c at 0x160, ShadowModel at 0x138,
+ * calls -- dBgCh_Actr at 0x194, dCcAc_c at 0x160, dExtShadowModel_c at 0x138,
  * ModelAnim at 0xd4 -- and then dActor_c's own step are every one a
  * consequence of `struct daPeach_c : dActor_c` and the members that
  * declaration types. D0's deallocation is the inline operator delete reached
@@ -213,7 +213,7 @@ void daPeach_c::UpdateModel()
     Matrix4x3_ApplyInPlaceToRotationY(data_020a0e68, mLookHorzAngle);
     Matrix4x3_ApplyInPlaceToRotationZ(data_020a0e68, mLookVertAngle);
     *(PeachM48 *)(*(char **)(c + 0xe8) + 0x360) = *(PeachM48 *)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mModelAnim.mat4x3, 0x8c000, 0x32000, 0xf);
 }
 
@@ -455,7 +455,7 @@ int daPeach_c::InitResources()
  *
  * `return new daPeach_c()` is the whole body: the synthesized constructor is
  * what runs dActor_c's base step, stores the vptr and then constructs the
- * ModelAnim at 0xd4, the ShadowModel at 0x138, the dCcAc_c at 0x160 and the
+ * ModelAnim at 0xd4, the dExtShadowModel_c at 0x138, the dCcAc_c at 0x160 and the
  * dBgCh_Actr at 0x194, in that order, and `operator new` is fBase_c's. */
 extern "C" daPeach_c *daPeach_c_classInit(void)
 {

@@ -7,7 +7,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 #include "TextureSequence.h"
 
@@ -29,10 +29,10 @@ struct daEykn_c : dActor_c {
        at +0x138 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     TextureSequence mTextureSequence;            /* 0x138 */
-    /* ShadowModel member. The cartridge's own ~daEykn_c calls _ZN11ShadowModelD1Ev at +0x14c
+    /* dExtShadowModel_c member. The cartridge's own ~daEykn_c calls _ZN17dExtShadowModel_cD1Ev at +0x14c
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */
-    ShadowModel mShadowModel;            /* 0x14c */
+    dExtShadowModel_c mShadowModel;            /* 0x14c */
     /* dCcAcPos_c member. The cartridge's own ~daEykn_c calls _ZN10dCcAcPos_cD1Ev at +0x174
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */

@@ -119,7 +119,7 @@ typedef char Minimap_size_must_be_0x258[sizeof(dMap_c) == 0x258 ? 1 : -1];
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+   can never be migrated. Same arrangement as include/dExtShadowModel_c.h. */
 struct dMap_c {
     u8  pad_000[0x50];
     /* Rotate-and-scale 2x2 for the minimap BG; see the C++ spelling above. */

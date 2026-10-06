@@ -70,7 +70,7 @@ extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int x
  * Every instruction the cartridge has here falls out of the one `new`.
  * 0x02111cf8 loads 928 == 0x3a0 into the header's inline operator new;
  * dBgActor_c::C2, the mid-construction daDsnBase_c vptr, TextureSequence@0x324,
- * ShadowModel@0x338, and this class's vptr all come from the implicit ctor
+ * dExtShadowModel_c@0x338, and this class's vptr all come from the implicit ctor
  * the `new` inlines. The null check is the one `new` itself emits. */
 extern "C" daDkk_c *daDkk_c_classInit()
 {

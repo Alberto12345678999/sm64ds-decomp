@@ -8,7 +8,7 @@
  * 0x02132d6c. The explicit call below cannot be satisfied by the inline copy
  * alone, so mwcc emits the out-of-line variant and objisolate drops the
  * forcing function's own .text (notes/dtor-migration.md section 3). The body
- * it emits is the class's: the ShadowModel and TextureSequence members torn
+ * it emits is the class's: the dExtShadowModel_c and TextureSequence members torn
  * down in reverse declaration order, the dBgActor_c base step last.
  */
 #include "daDsnBase_c.h"

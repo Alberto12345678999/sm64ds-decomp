@@ -31,7 +31,7 @@
  * _ZN7fBase_cnwEj(1016) allocator the loose factory called by hand, and
  * daOwl_c has no user-declared constructor, so the inherited dEnemyBase_c
  * ctor plus the vtable store plus the four member subobjects in field order
- * (dCcAcPos_c, dBgCh_Actr, ModelAnim, ShadowModel) come from the implicit
+ * (dCcAcPos_c, dBgCh_Actr, ModelAnim, dExtShadowModel_c) come from the implicit
  * default constructor with zero mangled calls.
  *
  * The fourteen address-named functions whose first parameter was the owl are
@@ -134,7 +134,7 @@ void Matrix4x3_FromTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToTranslation(Matrix4x3 *m, Fix12i x, Fix12i y, Fix12i z);
 void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, Matrix4x3 *m, Fix12i fx, int t, unsigned int u);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *, void *, int *, int, int, unsigned int, unsigned int);
@@ -146,7 +146,7 @@ void DecIfAbove0_Short(void *);
 
 // @symbol _ZN7daOwl_cD1Ev
 // @symbol _ZN7daOwl_cD0Ev
-/* The whole body is compiler-emitted: one vptr store, then ShadowModel
+/* The whole body is compiler-emitted: one vptr store, then dExtShadowModel_c
  * (0x370), ModelAnim (0x30c), dBgCh_Actr (0x150) and dCcAcPos_c (0x110) in
  * reverse declaration order, then dEnemyBase_c::~dEnemyBase_c. D1 is the
  * evidence for the header's four member types; D0 adds dEnemyBase_c's inline
@@ -516,7 +516,7 @@ void daOwl_c::func_ov094_021361d8()
         (mPosY - 0x38000) >> 3,
         mPosZ >> 3);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMat, 0x64000, 0x320000, 0xf);
 }
 

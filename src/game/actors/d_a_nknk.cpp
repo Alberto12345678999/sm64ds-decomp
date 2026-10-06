@@ -87,7 +87,7 @@ extern void UnloadBlueCoinModel(void *c);
 extern void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *m, short angY);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, struct Matrix4x3 *m, int radHeight, int a, u8 b);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, struct Matrix4x3 *m, int radHeight, int a, u8 b);
 extern struct Matrix4x3 data_020a0e68;
 inline struct Matrix4x3 *inline_fn()
 {
@@ -702,7 +702,7 @@ void daNknk_c::func_ov062_02118334()
       }
     }
   }
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mModelAnim.mat4x3, 0x50000, 0x50000, 0xf);
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mModelAnim.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118258Ei

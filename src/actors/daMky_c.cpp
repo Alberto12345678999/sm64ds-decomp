@@ -99,7 +99,7 @@ int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void
 void  _ZNK7PathPtr7GetNodeER7Vector3j(const void *self, Vector3 &node, unsigned int idx); /* local extern: the member form costs 02111b20 four words */
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  _Z11UpdateAngleRssis(short *p, short a, int b, short c);
-void  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
+void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_02038ea4(void *self);
 int   func_0203567c(int self);
@@ -129,7 +129,7 @@ bool ApproachLinear(short &value, short target, short step);
  *
  * The body is empty on purpose.  The compiler writes the whole of both
  * variants from the class definition: the vptr store, then ModelAnim,
- * ShadowModel, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
+ * dExtShadowModel_c, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
  * (PathPtr is trivial and skipped), then ~dActor_c; D0 additionally inlines
  * all of that and tail-calls Memory::Deallocate. */
 // @symbol _ZN7daMky_cD1Ev
@@ -476,7 +476,7 @@ void daMky_c::func_ov030_02112094()
 
     int b = (int)((this->mFlags & 0x40000) != 0);
     if (!b) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &this->mShadowModel, &this->mModelAnim.mat4x3, 0x5a000, 0x190000, 0xf);
     }
 

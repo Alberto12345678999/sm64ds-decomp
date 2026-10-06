@@ -65,8 +65,8 @@ extern void MulVec3Mat4x3(Vector3 *in, Matrix4x3 *m, Vector3 *out);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
-extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     int scaleX, int scaleY, int scaleZ, u32 opacity);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -237,7 +237,7 @@ void daObjCtMecha03_c::func_ov065_02119fe8()
     mShadowMat.m[9] = bobPos.x >> 3;
     mShadowMat.m[10] = mGroundY >> 3;
     mShadowMat.m[11] = bobPos.z >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         this, &mShadowModel, &mShadowMat, 0x12c000, 0x12c000, 0x78000, 0xf);
 }
 // @symbol _ZN16daObjCtMecha03_cD1Ev

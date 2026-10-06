@@ -11,7 +11,7 @@ void *_ZN15TextureSequenceC1Ev(void*);
 void _ZN15TextureSequenceD1Ev(void*);
 void *_ZN15MaterialChangerC1Ev(void*);
 void _ZN15MaterialChangerD1Ev(void*);
-void *_ZN11ShadowModelC1Ev(void*);
+void *_ZN17dExtShadowModel_cC1Ev(void*);
 void *_ZN10dCcAcPos_cC1Ev(void*);
 void *_ZN10dBgCh_ActrC1Ev(void*);
 void* _ZN6PlayerC1Ev(void* c){
@@ -24,7 +24,7 @@ void* _ZN6PlayerC1Ev(void* c){
   __cxa_vec_ctor(r4+0x100,4,0x14,(void*)_ZN15TextureSequenceC1Ev,(void*)_ZN15TextureSequenceD1Ev);
   __cxa_vec_ctor(r4+0x150,2,0x14,(void*)_ZN15MaterialChangerC1Ev,(void*)_ZN15MaterialChangerD1Ev);
   __cxa_vec_ctor(r4+0x178,2,0x14,(void*)_ZN15TextureSequenceC1Ev,(void*)_ZN15TextureSequenceD1Ev);
-  _ZN11ShadowModelC1Ev(p+0x2ac);
+  _ZN17dExtShadowModel_cC1Ev(p+0x2ac);
   _ZN10dCcAcPos_cC1Ev(p+0x2d4);
   _ZN10dCcAcPos_cC1Ev(p+0x314);
   _ZN10dBgCh_ActrC1Ev(p+0x380);

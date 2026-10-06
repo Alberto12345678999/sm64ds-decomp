@@ -152,7 +152,7 @@ extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern void func_ov002_020c3dbc(void *player);
 extern int data_0209caa0[];
 void Matrix4x3_FromRotationY(void *m, short angle);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *a, void *sm, void *mtx, int rad, int h, unsigned int x);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *a, void *sm, void *mtx, int rad, int h, unsigned int x);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void *data_ov089_021328b4[];
 extern ObjKeyFile data_ov002_02110964;
@@ -724,7 +724,7 @@ void daObjKey_c::UpdateModelTransform()
     mShadowMatrix.m[11] = mPosZ >> 3;
     /* Shadow only while the idle anim (file 0x801b) is showing. */
     if (mModelAnim.file == (BCA_File *)data_ov002_02110964.ptr)
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
 // @symbol _ZN10daObjKey_c16CleanupResourcesEv

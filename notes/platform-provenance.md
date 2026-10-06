@@ -138,7 +138,7 @@ declaration adds no slot and no field; the 0x320 assertion is unaffected.
 Several of these classes still have a compiler-generated D0 destructor living in a
 C translation unit, which reads the fields by offset. Those TUs cannot be
 migrated, so the header keeps a flat C spelling of the same object behind
-`#else`. Same arrangement as `include/ShadowModel.h`.
+`#else`. Same arrangement as `include/dExtShadowModel_c.h`.
 
 ## The standard derived-class argument
 
