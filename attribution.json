@@ -8519,6 +8519,9 @@
     "src/engine/heap/Heap.cpp#_ZN4Heap20RestoreFromTemporaryEv": "tangosdev",
     "src/engine/heap/Heap.cpp#_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i": "ruspecial",
     "src/engine/heap/Heap.cpp#_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i": "tangosdev",
-    "src/engine/heap/Heap.cpp#_ZN4Heap10SetDefaultEv": "tangosdev"
+    "src/engine/heap/Heap.cpp#_ZN4Heap10SetDefaultEv": "tangosdev",
+    "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefaSER10CLPS_Block": "tangosdev",
+    "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefD1Ev": "tangosdev",
+    "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefC1Ev": "tangosdev"
   }
 }

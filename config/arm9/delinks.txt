@@ -4245,17 +4245,9 @@ src/func_020381cc.c:
     complete
     .text start:0x020381cc end:0x0203821c
 
-src/_ZN13CLPS_BlockRefaSER10CLPS_Block.cpp:
+src/engine/collision/CLPS_BlockRef.cpp:
     complete
-    .text start:0x0203821c end:0x02038224
-
-src/_ZN13CLPS_BlockRefD1Ev.cpp:
-    complete
-    .text start:0x02038224 end:0x02038228
-
-src/_ZN13CLPS_BlockRefC1Ev.cpp:
-    complete
-    .text start:0x02038228 end:0x02038234
+    .text start:0x0203821c end:0x02038234
 
 src/func_02038234.c:
     complete
