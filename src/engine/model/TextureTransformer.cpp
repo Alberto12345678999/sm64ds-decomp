@@ -20,9 +20,9 @@ extern "C" void func_020469e8(ModelComponents *model, BTA_File *file, int frame)
    wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value
    parameters that a body reads, and the real signature carries
    Fix12<int> -- passing one to the member declaration homes it to the
-   caller's stack. The declarations in TextureTransformer.h and Animation.h
+   caller's stack. The declarations in TextureTransformer.h and dExtFrameCtrl_c.h
    are the real ones. */
-extern "C" void _ZN9Animation12SetAnimationEti5Fix12IiEt(Animation *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
+extern "C" void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
 
 // @symbol _ZN18TextureTransformerC1Ev
 TextureTransformer::TextureTransformer()
@@ -43,7 +43,7 @@ extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTra
         self->speed = speed;
     } else {
         self->file = file;
-        _ZN9Animation12SetAnimationEti5Fix12IiEt(self, file->numFrames, flags, speed, startFrame);
+        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(self, file->numFrames, flags, speed, startFrame);
     }
 }
 

@@ -36,7 +36,7 @@
 
 #include "daTree_c.h"
 #include "dCcPos_c.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 
 /* One tree instance's list node: the billboard/clip center in
  * matrix-shifted units (>> 3, y lifted by kCanopyLift), its cylinder
@@ -100,7 +100,7 @@ extern TreeNode *data_ov002_02110a48[kNumVariants];
 extern u16 data_ov002_0210abb8[];
 extern int data_0209f43c[];
 extern Matrix4x3 data_0209b3ec;
-extern Camera *data_0209f318;
+extern dCamera_c *data_0209f318;
 }
 
 namespace Memory {
@@ -168,7 +168,7 @@ int daTree_c::Behavior()
 // @symbol _ZN8daTree_c6RenderEv
 int daTree_c::Render()
 {
-    Camera *cam = data_0209f318;
+    dCamera_c *cam = data_0209f318;
     TreeNode **slot = data_ov002_02110a48;
     Model *model = mModel;
     int i;

@@ -561,7 +561,7 @@ banner-blink logic).
 calls once a frame, and the local struct it already carries is the whole story:
 
 ```cpp
-struct Camera {           /* 0xbc */
+struct dCamera_c {           /* 0xbc */
     Matrix4x3 viewMat;    /* 0x00 */
     char      pad30[0x30];
     Matrix4x3 projMat;    /* 0x60 */
@@ -573,7 +573,7 @@ struct Camera {           /* 0xbc */
 ```
 
 It computes the view direction as `eye - target`, so which vector is which is
-settled rather than assumed. (This is NOT `include/Camera.h`'s `Camera`, the
+settled rather than assumed. (This is NOT `include/dCamera_c.h`'s `dCamera_c`, the
 0x1a8-byte gameplay camera whose `lookAt`/`pos` sit at 0x80/0x8c. Two different
 types, one English word.)
 
@@ -596,7 +596,7 @@ outright by calling `Camera_UpdateMatrices(this + 0x466c)` and
 plus one for camera 1.
 
 Both blocks stay flat scalars rather than becoming a real `Vector3` or a real
-`Camera[2]`, for the reason dScMgD3DBase_c.h already gives: eight files spell
+`dCamera_c[2]`, for the reason dScMgD3DBase_c.h already gives: eight files spell
 them this way, and typing them is its own change with its own blast radius.
 
 ## dScMgBase_c field names

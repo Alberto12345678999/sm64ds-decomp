@@ -547,7 +547,7 @@ class PullRequestShapeTests(unittest.TestCase):
 # The pre-fix code refused to model any ROOT struct the moment its body reached a
 # method declaration, on the grounds that a polymorphic root carries an implicit vptr
 # that no declaration mentions. The offset IS derivable, and the tree writes the model
-# down by hand -- verbatim, in include/Animation.h and include/dCc_c.h:
+# down by hand -- verbatim, in include/dExtFrameCtrl_c.h and include/dCc_c.h:
 #
 #   /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
 #
@@ -659,7 +659,7 @@ class RootVptrTests(unittest.TestCase):
     def test_the_vptr_decision_is_scoped_to_this_struct_not_the_whole_file(self):
         """A twin header carries a flat C view of the same class below an `#else`, and
         that half routinely spells `void **vtable;` even where the C++ half above it
-        does not -- include/Animation.h is exactly that shape. A file-wide search for
+        does not -- include/dExtFrameCtrl_c.h is exactly that shape. A file-wide search for
         either marker reads the wrong half and shifts every field of the right one.
 
         Not a planted regression, and it cannot be one: the old code skipped this
@@ -977,6 +977,55 @@ class InlineMethodBodyTests(unittest.TestCase):
         rc, out = self._run(broken)
         self.assertEqual(rc, 1, out)
         self.assertIn("2 commented fields, 1 mismatched, 0 unparsed", out)
+
+
+# ------------------------- nested enums and anonymous unions are not fields
+
+class NestedEnumAndUnionTests(unittest.TestCase):
+    """daStar_c.h put its State/Kind enums ahead of the fields and overlaid words
+    with anonymous unions. Both stopped the walk (the enum's `};` read as the end of
+    the struct), so the header reported UNPARSED and none of its fields were checked."""
+
+    def _run(self, body):
+        with Repo() as r:
+            r.write("include/Widget.h", body)
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                rc = r.run("include/Widget.h")
+            return rc, out.getvalue()
+
+    ENUM_FIRST = """struct Widget {
+    enum State {
+        A = 0,
+        B = 1
+    };
+    enum Kind { K0, K1 };
+    u32 first;   /* 0x000 */
+    u32 second;  /* 0x004 */
+};
+"""
+    UNION = """struct Widget {
+    u32 first;   /* 0x000 */
+    union {
+        u32 second;  /* 0x004 */
+        u32 alias;
+    };
+    u32 third;   /* 0x008 */
+};
+"""
+
+    def test_enums_ahead_of_the_fields_do_not_end_the_walk(self):
+        rc, out = self._run(self.ENUM_FIRST)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("2 commented fields, 0 mismatched, 0 unparsed, struct spans 0x8", out)
+
+    def test_a_field_after_an_anonymous_union_is_still_checked(self):
+        rc, out = self._run(self.UNION)
+        self.assertEqual(rc, 0, out)
+        self.assertIn("3 commented fields, 0 mismatched, 0 unparsed, struct spans 0xc", out)
+        rc, out = self._run(self.UNION.replace("/* 0x008 */", "/* 0x00c */"))
+        self.assertEqual(rc, 1, out)
+        self.assertIn("1 mismatched", out)
 
 
 # ------------------------- allocation methods do not occupy or end instance fields

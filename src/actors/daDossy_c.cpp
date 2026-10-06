@@ -187,7 +187,7 @@ int daDossy_c::InitResources()
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     Model::LoadFile(data_ov002_0210d9c0);
     for (i = 0; i < 3; i++)
-        Animation::LoadFile(*data_ov065_0211c080[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov065_0211c080[i]);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d770[1], 0, 0x1000, 0);
     func_ov065_02118cc4();
     func_ov065_02118838();

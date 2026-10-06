@@ -1,9 +1,9 @@
-struct Camera;
+struct dCamera_c;
 
 extern short ReadUnalignedShort(unsigned char *p);
 extern int ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
 
-int func_020078c4(struct Camera *self, const unsigned char *data)
+int func_020078c4(struct dCamera_c *self, const unsigned char *data)
 {
     short v = ReadUnalignedShort((unsigned char *)data);
     unsigned char b = data[2];

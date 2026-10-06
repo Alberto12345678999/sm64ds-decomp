@@ -4,7 +4,7 @@
 #include "dBase_c.h"
 
 /* The scene root: fBase_c -> dBase_c -> dScene_c. Ten classes derive from it
- * directly; dScStage_c (dScStage_c), BootScene (dScBoot_c) and dScEntry_c are the
+ * directly; dScStage_c, dScBoot_c and dScEntry_c are the
  * three this tree describes. It declares no data members of its own -- every
  * offset below 0x50 belongs to fBase_c.
  *

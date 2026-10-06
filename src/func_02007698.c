@@ -19,19 +19,19 @@ typedef struct dActor_c {
     Vector3_16 ang;     // 0x8c
 } dActor_c;
 
-typedef struct Camera {
+typedef struct dCamera_c {
     char _pad0[0x80];
     Vector3 field_0x80; // 0x80
     Vector3 field_0x8c; // 0x8c
     char _pad1[0x110 - (0x8c + 0xc)];
     dActor_c* owner;       // 0x110
-} Camera;
+} dCamera_c;
 
 extern short ReadUnalignedShort(const char* from);
 extern void Vec3_RotateYAndTranslate(Vector3* res, const Vector3* translation,
                                      short angY, const Vector3* v);
 
-int func_02007698(Camera* self, const char* rec) {
+int func_02007698(dCamera_c* self, const char* rec) {
     Vector3 v;
     Vector3 w;
     dActor_c* owner;

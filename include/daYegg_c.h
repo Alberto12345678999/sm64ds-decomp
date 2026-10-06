@@ -19,8 +19,8 @@
  * at 0x38c, so everything below that is this class's own.
  *
  * The old flat header also carried a marker at 0x350 called mAnimation. That is not a
- * member of this class at all -- ModelAnim derives from BOTH Model and Animation, and
- * the Animation base sits at +0x50, so 0x300 + 0x50 is mModelAnim's Animation
+ * member of this class at all -- ModelAnim derives from BOTH Model and dExtFrameCtrl_c, and
+ * the dExtFrameCtrl_c base sits at +0x50, so 0x300 + 0x50 is mModelAnim's dExtFrameCtrl_c
  * subobject. It disappears here because the type expresses it.
  */
 /* The egg's state number (mState, +0x3f0) indexes a table of eight member-function

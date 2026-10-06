@@ -150,7 +150,7 @@ int data_0209b3ec[12];      /* camera Matrix4x3 the render walk composes */
 void *_ZTV5Model[8];
 // Same story for the animated-model hierarchy: primary vtables plus the
 // multiple-inheritance thunk table the ModelAnim ctor installs at +0x50.
-void *_ZTV9Animation[8];
+void *_ZTV15dExtFrameCtrl_c[8];
 void *_ZTV9ModelAnim[10];
 void *VTable_Animation_ModelAnimThunk[8];
 void *_ZTV4dBgW[13];   /* base: never dispatched in the gates */

@@ -352,7 +352,7 @@ int daHuwa_c::InitResources()
 {
     void *modelFile = Model::LoadFile(data_ov081_02128d60);
     mModelAnim.ModelBase::SetFile((BMD_File *)modelFile, 1, -1);
-    Animation::LoadFile(data_ov081_02128d68);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128d68);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, ((HuwaLoadedFile *)&data_ov081_02128d68)->file, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)

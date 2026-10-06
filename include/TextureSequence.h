@@ -2,10 +2,10 @@
 #define TEXTURESEQUENCE_H
 
 #include "types.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "math/Fix12.h"
 
-/* Animation child that drives BTP-file playback, vtable _ZTV15TextureSequence at 0x0208e7d4:
+/* dExtFrameCtrl_c child that drives BTP-file playback, vtable _ZTV15TextureSequence at 0x0208e7d4:
  * two slots, the destructor pair, nothing else. Update is a plain method;
  * Prepare is static, for the reason set out below.
  *
@@ -56,7 +56,7 @@ struct BTP_File {
     u16 pad_1e;
     char *unk_20;              /* 0x20 */
 };
-struct TextureSequence : Animation {
+struct TextureSequence : dExtFrameCtrl_c {
     BTP_File *file;           /* 0x10 */
 
     /* --- vtable: the destructor pair only. --- */
