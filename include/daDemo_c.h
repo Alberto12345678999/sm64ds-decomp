@@ -7,32 +7,22 @@
 #include "ModelAnim.h"
 
 /* The nested classes' bases are declared here under the cartridge's RTTI
- * spellings rather than through the project spellings. daDemo_c's typeinfo
- * and vtable records are emitted by this translation unit, and an emitted
- * record is only verifiable when its mangled name is the one symbols.txt
- * configures: "9ModelAnim" exists nowhere in the ROM, "14dExtAnmModel_c"
- * is the real record at arm9:0x0208e924. The declarations below copy the
- * field layout and vtable order of ModelBase.h/Animation.h/Model.h/
- * ModelAnim.h exactly; notes/model-rtti-names.md maps every spelling. All
- * method calls and field types in the translation unit continue to use the
- * project's names (Model, ModelAnim, Animation, ModelBase) -- these four
- * structs exist so the emitted RTTI names are the cartridge's own. */
+ * spellings rather than through the old project spellings. daDemo_c's
+ * typeinfo and vtable records are emitted by this translation unit, and an
+ * emitted record is only verifiable when its mangled name is the one
+ * symbols.txt configures: "9ModelAnim" exists nowhere in the ROM,
+ * "14dExtAnmModel_c" is the real record at arm9:0x0208e924. The model
+ * structs below copy the field layout and vtable order of ModelBase.h and
+ * Model.h. The frame-controller base is the real dExtFrameCtrl_c: that is
+ * now the project class as well as the cartridge name, so a second local
+ * struct would be a redefinition. notes/model-rtti-names.md maps the
+ * spellings. */
 struct dExtModel_c {
     BMD_File *modelFile;        /* 0x04 */
 
     dExtModel_c();
     virtual ~dExtModel_c();                              /* slots 0 (D1), 1 (D0) */
     virtual int DoSetFile(char *file, int a, int b) = 0; /* slot 2, null here */
-    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-};
-
-struct dExtFrameCtrl_c {
-    u32 numFramesAndFlags;      /* 0x04 */
-    Fix12i currFrame;           /* 0x08 */
-    Fix12i speed;               /* 0x0c */
-
-    dExtFrameCtrl_c();
-    virtual ~dExtFrameCtrl_c();                        /* slots 0 (D1), 1 (D0) */
     void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
 };
 
