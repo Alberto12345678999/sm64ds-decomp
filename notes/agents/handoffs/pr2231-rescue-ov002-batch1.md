@@ -30,7 +30,7 @@ This document describes this commit. The queue records its immutable output SHA.
   keeping both sides with main's rows first. Workflow/tool revision
   `d7e28406933497ff40150f9b912efe64666a00b2`.
 - Separate evidence commits and required artifacts in this commit: no separate
-  evidence commit. Stage artifacts: `src/actors/daObjLava_c.cpp`,
+  evidence commit. dScStage_c artifacts: `src/actors/daObjLava_c.cpp`,
   `src/actors/daObjFire_c.cpp`, `src/actors/daSCoin_c.cpp`, their headers in
   `include/`, and the three promoted manifests under
   [config/tu_manifest.d/ov002/](../../../config/tu_manifest.d/ov002/).

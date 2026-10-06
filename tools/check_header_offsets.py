@@ -639,7 +639,7 @@ def main(argv, repo=None):
             if not started:
                 # A struct-with-body BEFORE the file's own class is a helper type
                 # (ActorBase_SceneNode in fBase_c.h, KCL_Tri in dBgW_Kc.h,
-                # Particle::SysTracker's namespace-nested body in Stage.h), not the
+                # Particle::SysTracker's namespace-nested body in dScStage_c.h), not the
                 # struct this file is named for. Without this check the FIRST
                 # struct-with-body wins regardless of name, and the tool silently
                 # checks the helper instead of the class the header exists to
@@ -791,7 +791,7 @@ def main(argv, repo=None):
             # Say the struct is unmodelled rather than emit a mismatch per field.
             #
             # `~Name(...)` (a bare, non-virtual destructor declaration -- Particle::
-            # SysTracker in include/Stage.h is the first instance) starts with `~`,
+            # SysTracker in include/dScStage_c.h is the first instance) starts with `~`,
             # which the type-name alternative below never matches (`~` is not in
             # `[A-Za-z_]`), so without this alternative it fell through to UNPARSED.
             method_code, _ = _code_without_comments_or_strings(line)
@@ -812,7 +812,7 @@ def main(argv, repo=None):
                 # other bug this file documents, just arrived at from the opposite
                 # direction. Once a field HAS been seen, a method line ends the
                 # list as before -- that's the generated-header convention
-                # (Stage.h: fields, then methods).
+                # (dScStage_c.h: fields, then methods).
                 # Recognized allocation/inline methods consume no storage and
                 # resume the walk even when a commented field came before them.
                 if n == 0 or allocation_method or inline_method:

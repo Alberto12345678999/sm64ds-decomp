@@ -15,7 +15,7 @@ single C++ TU". Read it (`git show --stat a6486519a`) before you start.
 Do **not** use a `Reconstruct N actor profiles (wave NN)` commit as your
 template. Those rename registry rows and never touch the shard pile.
 
-## Stage 3b: gathering is only half the job
+## dScStage_c 3b: gathering is only half the job
 
 Folding the shards into one byte-matching TU earns `status: promoted`. It does not
 make the class a class. Until 2026-09-06 nothing here asked for methods, and the
@@ -60,9 +60,9 @@ the manifest's `functions[]` move in the same commit. No byte gate at stage 2 or
 catches this; the cheap link evidence is a `.symtab` undefined-symbol scan of the
 emitted object.
 
-**The rename also invalidates your own prose, and nothing will tell you.** Stage 2
+**The rename also invalidates your own prose, and nothing will tell you.** dScStage_c 2
 writes comments, manifest notes and a PR body describing the file it just folded --
-"the six C++-named members", "the two file-scope `extern "C"` regions". Stage 3b then
+"the six C++-named members", "the two file-scope `extern "C"` regions". dScStage_c 3b then
 renames forty or fifty members, and every one of those counts becomes wrong. No gate
 reads prose: `mwccarm` strips comments, `tiers.py` blanks them before scoring, and
 `check_dead_references.py` walks only `.md`, so a stale count inside a `.cpp` is
@@ -1035,7 +1035,7 @@ Ask the compiler rather than hand-mangling:
   it goes stale on every promotion, and `--check-note` goes red in CI. That flag
   **hard-fails on unstaged changes first** — "authority inputs have
   unstaged/untracked changes; stage or stash" — which reads like a different
-  failure than staleness. Stage, then re-run.
+  failure than staleness. dScStage_c, then re-run.
 
 - **A text-only promotion does not touch `symbols.txt`.** That file maps
   addresses to names and is unaffected by a source move; the reference promotion

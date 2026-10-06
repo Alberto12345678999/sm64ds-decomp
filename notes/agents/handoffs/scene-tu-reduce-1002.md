@@ -16,7 +16,7 @@ All 21 contributor identities have explicit `path#symbol` attribution. The
 
 The source contains 19 marked handwritten definitions and two compiler-emitted
 inline destructor variants. Current native fader calls are preserved. A boolean
-`ResetFadersAndSound` result expresses its two 0/1 exits and allows both Stage
+`ResetFadersAndSound` result expresses its two 0/1 exits and allows both dScStage_c
 and Entry callers to return the result through exact native tail calls. The
 unused conflicting generated alias is removed. Bank-reset return declarations,
 affine-register pointer type and sound storage view agree with inspected owners.
@@ -134,7 +134,7 @@ in the producer/reviewer conversation and ignored build evidence.
 Reviewer `scene_review` inspected all 21 bodies and contributor identities.
 SCENE-SR-01 qualifies boundary claims; SCENE-SR-02 repairs the retired-source
 citations; SCENE-SR-03 corrects standard metadata coverage claims and adds the
-complete comparison; SCENE-SR-04 repairs Stage's second missing-return workaround.
+complete comparison; SCENE-SR-04 repairs dScStage_c's second missing-return workaround.
 All four producer repairs are present. Final exact-commit re-review is pending.
 
 ## Pending declaration bookkeeping

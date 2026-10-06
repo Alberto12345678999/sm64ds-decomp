@@ -1,11 +1,11 @@
 //cpp
 /* The level-object loader: seventeen category loaders plus LoadObjects'
- * dispatch and Stage::LoadClsnAndObjects. ov002 .text 0x020fe190..0x020fea4c,
+ * dispatch and dScStage_c::LoadClsnAndObjects. ov002 .text 0x020fe190..0x020fea4c,
  * enrolled and canonical (delinks points here, not at per-function files).
  *
  * Source runs REVERSE of ROM (highest address first). Do not reorder.
  * The fifteen category loaders come first, then LoadObjects dispatching
- * through the handler table, then Stage::LoadClsnAndObjects -- define-
+ * through the handler table, then dScStage_c::LoadClsnAndObjects -- define-
  * before-use top to bottom.
  *
  * Leftover: the handler table and the small loader tables stay data;
@@ -18,7 +18,7 @@
 #include "decl_common.h"
 
 #include "LVL_Overlay.h"
-#include "Stage.h"
+#include "dScStage_c.h"
 #include "dBgW.h"
 
 /* ------------------------------------------------------------------------- *
@@ -31,17 +31,17 @@
 extern "C" {
 
 /* CONFLICT 1 -- data_0209caa0's element type.
- * Stage::LoadClsnAndObjects declared `extern int data_0209caa0[]` and reads
+ * dScStage_c::LoadClsnAndObjects declared `extern int data_0209caa0[]` and reads
  * `data_0209caa0[2] & 0x80`; LoadEntranceObjects declared `extern u8
  * data_0209caa0[]` and reads `data_0209caa0[0x41]`. Both cannot be the array's
  * element type. The byte view wins because it is the finer one -- index 0x41 is
- * not expressible as an int index -- and Stage's word read becomes an explicit
+ * not expressible as an int index -- and dScStage_c's word read becomes an explicit
  * `((int *)data_0209caa0)[2]`, which is what the wider declaration was doing
  * implicitly. Measured byte-free on both functions. */
 extern u8 data_0209caa0[];
 
 /* CONFLICT 2 -- data_0209f5c0's type.
- * Stage said `fBase_c *`, LoadEntranceObjects said `void *` and cast it back
+ * dScStage_c said `fBase_c *`, LoadEntranceObjects said `void *` and cast it back
  * to `fBase_c *` at the one place it used it. fBase_c * is the real type
  * (it is the parent handed to dBase_c::Spawn), so the cast disappears. */
 extern fBase_c *data_0209f5c0;
@@ -89,7 +89,7 @@ void func_0202b0c4(void *entries, u32 count);
 void func_0202b0e0(LVL_Overlay::StandardEntry *e, int count);
 void StartEntranceFaderWipe(int index);
 
-/* Stage::LoadClsnAndObjects' own callees. LoadFile is not in decl_common.h. */
+/* dScStage_c::LoadClsnAndObjects' own callees. LoadFile is not in decl_common.h. */
 struct KCL_File;
 struct CLPS_Block;
 KCL_File *LoadFile(int handle);
@@ -119,7 +119,7 @@ struct DoorEntry {                  /* 0xc bytes. LoadDoorObjects. */
 /* The runtime layout of an LVL_Overlay. include/LVL_Overlay.h declares only the
  * class's NESTED table and record types -- it has no data members at all -- so
  * the outer object's own shape is still a shadow. Only
- * Stage::LoadClsnAndObjects reads it. */
+ * dScStage_c::LoadClsnAndObjects reads it. */
 struct LVL_Overlay_Layout {
     CLPS_Block           *clps;         /* 0x00 */
     LVL_Overlay::ObjTable *objTable;    /* 0x04 */
@@ -273,12 +273,12 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable& tbl, int p2, u32 p3)
  * not paper over.
  *
  * This file declared `void func_0203accc(void *entries, int areaID, u32 param)`
- * and called it with three arguments; Stage::LoadClsnAndObjects (bottom of this
+ * and called it with three arguments; dScStage_c::LoadClsnAndObjects (bottom of this
  * file) includes decl_common.h, which declares `void func_0203accc(int)`, and
  * calls it with one. Two `extern "C"` declarations of one symbol with different
  * arity cannot coexist, and no cast reconciles them.
  *
- * The ROM decides it. Stage's call site is `mov r0, #0` then `bl` -- r1 and r2
+ * The ROM decides it. dScStage_c's call site is `mov r0, #0` then `bl` -- r1 and r2
  * are never set -- so a three-argument declaration would cost two extra
  * instructions there. This function is a tail call, `ldr r0, [r0, #4]` then
  * `bx ip`, which passes r1/r2 through by accident of the ABI rather than by
@@ -496,8 +496,8 @@ void LoadObjects(LVL_Overlay::ObjTable& t, int areaID, u32 param)
  * function in the same TU, so it is called by name -- and the hand-spelled
  * extern had to go, since an `extern "C"` declaration of that literal name and
  * the C++ definition that mangles to it are the same linker symbol. */
-// @symbol _ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
-void Stage::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
+// @symbol _ZN10dScStage_c18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
+void dScStage_c::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
 {
     LVL_Overlay_Layout *ovl = (LVL_Overlay_Layout *)&ovlRef;
     dBgW_Kc *mc = (dBgW_Kc *)&mcRef;
