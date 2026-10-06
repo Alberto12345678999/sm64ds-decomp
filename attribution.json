@@ -8310,6 +8310,9 @@
     "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0a4": "andrewboudreau",
     "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0b0": "andrewboudreau",
     "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0bc": "andrewboudreau",
-    "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0c8": "andrewboudreau"
+    "src/engine/collision/dBgW_Kc_itcm.cpp#func_01ffb0c8": "andrewboudreau",
+    "src/engine/gx/G2x.cpp#_ZN3G2x18SetBlendBrightnessEPVtts": "tangosdev",
+    "src/engine/gx/G2x.cpp#_ZN3G2x13SetBlendAlphaEPVttttj": "andrewboudreau",
+    "src/engine/gx/G2x.cpp#_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii": "andrewboudreau"
   }
 }
