@@ -39,6 +39,13 @@
 
 struct Player;
 
+/* The shadow's matrix (a bare 4x3: a real Matrix4x3 member would drag
+   Vector3's destructor into ~daStar_c). tx/ty/tz are the position >> 3. */
+struct daStarShadowMtx { s32 m[9]; s32 tx; s32 ty; s32 tz; };
+#ifndef SM64DS_PLATFORM_PC
+typedef char daStarShadowMtx_size_must_be_0x30[sizeof(struct daStarShadowMtx) == 0x30 ? 1 : -1];
+#endif
+
 struct daStar_c : dEnemyBase_c {
     /* ---- state, indexing data_ov002_021109d8 (the 14-entry pointer-to-member
        table built by __sinit_ov002_02106e40; Behavior calls entry mState) ----
@@ -120,10 +127,7 @@ struct daStar_c : dEnemyBase_c {
     ModelAnim                    mModelAnim2;           /* 0x370 -- the translucent "already collected" star */
     dExtShadowModel_c                  mShadowModel;          /* 0x3d4 */
 
-    /* The shadow's matrix (a bare 4x3: a real Matrix4x3 member would drag
-       Vector3's destructor into ~daStar_c). tx/ty/tz are the position >> 3. */
-    struct ShadowMtx { s32 m[9]; s32 tx, ty, tz; };
-    ShadowMtx                    mShadowMtx;            /* 0x3fc */
+    daStarShadowMtx              mShadowMtx;            /* 0x3fc */
 
     s32  mGroundY;                /* 0x42c -- func_ov002_020e7d08's downward probe from 50.0 above the star: the hit, or 0x7fffffff */
     u32  mSoundObjID;             /* 0x430 -- uniqueID of the sound object func_ov002_020e6fbc spawned, 0 if none */
@@ -135,11 +139,21 @@ struct daStar_c : dEnemyBase_c {
         s32  unk_440;
     };
     s32  mHomeState;              /* 0x444 -- the State chosen at init; func_ov002_020e8abc returns to it; 9 = placed by a marker */
-    s32  mSafePosX, mSafePosY, mSafePosZ;   /* 0x448 -- last position it rested at; the aim point when it lands on a bad floor */
-    s32  mHomePosX, mHomePosY, mHomePosZ;   /* 0x454 -- spawn position (STATE_COLLECT_BEGIN overwrites it with the player's); out-of-bounds reset target, and the floor of a silver star */
-    s32  mCamLookAtX, mCamLookAtY, mCamLookAtZ;   /* 0x460 -- camera look-at saved when the cutscene starts */
-    s32  mCamPosX, mCamPosY, mCamPosZ;            /* 0x46c -- camera position saved when the cutscene starts */
-    s32  mInitPosX, mInitPosY, mInitPosZ;         /* 0x478 -- a copy of the position at InitResources; nothing else reads it */
+    s32  mSafePosX;               /* 0x448 -- last position it rested at; the aim point when it lands on a bad floor */
+    s32  mSafePosY;               /* 0x44c */
+    s32  mSafePosZ;               /* 0x450 */
+    s32  mHomePosX;               /* 0x454 -- spawn position (STATE_COLLECT_BEGIN overwrites it with the player's); out-of-bounds reset target, and the floor of a silver star */
+    s32  mHomePosY;               /* 0x458 */
+    s32  mHomePosZ;               /* 0x45c */
+    s32  mCamLookAtX;             /* 0x460 -- camera look-at saved when the cutscene starts */
+    s32  mCamLookAtY;             /* 0x464 */
+    s32  mCamLookAtZ;             /* 0x468 */
+    s32  mCamPosX;                /* 0x46c -- camera position saved when the cutscene starts */
+    s32  mCamPosY;                /* 0x470 */
+    s32  mCamPosZ;                /* 0x474 */
+    s32  mInitPosX;               /* 0x478 -- a copy of the position at InitResources; nothing else reads it */
+    s32  mInitPosY;               /* 0x47c */
+    s32  mInitPosZ;               /* 0x480 */
     s32  mMinPosY;                /* 0x484 -- STAR_CAP_MIN_POS_Y copied at init: below it the star is out of bounds */
     s32  mWaterHeight;            /* 0x488 -- the water surface found by func_ov002_020e86ec */
     s32  mSoundObjSoundID;        /* 0x48c -- the sound id func_ov002_020ea3a4 picked; func_ov002_020e6fbc hands it to the sound object's mSoundID */
@@ -169,7 +183,9 @@ struct daStar_c : dEnemyBase_c {
         StarFlagBits mBits;       /* the same word as bit-fields, for the tests the ROM compiles as shifts */
     };
     u8   pad_4a4[0x4];
-    s32  mCenterX, mCenterY, mCenterZ;            /* 0x4a8 -- cache for func_ov002_020e8244; zeroed each Behavior */
+    s32  mCenterX;                /* 0x4a8 -- cache for func_ov002_020e8244; zeroed each Behavior */
+    s32  mCenterY;                /* 0x4ac */
+    s32  mCenterZ;                /* 0x4b0 */
     u32  mParticle[4];            /* 0x4b4 -- Particle::System handles: [0] shared by effects 0x113, 0x115 and 0x2f, [1] 0x116, [2] 0x114, [3] 0x10e (silver star) */
 
     /* --- vtable --- */
