@@ -7106,21 +7106,9 @@ src/func_020554bc.c:
     complete
     .text start:0x020554bc end:0x02055574
 
-src/_ZN3G3X13SetClearColorEtiiib.cpp:
+src/engine/gx/G3X.cpp:
     complete
-    .text start:0x02055574 end:0x020555a4
-
-src/func_020555a4.c:
-    complete
-    .text start:0x020555a4 end:0x020555bc
-
-src/_ZN3G3X11SetFogTableEPv.cpp:
-    complete
-    .text start:0x020555bc end:0x020555d0
-
-src/_ZN3G3X6SetFogEbiii.cpp:
-    complete
-    .text start:0x020555d0 end:0x02055624
+    .text start:0x02055574 end:0x02055624
 
 src/func_02055624.c:
     complete
@@ -7266,33 +7254,9 @@ src/_ZN3GXS10LoadBGPlttEPKvjj.cpp:
     complete
     .text start:0x02056808 end:0x02056870
 
-src/_ZN2GX10LoadBGPlttEPKvjj.cpp:
+src/engine/gx/GX.cpp:
     complete
-    .text start:0x02056870 end:0x020568cc
-
-src/_ZN2GX14EndLoadTexPlttEv.cpp:
-    complete
-    .text start:0x020568cc end:0x02056924
-
-src/_ZN2GX11LoadTexPlttEPKvjj.cpp:
-    complete
-    .text start:0x02056924 end:0x02056998
-
-src/_ZN2GX16BeginLoadTexPlttEv.cpp:
-    complete
-    .text start:0x02056998 end:0x020569e0
-
-src/_ZN2GX10EndLoadTexEv.cpp:
-    complete
-    .text start:0x020569e0 end:0x02056a50
-
-src/_ZN2GX7LoadTexEPKvjj.cpp:
-    complete
-    .text start:0x02056a50 end:0x02056b9c
-
-src/_ZN2GX12BeginLoadTexEv.cpp:
-    complete
-    .text start:0x02056b9c end:0x02056c1c
+    .text start:0x02056870 end:0x02056c1c
 
 src/Copy48BytesFixed.c:
     complete
@@ -7604,33 +7568,9 @@ src/func_02058b9c.c:
     complete
     .text start:0x02058b9c end:0x02058bb0
 
-src/_ZN4CP1514FlushDataCacheEv.cpp:
+src/engine/cp15/CP15.cpp:
     complete
-    .text start:0x02058bb0 end:0x02058bdc
-
-src/_ZN4CP1527FlushAndInvalidateDataCacheEv.cpp:
-    complete
-    .text start:0x02058bdc end:0x02058c08
-
-src/_ZN4CP1519InvalidateDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c08 end:0x02058c24
-
-src/_ZN4CP1514FlushDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c24 end:0x02058c40
-
-src/_ZN4CP1527FlushAndInvalidateDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c40 end:0x02058c5c
-
-src/_ZN4CP1516DrainWriteBufferEv.cpp:
-    complete
-    .text start:0x02058c5c end:0x02058c68
-
-src/_ZN4CP1526InvalidateInstructionCacheEjj.cpp:
-    complete
-    .text start:0x02058c68 end:0x02058c84
+    .text start:0x02058bb0 end:0x02058c84
 
 src/func_02058c84.c:
     complete
