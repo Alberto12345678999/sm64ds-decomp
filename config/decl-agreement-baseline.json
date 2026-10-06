@@ -9483,6 +9483,9 @@
       ],
       "src/game/actors/d_a_pg_mthr.cpp": [
         "return:void"
+      ],
+      "src/engine/collision/dBgCh_Actr.cpp": [
+        "return:dBgPi *"
       ]
     },
     "_ZN5dBgPiD2Ev": {
@@ -36406,6 +36409,26 @@
     "_ZN5dBgPcC1Ev": {
       "src/engine/collision/dBgW_Kc_itcm.cpp": [
         "return:void"
+      ]
+    },
+    "_ZN5dBgPiC1Ev": {
+      "src/engine/collision/dBgCh_Actr.cpp": [
+        "return:dBgPi *"
+      ]
+    },
+    "func_0203798c": {
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
+        "param:#2 int"
+      ]
+    },
+    "func_020379c0": {
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
+        "param:#2 int"
+      ]
+    },
+    "func_020379f4": {
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
+        "param:#2 int"
       ]
     }
   },

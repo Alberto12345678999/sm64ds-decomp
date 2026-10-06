@@ -38,6 +38,7 @@ int func_020397b8(int x);   /* wall-facing test */
 int func_02039794(int x);   /* slope-band classify */
 
 /* Hit-record writers into the query's embedded dBgPi. */
+/* local extern: dBgPi::RecordHit by its mangled name -- the Lin query's call shape (int* res/info) is byte-required, so dBgPi.h's member spelling is not used here. */
 void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, short triIdx, void *info);
 void func_020379f4(void *self, int triID, void *info);
 void func_020379c0(void *self, int triID, void *info);
