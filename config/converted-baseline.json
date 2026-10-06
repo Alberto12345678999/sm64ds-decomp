@@ -1215,11 +1215,6 @@
     "src/_ZN8dActor_cD0Ev.cpp",
     "src/_ZN8dActor_cD1Ev.cpp",
     "src/_ZN8dActor_cD2Ev.cpp",
-    "src/_ZN8dCcPos_c10GetOwnerIDEv.cpp",
-    "src/_ZN8dCcPos_c6GetPosEv.cpp",
-    "src/_ZN8dCcPos_cC1Ev.cpp",
-    "src/_ZN8dCcPos_cD0Ev.cpp",
-    "src/_ZN8dCcPos_cD1Ev.cpp",
     "src/engine/graph/dGraph_c_callback_c.cpp#_ZN8dGraph_c10callback_c14GraphCallback0Ev",
     "src/engine/graph/dGraph_c_callback_c.cpp#_ZN8dGraph_c10callback_c14GraphCallback1Ev",
     "src/engine/graph/dGraph_c_callback_c.cpp#_ZN8dGraph_c10callback_c14GraphCallback2Ev",
@@ -3112,7 +3107,12 @@
     "src/engine/collision/dBgW_Kc.cpp#_ZN7dBgW_KcD1Ev",
     "src/engine/collision/dBgW_Kc.cpp#_ZN7dBgW_KcD2Ev",
     "src/engine/collision/dBgW_Kc_itcm.cpp#_ZNK7dBgW_Kc13GetUnkOctreeYEv",
-    "src/engine/collision/dBgW_Kc_itcm.cpp#_ZNK7dBgW_Kc16GetOctreeOriginYEv"
+    "src/engine/collision/dBgW_Kc_itcm.cpp#_ZNK7dBgW_Kc16GetOctreeOriginYEv",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c10GetOwnerIDEv",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c6GetPosEv",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cC1Ev",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD0Ev",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD1Ev"
   ],
   "count": 3105
 }

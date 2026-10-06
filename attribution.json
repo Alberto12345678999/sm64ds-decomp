@@ -8367,6 +8367,12 @@
     "src/game/actors/d_a_pic_gate.cpp#_ZN11daPicGate_c19func_ov080_02126120Ev": "tangosdev",
     "src/game/actors/d_a_pic_gate.cpp#func_ov080_02126120": "tangosdev",
     "src/game/actors/d_a_pic_gate.cpp#_ZN11daPicGate_c19func_ov080_02126124Ev": "tangosdev",
-    "src/game/actors/d_a_pic_gate.cpp#func_ov080_02126124": "tangosdev"
+    "src/game/actors/d_a_pic_gate.cpp#func_ov080_02126124": "tangosdev",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj": "andrewboudreau",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c10GetOwnerIDEv": "tangosdev",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c6GetPosEv": "tangosdev",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD0Ev": "andrewboudreau",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD1Ev": "tangosdev",
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cC1Ev": "andrewboudreau"
   }
 }
