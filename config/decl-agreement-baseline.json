@@ -12591,6 +12591,7 @@
         "param:#2 Vector3 *"
       ],
       "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 Vector3 *",
         "param:#2 const Vector3 *"
       ],
       "src/func_ov002_020cfea4.cpp": [
@@ -12607,6 +12608,9 @@
       ],
       "src/actors/daKpa_c.cpp": [
         "param:#2 Vec3 *"
+      ],
+      "src/game/actors/d_a_shl.cpp": [
+        "param:#2 Vector3 *"
       ]
     },
     "_ZN9dBgCh_GndD1Ev": {
@@ -12662,6 +12666,7 @@
         "return:void"
       ],
       "src/actors/dActor_c.cpp": [
+        "param:#1 RaycastGroundPod *",
         "return:void"
       ]
     },
@@ -35310,6 +35315,7 @@
     },
     "_ZN9dBgCh_GndC1Ev": {
       "src/actors/dActor_c.cpp": [
+        "param:#1 RaycastGroundPod *",
         "return:void"
       ]
     },
@@ -35320,6 +35326,9 @@
     },
     "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh": {
       "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
+        "param:#1 char *"
+      ],
+      "src/actors/dActor_c.cpp": [
         "param:#1 char *"
       ]
     },

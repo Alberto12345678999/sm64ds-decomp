@@ -1,4 +1,5 @@
 extern int func_02053200(int x);
+/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 extern void _ZN8dClipper13Func_020156DCEitii(void *tab, int a, int b, int d, int e);
 extern short data_02082214[];
 extern int data_0209f43c;

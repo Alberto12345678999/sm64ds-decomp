@@ -103,6 +103,7 @@ void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
 void *_ZN5ModelC1Ev(void *);
 void _ZN5ModelD1Ev(void *);
 void _ZN5Sound12PlayBank2_2DEj(unsigned int);
+/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
 void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
 int _ZN9Animation7AdvanceEv(void *);
