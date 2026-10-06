@@ -29,7 +29,6 @@ extern dBgPi     data_020a0d1c;   /* == data_020a0d0c's dBgPi   (+0x10) */
 void func_0203aa74(dBgW_KcMbgSclY *self, const Vector3 *v, Vector3 *res);  /* world -> collider */
 void func_0203aa10(dBgW_KcMbgSclY *self, const Vector3 *v, Vector3 *res);  /* collider -> world */
 void func_02035394(dBgCh_Lin *dst, dBgCh_Lin *src);
-void func_020375ec(int *dst, const int *src);   /* dst[21..23] = src[0..2], i.e. dst->lineEnd */
 }
 
 int dBgW_KcMbgSclY::DetectClsn(dBgCh_Lin &ray)
@@ -49,7 +48,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_Lin &ray)
     if (hit != 0) {
         Fix12i dist = data_020a0d0c.clsnDist;
         func_0203aa10(this, &data_020a0d60, &worldPos);
-        func_020375ec((int *)&ray, (const int *)&worldPos);
+        ray.SetClsnPos(worldPos);
         ray.clsnDist = dist;
         /* the dBgPi base sub-object, at +0x10 */
         (dBgPi &)ray = data_020a0d1c;

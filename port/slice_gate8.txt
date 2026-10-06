@@ -16,7 +16,7 @@ src/func_020397b8.c
 src/_ZN5dBgPcC1Ev.cpp
 src/_ZN5dBgPcD1Ev.cpp
 src/func_02037fd4.c
-src/func_020375ec.c
+src/engine/collision/dBgCh_Lin.cpp
 src/func_020396dc.c
 src/func_02039624.c
 src/_ZN13CLPS_BlockRefaSER10CLPS_Block.cpp

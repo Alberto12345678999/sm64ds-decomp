@@ -1305,8 +1305,8 @@ _ZN9dBgCh_GndC1Ev kind:function(arm,size=0x40) addr:0x02037570
 _ZThn16_N9dBgCh_GndD0Ev kind:function(arm,size=0x10) addr:0x020375b0
 _ZThn16_N9dBgCh_GndD1Ev kind:function(arm,size=0x10) addr:0x020375c0
 _ZN9dBgCh_Lin10GetClsnPosEv kind:function(arm,size=0x1c) addr:0x020375d0
-func_020375ec kind:function(arm,size=0x1c) addr:0x020375ec
-func_02037608 kind:function(arm,size=0x68) addr:0x02037608
+_ZN9dBgCh_Lin10SetClsnPosERK7Vector3 kind:function(arm,size=0x1c) addr:0x020375ec
+_ZN9dBgCh_Lin13func_02037608Ev kind:function(arm,size=0x68) addr:0x02037608
 _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c kind:function(arm,size=0xa0) addr:0x02037670
 _ZN9dBgCh_LinD0Ev kind:function(arm,size=0x54) addr:0x02037710
 _ZN9dBgCh_LinD1Ev kind:function(arm,size=0x4c) addr:0x02037764
@@ -4326,9 +4326,7 @@ VTable_dBgPi_dBgCh_GndThunk kind:data(any) addr:0x02099274
 _ZTI8dM3dGLin kind:data(any) addr:0x0209927c
 _ZTS8dM3dGLin kind:data(any) addr:0x02099284
 _ZTS9dBgCh_Lin kind:data(any) addr:0x02099290
-data_020992a4 kind:data(any) addr:0x020992a4
 _ZTV9dBgCh_Lin kind:data(any) addr:0x020992a4
-data_020992b4 kind:data(any) addr:0x020992b4
 VTable_dBgPi_dBgCh_LinThunk kind:data(any) addr:0x020992b4
 _ZTI9dBgCh_Lin kind:data(any) addr:0x020992bc
 _ZTI8dM3dGSph kind:data(any) addr:0x020992e4

@@ -9,7 +9,7 @@
  * work against the static mesh. A hit is then pushed back out to world space.
  *
  * clsnDist is carried across by hand rather than through the dBgPi copy:
- * it is read off the scratch line before func_020375ec overwrites the caller's
+ * it is read off the scratch line before SetClsnPos overwrites the caller's
  * leading words, and restored after.
  */
 #include "dBgW_KcMbg.h"
@@ -19,7 +19,6 @@ extern "C" {
 extern void func_02039e48(dBgW_KcMbg *self, const Vector3 *v, Vector3 *res);
 extern void func_02035394(dBgCh_Lin *dst, dBgCh_Lin *src);
 extern void func_02039e30(dBgW_KcMbg *self, const Vector3 *v, Vector3 *res);
-extern void func_020375ec(int *line, const int *position);
 
 extern dBgCh_Lin data_020a0d0c;
 extern Vector3   data_020a0d60;
@@ -45,7 +44,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Lin &ray)
     if (hit != 0) {
         Fix12i distance = data_020a0d0c.clsnDist;
         func_02039e30(this, &data_020a0d60, &worldPos);
-        func_020375ec((int *)&ray, (const int *)&worldPos);
+        ray.SetClsnPos(worldPos);
         ray.clsnDist = distance;
         (dBgPi &)ray = data_020a0d1c;
         ray.hasClsn = 1;
