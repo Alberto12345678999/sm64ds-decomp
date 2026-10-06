@@ -7968,6 +7968,14 @@
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3": "tangosdev",
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16": "ruspecial",
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c6AddCapEj": "andrewboudreau",
-    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14UnloadCapModelEv": "tangosdev"
+    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14UnloadCapModelEv": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c": "andrewboudreau",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_Gnd10GetClsnPosER7Vector3": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_Gnd10SetClsnPosERK7Vector3": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_GndD0Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_GndD1Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_GndC1Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZThn16_N9dBgCh_GndD0Ev": "lplaat",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZThn16_N9dBgCh_GndD1Ev": "tangosdev"
   }
 }

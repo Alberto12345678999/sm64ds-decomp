@@ -19,7 +19,6 @@
 #include "dBgCh_Lin.h"
 
 extern "C" {
-extern void func_020374b8(int *ground, int *position);
 extern void func_02039e48(dBgW_KcMbg *self, const Vector3 *v, Vector3 *res);
 extern void func_02035394(dBgCh_Lin *dst, dBgCh_Gnd *src);
 extern void func_02039e30(dBgW_KcMbg *self, const Vector3 *v, Vector3 *res);
@@ -35,7 +34,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray)
     Vector3 lineEnd;
     Vector3 worldPos;
 
-    func_020374b8((int *)&ray, (int *)&probePos);
+    ray.GetClsnPos(probePos);
     lineEnd = probePos;
 
     int probeHeight = ray.mProbeHeight;

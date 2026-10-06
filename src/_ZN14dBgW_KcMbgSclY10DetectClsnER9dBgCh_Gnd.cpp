@@ -7,7 +7,6 @@
 #include "dBgCh_Lin.h"
 
 extern "C" {
-void func_020374b8(int *ground, int *position);
 void func_0203aa74(dBgW_KcMbgSclY *self, Vector3 *v, Vector3 *res);
 void func_02035394(dBgCh_Lin *dst, dBgCh_Gnd *src);
 void func_0203aa10(dBgW_KcMbgSclY *self, const Vector3 *v, Vector3 *res);
@@ -20,7 +19,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_Gnd &ground)
     Vector3 localEnd;
     Vector3 lineEnd;
 
-    func_020374b8((int *)&ground, (int *)&probePos);
+    ground.GetClsnPos(probePos);
     lineEnd = probePos;
 
     int probeHeight = ground.mProbeHeight;

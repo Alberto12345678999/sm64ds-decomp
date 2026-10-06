@@ -58,8 +58,8 @@ struct dBgCh_Gnd : dBgCh, dBgPi {
      * references to the ROM's existing tables. */
     virtual ~dBgCh_Gnd();
 
-    /* DECLARED, defined out of line in src/_ZN9dBgCh_GndC1Ev.cpp as real
-     * C++ -- complete-object context for every ROM caller, hence C1.
+    /* DECLARED, defined out of line in src/engine/collision/dBgCh_Gnd.cpp
+     * as real C++ -- complete-object context for every ROM caller, hence C1.
      * The ROM kept no C2 sibling: nothing derives from dBgCh_Gnd.
      */
     dBgCh_Gnd();
@@ -77,6 +77,8 @@ struct dBgCh_Gnd : dBgCh, dBgPi {
 
     /* methods */
     void SetObjAndPos(const Vector3 &pos, dActor_c *actor);
+    void GetClsnPos(Vector3 &res);
+    void SetClsnPos(const Vector3 &pos);
     int DetectClsn();
 };
 
