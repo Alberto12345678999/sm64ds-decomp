@@ -4279,49 +4279,9 @@ src/engine/collision/dM3dGSph.cpp:
     complete
     .text start:0x0203abb0 end:0x0203ac80
 
-src/_ZN7PathPtr6FromIDEj.cpp:
+src/engine/path/PathPtr.cpp:
     complete
-    .text start:0x0203ac80 end:0x0203aca0
-
-src/func_0203aca0.c:
-    complete
-    .text start:0x0203aca0 end:0x0203acbc
-
-src/func_0203acbc.c:
-    complete
-    .text start:0x0203acbc end:0x0203accc
-
-src/func_0203accc.c:
-    complete
-    .text start:0x0203accc end:0x0203acdc
-
-src/_ZNK7PathPtr7GetNodeER7Vector3j.cpp:
-    complete
-    .text start:0x0203acdc end:0x0203ad34
-
-src/_ZNK7PathPtr5LoopsEv.cpp:
-    complete
-    .text start:0x0203ad34 end:0x0203ad44
-
-src/func_0203ad44.c:
-    complete
-    .text start:0x0203ad44 end:0x0203ad54
-
-src/func_0203ad54.c:
-    complete
-    .text start:0x0203ad54 end:0x0203ad60
-
-src/_ZNK7PathPtr8NumNodesEv.cpp:
-    complete
-    .text start:0x0203ad60 end:0x0203ad6c
-
-src/func_0203ad6c.c:
-    complete
-    .text start:0x0203ad6c end:0x0203ad74
-
-src/_ZN7PathPtrC1Ev.cpp:
-    complete
-    .text start:0x0203ad74 end:0x0203ad84
+    .text start:0x0203ac80 end:0x0203ad84
 
 src/func_0203ad84.c:
     complete
