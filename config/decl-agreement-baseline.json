@@ -10490,6 +10490,9 @@
       ],
       "src/func_ov002_020e4bb8.c": [
         "return:unsigned int"
+      ],
+      "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
+        "return:int"
       ]
     },
     "_ZN6Player9DropActorEv": {
