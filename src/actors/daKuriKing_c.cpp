@@ -447,7 +447,6 @@ void daKuriKing_c::func_ov074_0211fa74()
     /* 0x603 does not fit an ARM immediate, so the increment is an address
      * materialized from the pool. A plain mSubState++ drops that and comes
      * out 0x14 short. */
-    daKuriKing_c* a = this;
     int b;
     switch (this->mSubState) {
     case 0:
@@ -1012,26 +1011,23 @@ void daKuriKing_c::func_ov074_02120b90() {
 // @symbol _ZN12daKuriKing_c19func_ov074_02120bb8EP8dActor_cP10dCcAcPos_ci
 void daKuriKing_c::func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mode)
 {
-    daKuriKing_c *self = this;
-    dActor_c *p1 = other;
-    dCcAcPos_c *p2 = clsn;
     Vector3 v, dst, src, delta;
     s32 aX, aY;
     s32 iX, iY;
     s32 s, w;
 
-    dst.x = self->mPosX;
-    dst.y = self->mPosY;
-    dst.z = self->mPosZ;
+    dst.x = this->mPosX;
+    dst.y = this->mPosY;
+    dst.z = this->mPosZ;
     {
-        Vector3 *pv = (Vector3*)&p1->mPosX;
+        Vector3 *pv = (Vector3*)&other->mPosX;
         src.x = pv->x;
         src.y = pv->y;
         src.z = pv->z;
     }
     {
-        s32 dy = p2->height;
-        w = p2->radius;
+        s32 dy = clsn->height;
+        w = clsn->radius;
         dst.y += dy;
     }
     src.y += 0x46000;
