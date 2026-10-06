@@ -8,9 +8,10 @@
  *
  * 20 functions, .text 0x020cc028..0x020ccb54, one TU: the seven dScene_c
  * slots it overrides (0, 3, 6, 9, 12, 16, 17 -- the class adds no new
- * virtual), two slots of the nested dScDSMT_c::graphCallback_c, four free
- * helpers that keep the per-file summary the client displays, the client's
- * command dispatcher func_ov007_020cc600, five allocator/file veneers for
+ * virtual), two slots of the nested dScDSMT_c::graphCallback_c, four small
+ * free helpers (a save-file slot lookup, installing the save-file buffer,
+ * arming a deferred music change, and the per-file summary the client
+ * displays), the client's command dispatcher func_ov007_020cc600, five allocator/file veneers for
  * the interface the client calls, and the factory dScDSMT_c_classInit.
  *
  * The destructor is inline in the class body and the key function is
