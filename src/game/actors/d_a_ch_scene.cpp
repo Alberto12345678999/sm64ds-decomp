@@ -11,8 +11,8 @@
  * own vtable slot.
  *
  * deslop leftovers:
- * - Camera::SetFlag_3 / LookAtExit stay mangled: Camera.h has no LookAtExit,
- *   and Camera.h is out of scope.
+ * - dCamera_c::SetFlag_3 / LookAtExit stay mangled: dCamera_c.h has no LookAtExit,
+ *   and dCamera_c.h is out of scope.
  * - func_ov002_020b0a0c writes the exit band and calls LoadLevel; a member
  *   spelling would change the ROM symbol.
  * - LoadLevel / StartExitFaderWipe / func_02012790 / IsStarCollectedInLevel
@@ -27,6 +27,7 @@
 #include "dScene_c.h"
 #include "FaderColor.h"
 #include "Player.h"
+#include "dCamera_c.h"
 
 extern "C" {
 extern void LoadLevel(s8 levelID, u8 entranceID, s8 starID, u32 d, s8 e);
@@ -35,10 +36,8 @@ extern void MulVec3Mat4x3(void *in, void *m, void *out);
 extern void InvMat4x3(void *in, void *out);
 extern void func_ov002_020b0a0c(daChScene_c *self);
 extern void StartExitFaderWipe(int a);
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
 extern int Vec3_Dist(void *a, void *b);
 extern void func_02012790(int id);
-extern void _ZN6Camera10LookAtExitER8dActor_c(void *cam, void *a);
 extern unsigned char data_0209f250;
 extern dActor_c *data_0209f394[];
 extern signed char data_02092110;
@@ -156,14 +155,14 @@ s32 daChScene_c::Behavior()
                                 if (((Player *)player)->Unk_020c9e5c(7)) {
                                     func_ov002_020b0a0c(this);
                                     StartExitFaderWipe(6);
-                                    _ZN6Camera9SetFlag_3Ev(cam);
+                                    ((dCamera_c *)cam)->SetFlag_3();
                                 } else {
                                     ((Player *)player)->SetNoControlState(6, -1, 0);
                                     if (mAngleX != 0) {
                                         dActor_c *o;
                                         func_ov002_020b0a0c(this);
                                         StartExitFaderWipe(5);
-                                        _ZN6Camera9SetFlag_3Ev(cam);
+                                        ((dCamera_c *)cam)->SetFlag_3();
                                         o = dActor_c::FindWithActorID(0x12a, 0);
                                         while (o != 0) {
                                             if (Vec3_Dist(&o->mPosX, &mPosX) < 0x12c000)
@@ -185,7 +184,7 @@ s32 daChScene_c::Behavior()
                                             data_0209f5e8.color = 0x7fff;
                                         }
                                         mHorzSpeed = out2[2];
-                                        _ZN6Camera10LookAtExitER8dActor_c(cam, this);
+                                        ((dCamera_c *)cam)->LookAtExit(*this);
                                         func_02012790(0x1e);
                                     }
                                 }

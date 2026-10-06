@@ -22,8 +22,8 @@
  * header had split a Vector3[3] at 0x3ac into nine scalars and named six of
  * them (elements 1 and 2). Both branches spell the array now. Two more former
  * unknowns sat inside embedded animations rather than in daKuriKing_c at all --
- * 0x3d8 is the MaterialChanger's Animation cursor (+0x08) and 0x3f0 is the
- * TextureSequence's playback speed (+0x0c); see include/Animation.h.
+ * 0x3d8 is the MaterialChanger's dExtFrameCtrl_c cursor (+0x08) and 0x3f0 is the
+ * TextureSequence's playback speed (+0x0c); see include/dExtFrameCtrl_c.h.
  *
  * Field provenance: notes/enemy-leaf-provenance.md.
  *
@@ -203,13 +203,13 @@ struct daKuriKing_c {
     s32 mCylClsnPos[9];              /* 0x3ac */
     u8  mMaterialChanger;            /* 0x3d0 */
     u8  pad_3d1[0x7];
-    /* mMaterialChanger's Animation base +0x08, the 20.12 playback cursor.
+    /* mMaterialChanger's dExtFrameCtrl_c base +0x08, the 20.12 playback cursor.
        InitResources sets it to data_ov074_02122e04[mSizeIndex] << 12. */
     s32 mMaterialChangerFrame;       /* 0x3d8 */
     u8  pad_3dc[0x8];
     u8  mTextureSequence;            /* 0x3e4 */
     u8  pad_3e5[0xb];
-    /* mTextureSequence's Animation base +0x0c, the playback speed. InitResources
+    /* mTextureSequence's dExtFrameCtrl_c base +0x0c, the playback speed. InitResources
        calls SetFile with 0x1000 and then zeroes this, freezing the sequence. */
     s32 mTextureSequenceSpeed;       /* 0x3f0 */
     u8  pad_3f4[0x4];

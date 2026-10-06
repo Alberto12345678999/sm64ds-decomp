@@ -778,7 +778,7 @@ int daFPkn_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov084_02130dfc), 1, -1);
 
     for (i = 0; i < 6; i++)
-        Animation::LoadFile(*data_ov084_021302f4[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov084_021302f4[i]);
 
     Model::LoadFile(data_ov002_0210da38);
     LoadBlueCoinModel(this);

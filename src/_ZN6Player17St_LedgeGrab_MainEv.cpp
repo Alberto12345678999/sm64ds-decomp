@@ -21,7 +21,7 @@ int Player::St_LedgeGrab_Main()
   if(_ZN6Player6IsAnimEj(((char*)this),0x20)){
     int id=_ZNK6Player14GetBodyModelIDEjb(((char*)this),param1&0xff,0);
     void* anim=*(void**)(((char*)this)+(id<<2)+0xdc);
-    if(_ZNK9Animation12WillHitFrameEi((char*)anim+0x50,0x1e))
+    if(_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)anim+0x50,0x1e))
       _ZN5Sound9PlayBank0EjRK7Vector3(mGroundSoundType+0x40,((char*)this)+0x74);
   }
   Player_AdvanceAnims(((char*)this));

@@ -26,13 +26,13 @@
  * - func_ov062_02116274 adds 0x500 through (int)this + 0x94. A member
  *   add is four bytes short. func_ov062_02116a08 copies the player's
  *   position from one base at +0x5c; three mPos loads are one instruction
- *   short. Finished and WillHitFrame take the Animation base at
+ *   short. Finished and WillHitFrame take the dExtFrameCtrl_c base at
  *   this+0x350 in one add; mModel+0x50 is two.
  * - The grabbed actor's +0xc8 and this object's +0xc8 are the unnamed gap
  *   before dActor_c::mAreaId. func_ov062_02116e80 stores &mHoldMtx there.
  * - func_ov062_021165e8 keeps a volatile Vector3 so the player's position
  *   occupies that stack slot.
- * - Animation::Finished / WillHitFrame are called through the Animation
+ * - dExtFrameCtrl_c::Finished / WillHitFrame are called through the dExtFrameCtrl_c
  *   base at mModel+0x50. A call on mModel itself goes through the thunk.
  */
 
@@ -146,11 +146,11 @@ int daHolhei_c::InitResources()
 {
     mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov062_0211ddf0), 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211dde8);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov062_0211dde0);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211de00);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211de08);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov062_0211ddf8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211dde8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211dde0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211de00);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211de08);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211ddf8);
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCc_c, (dActor_c*)this, 0xc8000, 0xfa000, 0x200004, 0x3010);
@@ -676,7 +676,7 @@ extern "C" int func_ov062_02116368(void* c) {
 // @symbol func_ov062_0211632c
 extern "C" int func_ov062_0211632c(void* c){
     daHolhei_c *self = (daHolhei_c *)c;
-    if (((Animation *)((char *)c + 0x350))->Finished()) {
+    if (((dExtFrameCtrl_c *)((char *)c + 0x350))->Finished()) {
         self->mChargeStep = 0;
         ::daHolhei_c_ChangeState(c, data_ov062_0211de80);
     }
@@ -721,12 +721,12 @@ extern "C" int func_ov062_02116238(char *c){
 extern "C" int func_ov062_021161a8(char *c)
 {
     daHolhei_c *self = (daHolhei_c *)c;
-    if (self->mHeld != 0 && ((Animation *)((char *)c + 0x350))->WillHitFrame(0x14)) {
+    if (self->mHeld != 0 && ((dExtFrameCtrl_c *)((char *)c + 0x350))->WillHitFrame(0x14)) {
         func_ov002_020db54c((int)self->mHeld, 0x28000, 0x50000, self->mAngleY);
         self->mHeld = 0;
         func_02012694(0x126, &self->mCamSpacePosX);
     }
-    if (((Animation *)((char *)c + 0x350))->Finished()) {
+    if (((dExtFrameCtrl_c *)((char *)c + 0x350))->Finished()) {
         self->mdCc_c.flags &= ~2;
         ::daHolhei_c_ChangeState(c, data_ov062_0211ded0);
     }

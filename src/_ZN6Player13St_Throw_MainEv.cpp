@@ -27,7 +27,7 @@ int Player::St_Throw_Main()
     int r4 = 5;
     int id=_ZNK6Player14GetBodyModelIDEjb(((char*)this),param1&0xff,0);
     void* anim=*(void**)(((char*)this)+(id<<2)+0xdc);
-    if(_ZNK9Animation12WillHitFrameEi((char*)anim+0x50,0)){
+    if(_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)anim+0x50,0)){
       if(func_ov002_020c19d0(((char*)this),0x40,0x32)) r4=0;
     }
     char* q=*(char**)((char*)&mHeldObj);
@@ -47,7 +47,7 @@ int Player::St_Throw_Main()
   Ld0:
     int id2=_ZNK6Player14GetBodyModelIDEjb(((char*)this),param1&0xff,0);
     void* anim2=*(void**)(((char*)this)+(id2<<2)+0xdc);
-    if(_ZNK9Animation12WillHitFrameEi((char*)anim2+0x50,r4)){
+    if(_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)anim2+0x50,r4)){
       int b2=(*(int*)(*(char**)((char*)&mHeldObj)+0xb0)&0x200)?1:0;
       if(b2==0) func_ov002_020daa74(((char*)this));
       else func_ov002_020da9d4(((char*)this));

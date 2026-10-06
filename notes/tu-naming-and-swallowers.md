@@ -140,7 +140,7 @@ one of the cases the tool exists to get right.
 `main` is still under-segmented afterwards, but at subsystem granularity rather than
 one blob — the largest remaining units are coherent: `Heap`/`Memory`/`HeapAllocator`
 (607), `Scene`/`Event`/`Fog`/`OAM` (530), the collision family
-`BgCh`/`SphereClsn`/`RaycastGround`/`MeshColliderBase` (223), `Camera`/`Vector3`
+`BgCh`/`SphereClsn`/`RaycastGround`/`MeshColliderBase` (223), `dCamera_c`/`Vector3`
 (157), the GX register API `G2`/`G2S`/`G3X`/`GXS` (122).
 
 ## 4. Two gate findings

@@ -23,7 +23,7 @@
  * deslop leftovers:
  * - DropShadowRadHeight, dCcAcPos_c::Init, dCcAc_c::Init, dBgCh_Actr::Init,
  *   GetCapState, UpdateCapPos, ModelAnim::SetAnim, SpawnFireball, Player::
- *   Bounce/Hurt, KillByInvincibleChar and the Sound/Particle/Camera calls
+ *   Bounce/Hurt, KillByInvincibleChar and the Sound/Particle/dCamera_c calls
  *   stay mangled: the header member forms take Fix12<int> by value (the
  *   Fix12 wall) or have no shared declaration.
  * - func_02012694's `((char *)this + 0x500)` argument is an opaque state
@@ -48,7 +48,7 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -111,7 +111,6 @@ int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
 void _Z14ApproachLinearRiii(int *p, int target, int step);
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
-void _ZN6Camera9SetFlag_3Ev(void *cam);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
@@ -888,7 +887,7 @@ void daTrs_c::func_ov063_021177b0() {
     }
 
     if (this->mDataIdx == 0) {
-        Camera* cam = (Camera *)data_0209f318;
+        dCamera_c* cam = (dCamera_c *)data_0209f318;
         unsigned short flags = *(unsigned short*)&this->mFlags_5d4;
 
         if (((unsigned)(flags << 21)) >> 31) {
@@ -936,7 +935,7 @@ void daTrs_c::func_ov063_021177b0() {
             }
         } else {
             *(unsigned short*)&this->mFlags_5d4 |= 0x400;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
         }
 
         if (func_ov063_0211a3d0() == 0)
@@ -1052,7 +1051,7 @@ void daTrs_c::func_ov063_02117b0c() {
             *fl = (u16)(*fl & ~0x400);
         }
         {
-            ((Camera *)data_0209f318)->mFlags &= ~8;
+            ((dCamera_c *)data_0209f318)->mFlags &= ~8;
         }
         break;
     }
@@ -1064,10 +1063,10 @@ void daTrs_c::func_ov063_02117cdc() {
 
     s16 v[3];
     int w[3];
-    Camera *cam;
+    dCamera_c *cam;
     int neg;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     switch (this->mSubState) {
     case 0:
         this->mTalkPlayer = (Player *)ClosestPlayer();
@@ -1105,7 +1104,7 @@ void daTrs_c::func_ov063_02117cdc() {
         if (this->mTalkPlayer->StartTalk(*(fBase_c *)(this), 1) == 0) {
             return;
         }
-        _ZN6Camera9SetFlag_3Ev(cam);
+        cam->SetFlag_3();
         this->mScreenPtAX = w[0];
         this->mScreenPtAY = w[1];
         this->mScreenPtAZ = w[2];
@@ -3288,8 +3287,8 @@ int daTrs_c::InitResources()
         unk_5cf = (param1 & 0xf) + 0xc;
         if (unk_5cf == 0xf) {
             LoadKeyModels(3);
-            Animation::LoadFile(data_ov063_0211edd4);
-            Animation::LoadFile(data_ov063_0211edcc);
+            dExtFrameCtrl_c::LoadFile(data_ov063_0211edd4);
+            dExtFrameCtrl_c::LoadFile(data_ov063_0211edcc);
         } else if (unk_5cf == 0xc) {
             mFoundActor = dActor_c::Spawn(0xd3, param1, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
             if (mFoundActor != 0) {
@@ -3297,7 +3296,7 @@ int daTrs_c::InitResources()
             }
             mFoundActor = 0;
         }
-        Animation::LoadFile(data_ov063_0211ede4);
+        dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edf4), 1, 1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211ede4 + 4), 0, 0x1000, 0);
         mDataIdx = 3;
@@ -3316,7 +3315,7 @@ int daTrs_c::InitResources()
         }
     } else {
         unk_5cf = param1 & 0xf;
-        Animation::LoadFile(data_ov063_0211eddc);
+        dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edc4), 1, 0x16);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211eddc + 4), 0, 0x1000, 0);
         mDataIdx = 1;

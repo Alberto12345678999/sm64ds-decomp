@@ -24,7 +24,7 @@
  * - Player::param1 and Player::mStateFlags are used. The held matrix at
  *   actor+0xc8 is inside dActor_c's pad (0xc5..0xcb); naming it is a base
  *   change. func_ov078_02125de0, Render and the throw helper still store it.
- * - Camera::mFlags (0x154, bit 8) is used. Behavior's store at Camera+0x114
+ * - dCamera_c::mFlags (0x154, bit 8) is used. Behavior's store at dCamera_c+0x114
  *   is the word after mTargetPlayer, still pad_114.
  * - func_02035550 is the call that ORs 0x4000 into dBgCh_Actr::mFlags
  *   Inlining the or would delete the call.
@@ -57,7 +57,7 @@
 #include "decl_Animation.h"
 #include "decl_Message.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Message.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -122,7 +122,6 @@ extern "C" {
     extern int data_ov078_021270fc[];
     extern int data_ov078_0212710c[];
 extern int data_ov078_02126ffc[];
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_Lsl(void *d, void *s, int sh);
 extern void func_02012694(int a, void *p);
@@ -235,13 +234,13 @@ extern "C" {
 int func_ov078_021238ac(char *c)
 {
     daBombking_c *k = (daBombking_c *)c;
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
     struct Vec3 v;
     struct Vec3 t;
     struct Vec3 u;
 
     if (k->mTalkingPlayer->GetTalkState() != -1) {
-        _ZN6Camera9SetFlag_3Ev(cam);
+        ((dCamera_c *)cam)->SetFlag_3();
         return 1;
     }
 
@@ -353,7 +352,7 @@ int func_ov078_02123c20(char* c){
         }
         return 1;
     }
-    if (((Animation *)(c+0x31c))->WillHitFrame(0x14)) {
+    if (((dExtFrameCtrl_c *)(c+0x31c))->WillHitFrame(0x14)) {
         int v = *(int*)(c+0x494);
         if (v != 0) {
             func_ov002_020db54c((char*)v, 0x28000, 0x50000, k->mAngleY);
@@ -362,7 +361,7 @@ int func_ov078_02123c20(char* c){
             func_02012694(0x131, c+0x74);
         }
     }
-    if (((Animation *)(c+0x31c))->Finished()) {
+    if (((dExtFrameCtrl_c *)(c+0x31c))->Finished()) {
         KingBobOmb_SetState(c, data_ov078_021270fc);
     }
     return 1;
@@ -462,7 +461,7 @@ extern "C" int func_ov078_02123f1c(char *c)
     }
     return 1;
 L6c:
-    if (((Animation *)&k->mBlendModelAnim)->Finished()) {
+    if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished()) {
         KingBobOmb_SetState(c, data_ov078_0212709c);
     }
     return 1;
@@ -487,7 +486,7 @@ int func_ov078_02124000(char* c){
   int ang = k->HorzAngleToCPlayer();
   ApproachAngle(&k->mPrevAngleY, ang, 1, 0x500, 0x500);
   k->mAngleY = k->mPrevAngleY;
-  if (((Animation *)&k->mBlendModelAnim)->Finished()) {
+  if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished()) {
     KingBobOmb_SetState(c, data_ov078_0212703c);
   }
   return 1;
@@ -663,13 +662,13 @@ int func_ov078_02124520(char *c)
     Vector3 ppos;
     Vector3 tmp;
     Vector3 dust;
-    Camera *cam;
+    dCamera_c *cam;
     Player *player;
     int *pp;
     s16 ang;
 
-    cam = (Camera *)data_0209f318;
-    if (((Animation *)&k->mBlendModelAnim)->WillHitFrame(0x46)) {
+    cam = (dCamera_c *)data_0209f318;
+    if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->WillHitFrame(0x46)) {
         func_ov078_02125c24(c, 0x7d0000);
         func_02012694(0x12c, &k->mCamSpacePosX);
         a.x = 0;
@@ -722,7 +721,7 @@ int func_ov078_02124520(char *c)
         return 1;
     }
     cam->mFlags &= ~8;
-    if (((Animation *)&k->mBlendModelAnim)->Finished()) {
+    if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished()) {
         KingBobOmb_SetState(c, &data_ov078_0212703c);
     }
     return 1;
@@ -764,7 +763,7 @@ int func_ov078_021247bc(void *thiz)
         ApproachAngle(&k->mPrevAngleX, vert, 5, 0x1000, 0x300);
         ApproachAngle(&k->mPrevAngleY, horz, 5, 0x1000, 0x300);
         k->mAngleY = k->mPrevAngleY;
-        if (((Animation *)&k->mBlendModelAnim)->Finished() == 0)
+        if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished() == 0)
             return 1;
         vB.x = 0;
         vB.y = 0x3c000;
@@ -823,7 +822,7 @@ int func_ov078_021247bc(void *thiz)
             return 1;
         }
 
-        if (((Animation *)&k->mBlendModelAnim)->Finished() != 0) {
+        if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished() != 0) {
             Player *pl2 = k->mTalkingPlayer;
             unsigned short m;
             E.x = k->mPosX;
@@ -833,7 +832,7 @@ int func_ov078_021247bc(void *thiz)
             m = pl2->mStateFlags & 0x800;
             if (m == 0) {
                 if (pl2->ShowMessage(*(fBase_c *)c, 0x94, (Vector3 *)(&E), 0, 0) != 0) {
-                    _ZN6Camera9SetFlag_3Ev(*(void **)&data_0209f318);
+                    ((dCamera_c *)data_0209f318)->SetFlag_3();
                     func_02012694(0x12a, &k->mCamSpacePosX);
                     KingBobOmb_SetState(c, &data_ov078_021270dc);
                 }
@@ -1094,7 +1093,7 @@ int func_ov078_021250f8(char* c) {
             target->mAngleY = k->mAngleY;
             target->mAngleZ = k->mAngleZ;
             func_ov102_0214b384(target, 0x78);
-            if (((Animation *)&k->mBlendModelAnim)->WillHitFrame(0x13) != 0
+            if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->WillHitFrame(0x13) != 0
                 || func_ov078_02123804(c) == 1) {
                 in.x = 0; in.y = 0; in.z = 0x28000;
                 out.x = 0; out.y = 0; out.z = 0;
@@ -1131,7 +1130,7 @@ int func_ov078_021250f8(char* c) {
         }
     }
 
-    if (((Animation *)&k->mBlendModelAnim)->Finished() != 0) {
+    if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished() != 0) {
         player = (Player *)k->ClosestPlayer();
         if (player != 0) {
             if (player->param1 != 3) {
@@ -1308,7 +1307,7 @@ extern "C" int func_ov078_02125790(char* self)
   if (func_ov078_02123804(self) == 1) return 1;
   ApproachAngle(&k->mPrevAngleY, k->HorzAngleToCPlayer(), 1, 0x500, 0x500);
   k->mAngleY = k->mPrevAngleY;
-  if (((Animation *)&k->mBlendModelAnim)->WillHitFrame(0x46)) {
+  if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->WillHitFrame(0x46)) {
     func_ov078_02125c24(self, 0x7d0000);
     func_02012694(0x12c, &k->mCamSpacePosX);
     s.x = 0;
@@ -1328,7 +1327,7 @@ extern "C" int func_ov078_02125790(char* self)
     v.z = d.z;
     k->HugeLandingDustAt(v, 1);
   }
-  if (((Animation *)&k->mBlendModelAnim)->Finished()) {
+  if (((dExtFrameCtrl_c *)&k->mBlendModelAnim)->Finished()) {
     KingBobOmb_SetState(self, &data_ov078_0212703c);
   }
   return 1;
@@ -1729,18 +1728,18 @@ int daBombking_c::InitResources()
     f = (BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov078_02126f38);
     mBlendModelAnim.SetFile(f, 1, 1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f00);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f20);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f10);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f08);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f18);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126ee0);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126ef0);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f40);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f30);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126ee8);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126f28);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov078_02126ef8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f00);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f20);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f10);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f08);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f18);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126ee0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126ef0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f40);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f30);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126ee8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126f28);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov078_02126ef8);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     v0.x = data_ov078_02126e00.x;

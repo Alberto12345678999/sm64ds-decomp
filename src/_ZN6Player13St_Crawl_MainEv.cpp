@@ -45,8 +45,8 @@ int Player::St_Crawl_Main()
         if (val1 >= 0x200 && ((*(u16*)((char*)data_0209f49c + off) & 0x400) != 0 || func_ov002_020d1164(((char*)this)) != 0)) {
             int id = _ZNK6Player14GetBodyModelIDEjb(((char*)this), param1 & 0xff, 0);
             char* anim = (char*)mBodyModels[id] + 0x50;
-            if (_ZNK9Animation12WillHitFrameEi(anim, 0xe) ||
-                _ZNK9Animation12WillHitFrameEi((char*)mBodyModels[_ZNK6Player14GetBodyModelIDEjb(((char*)this), param1 & 0xff, 0)] + 0x50, 0x1c)) {
+            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0xe) ||
+                _ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)mBodyModels[_ZNK6Player14GetBodyModelIDEjb(((char*)this), param1 & 0xff, 0)] + 0x50, 0x1c)) {
                 _ZN5Sound9PlayBank0EjRK7Vector3(mGroundSoundType + 0xc0, ((char*)this) + 0x74);
             }
             int shifted = mHorzSpeed >> 2;

@@ -24,7 +24,7 @@
  *     dCcAcPos_c  0x360 + 0x040 = 0x3a0   -> mTargetPlayer
  *
  * TWO OF THE GENERATED HEADER'S FIELDS WERE THE ModelAnim'S OWN INSIDES and are
- * gone from this half: `mAnimation` at 0x124 is 0x0d4 + 0x50, the Animation base
+ * gone from this half: `mAnimation` at 0x124 is 0x0d4 + 0x50, the dExtFrameCtrl_c base
  * inside ModelAnim, and `unk_130` at 0x130 is 0x0d4 + 0x5c. Both were declared as
  * siblings of a `u8 mModelAnim` marker whose pad stopped short of the real object.
  * Same shape as Player's two ModelAnims.

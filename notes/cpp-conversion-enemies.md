@@ -238,7 +238,7 @@ Eight are left untested:
 |1-4|5-8|
 |---|---|
 | `_ZN16daObjBC_Switch_c13InitResourcesEv`|  `_ZN13daObjNumber_c13InitResourcesEv`|
-|[func_ov002_020f6618](../src/func_ov002_020f6618.cpp) |                   `func_ov006_020e6e78`|
+|[func_ov002_020f6618](../src/actors/daDemo_c.cpp) |                   `func_ov006_020e6e78`|
 |`func_ov006_020e7fe8` |                   [func_ov060_02111cc0](../src/actors/daKpa_c.cpp)|
 |`func_ov075_021143e4` |                    `func_ov075_02114ddc`|
 

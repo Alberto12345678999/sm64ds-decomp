@@ -1,14 +1,14 @@
-struct Camera;
+struct dCamera_c;
 
 extern signed char data_0209f2f8;
 extern unsigned char data_0209f224;
 
 extern int SublevelToLevel(int i);
-extern void func_020071a8(struct Camera *cam, short ang, int threshold);
+extern void func_020071a8(struct dCamera_c *cam, short ang, int threshold);
 
-int func_020077f0(struct Camera *cam)
+int func_020077f0(struct dCamera_c *cam)
 {
-    struct Camera *r4 = cam;
+    struct dCamera_c *r4 = cam;
     int lvl = SublevelToLevel(data_0209f2f8);
 
     if (lvl == 2) {

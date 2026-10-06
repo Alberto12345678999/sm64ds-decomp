@@ -46,7 +46,7 @@
 /* Twelve-word copy. Assigning Matrix4x3 itself is a different sequence. */
 struct Mtx { int m[12]; };
 
-/* filePtr is the word Model::LoadFile and Animation::LoadFile read.
+/* filePtr is the word Model::LoadFile and dExtFrameCtrl_c::LoadFile read.
  * include/SharedFilePtr.h has no fields. */
 struct LoadedSharedFile {
     u16 fileID;    /* 0x00 */
@@ -162,7 +162,7 @@ int daLuigi_c::InitResources()
 
     mShadowModel.InitCylinder();
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)Animation::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210eaa0), 0, kFxOne, 0);
 
     Vec3_Asr(&t, (Vec3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, t.x, t.y, t.z);
@@ -200,7 +200,7 @@ int daLuigi_c::Behavior()
     func_ov002_020e4374((char *)player, &depth, &radius);
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMatrix, radius, depth, kShadowOpacity);
-    /* Camera::pad_114. No named field; the store is the actor pointer. */
+    /* dCamera_c::pad_114. No named field; the store is the actor pointer. */
     *(daLuigi_c **)((char *)data_0209f318 + 0x114) = this;
     return 1;
 }

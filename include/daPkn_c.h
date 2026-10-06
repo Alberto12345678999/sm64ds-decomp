@@ -16,7 +16,7 @@
  *     0x3b4 dCcAc_c       0x34   -> 0x3e8
  *     0x3e8 dCcAcPos_c    0x40   -> 0x428
  *
- * The Animation base of mModelAnim sits at 0x160 and mModelAnim.file at 0x170.
+ * The dExtFrameCtrl_c base of mModelAnim sits at 0x160 and mModelAnim.file at 0x170.
  *
  * SIZE IS THE ROM'S OWN, and the observed field span agrees with it:
  * daPkn_c_classInit loads the literal 0x47c from ov084 0x0213016c and hands it

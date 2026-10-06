@@ -1217,9 +1217,9 @@ func_ov002_020f030c kind:function(arm,size=0x50) addr:0x020f030c
 func_ov002_020f035c kind:function(arm,size=0x68) addr:0x020f035c
 _ZN9daSCoin_cD1Ev kind:function(arm,size=0x30) addr:0x020f03c4
 _ZN9daSCoin_cD0Ev kind:function(arm,size=0x44) addr:0x020f03f4
-_ZN9daSCoin_c19func_ov002_020f0438Ev kind:function(arm,size=0xe4) addr:0x020f0438
-_ZN9daSCoin_c19func_ov002_020f051cEv kind:function(arm,size=0xd8) addr:0x020f051c
-_ZN9daSCoin_c19func_ov002_020f05f4Ev kind:function(arm,size=0xa8) addr:0x020f05f4
+_ZN9daSCoin_c7CollectEv kind:function(arm,size=0xe4) addr:0x020f0438
+_ZN9daSCoin_c11LinkToBlockEv kind:function(arm,size=0xd8) addr:0x020f051c
+_ZN9daSCoin_c9SpawnStarEv kind:function(arm,size=0xa8) addr:0x020f05f4
 _ZN9daSCoin_c16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x020f069c
 _ZN9daSCoin_c8BehaviorEv kind:function(arm,size=0x11c) addr:0x020f06c0
 _ZN9daSCoin_c13InitResourcesEv kind:function(arm,size=0x80) addr:0x020f07dc
@@ -2393,7 +2393,7 @@ data_ov002_0210ba7c kind:data(any) addr:0x0210ba7c
 data_ov002_0210ba9c kind:data(any) addr:0x0210ba9c
 _ZTIN8daDemo_c10anmModel_cE kind:data(any) addr:0x0210babc
 data_ov002_0210bae4 kind:data(any) addr:0x0210bae4
-_ZTVN8daDemo_c13simpleModel_cE kind:data(any) addr:0x0210bae0
+_ZTVN8daDemo_c13simpleModel_cE kind:data(any) addr:0x0210bae4
 _ZTIN8daDemo_c13simpleModel_cE kind:data(any) addr:0x0210bafc
 data_ov002_0210bb1c kind:data(any) addr:0x0210bb1c
 data_ov002_0210bb3c kind:data(any) addr:0x0210bb3c
@@ -2406,7 +2406,8 @@ data_ov002_0210bc28 kind:data(any) addr:0x0210bc28
 data_ov002_0210bc58 kind:data(any) addr:0x0210bc58
 data_ov002_0210bc88 kind:data(any) addr:0x0210bc88
 data_ov002_0210bcc4 kind:data(any) addr:0x0210bcc4
-_ZTVN8daDemo_c10anmModel_cE kind:data(any) addr:0x0210bcc0
+_ZTVN8daDemo_c10anmModel_cE kind:data(any) addr:0x0210bcc4
+daDemo_anmModel_vtbl kind:data(any) addr:0x0210bcc4
 data_ov002_0210bce8 kind:data(any) addr:0x0210bce8
 data_ov002_0210bcf0 kind:data(any) addr:0x0210bcf0
 data_ov002_0210bd24 kind:data(any) addr:0x0210bd24

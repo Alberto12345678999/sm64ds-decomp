@@ -95,7 +95,7 @@ s32 daSBird_c::InitResources()
 {
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov009_02113c20);
     mModelAnim.SetFile(modelFile, 1, 1);
-    BCA_File *animFile = (BCA_File *)Animation::LoadFile(data_ov009_02113c28);
+    BCA_File *animFile = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113c28);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, animFile, 0, 0x1000, 0);
     mShadowModel.InitCylinder();

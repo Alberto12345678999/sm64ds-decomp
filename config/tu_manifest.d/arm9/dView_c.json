@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED: one unit covering the whole module text with dozens of class labels, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
     "contiguous linker run 0x0202fc98..0x0202fd2c: the three delinks entries tile it exactly once -- D1 0x0202fc98, D0 0x0202fcc8, Render 0x0202fd0c -- with no interior hole.",
-    "class-label homogeneity: every named symbol in the run is a member of dView_c (the shared 0x80-byte view base Camera derives from, include/dView_c.h).",
+    "class-label homogeneity: every named symbol in the run is a member of dView_c (the shared 0x80-byte view base dCamera_c derives from, include/dView_c.h).",
     "ROM evidence says one object and names it: the vtable at 0x02092720 (_ZTV7dView_c) carries the canonical {0, _ZTI} preamble whose typeinfo pointer names 0x02086ecc (_ZTI7dView_c, an __si_class_type_info on _ZTI7dBase_c); _ZTS7dView_c at 0x02086e48 reads \"7dView_c\". The tree previously coined `View`; the class is renamed to the cartridge's RTTI spelling so the emitted typeinfo externalizes at the real records.",
     "neighbour below: func_0202fc40 at 0x0202fc40..0x0202fc98 (unattributed C function). Neighbour above: func_0202fd2c at 0x0202fd2c (unattributed C function). The run is bracketed rather than cut out of a uniform stretch."
   ],

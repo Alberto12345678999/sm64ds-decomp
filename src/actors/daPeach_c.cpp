@@ -12,7 +12,7 @@
  *   the cartridge does not name, so it stays a C-linkage free function taking
  *   `char *`.
  * - ModelAnim::SetAnim is called by its mangled name and the ModelAnim/
- *   Animation views are reached by cast: both take Fix12<int> by value (see
+ *   dExtFrameCtrl_c views are reached by cast: both take Fix12<int> by value (see
  *   notes/mwccarm-codegen.md 6az).
  * - Offsets 0xa4, 0xac (dActor_c's unk_0a4 / unk_0ac) and 0xe8 (inside the
  *   Model's ModelComponents) are still read raw, through words[] and a cast.
@@ -22,7 +22,7 @@
 #include "dActor_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "dCc_c.h"
 #include "types.h"
 
@@ -230,7 +230,7 @@ int daPeach_c::InitState0()
 int daPeach_c::State0()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, data_ov085_021304ec[1], 0, 0x1000, 0);
-    ((Animation *)&mModelAnim)->SetFlags(0x40000000);
+    ((dExtFrameCtrl_c *)&mModelAnim)->SetFlags(0x40000000);
     mHorzSpeed = 0x4000;
     mVertSpeed = 0xa000;
     mStateValue = 4;
@@ -309,8 +309,8 @@ int daPeach_c::State3()
 int daPeach_c::InitState1()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((char *)&mModelAnim, data_ov085_021304d4[1], 0, 0x1000, 0);
-    ((Animation *)&mModelAnim)->currFrame = 0;
-    ((Animation *)&mModelAnim)->Advance();
+    ((dExtFrameCtrl_c *)&mModelAnim)->currFrame = 0;
+    ((dExtFrameCtrl_c *)&mModelAnim)->Advance();
     mTalkState = 1;
     mStateValue = 1;
     return 1;
@@ -407,7 +407,7 @@ int daPeach_c::Behavior()
     CallStateBehavior();
     UpdateLookAt();
     if (mStateValue != 1)
-        ((Animation *)((Animation *)&mModelAnim))->Advance();
+        ((dExtFrameCtrl_c *)((dExtFrameCtrl_c *)&mModelAnim))->Advance();
     ((PeachAnimSlots *)((char *)&mModelAnim))->g3();
     ((dCc_c *)&mCylinder)->Clear();
     ((dCc_c *)&mCylinder)->Update();
@@ -426,7 +426,7 @@ int daPeach_c::InitResources()
     void *f = Model::LoadFile(*(SharedFilePtr *)&data_ov085_021304f4);
     ((ModelBase *)&mModelAnim)->SetFile((BMD_File *)f, 1, -1);
     for (int i = 0; i < 7; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov085_0212f280[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(

@@ -36,7 +36,7 @@
  * Leftover: ModelAnim::SetAnim, dCcAc_c::Init and
  *   dActor_c::DropShadowRadHeight stay mangled; each takes Fix12<int> by
  *   value (notes/mwccarm-codegen.md 6az). Player::ShowMessage and
- *   Camera::SetFlag_3 stay mangled too; the reasons are at their
+ *   dCamera_c::SetFlag_3 stay mangled too; the reasons are at their
  *   declarations.
  * Leftover: the two shared files (0x02130da4 model, 0x02130d9c animation)
  *   and the state table live in .bss this text-only TU does not own, and keep
@@ -47,7 +47,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
 #include "decl_SaveData.h"
 #include "daObjCannonShutter_c.h"
@@ -115,7 +115,7 @@ void func_ov084_0212ce50(daRedBombhei_c *self);
 extern RedBombheiState data_ov084_02130dc4[];
 
 /* -- globals -- */
-extern Camera *data_0209f318;           /* the camera */
+extern dCamera_c *data_0209f318;           /* the camera */
 extern s8  data_0209f2f8;               /* current level */
 extern u8  data_0209f220;
 extern u8  data_0209f284;
@@ -153,8 +153,8 @@ int   _ZN4cstd4fdivEii(int a, int b);
    instruction in func_ov084_0212c9f0). */
 int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor, unsigned int msgID, const Vector3 *pos, unsigned int a, unsigned int b);
 
-/* local extern: Camera.h does not declare this member. */
-void _ZN6Camera9SetFlag_3Ev(Camera *cam);
+/* local extern: dCamera_c.h does not declare this member. */
+void _ZN9dCamera_c9SetFlag_3Ev(dCamera_c *cam);
 
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *thiz, BCA_File *file, int flags, int speed, unsigned short startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
@@ -176,7 +176,7 @@ s32 daRedBombhei_c::InitResources()
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov084_02130da4);
     mModelAnim.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov084_02130d9c);
+    dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x8c000, 0x8c000, 0x4200004, 0);
     func_ov084_0212c960(this, 0);
     mShutterID = 0;
@@ -295,7 +295,7 @@ extern "C" int func_ov084_0212cda0(daRedBombhei_c *self, Vector3 *cur, Vector3 *
    Returns 1 once both points have arrived. */
 extern "C" int func_ov084_0212ccb4(daRedBombhei_c *self)
 {
-    Camera *cam = data_0209f318;
+    dCamera_c *cam = data_0209f318;
     int posDone;
     Vector3 lookAt;
     Vector3 *camLookAt = &cam->lookAt;
@@ -329,7 +329,7 @@ extern "C" int func_ov084_0212ccb4(daRedBombhei_c *self)
 extern "C" int func_ov084_0212cae0(daRedBombhei_c *self)
 {
     int posDone, lookAtDone;
-    Camera *cam;
+    dCamera_c *cam;
     dActor_c *shutter;
     Vector3 lookAt, pos, targetLookAt, targetPos, offset, sum, sum2;
     unsigned id = self->mShutterID;
@@ -645,7 +645,7 @@ extern "C" void func_ov084_0212c4a0(daRedBombhei_c *self)
 extern "C" void func_ov084_0212c1a0(daRedBombhei_c *self)
 {
     Player *player = self->mTalkPlayer;
-    Camera *cam = data_0209f318;
+    dCamera_c *cam = data_0209f318;
     Vector3 playerPos;
     s16 angle;
     int *src = &player->mPosX;
@@ -679,7 +679,7 @@ extern "C" void func_ov084_0212c1a0(daRedBombhei_c *self)
             self->mSavedCamPos.x = pos[0];
             self->mSavedCamPos.y = pos[1];
             self->mSavedCamPos.z = pos[2];
-            _ZN6Camera9SetFlag_3Ev(cam);
+            _ZN9dCamera_c9SetFlag_3Ev(cam);
             self->mFlags &= ~1;
             self->mCutsceneStep += 1;
             return;
@@ -692,7 +692,7 @@ extern "C" void func_ov084_0212c1a0(daRedBombhei_c *self)
         }
         return;
     case 1: {
-        /* Camera over to the shutter, then open it. */
+        /* dCamera_c over to the shutter, then open it. */
         dActor_c *shutter;
         if (self->mShutterID == 0)
             return;
@@ -715,7 +715,7 @@ extern "C" void func_ov084_0212c1a0(daRedBombhei_c *self)
         return;
     }
     case 3:
-        /* Camera back. */
+        /* dCamera_c back. */
         if (func_ov084_0212ccb4(self) != 0)
             self->mCutsceneStep += 1;
         return;
