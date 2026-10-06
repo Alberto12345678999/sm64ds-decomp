@@ -396,7 +396,7 @@
                 "section": "ARM9"
               }
             },
-            "baselineElfSha256": "92d70d0cb22d186b5289f5c841440d406f841516a09391d818a49250b4f084d2",
+            "baselineElfSha256": "930be4683749ac5a22bfcb181171a855d6c895db07fe05c15c844aec433f089d",
             "exact": true
           }
         ],
