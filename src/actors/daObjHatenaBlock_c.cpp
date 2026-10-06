@@ -67,10 +67,12 @@
  * Known limits:
  *   func_020393a4 / func_02039394 poke mMeshCollider (Behavior), which has
  *   no setter; naming belongs with dBgW in arm9.
- *   The func_ov102_* helpers keep their linker names. Six are members
- *   (declared in the header); the rest are extern "C" functions taking the
- *   block pointer. The state and prize tables are dispatched through the
- *   opaque stand-in `C` (pointer-to-member calls), not daObjHatenaBlock_c.
+ *   The func_ov102_* helpers keep their linker names -- no semantic names
+ *   are known. All take the block as arg0 and are declared as members on
+ *   daObjHatenaBlock_c except func_ov102_02149684, which takes it as arg1
+ *   (the out-param is arg0) and stays free. The state and prize tables are
+ *   dispatched through the opaque stand-in `C` (pointer-to-member calls),
+ *   not daObjHatenaBlock_c.
  *   None is coined.
  *   Unrecovered meanings: SaveData::flags1 bit 31 (SAVE_FLAGS1_BIT31); the
  *   LEVEL_ID values 0x1c / 0x1f / 0x21 this class special-cases (0x15 is
@@ -104,6 +106,18 @@
  *     020a0edc -- arm9 globals.
  *   g_profile_HATENA_BLOCK / ITEM_BLOCK / VS_ITEM_BLOCK / CAP_BLOCK_* (overlay
  *   data).
+ *
+ * deslop leftovers:
+ * - func_ov102_02149684 stays free: it writes the prize point into a
+ *   caller's buffer in arg0 and takes the block in arg1, so member form
+ *   would swap the register operands.
+ * - The state/prize dispatch tables stay pointer-to-member records on the
+ *   non-virtual stand-in C: daObjHatenaBlock_c has virtuals, so a real
+ *   daObjHatenaBlock_c::* is wider than the 8-byte entries the sinit
+ *   copies into data_ov102_0214e890/e870/e8c0.
+ * - The (Vector3 *) prize-point casts around func_ov102_02149684's int
+ *   buffers stay: dActor_c.h has no Pos() accessor, and a real Vector3
+ *   copy emits a Vector3 D1 deadstrip.
  */
 
 /* common.h first: see the header. */
@@ -218,16 +232,9 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_ov102_0214ad14(void *actor);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
 
-int func_ov102_02149078(daObjHatenaBlock_c *self);
-void func_ov102_02149100(daObjHatenaBlock_c *c, Vector3 *pos, int n, unsigned int speed, short baseAngle);
-void *func_ov102_02149220(daObjHatenaBlock_c *c);
-void func_ov102_0214953c(daObjHatenaBlock_c *c, int p1, int p2);
-int func_ov102_02149610(daObjHatenaBlock_c *c);
+/* Free: the block is its second argument (dst, src), so member form would
+   swap the register operands. */
 void func_ov102_02149684(int *dst, daObjHatenaBlock_c *src);
-void func_ov102_02149da8(daObjHatenaBlock_c *c, int i);
-void func_ov102_02149df0(daObjHatenaBlock_c *c);
-void func_ov102_02149ea4(daObjHatenaBlock_c *c);
-void func_ov102_02149ff0(char *c);   /* char * as include/decl_common.h spells it */
 }
 
 // @symbol daObjHatenaBlock_c_classInit_VS_ITEM_BLOCK
@@ -319,12 +326,12 @@ int daObjHatenaBlock_c::InitResources()
 
     mModel.SetFile((BMD_File *)modelFile, 1, -1);
     mShadowModel.InitCuboid();
-    func_ov102_02149da8(this, STATE_IDLE);
+    func_ov102_02149da8(STATE_IDLE);
     mTerminalVelocity = -0x3c000;   /* -60 units */
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    func_ov102_02149ff0((char *)this);
+    func_ov102_02149ff0();
     func_ov102_02149e38();
     mShadowMat = mModel.mat4x3;
     {
@@ -409,12 +416,12 @@ end:
  *     meaning of its two arguments is not recovered here. Always returns 1. */
 int daObjHatenaBlock_c::Behavior()
 {
-    func_ov102_02149df0(this);
+    func_ov102_02149df0();
     if (mState != STATE_POPPED) {
         UpdatePos(0);
         if (mPosY <= mHomePosY) mPosY = mHomePosY;
-        func_ov102_02149ff0((char *)this);
-        func_ov102_02149ea4(this);
+        func_ov102_02149ff0();
+        func_ov102_02149ea4();
     }
     func_020393a4((int *)&mMeshCollider, 0x8c000);
     func_02039394((int *)&mMeshCollider, 0x46000);
@@ -560,28 +567,25 @@ int daObjHatenaBlock_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov102_02149ff0
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149ff0Ev
 /* Rebuilds the model matrix: a Y rotation by mAngleY, with the translation
    set to (mPosX, mPosY + mBounceYOffs, mPosZ) >> 3. A HATENA_BLOCK with
    SAVE_FLAGS1_BIT31 clear then copies the matrix into mModelAnim as well. */
-extern "C" {
-void func_ov102_02149ff0(char *self)
+void daObjHatenaBlock_c::func_ov102_02149ff0()
 {
-    daObjHatenaBlock_c *c = (daObjHatenaBlock_c *)self;
-    Matrix4x3_FromRotationY(&c->mModel.mat4x3, c->mAngleY);
-    c->mModel.mat4x3.m[9] = c->mPosX >> 3;
-    c->mModel.mat4x3.m[10] = (c->mPosY + c->mBounceYOffs) >> 3;
-    c->mModel.mat4x3.m[11] = c->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModel.mat4x3, mAngleY);
+    mModel.mat4x3.m[9] = mPosX >> 3;
+    mModel.mat4x3.m[10] = (mPosY + mBounceYOffs) >> 3;
+    mModel.mat4x3.m[11] = mPosZ >> 3;
     if (data_0209caa0[1] & SAVE_FLAGS1_BIT31)
         return;
-    int b = (int)(c->actorID == ACTOR_HATENA_BLOCK);
+    int b = (int)(actorID == ACTOR_HATENA_BLOCK);
     if (b == 0)
         return;
-    c->mModelAnim.mat4x3 = c->mModel.mat4x3;
-}
+    mModelAnim.mat4x3 = mModel.mat4x3;
 }
 
-// @symbol func_ov102_02149ea4
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149ea4Ev
 /* The drop shadow and the clip volume, both sized by the drop to the floor.
  *
  * mFloorY is refreshed (func_ov102_02149610) unless mFlags bit 8 (dActor_c's
@@ -597,36 +601,34 @@ void func_ov102_02149ff0(char *self)
  * (mPosX, mPosY - 0x20000 (32 units), mPosZ) >> 3. The drop-shadow call is
  * (shadow, matrix, scale X = horizontal, scale Y, scale Z = horizontal) with
  * opacity 0xf. */
-extern "C" {
-void func_ov102_02149ea4(daObjHatenaBlock_c *c)
+void daObjHatenaBlock_c::func_ov102_02149ea4()
 {
     int shadowScale, height, paddedHeight;
     int b0, b1;
 
-    b0 = (c->mFlags & 8) ? 1 : 0;
+    b0 = (mFlags & 8) ? 1 : 0;
     if (b0 != 0) {
         b1 = (*(volatile unsigned char *)&data_0209f2d8 == 1) ? 1 : 0;
         if (b1 == 0) goto skipcall;
     }
-    c->mFloorY = func_ov102_02149610(c);
+    mFloorY = func_ov102_02149610();
 skipcall:
-    height = c->mPosY - c->mFloorY;
+    height = mPosY - mFloorY;
     if (height <= 0x1000) height = 0x1000;
     shadowScale = (int)(((long long)height * 0x180 + 0x800) >> 12);
     shadowScale = 0xb4000 - shadowScale;
     paddedHeight = height + 0x214000;
     if (shadowScale < 0xa000) shadowScale = 0xa000;
     if (paddedHeight < 0x200000) paddedHeight = 0x200000;
-    c->mClipOffsetY = -((int)((height + 0x14000) + ((unsigned)(height + 0x14000) >> 31)) >> 1);
-    c->mClipRadius = (int)(paddedHeight + ((unsigned)paddedHeight >> 31)) >> 4;
-    shadowScale = (int)(((long long)shadowScale * c->mScaleX + 0x800) >> 12);
-    Matrix4x3_FromRotationY(&c->mShadowMat, c->mAngleY);
-    c->mShadowMat.m[9] = c->mPosX >> 3;
-    c->mShadowMat.m[10] = (c->mPosY - 0x20000) >> 3;
-    c->mShadowMat.m[11] = c->mPosZ >> 3;
+    mClipOffsetY = -((int)((height + 0x14000) + ((unsigned)(height + 0x14000) >> 31)) >> 1);
+    mClipRadius = (int)(paddedHeight + ((unsigned)paddedHeight >> 31)) >> 4;
+    shadowScale = (int)(((long long)shadowScale * mScaleX + 0x800) >> 12);
+    Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
+    mShadowMat.m[9] = mPosX >> 3;
+    mShadowMat.m[10] = (mPosY - 0x20000) >> 3;
+    mShadowMat.m[11] = mPosZ >> 3;
     _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-        c, &c->mShadowModel, &c->mShadowMat, shadowScale, height + 0x14000, shadowScale, 0xf);
-}
+        this, &mShadowModel, &mShadowMat, shadowScale, height + 0x14000, shadowScale, 0xf);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149e38Ev
@@ -641,26 +643,24 @@ void daObjHatenaBlock_c::func_ov102_02149e38(){
     mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 
-// @symbol func_ov102_02149df0
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149df0Ev
 /* Runs the update routine (column 1) of mState's row in the state table. */
-extern "C" void func_ov102_02149df0(daObjHatenaBlock_c *c) { int j = c->mState; (((C *)c)->*data_ov102_0214e890[j].pmf[1])(); }
+void daObjHatenaBlock_c::func_ov102_02149df0() { int j = mState; (((C *)this)->*data_ov102_0214e890[j].pmf[1])(); }
 
-// @symbol func_ov102_02149da8
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149da8Ei
 /* Enters state i: stores it in mState, then runs that row's enter routine
    (column 0). */
-extern "C" void func_ov102_02149da8(daObjHatenaBlock_c *c, int i) { c->mState = i; int j = c->mState; (((C *)c)->*data_ov102_0214e890[j].pmf[0])(); }
+void daObjHatenaBlock_c::func_ov102_02149da8(int i) { mState = i; int j = mState; (((C *)this)->*data_ov102_0214e890[j].pmf[0])(); }
 
-// @symbol func_ov102_02149d80
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149d80Ev
 /* STATE_IDLE enter routine: no bounce offset, unit scale, vertical
    acceleration -0x8000 (-8 units). */
-extern "C" {
-void func_ov102_02149d80(daObjHatenaBlock_c *c) {
-    c->mBounceYOffs = 0;
-    c->mScaleX = 0x1000;
-    c->mScaleY = 0x1000;
-    c->mScaleZ = 0x1000;
-    c->mVertAccel = -0x8000;
-}
+void daObjHatenaBlock_c::func_ov102_02149d80() {
+    mBounceYOffs = 0;
+    mScaleX = 0x1000;
+    mScaleY = 0x1000;
+    mScaleZ = 0x1000;
+    mVertAccel = -0x8000;
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149cccEv
@@ -687,21 +687,19 @@ void daObjHatenaBlock_c::func_ov102_02149ccc()
     OnHitByMegaChar(*player);
 }
 
-// @symbol func_ov102_02149c78
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149c78Ev
 /* STATE_BOUNCING enter routine: an Earthquake at the block's position
    (argument 0x5dc000, 1500 units), then the bounce begins: mBounceAng =
    0x4000 (a quarter turn) and mBounceTimer = 7 frames. */
-extern "C" {
-void func_ov102_02149c78(daObjHatenaBlock_c *self)
+void daObjHatenaBlock_c::func_ov102_02149c78()
 {
     s32 vec[3];
-    vec[0] = self->mPosX;
-    vec[1] = self->mPosY;
-    vec[2] = self->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, vec, 0x5dc000);
-    self->mBounceAng = 0x4000;
-    self->mBounceTimer = 7;
-}
+    vec[0] = mPosX;
+    vec[1] = mPosY;
+    vec[2] = mPosZ;
+    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, vec, 0x5dc000);
+    mBounceAng = 0x4000;
+    mBounceTimer = 7;
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_021498e0Ev
@@ -810,33 +808,31 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
             if (ch >= 4) ch = 0;
             (self->*tbl[content][ch])();
         } else {
-            func_ov102_02149220(this);
+            func_ov102_02149220();
         }
         break;
     case 3:     /* CAP_BLOCK_M: character 0 */
-        if (SaveData::HasPlayerLostCap() == 0) func_ov102_0214953c(this, 0, 0x12);
-        else func_ov102_02149220(this);
+        if (SaveData::HasPlayerLostCap() == 0) func_ov102_0214953c(0, 0x12);
+        else func_ov102_02149220();
         break;
     case 5:     /* CAP_BLOCK_L: character 1 */
-        if (SaveData::HasPlayerLostCap() == 0) func_ov102_0214953c(this, 1, 0x12);
-        else func_ov102_02149220(this);
+        if (SaveData::HasPlayerLostCap() == 0) func_ov102_0214953c(1, 0x12);
+        else func_ov102_02149220();
         break;
     case 4:     /* CAP_BLOCK_W: character 2 */
-        if (SaveData::HasPlayerLostCap() == 0) func_ov102_0214953c(this, 2, 0x12);
-        else func_ov102_02149220(this);
+        if (SaveData::HasPlayerLostCap() == 0) func_ov102_0214953c(2, 0x12);
+        else func_ov102_02149220();
         break;
     }
-    func_ov102_02149da8(this, STATE_POPPED);
+    func_ov102_02149da8(STATE_POPPED);
 }
 
-// @symbol func_ov102_021498c4
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_021498c4Ev
 /* STATE_POPPED enter routine: mBounceTimer = 0x12c (300 frames) and vertical
    acceleration -0x8000 (-8 units). */
-extern "C" {
-void func_ov102_021498c4(daObjHatenaBlock_c *p) {
-    p->mBounceTimer = 0x12c;
-    p->mVertAccel = -0x8000;
-}
+void daObjHatenaBlock_c::func_ov102_021498c4() {
+    mBounceTimer = 0x12c;
+    mVertAccel = -0x8000;
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149878Ev
@@ -851,7 +847,7 @@ int daObjHatenaBlock_c::func_ov102_02149878()
     if (r != 0) return r;
     r = DistToCPlayer();
     if (r <= 0x64000) return r;
-    func_ov102_02149da8(this, STATE_IDLE);
+    func_ov102_02149da8(STATE_IDLE);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c15OnGroundPoundedER8dActor_c
@@ -861,10 +857,10 @@ int daObjHatenaBlock_c::func_ov102_02149878()
 void daObjHatenaBlock_c::OnGroundPounded(dActor_c &other)
 {
     if (mState == STATE_BOUNCING) return;
-    int r = func_ov102_02149078(this);
+    int r = func_ov102_02149078();
     if (r != 0) return;
     mHitterParam = other.param1;
-    func_ov102_02149da8(this, STATE_BOUNCING);
+    func_ov102_02149da8(STATE_BOUNCING);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c11OnAttacked1ER8dActor_c
@@ -874,10 +870,10 @@ int daObjHatenaBlock_c::OnAttacked1(dActor_c &other)
 {
     int v = mState;
     if (v != STATE_BOUNCING) {
-        if (!func_ov102_02149078(this)) {
+        if (!func_ov102_02149078()) {
             int val = other.param1;
             mHitterParam = val;
-            func_ov102_02149da8(this, STATE_BOUNCING);
+            func_ov102_02149da8(STATE_BOUNCING);
         }
     }
 }
@@ -887,10 +883,10 @@ int daObjHatenaBlock_c::OnAttacked1(dActor_c &other)
 void daObjHatenaBlock_c::OnKicked(dActor_c &other)
 {
     if (mState == STATE_BOUNCING) return;
-    int r = func_ov102_02149078(this);
+    int r = func_ov102_02149078();
     if (r != 0) return;
     mHitterParam = other.param1;
-    func_ov102_02149da8(this, STATE_BOUNCING);
+    func_ov102_02149da8(STATE_BOUNCING);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c15OnHitByMegaCharER6Player
@@ -900,10 +896,10 @@ void daObjHatenaBlock_c::OnKicked(dActor_c &other)
 void daObjHatenaBlock_c::OnHitByMegaChar(Player &player)
 {
     if (mState == STATE_BOUNCING) return;
-    if (func_ov102_02149078(this) != 0) return;
+    if (func_ov102_02149078() != 0) return;
     player.IncMegaKillCount();
     mHitterParam = player.param1;
-    func_ov102_02149da8(this, STATE_BOUNCING);
+    func_ov102_02149da8(STATE_BOUNCING);
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19OnHitFromUnderneathER8dActor_c
@@ -916,9 +912,9 @@ int daObjHatenaBlock_c::OnHitFromUnderneath(dActor_c &other)
     if (mState != STATE_BOUNCING) {
         mVertAccel = -0x8000;
         mVertSpeed = 0x1e000;
-        if (!func_ov102_02149078(this)) {
+        if (!func_ov102_02149078()) {
             mHitterParam = other.param1;
-            func_ov102_02149da8(this, STATE_BOUNCING);
+            func_ov102_02149da8(STATE_BOUNCING);
         }
     }
 }
@@ -936,39 +932,38 @@ void func_ov102_02149684(int* dst, daObjHatenaBlock_c* src){
 }
 }
 
-// @symbol func_ov102_02149610
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149610Ev
 /* Floor height under the block: a ground raycast (dBgCh_Gnd) from 0x28000 (40
    units) above the block, with probe height 0x3e8000 (1000 units). Returns
    the hit height, or mPosY when nothing is hit. */
-extern "C" int func_ov102_02149610(daObjHatenaBlock_c *c){
-  V3 pos(c->mPosX, c->mPosY + 0x28000, c->mPosZ);
+int daObjHatenaBlock_c::func_ov102_02149610(){
+  V3 pos(mPosX, mPosY + 0x28000, mPosZ);
   dBgCh_Gnd rg;
   rg.SetObjAndPos(*(Vector3*)&pos, 0);
   rg.mProbeHeight = 0x3e8000;
-  int r = c->mPosY;
+  int r = mPosY;
   if (rg.DetectClsn()) r = rg.clsnY;
   return r;
 }
 
 struct HbSpawnFrame { Vector3 pos; int vel[3]; };
 
-// @symbol func_ov102_0214953c
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_0214953cEii
 /* Cap prize: spawns an OBJ_MARIO_CAP at the prize point with param1 =
    p2 | (p1 << 8) (cap type 0x12 for character p1) and no rotation. If it
    spawned, the cap gets heading (RandomIntInternal() + camera mAngleY +
    0x8000, truncated to 16 bits) in its mPrevAngleY, speed 0x3320 (about 3.2
    units) in mHorzSpeed, and a velocity vector (0, 0x11000, 0) in
    unk_0a4 / mVertSpeed / unk_0ac (0x11000 = 17 units up). */
-extern "C" {
-void func_ov102_0214953c(daObjHatenaBlock_c* c, int p1, int p2)
+void daObjHatenaBlock_c::func_ov102_0214953c(int p1, int p2)
 {
     HbSpawnFrame f;
     int rnd;
     dActor_c* o;
     Camera* g;
-    func_ov102_02149684((int*)&f.pos, c);
+    func_ov102_02149684((int*)&f.pos, this);
     o = dActor_c::Spawn(
-        ACTOR_OBJ_MARIO_CAP, (unsigned int)(p2 | (p1 << 8)), f.pos, 0, c->mAreaId, -1);
+        ACTOR_OBJ_MARIO_CAP, (unsigned int)(p2 | (p1 << 8)), f.pos, 0, mAreaId, -1);
     if (o == 0) return;
     g = *(Camera**)data_0209f318;
     f.vel[0] = 0;
@@ -986,23 +981,20 @@ void func_ov102_0214953c(daObjHatenaBlock_c* c, int p1, int p2)
         o->unk_0ac = f.vel[2];
     }
 }
-}
 
-// @symbol func_ov102_021494cc
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_021494ccEv
 /* CONTENT_COINS prize: count = param1 bits 8..15 (0xff reads as 1); sprays
    that many coins from the prize point (func_ov102_02149100, speed 0x1800 =
    1.5 units, base angle 0), then KillAndTrackInDeathTable. */
-extern "C" {
-void func_ov102_021494cc(daObjHatenaBlock_c* c){
+void daObjHatenaBlock_c::func_ov102_021494cc(){
   int s[3];
-  func_ov102_02149684(s, c);
-  int count = (c->param1 >> 8) & 0xff;
+  func_ov102_02149684(s, this);
+  int count = (param1 >> 8) & 0xff;
   if(count == 0xff) count = 1;
   int w[3];
   w[0] = s[0]; w[1] = s[1]; w[2] = s[2];
-  func_ov102_02149100(c, (Vector3 *)w, count, 0x1800, 0);
-  c->KillAndTrackInDeathTable();
-}
+  func_ov102_02149100((Vector3 *)w, count, 0x1800, 0);
+  KillAndTrackInDeathTable();
 }
 
 // @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149478Ev
@@ -1025,86 +1017,78 @@ void daObjHatenaBlock_c::func_ov102_02149428(){
   KillAndTrackInDeathTable();
 }
 
-// @symbol func_ov102_021493dc
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_021493dcEv
 /* CONTENT_SCALEUP_KINOKO prize: spawns a SCALEUP_KINOKO at the prize point.
    Does not kill the block. */
-extern "C" void func_ov102_021493dc(daObjHatenaBlock_c* c) {
+void daObjHatenaBlock_c::func_ov102_021493dc() {
     Vector3 v;
-    func_ov102_02149684((int *)&v, c);
-    signed char cc = c->mAreaId;
+    func_ov102_02149684((int *)&v, this);
+    signed char cc = mAreaId;
     dActor_c::Spawn(ACTOR_SCALEUP_KINOKO, 0, v, (const Vector3_16*)0, cc, -1);
 }
 
-// @symbol func_ov102_02149384
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149384Ev
 /* CONTENT_SHELL prize: spawns a SHELL at the prize point and, if it spawned,
    sets the new shell's mDespawnTimer to 0xb4 (180). Returns the new actor. */
-extern "C" {
-
-void* func_ov102_02149384(daObjHatenaBlock_c* c){
+void* daObjHatenaBlock_c::func_ov102_02149384(){
   Vector3 v;
-  func_ov102_02149684((int *)&v, c);
-  void* a=dActor_c::Spawn(ACTOR_SHELL,0,v,0,c->mAreaId,-1);
+  func_ov102_02149684((int *)&v, this);
+  void* a=dActor_c::Spawn(ACTOR_SHELL,0,v,0,mAreaId,-1);
   if(a) ((daShl_c *)a)->mDespawnTimer=0xb4;
   return a;
 }
-}
 
-// @symbol func_ov102_021492d4
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_021492d4Ev
 /* FEATHER prize: spawns a FEATHER at the prize point with rotation taken
    from the three u16 words at data_020a0edc, except Y: the block's own
    mAngleY when data_0209f2d8 (CURRENT_GAMEMODE) is 1, else the camera's
    mAngleY + 0x4000. */
-extern "C" {
-void func_ov102_021492d4(daObjHatenaBlock_c* c) {
+void daObjHatenaBlock_c::func_ov102_021492d4() {
   struct Vector3 pos;
   struct Vector3_16 rot;
-  func_ov102_02149684((int*)&pos, c);
+  func_ov102_02149684((int*)&pos, this);
   rot.x = *(u16*)(data_020a0edc);
   rot.y = *(u16*)(data_020a0edc+2);
   rot.z = *(u16*)(data_020a0edc+4);
   if ((int)(*(unsigned char*)(&data_0209f2d8) == 1) != 0) {
-    rot.y = c->mAngleY;
+    rot.y = mAngleY;
   } else {
     rot.y = ((Camera *)*(char**)data_0209f318)->mAngleY + 0x4000;
   }
-  dActor_c::Spawn(ACTOR_FEATHER, 0, pos, &rot, c->mAreaId, -1);
-}
+  dActor_c::Spawn(ACTOR_FEATHER, 0, pos, &rot, mAreaId, -1);
 }
 
-// @symbol func_ov102_02149288
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149288Ev
 /* POWER_UP_ITEM prize: spawns a POWER_UP_ITEM (param 0) at the prize point. */
-extern "C" void func_ov102_02149288(daObjHatenaBlock_c* c){
+void daObjHatenaBlock_c::func_ov102_02149288(){
     Vector3 v;
-    func_ov102_02149684((int *)&v, c);
-    dActor_c::Spawn(ACTOR_POWER_UP_ITEM, 0u, v, 0, c->mAreaId, -1);
+    func_ov102_02149684((int *)&v, this);
+    dActor_c::Spawn(ACTOR_POWER_UP_ITEM, 0u, v, 0, mAreaId, -1);
 }
 
-// @symbol func_ov102_02149220
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149220Ev
 /* Bob-omb prize: spawns a BOMBHEI (param 4) at the prize point; if it
    spawned, func_ov102_0214ad14 (daBmb_c: stores ClosestPlayer as its chase
    target) and func_ov102_0214b384(a, 0x3c) (daBmb_c.h: only shortens the
    fuse). Returns the result of the last call, or 0. */
-extern "C" {
-extern void* func_ov102_0214b384(void*, int);
-void* func_ov102_02149220(daObjHatenaBlock_c* c){
+extern "C" void* func_ov102_0214b384(void*, int);
+void* daObjHatenaBlock_c::func_ov102_02149220(){
   Vector3 v;
-  func_ov102_02149684((int *)&v, c);
-  void* a = dActor_c::Spawn(ACTOR_BOMBHEI, 4, v, 0, c->mAreaId, -1);
+  func_ov102_02149684((int *)&v, this);
+  void* a = dActor_c::Spawn(ACTOR_BOMBHEI, 4, v, 0, mAreaId, -1);
   if(a == 0) return a;
   func_ov102_0214ad14(a);
   return func_ov102_0214b384(a, 0x3c);
 }
-}
 
-// @symbol func_ov102_02149100
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149100EP7Vector3ijs
 /* Spawns n COINs (param 2) at *pos. Each coin gets a heading baseAngle + dir
    in its mPrevAngleY, where dir is a 5-bit signed value times 0x800 (-0x8000
    .. 0x7800, a full turn is 0x10000) drawn from RandomIntInternal, re-drawn
    while it equals the previous coin's dir. The speed (initially the caller's
    `speed`) is scaled by (random % 50 + 100) / 100 for each coin, and the
    scaled value carries over to the next coin. */
-extern "C" {
-void func_ov102_02149100(daObjHatenaBlock_c *c, Vector3 *pos, int n, unsigned int speed, short baseAngle)
+void daObjHatenaBlock_c::func_ov102_02149100(Vector3 *pos, int n, unsigned int speed, short baseAngle)
 {
     dActor_c *a;
     int dir;
@@ -1116,7 +1100,7 @@ void func_ov102_02149100(daObjHatenaBlock_c *c, Vector3 *pos, int n, unsigned in
     if (n <= 0) return;
 
     do {
-        a = dActor_c::Spawn(ACTOR_COIN, 2, *pos, 0, c->mAreaId, -1);
+        a = dActor_c::Spawn(ACTOR_COIN, 2, *pos, 0, mAreaId, -1);
         if (a != 0) {
             do {
                 rnd = (unsigned int)RandomIntInternal(&data_0209e650);
@@ -1134,27 +1118,24 @@ void func_ov102_02149100(daObjHatenaBlock_c *c, Vector3 *pos, int n, unsigned in
         i++;
     } while (i < n);
 }
-}
 
-// @symbol func_ov102_02149078
+// @symbol _ZN18daObjHatenaBlock_c19func_ov102_02149078Ev
 /* Whether the block cannot be hit right now: returns 1 in level 0x15 when
    mHomePosY - 0x32000 (50 units) is at or below data_0209f32c
    (WATER_HEIGHT in symbols/verified.tsv); in any other level except 0x21 (0
    there) when the closest player's mIsUnderwater is non-zero; otherwise 0.
    The levels are LEVEL_ID values (data_0209f2f8); 0x15 is Wet-Dry World per
    dActor_c::GetWaterHeightWDW, the tree does not name 0x21. */
-extern "C" {
-int func_ov102_02149078(daObjHatenaBlock_c *self)
+int daObjHatenaBlock_c::func_ov102_02149078()
 {
     if (data_0209f2f8 == 0x15) {
-        if ((int)(self->mHomePosY - 0x32000) <= data_0209f32c)
+        if ((int)(mHomePosY - 0x32000) <= data_0209f32c)
             return 1;
     } else {
         if (data_0209f2f8 == 0x21)
             return 0;
-        if (self->ClosestPlayer()->mIsUnderwater)
+        if (ClosestPlayer()->mIsUnderwater)
             return 1;
     }
     return 0;
-}
 }
