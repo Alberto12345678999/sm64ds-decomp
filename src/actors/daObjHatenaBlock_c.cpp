@@ -91,7 +91,7 @@
  * NOT OWNED BY THIS TU (named where they live, not here):
  *   func_ov102_0214ad14 / 0214b384 -- daBmb_c helpers, called by
  *     func_ov102_02149220 on the Bob-omb it spawns.
- *   func_ov002_020f0438 -- ov002; the bounce end calls it on a held
+ *   daSCoin_c::Collect -- ov002; the bounce end calls it on a held
  *     SECRET_COIN (actorID 0x149).
  *   data_ov102_0214e7d0..808 -- this overlay's KCL/BMD/BCA handles. ov102's
  *     sinit constructs them; this TU does not own .bss.
@@ -116,7 +116,7 @@
 #include "Sound.h"
 #include "SaveData.h"
 #include "daSCoin_c.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "daShl_c.h"
 
 struct CLPS_Block;
@@ -722,7 +722,7 @@ void func_ov102_02149c78(daObjHatenaBlock_c *self)
  * On the first update where the countdown returns 0 (the seventh after the
  * bounce begins, since mBounceTimer starts at 7) the block pops:
  *  - a SECRET_COIN that registered itself in mHeldActor gets
- *    daSCoin_c::func_ov002_020f0438; mHeldActor is cleared;
+ *    daSCoin_c::Collect; mHeldActor is cleared;
  *  - sound 0 through Sound::PlayBank3 at the camera-space position, and
  *    particles 0xb and 0xd at pos, plus one that depends on the block (0xc
  *    for HATENA_BLOCK, 0x10 for ITEM / VS, 9 for the caps; IDs unnamed here);
@@ -771,7 +771,7 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
     held = mHeldActor;
     if (held != 0) {
         if (held->actorID == ACTOR_SECRET_COIN)
-            ((daSCoin_c *)held)->func_ov002_020f0438();
+            ((daSCoin_c *)held)->Collect();
         mHeldActor = 0;
     }
     Sound::PlayBank3(0, *(Vector3 *)&mCamSpacePosX);
@@ -965,12 +965,12 @@ void func_ov102_0214953c(daObjHatenaBlock_c* c, int p1, int p2)
     HbSpawnFrame f;
     int rnd;
     dActor_c* o;
-    Camera* g;
+    dCamera_c* g;
     func_ov102_02149684((int*)&f.pos, c);
     o = dActor_c::Spawn(
         ACTOR_OBJ_MARIO_CAP, (unsigned int)(p2 | (p1 << 8)), f.pos, 0, c->mAreaId, -1);
     if (o == 0) return;
-    g = *(Camera**)data_0209f318;
+    g = *(dCamera_c**)data_0209f318;
     f.vel[0] = 0;
     f.vel[1] = 0x11000;
     f.vel[2] = 0;
@@ -1065,7 +1065,7 @@ void func_ov102_021492d4(daObjHatenaBlock_c* c) {
   if ((int)(*(unsigned char*)(&data_0209f2d8) == 1) != 0) {
     rot.y = c->mAngleY;
   } else {
-    rot.y = ((Camera *)*(char**)data_0209f318)->mAngleY + 0x4000;
+    rot.y = ((dCamera_c *)*(char**)data_0209f318)->mAngleY + 0x4000;
   }
   dActor_c::Spawn(ACTOR_FEATHER, 0, pos, &rot, c->mAreaId, -1);
 }

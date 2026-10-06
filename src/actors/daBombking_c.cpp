@@ -23,7 +23,7 @@ comment leftovers:
  * - Player::param1 and Player::mStateFlags are used. The held matrix at
  *   actor+0xc8 is inside dActor_c's pad (0xc5..0xcb); naming it is a base
  *   change. func_ov078_02125de0, Render and the throw helper still store it.
- * - Camera::mFlags (0x154, bit 8) is used. Behavior's store at Camera+0x114
+ * - dCamera_c::mFlags (0x154, bit 8) is used. Behavior's store at dCamera_c+0x114
  *   is the word after mTargetPlayer, still pad_114.
  * - func_02035550 is the call that ORs 0x4000 into dBgCh_Actr::mFlags;
  *   inlining the or would delete the call.
@@ -62,7 +62,7 @@ comment leftovers:
 #include "decl_Animation.h"
 #include "decl_Message.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Message.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -127,7 +127,6 @@ extern "C" {
     extern int data_ov078_0212710c[];
 extern int data_ov078_02126ffc[];
 extern int data_02092138;
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_Lsl(void *d, void *s, int sh);
 extern void func_02012694(int a, void *p);
@@ -239,13 +238,13 @@ void daBombking_c::func_ov078_02123864()
 
 int daBombking_c::func_ov078_021238ac()
 {
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
     struct Vec3 v;
     struct Vec3 t;
     struct Vec3 u;
 
     if (this->mTalkingPlayer->GetTalkState() != -1) {
-        _ZN6Camera9SetFlag_3Ev(cam);
+        cam->SetFlag_3();
         return 1;
     }
 
@@ -663,12 +662,12 @@ int daBombking_c::func_ov078_02124520()
     Vector3 ppos;
     Vector3 tmp;
     Vector3 dust;
-    Camera *cam;
+    dCamera_c *cam;
     Player *player;
     int *pp;
     s16 ang;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     if (((dExtFrameCtrl_c *)&this->mBlendModelAnim)->WillHitFrame(0x46)) {
         func_ov078_02125c24(0x7d0000);
         func_02012694(0x12c, &this->mCamSpacePosX);
@@ -831,7 +830,7 @@ int daBombking_c::func_ov078_021247bc()
             m = pl2->mStateFlags & 0x800;
             if (m == 0) {
                 if (pl2->ShowMessage(*(fBase_c *)this, 0x94, (Vector3 *)(&E), 0, 0) != 0) {
-                    _ZN6Camera9SetFlag_3Ev(*(void **)&data_0209f318);
+                    ((dCamera_c *)data_0209f318)->SetFlag_3();
                     func_02012694(0x12a, &this->mCamSpacePosX);
                     KingBobOmb_SetState(&data_ov078_021270dc);
                 }

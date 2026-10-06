@@ -200,7 +200,7 @@ a documented contamination vector worth a policy note. *This was not verified â€
 | `func_02037e38` | `CLPS::GetType` | the only CLPS getter used in a jump-table dispatch ([ov098](../../config/arm9/overlays/ov098/symbols.txt) @0x02139264) |
 | 0x02037e14â€“0x02037e90 | eight more CLPS bitfield getters | 3-instruction accessors, bit extents recovered |
 
-Camera `State` descriptors ([ov002](../../config/arm9/overlays/ov002/symbols.txt), `data_ov002_0211xxxx`, 41 unnamed), disambiguated by
+dCamera_c `State` descriptors ([ov002](../../config/arm9/overlays/ov002/symbols.txt), `data_ov002_0211xxxx`, 41 unnamed), disambiguated by
 `ChangeState` caller analysis:
 
 | Address | Role |
@@ -229,7 +229,7 @@ An earlier pass claimed the camera behaviour table at `0x0209b008` had **exactly
 
 The table extends well past 0x0209b0e8, so the slot-count coincidence evaporates. What survives is
 the useful part: **there is a real table of 0x10-byte camera `State` structs based at 0x0209b008**,
-corroborated by literal-pool targets inside the byte-matched [_ZN6Camera14GoBehindPlayerEj](../../src/_ZN6Camera14GoBehindPlayerEj.cpp).
+corroborated by literal-pool targets inside the byte-matched [_ZN9dCamera_c14GoBehindPlayerEj](../../src/_ZN9dCamera_c14GoBehindPlayerEj.cpp).
 Do not cite the N64 parallel.
 
 ---

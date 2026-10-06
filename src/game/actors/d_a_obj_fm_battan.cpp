@@ -41,7 +41,7 @@
  *   data_ov023_02112088 / 02112080 are resource handles this TU's sinit
  *   owns; data_ov064_0211ba4c (CLPS) is overlay .data; data_02082214 is the
  *   sine table.
- *   No Player.h / Camera.h. The leaf operator new stays until #2570.
+ *   No Player.h / dCamera_c.h. The leaf operator new stays until #2570.
  */
 
 #include "daObjFm_Battan_c.h"

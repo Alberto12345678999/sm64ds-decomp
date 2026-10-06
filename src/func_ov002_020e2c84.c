@@ -4,13 +4,13 @@
 #include "decl_common.h"
 /* recovered: shared common types */
 #include "common.h"
-struct Camera;
+struct dCamera_c;
 
 extern int func_ov002_020e3078(char *self, void *s);
 extern int func_ov002_020e2ea0(char *self);
 extern void _ZN6Player11ChangeStateERNS_5StateE(char *self, void *state);
 extern int func_ov002_020d91e0(char *thiz, int damage, int doPre);
-extern void func_0200d8c8(struct Camera *cam, const struct Vector3 *v, int strength);
+extern void func_0200d8c8(struct dCamera_c *cam, const struct Vector3 *v, int strength);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, const struct Vector3 *v);
 extern int _ZN6Player7IsStateERNS_5StateE(char *self, void *state);
 extern int func_ov002_020c5dec(char *c, int r1);
@@ -19,7 +19,7 @@ extern void func_ov002_020db8bc(unsigned char *p, unsigned char val);
 extern char data_ov002_02110454;
 extern char data_ov002_02110094;
 extern char data_ov002_0211010c;
-extern struct Camera *data_0209f318;
+extern struct dCamera_c *data_0209f318;
 
 int func_ov002_020e2c84(char *self)
 {
