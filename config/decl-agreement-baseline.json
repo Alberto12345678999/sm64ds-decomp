@@ -12910,6 +12910,12 @@
       ],
       "src/func_0200b0fc.c": [
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daMky_c.cpp": [
+        "param:#2 Vector3 &"
+      ],
+      "src/actors/daWanwan2_c.cpp": [
+        "param:#2 Vector3 &"
       ]
     },
     "_ZNK7PathPtr8NumNodesEv": {

@@ -17,7 +17,7 @@ typed-subobject constructor (dBgCh_Actr).
 | `src/_ZN5ModelC1Ev.cpp` | `Model::Model()` | 0x02016d58, 0x50 |
 | `src/engine/model/CommonModel.cpp` | `CommonModel::CommonModel()` | 0x02016204, 0x50 |
 | `src/_ZN11ShadowModelC1Ev.cpp` | `ShadowModel::ShadowModel()` | 0x02016068, 0x34 |
-| `src/_ZN7PathPtrC1Ev.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
+| `src/engine/path/PathPtr.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
 | `src/engine/collision/dM3dGSph.cpp` | `dM3dGSph::dM3dGSph()` | 0x0203ac60, 0x10 |
 | `src/engine/collision/dBgCh_Lin.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |
 | `src/_ZN12dBgCh_SphCrrC1Ev.cpp` | `dBgCh_SphCrr::dBgCh_SphCrr()` | 0x02037d18, 0x6c |
