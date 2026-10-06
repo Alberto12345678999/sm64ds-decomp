@@ -4,14 +4,14 @@ extern void func_02009e70(void *self);
 typedef struct CameraDef CameraDef;
 extern CameraDef data_020874cc; /* at 0x020874cc */
 extern CameraDef data_020874f4; /* at 0x020874f4 */
-typedef struct Camera Camera;
-struct Camera {
+typedef struct dCamera_c dCamera_c;
+struct dCamera_c {
     char _pad0[0x13c];
     CameraDef *defaultCamDef; /* 0x13c */
     char _pad1[0x184 - 0x140];
     s16  field_184;           /* 0x184 */
 };
-void func_02005000(Camera *self)
+void func_02005000(dCamera_c *self)
 {
     if (self->defaultCamDef == &data_020874cc)
     {

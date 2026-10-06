@@ -1,9 +1,9 @@
 extern int data_020a0e40;
 extern int data_0209f4a4;
 
-typedef struct { char _pad[0x19c]; short field_19c; } Camera;
+typedef struct { char _pad[0x19c]; short field_19c; } dCamera_c;
 
-short func_02008a70(Camera *self)
+short func_02008a70(dCamera_c *self)
 {
     unsigned char idx = *(unsigned char *)&data_020a0e40;
     short tbl = *(short *)((char *)&data_0209f4a4 + idx * 0x18);

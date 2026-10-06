@@ -1,5 +1,5 @@
 //cpp
-/* Camera-tag position marker -- ov002/daCamTag_c.
+/* dCamera_c-tag position marker -- ov002/daCamTag_c.
  *
  * ROM RTTI names daCamTag_c; overlay_actors.md CAMERA_TAG(333). Ugly RTTI
  * name is final. mwccarm emits ordinary function sections in reverse source

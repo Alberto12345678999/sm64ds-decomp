@@ -412,6 +412,82 @@ def _canon_scalar(tokens):
     return INT_CANON.get(joined, joined).split()
 
 
+# A const inside `<...>` is not the word the outer hoist recognises. Restored
+# after that hoist, so `Box<const T>` does not become `const Box<T>`.
+_CONST_IN_TEMPLATE = "\x00const"
+
+
+def _token_depths(toks):
+    """Nesting depth of each token. `<` is recorded at the outer depth."""
+    depth = 0
+    depths = []
+    for tok in toks:
+        if tok == ">":
+            depth = max(0, depth - 1)
+        depths.append(depth)
+        if tok == "<":
+            depth += 1
+    return depths
+
+
+def _shield_template_const(toks):
+    """Move template-argument const to the west side of its own argument.
+
+    The hoist below treats every `const` before the first `*`/`&` as qualifying
+    the outer base. That is right for `Vector3 const &` and wrong for
+    `Box<const T> &`, which is a different specialisation from `const Box<T> &`.
+    East and west const still collapse, but only inside one template argument
+    (`Box<T const>` is `Box<const T>`). A const after a pointer at that same
+    depth qualifies the pointer and stays there. Tokens with no inner const are
+    returned unchanged, so every other spelling stays byte-identical.
+    """
+    if "<" not in toks or "const" not in toks:
+        return toks
+    depths = _token_depths(toks)
+    remove = set()
+    shield = set()
+    insert_after = set()
+    for i, tok in enumerate(toks):
+        if tok != "const" or depths[i] == 0:
+            continue
+        depth = depths[i]
+        left = -1
+        for j in range(i - 1, -1, -1):
+            if ((toks[j] == "," and depths[j] == depth)
+                    or (toks[j] == "<" and depths[j] == depth - 1)):
+                left = j
+                break
+        if left < 0:
+            shield.add(i)
+            continue
+        right = len(toks)
+        for j in range(i + 1, len(toks)):
+            if ((toks[j] == "," and depths[j] == depth)
+                    or (toks[j] == ">" and depths[j] == depth - 1)):
+                right = j
+                break
+        first_ptr = None
+        for j in range(left + 1, right):
+            if toks[j] in ("*", "&") and depths[j] == depth:
+                first_ptr = j
+                break
+        if first_ptr is None or i < first_ptr:
+            remove.add(i)
+            insert_after.add(left)
+        else:
+            shield.add(i)
+    if not remove and not shield:
+        return toks
+    out = []
+    for i, tok in enumerate(toks):
+        if i in remove:
+            continue
+        out.append(_CONST_IN_TEMPLATE if i in shield else tok)
+        if i in insert_after:
+            out.append(_CONST_IN_TEMPLATE)
+    return out
+
+
 def normalise_type(text, aliases, decay_arrays):
     """A canonical spelling of a type, or "" when there is nothing left to say.
 
@@ -440,6 +516,7 @@ def normalise_type(text, aliases, decay_arrays):
     toks = re.findall(r"[A-Za-z_][A-Za-z0-9_:]*|\*|&|<|>|,|::", text)
     # Elaborated specifiers name the same type as the bare tag.
     toks = [t for t in toks if t not in TAG_KEYWORDS]
+    toks = _shield_template_const(toks)
     # A top-level const is not part of a by-value type. A const that guards a
     # pointee is: keep any `const` with a `*` or `&` after it.
     kept = []
@@ -478,7 +555,7 @@ def normalise_type(text, aliases, decay_arrays):
     out = " ".join(base)
     if ptr:
         out = (out + " " + " ".join(ptr)).strip()
-    return " ".join(out.split())
+    return " ".join(out.split()).replace(_CONST_IN_TEMPLATE, "const")
 
 
 def split_top(text, seps=(",",)):
@@ -707,14 +784,36 @@ def _brace_kind(head):
     return "body"
 
 
+def _scope_name(head):
+    """The identifier a namespace head adds, or None when it cannot be re-encoded.
+
+    `namespace Particle` contributes `Particle`. An anonymous namespace, a
+    qualified `namespace A::B`, or anything else this scanner will not turn back
+    into an Itanium prefix contributes None so a later identity check declines
+    instead of guessing.
+    """
+    tail = " ".join(head.split())
+    matched = re.fullmatch(r"(?:inline\s+)?namespace(?:\s+([A-Za-z_][A-Za-z0-9_]*))?",
+                           tail)
+    if matched:
+        return matched.group(1)
+    fallback = re.search(r"\bnamespace\s+([A-Za-z_][A-Za-z0-9_]*)\s*$", tail)
+    if fallback and "::" not in tail:
+        return fallback.group(1)
+    return None
+
+
 def top_level_units(code, default_linkage):
-    """Yield (start, text, term, linkage, in_block, in_ns) per top-level statement.
+    """Yield (start, text, term, linkage, in_block, in_ns, ns_parts).
 
     `in_block` says the statement sits inside an explicit `extern "C" { ... }`, where
     a declaration does not have to repeat the `extern` keyword to be one. `in_ns` says
     it sits inside a `namespace { ... }`. The two are not exclusive and the CALLER
     decides: language linkage beats scope, so a namespaced entity is mangled only when
     its effective linkage is still C++.
+
+    `ns_parts` is the open namespace identifiers, outer first. A None element means
+    some open namespace is not re-encodable.
 
     Function bodies, aggregates and initialisers are skipped whole: their contents are
     not `extern` declarations of anything, and walking into them is how a naive scanner
@@ -726,16 +825,18 @@ def top_level_units(code, default_linkage):
     paren = 0
     linkage = [default_linkage]
     kinds = []
+    ns_stack = []
     while i < n:
         block = "linkage" in kinds
         in_ns = "scope" in kinds
+        ns_parts = tuple(ns_stack)
         ch = code[i]
         if ch in "([":
             paren += 1
         elif ch in ")]":
             paren -= 1
         elif paren <= 0 and ch == ";":
-            yield start, code[start:i], ";", linkage[-1], block, in_ns
+            yield start, code[start:i], ";", linkage[-1], block, in_ns, ns_parts
             start = i + 1
         elif paren <= 0 and ch == "{":
             head = code[start:i]
@@ -748,10 +849,11 @@ def top_level_units(code, default_linkage):
             elif kind == "scope":
                 linkage.append(linkage[-1])
                 kinds.append(kind)
+                ns_stack.append(_scope_name(head))
                 start = i + 1
             else:
                 if kind == "body":
-                    yield start, head, "{", linkage[-1], block, in_ns
+                    yield start, head, "{", linkage[-1], block, in_ns, ns_parts
                 depth = 0
                 while i < n:
                     if code[i] == "{":
@@ -786,13 +888,16 @@ def top_level_units(code, default_linkage):
                     # an initialiser's VALUE, so a `0` stands in for the block and
                     # the statement is handed over whole.
                     tail = code[after:i].rstrip().rstrip(";")
-                    yield start, head + "0" + tail, ";", linkage[-1], block, in_ns
+                    yield (start, head + "0" + tail, ";", linkage[-1], block, in_ns,
+                           ns_parts)
                 start = i
                 continue
         elif paren <= 0 and ch == "}":
             if kinds:
-                kinds.pop()
+                kind = kinds.pop()
                 linkage.pop()
+                if kind == "scope" and ns_stack:
+                    ns_stack.pop()
             start = i + 1
         i += 1
 
@@ -1325,6 +1430,80 @@ def static_member_index(root=REPO, files=None):
     return index
 
 
+def _qualified_entity(rest, ns_parts):
+    """(parts, name, kind) of one plain member or namespace function, else None.
+
+    `parts` is the namespace qualification followed by the class qualification,
+    without the function name. `kind` is `function`, `constructor` or
+    `destructor`. None means this declarator is not something a mangled
+    `@symbol` can be proved to name: a template-id, an operator, or a namespace
+    this scanner cannot re-encode. The one-marker fallback then leaves it
+    unclaimed rather than lending the marker to whatever body is left.
+    """
+    if any(part is None or not IDENT.fullmatch(part) for part in ns_parts):
+        return None
+    text = " ".join(rest.split())
+    head = _native_lifecycle_head(text)
+    if head:
+        kind, owner, name = head
+        parts = list(ns_parts) + owner.split("::")
+        if any(not IDENT.fullmatch(part) for part in parts):
+            return None
+        return tuple(parts), name, kind
+    open_at = text.find("(")
+    if open_at < 0:
+        return None
+    before = text[:open_at].rstrip()
+    matched = re.search(
+        r"((?:[A-Za-z_][A-Za-z0-9_]*::)*[A-Za-z_][A-Za-z0-9_]*)\s*$", before)
+    if not matched:
+        return None
+    # `Foo<int>::bar` splits on the `>` and leaves the `::` in front of the
+    # match. A return type such as `Box<int> Class::method` does not: the
+    # qualified-id itself still matches, and the `>` is only the return type.
+    if before[:matched.start()].rstrip().endswith("::"):
+        return None
+    if re.search(r"\boperator\b", before[:matched.end()]):
+        return None
+    bits = matched.group(1).split("::")
+    name = bits[-1]
+    class_parts = bits[:-1]
+    if not IDENT.fullmatch(name) or any(not IDENT.fullmatch(part) for part in class_parts):
+        return None
+    parts = list(ns_parts) + class_parts
+    if not parts:
+        return None
+    kind = "constructor" if class_parts and name == class_parts[-1] else "function"
+    return tuple(parts), name, kind
+
+
+def _symbol_encodes_entity(symbol, entity):
+    """True when `symbol` is the Itanium nested name of `entity`.
+
+    CV-qualifiers sit between `N` and the first length (`_ZNK6Widget1fEv` is
+    `Widget::f() const`). Constructors and destructors are `C1`/`C2`/`C3` and
+    `D0`/`D1`/`D2`, not a second copy of the class name. Anything else,
+    including a marker that encodes a different function, is not this entity.
+    """
+    if not entity or not symbol.startswith("_Z"):
+        return False
+    parts, name, kind = entity
+    if any(not IDENT.fullmatch(part) for part in parts) or not IDENT.fullmatch(name):
+        return False
+    nested = re.match(r"_ZN[rVK]*", symbol)
+    if not nested:
+        return False
+    body = symbol[nested.end():]
+    encoded = "".join("%d%s" % (len(part), part) for part in parts)
+    if kind == "constructor":
+        return name == parts[-1] and re.match(
+            re.escape(encoded) + r"C[123]", body) is not None
+    if kind == "destructor":
+        return name == parts[-1] and re.match(
+            re.escape(encoded) + r"D[012]", body) is not None
+    return body.startswith("%s%d%sE" % (encoded, len(name), name))
+
+
 def parse_file(rel, text, aliases, statics=None):
     """(declarations, definitions, unparsed_count) found in one file.
 
@@ -1360,7 +1539,7 @@ def parse_file(rel, text, aliases, statics=None):
             file_types |= _typedef_words(stmt)
     decls, defs = [], []
     unparsed = 0
-    for start, chunk, term, linkage, in_block, in_ns in top_level_units(
+    for start, chunk, term, linkage, in_block, in_ns, ns_parts in top_level_units(
             code, default_linkage):
         body = " ".join(chunk.split())
         if not body:
@@ -1442,7 +1621,8 @@ def parse_file(rel, text, aliases, statics=None):
                 # definition, in which case the mark names it. See the adoption
                 # pass at the end of this function.
                 orphans.append((symbol, rel, line, ret, params, linkage, member,
-                                _raw_types(rest, name) | file_types, this_unknown))
+                                _raw_types(rest, name) | file_types, this_unknown,
+                                _qualified_entity(rest, ns_parts)))
                 continue
             defs.append(Record(symbol, rel, line, ret, params, True,
                                "C" if linkage == "C" else linkage, True, member,
@@ -1517,18 +1697,23 @@ def parse_file(rel, text, aliases, statics=None):
     # to twenty-odd reconstructed `Vector3 *` spellings that the ROM's own mangled
     # name (`RK7Vector3`) refutes.
     #
-    # Adopt the mark only when it is unambiguous: exactly one `@symbol` line in the
-    # file, exactly one definition that went unnamed, and no definition already
-    # claiming that symbol. A file with two marks or two orphans says nothing about
-    # which belongs to which, and still claims nothing.
+    # Adopt the mark only when it is unambiguous AND it names this declarator.
+    # Exactly one `@symbol` line, exactly one definition that went unnamed, and
+    # no definition already claiming that symbol are not enough: a marker left
+    # above a helper is not evidence that the remaining body is that symbol.
+    # `_ZN1A1fEv` must not become `namespace B { int g(); }`. The marker has to
+    # encode the namespace, class and function that were parsed (a const method's
+    # `K`, or `C1`/`D1` for a lifecycle). Two marks, two orphans, or a marker
+    # that encodes something else still claim nothing.
     if len(marks) == 1 and len(orphans) == 1 and not unbound_lifecycles:
         symbol = marks[0][1]
         if not any(d.symbol == symbol for d in defs):
             (_, o_rel, o_line, o_ret, o_params, o_linkage, o_member, o_types,
-             o_unknown) = orphans[0]
-            defs.append(Record(symbol, o_rel, o_line, o_ret, o_params, True,
-                               "C" if o_linkage == "C" else o_linkage, True,
-                               o_member, o_types, o_unknown))
+             o_unknown, entity) = orphans[0]
+            if _symbol_encodes_entity(symbol, entity):
+                defs.append(Record(symbol, o_rel, o_line, o_ret, o_params, True,
+                                   "C" if o_linkage == "C" else o_linkage, True,
+                                   o_member, o_types, o_unknown))
     return decls, defs, unparsed
 
 

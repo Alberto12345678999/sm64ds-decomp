@@ -42,17 +42,13 @@ comment leftovers:
 #include "common.h"
 #include "dActor_c.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
 extern "C" {
-
-/* local extern: Camera.h has no SetFlag_3 member; the mangled spelling is
-   the only declaration in the tree. */
-void  _ZN6Camera9SetFlag_3Ev(void *cam);
 
 /* math / vector helpers -- no shared header declares these */
 void  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *cur, const void *tgt, int step);
@@ -148,9 +144,9 @@ daC_Jugem_c::~daC_Jugem_c()
    wait in StateHidden. */
 int daC_Jugem_c::StateIntroMain()
 {
-  Camera *cam = (Camera *)data_0209f318;
+  dCamera_c *cam = (dCamera_c *)data_0209f318;
   CamPose r;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  cam->SetFlag_3();
   r.lx = -0x4b0000;
   r.ly = 0x19f000;
   r.lz = 0x1a90000;
@@ -197,12 +193,12 @@ int daC_Jugem_c::StateIntroInit()
 int daC_Jugem_c::StateApproachMain()
 {
     Vector3 v[3];
-    Camera *cam;
+    dCamera_c *cam;
     int spd;
     int len;
 
-    cam = (Camera *)data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    cam = (dCamera_c *)data_0209f318;
+    cam->SetFlag_3();
     mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(Vector3 *)&mCamSpacePosX, 0);
     ApproachLinear(mAngleY, Vec3_HorzAngle(&mPosX, &data_ov085_0213084c), 0x200);
     ApproachLinear(mAngleX, Vec3_VertAngle(&mPosX, &data_ov085_0213084c), 0x200);
@@ -234,13 +230,13 @@ int daC_Jugem_c::StateApproachMain()
 int daC_Jugem_c::StateApproachInit()
 {
   volatile Vector3 look, pos; (void)&look; (void)&pos;
-  Camera *cam;
+  dCamera_c *cam;
   mHorzSpeed = 0;
   mTimer = 0;
   mAuxCounter = 0;
   unk_2e0 = 0;
-  cam = (Camera *)data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  cam = (dCamera_c *)data_0209f318;
+  cam->SetFlag_3();
   mCamLookX = 0xffc67000;
   mCamLookY = 0x6ea000;
   mCamLookZ = 0x1212000;
@@ -302,7 +298,7 @@ int daC_Jugem_c::StateBobMain()
 int daC_Jugem_c::StateBobInit()
 {
   Vector3 look, pos;
-  Camera *cam;
+  dCamera_c *cam;
   mTimer = 0;
   mAuxCounter = 0;
   mPosX = -0x5a0000;
@@ -311,8 +307,8 @@ int daC_Jugem_c::StateBobInit()
   mTargetX = mPosX;
   mTargetY = mPosY;
   mTargetZ = mPosZ;
-  cam = (Camera *)data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  cam = (dCamera_c *)data_0209f318;
+  cam->SetFlag_3();
   look.x = -0x304000;
   look.y = 0x3c1000;
   look.z = 0x1c77000;
@@ -408,12 +404,12 @@ int daC_Jugem_c::StateTurnMain()
 int daC_Jugem_c::StateTurnInit()
 {
   Vector3 look, pos;
-  Camera *cam;
+  dCamera_c *cam;
   mTimer = 0;
   mTalkPlayer = 0;
   mAngleZ = 0;
-  cam = (Camera *)data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  cam = (dCamera_c *)data_0209f318;
+  cam->SetFlag_3();
   look.x = 0xffadd000;
   look.y = 0x17e000;
   look.z = 0x1a29000;
@@ -469,7 +465,7 @@ int daC_Jugem_c::StateArriveMain()
 int daC_Jugem_c::StateArriveInit()
 {
     Vector3 look, pos;
-    Camera *cam;
+    dCamera_c *cam;
     Player* player;
     mTargetX = -0x5a0000;
     mTargetY = 0x1c0000;
@@ -479,8 +475,8 @@ int daC_Jugem_c::StateArriveInit()
         mSavedAngleY = player->mAngleY;
         func_ov002_020d228c(player);
     }
-    cam = (Camera *)data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    cam = (dCamera_c *)data_0209f318;
+    cam->SetFlag_3();
     look.x = 0xff883000;
     look.y = 0x2ef000;
     look.z = 0x1a36000;
@@ -676,11 +672,11 @@ int daC_Jugem_c::StateHiddenInit()
 int daC_Jugem_c::StateHoverMain()
 {
     Vector3 in, out, plpos;
-    Camera *cam;
+    dCamera_c *cam;
     Vector3* src;
     Player *p;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
     src = &cam->pos;
@@ -712,7 +708,7 @@ int daC_Jugem_c::StateHoverMain()
     }
     mPosZ += out.z;
     mPrevAngleY = 0x8000 - cam->mAngleY;
-    /* The halfword after Camera::mAngleY at 0x17e (Camera.h has no member for
+    /* The halfword after dCamera_c::mAngleY at 0x17e (dCamera_c.h has no member for
        it). Possibly the pitch, but only this one negated use suggests so. */
     mPrevAngleX = -*(short *)((char *)&cam->mAngleY + 2);
     return 1;
@@ -872,7 +868,7 @@ int daC_Jugem_c::InitResources()
 {
   BMD_File* bmd = (BMD_File*)Model::LoadFile(data_ov085_0213074c);
   mModelAnim1.SetFile(bmd, 1, -1);
-  Animation::LoadFile(data_ov085_02130744);
+  dExtFrameCtrl_c::LoadFile(data_ov085_02130744);
   TextureSequence::LoadFile(data_ov085_0213073c);
   mShadowModel1.InitCylinder();
   mShadowModel2.InitCylinder();

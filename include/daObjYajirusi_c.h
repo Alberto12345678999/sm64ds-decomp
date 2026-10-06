@@ -169,7 +169,7 @@ struct daObjYajirusi_c {
     u8  pad_2ec[0x34];
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x320 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN15daObjYajirusi_cD1Ev.c] */
+       checks. Was a u8 marker. [_ZN15daObjYajirusi_cD1Ev, now in src/actors/daObjYajirusi_c.cpp] */
     dExtShadowModel_c mShadowModel;            /* 0x320 */
     u8  mShadowMat;         /* 0x348 */
     u8  pad_349[0x33];

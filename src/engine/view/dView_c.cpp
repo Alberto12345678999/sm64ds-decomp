@@ -1,12 +1,12 @@
 //cpp
-/* dView_c -- the shared 0x80-byte view base Camera derives from.
+/* dView_c -- the shared 0x80-byte view base dCamera_c derives from.
  *
  * ROM evidence: the three enrolled members tile 0x0202fc98..0x0202fd2c and
  * the class vtable at 0x02092720 (_ZTV7dView_c) names [D1 0x0202fc98,
  * D0 0x0202fcc8, Render 0x0202fd0c] under the canonical {0, _ZTI} header --
  * all three inside this run. _ZTS7dView_c at 0x02086e48 reads "7dView_c"
  * and _ZTI7dView_c at 0x02086ecc is an __si_class_type_info on dBase_c.
- * The destructor is declared inline on the header (Camera's ROM dtor
+ * The destructor is declared inline on the header (dCamera_c's ROM dtor
  * inlines dView_c's vptr store), so the two emit-forcers below pin the
  * out-of-line D1/D0 copies the vtable slots point at.
  */

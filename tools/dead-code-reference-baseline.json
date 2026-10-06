@@ -216,9 +216,6 @@
   "include/decl_BlendModelAnim.h": [
    "tools/decl_headers.py"
   ],
-  "include/decl_Camera.h": [
-   "tools/decl_headers.py"
-  ],
   "include/decl_Enemy.h": [
    "tools/decl_headers.py"
   ],

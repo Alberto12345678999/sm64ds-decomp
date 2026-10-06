@@ -55,12 +55,12 @@
  * `#pragma defer_codegen off` keeps this file in ROM order.
  *
  * Leftover: the helpers keep their C-ABI cartridge names (nothing here says
- *   what the original called them); their door, Player, Animation and Camera
+ *   what the original called them); their door, Player, dExtFrameCtrl_c and dCamera_c
  *   accesses are real members now, and their Player calls are real member
  *   calls through include/Player.h, except Unk_020ca488 (see its declaration)
  *   and func_ov002_020ca78c, which are free-function calls.
  * Leftover: the callees with Fix12<int> parameters (Sound, ModelAnim::SetAnim),
- *   the SaveData, Sound::PlayCharVoice and Animation::LoadFile calls, and the
+ *   the SaveData, Sound::PlayCharVoice and dExtFrameCtrl_c::LoadFile calls, and the
  *   Model loaders InitResources calls stay spelled as mangled extern-C free
  *   functions.
  * Leftover: dActor_c's mScaleX/Y/Z and mAngleX/Z carry other things for a door
@@ -69,7 +69,7 @@
  *   cannot change on one derived class's evidence, so the functions that read
  *   them describe them in their own comments.
  * Leftover: the sound ids other than the two swing pairs, the message ids, camera
- *   flag bits 0xc00 (not in include/Camera.h) and SaveData flags2 bit 16 stay
+ *   flag bits 0xc00 (not in include/dCamera_c.h) and SaveData flags2 bit 16 stay
  *   numbers; their meanings are not recovered here.
  * Leftover: DoorPmfSelf stands in for the door in func_ov100_021453d8 (see
  *   there); Behavior's DoorState is the same pair spelled the other way.
@@ -86,7 +86,7 @@
 #include "types.h"
 #include "common.h"
 #include "SharedFilePtr.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "daObjKey_c.h"
 
 /* Three plain words: the stack and static vectors of the helpers that were
@@ -148,8 +148,8 @@ enum DoorSaveFlag {
                                         execute state, with the same effect */
 };
 
-/* Camera::mFlags bits the door sets when a swing starts (func_ov100_02144950)
-   and clears near and at its end. Not documented in include/Camera.h. */
+/* dCamera_c::mFlags bits the door sets when a swing starts (func_ov100_02144950)
+   and clears near and at its end. Not documented in include/dCamera_c.h. */
 #define DOOR_CAMERA_FLAGS 0xc00
 
 /* ov089's OBJ_KEY (symbols/actor_debug_names.tsv: 282), which a key door
@@ -198,7 +198,8 @@ int _ZN8SaveData22NumGlowingRabbitsFoundEv(void);
 void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
-void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *fp);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
@@ -469,7 +470,7 @@ extern "C" void func_ov100_021446f8(daDoor_c *r0, Player *r1)
    mKeyModelIdx, on the frame 0x1c (28) from the end it clears the camera
    bits and plays the character voice (or, for variant 0xd with the latch
    clear, the player's Mamma Mia sound); otherwise, on the frame 0x18 (24)
-   from the end, it sends the camera behind the player (Camera::GoBehindPlayer
+   from the end, it sends the camera behind the player (dCamera_c::GoBehindPlayer
    with the current player id) and, when the next-level id is not negative,
    zeroes the animation's speed. */
 extern "C" int func_ov100_02144730(daDoor_c *self, Player *arg1)
@@ -495,13 +496,13 @@ extern "C" int func_ov100_02144730(daDoor_c *self, Player *arg1)
         arg1->mAreaId = t;
         ChangeArea(t);
         {
-            u32 *p = &((Camera *)data_0209f318)->mFlags;
+            u32 *p = &((dCamera_c *)data_0209f318)->mFlags;
             *p &= ~DOOR_CAMERA_FLAGS;
         }
         func_02012694(self->param1 == DOOR_ALT_SOUND ? SND_SWING_END_ALT : SND_SWING_END, &self->mCamSpacePosX);
     } else if (self->mKeyModelIdx != 0) {
         if (self->mModel.WillHitFrame((u16)(self->mModel.GetFrameCount() - 0x1c)) != 0) {
-            u32 *p = &((Camera *)data_0209f318)->mFlags;
+            u32 *p = &((dCamera_c *)data_0209f318)->mFlags;
             *p &= ~DOOR_CAMERA_FLAGS;
             if (self->param1 != DOOR_LAST_KEY_MODEL) {
                 _ZN5Sound13PlayCharVoiceEjjRK7Vector3(data_0209caa0.mCharacter, 0x21, &self->mCamSpacePosX);
@@ -513,7 +514,7 @@ extern "C" int func_ov100_02144730(daDoor_c *self, Player *arg1)
         if (self->mModel.WillHitFrame((u16)(self->mModel.GetFrameCount() - 0x18)) != 0) {
             if (*(s8 *)&data_02092110 >= 0)
                 self->mModel.speed = 0;
-            ((Camera *)data_0209f318)->GoBehindPlayer(data_0209f250);
+            ((dCamera_c *)data_0209f318)->GoBehindPlayer(data_0209f250);
         }
     }
     return 1;
@@ -550,7 +551,7 @@ extern "C" int func_ov100_02144950(daDoor_c *c, Player *pl, int unused)
     c->mModel.currFrame = 0;
     ShowArea((signed char)c->mAngleX);
     ShowArea((signed char)c->mAngleZ);
-    ((Camera *)data_0209f318)->mFlags |= DOOR_CAMERA_FLAGS;
+    ((dCamera_c *)data_0209f318)->mFlags |= DOOR_CAMERA_FLAGS;
     func_02012694((c->param1 == DOOR_ALT_SOUND) ? SND_SWING_START_ALT : SND_SWING_START, &c->mCamSpacePosX);
     c->mTimer = 0;
     return 1;
@@ -1183,7 +1184,7 @@ s32 daDoor_c::InitResources()
             _ZN5Model8LoadFileER13SharedFilePtr(mKeyFile);
     }
 
-    an = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov100_02148744);
+    an = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov100_02148744);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModel, an, 0x40000000, 0x1000, 0);
 
     /* The model matrix takes the position >> 3. */

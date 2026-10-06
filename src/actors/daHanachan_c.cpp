@@ -39,6 +39,7 @@
 #include "daHanachan_c.h"
 #include "common.h"
 #include "decl_Player.h"
+#include "dCamera_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "dBgCh_Gnd.h"
@@ -59,7 +60,6 @@ extern void **data_ov034_02113860[];
 extern int Math_Function_0203b14c(void *base, int a, int b, int c, int d);
 extern int data_ov034_021138c4[];
 extern void func_0201267c(int, void *);
-extern void _ZN6Camera9SetFlag_3Ev(void* cam);
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern short data_ov034_02113820[];
 extern void **data_ov034_021138b0[];
@@ -322,7 +322,7 @@ void daHanachan_c::StateDamageMain()
     if (!talk->StartTalk(*this, true))
         return;
 
-    _ZN6Camera9SetFlag_3Ev(data_0209f318);
+    ((dCamera_c *)data_0209f318)->SetFlag_3();
     mDriveCamera = 1;
 
     ApproachLinear(mPlayer->mAngleY, Vec3_HorzAngle(&mSegmentPos[0], &mPlayer->mPosX), 0x100);
@@ -572,7 +572,7 @@ void daHanachan_c::StateDemoCallMain()
     if (player->ShowMessage(*this, data_ov034_02113820[0], &v, 1, 0) == 0)
         return;
     Message::PrepareTalk();
-    _ZN6Camera9SetFlag_3Ev(data_0209f318);
+    ((dCamera_c *)data_0209f318)->SetFlag_3();
     mDriveCamera = 1;
     func_0201267c(0x11b, &mCamSpacePosX);
     SetState(2);
@@ -1116,11 +1116,11 @@ int daHanachan_c::InitResources()
         texFile = data_ov034_0211384c[i];
         TextureSequence::LoadFile(*texFile);
         animFile = data_ov034_02113860[i];
-        Animation::LoadFile(*(SharedFilePtr *)animFile);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_02113874[i]);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_02113888[i]);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_0211389c[i]);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_021138b0[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)animFile);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_02113874[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_02113888[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_0211389c[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_021138b0[i]);
         animRow->SetFile(*(BMD_File **)((char *)modelFile + 4), one, minusOne);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(animRow, *(void **)((char *)animFile + 4), zeroA, 0x1000, zeroA);
         TextureSequence::Prepare(**(BMD_File **)((char *)modelFile + 4), **(BTP_File **)((char *)texFile + 4));

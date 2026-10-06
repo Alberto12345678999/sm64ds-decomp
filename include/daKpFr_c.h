@@ -61,7 +61,7 @@ struct daKpFr_c : dActor_c {
     s32                mStateResult;           /* 0x320 */
     /* Two particle handles, effects 0x7f and 0x80, both fed back into
        Particle::System::NewUnkCallback818 every Render, at mPosY + 0x4b000.
-       [_ZN8daKpFr_c6RenderEv.cpp] */
+       [_ZN8daKpFr_c6RenderEv, now in src/game/actors/d_a_kp_fr.cpp] */
     u32                mParticle1;             /* 0x324 */
     u32                mParticle2;             /* 0x328 */
     u8                 mStateTimer;            /* 0x32c */
