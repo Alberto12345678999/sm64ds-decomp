@@ -95,9 +95,10 @@ struct daTor_c : dActor_c {
                                      steered toward when not chasing. */
     s16 mAngleToPlayer;          /* 0x358 -- the same angle to the closest
                                      player, steered toward while chasing. */
-    s16 unk_35a;                 /* 0x35a -- zeroed by InitResources;
-                                     UpdateSpin indexes the sine table with it
-                                     and adds 0x200 each frame. No name yet. */
+    s16 mSpinPhase;              /* 0x35a -- the phase UpdateSpin advances by
+                                     0x200 each call; (u16 >> 4) * 2 + 1 of it
+                                     indexes the data_02082214 sine table that
+                                     waves the scale. */
     s32 mState;                  /* 0x35c -- 0/1/2, the switch in Behavior;
                                      see the header comment. */
     u8  mTriggerCount;           /* 0x360 -- an event counter both live states
