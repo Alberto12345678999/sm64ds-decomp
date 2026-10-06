@@ -1808,11 +1808,6 @@
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
       ],
-      "src/_ZN11CommonModel6RenderEPK7Vector3.cpp": [
-        "param:#1 const Matrix4x3 *",
-        "param:#2 const Matrix4x3 *",
-        "param:#3 Matrix4x3 *"
-      ],
       "src/_ZN11ShadowModel9RenderAllEv.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
@@ -1870,6 +1865,11 @@
         "param:#3 Matrix4x3 *"
       ],
       "src/engine/model/Model.cpp": [
+        "param:#1 const Matrix4x3 *",
+        "param:#2 const Matrix4x3 *",
+        "param:#3 Matrix4x3 *"
+      ],
+      "src/engine/model/dExtCommonModel_c.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
@@ -5997,11 +5997,6 @@
         "return:void"
       ],
       "src/game/actors/daPiano_c/d_a_piano.cpp": [
-        "return:void"
-      ]
-    },
-    "_ZN11CommonModelD1Ev": {
-      "include/decl_common.h": [
         "return:void"
       ]
     },
@@ -24335,10 +24330,10 @@
       ]
     },
     "func_02016e70": {
-      "src/_ZN11CommonModel9DoSetFileEPcii.cpp": [
+      "src/_ZN11ShadowModel9DoSetFileEPcii.cpp": [
         "return:ModelComponents *"
       ],
-      "src/_ZN11ShadowModel9DoSetFileEPcii.cpp": [
+      "src/engine/model/dExtCommonModel_c.cpp": [
         "return:ModelComponents *"
       ]
     },
@@ -28004,11 +27999,11 @@
       ]
     },
     "func_02046008": {
-      "src/_ZN11CommonModel12SetPolygonIDEj.cpp": [
-        "param:#2 unsigned int"
-      ],
       "src/_ZN5Model12SetPolygonIDEi.cpp": [
         "param:#2 int"
+      ],
+      "src/engine/model/dExtCommonModel_c.cpp": [
+        "param:#2 unsigned int"
       ]
     },
     "func_02046088": {
@@ -35326,6 +35321,11 @@
     },
     "_ZN9dBgCh_GndC1Ev": {
       "src/actors/dActor_c.cpp": [
+        "return:void"
+      ]
+    },
+    "_ZN17dExtCommonModel_cD1Ev": {
+      "include/decl_common.h": [
         "return:void"
       ]
     }

@@ -1,5 +1,5 @@
-#ifndef COMMONMODEL_H
-#define COMMONMODEL_H
+#ifndef DEXTCOMMONMODEL_C_H
+#define DEXTCOMMONMODEL_C_H
 
 #include "types.h"
 #include "BMD_File.h"
@@ -7,10 +7,10 @@
 #include "math/Matrix.h"
 
 /* ModelBase sibling with a POINTER to pooled components, vtable
- * _ZTV11CommonModel at 0x0208e8a4:
+ * _ZTV17dExtCommonModel_c at 0x0208e8a4:
  *
- *   slot 0  0x020161e0  ~CommonModel (D1)
- *   slot 1  0x020161b4  ~CommonModel (D0)
+ *   slot 0  0x020161e0  ~dExtCommonModel_c (D1)
+ *   slot 1  0x020161b4  ~dExtCommonModel_c (D0)
  *   slot 2  0x02016144  DoSetFile(char *, int, int)
  *
  * Three slots, so unlike Model its Render is NON-virtual. DoSetFile takes
@@ -35,15 +35,15 @@
 
 #ifdef __cplusplus
 
-struct CommonModel : ModelBase {
+struct dExtCommonModel_c : ModelBase {
     ModelComponents *data;     /* 0x08 - pool entry from func_02016e70 */
     Matrix4x3 mat4x3;          /* 0x0c */
 
     /* DECLARED, NEVER DEFINED HERE -- same reasoning as Model (include/Model.h)
        and ModelBase: undeclared, the compiler synthesises this constructor and
-       INLINES it into every holder; the ROM calls _ZN11CommonModelC1Ev
+       INLINES it into every holder; the ROM calls _ZN17dExtCommonModel_cC1Ev
        (0x02016204) out of line instead. */
-    CommonModel();
+    dExtCommonModel_c();
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     /* The destructor pair spelled as two plain virtuals on the host, plus the
@@ -53,9 +53,9 @@ struct CommonModel : ModelBase {
 #ifdef _MSC_VER
     virtual void Destructor1();                       /* slot 0 (D1) */
     virtual void Destructor0();                       /* slot 1 (D0) */
-    ~CommonModel();                                   /* no slot */
+    ~dExtCommonModel_c();                                   /* no slot */
 #else
-    virtual ~CommonModel();                           /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtCommonModel_c();                           /* slots 0 (D1), 1 (D0) */
 #endif
     virtual int DoSetFile(char *file, int a, int b);  /* slot 2 */
 
@@ -67,12 +67,12 @@ struct CommonModel : ModelBase {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char CommonModel_size_must_be_0x3c[sizeof(CommonModel) == 0x3c ? 1 : -1];
+typedef char dExtCommonModel_c_size_must_be_0x3c[sizeof(dExtCommonModel_c) == 0x3c ? 1 : -1];
 #endif
 
 #else
 
-struct CommonModel {
+struct dExtCommonModel_c {
     void **vtable;                     /* 0x00 */
     struct BMD_File *modelFile;        /* 0x04 */
     struct ModelComponents *data;      /* 0x08 */
@@ -81,4 +81,4 @@ struct CommonModel {
 
 #endif /* __cplusplus */
 
-#endif /* COMMONMODEL_H */
+#endif /* DEXTCOMMONMODEL_C_H */

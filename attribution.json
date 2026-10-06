@@ -133,8 +133,6 @@
     "src/_ZN11BabyPenguin13OnYoshiTryEatEv.cpp": "tangosdev",
     "src/_ZN11BillBlaster15OnHitByMegaCharER6Player.c": "tangosdev",
     "src/_ZN11BillBlaster15OnHitByMegaCharER6Player.cpp": "tangosdev",
-    "src/_ZN11CommonModelC1Ev.c": "tangosdev",
-    "src/_ZN11CommonModelC1Ev.cpp": "tangosdev",
     "src/_ZN11CrazedCrate13OnYoshiTryEatEv.c": "tangosdev",
     "src/_ZN11CrazedCrate13OnYoshiTryEatEv.cpp": "tangosdev",
     "src/_ZN11FallBlockWfD0Ev.cpp": "tangosdev",
@@ -8561,6 +8559,15 @@
     "src/engine/collision/dBgCh_Gnd.cpp#_ZThn16_N9dBgCh_GndD0Ev": "lplaat",
     "src/engine/collision/dBgCh_Gnd.cpp#_ZThn16_N9dBgCh_GndD1Ev": "tangosdev",
     "src/engine/gx/G3i.cpp#_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3": "tangosdev",
-    "src/engine/gx/G3i.cpp#_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3": "tangosdev"
+    "src/engine/gx/G3i.cpp#_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3": "tangosdev",
+    "src/_ZN17dExtCommonModel_cC1Ev.c": "tangosdev",
+    "src/_ZN17dExtCommonModel_cC1Ev.cpp": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c12SetPolygonIDEj": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c13Func_020160ACEj": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c6RenderEPK7Vector3": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c9DoSetFileEPcii": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD0Ev": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD1Ev": "tangosdev",
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cC1Ev": "tangosdev"
   }
 }
