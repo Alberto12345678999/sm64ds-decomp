@@ -111,7 +111,7 @@ int RandomIntInternal(int *seed);
 void Vec3_Asr(void *d, const void *s, int sh);
 void _Z14ApproachLinearRiii(int *p, int target, int step);
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, s32 d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 int func_020092c4(void *cam, void *out, void *target);
 int func_02012694(int a, void *p, ...);
 u16 func_0201277c(int a);
@@ -336,7 +336,7 @@ void daTrs_c::func_ov063_0211640c() {
         Matrix4x3_FromTranslation(&data_020a0e68,
             pos.x >> 3, pos.y >> 3, pos.z >> 3);
         *(struct Matrix4x3 *)&this->mShadowMtx[0] = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
 
         if ((u32)(*(u16 *)&this->mFlags_5d4 << 0x17) >> 0x1f) {
@@ -346,7 +346,7 @@ void daTrs_c::func_ov063_0211640c() {
             Matrix4x3_FromTranslation(&data_020a0e68,
                 pos.x >> 3, pos.y >> 3, pos.z >> 3);
             this->mShadowMtx2 = data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 this, &this->mShadowModel2, &this->mShadowMtx2, 0x12c000, 0xc8000, 0xf);
         }
     }
@@ -408,9 +408,9 @@ void daTrs_c::func_ov063_021166ac() {
     {
         int big = (this->actorID == 0xd2);
         if (big)
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
         else
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x64000, 0xc8000, 0xf);
     }
     this->mCapPosY = this->mClsnOffY + (int)(((s64)this->mScaleX * 0x60000 + 0x800) >> 12);
     pos.x = this->mCapPosX;
@@ -438,7 +438,7 @@ void daTrs_c::func_ov063_021166ac() {
 void daTBasket_c::func_ov063_021169c4() {
 
     Matrix4x3_FromTranslation(&this->mModel.mat4x3, this->mPosX>>3, this->mPosY>>3, this->mPosZ>>3);
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &this->mModel.mat4x3, 0x64000, 0x64000, 0xf);
 }
 
 

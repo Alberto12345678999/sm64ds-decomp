@@ -99,8 +99,8 @@ struct M48 { int w[12]; };
 /* shadow struct 'V3' */
 struct V3 { int x, y, z; };
 
-/* shadow struct 'ShadowModel' */
-struct ShadowModel;
+/* shadow struct 'dExtShadowModel_c' */
+struct dExtShadowModel_c;
 
 /* shadow struct 'Matrix4x3' */
 struct Matrix4x3;
@@ -260,7 +260,7 @@ extern void MulMat4x3Mat4x3(void* out, void* a, void* b);
 extern void Vec3_LslInPlace(void* v, int sh);
 extern struct M48 data_020a0e68;
 extern Mtx IDENTITY_MATRIX4X3;
-extern int _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(char *self, struct ShadowModel *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(char *self, struct dExtShadowModel_c *sm, struct Matrix4x3 *m, int fix, int t, u32 f);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void _ZN7fBase_c18MarkForDestructionEv(char* c);
@@ -355,7 +355,6 @@ extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(char *c, const voi
 extern int data_ov002_0210aa0c[3];
 extern PMF data_ov002_021109d8[];
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
 extern int _ZN8dActor_c18GetBitInDeathTableEv(void *self);
 extern u8 data_0209f220;
 extern s32 data_0209cef0;
@@ -463,7 +462,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for _ZN8daStar_c16CleanupResourcesEv, NOT applied: extern "C" void _ZN8dActor_c11UntrackStarERa(void* self, signed char* star); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromTranslation, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z); */
 /* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromRotationY(void *m, int ang); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j( */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j( */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern char *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c5ClearEv, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN5dCc_c5ClearEv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f208, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern unsigned char data_0209f208; */
@@ -491,7 +490,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN9ModelBase7SetFileEP8BMD_Fileii, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, s32 a, s32 b); */
 /* TUBUILD CONFLICT -- alternate declaration of SublevelToLevel, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 SublevelToLevel(s32 sub); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, s32 a, s32 spd, u32 g); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN11ShadowModel12InitCylinderEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN11ShadowModel12InitCylinderEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN17dExtShadowModel_c12InitCylinderEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN17dExtShadowModel_c12InitCylinderEv(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj( */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as( */
 /* TUBUILD CONFLICT -- alternate declaration of NumVsStarsObtained, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 NumVsStarsObtained(void); */
@@ -525,7 +524,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
  *
  * One vtable store and 6 destructor calls, every one a consequence of
  * `struct daStar_c : dEnemyBase_c` and the members that declaration now types:
- * its own vptr, then ShadowModel (0x3d4), ModelAnim (0x370), ModelAnim (0x30c),
+ * its own vptr, then dExtShadowModel_c (0x3d4), ModelAnim (0x370), ModelAnim (0x30c),
  * dBgCh_Actr (0x150),
  * dCcAcPos_c (0x110)
  * in reverse declaration order, then dEnemyBase_c::~dEnemyBase_c.
@@ -649,7 +648,7 @@ s32 daStar_c::InitResources()
 
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(t + 0x30c, data_ov002_02110964.ptr, 0x40000000, 0x1000, 0);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(t + 0x370, data_ov002_02110964.ptr, 0x40000000, 0x1000, 0);
-    if (_ZN11ShadowModel12InitCylinderEv(t + 0x3d4) == 0)
+    if (this->mShadowModel.InitCylinder() == 0)
         return 0;
 
     v2.x = data_ov002_0210aa0c[0];
@@ -874,7 +873,7 @@ int daStarBase_c::InitResources()
         }
     }
 
-    if (_ZN11ShadowModel12InitCylinderEv((char *)&mShadowModel) == 0) {
+    if (mShadowModel.InitCylinder() == 0) {
         return 0;
     }
 
@@ -1014,8 +1013,8 @@ int daStarBase_c::Behavior()
             int rad = 0xa0000;
             if (mState != 0)
                 rad = 0xc8000;
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-                ((char *)this), (struct ShadowModel *)(((char *)this) + 0x164), (struct Matrix4x3 *)(((char *)this) + 0x18c), rad, d + 0x28000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+                ((char *)this), (struct dExtShadowModel_c *)(((char *)this) + 0x164), (struct Matrix4x3 *)(((char *)this) + 0x18c), rad, d + 0x28000, 0xf);
         }
     }
     if (mState != 0) {
@@ -2676,7 +2675,7 @@ void daStar_c::func_ov002_020e8398() {
     *(int *)(c + 0x424) = *(int *)(c + 0x60) >> 3;
     *(int *)(c + 0x428) = *(int *)(c + 0x64) >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, (struct ShadowModel *)(c + 0x3d4), (struct Matrix4x3 *)(c + 0x3fc), r8, t, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, (struct dExtShadowModel_c *)(c + 0x3d4), (struct Matrix4x3 *)(c + 0x3fc), r8, t, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -538,7 +538,7 @@ Additions from the 2026-07-04/05 overnight runs (credit: Fable refine agents):
   threading); (b) a SINGLE reused `int` scratch temp reassigned per range check (not separate
   `rel0`/`rel1` as m2c renders them) reproduces the ROM's stale-temp reads - a later block that
   reads `(u8)tmpv` gets the LAST assignment, matching the ROM's register reuse. On
-  Stage::PS_Update (0x0202635c, 3115 insns) this took case 8 from 213 div to byte-exact incl.
+  dScStage_c::PS_Update (0x0202635c, 3115 insns) this took case 8 from 213 div to byte-exact incl.
   the language arms, placed cases 1 & 0xa's mid-case literal pools exactly, and cut global div
   916->756 / region 690->180 (16->17 cases byte-identical). Pair with per-site u64-mask
   laundering (sec 6e/6g) for the struct-style `add base,idx,lsl#2`+`[rX,#k]` accesses.
@@ -549,8 +549,8 @@ Additions from the 2026-07-04/05 overnight runs (credit: Fable refine agents):
   because mwccarm constant-propagates before instruction selection. Feed the mask through a
   non-const local or a tiny inline helper (`static inline int clr(int x,int m){return x&~m;}`
   called with a runtime-looking `m` that is provably 0) so selection runs on `x & ~m` and
-  picks BIC *before* the value-numbering pass proves `m==0`. Cracked _ZN5Stage8BehaviorEv
-  (Fable, div 49→0) and the same residual on the Stage::PS_Update near-miss. Pairs with
+  picks BIC *before* the value-numbering pass proves `m==0`. Cracked _ZN10dScStage_c8BehaviorEv
+  (Fable, div 49→0) and the same residual on the dScStage_c::PS_Update near-miss. Pairs with
   `#pragma opt_common_subs off` + a named manual-CSE local (the EBB-CSE master lever) which
   carried the rest of that 444-insn C++ dispatcher.
 
@@ -574,7 +574,7 @@ Swept 20 CodeWarrior pragmas x all 96 div<=4 near-misses (1,920 compiles). Verdi
   On LARGE multi-EBB functions with a genuine function-wide shared CSE (e.g. a slot-address
   reused across many switch cases), `opt_common_subs off` is a MASTER lever, not inert - it
   flips global CSE to EBB-local rematerialization, the ROM's shape. See 6e (2026-07-07,
-  Stage::PS_Update). Do NOT skip this pragma on a big function just because the small-batch
+  dScStage_c::PS_Update). Do NOT skip this pragma on a big function just because the small-batch
   sweep found it inert. `opt_propagation off` is likewise live on large functions (6e 07-05).
 
 ## 6g. The materialization "floor", precisely bounded (2026-07-01 corpus search)
@@ -786,7 +786,7 @@ Try the subscript form before parking an index-variable spill as a coloring floo
 
 The section-2 rule "register allocation follows declaration order" has a precise
 DIRECTION for the callee-saved band (r7-r10/sb/sl), learned cracking the biggest
-unmatched function in the game one-shot on Opus (_ZN5Stage9PS_RenderEv, arm9 0xb50 /
+unmatched function in the game one-shot on Opus (_ZN10dScStage_c9PS_RenderEv, arm9 0xb50 /
 724 insns, div 21 -> 0). The long-lived locals that survive across calls are handed the
 callee-saved registers in REVERSE of their C declaration order: the LAST-declared
 long-lived local takes r7, the next-to-last r8, then r9, r10, sb, sl ascending. The
@@ -992,7 +992,7 @@ What survived BOTH prober and skeptic - marked `floor(ordering)` in nearmiss/db.
 - position-dependent final-block scheduler state: the byte-identical C spelling
   MATCHES in the function's first arm and diverges in the last block before the
   literal pool (func_ov006_020fb230);
-- Stage::PS_Update's case-1 preheader independent-ldr pair (see that file's header).
+- dScStage_c::PS_Update's case-1 preheader independent-ldr pair (see that file's header).
 
 Caveats from this run: two initial floor verdicts fell to the skeptic's fresh lever
 families, and 6n's permuter result cracked a third ordering shape - treat
@@ -1480,7 +1480,7 @@ Levers that landed (all steer coloring/scheduling through SOURCE STRUCTURE, not 
 - **Block-scope the loop pointer, declare the counter last** (`func_0203128c`, div 6->0).
   Scoping a pointer inside the if-body and declaring a distinct counter local AFTER it
   flipped a pure r5/r6 swap. This is 6i applied to a loop induction pair.
-- **Stage a store-triple through a local struct temp, in emission order**
+- **dScStage_c a store-triple through a local struct temp, in emission order**
   (`func_0200c394`, div 7->0). Three shifted s16->fx32 values assigned to `t.x/t.z/t.y`
   in that order, then stored out, rotated the load/shift registers to r0/r3/r1/r2
   exactly. A struct temp is a stronger ordering constraint than three scalars.
@@ -1598,7 +1598,7 @@ New levers:
   case in three batches** -- the recurring tell is a missing or duplicated constant
   materialization. Check the branch offsets before believing a coloring diagnosis.
 
-**Confirmed floors** (survived Opus AND Fable, both exhaustive): `Stage::LoadFog` (r5/r8 swap,
+**Confirmed floors** (survived Opus AND Fable, both exhaustive): `dScStage_c::LoadFog` (r5/r8 swap,
 the CSE'd zero web colors last under every lever), `func_020341a8` (r1/r2 swap rooted in one
 in-place-vs-fresh allocator choice), `GX::LoadTex` (r4/r5 web-identity swap; 9 disjoint probes
 compiled BITWISE IDENTICAL -- a 6y-class allocator-priority floor).
@@ -1654,7 +1654,7 @@ immediate re-crack queue for this recipe. NOT applicable as-is to the s64/smull 
 
 The 6aa recipe fleet ran the full pure-register-permutation near-miss class (42 targets).
 23 fleet matches plus 4 landed concurrently; all three functions previously recorded as
-confirmed allocator floors (Stage::LoadFog, func_020341a8, GX::LoadTex) FELL. New levers,
+confirmed allocator floors (dScStage_c::LoadFog, func_020341a8, GX::LoadTex) FELL. New levers,
 each verified by a div->0 crack:
 
 - **A stubborn scratch-web permutation near a call can be a DROPPED ARGUMENT.** Twice in
@@ -1671,7 +1671,7 @@ each verified by a div->0 crack:
   where every temp-hoist folded back (func_ov002_020d4748, div 8->0 in one step).
 - **Branch-order inversion renumbers webs; decl order arbitrates only after.** Writing
   `if (x != k) cheap else rare` instead of the positive test rotated the loop webs, then
-  reverse-decl-order (6k) landed the exact ROM colors (Stage::LoadFog, div 10->0 after a
+  reverse-decl-order (6k) landed the exact ROM colors (dScStage_c::LoadFog, div 10->0 after a
   6x6 decl grid had floored at 10 under the original branch order).
 - **De-volatile via char-cast reads.** A volatile spill-array crutch stalls at a pure
   color swap; plain array + *(int*)((char*)v + K) call-arg reads keep the memory pin
@@ -1832,7 +1832,7 @@ mechanism claims bounded by known constructs, never impossibility.
   hypothesis, ask what the probe inherited from the draft.
 - **Deep-pile divergence mostly means "draft never got attention"**: func_020345b0
   (120->0), func_0206ece0 (112->0), func_0206655c (179->0) all fell in one session
-  each with ROM-first reading, and Stage::InitResources went 193->4. High div is not
+  each with ROM-first reading, and dScStage_c::InitResources went 193->4. High div is not
   a difficulty signal; it is an attention signal.
 - **Read-order of adjacent globals is a real lever** (func_02032f9c lever 2): naming
   one global's read into a local FIRST and leaving the other inline flips two pool
@@ -2636,7 +2636,7 @@ independently steerable (7->0, byte-identical, 1.2/sp2p3).
 
 Scope check (same night): a mechanical signedness sweep (singles, pairs, all-flip; 581
 compiles) across the seven other stuck arm9 residues (0202ffec, CapEnemy::GetCapState,
-Stage::InitResources, 0204a730, 020412f0, Stage::PS_UpdateOkAndBackButtons, 02038824)
+dScStage_c::InitResources, 0204a730, 020412f0, dScStage_c::PS_UpdateOkAndBackButtons, 02038824)
 moved NOTHING. The lever fires when the residue is a two-local callee-saved web-identity
 swap; it does not perturb scheduling knots or wider coloring webs. Sweep script pattern:
 flip (unsigned int|int|u32|s32) decls in the bank draft, abverify each.
@@ -2852,7 +2852,7 @@ the RMW through a named temp reaches the same shape with the name kept.
 
 ## 6au. volatile-on-the-OBJECT plus an inline access beats a named pointer (2026-07-31, PS_UpdateOkAndBackButtons MATCHED)
 
-Closing `_ZN5Stage25PS_UpdateOkAndBackButtonsEb` (18 -> 9 -> 0, byte-identical on 1.2/base,
+Closing `_ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb` (18 -> 9 -> 0, byte-identical on 1.2/base,
 1.2/sp2, 1.2/sp2p3 AND 2004/b56). 6at correctly diagnosed the last 9 words as a coloring
 rotation needing the pooled base out of the address-constant class, but the fix is not
 "de-rematerialize the pointer". It is two coupled changes that only work together:
@@ -2891,7 +2891,7 @@ holding the address with an inline `(int*)` cast at the index site (stays addres
 `opt_common_subs off` and `opt_strength_reduction off` (honoured but byte-identical here --
 these are established-real pragmas, verified by a zero-byte disassembly diff, not 6as typos).
 
-## 6av. The outgoing-arg phi coalesce: a build delta no register-resident construct breaks (2026-07-31, Stage::InitResources)
+## 6av. The outgoing-arg phi coalesce: a build delta no register-resident construct breaks (2026-07-31, dScStage_c::InitResources)
 
 A negative worth recording precisely, because it is cheap to re-grind and about 40 constructs
 have now died on it.
@@ -5975,14 +5975,14 @@ constant's position alone never leaves 7, and the read order alone never leaves 
 ROM does `bl` then `cmp r0,#0`, so it returns a value. A file that needs the real return type
 declares it locally and does not include `decl_common.h`; the generated header was left alone.
 
-## 6ch. A near-miss that is SHORT by exactly one register-to-register copy is dead-assignment elimination, and `#pragma opt_dead_assignments off` is the probe that proves it (_ZN5Stage13InitResourcesEv, div 3, and func_ov007_020bfd70, div 7 -> 0, 2026-09-13, run link100 crack wave 9 lane CRK-K)
+## 6ch. A near-miss that is SHORT by exactly one register-to-register copy is dead-assignment elimination, and `#pragma opt_dead_assignments off` is the probe that proves it (_ZN10dScStage_c13InitResourcesEv, div 3, and func_ov007_020bfd70, div 7 -> 0, 2026-09-13, run link100 crack wave 9 lane CRK-K)
 
 Two rows in one lane showed the same fingerprint: the cartridge's compiler DECLINES a
 coalesce that 2004/b56 takes, and the cost is the copy instruction that the coalesce
 removes. Reading the residue that way is what separates the one that falls from the one
 that does not.
 
-**The probe.** `_ZN5Stage13InitResourcesEv` (arm9 0x0202cc0c, 0xa84) was banked at div 3.
+**The probe.** `_ZN10dScStage_c13InitResourcesEv` (arm9 0x0202cc0c, 0xa84) was banked at div 3.
 Spelt plainly it is 0xa80 -- four bytes short -- and an aligned instruction diff (not
 `match.py`, which refuses to diff on a size mismatch) shows it byte-identical to the ROM
 everywhere except ONE missing word, `mov r1, r2` at +0x584, the join copy of the `bank`
@@ -6032,7 +6032,7 @@ shape, every immediate and every branch were already right; `wallcrack` tags all
     the 0x800 rounding constant    r0    r1
 ```
 
-Every one of those is the same shape as Stage's: the ROM keeps two webs apart where the
+Every one of those is the same shape as dScStage_c's: the ROM keeps two webs apart where the
 draft folds them together. It closed to 0 by reading the depth component and its
 absolute-value fix-up FIRST, ahead of the angle, the table base and both table reads:
 
@@ -6065,7 +6065,7 @@ recorded. A pure `regperm` residue with no `SCHED` words is the permuter's adver
 home ground and it did not move; the declaration rank did, in one move.
 
 **Porting a C++ draft to the permuter, second data point for 6cc.** A plain-C
-translation of `Stage::InitResources` was made byte-identical to the C++ draft, which is
+translation of `dScStage_c::InitResources` was made byte-identical to the C++ draft, which is
 what a permuter run needs. The naive translation loses 0x64 bytes: C folds
 `int v = (x == N) ? 1 : 0;` straight into the branch where C++ materialises
 `moveq/movne/cmp`. 6cc's `_Bool` two-step restores it exactly, at all ten sites --
@@ -6076,7 +6076,7 @@ missing instruction shifts every later pc-relative offset, so the base scored 5,
 body one word from exact.
 
 **Addendum (2026-09-13, run link100 wave 12 lane W12-6).** The missing copy on
-`_ZN5Stage13InitResourcesEv` was not a coalesce the cartridge's compiler declined. r1 had not
+`_ZN10dScStage_c13InitResourcesEv` was not a coalesce the cartridge's compiler declined. r1 had not
 died at +0x520: `GetSoundGroupID` takes two arguments (src/GetSoundGroupID.c) and the ROM passes
 the area byte still in r1 as the second one, which the draft's one-argument declaration had
 dropped. With the honest declaration the bank default takes r2 and the join copy `mov r1,r2`
@@ -6781,7 +6781,7 @@ same way. Eighteen are already byte-exact and always were -- the HAND-ASM PRIMIT
 which carry the banner as a policy marker under the 09-09 ruling -- and the remaining eleven
 keep their residue exactly (func_02009e70 96, `dScStarSel_c::Behavior` 11,
 func_ov015_021114f0 8, func_ov007_020bfd70 7, `Model::LoadCompressedTextureToVram` 5,
-`Stage::InitResources` 4, func_ov075_0211afb0 4, `daEykn_c::InitResources` 3, `OAM::Render` 2,
+`dScStage_c::InitResources` 4, func_ov075_0211afb0 4, `daEykn_c::InitResources` 3, `OAM::Render` 2,
 func_0202ffec 2). Do not go looking for a second free match here; there is one, and this
 was it.
 
@@ -6803,7 +6803,7 @@ second section or change the size. The file therefore enrolls as `rombytes`, not
 link time.
 
 **Addendum (2026-09-13, run link100 wave 12).** Two rows in the list above have since matched,
-neither by a flag: `Stage::InitResources` (a callee's definition takes a second argument, 6cy)
+neither by a flag: `dScStage_c::InitResources` (a callee's definition takes a second argument, 6cy)
 and `daEykn_c::InitResources` (a callee takes the actor, 6cx addendum). Both were declaration defects
 of the 6cx class; the flag reading of the remaining rows stands.
 
@@ -7695,9 +7695,9 @@ moves, to 27), `scheduling off` (ignored), the -proc arm9 family, -O4,s/-O3,p/-O
 -1, flag/mode declaration positions under the volatile chain, and a struct overlay at
 ptr+0x4000 with plain or bitfield members.
 
-## 6cy. A "dead mov" residue can be an argument the caller really passes: check every callee's DEFINITION, not its declaration, before banking a 6bs residue (Stage::InitResources MATCHED, div 3 -> 0, 2026-09-13, run link100 wave 12 lane W12-6)
+## 6cy. A "dead mov" residue can be an argument the caller really passes: check every callee's DEFINITION, not its declaration, before banking a 6bs residue (dScStage_c::InitResources MATCHED, div 3 -> 0, 2026-09-13, run link100 wave 12 lane W12-6)
 
-Stage::InitResources (arm9 0x0202cc0c, 0xa84) sat one word short for three campaigns (6av, 6bs,
+dScStage_c::InitResources (arm9 0x0202cc0c, 0xa84) sat one word short for three campaigns (6av, 6bs,
 CRK-K in 6ch: ~1,500 cells, the full pragma vocabulary, the permuter). Spelt plainly the function
 is 0xa80 and byte-identical to the ROM except the ROM's `mov r1,r2` at +0x584, the join copy of
 the bank phi web into the second argument register of Sound::LoadGroupAndSetBank; 2004/b56

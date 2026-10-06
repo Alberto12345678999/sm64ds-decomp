@@ -13,7 +13,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "dExtCommonModel_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 #include "math/Matrix.h"
@@ -59,10 +59,10 @@ struct daCoin_c : dActor_c {
        dExtCommonModel_c's D1 at +0x114 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */
     dExtCommonModel_c mCommonModel2;            /* 0x114 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x150 -- a relocation the ROM build
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x150 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */
-    ShadowModel mShadowModel;            /* 0x150 */
+    dExtShadowModel_c mShadowModel;            /* 0x150 */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x178 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */

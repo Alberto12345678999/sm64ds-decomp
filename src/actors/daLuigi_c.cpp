@@ -125,7 +125,7 @@ void Vec3_Asr(Vec3 *dst, Vec3 *src, int shift);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 
 /* Fix12<int> by value. The method form homes that argument on the stack. */
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(dActor_c *self, ShadowModel *shadow, Matrix4x3 *mat, int radius, int depth, unsigned char opacity);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mat, int radius, int depth, unsigned char opacity);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *model, BCA_File *file, int flags, int speed, unsigned short start);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequence *seq, BTP_File *file, int flags, int speed, unsigned short start);
 }
@@ -198,7 +198,7 @@ int daLuigi_c::Behavior()
         (this->*mState->execute)(player);
     Matrix4x3_FromTranslation(&mShadowMatrix, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
     func_ov002_020e4374((char *)player, &depth, &radius);
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMatrix, radius, depth, kShadowOpacity);
     /* dCamera_c::pad_114. No named field; the store is the actor pointer. */
     *(daLuigi_c **)((char *)data_0209f318 + 0x114) = this;

@@ -1791,7 +1791,6 @@ extern "C" {
 int Player::func_ov002_020bfa74()
 {
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
-    extern unsigned int func_0203ad54(void*);
     extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
     extern s16 Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
     extern s32 Vec3_HorzLen(const Vector3 *v);
@@ -1829,7 +1828,7 @@ int Player::func_ov002_020bfa74()
         for (i = 0; i < n; i++) {
             path.GetNode(nodes[i], i);
         }
-        idx = (u8)func_0203ad54(&path);
+        idx = (u8)path.GetUnk004();
         if (idx >= 4) idx = 1;
         horz = Vec3_HorzAngle(&nodes[0], &nodes[1]);
         vert = Vec3_VertAngle(&nodes[0], &nodes[1]);
@@ -1973,7 +1972,7 @@ int func_ov002_020c0108(char *self, int p1)
     extern void _ZN7PathPtr6FromIDEj(void*, u32 id);
     extern int _ZNK7PathPtr8NumNodesEv(void*);
     extern void _ZNK7PathPtr7GetNodeER7Vector3j(void*, void*, u32 idx);
-    extern u32 func_0203ad54(void*);
+    extern u32 _ZNK7PathPtr9GetUnk004Ev(void*);
     extern int Vec3_HorzAngle(const Vec3i *v0, const Vec3i *v1);
     extern int Vec3_VertAngle(const Vec3i *v1, const Vec3i *v0);
     extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
@@ -2007,7 +2006,7 @@ int func_ov002_020c0108(char *self, int p1)
             _ZNK7PathPtr7GetNodeER7Vector3j(&path, &nodes[i], i);
         }
 
-        idx = func_0203ad54((unsigned char **)&path) & 0xff;
+        idx = _ZNK7PathPtr9GetUnk004Ev((unsigned char **)&path) & 0xff;
         if ((u32)idx >= 4)
             idx = 1;
 

@@ -53,7 +53,7 @@ dScDSMT_c::graphCallback_c	MISSING	include\dScDSMT_c.h  [alias: header uses pre-
 dScEntry_c::graphCallback_c	MISSING	include\dScEntry_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	ov075	0
 dScMB_c::graphCallback_c	MISSING	include\dScMB_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	arm9	0
 dScMgBase_c::graphCallback_c	MISSING	include\dScMgBase_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	ov004	0
-dScStage_c::graphCallback_c	MISSING	include\Stage.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0		0
+dScStage_c::graphCallback_c	MISSING	include\dScStage_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0		0
 dBgCh_Actr	DONE	include\dBgCh_Actr.h	dBgCh	0	arm9	18
 dBgCh_Gnd	DONE	include\dBgCh_Gnd.h	dBgPi	0	arm9	5
 dBgCh_Lin	DONE	include\dBgCh_Lin.h	dM3dGLin	0	arm9	6
@@ -196,7 +196,7 @@ dScEntry_c	DONE	include\dScEntry_c.h	dScene_c	0	ov075	14
 dScGameOver_c	DONE	include\dScGameOver_c.h	dScene_c	0	ov003	7
 dScMB_c	DONE	include\dScMB_c.h	dScene_c	0	arm9	9
 dScMiniGm_c	DONE	include\dScMiniGm_c.h	dScene_c	0	ov005	7
-dScStage_c	DONE	include\Stage.h  [alias: header uses pre-rename name]	dScene_c	0	arm9;ov002	43
+dScStage_c	DONE	include\dScStage_c.h  [alias: header uses pre-rename name]	dScene_c	0	arm9;ov002	43
 dScStarSel_c	DONE	include\dScStarSel_c.h	dScene_c	0	ov003	7
 dScTitle_c	DONE	include\dScTitle_c.h	dScene_c	0	ov003	7
 dCamera_c	DONE	include\dCamera_c.h  [alias: header uses pre-rename name]	dView_c	0	arm9	14

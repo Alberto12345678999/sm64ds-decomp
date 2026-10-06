@@ -67,13 +67,13 @@ void *_ZN8dActor_cC2Ev(void *self);
 void *_ZN5ModelC1Ev(void *self);
 void *_ZN10dCcAcPos_cC1Ev(void *self);
 void *_ZN7PathPtrC1Ev(void *self);
-void *_ZN11ShadowModelC1Ev(void *self);
+void *_ZN17dExtShadowModel_cC1Ev(void *self);
 
 /* ABI seams: both take Fix12<int> by value. */
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset,
     Fix12i radius, Fix12i height, u32 flags, u32 vulnFlags);
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int x, int y, int z, unsigned int flags);
 
 u16 DecIfAbove0_Short(u16 *timer);
@@ -102,7 +102,7 @@ extern "C" daObjWlPolelift_c *daObjWlPolelift_c_classInit()
         _ZN5ModelC1Ev(&actor->model);
         _ZN10dCcAcPos_cC1Ev(&actor->clsn);
         _ZN7PathPtrC1Ev(&actor->path);
-        _ZN11ShadowModelC1Ev(&actor->shadow);
+        _ZN17dExtShadowModel_cC1Ev(&actor->shadow);
     }
     return actor;
 }
@@ -252,13 +252,13 @@ extern "C" void func_ov026_021112a4(daObjWlPolelift_c *actor)
 
 // @symbol func_ov026_02111234
 /* File-local helper: copy the model matrix into the drop-shadow matrix and
- * hand the owned ShadowModel to dActor_c::DropShadowScaleXYZ. */
+ * hand the owned dExtShadowModel_c to dActor_c::DropShadowScaleXYZ. */
 extern "C" void func_ov026_02111234(daObjWlPolelift_c *actor)
 {
     char *c = (char *)actor;
     *(struct Matrix4x3 *)(c + 0x1b0) = *(struct Matrix4x3 *)(c + 0xf0);
     *(int *)(c + 0x1d8) = *(int *)(c + 0x1e0) >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         c, c + 0x188, c + 0x1b0, 0x64000, 0xc8000, 0x64000, 0xf);
 }
 

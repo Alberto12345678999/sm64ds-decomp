@@ -20,7 +20,7 @@ int *daKpaFire_c_classInit(void)
         p[0] = (int)_ZTV11daKpaFire_c;
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x110);
         _ZN7dCcAc_cC1Ev((char *)p + 0x2d0);
-        _ZN11ShadowModelC1Ev((char *)p + 0x304);
+        _ZN17dExtShadowModel_cC1Ev((char *)p + 0x304);
     }
     return p;
 }

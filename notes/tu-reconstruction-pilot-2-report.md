@@ -32,7 +32,7 @@ sources under `src/` were the sole enrolled owners of
 ```python
 TU ov002/LevelObjects
 
-MATCH  Stage::LoadClsnAndObjects   0x020fe190  size 0x1ac  relocs 19
+MATCH  dScStage_c::LoadClsnAndObjects   0x020fe190  size 0x1ac  relocs 19
 MATCH  LoadObjects                 0x020fe33c  size 0x090  relocs  2
 MATCH  LoadStarCameraObjects       0x020fe3cc  size 0x018  relocs  1
 MATCH  LoadUnusedType13Objects     0x020fe3e4  size 0x014  relocs  1
@@ -184,14 +184,14 @@ Fifteen entries, fifteen targets, all inside the span, nothing else. **Correctio
 (adversarial review):** the claim that those fifteen relocations are the *only*
 references into the span was checked against the full reloc sweep and is off by
 three — there are eighteen: the fifteen table loads, two intra-span calls to
-`LoadObjects` (both from inside `Stage::LoadClsnAndObjects`, so "one caller"
+`LoadObjects` (both from inside `dScStage_c::LoadClsnAndObjects`, so "one caller"
 still holds), and one external call from arm9 `0x0202d2b8` into the TU's public
-entry point, `Stage::LoadClsnAndObjects` itself. All three extra references land
+entry point, `dScStage_c::LoadClsnAndObjects` itself. All three extra references land
 *inside* the boundary already drawn or call *into* it from outside in the
 expected direction — none of them contradicts the boundary, they support it —
 but the "only fifteen" sentence as originally written was wrong and is corrected
 here rather than left standing. `LoadObjects` — which indexes that table — is
-referenced by exactly one function in the whole ROM: `Stage::LoadClsnAndObjects`,
+referenced by exactly one function in the whole ROM: `dScStage_c::LoadClsnAndObjects`,
 immediately below it in address order.
 
 **Both ends are hard.** `_ZN8dMeter_cC1Ev` ends exactly at `0x020fe190` and is the
@@ -254,7 +254,7 @@ Strict reversal, third independent confirmation.
 ### 3.2 On the real TU — and the reversal is evidence, not just mechanics
 
 The file is written with `LoadSimpleObjects` (highest ROM address) first and
-`Stage::LoadClsnAndObjects` (lowest) last, and the emitted order comes out as
+`dScStage_c::LoadClsnAndObjects` (lowest) last, and the emitted order comes out as
 ordinals 0..16 in exact ROM address order, with **no exceptions**. Unlike pilot
 #1 there is no destructor variant group to break the rule inside a definition,
 and no vague-linkage class body trailing the object — the only two extras are
@@ -272,7 +272,7 @@ compiled section order = ROM address order = reverse of SOURCE order
 
 Read that way the file is textbook define-before-use: the fifteen category
 loaders, then `LoadObjects` which dispatches to all fifteen, then
-`Stage::LoadClsnAndObjects`, `LoadObjects`' only caller. And after
+`dScStage_c::LoadClsnAndObjects`, `LoadObjects`' only caller. And after
 `LoadSimpleObjects` the remaining fourteen fall in **ascending handler-table
 index** — `0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14` — with only index 5
 hoisted to the front.
@@ -363,21 +363,21 @@ here.
 `decl_common.h` (line 2116) declares `extern void func_0203accc(int);`.
 `src/_Z19LoadPathNodeObjects...cpp` declares
 `extern "C" void func_0203accc(void *entries, int areaID, u32 param);` and calls
-it with three arguments. `Stage::LoadClsnAndObjects` includes `decl_common.h` and
+it with three arguments. `dScStage_c::LoadClsnAndObjects` includes `decl_common.h` and
 calls it with one. Two `extern "C"` declarations of one symbol with different
 arity cannot coexist in a translation unit, and no cast reconciles them.
 
 The ROM settles it. Disassembling both call sites:
 
 ```arm
-Stage::LoadClsnAndObjects        LoadPathNodeObjects (0x10, the whole function)
+dScStage_c::LoadClsnAndObjects        LoadPathNodeObjects (0x10, the whole function)
   mov r0, #0                       ldr ip, [pc, #4]
   bl  func_0203accc                ldr r0, [r0, #4]
                                    bx  ip
                                    .word func_0203accc
 ```
 
-`Stage` never sets `r1`/`r2`, so a three-argument declaration there costs two
+`dScStage_c` never sets `r1`/`r2`, so a three-argument declaration there costs two
 extra instructions and breaks the byte match. `LoadPathNodeObjects` is a tail
 call that passes `r1`/`r2` through **by accident of the ABI, not by intent** —
 the same four instructions come out whether the callee is declared to take them
@@ -386,7 +386,7 @@ call sites, and the three-argument spelling was an inference from the tail-call
 shape that the other caller contradicts.
 
 Resolved to `func_0203accc((int)tbl.entries)`. Byte-free — `LoadPathNodeObjects`
-is still `0x10` and `Stage::LoadClsnAndObjects` still `0x1ac`.
+is still `0x10` and `dScStage_c::LoadClsnAndObjects` still `0x1ac`.
 
 **This is the interesting class of finding for the workstream.** Per-function
 compilation lets two files hold mutually exclusive beliefs about a ROM symbol
@@ -412,23 +412,23 @@ long, because `areaID` arrives as a full-word `int`. So `LoadEntranceObjects`
 moves *off* the real method onto the alias — measured byte-free at `0x1e4`.
 
 The same collision exists for `ActorDerived::Spawn` and resolves the other way:
-`include/ActorDerived.h` arrives transitively through `Stage.h` → `Scene.h`, and
+`include/ActorDerived.h` arrives transitively through `dScStage_c.h` → `Scene.h`, and
 the real static method costs nothing, so both call sites use it and the
-hand-spelled alias in `Stage`'s legacy file is dropped.
+hand-spelled alias in `dScStage_c`'s legacy file is dropped.
 
 ### 5.4 CONFLICT — [data_0209caa0](../config/arm9/symbols.txt)'s element type
 
-`Stage::LoadClsnAndObjects` declared `extern int data_0209caa0[]` and reads
+`dScStage_c::LoadClsnAndObjects` declared `extern int data_0209caa0[]` and reads
 `data_0209caa0[2] & 0x80`; `LoadEntranceObjects` declared `extern u8
 data_0209caa0[]` and reads `data_0209caa0[0x41]`. Both cannot be the element
 type. The byte view wins because it is the finer one — index `0x41` is not
-expressible as an `int` index — and `Stage`'s word read becomes an explicit
+expressible as an `int` index — and `dScStage_c`'s word read becomes an explicit
 `((int *)data_0209caa0)[2]`, which is what the wider declaration was doing
 implicitly. Byte-free on both.
 
 ### 5.5 CONFLICT — [data_0209f5c0](../config/arm9/symbols.txt)'s type
 
-`ActorBase *` (Stage) vs `void *` with a cast back to `ActorBase *`
+`ActorBase *` (dScStage_c) vs `void *` with a cast back to `ActorBase *`
 (`LoadEntranceObjects`). `ActorBase *` is the real type — it is the parent handed
 to `ActorDerived::Spawn` — so the cast disappears. Byte-free.
 
@@ -456,23 +456,23 @@ an existing type:
 * `LVL_Overlay_Layout` — `LVL_Overlay` in the header has **no data members at
   all**, only nested table and record types (that nesting is what makes the
   compiler emit `N11LVL_Overlay8ObjTableE`). The outer object's runtime shape is
-  still unrecovered, and only `Stage::LoadClsnAndObjects` reads it.
+  still unrecovered, and only `dScStage_c::LoadClsnAndObjects` reads it.
 
 ### 5.7 Reconciled with no code change
 
 * **Include sets.** Six different sets across seventeen files reduced to four
-  headers: `decl_common.h`, `LVL_Overlay.h`, `Stage.h`, `MeshColliderBase.h`.
+  headers: `decl_common.h`, `LVL_Overlay.h`, `dScStage_c.h`, `MeshColliderBase.h`.
   The `Matrix4x3` ordering hazard (`common.h` first, flat `s32 m[12]` vs
   `math/Matrix.h`'s `{r, t}`) is not triggered: `decl_common.h` pulls `common.h`
-  first and `Stage.h` → `Model.h` → `math/Matrix.h` stands down on the guard.
+  first and `dScStage_c.h` → `Model.h` → `math/Matrix.h` stands down on the guard.
 * **Language mode.** All seventeen were already `//cpp`. Unlike pilot #1 there is
   no `.c` → C++ transition to measure here.
-* **`_Z11LoadObjects...` by hand.** `Stage::LoadClsnAndObjects` reached
+* **`_Z11LoadObjects...` by hand.** `dScStage_c::LoadClsnAndObjects` reached
   `LoadObjects` through the hand-spelled mangled name because that was the only
   way to reach another file's symbol. In one TU the `extern "C"` declaration of
   that literal name and the C++ definition that mangles to it are the same
   linker symbol, so the alias had to go and the call is now by name.
-* **`Stage::LoadClsnAndObjects` was defined inside `extern "C" { }`** in the
+* **`dScStage_c::LoadClsnAndObjects` was defined inside `extern "C" { }`** in the
   legacy file — inert for a member function, but stated wrongly. Now outside.
 
 ---
@@ -496,7 +496,7 @@ contains no `_Spawn` factory, so the bug's precondition is absent. Nothing here
 confirms or weakens it.
 
 **One inference, flagged rather than buried:** the membership of
-`Stage::LoadClsnAndObjects`. It rests on contiguity, on being `LoadObjects`' only
+`dScStage_c::LoadClsnAndObjects`. It rests on contiguity, on being `LoadObjects`' only
 caller, and on the define-before-use reading — but it is externally linked, so
 nothing *forces* it into this TU the way internal linkage would force a static
 helper. The alternative reading is a one-function TU sandwiched between `dMeter_c`'s

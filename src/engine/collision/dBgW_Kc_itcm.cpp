@@ -44,7 +44,7 @@ void func_020379f4(void *self, int triID, void *info);
 void func_020379c0(void *self, int triID, void *info);
 void func_0203798c(void *self, int triID, void *info);
 void func_0203794c(int *d, int *s);
-void func_020375ec(int *d, int *s);
+
 
 /* The sphere query's AABB expander (0x02037a6c). */
 void func_02037a6c(void *b, s32 x1, s32 y1, s32 z1, s32 x2, s32 y2, s32 z2);
@@ -1214,7 +1214,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
     pos.x = best.x << 6;
     pos.y = best.y << 6;
     pos.z = best.z << 6;
-    func_020375ec((int *) &ray, (int *) &pos);
+    ray.SetClsnPos(pos);
     }
     ray.hasClsn = 1;
     return 1;

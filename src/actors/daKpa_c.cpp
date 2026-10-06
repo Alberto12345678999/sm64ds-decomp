@@ -291,7 +291,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 angZ);
 extern void _ZN9ModelBase12ApplyOpacityEjj(void *self, unsigned int opacity, unsigned int unused);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Vec3_LslInPlace(void *v, int sh);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* self, struct Vector3* v, int f);
 extern void func_ov060_021123a0(void *a, int b);
@@ -328,7 +328,6 @@ extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, unsigned int d);
 extern void _ZN9Animation8SetFlagsEi(void *self, int flags);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void *self);
@@ -533,7 +532,7 @@ int daKpaTail_c::InitResources()
  * dActor_c::mAreaId -- which is why it is read as a signed char and handed straight
  * to dActor_c::Spawn's areaID parameter.
  *
- * The early `return 0` when ShadowModel::InitCylinder fails is the ROM's -- the
+ * The early `return 0` when dExtShadowModel_c::InitCylinder fails is the ROM's -- the
  * only failure path in the function.
  */
 int daKpa_c::InitResources()
@@ -555,7 +554,7 @@ int daKpa_c::InitResources()
     _ZN5Model8LoadFileER13SharedFilePtr(*(SharedFilePtr *)data_ov060_0211b208);
     _ZN5Model8LoadFileER13SharedFilePtr(data_ov089_02132c50);
 
-    if (_ZN11ShadowModel12InitCylinderEv(&this->mShadowModel) == 0)
+    if (this->mShadowModel.InitCylinder() == 0)
         return 0;
 
     /* Same object as the other ~30 call sites, which hand it the base pointer as
@@ -1067,7 +1066,7 @@ skip_angles:
         Vec3_Asr(&v2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v2.x, v2.y, v2.z);
         *(Matrix4x3 *)(c + 0x330) = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, c + 0x308, c + 0x330, 0x140000, 0x64000, 0xf);
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, c + 0x308, c + 0x330, 0x140000, 0x64000, 0xf);
     }
 }
 }

@@ -59,7 +59,7 @@ int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int dist);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, int r, int h, unsigned int a, unsigned int b);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, int r, int h, void *v, int b);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int flags, int speed, unsigned int start);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int radius, int height, unsigned int flags);
 int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, Vector3 *a, int b, Vector3 *e);
 
@@ -639,7 +639,7 @@ extern "C" void func_ov072_021210c4(daPgBby_c *self)
         }
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, &self->mModelAnim.mat4x3, shadowRadius, shadowHeight, 0xf);
 }
 

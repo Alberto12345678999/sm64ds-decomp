@@ -36,7 +36,6 @@ int  func_020397b8(s32 x);
 void _ZN5dBgPcC1Ev(SurfaceInfo *info);
 void _ZN5dBgPcD1Ev(SurfaceInfo *info);
 void func_02037fd4(dBgPi *res, s16 triIdx, SurfaceInfo *info);
-void func_020375ec(dBgCh_Lin *ray, Vector3 *pos);
 u32  func_020396dc(dBgW_Kc *self, KCL_Tri *prism);
 int  _ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b(void *self, SurfaceInfo *surf,
                                                     dBgCh_Lin *ray, int isSteep);
@@ -245,7 +244,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
     pos.x = best.x;
     pos.y = best.y;
     pos.z = best.z;
-    func_020375ec(&ray, &pos);
+    ray.SetClsnPos(pos);
     ray.hasClsn = 1;
     return 1;
 }

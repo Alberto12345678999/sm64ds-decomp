@@ -9,7 +9,7 @@
     "contiguous linker run: 0x2111688..0x21145e0, 44 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daMky_c",
     "module sinit corroboration: 3 sinit(s) / 3 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "fold-lane-c-0929: two loose one-function registry factories, src/d_a_mky_monkey_star.c (MONKEY_STAR, 0x021145e0..0x02114638) and src/d_a_mky_monkey_thief.c (MONKEY_THIEF, 0x02114638..0x02114690), sit immediately after this TU's OnTurnIntoEgg with no gap before the next symbol, __sinit_ov030_0211484c (the module's static initializer at 0x0211484c, outside this .text run); folded in ROM order as `return new daMky_c();` twice -- daMky_c declares no constructor of its own, so the compiler-synthesized default constructor reproduces each loose file's hand-written fBase_c::operator new(972) + dActor_c::dActor_c() + vtable store + ModelAnim/ShadowModel/dCcAc_c/dBgCh_Actr/PathPtr sub-object construction sequence byte-for-byte."
+    "fold-lane-c-0929: two loose one-function registry factories, src/d_a_mky_monkey_star.c (MONKEY_STAR, 0x021145e0..0x02114638) and src/d_a_mky_monkey_thief.c (MONKEY_THIEF, 0x02114638..0x02114690), sit immediately after this TU's OnTurnIntoEgg with no gap before the next symbol, __sinit_ov030_0211484c (the module's static initializer at 0x0211484c, outside this .text run); folded in ROM order as `return new daMky_c();` twice -- daMky_c declares no constructor of its own, so the compiler-synthesized default constructor reproduces each loose file's hand-written fBase_c::operator new(972) + dActor_c::dActor_c() + vtable store + ModelAnim/dExtShadowModel_c/dCcAc_c/dBgCh_Actr/PathPtr sub-object construction sequence byte-for-byte."
   ],
   "sections": [
     {
@@ -553,9 +553,9 @@
       "reason": "Vague-linkage Vector3 destructor. Vector3 carries a user-declared ~Vector3() (include/types.h) and this TU odr-uses several as function locals -- three in func_ov030_02111734 alone. One row however many objects: the emitted symbol is the single vague copy. arm9 owns the kept copy at 0x020072c0, four bytes of bx lr."
     },
     {
-      "symbol": "_ZN7daMky_c21Bundle$846daMky_c_cppD1Ev",
+      "symbol": "_ZN7daMky_c21Bundle$851daMky_c_cppD1Ev",
       "disposition": "deadstrip",
-      "reason": "The implicit destructor of the file-local `struct Bundle` that func_ov030_02112094 declares in its own body -- it holds a Vector3_16 and a Vector3, so the aggregate gets a destructor of its own, and mwccarm names it after the file. The name is file-scoped by construction and exists nowhere in the cartridge, so it is genuinely homeless: a plain deadstrip, not a duplicate of anything. The $724 in the name is a POSITION-DEPENDENT uniquifier, not a stable identity, and not a line number either: this row read _ZN21Bundle$701daMky_c_cppD1Ev until stage 3b added the file-scope declaration region and converted eleven members, at which point the same struct came back as $724 -- and a later 25-line comment edit above it moved nothing. The struct itself is declared inside func_ov030_02112094's body and has not moved in the source at all. Including Player.h, SurfaceInfo.h and dBgCh_Lin.h ahead of it moved the uniquifier from $743 to $805, and hoisting the func_ov030_* methods' block-scope externs to file scope moved it to $816. Including dCamera_c.h ahead of the struct moved it to $828. Any future edit to this TU may renumber it, and the promotion then refuses with `unlicensed function ... has no compiler_only_output policy` until this row is updated. Adding the eight method declarations to include/dBgPi.h moved it to $840. The dCamera_c member declarations on include/dCamera_c.h moved it to $846. Re-read the symbol from verify's output rather than assuming it held."
+      "reason": "The implicit destructor of the file-local `struct Bundle` that func_ov030_02112094 declares in its own body -- it holds a Vector3_16 and a Vector3, so the aggregate gets a destructor of its own, and mwccarm names it after the file. The name is file-scoped by construction and exists nowhere in the cartridge, so it is genuinely homeless: a plain deadstrip, not a duplicate of anything. The $724 in the name is a POSITION-DEPENDENT uniquifier, not a stable identity, and not a line number either: this row read _ZN21Bundle$701daMky_c_cppD1Ev until stage 3b added the file-scope declaration region and converted eleven members, at which point the same struct came back as $724 -- and a later 25-line comment edit above it moved nothing. The struct itself is declared inside func_ov030_02112094's body and has not moved in the source at all. Including Player.h, SurfaceInfo.h and dBgCh_Lin.h ahead of it moved the uniquifier from $743 to $805, and hoisting the func_ov030_* methods' block-scope externs to file scope moved it to $816. Including dCamera_c.h ahead of the struct moved it to $828. Any future edit to this TU may renumber it, and the promotion then refuses with `unlicensed function ... has no compiler_only_output policy` until this row is updated. Adding the eight method declarations to include/dBgPi.h moved it to $840. The batch/maint4 extern normalization moved it to $845, batch/maint5 (folded dBgCh_Lin Set port) moved it to $846, and merging those with the six PathPtr member/static declarations in include/PathPtr.h moved it to $850. The dCamera_c member declarations on include/dCamera_c.h moved it to $851; re-read the symbol from verify's output rather than assuming it held."
     }
   ],
   "verification": {
@@ -570,11 +570,11 @@
       "requested": [
         "_ZN7daMky_cD2Ev",
         "_ZN7Vector3D1Ev",
-        "_ZN7daMky_c21Bundle$846daMky_c_cppD1Ev"
+        "_ZN7daMky_c21Bundle$851daMky_c_cppD1Ev"
       ],
       "deadstripped": [
         "_ZN7Vector3D1Ev",
-        "_ZN7daMky_c21Bundle$846daMky_c_cppD1Ev",
+        "_ZN7daMky_c21Bundle$851daMky_c_cppD1Ev",
         "_ZN7daMky_cD2Ev"
       ],
       "droppedSections": [

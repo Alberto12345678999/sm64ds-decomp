@@ -5,7 +5,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 /* Chuckya (HOLHEI 190) -- ov062/daHolhei_c.
@@ -22,7 +22,7 @@ struct daHolhei_c : dEnemyBase_c {
     /* Behavior calls the PMF at *mState + 8. InitResources enters
        data_ov062_0211dee0 through daHolhei_c_ChangeState. */
     void       *mState;        /* 0x364 */
-    ShadowModel mShadowModel;  /* 0x368 */
+    dExtShadowModel_c mShadowModel;  /* 0x368 */
     /* func_ov062_02116dbc / 02116d28 copy identity here, write pos>>3 into
        the translation, and pass it to DropShadowRadHeight. */
     Matrix4x3   mShadowMtx;    /* 0x390 */

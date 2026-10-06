@@ -3,7 +3,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -46,7 +46,7 @@ struct daPgBby_c : dActor_c {
        step places the penguin in front of it and clears it. */
     Player *mEatingPlayer;          /* 0x0d0 */
     ModelAnim mModelAnim;           /* 0x0d4 */
-    ShadowModel mShadowModel;       /* 0x138 */
+    dExtShadowModel_c mShadowModel;       /* 0x138 */
     dCcAc_c mCylClsn;               /* 0x160 */
     dBgCh_Actr mWithMeshClsn;       /* 0x194 */
     /* Copy of mPosX/Y/Z taken once in InitResources and never written

@@ -94,7 +94,7 @@ typedef char dBgW_KcMbg_size_must_be_0x1c8[sizeof(dBgW_KcMbg) == 0x1c8 ? 1 : -1]
 
 #else
 
-/* The C spelling of the same object, flat -- the arrangement include/ShadowModel.h
+/* The C spelling of the same object, flat -- the arrangement include/dExtShadowModel_c.h
    and include/dBgCh_Actr.h already use, and added here for the same reason they
    have one: ten actor headers that a `.c` translation unit reaches embed a
    dBgW_KcMbg BY VALUE, proved by their own destructors calling _ZN10dBgW_KcMbgD1Ev

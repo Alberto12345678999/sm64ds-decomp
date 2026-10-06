@@ -3,7 +3,7 @@
 
 #include "dActor_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -34,7 +34,7 @@ struct Player;
 struct daPeach_c : dActor_c {
     u8 mPad0d0[0x4];                    /* 0x0d0 */
     ModelAnim mModelAnim;               /* 0x0d4 */
-    ShadowModel mShadowModel;           /* 0x0138 */
+    dExtShadowModel_c mShadowModel;           /* 0x0138 */
     dCcAc_c mCylinder;                  /* 0x0160 */
     dBgCh_Actr mWithMeshClsn;           /* 0x0194 */
 

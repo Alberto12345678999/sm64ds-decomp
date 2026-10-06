@@ -15,11 +15,11 @@ typed-subobject constructor (dBgCh_Actr).
 |---|---|---|
 | `src/_ZN9ModelBaseC2Ev.cpp` | `ModelBase::ModelBase()` | 0x02017150, 0x18 |
 | `src/_ZN5ModelC1Ev.cpp` | `Model::Model()` | 0x02016d58, 0x50 |
-| `src/engine/model/CommonModel.cpp` | `CommonModel::CommonModel()` | 0x02016204, 0x50 |
-| `src/_ZN11ShadowModelC1Ev.cpp` | `ShadowModel::ShadowModel()` | 0x02016068, 0x34 |
-| `src/_ZN7PathPtrC1Ev.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
+| `src/engine/model/dExtCommonModel_c.cpp` | `dExtCommonModel_c::dExtCommonModel_c()` | 0x02016204, 0x50 |
+| `src/engine/model/dExtShadowModel_c.cpp` | `dExtShadowModel_c::dExtShadowModel_c()` | 0x02016068, 0x34 |
+| `src/engine/path/PathPtr.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
 | `src/engine/collision/dM3dGSph.cpp` | `dM3dGSph::dM3dGSph()` | 0x0203ac60, 0x10 |
-| `src/_ZN9dBgCh_LinC1Ev.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |
+| `src/engine/collision/dBgCh_Lin.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |
 | `src/_ZN12dBgCh_SphCrrC1Ev.cpp` | `dBgCh_SphCrr::dBgCh_SphCrr()` | 0x02037d18, 0x6c |
 | `src/engine/collision/dBgCh_Gnd.cpp` | `dBgCh_Gnd::dBgCh_Gnd()` | 0x02037570, 0x40 |
 
@@ -158,7 +158,7 @@ appears and the candidate lands tens of bytes short. Declared-but-not-defined
 in the class body is what makes every derived constructor emit
 `bl _ZN…C…Ev`. This is already how `Model()` was declared in
 `include/Model.h`; this wave added the same declaration to `ModelBase`,
-`CommonModel`, and `ShadowModel`.
+`dExtCommonModel_c`, and `dExtShadowModel_c`.
 
 Risk to check when adding one: every TU that value-constructs the class or a
 derived class changes codegen. In this family every derived constructor was
@@ -188,7 +188,7 @@ hand-spelled externs. It is a **C2**. The evidence, all four callers:
 
 | caller | what it is |
 |---|---|
-| `_ZN11ShadowModelC1Ev` | derived ctor, base-subobject step |
+| `_ZN17dExtShadowModel_cC1Ev` | derived ctor, base-subobject step |
 | `_ZN11CommonModelC1Ev` | derived ctor, base-subobject step |
 | `_ZN5ModelC1Ev` (+8) | derived ctor, base-subobject step |
 | `_ZN5ModelC2Ev` (+8) | derived ctor, base-subobject step |
@@ -224,7 +224,7 @@ a **base subobject** of a derived class:
 |---|---|
 | `_ZN9dCamera_cC1Ev`, `_ZN8dActor_cC1Ev`, `_ZN8dActor_cC2Ev` | derived ctors, base-subobject step |
 | `_ZN8dMeter_cC1Ev`, `_ZN6dMap_cC1Ev` | derived ctors, base-subobject step |
-| `_ZN5StageC3Ev` | allocating ctor folding a base-subobject step (§5c) |
+| `_ZN10dScStage_cC3Ev` | allocating ctor folding a base-subobject step (§5c) |
 | `dScStarSel_c_classInit`, `UnknownVsEntry_Spawn`, `dScBoot_c_classInit`, `func_020352b4` | unnamed C3s: `operator new` → null check → base step → double vptr store |
 | 7 overlay `func_*` placeholders | same Spawn shape in ov003/004/005/007/075 |
 
@@ -300,7 +300,7 @@ Disassembled, all three allocating-labelled functions share one shape:
 
 | label | prologue |
 |---|---|
-| `_ZN5StageC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
+| `_ZN10dScStage_cC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
 | `_ZN6PlayerC3Ev` 0x020e6c0c | same, then `bl` Player's own ctor |
 | `_ZN9dCamera_cC1Ev` 0x0200e444 | same, construction fully inline |
 
@@ -339,7 +339,7 @@ p->T::T();                        -> illegal use of type-name
 ```
 
 So a folded factory is **not writable as real C++ under this toolchain**,
-period. `Camera_Spawn`, `Stage`'s and `Player`'s factories stay hand-written
+period. `Camera_Spawn`, `dScStage_c`'s and `Player`'s factories stay hand-written
 `.c` files — like fBase_c's constructor, a permanent asm-or-C transcription,
 with the reason recorded here so nobody retries the recipe hoping for a
 different answer. What IS recoverable from them is knowledge, not code:

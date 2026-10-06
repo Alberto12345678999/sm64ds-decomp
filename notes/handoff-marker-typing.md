@@ -105,7 +105,7 @@ Do that, per class, byte-verifying each. Then re-run the census and the clean sw
 
 The 29: `BobOmb BooCage daKpa_c daKpaFire_c daObjFl_Puzzle_c daPropeller_Heyho_Fire_c Coffin FlyGuy Goomba
 Koopa daJgm_c daC_Jugem_c daPiano_c MrI MrI_Projectile OneUpMushroom daPeach_c
-RotatingClockHand Scuttlebug daObjTatefuda_c daBgSnmBdy_c daBgSnmHed_c Snufit Spindrift Stage
+RotatingClockHand Scuttlebug daObjTatefuda_c daBgSnmBdy_c daBgSnmHed_c Snufit Spindrift dScStage_c
 daBasabasa_c TtcConveyorBeltLarge WaterBomb daYegg_c`
 
 ## 6. Gates -- run all of them, and know what each cannot see
@@ -155,7 +155,7 @@ to both gates above. **Keep this one closest.**
 - **36 undecided markers**, with reasons in `build/marker_evidence.json`. Honest.
 - **9 "interior to a typed member"** findings -- header self-contradictions, not typing
   questions. Separate fix.
-- **`Stage.unk_874`** -- rests only on a cast through a locally-declared struct.
+- **`dScStage_c.unk_874`** -- rests only on a cast through a locally-declared struct.
 - **`include/G2x.h`** -- describes hardware registers, not an object. Issue **#1148**,
   someone else is on it. Do not type it.
 - **`ModelBase::SetFile` is declared `void`** but the ROM's call sites consume r0, so it

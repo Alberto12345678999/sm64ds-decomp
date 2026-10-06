@@ -46,7 +46,7 @@ void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     void *seq, void *file, int flags, int speed, unsigned short startFrame);
 int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
     void *clipper, void *mat, void *src, int scale, void *dst);
-void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
+void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
     void *shadow, Matrix4x3 *mat, int radius, int height, int depth, unsigned char flags);
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir, void *callback);
@@ -650,7 +650,7 @@ extern "C" void func_ov075_02114cd8(UnknownVsPlayer *p)
     (p->*data_ov075_0211d53c[p->mAnimState].state)();
     p->mModel.Advance();
     p->mTextureSequence.Advance();
-    _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
+    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
         &p->mShadow, &p->mModel.mat4x3, 0x50000, 0x1f4000, 0x50000, 0xf);
 }
 
@@ -904,7 +904,7 @@ int dEntObj_c::CleanupResources()
 int dEntObj_c::Render()
 {
     mModel.Render(0);
-    ShadowModel::RenderAll();
+    dExtShadowModel_c::RenderAll();
     mParticles.Update();
     int i = 0;
     UnknownVsPlayer *player = mPlayers;
@@ -1020,7 +1020,7 @@ int dEntObj_c::InitResources()
     TextureSequence::LoadFile(*(SharedFilePtr*)data_ov075_0211d40c);
 
     _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
-    ShadowModel::CleanAll();
+    dExtShadowModel_c::CleanAll();
 
     mModel.SetFile(*(BMD_File**)((char*)data_ov075_0211d3fc + 4), 1, -1);
 

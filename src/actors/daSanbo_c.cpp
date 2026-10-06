@@ -68,7 +68,7 @@ extern "C" void Matrix4x3_FromTranslation(struct Matrix4x3* m, Fix12i x, Fix12i 
 extern "C" void Matrix4x3_ApplyInPlaceToTranslation(void* m, int x, int y, int z);
 extern "C" void Matrix4x3_ApplyInPlaceToRotationZXYExt(void* m, int x, int y, int z);
 extern "C" void Matrix4x3_FromRotationY(void* m, int angle);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j( void* self, void* sm, void* mtx, Fix12i fx, int t, u32 u);
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j( void* self, void* sm, void* mtx, Fix12i fx, int t, u32 u);
 extern struct Matrix4x3 data_020a0e68;
 extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int, void*);
 extern short Vec3_HorzAngle(const void* a, const void* b);
@@ -609,7 +609,7 @@ void daSanbo_c::func_ov096_02135efc()
             mMatrix.m[10] = mPosY >> 3;
             mMatrix.m[11] = mPosZ >> 3;
 
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 this, &mShadowModel, &mMatrix, 0xa0000, 0x2bc000, 0xf);
             return;
         }
@@ -621,7 +621,7 @@ void daSanbo_c::func_ov096_02135efc()
     mModel.mat4x3.m[11] = (mPosZ + mOffsetZ) >> 3;
 
     if (mNextSegment == 0 || mState == 2 || mState == 5) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &mShadowModel, &mModel.mat4x3, 0x82000, 0x2bc000, 0xf);
     }
 }

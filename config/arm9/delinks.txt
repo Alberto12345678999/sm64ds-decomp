@@ -1253,33 +1253,9 @@ src/_ZN9AnimationC2Ev.cpp:
     complete
     .text start:0x02015d18 end:0x02015d38
 
-src/_ZN11ShadowModel9RenderAllEv.cpp:
+src/engine/model/dExtShadowModel_c.cpp:
     complete
-    .text start:0x02015d38 end:0x02015e14
-
-src/_ZN11ShadowModel8CleanAllEv.cpp:
-    complete
-    .text start:0x02015e14 end:0x02015e64
-
-src/_ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j.c:
-    complete
-    .text start:0x02015e64 end:0x02015ebc
-
-src/_ZN11ShadowModel9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02015ef4 end:0x02015f80
-
-src/_ZN11ShadowModelD0Ev.cpp:
-    complete
-    .text start:0x02015f80 end:0x02015ff8
-
-src/_ZN11ShadowModelD1Ev.cpp:
-    complete
-    .text start:0x02015ff8 end:0x02016068
-
-src/_ZN11ShadowModelC1Ev.cpp:
-    complete
-    .text start:0x02016068 end:0x0201609c
+    .text start:0x02015d38 end:0x0201609c
 
 src/engine/model/dExtCommonModel_c.cpp:
     complete
@@ -2256,7 +2232,7 @@ src/engine/message/func_0201cb2c.c:
     complete
     .text start:0x0201cb2c end:0x0201cb7c
 
-src/_ZN5Stage13UpdateMessageEv.cpp:
+src/_ZN10dScStage_c13UpdateMessageEv.cpp:
     complete
     .text start:0x0201cb7c end:0x0201cd08
 
@@ -2771,74 +2747,14 @@ src/d_s_boot.c:
     complete
     .text start:0x02023624 end:0x02023688
 
-src/_ZN5StageD1Ev.cpp:
+src/actors/dScStage_c.cpp:
     complete
-    .text start:0x02023688 end:0x020236f0
-
-src/_ZN5StageD0Ev.cpp:
-    complete
-    .text start:0x020236f0 end:0x0202376c
-
-src/_ZN5Stage9VE_UpdateEv.cpp:
-    complete
-    .text start:0x0202376c end:0x02023a80
-
-src/_ZN5Stage7VE_InitEv.cpp:
-    complete
-    .text start:0x02023a80 end:0x02023be0
-
-src/_ZN5Stage20RenderBouncingArrowsEv.cpp:
-    complete
-    .text start:0x02023be0 end:0x02023db8
-
-src/_ZN5Stage9LC_RenderEv.cpp:
-    complete
-    .text start:0x02023db8 end:0x020242c8
-
-src/_ZN5Stage9LC_UpdateEv.cpp:
-    complete
-    .text start:0x020242c8 end:0x02024c70
-
-src/_ZN5Stage16CheckCameraInputEv.cpp:
-    complete
-    .text start:0x02024c70 end:0x020250d0
-
-src/_ZN5Stage12RenderNumberEhiibi.cpp:
-    complete
-    .text start:0x020250d0 end:0x020251d0
-
-src/_ZN5Stage9PS_RenderEv.cpp:
-    complete
-    .text start:0x020251d0 end:0x02025d20
-
-src/_ZN5Stage25PS_UpdateOkAndBackButtonsEb.cpp:
-    complete
-    .text start:0x02025d20 end:0x02025e74
-
-src/_ZN5Stage17PS_UpdateSaveMenuEb.cpp:
-    complete
-    .text start:0x02025e74 end:0x02025f60
-
-src/_ZN5Stage20PS_UpdateOptionsMenuEv.cpp:
-    complete
-    .text start:0x02025f60 end:0x02026148
-
-src/_ZN5Stage17UpdateMenuButtonsEb.cpp:
-    complete
-    .text start:0x02026148 end:0x02026290
-
-src/_ZN5Stage10PS_CleanupEv.cpp:
-    complete
-    .text start:0x02026290 end:0x0202635c
-
-src/_ZN5Stage9PS_UpdateEv.cpp:
-    complete
-    .text start:0x0202635c end:0x02029408
+    .text start:0x02023688 end:0x02029408
 
 src/func_02029408.c:
     .text start:0x02029408 end:0x0202942c
 
-src/_ZN5Stage7PS_InitEv.cpp:
+src/_ZN10dScStage_c7PS_InitEv.cpp:
     complete
     .text start:0x0202942c end:0x02029600
 
@@ -2850,11 +2766,11 @@ src/IsButtonInputValid.c:
     complete
     .text start:0x02029654 end:0x020297f4
 
-src/_ZN5Stage14GraphCallback2Ev.cpp:
+src/_ZN10dScStage_c14GraphCallback2Ev.cpp:
     complete
     .text start:0x020297f4 end:0x02029838
 
-src/_ZN5Stage14GraphCallback1Ev.cpp:
+src/_ZN10dScStage_c14GraphCallback1Ev.cpp:
     complete
     .text start:0x02029838 end:0x02029854
 
@@ -2934,7 +2850,7 @@ src/Event.cpp:
     complete
     .text start:0x02029ea4 end:0x02029ef8
 
-src/_ZN5Stage19RenderVsModeNewStarEv.cpp:
+src/_ZN10dScStage_c19RenderVsModeNewStarEv.cpp:
     complete
     .text start:0x02029ef8 end:0x0202a130
 
@@ -2942,7 +2858,7 @@ src/FUN_0202a130.c:
     complete
     .text start:0x0202a130 end:0x0202a168
 
-src/_ZN5Stage21RenderVsModeCountdownEv.cpp:
+src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp:
     complete
     .text start:0x0202a168 end:0x0202a55c
 
@@ -2954,7 +2870,7 @@ src/GiveVsStars.c:
     complete
     .text start:0x0202a5ac end:0x0202a5c4
 
-src/_ZN5Stage15IsPauseDisabledEv.cpp:
+src/_ZN10dScStage_c15IsPauseDisabledEv.cpp:
     complete
     .text start:0x0202a5c4 end:0x0202a608
 
@@ -3022,7 +2938,7 @@ src/func_0202a8e0.c:
     complete
     .text start:0x0202a8e0 end:0x0202a93c
 
-src/_ZN5Stage11GetSkyboxIDEv.cpp:
+src/_ZN10dScStage_c11GetSkyboxIDEv.cpp:
     complete
     .text start:0x0202a93c end:0x0202a958
 
@@ -3142,15 +3058,15 @@ src/func_0202b0e0.c:
     complete
     .text start:0x0202b0e0 end:0x0202b0fc
 
-src/_ZN5Stage10LoadSkyboxEv.cpp:
+src/_ZN10dScStage_c10LoadSkyboxEv.cpp:
     complete
     .text start:0x0202b0fc end:0x0202b164
 
-src/_ZN5Stage22RenderModelTransparentEv.cpp:
+src/_ZN10dScStage_c22RenderModelTransparentEv.cpp:
     complete
     .text start:0x0202b164 end:0x0202b268
 
-src/_ZN5Stage11RenderModelEv.cpp:
+src/_ZN10dScStage_c11RenderModelEv.cpp:
     complete
     .text start:0x0202b268 end:0x0202b3d8
 
@@ -3158,39 +3074,39 @@ src/CopyTexPalFromLevelModel.c:
     complete
     .text start:0x0202b3d8 end:0x0202b534
 
-src/_ZN5Stage23LoadTextureTransformersEv.cpp:
+src/_ZN10dScStage_c23LoadTextureTransformersEv.cpp:
     complete
     .text start:0x0202b534 end:0x0202b5ec
 
-src/_ZN5Stage9LoadModelEv.cpp:
+src/_ZN10dScStage_c9LoadModelEv.cpp:
     complete
     .text start:0x0202b5ec end:0x0202b67c
 
-src/_ZN5Stage9RenderFogEv.cpp:
+src/_ZN10dScStage_c9RenderFogEv.cpp:
     complete
     .text start:0x0202b67c end:0x0202b710
 
-src/_ZN5Stage7LoadFogEv.cpp:
+src/_ZN10dScStage_c7LoadFogEv.cpp:
     complete
     .text start:0x0202b710 end:0x0202b818
 
-src/_ZN5Stage8CanPauseEv.cpp:
+src/_ZN10dScStage_c8CanPauseEv.cpp:
     complete
     .text start:0x0202b818 end:0x0202b8a0
 
-src/_ZN5Stage16OnPendingDestroyEv.cpp:
+src/_ZN10dScStage_c16OnPendingDestroyEv.cpp:
     complete
     .text start:0x0202b8a0 end:0x0202b8a4
 
-src/_ZN5Stage6RenderEv.cpp:
+src/_ZN10dScStage_c6RenderEv.cpp:
     complete
     .text start:0x0202b8a4 end:0x0202bbbc
 
-src/_ZN5Stage8BehaviorEv.cpp:
+src/_ZN10dScStage_c8BehaviorEv.cpp:
     complete
     .text start:0x0202bbbc end:0x0202c2ac
 
-src/_ZN5Stage10CheckInputEv.cpp:
+src/_ZN10dScStage_c10CheckInputEv.cpp:
     complete
     .text start:0x0202c2ac end:0x0202c830
 
@@ -3206,19 +3122,19 @@ src/ResetInput.c:
     complete
     .text start:0x0202c8f8 end:0x0202c9a8
 
-src/_ZN5Stage16CleanupResourcesEv.cpp:
+src/_ZN10dScStage_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x0202c9a8 end:0x0202cc0c
 
-src/_ZN5Stage13InitResourcesEv.cpp:
+src/_ZN10dScStage_c13InitResourcesEv.cpp:
     complete
     .text start:0x0202cc0c end:0x0202d690
 
-src/_ZN5Stage14LoadGraphics2DEbi.cpp:
+src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp:
     complete
     .text start:0x0202d690 end:0x0202ddc8
 
-src/_ZN5Stage19BeforeInitResourcesEv.cpp:
+src/_ZN10dScStage_c19BeforeInitResourcesEv.cpp:
     complete
     .text start:0x0202ddc8 end:0x0202ddd4
 
@@ -3694,41 +3610,10 @@ src/engine/collision/dBgCh_Gnd.cpp:
     .text start:0x0203748c end:0x020375d0
     .data start:0x02099224 end:0x0209927c
 
-src/_ZN9dBgCh_Lin10GetClsnPosEv.cpp:
+src/engine/collision/dBgCh_Lin.cpp:
     complete
-    .text start:0x020375d0 end:0x020375ec
-
-src/func_020375ec.c:
-    complete
-    .text start:0x020375ec end:0x02037608
-
-src/func_02037608.c:
-    complete
-    .text start:0x02037608 end:0x02037670
-
-src/_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c.cpp:
-    complete
-    .text start:0x02037670 end:0x02037710
-
-src/_ZN9dBgCh_LinD0Ev.cpp:
-    complete
-    .text start:0x02037710 end:0x02037764
-
-src/_ZN9dBgCh_LinD1Ev.cpp:
-    complete
-    .text start:0x02037764 end:0x020377b0
-
-src/_ZN9dBgCh_LinC1Ev.cpp:
-    complete
-    .text start:0x020377b0 end:0x0203780c
-
-src/_ZThn16_N9dBgCh_LinD0Ev.cpp:
-    complete
-    .text start:0x0203780c end:0x0203781c
-
-src/_ZThn16_N9dBgCh_LinD1Ev.cpp:
-    complete
-    .text start:0x0203781c end:0x0203782c
+    .text start:0x020375d0 end:0x0203782c
+    .data start:0x02099290 end:0x020992e4
 
 src/func_0203782c.c:
     complete
@@ -3998,7 +3883,7 @@ src/func_020391f0.c:
     complete
     .text start:0x020391f0 end:0x020391f4
 
-src/_ZN5Stage18ResetMeshCollidersEv.cpp:
+src/_ZN10dScStage_c18ResetMeshCollidersEv.cpp:
     complete
     .text start:0x020391f4 end:0x02039218
 
@@ -4162,49 +4047,9 @@ src/engine/collision/dM3dGSph.cpp:
     complete
     .text start:0x0203abb0 end:0x0203ac80
 
-src/_ZN7PathPtr6FromIDEj.cpp:
+src/engine/path/PathPtr.cpp:
     complete
-    .text start:0x0203ac80 end:0x0203aca0
-
-src/func_0203aca0.c:
-    complete
-    .text start:0x0203aca0 end:0x0203acbc
-
-src/func_0203acbc.c:
-    complete
-    .text start:0x0203acbc end:0x0203accc
-
-src/func_0203accc.c:
-    complete
-    .text start:0x0203accc end:0x0203acdc
-
-src/_ZNK7PathPtr7GetNodeER7Vector3j.cpp:
-    complete
-    .text start:0x0203acdc end:0x0203ad34
-
-src/_ZNK7PathPtr5LoopsEv.cpp:
-    complete
-    .text start:0x0203ad34 end:0x0203ad44
-
-src/func_0203ad44.c:
-    complete
-    .text start:0x0203ad44 end:0x0203ad54
-
-src/func_0203ad54.c:
-    complete
-    .text start:0x0203ad54 end:0x0203ad60
-
-src/_ZNK7PathPtr8NumNodesEv.cpp:
-    complete
-    .text start:0x0203ad60 end:0x0203ad6c
-
-src/func_0203ad6c.c:
-    complete
-    .text start:0x0203ad6c end:0x0203ad74
-
-src/_ZN7PathPtrC1Ev.cpp:
-    complete
-    .text start:0x0203ad74 end:0x0203ad84
+    .text start:0x0203ac80 end:0x0203ad84
 
 src/func_0203ad84.c:
     complete
@@ -6989,21 +6834,9 @@ src/func_020554bc.c:
     complete
     .text start:0x020554bc end:0x02055574
 
-src/_ZN3G3X13SetClearColorEtiiib.cpp:
+src/engine/gx/G3X.cpp:
     complete
-    .text start:0x02055574 end:0x020555a4
-
-src/func_020555a4.c:
-    complete
-    .text start:0x020555a4 end:0x020555bc
-
-src/_ZN3G3X11SetFogTableEPv.cpp:
-    complete
-    .text start:0x020555bc end:0x020555d0
-
-src/_ZN3G3X6SetFogEbiii.cpp:
-    complete
-    .text start:0x020555d0 end:0x02055624
+    .text start:0x02055574 end:0x02055624
 
 src/func_02055624.c:
     complete
@@ -7149,33 +6982,9 @@ src/_ZN3GXS10LoadBGPlttEPKvjj.cpp:
     complete
     .text start:0x02056808 end:0x02056870
 
-src/_ZN2GX10LoadBGPlttEPKvjj.cpp:
+src/engine/gx/GX.cpp:
     complete
-    .text start:0x02056870 end:0x020568cc
-
-src/_ZN2GX14EndLoadTexPlttEv.cpp:
-    complete
-    .text start:0x020568cc end:0x02056924
-
-src/_ZN2GX11LoadTexPlttEPKvjj.cpp:
-    complete
-    .text start:0x02056924 end:0x02056998
-
-src/_ZN2GX16BeginLoadTexPlttEv.cpp:
-    complete
-    .text start:0x02056998 end:0x020569e0
-
-src/_ZN2GX10EndLoadTexEv.cpp:
-    complete
-    .text start:0x020569e0 end:0x02056a50
-
-src/_ZN2GX7LoadTexEPKvjj.cpp:
-    complete
-    .text start:0x02056a50 end:0x02056b9c
-
-src/_ZN2GX12BeginLoadTexEv.cpp:
-    complete
-    .text start:0x02056b9c end:0x02056c1c
+    .text start:0x02056870 end:0x02056c1c
 
 src/Copy48BytesFixed.c:
     complete
@@ -7487,33 +7296,9 @@ src/func_02058b9c.c:
     complete
     .text start:0x02058b9c end:0x02058bb0
 
-src/_ZN4CP1514FlushDataCacheEv.cpp:
+src/engine/cp15/CP15.cpp:
     complete
-    .text start:0x02058bb0 end:0x02058bdc
-
-src/_ZN4CP1527FlushAndInvalidateDataCacheEv.cpp:
-    complete
-    .text start:0x02058bdc end:0x02058c08
-
-src/_ZN4CP1519InvalidateDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c08 end:0x02058c24
-
-src/_ZN4CP1514FlushDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c24 end:0x02058c40
-
-src/_ZN4CP1527FlushAndInvalidateDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c40 end:0x02058c5c
-
-src/_ZN4CP1516DrainWriteBufferEv.cpp:
-    complete
-    .text start:0x02058c5c end:0x02058c68
-
-src/_ZN4CP1526InvalidateInstructionCacheEjj.cpp:
-    complete
-    .text start:0x02058c68 end:0x02058c84
+    .text start:0x02058bb0 end:0x02058c84
 
 src/func_02058c84.c:
     complete

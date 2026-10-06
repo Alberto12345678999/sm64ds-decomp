@@ -16,7 +16,7 @@
  * a `bl` to it; this class defines its own destructor inline for the
  * separate reason spelled out at the declaration below. D1 (0x021118c8) and D0
  * (0x02111928) both walk: own vptr, then daDsnBase_c's (inlined --
- * ShadowModel@0x338 then TextureSequence@0x324), then dBgActor_c's (also
+ * dExtShadowModel_c@0x338 then TextureSequence@0x324), then dBgActor_c's (also
  * inlined, per its own header's convention -- dBgW_KcMbg@0x124 and
  * Model@0xd4), then dActor_c::~dActor_c.
  *
@@ -82,7 +82,7 @@ struct daDkk_c : daDsnBase_c {
        EMPTY, BUT NOT INERT. This class adds no member of its own with a
        destructor, yet the body is 0x60 bytes: it stores this class's vptr, then
        daDsnBase_c's -- inlined, because daDsnBase_c.h defines its destructor in
-       its class body -- which destroys ShadowModel@0x338 then
+       its class body -- which destroys dExtShadowModel_c@0x338 then
        TextureSequence@0x324, then dBgActor_c's, also inlined, which destroys
        dBgW_KcMbg@0x124 and Model@0xd4, before chaining to dActor_c::~dActor_c.
 
