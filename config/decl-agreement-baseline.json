@@ -1512,7 +1512,7 @@
       ]
     },
     "Matrix3x3_SetRotationZ": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
       "src/func_ov007_020c3abc.c": [
@@ -1876,7 +1876,7 @@
       ]
     },
     "MulVec3Mat3x3": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix3x3 *",
         "param:#3 Vector3 *"
@@ -28896,7 +28896,7 @@
       ]
     },
     "func_02052550": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
       "src/func_ov007_020c3abc.c": [
@@ -28904,7 +28904,7 @@
       ]
     },
     "func_0205256c": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
       "src/func_ov007_020c3abc.c": [
