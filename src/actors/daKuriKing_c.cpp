@@ -36,7 +36,7 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "daKrb_c.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Message.h"
 
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
@@ -53,7 +53,6 @@ struct LoadedSharedFile {
 };
 #define FileOf(handle) ((LoadedSharedFile *)&(handle))->filePtr
 
-extern "C" void _ZN6Camera9SetFlag_3Ev(void* cam);
 extern "C" void Matrix4x3_FromRotationY(void* m, short ang);
 extern "C" void MulVec3Mat4x3(void* a, void* m, void* b);
 extern "C" char* data_0209f318;
@@ -101,9 +100,10 @@ extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
-extern "C" void _ZN9Animation7AdvanceEv(void *anim);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern "C" void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, void *v, int f);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
 extern "C" int data_ov074_02122e24[];
 extern "C" char data_ov074_02122f3c[];
@@ -207,7 +207,7 @@ extern "C" void func_ov074_0211f154(daKuriKing_c* c) {
     struct Vector3 look, pos, in, out;
     void* cam;
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
     look.x = c->mPosX;
@@ -223,8 +223,8 @@ extern "C" void func_ov074_0211f154(daKuriKing_c* c) {
     pos.x = pos.x + out.x;
     pos.y = pos.y + 0x300000;
     pos.z = pos.z + out.z;
-    ((Camera *)cam)->SetLookAt(look);
-    ((Camera *)cam)->SetPos(pos);
+    ((dCamera_c *)cam)->SetLookAt(look);
+    ((dCamera_c *)cam)->SetPos(pos);
 }
 
 // @symbol func_ov074_0211f244
@@ -740,7 +740,7 @@ extern "C" void func_ov074_021201f0(daKuriKing_c* c) {
 
     player = (Player*)c->ClosestPlayer();
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
 
     look.x = c->mPosX;
     look.y = c->mPosY;
@@ -754,8 +754,8 @@ extern "C" void func_ov074_021201f0(daKuriKing_c* c) {
     pos.x -= 0x2f0000;
     pos.y += 0x20000;
     pos.z += 0x254000;
-    ((Camera *)cam)->SetLookAt(look);
-    ((Camera *)cam)->SetPos(pos);
+    ((dCamera_c *)cam)->SetLookAt(look);
+    ((dCamera_c *)cam)->SetPos(pos);
 
     ang = *(struct Ang16*)&c->mAngleX;
     ang.v[1] += 0x7fff;
@@ -1415,7 +1415,7 @@ extern "C" void func_ov074_02121800(daKuriKing_c *c)
         fp = *(int *)(src + 0x3b4);
         sl += 0x28000;
         *(int *)(self + 0x318) = fp >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             c, sm, m, r3_318, sl, 0xf);
         self += 0x30;
         src += 0xc;
@@ -1446,8 +1446,8 @@ extern "C" void func_ov074_0212199c(daKuriKing_c *c)
     } else {
         *(int *)((char *)c + 0x26c) = 0x1000;
     }
-    _ZN9Animation7AdvanceEv((char *)c + 0x260);
-    _ZN9Animation7AdvanceEv((char *)c + 0x3f8);
+    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)c + 0x260);
+    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)c + 0x3f8);
 }
 
 /* The animation table behind data_ov074_02122f34: one record per clip --
@@ -1622,13 +1622,13 @@ int daKuriKing_c::InitResources()
 
     i = 0;
     do {
-        Animation::LoadFile(*data_ov074_0212292c[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov074_0212292c[i]);
         i++;
     } while (i < 7);
 
     i = 0;
     do {
-        Animation::LoadFile(*data_ov074_02122948[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov074_02122948[i]);
         i++;
     } while (i < 0xc);
 
@@ -1829,7 +1829,7 @@ extern "C" int func_ov074_021223bc(daKuriKing_c *c)
     *(int *)((char *)c + 0x314) = c->mPosY >> 3;
     *(int *)((char *)c + 0x318) = c->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, (char *)c + 0x274, (char *)c + 0x2ec, 0x8c000, 0x3e8000, 0xf);
 
     return 1;
@@ -1845,7 +1845,7 @@ extern "C" int func_ov074_02122634(daKuriKing_c *c)
 
     Model::LoadFile(data_ov084_02130cf8);
     for (i = 0; i < 7; i++)
-        Animation::LoadFile(*data_ov074_0212292c[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov074_0212292c[i]);
 
     if (c->mModelAnim.SetFile((BMD_File *)FileOf(data_ov084_02130cf8), 1, 1) == 0)
         return 0;

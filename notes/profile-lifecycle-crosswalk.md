@@ -33,8 +33,8 @@ This sharpens Troy's initial field list in two ways:
 
 1. The apparent profile-ID field is not separate storage from execute order in the
    ROM layout.  SM64DS stores the registry index in `+0x04` and then uses that exact
-   value as behavior/execute order.  This closely resembles [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp)'s `BASE_PROFILE`
-   and `ACTOR_PROFILE` macros, which use the profile number as execute order by
+   value as behavior/execute order.  This closely resembles [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp)['s `BASE_PROFILE`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_profile.hpp#L23)
+   [and `ACTOR_PROFILE`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_profile.hpp#L29) macros, which use the profile number as execute order by
    default.
 2. A distinct group-flags member is absent from both runtime descriptors because it
    is not descriptor data at all.  The `fBase_c +0x12` byte is an argument of the
@@ -94,11 +94,11 @@ Two thin wrappers complete the shape, and both are byte-confirmed:
 | `func_02042ffc` | `0x02042ffc` | returns 0 on a null parent, else `add r1,r1,#0x14` and calls `func_02043098` -- converts an `fBase_c *` to `&parent->manager` | `createChild(profName, parent, param, groupType)` |
 | `func_02043098` | `0x02043098` | the core; takes the parent scene node directly | -- |
 
-The pinned [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp) header declares
-`createChild(ProfileName profName, fBase_c *parent, unsigned long param, u8 groupType)`
-and `createRoot(ProfileName profName, unsigned long param, u8 groupType)`, with
-members `mParam` (u32), `mProfName` (`ProfileName`), and
-`mGroupType` (u8, "value is a `GROUP_TYPE_e`").  SM64DS's `fBase_c` stores the same
+The pinned [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp) header [declares
+`createChild(ProfileName profName, fBase_c *parent, unsigned long param, u8 groupType)`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_base.hpp#L242)
+[and `createRoot(ProfileName profName, unsigned long param, u8 groupType)`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_base.hpp#L252), with
+members [`mParam` (u32)](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_base.hpp#L62), [`mProfName` (`ProfileName`)](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_base.hpp#L63), and
+[`mGroupType` (u8)](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_base.hpp#L82), "[value is a `GROUP_TYPE_e`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/include/game/framework/f_base.hpp#L28)".  SM64DS's `fBase_c` stores the same
 three at `+0x08`, `+0x0c`, and `+0x12`, seeded in that order by the same three
 arguments.  The parameter list, its order, and the destination fields all agree.
 
@@ -219,10 +219,10 @@ triplet in the same order.
 
 | SM64DS vtable slots | [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp) operation | confidence | rationale |
 |---|---|---|---|
-| `InitResources`, `BeforeInitResources`, `AfterInitResources` (0-2) | `create`, `preCreate`, `postCreate` | high structural lineage | initialization may wait across frames; successful post-init schedules behavior and render nodes |
-| `CleanupResources`, `BeforeCleanupResources`, `AfterCleanupResources` (3-5) | `doDelete`, `preDelete`, `postDelete` | high structural lineage | the pre-hook waits on child/auxiliary state and successful post-cleanup unlinks, destroys, destructs, and deallocates |
-| `Behavior`, `BeforeBehavior`, `AfterBehavior` (6-8) | `execute`, `preExecute`, `postExecute` | high structural lineage | the pre-hook applies pause and actor culling gates before per-frame behavior |
-| `Render`, `BeforeRender`, `AfterRender` (9-11) | `draw`, `preDraw`, `postDraw` | high structural lineage | the pre-hook applies pause, hidden-area, and off-screen gates before drawing |
+| `InitResources`, `BeforeInitResources`, `AfterInitResources` (0-2) | [`create`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L88) [`preCreate`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L92) [`postCreate`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L96) | high structural lineage | initialization may wait across frames; successful post-init schedules behavior and render nodes |
+| `CleanupResources`, `BeforeCleanupResources`, `AfterCleanupResources` (3-5) | [`doDelete`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L118) [`preDelete`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L126) [`postDelete`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L142) | high structural lineage | the pre-hook waits on child/auxiliary state and successful post-cleanup unlinks, destroys, destructs, and deallocates |
+| `Behavior`, `BeforeBehavior`, `AfterBehavior` (6-8) | [`execute`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L168) [`preExecute`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L172) [`postExecute`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L180) | high structural lineage | the pre-hook applies pause and actor culling gates before per-frame behavior |
+| `Render`, `BeforeRender`, `AfterRender` (9-11) | [`draw`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L188) [`preDraw`,](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L192) [`postDraw`](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/master/source/dol/framework/f_base.cpp#L200) | high structural lineage | the pre-hook applies pause, hidden-area, and off-screen gates before drawing |
 
 The method *roles* and triplet structure are strongly supported.  Renaming the
 SM64DS virtuals to the [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp) spellings would be a separate source-naming decision.

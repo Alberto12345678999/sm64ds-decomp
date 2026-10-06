@@ -9,7 +9,7 @@
     "contiguous linker run: 0x2137be0..0x2138008, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjYajirusi_c",
     "module sinit corroboration: 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "twin factory folded by hand: daObjYajirusi_c_classInit_YAJIRUSI_L at 0x02138008..0x02138040 is the same class's second profile factory (identical body to _R: alloc 896, dBgActor_c C2, same vtable, ShadowModel C1 at +0x320), contiguous with no gap, so the genuine TU is 0x02137be0..0x02138040, 12 functions. tu_map cut it because factories carry no class label."
+    "twin factory folded by hand: daObjYajirusi_c_classInit_YAJIRUSI_L at 0x02138008..0x02138040 is the same class's second profile factory (identical body to _R: alloc 896, dBgActor_c C2, same vtable, dExtShadowModel_c C1 at +0x320), contiguous with no gap, so the genuine TU is 0x02137be0..0x02138040, 12 functions. tu_map cut it because factories carry no class label."
   ],
   "sections": [
     {

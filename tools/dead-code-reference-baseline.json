@@ -216,9 +216,6 @@
   "include/decl_BlendModelAnim.h": [
    "tools/decl_headers.py"
   ],
-  "include/decl_Camera.h": [
-   "tools/decl_headers.py"
-  ],
   "include/decl_Enemy.h": [
    "tools/decl_headers.py"
   ],
@@ -1807,7 +1804,6 @@
    "src/func_ov006_020f8ed8.c"
   ],
   "src/minigames/d_s_mg_m_carlo2.cpp": [
-   "config/tu_manifest.d/ov006/dScMgMCarlo2_c",
    "src/MgPairAGoneAndOn_Spawn.cpp",
    "src/_ZN14dScMgMCarlo2_c13InitResourcesEv.cpp",
    "src/_ZN14dScMgMCarlo2_c16CleanupResourcesEv.cpp",

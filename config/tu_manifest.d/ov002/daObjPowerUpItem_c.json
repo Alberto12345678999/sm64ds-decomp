@@ -158,7 +158,7 @@
   "notes": [
     "Cartridge RTTI name is daObjPowerUpItem_c (_ZTS18daObjPowerUpItem_c). The licensed run is the one .text span 0x020b9148..0x020b9e64 (19 functions); the last is the registry factory daObjPowerUpItem_c_classInit (0x020b9e0c), folded in the 0930c classInit tail pass.",
     "The destructor is declared in the header and defined once, out of line, first in the file. Under #pragma defer_codegen off that emits D1 then D0 in ROM order, plus a homeless D2.",
-    "classInit tail fold (0930c): folded the registry factory daObjPowerUpItem_c_classInit (0x020b9e0c..0x020b9e64) into this promoted TU and widened the complete delinks.txt claim to 0x020b9148..0x020b9e64. The loose source hand-called fBase_c::operator new(972), dActor_c's base constructor, stored _ZTV18daObjPowerUpItem_c, then constructed the two Model members, the ShadowModel, the dCcAc_c and the dBgCh_Actr. daObjPowerUpItem_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daObjPowerUpItem_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
+    "classInit tail fold (0930c): folded the registry factory daObjPowerUpItem_c_classInit (0x020b9e0c..0x020b9e64) into this promoted TU and widened the complete delinks.txt claim to 0x020b9148..0x020b9e64. The loose source hand-called fBase_c::operator new(972), dActor_c's base constructor, stored _ZTV18daObjPowerUpItem_c, then constructed the two Model members, the dExtShadowModel_c, the dCcAc_c and the dBgCh_Actr. daObjPowerUpItem_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daObjPowerUpItem_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
   ],
   "compiler_only_output": [
     {

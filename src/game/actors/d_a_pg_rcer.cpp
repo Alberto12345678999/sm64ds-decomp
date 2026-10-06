@@ -102,7 +102,7 @@ extern void Matrix4x3_FromRotationY(Matrix4x3 *m, short angle);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *clsn, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *clsn, void *actor, int radius, int height, void *a, int b);
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int offsetY, int radius, int clip, int far);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
 extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *model, void *bca, int flags, int speed, unsigned int start);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *btp, int flags, int speed, unsigned int start);
 extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *clsn);
@@ -134,7 +134,7 @@ int daPgRcer_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov019_02113498), 1, 1);
 
     for (i = 0; i < 7; i++)
-        Animation::LoadFile(*data_ov019_02112788[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov019_02112788[i]);
 
     for (int j = 0; j < 3; j++) {
         SharedFilePtr *t = data_ov019_0211277c[j];
@@ -176,7 +176,7 @@ int daPgRcer_c::InitResources()
 int daPgRcer_c::Behavior()
 {
     func_ov019_02112268();
-    mModelAnim.Animation::Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
     mTextureSequence.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -358,7 +358,7 @@ int func_ov019_02111dec(daPgRcer_c *self)
         }
         break;
     case 2:
-        if (self->mModelAnim.Animation::Finished() != 0) {
+        if (self->mModelAnim.dExtFrameCtrl_c::Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113470), 0, 0x1000, 0);
         }
         if (self->mTalkPlayer->GetTalkState() == -1) {
@@ -394,7 +394,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
         if (self->func_ov019_0211131c()) {
             self->func_ov019_021113b0();
         }
-        if (self->mModelAnim.Animation::Finished()) {
+        if (self->mModelAnim.dExtFrameCtrl_c::Finished()) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113488), 0, 0x1000, 0);
             self->mModelAnim.speed = 0x1000;
             self->mActionStep++;
@@ -480,7 +480,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
         break;
 
     case 2:
-        if (self->mModelAnim.Animation::Finished()) {
+        if (self->mModelAnim.dExtFrameCtrl_c::Finished()) {
             self->func_ov019_021122dc(4);
         }
         break;
@@ -629,7 +629,7 @@ void func_ov019_021114ec(daPgRcer_c *self)
     self->mModelAnim.mat4x3.t.x = self->mPosX >> 3;
     self->mModelAnim.mat4x3.t.y = self->mPosY >> 3;
     self->mModelAnim.mat4x3.t.z = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0x140000, 0x50000, 0xf);
 }
 

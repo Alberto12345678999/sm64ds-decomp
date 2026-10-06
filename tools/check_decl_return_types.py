@@ -175,7 +175,7 @@ def norm_type(t):
 # carrying a return type of its own:
 #
 #     include/decl_common.h    extern void func_0200c66c(void*, void*, int*, int*, int*);
-#     src/func_0200c66c.c      int func_0200c66c(char *self, ...) { ... return res; }
+#     src/engine/view/dCamera_c.cpp   int func_0200c66c(char *self, ...) { ... return res; }
 #
 # DECL_ROW above requires `_Z\w+`, so the join in check() cannot see a single
 # one of them: a row that says `void` over a body that returns a value has been

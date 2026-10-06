@@ -4,7 +4,7 @@
  * Field NAMES are placeholders - renaming cannot change codegen.
  *
  * HAND-EXTENDED for dBgW_Kc::DetectClsn(dBgCh_Gnd&) at 0x01ffd3f8:
- *   0x010  the dBgPi the hit is written into (func_02037fd4(ray+0x10, ...))
+ *   0x010  the dBgPi the hit is written into (_ZN5dBgPi9RecordHitEsP11SurfaceInfo(ray+0x10, ...))
  *   0x038  the probe position, a Fix12i Vector3, read as .x, .z, .y
  *   0x044  the collision height in Fix12i: the search seed on entry, the hit on exit
  *   0x048  the has-collision byte
@@ -37,7 +37,7 @@ struct dActor_c;
 
 struct dBgCh_Gnd : dBgCh, dBgPi {
     /* 0x10..0x37 is the dBgPi base sub-object itself -- THE HIT RECORD,
-       written by dBgW_Kc::DetectClsn through func_02037fd4(&ray->base, ...).
+       written by dBgW_Kc::DetectClsn through _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&ray->base, ...).
 
        THE PROBE STATE, supplied by the caller of DetectClsn and overwritten
        with the answer: pos is the search position (read .z, .x, .y by the
@@ -58,8 +58,8 @@ struct dBgCh_Gnd : dBgCh, dBgPi {
      * references to the ROM's existing tables. */
     virtual ~dBgCh_Gnd();
 
-    /* DECLARED, defined out of line in src/_ZN9dBgCh_GndC1Ev.cpp as real
-     * C++ -- complete-object context for every ROM caller, hence C1.
+    /* DECLARED, defined out of line in src/engine/collision/dBgCh_Gnd.cpp
+     * as real C++ -- complete-object context for every ROM caller, hence C1.
      * The ROM kept no C2 sibling: nothing derives from dBgCh_Gnd.
      */
     dBgCh_Gnd();
@@ -77,6 +77,8 @@ struct dBgCh_Gnd : dBgCh, dBgPi {
 
     /* methods */
     void SetObjAndPos(const Vector3 &pos, dActor_c *actor);
+    void GetClsnPos(Vector3 &res);
+    void SetClsnPos(const Vector3 &pos);
     int DetectClsn();
 };
 

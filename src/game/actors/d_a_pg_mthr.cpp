@@ -49,7 +49,7 @@
 #include "SharedFilePtr.h"
 #include "TextureSequence.h"
 #include "dBgCh_Gnd.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Player.h"
@@ -104,7 +104,7 @@ extern s16 Vec3_VertAngle(const Vector3 *v1, const Vector3 *v0);
    previous function (0x02012664); this TU's bl is not that one. */
 extern void func_0201267c(int a, void *b);
 extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *, ShadowModel &sm, Matrix4x3 &mf, int c, int d, unsigned int e);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mf, int c, int d, unsigned int e);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
@@ -141,7 +141,7 @@ int daPgMthr_c::InitResources()
     void *m = Model::LoadFile(data_ov018_02113c00);
     mModelAnim.SetFile((BMD_File *)m, 1, 1);
     for (int i = 0; i < 2; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov018_02112c0c[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov018_02112c0c[i]);
     for (int i = 0; i < 2; i++) {
         SharedFilePtr *t = data_ov018_02112c04[i];
         TextureSequence::LoadFile(*t);
@@ -184,7 +184,7 @@ int daPgMthr_c::InitResources()
 int daPgMthr_c::Behavior()
 {
     func_ov018_0211235c(this);
-    mModelAnim.Animation::Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
     mTextureSequence.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -404,7 +404,7 @@ void daPgMthr_c::func_ov018_02111d28()
     *(int *)(s + 0x114) = mPosX >> 3;
     *(int *)(s + 0x118) = mPosY >> 3;
     *(int *)(s + 0x11c) = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, mShadowModel, *(Matrix4x3 *)(s + 0xf0), 0x140000, 0x50000, 0xf);
     if (mLookAngX != 0 || mLookAngY != 0) {
         Matrix4x3 *bone = &mModelAnim.data.transforms[LOOK_BONE];

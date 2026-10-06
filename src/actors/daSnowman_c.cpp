@@ -98,7 +98,7 @@ extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 extern struct Matrix4x3 data_020a0e68;
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
@@ -899,7 +899,7 @@ extern "C" void func_ov081_021254d8(daSnowman_c *self)
         (self->mPosY - 0xe000) >> 3,
         self->mPosZ >> 3);
     self->mShadowMatrix = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, &self->mShadowMatrix, 0x78000, 0xc8000, 0xf);
 }
 
@@ -1021,11 +1021,11 @@ int daSnowman_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov081_02128db0), 1, -1);
     Model::LoadFile(data_ov081_02128d90);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov081_02128d98);
-    Animation::LoadFile(data_ov081_02128db8);
-    Animation::LoadFile(data_ov081_02128da8);
-    Animation::LoadFile(data_ov081_02128d88);
-    Animation::LoadFile(data_ov081_02128da0);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128d98);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128db8);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128da8);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128d88);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128da0);
 
     mPathId = (s32)param1 & 0xff;
     mType = ((s32)param1 & 0xff00) >> 8;

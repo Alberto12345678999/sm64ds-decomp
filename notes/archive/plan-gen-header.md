@@ -152,7 +152,7 @@ entrenched 87 known-wrong inherited fields permanently. **A field that is unback
 conflicts with its base class is not unbacked -- it is contradicted by the hierarchy.**
 
 Where evidence conflicts *with itself* -- 8 of 1,867 ROM-evidenced offsets show multiple
-widths, and source-level reinterpretation exists (`_ZN6Camera11ChangeStateEPNS_5StateE.cpp`
+widths, and source-level reinterpretation exists (`_ZN9dCamera_c11ChangeStateEPNS_5StateE.cpp`
 reads 4 bytes through `&self->unk_154`) -- it goes to a human. Never auto-resolve to
 widest or narrowest.
 
@@ -208,6 +208,6 @@ evidence behind them.
 - [ ] three extractors run over all 241 classes, each reporting its own recall
 - [ ] confirmed / contradicted / base-conflict / unbacked / new counted, tree and per class
 - [ ] every contradiction listed with provenance (`file:line` or instruction address)
-- [ ] the 112 base-conflicts individually classified, including the handful (Camera,
+- [ ] the 112 base-conflicts individually classified, including the handful (dCamera_c,
       `ActorBase__SceneNode`) that may not be Actor descendants
 - [ ] no file in `src/` or `include/` modified; `ROM-build analysis: PASS` trivially

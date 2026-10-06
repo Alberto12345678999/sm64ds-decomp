@@ -13,6 +13,8 @@
  * Also takes 1.2/base|sp2|sp2p3 from 25 divergences to 5, so it is a better source shape
  * rather than a b56 artifact. Link-verified: VERIFIED, 0 diffs, 0 blind.
  */
+#include "dBgPi.h"
+
 struct Vec3 { int x, y, z; };
 
 struct A {
@@ -42,7 +44,7 @@ extern "C" int func_0203939c(struct A *p);
 extern "C" int func_0203938c(struct A *p);
 extern "C" int func_02035354(char *a, struct B *b);
 extern "C" int Vec3_Dist(const void *a, const void *b);
-extern "C" void func_02037fec(char *c, int i, int p2, struct B *p3, struct A *p4);
+
 extern "C" void func_020379d0(char *c, int i, int d, struct B *e, struct A *f);
 extern "C" void func_0203799c(char *c, int i, int d, struct B *e, struct A *f);
 extern "C" void func_02037968(char *c, int i, int d, struct B *e, struct A *f);
@@ -81,7 +83,7 @@ extern "C" int func_02038824(char *self)
         }
         int flags = o->f8(self);
         if (flags == 0) continue;
-        func_02037fec(self + 0x10, i, func_020393ac(o), func_020393b4(o), o);
+        ((dBgPi *)(self + 0x10))->SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
         if (flags & 1) func_020379d0(self, i, func_020393ac(o), func_020393b4(o), o);
         if (flags & 2) func_0203799c(self, i, func_020393ac(o), func_020393b4(o), o);
         if (flags & 4) func_02037968(self, i, func_020393ac(o), func_020393b4(o), o);

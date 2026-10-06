@@ -33,7 +33,7 @@ Each listed improvement and the combined source reproduces all 15 relocated func
 - Replace the fabricated model vtable call with `mModel.Render(0)`; use
   `mAngleY += 0x500`, real Model/ShadowModel initialization, Player conversation
   methods, `ClosestPlayer`, `MarkForDestruction` and `UpdatePosWithOnlySpeed`.
-- Use Camera::mFlags, Player::mStateFlags, the actual SharedFilePtr object and
+- Use dCamera_c::mFlags, Player::mStateFlags, the actual SharedFilePtr object and
   Message static methods. These compile without the old raw camera offset and
   mangled free-call spellings. Generic global placeholders elsewhere remain an
   explicit declaration-integration boundary, not proof these types are universal.

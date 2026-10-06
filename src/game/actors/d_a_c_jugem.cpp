@@ -10,7 +10,7 @@
 #include "common.h"
 #include "dActor_c.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "SharedFilePtr.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -23,7 +23,6 @@ bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 
 /* camera */
-void  _ZN6Camera9SetFlag_3Ev(void *cam);
 
 /* math / vector helpers */
 void  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *cur, const void *tgt, int step);
@@ -48,7 +47,7 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    The mangled spellings are kept wherever the real declaration takes a
    Fix12<int> or an s8/s16 BY VALUE, because mwccarm passes those differently
    at the call site than the loose spelling would. */
-int   _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+int   _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 void *_ZN12dEnemyBase_cC2Ev(void *thiz);
 
@@ -66,7 +65,7 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *f, int a, Fi
 void  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, BTP_File &f, int a, Fix12i b, u32 c);
 void *_ZN9ModelAnimC1Ev(void *thiz);
 void *_ZN15TextureSequenceC1Ev(void *thiz);
-void *_ZN11ShadowModelC1Ev(void *thiz);
+void *_ZN17dExtShadowModel_cC1Ev(void *thiz);
 
 /* other overlays / arm9 */
 void  func_ov002_020c3e8c(void *player);
@@ -134,7 +133,7 @@ extern JugemInitPMF data_ov085_02130830;
  * The body is empty because there is nothing to write: one vtable store
  * and six destructor calls, every one a consequence of
  * `struct daC_Jugem_c : dEnemyBase_c` and the members that declaration
- * types -- its own vptr, then ShadowModel (0x218), ShadowModel (0x1f0),
+ * types -- its own vptr, then dExtShadowModel_c (0x218), dExtShadowModel_c (0x1f0),
  * TextureSequence (0x1d8), ModelAnim (0x174), ModelAnim (0x110) in
  * reverse declaration order, then dEnemyBase_c::~dEnemyBase_c. D0's
  * deallocation is an inline operator delete reached through
@@ -151,7 +150,7 @@ struct Range { int a, b, c, d, e, f; };
 extern "C" int func_ov085_0212d5dc(daC_Jugem_c *c) {
   Range r;
   void* cam = *(void**)&data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   r.a = -0x4b0000;
   r.b = 0x19f000;
   r.c = 0x1a90000;
@@ -159,13 +158,13 @@ extern "C" int func_ov085_0212d5dc(daC_Jugem_c *c) {
   r.e = 0x250000;
   r.f = 0x1d4c000;
   _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&c->mCamLookX, &r, 0x70000);
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
   Vec3_Dist(&c->mCamLookX, &r);
   c->mTimer++;
   if (c->mTimer > 0x64) {
     if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4b, 0x7f, 0, 0x7222, false) != 0) {
-      *(int *)&((Camera *)cam)->mFlags &= ~8;
+      *(int *)&((dCamera_c *)cam)->mFlags &= ~8;
       c->mHorzSpeed = 0;
       c->mTimer = 0;
       c->unk_2cc = 0;
@@ -203,7 +202,7 @@ int func_ov085_0212d73c(daC_Jugem_c *c)
     int len;
 
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     c->mSfxHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSfxHandle, 3, 0x182, &c->mCamSpacePosX, 0);
     ApproachLinear(c->mAngleY, Vec3_HorzAngle(&c->mPosX, &data_ov085_0213084c), 0x200);
     ApproachLinear(c->mAngleX, Vec3_VertAngle(&c->mPosX, &data_ov085_0213084c), 0x200);
@@ -222,8 +221,8 @@ int func_ov085_0212d73c(daC_Jugem_c *c)
     spd = c->mHorzSpeed >> 1;
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&c->mCamLookX, &c->mPosX, spd);
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&c->mCamPosX, &v[1], spd);
-    ((Camera *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
-    ((Camera *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
+    ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
+    ((dCamera_c *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
     Vec3_Sub(&v[2], &c->mPosX, &data_ov085_0213084c);
     len = LenVec3(&v[2]);
     if (len == 0 || len < 0x7d0000)
@@ -242,15 +241,15 @@ int func_ov085_0212d8ec(daC_Jugem_c *c) {
   c->unk_2cc = 0;
   c->unk_2e0 = 0;
   cam = data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   c->mCamLookX = 0xffc67000;
   c->mCamLookY = 0x6ea000;
   c->mCamLookZ = 0x1212000;
   c->mCamPosX = 0xffb65000;
   c->mCamPosY = 0x1d5000;
   c->mCamPosZ = 0x17fc000;
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
   c->unk_2cc = 0xa0;
   c->mPosX = data_ov085_02130840[0];
   c->mPosY = data_ov085_02130840[1];
@@ -318,15 +317,15 @@ int func_ov085_0212db04(daC_Jugem_c *c) {
   c->mTargetY = c->mPosY;
   c->mTargetZ = c->mPosZ;
   cam = data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   look.x = -0x304000;
   look.y = 0x3c1000;
   look.z = 0x1c77000;
   pos.x = -0x540000;
   pos.y = 0xe1000;
   pos.z = 0x19e4000;
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&look);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&pos);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&look);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&pos);
   c->mHorzSpeed = 0;
   return 1;
 }
@@ -429,15 +428,15 @@ int func_ov085_0212ddc4(daC_Jugem_c *c) {
   c->mTalkPlayer = 0;
   c->mAngleZ = 0;
   cam = data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   look.x = 0xffadd000;
   look.y = 0x17e000;
   look.z = 0x1a29000;
   pos.x = 0xffa54000;
   pos.y = 0x1f4000;
   pos.z = 0x1ccf000;
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&look);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&pos);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&look);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&pos);
   return 1;
 }
 }
@@ -501,15 +500,15 @@ extern "C" int func_ov085_0212df84(daC_Jugem_c *c)
         func_ov002_020d228c(player);
     }
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     look.x = 0xff883000;
     look.y = 0x2ef000;
     look.z = 0x1a36000;
     pos.x = 0xffb18000;
     pos.y = 0x18c000;
     pos.z = 0x1a89000;
-    ((Camera *)cam)->SetLookAt(*(Vector3 *)&look);
-    ((Camera *)cam)->SetPos(*(Vector3 *)&pos);
+    ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&look);
+    ((dCamera_c *)cam)->SetPos(*(Vector3 *)&pos);
     c->mStateTimer = 0x79;
     c->mPosX = c->mTargetX;
     c->mPosY = c->mTargetY;
@@ -720,11 +719,11 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov085_0212e5ac(daC_Jugem_c *self)
 {
     Vector3 in, out, plpos;
-    Camera *cam;
+    dCamera_c *cam;
     Vector3* src;
     Player *p;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
     src = (Vector3 *)(((int)&cam->pos));
@@ -756,7 +755,7 @@ int func_ov085_0212e5ac(daC_Jugem_c *self)
     }
     *(int *)(((int)&self->mPosZ)) += out.z;
     self->mPrevAngleY = 0x8000 - cam->mAngleY;
-    /* The halfword after Camera::mAngleY at 0x17e (Camera.h has no member for
+    /* The halfword after dCamera_c::mAngleY at 0x17e (dCamera_c.h has no member for
        it). Possibly the pitch, but only this one negated use suggests so. */
     self->mPrevAngleX = -*(short *)((char *)&cam->mAngleY + 2);
     return 1;
@@ -790,7 +789,7 @@ void func_ov085_0212e778(daC_Jugem_c *c)
     *(M48 *)&c->mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0x38000) >> 3, c->mPosZ >> 3);
     *(M48 *)&c->mShadowMat1 = *(M48 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel1, &c->mShadowMat1, 0x46000, 0x258000, 0xf);
 }
 }
@@ -840,7 +839,7 @@ void func_ov085_0212e858(daC_Jugem_c *c)
         c->mPosZ >> 3);
     *(M48e858 *)&c->mShadowMat1 = *(M48e858 *)&data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel1, &c->mShadowMat1, 0x46000, 0x258000, 0xf);
 
     pl = c->ClosestPlayer();
@@ -884,7 +883,7 @@ void func_ov085_0212e858(daC_Jugem_c *c)
     func_ov002_020e4374(pl, &p1, &p2);
 
     *(M48e858 *)&c->mShadowMat2 = *(M48e858 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel2, &c->mShadowMat2, p2, p1, 0xf);
 }
 }
@@ -941,7 +940,7 @@ int daC_Jugem_c::Behavior()
   BehState* st=(BehState *)mState;
   if(st->fn) (((BehC*)this)->*st->fn)();
   UpdatePos(0);
-  static_cast<Animation *>(&mModelAnim1)->Advance();
+  static_cast<dExtFrameCtrl_c *>(&mModelAnim1)->Advance();
   mTextureSequence.Advance();
   if((BehState *)mState==(BehState*)&data_ov085_021307d0){
     mAngleX=mPrevAngleX;
@@ -968,7 +967,7 @@ int daC_Jugem_c::InitResources()
 {
   BMD_File* bmd = (BMD_File*)Model::LoadFile(*(SharedFilePtr*)data_ov085_0213074c);
   mModelAnim1.SetFile(bmd, 1, -1);
-  Animation::LoadFile(*(SharedFilePtr*)data_ov085_02130744);
+  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov085_02130744);
   TextureSequence::LoadFile(*(SharedFilePtr*)data_ov085_0213073c);
   mShadowModel1.InitCylinder();
   mShadowModel2.InitCylinder();
@@ -1016,7 +1015,7 @@ int daC_Jugem_c::InitResources()
  *
  * `return new daC_Jugem_c()` is the whole body: the synthesized constructor is
  * what stores the vptr and runs the two ModelAnim, one TextureSequence and two
- * ShadowModel constructors the ROM calls, in that order, and `operator new`
+ * dExtShadowModel_c constructors the ROM calls, in that order, and `operator new`
  * is fBase_c's. Spelling the vptr store by hand instead would be wrong here
  * as well as longer -- this TU emits _ZTV11daC_Jugem_c itself, so the store
  * has to be the compiler's own. */

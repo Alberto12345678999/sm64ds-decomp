@@ -56,8 +56,8 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     CLPS_Block *clps);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
     dBgActor_c *self, int a, int b);
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-    dActor_c *self, ShadowModel *sm, Matrix4x3 *mtx, int a, int b, int d,
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, int a, int b, int d,
     unsigned int e);
 }
 
@@ -77,7 +77,7 @@ extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
 extern void *_ZN5ModelC1Ev(Model *model);
 extern Model *_ZN5ModelD1Ev(Model *model);
 extern void *_ZN7PathPtrC1Ev(PathPtr *path);
-extern void *_ZN11ShadowModelC1Ev(ShadowModel *model);
+extern void *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *model);
 extern void __cxa_vec_ctor(
     Model *models, unsigned int count, unsigned int size,
     void (*ctor)(void *), void (*dtor)(void *));
@@ -100,7 +100,7 @@ extern "C" daObjPathLift_c *daObjPathLift_c_classInit()
             (void (*)(void *))_ZN5ModelD1Ev);
         _ZN7PathPtrC1Ev(&actor->mPath);
         *(int *)actor = (int)&_ZTV15daObjPathLift_c[2];
-        _ZN11ShadowModelC1Ev(&actor->mShadowModel);
+        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
     }
     return actor;
 }
@@ -245,11 +245,11 @@ extern "C" void func_ov100_02146e70(daObjPathLift_c *self)
 
     t = data_0209f2d8 == 1;
     if (t != false) {
-        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             self, &self->mShadowModel, (Matrix4x3 *)self->unk_478, 0x118000,
             0x7d0000, scaleZ, 0xf);
     } else {
-        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             self, &self->mShadowModel, (Matrix4x3 *)self->unk_478, 0x118000,
             groundDepth, scaleZ, 0xf);
     }

@@ -21,7 +21,8 @@ extern void ApproachAngle(void *, s16, s16, s16, s32);
 extern s32 func_ov002_020bf224(void *, s32, s32);
 extern void _Z15ApproachLinear2Rsss(s16 &, s16, s16);
 extern void func_ov002_020de3d0(void *, s16 *, s16 *);
-extern void _ZN9Animation7AdvanceEv(void *);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
 
 extern u8 data_020a0e40;
 extern s16 data_0209f49e[];

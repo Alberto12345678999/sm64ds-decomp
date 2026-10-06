@@ -193,7 +193,7 @@ extern "C" int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, sh
 extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int c, int d, int e, const void *v, void *cb);
 extern "C" u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, int c, int d, int e, const Vector3_16f *v);
 extern "C" void _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(void *self, const struct Vector3 *vec);
-extern "C" void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void *self, void *sm, void *m, int a, int b, int c, u32 j);
+extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *sm, void *m, int a, int b, int c, u32 j);
 extern "C" void _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 extern "C" void func_ov002_020bbda4(daObjTatefuda_c *c);
 extern "C" void _ZN5dCc_c6UpdateEv(void *self);
@@ -405,7 +405,7 @@ int daObjTatefuda_c::Behavior()
             func_ov002_020bae9c((char *)this);
             return 1;
         }
-        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             this, &mShadowModel, &mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
         return 1;
     }
@@ -421,7 +421,7 @@ int daObjTatefuda_c::Behavior()
         if (s == STATE_THROWN) {
             func_ov002_020bafc0(this);
         } else if (mPoundsLeft == 2 && (u32)s <= 1) {  /* STATE_IDLE or STATE_TALK */
-            _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
                 this, &mShadowModel, &mShadowMat, 0x50000, 0x28000, 0x28000, 0xf);
         }
     }
@@ -1136,7 +1136,7 @@ int daObjTatefuda_c::OnAttacked1(dActor_c &other)
  * func_ov002_020e496c; m2 is the pointer stored at +0x14 of it, and the
  * Matrix4x3 at m2 + 0x2a0 is multiplied in. r4 picks a pose, 0 or 1: 1 when
  * the holder is front-sliding, or has lost its grabbed object while the body
- * model's word at +0x58 (the Animation base's current frame, per Player.h)
+ * model's word at +0x58 (the dExtFrameCtrl_c base's current frame, per Player.h)
  * satisfies (word << 4) >> 16 < 0xe. The X angle approaches data_ov002_020ff0d0[r4] by 0x1000 per call;
  * the sign copies the holder's Y angle (into mAngleY and mPrevAngleY); the
  * matrix is built from a translation, a pivot offset of 0x8c00 up and back, the

@@ -1,10 +1,12 @@
 //cpp
+#include "dBgPi.h"
+
 extern "C" {
 extern void func_02037464(void *c);
 extern int func_020393b4(void *p);
 extern int func_02035354(void *a, int b);
 extern int func_020393ac(void *p);
-extern void func_02037fec(char *c, int p1, int p2, int p3, void *p4);
+
 }
 
 struct Obj {
@@ -30,7 +32,7 @@ extern "C" int func_02038ea4(void *thiz)
             if (o->v6(thiz) != 0) {
                 int a = func_020393ac(o);
                 int b = func_020393b4(o);
-                func_02037fec((char *)thiz + 0x10, 0, a, b, o);
+                ((dBgPi *)((char *)thiz + 0x10))->SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
                 r = 1;
             }
         }

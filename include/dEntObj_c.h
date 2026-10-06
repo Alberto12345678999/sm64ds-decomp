@@ -21,7 +21,7 @@
 #include "ModelAnim.h"
 #include "BlendModelAnim.h"
 #include "TextureSequence.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 /* One figure on the entry stage. mMoveState and mAnimState index the two
  * pointer-to-member state tables in src/actors/dEntObj_c.cpp; the fields
@@ -30,7 +30,7 @@ struct UnknownVsPlayer {
     BlendModelAnim mModel;             /* 0x000 */
     ModelAnim mAnimation;              /* 0x070 */
     TextureSequence mTextureSequence;  /* 0x0d4 */
-    ShadowModel mShadow;               /* 0x0e8 */
+    dExtShadowModel_c mShadow;               /* 0x0e8 */
     s32 mMoveState;                    /* 0x110 */
     s32 mAnimState;                    /* 0x114 */
     Vector3 mPosition;                 /* 0x118 */

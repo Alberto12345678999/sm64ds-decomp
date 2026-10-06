@@ -52,7 +52,7 @@ shard counts below describe the pre-fold inputs, not the current queue row.
   - `a388ebbee` queue line-count correction
 
   Facts: `notes/data/class-facts/daSanbo_c.json` -- the scout's blob, moved with
-  the class, prose preserved verbatim plus one added key saying so. Stage
+  the class, prose preserved verbatim plus one added key saying so. dScStage_c
   artifacts: `src/actors/daSanbo_c.cpp`,
   [config/tu_manifest.d/ov096/daSanbo_c.json](../../../config/tu_manifest.d/ov096/daSanbo_c.json), `include/daSanbo_c.h`.
 - Next action, responsible role and blockers: independent verification of this
