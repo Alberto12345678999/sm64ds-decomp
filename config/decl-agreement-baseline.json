@@ -1301,7 +1301,7 @@
       "src/func_ov007_020c775c.c": [
         "param:#1 Vector3 *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *"
       ],
       "src/game/actors/d_a_obj_wl_polelift.cpp": [
@@ -1965,7 +1965,7 @@
         "param:#1 const Vec3 *",
         "param:#3 Vec3 *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -3932,7 +3932,7 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#2 const void *"
       ]
     },
@@ -4015,7 +4015,7 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_fish.cpp": [
@@ -4159,7 +4159,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -4352,7 +4352,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -4450,7 +4450,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -4862,7 +4862,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#2 const void *",
         "param:#3 const void *"
       ],
@@ -4942,7 +4942,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -5183,7 +5183,7 @@
         "param:#1 int *",
         "param:#2 int *"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 void *",
         "param:#2 const void *",
         "return:void"
@@ -6577,7 +6577,7 @@
       "src/actors/daBgSnwmn_c.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#2 BTP_File &",
         "param:#5 unsigned int"
       ],
@@ -8907,7 +8907,7 @@
       "src/func_0200f7f0.c": [
         "return:int"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#5 bool",
         "return:int"
       ],
@@ -9039,7 +9039,7 @@
         "param:#5 unsigned int",
         "return:unsigned int"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#4 const void *",
         "param:#5 unsigned int",
         "return:unsigned int"
@@ -11945,7 +11945,7 @@
       "src/func_ov002_020e444c.c": [
         "param:#6 unsigned int"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#6 unsigned int",
         "return:int"
       ],
@@ -12488,7 +12488,7 @@
       "src/game/actors/d_a_btn.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_fish.cpp": [
@@ -22689,95 +22689,95 @@
       ]
     },
     "data_ov085_0213073c": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:char []"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:void *"
       ]
     },
     "data_ov085_02130744": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:char []"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:void *"
       ]
     },
     "data_ov085_0213074c": {
       "src/_ZN8daDemo_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:char []"
+      "src/actors/daC_Jugem_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov085_02130790": {
       "src/__sinit_ov085_0212fa40.c": [
         "return:S16"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/actors/daC_Jugem_c.cpp": [
+        "return:daC_Jugem_c::StateFn []"
       ]
     },
     "data_ov085_021307a0": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_021307b0": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_021307c0": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_021307d0": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_021307e0": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_021307f0": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_02130800": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_02130810": {
       "src/__sinit_ov085_0212fa40.c": [
         "return:S16"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/actors/daC_Jugem_c.cpp": [
+        "return:daC_Jugem_c::StateFn []"
       ]
     },
     "data_ov085_02130820": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S16"
       ]
     },
     "data_ov085_02130830": {
       "src/__sinit_ov085_0212fa40.c": [
         "return:S16"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:JugemInitPMF"
+      "src/actors/daC_Jugem_c.cpp": [
+        "return:daC_Jugem_c::StateFn []"
       ]
     },
     "data_ov085_02130840": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:int []"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S12"
       ]
     },
     "data_ov085_0213084c": {
-      "src/game/actors/d_a_c_jugem.cpp": [
-        "return:Vector3"
+      "src/__sinit_ov085_0212fa40.c": [
+        "return:S12"
       ]
     },
     "data_ov085_02130858": {
@@ -24132,7 +24132,7 @@
       "src/actors/daManta_c.cpp": [
         "return:void"
       ],
-      "src/game/actors/d_a_c_jugem.cpp": [
+      "src/actors/daC_Jugem_c.cpp": [
         "param:#1 int",
         "return:void"
       ],
