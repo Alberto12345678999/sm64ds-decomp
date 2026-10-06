@@ -8321,6 +8321,10 @@
     "src/actors/CapIconMgr.cpp#func_ov001_020aa960": "tangosdev",
     "src/actors/CapIconMgr.cpp#func_ov001_020aaa54": "tangosdev",
     "src/actors/CapIconMgr.cpp#func_ov001_020aadac": "tangosdev",
-    "src/actors/CapIconMgr.cpp#func_ov001_020aaf40": "tangosdev"
+    "src/actors/CapIconMgr.cpp#func_ov001_020aaf40": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer7GetTimeEv": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer9StopTimerEv": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer10StartTimerEv": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer10ResetTimerEv": "tangosdev"
   }
 }
