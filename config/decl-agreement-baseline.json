@@ -21115,6 +21115,16 @@
         "return:Entry []"
       ]
     },
+    "data_ov064_0211c944": {
+      "src/actors/daWater_Ring_c.cpp": [
+        "return:daWater_Ring_c::State []"
+      ]
+    },
+    "data_ov064_0211c954": {
+      "src/actors/daWater_Ring_c.cpp": [
+        "return:daWater_Ring_c::State []"
+      ]
+    },
     "data_ov064_0211c964": {
       "src/__sinit_ov064_0211b59c.c": [
         "return:int []"
