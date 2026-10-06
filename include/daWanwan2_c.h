@@ -6,7 +6,7 @@
 #include "Model.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 /* The chain has six links; Render draws only five of the six link models. */
@@ -16,12 +16,12 @@ enum { daWanwan2_NUM_LINKS = 6 };
  * unusually strong witness because five of the nine members are ARRAYS: __cxa_vec_cleanup
  * takes a count and a stride, so it names not just the type at an offset but how many
  * and how far apart. The members with destructors sit at 0x370..0x78c with no overlap
- * (the plain fields at 0x668..0x6d8 lie between the single ShadowModel and the link
+ * (the plain fields at 0x668..0x6d8 lie between the single dExtShadowModel_c and the link
  * arrays):
  *
  *     0x370  Model       x6   stride 0x50
- *     0x550  ShadowModel x6   stride 0x28
- *     0x640  ShadowModel  1
+ *     0x550  dExtShadowModel_c x6   stride 0x28
+ *     0x640  dExtShadowModel_c  1
  *     0x6d8  Vector3     x6   stride 0x0c
  *     0x720  Vector3     x6   stride 0x0c
  *     0x768  Vector3s    x6   stride 0x06   -> ends 0x78c
@@ -43,8 +43,8 @@ struct daWanwan2_c : dEnemyBase_c {
     dBgCh_Actr        mWithMeshClsn;      /* 0x150 */
     ModelAnim           mModelAnim;         /* 0x30c -- the chomp's body; its mat4x3 is the body matrix */
     Model               mModels[6];                           /* 0x370 -- one per chain link; mat4x3 is that link's matrix */
-    ShadowModel         mShadowModels[6];                     /* 0x550 -- the links' drop shadows */
-    ShadowModel         mShadowModel;       /* 0x640 -- the body's drop shadow */
+    dExtShadowModel_c         mShadowModels[6];                     /* 0x550 -- the links' drop shadows */
+    dExtShadowModel_c         mShadowModel;       /* 0x640 -- the body's drop shadow */
     /* The current state: a pair of pointers-to-member (enter, execute) that
        func_ov100_02143b18 stores and calls and Behavior calls every frame --
        see ChompState in src/actors/daWanwan2_c.cpp. */

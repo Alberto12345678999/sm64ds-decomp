@@ -26,14 +26,14 @@
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
 #include "PathPtr.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daNknk_c : dEnemyBase_c {
     dCcAc_c         mdCc_c;                  /* 0x110 */
     dBgCh_Actr      mWithMeshClsn;           /* 0x144 */
     ModelAnim       mModelAnim;              /* 0x300 */
-    ShadowModel     mShadowModel;            /* 0x364 */
+    dExtShadowModel_c     mShadowModel;            /* 0x364 */
     s32             mState;                  /* 0x38c */
     s32             mKoopaVariant;           /* 0x390 */
     s32             mModelIndex;             /* 0x394 */

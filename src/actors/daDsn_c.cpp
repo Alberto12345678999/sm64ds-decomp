@@ -71,7 +71,7 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOff
  *
  * The whole body falls out of the one `new`: operator new(932 == 0x3a4),
  * dBgActor_c::C2, the mid-construction daDsnBase_c vptr,
- * TextureSequence@0x324, ShadowModel@0x338 and this class's vptr are the
+ * TextureSequence@0x324, dExtShadowModel_c@0x338 and this class's vptr are the
  * implicit constructor, inlined. */
 extern "C" daDsn_c *daDsn_c_classInit()
 {

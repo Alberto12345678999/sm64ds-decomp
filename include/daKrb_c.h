@@ -5,7 +5,7 @@
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "MaterialChanger.h"
 
 /* Goomba (KURIBO 200 / KURIBO_S 201 / KURIBO_L 202) -- ov084/daKrb_c.
@@ -33,7 +33,7 @@ struct daKrb_c : dCapEnemy_c {
     dCcAc_c mdCcAc_c;         /* 0x180 */
     dBgCh_Actr mWithMeshClsn; /* 0x1b4 */
     ModelAnim mModelAnim;     /* 0x370 */
-    ShadowModel mShadowModel; /* 0x3d4 */
+    dExtShadowModel_c mShadowModel; /* 0x3d4 */
     MaterialChanger mMaterialChanger; /* 0x3fc */
     /* Last position that IsGoingOffCliff did not reject; Behavior snaps back to
        it when the next step would carry the Goomba off a ledge. */

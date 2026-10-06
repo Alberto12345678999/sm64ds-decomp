@@ -29,11 +29,13 @@ func_0206d9cc
 func_0206da18
 
 # --- rejected by mwldarm despite passing eligibility ---
-# _ZN11ShadowModel10InitCuboidEv / _ZN11ShadowModel12InitCylinderEv CAME OFF
-# THIS LIST ahead of the ShadowModel fold (#3493), which respells their SetFile
-# globals as the resolvable overlay rows data_ov000_020ad524/data_ov000_020ad560.
-# Until enrollment claims them the removal is inert: nothing compiles either
-# symbol, and their ranges stay inside the module gap object exactly as before.
+# _ZN17dExtShadowModel_c10InitCuboidEv / _ZN17dExtShadowModel_c12InitCylinderEv CAME OFF
+# THIS LIST. Their SetFile calls name the model-file globals at
+# 0x020ad524/0x020ad560 -- addresses past arm9's .bss that only the ov000/ov001
+# symbols.txt rows define (data_ov000_*). Spelling the references by their
+# overlay names lets the link resolve them; both now live folded in
+# src/engine/model/dExtShadowModel_c.cpp, which also keeps their old arm9
+# data_020ad524/data_020ad560 spellings out of the source.
 
 # --- linked cleanly but produced the wrong bytes (dsd check modules) ---
 # Eligibility proves an object is the right shape to drop in, never that it is

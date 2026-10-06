@@ -24,7 +24,7 @@
  * fold-lane-c-0929) is now the last function in the file, appended after
  * InitResources in ROM order; it hand-called fBase_c::operator new(968),
  * dEnemyBase_c::dEnemyBase_c(), stored _ZTV9daGrock_c, then Model, then
- * ShadowModel, then dCcAcPos_c, then dBgCh_Actr in field order. daGrock_c
+ * dExtShadowModel_c, then dCcAcPos_c, then dBgCh_Actr in field order. daGrock_c
  * declares no constructor of its own, so the compiler-synthesized default
  * constructor emits exactly that sequence, and the factory is now
  * `return new daGrock_c();`. g_profile_GORO_ROCK is still not in this TU.
@@ -105,7 +105,7 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
-extern int _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *thiz, void *sm, void *m, int rad, int h, unsigned u);
 extern struct Matrix4x3 data_020a0e68;
 /* Same body as Sound::PlayBank3 (0x02012664). The ROM calls these copies. */
@@ -183,7 +183,7 @@ extern "C" int func_ov021_021122fc(char *raw)
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68,
                                             rock->mAngleX, rock->mAngleY, rock->mAngleZ);
     rock->mModel.mat4x3 = data_020a0e68;
-    return _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         rock, &rock->mShadowModel, rock->pad_188, 0x1f4000, 0x1f4000, 0xf);
 }
 

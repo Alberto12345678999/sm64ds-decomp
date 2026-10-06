@@ -49,7 +49,7 @@ typedef char daObjSlIceBlock_c_size_must_be_0x32c[sizeof(daObjSlIceBlock_c) == 0
 #else
 
 /* The C spelling of the same object, flat. Kept because C factories and
-   leftover C TUs still read these fields. Same arrangement as include/ShadowModel.h. */
+   leftover C TUs still read these fields. Same arrangement as include/dExtShadowModel_c.h. */
 struct daObjSlIceBlock_c {
     u8  pad_000[0xc];
     u16 mActorID;            /* 0x00c */
