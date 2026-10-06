@@ -379,7 +379,7 @@ int daWater_Tatumaki_c::InitResources()
     BMD_File *model = (BMD_File *)Model::LoadFile(AS_SHARED(MODEL_FILE));
     mModelAnim.SetFile(model, 1, -1);
 
-    Animation::LoadFile(AS_SHARED(ANIM_FILE));
+    dExtFrameCtrl_c::LoadFile(AS_SHARED(ANIM_FILE));
 
     TextureTransformer::Prepare(*(BMD_File *)MODEL_FILE.file, WHIRLPOOL_BTA);
     TextureTransformer_SetFile(&mTextureTransformer, WHIRLPOOL_BTA, 0, kAnimSpeed, 0);

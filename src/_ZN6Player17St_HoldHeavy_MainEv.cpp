@@ -47,7 +47,7 @@ int Player::St_HoldHeavy_Main()
                 u32 arg = (u8)param1;
                 int modelIdx = _ZNK6Player14GetBodyModelIDEjb(((char*)this), arg, 0);
                 char* animPtr = *(char**)(((char*)this) + modelIdx * 4 + 0xdc) + 0x50;
-                if (_ZNK9Animation12WillHitFrameEi(animPtr, 6)) {
+                if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(animPtr, 6)) {
                     int* heavy = *(int**)((char*)&mHeldObj);
                     if (heavy != 0) {
                         *(int*)((char*)heavy + 0xb0) |= 0x4000;
@@ -105,7 +105,7 @@ int Player::St_HoldHeavy_Main()
 
     if (mHorzSpeed == 0) {
         if (_ZN6Player12FinishedAnimEv(((char*)this)) ||
-            !_ZN9Animation8GetFlagsEv(
+            !_ZN15dExtFrameCtrl_c8GetFlagsEv(
                 *(char**)(((char*)this) + _ZNK6Player14GetBodyModelIDEjb(((char*)this), (u8)param1, 0) * 4 + 0xdc) + 0x50)) {
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), data_ov002_020ff254[mStateWork + 2], 0, 0x1000, 0);
         }

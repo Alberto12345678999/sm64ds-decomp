@@ -547,7 +547,7 @@ class PullRequestShapeTests(unittest.TestCase):
 # The pre-fix code refused to model any ROOT struct the moment its body reached a
 # method declaration, on the grounds that a polymorphic root carries an implicit vptr
 # that no declaration mentions. The offset IS derivable, and the tree writes the model
-# down by hand -- verbatim, in include/Animation.h and include/dCc_c.h:
+# down by hand -- verbatim, in include/dExtFrameCtrl_c.h and include/dCc_c.h:
 #
 #   /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
 #
@@ -659,7 +659,7 @@ class RootVptrTests(unittest.TestCase):
     def test_the_vptr_decision_is_scoped_to_this_struct_not_the_whole_file(self):
         """A twin header carries a flat C view of the same class below an `#else`, and
         that half routinely spells `void **vtable;` even where the C++ half above it
-        does not -- include/Animation.h is exactly that shape. A file-wide search for
+        does not -- include/dExtFrameCtrl_c.h is exactly that shape. A file-wide search for
         either marker reads the wrong half and shifts every field of the right one.
 
         Not a planted regression, and it cannot be one: the old code skipped this

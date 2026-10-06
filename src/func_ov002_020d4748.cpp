@@ -6,7 +6,8 @@ void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int
 int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned int, int);
 void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int, int, int);
 int Player_ScaleByCharFactor(void*, int);
-int _ZNK9Animation12WillHitFrameEi(void*, int);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void*, int);
 void func_ov002_020d4c30(void*);
 }
 
@@ -122,8 +123,8 @@ extern "C" void func_ov002_020d4748(char* c)
             _ZN6Player7SetAnimEji5Fix12IiEj(c, 0x3f, 0, v + 0x2800, AnimSpeed(c));
         }
 
-        if (_ZNK9Animation12WillHitFrameEi(GetAnim(c), 4) != 0
-            || _ZNK9Animation12WillHitFrameEi(GetAnim(c), 0x13) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(GetAnim(c), 4) != 0
+            || _ZNK15dExtFrameCtrl_c12WillHitFrameEi(GetAnim(c), 0x13) != 0) {
             func_ov002_020d4c30(c);
         }
     }

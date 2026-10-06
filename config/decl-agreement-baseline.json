@@ -12103,7 +12103,7 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
+    "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
       ],
@@ -12111,12 +12111,12 @@
         "param:#1 void *"
       ]
     },
-    "_ZN9Animation4CopyERKS_": {
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
       "include/decl_Animation.h": [
         "param:#2 const void *"
       ]
     },
-    "_ZN9Animation7AdvanceEv": {
+    "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/actors/unit020bfec0.cpp": [
         "return:int"
       ],
@@ -12124,7 +12124,7 @@
         "return:int"
       ]
     },
-    "_ZN9Animation8LoadFileER13SharedFilePtr": {
+    "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr": {
       "src/actors/Eyerok.cpp": [
         "param:#1 void *",
         "return:void"
@@ -12849,7 +12849,7 @@
         "return:System *"
       ]
     },
-    "_ZNK9Animation12WillHitFrameEi": {
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
       "include/decl_Animation.h": [
         "return:int"
       ],
@@ -12887,7 +12887,7 @@
         "return:int"
       ]
     },
-    "_ZNK9Animation13GetFrameCountEv": {
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
       "include/decl_Animation.h": [
         "return:int"
       ],

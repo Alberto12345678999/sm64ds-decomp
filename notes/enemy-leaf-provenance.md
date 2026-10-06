@@ -71,7 +71,7 @@ spells properly:
 | 0x09c | `mVertAccel` | `dActor_c`'s field; `InitResources` sets it to `-0xa000`, i.e. gravity. |
 | 0x0a0 | `mTerminalVelocity` | `dActor_c`'s field; `InitResources` sets it to `-0x3c000`. |
 | 0x3ac | `mCylClsnPos[9]` | The header's own note already said `unk_3b8..unk_3cc` were elements 1 and 2 of the C++ branch's `Vector3 mCylClsnPos[3]`. The twin now spells the whole array flat instead of six of its nine scalars. `Behavior` reads elements 1 and 2 as the two footfall positions. |
-| 0x3d8 | `mMaterialChangerFrame` | `mMaterialChanger` sits at 0x3d0 and its `Animation` base puts the 20.12 playback cursor at +0x08 (`include/Animation.h`). `InitResources` stores `data_ov074_02122e04[mSizeIndex] << 12` there — a frame number in 20.12. |
+| 0x3d8 | `mMaterialChangerFrame` | `mMaterialChanger` sits at 0x3d0 and its `Animation` base puts the 20.12 playback cursor at +0x08 (`include/dExtFrameCtrl_c.h`). `InitResources` stores `data_ov074_02122e04[mSizeIndex] << 12` there — a frame number in 20.12. |
 | 0x3f0 | `mTextureSequenceSpeed` | `mTextureSequence` sits at 0x3e4 and `Animation` puts playback speed at +0x0c. `InitResources` calls `SetFile(..., 0x1000, 0)` and then zeroes this word, freezing the sequence. |
 
 Byte-neutral cleanups (each re-verified, `2004/b56`):

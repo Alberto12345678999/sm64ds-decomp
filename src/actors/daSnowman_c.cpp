@@ -1021,11 +1021,11 @@ int daSnowman_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov081_02128db0), 1, -1);
     Model::LoadFile(data_ov081_02128d90);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov081_02128d98);
-    Animation::LoadFile(data_ov081_02128db8);
-    Animation::LoadFile(data_ov081_02128da8);
-    Animation::LoadFile(data_ov081_02128d88);
-    Animation::LoadFile(data_ov081_02128da0);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128d98);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128db8);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128da8);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128d88);
+    dExtFrameCtrl_c::LoadFile(data_ov081_02128da0);
 
     mPathId = (s32)param1 & 0xff;
     mType = ((s32)param1 & 0xff00) >> 8;

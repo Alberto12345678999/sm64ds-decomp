@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN9Animation17UpdateFileOffsetsER8BCA_File
-#include "Animation.h"
+// @symbol _ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File
+#include "dExtFrameCtrl_c.h"
 
 /* The four offsets in a freshly loaded BCA file are file-relative; rebase
    them into pointers. Only the header words this touches are typed. */
@@ -13,7 +13,7 @@ struct BCA_File {
     char *unk_14;      /* 0x14 */
 };
 
-void Animation::UpdateFileOffsets(BCA_File &file)
+void dExtFrameCtrl_c::UpdateFileOffsets(BCA_File &file)
 {
     file.unk_08 = (char *)&file + (int)file.unk_08;
     file.unk_0c = (char *)&file + (int)file.unk_0c;

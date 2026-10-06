@@ -550,8 +550,8 @@ extern void func_ov002_020f5f0c(C* c, int idx);
 extern void _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev(char *self);
 extern void func_ov002_020f5fe4(char *c);
 extern int func_ov002_020f6424(char* c);
-extern int _ZN9Animation7AdvanceEv(char*);
-extern int _ZN9Animation8FinishedEv(char*);
+extern int _ZN15dExtFrameCtrl_c7AdvanceEv(char*); /* local extern: untyped this. */
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(char*); /* local extern: untyped this. */
 /* local extern dropped: decl_common.h declares func_ov002_020f6514(unsigned char*, void*, unsigned char) */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
@@ -683,7 +683,7 @@ extern char data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f5fe4, NOT applied: extern u8 data_0209d454; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN6Memory16operator_delete2EPv, from the legacy file for func_ov002_020f63a0, NOT applied: extern void _ZN6Memory16operator_delete2EPv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of _Znwj, from the legacy file for func_ov002_020f6448, NOT applied: extern void* _Znwj(unsigned int sz); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation7AdvanceEv, from the legacy file for func_ov002_020f65ec, NOT applied: extern int _ZN9Animation7AdvanceEv(void *p); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c7AdvanceEv, from the legacy file for func_ov002_020f65ec, NOT applied: extern int _ZN15dExtFrameCtrl_c7AdvanceEv(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of ReadUnalignedShort, from the legacy file for func_ov002_020f6bc0, NOT applied: extern s16 ReadUnalignedShort(unsigned char *p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020f6514, from the legacy file for func_ov002_020f6c34, NOT applied: extern void func_ov002_020f6514(void *p, void *tbl, unsigned char v); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov002_020f6c60, NOT applied: extern unsigned int RandomIntInternal(int *seed); */
@@ -3651,8 +3651,8 @@ int func_ov002_020f6448(char *self, unsigned char *arg1)
 // @symbol func_ov002_020f64ac
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020f64ac(char* c, char* r4){
-  _ZN9Animation7AdvanceEv(c+0x50);
-  if(!_ZN9Animation8FinishedEv(c+0x50)) return;
+  _ZN15dExtFrameCtrl_c7AdvanceEv(c+0x50);
+  if(!_ZN15dExtFrameCtrl_c8FinishedEv(c+0x50)) return;
   signed char r2 = *(signed char*)(r4 + (*(unsigned char*)(c+0x82) << 2) + 3);
   if(r2 < 0) return;
   func_ov002_020f6514((u8*)c, (u8*)r4, (u8)(r2 & 0xff));
@@ -3712,7 +3712,7 @@ int func_ov002_020f65ec(char *c)
     void *p = *(void**)(c + 0x7c);
     if (p == 0)
         return (int)p;
-    return _ZN9Animation7AdvanceEv((char*)p);
+    return _ZN15dExtFrameCtrl_c7AdvanceEv((char*)p);
 }
 }
 
@@ -3723,7 +3723,7 @@ int func_ov002_020f65ec(char *c)
 #include "TextureSequence.h"
 struct BTP_File;
 extern "C" {
-void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr& f);
+void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr& f); /* local extern: untyped file pointer. */
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* f, int a, int fx, unsigned int e);
 void* _Znwj(unsigned int sz);
 void* _ZN15TextureSequenceC1Ev(void* self);
@@ -3742,7 +3742,7 @@ int func_ov002_020f6618(char* self, SharedFilePtr* mdl, int nAnims, SharedFilePt
     self[0x80] = (char)nAnims;
     *(SharedFilePtr***)(self + 0x74) = anims;
     for (i = 0; i < *(unsigned char*)(self + 0x80); i++) {
-        _ZN9Animation8LoadFileER13SharedFilePtr(*(*(SharedFilePtr***)(self + 0x74))[i]);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(*(*(SharedFilePtr***)(self + 0x74))[i]);
     }
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(self,
         *(void**)((char*)(*(SharedFilePtr***)(self + 0x74))[0] + 4), 0, 0x1000, 0);

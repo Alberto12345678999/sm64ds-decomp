@@ -362,7 +362,7 @@ int daManta_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov090_02134524), 1, -1);
     Model::LoadFile(data_ov002_0210da10);
     Model::LoadFile(data_ov002_0210d9a8);
-    Animation::LoadFile(data_ov090_0213452c);
+    dExtFrameCtrl_c::LoadFile(data_ov090_0213452c);
 
     mPathID = param1 & 0xff;
     mStarID = (param1 >> 12) & 0xf;

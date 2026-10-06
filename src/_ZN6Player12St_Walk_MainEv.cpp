@@ -96,7 +96,7 @@ label_1f0:
         u32 arg = (u8)param1;
         int modelIdx = _ZNK6Player14GetBodyModelIDEjb(((char*)this), arg, 0);
         char* anim = *(char**)(((char*)this) + modelIdx * 4 + 0xdc) + 0x50;
-        if (_ZN9Animation8GetFlagsEv(anim)) goto end;
+        if (_ZN15dExtFrameCtrl_c8GetFlagsEv(anim)) goto end;
     }
 
 label_27c:
