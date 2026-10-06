@@ -644,10 +644,10 @@ extern int data_ov002_02110b00;
 extern PMF3 data_ov002_0211104c[24];
 int func_ov002_020f63a0(daDemo_c* thiz);
 int func_ov002_020f23d0(void* c);
-void _ZN9ModelBase12ApplyOpacityEjj(void* m, unsigned int opacity, unsigned int unused);
+void _ZN9ModelBase12ApplyOpacityEjj(void* m, unsigned int opacity, unsigned int unused); /* local extern: untyped model pointer. */
 void func_ov002_020f65b8(ObjSeq* o);
-extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *c, void *cyl);
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *c, void *cyl);
+extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *c, void *cyl); /* local extern: untyped this, null cylinder. */
+extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *c, void *cyl); /* local extern: untyped this, null cylinder. */
 extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, s32 x, s32 y, s32 z);
