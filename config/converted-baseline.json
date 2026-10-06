@@ -3514,7 +3514,8 @@
     "src/_ZN15dExtFrameCtrl_cC2Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
-    "src/_ZN15dExtFrameCtrl_cD2Ev.cpp"
+    "src/_ZN15dExtFrameCtrl_cD2Ev.cpp",
+    "src/actors/daObjFl_Seesaw_c.cpp#daObjFl_Seesaw_c_classInit"
   ],
-  "count": 3507
+  "count": 3508
 }
