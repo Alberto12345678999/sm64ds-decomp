@@ -741,12 +741,6 @@
     "src/actors/daEykn_c.cpp#_ZN8daEykn_c16OnPendingDestroyEv",
     "src/actors/daEykn_c.cpp#_ZN8daEykn_cD0Ev",
     "src/actors/daEykn_c.cpp#_ZN8daEykn_cD1Ev",
-    "src/_ZN3OAM11GetObjWidthEii.cpp",
-    "src/_ZN3OAM12EnableSubOAMEv.cpp",
-    "src/_ZN3OAM12GetObjHeightEii.cpp",
-    "src/_ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2.cpp",
-    "src/_ZN3OAM4LoadEv.cpp",
-    "src/_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2.cpp",
     "src/typeinfo.cpp#_ZN3abi17__class_type_infoD0Ev",
     "src/typeinfo.cpp#_ZN3abi17__class_type_infoD1Ev",
     "src/typeinfo.cpp#_ZN3abi17__class_type_infoD2Ev",
@@ -3112,7 +3106,13 @@
     "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c6GetPosEv",
     "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cC1Ev",
     "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD0Ev",
-    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD1Ev"
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD1Ev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM11GetObjWidthEii",
+    "src/engine/oam/OAM.cpp#_ZN3OAM12EnableSubOAMEv",
+    "src/engine/oam/OAM.cpp#_ZN3OAM12GetObjHeightEii",
+    "src/engine/oam/OAM.cpp#_ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2",
+    "src/engine/oam/OAM.cpp#_ZN3OAM4LoadEv",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2"
   ],
   "count": 3105
 }

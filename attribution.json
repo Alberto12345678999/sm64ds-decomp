@@ -8373,6 +8373,18 @@
     "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_c6GetPosEv": "tangosdev",
     "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD0Ev": "andrewboudreau",
     "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cD1Ev": "tangosdev",
-    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cC1Ev": "andrewboudreau"
+    "src/engine/collision/dCcPos_c.cpp#_ZN8dCcPos_cC1Ev": "andrewboudreau",
+    "src/engine/oam/OAM.cpp#_ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2": "lunavyqo",
+    "src/engine/oam/OAM.cpp#_ZN3OAM12GetObjHeightEii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM11GetObjWidthEii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM5ResetEv": "andrewboudreau",
+    "src/engine/oam/OAM.cpp#_ZN3OAM5FlushEv": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM4LoadEv": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM9RenderSubEP7OamAttrii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM9RenderSubEP7OamAttriiii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM12EnableSubOAMEv": "tangosdev"
   }
 }
