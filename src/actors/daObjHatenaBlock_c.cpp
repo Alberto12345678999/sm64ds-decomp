@@ -91,7 +91,7 @@
  * NOT OWNED BY THIS TU (named where they live, not here):
  *   func_ov102_0214ad14 / 0214b384 -- daBmb_c helpers, called by
  *     func_ov102_02149220 on the Bob-omb it spawns.
- *   func_ov002_020f0438 -- ov002; the bounce end calls it on a held
+ *   daSCoin_c::Collect -- ov002; the bounce end calls it on a held
  *     SECRET_COIN (actorID 0x149).
  *   data_ov102_0214e7d0..808 -- this overlay's KCL/BMD/BCA handles. ov102's
  *     sinit constructs them; this TU does not own .bss.
@@ -722,7 +722,7 @@ void func_ov102_02149c78(daObjHatenaBlock_c *self)
  * On the first update where the countdown returns 0 (the seventh after the
  * bounce begins, since mBounceTimer starts at 7) the block pops:
  *  - a SECRET_COIN that registered itself in mHeldActor gets
- *    daSCoin_c::func_ov002_020f0438; mHeldActor is cleared;
+ *    daSCoin_c::Collect; mHeldActor is cleared;
  *  - sound 0 through Sound::PlayBank3 at the camera-space position, and
  *    particles 0xb and 0xd at pos, plus one that depends on the block (0xc
  *    for HATENA_BLOCK, 0x10 for ITEM / VS, 9 for the caps; IDs unnamed here);
@@ -771,7 +771,7 @@ void daObjHatenaBlock_c::func_ov102_021498e0()
     held = mHeldActor;
     if (held != 0) {
         if (held->actorID == ACTOR_SECRET_COIN)
-            ((daSCoin_c *)held)->func_ov002_020f0438();
+            ((daSCoin_c *)held)->Collect();
         mHeldActor = 0;
     }
     Sound::PlayBank3(0, *(Vector3 *)&mCamSpacePosX);

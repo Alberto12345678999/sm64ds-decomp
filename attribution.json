@@ -1267,12 +1267,6 @@
     "src/game/actors/d_a_obj_km1_kurumajiku.cpp#daObjKm1_Kurumajiku_c_classInit": "tangosdev",
     "src/actors/daSCoin_c.cpp#_ZN9daSCoin_cD1Ev": "tangosdev",
     "src/actors/daSCoin_c.cpp#_ZN9daSCoin_cD0Ev": "tangosdev",
-    "src/actors/daSCoin_c.cpp#func_ov002_020f0438": "tangosdev",
-    "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c19func_ov002_020f0438Ev": "tangosdev",
-    "src/actors/daSCoin_c.cpp#func_ov002_020f051c": "andrewboudreau",
-    "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c19func_ov002_020f051cEv": "andrewboudreau",
-    "src/actors/daSCoin_c.cpp#func_ov002_020f05f4": "ruspecial",
-    "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c19func_ov002_020f05f4Ev": "ruspecial",
     "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c8BehaviorEv": "tangosdev",
     "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c13InitResourcesEv": "tangosdev",
@@ -5153,7 +5147,6 @@
     "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c13InitResourcesEv": "ruspecial",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_cD1Ev": "andrewboudreau",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_cD0Ev": "tangosdev",
-    "src/actors/daObjShell_c.cpp#func_ov064_0211a9b4": "tangosdev",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c6RenderEv": "tangosdev",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c8BehaviorEv": "ruspecial",
@@ -8947,5 +8940,17 @@
     "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c8SetFlagsEi": "tangosdev",
     "src/engine/animation/dExtFrameCtrl_c.cpp#_ZNK15dExtFrameCtrl_c12WillHitFrameEi": "aitddlabs",
     "src/engine/animation/dExtFrameCtrl_c.cpp#_ZNK15dExtFrameCtrl_c13GetFrameCountEv": "tangosdev"
-  }
+  ,
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c19func_ov064_0211a9b4Ev": "tangosdev",
+    "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c11LinkToBlockEv": "andrewboudreau",
+    "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c7CollectEv": "tangosdev",
+    "src/actors/daSCoin_c.cpp#_ZN9daSCoin_c9SpawnStarEv": "ruspecial",
+    "src/engine/model/ModelAnim.cpp#_ZN9ModelAnim11UpdateVertsEv": "tangosdev",
+    "src/engine/model/ModelAnim.cpp#_ZN9ModelAnim4CopyERKS_Pc": "tangosdev",
+    "src/engine/model/ModelAnim.cpp#_ZN9ModelAnim6RenderEPK7Vector3": "tangosdev",
+    "src/engine/model/ModelAnim.cpp#_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj": "tangosdev",
+    "src/engine/model/ModelAnim.cpp#_ZN9ModelAnim9Virtual10ER9Matrix4x3": "tangosdev",
+    "src/engine/model/ModelAnim.cpp#_ZN9ModelAnim9Virtual18EjPK7Vector3": "tangosdev",
+    "src/engine/model/ModelAnim.cpp#func_020167a4": "ruspecial"
+}
 }
