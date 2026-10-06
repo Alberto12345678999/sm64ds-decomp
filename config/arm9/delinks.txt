@@ -1353,37 +1353,9 @@ src/_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj.cpp:
     complete
     .text start:0x020148c8 end:0x0201490c
 
-src/_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj.cpp:
+src/engine/collision/dCcAc_c.cpp:
     complete
-    .text start:0x0201490c end:0x0201493c
-
-src/_ZN7dCcAc_c10GetOwnerIDEv.cpp:
-    complete
-    .text start:0x0201493c end:0x02014948
-
-src/_ZN7dCcAc_c6GetPosEv.cpp:
-    complete
-    .text start:0x02014948 end:0x02014954
-
-src/_ZN7dCcAc_cD2Ev.cpp:
-    complete
-    .text start:0x02014954 end:0x02014978
-
-src/_ZN7dCcAc_cD0Ev.cpp:
-    complete
-    .text start:0x02014978 end:0x020149a4
-
-src/_ZN7dCcAc_cD1Ev.cpp:
-    complete
-    .text start:0x020149a4 end:0x020149c8
-
-src/_ZN7dCcAc_cC1Ev.cpp:
-    complete
-    .text start:0x020149c8 end:0x020149f4
-
-src/_ZN7dCcAc_cC2Ev.cpp:
-    complete
-    .text start:0x020149f4 end:0x02014a20
+    .text start:0x0201490c end:0x02014a20
 
 src/func_02014a20.c:
     complete
@@ -4370,41 +4342,9 @@ src/engine/collision/dBgW_KcMbgSclY.cpp:
     complete
     .text start:0x0203a4dc end:0x0203abb0
 
-src/func_0203abb0.c:
+src/engine/collision/dM3dGSph.cpp:
     complete
-    .text start:0x0203abb0 end:0x0203abcc
-
-src/func_0203abcc.c:
-    complete
-    .text start:0x0203abcc end:0x0203abd4
-
-src/func_0203abd4.c:
-    complete
-    .text start:0x0203abd4 end:0x0203ac00
-
-src/func_0203ac00.c:
-    complete
-    .text start:0x0203ac00 end:0x0203ac1c
-
-src/_ZN8dM3dGSphD2Ev.cpp:
-    complete
-    .text start:0x0203ac1c end:0x0203ac2c
-
-src/_ZN8dM3dGSphD0Ev.cpp:
-    complete
-    .text start:0x0203ac2c end:0x0203ac50
-
-src/_ZN8dM3dGSphD1Ev.cpp:
-    complete
-    .text start:0x0203ac50 end:0x0203ac60
-
-src/_ZN8dM3dGSphC1Ev.cpp:
-    complete
-    .text start:0x0203ac60 end:0x0203ac70
-
-src/_ZN8dM3dGSphC2Ev.cpp:
-    complete
-    .text start:0x0203ac70 end:0x0203ac80
+    .text start:0x0203abb0 end:0x0203ac80
 
 src/_ZN7PathPtr6FromIDEj.cpp:
     complete
