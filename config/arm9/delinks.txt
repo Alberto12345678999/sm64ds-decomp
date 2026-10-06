@@ -7584,33 +7584,9 @@ src/_ZN3GXS10LoadBGPlttEPKvjj.cpp:
     complete
     .text start:0x02056808 end:0x02056870
 
-src/_ZN2GX10LoadBGPlttEPKvjj.cpp:
+src/engine/gx/GX.cpp:
     complete
-    .text start:0x02056870 end:0x020568cc
-
-src/_ZN2GX14EndLoadTexPlttEv.cpp:
-    complete
-    .text start:0x020568cc end:0x02056924
-
-src/_ZN2GX11LoadTexPlttEPKvjj.cpp:
-    complete
-    .text start:0x02056924 end:0x02056998
-
-src/_ZN2GX16BeginLoadTexPlttEv.cpp:
-    complete
-    .text start:0x02056998 end:0x020569e0
-
-src/_ZN2GX10EndLoadTexEv.cpp:
-    complete
-    .text start:0x020569e0 end:0x02056a50
-
-src/_ZN2GX7LoadTexEPKvjj.cpp:
-    complete
-    .text start:0x02056a50 end:0x02056b9c
-
-src/_ZN2GX12BeginLoadTexEv.cpp:
-    complete
-    .text start:0x02056b9c end:0x02056c1c
+    .text start:0x02056870 end:0x02056c1c
 
 src/Copy48BytesFixed.c:
     complete
