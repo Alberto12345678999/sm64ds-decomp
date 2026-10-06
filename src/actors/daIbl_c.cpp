@@ -163,7 +163,7 @@ int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 int _ZN4cstd4fdivEii(int a, int b);
 int _ZN8dActor_c14GetSubtractionEss(void *a, short s1, int s2);
 int _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, int ang);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, void *mtx, int f, int g, unsigned int h);
 void _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(void *self, void *c);
 void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *c);
 void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *self, void *c);
@@ -180,7 +180,6 @@ void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
 void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
 void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
-int _ZN11ShadowModel12InitCylinderEv(void *self);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
 
@@ -203,7 +202,7 @@ extern struct VtEntry data_ov100_0214867c[];
  *
  * D1 is one vtable store and five destructor calls, every one a consequence
  * of `struct daIbl_c : dEnemyBase_c` and the members that declaration types:
- * its own vptr, then dCcAc_c (0x374), ShadowModel (0x31c), Model (0x2cc),
+ * its own vptr, then dCcAc_c (0x374), dExtShadowModel_c (0x31c), Model (0x2cc),
  * dBgCh_Actr (0x110) in reverse declaration order, then
  * dEnemyBase_c::~dEnemyBase_c. D0 is the deleting destructor: the same
  * teardown, then an inline operator delete -- dEnemyBase_c's, reached
@@ -367,7 +366,7 @@ extern "C" void func_ov100_02142264(daIbl_c *c)
         k += 0x28;
     else
         k += 0x190;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel, c->mShadowMtx, c->mDrawScaleX * 0xc8, k * c->mDrawScaleX, 0xf);
 }
 
@@ -921,7 +920,7 @@ int daIbl_c::InitResources()
 
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel,
         _ZN5Model8LoadFileER13SharedFilePtr(&data_ov100_02148668), 1, -1);
-    if (_ZN11ShadowModel12InitCylinderEv((char *)&mShadowModel) == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;

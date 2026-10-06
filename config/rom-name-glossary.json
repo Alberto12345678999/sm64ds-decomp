@@ -143,47 +143,47 @@
     "Ki": {
       "gloss": "Kaizoku Irie (pirate cove) -- Jolly Roger Bay",
       "confidence": "high",
-      "note": "Stage dir data/stage/kaizoku_irie in the ROM file-name table (extracted/overlays/overlay_0000.bin); its sibling kaizoku_ship is Ks. ov016: SHIP_UP/DOWN, ROCK_PILLAR, UNAGI."
+      "note": "dScStage_c dir data/stage/kaizoku_irie in the ROM file-name table (extracted/overlays/overlay_0000.bin); its sibling kaizoku_ship is Ks. ov016: SHIP_UP/DOWN, ROCK_PILLAR, UNAGI."
     },
     "Fl": {
       "gloss": "Fire Land -- Lethal Lava Land",
       "confidence": "high",
-      "note": "Stage dir data/stage/fire_land in the ROM file-name table (extracted/overlays/overlay_0000.bin); the volcano interior is fire_mt (Fm). ov022 is entirely LLL."
+      "note": "dScStage_c dir data/stage/fire_land in the ROM file-name table (extracted/overlays/overlay_0000.bin); the volcano interior is fire_mt (Fm). ov022 is entirely LLL."
     },
     "Wc": {
       "gloss": "Water City -- Wet-Dry World",
       "confidence": "high",
-      "note": "Stage dir data/stage/water_city in the ROM file-name table (extracted/overlays/overlay_0000.bin); mapping from ov029."
+      "note": "dScStage_c dir data/stage/water_city in the ROM file-name table (extracted/overlays/overlay_0000.bin); mapping from ov029."
     },
     "Dl": {
       "gloss": "Desert Land -- Shifting Sand Land (the outdoor desert)",
       "confidence": "high",
-      "note": "Stage dir data/stage/desert_land in the ROM file-name table (extracted/overlays/overlay_0000.bin). ov024: PYRAMID_TOP, PYRAMID_TAG -- the pyramid seen from outside; its interior is Dp."
+      "note": "dScStage_c dir data/stage/desert_land in the ROM file-name table (extracted/overlays/overlay_0000.bin). ov024: PYRAMID_TOP, PYRAMID_TAG -- the pyramid seen from outside; its interior is Dp."
     },
     "Dp": {
       "gloss": "Desert Pyramid -- Shifting Sand Land (pyramid interior)",
       "confidence": "high",
-      "note": "Stage dir data/stage/desert_py in the ROM file-name table (extracted/overlays/overlay_0000.bin). ov025: PYRAMID_STEP, PYRAMID_LIFT, GRINDEL."
+      "note": "dScStage_c dir data/stage/desert_py in the ROM file-name table (extracted/overlays/overlay_0000.bin). ov025: PYRAMID_STEP, PYRAMID_LIFT, GRINDEL."
     },
     "Hm": {
       "gloss": "High Mountain -- Tall, Tall Mountain",
       "confidence": "high",
-      "note": "Stage dir data/stage/high_mt in the ROM file-name table (extracted/overlays/overlay_0000.bin); ov030 carries HM_BASKET and HM_MARUTA."
+      "note": "dScStage_c dir data/stage/high_mt in the ROM file-name table (extracted/overlays/overlay_0000.bin); ov030 carries HM_BASKET and HM_MARUTA."
     },
     "Rc": {
       "gloss": "Rainbow Cruise -- Rainbow Ride",
       "confidence": "high",
-      "note": "Stage dir data/stage/rainbow_cruise in the ROM file-name table (extracted/overlays/overlay_0000.bin)."
+      "note": "dScStage_c dir data/stage/rainbow_cruise in the ROM file-name table (extracted/overlays/overlay_0000.bin)."
     },
     "Ct": {
       "gloss": "Clock Tower -- Tick Tock Clock",
       "confidence": "high",
-      "note": "Stage dir data/stage/clock_tower in the ROM file-name table (extracted/overlays/overlay_0000.bin); every CT_MECHA* model is special_obj/ct_mecha_objNN."
+      "note": "dScStage_c dir data/stage/clock_tower in the ROM file-name table (extracted/overlays/overlay_0000.bin); every CT_MECHA* model is special_obj/ct_mecha_objNN."
     },
     "Km": {
       "gloss": "Koopa Map -- a daKpa_c stage (Km1/Km2/Km3 are the three)",
       "confidence": "high",
-      "note": "Stage dirs data/stage/koopa1_map..koopa3_map in the ROM file-name table (extracted/overlays/overlay_0000.bin); the boss arenas are koopaN_boss (Kb). ov043/ov045/ov047 carry the three courses' furniture."
+      "note": "dScStage_c dirs data/stage/koopa1_map..koopa3_map in the ROM file-name table (extracted/overlays/overlay_0000.bin); the boss arenas are koopaN_boss (Kb). ov043/ov045/ov047 carry the three courses' furniture."
     },
     "Mc": {
       "gloss": "Main Castle -- the castle grounds (outside)",
@@ -193,60 +193,60 @@
     "C0": {
       "gloss": "Castle basement (B1)",
       "confidence": "high",
-      "note": "Stage dir data/stage/castle_b1; C0_WATER = BASEMENT_WATER, C0_SWITCH = SWITCH_PILLAR (ov012). The splitter currently cuts this as C + 0."
+      "note": "dScStage_c dir data/stage/castle_b1; C0_WATER = BASEMENT_WATER, C0_SWITCH = SWITCH_PILLAR (ov012). The splitter currently cuts this as C + 0."
     },
     "C1": {
       "gloss": "Castle first floor (1F)",
       "confidence": "high",
-      "note": "Stage dir data/stage/castle_1f; C1_PEACH = PEACH_PAINTING, C1_HIKARI = LIGHT_BEAM, C1_TRAP = TRAP (ov010). C2 (castle_2f) shows up in the file table as c2_huriko / c2_hari_* but not in RTTI."
+      "note": "dScStage_c dir data/stage/castle_1f; C1_PEACH = PEACH_PAINTING, C1_HIKARI = LIGHT_BEAM, C1_TRAP = TRAP (ov010). C2 (castle_2f) shows up in the file table as c2_huriko / c2_hari_* but not in RTTI."
     },
     "Sm": {
       "gloss": "Snow Mountain -- Cool, Cool Mountain",
       "confidence": "high",
-      "note": "Stage dir data/stage/snow_mt; SM_LIFT(63) = SKI_LIFT, ov018 (include/daObjSm_Lift_c.h:7)."
+      "note": "dScStage_c dir data/stage/snow_mt; SM_LIFT(63) = SKI_LIFT, ov018 (include/daObjSm_Lift_c.h:7)."
     },
     "Ks": {
       "ja": "海賊船",
       "gloss": "Kaizoku Ship -- the sunken pirate ship in Jolly Roger Bay",
       "confidence": "high",
-      "note": "Stage dir data/stage/kaizoku_ship; KS_MIZU(62) = SHIP_WATER, ov017 (include/daObjKsWater_c.h:1)."
+      "note": "dScStage_c dir data/stage/kaizoku_ship; KS_MIZU(62) = SHIP_WATER, ov017 (include/daObjKsWater_c.h:1)."
     },
     "Th": {
       "gloss": "Teresa House -- Big Boo's Haunt",
       "confidence": "high",
-      "note": "Stage dir data/stage/teresa_house; TH_DOWN_B(66) = FALL_BLOCK_BBH, ov063; the file table also has th_hondana, th_kaidan, th_mery_go, th_trap. NOT the Th of dThIcon_c (touch)."
+      "note": "dScStage_c dir data/stage/teresa_house; TH_DOWN_B(66) = FALL_BLOCK_BBH, ov063; the file table also has th_hondana, th_kaidan, th_mery_go, th_trap. NOT the Th of dThIcon_c (touch)."
     },
     "Hs": {
       "gloss": "High Slider -- the Princess's Secret Slide",
       "confidence": "medium",
-      "note": "Stage dir data/stage/high_slider; HS_MOON / HS_STAR / HS_Y_STAR / HS_B_STAR (302-305) are the ov031 slide decorations (include/daObjHsBillboard_c.h:1). Caveat: HS_UPDOWN_LIFT(30) is labelled ROTATING_UP_DOWN_PLATFORM_UTM, which does not obviously belong to the slide."
+      "note": "dScStage_c dir data/stage/high_slider; HS_MOON / HS_STAR / HS_Y_STAR / HS_B_STAR (302-305) are the ov031 slide decorations (include/daObjHsBillboard_c.h:1). Caveat: HS_UPDOWN_LIFT(30) is labelled ROTATING_UP_DOWN_PLATFORM_UTM, which does not obviously belong to the slide."
     },
     "Td": {
       "ja": "ちびでか",
       "gloss": "Tibi-Deka, deka (huge) side -- Tiny-Huge Island",
       "confidence": "high",
-      "note": "Stage dir data/stage/tibi_deka_d; TD_FUTA(106) = HUGE_COVER, TD_WATER(107) = HUGE_WATER (ov032). tibi (tiny) / deka (huge) is THI's Japanese name."
+      "note": "dScStage_c dir data/stage/tibi_deka_d; TD_FUTA(106) = HUGE_COVER, TD_WATER(107) = HUGE_WATER (ov032). tibi (tiny) / deka (huge) is THI's Japanese name."
     },
     "Tt": {
       "ja": "ちびでか",
       "gloss": "Tibi-Deka, tibi (tiny) side -- Tiny-Huge Island",
       "confidence": "high",
-      "note": "Stage dir data/stage/tibi_deka_t; TT_FUTA(104) = TINY_COVER, TT_WATER(105) = TINY_WATER (ov033)."
+      "note": "dScStage_c dir data/stage/tibi_deka_t; TT_FUTA(104) = TINY_COVER, TT_WATER(105) = TINY_WATER (ov033)."
     },
     "Kb": {
       "gloss": "Koopa Boss -- a daKpa_c battle arena (Kb1/Kb2/Kb3)",
       "confidence": "high",
-      "note": "Stage dirs data/stage/koopa1_boss..koopa3_boss; the file table has kb1_ball, kb2_stage, kb3_stage. KB1_BILLBOARD(301) = ORANGE_BALL_BILLBOARD, ov044 (include/daObjKb1Billboard_c.h:1). Mirrors Km = koopaN_map."
+      "note": "dScStage_c dirs data/stage/koopa1_boss..koopa3_boss; the file table has kb1_ball, kb2_stage, kb3_stage. KB1_BILLBOARD(301) = ORANGE_BALL_BILLBOARD, ov044 (include/daObjKb1Billboard_c.h:1). Mirrors Km = koopaN_map."
     },
     "Emm": {
       "gloss": "Ex Mario map -- an extra (secret) stage",
       "confidence": "medium",
-      "note": "Stage dir data/stage/ex_m_map, alongside ex_mario, ex_l_map / ex_luigi, ex_w_map / ex_wario. EMM_LOG(174), EMM_YUKA(175) in ov052. Which in-game stage this is was not confirmed."
+      "note": "dScStage_c dir data/stage/ex_m_map, alongside ex_mario, ex_l_map / ex_luigi, ex_w_map / ex_wario. EMM_LOG(174), EMM_YUKA(175) in ov052. Which in-game stage this is was not confirmed."
     },
     "Ewm": {
       "gloss": "Ex Wario map -- an extra (secret) stage",
       "confidence": "medium",
-      "note": "Stage dir data/stage/ex_w_map; EWM_ICE_BLOCK(173) = BIG_MOVING_ICE_BLOCK, ov056; file special_obj/ewm_ice_brock."
+      "note": "dScStage_c dir data/stage/ex_w_map; EWM_ICE_BLOCK(173) = BIG_MOVING_ICE_BLOCK, ov056; file special_obj/ewm_ice_brock."
     },
     "Ewb": {
       "gloss": "Ex Wario boss? -- Chief Chilly's arena",

@@ -61,7 +61,7 @@ extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
 extern SharedFilePtr data_ov035_02112cb0;
 extern SharedFilePtr data_ov035_02112cb8;
-extern int _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
 }
 
@@ -90,7 +90,7 @@ int daObjCtMecha11_c::UpdateShadow()
     int s = data_02082214[(idx << 1) + 1];
     int sa = s < 0 ? -s : s;
     int scaled = (int)(((long long)sa * 0x26c000 + 0x800) >> 12);
-    return _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         this, &mShadowModel, &mShadowMat, 0x12c000, 0x32000,
         scaled + 0x50000, 0xf);
 }

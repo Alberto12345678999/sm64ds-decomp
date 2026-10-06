@@ -6,7 +6,7 @@
  * no destructor-forcing functions are needed.
  */
 #include "dScene_c.h"
-#include "Stage.h"
+#include "dScStage_c.h"
 #include "FaderColor.h"
 
 struct Matrix2x2 { int m[4]; };
@@ -207,8 +207,8 @@ void DisableAllBanks(){
 }
 }
 
-// @symbol _ZN5Stage12SetVramBanksEv
-void Stage::SetVramBanks() {
+// @symbol _ZN10dScStage_c12SetVramBanksEv
+void dScStage_c::SetVramBanks() {
     GX::DisableAllBanks();
     _ZN2GX13SetBankForTexEt(3);
     _ZN2GX17SetBankForTexPlttEt(0x30);

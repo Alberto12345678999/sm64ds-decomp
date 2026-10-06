@@ -150,7 +150,7 @@ extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
 extern void *_ZN8dActor_c10FindWithIDEj(u32 id);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, void *pos, unsigned int n, int speed, short ang);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, short c);
-extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern char *_ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3(char *self, char *player, const struct Vector3 *v);
 extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int a, int b);
@@ -226,7 +226,7 @@ extern "C" BlockSW4 data_ov098_0213c4f0;
 
 // @symbol _ZN13daObjBlockS_cD1Ev
 // @symbol _ZN13daObjBlockS_cD0Ev
-/* Destroys dCcAcPos_c x2, ShadowModel and dBgCh_Actr in reverse declaration
+/* Destroys dCcAcPos_c x2, dExtShadowModel_c and dBgCh_Actr in reverse declaration
  * order, then dBgActor_c's inline destructor stores its own vptr and destroys
  * its dBgW_KcMbg and Model before chaining to dActor_c. D0 then returns the
  * object through the inline operator delete. */
@@ -1134,7 +1134,7 @@ void daObjBlockS_c::func_ov098_021396a4()
     mShadowMtx.m[9] = mPosX >> 3;
     mShadowMtx.m[10] = (mPosY - 0x14000) >> 3;
     mShadowMtx.m[11] = mPosZ >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         this, &mShadowModel, &mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
 }
 

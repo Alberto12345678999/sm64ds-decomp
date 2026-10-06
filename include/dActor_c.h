@@ -38,7 +38,7 @@ struct dCc_c;
 /* Only ever named through a pointer below; the definition lives in common.h /
    math/Matrix.h, which this header deliberately does not pull in. */
 struct Matrix4x3;
-struct ShadowModel;
+struct dExtShadowModel_c;
 #include "math/Fix12.h"
 
 /* The actor heap and its deallocator, for the inline operator delete at the end of
@@ -273,12 +273,12 @@ struct dActor_c : dBase_c {
                         Fix12<int> horzSpeed, Fix12<int> unk35c, u32 param1);
     bool IsPlayerInRange(Fix12<int> posX, Fix12<int> posY, Fix12<int> posZ,
                           s32 maxDist);
-    void DropShadowScaleXYZ(ShadowModel &shadow, Matrix4x3 &matrix,
+    void DropShadowScaleXYZ(dExtShadowModel_c &shadow, Matrix4x3 &matrix,
                              Fix12<int> scaleX, Fix12<int> scaleY,
                              Fix12<int> scaleZ, u32 opacity);
     s16  ReflectAngle(Fix12<int> normalX, Fix12<int> normalZ, s16 angToReflect);
     void SpawnCoins(const Vector3 &pos, u32 count, Fix12<int> spread, s16 angle);
-    void DropShadowRadHeight(ShadowModel &shadow, Matrix4x3 &matrix,
+    void DropShadowRadHeight(dExtShadowModel_c &shadow, Matrix4x3 &matrix,
                               Fix12<int> radius, Fix12<int> depth, u32 opacity);
 
     /* INLINE, AND ON THIS CLASS RATHER THAN A BASE -- both are load-bearing.

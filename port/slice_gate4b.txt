@@ -19,8 +19,7 @@ port/unmatched/ModelComponents_Render.cpp
 src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.cpp
 
 # GX upload path (no textual MMIO; VRAM windows come from HAL globals)
-src/_ZN2GX7LoadTexEPKvjj.cpp
-src/_ZN2GX11LoadTexPlttEPKvjj.cpp
+src/engine/gx/GX.cpp
 
 # render walk + math. func_02044534/func_0204488c/NormalizeVec3 are in the
 # HOSTGEN list instead: they touch MMIO textually (geometry ports, the

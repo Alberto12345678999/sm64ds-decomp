@@ -9,7 +9,7 @@
     "contiguous linker run: 0x21196d8..0x2119ebc, 9 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjCtRotateBlock_c",
     "module sinit corroboration: 10 sinit(s) / 10 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "classInit fold (0930c): the two registry factories daObjCtRotateBlock_c_classInit_CT_MECHA02 (0x02119ebc, 0x40) and daObjCtRotateBlock_c_classInit_CT_MECHA01 (0x02119efc, 0x40) abut this TU's former end 0x02119ebc with no gap and nothing between them; tu_map left them in their own unlabelled unit because it cuts on symbol name. Both construct this class (operator new(0x3d8), dBgActor_c C2, _ZTV20daObjCtRotateBlock_c store, Model and ShadowModel C1). The widened range 0x021196d8..0x02119f3c ends where the daObjCtMecha03_c TU (src/actors/daObjCtMecha03_c.cpp) begins."
+    "classInit fold (0930c): the two registry factories daObjCtRotateBlock_c_classInit_CT_MECHA02 (0x02119ebc, 0x40) and daObjCtRotateBlock_c_classInit_CT_MECHA01 (0x02119efc, 0x40) abut this TU's former end 0x02119ebc with no gap and nothing between them; tu_map left them in their own unlabelled unit because it cuts on symbol name. Both construct this class (operator new(0x3d8), dBgActor_c C2, _ZTV20daObjCtRotateBlock_c store, Model and dExtShadowModel_c C1). The widened range 0x021196d8..0x02119f3c ends where the daObjCtMecha03_c TU (src/actors/daObjCtMecha03_c.cpp) begins."
   ],
   "sections": [
     {

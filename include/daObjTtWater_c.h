@@ -49,7 +49,7 @@ typedef char daObjTtWater_c_size_must_be_0x340[sizeof(daObjTtWater_c) == 0x340 ?
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+   can never be migrated. Same arrangement as include/dExtShadowModel_c.h. */
 struct daObjTtWater_c {
     u8  pad_000[0x60];
     s32 mPosY;            /* 0x060 */
@@ -68,7 +68,7 @@ struct daObjTtWater_c {
     u8  pad_2ec[0x34];
     /* TextureTransformer member, named by the class's own destructor calling
        TextureTransformer's D1 at +0x320 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN14daObjTtWater_cD1Ev.c] */
+       checks. Was a u8 marker. [_ZN14daObjTtWater_cD1Ev, now in src/actors/daObjTtWater_c.cpp] */
     TextureTransformer mTextureTransformer;            /* 0x320 */
     s32 mMinPosY;            /* 0x334 */
     s32 mSoundID;            /* 0x338 */

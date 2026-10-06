@@ -1117,11 +1117,11 @@ matched: yes</title></rect><rect x="112.87" y="123.03" width="32.03" height="4.1
 module: arm9
 addr: 0x02010ad8
 size: 196 bytes
-matched: yes</title></rect><rect x="144.91" y="123.03" width="12.42" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j
+matched: yes</title></rect><rect x="144.91" y="123.03" width="12.42" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j
 module: arm9
 addr: 0x02010b9c
 size: 76 bytes
-matched: yes</title></rect><rect x="157.33" y="123.03" width="11.77" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j
+matched: yes</title></rect><rect x="157.33" y="123.03" width="11.77" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j
 module: arm9
 addr: 0x02010be8
 size: 72 bytes
@@ -2101,39 +2101,39 @@ matched: yes</title></rect><rect x="240.73" y="162.45" width="2.42" height="8.88
 module: arm9
 addr: 0x02015d18
 size: 32 bytes
-matched: yes</title></rect><rect x="243.15" y="162.45" width="16.62" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModel9RenderAllEv
+matched: yes</title></rect><rect x="243.15" y="162.45" width="16.62" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_c9RenderAllEv
 module: arm9
 addr: 0x02015d38
 size: 220 bytes
-matched: yes</title></rect><rect x="259.77" y="162.45" width="6.04" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModel8CleanAllEv
+matched: yes</title></rect><rect x="259.77" y="162.45" width="6.04" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_c8CleanAllEv
 module: arm9
 addr: 0x02015e14
 size: 80 bytes
-matched: yes</title></rect><rect x="265.82" y="162.45" width="6.65" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j
+matched: yes</title></rect><rect x="265.82" y="162.45" width="6.65" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j
 module: arm9
 addr: 0x02015e64
 size: 88 bytes
-matched: yes</title></rect><rect x="272.46" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModel12InitCylinderEv
+matched: yes</title></rect><rect x="272.46" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_c12InitCylinderEv
 module: arm9
 addr: 0x02015ebc
 size: 28 bytes
-matched: yes</title></rect><rect x="274.58" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModel10InitCuboidEv
+matched: yes</title></rect><rect x="274.58" y="162.45" width="2.12" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_c10InitCuboidEv
 module: arm9
 addr: 0x02015ed8
 size: 28 bytes
-matched: yes</title></rect><rect x="276.70" y="162.45" width="10.58" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModel9DoSetFileEPcii
+matched: yes</title></rect><rect x="276.70" y="162.45" width="10.58" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_c9DoSetFileEPcii
 module: arm9
 addr: 0x02015ef4
 size: 140 bytes
-matched: yes</title></rect><rect x="287.27" y="162.45" width="9.07" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModelD0Ev
+matched: yes</title></rect><rect x="287.27" y="162.45" width="9.07" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_cD0Ev
 module: arm9
 addr: 0x02015f80
 size: 120 bytes
-matched: yes</title></rect><rect x="296.34" y="162.45" width="8.46" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModelD1Ev
+matched: yes</title></rect><rect x="296.34" y="162.45" width="8.46" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_cD1Ev
 module: arm9
 addr: 0x02015ff8
 size: 112 bytes
-matched: yes</title></rect><rect x="304.80" y="162.45" width="3.93" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11ShadowModelC1Ev
+matched: yes</title></rect><rect x="304.80" y="162.45" width="3.93" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dExtShadowModel_cC1Ev
 module: arm9
 addr: 0x02016068
 size: 52 bytes
@@ -3225,7 +3225,7 @@ matched: yes</title></rect><rect x="210.97" y="218.29" width="3.32" height="16.1
 module: arm9
 addr: 0x0201cb2c
 size: 80 bytes
-matched: yes</title></rect><rect x="214.29" y="218.29" width="16.44" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage13UpdateMessageEv
+matched: yes</title></rect><rect x="214.29" y="218.29" width="16.44" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c13UpdateMessageEv
 module: arm9
 addr: 0x0201cb7c
 size: 396 bytes
@@ -3817,67 +3817,67 @@ matched: yes</title></rect><rect x="295.35" y="282.04" width="12.78" height="5.2
 module: arm9
 addr: 0x02023624
 size: 100 bytes
-matched: yes</title></rect><rect x="308.13" y="282.04" width="13.29" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5StageD1Ev
+matched: yes</title></rect><rect x="308.13" y="282.04" width="13.29" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_cD1Ev
 module: arm9
 addr: 0x02023688
 size: 104 bytes
-matched: yes</title></rect><rect x="5.00" y="287.29" width="4.01" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5StageD0Ev
+matched: yes</title></rect><rect x="5.00" y="287.29" width="4.01" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_cD0Ev
 module: arm9
 addr: 0x020236f0
 size: 124 bytes
-matched: yes</title></rect><rect x="9.01" y="287.29" width="25.51" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9VE_UpdateEv
+matched: yes</title></rect><rect x="9.01" y="287.29" width="25.51" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9VE_UpdateEv
 module: arm9
 addr: 0x0202376c
 size: 788 bytes
-matched: yes</title></rect><rect x="34.52" y="287.29" width="11.39" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage7VE_InitEv
+matched: yes</title></rect><rect x="34.52" y="287.29" width="11.39" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c7VE_InitEv
 module: arm9
 addr: 0x02023a80
 size: 352 bytes
-matched: yes</title></rect><rect x="45.91" y="287.29" width="15.28" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage20RenderBouncingArrowsEv
+matched: yes</title></rect><rect x="45.91" y="287.29" width="15.28" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c20RenderBouncingArrowsEv
 module: arm9
 addr: 0x02023be0
 size: 472 bytes
-matched: yes</title></rect><rect x="61.19" y="287.29" width="41.95" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9LC_RenderEv
+matched: yes</title></rect><rect x="61.19" y="287.29" width="41.95" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9LC_RenderEv
 module: arm9
 addr: 0x02023db8
 size: 1296 bytes
-matched: yes</title></rect><rect x="103.14" y="287.29" width="80.01" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9LC_UpdateEv
+matched: yes</title></rect><rect x="103.14" y="287.29" width="80.01" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9LC_UpdateEv
 module: arm9
 addr: 0x020242c8
 size: 2472 bytes
-matched: yes</title></rect><rect x="183.15" y="287.29" width="36.25" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage16CheckCameraInputEv
+matched: yes</title></rect><rect x="183.15" y="287.29" width="36.25" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c16CheckCameraInputEv
 module: arm9
 addr: 0x02024c70
 size: 1120 bytes
-matched: yes</title></rect><rect x="219.40" y="287.29" width="8.29" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage12RenderNumberEhiibi
+matched: yes</title></rect><rect x="219.40" y="287.29" width="8.29" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c12RenderNumberEhiibi
 module: arm9
 addr: 0x020250d0
 size: 256 bytes
-matched: yes</title></rect><rect x="227.69" y="287.29" width="93.74" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9PS_RenderEv
+matched: yes</title></rect><rect x="227.69" y="287.29" width="93.74" height="20.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9PS_RenderEv
 module: arm9
 addr: 0x020251d0
 size: 2896 bytes
-matched: yes</title></rect><rect x="5.00" y="308.02" width="7.65" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage25PS_UpdateOkAndBackButtonsEb
+matched: yes</title></rect><rect x="5.00" y="308.02" width="7.65" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb
 module: arm9
 addr: 0x02025d20
 size: 340 bytes
-matched: yes</title></rect><rect x="12.65" y="308.02" width="5.31" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage17PS_UpdateSaveMenuEb
+matched: yes</title></rect><rect x="12.65" y="308.02" width="5.31" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c17PS_UpdateSaveMenuEb
 module: arm9
 addr: 0x02025e74
 size: 236 bytes
-matched: yes</title></rect><rect x="17.97" y="308.02" width="10.99" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage20PS_UpdateOptionsMenuEv
+matched: yes</title></rect><rect x="17.97" y="308.02" width="10.99" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c20PS_UpdateOptionsMenuEv
 module: arm9
 addr: 0x02025f60
 size: 488 bytes
-matched: yes</title></rect><rect x="28.95" y="308.02" width="7.38" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage17UpdateMenuButtonsEb
+matched: yes</title></rect><rect x="28.95" y="308.02" width="7.38" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c17UpdateMenuButtonsEb
 module: arm9
 addr: 0x02026148
 size: 328 bytes
-matched: yes</title></rect><rect x="36.34" y="308.02" width="4.59" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage10PS_CleanupEv
+matched: yes</title></rect><rect x="36.34" y="308.02" width="4.59" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c10PS_CleanupEv
 module: arm9
 addr: 0x02026290
 size: 204 bytes
-matched: yes</title></rect><rect x="40.93" y="308.02" width="280.50" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9PS_UpdateEv
+matched: yes</title></rect><rect x="40.93" y="308.02" width="280.50" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9PS_UpdateEv
 module: arm9
 addr: 0x0202635c
 size: 12460 bytes
@@ -3885,7 +3885,7 @@ matched: yes</title></rect><rect x="5.00" y="337.81" width="3.33" height="7.26" 
 module: arm9
 addr: 0x02029408
 size: 36 bytes
-matched: yes</title></rect><rect x="8.33" y="337.81" width="43.25" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage7PS_InitEv
+matched: yes</title></rect><rect x="8.33" y="337.81" width="43.25" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c7PS_InitEv
 module: arm9
 addr: 0x0202942c
 size: 468 bytes
@@ -3897,11 +3897,11 @@ matched: yes</title></rect><rect x="59.34" y="337.81" width="38.44" height="7.26
 module: arm9
 addr: 0x02029654
 size: 416 bytes
-matched: yes</title></rect><rect x="97.78" y="337.81" width="6.28" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage14GraphCallback2Ev
+matched: yes</title></rect><rect x="97.78" y="337.81" width="6.28" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14GraphCallback2Ev
 module: arm9
 addr: 0x020297f4
 size: 68 bytes
-matched: yes</title></rect><rect x="104.07" y="337.81" width="2.59" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage14GraphCallback1Ev
+matched: yes</title></rect><rect x="104.07" y="337.81" width="2.59" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14GraphCallback1Ev
 module: arm9
 addr: 0x02029838
 size: 28 bytes
@@ -3989,7 +3989,7 @@ matched: yes</title></rect><rect x="261.54" y="337.81" width="2.22" height="7.26
 module: arm9
 addr: 0x02029ee0
 size: 24 bytes
-matched: yes</title></rect><rect x="263.76" y="337.81" width="52.49" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage19RenderVsModeNewStarEv
+matched: yes</title></rect><rect x="263.76" y="337.81" width="52.49" height="7.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c19RenderVsModeNewStarEv
 module: arm9
 addr: 0x02029ef8
 size: 568 bytes
@@ -3997,7 +3997,7 @@ matched: yes</title></rect><rect x="316.25" y="337.81" width="5.18" height="7.26
 module: arm9
 addr: 0x0202a130
 size: 56 bytes
-matched: yes</title></rect><rect x="5.00" y="345.07" width="67.84" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage21RenderVsModeCountdownEv
+matched: yes</title></rect><rect x="5.00" y="345.07" width="67.84" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c21RenderVsModeCountdownEv
 module: arm9
 addr: 0x0202a168
 size: 1012 bytes
@@ -4009,7 +4009,7 @@ matched: yes</title></rect><rect x="78.21" y="345.07" width="1.61" height="10.01
 module: arm9
 addr: 0x0202a5ac
 size: 24 bytes
-matched: yes</title></rect><rect x="79.82" y="345.07" width="4.56" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage15IsPauseDisabledEv
+matched: yes</title></rect><rect x="79.82" y="345.07" width="4.56" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c15IsPauseDisabledEv
 module: arm9
 addr: 0x0202a5c4
 size: 68 bytes
@@ -4077,7 +4077,7 @@ matched: yes</title></rect><rect x="133.18" y="345.07" width="6.17" height="10.0
 module: arm9
 addr: 0x0202a8e0
 size: 92 bytes
-matched: yes</title></rect><rect x="139.35" y="345.07" width="1.88" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage11GetSkyboxIDEv
+matched: yes</title></rect><rect x="139.35" y="345.07" width="1.88" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c11GetSkyboxIDEv
 module: arm9
 addr: 0x0202a93c
 size: 28 bytes
@@ -4197,15 +4197,15 @@ matched: yes</title></rect><rect x="270.47" y="345.07" width="1.88" height="10.0
 module: arm9
 addr: 0x0202b0e0
 size: 28 bytes
-matched: yes</title></rect><rect x="272.35" y="345.07" width="6.97" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage10LoadSkyboxEv
+matched: yes</title></rect><rect x="272.35" y="345.07" width="6.97" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c10LoadSkyboxEv
 module: arm9
 addr: 0x0202b0fc
 size: 104 bytes
-matched: yes</title></rect><rect x="279.32" y="345.07" width="17.43" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage22RenderModelTransparentEv
+matched: yes</title></rect><rect x="279.32" y="345.07" width="17.43" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c22RenderModelTransparentEv
 module: arm9
 addr: 0x0202b164
 size: 260 bytes
-matched: yes</title></rect><rect x="296.75" y="345.07" width="24.67" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage11RenderModelEv
+matched: yes</title></rect><rect x="296.75" y="345.07" width="24.67" height="10.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c11RenderModelEv
 module: arm9
 addr: 0x0202b268
 size: 368 bytes
@@ -4213,35 +4213,35 @@ matched: yes</title></rect><rect x="5.00" y="355.08" width="29.01" height="8.05"
 module: arm9
 addr: 0x0202b3d8
 size: 348 bytes
-matched: yes</title></rect><rect x="34.01" y="355.08" width="15.34" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage23LoadTextureTransformersEv
+matched: yes</title></rect><rect x="34.01" y="355.08" width="15.34" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c23LoadTextureTransformersEv
 module: arm9
 addr: 0x0202b534
 size: 184 bytes
-matched: yes</title></rect><rect x="49.35" y="355.08" width="12.00" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9LoadModelEv
+matched: yes</title></rect><rect x="49.35" y="355.08" width="12.00" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9LoadModelEv
 module: arm9
 addr: 0x0202b5ec
 size: 144 bytes
-matched: yes</title></rect><rect x="61.35" y="355.08" width="12.34" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9RenderFogEv
+matched: yes</title></rect><rect x="61.35" y="355.08" width="12.34" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c9RenderFogEv
 module: arm9
 addr: 0x0202b67c
 size: 148 bytes
-matched: yes</title></rect><rect x="73.69" y="355.08" width="22.01" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage7LoadFogEv
+matched: yes</title></rect><rect x="73.69" y="355.08" width="22.01" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c7LoadFogEv
 module: arm9
 addr: 0x0202b710
 size: 264 bytes
-matched: yes</title></rect><rect x="95.69" y="355.08" width="11.34" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage8CanPauseEv
+matched: yes</title></rect><rect x="95.69" y="355.08" width="11.34" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c8CanPauseEv
 module: arm9
 addr: 0x0202b818
 size: 136 bytes
-matched: yes</title></rect><rect x="107.36" y="355.08" width="66.02" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage6RenderEv
+matched: yes</title></rect><rect x="107.36" y="355.08" width="66.02" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c6RenderEv
 module: arm9
 addr: 0x0202b8a4
 size: 792 bytes
-matched: yes</title></rect><rect x="173.38" y="355.08" width="148.04" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage8BehaviorEv
+matched: yes</title></rect><rect x="173.38" y="355.08" width="148.04" height="8.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c8BehaviorEv
 module: arm9
 addr: 0x0202bbbc
 size: 1776 bytes
-matched: yes</title></rect><rect x="5.00" y="363.13" width="64.38" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage10CheckInputEv
+matched: yes</title></rect><rect x="5.00" y="363.13" width="64.38" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c10CheckInputEv
 module: arm9
 addr: 0x0202c2ac
 size: 1412 bytes
@@ -4257,19 +4257,19 @@ matched: yes</title></rect><rect x="78.50" y="363.13" width="8.02" height="14.71
 module: arm9
 addr: 0x0202c8f8
 size: 176 bytes
-matched: yes</title></rect><rect x="86.52" y="363.13" width="27.90" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage16CleanupResourcesEv
+matched: yes</title></rect><rect x="86.52" y="363.13" width="27.90" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c16CleanupResourcesEv
 module: arm9
 addr: 0x0202c9a8
 size: 612 bytes
-matched: yes</title></rect><rect x="114.43" y="363.13" width="122.74" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage13InitResourcesEv
+matched: yes</title></rect><rect x="114.43" y="363.13" width="122.74" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c13InitResourcesEv
 module: arm9
 addr: 0x0202cc0c
 size: 2692 bytes
-matched: yes</title></rect><rect x="237.17" y="363.13" width="84.26" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage14LoadGraphics2DEbi
+matched: yes</title></rect><rect x="237.17" y="363.13" width="84.26" height="14.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c14LoadGraphics2DEbi
 module: arm9
 addr: 0x0202d690
 size: 1848 bytes
-matched: yes</title></rect><rect x="5.00" y="377.84" width="2.45" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage19BeforeInitResourcesEv
+matched: yes</title></rect><rect x="5.00" y="377.84" width="2.45" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c19BeforeInitResourcesEv
 module: arm9
 addr: 0x0202ddc8
 size: 12 bytes
@@ -4381,7 +4381,7 @@ matched: yes</title></rect><rect x="62.23" y="381.12" width="8.78" height="8.86"
 module: arm9
 addr: 0x0202e6c8
 size: 116 bytes
-matched: yes</title></rect><rect x="71.01" y="381.12" width="6.06" height="8.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage12SetVramBanksEv
+matched: yes</title></rect><rect x="71.01" y="381.12" width="6.06" height="8.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c12SetVramBanksEv
 module: arm9
 addr: 0x0202e73c
 size: 80 bytes
@@ -5145,11 +5145,11 @@ matched: yes</title></rect><rect x="53.64" y="459.58" width="3.74" height="5.02"
 module: arm9
 addr: 0x020375d0
 size: 28 bytes
-matched: yes</title></rect><rect x="57.38" y="459.58" width="3.74" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020375ec
+matched: yes</title></rect><rect x="57.38" y="459.58" width="3.74" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin10SetClsnPosERK7Vector3
 module: arm9
 addr: 0x020375ec
 size: 28 bytes
-matched: yes</title></rect><rect x="61.12" y="459.58" width="13.90" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037608
+matched: yes</title></rect><rect x="61.12" y="459.58" width="13.90" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin13func_02037608Ev
 module: arm9
 addr: 0x02037608
 size: 104 bytes
@@ -5525,7 +5525,7 @@ matched: yes</title></rect><rect x="5.00" y="475.61" width="1.91" height="1.41" 
 module: arm9
 addr: 0x020391f0
 size: 4 bytes
-matched: yes</title></rect><rect x="6.91" y="475.61" width="17.16" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage18ResetMeshCollidersEv
+matched: yes</title></rect><rect x="6.91" y="475.61" width="17.16" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c18ResetMeshCollidersEv
 module: arm9
 addr: 0x020391f4
 size: 36 bytes
@@ -5897,15 +5897,15 @@ matched: yes</title></rect><rect x="134.22" y="488.71" width="6.63" height="3.24
 module: arm9
 addr: 0x0203ac80
 size: 32 bytes
-matched: yes</title></rect><rect x="140.85" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aca0
+matched: yes</title></rect><rect x="140.85" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr12SetPathTableEP7PathDefi
 module: arm9
 addr: 0x0203aca0
 size: 28 bytes
-matched: yes</title></rect><rect x="146.65" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203acbc
+matched: yes</title></rect><rect x="146.65" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr12GetNodeTableEv
 module: arm9
 addr: 0x0203acbc
 size: 16 bytes
-matched: yes</title></rect><rect x="149.96" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203accc
+matched: yes</title></rect><rect x="149.96" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr12SetNodeTableEPv
 module: arm9
 addr: 0x0203accc
 size: 16 bytes
@@ -5917,11 +5917,11 @@ matched: yes</title></rect><rect x="171.50" y="488.71" width="3.31" height="3.24
 module: arm9
 addr: 0x0203ad34
 size: 16 bytes
-matched: yes</title></rect><rect x="174.81" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad44
+matched: yes</title></rect><rect x="174.81" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr13GetPullFactorEv
 module: arm9
 addr: 0x0203ad44
 size: 16 bytes
-matched: yes</title></rect><rect x="178.12" y="488.71" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad54
+matched: yes</title></rect><rect x="178.12" y="488.71" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr9GetUnk004Ev
 module: arm9
 addr: 0x0203ad54
 size: 12 bytes
@@ -5929,7 +5929,7 @@ matched: yes</title></rect><rect x="180.61" y="488.71" width="2.49" height="3.24
 module: arm9
 addr: 0x0203ad60
 size: 12 bytes
-matched: yes</title></rect><rect x="183.09" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad6c
+matched: yes</title></rect><rect x="183.09" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr6SetDefEP7PathDef
 module: arm9
 addr: 0x0203ad6c
 size: 8 bytes
@@ -18429,7 +18429,7 @@ matched: yes</title></rect><rect x="442.39" y="952.99" width="11.34" height="3.5
 module: ov002
 addr: 0x020fe154
 size: 60 bytes
-matched: yes</title></rect><rect x="442.39" y="956.51" width="11.34" height="25.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
+matched: yes</title></rect><rect x="442.39" y="956.51" width="11.34" height="25.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScStage_c18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
 module: ov002
 addr: 0x020fe190
 size: 428 bytes

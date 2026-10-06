@@ -53,7 +53,7 @@ typedef char daObjSeesaw_c_size_must_be_0x328[sizeof(daObjSeesaw_c) == 0x328 ? 1
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+   can never be migrated. Same arrangement as include/dExtShadowModel_c.h. */
 struct daObjSeesaw_c {
     u8  pad_000[0xc];
     u16 actorID;            /* 0x00c */

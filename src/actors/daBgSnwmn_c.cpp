@@ -33,8 +33,8 @@ void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *offset, int radius, int height,
     u32 flags, u32 unk);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    void *self, ShadowModel *shadow, Matrix4x3 *matrix, int radius,
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    void *self, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius,
     int height, u32 flags);
 
 extern SharedFilePtr data_ov072_02122c40;
@@ -182,6 +182,6 @@ void daBgSnwmn_c::func_ov072_021208d8()
     mModel2.mat4x3.t.y = mPosY >> 3;
     mModel2.mat4x3.t.z = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadow, &mModel2.mat4x3, 0xe6000, 0x12c000, 0xf);
 }

@@ -4,7 +4,7 @@
 #include "dBase_c.h"
 
 /* The scene root: fBase_c -> dBase_c -> dScene_c. Ten classes derive from it
- * directly; Stage (dScStage_c), BootScene (dScBoot_c) and dScEntry_c are the
+ * directly; dScStage_c (dScStage_c), BootScene (dScBoot_c) and dScEntry_c are the
  * three this tree describes. It declares no data members of its own -- every
  * offset below 0x50 belongs to fBase_c.
  *
@@ -31,7 +31,7 @@ struct dScene_c : dBase_c {
     /* Declared first (key function) and DEFINED INLINE, both deliberately.
        MEASURED: every subclass destructor inlines this one, so a merely
        declared `virtual ~dScene_c();' emits `bl _ZN8dScene_cD2Ev' where the
-       ROM has none and costs 24 bytes in Stage's destructor alone. Do not move
+       ROM has none and costs 24 bytes in dScStage_c's destructor alone. Do not move
        it out of line. Overrides slots 16 (D1) and 17 (D0). */
     virtual ~dScene_c() {}
 

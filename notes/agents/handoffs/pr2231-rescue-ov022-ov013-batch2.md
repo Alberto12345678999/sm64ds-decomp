@@ -31,7 +31,7 @@ This document describes this commit. The queue records its immutable output SHA.
   `346b04c271b1` and `tools/validate_merge.py` is blob `a4d3b362ff58`, i.e.
   both post-#2425.
 - Separate evidence commits and required artifacts in this commit: no separate
-  evidence commit. Stage artifacts: `src/actors/daObjFl_London_c.cpp`,
+  evidence commit. dScStage_c artifacts: `src/actors/daObjFl_London_c.cpp`,
   `src/actors/daObjClock_c.cpp`, `src_tu/actors/daObj_volcanoCannon_c.cpp`
   (shadow, text-verified), their headers in `include/`, and the three manifests
   under [config/tu_manifest.d/ov022/](../../../config/tu_manifest.d/ov022/) and [config/tu_manifest.d/ov013/](../../../config/tu_manifest.d/ov013/).

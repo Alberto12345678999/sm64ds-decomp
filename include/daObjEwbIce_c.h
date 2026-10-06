@@ -77,7 +77,7 @@ typedef char daObjEwbIce_c_size_must_be_0x33c[sizeof(daObjEwbIce_c) == 0x33c ? 1
 #include "Model.h"
 
 /* The C spelling of the same object, flat. Retained for any leftover C
-   translation unit, same arrangement as include/ShadowModel.h. */
+   translation unit, same arrangement as include/dExtShadowModel_c.h. */
 struct daObjEwbIce_c {
     u8  pad_000[0xc];
     u16 mActorID;            /* 0x00c */
