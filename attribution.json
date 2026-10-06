@@ -8590,6 +8590,15 @@
     "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c9DoSetFileEPcii": "tangosdev",
     "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD0Ev": "tangosdev",
     "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD1Ev": "tangosdev",
-    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cC1Ev": "tangosdev"
+    "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cC1Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_Lin10GetClsnPosEv": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_Lin10SetClsnPosERK7Vector3": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_Lin13func_02037608Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD0Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD1Ev": "andrewboudreau",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinC1Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZThn16_N9dBgCh_LinD0Ev": "lplaat",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZThn16_N9dBgCh_LinD1Ev": "tangosdev"
   }
 }

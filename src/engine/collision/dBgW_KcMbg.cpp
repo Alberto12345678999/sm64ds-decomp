@@ -48,7 +48,6 @@ void func_020396d0(int *p, int v);
 
 /* Collision-query plumbing shared with the SphCrr/Gnd/Lin checkers. */
 void func_02035394(void *dst, void *src);
-void func_020375ec(int *line, int *position);
 void func_02037940(void *p, int v);
 void func_02037a04(void *o, void *d1, void *d2);
 void func_02037a6c(void *b, int x1, int y1, int z1, int x2, int y2, int z2);
@@ -373,7 +372,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Lin &ray)
     if (hit != 0) {
         Fix12i distance = data_020a0d0c.clsnDist;
         func_02039e30(this, &data_020a0d60, &worldPos);
-        func_020375ec((int *)&ray, (int *)&worldPos);
+        ray.SetClsnPos(worldPos);
         ray.clsnDist = distance;
         (dBgPi &)ray = data_020a0d1c;
         ray.hasClsn = 1;

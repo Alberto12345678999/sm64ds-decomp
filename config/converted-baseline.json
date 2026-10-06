@@ -1205,10 +1205,6 @@
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_cD1Ev",
     "src/actors/daWbm_c.cpp#_ZN7daWbm_cD0Ev",
     "src/actors/daWbm_c.cpp#_ZN7daWbm_cD1Ev",
-    "src/_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c.cpp",
-    "src/_ZN9dBgCh_LinC1Ev.cpp",
-    "src/_ZN9dBgCh_LinD0Ev.cpp",
-    "src/_ZN9dBgCh_LinD1Ev.cpp",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev",
     "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp",
@@ -3521,7 +3517,11 @@
     "src/engine/model/Model.cpp#_ZN5ModelD0Ev",
     "src/engine/model/Model.cpp#_ZN5ModelD2Ev",
     "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD0Ev",
-    "src/engine/oam/OAM.cpp#_ZN3OAM5ResetEv"
+    "src/engine/oam/OAM.cpp#_ZN3OAM5ResetEv",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinC1Ev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD0Ev",
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD1Ev"
   ],
   "count": 3514
 }
