@@ -17,7 +17,7 @@
  *
  * deslop
  * Leftover: dCamera_c::GoBehindPlayer / SetFlag_3 stay mangled (dCamera_c.h shifts
- *   this TU's @452 uniquifier; SetFlag_3 is not on dCamera_c.h). This TU's St_OpenClose_Init / Main.
+ *   this TU's @452 uniquifier). This TU's St_OpenClose_Init / Main.
  * Leftover: func_ov100_02144fcc / 02145014 / 02145070 / 02144f84 stay those
  *   ROM labels. 02144fcc keeps the ellipsis: St_StayClosed_Main passes
  *   (this, player); the body is 0-arg.
@@ -38,7 +38,6 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
-#include "dCamera_c.h"
 
 struct dCamera_c;
 
@@ -51,6 +50,8 @@ void _ZN9dCamera_c14GoBehindPlayerEj(dCamera_c *self, unsigned int a);
 void Vec3_RotateYAndTranslate(Vector3 *out, void *m, short angle, Vector3 *in);
 void ChangeArea(int areaID);
 int ShowArea(int areaID);
+/* local extern: including dCamera_c.h shifts this TU's @452 uniquifier; the TU binding policy refuses it */
+int _ZN9dCamera_c9SetFlag_3Ev(void *camera);
 int func_ov100_02145014(void);
 void func_ov100_02145070(int value);
 unsigned char NumStars(void);
@@ -393,7 +394,7 @@ bool daStarGate_c::St_OpenClose_Init(Player *)
 {
     ShowArea((s8)mAngleX);
     ShowArea((s8)mAngleZ);
-    ((dCamera_c *)data_0209f318)->SetFlag_3();
+    _ZN9dCamera_c9SetFlag_3Ev((void *)data_0209f318);
     mTerminalVelocity = -0x8a000;
     func_02012694(0x4e, &mCamSpacePosX);
     return true;
