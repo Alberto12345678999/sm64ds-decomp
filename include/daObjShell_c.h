@@ -50,6 +50,11 @@ struct daObjShell_c : dActor_c {
     virtual int Behavior();         /* slot 6 */
     virtual int Render();           /* slot 9 */
 
+    /* Rebuilds the model's world matrix from the facing angle and position
+       (position >> 3), the way every ModelAnim actor in this overlay poses
+       its model. Called once, from InitResources. ROM name unrecovered. */
+    void func_ov064_0211a9b4();
+
     /* The factory's allocation goes through the actor heap, not the global
      * operator new: daObjShell_c_classInit's first call is fBase_c's own
      * operator new with the literal 0x174. Spelling it here as a leaf operator
