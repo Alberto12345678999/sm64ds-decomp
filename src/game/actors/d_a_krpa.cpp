@@ -383,8 +383,8 @@ end:
  * reason as the two Init imports above. */
 extern "C" void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     Fix12i radius, Fix12i depth, u32 opacity);
 
 extern "C" void func_ov070_02121310(daKrpa_c *self)
@@ -401,7 +401,7 @@ extern "C" void func_ov070_02121310(daKrpa_c *self)
     self->mMatrix.t.x = self->mPosX >> 3;
     self->mMatrix.t.y = self->mPosY >> 3;
     self->mMatrix.t.z = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, &self->mMatrix,
         self->mScaleX * 0x46, self->mGroundDistance, 0xf);
 }

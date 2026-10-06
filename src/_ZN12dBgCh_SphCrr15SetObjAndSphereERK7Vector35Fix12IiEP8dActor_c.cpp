@@ -13,7 +13,7 @@ extern "C" void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c
 {
     /* through the REFERENCE: a pointer-level upcast makes mwcc emit the
        null-checked MI adjustment (movs/addne), the ROM's is unconditional */
-    func_0203abd4((int *)&(dM3dGSph &)*self, (int *)pos, radius);
+    ((dM3dGSph &)*self).Set(*pos, radius);
     func_020353b0((char *)self, actor);
     func_02037b5c((char *)self);
     self->mScale = 0x1000;

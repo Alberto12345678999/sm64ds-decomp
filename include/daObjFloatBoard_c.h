@@ -109,6 +109,12 @@ struct daObjFloatBoard_c : dBgActor_c {
     s32 Render();                       /* slot 9, ov002 0x020b5c24 -- mModel.Render(0) */
     void func_ov002_020b5b98();
     int func_ov002_020b5ab4();
+    /* The shared Init helper every leaf's InitResources calls with its own
+       file table (ov002 0x020b5e58), and the mesh-collision callback it
+       registers (ov002 0x020b5f9c). Address names: nothing in the ROM names
+       either. */
+    int  func_ov002_020b5e58(daObjFloatBoard_c_Resources *resources);
+    void func_ov002_020b5f9c(dActor_c *rider);
     /* THE NULL SLOTS THE NOTE ABOVE ALREADY NAMES, SPELT SO THE COMPILER AGREES.
        mwccarm lays down a bare 0x00000000 with no relocation for a pure virtual --
        there is no __cxa_pure_virtual in this image for it to point at -- so a zero

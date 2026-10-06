@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjCtMecha09_c : dBgActor_c {
     u8  pad_31e[0x2];
@@ -29,7 +29,7 @@ struct daObjCtMecha09_c : dBgActor_c {
     u16 mLegLength;                   /* 0x32c -- the leg's full length; the last five frames hold still */
     u8  pad_32e[0x2];
     s32 mGroundY;                     /* 0x330 -- InitResources' dBgCh_Gnd raycast result, falling back to the probe height */
-    ShadowModel mShadowModel;         /* 0x334 */
+    dExtShadowModel_c mShadowModel;         /* 0x334 */
 
     /* --- vtable --- */
     virtual ~daObjCtMecha09_c();

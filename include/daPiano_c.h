@@ -5,7 +5,7 @@
 #include "types.h"
 #include "dBgActor_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
 
@@ -15,12 +15,12 @@
 struct daPiano_c : dBgActor_c {
     /* Named by _ZN9ModelAnimD1Ev at +0x320, a relocation the ROM build checks. */
     ModelAnim mModelAnim;            /* 0x320 */
-    /* Named by _ZN11ShadowModelD1Ev at +0x384 (D0/D1), a ROM-checked relocation. */
-    ShadowModel mShadowModel1;            /* 0x384 */
-    /* Named by _ZN11ShadowModelD1Ev at +0x3ac (D0/D1), a ROM-checked relocation. */
-    ShadowModel mShadowModel2;            /* 0x3ac */
-    /* Named by _ZN11ShadowModelD1Ev at +0x3d4 (D0/D1), a ROM-checked relocation. */
-    ShadowModel mShadowModel3;            /* 0x3d4 */
+    /* Named by _ZN17dExtShadowModel_cD1Ev at +0x384 (D0/D1), a ROM-checked relocation. */
+    dExtShadowModel_c mShadowModel1;            /* 0x384 */
+    /* Named by _ZN17dExtShadowModel_cD1Ev at +0x3ac (D0/D1), a ROM-checked relocation. */
+    dExtShadowModel_c mShadowModel2;            /* 0x3ac */
+    /* Named by _ZN17dExtShadowModel_cD1Ev at +0x3d4 (D0/D1), a ROM-checked relocation. */
+    dExtShadowModel_c mShadowModel3;            /* 0x3d4 */
     /* func_ov063_0211d5f4 builds one rotation+position matrix per shadow (from
      * mPos and mAngleY) and hands them to DropShadowRadHeight/ScaleXYZ
      * alongside mShadowModel1-3. */

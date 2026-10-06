@@ -138,7 +138,7 @@ declaration adds no slot and no field; the 0x320 assertion is unaffected.
 Several of these classes still have a compiler-generated D0 destructor living in a
 C translation unit, which reads the fields by offset. Those TUs cannot be
 migrated, so the header keeps a flat C spelling of the same object behind
-`#else`. Same arrangement as `include/ShadowModel.h`.
+`#else`. Same arrangement as `include/dExtShadowModel_c.h`.
 
 ## The standard derived-class argument
 
@@ -271,7 +271,7 @@ A real `dBgActor_c` subclass ([ov095](../config/arm9/overlays/ov095/symbols.txt)
 
 | offset | name | evidence |
 |---|---|---|
-| 0x320 | `mRider` | [func_ov095_02136764](../src/func_ov095_02136764.cpp) stores the colliding actor here; `Behavior` passes it to `Player::IsInAir` and clears it when the rider leaves |
+| 0x320 | `mRider` | [func_ov095_02136764](../src/actors/daUdlift_c.cpp) stores the colliding actor here; `Behavior` passes it to `Player::IsInAir` and clears it when the rider leaves |
 | 0x324 | `mClosestPlayer` | `= dActor_c::ClosestPlayer()` every frame |
 | 0x328 | `mVariant` | 0 / 1 / 2 from `actorID` 0x20 / 0x21 / 0x83; indexes [data_ov095_02136f68](../config/arm9/overlays/ov095/symbols.txt) (model), [data_ov095_02136f74](../config/arm9/overlays/ov095/symbols.txt) (collider) and [data_ov095_021375a4](../config/arm9/overlays/ov095/symbols.txt) (CLPS) |
 | 0x32c | `mState` | the index into the [data_ov095_02137910](../config/arm9/overlays/ov095/symbols.txt) pointer-to-member table `Behavior` dispatches |
@@ -283,7 +283,7 @@ A real `dBgActor_c` subclass ([ov095](../config/arm9/overlays/ov095/symbols.txt)
 | 0x344 | `mStateTimer` | incremented every `Behavior`, zeroed on a state change |
 | 0x346 | `mIsAtBottom` | set when the descent ([func_ov095_02136178](../src/actors/daUdlift_c.cpp)) reaches `mBottomY`, cleared when the climb ([func_ov095_02136298](../src/actors/daUdlift_c.cpp)) reaches `mTopY`; the waiting state [func_ov095_02136368](../src/actors/daUdlift_c.cpp) branches on it |
 | 0x347 | `mIsArmed` | 1 at init; [func_ov095_02136368](../src/actors/daUdlift_c.cpp) only starts the lift while it is 1 and clears it on trigger; `Behavior` re-arms it when the rider leaves |
-| 0x348 | `mIsRidden` | set by the collider callback [func_ov095_02136764](../src/func_ov095_02136764.cpp), read once and cleared at the end of every `Behavior` |
+| 0x348 | `mIsRidden` | set by the collider callback [func_ov095_02136764](../src/actors/daUdlift_c.cpp), read once and cleared at the end of every `Behavior` |
 
 Left as `unk_`, honestly:
 

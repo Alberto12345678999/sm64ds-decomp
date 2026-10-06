@@ -8,7 +8,7 @@ revisions. Current corrections and proof identities follow in the dated
 
 - Task: promote the class the tree carried as the coined `Snufit` into a single
   C++ translation unit under the cartridge's own RTTI name, `daYurei_Mucho_c`.
-  Stage `reconstruct`, role producer, session `prod-yurei-0907`, harness Claude
+  dScStage_c `reconstruct`, role producer, session `prod-yurei-0907`, harness Claude
   Code.
 - Branch `cpp/daYurei_Mucho_c-tu`, based on `11ef9a7dd`. Workflow/tool pin
   `d7e28406933497ff40150f9b912efe64666a00b2`.

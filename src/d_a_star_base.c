@@ -20,7 +20,7 @@ int *daStarBase_c_classInit(void)
         p[0] = (int)_ZTV12daStarBase_c;
         _ZN10dCcAcPos_cC1Ev((char *)p + 0xd4);
         _ZN5ModelC1Ev((char *)p + 0x114);
-        _ZN11ShadowModelC1Ev((char *)p + 0x164);
+        _ZN17dExtShadowModel_cC1Ev((char *)p + 0x164);
     }
     return p;
 }

@@ -65,6 +65,22 @@ class DetectionTests(unittest.TestCase):
             t.write("tools/thing.py", '"""See include/dEnemyBase_c.h for the layout."""\n')
         self.assertEqual(self._dead(build), set())
 
+    def test_a_plus_in_a_filename_is_part_of_the_path(self):
+        """A joint TU name is one path. The scanner must not stop at the plus."""
+        dead = self._dead(lambda t: t.write(
+            "notes/cite.md",
+            "See src_tu/actors/Koopa+KoopaSmall.cpp for the fold.\n"
+            "C++/CLI and g++/clang are not paths.\n"))
+        self.assertEqual(
+            dead, {("notes/cite.md", "src_tu/actors/Koopa+KoopaSmall.cpp")})
+
+    def test_a_live_plus_path_is_not_reported(self):
+        def build(t):
+            t.write("config/tu_manifest.d/ov062/Koopa+KoopaSmall.json", "{}\n")
+            t.write("notes/cite.md",
+                    "The manifest is config/tu_manifest.d/ov062/Koopa+KoopaSmall.json.\n")
+        self.assertEqual(self._dead(build), set())
+
     def test_a_dead_reference_in_a_comment_is_detected(self):
         dead = self._dead(lambda t: t.write(
             "tools/thing.py", "x = 1  # cf. notes/gone.md\n"))

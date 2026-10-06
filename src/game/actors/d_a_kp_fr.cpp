@@ -15,7 +15,7 @@
  *   mwcc emits one .text section per ordinary definition in reverse source
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
  *   M48, the array wrapper for the IDENTITY_MATRIX4X3 copy: the nested
- *   math/Matrix.h spelling (via ShadowModel.h) scalarizes it.
+ *   math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes it.
  *   Fix12i[3] locals instead of Vector3, which declares its own
  *   destructor.
  *   The (long long) smull in func_ov070_02121d50 is the matching form.
@@ -86,7 +86,7 @@ extern "C" daKpFrSpawnInfo g_profile_KERONPA_FIRE = {
 // @symbol _ZN8daKpFr_c13InitResourcesEv
 #include "decl_common.h"
 /* Array-only wrapper preserves retail's ldm/stm matrix copy in C++ mode.
- * Nested math/Matrix.h spelling (via ShadowModel.h) scalarizes otherwise. */
+ * Nested math/Matrix.h spelling (via dExtShadowModel_c.h) scalarizes otherwise. */
 struct M48 { int w[12]; };
 extern "C" {
 /* Fix12-by-value, notes/mwccarm-codegen.md 6az. dBgCh_Actr::Init header Fix12i
@@ -233,8 +233,8 @@ int daKpFr_c::func_ov070_02121eb0() {
 extern "C" {
 /* Fix12-by-value, notes/mwccarm-codegen.md 6az -- header method form homes the
    class args. */
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     Fix12i radius, Fix12i depth, u32 opacity);
 }
 // @symbol _ZN8daKpFr_c19func_ov070_02121e14Ev
@@ -249,7 +249,7 @@ void daKpFr_c::func_ov070_02121e14() {
     shadowDepth = (mPosY - ground.clsnY) + 0x1e000;
   else
     shadowDepth = 0x12c000;
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
       this, &mShadowModel, &mMatrix, 0x64000, shadowDepth, 0xf);
 }
 

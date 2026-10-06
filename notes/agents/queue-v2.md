@@ -129,7 +129,7 @@ merging source just to import metadata:
 
 Fetch those exact commits into the coordinator's repository before enqueueing.
 The queue checks the commits and paths, retains them in its Git ancestry, and
-includes them in `next` results. Stage `requires` still refers to the source input
+includes them in `next` results. dScStage_c `requires` still refers to the source input
 commit; separately pinned facts belong in `evidence_inputs`. Producers should read
 the listed revision, including what it marks unproven, before continuing. Optional
 fields such as `previous_branch` and `previous_session` are preserved in the task
@@ -276,7 +276,7 @@ A verify-only adopted task has no producer stage to return to. On failure, recor
 the failure on its issue, release, and have the coordinator cancel and enqueue a
 new explicit continuation with producer and verifier stages using the same source
 commit and pinned evidence. This recovery changes no source branch and leaks no
-resource reservation. Stage graphs are not edited in place.
+resource reservation. dScStage_c graphs are not edited in place.
 
 If interrupted before producing an output, relinquish the running lease:
 

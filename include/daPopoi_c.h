@@ -14,7 +14,7 @@
  *     0x144 dCcAcPos_c  0x40   -> 0x184
  *     0x184 dBgCh_Actr               0x1bc  -> 0x340
  *     0x340 ModelAnim                  0x64   -> 0x3a4
- *     0x3a4 ShadowModel                0x28   -> 0x3cc
+ *     0x3a4 dExtShadowModel_c                0x28   -> 0x3cc
  *
  * Typing them absorbed these markers, which were a member's insides:
  *   - 0x390 mAnimation   = mModelAnim + 0x50
@@ -39,7 +39,7 @@
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
@@ -76,7 +76,7 @@ struct daPopoi_c : dEnemyBase_c {
     dCcAcPos_c    mdCcAcPos_c; /* 0x144 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x184 */
     ModelAnim                    mModelAnim;            /* 0x340 */
-    ShadowModel                  mShadowModel;          /* 0x3a4 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x3a4 */
     u8  pad_3cc[0x30];                                   /* 0x3cc -- no function here touches it */
     /* The current state's record; see the table above. Installed by
        func_ov077_02126d5c, which also runs the record's enter handler. */

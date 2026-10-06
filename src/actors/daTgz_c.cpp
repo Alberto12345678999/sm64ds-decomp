@@ -88,7 +88,7 @@ void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern Matrix4x3 data_020a0e68;
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int depth, u8 opacity);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int depth, u8 opacity);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int flags, int speed, u16 startFrame);
 void * _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
@@ -375,7 +375,7 @@ extern "C" void func_ov077_02125304(char *vc)
     self->mShadowMatrix[9] = self->mPosX >> 3;
     self->mShadowMatrix[10] = self->mPosY >> 3;
     self->mShadowMatrix[11] = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, self->mShadowMatrix, 0x50000, 0x320000, 0xf);
 }
 

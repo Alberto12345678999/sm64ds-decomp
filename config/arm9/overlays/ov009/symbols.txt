@@ -1,10 +1,10 @@
 _ZN9daSBird_cD1Ev kind:function(arm,size=0x38) addr:0x021111a0
 _ZN9daSBird_cD0Ev kind:function(arm,size=0x4c) addr:0x021111d8
-func_ov009_02111224 kind:function(arm,size=0x10) addr:0x02111224
-func_ov009_02111234 kind:function(arm,size=0x228) addr:0x02111234
+_ZN9daSBird_c19func_ov009_02111224Ei kind:function(arm,size=0x10) addr:0x02111224
+_ZN9daSBird_c19func_ov009_02111234Ev kind:function(arm,size=0x228) addr:0x02111234
 func_ov009_0211145c kind:function(arm,size=0x17c) addr:0x0211145c
-func_ov009_021115d8 kind:function(arm,size=0x114) addr:0x021115d8
-func_ov009_021116ec kind:function(arm,size=0x150) addr:0x021116ec
+_ZN9daSBird_c19func_ov009_021115d8Ev kind:function(arm,size=0x114) addr:0x021115d8
+_ZN9daSBird_c19func_ov009_021116ecEv kind:function(arm,size=0x150) addr:0x021116ec
 _ZN9daSBird_c16CleanupResourcesEv kind:function(arm,size=0x30) addr:0x0211183c
 _ZN9daSBird_c16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x0211186c
 _ZN9daSBird_c6RenderEv kind:function(arm,size=0x28) addr:0x02111870

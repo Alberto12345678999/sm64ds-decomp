@@ -32,12 +32,12 @@
 #ifdef __cplusplus
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjRotateUpdownLift_c : dBgActor_c {
-    /* Named by the class's own destructor calling ShadowModel's D1 at +0x320
+    /* Named by the class's own destructor calling dExtShadowModel_c's D1 at +0x320
        -- a relocation the ROM build checks. Was a u8 marker. */
-    ShadowModel mShadowModel;    /* 0x320 */
+    dExtShadowModel_c mShadowModel;    /* 0x320 */
     u8  pad_348[0x30];
     s32 mSoundHandle;            /* 0x378 */
     s32 mGroundY;            /* 0x37c */

@@ -3,7 +3,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 #include "PathPtr.h"
@@ -45,10 +45,10 @@ struct daMky_c : dActor_c {
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0xd4 -- a relocation the ROM build
        checks. */
     ModelAnim mModelAnim;            /* 0x0d4 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x138.
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x138.
        [src/actors/daMky_c.cpp: daMky_c::~daMky_c] */
-    ShadowModel mShadowModel;            /* 0x138 */
+    dExtShadowModel_c mShadowModel;            /* 0x138 */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x160.
        [src/actors/daMky_c.cpp: daMky_c::~daMky_c] */

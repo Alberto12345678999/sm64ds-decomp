@@ -5,7 +5,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 /* The Yoshi egg. The cartridge's RTTI names the class: _ZTS8daYegg_c at 0x0210ad78,
@@ -15,7 +15,7 @@
  * constructs the four members below in order; _ZN8daYegg_cD1Ev destroys the same four
  * in reverse and chains to _ZN12dEnemyBase_cD2Ev.
  *
- * SIZE 0x42c, the literal in the factory's fBase_c::operator new. ShadowModel ends
+ * SIZE 0x42c, the literal in the factory's fBase_c::operator new. dExtShadowModel_c ends
  * at 0x38c, so everything below that is this class's own.
  *
  * The old flat header also carried a marker at 0x350 called mAnimation. That is not a
@@ -59,7 +59,7 @@ struct daYegg_c : dEnemyBase_c {
     dCcAc_c             mdCcAc_c;               /* 0x110 */
     dBgCh_Actr          mWithMeshClsn;          /* 0x144 */
     ModelAnim           mModelAnim;             /* 0x300 */
-    ShadowModel         mShadowModel;           /* 0x364 */
+    dExtShadowModel_c         mShadowModel;           /* 0x364 */
     /* The ROM loads this WORD and passes it to _ZN6Player16IsInsideOfCannonEv as that
        function's `this`, which is an object address -- so the word is a Player *.
        It is the actor the egg follows and reads its pose from. */
