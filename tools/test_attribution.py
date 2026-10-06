@@ -662,6 +662,209 @@ class RenameReplay(GitFixture):
                                side_effect=AssertionError("unexpected full scan")):
             self.assertEqual(self.check_gate()[0], 0)
 
+    def retire_shard(self, *, proof="absent", shard_author="bob", shard_file="src/OldMember.cpp",
+                     function_author="canonical", head_author=None, symbol="OldMember",
+                     head_symbol=None, size=4, head_size=None, addr=0x021260A8,
+                     head_addr=None, module="ov078", head_module=None, owner="src/Actor.cpp",
+                     head_owner=None, ambiguous=False, extra_module=False, steal=False,
+                     credit="member", enroll_canonical=True):
+        """Canonical enrolled function plus a shard, then delete only the shard."""
+        head_symbol = symbol if head_symbol is None else head_symbol
+        head_size = size if head_size is None else head_size
+        head_addr = addr if head_addr is None else head_addr
+        head_module = module if head_module is None else head_module
+        head_owner = owner if head_owner is None else head_owner
+        head_author = function_author if head_author is None else head_author
+
+        def sym_line(name, sz, address):
+            return f"{name} kind:function(arm,size=0x{sz:x}) addr:0x{address:08x}\n"
+
+        def entry(path, complete, start, length):
+            body = f"{path}:\n"
+            if complete:
+                body += "    complete\n"
+            return body + f"    .text start:0x{start:08x} end:0x{start + length:08x}\n"
+
+        self.write(shard_file, "//cpp\nint OldMember() { return 1; }\n")
+        self.commit(shard_author, "match legacy shard")
+        self.write(owner, "//cpp\nint OldMember() { return 1; }\n")
+        if head_owner != owner:
+            self.write(head_owner, "//cpp\nint Other() { return 1; }\n")
+        symbols = sym_line(symbol, size, addr)
+        if ambiguous:
+            symbols += sym_line("OtherMember", size, addr)
+        if extra_module:
+            self.write("config/arm9/overlays/ov079/symbols.txt", sym_line(symbol, size, addr))
+            self.write("config/arm9/overlays/ov079/delinks.txt",
+                       entry("src/OtherOv.cpp", True, addr, size))
+            self.write("src/OtherOv.cpp", "//cpp\nint OldMember() { return 2; }\n")
+        shard_entry = ""
+        if proof == "unenrolled":
+            shard_entry = entry(shard_file, False, addr, size)
+        elif proof == "complete":
+            shard_entry = entry(shard_file, True, addr, size)
+        elif proof == "other_range":
+            shard_entry = entry(shard_file, False, addr + 0x10, size)
+        canon = entry(owner, True, addr, size) if enroll_canonical else ""
+        body = (canon + shard_entry) if steal else (shard_entry + canon)
+        self.write(f"config/arm9/overlays/{module}/symbols.txt", symbols)
+        self.write(f"config/arm9/overlays/{module}/delinks.txt", body)
+        overrides = {}
+        if credit == "member":
+            overrides[f"{owner}#{symbol}"] = function_author
+        elif credit == "path":
+            overrides[owner] = function_author
+        elif credit == "shard":
+            overrides[f"{shard_file}#{symbol}"] = function_author
+        self.write("attribution.json", json.dumps({"overrides": overrides}))
+        self.commit("alice", "enroll canonical function")
+        self.git("branch", "before_configured")
+
+        (self.repo / shard_file).unlink()
+        head_symbols = sym_line(head_symbol, head_size, head_addr)
+        if ambiguous:
+            head_symbols += sym_line("OtherMember", head_size, head_addr)
+        if head_module != module:
+            self.write(f"config/arm9/overlays/{module}/symbols.txt", "")
+            self.write(f"config/arm9/overlays/{module}/delinks.txt", "")
+        head_body = entry(head_owner, True, head_addr, head_size) if enroll_canonical else ""
+        self.write(f"config/arm9/overlays/{head_module}/symbols.txt", head_symbols)
+        self.write(f"config/arm9/overlays/{head_module}/delinks.txt", head_body)
+        head_overrides = {}
+        if credit == "member":
+            head_overrides[f"{head_owner}#{head_symbol}"] = head_author
+        elif credit == "path":
+            head_overrides[head_owner] = head_author
+        elif credit == "shard":
+            head_overrides[f"{shard_file}#{head_symbol}"] = head_author
+        self.write("attribution.json", json.dumps({"overrides": head_overrides}))
+        self.commit("promoter", "retire duplicate shard")
+
+    def test_retired_unenrolled_shard_keeps_path_author_apart_from_function_author(self):
+        self.retire_shard()
+        status, report = self.check_gate()
+        self.assertEqual(status, 0, report)
+        self.assertEqual(report["retired_ok"], [[
+            "OldMember", "src/OldMember", "src/Actor.cpp", "bob", "canonical"]])
+        self.assertEqual(report["changed"], [])
+        self.assertEqual(report["lost"], [])
+        self.assertNotEqual(report["retired_ok"][0][3], report["retired_ok"][0][4])
+
+    def test_retired_unenrolled_shard_allows_the_same_person_in_both_roles(self):
+        self.retire_shard(shard_author="canonical", function_author="canonical")
+        status, report = self.check_gate()
+        self.assertEqual(status, 0, report)
+        self.assertEqual(report["retired_ok"][0][3:], ["canonical", "canonical"])
+
+    def test_named_unenrolled_entry_retires_even_when_the_filename_is_not_the_symbol(self):
+        self.retire_shard(proof="unenrolled", shard_file="src/legacy_shard.cpp")
+        status, report = self.check_gate()
+        self.assertEqual(status, 0, report)
+        self.assertEqual(report["retired_ok"], [[
+            "OldMember", "src/legacy_shard", "src/Actor.cpp", "bob", "canonical"]])
+
+    def test_retired_duplicate_changed_size_fails(self):
+        self.retire_shard(head_size=8)
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual(report["lost"][0][0], "OldMember")
+
+    def test_retired_duplicate_changed_address_fails(self):
+        self.retire_shard(head_addr=0x021260B0)
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"])
+
+    def test_retired_duplicate_changed_symbol_fails(self):
+        self.retire_shard(head_symbol="NewMember")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual([row[0] for row in report["lost"]], ["OldMember"])
+
+    def test_retired_duplicate_changed_module_fails(self):
+        self.retire_shard(head_module="ov079")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"])
+
+    def test_retired_duplicate_symbol_in_two_modules_is_not_unique(self):
+        self.retire_shard(extra_module=True)
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"])
+
+    def test_retired_duplicate_ambiguous_address_fails(self):
+        self.retire_shard(ambiguous=True)
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual(report["changed"], [])
+        self.assertTrue(report["lost"])
+
+    def test_retired_duplicate_changed_owner_fails(self):
+        self.retire_shard(head_owner="src/Other.cpp")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual(report["changed"], [])
+        self.assertTrue(report["lost"])
+
+    def test_enrolled_shard_is_not_retired_as_an_unenrolled_duplicate(self):
+        self.retire_shard(proof="complete")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"])
+
+    def test_unenrolled_entry_that_does_not_cover_the_function_is_not_proof(self):
+        self.retire_shard(proof="other_range")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"])
+
+    def test_unenrolled_entry_that_steals_the_matched_owner_fails(self):
+        self.retire_shard(proof="unenrolled", steal=True)
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual(report["changed"][0][-2:], ["bob", "canonical"])
+
+    def test_retired_duplicate_changed_member_credit_fails(self):
+        self.retire_shard(head_author="thief")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual(report["changed"][0][3:], ["canonical", "thief"])
+        self.assertNotIn("bob", report["changed"][0])
+
+    def test_retired_duplicate_without_explicit_member_credit_fails(self):
+        self.retire_shard(credit="path")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertEqual(report["changed"], [])
+        self.assertTrue(report["lost"])
+
+    def test_shard_member_override_is_not_the_canonical_function_credit(self):
+        self.retire_shard(credit="shard")
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"] or report["changed"])
+
+    def test_configured_symbol_without_unenrolled_duplicate_proof_fails(self):
+        self.retire_shard(enroll_canonical=False)
+        status, report = self.check_gate()
+        self.assertEqual(status, 1, report)
+        self.assertEqual(report["retired_ok"], [])
+        self.assertTrue(report["lost"])
+
 
 class GeneratedAttribution(GitFixture):
     """Exercise the real records and chart written by chaos_db_ci.main()."""

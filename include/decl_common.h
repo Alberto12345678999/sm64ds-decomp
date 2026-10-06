@@ -1785,7 +1785,7 @@ extern void func_01ffb0b0(void*);
 extern void func_01ffb0bc(void*);
 extern void func_01ffb0c8(void*);
 extern void func_01ffde98(int, int, int);
-extern void func_02005348(void*);
+/* func_02005348 removed: it is the member dScBoot_c::func_02005348(), declared in include/dScBoot_c.h */
 extern void func_02007c14(struct Vector3*, const struct Vector3*, int, short, short);
 extern void func_02007c9c(const struct Vector3*, const struct Vector3*, int*, short*, short*);
 extern void func_0200897c(void*, void*);

@@ -50,7 +50,6 @@ func_0206da18
 # an empty daObjCloset_c::~daObjCloset_c(); the compiler picks D2 itself and
 # the ROM build carries both. Cast-and-call is the shape to look for in whatever
 # is still listed here.
-_ZN14BlendModelAnimD1Ev
 CleanCommonModelDataArr
 func_020313d8
 

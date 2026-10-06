@@ -9,9 +9,12 @@
  * shape as ModelAnim, every slot overridden) plus its own
  * VTable_Animation_BlendModelAnimThunk secondary.
  *
- * THE DESTRUCTOR IS DECLARED FIRST AND NEVER DEFINED AS A METHOD -- see
- * include/ModelAnim.h; the D1 additionally frees unk_6c before chaining
- * to ModelAnim::D2, which is why it stays a C file with real logic.
+ * THE DESTRUCTOR IS DECLARED FIRST -- see include/ModelAnim.h; the D1
+ * additionally frees unk_6c before chaining to ModelAnim::D2. Defined
+ * out of line: D1 in src/_ZN14BlendModelAnimD1Ev.cpp, D0 in
+ * src/_ZN14BlendModelAnimD0Ev.cpp -- the lifecycle stays shard-enrolled
+ * because this MI class's vtable group cannot ride in the promoted TU
+ * (see its manifest).
  *
  * LAYOUT: ModelAnim 0x00..0x64, then the blend state. blendWeight ramps
  * 0 -> 0x1000 (1.0) by blendStep per Advance; below 1.0 UpdateVerts and
