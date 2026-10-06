@@ -86,6 +86,46 @@ struct SharedFilePtrRaw { u32 id; void *ptr; };
 struct Anim2 { void *a; void *b; };
 extern Anim2 data_ov002_02110944;
 
+/* TUBUILD CONFLICT -- alternate body of struct 'Flags', from the legacy file for func_ov002_020e86ec, NOT applied:
+struct Flags { unsigned short b0 : 1, b1 : 1, b2 : 1, b3 : 1, fld : 2; };
+*/
+
+/* TUBUILD CONFLICT -- alternate body of struct 'Flags', from the legacy file for func_ov002_020e88a8, NOT applied:
+struct Flags { unsigned short b0 : 1, b1 : 1, b2 : 1, b3 : 1, fld : 2; };
+*/
+
+/* TUBUILD CONFLICT -- alternate body of typedef 'Vec3', from the legacy file for func_ov002_020e947c, NOT applied:
+typedef struct { int x, y, z; } Vec3;
+*/
+
+/* TUBUILD CONFLICT -- alternate body of typedef 'Sub', from the legacy file for func_ov002_020e9af4, NOT applied:
+typedef struct Sub {
+    u8 pad[0x8e];
+    s16 x8e;
+} Sub;
+*/
+
+/* TUBUILD CONFLICT -- alternate body of struct 'Obj', from the legacy file for _ZN8daStar_c6RenderEv, NOT applied:
+struct Obj {
+    char pad80[0x80];
+    Thing arg80;          /* +0x80 (passed by address) *\/
+    char padb0[0xb0 - 0x84];
+    unsigned int fb0;      /* +0xb0 *\/
+    char pad30c[0x30c - 0xb4];
+    Sub sub30c;            /* +0x30c *\/
+    char pad370[0x370 - 0x310];
+    Sub sub370;            /* +0x370 *\/
+    char pad4a2[0x4a2 - 0x374];
+    unsigned short b0 : 1;  /* +0x4a2 bit 0 *\/
+    unsigned short b1 : 1;  /* bit 1 *\/
+    unsigned short b2 : 1;  /* bit 2 *\/
+};
+*/
+
+/* TUBUILD CONFLICT -- alternate body of struct 'Vec3', from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied:
+struct Vec3 { s32 x, y, z; };
+*/
+
 /* Actor IDs this file spawns or searches for. */
 enum {
     ACTOR_ICE_BLOCK_LL   = 0x12,
@@ -235,6 +275,143 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
 extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void *self);
 extern s32 IsStarCollected(s32 level, s32 idx);
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c15FindWithActorIDEjPS_, from the legacy file for func_ov002_020e7554, NOT applied: extern char* _ZN8dActor_c15FindWithActorIDEjPS_(u32 actorID, char* prev); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e7554, NOT applied: extern char* _ZN8dActor_c10FindWithIDEj(u32 id); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020e763c, NOT applied: extern int data_0209b454; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN6Camera9SetLookAtERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN6Camera9SetLookAtERK7Vector3(void* cam, const Vector3* v); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN6Camera6SetPosERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN6Camera6SetPosERK7Vector3(void* cam, const Vector3* v); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_Dist, from the legacy file for func_ov002_020e7934, NOT applied: extern int Vec3_Dist(const Vector3* a, const Vector3* b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e7fcc, NOT applied: extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 effect, Fix12i x, Fix12i y, Fix12i z, const void* rot, struct Callback* cb); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_, from the legacy file for func_ov002_020e7fcc, NOT applied: extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 effect, Fix12i x, Fix12i y, Fix12i z); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation8FinishedEv, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" int _ZN9Animation8FinishedEv(void* anim); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8244, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" void func_ov002_020e8244(Vector3* out, char* self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g); */
+/* TUBUILD CONFLICT -- alternate declaration of SubVec3, from the legacy file for func_ov002_020e8244, NOT applied: extern void SubVec3(struct V3* a, struct V3* b, struct V3* c); */
+/* TUBUILD CONFLICT -- alternate declaration of AddVec3, from the legacy file for func_ov002_020e8244, NOT applied: extern void AddVec3(struct V3* a, struct V3* b, struct V3* c); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020e8618, NOT applied: extern int data_0209b454; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation8FinishedEv, from the legacy file for func_ov002_020e8618, NOT applied: extern int _ZN9Animation8FinishedEv(char* a); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for func_ov002_020e8618, NOT applied: extern void _ZN8dActor_c11UntrackStarERa(char* c, signed char* p); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020e88a8, NOT applied: extern void func_ov002_020e9448(void* self); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_Dist, from the legacy file for func_ov002_020e88a8, NOT applied: extern int Vec3_Dist(struct Vector3* a, struct Vector3* b); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov002_020e88a8, NOT applied: extern short Vec3_HorzAngle(struct Vector3* a, struct Vector3* b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e8abc, NOT applied: extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for func_ov002_020e8abc, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02035860, from the legacy file for func_ov002_020e8abc, NOT applied: extern void func_02035860(char *o, void *src); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9464, from the legacy file for func_ov002_020e8abc, NOT applied: extern void func_ov002_020e9464(char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020e8abc, NOT applied: extern void func_ov002_020e9448(unsigned char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9464, from the legacy file for func_ov002_020e8e80, NOT applied: extern void func_ov002_020e9464(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e8ef0, NOT applied: void* _ZN8dActor_c10FindWithIDEj(u32 id); */
+/* TUBUILD CONFLICT -- alternate declaration of LinkSilverStarAndStarMarker, from the legacy file for func_ov002_020e8ef0, NOT applied: void LinkSilverStarAndStarMarker(void* a, void* b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c5ClearEv, from the legacy file for func_ov002_020e8ef0, NOT applied: void _ZN5dCc_c5ClearEv(void* c); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9630, from the legacy file for func_ov002_020e8ef0, NOT applied: int func_ov002_020e9630(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of IsStarCollectedInCurLevel, from the legacy file for func_ov002_020e8ef0, NOT applied: int IsStarCollectedInCurLevel(int i); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9464, from the legacy file for func_ov002_020e8ef0, NOT applied: void func_ov002_020e9464(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020e8ef0, NOT applied: extern u8 data_0209f2d8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020e8ef0, NOT applied: extern u32 data_0209b454; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e930c, NOT applied: extern void* _ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8ef0, from the legacy file for func_ov002_020e930c, NOT applied: extern int func_ov002_020e8ef0(void* a, void* b); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for func_ov002_020e947c, NOT applied: extern short Vec3_HorzAngle(const Vec3* a, const Vec3* b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e9590, NOT applied: extern "C" dActor_c* _ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c15FindWithActorIDEjPS_, from the legacy file for func_ov002_020e9590, NOT applied: extern "C" dActor_c* _ZN8dActor_c15FindWithActorIDEjPS_(unsigned int actorID, dActor_c* prev); */
+/* TUBUILD CONFLICT -- alternate declaration of LinkSilverStarAndStarMarker, from the legacy file for func_ov002_020e9590, NOT applied: extern "C" void LinkSilverStarAndStarMarker(void* a, void* b); */
+/* TUBUILD CONFLICT -- alternate declaration of SublevelToLevel, from the legacy file for func_ov002_020e9630, NOT applied: extern int SublevelToLevel(int i); */
+/* TUBUILD CONFLICT -- alternate declaration of GiveVsStars, from the legacy file for func_ov002_020e96a0, NOT applied: extern void GiveVsStars(int idx, int delta); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8244, from the legacy file for func_ov002_020e96a0, NOT applied: extern void func_ov002_020e8244(int *out, char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_, from the legacy file for func_ov002_020e96a0, NOT applied: extern void _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_(char *c, int *pos, int num, int b, int t, char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for func_ov002_020e96a0, NOT applied: extern void _ZN8dActor_c11UntrackStarERa(char *c, signed char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7e58, from the legacy file for func_ov002_020e96a0, NOT applied: extern void func_ov002_020e7e58(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for func_ov002_020e96a0, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c24KillAndTrackInDeathTableEv, from the legacy file for func_ov002_020e96a0, NOT applied: extern void _ZN8dActor_c24KillAndTrackInDeathTableEv(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e9840, NOT applied: extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov002_020e9840, NOT applied: extern void func_02012694(unsigned int id, const struct Vector3 *v); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020e9840, NOT applied: extern void func_ov002_020e9448(unsigned char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020e9840, NOT applied: extern u8 data_0209f2d8; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE, from the legacy file for func_ov002_020e9d18, NOT applied: extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, int vol); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation8FinishedEv, from the legacy file for func_ov002_020e9d18, NOT applied: extern int _ZN9Animation8FinishedEv(char *anim); */
+/* TUBUILD CONFLICT -- alternate declaration of GiveVsStars, from the legacy file for func_ov002_020e9d18, NOT applied: extern void GiveVsStars(int idx, int n); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8244, from the legacy file for func_ov002_020e9d18, NOT applied: extern void func_ov002_020e8244(Vec3 *t, char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_, from the legacy file for func_ov002_020e9d18, NOT applied: extern void _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_(char *self, Vec3 *vec, int n, u32 b, int t, int actor); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8618, from the legacy file for func_ov002_020e9d18, NOT applied: extern void func_ov002_020e8618(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02012790, from the legacy file for func_ov002_020e9d18, NOT applied: extern void func_02012790(int n); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9630, from the legacy file for func_ov002_020e9d18, NOT applied: extern int func_ov002_020e9630(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020e9d18, NOT applied: extern u8 data_0209f2d8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020ea3a4, NOT applied: extern "C" unsigned char data_0209f2d8; */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8ef0, from the legacy file for func_ov002_020ea410, NOT applied: extern void func_ov002_020e8ef0(void*, u32); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02012790, from the legacy file for func_ov002_020ea420, NOT applied: extern void func_02012790(int id); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for func_ov002_020ea420, NOT applied: extern void _ZN8dActor_c11UntrackStarERa(char *self, char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e930c, from the legacy file for func_ov002_020ea420, NOT applied: extern void func_ov002_020e930c(char *self); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020ea420, NOT applied: extern int data_0209b454; */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9464, from the legacy file for func_ov002_020ea7ac, NOT applied: extern void func_ov002_020e9464(char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7d08, from the legacy file for func_ov002_020ea7ac, NOT applied: extern void func_ov002_020e7d08(char *p); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020ea824, NOT applied: extern int _ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov002_020ea824, NOT applied: extern int Vec3_HorzDist(char* a, char* b); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020ea824, NOT applied: extern void func_ov002_020e9448(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e81e0, from the legacy file for func_ov002_020ea824, NOT applied: extern void func_ov002_020e81e0(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7e24, from the legacy file for func_ov002_020ea824, NOT applied: extern void func_ov002_020e7e24(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7d08, from the legacy file for func_ov002_020ea824, NOT applied: extern void func_ov002_020e7d08(char* c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020ea90c, NOT applied: char* _ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov002_020ea90c, NOT applied: s32 Vec3_HorzDist(const Vector3* a, const Vector3* b); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e81e0, from the legacy file for func_ov002_020ea90c, NOT applied: void func_ov002_020e81e0(char* a0); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7e24, from the legacy file for func_ov002_020ea90c, NOT applied: void func_ov002_020e7e24(char* a0); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7d08, from the legacy file for func_ov002_020ea90c, NOT applied: void func_ov002_020e7d08(char* a0); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e947c, from the legacy file for func_ov002_020ea90c, NOT applied: extern "C" void func_ov002_020e947c(char* a0, Vector3 v, int a2); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020ea9d0, NOT applied: extern s32 data_0209b454; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2f8, from the legacy file for func_ov002_020ea9d0, NOT applied: extern s8 data_0209f2f8; */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9590, from the legacy file for func_ov002_020ea9d0, NOT applied: extern void func_ov002_020e9590(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for func_ov002_020ea9d0, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov002_020ea9d0, NOT applied: extern void func_02012694(u32 id, void *v); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020ea9d0, NOT applied: extern void func_ov002_020e9448(void *p); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020ea9d0, NOT applied: extern char *_ZN8dActor_c10FindWithIDEj(u32 id); */
+/* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov002_020ea9d0, NOT applied: extern s32 Vec3_HorzDist(void *a, void *b); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e947c, from the legacy file for func_ov002_020ea9d0, NOT applied: extern void func_ov002_020e947c(void *c, struct Vector3 *p, s32 n); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8dd8, from the legacy file for func_ov002_020ea9d0, NOT applied: extern s32 func_ov002_020e8dd8(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for _ZN12daStarBase_c16OnPendingDestroyEv, NOT applied: extern void* _ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for _ZN8daStar_c16CleanupResourcesEv, NOT applied: extern "C" void _ZN8dActor_c11UntrackStarERa(void* self, signed char* star); */
+/* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromTranslation, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z); */
+/* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromRotationY, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void Matrix4x3_FromRotationY(void *m, int ang); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j( */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern char *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c5ClearEv, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern void _ZN5dCc_c5ClearEv(void *p); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f208, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern unsigned char data_0209f208; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f344, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern unsigned char *data_0209f344; */
+/* TUBUILD CONFLICT -- alternate declaration of IDENTITY_MATRIX4X3, from the legacy file for _ZN12daStarBase_c8BehaviorEv, NOT applied: extern Mtx IDENTITY_MATRIX4X3; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c5ClearEv, from the legacy file for _ZN8daStar_c8BehaviorEv, NOT applied: extern void _ZN5dCc_c5ClearEv(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5dCc_c6UpdateEv, from the legacy file for _ZN8daStar_c8BehaviorEv, NOT applied: extern void _ZN5dCc_c6UpdateEv(char *c); */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for _ZN8daStar_c8BehaviorEv, NOT applied: extern int data_0209b454; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 a, u32 b, const void *v, const void *v16, int e, int f); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5Model8LoadFileER13SharedFilePtr, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp); */
+/* TUBUILD CONFLICT -- alternate declaration of IsStarCollectedInCurLevel, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern int IsStarCollectedInCurLevel(u8 x); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_0210d9a8, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern char data_ov002_0210d9a8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_0211092c, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern SharedFilePtr data_ov002_0211092c; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern u8 data_0209f2d8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2f8, from the legacy file for _ZN12daStarBase_c13InitResourcesEv, NOT applied: extern s8 data_0209f2f8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern u8 data_0209f2d8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_0209f2f8, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s8 data_0209f2f8; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_0210aa0c, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct Vec3 data_ov002_0210aa0c; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110924, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110924; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110934, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110934; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110944, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110944; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov002_02110964, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern struct SharedFilePtr data_ov002_02110964; */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9ModelBase7SetFileEP8BMD_Fileii, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, s32 a, s32 b); */
+/* TUBUILD CONFLICT -- alternate declaration of SublevelToLevel, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 SublevelToLevel(s32 sub); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, s32 a, s32 spd, u32 g); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN17dExtShadowModel_c12InitCylinderEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN17dExtShadowModel_c12InitCylinderEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj( */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as( */
+/* TUBUILD CONFLICT -- alternate declaration of NumVsStarsObtained, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 NumVsStarsObtained(void); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void func_ov002_020e9448(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN10dBgCh_Actr19StartDetectingWaterEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN10dBgCh_Actr19StartDetectingWaterEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of IsStarCollectedInCurLevel, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 IsStarCollectedInCurLevel(u32 idx); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN7fBase_c18MarkForDestructionEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN7fBase_c18MarkForDestructionEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8dd8, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void func_ov002_020e8dd8(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e7d08, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void func_ov002_020e7d08(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN5Event8ClearBitEj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN5Event8ClearBitEj(u32 bit); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern char *_ZN8dActor_c10FindWithIDEj(u32 id); */
+/* TUBUILD CONFLICT -- alternate declaration of LinkSilverStarAndStarMarker, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void LinkSilverStarAndStarMarker(void *a, void *b); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c18GetBitInDeathTableEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern s32 _ZN8dActor_c18GetBitInDeathTableEv(void *self); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c24KillAndTrackInDeathTableEv, from the legacy file for _ZN8daStar_c13InitResourcesEv, NOT applied: extern void _ZN8dActor_c24KillAndTrackInDeathTableEv(void *self); */
 }
 
 /* The two destructor bodies are defined first so their D1/D0 groups lead the
@@ -387,7 +564,7 @@ s32 daStar_c::InitResources()
 
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110964.ptr, 0x40000000, 0x1000, 0);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110964.ptr, 0x40000000, 0x1000, 0);
-    if (_ZN17dExtShadowModel_c12InitCylinderEv(&mShadowModel) == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
 
     v2.x = data_ov002_0210aa0c[0];
@@ -608,7 +785,7 @@ int daStarBase_c::InitResources()
         }
     }
 
-    if (_ZN17dExtShadowModel_c12InitCylinderEv(&mShadowModel) == 0) {
+    if (mShadowModel.InitCylinder() == 0) {
         return 0;
     }
 
