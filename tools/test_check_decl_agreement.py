@@ -2518,7 +2518,7 @@ class NativeConstructorAndWrapperTests(unittest.TestCase):
         self.assertEqual(defs, [])
 
     def test_real_constructor_and_force_wrapper_fixtures(self):
-        examples = (("src/_ZN5ModelC1Ev.cpp", "_ZN5ModelC1Ev", "Model"),
+        examples = (("src/engine/model/Model.cpp", "_ZN5ModelC1Ev", "Model"),
                     ("src/_ZN10dScEntry_c6icon_cC1Ev.cpp", "_ZN10dScEntry_c6icon_cC1Ev", "dScEntry_c::icon_c"))
         for rel, symbol, owner in examples:
             with self.subTest(path=rel):

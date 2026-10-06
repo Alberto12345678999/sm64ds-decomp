@@ -354,8 +354,20 @@
    "ref": "src/_ZN7dBgW_KcD1Ev.cpp"
   },
   {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/_ZN5ModelC1Ev.cpp"
+  },
+  {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/engine/model/CommonModel.cpp"
+  },
+  {
    "file": "notes/declaration-centralization.md",
    "ref": "include/decl_"
+  },
+  {
+   "file": "notes/decoding-file-structure.md",
+   "ref": "include/Clipper.h"
   },
   {
    "file": "notes/dscene-c-siblings-census.md",
@@ -366,8 +378,16 @@
    "ref": "src/_ZN5EnemyD0Ev.c"
   },
   {
+   "file": "notes/dtor-migration.md",
+   "ref": "src/_ZN5ModelD1Ev.cpp"
+  },
+  {
    "file": "notes/emu-trace-build.md",
    "ref": "nearmiss/ledger"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-clipper-6az.md",
+   "ref": "include/Clipper.h"
   },
   {
    "file": "notes/experiments/boo-2710-advance-thunk.md",
@@ -480,6 +500,10 @@
   {
    "file": "notes/overlay-residency.md",
    "ref": "src/_ZN8CapEnemy6AddCapEj.c"
+  },
+  {
+   "file": "notes/overlay-residency.md",
+   "ref": "src/actors/CutsceneObject.cpp"
   },
   {
    "file": "notes/overlay-residency.md",

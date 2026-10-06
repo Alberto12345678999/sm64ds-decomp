@@ -1409,31 +1409,19 @@ src/engine/collision/dCc_c.cpp:
     complete
     .text start:0x02014aa8 end:0x020150e8
 
-src/_ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh.cpp:
+src/engine/collision/dClipper.cpp:
     complete
-    .text start:0x020150e8 end:0x02015560
+    .text start:0x020150e8 end:0x020156fc
 
-src/_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_.cpp:
-    complete
-    .text start:0x02015560 end:0x0201559c
-
-src/_ZN7Clipper13Func_0201559CEv.cpp:
-    complete
-    .text start:0x0201559c end:0x020156dc
-
-src/_ZN7Clipper13Func_020156DCEitii.cpp:
-    complete
-    .text start:0x020156dc end:0x020156fc
-
-src/_ZN7ClipperD0Ev.cpp:
+src/_ZN8dClipperD0Ev.cpp:
     complete
     .text start:0x020156fc end:0x02015720
 
-src/_ZN7ClipperD1Ev.cpp:
+src/_ZN8dClipperD1Ev.cpp:
     complete
     .text start:0x02015720 end:0x02015730
 
-src/_ZN7ClipperC1Ev.cpp:
+src/_ZN8dClipperC1Ev.cpp:
     complete
     .text start:0x02015730 end:0x0201577c
 
@@ -1505,33 +1493,9 @@ src/engine/model/dExtShadowModel_c.cpp:
     complete
     .text start:0x02015d38 end:0x0201609c
 
-src/_ZN11CommonModel12SetPolygonIDEj.cpp:
+src/engine/model/dExtCommonModel_c.cpp:
     complete
-    .text start:0x0201609c end:0x020160ac
-
-src/_ZN11CommonModel13Func_020160ACEj.cpp:
-    complete
-    .text start:0x020160ac end:0x02016104
-
-src/_ZN11CommonModel6RenderEPK7Vector3.cpp:
-    complete
-    .text start:0x02016104 end:0x02016144
-
-src/_ZN11CommonModel9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02016144 end:0x020161b4
-
-src/_ZN11CommonModelD0Ev.cpp:
-    complete
-    .text start:0x020161b4 end:0x020161e0
-
-src/_ZN11CommonModelD1Ev.cpp:
-    complete
-    .text start:0x020161e0 end:0x02016204
-
-src/_ZN11CommonModelC1Ev.cpp:
-    complete
-    .text start:0x02016204 end:0x02016254
+    .text start:0x0201609c end:0x02016254
 
 src/_ZN10ModelAnim24CopyERKS_Pcj.cpp:
     complete
@@ -1697,41 +1661,9 @@ src/func_02016b24.c:
     complete
     .text start:0x02016b24 end:0x02016b78
 
-src/_ZN5Model6RenderEPK7Vector3.cpp:
+src/engine/model/Model.cpp:
     complete
-    .text start:0x02016b78 end:0x02016bb8
-
-src/_ZN5Model9Virtual10ER9Matrix4x3.cpp:
-    complete
-    .text start:0x02016bb8 end:0x02016bf8
-
-src/_ZN5Model9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02016bf8 end:0x02016c98
-
-src/_ZN5Model11UpdateVertsEv.cpp:
-    complete
-    .text start:0x02016c98 end:0x02016ca8
-
-src/_ZN5ModelD2Ev.cpp:
-    complete
-    .text start:0x02016ca8 end:0x02016ce0
-
-src/_ZN5ModelD0Ev.cpp:
-    complete
-    .text start:0x02016ce0 end:0x02016d20
-
-src/_ZN5ModelD1Ev.cpp:
-    complete
-    .text start:0x02016d20 end:0x02016d58
-
-src/_ZN5ModelC1Ev.cpp:
-    complete
-    .text start:0x02016d58 end:0x02016da8
-
-src/_ZN5ModelC2Ev.cpp:
-    complete
-    .text start:0x02016da8 end:0x02016df8
+    .text start:0x02016b78 end:0x02016df8
 
 src/func_02016e70.c:
     complete
@@ -3969,37 +3901,10 @@ src/func_02037464.c:
     complete
     .text start:0x02037464 end:0x0203748c
 
-src/_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c.cpp:
+src/engine/collision/dBgCh_Gnd.cpp:
     complete
-    .text start:0x0203748c end:0x020374b8
-
-src/func_020374b8.c:
-    complete
-    .text start:0x020374b8 end:0x020374d4
-
-src/func_020374d4.c:
-    complete
-    .text start:0x020374d4 end:0x020374f0
-
-src/_ZN9dBgCh_GndD0Ev.cpp:
-    complete
-    .text start:0x020374f0 end:0x02037534
-
-src/_ZN9dBgCh_GndD1Ev.cpp:
-    complete
-    .text start:0x02037534 end:0x02037570
-
-src/_ZN9dBgCh_GndC1Ev.cpp:
-    complete
-    .text start:0x02037570 end:0x020375b0
-
-src/_ZThn16_N9dBgCh_GndD0Ev.cpp:
-    complete
-    .text start:0x020375b0 end:0x020375c0
-
-src/_ZThn16_N9dBgCh_GndD1Ev.cpp:
-    complete
-    .text start:0x020375c0 end:0x020375d0
+    .text start:0x0203748c end:0x020375d0
+    .data start:0x02099224 end:0x0209927c
 
 src/_ZN9dBgCh_Lin10GetClsnPosEv.cpp:
     complete
@@ -4221,17 +4126,9 @@ src/func_020381cc.c:
     complete
     .text start:0x020381cc end:0x0203821c
 
-src/_ZN13CLPS_BlockRefaSER10CLPS_Block.cpp:
+src/engine/collision/CLPS_BlockRef.cpp:
     complete
-    .text start:0x0203821c end:0x02038224
-
-src/_ZN13CLPS_BlockRefD1Ev.cpp:
-    complete
-    .text start:0x02038224 end:0x02038228
-
-src/_ZN13CLPS_BlockRefC1Ev.cpp:
-    complete
-    .text start:0x02038228 end:0x02038234
+    .text start:0x0203821c end:0x02038234
 
 src/func_02038234.c:
     complete
@@ -4772,41 +4669,9 @@ src/Memory.cpp:
     complete
     .text start:0x0203c1b4 end:0x0203c24c
 
-src/_ZN4Heap18InitializeGameHeapEjPS_.cpp:
+src/engine/heap/Heap.cpp:
     complete
-    .text start:0x0203c24c end:0x0203c274
-
-src/_ZN4Heap7_SizeofEPv.cpp:
-    complete
-    .text start:0x0203c274 end:0x0203c280
-
-src/_ZN4Heap11_DeallocateEPv.cpp:
-    complete
-    .text start:0x0203c280 end:0x0203c28c
-
-src/_ZN4Heap8AllocateEj.cpp:
-    complete
-    .text start:0x0203c28c end:0x0203c29c
-
-src/_ZN4Heap9_AllocateEji.cpp:
-    complete
-    .text start:0x0203c29c end:0x0203c2a8
-
-src/_ZN4Heap20RestoreFromTemporaryEv.cpp:
-    complete
-    .text start:0x0203c2a8 end:0x0203c2d8
-
-src/_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i.cpp:
-    complete
-    .text start:0x0203c2d8 end:0x0203c2e4
-
-src/_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i.cpp:
-    complete
-    .text start:0x0203c2e4 end:0x0203c324
-
-src/_ZN4Heap10SetDefaultEv.cpp:
-    complete
-    .text start:0x0203c324 end:0x0203c33c
+    .text start:0x0203c24c end:0x0203c33c
 
 src/_ZN9SolidHeap12VResizeToFitEv.cpp:
     complete
@@ -6336,29 +6201,9 @@ src/func_0204d440.c:
     complete
     .text start:0x0204d440 end:0x0204d4d0
 
-src/_ZN8Particle14RadiusConverge4FuncERNS_10EffectDataEPcR7Vector3.cpp:
+src/engine/particle/Particle_Behavior.cpp:
     complete
-    .text start:0x0204d4d0 end:0x0204d57c
-
-src/_ZN8Particle10LimitPlane4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d57c end:0x0204d680
-
-src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d680 end:0x0204d758
-
-src/_ZN8Particle8Converge4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d758 end:0x0204d7ec
-
-src/_ZN8Particle6Jitter4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d7ec end:0x0204d8b0
-
-src/_ZN8Particle12Acceleration4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d8b0 end:0x0204d8e8
+    .text start:0x0204d4d0 end:0x0204d8e8
 
 src/func_0204d8e8.c:
     complete
@@ -7352,17 +7197,9 @@ src/func_020551f0.c:
     complete
     .text start:0x020551f0 end:0x02055238
 
-src/_ZN3G2x18SetBlendBrightnessEPVtts.cpp:
+src/engine/gx/G2x.cpp:
     complete
-    .text start:0x02055238 end:0x0205525c
-
-src/_ZN3G2x13SetBlendAlphaEPVttttj.cpp:
-    complete
-    .text start:0x0205525c end:0x02055278
-
-src/_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii.cpp:
-    complete
-    .text start:0x02055278 end:0x0205532c
+    .text start:0x02055238 end:0x0205532c
 
 src/func_0205532c.c:
     complete
@@ -7436,13 +7273,9 @@ src/func_02055998.c:
     complete
     .text start:0x02055998 end:0x02055a64
 
-src/_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3.cpp:
+src/engine/gx/G3i.cpp:
     complete
-    .text start:0x02055a64 end:0x02055bfc
-
-src/_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3.c:
-    complete
-    .text start:0x02055bfc end:0x02055dec
+    .text start:0x02055a64 end:0x02055dec
 
 src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp:
     complete

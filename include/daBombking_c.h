@@ -21,7 +21,7 @@
 
 #include "dEnemyBase_c.h"
 #include "BlendModelAnim.h"
-#include "CommonModel.h"
+#include "dExtCommonModel_c.h"
 #include "dCcAcPos_c.h"
 #include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
@@ -44,7 +44,7 @@ struct daBombking_c : dEnemyBase_c {
     BlendModelAnim mBlendModelAnim;   /* 0x2cc */
     dCcAcPos_c mdCcAcPos_c;/* 0x33c */
     dCcAcPos_c mdCcAcPos_c2;/* 0x37c */
-    CommonModel mCommonModel;         /* 0x3bc */
+    dExtCommonModel_c mCommonModel;         /* 0x3bc */
     dExtShadowModel_c mShadowModel;         /* 0x3f8 */
     /* The reconstructed state dispatcher uses two member-pointer records.
        KingBobOmb_SetState invokes the first; Behavior invokes the second.

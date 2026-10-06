@@ -85,7 +85,7 @@ int  _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *file, void *mat, int scale, s16 angle, void *clps);
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
-dBgCh_Gnd *_ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
+void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
 void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int a, int b, int c, u8 flags);
 }

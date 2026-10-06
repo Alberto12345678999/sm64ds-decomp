@@ -140,7 +140,7 @@ extern "C" int func_0201267c(int id, void *pos, int unused);
 /* Hand-rolled. The two Vector3[7] arrays are constructed by func_0203d384,
  * not by Vector3's implicit default. */
 /* return new daWanwan_c() measured 0xf0->0xa0, and the vec_ctor slot
-   relocates ShadowModelD1 where the ROM still has 0x020733a8. func_0203d384
+   relocates dExtShadowModel_c's D1 where the ROM still has 0x020733a8. func_0203d384
    stays the Vector3[7] constructor. */
 extern "C" daWanwan_c *daWanwan_c_classInit()
 {

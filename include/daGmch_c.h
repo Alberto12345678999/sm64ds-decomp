@@ -9,28 +9,12 @@
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
-/* TWO WITNESSES, and they close on each other:
- *
- *   Moneybag_Spawn  fBase_c::operator new(1012 = 0x3f4), dActor_c::dActor_c(), stores _ZTV8daGmch_c,
- *                   then the five members below in this order.
- *   ~daGmch_c       the same members destroyed in reverse, then ~dActor_c.
- *
- * SIZE 0x3f4 is the factory's own literal, and the trailing byte fields close exactly on it.
- *
- * THE VTABLE was diffed slot by slot against _ZTV8dActor_c (relocs.txt, ov081). Only the
- * slots declared below differ; every other slot holds the base's own word and is inherited,
- * so it is deliberately not redeclared here.
- *
- * SM64DS proves this class as daGmch_c through RTTI, allocation size and
- * vtable identity. The factory and profile spellings below are reconstructed
- * source-style names -- evidence-bounded proposals, not recovered SM64DS
- * symbols.
- *
- * daGmch_c_classInit at 0x02127adc (historical alias Moneybag_Spawn)
- * allocates 0x3f4 and installs this class's cartridge vtable. It backs the
- * GAMAGUCHI registry profile, whose descriptor at 0x02128be0 is
- * reconstructed as g_profile_GAMAGUCHI.
- */
+/* Moneybag. ROM name daGmch_c (_ZTS8daGmch_c at 0x02128bc8). The factory
+   daGmch_c_classInit at 0x02127adc allocates 0x3f4 and stores _ZTV8daGmch_c.
+   The destructor is the key function: D1 at 0x02126504, D0 at 0x02126554,
+   and the D2 mwccarm also emits is deadstripped. Only the vtable slots
+   declared below differ from dActor_c. */
+
 struct daGmch_c : dActor_c {
     /* The actor whose position this one copies while mFlags bit 0x40000 (one
        of dActor_c's yoshi-mouth states) is set.  EnterState7 reads its
@@ -77,9 +61,9 @@ struct daGmch_c : dActor_c {
        draws it at random.
        [EnterState1, UpdateState1] */
     s16 mTargetAngleY;         /* 0x3ee */
-    /* Set to 1 by InitResources. Render draws the ModelAnim only above 1 and
-       the Model only at or below 0x1f, so the two overlap for 2..0x1f and the
-       high values are a state in which neither is drawn.
+    /* Set to 1 by InitResources. Render draws the animated model when this
+       is above 1 and the static model when it is at or below 0x1f, so both
+       draw for 2..0x1f and only the animated model draws above 0x1f.
        [_ZN8daGmch_c13InitResourcesEv.cpp, _ZN8daGmch_c6RenderEv.cpp] */
     /* UpdateState0 also reaches this offset as an `int *` through
        ApproachLinear2, so the four bytes 0x3f0..0x3f3 are read and written as

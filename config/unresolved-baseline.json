@@ -124,7 +124,7 @@
    ]
   },
   "ov002:0x020f83a4": {
-   "name": "_ZN14CutsceneObject13InitResourcesEv",
+   "name": "_ZN8daDemo_c13InitResourcesEv",
    "missing": [
     "func_02113c20"
    ]

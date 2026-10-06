@@ -246,8 +246,8 @@ char *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
-void *_ZN9dBgCh_GndC1Ev(char *ray);
-void  _ZN9dBgCh_GndD1Ev(char *ray);
+void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *ray);
+void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
 
 /* SetRanges carries Fix12<int> by value; dActor_c.h deliberately omits it
    (notes/mwccarm-codegen.md 6az). A call is unaffected. */
@@ -739,12 +739,12 @@ void daObjMarioCap_c::func_ov002_020b7f7c()
             probe[1] = mPosY;
             probe[2] = mPosZ;
             probe[1] = probe[1] + 0x28000;
-            _ZN9dBgCh_GndC1Ev(ray);
+            _ZN9dBgCh_GndC1Ev((dBgCh_Gnd *)ray);
             ((dBgCh_Gnd *)ray)->SetObjAndPos(*(Vector3 *)probe, 0);
             y = probe[1];
             if (((dBgCh_Gnd *)ray)->DetectClsn() != 0)
                 y = ((dBgCh_Gnd *)ray)->clsnY;
-            _ZN9dBgCh_GndD1Ev(ray);
+            _ZN9dBgCh_GndD1Ev((dBgCh_Gnd *)ray);
         }
 
         off = 0;

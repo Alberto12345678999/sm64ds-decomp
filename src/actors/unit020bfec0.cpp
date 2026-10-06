@@ -103,7 +103,8 @@ void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
 void *_ZN5ModelC1Ev(void *);
 void _ZN5ModelD1Ev(void *);
 void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-void _ZN7Clipper13Func_020156DCEitii(void *, int, int, int, int);
+/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
+void _ZN8dClipper13Func_020156DCEitii(void *, int, int, int, int);
 void *_ZN7Vector3D1Ev(void *);
 int _ZN9Animation7AdvanceEv(void *);
 int _ZN9Animation8FinishedEv(void *);
@@ -2788,7 +2789,7 @@ void Camera_UpdateMatrices(struct Camera *self)
 
     _Z13CopyToViewMatPK9Matrix4x3(&self->viewMat);
 
-    _ZN7Clipper13Func_020156DCEitii(
+    _ZN8dClipper13Func_020156DCEitii(
         data_0209f43c, 0x1555, self->angle, 0x1000, 0x1388000);
 }
 }

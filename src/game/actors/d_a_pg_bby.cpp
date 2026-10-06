@@ -16,7 +16,7 @@
  *
  * Known limits:
  * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer, dCcAc_c::Init,
- *   dBgCh_Actr::Init and Clipper::Func_02015560 stay mangled: each takes
+ *   dBgCh_Actr::Init and dClipper::Func_02015560 stay mangled: each takes
  *   Fix12<int> by value (notes/mwccarm-codegen.md 6az).
  * - The state table (data_ov072_02122d6c), its member-pointer literals, the
  *   carry offsets (data_ov072_02122d3c) and the file handles are built by
@@ -61,7 +61,7 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, voi
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int flags, int speed, unsigned int start);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int radius, int height, unsigned int flags);
-int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, Vector3 *a, int b, Vector3 *e);
+int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, Vector3 *a, int b, Vector3 *e);
 
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
@@ -755,7 +755,7 @@ extern "C" void func_ov072_02120d04(daPgBby_c *self)
         if (DecIfAbove0_Short(&self->mRespawnTimer) != 0) return;
     }
     Vec3_Asr(&tmp, (Vector3 *)&self->mSpawnPosX, 3);
-    if (_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_((void *)data_0209f43c, &data_0209b3ec, &tmp, 0x1f400, &out) <= 0xc350000) return;
+    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_((void *)data_0209f43c, &data_0209b3ec, &tmp, 0x1f400, &out) <= 0xc350000) return;
     self->mPosX = self->mSpawnPosX;
     self->mPosY = self->mSpawnPosY;
     self->mPosZ = self->mSpawnPosZ;

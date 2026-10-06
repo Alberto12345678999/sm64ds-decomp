@@ -177,7 +177,7 @@ daBombking_c::~daBombking_c() {}
  * A consequence of `struct daBombking_c : dEnemyBase_c`: its own vptr store,
  * then the destructors of the five members that have one -- dBgCh_Actr at
  * +0x110, BlendModelAnim at +0x2cc, dCcAcPos_c at +0x33c and +0x37c, and
- * CommonModel at +0x3bc -- then the base chain. Each of those member calls is
+ * dExtCommonModel_c at +0x3bc -- then the base chain. Each of those member calls is
  * a relocation the ROM build checks, which is what named the members.
  *
  * DEFINED OUT OF LINE at the top of this file, and DECLARED FIRST in the

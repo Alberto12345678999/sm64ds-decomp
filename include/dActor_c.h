@@ -105,13 +105,13 @@ struct dActor_c : dBase_c {
     /* The clip volume, all four set together by SetRanges out of the actor's
        entry in the spawn-info table. BeforeBehavior projects
        (mPosX, mPosY + mClipOffsetY, mPosZ) into camera space and hands the
-       result to the Clipper; a zero radius means "no clip volume" and skips the
+       result to the dClipper; a zero radius means "no clip volume" and skips the
        transform outright. */
     s32 mClipOffsetY;       /* 0x0b4 */
     s32 mClipRadius;        /* 0x0b8 */
     s32 mClipDistance;      /* 0x0bc -- past this the actor is off screen AND far away */
     s32 mFarDistance;       /* 0x0c0 -- past this it is merely far away */
-    u8  mClipResult;        /* 0x0c4 -- written by the Clipper */
+    u8  mClipResult;        /* 0x0c4 -- written by the dClipper */
     u8  pad_0c5[0x7];
     s8  mAreaId;            /* 0x0cc -- negative means "not area-bound" */
     u8  pad_0cd[0x1];
