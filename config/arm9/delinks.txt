@@ -2712,21 +2712,9 @@ src/func_02018e68.c:
     complete
     .text start:0x02018e68 end:0x02018ea0
 
-src/_ZN8dGraph_c10callback_c14GraphCallback3Ev.cpp:
+src/engine/graph/dGraph_c_callback_c.cpp:
     complete
-    .text start:0x02018ea0 end:0x02018ea8
-
-src/_ZN8dGraph_c10callback_c14GraphCallback2Ev.cpp:
-    complete
-    .text start:0x02018ea8 end:0x02018eb0
-
-src/_ZN8dGraph_c10callback_c14GraphCallback1Ev.cpp:
-    complete
-    .text start:0x02018eb0 end:0x02018eb8
-
-src/_ZN8dGraph_c10callback_c14GraphCallback0Ev.cpp:
-    complete
-    .text start:0x02018eb8 end:0x02018ec0
+    .text start:0x02018ea0 end:0x02018ec0
 
 src/func_02018ec0.c:
     complete
