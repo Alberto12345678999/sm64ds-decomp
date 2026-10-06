@@ -611,11 +611,6 @@
     "src/_ZN17daObjKurumajiku_cD0Ev.cpp",
     "src/_ZN17daObjKurumajiku_cD1Ev.cpp",
     "src/engine/heap/SolidHeapAllocator.cpp#_ZN18SolidHeapAllocator5ResetEj",
-    "src/_ZN18TextureTransformer6UpdateER15ModelComponents.cpp",
-    "src/_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File.cpp",
-    "src/_ZN18TextureTransformerC1Ev.cpp",
-    "src/_ZN18TextureTransformerD0Ev.cpp",
-    "src/_ZN18TextureTransformerD1Ev.cpp",
     "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_cD0Ev",
     "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_cD1Ev",
     "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c13OnTurnIntoEggER6Player",
@@ -3112,7 +3107,12 @@
     "src/engine/oam/OAM.cpp#_ZN3OAM12GetObjHeightEii",
     "src/engine/oam/OAM.cpp#_ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2",
     "src/engine/oam/OAM.cpp#_ZN3OAM4LoadEv",
-    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2"
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer6UpdateER15ModelComponents",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerC1Ev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD0Ev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD1Ev"
   ],
   "count": 3105
 }

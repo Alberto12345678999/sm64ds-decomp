@@ -8385,6 +8385,12 @@
     "src/engine/oam/OAM.cpp#_ZN3OAM4LoadEv": "tangosdev",
     "src/engine/oam/OAM.cpp#_ZN3OAM9RenderSubEP7OamAttrii": "tangosdev",
     "src/engine/oam/OAM.cpp#_ZN3OAM9RenderSubEP7OamAttriiii": "tangosdev",
-    "src/engine/oam/OAM.cpp#_ZN3OAM12EnableSubOAMEv": "tangosdev"
+    "src/engine/oam/OAM.cpp#_ZN3OAM12EnableSubOAMEv": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File": "ruspecial",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer6UpdateER15ModelComponents": "ruspecial",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD0Ev": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD1Ev": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerC1Ev": "tangosdev"
   }
 }

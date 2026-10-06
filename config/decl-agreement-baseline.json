@@ -12087,11 +12087,7 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation12SetAnimationEti5Fix12IiEt": {
-      "src/_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj.c": [
-        "param:#1 TextureTransformer *"
-      ]
-    },
+    "_ZN9Animation12SetAnimationEti5Fix12IiEt": {},
     "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
@@ -27924,13 +27920,13 @@
       ]
     },
     "func_020469e8": {
-      "src/_ZN18TextureTransformer6UpdateER15ModelComponents.cpp": [
+      "src/engine/model/TextureTransformer.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BTA_File *"
       ]
     },
     "func_02046b64": {
-      "src/_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File.cpp": [
+      "src/engine/model/TextureTransformer.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BTA_File *"
       ],
