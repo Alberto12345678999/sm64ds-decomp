@@ -82,7 +82,7 @@
 
 ### Fields/names belong elsewhere, cross-TU callers (10, incl. partials)
 
-- `src/actors/daBombking_c.cpp:37` (Player/Camera/data part) — Player+8/+0x6ce/+0xc8 on Player, Camera+0x114/154 on Camera, data_ov078_*/func_02035550 ownership.
+- `src/actors/daBombking_c.cpp:37` (Player/dCamera_c/data part) — Player+8/+0x6ce/+0xc8 on Player, dCamera_c+0x114/154 on dCamera_c, data_ov078_*/func_02035550 ownership.
 - `src/actors/daMip_c.cpp:75` (Player/data/S14 part) — Player+8/+0x6d9/+0x6ce on Player, data_ov085_* handles, S14 (matrix part DISPROVED via Extra11).
 - `src/actors/daMky_c.cpp:22` (Player/data/factory part) — Player+8/cap+0xc8 on those classes, data_ov030_* handles, factories in other files (matrix part DISPROVED via Extra10).
 - `src/actors/daSanbo_c.cpp:65` (Player/data/S14/veneer part) — Player+8 on Player, data_ov096_*/state records, S14, func_02038414 veneer naming.

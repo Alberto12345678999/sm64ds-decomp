@@ -488,7 +488,7 @@ Additions from the 2026-07-04/05 overnight runs (credit: Fable refine agents):
 - **Launder signedness is a value-number lever (2026-07-10).** `(int)` vs `(unsigned int)`
   inside the u64-mask give DISTINCT 64-bit value numbers, so two materialized bases around
   a call both emit instead of CSE keeping the address live across it - a finer-grained tool
-  than respelling the whole mask (found on _ZN6Camera14GoBehindPlayerEj, 9->4 div).
+  than respelling the whole mask (found on _ZN9dCamera_c14GoBehindPlayerEj, 9->4 div).
 - **Bit-field extract coloring: `(short)x << 12` vs `(x << 16) >> 4` (2026-07-10).** Both
   are the same extract, but the cast form forces a non-inplace lsl into a FRESH register
   plus an in-place asr, reproducing a target's r0/r2/r1/r0 coloring that the double-shift
@@ -1533,7 +1533,7 @@ Levers that landed:
   reference the temp in a degenerate ternary on the other store:
   `vy = <y expr>; v.x = vy ? sx<<3 : sx<<3;`. Generalizes 6y's fake-dependency trick to
   store-emission order.
-- **Mixed temp/RMW interleave beats both pure families** (`Camera::Render`, div 4->0, Fable).
+- **Mixed temp/RMW interleave beats both pure families** (`dCamera_c::Render`, div 4->0, Fable).
   On a 6-element `(x+4)>>3` writeback, *def order* pins register/slot assignment while
   *store-statement order* pins emission. Pure-temp and pure-RMW forms both floor (an
   exhaustive 720-permutation sweep bottomed at div 4); temps for a SUBSET (0,1,2,4) with
@@ -2406,7 +2406,7 @@ it**, while plain comparisons in the same translation unit still fold normally.
 
 So a materialized bool sitting inside an `&&` chain is a tell about two things at once:
 the file is C++, and the condition came from an inlined accessor rather than being written
-out. Found on `func_02009e70` `(Camera::Update)`; it was worth ~1300 divergences on its own.
+out. Found on `func_02009e70` `(dCamera_c::Update)`; it was worth ~1300 divergences on its own.
 
 ### The TYPE of a named local selects its callee-saved rank
 
@@ -2478,7 +2478,7 @@ Neither matched, but both moved a long way and every lever below was isolated by
 building the variant WITHOUT it and re-verifying, so the numbers are measured
 rather than attributed.
 
-### func_02009e70 (Camera::Update, 0x109c): 302 -> 183
+### func_02009e70 (dCamera_c::Update, 0x109c): 302 -> 183
 
 Two levers carry the whole distance, and one of them is worth more than everything
 else in this file combined.

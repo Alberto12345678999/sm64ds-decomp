@@ -12,7 +12,7 @@ struct dActor_c {
     struct Vector3 pos; /* 0x5c */
 };
 
-struct Camera {
+struct dCamera_c {
     char pad0[0x80];
     char field_0x80[0x10]; /* 0x80 */
     char pad1[0x110 - 0x90];
@@ -29,7 +29,7 @@ struct Data {
 extern short ReadUnalignedShort(const void *p);
 extern void AddVec3(const struct Vector3 *a, const struct Vector3 *b, struct Vector3 *dest);
 
-int func_02007b98(struct Camera *cam, struct Data *data) {
+int func_02007b98(struct dCamera_c *cam, struct Data *data) {
     struct Vector3 v;
     Fix12i x, y, z;
     int b;

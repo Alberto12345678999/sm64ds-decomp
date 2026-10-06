@@ -70,7 +70,7 @@
 #include "TextureSequence.h"
 #include "Player.h"
 #include "Message.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 
 /* Actor ids, from symbols/actor_debug_names.tsv. */
 enum {
@@ -319,7 +319,6 @@ extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
 extern void _ZN6Player16IncMegaKillCountEv(void *p);
 extern void _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(void *sfp);
 extern void _ZN7fBase_c18MarkForDestructionEv(void *self);
@@ -2194,7 +2193,7 @@ int func_ov066_0211901c(Eyerok *self)
 /* Talk state, run handler (enter handler func_ov066_02119348). Used twice: before
  * the fight (both hands alive, once they have risen) and after it (both gone).
  * Waits for mTimer2. On the first frame it sets the camera flag
- * (Camera::SetFlag_3), remembers the closest player in mTalkPlayer and locks it
+ * (dCamera_c::SetFlag_3), remembers the closest player in mTalkPlayer and locks it
  * with SetNoControlState(5, -1, 0). From then on the camera's look-at (+0x80) and
  * position (+0x8c) are moved (func_020092c4) to the body's position + (0,
  * 0x100000, 0) = 256.0 up, and + (0x10000, 0x100000, 0x564000) = (16.0, 256.0,
@@ -2212,14 +2211,14 @@ int func_ov066_0211901c(Eyerok *self)
 extern "C" {
 int func_ov066_0211903c(Eyerok *self) {
     struct Vector3 v1, v2, in, out, star;
-    Camera* cam;
+    dCamera_c* cam;
     int msgid;
 
     if (self->mTimer2) return 1;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     if (self->mSubState == 0) {
-        _ZN6Camera9SetFlag_3Ev(cam);
+        cam->SetFlag_3();
         self->mTalkPlayer = self->ClosestPlayer();
         if (self->mTalkPlayer != 0)
             ((Player *)(self->mTalkPlayer))->SetNoControlState(5, -1, 0);

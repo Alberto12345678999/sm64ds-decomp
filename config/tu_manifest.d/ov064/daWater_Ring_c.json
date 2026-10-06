@@ -34,49 +34,49 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov064_02119afc",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119afcEv",
       "address": "0x02119afc",
       "size": "0x00000164",
       "legacy_source": "src/func_ov064_02119afc.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov064_02119c60",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119c60Ev",
       "address": "0x02119c60",
       "size": "0x00000084",
       "legacy_source": "src/func_ov064_02119c60.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov064_02119ce4",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119ce4Ev",
       "address": "0x02119ce4",
       "size": "0x00000044",
       "legacy_source": "src/func_ov064_02119ce4.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov064_02119d28",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119d28Ev",
       "address": "0x02119d28",
       "size": "0x00000178",
       "legacy_source": "src/func_ov064_02119d28.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov064_02119ea0",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119ea0Ev",
       "address": "0x02119ea0",
       "size": "0x0000002c",
       "legacy_source": "src/func_ov064_02119ea0.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov064_02119ecc",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119eccEPKNS_5StateE",
       "address": "0x02119ecc",
       "size": "0x00000050",
       "legacy_source": "src/func_ov064_02119ecc.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov064_02119f1c",
+      "symbol": "_ZN14daWater_Ring_c19func_ov064_02119f1cEv",
       "address": "0x02119f1c",
       "size": "0x00000084",
       "legacy_source": "src/func_ov064_02119f1c.cpp",

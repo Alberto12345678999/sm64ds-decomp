@@ -26,7 +26,7 @@
  * - func_ov002_020bc990: inbound from ov084 (daRedBombhei_c). No coined name.
  * - func_0201277c (sound 0x47); data_020a0e68 scratch matrix;
  *   data_0209f2f8 / data_0209f220 scene/level gates.
- * - no Camera.h. Player.h is required for ClosestPlayer()->mIsMega.
+ * - no dCamera_c.h. Player.h is required for ClosestPlayer()->mIsMega.
  */
 
 /* daObjCannonShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach

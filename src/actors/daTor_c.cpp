@@ -1,24 +1,27 @@
 //cpp
-/* Production translation unit for ov096/daTor_c.
- * 10 function(s), .text 0x02136db0..0x021376bc. The sand tornado (registry
- * profile TORNADO).
+/* daTor_c -- the sand tornado (registry profile TORNADO).
+ * 11 function(s), .text 0x02136db0..0x021376bc.
  *
- * NAME: _ZTS7daTor_c is "7daTor_c" at ov096 0x02137a54; _ZTI at 0x02137a60
- * reads [__si_class_type_info, that string, _ZTI8dActor_c]. The tree
- * previously called the class Tornado (coined).
+ * ROM evidence: _ZTS7daTor_c at ov096 0x02137a54; _ZTI at 0x02137a60 reads
+ * [__si_class_type_info, that string, _ZTI8dActor_c]. The out-of-line
+ * destructor is the key function, so this TU emits _ZTV/_ZTI/_ZTS. Under
+ * defer_codegen off it lays down D1, D0, then a deadstripped D2, and .text in
+ * source order -- this file is ROM-ascending, with the classInit factory
+ * appended last.
  *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02136db0), D0
- * (0x02136df8), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is
- * ROM-ascending. The factory daTor_c_classInit (0x021376bc..0x0213770c,
- * historical alias Tornado_Spawn) now appends at the end of source order:
- * fBase_c::operator new(size_t) forwards `return new daTor_c();` to the same
- * _ZN7fBase_cnwEj(880) allocator the loose factory called by hand, and
- * daTor_c has no user-declared constructor, so the inherited dActor_c ctor
- * plus the vtable store plus the four member subobjects in field order
- * (dCcAc_c, dBgCh_Actr, ModelAnim, TextureTransformer) come from the implicit
- * default constructor with zero mangled calls.
+ * deslop leftovers:
+ * - cstd::atan2, Particle::System::New, ModelAnim::SetAnim,
+ *   TextureTransformer::SetFile, dCcAc_c::Init and dBgCh_Actr::Init take
+ *   Fix12<int> by value and stay mangled extern "C" calls.
+ * - dBgCh_Actr_UpdateContinuous_Veneer is the ROM's own tail-call thunk, not
+ *   UpdateContinuous itself: the reloc points at the veneer symbol.
+ * - The GetWallResult +4 in State1 is the unrecovered result struct's
+ *   SurfaceInfo slot; dEnemyBase_c spells it the same way.
+ * - State1 copies the player position through a raw (char*)player + 0x5c
+ *   pointer: named mPosX/Y/Z loads come out one instruction shorter.
+ * - data_ov096_02137ba8/bb0 SharedFilePtrs are word-indexed because the
+ *   layout is deliberately unrecovered (include/SharedFilePtr.h).
+ * - unk_352 stays unnamed: zeroed by state 0 and read nowhere.
  */
 
 #pragma defer_codegen off
@@ -29,23 +32,18 @@
 #include "Sound.h"
 #include "SurfaceInfo.h"
 
-/* Leftover: cstd::atan2, Particle::System::New, ModelAnim::SetAnim,
- * TextureTransformer::SetFile, dCcAc_c::Init and dBgCh_Actr::Init take
- * Fix12<int> by value, so they stay mangled. dBgCh_Actr::GetWallResult stays
- * mangled because include/dBgCh_Actr.h does not declare it yet. */
 extern "C" {
 /* The texture animation InitResources hands to mTextureTransformer lives in
  * the level overlay, not here. ov096 relocs.txt lists the load at 0x021376b0
  * as ambiguous between ten level overlays; tools/overlay_residency.py settles
  * it to ov024, the only level whose tables load ov096. */
 extern int data_ov024_02112968[];
-s16 data_02082214[];
-s32 Vec3_HorzDist(const void *a, const void *b);
-s16 Vec3_HorzAngle(const void *a, const void *b);
-s32 Vec3_Dist(const void *a, const void *b);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
+extern s16 data_02082214[]; /* shared sin/cos lookup table */
+s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
+s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
+s32 Vec3_Dist(const Vector3 *a, const Vector3 *b);
+void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *collision);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *collision);
 s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
 u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 handle, u32 effect, s32 x, s32 y, s32 z, const void *direction,
@@ -71,7 +69,7 @@ daTor_c::~daTor_c()
 // @symbol _ZN7daTor_c10UpdateSpinEi
 void daTor_c::UpdateSpin(s32 scale)
 {
-    u16 idx = (u16)unk_35a;
+    u16 idx = (u16)mSpinPhase;
     s16 wave = data_02082214[(idx >> 4) * 2 + 1];
     s32 radiusScale = (wave + 0x1000) >> 1;
     s32 frameScale = (s32)(((long long)scale * 0x666 + 0x800) >> 12);
@@ -79,13 +77,13 @@ void daTor_c::UpdateSpin(s32 scale)
     radius += 0x1000;
     mScaleX = (s32)(((long long)radius * frameScale + 0x800) >> 12);
 
-    u16 idx2 = (u16)unk_35a;
+    u16 idx2 = (u16)mSpinPhase;
     s16 wave2 = data_02082214[(idx2 >> 4) * 2 + 1];
     s32 heightScale = ((0x1000 - wave2) >> 2) + 0x800;
     mScaleY = (s32)(((long long)heightScale * frameScale + 0x800) >> 12);
 
     mScaleZ = mScaleX;
-    unk_35a += 0x200;
+    mSpinPhase += 0x200;
     mHorzSpeed = 0xe000;
     mAngleY += 0x2c00;
     mdCcAc_c.radius = mScaleX * 0x514;
@@ -99,20 +97,17 @@ void daTor_c::UpdateSpin(s32 scale)
 void daTor_c::State2()
 {
     s32 scale = (0x3c - mStateTimer) << 12;
-    if (scale < 0)
-        goto finished;
-
-    UpdateSpin(scale / 0x3c);
-    return;
-
-finished:
+    if (scale >= 0) {
+        UpdateSpin(scale / 0x3c);
+        return;
+    }
     mdCcAc_c.flags |= 1;
     mCaughtActor = 0;
 
     Player *player = ClosestPlayer();
     if (player) {
         dActor_c *actor = (dActor_c *)player;
-        if (Vec3_HorzDist(&mHomePosX, &actor->mPosX) > 0x9c4000)
+        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, (const Vector3 *)&actor->mPosX) > 0x9c4000)
             mState = 0;
         if (mStateTimer > 0x168)
             mState = 0;
@@ -126,10 +121,9 @@ void daTor_c::State1()
 {
     Vector3 playerPos;
     s16 angle;
-    u16 *chaseTimer = &mChaseTimer;
-    *chaseTimer = (u16)(*chaseTimer + 1);
+    ++mChaseTimer;
 
-    angle = Vec3_HorzAngle(&mPosX, &mHomePosX);
+    angle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mHomePosX);
     mAngleToHome = angle;
 
     mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85,
@@ -140,9 +134,7 @@ void daTor_c::State1()
     if (player == 0)
         goto null_player;
 
-    /* Leftover: the player position is copied through a raw pointer at
-       player+0x5c, because named mPosX/Y/Z loads come out one instruction
-       shorter than the ROM's pointer copy. */
+    /* Leftover: raw pointer copy -- named loads change codegen; see file header. */
     {
         s32 *pos = (s32 *)((char *)player + 0x5c);
         playerPos.x = pos[0];
@@ -150,17 +142,18 @@ void daTor_c::State1()
         playerPos.z = pos[2];
     }
 
-    if (Vec3_HorzDist(&mHomePosX, &playerPos) < mChaseRange
+    if (Vec3_HorzDist((const Vector3 *)&mHomePosX, &playerPos) < mChaseRange
         && mTriggerCount == 0
         && mChaseTimer < 0x384) {
-        angle = Vec3_HorzAngle(&mPosX, &playerPos);
+        angle = Vec3_HorzAngle((const Vector3 *)&mPosX, &playerPos);
         mAngleToPlayer = angle;
         ApproachLinear(mPrevAngleY, mAngleToPlayer, 0x200);
+        /* ov002 helper wraps Player::IsState(tornado): still being carried. */
         if (mCaughtActor != 0 && func_ov002_020de328(mCaughtActor) != 0)
             ++mTriggerCount;
     } else {
         ApproachLinear(mPrevAngleY, mAngleToHome, 0x200);
-        if (Vec3_HorzDist(&mHomePosX, &mPosX) < 0xc8000)
+        if (Vec3_HorzDist((const Vector3 *)&mHomePosX, (const Vector3 *)&mPosX) < 0xc8000)
             mState = 2;
     }
     goto cont;
@@ -170,28 +163,24 @@ null_player:
     return;
 
 cont:
-    if (Vec3_Dist(&mPosX, &playerPos) > 0xbb8000 || mChaseTimer >= 0x384)
+    if (Vec3_Dist((const Vector3 *)&mPosX, &playerPos) > 0xbb8000 || mChaseTimer >= 0x384)
         mState = 2;
 
     UpdatePos(0);
     dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
     if (mWithMeshClsn.IsOnWall() != 0) {
-        s32 normal[3];
-        void *wall = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
-        ((SurfaceInfo *)((char *)wall + 4))->CopyNormalTo(*(Vector3 *)normal);
-        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(normal[0], normal[2]);
+        Vector3 normal;
+        void *wall = mWithMeshClsn.GetWallResult();
+        ((SurfaceInfo *)((char *)wall + 4))->CopyNormalTo(normal);
+        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
     }
 
     UpdateSpin(0x1000);
 
-    {
-        s32 z = mPosZ;
-        mParticleHandle0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleHandle0, 0x11f, mPosX, mPosY, z, 0, 0);
-        z = mPosZ;
-        mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            mParticleHandle1, 0x120, mPosX, mPosY, z, 0, 0);
-    }
+    mParticleHandle0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleHandle0, 0x11f, mPosX, mPosY, mPosZ, 0, 0);
+    mParticleHandle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleHandle1, 0x120, mPosX, mPosY, mPosZ, 0, 0);
 }
 
 // @symbol _ZN7daTor_c6State0Ev
@@ -210,18 +199,15 @@ void daTor_c::State0()
         mScaleY = 0;
         mScaleZ = 0;
         unk_352 = 0;
-        if (DistToCPlayer() < 0x5dc000) {
-            u8 *trigger = &mTriggerCount;
-            *trigger = *trigger + 1;
-        }
+        if (DistToCPlayer() < 0x5dc000)
+            ++mTriggerCount;
         mStateTimer = 0;
         mdCcAc_c.flags &= ~1;
         mChaseTimer = 0;
     } else {
         mSoundHandle = Sound::PlayLong(mSoundHandle, 3, 0x85,
                                        *(Vector3 *)&mCamSpacePosX, 0);
-        s32 timer = mStateTimer;
-        UpdateSpin((timer << 12) / 60);
+        UpdateSpin((mStateTimer << 12) / 60);
         if (mStateTimer >= 0x3c)
             mState = 1;
     }
@@ -261,9 +247,11 @@ int daTor_c::Behavior()
     if (id != 0 && (mdCcAc_c.hitFlags & 0x400000) != 0) {
         dActor_c *o = dActor_c::FindWithID(id);
         if (o != 0) {
-            dActor_c *closest = ClosestWithActorID(0x135);
-            if (closest == 0 || Vec3_Dist(&o->mPosX, &closest->mPosX) > 0x118000) {
-                if (func_ov002_020de33c((char *)o, (int)((char *)this)) != 0)
+            dActor_c *closest = ClosestWithActorID(0x135 /* ONIMASU */);
+            if (closest == 0 || Vec3_Dist((const Vector3 *)&o->mPosX, (const Vector3 *)&closest->mPosX) > 0x118000) {
+                /* ov002 player-state helper: stores `this` into the player's
+                   tornado slot and switches it into the tornado state. */
+                if (func_ov002_020de33c((char *)o, (int)this) != 0)
                     mCaughtActor = o;
             }
         }
@@ -279,9 +267,8 @@ int daTor_c::Behavior()
 // @symbol _ZN7daTor_c13InitResourcesEv
 int daTor_c::InitResources()
 {
-    /* Leftover: SetAnim, TextureTransformer::SetFile and
-       dCcAc_c::Init take Fix12<int> by value; calling them as methods homes
-       the arguments and the function grows from 0x158 to 0x18c. */
+    /* The three Fix12-by-value calls below stay mangled (file header leftovers);
+       member calls grow this function from 0x158 to 0x18c. */
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov096_02137ba8),
                        1, 0x15);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov096_02137bb0);
@@ -298,7 +285,7 @@ int daTor_c::InitResources()
     mHomePosX = mPosX;
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
-    unk_35a = 0;
+    mSpinPhase = 0;
     mState = 0;
     mTriggerCount = 0;
     mVertAccel = -0x1000;

@@ -523,7 +523,7 @@ extern "C" int func_ov075_02114a6c(UnknownVsPlayer *p)
 }
 
 // @symbol func_ov075_02114ac4
-/* Camera follow for the focused figure. While it runs off (movement state 5)
+/* dCamera_c follow for the focused figure. While it runs off (movement state 5)
  * the eye pulls back with it; once it has dropped away (state 6) the eye
  * rises and eases toward the target's depth, and the target follows the
  * eye's height. Returns nonzero when the view needs rebuilding. */
