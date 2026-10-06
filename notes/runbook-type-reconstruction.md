@@ -247,7 +247,7 @@ int *_ZN19daObjBlockItemTag_cD0Ev(int *t)
 
 `this` is an `int*`, members are array indices, the symbol name is spelled by hand.
 
-**Rung 3 -- migrated function** (`src/engine/fader/_ZN8dFader_c13AdvanceInterpEv.cpp`, done):
+**Rung 3 -- migrated function** (`dFader_c::AdvanceInterp`, written as a one-function shard and since folded into `src/engine/fader/dFader_c.cpp`, done):
 
 ```c
 //cpp
@@ -282,7 +282,7 @@ declaration.
 Nothing merges and nothing accumulates. The binding is one line in a generated file:
 
 ```sh
-src/engine/fader/_ZN8dFader_c13AdvanceInterpEv.cpp:
+src/<dir>/_ZN8dFader_c13AdvanceInterpEv.cpp:
     complete
     .text start:0x020175e8 end:0x02017610
 ```
