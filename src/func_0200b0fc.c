@@ -86,10 +86,10 @@ void func_0200b0fc(char *c, char *a)
     projDir = DotVec3(&toPos, &dir);
     diff = projDir - DotVec3(&toTarget, &dir);
 
-    if (func_0203ad54(path) == 0xff) {
+    if (_ZNK7PathPtr9GetUnk004Ev(path) == 0xff) {
         maxDelta = 0;
     } else {
-        maxDelta = func_0203ad54(path) << 12;
+        maxDelta = _ZNK7PathPtr9GetUnk004Ev(path) << 12;
     }
     negMax = -maxDelta;
     if (diff < negMax) {
@@ -151,10 +151,10 @@ void func_0200b0fc(char *c, char *a)
     Vec3_MulScalar(&offset, &dir, projDir);
     Vec3_Add(&targetPos, &node0, &offset);
 
-    if (func_0203ad44(path) == 0xff) {
+    if (_ZNK7PathPtr13GetPullFactorEv(path) == 0xff) {
         v4 = 0;
     } else {
-        v4 = func_0203ad44(path) << 4;
+        v4 = _ZNK7PathPtr13GetPullFactorEv(path) << 4;
     }
 
     if (data_0209f2f8 == 0x2f) {
