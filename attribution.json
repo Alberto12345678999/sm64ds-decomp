@@ -8172,6 +8172,15 @@
     "src/engine/save/SaveData.cpp#_ZN8SaveData12ReadFileDataEjP12FileSaveData": "tangosdev",
     "src/engine/save/SaveData.cpp#_ZN8SaveData16SetDefaultValuesEP12FileSaveData": "tangosdev",
     "src/engine/save/SaveData.cpp#_ZN8SaveData16EraseAllSaveDataEv": "tangosdev",
-    "src/engine/save/SaveData.cpp#func_02013e64": "ruspecial"
+    "src/engine/save/SaveData.cpp#func_02013e64": "ruspecial",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents5Entry10InitialiseEjjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents5Entry5ResetEv": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8ContentsC1Ev": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents6UpdateEv": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents5ClearEv": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZNK8Particle10SysTracker8Contents8FindDataEj": "tangosdev",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents4LinkERNS1_5EntryE": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents6UnlinkERNS1_5EntryE": "andrewboudreau"
   }
 }
