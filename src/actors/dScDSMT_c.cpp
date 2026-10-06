@@ -75,7 +75,7 @@
 
 /* One save file, the 0x44-byte unit SaveData::ReadFileData and
  * SaveData::EraseSaveFile move; include/SaveData.h only forward-declares
- * it. Layout as src/func_02013c84.c spells it. */
+ * it. Layout as the save block's callers spell it. */
 struct FileSaveData {
     u32 magic8000;
     u32 flags1;

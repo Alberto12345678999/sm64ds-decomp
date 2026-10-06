@@ -13,10 +13,12 @@ struct A {
     virtual int f8(void*);
 };
 
+#include "dBgPi.h"
+
 extern "C" int func_020393b4(struct A *p);
 extern "C" int func_020393ac(struct A *p);
 extern "C" int func_02035354(void *a, int b);
-extern "C" void func_02037fec(char *c, int p1, int p2, int p3, struct A *p4);
+
 extern "C" void func_020379d0(void *c, int b, int d, int e, struct A *f);
 extern "C" void func_0203799c(void *c, int b, int d, int e, struct A *f);
 extern "C" void func_02037968(void *c, int b, int d, int e, struct A *f);
@@ -31,7 +33,7 @@ extern "C" int func_02038a38(void *arg0)
     int flags;
     if (o != 0 && func_02035354(arg0, func_020393b4(o)) == 0
         && (flags = o->f8(arg0)) != 0) {
-        func_02037fec((char*)arg0 + 0x10, 0, func_020393ac(o), func_020393b4(o), o);
+        ((dBgPi *)((char*)arg0 + 0x10))->SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
         if (flags & 1)
             func_020379d0(arg0, 0, func_020393ac(o), func_020393b4(o), o);
         if (flags & 2)
