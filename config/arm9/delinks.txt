@@ -1721,41 +1721,9 @@ src/func_02016b24.c:
     complete
     .text start:0x02016b24 end:0x02016b78
 
-src/_ZN5Model6RenderEPK7Vector3.cpp:
+src/engine/model/Model.cpp:
     complete
-    .text start:0x02016b78 end:0x02016bb8
-
-src/_ZN5Model9Virtual10ER9Matrix4x3.cpp:
-    complete
-    .text start:0x02016bb8 end:0x02016bf8
-
-src/_ZN5Model9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02016bf8 end:0x02016c98
-
-src/_ZN5Model11UpdateVertsEv.cpp:
-    complete
-    .text start:0x02016c98 end:0x02016ca8
-
-src/_ZN5ModelD2Ev.cpp:
-    complete
-    .text start:0x02016ca8 end:0x02016ce0
-
-src/_ZN5ModelD0Ev.cpp:
-    complete
-    .text start:0x02016ce0 end:0x02016d20
-
-src/_ZN5ModelD1Ev.cpp:
-    complete
-    .text start:0x02016d20 end:0x02016d58
-
-src/_ZN5ModelC1Ev.cpp:
-    complete
-    .text start:0x02016d58 end:0x02016da8
-
-src/_ZN5ModelC2Ev.cpp:
-    complete
-    .text start:0x02016da8 end:0x02016df8
+    .text start:0x02016b78 end:0x02016df8
 
 src/func_02016e70.c:
     complete

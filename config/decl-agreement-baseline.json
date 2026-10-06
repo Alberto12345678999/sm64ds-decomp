@@ -1818,11 +1818,6 @@
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
       ],
-      "src/_ZN5Model6RenderEPK7Vector3.cpp": [
-        "param:#1 const Matrix4x3 *",
-        "param:#2 const Matrix4x3 *",
-        "param:#3 Matrix4x3 *"
-      ],
       "src/_ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3.cpp": [
         "param:#1 Matrix4x3 *",
         "param:#2 Matrix4x3 *",
@@ -1870,6 +1865,11 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_holhei.cpp": [
+        "param:#1 const Matrix4x3 *",
+        "param:#2 const Matrix4x3 *",
+        "param:#3 Matrix4x3 *"
+      ],
+      "src/engine/model/Model.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
@@ -24306,15 +24306,15 @@
       ]
     },
     "func_02016b24": {
-      "src/_ZN5Model9DoSetFileEPcii.cpp": [
-        "param:#1 Model *",
-        "param:#2 int"
-      ],
       "src/actors/daMip_c.cpp": [
         "param:#2 int"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 char *",
+        "param:#2 int"
+      ],
+      "src/engine/model/Model.cpp": [
+        "param:#1 Model *",
         "param:#2 int"
       ]
     },
@@ -27929,7 +27929,7 @@
         "param:#1 ModelComponents *",
         "param:#2 BMD_Bone *"
       ],
-      "src/_ZN5Model9Virtual10ER9Matrix4x3.cpp": [
+      "src/engine/model/Model.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMD_Bone *"
       ]
@@ -28028,20 +28028,20 @@
       ]
     },
     "func_020462d0": {
-      "src/_ZN5Model9DoSetFileEPcii.cpp": [
-        "param:#1 ModelComponents *",
-        "param:#2 BMD_File *"
-      ],
       "src/func_ov007_020bc47c.cpp": [
         "param:#3 int"
+      ],
+      "src/engine/model/Model.cpp": [
+        "param:#1 ModelComponents *",
+        "param:#2 BMD_File *"
       ]
     },
     "func_02046564": {
-      "src/_ZN5Model9DoSetFileEPcii.cpp": [
-        "param:#1 BMD_File *",
+      "src/func_02016e70.c": [
         "return:unsigned int"
       ],
-      "src/func_02016e70.c": [
+      "src/engine/model/Model.cpp": [
+        "param:#1 BMD_File *",
         "return:unsigned int"
       ]
     },
