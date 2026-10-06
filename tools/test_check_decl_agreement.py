@@ -541,6 +541,74 @@ void dBgCh_Gnd::SetObjAndPos(const Vector3 &vec_, void *actor_)
         self.assertEqual([d for d in defs if "::" in (d.symbol or "")], [])
 
 
+class MarkerIdentityTests(unittest.TestCase):
+    """One marker and one orphan is not symbol identity.
+
+    The fallback used to hand the only `@symbol` to whatever body was left after
+    a helper declaration. That records a definition the file does not contain,
+    and a definition outranks every declaration of that name.
+    """
+
+    def test_a_namespace_helper_does_not_take_an_unrelated_marker(self):
+        text = ("// @symbol _ZN1A1fEv\n"
+                "extern \"C\" void helper(void);\n"
+                "namespace B {\n"
+                "int g(void) { return 7; }\n"
+                "}\n")
+        _decls, defs, _unparsed = CDA.parse_file("src/pair.cpp", text, {})
+        self.assertFalse(any(d.symbol == "_ZN1A1fEv" for d in defs))
+        self.assertFalse(any(d.ret == "int" and d.symbol.startswith("_ZN1A")
+                             for d in defs))
+
+    def test_mismatched_class_or_function_is_not_adopted(self):
+        for body in ("int B::g(void) { return 7; }\n",
+                     "int A::g(void) { return 7; }\n",
+                     "int B::f(void) { return 7; }\n"):
+            text = ("// @symbol _ZN1A1fEv\n"
+                    "extern \"C\" void helper(void);\n" + body)
+            _decls, defs, _unparsed = CDA.parse_file("src/pair.cpp", text, {})
+            self.assertFalse(any(d.symbol == "_ZN1A1fEv" for d in defs), body)
+
+    def test_a_declaration_only_marker_records_no_definition(self):
+        samples = (
+            "// @symbol _ZN1A1fEv\nextern \"C\" void helper(void);\n",
+            "// @symbol _ZN1A1fEv\nextern int A::f(void);\n",
+            "// @symbol _ZN1A1fEv\nextern \"C\" void helper(void);\n"
+            "namespace B { int g(void); }\n",
+        )
+        for text in samples:
+            _decls, defs, _unparsed = CDA.parse_file("src/pair.cpp", text, {})
+            self.assertFalse(any(d.symbol == "_ZN1A1fEv" for d in defs), text)
+
+    def test_a_matching_namespace_function_is_still_adopted(self):
+        text = ("// @symbol _ZN1B1gEv\n"
+                "extern \"C\" void helper(void);\n"
+                "namespace B {\n"
+                "int g(void) { return 7; }\n"
+                "}\n")
+        _decls, defs, _unparsed = CDA.parse_file("src/ns.cpp", text, {})
+        self.assertEqual([d.symbol for d in defs], ["_ZN1B1gEv"])
+        self.assertEqual(defs[0].ret, "int")
+
+    def test_a_namespace_qualified_member_is_still_adopted(self):
+        text = ("// @symbol _ZN8Particle10SysTracker10InitialiseEv\n"
+                "extern \"C\" void helper(void);\n"
+                "namespace Particle {\n"
+                "void SysTracker::Initialise(void) {}\n"
+                "}\n")
+        _decls, defs, _unparsed = CDA.parse_file("src/ns.cpp", text, {})
+        self.assertEqual([d.symbol for d in defs],
+                         ["_ZN8Particle10SysTracker10InitialiseEv"])
+
+    def test_a_const_method_marker_still_matches(self):
+        text = ("// @symbol _ZNK6Widget1fEv\n"
+                "extern \"C\" void helper(void);\n"
+                "int Widget::f(void) const { return 1; }\n")
+        _decls, defs, _unparsed = CDA.parse_file("src/widget.cpp", text, {})
+        self.assertEqual([d.symbol for d in defs], ["_ZNK6Widget1fEv"])
+        self.assertEqual(defs[0].ret, "int")
+
+
 class EastConstTests(unittest.TestCase):
     """`Vector3 const &` and `const Vector3 &` spell one type.
 
@@ -582,6 +650,59 @@ class EastConstTests(unittest.TestCase):
                     'extern "C" void Take(Vector3 *v);\n')
         findings, _d, _f, _files = build(tree)
         self.assertEqual(len(kinds(findings, "Take")), 1)
+
+
+class TemplateConstTests(unittest.TestCase):
+    """Const inside a template argument is not const on the template itself.
+
+    `Box<const T> &` and `const Box<T> &` are different types. The outer hoist
+    used to pull the inner const out, so a definition and an extern of those two
+    spellings produced no finding. Outer east/west const still collapses.
+    """
+
+    def test_template_argument_const_is_not_outer_const(self):
+        self.assertEqual(CDA.normalise_type("Box<const T> &", {}, False),
+                         "Box < const T > &")
+        self.assertEqual(CDA.normalise_type("const Box<T> &", {}, False),
+                         "const Box < T > &")
+        self.assertNotEqual(CDA.normalise_type("Box<const T> &", {}, False),
+                            CDA.normalise_type("const Box<T> &", {}, False))
+        self.assertEqual(CDA.normalise_type("Box<T const> &", {}, False),
+                         "Box < const T > &")
+        self.assertEqual(CDA.normalise_type("Box<T> const &", {}, False),
+                         CDA.normalise_type("const Box<T> &", {}, False))
+        self.assertEqual(CDA.normalise_type("Vector3 const &", {}, False),
+                         CDA.normalise_type("const Vector3 &", {}, False))
+        self.assertEqual(CDA.normalise_type("Box<Wrap<const T>> &", {}, False),
+                         "Box < Wrap < const T > > &")
+        self.assertNotEqual(
+            CDA.normalise_type("Box<Wrap<const T>> &", {}, False),
+            CDA.normalise_type("const Box<Wrap<T>> &", {}, False))
+
+    def test_template_argument_const_disagrees_through_comparison(self):
+        def tree(t):
+            t.write("src/def.cpp",
+                    "extern \"C\" void Take(Box<const Vector3> &v)\n"
+                    "{\n    (void)v;\n}\n")
+            t.write("src/caller.cpp",
+                    "extern \"C\" void Take(const Box<Vector3> &v);\n")
+        findings, _d, _f, _files = build(tree)
+        self.assertEqual(kinds(findings, "Take"),
+                         [("param", "src/caller.cpp",
+                           "#1 const Box < Vector3 > &",
+                           "#1 Box < const Vector3 > &")])
+        self.assertEqual({f["basis"] for f in findings if f["symbol"] == "Take"},
+                         {"definition"})
+
+    def test_outer_const_on_a_template_is_still_one_type(self):
+        def tree(t):
+            t.write("src/def.cpp",
+                    "extern \"C\" void Take(const Box<Vector3> &v)\n"
+                    "{\n    (void)v;\n}\n")
+            t.write("src/caller.cpp",
+                    "extern \"C\" void Take(Box<Vector3> const &v);\n")
+        findings, _d, _f, _files = build(tree)
+        self.assertEqual(kinds(findings, "Take"), [])
 
 
 # ------------------------------------------------------------------- other controls
@@ -2518,7 +2639,7 @@ class NativeConstructorAndWrapperTests(unittest.TestCase):
         self.assertEqual(defs, [])
 
     def test_real_constructor_and_force_wrapper_fixtures(self):
-        examples = (("src/_ZN5ModelC1Ev.cpp", "_ZN5ModelC1Ev", "Model"),
+        examples = (("src/engine/model/Model.cpp", "_ZN5ModelC1Ev", "Model"),
                     ("src/_ZN10dScEntry_c6icon_cC1Ev.cpp", "_ZN10dScEntry_c6icon_cC1Ev", "dScEntry_c::icon_c"))
         for rel, symbol, owner in examples:
             with self.subTest(path=rel):

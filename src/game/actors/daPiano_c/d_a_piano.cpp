@@ -92,7 +92,7 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *, int, int);
 void func_ov063_0211ddf4(daPiano_c *self);
 void *_ZN10dBgActor_cC2Ev(void *self);
 void *_ZN9ModelAnimC1Ev(void *self);
-void *_ZN11ShadowModelC1Ev(void *self);
+void *_ZN17dExtShadowModel_cC1Ev(void *self);
 void __cxa_vec_ctor(void *array, int count, int stride, void *ctor, void *dtor);
 void *_ZN10dCcAcPos_cC1Ev(void *self);
 void _ZN10dCcAcPos_cD1Ev(void *self);
@@ -138,9 +138,9 @@ extern "C" daPiano_c *daPiano_c_classInit()
         _ZN10dBgActor_cC2Ev(actor);
         *(int *)actor = (int)&_ZTV9daPiano_c[2];
         _ZN9ModelAnimC1Ev(&actor->mModelAnim);
-        _ZN11ShadowModelC1Ev(&actor->mShadowModel1);
-        _ZN11ShadowModelC1Ev(&actor->mShadowModel2);
-        _ZN11ShadowModelC1Ev(&actor->mShadowModel3);
+        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel1);
+        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel2);
+        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel3);
         __cxa_vec_ctor(actor->mCylinderClsn, 2, sizeof(dCcAcPos_c),
             (void *)_ZN10dCcAcPos_cC1Ev, (void *)_ZN10dCcAcPos_cD1Ev);
         _ZN10dBgCh_ActrC1Ev(&actor->mWithMeshClsn);
@@ -163,7 +163,7 @@ int daPiano_c::InitResources()
     mShadowModel1.InitCuboid();
     mShadowModel2.InitCuboid();
     mShadowModel3.InitCylinder();
-    f = Animation::LoadFile(gPianoAttackAnimationFile);
+    f = dExtFrameCtrl_c::LoadFile(gPianoAttackAnimationFile);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)f, 0, 0x1000, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
@@ -532,16 +532,16 @@ void func_ov063_0211d828(daPiano_c *self){
 extern "C" {
 // @symbol func_ov063_0211d5f4
 /* Pose the three drop shadows: rotate a body-frame offset by the facing,
- * add the actor position, and drop one shadow per ShadowModel. */
+ * add the actor position, and drop one shadow per dExtShadowModel_c. */
 void func_ov063_0211d5f4(daPiano_c *self)
 {
     extern void Matrix4x3_FromRotationY(Matrix4x3* m, int angle);
     extern void MulVec3Mat4x3(PianoVec3* in, Matrix4x3* m, PianoVec3* out);
     extern void AddVec3(PianoVec3* a, PianoVec3* b, PianoVec3* c);
-    extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        dActor_c* self, ShadowModel* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t, unsigned int u);
-    extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-        dActor_c* self, ShadowModel* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t1, Fix12i t2, unsigned int u);
+    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        dActor_c* self, dExtShadowModel_c* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t, unsigned int u);
+    extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+        dActor_c* self, dExtShadowModel_c* sm, Matrix4x3* mtx, Fix12i fx, Fix12i t1, Fix12i t2, unsigned int u);
 
     extern Matrix4x3 data_020a0e68;   /* shared scratch matrix */
 
@@ -589,11 +589,11 @@ void func_ov063_0211d5f4(daPiano_c *self)
     self->mShadowMats[1].m[10] = self->mPosY >> 3;
     self->mShadowMats[1].m[11] = out.z >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel3, &self->mShadowMats[2], 0xf0000, 0x50000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         self, &self->mShadowModel1, &self->mShadowMats[0], 0xa0000, 0x50000, 0x110000, 0xf);
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         self, &self->mShadowModel2, &self->mShadowMats[1], 0x80000, 0x50000, 0xf0000, 0xf);
 }
 }

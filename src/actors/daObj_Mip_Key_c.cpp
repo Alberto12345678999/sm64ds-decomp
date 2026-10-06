@@ -20,7 +20,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Message.h"
 
 extern "C" {
@@ -40,8 +40,8 @@ void  Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 void  MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 
 // Scalar bridge: the real Fix12 aggregate call grew this helper by 16 bytes.
-void  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-          dActor_c *thiz, ShadowModel *sm, Matrix4x3 *mtx, int rad, int height, u8 flags);
+void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+          dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int rad, int height, u8 flags);
 
 bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, Fix12i d, int loop);
 
@@ -49,7 +49,7 @@ unsigned int func_02012790(unsigned int a);
 void  func_02013868(int t, int x);
 void  StartMinigameMenu(u8 a);
 
-extern Camera *data_0209f318;
+extern dCamera_c *data_0209f318;
 extern int   data_0209caa0[];
 extern u8    data_0209d660;
 extern u8    data_0209d684;
@@ -295,7 +295,7 @@ extern "C" void func_ov085_0212d2b8(daObj_Mip_Key_c *thiz)
         thiz->mPosX >> 3,
         (thiz->mPosY - 0x32000) >> 3,
         thiz->mPosZ >> 3);
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         thiz, &thiz->mShadowModel, &thiz->mModel.mat4x3, 0x23000, 0x12c000, 0xf);
 }
 

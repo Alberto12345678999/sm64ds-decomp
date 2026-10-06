@@ -1362,7 +1362,8 @@ def reorder_same_named_nontext_sections(raw, ordered_groups):
                         "sectionInfos": section_infos, "error": None}
 
 
-def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
+def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False,
+                          skip_undefined=None):
     """Move exact retained object symbols from storage start to public address point.
 
     C++ vtable definitions are the motivating case.  mwcc's symbol covers the full
@@ -1377,6 +1378,10 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     ``normalize_undefined``, raw references to undefined ``_ZTV`` imports lose the
     same ABI preamble from their addend; unlike a rebased local definition this fixes
     the address the repository's already-public import would otherwise resolve to.
+    ``skip_undefined`` names undefined ``_ZTV`` imports whose references are already
+    in the public convention -- a vtable this object defined and a compiler-only or
+    externalization policy then dropped, whose surviving references were re-addended
+    by that earlier pass and must not be corrected a second time.
     A policy may additionally split the preamble and public vtable range into exact
     symbols by reusing explicitly policy-owned symbol-table slots. A fitting name
     reuses the donor's exclusive string bytes in place. A longer name is appended to
@@ -1509,6 +1514,7 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
 
     import struct
     endian = "<" if elf.little_endian else ">"
+    skipped = set(skip_undefined or ())
 
     # Moving the definition from storage start to public address point must not move
     # any resolved reference.  mwcc's live references use RELA/ABS32 with the ABI
@@ -1527,6 +1533,7 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
             target_is_rebased = target.name in requested
             target_is_undefined = (normalize_undefined
                                    and target.name.startswith("_ZTV")
+                                   and target.name not in skipped
                                    and target["st_shndx"] in ("SHN_UNDEF", SHN_UNDEF))
             if not target_is_rebased and not target_is_undefined:
                 continue

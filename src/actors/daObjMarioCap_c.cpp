@@ -246,14 +246,14 @@ char *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
-void *_ZN9dBgCh_GndC1Ev(char *ray);
-void  _ZN9dBgCh_GndD1Ev(char *ray);
+void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *ray);
+void  _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *ray);
 
 /* SetRanges carries Fix12<int> by value; dActor_c.h deliberately omits it
    (notes/mwccarm-codegen.md 6az). A call is unaffected. */
 void  _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int offsetY, int radius,
                                                 int clipDistance, int farDistance);
-void  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *self, void *shadow, void *matrix, int radius, int depth, int opacity);
 short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int nx, int nz, short ang);
 void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int flags,
@@ -319,34 +319,34 @@ int daObjMarioCap_c::InitResources()
             mIconKind = 0;
     }
 
-    /* Animation files this type will use; CleanupResources releases the same
+    /* dExtFrameCtrl_c files this type will use; CleanupResources releases the same
        set. Type 15 and types 20..22 load their own sets, every other type the
        pair at the bottom. */
     switch (mType) {
     case 0xf:
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de50);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de60);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de48);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de50);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de60);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de48);
         break;
     case 0x14:
     case 0x15:
     case 0x16:
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de28);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de08);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de20);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de40);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de10);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de00);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de58);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de18);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de28);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de08);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de20);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de40);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de10);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de00);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de58);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de18);
         break;
     case 0x10:
     case 0x11:
     case 0x12:
     case 0x13:
     default:
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de30);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de38);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de30);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de38);
         break;
     }
 
@@ -739,12 +739,12 @@ void daObjMarioCap_c::func_ov002_020b7f7c()
             probe[1] = mPosY;
             probe[2] = mPosZ;
             probe[1] = probe[1] + 0x28000;
-            _ZN9dBgCh_GndC1Ev(ray);
+            _ZN9dBgCh_GndC1Ev((dBgCh_Gnd *)ray);
             ((dBgCh_Gnd *)ray)->SetObjAndPos(*(Vector3 *)probe, 0);
             y = probe[1];
             if (((dBgCh_Gnd *)ray)->DetectClsn() != 0)
                 y = ((dBgCh_Gnd *)ray)->clsnY;
-            _ZN9dBgCh_GndD1Ev(ray);
+            _ZN9dBgCh_GndD1Ev((dBgCh_Gnd *)ray);
         }
 
         off = 0;
@@ -762,7 +762,7 @@ void daObjMarioCap_c::func_ov002_020b7f7c()
         mShadowMat.m[9] = mPosX >> 3;
         mShadowMat.m[10] = (y + (off << 12)) >> 3;
         mShadowMat.m[11] = mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &mShadowModel, &mShadowMat, 0x50000, 0x32000, 0xf);
     }
 }

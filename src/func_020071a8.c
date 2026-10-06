@@ -1,10 +1,10 @@
 struct Vector3;
-struct Camera;
+struct dCamera_c;
 
 extern short Vec3_HorzAngle(const struct Vector3 *a, const struct Vector3 *b);
 extern short AngleDiff(short a, short b);
 
-void func_020071a8(struct Camera *cam, short ang, int threshold)
+void func_020071a8(struct dCamera_c *cam, short ang, int threshold)
 {
     short diff = AngleDiff(
         Vec3_HorzAngle((const struct Vector3 *)((char *)cam + 0x98),

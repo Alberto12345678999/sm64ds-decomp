@@ -48,7 +48,7 @@ extern "C" {
 #include "daPopoi_c.h"
 #include "Model.h"
 #include "Player.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
 #include "dBgCh_Lin.h"
 
@@ -83,9 +83,9 @@ int daPopoi_c::InitResources()
 {
   Vector3 v;
   mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov077_02127c88), 1, -1);
-  Animation::LoadFile(*(SharedFilePtr *)&data_ov077_02127ca0);
-  Animation::LoadFile(*(SharedFilePtr *)&data_ov077_02127c90);
-  Animation::LoadFile(*(SharedFilePtr *)&data_ov077_02127c98);
+  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov077_02127ca0);
+  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov077_02127c90);
+  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov077_02127c98);
   mVertAccel = -0x1000;
   mTerminalVelocity = -0x1e000;
   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x52000, 0x52000, 0x800004, 0);

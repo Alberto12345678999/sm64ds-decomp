@@ -53,19 +53,21 @@ struct daWater_Ring_c : dEnemyBase_c {
     const State                 *mState;                /* 0x370 */
     /* Phase accumulators: each frame adds 0x1000 / 0x800, and the high bits
        index the sine table for the scale wobble / the spin. */
-    s32                          unk_374;               /* 0x374 */
-    s32                          unk_378;               /* 0x378 */
+    s32                          mWobblePhase;          /* 0x374 */
+    s32                          mSpinPhase;            /* 0x378 */
     /* param1 & 0xff, clamped to 0..2. 1 is the heal ring. */
-    s32                          unk_37c;               /* 0x37c */
-    u8                           unk_380;               /* 0x380 -- opacity */
+    s32                          mRingType;             /* 0x37c */
+    u8                           mOpacity;              /* 0x380 */
     u8  pad_381[0x3];
-    s32                          unk_384;               /* 0x384 -- scale target */
-    /* The player's side of the ring, as HorzAngleToCPlayer's sign bit. */
-    s16                          unk_388;               /* 0x388 */
+    /* Resting scale the wobble is added to; approaches 0x2000 while active. */
+    s32                          mScaleBase;            /* 0x384 */
+    /* The previous HorzAngleToCPlayer reading; the pass test compares a
+       side bit of it against the current reading. */
+    s16                          mPrevPlayerAngle;      /* 0x388 */
     u8  pad_38a[0x2];
     /* The actor that spawned this ring; stored by the spawner after
        dActor_c::Spawn (daWater_Hakidasi_c for type 2). */
-    char                        *unk_38c;               /* 0x38c */
+    dActor_c                    *mSpawner;              /* 0x38c */
 
     /* --- vtable --- */
     virtual ~daWater_Ring_c();
@@ -75,6 +77,16 @@ struct daWater_Ring_c : dEnemyBase_c {
     int InitResources();
     void OnPendingDestroy();
     int Render();
+
+    /* State-machine bodies the tables below point at, the installer, and the
+       per-frame model pose update. ROM names unrecovered; address names. */
+    void func_ov064_02119afc();                    /* checks whether the player swam through */
+    int  func_ov064_02119c60();                    /* fading out: grow, fade, destroy */
+    int  func_ov064_02119ce4();                    /* passed init: tell the spawner */
+    int  func_ov064_02119d28();                    /* active execute: wobble, spin, wait */
+    s32  func_ov064_02119ea0();                    /* active init */
+    int  func_ov064_02119ecc(const State *state);  /* install a state, run its init */
+    void func_ov064_02119f1c();                    /* pose the model */
 };
 
 #ifndef SM64DS_PLATFORM_PC

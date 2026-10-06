@@ -50,7 +50,7 @@ game data. `build-port.cmd` builds all of them into `build\port\`.
 | 3b | `smoke_fs` | SharedFilePtr over the catalog card seam, LZ77 cross-checked |
 | 4a | `smoke_gx` | the interrupt-driven display-list pump, byte-equal vs harness |
 | 4b | `smoke_model` | the whole Model pipeline: load, rebase, VRAM upload, materials, render (Mario, textured) |
-| 4c | `smoke_anim` | Animation/UpdateBones recursion (the Mad Piano, posed) |
+| 4c | `smoke_anim` | dExtFrameCtrl_c/UpdateBones recursion (the Mad Piano, posed) |
 | 4d | `smoke_soak` | every compatible catalog model loads and renders with zero faults |
 | 5 | `smoke_frames` | the fiber frame loop: game-shaped frames, the piano attack in motion |
 | 5b | `smoke_soak_anim` | every compatible model+BCA pair animates and renders with zero faults |

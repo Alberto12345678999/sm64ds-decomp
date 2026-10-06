@@ -307,7 +307,7 @@ rows get restamped when a correction happens to touch them and keep their
 import-time spelling when it does not. So the same address routinely spells a
 different name in each record (`0x02043444` is `_ZN7fBase_cnwEj` in config and
 `_ZN9ActorBasenwEj` in the mirror), and destructor rows diverge in class *and*
-variant at once (`0x02023598`: `_ZN9BootSceneD1Ev` vs `_ZN5SceneD2Ev`).
+variant at once (`0x02023598`: `_ZN9dScBoot_cD1Ev` vs `_ZN5SceneD2Ev`).
 
 What went wrong on 2026-08-30: an "is this body sourced?" sweep took *names* from
 one record and looked them up against work keyed to the other. Every divergent

@@ -17,7 +17,7 @@
  *   eleven are the ticks, also methods. Helpers those ticks call take
  *   the same Ukiki in r0, so they are methods too.
  * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, IsTooFarAwayFromPlayer, Clipper::Func_02015560
+ *   DropShadowRadHeight, IsTooFarAwayFromPlayer, dClipper::Func_02015560
  *   and Sound::PlaySub pass Fix12<int> by value. The method form changes
  *   the call. dBgCh_Actr::Init's header is Fix12i, which mangles as i;
  *   the ROM symbol is Fix12<int>.
@@ -27,7 +27,8 @@
  *   veneers. The bl targets the veneer, not UpdateContinuousNoLava or
  *   UpdateContinuous.
  * - func_0203567c returns its argument plus 0x30. GetFloorResult is the
- *   previous symbol, 0x0203566c, and dBgCh_Actr.h does not declare it.
+ *   previous symbol, 0x0203566c. dBgCh_Actr.h declares it; this TU still
+ *   calls func_0203567c.
  *   func_02038ea4 is not dBgCh_Gnd::DetectClsn: 02111ea4 calls DetectClsn
  *   and 02111dd0 calls func_02038ea4.
  * - func_02037f44 returns word 8 of the record it is handed. The polygon
@@ -39,7 +40,7 @@
  * - func_ov030_02112094 copies the model matrix through a 12-word POD:
  *   Matrix4x3 embeds Vector3, and Vector3 has a destructor.
  *
- * Leftover: named daMky_c / dActor_c / Player / Camera fields replaced the
+ * Leftover: named daMky_c / dActor_c / Player / dCamera_c fields replaced the
  * char* recasts of this, and tubuild verify stayed 46/46. Measured DIFF,
  * reverted: func_ov030_02112094 spelled the bone as
  * &mModelAnim.data.transforms[5] and came out 999 words off, with reloc
@@ -48,8 +49,8 @@
  * (Matrix4x3 is 0x30) and indexing the matrix is not a POD address.
  * Still raw, because nothing names them: carrier and cap +0xc8 (the word
  * inside dActor_c::pad_0c5; daObjMarioCap_c does not name it), and the
- * cap's word at +0xd0, past dActor_c. GetFloorResult / GetWallResult + 4
- * is the SurfaceInfo; dBgCh_Actr.h does not declare those getters.
+ * cap's word at +0xd0, past dActor_c. GetFloorResult and GetWallResult
+ * are declared; this TU still reads the SurfaceInfo at result + 4.
  * PathPtr::GetNode stays the mangled call: the member form costs
  * 02111b20 four words. mPathNode's compare stays a signed word; the
  * field is unsigned. Fix12-by-value calls, the veneers, func_0203567c,
@@ -67,7 +68,7 @@
 #include "dBgCh_Actr.h"
 #include "SaveData.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "SurfaceInfo.h"
 #include "dBgCh_Lin.h"
 #include "dBgPi.h"
@@ -94,16 +95,16 @@ unsigned char DecIfAbove0_Byte(unsigned char *p);
 void *_ZN9dBgCh_LinC1Ev(void *self);
 dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void *self);
 void  Vec3_Asr(void *d, void *s, int sh);
-int   _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
+int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
 void  _ZNK7PathPtr7GetNodeER7Vector3j(const void *self, Vector3 &node, unsigned int idx); /* local extern: the member form costs 02111b20 four words */
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  _Z11UpdateAngleRssis(short *p, short a, int b, short c);
-void  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
+void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_02038ea4(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
-dBgPi *_ZN5dBgPiD1Ev(void *result);
+void _ZN5dBgPiD1Ev(void *result);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 void  Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
@@ -128,7 +129,7 @@ bool ApproachLinear(short &value, short target, short step);
  *
  * The body is empty on purpose.  The compiler writes the whole of both
  * variants from the class definition: the vptr store, then ModelAnim,
- * ShadowModel, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
+ * dExtShadowModel_c, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
  * (PathPtr is trivial and skipped), then ~dActor_c; D0 additionally inlines
  * all of that and tail-calls Memory::Deallocate. */
 // @symbol _ZN7daMky_cD1Ev
@@ -175,7 +176,7 @@ void daMky_c::func_ov030_02111734()
 
     Vec3_Asr(&asr, (Vector3 *)&this->mPerchPosX, 3);
 
-    if (_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
+    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
         goto done;
 
     this->mPosX = this->mPerchPosX;
@@ -246,7 +247,7 @@ int daMky_c::func_ov030_02111a00()
     extern int data_ov030_02115cd8[];
     extern void** data_ov030_02115bc8[];
     func_ov030_02111908();
-    if (static_cast<Animation &>(this->mModelAnim).WillHitFrame( 0) == 0) {
+    if (static_cast<dExtFrameCtrl_c &>(this->mModelAnim).WillHitFrame( 0) == 0) {
         int v = (int)this->mModelAnim.file;
         int b;
         b = (int)(v == data_ov030_02115cf0[1]); if (b != 0) goto fail;
@@ -475,7 +476,7 @@ void daMky_c::func_ov030_02112094()
 
     int b = (int)((this->mFlags & 0x40000) != 0);
     if (!b) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &this->mShadowModel, &this->mModelAnim.mat4x3, 0x5a000, 0x190000, 0xf);
     }
 
@@ -513,7 +514,7 @@ int daMky_c::func_ov030_021122b0()
     this->mPrevAngleY = this->mAngleY;
     if (DecIfAbove0_Byte(&this->mActionTimer) == 0)
         func_ov030_021141a8(0);
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
     int b = (int)(this->actorID == 0x10b);
     if (b) {
         this->UpdatePos((dCc_c*)(&this->mdCcAc_c));
@@ -562,7 +563,7 @@ int daMky_c::func_ov030_02112400()
         int t0, t1, t2;
     };
     func_ov030_02111a00();
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
     this->UpdatePos(&this->mdCcAc_c);
     func_ov030_02111f6c((dBgCh_Actr*)(&this->mWithMeshClsn));
     func_ov030_02111bc4();
@@ -650,7 +651,7 @@ int daMky_c::func_ov030_02112578()
         sp[1] += 0x50000;
         if (player->ShowMessage(*this, 0xbd, (const Vector3 *)sp, 1, 0) != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115cf8[1], 0, 0x1000, 0);
-            static_cast<Animation &>(this->mModelAnim).SetFlags( 0);
+            static_cast<dExtFrameCtrl_c &>(this->mModelAnim).SetFlags( 0);
             func_0201267c(0xd1, (const Vector3 *)&this->mCamSpacePosX);
             { u8 *p = &this->unk_3c7; *p = *p + 1; }
         }
@@ -681,7 +682,7 @@ int daMky_c::func_ov030_02112578()
         }
         break;
     case 6:
-        if (static_cast<Animation &>(this->mModelAnim).Finished() != 0) {
+        if (static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115cd0[1], 0, 0x1000, 0);
             this->mModelAnim.speed = 0x1000;
             cage->mHorzSpeed = 0x400;
@@ -719,7 +720,7 @@ int daMky_c::func_ov030_02112578()
         break;
     }
 
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
     UpdatePos(&this->mdCcAc_c);
     func_ov030_02111f6c(&this->mWithMeshClsn);
     this->mdCcAc_c.Clear();
@@ -795,7 +796,7 @@ int daMky_c::func_ov030_02112a84()
         }
     }
 
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
     this->UpdatePos(&this->mdCcAc_c);
     func_ov030_02111bc4();
     this->mdCcAc_c.Clear();
@@ -1109,7 +1110,7 @@ skip_raycast:
             if (((Player *)this->unk_3a8)->StartTalk(*this, 1) != 0) {
                 Vector3 camPos;
                 {
-                    Vector3 *src = &((Camera *)data_0209f318)->pos;
+                    Vector3 *src = &((dCamera_c *)data_0209f318)->pos;
                     camPos.x = src->x;
                     camPos.y = src->y;
                     camPos.z = src->z;
@@ -1157,7 +1158,7 @@ skip_raycast:
         break;
     }
 
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
     this->mdCcAc_c.Clear();
     return 1;
 }
@@ -1242,7 +1243,7 @@ int daMky_c::func_ov030_021136b0()
         {
             u8 fl = this->mHasSpawnedCap;
             msg = fl ? 0xbe : 0xbf;
-            Camera *camBase = (Camera *)data_0209f318;
+            dCamera_c *camBase = (dCamera_c *)data_0209f318;
             Vector3 *src = &camBase->pos;
             camPos.x = src->x;
             camPos.y = src->y;
@@ -1347,7 +1348,7 @@ int daMky_c::func_ov030_021136b0()
         break;
     }
 
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
     this->mdCcAc_c.Clear();
     return 1;
 }
@@ -1389,7 +1390,7 @@ int daMky_c::func_ov030_02113b38()
 {
     typedef int Fix12i;
     extern int data_ov030_02115d18[];
-  static_cast<Animation &>(this->mModelAnim).Advance();
+  static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
   this->UpdatePos(&this->mdCcAc_c);
   func_ov030_02111f6c(&this->mWithMeshClsn);
   if (this->mWithMeshClsn.JustHitGround() != 0) {
@@ -1500,7 +1501,7 @@ int daMky_c::func_ov030_02113d20()
     else
         func_ov030_02111a00();
 
-    static_cast<Animation &>(this->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
 
     b = (int)(this->actorID == 0x10b);
     if (b) {
@@ -1553,7 +1554,7 @@ int daMky_c::func_ov030_02113ff0()
   ApproachLinear(this->mAngleY, this->HorzAngleToCPlayer(), 0x514);
   this->mPrevAngleY = this->mAngleY;
   this->mModelAnim.speed = 0x1000;
-  static_cast<Animation &>(this->mModelAnim).Advance();
+  static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
   b = (this->actorID == 0x10b);
   if (b) {
     this->UpdatePos(&this->mdCcAc_c);
@@ -1709,7 +1710,7 @@ s32 daMky_c::InitResources()
     Model::LoadFile(data_ov002_0210d9c0);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov030_02115d00), 1, 1);
     for (i = 0; i < 10; i++)
-        Animation::LoadFile(*data_ov030_02114824[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov030_02114824[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov030_02115cf0[1], 0, 0x1000, 0);

@@ -17,11 +17,11 @@
 #ifdef __cplusplus
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjBk_Lift_c : dBgActor_c {
     u8  pad_31e[0x2];
-    ShadowModel mShadowModel;         /* 0x320 */
+    dExtShadowModel_c mShadowModel;         /* 0x320 */
     /* Shadow transform. func_ov015_021123c8 copies mModel.mat4x3 here, then
        overwrites the translation row (0x36c..0x374) before DropShadowScaleXYZ. */
     Matrix4x3 mShadowMat;              /* 0x348 */
@@ -64,7 +64,7 @@ typedef char daObjBk_Lift_c_size_must_be_0x394[sizeof(daObjBk_Lift_c) == 0x394 ?
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+   can never be migrated. Same arrangement as include/dExtShadowModel_c.h. */
 struct daObjBk_Lift_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
@@ -91,7 +91,7 @@ struct daObjBk_Lift_c {
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
     u8  pad_2ec[0x34];
-    ShadowModel mShadowModel; /* 0x320 */
+    dExtShadowModel_c mShadowModel; /* 0x320 */
     /* Same 0x30 bytes as the C++ mShadowMat. This half is not compiled. */
     u8  pad_348[0x30];
     s32 mFloorPosY;            /* 0x378 */

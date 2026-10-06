@@ -2113,7 +2113,7 @@
       "python tools/tu_map.py --module ov006",
       "python tools/tubuild.py inspect ov006/dScMgPanel_c"
     ],
-    "gates_not_run": "No byte gate, no rombuild, no linkcheck, no eligible.py. Stage 4 decides whether the bytes are right.",
+    "gates_not_run": "No byte gate, no rombuild, no linkcheck, no eligible.py. dScStage_c 4 decides whether the bytes are right.",
     "renames_not_done": "Nothing was renamed. No shared ledger was edited."
   }
 }

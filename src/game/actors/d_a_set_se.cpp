@@ -33,7 +33,7 @@
  */
 
 #include "daSetSE_c.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 
 /* Sound.h does not declare PlayLong yet, so this TU re-opens the namespace
    the way daBmb_c, daBrq_c and daObjPushblock_c do. Additive only: it does
@@ -46,7 +46,7 @@ extern "C" {
 extern int data_ov002_0210b498[];  /* sound-ID table, 11 entries: 0x18d, 0x100-0x103, 0x81, 0x89, 0x9c-0x9e, 0; the _ZTV9daSetSE_c header follows it, so spawn params stay 0-10 */
 extern int data_ov002_02110aec;    /* WATERFALL_SOUNDS_DISABLED */
 extern int data_0209b4ac;          /* current music ID */
-extern Camera *data_0209f318;      /* CAMERA */
+extern dCamera_c *data_0209f318;      /* CAMERA */
 extern int IsStarCollectedInLevel(s8 levelID, int starID);
 extern s8 data_0209f2f8;           /* LEVEL_ID */
 extern u8 data_0209f220;           /* STAR_ID */
@@ -93,7 +93,7 @@ int daSetSE_c::Behavior()
 {
     u32 effect;
     int music;
-    Camera *cam;
+    dCamera_c *cam;
 
     if (data_ov002_02110aec != 0)
         return 1;

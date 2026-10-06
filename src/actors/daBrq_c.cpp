@@ -104,7 +104,7 @@ int daBrq_c::InitResources()
 
     int i;
     for (i = 0; i < 2; i++) {
-        Animation::LoadFile(*data_ov070_021222e0[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov070_021222e0[i]);
     }
 
     BMD_File *bmd2 = *(BMD_File **)((char *)&data_ov070_02123604 + 4);
@@ -405,8 +405,8 @@ done:
 #include "dBgCh_Gnd.h"
 extern "C" void Matrix4x3_FromRotationXYZExt(
     Matrix4x3 *matrix, s16 x, s16 y, s16 z);
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     s32 radius, s32 depth, u32 opacity);
 extern signed char data_0209f2f8[];
 
@@ -452,7 +452,7 @@ void daBrq_c::UpdateModelTransform()
         }
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mMat4x3, 0x5a000, shadowDepth, 0xf);
 }
 

@@ -104,14 +104,14 @@
  *       helpers take daKing_Donketu_c *: dActor_c::FindWithID /
  *       ClosestPlayer / HorzAngleToCPlayer / DistToCPlayer / Spawn /
  *       PoofDustAt / HugeLandingDustAt / JumpedOnByPlayer / FindWithActorID;
- *       Camera::SetLookAt / SetPos; fBase_c::MarkForDestruction;
- *       Animation::Finished / WillHitFrame (through mBlendModelAnim);
+ *       dCamera_c::SetLookAt / SetPos; fBase_c::MarkForDestruction;
+ *       dExtFrameCtrl_c::Finished / WillHitFrame (through mBlendModelAnim);
  *       dBgCh_Actr::IsOnGround (mWithMeshClsn); Player::StartTalk /
  *       ShowMessage / GetTalkState / GetHurtState / Unk_020c6a10;
  *       Message::EndTalk; SaveData::IsCharacterUnlocked.
  *
  *   (c) No declaration exists to call: Particle.h has no System::NewSimple;
- *       Camera::SetFlag_3 is a real method but is not on Camera.h; Sound.h has
+ *       dCamera_c::SetFlag_3 is a real method but is not on dCamera_c.h; Sound.h has
  *       PlayLong but not Layer3 Load/Stop. Particle::System::FromUniqueID is
  *       on Particle__System.h, but this TU pokes sys+0x44 after the call
  *       (the word lies in Particle::System's unnamed pad_042 bytes).
@@ -158,13 +158,13 @@
  *   - ChiefChilly_ChangeState's first parameter is C* (the PMF shadow), not
  *     char* or void* cast to daKing_Donketu_c. It stays the coined dispatcher.
  *   - Actor fields the header already names are member reads. Left raw, and
- *     not a class field this header names: Camera +0x114 (pad_114),
+ *     not a class field this header names: dCamera_c +0x114 (pad_114),
  *     Particle::System +0x44, and the data_020a0e68 translation words
  *     (`.m[9..11]` moves bytes).
  *   - The cartridge's names for the sixteen states and for the func_ov073_*
  *     handlers; the labels in the table are descriptions. The state records
  *     are dispatched through the `struct C` shadow, not a real PMF member.
- *   - Camera +0x114 (Behavior publishes `this` there): Camera.h has it inside
+ *   - dCamera_c +0x114 (Behavior publishes `this` there): dCamera_c.h has it inside
  *     pad_114. Particle::System +0x44 likewise. Both stay raw.
  *   - What the ground ray's miss means (mNoGroundAhead) and how that
  *     relates to the mHitsRemaining counter: see the notes in the
@@ -177,7 +177,7 @@
  *     was consulted.
  *   - Spellings kept ONLY because the bytes need them (each measured: the
  *     alternative was compiled and the object compared): `void *cam` (not
- *     Camera *) in func_ov073_0211fa74 / 0212128c / 02121388, where the
+ *     dCamera_c *) in func_ov073_0211fa74 / 0212128c / 02121388, where the
  *     typed pointer swaps two registers; the (unsigned short) reads of
  *     mStateTimer and of mAngleX/Y/Z in func_ov073_0211fa74 (the members are
  *     s16, the cartridge loads them with ldrh and a plain read gives ldrsh);
@@ -203,7 +203,7 @@
 #include "SaveData.h"
 #include "Message.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "dBgCh_Lin.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -289,7 +289,6 @@ extern void func_02012694(int a, void* b);
 extern int RandomIntInternal(u16* seed);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12i f, u32 b, u32 c, u32 d);
 extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void* thiz, struct BCA_File* f, int i, int j, Fix12i fx, u16 k);
-extern void _ZN6Camera9SetFlag_3Ev(void* cam);
 extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, struct Vector3* v, unsigned int d);
@@ -299,7 +298,7 @@ extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void UnloadKeyModels(int i);
 extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
 extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *self, void *clsn);
@@ -314,7 +313,7 @@ extern void *_ZN12dEnemyBase_cC2Ev(void *self);
 extern void *_ZN10dCcAcPos_cC1Ev(void *self);
 extern void *_ZN10dBgCh_ActrC1Ev(void *self);
 extern void *_ZN14BlendModelAnimC1Ev(void *self);
-extern void *_ZN11ShadowModelC1Ev(void *self);
+extern void *_ZN17dExtShadowModel_cC1Ev(void *self);
 extern void *_ZN7Vector3D1Ev(void *self);
 extern void func_0203d384(void);
 /* The array runtime discards lifecycle receiver results. */
@@ -718,7 +717,7 @@ int daKing_Donketu_c::func_ov073_0211fa74() {
     volatile struct Vector3_16 rot;
     struct Vector3 pos;
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     _Z14ApproachLinearRiii((int*)&c->mScaleX, 0, 0x80);
     c->mScaleZ = c->mScaleX;
     c->mScaleY = c->mScaleZ;
@@ -756,7 +755,7 @@ int daKing_Donketu_c::func_ov073_0211fa74() {
         found->MarkForDestruction();
     }
     if (spawned != 0) {
-        ((Camera *)cam)->mFlags &= ~8;
+        ((dCamera_c *)cam)->mFlags &= ~8;
         c->MarkForDestruction();
     }
 end:
@@ -779,7 +778,7 @@ int daKing_Donketu_c::func_ov073_0211fbf4() {
     daKing_Donketu_c *c = this;
   Player* pl = c->mTalkPlayer;
   c->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, (struct Vector3 *)&c->mCamSpacePosX, 0);
-  _ZN6Camera9SetFlag_3Ev(data_0209f318);
+  ((dCamera_c *)data_0209f318)->SetFlag_3();
   c->func_ov073_0211f144();
   if(pl->GetTalkState() == -1){
     ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123370));
@@ -808,7 +807,7 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
     struct Vector3 msgpos[2];
     struct Vector3 la, ps, in, out;
     Player* player;
-    Camera* cam;
+    dCamera_c* cam;
 
     player = c->ClosestPlayer();
     c->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, (struct Vector3*)&c->mCamSpacePosX, 0);
@@ -822,12 +821,12 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
         msgpos[0].y = pv[1];
         msgpos[0].z = pv[2];
     }
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     msgpos[1].x = c->mPosX;
     msgpos[1].y = c->mPosY;
     msgpos[1].z = c->mPosZ;
 
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
 
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
@@ -859,7 +858,7 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
         _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
         _ZN7Message11PrepareTalkEv();
         if (c->mTalkPlayer->StartTalk(*c, 1)) {
-            _ZN6Camera9SetFlag_3Ev(cam);
+            ((dCamera_c *)cam)->SetFlag_3();
             if (c->mTalkPlayer->ShowMessage(*c, msg, &msgpos[1], 0, 2)) {
                 func_02012694(SND_TALK_DONE, (void*)&c->mCamSpacePosX);
                 ChiefChilly_ChangeState((C *)(c), (PMF *)(&data_ov073_02123410));
@@ -889,7 +888,7 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
     daKing_Donketu_c *c = this;
     struct Vector3 look, pos, in, out;
     Player* player;
-    Camera* cam;
+    dCamera_c* cam;
 
     c->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, (struct Vector3*)&c->mCamSpacePosX, 0);
 
@@ -905,8 +904,8 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
 
     c->func_ov073_0211f144();
 
-    cam = (Camera *)data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    cam = (dCamera_c *)data_0209f318;
+    ((dCamera_c *)cam)->SetFlag_3();
 
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
@@ -1664,7 +1663,7 @@ int daKing_Donketu_c::func_ov073_0212128c()
 
     cam = data_0209f318;
     player = c->mTalkPlayer;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
 
     la.x = c->mPosX;
     la.y = c->mPosY;
@@ -1678,11 +1677,11 @@ int daKing_Donketu_c::func_ov073_0212128c()
     ps.y = ps.y + 0x20000;
     ps.z = ps.z + 0xffa34000;
 
-    ((Camera *)cam)->SetLookAt(la);
-    ((Camera *)cam)->SetPos(ps);
+    ((dCamera_c *)cam)->SetLookAt(la);
+    ((dCamera_c *)cam)->SetPos(ps);
 
     if (player->GetTalkState() == -1) {
-        ((Camera *)cam)->mFlags &= ~8;
+        ((dCamera_c *)cam)->mFlags &= ~8;
         _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
         func_02011d08();
         ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
@@ -1731,7 +1730,7 @@ int daKing_Donketu_c::func_ov073_02121388() {
     vmsg.y = c->mPosY;
     vmsg.z = c->mPosZ;
 
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
 
     la.x = c->mPosX;
     la.y = c->mPosY;
@@ -1745,8 +1744,8 @@ int daKing_Donketu_c::func_ov073_02121388() {
     ps.y = ps.y + 0x20000;
     ps.z = ps.z + 0xffa34000;
 
-    ((Camera *)cam)->SetLookAt(la);
-    ((Camera *)cam)->SetPos(ps);
+    ((dCamera_c *)cam)->SetLookAt(la);
+    ((dCamera_c *)cam)->SetPos(ps);
 
     vmsg.y = vmsg.y + 0x64000;
     ApproachLinear(c->mPrevAngleY, Vec3_HorzAngle((struct Vector3*)&c->mPosX, &vplayer), 0x800);
@@ -1833,7 +1832,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
 
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     c->mShadowMtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel, &c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
 }
 
@@ -1888,7 +1887,7 @@ int daKing_Donketu_c::Render()
  * a miss while moving faster than 0xa000 (10.0) sets it.
  *
  * The first thing it does is store `this` into the camera object at +0x114
- * (Camera.h has that word inside pad_114). What the camera does with it is not
+ * (dCamera_c.h has that word inside pad_114). What the camera does with it is not
  * recovered here.
  *
  * `opt_propagation off` is what stops the many position temporaries being
@@ -2035,8 +2034,8 @@ extern "C" {
 extern void LoadKeyModels(int idx);
 extern struct BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, struct BMD_File* f, int a, int b);
-extern void _ZN11ShadowModel12InitCylinderEv(void* self);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
 }
@@ -2050,17 +2049,17 @@ int daKing_Donketu_c::InitResources()
     Vector3 v;
     int i;
     LoadKeyModels(4);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123280);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a0);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123288);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a8);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123290);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b0);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123280);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123288);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123290);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b8);
     _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov002_0210da30);
     f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123298);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, f, 1, -1);
-    _ZN11ShadowModel12InitCylinderEv(&mShadowModel);
+    mShadowModel.InitCylinder();
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x3c000;
     v.x = data_ov073_02123040.x;
@@ -2117,7 +2116,7 @@ extern "C" daKing_Donketu_c *daKing_Donketu_c_classInit()
         _ZN10dCcAcPos_cC1Ev(&p->mdCcAcPos_c);
         _ZN10dBgCh_ActrC1Ev(&p->mWithMeshClsn);
         _ZN14BlendModelAnimC1Ev(&p->mBlendModelAnim);
-        _ZN11ShadowModelC1Ev(&p->mShadowModel);
+        _ZN17dExtShadowModel_cC1Ev(&p->mShadowModel);
         __cxa_vec_ctor(p->mWaypointsA, 8, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(p->mWaypointsB, 8, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(p->unk_4d4, 2, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);

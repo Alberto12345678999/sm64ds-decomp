@@ -145,7 +145,7 @@ SKIP_DIRS = {".git", "build", "extracted", "__pycache__", ".mypy_cache",
              ".pytest_cache", "node_modules", ".venv", "venv"}
 CODE_SUFFIXES = (".c", ".cc", ".cpp", ".h", ".hpp")
 
-PATH_RE = re.compile(r"(?<![\w./\\-])((?:[A-Za-z0-9_.\-]+/)+[A-Za-z0-9_.\-]+)(?![\w-])")
+PATH_RE = re.compile(r"(?<![\w./\\-])((?:[A-Za-z0-9_.+\-]+/)+[A-Za-z0-9_.+\-]+)(?![\w-])")
 # Templates, globs and format placeholders are not paths anyone can resolve.
 GLOBBY = re.compile(r"[*?\[\]{}<>]|\.\.\.|%s|\$\(|::")
 TRAILING = ".,;:)\"'`!?"

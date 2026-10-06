@@ -90,7 +90,7 @@ void _ZN2GX10EndLoadTexEv(void) {}
 void _ZN2GX16BeginLoadTexPlttEv(void) {}
 void _ZN2GX14EndLoadTexPlttEv(void) {}
 
-// GX::LoadTex destination resolution (see src/_ZN2GX7LoadTexEPKvjj.cpp):
+// GX::LoadTex destination resolution (see src/engine/gx/GX.cpp):
 //   data_020a60ac  base window address        -> texture slots at 0x06800000
 //   data_020a60bc  secondary bank address     -> 0 = single flat window
 //   data_020a60c0  where the window splits    -> unused while _bc is 0
@@ -150,7 +150,7 @@ int data_0209b3ec[12];      /* camera Matrix4x3 the render walk composes */
 void *_ZTV5Model[8];
 // Same story for the animated-model hierarchy: primary vtables plus the
 // multiple-inheritance thunk table the ModelAnim ctor installs at +0x50.
-void *_ZTV9Animation[8];
+void *_ZTV15dExtFrameCtrl_c[8];
 void *_ZTV9ModelAnim[10];
 void *VTable_Animation_ModelAnimThunk[8];
 void *_ZTV4dBgW[13];   /* base: never dispatched in the gates */

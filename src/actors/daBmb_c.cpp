@@ -12,7 +12,7 @@
  *   calls the 3-arg method.
  * - GetFloorResult is not on dBgCh_Actr. Behavior skips 4 bytes to the
  *   SurfaceInfo and tests CLPS bit 0x20 (water).
- * - State1 and State3 advance the Animation at this+0x350. Building that
+ * - State1 and State3 advance the dExtFrameCtrl_c at this+0x350. Building that
  *   pointer as &mModelAnim+0x50 changed State1's size. mModelAnim.Advance()
  *   would go through the second-base thunk.
  * - The word after mClipResult (dActor_c pad, 0xc8) is a Matrix4x3* while
@@ -59,7 +59,7 @@ struct Bmb_Bf64Obj {
     char ga0[0xa8 - 0x9c];
     int vertSpeed;            /* 0xa8 mVertSpeed */
     char gac[0x350 - 0xac];
-    char anim[0x35c - 0x350]; /* 0x350 Animation */
+    char anim[0x35c - 0x350]; /* 0x350 dExtFrameCtrl_c */
     int animSpeed;            /* 0x35c mModelAnim.speed */
     char g360[0x38c - 0x360];
     void* chase;              /* 0x38c mChasePlayer */
@@ -212,8 +212,8 @@ int daBmb_c::InitResources()
 {
     BMD_File* bmd;
 
-    Animation::LoadFile(data_ov102_0214e9c0);
-    Animation::LoadFile(data_ov102_0214e9c8);
+    dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c0);
+    dExtFrameCtrl_c::LoadFile(data_ov102_0214e9c8);
     bmd = (BMD_File*)Model::LoadFile(data_ov002_0210d9e0);
     if (mModelAnim.SetFile(bmd, 1, -1) == 0)
         return 0;
@@ -495,7 +495,7 @@ void func_ov102_0214bf64(void *ov)
         }
         o->animSpeed = o->horzSpeed >> 3;
     }
-    ((Animation *)o->anim)->Advance();
+    ((dExtFrameCtrl_c *)o->anim)->Advance();
 }
 
 }
@@ -549,7 +549,7 @@ void daBmb_c::State1() {
         ApproachLinear(mPrevAngleY, *(short *)&mTargetAngY, 0x800);
     }
     mAngleY = mPrevAngleY;
-    ((Animation *)((char *)this + 0x350))->Advance();
+    ((dExtFrameCtrl_c *)((char *)this + 0x350))->Advance();
     if (mState == 2) return;
     if (mPrevAngleY != *(short *)&mTargetAngY) return;
     func_ov102_0214c0b8(this);
@@ -638,7 +638,7 @@ void daBmb_c::State3()
             func_ov102_0214c0b8(this);
         }
     }
-    ((Animation *)((char *)this + 0x350))->Advance();
+    ((dExtFrameCtrl_c *)((char *)this + 0x350))->Advance();
 }
 
 /* ==========================================================================
@@ -1003,7 +1003,7 @@ extern "C" {
 // @symbol func_ov102_0214b444
 void func_ov102_0214b444(void *cv)
 {
-    extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         int self, int sm, int mat, int fix, int t, unsigned int j);
 
     daBmb_c *self = (daBmb_c *)cv;
@@ -1036,7 +1036,7 @@ void func_ov102_0214b444(void *cv)
     self->mMatrix[10] = v >> 3;
     self->mMatrix[11] = self->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, (int)&self->mShadowModel, (int)self->mMatrix, self->mScaleX * 0x50, 0x1e000, 0xf);
 }
 
@@ -1208,8 +1208,8 @@ void func_ov102_0214b128(void *cv) {
 // @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
 void daBmb_c::func_ov102_0214b03c(){
   if(mState < 2 && mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))){
-    if(((Animation *)((char *)this + 0x350))->WillHitFrame(0) != 0
-       || ((Animation *)((char *)this + 0x350))->WillHitFrame(0x10) != 0){
+    if(((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0) != 0
+       || ((dExtFrameCtrl_c *)((char *)this + 0x350))->WillHitFrame(0x10) != 0){
       func_0201267c(0x132, (const Vector3 *)&mCamSpacePosX);
     }
   }

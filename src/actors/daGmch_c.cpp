@@ -18,8 +18,8 @@
  * - SetAnim / dCcAc Init / dBgCh Init / NewSimple / SpawnCoins /
  *   DropShadowRadHeight / Player::Bounce / Hurt keep computed spellings
  *   (Fix12<int> by value, wall 6az).
- * - GetFloorResult / GetWallResult / TouchesWater have no header member;
- *   the bridges stay TU-local.
+ * - GetFloorResult / GetWallResult / TouchesWater are the const methods
+ *   on dBgCh_Actr. cstd::fdiv is the integer divide.
  * - dActor_c has no Pos(). PlayBank0 takes the camera-space triple at
  *   mCamSpacePosX through a Vector3 pun (CheckPlayerContact, EnterState8).
  * - unk_0a4 and unk_0ac stay those names. They are dActor_c's world-velocity
@@ -29,11 +29,14 @@
  * - State numbers stay literal: what each state means is not proven (see
  *   daGmch_c.h). mFlags bit 0x80000 and the hit mask 0x66fe0 stay numeric.
  *
- * Leftover: char* is gone (TouchesWater takes dBgCh_Actr*, floor/wall
- * results cast the void* extern to dBgPi* and use surface -- a dBgPi*
- * return contradicts the other declarations -- the sine table is an s16
- * index, the BCA word is data_ov081_02128edc[1], and the factory is
- * `new daGmch_c()`).
+ * Leftover: TouchesWater, GetFloorResult and GetWallResult are the const
+ * dBgCh_Actr methods. Those two results are still cast to dBgPi*, because
+ * the methods return the raw result word and a dBgPi* return disagrees
+ * with the definitions. cstd::fdiv is the divide. SpawnCoins written as
+ * dActor_c::SpawnCoins was remeasured in SpawnCoinsAndDie and that
+ * function stopped matching, so it and the other Fix12-by-value calls
+ * stay scalar externs. The sine table is an s16 index, the BCA word is
+ * data_ov081_02128edc[1], and the factory is `new daGmch_c()`.
  * CallStateEnter/Update go through mStatePmfPair as daGmch_c::*. mFlags
  * uses &= / |= and mPhase uses ++. Reverted, sizes measured against the
  * ROM: mSpinAngleY += 0xc00 in UpdateState0 is 4 words off at the same
@@ -44,8 +47,7 @@
  * SpawnCoins, DropShadowRadHeight, Player::Bounce, Player::Hurt and
  * Particle::NewSimple (Fix12<int> by value). ApproachLinear2 still sees
  * &mState as an int* because mState/mPhase/mTimer are one word.
- * GetFloorResult, GetWallResult and TouchesWater are not declared on
- * dBgCh_Actr, so those stay calls. Vec3_26e28 and the *(Vector3 *)&mPosX
+ * Vec3_26e28 and the *(Vector3 *)&mPosX
  * / mCamSpacePosX puns stay: a real Vector3 runs ~Vector3, and dActor_c
  * has no Pos(). Bca2 and the pointer-array view of the same BCA rows
  * stay both spellings. ModelCache stays file-local.
@@ -67,7 +69,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "Model.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SharedFilePtr.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -158,23 +160,21 @@ extern void   _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3
 extern void   _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
 extern void   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, void *pos, unsigned int a, int fix, unsigned int b, unsigned int cc, unsigned int d);
 extern int    func_02038414(void *clsn);
-extern int    _ZN4cstd4fdivEii(int a, int b);
 extern void   Matrix4x3_FromRotationY(void *m, int angle);
 extern void   Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern void   Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void   Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 angY);
-extern void   _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, u32 flags);
+extern void   _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, u32 flags);
 extern int    DecIfAbove0_Byte(void *p);
 extern void   _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fix, unsigned int j);
 extern void   _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
 extern int    _Z15ApproachLinear2Riii(int *p, int target, int step);
 extern void   func_0201267c(int id, void *pos);
 extern void   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
-extern int    _ZNK10dBgCh_Actr12TouchesWaterEv(dBgCh_Actr *clsn);
-extern void  *_ZNK10dBgCh_Actr14GetFloorResultEv(void *clsn);
-extern void  *_ZNK10dBgCh_Actr13GetWallResultEv(void *clsn);
 extern void   _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
 }
+
+namespace cstd { int fdiv(int a, int b); }
 
 // @symbol _ZN8daGmch_cD1Ev
 // @symbol _ZN8daGmch_cD0Ev
@@ -335,7 +335,7 @@ int daGmch_c::ApplySlopeToVertSpeed(void *clsn)
     int wallNormal[3];
     func_02038414(clsn);
     if (((dBgCh_Actr *)clsn)->IsOnGround()) {
-        ((dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(clsn))->surface.CopyNormalTo(*(Vector3 *)floorNormal);
+        ((dBgPi *)((dBgCh_Actr *)clsn)->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)floorNormal);
         if (floorNormal[1] != 0) {
             /* unk_0a4 / unk_0ac: world velocity X/Z next to mVertSpeed. */
             s32 velX = unk_0a4;
@@ -344,11 +344,11 @@ int daGmch_c::ApplySlopeToVertSpeed(void *clsn)
             long long prodZ = (long long)floorNormal[2] * (long long)velZ;
             int termX = (int)((prodX + 0x800) >> 12);
             int termZ = (int)((prodZ + 0x800) >> 12);
-            mVertSpeed = -(_ZN4cstd4fdivEii(termX + termZ, floorNormal[1]) + 0x8000);
+            mVertSpeed = -(cstd::fdiv(termX + termZ, floorNormal[1]) + 0x8000);
         }
     }
     if (((dBgCh_Actr *)clsn)->IsOnWall()) {
-        ((dBgPi *)_ZNK10dBgCh_Actr13GetWallResultEv(clsn))->surface.CopyNormalTo(*(Vector3 *)wallNormal);
+        ((dBgPi *)((dBgCh_Actr *)clsn)->GetWallResult())->surface.CopyNormalTo(*(Vector3 *)wallNormal);
     }
 }
 
@@ -395,7 +395,7 @@ void daGmch_c::UpdateDrawMatrices()
     mMatrix.m[11] = mPosZ >> 3;
 
     int dh = (mStateIndex == 8) ? 0x258000 : 0x12c000;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mMatrix, 0x78000, dh, 0xf);
 }
 
@@ -844,7 +844,7 @@ int daGmch_c::Behavior()
     CallStateUpdate();
     MakeVanishLuigiWork(mdCcAc_c);
     if (mWithMeshClsn.GetResultFlag1() != 0) {
-        if (_ZNK10dBgCh_Actr12TouchesWaterEv(&mWithMeshClsn) != 0) {
+        if (mWithMeshClsn.TouchesWater() != 0) {
             SpawnCoinsAndDie();
         }
     }
@@ -867,7 +867,7 @@ int daGmch_c::InitResources()
     if (mModel.SetFile(data_ov002_0210d9b8.file, 1, 1) == 0)
         return 0;
     for (int i = 0; i < 4; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);

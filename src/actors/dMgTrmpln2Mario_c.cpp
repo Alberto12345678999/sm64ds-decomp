@@ -35,7 +35,7 @@
  * address name under extern "C", and every data symbol is declared extern "C"
  * so the namespace does not enter its name. The few classes whose member or
  * free-function names are mangled (SharedFilePtr::Release, ~ModelAnim,
- * Animation::Advance and ::WillHitFrame, Sound::PlayBank2_2D and the
+ * dExtFrameCtrl_c::Advance and ::WillHitFrame, Sound::PlayBank2_2D and the
  * ApproachLinear overloads) are declared once, at global scope, ahead of the
  * shards. Shards that were C are wrapped in
  * extern "C" and had the parameter named `this` renamed `self`. Two shards
@@ -55,7 +55,7 @@
 struct W2 { int w[2]; };
 struct SharedFilePtr { void Release(); };
 struct ModelAnim { ~ModelAnim(); };
-struct Animation { void Advance(); int WillHitFrame(int) const; };
+struct dExtFrameCtrl_c { void Advance(); int WillHitFrame(int) const; };
 struct Sound { static void PlayBank2_2D(unsigned int); };
 bool ApproachLinear(short &value, short target, short step);
 int ApproachLinear(int &r, int b, int c);
@@ -211,7 +211,7 @@ extern "C" void func_ov006_020c8f20(char *o) {
         }
     }
     func_ov006_020c8ecc(o);
-    ((Animation*)(o + 0xc8))->Advance();
+    ((dExtFrameCtrl_c*)(o + 0xc8))->Advance();
 }
 }
 // ---- func_ov006_020c9024
@@ -308,7 +308,8 @@ namespace ns_020c91ac {
 
 extern "C" {
 void func_ov006_020ca2ec(void *c);
-int _ZNK9Animation12WillHitFrameEi(void *thisPtr, int frame);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thisPtr, int frame);
 void func_ov006_020e6e3c(int a0, int a1);
 void func_ov006_020bfec0(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
@@ -342,8 +343,8 @@ extern "C" void func_ov006_020c91ac(char *c)
     }
 
     if (*(int *)(c + 0xd8) == data_ov006_0214059c) {
-        if (_ZNK9Animation12WillHitFrameEi((void *)(c + 0xc8), 0xc) != 0 ||
-            _ZNK9Animation12WillHitFrameEi((void *)(c + 0xc8), 0x18) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)(c + 0xc8), 0xc) != 0 ||
+            _ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)(c + 0xc8), 0x18) != 0) {
             func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x24));
         }
     }
@@ -1201,7 +1202,8 @@ extern "C" void* data_ov006_021405c4;
 extern "C" char* data_ov006_02141a40;
 
 extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
 extern void func_ov006_020bfec0(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a, int b);
@@ -1215,19 +1217,19 @@ int func_ov006_020ca430(char* c)
     int ret;
 
     f = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov006_021405f8);
-    data_ov006_02140590 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140608);
-    data_ov006_02140560 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405d0);
-    data_ov006_02140580 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140628);
-    data_ov006_021405c0 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140618);
-    data_ov006_0214054c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140638);
-    data_ov006_02140564 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405f0);
-    data_ov006_021405a0 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405e8);
-    data_ov006_0214057c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140600);
-    data_ov006_0214056c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405e0);
-    data_ov006_02140568 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140610);
-    data_ov006_0214059c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405d8);
-    data_ov006_02140540 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140620);
-    data_ov006_021405c4 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140630);
+    data_ov006_02140590 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140608);
+    data_ov006_02140560 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405d0);
+    data_ov006_02140580 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140628);
+    data_ov006_021405c0 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140618);
+    data_ov006_0214054c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140638);
+    data_ov006_02140564 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405f0);
+    data_ov006_021405a0 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405e8);
+    data_ov006_0214057c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140600);
+    data_ov006_0214056c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405e0);
+    data_ov006_02140568 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140610);
+    data_ov006_0214059c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405d8);
+    data_ov006_02140540 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140620);
+    data_ov006_021405c4 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140630);
     ret = _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x78, f, 1, -1);
     *(int*)(c + 0x60) = 0;
     if (data_ov006_02141a40 != 0)
@@ -1755,7 +1757,7 @@ extern "C" void func_ov006_020cb030(char *o) {
         }
     }
     func_ov006_020cafdc(o);
-    ((Animation*)(o + 0xbc))->Advance();
+    ((dExtFrameCtrl_c*)(o + 0xbc))->Advance();
 }
 }
 // ---- func_ov006_020cb134
@@ -1862,7 +1864,8 @@ extern "C" Triple data_ov006_02140778[];
 extern "C" Triple data_020a0ebc;
 
 extern void _Z11UpdateAngleRssis(short *, short, int, short);
-extern int _ZN9Animation8FinishedEv(void *);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 extern void _Z14ApproachLinearRiii(int *, int, int);
 extern void _Z15ApproachLinear2Rsss(short *, short, short);
@@ -1891,7 +1894,7 @@ void func_ov006_020cb2b4(void *self)
 
     if (*(int *)(c + 0xcc) == data_ov006_0214054c) {
         _Z11UpdateAngleRssis((short *)(c + 0x4a), 0, 2, 0x1000);
-        if (_ZN9Animation8FinishedEv(c + 0xbc) == 0)
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) == 0)
             return;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140564, 0, 0x800, 0);
         return;
@@ -1986,7 +1989,8 @@ extern "C" int data_ov006_021405c0;
 extern "C" short data_ov006_02140538;
 extern void _Z14ApproachLinearRiii(int* p, int b, int c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern int _ZN9Animation8FinishedEv(void* a);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
 extern void func_ov006_020cb528(char* c);
 extern void func_ov006_020cc8c8(char* c);
 
@@ -2001,7 +2005,7 @@ void func_ov006_020cb5c4(char* c)
     *(int*)(c + 0x34) = 0;
     *(int*)(c + 0x38) = 0;
     if (*(int*)(c + 0xcc) != data_ov006_021405c0) return;
-    if (_ZN9Animation8FinishedEv(c + 0xbc) == 0) return;
+    if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) == 0) return;
     if (*(short*)(c + 0x52) == data_ov006_02140538)
         func_ov006_020cb528(c);
     else
@@ -2165,8 +2169,8 @@ extern "C" void func_ov006_020cb838(char *c)
     }
 
     if (*(int *)(c + 0xcc) == data_ov006_0214059c) {
-        if (((Animation *)(c + 0xbc))->WillHitFrame(0xc) ||
-            ((Animation *)(c + 0xbc))->WillHitFrame(0x18)) {
+        if (((dExtFrameCtrl_c *)(c + 0xbc))->WillHitFrame(0xc) ||
+            ((dExtFrameCtrl_c *)(c + 0xbc))->WillHitFrame(0x18)) {
             func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x1c));
         }
     }
@@ -2895,7 +2899,8 @@ void func_ov006_020cc698(char *c) {
 // ---- func_ov006_020cc724
 namespace ns_020cc724 {
 extern "C" {
-extern int _ZN9Animation8FinishedEv(void *self);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void func_ov006_020cc698(char *c);
@@ -2912,7 +2917,7 @@ void func_ov006_020cc724(char *c)
     *(void **)(c + 0x20) = data_ov006_021405c8[*(s16 *)(c + 0x52)];
 
     if (*(void **)(c + 0xcc) == data_ov006_0214057c) {
-        if (_ZN9Animation8FinishedEv(c + 0xbc) != 0) {
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140564, 0, 0x800, 0);
             return;
         }
@@ -2933,14 +2938,14 @@ void func_ov006_020cc724(char *c)
     }
 
     if (*(void **)(c + 0xcc) == data_ov006_0214056c) {
-        if (_ZN9Animation8FinishedEv(c + 0xbc) != 0) {
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140568, 0x40000000, 0x800, 0);
             return;
         }
     }
 
     if (*(void **)(c + 0xcc) == data_ov006_02140568) {
-        if (_ZN9Animation8FinishedEv(c + 0xbc) != 0)
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0)
             func_ov006_020cc698(c);
     }
 }
@@ -3040,7 +3045,8 @@ extern "C" void func_ov006_020cc9fc(char *c)
 // ---- func_ov006_020ccae0
 namespace ns_020ccae0 {
 extern "C" {
-extern int _ZN9Animation8FinishedEv(void *self);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int i, int fix, u32 j);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void func_ov006_020cc9fc(char *c);
@@ -3057,7 +3063,7 @@ void func_ov006_020ccae0(char *c)
     *(void **)(c + 0x20) = data_ov006_021405c8;
 
     if (*(void **)(c + 0xcc) == data_ov006_0214057c) {
-        if (_ZN9Animation8FinishedEv(c + 0xbc) != 0) {
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140564, 0, 0x800, 0);
             return;
         }
@@ -3078,14 +3084,14 @@ void func_ov006_020ccae0(char *c)
     }
 
     if (*(void **)(c + 0xcc) == data_ov006_0214056c) {
-        if (_ZN9Animation8FinishedEv(c + 0xbc) != 0) {
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140568, 0x40000000, 0x800, 0);
             return;
         }
     }
 
     if (*(void **)(c + 0xcc) == data_ov006_02140568) {
-        if (_ZN9Animation8FinishedEv(c + 0xbc) != 0)
+        if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0xbc) != 0)
             func_ov006_020cc9fc(c);
     }
 }
@@ -3203,7 +3209,8 @@ extern "C" void* data_ov006_02140540;
 extern "C" char* data_ov006_02141a40;
 
 extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
 extern void func_ov006_020bfec0(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a, int b);
@@ -3217,18 +3224,18 @@ int func_ov006_020cce0c(char* c)
     int ret;
 
     f = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov006_021405f8);
-    data_ov006_02140590 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140608);
-    data_ov006_02140560 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405d0);
-    data_ov006_02140580 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140628);
-    data_ov006_021405c0 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140618);
-    data_ov006_0214054c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140638);
-    data_ov006_02140564 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405f0);
-    data_ov006_021405a0 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405e8);
-    data_ov006_0214057c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140600);
-    data_ov006_0214056c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405e0);
-    data_ov006_02140568 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140610);
-    data_ov006_0214059c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_021405d8);
-    data_ov006_02140540 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140620);
+    data_ov006_02140590 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140608);
+    data_ov006_02140560 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405d0);
+    data_ov006_02140580 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140628);
+    data_ov006_021405c0 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140618);
+    data_ov006_0214054c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140638);
+    data_ov006_02140564 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405f0);
+    data_ov006_021405a0 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405e8);
+    data_ov006_0214057c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140600);
+    data_ov006_0214056c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405e0);
+    data_ov006_02140568 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140610);
+    data_ov006_0214059c = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_021405d8);
+    data_ov006_02140540 = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02140620);
     ret = _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x6c, f, 1, -1);
     *(int*)(c + 0x58) = 0;
     if (data_ov006_02141a40 != 0)

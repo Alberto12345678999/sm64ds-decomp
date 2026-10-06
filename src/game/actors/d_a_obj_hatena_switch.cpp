@@ -148,7 +148,7 @@ s32 daObjHatenaSwitch_c::InitResources()
     file = Model::LoadFile(data_ov002_0210dd60);
     mModelAnim.SetFile((BMD_File *)file, 1, -1);
 
-    file = Animation::LoadFile(data_ov002_0210dd68);
+    file = dExtFrameCtrl_c::LoadFile(data_ov002_0210dd68);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, (BCA_File *)file, 0, 0x1000, 0);
     mModelAnim.SetFlags(0x40000000);

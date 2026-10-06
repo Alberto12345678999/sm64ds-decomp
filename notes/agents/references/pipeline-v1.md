@@ -32,7 +32,7 @@ open at once, and it exists purely because the validator is one box. See
 `roles/integrator.md`. It re-derives nothing; it moves proven commits onto a
 fresh base and proves that the composition changed nothing.
 
-Stage 2 is wider than its one row suggests. Besides the source and manifest, a
+dScStage_c 2 is wider than its one row suggests. Besides the source and manifest, a
 promotion edits `delinks.txt`, `converted-baseline.json` (via `tiers_ratchet
 --update`, never by hand), `converted-backslide-exceptions.jsonl`, any `port/`
 slice manifest naming a deleted shard, and any prose naming one. Six non-source
@@ -85,7 +85,7 @@ were auto-named, so its ceiling was **name recovery, not codegen and not
 scope** -- a different wall from `dScMgCurling2_c`'s, where all 29 compiled
 byte-neutrally and 12 were refused for scope alone.
 
-State which wall you hit. "10/37" with no wall named is not a result. Stage 3b owns it; it is the same `writer` role file and
+State which wall you hit. "10/37" with no wall named is not a result. dScStage_c 3b owns it; it is the same `writer` role file and
 may run as a separate pass on the same branch when stages 2 and 3 have already
 pushed. A member that will not convert byte-neutrally **stays a free function** --
 that is a result, not a failure. Report the count either way: "31/31 MATCH" hides
@@ -139,12 +139,12 @@ enclosing scope of `dMgPsOpt_c::TouchIcon_c`. **A raw substring search is not th
 test**: `Koopa`, `Door`, `Coin`, `Key` and `Fish` all "match" inside unrelated ROM
 strings.
 
-Stage 4 is the only stage that DECIDES whether the bytes are right, and it owns
+dScStage_c 4 is the only stage that DECIDES whether the bytes are right, and it owns
 `linkcheck` and `rombuild`. That is not the same as "stages 1-3 never run a byte
 gate", which this file used to say and which is actively harmful at stage 3: a
 humanizer's edits move bytes routinely, `tubuild.py verify` costs 2.6 seconds on
 a 71-member TU, and running it after every batch is the difference between
-knowing and bisecting. Stage 3 never changes semantics. Stage 5 is a different
+knowing and bisecting. dScStage_c 3 never changes semantics. dScStage_c 5 is a different
 agent from stage 4 — a producer's own green output is evidence, not review.
 
 **Every merge to `main` invalidates the pinned base of every other open PR.** So

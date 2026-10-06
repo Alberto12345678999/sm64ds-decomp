@@ -3,7 +3,7 @@
 #pragma opt_common_subs off
 #pragma opt_propagation off
 #pragma opt_loop_invariants off
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
+extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void* sfp);
 extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
 extern void LoadSilverStarAndNumber(void);
@@ -17,7 +17,7 @@ extern void func_ov002_020e6780(void* p);
 extern void* _ZN9ModelAnimC1Ev(void* thiz);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, s32 i, Fix12i fx, u32 j);
 extern void* _ZN5ModelC1Ev(void* thiz);
-extern void _ZN11ShadowModel12InitCylinderEv(void* thiz);
+extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
 extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
 extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void* bmd, void* btp);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* thiz, void* f, s32 i, Fix12i fx, u32 j);
@@ -140,13 +140,13 @@ void func_ov002_020e5948(void* arg0)
     void* texseq;
     void* entry;
 
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e798);
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e4f0);
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e3d8);
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e6c0);
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210eb98);
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210eb88);
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e4c0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e798);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e4f0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e3d8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e6c0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210eb98);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210eb88);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e4c0);
 
     if (data_0209f310[*(u8*)(c + 0x6D8)] != 0) {
         LoadSilverStarAndNumber();
@@ -206,10 +206,10 @@ void func_ov002_020e5948(void* arg0)
         mode = data_0209f2d8;
         mode = (mode == 1);
         if (mode == 0) {
-            _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e750);
+            _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e750);
             _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210d9a8);
             _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_02110aa4);
-            _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_0210e588);
+            _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e588);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e7e8);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e450);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e788);
@@ -269,7 +269,7 @@ void func_ov002_020e5948(void* arg0)
         }
     }
 
-    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov002_020ff480[*(s32*)(c + 0x63C)]);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_020ff480[*(s32*)(c + 0x63C)]);
 
     i = 0;
     do {
@@ -355,7 +355,7 @@ void func_ov002_020e5948(void* arg0)
         }
     }
 
-    _ZN11ShadowModel12InitCylinderEv(c + 0x2AC);
+    _ZN17dExtShadowModel_c12InitCylinderEv(c + 0x2AC);
 
     bodyId = _ZNK6Player14GetBodyModelIDEjb(c, 3, 0);
     ma = *(void**)(c + 0xDC + bodyId * 4);

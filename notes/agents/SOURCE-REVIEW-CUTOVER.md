@@ -119,7 +119,7 @@ For a completed task or a composed PR, use a separate verify-only review task:
   revising a composition. Enqueue inherits findings and contributing sessions.
 - `resources`: the new review's own report/handoff path. This is a read-only
   review; the source owner's existing reservations stay intact.
-- Stage: role `humanizer` or `verifier`, mode `verify`, source/header inputs in
+- dScStage_c: role `humanizer` or `verifier`, mode `verify`, source/header inputs in
   `requires`, and no source output in `produces`.
 
 Publish the same input SHA with the source-review evidence. A failure remains a

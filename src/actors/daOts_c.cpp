@@ -142,7 +142,7 @@ enum {
     kAnimWalk = 4
 };
 
-/* Animation playback speeds, 20.12 fixed point. */
+/* dExtFrameCtrl_c playback speeds, 20.12 fixed point. */
 enum { kAnimSpeedNormal = 0x1000, kAnimSpeedDouble = 0x2000 };
 
 /* dCc_c hitFlags / vulnFlags bits this class tests (the bit table in dCc_c.h,
@@ -232,7 +232,7 @@ int _Z14ApproachLinearRiii(int *dst, int target, int rate);
 
 int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void* self, int fix12);
 int _ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i(void*,int,int,int,int);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* mtx, int rad, int h, unsigned int x);
 int _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* c, void* v, void* player, s32 flag);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u32 b, u32 c, u32 d);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h, unsigned int d, unsigned int e);
@@ -247,7 +247,7 @@ void func_ov064_021163c0(daOts_c *c);
  *
  * Shared InitResources body. daOts_c leaves slot 0 pure virtual; all three
  * children set mFileTable and call this. Loads the five SharedFilePtrs, inits
- * ModelAnim / ShadowModel / dCcAc_c / dBgCh_Actr, and seeds the Tail words
+ * ModelAnim / dExtShadowModel_c / dCcAc_c / dBgCh_Actr, and seeds the Tail words
  * (position snapshot, home position, config copies) from the config block and
  * the spawn position. Returns 0 if the model or shadow cannot be set up, else 1.
  *
@@ -258,10 +258,10 @@ int daOts_c::InitResourcesCommon()
 {
     BMD_File *bmd;
 
-    Animation::LoadFile(*CONFIG(this)->files[kAnimDeath]);
-    Animation::LoadFile(*CONFIG(this)->files[kAnimHit]);
-    Animation::LoadFile(*CONFIG(this)->files[kAnimLedgeTurn]);
-    Animation::LoadFile(*CONFIG(this)->files[kAnimWalk]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimDeath]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimHit]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimLedgeTurn]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimWalk]);
     bmd = (BMD_File *)Model::LoadFile(*CONFIG(this)->files[kFileModel]);
     if (mModelAnim.SetFile(bmd, 1, 1) == 0)
         return 0;
@@ -439,7 +439,7 @@ void daOts_c::func_ov064_02116bac(){
   tail().mShadowMtx.t.x = this->mPosX >> 3;
   tail().mShadowMtx.t.y = this->mPosY >> 3;
   tail().mShadowMtx.t.z = this->mPosZ >> 3;
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &tail().mShadowMtx, h, d+0x28000, 0xf);
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel, &tail().mShadowMtx, h, d+0x28000, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -991,7 +991,7 @@ int daOts_c::OnAimedAtWithEgg()
 /* recovered: real C++ destructor, defined inline in the header
  *
  * The body the key function forces out is the class's own layout evidence: the
- * ROM destroys a ShadowModel at 0x370, a dCcAc_c at 0x33c, a dBgCh_Actr at
+ * ROM destroys a dExtShadowModel_c at 0x370, a dCcAc_c at 0x33c, a dBgCh_Actr at
  * 0x174 and a ModelAnim at 0x110, then chains to _ZN12dEnemyBase_cD2Ev, and
  * every one of those offsets is where the members' asserted sizes put them.
  * Nothing forces D1 here either -- see the D0 note above.

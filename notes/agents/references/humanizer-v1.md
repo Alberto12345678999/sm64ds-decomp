@@ -115,7 +115,7 @@ builder can re-run the full gates. Do not rely on the builder to catch a moved
 byte — by then you have lost which batch did it, and both humanizer runs to date
 needed a bisect for exactly that reason.
 
-**Do not rebase a branch that is already on the remote.** Stage 2 pushes before
+**Do not rebase a branch that is already on the remote.** dScStage_c 2 pushes before
 you start, so a rebase makes your push a non-fast-forward against the remote's
 copy of the same commit, and repairing it costs an add/add conflict on the
 promoted `.cpp`. Merge `origin/main` in instead. Force-pushes are blocked here.
