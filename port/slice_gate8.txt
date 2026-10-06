@@ -3,20 +3,17 @@
 # port/unmatched adoption (see the file header); everything else is matched.
 
 port/unmatched/MeshCollider_DetectClsn_RaycastLine.cpp
-src/_ZN7dBgW_KcC1Ev.cpp
-src/_ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block.cpp
-src/_ZN7dBgW_Kc17UpdateFileOffsetsER8KCL_File.cpp
+# dBgW_Kc is two production translation units, one per module: the arm9
+# lifecycle/SetFile side and the ITCM query engine. The constructor,
+# SetFile, UpdateFileOffsets, Virtual08, the func_020397* helpers,
+# GetSurfaceInfo, GetNormal and GetTriangleOrigin files this slice used
+# to name separately all live in them.
+src/engine/collision/dBgW_Kc.cpp
+src/engine/collision/dBgW_Kc_itcm.cpp
 src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp
-src/_ZN7dBgW_Kc14GetSurfaceInfoEsR11SurfaceInfo.cpp
-src/_ZN7dBgW_Kc9GetNormalEsR7Vector3.cpp
-src/_ZN7dBgW_Kc17GetTriangleOriginEsR7Vector3.cpp
-src/_ZN7dBgW_Kc9Virtual08Ev.cpp
-src/func_020397dc.c
-src/func_020397b8.c
 src/engine/collision/dBgPc.cpp
 src/engine/collision/dBgPi.cpp
 src/func_020375ec.c
-src/func_020396dc.c
 src/func_02039624.c
 src/_ZN13CLPS_BlockRefaSER10CLPS_Block.cpp
 src/func_020381cc.c
