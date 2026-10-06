@@ -243,6 +243,9 @@ ov002	0x020ee3d8	YoshiEgg_Spawn	daYegg_c_classInit	reconstructed classInit; ROM 
 ov002	0x020f085c	func_ov002_020f085c	InvisibleSecret_Spawn	spawnfunc
 ov002	0x020f085c	InvisibleSecret_Spawn	daSCoin_c_Spawn	renamed to the class's ROM RTTI identity; row recorded retroactively -- the rename reached symbols.txt without a ledger entry
 ov002	0x020f085c	daSCoin_c_Spawn	daSCoin_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov002	0x020f0438	_ZN9daSCoin_c19func_ov002_020f0438Ev	_ZN9daSCoin_c7CollectEv	daSCoin_c member; touch handler in Behavior, and called by daObjHatenaBlock_c/daObjPushblock_c on a held coin
+ov002	0x020f051c	_ZN9daSCoin_c19func_ov002_020f051cEv	_ZN9daSCoin_c11LinkToBlockEv	daSCoin_c member; one-shot scan that registers the coin in a nearby hatena/item/push block
+ov002	0x020f05f4	_ZN9daSCoin_c19func_ov002_020f05f4Ev	_ZN9daSCoin_c9SpawnStarEv	daSCoin_c member; spawns POWER_STAR at the matching STARBASE marker
 ov002	0x020f0894	func_ov002_020f0894	_ZN13daObjNumber_cD1Ev	vtable slot 16 (was _ZN15InvisibleSecretD1Ev)
 ov002	0x020f08cc	func_ov002_020f08cc	_ZN13daObjNumber_cD0Ev	vtable slot 17 (was _ZN15InvisibleSecretD0Ev)
 ov002	0x020f093c	func_ov002_020f093c	_ZN13daObjNumber_c16CleanupResourcesEv	vtable slot 3 (was _ZN15InvisibleSecret16CleanupResourcesEv)

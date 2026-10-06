@@ -32,7 +32,7 @@
  *   them. S14: g_profile_PUSHBLOCK stays outside the licensed .text.
  * - func_020393a4 / func_02039394 store clip ranges on mMeshCollider
  *   (no setter).
- * - func_ov002_020f0438 linked-actor helper (Behavior).
+ * - daSCoin_c::Collect linked-actor helper (Behavior).
  * - OnPushed fall-off-the-end return: adding `return 0;` emits mov r0,#0
  *   and DIFFs (measured 2026-08-22).
  */
@@ -202,7 +202,7 @@ int daObjPushblock_c::Behavior()
                 q->mPosX = homeX;
                 q->mPosY = pos.y;
                 q->mPosZ = pos.z;
-                ((daSCoin_c *)mLinkedActor)->func_ov002_020f0438();
+                ((daSCoin_c *)mLinkedActor)->Collect();
             }
             mLinkedActor = 0;
         }
