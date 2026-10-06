@@ -13,7 +13,7 @@ src/engine/collision/dBgW_Kc_itcm.cpp
 src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp
 src/engine/collision/dBgPc.cpp
 src/engine/collision/dBgPi.cpp
-src/func_020375ec.c
+src/engine/collision/dBgCh_Lin.cpp
 src/func_02039624.c
 src/engine/collision/CLPS_BlockRef.cpp
 src/func_020381cc.c

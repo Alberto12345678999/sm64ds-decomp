@@ -659,7 +659,7 @@ void daObjKey_c::func_ov089_02131df4(char *p)
 {
     Player *player = (Player *)p;
 
-    /* Word 1, bit (2 << kind): already collected. 1 asks Stage/dMeter/Player
+    /* Word 1, bit (2 << kind): already collected. 1 asks dScStage_c/dMeter/Player
      * for the new-star fanfare; 0 suppresses it. Kind 7 takes neither arm.
      * One arm is shorter (0x110 -> 0xe8); the ROM has both. */
     if (data_0209caa0[1] & (2 << mState))

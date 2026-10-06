@@ -4,7 +4,7 @@
  * This is the C++ spelling of the object that include/Particle.h still models
  * as a flat C `struct Particle` (kept for the thirteen C99 files that reach it
  * through that name and cannot see a namespace at all). It is the only C++
- * definition: Stage (at +0x50) and dScMgSingle3DBase_c (at +0x471c) embed this
+ * definition: dScStage_c (at +0x50) and dScMgSingle3DBase_c (at +0x471c) embed this
  * class directly. The two declarations agree field for field; only this one is
  * the class the ROM's mangled names actually describe, so the members whose
  * symbols are _ZN8Particle10SysTracker* are defined against it.
