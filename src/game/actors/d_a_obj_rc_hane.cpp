@@ -117,7 +117,7 @@ void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, short ang);
 
    Every instruction the cartridge has here falls out of the one `new`.
    sizeof is 0x11c; the implicit ctor calls dActor_c C2, stores this class's
-   vptr, then CommonModel C1 at 0xd4. The null check is the one `new` itself
+   vptr, then dExtCommonModel_c C1 at 0xd4. The null check is the one `new` itself
    emits. */
 extern "C" daObjRc_Hane_c *daObjRc_Hane_c_classInit()
 {
@@ -260,7 +260,7 @@ s32 daObjRc_Hane_c::CleanupResources()
  * RTTI pair land here rather than in whichever other TU happens to name them.
  *
  * Both bodies are short because the chain is short: this class's vptr store,
- * then CommonModel's destructor, then dActor_c's. This class's own fields are
+ * then dExtCommonModel_c's destructor, then dActor_c's. This class's own fields are
  * two s16 triples and three small integers, none of which has a destructor.
  * D0's trailing deallocation is the inherited inline operator delete, which is
  * why nothing here names a heap.

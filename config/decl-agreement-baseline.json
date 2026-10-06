@@ -506,14 +506,9 @@
       ]
     },
     "CrossVec3": {
-      "src/_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3.cpp": [
+      "src/engine/gx/G3i.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/_ZN7Clipper13Func_0201559CEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
       "src/actors/unit020cd744.cpp": [
@@ -550,6 +545,11 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
+      ],
+      "src/engine/collision/dClipper.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "DMAStartTransfer": {
@@ -1509,7 +1509,7 @@
       ]
     },
     "Matrix3x3_SetRotationZ": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
       "src/func_ov007_020c3abc.c": [
@@ -1805,17 +1805,7 @@
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
       ],
-      "src/_ZN11CommonModel6RenderEPK7Vector3.cpp": [
-        "param:#1 const Matrix4x3 *",
-        "param:#2 const Matrix4x3 *",
-        "param:#3 Matrix4x3 *"
-      ],
       "src/_ZN11ShadowModel9RenderAllEv.cpp": [
-        "param:#1 const Matrix4x3 *",
-        "param:#2 const Matrix4x3 *",
-        "param:#3 Matrix4x3 *"
-      ],
-      "src/_ZN5Model6RenderEPK7Vector3.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
@@ -1870,10 +1860,20 @@
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
+      ],
+      "src/engine/model/Model.cpp": [
+        "param:#1 const Matrix4x3 *",
+        "param:#2 const Matrix4x3 *",
+        "param:#3 Matrix4x3 *"
+      ],
+      "src/engine/model/dExtCommonModel_c.cpp": [
+        "param:#1 const Matrix4x3 *",
+        "param:#2 const Matrix4x3 *",
+        "param:#3 Matrix4x3 *"
       ]
     },
     "MulVec3Mat3x3": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix3x3 *",
         "param:#3 Vector3 *"
@@ -1889,10 +1889,6 @@
     },
     "MulVec3Mat4x3": {
       "src/_ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Matrix4x3 *"
-      ],
-      "src/_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ],
@@ -2005,6 +2001,10 @@
       ],
       "src/actors/daKpa3Bg_c.cpp": [
         "param:#1 Vec3 *"
+      ],
+      "src/engine/collision/dClipper.cpp": [
+        "param:#1 const Vector3 *",
+        "param:#2 const Matrix4x3 *"
       ]
     },
     "MultiCopyHalf": {
@@ -2332,11 +2332,7 @@
       ]
     },
     "NormalizeVec3": {
-      "src/_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
-      "src/_ZN7Clipper13Func_0201559CEv.cpp": [
+      "src/engine/gx/G3i.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
@@ -2393,6 +2389,10 @@
         "param:#2 Vec3 *"
       ],
       "src/engine/collision/dBgW_KcMbgSclY.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
+      ],
+      "src/engine/collision/dClipper.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -5990,11 +5990,6 @@
         "return:void"
       ]
     },
-    "_ZN11CommonModelD1Ev": {
-      "include/decl_common.h": [
-        "return:void"
-      ]
-    },
     "_ZN11ShadowModel12InitCylinderEv": {
       "src/actors/Eyerok.cpp": [
         "return:void"
@@ -7584,8 +7579,24 @@
       ]
     },
     "_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3": {
+      "src/actors/dScStarSel_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *",
+        "param:#3 const void *",
+        "param:#4 int"
+      ],
       "src/actors/unit020bfec0.cpp": [
+        "param:#4 int",
         "return:int"
+      ],
+      "src/func_ov007_020b1fa4.c": [
+        "param:#4 int"
+      ],
+      "src/func_ov007_020b20e8.c": [
+        "param:#4 int"
+      ],
+      "src/func_ov007_020b2160.c": [
+        "param:#4 int"
       ]
     },
     "_ZN3GXS10LoadBGPlttEPKvjj": {
@@ -10570,17 +10581,6 @@
         "param:#1 char *"
       ]
     },
-    "_ZN7Clipper13Func_020156DCEitii": {
-      "src/actors/unit020bfec0.cpp": [
-        "param:#3 int"
-      ],
-      "src/func_0200af20.c": [
-        "param:#3 int"
-      ],
-      "src/func_0200d954.c": [
-        "param:#3 int"
-      ]
-    },
     "_ZN7Message11DisplayTextEt": {
       "src/_ZN5Stage9PS_UpdateEv.cpp": [
         "param:#1 int"
@@ -12580,6 +12580,7 @@
         "param:#2 Vector3 *"
       ],
       "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 Vector3 *",
         "param:#2 const Vector3 *"
       ],
       "src/func_ov002_020cfea4.cpp": [
@@ -12596,6 +12597,9 @@
       ],
       "src/actors/daKpa_c.cpp": [
         "param:#2 Vec3 *"
+      ],
+      "src/game/actors/d_a_shl.cpp": [
+        "param:#2 Vector3 *"
       ]
     },
     "_ZN9dBgCh_GndD1Ev": {
@@ -12651,6 +12655,7 @@
         "return:void"
       ],
       "src/actors/dActor_c.cpp": [
+        "param:#1 RaycastGroundPod *",
         "return:void"
       ]
     },
@@ -13043,7 +13048,7 @@
       ]
     },
     "_Znwj": {
-      "src/_ZN14CutsceneObject13InitResourcesEv.cpp": [
+      "src/_ZN8daDemo_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ]
     },
@@ -13808,7 +13813,7 @@
       ]
     },
     "data_0209b41c": {
-      "src/_ZN14CutsceneObject6RenderEv.cpp": [
+      "src/_ZN8daDemo_c6RenderEv.cpp": [
         "return:M48"
       ],
       "src/_ZN6Camera8BehaviorEv.cpp": [
@@ -15251,7 +15256,7 @@
     },
     "data_0209f43c": {
       "src/_ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb.cpp": [
-        "return:Clipper"
+        "return:dClipper"
       ],
       "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
         "return:char"
@@ -15263,7 +15268,7 @@
         "return:char"
       ],
       "src/actors/dEntObj_c.cpp": [
-        "return:Clipper"
+        "return:dClipper"
       ],
       "src/actors/unit020bfec0.cpp": [
         "return:char []"
@@ -22629,7 +22634,7 @@
       ]
     },
     "data_ov085_0213074c": {
-      "src/_ZN14CutsceneObject13InitResourcesEv.cpp": [
+      "src/_ZN8daDemo_c13InitResourcesEv.cpp": [
         "return:char"
       ],
       "src/game/actors/d_a_c_jugem.cpp": [
@@ -24253,23 +24258,23 @@
       ]
     },
     "func_02016b24": {
-      "src/_ZN5Model9DoSetFileEPcii.cpp": [
-        "param:#1 Model *",
-        "param:#2 int"
-      ],
       "src/actors/daMip_c.cpp": [
         "param:#2 int"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 char *",
         "param:#2 int"
+      ],
+      "src/engine/model/Model.cpp": [
+        "param:#1 Model *",
+        "param:#2 int"
       ]
     },
     "func_02016e70": {
-      "src/_ZN11CommonModel9DoSetFileEPcii.cpp": [
+      "src/_ZN11ShadowModel9DoSetFileEPcii.cpp": [
         "return:ModelComponents *"
       ],
-      "src/_ZN11ShadowModel9DoSetFileEPcii.cpp": [
+      "src/engine/model/dExtCommonModel_c.cpp": [
         "return:ModelComponents *"
       ]
     },
@@ -27870,7 +27875,7 @@
         "param:#1 ModelComponents *",
         "param:#2 BMD_Bone *"
       ],
-      "src/_ZN5Model9Virtual10ER9Matrix4x3.cpp": [
+      "src/engine/model/Model.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMD_Bone *"
       ]
@@ -27929,11 +27934,11 @@
       ]
     },
     "func_02046008": {
-      "src/_ZN11CommonModel12SetPolygonIDEj.cpp": [
-        "param:#2 unsigned int"
-      ],
       "src/_ZN5Model12SetPolygonIDEi.cpp": [
         "param:#2 int"
+      ],
+      "src/engine/model/dExtCommonModel_c.cpp": [
+        "param:#2 unsigned int"
       ]
     },
     "func_02046088": {
@@ -27969,20 +27974,20 @@
       ]
     },
     "func_020462d0": {
-      "src/_ZN5Model9DoSetFileEPcii.cpp": [
-        "param:#1 ModelComponents *",
-        "param:#2 BMD_File *"
-      ],
       "src/func_ov007_020bc47c.cpp": [
         "param:#3 int"
+      ],
+      "src/engine/model/Model.cpp": [
+        "param:#1 ModelComponents *",
+        "param:#2 BMD_File *"
       ]
     },
     "func_02046564": {
-      "src/_ZN5Model9DoSetFileEPcii.cpp": [
-        "param:#1 BMD_File *",
+      "src/func_02016e70.c": [
         "return:unsigned int"
       ],
-      "src/func_02016e70.c": [
+      "src/engine/model/Model.cpp": [
+        "param:#1 BMD_File *",
         "return:unsigned int"
       ]
     },
@@ -28837,7 +28842,7 @@
       ]
     },
     "func_02052550": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
       "src/func_ov007_020c3abc.c": [
@@ -28845,7 +28850,7 @@
       ]
     },
     "func_0205256c": {
-      "src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp": [
+      "src/engine/particle/Particle_Behavior.cpp": [
         "param:#1 Matrix3x3 *"
       ],
       "src/func_ov007_020c3abc.c": [
@@ -35236,7 +35241,32 @@
     },
     "_ZN9dBgCh_GndC1Ev": {
       "src/actors/dActor_c.cpp": [
+        "param:#1 RaycastGroundPod *",
         "return:void"
+      ]
+    },
+    "_ZN17dExtCommonModel_cD1Ev": {
+      "include/decl_common.h": [
+        "return:void"
+      ]
+    },
+    "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh": {
+      "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
+        "param:#1 char *"
+      ],
+      "src/actors/dActor_c.cpp": [
+        "param:#1 char *"
+      ]
+    },
+    "_ZN8dClipper13Func_020156DCEitii": {
+      "src/actors/unit020bfec0.cpp": [
+        "param:#3 int"
+      ],
+      "src/func_0200af20.c": [
+        "param:#3 int"
+      ],
+      "src/func_0200d954.c": [
+        "param:#3 int"
       ]
     }
   },

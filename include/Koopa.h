@@ -71,6 +71,39 @@ struct daNknk_c : dEnemyBase_c {
     int InitResources();
     void OnPendingDestroy();
     int Render();
+
+    /* State and behavior helpers. They keep their ROM addresses as names
+     * (the cartridge has no English names for them); the vtable and the
+     * sinit do not reference any of them, so these spellings only matter
+     * to this file and symbols.txt.
+     */
+    void func_ov062_02117570();
+    void func_ov062_021175c0();
+    void func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned int a3, unsigned short a4);
+    void func_ov062_02117994(int idx);
+    void func_ov062_021179e4();
+    void func_ov062_02117a3c();
+    void func_ov062_02117acc();
+    void func_ov062_02117b48();
+    int  func_ov062_02117b60();
+    void *func_ov062_02117b9c();
+    void func_ov062_02117bf4();
+    void func_ov062_02117c98();
+    void func_ov062_02118004(int limit);
+    void func_ov062_02118058();
+    void func_ov062_021180d4();
+    void func_ov062_0211811c();
+    void func_ov062_021181a0();
+    void func_ov062_02118258(int lim);
+    void func_ov062_02118334();
+    void func_ov062_021183e0();
+    void func_ov062_02118588();
+    void func_ov062_02118718();
+    void func_ov062_02118a00();
+    void func_ov062_02118a50();
+    void func_ov062_02118b4c();
+    void func_ov062_02118cdc();
+    void func_ov062_02118de8();
 };
 
 // Community source compatibility name; retail RTTI is daNknk_c.
