@@ -695,10 +695,6 @@
     "Deallocate": {
       "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "arity:0"
-      ],
-      "src/func_ov007_020cca68.c": [
-        "arity:0",
-        "return:int"
       ]
     },
     "DeathTable_GetBit": {
@@ -1408,9 +1404,6 @@
       "src/func_0200f13c.cpp": [
         "param:#1 unsigned short",
         "return:void *"
-      ],
-      "src/func_ov007_020cca74.c": [
-        "arity:0"
       ],
       "src/func_ov075_02116818.c": [
         "return:void *"
@@ -8274,21 +8267,10 @@
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
-      "src/_ZN9dScDSMT_c8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
       "src/actors/dScMB_c.cpp": [
         "return:void *"
       ],
       "src/func_ov075_02118bf8.c": [
-        "return:int"
-      ]
-    },
-    "_ZN4Heap11_DeallocateEPv": {
-      "src/func_ov007_020cca98.c": [
-        "param:#1 int",
-        "param:#2 int",
         "return:int"
       ]
     },
@@ -8303,9 +8285,6 @@
     "_ZN4Heap21MaxAllocationUnitSizeEv": {
       "src/ShowCrashScreen.c": [
         "return:int"
-      ],
-      "src/func_ov007_020cca80.c": [
-        "param:#1 unsigned int"
       ]
     },
     "_ZN4Heap24CreateSolidHeapAllocatorEPvjj": {
@@ -8329,13 +8308,6 @@
       ],
       "src/func_02017060.c": [
         "return:unsigned int"
-      ]
-    },
-    "_ZN4Heap8AllocateEj": {
-      "src/func_ov007_020ccab4.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
       ]
     },
     "_ZN4Heap9SetNodeIDEj": {
@@ -11343,11 +11315,6 @@
         "return:unsigned int"
       ]
     },
-    "_ZN8SaveData13EraseSaveFileEjPc": {
-      "src/func_ov007_020cc600.c": [
-        "return:void"
-      ]
-    },
     "_ZN8SaveData13GetCoinRecordEj": {
       "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int",
@@ -11355,11 +11322,6 @@
       ],
       "src/actors/daStar_c.cpp": [
         "return:int"
-      ]
-    },
-    "_ZN8SaveData13SaveMinigamesEP16MinigameSaveData": {
-      "src/func_ov007_020cc600.c": [
-        "return:void"
       ]
     },
     "_ZN8SaveData15SaveCurrentFileEv": {
@@ -12948,6 +12910,12 @@
       ],
       "src/func_0200b0fc.c": [
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daMky_c.cpp": [
+        "param:#2 Vector3 &"
+      ],
+      "src/actors/daWanwan2_c.cpp": [
+        "param:#2 Vector3 &"
       ]
     },
     "_ZNK7PathPtr8NumNodesEv": {
@@ -13078,17 +13046,17 @@
       ]
     },
     "_ZTV8dScene_c": {
+      "include/decl_common.h": [
+        "return:int []"
+      ],
+      "src/d_s_boot.c": [
+        "return:int []"
+      ],
       "src/d_s_entry_entry.cpp": [
         "return:char []"
       ],
       "src/d_s_entry_result.cpp": [
         "return:char []"
-      ],
-      "src/d_s_stage.cpp": [
-        "return:void * []"
-      ],
-      "src/d_s_star_sel.cpp": [
-        "return:void * []"
       ]
     },
     "_Znwj": {
@@ -13825,14 +13793,6 @@
         "return:unsigned short"
       ]
     },
-    "data_0209b33c": {
-      "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp": [
-        "return:void *"
-      ],
-      "src/_ZN9dScDSMT_c8BehaviorEv.cpp": [
-        "return:char *"
-      ]
-    },
     "data_0209b3ec": {
       "src/_ZN8Particle9RenderAllEv.cpp": [
         "return:int"
@@ -14116,9 +14076,6 @@
       "src/_ZN8SaveData22NumGlowingRabbitsFoundEv.cpp": [
         "return:unsigned char []"
       ],
-      "src/_ZN9dScDSMT_c8BehaviorEv.cpp": [
-        "return:char"
-      ],
       "src/actors/dScMiniGm_c.cpp": [
         "return:unsigned int []"
       ],
@@ -14166,9 +14123,6 @@
       ],
       "src/func_ov002_020e032c.c": [
         "return:int"
-      ],
-      "src/func_ov007_020cc600.c": [
-        "return:unsigned char []"
       ],
       "src/game/actors/d_a_obj_hatena_switch.cpp": [
         "return:unsigned int []"
@@ -14384,12 +14338,6 @@
     },
     "data_0209d4a8": {
       "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN9dScDSMT_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
       "src/func_02019144.c": [
@@ -24244,9 +24192,6 @@
     "func_02013c84": {
       "include/decl_common.h": [
         "param:#1 int"
-      ],
-      "src/func_ov007_020cc600.c": [
-        "param:#1 unsigned int"
       ]
     },
     "func_02013edc": {
@@ -33008,15 +32953,6 @@
         "arity:1"
       ]
     },
-    "func_ov007_020b7090": {
-      "src/_ZN9dScDSMT_c13InitResourcesEv.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 int",
-        "return:void"
-      ]
-    },
     "func_ov007_020b7364": {
       "src/func_ov007_020b72a0.c": [
         "return:int"
@@ -34599,11 +34535,6 @@
     "func_ov007_020cbf8c": {
       "src/func_ov007_020bf428.c": [
         "return:int"
-      ]
-    },
-    "func_ov007_020cc0e4": {
-      "src/func_ov007_020cc600.c": [
-        "arity:0"
       ]
     },
     "func_ov010_02111984": {
