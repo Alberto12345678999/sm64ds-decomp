@@ -3961,37 +3961,10 @@ src/func_02037464.c:
     complete
     .text start:0x02037464 end:0x0203748c
 
-src/_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c.cpp:
+src/engine/collision/dBgCh_Gnd.cpp:
     complete
-    .text start:0x0203748c end:0x020374b8
-
-src/func_020374b8.c:
-    complete
-    .text start:0x020374b8 end:0x020374d4
-
-src/func_020374d4.c:
-    complete
-    .text start:0x020374d4 end:0x020374f0
-
-src/_ZN9dBgCh_GndD0Ev.cpp:
-    complete
-    .text start:0x020374f0 end:0x02037534
-
-src/_ZN9dBgCh_GndD1Ev.cpp:
-    complete
-    .text start:0x02037534 end:0x02037570
-
-src/_ZN9dBgCh_GndC1Ev.cpp:
-    complete
-    .text start:0x02037570 end:0x020375b0
-
-src/_ZThn16_N9dBgCh_GndD0Ev.cpp:
-    complete
-    .text start:0x020375b0 end:0x020375c0
-
-src/_ZThn16_N9dBgCh_GndD1Ev.cpp:
-    complete
-    .text start:0x020375c0 end:0x020375d0
+    .text start:0x0203748c end:0x020375d0
+    .data start:0x02099224 end:0x0209927c
 
 src/_ZN9dBgCh_Lin10GetClsnPosEv.cpp:
     complete

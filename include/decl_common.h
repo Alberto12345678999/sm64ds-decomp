@@ -1862,8 +1862,6 @@ extern void func_020354d0(void*);
 extern void func_02035550(void*);
 extern void func_020371b0(void*, int);
 extern void func_020371fc(char*);
-extern void func_020374b8(int*, int*);
-extern void func_020374d4(void*, struct Vector3*);
 extern void func_020375ec(int*, int*);
 extern void func_0203782c(void*, void*);
 extern void func_02037940(void*, int);

@@ -8546,6 +8546,19 @@
     "src/actors/daDemo_c.cpp#_ZN8daDemo_c6RenderEv": "lunavyqo",
     "src/actors/daDemo_c.cpp#_ZN8daDemo_c8BehaviorEv": "tangosdev",
     "src/actors/daDemo_c.cpp#_ZN8daDemo_c13InitResourcesEv": "tangosdev",
-    "src/_ZN8daDemo_cD1Ev.cpp#_ZN8daDemo_cD1Ev": "tangosdev"
+    "src/_ZN8daDemo_cD1Ev.cpp#_ZN8daDemo_cD1Ev": "tangosdev",
+    "src/_ZN10dBgW_KcMbgC2Ev.cpp": "tangosdev",
+    "src/func_ov009_02111224.c": "tangosdev",
+    "src/func_ov009_02111234.cpp": "tangosdev",
+    "src/game/actors/d_a_s_bird.cpp#func_ov009_021115d8": "lunavyqo",
+    "src/game/actors/d_a_s_bird.cpp#func_ov009_021116ec": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c": "andrewboudreau",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_Gnd10GetClsnPosER7Vector3": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_Gnd10SetClsnPosERK7Vector3": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_GndD0Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_GndD1Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZN9dBgCh_GndC1Ev": "tangosdev",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZThn16_N9dBgCh_GndD0Ev": "lplaat",
+    "src/engine/collision/dBgCh_Gnd.cpp#_ZThn16_N9dBgCh_GndD1Ev": "tangosdev"
   }
 }
