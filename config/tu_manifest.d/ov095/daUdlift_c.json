@@ -4,20 +4,21 @@
   "source": "src/actors/daUdlift_c.cpp",
   "promoted_source": "src/actors/daUdlift_c.cpp",
   "status": "promoted",
-  "boundary_confidence": "medium",
+  "production_mode": "text-only",
+  "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x2135ff4..0x2136764, 11 function(s), from build/tu_map.json (tools/tu_map.py); this entry licenses the whole run as one file.",
+    "contiguous linker run: 0x2135ff4..0x213682c, 16 function(s): the 11-member body run, then the rider-collision pair and the three classInit factories, ending exactly where daObjFlamethrower_c's TU begins. The per-class factories sit immediately after each class's methods across this overlay (seesaw callbacks+factories precede this run, flamethrower follows), which is the layout of one original file per actor, so the whole span is claimed as one TU.",
     "class label(s): daUdlift_c -- the cartridge's own RTTI spelling. Read out of extracted/overlays/overlay_0095.bin (ov095 loads at 0x02135700): _ZTS at 0x021375bc is the string \"10daUdlift_c\" plus its NUL; _ZTI at 0x021375b0 reads [__si_class_type_info+8 (0x0209a764), that string, _ZTI10dBgActor_c (ov002 0x021089ec)]; and the typeinfo word of the two-word header before the _ZTV address point 0x02137628 reads 0x021375b0. The class carried the coined name UpDownLiftBbh until the commit before this one.",
     "MEASURED: the five State* members are this class's states. __sinit_ov095_0213722c copies five pointer-to-member constants into the state table data_ov095_02137910 (.bss) that Behavior indexes by mState, and ov095 relocs.txt resolves them as state 0 -> 0x02136368 (StateWait), 1 -> 0x02136298 (StateMoveUp), 2 -> 0x02136178 (StateMoveDown), 3 -> 0x02136090 (StateStop), 4 -> 0x02136104 (StateStopAtBottom). Written in state order in the source, they come out in exactly the reverse ROM order. The State* names are reconstructed; the relocations resolve by address, so renaming the rows changes no linked byte.",
     "MEASURED: the empty inline destructor in the class header emits D1 ahead of D0, the cartridge's order (0x02135ff4 then 0x02136038), and no D2. Same lever as the promoted neighbour config/tu_manifest.d/ov095/daObjFlamethrower_c.json (include/daObjFlamethrower_c.h) and the ov022 dBgActor_c leaves daObjFl_Ring_c and daObjFl_UkiKi_c.",
-    "SCOPE: func_ov095_02136764 and func_ov095_02136788 (the rider-collision callback InitResources installs) and the three factories daUdlift_c_classInit_RC_RIFT02 / _UDLIFT / _UDLIFT_TERESA sit immediately right of this run. tools/tu_map.py ends this candidate at 0x02136764 and gives them their own run, so they are deliberately not claimed here and remain one-function sources.",
+    "SCOPE (resolved 2026-10-05): func_ov095_02136764 and func_ov095_02136788 -- the rider-collision callback InitResources installs at dBgW+0x1c via func_020393c4 -- and the three factories daUdlift_c_classInit_RC_RIFT02 / _UDLIFT / _UDLIFT_TERESA sit immediately right of the member run and are now folded in. tu_map.py had ended this candidate at 0x02136764 only because the callback pair is not a _ZN member; the folded source keeps both names verbatim since the ROM records no better ones, and the veneer must stay a free function because its raw address is stored as the collider callback.",
     "module sinit corroboration: 2 sinit(s) / 2 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU)"
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02135ff4",
-      "end": "0x02136764"
+      "end": "0x0213682c"
     }
   ],
   "functions": [
@@ -97,12 +98,47 @@
       "size": "0x0000018c",
       "legacy_source": "src/_ZN10daUdlift_c13InitResourcesEv.cpp",
       "ordinal": 10
+    },
+    {
+      "symbol": "func_ov095_02136764",
+      "address": "0x02136764",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov095_02136764.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_ov095_02136788",
+      "address": "0x02136788",
+      "size": "0x00000014",
+      "legacy_source": "src/func_ov095_02136788.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "daUdlift_c_classInit_RC_RIFT02",
+      "address": "0x0213679c",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_udlift_rc_rift02.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "daUdlift_c_classInit_UDLIFT",
+      "address": "0x021367cc",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_udlift_udlift.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "daUdlift_c_classInit_UDLIFT_TERESA",
+      "address": "0x021367fc",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_udlift_udlift_teresa.c",
+      "ordinal": 15
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Hand-curated from the 11 legacy one-function sources (six C++ members, three C++ helpers and two C helpers); see the file's own header comment for the reconciliation.",
+    "Hand-curated from the 16 legacy one-function sources (six C++ members, three C++ helpers and two C helpers, plus the C++ rider-collision body, its C veneer and the three C classInit factories); see the file's own header comment for the reconciliation.",
     "tubuild create RAW items (RESOLVED): func_ov095_02136090, func_ov095_02136104 and func_ov095_02136298 had their definitions inside an extern \"C\" block and were carried verbatim; each is now a single extern \"C\" definition over a daUdlift_c pointer, reading the header's field names instead of raw offsets, with no byte change. Their local Vector3 and reference-typed Sound declarations were dropped for include/types.h and include/Sound.h.",
     "The five state bodies are non-virtual daUdlift_c members (StateWait, StateMoveUp, StateMoveDown, StateStop, StateStopAtBottom), formerly the C-linkage helpers func_ov095_02136368, func_ov095_02136298, func_ov095_02136178, func_ov095_02136090 and func_ov095_02136104; the member form emits the same bytes and relocations.",
     "MEASURED: InitResources, StateWait and StateMoveDown test actorID as `(int)(actorID == N) != 0`; spelled as a plain `actorID == N` each one DIFFs (10/11). InitResources' former goto chain and new_var temporary are gone with no byte change.",
@@ -115,13 +151,15 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov095-daUdlift_c/daUdlift_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 11,
-    "functions_declared": 11,
+    "functions_matched": 16,
+    "functions_declared": 16,
     "compilerOnlyOutput": {
       "requested": [
+        "_ZN10dBgActor_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
       "deadstripped": [
+        "_ZN10dBgActor_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
@@ -142,7 +180,9 @@
         19,
         20,
         21,
-        28
+        28,
+        48,
+        49
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -193,7 +233,7 @@
       },
       "tuRange": {
         "start": "0x02135ff4",
-        "end": "0x02136764",
+        "end": "0x0213682c",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -201,14 +241,14 @@
         {
           "section": ".text",
           "start": "0x02135ff4",
-          "end": "0x02136764",
+          "end": "0x0213682c",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 11
+          "LICENSED": 16
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -253,6 +293,11 @@
     }
   },
   "compiler_only_output": [
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "The factories' `new daUdlift_c()` runs the implicit derived C2, which calls the base subobject destructor D2 as vague linkage when the compiler cannot inline it away. The cartridge keeps only _ZN10dBgActor_cD1Ev (ov002:0x020ee42c) and _ZN10dBgActor_cD0Ev (ov002:0x020ee464) and has no dBgActor_c D2 at all, so this copy has no canonical owner and is simply discarded."
+    },
     {
       "symbol": "_ZN7Vector3D1Ev",
       "disposition": "deadstrip-duplicate",
