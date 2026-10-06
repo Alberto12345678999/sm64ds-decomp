@@ -3818,8 +3818,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN6Camera11ChangeStateEPNS_5StateE.cpp",
-      "name": "_ZN6Camera11ChangeStateEPNS_5StateE",
+      "file": "src/_ZN9dCamera_c11ChangeStateEPNS_5StateE.cpp",
+      "name": "_ZN9dCamera_c11ChangeStateEPNS_5StateE",
       "module": "arm9",
       "addr": "0x200cb70",
       "verdict": "VERIFIED",
@@ -3827,8 +3827,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN6Camera14GoBehindPlayerEj.cpp",
-      "name": "_ZN6Camera14GoBehindPlayerEj",
+      "file": "src/_ZN9dCamera_c14GoBehindPlayerEj.cpp",
+      "name": "_ZN9dCamera_c14GoBehindPlayerEj",
       "module": "arm9",
       "addr": "0x200d304",
       "verdict": "VERIFIED",
@@ -3836,8 +3836,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN6Camera8BehaviorEv.cpp",
-      "name": "_ZN6Camera8BehaviorEv",
+      "file": "src/_ZN9dCamera_c8BehaviorEv.cpp",
+      "name": "_ZN9dCamera_c8BehaviorEv",
       "module": "arm9",
       "addr": "0x200debc",
       "verdict": "VERIFIED",
@@ -20070,7 +20070,7 @@
           "src/_ZN5Stage22RenderModelTransparentEv.cpp",
           "src/_ZN5Timer9StopTimerEv.cpp",
           "src/_ZN5dCc_c6UpdateEv.cpp",
-          "src/_ZN6Camera8BehaviorEv.cpp",
+          "src/_ZN9dCamera_c8BehaviorEv.cpp",
           "src/_ZN6Fwoosh8BehaviorEv.cpp",
           "src/_ZN6Player12St_Dive_InitEv.cpp",
           "src/_ZN6Player12St_Walk_InitEv.cpp",
@@ -20189,7 +20189,7 @@
           "src/_ZN5Stage22RenderModelTransparentEv.cpp",
           "src/_ZN5Timer9StopTimerEv.cpp",
           "src/_ZN5dCc_c6UpdateEv.cpp",
-          "src/_ZN6Camera8BehaviorEv.cpp",
+          "src/_ZN9dCamera_c8BehaviorEv.cpp",
           "src/_ZN6Fwoosh8BehaviorEv.cpp",
           "src/_ZN6Player12St_Dive_InitEv.cpp",
           "src/_ZN6Player12St_Walk_InitEv.cpp",
@@ -21106,7 +21106,7 @@
           "src/_ZN5Stage17PS_UpdateSaveMenuEb.cpp",
           "src/_ZN5Timer10StartTimerEv.cpp",
           "src/_ZN5Whomp16CleanupResourcesEv.cpp",
-          "src/_ZN6Camera11ChangeStateEPNS_5StateE.cpp",
+          "src/_ZN9dCamera_c11ChangeStateEPNS_5StateE.cpp",
           "src/_ZN6Eyerok13InitResourcesEv.cpp",
           "src/_ZN6Player11St_Owl_InitEv.cpp",
           "src/_ZN6Player12St_Land_MainEv.cpp",
@@ -21231,7 +21231,7 @@
           "src/_ZN5Stage17PS_UpdateSaveMenuEb.cpp",
           "src/_ZN5Timer10StartTimerEv.cpp",
           "src/_ZN5Whomp16CleanupResourcesEv.cpp",
-          "src/_ZN6Camera11ChangeStateEPNS_5StateE.cpp",
+          "src/_ZN9dCamera_c11ChangeStateEPNS_5StateE.cpp",
           "src/_ZN6Eyerok13InitResourcesEv.cpp",
           "src/_ZN6Player11St_Owl_InitEv.cpp",
           "src/_ZN6Player12St_Land_MainEv.cpp",
@@ -21365,7 +21365,7 @@
           "src/_ZN5Stage17UpdateMenuButtonsEb.cpp",
           "src/_ZN5Timer7GetTimeEv.cpp",
           "src/_ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b.cpp",
-          "src/_ZN6Camera14GoBehindPlayerEj.cpp",
+          "src/_ZN9dCamera_c14GoBehindPlayerEj.cpp",
           "src/_ZN6Fwoosh13InitResourcesEv.cpp",
           "src/_ZN6Player11St_Owl_MainEv.cpp",
           "src/_ZN6Player12St_Wait_MainEv.cpp",
@@ -21488,7 +21488,7 @@
           "src/_ZN5Stage17UpdateMenuButtonsEb.cpp",
           "src/_ZN5Timer7GetTimeEv.cpp",
           "src/_ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b.cpp",
-          "src/_ZN6Camera14GoBehindPlayerEj.cpp",
+          "src/_ZN9dCamera_c14GoBehindPlayerEj.cpp",
           "src/_ZN6Fwoosh13InitResourcesEv.cpp",
           "src/_ZN6Player11St_Owl_MainEv.cpp",
           "src/_ZN6Player12St_Wait_MainEv.cpp",
@@ -21813,9 +21813,9 @@
         "src/_ZN7daKpa_c8BehaviorEv.cpp",
         "src/_ZN6Bullet13InitResourcesEv.cpp",
         "src/_ZN6Bullet8BehaviorEv.cpp",
-        "src/_ZN6Camera11ChangeStateEPNS_5StateE.cpp",
-        "src/_ZN6Camera14GoBehindPlayerEj.cpp",
-        "src/_ZN6Camera8BehaviorEv.cpp",
+        "src/_ZN9dCamera_c11ChangeStateEPNS_5StateE.cpp",
+        "src/_ZN9dCamera_c14GoBehindPlayerEj.cpp",
+        "src/_ZN9dCamera_c8BehaviorEv.cpp",
         "src/_ZN6Coffin13InitResourcesEv.cpp",
         "src/_ZN6Coffin16CleanupResourcesEv.cpp",
         "src/_ZN6Coffin8BehaviorEv.cpp",
@@ -23167,16 +23167,16 @@
           "name": "_ZN6Bullet8BehaviorEv"
         },
         {
-          "file": "src/_ZN6Camera11ChangeStateEPNS_5StateE.cpp",
-          "name": "_ZN6Camera11ChangeStateEPNS_5StateE"
+          "file": "src/_ZN9dCamera_c11ChangeStateEPNS_5StateE.cpp",
+          "name": "_ZN9dCamera_c11ChangeStateEPNS_5StateE"
         },
         {
-          "file": "src/_ZN6Camera14GoBehindPlayerEj.cpp",
-          "name": "_ZN6Camera14GoBehindPlayerEj"
+          "file": "src/_ZN9dCamera_c14GoBehindPlayerEj.cpp",
+          "name": "_ZN9dCamera_c14GoBehindPlayerEj"
         },
         {
-          "file": "src/_ZN6Camera8BehaviorEv.cpp",
-          "name": "_ZN6Camera8BehaviorEv"
+          "file": "src/_ZN9dCamera_c8BehaviorEv.cpp",
+          "name": "_ZN9dCamera_c8BehaviorEv"
         },
         {
           "file": "src/_ZN6Coffin13InitResourcesEv.cpp",

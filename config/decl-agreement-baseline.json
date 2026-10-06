@@ -107,15 +107,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/func_0200bec4.c": [
-        "param:#1 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_0200d858.c": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/func_ov002_020f7bb8.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -160,6 +151,9 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "AngleDiff": {
@@ -951,11 +945,6 @@
         "return:void"
       ]
     },
-    "FUN_02029a68": {
-      "src/_ZN6Camera9SetFlag_3Ev.cpp": [
-        "arity:1"
-      ]
-    },
     "GetAngleToCamera": {
       "src/_ZN6Player8BehaviorEv.cpp": [
         "param:#1 unsigned char"
@@ -1018,10 +1007,7 @@
       ]
     },
     "GetViewObj": {
-      "src/_ZN6Camera13InitResourcesEv.cpp": [
-        "return:ViewObj *"
-      ],
-      "src/func_0200c66c.c": [
+      "src/engine/view/dCamera_c.cpp": [
         "return:void *"
       ]
     },
@@ -1483,9 +1469,6 @@
       ]
     },
     "Math_Function_0203b14c": {
-      "src/func_0200bec4.c": [
-        "return:void"
-      ],
       "src/game/actors/d_a_obj_bk_dossunbar.cpp": [
         "return:void"
       ],
@@ -1755,9 +1738,6 @@
       "src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.cpp": [
         "arity:1"
       ],
-      "src/d_camera.cpp": [
-        "arity:1"
-      ],
       "src/func_02044efc.c": [
         "arity:1"
       ],
@@ -1768,6 +1748,9 @@
         "arity:1"
       ],
       "src/func_ov007_020c0128.cpp": [
+        "arity:1"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
         "arity:1"
       ]
     },
@@ -1873,6 +1856,9 @@
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
         "param:#3 Matrix4x3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "MulVec3Mat3x3": {
@@ -2008,6 +1994,9 @@
       "src/engine/collision/dClipper.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "MultiCopyHalf": {
@@ -3720,10 +3709,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/func_0200bec4.c": [
-        "param:#1 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/func_ov007_020c2390.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -3777,6 +3762,9 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "SublevelToLevel": {
@@ -3930,6 +3918,10 @@
         "param:#3 Vector3 *"
       ],
       "src/actors/daYegg_c.cpp": [
+        "param:#2 const void *",
+        "param:#3 const void *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
         "param:#2 const void *",
         "param:#3 const void *"
       ]
@@ -4205,6 +4197,10 @@
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_DivScalarInPlace": {
@@ -4228,10 +4224,6 @@
       ]
     },
     "Vec3_HorzAngle": {
-      "src/_ZN6Camera8BehaviorEv.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -4374,6 +4366,10 @@
       "src/game/actors/d_a_obj_c1_trap.cpp": [
         "param:#1 const TrapVector3 *",
         "param:#2 const TrapVector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_HorzDist": {
@@ -4472,6 +4468,10 @@
       "src/game/actors/daObjPushblock_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_HorzLen": {
@@ -4495,6 +4495,9 @@
       ],
       "src/func_ov009_0211145c.c": [
         "param:#1 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 const void *"
       ]
     },
     "Vec3_Lsl": {
@@ -4622,6 +4625,9 @@
       "src/game/actors/d_a_obj_wl_polelift.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "Vec3_MulScalarInPlace": {
@@ -4689,14 +4695,6 @@
         "param:#2 int",
         "param:#4 const int *"
       ],
-      "src/func_0200bec4.c": [
-        "param:#1 Vector3 *"
-      ],
-      "src/func_0200cce4.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#4 Vector3 *"
-      ],
       "src/func_ov002_020bd250.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
@@ -4726,6 +4724,10 @@
       "src/game/actors/d_a_star_gate.cpp": [
         "param:#1 Vector3 *",
         "param:#4 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *",
+        "param:#4 const void *"
       ]
     },
     "Vec3_Sub": {
@@ -4851,10 +4853,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/func_0200bec4.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov009_0211145c.c": [
         "param:#1 Vector3 *",
         "return:int"
@@ -4902,13 +4900,13 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *",
+        "param:#3 const void *"
       ]
     },
     "Vec3_VertAngle": {
-      "src/_ZN6Camera8BehaviorEv.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/actors/daBombking_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -4958,6 +4956,10 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_wanwan.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -5197,9 +5199,6 @@
       ]
     },
     "_Z14ApproachLinearRiii": {
-      "src/_ZN6Camera8BehaviorEv.cpp": [
-        "param:#1 int &"
-      ],
       "src/_ZN6Player13St_Throw_MainEv.cpp": [
         "param:#1 int &",
         "return:int"
@@ -5281,9 +5280,6 @@
       ]
     },
     "_Z15ApproachLinear2Rsss": {
-      "src/_ZN6Camera8BehaviorEv.cpp": [
-        "param:#1 short &"
-      ],
       "src/_ZN6Player14St_Thrown_MainEv.cpp": [
         "return:void"
       ],
@@ -5312,10 +5308,6 @@
       ],
       "src/func_0200840c.c": [
         "return:short"
-      ],
-      "src/func_0200ca50.cpp": [
-        "param:#1 short &",
-        "return:void"
       ],
       "src/func_ov002_020df8f0.c": [
         "return:void"
@@ -7570,10 +7562,6 @@
       ]
     },
     "_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3": {
-      "src/_ZN6Camera6RenderEv.cpp": [
-        "param:#7 bool",
-        "param:#8 Matrix4x3 *"
-      ],
       "src/actors/dEntObj_c.cpp": [
         "param:#7 bool",
         "param:#8 Matrix4x3 *"
@@ -7585,6 +7573,10 @@
         "param:#8 Matrix4x3 *"
       ],
       "src/func_ov007_020c0078.c": [
+        "param:#8 Matrix4x3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#7 bool",
         "param:#8 Matrix4x3 *"
       ]
     },
@@ -8099,9 +8091,6 @@
       "src/_ZN5Stage9LC_RenderEv.cpp": [
         "return:int"
       ],
-      "src/_ZN6Camera6RenderEv.cpp": [
-        "param:#1 bool"
-      ],
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:void *"
       ],
@@ -8129,6 +8118,9 @@
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 bool"
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi": {
@@ -9253,74 +9245,7 @@
         "return:void"
       ]
     },
-    "_ZN6Camera11ChangeStateEPNS_5StateE": {
-      "src/_ZN6Camera13InitResourcesEv.cpp": [
-        "param:#2 Camera_State *"
-      ],
-      "src/_ZN6Camera14GoBehindPlayerEj.cpp": [
-        "return:void"
-      ],
-      "src/func_0200d10c.c": [
-        "return:void"
-      ],
-      "src/func_0200d148.c": [
-        "return:void"
-      ],
-      "src/func_0200d3f8.c": [
-        "return:void"
-      ],
-      "src/func_0200d438.c": [
-        "return:void"
-      ],
-      "src/func_0200d474.c": [
-        "return:void"
-      ],
-      "src/func_0200d508.c": [
-        "return:void"
-      ],
-      "src/func_0200d544.c": [
-        "return:void"
-      ],
-      "src/func_0200d580.c": [
-        "return:void"
-      ],
-      "src/func_0200d5c0.c": [
-        "return:void"
-      ],
-      "src/func_0200d5fc.c": [
-        "return:void"
-      ],
-      "src/func_0200d63c.c": [
-        "return:void"
-      ],
-      "src/func_0200d678.c": [
-        "return:void"
-      ],
-      "src/func_0200d6b4.c": [
-        "return:void"
-      ],
-      "src/func_0200d6f0.c": [
-        "return:void"
-      ],
-      "src/func_0200d72c.c": [
-        "return:void"
-      ],
-      "src/func_0200d768.c": [
-        "return:void"
-      ],
-      "src/func_0200d7a4.c": [
-        "return:void"
-      ],
-      "src/func_0200d7e0.c": [
-        "param:#2 Camera_State *",
-        "return:void"
-      ],
-      "src/func_0200d81c.c": [
-        "param:#2 Camera_State *",
-        "return:void"
-      ]
-    },
-    "_ZN6Camera6SetPosERK7Vector3": {
+    "_ZN9dCamera_c6SetPosERK7Vector3": {
       "src/actors/daKpa_c.cpp": [
         "param:#2 const Vector3 *"
       ],
@@ -9328,12 +9253,12 @@
         "param:#2 void *"
       ]
     },
-    "_ZN6Camera9SetFlag_3Ev": {
+    "_ZN9dCamera_c9SetFlag_3Ev": {
       "src/game/actors/d_a_star_gate.cpp": [
         "return:int"
       ]
     },
-    "_ZN6Camera9SetLookAtERK7Vector3": {
+    "_ZN9dCamera_c9SetLookAtERK7Vector3": {
       "src/actors/daKpa_c.cpp": [
         "param:#2 const Vector3 *"
       ],
@@ -12187,7 +12112,6 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation12SetAnimationEti5Fix12IiEt": {},
     "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
@@ -12575,15 +12499,6 @@
       "src/func_0200b798.c": [
         "param:#2 const Vector3 *"
       ],
-      "src/func_0200bec4.c": [
-        "param:#2 const Vector3 *"
-      ],
-      "src/func_0200c66c.c": [
-        "param:#2 Vector3 *"
-      ],
-      "src/func_0200cce4.c": [
-        "param:#2 Vector3 *"
-      ],
       "src/func_0200fa04.c": [
         "param:#2 Vector3 *"
       ],
@@ -12611,6 +12526,9 @@
       ],
       "src/game/actors/d_a_shl.cpp": [
         "param:#2 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "_ZN9dBgCh_GndD1Ev": {
@@ -12644,15 +12562,6 @@
       "src/func_0200b798.c": [
         "return:void"
       ],
-      "src/func_0200bec4.c": [
-        "return:void"
-      ],
-      "src/func_0200c66c.c": [
-        "return:void"
-      ],
-      "src/func_0200cce4.c": [
-        "return:void"
-      ],
       "src/func_0200fa04.c": [
         "return:void"
       ],
@@ -12681,15 +12590,6 @@
       "src/func_02009e70.cpp": [
         "mangled:2 parameter(s)"
       ],
-      "src/func_0200bec4.c": [
-        "mangled:2 parameter(s)"
-      ],
-      "src/func_0200c66c.c": [
-        "mangled:2 parameter(s)"
-      ],
-      "src/func_0200cce4.c": [
-        "mangled:2 parameter(s)"
-      ],
       "src/func_ov002_020d0178.c": [
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
@@ -12708,24 +12608,15 @@
       ],
       "src/engine/collision/dBgCh_Actr.cpp": [
         "mangled:2 parameter(s)"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "mangled:2 parameter(s)"
       ]
     },
     "_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c": {
       "src/func_0200b990.c": [
         "param:#2 V3 *",
         "param:#3 V3 *"
-      ],
-      "src/func_0200bec4.c": [
-        "param:#2 const Vector3 *",
-        "param:#3 const Vector3 *"
-      ],
-      "src/func_0200c66c.c": [
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_0200cce4.c": [
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
       ],
       "src/func_ov002_020d8a50.c": [
         "param:#2 Vector3 *",
@@ -12738,6 +12629,14 @@
       "src/func_ov002_020d0178.c": [
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
+      ],
+      "src/engine/collision/dBgCh_Actr.cpp": [
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 const void *",
+        "param:#3 const void *"
       ]
     },
     "_ZN9dBgCh_LinD1Ev": {
@@ -12753,15 +12652,6 @@
       "src/func_0200b990.c": [
         "return:void"
       ],
-      "src/func_0200bec4.c": [
-        "return:void"
-      ],
-      "src/func_0200c66c.c": [
-        "return:void"
-      ],
-      "src/func_0200cce4.c": [
-        "return:void"
-      ],
       "src/func_ov002_020d0178.c": [
         "return:void"
       ],
@@ -12769,6 +12659,9 @@
         "return:void"
       ],
       "src/func_ov002_020d8a50.c": [
+        "return:void"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
         "return:void"
       ]
     },
@@ -13031,7 +12924,7 @@
         "return:unsigned int"
       ]
     },
-    "_ZTV6Camera": {
+    "_ZTV9dCamera_c": {
       "include/decl_common.h": [
         "return:unsigned int"
       ]
@@ -13392,22 +13285,9 @@
         "return:int []"
       ]
     },
-    "data_02086f2c": {
-      "src/func_0200d1e4.c": [
-        "return:int []"
-      ]
-    },
-    "data_02087274": {
-      "src/func_0200c66c.c": [
-        "return:char"
-      ]
-    },
     "data_0208733c": {
       "include/decl_common.h": [
         "return:unsigned int"
-      ],
-      "src/func_0200c66c.c": [
-        "return:char"
       ]
     },
     "data_020873dc": {
@@ -13839,9 +13719,6 @@
       "src/_ZN8daDemo_c6RenderEv.cpp": [
         "return:M48"
       ],
-      "src/_ZN6Camera8BehaviorEv.cpp": [
-        "return:char"
-      ],
       "src/func_ov002_020f6c60.c": [
         "return:int"
       ],
@@ -13879,9 +13756,6 @@
         "return:int"
       ],
       "src/_ZN5Stage9PS_UpdateEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN6Camera8BehaviorEv.cpp": [
         "return:int"
       ],
       "src/actors/daObjKey_c.cpp": [
@@ -14707,9 +14581,6 @@
       ]
     },
     "data_0209ee90": {
-      "src/_ZN6Camera6RenderEv.cpp": [
-        "return:int []"
-      ],
       "src/_ZN6Player15St_Swallow_MainEv.cpp": [
         "return:int []"
       ],
@@ -14724,6 +14595,9 @@
       ],
       "src/func_020197b8.c": [
         "return:unsigned char []"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "return:int []"
       ]
     },
     "data_0209f1f8": {
@@ -14763,53 +14637,6 @@
     "data_0209f228": {
       "src/StartFile.c": [
         "return:unsigned char []"
-      ]
-    },
-    "data_0209f250": {
-      "src/func_0200d10c.c": [
-        "return:int"
-      ],
-      "src/func_0200d148.c": [
-        "return:int"
-      ],
-      "src/func_0200d3f8.c": [
-        "return:int"
-      ],
-      "src/func_0200d438.c": [
-        "return:int"
-      ],
-      "src/func_0200d474.c": [
-        "return:int"
-      ],
-      "src/func_0200d508.c": [
-        "return:int"
-      ],
-      "src/func_0200d544.c": [
-        "return:int"
-      ],
-      "src/func_0200d5c0.c": [
-        "return:int"
-      ],
-      "src/func_0200d63c.c": [
-        "return:int"
-      ],
-      "src/func_0200d678.c": [
-        "return:int"
-      ],
-      "src/func_0200d6b4.c": [
-        "return:int"
-      ],
-      "src/func_0200d6f0.c": [
-        "return:int"
-      ],
-      "src/func_0200d72c.c": [
-        "return:int"
-      ],
-      "src/func_0200d768.c": [
-        "return:int"
-      ],
-      "src/func_0200d7a4.c": [
-        "return:int"
       ]
     },
     "data_0209f258": {
@@ -15021,7 +14848,7 @@
         "return:char *"
       ],
       "src/game/actors/d_a_red_bombhei.cpp": [
-        "return:Camera *"
+        "return:dCamera_c *"
       ],
       "src/_ZN5Stage16CheckCameraInputEv.cpp": [
         "return:unsigned char *"
@@ -15078,7 +14905,7 @@
         "return:char []"
       ],
       "src/actors/daObj_Mip_Key_c.cpp": [
-        "return:Camera *"
+        "return:dCamera_c *"
       ],
       "src/func_ov002_020d2da0.c": [
         "return:char *"
@@ -15087,19 +14914,19 @@
         "return:int"
       ],
       "src/func_ov002_020df34c.cpp": [
-        "return:Camera *"
+        "return:dCamera_c *"
       ],
       "src/func_ov002_020f6c60.c": [
         "return:char *"
       ],
       "src/game/actors/d_a_set_se.cpp": [
-        "return:Camera *"
+        "return:dCamera_c *"
       ],
       "src/game/actors/d_a_star_gate.cpp": [
-        "return:Camera *"
+        "return:dCamera_c *"
       ],
       "src/game/actors/d_a_tree.cpp": [
-        "return:Camera *"
+        "return:dCamera_c *"
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:int"
@@ -15298,9 +15125,6 @@
       ],
       "src/func_0200af20.c": [
         "return:char []"
-      ],
-      "src/func_0200d954.c": [
-        "return:int"
       ]
     },
     "data_0209f498": {
@@ -23227,7 +23051,7 @@
     },
     "func_020070e8": {
       "src/func_020075b4.c": [
-        "param:#1 Camera *",
+        "param:#1 dCamera_c *",
         "param:#4 short"
       ],
       "src/func_02007758.c": [
@@ -23315,7 +23139,7 @@
         "param:#1 int"
       ],
       "src/func_02009540.c": [
-        "param:#1 Camera *",
+        "param:#1 dCamera_c *",
         "return:void"
       ]
     },
@@ -23324,7 +23148,7 @@
         "param:#2 void *"
       ],
       "src/func_02009540.c": [
-        "param:#2 Camera *"
+        "param:#2 dCamera_c *"
       ],
       "src/func_02009aa8.c": [
         "param:#2 void *"
@@ -23349,16 +23173,18 @@
       "src/func_0200b0fc.c": [
         "param:#1 void *"
       ],
-      "src/func_0200cbe0.c": [
-        "param:#1 void *"
-      ],
       "src/actors/daKpa_c.cpp": [
         "param:#1 void *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 void *",
+        "param:#2 Vec3 *",
+        "param:#3 Vec3 *"
       ]
     },
     "func_02009414": {
       "src/func_02008028.c": [
-        "param:#1 Camera *",
+        "param:#1 dCamera_c *",
         "return:void"
       ],
       "src/func_020082a0.c": [
@@ -23382,9 +23208,9 @@
       ]
     },
     "func_0200af20": {
-      "src/_ZN6Camera6RenderEv.cpp": [
-        "param:#2 int *",
-        "param:#3 int *"
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#2 Vec3 *",
+        "param:#3 Vec3 *"
       ]
     },
     "func_0200b0fc": {
@@ -23403,12 +23229,6 @@
         "param:#4 CamMode *"
       ]
     },
-    "func_0200c394": {
-      "src/func_0200c66c.c": [
-        "param:#4 Vector3 *",
-        "param:#6 int"
-      ]
-    },
     "func_0200c66c": {
       "include/decl_common.h": [
         "param:#3 int *",
@@ -23425,23 +23245,6 @@
         "param:#2 unsigned char"
       ]
     },
-    "func_0200cbe0": {
-      "src/func_0200ca50.cpp": [
-        "return:int"
-      ]
-    },
-    "func_0200cf40": {
-      "src/_ZN6Camera13InitResourcesEv.cpp": [
-        "param:#1 Camera *"
-      ]
-    },
-    "func_0200d0ac": {
-      "src/_ZN6Camera13InitResourcesEv.cpp": [
-        "param:#1 Camera *",
-        "param:#2 unsigned char",
-        "return:void"
-      ]
-    },
     "func_0200d438": {
       "src/func_ov002_020df300.c": [
         "param:#1 int"
@@ -23456,11 +23259,6 @@
       ],
       "src/actors/dActor_c.cpp": [
         "arity:2"
-      ]
-    },
-    "func_0200d954": {
-      "src/func_0200cf40.c": [
-        "param:#2 int"
       ]
     },
     "func_0200e494": {
@@ -24034,14 +23832,6 @@
         "return:void"
       ],
       "src/actors/daStar_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/func_0200d064.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/func_0200d0ac.c": [
         "param:#1 int",
         "return:void"
       ],
@@ -26827,7 +26617,6 @@
         "param:#2 int"
       ]
     },
-    "func_02035394": {},
     "func_020353b0": {
       "src/_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c.cpp": [
         "param:#2 dActor_c *"
@@ -26871,7 +26660,6 @@
         "param:#2 const Vector3 *"
       ]
     },
-    "func_020375ec": {},
     "func_02037608": {
       "src/_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c.cpp": [
         "param:#1 dBgCh_Lin *"
@@ -26907,8 +26695,6 @@
         "return:dBgPi *"
       ]
     },
-    "func_02037940": {},
-    "func_0203794c": {},
     "func_02037968": {
       "src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp": [
         "param:#5 void *"
@@ -26945,7 +26731,6 @@
         "param:#5 A *"
       ]
     },
-    "func_02037a04": {},
     "func_02037a38": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -26954,7 +26739,6 @@
         "param:#1 char *"
       ]
     },
-    "func_02037a6c": {},
     "func_02037dc4": {
       "src/_ZN8dActor_c17DetectRaycastClsnER7Vector3S1_b.cpp": [
         "param:#1 SurfaceInfo *",
@@ -35339,7 +35123,7 @@
       "src/func_0200af20.c": [
         "param:#3 int"
       ],
-      "src/func_0200d954.c": [
+      "src/engine/view/dCamera_c.cpp": [
         "param:#3 int"
       ]
     }

@@ -1,12 +1,14 @@
-/* Camera's evidenced object layout and real dView_c inheritance.
+/* dCamera_c's evidenced object layout and real dView_c inheritance.
  * Offsets and widths are observed from matched functions; gaps remain explicit.
  * Field names are descriptive and do not affect code generation. */
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef DCAMERA_C_H
+#define DCAMERA_C_H
 #include "dView_c.h"
 
-struct Camera : dView_c {
-    /* Nested, and only ever needed as a pointer -- Camera::ChangeState is
+struct dActor_c;
+
+struct dCamera_c : dView_c {
+    /* Nested, and only ever needed as a pointer -- dCamera_c::ChangeState is
        mangled `PNS_5StateE`, which IS the nesting, so the declaration is
        evidence rather than convention. Layout not recovered; nothing here
        dereferences one.
@@ -17,7 +19,7 @@ struct Camera : dView_c {
 
     /* dView_c occupies 0x00..0x7f; its Matrix4x3 is at 0x50. */
     /* The camera proper: where it looks and where it is. Both are twelve-byte
-       Vector3s -- Camera::SetLookAt and Camera::SetPos each write exactly three
+       Vector3s -- dCamera_c::SetLookAt and dCamera_c::SetPos each write exactly three
        words, at 0x80 and 0x8c. */
     Vector3 lookAt;            /* 0x080 */
     Vector3 pos;            /* 0x08c */
@@ -41,7 +43,7 @@ struct Camera : dView_c {
     /* Owned; CleanupResources deletes it. */
     void* mFixedViewPos;            /* 0x148 */
     u8  pad_14c[0x8];
-    /* Flag word. Bit 0 is under-water (Camera::IsUnderwater returns it
+    /* Flag word. Bit 0 is under-water (dCamera_c::IsUnderwater returns it
        masked, not normalised); 0x10 vetoes a state change; 0x4000 records
        that the pre-talk save has been taken. */
     u32 mFlags;            /* 0x154 */
@@ -56,8 +58,8 @@ struct Camera : dView_c {
     s16 mAngleY;            /* 0x17c */
     u8  pad_17e[0x28];
     u8  unk_1a6;            /* 0x1a6 */
-    Camera();
-    virtual ~Camera();
+    dCamera_c();
+    virtual ~dCamera_c();
 
     /* fBase_c virtual overrides, in their inherited slots. */
     virtual s32 InitResources();
@@ -71,13 +73,15 @@ struct Camera : dView_c {
     void GoBehindPlayer(u32 playerID);
     int IsUnderwater() const;
     void SaveCameraStateBeforeTalk();
+    void LookAtExit(dActor_c &actor);
+    void SetFlag_3();
     void SetLookAt(const Vector3 & lookAt_);
     void SetPos(const Vector3 & pos_);
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Camera_size_must_be_0x1a8[sizeof(struct Camera) == 0x1a8 ? 1 : -1];
+typedef char Camera_size_must_be_0x1a8[sizeof(struct dCamera_c) == 0x1a8 ? 1 : -1];
 #endif
 
 #endif

@@ -439,13 +439,13 @@ extern "C" {
 /* recovered: shared common types */
 /* func_ov006_020c3b2c at 0x020c3b2c
  *
- * Camera preset init: sets eye/target vectors and angle, then
+ * dCamera_c preset init: sets eye/target vectors and angle, then
  * tail-calls Camera_UpdateMatrices. Sibling of func_ov006_020c225c.
  */
 
 struct Matrix4x3_local { int data[12]; };
 
-struct Camera {
+struct dCamera_c {
     struct Matrix4x3_local viewMat;  /* 0x00 */
     char pad30[0x30];          /* 0x30 */
     struct Matrix4x3_local projMat;  /* 0x60 */
@@ -456,7 +456,7 @@ struct Camera {
 };
 
 
-void func_ov006_020c3b2c(struct Camera *self)
+void func_ov006_020c3b2c(struct dCamera_c *self)
 {
     self->eye.x = 0x1b000;
     self->eye.y = 0x17600;
@@ -1327,7 +1327,7 @@ extern "C" {
 
 struct Matrix4x3_local { int data[12]; };
 
-struct Camera {
+struct dCamera_c {
     struct Matrix4x3_local viewMat;  /* 0x00 */
     char pad30[0x30];          /* 0x30 */
     struct Matrix4x3_local projMat;  /* 0x60 */
@@ -1338,7 +1338,7 @@ struct Camera {
 };
 
 
-void func_ov006_020c225c(struct Camera *self)
+void func_ov006_020c225c(struct dCamera_c *self)
 {
     self->eye.x = 0;
     self->eye.y = 0;
@@ -1525,13 +1525,13 @@ extern "C" {
 /* recovered: shared common types */
 /* func_ov006_020c1eb4 at 0x020c1eb4
  *
- * Camera preset init: sets eye/target vectors and angle, then
+ * dCamera_c preset init: sets eye/target vectors and angle, then
  * tail-calls Camera_UpdateMatrices. Sibling of func_ov006_020c225c.
  */
 
 struct Matrix4x3_local { int data[12]; };
 
-struct Camera {
+struct dCamera_c {
     struct Matrix4x3_local viewMat;  /* 0x00 */
     char pad30[0x30];          /* 0x30 */
     struct Matrix4x3_local projMat;  /* 0x60 */
@@ -1542,7 +1542,7 @@ struct Camera {
 };
 
 
-void func_ov006_020c1eb4(struct Camera *self)
+void func_ov006_020c1eb4(struct dCamera_c *self)
 {
     self->eye.x = 0;
     self->eye.y = 0xe000;
@@ -2314,13 +2314,13 @@ extern "C" {
 /* recovered: shared common types */
 /* func_ov006_020c0aa8 at 0x020c0aa8
  *
- * Camera preset init: sets eye/target vectors and angle, then
+ * dCamera_c preset init: sets eye/target vectors and angle, then
  * tail-calls Camera_UpdateMatrices. Sibling of func_ov006_020c225c.
  */
 
 struct Matrix4x3_local { int data[12]; };
 
-struct Camera {
+struct dCamera_c {
     struct Matrix4x3_local viewMat;  /* 0x00 */
     char pad30[0x30];          /* 0x30 */
     struct Matrix4x3_local projMat;  /* 0x60 */
@@ -2331,7 +2331,7 @@ struct Camera {
 };
 
 
-void func_ov006_020c0aa8(struct Camera *self)
+void func_ov006_020c0aa8(struct dCamera_c *self)
 {
     self->eye.x = 0x200;
     self->eye.y = 0x9600;
@@ -2740,7 +2740,7 @@ typedef int s32;
 
 struct Matrix4x3_local { int data[12]; };
 
-struct Camera {
+struct dCamera_c {
     struct Matrix4x3_local viewMat;  /* 0x00 */
     char pad30[0x30];          /* 0x30 */
     struct Matrix4x3_local projMat;  /* 0x60 */
@@ -2754,7 +2754,7 @@ struct Camera {
 extern short data_02082214[];
 extern char data_0209f43c[];
 
-void Camera_UpdateMatrices(struct Camera *self)
+void Camera_UpdateMatrices(struct dCamera_c *self)
 {
     struct Vector3 up;
     struct Vector3 v1c;

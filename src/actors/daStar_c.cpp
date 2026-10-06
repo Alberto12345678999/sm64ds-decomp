@@ -37,6 +37,7 @@
 #include "decl_Actor.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
+#include "dCamera_c.h"
 
 /* Local shadow declarations carried from the legacy files verbatim.
  * NOT reconciled against real project headers -- check include/*.h for
@@ -243,7 +244,6 @@ extern void func_02035860(void* o, void* src);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern void *data_0209f318;
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
 extern unsigned char IsAreaShowing(int idx);
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern short data_02082214[];
@@ -372,8 +372,8 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c15FindWithActorIDEjPS_, from the legacy file for func_ov002_020e7554, NOT applied: extern char* _ZN8dActor_c15FindWithActorIDEjPS_(u32 actorID, char* prev); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e7554, NOT applied: extern char* _ZN8dActor_c10FindWithIDEj(u32 id); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020e763c, NOT applied: extern int data_0209b454; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Camera9SetLookAtERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN6Camera9SetLookAtERK7Vector3(void* cam, const Vector3* v); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Camera6SetPosERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN6Camera6SetPosERK7Vector3(void* cam, const Vector3* v); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9dCamera_c9SetLookAtERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN9dCamera_c9SetLookAtERK7Vector3(void* cam, const Vector3* v); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN9dCamera_c6SetPosERK7Vector3, from the legacy file for func_ov002_020e7934, NOT applied: extern void _ZN9dCamera_c6SetPosERK7Vector3(void* cam, const Vector3* v); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_Dist, from the legacy file for func_ov002_020e7934, NOT applied: extern int Vec3_Dist(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e7fcc, NOT applied: extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 effect, Fix12i x, Fix12i y, Fix12i z, const void* rot, struct Callback* cb); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_, from the legacy file for func_ov002_020e7fcc, NOT applied: extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 effect, Fix12i x, Fix12i y, Fix12i z); */
@@ -2948,8 +2948,6 @@ void daStar_c::func_ov002_020e7d08() {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daStar_c19func_ov002_020e7c90EPv
 extern "C" {
-extern void _ZN6Camera9SetLookAtERK7Vector3(void* cam, void* v);
-extern void _ZN6Camera6SetPosERK7Vector3(void* cam, void* v);
 }
 
 int daStar_c::func_ov002_020e7c90(void* cam) {
@@ -2959,8 +2957,8 @@ int daStar_c::func_ov002_020e7c90(void* cam) {
     a = (char *)_ZN8dActor_c15FindWithActorIDEjPS_(0xb1, a);
     if(a == 0) break;
     if(*(unsigned char*)(c+0x49d) == (*(unsigned int*)(a+8) & 0xf)){
-      _ZN6Camera9SetLookAtERK7Vector3(cam, c+0x5c);
-      _ZN6Camera6SetPosERK7Vector3(cam, a+0x5c);
+      ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)(c+0x5c));
+      ((dCamera_c *)cam)->SetPos(*(const Vector3 *)(a+0x5c));
       return 1;
     }
   }
@@ -2982,7 +2980,7 @@ void daStar_c::func_ov002_020e7934(void* cam) {
     vec[0].x = *(int*)(self + 0x5c);
     vec[0].y = *(int*)(self + 0x60);
     vec[0].z = *(int*)(self + 0x64);
-    _ZN6Camera9SetLookAtERK7Vector3(cam, &vec[0]);
+    ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)&vec[0]);
 
     vec[0].y += 0xc8000;
     vec[1] = vec[0];
@@ -3008,7 +3006,7 @@ void daStar_c::func_ov002_020e7934(void* cam) {
             int k = (unsigned short)(short)(ang + ((r6 & 3) << 14)) >> 4;
             vec[0].x = data_02082214[k * 2] * 1000 + vec[0].x;
             vec[0].z = data_02082214[k * 2 + 1] * 1000 + vec[0].z;
-            _ZN6Camera6SetPosERK7Vector3(cam, &vec[0]);
+            ((dCamera_c *)cam)->SetPos(*(const Vector3 *)&vec[0]);
         } else {
             if (!IsAreaShowing(*(signed char*)(self + 0xcc)))
                 return;
@@ -3016,7 +3014,7 @@ void daStar_c::func_ov002_020e7934(void* cam) {
             int k = (unsigned short)(short)(ang + ((r6 & 3) << 14)) >> 4;
             vec[0].x += (int)(((long long)dist * data_02082214[k * 2] + 0x800) >> 12);
             vec[0].z += (int)(((long long)dist * data_02082214[k * 2 + 1] + 0x800) >> 12);
-            _ZN6Camera6SetPosERK7Vector3(cam, &vec[0]);
+            ((dCamera_c *)cam)->SetPos(*(const Vector3 *)&vec[0]);
         }
 
         if (!IsAreaShowing(*(signed char*)(self + 0xcc)))
@@ -3037,7 +3035,7 @@ void daStar_c::func_ov002_020e7934(void* cam) {
                 r6 = (r6 + 1) & 0xff;
                 vec[0] = vec[1];
                 if (r6 >= 0x14) {
-                    _ZN6Camera6SetPosERK7Vector3(cam, (Vector3*)(self + 0x46c));
+                    ((dCamera_c *)cam)->SetPos(*(const Vector3 *)(self + 0x46c));
                     return;
                 }
                 continue;
@@ -3080,7 +3078,7 @@ void daStar_c::func_ov002_020e763c() {
         *(int *)(self + 0x474) = s2[2];
     }
         ((daStar_c *)(self))->func_ov002_020e7c90(cam);
-        _ZN6Camera9SetFlag_3Ev(cam);
+        ((dCamera_c *)cam)->SetFlag_3();
         if (((daStar_c *)(self))->func_ov002_020e7c90(cam) == 0)
             ((daStar_c *)(self))->func_ov002_020e7934(cam);
         *(u16 *)(((int)self + 0x496)) += 1;
@@ -3088,7 +3086,7 @@ void daStar_c::func_ov002_020e763c() {
     case 1:
         if (*(int *)(self + 0x440) != 2)
             return;
-        _ZN6Camera9SetLookAtERK7Vector3(cam, &v);
+        ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)&v);
         break;
     case 0x64:
     {
@@ -3101,19 +3099,19 @@ void daStar_c::func_ov002_020e763c() {
         *(int *)(self + 0x470) = s2[1];
         *(int *)(self + 0x474) = s2[2];
     }
-        _ZN6Camera9SetFlag_3Ev(cam);
+        ((dCamera_c *)cam)->SetFlag_3();
         if (((daStar_c *)(self))->func_ov002_020e7c90(cam) == 0)
             ((daStar_c *)(self))->func_ov002_020e7934(cam);
         *(u16 *)(((int)self + 0x496)) += 1;
         break;
     case 0x65:
-        _ZN6Camera9SetLookAtERK7Vector3(cam, &v);
+        ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)&v);
         if (*(int *)(self + 0x80) == 0x1000 || *(int *)(self + 0x80) == 0)
             ((SubSt *)(self + 0x400))->state = 0x1b6;
         break;
     case 0x1f4:
-        _ZN6Camera9SetLookAtERK7Vector3(cam, (Vec3 *)(self + 0x460));
-        _ZN6Camera6SetPosERK7Vector3(cam, (Vec3 *)(self + 0x46c));
+        ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)(self + 0x460));
+        ((dCamera_c *)cam)->SetPos(*(const Vector3 *)(self + 0x46c));
         *(u16 *)(((int)self + 0x496)) += 1;
         break;
     case 0x1f5:

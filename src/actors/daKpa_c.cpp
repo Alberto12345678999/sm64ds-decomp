@@ -47,6 +47,7 @@
 #include "daKirai_c.h"
 #include "types.h"
 #include "decl_common.h"
+#include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
@@ -155,14 +156,11 @@ struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual vo
 /* TUBUILD CONFLICT -- alternate #define of LAUND, from the legacy file for func_ov060_021130c0, NOT applied: #define LAUND(p) ((void*)(p)) */
 
 extern "C" {
-/* Camera base pointer; Bowser publishes itself into the target slot at +0x114,
+/* dCamera_c base pointer; Bowser publishes itself into the target slot at +0x114,
  * so the offset is a byte offset from this base, not a field of a known class. */
 extern char *data_0209f318;
 extern short data_02082214[];
 extern void* _ZN8dActor_c13ClosestPlayerEv(void *thiz);
-extern void _ZN6Camera9SetFlag_3Ev(void*);
-extern void _ZN6Camera9SetLookAtERK7Vector3(void*, const struct Vector3*);
-extern void _ZN6Camera6SetPosERK7Vector3(void*, const struct Vector3*);
 extern int Vec3_HorzDist(const struct Vector3*, const struct Vector3*);
 extern short Vec3_HorzAngle(const struct Vector3*, const struct Vector3*);
 extern int func_020092c4(void*, void*, void*);
@@ -3278,13 +3276,13 @@ int func_ov060_02111f08(void* arg0)
 
     switch (*(unsigned char*)(self + 0x444)) {
     case 0:
-        _ZN6Camera9SetFlag_3Ev(cam);
+        ((dCamera_c *)cam)->SetFlag_3();
         pv = (struct Vector3*)(player + 0x5c);
         sp.x = pv->x;
         sp.y = pv->y;
         sp.z = pv->z;
         sp.y = *(int*)(self + 0x60);
-        _ZN6Camera9SetLookAtERK7Vector3(cam, &sp);
+        ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)&sp);
         *(int*)(self + 0x42c) = sp.x;
         *(int*)(self + 0x430) = sp.y;
         *(int*)(self + 0x434) = sp.z;
@@ -3294,7 +3292,7 @@ int func_ov060_02111f08(void* arg0)
         *(int*)(self + 0x438) = *(int*)(self + 0x5c) + (int)(((long long)v * data_02082214[k * 2] + 0x800) >> 12);
         *(int*)(self + 0x43c) = *(int*)(self + 0x60) + 0xc8000;
         *(int*)(self + 0x440) = *(int*)(self + 0x64) + (int)(((long long)v * data_02082214[k * 2 + 1] + 0x800) >> 12);
-        _ZN6Camera6SetPosERK7Vector3(cam, (struct Vector3*)(self + 0x438));
+        ((dCamera_c *)cam)->SetPos(*(const Vector3 *)(self + 0x438));
         p = (unsigned char*)(self + 0x444);
         *p = *p + 1;
         break;

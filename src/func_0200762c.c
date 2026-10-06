@@ -1,9 +1,9 @@
-struct Camera;
+struct dCamera_c;
 
 extern int data_02086ec0[];
 extern void Vec3_RotateYAndTranslate(void *src, void *dst, short angle, void *unk);
 
-int func_0200762c(struct Camera *self)
+int func_0200762c(struct dCamera_c *self)
 {
     int stack[3];
     stack[0] = data_02086ec0[0];

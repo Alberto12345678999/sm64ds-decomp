@@ -20,7 +20,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Message.h"
 
 extern "C" {
@@ -49,7 +49,7 @@ unsigned int func_02012790(unsigned int a);
 void  func_02013868(int t, int x);
 void  StartMinigameMenu(u8 a);
 
-extern Camera *data_0209f318;
+extern dCamera_c *data_0209f318;
 extern int   data_0209caa0[];
 extern u8    data_0209d660;
 extern u8    data_0209d684;

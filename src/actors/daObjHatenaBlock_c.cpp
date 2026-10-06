@@ -116,7 +116,7 @@
 #include "Sound.h"
 #include "SaveData.h"
 #include "daSCoin_c.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "daShl_c.h"
 
 struct CLPS_Block;
@@ -965,12 +965,12 @@ void func_ov102_0214953c(daObjHatenaBlock_c* c, int p1, int p2)
     HbSpawnFrame f;
     int rnd;
     dActor_c* o;
-    Camera* g;
+    dCamera_c* g;
     func_ov102_02149684((int*)&f.pos, c);
     o = dActor_c::Spawn(
         ACTOR_OBJ_MARIO_CAP, (unsigned int)(p2 | (p1 << 8)), f.pos, 0, c->mAreaId, -1);
     if (o == 0) return;
-    g = *(Camera**)data_0209f318;
+    g = *(dCamera_c**)data_0209f318;
     f.vel[0] = 0;
     f.vel[1] = 0x11000;
     f.vel[2] = 0;
@@ -1065,7 +1065,7 @@ void func_ov102_021492d4(daObjHatenaBlock_c* c) {
   if ((int)(*(unsigned char*)(&data_0209f2d8) == 1) != 0) {
     rot.y = c->mAngleY;
   } else {
-    rot.y = ((Camera *)*(char**)data_0209f318)->mAngleY + 0x4000;
+    rot.y = ((dCamera_c *)*(char**)data_0209f318)->mAngleY + 0x4000;
   }
   dActor_c::Spawn(ACTOR_FEATHER, 0, pos, &rot, c->mAreaId, -1);
 }

@@ -36,7 +36,7 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "daKrb_c.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Message.h"
 
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
@@ -53,7 +53,6 @@ struct LoadedSharedFile {
 };
 #define FileOf(handle) ((LoadedSharedFile *)&(handle))->filePtr
 
-extern "C" void _ZN6Camera9SetFlag_3Ev(void* cam);
 extern "C" void Matrix4x3_FromRotationY(void* m, short ang);
 extern "C" void MulVec3Mat4x3(void* a, void* m, void* b);
 extern "C" char* data_0209f318;
@@ -207,7 +206,7 @@ extern "C" void func_ov074_0211f154(daKuriKing_c* c) {
     struct Vector3 look, pos, in, out;
     void* cam;
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
     look.x = c->mPosX;
@@ -223,8 +222,8 @@ extern "C" void func_ov074_0211f154(daKuriKing_c* c) {
     pos.x = pos.x + out.x;
     pos.y = pos.y + 0x300000;
     pos.z = pos.z + out.z;
-    ((Camera *)cam)->SetLookAt(look);
-    ((Camera *)cam)->SetPos(pos);
+    ((dCamera_c *)cam)->SetLookAt(look);
+    ((dCamera_c *)cam)->SetPos(pos);
 }
 
 // @symbol func_ov074_0211f244
@@ -740,7 +739,7 @@ extern "C" void func_ov074_021201f0(daKuriKing_c* c) {
 
     player = (Player*)c->ClosestPlayer();
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
 
     look.x = c->mPosX;
     look.y = c->mPosY;
@@ -754,8 +753,8 @@ extern "C" void func_ov074_021201f0(daKuriKing_c* c) {
     pos.x -= 0x2f0000;
     pos.y += 0x20000;
     pos.z += 0x254000;
-    ((Camera *)cam)->SetLookAt(look);
-    ((Camera *)cam)->SetPos(pos);
+    ((dCamera_c *)cam)->SetLookAt(look);
+    ((dCamera_c *)cam)->SetPos(pos);
 
     ang = *(struct Ang16*)&c->mAngleX;
     ang.v[1] += 0x7fff;
