@@ -1345,7 +1345,7 @@
       "src/actors/dScMgAmida_c.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "param:#1 int"
       ],
       "src/_ZN5Stage9PS_UpdateEv.cpp": [
@@ -7187,7 +7187,7 @@
       "src/LoadControllerModeText.c": [
         "return:int"
       ],
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
@@ -7216,7 +7216,7 @@
       ]
     },
     "_ZN2G212GetBG3ScrPtrEv": {
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN7Message11DisplayTextEt.cpp": [
@@ -7254,7 +7254,7 @@
       ]
     },
     "_ZN2G213GetBG2CharPtrEv": {
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
@@ -7327,7 +7327,7 @@
       "src/Message_DrawCenteredLine.c": [
         "return:int"
       ],
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
@@ -7419,7 +7419,7 @@
       "src/actors/dScMgAmida_c.cpp": [
         "return:void *"
       ],
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
@@ -7461,7 +7461,7 @@
       ]
     },
     "_ZN3G2S12GetBG2ScrPtrEv": {
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
@@ -7502,7 +7502,7 @@
       ]
     },
     "_ZN3G2S12GetBG3ScrPtrEv": {
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/actors/dMap_c.cpp": [
@@ -7540,7 +7540,7 @@
       "src/Message_DrawCenteredLine.c": [
         "return:int"
       ],
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
@@ -7642,7 +7642,7 @@
       ]
     },
     "_ZN3G2S13GetBG2CharPtrEv": {
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
       "src/actors/dScMiniGm_c.cpp": [
@@ -7684,7 +7684,7 @@
       ]
     },
     "_ZN3G2x13SetBlendAlphaEPVttttj": {
-      "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
+      "src/minigames/d_s_mg_slot1.cpp": [
         "param:#5 unsigned short"
       ],
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
