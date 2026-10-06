@@ -8671,6 +8671,12 @@
     "src/actors/dScDSMT_c.cpp#func_ov007_020cca80": "tangosdev",
     "src/actors/dScDSMT_c.cpp#func_ov007_020cca98": "ruspecial",
     "src/actors/dScDSMT_c.cpp#func_ov007_020ccab4": "ruspecial",
-    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial"
+    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial",
+    "src/engine/gx/GXS.cpp#_ZN3GXS17EndLoadOBJExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS14LoadOBJExtPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS19BeginLoadOBJExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS16EndLoadBGExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS13LoadBGExtPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS18BeginLoadBGExtPlttEv": "tangosdev"
   }
 }
