@@ -241,7 +241,7 @@ operation=write32
 old_value=0x00000000
 new_value=0x00000001
 pc=daMoray_c::InitResources+0x38
-callers=Stage::Load -> Actor::Spawn -> daMoray_c::InitResources
+callers=dScStage_c::Load -> Actor::Spawn -> daMoray_c::InitResources
 ```
 
 Important fields include:

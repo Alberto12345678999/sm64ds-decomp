@@ -77,7 +77,7 @@ not merely once after the rebase.
     #      `cpp-tu state note is current`, exit 0. It is NOT unconditionally
     #      safe -- an unstaged edit to src, src_tu, include or config makes it
     #      exit 2 with `authority inputs have unstaged/untracked changes`,
-    #      naming the file. Stage the edit and re-run; do NOT git stash, which
+    #      naming the file. dScStage_c the edit and re-run; do NOT git stash, which
     #      is shared across every worktree of this clone.
     #      It reports stale only when the note file itself differs from a
     #      regeneration. The dirty-tree refusal below belongs to --write-note

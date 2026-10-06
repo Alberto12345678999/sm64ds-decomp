@@ -224,7 +224,7 @@ a **base subobject** of a derived class:
 |---|---|
 | `_ZN6CameraC1Ev`, `_ZN8dActor_cC1Ev`, `_ZN8dActor_cC2Ev` | derived ctors, base-subobject step |
 | `_ZN8dMeter_cC1Ev`, `_ZN6dMap_cC1Ev` | derived ctors, base-subobject step |
-| `_ZN5StageC3Ev` | allocating ctor folding a base-subobject step (§5c) |
+| `_ZN10dScStage_cC3Ev` | allocating ctor folding a base-subobject step (§5c) |
 | `dScStarSel_c_classInit`, `UnknownVsEntry_Spawn`, `dScBoot_c_classInit`, `func_020352b4` | unnamed C3s: `operator new` → null check → base step → double vptr store |
 | 7 overlay `func_*` placeholders | same Spawn shape in ov003/004/005/007/075 |
 
@@ -300,7 +300,7 @@ Disassembled, all three allocating-labelled functions share one shape:
 
 | label | prologue |
 |---|---|
-| `_ZN5StageC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
+| `_ZN10dScStage_cC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
 | `_ZN6PlayerC3Ev` 0x020e6c0c | same, then `bl` Player's own ctor |
 | `_ZN6CameraC1Ev` 0x0200e444 | same, construction fully inline |
 
@@ -339,7 +339,7 @@ p->T::T();                        -> illegal use of type-name
 ```
 
 So a folded factory is **not writable as real C++ under this toolchain**,
-period. `Camera_Spawn`, `Stage`'s and `Player`'s factories stay hand-written
+period. `Camera_Spawn`, `dScStage_c`'s and `Player`'s factories stay hand-written
 `.c` files — like fBase_c's constructor, a permanent asm-or-C transcription,
 with the reason recorded here so nobody retries the recipe hoping for a
 different answer. What IS recoverable from them is knowledge, not code:

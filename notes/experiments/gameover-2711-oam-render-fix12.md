@@ -10,7 +10,7 @@
 
 ```diff
  #include "dScGameOver_c.h"
- #include "Stage.h"
+ #include "dScStage_c.h"
  #include "OamAttr.h"
  #include "decl_common.h"
 +#include "math/Fix12.h"
