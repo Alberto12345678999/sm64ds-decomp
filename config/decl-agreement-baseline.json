@@ -309,7 +309,7 @@
       ]
     },
     "Copy32Bytes": {
-      "src/_ZN3G3X11SetFogTableEPv.cpp": [
+      "src/engine/gx/G3X.cpp": [
         "arity:2"
       ]
     },
@@ -2023,9 +2023,6 @@
       "src/_ZN3GXS11LoadOBJPlttEPKvjj.cpp": [
         "param:#3 unsigned int"
       ],
-      "src/func_020555a4.c": [
-        "param:#3 unsigned int"
-      ],
       "src/func_020562b4.c": [
         "param:#3 unsigned int"
       ],
@@ -2061,6 +2058,9 @@
       ],
       "src/func_ov007_020c940c.c": [
         "param:#1 int"
+      ],
+      "src/engine/gx/G3X.cpp": [
+        "param:#3 unsigned int"
       ]
     },
     "MultiCopy_Int": {
@@ -7566,7 +7566,20 @@
     },
     "_ZN3G3X13SetClearColorEtiiib": {
       "src/func_ov007_020bcf90.c": [
-        "param:#1 int"
+        "param:#1 int",
+        "param:#5 int"
+      ],
+      "src/func_ov007_020b6c54.c": [
+        "param:#5 int"
+      ],
+      "src/Initialise3dGraphics.cpp": [
+        "param:#5 int"
+      ],
+      "include/decl_common.h": [
+        "param:#5 int"
+      ],
+      "src/func_02045d9c.c": [
+        "param:#5 int"
       ]
     },
     "_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3": {
@@ -35341,6 +35354,17 @@
       ],
       "src/func_0200d954.c": [
         "param:#3 int"
+      ]
+    },
+    "_ZN3G3X6SetFogEbiii": {
+      "src/_ZN5Stage9RenderFogEv.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 int"
+      ],
+      "include/decl_common.h": [
+        "param:#1 int"
       ]
     }
   },
