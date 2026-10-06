@@ -2539,7 +2539,6 @@ extern void func_ov102_0214ad14(void*);
 extern void func_ov102_0214ae1c(void*);
 extern void func_ov102_0214b03c(void*);
 extern void func_ov102_0214baa0(void*);
-extern void func_ov102_0214c7fc(char*);
 extern void p__sinit_ov031_02111434(char*);
 extern void*Actor_FindWithID(unsigned int);
 extern void*Animation_LoadFile(void*);
