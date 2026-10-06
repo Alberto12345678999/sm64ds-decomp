@@ -7604,33 +7604,9 @@ src/func_02058b9c.c:
     complete
     .text start:0x02058b9c end:0x02058bb0
 
-src/_ZN4CP1514FlushDataCacheEv.cpp:
+src/engine/cp15/CP15.cpp:
     complete
-    .text start:0x02058bb0 end:0x02058bdc
-
-src/_ZN4CP1527FlushAndInvalidateDataCacheEv.cpp:
-    complete
-    .text start:0x02058bdc end:0x02058c08
-
-src/_ZN4CP1519InvalidateDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c08 end:0x02058c24
-
-src/_ZN4CP1514FlushDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c24 end:0x02058c40
-
-src/_ZN4CP1527FlushAndInvalidateDataCacheEjj.cpp:
-    complete
-    .text start:0x02058c40 end:0x02058c5c
-
-src/_ZN4CP1516DrainWriteBufferEv.cpp:
-    complete
-    .text start:0x02058c5c end:0x02058c68
-
-src/_ZN4CP1526InvalidateInstructionCacheEjj.cpp:
-    complete
-    .text start:0x02058c68 end:0x02058c84
+    .text start:0x02058bb0 end:0x02058c84
 
 src/func_02058c84.c:
     complete
