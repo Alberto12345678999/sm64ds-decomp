@@ -6,8 +6,9 @@ Folded G3X (the 3D engine's fog and clear-color register writer set) into
 - 4 functions: SetClearColor, func_020555a4, SetFogTable, SetFog.
   4/4 MATCH, objisolate clean, reloc-destinations clean, ROM-ascending
   emission (source written descending for deferred codegen).
-- func_020555a4 is a file-local helper (signature `(void* dst)`, snapshots
-  the register block at 0x4000380 through MultiCopyHalf): folded under its
+- func_020555a4 is a helper (signature `(void* dst)`, uploads a 0x40-byte table
+  from that buffer to the TOON_TABLE registers at 0x4000380 through
+  MultiCopyHalf): folded under its
   own func_ name in `extern "C"` so it stays unmangled — the same absorbed-
   shard disposition as dBgPi's func_ members, minus the rename its signature
   does not support.

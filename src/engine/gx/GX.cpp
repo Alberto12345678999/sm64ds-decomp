@@ -9,17 +9,21 @@
  * declaration makes mwccarm emit narrowing shifts at the call site, and a
  * u8-typed DMASyncWordTransfer channel does the same -- the shards' u32
  * spellings are what the bytes were built against.
+ *
+ * Definitions run descending (EndLoadTex above BeginLoadTex's callers, and so
+ * on up from LoadBGPltt) because mwccarm emits .text in reverse source order;
+ * the @symbol roster is what ties each one back to its ROM address.
  */
 
 #include "types.h"
 
-extern u32 data_02099fd0;
-extern u32 data_020a60ac;
-extern u32 data_020a60b0;
-extern u32 data_020a60b4;
-extern u32 data_020a60b8;
-extern u32 data_020a60bc;
-extern u32 data_020a60c0;
+extern u32 data_02099fd0;  // RENDER_DMA_CHANNEL: DMA channel number, -1 if none
+extern u32 data_020a60ac;  // texture upload window: base address
+extern u32 data_020a60b0;  // texture-palette VRAM base address
+extern u32 data_020a60b4;  // texture-palette bank selector (BeginLoadTexPltt result)
+extern u32 data_020a60b8;  // texture bank selector (BeginLoadTex result)
+extern u32 data_020a60bc;  // texture upload window: secondary bank base
+extern u32 data_020a60c0;  // texture upload window: top of the base window
 extern u16 data_02086314[];
 extern u16 data_02086324[];
 extern u16 data_02086326[];
@@ -34,7 +38,7 @@ extern void DMASyncHalfTransfer(u32 channel, void *src, void *dst, u32 numHalfs)
 // local extern: u8 channel per the definition inserts a narrowing op at the call
 extern void DMASyncWordTransfer(unsigned int channel, const void *src, void *dest, unsigned int len);
 extern void MultiCopyHalf(const void *src, void *dst, s32 size);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+extern void MultiCopy_Int(int *src, int *dst, int len);
 // local extern: u16 parameter per the definition inserts narrowing shifts at the call
 extern void _ZN2GX13SetBankForTexEt(u32 tex);
 extern void _ZN2GX17SetBankForTexPlttEt(u32 bank);
@@ -52,6 +56,10 @@ void BeginLoadTex(){
     data_020a60c0 = (int)*(u16 *)((char *)data_02086328 + i) << 12;
 }
 
+// VRAM texture upload with banked destination: below-top goes to the base
+// window, above-top to the secondary bank, straddling splits into two DMA (or
+// CPU copy) halves. Lever that matched: base/top typed as plain int (r4/r5 web
+// identity), comparisons left to natural unsigned promotion for lo/hs.
 // @symbol _ZN2GX7LoadTexEPKvjj
 void LoadTex(void const *src, unsigned int offset, unsigned int size) {
     unsigned int dst;
@@ -85,6 +93,8 @@ void LoadTex(void const *src, unsigned int offset, unsigned int size) {
     MultiCopy_Int((int*)src, (int*)dst, size);
 }
 
+// Ends a banked texture upload: waits on the upload DMA channel if one is
+// active, restores the texture bank, then clears the four upload-window globals.
 // @symbol _ZN2GX10EndLoadTexEv
 void EndLoadTex()
 {
@@ -105,6 +115,8 @@ void BeginLoadTexPltt(){
     data_020a60b0 = (int)data_02086314[r >> 4] << 12;
 }
 
+// Loads a texture palette into VRAM: async DMA when a channel is configured
+// (data_02099fd0 != -1), otherwise MultiCopy_Int.
 // @symbol _ZN2GX11LoadTexPlttEPKvjj
 void LoadTexPltt(const void *src, u32 destSlotAddr, u32 size){
     void *dest = (void *)(data_020a60b0 + destSlotAddr);
@@ -127,6 +139,7 @@ void EndLoadTexPltt(){
     data_020a60b0 = 0;
 }
 
+// Loads BG palette data to main-screen (GX) palette VRAM at 0x05000000.
 // @symbol _ZN2GX10LoadBGPlttEPKvjj
 void LoadBGPltt(const void* src, unsigned int offset, unsigned int size){
     int channel = data_02099fd0;
