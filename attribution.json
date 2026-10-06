@@ -8510,6 +8510,15 @@
     "src/_ZN8dActor_cC2Ev.cpp": "tangosdev",
     "src/_ZN8dActor_cC1Ev.cpp": "tangosdev",
     "src/_ZN8dActor_cD2Ev.cpp": "tangosdev",
-    "src/_ZN8Vector3sD1Ev.cpp": "andrewboudreau"
+    "src/_ZN8Vector3sD1Ev.cpp": "andrewboudreau",
+    "src/engine/heap/Heap.cpp#_ZN4Heap18InitializeGameHeapEjPS_": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap7_SizeofEPv": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap11_DeallocateEPv": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap8AllocateEj": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap9_AllocateEji": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap20RestoreFromTemporaryEv": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap10SetDefaultEv": "tangosdev"
   }
 }

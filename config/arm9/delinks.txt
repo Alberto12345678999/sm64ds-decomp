@@ -4796,41 +4796,9 @@ src/Memory.cpp:
     complete
     .text start:0x0203c1b4 end:0x0203c24c
 
-src/_ZN4Heap18InitializeGameHeapEjPS_.cpp:
+src/engine/heap/Heap.cpp:
     complete
-    .text start:0x0203c24c end:0x0203c274
-
-src/_ZN4Heap7_SizeofEPv.cpp:
-    complete
-    .text start:0x0203c274 end:0x0203c280
-
-src/_ZN4Heap11_DeallocateEPv.cpp:
-    complete
-    .text start:0x0203c280 end:0x0203c28c
-
-src/_ZN4Heap8AllocateEj.cpp:
-    complete
-    .text start:0x0203c28c end:0x0203c29c
-
-src/_ZN4Heap9_AllocateEji.cpp:
-    complete
-    .text start:0x0203c29c end:0x0203c2a8
-
-src/_ZN4Heap20RestoreFromTemporaryEv.cpp:
-    complete
-    .text start:0x0203c2a8 end:0x0203c2d8
-
-src/_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i.cpp:
-    complete
-    .text start:0x0203c2d8 end:0x0203c2e4
-
-src/_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i.cpp:
-    complete
-    .text start:0x0203c2e4 end:0x0203c324
-
-src/_ZN4Heap10SetDefaultEv.cpp:
-    complete
-    .text start:0x0203c324 end:0x0203c33c
+    .text start:0x0203c24c end:0x0203c33c
 
 src/_ZN9SolidHeap12VResizeToFitEv.cpp:
     complete
