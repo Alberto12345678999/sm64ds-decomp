@@ -8242,6 +8242,11 @@
     "src/engine/collision/dBgCh_Actr.cpp#_ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_": "tangosdev",
     "src/engine/collision/dBgCh_Actr.cpp#_ZN10dBgCh_ActrD0Ev": "tangosdev",
     "src/engine/collision/dBgCh_Actr.cpp#_ZN10dBgCh_ActrD1Ev": "andrewboudreau",
-    "src/engine/collision/dBgCh_Actr.cpp#_ZN10dBgCh_ActrC1Ev": "tangosdev"
+    "src/engine/collision/dBgCh_Actr.cpp#_ZN10dBgCh_ActrC1Ev": "tangosdev",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c14SetForwardTimeEj": "andrewboudreau",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c15SetBackwardTimeEj": "andrewboudreau",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c11AdvanceFadeEv": "andrewboudreau",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD0Ev": "tangosdev",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD1Ev": "tangosdev"
   }
 }
