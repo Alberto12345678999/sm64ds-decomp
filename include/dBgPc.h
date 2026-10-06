@@ -9,7 +9,7 @@
  * Because dBgPi introduces the first virtual function in the hierarchy,
  * mwccarm places dBgPi's vptr at 0x00 and this non-polymorphic base at 0x04.
  * Its one data member is the five-word surface record copied into dBgPi by
- * func_02037fd4 and initialized by the constructor below.
+ * dBgPi::RecordHit and initialized by the constructor below.
  */
 struct dBgPc {
     struct SurfaceInfo surface;    /* 0x00 */

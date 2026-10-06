@@ -4781,69 +4781,9 @@ src/func_02037f44.c:
     complete
     .text start:0x02037f44 end:0x02037f4c
 
-src/_ZNK5dBgPi9GetClsnIDEv.cpp:
+src/engine/collision/dBgPi.cpp:
     complete
-    .text start:0x02037f4c end:0x02037f54
-
-src/func_02037f54.c:
-    complete
-    .text start:0x02037f54 end:0x02037f5c
-
-src/func_02037f5c.c:
-    complete
-    .text start:0x02037f5c end:0x02037f64
-
-src/func_02037f64.c:
-    complete
-    .text start:0x02037f64 end:0x02037f94
-
-src/func_02037f94.c:
-    complete
-    .text start:0x02037f94 end:0x02037fc0
-
-src/func_02037fc0.c:
-    complete
-    .text start:0x02037fc0 end:0x02037fd4
-
-src/func_02037fd4.c:
-    complete
-    .text start:0x02037fd4 end:0x02037fec
-
-src/func_02037fec.c:
-    complete
-    .text start:0x02037fec end:0x02038018
-
-src/_ZN5dBgPiaSERKS_.cpp:
-    complete
-    .text start:0x02038018 end:0x0203806c
-
-src/_ZNK5dBgPi6CopyToERS_.cpp:
-    complete
-    .text start:0x0203806c end:0x020380c0
-
-src/func_020380c0.c:
-    complete
-    .text start:0x020380c0 end:0x020380ec
-
-src/_ZN5dBgPiD2Ev.cpp:
-    complete
-    .text start:0x020380ec end:0x02038114
-
-src/_ZN5dBgPiD0Ev.cpp:
-    complete
-    .text start:0x02038114 end:0x02038144
-
-src/_ZN5dBgPiD1Ev.cpp:
-    complete
-    .text start:0x02038144 end:0x0203816c
-
-src/_ZN5dBgPiC1Ev.cpp:
-    complete
-    .text start:0x0203816c end:0x0203819c
-
-src/_ZN5dBgPiC2Ev.cpp:
-    complete
-    .text start:0x0203819c end:0x020381cc
+    .text start:0x02037f4c end:0x020381cc
 
 src/func_020381cc.c:
     complete

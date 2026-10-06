@@ -103,7 +103,7 @@ void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_02038ea4(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
-dBgPi *_ZN5dBgPiD1Ev(void *result);
+void _ZN5dBgPiD1Ev(void *result);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 void  Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);

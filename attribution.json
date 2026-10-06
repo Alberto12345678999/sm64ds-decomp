@@ -8255,6 +8255,22 @@
     "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c15SetBackwardTimeEj": "andrewboudreau",
     "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c11AdvanceFadeEv": "andrewboudreau",
     "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD0Ev": "tangosdev",
-    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD1Ev": "tangosdev"
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD1Ev": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZNK5dBgPi9GetClsnIDEv": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZNK5dBgPi16GetColliderIndexEv": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPi16SetColliderIndexEi": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZNK5dBgPi7IsHitByEiP8dActor_cP4dBgW": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZNK5dBgPi7IsValidEv": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZNK5dBgPi11HasColliderEv": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPi9RecordHitEsP11SurfaceInfo": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPi11SetColliderEiiP8dActor_cP4dBgW": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiaSERKS_": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZNK5dBgPi6CopyToERS_": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPi5ResetEv": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiD2Ev": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiD0Ev": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiD1Ev": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiC1Ev": "tangosdev",
+    "src/engine/collision/dBgPi.cpp#_ZN5dBgPiC2Ev": "tangosdev"
   }
 }

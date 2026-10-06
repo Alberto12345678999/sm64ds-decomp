@@ -8,7 +8,7 @@ typedef struct { int x, y, z; } Vector3;
 extern void func_ov002_020fea4c(int *a, int *b);
 extern void func_ov002_020fea68(int *a, int *b);
 extern Fix12i Vec3_Dist(const Vector3 *a, const Vector3 *b);
-extern void func_020380c0(char *c);
+extern void _ZN5dBgPi5ResetEv(char *c);
 
 void func_02037608(char *thiz)
 {
@@ -21,5 +21,5 @@ void func_02037608(char *thiz)
     *(int *)(thiz + 0x5c) = b.z;
     func_ov002_020fea68((int *)&a, (int *)(thiz + 0x38));
     *(Fix12i *)(thiz + 0x60) = Vec3_Dist((const Vector3 *)(thiz + 0x54), (const Vector3 *)&a);
-    func_020380c0(thiz + 0x10);
+    _ZN5dBgPi5ResetEv(thiz + 0x10);
 }
