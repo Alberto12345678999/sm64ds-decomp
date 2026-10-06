@@ -8138,6 +8138,26 @@
     "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator8PreviousEP13HeapAllocator": "tangosdev",
     "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIteratorC1Ej": "tangosdev",
     "src/engine/heap/NestedHeapIterator.cpp#_ZN13HeapAllocator6RemoveEv": "tangosdev",
-    "src/engine/heap/NestedHeapIterator.cpp#func_0204df54": "ruspecial"
+    "src/engine/heap/NestedHeapIterator.cpp#func_0204df54": "ruspecial",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator14SizeofInternalEPv": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator13DeallocateAllEPFvPvPS_jEj": "andrewboudreau",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator9GetNodeIDEv": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator9SetNodeIDEj": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator18MaxAllocatableSizeEi": "andrewboudreau",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10MemoryLeftEv": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10DeallocateEPv": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10ReallocateEPvj": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator8AllocateEji": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN13HeapAllocator7DestroyEv": "ruspecial",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN4Heap28CreateExpandingHeapAllocatorEPvjj": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator8FreeNodeEP10MemoryNodePNS0_6TargetE": "andrewboudreau",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator17AllocateBackwardsEjj": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator16AllocateForwardsEjj": "andrewboudreau",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator12AllocateNodeEP10MemoryNodeS1_Pvjt": "andrewboudreau",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocatorC1EPvj": "ruspecial",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_": "tangosdev",
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN10MemoryNode6TargetC1EPS_": "tangosdev"
   }
 }
