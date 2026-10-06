@@ -366,6 +366,9 @@
       "src/_ZN13SharedFilePtr4LoadEv.cpp": [
         "arity:3"
       ],
+      "src/engine/save/SaveData.cpp": [
+        "arity:3"
+      ],
       "src/func_02013c84.c": [
         "arity:3"
       ],
@@ -14806,6 +14809,9 @@
       "src/actors/daObjWlSubmarine_c.cpp": [
         "return:char []"
       ],
+      "src/engine/save/SaveData.cpp": [
+        "return:unsigned char []"
+      ],
       "src/func_020135d0.c": [
         "return:unsigned char []"
       ],
@@ -15608,6 +15614,9 @@
         "return:unsigned char []"
       ],
       "src/actors/daSnmBth_c.cpp": [
+        "return:unsigned char []"
+      ],
+      "src/engine/save/SaveData.cpp": [
         "return:unsigned char []"
       ],
       "src/game/actors/d_a_obj_mc_water.cpp": [
@@ -30881,6 +30890,9 @@
         "return:void *"
       ],
       "src/ResetInput.c": [
+        "arity:3"
+      ],
+      "src/engine/save/SaveData.cpp": [
         "arity:3"
       ],
       "src/func_02013e64.c": [

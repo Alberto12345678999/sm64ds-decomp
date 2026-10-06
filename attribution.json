@@ -8158,6 +8158,20 @@
     "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt": "tangosdev",
     "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_": "tangosdev",
     "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_": "tangosdev",
-    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN10MemoryNode6TargetC1EPS_": "tangosdev"
+    "src/engine/heap/ExpandingHeapAllocator.cpp#_ZN10MemoryNode6TargetC1EPS_": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData13PlayerLoseCapEv": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData16HasPlayerLostCapEv": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData16CanPlayerHaveCapEv": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData15SaveCurrentFileEv": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData13SaveMinigamesEP16MinigameSaveData": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData16ReadMinigameDataEP16MinigameSaveData": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData18SetDefaultValuesMgEP16MinigameSaveData": "tangosdev",
+    "src/engine/save/SaveData.cpp#func_02013c84": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData13EraseSaveFileEjPc": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData8SaveFileEjP12FileSaveData": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData12ReadFileDataEjP12FileSaveData": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData16SetDefaultValuesEP12FileSaveData": "tangosdev",
+    "src/engine/save/SaveData.cpp#_ZN8SaveData16EraseAllSaveDataEv": "tangosdev",
+    "src/engine/save/SaveData.cpp#func_02013e64": "ruspecial"
   }
 }
