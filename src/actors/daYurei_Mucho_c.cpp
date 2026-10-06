@@ -72,7 +72,7 @@ extern "C" {
    group size-DIFF; see the deslop leftover list. */
 extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos,
                                                           unsigned int n, int f, short s);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int rad, int height, unsigned int flags);
 extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *v, unsigned int a,
@@ -173,8 +173,8 @@ int daYurei_Mucho_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d618), 1, -1);
     Model::LoadFile(data_ov065_0211d610);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov065_0211d600);
-    Animation::LoadFile(data_ov065_0211d608);
+    dExtFrameCtrl_c::LoadFile(data_ov065_0211d600);
+    dExtFrameCtrl_c::LoadFile(data_ov065_0211d608);
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
@@ -349,7 +349,7 @@ void daYurei_Mucho_c::func_ov065_0211696c()
 
     *(Mtx43 *)mShadowMat = *(Mtx43 *)data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, mShadowMat, 0x64000, 0x258000, 0xf);
 }
 
@@ -550,7 +550,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
         }
     }
 
-    if (((Animation *)((void *)((char *)this + 0x350)))->Finished() != 0) {
+    if (((dExtFrameCtrl_c *)((void *)((char *)this + 0x350)))->Finished() != 0) {
         if (pl != 0) {
             s32 *dsrc = (s32 *)(int)(&pl->mPosX);
             L.d.x = dsrc[0];
@@ -711,7 +711,7 @@ int daYurei_Mucho_c::func_ov065_02115f84()
  * included class header makes mwccarm emit retail's D1 then D0 pair without
  * the otherwise homeless D2 variant an out-of-line definition produces.
  *
- * D1 stores the vptr, then destroys the ShadowModel at 0x364, the ModelAnim at
+ * D1 stores the vptr, then destroys the dExtShadowModel_c at 0x364, the ModelAnim at
  * 0x300, the dBgCh_Actr at 0x144 and the dCcAc_c at 0x110 in reverse
  * declaration order, and tails into ov002 _ZN12dEnemyBase_cD2Ev. D0 repeats
  * that body verbatim -- it does NOT call D1 -- and then hands the object back

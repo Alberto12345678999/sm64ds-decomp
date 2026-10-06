@@ -3,7 +3,7 @@
 
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
@@ -67,7 +67,7 @@ typedef char daKrpaFrameController_size_must_be_0x10[
 struct daKrpa_c : dActor_c {
     u8                        pad_0d0[0x4];
     ModelAnim                 mModelAnim;                    /* 0x0d4 */
-    ShadowModel               mShadowModel;                  /* 0x138 */
+    dExtShadowModel_c               mShadowModel;                  /* 0x138 */
     dCcAcPos_c mdCcAcPos_c;    /* 0x160 */
     dBgCh_Actr              mWithMeshClsn;                 /* 0x1a0 */
     Matrix4x3                 mMatrix;                       /* 0x35c */
@@ -77,7 +77,7 @@ struct daKrpa_c : dActor_c {
     Player                   *mPlayer;                       /* 0x3a4 */
     /* InitResources raycasts a dBgCh_Gnd straight down from mPos and stores
        (mPosY - hit height) + 0x1e000, or the constant 0x1f4000 when nothing is
-       hit. [_ZN8daKrpa_c13InitResourcesEv.cpp] */
+       hit. [_ZN8daKrpa_c13InitResourcesEv, now in src/game/actors/d_a_krpa.cpp] */
     Fix12i                    mGroundDistance;                /* 0x3a8 */
     u8                        mStateTimer;                    /* 0x3ac */
     u8                        pad_3ad[0x3];

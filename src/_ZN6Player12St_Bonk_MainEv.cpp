@@ -5,7 +5,7 @@
 #include "decl_Animation.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
-struct Camera;
+struct dCamera_c;
 
 extern "C" {
 extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
@@ -15,9 +15,9 @@ extern int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
 extern int _ZN6Player12FinishedAnimEv(void* c);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void Player_AdvanceAnims(void* c);
-extern void func_0200d8c8(struct Camera* cam, const struct Vector3* v, int strength);
+extern void func_0200d8c8(struct dCamera_c* cam, const struct Vector3* v, int strength);
 
-extern struct Camera* data_0209f318;
+extern struct dCamera_c* data_0209f318;
 extern int data_ov002_0211013c[];
 }
 
@@ -67,7 +67,7 @@ willhit:
         u32 arg = (u8)param1;
         int modelIdx = _ZNK6Player14GetBodyModelIDEjb(((char*)this), arg, 0);
         char* anim = *(char**)(((char*)this) + modelIdx * 4 + 0xdc) + 0x50;
-        if (_ZNK9Animation12WillHitFrameEi(anim, 0x2e) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0x2e) != 0) {
             mStateWork = 1;
         }
     }

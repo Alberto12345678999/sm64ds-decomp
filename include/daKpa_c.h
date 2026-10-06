@@ -1,7 +1,17 @@
 /* Seeded from matched-function evidence by tools/gen_header.py, then given its
  * real base and real member types by hand.
  *
- * class daKpa_c: 5 matched functions.
+ * class daKpa_c: Bowser (ov060), who spawns his tail daKpaTail_c (actor ID 278). The behaviour lives in src/actors/daKpa_c.cpp.
+ *
+ * Readability pass: members are named from how that file uses them; the C half
+ * below repeats the field list for a C translation unit. State, hold-state,
+ * condition-flag, actor-ID, sound and collider-flag numbers are the enums at the
+ * top of daKpa_c.cpp. Fix12 values read 0x1000 = 1.0; angles 0x10000 = a full turn.
+ *
+ * Leftover: unk_420 and unk_422 are written in daKpa_c.cpp and never read, so they
+ * keep placeholder names; the dActor_c words at 0xa4 and 0xac that the file
+ * touches are unnamed (they are dActor_c's own unk_0a4 / unk_0ac); the pad_ arrays
+ * are bytes nothing in that file reads or writes.
  *
  * Five sub-objects, and every one's asserted size closes EXACTLY on the next named
  * field -- five independent confirmations of one layout:
@@ -10,11 +20,11 @@
  *     ModelAnim                  0x0d4 + 0x064 = 0x138   -> mTextureSequence
  *     TextureSequence            0x138 + 0x014 = 0x14c   -> mWithMeshClsn
  *     dBgCh_Actr               0x14c + 0x1bc = 0x308   -> mShadowModel
- *     ShadowModel                0x308 + 0x028 = 0x330   -> padding
+ *     dExtShadowModel_c                0x308 + 0x028 = 0x330   -> padding
  *     dCcAcPos_c  0x360 + 0x040 = 0x3a0   -> mTargetPlayer
  *
  * TWO OF THE GENERATED HEADER'S FIELDS WERE THE ModelAnim'S OWN INSIDES and are
- * gone from this half: `mAnimation` at 0x124 is 0x0d4 + 0x50, the Animation base
+ * gone from this half: `mAnimation` at 0x124 is 0x0d4 + 0x50, the dExtFrameCtrl_c base
  * inside ModelAnim, and `unk_130` at 0x130 is 0x0d4 + 0x5c. Both were declared as
  * siblings of a `u8 mModelAnim` marker whose pad stopped short of the real object.
  * Same shape as Player's two ModelAnims.
@@ -23,14 +33,14 @@
  * fBase_c::operator new for 1108 bytes -- and the last declared field, mSoundID,
  * happens to end there too.
  *
- * Field NAMES for the unk_ entries are placeholders. */
+ * The unk_ entries are placeholders. */
 #ifndef DAKPA_C_H
 #define DAKPA_C_H
 #include "types.h"
 #include "ModelAnim.h"
 #include "TextureSequence.h"
 #include "dBgCh_Actr.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 
 #ifdef __cplusplus
@@ -42,8 +52,15 @@ struct daKpa_c : dActor_c {
     ModelAnim mModelAnim;                                   /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
-    ShadowModel mShadowModel;                               /* 0x308 */
-    u8  pad_330[0x30];
+    dExtShadowModel_c mShadowModel;                               /* 0x308 */
+    /* The shadow's world matrix: a Matrix4x3 written from the scratch matrix at
+       0x020a0e68 each frame and handed to dActor_c::DropShadowRadHeight. Left a
+       byte array so this header does not have to pull Matrix4x3 in. */
+    u8  mShadowMtx[0x30];         /* 0x330 */
+    /* The body cylinder. Its dCc_c flags word (+0x18, so 0x378) bit 0 is
+       "disabled"; its radius (+0x04, so 0x364) is set to 180 units when the
+       defeat knock-back starts; its otherOwner (+0x24, so 0x384) is the uniqueID of
+       whatever hit it. */
     dCcAcPos_c mdCcAcPos_c;   /* 0x360 */
     /* A POINTER, not an s32. daKpa_c::Behavior assigns it straight from
        dActor_c::ClosestPlayer() and then re-spelt every read of the slot as
@@ -52,46 +69,87 @@ struct daKpa_c : dActor_c {
        Player.h is not includable here, and dActor_c is the base at offset 0, so
        the ClosestPlayer() result converts with no adjustment. */
     dActor_c *mTargetPlayer;      /* 0x3a0 */
-    u8  pad_3a4[0x4];
-    s32 mUniqueID_3a8;            /* 0x3a8 */
-    u8  pad_3ac[0x4];
-    s32 mHomePosX;            /* 0x3b0 */
-    s32 mHomePosY;            /* 0x3b4 */
+    dActor_c *mGrabbedPlayer;     /* 0x3a4 -- the Player holding the tail; null when nobody does */
+    /* uniqueID of the KOOPATAIL actor (ID 278) that InitResources spawns. */
+    s32 mTailUniqueID;            /* 0x3a8 */
+    /* uniqueID of the KOOPA2BG actor (ID 166) found with FindWithActorID. The
+       tilt state writes its tilt angles (+0x31e/+0x320/+0x322). */
+    u32 mArenaBgUniqueID;         /* 0x3ac */
+    s32 mHomePosX;            /* 0x3b0 -- spawn position; Y is the arena floor level */
+    s32 mHomePosY;            /* 0x3b4    that the fall and recover tests measure from */
     s32 mHomePosZ;            /* 0x3b8 */
-    u8  pad_3bc[0x30];
-    s32 mDistToTarget;            /* 0x3ec */
-    u8  pad_3f0[0x8];
-    s32 mAnimSpeed;            /* 0x3f8 */
-    s16 mTimer;            /* 0x3fc */
-    u8  pad_3fe[0x8];
+    /* Normal of the floor under him, copied out of the floor result by
+       SurfaceInfo::CopyNormalTo (a Vector3 at this address; three words here so
+       the header keeps Vector3, which has a destructor, out of the layout). */
+    s32 mGroundNormalX;       /* 0x3bc */
+    s32 mGroundNormalY;       /* 0x3c0 */
+    s32 mGroundNormalZ;       /* 0x3c4 */
+    /* Position recorded the last frame he stood on the ground; restored when he
+       walks off the floor. */
+    s32 mLastGroundPosX;      /* 0x3c8 */
+    s32 mLastGroundPosY;      /* 0x3cc */
+    s32 mLastGroundPosZ;      /* 0x3d0 */
+    /* Two world-space points taken from bone matrices 3 and 6 of his skeleton
+       (offsets +0x90 and +0x120 of the bone array), with Y replaced by his own
+       Y. Landing dust is spawned at one or the other. */
+    s32 mFootPosAX;           /* 0x3d4 */
+    s32 mFootPosAY;           /* 0x3d8 */
+    s32 mFootPosAZ;           /* 0x3dc */
+    s32 mFootPosBX;           /* 0x3e0 */
+    s32 mFootPosBY;           /* 0x3e4 */
+    s32 mFootPosBZ;           /* 0x3e8 */
+    s32 mDistToTarget;            /* 0x3ec -- horizontal distance to mTargetPlayer, 0x7fffffff if none */
+    /* Copy of a halfword at +0x69c of the Player holding the tail, refreshed every
+       frame while held; its magnitude sets his tilt and, on release, his launch
+       speed. */
+    s32 mSwingSpeed;          /* 0x3f0 */
+    s32 mDistToCenter;        /* 0x3f4 -- horizontal distance from the world origin (the arena centre) */
+    s32 mAnimSpeed;            /* 0x3f8 -- written to the ModelAnim's playback speed each frame; 0x1000 = 1.0 */
+    u16 mTimer;            /* 0x3fc -- frames in the current state; reset on every state change */
+    u16 mStepCounter;         /* 0x3fe -- general per-state counter; its meaning depends on mState */
+    u16 mFireTimer;           /* 0x400 -- frames of fire breath so far */
+    s16 mSpinSpeed;           /* 0x402 -- angle added to mAngleY each frame in the defeat sequence */
+    u8  pad_404[0x2];
     s16 mAngleToTarget;            /* 0x406 */
-    u8  pad_408[0x4];
-    s32 mState;            /* 0x40c */
-    u8  pad_410[0x4];
-    s8  mVariantID;            /* 0x414 */
-    u8  pad_415[0x1];
-    s8  unk_416;            /* 0x416 */
-    u8  pad_417[0x5];
-    u8  mOpacity;            /* 0x41c */
-    u8  pad_41d[0x6];
-    s8  unk_423;            /* 0x423 */
-    s8  mTalkStep;            /* 0x424 */
-    u8  pad_425[0x1];
-    s8  mDropsShadow;            /* 0x426 */
-    s8  mBounceOnLand;            /* 0x427 */
-    u8  pad_428[0x1];
-    s8  unk_429;            /* 0x429 */
-    s8  unk_42a;            /* 0x42a */
+    s16 mAngleToCenter;       /* 0x408 -- angle from Bowser toward the world origin */
+    u8  pad_40a[0x2];
+    s32 mState;            /* 0x40c -- see Bowser_State in daKpa_c.cpp */
+    s32 mHoldState;           /* 0x410 -- see Bowser_HoldState in daKpa_c.cpp */
+    u8  mVariantID;            /* 0x414 -- param1 & 3: which of the three fights; 3 is treated as 0 */
+    u8  mPickToggle;          /* 0x415 -- alternates between "choose an action" and "turn to face the target" */
+    u8  mChooseJumpOnly;      /* 0x416 -- param1 bit 2; when set, the variant-2 idle pick chooses the jump state instead of calling func_ov060_021150d0 */
+    u8  pad_417[0x1];
+    u32 mCondFlags;           /* 0x418 -- see Bowser_CondFlag in daKpa_c.cpp */
+    u8  mOpacity;            /* 0x41c -- 0..255, walked toward mTargetOpacity by 20 per frame */
+    u8  mTargetOpacity;       /* 0x41d */
+    s8  mHealth;              /* 0x41e -- hits left; set from a per-variant table (1, 1, 3) */
+    u8  pad_41f[0x1];
+    u16 unk_420;              /* 0x420 -- zeroed at init, never read in daKpa_c.cpp */
+    u8  unk_422;              /* 0x422 -- set to 1 during the hurt hop and the defeat launch and cleared to 0 in the idle state; never read in daKpa_c.cpp */
+    u8  mStep;                /* 0x423 -- step within the current state; reset on every state change */
+    u8  mTalkStep;            /* 0x424 -- step of the intro conversation (func_ov060_02115518) */
+    u8  mHoldStep;            /* 0x425 -- step of the held handler (mHoldState 1) */
+    u8  mDropsShadow;            /* 0x426 */
+    u8  mBounceOnLand;            /* 0x427 */
+    u8  mFireballShots;       /* 0x428 -- shots to fire this time (1..3) */
+    u8  mSkipIdleRoll;        /* 0x429 -- set at init; the first variant-0 idle pick that finds mPickToggle set clears it and turns without the one-in-ten draw */
+    u8  mVanishChance;        /* 0x42a -- chance in tenths of picking the vanish-and-dash state; starts at 5 */
     u8  mCapActorAlive;            /* 0x42b */
-    u8  pad_42c[0x18];
-    s8  mCutsceneStep;            /* 0x444 */
-    u8  pad_445[0x1];
-    s8  mStompFxLatch;            /* 0x446 */
+    /* Cutscene camera: look-at target and camera position, written only by the
+       intro camera helper func_ov060_02111f08, which feeds them to the Camera. */
+    s32 mCamLookAtX;          /* 0x42c */
+    s32 mCamLookAtY;          /* 0x430 */
+    s32 mCamLookAtZ;          /* 0x434 */
+    s32 mCamPosX;             /* 0x438 */
+    s32 mCamPosY;             /* 0x43c */
+    s32 mCamPosZ;             /* 0x440 */
+    u8  mCutsceneStep;            /* 0x444 */
+    u8  mCutsceneTimer;       /* 0x445 -- frames spent on the ground in cutscene step 1 */
+    u8  mFootfallLatch;            /* 0x446 -- 1 while the animation is inside a footfall frame window */
     u8  pad_447[0x1];
     s32 mParticleHandle;            /* 0x448 */
     s32 mSoundHandle;            /* 0x44c */
     s32 mSoundID;            /* 0x450 */
-
     /* --- vtable, in ROM order. Do not reorder. --- */
     virtual ~daKpa_c();                  /* slots 16 (D1), 17 (D0) */
 
@@ -139,47 +197,96 @@ struct daKpa_c {
     ModelAnim mModelAnim;                                   /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
-    ShadowModel mShadowModel;                               /* 0x308 */
-    u8  pad_330[0x30];
+    dExtShadowModel_c mShadowModel;                               /* 0x308 */
+    /* The shadow's world matrix: a Matrix4x3 written from the scratch matrix at
+       0x020a0e68 each frame and handed to dActor_c::DropShadowRadHeight. Left a
+       byte array so this header does not have to pull Matrix4x3 in. */
+    u8  mShadowMtx[0x30];         /* 0x330 */
+    /* The body cylinder. Its dCc_c flags word (+0x18, so 0x378) bit 0 is
+       "disabled"; its radius (+0x04, so 0x364) is set to 180 units when the
+       defeat knock-back starts; its otherOwner (+0x24, so 0x384) is the uniqueID of
+       whatever hit it. */
     dCcAcPos_c mdCcAcPos_c;   /* 0x360 */
     /* The C++ half types this dActor_c*; C translation units have no dActor_c
        declaration in scope here, so it is spelt void* -- same width, same slot. */
     void *mTargetPlayer;            /* 0x3a0 */
-    u8  pad_3a4[0x4];
-    s32 mUniqueID_3a8;            /* 0x3a8 */
-    u8  pad_3ac[0x4];
-    s32 mHomePosX;            /* 0x3b0 */
-    s32 mHomePosY;            /* 0x3b4 */
+    void *mGrabbedPlayer;         /* 0x3a4 -- the Player holding the tail; null when nobody does */
+    /* uniqueID of the KOOPATAIL actor (ID 278) that InitResources spawns. */
+    s32 mTailUniqueID;            /* 0x3a8 */
+    /* uniqueID of the KOOPA2BG actor (ID 166) found with FindWithActorID. The
+       tilt state writes its tilt angles (+0x31e/+0x320/+0x322). */
+    u32 mArenaBgUniqueID;         /* 0x3ac */
+    s32 mHomePosX;            /* 0x3b0 -- spawn position; Y is the arena floor level */
+    s32 mHomePosY;            /* 0x3b4    that the fall and recover tests measure from */
     s32 mHomePosZ;            /* 0x3b8 */
-    u8  pad_3bc[0x30];
-    s32 mDistToTarget;            /* 0x3ec */
-    u8  pad_3f0[0x8];
-    s32 mAnimSpeed;            /* 0x3f8 */
-    s16 mTimer;            /* 0x3fc */
-    u8  pad_3fe[0x8];
+    /* Normal of the floor under him, copied out of the floor result by
+       SurfaceInfo::CopyNormalTo (a Vector3 at this address; three words here so
+       the header keeps Vector3, which has a destructor, out of the layout). */
+    s32 mGroundNormalX;       /* 0x3bc */
+    s32 mGroundNormalY;       /* 0x3c0 */
+    s32 mGroundNormalZ;       /* 0x3c4 */
+    /* Position recorded the last frame he stood on the ground; restored when he
+       walks off the floor. */
+    s32 mLastGroundPosX;      /* 0x3c8 */
+    s32 mLastGroundPosY;      /* 0x3cc */
+    s32 mLastGroundPosZ;      /* 0x3d0 */
+    /* Two world-space points taken from bone matrices 3 and 6 of his skeleton
+       (offsets +0x90 and +0x120 of the bone array), with Y replaced by his own
+       Y. Landing dust is spawned at one or the other. */
+    s32 mFootPosAX;           /* 0x3d4 */
+    s32 mFootPosAY;           /* 0x3d8 */
+    s32 mFootPosAZ;           /* 0x3dc */
+    s32 mFootPosBX;           /* 0x3e0 */
+    s32 mFootPosBY;           /* 0x3e4 */
+    s32 mFootPosBZ;           /* 0x3e8 */
+    s32 mDistToTarget;            /* 0x3ec -- horizontal distance to mTargetPlayer, 0x7fffffff if none */
+    /* Copy of a halfword at +0x69c of the Player holding the tail, refreshed every
+       frame while held; its magnitude sets his tilt and, on release, his launch
+       speed. */
+    s32 mSwingSpeed;          /* 0x3f0 */
+    s32 mDistToCenter;        /* 0x3f4 -- horizontal distance from the world origin (the arena centre) */
+    s32 mAnimSpeed;            /* 0x3f8 -- written to the ModelAnim's playback speed each frame; 0x1000 = 1.0 */
+    u16 mTimer;            /* 0x3fc -- frames in the current state; reset on every state change */
+    u16 mStepCounter;         /* 0x3fe -- general per-state counter; its meaning depends on mState */
+    u16 mFireTimer;           /* 0x400 -- frames of fire breath so far */
+    s16 mSpinSpeed;           /* 0x402 -- angle added to mAngleY each frame in the defeat sequence */
+    u8  pad_404[0x2];
     s16 mAngleToTarget;            /* 0x406 */
-    u8  pad_408[0x4];
-    s32 mState;            /* 0x40c */
-    u8  pad_410[0x4];
-    s8  mVariantID;            /* 0x414 */
-    u8  pad_415[0x1];
-    s8  unk_416;            /* 0x416 */
-    u8  pad_417[0x5];
-    u8  mOpacity;            /* 0x41c */
-    u8  pad_41d[0x6];
-    s8  unk_423;            /* 0x423 */
-    s8  mTalkStep;            /* 0x424 */
-    u8  pad_425[0x1];
-    s8  mDropsShadow;            /* 0x426 */
-    s8  mBounceOnLand;            /* 0x427 */
-    u8  pad_428[0x1];
-    s8  unk_429;            /* 0x429 */
-    s8  unk_42a;            /* 0x42a */
+    s16 mAngleToCenter;       /* 0x408 -- angle from Bowser toward the world origin */
+    u8  pad_40a[0x2];
+    s32 mState;            /* 0x40c -- see Bowser_State in daKpa_c.cpp */
+    s32 mHoldState;           /* 0x410 -- see Bowser_HoldState in daKpa_c.cpp */
+    u8  mVariantID;            /* 0x414 -- param1 & 3: which of the three fights; 3 is treated as 0 */
+    u8  mPickToggle;          /* 0x415 -- alternates between "choose an action" and "turn to face the target" */
+    u8  mChooseJumpOnly;      /* 0x416 -- param1 bit 2; when set, the variant-2 idle pick chooses the jump state instead of calling func_ov060_021150d0 */
+    u8  pad_417[0x1];
+    u32 mCondFlags;           /* 0x418 -- see Bowser_CondFlag in daKpa_c.cpp */
+    u8  mOpacity;            /* 0x41c -- 0..255, walked toward mTargetOpacity by 20 per frame */
+    u8  mTargetOpacity;       /* 0x41d */
+    s8  mHealth;              /* 0x41e -- hits left; set from a per-variant table (1, 1, 3) */
+    u8  pad_41f[0x1];
+    u16 unk_420;              /* 0x420 -- zeroed at init, never read in daKpa_c.cpp */
+    u8  unk_422;              /* 0x422 -- set to 1 during the hurt hop and the defeat launch and cleared to 0 in the idle state; never read in daKpa_c.cpp */
+    u8  mStep;                /* 0x423 -- step within the current state; reset on every state change */
+    u8  mTalkStep;            /* 0x424 -- step of the intro conversation (func_ov060_02115518) */
+    u8  mHoldStep;            /* 0x425 -- step of the held handler (mHoldState 1) */
+    u8  mDropsShadow;            /* 0x426 */
+    u8  mBounceOnLand;            /* 0x427 */
+    u8  mFireballShots;       /* 0x428 -- shots to fire this time (1..3) */
+    u8  mSkipIdleRoll;        /* 0x429 -- set at init; the first variant-0 idle pick that finds mPickToggle set clears it and turns without the one-in-ten draw */
+    u8  mVanishChance;        /* 0x42a -- chance in tenths of picking the vanish-and-dash state; starts at 5 */
     u8  mCapActorAlive;            /* 0x42b */
-    u8  pad_42c[0x18];
-    s8  mCutsceneStep;            /* 0x444 */
-    u8  pad_445[0x1];
-    s8  mStompFxLatch;            /* 0x446 */
+    /* Cutscene camera: look-at target and camera position, written only by the
+       intro camera helper func_ov060_02111f08, which feeds them to the Camera. */
+    s32 mCamLookAtX;          /* 0x42c */
+    s32 mCamLookAtY;          /* 0x430 */
+    s32 mCamLookAtZ;          /* 0x434 */
+    s32 mCamPosX;             /* 0x438 */
+    s32 mCamPosY;             /* 0x43c */
+    s32 mCamPosZ;             /* 0x440 */
+    u8  mCutsceneStep;            /* 0x444 */
+    u8  mCutsceneTimer;       /* 0x445 -- frames spent on the ground in cutscene step 1 */
+    u8  mFootfallLatch;            /* 0x446 -- 1 while the animation is inside a footfall frame window */
     u8  pad_447[0x1];
     s32 mParticleHandle;            /* 0x448 */
     s32 mSoundHandle;            /* 0x44c */

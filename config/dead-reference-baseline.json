@@ -46,6 +46,10 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src_tu/actors/Actor.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
    "ref": "src/func_ov006_020cb030.cpp"
   },
@@ -55,7 +59,11 @@
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
-   "ref": "src_tu/actors/Koopa"
+   "ref": "src_tu/actors/Actor.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
+   "ref": "src_tu/actors/Koopa+KoopaSmall.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
@@ -170,8 +178,24 @@
    "ref": "src/d_a_luigi.cpp"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_rc_rift02.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_udlift.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_udlift_teresa.c"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
    "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "src/_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE.cpp"
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
@@ -223,6 +247,14 @@
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/_ZN9dCamera_c14GoBehindPlayerEj.cpp"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "src/d_a_book_killer_book.c"
   },
   {
@@ -254,6 +286,10 @@
    "ref": "src/_ZN9dFdWipe_cC1Ev.c"
   },
   {
+   "file": "notes/ask-the-compiler.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/Eyerok_Spawn.cpp"
   },
@@ -274,12 +310,20 @@
    "ref": "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp"
   },
   {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "src/_ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h.cpp"
+  },
+  {
    "file": "notes/collision-query-classes.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
   {
    "file": "notes/collision-query-classes.md",
    "ref": "src/_ZN12MeshCollider10DetectClsnER13RaycastGround.cpp"
+  },
+  {
+   "file": "notes/collision-query-classes.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
   },
   {
    "file": "notes/collision-system.md",
@@ -290,8 +334,32 @@
    "ref": "port/unmatched/MeshCollider_DetectClsn_Sphere.cpp"
   },
   {
+   "file": "notes/collision-system.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
+   "file": "notes/collision-system.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp"
+  },
+  {
+   "file": "notes/collision-system.md",
+   "ref": "src/_ZN7dBgW_KcD1Ev.cpp"
+  },
+  {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/_ZN5ModelC1Ev.cpp"
+  },
+  {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/engine/model/CommonModel.cpp"
+  },
+  {
    "file": "notes/declaration-centralization.md",
    "ref": "include/decl_"
+  },
+  {
+   "file": "notes/decoding-file-structure.md",
+   "ref": "include/Clipper.h"
   },
   {
    "file": "notes/dscene-c-siblings-census.md",
@@ -302,8 +370,16 @@
    "ref": "src/_ZN5EnemyD0Ev.c"
   },
   {
+   "file": "notes/dtor-migration.md",
+   "ref": "src/_ZN5ModelD1Ev.cpp"
+  },
+  {
    "file": "notes/emu-trace-build.md",
    "ref": "nearmiss/ledger"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-clipper-6az.md",
+   "ref": "include/Clipper.h"
   },
   {
    "file": "notes/experiments/boo-2710-advance-thunk.md",
@@ -382,6 +458,10 @@
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
   {
+   "file": "notes/handoff-sphereclsn-detectclsn.md",
+   "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
+  },
+  {
    "file": "notes/handoff-validator-and-tests.md",
    "ref": "tools/test_"
   },
@@ -415,6 +495,10 @@
   },
   {
    "file": "notes/overlay-residency.md",
+   "ref": "src/actors/CutsceneObject.cpp"
+  },
+  {
+   "file": "notes/overlay-residency.md",
    "ref": "src/func_ov007_020cc2cc.c"
   },
   {
@@ -430,8 +514,16 @@
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
   },
   {
+   "file": "notes/plan-tu-merge-queue.md",
+   "ref": "src_tu/actors"
+  },
+  {
    "file": "notes/platform-provenance.md",
    "ref": "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c"
+  },
+  {
+   "file": "notes/player-provenance.md",
+   "ref": "src_tu/actors"
   },
   {
    "file": "notes/port-selftest-bmp-gate.md",
@@ -516,6 +608,10 @@
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
    "ref": "include/ActorDerived.h"
+  },
+  {
+   "file": "notes/tu-reconstruction-pilot-2-report.md",
+   "ref": "src_tu/actors"
   },
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
@@ -631,7 +727,15 @@
   },
   {
    "file": "tools/check_src_tu.py",
+   "ref": "src_tu/actors/Actor.cpp"
+  },
+  {
+   "file": "tools/check_src_tu.py",
    "ref": "src_tu/actors/CastleWater.cpp"
+  },
+  {
+   "file": "tools/check_src_tu_compiles.py",
+   "ref": "src_tu/actors/Actor.cpp"
   },
   {
    "file": "tools/d0_migrate.py",

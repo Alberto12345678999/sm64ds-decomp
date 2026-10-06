@@ -44,7 +44,7 @@ is `False` for all 173 because the census joined on the wrong key. The real key 
 
 **0.3 — A link-verified TU falsifies a fresh-map boundary.** [ov002](../config/arm9/overlays/ov002/symbols.txt)/`LevelObjects` is
 `link-verified` over `.text 0x020fe190..0x020fea4c`. The regenerated map cuts that range
-into `@0x20fe190` (2 files, class `Stage`) + `@0x20fe3cc` (17 files, no class,
+into `@0x20fe190` (2 files, class `dScStage_c`) + `@0x20fe3cc` (17 files, no class,
 medium/medium), and extends the second *past* the verified end to `0x20fea84`, sweeping
 in [func_ov002_020fea4c.c](../src/func_ov002_020fea4c.c) and [func_ov002_020fea68.c](../src/func_ov002_020fea68.c).
 

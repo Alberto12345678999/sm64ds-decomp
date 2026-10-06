@@ -72,7 +72,7 @@ minigame family -- [notes/dscene-c-siblings-census.md](../notes/dscene-c-sibling
 
 **Destructor.** The cascade goes one more level than dScene_c's own fix.
 dScMgBase_c has 32 descendants, so its D2/D1 would have to be defined inline for
-them to inline it the way Stage inlines dScene_c's -- except this body has real
+them to inline it the way dScStage_c inlines dScene_c's -- except this body has real
 work in it (a global write, a function call) and mwcc does *not* inline it:
 dScMgD3DBase_c's own D1 in the ROM (0x38 bytes) calls `_ZN11dScMgBase_cD2Ev` as
 a real `bl`. Compiling dScMgD3DBase_c's destructor against an INLINE-defined
@@ -148,7 +148,7 @@ virtual, so its table is dScMgBase_c's 36 slots (ov006:0x0213e448, 0x90 bytes).
 on the offset: this class's D1 and D0 both destroy it
 (`_ZN8Particle10SysTrackerD1Ev((char*)c + 0x471c)`), AfterInitResources
 initialises it, BeforeBehavior updates it conditionally. Its type is the one
-shared definition in include/Particle__SysTracker.h, which Stage.h also uses.
+shared definition in include/Particle__SysTracker.h, which dScStage_c.h also uses.
 
 **0x4700..0x4718** (seven fields) were split out of the former `pad_4660[0xbc]`:
 dScMgRoulette_c's Render (_ZN15dScMgRoulette_c6RenderEv, in src/actors/dScMgRoulette_c.cpp) and dScMg3DEsp_c's Render
@@ -561,7 +561,7 @@ banner-blink logic).
 calls once a frame, and the local struct it already carries is the whole story:
 
 ```cpp
-struct Camera {           /* 0xbc */
+struct dCamera_c {           /* 0xbc */
     Matrix4x3 viewMat;    /* 0x00 */
     char      pad30[0x30];
     Matrix4x3 projMat;    /* 0x60 */
@@ -573,7 +573,7 @@ struct Camera {           /* 0xbc */
 ```
 
 It computes the view direction as `eye - target`, so which vector is which is
-settled rather than assumed. (This is NOT `include/Camera.h`'s `Camera`, the
+settled rather than assumed. (This is NOT `include/dCamera_c.h`'s `dCamera_c`, the
 0x1a8-byte gameplay camera whose `lookAt`/`pos` sit at 0x80/0x8c. Two different
 types, one English word.)
 
@@ -596,7 +596,7 @@ outright by calling `Camera_UpdateMatrices(this + 0x466c)` and
 plus one for camera 1.
 
 Both blocks stay flat scalars rather than becoming a real `Vector3` or a real
-`Camera[2]`, for the reason dScMgD3DBase_c.h already gives: eight files spell
+`dCamera_c[2]`, for the reason dScMgD3DBase_c.h already gives: eight files spell
 them this way, and typing them is its own change with its own blast radius.
 
 ## dScMgBase_c field names

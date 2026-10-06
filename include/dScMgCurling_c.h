@@ -8,7 +8,7 @@
  * really dScMgBase_c's own field at that offset, misattributed by
  * tools/deepen_rtti.py's flat-struct generation (it doesn't know about
  * inheritance). SIZE NOT ASSERTED: a leaf, so nothing needs the number
- * (same reasoning include/Stage.h documents). */
+ * (same reasoning include/dScStage_c.h documents). */
 #ifndef DSCMGCURLING_C_H
 #define DSCMGCURLING_C_H
 #include "dScMgBase_c.h"

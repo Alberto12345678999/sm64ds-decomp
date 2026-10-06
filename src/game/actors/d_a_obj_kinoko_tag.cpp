@@ -25,7 +25,7 @@
  *   no recovered name, so it is not coined. SharedFilePtr.h has no fields.
  * - PILE / daObjPile_c.h +0x32c backlink (actor ID 0x1b).
  * - Vec3_Dist: no shared header this TU can take without a campaign.
- * - no Player.h / Camera.h.
+ * - no Player.h / dCamera_c.h.
  * - leaf operator new until #2570.
  */
 

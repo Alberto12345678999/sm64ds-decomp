@@ -98,8 +98,8 @@ enum {
 /* Turning speed: 0x800 a frame (0x10000 is a full turn). */
 enum { kTurnStep = 0x800 };
 
-/* Animation playback flags for SetAnim, inferred rather than read from the
-   animation files (Animation.h only says "loop flags"; 0x40000000 = play once
+/* dExtFrameCtrl_c playback flags for SetAnim, inferred rather than read from the
+   animation files (dExtFrameCtrl_c.h only says "loop flags"; 0x40000000 = play once
    is a reading of how they are used). Most animations played with kAnimPlayOnce
    are later waited on with Finished/WillHitFrame (RUN_START, LAND, BRAKE);
    ANIM_JUMP is played once and never waited on. The idle, talk and run cycles
@@ -187,7 +187,7 @@ extern Timer data_0209d4c8;         /* TIME_TIMER: the course timer */
 extern void Vec3_Asr(void *destination, void *source, int shift);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void* m, short angY);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int a, int b, unsigned char g);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int a, int b, unsigned char g);
 extern struct Matrix4x3 data_020a0e68;  /* MATRIX_SCRATCH_PAPER */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h, unsigned int d, unsigned int e);
 /* The existing C initializer erases pointer slots to integers. Keep the
@@ -222,13 +222,13 @@ int daRNk_c::InitResources()
     int zero;
 
     Model::LoadFile(*(SharedFilePtr *)data_ov062_0211e00c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e014);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e024);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e01c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e034);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e03c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e02c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e004);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e014);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e024);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e01c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e034);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e03c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e02c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e004);
     if (mModelAnim.SetFile(*(BMD_File **)(data_ov062_0211e00c + 4), 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
@@ -333,7 +333,7 @@ void func_ov062_0211aac0(daRNk_c* self){
   Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, self->mAngleY);
   { struct M43w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
     *(M43w*)&self->mModelAnim.mat4x3 = *(M43w*)&data_020a0e68; }
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0xa0000, 0xa0000, 0xf);
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0xa0000, 0xa0000, 0xf);
 }
 }
 

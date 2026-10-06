@@ -18,10 +18,10 @@
 #include "daObjWanwanShutter_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Sound.h"
 #include "dCc_c.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 enum {
     kYoshiEggId = 9,
@@ -38,8 +38,8 @@ enum {
  * has no fields; +4 is the BMD or BCA the load just filled in.
  *   02114968  body BMD   sinit 0x9c02, Model::LoadFile, mModelAnim
  *   02114978  link BMD   sinit 0x9c01, Model::LoadFile, mLinkModels
- *   02114980  idle BCA   sinit 0x9c04, Animation::LoadFile
- *   02114970  lunge BCA  sinit 0x9c03, Animation::LoadFile
+ *   02114980  idle BCA   sinit 0x9c04, dExtFrameCtrl_c::LoadFile
+ *   02114970  lunge BCA  sinit 0x9c03, dExtFrameCtrl_c::LoadFile
  */
 struct Ov014Loaded {
     u32 id;
@@ -72,8 +72,8 @@ void func_ov102_0214ae1c(void *bomb);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *pos, int radius, int height,
     unsigned flags, unsigned vuln);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, ShadowModel *shadow, Matrix4x3 *mtx, int radius, int depth,
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
     unsigned opacity);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     ModelAnim *self, void *bca, int flags, int speed, unsigned start);
@@ -81,7 +81,6 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, const Vector3 *pos, unsigned kind, int power, unsigned a,
     unsigned b, unsigned c);
 short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-void _ZN6Camera9SetFlag_3Ev(Camera *cam);
 
 void MulVec3Mat4x3(void *v, void *m, void *dst);
 void Vec3_Add(void *out, void *a, void *b);
@@ -110,13 +109,13 @@ extern "C" {
 dEnemyBase_c *_ZN12dEnemyBase_cC2Ev(dEnemyBase_c *object);
 dCcAcPos_c *_ZN10dCcAcPos_cC1Ev(dCcAcPos_c *object);
 ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
-ShadowModel *_ZN11ShadowModelC1Ev(ShadowModel *object);
+dExtShadowModel_c *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *object);
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
     void (*ctor)(void *), void (*dtor)(void *));
 extern int _ZTV10daWanwan_c[];
 extern Model *_ZN5ModelD1Ev(Model *object);
 extern Model *_ZN5ModelC1Ev(Model *object);
-extern ShadowModel *_ZN11ShadowModelD1Ev(ShadowModel *object);
+extern dExtShadowModel_c *_ZN17dExtShadowModel_cD1Ev(dExtShadowModel_c *object);
 extern Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
 extern void func_0203d384(void);
 }
@@ -140,7 +139,7 @@ extern "C" int func_0201267c(int id, void *pos, int unused);
 /* Hand-rolled. The two Vector3[7] arrays are constructed by func_0203d384,
  * not by Vector3's implicit default. */
 /* return new daWanwan_c() measured 0xf0->0xa0, and the vec_ctor slot
-   relocates ShadowModelD1 where the ROM still has 0x020733a8. func_0203d384
+   relocates dExtShadowModel_c's D1 where the ROM still has 0x020733a8. func_0203d384
    stays the Vector3[7] constructor. */
 extern "C" daWanwan_c *daWanwan_c_classInit()
 {
@@ -150,12 +149,12 @@ extern "C" daWanwan_c *daWanwan_c_classInit()
         *(int **)c = &_ZTV10daWanwan_c[2];
         _ZN10dCcAcPos_cC1Ev(&c->mdCcAcPos_c);
         _ZN9ModelAnimC1Ev(&c->mModelAnim);
-        _ZN11ShadowModelC1Ev(&c->mShadowModel);
+        _ZN17dExtShadowModel_cC1Ev(&c->mShadowModel);
         __cxa_vec_ctor(c->mLinkModels, 7, 0x50,
             (void (*)(void *))_ZN5ModelC1Ev, (void (*)(void *))_ZN5ModelD1Ev);
         __cxa_vec_ctor(c->mLinkShadows, 7, 0x28,
-            (void (*)(void *))_ZN11ShadowModelC1Ev,
-            (void (*)(void *))_ZN11ShadowModelD1Ev);
+            (void (*)(void *))_ZN17dExtShadowModel_cC1Ev,
+            (void (*)(void *))_ZN17dExtShadowModel_cD1Ev);
         __cxa_vec_ctor(c->mLinkPos, 7, 0xc,
             (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(c->mLinkDelta, 7, 0xc,
@@ -170,8 +169,8 @@ int daWanwan_c::InitResources()
     void *f = Model::LoadFile(data_ov014_02114968);
     mModelAnim.SetFile((BMD_File *)f, 1, 1);
     Model::LoadFile(data_ov014_02114978);
-    Animation::LoadFile(data_ov014_02114980);
-    Animation::LoadFile(data_ov014_02114970);
+    dExtFrameCtrl_c::LoadFile(data_ov014_02114980);
+    dExtFrameCtrl_c::LoadFile(data_ov014_02114970);
 
     {
         int i = 0;
@@ -189,7 +188,7 @@ int daWanwan_c::InitResources()
         int si = 0;
         unsigned char *sp = (unsigned char *)mLinkShadows;
         do {
-            ((ShadowModel *)sp)->InitCylinder();
+            ((dExtShadowModel_c *)sp)->InitCylinder();
             si = si + 1;
             sp = sp + 0x28;
         } while (si < 7);
@@ -339,8 +338,8 @@ void func_ov014_02112788(char *c)
     if (t <= 0x1000)
         t = 0x1000;
     /* DropShadowRadHeight(Fix12<int>, Fix12<int>) measured 0x1c4->0x1e4 for both calls. */
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        (dActor_c *)c, (ShadowModel *)(c + 0x1b4), (Matrix4x3 *)(c + 0x16c),
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        (dActor_c *)c, (dExtShadowModel_c *)(c + 0x1b4), (Matrix4x3 *)(c + 0x16c),
         0x15e000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
         t + 0x28000,
         0xf);
@@ -358,8 +357,8 @@ void func_ov014_02112788(char *c)
         t = *(int *)(e + 0x528) - *(int *)(c + 0x5f0);
         if (t <= 0x1000)
             t = 0x1000;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-            (dActor_c *)c, (ShadowModel *)sm, (Matrix4x3 *)(m + 0x1c),
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+            (dActor_c *)c, (dExtShadowModel_c *)sm, (Matrix4x3 *)(m + 0x1c),
             0x78000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
             t + 0x28000,
             0xf);
@@ -823,7 +822,7 @@ extern "C" void func_ov014_02111ca8(char *raw)
             c->func_ov014_02111ebc(2);
         }
     }
-    static_cast<Animation &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
 }
 
 // @symbol func_ov014_02111b70
@@ -881,7 +880,7 @@ extern "C" int func_ov014_02111af0(char *raw)
         goto adv;
     c->func_ov014_02111ebc(1);
 adv:
-    static_cast<Animation &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
 }
 
 // @symbol func_ov014_02111a6c
@@ -919,7 +918,6 @@ extern "C" void func_ov014_021115ec(u8 *raw)
     void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self_, void *bca, s32 a, s32 fix, unsigned b);
     s32 Vec3_ApproachHorz(Vector3 *out, Vector3 *target, s32 maxStep);
     void func_ov014_02112ea8(void *actor);
-    void _ZN6Camera9SetFlag_3Ev(void *cam);
     extern s16 data_02082214[];
     extern void *data_0209f318;
 
@@ -928,7 +926,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
     Vector3 partnerPos;
     s16 angleToPlayer;
     s16 angleToAnchor;
-    Camera *camera;
+    dCamera_c *camera;
 
     Sound::PlaySecretSound(self, &self->mSecretSound);
     fence = (daObjWanwanShutter_c *)dActor_c::FindWithID((unsigned)self->mFenceUniqueID);
@@ -942,7 +940,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
         partnerPos.z = src[2];
         ApproachAngle(ap, z, 4, 0x200, fifth);
     }
-    camera = (Camera *)data_0209f318;
+    camera = (dCamera_c *)data_0209f318;
     angleToPlayer = self->HorzAngleToCPlayer();
     angleToAnchor = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mSpawnPosX);
     switch (self->mReleaseStep) {
@@ -1034,7 +1032,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
                 self->mHorzSpeed = 0x1e000;
                 self->mVertSpeed = kChainSlack;
             }
-            _ZN6Camera9SetFlag_3Ev(camera);
+            camera->SetFlag_3();
             incRelease(self);
         }
         break;
@@ -1054,7 +1052,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
             self->MarkForDestruction();
         break;
     }
-    static_cast<Animation &>(self->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(self->mModelAnim).Advance();
 }
 
 // @symbol func_ov014_021115c0

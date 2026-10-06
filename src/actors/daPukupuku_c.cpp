@@ -49,7 +49,7 @@
 #include "daPukupuku_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "decl_common.h"
 
 /* shadow typedef 'Fix12i' */
@@ -105,7 +105,7 @@ int daPukupuku_c::InitResources()
     bmd = (struct BMD_File *)Model::LoadFile(data_ov090_02134564);
     mModelAnim.SetFile(bmd, 1, -1);
 
-    Animation::LoadFile(*(struct SharedFilePtr *)&data_ov090_0213455c);
+    dExtFrameCtrl_c::LoadFile(*(struct SharedFilePtr *)&data_ov090_0213455c);
 
     v = data_ov090_021342d8;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -148,7 +148,7 @@ int daPukupuku_c::Behavior()
     }
     mAngleY = mPrevAngleY;
     mModelAnim.speed = 0x1000;
-    static_cast<Animation &>(mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(mModelAnim).Advance();
     func_ov090_02133338((char *)this);
     func_ov090_021330c8((char *)this);
     mdCcAcPos_c.Clear();

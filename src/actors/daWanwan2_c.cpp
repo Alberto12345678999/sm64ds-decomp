@@ -148,7 +148,7 @@ void _ZN8dActor_c15HugeLandingDustEb(dActor_c *thiz, bool b);
 dActor_c *_ZN8dActor_c13ClosestPlayerEv(dActor_c *thiz);
 void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 param, const Vector3 *pos, const Vector3_16 *rot, int area, int unk);
 void *_ZN8dActor_c10FindWithIDEj(u32 id);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, int a, int b, unsigned int g);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *clsn, const void *pos);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
@@ -157,7 +157,8 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *pos, u32 a, in
 void _ZN5dCc_c5ClearEv(void *thiz);
 int _ZN5dCc_c6UpdateEv(void *thiz);
 int func_02012694(int, void *);
-void _ZN9Animation7AdvanceEv(void *anim);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, int a, int b, unsigned int u);
 void *_ZN7PathPtrC1Ev(void *thiz);
 void _ZN7PathPtr6FromIDEj(void *thiz, unsigned int id);
@@ -505,7 +506,7 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
 extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 {
     c->mModelAnim.speed = 4096;     /* 1.0 */
-    _ZN9Animation7AdvanceEv((Animation *)&c->mModelAnim);
+    _ZN15dExtFrameCtrl_c7AdvanceEv((dExtFrameCtrl_c *)&c->mModelAnim);
     func_ov100_021437d4(c);
     func_ov100_0214344c(c);
     func_ov100_021435e8(c);
@@ -556,12 +557,12 @@ extern "C" void func_ov100_02143b68(char *self)
     Model *mdst;
     char *rd;
     char *st;
-    ShadowModel *sm;
+    dExtShadowModel_c *sm;
     Matrix4x3_FromRotationXYZExt(&c->mModelAnim.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
     c->mModelAnim.mat4x3.t.x = c->mPosX >> 3;
     c->mModelAnim.mat4x3.t.y = c->mPosY >> 3;
     c->mModelAnim.mat4x3.t.z = c->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000, 0x1f4000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mModelAnim.mat4x3, 0x15e000, 0x1f4000, 0xf);
     tmp = *(M48 *)&IDENTITY_MATRIX4X3;
     i = 0;
     mdst = c->mModels;
@@ -576,7 +577,7 @@ extern "C" void func_ov100_02143b68(char *self)
         *(int *)(st + 0x3b0) = *(int *)(rd + 0x6d8) >> 3;
         *(int *)(st + 0x3b4) = *(int *)(rd + 0x6dc) >> 3;
         *(int *)(st + 0x3b8) = *(int *)(rd + 0x6e0) >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, sm, &mdst->mat4x3, 0x78000, 0x1f4000, 0xf);
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, sm, &mdst->mat4x3, 0x78000, 0x1f4000, 0xf);
         mdst++;
         rd += 0xc;
         st += 0x50;
@@ -771,8 +772,8 @@ int daWanwan2_c::InitResources()
     Model::LoadFile(data_ov002_0211092c);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov100_021486bc), 1, -1);
     Model::LoadFile(data_ov100_021486a4);
-    Animation::LoadFile(data_ov100_021486ac);
-    Animation::LoadFile(data_ov100_021486b4);
+    dExtFrameCtrl_c::LoadFile(data_ov100_021486ac);
+    dExtFrameCtrl_c::LoadFile(data_ov100_021486b4);
     LoadSilverStarAndNumber();
 
     {
@@ -789,7 +790,7 @@ int daWanwan2_c::InitResources()
     mShadowModel.InitCylinder();
     {
         int i = 0;
-        ShadowModel *shadow = mShadowModels;
+        dExtShadowModel_c *shadow = mShadowModels;
         do {
             shadow->InitCylinder();
             i++;

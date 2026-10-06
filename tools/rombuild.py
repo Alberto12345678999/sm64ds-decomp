@@ -237,6 +237,20 @@ def run(cmd, what, quiet_patterns=()):
     return out
 
 
+def _bad_module_lines(verification):
+    """Name the modules behind a failed `dsd check modules`, not just the count.
+
+    dsd prints `Check <module>: checksum failed` per offending module into the
+    captured output; surfacing it makes a remote-only mismatch actionable from
+    the failure detail alone."""
+    out = (verification.get("modulesOutput") or "").strip()
+    bad = [line for line in out.splitlines()
+           if "checksum failed" in line or "byte(s) differ" in line]
+    if bad:
+        return bad
+    return [out[-1200:]] if out else []
+
+
 def enrolled(config_root=CONFIG_ROOT, extra_roots=()):
     """Every `src/` file carved out by a `complete` file entry in a delinks.txt.
 
@@ -1280,6 +1294,7 @@ def main():
                 detail = []
                 if not verification["modulesOk"]:
                     detail.append("dsd check modules --fail did not pass")
+                    detail.extend(_bad_module_lines(verification))
                 detail.extend(f"new symbol error: {line}"
                               for line in verification["newSymbolErrors"])
                 detail.extend(verification["storageAliasErrors"])
@@ -1294,7 +1309,11 @@ def main():
             if not verification["ok"]:
                 detail = []
                 if not verification["modulesOk"]:
-                    detail.append("dsd check modules --fail did not pass")
+                    replay = verification.get("moduleChecksumReplay") or []
+                    detail.append(
+                        "dsd check modules --fail did not pass "
+                        f"[replay-diag-1: {', '.join(replay) if replay else 'all module hashes replay-match the committed config'}]")
+                    detail.extend(_bad_module_lines(verification))
                 detail.extend(f"new symbol error: {line}"
                               for line in verification["newSymbolErrors"])
                 detail.extend(verification["storageAliasErrors"])

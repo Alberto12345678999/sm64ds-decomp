@@ -15,7 +15,7 @@
  *     dCcAcPos_c  0x320 + 0x40 = 0x360
  *     BlendModelAnim             0x360 + 0x70 = 0x3d0
  *     Model                      0x3d0 + 0x50 = 0x420
- *     ShadowModel                0x420 + 0x28 = 0x448
+ *     dExtShadowModel_c                0x420 + 0x28 = 0x448
  *     TextureSequence            0x448 + 0x14 = 0x45c
  *
  * 0x45c..0x4d6 is a run of individually evidenced scalars. At 0x4dc,
@@ -52,14 +52,14 @@
 #include "dBgActor_c.h"
 #include "dCcAcPos_c.h"
 #include "BlendModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureSequence.h"
 
 struct Eyerok : dBgActor_c {
     dCcAcPos_c mdCcAcPos_c;  /* 0x320 */
     BlendModelAnim mBlendModelAnim;                        /* 0x360 */
     Model mModel2;                                         /* 0x3d0 */
-    ShadowModel mShadowModel;                               /* 0x420 */
+    dExtShadowModel_c mShadowModel;                               /* 0x420 */
     TextureSequence mTextureSequence;                       /* 0x448 */
     /* Drop-shadow matrix, flat words. A Matrix4x3 member would run another
        ~Vector3 from ~Eyerok. */
@@ -183,7 +183,7 @@ typedef char Eyerok_size_must_be_0x874[sizeof(Eyerok) == 0x874 ? 1 : -1];
 #include "Model.h"
 
 /* The C spelling of the same object, flat. Retained for any leftover C
-   translation unit, same arrangement as include/ShadowModel.h. */
+   translation unit, same arrangement as include/dExtShadowModel_c.h. */
 struct Eyerok {
     u8  pad_000[0x5c];
     s32 mPosX;            /* 0x05c */

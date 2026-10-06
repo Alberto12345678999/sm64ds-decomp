@@ -25,8 +25,8 @@
  * - The *(short*)&mSwayAngle increment: the cartridge sign-extends it
  *   (ldrsh) while the index below zero-extends (ldrh). The plain u16
  *   re-read holds the reload (volatile disproved, FEATHER-2713-01).
- * - Camera+0x17c (data_0209f318): the halfword InitResources and Behavior
- *   add 0x4000 to; Camera.h names nothing there.
+ * - dCamera_c+0x17c (data_0209f318): the halfword InitResources and Behavior
+ *   add 0x4000 to; dCamera_c.h names nothing there.
  * - data_0209f2d8 game-mode flag, data_02082214 sin/cos table,
  *   data_020a0e68 scratch matrix, data_ov002_0210da58 file handle: ROM labels.
  * - func_ov002_020b2c44 keeps its ROM label (unowned helper, typed this).
@@ -69,8 +69,8 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, ShadowModel *sm, Matrix4x3 *mtx, Fix12i a, Fix12i b, u8 u);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, Fix12i a, Fix12i b, u8 u);
 
 }
 
@@ -132,7 +132,7 @@ int daFeather_c::InitResources()
     mAngleZ = -0x4000;
     b = (data_0209f2d8 == 1);
     if (!b) {
-        /* Camera+0x17c, the same halfword Behavior re-reads every frame. */
+        /* dCamera_c+0x17c, the same halfword Behavior re-reads every frame. */
         mAngleY = *(s16*)((char*)data_0209f318 + 0x17c) + 0x4000;
     }
     mLifeTimer = 0xb4;
@@ -275,7 +275,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         c->mShadowMtx.m[9] = c->mPosX >> 3;
         c->mShadowMtx.m[10] = c->mPosY >> 3;
         c->mShadowMtx.m[11] = c->mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             c, &c->mShadowModel, &c->mShadowMtx, 0x96000, 0x320000, 0xf);
         return;
     }
@@ -303,7 +303,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         c->mShadowMtx.m[9] = c->mPosX >> 3;
         c->mShadowMtx.m[10] = c->mPosY >> 3;
         c->mShadowMtx.m[11] = c->mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             c, &c->mShadowModel, &c->mShadowMtx, r4, r5 + 0x28000, 0xf);
     }
 }

@@ -116,7 +116,7 @@ void f(void *t) {
 
 
 def test_a_qualified_call_on_another_class_is_left_alone():
-    """src/_ZN6Camera6RenderEv.cpp: three `OAM::Render(..)` and one `View::Render()`."""
+    """src/engine/view/dCamera_c.cpp: three `OAM::Render(..)` and one `View::Render()`."""
     src = """\
 struct OAM { static void Render(bool, int); };
 struct View { int Render(); };

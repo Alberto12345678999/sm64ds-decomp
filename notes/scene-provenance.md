@@ -33,7 +33,7 @@ ROM's type graph (`tools/rtti_extract.py`), every record whose single base is
 
 Four already have headers under the ROM's own names (`dScBoot_c.h`, `dScMgBase_c.h`,
 `dScMiniGm_c.h`, `dScEntry_c.h`). One more has one under a coinage, `dScStage_c` as
-`include/Stage.h` — and `dScBoot_c` is also known by the coinage `BootScene`, from its
+`include/dScStage_c.h` — and `dScBoot_c` was also known by the coinage `BootScene`, from its
 destructor symbols. The remaining five — `dScMB_c`, `dScTitle_c`, `dScStarSel_c`,
 `dScGameOver_c`, `dScDSMT_c` — the tree does not describe at all. 4 + 1 + 5 = 10.
 Naming a subset is fine; naming a subset as though it were the set is the mistake this
@@ -74,12 +74,12 @@ overrides eight functionally, plus the destructor pair at 16/17.
 `~dScene_c()` is **defined inline**, and per `include/dBase_c.h` the key-function worry
 is moot — `objisolate` makes a key-function TU eligible regardless, by dropping the
 vtable it emits and rebinding to the ROM's own `_ZTV`. What forced the inline move:
-`Stage::~Stage` (and every one of `dScene_c`'s other nine direct children) *inlines*
-`dScene_c`'s own D2 the same way `dScene_c` inlines `dBase_c`'s — the ROM's `Stage`
-destructor stores `Stage`'s vptr, then `dScene_c`'s, then `dBase_c`'s, then calls
+`dScStage_c::~dScStage_c` (and every one of `dScene_c`'s other nine direct children) *inlines*
+`dScene_c`'s own D2 the same way `dScene_c` inlines `dBase_c`'s — the ROM's `dScStage_c`
+destructor stores `dScStage_c`'s vptr, then `dScene_c`'s, then `dBase_c`'s, then calls
 `fBase_c`'s D2 directly, with no call to a separate `dScene_c::~dScene_c()`. A merely
 declared `virtual ~dScene_c();` cannot be inlined and emits `bl _ZN8dScene_cD2Ev` where
-the ROM has none (measured on a `Stage` trial: 80 bytes with the call vs the ROM's 104
+the ROM has none (measured on a `dScStage_c` trial: 80 bytes with the call vs the ROM's 104
 with none).
 
 The production [Scene TU](../src/actors/dScene_c.cpp) defines the key function,
@@ -95,11 +95,11 @@ only this-relative access in the entire class, across all 23 functions, is
 `this->pauseFlags` (0x13) in `BeforeBehavior`; the destructors touch the vptr; everything else
 either passes `this` straight through or never sees it.
 
-Second — and this is the half that rules out a hidden field — `Stage` putting its first
+Second — and this is the half that rules out a hidden field — `dScStage_c` putting its first
 own field at 0x050 is not on its own enough; that is consistent with a `dScene_c` field
-at 0x50 that only `Stage`'s code happens to touch. What separates the two is that
-`Stage` is not the only child: `dScBoot_c`'s generated header puts a **u16** at 0x050
-where `Stage` has a `u8`. Two siblings disagreeing about the type at 0x050 means 0x050
+at 0x50 that only `dScStage_c`'s code happens to touch. What separates the two is that
+`dScStage_c` is not the only child: `dScBoot_c`'s generated header puts a **u16** at 0x050
+where `dScStage_c` has a `u8`. Two siblings disagreeing about the type at 0x050 means 0x050
 is not inherited.
 
 The size assertion in the header holds all three headers to that.
@@ -112,7 +112,7 @@ that ignores `this` compiles the same either way. It is decided at the **call si
 - For the ones that take arguments — `SetFaders`, `SetSceneToSpawn`, `StartSceneFade` —
   the call site puts the first declared argument in r0, leaving no register for a
   `this`. `SetAndStopColorFader` loads a `dFdColor_c` into r0 and `bl`s `SetFaders`;
-  `Stage::Behavior` calls `SetSceneToSpawn` with `mov r0,#4; mov r1,#0`.
+  `dScStage_c::Behavior` calls `SetSceneToSpawn` with `mov r0,#4; mov r1,#0`.
 - For the ones that take none — `SetAndStopColorFader`, `SpawnIfNecessary`,
   `PrepareToSpawnBoot`, `Initialise3dGraphics`, `ResetHardwareRegisters` — nothing is
   placed in r0 at all; r0 still holds whatever the previous call left in it, and a
@@ -128,59 +128,59 @@ has none either.
 
 ---
 
-## Stage / dScStage_c (`include/Stage.h`)
+## dScStage_c / dScStage_c (`include/dScStage_c.h`)
 
-The playable level: `fBase_c -> dBase_c -> dScene_c -> Stage`.
+The playable level: `fBase_c -> dBase_c -> dScene_c -> dScStage_c`.
 
 The generated header this replaced named no base and re-declared the whole of
 `fBase_c` inline — `uniqueID` at 0x004, `actorID` at 0x00c, the three list nodes, a pad
-to 0x050 — so `Stage` and `dScene_c` were unrelated types. Everything below 0x050 is
+to 0x050 — so `dScStage_c` and `dScene_c` were unrelated types. Everything below 0x050 is
 gone from the header now; it comes from the base chain, which owns it.
 
-**Derivation.** `dScStage_c` at 0x02092158, vtable 0x020921c0 = `_ZTV5Stage`, single
+**Derivation.** `dScStage_c` at 0x02092158, vtable 0x020921c0 = `_ZTV10dScStage_c`, single
 base `dScene_c`. It is a leaf: no record in the image names `dScStage_c` as a base.
 
-**Vtable.** `_ZTV5Stage` is 18 slots, the same shape `dScene_c` and `fBase_c` have, and
-`Stage` adds no virtual of its own. It overrides six functionally — 0 `InitResources`,
+**Vtable.** `_ZTV10dScStage_c` is 18 slots, the same shape `dScene_c` and `fBase_c` have, and
+`dScStage_c` adds no virtual of its own. It overrides six functionally — 0 `InitResources`,
 1 `BeforeInitResources`, 3 `CleanupResources`, 6 `Behavior`, 9 `Render`,
 12 `OnPendingDestroy` — plus the destructor pair at 16/17. The remaining ten still point
 at `dScene_c`'s Before/After hooks or at `fBase_c`.
 
-**Key function.** Slot 0 is `Stage::InitResources`, so declaration order matters in the
+**Key function.** Slot 0 is `dScStage_c::InitResources`, so declaration order matters in the
 way `include/dActor_c.h` warns about: whichever non-inline virtual is declared first is
 the key function, and CW 1.2 emits the vtable group into the TU that *defines* it —
 colliding with the copy the module's gap object supplies from ROM data. The destructor
 is declared first, which is free for a derived class (an override takes its base's slot
-wherever it is written) and pins the role to `~Stage`. `tools/objisolate.py` makes that
-TU eligible anyway, so `~Stage` is a real method, defined identically —
-`Stage::~Stage() {}` — in both `src/_ZN5StageD1Ev.cpp` and `src/_ZN5StageD0Ev.cpp`.
-Unlike `dScene_c`, `Stage` does not need to define it inline in the class body: `Stage`
+wherever it is written) and pins the role to `~dScStage_c`. `tools/objisolate.py` makes that
+TU eligible anyway, so `~dScStage_c` is a real method, defined identically —
+`dScStage_c::~dScStage_c() {}` — in both of its destructor variants in `src/actors/dScStage_c.cpp`.
+Unlike `dScene_c`, `dScStage_c` does not need to define it inline in the class body: `dScStage_c`
 is a leaf, so nothing derives from it that would need to inline *its* destructor in
 turn.
 
 **Size is deliberately not asserted for the observed-field span.** The last field the
 header lists is the last one any matched function has been observed to touch, which is
 not the same as the last field the object has. The trailing `pad_9c0[0x8]` and the
-`0x9c8` assertion come from the ROM's own `new Stage` size literal
+`0x9c8` assertion come from the ROM's own `new dScStage_c` size literal
 (`tools/opnew_sizes.py`), which *is* decisive. The offsets are checked:
 `tools/check_header_offsets.py` walks them from `dScene_c`'s asserted 0x50.
 
-**`Particle::SysTracker`, embedded at `Stage+0x50`.** Not its own header yet:
+**`Particle::SysTracker`, embedded at `dScStage_c+0x50`.** Not its own header yet:
 `include/Particle.h` and `include/Particle__SysTracker.h` are two *separate*
 `gen_header.py` shadows of this same class. `src/_ZN8Particle10SysTrackerC1Ev.cpp` writes
 fields through `struct Particle *self` up to `unk_818`, while
 `src/_ZN8Particle10SysTracker10InitialiseEv.cpp` and `6UpdateEv.c` read `mManager`/`mContents`
 through `struct Particle__SysTracker *self` — the same offsets `Particle.h` also
-carries. Their union is what `Stage.h` declares locally: `Particle.h`'s full 34-field
+carries. Their union is what `dScStage_c.h` declares locally: `Particle.h`'s full 34-field
 layout, last field `unk_818` (1 byte, ends 0x819), padded to 0x81c for 4-byte
-alignment — exactly the gap `Stage`'s own D1/D0 give this member (0x50..0x86c), a
+alignment — exactly the gap `dScStage_c`'s own D1/D0 give this member (0x50..0x86c), a
 second independent check on the same number. Declared locally rather than merging the
-two real headers because neither `Stage` source file includes them and a merge has its
+two real headers because neither `dScStage_c` source file includes them and a merge has its
 own blast radius across every file that already casts through one shadow or the other.
 
 Its destructor is declared, never defined: `src/_ZN8Particle10SysTrackerD1Ev.cpp`
 already supplies `_ZN8Particle10SysTrackerD1Ev` as an `extern "C"` free function; the
-declaration only lets `Stage`'s implicit destructor find it by name. Not virtual —
+declaration only lets `dScStage_c`'s implicit destructor find it by name. Not virtual —
 `dtor_variant_audit.py` established `Particle::SysTracker` has no RTTI record and no
 `_ZTV`, so it is not polymorphic and must not gain a vtable pointer.
 
@@ -199,14 +199,14 @@ call site is what decides it.
 `dScStage_c::graphCallback_c` (RTTI si-child of `dGraph_c::callback_c`). Virtual and
 nullary in the ROM: dispatchers call through the object's vptr with r0 = the callback
 object and no other argument; `GraphCallback2` reads its fields (fixed-point matrix at
-+0x4) through `this`. Members of `Stage` only as the family's legacy scope for
++0x4) through `this`. Members of `dScStage_c` only as the family's legacy scope for
 `dScStage_c`; non-static because slot 2 needs `this`, non-virtual to keep their TUs from
 emitting a vtable the delink ranges do not own.
 
 **`PS_Init` is deliberately not declared in the header**, even though
-`src/_ZN5Stage7PS_InitEv.cpp` defines `Stage::PS_Init()` and is byte-verified and
-enrolled. It uses its own local shadow `class Stage` (the same pattern
-`src/_ZN5Stage8BehaviorEv.cpp` uses) on purpose: a real landmine lived at that exact
+`src/_ZN10dScStage_c7PS_InitEv.cpp` defines `dScStage_c::PS_Init()` and is byte-verified and
+enrolled. It uses its own local shadow `class dScStage_c` (the same pattern
+`src/_ZN10dScStage_c8BehaviorEv.cpp` uses) on purpose: a real landmine lived at that exact
 filename — an untracked, un-enrolled second `.cpp` for the symbol whose private
 `struct G2x` declared `SetBlendBrightness`'s middle parameter as `int`, mangling to
 `_ZN3G2x18SetBlendBrightnessEPVtis`, which resolves to nothing and would silently *not*
@@ -217,31 +217,31 @@ header is a separate, low-risk change.
 
 ---
 
-## BootScene / dScBoot_c (`include/BootScene.h`)
+## dScBoot_c (`include/dScBoot_c.h`)
 
-The boot/intro scene: `fBase_c -> dBase_c -> dScene_c -> BootScene`.
+The boot/intro scene: `fBase_c -> dBase_c -> dScene_c -> dScBoot_c`.
 
-The generated header this replaced, `include/dScBoot_c.h`, named no base and
-re-declared a 0x50-byte pad in place of the inherited chain. The class's *functions* are
-attributed under the English coinage `BootScene`, because that is what its destructor
-symbols (`_ZN9BootSceneD1Ev` / `_ZN9BootSceneD0Ev`) mangle to; this header follows
-`include/Stage.h`'s precedent of naming after the coinage. `include/dScBoot_c.h` is left
-in place for other includers; neither `BootScene` source needs it any more.
+This class was coined `BootScene` before the ROM's RTTI name won out: the
+generated `include/dScBoot_c.h` named no base and re-declared a 0x50-byte pad
+in place of the inherited chain, and a hand-built `BootScene.h` carried
+the real layout under the coinage. The promotion fold moved the class onto the
+cartridge's own spelling — `_ZTS9dScBoot_c` at 0x020914bc — so the real header
+now lives at `include/dScBoot_c.h` and the generated stub is gone.
 
 **Derivation.** `dScBoot_c` at 0x020914c8, vtable 0x02091528, single base `dScene_c`. A
 leaf.
 
-**Vtable.** `data_02091528` is 18 slots and `BootScene` overrides two functionally —
+**Vtable.** `data_02091528` is 18 slots and `dScBoot_c` overrides two functionally —
 slot 0 `InitResources` ([arm9](../config/arm9/symbols.txt) 0x02005a58) and slot 6 `Behavior` ([arm9](../config/arm9/symbols.txt) 0x02005418) — plus
 the destructor pair at 16/17. Confirmed against [config/arm9/relocs.txt](../config/arm9/relocs.txt)'s vtable words
 at 0x02091528 and 0x02091540.
 
-**Converted 2026-08-22.** Both overrides are now real `BootScene::` methods
-(`src/_ZN9BootScene13InitResourcesEv.cpp`, `src/_ZN9BootScene8BehaviorEv.cpp`), both
-byte-exact, and neither includes `include/dScBoot_c.h` any more. A previous revision of
+**Converted 2026-08-22.** Both overrides are now real `dScBoot_c::` methods
+(`src/actors/dScBoot_c.cpp`), both
+byte-exact. A previous revision of
 the header said they were "NOT CONVERTED BY THIS PASS", which was later read as saying
 they *could not* be. The key function is the first non-inline virtual *declared*, which
-is `~BootScene`, defined out of line in `_ZN9BootSceneD1Ev.cpp`; where `InitResources`
+is `~dScBoot_c`, defined out of line in `src/d_s_boot.cpp`; where `InitResources`
 is defined cannot move that. Bracketing `eligible.py` across the conversion returned a
 byte-identical name list, which is the gate that would show a `_ZTV` appearing.
 
@@ -379,11 +379,11 @@ variant — only the colouring differs. Re-open only with a lever that makes r2 
 
 ---
 
-## Stage's fog array (`include/Fog.h`, `Stage::LoadFog`)
+## dScStage_c's fog array (`include/Fog.h`, `dScStage_c::LoadFog`)
 
-`Stage.h` used to model 0x96c..0x9bc as one `Fog` (0x26 bytes) followed by five
+`dScStage_c.h` used to model 0x96c..0x9bc as one `Fog` (0x26 bytes) followed by five
 loose `unk_` bytes at 0x994, 0x9b4, 0x9b5, 0x9b6 and 0x9b8. Those five are the
-*second element of a two-element `Fog` array*, and `Stage::LoadFog` is what shows
+*second element of a two-element `Fog` array*, and `dScStage_c::LoadFog` is what shows
 it: its second loop starts at `this + 0x96c` and advances `dst += 0x28` once per
 level fog record, handing each `dst` to `Fog::Init`. 0x994 = 0x96c + 0x28 is
 `mFog[1]`'s density ramp; 0x9b4/0x9b5/0x9b6/0x9b8 are `mFog[1]`'s
@@ -391,9 +391,9 @@ level fog record, handing each `dst` to `Fog::Init`. 0x994 = 0x96c + 0x28 is
 0x9bc, exactly where `mSkyboxModel` begins.
 
 So `Fog`'s size is 0x28, not the 0x26 its field span alone suggests — the stride
-is the witness, and the old header's "independently, Stage.h places Fog at 0x96c
+is the witness, and the old header's "independently, dScStage_c.h places Fog at 0x96c
 with its next real field at 0x994" was reading the next array element as a
-neighbouring field. `Fog` is now `Fog mFog[2];` in `Stage.h`, and `LoadFog` reads
+neighbouring field. `Fog` is now `Fog mFog[2];` in `dScStage_c.h`, and `LoadFog` reads
 as two hand-written default ramps followed by the level's own records.
 
 **Dead lever, recorded so it is not retried.** In `Fog::Init` the density ramp is

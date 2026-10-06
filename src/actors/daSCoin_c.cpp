@@ -1,34 +1,34 @@
 //cpp
-/* Secret Coin (SECRET_COIN 329) -- ov002/daSCoin_c.
+/* Secret Coin (SECRET_COIN 329) -- ov002/daSCoin_c. RTTI ov002:0x0210b000
+ * names daSCoin_c. Collecting all five coins of a group spawns POWER_STAR
+ * at the STARBASE marker with the same mStarID.
  *
- * RTTI ov002:0x0210b000 names daSCoin_c; the debug table names SECRET_COIN.
- * overlay_actors.md lists the same slot as INVISIBLE_SECRET(329). SILVER_STAR
- * (179) is daStar_c, not this class. ov002 also carries POWER_STAR(178) and
- * STAR_MARKER(180), which 020f05f4 matches and spawns (symbols/actor_debug_names.tsv
- * spells those two ids STAR and STARBASE).
+ * Function order is the reverse of the ROM's: mwccarm 2004/b56 emits one
+ * .text section per function in reverse source order.
  *
- * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S. mwccarm 2004/b56
- * emits one `.text` section per function in the reverse of source order.
- *
- * Known limits:
- * - dCcAc_c::Init 6az: InitResources passes Fix12<int> by value; the header
- *   method form size-DIFFs (notes/mwccarm-codegen.md 6az).
- * - Named mPosX/Y/Z on the STAR_MARKER in 020f05f4 size-DIFFs; keep the
- *   int* +0x5c copy.
- * - data_ov002_0210d9a8 is the ov002 SharedFilePtr handle; symbols.txt has
- *   no recovered name, so it is not coined. SharedFilePtr.h has no fields.
- * - func_02012790 collection jingle 0x25 (020f0438).
+ * deslop leftovers:
+ * - dCcAc_c::Init stays a scalar extern: it takes Fix12<int> by value and
+ *   the member form size-DIFFs (mwccarm-codegen wall 6az).
+ * - SpawnStar reads the marker's position through int* at +0x5c: named
+ *   mPosX/Y/Z on the daStarBase_c* size-DIFFs. dActor_c has no Pos().
+ * - LinkToBlock keeps the goto + sequential isMatch stores: the plain
+ *   for/else-if loop size-DIFFs.
+ * - data_ov002_0210d9a8 (the ov002 SharedFilePtr handle) and func_02012790
+ *   (the no-position jingle player, id 0x25 here) have no recovered names.
  */
 
 #include "daSCoin_c.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
 #include "daStar_c.h"
+#include "daStarBase_c.h"
+#include "daObjHatenaBlock_c.h"
+#include "daObjPushblock_c.h"
 
 extern "C" {
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
-void func_02012790(int);
+unsigned int func_02012790(unsigned int);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                               int radius, int height,
                                               unsigned int flags,
@@ -69,7 +69,7 @@ s32 daSCoin_c::InitResources()
 {
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000,
                                               0x40000, 0x800002, 0);
-    unk_10d = param1 & 0xf;
+    mStarID = param1 & 0xf;
     mGroupId = (param1 >> 8) & 0xf;
     mGroupRole = 0;
     mLeaderUniqueID = 0;
@@ -84,25 +84,23 @@ s32 daSCoin_c::Behavior()
 {
     if (mDeathTimer) {
         if (DecIfAbove0_Byte(&mDeathTimer) == 0) {
-            func_ov002_020f05f4();
+            SpawnStar();
             MarkForDestruction();
         }
         return 1;
     }
     if (mGroupRole == 0) {
-        unsigned char st = mGroupId;
-        if (st == 0 || st == 0xf) {
-            {
-                dActor_c *o = 0;
-                mGroupRole = 1;
-                mLeaderUniqueID = uniqueID;
-                for (;;) {
-                    o = dActor_c::FindWithActorID(0x149, o);
-                    if (o == 0) break;
-                    if (o != this) {
-                        ((daSCoin_c *)o)->mGroupRole = 2;
-                        ((daSCoin_c *)o)->mLeaderUniqueID = uniqueID;
-                    }
+        u8 group = mGroupId;
+        if (group == 0 || group == 0xf) {
+            mGroupRole = 1;
+            mLeaderUniqueID = uniqueID;
+            daSCoin_c *other = 0;
+            for (;;) {
+                other = (daSCoin_c *)dActor_c::FindWithActorID(0x149, other);
+                if (other == 0) break;
+                if (other != this) {
+                    other->mGroupRole = 2;
+                    other->mLeaderUniqueID = uniqueID;
                 }
             }
         }
@@ -111,9 +109,9 @@ s32 daSCoin_c::Behavior()
         MarkForDestruction();
         return 1;
     }
-    func_ov002_020f051c();
+    LinkToBlock();
     if (mdCcAc_c.otherOwner) {
-        func_ov002_020f0438();
+        Collect();
     }
     mdCcAc_c.Clear();
     if (mClsnDisabled == 0) {
@@ -129,49 +127,45 @@ s32 daSCoin_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN9daSCoin_c19func_ov002_020f05f4Ev
-/* Finds the STAR_MARKER whose byte at +0x1d9 equals unk_10d and spawns actor
- * 0xb2 (POWER_STAR) 0x12c000 above its position, then calls AddStarMarker on it.
+// @symbol _ZN9daSCoin_c9SpawnStarEv
+/* Finds the STARBASE whose mStarID equals this group's and spawns POWER_STAR
+ * (0xb2) 0x12c000 above its position, then calls AddStarMarker on it.
  * Returns without spawning when there is no such marker. */
-void daSCoin_c::func_ov002_020f05f4()
+void daSCoin_c::SpawnStar()
 {
-    /* MATCH form: dActor_c::Spawn as a real method size-DIFFs (s8/s16
-     * areaID/deathTableID vs the scalar ABI). Named mPosX/Y/Z on the
-     * STAR_MARKER also size-DIFFs; keep the int* +0x5c copy. */
-    char *marker = 0;
+    daStarBase_c *marker = 0;
     for (;;) {
-        marker = (char *)dActor_c::FindWithActorID(0xb4, (dActor_c *)marker);
+        marker = (daStarBase_c *)dActor_c::FindWithActorID(0xb4, marker);
         if (marker == 0) return;
-        if (unk_10d == *(unsigned char *)(marker + 0x1d9)) {
-            int *base = (int *)(marker + 0x5c);
+        if (mStarID == marker->mStarID) {
+            int *base = (int *)((char *)marker + 0x5c);
             Vector3 pos;
             pos.x = base[0];
             pos.y = base[1];
             pos.z = base[2];
             pos.y += 0x12c000;
-            {
-                char *star = (char *)dActor_c::Spawn(
-                    0xb2, unk_10d | 0x40, pos, 0, mAreaId, -1);
-                if (star != 0) {
-                    ((daStar_c *)star)->AddStarMarker();
-                }
+            daStar_c *star = (daStar_c *)dActor_c::Spawn(
+                0xb2, mStarID | 0x40, pos, 0, mAreaId, -1);
+            if (star != 0) {
+                star->AddStarMarker();
             }
             return;
         }
     }
 }
 
-// @symbol _ZN9daSCoin_c19func_ov002_020f051cEv
-/* Runs once (unk_112 guards it). Looks through the actor list for actor 0x14
- * (HATENA_BLOCK), 0x15 (ITEM_BLOCK) or 0xc0 (PUSHBLOCK) closer than 0xc8000
- * to this coin; on a hit it sets mClsnDisabled and stores this coin in the
- * other actor at +0x3f4 (+0x4f0 for 0xc0). */
-void daSCoin_c::func_ov002_020f051c()
+// @symbol _ZN9daSCoin_c11LinkToBlockEv
+/* Runs once (mBlockScanDone guards it). Looks through the actor list for a
+ * HATENA_BLOCK (0x14), ITEM_BLOCK (0x15) or PUSHBLOCK (0xc0) closer than
+ * 0xc8000 to this coin; on a hit it disables the touch collider and stores
+ * itself in the block's held/linked slot. The block collects the coin when
+ * it pops. */
+void daSCoin_c::LinkToBlock()
 {
     dActor_c *other;
     u32 otherID;
     int isMatch;
-    if (unk_112 != 0) return;
+    if (mBlockScanDone != 0) return;
     other = dActor_c::Next(0);
     if (other == 0) goto done;
     do {
@@ -183,7 +177,7 @@ void daSCoin_c::func_ov002_020f051c()
         }
         if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
             mClsnDisabled = 1;
-            *(int *)((char *)other + 0x3f4) = (int)this;
+            ((daObjHatenaBlock_c *)other)->mHeldActor = this;
             goto done;
         }
         goto next;
@@ -192,39 +186,39 @@ void daSCoin_c::func_ov002_020f051c()
         if (isMatch == 0) goto next;
         if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&other->mPosX) < 0xc8000) {
             mClsnDisabled = 1;
-            *(int *)((char *)other + 0x4f0) = (int)this;
+            ((daObjPushblock_c *)other)->mLinkedActor = this;
             goto done;
         }
       next:
         other = dActor_c::Next(other);
     } while (other != 0);
   done:
-    unk_112 = 1;
+    mBlockScanDone = 1;
 }
 
-// @symbol _ZN9daSCoin_c19func_ov002_020f0438Ev
+// @symbol _ZN9daSCoin_c7CollectEv
 /* Collection handler. Finds the group leader by mLeaderUniqueID; unless this
  * coin is mGroupId 0xf, its mGroupId must equal the leader's mCollectedCount.
  * Plays func_02012790(0x25), bumps the leader's count, spawns the count as a
  * number, and marks the collider flags. The fifth collection starts this
  * coin's mDeathTimer at 0x1e frames; otherwise a mGroupRole 2 coin destroys
  * itself. */
-void daSCoin_c::func_ov002_020f0438()
+void daSCoin_c::Collect()
 {
-    daSCoin_c *o = (daSCoin_c *)dActor_c::FindWithID(mLeaderUniqueID);
-    if (!o) return;
-    if (mGroupId != 0xf && mGroupId != o->mCollectedCount) return;
+    daSCoin_c *leader = (daSCoin_c *)dActor_c::FindWithID(mLeaderUniqueID);
+    if (!leader) return;
+    if (mGroupId != 0xf && mGroupId != leader->mCollectedCount) return;
     func_02012790(0x25);
-    o->mCollectedCount++;
+    leader->mCollectedCount++;
     {
         Vector3 v;
         v.x = mPosX;
         v.y = mPosY;
         v.z = mPosZ;
-        SpawnNumber(v, o->mCollectedCount, false, 0, 0);
+        SpawnNumber(v, leader->mCollectedCount, false, 0, 0);
     }
     mdCcAc_c.flags |= 1;
-    if (o->mCollectedCount == 5) { mDeathTimer = 0x1e; return; }
+    if (leader->mCollectedCount == 5) { mDeathTimer = 0x1e; return; }
     if (mGroupRole != 2) return;
     MarkForDestruction();
 }

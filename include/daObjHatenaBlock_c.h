@@ -7,7 +7,7 @@
 
 #include "dBgActor_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 /* Question / item / VS-item / cap blocks (HATENA_BLOCK 20, ITEM_BLOCK 21,
  * VS_ITEM_BLOCK 22, CAP_BLOCK_M/W/L 23-25). ROM RTTI daObjHatenaBlock_c;
@@ -18,7 +18,7 @@
 struct daObjHatenaBlock_c : dBgActor_c {
     u8  pad_31e[0x2];
     ModelAnim mModelAnim;             /* 0x320 -- only HATENA_BLOCK (20) loads and draws it */
-    ShadowModel mShadowModel;         /* 0x384 */
+    dExtShadowModel_c mShadowModel;         /* 0x384 */
     /* Seeded from mModel.mat4x3 by InitResources, then rebuilt every frame
        by func_ov102_02149ea4. DropShadowScaleXYZ takes this pairing. 0x3ac + 0x30 = 0x3dc. */
     Matrix4x3 mShadowMat;             /* 0x3ac */
@@ -47,7 +47,7 @@ struct daObjHatenaBlock_c : dBgActor_c {
     u8 mHitterParam;                  /* 0x3f2 */
     u8 mContentType;                  /* 0x3f3 -- Content */
     /* A SECRET_COIN that registered itself with this block: daSCoin_c::
-       func_ov002_020f051c stores itself here when it is within 200 units of
+       LinkToBlock stores itself here when it is within 200 units of
        an actor 20 / 21 block. Bounce-end (func_ov102_021498e0) collects it
        (actorID 0x149, SECRET_COIN) and clears this. Not written by this
        class. */

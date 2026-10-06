@@ -37,7 +37,7 @@
  * - The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
  *   name it.
  * - g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
- * - data_0209f318 as Camera * matches, but the plurality is void * so the
+ * - data_0209f318 as dCamera_c * matches, but the plurality is void * so the
  *   cast stays.
  *
  * Leftover: 20/20 MATCH. func_ov089_02130fb4, func_ov089_0213115c,
@@ -57,7 +57,7 @@
 #include "decl_common.h"
 #include "daObjKey_c.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "Message.h"
@@ -136,7 +136,7 @@ enum {
 typedef void (daObjKey_c::*StateFunc)();
 extern StateFunc data_ov089_02132cec[];
 
-/* local extern: Camera.h has no SetFlag_3. Particle::System::New,
+/* local extern: dCamera_c.h has no SetFlag_3. Particle::System::New,
  * DropShadowRadHeight, ModelAnim::SetAnim and dCcAcPos_c::Init take
  * Fix12<int> by value; the scalar call does not compile and the Fix12
  * temporary size-DIFFs (see the file comment). The ROM calls the
@@ -145,14 +145,13 @@ extern "C" {
 extern void dBgCh_Actr_UpdateContinuous_Veneer(char *p);
 extern void *data_0209f318;
 extern int data_0209b454;
-extern void _ZN6Camera9SetFlag_3Ev(Camera *cam);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 a, u32 b, int c, int d, int e, void *f, void *g);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
 extern void func_ov002_020c3dbc(void *player);
 extern int data_0209caa0[];
 void Matrix4x3_FromRotationY(void *m, short angle);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *a, void *sm, void *mtx, int rad, int h, unsigned int x);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *a, void *sm, void *mtx, int rad, int h, unsigned int x);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void *data_ov089_021328b4[];
 extern ObjKeyFile data_ov002_02110964;
@@ -173,7 +172,7 @@ extern void LoadKeyModels(int idx);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int a, int fx, unsigned int f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *thiz, void *actor, void *pos, int r, int s, unsigned int a, unsigned int b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, int a, int b, void *v, void *w);
-/* An ObjKeyFile in layout, but CutsceneObject::InitResources declares it `char`;
+/* An ObjKeyFile in layout, but daDemo_c::InitResources declares it `char`;
    keep that spelling so the declarations of this symbol stay in agreement. */
 extern char data_ov002_0211094c;
 extern int data_0209cef0;
@@ -287,7 +286,7 @@ void daObjKey_c::StateFlyToCenter()
     Vector3 v;
     Vector3 center1;
     Vector3 center2;
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
 
     switch (mStep) {
     case 0:
@@ -310,7 +309,7 @@ void daObjKey_c::StateFlyToCenter()
             mSavedCamPos.x = pos->x;
             mSavedCamPos.y = pos->y;
             mSavedCamPos.z = pos->z;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             mStep++;
             _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, data_0209b490 / 15);
             break;
@@ -419,7 +418,7 @@ void daObjKey_c::StateStarJump()
 {
     Vector3 v;
     Vector3 target;
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
 
     if (mStep < 3) {
         v.x = mPosX;
@@ -449,7 +448,7 @@ void daObjKey_c::StateStarJump()
             mSavedCamPos.x = pos->x;
             mSavedCamPos.y = pos->y;
             mSavedCamPos.z = pos->z;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
@@ -568,7 +567,7 @@ void daObjKey_c::StateStarJump()
 // @symbol _ZN10daObjKey_c9StateDropEv
 void daObjKey_c::StateDrop()
 {
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
     Vector3 v;
 
     dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
@@ -587,7 +586,7 @@ void daObjKey_c::StateDrop()
             mSavedCamPos.x = pos->x;
             mSavedCamPos.y = pos->y;
             mSavedCamPos.z = pos->z;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
@@ -659,7 +658,7 @@ void daObjKey_c::func_ov089_02131df4(char *p)
 {
     Player *player = (Player *)p;
 
-    /* Word 1, bit (2 << kind): already collected. 1 asks Stage/dMeter/Player
+    /* Word 1, bit (2 << kind): already collected. 1 asks dScStage_c/dMeter/Player
      * for the new-star fanfare; 0 suppresses it. Kind 7 takes neither arm.
      * One arm is shorter (0x110 -> 0xe8); the ROM has both. */
     if (data_0209caa0[1] & (2 << mState))
@@ -724,7 +723,7 @@ void daObjKey_c::UpdateModelTransform()
     mShadowMatrix.m[11] = mPosZ >> 3;
     /* Shadow only while the idle anim (file 0x801b) is showing. */
     if (mModelAnim.file == (BCA_File *)data_ov002_02110964.ptr)
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
 // @symbol _ZN10daObjKey_c16CleanupResourcesEv
@@ -850,7 +849,7 @@ int daObjKey_c::InitResources()
     int kind = param1 & 7;
     mState = kind;
     LoadKeyModels(mState);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
 
     if (mState == KEY_KIND_STAR) {
         if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->ptr, 1, 1) == 0)
@@ -868,10 +867,10 @@ int daObjKey_c::InitResources()
         mVertAccel = 0;
         Sound::PlayBank3(SND_APPEAR, *(Vector3 *)&mCamSpacePosX);
     } else {
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c60);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c60);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
         if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->ptr, 1, 1) == 0)
             return 0;
         {

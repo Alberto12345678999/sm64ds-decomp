@@ -70,7 +70,7 @@
 #include "TextureSequence.h"
 #include "Player.h"
 #include "Message.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 
 /* Actor ids, from symbols/actor_debug_names.tsv. */
 enum {
@@ -312,7 +312,6 @@ extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int s
 extern void _Z14ApproachLinearRiii(int *r, int target, int step);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, Vector3 *v, s32 f1, s32 f2, u32 a, u32 b);
-extern void _ZN11ShadowModel12InitCylinderEv(void *self);
 extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *sfp);
@@ -320,7 +319,6 @@ extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
 extern void _ZN6Player16IncMegaKillCountEv(void *p);
 extern void _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(void *sfp);
 extern void _ZN7fBase_c18MarkForDestructionEv(void *self);
@@ -333,11 +331,14 @@ extern void _ZN8dActor_c16TriplePoofDustAtERK7Vector3(void *self, const void *v)
 extern int _ZN8dActor_c18HorzAngleToCPlayerEv(void *self);
 extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 b, Vector3 *pos, void *p, int e, int f);
 extern u8 _ZN8dActor_c9TrackStarEjj(void *actor, u32 a, u32 b);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
-extern int _ZN9Animation8FinishedEv(void *self);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *sfp);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *sfp);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
-extern int _ZNK9Animation13GetFrameCountEv(void *self);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *self);
 
 /* ---- the dBgW callback veneer just past this unit (0x0211a35c, its own
  *      src/ file) ---- */
@@ -2192,7 +2193,7 @@ int func_ov066_0211901c(Eyerok *self)
 /* Talk state, run handler (enter handler func_ov066_02119348). Used twice: before
  * the fight (both hands alive, once they have risen) and after it (both gone).
  * Waits for mTimer2. On the first frame it sets the camera flag
- * (Camera::SetFlag_3), remembers the closest player in mTalkPlayer and locks it
+ * (dCamera_c::SetFlag_3), remembers the closest player in mTalkPlayer and locks it
  * with SetNoControlState(5, -1, 0). From then on the camera's look-at (+0x80) and
  * position (+0x8c) are moved (func_020092c4) to the body's position + (0,
  * 0x100000, 0) = 256.0 up, and + (0x10000, 0x100000, 0x564000) = (16.0, 256.0,
@@ -2210,14 +2211,14 @@ int func_ov066_0211901c(Eyerok *self)
 extern "C" {
 int func_ov066_0211903c(Eyerok *self) {
     struct Vector3 v1, v2, in, out, star;
-    Camera* cam;
+    dCamera_c* cam;
     int msgid;
 
     if (self->mTimer2) return 1;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     if (self->mSubState == 0) {
-        _ZN6Camera9SetFlag_3Ev(cam);
+        cam->SetFlag_3();
         self->mTalkPlayer = self->ClosestPlayer();
         if (self->mTalkPlayer != 0)
             ((Player *)(self->mTalkPlayer))->SetNoControlState(5, -1, 0);
@@ -2416,7 +2417,7 @@ void func_ov066_021194fc(char* c)
             (self->mPosZ + 0xa0000) >> 3);
     }
     *(M48 *)self->mShadowMtx = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &self->mShadowModel, self->mShadowMtx, 0x140000, 0x258000, 0xf);
 }
 }
@@ -2657,7 +2658,7 @@ int Eyerok::Behavior()
         ((dCc_c *)&mdCcAcPos_c)->Clear();
         ((dCc_c *)&mdCcAcPos_c)->dCc_c::Update();
         ((BlendModelAnim *)&mBlendModelAnim)->Advance();
-        ((Animation *)&mTextureSequence)->Advance();
+        ((dExtFrameCtrl_c *)&mTextureSequence)->Advance();
     }
     return 1;
 }
@@ -2708,16 +2709,16 @@ int Eyerok::InitResources()
         _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae9c);
         _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae3c);
         _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae2c);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae5c);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae84);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211aea4);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae8c);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae54);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae94);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae64);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae44);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae74);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae7c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae5c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae84);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211aea4);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae8c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae54);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae94);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae64);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae44);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae74);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae7c);
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae24);
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211aeac);
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae14);
@@ -2739,7 +2740,7 @@ int Eyerok::InitResources()
     }
 
     if (mPartIdx != PART_MAIN) {
-        _ZN11ShadowModel12InitCylinderEv(&mShadowModel);
+        mShadowModel.InitCylinder();
         w.x = data_ov066_0211ad18[0];
         w.y = data_ov066_0211ad18[1];
         w.z = data_ov066_0211ad18[2];
@@ -2880,7 +2881,7 @@ extern "C" void *_ZN14BlendModelAnimC1Ev(void *thiz);
 extern "C" void *_ZN5ModelC1Ev(void *thiz);
 extern "C" void *_ZN10dCcAcPos_cC1Ev(void *thiz);
 extern "C" void *_ZN10dBgW_KcMbgC1Ev(void *thiz);
-extern "C" void *_ZN11ShadowModelC1Ev(void *thiz);
+extern "C" void *_ZN17dExtShadowModel_cC1Ev(void *thiz);
 extern "C" void *_ZN15TextureSequenceC1Ev(void *thiz);
 extern "C" void __cxa_vec_ctor(void *p, int a, int b, void *f1, void *f2);
 extern "C" Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
@@ -2900,7 +2901,7 @@ extern "C" void *daIwante_c_classInit(void)
         _ZN10dCcAcPos_cC1Ev(c + 0x320);
         _ZN14BlendModelAnimC1Ev(c + 0x360);
         _ZN5ModelC1Ev(c + 0x3d0);
-        _ZN11ShadowModelC1Ev(c + 0x420);
+        _ZN17dExtShadowModel_cC1Ev(c + 0x420);
         _ZN15TextureSequenceC1Ev(c + 0x448);
         __cxa_vec_ctor(c + 0x4dc, 0x14, 0xc, (void *)func_0203d384,
                        (void *)_ZN7Vector3D1Ev);

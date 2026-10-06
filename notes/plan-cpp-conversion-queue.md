@@ -45,7 +45,7 @@ The population splits on two axes that are **almost disjoint**, and that drives 
   transitive (837)    n/a  no individual proof  203 safe / 634 blocked
 ```
 
-| Stage | Set | Count | Granularity | Owner |
+| dScStage_c | Set | Count | Granularity | Owner |
 |---|---|---|---|---|
 | **S0** | inert `//cpp` marker in the positive pool | **1 file** | file, no build | report only |
 | **S1** | **pilot**, then P2-vtable-only, zero-hazard, enrolled | **82 files** | file-level | cheap model, bulk |

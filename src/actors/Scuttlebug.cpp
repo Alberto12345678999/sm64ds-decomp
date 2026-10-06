@@ -18,7 +18,7 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -94,7 +94,7 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a,
 void  _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos,
                                                      unsigned int count,
                                                      int value, short s);
-void  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *self, void *shadow, void *mtx, int radius, int height, u32 flags);
 
 void  _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, const void *pos);
@@ -109,7 +109,7 @@ int   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos,
 
 void *_ZN8dActor_cC2Ev(void *actor);
 void *_ZN9ModelAnimC1Ev(void *p);
-void *_ZN11ShadowModelC1Ev(void *p);
+void *_ZN17dExtShadowModel_cC1Ev(void *p);
 void *_ZN7dCcAc_cC1Ev(void *p);
 void *_ZN10dBgCh_ActrC1Ev(void *p);
 
@@ -157,7 +157,7 @@ extern "C" int *daSpd_c_classInit(void)
         _ZN8dActor_cC2Ev(p);
         p[0] = (int)&_ZTV10Scuttlebug[2];
         _ZN9ModelAnimC1Ev(&((Scuttlebug *)p)->mModelAnim);
-        _ZN11ShadowModelC1Ev(&((Scuttlebug *)p)->mShadowModel);
+        _ZN17dExtShadowModel_cC1Ev(&((Scuttlebug *)p)->mShadowModel);
         _ZN7dCcAc_cC1Ev(&((Scuttlebug *)p)->mdCcAc_c);
         _ZN10dBgCh_ActrC1Ev(&((Scuttlebug *)p)->mWithMeshClsn);
     }
@@ -197,8 +197,8 @@ int Scuttlebug::InitResources()
     char *s = (char *)((dActor_c *)this);
     void *mf = Model::LoadFile(*(SharedFilePtr *)data_ov071_02122f80);
     ((ModelBase *)(&((Scuttlebug *)s)->mModelAnim))->SetFile((BMD_File *)mf, 1, -1);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov071_02122f88);
-    if (((ShadowModel *)(&((Scuttlebug *)s)->mShadowModel))->InitCylinder() == 0)
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov071_02122f88);
+    if (((dExtShadowModel_c *)(&((Scuttlebug *)s)->mShadowModel))->InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &((Scuttlebug *)s)->mdCcAc_c, ((dActor_c *)this), 0x46000, 0x64000, 0x200000, 0x6eff0);
@@ -747,7 +747,7 @@ extern "C" void func_ov071_0211f524(char *c)
     self->mShadowMtx[11] = self->mPosZ >> 3;
 
     int dh = (self->mState == 8) ? 0x190000 : 0xc8000;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &self->mShadowModel, self->mShadowMtx, 0xa0000, dh, 0xf);
 }
 

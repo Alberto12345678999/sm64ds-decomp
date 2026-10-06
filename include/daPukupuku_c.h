@@ -73,7 +73,7 @@ typedef char daPukupuku_c_size_must_be_0x388[sizeof(daPukupuku_c) == 0x388 ? 1 :
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+   can never be migrated. Same arrangement as include/dExtShadowModel_c.h. */
 struct daPukupuku_c {
     u8  pad_000[0x5c];
     s32 mPosX;            /* 0x05c */
@@ -88,11 +88,11 @@ struct daPukupuku_c {
     u8  pad_0b4[0x5c];
     /* dCcAcPos_c member, named by the class's own destructor calling
        dCcAcPos_c's D1 at +0x110 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN12daPukupuku_cD1Ev.c] */
+       checks. Was a u8 marker. [_ZN12daPukupuku_cD1Ev, now in src/actors/daPukupuku_c.cpp] */
     dCcAcPos_c mdCcAcPos_c;            /* 0x110 */
     /* dBgCh_Actr member, named by the class's own destructor calling
        dBgCh_Actr's D1 at +0x150 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN12daPukupuku_cD1Ev.c] */
+       checks. Was a u8 marker. [_ZN12daPukupuku_cD1Ev, now in src/actors/daPukupuku_c.cpp] */
     dBgCh_Actr mWithMeshClsn;            /* 0x150 */
     u8  mModelAnim;            /* 0x30c */
     u8  pad_30d[0x67];

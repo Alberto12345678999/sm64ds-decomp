@@ -12,6 +12,7 @@ import contextlib
 import io as _io
 import json
 import pathlib
+import sys
 import tempfile
 import unittest
 
@@ -148,6 +149,137 @@ class CheckPromoted(unittest.TestCase):
             self.assertFalse((root / "build").exists())
             rc, out = run()
         self.assertEqual(rc, 0, out)
+
+
+SCUTTLE = frozenset({"Scuttlebug", "daSpd_c"})
+POKEY = frozenset({"Pokey", "daSanbo_c"})
+
+
+class FactorySpellings(unittest.TestCase):
+    """The run extends over a zero-gap factory under either class spelling.
+
+    srcpath.class_of cannot see `_classInit` (`_SPAWN_RE` is `^(\\w+)_Spawn$`),
+    and the queue row is often the coined name while the symbol is the ROM one.
+    """
+
+    def test_class_of_does_not_see_classInit(self):
+        # srcpath imports `relocs` as a sibling, the same way its own tests do.
+        tools_dir = str(pathlib.Path(__file__).resolve().parent)
+        sys.path.insert(0, tools_dir)
+        try:
+            import srcpath
+        finally:
+            sys.path.remove(tools_dir)
+        self.assertIsNone(srcpath.class_of("daYurei_Mucho_c_classInit"))
+        self.assertIsNone(srcpath.class_of("daSpd_c_classInit"))
+        self.assertEqual(srcpath._SPAWN_RE.pattern, r"^(\w+)_Spawn$")
+
+    def test_factory_stem_keeps_a_profile_suffix_off_the_class(self):
+        self.assertEqual(queue_audit.factory_stem("daSanbo_c_classInit_SANBO_BODY"),
+                         "daSanbo_c")
+        self.assertEqual(queue_audit.factory_stem("daNknk_c_classInit_NOKONOKO_S"),
+                         "daNknk_c")
+        self.assertEqual(queue_audit.factory_stem("Scuttlebug_Spawn"), "Scuttlebug")
+        self.assertIsNone(queue_audit.factory_stem(
+            "_ZN10Scuttlebug13OnTurnIntoEggER6Player"))
+
+    def test_rtti_vtable_joins_the_coined_symbol(self):
+        """Eyerok's vtable symbol is coined; the ROM record names daIwante_c."""
+        vt = {("ov066", 0x0211ad64): {"Eyerok"}}
+        rom = {("ov066", 0x0211ad64): {"daIwante_c"}}
+        aliases = queue_audit.class_aliases(vt, rom)
+        self.assertEqual(aliases["Eyerok"], frozenset({"Eyerok", "daIwante_c"}))
+        self.assertEqual(aliases["daIwante_c"], aliases["Eyerok"])
+
+    def test_colocated_vtables_are_one_class(self):
+        vt = {("ov071", 0x02122c2c): {"Scuttlebug", "daSpd_c"}}
+        aliases = queue_audit.class_aliases(vt, {})
+        self.assertEqual(aliases["Scuttlebug"], SCUTTLE)
+
+    def test_a_shared_address_in_two_modules_is_not_one_class(self):
+        vt = {("ov001", 0x1000): {"Aaa"}, ("ov002", 0x1000): {"Bbb"}}
+        rom = {("ov001", 0x1000): {"RomA"}, ("ov002", 0x1000): {"RomB"}}
+        aliases = queue_audit.class_aliases(vt, rom)
+        self.assertEqual(aliases["Aaa"], frozenset({"Aaa", "RomA"}))
+        self.assertEqual(aliases["Bbb"], frozenset({"Bbb", "RomB"}))
+        self.assertTrue(aliases["Aaa"].isdisjoint(aliases["Bbb"]))
+
+    def test_two_rom_names_on_one_vtable_are_not_joined(self):
+        vt = {("ov001", 0x1000): {"Coined", "RomA"}}
+        rom = {("ov001", 0x1000): {"RomA", "RomB"}}
+        aliases = queue_audit.class_aliases(vt, rom)
+        self.assertEqual(aliases["Coined"], frozenset({"Coined", "RomA"}))
+        self.assertNotIn("RomB", aliases)
+
+    def test_rom_factory_extends_a_coined_row(self):
+        syms = [
+            (0x1000, 0x10, "_ZN10Scuttlebug13OnTurnIntoEggER6Player"),
+            (0x1010, 0x50, "daSpd_c_classInit"),
+            (0x1060, 0x48, "_ZN8daEykn_cD1Ev"),
+        ]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["Scuttlebug"], 0x1000, 0x1010,
+            {"daSpd_c": SCUTTLE, "Scuttlebug": SCUTTLE})
+        self.assertEqual(absorbed, ["daSpd_c_classInit"])
+        self.assertEqual((start, end), (0x1000, 0x1060))
+
+    def test_same_spelling_still_extends_without_an_alias(self):
+        syms = [
+            (0x1000, 0x10, "_ZN15daYurei_Mucho_c13OnYoshiTryEatEv"),
+            (0x1010, 0x50, "daYurei_Mucho_c_classInit"),
+        ]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["daYurei_Mucho_c"], 0x1000, 0x1010, {})
+        self.assertEqual(absorbed, ["daYurei_Mucho_c_classInit"])
+        self.assertEqual(end, 0x1060)
+
+    def test_profile_suffix_chain_uses_the_other_spelling(self):
+        syms = [
+            (0x2000, 0x20, "_ZN9daSanbo_c16OnAimedAtWithEggEv"),
+            (0x2020, 0x50, "daSanbo_c_classInit_SANBO_BODY"),
+            (0x2070, 0x50, "daSanbo_c_classInit_SANBO"),
+        ]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["Pokey"], 0x2000, 0x2020,
+            {"Pokey": POKEY, "daSanbo_c": POKEY})
+        self.assertEqual(absorbed, [
+            "daSanbo_c_classInit_SANBO_BODY", "daSanbo_c_classInit_SANBO"])
+        self.assertEqual(end, 0x20c0)
+
+    def test_spawn_spelling_extends_a_rom_keyed_row(self):
+        syms = [(0x3000, 0x30, "Scuttlebug_Spawn")]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["daSpd_c"], 0x3030, 0x3100,
+            {"Scuttlebug": SCUTTLE, "daSpd_c": SCUTTLE})
+        self.assertEqual(start, 0x3000)
+        self.assertEqual(end, 0x3100)
+        self.assertEqual(absorbed, ["Scuttlebug_Spawn"])
+
+    def test_a_gap_is_not_absorbed(self):
+        syms = [(0x1010, 0x50, "daSpd_c_classInit")]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["Scuttlebug"], 0x1000, 0x1008,
+            {"daSpd_c": SCUTTLE, "Scuttlebug": SCUTTLE})
+        self.assertEqual(absorbed, [])
+        self.assertEqual((start, end), (0x1000, 0x1008))
+
+    def test_the_next_class_factory_is_not_pulled_in(self):
+        syms = [
+            (0x1010, 0x50, "daSpd_c_classInit"),
+            (0x1060, 0x48, "daEykn_c_classInit"),
+        ]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["Scuttlebug"], 0x1000, 0x1010,
+            {"daSpd_c": SCUTTLE, "Scuttlebug": SCUTTLE})
+        self.assertEqual(absorbed, ["daSpd_c_classInit"])
+        self.assertEqual(end, 0x1060)
+
+    def test_a_factory_already_inside_the_run_is_not_recounted(self):
+        syms = [(0x1004, 0x10, "daYurei_Mucho_c_classInit")]
+        start, end, absorbed = queue_audit.extend_over_factories(
+            syms, ["daYurei_Mucho_c"], 0x1000, 0x1020, {})
+        self.assertEqual(absorbed, [])
+        self.assertEqual((start, end), (0x1000, 0x1020))
 
 
 if __name__ == "__main__":

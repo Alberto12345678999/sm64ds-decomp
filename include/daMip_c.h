@@ -15,8 +15,8 @@
  *     0x110 dCcAc_c         0x34    -> 0x144
  *     0x144 dBgCh_Actr               0x1bc   -> 0x300
  *     0x300 ModelAnim                  0x64    -> 0x364
- *     0x368 ShadowModel                0x28    -> 0x390
- *     0x3c0 ShadowModel                0x28    -> 0x3e8
+ *     0x368 dExtShadowModel_c                0x28    -> 0x390
+ *     0x3c0 dExtShadowModel_c                0x28    -> 0x3e8
  *
  * Typing them absorbed markers that were their insides:
  *   - unk_308 = ModelAnim.data.modelFile
@@ -41,7 +41,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -56,10 +56,10 @@ struct daMip_c : dEnemyBase_c {
        is a pointer with no recovered type; func_ov085_0212bc78(this, record)
        assigns it. */
     s32                          mState;                /* 0x364 */
-    ShadowModel                  mShadowModel1;         /* 0x368 */
+    dExtShadowModel_c                  mShadowModel1;         /* 0x368 */
     /* 0212bcc8 / 0212bdbc copy data_020a0e68 here then DropShadowRadHeight. */
     s32                          mShadowMtx[12];        /* 0x390 */
-    ShadowModel                  mShadowModel2;         /* 0x3c0 */
+    dExtShadowModel_c                  mShadowModel2;         /* 0x3c0 */
     u8  pad_3e8[0x34];
     /* Idle/talk/save step: StateIdleMain cycles 0..2; StateSaveTalkMain walks
        0,1,2; several inits zero it. */

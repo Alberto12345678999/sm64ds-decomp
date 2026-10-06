@@ -4,7 +4,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -34,7 +34,7 @@ struct daSanbo_c : dActor_c {
 
     u8  pad_0d0[0x4];
     Model mModel;                            /* 0x0d4 */
-    ShadowModel mShadowModel;                /* 0x124 */
+    dExtShadowModel_c mShadowModel;                /* 0x124 */
     dCcAc_c mdCcAc_c;  /* 0x14c */
     dBgCh_Actr mWithMeshClsn;              /* 0x180 */
     Matrix4x3 mMatrix;      /* 0x33c -- initialized from IDENTITY_MATRIX4X3 */

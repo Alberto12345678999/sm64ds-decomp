@@ -43,7 +43,7 @@
  */
 
 #include "dScGameOver_c.h"
-#include "Stage.h"
+#include "dScStage_c.h"
 #include "OamAttr.h"
 #include "decl_common.h"
 
@@ -67,7 +67,7 @@ struct SceneGate { virtual int f00(); virtual int f01(); virtual int f02(); virt
 
 /* ROM symbols this TU references that no header in the tree declares yet.
  * Spelt by their exact final names under C linkage, the way decl_common.h
- * spells its own. Everything else these functions call comes from Stage.h,
+ * spells its own. Everything else these functions call comes from dScStage_c.h,
  * OamAttr.h, or decl_common.h and is deliberately NOT repeated here. */
 extern "C" {
 extern short data_ov003_020b1774[];
@@ -387,7 +387,7 @@ end:
 
 /* [5] 0x020b0814 -- vtable slot 9. Draws the eight "GAME OVER" glyph
  * sprites from the per-glyph x/y arrays InitResources laid out, then lets
- * Stage draw the yes/no bouncing arrows once the cursor is live. */
+ * dScStage_c draw the yes/no bouncing arrows once the cursor is live. */
  // @symbol _ZN13dScGameOver_c6RenderEv
 s32 dScGameOver_c::Render()
 {
@@ -399,7 +399,7 @@ s32 dScGameOver_c::Render()
             -1, -1, 0x1000, 0x1000, 0, -1);
     }
     if (mIntroPhase >= 2)
-        Stage::RenderBouncingArrows();
+        dScStage_c::RenderBouncingArrows();
     return 1;
 }
 

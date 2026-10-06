@@ -14,7 +14,7 @@
  *
  *     0x110 dBgCh_Actr               0x1bc   -> 0x2cc
  *     0x2cc Model                      0x50    -> 0x31c
- *     0x31c ShadowModel                0x28    -> 0x344
+ *     0x31c dExtShadowModel_c                0x28    -> 0x344
  *     0x374 dCcAc_c         0x34    -> 0x3a8
  *     0x3f4 PathPtr                    0x8     -> 0x3fc
  *
@@ -44,7 +44,7 @@
 #include "Model.h"
 #include "dCcAc_c.h"
 #include "PathPtr.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 /* Behavior's table is indexed by mVariant (param1's low nibble). The names say
@@ -74,7 +74,7 @@ enum daIbl_Kind {
 struct daIbl_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x110 */
     Model                        mModel;                /* 0x2cc -- mModel.mat4x3 is the model matrix */
-    ShadowModel                  mShadowModel;          /* 0x31c */
+    dExtShadowModel_c                  mShadowModel;          /* 0x31c */
     /* The shadow's Matrix4x3, as twelve words (words 9..11 are the
        translation). func_ov100_02142264 copies the model matrix into it and then
        overwrites the Y translation. Kept as plain words because a Matrix4x3
