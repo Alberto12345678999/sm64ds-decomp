@@ -8540,6 +8540,12 @@
     "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_c19func_ov062_02118a50Ev": "lunavyqo",
     "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_c19func_ov062_02118b4cEv": "tangosdev",
     "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_c19func_ov062_02118cdcEv": "tangosdev",
-    "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_c19func_ov062_02118de8Ev": "tangosdev"
+    "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_c19func_ov062_02118de8Ev": "tangosdev",
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c6RenderEv": "lunavyqo",
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c8BehaviorEv": "tangosdev",
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c13InitResourcesEv": "tangosdev",
+    "src/_ZN8daDemo_cD1Ev.cpp#_ZN8daDemo_cD1Ev": "tangosdev"
   }
 }
