@@ -5897,15 +5897,15 @@ matched: yes</title></rect><rect x="134.22" y="488.71" width="6.63" height="3.24
 module: arm9
 addr: 0x0203ac80
 size: 32 bytes
-matched: yes</title></rect><rect x="140.85" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aca0
+matched: yes</title></rect><rect x="140.85" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr12SetPathTableEP7PathDefi
 module: arm9
 addr: 0x0203aca0
 size: 28 bytes
-matched: yes</title></rect><rect x="146.65" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203acbc
+matched: yes</title></rect><rect x="146.65" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr12GetNodeTableEv
 module: arm9
 addr: 0x0203acbc
 size: 16 bytes
-matched: yes</title></rect><rect x="149.96" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203accc
+matched: yes</title></rect><rect x="149.96" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr12SetNodeTableEPv
 module: arm9
 addr: 0x0203accc
 size: 16 bytes
@@ -5917,11 +5917,11 @@ matched: yes</title></rect><rect x="171.50" y="488.71" width="3.31" height="3.24
 module: arm9
 addr: 0x0203ad34
 size: 16 bytes
-matched: yes</title></rect><rect x="174.81" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad44
+matched: yes</title></rect><rect x="174.81" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr13GetPullFactorEv
 module: arm9
 addr: 0x0203ad44
 size: 16 bytes
-matched: yes</title></rect><rect x="178.12" y="488.71" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad54
+matched: yes</title></rect><rect x="178.12" y="488.71" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr9GetUnk004Ev
 module: arm9
 addr: 0x0203ad54
 size: 12 bytes
@@ -5929,7 +5929,7 @@ matched: yes</title></rect><rect x="180.61" y="488.71" width="2.49" height="3.24
 module: arm9
 addr: 0x0203ad60
 size: 12 bytes
-matched: yes</title></rect><rect x="183.09" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad6c
+matched: yes</title></rect><rect x="183.09" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr6SetDefEP7PathDef
 module: arm9
 addr: 0x0203ad6c
 size: 8 bytes
