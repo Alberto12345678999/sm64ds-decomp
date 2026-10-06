@@ -57,7 +57,7 @@ int Player::St_HoldLight_Main()
                 u32 arg = (u8)param1;
                 int modelIdx = _ZNK6Player14GetBodyModelIDEjb(((char*)this), arg, 0);
                 char* anim = *(char**)(((char*)this) + modelIdx * 4 + 0xdc) + 0x50;
-                if (_ZNK9Animation12WillHitFrameEi(anim, 6)) {
+                if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 6)) {
                     int* light = *(int**)((char*)&mHeldObj);
                     if (light != 0) {
                         int* p = (int*)((char*)light + 0xb0);
@@ -137,7 +137,7 @@ int Player::St_HoldLight_Main()
 
     if (mHorzSpeed == 0) {
         if (_ZN6Player12FinishedAnimEv(((char*)this)) ||
-            !_ZN9Animation8GetFlagsEv(
+            !_ZN15dExtFrameCtrl_c8GetFlagsEv(
                 *(char**)(((char*)this) + _ZNK6Player14GetBodyModelIDEjb(((char*)this), (u8)param1, 0) * 4 + 0xdc) + 0x50)) {
             int* light = *(int**)((char*)&mHeldObj);
             u32 animId = 0x33;

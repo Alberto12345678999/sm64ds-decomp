@@ -443,7 +443,7 @@ void dMgJump3DMario_c::func_ov006_020c7860()
     (this->*mState)();
     func_ov006_020bfec0(data_ov006_02141a40, &mPos, &mScreenX);
     func_ov006_020c76e0();
-    mModelAnim.Animation::Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
 }
 
 // @symbol _ZN16dMgJump3DMario_c9StateDampEv
@@ -560,7 +560,7 @@ void dMgJump3DMario_c::EnterHold()
         mVel.y = -mVel.y;
     }
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov006_02140408, 0x40000000, kAnimSpeed, 0);
-    mModelAnim.Animation::currFrame = 0;
+    mModelAnim.dExtFrameCtrl_c::currFrame = 0;
     Sound_PlayBank1Panned(0, 6, mPos.x);
     mTimer = 0x20;
     mState = data_ov006_0213b028;
@@ -623,7 +623,7 @@ void dMgJump3DMario_c::StateMove()
                     else
                         mAnimIdx = 1;
                     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
-                    mModelAnim.Animation::currFrame = 0;
+                    mModelAnim.dExtFrameCtrl_c::currFrame = 0;
                     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xed, mPos.x << 3, mPos.y << 3, mPos.z << 3);
                     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xee, v[0] << 3, v[1] << 3, v[2] << 3);
                     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xef, v[0] << 3, v[1] << 3, v[2] << 3);
@@ -647,7 +647,7 @@ void dMgJump3DMario_c::StateMove()
             if (mVel.y > 0) {
                 mAnimIdx = 2;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
-                mModelAnim.Animation::currFrame = 0;
+                mModelAnim.dExtFrameCtrl_c::currFrame = 0;
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
         } else if (pos > kWallX && mVel.x > 0) {
@@ -655,7 +655,7 @@ void dMgJump3DMario_c::StateMove()
             if (mVel.y > 0) {
                 mAnimIdx = 2;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
-                mModelAnim.Animation::currFrame = 0;
+                mModelAnim.dExtFrameCtrl_c::currFrame = 0;
                 Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
             }
         }
@@ -697,7 +697,7 @@ void dMgJump3DMario_c::func_ov006_020c8084()
         mVel.y = 0x2000;
         Sound::PlayBank2_2D(0x1c9);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov006_0214042c, 0, kAnimSpeed, 0);
-        mModelAnim.Animation::currFrame = 0;
+        mModelAnim.dExtFrameCtrl_c::currFrame = 0;
         mState = data_ov006_0213b090;
     }
 }
@@ -707,8 +707,8 @@ void dMgJump3DMario_c::StateRiseOut()
 {
     if (mModelAnim.file == data_ov006_0214041c)
     {
-        if (mModelAnim.Animation::WillHitFrame(0xc) ||
-            mModelAnim.Animation::WillHitFrame(0x18))
+        if (mModelAnim.dExtFrameCtrl_c::WillHitFrame(0xc) ||
+            mModelAnim.dExtFrameCtrl_c::WillHitFrame(0x18))
             func_ov006_020e6e3c(0x1b5, mPos.x);
     }
     if (mPos.y <= 0x180000)
@@ -725,7 +725,7 @@ void dMgJump3DMario_c::func_ov006_020c81e0()
     mVel.x = 0;
     mVel.y = data_ov006_0213b00c;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov006_0214041c, 0x40000000, kAnimSpeed, 0);
-    mModelAnim.Animation::currFrame = 0;
+    mModelAnim.dExtFrameCtrl_c::currFrame = 0;
     Sound::PlayBank2_2D(0x10f);
     func_02012718(0x1b5, mScreenX << 12);
     mState = data_ov006_0213b080;
@@ -735,7 +735,7 @@ void dMgJump3DMario_c::func_ov006_020c81e0()
 void dMgJump3DMario_c::EnterHit()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov006_0214041c, 0x40000000, kAnimSpeed, 0);
-    mModelAnim.Animation::currFrame = 0;
+    mModelAnim.dExtFrameCtrl_c::currFrame = 0;
     if (mState == data_ov006_0213b068) {
         func_02012718(0x110, mScreenX << 12);
     } else {
@@ -756,8 +756,8 @@ void dMgJump3DMario_c::StateBounce()
     }
 
     if (mModelAnim.file == data_ov006_0214041c) {
-        if (mModelAnim.Animation::WillHitFrame(0xc) != 0 ||
-            mModelAnim.Animation::WillHitFrame(0x18) != 0)
+        if (mModelAnim.dExtFrameCtrl_c::WillHitFrame(0xc) != 0 ||
+            mModelAnim.dExtFrameCtrl_c::WillHitFrame(0x18) != 0)
             func_ov006_020e6e3c(0x1b5, mPos.x);
     }
 
@@ -766,7 +766,7 @@ void dMgJump3DMario_c::StateBounce()
         if (mVel.y > 0) {
             mAnimIdx = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
-            mModelAnim.Animation::currFrame = 0;
+            mModelAnim.dExtFrameCtrl_c::currFrame = 0;
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }
     } else if (mPos.x > kWallX && mVel.x > 0) {
@@ -774,7 +774,7 @@ void dMgJump3DMario_c::StateBounce()
         if (mVel.y > 0) {
             mAnimIdx = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *data_ov006_0213b098[mAnimIdx], 0x40000000, kAnimSpeed, 0);
-            mModelAnim.Animation::currFrame = 0;
+            mModelAnim.dExtFrameCtrl_c::currFrame = 0;
             Sound_PlayBank1Panned(0, mAnimIdx, mPos.x);
         }
     } else {
@@ -891,12 +891,12 @@ int dMgJump3DMario_c::func_ov006_020c87d0()
     if (func_020179b4(&data_ov006_02140450, &mModelAnim, 1) == 0)
         return 0;
 
-    data_ov006_02140430 = (BCA_File *)Animation::LoadFile(data_ov006_02140460);
-    data_ov006_0214040c = (BCA_File *)Animation::LoadFile(data_ov006_02140468);
-    data_ov006_0214041c = (BCA_File *)Animation::LoadFile(data_ov006_02140458);
-    data_ov006_02140424 = (BCA_File *)Animation::LoadFile(data_ov006_02140438);
-    data_ov006_02140408 = (BCA_File *)Animation::LoadFile(data_ov006_02140440);
-    data_ov006_0214042c = (BCA_File *)Animation::LoadFile(data_ov006_02140448);
+    data_ov006_02140430 = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140460);
+    data_ov006_0214040c = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140468);
+    data_ov006_0214041c = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140458);
+    data_ov006_02140424 = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140438);
+    data_ov006_02140408 = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140440);
+    data_ov006_0214042c = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140448);
 
     mAnimIdx = 0;
     if (data_ov006_02141a40 != 0)

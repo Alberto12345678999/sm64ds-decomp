@@ -231,7 +231,7 @@ s32 daJgm_c::InitResources()
     ((ModelBase *)(c + 0x138))->SetFile(
         (BMD_File *)Model::LoadFile(data_ov077_02127b48), 1, 1);
     for (int i = 0; i < 2; i++)
-        Animation::LoadFile(*data_ov077_02127238[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov077_02127238[i]);
     for (int i = 0; i < 2; i++) {
         void *t = (void *)data_ov077_02127230[i];
         TextureSequence::LoadFile(*(SharedFilePtr *)t);
@@ -424,12 +424,12 @@ s32 daJgm_c::UpdateThrowState()
             *(signed char *)(c + 0xcc), -1);
         func_0201267c(0xd2, c + 0x74);
     }
-    if (((Animation *)(c + 0x124))->Finished())
+    if (((dExtFrameCtrl_c *)(c + 0x124))->Finished())
         SetState(0);
     UpdateFlight();
     UpdateHoverBob();
-    ((Animation *)(c + 0x124))->Advance();
-    ((Animation *)(c + 0x1b0))->Advance();
+    ((dExtFrameCtrl_c *)(c + 0x124))->Advance();
+    ((dExtFrameCtrl_c *)(c + 0x1b0))->Advance();
     HandlePlayerCollision();
     {
         DaJgmVector3Words pos;

@@ -555,8 +555,8 @@ int daKinopio_c::Behavior()
 int daKinopio_c::InitResources()
 {
     Vector3 objPos;
-    Animation::LoadFile(data_ov085_02130488);
-    Animation::LoadFile(data_ov085_02130490);
+    dExtFrameCtrl_c::LoadFile(data_ov085_02130488);
+    dExtFrameCtrl_c::LoadFile(data_ov085_02130490);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov085_02130480), 1, 0x16);
     mShadowModel.InitCylinder();
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCollider, this,

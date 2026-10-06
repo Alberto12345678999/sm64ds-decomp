@@ -26,10 +26,10 @@
  *   dBgCh Init header Fix12i mangles as int -- this TU's InitResources call).
  *   ModelAnim::SetAnim, DropShadowRadHeight, SpawnCoins, SpawnFireball,
  *   Particle::System::New / NewUnkCallback818, Player::SpinBounce / Hurt stay
- *   mangled (Fix12-by-value, 6az -- this TU). Animation::Finished / WillHitFrame
+ *   mangled (Fix12-by-value, 6az -- this TU). dExtFrameCtrl_c::Finished / WillHitFrame
  *   in func_ov070_0211f48c / 0211f62c / 0211f6e0 are called as
- *   `mModelAnim.Animation::Finished()` (byte-identical to the old
- *   `(Animation *)((char *)this + 0x350)` view; measured: `(char *)&mModelAnim + 0x50`
+ *   `mModelAnim.dExtFrameCtrl_c::Finished()` (byte-identical to the old
+ *   `(dExtFrameCtrl_c *)((char *)this + 0x350)` view; measured: `(char *)&mModelAnim + 0x50`
  *   DIFFs).
  *   data_ov070_* SharedFilePtr handles (Init LoadFile / Cleanup Release) and
  *   state records (FlyGuy_ChangeState) are sinit-owned BSS, not this TU's data
@@ -216,12 +216,12 @@ int daPropeller_Heyho_c::InitResources()
 {
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov070_02123530), 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov070_02123520);
-    Animation::LoadFile(data_ov070_02123518);
-    Animation::LoadFile(data_ov070_02123510);
-    Animation::LoadFile(data_ov070_02123528);
-    Animation::LoadFile(data_ov070_02123508);
-    Animation::LoadFile(data_ov070_02123500);
+    dExtFrameCtrl_c::LoadFile(data_ov070_02123520);
+    dExtFrameCtrl_c::LoadFile(data_ov070_02123518);
+    dExtFrameCtrl_c::LoadFile(data_ov070_02123510);
+    dExtFrameCtrl_c::LoadFile(data_ov070_02123528);
+    dExtFrameCtrl_c::LoadFile(data_ov070_02123508);
+    dExtFrameCtrl_c::LoadFile(data_ov070_02123500);
     mCanSpitFire = param1 & 0xff;
     if (mCanSpitFire == 0xff) mCanSpitFire = 0;
     mTerminalVelocity = -0x1e000; /* -30.0 units/frame */
@@ -732,7 +732,7 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
     ApproachAngleInt::ApproachAngle(&mPrevAngleY, mTargetAngY, 0x100, 0x1000, 0x1000);
     ApproachAngleInt::ApproachAngle(&mPrevAngleZ, 0, 0x100, 0x1000, 0x1000);
 
-    if (mModelAnim.Animation::Finished()) {
+    if (mModelAnim.dExtFrameCtrl_c::Finished()) {
         if (mStateStep == 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)((int *)&data_ov070_02123510)[1], 0, 0x1000, 0);
             mStateStep = 1;
@@ -854,7 +854,7 @@ extern daPropeller_Heyho_c::State data_ov070_0212359c;
  * returns to wander. */
 int daPropeller_Heyho_c::func_ov070_0211f62c()
 {
-    if (mModelAnim.Animation::Finished() != 0) {
+    if (mModelAnim.dExtFrameCtrl_c::Finished() != 0) {
         if (data_0209f2f8 != kLevel0x16)
             mHomePosY += kHomeLiftRecover;
         mStateStep = 0;
@@ -928,7 +928,7 @@ int daPropeller_Heyho_c::func_ov070_0211f48c() {
     ApproachAngleInt::ApproachAngle(&mPrevAngleY, mTargetAngY, 0xa, 0x400, 0x200);
 
 hitframe:
-    if (mModelAnim.Animation::WillHitFrame(kFireFrame) != 0) {
+    if (mModelAnim.dExtFrameCtrl_c::WillHitFrame(kFireFrame) != 0) {
         *(V3h*)&vel = *(V3h*)&mAngleX;
         if (pl != 0) {
             int *base = (int *)(int)M(&pl->mPosX);
@@ -940,7 +940,7 @@ hitframe:
         _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(this, &mPosX, &vel, 0x1e000, 0xa000, 1);
         func_02012694(kSndFireSpit, &mCamSpacePosX);
     }
-    if (mModelAnim.Animation::Finished() != 0) {
+    if (mModelAnim.dExtFrameCtrl_c::Finished() != 0) {
         mModelAnim.currFrame = 0;
         mCooldown = kAttackCooldown;
         FlyGuy_ChangeState(this, &data_ov070_0212359c);

@@ -45,17 +45,9 @@ src/func_02005324.c:
     complete
     .text start:0x02005324 end:0x02005348
 
-src/func_02005348.c:
+src/actors/dScBoot_c.cpp:
     complete
-    .text start:0x02005348 end:0x02005418
-
-src/_ZN9BootScene8BehaviorEv.cpp:
-    complete
-    .text start:0x02005418 end:0x02005a58
-
-src/_ZN9BootScene13InitResourcesEv.cpp:
-    complete
-    .text start:0x02005a58 end:0x02005d94
+    .text start:0x02005348 end:0x02005d94
 
 src/actors/dCapEnemy_c_arm9.cpp:
     complete
@@ -1409,55 +1401,27 @@ src/engine/model/TextureSequence.cpp:
     complete
     .text start:0x0201597c end:0x02015a7c
 
-src/_ZN9Animation4CopyERKS_.cpp:
+src/engine/animation/dExtFrameCtrl_c.cpp:
     complete
-    .text start:0x02015a7c end:0x02015a98
+    .text start:0x02015a7c end:0x02015cb4
 
-src/_ZNK9Animation12WillHitFrameEi.cpp:
-    complete
-    .text start:0x02015a98 end:0x02015bcc
-
-src/_ZN9Animation8FinishedEv.cpp:
-    complete
-    .text start:0x02015bcc end:0x02015bec
-
-src/_ZN9Animation8GetFlagsEv.cpp:
-    complete
-    .text start:0x02015bec end:0x02015bf8
-
-src/_ZN9Animation8SetFlagsEi.cpp:
-    complete
-    .text start:0x02015bf8 end:0x02015c0c
-
-src/_ZNK9Animation13GetFrameCountEv.cpp:
-    complete
-    .text start:0x02015c0c end:0x02015c20
-
-src/_ZN9Animation12SetAnimationEti5Fix12IiEt.cpp:
-    complete
-    .text start:0x02015c20 end:0x02015c3c
-
-src/_ZN9Animation7AdvanceEv.cpp:
-    complete
-    .text start:0x02015c3c end:0x02015cb4
-
-src/_ZN9AnimationD2Ev.cpp:
+src/_ZN15dExtFrameCtrl_cD2Ev.cpp:
     complete
     .text start:0x02015cb4 end:0x02015cc4
 
-src/_ZN9AnimationD0Ev.cpp:
+src/_ZN15dExtFrameCtrl_cD0Ev.cpp:
     complete
     .text start:0x02015cc4 end:0x02015ce8
 
-src/_ZN9AnimationD1Ev.cpp:
+src/_ZN15dExtFrameCtrl_cD1Ev.cpp:
     complete
     .text start:0x02015ce8 end:0x02015cf8
 
-src/_ZN9AnimationC1Ev.cpp:
+src/_ZN15dExtFrameCtrl_cC1Ev.cpp:
     complete
     .text start:0x02015cf8 end:0x02015d18
 
-src/_ZN9AnimationC2Ev.cpp:
+src/_ZN15dExtFrameCtrl_cC2Ev.cpp:
     complete
     .text start:0x02015d18 end:0x02015d38
 
@@ -1804,7 +1768,7 @@ src/SharedFilePtr_Construct_TexSeq.c:
     complete
     .text start:0x02017934 end:0x0201794c
 
-src/_ZN9Animation8LoadFileER13SharedFilePtr.cpp:
+src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp:
     complete
     .text start:0x0201794c end:0x02017984
 
@@ -2919,17 +2883,9 @@ src/func_02023544.c:
     complete
     .text start:0x02023544 end:0x02023598
 
-src/_ZN9BootSceneD1Ev.cpp:
+src/d_s_boot.cpp:
     complete
-    .text start:0x02023598 end:0x020235d4
-
-src/_ZN9BootSceneD0Ev.cpp:
-    complete
-    .text start:0x020235d4 end:0x02023624
-
-src/d_s_boot.c:
-    complete
-    .text start:0x02023624 end:0x02023688
+    .text start:0x02023598 end:0x02023688
 
 src/actors/dScStage_c.cpp:
     complete
@@ -5667,7 +5623,7 @@ src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp:
 src/_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File.cpp:
     .text start:0x020468a0 end:0x020469ac
 
-src/_ZN9Animation17UpdateFileOffsetsER8BCA_File.cpp:
+src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp:
     complete
     .text start:0x020469ac end:0x020469e0
 
