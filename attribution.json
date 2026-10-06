@@ -8644,6 +8644,16 @@
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c6RenderEv": "tangosdev",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c8BehaviorEv": "tangosdev",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c13InitResourcesEv": "tangosdev",
-    "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit": "tangosdev"
+    "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c8BehaviorEv": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c13InitResourcesEv": "ruspecial",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc600": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca68": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca74": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca80": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca98": "ruspecial",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020ccab4": "ruspecial",
+    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial"
   }
 }
