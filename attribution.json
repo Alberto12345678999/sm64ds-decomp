@@ -817,6 +817,14 @@
     "src/engine/collision/dBgW_KcMbg.cpp#_ZN10dBgW_KcMbgD1Ev": "tangosdev",
     "src/engine/collision/dBgW_KcMbg.cpp#_ZN10dBgW_KcMbgC1Ev": "tangosdev",
     "src/engine/collision/dBgW_KcMbg.cpp#_ZN10dBgW_KcMbgC2Ev": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim7AdvanceEv": "lplaat",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim9Virtual18EjPK7Vector3": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim6RenderEPK7Vector3": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim9Virtual10ER9Matrix4x3": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim11UpdateVertsEv": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#func_020165c4": "tangosdev",
+    "src/engine/model/BlendModelAnim.cpp#_ZN14BlendModelAnim9DoSetFileEPcii": "tangosdev",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_cD1Ev": "tangosdev",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_cD0Ev": "tangosdev",
     "src/game/actors/d_a_btn.cpp#func_ov079_02123804": "andrewboudreau",
@@ -8663,6 +8671,12 @@
     "src/actors/dScDSMT_c.cpp#func_ov007_020cca80": "tangosdev",
     "src/actors/dScDSMT_c.cpp#func_ov007_020cca98": "ruspecial",
     "src/actors/dScDSMT_c.cpp#func_ov007_020ccab4": "ruspecial",
-    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial"
+    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial",
+    "src/engine/gx/GXS.cpp#_ZN3GXS17EndLoadOBJExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS14LoadOBJExtPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS19BeginLoadOBJExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS16EndLoadBGExtPlttEv": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS13LoadBGExtPlttEPKvjj": "tangosdev",
+    "src/engine/gx/GXS.cpp#_ZN3GXS18BeginLoadBGExtPlttEv": "tangosdev"
   }
 }
