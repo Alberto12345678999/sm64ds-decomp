@@ -16128,14 +16128,8 @@
       ]
     },
     "data_020a0ea0": {
-      "src/_ZN8Particle10SysTracker10InitialiseEv.cpp": [
-        "return:void *"
-      ],
-      "src/func_02013f4c.c": [
-        "return:void *"
-      ],
-      "src/func_0203cc0c.c": [
-        "return:void *"
+      "src/LoadArchive.c": [
+        "return:int"
       ]
     },
     "data_020a0ebc": {
