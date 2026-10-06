@@ -36,7 +36,6 @@ src/func_02053200.c
 # dBgW_Kc is two production translation units, one per module; the C2
 # base-subobject ctor lives in the arm9 one.
 src/engine/collision/dBgW_Kc.cpp
-src/_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s.cpp
 src/func_0203b244.c
 src/LenVec3.c
 src/func_020396d0.c
