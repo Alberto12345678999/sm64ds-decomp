@@ -1900,6 +1900,8 @@
     "src/actors/daPkn_c.cpp#_ZN7daPkn_c16CleanupResourcesEv",
     "src/actors/daPkn_c.cpp#_ZN7daPkn_c16OnAimedAtWithEggEv",
     "src/actors/daPkn_c.cpp#_ZN7daPkn_c16OnPendingDestroyEv",
+    "src/actors/daPkn_c.cpp#_ZN7daPkn_c16PlayerMovingFastEv",
+    "src/actors/daPkn_c.cpp#_ZN7daPkn_c18TrackClosestPlayerEv",
     "src/actors/daPkn_c.cpp#_ZN7daPkn_c6RenderEv",
     "src/actors/daPkn_c.cpp#_ZN7daPkn_cD0Ev",
     "src/actors/daPkn_c.cpp#_ZN7daPkn_cD1Ev",

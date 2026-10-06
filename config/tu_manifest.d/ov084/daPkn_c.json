@@ -35,14 +35,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov084_0212ebb4",
+      "symbol": "_ZN7daPkn_c3DieEv",
       "address": "0x0212ebb4",
       "size": "0x00000050",
       "legacy_source": "src/func_ov084_0212ebb4.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov084_0212ec04",
+      "symbol": "_ZN7daPkn_c10EnterLungeEi",
       "address": "0x0212ec04",
       "size": "0x00000054",
       "legacy_source": "src/func_ov084_0212ec04.c",
@@ -56,28 +56,28 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov084_0212ec60",
+      "symbol": "_ZN7daPkn_c10UpdatePoseEv",
       "address": "0x0212ec60",
       "size": "0x000002a0",
       "legacy_source": "src/func_ov084_0212ec60.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov084_0212ef00",
+      "symbol": "_ZN7daPkn_c9CheckHitsEv",
       "address": "0x0212ef00",
       "size": "0x000002d0",
       "legacy_source": "src/func_ov084_0212ef00.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov084_0212f1d0",
+      "symbol": "_ZN7daPkn_c16PlayerMovingFastEv",
       "address": "0x0212f1d0",
       "size": "0x00000034",
       "legacy_source": "src/func_ov084_0212f1d0.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov084_0212f204",
+      "symbol": "_ZN7daPkn_c18TrackClosestPlayerEv",
       "address": "0x0212f204",
       "size": "0x00000094",
       "legacy_source": "src/func_ov084_0212f204.c",
