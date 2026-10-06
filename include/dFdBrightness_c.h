@@ -12,8 +12,8 @@
  * data_0208eacc fills all eight of the slots dFader_c leaves null, and both
  * data_0208eb2c (dFdColor_c's) and _ZTV9dFdWipe_c still point at these functions
  * for everything except AdvanceFade. `data_0208eacc` is the ROM-proven address
- * point; `_ZTV15dFdBrightness_c` is its compiler-facing compatibility alias.
- * The ROM RTTI name is dFdBrightness_c; see include/dFader_c.h.
+ * point of `_ZTV15dFdBrightness_c`, and the ROM's own RTTI record
+ * (_ZTS15dFdBrightness_c) uses the same name.
  *
  * THREE OF THESE USED TO BE DECLARED NON-VIRTUAL -- IsBetweenStartAndEnd,
  * SetToEnd and SetToStart. They occupy slots 7, 8 and 9 of every concrete table

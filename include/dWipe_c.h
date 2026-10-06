@@ -13,7 +13,7 @@
  * __si_class_type_info record for dWipe_c, so the destructors below can be real
  * C++ and still resolve at the link.
  *
- * dWipe_c is NOT dFdWipe_c/dFdWipe_c; they are unrelated classes.
+ * dWipe_c is NOT dFdWipe_c; they are unrelated classes.
  */
 #ifdef __cplusplus
 struct dWipe_c : dFdColor_c {
