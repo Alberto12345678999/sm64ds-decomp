@@ -12,6 +12,16 @@
 struct Matrix2x2 { int m[4]; };
 
 // @symbol _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii
+/* Loads a background's affine transform into the hardware registers behind `p`.
+ *
+ * The four matrix terms go out as TWO 32-bit writes, packed in pairs, each term
+ * narrowed to s16 after a >> 4 -- the registers are 1.7.8 fixed point while the
+ * matrix is 20.12, so the shift is the format conversion, not a scale.
+ *
+ * The reference point is the interesting part: dx/dy are the offset from (a,b)
+ * to (c,d), and the displacement written is `m * d + (origin << 12)`. So the
+ * caller gives a point to rotate ABOUT and a point to rotate TO, and this
+ * resolves them into the single origin the hardware actually takes. */
 void G2x::SetBGyAffine(volatile unsigned short *p, Matrix2x2 *m, int a, int b, int c, int d)
 {
     u16 pa = (u16)(s16)(m->m[0] >> 4);
@@ -32,6 +42,8 @@ void G2x::SetBGyAffine(volatile unsigned short *p, Matrix2x2 *m, int a, int b, i
 }
 
 // @symbol _ZN3G2x13SetBlendAlphaEPVttttj
+/* The final argument is 32-bit: the ROM loads its stack slot with `ldr`, not
+   `ldrh`. The former `...ttttt` name contradicted that instruction. */
 void G2x::SetBlendAlpha(volatile u16 *reg, u16 firstTarget,
                         u16 secondTarget, u16 firstAlpha,
                         u32 secondAlpha)
@@ -42,6 +54,11 @@ void G2x::SetBlendAlpha(volatile u16 *reg, u16 firstTarget,
 }
 
 // @symbol _ZN3G2x18SetBlendBrightnessEPVtts
+/* Writes the hardware brightness registers behind `p`. The SIGN of `amt`
+ * selects the mode rather than a separate flag: negative sets bits 0xc0
+ * (fade to black) and writes the magnitude, positive sets 0x80 (fade to
+ * white) and writes the value as-is. So one signed argument carries both
+ * "which way" and "how much". */
 void G2x::SetBlendBrightness(volatile unsigned short *p, unsigned short val, short amt)
 {
     if (amt < 0) {
