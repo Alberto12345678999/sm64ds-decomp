@@ -8396,6 +8396,17 @@
     "src/Memory.cpp#_ZN6Memory8AllocateEj": "tangosdev",
     "src/Memory.cpp#_ZN6Memory8AllocateEji": "tangosdev",
     "src/Memory.cpp#_ZN6Memory10DeallocateEPvP4Heap": "tangosdev",
-    "src/Memory.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev"
+    "src/Memory.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c7ProcessEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#func_02014f44": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#func_02014f5c": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c6UnlinkEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c6UpdateEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c5ClearEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c4InitE5Fix12IiES1_jj": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cD2Ev": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cD0Ev": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cD1Ev": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cC2Ev": "tangosdev"
   }
 }

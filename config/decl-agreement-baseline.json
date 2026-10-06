@@ -14056,11 +14056,11 @@
       ]
     },
     "data_0209cee8": {
-      "include/decl_common.h": [
-        "return:void *"
-      ],
       "src/_ZN5Stage13InitResourcesEv.cpp": [
         "return:int"
+      ],
+      "src/engine/collision/dCc_c.cpp": [
+        "return:dCc_c *"
       ]
     },
     "data_0209ceec": {
@@ -24106,11 +24106,6 @@
         "return:int"
       ]
     },
-    "func_02014f44": {
-      "src/_ZN5dCc_c7ProcessEv.cpp": [
-        "param:#2 dCc_c *"
-      ]
-    },
     "func_020165c4": {
       "src/_ZN14BlendModelAnim9DoSetFileEPcii.cpp": [
         "param:#1 BlendModelAnim *",
@@ -31547,12 +31542,6 @@
         "return:void"
       ],
       "src/_ZN6Player16St_BurnLava_MainEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov002_020caf98": {
-      "src/func_02014f5c.c": [
-        "param:#2 dActor_c *",
         "return:void"
       ]
     },
