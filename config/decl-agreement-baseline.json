@@ -2066,14 +2066,6 @@
         "param:#1 const void *",
         "param:#3 unsigned int"
       ],
-      "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
       "src/func_0202f2c4.c": [
         "param:#3 unsigned int"
       ],
@@ -7043,12 +7035,12 @@
       ]
     },
     "_ZN2GX22SetBankForSubBGExtPlttEt": {
-      "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
     "_ZN2GX23SetBankForSubOBJExtPlttEt": {
-      "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -16454,16 +16446,6 @@
         "return:unsigned short"
       ]
     },
-    "data_020a60a4": {
-      "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
-    "data_020a60a8": {
-      "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
     "data_020a60c4": {
       "src/_ZN3IRQ13DmaTimHandlerEj.cpp": [
         "return:DmaEnt []"
@@ -23986,12 +23968,6 @@
         "return:int"
       ]
     },
-    "func_020165c4": {
-      "src/_ZN14BlendModelAnim9DoSetFileEPcii.cpp": [
-        "param:#1 BlendModelAnim *",
-        "param:#2 char *"
-      ]
-    },
     "func_020167a4": {
       "src/actors/daMoray_c.cpp": [
         "param:#1 BlendModelAnim *"
@@ -27679,10 +27655,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN14BlendModelAnim11UpdateVertsEv.cpp": [
-        "param:#1 ModelComponents *"
-      ],
-      "src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.cpp": [
+      "src/engine/model/BlendModelAnim.cpp": [
         "param:#1 ModelComponents *"
       ],
       "src/actors/daMoray_c.cpp": [
@@ -27760,8 +27733,7 @@
       ]
     },
     "func_020462bc": {
-      "src/func_020165c4.c": [
-        "param:#1 int",
+      "src/engine/model/BlendModelAnim.cpp": [
         "return:unsigned int"
       ],
       "src/func_ov007_020bc6d4.c": [
@@ -28752,16 +28724,6 @@
         "return:void"
       ]
     },
-    "func_020540f0": {
-      "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02054118": {
-      "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
     "func_02054140": {
       "src/actors/dScMgD3DBase_c.cpp": [
         "return:void"
@@ -29237,30 +29199,6 @@
       ],
       "src/func_02069038.c": [
         "param:#1 void *"
-      ]
-    },
-    "func_02059fa8": {
-      "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
-        "param:#1 unsigned int"
-      ],
-      "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "func_02059fd0": {
-      "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
-      ],
-      "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
       ]
     },
     "func_0205a358": {
