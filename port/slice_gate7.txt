@@ -4,10 +4,7 @@
 
 src/_ZN9ModelAnimC1Ev.cpp
 src/_ZN9ModelAnimC2Ev.cpp
-src/_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj.c
-src/_ZN9ModelAnim11UpdateVertsEv.cpp
-src/_ZN9ModelAnim6RenderEPK7Vector3.cpp
-src/_ZN9ModelAnim9Virtual10ER9Matrix4x3.cpp
+src/engine/model/ModelAnim.cpp
 src/_ZN9AnimationC1Ev.cpp
 # src/_ZN9AnimationC2Ev.cpp is the C2 sibling of the C1 above and has the
 # identical body. Itanium keeps them as two symbols; MSVC has one, so
@@ -24,5 +21,4 @@ src/_ZN9AnimationD1Ev.cpp
 # is the vtable's key function for MSVC too, so every virtual has to be
 # defined. Virtual18 and the destructor were the two the gate never
 # exercised and so never sliced.
-src/_ZN9ModelAnim9Virtual18EjPK7Vector3.cpp
 src/_ZN9ModelAnimD1Ev.cpp
