@@ -3220,6 +3220,7 @@
     "src/actors/daObjFallBlock_c.cpp#daObjFallBlock_c_InitResources",
     "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_c16CleanupResourcesEv",
     "src/actors/daObjFl_Seesaw_c.cpp#_ZN16daObjFl_Seesaw_c16CleanupResourcesEv",
+    "src/actors/daObjFl_Seesaw_c.cpp#daObjFl_Seesaw_c_classInit",
     "src/actors/daObjFl_Ukiyuka_c.cpp#_ZN17daObjFl_Ukiyuka_c13InitResourcesEv",
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_c16CleanupResourcesEv",
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c8BehaviorEv",
@@ -3521,5 +3522,5 @@
     "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD0Ev",
     "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD1Ev"
   ],
-  "count": 3512
+  "count": 3513
 }

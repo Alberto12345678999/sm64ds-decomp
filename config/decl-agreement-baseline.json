@@ -20204,6 +20204,22 @@
         "return:SharedFilePtr"
       ]
     },
+    "data_ov022_021145a0": {
+      "src/__sinit_ov022_02112e58.c": [
+        "return:int []"
+      ],
+      "src/actors/daObjFl_Seesaw_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "data_ov022_021145a8": {
+      "src/__sinit_ov022_02112e58.c": [
+        "return:int []"
+      ],
+      "src/actors/daObjFl_Seesaw_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
     "data_ov022_02114618": {
       "src/__sinit_ov022_02112f78.c": [
         "return:int []"
