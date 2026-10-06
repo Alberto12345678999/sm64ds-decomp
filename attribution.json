@@ -8519,6 +8519,14 @@
     "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD0Ev": "tangosdev",
     "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD1Ev": "tangosdev",
     "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC1Ev": "tangosdev",
-    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC2Ev": "tangosdev"
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC2Ev": "tangosdev",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj": "andrewboudreau",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_c10GetOwnerIDEv": "andrewboudreau",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_c6GetPosEv": "andrewboudreau",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_cD2Ev": "andrewboudreau",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_cD0Ev": "tangosdev",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_cD1Ev": "andrewboudreau",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_cC1Ev": "andrewboudreau",
+    "src/engine/collision/dCcAc_c.cpp#_ZN7dCcAc_cC2Ev": "andrewboudreau"
   }
 }

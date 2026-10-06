@@ -1043,12 +1043,6 @@
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_cD0Ev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_cD1Ev",
     "src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp",
-    "src/_ZN7dCcAc_c10GetOwnerIDEv.cpp",
-    "src/_ZN7dCcAc_cC1Ev.cpp",
-    "src/_ZN7dCcAc_cC2Ev.cpp",
-    "src/_ZN7dCcAc_cD0Ev.cpp",
-    "src/_ZN7dCcAc_cD1Ev.cpp",
-    "src/_ZN7dCcAc_cD2Ev.cpp",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c15graphCallback_c14GraphCallback0Ev",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c15graphCallback_c14GraphCallback2Ev",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c16CleanupResourcesEv",
@@ -3474,5 +3468,5 @@
     "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD1Ev",
     "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD2Ev"
   ],
-  "count": 3465
+  "count": 3459
 }
