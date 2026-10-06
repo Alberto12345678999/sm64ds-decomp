@@ -165,6 +165,19 @@ ov002	0x020b9e0c	func_ov002_020b9e0c	PowerFlower_Spawn	spawnfunc
 ov002	0x020b9e0c	PowerFlower_Spawn	daObjPowerUpItem_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020b9e64	func_ov002_020b9e64	_ZN13daObjSwitch_cD1Ev	vtable slot 16
 ov002	0x020b9ea8	func_ov002_020b9ea8	_ZN13daObjSwitch_cD0Ev	vtable slot 17
+ov002	0x020b9f00	func_ov002_020b9f00	_ZN13daObjSwitch_c19func_ov002_020b9f00Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020b9f80	func_ov002_020b9f80	_ZN13daObjSwitch_c19func_ov002_020b9f80Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba01c	func_ov002_020ba01c	_ZN13daObjSwitch_c19func_ov002_020ba01cEiiii	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba0bc	func_ov002_020ba0bc	_ZN13daObjSwitch_c19func_ov002_020ba0bcEv	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba0f8	func_ov002_020ba0f8	_ZN13daObjSwitch_c19func_ov002_020ba0f8Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba1ac	func_ov002_020ba1ac	_ZN13daObjSwitch_c19func_ov002_020ba1acEv	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba2ac	func_ov002_020ba2ac	_ZN13daObjSwitch_c19func_ov002_020ba2acEv	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba2d0	func_ov002_020ba2d0	_ZN13daObjSwitch_c19func_ov002_020ba2d0Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba3a8	func_ov002_020ba3a8	_ZN13daObjSwitch_c19func_ov002_020ba3a8Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba3fc	func_ov002_020ba3fc	_ZN13daObjSwitch_c19func_ov002_020ba3fcEv	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba4c0	func_ov002_020ba4c0	_ZN13daObjSwitch_c19func_ov002_020ba4c0Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba4d8	func_ov002_020ba4d8	_ZN13daObjSwitch_c19func_ov002_020ba4d8Ei	object-as-this; sinit .data stores {init,exec} pointer-to-member records
+ov002	0x020ba520	func_ov002_020ba520	_ZN13daObjSwitch_c19func_ov002_020ba520Ev	object-as-this; sinit .data stores {init,exec} pointer-to-member records
 ov002	0x020ba568	func_ov002_020ba568	_ZN13daObjSwitch_c16CleanupResourcesEv	vtable slot 3
 ov002	0x020ba5f4	func_ov002_020ba5f4	_ZN13daObjSwitch_c6RenderEv	vtable slot 9
 ov002	0x020ba624	func_ov002_020ba624	_ZN13daObjSwitch_c8BehaviorEv	vtable slot 6
@@ -4733,3 +4746,9 @@ ov065	0x02116e10	func_ov065_02116e10	_ZN6Snufit13InitResourcesEv	chain repair: f
 ov065	0x02116e10	_ZN6Snufit13InitResourcesEv	_ZN15daYurei_Mucho_c13InitResourcesEv	chain repair: _ZN6Snufit13InitResourcesEv -> _ZN15daYurei_Mucho_c13InitResourcesEv keeps the live name at this address on the last row.
 ov065	0x0211cba4	data_ov065_0211cba4	_ZTV6Snufit	chain repair: data_ov065_0211cba4 -> _ZTV6Snufit puts this name back on the path from the first name at this address; no earlier row targets it. Earlier rows were not edited.
 ov065	0x0211cba4	_ZTV6Snufit	_ZTV15daYurei_Mucho_c	chain repair: _ZTV6Snufit -> _ZTV15daYurei_Mucho_c keeps the live name at this address on the last row.
+ov084	0x0212ebb4	func_ov084_0212ebb4	_ZN7daPkn_c3DieEv	daPkn_c method. The first argument is the object, so the function is a member and the parameter is this. Named Die: death animation + state 5; readable name recorded in the chain.
+ov084	0x0212ec04	func_ov084_0212ec04	_ZN7daPkn_c10EnterLungeEi	daPkn_c method. The first argument is the object, so the function is a member and the parameter is this. Named EnterLunge: enters state 2 with the lunge animation at `frame`; also called cross-TU by daFPkn_c.
+ov084	0x0212ec60	func_ov084_0212ec60	_ZN7daPkn_c10UpdatePoseEv	daPkn_c method. The first argument is the object, so the function is a member and the parameter is this. Named UpdatePose: poses both models and places the head cylinder and the sleep bubble.
+ov084	0x0212ef00	func_ov084_0212ef00	_ZN7daPkn_c9CheckHitsEv	daPkn_c method. The first argument is the object, so the function is a member and the parameter is this. Named CheckHits: shared idle collision check, returns 1 when a hit killed the plant.
+ov084	0x0212f1d0	func_ov084_0212f1d0	_ZN7daPkn_c16PlayerMovingFastEv	daPkn_c method. The first argument is the object, so the function is a member and the parameter is this. Named PlayerMovingFast: closest player speed predicate that wakes the plant.
+ov084	0x0212f204	func_ov084_0212f204	_ZN7daPkn_c18TrackClosestPlayerEv	daPkn_c method. The first argument is the object, so the function is a member and the parameter is this. Named TrackClosestPlayer: refreshes mClosestPlayer/mPlayerDist/mTargetAngleY/mPlayerAirborne.
