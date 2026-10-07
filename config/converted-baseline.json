@@ -1410,7 +1410,6 @@
     "src/__sinit_ov079_02127acc.c",
     "src/__sinit_ov080_02127a60.c",
     "src/__sinit_ov080_02127b2c.c",
-    "src/__sinit_ov081_021284b4.c",
     "src/__sinit_ov081_021287b8.c",
     "src/__sinit_ov085_0212f9bc.c",
     "src/__sinit_ov085_0212fdb0.c",
@@ -3551,5 +3550,5 @@
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c21AfterCleanupResourcesEj",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c8BehaviorEv"
   ],
-  "count": 3542
+  "count": 3541
 }
