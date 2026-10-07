@@ -5265,7 +5265,7 @@
         "param:#3 signed char"
       ]
     },
-    "_ZN10FaderColorD1Ev": {
+    "_ZN10dFdColor_cD1Ev": {
       "include/decl_FaderColor.h": [
         "return:void"
       ]
@@ -6422,13 +6422,13 @@
         "return:void"
       ]
     },
-    "_ZN15FaderBrightness15SetBackwardTimeEj": {
+    "_ZN15dFdBrightness_c15SetBackwardTimeEj": {
       "src/_ZN7dWipe_c15SetBackwardTimeEj.c": [
         "arity:3",
         "mangled:3 parameter(s)"
       ]
     },
-    "_ZN15FaderBrightness8SetToEndEv": {
+    "_ZN15dFdBrightness_c8SetToEndEv": {
       "include/decl_FaderBrightness.h": [
         "arity:0"
       ]
@@ -7452,12 +7452,6 @@
         "param:#1 unsigned short *",
         "param:#3 int"
       ],
-      "src/engine/fader/_ZN10FaderColor11AdvanceFadeEv.cpp": [
-        "param:#3 int"
-      ],
-      "src/engine/fader/_ZN9FaderWipe11AdvanceFadeEv.cpp": [
-        "param:#3 int"
-      ],
       "src/func_0201f32c.c": [
         "param:#2 int",
         "param:#3 int"
@@ -7481,6 +7475,9 @@
       ],
       "src/actors/dScStage_c.cpp": [
         "param:#2 int"
+      ],
+      "src/engine/fader/dFader_c.cpp": [
+        "param:#3 int"
       ]
     },
     "_ZN3G3X13SetClearColorEtiiib": {
@@ -8378,7 +8375,7 @@
         "return:void"
       ]
     },
-    "_ZN5Fader13AdvanceInterpEv": {
+    "_ZN8dFader_c13AdvanceInterpEv": {
       "include/decl_Fader.h": [
         "arity:0"
       ]
@@ -12094,12 +12091,12 @@
         "return:void *"
       ]
     },
-    "_ZN9FaderWipe14LoadAndSetFileEt": {
+    "_ZN9dFdWipe_c14LoadAndSetFileEt": {
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ]
     },
-    "_ZN9FaderWipeD1Ev": {
+    "_ZN9dFdWipe_cD1Ev": {
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -13553,7 +13550,7 @@
     },
     "data_0209b294": {
       "src/ProcessKuppaScript.cpp": [
-        "return:FaderBrightness"
+        "return:dFdBrightness_c"
       ]
     },
     "data_0209b2a4": {
@@ -14144,7 +14141,7 @@
         "return:int"
       ],
       "src/actors/dScene_c.cpp": [
-        "return:FaderBrightness *"
+        "return:dFdBrightness_c *"
       ]
     },
     "data_0209d4b0": {
@@ -14158,7 +14155,7 @@
         "return:WipeEntry *"
       ],
       "src/ProcessKuppaScript.cpp": [
-        "return:FaderBrightness *"
+        "return:dFdBrightness_c *"
       ],
       "src/func_02018ec0.c": [
         "return:void *"
@@ -14853,10 +14850,10 @@
         "return:void *"
       ],
       "src/engine/fader/StartEntranceFaderWipe.cpp": [
-        "return:FaderWipe *"
+        "return:dFdWipe_c *"
       ],
       "src/engine/fader/StartExitFaderWipe.cpp": [
-        "return:FaderWipe *"
+        "return:dFdWipe_c *"
       ]
     },
     "data_0209f334": {
@@ -15210,7 +15207,7 @@
         "return:TouchOwner *"
       ],
       "src/actors/dScene_c.cpp": [
-        "return:FaderBrightness *"
+        "return:dFdBrightness_c *"
       ],
       "src/actors/unit020bfec0.cpp": [
         "return:void *"
@@ -15231,7 +15228,7 @@
         "return:UnkVis *"
       ],
       "src/actors/dScBoot_c.cpp": [
-        "return:FaderBrightness *"
+        "return:dFdBrightness_c *"
       ],
       "src/actors/daDemo_c.cpp": [
         "return:void *"
@@ -15250,7 +15247,7 @@
     },
     "data_0209f5d0": {
       "src/actors/dScene_c.cpp": [
-        "return:FaderBrightness"
+        "return:dFdBrightness_c"
       ]
     },
     "data_0209f5e8": {
@@ -21493,7 +21490,7 @@
     },
     "data_ov072_02122d6c": {
       "src/game/actors/d_a_pg_bby.cpp": [
-        "return:PgBbyState []"
+        "return:daPgBby_c::State []"
       ]
     },
     "data_ov073_02123320": {
@@ -34853,6 +34850,22 @@
       ],
       "include/decl_common.h": [
         "param:#1 int"
+      ]
+    },
+    "data_ov022_021145a0": {
+      "src/__sinit_ov022_02112e58.c": [
+        "return:int []"
+      ],
+      "src/actors/daObjFl_Seesaw_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "data_ov022_021145a8": {
+      "src/__sinit_ov022_02112e58.c": [
+        "return:int []"
+      ],
+      "src/actors/daObjFl_Seesaw_c.cpp": [
+        "return:SharedFilePtr"
       ]
     }
   },
