@@ -474,21 +474,21 @@ void dScMgCurling2_c::NextThrow()
 void dScMgCurling2_c::Play()
 {
     char *c = (char *)this;
-    if (*(u16*)(c + 0x55b6) != 0) {
+    if (mStateTimer != 0) {
         u16* q = (u16*)(c + 0x55b6);
         *q = *q - 1;
         return;
     }
-    if (*(u8*)(c + 0xc4) == 0) {
-        *(u8*)(c + 0xc3) = 1;
-        *(u8*)(c + 0xc4) = 1;
-        *(u16*)(c + 0xc0) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
-    if (*(u8*)(c + 0x55bd) != 0) {
+    if (sndCooldown != 0) {
         u8* q = (u8*)(c + 0x55bd);
         *q = *q - 1;
     }
-    (((C*)c)->*data_ov006_02141978[*(u8*)(c + 0x55b8)])();
+    (((C*)c)->*data_ov006_02141978[unk_55b8])();
 
     {
         int count = 0;
@@ -508,8 +508,8 @@ void dScMgCurling2_c::Play()
         }
         if (count != 0) return;
     }
-    *(int*)(c + 0x5580) = 2;
-    *(u16*)(c + 0x55b6) = 0x40;
+    mState = 2;
+    mStateTimer = 0x40;
 }
 
 

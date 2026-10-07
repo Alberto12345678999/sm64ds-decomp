@@ -2633,25 +2633,25 @@ s32 dScMgPachinko_c::Behavior()
 {
     char *c = (char *)this;
 
-    switch (*(s32 *)(c + 0x5c10)) {
+    switch (unk_5c10) {
     case 0:
         FreeGfxSlotsById(0x1d);
         func_ov006_020feba8(c);
         func_ov006_020fc844((u8 *)c);
         func_ov006_020fae90((u8 *)c);
-        *(s32 *)(c + 0x5c10) = 1;
-        *(u16 *)(c + 0x5c1c) = 0x10;
-        *(u16 *)(c + 0x5c24) = 0x60;
+        unk_5c10 = 1;
+        unk_5c1c = 0x10;
+        unk_5c24 = 0x60;
         break;
     case 1:
-        if (*(u8 *)(c + 0xc4) == 0) {
-            *(u8 *)(c + 0xc3) = 1;
-            *(u8 *)(c + 0xc4) = 1;
-            *(u16 *)(c + 0xc0) = 0;
+        if (mPromptBlinkCount == 0) {
+            mPromptEnabled = 1;
+            mPromptBlinkCount = 1;
+            mPromptBlinkTimer = 0;
         }
-        if (*(u16 *)(c + 0x5c2a) != 0) {
+        if (unk_5c2a != 0) {
             func_ov006_020fb7e0(c);
-            (*(u16 *)(c + 0x5c2a))--;
+            (unk_5c2a)--;
         } else {
             func_ov006_020fdd40(this);
             func_ov006_020fe2bc(c);
@@ -2667,11 +2667,11 @@ s32 dScMgPachinko_c::Behavior()
         }
         break;
     case 2:
-        if (*(u16 *)(c + 0x5c18) != 0) {
-            (*(u16 *)(c + 0x5c18))--;
+        if (unk_5c18 != 0) {
+            (unk_5c18)--;
             if (*(s16 *)(c + 0x5c18) <= 0) {
                 func_ov004_020b0a54(0x10);
-                *(u8 *)(c + 0xc3) = 0;
+                mPromptEnabled = 0;
             }
         }
         func_ov006_020fb7e0(c);
@@ -2799,10 +2799,10 @@ s32 dScMgPachinko_c::InitResources()
     func_ov006_020fae90((u8 *)c);
     func_ov004_020b04d0(0x20);
 
-    *(int *)(c + 0xa4) = 1;
-    *(u16 *)(c + 0x5c1c) = 0x10;
-    *(u16 *)(c + 0x5c24) = 0x60;
-    *(int *)(c + 0x5c10) = 1;
-    *(int *)(c + 0xa4) = 1;
+    unk_0a4 = 1;
+    unk_5c1c = 0x10;
+    unk_5c24 = 0x60;
+    unk_5c10 = 1;
+    unk_0a4 = 1;
     return 1;
 }

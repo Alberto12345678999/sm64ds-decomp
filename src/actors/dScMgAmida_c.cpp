@@ -844,7 +844,7 @@ int dScMgAmida_c::StepWalker(int b, int dir)
     }
 
     if (cur >= 2) {
-        u8 mv = *(u8 *)(*(u8 **)(p + 0x4710) + col * 0x158 + row);
+        u8 mv = *(u8 *)(mInkGrid + col * 0x158 + row);
         if (mv != cur)
             return 0;
 
@@ -855,16 +855,16 @@ int dScMgAmida_c::StepWalker(int b, int dir)
     } else {
         int q, r;
 
-        if (*(u8 *)(*(u8 **)(p + 0x4710) + col * 0x158 + row) < 2)
+        if (*(u8 *)(mInkGrid + col * 0x158 + row) < 2)
             return 0;
 
         *(int *)(p + b * 4 + 0x4684) = dir;
-        *pcur = *(u8 *)(*(u8 **)(p + 0x4710) + col * 0x158 + row);
+        *pcur = *(u8 *)(mInkGrid + col * 0x158 + row);
         *(int *)(p + b * 8 + 0x4660) = col;
         *(int *)(p + b * 8 + 0x4664) = row - 0xc0;
 
         q = (*(int *)(p + b * 8 + 0x4664) + 0xd4) * 0x1f4 /
-            (*(int *)(p + 0x4700) + 0xd4);
+            (mLineEndY + 0xd4);
         r = func_020126e8(*(int *)(p + b * 8 + 0x4660) << 0xc);
         func_020126ac(0x1bf, 6, 0, q, r);
         return 1;
@@ -892,7 +892,7 @@ void dScMgAmida_c::StepWalkers()
     s32 idx;
     s32 count;
 
-    for (var_r4 = 0; var_r4 < (count = *(s32 *)(p + 0x46c8)); ) {
+    for (var_r4 = 0; var_r4 < (count = mWalkerCount); ) {
         s32 *slot = (s32 *)((int)p + var_r4 * 4 + 0x46b8);
         s32 v = *slot;
         var_r4++;
@@ -944,7 +944,7 @@ void dScMgAmida_c::StepWalkers()
                 s32 tmp;
                 s32 *distp = (s32 *)(ent + 0x4664);
                 s32 dist = *distp;
-                s32 lim = *(s32 *)(p + 0x4700);
+                s32 lim = mLineEndY;
 
                 if (dist > lim) {
                     u8 *flag = (u8 *)(p + idx + 0x46b4);
@@ -959,31 +959,31 @@ void dScMgAmida_c::StepWalkers()
                             dirVal = *dirSlot;
                             switch (dirVal) {
                             case 0x20:
-                                if (*(s32 *)(p + 0x4714) == (s32)want) {
+                                if (mLaneResult[0] == (s32)want) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x5398) = c1;
+                                    mLaneFlashFlag[0] = c1;
                                 }
                                 break;
                             case 0x60:
-                                if (*(s32 *)(p + 0x4718) == (s32)want) {
+                                if (mLaneResult[1] == (s32)want) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x5399) = c1;
+                                    mLaneFlashFlag[1] = c1;
                                 }
                                 break;
                             case 0xa0:
-                                if (*(s32 *)(p + 0x471c) == (s32)want) {
+                                if (mLaneResult[2] == (s32)want) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x539a) = c1;
+                                    mLaneFlashFlag[2] = c1;
                                 }
                                 break;
                             case 0xe0:
-                                if (*(s32 *)(p + 0x4720) == (s32)want) {
+                                if (mLaneResult[3] == (s32)want) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x539b) = c1;
+                                    mLaneFlashFlag[3] = c1;
                                 }
                                 break;
                             }
@@ -992,31 +992,31 @@ void dScMgAmida_c::StepWalkers()
                             dirVal = *dirSlot;
                             switch (dirVal) {
                             case 0x20:
-                                if (*(s32 *)(p + 0x4714) == 1) {
+                                if (mLaneResult[0] == 1) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x5398) = c1;
+                                    mLaneFlashFlag[0] = c1;
                                 }
                                 break;
                             case 0x60:
-                                if (*(s32 *)(p + 0x4718) == 1) {
+                                if (mLaneResult[1] == 1) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x5399) = c1;
+                                    mLaneFlashFlag[1] = c1;
                                 }
                                 break;
                             case 0xa0:
-                                if (*(s32 *)(p + 0x471c) == 1) {
+                                if (mLaneResult[2] == 1) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x539a) = c1;
+                                    mLaneFlashFlag[2] = c1;
                                 }
                                 break;
                             case 0xe0:
-                                if (*(s32 *)(p + 0x4720) == 1) {
+                                if (mLaneResult[3] == 1) {
                                     sl = c1;
                                 } else {
-                                    *(u8 *)(p + 0x539b) = c1;
+                                    mLaneFlashFlag[3] = c1;
                                 }
                                 break;
                             }
@@ -1024,7 +1024,7 @@ void dScMgAmida_c::StepWalkers()
 
                         if (sl == 1) {
                             if (Unk36() != 0) {
-                                if (*(u8 *)(p + 0x46d5) == 0) {
+                                if (mRoundFailed == 0) {
                                     func_02012718(v10, *dirSlot << 0xc);
                                     u32 w2 = *(u32 *)(p + idx * 4 + 0x46a4);
                                     switch (w2) {
@@ -1047,81 +1047,81 @@ void dScMgAmida_c::StepWalkers()
                                     func_02012718(0x1c3, *dirSlot << 0xc);
                                 }
                                 *flag = c1;
-                                *(s32 *)(p + 0x46cc) += 1;
-                                if (*(s32 *)(p + 0x46cc) < *(s32 *)(p + 0x46c8)) {
+                                mWalkersDone += 1;
+                                if (mWalkersDone < mWalkerCount) {
                                     continue;
                                 }
-                                if (*(u8 *)(p + 0x46d5) == 0) {
+                                if (mRoundFailed == 0) {
                                     *(s32 *)((int)p + 0x5374) += 1;
-                                    *(s32 *)(p + 0x53e8) += 1;
-                                    if (*(s32 *)(p + 0x53e8) > 0x270f) {
-                                        *(s32 *)(p + 0x53e8) = 0x270f;
+                                    mScore += 1;
+                                    if (mScore > 0x270f) {
+                                        mScore = 0x270f;
                                     }
-                                    *(s32 *)(p + 0x53e0) = 0x78;
+                                    mRoundTimer = 0x78;
                                     return;
                                 }
-                                *(s32 *)(p + 0x53e0) = 0x1e;
+                                mRoundTimer = 0x1e;
                             } else {
                                 s32 *d2 = (s32 *)((int)(p + idx * 8) + 0x4660);
                                 s32 t;
                                 func_02012718(v10, *d2 << 0xc);
                                 func_02012718(0x1c1, *d2 << 0xc);
                                 *flag = c1;
-                                *(s32 *)(p + 0x46cc) += 1;
-                                if (*(s32 *)(p + 0x46cc) < *(s32 *)(p + 0x46c8)) {
+                                mWalkersDone += 1;
+                                if (mWalkersDone < mWalkerCount) {
                                     continue;
                                 }
                                 *(s32 *)((int)p + 0x5374) += 1;
-                                *(s32 *)(p + 0x53e8) += 1;
-                                if (*(s32 *)(p + 0x53e8) > 0x270f) {
-                                    *(s32 *)(p + 0x53e8) = 0x270f;
+                                mScore += 1;
+                                if (mScore > 0x270f) {
+                                    mScore = 0x270f;
                                 }
-                                t = *(s32 *)((char *)data_ov006_0212e1c0 + *(s32 *)(p + 0x53d4) * 0x1c);
+                                t = *(s32 *)((char *)data_ov006_0212e1c0 + mPatternIndex * 0x1c);
                                 switch (t) {
                                 case 0:
                                     break;
                                 case 1:
-                                    if ((*(s32 *)(p + 0x5374) % 2) == 0) {
-                                        *(s32 *)(p + 0x5368) += 5;
+                                    if ((mRoundCount % 2) == 0) {
+                                        mScrollSpeed += 5;
                                     }
                                     break;
                                 case 2:
-                                    *(s32 *)(p + 0x5368) += 5;
+                                    mScrollSpeed += 5;
                                     break;
                                 }
-                                if (*(s32 *)(p + 0x5368) > 0x64) {
-                                    *(s32 *)(p + 0x5368) = 0x64;
+                                if (mScrollSpeed > 0x64) {
+                                    mScrollSpeed = 0x64;
                                 }
-                                if (*(s32 *)(p + 0x5374) >= 5) {
-                                    *(s32 *)(p + 0x53c0) = 0x3c;
-                                    *(s32 *)(p + 0x46d0) = 2;
-                                    *(u8 *)(p + 0x46d4) = 1;
+                                if (mRoundCount >= 5) {
+                                    mResultWaitTimer = 0x3c;
+                                    mState = 2;
+                                    mFinished = 1;
                                     return;
                                 }
-                                *(s32 *)(p + 0x46d0) = 0;
+                                mState = 0;
                             }
                             return;
                         }
 
                         if (Unk36() != 0) {
                             func_02012dbc(5);
-                            if (*(u8 *)(p + 0x46d5) == 0) {
+                            if (mRoundFailed == 0) {
                                 func_02012718(0x1c2, *(s32 *)(p + idx * 8 + 0x4660) << 0xc);
                             } else {
                                 func_02012718(0x1c3, *(s32 *)(p + idx * 8 + 0x4660) << 0xc);
                             }
                             *flag = 1;
-                            *(u8 *)(p + 0x46d5) = 1;
-                            *(s32 *)(p + 0x46cc) += 1;
-                            if (*(s32 *)(p + 0x46cc) >= *(s32 *)(p + 0x46c8)) {
-                                *(s32 *)(p + 0x53e0) = 0x3c;
+                            mRoundFailed = 1;
+                            mWalkersDone += 1;
+                            if (mWalkersDone >= mWalkerCount) {
+                                mRoundTimer = 0x3c;
                             }
                             return;
                         }
                         func_02012718(0xe1, *(s32 *)(p + idx * 8 + 0x4660) << 0xc);
-                        *(s32 *)(p + 0x53c0) = 0x3c;
-                        *(s32 *)(p + 0x46d0) = 2;
-                        *(u8 *)(p + 0x46d5) = 1;
+                        mResultWaitTimer = 0x3c;
+                        mState = 2;
+                        mRoundFailed = 1;
                         return;
                     }
                     continue;
@@ -1264,7 +1264,7 @@ void dScMgAmida_c::StepWalkers()
                     }
                 }
             }
-        } while (++idx < *(s32 *)(p + 0x46c8));
+        } while (++idx < mWalkerCount);
     }
 }
 #pragma pop

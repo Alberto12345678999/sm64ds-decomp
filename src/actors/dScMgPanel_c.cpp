@@ -2127,12 +2127,12 @@ void dScMgPanel_c::OnYoshiTryEat(int flag)
     if (flag == 0) {
         int *q = (int *)(self + 0xbc);
         *q += 1;
-        if (*(u32 *)(self + 0xbc) > 0x270e)
+        if (unk_0bc > 0x270e)
             *(int *)(self + 0xbc) = 0x270e;
     } else {
         unk_4fea = 0;
         *(int *)(self + 0xbc) = 0;
-        if (*(u32 *)(self + 0xbc) > 0x270e)
+        if (unk_0bc > 0x270e)
             *(int *)(self + 0xbc) = 0x270e;
 
         if (data_ov004_020beb68 != 0)
@@ -2325,6 +2325,6 @@ s32 dScMgPanel_c::InitResources()
 
     func_ov004_020b04d0(0x20);
     func_ov004_020b0cac(0xd, 0x80, 0x40, 0, -1, 0xd);
-    *(int *)(c + 0xb4) = 0;
+    mHudScore = 0;
     return 1;
 }

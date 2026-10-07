@@ -1422,10 +1422,10 @@ void dScMgCurling_c::func_ov006_020e3078()
         *q = *q - 1;
         return;
     }
-    if (*(u8 *)(c + 0xc4) == 0) {
-        *(u8 *)(c + 0xc3) = 1;
-        *(u8 *)(c + 0xc4) = 1;
-        *(u16 *)(c + 0xc0) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
     if (mSwingTimer != 0) {
         u8 *q = (u8 *)(c + 0x4ee9);

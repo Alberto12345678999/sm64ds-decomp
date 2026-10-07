@@ -299,10 +299,10 @@ int dScMgSnowball_c::func_ov006_021259d8(int *point) {
     if (y < 0) {
         return 0;
     }
-    if (y >= (*(int *)(scene + 0xba08) << 16)) {
+    if (y >= (mScrollLimit << 16)) {
         return 0;
     }
-    if (y >= (*(int *)(scene + 0xab6c) + 0x1d0000)) {
+    if (y >= (mScrollY + 0x1d0000)) {
         return 0;
     }
 
@@ -386,8 +386,8 @@ int dScMgSnowball_c::func_ov006_02125bbc(int *point)
                 continue;
             *(u8 *)(scene + i + 0xb2d8) = 1;
             if (*(int *)(scene + i * 4 + 0xb0d8) == 1) {
-                *(u8 *)(scene + 0xb9e6) = 1;
-                *(int *)(scene + 0xb9e8) = *(int *)(prop + 0xacd8);
+                mSoundPending = 1;
+                unk_b9e8 = *(int *)(prop + 0xacd8);
                 *(int *)(scene + 0xb9ec) = *(int *)(prop + 0xacdc);
             }
             return 1;
@@ -2450,11 +2450,11 @@ void dScMgSnowball_c::func_ov006_0212a2e0()
         if (*(u8 *)(q + 0xbeae) != 0) {
             u8 fidx = *(u8 *)(q + 0xbeaf);
             (this->*data_ov006_02143038[fidx])(i);
-            if ((*(int *)(q + 0xbe98) - *(int *)(o + 0xab6c)) >> 12 >= 0xc8) {
+            if ((*(int *)(q + 0xbe98) - mScrollY) >> 12 >= 0xc8) {
                 u32 rnd = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & mask;
                 rnd = (rnd << 5) >> 0xf;
                 *(int *)(q + 0xbe94) = rnd << 0xf;
-                *(int *)(q + 0xbe98) = *(int *)(o + 0xab6c) - 0x8000;
+                *(int *)(q + 0xbe98) = mScrollY - 0x8000;
                 *(u8 *)(q + 0xbeb0) = 0;
                 *(u8 *)(q + 0xbeaf) = 0;
                 *(u8 *)(q + 0xbeb1) = 0;
@@ -2512,7 +2512,7 @@ void dScMgSnowball_c::func_ov006_0212a3c0()
 
         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
         q = (((r >> 16) & 0x7fff) * 0x18) >> 0xf;
-        *(int *)(p + 0xb000 + 0xe98) = *(int *)(c + 0xab6c) - 0x8000 + (q << 0xf);
+        *(int *)(p + 0xb000 + 0xe98) = mScrollY - 0x8000 + (q << 0xf);
         *(char *)(p + 0xb000 + 0xeae) = 1;
         *(char *)(p + 0xb000 + 0xeb2) = 1;
         *(char *)(p + 0xb000 + 0xeaf) = 0;

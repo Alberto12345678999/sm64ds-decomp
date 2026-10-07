@@ -1050,7 +1050,7 @@ void dScMgCoin_c::func_ov006_020dd658(int i)
         *(u8 *)(self + 0x4675 + n) = 4;
         *(u8 *)(self + 0x4676 + n) = 0;
         *(u8 *)(self + 0x4677 + n) = 0;
-        (*(u16 *)(self + 0x4d08))++;
+        (mScore.total)++;
 
         {
             int v1 = *(s32 *)(self + 0x4664 + n);
@@ -1434,20 +1434,20 @@ void dScMgCoin_c::func_ov006_020de0e0()
     if (data_020a0de8[idx * 4] != 0) {
         if (data_020a0de9[idx * 4] != 0) flag = 1;
     }
-    if (flag != 0 && *(int *)(self + 0x51cc) <= 0x80) {
-        *(int *)(self + 0x51cc) = 0;
+    if (flag != 0 && mCountdown <= 0x80) {
+        mCountdown = 0;
         Sound::PlayBank2_2D(0x62);
     } else {
-        *(int *)(self + 0x51cc) = 0x80;
+        mCountdown = 0x80;
     }
-    if (*(int *)(self + 0x51cc) > 0) return;
-    *(int *)(self + 0x51cc) = 0;
+    if (mCountdown > 0) return;
+    mCountdown = 0;
     if (*(unsigned char *)(self + 0x51df) != 0) {
         FreeGfxSlotsById(6);
         func_ov004_020ae20c();
     }
     func_ov004_020b0a54(0x10);
-    *(unsigned char *)(self + 0xc3) = 0;
+    mPromptEnabled = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de1d4Ev
@@ -1467,12 +1467,12 @@ void dScMgCoin_c::func_ov006_020de1d4()
         char *o = (char *)data_ov004_020beb68;
         int v = o != 0 ? *(int *)(o + 0xa8) : 0;
         if (v != 0) {
-            *(unsigned char *)(c + 0x51de) = 0;
+            mCaptionLatch = 0;
             this->func_ov006_020dc370();
         }
     }
-    *(int *)(c + 0x51cc) = 0xc0;
-    *(int *)(c + 0x51c8) = 5;
+    mCountdown = 0xc0;
+    unk_51c8 = 5;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de26cEv
@@ -1543,7 +1543,7 @@ void dScMgCoin_c::func_ov006_020de440()
     }
     this->func_ov006_020dd2cc();
     this->func_ov006_020dca04();
-    if (*(s32 *)(c + 0x51c8) == 3) {
+    if (unk_51c8 == 3) {
         return;
     }
     {
@@ -1562,8 +1562,8 @@ void dScMgCoin_c::func_ov006_020de440()
             return;
         }
     }
-    *(s32 *)(c + 0x51c8) = 3;
-    *(s32 *)(c + 0x51cc) = 0x40;
+    unk_51c8 = 3;
+    mCountdown = 0x40;
     *(u8 *)(c + 0x51df) = 1;
     {
         int t;
@@ -1573,10 +1573,10 @@ void dScMgCoin_c::func_ov006_020de440()
         } else {
             t = 0;
         }
-        if (t > *(s32 *)(c + 0x51d4)) {
-            *(u8 *)(c + 0x51db) = 1;
+        if (t > unk_51d4) {
+            unk_51db = 1;
         } else {
-            *(u8 *)(c + 0x51db) = 0;
+            unk_51db = 0;
         }
     }
 }

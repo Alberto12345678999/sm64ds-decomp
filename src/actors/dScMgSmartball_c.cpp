@@ -2420,24 +2420,24 @@ void cMgSmartball_propeller_c::Update()
 void cMgSmartball_propeller_c::SaveSnapshot()
 {
     char* c = (char*)this;
-    *(int*)(c+0x10) = *(int*)(c+8);
-    *(int*)(c+0x14) = *(int*)(c+0xc);
+    mSnapshot0 = mCurrent0;
+    mSnapshot1 = mCurrent1;
     if (*(unsigned char*)(*(char**)(c+4) + 0x595d) != 0)
         return;
-    if (*(short*)(c+0x36) < *(short*)(c+0x34)) {
+    if (mSpinSpeed < mSpinSpeedTarget) {
         short* p = (short*)(((int)c + 0x36));
         *p = *p + 8;
-        if (*(short*)(c+0x36) > *(short*)(c+0x34))
-            *(short*)(c+0x36) = *(short*)(c+0x34);
+        if (mSpinSpeed > mSpinSpeedTarget)
+            mSpinSpeed = mSpinSpeedTarget;
     } else {
         short* p = (short*)(((int)c + 0x36));
         *p = *p - 8;
-        if (*(short*)(c+0x36) < *(short*)(c+0x34))
-            *(short*)(c+0x36) = *(short*)(c+0x34);
+        if (mSpinSpeed < mSpinSpeedTarget)
+            mSpinSpeed = mSpinSpeedTarget;
     }
     {
         short* q = (short*)(((int)c + 0x32));
-        *q = *q + *(short*)(c+0x36);
+        *q = *q + mSpinSpeed;
     }
     func_ov006_02110e28((C2 *)c);
 }
@@ -6420,7 +6420,7 @@ s32 dScMgSmartball_c::Behavior()
     char* c = (char*)this;
     int vec[3];
 
-    if (*(unsigned char*)(c + 0xc4) == 0) {
+    if (mPromptBlinkCount == 0) {
         c[0xc3] = 1;
         c[0xc4] = 1;
         *(short*)(c + 0xc0) = 0;

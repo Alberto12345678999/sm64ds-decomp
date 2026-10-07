@@ -598,48 +598,48 @@ void dScMgCup_c::StateShuffle()
     }
 
     {
-        int slot = mIds[*(int*)(raw + 0x542c)];
+        int slot = mIds[mSwap0];
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = *(int*)(raw + 0x5400)
-            - (int)(((long long)cosine * *(int*)(raw + 0x5408) + 0x800) >> 12);
+        mCup[slot].x = mMidX
+            - (int)(((long long)cosine * mHalfX + 0x800) >> 12);
     }
     {
-        int slot = mIds[*(int*)(raw + 0x542c)];
-        mCup[slot].y = *(int*)(raw + 0x5404)
+        int slot = mIds[mSwap0];
+        mCup[slot].y = mMidY
             - (int)((data_02082214[(mShuffleAngle >> 4) * 2] * 0x14000LL + 0x800) >> 12);
     }
     {
-        int slot = mIds[*(int*)(raw + 0x542c)];
-        mOnes[slot] = ((mCup[slot].y - *(int*)(raw + 0x5404)) >> 7) + 0x1000;
+        int slot = mIds[mSwap0];
+        mOnes[slot] = ((mCup[slot].y - mMidY) >> 7) + 0x1000;
     }
     {
-        int slot = mIds[*(int*)(raw + 0x542c)];
+        int slot = mIds[mSwap0];
         func_ov006_020deaf0((char *)mFx, (u8)(s8)slot,
             mCup[slot].x - oldX,
             mCup[slot].y - oldY);
     }
 
     {
-        int slot = mIds[*(int*)(raw + 0x5430)];
+        int slot = mIds[mSwap1];
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = *(int*)(raw + 0x5400)
-            + (int)(((long long)cosine * *(int*)(raw + 0x5408) + 0x800) >> 12);
+        mCup[slot].x = mMidX
+            + (int)(((long long)cosine * mHalfX + 0x800) >> 12);
     }
     {
-        int slot = mIds[*(int*)(raw + 0x5430)];
-        mCup[slot].y = *(int*)(raw + 0x5404)
+        int slot = mIds[mSwap1];
+        mCup[slot].y = mMidY
             + (int)((data_02082214[(mShuffleAngle >> 4) * 2] * 0x14000LL + 0x800) >> 12);
     }
     {
-        int slot = mIds[*(int*)(raw + 0x5430)];
-        mOnes[slot] = ((mCup[slot].y - *(int*)(raw + 0x5404)) >> 7) + 0x1000;
+        int slot = mIds[mSwap1];
+        mOnes[slot] = ((mCup[slot].y - mMidY) >> 7) + 0x1000;
     }
     {
-        int slot = mIds[*(int*)(raw + 0x5430)];
+        int slot = mIds[mSwap1];
         func_ov006_020deaf0((char *)mFx, (u8)(s8)slot,
             mCup[slot].x - oldX,
             mCup[slot].y - oldY);
@@ -649,20 +649,20 @@ void dScMgCup_c::StateShuffle()
         char *state = raw + 0x5400;
         u16 angle = *(u16*)(state + 0x5c);
         if (angle == 0x8000) {
-            int tb = mIds[*(int*)(raw + 0x5430)];
-            int ta = mIds[*(int*)(raw + 0x542c)];
-            mIds[*(int*)(raw + 0x542c)] = tb;
-            mIds[*(int*)(raw + 0x5430)] = ta;
+            int tb = mIds[mSwap1];
+            int ta = mIds[mSwap0];
+            mIds[mSwap0] = tb;
+            mIds[mSwap1] = ta;
             unk_5460 -= 1;
             if (unk_5460 == 0) {
-                *(int*)(raw + 0x541c) = 0x1e;
+                mTimer = 0x1e;
                 mState = 3;
             } else {
                 u32 r = RandomIntInternal(&data_0209e650);
-                *(int*)(raw + 0x541c) = (r >> 8) % 0x18 + 1;
+                mTimer = (r >> 8) % 0x18 + 1;
                 mState = 1;
             }
-        } else if (*(u8*)(raw + 0x546a) != 0) {
+        } else if (mFakeOut != 0) {
             s16 speed = *(s16*)(state + 0x5e);
             if ((speed >= 0 && angle >= 0x5555u) || (speed < 0 && angle <= 0xaaabu)) {
                 /* The stores respell the full offset from raw (a cached base
@@ -672,22 +672,22 @@ void dScMgCup_c::StateShuffle()
                 mShuffleSpeed = speed;
                 mShuffleAngle = mShuffleAngle + 0x8000;
                 {
-                    int tb = mIds[*(int*)(raw + 0x5430)];
-                    int ta = mIds[*(int*)(raw + 0x542c)];
-                    mIds[*(int*)(raw + 0x542c)] = tb;
-                    mIds[*(int*)(raw + 0x5430)] = ta;
+                    int tb = mIds[mSwap1];
+                    int ta = mIds[mSwap0];
+                    mIds[mSwap0] = tb;
+                    mIds[mSwap1] = ta;
                 }
-                *(u8*)(raw + 0x546a) = 0;
+                mFakeOut = 0;
             }
         }
     }
 
-    if (*(u8*)(raw + 0x546b) != 0) {
-        int cnt = *(int*)(raw + 0x541c);
+    if (mSparkleShuffles != 0) {
+        int cnt = mTimer;
         if ((cnt & 3) == 0) {
             int i;
             {
-                int slot = mIds[*(int*)(raw + 0x542c)];
+                int slot = mIds[mSwap0];
                 i = (cnt >> 2) & 7;
                 func_ov006_020deb48((char *)mFx, 2,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
@@ -695,7 +695,7 @@ void dScMgCup_c::StateShuffle()
                     slot);
             }
             {
-                int slot = mIds[*(int*)(raw + 0x5430)];
+                int slot = mIds[mSwap1];
                 func_ov006_020deb48((char *)mFx, 2,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
                     mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
@@ -703,11 +703,11 @@ void dScMgCup_c::StateShuffle()
             }
         }
     } else {
-        int cnt = *(int*)(raw + 0x541c);
+        int cnt = mTimer;
         if (cnt & 1) {
             int i;
             {
-                int slot = mIds[*(int*)(raw + 0x542c)];
+                int slot = mIds[mSwap0];
                 i = (cnt >> 1) & 7;
                 func_ov006_020deb48((char *)mFx, 1,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
@@ -715,23 +715,23 @@ void dScMgCup_c::StateShuffle()
                     slot);
             }
             {
-                int slot = mIds[*(int*)(raw + 0x5430)];
+                int slot = mIds[mSwap1];
                 func_ov006_020deb48((char *)mFx, 1,
                     mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
                     mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
         }
-        if ((*(int*)(raw + 0x541c) & 3) == 0) {
+        if ((mTimer & 3) == 0) {
             {
-                int slot = mIds[*(int*)(raw + 0x542c)];
+                int slot = mIds[mSwap0];
                 func_ov006_020deb48((char *)mFx, 0,
                     mCup[slot].x - 0xe000,
                     mCup[slot].y + 0x1c000,
                     slot);
             }
             {
-                int slot = mIds[*(int*)(raw + 0x5430)];
+                int slot = mIds[mSwap1];
                 func_ov006_020deb48((char *)mFx, 0,
                     mCup[slot].x - 0xe000,
                     mCup[slot].y + 0x1c000,
@@ -740,7 +740,7 @@ void dScMgCup_c::StateShuffle()
         }
     }
 
-    *(int*)(raw + 0x541c) += 1;
+    mTimer += 1;
 }
 #pragma pop
 
