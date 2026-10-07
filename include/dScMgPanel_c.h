@@ -17,6 +17,67 @@
  * MgPuzzlePanelPuzzlePanic_Spawn); it installs this vtable for MG_PANEL.
  * Only the class name is a cartridge string.
  */
+/* The banner that drops in at the start of a round (func_ov006_02104a84
+   and its state table data_ov006_021427ec). */
+struct dScMgPanel_Banner {
+    s32 x;            /* +0x00 -- Fix12 */
+    s32 y;            /* +0x04 */
+    u16 timer;        /* +0x08 */
+    u16 hold;         /* +0x0a */
+    u8  active;       /* +0x0c */
+    u8  visible;      /* +0x0d */
+    u8  state;        /* +0x0e */
+    u8  pad_0f;
+};
+
+/* Sub-screen BG0 shake after a miss (func_ov006_02104920/02104a10);
+   state indexes data_ov006_021427bc. */
+struct dScMgPanel_Shake {
+    s32 unk_00;
+    s32 offset;       /* +0x04 -- SetSubBg0Offset y */
+    u16 timer;        /* +0x08 */
+    u8  active;       /* +0x0a */
+    u8  state;        /* +0x0b */
+};
+
+/* BG2 offset on both screens. func_ov006_02104580 runs it: phase 0 shakes
+   x by +-2.0 for 0x3c frames and drops particles (func_ov006_0210446c) at
+   both side edges, then y accelerates up to 512.0. func_ov006_02104870 arms
+   it; func_ov006_021048b0 clears `on` and the offsets. */
+struct dScMgPanel_Scroll {
+    s32 x;            /* +0x00 */
+    s32 y;            /* +0x04 */
+    s32 z;            /* +0x08 */
+    s32 vel;          /* +0x0c */
+    u8  on;           /* +0x10 */
+    u8  phase;        /* +0x11 */
+    u8  timer;        /* +0x12 */
+    u8  pad_13;
+};
+
+/* One of the 64 debris particles (func_ov006_02104354 steps them). */
+struct dScMgPanel_Particle {
+    s32 x;            /* +0x00 -- Fix12 */
+    s32 y;            /* +0x04 */
+    s32 vx;           /* +0x08 */
+    s32 vy;           /* +0x0c */
+    u8  active;       /* +0x10 */
+    u8  stuck;        /* +0x11 -- set: no gravity */
+    u8  kind;         /* +0x12 -- sprite, data_ov006_0213def0 */
+    u8  frame;        /* +0x13 -- five frames, then the slot frees */
+    u8  tick;         /* +0x14 */
+    u8  visible;      /* +0x15 */
+    u8  drift;        /* +0x16 -- set by the spawn: fixed or random */
+    u8  pad_17;
+};
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char dScMgPanel_Banner_size_must_be_0x10[sizeof(dScMgPanel_Banner) == 0x10 ? 1 : -1];
+typedef char dScMgPanel_Shake_size_must_be_0xc[sizeof(dScMgPanel_Shake) == 0xc ? 1 : -1];
+typedef char dScMgPanel_Scroll_size_must_be_0x14[sizeof(dScMgPanel_Scroll) == 0x14 ? 1 : -1];
+typedef char dScMgPanel_Particle_size_must_be_0x18[sizeof(dScMgPanel_Particle) == 0x18 ? 1 : -1];
+#endif
+
 struct dScMgPanel_c : dScMgBase_c {
     virtual ~dScMgPanel_c();
     virtual s32 InitResources();         /* slot 0 */
@@ -24,8 +85,7 @@ struct dScMgPanel_c : dScMgBase_c {
     virtual s32 Render();                /* slot 9 */
     virtual void OnYoshiTryEat(int arg); /* slot 18 */
 
-    /* Intro card slides in on mSlide, then holds. Scroll and the 64
-       particles live in the pad above mState; the cpp names them. */
+    /* Intro card slides in on mSlide, then holds. */
     s32 mSlide;              /* 0x4660 Fix12 */
     s32 mSlideY;             /* 0x4664 */
     s32 mSlideVel;           /* 0x4668 */
@@ -36,7 +96,10 @@ struct dScMgPanel_c : dScMgBase_c {
     u8  mSlideStep;          /* 0x4675 */
     u8  mSlideFlag;          /* 0x4676 */
     u8  mSlideLeft;          /* 0x4677 */
-    u8  pad_4678[0x630];
+    dScMgPanel_Banner   mBanner;            /* 0x4678 */
+    dScMgPanel_Shake    mShake[1];          /* 0x4688 */
+    dScMgPanel_Scroll   mScroll;            /* 0x4694 */
+    dScMgPanel_Particle mParticles[0x40];   /* 0x46a8 */
     s32 mState;              /* 0x4ca8 state-table index */
     s32 mIntro;              /* 0x4cac intro slides finished */
     s32 mDealt;              /* 0x4cb0 0 until the first board is chosen */
