@@ -1967,6 +1967,7 @@
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_cD0Ev": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_cD1Ev": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#daWanwan_c_classInit": "github-actions[bot]",
+    "src/game/actors/d_a_wanwan.cpp#__sinit_d_a_wanwan.cpp": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#func_ov014_02111484": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#func_ov014_021114d8": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#func_ov014_0211150c": "github-actions[bot]",
