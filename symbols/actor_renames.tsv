@@ -3532,6 +3532,12 @@ ov098	0x0213a8e0	func_ov098_0213a8e0	daObjFallBlock_c_RequestShake	writes mShake
 ov098	0x0213a8ec	func_ov098_0213a8ec	daObjFallBlock_c_OnStoodOn	dBgW+0x1c callback veneer; drops collider, forwards actor into RequestShake
 ov098	0x0213a900	func_ov098_0213a900	_ZN7daCnn_cD1Ev	vtable slot 16
 ov098	0x0213a938	func_ov098_0213a938	_ZN7daCnn_cD0Ev	vtable slot 17
+ov098	0x0213a984	func_ov098_0213a984	_ZN7daCnn_c19func_ov098_0213a984Ev	daCnn_c method. The first argument is the cannon, so the function is a member and the parameter is this. The address is kept as the method name.
+ov098	0x0213aa28	func_ov098_0213aa28	_ZN7daCnn_c19func_ov098_0213aa28Ev	daCnn_c method; state-3 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c644). The address is kept as the method name.
+ov098	0x0213ad08	func_ov098_0213ad08	_ZN7daCnn_c19func_ov098_0213ad08Ev	daCnn_c method; state-2 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c654). The address is kept as the method name.
+ov098	0x0213ade8	func_ov098_0213ade8	_ZN7daCnn_c19func_ov098_0213ade8Ev	daCnn_c method; state-1 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c65c). The address is kept as the method name.
+ov098	0x0213b0a4	func_ov098_0213b0a4	_ZN7daCnn_c19func_ov098_0213b0a4Ev	daCnn_c method; state-0 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c64c). The address is kept as the method name.
+ov098	0x0213b15c	func_ov098_0213b15c	_ZN7daCnn_c19func_ov098_0213b15cEv	daCnn_c method. The first argument is the cannon, so the function is a member and the parameter is this. The address is kept as the method name.
 ov098	0x0213b1d8	func_ov098_0213b1d8	_ZN7daCnn_c16CleanupResourcesEv	vtable slot 3
 ov098	0x0213b214	func_ov098_0213b214	_ZN7daCnn_c6RenderEv	vtable slot 9
 ov098	0x0213b26c	func_ov098_0213b26c	_ZN7daCnn_c8BehaviorEv	vtable slot 6
