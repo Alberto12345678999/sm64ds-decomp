@@ -1438,7 +1438,8 @@ void dScMgCoin_c::func_ov006_020de0e0()
     } else {
         mCountdown = 0x80;
     }
-    if (mCountdown > 0) return; mCountdown = 0;
+    if (mCountdown > 0) return;
+    mCountdown = 0;
     if (*(unsigned char *)(self + 0x51df) != 0) {
         FreeGfxSlotsById(6);
         func_ov004_020ae20c();

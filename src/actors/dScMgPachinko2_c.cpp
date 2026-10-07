@@ -289,7 +289,8 @@ void dScMgPachinko2_c::func_ov006_020ff534(int k)
     int *py = (int *)(c + k * 32 + 0x5624);
     for (; i < 0x30; i++) {
         int dx, dy;
-        if (mBalls[i].unk_38 == 0) continue; if (mBalls[i].state < 3) continue;
+        if (mBalls[i].unk_38 == 0) continue;
+        if (mBalls[i].state < 3) continue;
         dx = (mBalls[i].x - *px) >> 12;
         dy = (mBalls[i].y - *py) >> 12;
         if (dx < -0x18) continue;
@@ -894,7 +895,8 @@ void dScMgPachinko2_c::func_ov006_021006f4()
 void dScMgPachinko2_c::func_ov006_02100734(int idx)
 {
     char *c = (char *)this;
-    if (mPaddles[idx].active == 0) return; mPaddles[idx].angle = 0;
+    if (mPaddles[idx].active == 0) return;
+    mPaddles[idx].angle = 0;
     mPaddles[idx].speed = 0;
     mPaddles[idx].timer = 0x40;
     mPaddles[idx].state = 0xc;
@@ -1852,7 +1854,8 @@ void dScMgPachinko2_c::func_ov006_0210258c()
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02102624Ev
 void dScMgPachinko2_c::func_ov006_02102624()
 {
-    if (mCountdownShown == 0) return; func_ov004_020b1e44(mCountdown);
+    if (mCountdownShown == 0) return;
+    func_ov004_020b1e44(mCountdown);
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_0210265cEv
@@ -1865,7 +1868,8 @@ void dScMgPachinko2_c::func_ov006_0210265c()
     if (mCountdown == 0) return;
     q = (unsigned char *)(((int)c + 0x5679));
     *q += 1;
-    if (mCountdownTick < 0x3c) return; mCountdownTick = 0;
+    if (mCountdownTick < 0x3c) return;
+    mCountdownTick = 0;
     h = (unsigned short *)(((int)c + 0x5674));
     *h -= 1;
     t = mCountdown;
@@ -2172,7 +2176,8 @@ void dScMgPachinko2_c::func_ov006_02102e8c()
 void dScMgPachinko2_c::func_ov006_02102ef4()
 {
     unsigned char *r0 = (unsigned char *)this;
-    if (mCountdownArmed != 0) return; mCountdown = 0x1e;
+    if (mCountdownArmed != 0) return;
+    mCountdown = 0x1e;
     mCountdownTick = 0;
     mCountdownShown = 1;
     {
@@ -2567,9 +2572,11 @@ void dScMgPachinko2_c::func_ov006_02103ac0()
     char *c = (char *)this;
     int i;
     unsigned short *q;
-    if (unk_566c == 0) return; q = &unk_566c;
+    if (unk_566c == 0) return;
+    q = &unk_566c;
     *q = *q - 1;
-    if ((short)unk_566c > 0) return; unk_566c = 0;
+    if ((short)unk_566c > 0) return;
+    unk_566c = 0;
     for (i = 0; i < 0x30; i++) {
         char *b = c + (i << 6);
         if (*(unsigned char *)(b + 0x4698) == 0) {
