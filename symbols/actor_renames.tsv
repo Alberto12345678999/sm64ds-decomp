@@ -545,6 +545,46 @@ ov006	0x020dbd54	MgPicturePoker_Spawn	dScMgCard_c_classInit	reconstructed classI
 ov006	0x020de940	func_ov006_020de940	MgCoincentration_Spawn	spawnfunc
 ov006	0x020de940	MgCoincentration_Spawn	dScMgCoin_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020e0574	func_ov006_020e0574	dScMgCup_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x020e0694	func_ov006_020e0694	_ZN14dScMgCurling_c19func_ov006_020e0694Ev	object-as-this
+ov006	0x020e071c	func_ov006_020e071c	_ZN14dScMgCurling_c19func_ov006_020e071cEi	object-as-this
+ov006	0x020e07b0	func_ov006_020e07b0	_ZN14dScMgCurling_c19func_ov006_020e07b0Ei	object-as-this
+ov006	0x020e0884	func_ov006_020e0884	_ZN14dScMgCurling_c19func_ov006_020e0884Ei	object-as-this
+ov006	0x020e091c	func_ov006_020e091c	_ZN14dScMgCurling_c19func_ov006_020e091cEi	object-as-this
+ov006	0x020e0a24	func_ov006_020e0a24	_ZN14dScMgCurling_c19func_ov006_020e0a24Ei	object-as-this
+ov006	0x020e0b64	func_ov006_020e0b64	_ZN14dScMgCurling_c19func_ov006_020e0b64Ei	object-as-this
+ov006	0x020e0ca0	func_ov006_020e0ca0	_ZN14dScMgCurling_c19func_ov006_020e0ca0Ei	object-as-this
+ov006	0x020e0d84	func_ov006_020e0d84	_ZN14dScMgCurling_c19func_ov006_020e0d84Ei	object-as-this
+ov006	0x020e0e18	func_ov006_020e0e18	_ZN14dScMgCurling_c19func_ov006_020e0e18Ei	object-as-this
+ov006	0x020e0edc	func_ov006_020e0edc	_ZN14dScMgCurling_c19func_ov006_020e0edcEi	object-as-this
+ov006	0x020e0ff0	func_ov006_020e0ff0	_ZN14dScMgCurling_c19func_ov006_020e0ff0Ei	object-as-this
+ov006	0x020e1100	func_ov006_020e1100	_ZN14dScMgCurling_c19func_ov006_020e1100Ei	object-as-this
+ov006	0x020e1214	func_ov006_020e1214	_ZN14dScMgCurling_c19func_ov006_020e1214Ei	object-as-this
+ov006	0x020e1264	func_ov006_020e1264	_ZN14dScMgCurling_c19func_ov006_020e1264Ei	object-as-this
+ov006	0x020e12d0	func_ov006_020e12d0	_ZN14dScMgCurling_c19func_ov006_020e12d0Ev	object-as-this
+ov006	0x020e13a4	func_ov006_020e13a4	_ZN14dScMgCurling_c19func_ov006_020e13a4Ev	object-as-this
+ov006	0x020e1554	func_ov006_020e1554	_ZN14dScMgCurling_c19func_ov006_020e1554Ev	object-as-this
+ov006	0x020e1608	func_ov006_020e1608	_ZN14dScMgCurling_c19func_ov006_020e1608Ev	object-as-this
+ov006	0x020e1680	func_ov006_020e1680	_ZN14dScMgCurling_c19func_ov006_020e1680Ev	object-as-this
+ov006	0x020e17f8	func_ov006_020e17f8	_ZN14dScMgCurling_c19func_ov006_020e17f8Ev	object-as-this
+ov006	0x020e1854	func_ov006_020e1854	_ZN14dScMgCurling_c19func_ov006_020e1854Ev	object-as-this
+ov006	0x020e1b54	func_ov006_020e1b54	_ZN14dScMgCurling_c19func_ov006_020e1b54Ev	object-as-this
+ov006	0x020e1c68	func_ov006_020e1c68	_ZN14dScMgCurling_c19func_ov006_020e1c68Ev	object-as-this
+ov006	0x020e1dc8	func_ov006_020e1dc8	_ZN14dScMgCurling_c19func_ov006_020e1dc8Ei	object-as-this
+ov006	0x020e20bc	func_ov006_020e20bc	_ZN14dScMgCurling_c19func_ov006_020e20bcEi	object-as-this
+ov006	0x020e269c	func_ov006_020e269c	_ZN14dScMgCurling_c19func_ov006_020e269cEi	object-as-this
+ov006	0x020e26f8	func_ov006_020e26f8	_ZN14dScMgCurling_c19func_ov006_020e26f8Ei	object-as-this
+ov006	0x020e285c	func_ov006_020e285c	_ZN14dScMgCurling_c19func_ov006_020e285cEi	object-as-this
+ov006	0x020e2868	func_ov006_020e2868	_ZN14dScMgCurling_c19func_ov006_020e2868Ei	object-as-this
+ov006	0x020e2c08	func_ov006_020e2c08	_ZN14dScMgCurling_c19func_ov006_020e2c08Ei	object-as-this
+ov006	0x020e2dbc	func_ov006_020e2dbc	_ZN14dScMgCurling_c19func_ov006_020e2dbcEv	object-as-this
+ov006	0x020e2eb8	func_ov006_020e2eb8	_ZN14dScMgCurling_c19func_ov006_020e2eb8Ev	object-as-this
+ov006	0x020e2ebc	func_ov006_020e2ebc	_ZN14dScMgCurling_c19func_ov006_020e2ebcEv	object-as-this
+ov006	0x020e2f78	func_ov006_020e2f78	_ZN14dScMgCurling_c19func_ov006_020e2f78Ev	object-as-this
+ov006	0x020e3078	func_ov006_020e3078	_ZN14dScMgCurling_c19func_ov006_020e3078Ev	object-as-this
+ov006	0x020e3210	func_ov006_020e3210	_ZN14dScMgCurling_c19func_ov006_020e3210Ev	object-as-this
+ov006	0x020e3250	func_ov006_020e3250	_ZN14dScMgCurling_c19func_ov006_020e3250Ev	object-as-this
+ov006	0x020e3378	func_ov006_020e3378	_ZN14dScMgCurling_c19func_ov006_020e3378Ev	object-as-this
+ov006	0x020e3388	func_ov006_020e3388	_ZN14dScMgCurling_c19func_ov006_020e3388Ev	object-as-this
 ov006	0x020e3820	func_ov006_020e3820	MgShuffleShell_Spawn	spawnfunc
 ov006	0x020e3820	MgShuffleShell_Spawn	dScMgCurling_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020e6c28	func_ov006_020e6c28	_ZN14dScMgD3DBase_cD1Ev	vtable slot 16 (was _ZN17MgBounceAndPounceD1Ev)
@@ -2522,6 +2562,40 @@ ov074	0x02122e94	ExplosionGoomba_SpawnInfo	g_profile_KURIKING_VANISH	reconstruct
 ov074	0x02122eb8	data_ov074_02122eb8	_ZTV12daKuriKing_c	vtable alloc=0x610
 ov075	0x02113ee0	func_ov075_02113ee0	_ZN9dEntObj_cD1Ev	vtable slot 16
 ov075	0x02113f54	func_ov075_02113f54	_ZN9dEntObj_cD0Ev	vtable slot 17
+ov075	0x02114010	func_ov075_02114010	_ZN15UnknownVsPlayer19func_ov075_02114010Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021140e4	func_ov075_021140e4	_ZN15UnknownVsPlayer19func_ov075_021140e4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021141b8	func_ov075_021141b8	_ZN15UnknownVsPlayer19func_ov075_021141b8Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114218	func_ov075_02114218	_ZN15UnknownVsPlayer19func_ov075_02114218Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x0211427c	func_ov075_0211427c	_ZN15UnknownVsPlayer19func_ov075_0211427cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021142fc	func_ov075_021142fc	_ZN15UnknownVsPlayer19func_ov075_021142fcEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114300	func_ov075_02114300	_ZN15UnknownVsPlayer19func_ov075_02114300Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114390	func_ov075_02114390	_ZN15UnknownVsPlayer19func_ov075_02114390Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021143e4	func_ov075_021143e4	_ZN15UnknownVsPlayer19func_ov075_021143e4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114560	func_ov075_02114560	_ZN15UnknownVsPlayer19func_ov075_02114560Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x0211473c	func_ov075_0211473c	_ZN15UnknownVsPlayer19func_ov075_0211473cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x0211478c	func_ov075_0211478c	_ZN15UnknownVsPlayer19func_ov075_0211478cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021147d4	func_ov075_021147d4	_ZN15UnknownVsPlayer19func_ov075_021147d4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114890	func_ov075_02114890	_ZN15UnknownVsPlayer19func_ov075_02114890Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114894	func_ov075_02114894	_ZN15UnknownVsPlayer19func_ov075_02114894Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021148f0	func_ov075_021148f0	_ZN15UnknownVsPlayer19func_ov075_021148f0Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114904	func_ov075_02114904	_ZN15UnknownVsPlayer19func_ov075_02114904Ei	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114988	func_ov075_02114988	_ZN15UnknownVsPlayer19func_ov075_02114988Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021149d0	func_ov075_021149d0	_ZN15UnknownVsPlayer19func_ov075_021149d0Ei	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114a58	func_ov075_02114a58	_ZN15UnknownVsPlayer19func_ov075_02114a58Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114a6c	func_ov075_02114a6c	_ZN15UnknownVsPlayer19func_ov075_02114a6cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114ac4	func_ov075_02114ac4	_ZN15UnknownVsPlayer19func_ov075_02114ac4EP7Vector3S1_	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114b60	func_ov075_02114b60	_ZN15UnknownVsPlayer19func_ov075_02114b60Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114be4	func_ov075_02114be4	_ZN15UnknownVsPlayer19func_ov075_02114be4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114cd8	func_ov075_02114cd8	_ZN15UnknownVsPlayer19func_ov075_02114cd8Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114ddc	func_ov075_02114ddc	_ZN15UnknownVsPlayer19func_ov075_02114ddcEhhi	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114fa8	func_ov075_02114fa8	_ZN9dEntObj_c19func_ov075_02114fa8Ev	methodized dEntObj_c helper; first param was the actor
+ov075	0x0211505c	func_ov075_0211505c	_ZN9dEntObj_c19func_ov075_0211505cEv	methodized dEntObj_c helper; first param was the actor
+ov075	0x02115098	func_ov075_02115098	_ZN9dEntObj_c19func_ov075_02115098Ei	methodized dEntObj_c helper; first param was the actor
+ov075	0x02115134	func_ov075_02115134	_ZN9dEntObj_c19func_ov075_02115134Ev	methodized dEntObj_c helper; first param was the actor
+ov075	0x021151b4	func_ov075_021151b4	_ZN9dEntObj_c19func_ov075_021151b4Ei	methodized dEntObj_c helper; first param was the actor
+ov075	0x0211524c	func_ov075_0211524c	_ZN9dEntObj_c19func_ov075_0211524cEi	methodized dEntObj_c helper; first param was the actor
+ov075	0x02115290	func_ov075_02115290	_ZN9dEntObj_c19func_ov075_02115290Ei	methodized dEntObj_c helper; first param was the actor
+ov075	0x021152d4	func_ov075_021152d4	_ZN9dEntObj_c19func_ov075_021152d4Ev	methodized dEntObj_c helper; first param was the actor
 ov075	0x02115388	func_ov075_02115388	_ZN9dEntObj_c16CleanupResourcesEv	vtable slot 3
 ov075	0x021154cc	func_ov075_021154cc	_ZN9dEntObj_c6RenderEv	vtable slot 9
 ov075	0x0211555c	func_ov075_0211555c	_ZN9dEntObj_c8BehaviorEv	vtable slot 6
@@ -2883,6 +2957,31 @@ ov085	0x0212d4e8	func_ov085_0212d4e8	RabbitKey_Spawn	spawnfunc
 ov085	0x0212d4e8	RabbitKey_Spawn	daObj_Mip_Key_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov085	0x0212d528	func_ov085_0212d528	_ZN11daC_Jugem_cD1Ev	vtable slot 16 (was _ZN9LakituBroD1Ev)
 ov085	0x0212d578	func_ov085_0212d578	_ZN11daC_Jugem_cD0Ev	vtable slot 17 (was _ZN9LakituBroD0Ev)
+ov085	0x0212d5dc	func_ov085_0212d5dc	_ZN11daC_Jugem_c14StateIntroMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212d724	func_ov085_0212d724	_ZN11daC_Jugem_c14StateIntroInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212d73c	func_ov085_0212d73c	_ZN11daC_Jugem_c17StateApproachMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212d8ec	func_ov085_0212d8ec	_ZN11daC_Jugem_c17StateApproachInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212d9b8	func_ov085_0212d9b8	_ZN11daC_Jugem_c12StateBobMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212db04	func_ov085_0212db04	_ZN11daC_Jugem_c12StateBobInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212dbdc	func_ov085_0212dbdc	_ZN11daC_Jugem_c14StateGuideMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212dcfc	func_ov085_0212dcfc	_ZN11daC_Jugem_c14StateGuideInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212dd10	func_ov085_0212dd10	_ZN11daC_Jugem_c13StateTurnMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212ddc4	func_ov085_0212ddc4	_ZN11daC_Jugem_c13StateTurnInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212de5c	func_ov085_0212de5c	_ZN11daC_Jugem_c15StateArriveMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212df84	func_ov085_0212df84	_ZN11daC_Jugem_c15StateArriveInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e078	func_ov085_0212e078	_ZN11daC_Jugem_c14StateLeaveMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e180	func_ov085_0212e180	_ZN11daC_Jugem_c14StateLeaveInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e19c	func_ov085_0212e19c	_ZN11daC_Jugem_c13StateTalkMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e2ec	func_ov085_0212e2ec	_ZN11daC_Jugem_c13StateTalkInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e310	func_ov085_0212e310	_ZN11daC_Jugem_c20StateFlyToPlayerMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e480	func_ov085_0212e480	_ZN11daC_Jugem_c20StateFlyToPlayerInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e4a4	func_ov085_0212e4a4	_ZN11daC_Jugem_c15StateHiddenMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e59c	func_ov085_0212e59c	_ZN11daC_Jugem_c15StateHiddenInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e5ac	func_ov085_0212e5ac	_ZN11daC_Jugem_c14StateHoverMainEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e720	func_ov085_0212e720	_ZN11daC_Jugem_c14StateHoverInitEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e728	func_ov085_0212e728	_ZN11daC_Jugem_c8SetStateEPMS_FivE	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e778	func_ov085_0212e778	_ZN11daC_Jugem_c12UpdateShadowEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
+ov085	0x0212e858	func_ov085_0212e858	_ZN11daC_Jugem_c18UpdateShadowPlayerEv	daC_Jugem_c member; state-record PMF slot or direct call in this TU (sinit writes {enter,run} PMF pairs at 0x02130790..0x02130830)
 ov085	0x0212ea90	func_ov085_0212ea90	_ZN11daC_Jugem_c16CleanupResourcesEv	vtable slot 3 (was _ZN9LakituBro16CleanupResourcesEv)
 ov085	0x0212eacc	func_ov085_0212eacc	_ZN11daC_Jugem_c16OnPendingDestroyEv	vtable slot 12 (was _ZN9LakituBro16OnPendingDestroyEv)
 ov085	0x0212ead0	func_ov085_0212ead0	_ZN11daC_Jugem_c6RenderEv	vtable slot 9 (was _ZN9LakituBro6RenderEv)
