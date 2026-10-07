@@ -60,6 +60,7 @@ struct dScMgBomroom_Slot {
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char dScMgBomroom_Bomb_size_must_be_0x40[sizeof(struct dScMgBomroom_Bomb) == 0x40 ? 1 : -1];
+typedef char dScMgBomroom_Slot_size_must_be_0x10[sizeof(struct dScMgBomroom_Slot) == 0x10 ? 1 : -1];
 #endif
 
 struct dScMgBomroom_c : dScMgBase_c {
