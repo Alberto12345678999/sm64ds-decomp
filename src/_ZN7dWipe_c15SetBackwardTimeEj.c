@@ -11,8 +11,8 @@
  * in the ROM. A real method fixes the arity at one (`Ej'), the parameter cannot
  * exist, and three words miss. Eleven spellings tried; full record in
  * notes/scene-provenance.md. */
-struct FaderBrightness;
-extern int _ZN15FaderBrightness15SetBackwardTimeEj(struct FaderBrightness *self, u32 time, u32 c);
+struct dFdBrightness_c;
+extern int _ZN15dFdBrightness_c15SetBackwardTimeEj(struct dFdBrightness_c *self, u32 time, u32 c);
 extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -40,7 +40,7 @@ int _ZN7dWipe_c15SetBackwardTimeEj(struct dWipe_c *self, u32 param_1, u32 param_
 
     type = self->type;
     if (type == 1) {
-        return _ZN15FaderBrightness15SetBackwardTimeEj((struct FaderBrightness *)self, param_1, param_2);
+        return _ZN15dFdBrightness_c15SetBackwardTimeEj((struct dFdBrightness_c *)self, param_1, param_2);
     }
 
     state = self->state;

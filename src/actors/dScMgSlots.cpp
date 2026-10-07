@@ -116,7 +116,7 @@ extern s16 data_ov006_0213e654[][2];
 extern s16 data_ov006_0213e656[][2];
 extern s16 data_ov006_0213e4f8[][2];
 extern s16 data_ov006_0213e4fa[][2];
-extern struct FaderBrightness data_0209f61c;
+extern struct dFdBrightness_c data_0209f61c;
 extern void func_ov004_020af770(void* a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 }

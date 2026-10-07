@@ -1,8 +1,8 @@
 #ifndef DWIPE_C_H
 #define DWIPE_C_H
-#include "FaderColor.h"
+#include "dFdColor_c.h"
 
-/* Hardware screen wipe. Unlike FaderColor, which just drives a blend register,
+/* Hardware screen wipe. Unlike dFdColor_c, which just drives a blend register,
  * this drives the capture/DMA path: CP15 cache flush, GX palette load, and an
  * IRQ-driven per-scanline capture. `type == 1` is the escape hatch -- every
  * override below hands that case straight back to the base class.
@@ -13,11 +13,11 @@
  * __si_class_type_info record for dWipe_c, so the destructors below can be real
  * C++ and still resolve at the link.
  *
- * dWipe_c is NOT dFdWipe_c/FaderWipe; they are unrelated classes.
+ * dWipe_c is NOT dFdWipe_c; they are unrelated classes.
  */
 #ifdef __cplusplus
-struct dWipe_c : FaderColor {
-    /* 0x0e/0x0f reuse FaderColor's tail padding -- see notes/scene-provenance.md. */
+struct dWipe_c : dFdColor_c {
+    /* 0x0e/0x0f reuse dFdColor_c's tail padding -- see notes/scene-provenance.md. */
     u8  unk_00e;         /* 0x0e */
     /* 0x0f -- capture is armed; the destructors tear it down. UNSIGNED: the
        only two reads of this field in the image, the D1 and D0 destructors at
@@ -28,7 +28,7 @@ struct dWipe_c : FaderColor {
     s32 state;           /* 0x10 -- 0 idle, 1 opening, 2 open, 3 closing, 4 closed */
     s32 type;            /* 0x14 -- palette/blend path selector; 1 defers to the base */
     s32 unk_018;         /* 0x18 */
-    s32 wipeInterp;      /* 0x1c -- 20.12 ramp, independent of Fader::currInterp */
+    s32 wipeInterp;      /* 0x1c -- 20.12 ramp, independent of dFader_c::currInterp */
     s32 wipeSpeed;       /* 0x20 -- per-frame delta added to wipeInterp */
     s32 wipeAccel;       /* 0x24 -- per-frame delta added to wipeSpeed */
     u8  unk_028;         /* 0x28 */
@@ -53,9 +53,9 @@ typedef char dWipe_c_size_must_be_0x2c[sizeof(dWipe_c) == 0x2c ? 1 : -1];
    express the virtuals and so write out the vptr the compiler would place. */
 struct dWipe_c {
     void*  vtable;      /* 0x00 */
-    Fix12i currInterp;  /* 0x04 (from Fader) */
-    Fix12i speed;       /* 0x08 (from Fader) */
-    u16    color;       /* 0x0c (from FaderColor) */
+    Fix12i currInterp;  /* 0x04 (from dFader_c) */
+    Fix12i speed;       /* 0x08 (from dFader_c) */
+    u16    color;       /* 0x0c (from dFdColor_c) */
     u8     unk_00e;     /* 0x0e */
     u8     needsCleanup;/* 0x0f -- unsigned; see the C++ branch above */
     s32    state;       /* 0x10 */

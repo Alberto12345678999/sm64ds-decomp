@@ -15,7 +15,7 @@ extern "C" void _ZN3G2x18SetBlendBrightnessEPVtts(unsigned short *p, unsigned sh
 void dWipe_c::AdvanceFade()
 {
     if (type == 1) {
-        FaderColor::AdvanceFade();
+        dFdColor_c::AdvanceFade();
         return;
     }
     switch (state) {
