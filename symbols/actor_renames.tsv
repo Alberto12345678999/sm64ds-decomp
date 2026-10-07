@@ -5130,3 +5130,49 @@ ov006	0x020d36a4	func_ov006_020d36a4	_ZN12dScMgAmida_c11InitWalkersEv	dScMgAmida
 ov006	0x020d3ba0	func_ov006_020d3ba0	_ZN12dScMgAmida_c10SetupRoundEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named SetupRound: picks the pattern, paints the vertical lanes and pre-seeded rungs, and resets the board into playing state.
 ov006	0x020d452c	func_ov006_020d452c	_ZN12dScMgAmida_c11RenderBoardEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named RenderBoard: the mode-1 playfield pass -- lane markers, walkers and the side pillars.
 ov006	0x020d47f4	func_ov006_020d47f4	_ZN12dScMgAmida_c14RenderBoardAltEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named RenderBoardAlt: the Unk36-mode playfield pass -- goal markers at the walker ends and lane-result icons at the lane tops.
+ov006	0x020e792c	func_ov006_020e792c	_ZN17dMg3DEspAnimSet_c10SetRepeatsEs	dMg3DEspAnimSet_c method. Called on the model's mAnimSet member; stores the repeat counts field. Named SetRepeats: writes both repeat counters.
+ov006	0x020e7940	func_ov006_020e7940	_ZN17dMg3DEspAnimSet_c9SetPeriodEs	dMg3DEspAnimSet_c method. Called on the model's mAnimSet member. Named SetPeriod: writes the animation period.
+ov006	0x020e794c	func_ov006_020e794c	_ZN17dMg3DEspAnimSet_c8SetSpeedEi	dMg3DEspAnimSet_c method. Called on the model's mAnimSet member. Named SetSpeed: writes the animation speed.
+ov006	0x020e7cc0	func_ov006_020e7cc0	_ZN15dMg3DEspModel_c3HitEv	dMg3DEspModel_c method; pointer-to-member record in data_ov006_0213c7xx. Named Hit: per-frame state while the esp is stunned.
+ov006	0x020e7d7c	func_ov006_020e7d7c	_ZN15dMg3DEspModel_c8StartHitEv	dMg3DEspModel_c method. Named StartHit: state setter that enters the hit state.
+ov006	0x020e7de8	func_ov006_020e7de8	_ZN15dMg3DEspModel_c5IntroEv	dMg3DEspModel_c method; pointer-to-member record in data_ov006_0213c7xx. Named Intro: per-frame state while the esp grows in.
+ov006	0x020e7e74	func_ov006_020e7e74	_ZN15dMg3DEspModel_c10StartIntroEv	dMg3DEspModel_c method. Named StartIntro: state setter that enters the intro state.
+ov006	0x020e7f04	func_ov006_020e7f04	_ZN15dMg3DEspModel_c4WaitEv	dMg3DEspModel_c method; pointer-to-member record in data_ov006_0213c7xx. Named Wait: per-frame state waiting between shots.
+ov006	0x020e7f5c	func_ov006_020e7f5c	_ZN15dMg3DEspModel_c9StartWaitEv	dMg3DEspModel_c method. Named StartWait: state setter that enters the wait state.
+ov006	0x020e7fac	func_ov006_020e7fac	_ZN15dMg3DEspModel_c4IdleEv	dMg3DEspModel_c method; the no-op record shared by three PMF tables. Named Idle: empty state body.
+ov006	0x020e81a4	func_ov006_020e81a4	_ZN12dScMg3DEsp_c10DrawBannerEv	dScMg3DEsp_c method; first argument is the object. Named DrawBanner: draws the touch-screen banner OAM sprite.
+ov006	0x020e81e0	func_ov006_020e81e0	_ZN12dScMg3DEsp_c10FlashQuickEv	dScMg3DEsp_c method; PMF record in the flash-mode table data_ov006_0213c784. Named FlashQuick: one quick flash step.
+ov006	0x020e8214	func_ov006_020e8214	_ZN12dScMg3DEsp_c9FlashSyncEv	dScMg3DEsp_c method; PMF record in the flash-mode table. Named FlashSync: synchronized flash step.
+ov006	0x020e82c8	func_ov006_020e82c8	_ZN12dScMg3DEsp_c9FlashOnceEv	dScMg3DEsp_c method; PMF record in the flash-mode table. Named FlashOnce: single flash step.
+ov006	0x020e82fc	func_ov006_020e82fc	_ZN12dScMg3DEsp_c11UpdateFlashEv	dScMg3DEsp_c method. Named UpdateFlash: dispatches through the flash-mode PMF table.
+ov006	0x020e8354	func_ov006_020e8354	_ZN12dScMg3DEsp_c11RenderSlotsEv	dScMg3DEsp_c method. Named RenderSlots: draws every slot sprite.
+ov006	0x020e83bc	func_ov006_020e83bc	_ZN12dScMg3DEsp_c10SlotDampenEi	dScMg3DEsp_c method; PMF record in the slot-state table. Named SlotDampen: slot state that eases the slot to rest.
+ov006	0x020e84b8	func_ov006_020e84b8	_ZN12dScMg3DEsp_c8SlotKickEi	dScMg3DEsp_c method; PMF record in the slot-state table. Named SlotKick: slot state giving the slot an impulse.
+ov006	0x020e85f0	func_ov006_020e85f0	_ZN12dScMg3DEsp_c8SlotRiseEi	dScMg3DEsp_c method; PMF record in the slot-state table. Named SlotRise: slot state rising to position.
+ov006	0x020e8728	func_ov006_020e8728	_ZN12dScMg3DEsp_c9SlotSetupEi	dScMg3DEsp_c method; PMF record in the slot-type handler table. Named SlotSetup: per-type handler that initializes a slot.
+ov006	0x020e8830	func_ov006_020e8830	_ZN12dScMg3DEsp_c8SlotFallEi	dScMg3DEsp_c method; PMF record in the slot-type handler table. Named SlotFall: per-type handler for a falling slot.
+ov006	0x020e8928	func_ov006_020e8928	_ZN12dScMg3DEsp_c8SlotWaitEi	dScMg3DEsp_c method; PMF record in the slot-type handler table. Named SlotWait: per-type handler for a waiting slot.
+ov006	0x020e8a44	func_ov006_020e8a44	_ZN12dScMg3DEsp_c11UpdateSlotsEv	dScMg3DEsp_c method. Named UpdateSlots: dispatches every slot through the slot-state PMF table.
+ov006	0x020e8aac	func_ov006_020e8aac	_ZN12dScMg3DEsp_c10ResetSlotsEv	dScMg3DEsp_c method. Named ResetSlots: clears all slot state for a round.
+ov006	0x020e8b18	func_ov006_020e8b18	_ZN12dScMg3DEsp_c10RenderRowsEv	dScMg3DEsp_c method. Named RenderRows: draws every row sprite.
+ov006	0x020e8bd0	func_ov006_020e8bd0	_ZN12dScMg3DEsp_c7RowFadeEi	dScMg3DEsp_c method; PMF record in the row-state table. Named RowFade: row state fading out.
+ov006	0x020e8c74	func_ov006_020e8c74	_ZN12dScMg3DEsp_c8RowDecayEi	dScMg3DEsp_c method; PMF record in the row-state table. Named RowDecay: row state decaying.
+ov006	0x020e8cb0	func_ov006_020e8cb0	_ZN12dScMg3DEsp_c7RowWaitEi	dScMg3DEsp_c method; PMF record in the row-state table. Named RowWait: row state waiting.
+ov006	0x020e8d08	func_ov006_020e8d08	_ZN12dScMg3DEsp_c10UpdateRowsEv	dScMg3DEsp_c method. Named UpdateRows: dispatches every row through the row-state PMF table.
+ov006	0x020e8d7c	func_ov006_020e8d7c	_ZN12dScMg3DEsp_c9SpawnRowsEi	dScMg3DEsp_c method. Named SpawnRows: spawns the row sprites for a round.
+ov006	0x020e8e10	func_ov006_020e8e10	_ZN12dScMg3DEsp_c11RenderCardsEv	dScMg3DEsp_c method. Named RenderCards: draws every card sprite.
+ov006	0x020e8f14	func_ov006_020e8f14	_ZN12dScMg3DEsp_c8CardSeekEi	dScMg3DEsp_c method; PMF record in the card-state table. Named CardSeek: card state seeking its target.
+ov006	0x020e91a0	func_ov006_020e91a0	_ZN12dScMg3DEsp_c9CardTouchEi	dScMg3DEsp_c method; PMF record in the card-state table. Named CardTouch: card state reacting to touch.
+ov006	0x020e9318	func_ov006_020e9318	_ZN12dScMg3DEsp_c8CardExitEi	dScMg3DEsp_c method; PMF record in the card-state table. Named CardExit: card state leaving play.
+ov006	0x020e9374	func_ov006_020e9374	_ZN12dScMg3DEsp_c11UpdateCardsEv	dScMg3DEsp_c method. Named UpdateCards: dispatches every card through the card-state PMF table.
+ov006	0x020e93e8	func_ov006_020e93e8	_ZN12dScMg3DEsp_c9DealCardsEv	dScMg3DEsp_c method. Named DealCards: lays out and initializes the hand.
+ov006	0x020e95a4	func_ov006_020e95a4	_ZN12dScMg3DEsp_c10ClearCardsEv	dScMg3DEsp_c method. Named ClearCards: clears the hand.
+ov006	0x020e95e4	func_ov006_020e95e4	_ZN12dScMg3DEsp_c13SetDifficultyEv	dScMg3DEsp_c method. Named SetDifficulty: scales round parameters by difficulty.
+ov006	0x020e9670	func_ov006_020e9670	_ZN12dScMg3DEsp_c7ResolveEv	dScMg3DEsp_c method; PMF record in the play-phase table. Named Resolve: phase that resolves the hand.
+ov006	0x020e968c	func_ov006_020e968c	_ZN12dScMg3DEsp_c5AwaitEv	dScMg3DEsp_c method; PMF record in the play-phase table. Named Await: phase waiting on the player.
+ov006	0x020e96f4	func_ov006_020e96f4	_ZN12dScMg3DEsp_c4FadeEv	dScMg3DEsp_c method; PMF record in the play-phase table. Named Fade: phase fading the round out.
+ov006	0x020e97b0	func_ov006_020e97b0	_ZN12dScMg3DEsp_c4DealEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Deal: round state dealing cards.
+ov006	0x020e984c	func_ov006_020e984c	_ZN12dScMg3DEsp_c10ResetRoundEv	dScMg3DEsp_c method. Named ResetRound: resets round state for the next hand.
+ov006	0x020e989c	func_ov006_020e989c	_ZN12dScMg3DEsp_c7ResultsEv	dScMg3DEsp_c method; PMF record in the play-phase table. Named Results: phase showing the round result.
+ov006	0x020e9b70	func_ov006_020e9b70	_ZN12dScMg3DEsp_c4PlayEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Play: round state dispatching the play phases.
+ov006	0x020e9bbc	func_ov006_020e9bbc	_ZN12dScMg3DEsp_c4WaitEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Wait: round state idling between rounds.
