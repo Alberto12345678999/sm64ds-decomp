@@ -207,9 +207,8 @@ extern char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, uns
    overlays each put a function at 0x02123804. The call is gated on actor
    types 0xa4 and 0xa5, BATAN and BATANKING, both daBtn_c in ov079, and
    ov079's function there is daBtn_c's hit reaction, which takes the body and
-   the actor that hit it -- the call's (actor, egg).
-   local extern: daBtn_c::func_ov079_02123804. This TU does not include
-   daBtn_c.h, and the definition's linker name is the mangled method. */
+   the actor that hit it -- the call's (actor, egg). */
+/* local extern: daBtn_c::func_ov079_02123804. This TU does not include daBtn_c.h. */
 extern void _ZN7daBtn_c19func_ov079_02123804EP8dActor_c(struct daBtn_c *self, dActor_c *other);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *thiz, const void *v, unsigned int n, Fix12i f, short s);
 extern int RandomIntInternal(int *seed);
