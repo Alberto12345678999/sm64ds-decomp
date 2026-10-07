@@ -199,17 +199,17 @@ s32 dScMgJump_c::InitResources()
 
 // @symbol func_ov006_020ee658
 /* The state functions below are unnamed in symbols.txt and take the object
- * as raw bytes, because dScMgJump_c.h only has placeholders from 0x5004 to
- * 0x5016. What the code shows: 0x5004 is the current state (see Behavior),
- * 0x500c accumulates 0x5010 >> 12 each tick and 0x5014 is an s16 countdown.
- * Naming those fields is what unblocks typed access here.
+ * as raw bytes. 0x5004 is the current state (see Behavior), mAccum gains
+ * mAccumStep >> 12 each tick and unk_5014 is an s16 countdown.
  *
  * This one arms the countdown; its only caller is OnYoshiTryEat. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee658(char *raw) {
-    *(short *)(raw + 0x5014) = 0x78;
-    *(int *)(raw + 0x500c) = 0;
-    *(int *)(raw + 0x5010) = 0x4000;
+    dScMgJump_c *scene = (dScMgJump_c *)raw;
+    dScMgJump_c *self = (dScMgJump_c *)raw;
+    self->unk_5014 = 0x78;
+    scene->mAccum = 0;
+    scene->mAccumStep = 0x4000;
     *(struct Pair *)(raw + 0x5004) = data_ov006_0213cb54;
 }
 }
@@ -220,12 +220,12 @@ void func_ov006_020ee658(char *raw) {
  * would leak into every function in this file if carried. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee5b8(char* raw){
+    dScMgJump_c *scene = (dScMgJump_c *)raw;
     dScMgJump_c *self = (dScMgJump_c *)raw;
     int left;
-    short *countdown = (short *)(raw + 0x5014);
-    char* base = raw + 0x5000;
+    short *countdown = &scene->unk_5014;
     *countdown = *countdown - 1;
-    left = *(short*)(base + 0x14);
+    left = scene->unk_5014;
     if (left == 0) {
         FreeGfxSlotsById(0x1d);
         if (self->mPromptBlinkCount == 0) {
@@ -252,9 +252,10 @@ void func_ov006_020ee598(char *raw) {
 // @symbol func_ov006_020ee508
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee508(char *raw){
-    int *acc = (int *)(raw + 0x500c);
-    *acc += *(int *)(raw + 0x5010) >> 12;
-    if (*(int *)(raw + 0x500c) > 0x1000) {
+    dScMgJump_c *self = (dScMgJump_c *)raw;
+    int *acc = &self->mAccum;
+    *acc += self->mAccumStep >> 12;
+    if (self->mAccum > 0x1000) {
         *acc -= 0x1000;
     }
     func_ov006_020c42bc();
@@ -273,7 +274,8 @@ void func_ov006_020ee508(char *raw){
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee4e0(char *raw)
 {
-    *(unsigned short *)(raw + 0x5014) = 0x20;
+    dScMgJump_c *self = (dScMgJump_c *)raw;
+    self->unk_5014 = 0x20;
     *(struct Pair *)(raw + 0x5004) = data_ov006_0213cb5c;
 }
 }
@@ -282,16 +284,17 @@ void func_ov006_020ee4e0(char *raw)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee44c(char *raw)
 {
-  int *acc = (int *)(raw + 0x500c);
-  char *hi = raw + 0x5000;
+    dScMgJump_c *scene = (dScMgJump_c *)raw;
+    dScMgJump_c *self = (dScMgJump_c *)raw;
+  int *acc = &scene->mAccum;
   *acc += *(int *)((raw + 0x5000) + 0x10) >> 12;
-  if (*(int *)(hi + 0xc) > 0x1000)
+  if (scene->mAccum > 0x1000)
   {
     *acc -= 0x1000;
   }
   func_ov006_020c42bc();
   func_ov006_020c712c();
-  if (ApproachLinear2(*(short *) (raw + 0x5014), 0, 1) == 0)
+  if (ApproachLinear2(self->unk_5014, 0, 1) == 0)
   {
     return;
   }
@@ -305,6 +308,7 @@ void func_ov006_020ee44c(char *raw)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee3ec(char* raw)
 {
+    dScMgJump_c *scene = (dScMgJump_c *)raw;
     dScMgJump_c *self = (dScMgJump_c *)raw;
     int ready = func_ov006_020c7300();
     if (ready) {
@@ -312,7 +316,7 @@ void func_ov006_020ee3ec(char* raw)
         if (ready) {
             func_ov004_020b0a54(0x12);
             self->mPromptEnabled = 0;
-            *(u16 *)(raw + 0x5014) = 0;
+            scene->unk_5014 = 0;
             *(struct Pair *)(raw + 0x5004) = data_ov006_0213cb74;
         }
     }
@@ -335,9 +339,11 @@ void func_ov006_020ee3bc(char *raw)
  * from above. `shared` is the ov004 scene data; its type is not recovered. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee2c4(char* raw){
+    dScMgJump_c *sc = (dScMgJump_c *)raw;
+    dScMgJump_c *scene = (dScMgJump_c *)raw;
   dScMgJump_c *self = (dScMgJump_c *)raw;
-  *(int *)(raw + 0x500c) += *(int *)(raw + 0x5010) >> 12;
-  *(int *)(raw + 0x5010) += 0x600;
+  sc->mAccum += sc->mAccumStep >> 12;
+  sc->mAccumStep += 0x600;
   func_ov006_020c712c();
   int same = (int)(data_ov006_02140434 == data_ov006_02140418);
   if(same == 0) return;
@@ -353,7 +359,7 @@ void func_ov006_020ee2c4(char* raw){
   func_ov004_020adb1c(self->mHudScore);
   func_ov004_020b0a54(0);
   self->mPromptEnabled = 0;
-  *(short*)(raw+0x5014) = 0;
+  scene->unk_5014 = 0;
   *(struct Pair*)(raw+0x5004) = data_ov006_0213cb7c;
 }
 }
@@ -382,7 +388,6 @@ s32 dScMgJump_c::Behavior()
  * sprites and the ov006 draw helpers are unnamed in symbols.txt. */
 s32 dScMgJump_c::Render()
 {
-    char *c = (char *)this;
 
     if (unk_4664 == 1) {
         int count;
@@ -442,7 +447,7 @@ s32 dScMgJump_c::Render()
         obj = &mModel.data;
         p = *(void **)((char *)obj + 4);
         func_02045e44(obj, 1, 0);
-        *(int *)((char *)p + 0x18) = *(int *)(c + 0x500c);
+        *(int *)((char *)p + 0x18) = mAccum;
 
         {
             Model *model = &mModel;
