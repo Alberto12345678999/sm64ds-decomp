@@ -6648,6 +6648,7 @@
     "src/actors/daObjBlockS_c.cpp#daObjBlockS_c_classInit": "tangosdev",
     "src/actors/daOwl_c.cpp#daOwl_c_classInit": "tangosdev",
     "src/actors/daBttBk_c.cpp#daBttBk_c_classInit": "tangosdev",
+    "src/actors/daBttBk_c.cpp#__sinit_daBttBk_c.cpp": "tangosdev",
     "src/actors/daHuwa_c.cpp#daHuwa_c_classInit": "tangosdev",
     "src/actors/daWater_Hakidasi_c.cpp#daWater_Hakidasi_c_classInit": "tangosdev",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c19func_ov064_021193b4Ev": "lunavyqo",
