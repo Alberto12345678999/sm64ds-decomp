@@ -2987,89 +2987,10 @@ src/actors/dScene_c.cpp:
     complete
     .text start:0x0202e140 end:0x0202ec9c
 
-src/func_0202ec9c.cpp:
+src/engine/fader/dWipe_c.cpp:
     complete
-    .text start:0x0202ec9c end:0x0202ecfc
-
-src/_ZN7dWipe_c10SetToStartEv.cpp:
-    complete
-    .text start:0x0202ecfc end:0x0202ed08
-
-src/_ZN7dWipe_c8SetToEndEv.cpp:
-    complete
-    .text start:0x0202ed08 end:0x0202ed14
-
-src/func_0202ed14.c:
-    complete
-    .text start:0x0202ed14 end:0x0202ed48
-
-src/func_0202ed48.c:
-    complete
-    .text start:0x0202ed48 end:0x0202ed7c
-
-src/_ZN7dWipe_c20IsBetweenStartAndEndEv.cpp:
-    complete
-    .text start:0x0202ed7c end:0x0202eddc
-
-src/_ZN7dWipe_c7IsAtEndEv.cpp:
-    complete
-    .text start:0x0202eddc end:0x0202ee38
-
-src/_ZN7dWipe_c9IsAtStartEv.cpp:
-    complete
-    .text start:0x0202ee38 end:0x0202ee94
-
-src/func_0202ee94.c:
-    complete
-    .text start:0x0202ee94 end:0x0202efa0
-
-src/func_0202efa0.c:
-    complete
-    .text start:0x0202efa0 end:0x0202f290
-
-src/func_0202f290.c:
-    complete
-    .text start:0x0202f290 end:0x0202f2c4
-
-src/func_0202f2c4.c:
-    complete
-    .text start:0x0202f2c4 end:0x0202f3a4
-
-src/func_0202f3a4.c:
-    complete
-    .text start:0x0202f3a4 end:0x0202f428
-
-src/_ZN7dWipe_c11AdvanceFadeEv.cpp:
-    complete
-    .text start:0x0202f428 end:0x0202f58c
-
-src/func_0202f58c.c:
-    complete
-    .text start:0x0202f58c end:0x0202f708
-
-src/_ZN7dWipe_c14SetForwardTimeEj.cpp:
-    complete
-    .text start:0x0202f708 end:0x0202f928
-
-src/_ZN7dWipe_c15SetBackwardTimeEj.c:
-    complete
-    .text start:0x0202f928 end:0x0202fb30
-
-src/func_0202fb30.c:
-    complete
-    .text start:0x0202fb30 end:0x0202fbc8
-
-src/_ZN7dWipe_cD0Ev.cpp:
-    complete
-    .text start:0x0202fbc8 end:0x0202fc08
-
-src/_ZN7dWipe_cD1Ev.cpp:
-    complete
-    .text start:0x0202fc08 end:0x0202fc40
-
-src/func_0202fc40.c:
-    complete
-    .text start:0x0202fc40 end:0x0202fc98
+    .text start:0x0202ec9c end:0x0202fc98
+    .data start:0x020926d0 end:0x02092718
 
 src/engine/view/dView_c.cpp:
     complete
