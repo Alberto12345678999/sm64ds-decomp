@@ -815,7 +815,7 @@ void dScMgLuigi_c::TickPictureFlash(int idx)
         *(short *)(raw + (idx << 1) + 0x506c) = 0;
 
     /* Two exits, not one if/else: folding them changes the code. */
-    if ((((unsigned short)*(unsigned short *)(raw + (idx << 1) + 0x506c) >> 2) & 1) != 0) {
+    if ((((unsigned short)mBlink[idx] >> 2) & 1) != 0) {
         char *p = raw + 0x53dd;
         p[idx] = 0;
         q = (unsigned char *)(p + idx);
@@ -827,7 +827,7 @@ void dScMgLuigi_c::TickPictureFlash(int idx)
         q = (unsigned char *)(p + idx);
     }
 after_flag:
-    if (*(unsigned short *)(raw + (idx << 1) + 0x506c) != 0)
+    if (mBlink[idx] != 0)
         return;
     *(unsigned char *)(raw + idx + 0x51fd) = 0;
     *q = 1;

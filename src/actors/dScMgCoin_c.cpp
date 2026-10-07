@@ -214,17 +214,16 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
 void dScMgCoin_c::func_ov006_020dbe9c()
 {
     char *c = (char *)this;
-    char *s = c + 0x5000;
 
-    if (*(u8 *)(s + 0x1bd) == 0)
+    if (mBouncer.shown == 0)
         return;
     {
-        u16 idx_h = *(u16 *)(c + 0x5100 + 0xb8);
-        s32 xr = *(s32 *)(s + 0x1a8);
-        s32 yr = *(s32 *)(s + 0x1ac);
+        u16 idx_h = mBouncer.spin;
+        s32 xr = mBouncer.x;
+        s32 yr = mBouncer.y;
         int i = (idx_h >> 4) * 2;
         int vec[4];
-        u8 idx_l = *(u8 *)(s + 0x1be);
+        u8 idx_l = mBouncer.sprite;
 
         vec[0] = FX_MUL(data_02082214[i + 1], 0x1000);
         vec[1] = FX_MUL(data_02082214[i], 0x1000);
@@ -821,7 +820,7 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
     int stars;
     int need;
 
-    if (*(int *)(self + 0x5000 + 0x1c8) != 2)
+    if (unk_51c8 != 2)
         return;
 
     i = data_020a0e40;
@@ -862,8 +861,8 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
 
     this->func_ov006_020dcb1c(idx);
     *(u8 *)(self + idx * 0x18 + 0x4000 + 0xad2) = 0;
-    *(int *)(self + 0x5000 + 0x1c8) = 3;
-    *(int *)(self + 0x5000 + 0x1cc) = 0x40;
+    unk_51c8 = 3;
+    mCountdown = 0x40;
 
     ang = (*p0 >> 12) - 0x80;
     ang >>= 1;
@@ -876,11 +875,11 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
     stars = (data_ov004_020beb68 != 0) ? *(int *)((char *)data_ov004_020beb68 + 0xa8) : 0;
-    need = *(int *)(self + 0x5000 + 0x1d4);
+    need = unk_51d4;
     if (stars > need)
-        *(u8 *)(self + 0x5000 + 0x1db) = 1;
+        unk_51db = 1;
     else
-        *(u8 *)(self + 0x5000 + 0x1db) = 0;
+        unk_51db = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dd2ccEv
@@ -950,13 +949,13 @@ void dScMgCoin_c::func_ov006_020dd4b0(int id)
         if (*(unsigned char *)(p + 0x4677) != 0 &&
             *(unsigned char *)(p + 0x4675) == 4 &&
             id == *(unsigned char *)(p + 0x467b)) {
-            int v = *(int *)(base + id * 0x18 + 0x4ac4);
+            int v = mCoins[id].y;
             *(int *)(base + i * 0x1c + 0x4664) = v - 0x20000;
             *(unsigned char *)(base + i * 0x1c + 0x4676) = 1;
             *(unsigned char *)(base + i * 0x1c + 0x4675) = 5;
             *(int *)(base + i * 0x1c + 0x466c) = -0x4800;
             *(short *)(base + i * 0x1c + 0x4670) = 0;
-            int w = (*(int *)(base + id * 0x18 + 0x4ac0) >> 12) - 0x80;
+            int w = (mCoins[id].x >> 12) - 0x80;
             int r = w >> 1;
             if (r >= 0x3c) r = 0x3c;
             if (r <= -0x3c) r = -0x3c;
@@ -1050,7 +1049,7 @@ void dScMgCoin_c::func_ov006_020dd658(int i)
         *(u8 *)(self + 0x4675 + n) = 4;
         *(u8 *)(self + 0x4676 + n) = 0;
         *(u8 *)(self + 0x4677 + n) = 0;
-        (mScore.total)++;
+        mScore.total++;
 
         {
             int v1 = *(s32 *)(self + 0x4664 + n);
@@ -1079,7 +1078,6 @@ void dScMgCoin_c::func_ov006_020dd7c0(int index)
     int new_var;
     int *pa = (int *)((thiz + 0x466c) + off);
     int *pb = (int *)((thiz + 0x4664) + off);
-    char *f = (thiz + off) + 0x4000;
     *pb = (*pb) + (*((int *)((thiz + 0x466c) + off)));
     *((int *)((thiz + 0x466c) + off)) = (*pa) + 0x400;
     new_var = 0x674;
@@ -1287,8 +1285,8 @@ void dScMgCoin_c::func_ov006_020ddd6c()
     }
     if (n != 0)
         return;
-    *(int *)(thiz + 0x5000 + 0x1c8) = 2;
-    *(unsigned char *)(thiz + 0x4000 + 0xd13) = 1;
+    unk_51c8 = 2;
+    mScore.running = 1;
     Sound::PlayBank2_2D(0x151);
 }
 
@@ -1427,7 +1425,7 @@ void dScMgCoin_c::func_ov006_020ddf9c()
 void dScMgCoin_c::func_ov006_020de0e0()
 {
     char *self = (char *)this;
-    if (*(int *)(self + 0x5000 + 0x1cc) == 0) return;
+    if (mCountdown == 0) return;
     *(int *)(((int)self + 0x51cc)) -= 1;
     unsigned int idx = data_020a0e40;
     int flag = 0;
@@ -1440,8 +1438,7 @@ void dScMgCoin_c::func_ov006_020de0e0()
     } else {
         mCountdown = 0x80;
     }
-    if (mCountdown > 0) return;
-    mCountdown = 0;
+    if (mCountdown > 0) return; mCountdown = 0;
     if (*(unsigned char *)(self + 0x51df) != 0) {
         FreeGfxSlotsById(6);
         func_ov004_020ae20c();

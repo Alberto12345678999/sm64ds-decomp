@@ -615,7 +615,7 @@ void dScMgCurling_c::func_ov006_020e1680()
     u8 *delay;
 
     for (j = 0; j < 5; j++) {
-        if (*(u8 *)(raw + j * 16 + 0x4748) == 0) {
+        if (mPopup[j].live == 0) {
             slot = j;
             break;
         }
@@ -635,8 +635,8 @@ void dScMgCurling_c::func_ov006_020e1680()
             int az = dz >> 12;
             dist = cstd::sqrt((u64)(s64)(ax * ax + az * az));
         }
-        *(u8 *)(raw + slot * 16 + 0x4748) = 1;
-        *(int *)(raw + slot * 16 + 0x473c) = *(int *)(stone + 0x4660);
+        mPopup[slot].live = 1;
+        mPopup[slot].x = *(int *)(stone + 0x4660);
         {
         int *popupY = M(raw + slot * 16 + 0x4740);
         *popupY = *(int *)(stone + 0x4664) + 0x1000;

@@ -651,7 +651,6 @@ s32 dScMgRoulette_c::CleanupResources()
 /* Runs the end of the round, phases 5 to 9. Returns 1 when it is done. */
 int dScMgRoulette_c::OnTurnIntoEgg(int /* mode */)
 {
-    char *raw = (char *)this;
 
     switch (mPhase) {
     case 5:
@@ -692,7 +691,6 @@ int dScMgRoulette_c::OnTurnIntoEgg(int /* mode */)
    with -1. */
 void dScMgRoulette_c::OnYoshiTryEat(int /* arg */)
 {
-    char *raw = (char *)this;
 
     int i;
     int *racer;

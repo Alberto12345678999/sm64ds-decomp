@@ -1956,7 +1956,6 @@ tail:
 // @symbol _ZN15dScMgHanachan_c8BehaviorEv
 s32 dScMgHanachan_c::Behavior()
 {
-    char *raw = (char *)this;
 
     data_ov006_02141fcc = data_ov006_02141fcc + 0x800;
     (((CB *)this)->*(*(PMF *)&mPhaseFn))();

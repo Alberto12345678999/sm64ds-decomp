@@ -602,8 +602,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX
-            - (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX - (int)(((long long)cosine * mHalfX + 0x800) >> 12);
     }
     {
         int slot = mIds[mSwap0];
@@ -626,8 +625,7 @@ void dScMgCup_c::StateShuffle()
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
         oldX = mCup[slot].x;
         oldY = mCup[slot].y;
-        mCup[slot].x = mMidX
-            + (int)(((long long)cosine * mHalfX + 0x800) >> 12);
+        mCup[slot].x = mMidX + (int)(((long long)cosine * mHalfX + 0x800) >> 12);
     }
     {
         int slot = mIds[mSwap1];
@@ -646,8 +644,7 @@ void dScMgCup_c::StateShuffle()
     }
 
     {
-        char *state = raw + 0x5400;
-        u16 angle = *(u16*)(state + 0x5c);
+        u16 angle = mShuffleAngle;
         if (angle == 0x8000) {
             int tb = mIds[mSwap1];
             int ta = mIds[mSwap0];
@@ -663,7 +660,7 @@ void dScMgCup_c::StateShuffle()
                 mState = 1;
             }
         } else if (mFakeOut != 0) {
-            s16 speed = *(s16*)(state + 0x5e);
+            s16 speed = mShuffleSpeed;
             if ((speed >= 0 && angle >= 0x5555u) || (speed < 0 && angle <= 0xaaabu)) {
                 /* The stores respell the full offset from raw (a cached base
                    also relinks to the wrong data symbol), and the angle bump
@@ -751,9 +748,9 @@ void dScMgCup_c::StatePrepareShuffle()
     int *countdown = (int *)(raw + 0x541c);
     *countdown = *countdown - 1;
     /* Same word as mTimer. The 0x5000 split is a second load; mTimer > 0 misses. */
-    if (*(int *)(raw + 0x5000 + 0x41c) > 0) return;
+    if (mTimer > 0) return;
     func_ov006_020df024(raw);
-    if (*(unsigned char *)(raw + 0x5000 + 0x46b) != 0) {
+    if (mSparkleShuffles != 0) {
         unsigned char *pending = (unsigned char *)(raw + 0x546b);
         *pending = *pending - 1;
     }
@@ -920,7 +917,7 @@ s32 dScMgCup_c::Render()
         func_ov006_020debb4((char *)mFx, (char)cup);
         func_ov006_020deed8((int)raw,
             (void *)data_ov006_0213c0d8[mAnim[cup]][mFrame[k]].list,
-            *(int*)(raw + cup * 8 + 0x53e8),
+            mCup[cup].x,
             ((struct P8*)raw + cup)[0xa7d].b,
             mOnes[cup],
             unk_5462[cup]);

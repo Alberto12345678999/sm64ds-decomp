@@ -2471,10 +2471,8 @@ void dScMgBomroom_c::OnYoshiTryEat(int /* arg */)
     unsigned char *c = (unsigned char *)this;
 
     func_ov006_020d907c(c);
-    unsigned char *a = c + 0x6200;
-    unsigned char *b = c + 0x6000;
-    *(unsigned short *)(a + 0xee) = 0;
-    *(int *)(b + 0x2d0) = 0;
+    unk_62ee = 0;
+    unk_62d0 = 0;
     G2x::SetBlendAlpha((volatile u16 *)0x4000050, 1, 0x1c, 4, 3);
     SetBg0Offset(0, 0);
 }
@@ -2503,13 +2501,13 @@ extern "C" PMF_91b0 data_ov006_021416e0[];
 s32 dScMgBomroom_c::Behavior()
 {
     char *c = (char *)this;
-    if (*(unsigned short *)(c + 0x6200 + 0xf0) != 0) {
+    if (unk_62f0 != 0) {
         unsigned short *t = (unsigned short *)(((int)c + 0x62f0));
         *t = *t - 1;
         if (*(short *)(c + 0x6200 + 0xf0) <= 0)
             *(short *)(c + 0x6200 + 0xf0) = 0;
     } else {
-        (((C_91b0 *)this)->*data_ov006_021416e0[*(int *)(c + 0x6000 + 0x2d0)])();
+        (((C_91b0 *)this)->*data_ov006_021416e0[unk_62d0])();
         func_ov006_020d5d08(c);
         func_ov006_020d5b10(c);
     }
@@ -2600,8 +2598,8 @@ s32 dScMgBomroom_c::InitResources()
     func_ov006_020d6630(c);
     func_ov006_020d62e0(c);
     func_ov006_020d604c(c);
-    *(int *)(c + 0x6000 + 0x2d0) = 1;
-    *(u16 *)(c + 0x6200 + 0xee) = 0;
+    unk_62d0 = 1;
+    unk_62ee = 0;
     func_ov004_020b04d0(0x20);
     func_ov004_020adb1c(0);
     return 1;

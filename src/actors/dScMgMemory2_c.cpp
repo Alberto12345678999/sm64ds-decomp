@@ -692,9 +692,8 @@ zero:
 void dScMgMemory2_c::RoundReveal()
 {
   char *raw = (char *)this;
-  char *q = raw + 0x5300;
   unsigned short *timer;
-  if (*(unsigned short *)(q + 0xe2) != 0)
+  if (mCardTimer != 0)
   {
     timer = &mCardTimer;
     *timer = *timer - 1;
@@ -744,8 +743,8 @@ void *dScMgMemory2_c::RoundWaitDeal(){
   }
   {
     char* base = raw + 0x5000;
-    *(int*)(base + 0x3d8) = 0;
-    *(int*)(base + 0x3d4) = 2;
+    mSubstate = 0;
+    mState = 2;
     return base;
   }
 }

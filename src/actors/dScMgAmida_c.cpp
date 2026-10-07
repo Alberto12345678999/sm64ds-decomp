@@ -848,7 +848,7 @@ int dScMgAmida_c::StepWalker(int b, int dir)
         if (mv != cur)
             return 0;
 
-        *(int *)(p + b * 4 + 0x4684) = dir;
+        mWalkerDir[b] = dir;
         *(int *)(p + b * 8 + 0x4660) = col;
         *(int *)(p + b * 8 + 0x4664) = row - 0xc0;
         return 1;
@@ -858,7 +858,7 @@ int dScMgAmida_c::StepWalker(int b, int dir)
         if (*(u8 *)(mInkGrid + col * 0x158 + row) < 2)
             return 0;
 
-        *(int *)(p + b * 4 + 0x4684) = dir;
+        mWalkerDir[b] = dir;
         *pcur = *(u8 *)(mInkGrid + col * 0x158 + row);
         *(int *)(p + b * 8 + 0x4660) = col;
         *(int *)(p + b * 8 + 0x4664) = row - 0xc0;
@@ -935,7 +935,7 @@ void dScMgAmida_c::StepWalkers()
         s32 v28 = 0;
 
         do {
-            if (*(s32 *)(p + idx * 4 + 0x46b8) > 0) {
+            if (mWalkerDelay[idx] > 0) {
                 continue;
             }
 

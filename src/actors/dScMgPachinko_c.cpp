@@ -2651,7 +2651,7 @@ s32 dScMgPachinko_c::Behavior()
         }
         if (unk_5c2a != 0) {
             func_ov006_020fb7e0(c);
-            (unk_5c2a)--;
+            unk_5c2a--;
         } else {
             func_ov006_020fdd40(this);
             func_ov006_020fe2bc(c);
@@ -2668,7 +2668,7 @@ s32 dScMgPachinko_c::Behavior()
         break;
     case 2:
         if (unk_5c18 != 0) {
-            (unk_5c18)--;
+            unk_5c18--;
             if (*(s16 *)(c + 0x5c18) <= 0) {
                 func_ov004_020b0a54(0x10);
                 mPromptEnabled = 0;

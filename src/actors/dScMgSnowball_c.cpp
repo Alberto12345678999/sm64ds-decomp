@@ -385,7 +385,7 @@ int dScMgSnowball_c::func_ov006_02125bbc(int *point)
             if ((int)(((s64)dx * dx + 0x800) >> 12) + (int)(((s64)dy * dy + 0x800) >> 12) / 4 > 0x100000)
                 continue;
             *(u8 *)(scene + i + 0xb2d8) = 1;
-            if (*(int *)(scene + i * 4 + 0xb0d8) == 1) {
+            if (mArray1Kind[i] == 1) {
                 mSoundPending = 1;
                 unk_b9e8 = *(int *)(prop + 0xacd8);
                 *(int *)(scene + 0xb9ec) = *(int *)(prop + 0xacdc);
@@ -1424,7 +1424,7 @@ s32 dScMgSnowball_c::Render()
             int t6 = self->mScrollY;
             int t5 = *(int*)((long long)(int)(c + i1 * 8 + 0xacdc));
             if (t5 >= t6 - 0x20000 && t5 < t6 + 0x1a0000 + (func_ov004_020b04c0() << 0xc)) {
-                if (*(int*)(c + i1 * 4 + 0xb0d8) == 1) {
+                if (mArray1Kind[i1] == 1) {
                     int cnt = self->mAnimCounter;
                     int idx = (cnt / 4) & 7;
                     if (*(u8*)(p + 0xb2d8) == 1) idx += 8;
@@ -1445,7 +1445,7 @@ s32 dScMgSnowball_c::Render()
             int t7 = self->mScrollY;
             int t6 = *(int*)((long long)(int)(c + i2 * 8 + 0xb5dc));
             if (t6 >= t7 - 0x40000 && t6 < t7 + 0x1c0000 + (func_ov004_020b04c0() << 0xc)) {
-                switch (*(int*)(c + i2 * 4 + 0xb3d8)) {
+                switch (mArray2Kind[i2]) {
                 case 0:
                 case 1:
                 case 2: {
