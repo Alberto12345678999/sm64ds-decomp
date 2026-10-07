@@ -3522,6 +3522,17 @@
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD0Ev",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD1Ev",
     "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit",
+    "src/actors/daObjTatefuda_c.cpp#RebuildModelMatrix",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c10InitThrownEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11InitCarriedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11InitDroppedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11UpdateStateEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c18UpdateShadowMatrixEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c4IdleEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c7CarriedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitIdleEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitTalkEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8SetStateEi",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c10SetToStartEv",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c20IsBetweenStartAndEndEv",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c7IsAtEndEv",
@@ -3531,5 +3542,5 @@
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD0Ev",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD1Ev"
   ],
-  "count": 3522
+  "count": 3533
 }
