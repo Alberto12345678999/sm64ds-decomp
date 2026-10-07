@@ -2245,6 +2245,7 @@
     "src/game/actors/d_a_obj_c1_trap.cpp#_ZN14daObjC1_Trap_cD1Ev": "github-actions[bot]",
     "src/game/actors/d_a_obj_c1_trap.cpp#func_ov010_02111984": "github-actions[bot]",
     "src/game/actors/d_a_obj_c1_trap.cpp#__sinit_d_a_obj_c1_trap.cpp": "tangosdev",
+    "src/game/actors/d_a_obj_c1_trap.cpp#daObjC1_Trap_c_classInit": "andrewboudreau",
     "src/game/actors/d_a_obj_cannon_shutter.cpp#_ZN20daObjCannonShutter_c13InitResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_cannon_shutter.cpp#_ZN20daObjCannonShutter_c16CleanupResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_cannon_shutter.cpp#_ZN20daObjCannonShutter_c6RenderEv": "tangosdev",
