@@ -7409,6 +7409,7 @@
     "src/actors/daBook_c.cpp#daBookGen_c_classInit": "tangosdev",
     "src/actors/daBook_c.cpp#daBook_c_classInit_KILLER_BOOK": "tangosdev",
     "src/actors/daBook_c.cpp#daBook_c_classInit_SHOOT_BOOK": "tangosdev",
+    "src/actors/daBook_c.cpp#__sinit_daBook_c.cpp": "tangosdev",
     "src/actors/dScMgSnowball_c.cpp#func_ov006_021295ac": "tangosdev",
     "src/actors/dScMgSnowball_c.cpp#func_ov006_0212968c": "tangosdev",
     "src/d_s_mg_flower.cpp#dScMgFlower_c_classInit": "tangosdev",
