@@ -1004,13 +1004,6 @@
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c6RenderEv",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_cD0Ev",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_cD1Ev",
-    "src/_ZN7dWipe_c10SetToStartEv.cpp",
-    "src/_ZN7dWipe_c20IsBetweenStartAndEndEv.cpp",
-    "src/_ZN7dWipe_c7IsAtEndEv.cpp",
-    "src/_ZN7dWipe_c8SetToEndEv.cpp",
-    "src/_ZN7dWipe_c9IsAtStartEv.cpp",
-    "src/_ZN7dWipe_cD0Ev.cpp",
-    "src/_ZN7dWipe_cD1Ev.cpp",
     "src/actors/daBbl_c.cpp#_ZN7daBbl_c13OnYoshiTryEatEv",
     "src/actors/daBbl_c.cpp#_ZN7daBbl_c16CleanupResourcesEv",
     "src/actors/daBbl_c.cpp#_ZN7daBbl_c16OnPendingDestroyEv",
@@ -3539,7 +3532,15 @@
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c7CarriedEv",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitIdleEv",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitTalkEv",
-    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8SetStateEi"
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8SetStateEi",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c10SetToStartEv",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c20IsBetweenStartAndEndEv",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c7IsAtEndEv",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c8SetToEndEv",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c9IsAtStartEv",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cC1Ev",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD0Ev",
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD1Ev"
   ],
-  "count": 3532
+  "count": 3533
 }
