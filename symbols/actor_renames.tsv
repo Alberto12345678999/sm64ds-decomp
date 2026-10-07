@@ -2519,6 +2519,40 @@ ov074	0x02122e94	ExplosionGoomba_SpawnInfo	g_profile_KURIKING_VANISH	reconstruct
 ov074	0x02122eb8	data_ov074_02122eb8	_ZTV12daKuriKing_c	vtable alloc=0x610
 ov075	0x02113ee0	func_ov075_02113ee0	_ZN9dEntObj_cD1Ev	vtable slot 16
 ov075	0x02113f54	func_ov075_02113f54	_ZN9dEntObj_cD0Ev	vtable slot 17
+ov075	0x02114010	func_ov075_02114010	_ZN15UnknownVsPlayer19func_ov075_02114010Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021140e4	func_ov075_021140e4	_ZN15UnknownVsPlayer19func_ov075_021140e4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021141b8	func_ov075_021141b8	_ZN15UnknownVsPlayer19func_ov075_021141b8Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114218	func_ov075_02114218	_ZN15UnknownVsPlayer19func_ov075_02114218Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x0211427c	func_ov075_0211427c	_ZN15UnknownVsPlayer19func_ov075_0211427cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021142fc	func_ov075_021142fc	_ZN15UnknownVsPlayer19func_ov075_021142fcEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114300	func_ov075_02114300	_ZN15UnknownVsPlayer19func_ov075_02114300Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114390	func_ov075_02114390	_ZN15UnknownVsPlayer19func_ov075_02114390Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021143e4	func_ov075_021143e4	_ZN15UnknownVsPlayer19func_ov075_021143e4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114560	func_ov075_02114560	_ZN15UnknownVsPlayer19func_ov075_02114560Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x0211473c	func_ov075_0211473c	_ZN15UnknownVsPlayer19func_ov075_0211473cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x0211478c	func_ov075_0211478c	_ZN15UnknownVsPlayer19func_ov075_0211478cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021147d4	func_ov075_021147d4	_ZN15UnknownVsPlayer19func_ov075_021147d4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114890	func_ov075_02114890	_ZN15UnknownVsPlayer19func_ov075_02114890Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114894	func_ov075_02114894	_ZN15UnknownVsPlayer19func_ov075_02114894Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021148f0	func_ov075_021148f0	_ZN15UnknownVsPlayer19func_ov075_021148f0Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114904	func_ov075_02114904	_ZN15UnknownVsPlayer19func_ov075_02114904Ei	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114988	func_ov075_02114988	_ZN15UnknownVsPlayer19func_ov075_02114988Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x021149d0	func_ov075_021149d0	_ZN15UnknownVsPlayer19func_ov075_021149d0Ei	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114a58	func_ov075_02114a58	_ZN15UnknownVsPlayer19func_ov075_02114a58Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114a6c	func_ov075_02114a6c	_ZN15UnknownVsPlayer19func_ov075_02114a6cEv	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114ac4	func_ov075_02114ac4	_ZN15UnknownVsPlayer19func_ov075_02114ac4EP7Vector3S1_	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114b60	func_ov075_02114b60	_ZN15UnknownVsPlayer19func_ov075_02114b60Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114be4	func_ov075_02114be4	_ZN15UnknownVsPlayer19func_ov075_02114be4Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114cd8	func_ov075_02114cd8	_ZN15UnknownVsPlayer19func_ov075_02114cd8Ev	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114ddc	func_ov075_02114ddc	_ZN15UnknownVsPlayer19func_ov075_02114ddcEhhi	methodized UnknownVsPlayer helper; PMF state-table member; first param was the figure
+ov075	0x02114fa8	func_ov075_02114fa8	_ZN9dEntObj_c19func_ov075_02114fa8Ev	methodized dEntObj_c helper; first param was the actor
+ov075	0x0211505c	func_ov075_0211505c	_ZN9dEntObj_c19func_ov075_0211505cEv	methodized dEntObj_c helper; first param was the actor
+ov075	0x02115098	func_ov075_02115098	_ZN9dEntObj_c19func_ov075_02115098Ei	methodized dEntObj_c helper; first param was the actor
+ov075	0x02115134	func_ov075_02115134	_ZN9dEntObj_c19func_ov075_02115134Ev	methodized dEntObj_c helper; first param was the actor
+ov075	0x021151b4	func_ov075_021151b4	_ZN9dEntObj_c19func_ov075_021151b4Ei	methodized dEntObj_c helper; first param was the actor
+ov075	0x0211524c	func_ov075_0211524c	_ZN9dEntObj_c19func_ov075_0211524cEi	methodized dEntObj_c helper; first param was the actor
+ov075	0x02115290	func_ov075_02115290	_ZN9dEntObj_c19func_ov075_02115290Ei	methodized dEntObj_c helper; first param was the actor
+ov075	0x021152d4	func_ov075_021152d4	_ZN9dEntObj_c19func_ov075_021152d4Ev	methodized dEntObj_c helper; first param was the actor
 ov075	0x02115388	func_ov075_02115388	_ZN9dEntObj_c16CleanupResourcesEv	vtable slot 3
 ov075	0x021154cc	func_ov075_021154cc	_ZN9dEntObj_c6RenderEv	vtable slot 9
 ov075	0x0211555c	func_ov075_0211555c	_ZN9dEntObj_c8BehaviorEv	vtable slot 6
