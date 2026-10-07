@@ -5259,6 +5259,11 @@
         "param:#3 signed char"
       ]
     },
+    "_ZN10dFdColor_cD1Ev": {
+      "include/decl_FaderColor.h": [
+        "return:void"
+      ]
+    },
     "_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt": {
       "include/decl_ModelAnim2.h": [
         "param:#2 unsigned int"
@@ -6409,6 +6414,21 @@
     "_ZN14dBgW_KcMbgSclYD1Ev": {
       "include/decl_dBgW_KcMbgSclY.h": [
         "return:void"
+      ]
+    },
+    "_ZN15dFdBrightness_c15SetBackwardTimeEj": {
+      "src/_ZN7dWipe_c15SetBackwardTimeEj.c": [
+        "arity:3",
+        "mangled:3 parameter(s)"
+      ],
+      "src/engine/fader/dWipe_c.cpp": [
+        "arity:3",
+        "mangled:3 parameter(s)"
+      ]
+    },
+    "_ZN15dFdBrightness_c8SetToEndEv": {
+      "include/decl_FaderBrightness.h": [
+        "arity:0"
       ]
     },
     "_ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File": {
@@ -8333,6 +8353,11 @@
     "_ZN5Event8ClearBitEj": {
       "src/actors/daStar_c.cpp": [
         "return:void"
+      ]
+    },
+    "_ZN8dFader_c13AdvanceInterpEv": {
+      "include/decl_Fader.h": [
+        "arity:0"
       ]
     },
     "_ZN5Model13LoadTexAndPalER8BMD_File": {
@@ -12046,12 +12071,12 @@
         "return:void *"
       ]
     },
-    "_ZN9FaderWipe14LoadAndSetFileEt": {
+    "_ZN9dFdWipe_c14LoadAndSetFileEt": {
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ]
     },
-    "_ZN9FaderWipeD1Ev": {
+    "_ZN9dFdWipe_cD1Ev": {
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -15159,7 +15184,7 @@
         "return:UnkVis *"
       ],
       "src/actors/dScBoot_c.cpp": [
-        "return:FaderBrightness *"
+        "return:dFdBrightness_c *"
       ],
       "src/actors/daDemo_c.cpp": [
         "return:void *"
@@ -34745,40 +34770,6 @@
       ],
       "src/actors/daObjFl_Seesaw_c.cpp": [
         "return:SharedFilePtr"
-      ]
-    },
-    "_ZN10dFdColor_cD1Ev": {
-      "include/decl_FaderColor.h": [
-        "return:void"
-      ]
-    },
-    "_ZN15dFdBrightness_c15SetBackwardTimeEj": {
-      "src/engine/fader/dWipe_c.cpp": [
-        "arity:3",
-        "mangled:3 parameter(s)"
-      ]
-    },
-    "_ZN15dFdBrightness_c8SetToEndEv": {
-      "include/decl_FaderBrightness.h": [
-        "arity:0"
-      ]
-    },
-    "_ZN8dFader_c13AdvanceInterpEv": {
-      "include/decl_Fader.h": [
-        "arity:0"
-      ]
-    },
-    "_ZN9dFdWipe_c14LoadAndSetFileEt": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "param:#1 int"
-      ]
-    },
-    "_ZN9dFdWipe_cD1Ev": {
-      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
-        "return:void"
       ]
     }
   },

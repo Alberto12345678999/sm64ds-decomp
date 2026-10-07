@@ -5,19 +5,13 @@
 
 /* The screen-fade interpolator base at 0x020175e8..0x0201786c.
  *
- * ROM-derived claims and repository compatibility spellings are distinguished
- * explicitly below:
- *
  * VTABLE NAMES. The ROM proves the three address points and their contents:
  * data_0208eafc (dFader_c), data_0208eacc (dFdBrightness_c) and data_0208eb2c
- * (dFdColor_c). Its RTTI records call the original classes dFader_c,
- * dFdBrightness_c and dFdColor_c. The repository also gives those addresses
- * compiler-facing compatibility aliases `_ZTV8dFader_c`,
- * `_ZTV15dFdBrightness_c` and `_ZTV10dFdColor_c`, because those are the names
- * mwcc emits for the currently matched class-symbol view. The aliases make
- * generated relocations exact; they are not evidence that EAD used the
- * compatibility class names. Layout and wiring claims below use the ROM-proven
- * addresses.
+ * (dFdColor_c). Its RTTI records (_ZTS8dFader_c, _ZTS15dFdBrightness_c,
+ * _ZTS10dFdColor_c) name the classes the same way, so `_ZTV8dFader_c`,
+ * `_ZTV15dFdBrightness_c` and `_ZTV10dFdColor_c` are the names mwcc emits for
+ * those vtables directly, with no separate spelling to reconcile. Layout and
+ * wiring claims below use the ROM-proven addresses.
  *
  * LAYOUT. dFader_c is polymorphic -- the ROM carries its vtable at data_0208eafc,
  * and dFader_c::~dFader_c stores it into [this+0x0]. So the vptr is at 0x0 and the first

@@ -39,7 +39,7 @@
 #pragma opt_common_subs off
 
 extern "C" {
-extern FaderBrightness *data_0209f5bc;
+extern dFdBrightness_c *data_0209f5bc;
 extern u8 data_0209f1e8;
 extern u8 data_020a0e40;
 extern u16 data_020a0e58[];

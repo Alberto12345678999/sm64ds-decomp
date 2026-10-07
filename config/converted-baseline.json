@@ -3485,7 +3485,6 @@
     "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD2Ev.cpp",
-    "src/actors/daObjFl_Seesaw_c.cpp#daObjFl_Seesaw_c_classInit",
     "src/actors/dScene_c.cpp#_ZN8dScene_c9SetFadersEP15dFdBrightness_c",
     "src/engine/fader/dFader_c.cpp#_ZN10dFdColor_cD0Ev",
     "src/engine/fader/dFader_c.cpp#_ZN10dFdColor_cD1Ev",
@@ -3520,5 +3519,5 @@
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD0Ev",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD1Ev"
   ],
-  "count": 3511
+  "count": 3510
 }

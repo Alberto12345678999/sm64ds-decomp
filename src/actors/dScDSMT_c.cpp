@@ -21,8 +21,8 @@
  * reorder.
  *
  * classInit stays a literal construction bridge: the fader member's
- * constructor is _ZN10dFdDummy_cC1Ev, so `new dScDSMT_c` would not spell
- * the same call.
+ * constructor is the out-of-line arm9 _ZN10dFdDummy_cC1Ev, so
+ * `new dScDSMT_c` would not spell the same call.
  *
  * Leftovers:
  * - The four func_ov007_* helpers, the dispatcher and the wrappers keep
@@ -99,8 +99,7 @@ void SetSoundMode(int mode);
 void TurnBacklightOn(void);
 void TurnBacklightOff(void);
 void *_ZN7fBase_cC2Ev(void *p);
-struct dFdDummy_c;
-extern struct dFdDummy_c *_ZN10dFdDummy_cC1Ev(struct dFdDummy_c *p);
+struct dFdDummy_c *_ZN10dFdDummy_cC1Ev(struct dFdDummy_c *p);
 }
 
 /* The two GX entry points this scene uses have no header of their own.
@@ -120,7 +119,7 @@ void DisableAllBanks();
  * trips objisolate's defined-then-externalised survey), ORs the two spawn-flag
  * bits at +0x13, gives the graphCallback_c sub-object at +0x50 its
  * base-then-derived vptr pair, and finishes the dFdDummy_c member at +0x54 via
- * _ZN10dFdDummy_cC1Ev. */
+ * the arm9 constructor _ZN10dFdDummy_cC1Ev. */
 /* -------------------------------------------------------------------------- */
 // @symbol dScDSMT_c_classInit
 extern "C" int *dScDSMT_c_classInit(void)

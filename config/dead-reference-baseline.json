@@ -283,7 +283,7 @@
   },
   {
    "file": "notes/archive/plan-scalar-markers.md",
-   "ref": "src/_ZN9dFdWipe_cC1Ev.c"
+   "ref": "src/_ZN9FaderWipeC1Ev.c"
   },
   {
    "file": "notes/ask-the-compiler.md",
@@ -560,10 +560,6 @@
   {
    "file": "notes/runbook-type-reconstruction.md",
    "ref": "src/_ZN5Scene19BeforeInitResourcesEv.c"
-  },
-  {
-   "file": "notes/runbook-type-reconstruction.md",
-   "ref": "src/engine/fader/_ZN8dFader_c13AdvanceInterpEv.cpp"
   },
   {
    "file": "notes/runbook-type-reconstruction.md",

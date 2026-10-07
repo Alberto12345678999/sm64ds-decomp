@@ -338,7 +338,7 @@ per-scanline capture), instead of a flat blend register (`dFdColor_c`'s own path
 used when `type == 1`) or a 3D model (`dFdWipe_c`'s path — a different, unrelated class).
 
 **Derivation.** The ROM's `__si_class_type_info` for `dWipe_c` names its single base
-`dFdColor_c` (== `dFdColor_c`), confirmed independently by `dWipe_c::AdvanceFade`
+`dFdColor_c`, confirmed independently by `dWipe_c::AdvanceFade`
 (0x0202f428), which forwards to `_ZN10dFdColor_c11AdvanceFadeEv` when `type == 1`.
 
 **Construction.** `dWipe_c` is not spawned; it is a single global static object,

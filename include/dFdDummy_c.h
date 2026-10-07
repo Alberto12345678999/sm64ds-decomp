@@ -5,7 +5,7 @@
 /* A no-op fade variant: overrides five of dFdColor_c's ten slots with trivial
  * or pass-through bodies and adds no fields of its own -- "dummy" fits.
  *
- * BASE. dFdColor_c (== dFdColor_c), confirmed by the RTTI edge (dFdDummy_c
+ * BASE. dFdColor_c, confirmed by the RTTI edge (dFdDummy_c
  * arm9:0x0208ea0c -> dFdColor_c arm9:0x0208ea00) and independently by the
  * vtable: data_0208ea6c (10 slots, matching dFdColor_c's own 10) overrides
  * exactly slots 0, 1, 2, 3, 4 against data_0208eb2c (dFdColor_c's table);
