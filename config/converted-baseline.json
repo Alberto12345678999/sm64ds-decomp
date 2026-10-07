@@ -19,7 +19,7 @@
     "src/ApproachAngle.c",
     "src/AutoloadCallback.c",
     "src/BitUnPack.c",
-    "src/actors/daKpa_c.cpp#Bowser_IsAnimAtLastFrame",
+    "src/actors/daKpa_c.cpp#_ZN7daKpa_c24Bowser_IsAnimAtLastFrameEv",
     "src/ChangeArea.c",
     "src/ClearSpikeBomb.c",
     "src/CollectStar.c",
