@@ -3540,7 +3540,29 @@
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_c9IsAtStartEv",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cC1Ev",
     "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD0Ev",
-    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD1Ev"
+    "src/engine/fader/dWipe_c.cpp#_ZN7dWipe_cD1Ev",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c11ClearStrokeEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c11InitWalkersEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c11RenderBoardEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c12ShuffleGoalsEi",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c14CheckEdgeBoostEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c14RenderBoardAltEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c16CheckHurryButtonEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c21AfterCleanupResourcesEj",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c8BehaviorEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c10RenderRowsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c11RenderCardsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c11RenderSlotsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c11UpdateSlotsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c4PlayEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c7ResolveEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c8RowDecayEi",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c9SlotSetupEi",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN15dMg3DEspModel_c4IdleEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN15dMg3DEspModel_c4WaitEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c10SetRepeatsEs",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c8SetSpeedEi",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c9SetPeriodEs"
   ],
-  "count": 3533
+  "count": 3555
 }
