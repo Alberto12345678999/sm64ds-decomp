@@ -376,6 +376,19 @@ def apply(moves, files=None):
             "text_replaced_only": non_canonical}
 
 
+def decl_agreement_is_red():
+    """Read-only: does the decl-agreement gate fail on the tree as it now stands?
+
+    A move can flip which side of a plurality TIE the gate calls wrong (ties fall to path
+    order) without a single declaration changing, so the rekeyed baseline can read as
+    225 "new" disagreements of symbols it already carries. This tool does not re-bank on
+    its own -- `check_decl_agreement.py --update` rewrites the whole baseline, including
+    rows unrelated to the move, and that is a diff a human should read. It only says so."""
+    gate = [sys.executable, str(REPO / "tools" / "check_decl_agreement.py")]
+    return subprocess.run(gate, cwd=SP.REPO, stdout=subprocess.DEVNULL,
+                          stderr=subprocess.DEVNULL).returncode != 0
+
+
 def leftover_backslash_refs(moves, files=None):
     """Files still spelling a moved path with backslashes -- the one form rekey skips."""
     pat = re.compile(r"src\\\\?(" + "|".join(re.escape(pathlib.PurePosixPath(m.old).name)
@@ -430,6 +443,12 @@ def main():
     stale = leftover_backslash_refs(moves)
     if stale:
         print("WARNING: backslash-spelled references remain in: " + ", ".join(stale[:10]))
+    if decl_agreement_is_red():
+        print("NOTE: check_decl_agreement.py is red after the move. If its output is "
+              "'plurality is ...' disagreements for symbols the baseline already carries, "
+              "a tie flipped with the new path order: run "
+              "`python tools/check_decl_agreement.py --update` and read the diff "
+              "(the count should not grow by more than a handful).")
     import layout_check
     return 1 if layout_check.print_report(layout_check.check(), quiet=True) else 0
 

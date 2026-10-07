@@ -87,7 +87,7 @@ UNNAMED_DIR = "unnamed"
 NAMED_DIR = "named"
 
 # Modules whose address-named bucket is itself too big for one directory are split on the
-# high half of the ROM address: `src/unnamed/arm9/0204/func_0204eda4.c`. The value is the
+# high half of the ROM address: `src/unnamed/arm9/0204/<symbol>.c`. The value is the
 # right-shift that turns an address into the shard key, so 16 keeps four hex digits.
 # Deterministic on purpose -- the shard is a pure function of the symbol, so placement
 # never needs judgement and two agents always agree.
