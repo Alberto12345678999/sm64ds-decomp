@@ -18712,7 +18712,7 @@
     },
     "data_ov006_02141f1c": {
       "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:PMF_8a44 []"
+        "return:dScMg3DEsp_cObjState []"
       ]
     },
     "data_ov006_02141f2c": {
@@ -18722,27 +18722,27 @@
     },
     "data_ov006_02141f44": {
       "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:Ent_82fc []"
+        "return:dScMg3DEsp_cState []"
       ]
     },
     "data_ov006_02141f5c": {
       "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:PMF_9374 []"
+        "return:dScMg3DEsp_cObjState []"
       ]
     },
     "data_ov006_02141f74": {
       "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:PMF_8d08 []"
+        "return:dScMg3DEsp_cObjState []"
       ]
     },
     "data_ov006_02141f8c": {
       "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:int []"
+        "return:dScMg3DEsp_cObjState []"
       ]
     },
     "data_ov006_02141fac": {
       "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:Entry_9b70 []"
+        "return:dScMg3DEsp_cState []"
       ]
     },
     "data_ov006_02142018": {

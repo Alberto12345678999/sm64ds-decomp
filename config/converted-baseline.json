@@ -2842,6 +2842,19 @@
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD1Ev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD0Ev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c10RenderRowsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c11RenderCardsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c11RenderSlotsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c11UpdateSlotsEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c4PlayEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c7ResolveEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c8RowDecayEi",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c9SlotSetupEi",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN15dMg3DEspModel_c4IdleEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN15dMg3DEspModel_c4WaitEv",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c10SetRepeatsEs",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c8SetSpeedEi",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c9SetPeriodEs",
     "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit",
     "src/actors/daMoray_c.cpp#BookSwitch_Spawn",
     "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit",
@@ -3541,5 +3554,5 @@
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitTalkEv",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8SetStateEi"
   ],
-  "count": 3532
+  "count": 3545
 }
