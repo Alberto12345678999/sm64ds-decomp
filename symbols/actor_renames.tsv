@@ -3205,6 +3205,15 @@ ov091	0x02133938	func_ov091_02133938	Stump_Spawn	spawnfunc
 ov091	0x02133938	Stump_Spawn	daObjPile_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02133968	func_ov091_02133968	_ZN10daHyuhyu_cD1Ev	vtable slot 16 (was _ZN5StumpD1Ev)
 ov091	0x021339a8	func_ov091_021339a8	_ZN10daHyuhyu_cD0Ev	vtable slot 17 (was _ZN5StumpD0Ev)
+ov091	0x021339fc	func_ov091_021339fc	_ZN10daHyuhyu_c19func_ov091_021339fcEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133c6c	func_ov091_02133c6c	_ZN10daHyuhyu_c19func_ov091_02133c6cEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133d1c	func_ov091_02133d1c	_ZN10daHyuhyu_c19func_ov091_02133d1cEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133d30	func_ov091_02133d30	_ZN10daHyuhyu_c19func_ov091_02133d30Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133f24	func_ov091_02133f24	_ZN10daHyuhyu_c19func_ov091_02133f24Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133f60	func_ov091_02133f60	_ZN10daHyuhyu_c19func_ov091_02133f60Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x0213400c	func_ov091_0213400c	_ZN10daHyuhyu_c19func_ov091_0213400cEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02134044	func_ov091_02134044	_ZN10daHyuhyu_c19func_ov091_02134044EP16daHyuhyu_c_State	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02134094	func_ov091_02134094	_ZN10daHyuhyu_c19func_ov091_02134094Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov091	0x02134108	func_ov091_02134108	_ZN10daHyuhyu_c16CleanupResourcesEv	vtable slot 3 (was _ZN5Stump16CleanupResourcesEv)
 ov091	0x02134180	func_ov091_02134180	_ZN10daHyuhyu_c16OnPendingDestroyEv	vtable slot 12 (was _ZN5Stump16OnPendingDestroyEv)
 ov091	0x02134184	func_ov091_02134184	_ZN10daHyuhyu_c6RenderEv	vtable slot 9 (was _ZN5Stump6RenderEv)
