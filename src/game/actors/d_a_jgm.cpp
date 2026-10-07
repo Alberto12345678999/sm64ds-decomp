@@ -173,8 +173,8 @@ extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 extern int _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
     void *a, void *b);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     Fix12i radius, Fix12i depth, u32 opacity);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(
     dActor_c *actor, const DaJgmVector3Words *pos, unsigned int count,
@@ -231,7 +231,7 @@ s32 daJgm_c::InitResources()
     ((ModelBase *)(c + 0x138))->SetFile(
         (BMD_File *)Model::LoadFile(data_ov077_02127b48), 1, 1);
     for (int i = 0; i < 2; i++)
-        Animation::LoadFile(*data_ov077_02127238[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov077_02127238[i]);
     for (int i = 0; i < 2; i++) {
         void *t = (void *)data_ov077_02127230[i];
         TextureSequence::LoadFile(*(SharedFilePtr *)t);
@@ -424,12 +424,12 @@ s32 daJgm_c::UpdateThrowState()
             *(signed char *)(c + 0xcc), -1);
         func_0201267c(0xd2, c + 0x74);
     }
-    if (((Animation *)(c + 0x124))->Finished())
+    if (((dExtFrameCtrl_c *)(c + 0x124))->Finished())
         SetState(0);
     UpdateFlight();
     UpdateHoverBob();
-    ((Animation *)(c + 0x124))->Advance();
-    ((Animation *)(c + 0x1b0))->Advance();
+    ((dExtFrameCtrl_c *)(c + 0x124))->Advance();
+    ((dExtFrameCtrl_c *)(c + 0x1b0))->Advance();
     HandlePlayerCollision();
     {
         DaJgmVector3Words pos;
@@ -602,7 +602,7 @@ void daJgm_c::UpdateModels()
     mMatrix.m[10] = mPosY >> 3;
     mMatrix.m[11] = mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mMatrix, 0x5a000, 0x320000, 0xf);
 
     if (mState != 1)

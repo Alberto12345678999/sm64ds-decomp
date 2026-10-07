@@ -24,14 +24,15 @@
  *   them as file IDs 1080 / 1081; overlay .bss owns them. symbols.txt has
  *   no recovered names, so they are not coined.
  * - data_ov009_02113c48 is the 4-state PMF table this Behavior indexes;
- *   overlay .bss owns it. Helpers stay func_ov009_* (table order: 021116ec,
- *   021115d8, 0211145c, 02111234). 02111224 is the follower-attach called
- *   from the two spawn loops.
+ *   overlay .bss owns it. Its members are daSBird_c methods (table order:
+ *   021116ec, 021115d8, 0211145c, 02111234); 02111224 is the follower-
+ *   attach the two spawn loops call. 0211145c is the unmatched hatch.
  * - func_ov009_0211145c is a proven mwccarm 1.2/2004/b56 register-
  *   allocation wall. It lives in src/func_ov009_0211145c.c as an
  *   unenrolled draft (not in this TU's delinks span).
- *   D1/D0/02111224/02111234 stay as leftover enrolled files below
- *   that hole so this TU's complete range is 0x021115d8..0x02111a70.
+ *   D1/D0 stay as leftover enrolled files below that hole;
+ *   02111224/02111234 folded into d_a_s_bird_head.cpp as daSBird_c
+ *   members, so this TU's complete range is 0x021115d8..0x02111a70.
  * - *(Vector3 *)&mPosX addressing shape (a Vector3 member at 0x05c is a
  *   dActor_c campaign, not this leaf).
  * - data_020a0e68 scratch matrix; data_02082214 sine table;
@@ -71,15 +72,14 @@ extern void Matrix4x3_ApplyInPlaceToRotationZ(void *m, s16 a);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, s16 a);
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
 extern int func_0201267c(unsigned int a, void *b);
-extern void func_ov009_02111224(char *c, int r1);
 
 /* ModelAnim::SetAnim -- wall 6az. */
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     ModelAnim *self, BCA_File *animFile, int flags, int speed, u32 startFrame);
 
 /* dActor_c::DropShadowRadHeight -- wall 6az. */
-int _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, ShadowModel *sm, Matrix4x3 *m, int rad, int h, unsigned u);
+int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *m, int rad, int h, unsigned u);
 }
 
 extern int _ZTV9daSBird_c[];
@@ -95,7 +95,7 @@ s32 daSBird_c::InitResources()
 {
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov009_02113c20);
     mModelAnim.SetFile(modelFile, 1, 1);
-    BCA_File *animFile = (BCA_File *)Animation::LoadFile(data_ov009_02113c28);
+    BCA_File *animFile = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113c28);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, animFile, 0, 0x1000, 0);
     mShadowModel.InitCylinder();
@@ -127,7 +127,7 @@ s32 daSBird_c::Behavior()
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, mAngleZ);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     *(BirdMtx *)((char *)&mModelAnim.mat4x3) = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mModelAnim.mat4x3, 0x1e000, 0x7d0000, 0xf);
     mModelAnim.Advance();
     return 1;
@@ -153,46 +153,46 @@ s32 daSBird_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov009_021116ec
-extern "C" void func_ov009_021116ec(char *c)
+// @symbol _ZN9daSBird_c19func_ov009_021116ecEv
+void daSBird_c::func_ov009_021116ec()
 {
-    if (*(unsigned char *)(c + 0x180)) {
-        int n = *(int *)(c + 8) & 0xf;
+    if (mIsLeader) {
+        int n = (int)param1 & 0xf;
         if (n > 1) {
-            Vector3_16 rot = *(Vector3_16 *)(c + 0x92);
+            Vector3_16 rot = *(Vector3_16 *)&mPrevAngleX;
             for (int i = 0; i < n - 1; i++) {
                 Vector3 pos;
-                pos.x = *(int *)(c + 0x5c)
+                pos.x = mPosX
                     + (int)((RandomIntInternal(&data_0209e650) % 400) - 0xa0)
                         * 4096;
-                pos.y = *(int *)(c + 0x60);
-                pos.z = *(int *)(c + 0x64)
+                pos.y = mPosY;
+                pos.z = mPosZ
                     + (int)((RandomIntInternal(&data_0209e650) % 400) - 0xa0)
                         * 4096;
                 rot.y = (short)(rot.y
                     + (short)(RandomIntInternal(&data_0209e650) >> 16));
                 void *a = dActor_c::Spawn(
-                    0x157, 0, pos, &rot, *(signed char *)(c + 0xcc), -1);
+                    0x157, 0, pos, &rot, mAreaId, -1);
                 if (a)
-                    func_ov009_02111224((char *)a, *(int *)(c + 4));
+                    ((daSBird_c *)a)->func_ov009_02111224(uniqueID);
             }
         }
-        *(int *)(c + 0x160) = -0x14000;
-        *(int *)(c + 0x168) = 0xff06a000;
+        mTargetPos.x = -0x14000;
+        mTargetPos.z = 0xff06a000;
     }
-    *(int *)(c + 0x17c) = 1;
+    mState = 1;
 }
 
-// @symbol func_ov009_021115d8
-extern "C" void func_ov009_021115d8(char *c)
+// @symbol _ZN9daSBird_c19func_ov009_021115d8Ev
+void daSBird_c::func_ov009_021115d8()
 {
-    if (*(unsigned char *)(c + 0x180) != 0) {
-        char *p2 = (char *)((dActor_c *)c)->ClosestPlayer();
+    if (mIsLeader) {
+        char *p2 = (char *)ClosestPlayer();
         if (p2 != 0) {
             struct Vector3 copy;
             struct Vector3 diff;
             int len;
-            Vec3_Sub(&diff, c + 0x5c, p2 + 0x5c);
+            Vec3_Sub(&diff, &mPosX, p2 + 0x5c);
             copy.x = diff.x;
             copy.y = diff.y;
             copy.z = diff.z;
@@ -200,19 +200,19 @@ extern "C" void func_ov009_021115d8(char *c)
             if (len > 0x7d0000)
                 return;
         }
-        func_0201267c(0x6a, c + 0x74);
+        func_0201267c(0x6a, &mCamSpacePosX);
     } else {
-        char *p = (char *)dActor_c::FindWithID(*(unsigned int *)(c + 0x178));
+        daSBird_c *p = (daSBird_c *)dActor_c::FindWithID(mOwnerID);
         if (p == 0) {
-            ((fBase_c *)c)->MarkForDestruction();
+            MarkForDestruction();
             return;
         }
-        if (*(int *)(p + 0x17c) != 3)
+        if (p->mState != 3)
             return;
     }
-    *(short *)(c + 0x92) = 5000
+    mPrevAngleX = 5000
         - (unsigned int)RandomIntInternal(&data_0209e650) % 4000;
-    *(int *)(c + 0x174) = 0x28000;
-    *(int *)(c + 0x17c) = 3;
-    *(int *)(((int)c + 0xb0)) &= ~0x10000;
+    mFlySpeed = 0x28000;
+    mState = 3;
+    mFlags &= ~0x10000;
 }

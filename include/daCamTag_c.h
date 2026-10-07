@@ -5,7 +5,7 @@
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
-/* Camera-tag position marker -- ov002/daCamTag_c.
+/* dCamera_c-tag position marker -- ov002/daCamTag_c.
  *
  * ROM RTTI at ov002 0x021084fc names `10daCamTag_c`; its one base is
  * _ZTI8dActor_c. overlay_actors.md: CAMERA_TAG(333). Ugly RTTI name is

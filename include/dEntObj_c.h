@@ -21,7 +21,7 @@
 #include "ModelAnim.h"
 #include "BlendModelAnim.h"
 #include "TextureSequence.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 /* One figure on the entry stage. mMoveState and mAnimState index the two
  * pointer-to-member state tables in src/actors/dEntObj_c.cpp; the fields
@@ -30,7 +30,7 @@ struct UnknownVsPlayer {
     BlendModelAnim mModel;             /* 0x000 */
     ModelAnim mAnimation;              /* 0x070 */
     TextureSequence mTextureSequence;  /* 0x0d4 */
-    ShadowModel mShadow;               /* 0x0e8 */
+    dExtShadowModel_c mShadow;               /* 0x0e8 */
     s32 mMoveState;                    /* 0x110 */
     s32 mAnimState;                    /* 0x114 */
     Vector3 mPosition;                 /* 0x118 */
@@ -52,6 +52,45 @@ struct UnknownVsPlayer {
 
     UnknownVsPlayer();
     ~UnknownVsPlayer();
+
+    /* The mMoveState handlers (data_ov075_0211d56c's indices). */
+    void func_ov075_021147d4();        /* 1 */
+    void func_ov075_0211478c();        /* 2 */
+    void func_ov075_0211473c();        /* 3 */
+    void func_ov075_02114560();        /* 5 */
+    void func_ov075_021143e4();        /* 7 */
+    void func_ov075_02114390();        /* 8 */
+    void func_ov075_02114300();        /* 9 */
+    /* The mAnimState handlers (data_ov075_0211d53c's indices). */
+    int func_ov075_0211427c();         /* 1 */
+    int func_ov075_02114218();         /* 2 */
+    int func_ov075_021141b8();         /* 3 */
+    void func_ov075_021140e4();        /* 4 */
+    void func_ov075_02114010();        /* 5 */
+    /* The empty handler both tables' unused indices point at. */
+    void func_ov075_02114890();
+    void func_ov075_021142fc();
+
+    /* Send the figure toward its exit slot at x = exitX. */
+    void func_ov075_02114904(int exitX);
+    /* The selection one-shot on this figure; returns 1 when armed. */
+    int func_ov075_02114988();
+    /* Walk the figure toward x = targetX. */
+    void func_ov075_021149d0(int targetX);
+    int func_ov075_02114a58();         /* movement state == 0 (idle) */
+    int func_ov075_02114a6c();         /* go idle in the standing animation */
+    /* dCamera_c follow for the focused figure; nonzero when the view needs
+       rebuilding. */
+    int func_ov075_02114ac4(Vector3 *at, Vector3 *pos);
+    void func_ov075_02114894();
+    int func_ov075_021148f0();
+    void func_ov075_02114b60();
+    void func_ov075_02114be4();
+    /* One figure's frame: movement state, model matrix, animation state,
+       both animators, the shadow. */
+    void func_ov075_02114cd8();
+    /* Set up the figure for player slot playerNo at x. */
+    int func_ov075_02114ddc(unsigned char kind, unsigned char playerNo, int x);
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -84,6 +123,25 @@ struct dEntObj_c : dBase_c {
     virtual int CleanupResources();
     virtual int Behavior();
     virtual int Render();
+
+    /* Send every present figure toward its exit and pick the one the camera
+       follows. */
+    void func_ov075_02114fa8();
+    /* Stop the selection animation and return the chosen figure to idle. */
+    void func_ov075_0211505c();
+    /* Once every figure is idle, play the selection one-shot on player
+       playerNo's figure; returns 0 while any figure still moves. */
+    int func_ov075_02115098(int playerNo);
+    /* Walk every figure to its slot for the current player count. */
+    void func_ov075_02115134();
+    /* Put the selection model over player playerNo's figure. */
+    void func_ov075_021151b4(int playerNo);
+    /* The exit-slot x for figure playerNo. */
+    int func_ov075_0211524c(int playerNo);
+    /* The slot x for figure playerNo under the current player count. */
+    int func_ov075_02115290(int playerNo);
+    /* Copy the camera target/position fields into the shared block. */
+    void func_ov075_021152d4();
 };
 
 #ifndef SM64DS_PLATFORM_PC

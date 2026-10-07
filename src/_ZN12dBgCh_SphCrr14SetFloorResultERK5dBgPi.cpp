@@ -18,8 +18,8 @@ void dBgCh_SphCrr::SetFloorResult(const dBgPi &src_)
     mClsnResult1.surface.normal.y = src_.surface.normal.y;
     mClsnResult1.surface.normal.z = src_.surface.normal.z;
     mClsnResult1.triangleID = src_.triangleID;
-    mClsnResult1.flags = src_.flags;
+    mClsnResult1.colliderIdx = src_.colliderIdx;
     mClsnResult1.clsnID = src_.clsnID;
-    mClsnResult1.unk_020 = src_.unk_020;
-    mClsnResult1.unk_024 = src_.unk_024;
+    mClsnResult1.owner = src_.owner;
+    mClsnResult1.collider = src_.collider;
 }

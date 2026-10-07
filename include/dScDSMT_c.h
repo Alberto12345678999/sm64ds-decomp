@@ -29,7 +29,7 @@
  * flag bits at fBase_c's own 0x13 (unrelated to this class), then at 0x50
  * writes a nested object's vtable word twice (data_0208ee14, then
  * data_ov007_021032b0 -- a base-then-derived vptr-store pair) and calls the
- * shared helper func_02017278(p + 0x54) to finish constructing it. The
+ * shared helper _ZN10dFdDummy_cC1Ev(p + 0x54) to finish constructing it. The
  * destructor (func_ov007_020cc028 / _020cc070) tears down the same range
  * with func_02017254(t + 0x54) before calling fBase_c's D2.
  *
@@ -76,12 +76,10 @@ struct dScDSMT_c : dScene_c {
                                     it is this type and not an inlined base.
                                     Behavior passes &fader to SetFaders. */
 
-    /* Declared first -- key function; see the family convention discussed
-       in dScene_c.h. Defined out of line in src/actors/dScDSMT_c.cpp, which
-       therefore emits the vtable. Out of line only while that TU cannot
-       also hold InitResources (see its PARTIAL FOLD note); the whole-class
-       fold makes this `virtual ~dScDSMT_c() {}`, as dScTitle_c has it. */
-    virtual ~dScDSMT_c();                                /* slots 16 (D1), 17 (D0) */
+    /* Inline in the class body: the TU's key function is InitResources,
+       and mwccarm emits D1 then D0 from here -- the cartridge's order. See
+       the family convention discussed in dScene_c.h. */
+    virtual ~dScDSMT_c() {}                            /* slots 16 (D1), 17 (D0) */
 
     /* --- overrides, in _ZTV8dScene_c/_ZTV7fBase_c order. --- */
     virtual s32  InitResources();                        /* slot  0 */

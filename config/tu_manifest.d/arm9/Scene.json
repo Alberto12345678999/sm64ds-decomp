@@ -9,7 +9,7 @@
     "tu_map CANNOT segment this module: tools/tu_map.py emits `main` as ONE unit covering 0x20049f0..0x20707a4 with 2984 functions and ~70 class labels, and lists the module under `under-segmented (TU count is a lower bound)`. There is therefore no `tubuild.py create` candidate id for Scene and NO tu_map boundary behind any of the readings below -- all of them were established by hand from the cartridge.",
     "contiguous linker run: 0x0202e140..0x0202ec9c, 21 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all 21 marked `complete`).",
     "neighbours differ on both sides: func_0202e118 (0x0202e118..0x0202e140) ends exactly where the run begins and the Stage_Spawn allocation factory sits below it; func_0202ec9c begins exactly where the run ends. Neither is a Scene member and neither is called from one.",
-    "Interleaving evidence: Stage::SetVramBanks (0x0202e73c) and GX::DisableAllBanks (0x0202e78c) lie between Scene graphics methods. Under the contiguous-object layout model, assigning those enclosing methods to one TU includes the two helpers. Co-residence is inferred, not recovered from an original object map.",
+    "Interleaving evidence: dScStage_c::SetVramBanks (0x0202e73c) and GX::DisableAllBanks (0x0202e78c) lie between Scene graphics methods. Under the contiguous-object layout model, assigning those enclosing methods to one TU includes the two helpers. Co-residence is inferred, not recovered from an original object map.",
     "Corroborating data evidence: data_02092660, data_02092664 and data_02092668 occupy 0x02092660..0x02092678 immediately before the Scene vtable storage at 0x02092678..0x020926c8. Configured references to these statics lie within the proposed Scene text span, on both sides of the two graphics helpers. Adjacency and shared references support this cut, but do not alone prove original object ownership or static linkage. This promotion claims only the measured text span.",
     "the source order the reverse-emission rule implies is a coherent file: reversing the ROM address order yields BeforeInitResources then AfterInitResources, then the Cleanup pair, then Behavior, then Render -- each Before immediately before its After, the four groups in ActorBase's own declaration order, destructor last. Corroboration, not proof.",
     "The four dGraph_c::callback_c GraphCallback functions at 0x02018ea0..0x02018ec0 lie outside this measured Scene interval. Their system/graphics neighbours and pointer tables near 0x0208ee14 support a different TU assignment under the contiguous-object model; they are not included in this promotion. The original object map is unavailable, so these observations do not prove an absolute prohibition on split contributions.",
@@ -45,10 +45,10 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN8dScene_c9SetFadersEP15FaderBrightness",
+      "symbol": "_ZN8dScene_c9SetFadersEP15dFdBrightness_c",
       "address": "0x0202e1e0",
       "size": "0x0000008c",
-      "legacy_source": "src/_ZN8dScene_c9SetFadersEP15FaderBrightness.cpp",
+      "legacy_source": "src/_ZN8dScene_c9SetFadersEP15dFdBrightness_c.cpp",
       "ordinal": 3
     },
     {
@@ -150,10 +150,10 @@
       "ordinal": 17
     },
     {
-      "symbol": "_ZN5Stage12SetVramBanksEv",
+      "symbol": "_ZN10dScStage_c12SetVramBanksEv",
       "address": "0x0202e73c",
       "size": "0x00000050",
-      "legacy_source": "src/_ZN5Stage12SetVramBanksEv.cpp",
+      "legacy_source": "src/_ZN10dScStage_c12SetVramBanksEv.cpp",
       "ordinal": 18
     },
     {
@@ -175,7 +175,7 @@
   "bss": [],
   "notes": [
     "HAND-ASSEMBLED. `tubuild.py create` has no candidate for this TU (see boundary_evidence item 1) and would refuse these sources anyway, several being extern \"C\"-wrapped. Written against notes/tu-reconstruction-pilot-report.md and src_tu/actors/daObjKm2_Ami_Bou_c.cpp; the manifest entry itself is built by tubuild.build_manifest_entry so the schema stays the tool's own.",
-    "The two functions at 0x0202e73c and 0x0202e78c carry other classes' names (Stage::SetVramBanks, GX::DisableAllBanks) and are admitted on the data-attribution reading in boundary_evidence, not on their names. Stage and GX are project coinages. Where the cartridge's RTTI does name a class this tree now uses that name, which is why this TU's own class is dScene_c.",
+    "The two functions at 0x0202e73c and 0x0202e78c carry other classes' names (dScStage_c::SetVramBanks, GX::DisableAllBanks) and are admitted on the data-attribution reading in boundary_evidence, not on their names. dScStage_c and GX are project coinages. Where the cartridge's RTTI does name a class this tree now uses that name, which is why this TU's own class is dScene_c.",
     "ZERO UNLICENSED .text, AND THAT TOOK REMOVING A SCAFFOLD RATHER THAN ADDING ONE. The destructor is defined INLINE in include/dScene_c.h (renamed from include/Scene.h when the class took the cartridge's name), and src/_ZN8dScene_cD1Ev.cpp / src/_ZN8dScene_cD0Ev.cpp each carry a never-called forcing function because a TU that merely includes the header emits no out-of-line copy. This TU needs no such thing: it defines dScene_c's key function (BeforeInitResources, the first non-inline virtual), so it emits _ZTV8dScene_c, whose slots 16/17 ARE D1/D0, and taking their addresses for the table forces both out-of-line copies. MEASURED both ways -- `tubuild.py compile` reports D1 at section[16] size 0x30 and D0 at section[18] size 0x44 with the scaffold and without it; dropping it took unlicensed function symbols 1 -> 0. It was worth dropping and not merely tidy: a 0x38-byte STB_GLOBAL .text that no config/arm9/symbols.txt entry names, sitting inside the licensed span, displaces every byte after it under rombuild's -nodead link (measured on arm9/Actor: 506 bytes differ and 15/106 modules exact with a scaffold, IDENTICAL and 106/106 without).",
     "UNLICENSED .data, 7 symbols, ALL EXPECTED AND NONE VERIFIED. Defining the key function emits _ZTV8dScene_c (0x50, STB_GLOBAL) plus six STB_LOPROC RTTI records for dScene_c and its bases. _ZTV8dScene_c is ROM-resident at 0x02092678..0x020926c8 -- inside the 0x02092660..0x020926c8 block boundary_evidence establishes this TU owns -- so it is licensable in principle, but it is deliberately NOT listed under `data` here: every one of its 20 words is a relocation, `verify` does not compare data at all, and listing it would only stop the tool reporting it while proving nothing. That is the `data-verified` rung and this round did not attempt it. Note also the convention clash the pilot hit in the text direction: mwcc's `_ZTV8dScene_c` names the vtable OBJECT at 0x02092678 while config/arm9/symbols.txt names the SLOT ARRAY at 0x02092680, eight bytes apart.",
     "boundary_confidence 'high' came out of tubuild.tu_confidence's DEGENERATE path -- with a single synthetic unit it has no neighbouring unit to score against and returns 'high' merely because the unit carries a class label. It is NOT a tu_map boundary_confidence reading, because tu_map has no boundary here at all. The real basis for trusting this cut is the boundary_evidence list, item 5 in particular.",
@@ -325,7 +325,7 @@
       "src/_ZN8dScene_cD1Ev.cpp",
       "src/_ZN8dScene_cD0Ev.cpp",
       "src/_ZN8dScene_c20SetAndStopColorFaderEv.cpp",
-      "src/_ZN8dScene_c9SetFadersEP15FaderBrightness.cpp",
+      "src/_ZN8dScene_c9SetFadersEP15dFdBrightness_c.cpp",
       "src/_ZN8dScene_c16SpawnIfNecessaryEv.cpp",
       "src/_ZN8dScene_c18PrepareToSpawnBootEv.cpp",
       "src/_ZN8dScene_c14StartSceneFadeEjjt.cpp",
@@ -340,7 +340,7 @@
       "src/_ZN8dScene_c19BeforeInitResourcesEv.cpp",
       "src/_ZN8dScene_c19ResetFadersAndSoundEv.cpp",
       "src/_ZN8dScene_c20Initialise3dGraphicsEv.cpp",
-      "src/_ZN5Stage12SetVramBanksEv.cpp",
+      "src/_ZN10dScStage_c12SetVramBanksEv.cpp",
       "src/_ZN2GX15DisableAllBanksEv.cpp",
       "src/_ZN8dScene_c22ResetHardwareRegistersEv.cpp"
     ],

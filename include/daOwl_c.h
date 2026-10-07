@@ -18,16 +18,16 @@
  *     0x110 dCcAcPos_c  0x40   -> 0x150
  *     0x150 dBgCh_Actr  0x1bc  -> 0x30c
  *     0x30c ModelAnim   0x64   -> 0x370
- *     0x370 ShadowModel 0x28   -> 0x398
+ *     0x370 dExtShadowModel_c 0x28   -> 0x398
  *
  * and dEnemyBase_c's own 0x110 closes exactly on the first of them.
  *
  * Typing them absorbed four markers that were their insides:
  *   - unk_128 = mdCcAcPos_c.flags  (dCc_c +0x18)
- *   - mAnimation = the ModelAnim's Animation base (+0x50)
- *   - unk_364 = that Animation's currFrame (+0x08); Behavior reads it as
+ *   - mAnimation = the ModelAnim's dExtFrameCtrl_c base (+0x50)
+ *   - unk_364 = that dExtFrameCtrl_c's currFrame (+0x08); Behavior reads it as
  *     `>> 12`, the integer frame of a 20.12 fixed-point count
- *   - unk_368 = that Animation's speed (+0x0c); Behavior copies mAnimSpeed
+ *   - unk_368 = that dExtFrameCtrl_c's speed (+0x0c); Behavior copies mAnimSpeed
  *     into it, and InitResources sets mAnimSpeed to 0x1000, which is 1.0
  *
  * Size is the ROM's own, not a rounded-up field span: `daOwl_c_classInit`
@@ -43,7 +43,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daOwl_c : dEnemyBase_c {
@@ -59,7 +59,7 @@ struct daOwl_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x150 */
     ModelAnim mModelAnim;             /* 0x30c */
-    ShadowModel mShadowModel;         /* 0x370 */
+    dExtShadowModel_c mShadowModel;         /* 0x370 */
     Matrix4x3 mShadowMat;             /* 0x398 -- fed to DropShadowRadHeight */
     State *mCurrentState;             /* 0x3c8 */
     struct Player *mRider;            /* 0x3cc -- the player being carried, else 0 */

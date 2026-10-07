@@ -30,7 +30,7 @@
  * - S14: g_profile_TD_WATER stays outside the licensed .text.
  * - Event::GetBit has no shared header; every caller declares it locally.
  * - common.h first (dBgActor_c.h must see common.h ahead of Model.h).
- * - no Player.h / Camera.h.
+ * - no Player.h / dCamera_c.h.
  *
  * Consolidated from these legacy one-function sources (ROM address order):
  *   [0] 0x02112698  src/_ZN14daObjTdWater_cD1Ev.cpp

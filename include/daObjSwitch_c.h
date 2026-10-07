@@ -59,6 +59,22 @@ struct daObjSwitch_c : dBgActor_c {
     int InitResources();
     int Render();
     void OnGroundPounded(dActor_c &other);
+
+    /* State-table members: the sinit data records at 0x0210987c.. store
+       {init, exec} pointer-to-member pairs built from these addresses. */
+    int  func_ov002_020b9f00();
+    void func_ov002_020b9f80();
+    void func_ov002_020ba01c(int mask, Fix12i b, Fix12i base, Fix12i target);
+    void func_ov002_020ba0bc();
+    void func_ov002_020ba0f8();
+    void func_ov002_020ba1ac();
+    void func_ov002_020ba2ac();
+    void func_ov002_020ba2d0();
+    void func_ov002_020ba3a8();
+    void func_ov002_020ba3fc();
+    void func_ov002_020ba4c0();
+    void func_ov002_020ba4d8(int nextState);
+    void func_ov002_020ba520();
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -38,7 +38,7 @@
  * - dBgCh_Actr::GetFloorResult and dCapEnemy_c::UpdateCapPos have no header
  *   member. UpdateCapPos still needs the unsigned Vector3_16_local and the
  *   equal-arm ternary so r2 is set up before r1.
- * - Animation::Advance is called on the subobject at +0x3c0. mModelAnim.Advance()
+ * - dExtFrameCtrl_c::Advance is called on the subobject at +0x3c0. mModelAnim.Advance()
  *   this-adjusts.
  * - func_ov084_021290d4 recomputes the chase radius at each store. A named
  *   temporary size-DIFFs, and mUnstickTimer spelled the same way on both sides
@@ -190,7 +190,7 @@ extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u3
 extern void* data_ov084_02130cd0[];
 extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
 extern "C" void _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(void *, const Vector3&, const Vector3_16_local&);
 extern char data_ov084_0213089c;
@@ -405,7 +405,7 @@ void func_ov084_0212934c(char* c)
 
     /* Frame before the file pointer: that order is what colors the short
        extract and the file load into the registers the ROM uses. */
-    frame = static_cast<Animation &>(goomba->mModelAnim).currFrame;
+    frame = static_cast<dExtFrameCtrl_c &>(goomba->mModelAnim).currFrame;
     kind = (unsigned short)((unsigned)frame >> 12);
     type = (int)goomba->mModelAnim.file;
 
@@ -636,8 +636,8 @@ int func_ov084_021298d0(char* c){
     daKrb_c *goomba = (daKrb_c *)c;
     int deathState = goomba->UpdateDeath(goomba->mWithMeshClsn);
     if ((unsigned int)(goomba->mDeathState - 2) > 4) goto L_a4;
-    static_cast<Animation &>(goomba->mModelAnim).speed = 0x1000;
-    ((Animation *)&goomba->mModelAnim)->Advance();
+    static_cast<dExtFrameCtrl_c &>(goomba->mModelAnim).speed = 0x1000;
+    ((dExtFrameCtrl_c *)&goomba->mModelAnim)->Advance();
     if (goomba->mGoombaType != daKrb_c::GOOMBA_KING_MINION) goto L_a4;
 
     /* SpawnCoin only when the actor we hit is a KURIKING. The flag and the
@@ -751,7 +751,7 @@ int func_ov084_02129a00(char *c) {
                 goomba->mMaterialChanger.currFrame = 0;
             }
         }
-        ((Animation *)&goomba->mModelAnim)->Advance();
+        ((dExtFrameCtrl_c *)&goomba->mModelAnim)->Advance();
         if (goomba->mWithMeshClsn.JustHitGround())
             func_ov084_02129168(goomba, 0);
     }
@@ -1116,9 +1116,9 @@ void daKrb_c::func_ov084_0212a580(){
     rotation.z = mAngleZ;
     if ((mFlags & 0x40000 ? 1 : 0) == 0) {
         if (mWithMeshClsn.IsOnGround()) {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
         } else {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
         }
     }
     pos.x = 0;
@@ -1184,8 +1184,8 @@ void func_ov084_0212a774(daKrb_c *goomba)
     u16 h = goomba->mBounceCountdown;
 
     if (h == 0) {
-        ((Animation *)&goomba->mMaterialChanger)->Advance();
-        if (((Animation *)&goomba->mModelAnim)->Finished() == 0)
+        ((dExtFrameCtrl_c *)&goomba->mMaterialChanger)->Advance();
+        if (((dExtFrameCtrl_c *)&goomba->mModelAnim)->Finished() == 0)
             return;
         goomba->mFlags = goomba->mSavedParam;
         goomba->mState = daKrb_c::STATE_WALK;
@@ -1801,7 +1801,7 @@ int daKrb_c::Behavior()
 
     if (mState != STATE_AIRBORNE) {
         func_ov084_0212934c((char *)this);
-        ((Animation *)&mModelAnim)->Advance();
+        ((dExtFrameCtrl_c *)&mModelAnim)->Advance();
     }
 
     st = mState;
@@ -1938,7 +1938,7 @@ int daKrb_c::InitResources()
 
     Model::LoadFile(data_ov084_02130cf8);
     for (i = 0; i < 7; i++)
-        Animation::LoadFile(*(SharedFilePtr *)(data_ov084_02130278[i]));
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)(data_ov084_02130278[i]));
 
     ((dCapEnemy_c *)c)->AddCap((unsigned char)(*(int*)(c + 8) & 0xf));
 

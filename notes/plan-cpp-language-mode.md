@@ -21,9 +21,9 @@ Every number below is reproducible on a clean tree at `b7f04b91`. Commands in §
 | # | Claim | Verdict | Evidence |
 |---|---|---|---|
 | 1 | Name mangling proves C++, ignored | **Holds** | 1,359 of 2,515 mangled-symbol files (54%) still spell the mangled name by hand — 1,044 in `.c` files, and 315 more in `.cpp` files that renamed the extension and nothing else |
-| 2 | Incorrect return types | **Holds** | `int _ZN10FaderColorD1Ev(int *self)` — the ARM C++ dtor ABI returns `this`, so this is `FaderColor* FaderColor::~FaderColor()` |
+| 2 | Incorrect return types | **Holds** | `int _ZN10dFdColor_cD1Ev(int *self)` — the ARM C++ dtor ABI returns `this`, so this is `dFdColor_c* dFdColor_c::~dFdColor_c()` |
 | 3 | Forced register usage | **Holds, smaller than stated** | 14 files carry inline `asm`; 67 name a codegen-forcing hack in a comment; 1,246 use `long long` (an unknown subset legitimately) |
-| 4 | Incorrect argument types | **Holds** | `int *self` for `FaderColor*`; and per the runbook, 27% of local declarations contradict each other |
+| 4 | Incorrect argument types | **Holds** | `int *self` for `dFdColor_c*`; and per the runbook, 27% of local declarations contradict each other |
 | 5 | Using a C compiler for C++ | **Holds in substance** | mwccarm does compile both, so "wrong compiler" is imprecise — but 8,125 files build as C and 1,044 of them define a C++ symbol. The mode is wrong where it matters, and the follow-up jab that `//cpp` "changes nothing" is right for 315 files |
 
 What does **not** survive: *"every single function is fake matched."* The byte gate is
@@ -81,7 +81,7 @@ optimization level). `--list excluded` names them.
 > **The `D2` row does not mean what it says.** `tools/dtor_variant_audit.py` shows **7 of
 > the 17** named D2 symbols occupy a vtable slot, which a base-object destructor never
 > does — they are D1s, and one of them (`_ZN5SceneD2Ev`) belongs to a different class
-> (`BootScene`). Two symbols named `D1` are conversely D2s, and the Fader family holds
+> (`dScBoot_c`). Two symbols named `D1` are conversely D2s, and the dFader_c family holds
 > three genuine D2s carrying no D2 name at all. Read `notes/dtor-variant-audit.md` before
 > scheduling any D2 work, and before trusting the per-class `D2:1` entries below — five of
 > the six pilot classes carry an impostor.
@@ -223,7 +223,7 @@ python tools/langmode_audit.py --check /tmp/base.json
 
 *The headline WAS gameable, by basename.* "Cannot be gamed by renaming a `.c` to a
 `.cpp`" was true of the extension and false of the filename: `git mv
-_ZN5FaderD1Ev.c func_0201786c.c` with the content untouched **lowered**
+_ZN8dFader_cD1Ev.c func_0201786c.c` with the content untouched **lowered**
 `unmigrated_total`, and renaming every mangled-stem file to `func_fake_N` drove the
 headline to *"0 of 1258 (0.0%)"* without editing a byte. The metric rewarded making
 the symbol table less true. `classify()` now reads the body when the filename does
@@ -231,7 +231,7 @@ not carry a mangled symbol, which closes it; the counts on a clean tree are
 unchanged, because there was no hidden debt — only an open door.
 
 *A count may also rise, once, under a stated rule.* Naming a function the tree had
-never identified — `func_02017838` to `_ZN5FaderD2Ev` — makes the symbol table more
+never identified — `func_02017838` to `_ZN8dFader_cD2Ev` — makes the symbol table more
 true and `unmigrated_total` larger, because it genuinely mints a new hand-spelled
 mangled symbol. That is real debt and should be counted. So the rule is **not** an
 exemption:
@@ -303,7 +303,7 @@ Pilot targets — highest unmigrated count *and* an existing reconstructed heade
 |---|---|---|
 | `Actor` | 65 | `C1:1 C2:1 D0:1 D1:1 D2:1 method:60` |
 | `Player` | 48 | `C1:1 C3:1 D0:1 D2:1 method:44` |
-| `Stage` | 25 | `C3:1 D0:1 D2:1 method:22` |
+| `dScStage_c` | 25 | `C3:1 D0:1 D2:1 method:22` |
 | `Scene` | 23 | `D0:1 D1:1 D2:1 method:20` |
 | `Heap` | 19 | `C1:1 D0:1 D1:1 D2:1 method:15` |
 
@@ -316,10 +316,10 @@ a constructor.~~
 (`u8 unk_013` behind `0x13` of padding) under the fabricated `gen_header.py` banner — it is
 a rung-0 skeleton, not a named header — and all three Scene destructors are shadow-struct
 files that do not include it. Nor does Scene carry one of each variant: `_ZN5SceneD2Ev` is
-`BootScene`'s D1 (`notes/dtor-variant-audit.md`). Pick the pilot from `--by-class` output
+`dScBoot_c`'s D1 (`notes/dtor-variant-audit.md`). Pick the pilot from `--by-class` output
 that has been through that audit. `Actor` is the prize (65 files, base of the actor hierarchy) and also the
 widest blast radius in the tree: take it third or fourth, once the procedure is boring.
-Note that `Actor`, `Player`, `Stage` and `Heap` each carry a ctor variant, which is Phase 5
+Note that `Actor`, `Player`, `dScStage_c` and `Heap` each carry a ctor variant, which is Phase 5
 research — split those files out of the slice rather than letting them block it.
 
 Heed the runbook's warning on the C side: a polymorphic class needs an explicit

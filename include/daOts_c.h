@@ -5,7 +5,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 /* The shared base of the three Bully variants. The ROM's RTTI names it daOts_c and
@@ -19,7 +19,7 @@
  * FOUR WITNESSES, which is one more than a leaf class ever gets:
  *
  *   _ZN7daOts_cD1Ev (ov064 0x02115ee0, 0x48) -- this class's own destructor. It stores
- *   data_ov064_0211b768 and destroys ShadowModel 0x370, dCcAc_c 0x33c,
+ *   data_ov064_0211b768 and destroys dExtShadowModel_c 0x370, dCcAc_c 0x33c,
  *   dBgCh_Actr 0x174, ModelAnim 0x110, then chains to _ZN12dEnemyBase_cD2Ev. D0 at
  *   0x02115f28 is the same plus Memory::Deallocate.
  *
@@ -41,7 +41,7 @@
  *
  * SIZE 0x398, and every member closes exactly on the next: ModelAnim 0x64 ends at
  * 0x174, dBgCh_Actr 0x1bc ends at 0x330, mFileTable plus two particle ids end at
- * 0x33c, dCcAc_c 0x34 ends at 0x370, ShadowModel 0x28 ends at 0x398. Nothing
+ * 0x33c, dCcAc_c 0x34 ends at 0x370, dExtShadowModel_c 0x28 ends at 0x398. Nothing
  * allocates a plain daOts_c, so the ceiling comes from the children instead: the
  * earliest own named field any of the three declares is at 0x3fa.
  *
@@ -154,7 +154,7 @@ struct daOts_c : dEnemyBase_c {
     u32                 mParticle0;             /* 0x334 */
     u32                 mParticle1;             /* 0x338 */
     dCcAc_c  mdCcAc_c;    /* 0x33c */
-    ShadowModel         mShadowModel;           /* 0x370 */
+    dExtShadowModel_c         mShadowModel;           /* 0x370 */
 
     /* INLINE, AND IT MUST BE. Both children's destructors store their own vtable,
        then this one's, then destroy all four members in place -- there is no `bl`
@@ -200,7 +200,7 @@ struct daOts_c : dEnemyBase_c {
     /* Non-virtual shared workers. All three children wrap these from the
        pure-virtual InitResources / Behavior slots after their own preamble.
        Class ownership is proven by this-pointer layout (ModelAnim 0x110,
-       dBgCh_Actr 0x174, mFileTable 0x330, dCcAc_c 0x33c, ShadowModel 0x370)
+       dBgCh_Actr 0x174, mFileTable 0x330, dCcAc_c 0x33c, dExtShadowModel_c 0x370)
        and by named daOts callees already in this TU. The English spellings
        describe those call sites; the stripped image carries no original
        method names. */

@@ -59,7 +59,7 @@ bool ApproachLinear(short &value, short target, short step);
 
 typedef long long s64;
 
-struct Camera;
+struct dCamera_c;
 
 extern "C" {
 /* This class's model and collision files (ov016 .bss) and the CLPS block
@@ -78,7 +78,7 @@ s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 u8 DecIfAbove0_Byte(u8 *p);
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 /* The camera-shake request and the camera it goes to (arm9). */
-void func_0200d8c8(Camera *cam, const Vector3 *pos, int strength);
+void func_0200d8c8(dCamera_c *cam, const Vector3 *pos, int strength);
 extern void *data_0209f318;
 /* The sin/cos table: (sin, cos) pairs of s16 indexed by angle >> 4. */
 extern s16 data_02082214[];
@@ -191,7 +191,7 @@ s32 daObjKi_Hasira_c::Behavior()
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(particleID, x, y, z);
             dustPos.x = crashPos.x; dustPos.y = crashPos.y; dustPos.z = crashPos.z;
             LandingDustAt(dustPos, true);
-            func_0200d8c8((Camera *)data_0209f318, (Vector3 *)&mPosX, 0x5dc000);
+            func_0200d8c8((dCamera_c *)data_0209f318, (Vector3 *)&mPosX, 0x5dc000);
             Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
             MarkForDestruction();
         }

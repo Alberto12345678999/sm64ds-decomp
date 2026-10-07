@@ -21,7 +21,7 @@
  * `return new daBtfly_c();` to the same _ZN7fBase_cnwEj(1012) allocator the
  * loose factory called by hand, and daBtfly_c has no user-declared
  * constructor, so the inherited dActor_c ctor plus the vtable store plus the
- * six member subobjects in field order (ModelAnim, Model, ShadowModel x2,
+ * six member subobjects in field order (ModelAnim, Model, dExtShadowModel_c x2,
  * dBgCh_Actr, dCcAcPos_c) come from the implicit default constructor with
  * zero mangled calls.
  *
@@ -111,7 +111,7 @@ extern ButterflyState data_ov100_02148628[];
 /* Fix12<int> by value. The header method form homes those arguments on the
  * stack; these scalar entries are the ROM calls. */
 void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *c, int oy, int rad, int clip, int far);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *actor, void *shadow, void *mtx, int radius, int height, unsigned int opacity);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *ma, void *bca, int flags, int speed, u32 start);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -526,12 +526,12 @@ int daBtfly_c::Behavior()
         Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
         if (mUseAnimModel != 0) {
             *(Mtx *)&mModelAnim.mat4x3 = *(Mtx *)&data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 this, &mShadowModel1, &mModelAnim.mat4x3, 0x14000, 0x12c000, 0xf);
             mModelAnim.Advance();
         } else {
             *(Mtx *)&mModel.mat4x3 = *(Mtx *)&data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 this, &mShadowModel2, &mModel.mat4x3, 0x64000, 0x12c000, 0xf);
         }
     }
@@ -542,7 +542,7 @@ int daBtfly_c::Behavior()
 int daBtfly_c::InitResources()
 {
     Model::LoadFile(data_ov002_0210d9d8);
-    Animation::LoadFile(data_ov100_02148600);
+    dExtFrameCtrl_c::LoadFile(data_ov100_02148600);
     Model::LoadFile(data_ov100_02148668);
     void *bmd = Model::LoadFile(data_ov100_02148608);
 

@@ -9,7 +9,7 @@ extern int data_0209f32c;
 
 extern int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *self, unsigned int a, int b, Fix12i c, unsigned int d);
-extern int _ZNK9Animation12WillHitFrameEi(void *anim, int frame);
+extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *anim, int frame);
 extern u32 func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir);
 extern void func_0201251c(int a, int b, int c, int d);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
@@ -50,10 +50,10 @@ void func_ov002_020d1f78(void *selfPtr, u32 param)
 
     id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
     anim = (char *)((int *)(self + 0xdc))[id] + 0x50;
-    if (!_ZNK9Animation12WillHitFrameEi(anim, 4)) {
+    if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 4)) {
         id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
         anim = (char *)((int *)(self + 0xdc))[id] + 0x50;
-        if (!_ZNK9Animation12WillHitFrameEi(anim, 0x13))
+        if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0x13))
             return;
     }
 

@@ -12,8 +12,8 @@
  */
 #include "types.h"
 #include "dActor_c.h"
-#include "CommonModel.h"
-#include "ShadowModel.h"
+#include "dExtCommonModel_c.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 #include "math/Matrix.h"
@@ -51,18 +51,18 @@ struct daStarBase_c;
 struct daCoin_c : dActor_c {
     s32 mEatingPlayer;            /* 0x0d0 */
     s32 mPuzzleManagerID;            /* 0x0d4 */
-    /* CommonModel member, named by the class's own destructor calling
-       CommonModel's D1 at +0x0d8 -- a relocation the ROM build
+    /* dExtCommonModel_c member, named by the class's own destructor calling
+       dExtCommonModel_c's D1 at +0x0d8 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */
-    CommonModel mCommonModel1;            /* 0x0d8 */
-    /* CommonModel member, named by the class's own destructor calling
-       CommonModel's D1 at +0x114 -- a relocation the ROM build
+    dExtCommonModel_c mCommonModel1;            /* 0x0d8 */
+    /* dExtCommonModel_c member, named by the class's own destructor calling
+       dExtCommonModel_c's D1 at +0x114 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */
-    CommonModel mCommonModel2;            /* 0x114 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x150 -- a relocation the ROM build
+    dExtCommonModel_c mCommonModel2;            /* 0x114 */
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x150 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */
-    ShadowModel mShadowModel;            /* 0x150 */
+    dExtShadowModel_c mShadowModel;            /* 0x150 */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x178 -- a relocation the ROM build
        checks. Was a u8 marker. [daCoin_c::~daCoin_c, src/actors/daCoin_c.cpp] */

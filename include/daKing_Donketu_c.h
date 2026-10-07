@@ -6,7 +6,7 @@
 #ifdef __cplusplus
 
 #include "dEnemyBase_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "BlendModelAnim.h"
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
@@ -27,7 +27,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
     dBgCh_Actr mWithMeshClsn;                              /* 0x150 */
     /* The boss's model and skeleton animation. The state handlers read the
        bone-matrix array (data.transforms, 0x320) and the model's own matrix
-       (mat4x3, 0x328) to find where to put particles, treat its Animation
+       (mat4x3, 0x328) to find where to put particles, treat its dExtFrameCtrl_c
        base (0x35c) as the clock they wait on, and set its playback speed
        (speed, 0x368; 0x1000 is 1.0). */
     BlendModelAnim mBlendModelAnim;                        /* 0x30c */
@@ -38,7 +38,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
        every frame and compares this against the records by ADDRESS to decide
        what else the frame does. */
     void *mState;                                          /* 0x37c */
-    ShadowModel mShadowModel;                              /* 0x380 */
+    dExtShadowModel_c mShadowModel;                              /* 0x380 */
     /* The matrix func_ov073_021215cc hands DropShadowRadHeight: a pure
        translation to the boss's position >> 3, with y taken 0xa000 (10
        units) lower first. */

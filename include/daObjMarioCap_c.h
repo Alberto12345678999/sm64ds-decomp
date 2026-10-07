@@ -14,7 +14,7 @@
 #include "CapIcon.h"
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -23,7 +23,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  *
  *   daObjMarioCap_c_classInit (ov002) allocates 0x410, calls _ZN12dEnemyBase_cC2Ev, stores
  *   _ZTV15daObjMarioCap_c, then constructs dCcAc_c 0x110, dBgCh_Actr 0x144,
- *   ModelAnim 0x300, ShadowModel 0x364 and the CapIcon at 0x3d0.
+ *   ModelAnim 0x300, dExtShadowModel_c 0x364 and the CapIcon at 0x3d0.
  *
  *   _ZN15daObjMarioCap_cD1Ev tears the same five down in exactly the reverse order and
  *   chains to _ZN12dEnemyBase_cD2Ev.
@@ -46,18 +46,18 @@ struct daObjMarioCap_c : dEnemyBase_c {
     dCcAc_c  mdCcAc_c;    /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;          /* 0x144 */
     ModelAnim           mModelAnim;             /* 0x300 */
-    ShadowModel         mShadowModel;           /* 0x364 */
-    /* Drop-shadow matrix: func_ov002_020b7f7c rebuilds it on the frames the shadow is drawn (rotation
+    dExtShadowModel_c         mShadowModel;           /* 0x364 */
+    /* Drop-shadow matrix: UpdateMatrix rebuilds it on the frames the shadow is drawn (rotation
        about Y, translation = position / 8) for DropShadowRadHeight. */
     Matrix4x3           mShadowMat;             /* 0x38c */
     /* The current state: a pointer to one of nine {enter, per-frame} records
        in ov002 .bss (data_ov002_0210df04 .. df84), each a pair of 8-byte
        pointers-to-member filled in at static-init time by
-       __sinit_ov002_02101064. func_ov002_020b7f2c
+       __sinit_ov002_02101064. EnterState
        stores a record here and runs its first member (the enter function);
        Behavior then runs the second one every frame. Held as an s32 because
-       the member-pointer record layout is spelled by the file-local Holder /
-       C stand-ins in the .cpp, not by this header. */
+       the member-pointer record layout is spelled by the file-local
+       CapStateRec / CapEnterSelf stand-ins in the .cpp, not by this header. */
     s32 mStateEntry;                            /* 0x3bc */
     /* The player this cap is bound to: whoever touched it, or the nearest
        player (ClosestPlayer) for the types that start bound. Read as a
@@ -92,7 +92,7 @@ struct daObjMarioCap_c : dEnemyBase_c {
     /* Set once the cap's model has been given its follow-up animation: the
        0x8012 animation in the taken state (OnTurnIntoEgg sets it too) or the
        second animation of type 0x14 in the animation state, whose enter
-       function (func_ov002_020b7330) clears it. */
+       function (InitAnim) clears it. */
     u8  mAnimStarted;                           /* 0x3fe */
     /* 1 while bit 1 of mCapIcon.mFlags is clear (the bit dCapIcon_c's
        GetCapState tests); only caps with an icon ever set it. Behavior then
@@ -133,7 +133,7 @@ struct daObjMarioCap_c : dEnemyBase_c {
        D0 at 0x020b6f68 and carries no D2, which is exactly what mwccarm 2004
        emits for an inline destructor; an out-of-line one emits D2/D0/D1 in the
        wrong order plus a homeless D2. The typed member list below makes the
-       empty body own the dCapIcon_c, ShadowModel, ModelAnim, dBgCh_Actr and
+       empty body own the dCapIcon_c, dExtShadowModel_c, ModelAnim, dBgCh_Actr and
        dCcAc_c teardowns and the chain into _ZN12dEnemyBase_cD2Ev.
 
        With the destructor inline, OnYoshiTryEat becomes the first out-of-line
@@ -151,15 +151,37 @@ struct daObjMarioCap_c : dEnemyBase_c {
     int Render();
     void OnPendingDestroy();
     void OnTurnIntoEgg(Player &player);  /* slot 19, ov002 0x020b81e0 */
-    void func_ov002_020b7f7c();
-    int func_ov002_020b7e08();
-    int func_ov002_020b7d9c();
-    int func_ov002_020b7d58();
-    int func_ov002_020b7cec();
-    int func_ov002_020b7c30();
-    int func_ov002_020b76ec();
-    int func_ov002_020b74d0();
-    int func_ov002_020b7200();
+
+    /* Once-a-frame render-matrix update and drop-shadow placement. */
+    void UpdateMatrix();
+    /* The state dispatcher: stores a {enter, per-frame} record in mStateEntry
+       and calls its enter member. `void*` because the record's member-pointer
+       layout is spelled by the .cpp's file-local stand-ins. */
+    int EnterState(void *rec);
+    /* The pickup check shared by the states that let the player take the cap:
+       reflects off walls, validates the collider owner is a Player, hands the
+       hat over and enters the taken state. */
+    void CheckTouch();
+
+    /* The nine {enter, per-frame} state pairs, in the state-table's order. */
+    int InitWait();         /* df64 enter;  type 0 */
+    int Wait();             /* df64 per-frame */
+    int InitTimedWait();    /* df84 enter;  type 1 */
+    int TimedWait();        /* df84 per-frame */
+    int InitTouchWait();    /* df04 enter;  type 2 */
+    int TouchWait();        /* df04 per-frame */
+    int InitTimedWait2();   /* df24 enter;  type 3 */
+    int TimedWait2();       /* df24 per-frame */
+    int InitSlide();        /* df34 enter;  types 4..9, 11, 16..18 */
+    int Slide();            /* df34 per-frame */
+    int InitTaken();        /* df54 enter;  the taken state */
+    int Taken();            /* df54 per-frame */
+    int InitAnim();         /* df74 enter;  types 10, 15, 20..22 */
+    int Anim();             /* df74 per-frame */
+    int InitFall();         /* df14 enter;  type 12 */
+    int Fall();             /* df14 per-frame */
+    int InitDormant();      /* df44 enter;  type 13 */
+    int Dormant();          /* df44 per-frame */
 
     /* Leaf until fBase_c can declare operator new (#2570). unsigned long, not
        unsigned int: size_t is unsigned int on this include path and mangles

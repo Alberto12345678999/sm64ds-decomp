@@ -55,7 +55,7 @@ namespace alias with a third argument has no callee support. At caller
 third argument leaves that exact instruction sequence unchanged.
 
 The helper has no meaningful return value. Its actual SetAnim callee is defined
-as void in `src/_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj.c`; the helper stores the
+as void in `src/engine/model/ModelAnim.cpp`; the helper stores the
 animation index after the call and returns without defining another result.
 The corrected bridge uses that definition's scalar parameter contract. The ROM
 reads its fifth argument with `ldrh` at 0x02016780. `ModelAnim.h` still declares a

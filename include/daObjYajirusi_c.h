@@ -25,7 +25,7 @@ struct Player;
 
 #include "common.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 #if defined(SM64DS_PLATFORM_PC) && defined(_MSC_VER)
 #include <stddef.h>
@@ -56,7 +56,7 @@ struct daObjYajirusi_c {
     dBgW_KcMbg mMeshCollider;          /* 0x124 */
     Matrix4x3 mClsnMat;                /* 0x2ec */
     u8  pad_31c[0x4];
-    ShadowModel mShadowModel;          /* 0x320 */
+    dExtShadowModel_c mShadowModel;          /* 0x320 */
     u8 mShadowMat;                        /* 0x348 */
     u8  pad_349[0x33];
     u8 mVariant;                        /* 0x37c */
@@ -104,7 +104,7 @@ static_assert(sizeof(daObjYajirusi_c) == 0x380, "daObjYajirusi_c host size");
 
 struct daObjYajirusi_c : dBgActor_c {
     u8  pad_31e[0x2];
-    ShadowModel mShadowModel;         /* 0x320 */
+    dExtShadowModel_c mShadowModel;         /* 0x320 */
     /* Behavior passes `&mShadowMat' as the `Matrix4x3 &' argument of
        dActor_c::DropShadowScaleXYZ, with mShadowModel as the argument before
        it. A Matrix4x3 is 0x30 bytes and 0x348 + 0x30 = 0x378. Left a u8
@@ -152,7 +152,7 @@ typedef char daObjYajirusi_c_size_must_be_0x380[sizeof(daObjYajirusi_c) == 0x380
 
 /* The C spelling of the same object, flat. Kept because the port builds
    this header for the host, and the flat view cannot derive from dBgActor_c
-   without moving every field. Same arrangement as include/ShadowModel.h. */
+   without moving every field. Same arrangement as include/dExtShadowModel_c.h. */
 struct daObjYajirusi_c {
     u8  pad_000[0xc];
     u16 actorID;            /* 0x00c */
@@ -167,10 +167,10 @@ struct daObjYajirusi_c {
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
     u8  pad_2ec[0x34];
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x320 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN15daObjYajirusi_cD1Ev.c] */
-    ShadowModel mShadowModel;            /* 0x320 */
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x320 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN15daObjYajirusi_cD1Ev, now in src/actors/daObjYajirusi_c.cpp] */
+    dExtShadowModel_c mShadowModel;            /* 0x320 */
     u8  mShadowMat;         /* 0x348 */
     u8  pad_349[0x33];
     u8  mVariant;           /* 0x37c */

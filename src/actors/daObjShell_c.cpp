@@ -49,8 +49,8 @@
  *   structurally the twin of the already named
  *   daObjTbox_c::UpdateModelTransform two TUs earlier in this same overlay,
  *   but the cartridge records no name for it, and coining one is a rename PR
- *   rather than this one. It is typed against the class here so it at least
- *   reads as the member it is.
+ *   rather than this one. It is written here as the member it is, under its
+ *   address name.
  * - SharedFilePtr has no recovered layout, so the BCA_File handle each SetAnim
  *   call passes is still read as the raw word at +4.
  * - the three SharedFilePtr handles at 0x0211c9bc/0x0211c9c4/0x0211c9cc are
@@ -62,7 +62,7 @@
  * ROM address order:
  *   [0] 0x0211a930  _ZN12daObjShell_cD1Ev
  *   [1] 0x0211a968  _ZN12daObjShell_cD0Ev
- *   [2] 0x0211a9b4  func_ov064_0211a9b4
+ *   [2] 0x0211a9b4  _ZN12daObjShell_c19func_ov064_0211a9b4Ev
  *   [3] 0x0211a9f4  _ZN12daObjShell_c16CleanupResourcesEv
  *   [4] 0x0211aa30  _ZN12daObjShell_c6RenderEv
  *   [5] 0x0211aa58  _ZN12daObjShell_c8BehaviorEv
@@ -107,12 +107,6 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
 extern SharedFilePtr data_ov064_0211c9bc;
 extern SharedFilePtr data_ov064_0211c9c4;
 extern SharedFilePtr data_ov064_0211c9cc;
-
-/* This TU's own helper, still carrying its linker name -- see Known limits.
- * Declared here because InitResources calls it and is written first.
- * `char *` is the spelling include/decl_common.h gives it tree-wide; the
- * definition below takes its typed view of the object internally. */
-void func_ov064_0211a9b4(char *clam);
 }
 
 // @symbol daObjShell_c_classInit
@@ -147,8 +141,8 @@ extern "C" daObjShell_c *daObjShell_c_classInit()
  */
 int daObjShell_c::InitResources()
 {
-    Animation::LoadFile(data_ov064_0211c9cc);
-    Animation::LoadFile(data_ov064_0211c9bc);
+    dExtFrameCtrl_c::LoadFile(data_ov064_0211c9cc);
+    dExtFrameCtrl_c::LoadFile(data_ov064_0211c9bc);
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov064_0211c9c4);
     mModelAnim.SetFile(modelFile, 1, -1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
@@ -157,7 +151,7 @@ int daObjShell_c::InitResources()
         0x40000000, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x64000, 0x64000, 0x200004, 0);
-    func_ov064_0211a9b4((char *)this);
+    func_ov064_0211a9b4();
     mState = STATE_SHUT;
     return 1;
 }
@@ -175,7 +169,7 @@ int daObjShell_c::InitResources()
  * Whatever the state, a touched actor whose actor ID is ACTOR_PLAYER is hurt
  * for 2 with 0xc000 of knockback, every frame the contact persists.
  *
- * mModelAnim carries the Animation base at +0x50, so the ROM's calls on
+ * mModelAnim carries the dExtFrameCtrl_c base at +0x50, so the ROM's calls on
  * `this + 0x124` are member calls on `this + 0xd4`: the compiler applies
  * the same adjustment the hand-spelt offsets did.
  *
@@ -290,24 +284,21 @@ int daObjShell_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov064_0211a9b4
+// @symbol _ZN12daObjShell_c19func_ov064_0211a9b4Ev
 /* Rebuilds the model's world matrix from the actor's facing angle and its
  * position, the position scaled down by 8 the way every ModelAnim actor in
  * this overlay does it. InitResources calls it once, at spawn.
  *
- * Still carries its linker name: daObjTbox_c, promoted just before this TU in
- * the same overlay, has a structurally identical helper named
+ * Keeps its address name: daObjTbox_c, promoted just before this TU in the
+ * same overlay, has a structurally identical helper named
  * UpdateModelTransform, but the cartridge records no name for this one and
- * coining one belongs in a rename PR. It keeps C linkage, so the symbol the
- * delinker configured is exactly the symbol this TU defines. */
-extern "C" void func_ov064_0211a9b4(char *clam)
+ * coining one belongs in a rename PR. */
+void daObjShell_c::func_ov064_0211a9b4()
 {
-    daObjShell_c *shell = (daObjShell_c *)clam;
-
-    Matrix4x3_FromRotationY(&shell->mModelAnim.mat4x3, shell->mAngleY);
-    shell->mModelAnim.mat4x3.t.x = shell->mPosX >> 3;
-    shell->mModelAnim.mat4x3.t.y = shell->mPosY >> 3;
-    shell->mModelAnim.mat4x3.t.z = shell->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
+    mModelAnim.mat4x3.t.x = mPosX >> 3;
+    mModelAnim.mat4x3.t.y = mPosY >> 3;
+    mModelAnim.mat4x3.t.z = mPosZ >> 3;
 }
 
 /* The destructors (D0 0x0211a968, D1 0x0211a930) are not written here on

@@ -33,14 +33,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020b9f00",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020b9f00Ev",
       "address": "0x020b9f00",
       "size": "0x00000080",
       "legacy_source": "src/func_ov002_020b9f00.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov002_020b9f80",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020b9f80Ev",
       "address": "0x020b9f80",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov002_020b9f80.cpp",
@@ -54,77 +54,77 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov002_020ba01c",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba01cEiiii",
       "address": "0x020ba01c",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov002_020ba01c.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov002_020ba0bc",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba0bcEv",
       "address": "0x020ba0bc",
       "size": "0x0000003c",
       "legacy_source": "src/func_ov002_020ba0bc.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov002_020ba0f8",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba0f8Ev",
       "address": "0x020ba0f8",
       "size": "0x000000b4",
       "legacy_source": "src/func_ov002_020ba0f8.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov002_020ba1ac",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba1acEv",
       "address": "0x020ba1ac",
       "size": "0x00000100",
       "legacy_source": "src/func_ov002_020ba1ac.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov002_020ba2ac",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba2acEv",
       "address": "0x020ba2ac",
       "size": "0x00000024",
       "legacy_source": "src/func_ov002_020ba2ac.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov002_020ba2d0",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba2d0Ev",
       "address": "0x020ba2d0",
       "size": "0x000000d8",
       "legacy_source": "src/func_ov002_020ba2d0.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov002_020ba3a8",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba3a8Ev",
       "address": "0x020ba3a8",
       "size": "0x00000054",
       "legacy_source": "src/func_ov002_020ba3a8.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov002_020ba3fc",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba3fcEv",
       "address": "0x020ba3fc",
       "size": "0x000000c4",
       "legacy_source": "src/func_ov002_020ba3fc.cpp",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov002_020ba4c0",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba4c0Ev",
       "address": "0x020ba4c0",
       "size": "0x00000018",
       "legacy_source": "src/func_ov002_020ba4c0.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov002_020ba4d8",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba4d8Ei",
       "address": "0x020ba4d8",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020ba4d8.cpp",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov002_020ba520",
+      "symbol": "_ZN13daObjSwitch_c19func_ov002_020ba520Ev",
       "address": "0x020ba520",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020ba520.cpp",
@@ -183,10 +183,10 @@
     "SS2874-08: daStarBase_c InitResources now declares shared data_ov002_0211092c as SharedFilePtr using the existing header. This is a caller declaration repair at ov002:[020eb204,020eb63c), with complete object identity and strict bytes proved; no new mismatch bank or shared-header edit."
   ],
   "verification": {
-    "round": "PR2874 producer: whole promoted TU compiled once; strict20 and direct metadata proof in notes/experiments/pr2874-source-repair-0920.json",
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/switch2874/final.o (ignored producer worktree artifact)",
+    "object": "build/tu/ov002-daObjSwitch_c/daObjSwitch_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 20,
     "functions_declared": 20,

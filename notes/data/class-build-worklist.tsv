@@ -4,7 +4,7 @@ dPa_c::level_c::callback_c	DONE	include\dPa_c.h  [alias: header uses pre-rename 
 cMgSmartball_object_c	DONE	include\cMgSmartball_object_c.h		11	ov006	3
 dExtModel_c	DONE	include\ModelBase.h  [alias: header uses pre-rename name]		3	arm9	6
 dExtFrameCtrl_c	DONE	include\Animation.h  [alias: header uses pre-rename name]		4	arm9	13
-dFader_c	DONE	include\Fader.h  [alias: header uses pre-rename name]		1	arm9	4
+dFader_c	DONE	include\dFader_c.h  [alias: header uses pre-rename name]		1	arm9	4
 dGraph_c::callback_c	DONE	include\dGraph_c.h  [alias: header uses pre-rename name]		5		0
 dBgCh	DONE	include\dBgCh.h		4	arm9	9
 dBgPc	DONE	include\dBgPc.h		1	arm9	4
@@ -13,7 +13,7 @@ dCc_c	DONE	include\dCc_c.h		2	arm9	9
 dMgTrmpObjAdapter_c	MISSING	include/dMgTrmpObjAdapter_c.h (MISSING)		2	ov006	0
 dThIcon_c	DONE	include\dThIcon_c.h		3	ov001	2
 std::type_info	BUILTIN	include/std.h (outer header, nested class MISSING)		1	arm9	0
-daDemo_c::param_c	MISSING	include\CutsceneObject.h  [alias: header uses pre-rename name]		2		0
+daDemo_c::param_c	DONE	include\daDemo_c.h		2		0
 mHeap::Heap_t	MISSING	include/mHeap.h (outer header, nested class MISSING)		2	arm9	0
 dM3dGLin	PARTIAL	include\dM3dGLin.h		1	ov002	2
 dM3dGSph	DONE	include\dM3dGSph.h		1	arm9	5
@@ -48,12 +48,12 @@ dExtAnmModel_c	DONE	include\ModelAnim.h  [alias: header uses pre-rename name]	dE
 dExtAnmMaterial_c	DONE	include\MaterialChanger.h  [alias: header uses pre-rename name]	dExtFrameCtrl_c	0	arm9	6
 dExtAnmTexPat_c	DONE	include\TextureSequence.h  [alias: header uses pre-rename name]	dExtFrameCtrl_c	0	arm9	8
 dExtAnmTexSRT_c	DONE	include\TextureTransformer.h  [alias: header uses pre-rename name]	dExtFrameCtrl_c	0	arm9	6
-dFdBrightness_c	DONE	include\FaderBrightness.h  [alias: header uses pre-rename name]	dFader_c	1	arm9	11
+dFdBrightness_c	DONE	include\dFdBrightness_c.h  [alias: header uses pre-rename name]	dFader_c	1	arm9	11
 dScDSMT_c::graphCallback_c	MISSING	include\dScDSMT_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	ov007	0
 dScEntry_c::graphCallback_c	MISSING	include\dScEntry_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	ov075	0
 dScMB_c::graphCallback_c	MISSING	include\dScMB_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	arm9	0
 dScMgBase_c::graphCallback_c	MISSING	include\dScMgBase_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0	ov004	0
-dScStage_c::graphCallback_c	MISSING	include\Stage.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0		0
+dScStage_c::graphCallback_c	MISSING	include\dScStage_c.h  [alias: header uses pre-rename name]	dGraph_c::callback_c	0		0
 dBgCh_Actr	DONE	include\dBgCh_Actr.h	dBgCh	0	arm9	18
 dBgCh_Gnd	DONE	include\dBgCh_Gnd.h	dBgPi	0	arm9	5
 dBgCh_Lin	DONE	include\dBgCh_Lin.h	dM3dGLin	0	arm9	6
@@ -68,8 +68,8 @@ dMgPsOpt_c::TouchIcon_c	DONE	include\dMgPsOpt_c.h  [alias: header uses pre-renam
 dScEntry_c::icon_c	DONE	include\dScEntry_c.h  [alias: header uses pre-rename name]	dThIcon_c	0	ov075	0
 dScMgSlot1_c::betIcon_c	DONE	include\dScMgSlot1_c.h  [alias: header uses pre-rename name]	dThIcon_c	0	ov006	0
 abi::__class_type_info	MISSING	include/abi.h (outer header, nested class MISSING)	std::type_info	2	arm9	0
-daDemo_c::anmModel_c	MISSING	include\CutsceneObject.h  [alias: header uses pre-rename name]	daDemo_c::param_c	0		0
-daDemo_c::simpleModel_c	MISSING	include\CutsceneObject.h  [alias: header uses pre-rename name]	daDemo_c::param_c	0		0
+daDemo_c::anmModel_c	DONE	include\daDemo_c.h	daDemo_c::param_c	0		0
+daDemo_c::simpleModel_c	DONE	include\daDemo_c.h	daDemo_c::param_c	0		0
 mHeap::ExpHeap_t	MISSING	include/mHeap.h (outer header, nested class MISSING)	mHeap::Heap_t	0	arm9	0
 mHeap::SolidHeap_t	MISSING	include/mHeap.h (outer header, nested class MISSING)	mHeap::Heap_t	0	arm9	0
 dMgJump3DMario_c	DONE	include\dMgJump3DMario_c.h	dMg3DHeyhoObjAdapter_c	0	ov006	5
@@ -88,7 +88,7 @@ dPa_c::level_c::scaleCallback_c	DONE	include\dPa_c.h  [alias: header uses pre-re
 dPa_c::level_c::splashCallback_c	DONE	include\dPa_c.h  [alias: header uses pre-rename name]	dPa_c::level_c::simpleCallback_c	0		0
 dExtAnm2Model_c	DONE	include\ModelAnim2.h  [alias: header uses pre-rename name]	dExtAnmModel_c	0	arm9	5
 dExtBlendAnmModel_c	DONE	include\BlendModelAnim.h  [alias: header uses pre-rename name]	dExtAnmModel_c	0	arm9	10
-dFdColor_c	DONE	include\FaderColor.h  [alias: header uses pre-rename name]	dFdBrightness_c	3	arm9	4
+dFdColor_c	DONE	include\dFdColor_c.h  [alias: header uses pre-rename name]	dFdBrightness_c	3	arm9	4
 dBgW_KcMbg	DONE	include\dBgW_KcMbg.h	dBgW_Kc	1	arm9	16
 dCcAcPos_c	DONE	include\dCcAcPos_c.h	dCcAc_c	0	arm9	6
 dMgTrmpln2Mario_c	MISSING	include/dMgTrmpln2Mario_c.h (MISSING)	dMgTrmpRingObjAdapter_c	0	ov006	0
@@ -196,12 +196,12 @@ dScEntry_c	DONE	include\dScEntry_c.h	dScene_c	0	ov075	14
 dScGameOver_c	DONE	include\dScGameOver_c.h	dScene_c	0	ov003	7
 dScMB_c	DONE	include\dScMB_c.h	dScene_c	0	arm9	9
 dScMiniGm_c	DONE	include\dScMiniGm_c.h	dScene_c	0	ov005	7
-dScStage_c	DONE	include\Stage.h  [alias: header uses pre-rename name]	dScene_c	0	arm9;ov002	43
+dScStage_c	DONE	include\dScStage_c.h  [alias: header uses pre-rename name]	dScene_c	0	arm9;ov002	43
 dScStarSel_c	DONE	include\dScStarSel_c.h	dScene_c	0	ov003	7
 dScTitle_c	DONE	include\dScTitle_c.h	dScene_c	0	ov003	7
-dCamera_c	DONE	include\Camera.h  [alias: header uses pre-rename name]	dView_c	0	arm9	14
+dCamera_c	DONE	include\dCamera_c.h  [alias: header uses pre-rename name]	dView_c	0	arm9	14
 dFdDummy_c	DONE	include\dFdDummy_c.h	dFdColor_c	0	arm9	5
-dFdWipe_c	DONE	include\FaderWipe.h  [alias: header uses pre-rename name]	dFdColor_c	0	arm9	5
+dFdWipe_c	DONE	include\dFdWipe_c.h  [alias: header uses pre-rename name]	dFdColor_c	0	arm9	5
 dWipe_c	DONE	include\dWipe_c.h	dFdColor_c	0	arm9	10
 dBgW_KcMbgSclY	DONE	include\dBgW_KcMbgSclY.h	dBgW_KcMbg	0	arm9	10
 daObjKaitendai_c	DONE	include\daObjKaitendai_c.h	dBgActor_c	5	ov002	4

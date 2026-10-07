@@ -35,14 +35,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov006_020e38b0",
+      "symbol": "_ZN15dScMgCurling2_c10DrawValuesEv",
       "address": "0x020e38b0",
       "size": "0x00000098",
       "legacy_source": "src/func_ov006_020e38b0.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov006_020e3948",
+      "symbol": "_ZN15dScMgCurling2_c9AgeValuesEv",
       "address": "0x020e3948",
       "size": "0x00000098",
       "legacy_source": "src/func_ov006_020e3948.c",
@@ -56,14 +56,14 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov006_020e3b9c",
+      "symbol": "_ZN15dScMgCurling2_c11ClearValuesEv",
       "address": "0x020e3b9c",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020e3b9c.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov006_020e3bc4",
+      "symbol": "_ZN15dScMgCurling2_c10DrawPiecesEv",
       "address": "0x020e3bc4",
       "size": "0x00000088",
       "legacy_source": "src/func_ov006_020e3bc4.c",
@@ -168,35 +168,35 @@
       "ordinal": 20
     },
     {
-      "symbol": "func_ov006_020e4800",
+      "symbol": "_ZN15dScMgCurling2_c10StepPiecesEv",
       "address": "0x020e4800",
       "size": "0x000000d4",
       "legacy_source": "src/func_ov006_020e4800.cpp",
       "ordinal": 21
     },
     {
-      "symbol": "func_ov006_020e48d4",
+      "symbol": "_ZN15dScMgCurling2_c10SeedPiecesEv",
       "address": "0x020e48d4",
       "size": "0x000001b0",
       "legacy_source": "src/func_ov006_020e48d4.c",
       "ordinal": 22
     },
     {
-      "symbol": "func_ov006_020e4a84",
+      "symbol": "_ZN15dScMgCurling2_c9DrawMarksEv",
       "address": "0x020e4a84",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov006_020e4a84.c",
       "ordinal": 23
     },
     {
-      "symbol": "func_ov006_020e4b00",
+      "symbol": "_ZN15dScMgCurling2_c8AgeMarksEv",
       "address": "0x020e4b00",
       "size": "0x00000078",
       "legacy_source": "src/func_ov006_020e4b00.c",
       "ordinal": 24
     },
     {
-      "symbol": "func_ov006_020e4b78",
+      "symbol": "_ZN15dScMgCurling2_c10DrawCursorEv",
       "address": "0x020e4b78",
       "size": "0x0000005c",
       "legacy_source": "src/func_ov006_020e4b78.c",
@@ -217,21 +217,21 @@
       "ordinal": 27
     },
     {
-      "symbol": "func_ov006_020e4fe8",
+      "symbol": "_ZN15dScMgCurling2_c11DrawCounterEv",
       "address": "0x020e4fe8",
       "size": "0x00000094",
       "legacy_source": "src/func_ov006_020e4fe8.c",
       "ordinal": 28
     },
     {
-      "symbol": "func_ov006_020e507c",
+      "symbol": "_ZN15dScMgCurling2_c10DrawStonesEv",
       "address": "0x020e507c",
       "size": "0x000000c0",
       "legacy_source": "src/func_ov006_020e507c.c",
       "ordinal": 29
     },
     {
-      "symbol": "func_ov006_020e513c",
+      "symbol": "_ZN15dScMgCurling2_c14SeparateStonesEi",
       "address": "0x020e513c",
       "size": "0x00000314",
       "legacy_source": "src/func_ov006_020e513c.cpp",
@@ -346,7 +346,8 @@
     "METHOD-CONVERSION PASS (stage 3.5). Seventeen of the 29 non-destructor members are now real dScMgCurling2_c:: methods declared in include/dScMgCurling2_c.h: SpawnValue, StepYRampDown, StepYRampUp, StepYRestart, StepXSettle, StepXPushNeg, StepXPushPos, StepXPick, StepXAndY, StepXSettleFast, StepXPushNegFast, StepXPushPosFast, StepXPickFast, StepXOnly, PickStepMode, DragUpdate and DragBegin. Every conversion is byte-neutral: 31/31 MATCH, objisolate clean, ROM-ascending emission order, unchanged from the pre-conversion run. The bodies keep the shard's raw-offset spellings behind a `char *x = (char *)this;` prologue, so none of the humanizer's measured levers moved.",
     "SYMBOLS.TXT IS PART OF THIS EDIT. Sixteen of the seventeen renamed members are the target of an 8-byte {code pointer, zero adjustment} pointer-to-member record in unowned ov006 .data (0x0213c40c..0x0213c4b4), which __sinit_ov006_02130758 copies into the BSS dispatch arrays. dsd resolves those records BY SYMBOL NAME, so all seventeen rows in config/arm9/overlays/ov006/symbols.txt move to the mangled spelling in the same commit; a row left behind would link its .data code word as 0x00000000 with a green compile. SpawnValue is the seventeenth: it carries no .data record and is reached only from inside this TU and from the sourceless hole's own cartridge bytes.",
     "TWELVE MEMBERS REFUSED CONVERSION, AND THE REASON IS MEASURED AND IS NOT BYTES. With all 29 converted the TU still reports 31/31 MATCH / objisolate clean / ROM-ascending, but `python tools/rombuild.py -j 6 --no-rom` fails with exactly twelve `mwldarm.exe: Undefined` lines: func_ov006_020e38b0, _020e3948, _020e3bc4, _020e4a84, _020e4b78, _020e4fe8, _020e507c (referenced from dScMgCurling2_c::Render()), _020e4800 and _020e3948 (Behavior()), _020e48d4 (InitResources()), _020e3b9c (func_ov006_020e668c), _020e4b00 (func_ov006_020e628c) and _020e513c (func_ov006_020e5e3c). Those callers are still one-function shards above the sourceless hole, and they -- and include/decl_common.h -- spell the target by its C name. The twelve convert byte-neutrally the day segment B is promoted; nothing else blocks them.",
-    "THE SEVENTEEN NAMES ARE COINED. The ROM proves member-ness (a zero-adjustment pointer-to-member record) and each handler's index in its own table, both read out of __sinit_ov006_02130758 and quoted in include/dScMgCurling2_c.h. It does not carry the original identifiers, and the gameplay semantics of the 0x48c0 and 0x4fe0 record arrays remain on the scout's `unproven` list; no name asserts them."
+    "THE SEVENTEEN NAMES ARE COINED. The ROM proves member-ness (a zero-adjustment pointer-to-member record) and each handler's index in its own table, both read out of __sinit_ov006_02130758 and quoted in include/dScMgCurling2_c.h. It does not carry the original identifiers, and the gameplay semantics of the 0x48c0 and 0x4fe0 record arrays remain on the scout's `unproven` list; no name asserts them.",
+    "UPPER SIDE PROMOTED (segment B, fold/ov006-curling2-1005). The 20-member run above the func_ov006_020e5450 hole is src/actors/dScMgCurling2_c_upper.cpp under config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json -- the second half of this same linker run, licensed as its own TU because no manifest shape expresses a .text claim with a hole in it. With every C-name caller folded, the twelve members this manifest's earlier notes marked byte-neutrally convertible all took their real dScMgCurling2_c:: names in the same edit (DrawValues, AgeValues, ClearValues, DrawPieces, StepPieces, SeedPieces, DrawMarks, AgeMarks, DrawCursor, DrawCounter, DrawStones, SeparateStones), 31/31 MATCH unchanged. The decl_common.h decls note 101 enumerates are gone with them; note 105's migration is complete. The eight new names are coined the same way note 106 records for the first seventeen: .data pointer-to-member records prove member-ness, the ROM preserves no identifiers."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

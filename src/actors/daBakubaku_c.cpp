@@ -114,7 +114,7 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     int radius, int height, u32 d, u32 e);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a, void *b);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     void *p, void *v, u32 a, int f, u32 c, u32 d, u32 e);
@@ -163,8 +163,8 @@ s32 daBakubaku_c::InitResources()
     f = Model::LoadFile(*(SharedFilePtr *)data_ov032_02113a40);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov032_02113a48);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a48);
 
     bodyOffset.x = data_ov032_021137cc.x;
     bodyOffset.y = data_ov032_021137cc.y;
@@ -274,7 +274,7 @@ void daBakubaku_c::func_ov032_02112044()
         &data_020a0e68, mPosX >> 3,
         (mPosY - 0x5a000) >> 3, mPosZ >> 3);
     mShadowMat = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMat, 0xfa000, 0x258000, 0xf);
 }
 

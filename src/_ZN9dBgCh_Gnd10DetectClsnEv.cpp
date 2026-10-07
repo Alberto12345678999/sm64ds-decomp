@@ -10,7 +10,7 @@ extern "C" int func_020393ac(ClsnActor*);
 extern "C" int func_0203939c(ClsnActor*);
 extern "C" int func_0203938c(ClsnActor*);
 extern "C" int func_02035354(void*, ClsnObj*);
-extern "C" void func_02037fec(char*, int, int, int, ClsnActor*);
+
 extern "C" int Vec3_HorzDist(Vec3*, Vec3*);
 extern "C" ClsnActor* data_020a0c80[];
 
@@ -20,7 +20,7 @@ int dBgCh_Gnd::DetectClsn()
     func_02037464(this);
     ClsnActor* o = data_020a0c80[0];
     if (o != 0 && func_02035354(this, func_020393b4(o)) == 0 && o->v6(this) != 0) {
-        func_02037fec((char*)this + 0x10, 0, func_020393ac(o), (int)func_020393b4(o), o);
+        ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
         ret = 1;
     }
     int flag = 1;
@@ -49,7 +49,7 @@ int dBgCh_Gnd::DetectClsn()
             if (Vec3_HorzDist(selfpos, &pos) > thr) continue;
         }
         if (obj->v6(this) != 0) {
-            func_02037fec((char*)this + 0x10, i, func_020393ac(obj), (int)func_020393b4(obj), obj);
+            ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(obj), (dActor_c *)func_020393b4(obj), (dBgW *)obj);
             ret = one;
         }
     }

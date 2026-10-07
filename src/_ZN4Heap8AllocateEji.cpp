@@ -5,8 +5,9 @@
  * NULL to the caller, Crash() instead.
  *
  * RETURN TYPE: void*, from the definition. This file used to declare `int
- * Heap::Allocate(...)' while _ZN4Heap8AllocateEj.cpp -- the sibling overload,
- * which forwards to this one -- declared the same function `void*'. Two files
+ * Heap::Allocate(...)' while the sibling overload -- now in
+ * src/engine/heap/Heap.cpp and forwarding to this one -- declared the same
+ * function `void*'. Two files
  * disagreeing about one signature is exactly the debt the shadow structs
  * create. ExpandingHeap::VAllocate and SolidHeap::VAllocate both return void*,
  * so void* it is, and the two files now agree because they share a header.

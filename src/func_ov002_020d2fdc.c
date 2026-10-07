@@ -10,7 +10,7 @@ extern void *data_0209f318;
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *thiz, unsigned int id, int flags, int speed, unsigned int extra);
 extern int _ZNK6Player14GetBodyModelIDEjb(void *thiz, unsigned int a, int b);
-extern int _ZNK9Animation12WillHitFrameEi(void *thiz, int f);
+extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thiz, int f);
 extern void func_ov002_020d4c30(void *self);
 
 int func_ov002_020d2fdc(char *self)
@@ -44,10 +44,10 @@ int func_ov002_020d2fdc(char *self)
 
         id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
         anim = (char *)((int *)(self + 0xdc))[id] + 0x50;
-        if (_ZNK9Animation12WillHitFrameEi(anim, 4) ||
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 4) ||
             (id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0),
              anim = (char *)((int *)(self + 0xdc))[id] + 0x50,
-             _ZNK9Animation12WillHitFrameEi(anim, 0x13))) {
+             _ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0x13))) {
             func_ov002_020d4c30(self);
         }
         return 0;

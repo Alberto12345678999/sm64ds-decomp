@@ -11,7 +11,7 @@
  *     dEnemyBase_c                        ends 0x110
  *     dCcAcPos_c[4] 0x110 + 4*0x40 = 0x210  -> ModelAnim
  *     ModelAnim                    0x210 +   0x64 = 0x274  -> the shadows
- *     ShadowModel[3]               0x274 + 3*0x28 = 0x2ec
+ *     dExtShadowModel_c[3]               0x274 + 3*0x28 = 0x2ec
  *     Vector3[3]                   0x3ac + 3*0x0c = 0x3d0  -> MaterialChanger
  *     MaterialChanger              0x3d0 +   0x14 = 0x3e4  -> TextureSequence
  *     TextureSequence              0x3e4 +   0x14 = 0x3f8  -> TextureTransformer
@@ -22,8 +22,8 @@
  * header had split a Vector3[3] at 0x3ac into nine scalars and named six of
  * them (elements 1 and 2). Both branches spell the array now. Two more former
  * unknowns sat inside embedded animations rather than in daKuriKing_c at all --
- * 0x3d8 is the MaterialChanger's Animation cursor (+0x08) and 0x3f0 is the
- * TextureSequence's playback speed (+0x0c); see include/Animation.h.
+ * 0x3d8 is the MaterialChanger's dExtFrameCtrl_c cursor (+0x08) and 0x3f0 is the
+ * TextureSequence's playback speed (+0x0c); see include/dExtFrameCtrl_c.h.
  *
  * Field provenance: notes/enemy-leaf-provenance.md.
  *
@@ -39,7 +39,7 @@
 
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "MaterialChanger.h"
 #include "TextureSequence.h"
 #include "TextureTransformer.h"
@@ -49,7 +49,7 @@
 struct daKuriKing_c : dEnemyBase_c {
     dCcAcPos_c mdCc_cs[4];  /* 0x110 */
     ModelAnim mModelAnim;                         /* 0x210 */
-    ShadowModel mShadowModels[3];                 /* 0x274 */
+    dExtShadowModel_c mShadowModels[3];                 /* 0x274 */
     u8  pad_2ec[0xc0];
     Vector3 mCylClsnPos[3];                           /* 0x3ac */
     MaterialChanger mMaterialChanger;             /* 0x3d0 */
@@ -118,6 +118,51 @@ struct daKuriKing_c : dEnemyBase_c {
        function -- and with it _ZTV12daKuriKing_c -- stays where it already was. */
     virtual s32 InitResources();
     virtual s32 Render();
+
+    /* The class's ordinary methods, under the ROM's only surviving spellings:
+       their addresses. The state handlers are the records __sinit copies into
+       data_ov074_021230f8; func_ov074_021203e4 runs the enter side. */
+    void func_ov074_0211f154();
+    void func_ov074_0211f244();
+    void func_ov074_0211f344(u8 value);
+    int  func_ov074_0211f38c();
+    void func_ov074_0211f5b8();
+    void func_ov074_0211fa08();
+    void func_ov074_0211fa74();
+    void func_ov074_0211fb84();
+    int  func_ov074_0211fbd0();
+    void func_ov074_0211fc34();
+    void func_ov074_0211fc38();
+    void func_ov074_0211fd48();
+    void func_ov074_0211fd74();
+    void func_ov074_0211ffac();
+    void func_ov074_0211ffcc();
+    void func_ov074_02120080();
+    void func_ov074_0212016c();
+    void func_ov074_0212018c();
+    void func_ov074_021201f0();
+    int  func_ov074_021203e4(int i);
+    void func_ov074_0212042c();
+    int  func_ov074_02120474();
+    int  func_ov074_021204c0();
+    int  func_ov074_021206c8();
+    int  func_ov074_021207b8();
+    void func_ov074_02120808();
+    int  func_ov074_02120b24();
+    void func_ov074_02120b90();
+    void func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mode);
+    void func_ov074_02120d74();
+    void func_ov074_02121300();
+    void func_ov074_02121380();
+    int  func_ov074_021216f4();
+    void func_ov074_02121800();
+    void func_ov074_0212195c();
+    void func_ov074_0212199c();
+    int  func_ov074_02121a20(int idx);
+    int  func_ov074_0212229c();
+    int  func_ov074_021222e0();
+    int  func_ov074_021223bc();
+    int  func_ov074_02122634();
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -158,13 +203,13 @@ struct daKuriKing_c {
     s32 mCylClsnPos[9];              /* 0x3ac */
     u8  mMaterialChanger;            /* 0x3d0 */
     u8  pad_3d1[0x7];
-    /* mMaterialChanger's Animation base +0x08, the 20.12 playback cursor.
+    /* mMaterialChanger's dExtFrameCtrl_c base +0x08, the 20.12 playback cursor.
        InitResources sets it to data_ov074_02122e04[mSizeIndex] << 12. */
     s32 mMaterialChangerFrame;       /* 0x3d8 */
     u8  pad_3dc[0x8];
     u8  mTextureSequence;            /* 0x3e4 */
     u8  pad_3e5[0xb];
-    /* mTextureSequence's Animation base +0x0c, the playback speed. InitResources
+    /* mTextureSequence's dExtFrameCtrl_c base +0x0c, the playback speed. InitResources
        calls SetFile with 0x1000 and then zeroes this, freezing the sequence. */
     s32 mTextureSequenceSpeed;       /* 0x3f0 */
     u8  pad_3f4[0x4];

@@ -16,7 +16,7 @@
  *     0x144 dCcAc_c       0x34   -> 0x178
  *     0x178 dBgCh_Actr             0x1bc  -> 0x334
  *     0x334 BlendModelAnim           0x70   -> 0x3a4
- *     0x3a4 ShadowModel              0x28   -> 0x3cc
+ *     0x3a4 dExtShadowModel_c              0x28   -> 0x3cc
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
  * is not independent evidence about the ROM.
@@ -34,7 +34,7 @@
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
 #include "PathPtr.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daJango_c : dEnemyBase_c {
@@ -47,7 +47,7 @@ struct daJango_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c2;  /* 0x144 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x178 */
     BlendModelAnim               mBlendModelAnim;       /* 0x334 */
-    ShadowModel                  mShadowModel;          /* 0x3a4 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x3a4 */
     /* Both matrices are 12 words rather than a Matrix4x3 member: a Matrix4x3
        member makes the synthesised constructor emit a Matrix4x3 destructor that
        the ROM has no symbol for, and the ROM build refuses the object.

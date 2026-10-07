@@ -8,7 +8,7 @@
  * fBase_c::operator new(1168) + the inherited dEnemyBase_c ctor + this
  * class's vtable store + the five member subobjects in field order
  * (two dCcAc_c at +0x110/+0x144, dBgCh_Actr at +0x178, BlendModelAnim at
- * +0x334, ShadowModel at +0x3a4). daJango_c has no user-declared
+ * +0x334, dExtShadowModel_c at +0x3a4). daJango_c has no user-declared
  * constructor, so `new daJango_c()` reproduces the identical sequence.
  *
  * How it behaves: a condor that flies a loop (CIRCLE), swoops (SWOOP) at a
@@ -63,7 +63,7 @@ extern "C" int AngleDiff(int a, int b);
 #include "SaveData.h"
 #include "Player.h"
 #include "BlendModelAnim.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -148,7 +148,7 @@ extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
 extern void MulMat4x3Mat4x3(void* a, void* b, void* c);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, Fix12i r, Fix12i h, unsigned int d, unsigned int e);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *a, Fix12i b, Fix12i c, void *d, void *e);
 extern SharedFilePtr data_ov062_0211e0fc;
@@ -292,9 +292,9 @@ int daJango_c::InitResources()
     bmd = Model::LoadFile(data_ov062_0211e0fc);                 /* jango.bmd */
     mBlendModelAnim.SetFile((BMD_File *)bmd, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */
-    Animation::LoadFile(data_ov062_0211e10c);                   /* jango_damage.bca */
-    Animation::LoadFile(data_ov062_0211e104);                   /* jango_fly.bca */
+    dExtFrameCtrl_c::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */
+    dExtFrameCtrl_c::LoadFile(data_ov062_0211e10c);                   /* jango_damage.bca */
+    dExtFrameCtrl_c::LoadFile(data_ov062_0211e104);                   /* jango_fly.bca */
     Model::LoadFile(data_ov002_0210da40);
     Model::LoadFile(data_ov002_0210d9a0);
     Model::LoadFile(data_ov002_0210d9c0);
@@ -442,7 +442,7 @@ int daJango_c::Behavior()
                 goto skip_destroy;
             } else if (*(unsigned char *)((char *)p + 0x403) == 0) {
                 /* daObjMarioCap_c::unk_403: the cap sets it to 1 in
-                   func_ov002_020b76ec, the same function that clears the +0xc8
+                   InitTaken, the same function that clears the +0xc8
                    matrix pointer stored below. */
                 p->mPosX = mHeldPosX;
                 p->mPosY = mHeldPosY;
@@ -582,7 +582,7 @@ void func_ov062_0211c6a8(daJango_c* c)
 
     Matrix4x3_FromTranslation(data_020a0e68, c->mPosX >> 3, (c->mPosY - 0x18000) >> 3, c->mPosZ >> 3);
     *(M48*)&c->mShadowMat = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mShadowMat, 0x40000, 0x258000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mShadowMat, 0x40000, 0x258000, 0xf);
 }
 }
 
