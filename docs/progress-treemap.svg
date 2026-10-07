@@ -13633,87 +13633,87 @@ matched: yes</title></rect><rect x="463.90" y="127.82" width="10.24" height="6.5
 module: ov002
 addr: 0x020b6f68
 size: 100 bytes
-matched: yes</title></rect><rect x="474.14" y="127.82" width="55.31" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b6fcc
+matched: yes</title></rect><rect x="474.14" y="127.82" width="55.31" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c10CheckTouchEv
 module: ov002
 addr: 0x020b6fcc
 size: 540 bytes
-matched: yes</title></rect><rect x="529.45" y="127.82" width="0.82" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b71e8
+matched: yes</title></rect><rect x="529.45" y="127.82" width="0.82" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c7DormantEv
 module: ov002
 addr: 0x020b71e8
 size: 8 bytes
-matched: yes</title></rect><rect x="530.27" y="127.82" width="1.64" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b71f0
+matched: yes</title></rect><rect x="530.27" y="127.82" width="1.64" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c11InitDormantEv
 module: ov002
 addr: 0x020b71f0
 size: 16 bytes
-matched: yes</title></rect><rect x="531.91" y="127.82" width="31.14" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7200Ev
+matched: yes</title></rect><rect x="531.91" y="127.82" width="31.14" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c4AnimEv
 module: ov002
 addr: 0x020b7200
 size: 304 bytes
-matched: yes</title></rect><rect x="563.04" y="127.82" width="42.61" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7330
+matched: yes</title></rect><rect x="563.04" y="127.82" width="42.61" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c8InitAnimEv
 module: ov002
 addr: 0x020b7330
 size: 416 bytes
-matched: yes</title></rect><rect x="354.10" y="134.31" width="49.72" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b74d0Ev
+matched: yes</title></rect><rect x="354.10" y="134.31" width="49.72" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c5TakenEv
 module: ov002
 addr: 0x020b74d0
 size: 540 bytes
-matched: yes</title></rect><rect x="403.82" y="134.31" width="27.99" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b76ecEv
+matched: yes</title></rect><rect x="403.82" y="134.31" width="27.99" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c9InitTakenEv
 module: ov002
 addr: 0x020b76ec
 size: 304 bytes
-matched: yes</title></rect><rect x="431.81" y="134.31" width="78.45" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b781c
+matched: yes</title></rect><rect x="431.81" y="134.31" width="78.45" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c5SlideEv
 module: ov002
 addr: 0x020b781c
 size: 852 bytes
-matched: yes</title></rect><rect x="510.26" y="134.31" width="17.68" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7b70
+matched: yes</title></rect><rect x="510.26" y="134.31" width="17.68" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c9InitSlideEv
 module: ov002
 addr: 0x020b7b70
 size: 192 bytes
-matched: yes</title></rect><rect x="527.94" y="134.31" width="15.84" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7c30Ev
+matched: yes</title></rect><rect x="527.94" y="134.31" width="15.84" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c4FallEv
 module: ov002
 addr: 0x020b7c30
 size: 172 bytes
-matched: yes</title></rect><rect x="543.78" y="134.31" width="1.47" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7cdc
+matched: yes</title></rect><rect x="543.78" y="134.31" width="1.47" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c8InitFallEv
 module: ov002
 addr: 0x020b7cdc
 size: 16 bytes
-matched: yes</title></rect><rect x="545.25" y="134.31" width="9.94" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7cecEv
+matched: yes</title></rect><rect x="545.25" y="134.31" width="9.94" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c10TimedWait2Ev
 module: ov002
 addr: 0x020b7cec
 size: 108 bytes
-matched: yes</title></rect><rect x="555.19" y="134.31" width="1.84" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7d58Ev
+matched: yes</title></rect><rect x="555.19" y="134.31" width="1.84" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c14InitTimedWait2Ev
 module: ov002
 addr: 0x020b7d58
 size: 20 bytes
-matched: yes</title></rect><rect x="557.03" y="134.31" width="3.68" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7d6c
+matched: yes</title></rect><rect x="557.03" y="134.31" width="3.68" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c9TouchWaitEv
 module: ov002
 addr: 0x020b7d6c
 size: 40 bytes
-matched: yes</title></rect><rect x="560.72" y="134.31" width="0.74" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7d94
+matched: yes</title></rect><rect x="560.72" y="134.31" width="0.74" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c13InitTouchWaitEv
 module: ov002
 addr: 0x020b7d94
 size: 8 bytes
-matched: yes</title></rect><rect x="561.45" y="134.31" width="9.94" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7d9cEv
+matched: yes</title></rect><rect x="561.45" y="134.31" width="9.94" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c9TimedWaitEv
 module: ov002
 addr: 0x020b7d9c
 size: 108 bytes
-matched: yes</title></rect><rect x="571.40" y="134.31" width="1.84" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7e08Ev
+matched: yes</title></rect><rect x="571.40" y="134.31" width="1.84" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c13InitTimedWaitEv
 module: ov002
 addr: 0x020b7e08
 size: 20 bytes
-matched: yes</title></rect><rect x="573.24" y="134.31" width="24.31" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7e1c
+matched: yes</title></rect><rect x="573.24" y="134.31" width="24.31" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c4WaitEv
 module: ov002
 addr: 0x020b7e1c
 size: 264 bytes
-matched: yes</title></rect><rect x="597.55" y="134.31" width="0.74" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7f24
+matched: yes</title></rect><rect x="597.55" y="134.31" width="0.74" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c8InitWaitEv
 module: ov002
 addr: 0x020b7f24
 size: 8 bytes
-matched: yes</title></rect><rect x="598.28" y="134.31" width="7.37" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b7f2c
+matched: yes</title></rect><rect x="598.28" y="134.31" width="7.37" height="7.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c10EnterStateEPv
 module: ov002
 addr: 0x020b7f2c
 size: 80 bytes
-matched: yes</title></rect><rect x="354.10" y="141.54" width="41.92" height="9.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c19func_ov002_020b7f7cEv
+matched: yes</title></rect><rect x="354.10" y="141.54" width="41.92" height="9.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjMarioCap_c12UpdateMatrixEv
 module: ov002
 addr: 0x020b7f7c
 size: 612 bytes
