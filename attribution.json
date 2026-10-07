@@ -9486,6 +9486,7 @@
     "src/actors/Player.cpp#_ZN6Player12St_Walk_MainEv": "andrewboudreau",
     "src/actors/Player.cpp#func_ov002_020c19d0": "andrewboudreau",
     "src/actors/Player.cpp#func_ov002_020c607c": "andrewboudreau",
-    "src/actors/Player.cpp#func_ov002_020ce9c8": "andrewboudreau"
+    "src/actors/Player.cpp#func_ov002_020ce9c8": "andrewboudreau",
+    "src/actors/dPathLiftActor_c.cpp#__sinit_dPathLiftActor_c.cpp": "tangosdev"
   }
 }
