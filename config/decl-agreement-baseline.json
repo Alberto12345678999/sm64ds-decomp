@@ -14214,7 +14214,7 @@
         "return:short []"
       ]
     },
-    "data_020a0de8": {
+    "gTouchHeld": {
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char [][]"
       ],
@@ -14237,7 +14237,7 @@
         "return:unsigned char [][]"
       ]
     },
-    "data_020a0de9": {
+    "gTouchEdge": {
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char [][]"
       ],
@@ -14254,7 +14254,7 @@
         "return:unsigned char [][]"
       ]
     },
-    "data_020a0dea": {
+    "gTouchX": {
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned char [][]"
       ],
@@ -14275,9 +14275,18 @@
       ],
       "src/actors/dScStage_c.cpp": [
         "return:volatile unsigned char []"
+      ],
+      "include/PlayerInput.h": [
+        "return:unsigned char []"
+      ],
+      "src/actors/dScMgBomroom_c.cpp": [
+        "return:unsigned char []"
+      ],
+      "src/actors/dScMiniGm_c.cpp": [
+        "return:unsigned char []"
       ]
     },
-    "data_020a0deb": {
+    "gTouchY": {
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned char [][]"
       ],
@@ -14298,6 +14307,15 @@
       ],
       "src/actors/dScStage_c.cpp": [
         "return:volatile unsigned char []"
+      ],
+      "include/PlayerInput.h": [
+        "return:unsigned char []"
+      ],
+      "src/actors/dScMgBomroom_c.cpp": [
+        "return:unsigned char []"
+      ],
+      "src/actors/dScMiniGm_c.cpp": [
+        "return:unsigned char []"
       ]
     },
     "data_020a0df8": {
@@ -14305,7 +14323,7 @@
         "return:void *"
       ]
     },
-    "data_020a0e40": {
+    "gActivePlayerSlot": {
       "src/_ZN6Player12St_Land_InitEv.cpp": [
         "return:unsigned char []"
       ],
