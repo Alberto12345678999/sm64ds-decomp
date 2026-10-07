@@ -1509,6 +1509,7 @@
     "src/actors/daBgSnwmn_c.cpp#_ZN11daBgSnwmn_cD1Ev": "github-actions[bot]",
     "src/actors/daBgSnwmn_c.cpp#daBgSnwmn_c_classInit": "github-actions[bot]",
     "src/actors/daBgSnwmn_c.cpp#_ZN11daBgSnwmn_c19func_ov072_021208d8Ev": "github-actions[bot]",
+    "src/actors/daBgSnwmn_c.cpp#__sinit_daBgSnwmn_c.cpp": "tangosdev",
     "src/actors/daBgSnmBdy_c.cpp#_ZN12daBgSnmBdy_cD1Ev": "tangosdev",
     "src/actors/daBgSnmBdy_c.cpp#_ZN12daBgSnmBdy_cD0Ev": "tangosdev",
     "src/actors/daBgSnmBdy_c.cpp#_ZN12daBgSnmBdy_c18IsPlayerNearCenterEv": "andrewboudreau",
