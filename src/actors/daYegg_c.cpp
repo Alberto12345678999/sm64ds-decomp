@@ -196,7 +196,8 @@ extern char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, uns
    types 0xa4 and 0xa5, BATAN and BATANKING, both daBtn_c in ov079, and
    ov079's function there is daBtn_c's hit reaction, which takes the body and
    the actor that hit it -- the call's (actor, egg). */
-extern void func_ov079_02123804(struct daBtn_c *self, dActor_c *other);
+/* local extern: daBtn_c::func_ov079_02123804. This TU does not include daBtn_c.h. */
+extern void _ZN7daBtn_c19func_ov079_02123804EP8dActor_c(struct daBtn_c *self, dActor_c *other);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *thiz, const void *v, unsigned int n, Fix12i f, short s);
 extern int RandomIntInternal(int *seed);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int b, unsigned int u);
@@ -370,7 +371,7 @@ void daYegg_c::func_ov002_020ec670(int arg)
         if (t == 0) return;
     }
 docall:
-    func_ov079_02123804((struct daBtn_c *)actor, this);
+    _ZN7daBtn_c19func_ov079_02123804EP8dActor_c((struct daBtn_c *)actor, this);
 }
 
 /* -------------------------------------------------------------------------- */
