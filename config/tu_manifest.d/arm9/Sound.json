@@ -675,5 +675,6 @@
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     }
-  }
+  },
+  "production_mode": "text-only"
 }
