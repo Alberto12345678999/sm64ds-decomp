@@ -3,9 +3,9 @@
 /* recovered: real C++ destructor -- the compiler emits everything but the body
  *
  * D1 is the COMPLETE-object destructor, vtable slot 0. Only the `if` below is
- * written source; the vptr store that precedes it and the FaderColor base
+ * written source; the vptr store that precedes it and the dFdColor_c base
  * sub-object destructor (D2) that follows it are both consequences of
- * `struct dWipe_c : FaderColor` and land in exactly the ROM's order.
+ * `struct dWipe_c : dFdColor_c` and land in exactly the ROM's order.
  *
  * The body itself is this class's one real obligation: if the per-scanline
  * hardware capture is still armed, cancel it before the object goes away.
