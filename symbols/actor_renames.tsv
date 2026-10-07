@@ -2431,11 +2431,27 @@ ov070	0x021210ac	func_ov070_021210ac	Amp_Spawn	spawnfunc; evidence-bounded facto
 ov070	0x021210ac	Amp_Spawn	daBrq_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov070	0x02121118	func_ov070_02121118	_ZN8daKrpa_cD1Ev	vtable slot 16
 ov070	0x02121160	func_ov070_02121160	_ZN8daKrpa_cD0Ev	vtable slot 17
+ov070	0x021211c4	func_ov070_021211c4	_ZN8daKrpa_c19func_ov070_021211c4Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121298	func_ov070_02121298	_ZN8daKrpa_c19func_ov070_02121298Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121310	func_ov070_02121310	_ZN8daKrpa_c19func_ov070_02121310Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x021213cc	func_ov070_021213cc	_ZN8daKrpa_c19func_ov070_021213ccEv	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121438	func_ov070_02121438	_ZN8daKrpa_c19func_ov070_02121438Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x021214f8	func_ov070_021214f8	_ZN8daKrpa_c19func_ov070_021214f8Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121548	func_ov070_02121548	_ZN8daKrpa_c19func_ov070_02121548Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x0212156c	func_ov070_0212156c	_ZN8daKrpa_c19func_ov070_0212156cEv	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x021216b8	func_ov070_021216b8	_ZN8daKrpa_c19func_ov070_021216b8Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121710	func_ov070_02121710	_ZN8daKrpa_c19func_ov070_02121710Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x021217ac	func_ov070_021217ac	_ZN8daKrpa_c19func_ov070_021217acEv	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x0212180c	func_ov070_0212180c	_ZN8daKrpa_c19func_ov070_0212180cEv	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121848	func_ov070_02121848	_ZN8daKrpa_c19func_ov070_02121848Ev	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121880	func_ov070_02121880	_ZN8daKrpa_c19func_ov070_02121880Ei	daKrpa_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov070	0x0212189c	func_ov070_0212189c	_ZN8daKrpa_c16CleanupResourcesEv	vtable slot 3
 ov070	0x021218c0	func_ov070_021218c0	_ZN8daKrpa_c16OnPendingDestroyEv	vtable slot 12
 ov070	0x021218c4	func_ov070_021218c4	_ZN8daKrpa_c6RenderEv	vtable slot 9
 ov070	0x021218f4	func_ov070_021218f4	_ZN8daKrpa_c8BehaviorEv	vtable slot 6
 ov070	0x02121914	func_ov070_02121914	_ZN8daKrpa_c13InitResourcesEv	vtable slot 0
+ov070	0x02121a64	func_ov070_02121a64	_ZN21daKrpaFrameController19func_ov070_02121a64Ev	daKrpaFrameController method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov070	0x02121ae0	func_ov070_02121ae0	_ZN21daKrpaFrameController19func_ov070_02121ae0EPjjj	daKrpaFrameController method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov070	0x02121af8	func_ov070_02121af8	FlameChomp_Spawn	spawnfunc
 ov070	0x02121af8	FlameChomp_Spawn	daKrpa_c_Spawn	prior RTTI-anchored project alias; class identity proven, exact source spelling not preserved
 ov070	0x02121af8	daKrpa_c_Spawn	daKrpa_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
