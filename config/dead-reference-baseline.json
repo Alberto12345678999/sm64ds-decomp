@@ -350,6 +350,10 @@
    "ref": "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp"
   },
   {
+   "file": "notes/collision-query-classes.md",
+   "ref": "src/func_02037a6c.c"
+  },
+  {
    "file": "notes/collision-system.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
@@ -368,6 +372,10 @@
   {
    "file": "notes/collision-system.md",
    "ref": "src/_ZN7dBgW_KcD1Ev.cpp"
+  },
+  {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/_ZN12dBgCh_SphCrrC1Ev.cpp"
   },
   {
    "file": "notes/ctor-migration.md",

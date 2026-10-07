@@ -2994,113 +2994,10 @@ src/engine/collision/dBgCh_Lin.cpp:
     .text start:0x020375d0 end:0x0203782c
     .data start:0x02099290 end:0x020992e4
 
-src/func_0203782c.c:
+src/engine/collision/dBgCh_SphCrr.cpp:
     complete
-    .text start:0x0203782c end:0x02037880
-
-src/func_02037880.c:
-    complete
-    .text start:0x02037880 end:0x02037888
-
-src/func_02037888.c:
-    complete
-    .text start:0x02037888 end:0x020378dc
-
-src/func_020378dc.c:
-    complete
-    .text start:0x020378dc end:0x020378e4
-
-src/_ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi.cpp:
-    complete
-    .text start:0x020378e4 end:0x02037938
-
-src/func_02037938.c:
-    complete
-    .text start:0x02037938 end:0x02037940
-
-src/func_02037940.c:
-    complete
-    .text start:0x02037940 end:0x0203794c
-
-src/func_0203794c.c:
-    complete
-    .text start:0x0203794c end:0x02037968
-
-src/func_02037968.c:
-    complete
-    .text start:0x02037968 end:0x0203798c
-
-src/func_0203798c.c:
-    complete
-    .text start:0x0203798c end:0x0203799c
-
-src/func_0203799c.c:
-    complete
-    .text start:0x0203799c end:0x020379c0
-
-src/func_020379c0.c:
-    complete
-    .text start:0x020379c0 end:0x020379d0
-
-src/func_020379d0.c:
-    complete
-    .text start:0x020379d0 end:0x020379f4
-
-src/func_020379f4.c:
-    complete
-    .text start:0x020379f4 end:0x02037a04
-
-src/func_02037a04.c:
-    complete
-    .text start:0x02037a04 end:0x02037a38
-
-src/func_02037a38.c:
-    complete
-    .text start:0x02037a38 end:0x02037a6c
-
-src/func_02037a6c.c:
-    complete
-    .text start:0x02037a6c end:0x02037b1c
-
-src/func_02037b1c.c:
-    complete
-    .text start:0x02037b1c end:0x02037b5c
-
-src/func_02037b5c.c:
-    complete
-    .text start:0x02037b5c end:0x02037c00
-
-src/_ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c.cpp:
-    complete
-    .text start:0x02037c00 end:0x02037c40
-
-src/_ZN12dBgCh_SphCrrD0Ev.cpp:
-    complete
-    .text start:0x02037c40 end:0x02037cb0
-
-src/_ZN12dBgCh_SphCrrD1Ev.cpp:
-    complete
-    .text start:0x02037cb0 end:0x02037d18
-
-src/_ZN12dBgCh_SphCrrC1Ev.cpp:
-    complete
-    .text start:0x02037d18 end:0x02037d84
-
-src/_ZThn16_N12dBgCh_SphCrrD0Ev.cpp:
-    complete
-    .text start:0x02037d84 end:0x02037d94
-
-src/_ZThn16_N12dBgCh_SphCrrD1Ev.cpp:
-    complete
-    .text start:0x02037d94 end:0x02037da4
-
-src/_ZThn56_N12dBgCh_SphCrrD0Ev.cpp:
-    complete
-    .text start:0x02037da4 end:0x02037db4
-
-src/_ZThn56_N12dBgCh_SphCrrD1Ev.cpp:
-    complete
-    .text start:0x02037db4 end:0x02037dc4
+    .text start:0x0203782c end:0x02037dc4
+    .data start:0x020992f8 end:0x02099360
 
 src/func_02037dc4.c:
     complete
@@ -3230,17 +3127,9 @@ src/_ZN9dBgCh_Lin10DetectClsnEv.cpp:
     complete
     .text start:0x02038638 end:0x02038824
 
-src/func_02038824.cpp:
+src/engine/collision/dBgCh_SphCrr_query.cpp:
     complete
-    .text start:0x02038824 end:0x02038a38
-
-src/func_02038a38.cpp:
-    complete
-    .text start:0x02038a38 end:0x02038b78
-
-src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp:
-    complete
-    .text start:0x02038b78 end:0x02038ea4
+    .text start:0x02038824 end:0x02038ea4
 
 src/func_02038ea4.cpp:
     complete
