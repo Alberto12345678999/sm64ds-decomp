@@ -2055,12 +2055,6 @@
         "param:#1 const void *",
         "param:#3 unsigned int"
       ],
-      "src/func_0202f2c4.c": [
-        "param:#3 unsigned int"
-      ],
-      "src/func_0202f3a4.c": [
-        "param:#3 unsigned int"
-      ],
       "src/func_02040638.c": [
         "param:#3 unsigned int"
       ],
@@ -6426,6 +6420,10 @@
       "src/_ZN7dWipe_c15SetBackwardTimeEj.c": [
         "arity:3",
         "mangled:3 parameter(s)"
+      ],
+      "src/engine/fader/dWipe_c.cpp": [
+        "arity:3",
+        "mangled:3 parameter(s)"
       ]
     },
     "_ZN15dFdBrightness_c8SetToEndEv": {
@@ -7448,10 +7446,6 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/_ZN7dWipe_c11AdvanceFadeEv.cpp": [
-        "param:#1 unsigned short *",
-        "param:#3 int"
-      ],
       "src/func_0201f32c.c": [
         "param:#2 int",
         "param:#3 int"
@@ -7477,6 +7471,9 @@
         "param:#2 int"
       ],
       "src/engine/fader/dFader_c.cpp": [
+        "param:#3 int"
+      ],
+      "src/engine/fader/dWipe_c.cpp": [
         "param:#3 int"
       ]
     },
@@ -7547,9 +7544,6 @@
       ]
     },
     "_ZN3IRQ10EnableIRQsEj": {
-      "src/_ZN7dWipe_c15SetBackwardTimeEj.c": [
-        "return:void"
-      ],
       "src/func_0201a054.c": [
         "return:void"
       ],
@@ -7593,9 +7587,6 @@
       "src/func_0201a054.c": [
         "return:void"
       ],
-      "src/func_0202fb30.c": [
-        "return:void"
-      ],
       "src/func_02059834.c": [
         "return:void"
       ],
@@ -7621,14 +7612,8 @@
       ]
     },
     "_ZN3IRQ13SetIRQHandlerEjPFvvE": {
-      "src/_ZN7dWipe_c15SetBackwardTimeEj.c": [
-        "param:#2 void (*)(void)"
-      ],
       "src/func_0201a4e4.c": [
         "param:#2 void (*)(void)"
-      ],
-      "src/func_0202fb30.c": [
-        "param:#2 void *"
       ],
       "src/func_02059788.c": [
         "param:#2 void (*)(void)"
@@ -8242,11 +8227,6 @@
     "_ZN4cstd3divEii": {
       "src/func_ov007_020cbbb0.c": [
         "return:long long"
-      ]
-    },
-    "_ZN4cstd4sqrtEy": {
-      "src/func_0202ee94.c": [
-        "return:unsigned long long"
       ]
     },
     "_ZN4cstd5atan2E5Fix12IiES1_": {
@@ -13310,30 +13290,6 @@
         "return:int []"
       ]
     },
-    "data_0208eacc": {
-      "src/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_0202fc40.c": [
-        "return:void *"
-      ]
-    },
-    "data_0208eafc": {
-      "src/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_0202fc40.c": [
-        "return:void *"
-      ]
-    },
-    "data_0208eb2c": {
-      "src/__sinit_02073e6c.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_0202fc40.c": [
-        "return:void *"
-      ]
-    },
     "data_0208eb54": {
       "src/func_020186c0.c": [
         "return:unsigned char"
@@ -15264,30 +15220,9 @@
         "return:unsigned short []"
       ]
     },
-    "data_0209f5fc": {
-      "src/func_0202f58c.c": [
-        "return:volatile unsigned char"
-      ]
-    },
-    "data_0209f608": {
-      "src/func_0202ee94.c": [
-        "return:int"
-      ]
-    },
-    "data_0209f60c": {
-      "src/func_0202ee94.c": [
-        "return:int"
-      ],
-      "src/func_0202f3a4.c": [
-        "return:unsigned int"
-      ]
-    },
     "data_0209f61c": {
       "src/__sinit_02074f80.c": [
         "return:int []"
-      ],
-      "src/actors/dScMiniGm_c.cpp": [
-        "return:unsigned char"
       ]
     },
     "data_0209fc48": {
@@ -15789,9 +15724,6 @@
         "return:char []"
       ],
       "src/actors/daYurei_Mucho_c.cpp": [
-        "return:int []"
-      ],
-      "src/engine/fader/_ZN9FaderWipe11AdvanceFadeEv.cpp": [
         "return:int []"
       ],
       "src/func_020095e4.c": [
@@ -16764,9 +16696,6 @@
       ],
       "src/_ZN4CP1511SystemSetupEv.cpp": [
         "return:char []"
-      ],
-      "src/func_0202f2c4.c": [
-        "return:int"
       ],
       "src/func_02058308.c": [
         "return:char"
@@ -26302,31 +26231,6 @@
     "func_0202b0e0": {
       "src/stage/LevelObjects.cpp": [
         "param:#1 LVL_Overlay::StandardEntry *"
-      ]
-    },
-    "func_0202ec9c": {
-      "src/minigames/d_s_mg_base.cpp": [
-        "return:void"
-      ]
-    },
-    "func_0202ed14": {
-      "src/func_0202fc40.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_0202ee94": {
-      "src/func_0202f290.c": [
-        "param:#1 Obj *"
-      ]
-    },
-    "func_0202efa0": {
-      "src/func_0202f290.c": [
-        "param:#1 Obj *"
-      ]
-    },
-    "func_0202fc40": {
-      "src/__sinit_02074f80.c": [
-        "return:void"
       ]
     },
     "func_020308a8": {
