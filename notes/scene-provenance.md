@@ -365,7 +365,7 @@ same slot. Two of the ten (`SetToEnd`, `SetToStart`) are pure tail-call veneers 
 `dFdBrightness_c`/`dFdColor_c` bodies and otherwise run the hardware-capture path.
 
 **`SetBackwardTime` stays plain C — measured, do not "fix".** The full record:
-`src/_ZN7dWipe_c15SetBackwardTimeEj.c` takes a third parameter that arrives in r2 and is
+`src/engine/fader/dWipe_c.cpp` takes a third parameter that arrives in r2 and is
 forwarded to the guard call with zero instructions, which keeps r2 live from entry to
 the call and forces the cached `type` into r3 as in the ROM. As a real method the
 mangled name fixes the arity at one (`Ej`), so the r2-holding parameter cannot exist,
