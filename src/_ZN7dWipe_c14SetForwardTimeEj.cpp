@@ -24,7 +24,7 @@ int dWipe_c::SetForwardTime(u32 frames)
         u16 saved;
 
         if (type == 1) {
-            return FaderBrightness::SetForwardTime(frames);
+            return dFdBrightness_c::SetForwardTime(frames);
         }
 
         if (frames == 0) {

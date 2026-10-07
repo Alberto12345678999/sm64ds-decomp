@@ -1,54 +1,48 @@
-#ifndef FADER_H
-#define FADER_H
+#ifndef DFADER_C_H
+#define DFADER_C_H
 
 #include "types.h"
 
 /* The screen-fade interpolator base at 0x020175e8..0x0201786c.
  *
- * ROM-derived claims and repository compatibility spellings are distinguished
- * explicitly below:
- *
  * VTABLE NAMES. The ROM proves the three address points and their contents:
- * data_0208eafc (Fader), data_0208eacc (FaderBrightness) and data_0208eb2c
- * (FaderColor). Its RTTI records call the original classes dFader_c,
- * dFdBrightness_c and dFdColor_c. The repository also gives those addresses
- * compiler-facing compatibility aliases `_ZTV5Fader`,
- * `_ZTV15FaderBrightness` and `_ZTV10FaderColor`, because those are the names
- * mwcc emits for the currently matched class-symbol view. The aliases make
- * generated relocations exact; they are not evidence that EAD used the
- * compatibility class names. Layout and wiring claims below use the ROM-proven
- * addresses.
+ * data_0208eafc (dFader_c), data_0208eacc (dFdBrightness_c) and data_0208eb2c
+ * (dFdColor_c). Its RTTI records (_ZTS8dFader_c, _ZTS15dFdBrightness_c,
+ * _ZTS10dFdColor_c) name the classes the same way, so `_ZTV8dFader_c`,
+ * `_ZTV15dFdBrightness_c` and `_ZTV10dFdColor_c` are the names mwcc emits for
+ * those vtables directly, with no separate spelling to reconcile. Layout and
+ * wiring claims below use the ROM-proven addresses.
  *
- * LAYOUT. Fader is polymorphic -- the ROM carries its vtable at data_0208eafc,
- * and Fader::~Fader stores it into [this+0x0]. So the vptr is at 0x0 and the first
- * data member starts at 0x4. Fader::AdvanceInterp reads a Fix12i at 0x8 and
+ * LAYOUT. dFader_c is polymorphic -- the ROM carries its vtable at data_0208eafc,
+ * and dFader_c::~dFader_c stores it into [this+0x0]. So the vptr is at 0x0 and the first
+ * data member starts at 0x4. dFader_c::AdvanceInterp reads a Fix12i at 0x8 and
  * passes &[this+0x4] to the 20.12 approach helper at 0x0203ae58, which pins
- * currInterp=0x4 and speed=0x8, both 4 bytes. FaderWipe::FaderWipe writes
+ * currInterp=0x4 and speed=0x8, both 4 bytes. dFdWipe_c::dFdWipe_c writes
  * 0x1000 to [this+0x4] and 0 to [this+0x8] on the way up the chain, which is
  * the same two fields seen from the constructor side.
  *
  * VTABLE: TEN SLOTS, AND THIS HEADER USED TO CLAIM SEVEN. The old text derived
- * 0..6 from FaderBrightness::IsBetweenStartAndEnd calling slots 5 and 6, and
+ * 0..6 from dFdBrightness_c::IsBetweenStartAndEnd calling slots 5 and 6, and
  * stopped there because nothing it had looked at reached higher. Slots 7, 8 and
- * 9 exist, and FaderBrightness declared their functions as ordinary non-virtual
+ * 9 exist, and dFdBrightness_c declared their functions as ordinary non-virtual
  * members -- three functions the ROM dispatches through the vtable that no
  * header said were virtual.
  *
  * Read the vtable at data_0208eafc and the table is unambiguous, because eight of
  * its ten words are zero:
  *
- *     0208eafc  0201786c  _ZN5FaderD1Ev          slot 0
- *     0208eb00  02017848  _ZN5FaderD0Ev          slot 1
+ *     0208eafc  0201786c  _ZN8dFader_cD1Ev          slot 0
+ *     0208eb00  02017848  _ZN8dFader_cD0Ev          slot 1
  *     0208eb04..0208eb20  00000000               slots 2..9, all null
  *
- * A null slot is a pure virtual, so Fader is ABSTRACT and declares eight of
+ * A null slot is a pure virtual, so dFader_c is ABSTRACT and declares eight of
  * them -- which is why nothing in the ROM ever instantiates one. The names and
  * order come from the concrete tables, where every slot resolves: data_0208eacc,
- * data_0208eb2c and _ZTV9FaderWipe (0x0208ea9c) are each ten entries long and
+ * data_0208eb2c and _ZTV9dFdWipe_c (0x0208ea9c) are each ten entries long and
  * agree slot for slot.
  *
- * THE CHAIN is Fader -> FaderBrightness -> FaderColor -> FaderWipe, and
- * _ZN9FaderWipeC1Ev (0x02017480) is the single clearest statement of it: it
+ * THE CHAIN is dFader_c -> dFdBrightness_c -> dFdColor_c -> dFdWipe_c, and
+ * _ZN9dFdWipe_cC1Ev (0x02017480) is the single clearest statement of it: it
  * writes all four vtables into [this+0x0] in that exact order, 0x0208eafc then
  * 0x0208eacc then 0x0208eb2c then 0x0208ea9c, one per sub-object constructor.
  * The ROM's own type graph says the same -- tools/rtti_extract.py reads
@@ -68,15 +62,15 @@
 #ifdef __cplusplus
 extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 
-struct Fader {
+struct dFader_c {
     Fix12i currInterp;  /* 0x04 -- current fade level, 0..0x1000 */
     Fix12i speed;       /* 0x08 -- per-frame delta; sign selects the target */
 
     /* Declared first, making the destructor the key function. The D0/D1/D2
-       sources now define a real Fader::~Fader(); mwcc therefore emits its
+       sources now define a real dFader_c::~dFader_c(); mwcc therefore emits its
        destructor variants and vtable group, while enrollment isolates the
-       licensed variant and binds `_ZTV5Fader` to the ROM-proven address point. */
-    virtual ~Fader();                                /* slots 0 (D1), 1 (D0) */
+       licensed variant and binds `_ZTV8dFader_c` to the ROM-proven address point. */
+    virtual ~dFader_c();                                /* slots 0 (D1), 1 (D0) */
 
     /* Every deleting destructor in this hierarchy ends at
        Memory::operator_delete2 (0x0203cbcc). Keeping that class delete path
@@ -100,16 +94,16 @@ struct Fader {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Fader_size_must_be_0xc[sizeof(Fader) == 0xc ? 1 : -1];
+typedef char dFader_c_size_must_be_0xc[sizeof(dFader_c) == 0xc ? 1 : -1];
 #endif
 #else
 /* Same object, spelled for remaining C consumers: C cannot express the virtual
    functions, so the vptr the compiler would place is explicit. */
-struct Fader {
+struct dFader_c {
     void*  vtable;      /* 0x00 */
     Fix12i currInterp;  /* 0x04 */
     Fix12i speed;       /* 0x08 */
 };
 #endif
 
-#endif /* FADER_H */
+#endif /* DFADER_C_H */
