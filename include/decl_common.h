@@ -1223,7 +1223,6 @@ extern int func_ov002_020af1dc(char*);
 extern int func_ov002_020b3344(char*);
 extern int func_ov002_020b36a0(char*);
 extern int func_ov002_020b6a80(char*);
-extern int func_ov002_020b7e1c(char*);
 extern int func_ov002_020baa98;
 extern int func_ov002_020baba8(void*, void*);
 extern int func_ov002_020bac18();

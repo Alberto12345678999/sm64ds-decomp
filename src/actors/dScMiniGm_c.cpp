@@ -384,7 +384,7 @@ s32 dScMiniGm_c::InitResources()
     }
     data_0208ee44 = 1;
     if (data_0209b2fc != 0) {
-        _ZN8dScene_c9SetFadersEP15FaderBrightness(&data_0209f61c);
+        _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
     }
 
     data_0209b2fc = 0;
@@ -1041,7 +1041,7 @@ void dScMiniGm_c::func_ov005_020c0378()
     }
     func_ov005_020c1688((char *)this, sel);
     func_02012790(0x1e);
-    _ZN8dScene_c9SetFadersEP15FaderBrightness(&data_0209f61c);
+    _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
     func_0202ec9c(&data_0209f61c, 0);
     data_0209b308.unk30 = unk_05c;
     dScene_c::StartSceneFade(data_ov005_020c24d8[data_0208a174[0]].id, data_ov005_020c24d8[data_0208a174[0]].unk4, 0);
