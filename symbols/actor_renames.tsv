@@ -626,6 +626,73 @@ ov006	0x020fa6ac	func_ov006_020fa6ac	MgPairAGoneAndOn_Spawn	spawnfunc
 ov006	0x020fa6ac	MgPairAGoneAndOn_Spawn	dScMgMCarlo2_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020ff3ec	func_ov006_020ff3ec	MgBobOmbSquad_Spawn	spawnfunc
 ov006	0x020ff3ec	MgBobOmbSquad_Spawn	dScMgPachinko_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x020ff47c	func_ov006_020ff47c	_ZN16dScMgPachinko2_c19func_ov006_020ff47cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ff4ec	func_ov006_020ff4ec	_ZN16dScMgPachinko2_c19func_ov006_020ff4ecEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ff534	func_ov006_020ff534	_ZN16dScMgPachinko2_c19func_ov006_020ff534Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ff690	func_ov006_020ff690	_ZN16dScMgPachinko2_c19func_ov006_020ff690Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x020ff8c8	func_ov006_020ff8c8	_ZN16dScMgPachinko2_c19func_ov006_020ff8c8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x020ffb54	func_ov006_020ffb54	_ZN16dScMgPachinko2_c19func_ov006_020ffb54Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x020ffde4	func_ov006_020ffde4	_ZN16dScMgPachinko2_c19func_ov006_020ffde4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x020fff54	func_ov006_020fff54	_ZN16dScMgPachinko2_c19func_ov006_020fff54Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x020fff84	func_ov006_020fff84	_ZN16dScMgPachinko2_c19func_ov006_020fff84Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020fffec	func_ov006_020fffec	_ZN16dScMgPachinko2_c19func_ov006_020fffecEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100058	func_ov006_02100058	_ZN16dScMgPachinko2_c19func_ov006_02100058Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100084	func_ov006_02100084	_ZN16dScMgPachinko2_c19func_ov006_02100084Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100140	func_ov006_02100140	_ZN16dScMgPachinko2_c19func_ov006_02100140Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021001ac	func_ov006_021001ac	_ZN16dScMgPachinko2_c19func_ov006_021001acEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100278	func_ov006_02100278	_ZN16dScMgPachinko2_c19func_ov006_02100278Eiii	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100314	func_ov006_02100314	_ZN16dScMgPachinko2_c19func_ov006_02100314Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100380	func_ov006_02100380	_ZN16dScMgPachinko2_c19func_ov006_02100380Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100408	func_ov006_02100408	_ZN16dScMgPachinko2_c19func_ov006_02100408Eii	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100488	func_ov006_02100488	_ZN16dScMgPachinko2_c19func_ov006_02100488Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021004c0	func_ov006_021004c0	_ZN16dScMgPachinko2_c19func_ov006_021004c0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021004f4	func_ov006_021004f4	_ZN16dScMgPachinko2_c19func_ov006_021004f4Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100554	func_ov006_02100554	_ZN16dScMgPachinko2_c19func_ov006_02100554Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210068c	func_ov006_0210068c	_ZN16dScMgPachinko2_c19func_ov006_0210068cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021006f4	func_ov006_021006f4	_ZN16dScMgPachinko2_c19func_ov006_021006f4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02100734	func_ov006_02100734	_ZN16dScMgPachinko2_c19func_ov006_02100734Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210076c	func_ov006_0210076c	_ZN16dScMgPachinko2_c19func_ov006_0210076cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021009b8	func_ov006_021009b8	_ZN16dScMgPachinko2_c19func_ov006_021009b8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02100b08	func_ov006_02100b08	_ZN16dScMgPachinko2_c19func_ov006_02100b08Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02100bac	func_ov006_02100bac	_ZN16dScMgPachinko2_c19func_ov006_02100bacEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02100d90	func_ov006_02100d90	_ZN16dScMgPachinko2_c19func_ov006_02100d90Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02100e3c	func_ov006_02100e3c	_ZN16dScMgPachinko2_c19func_ov006_02100e3cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02100f7c	func_ov006_02100f7c	_ZN16dScMgPachinko2_c19func_ov006_02100f7cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02101088	func_ov006_02101088	_ZN16dScMgPachinko2_c19func_ov006_02101088Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02101148	func_ov006_02101148	_ZN16dScMgPachinko2_c19func_ov006_02101148Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02101224	func_ov006_02101224	_ZN16dScMgPachinko2_c19func_ov006_02101224Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x021012cc	func_ov006_021012cc	_ZN16dScMgPachinko2_c19func_ov006_021012ccEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x021016ec	func_ov006_021016ec	_ZN16dScMgPachinko2_c19func_ov006_021016ecEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x021019e0	func_ov006_021019e0	_ZN16dScMgPachinko2_c19func_ov006_021019e0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02101af0	func_ov006_02101af0	_ZN16dScMgPachinko2_c19func_ov006_02101af0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02101e88	func_ov006_02101e88	_ZN16dScMgPachinko2_c19func_ov006_02101e88Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x021020c4	func_ov006_021020c4	_ZN16dScMgPachinko2_c19func_ov006_021020c4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02102274	func_ov006_02102274	_ZN16dScMgPachinko2_c19func_ov006_02102274Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x0210246c	func_ov006_0210246c	_ZN16dScMgPachinko2_c19func_ov006_0210246cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021024e0	func_ov006_021024e0	_ZN16dScMgPachinko2_c19func_ov006_021024e0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102564	func_ov006_02102564	_ZN16dScMgPachinko2_c19func_ov006_02102564Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210258c	func_ov006_0210258c	_ZN16dScMgPachinko2_c19func_ov006_0210258cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102624	func_ov006_02102624	_ZN16dScMgPachinko2_c19func_ov006_02102624Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210265c	func_ov006_0210265c	_ZN16dScMgPachinko2_c19func_ov006_0210265cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102718	func_ov006_02102718	_ZN16dScMgPachinko2_c19func_ov006_02102718Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021027e4	func_ov006_021027e4	_ZN16dScMgPachinko2_c19func_ov006_021027e4Eiii	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102864	func_ov006_02102864	_ZN16dScMgPachinko2_c19func_ov006_02102864Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102c3c	func_ov006_02102c3c	_ZN16dScMgPachinko2_c19func_ov006_02102c3cEiii	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102d6c	func_ov006_02102d6c	_ZN16dScMgPachinko2_c19func_ov006_02102d6cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102dbc	func_ov006_02102dbc	_ZN16dScMgPachinko2_c19func_ov006_02102dbcEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102de4	func_ov006_02102de4	_ZN16dScMgPachinko2_c19func_ov006_02102de4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102e8c	func_ov006_02102e8c	_ZN16dScMgPachinko2_c19func_ov006_02102e8cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102ef4	func_ov006_02102ef4	_ZN16dScMgPachinko2_c19func_ov006_02102ef4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02102f3c	func_ov006_02102f3c	_ZN16dScMgPachinko2_c19func_ov006_02102f3cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02102fe8	func_ov006_02102fe8	_ZN16dScMgPachinko2_c19func_ov006_02102fe8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02103360	func_ov006_02103360	_ZN16dScMgPachinko2_c19func_ov006_02103360Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02103608	func_ov006_02103608	_ZN16dScMgPachinko2_c19func_ov006_02103608Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x0210371c	func_ov006_0210371c	_ZN16dScMgPachinko2_c19func_ov006_0210371cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02103870	func_ov006_02103870	_ZN16dScMgPachinko2_c19func_ov006_02103870Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x0210397c	func_ov006_0210397c	_ZN16dScMgPachinko2_c19func_ov006_0210397cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02103994	func_ov006_02103994	_ZN16dScMgPachinko2_c19func_ov006_02103994Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_021426cc/021426f4/02142734)
+ov006	0x02103ac0	func_ov006_02103ac0	_ZN16dScMgPachinko2_c19func_ov006_02103ac0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02103bfc	func_ov006_02103bfc	_ZN16dScMgPachinko2_c19func_ov006_02103bfcEv	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x02104258	func_ov006_02104258	MgLakituLaunch_Spawn	spawnfunc
 ov006	0x02104258	MgLakituLaunch_Spawn	dScMgPachinko2_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x02107858	func_ov006_02107858	MgPuzzlePanelPuzzlePanic_Spawn	spawnfunc
@@ -2920,6 +2987,22 @@ ov084	0x0212c0b0	func_ov084_0212c0b0	Goomba_Spawn	spawnfunc
 ov084	0x0212c0b0	Goomba_Spawn	daKrb_c_classInit_KURIBO	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov084	0x0212c10c	func_ov084_0212c10c	_ZN14daRedBombhei_cD1Ev	vtable slot 16
 ov084	0x0212c14c	func_ov084_0212c14c	_ZN14daRedBombhei_cD0Ev	vtable slot 17
+ov084	0x0212c1a0	func_ov084_0212c1a0	_ZN14daRedBombhei_c19func_ov084_0212c1a0Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c4a0	func_ov084_0212c4a0	_ZN14daRedBombhei_c19func_ov084_0212c4a0Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c508	func_ov084_0212c508	_ZN14daRedBombhei_c19func_ov084_0212c508Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c89c	func_ov084_0212c89c	_ZN14daRedBombhei_c19func_ov084_0212c89cEv	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c8b0	func_ov084_0212c8b0	_ZN14daRedBombhei_c19func_ov084_0212c8b0Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c92c	func_ov084_0212c92c	_ZN14daRedBombhei_c19func_ov084_0212c92cEv	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c960	func_ov084_0212c960	_ZN14daRedBombhei_c19func_ov084_0212c960Ei	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c9a8	func_ov084_0212c9a8	_ZN14daRedBombhei_c19func_ov084_0212c9a8Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212c9f0	func_ov084_0212c9f0	_ZN14daRedBombhei_c19func_ov084_0212c9f0Eij	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212ca60	func_ov084_0212ca60	_ZN14daRedBombhei_c19func_ov084_0212ca60Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212caa8	func_ov084_0212caa8	_ZN14daRedBombhei_c19func_ov084_0212caa8Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212cac0	func_ov084_0212cac0	_ZN14daRedBombhei_c19func_ov084_0212cac0Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212cae0	func_ov084_0212cae0	_ZN14daRedBombhei_c19func_ov084_0212cae0Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212ccb4	func_ov084_0212ccb4	_ZN14daRedBombhei_c19func_ov084_0212ccb4Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212cda0	func_ov084_0212cda0	_ZN14daRedBombhei_c19func_ov084_0212cda0EP7Vector3S1_	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov084	0x0212ce50	func_ov084_0212ce50	_ZN14daRedBombhei_c19func_ov084_0212ce50Ev	daRedBombhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov084	0x0212cf10	func_ov084_0212cf10	_ZN14daRedBombhei_c16CleanupResourcesEv	vtable slot 3
 ov084	0x0212cf40	func_ov084_0212cf40	_ZN14daRedBombhei_c6RenderEv	vtable slot 9
 ov084	0x0212cf6c	func_ov084_0212cf6c	_ZN14daRedBombhei_c8BehaviorEv	vtable slot 6
@@ -3189,6 +3272,15 @@ ov091	0x02133938	func_ov091_02133938	Stump_Spawn	spawnfunc
 ov091	0x02133938	Stump_Spawn	daObjPile_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02133968	func_ov091_02133968	_ZN10daHyuhyu_cD1Ev	vtable slot 16 (was _ZN5StumpD1Ev)
 ov091	0x021339a8	func_ov091_021339a8	_ZN10daHyuhyu_cD0Ev	vtable slot 17 (was _ZN5StumpD0Ev)
+ov091	0x021339fc	func_ov091_021339fc	_ZN10daHyuhyu_c19func_ov091_021339fcEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133c6c	func_ov091_02133c6c	_ZN10daHyuhyu_c19func_ov091_02133c6cEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133d1c	func_ov091_02133d1c	_ZN10daHyuhyu_c19func_ov091_02133d1cEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133d30	func_ov091_02133d30	_ZN10daHyuhyu_c19func_ov091_02133d30Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133f24	func_ov091_02133f24	_ZN10daHyuhyu_c19func_ov091_02133f24Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02133f60	func_ov091_02133f60	_ZN10daHyuhyu_c19func_ov091_02133f60Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x0213400c	func_ov091_0213400c	_ZN10daHyuhyu_c19func_ov091_0213400cEv	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02134044	func_ov091_02134044	_ZN10daHyuhyu_c19func_ov091_02134044EP16daHyuhyu_c_State	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov091	0x02134094	func_ov091_02134094	_ZN10daHyuhyu_c19func_ov091_02134094Ev	daHyuhyu_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov091	0x02134108	func_ov091_02134108	_ZN10daHyuhyu_c16CleanupResourcesEv	vtable slot 3 (was _ZN5Stump16CleanupResourcesEv)
 ov091	0x02134180	func_ov091_02134180	_ZN10daHyuhyu_c16OnPendingDestroyEv	vtable slot 12 (was _ZN5Stump16OnPendingDestroyEv)
 ov091	0x02134184	func_ov091_02134184	_ZN10daHyuhyu_c6RenderEv	vtable slot 9 (was _ZN5Stump6RenderEv)
@@ -3484,6 +3576,16 @@ ov100	0x021461d4	func_ov100_021461d4	StarDoor_Spawn	spawnfunc
 ov100	0x021461d4	StarDoor_Spawn	daStarGate_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov100	0x0214620c	func_ov100_0214620c	_ZN8daFish_cD1Ev	vtable slot 16
 ov100	0x0214623c	func_ov100_0214623c	_ZN8daFish_cD0Ev	vtable slot 17
+ov100	0x02146280	func_ov100_02146280	_ZN8daFish_c19func_ov100_02146280Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x0214629c	func_ov100_0214629c	_ZN8daFish_c19func_ov100_0214629cEj	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x0214639c	func_ov100_0214639c	_ZN8daFish_c19func_ov100_0214639cEv	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x021463b0	func_ov100_021463b0	_ZN8daFish_c19func_ov100_021463b0Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x02146468	func_ov100_02146468	_ZN8daFish_c19func_ov100_02146468Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x021464f4	func_ov100_021464f4	_ZN8daFish_c19func_ov100_021464f4Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x02146640	func_ov100_02146640	_ZN8daFish_c19func_ov100_02146640Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x021467d4	func_ov100_021467d4	_ZN8daFish_c19func_ov100_021467d4Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x021467e8	func_ov100_021467e8	_ZN8daFish_c19func_ov100_021467e8Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov100	0x02146828	func_ov100_02146828	_ZN8daFish_c19func_ov100_02146828Ev	daFish_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov100	0x02146a98	func_ov100_02146a98	_ZN8daFish_c16CleanupResourcesEv	vtable slot 3
 ov100	0x02146b00	func_ov100_02146b00	_ZN8daFish_c16OnPendingDestroyEv	vtable slot 12
 ov100	0x02146b04	func_ov100_02146b04	_ZN8daFish_c6RenderEv	vtable slot 9
@@ -5016,3 +5118,15 @@ ov002	0x020bbcb8	func_ov002_020bbcb8	_ZN15daObjTatefuda_c7CarriedEv	daObjTatefud
 ov002	0x020bbd50	func_ov002_020bbd50	_ZN15daObjTatefuda_c11InitCarriedEv	daObjTatefuda_c method. The first argument is the object, so the function is a member and the parameter is this. Named InitCarried: CARRIED-state enter, stops horizontal speed.
 ov002	0x020bbd5c	func_ov002_020bbd5c	_ZN15daObjTatefuda_c8SetStateEi	daObjTatefuda_c method. The first argument is the object, so the function is a member and the parameter is this. Named SetState: enters a state and runs its enter routine.
 ov002	0x020bbda4	func_ov002_020bbda4	_ZN15daObjTatefuda_c11UpdateStateEv	daObjTatefuda_c method. The first argument is the object, so the function is a member and the parameter is this. Named UpdateState: runs the current state's update routine.
+ov006	0x020d122c	func_ov006_020d122c	_ZN12dScMgAmida_c12ShuffleGoalsEi	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named ShuffleGoals: refills and shuffles the four-entry lane-goal table at 0x4714, `count` marking how many lanes are winners.
+ov006	0x020d1450	func_ov006_020d1450	_ZN12dScMgAmida_c11ClearStrokeEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named ClearStroke: clears the provisional stroke grid, refreshes the BG char banks and resets the line-start latch after a rejected or erased stroke.
+ov006	0x020d1958	func_ov006_020d1958	_ZN12dScMgAmida_c16CheckHurryButtonEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named CheckHurryButton: polls the touchscreen rect and latches the hurry flag that speeds the scroll.
+ov006	0x020d1a3c	func_ov006_020d1a3c	_ZN12dScMgAmida_c14CheckEdgeBoostEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named CheckEdgeBoost: counts pen contact in the left/right screen strips and arms the one-shot scroll boost.
+ov006	0x020d1ba0	func_ov006_020d1ba0	_ZN12dScMgAmida_c9HandlePenEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named HandlePen: the stylus handler that follows the pen and turns the released stroke into a rung.
+ov006	0x020d2580	func_ov006_020d2580	_ZN12dScMgAmida_c9ProbeRungENS_5PointES0_	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named ProbeRung: dry-runs a candidate rung through the brush in probe mode and reports whether it crosses painted cells.
+ov006	0x020d25fc	func_ov006_020d25fc	_ZN12dScMgAmida_c10StepWalkerEii	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named StepWalker: moves one walker one cell in `dir` when the occupancy grid allows.
+ov006	0x020d27dc	func_ov006_020d27dc	_ZN12dScMgAmida_c11StepWalkersEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named StepWalkers: the per-tick walker advance Behavior runs mScrollAccum/16 times a frame; closes the round when every walker is in.
+ov006	0x020d36a4	func_ov006_020d36a4	_ZN12dScMgAmida_c11InitWalkersEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named InitWalkers: deals the lane permutation and seeds walker position, direction and timers for the round.
+ov006	0x020d3ba0	func_ov006_020d3ba0	_ZN12dScMgAmida_c10SetupRoundEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named SetupRound: picks the pattern, paints the vertical lanes and pre-seeded rungs, and resets the board into playing state.
+ov006	0x020d452c	func_ov006_020d452c	_ZN12dScMgAmida_c11RenderBoardEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named RenderBoard: the mode-1 playfield pass -- lane markers, walkers and the side pillars.
+ov006	0x020d47f4	func_ov006_020d47f4	_ZN12dScMgAmida_c14RenderBoardAltEv	dScMgAmida_c method. The first argument is the object, so the function is a member and the parameter is this. Named RenderBoardAlt: the Unk36-mode playfield pass -- goal markers at the walker ends and lane-result icons at the lane tops.
