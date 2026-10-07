@@ -10,7 +10,7 @@ int dWipe_c::IsAtEnd()
 {
     int result;
     if (type == 1)
-        return FaderBrightness::IsAtEnd();
+        return dFdBrightness_c::IsAtEnd();
     if (state == 0)
         goto ret1;
     if (wipeInterp > 0)
