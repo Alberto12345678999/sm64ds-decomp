@@ -95,6 +95,7 @@
  */
 
 #include "dMgState_c.h"
+#include "dScene_c.h"
 
 extern int ApproachLinear(s32 &value, s32 target, s32 step);
 
@@ -125,8 +126,6 @@ extern "C" {
 extern void FreeGfxSlotsById(int arg);
 extern int GetGameLanguage(void);
 extern unsigned int _ZN5Sound12PlayBank2_2DEj(unsigned int);
-extern void _ZN8dScene_c14StartSceneFadeEjjt(unsigned int a, unsigned int b, unsigned short c);
-extern void _ZN8dScene_c9SetFadersEP15FaderBrightness(void* fb);
 extern unsigned int func_02012790(unsigned int x);
 extern void func_02012dd0(void* c);
 extern int func_0202ec9c(void* thiz, int arg1);
@@ -453,9 +452,9 @@ void dMgState_c::func_ov004_020b8098() {
     o = data_0209f5bc;
     if (o->m_1c())
       return;
-    _ZN8dScene_c9SetFadersEP15FaderBrightness(data_0209f61c);
+    dScene_c::SetFaders((dFdBrightness_c *)data_0209f61c);
     func_0202ec9c(data_0209f61c, 2);
-    _ZN8dScene_c14StartSceneFadeEjjt(5, 0, 0);
+    dScene_c::StartSceneFade(5, 0, 0);
     func_02012dd0((void*)0x3c);
     return;
   }
@@ -581,9 +580,9 @@ void dMgState_c::func_ov004_020b7c04() {
     if (v != 0) return;
     o = *(Obj**)&data_0209f5bc;
     if (o->m_1c() != 0) return;
-    _ZN8dScene_c9SetFadersEP15FaderBrightness(data_0209f61c);
+    dScene_c::SetFaders((dFdBrightness_c *)data_0209f61c);
     func_0202ec9c(data_0209f61c, 2);
-    _ZN8dScene_c14StartSceneFadeEjjt(5, 0, 0);
+    dScene_c::StartSceneFade(5, 0, 0);
     func_02012dd0((void*)0x3c);
 }
 
@@ -708,9 +707,9 @@ void dMgState_c::func_ov004_020b75e4() {
     o = data_0209f5bc;
     if (o->m_1c())
       return;
-    _ZN8dScene_c9SetFadersEP15FaderBrightness(data_0209f61c);
+    dScene_c::SetFaders((dFdBrightness_c *)data_0209f61c);
     func_0202ec9c(data_0209f61c, 2);
-    _ZN8dScene_c14StartSceneFadeEjjt(5, 0, 0);
+    dScene_c::StartSceneFade(5, 0, 0);
     func_02012dd0((void*)0x3c);
     return;
   }
@@ -778,9 +777,9 @@ void dMgState_c::func_ov004_020b72d4() {
     }
     if (data_0209f5bc->m_1c() != 0)
       return;
-    _ZN8dScene_c9SetFadersEP15FaderBrightness(data_0209f61c);
+    dScene_c::SetFaders((dFdBrightness_c *)data_0209f61c);
     func_0202ec9c(data_0209f61c, 2);
-    _ZN8dScene_c14StartSceneFadeEjjt(5, 0, 0);
+    dScene_c::StartSceneFade(5, 0, 0);
     func_02012dd0((void*)0x3c);
     return;
   }
