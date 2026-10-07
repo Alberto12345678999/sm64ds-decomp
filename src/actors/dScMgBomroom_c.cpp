@@ -862,7 +862,6 @@ void func_ov006_020d6784(char *raw)
 extern "C" {
 void func_ov006_020d68a8(char *raw, int picked)
 {
-    dScMgBomroom_c *scene = (dScMgBomroom_c *)raw;
     dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     int i;
     u8 *cur = (u8 *)(((int)(raw + picked * 0x40) + 0x469a));
@@ -893,12 +892,12 @@ void func_ov006_020d68a8(char *raw, int picked)
             }
         }
     }
-    if (scene->unk_62f8 != 0)
+    if (self->unk_62f8 != 0)
         return;
-    scene->unk_62f8 = *(u8 *)(raw + picked * 0x40 + 0x469a) + 1;
-    scene->unk_62e8 = 0x60;
+    self->unk_62f8 = *(u8 *)(raw + picked * 0x40 + 0x469a) + 1;
+    self->unk_62e8 = 0x60;
     self->unk_62d0 = 3;
-    scene->unk_62d4 = 0;
+    self->unk_62d4 = 0;
 }
 }
 #pragma pop
@@ -1293,7 +1292,6 @@ void func_ov006_020d7524(void *raw) {
 extern "C" {
 void func_ov006_020d7604(void *raw)
 {
-    dScMgBomroom_c *scene = (dScMgBomroom_c *)raw;
     dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     unsigned char *bytes = (unsigned char *)raw;
     int ca = 0;
@@ -1304,7 +1302,7 @@ void func_ov006_020d7604(void *raw)
     for (i = 0; i < 0x70; i++) {
         unsigned char *bomb = bytes + i * 64;
         if (self->mBombs[i].active != 0) {
-            if (scene->unk_62f8 == 1) {
+            if (self->unk_62f8 == 1) {
                 if (self->mBombs[i].color != 0) {
                     int v;
                     int q;
@@ -1330,13 +1328,13 @@ void func_ov006_020d7604(void *raw)
                     cb++;
                     cc++;
                 }
-            } else if (scene->unk_62f8 != 0) {
+            } else if (self->unk_62f8 != 0) {
                 bomb[0x469c] = (unsigned char)cc;
                 bomb[0x469b] = 3;
                 ((Bomb *)(bomb + 0x4660))->f30 = (unsigned short)(cc * 8);
                 cc++;
             } else {
-                if (scene->unk_62f5 == self->mBombs[i].color && self->mBombs[i].state == 6) {
+                if (self->unk_62f5 == self->mBombs[i].color && self->mBombs[i].state == 6) {
                     bomb[0x469c] = (unsigned char)cc;
                     bomb[0x469b] = 3;
                     ((Bomb *)(bomb + 0x4660))->f30 = (unsigned short)(cc * 8);
@@ -2175,16 +2173,15 @@ void func_ov006_020d893c(char *c)
 extern "C" {
 void func_ov006_020d89c4(char *self)
 {
-    dScMgBomroom_c *sc = (dScMgBomroom_c *)self;
     dScMgBomroom_c *scene = (dScMgBomroom_c *)self;
     int j;
 
     func_ov006_020d836c(self);
 
-    if (sc->unk_62e8 != 0) {
-        (sc->unk_62e8)--;
-        if ((s16)sc->unk_62e8 < 0)
-            sc->unk_62e8 = 0;
+    if (scene->unk_62e8 != 0) {
+        (scene->unk_62e8)--;
+        if ((s16)scene->unk_62e8 < 0)
+            scene->unk_62e8 = 0;
         return;
     }
 
@@ -2200,19 +2197,19 @@ void func_ov006_020d89c4(char *self)
         }
     }
 
-    if (sc->unk_62f8 != 0) {
-        sc->unk_62e8 = 0x60;
+    if (scene->unk_62f8 != 0) {
+        scene->unk_62e8 = 0x60;
         scene->unk_62d0 = 4;
-        sc->unk_62d4 = 0;
+        scene->unk_62d4 = 0;
         func_ov004_020adb1c(scene->unk_62ee + func_ov004_020adbc0());
     } else {
         func_ov004_020adb1c(scene->unk_62ee + func_ov004_020adbc0());
         scene->unk_62d0 = 2;
-        sc->unk_62d4 = 0;
-        sc->unk_62f8 = 0;
-        sc->unk_62fb = 0;
+        scene->unk_62d4 = 0;
+        scene->unk_62f8 = 0;
+        scene->unk_62fb = 0;
     }
-    sc->unk_62f9 = 0;
+    scene->unk_62f9 = 0;
     scene->unk_62ee = 0;
     SetBg0Offset(0, 0);
 }
@@ -2223,7 +2220,6 @@ void func_ov006_020d89c4(char *self)
 extern "C" {
 void func_ov006_020d8af8(char *self)
 {
-    dScMgBomroom_c *sc = (dScMgBomroom_c *)self;
     dScMgBomroom_c *scene = (dScMgBomroom_c *)self;
     int found;
     int j;
@@ -2231,21 +2227,21 @@ void func_ov006_020d8af8(char *self)
 
     func_ov006_020d836c(self);
 
-    if (sc->unk_62e8 != 0) {
-        (sc->unk_62e8)--;
-        if ((s16)sc->unk_62e8 > 0)
+    if (scene->unk_62e8 != 0) {
+        (scene->unk_62e8)--;
+        if ((s16)scene->unk_62e8 > 0)
             return;
-        sc->unk_62e8 = 0;
-        sc->unk_62e0 = 0x10;
+        scene->unk_62e8 = 0;
+        scene->unk_62e0 = 0x10;
         if (func_ov006_020d8c88(self) != 0) {
-            sc->mBg2State = 1;
+            scene->mBg2State = 1;
             Sound::PlayBank2_2D(0x1dd);
         }
         return;
     }
 
-    if (sc->unk_62e0 != 0) {
-        (sc->unk_62e0)--;
+    if (scene->unk_62e0 != 0) {
+        (scene->unk_62e0)--;
         return;
     }
 
@@ -2257,19 +2253,19 @@ void func_ov006_020d8af8(char *self)
         j++;
     } while (j < 0x70);
 
-    (sc->unk_62ea)++;
-    if (sc->unk_62ea < 4)
+    (scene->unk_62ea)++;
+    if (scene->unk_62ea < 4)
         return;
 
     if (found != 0) {
         arr[found - 1][0x4698] = 2;
-        sc->unk_62ea = 0;
+        scene->unk_62ea = 0;
         (scene->unk_62ee)++;
         Sound::PlayBank2_2D(0x1bc);
     } else {
-        sc->unk_62ea = 0;
-        sc->unk_62e8 = 0x40;
-        sc->unk_62d4 = 3;
+        scene->unk_62ea = 0;
+        scene->unk_62e8 = 0x40;
+        scene->unk_62d4 = 3;
     }
 }
 }
@@ -2462,22 +2458,21 @@ void func_ov006_020d904c(void *c)
 extern "C" {
 void func_ov006_020d907c(void *p)
 {
-    dScMgBomroom_c *scene = (dScMgBomroom_c *)p;
     dScMgBomroom_c *self = (dScMgBomroom_c *)p;
     char *c = (char *)p;
     func_ov006_020d893c(c);
-    scene->unk_62e2 = 0;
-    scene->unk_62e4 = 0;
-    scene->unk_62e6 = 0;
-    scene->unk_62f6 = 0xff;
-    scene->unk_62f7 = 0;
-    scene->unk_62ea = 0;
-    scene->unk_62f8 = 0;
-    scene->unk_62d8 = 0;
+    self->unk_62e2 = 0;
+    self->unk_62e4 = 0;
+    self->unk_62e6 = 0;
+    self->unk_62f6 = 0xff;
+    self->unk_62f7 = 0;
+    self->unk_62ea = 0;
+    self->unk_62f8 = 0;
+    self->unk_62d8 = 0;
     self->unk_62f0 = 0;
-    scene->unk_62f9 = 0;
-    scene->unk_62fb = 0;
-    scene->unk_62fc = 0;
+    self->unk_62f9 = 0;
+    self->unk_62fb = 0;
+    self->unk_62fc = 0;
     func_ov004_020adb1c(0);
     func_ov006_020d669c(c);
     func_ov006_020d63ac(c);

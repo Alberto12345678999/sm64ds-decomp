@@ -205,11 +205,10 @@ s32 dScMgJump_c::InitResources()
  * This one arms the countdown; its only caller is OnYoshiTryEat. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee658(char *raw) {
-    dScMgJump_c *scene = (dScMgJump_c *)raw;
     dScMgJump_c *self = (dScMgJump_c *)raw;
     self->unk_5014 = 0x78;
-    scene->mAccum = 0;
-    scene->mAccumStep = 0x4000;
+    self->mAccum = 0;
+    self->mAccumStep = 0x4000;
     *(struct Pair *)(raw + 0x5004) = data_ov006_0213cb54;
 }
 }
@@ -220,12 +219,11 @@ void func_ov006_020ee658(char *raw) {
  * would leak into every function in this file if carried. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee5b8(char* raw){
-    dScMgJump_c *scene = (dScMgJump_c *)raw;
     dScMgJump_c *self = (dScMgJump_c *)raw;
     int left;
-    short *countdown = &scene->unk_5014;
+    short *countdown = &self->unk_5014;
     *countdown = *countdown - 1;
-    left = scene->unk_5014;
+    left = self->unk_5014;
     if (left == 0) {
         FreeGfxSlotsById(0x1d);
         if (self->mPromptBlinkCount == 0) {
@@ -284,11 +282,10 @@ void func_ov006_020ee4e0(char *raw)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee44c(char *raw)
 {
-    dScMgJump_c *scene = (dScMgJump_c *)raw;
     dScMgJump_c *self = (dScMgJump_c *)raw;
-  int *acc = &scene->mAccum;
+  int *acc = &self->mAccum;
   *acc += *(int *)((raw + 0x5000) + 0x10) >> 12;
-  if (scene->mAccum > 0x1000)
+  if (self->mAccum > 0x1000)
   {
     *acc -= 0x1000;
   }
@@ -308,7 +305,6 @@ void func_ov006_020ee44c(char *raw)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee3ec(char* raw)
 {
-    dScMgJump_c *scene = (dScMgJump_c *)raw;
     dScMgJump_c *self = (dScMgJump_c *)raw;
     int ready = func_ov006_020c7300();
     if (ready) {
@@ -316,7 +312,7 @@ void func_ov006_020ee3ec(char* raw)
         if (ready) {
             func_ov004_020b0a54(0x12);
             self->mPromptEnabled = 0;
-            scene->unk_5014 = 0;
+            self->unk_5014 = 0;
             *(struct Pair *)(raw + 0x5004) = data_ov006_0213cb74;
         }
     }
@@ -339,11 +335,9 @@ void func_ov006_020ee3bc(char *raw)
  * from above. `shared` is the ov004 scene data; its type is not recovered. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020ee2c4(char* raw){
-    dScMgJump_c *sc = (dScMgJump_c *)raw;
-    dScMgJump_c *scene = (dScMgJump_c *)raw;
   dScMgJump_c *self = (dScMgJump_c *)raw;
-  sc->mAccum += sc->mAccumStep >> 12;
-  sc->mAccumStep += 0x600;
+  self->mAccum += self->mAccumStep >> 12;
+  self->mAccumStep += 0x600;
   func_ov006_020c712c();
   int same = (int)(data_ov006_02140434 == data_ov006_02140418);
   if(same == 0) return;
@@ -359,7 +353,7 @@ void func_ov006_020ee2c4(char* raw){
   func_ov004_020adb1c(self->mHudScore);
   func_ov004_020b0a54(0);
   self->mPromptEnabled = 0;
-  scene->unk_5014 = 0;
+  self->unk_5014 = 0;
   *(struct Pair*)(raw+0x5004) = data_ov006_0213cb7c;
 }
 }
