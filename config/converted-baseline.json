@@ -404,7 +404,16 @@
     "src/_ZN12dBgCh_SphCrrD0Ev.cpp",
     "src/_ZN12dBgCh_SphCrrD1Ev.cpp",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c16CleanupResourcesEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c11ClearStrokeEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c11InitWalkersEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c11RenderBoardEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c12ShuffleGoalsEi",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c14CheckEdgeBoostEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c14RenderBoardAltEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c16CheckHurryButtonEv",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c21AfterCleanupResourcesEj",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c5Unk36Ev",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c8BehaviorEv",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c9Virtual8CEv",
     "src/actors/dScMgSlots.cpp#_ZN12dScMgSlot1_cD0Ev",
     "src/actors/dScMgSlots.cpp#_ZN12dScMgSlot1_cD1Ev",
@@ -3530,5 +3539,5 @@
     "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9TimedWaitEv",
     "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9TouchWaitEv"
   ],
-  "count": 3521
+  "count": 3530
 }
