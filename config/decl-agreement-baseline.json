@@ -19007,11 +19007,6 @@
         "return:SharedFilePtr"
       ]
     },
-    "data_ov039_021118e4": {
-      "src/game/actors/d_a_obj_kumo.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov043_02111c00": {
       "src/game/actors/d_a_obj_km1_ukishima.cpp": [
         "return:CLPS_Block"
@@ -22795,9 +22790,6 @@
       "src/__sinit_ov036_02112944.c": [
         "kind:data"
       ],
-      "src/__sinit_ov039_021113b4.c": [
-        "kind:data"
-      ],
       "src/__sinit_ov043_021117fc.c": [
         "kind:data"
       ],
@@ -23505,9 +23497,6 @@
         "return:void"
       ],
       "src/__sinit_ov036_02112944.c": [
-        "return:void"
-      ],
-      "src/__sinit_ov039_021113b4.c": [
         "return:void"
       ],
       "src/__sinit_ov043_021117fc.c": [
