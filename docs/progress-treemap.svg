@@ -22821,15 +22821,15 @@ matched: yes</title></rect><rect x="997.33" y="325.72" width="2.53" height="7.39
 module: ov006
 addr: 0x020e7910
 size: 28 bytes
-matched: yes</title></rect><rect x="999.87" y="325.72" width="1.81" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e792c
+matched: yes</title></rect><rect x="999.87" y="325.72" width="1.81" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c10SetRepeatsEs
 module: ov006
 addr: 0x020e792c
 size: 20 bytes
-matched: yes</title></rect><rect x="1001.68" y="325.72" width="1.09" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7940
+matched: yes</title></rect><rect x="1001.68" y="325.72" width="1.09" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c9SetPeriodEs
 module: ov006
 addr: 0x020e7940
 size: 12 bytes
-matched: yes</title></rect><rect x="1002.76" y="325.72" width="0.72" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e794c
+matched: yes</title></rect><rect x="1002.76" y="325.72" width="0.72" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c8SetSpeedEi
 module: ov006
 addr: 0x020e794c
 size: 8 bytes
@@ -22857,31 +22857,31 @@ matched: yes</title></rect><rect x="638.96" y="333.11" width="30.70" height="4.7
 module: ov006
 addr: 0x020e7be8
 size: 216 bytes
-matched: yes</title></rect><rect x="669.67" y="333.11" width="26.72" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7cc0
+matched: yes</title></rect><rect x="669.67" y="333.11" width="26.72" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c3HitEv
 module: ov006
 addr: 0x020e7cc0
 size: 188 bytes
-matched: yes</title></rect><rect x="696.39" y="333.11" width="15.35" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7d7c
+matched: yes</title></rect><rect x="696.39" y="333.11" width="15.35" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c8StartHitEv
 module: ov006
 addr: 0x020e7d7c
 size: 108 bytes
-matched: yes</title></rect><rect x="711.74" y="333.11" width="19.90" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7de8
+matched: yes</title></rect><rect x="711.74" y="333.11" width="19.90" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c5IntroEv
 module: ov006
 addr: 0x020e7de8
 size: 140 bytes
-matched: yes</title></rect><rect x="731.64" y="333.11" width="20.47" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7e74
+matched: yes</title></rect><rect x="731.64" y="333.11" width="20.47" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c10StartIntroEv
 module: ov006
 addr: 0x020e7e74
 size: 144 bytes
-matched: yes</title></rect><rect x="752.11" y="333.11" width="12.51" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7f04
+matched: yes</title></rect><rect x="752.11" y="333.11" width="12.51" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c4WaitEv
 module: ov006
 addr: 0x020e7f04
 size: 88 bytes
-matched: yes</title></rect><rect x="764.62" y="333.11" width="11.37" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7f5c
+matched: yes</title></rect><rect x="764.62" y="333.11" width="11.37" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c9StartWaitEv
 module: ov006
 addr: 0x020e7f5c
 size: 80 bytes
-matched: yes</title></rect><rect x="775.99" y="333.11" width="0.57" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7fac
+matched: yes</title></rect><rect x="775.99" y="333.11" width="0.57" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c4IdleEv
 module: ov006
 addr: 0x020e7fac
 size: 4 bytes
@@ -22901,147 +22901,147 @@ matched: yes</title></rect><rect x="835.13" y="333.11" width="12.51" height="4.7
 module: ov006
 addr: 0x020e814c
 size: 88 bytes
-matched: yes</title></rect><rect x="847.63" y="333.11" width="8.53" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e81a4
+matched: yes</title></rect><rect x="847.63" y="333.11" width="8.53" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10DrawBannerEv
 module: ov006
 addr: 0x020e81a4
 size: 60 bytes
-matched: yes</title></rect><rect x="856.16" y="333.11" width="7.39" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e81e0
+matched: yes</title></rect><rect x="856.16" y="333.11" width="7.39" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10FlashQuickEv
 module: ov006
 addr: 0x020e81e0
 size: 52 bytes
-matched: yes</title></rect><rect x="863.55" y="333.11" width="25.59" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8214
+matched: yes</title></rect><rect x="863.55" y="333.11" width="25.59" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9FlashSyncEv
 module: ov006
 addr: 0x020e8214
 size: 180 bytes
-matched: yes</title></rect><rect x="889.14" y="333.11" width="7.39" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e82c8
+matched: yes</title></rect><rect x="889.14" y="333.11" width="7.39" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9FlashOnceEv
 module: ov006
 addr: 0x020e82c8
 size: 52 bytes
-matched: yes</title></rect><rect x="896.53" y="333.11" width="12.51" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e82fc
+matched: yes</title></rect><rect x="896.53" y="333.11" width="12.51" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c11UpdateFlashEv
 module: ov006
 addr: 0x020e82fc
 size: 88 bytes
-matched: yes</title></rect><rect x="909.04" y="333.11" width="14.78" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8354
+matched: yes</title></rect><rect x="909.04" y="333.11" width="14.78" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c11RenderSlotsEv
 module: ov006
 addr: 0x020e8354
 size: 104 bytes
-matched: yes</title></rect><rect x="923.82" y="333.11" width="35.82" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e83bc
+matched: yes</title></rect><rect x="923.82" y="333.11" width="35.82" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10SlotDampenEi
 module: ov006
 addr: 0x020e83bc
 size: 252 bytes
-matched: yes</title></rect><rect x="959.65" y="333.11" width="44.35" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e84b8
+matched: yes</title></rect><rect x="959.65" y="333.11" width="44.35" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8SlotKickEi
 module: ov006
 addr: 0x020e84b8
 size: 312 bytes
-matched: yes</title></rect><rect x="1004.00" y="333.11" width="44.35" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e85f0
+matched: yes</title></rect><rect x="1004.00" y="333.11" width="44.35" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8SlotRiseEi
 module: ov006
 addr: 0x020e85f0
 size: 312 bytes
-matched: yes</title></rect><rect x="615.65" y="337.81" width="56.33" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8728
+matched: yes</title></rect><rect x="615.65" y="337.81" width="56.33" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9SlotSetupEi
 module: ov006
 addr: 0x020e8728
 size: 264 bytes
-matched: yes</title></rect><rect x="671.98" y="337.81" width="52.91" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8830
+matched: yes</title></rect><rect x="671.98" y="337.81" width="52.91" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8SlotFallEi
 module: ov006
 addr: 0x020e8830
 size: 248 bytes
-matched: yes</title></rect><rect x="724.89" y="337.81" width="60.59" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8928
+matched: yes</title></rect><rect x="724.89" y="337.81" width="60.59" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8SlotWaitEi
 module: ov006
 addr: 0x020e8928
 size: 284 bytes
-matched: yes</title></rect><rect x="785.49" y="337.81" width="22.19" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8a44
+matched: yes</title></rect><rect x="785.49" y="337.81" width="22.19" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c11UpdateSlotsEv
 module: ov006
 addr: 0x020e8a44
 size: 104 bytes
-matched: yes</title></rect><rect x="807.67" y="337.81" width="23.04" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8aac
+matched: yes</title></rect><rect x="807.67" y="337.81" width="23.04" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10ResetSlotsEv
 module: ov006
 addr: 0x020e8aac
 size: 108 bytes
-matched: yes</title></rect><rect x="830.72" y="337.81" width="39.26" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8b18
+matched: yes</title></rect><rect x="830.72" y="337.81" width="39.26" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10RenderRowsEv
 module: ov006
 addr: 0x020e8b18
 size: 184 bytes
-matched: yes</title></rect><rect x="869.98" y="337.81" width="34.99" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8bd0
+matched: yes</title></rect><rect x="869.98" y="337.81" width="34.99" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c7RowFadeEi
 module: ov006
 addr: 0x020e8bd0
 size: 164 bytes
-matched: yes</title></rect><rect x="904.97" y="337.81" width="12.80" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8c74
+matched: yes</title></rect><rect x="904.97" y="337.81" width="12.80" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8RowDecayEi
 module: ov006
 addr: 0x020e8c74
 size: 60 bytes
-matched: yes</title></rect><rect x="917.77" y="337.81" width="18.78" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8cb0
+matched: yes</title></rect><rect x="917.77" y="337.81" width="18.78" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c7RowWaitEi
 module: ov006
 addr: 0x020e8cb0
 size: 88 bytes
-matched: yes</title></rect><rect x="936.54" y="337.81" width="24.75" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8d08
+matched: yes</title></rect><rect x="936.54" y="337.81" width="24.75" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10UpdateRowsEv
 module: ov006
 addr: 0x020e8d08
 size: 116 bytes
-matched: yes</title></rect><rect x="961.29" y="337.81" width="31.58" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8d7c
+matched: yes</title></rect><rect x="961.29" y="337.81" width="31.58" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9SpawnRowsEi
 module: ov006
 addr: 0x020e8d7c
 size: 148 bytes
-matched: yes</title></rect><rect x="992.87" y="337.81" width="55.47" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8e10
+matched: yes</title></rect><rect x="992.87" y="337.81" width="55.47" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c11RenderCardsEv
 module: ov006
 addr: 0x020e8e10
 size: 260 bytes
-matched: yes</title></rect><rect x="615.65" y="340.94" width="48.21" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e8f14
+matched: yes</title></rect><rect x="615.65" y="340.94" width="48.21" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8CardSeekEi
 module: ov006
 addr: 0x020e8f14
 size: 652 bytes
-matched: yes</title></rect><rect x="663.86" y="340.94" width="27.80" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e91a0
+matched: yes</title></rect><rect x="663.86" y="340.94" width="27.80" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9CardTouchEi
 module: ov006
 addr: 0x020e91a0
 size: 376 bytes
-matched: yes</title></rect><rect x="691.66" y="340.94" width="6.80" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e9318
+matched: yes</title></rect><rect x="691.66" y="340.94" width="6.80" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c8CardExitEi
 module: ov006
 addr: 0x020e9318
 size: 92 bytes
-matched: yes</title></rect><rect x="698.46" y="340.94" width="8.58" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e9374
+matched: yes</title></rect><rect x="698.46" y="340.94" width="8.58" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c11UpdateCardsEv
 module: ov006
 addr: 0x020e9374
 size: 116 bytes
-matched: yes</title></rect><rect x="707.04" y="340.94" width="32.83" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e93e8
+matched: yes</title></rect><rect x="707.04" y="340.94" width="32.83" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9DealCardsEv
 module: ov006
 addr: 0x020e93e8
 size: 444 bytes
-matched: yes</title></rect><rect x="739.87" y="340.94" width="4.73" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e95a4
+matched: yes</title></rect><rect x="739.87" y="340.94" width="4.73" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10ClearCardsEv
 module: ov006
 addr: 0x020e95a4
 size: 64 bytes
-matched: yes</title></rect><rect x="744.60" y="340.94" width="10.35" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e95e4
+matched: yes</title></rect><rect x="744.60" y="340.94" width="10.35" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c13SetDifficultyEv
 module: ov006
 addr: 0x020e95e4
 size: 140 bytes
-matched: yes</title></rect><rect x="754.95" y="340.94" width="2.07" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e9670
+matched: yes</title></rect><rect x="754.95" y="340.94" width="2.07" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c7ResolveEv
 module: ov006
 addr: 0x020e9670
 size: 28 bytes
-matched: yes</title></rect><rect x="757.02" y="340.94" width="7.69" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e968c
+matched: yes</title></rect><rect x="757.02" y="340.94" width="7.69" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c5AwaitEv
 module: ov006
 addr: 0x020e968c
 size: 104 bytes
-matched: yes</title></rect><rect x="764.71" y="340.94" width="13.90" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e96f4
+matched: yes</title></rect><rect x="764.71" y="340.94" width="13.90" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c4FadeEv
 module: ov006
 addr: 0x020e96f4
 size: 188 bytes
-matched: yes</title></rect><rect x="778.61" y="340.94" width="11.53" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e97b0
+matched: yes</title></rect><rect x="778.61" y="340.94" width="11.53" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c4DealEv
 module: ov006
 addr: 0x020e97b0
 size: 156 bytes
-matched: yes</title></rect><rect x="790.15" y="340.94" width="5.92" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e984c
+matched: yes</title></rect><rect x="790.15" y="340.94" width="5.92" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c10ResetRoundEv
 module: ov006
 addr: 0x020e984c
 size: 80 bytes
-matched: yes</title></rect><rect x="796.06" y="340.94" width="53.53" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e989c
+matched: yes</title></rect><rect x="796.06" y="340.94" width="53.53" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c7ResultsEv
 module: ov006
 addr: 0x020e989c
 size: 724 bytes
-matched: yes</title></rect><rect x="849.60" y="340.94" width="5.62" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e9b70
+matched: yes</title></rect><rect x="849.60" y="340.94" width="5.62" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c4PlayEv
 module: ov006
 addr: 0x020e9b70
 size: 76 bytes
-matched: yes</title></rect><rect x="855.22" y="340.94" width="6.21" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e9bbc
+matched: yes</title></rect><rect x="855.22" y="340.94" width="6.21" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c4WaitEv
 module: ov006
 addr: 0x020e9bbc
 size: 84 bytes
