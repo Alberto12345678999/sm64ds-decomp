@@ -6507,10 +6507,10 @@
       ]
     },
     "_ZN18NestedHeapIteratorC1Ej": {
-      "src/func_02051064.c": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
+      "include/decl_NestedHeapIterator.h": [
+        "param:#1 void *",
+        "param:#2 unsigned int",
+        "return:void"
       ]
     },
     "_ZN18SolidHeapAllocator10MemoryLeftEi": {
