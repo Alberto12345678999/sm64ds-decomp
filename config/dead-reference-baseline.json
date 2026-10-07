@@ -190,8 +190,24 @@
    "ref": "src/d_a_udlift_udlift_teresa.c"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
+   "ref": "src/func_020393c4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
+   "ref": "src/func_020393d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
+   "ref": "src/func_020393d4.c"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
    "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov071-casket-0925.md",
+   "ref": "src/func_020393d4.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
@@ -350,10 +366,6 @@
    "ref": "src/_ZN5ModelC1Ev.cpp"
   },
   {
-   "file": "notes/ctor-migration.md",
-   "ref": "src/engine/model/CommonModel.cpp"
-  },
-  {
    "file": "notes/declaration-centralization.md",
    "ref": "include/decl_"
   },
@@ -492,10 +504,6 @@
   {
    "file": "notes/overlay-residency.md",
    "ref": "src/_ZN8CapEnemy6AddCapEj.c"
-  },
-  {
-   "file": "notes/overlay-residency.md",
-   "ref": "src/actors/CutsceneObject.cpp"
   },
   {
    "file": "notes/overlay-residency.md",
