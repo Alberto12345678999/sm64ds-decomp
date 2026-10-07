@@ -601,6 +601,19 @@ ov006	0x020ede18	func_ov006_020ede18	MgWhichWiggler_Spawn	spawnfunc
 ov006	0x020ede18	MgWhichWiggler_Spawn	dScMgHanachan_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020eeafc	func_ov006_020eeafc	MgBounceAndPounce_Spawn	spawnfunc
 ov006	0x020eeafc	MgBounceAndPounce_Spawn	dScMgJump_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x020eed68	func_ov006_020eed68	_ZN4Elem19func_ov006_020eed68Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020eedc8	func_ov006_020eedc8	_ZN4Elem19func_ov006_020eedc8Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020eee3c	func_ov006_020eee3c	_ZN4Elem19func_ov006_020eee3cEiii	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020eeef4	func_ov006_020eeef4	_ZN4Node19func_ov006_020eeef4Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020eef40	func_ov006_020eef40	_ZN4Node19func_ov006_020eef40Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef47c	func_ov006_020ef47c	_ZN12dScMgJump2_c19func_ov006_020ef47cEv	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef480	func_ov006_020ef480	_ZN12dScMgJump2_c19func_ov006_020ef480Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef4ec	func_ov006_020ef4ec	_ZN12dScMgJump2_c19func_ov006_020ef4ecEv	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef580	func_ov006_020ef580	_ZN12dScMgJump2_c19func_ov006_020ef580Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef5ac	func_ov006_020ef5ac	_ZN12dScMgJump2_c19func_ov006_020ef5acEv	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef768	func_ov006_020ef768	_ZN12dScMgJump2_c19func_ov006_020ef768Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef794	func_ov006_020ef794	_ZN12dScMgJump2_c19func_ov006_020ef794Ev	object-as-this memberization; receiver recast to the class in the body
+ov006	0x020ef7f8	func_ov006_020ef7f8	_ZN12dScMgJump2_c19func_ov006_020ef7f8Ev	object-as-this memberization; receiver recast to the class in the body
 ov006	0x020efaf0	dScMgJump2_c_Spawn	dScMgJump2_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020f3800	func_ov006_020f3800	MgWanted_Spawn	spawnfunc
 ov006	0x020f3800	MgWanted_Spawn	dScMgLuigi_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
