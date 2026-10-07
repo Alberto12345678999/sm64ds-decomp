@@ -23,7 +23,7 @@ Checks
                     module such as arm9) sits in the wrong address shard ERROR
   L4  split class   one class occupies two or more subdirectories       ERROR
   L5  unenrolled    a source file no delinks.txt mentions               INFO
-  L6  misfiled      src/named/<mod>/ holds an address-named symbol, or
+  L6  misfiled      named/<mod>/ holds an address-named symbol, or
                     one symbols.txt places in a different module        ERROR
 
 L5 is informational on purpose: a matched function can be legitimately un-enrolled (thumb,
@@ -132,7 +132,7 @@ def check(config=None, known=None):
             findings["L3"].append({"key": p.relative_to(SP.REPO).as_posix(),
                                    "bucket": bucket, "why": f"belongs in {want}/"})
 
-    # L6 -- src/named/<mod>/ is a module bucket for symbols that carry a name. An address
+    # L6 -- named/<mod>/ is a module bucket for symbols that carry a name. An address
     # name in it is misfiled, and so is a symbol whose symbols.txt row says another module.
     named_root = SP.SRC / SP.NAMED_DIR
     for p in sources:
@@ -192,7 +192,7 @@ LABEL = {
     "L3": "misfiled under src/unnamed/",
     "L4": "one class split across two directories (disables placement for it)",
     "L5": "source file not enrolled in any delinks.txt",
-    "L6": "misfiled under src/named/",
+    "L6": "misfiled under named/",
 }
 
 

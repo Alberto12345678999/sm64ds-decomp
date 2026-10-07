@@ -4,7 +4,7 @@ WHY THIS EXISTS
 ---------------
 `src/` held 3,454 files in one directory, and GitHub stops listing a directory at 1,000
 entries. `srcpath.placement_for` already routes NEW files into `src/unnamed/<module>/`,
-`src/named/<module>/` and (for arm9) an address shard; this tool relocates the files that
+`named/<module>/` and (for arm9) an address shard; this tool relocates the files that
 were already flat, so the placement rule and the tree finally agree.
 
 A move is only safe if EVERY record that spells the old path is rewritten in the same
@@ -108,7 +108,7 @@ def _class_homes(rels):
 
     A class already living in exactly ONE subdirectory keeps following it (that is what
     `placement_for` does for new files). Otherwise the whole class goes to
-    `src/named/<module>/` of its most common module, so it never straddles two
+    `named/<module>/` of its most common module, so it never straddles two
     directories -- which `layout_check` L4 would call a split class."""
     cohort = SP._cohort_index()
     members = collections.defaultdict(list)

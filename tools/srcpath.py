@@ -80,14 +80,14 @@ SOURCE_SUFFIXES = (".c", ".cpp")
 # class, only an address. Spelled once, here, so the convention is one edit to revisit.
 UNNAMED_DIR = "unnamed"
 
-# src/named/<module>/ -- the sibling bucket for symbols that DO carry a name (a class
+# named/<module>/ -- the sibling bucket for symbols that DO carry a name (a class
 # method, a free function) and have no class directory of their own yet. Introduced so no
 # directory has to hold thousands of files: GitHub truncates a directory listing at 1,000
 # entries, and a flat `src/` held 3,454.
 NAMED_DIR = "named"
 
 # Modules whose address-named bucket is itself too big for one directory are split on the
-# high half of the ROM address: `src/unnamed/arm9/0204/<symbol>.c`. The value is the
+# high half of the ROM address: `unnamed/arm9/0204/<symbol>.c` under src. The value is the
 # right-shift that turns an address into the shard key, so 16 keeps four hex digits.
 # Deterministic on purpose -- the shard is a pure function of the symbol, so placement
 # never needs judgement and two agents always agree.
@@ -412,7 +412,7 @@ def named_module_of(symbol):
 
 
 def named_dir_for(symbol):
-    """``src/named/<module>/`` for a named symbol with a known module, else None."""
+    """``named/<module>/`` for a named symbol with a known module, else None."""
     mod = named_module_of(symbol)
     return SRC / NAMED_DIR / mod if mod else None
 
