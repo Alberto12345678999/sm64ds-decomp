@@ -2831,6 +2831,32 @@ ov081	0x02124040	func_ov081_02124040	Spindrift_Spawn	spawnfunc
 ov081	0x02124040	Spindrift_Spawn	daHuwa_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02124090	func_ov081_02124090	_ZN11daSnowman_cD1Ev	vtable slot 16
 ov081	0x021240d8	func_ov081_021240d8	_ZN11daSnowman_cD0Ev	vtable slot 17
+ov081	0x02124134	func_ov081_02124134	_ZN11daSnowman_c19func_ov081_02124134Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x0212423c	func_ov081_0212423c	_ZN11daSnowman_c19func_ov081_0212423cEi	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x021243cc	func_ov081_021243cc	_ZN11daSnowman_c19func_ov081_021243ccEv	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x021245e8	func_ov081_021245e8	_ZN11daSnowman_c19func_ov081_021245e8Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x021246a0	func_ov081_021246a0	_ZN11daSnowman_c19func_ov081_021246a0Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x0212479c	func_ov081_0212479c	_ZN11daSnowman_c19func_ov081_0212479cEv	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124894	func_ov081_02124894	_ZN11daSnowman_c19func_ov081_02124894Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x0212498c	func_ov081_0212498c	_ZN11daSnowman_c19func_ov081_0212498cEv	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x021249f4	func_ov081_021249f4	_ZN11daSnowman_c19func_ov081_021249f4Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124b08	func_ov081_02124b08	_ZN11daSnowman_c19func_ov081_02124b08Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124b98	func_ov081_02124b98	_ZN11daSnowman_c19func_ov081_02124b98Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124d14	func_ov081_02124d14	_ZN11daSnowman_c19func_ov081_02124d14Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124d50	func_ov081_02124d50	_ZN11daSnowman_c19func_ov081_02124d50Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124dfc	func_ov081_02124dfc	_ZN11daSnowman_c19func_ov081_02124dfcEv	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124e64	func_ov081_02124e64	_ZN11daSnowman_c19func_ov081_02124e64Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124ec0	func_ov081_02124ec0	_ZN11daSnowman_c19func_ov081_02124ec0Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124f20	func_ov081_02124f20	_ZN11daSnowman_c19func_ov081_02124f20Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02124f7c	func_ov081_02124f7c	_ZN11daSnowman_c19func_ov081_02124f7cEv	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02125038	func_ov081_02125038	_ZN11daSnowman_c19func_ov081_02125038Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02125068	func_ov081_02125068	_ZN11daSnowman_c19func_ov081_02125068Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x021250c8	func_ov081_021250c8	_ZN11daSnowman_c19func_ov081_021250c8Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02125200	func_ov081_02125200	_ZN11daSnowman_c19func_ov081_02125200Ev	daSnowman_c method; enter of the hop state, invoked through a pointer-to-member in the State record. The address is kept as the method name.
+ov081	0x02125208	func_ov081_02125208	_ZN11daSnowman_c19func_ov081_02125208Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x0212538c	func_ov081_0212538c	_ZN11daSnowman_c19func_ov081_0212538cEv	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x02125488	func_ov081_02125488	_ZN11daSnowman_c19func_ov081_02125488EPNS_5StateE	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov081	0x021254d8	func_ov081_021254d8	_ZN11daSnowman_c19func_ov081_021254d8Ev	daSnowman_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov081	0x021257b0	func_ov081_021257b0	_ZN11daSnowman_c16CleanupResourcesEv	vtable slot 3
 ov081	0x0212581c	func_ov081_0212581c	_ZN11daSnowman_c16OnPendingDestroyEv	vtable slot 12
 ov081	0x02125820	func_ov081_02125820	_ZN11daSnowman_c6RenderEv	vtable slot 9
