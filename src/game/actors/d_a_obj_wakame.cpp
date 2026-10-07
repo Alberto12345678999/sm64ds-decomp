@@ -37,7 +37,7 @@
  *   SharedFilePtr). This TU claims .text only.
  * - common.h is not first: this file wants math/Matrix.h's Matrix4x3 so
  *   mModelAnim.mat4x3.t is a Vector3.
- * - No Player.h / Camera.h.
+ * - No Player.h / dCamera_c.h.
  */
 
 #include "daObjWakame_c.h"

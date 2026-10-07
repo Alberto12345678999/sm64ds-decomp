@@ -294,7 +294,7 @@ daKpa_c decisively, and they read almost all of it. Named from that evidence:
 | 0x426 | `mDropsShadow` | gates the `dBgCh_Gnd` raycast that projects daKpa_c onto the ground and writes the shadow matrix at 0x330 -- the same role `daKpaFire_c::mDropsShadow` was named for. |
 | 0x427 | `mBounceOnLand` | while set, `dBgCh_Actr::JustHitGround()` reflects the vertical speed at -60% (clamped to 0x14000); cleared once he settles. |
 | 0x42b | `mCapActorAlive` | actor 0x10d is the lost cap -- `daSnowman_c` spawns it under `SaveData::HasPlayerLostCap()` and stores its unique id as `mCapUniqueID`. This is the latch saying that actor still exists. |
-| 0x444 | `mCutsceneStep` | `switch` on it drives the camera: `Camera::SetFlag_3`, `Camera::SetLookAt`, and the computed eye position at 0x438/0x43c. |
+| 0x444 | `mCutsceneStep` | `switch` on it drives the camera: `dCamera_c::SetFlag_3`, `dCamera_c::SetLookAt`, and the computed eye position at 0x438/0x43c. |
 | 0x446 | `mStompFxLatch` | [func_ov060_02111a28](../src/actors/daKpa_c.cpp) matches the animation frame at 0x12c against per-animation windows and, on the rising edge only, emits landing dust from the left foot (0x3d4) or right (0x3e0), plays sound 0xb0 and calls `dActor_c::Earthquake`. This is the edge-detect latch that makes it fire once per window. |
 | 0x448 | `mParticleHandle` | stores the result of `Particle::System::New`. |
 | 0x44c | `mSoundHandle` | stores the result of `Sound::PlayLong`, and passes it back as that call's first argument. |

@@ -166,7 +166,7 @@ int daManta_c::func_ov090_021327e4()
                 mRingWrite += 1;
                 if (mRingWrite >= MANTA_RING_SLOTS)
                     mRingWrite = 0;
-                ((daWater_Ring_c *)spawned)->unk_38c = (char *)this;
+                ((daWater_Ring_c *)spawned)->mSpawner = this;
             }
             mStateTimer = MANTA_RING_INTERVAL;
         }

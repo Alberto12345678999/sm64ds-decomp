@@ -115,7 +115,7 @@ names the real offenders, and per-function spelunking is wasted motion.
 The census this attacks (`tools/langmode_audit.py --by-class`, 2026-08-24):
 **C1 32 (8 migrated), C2 14 (2 migrated), C3 2** — against 397 plain methods
 and 65 D1s — though §5c
-reclassifies the two "C3"s and at least two C1s (Camera settled; dMap_c,
+reclassifies the two "C3"s and at least two C1s (dCamera_c settled; dMap_c,
 dMeter_c pending shape-check) as
 factories that no source form can express, so the true migratable backlog is
 smaller than the raw census; §7 enumerates it symbol by symbol. D0 is out of
@@ -222,7 +222,7 @@ a **base subobject** of a derived class:
 
 | callers | what they are |
 |---|---|
-| `_ZN6CameraC1Ev`, `_ZN8dActor_cC1Ev`, `_ZN8dActor_cC2Ev` | derived ctors, base-subobject step |
+| `_ZN9dCamera_cC1Ev`, `_ZN8dActor_cC1Ev`, `_ZN8dActor_cC2Ev` | derived ctors, base-subobject step |
 | `_ZN8dMeter_cC1Ev`, `_ZN6dMap_cC1Ev` | derived ctors, base-subobject step |
 | `_ZN10dScStage_cC3Ev` | allocating ctor folding a base-subobject step (§5c) |
 | `dScStarSel_c_classInit`, `UnknownVsEntry_Spawn`, `dScBoot_c_classInit`, `func_020352b4` | unnamed C3s: `operator new` → null check → base step → double vptr store |
@@ -302,7 +302,7 @@ Disassembled, all three allocating-labelled functions share one shape:
 |---|---|
 | `_ZN10dScStage_cC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
 | `_ZN6PlayerC3Ev` 0x020e6c0c | same, then `bl` Player's own ctor |
-| `_ZN6CameraC1Ev` 0x0200e444 | same, construction fully inline |
+| `_ZN9dCamera_cC1Ev` 0x0200e444 | same, construction fully inline |
 
 Three tells, each individually fatal to the constructor reading:
 
@@ -344,7 +344,7 @@ period. `Camera_Spawn`, `dScStage_c`'s and `Player`'s factories stay hand-writte
 with the reason recorded here so nobody retries the recipe hoping for a
 different answer. What IS recoverable from them is knowledge, not code:
 
-### 5e. What the Camera factory taught us about the hierarchy
+### 5e. What the dCamera_c factory taught us about the hierarchy
 
 RTTI names read straight off the vtables (typeinfo name strings):
 
@@ -352,7 +352,7 @@ RTTI names read straight off the vtables (typeinfo name strings):
 |---|---|
 | `data_0208e4b8` | `7dBase_c` | the unnamed intermediate base §5b predicted; vtable already carries the class's 18 slots |
 | `_ZTV7dView_c` | `7dView_c` | overrides slot 9 (Render) + D1/D0 only; adds no new virtuals |
-| `_ZTV6Camera` | `9dCamera_c` | the project's `Camera` |
+| `_ZTV9dCamera_c` | `9dCamera_c` | the project's `dCamera_c` |
 
 Chain: **`dCamera_c : dView_c : dBase_c : fBase_c`**. The factory's three
 vptr stores walk it bottom-up (`dBase_c` store, `dView_c` store, then body +
@@ -362,10 +362,10 @@ note already said.
 
 Layout consequence: `dView_c` owns the 48-byte matrix at +0x50 (constructed
 with `Matrix4x3_LoadIdentity(&mat)` mid-fold), making it 0x80 tall — which is
-exactly why auto-generated `Camera.h` shows `pad_000[0x80]` before `lookAt`:
+exactly why auto-generated `dCamera_c.h` shows `pad_000[0x80]` before `lookAt`:
 those bytes are base subobjects, not padding. Reference-graph facts: only
-`Camera` derives from `dView_c` (five `_ZTV7dView_c` references total: two
-inside Camera's D1/D0 teardown, two inside dView_c's own dtor pair, one in
+`dCamera_c` derives from `dView_c` (five `_ZTV7dView_c` references total: two
+inside dCamera_c's D1/D0 teardown, two inside dView_c's own dtor pair, one in
 the factory), and `dView_c` has no out-of-line constructor anywhere — its
 construction exists only inside the folded factory, so its ctor must have
 been defined inline in the original header.
@@ -472,8 +472,8 @@ asm transcription, or absent.
    `Particle10SysTrackerC1Ev` 0x02023204 (0x1d0 — the biggest body on the
    list; expect member-ctor synthesis work). Shape-check before attempting:
    if the disassembly starts `operator new` → null-check, it is a factory
-   (§5c/§5d) and no source form exists. `Camera` is settled that way;
-   FaderWipe C1 0x02017480 has no source at all and needs the same check
+   (§5c/§5d) and no source form exists. `dCamera_c` is settled that way;
+   dFdWipe_c C1 0x02017480 has no source at all and needs the same check
    before anyone promotes its header.
 5. **Anim/model family**: `ModelAnimC1/C2Ev` 0x02016958/98 ·
    `ModelAnim2C1Ev` 0x020163a0 · `BlendModelAnimC1Ev` 0x020166d4.

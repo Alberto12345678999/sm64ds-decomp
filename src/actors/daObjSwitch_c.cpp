@@ -1,13 +1,22 @@
 //cpp
 // Timed floor switches and the switch which reveals a star.
-// This TU contains 18 written bodies and two destructor variants emitted from
-// daObjSwitch_c.h. Reverse source order preserves the retail text order with 2004/b56.
 // Select the shared flat Matrix4x3 before the actor headers, as dBgActor_c.h requires.
 //
-// Leftover: the func_ov002_020b9xxx helpers and data_ov002_021098e8 table
-//   keep linker names; naming belongs at their definitions.
-// Leftover: ChangeMusicVolume / IsClsnInRange / KcMbg::SetFile keep
-//   computed spellings (Fix12<int> by value, wall 6az -- noted at use).
+// The 13 func_ov002_020b9xxx/020baxxx helpers are daObjSwitch_c members: each
+// takes the object as arg0 and recasts it, and the sinit .data records at
+// 0x0210987c.. store {init, exec} pointer-to-member pairs over them
+// (data_ov002_0210e00c). Reverse source order preserves the retail text order.
+//
+// comment leftovers:
+//   - ChangeMusicVolume / IsClsnInRange / KcMbg::SetFile stay computed-spelling
+//     externs: the member form changes codegen under 2004/b56 (Fix12<int> by
+//     value, wall 6az -- noted at use).
+//   - func_020393c4 stores a callback address as a 32-bit word at +0x1c; a
+//     typed callback signature has no byte proof, so the int* decl stays.
+//   - func_ov002_020baa98 is a foreign-overlay callback whose address is taken;
+//     it keeps its free extern.
+//   - The daStar_c fields at +0x438/+0x440 and unk_49d are unnamed upstream;
+//     the int*/unk_ puns stay until daStar_c.h names them.
 #include "common.h"
 #include "daObjSwitch_c.h"
 #include "SharedFilePtr.h"
@@ -25,10 +34,13 @@ extern "C" {
     extern signed char data_0209f2f8;
     extern SharedFilePtr data_ov002_0211092c;
     extern daObjSwitch_c::Resources data_ov002_021098e8[];
+    // local extern: Sound.h/dBgActor_c.h declare the members, but Fix12<int>
+    // by value through the member call changes codegen under 2004/b56.
     int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int id, int volume);
     int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
-    // The actual free definition accepts a scalar scale. The genuine member
-    // call changes InitResources under 2004/b56; see the committed experiment.
+    // local extern: the actual free definition accepts a scalar scale. The
+    // genuine member call changes InitResources under 2004/b56; see the
+    // committed experiment.
     void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         void *self, void *file, const Matrix4x3 *matrix, int scale, s16 angle, void *clps);
     // The existing setter stores a callback address as a 32-bit word at +0x1c.
@@ -39,11 +51,6 @@ extern "C" {
     unsigned char DecIfAbove0_Byte(unsigned char *value);
     void LoadSilverStarAndNumber();
     void UnloadSilverStarAndNumber();
-    void func_ov002_020ba4d8(char *self, int state);
-    void func_ov002_020ba01c(char *self, int axes, Fix12i frames, Fix12i from, Fix12i to);
-    void func_ov002_020b9f80(char *self);
-    int func_ov002_020b9f00(char *self);
-    void func_ov002_020ba520(char *self);
 }
 
 // @symbol _ZN13daObjSwitch_c13InitResourcesEv
@@ -86,7 +93,7 @@ int daObjSwitch_c::InitResources()
     f = Model::LoadFile(*data_ov002_021098e8[idx].model);
     mModel.SetFile((BMD_File *)f, 1, -1);
     UpdateModelPosAndRotY();
-    func_ov002_020b9f80(reinterpret_cast<char *>(this));
+    func_ov002_020b9f80();
 
     idx = mResourceIdx;
     f = dBgW_Kc::LoadFile(*data_ov002_021098e8[idx].collision);
@@ -120,8 +127,8 @@ int daObjSwitch_c::Behavior()
     if (IsAreaShowing(mHomeAreaId) == 0) {
         mAreaId = mHomeAreaId;
         mTimer = 1;
-        func_ov002_020ba01c(reinterpret_cast<char *>(this), 2, 1, 0x333, 0x1000);
-        func_ov002_020ba4d8(reinterpret_cast<char *>(this), 0);
+        func_ov002_020ba01c(2, 1, 0x333, 0x1000);
+        func_ov002_020ba4d8(0);
         a = dActor_c::FindWithID(mTargetActorID);
         if (a != 0) {
             static_cast<daStar_c *>(a)->func_ov002_020e6d88();
@@ -131,7 +138,7 @@ int daObjSwitch_c::Behavior()
     {
         int isType = (int)(actorID == 0xc);
         if (isType != 0) {
-            if (func_ov002_020b9f00(reinterpret_cast<char *>(this)) != 0) {
+            if (func_ov002_020b9f00() != 0) {
                 a = dActor_c::FindWithID(mTargetActorID);
                 if (a != 0) {
                     mTargetActor = a;
@@ -143,10 +150,10 @@ int daObjSwitch_c::Behavior()
     if ((int)(actorID == 0xc) != 0) {
         id344 = mTargetActorID;
         if (id344 == 0) {
-            func_ov002_020ba01c(reinterpret_cast<char *>(this), 2, 3, 0x333, 0x1000);
+            func_ov002_020ba01c(2, 3, 0x333, 0x1000);
             UpdateModelPosAndRotY();
             if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0) {
-                func_ov002_020b9f80(reinterpret_cast<char *>(this));
+                func_ov002_020b9f80();
             }
             return 1;
         }
@@ -160,10 +167,10 @@ int daObjSwitch_c::Behavior()
     if ((data_0209b454 & 0x4000000) == 0) {
         mTimer++;
     }
-    func_ov002_020ba520(reinterpret_cast<char *>(this));
+    func_ov002_020ba520();
     UpdateModelPosAndRotY();
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0) {
-        func_ov002_020b9f80(reinterpret_cast<char *>(this));
+        func_ov002_020b9f80();
     }
 
     if (mSwitchType == 2) {
@@ -209,43 +216,39 @@ int daObjSwitch_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov002_020ba520
-extern "C" void func_ov002_020ba520(char *self)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba520Ev
+void daObjSwitch_c::func_ov002_020ba520()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(self);
-    int state = actor->mState;
-    (actor->*data_ov002_0210e00c[state].exec)();
+    int state = mState;
+    (this->*data_ov002_0210e00c[state].exec)();
 }
 
-// @symbol func_ov002_020ba4d8
-extern "C" void func_ov002_020ba4d8(char *self, int nextState)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba4d8Ei
+void daObjSwitch_c::func_ov002_020ba4d8(int nextState)
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(self);
-    actor->mState = nextState;
-    int state = actor->mState;
-    (actor->*data_ov002_0210e00c[state].init)();
+    mState = nextState;
+    int state = mState;
+    (this->*data_ov002_0210e00c[state].init)();
 }
 
-// @symbol func_ov002_020ba4c0
-extern "C" void func_ov002_020ba4c0(char *p)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba4c0Ev
+void daObjSwitch_c::func_ov002_020ba4c0()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(p);
-    actor->mTimer = 0;
-    actor->mPressTimer = 5;
+    mTimer = 0;
+    mPressTimer = 5;
 }
 
-// @symbol func_ov002_020ba3fc
-extern "C" void func_ov002_020ba3fc(char *c)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba3fcEv
+void daObjSwitch_c::func_ov002_020ba3fc()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(c);
     int ok = 1;
     dActor_c *p;
-    actor->mTimer = 0;
-    actor->mPressTimer = 5;
-    actor->mMusicFadeDone = 0;
+    mTimer = 0;
+    mPressTimer = 5;
+    mMusicFadeDone = 0;
     p = dActor_c::FindWithActorID(0xb, 0);
     while (p != 0) {
-        if (p != actor) {
+        if (p != this) {
             if (static_cast<daObjSwitch_c *>(p)->mState != 0) ok = 0;
         }
         p = dActor_c::FindWithActorID(0xb, p);
@@ -253,166 +256,157 @@ extern "C" void func_ov002_020ba3fc(char *c)
     if (ok != 0) {
         p = dActor_c::FindWithActorID(0xc, 0);
         while (p != 0) {
-            if (p != actor) {
+            if (p != this) {
                 if (static_cast<daObjSwitch_c *>(p)->mState != 0) ok = 0;
             }
             p = dActor_c::FindWithActorID(0xc, p);
         }
     }
-    if (ok != 0) actor->mMusicVolume = 0x7f;
+    if (ok != 0) mMusicVolume = 0x7f;
 }
 
-// @symbol func_ov002_020ba3a8
-extern "C" void func_ov002_020ba3a8(daObjSwitch_c *c)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba3a8Ev
+void daObjSwitch_c::func_ov002_020ba3a8()
 {
-    if (c->mPlayerNearby) {
-        if (DecIfAbove0_Byte(&c->mPressTimer) != 0) return;
-        func_ov002_020ba4d8(reinterpret_cast<char *>(c), 1);
+    if (mPlayerNearby) {
+        if (DecIfAbove0_Byte(&mPressTimer) != 0) return;
+        func_ov002_020ba4d8(1);
         return;
     }
-    c->mPressTimer = 5;
+    mPressTimer = 5;
 }
 
-// @symbol func_ov002_020ba2d0
-extern "C" void func_ov002_020ba2d0(char *c)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba2d0Ev
+void daObjSwitch_c::func_ov002_020ba2d0()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(c);
-    func_ov002_020ba01c(c, 2, 3, 0x1000, 0x333);
-    if (actor->mTimer != 3) return;
-    Sound::PlayBank3(0x3e, *reinterpret_cast<const Vector3 *>(&actor->mCamSpacePosX));
-    if ((int)(actor->actorID == 0xc) != 0) {
-        dActor_c *p = actor->mTargetActor;
+    func_ov002_020ba01c(2, 3, 0x1000, 0x333);
+    if (mTimer != 3) return;
+    Sound::PlayBank3(0x3e, *reinterpret_cast<const Vector3 *>(&mCamSpacePosX));
+    if ((int)(actorID == 0xc) != 0) {
+        dActor_c *p = mTargetActor;
         if (p != 0) {
             static_cast<daStar_c *>(p)->func_ov002_020e7104(1);
-            actor->mAreaId = -1;
+            mAreaId = -1;
         }
     } else {
-        if (data_0209f2f8 == 0xd && actor->mPosX == -0x140000) {
-            actor->SpawnSoundObj(0);
+        if (data_0209f2f8 == 0xd && mPosX == -0x140000) {
+            SpawnSoundObj(0);
         }
-        Event::SetBit(actor->mEventBit);
+        Event::SetBit(mEventBit);
     }
-    func_ov002_020ba4d8(c, 2);
+    func_ov002_020ba4d8(2);
 }
 
-// @symbol func_ov002_020ba2ac
-extern "C" void func_ov002_020ba2ac(char *p)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba2acEv
+void daObjSwitch_c::func_ov002_020ba2ac()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(p);
-    actor->mTimer = 0;
-    actor->mPressTimer = 5;
-    actor->mMusicFadeDone = 0;
-    actor->mMusicVolume = 64;
+    mTimer = 0;
+    mPressTimer = 5;
+    mMusicFadeDone = 0;
+    mMusicVolume = 64;
 }
 
-// @symbol func_ov002_020ba1ac
-extern "C" void func_ov002_020ba1ac(char *self)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba1acEv
+void daObjSwitch_c::func_ov002_020ba1ac()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(self);
     int diff;
-    if (actor->mSwitchType == 0) return;
-    if (actor->mSwitchType == 1) {
-        if (actor->mPlayerNearby == 0) {
-            func_ov002_020ba4d8(self, 3);
+    if (mSwitchType == 0) return;
+    if (mSwitchType == 1) {
+        if (mPlayerNearby == 0) {
+            func_ov002_020ba4d8(3);
             return;
         }
     }
-    diff = actor->mTimeLimit - actor->mTimer;
+    diff = mTimeLimit - mTimer;
     if (!(data_0209b454 & 0x4000000)) {
         if (diff == 0x2d) {
-            actor->mTickSoundHandle = 0;
+            mTickSoundHandle = 0;
         } else if (diff < 0x2d) {
-            actor->mTickSoundHandle = func_02012310(actor->mTickSoundHandle, 0x39, 0);
+            mTickSoundHandle = func_02012310(mTickSoundHandle, 0x39, 0);
         } else {
-            actor->mTickSoundHandle = func_02012310(actor->mTickSoundHandle, 0x38, 0);
+            mTickSoundHandle = func_02012310(mTickSoundHandle, 0x38, 0);
         }
     }
-    if (actor->mTimer > actor->mTimeLimit) {
-        func_ov002_020ba4d8(self, 4);
+    if (mTimer > mTimeLimit) {
+        func_ov002_020ba4d8(4);
         return;
     }
-    if (actor->mTargetActor == 0) return;
-    if (static_cast<daStar_c *>(actor->mTargetActor)->unk_440 != 5) return;
-    func_ov002_020ba4d8(self, 4);
+    if (mTargetActor == 0) return;
+    if (static_cast<daStar_c *>(mTargetActor)->unk_440 != 5) return;
+    func_ov002_020ba4d8(4);
 }
 
-// @symbol func_ov002_020ba0f8
-extern "C" void func_ov002_020ba0f8(char *c)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba0f8Ev
+void daObjSwitch_c::func_ov002_020ba0f8()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(c);
-    func_ov002_020ba01c(c, 2, 3, 0x333, 0x1000);
-    if (actor->mTimer != 3) return;
-    Sound::PlayBank3(0x3e, *reinterpret_cast<const Vector3 *>(&actor->mCamSpacePosX));
+    func_ov002_020ba01c(2, 3, 0x333, 0x1000);
+    if (mTimer != 3) return;
+    Sound::PlayBank3(0x3e, *reinterpret_cast<const Vector3 *>(&mCamSpacePosX));
     {
-        int b = (actor->actorID == 0xc);
+        int b = (actorID == 0xc);
         if (b) {
-            dActor_c *p = actor->mTargetActor;
+            dActor_c *p = mTargetActor;
             // This foreign star field is still unnamed in daStar_c.h.
             if (p != 0 && *reinterpret_cast<int *>(reinterpret_cast<char *>(p) + 0x438) == 0) {
                 static_cast<daStar_c *>(p)->func_ov002_020e7104(0);
             }
-            actor->mAreaId = actor->mHomeAreaId;
+            mAreaId = mHomeAreaId;
         } else {
-            Event::ClearBit(actor->mEventBit);
+            Event::ClearBit(mEventBit);
         }
     }
-    func_ov002_020ba4d8(c, 0);
+    func_ov002_020ba4d8(0);
 }
 
-// @symbol func_ov002_020ba0bc
-extern "C" void func_ov002_020ba0bc(char *c)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba0bcEv
+void daObjSwitch_c::func_ov002_020ba0bc()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(c);
-    unsigned short v = actor->actorID;
+    unsigned short v = actorID;
     int b = (v == 0xc);
-    if (!b) Event::ClearBit(actor->mEventBit);
-    func_ov002_020ba4d8(c, 3);
+    if (!b) Event::ClearBit(mEventBit);
+    func_ov002_020ba4d8(3);
 }
 
-// @symbol func_ov002_020ba01c
-extern "C" void func_ov002_020ba01c(char *c, int mask, Fix12i b, Fix12i base, Fix12i target)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020ba01cEiiii
+void daObjSwitch_c::func_ov002_020ba01c(int mask, Fix12i b, Fix12i base, Fix12i target)
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(c);
-    Fix12i d = cstd::fdiv((Fix12i)actor->mTimer, b);
+    Fix12i d = cstd::fdiv((Fix12i)mTimer, b);
     Fix12i diff = target - base;
     Fix12i e = (Fix12i)(((long long)diff * d + 0x800) >> 12);
     Fix12i v = base + cstd::fdiv(e, 0x1000);
     Fix12i h = (Fix12i)(((long long)v * 0x3c000 + 0x800) >> 12);
-    actor->mDisplacementY = 0x3c000 - h;
-    if (mask & 1) actor->mDrawScale.x = v;
-    if (mask & 2) actor->mDrawScale.y = v;
-    if (mask & 4) actor->mDrawScale.z = v;
+    mDisplacementY = 0x3c000 - h;
+    if (mask & 1) mDrawScale.x = v;
+    if (mask & 2) mDrawScale.y = v;
+    if (mask & 4) mDrawScale.z = v;
 }
 
 // @symbol _ZN13daObjSwitch_c15OnGroundPoundedER8dActor_c
 void daObjSwitch_c::OnGroundPounded(dActor_c &other)
 {
     if (mState != 0) return;
-    func_ov002_020ba4d8(reinterpret_cast<char *>(this), 1);
+    func_ov002_020ba4d8(1);
 }
 
-// @symbol func_ov002_020b9f80
-extern "C" void func_ov002_020b9f80(char *self)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020b9f80Ev
+void daObjSwitch_c::func_ov002_020b9f80()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(self);
-
-    actor->mClsnMat = actor->mModel.mat4x3;
-    actor->mClsnMat.m[9] = actor->mPosX;
-    actor->mClsnMat.m[10] = actor->mPosY - actor->mDisplacementY;
-    actor->mClsnMat.m[11] = actor->mPosZ;
-    actor->mMeshCollider.Transform(actor->mClsnMat, actor->mAngleY);
+    mClsnMat = mModel.mat4x3;
+    mClsnMat.m[9] = mPosX;
+    mClsnMat.m[10] = mPosY - mDisplacementY;
+    mClsnMat.m[11] = mPosZ;
+    mMeshCollider.Transform(mClsnMat, mAngleY);
 }
 
-// @symbol func_ov002_020b9f00
-extern "C" int func_ov002_020b9f00(char *self)
+// @symbol _ZN13daObjSwitch_c19func_ov002_020b9f00Ev
+int daObjSwitch_c::func_ov002_020b9f00()
 {
-    daObjSwitch_c *actor = reinterpret_cast<daObjSwitch_c *>(self);
     dActor_c *star;
-    if (actor->mTargetActorID) return 0;
+    if (mTargetActorID) return 0;
     star = dActor_c::FindWithActorID(0xb2, 0);
     while (star) {
-        if (actor->mStarID == static_cast<daStar_c *>(star)->unk_49d) {
-            actor->mTargetActorID = star->uniqueID;
+        if (mStarID == static_cast<daStar_c *>(star)->unk_49d) {
+            mTargetActorID = star->uniqueID;
             return 1;
         }
         star = dActor_c::FindWithActorID(0xb2, star);

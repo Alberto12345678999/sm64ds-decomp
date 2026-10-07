@@ -14,7 +14,7 @@
  * - Matrix4x3_FromRotationY stays a free function (no header method)
  * - pad_0d0 unused (not live)
  * - common.h not needed (no 12-word Matrix4x3 copy)
- * - no Player.h / Camera.h
+ * - no Player.h / dCamera_c.h
  */
 
 #include "daObjKb1Billboard_c.h"

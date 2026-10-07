@@ -2,11 +2,11 @@
 // @symbol _ZN6Player17St_ButtSlide_InitEv
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
-struct Camera;
+struct dCamera_c;
 extern "C" {
 extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
-extern struct Camera* data_0209f318;
-extern void func_0200d544(struct Camera* thiz, unsigned char playerID);
+extern struct dCamera_c* data_0209f318;
+extern void func_0200d544(struct dCamera_c* thiz, unsigned char playerID);
 }
 
 int Player::St_ButtSlide_Init()

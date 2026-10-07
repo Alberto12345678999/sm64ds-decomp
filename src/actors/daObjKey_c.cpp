@@ -37,7 +37,7 @@
  * - The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
  *   name it.
  * - g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
- * - data_0209f318 as Camera * matches, but the plurality is void * so the
+ * - data_0209f318 as dCamera_c * matches, but the plurality is void * so the
  *   cast stays.
  *
  * Leftover: 20/20 MATCH. func_ov089_02130fb4, func_ov089_0213115c,
@@ -57,7 +57,7 @@
 #include "decl_common.h"
 #include "daObjKey_c.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
 #include "Message.h"
@@ -136,7 +136,7 @@ enum {
 typedef void (daObjKey_c::*StateFunc)();
 extern StateFunc data_ov089_02132cec[];
 
-/* local extern: Camera.h has no SetFlag_3. Particle::System::New,
+/* local extern: dCamera_c.h has no SetFlag_3. Particle::System::New,
  * DropShadowRadHeight, ModelAnim::SetAnim and dCcAcPos_c::Init take
  * Fix12<int> by value; the scalar call does not compile and the Fix12
  * temporary size-DIFFs (see the file comment). The ROM calls the
@@ -145,7 +145,6 @@ extern "C" {
 extern void dBgCh_Actr_UpdateContinuous_Veneer(char *p);
 extern void *data_0209f318;
 extern int data_0209b454;
-extern void _ZN6Camera9SetFlag_3Ev(Camera *cam);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 a, u32 b, int c, int d, int e, void *f, void *g);
 extern void func_02012694(unsigned int id, const Vector3 *pos);
@@ -287,7 +286,7 @@ void daObjKey_c::StateFlyToCenter()
     Vector3 v;
     Vector3 center1;
     Vector3 center2;
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
 
     switch (mStep) {
     case 0:
@@ -310,7 +309,7 @@ void daObjKey_c::StateFlyToCenter()
             mSavedCamPos.x = pos->x;
             mSavedCamPos.y = pos->y;
             mSavedCamPos.z = pos->z;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             mStep++;
             _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, data_0209b490 / 15);
             break;
@@ -419,7 +418,7 @@ void daObjKey_c::StateStarJump()
 {
     Vector3 v;
     Vector3 target;
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
 
     if (mStep < 3) {
         v.x = mPosX;
@@ -449,7 +448,7 @@ void daObjKey_c::StateStarJump()
             mSavedCamPos.x = pos->x;
             mSavedCamPos.y = pos->y;
             mSavedCamPos.z = pos->z;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
@@ -568,7 +567,7 @@ void daObjKey_c::StateStarJump()
 // @symbol _ZN10daObjKey_c9StateDropEv
 void daObjKey_c::StateDrop()
 {
-    Camera *cam = (Camera *)data_0209f318;
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
     Vector3 v;
 
     dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
@@ -587,7 +586,7 @@ void daObjKey_c::StateDrop()
             mSavedCamPos.x = pos->x;
             mSavedCamPos.y = pos->y;
             mSavedCamPos.z = pos->z;
-            _ZN6Camera9SetFlag_3Ev(cam);
+            cam->SetFlag_3();
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;

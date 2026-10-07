@@ -4465,7 +4465,7 @@ int Player::func_ov002_020c4188()
     extern short data_ov002_020ff26c[];
     extern unsigned char data_0209d660;
     extern void func_0200d3f8(void*, unsigned char playerID, void*);
-    extern void _ZN6Camera9SetFlag_3Ev(void*);
+    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern void func_0201f32c(int arg0);
     extern void* _ZN8dActor_c13SpawnSoundObjEj(void*, unsigned int a);
     extern void func_0200d81c(void*, int playerID);
@@ -4487,7 +4487,7 @@ int Player::func_ov002_020c4188()
         if (*(u8*)((char *)this + 0x71e) < 7) {
             func_0200d3f8(p, mPlayerNo, 0);
         } else {
-            _ZN6Camera9SetFlag_3Ev(p);
+            _ZN9dCamera_c9SetFlag_3Ev(p);
         }
         (*(u8*)((int)((char *)this + 0x71f)))++;
         if (*(u8*)((char *)this + 0x71e) >= 7) {
@@ -4949,7 +4949,7 @@ int Player::ShowMessage2(fBase_c & actor_, unsigned int msg, const Vector3 * pos
     extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
     extern void func_020731dc(void*, void*, void*);
     extern void Vec3_RotateYAndTranslate(void*, const Vector3 *in, int angle, const Vector3 *src);
-    extern void _ZN6Camera9SetFlag_3Ev(void*);
+    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     extern Player::State data_ov002_0211046c;
     extern Player::State data_ov002_0211013c;
     extern Player::State data_ov002_02110364;
@@ -5017,7 +5017,7 @@ finish:
     *(unsigned int*)&mAttachOffsetY = msg;
 
     if (e == 2) {
-        _ZN6Camera9SetFlag_3Ev(data_0209f318);
+        _ZN9dCamera_c9SetFlag_3Ev(data_0209f318);
     }
 
     return 1;
@@ -6398,7 +6398,7 @@ int func_ov002_020c6e14(void* actor)
     extern void* data_0209f318[];
     extern int NumStars(void);
     extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void*, void*, unsigned int msg, const void* pos, unsigned int a, unsigned int b);
-    extern void _ZN6Camera9SetFlag_3Ev(void*);
+    extern void _ZN9dCamera_c9SetFlag_3Ev(void*);
     int idx;
 
     if (data_0209f2ac != 0) {
@@ -6417,7 +6417,7 @@ int func_ov002_020c6e14(void* actor)
             return 0;
 
         if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(actor, actor, data_ov002_020ff1a0[idx], 0, 0, 2)) {
-            _ZN6Camera9SetFlag_3Ev(data_0209f318[0]);
+            _ZN9dCamera_c9SetFlag_3Ev(data_0209f318[0]);
             return 1;
         }
     }
