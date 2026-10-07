@@ -213,7 +213,6 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
 #pragma opt_propagation off
 void dScMgCoin_c::func_ov006_020dbe9c()
 {
-    char *c = (char *)this;
 
     if (mBouncer.shown == 0)
         return;
@@ -584,12 +583,11 @@ void dScMgCoin_c::func_ov006_020dc960(int index)
     /* Two strides, 0x18 and 0x10. The struct form keeps 0x18 alive
        past the coin and pushes a register. */
     char *coin = raw + index * 0x18;
-    char *popup = raw + index * 0x10;
-    *(int *)(popup + 0x5014) = *(int *)(coin + 0x4ac0);
-    *(int *)(popup + 0x5018) = *(int *)(coin + 0x4ac4);
-    *(short *)(popup + 0x501e) = *(unsigned char *)(coin + 0x4ad3);
-    *(unsigned char *)(popup + 0x5020) = 1;
-    *(short *)(popup + 0x501c) = 0x18;
+    mPopups[index].x = mCoins[index].x;
+    mPopups[index].y = mCoins[index].y;
+    mPopups[index].value = mCoins[index].value;
+    mPopups[index].live = 1;
+    mPopups[index].timer = 0x18;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dc99cEv
@@ -1390,9 +1388,9 @@ void dScMgCoin_c::func_ov006_020ddf9c()
 
     *((u32 *)(c + 0x4d00)) = 0;
     *((u32 *)(c + 0x4d04)) = 0;
-    *((u16 *)(c + 0x4d08)) = 0;
-    *((u16 *)(c + 0x4d0a)) = 0;
-    *((u16 *)(c + 0x4d0c)) = 0;
+    *(&mScore.total) = 0;
+    *(&mScore.shown) = 0;
+    *(&mScore.tick) = 0;
     *((u8 *)(c + 0x4d13)) = 0;
     p = c;
     for (i3 = 0; i3 < 0x20; i3++) {
@@ -1426,7 +1424,7 @@ void dScMgCoin_c::func_ov006_020de0e0()
 {
     char *self = (char *)this;
     if (mCountdown == 0) return;
-    *(int *)(((int)self + 0x51cc)) -= 1;
+    mCountdown -= 1;
     unsigned int idx = data_020a0e40;
     int flag = 0;
     if (data_020a0de8[idx * 4] != 0) {
@@ -1507,21 +1505,21 @@ void dScMgCoin_c::func_ov006_020de26c()
     this->func_ov006_020dca04();
     if (count != 0) return;
 
-    if (((int *)(self + 0x5000))[0x73] != 0) {
+    if ((&mSparkles[31].y)[0x73] != 0) {
         *(int *)(((long long)(int)(self + 0x51cc))) -= 1;
-        if (((int *)(self + 0x5000))[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] == 0)
+        if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] == 0)
             this->func_ov006_020dc348();
-        if (((int *)(self + 0x5000))[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] != 0) {
+        if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] != 0) {
             func_ov004_020b0cac(6, 0x80, -0x80, -1, -1, 0xd);
             func_ov004_020ae274(0);
         }
-        if (((int *)(self + 0x5000))[0x73] <= 0) ((int *)(self + 0x5000))[0x73] = 0;
+        if ((&mSparkles[31].y)[0x73] <= 0) (&mSparkles[31].y)[0x73] = 0;
         return;
     }
     g = (char *)data_ov004_020beb68;
     func_ov004_020adb1c(g != 0 ? *(int *)(g + 0xa8) : 0);
-    ((int *)(self + 0x5000))[0x73] = 0x70;
-    ((int *)(self + 0x5000))[0x72] = 4;
+    (&mSparkles[31].y)[0x73] = 0x70;
+    (&mSparkles[31].y)[0x72] = 4;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de440Ev

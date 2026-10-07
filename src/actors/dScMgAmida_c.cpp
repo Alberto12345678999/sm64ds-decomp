@@ -954,7 +954,7 @@ void dScMgAmida_c::StepWalkers()
                         s32 dirVal;
 
                         if (Unk36() != 0) {
-                            u32 want = *(u32 *)(p + idx * 4 + 0x46a4);
+                            u32 want = (u32)mLaneWants[idx];
                             dirSlot = (s32 *)(p + idx * 8 + 0x4660);
                             dirVal = *dirSlot;
                             switch (dirVal) {
@@ -1026,7 +1026,7 @@ void dScMgAmida_c::StepWalkers()
                             if (Unk36() != 0) {
                                 if (mRoundFailed == 0) {
                                     func_02012718(v10, *dirSlot << 0xc);
-                                    u32 w2 = *(u32 *)(p + idx * 4 + 0x46a4);
+                                    u32 w2 = (u32)mLaneWants[idx];
                                     switch (w2) {
                                     default:
                                         break;
@@ -1052,7 +1052,7 @@ void dScMgAmida_c::StepWalkers()
                                     continue;
                                 }
                                 if (mRoundFailed == 0) {
-                                    *(s32 *)((int)p + 0x5374) += 1;
+                                    mRoundCount += 1;
                                     mScore += 1;
                                     if (mScore > 0x270f) {
                                         mScore = 0x270f;
@@ -1071,7 +1071,7 @@ void dScMgAmida_c::StepWalkers()
                                 if (mWalkersDone < mWalkerCount) {
                                     continue;
                                 }
-                                *(s32 *)((int)p + 0x5374) += 1;
+                                mRoundCount += 1;
                                 mScore += 1;
                                 if (mScore > 0x270f) {
                                     mScore = 0x270f;

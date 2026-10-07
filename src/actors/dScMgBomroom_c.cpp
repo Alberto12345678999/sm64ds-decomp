@@ -2438,6 +2438,7 @@ void func_ov006_020d904c(void *c)
 extern "C" {
 void func_ov006_020d907c(void *p)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)p;
     char *c = (char *)p;
     func_ov006_020d893c(c);
     *(short *)(c + 0x62e2) = 0;
@@ -2448,7 +2449,7 @@ void func_ov006_020d907c(void *p)
     *(short *)(c + 0x62ea) = 0;
     *(unsigned char *)(c + 0x62f8) = 0;
     *(int *)(c + 0x62d8) = 0;
-    *(short *)(c + 0x62f0) = 0;
+    self->unk_62f0 = 0;
     *(unsigned char *)(c + 0x62f9) = 0;
     *(unsigned char *)(c + 0x62fb) = 0;
     *(unsigned char *)(c + 0x62fc) = 0;
@@ -2502,10 +2503,10 @@ s32 dScMgBomroom_c::Behavior()
 {
     char *c = (char *)this;
     if (unk_62f0 != 0) {
-        unsigned short *t = (unsigned short *)(((int)c + 0x62f0));
+        unsigned short *t = &unk_62f0;
         *t = *t - 1;
-        if (*(short *)(c + 0x6200 + 0xf0) <= 0)
-            *(short *)(c + 0x6200 + 0xf0) = 0;
+        if ((short)unk_62f0 <= 0)
+            unk_62f0 = 0;
     } else {
         (((C_91b0 *)this)->*data_ov006_021416e0[unk_62d0])();
         func_ov006_020d5d08(c);

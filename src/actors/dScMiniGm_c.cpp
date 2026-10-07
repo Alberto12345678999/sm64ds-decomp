@@ -404,6 +404,7 @@ s32 dScMiniGm_c::InitResources()
 extern "C" {
 void func_ov005_020c16e4(void *selfv)
 {
+    dScMiniGm_c *scene = (dScMiniGm_c *)selfv;
     char *self = (char *)selfv;
     int i;
     int rowB;
@@ -493,7 +494,7 @@ void func_ov005_020c16e4(void *selfv)
             row = m;
             destOff = row;
             do {
-                idx = *(int *)(self + 0x64);
+                idx = scene->mGfxSlot;
                 ch = (char *)_ZN3G2S13GetBG0CharPtrEv();
                 scr = ch + (idx / 4) * 0x2400 + (idx % 4) * 0xc0 + destOff;
                 ch = (char *)_ZN3G2S13GetBG0CharPtrEv();
@@ -503,10 +504,10 @@ void func_ov005_020c16e4(void *selfv)
 
             f = LoadFile(data_ov005_020c2310[data_0208a170 + j]);
             _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)f, flushSize);
-            _ZN3GXS10LoadBGPlttEPKvjj(f, *(int *)(self + 0x64) << 5, plttSize);
+            _ZN3GXS10LoadBGPlttEPKvjj(f, scene->mGfxSlot << 5, plttSize);
             Deallocate(f);
 
-            ((int *)(self + 0x68))[i] = *(int *)(self + 0x64);
+            scene->mGfxSlots[i] = scene->mGfxSlot;
 
             off = tbl.v[i];
             rowB = pInit;
@@ -516,7 +517,7 @@ void func_ov005_020c16e4(void *selfv)
                 destOff = off << 1;
                 do {
                     char *dstp;
-                    idx = *(int *)(self + 0x64);
+                    idx = scene->mGfxSlot;
                     scr = (char *)_ZN3G2S12GetBG0ScrPtrEv();
                     dstp = scr + destOff;
                     dstp = idx ? dstp : dstp; /* register-dest pin; arms identical */
@@ -532,10 +533,10 @@ void func_ov005_020c16e4(void *selfv)
             } while (rowB < 9);
 
             {
-                int *slot = (int *)(self + 0x64);
+                int *slot = &scene->mGfxSlot;
                 *slot = *slot + 1;
-                if (*(int *)(self + 0x64) >= 10)
-                    *(int *)(self + 0x64) = resetVal;
+                if (scene->mGfxSlot >= 10)
+                    scene->mGfxSlot = resetVal;
             }
         }
         j += 4;
@@ -618,6 +619,7 @@ s32 dScMiniGm_c::Behavior()
 extern "C" {
 void func_ov005_020c1130(void *selfv)
 {
+    dScMiniGm_c *scene = (dScMiniGm_c *)selfv;
     char *self = (char *)selfv;
     int end;
     int i;
@@ -632,7 +634,7 @@ void func_ov005_020c1130(void *selfv)
     unsigned int rem;
     unsigned int pct;
 
-    if (*(u8 *)(self + 0x54) == 1)
+    if (scene->mPageFlipped == 1)
         return;
 
     if (data_0209b304 == 1) {
@@ -735,8 +737,9 @@ void func_ov005_020c1030(void *a0, int x, int y, int val){
 extern "C" {
 void func_ov005_020c0f38(void *selfv)
 {
+    dScMiniGm_c *scene = (dScMiniGm_c *)selfv;
     char *self = (char *)selfv;
-    int g = (*(int *)(self + 0x9c) >= 0x20) ? 1 : 0;
+    int g = (scene->mIconBlinkPhase >= 0x20) ? 1 : 0;
     int start, end;
     if (data_0209b304 == 1) {
         start = 6;
@@ -745,7 +748,7 @@ void func_ov005_020c0f38(void *selfv)
         start = 0;
         end = 5;
     }
-    if (*(unsigned char *)(self + 0x54) == 1)
+    if (scene->mPageFlipped == 1)
         return;
     int i;
     for (i = start; i <= end; i++) {
@@ -849,30 +852,31 @@ extern "C" {
 
 void func_ov005_020c0878(char *self)
 {
+    dScMiniGm_c *scene = (dScMiniGm_c *)self;
     void* g = (void*)data_0209f5bc;
     int (**vt)(void*) = *(int(***)(void*))g;
     if (vt[5](g) == 0)
         return;
-    if (*(unsigned char*)(self + 0xac) != 0)
+    if (scene->mExiting != 0)
         return;
-    if (*(unsigned char*)(self + 0x54) == 1)
+    if (scene->mPageFlipped == 1)
         return;
-    if (*(int*)(self + 0x90) > 0)
+    if (scene->mPrevPageTimer > 0)
         return;
-    if (*(int*)(self + 0x94) > 0)
+    if (scene->mNextPageTimer > 0)
         return;
-    if (*(int*)(self + 0x98) > 0)
+    if (scene->mExitTimer > 0)
         return;
 
-    if (*(int*)(self + 0xa0) > 0) {
-        int* pa0 = (int*)((int)self + 0xa0);
+    if (scene->mScrollDelay > 0) {
+        int* pa0 = &scene->mScrollDelay;
         *pa0 = *pa0 - 1;
-        if (*(int*)(self + 0xa0) == 0) {
-            int f58 = *(int*)(self + 0x58);
+        if (scene->mScrollDelay == 0) {
+            int f58 = scene->mGroupBase;
             if (f58 != data_0208a170) {
                 data_0208a170 = f58;
                 func_ov005_020c16e4(self);
-                *(int*)(self + 0xa0) = 0x1e;
+                scene->mScrollDelay = 0x1e;
             }
         }
     }
@@ -885,7 +889,7 @@ void func_ov005_020c0878(char *self)
             if (data_020a0de9[idx * 4] != 0)
                 flag = 1;
         }
-        if (flag != 0 || (*(int*)(self + 0xa0) <= 0 && v != 0)) {
+        if (flag != 0 || (scene->mScrollDelay <= 0 && v != 0)) {
             int i = 0;
             int lo = 2;
             int hi = 0x2e;
@@ -898,10 +902,10 @@ void func_ov005_020c0878(char *self)
                     unsigned char* p = (unsigned char*)data_020a0de8 + (ix * 4);
                     if (p[2] <= 0x30 && p[3] >= lo && p[3] <= hi) {
                         data_0208a170 = e;
-                        *(int*)(self + 0x58) = e;
+                        scene->mGroupBase = e;
                         func_02012790(z);
                         func_ov005_020c16e4(self);
-                        *(int*)(self + 0xa0) = t;
+                        scene->mScrollDelay = t;
                     }
                 }
                 i++;
@@ -911,7 +915,7 @@ void func_ov005_020c0878(char *self)
             return;
         }
 
-        if (*(int*)(self + 0xa0) <= 0)
+        if (scene->mScrollDelay <= 0)
             return;
         if (v == 0)
             return;
@@ -923,13 +927,13 @@ void func_ov005_020c0878(char *self)
             int t = 0x1e;
             do {
                 int e = data_ov005_020c2250[i];
-                if (*(int*)(self + 0x58) != e) {
+                if (scene->mGroupBase != e) {
                     unsigned char ix = data_020a0e40;
                     unsigned char* p = (unsigned char*)data_020a0de8 + (ix * 4);
                     if (p[2] <= 0x30 && p[3] >= lo && p[3] <= hi) {
-                        *(int*)(self + 0x58) = e;
+                        scene->mGroupBase = e;
                         func_02012790(z);
-                        *(int*)(self + 0xa0) = t;
+                        scene->mScrollDelay = t;
                     }
                 }
                 i++;
@@ -945,15 +949,16 @@ void func_ov005_020c0878(char *self)
 extern "C" {
 void func_ov005_020c06cc(char *self)
 {
+    dScMiniGm_c *scene = (dScMiniGm_c *)self;
     int (**vt)(void*);
     void *obj = (void*)data_0209f5bc;
     vt = *(int(***)(void*))obj;
     if (vt[5](obj) == 0) return;
-    if (*(u8*)(self+0xac) != 0) return;
-    if (*(u8*)(self+0x54) == 1) return;
-    if (*(int*)(self+0x90) > 0) return;
-    if (*(int*)(self+0x94) > 0) return;
-    if (*(int*)(self+0x98) > 0) return;
+    if (scene->mExiting != 0) return;
+    if (scene->mPageFlipped == 1) return;
+    if (scene->mPrevPageTimer > 0) return;
+    if (scene->mNextPageTimer > 0) return;
+    if (scene->mExitTimer > 0) return;
     if (func_ov005_020c00e4(self) == 0) return;
 
     {
@@ -971,7 +976,7 @@ void func_ov005_020c06cc(char *self)
             if (data_020a0deb[idx*4] < 0x40) return;
             if (data_020a0deb[idx*4] > 0x80) return;
             func_02012790(0);
-            *(int*)(self+0x94) = 0x12;
+            scene->mNextPageTimer = 0x12;
             return;
         } else {
             u8 v = data_020a0dea[idx*4];
@@ -980,7 +985,7 @@ void func_ov005_020c06cc(char *self)
             if (data_020a0deb[idx*4] < 0x40) return;
             if (data_020a0deb[idx*4] > 0x80) return;
             func_02012790(0);
-            *(int*)(self+0x90) = 0x12;
+            scene->mPrevPageTimer = 0x12;
             return;
         }
     }
@@ -1055,14 +1060,15 @@ void dScMiniGm_c::func_ov005_020c0378()
 extern "C" {
 
 void func_ov005_020c0250(char *self) {
+    dScMiniGm_c *scene = (dScMiniGm_c *)self;
     void* g = (void*)data_0209f5bc;
     int (**vt)(void*) = *(int(***)(void*))g;
     if (vt[5](g) == 0) return;
-    if (*(unsigned char*)(self+0xac) != 0) return;
-    if (*(unsigned char*)(self+0x54) == 1) return;
-    if (*(int*)(self+0x90) > 0) return;
-    if (*(int*)(self+0x94) > 0) return;
-    if (*(int*)(self+0x98) > 0) return;
+    if (scene->mExiting != 0) return;
+    if (scene->mPageFlipped == 1) return;
+    if (scene->mPrevPageTimer > 0) return;
+    if (scene->mNextPageTimer > 0) return;
+    if (scene->mExitTimer > 0) return;
     unsigned int i = data_020a0e40;
     bool ok = false;
     if (data_020a0de8[i].pressed != 0) {
@@ -1076,7 +1082,7 @@ void func_ov005_020c0250(char *self) {
     if (y < 0x90) return;
     if (y > 0xb0) return;
     func_02012790(0x63);
-    *(int*)(self+0x98) = 0x1c;
+    scene->mExitTimer = 0x1c;
 }
 }
 
@@ -1084,31 +1090,32 @@ void func_ov005_020c0250(char *self) {
 extern "C" {
 
 void func_ov005_020c0140(char *self) {
+    dScMiniGm_c *scene = (dScMiniGm_c *)self;
     int* g = (int*)data_0209f5bc;
     if ((*(int(***)(int*))g)[0x14/4](g) == 0) return;
-    if (*(unsigned char*)(self + 0xac) != 0) return;
-    if (*(int*)(self + 0x90) > 0) return;
-    if (*(int*)(self + 0x94) > 0) return;
-    if (*(int*)(self + 0x98) > 0) return;
+    if (scene->mExiting != 0) return;
+    if (scene->mPrevPageTimer > 0) return;
+    if (scene->mNextPageTimer > 0) return;
+    if (scene->mExitTimer > 0) return;
     if (data_0209b304 == 0) {
-        if (*(int*)(self + 0x50) >= 0) {
-            *(int*)((int)self + 0x50) -= 8;
-            if (*(int*)(self + 0x50) <= 0) {
-                *(int*)(self + 0x50) = 0;
-                *(unsigned char*)(self + 0x54) = 0;
+        if (scene->mSubBgScrollX >= 0) {
+            scene->mSubBgScrollX -= 8;
+            if (scene->mSubBgScrollX <= 0) {
+                scene->mSubBgScrollX = 0;
+                scene->mPageFlipped = 0;
             }
         }
     } else {
-        if (*(int*)(self + 0x50) <= 0xb0) {
-            *(int*)((int)self + 0x50) += 8;
-            if (*(int*)(self + 0x50) >= 0xb0) {
-                *(int*)(self + 0x50) = 0xb0;
-                *(unsigned char*)(self + 0x54) = 0;
+        if (scene->mSubBgScrollX <= 0xb0) {
+            scene->mSubBgScrollX += 8;
+            if (scene->mSubBgScrollX >= 0xb0) {
+                scene->mSubBgScrollX = 0xb0;
+                scene->mPageFlipped = 0;
             }
         }
     }
-    data_0209d494[0] = (short)*(int*)(self + 0x50);
-    data_0209d474[0] = (short)*(int*)(self + 0x50);
+    data_0209d494[0] = (short)scene->mSubBgScrollX;
+    data_0209d474[0] = (short)scene->mSubBgScrollX;
 }
 }
 

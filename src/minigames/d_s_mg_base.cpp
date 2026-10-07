@@ -1255,6 +1255,7 @@ extern int data_ov006_021346bc;
 
 extern "C" void func_ov004_020ae858(char *self)
 {
+    dScMgBase_c *scene = (dScMgBase_c *)self;
     int extra[3];
     s16 *tbl[3];
     int buf[4];
@@ -1270,9 +1271,9 @@ extern "C" void func_ov004_020ae858(char *self)
     extra[1] = *data_ov004_020bbfbc[GetGameLanguage()];
     extra[2] = *data_ov004_020bbfd0[GetGameLanguage()];
 
-    tbl[0] = (s16 *)(self + 0x4634);
-    tbl[1] = (s16 *)(self + 0x4638);
-    tbl[2] = (s16 *)(self + 0x463c);
+    tbl[0] = &scene->mMenuItem0X;
+    tbl[1] = &scene->mMenuItem1X;
+    tbl[2] = &scene->mMenuItem2X;
 
     i = 0;
     zero1 = 0;
@@ -1280,8 +1281,8 @@ extern "C" void func_ov004_020ae858(char *self)
     zero0 = 0;
 
     for (; i < 3; i++) {
-        if (i == *(s16 *)(self + 0x4646)) {
-            unsigned int field = *(unsigned int *)(self + 0x4640);
+        if (i == scene->mMenuCursor) {
+            unsigned int field = (unsigned int)scene->mMenuCursorPhase;
             unsigned int shifted = (field << 0xf) >> 0x10;
             int idx0 = (int)shifted >> 4;
             int s0 = data_02082214[idx0 * 2];
@@ -1434,6 +1435,7 @@ extern dWipe_c data_0209f61c;
 
 void func_ov004_020aeb24(char* c)
 {
+    dScMgBase_c *self = (dScMgBase_c *)c;
     unsigned char idx = data_020a0e40[0];
     unsigned short flags = data_020a0e5a[idx * 2];
     int unlocked;
@@ -1448,9 +1450,9 @@ void func_ov004_020aeb24(char* c)
     }
     if (func_ov004_020b8f78(c + 0xf4) != 0) return;
 
-    _Z15ApproachLinear2Rsss((short*)(c + 0x4634), 0x80, 0x10);
-    _Z15ApproachLinear2Rsss((short*)(c + 0x4638), 0x80, 0x10);
-    _Z15ApproachLinear2Rsss((short*)(c + 0x463e), 0x90, 5);
+    _Z15ApproachLinear2Rsss(&self->mMenuItem0X, 0x80, 0x10);
+    _Z15ApproachLinear2Rsss(&self->mMenuItem1X, 0x80, 0x10);
+    _Z15ApproachLinear2Rsss(&self->mMenuItem2Y, 0x90, 5);
 
     idx = data_020a0e40[0];
     unlocked = 0;
@@ -1458,18 +1460,18 @@ void func_ov004_020aeb24(char* c)
         unlocked = (data_020a0de9[idx * 4] != 0);
     }
     if (unlocked == 0) goto after;
-    if (*(short*)(c + 0x4646) >= 0) goto after;
+    if (self->mMenuCursor >= 0) goto after;
     tmp[0] = data_020a0dea[idx * 4];
     tmp[1] = data_020a0deb[idx * 4];
-    func_0203b958(d0, tmp, (short*)(c + 0x4634));
-    func_0203b958(d1, tmp, (short*)(c + 0x4638));
-    func_0203b958(d2, tmp, (short*)(c + 0x463c));
+    func_0203b958(d0, tmp, &self->mMenuItem0X);
+    func_0203b958(d1, tmp, &self->mMenuItem1X);
+    func_0203b958(d2, tmp, &self->mMenuItem2X);
     a = d0[0]; if (a < 0) a = -a;
     if (a < 0x60) {
         b = d0[1]; if (b < 0) b = -b;
         if (b < 0x18) {
             func_02012790(0x62);
-            *(short*)(c + 0x4646) = 0;
+            self->mMenuCursor = 0;
             *(short*)(c + 0x4644) = 0x10;
             goto after;
         }
@@ -1479,7 +1481,7 @@ void func_ov004_020aeb24(char* c)
         b = d1[1]; if (b < 0) b = -b;
         if (b < 0x13) {
             func_02012790(0x63);
-            *(short*)(c + 0x4646) = 1;
+            self->mMenuCursor = 1;
             *(short*)(c + 0x4644) = 0;
             goto after;
         }
@@ -1489,17 +1491,17 @@ void func_ov004_020aeb24(char* c)
         b = d2[1]; if (b < 0) b = -b;
         if (b < 0x13) {
             func_02012790(0x62);
-            *(short*)(c + 0x4646) = 2;
+            self->mMenuCursor = 2;
             *(short*)(c + 0x4644) = 0;
         }
     }
 
 after:
-    if (*(short*)(c + 0x4646) < 0) return;
-    if (_Z14ApproachLinearRiii((int*)(c + 0x4640), 0x10000, 0x1000) == 0) return;
+    if (self->mMenuCursor < 0) return;
+    if (_Z14ApproachLinearRiii(&self->mMenuCursorPhase, 0x10000, 0x1000) == 0) return;
     if (_Z15ApproachLinear2Rsss((short*)(c + 0x4644), 0, 1) == 0) return;
 
-    switch (*(short*)(c + 0x4646)) {
+    switch (self->mMenuCursor) {
     case 0:
         ((Obj*)c)->v28();
         return;
@@ -1507,14 +1509,14 @@ after:
         dScene_c::SetFaders(&data_0209f61c);
         data_0209f61c.func_0202ec9c(1);
         dScene_c::StartSceneFade(5, 0, 0);
-        if (*(int*)(c + 0x4648) != 0) return;
+        if (self->unk_4648 != 0) return;
         func_02012dd0(0x3c);
-        *(int*)(c + 0x4648) = 1;
+        self->unk_4648 = 1;
         return;
     case 2:
         func_ov004_020b9220(c + 0xf4);
-        *(short*)(c + 0x4646) = -1;
-        *(int*)(c + 0x4640) = 0;
+        self->mMenuCursor = -1;
+        self->mMenuCursorPhase = 0;
         return;
     default:
         ((Obj*)c)->v28();
@@ -2832,19 +2834,20 @@ extern char* data_ov004_020bbfa8[];
 
 void func_ov004_020b0de0(char* c)
 {
-    if (*(unsigned char*)(c + 0xc3) == 0)
+    dScMgBase_c *self = (dScMgBase_c *)c;
+    if (self->mPromptEnabled == 0)
         return;
-    if ((unsigned int)*(unsigned char*)(c + 0xc4) < 4U) {
+    if ((unsigned int)self->mPromptBlinkCount < 4U) {
         unsigned short* p = (unsigned short*)LAU(c + 0xc0);
         *p = (unsigned short)(*p + 1);
-        if ((unsigned int)*(unsigned short*)(c + 0xc0) >= 0x30U) {
-            *(unsigned short*)(c + 0xc0) = 0U;
+        if ((unsigned int)self->mPromptBlinkTimer >= 0x30U) {
+            self->mPromptBlinkTimer = 0U;
             {
                 unsigned char* q = (unsigned char*)LAU(c + 0xc4);
                 *q = (unsigned char)(*q + 1);
             }
         }
-        if ((unsigned int)*(unsigned short*)(c + 0xc0) >= 0x18U)
+        if ((unsigned int)self->mPromptBlinkTimer >= 0x18U)
             return;
     }
     {

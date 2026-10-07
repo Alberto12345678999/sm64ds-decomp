@@ -745,7 +745,7 @@ void dScMgCup_c::StateShuffle()
 void dScMgCup_c::StatePrepareShuffle()
 {
     char *raw = (char *)this;
-    int *countdown = (int *)(raw + 0x541c);
+    int *countdown = &mTimer;
     *countdown = *countdown - 1;
     /* Same word as mTimer. The 0x5000 split is a second load; mTimer > 0 misses. */
     if (mTimer > 0) return;
@@ -946,15 +946,14 @@ s32 dScMgCup_c::Behavior()
     int i;
     (this->*data_ov006_02141870[mState])();
     for (i = 0; i < 3; i++) {
-        AnimStep *anim = &data_ov006_0213c0d8[*(int *)(((int)raw + i * 4 + 0x5434))][*(int *)(raw + i * 4 + 0x5440)];
+        AnimStep *anim = &data_ov006_0213c0d8[mAnim[i]][mFrame[i]];
         int length = anim->ticks;
         if (length != 0) {
-            *(int *)(((int)raw + i * 4 + 0x544c)) += 1;
-            if (*(int *)(((int)raw + i * 4 + 0x544c)) >= length) {
-                *(int *)(((int)raw + i * 4 + 0x544c)) = 0;
-                *(int *)(((int)raw + i * 4 + 0x5440)) += 1;
-                func_ov006_020dedfc(raw, *(int *)(((int)raw + i * 4 + 0x5434)),
-                                    *(int *)(((int)raw + i * 4 + 0x5440)), i);
+            mTick[i] += 1;
+            if (mTick[i] >= length) {
+                mTick[i] = 0;
+                mFrame[i] += 1;
+                func_ov006_020dedfc(raw, mAnim[i], mFrame[i], i);
             }
         }
     }
