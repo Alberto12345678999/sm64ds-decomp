@@ -514,6 +514,10 @@
    "ref": "src/_ZN10ChillBully14UpdateRunStateEv.cpp"
   },
   {
+   "file": "notes/plan-cpp-conversion-queue.md",
+   "ref": "src/_ZN7dWipe_c15SetBackwardTimeEj.c"
+  },
+  {
    "file": "notes/plan-cpp-language-mode.md",
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
   },
@@ -584,6 +588,10 @@
   {
    "file": "notes/src-domain-buckets.md",
    "ref": "src/ui/messages"
+  },
+  {
+   "file": "notes/tu-cpp-census-2026-08.md",
+   "ref": "src/_ZN7dWipe_c15SetBackwardTimeEj.c"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
