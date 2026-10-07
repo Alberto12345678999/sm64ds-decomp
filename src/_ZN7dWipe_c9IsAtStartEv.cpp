@@ -10,7 +10,7 @@ int dWipe_c::IsAtStart()
 {
     int result;
     if (type == 1)
-        return FaderBrightness::IsAtStart();
+        return dFdBrightness_c::IsAtStart();
     if (state == 0)
         goto ret1;
     if (wipeInterp < 0x200000)
