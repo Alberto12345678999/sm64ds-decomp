@@ -131,8 +131,8 @@ dScMgBomroom_c::~dScMgBomroom_c()
 extern "C" {
 void func_ov006_020d5ab0(void *p)
 {
-    char *c = (char *)p;
-    if (*(unsigned char *)(c + 0x6000 + 0x2fa) == 0) return;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)p;
+    if (self->mRoundOver == 0) return;
     RenderOamMainScreen((int)data_ov006_02134f30, 0x80, 0xc0, -1, 1);
 }
 }
@@ -141,7 +141,8 @@ void func_ov006_020d5ab0(void *p)
 extern "C" {
 void func_ov006_020d5b00(char *p)
 {
-    *(char *)(p + 0x62fa) = 1;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)p;
+    self->mRoundOver = 1;
 }
 }
 
@@ -152,7 +153,8 @@ void func_ov006_020d5b00(char *p)
 extern "C" {
 void func_ov006_020d5b10(char *c)
 {
-    u8 state = *(u8 *)(c + 0x62f4);
+    dScMgBomroom_c *self = (dScMgBomroom_c *)c;
+    u8 state = self->mBg2State;
 
     if (state == 0) {
         return;
@@ -161,14 +163,14 @@ void func_ov006_020d5b10(char *c)
     if (state == 1) {
         s32 v;
         s32 shifted;
-        *(s32 *)(c + 0x62dc) += 0x3000;
-        v = *(s32 *)(c + 0x62dc);
+        self->mBg2Y += 0x3000;
+        v = self->mBg2Y;
         shifted = v >> 0xc;
         if (shifted >= 0xc0) {
-            *(s32 *)(c + 0x62dc) = 0xc0000;
-            *(u8 *)(c + 0x62f4) = 2;
+            self->mBg2Y = 0xc0000;
+            self->mBg2State = 2;
             shifted = 0xc0;
-            *(u16 *)(c + 0x62f2) = shifted;
+            self->mBg2Hold = shifted;
             Sound::PlayBank2_2D(0x1de);
             func_ov006_020d8904(c);
         }
@@ -180,9 +182,9 @@ void func_ov006_020d5b10(char *c)
         return;
     }
 
-    if (*(u16 *)(c + 0x62f2) != 0) {
-        *(u16 *)(c + 0x62f2) -= 1;
-        if (*(u16 *)(c + 0x62f2) != 0) {
+    if (self->mBg2Hold != 0) {
+        self->mBg2Hold -= 1;
+        if (self->mBg2Hold != 0) {
             return;
         }
         Sound::PlayBank2_2D(0x1df);
@@ -192,13 +194,13 @@ void func_ov006_020d5b10(char *c)
     {
         s32 v;
         s32 shifted;
-        *(s32 *)(c + 0x62dc) -= 0x3000;
-        v = *(s32 *)(c + 0x62dc);
+        self->mBg2Y -= 0x3000;
+        v = self->mBg2Y;
         shifted = v >> 0xc;
         if (shifted <= 0) {
             shifted = 0;
-            *(s32 *)(c + 0x62dc) = 0;
-            *(u8 *)(c + 0x62f4) = 0;
+            self->mBg2Y = 0;
+            self->mBg2State = 0;
             Sound::PlayBank2_2D(0x1de);
         }
         SetBg2Offset(0, shifted);
@@ -210,10 +212,11 @@ void func_ov006_020d5b10(char *c)
 extern "C" {
 void func_ov006_020d5c60(char *p)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)p;
     int zero = 0;
-    *(int *)(p + 0x62dc) = zero;
-    *(unsigned char *)(p + 0x62f4) = zero;
-    *(unsigned short *)(p + 0x62f2) = zero;
+    self->mBg2Y = zero;
+    self->mBg2State = zero;
+    self->mBg2Hold = zero;
     SetBg2Offset(zero, zero);
 }
 }
@@ -306,11 +309,11 @@ void func_ov006_020d5d90(char *base, int idx)
 extern "C" {
 void func_ov006_020d5dd4(char* sceneBytes)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)sceneBytes;
     int slot;
     for (slot = 0; slot < 2; slot++) {
-        char* slotBase = sceneBytes + slot * 0x10;
-        slotBase[0x62bc] = 0;
-        slotBase[0x62bd] = 0;
+        self->mMarkers[slot].animating = 0;
+        self->mMarkers[slot].visible = 0;
     }
 }
 }
@@ -328,7 +331,8 @@ void func_ov006_020d5dfc(void)
 extern "C" {
 void func_ov006_020d5e1c(void *a)
 {
-    *(((unsigned char *)a) + 0x62ac) = 3;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)a;
+    self->mPrompt.state = 3;
     Sound::PlayBank2_2D(0x1e3);
 }
 }
@@ -337,7 +341,8 @@ void func_ov006_020d5e1c(void *a)
 extern "C" {
 void func_ov006_020d5e3c(void *a)
 {
-    *(((unsigned char *)a) + 0x62ac) = 1;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)a;
+    self->mPrompt.state = 1;
     Sound::PlayBank2_2D(0x1e2);
 }
 }
@@ -455,8 +460,9 @@ void func_ov006_020d604c(void *raw){
 extern "C" {
 extern "C" void func_ov006_020d6084(char *raw)
 {
-    *(char *)(raw + 0x62ad) = 0;
-    *(char *)(raw + 0x62af) = 0;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
+    self->mPrompt.active = 0;
+    self->mPrompt.visible = 0;
 }
 }
 
@@ -606,17 +612,17 @@ void func_ov006_020d62e0(void *p) {
 extern "C" {
 void func_ov006_020d634c(char *raw, int index)
 {
-    char *rec = raw + index * 16;
-    unsigned char st = *(unsigned char *)(rec + 0x628c);
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
+    unsigned char st = self->mSignsB[index].state;
     if (st != 0) {
         if (st == 2) {
-            *(short *)(rec + 0x6288) = 0x20;
+            self->mSignsB[index].timer = 0x20;
         } else {
-            *(unsigned char *)(rec + 0x628c) = 1;
+            self->mSignsB[index].state = 1;
         }
         return;
     }
-    *(unsigned char *)(rec + 0x628c) = 1;
+    self->mSignsB[index].state = 1;
     SetBg0Offset(0x100, 0);
 }
 }
@@ -627,11 +633,11 @@ void func_ov006_020d634c(char *raw, int index)
 extern "C" {
 void func_ov006_020d63ac(char* sceneBytes)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)sceneBytes;
     int slot;
     for (slot = 0; slot < 2; slot++) {
-        char* slotBase = sceneBytes + slot * 0x10;
-        slotBase[0x628d] = 0;
-        slotBase[0x628e] = 0;
+        self->mSignsB[slot].active = 0;
+        self->mSignsB[slot].visible = 0;
     }
 }
 }
@@ -696,22 +702,23 @@ void func_ov006_020d64c4(void)
 extern "C" {
 void func_ov006_020d64c8(char *raw, int index)
 {
-    *(u16 *)(raw + 0x6268 + index * 16) += 1;
-    if (*(u16 *)(raw + index * 16 + 0x6268) < 5)
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
+    self->mSignsA[index].timer += 1;
+    if (self->mSignsA[index].timer < 5)
         return;
-    *(u16 *)(raw + index * 16 + 0x6268) = 0;
-    *(u8 *)(raw + 0x626f + index * 16) += 1;
+    self->mSignsA[index].timer = 0;
+    self->mSignsA[index].frame += 1;
     if (index == 0) {
-        u8 level = *(u8 *)(raw + index * 16 + 0x626f);
+        u8 level = self->mSignsA[index].frame;
         if (level == 2 || level == 4) {
-            int *offsetY = (int *)(raw + 0x62b4);
+            int *offsetY = &self->mMarkers[0].y;
             *offsetY += 0x8000;
         }
     }
-    if (*(u8 *)(raw + index * 16 + 0x626f) == 3 && index == 1)
+    if (self->mSignsA[index].frame == 3 && index == 1)
         func_ov006_020d5d90(raw, index);
-    if (*(u8 *)(raw + index * 16 + 0x626f) >= 4)
-        *(u8 *)(raw + index * 16 + 0x626c) = 2;
+    if (self->mSignsA[index].frame >= 4)
+        self->mSignsA[index].state = 2;
 }
 }
 #pragma pop
@@ -772,11 +779,11 @@ void func_ov006_020d6630(void *p) {
 extern "C" {
 void func_ov006_020d669c(char* sceneBytes)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)sceneBytes;
     int slot;
     for (slot = 0; slot < 2; slot++) {
-        char* slotBase = sceneBytes + slot * 0x10;
-        slotBase[0x626d] = 0;
-        slotBase[0x626e] = 0;
+        self->mSignsA[slot].active = 0;
+        self->mSignsA[slot].visible = 0;
     }
 }
 }
@@ -855,6 +862,8 @@ void func_ov006_020d6784(char *raw)
 extern "C" {
 void func_ov006_020d68a8(char *raw, int picked)
 {
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)raw;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     int i;
     u8 *cur = (u8 *)(((int)(raw + picked * 0x40) + 0x469a));
     for (i = 0; i < 0x70; i++) {
@@ -878,18 +887,18 @@ void func_ov006_020d68a8(char *raw, int picked)
                     }
                     if (*state <= 1) {
                         *state = 3;
-                        *(u16 *)(raw + i * 0x40 + 0x4690) = 0x20;
+                        self->mBombs[i].unk_30 = 0x20;
                     }
                 }
             }
         }
     }
-    if (*(u8 *)(raw + 0x62f8) != 0)
+    if (scene->unk_62f8 != 0)
         return;
-    *(u8 *)(raw + 0x62f8) = *(u8 *)(raw + picked * 0x40 + 0x469a) + 1;
-    *(u16 *)(raw + 0x62e8) = 0x60;
-    *(int *)(raw + 0x62d0) = 3;
-    *(int *)(raw + 0x62d4) = 0;
+    scene->unk_62f8 = *(u8 *)(raw + picked * 0x40 + 0x469a) + 1;
+    scene->unk_62e8 = 0x60;
+    self->unk_62d0 = 3;
+    scene->unk_62d4 = 0;
 }
 }
 #pragma pop
@@ -1057,6 +1066,7 @@ extern u8 data_020a0e40;
 extern Tab data_020a0de8[];
 
 void func_ov006_020d6d7c(char *raw, int index) {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     u8 touch = data_020a0e40;
     int touching = 0;
     char *bomb;
@@ -1065,7 +1075,7 @@ void func_ov006_020d6d7c(char *raw, int index) {
         if (data_020a0de8[touch].f1 != 0) touching = 1;
     }
     if (touching == 0) return;
-    if (*(u8*)(raw + 0x62f6) != 0xff) return;
+    if (self->unk_62f6 != 0xff) return;
     bomb = raw + index * 0x40;
     dx = data_020a0de8[touch].f2 - (((Bomb *)(bomb + 0x4660))->x >> 0xc);
     dy = data_020a0de8[touch].f3 - (((Bomb *)(bomb + 0x4660))->y >> 0xc);
@@ -1073,7 +1083,7 @@ void func_ov006_020d6d7c(char *raw, int index) {
     if (dx < -0xc) return;
     if (dy > 0xf) return;
     if (dy < -0xf) return;
-    *(u8*)(raw + 0x62f6) = ((Bomb *)(bomb + 0x4660))->color;
+    self->unk_62f6 = ((Bomb *)(bomb + 0x4660))->color;
     ((Bomb *)(bomb + 0x4660))->type = 1;
     ((Bomb *)(bomb + 0x4660))->state = 2;
     ((Bomb *)(bomb + 0x4660))->grabX = dx << 0xc;
@@ -1283,6 +1293,8 @@ void func_ov006_020d7524(void *raw) {
 extern "C" {
 void func_ov006_020d7604(void *raw)
 {
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)raw;
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     unsigned char *bytes = (unsigned char *)raw;
     int ca = 0;
     int cb = 0;
@@ -1291,9 +1303,9 @@ void func_ov006_020d7604(void *raw)
 
     for (i = 0; i < 0x70; i++) {
         unsigned char *bomb = bytes + i * 64;
-        if (bomb[0x4698] != 0) {
-            if (bytes[0x62f8] == 1) {
-                if (bomb[0x4696] != 0) {
+        if (self->mBombs[i].active != 0) {
+            if (scene->unk_62f8 == 1) {
+                if (self->mBombs[i].color != 0) {
                     int v;
                     int q;
                     bomb[0x469b] = 3;
@@ -1318,13 +1330,13 @@ void func_ov006_020d7604(void *raw)
                     cb++;
                     cc++;
                 }
-            } else if (bytes[0x62f8] != 0) {
+            } else if (scene->unk_62f8 != 0) {
                 bomb[0x469c] = (unsigned char)cc;
                 bomb[0x469b] = 3;
                 ((Bomb *)(bomb + 0x4660))->f30 = (unsigned short)(cc * 8);
                 cc++;
             } else {
-                if (bytes[0x62f5] == bomb[0x4696] && bomb[0x4697] == 6) {
+                if (scene->unk_62f5 == self->mBombs[i].color && self->mBombs[i].state == 6) {
                     bomb[0x469c] = (unsigned char)cc;
                     bomb[0x469b] = 3;
                     ((Bomb *)(bomb + 0x4660))->f30 = (unsigned short)(cc * 8);
@@ -1352,11 +1364,12 @@ extern "C" {
 
 void func_ov006_020d777c(char *raw, int index)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     int off = index << 6;
-    if (*(u16*)(raw + (index << 6) + 0x4690) != 0) {
+    if (self->mBombs[index].unk_30 != 0) {
         *(u16*)(raw + 0x4690 + off) -= 1;
-        if (*(s16*)(raw + (index << 6) + 0x4690) < 0)
-            *(u16*)(raw + (index << 6) + 0x4690) = 0;
+        if ((s16)self->mBombs[index].unk_30 < 0)
+            self->mBombs[index].unk_30 = 0;
         return;
     }
     {
@@ -1371,24 +1384,24 @@ void func_ov006_020d777c(char *raw, int index)
         curY = ((Bomb *)(raw + 0x4660 + (index<<6)))->y >> 12;
         if (targetX == curX && targetY == curY) {
             *(u8*)(raw + (index << 6) + 0x469b) = 4;
-            if (*(u8*)(raw + (index << 6) + 0x4696) != 0)
+            if (self->mBombs[index].color != 0)
                 func_02012718((int)0x1d9, ((Bomb *)(raw + 0x4660 + (index<<6)))->x);
             else
                 func_02012718((int)0x1da, ((Bomb *)(raw + 0x4660 + (index<<6)))->x);
             return;
         }
         if (targetY != curY) {
-            *(int*)(raw + 0x4664 + (index << 6)) += ((Bomb *)(raw + 0x4660 + (index << 6)))->speed;
+            self->mBombs[index].y += ((Bomb *)(raw + 0x4660 + (index << 6)))->speed;
             if ((((Bomb *)(raw + 0x4660 + (index<<6)))->y >> 12) >= targetY)
                 ((Bomb *)(raw + 0x4660 + (index<<6)))->y = targetY << 12;
             return;
         }
         if (targetX > curX) {
-            *(int*)(raw + 0x4660 + (index << 6)) += ((Bomb *)(raw + 0x4660 + (index << 6)))->speed;
+            self->mBombs[index].x += ((Bomb *)(raw + 0x4660 + (index << 6)))->speed;
             if (targetX <= (((Bomb *)(raw + 0x4660 + (index<<6)))->x >> 12))
                 ((Bomb *)(raw + 0x4660 + (index<<6)))->x = targetX << 12;
         } else if (targetX < curX) {
-            *(int*)(raw + 0x4660 + (index << 6)) -= ((Bomb *)(raw + 0x4660 + (index << 6)))->speed;
+            self->mBombs[index].x -= ((Bomb *)(raw + 0x4660 + (index << 6)))->speed;
             if (targetX >= curX)
                 ((Bomb *)(raw + 0x4660 + (index<<6)))->x = targetX << 12;
         }
@@ -1411,33 +1424,34 @@ void func_ov006_020d7958(void)
 extern "C" {
 void func_ov006_020d795c(char *raw, int index)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     int color, x;
     {
-        s16 sine = data_02082214[((*(u16 *)(raw + index * 0x40 + 0x468c)) >> 4) * 2 + 1];
+        s16 sine = data_02082214[((self->mBombs[index].angle) >> 4) * 2 + 1];
         *(int *)((char *)(raw + 0x4660) + index * 0x40) +=
             (int)(((s64)sine * ((Bomb *)(raw + 0x4660 + index * 0x40))->speed + 0x800) >> 12);
     }
     {
-        s16 sine = data_02082214[((*(u16 *)(raw + index * 0x40 + 0x468c)) >> 4) * 2];
+        s16 sine = data_02082214[((self->mBombs[index].angle) >> 4) * 2];
         *(int *)((char *)(raw + 0x4664) + index * 0x40) +=
             (int)(((s64)sine * ((Bomb *)(raw + 0x4660 + index * 0x40))->speed + 0x800) >> 12);
     }
-    color = *(u8 *)(raw + index * 0x40 + 0x4696);
-    x = *(int *)(raw + index * 0x40 + 0x4660) >> 12;
+    color = self->mBombs[index].color;
+    x = self->mBombs[index].x >> 12;
     if (color != 0) {
         if (x >= 0x110) {
             *(u8 *)(raw + index * 0x40 + 0x469b) = 2;
-            *(int *)(raw + index * 0x40 + 0x4660) = 0x80000;
-            *(int *)(raw + index * 0x40 + 0x4664) = -0xf0000;
+            self->mBombs[index].x = 0x80000;
+            self->mBombs[index].y = -0xf0000;
         }
     } else {
         if (x <= -0x10) {
             *(u8 *)(raw + index * 0x40 + 0x469b) = 2;
-            *(int *)(raw + index * 0x40 + 0x4660) = 0x80000;
-            *(int *)(raw + index * 0x40 + 0x4664) = -0xf0000;
+            self->mBombs[index].x = 0x80000;
+            self->mBombs[index].y = -0xf0000;
         }
     }
-    func_ov006_020d634c(raw, *(u8 *)(raw + index * 0x40 + 0x4696));
+    func_ov006_020d634c(raw, self->mBombs[index].color);
 }
 }
 #pragma pop
@@ -1449,19 +1463,20 @@ void func_ov006_020d795c(char *raw, int index)
 extern "C" {
 void func_ov006_020d7a84(char *raw, int index)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)raw;
     int color, x, z, tx, ty;
 
-    tx = (*(u8 *)(raw + index * 0x40 + 0x4696) != 0) ? 0x100 : 0;
+    tx = (self->mBombs[index].color != 0) ? 0x100 : 0;
     ty = 0x60;
-    tx -= *(int *)(raw + index * 0x40 + 0x4660) >> 12;
-    ty -= *(int *)(raw + index * 0x40 + 0x4664) >> 12;
+    tx -= self->mBombs[index].x >> 12;
+    ty -= self->mBombs[index].y >> 12;
 
-    *(s16 *)(raw + index * 0x40 + 0x468c) =
+    self->mBombs[index].angle =
         _ZN4cstd5atan2E5Fix12IiES1_(ty, tx);
 
     {
         s16 sine = data_02082214[
-            ((*(u16 *)(raw + index * 0x40 + 0x468c) >> 4) * 2) + 1];
+            ((self->mBombs[index].angle >> 4) * 2) + 1];
 
         *(int *)((char *)(raw + 0x4660) +
                   index * 0x40) +=
@@ -1471,7 +1486,7 @@ void func_ov006_020d7a84(char *raw, int index)
 
     {
         s16 sine = data_02082214[
-            (*(u16 *)(raw + index * 0x40 + 0x468c) >> 4) * 2];
+            (self->mBombs[index].angle >> 4) * 2];
 
         *(int *)((char *)(raw + 0x4664) +
                   index * 0x40) +=
@@ -1479,9 +1494,9 @@ void func_ov006_020d7a84(char *raw, int index)
                    ((Bomb *)(raw + 0x4660 + index * 0x40))->speed + 0x800) >> 12);
     }
 
-    color = *(u8 *)(raw + index * 0x40 + 0x4696);
-    x = *(int *)(raw + index * 0x40 + 0x4660) >> 12;
-    z = *(int *)(raw + index * 0x40 + 0x4664) >> 12;
+    color = self->mBombs[index].color;
+    x = self->mBombs[index].x >> 12;
+    z = self->mBombs[index].y >> 12;
     tx = color ? 0x100 : 0;
 
     if (x > tx + 2)
@@ -1494,13 +1509,13 @@ void func_ov006_020d7a84(char *raw, int index)
         goto done;
 
     *(u8 *)(raw + index * 0x40 + 0x469b) = 1;
-    if (*(u8 *)(raw + index * 0x40 + 0x4696) != 0)
-        *(s16 *)(raw + index * 0x40 + 0x468c) = 0;
+    if (self->mBombs[index].color != 0)
+        self->mBombs[index].angle = 0;
     else
-        *(u16 *)(raw + index * 0x40 + 0x468c) = 0x8000;
+        self->mBombs[index].angle = 0x8000;
 
 done:
-    func_ov006_020d634c(raw, *(u8 *)(raw + index * 0x40 + 0x4696));
+    func_ov006_020d634c(raw, self->mBombs[index].color);
 }
 }
 #pragma pop
@@ -1580,12 +1595,13 @@ void func_ov006_020d7c4c(dScMgBomroom_c *self, int idx)
 extern "C" {
 void func_ov006_020d7e7c(char *c, int i)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)c;
     char *b = c + i * 64;
     if (*(unsigned char *)(b + 0x469d) == 0) return;
     if (*(unsigned char *)(b + 0x4695) != 0) return;
-    if (*(unsigned short *)(b + 0x468e) != 1) return;
+    if (self->mBombs[i].unk_2e != 1) return;
     Sound::PlayBank2_2D(0x1e0);
-    *(short *)(c + 0x62f0) = 0x60;
+    self->unk_62f0 = 0x60;
 }
 }
 
@@ -1617,7 +1633,8 @@ extern "C" {
 #define B ((char *)self_ + idx * 0x40 + 0x4000)
 void func_ov006_020d7f5c(char *self_, int idx)
 {
-    if (*(u8 *)(self_ + 0x62f6) == 0xff) {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)self_;
+    if (self->unk_62f6 == 0xff) {
         *(u8 *)(B + 0x697) = 1;
         *(u16 *)((char *)self_ + 0x4692 + idx * 0x40) += 0x40;
         func_ov006_020d6b88(self_, idx);
@@ -1705,10 +1722,11 @@ struct S16_816c { unsigned short v; char pad[0x3e]; };
 
 void func_ov006_020d816c(char *self, int idx)
 {
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)self;
     int t;
 
     if (((struct Ent_816c *)(self + 0x4660))[idx].h != 0) {
-        if (*(unsigned char *)(self + 0x62fb) == 0) {
+        if (scene->unk_62fb == 0) {
             ((struct S16_816c *)(self + 0x4692))[idx].v--;
         }
         if ((short)((struct Ent_816c *)(self + 0x4660))[idx].h < 0) {
@@ -1729,7 +1747,7 @@ void func_ov006_020d816c(char *self, int idx)
         return;
     }
 
-    if (*(unsigned char *)(self + 0x62fb) != 0) {
+    if (scene->unk_62fb != 0) {
         return;
     }
 
@@ -2157,14 +2175,16 @@ void func_ov006_020d893c(char *c)
 extern "C" {
 void func_ov006_020d89c4(char *self)
 {
+    dScMgBomroom_c *sc = (dScMgBomroom_c *)self;
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)self;
     int j;
 
     func_ov006_020d836c(self);
 
-    if (*(u16 *)(self + 0x62e8) != 0) {
-        (*(u16 *)(self + 0x62e8))--;
-        if (*(s16 *)(self + 0x62e8) < 0)
-            *(u16 *)(self + 0x62e8) = 0;
+    if (sc->unk_62e8 != 0) {
+        (sc->unk_62e8)--;
+        if ((s16)sc->unk_62e8 < 0)
+            sc->unk_62e8 = 0;
         return;
     }
 
@@ -2180,20 +2200,20 @@ void func_ov006_020d89c4(char *self)
         }
     }
 
-    if (*(u8 *)(self + 0x62f8) != 0) {
-        *(u16 *)(self + 0x62e8) = 0x60;
-        *(int *)(self + 0x62d0) = 4;
-        *(int *)(self + 0x62d4) = 0;
-        func_ov004_020adb1c(*(u16 *)(self + 0x62ee) + func_ov004_020adbc0());
+    if (sc->unk_62f8 != 0) {
+        sc->unk_62e8 = 0x60;
+        scene->unk_62d0 = 4;
+        sc->unk_62d4 = 0;
+        func_ov004_020adb1c(scene->unk_62ee + func_ov004_020adbc0());
     } else {
-        func_ov004_020adb1c(*(u16 *)(self + 0x62ee) + func_ov004_020adbc0());
-        *(int *)(self + 0x62d0) = 2;
-        *(int *)(self + 0x62d4) = 0;
-        *(u8 *)(self + 0x62f8) = 0;
-        *(u8 *)(self + 0x62fb) = 0;
+        func_ov004_020adb1c(scene->unk_62ee + func_ov004_020adbc0());
+        scene->unk_62d0 = 2;
+        sc->unk_62d4 = 0;
+        sc->unk_62f8 = 0;
+        sc->unk_62fb = 0;
     }
-    *(u8 *)(self + 0x62f9) = 0;
-    *(u16 *)(self + 0x62ee) = 0;
+    sc->unk_62f9 = 0;
+    scene->unk_62ee = 0;
     SetBg0Offset(0, 0);
 }
 }
@@ -2203,27 +2223,29 @@ void func_ov006_020d89c4(char *self)
 extern "C" {
 void func_ov006_020d8af8(char *self)
 {
+    dScMgBomroom_c *sc = (dScMgBomroom_c *)self;
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)self;
     int found;
     int j;
     u8 (*arr)[0x40] = (u8 (*)[0x40])self;
 
     func_ov006_020d836c(self);
 
-    if (*(u16 *)(self + 0x62e8) != 0) {
-        (*(u16 *)(self + 0x62e8))--;
-        if (*(s16 *)(self + 0x62e8) > 0)
+    if (sc->unk_62e8 != 0) {
+        (sc->unk_62e8)--;
+        if ((s16)sc->unk_62e8 > 0)
             return;
-        *(u16 *)(self + 0x62e8) = 0;
-        *(u16 *)(self + 0x62e0) = 0x10;
+        sc->unk_62e8 = 0;
+        sc->unk_62e0 = 0x10;
         if (func_ov006_020d8c88(self) != 0) {
-            *(u8 *)(self + 0x62f4) = 1;
+            sc->mBg2State = 1;
             Sound::PlayBank2_2D(0x1dd);
         }
         return;
     }
 
-    if (*(u16 *)(self + 0x62e0) != 0) {
-        (*(u16 *)(self + 0x62e0))--;
+    if (sc->unk_62e0 != 0) {
+        (sc->unk_62e0)--;
         return;
     }
 
@@ -2235,19 +2257,19 @@ void func_ov006_020d8af8(char *self)
         j++;
     } while (j < 0x70);
 
-    (*(u16 *)(self + 0x62ea))++;
-    if (*(u16 *)(self + 0x62ea) < 4)
+    (sc->unk_62ea)++;
+    if (sc->unk_62ea < 4)
         return;
 
     if (found != 0) {
         arr[found - 1][0x4698] = 2;
-        *(u16 *)(self + 0x62ea) = 0;
-        (*(u16 *)(self + 0x62ee))++;
+        sc->unk_62ea = 0;
+        (scene->unk_62ee)++;
         Sound::PlayBank2_2D(0x1bc);
     } else {
-        *(u16 *)(self + 0x62ea) = 0;
-        *(u16 *)(self + 0x62e8) = 0x40;
-        *(int *)(self + 0x62d4) = 3;
+        sc->unk_62ea = 0;
+        sc->unk_62e8 = 0x40;
+        sc->unk_62d4 = 3;
     }
 }
 }
@@ -2275,6 +2297,7 @@ int func_ov006_020d8c88(char *c)
 extern "C" {
 void func_ov006_020d8cc4(char *r5)
 {
+    dScMgBomroom_c *self = (dScMgBomroom_c *)r5;
     func_ov006_020d836c(r5);
     int c4 = 0;
     int c2 = 0;
@@ -2289,14 +2312,14 @@ void func_ov006_020d8cc4(char *r5)
         }
         i++;
     } while (i < 0x70);
-    if (c2 == 0 && *(unsigned char *)(r5 + 0x6000 + 0x2f4) == 0) {
+    if (c2 == 0 && self->mBg2State == 0) {
         func_ov006_020d7604(r5);
     }
     if (c4 != 0) return;
     func_ov006_020d5e1c(r5);
-    *(short *)(r5 + 0x6200 + 0xe8) = 0x10;
-    *(int *)(r5 + 0x6000 + 0x2d4) = 2;
-    *(unsigned char *)(r5 + 0x6000 + 0x2f9) = 1;
+    self->unk_62e8 = 0x10;
+    self->unk_62d4 = 2;
+    self->unk_62f9 = 1;
 }
 }
 #pragma pop
@@ -2305,6 +2328,7 @@ void func_ov006_020d8cc4(char *r5)
 extern "C" {
 void func_ov006_020d8d84(char *self)
 {
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)self;
     int flag;
     int count;
     int i;
@@ -2313,14 +2337,14 @@ void func_ov006_020d8d84(char *self)
 
     func_ov006_020d836c(self);
 
-    if (*(u16 *)(self + 0x62e8) != 0) {
-        (*(u16 *)(self + 0x62e8))--;
-        if (*(s16 *)(self + 0x62e8) < 0)
-            *(s16 *)(self + 0x62e8) = 0;
+    if (scene->unk_62e8 != 0) {
+        (scene->unk_62e8)--;
+        if ((s16)scene->unk_62e8 < 0)
+            scene->unk_62e8 = 0;
         return;
     }
 
-    if (*(u8 *)(self + 0x62f8) != 0) {
+    if (scene->unk_62f8 != 0) {
         flag = 0;
         count = 0;
         i = 0;
@@ -2337,7 +2361,7 @@ void func_ov006_020d8d84(char *self)
         } while (i < 0x70);
         if (count != 0) {
             Sound::PlayBank2_2D(0x1e6);
-            if (*(u8 *)(self + 0x62f8) == 1) {
+            if (scene->unk_62f8 == 1) {
                 func_ov006_020d634c(self, 0);
                 func_ov006_020d634c(self, 1);
             } else {
@@ -2348,7 +2372,7 @@ void func_ov006_020d8d84(char *self)
         i = 0;
         do {
             if (arr[i][0x4698] != 0 && arr[i][0x4697] == 5) {
-                if (*(u8 *)(self + 0x62f5) == arr[i][0x4696]) {
+                if (scene->unk_62f5 == arr[i][0x4696]) {
                     arr[i][0x4697] = 6;
                     arr[i][0x469b] = 0;
                     iarr[i][0x119c] = 0x4000;
@@ -2357,9 +2381,9 @@ void func_ov006_020d8d84(char *self)
             i++;
         } while (i < 0x70);
         Sound::PlayBank2_2D(0x1e6);
-        func_ov006_020d634c(self, *(u8 *)(self + 0x62f5));
+        func_ov006_020d634c(self, scene->unk_62f5);
     }
-    *(int *)(self + 0x62d4) = 1;
+    scene->unk_62d4 = 1;
 }
 }
 
@@ -2438,21 +2462,22 @@ void func_ov006_020d904c(void *c)
 extern "C" {
 void func_ov006_020d907c(void *p)
 {
+    dScMgBomroom_c *scene = (dScMgBomroom_c *)p;
     dScMgBomroom_c *self = (dScMgBomroom_c *)p;
     char *c = (char *)p;
     func_ov006_020d893c(c);
-    *(short *)(c + 0x62e2) = 0;
-    *(short *)(c + 0x62e4) = 0;
-    *(short *)(c + 0x62e6) = 0;
-    *(unsigned char *)(c + 0x62f6) = 0xff;
-    *(unsigned char *)(c + 0x62f7) = 0;
-    *(short *)(c + 0x62ea) = 0;
-    *(unsigned char *)(c + 0x62f8) = 0;
-    *(int *)(c + 0x62d8) = 0;
+    scene->unk_62e2 = 0;
+    scene->unk_62e4 = 0;
+    scene->unk_62e6 = 0;
+    scene->unk_62f6 = 0xff;
+    scene->unk_62f7 = 0;
+    scene->unk_62ea = 0;
+    scene->unk_62f8 = 0;
+    scene->unk_62d8 = 0;
     self->unk_62f0 = 0;
-    *(unsigned char *)(c + 0x62f9) = 0;
-    *(unsigned char *)(c + 0x62fb) = 0;
-    *(unsigned char *)(c + 0x62fc) = 0;
+    scene->unk_62f9 = 0;
+    scene->unk_62fb = 0;
+    scene->unk_62fc = 0;
     func_ov004_020adb1c(0);
     func_ov006_020d669c(c);
     func_ov006_020d63ac(c);
