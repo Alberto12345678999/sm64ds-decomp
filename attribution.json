@@ -6587,6 +6587,7 @@
     "src/actors/daObjCtMecha08_c.cpp#daObjCtMecha08_c_classInit_CT_MECHA08A": "andrewboudreau",
     "src/actors/daObjKi_Hasira_c.cpp#daObjKi_Hasira_c_classInit": "tangosdev",
     "src/actors/daLuigi_c.cpp#daLuigi_c_classInit": "tangosdev",
+    "src/actors/daLuigi_c.cpp#__sinit_daLuigi_c.cpp": "tangosdev",
     "src/actors/daObjHmMaruta_c.cpp#daObjHmMaruta_c_classInit": "tangosdev",
     "src/actors/daObjCtMecha11_c.cpp#daObjCtMecha11_c_classInit": "tangosdev",
     "src/actors/daObjCtRotateBlock_c.cpp#daObjCtRotateBlock_c_classInit_CT_MECHA02": "tangosdev",

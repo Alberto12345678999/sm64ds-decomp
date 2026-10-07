@@ -1377,7 +1377,6 @@
     "src/__sinit_ov047_0211181c.c",
     "src/__sinit_ov052_02111b64.c",
     "src/__sinit_ov052_02111bd0.c",
-    "src/__sinit_ov055_021118d4.c",
     "src/__sinit_ov056_02112b48.c",
     "src/__sinit_ov060_02119df0.c",
     "src/__sinit_ov060_02119f94.c",
@@ -3563,5 +3562,5 @@
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c8SetSpeedEi",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c9SetPeriodEs"
   ],
-  "count": 3554
+  "count": 3553
 }
