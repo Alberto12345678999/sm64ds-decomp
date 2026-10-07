@@ -132,7 +132,7 @@
       "ordinal": 14
     },
     {
-      "symbol": "func_ov006_02122e20",
+      "symbol": "_ZN18dScMgTrampoline2_c9InitBrushEi",
       "address": "0x02122e20",
       "size": "0x00000104",
       "legacy_source": "src/func_ov006_02122e20.c",
@@ -181,7 +181,7 @@
       "ordinal": 21
     },
     {
-      "symbol": "func_ov006_02123428",
+      "symbol": "_ZN18dScMgTrampoline2_c9SpawnWaveEv",
       "address": "0x02123428",
       "size": "0x00000314",
       "legacy_source": "src/func_ov006_02123428.cpp",
@@ -216,63 +216,63 @@
       "ordinal": 26
     },
     {
-      "symbol": "func_ov006_02123938",
+      "symbol": "_ZN18dScMgTrampoline2_c16UpdateTouchInputEv",
       "address": "0x02123938",
       "size": "0x000001e8",
       "legacy_source": "src/func_ov006_02123938.c",
       "ordinal": 27
     },
     {
-      "symbol": "func_ov006_02123b20",
+      "symbol": "_ZN18dScMgTrampoline2_c9StateDoneEv",
       "address": "0x02123b20",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_02123b20.c",
       "ordinal": 28
     },
     {
-      "symbol": "func_ov006_02123b24",
+      "symbol": "_ZN18dScMgTrampoline2_c13StateWaitExitEv",
       "address": "0x02123b24",
       "size": "0x000000d0",
       "legacy_source": "src/func_ov006_02123b24.c",
       "ordinal": 29
     },
     {
-      "symbol": "func_ov006_02123bf4",
+      "symbol": "_ZN18dScMgTrampoline2_c12StateResultsEv",
       "address": "0x02123bf4",
       "size": "0x00000084",
       "legacy_source": "src/func_ov006_02123bf4.cpp",
       "ordinal": 30
     },
     {
-      "symbol": "func_ov006_02123c78",
+      "symbol": "_ZN18dScMgTrampoline2_c12BeginResultsEv",
       "address": "0x02123c78",
       "size": "0x0000003c",
       "legacy_source": "src/func_ov006_02123c78.c",
       "ordinal": 31
     },
     {
-      "symbol": "func_ov006_02123cb4",
+      "symbol": "_ZN18dScMgTrampoline2_c9StatePlayEv",
       "address": "0x02123cb4",
       "size": "0x0000038c",
       "legacy_source": "src/func_ov006_02123cb4.c",
       "ordinal": 32
     },
     {
-      "symbol": "func_ov006_02124040",
+      "symbol": "_ZN18dScMgTrampoline2_c9BeginPlayEv",
       "address": "0x02124040",
       "size": "0x00000048",
       "legacy_source": "src/func_ov006_02124040.c",
       "ordinal": 33
     },
     {
-      "symbol": "func_ov006_02124088",
+      "symbol": "_ZN18dScMgTrampoline2_c10StateIntroEv",
       "address": "0x02124088",
       "size": "0x000001a0",
       "legacy_source": "src/func_ov006_02124088.c",
       "ordinal": 34
     },
     {
-      "symbol": "func_ov006_02124228",
+      "symbol": "_ZN18dScMgTrampoline2_c10BeginIntroEv",
       "address": "0x02124228",
       "size": "0x00000070",
       "legacy_source": "src/func_ov006_02124228.c",
@@ -300,7 +300,7 @@
       "ordinal": 38
     },
     {
-      "symbol": "func_ov006_021245a8",
+      "symbol": "_ZN18dScMgTrampoline2_c11InitDisplayEv",
       "address": "0x021245a8",
       "size": "0x00000174",
       "legacy_source": "src/func_ov006_021245a8.c",
@@ -338,31 +338,31 @@
       "symbol": "data_ov006_0213fbd0",
       "address": "0x0213fbd0",
       "size": "0x8",
-      "evidence": "TU-local state descriptor whose function relocation resolves to func_ov006_02123b20"
+      "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateDone member"
     },
     {
       "symbol": "data_ov006_0213fbd8",
       "address": "0x0213fbd8",
       "size": "0x8",
-      "evidence": "TU-local state descriptor whose function relocation resolves to func_ov006_02124088"
+      "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateIntro member"
     },
     {
       "symbol": "data_ov006_0213fbe0",
       "address": "0x0213fbe0",
       "size": "0x8",
-      "evidence": "TU-local state descriptor whose function relocation resolves to func_ov006_02123b24"
+      "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateWaitExit member"
     },
     {
       "symbol": "data_ov006_0213fbe8",
       "address": "0x0213fbe8",
       "size": "0x8",
-      "evidence": "TU-local state descriptor whose function relocation resolves to func_ov006_02123cb4"
+      "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StatePlay member"
     },
     {
       "symbol": "data_ov006_0213fbf0",
       "address": "0x0213fbf0",
       "size": "0x8",
-      "evidence": "TU-local state descriptor whose function relocation resolves to func_ov006_02123bf4"
+      "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateResults member"
     },
     {
       "symbol": "data_ov006_0213fbf8",
@@ -1277,51 +1277,20 @@
       "requested": [],
       "deadstripped": [],
       "droppedSections": [
-        6,
-        7,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        29,
-        30,
         32,
-        33,
-        34,
-        36
+        33
       ],
       "data": [
-        "_ZTI14dScMgD3DBase_c",
-        "_ZTS14dScMgD3DBase_c",
-        "_ZTI11dScMgBase_c",
-        "_ZTS11dScMgBase_c",
-        "_ZTI8dScene_c",
-        "_ZTS8dScene_c",
-        "_ZTI7dBase_c",
-        "_ZTS7dBase_c",
-        "_ZTI7fBase_c",
-        "_ZTS7fBase_c"
+        "_ZTI14dScMgD3DBase_c"
       ],
       "dataExternalized": [
-        "_ZTI11dScMgBase_c",
-        "_ZTI14dScMgD3DBase_c",
-        "_ZTI7dBase_c",
-        "_ZTI7fBase_c",
-        "_ZTI8dScene_c",
-        "_ZTS11dScMgBase_c",
-        "_ZTS14dScMgD3DBase_c",
-        "_ZTS7dBase_c",
-        "_ZTS7fBase_c",
-        "_ZTS8dScene_c"
+        "_ZTI14dScMgD3DBase_c"
       ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 9 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
