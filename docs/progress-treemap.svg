@@ -5177,19 +5177,19 @@ matched: yes</title></rect><rect x="132.21" y="459.58" width="2.14" height="5.02
 module: arm9
 addr: 0x0203781c
 size: 16 bytes
-matched: yes</title></rect><rect x="134.35" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203782c
+matched: yes</title></rect><rect x="134.35" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr14SetUnderResultERK5dBgPi
 module: arm9
 addr: 0x0203782c
 size: 84 bytes
-matched: yes</title></rect><rect x="145.57" y="459.58" width="1.07" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037880
+matched: yes</title></rect><rect x="145.57" y="459.58" width="1.07" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr14GetUnderResultEv
 module: arm9
 addr: 0x02037880
 size: 8 bytes
-matched: yes</title></rect><rect x="146.64" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037888
+matched: yes</title></rect><rect x="146.64" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13SetWallResultERK5dBgPi
 module: arm9
 addr: 0x02037888
 size: 84 bytes
-matched: yes</title></rect><rect x="157.87" y="459.58" width="1.07" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020378dc
+matched: yes</title></rect><rect x="157.87" y="459.58" width="1.07" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13GetWallResultEv
 module: arm9
 addr: 0x020378dc
 size: 8 bytes
@@ -5197,59 +5197,59 @@ matched: yes</title></rect><rect x="158.94" y="459.58" width="11.22" height="5.0
 module: arm9
 addr: 0x020378e4
 size: 84 bytes
-matched: yes</title></rect><rect x="170.16" y="459.58" width="1.07" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037938
+matched: yes</title></rect><rect x="170.16" y="459.58" width="1.07" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr14GetFloorResultEv
 module: arm9
 addr: 0x02037938
 size: 8 bytes
-matched: yes</title></rect><rect x="171.23" y="459.58" width="1.60" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037940
+matched: yes</title></rect><rect x="171.23" y="459.58" width="1.60" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037940Eh
 module: arm9
 addr: 0x02037940
 size: 12 bytes
-matched: yes</title></rect><rect x="172.83" y="459.58" width="3.74" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203794c
+matched: yes</title></rect><rect x="172.83" y="459.58" width="3.74" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_0203794cEPKi
 module: arm9
 addr: 0x0203794c
 size: 28 bytes
-matched: yes</title></rect><rect x="176.57" y="459.58" width="4.81" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037968
+matched: yes</title></rect><rect x="176.57" y="459.58" width="4.81" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037968Eiiii
 module: arm9
 addr: 0x02037968
 size: 36 bytes
-matched: yes</title></rect><rect x="181.39" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203798c
+matched: yes</title></rect><rect x="181.39" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_0203798cEiPv
 module: arm9
 addr: 0x0203798c
 size: 16 bytes
-matched: yes</title></rect><rect x="183.52" y="459.58" width="4.81" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203799c
+matched: yes</title></rect><rect x="183.52" y="459.58" width="4.81" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_0203799cEiiii
 module: arm9
 addr: 0x0203799c
 size: 36 bytes
-matched: yes</title></rect><rect x="188.33" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020379c0
+matched: yes</title></rect><rect x="188.33" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_020379c0EiPv
 module: arm9
 addr: 0x020379c0
 size: 16 bytes
-matched: yes</title></rect><rect x="190.47" y="459.58" width="4.81" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020379d0
+matched: yes</title></rect><rect x="190.47" y="459.58" width="4.81" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_020379d0Eiiii
 module: arm9
 addr: 0x020379d0
 size: 36 bytes
-matched: yes</title></rect><rect x="195.28" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020379f4
+matched: yes</title></rect><rect x="195.28" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_020379f4EiPv
 module: arm9
 addr: 0x020379f4
 size: 16 bytes
-matched: yes</title></rect><rect x="197.42" y="459.58" width="6.95" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037a04
+matched: yes</title></rect><rect x="197.42" y="459.58" width="6.95" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037a04EP7Vector3S1_
 module: arm9
 addr: 0x02037a04
 size: 52 bytes
-matched: yes</title></rect><rect x="204.37" y="459.58" width="6.95" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037a38
+matched: yes</title></rect><rect x="204.37" y="459.58" width="6.95" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037a38Ev
 module: arm9
 addr: 0x02037a38
 size: 52 bytes
-matched: yes</title></rect><rect x="211.32" y="459.58" width="23.52" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037a6c
+matched: yes</title></rect><rect x="211.32" y="459.58" width="23.52" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037a6cEiiiiii
 module: arm9
 addr: 0x02037a6c
 size: 176 bytes
-matched: yes</title></rect><rect x="234.84" y="459.58" width="8.55" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037b1c
+matched: yes</title></rect><rect x="234.84" y="459.58" width="8.55" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037b1cEv
 module: arm9
 addr: 0x02037b1c
 size: 64 bytes
-matched: yes</title></rect><rect x="243.39" y="459.58" width="21.91" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037b5c
+matched: yes</title></rect><rect x="243.39" y="459.58" width="21.91" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02037b5cEv
 module: arm9
 addr: 0x02037b5c
 size: 164 bytes
@@ -5493,11 +5493,11 @@ matched: yes</title></rect><rect x="52.05" y="468.14" width="44.18" height="7.47
 module: arm9
 addr: 0x02038638
 size: 492 bytes
-matched: yes</title></rect><rect x="96.23" y="468.14" width="47.77" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02038824
+matched: yes</title></rect><rect x="96.23" y="468.14" width="47.77" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02038824Ev
 module: arm9
 addr: 0x02038824
 size: 532 bytes
-matched: yes</title></rect><rect x="144.00" y="468.14" width="28.73" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02038a38
+matched: yes</title></rect><rect x="144.00" y="468.14" width="28.73" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrr13func_02038a38Ev
 module: arm9
 addr: 0x02038a38
 size: 320 bytes
