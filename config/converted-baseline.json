@@ -3528,7 +3528,18 @@
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c16OnPendingDestroyEv",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD0Ev",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD1Ev",
-    "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit"
+    "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit",
+    "src/actors/daObjTatefuda_c.cpp#RebuildModelMatrix",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c10InitThrownEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11InitCarriedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11InitDroppedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c11UpdateStateEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c18UpdateShadowMatrixEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c4IdleEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c7CarriedEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitIdleEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8InitTalkEv",
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8SetStateEi"
   ],
-  "count": 3521
+  "count": 3532
 }
