@@ -1212,10 +1212,11 @@ extern "C" void func_020133bc(void)
     func_02049cd8(&data_0209baa0, 0x1000, 0);
     data_0209b480 = 1;
 }
-/* opt_propagation/opt flags are file-global last-wins under deferred codegen
- * in mwccarm 2004/b56; the defer_codegen brackets above emit this function at
- * parse position -- after the deferred queue's 85 lower functions flush -- so
- * its cached pointer keeps the r4 home the ROM has without perturbing the rest. */
+/* opt_propagation is file-global last-wins under deferred codegen in mwccarm
+ * 2004/b56, and the deferred queue's codegen binds when the next function
+ * parses. The defer_codegen brackets emit func_020132d8 and func_020133bc at
+ * parse position -- func_020132d8 first, flushing the queued functions under
+ * on -- so func_020133bc alone sees off and keeps `anim` in r4 like the ROM. */
 #pragma opt_propagation on
 #pragma defer_codegen on
 
