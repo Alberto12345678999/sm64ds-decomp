@@ -3937,6 +3937,7 @@
     "src/game/actors/d_a_obj_km2_ami_bou.cpp#_ZN18daObjKm2_Ami_Bou_c8BehaviorEv": "tangosdev",
     "src/game/actors/d_a_obj_km2_ami_bou.cpp#_ZN18daObjKm2_Ami_Bou_c13InitResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_km2_ami_bou.cpp#daObjKm2_Ami_Bou_c_classInit": "tangosdev",
+    "src/game/actors/d_a_obj_km2_ami_bou.cpp#__sinit_d_a_obj_km2_ami_bou.cpp": "tangosdev",
     "src/game/actors/d_a_jgm.cpp": "tangosdev",
     "src/game/actors/d_a_jgm.cpp#_ZN7daJgm_cD1Ev": "tangosdev",
     "src/game/actors/d_a_jgm.cpp#_ZN7daJgm_cD0Ev": "tangosdev",
