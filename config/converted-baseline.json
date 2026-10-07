@@ -3512,11 +3512,23 @@
     "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cC1Ev",
     "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cD0Ev",
     "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cD1Ev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c10EnterStateEPv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c10TimedWait2Ev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c11InitDormantEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c13InitTimedWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c13InitTouchWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c14InitTimedWait2Ev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c7DormantEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c8InitFallEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c8InitWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9InitSlideEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9TimedWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9TouchWaitEv",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c16CleanupResourcesEv",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c16OnPendingDestroyEv",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD0Ev",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD1Ev",
     "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit"
   ],
-  "count": 3509
+  "count": 3521
 }
