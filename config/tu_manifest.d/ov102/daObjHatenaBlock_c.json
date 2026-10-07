@@ -38,49 +38,49 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov102_02149078",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149078Ev",
       "address": "0x02149078",
       "size": "0x00000088",
       "legacy_source": "src/func_ov102_02149078.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov102_02149100",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149100EP7Vector3ijs",
       "address": "0x02149100",
       "size": "0x00000120",
       "legacy_source": "src/func_ov102_02149100.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov102_02149220",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149220Ev",
       "address": "0x02149220",
       "size": "0x00000068",
       "legacy_source": "src/func_ov102_02149220.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov102_02149288",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149288Ev",
       "address": "0x02149288",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov102_02149288.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov102_021492d4",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_021492d4Ev",
       "address": "0x021492d4",
       "size": "0x000000b0",
       "legacy_source": "src/func_ov102_021492d4.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov102_02149384",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149384Ev",
       "address": "0x02149384",
       "size": "0x00000058",
       "legacy_source": "src/func_ov102_02149384.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov102_021493dc",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_021493dcEv",
       "address": "0x021493dc",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov102_021493dc.cpp",
@@ -101,21 +101,21 @@
       "ordinal": 10
     },
     {
-      "symbol": "func_ov102_021494cc",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_021494ccEv",
       "address": "0x021494cc",
       "size": "0x00000070",
       "legacy_source": "src/func_ov102_021494cc.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov102_0214953c",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_0214953cEii",
       "address": "0x0214953c",
       "size": "0x000000d4",
       "legacy_source": "src/func_ov102_0214953c.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov102_02149610",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149610Ev",
       "address": "0x02149610",
       "size": "0x00000074",
       "legacy_source": "src/func_ov102_02149610.cpp",
@@ -171,7 +171,7 @@
       "ordinal": 20
     },
     {
-      "symbol": "func_ov102_021498c4",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_021498c4Ev",
       "address": "0x021498c4",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov102_021498c4.c",
@@ -185,7 +185,7 @@
       "ordinal": 22
     },
     {
-      "symbol": "func_ov102_02149c78",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149c78Ev",
       "address": "0x02149c78",
       "size": "0x00000054",
       "legacy_source": "src/func_ov102_02149c78.c",
@@ -199,21 +199,21 @@
       "ordinal": 24
     },
     {
-      "symbol": "func_ov102_02149d80",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149d80Ev",
       "address": "0x02149d80",
       "size": "0x00000028",
       "legacy_source": "src/func_ov102_02149d80.c",
       "ordinal": 25
     },
     {
-      "symbol": "func_ov102_02149da8",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149da8Ei",
       "address": "0x02149da8",
       "size": "0x00000048",
       "legacy_source": "src/func_ov102_02149da8.cpp",
       "ordinal": 26
     },
     {
-      "symbol": "func_ov102_02149df0",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149df0Ev",
       "address": "0x02149df0",
       "size": "0x00000048",
       "legacy_source": "src/func_ov102_02149df0.cpp",
@@ -227,14 +227,14 @@
       "ordinal": 28
     },
     {
-      "symbol": "func_ov102_02149ea4",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149ea4Ev",
       "address": "0x02149ea4",
       "size": "0x0000014c",
       "legacy_source": "src/func_ov102_02149ea4.c",
       "ordinal": 29
     },
     {
-      "symbol": "func_ov102_02149ff0",
+      "symbol": "_ZN18daObjHatenaBlock_c19func_ov102_02149ff0Ev",
       "address": "0x02149ff0",
       "size": "0x0000009c",
       "legacy_source": "src/func_ov102_02149ff0.c",

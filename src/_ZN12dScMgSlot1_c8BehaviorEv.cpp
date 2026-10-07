@@ -37,7 +37,7 @@ extern s16 data_ov006_0213e654[][2];
 extern s16 data_ov006_0213e656[][2];
 extern s16 data_ov006_0213e4f8[][2];
 extern s16 data_ov006_0213e4fa[][2];
-extern struct FaderBrightness data_0209f61c;
+extern struct dFdBrightness_c data_0209f61c;
 }
 
 namespace Sound { void PlayBank2_2D(unsigned int); }

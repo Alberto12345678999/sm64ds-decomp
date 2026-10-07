@@ -34,6 +34,7 @@
 
 #include "common.h"
 #include "daFPkn_c.h"
+#include "daPkn_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
 #include "Sound.h"
@@ -113,10 +114,8 @@ enum {
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
 
-struct daPkn_c;
-/* daPkn_c's own helper, defined in src/actors/daPkn_c.cpp: hands the
+/* daPkn_c::EnterLunge, declared on the class's own header: hands the
    spawned PAKUN the grow-in frame. */
-extern "C" void func_ov084_0212ec04(daPkn_c *c, int frame);
 
 extern "C" {
 void func_02012694(u32 id, const Vector3 *pos);
@@ -458,7 +457,7 @@ void daFPkn_c::StateGrow()
         if (spawned == 0) return;
 
         mSuppressDeathReward = 2;
-        func_ov084_0212ec04((daPkn_c *)spawned, (short)((unsigned int)(mModelAnim.currFrame << 4) >> 16));
+        ((daPkn_c *)spawned)->EnterLunge((short)((unsigned int)(mModelAnim.currFrame << 4) >> 16));
         mdCcAc_c.flags |= 1;
         mdCcAcPos_c.flags |= 1;
         return;
