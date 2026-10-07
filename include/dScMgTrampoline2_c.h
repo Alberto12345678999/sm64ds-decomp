@@ -59,10 +59,8 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
 
     void UpdateTouchInput(); /* ov006 0x02123938 */
     void SpawnWave();        /* ov006 0x02123428 -- one random wave of shapes */
-    void InitDisplay();      /* ov006 0x021245a8 -- loads the BG/OBJ screens
-                                for the current language */
-    void InitBrush(int layer); /* ov006 0x02122e20 -- fills the layer the
-                                  stylus lines draw on */
+    void InitDisplay();      /* ov006 0x021245a8 -- loads BG/OBJ screens */
+    void InitBrush(int layer); /* ov006 0x02122e20 -- fills the stroke layer */
 
     /* Raw eight-byte state PMF. Behavior calls through it. A typed
        global initializer emits a __sinit this ROM does not have. */

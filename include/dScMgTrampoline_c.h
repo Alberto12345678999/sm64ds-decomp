@@ -83,13 +83,10 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
 
     void UpdateTouchInput(); /* ov006 0x0212157c */
     void UpdateScroll();     /* ov006 0x02121bc8 */
-    void InitDisplay();      /* ov006 0x0212231c -- loads the BG/OBJ screens
-                                for the current language */
-    void InitBrush(int layer); /* ov006 0x02120f18 -- fills the layer the
-                                  stylus lines draw on */
+    void InitDisplay();      /* ov006 0x0212231c -- loads BG/OBJ screens */
+    void InitBrush(int layer); /* ov006 0x02120f18 -- fills the stroke layer */
     s16  GetDoorSide();        /* ov006 0x02121768 */
-    void SetDoorSide(short v); /* ov006 0x02121750 -- also mirrors the pick
-                                  into data_ov006_02140538 */
+    void SetDoorSide(short v); /* ov006 0x02121750 -- mirrors pick to data_ov006_02140538 */
 
     u32 mState[2];          /* 0x5004 -- raw eight-byte State encoding; a
                                typed global PMF emits a non-ROM __sinit */

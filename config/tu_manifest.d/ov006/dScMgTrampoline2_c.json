@@ -635,7 +635,7 @@
       "source": "0x0213fbd0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "func_ov006_02123b20",
+      "symbol": "_ZN18dScMgTrampoline2_c9StateDoneEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02123b20"
@@ -645,7 +645,7 @@
       "source": "0x0213fbd8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "func_ov006_02124088",
+      "symbol": "_ZN18dScMgTrampoline2_c10StateIntroEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02124088"
@@ -655,7 +655,7 @@
       "source": "0x0213fbe0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "func_ov006_02123b24",
+      "symbol": "_ZN18dScMgTrampoline2_c13StateWaitExitEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02123b24"
@@ -665,7 +665,7 @@
       "source": "0x0213fbe8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "func_ov006_02123cb4",
+      "symbol": "_ZN18dScMgTrampoline2_c9StatePlayEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02123cb4"
@@ -675,7 +675,7 @@
       "source": "0x0213fbf0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "func_ov006_02123bf4",
+      "symbol": "_ZN18dScMgTrampoline2_c12StateResultsEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02123bf4"
