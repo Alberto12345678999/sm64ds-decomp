@@ -6533,6 +6533,7 @@
     "src/actors/Eyerok.cpp#func_ov066_02118c00": "andrewboudreau",
     "src/actors/Eyerok.cpp#func_ov066_02118cdc": "andrewboudreau",
     "src/actors/Eyerok.cpp#_ZN6Eyerok13InitResourcesEv": "andrewboudreau",
+    "src/actors/Eyerok.cpp#__sinit_Eyerok.cpp": "tangosdev",
     "src/actors/Eyerok.cpp#_ZN6Eyerok16OnAimedAtWithEggEv": "tangosdev",
     "src/actors/daMky_c.cpp#_ZN7daMky_c19func_ov030_02111bc4Ev": "andrewboudreau",
     "src/actors/daMky_c.cpp#_ZN7daMky_c19func_ov030_02111ea4Ev": "andrewboudreau",

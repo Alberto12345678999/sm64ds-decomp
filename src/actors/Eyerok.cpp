@@ -6,10 +6,12 @@
  * The unit's two destructors (D1 0x02115ee0, D0 0x02115f84) stay in their
  * own files: ~Eyerok is the key function, and defining it here would emit
  * the vtable and RTTI as _ZTS6Eyerok, a name the ROM does not have. The
- * tail folds the three zero-gap neighbours up to the sinit at 0x0211a418:
- * the free helper func_ov066_0211a2e4, its tail-call veneer
- * func_ov066_0211a35c (this unit's dBgW callback), and the registry
- * factory daIwante_c_classInit, which installs this unit's vtable.
+ * tail folds the three zero-gap neighbours and the static initializer up to
+ * the .ctor word at 0x0211abc0: the free helper func_ov066_0211a2e4, its
+ * tail-call veneer func_ov066_0211a35c (this unit's dBgW callback), the
+ * registry factory daIwante_c_classInit, which installs this unit's vtable,
+ * and __sinit_Eyerok.cpp (0x0211a418..0x0211abc0, emitted from the resource
+ * and state definitions at the bottom of this file; see the comment there).
  *
  * Source is ROM-ascending under defer_codegen off. Do not reorder.
  *
@@ -40,7 +42,11 @@
  *    unknown; and the 0x2 bit of the collider flags (set and cleared by
  *    func_ov066_021162e8 / 0211632c / 021164ec) is
  *    unexplained.
- *  - The func_ov066 helpers and data_ov066 tables keep linker names.
+ *  - The func_ov066 helpers and the remaining data_ov066 tables (the byte
+ *    flags and counters, the hit-volume offset) keep linker names. The 22
+ *    resource handles and 19 state descriptors are now typed objects defined
+ *    at the bottom of this file; the 38 pointer-to-member records they copy
+ *    from keep their data_ov066 names.
  *  - State dispatch stays a pointer-to-member of a placeholder class C (padding
  *    up to mState) standing in for Eyerok in func_ov066_02119454, which also
  *    keeps a raw `(char *)st + 8` in Behavior. EVec3 and M48
@@ -154,10 +160,57 @@ typedef int (C::*PMF)();
 struct State { char pad[8]; PMF fn; };
 struct CLPS_Block;
 
+/* The static initializer's own types. __sinit_ov066_0211a418 constructs 22
+ * resource handles with per-kind constructors and destructors, and copies
+ * 38 pointer-to-member pairs into 19 state descriptors. The constructors the
+ * ROM runs for each handle kind are not classes the compiler could have
+ * recovered fields for (SharedFilePtr's layout is not recovered), so each
+ * kind is a subclass of SharedFilePtr that adds two words and defines its
+ * constructor/destructor out of line; the manifest aliases those symbols onto
+ * the ROM's per-kind constructor/destructor entry points.
+ *
+ * A state descriptor is two of the 8-byte pointer-to-member records the ROM
+ * keeps in .data: the enter handler at +0 and the run handler at +8, laid out
+ * the way func_ov066_02119454 reads them (it skips the enter pair when
+ * installing the run state, see struct State above). */
+struct EyerokStateFn {
+    void *fn;
+    int adjustor;
+};
+
+struct EyerokStateDesc {
+    EyerokStateFn enter;
+    EyerokStateFn run;
+};
+
+struct EyerokModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+    EyerokModelFilePtr(unsigned int fileID);
+    ~EyerokModelFilePtr();
+};
+
+struct EyerokAnimationFilePtr : SharedFilePtr {
+    unsigned int words[2];
+    EyerokAnimationFilePtr(unsigned int fileID);
+    ~EyerokAnimationFilePtr();
+};
+
+struct EyerokTextureSequencePtr : SharedFilePtr {
+    unsigned int words[2];
+    EyerokTextureSequencePtr(unsigned int fileID);
+    ~EyerokTextureSequencePtr();
+};
+
+struct EyerokCollisionFilePtr : SharedFilePtr {
+    unsigned int words[2];
+    EyerokCollisionFilePtr(unsigned int fileID);
+    ~EyerokCollisionFilePtr();
+};
+
 extern "C" {
 /* ---- ov066 .bss: 8-byte SharedFilePtr slots (0x0211ae14..0x0211aebc) ----
  * Word [1] of each is the loaded file, which the states pass to SetAnim /
- * SetFile. Roles, from InitResources and the order __sinit_ov066_0211a418
+ * SetFile. Roles, from InitResources and the order __sinit_Eyerok.cpp
  * constructs them (the number in brackets is the id each is built with):
  *   models:           ae6c [0x339] body, ae4c [0x33f] hand 1, aeb4 [0x33a] hand 2
  *   texture patterns: ae3c [0x333], aebc [0x334], ae2c [0x33d], ae9c [0x33e]
@@ -167,28 +220,28 @@ extern "C" {
  *   collision files:  ae24 [0x332] body, aeac [0x33b], ae14 [0x33c],
  *                     ae1c [0x343], ae34 [0x345]
  * Which animation is which is described where it is started. */
-extern int data_ov066_0211ae14[];
-extern int data_ov066_0211ae1c[];
-extern int data_ov066_0211ae24[];
-extern int data_ov066_0211ae2c[];
-extern int data_ov066_0211ae34[];
-extern int data_ov066_0211ae3c[];
-extern int data_ov066_0211ae44[];
-extern int data_ov066_0211ae4c[];
-extern int data_ov066_0211ae54[];
-extern int data_ov066_0211ae5c[];
-extern int data_ov066_0211ae64[];
-extern int data_ov066_0211ae6c[];
-extern int data_ov066_0211ae74[];
-extern int data_ov066_0211ae7c[];
-extern int data_ov066_0211ae84[];
-extern int data_ov066_0211ae8c[];
-extern int data_ov066_0211ae94[];
-extern int data_ov066_0211ae9c[];
-extern int data_ov066_0211aea4[];
-extern int data_ov066_0211aeac[];
-extern int data_ov066_0211aeb4[];
-extern int data_ov066_0211aebc[];
+extern EyerokCollisionFilePtr data_ov066_0211ae14;
+extern EyerokCollisionFilePtr data_ov066_0211ae1c;
+extern EyerokCollisionFilePtr data_ov066_0211ae24;
+extern EyerokTextureSequencePtr data_ov066_0211ae2c;
+extern EyerokCollisionFilePtr data_ov066_0211ae34;
+extern EyerokTextureSequencePtr data_ov066_0211ae3c;
+extern EyerokAnimationFilePtr data_ov066_0211ae44;
+extern EyerokModelFilePtr data_ov066_0211ae4c;
+extern EyerokAnimationFilePtr data_ov066_0211ae54;
+extern EyerokAnimationFilePtr data_ov066_0211ae5c;
+extern EyerokAnimationFilePtr data_ov066_0211ae64;
+extern EyerokModelFilePtr data_ov066_0211ae6c;
+extern EyerokAnimationFilePtr data_ov066_0211ae74;
+extern EyerokAnimationFilePtr data_ov066_0211ae7c;
+extern EyerokAnimationFilePtr data_ov066_0211ae84;
+extern EyerokAnimationFilePtr data_ov066_0211ae8c;
+extern EyerokAnimationFilePtr data_ov066_0211ae94;
+extern EyerokTextureSequencePtr data_ov066_0211ae9c;
+extern EyerokAnimationFilePtr data_ov066_0211aea4;
+extern EyerokCollisionFilePtr data_ov066_0211aeac;
+extern EyerokModelFilePtr data_ov066_0211aeb4;
+extern EyerokTextureSequencePtr data_ov066_0211aebc;
 
 /* ---- ov066 .bss / .data byte flags and counters, shared by all three parts ---- */
 /* Hands that have reached their spot in pattern 8, one bit per hand. */
@@ -222,7 +275,7 @@ extern int data_ov066_0211abe4;
 extern int data_ov066_0211ad18[];
 
 /* ---- ov066 .bss state descriptors, 0x10 bytes each ----
- * Each holds two pointer-to-member pairs, filled by __sinit_ov066_0211a418
+ * Each holds two pointer-to-member pairs, filled by __sinit_Eyerok.cpp
  * (relocs.txt names the targets): the enter handler at +0, which
  * func_ov066_02119454 runs when it installs the state, and the run handler at
  * +8, which Behavior runs every frame. "Pattern n" means the state used while
@@ -250,25 +303,25 @@ extern int data_ov066_0211ad18[];
  *   b01c     pattern 8              021175bc  021171b0
  *   b04c     pattern 9              02117190  02116db0
  * (the address column is the low 16 bits of data_ov066_0211xxxx) */
-extern char data_ov066_0211afcc;
-extern char data_ov066_0211afdc;
-extern char data_ov066_0211afec;
-extern char data_ov066_0211affc;
-extern char data_ov066_0211b00c;
-extern char data_ov066_0211b01c;
-extern char data_ov066_0211b02c;
-extern char data_ov066_0211b03c;
-extern char data_ov066_0211b04c;
-extern int data_ov066_0211b05c[];
-extern char data_ov066_0211b06c;
-extern char data_ov066_0211b07c;
-extern char data_ov066_0211b08c;
-extern int data_ov066_0211b09c[];
-extern char data_ov066_0211b0ac;
-extern char data_ov066_0211b0bc;
-extern char data_ov066_0211b0cc;
-extern char data_ov066_0211b0dc;
-extern char data_ov066_0211b0ec;
+extern EyerokStateDesc data_ov066_0211afcc;
+extern EyerokStateDesc data_ov066_0211afdc;
+extern EyerokStateDesc data_ov066_0211afec;
+extern EyerokStateDesc data_ov066_0211affc;
+extern EyerokStateDesc data_ov066_0211b00c;
+extern EyerokStateDesc data_ov066_0211b01c;
+extern EyerokStateDesc data_ov066_0211b02c;
+extern EyerokStateDesc data_ov066_0211b03c;
+extern EyerokStateDesc data_ov066_0211b04c;
+extern EyerokStateDesc data_ov066_0211b05c;
+extern EyerokStateDesc data_ov066_0211b06c;
+extern EyerokStateDesc data_ov066_0211b07c;
+extern EyerokStateDesc data_ov066_0211b08c;
+extern EyerokStateDesc data_ov066_0211b09c;
+extern EyerokStateDesc data_ov066_0211b0ac;
+extern EyerokStateDesc data_ov066_0211b0bc;
+extern EyerokStateDesc data_ov066_0211b0cc;
+extern EyerokStateDesc data_ov066_0211b0dc;
+extern EyerokStateDesc data_ov066_0211b0ec;
 
 /* ---- ov025 .data: CLPS blocks. ov025 is the overlay resident below ov066
  *      at these addresses (tools/overlay_residency.py rules out every other
@@ -435,14 +488,14 @@ other:
     if (self->mHitPoints > 0) {
         if (self->mPartIdx == PART_HAND_2) {
             _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &self->mBlendModelAnim, (void *)data_ov066_0211ae5c[1], 4, 0x40000000, 0x1000, 0);
+                &self->mBlendModelAnim, (void *)data_ov066_0211ae5c.words[1], 4, 0x40000000, 0x1000, 0);
             _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                &self->mTextureSequence, (void *)data_ov066_0211ae3c[1], 0x40000000, 0x1000, 0);
+                &self->mTextureSequence, (void *)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
         } else {
             _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &self->mBlendModelAnim, (void *)data_ov066_0211ae84[1], 4, 0x40000000, 0x1000, 0);
+                &self->mBlendModelAnim, (void *)data_ov066_0211ae84.words[1], 4, 0x40000000, 0x1000, 0);
             _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-                &self->mTextureSequence, (void *)data_ov066_0211aebc[1], 0x40000000, 0x1000, 0);
+                &self->mTextureSequence, (void *)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
         }
         func_02012694(SE_HAND_HIT, &self->mCamSpacePosX);
         return 1;
@@ -516,15 +569,15 @@ void func_ov066_02116390(Eyerok *self)
         return;
     if (self->mTexPhase == 0) {
         if (self->mPartIdx == PART_HAND_2)
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae2c[1], 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae2c.words[1], 0x40000000, 0x1000, 0);
         else
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae9c[1], 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae9c.words[1], 0x40000000, 0x1000, 0);
         self->mTexTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 0xf) * 2 + 0x32;
     } else {
         if (self->mPartIdx == PART_HAND_2)
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae3c[1], 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
         else
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211aebc[1], 0x40000000, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
         self->mTexTimer = 8;
     }
     self->mTexPhase ^= 1;
@@ -548,9 +601,9 @@ void func_ov066_021164ec(Eyerok *self)
     self->mFlags = 0x10000000;
     self->mdCcAcPos_c.flags |= 2;
     if (self->mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae64[1], 4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae64.words[1], 4, 0, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae44[1], 4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae44.words[1], 4, 0, 0x1000, 0);
     }
     self->mStateWork1 = 1;
 }
@@ -568,14 +621,14 @@ void func_ov066_021165cc(Eyerok *self)
 {
     if (self->mPartIdx == PART_HAND_2) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &self->mBlendModelAnim, (void *)data_ov066_0211ae54[1], 4, 0x40000000, 0x1000, 0);
+            &self->mBlendModelAnim, (void *)data_ov066_0211ae54.words[1], 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            &self->mTextureSequence, (void *)data_ov066_0211ae3c[1], 0x40000000, 0x1000, 0);
+            &self->mTextureSequence, (void *)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
     } else {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &self->mBlendModelAnim, (void *)data_ov066_0211ae94[1], 4, 0x40000000, 0x1000, 0);
+            &self->mBlendModelAnim, (void *)data_ov066_0211ae94.words[1], 4, 0x40000000, 0x1000, 0);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-            &self->mTextureSequence, (void *)data_ov066_0211aebc[1], 0x40000000, 0x1000, 0);
+            &self->mTextureSequence, (void *)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
     }
     self->mBlendModelAnim.speed = 0x1000;
     {
@@ -599,21 +652,21 @@ void func_ov066_021166c8(Eyerok *self)
 {
 
     if (self->mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae54[1], 4, 0x40000000, 0x1000, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae2c[1], 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae54.words[1], 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae2c.words[1], 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae94[1], 4, 0x40000000, 0x1000, 0);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae9c[1], 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae94.words[1], 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void *)data_ov066_0211ae9c.words[1], 0x40000000, 0x1000, 0);
     }
 
     if (self->mMeshCollider2.IsEnabled() != 0)
         self->mMeshCollider2.Disable();
 
     if (self->mPartIdx == PART_HAND_1) {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&self->mMeshCollider2, (void *)data_ov066_0211ae34[1], &self->mClsnMat2, 0x199,
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&self->mMeshCollider2, (void *)data_ov066_0211ae34.words[1], &self->mClsnMat2, 0x199,
                                    self->mAngleY, &data_ov025_02112cc8);
     } else {
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&self->mMeshCollider2, (void *)data_ov066_0211ae1c[1], &self->mClsnMat2, 0x199,
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&self->mMeshCollider2, (void *)data_ov066_0211ae1c.words[1], &self->mClsnMat2, 0x199,
                                    self->mAngleY, &data_ov025_02112c88);
     }
 
@@ -819,9 +872,9 @@ int func_ov066_02116d14(Eyerok *self)
     self->mSubState = 0;
     self->mHorzSpeed = -0xa000;
     if (self->mPartIdx == PART_HAND_2) {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211aea4[1], 4, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211aea4.words[1], 4, 0x40000000, 0x1000, 0);
     } else {
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae8c[1], 4, 0x40000000, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void *)data_ov066_0211ae8c.words[1], 4, 0x40000000, 0x1000, 0);
     }
     return 1;
 }
@@ -917,11 +970,11 @@ int func_ov066_02116db0(Eyerok *self)
                 self->mMeshCollider2.Disable();
             if (self->mPartIdx == PART_HAND_1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &self->mMeshCollider2, (void *)data_ov066_0211ae14[1], &self->mClsnMat2, 0x199,
+                    &self->mMeshCollider2, (void *)data_ov066_0211ae14.words[1], &self->mClsnMat2, 0x199,
                     self->mAngleY, &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &self->mMeshCollider2, (void *)data_ov066_0211aeac[1], &self->mClsnMat2, 0x199,
+                    &self->mMeshCollider2, (void *)data_ov066_0211aeac.words[1], &self->mClsnMat2, 0x199,
                     self->mAngleY, &data_ov025_02112d48);
             func_020393d4(&self->mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&self->mMeshCollider2, (void *)func_ov066_0211a35c);
@@ -1296,11 +1349,11 @@ int func_ov066_021175e8(Eyerok *self)
                 self->mMeshCollider2.Disable();
             if (self->mPartIdx == PART_HAND_1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &self->mMeshCollider2, (void *)data_ov066_0211ae14[1], &self->mClsnMat2, 0x199,
+                    &self->mMeshCollider2, (void *)data_ov066_0211ae14.words[1], &self->mClsnMat2, 0x199,
                     self->mAngleY, &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &self->mMeshCollider2, (void *)data_ov066_0211aeac[1], &self->mClsnMat2, 0x199,
+                    &self->mMeshCollider2, (void *)data_ov066_0211aeac.words[1], &self->mClsnMat2, 0x199,
                     self->mAngleY, &data_ov025_02112d48);
             func_020393d4(&self->mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&self->mMeshCollider2, (void *)func_ov066_0211a35c);
@@ -1482,11 +1535,11 @@ int func_ov066_02117bf0(Eyerok *self)
                 self->mMeshCollider2.Disable();
             if (self->mPartIdx == PART_HAND_1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &self->mMeshCollider2, (void *)data_ov066_0211ae14[1], &self->mClsnMat2, 0x199,
+                    &self->mMeshCollider2, (void *)data_ov066_0211ae14.words[1], &self->mClsnMat2, 0x199,
                     self->mAngleY, &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                    &self->mMeshCollider2, (void *)data_ov066_0211aeac[1], &self->mClsnMat2, 0x199,
+                    &self->mMeshCollider2, (void *)data_ov066_0211aeac.words[1], &self->mClsnMat2, 0x199,
                     self->mAngleY, &data_ov025_02112d48);
             func_020393d4(&self->mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
             func_020393c4(&self->mMeshCollider2, (void *)func_ov066_0211a35c);
@@ -1630,11 +1683,11 @@ int func_ov066_02118188(Eyerok *self)
 
         if (self->mPartIdx == PART_HAND_1) {
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &self->mMeshCollider2, (void *)data_ov066_0211ae14[1], &self->mClsnMat2, 0x199,
+                &self->mMeshCollider2, (void *)data_ov066_0211ae14.words[1], &self->mClsnMat2, 0x199,
                 self->mAngleY, &data_ov025_02112c08);
         } else {
             _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &self->mMeshCollider2, (void *)data_ov066_0211aeac[1], &self->mClsnMat2, 0x199,
+                &self->mMeshCollider2, (void *)data_ov066_0211aeac.words[1], &self->mClsnMat2, 0x199,
                 self->mAngleY, &data_ov025_02112d48);
         }
 
@@ -1825,11 +1878,11 @@ int func_ov066_02118678(Eyerok *self)
 extern "C" {
 int func_ov066_021187c8(Eyerok *self){
   if(self->mPartIdx == PART_HAND_2){
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void*)data_ov066_0211ae74[1], 4, 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void*)data_ov066_0211ae3c[1], 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void*)data_ov066_0211ae74.words[1], 4, 0x40000000, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void*)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
   } else {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void*)data_ov066_0211ae7c[1], 4, 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void*)data_ov066_0211aebc[1], 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&self->mBlendModelAnim, (void*)data_ov066_0211ae7c.words[1], 4, 0x40000000, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, (void*)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
   }
   self->mBlendModelAnim.speed = 0;
   self->mStateWork0 = 0;
@@ -2431,28 +2484,28 @@ int Eyerok::CleanupResources()
   if(((dBgW *)&mMeshCollider2)->IsEnabled())
     ((dBgW *)&mMeshCollider2)->Disable();
   if(mPartIdx==0){
-    ((SharedFilePtr *)(data_ov066_0211ae6c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae4c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211aeb4))->Release();
-    ((SharedFilePtr *)(data_ov066_0211aebc))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae9c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae3c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae2c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae5c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae84))->Release();
-    ((SharedFilePtr *)(data_ov066_0211aea4))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae8c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae54))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae94))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae64))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae44))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae74))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae7c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae24))->Release();
-    ((SharedFilePtr *)(data_ov066_0211aeac))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae14))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae1c))->Release();
-    ((SharedFilePtr *)(data_ov066_0211ae34))->Release();
+    data_ov066_0211ae6c.Release();
+    data_ov066_0211ae4c.Release();
+    data_ov066_0211aeb4.Release();
+    data_ov066_0211aebc.Release();
+    data_ov066_0211ae9c.Release();
+    data_ov066_0211ae3c.Release();
+    data_ov066_0211ae2c.Release();
+    data_ov066_0211ae5c.Release();
+    data_ov066_0211ae84.Release();
+    data_ov066_0211aea4.Release();
+    data_ov066_0211ae8c.Release();
+    data_ov066_0211ae54.Release();
+    data_ov066_0211ae94.Release();
+    data_ov066_0211ae64.Release();
+    data_ov066_0211ae44.Release();
+    data_ov066_0211ae74.Release();
+    data_ov066_0211ae7c.Release();
+    data_ov066_0211ae24.Release();
+    data_ov066_0211aeac.Release();
+    data_ov066_0211ae14.Release();
+    data_ov066_0211ae1c.Release();
+    data_ov066_0211ae34.Release();
   }
   return 1;
 }
@@ -2702,40 +2755,40 @@ int Eyerok::InitResources()
 
     switch (mPartIdx) {
     case 0:
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel2, _ZN5Model8LoadFileER13SharedFilePtr(data_ov066_0211ae6c), 1, -1);
-        _ZN5Model8LoadFileER13SharedFilePtr(data_ov066_0211ae4c);
-        _ZN5Model8LoadFileER13SharedFilePtr(data_ov066_0211aeb4);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211aebc);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae9c);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae3c);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae2c);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae5c);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae84);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211aea4);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae8c);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae54);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae94);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae64);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae44);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae74);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae7c);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae24);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211aeac);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae14);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae1c);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae34);
+        _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel2, _ZN5Model8LoadFileER13SharedFilePtr(&data_ov066_0211ae6c), 1, -1);
+        _ZN5Model8LoadFileER13SharedFilePtr(&data_ov066_0211ae4c);
+        _ZN5Model8LoadFileER13SharedFilePtr(&data_ov066_0211aeb4);
+        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211aebc);
+        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211ae9c);
+        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211ae3c);
+        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211ae2c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae5c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae84);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211aea4);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae8c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae54);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae94);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae64);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae44);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae74);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae7c);
+        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae24);
+        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211aeac);
+        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae14);
+        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae1c);
+        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae34);
         break;
     case 1:
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, (void *)data_ov066_0211ae4c[1], 1, -1) == 0)
+        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, (void *)data_ov066_0211ae4c.words[1], 1, -1) == 0)
             return 0;
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c[1], *(BTP_File *)data_ov066_0211aebc[1]);
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c[1], *(BTP_File *)data_ov066_0211ae9c[1]);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.words[1], *(BTP_File *)data_ov066_0211aebc.words[1]);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.words[1], *(BTP_File *)data_ov066_0211ae9c.words[1]);
         break;
     case 2:
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, (void *)data_ov066_0211aeb4[1], 1, -1) == 0)
+        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, (void *)data_ov066_0211aeb4.words[1], 1, -1) == 0)
             return 0;
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4[1], *(BTP_File *)data_ov066_0211ae3c[1]);
-        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4[1], *(BTP_File *)data_ov066_0211ae2c[1]);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.words[1], *(BTP_File *)data_ov066_0211ae3c.words[1]);
+        TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.words[1], *(BTP_File *)data_ov066_0211ae2c.words[1]);
         break;
     }
 
@@ -2790,12 +2843,12 @@ int Eyerok::InitResources()
         data_ov066_0211abe4 = 1;
         data_ov066_0211ae04 = PHASE_DORMANT;
         data_ov066_0211abe0 = HANDS_BOTH;
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211ae24[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112ca8);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211ae24.words[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112ca8);
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
         func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
         ((dBgW *)&mMeshCollider2)->Enable(this);
         mTimer2 = 0x64;
-        func_ov066_02119454(c, data_ov066_0211b09c);
+        func_ov066_02119454(c, &data_ov066_0211b09c);
     } else {
         mRestPosX = mPosX;
         mRestPosY = mPosY;
@@ -2804,10 +2857,10 @@ int Eyerok::InitResources()
         mSpawnPosY = mPosY;
         mSpawnPosZ = mPosZ;
         if (mPartIdx == PART_HAND_1) {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211ae14[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112c08);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211ae14.words[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112c08);
             mRestPosX -= 0x31F000;
         } else {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211aeac[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112d48);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211aeac.words[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112d48);
             mRestPosX += 0x31F000;
         }
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
@@ -2816,7 +2869,7 @@ int Eyerok::InitResources()
         mRestPosZ -= 0x32000;
         mHitPoints = 3;
         data_ov066_0211ae00 = 0;
-        func_ov066_02119454(c, data_ov066_0211b05c);
+        func_ov066_02119454(c, &data_ov066_0211b05c);
     }
     return 1;
 }
@@ -2909,3 +2962,99 @@ extern "C" void *daIwante_c_classInit(void)
     }
     return c;
 }
+/* ---- the static initializer's objects. __sinit_Eyerok.cpp, emitted from
+ * these definitions at the bottom of the file, constructs the 22 resource
+ * handles (3 model, 10 animation, 4 texture-sequence, 5 collision) and
+ * registers each with its destructor through func_020731dc, then copies the
+ * 38 pointer-to-member records into the 19 state descriptors. The record
+ * and descriptor definitions are in the initializer's own order; the 22
+ * handles are in the order it constructs them. The constructor and
+ * destructor of each handle kind are the ROM's per-kind entry points
+ * (aliased in this unit's manifest), and func_020731dc is the register
+ * call the compiler emits as __register_global_object. */
+
+/* The 38 pointer-to-member records (ov066 .data 0x0211abe8..0x0211ad18).
+ * The first word is the handler, the second the pointer-adjustor word (0). */
+EyerokStateFn data_ov066_0211abe8 = { (void *)func_ov066_021184e0, 0 };
+EyerokStateFn data_ov066_0211abf0 = { (void *)func_ov066_02118604, 0 };
+EyerokStateFn data_ov066_0211abf8 = { (void *)func_ov066_021188b0, 0 };
+EyerokStateFn data_ov066_0211ac00 = { (void *)func_ov066_02116db0, 0 };
+EyerokStateFn data_ov066_0211ac08 = { (void *)func_ov066_02118678, 0 };
+EyerokStateFn data_ov066_0211ac10 = { (void *)func_ov066_02116d14, 0 };
+EyerokStateFn data_ov066_0211ac18 = { (void *)func_ov066_021171b0, 0 };
+EyerokStateFn data_ov066_0211ac20 = { (void *)func_ov066_021175bc, 0 };
+EyerokStateFn data_ov066_0211ac28 = { (void *)func_ov066_021189c0, 0 };
+EyerokStateFn data_ov066_0211ac30 = { (void *)func_ov066_021185e4, 0 };
+EyerokStateFn data_ov066_0211ac38 = { (void *)func_ov066_02118934, 0 };
+EyerokStateFn data_ov066_0211ac40 = { (void *)func_ov066_021187c8, 0 };
+EyerokStateFn data_ov066_0211ac48 = { (void *)func_ov066_02119398, 0 };
+EyerokStateFn data_ov066_0211ac50 = { (void *)func_ov066_0211944c, 0 };
+EyerokStateFn data_ov066_0211ac58 = { (void *)func_ov066_02118b28, 0 };
+EyerokStateFn data_ov066_0211ac60 = { (void *)func_ov066_021184c0, 0 };
+EyerokStateFn data_ov066_0211ac68 = { (void *)func_ov066_0211903c, 0 };
+EyerokStateFn data_ov066_0211ac70 = { (void *)func_ov066_02118a50, 0 };
+EyerokStateFn data_ov066_0211ac78 = { (void *)func_ov066_02116c6c, 0 };
+EyerokStateFn data_ov066_0211ac80 = { (void *)func_ov066_02118658, 0 };
+EyerokStateFn data_ov066_0211ac88 = { (void *)func_ov066_02118b08, 0 };
+EyerokStateFn data_ov066_0211ac90 = { (void *)func_ov066_02118188, 0 };
+EyerokStateFn data_ov066_0211ac98 = { (void *)func_ov066_02117190, 0 };
+EyerokStateFn data_ov066_0211aca0 = { (void *)func_ov066_02118954, 0 };
+EyerokStateFn data_ov066_0211aca8 = { (void *)func_ov066_021189a0, 0 };
+EyerokStateFn data_ov066_0211acb0 = { (void *)func_ov066_0211901c, 0 };
+EyerokStateFn data_ov066_0211acb8 = { (void *)func_ov066_02118a30, 0 };
+EyerokStateFn data_ov066_0211acc0 = { (void *)func_ov066_021175e8, 0 };
+EyerokStateFn data_ov066_0211acc8 = { (void *)func_ov066_02118be0, 0 };
+EyerokStateFn data_ov066_0211acd0 = { (void *)func_ov066_02117bd0, 0 };
+EyerokStateFn data_ov066_0211acd8 = { (void *)func_ov066_02118c00, 0 };
+EyerokStateFn data_ov066_0211ace0 = { (void *)func_ov066_02118e04, 0 };
+EyerokStateFn data_ov066_0211ace8 = { (void *)func_ov066_02118168, 0 };
+EyerokStateFn data_ov066_0211acf0 = { (void *)func_ov066_02118de0, 0 };
+EyerokStateFn data_ov066_0211acf8 = { (void *)func_ov066_02118cdc, 0 };
+EyerokStateFn data_ov066_0211ad00 = { (void *)func_ov066_02117bf0, 0 };
+EyerokStateFn data_ov066_0211ad08 = { (void *)func_ov066_02118cb8, 0 };
+EyerokStateFn data_ov066_0211ad10 = { (void *)func_ov066_02119348, 0 };
+
+/* The 22 resource handles, in construct order. */
+EyerokModelFilePtr data_ov066_0211aeb4(0x33a);
+EyerokModelFilePtr data_ov066_0211ae4c(0x33f);
+EyerokModelFilePtr data_ov066_0211ae6c(0x339);
+EyerokAnimationFilePtr data_ov066_0211ae5c(0x335);
+EyerokAnimationFilePtr data_ov066_0211ae84(0x336);
+EyerokAnimationFilePtr data_ov066_0211aea4(0x337);
+EyerokAnimationFilePtr data_ov066_0211ae8c(0x338);
+EyerokAnimationFilePtr data_ov066_0211ae54(0x340);
+EyerokAnimationFilePtr data_ov066_0211ae94(0x341);
+EyerokAnimationFilePtr data_ov066_0211ae64(0x342);
+EyerokAnimationFilePtr data_ov066_0211ae44(0x344);
+EyerokAnimationFilePtr data_ov066_0211ae74(0x346);
+EyerokAnimationFilePtr data_ov066_0211ae7c(0x347);
+EyerokTextureSequencePtr data_ov066_0211ae3c(0x333);
+EyerokTextureSequencePtr data_ov066_0211aebc(0x334);
+EyerokTextureSequencePtr data_ov066_0211ae2c(0x33d);
+EyerokTextureSequencePtr data_ov066_0211ae9c(0x33e);
+EyerokCollisionFilePtr data_ov066_0211ae24(0x332);
+EyerokCollisionFilePtr data_ov066_0211aeac(0x33b);
+EyerokCollisionFilePtr data_ov066_0211ae14(0x33c);
+EyerokCollisionFilePtr data_ov066_0211ae1c(0x343);
+EyerokCollisionFilePtr data_ov066_0211ae34(0x345);
+
+/* The 19 state descriptors, in copy order: { enter, run }. */
+EyerokStateDesc data_ov066_0211b09c = { data_ov066_0211ac50, data_ov066_0211ac48 };
+EyerokStateDesc data_ov066_0211b0ac = { data_ov066_0211ad10, data_ov066_0211ac68 };
+EyerokStateDesc data_ov066_0211b0cc = { data_ov066_0211acb0, data_ov066_0211ace0 };
+EyerokStateDesc data_ov066_0211b0dc = { data_ov066_0211acf0, data_ov066_0211acf8 };
+EyerokStateDesc data_ov066_0211afcc = { data_ov066_0211ad08, data_ov066_0211acd8 };
+EyerokStateDesc data_ov066_0211afdc = { data_ov066_0211acc8, data_ov066_0211ac58 };
+EyerokStateDesc data_ov066_0211affc = { data_ov066_0211ac88, data_ov066_0211ac70 };
+EyerokStateDesc data_ov066_0211b00c = { data_ov066_0211acb8, data_ov066_0211ac28 };
+EyerokStateDesc data_ov066_0211b02c = { data_ov066_0211aca8, data_ov066_0211aca0 };
+EyerokStateDesc data_ov066_0211b03c = { data_ov066_0211ac38, data_ov066_0211abf8 };
+EyerokStateDesc data_ov066_0211b05c = { data_ov066_0211ac40, data_ov066_0211ac08 };
+EyerokStateDesc data_ov066_0211b06c = { data_ov066_0211ac80, data_ov066_0211abf0 };
+EyerokStateDesc data_ov066_0211b08c = { data_ov066_0211ac30, data_ov066_0211abe8 };
+EyerokStateDesc data_ov066_0211b0bc = { data_ov066_0211ac60, data_ov066_0211ac90 };
+EyerokStateDesc data_ov066_0211b0ec = { data_ov066_0211ace8, data_ov066_0211ad00 };
+EyerokStateDesc data_ov066_0211afec = { data_ov066_0211acd0, data_ov066_0211acc0 };
+EyerokStateDesc data_ov066_0211b01c = { data_ov066_0211ac20, data_ov066_0211ac18 };
+EyerokStateDesc data_ov066_0211b04c = { data_ov066_0211ac98, data_ov066_0211ac00 };
+EyerokStateDesc data_ov066_0211b07c = { data_ov066_0211ac10, data_ov066_0211ac78 };
