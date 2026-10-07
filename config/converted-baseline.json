@@ -825,6 +825,7 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound12PlayBank2_2DEj",
     "src/engine/sound/Sound.cpp#_ZN5Sound12PlayBank3_2DEj",
     "src/engine/sound/Sound.cpp#_ZN5Sound12UnpauseMusicEv",
+    "src/engine/sound/Sound.cpp#_ZN5Sound13PlayCharVoiceEjjRK7Vector3",
     "src/engine/sound/Sound.cpp#_ZN5Sound16LoadInitialGroupEi",
     "src/engine/sound/Sound.cpp#_ZN5Sound19LoadGroupAndSetBankEii",
     "src/engine/sound/Sound.cpp#_ZN5Sound21ResetPlayerVoiceGroupEv",

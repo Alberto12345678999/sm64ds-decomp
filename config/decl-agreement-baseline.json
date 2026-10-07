@@ -8688,9 +8688,6 @@
       "src/actors/daDemo_c.cpp": [
         "param:#3 Vector3 *",
         "return:int"
-      ],
-      "src/engine/sound/Sound.cpp": [
-        "return:unsigned int"
       ]
     },
     "_ZN5Sound6Player19SetPlayableSeqCountEii": {

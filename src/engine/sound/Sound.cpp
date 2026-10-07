@@ -79,9 +79,9 @@ extern void *_ZN6Memory8AllocateEj(u32 size);
 extern void _ZN5Sound13Func_02048eb4Ev(void);
 extern void _ZN5Sound13Func_02048ec4Ev(void);
 extern void _ZN5Sound13Func_02048ee4Ev(void);
-/* Callers that consume r0 from the void-declared Sound::Play/Play2D keep the
- * mangled spelling; the extern "C" name is not type-checked across the seam. */
-extern unsigned int _ZN5Sound4PlayEjjRK7Vector3(unsigned int a, unsigned int b, const Vector3 &v);
+/* Callers that consume r0 from the void-declared Sound::Play2D keep the
+ * mangled spelling; the extern "C" name is not type-checked across the seam.
+ * Members reach the same symbol by casting Play2D/Play's address instead. */
 extern unsigned int _ZN5Sound6Play2DEjj(unsigned int a, unsigned int b);
 
 /* In-TU functions, declared once so callers ahead of their definitions link. */
@@ -520,13 +520,13 @@ namespace Sound {
 // @symbol _ZN5Sound12PlayBank3_2DEj
 unsigned int PlayBank3_2D(unsigned int a)
 {
-    return _ZN5Sound6Play2DEjj(3, a);
+    return ((unsigned int (*)(unsigned int, unsigned int))Play2D)(3, a);
 }
 
 // @symbol _ZN5Sound12PlayBank2_2DEj
 unsigned int PlayBank2_2D(unsigned int a)
 {
-    return _ZN5Sound6Play2DEjj(2, a);
+    return ((unsigned int (*)(unsigned int, unsigned int))Play2D)(2, a);
 }
 
 }
@@ -726,7 +726,8 @@ namespace Sound {
 // @symbol _ZN5Sound13PlayCharVoiceEjjRK7Vector3
 unsigned int PlayCharVoice(unsigned int a, unsigned int b, const Vector3 &v)
 {
-    return _ZN5Sound4PlayEjjRK7Vector3(1, b + data_02075250[a], v);
+    return ((unsigned int (*)(unsigned int, unsigned int, const Vector3 &))Play)(
+        1, b + data_02075250[a], v);
 }
 
 }
