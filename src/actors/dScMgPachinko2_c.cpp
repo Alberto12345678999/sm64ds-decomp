@@ -713,13 +713,12 @@ void dScMgPachinko2_c::func_ov006_02100278(int r1, int r2, int r3)
     for (i = 0; i < 0x10; i++, p += 0x18) {
         if (*(unsigned char *)(p + 0x54b4) == 0) {
             int off = i * 0x18;
-            char *q = (char *)((int)c + off);
-            *(unsigned char *)(q + 0x54b4) = 1;
-            *(unsigned char *)(q + 0x54b5) = 1;
+            mScorePops[i].active = 1;
+            mScorePops[i].visible = 1;
             if (r1 >= 0x80000)
-                *(int *)(q + 0x54a0) = 0xa4000;
+                mScorePops[i].x = 0xa4000;
             else
-                *(int *)(q + 0x54a0) = 0x5c000;
+                mScorePops[i].x = 0x5c000;
             {
                 char *w = (char *)(int)(c + off);
                 *(int *)(w + 0x54a4) = r2 + 0x48000;
@@ -894,7 +893,6 @@ void dScMgPachinko2_c::func_ov006_021006f4()
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100734Ei
 void dScMgPachinko2_c::func_ov006_02100734(int idx)
 {
-    char *c = (char *)this;
     if (mPaddles[idx].active == 0) return;
     mPaddles[idx].angle = 0;
     mPaddles[idx].speed = 0;
@@ -1039,7 +1037,6 @@ void dScMgPachinko2_c::func_ov006_021009b8(int i)
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100b08Ei
 void dScMgPachinko2_c::func_ov006_02100b08(int idx)
 {
-    char *self = (char *)this;
 
     if (mPaddles[idx].timer != 0) {
         mPaddles[idx].timer -= 1;
@@ -1065,13 +1062,12 @@ void dScMgPachinko2_c::func_ov006_02100b08(int idx)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02100bac(int i)
 {
-    char *self = (char *)this;
     int b = i << 6;
 
-    if (*(u16*)(self + 0x5292 + b) != 0) {
-        (*(u16*)(self + 0x5292 + b))--;
-        if (*(s16*)(self + b + 0x5292) < 0)
-            *(s16*)(self + b + 0x5292) = 0;
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer--;
+        if ((s16)mPaddles[i].timer < 0)
+            mPaddles[i].timer = 0;
         return;
     }
 
@@ -1870,7 +1866,7 @@ void dScMgPachinko2_c::func_ov006_0210265c()
     *q += 1;
     if (mCountdownTick < 0x3c) return;
     mCountdownTick = 0;
-    h = (unsigned short *)(((int)c + 0x5674));
+    h = &mCountdown;
     *h -= 1;
     t = mCountdown;
     if (t > 0xa)
@@ -2164,8 +2160,8 @@ void dScMgPachinko2_c::func_ov006_02102e8c()
 {
     int i;
     for (i = 0; i < 0x30; i++) {
-        if (*(unsigned char *)((char *)this + i * 0x40 + 0x4698) != 0) {
-            unsigned char k = *(unsigned char *)((char *)this + i * 0x40 + 0x4699);
+        if (mBalls[i].unk_38 != 0) {
+            unsigned char k = mBalls[i].state;
             (this->*data_ov006_021426f4[k].pmf)(i);
         }
     }

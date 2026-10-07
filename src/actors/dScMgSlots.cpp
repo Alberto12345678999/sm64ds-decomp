@@ -230,16 +230,17 @@ void func_ov006_0210ab90(void)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
 void func_ov006_0210ab94(char* c){
+    dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
-        *(int*)(c + 0x5000) = 7;
+        self->mState = 7;
         func_ov004_020b0a54(0x12);
-        *(int*)(c + 0x5004) = 0;
+        self->unk_5004 = 0;
     }
-    if (*(unsigned char*)(c + 0x503e) >= 0x3c) return;
+    if (self->unk_503e >= 0x3c) return;
     {
-        int* a = (int*)(((int)c + 0x4ff4));
-        int* b = (int*)(((int)c + 0x4ff8));
-        int* d = (int*)(((int)c + 0x4ffc));
+        int* a = &self->mReelWinPos[0];
+        int* b = &self->mReelWinPos[1];
+        int* d = &self->mReelWinPos[2];
         *a = *a + 0x10000;
         *b = *b - 0x10000;
         *d = *d + 0x10000;
@@ -535,9 +536,9 @@ void dScMgSlot3_c::OnYoshiTryEat(int mode)
     if (mode == 3 || mode == 0x12) {
         unk_0a8 = 0xc;
         unk_0ac = unk_0a8;
-        *(int *)(c + 0xbc) = unk_5004;
+        unk_0bc = unk_5004;
         if (unk_0bc > 0x270e) {
-            *(int *)(c + 0xbc) = 0x270e;
+            unk_0bc = 0x270e;
         }
         mHudScore = 0;
         func_ov004_020adb1c(mHudScore);
@@ -548,7 +549,7 @@ void dScMgSlot3_c::OnYoshiTryEat(int mode)
         }
         *(int *)(int)(c + 0xbc) += 1;
         if (unk_0bc > 0x270e) {
-            *(int *)(c + 0xbc) = 0x270e;
+            unk_0bc = 0x270e;
         }
     }
 
@@ -888,7 +889,7 @@ s32 dScMgSlot3_c::InitResources()
     func_ov006_020c2154(c + 0x4f38);
     func_ov006_020c1eb4(c + 0x4660);
 
-    unk_5004 = *(int *)(c + 0xbc);
+    unk_5004 = (int)unk_0bc;
 
     ((dScMgSlot3_c *)c)->OnYoshiTryEat(3);
 

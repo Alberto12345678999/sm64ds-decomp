@@ -2274,9 +2274,10 @@ void func_ov006_020ed844(char *raw)
 // @symbol func_ov006_020ed8a4
 extern "C" {
 void func_ov006_020ed8a4(void *arg) {
+    dScMgHanachan_c *self = (dScMgHanachan_c *)arg;
     char *raw = (char *)arg;
-    if (*(s32 *)(raw + 0xbc) < 0xa) {
-        int bc = *(s32 *)(raw + 0xbc);
+    if ((s32)self->unk_0bc < 0xa) {
+        int bc = (s32)self->unk_0bc;
         data_ov006_02141fd8 = data_ov006_0212e80c[bc];
         data_ov006_0213c958 = data_ov006_0212e820[bc];
     } else {
@@ -2290,7 +2291,7 @@ void func_ov006_020ed8a4(void *arg) {
         }
     }
 
-    if (*(unsigned int *)(raw + 0xbc) < 0xa)
+    if (self->unk_0bc < 0xa)
         func_ov006_020ebd7c(2);
     else
         func_ov006_020ebd7c(3);
@@ -2300,7 +2301,7 @@ void func_ov006_020ed8a4(void *arg) {
         if (data_ov006_0213c958 > 0) {
             Thing *p = (Thing *)((dScMgHanachan_c *)raw)->mWiggler;
             do {
-                func_ov006_020ecdb8((char *)p, i, *(s32 *)(raw + 0xbc));
+                func_ov006_020ecdb8((char *)p, i, (s32)self->unk_0bc);
                 i++;
                 p++;
             } while (i < data_ov006_0213c958);

@@ -742,6 +742,7 @@ extern "C" void func_ov006_0211d7ec(void *arg)
 // @symbol func_ov006_0211d86c
 extern "C" void func_ov006_0211d86c(char *raw, int idx)
 {
+    dScMgTeresa_c *self = (dScMgTeresa_c *)raw;
     char *base = raw + (idx << 5);
     if (*(unsigned short*)(base + 0x4bb4) != 0) {
         *(unsigned short*)(raw + 0x4bb4 + (idx << 5)) =
@@ -754,7 +755,7 @@ extern "C" void func_ov006_0211d86c(char *raw, int idx)
     data_0209d45c |= 4;
     data_0209d454 |= 1;
     Sound::PlayBank2_2D(0x1f6);
-    *(int*)(raw + 0x4be8) = 2;
+    self->unk_4be8 = 2;
     func_ov006_0211f51c(raw);
     func_ov006_0211d608(raw);
     Sound::PlayBank2_2D(0x1f5);
@@ -1574,8 +1575,9 @@ extern "C" void func_ov006_0211ee34(char *c, int i)
 // @symbol func_ov006_0211f040
 extern "C" void func_ov006_0211f040(char *c, int idx)
 {
+    dScMgTeresa_c *self = (dScMgTeresa_c *)c;
     int off;
-    if (*(int *)(c + 0x4000 + 0xbe8) != 4)
+    if (self->unk_4be8 != 4)
         return;
     off = idx * 0x24;
     if (*(unsigned short *)(c + 0x466e + off) != 0) {
@@ -2080,6 +2082,7 @@ extern "C" void func_ov006_0211fd44(char *c)
 // @symbol func_ov006_0211fe78
 extern "C" void func_ov006_0211fe78(char *c)
 {
+    dScMgTeresa_c *self = (dScMgTeresa_c *)c;
     func_ov006_0211d5a8((TeresaPmfA *)c);
     func_ov006_0211f9fc((int)c);
     if (*(u16 *)(c + 0x4c0c) != 0) {
@@ -2114,7 +2117,7 @@ extern "C" void func_ov006_0211fe78(char *c)
         return;
     }
     func_ov006_0211de54(c);
-    *(int *)(c + 0x4be8) = 4;
+    self->unk_4be8 = 4;
     *(s16 *)(c + 0x4c0c) = 0x60;
     *(int *)0x4001000 = *(int *)0x4001000 & ~0xe000;
     data_0209d454 = data_0209d454 & ~1;
@@ -2251,7 +2254,7 @@ void dScMgTeresa_c::OnYoshiTryEat(int reset)
         if (*(unsigned int*)(self + 0xbc) > 0x270e)
             *(unsigned int*)(self + 0xbc) = 0x270e;
     } else {
-        *(int*)(self + 0xb4) = 0;
+        mHudScore = 0;
         *(unsigned int*)(self + 0xbc) = 0;
         if (*(unsigned int*)(self + 0xbc) > 0x270e)
             *(unsigned int*)(self + 0xbc) = 0x270e;
@@ -2263,9 +2266,9 @@ void dScMgTeresa_c::OnYoshiTryEat(int reset)
     char* dst = (char *)G2S::GetBG0CharPtr();
     val = 0x1111;
     MultiStore16(val, dst, 0x6000);
-    *(int*)(self + 0x4be8) = 0;
+    unk_4be8 = 0;
     FreeGfxSlotsById(0x1d);
-    *(short*)(self + 0x4c16) = 0x20;
+    unk_4c16 = 0x20;
     func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
     void *h = LoadFile(0x101);
     DecompressLZ16(h, (void *)0x6400000);
@@ -2381,11 +2384,11 @@ s32 dScMgTeresa_c::InitResources()
     func_ov006_0211d7b4(self);
     func_ov006_0211dd6c(self);
     func_ov006_0211f77c(self);
-    *((int *) (self + 0x4be8)) = 1;
+    unk_4be8 = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
     func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
     data_ov004_020bc880 = 0x80;
     data_ov004_020bc884 = -128;
-    *((int *) (self + 0xb4)) = 0;
+    mHudScore = 0;
     return 1;
 }

@@ -691,13 +691,12 @@ zero:
 
 void dScMgMemory2_c::RoundReveal()
 {
-  char *raw = (char *)this;
   unsigned short *timer;
   if (mCardTimer != 0)
   {
     timer = &mCardTimer;
     *timer = *timer - 1;
-    if (*(short *)(raw + 0x53e2) > 0)
+    if ((short)mCardTimer > 0)
     {
       return;
     }

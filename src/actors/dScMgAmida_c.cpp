@@ -212,7 +212,7 @@ int dScMgAmida_c::Virtual8C()
    dScMgSlot1_c.h does for the same word. */
 int dScMgAmida_c::Unk36()
 {
-    return ((*(int *)((char *)this + 8)) & 0xff) == 2;
+    return (((int)param1) & 0xff) == 2;
 }
 
 // @symbol _ZN12dScMgAmida_c9Virtual7CEv

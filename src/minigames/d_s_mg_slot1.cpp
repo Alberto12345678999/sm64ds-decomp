@@ -175,7 +175,7 @@ s32 dScMgSlot1_c::InitResources()
     data_ov004_020bc8b8 = 0x80;
     data_ov004_020bc8b4 = 0x40;
 
-    if (*(int *)(c + 8) & 0xff) {
+    if ((int)param1 & 0xff) {
         unsigned char *tbl = data_ov006_0213ea20;
         char *p = c;
         for (j = 0; j < 3; j++) {

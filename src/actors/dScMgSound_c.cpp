@@ -1656,6 +1656,7 @@ void func_ov006_02119c74(void* scene)
 extern "C" {
 extern void* data_ov006_0213f730[];
 void func_ov006_02119bdc(void* scene) {
+    dScMgSound_c *self = (dScMgSound_c *)scene;
   char* c=(char*)scene;
   int i;
   char* o = c;
@@ -1665,7 +1666,7 @@ void func_ov006_02119bdc(void* scene) {
       int a1 = note->note.x >> 12;
       int a2 = note->note.y >> 12;
       int a4 = 0;
-      if (*(int*)(c + 0x5608) != 1) a4 = 1;
+      if (self->mState != 1) a4 = 1;
       unsigned char sel = note->note.frame;
       Hud_RenderSprite((int)data_ov006_0213f730[sel], a1, a2, -1, a4);
     }
