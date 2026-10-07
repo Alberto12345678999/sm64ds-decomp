@@ -31,7 +31,8 @@
  *   func_ov006_020dc1c4) and func_ov006_020dd4b0 (from
  *   func_ov006_020dd000) are still unnamed.
  * Leftover: RenderOamMainScreen and func_ov004_020b0380 are redeclared
- *   at the call. The sites disagree on the types.
+ *   extern "C" at the call — the ROM symbols are unmangled, and the
+ *   sites disagree on the types.
  * Leftover: func_ov006_020dcd74 reads the other score at
  *   data_ov004_020beb68 + 0xac. That word is not a field of dScMgBase_c.
  * Leftover: func_ov006_020dc6d0 casts the scene through unsigned long
@@ -140,6 +141,7 @@ extern u8 data_020a0deb[];
 extern void func_020127a4(int a, int b, int c, int d);
 extern int data_ov006_0212e358[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
+extern void RenderOamMainScreen(int a, int b, int c, int d, int e);
 extern u16 data_ov006_0212e314[];
 extern void *data_ov006_0213bf0c[];
 extern int data_ov006_0212e418[];
@@ -385,7 +387,6 @@ void dScMgCoin_c::func_ov006_020dc370()
 void dScMgCoin_c::func_ov006_020dc3bc()
 {
     dScMgCoin_c *scene = this;
-    extern int RenderOamMainScreen(int a, int b, int raw, int d, int e);
 
     if (scene->mCaption.visible == 0)
         return;
@@ -596,7 +597,6 @@ void dScMgCoin_c::func_ov006_020dc960(int index)
 void dScMgCoin_c::func_ov006_020dc99c()
 {
     SparkView *scene = (SparkView *)this;
-    extern void func_ov004_020b0380(void *fn, int x, int y, int d);
 
     int i;
     for (i = 0; i < kSparkleCount; i++) {
@@ -664,7 +664,6 @@ void dScMgCoin_c::func_ov006_020dcb1c(int coinIndex)
 void dScMgCoin_c::func_ov006_020dcc48()
 {
     dScMgCoin_c *scene = this;
-    extern void func_ov004_020b0380(int a, int b, int c, int d);
 
     int i;
     int x, y, j;
@@ -672,7 +671,7 @@ void dScMgCoin_c::func_ov006_020dcc48()
         y = data_ov006_0212e364[i];
         x = 0x10;
         for (j = 0; j < kTileCols; j++) {
-            func_ov004_020b0380(data_ov006_021341ec, x, y, 0);
+            func_ov004_020b0380((void *)data_ov006_021341ec, x, y, (void *)0);
             x += kTileStep;
         }
     }
@@ -682,7 +681,6 @@ void dScMgCoin_c::func_ov006_020dcc48()
 void dScMgCoin_c::func_ov006_020dccb8()
 {
     dScMgCoin_c *scene = this;
-    void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 
     int lang;
     if (scene->unk_51c8 < 2)
@@ -700,7 +698,6 @@ void dScMgCoin_c::func_ov006_020dccb8()
 void dScMgCoin_c::func_ov006_020dcd74()
 {
     dScMgCoin_c *scene = this;
-    void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 
     int lang;
     int count;
