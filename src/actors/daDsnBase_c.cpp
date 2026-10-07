@@ -145,7 +145,7 @@ extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     TextureSequence *self, BTP_File *file, int flags, int speed,
     unsigned startFrame);
 /* 8-byte store into dBgW+0x18 (beforeClsnCallback). No SetCallback member.
- * Spelling matches src/func_020393d4.c -- (int *, int). */
+ * Spelling matches src/engine/collision/dBgW.cpp -- (int *, int). */
 extern void func_020393d4(int *collider, int callback);
 
 }
