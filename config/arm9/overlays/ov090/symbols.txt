@@ -85,8 +85,8 @@ data_ov090_0213412c kind:data(any) addr:0x0213412c
 _ZTI9daMenbo_c kind:data(any) addr:0x02134138
 g_profile_MENBO kind:data(any) addr:0x02134144 ambiguous
 _ZTV9daMenbo_c kind:data(any) addr:0x02134168
-@771 kind:data(any) addr:0x021341e4
-@769 kind:data(any) addr:0x021341ec
+@776 kind:data(any) addr:0x021341e4
+@774 kind:data(any) addr:0x021341ec
 _ZTS9daManta_c kind:data(any) addr:0x021341f4
 data_ov090_02134200 kind:data(any) addr:0x02134200
 _ZTI9daManta_c kind:data(any) addr:0x0213420c
@@ -123,8 +123,8 @@ data_ov090_02134504 kind:bss addr:0x02134504
 data_ov090_02134514 kind:bss addr:0x02134514
 data_ov090_02134524 kind:bss addr:0x02134524
 data_ov090_0213452c kind:bss addr:0x0213452c
-@766 kind:bss addr:0x02134534
-@767 kind:bss addr:0x02134540
+@771 kind:bss addr:0x02134534
+@772 kind:bss addr:0x02134540
 data_ov090_0213454c kind:bss addr:0x0213454c
 data_ov090_0213455c kind:bss addr:0x0213455c
 data_ov090_02134564 kind:bss addr:0x02134564
