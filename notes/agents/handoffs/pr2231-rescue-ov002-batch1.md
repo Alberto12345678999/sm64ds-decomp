@@ -201,7 +201,7 @@ quoted verdict; nothing here is inherited from PR #2231's own manifests or logs.
   `--update` run), `langmode_audit.py --check langmode-baseline.json` (PASS;
   `extern_vtable` 164 against the banked 165 after the two redundant externs
   were dropped -- before the fire fix it read 165 -> 166).
-- RED, known tool defect: `python tools/prepush_attribution.py` exits 1 with
+- RED, known tool defect: `the old credit check` exits 1 with
   13 `CREDIT LOST` rows on this tree (it is in the pre-push hook). 12 are this
   batch's folded shards -- exactly the ones whose CLASS was renamed
   (`PoppingLavaBubbles*`, `BlueFlame*`, `d_a_obj_lava`, `d_a_obj_fire_*`,

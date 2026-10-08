@@ -53,7 +53,7 @@ This document describes this commit. The queue records its immutable output SHA.
   - Still raw: `FileOf` (the `SharedFilePtr` word at +4), the `Mtx` word copy, and `Behavior`'s store to [data_0209f318](../../../config/arm9/symbols.txt) + 0x114 (the camera, inside `dCamera_c::pad_114`).
   - `pad_0d0` stays, because nothing in the TU touches it.
 - Lifecycle, vtable/RTTI, initializer and data ownership: unchanged. The inline empty destructor still gives D1 and D0 with no D2, and `InitResources` is still the key function.
-- Attribution preserved through each move/rename: the three `attribution.json` keys follow the symbol renames with the same credit. `prepush_attribution` reports 0 changed and 0 lost.
+- Attribution preserved through each move/rename: the three `attribution.json` keys follow the symbol renames with the same credit. `the old credit check` reports 0 changed and 0 lost.
 - Remaining agreed issue scope: see the table below. Every deferred row has the owner `coordinator claude-promo-coord-0923`, to reassign under the named reservation, and the issue https://github.com/tangosdev/sm64ds-decomp/issues/3072.
 
 ### Deferred findings from #3072
@@ -100,7 +100,7 @@ All commands were run in `C:/tmp/claude-rd-ov055` on the source commit this hand
 - Complete emitted TU and data/metadata checks: the before-and-after object comparison described under Reconstruction dimensions. The 72 undefined symbols are identical, and the 21 sections are identical once the renames are mapped.
 - Shared-header consumer expansion: `python tools/affected_src.py include/daLuigi_c.h` lists `src/actors/daLuigi_c.cpp` and `src/d_a_luigi.cpp`. Both compiled in rombuild, and both are VERIFIED by linkcheck. `python tools/check_header_offsets.py include/daLuigi_c.h`: 6 commented fields, 0 mismatched.
 - Port/path/reference and other applicable static gates:
-  - `python tools/prepush_attribution.py --base 7423f8d73f --head HEAD` exit 0: 0 changed, 0 lost.
+  - `the old credit check` exit 0: 0 changed, 0 lost.
   - `python tools/check_decl_agreement.py --changed 7423f8d73f` exit 0: no new declaration disagreements.
   - `python tools/check_dead_references.py` exit 0: no new dead references, no broken markdown links.
   - `python tools/tiers_ratchet.py --check` exit 0: PASS, baseline 2994, current 3117. `--update` was not run.

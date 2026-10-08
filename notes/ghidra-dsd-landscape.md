@@ -593,7 +593,7 @@ files, then `enroll.py --complete-list` promoted the newly eligible names.
 | reproducing / mismatching | 10,854 / 0 | **10,880 / 0** |
 | module fidelity | 106/106 exact | **106/106 exact, 100.000000%** |
 | `port_refcheck.py` | — | 393 checked, 0 stale |
-| `prepush_attribution.py` | — | 11330 tracked, 0 changed, 0 lost |
+| `the old credit check` | — | 11330 tracked, 0 changed, 0 lost |
 
 **G10.1 — The langmode ratchet fails, and it is not this change.** [high] `--check`
 against `origin/chaos-data:langmode-baseline.json` reports

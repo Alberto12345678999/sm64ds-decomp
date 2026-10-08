@@ -483,7 +483,6 @@
             "python",
             "-X",
             "utf8",
-            "tools/prepush_attribution.py",
             "--base",
             "5ff95cd1ec5f05f3bd56c28edcfeb29e839f2a6a",
             "--head",

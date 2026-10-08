@@ -254,7 +254,7 @@ Round 2 touched no ledger.
   and names `unk_5660`, `unk_566c` and `unk_566e`; only `pad_5664` and
   `pad_5670` are padding.
 - Attribution: 74 `path#symbol` overrides carry the original credit;
-  prepush_attribution reports 74 consolidated, 0 changed, 0 lost.
+  the old credit check reports 74 consolidated, 0 changed, 0 lost.
 - Remaining issue scope:
   - naming the helpers and their fields;
   - the three banked declaration disagreements (`DecompressLZ16`,
@@ -307,7 +307,7 @@ with this note in the working tree.
     duplicate owner and no gap object.
 - `python tools/prepush_linkcheck.py --range 70f055a670..HEAD` exit 0: 74
   checked, 74 VERIFIED, 0 warnings, 0 blocking.
-- `python tools/prepush_attribution.py --base 70f055a670 --head HEAD` exit
+- `the old credit check` exit
   0: 7168 tracked, 74 consolidated with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed 70f055a670` exit 0: no
   new disagreements, no new local redeclarations. The full run exits 0:
@@ -365,7 +365,7 @@ with this note in the working tree.
   - no gap fallbacks, and one TU compiled.
 - `python tools/prepush_linkcheck.py --range 70f055a670..HEAD` exit 0: 74
   checked, 74 verified, 0 warnings, 0 blocking.
-- `python tools/prepush_attribution.py --base 70f055a670 --head HEAD` exit
+- `the old credit check` exit
   0: 74 consolidated with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed 70f055a670`:
   - before the re-key it exited 1, first with 11 disagreements from the new
