@@ -22,8 +22,8 @@
  * destructor emits D1 then D0.
  *
  * Known limits:
- * - The three state handlers and their helpers are extern "C" functions named
- *   by address, not daObjFl_Amilift_c members.
+ * - The three state handlers and their helpers are daObjFl_Amilift_c members
+ *   that keep their ROM addresses as names.
  * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange and cstd::atan2 take
  *   Fix12<int> by value, so they stay mangled calls.
  * - The collider callbacks registered in InitResources
@@ -52,7 +52,6 @@ struct CLPS_Block;
 extern "C" {
 int Vec3_HorzDist(const void* a, const void* b);
 int _Z14ApproachLinearRiii(int* v, int target, int step);
-void func_ov064_02117a14(daObjFl_Amilift_c *lift, Vector3* a, Vector3* b);
 extern LiftState data_ov064_0211c750[];
 extern short data_02082214[];
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void*, int, int);
@@ -79,12 +78,10 @@ daObjFl_Amilift_c::~daObjFl_Amilift_c()
 
 // @symbol func_ov064_02117a14
 /* Turn the lift to face from node b toward node a. */
-extern "C" {
-void func_ov064_02117a14(daObjFl_Amilift_c *lift, Vector3* a, Vector3* b){
+void daObjFl_Amilift_c::func_ov064_02117a14(Vector3* a, Vector3* b){
   Vector3 v;
   Vec3_Sub(&v, a, b);
-  lift->mPrevAngleY = (short)_ZN4cstd5atan2E5Fix12IiES1_(v.x, v.z);
-}
+  mPrevAngleY = (short)_ZN4cstd5atan2E5Fix12IiES1_(v.x, v.z);
 }
 
 // @symbol func_ov064_02117a44
@@ -93,41 +90,41 @@ void func_ov064_02117a14(daObjFl_Amilift_c *lift, Vector3* a, Vector3* b){
  * node, steps mNodeIndex one way or the other (per mState) and turns toward
  * the following node. Returns -1 when it has just reached either end of the
  * path (the index is then pulled back inside the path), else 0 or 1. */
-extern "C" int func_ov064_02117a44(daObjFl_Amilift_c *lift) {
+int daObjFl_Amilift_c::func_ov064_02117a44() {
   Vector3 a;
   Vector3 b;
   int r;
-  lift->UpdatePos(0);
-  r = (Vec3_HorzDist(&lift->mPosX, &lift->mToX) < 0x69000) ? 0 : 0xa000;
-  if (_Z14ApproachLinearRiii(&lift->mHorzSpeed, r, 0x800) != 0 && r == 0) {
-    lift->mFromX = lift->mToX;
-    lift->mFromY = lift->mToY;
-    lift->mFromZ = lift->mToZ;
-    lift->mPosX = lift->mFromX;
-    lift->mPosY = lift->mFromY;
-    lift->mPosZ = lift->mFromZ;
+  UpdatePos(0);
+  r = (Vec3_HorzDist(&mPosX, &mToX) < 0x69000) ? 0 : 0xa000;
+  if (_Z14ApproachLinearRiii(&mHorzSpeed, r, 0x800) != 0 && r == 0) {
+    mFromX = mToX;
+    mFromY = mToY;
+    mFromZ = mToZ;
+    mPosX = mFromX;
+    mPosY = mFromY;
+    mPosZ = mFromZ;
     r = 1;
-    if (lift->mState == daObjFl_Amilift_c::STATE_FORWARD) {
-      ++lift->mNodeIndex;
-      if (lift->mNodeIndex >= lift->mNodeCount) {
-        lift->mNodeIndex = lift->mNodeCount - 2;
+    if (mState == daObjFl_Amilift_c::STATE_FORWARD) {
+      ++mNodeIndex;
+      if (mNodeIndex >= mNodeCount) {
+        mNodeIndex = mNodeCount - 2;
         r = -1;
       }
     } else {
-      --lift->mNodeIndex;
-      if (lift->mNodeIndex < 0) {
-        lift->mNodeIndex = r;
+      --mNodeIndex;
+      if (mNodeIndex < 0) {
+        mNodeIndex = r;
         r = -1;
       }
     }
-    lift->mPathPtr.GetNode(*(Vector3 *)&lift->mToX, lift->mNodeIndex);
-    a.x = lift->mToX;
-    a.y = lift->mToY;
-    a.z = lift->mToZ;
-    b.x = lift->mFromX;
-    b.y = lift->mFromY;
-    b.z = lift->mFromZ;
-    func_ov064_02117a14(lift, &a, &b);
+    mPathPtr.GetNode(*(Vector3 *)&mToX, mNodeIndex);
+    a.x = mToX;
+    a.y = mToY;
+    a.z = mToZ;
+    b.x = mFromX;
+    b.y = mFromY;
+    b.z = mFromZ;
+    func_ov064_02117a14(&a, &b);
     return r;
   }
   return 0;
@@ -136,41 +133,35 @@ extern "C" int func_ov064_02117a44(daObjFl_Amilift_c *lift) {
 // @symbol func_ov064_02117b8c
 /* State 2, walking back: pause 20 frames, then walk. On reaching node 0 go to
  * the forward state if auto-run, else wait for the player. */
-extern "C" {
-void func_ov064_02117b8c(void *c) {
-    daObjFl_Amilift_c *lift = (daObjFl_Amilift_c *)c;
-    unsigned short v = lift->mStateFrames;
+void daObjFl_Amilift_c::func_ov064_02117b8c() {
+    unsigned short v = mStateFrames;
     if (v < 0x14) return;
-    int r = func_ov064_02117a44(lift);
+    int r = func_ov064_02117a44();
     if (r != -1) return;
-    unsigned char b = lift->mAutoRun;
+    unsigned char b = mAutoRun;
     if (b == 0) {
-        lift->mState = daObjFl_Amilift_c::STATE_WAIT;
+        mState = daObjFl_Amilift_c::STATE_WAIT;
     } else {
-        lift->mState = daObjFl_Amilift_c::STATE_FORWARD;
+        mState = daObjFl_Amilift_c::STATE_FORWARD;
     }
-}
 }
 
 // @symbol func_ov064_02117bdc
 /* State 1, walking forward: an auto-run lift pauses 20 frames first. On
  * reaching the last node go to the backward state. */
-extern "C" {
-int func_ov064_02117bdc(void *c)
+int daObjFl_Amilift_c::func_ov064_02117bdc()
 {
-    daObjFl_Amilift_c *lift = (daObjFl_Amilift_c *)c;
-    unsigned char b = lift->mAutoRun;
+    unsigned char b = mAutoRun;
     if (b == 1) {
-        unsigned short v = lift->mStateFrames;
+        unsigned short v = mStateFrames;
         if (v < 0x14) return v;
     }
-    int r = func_ov064_02117a44(lift);
+    int r = func_ov064_02117a44();
     if (r == -1) {
         r = 2;
-        lift->mState = r;
+        mState = r;
     }
     return r;
-}
 }
 
 // @symbol func_ov064_02117c24
@@ -178,27 +169,25 @@ int func_ov064_02117bdc(void *c)
  * does the counting); once more than 20 have counted, or at once if auto-run, turn toward
  * the next node and start walking forward. With nobody on it the counter
  * is held at 0. */
-extern "C" {
-void func_ov064_02117c24(daObjFl_Amilift_c *lift)
+void daObjFl_Amilift_c::func_ov064_02117c24()
 {
-    if (lift->mRiderOn != 0) {
-        if (lift->mAutoRun != 1) {
-            if (lift->mStateFrames <= 0x14)
+    if (mRiderOn != 0) {
+        if (mAutoRun != 1) {
+            if (mStateFrames <= 0x14)
                 return;
         }
-        lift->mState = daObjFl_Amilift_c::STATE_FORWARD;
+        mState = daObjFl_Amilift_c::STATE_FORWARD;
         struct Vector3 v0, v1;
-        v0.x = lift->mToX;
-        v0.y = lift->mToY;
-        v0.z = lift->mToZ;
-        v1.x = lift->mFromX;
-        v1.y = lift->mFromY;
-        v1.z = lift->mFromZ;
-        func_ov064_02117a14(lift, &v0, &v1);
+        v0.x = mToX;
+        v0.y = mToY;
+        v0.z = mToZ;
+        v1.x = mFromX;
+        v1.y = mFromY;
+        v1.z = mFromZ;
+        func_ov064_02117a14(&v0, &v1);
         return;
     }
-    lift->mStateFrames = 0;
-}
+    mStateFrames = 0;
 }
 
 // @symbol _ZN17daObjFl_Amilift_c16CleanupResourcesEv
@@ -296,7 +285,7 @@ s32 daObjFl_Amilift_c::InitResources() {
     nodeB.y = mFromY;
     nodeB.z = mFromZ;
 
-    func_ov064_02117a14(this, &nodeA, &nodeB);
+    func_ov064_02117a14(&nodeA, &nodeB);
 
     mHomeX = mPosX;
     mHomeY = mPosY;

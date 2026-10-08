@@ -42,9 +42,10 @@
  *
  * `#pragma defer_codegen off` keeps this file in ROM order.
  *
- * Leftover: the eight helpers keep their C-ABI cartridge names (they are the
- *   pointer-to-member targets of Behavior's table, and their original method
- *   names are not recovered), though they now take the ball as a daIbl_c *.
+ * Leftover: the eight helpers are members but keep their func_ov100_*
+ *   address names; the real names are not recovered. Behavior's dispatch
+ *   reads the two-word pointer-to-member records by hand because the table
+ *   at data_ov100_0214867c is .bss the startup code fills.
  * Leftover: the callees with Fix12<int> parameters (Particle::System,
  *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drop, Player::Hurt) stay
  *   spelled as mangled extern-C free functions. A real method call homes
@@ -130,14 +131,6 @@ struct EmbeddedClass {
 
 extern "C" {
 /* Defined below. */
-void func_ov100_02141fb0(daIbl_c *c);
-void func_ov100_02142130(daIbl_c *c);
-void func_ov100_02142264(daIbl_c *c);
-int func_ov100_0214233c(daIbl_c *c);
-int func_ov100_021424c0(daIbl_c *c);
-void func_ov100_0214272c(daIbl_c *c);
-void func_ov100_02142918(daIbl_c *c);
-void func_ov100_02142b90(daIbl_c *c);
 
 void *_ZN8dActor_c10FindWithIDEj(u32 id);
 void *_ZN8dActor_c13ClosestPlayerEv(void *c);
@@ -245,7 +238,7 @@ s32 daIbl_c::OnAimedAtWithEgg()
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- func_ov100_02141fb0, 0x02141fb0, size 0x180 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_02141fb0
+// @symbol _ZN7daIbl_c19func_ov100_02141fb0Ev
 /* Contact check, shared by every handler. mdCcAc_c.otherOwner is the uniqueID
    of the actor that touched the ball; when that is a Player (actor 191) who is
    not vanished (mIsVanish), mdCcAc_c.hitFlags decides what happens:
@@ -260,11 +253,11 @@ s32 daIbl_c::OnAimedAtWithEgg()
        sound); any other character only gets the not-broken sound;
      - any other contact hurts the Player (Player::Hurt, given the ball's
        position). */
-extern "C" void func_ov100_02141fb0(daIbl_c *c)
+void daIbl_c::func_ov100_02141fb0()
 {
     Player *a;
     u32 fl;
-    u32 id = c->mdCcAc_c.otherOwner;
+    u32 id = mdCcAc_c.otherOwner;
 
     if (id == 0) return;
     a = (Player *)_ZN8dActor_c10FindWithIDEj(id);
@@ -274,33 +267,33 @@ extern "C" void func_ov100_02141fb0(daIbl_c *c)
         if (b == 0) return;
     }
     if (a->mIsVanish != 0) return;
-    fl = c->mdCcAc_c.hitFlags;
+    fl = mdCcAc_c.hitFlags;
     if ((fl & daIbl_HIT_MEGA) != 0) {
         Vector3_16 s;
-        u32 r = c->OnAimedAtWithEgg();
-        c->mPosY += r;
+        u32 r = OnAimedAtWithEgg();
+        mPosY += r;
         s.x = 0; s.y = 0; s.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(c, &s, a, 0);
-        _ZN10dBgCh_Actr15ClearGroundFlagEv(&c->mWithMeshClsn);
+        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &s, a, 0);
+        _ZN10dBgCh_Actr15ClearGroundFlagEv(&mWithMeshClsn);
         return;
     }
     if ((fl & daIbl_HIT_ATTACK) != 0) {
         if (a->param1 == 2) {
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-                daIbl_PTCL_BREAK, c->mPosX, c->mPosY, c->mPosZ);
-            _ZN8dActor_c8PoofDustEv(c);
-            _ZN7fBase_c18MarkForDestructionEv(c);
-            func_02012694(daIbl_SND_BREAK, &c->mCamSpacePosX);
+                daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
+            _ZN8dActor_c8PoofDustEv(this);
+            _ZN7fBase_c18MarkForDestructionEv(this);
+            func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
             return;
         }
-        _ZN5Sound9PlayBank0EjRK7Vector3(daIbl_SND_HIT_NOT_BROKEN, &c->mCamSpacePosX);
+        _ZN5Sound9PlayBank0EjRK7Vector3(daIbl_SND_HIT_NOT_BROKEN, &mCamSpacePosX);
         return;
     }
     {
         Vector3 v;
-        v.x = c->mPosX;
-        v.y = c->mPosY;
-        v.z = c->mPosZ;
+        v.x = mPosX;
+        v.y = mPosY;
+        v.z = mPosZ;
         _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v, 2, 0xc000, 1, 0, 1);
     }
 }
@@ -308,7 +301,7 @@ extern "C" void func_ov100_02141fb0(daIbl_c *c)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- func_ov100_02142130, 0x02142130, size 0x134 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_02142130
+// @symbol _ZN7daIbl_c19func_ov100_02142130Ev
 /* The wall and floor probe. mHitWall is cleared, the collision object is
    updated (sublevel 0x19 runs func_020383f0, every other sublevel
    func_02038414; both unidentified), and mHitWall is set when the ball touches
@@ -319,32 +312,32 @@ extern "C" void func_ov100_02141fb0(daIbl_c *c)
    the floor normal's Y is non-zero, sets mVertSpeed to -(slope + 8
    units/frame), where slope = (n.x * vel.x + n.z * vel.z) / n.y, so the ball
    keeps to the slope. */
-extern "C" void func_ov100_02142130(daIbl_c *c)
+void daIbl_c::func_ov100_02142130()
 {
-    c->mHitWall = 0;
-    if (data_0209f2f8 == 0x19) func_020383f0(&c->mWithMeshClsn);
-    else func_02038414(&c->mWithMeshClsn);
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(&c->mWithMeshClsn) != 0) {
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&c->mWithMeshClsn) + 4, (Vector3 *)&c->mWallNormalX);
-        int a = _ZN4cstd5atan2E5Fix12IiES1_(c->mWallNormalX, c->mWallNormalZ);
-        if (_ZN8dActor_c14GetSubtractionEss(c, c->mPrevAngleY, a) > 0x4000)
-            c->mHitWall = 1;
+    mHitWall = 0;
+    if (data_0209f2f8 == 0x19) func_020383f0(&mWithMeshClsn);
+    else func_02038414(&mWithMeshClsn);
+    if (_ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) != 0) {
+        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn) + 4, (Vector3 *)&mWallNormalX);
+        int a = _ZN4cstd5atan2E5Fix12IiES1_(mWallNormalX, mWallNormalZ);
+        if (_ZN8dActor_c14GetSubtractionEss(this, mPrevAngleY, a) > 0x4000)
+            mHitWall = 1;
     }
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) == 0) return;
-    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&c->mWithMeshClsn) + 4, (Vector3 *)&c->mFloorNormalX);
-    if (c->mHitWall != 0) return;
-    c->mPosX = c->mPrevPosX;
-    c->mPosZ = c->mPrevPosZ;
-    if (c->mFloorNormalY == 0) return;
-    int s = (int)(((long long)c->mFloorNormalX * c->unk_0a4 + 0x800) >> 0xc)
-          + (int)(((long long)c->mFloorNormalZ * c->unk_0ac + 0x800) >> 0xc);
-    c->mVertSpeed = -(_ZN4cstd4fdivEii(s, c->mFloorNormalY) + 0x8000);
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) == 0) return;
+    _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn) + 4, (Vector3 *)&mFloorNormalX);
+    if (mHitWall != 0) return;
+    mPosX = mPrevPosX;
+    mPosZ = mPrevPosZ;
+    if (mFloorNormalY == 0) return;
+    int s = (int)(((long long)mFloorNormalX * unk_0a4 + 0x800) >> 0xc)
+          + (int)(((long long)mFloorNormalZ * unk_0ac + 0x800) >> 0xc);
+    mVertSpeed = -(_ZN4cstd4fdivEii(s, mFloorNormalY) + 0x8000);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 5 -- func_ov100_02142264, 0x02142264, size 0xd8 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_02142264
+// @symbol _ZN7daIbl_c19func_ov100_02142264Ev
 /* Per-frame model and shadow matrices. The model matrix is the identity with
    its translation set to mPos >> 3 (the ball's position in model units). It
    is copied to the shadow's matrix, whose Y translation is then replaced with
@@ -353,27 +346,27 @@ extern "C" void func_ov100_02142130(daIbl_c *c)
    depth 90 units * scale on the ground (0x32 + 0x28) or 450 units * scale in
    the air (0x32 + 0x190), and opacity 0xf. "Scale" is mDrawScaleX, 0x1000
    being 1.0. */
-extern "C" void func_ov100_02142264(daIbl_c *c)
+void daIbl_c::func_ov100_02142264()
 {
-    *(M48 *)&c->mModel.mat4x3 = *(M48 *)IDENTITY_MATRIX4X3;
-    c->mModel.mat4x3.t.x = c->mPosX >> 3;
-    c->mModel.mat4x3.t.y = c->mPosY >> 3;
-    c->mModel.mat4x3.t.z = c->mPosZ >> 3;
-    *(M48 *)c->mShadowMtx = *(M48 *)&c->mModel.mat4x3;
+    *(M48 *)&mModel.mat4x3 = *(M48 *)IDENTITY_MATRIX4X3;
+    mModel.mat4x3.t.x = mPosX >> 3;
+    mModel.mat4x3.t.y = mPosY >> 3;
+    mModel.mat4x3.t.z = mPosZ >> 3;
+    *(M48 *)mShadowMtx = *(M48 *)&mModel.mat4x3;
     int k = 0x32;
-    c->mShadowMtx[10] = (c->mDrawScaleX * k + c->mPosY) >> 3;
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) != 0)
+    mShadowMtx[10] = (mDrawScaleX * k + mPosY) >> 3;
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0)
         k += 0x28;
     else
         k += 0x190;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, c->mShadowMtx, c->mDrawScaleX * 0xc8, k * c->mDrawScaleX, 0xf);
+        this, &mShadowModel, mShadowMtx, mDrawScaleX * 0xc8, k * mDrawScaleX, 0xf);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 6 -- func_ov100_0214233c, 0x0214233c, size 0x184 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_0214233c
+// @symbol _ZN7daIbl_c19func_ov100_0214233cEv
 /* Path-node advance. mNextNodePos is the node the ball is heading for and
  * mPrevNodePos the one it last passed. Stores the atan2 heading to the node
  * in mHeadingToNode, then takes a 3-axis sign-dot of (node-prev) vs
@@ -388,23 +381,23 @@ extern "C" void func_ov100_02142264(daIbl_c *c)
  *    dest colors land on r1/r3 like the ROM; mul uses those names accordingly.
  *  - u64-launder materializes pidx between the first path-node load and store.
  */
-extern "C" int func_ov100_0214233c(daIbl_c *c)
+int daIbl_c::func_ov100_0214233c()
 {
-    int px = c->mNextNodePosX;
-    int ax = c->mPosX;
-    int prevx = c->mPrevNodePosX;
+    int px = mNextNodePosX;
+    int ax = mPosX;
+    int prevx = mPrevNodePosX;
     /* name A  = node.x - prev.x  (C8)  -- high-priority web -> r8 */
     int A = px - prevx;
-    int pz = c->mNextNodePosZ;
-    int az = c->mPosZ;
-    int prevz = c->mPrevNodePosZ;
-    int py = c->mNextNodePosY;
-    int prevy = c->mPrevNodePosY;
+    int pz = mNextNodePosZ;
+    int az = mPosZ;
+    int prevz = mPrevNodePosZ;
+    int py = mNextNodePosY;
+    int prevy = mPrevNodePosY;
     /* name B  = node.y - prev.y  (C7) */
     int B = py - prevy;
     /* name C8 = node.z - prev.z  (C6) */
     int C8 = pz - prevz;
-    int ay = c->mPosY;
+    int ay = mPosY;
     /* name C7 = node.y - pos.y   (Csl) */
     int C7 = py - ay;
     /* name C6 = node.x - pos.x   (true A) */
@@ -414,7 +407,7 @@ extern "C" int func_ov100_0214233c(daIbl_c *c)
     int sA, sB, s8, s7, s6, ssl;
     int dot;
 
-    c->mHeadingToNode = _ZN4cstd5atan2E5Fix12IiES1_(C6, Csl);
+    mHeadingToNode = _ZN4cstd5atan2E5Fix12IiES1_(C6, Csl);
 
     /* s6/s8 dest names swapped vs the values they store (free-reg coloring). */
     if (A != 0) {
@@ -469,20 +462,20 @@ extern "C" int func_ov100_0214233c(daIbl_c *c)
     /* s6=sign(C8), s8=sign(C6) after the dest-name swap above */
     dot = s6 * sA + s7 * ssl + s8 * sB;
     if (dot <= 0) {
-        int v = c->mNextNodePosX;
-        int *pidx = &c->mPathNodeIndex;
-        c->mPrevNodePosX = v;
-        v = c->mNextNodePosY;
-        c->mPrevNodePosY = v;
-        v = c->mNextNodePosZ;
-        c->mPrevNodePosZ = v;
+        int v = mNextNodePosX;
+        int *pidx = &mPathNodeIndex;
+        mPrevNodePosX = v;
+        v = mNextNodePosY;
+        mPrevNodePosY = v;
+        v = mNextNodePosZ;
+        mPrevNodePosZ = v;
         *pidx = *pidx + 1;
-        if (c->mPathNodeIndex >= c->mNumPathNodes) {
-            c->mPathNodeIndex = 0;
+        if (mPathNodeIndex >= mNumPathNodes) {
+            mPathNodeIndex = 0;
         }
-        _ZNK7PathPtr7GetNodeER7Vector3j(&c->mPathPtr, (Vector3 *)&c->mNextNodePosX,
-                                       c->mPathNodeIndex);
-        return (c->mPathNodeIndex == 0) ? -1 : 1;
+        _ZNK7PathPtr7GetNodeER7Vector3j(&mPathPtr, (Vector3 *)&mNextNodePosX,
+                                       mPathNodeIndex);
+        return (mPathNodeIndex == 0) ? -1 : 1;
     }
     return 0;
 }
@@ -490,7 +483,7 @@ extern "C" int func_ov100_0214233c(daIbl_c *c)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 7 -- func_ov100_021424c0, 0x021424c0, size 0x26c */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_021424c0
+// @symbol _ZN7daIbl_c19func_ov100_021424c0Ev
 /* Kinds 2 and 4, the path followers. First the knock-away death that
  * KillByInvincibleChar starts: func_ov002_020ad660 (a sibling of
  * dEnemyBase_c's UpdateKillByInvincibleChar at 0x020ad838, same mDeathState 8
@@ -511,82 +504,82 @@ extern "C" int func_ov100_0214233c(daIbl_c *c)
  * 4 ramps toward it by 0x400 (0.25 units/frame) a frame, and kind 2 adds
  * the floor normal's X and Z to its velocity. Last comes the collision
  * update. */
-extern "C" int func_ov100_021424c0(daIbl_c *c)
+int daIbl_c::func_ov100_021424c0()
 {
     int r;
     int vy;
 
-    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(c, &c->mdCcAc_c);
-    r = func_ov002_020ad660(c, &c->mWithMeshClsn, &c->mModel, 3);
+    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(this, &mdCcAc_c);
+    r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
             return r;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(daIbl_PTCL_BREAK, c->mPosX,
-                                                       c->mPosY, c->mPosZ);
-        return func_02012694(daIbl_SND_BREAK, &c->mCamSpacePosX);
+        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(daIbl_PTCL_BREAK, mPosX,
+                                                       mPosY, mPosZ);
+        return func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
     }
 
-    func_ov100_02141fb0(c);
+    func_ov100_02141fb0();
     {
-        int m = c->mDeathState;
+        int m = mDeathState;
         if (m == daIbl_DEATH_KNOCKED)
             return m;
     }
 
-    r = func_ov100_0214233c(c);
-    _Z14ApproachLinearRsss(&c->mPrevAngleY, c->mHeadingToNode, 0x800);
+    r = func_ov100_0214233c();
+    _Z14ApproachLinearRsss(&mPrevAngleY, mHeadingToNode, 0x800);
 
     if (r == -1) {
-        c->mVariant = daIbl_KIND_ROLL_OFF;
+        mVariant = daIbl_KIND_ROLL_OFF;
         /* mVariant was just set to 3, so the != 4 test cannot fail here. */
-        if (c->mVariant != daIbl_KIND_PATH_RAMP && _ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) != 0) {
-            c->mVertSpeed = 0;
-            c->mPosY += 0xf000;
+        if (mVariant != daIbl_KIND_PATH_RAMP && _ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
+            mVertSpeed = 0;
+            mPosY += 0xf000;
         } else {
-            func_ov100_02142130(c);
+            func_ov100_02142130();
         }
     } else {
-        int had = (c->mHitWall != 0);
-        vy = c->mVertSpeed;
-        func_ov100_02142130(c);
-        if (c->mHitWall != 0 && had == 0) {
-            c->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(c, c->mWallNormalX,
-                                                                      c->mWallNormalZ,
-                                                                      c->mPrevAngleY);
-            c->mRollSoundHandle = 0;
-        } else if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) != 0) {
-            if (_ZNK10dBgCh_Actr13JustHitGroundEv(&c->mWithMeshClsn) != 0) {
-                func_02012694(daIbl_SND_LAND, &c->mCamSpacePosX);
-                _ZN8dActor_c11LandingDustEb(c, 1);
+        int had = (mHitWall != 0);
+        vy = mVertSpeed;
+        func_ov100_02142130();
+        if (mHitWall != 0 && had == 0) {
+            mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX,
+                                                                      mWallNormalZ,
+                                                                      mPrevAngleY);
+            mRollSoundHandle = 0;
+        } else if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) != 0) {
+            if (_ZNK10dBgCh_Actr13JustHitGroundEv(&mWithMeshClsn) != 0) {
+                func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
+                _ZN8dActor_c11LandingDustEb(this, 1);
                 if (vy < -0x14000)
-                    c->mVertSpeed = (int)(-vy + ((u32)-vy >> 31)) >> 1;
-                c->mRollSoundHandle = 0;
+                    mVertSpeed = (int)(-vy + ((u32)-vy >> 31)) >> 1;
+                mRollSoundHandle = 0;
             } else {
-                c->mRollSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mRollSoundHandle,
-                                                                       3, daIbl_SND_ROLL, &c->mCamSpacePosX, 0);
+                mRollSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mRollSoundHandle,
+                                                                       3, daIbl_SND_ROLL, &mCamSpacePosX, 0);
             }
-            if (c->mHorzSpeed >= 0x23000) {
-                c->mHorzSpeed = 0x23000;
-            } else if (c->mVariant == daIbl_KIND_PATH_RAMP) {
-                _Z14ApproachLinearRiii(&c->mHorzSpeed, 0x23000, 0x400);
+            if (mHorzSpeed >= 0x23000) {
+                mHorzSpeed = 0x23000;
+            } else if (mVariant == daIbl_KIND_PATH_RAMP) {
+                _Z14ApproachLinearRiii(&mHorzSpeed, 0x23000, 0x400);
             } else {
-                c->unk_0a4 += c->mFloorNormalX;
-                c->unk_0ac += c->mFloorNormalZ;
-                c->mHorzSpeed = Vec3_HorzLen(&c->unk_0a4);
+                unk_0a4 += mFloorNormalX;
+                unk_0ac += mFloorNormalZ;
+                mHorzSpeed = Vec3_HorzLen(&unk_0a4);
             }
         }
     }
 
-    _ZN8dActor_c9UpdatePosEP5dCc_c(c, 0);
-    func_ov100_02142264(c);
-    _ZN5dCc_c5ClearEv(&c->mdCcAc_c);
-    return _ZN5dCc_c6UpdateEv(&c->mdCcAc_c);
+    _ZN8dActor_c9UpdatePosEP5dCc_c(this, 0);
+    func_ov100_02142264();
+    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    return _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 8 -- func_ov100_0214272c, 0x0214272c, size 0x1ec */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_0214272c
+// @symbol _ZN7daIbl_c19func_ov100_0214272cEv
 /* Kind 3, the ball that has left its path. After the knock-away death step
    (see func_ov100_021424c0) and the contact check, it breaks up in a triple
    poof when it is below the kill height mKillY or the probe says it hit a
@@ -597,66 +590,66 @@ extern "C" int func_ov100_021424c0(daIbl_c *c)
    -8 units/frame, replaces it with 1.5 times its magnitude; in a roll it
    plays the rolling sound. Vertical speed falls by gravity down
    to the terminal velocity, then the position updates from speed alone. */
-extern "C" void func_ov100_0214272c(daIbl_c *c)
+void daIbl_c::func_ov100_0214272c()
 {
     int r;
 
-    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(c, &c->mdCcAc_c);
-    r = func_ov002_020ad660(c, &c->mWithMeshClsn, &c->mModel, 3);
+    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(this, &mdCcAc_c);
+    r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
             return;
 
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
-            daIbl_PTCL_BREAK, c->mPosX, c->mPosY, c->mPosZ);
-        func_02012694(daIbl_SND_BREAK, &c->mCamSpacePosX);
+            daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
+        func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
         return;
     }
 
-    func_ov100_02141fb0(c);
-    func_ov100_02142130(c);
+    func_ov100_02141fb0();
+    func_ov100_02142130();
 
-    if (c->mPosY >= c->mKillY) {
-        if (c->mHitWall == 0)
+    if (mPosY >= mKillY) {
+        if (mHitWall == 0)
             goto ground;
     }
 
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         daIbl_PTCL_BREAK,
-        c->mPosX,
-        *(volatile int *)&c->mPosY,
-        c->mPosZ);
-    func_02012694(daIbl_SND_BREAK, &c->mCamSpacePosX);
-    _ZN8dActor_c14TriplePoofDustEv(c);
-    _ZN7fBase_c18MarkForDestructionEv(c);
+        mPosX,
+        *(volatile int *)&mPosY,
+        mPosZ);
+    func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
+    _ZN8dActor_c14TriplePoofDustEv(this);
+    _ZN7fBase_c18MarkForDestructionEv(this);
     return;
 
 ground:
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn)) {
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn)) {
         int *pa4;
         int *pac;
 
-        pa4 = &c->unk_0a4;
-        pac = &c->unk_0ac;
+        pa4 = &unk_0a4;
+        pac = &unk_0ac;
 
-        *pa4 = *pa4 + c->mFloorNormalX * 3;
-        *pac = *pac + c->mFloorNormalZ * 3;
-        c->mHorzSpeed = Vec3_HorzLen(pa4);
+        *pa4 = *pa4 + mFloorNormalX * 3;
+        *pac = *pac + mFloorNormalZ * 3;
+        mHorzSpeed = Vec3_HorzLen(pa4);
 
-        c->mPrevAngleY =
+        mPrevAngleY =
             _ZN4cstd5atan2E5Fix12IiES1_(
-                c->unk_0a4, c->unk_0ac);
+                unk_0a4, unk_0ac);
 
-        if (_ZNK10dBgCh_Actr13JustHitGroundEv(&c->mWithMeshClsn)) {
-            func_02012694(daIbl_SND_LAND, &c->mCamSpacePosX);
-            _ZN8dActor_c11LandingDustEb(c, 1);
+        if (_ZNK10dBgCh_Actr13JustHitGroundEv(&mWithMeshClsn)) {
+            func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
+            _ZN8dActor_c11LandingDustEb(this, 1);
 
-            if (c->mVertSpeed < -0x8000)
-                c->mVertSpeed = c->mVertSpeed * -3 / 2;
+            if (mVertSpeed < -0x8000)
+                mVertSpeed = mVertSpeed * -3 / 2;
         } else {
-            c->mRollSoundHandle =
+            mRollSoundHandle =
                 _ZN5Sound8PlayLongEjjjRK7Vector3s(
-                    c->mRollSoundHandle, 3, daIbl_SND_ROLL, &c->mCamSpacePosX, 0);
+                    mRollSoundHandle, 3, daIbl_SND_ROLL, &mCamSpacePosX, 0);
         }
     }
 
@@ -664,23 +657,23 @@ ground:
         int v;
         int lim;
 
-        v = c->mVertSpeed + c->mVertAccel;
-        lim = c->mTerminalVelocity;
+        v = mVertSpeed + mVertAccel;
+        lim = mTerminalVelocity;
         if (v >= lim)
             lim = v;
-        c->mVertSpeed = lim;
+        mVertSpeed = lim;
     }
 
-    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(c, 0);
-    func_ov100_02142264(c);
-    _ZN5dCc_c5ClearEv(&c->mdCcAc_c);
-    _ZN5dCc_c6UpdateEv(&c->mdCcAc_c);
+    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(this, 0);
+    func_ov100_02142264();
+    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 9 -- func_ov100_02142918, 0x02142918, size 0x278 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_02142918
+// @symbol _ZN7daIbl_c19func_ov100_02142918Ev
 /* Kind 1, the free-rolling ball: after the knock-away death step and the
    contact check (a mDeathState of 8 ends the handler), it bounces off walls
    and rolls down slopes. A wall hit reflects the heading and rebuilds the
@@ -695,83 +688,83 @@ ground:
    identity"); no vtable holds it -- its only reference is the
    pointer-to-member constant at 0x02147f18 that seeds entry 1 of
    Behavior's table. */
-extern "C" void func_ov100_02142918(daIbl_c *c)
+void daIbl_c::func_ov100_02142918()
 {
     int r;
-    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(c, &c->mdCcAc_c);
-    r = func_ov002_020ad660(c, &c->mWithMeshClsn, &c->mModel, 3);
+    _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(this, &mdCcAc_c);
+    r = func_ov002_020ad660(this, &mWithMeshClsn, &mModel, 3);
     if (r != 0) {
         if (r != 2)
             return;
-        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(daIbl_PTCL_BREAK, c->mPosX, c->mPosY, c->mPosZ);
-        func_02012694(daIbl_SND_BREAK, &c->mCamSpacePosX);
+        _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(daIbl_PTCL_BREAK, mPosX, mPosY, mPosZ);
+        func_02012694(daIbl_SND_BREAK, &mCamSpacePosX);
         return;
     }
 
-    func_ov100_02141fb0(c);
-    if (c->mDeathState == daIbl_DEATH_KNOCKED)
+    func_ov100_02141fb0();
+    if (mDeathState == daIbl_DEATH_KNOCKED)
         return;
-    func_ov100_02142130(c);
+    func_ov100_02142130();
 
-    if (c->mHitWall != 0) {
+    if (mHitWall != 0) {
         int ang;
-        c->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(c, c->mWallNormalX, c->mWallNormalZ, c->mPrevAngleY);
-        ang = *(u16 *)&c->mPrevAngleY;
-        c->unk_0a4 = (int)(((long long)c->mHorzSpeed * data_02082214[(ang >> 4) << 1] + 0x800) >> 12);
-        ang = *(u16 *)&c->mPrevAngleY;
-        c->unk_0ac = (int)(((long long)c->mHorzSpeed * data_02082214[((ang >> 4) << 1) + 1] + 0x800) >> 12);
+        mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(this, mWallNormalX, mWallNormalZ, mPrevAngleY);
+        ang = *(u16 *)&mPrevAngleY;
+        unk_0a4 = (int)(((long long)mHorzSpeed * data_02082214[(ang >> 4) << 1] + 0x800) >> 12);
+        ang = *(u16 *)&mPrevAngleY;
+        unk_0ac = (int)(((long long)mHorzSpeed * data_02082214[((ang >> 4) << 1) + 1] + 0x800) >> 12);
         {
-            int *pa4 = &c->unk_0a4;
-            int *pac = &c->unk_0ac;
-            *pa4 = *pa4 - c->mWallNormalX * 3;
-            *pac = *pac - c->mWallNormalZ * 3;
-            c->mHorzSpeed = Vec3_HorzLen(pa4);
+            int *pa4 = &unk_0a4;
+            int *pac = &unk_0ac;
+            *pa4 = *pa4 - mWallNormalX * 3;
+            *pac = *pac - mWallNormalZ * 3;
+            mHorzSpeed = Vec3_HorzLen(pa4);
         }
         goto Lend;
     }
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) == 0)
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&mWithMeshClsn) == 0)
         goto Lend;
 
     {
-        int *pa4 = &c->unk_0a4;
-        int *pac = &c->unk_0ac;
-        *pa4 = *pa4 + c->mFloorNormalX * 3;
-        *pac = *pac + c->mFloorNormalZ * 3;
-        c->mHorzSpeed = Vec3_HorzLen(pa4);
+        int *pa4 = &unk_0a4;
+        int *pac = &unk_0ac;
+        *pa4 = *pa4 + mFloorNormalX * 3;
+        *pac = *pac + mFloorNormalZ * 3;
+        mHorzSpeed = Vec3_HorzLen(pa4);
     }
-    if (c->mFloorNormalY == 0x1000 && c->mHorzSpeed > 0x1c000) {
-        c->mHorzSpeed = 0x1c000;
-        c->mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(c->unk_0a4, c->unk_0ac);
-        _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv(c);
+    if (mFloorNormalY == 0x1000 && mHorzSpeed > 0x1c000) {
+        mHorzSpeed = 0x1c000;
+        mPrevAngleY = _ZN4cstd5atan2E5Fix12IiES1_(unk_0a4, unk_0ac);
+        _ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv(this);
     }
 
-    if (_ZNK10dBgCh_Actr13JustHitGroundEv(&c->mWithMeshClsn) != 0) {
-        func_02012694(daIbl_SND_LAND, &c->mCamSpacePosX);
-        _ZN8dActor_c11LandingDustEb(c, 1);
+    if (_ZNK10dBgCh_Actr13JustHitGroundEv(&mWithMeshClsn) != 0) {
+        func_02012694(daIbl_SND_LAND, &mCamSpacePosX);
+        _ZN8dActor_c11LandingDustEb(this, 1);
         goto Lend;
     }
 
-    c->mRollSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mRollSoundHandle, 3, daIbl_SND_ROLL, &c->mCamSpacePosX, 0);
+    mRollSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(mRollSoundHandle, 3, daIbl_SND_ROLL, &mCamSpacePosX, 0);
 
 Lend:
     {
-        int nv = c->mVertSpeed + c->mVertAccel;
-        int lim = c->mTerminalVelocity;
+        int nv = mVertSpeed + mVertAccel;
+        int lim = mTerminalVelocity;
         if (nv >= lim)
             lim = nv;
-        c->mVertSpeed = lim;
+        mVertSpeed = lim;
     }
-    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(c, 0);
-    func_ov100_02142264(c);
-    _ZN5dCc_c5ClearEv(&c->mdCcAc_c);
-    _ZN5dCc_c6UpdateEv(&c->mdCcAc_c);
+    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(this, 0);
+    func_ov100_02142264();
+    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 10 -- func_ov100_02142b90, 0x02142b90, size 0x18c */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov100_02142b90
+// @symbol _ZN7daIbl_c19func_ov100_02142b90Ev
 /* Kind 0, the spawner. mStateTimer is its countdown. When it is zero, and the
    spawner has fewer than 3 balls out in sublevel 6 or 6 elsewhere
    (mLiveBalls), it looks at the closest player: unless the ball it would
@@ -785,10 +778,10 @@ Lend:
    nibble) is the spawner's second nibble, and (param1 & 0xf) != 4 is the test
    for "the spawned ball is not kind 4". The new ball stores the spawner in
    mDispenser, and mLiveBalls counts it. */
-extern "C" void func_ov100_02142b90(daIbl_c *c)
+void daIbl_c::func_ov100_02142b90()
 {
     struct Vec3i pos;
-    u16 *timer = (u16 *)&c->mStateTimer;
+    u16 *timer = (u16 *)&mStateTimer;
     void *pl;
     int r1;
 
@@ -798,9 +791,9 @@ extern "C" void func_ov100_02142b90(daIbl_c *c)
     }
 
     if (data_0209f2f8 == 6) r1 = 3; else r1 = 6;
-    if (c->mLiveBalls >= (u32)r1) return;
+    if (mLiveBalls >= (u32)r1) return;
 
-    pl = _ZN8dActor_c13ClosestPlayerEv(c);
+    pl = _ZN8dActor_c13ClosestPlayerEv(this);
     if (pl == 0) return;
 
     {
@@ -810,34 +803,34 @@ extern "C" void func_ov100_02142b90(daIbl_c *c)
         pos.z = pp->z;
     }
 
-    if ((c->param1 & 0xf) != daIbl_KIND_PATH_RAMP) {
-        if (pos.y >= c->mPosY - 0x28000) return;
+    if ((param1 & 0xf) != daIbl_KIND_PATH_RAMP) {
+        if (pos.y >= mPosY - 0x28000) return;
     }
 
     {
-        int d = Vec3_HorzDist((struct Vec3i *)&c->mPosX, &pos);
-        if (d < c->mMinSpawnDist) return;
-        if (d > c->mMaxSpawnDist) return;
+        int d = Vec3_HorzDist((struct Vec3i *)&mPosX, &pos);
+        if (d < mMinSpawnDist) return;
+        if (d > mMaxSpawnDist) return;
     }
 
     if (data_0209f2f8 == 0x16) {
         if (pos.y < (int)0xff63c000) return;
-        c->mStateTimer = 0x3f;
+        mStateTimer = 0x3f;
     } else {
-        c->mStateTimer = 0x7f;
+        mStateTimer = 0x7f;
     }
 
     {
         void *a;
-        int cc = c->mAreaId;
-        a = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daIbl_ACTOR_IRONBALL, c->param1,
-            (struct Vec3i *)&c->mPosX, (const void *)&c->mPrevAngleX, cc, -1);
+        int cc = mAreaId;
+        a = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daIbl_ACTOR_IRONBALL, param1,
+            (struct Vec3i *)&mPosX, (const void *)&mPrevAngleX, cc, -1);
         if (a == 0) return;
         {
-            u8 *cnt = &c->mLiveBalls;
+            u8 *cnt = &mLiveBalls;
             *cnt = *cnt + 1;
         }
-        ((daIbl_c *)a)->mDispenser = c;
+        ((daIbl_c *)a)->mDispenser = this;
     }
 }
 
@@ -961,7 +954,7 @@ int daIbl_c::InitResources()
             mPathNodeIndex += 1;
             _ZNK7PathPtr7GetNodeER7Vector3j(&mPathPtr, &mNextNodePosX, mPathNodeIndex);
         }
-        func_ov100_0214233c(this);
+        func_ov100_0214233c();
         mPrevAngleY = mHeadingToNode;
         mKillY = *(int *)&data_02092138;
         d = *(signed char *)&data_0209f2f8;

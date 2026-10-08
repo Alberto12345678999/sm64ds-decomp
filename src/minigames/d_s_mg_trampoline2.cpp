@@ -7,16 +7,19 @@
  * opt_loop_invariants is off for the whole file. TUBUILD CONFLICT lines
  * stay; the manifest pairs them.
  *
- * State callbacks stay free functions; their original names are unknown.
- * func_ov006_02123cb4 keeps raw int offsets for mTimer, mPattern, mScoreGate,
- * mScriptDone and mWaveStep: member form DIFFs there (code shifts; the
- * function grows). Its mRamp access matches.
- * 0x7acc has no matched read. The factory still builds the arrays by offset.
- * Model / TextureTransformer / SysTracker C1/D1 stay mangled (built on raw
- * storage); NewUnkCallback818 takes Fix12 by value, which costs the caller
- * bytes (notes/mwccarm-codegen.md 6az); the G2 BG getters stay mangled because
- * decl_common.h's global G2 hides the namespace; SetBlendAlpha keeps a
- * local declaration.
+ * comment leftovers:
+ * - dScMgTrampoline2_c::StatePlay keeps raw int offsets for mTimer,
+ *   mPattern, mScoreGate, mScriptDone and mWaveStep: member form DIFFs
+ *   there (code shifts; the function grows). Its mRamp access matches.
+ * - 0x7acc has no matched read. The factory still builds the arrays by
+ *   offset.
+ * - Model / TextureTransformer / SysTracker C1/D1 stay mangled (built on
+ *   raw storage); NewUnkCallback818 takes Fix12 by value, which costs the
+ *   caller bytes (notes/mwccarm-codegen.md 6az); the G2 BG getters stay
+ *   mangled because decl_common.h's global G2 hides the namespace;
+ *   SetBlendAlpha keeps a local declaration.
+ * - The 0x78-element pool helpers stay free; their element type is not
+ *   recovered.
  */
 
 #include "common.h"
@@ -63,8 +66,6 @@ struct Obj {
 };
 
 struct Vector3_16f;
-
-typedef void (dScMgTrampoline2_c::*dScMgTrampoline2_cState)();
 
 struct Vec3i {
     int x;
@@ -173,13 +174,10 @@ extern SpawnDef data_ov006_0212f2b0[];
 extern void func_ov006_020d0ac0(void);
 extern void func_ov006_020cac30(void);
 extern void func_ov006_020cad3c(int a);
-extern void func_ov006_02123c78(char *c);
 extern void func_ov006_020ca8e0(void);
-extern void func_ov006_02123428(char *c);
 extern void func_ov006_020caa08(void* a);
 extern struct S2 data_ov006_0213fbe8;
 extern void func_ov006_020d0b78(void);
-extern void func_ov006_02124040(char *c);
 extern s16 data_ov006_0212e058;
 extern s16 data_ov006_0212e050;
 extern s16 data_ov006_0212e048;
@@ -187,14 +185,12 @@ extern short data_ov006_0212e044;
 extern struct P2 data_ov006_0213fbd8;
 extern "C" void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
 extern "C" void func_ov006_020d0b04(u32 a);
-extern void func_ov006_02124228(char *self);
 extern volatile s16 data_020a0dbc[];
 extern void Camera_UpdateMatrices(void *cam);
 extern u8 data_0209d45c;
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void Deallocate(void *ptr);
-extern void func_ov006_02122e20(void *self, int a);
 extern int data_ov006_0213fc34[];
 extern int data_ov006_02134d40[];
 extern int data_ov006_02134d4c[];
@@ -254,22 +250,27 @@ extern int func_ov006_02122c90(char *object);
  /* TUBUILD CONFLICT -- alternate declaration of _ZN2GX10LoadBGPlttEPKvjj, from the legacy file for func_ov006_021245a8, NOT applied: extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b); */
 
 void *dScMgTrampoline2_c_classInit(void);
-void func_ov006_02123b20(void);
-void func_ov006_02123b24(char *scene);
-void func_ov006_02123bf4(char *scene);
-void func_ov006_02123cb4(char *scene);
-void func_ov006_02124088(char *scene);
+/* Literal aliases used only to make the five ROM PMF relocations static data.
+   Their definitions below are real compiler-spelled C++ members. Each is a
+   local extern: a pointer to member cannot convert to the int word a record
+   entry holds, so dScMgTrampoline2_c.h's declarations cannot fill the
+   table. */
+extern "C" void _ZN18dScMgTrampoline2_c9StateDoneEv(void);      /* local extern: PMF -> int */
+extern "C" void _ZN18dScMgTrampoline2_c13StateWaitExitEv(void); /* local extern: PMF -> int */
+extern "C" void _ZN18dScMgTrampoline2_c12StateResultsEv(void);  /* local extern: PMF -> int */
+extern "C" void _ZN18dScMgTrampoline2_c9StatePlayEv(void);      /* local extern: PMF -> int */
+extern "C" void _ZN18dScMgTrampoline2_c10StateIntroEv(void);    /* local extern: PMF -> int */
 
 /* Data owned by this production TU; the original TU grouping is inferred. */
 int data_ov006_0213fbc4 = 1;
 TrampolineTerrorProfile g_profile_MG_TRAMPOLINE2 = {
     dScMgTrampoline2_c_classInit, 0x181, 0x181
 };
-int data_ov006_0213fbd0[] = { (int)func_ov006_02123b20, 0 };
-P2 data_ov006_0213fbd8 = {{ (int)func_ov006_02124088, 0 }};
-StateValue data_ov006_0213fbe0 = {{ (int)func_ov006_02123b24, 0 }};
-S2 data_ov006_0213fbe8 = {{ (int)func_ov006_02123cb4, 0 }};
-P2 data_ov006_0213fbf0 = {{ (int)func_ov006_02123bf4, 0 }};
+int data_ov006_0213fbd0[] = { (int)_ZN18dScMgTrampoline2_c9StateDoneEv, 0 };
+P2 data_ov006_0213fbd8 = {{ (int)_ZN18dScMgTrampoline2_c10StateIntroEv, 0 }};
+StateValue data_ov006_0213fbe0 = {{ (int)_ZN18dScMgTrampoline2_c13StateWaitExitEv, 0 }};
+S2 data_ov006_0213fbe8 = {{ (int)_ZN18dScMgTrampoline2_c9StatePlayEv, 0 }};
+P2 data_ov006_0213fbf0 = {{ (int)_ZN18dScMgTrampoline2_c12StateResultsEv, 0 }};
 Tbl data_ov006_0213fbf8 = { 0x600, 0xc00, 0xe00 };
 int data_ov006_0213fc10[] = { 1000, 5000, 10000, 20000 };
 int data_ov006_0213fc20[] = {
@@ -352,11 +353,9 @@ extern "C" void *dScMgTrampoline2_c_classInit(void)
     return scene;
 }
 
-// @symbol func_ov006_021245a8
-extern "C" {
-void func_ov006_021245a8(void *arg0)
+// @symbol _ZN18dScMgTrampoline2_c11InitDisplayEv
+void dScMgTrampoline2_c::InitDisplay()
 {
-    void *raw = arg0;
     int objChar, objPltt, bgChar, bgScr, bgPltt;
     volatile u16 sp0;
 
@@ -392,8 +391,7 @@ void func_ov006_021245a8(void *arg0)
     Deallocate((void *)objChar);
     Deallocate((void *)objPltt);
 
-    func_ov006_02122e20(raw, 3);
-}
+    InitBrush(3);
 }
 
 // @symbol _ZN18dScMgTrampoline2_c13InitResourcesEv
@@ -404,7 +402,7 @@ s32 dScMgTrampoline2_c::InitResources()
     char *raw = (char *)this;
     s32 fov;
 
-    func_ov006_021245a8(raw);
+    InitDisplay();
     data_0209d45c = 0x1d;
     G3X::SetFog(false, 0, 2, 0x1000);
     *(u16 *)0x4000060 = (*(u16 *)0x4000060 & ~0x3000) | 8;
@@ -479,7 +477,7 @@ void dScMgTrampoline2_c::OnYoshiTryEat(int /* arg */)
         MultiStore16(z, dst, 0x6000);
     }
 
-    func_ov006_02124228((char *)this);
+    BeginIntro();
 }
 
 // @symbol _ZN18dScMgTrampoline2_c13OnTurnIntoEggEi
@@ -490,40 +488,35 @@ int dScMgTrampoline2_c::OnTurnIntoEgg(int /* mode */)
     return 1;
 }
 
-// @symbol func_ov006_02124228
-extern "C" {
-void func_ov006_02124228(char* raw) {
-    dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)raw;
+// @symbol _ZN18dScMgTrampoline2_c10BeginIntroEv
+void dScMgTrampoline2_c::BeginIntro() {
     short a, b;
-    self->mTimer = 0x5a;
+    mTimer = 0x5a;
     a = data_ov006_0212e044;
-    self->mTouchStartX = a;
+    mTouchStartX = a;
     b = data_ov006_0212e048;
-    self->mTouchStartY = b;
-    self->mTouchX = a;
-    self->mTouchY = b;
-    self->mDragSoundHandle = 0;
-    self->mScoreGate = 0x3e8;
-    *(struct P2*)self->mState = data_ov006_0213fbd8;
-}
+    mTouchStartY = b;
+    mTouchX = a;
+    mTouchY = b;
+    mDragSoundHandle = 0;
+    mScoreGate = 0x3e8;
+    *(struct P2*)mState = data_ov006_0213fbd8;
 }
 
-// @symbol func_ov006_02124088
-extern "C" {
-void func_ov006_02124088(char *raw)
+// @symbol _ZN18dScMgTrampoline2_c10StateIntroEv
+void dScMgTrampoline2_c::StateIntro()
 {
-    dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)raw;
     int counter;
 
     func_ov006_020d0ac0();
-    self->mTimer -= 1;
-    counter = self->mTimer;
+    mTimer -= 1;
+    counter = mTimer;
 
     if (counter == 0) {
-        if (self->mPromptBlinkCount == 0) {
-            self->mPromptEnabled = 1;
-            self->mPromptBlinkCount = 1;
-            self->mPromptBlinkTimer = 0;
+        if (mPromptBlinkCount == 0) {
+            mPromptEnabled = 1;
+            mPromptBlinkCount = 1;
+            mPromptBlinkTimer = 0;
         }
 
         {
@@ -534,44 +527,40 @@ void func_ov006_02124088(char *raw)
 
         func_ov006_020d0b78();
         func_02012718(0x1af, 0x8000);
-        func_ov006_02124040(raw);
+        BeginPlay();
         return;
     }
 
     {
         int t = cstd::fdiv(counter << 12, 0x5a000);
-        volatile s16 old9c = self->mTouchX;
-        volatile s16 old9e = self->mTouchY;
+        volatile s16 old9c = mTouchX;
+        volatile s16 old9e = mTouchY;
         int mixRaw = data_ov006_0212e050 * t + data_ov006_0212e058 * (0x1000 - t);
-        self->mTouchX = (s16)(mixRaw >> 12);
-        self->mTouchY = data_ov006_0212e048;
+        mTouchX = (s16)(mixRaw >> 12);
+        mTouchY = data_ov006_0212e048;
 
-        self->mTouchY +=
+        mTouchY +=
             ((((int)((unsigned int)(RandomIntInternal(&data_0209e650) & ~0x80000000) >> 19) - 0x800) << 2) >> 12);
 
-        func_ov004_020ae5c4((int)raw, old9c, old9e, self->mTouchX, self->mTouchY, 2, 0xc);
+        func_ov004_020ae5c4((int)this, old9c, old9e, mTouchX, mTouchY, 2, 0xc);
 
-        self->mDragSoundHandle = func_02012468(self->mDragSoundHandle, 2, 0x1b0, 2, 0,
+        mDragSoundHandle = func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0,
                                               func_020126e8(mixRaw), 0, 0);
     }
 }
+
+// @symbol _ZN18dScMgTrampoline2_c9BeginPlayEv
+void dScMgTrampoline2_c::BeginPlay(){
+  mTimer = 0xb4;
+  mInputEnabled = 1;
+  func_ov006_020caa08((char *)this + 0x7b00);
+  *(struct S2*)mState = data_ov006_0213fbe8;
 }
 
-// @symbol func_ov006_02124040
-extern "C" {
-void func_ov006_02124040(char* raw){
-  dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)raw;
-  self->mTimer = 0xb4;
-  self->mInputEnabled = 1;
-  func_ov006_020caa08(raw+0x7b00);
-  *(struct S2*)self->mState = data_ov006_0213fbe8;
-}
-}
-
-// @symbol func_ov006_02123cb4
-extern "C" {
-void func_ov006_02123cb4(char *raw)
+// @symbol _ZN18dScMgTrampoline2_c9StatePlayEv
+void dScMgTrampoline2_c::StatePlay()
 {
+    char *raw = (char *)this;
     int old;
 
     old = data_ov006_02140818;
@@ -582,14 +571,14 @@ void func_ov006_02123cb4(char *raw)
         int n = data_ov006_02140818 - old;
         int i;
         for (i = 0; i < n; i++)
-            ApproachLinear(((dScMgTrampoline2_c *)raw)->mRamp, 0x7000, -0x800);
+            ApproachLinear(mRamp, 0x7000, -0x800);
         if (data_ov006_02140818 == 3)
             *(u8 *)(raw + 0xc3) = 0;
     }
     func_ov006_020cad3c((data_ov006_02140818 / 10) * 64 + 0x1000);
     if (data_ov006_0213b0f0 == 0) {
-        ((dScMgTrampoline2_c *)raw)->mInputEnabled = 0;
-        func_ov006_02123c78(raw);
+        mInputEnabled = 0;
+        BeginResults();
         return;
     }
     if (data_ov006_02140830 >= *(int *)(raw + 0x7b90) && data_ov006_021405bc < 5) {
@@ -644,47 +633,40 @@ void func_ov006_02123cb4(char *raw)
             }
             *(int *)(raw + 0x7b98) = 0;
         } else {
-            func_ov006_02123428(raw);
+            SpawnWave();
         }
     }
     *(int *)(raw + 0x7b84) = 0x78;
 }
+
+// @symbol _ZN18dScMgTrampoline2_c12BeginResultsEv
+void dScMgTrampoline2_c::BeginResults() {
+    func_ov006_020ca840((char *)this);
+    mTimer = 0x5a;
+    *(struct P2*)mState = data_ov006_0213fbf0;
 }
 
-// @symbol func_ov006_02123c78
-extern "C" {
-void func_ov006_02123c78(char *raw) {
-    dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)raw;
-    func_ov006_020ca840(raw);
-    self->mTimer = 0x5a;
-    *(struct P2*)self->mState = data_ov006_0213fbf0;
-}
-}
-
-// @symbol func_ov006_02123bf4
-extern "C" void func_ov006_02123bf4(char *raw)
+// @symbol _ZN18dScMgTrampoline2_c12StateResultsEv
+void dScMgTrampoline2_c::StateResults()
 {
-    dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)raw;
     func_ov006_020cedf0();
     func_ov006_020cac30();
-    if (ApproachLinear(self->mTimer, 0, 1) == 0)
+    if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
     if (func_ov006_020ca7b8() == 0)
         return;
     func_ov004_020b0a54(0x12);
-    self->mPromptEnabled = 0;
-    self->mTimer = 0xb4;
-    *(double *)self->mState = data_ov006_0213fbe0.asDouble;
+    mPromptEnabled = 0;
+    mTimer = 0xb4;
+    *(double *)mState = data_ov006_0213fbe0.asDouble;
 }
 
-// @symbol func_ov006_02123b24
-extern "C" {
-void func_ov006_02123b24(char *raw)
+// @symbol _ZN18dScMgTrampoline2_c13StateWaitExitEv
+void dScMgTrampoline2_c::StateWaitExit()
 {
-    dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)raw;
     int idx, b;
-    self->mTimer -= 1;
-    if (self->mTimer != 0)
+    mTimer -= 1;
+    if (mTimer != 0)
     {
         idx = ACTIVE_SLOT;
         b = 0;
@@ -701,66 +683,60 @@ void func_ov006_02123b24(char *raw)
         h = 0;
         MultiStore16(h, (char *)r, 0x6000);
     }
-    self->mRoundOver = 1;
+    mRoundOver = 1;
     {
         int w0 = data_ov006_0213fbd0[0];
         int w1 = data_ov006_0213fbd0[1];
         w0 = w1 ? w0 : w0;
-        self->mState[0] = w0;
-        self->mState[1] = w1;
+        mState[0] = w0;
+        mState[1] = w1;
     }
 }
-}
 
-// @symbol func_ov006_02123b20
-extern "C" {
-void func_ov006_02123b20(void)
+// @symbol _ZN18dScMgTrampoline2_c9StateDoneEv
+void dScMgTrampoline2_c::StateDone()
 {
 }
-}
 
-// @symbol func_ov006_02123938
-extern "C" {
-void func_ov006_02123938(void *arg)
+// @symbol _ZN18dScMgTrampoline2_c16UpdateTouchInputEv
+void dScMgTrampoline2_c::UpdateTouchInput()
 {
-    dScMgTrampoline2_c *self = (dScMgTrampoline2_c *)arg;
     int i;
     int b;
 
-    if (self->mInputEnabled == 0 || self->mTouchReleased != 0) {
-        self->mTouching = 0;
+    if (mInputEnabled == 0 || mTouchReleased != 0) {
+        mTouching = 0;
         return;
     }
 
     i = ACTIVE_SLOT;
     b = (TOUCH_REC(gTouchHeld)[i][0] != 0 && TOUCH_REC(gTouchEdge)[i][0] != 0);
     if (b) {
-        self->mTouchX = TOUCH_REC(gTouchX)[i][0];
-        self->mTouchStartX = self->mTouchX;
-        self->mTouchY = TOUCH_REC(gTouchY)[i][0];
-        self->mTouchStartY = self->mTouchY;
-        self->mTouching = 1;
-        self->mDragSoundHandle = 0;
+        mTouchX = TOUCH_REC(gTouchX)[i][0];
+        mTouchStartX = mTouchX;
+        mTouchY = TOUCH_REC(gTouchY)[i][0];
+        mTouchStartY = mTouchY;
+        mTouching = 1;
+        mDragSoundHandle = 0;
     }
 
-    if (self->mTouching != 1) return;
+    if (mTouching != 1) return;
 
     i = ACTIVE_SLOT;
     if (TOUCH_REC(gTouchHeld)[i][0] != 0) {
-        func_ov004_020ae5c4((int)arg, self->mTouchX, self->mTouchY,
+        func_ov004_020ae5c4((int)this, mTouchX, mTouchY,
                             TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2, 4);
         i = ACTIVE_SLOT;
-        self->mTouchX = TOUCH_REC(gTouchX)[i][0];
-        self->mTouchY = TOUCH_REC(gTouchY)[i][0];
-        self->mDragSoundHandle = func_02012468(self->mDragSoundHandle, 2, 0x1b0, 2, 0,
-                                             func_020126e8(self->mTouchX << 12), 0, 0);
+        mTouchX = TOUCH_REC(gTouchX)[i][0];
+        mTouchY = TOUCH_REC(gTouchY)[i][0];
+        mDragSoundHandle = func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0,
+                                             func_020126e8(mTouchX << 12), 0, 0);
     } else {
         b = (int)(TOUCH_REC(gTouchHeld)[i][0] == 0 && TOUCH_REC(gTouchEdge)[i][0] != 0);
         if (b != 0) {
-            self->mTouchReleased = 1;
+            mTouchReleased = 1;
         }
     }
-}
 }
 
 // @symbol func_ov006_021238d0
@@ -851,8 +827,8 @@ int func_ov006_0212373c(int a)
 }
 }
 
-// @symbol func_ov006_02123428
-extern "C" void func_ov006_02123428(char *scene)
+// @symbol _ZN18dScMgTrampoline2_c9SpawnWaveEv
+void dScMgTrampoline2_c::SpawnWave()
 {
     int occupancy;
     int column;
@@ -964,10 +940,10 @@ s32 dScMgTrampoline2_c::Behavior()
         ApproachLinear(mRamp, 0x14000, 0x200);
     }
     {
-        dScMgTrampoline2_cState *pp = (dScMgTrampoline2_cState *)mState;
+        State *pp = (State *)mState;
         (this->**pp)();
     }
-    func_ov006_02123938(this);
+    UpdateTouchInput();
     if (saved != data_ov006_02140830) {
         func_ov004_020adb1c(data_ov006_02140830);
     }
@@ -1118,11 +1094,10 @@ int dScMgTrampoline2_c::OnAttacked2()
     return 1;
 }
 
-// @symbol func_ov006_02122e20
-extern "C" {
-void func_ov006_02122e20(void *arg0, int layer)
+// @symbol _ZN18dScMgTrampoline2_c9InitBrushEi
+void dScMgTrampoline2_c::InitBrush(int layer)
 {
-    struct Obj *self = (struct Obj *)arg0;
+    struct Obj *self = (struct Obj *)this;
     volatile unsigned short t0;
     volatile unsigned short t1;
     int v = 0x7000;
@@ -1164,7 +1139,6 @@ void func_ov006_02122e20(void *arg0, int layer)
     t1 = 0;
     MultiStore16(t1, charPtr, 0x6000);
     GX::LoadBGPltt(data_ov006_0212f1ac, 0xe0, 0x20);
-}
 }
 
 // @symbol _ZN18dScMgTrampoline2_c9Virtual88Eiiii

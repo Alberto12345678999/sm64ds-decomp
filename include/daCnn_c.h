@@ -66,6 +66,15 @@ struct daCnn_c : dActor_c {
     virtual int CleanupResources();
     virtual int Behavior();
     virtual int Render();
+
+    /* The four state bodies the table at data_ov098_0213c8fc dispatches, plus
+       the barrel-pose and next-aim helpers. */
+    void func_ov098_0213a984();
+    void func_ov098_0213aa28();
+    void func_ov098_0213ad08();
+    void func_ov098_0213ade8();
+    void func_ov098_0213b0a4();
+    void func_ov098_0213b15c();
 };
 
 #ifndef SM64DS_PLATFORM_PC
