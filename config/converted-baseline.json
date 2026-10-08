@@ -1357,7 +1357,6 @@
     "src/__sinit_ov032_02112e28.c",
     "src/__sinit_ov033_021119e8.c",
     "src/__sinit_ov033_02111a54.c",
-    "src/__sinit_ov035_02111f04.c",
     "src/__sinit_ov035_02111fc0.c",
     "src/__sinit_ov036_021125b0.c",
     "src/__sinit_ov036_0211261c.c",
@@ -3589,5 +3588,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3580
+  "count": 3579
 }

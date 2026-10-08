@@ -5118,6 +5118,7 @@
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_c6RenderEv": "tangosdev",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_c8BehaviorEv": "tangosdev",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCtMecha10_c.cpp#__sinit_daObjCtMecha10_c.cpp": "tangosdev",
     "src/actors/daObjFl_Ring_c.cpp#_ZN14daObjFl_Ring_cD1Ev": "tangosdev",
     "src/actors/daObjFl_Ring_c.cpp#_ZN14daObjFl_Ring_cD0Ev": "tangosdev",
     "src/actors/daObjFl_Ring_c.cpp#_ZN14daObjFl_Ring_c16CleanupResourcesEv": "tangosdev",
