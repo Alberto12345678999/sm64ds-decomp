@@ -1,7 +1,6 @@
 """Regression tests for tools/check_drafts_compile.py.
 
-Each case plants the breakage and asserts the gate goes red. Like
-test_check_src_tu_compiles.py, NO TEST HERE SKIPS ITSELF: the compiling cases need
+Each case plants the breakage and asserts the gate goes red. NO TEST HERE SKIPS ITSELF: the compiling cases need
 mwccarm and fail loudly without it, because a compile gate whose test passes without a
 compiler is the false green the gate exists for. So this module is deliberately not in
 tool-tests.yml's list; run it on a box with the toolchain.
