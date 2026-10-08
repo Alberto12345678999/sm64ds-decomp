@@ -1199,7 +1199,7 @@ Everything else follows from that. Corollaries, each verified with minimal toys:
 
 **The one matched precedent, and why it is not available here.** A corpus scan of all of arm9
 for the ROM shape `cmp rX,#0; beq #8; <single mov>` finds exactly TWO sites: `func_02068398`
-and `func_0205c048` -- and c048 is MATCHED. Its source (src/func_0205c048.c) buys the branch
+and `func_0205c048` -- and c048 is MATCHED. Its source (src/unnamed/arm9/0205/func_0205c048.c) buys the branch
 with a genuinely 2-condition guard, giving the assignment block two predecessors:
 ```c
 if (r8 != 0)      goto Lsep1;   /* pred 1: the goto      */
@@ -4494,7 +4494,7 @@ the lever should not be re-tried.
 **51 committed sources carry it right now** (`grep -rl '#pragma long_calls' src/`) -- 50 of
 them overlay files (19 in ov007, the rest spread over
 ov002/006/014/015/016/022/029/030/036/063/064/065/066/073/079/080/091/095/098) and exactly
-ONE arm9 file, `src/func_0205d4a0.c`. Most sit under a header comment that says the pragma
+ONE arm9 file, `src/unnamed/arm9/0205/func_0205d4a0.c`. Most sit under a header comment that says the pragma
 is what emits the pooled veneer. They all still byte-match, because the pragma is inert, but
 the comment is wrong and every one of those compiles now prints `warning: illegal #pragma`
 under the `-w illpragmas` in `DEFAULT_FLAGS`. Deleting the line from those files is a no-op
@@ -4675,7 +4675,7 @@ So the ROM's fabricated fourth word -- a zero that rides along in the store mult
 never in the load multiple -- has no C spelling. Combined with the leaf frame
 `stmdb sp!,{r4}` / `ldm sp!,{r4}` (mwccarm spends `push {r4,lr}` here because its block move
 needs `lr` as a scratch), this is a hand-written primitive and the existing HAND-ASM header on
-`src/func_02052514.c` is correct. Do not re-open it.
+`src/unnamed/arm9/0205/func_02052514.c` is correct. Do not re-open it.
 
 The transferable test: **an `ldm`/`stm` pair with different register counts, or an `stm` whose
 register list contains a value the matching `ldm` did not load, is hand-asm.** Equal widths
@@ -6669,12 +6669,12 @@ reproduced in a 15-instruction toy, `_abwork/crkh/toyprobe.py`:
   `if (x > 0x64) x = 0x64;` clamp four instructions earlier does not help it.
 * Two MATCHED precedents that 6u's corpus scan missed, both single-condition guards with a
   five-instruction return block that keeps its branch:
-      src/func_02062d10.cpp       `bne` over an arm containing `cmp r0,#0 / beq`
+      src/unnamed/arm9/0206/func_02062d10.cpp       `bne` over an arm containing `cmp r0,#0 / beq`
       func_ov006_020e83bc         `bge` over an arm containing `cmp r0,#0 / movgt / strgt`
                                   (now in src/actors/dMg3DEspAnimSet_c.cpp)
   Both are the final `else` of an if / else-if / else chain, so the jumped-over arm is the
   else-if body and contains that arm's own test. The multi-predecessor precedents 6u names
-  (src/func_ov007_020b1f2c.c, src/func_ov002_020d85fc.cpp) are `&&` chains.
+  (src/unnamed/ov007/func_ov007_020b1f2c.c, src/unnamed/ov002/func_ov002_020d85fc.cpp) are `&&` chains.
   Found by disassembling every matched src/ file's ROM range and looking for a forward
   conditional branch into a <=7-instruction block ending in a return whose only predecessor is
   that branch: 16 hits in the whole corpus.
@@ -7087,7 +7087,7 @@ Wave 9 left it at 164 with the residue read as "the compiler sinks one read past
 store". It is not a spelling problem at all, and the method that proved that is reusable.
 
 **1. The emit spelling is settled, because a matched sibling already contains it.** The vertex
-block is `src/func_ov007_020ca86c.c`'s inline with shift 8, spelled exactly the way that
+block is `src/unnamed/ov007/func_ov007_020ca86c.c`'s inline with shift 8, spelled exactly the way that
 matched file spells it:
 
 ```c
@@ -7964,3 +7964,21 @@ parameter has in the draft: a struct wrapper or a local copy demotes the load to
 and pushes it behind every homing store in the scheduler's input. The 6cf census found no
 other function with the self-home zip, so this is the only instance in the game, but the
 "parameter web vs body web" distinction is general and cheap to test.
+
+### 6bo/6cb follow-up (2026-10-07, lane OV75-OAM): the schedule-exact shape is a pure 4-cycle rotation, and an inline setter does not move it
+
+`func_ov075_02116128` re-attacked from the ROM's own register-priority order rather than
+more declaration permutations. In the ROM the colouring is pal=r0, i=r1, p=r2, shifted
+value=r3, i.e. the four webs were coloured in the order pal, i, p, hi (hi, used only by the
+four singles and by the pal materialisation, comes LAST and so inherits r3). Every
+schedule-exact shape instead colours hi first: an inline `SetPal(u16 *, u32)` setter that
+shifts inside (`(pal << 0x1c) >> 0x10`), with `m` kept as its own int so `mla` is emitted,
+reproduces the ROM schedule word for word and lands as p=r3, hi=r0, pal=r1, i=r2 - every
+register one place round the 4-cycle (div 31). Crossed with it and measured: five setter
+spellings (shift inside / pre-shifted / u16 / int param / nested `Ent()`), four hi types,
+five pragma sets, random declaration order, for/while loops (~6,200 compiles: only the
+24/31/34/38/41 colourings), a named `pal` added AFTER, BEFORE or INSIDE the loop block in
+nine respellings (`hi/0x10000`, `(hi>>15)>>1`, u8/u16/int types ...; ~3,000 compiles, best
+29), and index-form loops (`p[i]`, `map[r][i]`), which do NOT strength-reduce and change
+the size - so the ROM's `p++` is right. Nothing lowers hi's colouring priority below
+pal/i/p. Still NONMATCHING at div 20.

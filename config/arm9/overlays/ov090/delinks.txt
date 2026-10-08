@@ -14,6 +14,10 @@ src/d_a_menbo.c:
 src/actors/daManta_c.cpp:
     complete
     .text start:0x0213269c end:0x02133034
+    .init start:0x02133ea8 end:0x02133f4c
+    .ctor start:0x021340c8 end:0x021340cc
+    .data start:0x021341e4 end:0x021341f4
+    .bss start:0x02134524 end:0x0213455c
 
 src/actors/daPukupuku_c.cpp:
     complete
@@ -23,18 +27,14 @@ src/actors/daShark_c.cpp:
     complete
     .text start:0x0213367c end:0x02133ce8
 
-src/__sinit_ov090_02133ce8.c:
+src/unnamed/ov090/__sinit_ov090_02133ce8.c:
     complete
     .init start:0x02133ce8 end:0x02133ea8
 
-src/__sinit_ov090_02133ea8.c:
-    complete
-    .init start:0x02133ea8 end:0x02133f4c
-
-src/__sinit_ov090_02133f4c.c:
+src/unnamed/ov090/__sinit_ov090_02133f4c.c:
     complete
     .init start:0x02133f4c end:0x02134020
 
-src/__sinit_ov090_02134020.c:
+src/unnamed/ov090/__sinit_ov090_02134020.c:
     complete
     .init start:0x02134020 end:0x021340c4
