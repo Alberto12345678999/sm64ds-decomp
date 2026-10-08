@@ -1357,7 +1357,6 @@
     "src/__sinit_ov032_02112e28.c",
     "src/__sinit_ov033_021119e8.c",
     "src/__sinit_ov033_02111a54.c",
-    "src/__sinit_ov035_02111f04.c",
     "src/__sinit_ov035_02111fc0.c",
     "src/__sinit_ov036_021125b0.c",
     "src/__sinit_ov036_0211261c.c",
@@ -1419,7 +1418,6 @@
     "src/__sinit_ov091_021346e8.c",
     "src/__sinit_ov091_02134930.c",
     "src/__sinit_ov091_021349c4.c",
-    "src/__sinit_ov092_021320cc.c",
     "src/__sinit_ov095_02136fe0.c",
     "src/__sinit_ov095_0213722c.c",
     "src/__sinit_ov096_0213770c.c",
@@ -1479,7 +1477,7 @@
     "src/actors/Player.cpp#_ZN6Player7IsInAirEv",
     "src/actors/Player.cpp#_ZN6Player9GetHealthEv",
     "src/actors/Player.cpp#_ZN6Player9IsOnShellEv",
-    "src/actors/Scuttlebug.cpp#Scuttlebug_SetState",
+    "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug8SetStateEi",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug13OnYoshiTryEatEv",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug16OnAimedAtWithEggEv",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug16OnPendingDestroyEv",
@@ -3588,5 +3586,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3580
+  "count": 3579
 }
