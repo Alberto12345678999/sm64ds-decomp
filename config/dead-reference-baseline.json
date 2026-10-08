@@ -183,6 +183,10 @@
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
+   "ref": "src/__sinit_ov055_021118d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/d_a_luigi.cpp"
   },
   {
@@ -208,6 +212,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
    "ref": "src/func_020393d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
+   "ref": "src/__sinit_ov055_021118d4.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
