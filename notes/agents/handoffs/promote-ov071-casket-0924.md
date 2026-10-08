@@ -159,7 +159,7 @@ This document describes this commit. The queue records its immutable output SHA.
 - Attribution: tu_promote added 14 `path#symbol` overrides carrying the
   original credit (andrewboudreau for [func_ov071_021221bc](../../../config/tu_manifest.d/ov071/daObjCasket_c.json), ruspecial for
   [func_ov071_02122194](../../../config/tu_manifest.d/ov071/daObjCasket_c.json), aitddlabs for `Behavior`, tangosdev for the rest).
-  prepush_attribution reports 14 consolidated with credit intact, 0 changed
+  the old credit check reports 14 consolidated with credit intact, 0 changed
   and 0 lost. No credit went to a bot or to the coordinator.
 ---
 - Remaining issue scope: member spellings for the seven helpers; naming the
@@ -207,7 +207,7 @@ note changed after the byte and link gates ran.
   checked, 14 VERIFIED, 0 warnings, 0 blocking (the header's only consumer is
   the TU).
 ---
-- `python tools/prepush_attribution.py --base 787633e5e7 --head HEAD` exit 0:
+- `the old credit check` exit 0:
   14 consolidated with credit intact, 0 changed, 0 lost.
 ---
 - `python tools/check_decl_agreement.py --changed 787633e5e7`: exit 1 at

@@ -57,7 +57,7 @@ production slice, and honor the user's publication/merge limits.
 - Find blocked/offered work without a next owner; schedule its next concrete action.
 - Check shared-resource overlaps, stale bases, failed/pending checks, and PR successors.
 - Ensure facts and handoffs resolve at their recorded immutable commits.
-- Check that source progress is not merely packaging, and attribution survives moves.
+- Check that source progress is not merely packaging. Who matched a function stays in `function-authors.json`. A move does not change that row.
 
 Use the supported rework/amend/cancel transitions. Resource expansion is additive,
 atomic, and requires no running lease; arrange a checkpoint/release first. Never

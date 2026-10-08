@@ -48,7 +48,7 @@
   destination check on.
 - Gates: see the PR body for `prepush_linkcheck`, `rombuild`,
   `check_src_tu_compiles`, `check_decl_agreement`, `port_refcheck`,
-  `check_dead_references`, `prepush_attribution`, `queue_audit`,
+  `check_dead_references`, `the old credit check`, `queue_audit`,
   `romdata_check` results.
 
 ## Resumption

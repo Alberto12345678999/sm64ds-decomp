@@ -229,7 +229,7 @@ Recorded separately, not combined into one score.
   `attribution.json` carries **two** blocks for this class, 58 rows for 29
   functions, and both are required because the two gates key differently.
   `validate_merge` resolves `path#symbol` on the symbol's CURRENT name;
-  `prepush_attribution` looks each deleted shard up by its own retired file STEM.
+  `the old credit check` looks each deleted shard up by its own retired file STEM.
   With only the current-name rows the first gate is green and the second reports
   29 CREDIT LOST. Both blocks sit beside this class's own rows rather than at the
   tail of the object, so the diff against the base is two insertion hunks with
@@ -356,7 +356,7 @@ these exact trees; neither is a cached report from an earlier base.
   static gates pass on both base and merge; nothing goes green to red. Its
   source-coverage info line reads "entries: 9066 -> 9039 (-27) (consolidation, not
   a loss -- bytes are flat)".
-  `prepush_attribution.py --base 516a883c4 --head HEAD` exit 0, 29 consolidated
+  the old credit check exit 0, 29 consolidated
   with credit intact, 0 changed, 0 lost — green only after the retired-stem rows
   described above were added; it was red with 29 CREDIT LOST before them.
   `queue_audit.py` exit 0 and reports four disagreeing rows. One is this class's
