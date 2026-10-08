@@ -2168,6 +2168,11 @@ ov064	0x02117684	func_ov064_02117684	_ZN12daBDonketu_c8BehaviorEv	vtable slot 6
 ov064	0x02117784	func_ov064_02117784	_ZN12daBDonketu_c13InitResourcesEv	vtable slot 0
 ov064	0x0211791c	func_ov064_0211791c	BigBully_Spawn	spawnfunc
 ov064	0x0211791c	BigBully_Spawn	daBDonketu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov064	0x02117a14	func_ov064_02117a14	_ZN17daObjFl_Amilift_c19func_ov064_02117a14EP7Vector3S1_	daObjFl_Amilift_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117a44	func_ov064_02117a44	_ZN17daObjFl_Amilift_c19func_ov064_02117a44Ev	daObjFl_Amilift_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117b8c	func_ov064_02117b8c	_ZN17daObjFl_Amilift_c19func_ov064_02117b8cEv	daObjFl_Amilift_c method; state-table target. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117bdc	func_ov064_02117bdc	_ZN17daObjFl_Amilift_c19func_ov064_02117bdcEv	daObjFl_Amilift_c method; state-table target. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117c24	func_ov064_02117c24	_ZN17daObjFl_Amilift_c19func_ov064_02117c24Ev	daObjFl_Amilift_c method; state-table target. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov064	0x02117fe8	func_ov064_02117fe8	MetalNetLift_Spawn	spawnfunc
 ov064	0x02117fe8	MetalNetLift_Spawn	daObjFl_Amilift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02118020	func_ov064_02118020	_ZN14daObjFl_Gura_cD1Ev	ROM RTTI class identity; vtable slot 16 (was _ZN18TiltingPlatformLllD1Ev)
