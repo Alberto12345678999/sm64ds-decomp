@@ -226,6 +226,10 @@
    "ref": "include/BookShot.h"
   },
   {
+   "file": "notes/agents/handoffs/pr3199-subset-repair-0926.md",
+   "ref": "src/__sinit_ov002_021071f4.c"
+  },
+  {
    "file": "notes/agents/handoffs/prod-dossunbar-0907-daObjBk_Dossunbar_c.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
@@ -1068,10 +1072,6 @@
   {
    "file": "tools/tubuild.py",
    "ref": "symbols/sections"
-  },
-  {
-   "file": "notes/agents/handoffs/pr3199-subset-repair-0926.md",
-   "ref": "src/__sinit_ov002_021071f4.c"
   }
  ]
 }
