@@ -211,7 +211,7 @@ The target data/BSS shape is exact and contiguous:
 
 This is initializer ordinal 8 of 26. Its `.ctor` word at `0x021080f0` sits
 between the words for [__sinit_ov002_02100f84](../src/unnamed/ov002/__sinit_ov002_02100f84.c) (`daObjKurumajiku_c`) and
-[__sinit_ov002_02101478](../src/unnamed/ov002/__sinit_ov002_02101478.c) (`daObjPushblock_c`). This ordering is corroborating only:
+[__sinit_ov002_02101478](../src/game/actors/daObjPushblock_c.cpp) (`daObjPushblock_c`). This ordering is corroborating only:
 [ov002](../config/arm9/overlays/ov002/symbols.txt) has 26 initializers but 71 candidate text TUs, so the ordinal partition
 correctly refuses to attribute `.init`, `.ctor`, data, or BSS. Several TUs that
 need no static initializer occur between those named owners.
