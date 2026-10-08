@@ -9360,15 +9360,6 @@
     "src/actors/Player.cpp#func_ov002_020c19d0": "andrewboudreau",
     "src/actors/Player.cpp#func_ov002_020c607c": "andrewboudreau",
     "src/actors/Player.cpp#func_ov002_020ce9c8": "andrewboudreau",
-    "src/minigames/d_s_mg_base.cpp#_ZN3Ent19func_ov004_020adc80Ev": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#_ZN3Ent19func_ov004_020adcc8Ev": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#_ZN3Ent19func_ov004_020addccEv": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#_ZN3Ent19func_ov004_020adeb0Ev": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#_ZN11dScMgBase_c15graphCallback_cC1Ev": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#__arraydtor$314": "ruspecial",
-    "src/minigames/d_s_mg_base.cpp#_ZN3EntD1Ev": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#_ZN3EntC1Ev": "tangosdev",
-    "src/minigames/d_s_mg_base.cpp#__sinit_d_s_mg_base.cpp": "tangosdev",
     "src/actors/daJango_c.cpp#_ZN9daJango_c19func_ov062_0211b2fcEv": "tangosdev",
     "src/actors/daJango_c.cpp#_ZN9daJango_c19func_ov062_0211b3acEv": "lunavyqo",
     "src/actors/daJango_c.cpp#_ZN9daJango_c19func_ov062_0211b51cEv": "lunavyqo",
@@ -9510,6 +9501,11 @@
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d8ff4Ev": "tangosdev",
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d9020Ev": "tangosdev",
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d904cEv": "tangosdev",
-    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d907cEv": "tangosdev"
+    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d907cEv": "tangosdev",
+    "src/minigames/d_s_mg_base.cpp#func_ov004_020adc80": "tangosdev",
+    "src/minigames/d_s_mg_base.cpp#func_ov004_020adcc8": "tangosdev",
+    "src/minigames/d_s_mg_base.cpp#func_ov004_020addcc": "tangosdev",
+    "src/minigames/d_s_mg_base.cpp#func_ov004_020adeb0": "tangosdev",
+    "src/minigames/d_s_mg_base.cpp#func_ov004_020ae104": "tangosdev"
   }
 }
