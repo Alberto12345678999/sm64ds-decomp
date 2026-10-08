@@ -2425,6 +2425,7 @@
     "src/game/actors/daObjPushblock_c.cpp#_ZN16daObjPushblock_c8OnPushedER8dActor_c": "tangosdev",
     "src/game/actors/daObjPushblock_c.cpp#_ZN16daObjPushblock_cD0Ev": "github-actions[bot]",
     "src/game/actors/daObjPushblock_c.cpp#_ZN16daObjPushblock_cD1Ev": "github-actions[bot]",
+    "src/game/actors/daObjPushblock_c.cpp#__sinit_daObjPushblock_c.cpp": "tangosdev",
     "src/actors/daObjRcBuranko_c.cpp#_ZN16daObjRcBuranko_c13InitResourcesEv": "github-actions[bot]",
     "src/actors/daObjRcBuranko_c.cpp#_ZN16daObjRcBuranko_c16CleanupResourcesEv": "github-actions[bot]",
     "src/actors/daObjRcBuranko_c.cpp#_ZN16daObjRcBuranko_c6RenderEv": "github-actions[bot]",
