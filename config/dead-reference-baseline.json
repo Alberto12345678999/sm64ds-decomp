@@ -195,7 +195,7 @@
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
-   "ref": "src/__sinit_ov055_021118d4.c"
+   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
@@ -227,7 +227,7 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
-   "ref": "src/__sinit_ov055_021118d4.c"
+   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
@@ -683,7 +683,7 @@
   },
   {
    "file": "notes/tu-reconstruction-pilot-report.md",
-   "ref": "src/__sinit_ov045_02112214.c"
+   "ref": "src/unnamed/ov045/__sinit_ov045_02112214.c"
   },
   {
    "file": "port/docs/mmio-inventory.md",
