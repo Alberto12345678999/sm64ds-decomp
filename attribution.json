@@ -1642,6 +1642,8 @@
     "src/game/actors/d_a_obj_c0_switch.cpp#_ZN16daObjC0_Switch_cD0Ev": "github-actions[bot]",
     "src/game/actors/d_a_obj_c0_switch.cpp#_ZN16daObjC0_Switch_cD1Ev": "github-actions[bot]",
     "src/game/actors/d_a_obj_c0_switch.cpp#daObjC0_Switch_c_Spawn": "andrewboudreau",
+    "src/game/actors/d_a_obj_c0_switch.cpp#daObjC0_Switch_c_classInit": "andrewboudreau",
+    "src/game/actors/d_a_obj_c0_switch.cpp#__sinit_d_a_obj_c0_switch.cpp": "tangosdev",
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_c13InitResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_c16CleanupResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_c6RenderEv": "tangosdev",
