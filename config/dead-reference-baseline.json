@@ -243,6 +243,10 @@
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
+   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/d_a_luigi.cpp"
   },
   {
@@ -292,6 +296,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov034-hanachan-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
+   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
@@ -812,6 +820,10 @@
   {
    "file": "notes/tu-reconstruction-pilot-report.md",
    "ref": "include/Platform.h"
+  },
+  {
+   "file": "notes/tu-reconstruction-pilot-report.md",
+   "ref": "src/unnamed/ov045/__sinit_ov045_02112214.c"
   },
   {
    "file": "port/docs/mmio-inventory.md",
