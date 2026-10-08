@@ -266,15 +266,8 @@ python tools/port_refcheck.py
 python tools/check_dead_references.py
 ```
 
-After committing the source rename, verify contributor lineage:
-
-```powershell
-python tools/prepush_attribution.py --base origin/main
-```
-
-A commit may rewrite a file or move it, but should not do both when the path stem
-also changes. Split such work so Git records an unambiguous rename and original
-credit survives.
+Who matched a function stays the row in `function-authors.json`. A rename does
+not change it.
 
 Check the language-mode ratchet using the current generated baseline:
 

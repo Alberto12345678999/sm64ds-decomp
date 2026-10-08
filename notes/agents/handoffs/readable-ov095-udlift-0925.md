@@ -32,7 +32,7 @@ This document describes this commit. The queue records its immutable output SHA.
 - Genuine methods; remaining free-function/ABI bridges: all 11 functions are now `daUdlift_c` members. The remaining bridges are the three Fix12-by-value mangled calls (`dBgW_KcMbg::SetFile`, `dBgActor_c::IsClsnInRange`, `dActor_c::Earthquake`) and the unnamed arm9 setters `func_020393d4` and `func_020393c4`.
 - Recovered layout/fields; remaining shadow structs/raw offsets: every own field is named. The flat-C shadow struct under `#else` is deleted, because no C file includes the header. The `*(Vector3 *)&mCamSpacePosX` pun remains, because `dActor_c` spells camera-space position as three scalars in a shared header.
 - Lifecycle, vtable/RTTI, initializer and data ownership: unchanged. The inline empty destructor gives D1 and D0 and no D2. InitResources is the key function.
-- Attribution preserved through each move/rename: the five `attribution.json` keys follow the symbol renames with the same credit. `prepush_attribution` reports 0 changed and 0 lost.
+- Attribution preserved through each move/rename: the five `attribution.json` keys follow the symbol renames with the same credit. `the old credit check` reports 0 changed and 0 lost.
 - Remaining agreed issue scope: see the table.
 
 ### Deferred findings from #3071
@@ -73,7 +73,7 @@ All commands were run in `C:/tmp/claude-rd-ov095` on the source commit this hand
 - Complete emitted TU and data/metadata checks: the undefined-symbol sets of `build/tu/ov095-daUdlift_c/daUdlift_c.o`, before and after (pyelftools), are identical at 58 names. The defined globals differ only in the five renamed state symbols. A section-by-section comparison of bytes and relocations (offset, type and target, with the renamed states mapped) is identical across all 24 sections.
 - Shared-header consumer expansion: `include/daUdlift_c.h` has one consumer, `src/actors/daUdlift_c.cpp`. `python tools/check_header_offsets.py include/daUdlift_c.h`: 14 commented fields, 0 mismatched.
 - Port/path/reference and other applicable static gates:
-  - `python tools/prepush_attribution.py --base 7423f8d73f --head HEAD` exit 0: 0 changed, 0 lost.
+  - `the old credit check` exit 0: 0 changed, 0 lost.
   - `python tools/check_decl_agreement.py --changed 7423f8d73f` exit 0: no new declaration disagreements.
   - `python tools/check_dead_references.py` exit 0: no new dead references, no broken markdown links.
   - `python tools/tiers_ratchet.py --check` exit 0: PASS, baseline 2994, current 3116. `--update` was not run.

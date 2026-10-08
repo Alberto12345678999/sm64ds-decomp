@@ -160,7 +160,7 @@ All commands were run in this worktree against this commit's tree, with base `ac
   `dsd check symbols` errors (ITCM symbols) are pre-existing; the intact gate reports zero new
   symbol errors.
 - `python tools/prepush_linkcheck.py --range ace15a6c62..HEAD`: exit 0. 35 checked, 35 VERIFIED, 0 blocking.
-- `python tools/prepush_attribution.py --base ace15a6c62 --head HEAD`: exit 0. 0 changed, 0 lost.
+- `the old credit check`: exit 0. 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed ace15a6c62`: exit 1 before the baseline key above
   (one disagreement, [data_ov034_02114538](../../../config/arm9/overlays/ov034/symbols.txt)); exit 0 after it, no new disagreements and no new local
   redeclarations.

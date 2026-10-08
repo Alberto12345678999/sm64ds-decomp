@@ -63,7 +63,7 @@ proof. The documentation corrections in this revision do not resolve them.
   `21fc6604`, with the handoff path removed, is byte-identical at 10,935
   entries, every mode and hash equal. This revision corrects four statements
   that verification found wrong -- the owed-attribution table's re-key recipe
-  (which, applied literally, FAILED `prepush_attribution`), the stated
+  (which, applied literally, FAILED `the old credit check`), the stated
   mechanism behind that gate's blindness, the contributor count, and the
   block-scope extern count -- and changes nothing else. It deliberately does
   not move the source file; see the placement note under blockers.
@@ -151,7 +151,7 @@ proof. The documentation corrections in this revision do not resolve them.
   was returned for four further defects, all corrected here and each marked at
   the place it was corrected. One of the four was not a wording problem: the
   owed-attribution table's re-key recipe, applied literally to a scratch commit,
-  made `prepush_attribution` exit 1 with `CREDIT LOST _ZN13OneUpMushroomD0Ev`.
+  made `the old credit check` exit 1 with `CREDIT LOST _ZN13OneUpMushroomD0Ev`.
   That recipe is rewritten below and re-tested the same way; the number this
   session measured is recorded under Proof. Every check the producer and the
   independent verifications could run locally is listed under Proof, including
@@ -302,13 +302,12 @@ proof. The documentation corrections in this revision do not resolve them.
   and the 19 `func_ov002_*` bodies carry one each: 14 + 19 = 33. That doubling
   is load-bearing, not redundancy, and the reason is spelled out under the
   table below. An earlier revision of this document
-  said "every folded shard"; that was wrong. `python tools/prepush_attribution.py --base
-  2d293216c3eb0938ea291d0ad59f21e630cea041 --head HEAD` reports `9720 tracked,
+  said "every folded shard"; that was wrong. `the old credit check` reports `9720 tracked,
   26 consolidated with credit intact, 0 changed, 0 lost` -- the 26 with rows.
   The remaining **10** symbols have no `#symbol` override row. For the private
   validator, which resolves on the HEAD path, they miss
   `overrides[src/actors/da1up_c.cpp#<sym>]`, miss the bare TU path, and land on
-  `first_matchers[src/actors/da1up_c.cpp]` -- a path created by this fold --
+  `the old credit check[src/actors/da1up_c.cpp]` -- a path created by this fold --
   so it credits them to the TU's adder (`andrewboudreau`). They are
   `_ZN7da1up_cD0Ev`, `_ZN7da1up_c8BehaviorEv`,
   [func_ov002_020aeee4](../../../src/actors/da1up_c.cpp), [func_ov002_020aefa4](../../../src/actors/da1up_c.cpp), [func_ov002_020aefb8](../../../src/actors/da1up_c.cpp),
@@ -323,7 +322,7 @@ proof. The documentation corrections in this revision do not resolve them.
   lane applies the rows below. Each base author was recomputed independently
   **[rev b]** and again **[this revision]** with the validator's own formula
   (`overrides[path#symbol]` else
-  `overrides[path]` else `match_finishers[path]` else `first_matchers[path]`,
+  `overrides[path]` else `the old credit check[path]` else `the old credit check[path]`,
   evaluated at base `2d293216c3...`), which reproduces the same 8 rows and the
   same 8 handles both times.
   Each old shard path is recorded per function as `legacy_source` in
@@ -337,9 +336,9 @@ proof. The documentation corrections in this revision do not resolve them.
   - `validate_merge.attribution_snapshot` builds `f"{path}#{rec['name']}"` from
     the built report, so at HEAD it looks up the **new** spelling
     (`...#_ZN7da1up_cD0Ev`) on the TU path.
-  - `prepush_attribution.member_overrides_at` splits on the `#` and keys the
+  - `the old credit check` splits on the `#` and keys the
     result by the bare symbol, then consults it for each **deleted shard's
-    basename** (`prepush_attribution.py:256-265`). A promoted shard's basename
+    basename** (`the old credit check`). A promoted shard's basename
     is the **old** spelling (`_ZN13OneUpMushroomD0Ev`), because that is what
     the file was called. Without a row under the old spelling the rescue misses
     and the gate reports the credit lost.
@@ -347,19 +346,19 @@ proof. The documentation corrections in this revision do not resolve them.
   This is exactly what the 26 rows already on that path do -- it is why 26
   shards carry 33 rows -- and the earlier table failed to apply its own
   arithmetic to the two shards it was adding. Measured on a scratch commit by
-  this session; see the `prepush_attribution` entry under Proof for the exit
+  this session; see the `the old credit check` entry under Proof for the exit
   codes.
 
   | # | Ordinal | Address | Override key(s) to add on [src/actors/da1up_c.cpp](../../../src/actors/da1up_c.cpp) | Value | Where the base credit comes from |
   |---|---|---|---|---|---|
   | 1 | 1 | 0x020aee88 | `#_ZN7da1up_cD0Ev` **and** `#_ZN13OneUpMushroomD0Ev` | `tangosdev` | an `attribution.json` **bare-path** override keyed on the deleted shard `_ZN13OneUpMushroomD0Ev.cpp`; drop that row |
   | 2 | 3 | 0x020aefa4 | `#func_ov002_020aefa4` | `ruspecial` | an `attribution.json` **bare-path** override keyed on the deleted shard `func_ov002_020aefa4.c`; drop that row |
-  | 3 | 4 | 0x020aefb8 | `#func_ov002_020aefb8` | `lunavyqo` | `match_finishers` on the deleted shard |
-  | 4 | 15 | 0x020af724 | `#func_ov002_020af724` | `tangosdev` | `match_finishers` on the deleted shard |
-  | 5 | 20 | 0x020af950 | `#func_ov002_020af950` | `tangosdev` | `match_finishers` on the deleted shard |
-  | 6 | 26 | 0x020afc68 | `#func_ov002_020afc68` | `tangosdev` | `match_finishers` on the deleted shard |
-  | 7 | 30 | 0x020aff10 | `#func_ov002_020aff10` | `tangosdev` | `match_finishers` on the deleted shard |
-  | 8 | 34 | 0x020b00e8 | `#_ZN7da1up_c8BehaviorEv` **and** `#_ZN13OneUpMushroom8BehaviorEv` | `alexsobolew7` | `match_finishers` on the deleted shard |
+  | 3 | 4 | 0x020aefb8 | `#func_ov002_020aefb8` | `lunavyqo` | `the old credit check` on the deleted shard |
+  | 4 | 15 | 0x020af724 | `#func_ov002_020af724` | `tangosdev` | `the old credit check` on the deleted shard |
+  | 5 | 20 | 0x020af950 | `#func_ov002_020af950` | `tangosdev` | `the old credit check` on the deleted shard |
+  | 6 | 26 | 0x020afc68 | `#func_ov002_020afc68` | `tangosdev` | `the old credit check` on the deleted shard |
+  | 7 | 30 | 0x020aff10 | `#func_ov002_020aff10` | `tangosdev` | `the old credit check` on the deleted shard |
+  | 8 | 34 | 0x020b00e8 | `#_ZN7da1up_c8BehaviorEv` **and** `#_ZN13OneUpMushroom8BehaviorEv` | `alexsobolew7` | `the old credit check` on the deleted shard |
 
   Ten rows for eight shards. Rows 3-7 need only one spelling because a
   `func_ov002_*` body was never renamed -- its shard basename and its symbol
@@ -367,15 +366,15 @@ proof. The documentation corrections in this revision do not resolve them.
 
   Two of the eight, rows 1 and 2, additionally require a **deletion**: their
   credit today survives only through a bare-path `attribution.json` override on
-  a path this promotion deleted, and they appear in neither `first_matchers`
-  nor `match_finishers`. Re-key them onto the TU -- add the `#symbol` row(s),
+  a path this promotion deleted, and they appear in neither `the old credit check`
+  nor `the old credit check`. Re-key them onto the TU -- add the `#symbol` row(s),
   drop the bare-path row -- rather than leaving a second, stale key behind. The
-  other six are `match_finishers`-only and need no deletion.
+  other six are `the old credit check`-only and need no deletion.
 
   On the **value** column: write the base handle verbatim, as
-  `match_finishers` / the bare-path override returns it at base
+  `the old credit check` / the bare-path override returns it at base
   `2d293216c3...`. Notably that means `alexsobolew7` for row 8, not
-  `ruspecial`. `prepush_attribution` string-compares the row's value against
+  `ruspecial`. `the old credit check` string-compares the row's value against
   the base handle with no alias resolution, so a canonicalised value can read
   as CREDIT CHANGED; `validate_merge` applies `attribution.json`'s own
   `aliases` map afterwards (`validate_merge.py:319-333`) and gets the right
@@ -510,9 +509,7 @@ worktree's ignored `build/`; they are not committed.
   `da1up_c` row agrees with the tree (verified by regenerating with `--write`,
   reading the diff, and reverting). `tools/tu_map.py` was regenerated from
   fresh `rtti.json`/`rtti_vtables.json` and reports 691 TUs / 333 with a class.
-- Contributor attribution: `python tools/prepush_attribution.py --base
-  2d293216c3eb0938ea291d0ad59f21e630cea041 --head HEAD --json
-  build/attrib.json` -> exit 0, `9720 tracked, 0 moved with credit intact,
+- Contributor attribution: `the old credit check` -> exit 0, `9720 tracked, 0 moved with credit intact,
   0 renamed with credit intact, 26 consolidated with credit intact, 0 changed,
   0 lost`. Re-run **[rev b]** and again **[this revision]**; both verifications
   ran the same command with the same result. Coverage limit, and an earlier revision of this
@@ -520,15 +517,15 @@ worktree's ignored `build/`; they are not committed.
   the 26 rowed shards and that the other 10 are absent from its ledger. It is
   the other way round, and it was measured this time rather than reasoned
   about, by comparing each shard's `legacy_source` basename against
-  `prepush_attribution.lineage(HEAD)`:
+  `the old credit check`:
   - **0 of the 26** rowed shards appear in the HEAD ledger. Their deleted paths
-    drop out of `first_matchers`/`match_finishers`/bare overrides entirely, so
+    drop out of `the old credit check`/`the old credit check`/bare overrides entirely, so
     each falls into the "present at base, gone at head" branch and is rescued
     by its `#symbol` row. That rescue is precisely what `26 consolidated`
     counts -- the number is the rowed shards, but it counts them because they
     VANISHED, not because the gate can see them.
   - **10 of the 10** unrowed shards DO appear in the HEAD ledger: 8 because
-    `match_finishers` never expires a deleted source path, and 2
+    `the old credit check` never expires a deleted source path, and 2
     (`_ZN13OneUpMushroomD0Ev`, [func_ov002_020aefa4](../../../src/actors/da1up_c.cpp)) through the stale
     bare-path overrides that rows 1 and 2 of the owed table remove. Being
     present at head with the same handle as at base, they compare equal and are
@@ -546,7 +543,7 @@ worktree's ignored `build/`; they are not committed.
   above is a recipe an integrator will apply literally, so it was applied
   literally -- to `attribution.json` on a throwaway branch off this commit, one
   commit per variant, then measured with the same
-  `prepush_attribution.py --base 2d293216c3... --head HEAD` invocation and the
+  the old credit check, and the
   branch deleted. Three variants:
   - The table **as the previous revision wrote it** (new mangled spelling only,
     both bare-path overrides dropped) -> **exit 1**, `27 consolidated with
@@ -566,7 +563,7 @@ worktree's ignored `build/`; they are not committed.
     `alexsobolew7` -> also **exit 0**, `28 consolidated, 0 changed, 0 lost`,
     because that shard's name stays in the head ledger and its `#symbol` row is
     never consulted by this gate. Recorded so nobody reads that as licence:
-    write the base handle verbatim, since the moment `match_finishers` stops
+    write the base handle verbatim, since the moment `the old credit check` stops
     carrying the deleted path the row IS consulted and a canonicalised value
     reads as CREDIT CHANGED.
 
@@ -593,12 +590,12 @@ worktree's ignored `build/`; they are not committed.
   above read the way they do;
   `python tools/check_python_names.py` -> exit 0, `278 tracked file(s) checked,
   0 unresolvable names`;
-  `python tools/prepush_attribution.py --base 2d293216c3... --head HEAD` on
+  `the old credit check` on
   this commit -> exit 0, `26 consolidated, 0 changed, 0 lost`, and on the three
   scratch variants of the owed table -> exit 1 / exit 0 / exit 0 as recorded
   above; the ledger-membership measurement behind the corrected coverage limit
   (0 of the 26 rowed shards and 10 of the 10 unrowed ones present in
-  `prepush_attribution.lineage(HEAD)`); the base-handle recomputation
+  `the old credit check`); the base-handle recomputation
   for all 36 shards through the validator's resolution order; the
   `attribution.json` `aliases` read that settles `alexsobolew7` -> `ruspecial`;
   the block-scope mangled `extern` count (33 lines, 16 distinct symbols); and

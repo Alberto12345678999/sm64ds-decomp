@@ -93,7 +93,7 @@ All commands were run in this worktree against this commit's tree, with base `74
   The baseline control's `dsd check symbols` ITCM errors are pre-existing, and the intact gate
   reports zero new symbol errors.
 - `python tools/prepush_linkcheck.py --range 7423f8d73f..HEAD`: exit 0. 14 checked, 14 VERIFIED.
-- `python tools/prepush_attribution.py --base 7423f8d73f --head HEAD`: exit 0. 0 changed, 0 lost.
+- `the old credit check`: exit 0. 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed 7423f8d73f`: exit 0, no new disagreements.
 - `python tools/check_dead_references.py`: exit 0, no new dead references.
 - `python tools/tiers_ratchet.py --check`: exit 0. PASS, baseline 2994, current 3119. `--update` was not run.

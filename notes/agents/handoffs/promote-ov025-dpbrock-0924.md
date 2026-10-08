@@ -126,7 +126,7 @@ a table row, as history. `config/dead-reference-baseline.json` is not changed.
 - Attribution: tu_promote added 9 `path#symbol` overrides carrying the base
   credit (andrewboudreau for `InitResources`, which was already its first
   matcher at the input commit, and tangosdev for the other eight).
-  prepush_attribution reports 9 consolidated with credit intact, 0 changed and
+  the old credit check reports 9 consolidated with credit intact, 0 changed and
   0 lost. No credit went to github-actions[bot].
 - Remaining issue scope: member spellings for the two helpers;
   `include/decl_common.h` still declares `_ZTV11PyramidStep`, which nothing
@@ -175,7 +175,7 @@ static gates below were rerun on this commit.
   with zero new symbol errors, ROM sha256 d1506e90...c478e8.
 - `python tools/prepush_linkcheck.py --range 787633e5e7..HEAD` exit 0: 9
   checked, 9 verified, 0 blocking.
-- `python tools/prepush_attribution.py --base 787633e5e7 --head HEAD` exit 0:
+- `the old credit check` exit 0:
   9 consolidated with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed 787633e5e7` exit 0: no new
   declaration disagreements.

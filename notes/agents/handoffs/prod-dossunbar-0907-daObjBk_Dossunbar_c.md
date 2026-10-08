@@ -219,7 +219,7 @@ worktrees' gitignored build directories.
   the pre-fold shards read that symbol from `include/decl_common.h`, so the local
   declaration was removed. Removing it is byte-free: the verify byte comparison
   and the full ROM build are unchanged before and after.
-- Attribution: `prepush_attribution.py --base 80649f84e` exit 0 -- 0 changed,
+- Attribution: the old credit check exit 0 -- 0 changed,
   0 lost, 22 consolidated with credit intact. `validate_merge.py --base
   80649f84e --head HEAD` with both ROM reports supplied, exit 0 -- **contributor
   credit 0 added, 0 changed, 0 lost**, byte-verified functions and code bytes

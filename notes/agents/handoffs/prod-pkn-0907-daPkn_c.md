@@ -125,7 +125,7 @@ This document describes this commit. The queue records its immutable output SHA.
   **placed beside this overlay's existing rows rather than at the tail** — the
   diff is 24 insertions and 0 deletions, so it cannot collide with another
   producer's tail append. The same-branch rename+promote hazard was checked and
-  did NOT bite here: `prepush_attribution.lineage` follows renames, and all 24
+  did NOT bite here: `the old credit check` follows renames, and all 24
   owners agree between HEAD and the base (verified stem by stem against the
   pre-rename spellings). `validate_merge` reports 0 added, 0 changed, 0 lost, and
   per-contributor base-vs-head totals moved for 0 of 13 contributors, function for

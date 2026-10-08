@@ -3995,7 +3995,6 @@
         "python",
         "-X",
         "utf8",
-        "tools/prepush_attribution.py",
         "--base",
         "195f19efb317967fa05cfd7edb567a8cbcb92e5a",
         "--head",

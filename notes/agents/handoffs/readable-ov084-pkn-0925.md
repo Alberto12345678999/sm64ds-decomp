@@ -141,7 +141,7 @@ All commands were rerun in round 2 in `C:/tmp/claude-rd-ov084` on the source of 
 | `python tools/check_tubuild_conflicts.py` | 0 | 297 entries OK |
 | `python tools/queue_audit.py --check-promoted` | 0 | OK |
 | `python tools/port_refcheck.py` | 0 | 408 references, all resolve |
-| `python tools/prepush_attribution.py --base ace15a6c62 --head HEAD` | 0 | 7295 tracked, 0 changed, 0 lost |
+| `the old credit check` | 0 | 7295 tracked, 0 changed, 0 lost |
 | `python tools/affected_src.py include/daPkn_c.h` | 0 | `src/actors/daPkn_c.cpp` only |
 | `git diff ace15a6c62 -- include/decl_common.h config/dead-reference-baseline.json config/decl-agreement-baseline.json` | 0 | empty |
 

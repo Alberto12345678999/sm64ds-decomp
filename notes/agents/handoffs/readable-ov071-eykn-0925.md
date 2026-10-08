@@ -110,7 +110,7 @@ This document describes this commit. The queue records its immutable output SHA.
   deadstripped. The state table and file handles stay with `__sinit_ov071_021228c8`.
 - Attribution preserved through each rename: 16 keys re-keyed in place with the same credit.
   `src/actors/daEykn_c.cpp#_ZN8daEykn_c13InitResourcesEv` was added for andrewboudreau, the file's
-  first matcher. `prepush_attribution` reports 23 consolidated, 0 changed and 0 lost.
+  first matcher. `the old credit check` reports 23 consolidated, 0 changed and 0 lost.
 - Residue. Counting convention: the number of lines containing each token, from
   `MSYS_NO_PATHCONV=1 git show <rev>:<path> | grep -c -F <token>` and `wc -l`:
 
@@ -167,7 +167,7 @@ All commands were run in this worktree against this commit's tree. The base is `
   report zero new symbol errors. The baseline control's `dsd check symbols` ITCM errors are
   pre-existing.
 - `python tools/prepush_linkcheck.py --range ace15a6c62..HEAD`: exit 0. 23 checked, 23 VERIFIED.
-- `python tools/prepush_attribution.py --base ace15a6c62 --head HEAD`: exit 0. 23 consolidated
+- `the old credit check`: exit 0. 23 consolidated
   with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed ace15a6c62`: exit 0. No new local
   redeclarations and no new disagreements. The first draft failed on the Hurt and New spellings and
