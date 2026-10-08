@@ -975,7 +975,7 @@ extern int data_ov024_02113968[];
 extern int data_ov025_02112654(void*);
 extern int data_ov025_02113814[];
 extern int data_ov026_02113ea0[];
-extern int data_ov026_02113f2c;
+/* data_ov026_02113f2c is defined by daWater_Tatumaki_c.cpp. */
 extern int data_ov026_02113f58;
 extern int data_ov027_021138f4[];
 extern int data_ov027_021139d4[];
@@ -2470,7 +2470,7 @@ extern void*data_ov019_0211277c[];
 extern void*data_ov019_02112788[];
 extern void*data_ov019_02113498;
 extern void*data_ov023_02112088;
-extern void*data_ov026_02113f3c;
+/* data_ov026_02113f3c is defined by daWater_Tatumaki_c.cpp. */
 extern void*data_ov027_02112ca4[3];
 extern void*data_ov029_02112fb8;
 extern void*data_ov029_02112fec;
