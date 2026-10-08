@@ -37,9 +37,8 @@
  *   mPosY + 0x384000, mPosZ, 0, 0) is 0xc8 against ROM 0xe0. The ROM
  *   spills the position, adds the lift into the spill, and reloads x and
  *   the raised y. include/Particle__System.h does not declare New.
- * - func_ov026_02111ed8: daWater_Tatumaki_c::SpinEnter leaves
- *   func_ov026_02111ed8 missing from the object. The five state bodies
- *   are the ROM labels the state records point at, so they stay extern "C".
+ * - The four state bodies stay address-named methods. A coined spelling
+ *   would not be the ROM symbol.
  * - Without #pragma defer_codegen off the sections come out in reverse
  *   source order (InitResources first, D1 last). The pragma is what puts
  *   this TU in ROM order. D2 still has no cartridge home.
@@ -76,12 +75,10 @@ enum {
     kSprayEffect = 0x139
 };
 
-/* The two SharedFilePtr globals, the BTA, and the two State records.
-   Spelt the way __sinit_ov026_02112c94.c and include/decl_common.h declare
-   them, so every declaration of each symbol agrees. The handles are read
-   through SharedFileBytes: the constructor stores fileID at +0, refCount at
-   +2 and the loaded file at +4 (func_02017e0c). SharedFilePtr.h has no
-   fields, on purpose, so this view stays in the TU. */
+/* File handles this TU's static initializer constructs, and the two state
+   records it copies pointer-to-member descriptors into. Definitions are at
+   the end of the file. SharedFilePtr.h has no fields, so the 8-byte handle
+   is read through SharedFileBytes: fileID at +0, refCount at +2, file at +4. */
 struct SharedFileBytes {
     u16 fileID;
     u8 refCount;
@@ -89,23 +86,32 @@ struct SharedFileBytes {
     void *file;
 };
 
-extern int data_ov026_02113f0c[];   /* water_tatumaki.bmd, handle 0x4a9 */
-extern int data_ov026_02113f04[];   /* water_tatumaki.bca, handle 0x4a8 */
-extern BTA_File data_ov026_02112f40;
-extern int data_ov026_02113f2c;     /* State: spin, waiting to catch */
-extern void *data_ov026_02113f3c;   /* State: drag the player down */
+struct TatumakiModelFilePtr : SharedFilePtr {
+    u32 words[2];
 
-#define MODEL_FILE (*(SharedFileBytes *)data_ov026_02113f0c)
-#define ANIM_FILE  (*(SharedFileBytes *)data_ov026_02113f04)
+    TatumakiModelFilePtr(u32 fileID);
+    ~TatumakiModelFilePtr();
+};
+
+struct TatumakiAnimFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    TatumakiAnimFileHandle(u32 fileID);
+    ~TatumakiAnimFileHandle();
+};
+
+extern "C" TatumakiModelFilePtr data_ov026_02113f0c; /* water_tatumaki.bmd, 0x4a9 */
+extern "C" TatumakiAnimFileHandle data_ov026_02113f04;  /* water_tatumaki.bca, 0x4a8 */
+extern daWater_Tatumaki_c::State data_ov026_02113f2c; /* spin, waiting to catch */
+extern daWater_Tatumaki_c::State data_ov026_02113f3c; /* drag the player down */
+extern BTA_File data_ov026_02112f40;
+
+#define MODEL_FILE (*(SharedFileBytes *)&data_ov026_02113f0c)
+#define ANIM_FILE  (*(SharedFileBytes *)&data_ov026_02113f04)
 #define AS_SHARED(file) (*(SharedFilePtr *)&(file))
 #define WHIRLPOOL_BTA data_ov026_02112f40
-
-/* sinit copies these two PMF pairs out of .data. Spin enter is
-   func_ov026_02111ed8 and its execute is func_ov026_02111d4c. Drag enter is
-   func_ov026_02111cb4 and its execute is func_ov026_02111b24. The PMF's
-   second word is 0, so each one is an ordinary non-virtual function. */
-#define STATE_SPIN     ((const daWater_Tatumaki_c::State *)&data_ov026_02113f2c)
-#define STATE_DRAG     ((const daWater_Tatumaki_c::State *)&data_ov026_02113f3c)
+#define STATE_SPIN (&data_ov026_02113f2c)
+#define STATE_DRAG (&data_ov026_02113f3c)
 
 extern "C" {
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
@@ -148,10 +154,10 @@ daWater_Tatumaki_c::~daWater_Tatumaki_c()
 /* D0 is emitted from the destructor above. #pragma defer_codegen off puts
    D1 then D0, which is the cartridge order. The trailing D2 has no ROM home. */
 
-// @symbol func_ov026_02111b24
+// @symbol _ZN18daWater_Tatumaki_c19func_ov026_02111b24Ev
 /* Drag, each frame: orbit the player around the funnel and sink them. Below
    the centre, kill them once. */
-extern "C" int func_ov026_02111b24(daWater_Tatumaki_c *self)
+int daWater_Tatumaki_c::func_ov026_02111b24()
 {
     Vector3 target;
     Vector3 offset;
@@ -164,27 +170,27 @@ extern "C" int func_ov026_02111b24(daWater_Tatumaki_c *self)
     offset.x = 0;
     offset.y = 0;
     offset.z = 0;
-    target.z = self->mPullRadius;
-    player = self->ClosestPlayer();
+    target.z = this->mPullRadius;
+    player = this->ClosestPlayer();
     if (player) {
-        Matrix4x3_FromRotationY(&data_020a0e68, self->mPullAngle);
+        Matrix4x3_FromRotationY(&data_020a0e68, this->mPullAngle);
         MulVec3Mat4x3(&target, &data_020a0e68, &offset);
-        target.x = self->mCenter.x;
-        target.y = self->mCenter.y;
-        target.z = self->mCenter.z;
-        ApproachLinear2(self->mPullSpin, kSpinTarget, kSpinStep);
-        ApproachLinear(self->mPullRadius, kTightRadius, kRadiusStep);
-        ApproachLinear(self->mPullHeight, self->mCenter.y - kFunnelDepth, kSinkStep);
-        self->mPullAngle += self->mPullSpin;
-        target.y = self->mPullHeight;
+        target.x = this->mCenter.x;
+        target.y = this->mCenter.y;
+        target.z = this->mCenter.z;
+        ApproachLinear2(this->mPullSpin, kSpinTarget, kSpinStep);
+        ApproachLinear(this->mPullRadius, kTightRadius, kRadiusStep);
+        ApproachLinear(this->mPullHeight, this->mCenter.y - kFunnelDepth, kSinkStep);
+        this->mPullAngle += this->mPullSpin;
+        target.y = this->mPullHeight;
         target.x += offset.x;
         target.z += offset.z;
-        ApproachLinearVec(self->mPullPos, target, kChaseStep);
-        player->mPosX = self->mPullPos.x;
-        player->mPosY = self->mPullPos.y;
-        player->mPosZ = self->mPullPos.z;
+        ApproachLinearVec(this->mPullPos, target, kChaseStep);
+        player->mPosX = this->mPullPos.x;
+        player->mPosY = this->mPullPos.y;
+        player->mPosZ = this->mPullPos.z;
         {
-            int ang = self->HorzAngleToCPlayer() + kHalfTurn;
+            int ang = this->HorzAngleToCPlayer() + kHalfTurn;
             player->mAngleX = kLookDown;
             player->mAngleY = ang;
             player->mAngleZ = 0;
@@ -194,10 +200,10 @@ extern "C" int func_ov026_02111b24(daWater_Tatumaki_c *self)
             spilled[0] = playerPos->x;
             spilled[1] = playerPos->y;
             spilled[2] = playerPos->z;
-            if (self->mCenter.y > playerPos->y) {
-                if (self->mPlayerKilled == 0) {
+            if (this->mCenter.y > playerPos->y) {
+                if (this->mPlayerKilled == 0) {
                     KillPlayer();
-                    self->mPlayerKilled = 1;
+                    this->mPlayerKilled = 1;
                 }
             }
         }
@@ -205,36 +211,36 @@ extern "C" int func_ov026_02111b24(daWater_Tatumaki_c *self)
     return 1;
 }
 
-// @symbol func_ov026_02111cb4
+// @symbol _ZN18daWater_Tatumaki_c19func_ov026_02111cb4Ev
 /* Drag, on entry: start the orbit where the player is standing. */
-extern "C" int func_ov026_02111cb4(daWater_Tatumaki_c *self)
+int daWater_Tatumaki_c::func_ov026_02111cb4()
 {
-    Player *player = self->ClosestPlayer();
+    Player *player = this->ClosestPlayer();
     if (player) {
         const Vector3 *playerPos = (const Vector3 *)&player->mPosX;
         Vector3 pos;
         pos.x = playerPos->x;
         pos.y = playerPos->y;
         pos.z = playerPos->z;
-        self->mPullAngle = Vec3_HorzAngle((Vector3 *)&self->mPosX, &pos);
-        self->unk_190 = 0;
-        self->mPullHeight = 0;
-        self->mPullRadius = 0;
-        self->mPullPos.x = pos.x;
-        self->mPullPos.y = pos.y;
-        self->mPullPos.z = pos.z;
-        self->mPullHeight = pos.y;
-        self->mPullRadius = Vec3_HorzDist(&self->mCenter, &pos);
+        this->mPullAngle = Vec3_HorzAngle((Vector3 *)&this->mPosX, &pos);
+        this->unk_190 = 0;
+        this->mPullHeight = 0;
+        this->mPullRadius = 0;
+        this->mPullPos.x = pos.x;
+        this->mPullPos.y = pos.y;
+        this->mPullPos.z = pos.z;
+        this->mPullHeight = pos.y;
+        this->mPullRadius = Vec3_HorzDist(&this->mCenter, &pos);
     }
     return 1;
 }
 
-// @symbol func_ov026_02111d4c
+// @symbol _ZN18daWater_Tatumaki_c19func_ov026_02111d4cEv
 /* Spin, each frame: catch a player who has reached the centre, otherwise
    draw a non-metal player inward. The pull is stronger when they are closer. */
-extern "C" int func_ov026_02111d4c(daWater_Tatumaki_c *self)
+int daWater_Tatumaki_c::func_ov026_02111d4c()
 {
-    Player *player = self->ClosestPlayer();
+    Player *player = this->ClosestPlayer();
     if (player != 0) {
         Vector3 pos;
         {
@@ -242,18 +248,18 @@ extern "C" int func_ov026_02111d4c(daWater_Tatumaki_c *self)
             pos = *playerPos;
         }
 
-        if (Vec3_HorzDist(&self->mCenter, &pos) <= kCaptureReach) {
-            int dy = self->mCenter.y - pos.y;
+        if (Vec3_HorzDist(&this->mCenter, &pos) <= kCaptureReach) {
+            int dy = this->mCenter.y - pos.y;
             if (dy < 0) dy = -dy;
             if (dy <= kCaptureReach) {
                 player->EnterWhirlpool();
-                func_ov026_02111ee0(self, STATE_DRAG);
+                func_ov026_02111ee0(this, STATE_DRAG);
                 return 1;
             }
         }
 
         if (player->mIsMetal == 0) {
-            int dist = Vec3_Dist(&self->mCenter, &pos);
+            int dist = Vec3_Dist(&this->mCenter, &pos);
             if (dist < kDrawReach) {
                 Vector3 pull;
                 Vector3 out;
@@ -268,7 +274,7 @@ extern "C" int func_ov026_02111d4c(daWater_Tatumaki_c *self)
                 out.y = 0;
                 out.z = 0;
 
-                Matrix4x3_FromRotationY(&data_020a0e68, (short)(self->HorzAngleToCPlayer() + kHalfTurn));
+                Matrix4x3_FromRotationY(&data_020a0e68, (short)(this->HorzAngleToCPlayer() + kHalfTurn));
                 Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, kPullTilt);
                 MulVec3Mat4x3(&pull, &data_020a0e68, &out);
 
@@ -288,9 +294,9 @@ extern "C" int func_ov026_02111d4c(daWater_Tatumaki_c *self)
     return 1;
 }
 
-// @symbol func_ov026_02111ed8
+// @symbol _ZN18daWater_Tatumaki_c19func_ov026_02111ed8Ev
 /* Spin, on entry: nothing to set up. */
-extern "C" int func_ov026_02111ed8(void)
+int daWater_Tatumaki_c::func_ov026_02111ed8()
 {
     return 1;
 }
@@ -407,3 +413,17 @@ extern "C" daWater_Tatumaki_c *daWater_Tatumaki_c_classInit()
 {
     return new daWater_Tatumaki_c();
 }
+
+/* Static initializer: model handle, anim handle, then the two state records.
+   The pointer-to-member descriptors stay anonymous compiler objects. */
+TatumakiModelFilePtr data_ov026_02113f0c(0x4a9);
+TatumakiAnimFileHandle data_ov026_02113f04(0x4a8);
+
+daWater_Tatumaki_c::State data_ov026_02113f2c = {
+    &daWater_Tatumaki_c::func_ov026_02111ed8,
+    &daWater_Tatumaki_c::func_ov026_02111d4c,
+};
+daWater_Tatumaki_c::State data_ov026_02113f3c = {
+    &daWater_Tatumaki_c::func_ov026_02111cb4,
+    &daWater_Tatumaki_c::func_ov026_02111b24,
+};
