@@ -424,7 +424,7 @@
       "all_content_sections_licensed": "PASS -- .text 0x021333fc..0x02133968 (11 functions) + .init 0x021349c4..0x02134a30 + .ctor 0x02134b78..0x02134b7c + .bss 0x0213564c..0x02135674. The linkcheck block proves all four ranges.",
       "symbol_addresses_match": "PASS -- linkcheck objectAudit: 17 LICENSED, 0 COLLIDES-GAP, 0 COLLIDES-SRC, 0 HOMELESS",
       "module_reproduces": "PASS -- linkcheck module fidelity 106/106 exact; every owned range differingBytes 0",
-      "rom_build_passes": "PASS -- linkcheck phase 8 built the full ROM (sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40); the 9 dsd check symbols errors are baseline-identical, 0 new"
+      "rom_build_passes": "PASS -- linkcheck phase 8 built the full ROM (sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8); the 9 dsd check symbols errors are baseline-identical, 0 new"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
@@ -576,7 +576,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null
