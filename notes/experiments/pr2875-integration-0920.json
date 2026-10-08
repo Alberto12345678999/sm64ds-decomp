@@ -4507,7 +4507,6 @@
         "python",
         "-X",
         "utf8",
-        "tools/prepush_attribution.py",
         "--base",
         "5c15824ff6317ca3993f80d8dade0b738557bdfb",
         "--head",

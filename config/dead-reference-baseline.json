@@ -846,14 +846,6 @@
    "ref": "src/b.cpp"
   },
   {
-   "file": "tools/prepush_attribution.py",
-   "ref": "src/F.c"
-  },
-  {
-   "file": "tools/prepush_attribution.py",
-   "ref": "src/F.cpp"
-  },
-  {
    "file": "tools/prepush_linkcheck.py",
    "ref": "src/a.c"
   },

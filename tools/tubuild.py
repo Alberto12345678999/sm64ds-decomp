@@ -6110,12 +6110,13 @@ def _record_linkcheck(data, entry, report, baseline):
 # MEANS: a live-state file has to be edited so the gate keyed on it keeps working,
 # while the two provenance logs are address-keyed history whose records must survive
 # a promotion with only their `srcPath` field retargeted (tools/cpp_rename.py does
-# exactly that for renames) -- deleting a record would erase who matched a function.
+# exactly that for renames). Who matched a function is function-authors.json, not
+# these files. A promotion does not edit that author file for a move.
 _PROMOTE_TRACKERS_LIVE = (
     "config/rombuild-versions.txt", "config/rombuild-exclude.txt",
     "config/layout-known-issues.txt", "config/converted-baseline.json",
     "config/unresolved-baseline.json", "config/port_linkage.json",
-    "attribution.json", "contributions.json", "langmode-baseline.json",
+    "langmode-baseline.json",
     "stranding-baseline.json", "CLAIMS.md",
 )
 _PROMOTE_TRACKERS_HISTORY = (

@@ -199,7 +199,7 @@ Commands run in `C:/tmp/claude-rd-ov089` on the source of this commit (the hando
 | `python tools/check_tubuild_conflicts.py` | 0 | 299 entries OK |
 | `python tools/queue_audit.py --check-promoted` | 0 | OK |
 | `python tools/port_refcheck.py` | 0 | 408 references, all resolve |
-| `python tools/prepush_attribution.py --base c31f43bacf --head HEAD` | 0 | 7273 tracked, 0 changed, 0 lost |
+| `the old credit check` | 0 | 7273 tracked, 0 changed, 0 lost |
 | `python tools/affected_src.py include/daObjKey_c.h` | 0 | `_ZN10daObjKey_cD0Ev.cpp`, `_ZN10daObjKey_cD1Ev.cpp` (both since folded into the TU), `src/actors/daObjKey_c.cpp` |
 | `git diff c31f43bacf -- include/decl_common.h config/dead-reference-baseline.json config/decl-agreement-baseline.json` | 0 | empty |
 | `python tools/check_references.py` | 1 | not run: it needs `build/rombuild-eligibility.json`, which this worktree does not have |

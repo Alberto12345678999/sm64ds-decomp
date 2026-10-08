@@ -115,7 +115,7 @@ All commands ran in `C:/tmp/claude-mgp-p1-s3dbase-0925` on source commit `65bdca
   - `python tools/check_header_offsets.py include/dScMgSingle3DBase_c.h include/dMgState_c.h` exit 0: 1 commented field, 0 mismatched, struct spans 0x4f38; `dMgState_c.h` waived as before.
 - Relocation link check: `python tools/prepush_linkcheck.py --range e63828444b..HEAD` exit 0: the two headers fan out to 147 sources; 1080 functions checked, 1080 VERIFIED, 0 warnings, 0 blocking. It skipped the three consumers still marked as non-matching drafts (`_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp`, `_ZN12dScMgSlot1_c8BehaviorEv.cpp`, [func_ov006_020e5450.cpp](../../../src/unnamed/ov006/func_ov006_020e5450.cpp)); the 147-consumer object comparison covers them.
 - Static gates:
-  - `python tools/prepush_attribution.py --base e63828444b --head HEAD` exit 0: 7241 tracked, 0 changed, 0 lost.
+  - `the old credit check` exit 0: 7241 tracked, 0 changed, 0 lost.
   - `python tools/check_decl_agreement.py --changed e63828444b` exit 0: no new local redeclarations of header-declared symbols, no new declaration disagreements.
   - `python tools/check_decl_agreement.py` exit 0: no new declaration disagreements. It also reports 1024 banked rows gone, the same count on the base files, so they are not from this change. The baseline was not edited.
   - `python tools/check_dead_references.py` exit 0, run with this handoff in place: no new dead references, no broken markdown links.

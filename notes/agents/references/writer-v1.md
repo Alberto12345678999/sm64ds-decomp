@@ -164,11 +164,7 @@ here. The fix was to **split the type** (`C` incomplete, `CFull` complete); no
 choice of a single body would have reproduced 82/82. **Trust it over the queue's `blockers` column**, which is
 inferred rather than measured: `promotion_route` and any `compiler-only:~N` were
 copied from the row's `sibling_oracle` manifest, and 91 of 226 rows have no
-oracle at all and simply default to text-only. The `~` means estimate. **`prepush_attribution` reports CREDIT LOST from pure base drift.** If
-`origin/main` advanced past your base, it flags files that exist there and not
-on yours — one run blamed `dScMgHanachan_c`, which the branch never touched.
-Compare against the branch's own **merge-base** before treating CREDIT LOST as a
-blocker.
+oracle at all and simply default to text-only. The `~` means estimate.
 
 **Measured across four classes, the blockers column has been wrong every
 time**, and in both directions: `dScMgRoulette_c`'s `pragma:1` was a phantom (the

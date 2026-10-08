@@ -33,8 +33,9 @@ real methods and fields where evidenced, compiler-generated lifecycle machinery
 where it matches, and narrow documented ABI bridges at measured compiler walls.
 A promoted TU may still have substantial reconstruction work.
 
-Use the repository path resolver. Preserve attribution by symbol through renames
-and TU folding. Shared-header edits require a reserved dependency and consumer
+Use the repository path resolver. Who matched a function stays the row in
+`function-authors.json`, keyed by address. A rename or a fold does not change
+that row. Do not add a credit row for a move. Shared-header edits require a reserved dependency and consumer
 proof. Shared ledger/config changes require explicit reservation too; coordinate
 their reconciliation with the integrator.
 

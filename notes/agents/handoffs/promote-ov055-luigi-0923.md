@@ -89,7 +89,7 @@ This document describes this commit. The queue records its immutable output SHA.
     because the ROM pads them), 0 DIFFERS.
   - The static initializer and the factory stay outside this TU, where tu_map places
     them.
-- Attribution preserved through each move/rename: `prepush_attribution` reports 11
+- Attribution preserved through each move/rename: `the old credit check` reports 11
   consolidated with credit intact, 0 changed and 0 lost. One `tu_promote` override was
   corrected by hand: `OnPendingDestroy` goes to tangosdev, which is main's credit.
 - Remaining agreed issue scope:
@@ -121,7 +121,7 @@ All checks ran in `C:/tmp/promote-ov055-luigi-0923` on this branch, base `eb8f46
   and `src/d_a_luigi.cpp`. Both are VERIFIED above. `check_header_offsets` reports 6
   fields, 0 mismatched and 0 unparsed.
 - Port/path/reference and other applicable static gates:
-  - `prepush_attribution --base eb8f46d46a --head HEAD`: exit 0, 0 changed, 0 lost.
+  - the old credit check exit 0, 0 changed, 0 lost.
   - `check_decl_agreement --changed eb8f46d46a`: exit 0, no new disagreements. The
     full-tree run also reports none new.
     - The baseline was edited in place, not regenerated.

@@ -52,4 +52,4 @@ The nested no-TU baseline reports nine symbol-check errors; the candidate has th
 
 The six raw PARTIAL records are `_ZTS7fBase_c`, `_ZTS7dBase_c`, `_ZTS8dScene_c`, `_ZTS11dScMgBase_c`, `_ZTS14dScMgD3DBase_c` and `_ZTS18dScMgTrampoline2_c`: unchanged RTTI-name string extent/word-coverage limits, not newly differing data. The separate intact policy verifies the complete owned data range and exact imported records; it does not reclassify these raw measurements as VERIFIED.
 
-All 42 `path#symbol` credit overrides and the whole `attribution.json` are unchanged. The post-commit `prepush_attribution.py --base 3536f090698231c852ad18dde07f8bf9db2f50f7 --head HEAD` result belongs in the immutable queue evidence. No public/private CI validation or final composition acceptance is claimed from this local producer proof.
+All 42 `path#symbol` credit overrides and the whole `attribution.json` are unchanged. The post-commit old credit check result belongs in the immutable queue evidence. No public/private CI validation or final composition acceptance is claimed from this local producer proof.

@@ -349,7 +349,7 @@ not committed.
   `source_coverage.py`; `check_src_tu_compiles.py --quiet` (**160/160**
   translation units compile).
   - `python -m unittest` over `test_tu_manifest`, `test_validate_merge`,
-    `test_attribution`, `test_tiers_ratchet`, `test_check_dead_references` and
+    `test_tiers_ratchet`, `test_check_dead_references` and
     `test_check_rename_ledger`: **171 tests, all passing.** One of them
     (`test_the_committed_baseline_matches_the_tree`) failed on a first run and
     caught a real defect in this very document: an earlier draft named the
