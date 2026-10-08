@@ -181,39 +181,12 @@ extern ActorFn data_ov060_0211af74[];
 /* ROM ordinal 25 -- _ZN11daKpaFire_c13InitResourcesEv, 0x02117790, size 0x1a8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_c13InitResourcesEv
-/* recovered: named members + shared header, real C++ method
- *
- * daKpaFire_c holds no file references of its own -- daKpa_c loads and frees the
- * whole fight -- so this sets up collision and state rather than resources.
- *
- * All three shadow declarations are gone:
- *   - `struct Vector3 { int x, y, z; }`   -> the real types.h Vector3.
- *   - `struct dBgCh_Gnd { ... }`      -> the real dBgCh_Gnd.h.
- *   - `struct dActor_c { }`                  -> the real dActor_c.h.
- * ...along with the magic offsets on `char *c`, now named daKpaFire_c members.
- *
- * The dBgCh_Gnd one is the interesting fix. The stand-in declared
- * `int floor[12]` at 0x14 and then read `floor[12]` -- one PAST its own bound,
- * so the index was a magic offset in disguise: 0x14 + 12*4 = 0x44. The real
- * header names that field `clsnY` and documents it as the search seed on entry
- * and the hit on exit, which is exactly how it is used here.
- *
- * The `dActor_c` one was NOT obviously safe and was measured rather than assumed.
- * It types the pointer-to-member dispatch through data_ov060_0211af74, and a
- * pointer to member of a POLYMORPHIC class need not share a representation
- * with one of an empty class. Under the pin it does: swapping the empty
- * stand-in for the real dActor_c is byte-identical.
- *
- * The `|= 1` at 0x2e8 was briefly named as a daKpaFire_c field of its own. It
- * is not one. 0x2d0 + 0x18 lands inside mdCcAc_c, and
- * dCc_c::flags is at 0x18, documented as "bit 0 makes Update bail" --
- * which is precisely what setting bit 0 does, and precisely what this branch
- * wants when mVariant is zero. Same mistake, and same correction, as Player's
- * `mBodyClsnFlags`.
- *
- * The doubled write to pos.y is the ROM's own shape and is kept verbatim: the
- * seed is read into a local, stored, then overwritten with seed + 0x32000.
- */
+/* Sets up collision and state (no files of its own; daKpa_c owns the fight's).
+ * The ground probe uses the real dBgCh_Gnd (clsnY is seed on entry, hit on
+ * exit); the variant dispatch through data_ov060_0211af74 measured
+ * byte-identical with the real dActor_c. The `|= 1` sets dCc_c::flags bit 0
+ * inside mdCcAc_c when the variant is mouth. The doubled pos.y store is the
+ * ROM's own shape. dCcAc_c/dBgCh_Actr Init stay mangled: Fix12-by-value (6az). */
 int daKpaFire_c::InitResources()
 {
     Vector3 pos;
@@ -258,7 +231,7 @@ int daKpaFire_c::InitResources()
         pos.y = p60 + 0x32000;      /* search seed: 50 units above the fire */
     }
     rc.SetObjAndPos(pos, 0);
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rc))
+    if (rc.DetectClsn())
         this->mGroundY = rc.clsnY;
     else
         this->mGroundY = this->mPosY;
@@ -275,8 +248,6 @@ int daKpaFire_c::InitResources()
 /* ROM ordinal 24 -- _ZN11daKpaFire_c8BehaviorEv, 0x021176d4, size 0xbc */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_c8BehaviorEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 /* Once per frame: bump mTickCount, run the variant's handler from the
  * data_ov060_0211afb4 table, bump mFrameCount, then -- while gravity is still
  * on -- step the mesh collision and, for every variant but the bouncing one,
@@ -285,21 +256,20 @@ int daKpaFire_c::InitResources()
  * Update. Always returns 1. */
 int daKpaFire_c::Behavior()
 {
-    dActor_c *self = (dActor_c*)((char *)this);
     mTickCount += 1;
-    (self->*data_ov060_0211afb4[mVariant].pmf)();
+    (this->*data_ov060_0211afb4[mVariant].pmf)();
     mFrameCount += 1;
     if (mVertAccel != 0) {
-        dBgCh_Actr_UpdateDiscreteNoLava_veneer((char *)&mWithMeshClsn);
+        dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
         if (mVariant != VARIANT_BOUNCING) {
-            if (_ZNK10dBgCh_Actr10IsOnGroundEv((char *)&mWithMeshClsn) != 0) {
+            if (mWithMeshClsn.IsOnGround() != 0) {
                 mVertSpeed = 0;
                 mVertAccel = 0;
             }
         }
     }
-    func_ov060_02116740(((char *)this));
-    func_ov060_02117624(((char *)this));
+    func_ov060_02116740((char *)this);
+    func_ov060_02117624((char *)this);
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;
@@ -913,8 +883,6 @@ void func_ov060_021169b0(daKpaFire_c* thiz) {
  * pointer-to-member table) is 0, and the horizontal distance to it is under
  * 150 units (0x96000).
  * Raw offset left: daKpa_c +0x410. */
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern "C" void func_ov060_021168c4(daKpaFire_c* c)
 {
     daKpa_c* r4;
@@ -928,15 +896,15 @@ extern "C" void func_ov060_021168c4(daKpaFire_c* c)
     if (c->mWithMeshClsn.JustHitGround() != 0) {
         c->mVertSpeed = 0x1e000;
     }
-    ((dActor_c*)c)->UpdatePos((dCc_c*)0);
+    c->UpdatePos((dCc_c*)0);
     func_ov060_02116518(c, PARTICLE_VARIANT_4, 0, 0x32000);
     if (func_ov060_021172c8((unsigned char*)c, 0x96) != 0) {
-        ((fBase_c*)c)->MarkForDestruction();
+        c->MarkForDestruction();
     }
     if (r4 == 0) return;
     if (*(int*)((char*)r4 + 0x410) != 0) return;
     if (Vec3_HorzDist((Vector3*)&c->mPosX, (Vector3*)&r4->mPosX) >= 0x96000) return;
-    ((fBase_c*)c)->MarkForDestruction();
+    c->MarkForDestruction();
 }
 
 /* -------------------------------------------------------------------------- */
