@@ -1385,7 +1385,6 @@
     "src/unnamed/ov060/__sinit_ov060_02119df0.c",
     "src/unnamed/ov060/__sinit_ov060_02119f94.c",
     "src/unnamed/ov060/__sinit_ov060_0211a000.c",
-    "src/unnamed/ov060/__sinit_ov060_0211a388.c",
     "src/unnamed/ov064/__sinit_ov064_0211afc0.c",
     "src/unnamed/ov064/__sinit_ov064_0211b078.c",
     "src/unnamed/ov064/__sinit_ov064_0211b0e4.c",
@@ -1428,7 +1427,6 @@
     "src/unnamed/ov100/__sinit_ov100_021474e8.c",
     "src/unnamed/ov100/__sinit_ov100_02147d7c.c",
     "src/unnamed/ov102/__sinit_ov102_0214d714.c",
-    "src/unnamed/ov102/__sinit_ov102_0214dfac.c",
     "src/_dadd.c",
     "src/_dmul.c",
     "src/_ll_sdiv.c",
@@ -3586,5 +3584,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3577
+  "count": 3575
 }
