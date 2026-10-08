@@ -35,6 +35,7 @@ import json
 import os
 import pathlib
 import re
+import shutil
 import sys
 import tempfile
 from collections import Counter
@@ -462,20 +463,25 @@ def winning_object(name, addr, size, mod, candidate=None, include_dirs=(), name_
             # and take down a verdict. (Windows cp1252 round-trips have corrupted repo JSONL
             # this way before; do not narrow this to a bare OSError catch.)
             sources = [(candidate_path.read_text(encoding="utf-8", errors="replace"),
-                        candidate_path)]
+                        candidate_path, candidate_path)]
         except OSError:
             sources = []
     else:
-        sources = [(src, None) for src in RV.src_texts(name, addr)]
-    for src, source_path in sources:
+        sources = [(src, None, path) for src, path in RV.src_candidates(name, addr)]
+    for src, source_path, origin in sources:
         saw_source = True
         attempts = build_flag_attempts(src)
         for flags, suf in attempts:
             tmp = None
             if source_path is None:
-                fd, tmp = tempfile.mkstemp(suffix=suf)
-                os.close(fd)
-                cfile = pathlib.Path(tmp)
+                # The copy keeps the source's own basename: mwcc names a TU's static
+                # initializer __sinit_<file name>, and isolation asked for
+                # __sinit_dPathLiftActor_c.cpp finds nothing to keep in an object that
+                # calls it __sinit_tmpXXXX.cpp. It then returns the whole TU unisolated,
+                # and the destructors it emits for their legacy sources get checked with
+                # the raw +8 vtable addend and read WRONG.
+                tmp = tempfile.mkdtemp()
+                cfile = pathlib.Path(tmp) / (pathlib.Path(origin).stem + suf)
                 # encoding is not optional here: 42 files in src/ contain non-ASCII
                 # (arrows and box characters in codegen comments), and on Windows the
                 # default is cp1252, which raises UnicodeEncodeError and degrades the
@@ -545,7 +551,7 @@ def winning_object(name, addr, size, mod, candidate=None, include_dirs=(), name_
                             return obj, sym, None, off
             finally:
                 if tmp is not None:
-                    pathlib.Path(tmp).unlink(missing_ok=True)
+                    shutil.rmtree(tmp, ignore_errors=True)
     if diagnostics is not None:
         diagnostics["emitted_sizes"] = sorted(emitted_sizes)
     if not saw_source:
