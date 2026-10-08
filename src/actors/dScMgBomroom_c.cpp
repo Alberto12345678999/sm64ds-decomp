@@ -135,7 +135,7 @@ void dScMgBomroom_c::func_ov006_020d5b00() {
 
 void dScMgBomroom_c::func_ov006_020d5b10() {
     char * c = (char *)this;
-    u8 state = unk_62f4;
+    u8 state = mBg2State;
 
     if (state == 0) {
         return;
@@ -149,9 +149,9 @@ void dScMgBomroom_c::func_ov006_020d5b10() {
         shifted = v >> 0xc;
         if (shifted >= 0xc0) {
             mBg2Y = 0xc0000;
-            unk_62f4 = 2;
+            mBg2State = 2;
             shifted = 0xc0;
-            unk_62f2 = shifted;
+            mBg2Hold = shifted;
             Sound::PlayBank2_2D(0x1de);
             func_ov006_020d8904();
         }
@@ -163,9 +163,9 @@ void dScMgBomroom_c::func_ov006_020d5b10() {
         return;
     }
 
-    if (unk_62f2 != 0) {
-        unk_62f2 -= 1;
-        if (unk_62f2 != 0) {
+    if (mBg2Hold != 0) {
+        mBg2Hold -= 1;
+        if (mBg2Hold != 0) {
             return;
         }
         Sound::PlayBank2_2D(0x1df);
@@ -181,7 +181,7 @@ void dScMgBomroom_c::func_ov006_020d5b10() {
         if (shifted <= 0) {
             shifted = 0;
             mBg2Y = 0;
-            unk_62f4 = 0;
+            mBg2State = 0;
             Sound::PlayBank2_2D(0x1de);
         }
         SetBg2Offset(0, shifted);
@@ -195,8 +195,8 @@ void dScMgBomroom_c::func_ov006_020d5c60() {
     char * p = (char *)this;
     int zero = 0;
     mBg2Y = zero;
-    unk_62f4 = zero;
-    unk_62f2 = zero;
+    mBg2State = zero;
+    mBg2Hold = zero;
     SetBg2Offset(zero, zero);
 }
 
@@ -2046,7 +2046,7 @@ void dScMgBomroom_c::func_ov006_020d8af8() {
         mStateTimer = 0;
         unk_62e0 = 0x10;
         if (func_ov006_020d8c88() != 0) {
-            unk_62f4 = 1;
+            mBg2State = 1;
             Sound::PlayBank2_2D(0x1dd);
         }
         return;

@@ -21,9 +21,10 @@
  * defer_codegen off`. Do not reorder.
  *
  * Still raw: the func_ and data_ helpers are unnamed in symbols.txt. The
- * targets at 0x5bcc, the effects at 0x5958, the score popups at 0x4cf0,
- * the scrolling background at 0x5bfc and the pipes at 0x4ea0 are padding
- * in the header, so they are reached by offset. Shot and ball fields go
+ * targets at 0x5bcc, the effects at 0x5958 and the scrolling background at
+ * 0x5bfc are padding in the header, so they are reached by offset; so are
+ * the pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset macros, which
+ * take a pre-scaled offset rather than an index. Shot and ball fields go
  * through `p + i * 0x38`: indexing mShot[i]/mBall[i] is one word different,
  * so the multiply forms stay.
  */
@@ -964,15 +965,16 @@ void func_ov006_020fbad4(char *popup)
 // @symbol func_ov006_020fbb2c
 void func_ov006_020fbb2c(char *raw, int idx, unsigned short points)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
     int i;
     char *popup = raw + 0x15c;
     for (i = 0x1d; i >= 0; popup -= 0xc, i--) {
         if (*(unsigned short *)(popup + 0x4cfa) != 0) continue;
-        *(int *)(raw + i * 0xc + 0x4cf0) = *(int *)(raw + idx * 0x14 + 0x5958);
-        *(int *)(raw + i * 0xc + 0x4cf4) = *(int *)(raw + idx * 0x14 + 0x595c);
-        *(unsigned short *)(raw + i * 0xc + 0x4cfa) = 0x30;
-        *(unsigned short *)(raw + 0x4cf8 + i * 0xc) = points;
-        func_ov004_020adb1c(*(unsigned short *)(raw + 0x4cf8 + i * 0xc) + func_ov004_020adbc0());
+        self->mPopup[i].x = *(int *)(raw + idx * 0x14 + 0x5958);
+        self->mPopup[i].y = *(int *)(raw + idx * 0x14 + 0x595c);
+        self->mPopup[i].value = 0x30;
+        self->mPopup[i].timer = points;
+        func_ov004_020adb1c(self->mPopup[i].timer + func_ov004_020adbc0());
         if ((unsigned int)func_ov004_020adbc0() < 0xbb8) return;
         if (PACHINKO(raw)->mPromptEnabled != 0)
             PACHINKO(raw)->mPromptEnabled = 0;
@@ -1201,7 +1203,8 @@ void func_ov006_020fc1b4(char* row, int mode) {
 // @symbol func_ov006_020fc1f8
 int func_ov006_020fc1f8(char* raw, int idx)
 {
-  u16* counter = (u16*)(raw + 0x4eb0 + idx*0x1c);
+    dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
+  u16* counter = &self->mPipe[idx].timer;
   u8* frame = (u8*)(raw + 0x4eb6 + idx*0x1c);
   u16 c = *counter;
   *counter = c + 1;
@@ -1211,24 +1214,22 @@ int func_ov006_020fc1f8(char* raw, int idx)
     *frame = *frame + 1;
     if (*frame >= 8) {
       *frame = 0;
-      *(u8*)(raw + 0x4eba + idx*0x1c) = *(u8*)(raw + 0x4eba + idx*0x1c) + 1;
+      self->mPipe[idx].laps = self->mPipe[idx].laps + 1;
     }
-    *(u8*)(raw + idx*0x1c + 0x4000 + 0xeb5) = data_ov006_0212eb34[*frame];
+    self->mPipe[idx].out = data_ov006_0212eb34[*frame];
   }
   {
-    u8* base = (u8*)(raw + idx*0x1c + 0x4000);
-    if (base[0xeb4] != 0) {
-      base[0xeba] = 0;
+    if (self->mPipe[idx].state != 0) {
+      self->mPipe[idx].laps = 0;
       return 0;
     }
   }
   {
-    u8* laps = (u8*)(raw + 0x4eba);
-    u8 c3 = laps[idx*0x1c];
+    u8 c3 = self->mPipe[idx].laps;
     if (c3 >= 2) {
       c3 = 0;
-      *(u8*)(raw + idx*0x1c + 0x4000 + 0xeb3) = c3;
-      laps[idx*0x1c] = c3;
+      self->mPipe[idx].out2 = c3;
+      self->mPipe[idx].laps = c3;
     }
     return c3;
   }
@@ -1287,55 +1288,56 @@ void func_ov006_020fc2ec(char* raw, int i)
 
 // @symbol func_ov006_020fc500
 void func_ov006_020fc500(char* raw, int i) {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)raw;
     int off = i * 0x1c;
     int y;
 
-    if (*(u8*)(raw + 0x4eb4 + off) != 0) {
-        (*(u16*)(raw + 0x4eb0 + off))++;
-        if (*(u16*)(raw + 0x4eb0 + off) < 4) {
+    if (self->mPipe[i].state != 0) {
+        (self->mPipe[i].timer)++;
+        if (self->mPipe[i].timer < 4) {
             return;
         }
-        *(u16*)(raw + 0x4eb0 + off) = 0;
-        (*(u8*)(raw + 0x4eb6 + off))++;
-        if (*(u8*)(raw + 0x4eb6 + off) >= 3) {
-            *(u8*)(raw + 0x4eb6 + off) = 0;
-            *(u8*)(raw + 0x4eb3 + off) = 2;
-            *(u8*)(raw + 0x4eb4 + off) = 0;
+        self->mPipe[i].timer = 0;
+        (self->mPipe[i].frame)++;
+        if (self->mPipe[i].frame >= 3) {
+            self->mPipe[i].frame = 0;
+            self->mPipe[i].out2 = 2;
+            self->mPipe[i].state = 0;
             return;
         }
-        *(u8*)(raw + 0x4eb5 + off) = data_ov006_0212eb0c[*(u8*)(raw + 0x4eb6 + off)];
+        self->mPipe[i].out = data_ov006_0212eb0c[self->mPipe[i].frame];
         return;
     }
 
-    (*(u16*)(raw + 0x4eb0 + off))++;
-    if (*(u16*)(raw + 0x4eb0 + off) >= 4) {
-        *(u16*)(raw + 0x4eb0 + off) = 0;
-        (*(u8*)(raw + 0x4eb6 + off))++;
-        if (*(u8*)(raw + 0x4eb6 + off) >= 6) {
-            *(u8*)(raw + 0x4eb6 + off) = 0;
+    (self->mPipe[i].timer)++;
+    if (self->mPipe[i].timer >= 4) {
+        self->mPipe[i].timer = 0;
+        (self->mPipe[i].frame)++;
+        if (self->mPipe[i].frame >= 6) {
+            self->mPipe[i].frame = 0;
         }
-        *(u8*)(raw + 0x4eb5 + off) = data_ov006_0212eb14[*(u8*)(raw + 0x4eb6 + off)];
+        self->mPipe[i].out = data_ov006_0212eb14[self->mPipe[i].frame];
     }
 
-    *(s32*)(raw + 0x4ea0 + off) = *(s32*)(raw + 0x4ea0 + off) + *(s32*)(raw + 0x4ea8 + off);
-    y = *(s32*)(raw + 0x4ea0 + off) >> 0xc;
+    self->mPipe[i].acc = self->mPipe[i].acc + self->mPipe[i].vel;
+    y = self->mPipe[i].acc >> 0xc;
     if (y <= data_ov006_0212eb50[i + 2]) {
-        if (*(s32*)(raw + 0x4ea8 + off) <= -0x800) {
-            *(s32*)(raw + 0x4ea8 + off) = *(s32*)(raw + 0x4ea8 + off) + 0x80;
+        if (self->mPipe[i].vel <= -0x800) {
+            self->mPipe[i].vel = self->mPipe[i].vel + 0x80;
         }
     } else {
-        *(s32*)(raw + 0x4ea8 + off) = *(s32*)(raw + 0x4ea8 + off) - 0x80;
+        self->mPipe[i].vel = self->mPipe[i].vel - 0x80;
     }
 
     if (y > data_ov006_0212eb50[i]) {
         return;
     }
-    *(s32*)(raw + 0x4ea0 + off) = data_ov006_0212eb50[i] << 0xc;
-    *(s32*)(raw + 0x4ea8 + off) = 0x1000;
-    (*(u8*)(raw + 0x4eb4 + off))++;
-    *(u16*)(raw + 0x4eb0 + off) = 0;
-    *(u8*)(raw + 0x4eb6 + off) = 0;
-    *(u8*)(raw + 0x4eb5 + off) = data_ov006_0212eb0c[0];
+    self->mPipe[i].acc = data_ov006_0212eb50[i] << 0xc;
+    self->mPipe[i].vel = 0x1000;
+    (self->mPipe[i].state)++;
+    self->mPipe[i].timer = 0;
+    self->mPipe[i].frame = 0;
+    self->mPipe[i].out = data_ov006_0212eb0c[0];
 }
 
 #pragma push
@@ -1601,19 +1603,20 @@ void func_ov006_020fcd8c(char *thiz, int idx) {
 // @symbol func_ov006_020fce04
 void func_ov006_020fce04(char *c, int i)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)c;
     int k = i * 0x38;
-    unsigned short *cnt = (unsigned short *)(c + 0x4688 + k);
+    unsigned short *cnt = &self->mBall[i].timer;
     if (*cnt != 0) {
         *cnt = *cnt - 1;
         if (*cnt != 0)
             return;
         func_ov006_020fb8fc(c,
-                            *(int *)(c + 0x4660 + k),
-                            *(int *)(c + k + 0x4000 + 0x664),
+                            self->mBall[i].x,
+                            self->mBall[i].y,
                             2,
                             data_ov006_0213d954[0],
                             0);
-        func_02012718(0x18b, *(int *)(c + 0x4660 + k));
+        func_02012718(0x18b, self->mBall[i].x);
         return;
     }
     *(unsigned char *)((c + k) + 0x4000 + 0x68c) = 0;
@@ -1623,26 +1626,27 @@ void func_ov006_020fce04(char *c, int i)
 // @symbol func_ov006_020fcec4
 void func_ov006_020fcec4(char *c, int i)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)c;
     int n = i * 0x38;
     int x;
     int y;
     int f;
     short sv;
 
-    *(int *)(c + 0x4660 + n) += *(int *)(c + 0x4668 + n);
-    *(int *)(c + 0x4664 + n) += *(int *)(c + 0x466c + n);
-    *(unsigned short *)(c + 0x4684 + n) += 0x800;
-    if (*(int *)(c + 0x4678 + n) <= 0x30000) {
-        *(int *)(c + 0x4678 + n) += 0x800;
+    self->mBall[i].x += self->mBall[i].unk08;
+    self->mBall[i].y += self->mBall[i].unk0c;
+    self->mBall[i].unk24 += 0x800;
+    if (self->mBall[i].unk18 <= 0x30000) {
+        self->mBall[i].unk18 += 0x800;
     }
-    sv = data_02082214[(*(unsigned short *)(c + 0x4684 + n) >> 4) * 2 + 1];
-    *(int *)(c + 0x4670 + n) = (int)(((long long)sv * *(int *)(c + 0x4678 + n) + 0x800) >> 12);
-    sv = data_02082214[(*(unsigned short *)(c + 0x4684 + n) >> 4) * 2];
-    *(int *)(c + 0x4674 + n) = (int)(((long long)sv * *(int *)(c + 0x4678 + n) + 0x800) >> 12);
+    sv = data_02082214[(self->mBall[i].unk24 >> 4) * 2 + 1];
+    self->mBall[i].unk10 = (int)(((long long)sv * self->mBall[i].unk18 + 0x800) >> 12);
+    sv = data_02082214[(self->mBall[i].unk24 >> 4) * 2];
+    self->mBall[i].unk14 = (int)(((long long)sv * self->mBall[i].unk18 + 0x800) >> 12);
 
-    x = (*(int *)(c + 0x4660 + n) + *(int *)(c + 0x4670 + n)) >> 12;
-    y = (*(int *)(c + 0x4664 + n) + *(int *)(c + 0x4674 + n)) >> 12;
-    *(int *)(c + 0x467c + n) = Sound_PlayIfNotActive(*(int *)(c + 0x467c + n), 2, 0x187, 0);
+    x = (self->mBall[i].x + self->mBall[i].unk10) >> 12;
+    y = (self->mBall[i].y + self->mBall[i].unk14) >> 12;
+    self->mBall[i].unk1c = Sound_PlayIfNotActive(self->mBall[i].unk1c, 2, 0x187, 0);
     f = 0;
     if (x >= 0x130 || x <= -0x30) {
         f++;
@@ -1651,8 +1655,8 @@ void func_ov006_020fcec4(char *c, int i)
         f++;
     }
     if (f != 0) {
-        *(unsigned char *)(c + 0x468c + n) = 0;
-        *(unsigned char *)(c + 0x468d + n) = 0;
+        self->mBall[i].active = 0;
+        self->mBall[i].unk2d = 0;
     }
 }
 
@@ -1695,22 +1699,23 @@ void func_ov006_020fd088(char *self, int idx)
 // @symbol func_ov006_020fd17c
 void func_ov006_020fd17c(char *c, int i)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)c;
     unsigned short t;
     int lim;
 
-    if (*(unsigned short *)(c + i * 0x38 + 0x4688) != 0)
+    if (self->mBall[i].timer != 0)
     {
-        (*(unsigned short *)(c + 0x4688 + i * 0x38))--;
-        if (*(unsigned short *)(c + 0x4688 + i * 0x38) == 0)
+        (self->mBall[i].timer)--;
+        if (self->mBall[i].timer == 0)
         {
-            func_02012718(0x185, *(int *)(c + i * 0x38 + 0x4660));
+            func_02012718(0x185, self->mBall[i].x);
         }
     }
 
-    *(int *)(c + 0x4660 + i * 0x38) += *(int *)(c + 0x4668 + i * 0x38);
-    *(int *)(c + 0x4664 + i * 0x38) += *(int *)(c + 0x466c + i * 0x38);
+    self->mBall[i].x += self->mBall[i].unk08;
+    self->mBall[i].y += self->mBall[i].unk0c;
 
-    t = *(unsigned short *)(c + 0x5c28);
+    t = self->unk_5c28;
     if (t > 12)
     {
         lim = 0xd80 + ((t - 12) << 7);
@@ -1720,18 +1725,18 @@ void func_ov006_020fd17c(char *c, int i)
         lim = 0x600 + t * 0xa0;
     }
 
-    if (*(int *)(c + 0x466c + i * 0x38) <= lim)
+    if (self->mBall[i].unk0c <= lim)
     {
-        *(int *)(c + 0x466c + i * 0x38) += t * 4 + 8;
+        self->mBall[i].unk0c += t * 4 + 8;
     }
 
     func_ov006_020fdaf0(c, i);
     func_ov006_020fca1c(c, i);
     func_ov006_020fc9b0(c, i);
 
-    *(unsigned short *)(c + 0x4686 + i * 0x38) =
-        _ZN4cstd5atan2E5Fix12IiES1_(*(int *)(c + 0x466c + i * 0x38), *(int *)(c + 0x4668 + i * 0x38));
-    *(unsigned short *)((unsigned int)c + i * 0x38 + 0x4684) = *(unsigned short *)(c + 0x4686 + i * 0x38) - 0x4000;
+    self->mBall[i].angle =
+        _ZN4cstd5atan2E5Fix12IiES1_(self->mBall[i].unk0c, self->mBall[i].unk08);
+    self->mBall[i].unk24 = self->mBall[i].angle - 0x4000;
 
     func_ov006_020fcb4c(c, i);
 }
@@ -1739,32 +1744,33 @@ void func_ov006_020fd17c(char *c, int i)
 // @symbol func_ov006_020fd2d8
 void func_ov006_020fd2d8(char *o, int i)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     int idx;
     func_ov006_020fcd8c(o, i);
     idx = i * 0x38;
     if (*(unsigned char *)(o + 0x4690 + idx) == 0)
     {
         *(unsigned char *)(o + 0x4690 + idx) += 1;
-        if (*(unsigned short *)(o + 0x5c28) > 0xc)
+        if (self->unk_5c28 > 0xc)
         {
             *(int *)(ATI(o, idx) + 0x466c) =
                 ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf) << 7) + 0xb80
-                + ((*(unsigned short *)(o + 0x5c28) - 0xc) << 7);
+                + ((self->unk_5c28 - 0xc) << 7);
         }
         else
         {
             *(int *)(ATU(o, idx) + 0x466c) =
-                *(unsigned short *)(o + 0x5c28) * 0xa0
+                self->unk_5c28 * 0xa0
                 + (((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf) << 7) + 0x400);
         }
         if ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1) >> 0xf) != 0)
         {
-            *(int *)(o + idx + 0x4668) = (*(unsigned short *)(o + 0x5c28) << 7) + 0x600;
+            *(int *)(o + idx + 0x4668) = (self->unk_5c28 << 7) + 0x600;
             *(unsigned char *)(o + idx + 0x4691) = 0;
         }
         else
         {
-            *(int *)(o + idx + 0x4668) = -((*(unsigned short *)(o + 0x5c28) << 7) + 0x600);
+            *(int *)(o + idx + 0x4668) = -((self->unk_5c28 << 7) + 0x600);
             *(unsigned char *)(o + idx + 0x4691) = 0;
         }
         *(unsigned short *)((ATI(o, 0) + idx) + 0x4688) =
@@ -1872,10 +1878,10 @@ void func_ov006_020fd2d8(char *o, int i)
                     *(unsigned short *)(o + 0x4684 + idx) -= 0x80;
                     if (*(short *)(o + 0x4684 + idx) <= -0x1800)
                         *(unsigned short *)(o + 0x4684 + idx) = 0xe800;
-                    if (*vel >= (*(unsigned short *)(o + 0x5c28) << 7) + 0x600)
+                    if (*vel >= (self->unk_5c28 << 7) + 0x600)
                     {
                         *(unsigned char *)(o + 0x4691 + idx) = 0;
-                        *vel = (*(unsigned short *)(o + 0x5c28) << 7) + 0x600;
+                        *vel = (self->unk_5c28 << 7) + 0x600;
                         *(unsigned short *)(o + 0x4688 + idx) =
                             ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 3) + 0x10;
                     }
@@ -1886,10 +1892,10 @@ void func_ov006_020fd2d8(char *o, int i)
                     *(unsigned short *)(o + 0x4684 + idx) += 0x80;
                     if (*(short *)(o + 0x4684 + idx) >= 0x1800)
                         *(short *)(o + 0x4684 + idx) = 0x1800;
-                    if (*vel <= -((*(unsigned short *)(o + 0x5c28) << 7) + 0x600))
+                    if (*vel <= -((self->unk_5c28 << 7) + 0x600))
                     {
                         *(unsigned char *)(o + 0x4691 + idx) = 0;
-                        *vel = -((*(unsigned short *)(o + 0x5c28) << 7) + 0x600);
+                        *vel = -((self->unk_5c28 << 7) + 0x600);
                         *(unsigned short *)(o + 0x4688 + idx) =
                             ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 3) + 0x10;
                     }
@@ -1903,25 +1909,26 @@ void func_ov006_020fd2d8(char *o, int i)
 // @symbol func_ov006_020fd894
 void func_ov006_020fd894(char *o, int i)
 {
-    if (*(unsigned char *)(o + 0x4690 + i * 0x38) == 0)
+    dScMgPachinko_c *self = (dScMgPachinko_c *)o;
+    if (self->mBall[i].unk30 == 0)
     {
-        *(unsigned char *)(o + 0x4690 + i * 0x38) += 1;
-        if (*(unsigned short *)(o + 0x5c28) > 0xc)
+        self->mBall[i].unk30 += 1;
+        if (self->unk_5c28 > 0xc)
         {
-            *(int *)(o + i * 0x38 + 0x466c) =
+            self->mBall[i].unk0c =
                 ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf) << 7) + 0xb80
-                + ((*(unsigned short *)(o + 0x5c28) - 0xc) << 7);
+                + ((self->unk_5c28 - 0xc) << 7);
         }
         else
         {
-            *(int *)(o + i * 0x38 + 0x466c) =
-                *(unsigned short *)(o + 0x5c28) * 0xa0
+            self->mBall[i].unk0c =
+                self->unk_5c28 * 0xa0
                 + (((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 3) >> 0xf) << 7) + 0x400);
         }
     }
     else
     {
-        *(int *)(o + 0x4664 + i * 0x38) += *(int *)(o + i * 0x38 + 0x466c);
+        self->mBall[i].y += self->mBall[i].unk0c;
     }
     func_ov006_020fcd8c(o, i);
     func_ov006_020fdaf0(o, i);
@@ -2422,23 +2429,24 @@ void func_ov006_020fe750(char* c, int idx)
 // @symbol func_ov006_020fe90c
 void func_ov006_020fe90c(char* base, int i)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)base;
     int n = i * 0x38;
     s16 t;
     u16 v;
-    *(int*)(base + 0x4ef8 + n) = *(int*)(base + 0x4ef8 + n) + *(int*)(base + 0x4efc + n);
-    *(int*)(base + 0x4efc + n) = *(int*)(base + 0x4efc + n) + 0x10;
-    *(int*)(base + 0x4ed8 + n) = *(int*)(base + 0x4ed8 + n)
-        + (int)(((s64)data_02082214[((*(u16*)(base + 0x4f08 + n) >> 4) << 1) + 1] * 0x800 + 0x800) >> 0xc);
-    t = data_02082214[(*(u16*)(base + 0x4f08 + n) >> 4) << 1];
-    *(int*)(base + 0x4edc + n) = *(int*)(base + 0x4edc + n)
-        + (int)(((s64)t * *(int*)(base + 0x4ef8 + n) + 0x800) >> 0xc);
-    v = *(u16*)(base + 0x4f0a + n);
+    self->mShot[i].speed = self->mShot[i].speed + self->mShot[i].unk24;
+    self->mShot[i].unk24 = self->mShot[i].unk24 + 0x10;
+    self->mShot[i].x = self->mShot[i].x
+        + (int)(((s64)data_02082214[((self->mShot[i].angle >> 4) << 1) + 1] * 0x800 + 0x800) >> 0xc);
+    t = data_02082214[(self->mShot[i].angle >> 4) << 1];
+    self->mShot[i].y = self->mShot[i].y
+        + (int)(((s64)t * self->mShot[i].speed + 0x800) >> 0xc);
+    v = self->mShot[i].timer;
     if (v != 0) {
-        *(s16*)(base + 0x4f0a + n) = v - 1;
-        if (*(s16*)(base + 0x4f0a + n) < 0)
-            *(s16*)(base + 0x4f0a + n) = 0;
+        self->mShot[i].timer = v - 1;
+        if ((s16)self->mShot[i].timer < 0)
+            self->mShot[i].timer = 0;
     } else {
-        *(unsigned char*)(base + 0x4f0d + n) = 4;
+        self->mShot[i].state = 4;
     }
 }
 
@@ -2451,15 +2459,16 @@ void func_ov006_020fea54(char *p, int idx) {
 // @symbol func_ov006_020fea70
 void func_ov006_020fea70(char *o)
 {
+    dScMgPachinko_c *self = (dScMgPachinko_c *)o;
     int i;
     char *p;
 
-    if (*(unsigned short *)(o + 0x5c1c) == 0)
+    if (self->unk_5c1c == 0)
         return;
-    *(unsigned short *)(o + 0x5c1c) -= 1;
-    if (*(short *)(o + 0x5c1c) > 0)
+    self->unk_5c1c -= 1;
+    if ((short)self->unk_5c1c > 0)
         return;
-    *(unsigned short *)(o + 0x5c1c) = 0;
+    self->unk_5c1c = 0;
 
     p = o;
     for (i = 0; i < 0x30; i++)
@@ -2480,7 +2489,7 @@ void func_ov006_020fea70(char *o)
             *(unsigned char *)(p + 0xf0f) = 0;
             *(int *)(p + 0xee0) = 0;
             *(int *)(p + 0xee4) = 0;
-            *(unsigned short *)(o + i * 0x38 + 0x4f0a) = 0;
+            self->mShot[i].timer = 0;
             *(int *)(p + 0xf00) = 0;
             *(int *)(p + 0xf04) = 4;
             *(unsigned char *)(o + 0x5c2f) = (unsigned char)(i + 1);
@@ -2499,10 +2508,11 @@ void func_ov006_020fea70(char *o)
 // @symbol func_ov006_020feba8
 void func_ov006_020feba8(char *self)
 {
+    dScMgPachinko_c *scene = (dScMgPachinko_c *)self;
     int i, j, k, l, m, n;
     char *p, *q, *r, *s, *t, *u;
 
-    *(int *)(self + 0x5c10) = 0;
+    scene->unk_5c10 = 0;
 
     p = self;
     for (i = 0; i < 30; i++) {
@@ -2569,17 +2579,17 @@ void func_ov006_020feba8(char *self)
     *(char *)(self + 0x5bc6) = 0;
     *(char *)(self + 0x5bc8) = 0;
     *(char *)(self + 0x5bc7) = 0;
-    *(short *)(self + 0x5c18) = 0;
+    scene->unk_5c18 = 0;
     *(short *)(self + 0x5c22) = 0;
     *(short *)(self + 0x5c1e) = 0;
     *(char *)(self + 0x5c30) = 0;
-    *(char *)(self + 0x5c31) = 0;
+    scene->unk_5c31 = 0;
     *(char *)(self + 0x5c32) = 0;
-    *(short *)(self + 0x5c24) = 0;
+    scene->unk_5c24 = 0;
     *(char *)(self + 0x5c34) = 0;
-    *(short *)(self + 0x5c26) = 0;
-    *(short *)(self + 0x5c28) = 0;
-    *(short *)(self + 0x5c2a) = 0;
+    scene->unk_5c26 = 0;
+    scene->unk_5c28 = 0;
+    scene->unk_5c2a = 0;
     *(short *)(self + 0x5c20) = 0;
 
     func_ov004_020adb1c(0);
@@ -2638,25 +2648,25 @@ s32 dScMgPachinko_c::Behavior()
 {
     char *c = (char *)this;
 
-    switch (*(s32 *)(c + 0x5c10)) {
+    switch (unk_5c10) {
     case 0:
         FreeGfxSlotsById(0x1d);
         func_ov006_020feba8(c);
         func_ov006_020fc844((u8 *)c);
         func_ov006_020fae90((u8 *)c);
-        *(s32 *)(c + 0x5c10) = 1;
-        *(u16 *)(c + 0x5c1c) = 0x10;
-        *(u16 *)(c + 0x5c24) = 0x60;
+        unk_5c10 = 1;
+        unk_5c1c = 0x10;
+        unk_5c24 = 0x60;
         break;
     case 1:
-        if (*(u8 *)(c + 0xc4) == 0) {
-            *(u8 *)(c + 0xc3) = 1;
-            *(u8 *)(c + 0xc4) = 1;
-            *(u16 *)(c + 0xc0) = 0;
+        if (mPromptBlinkCount == 0) {
+            mPromptEnabled = 1;
+            mPromptBlinkCount = 1;
+            mPromptBlinkTimer = 0;
         }
-        if (*(u16 *)(c + 0x5c2a) != 0) {
+        if (unk_5c2a != 0) {
             func_ov006_020fb7e0(c);
-            (*(u16 *)(c + 0x5c2a))--;
+            unk_5c2a--;
         } else {
             func_ov006_020fdd40(this);
             func_ov006_020fe2bc(c);
@@ -2672,11 +2682,11 @@ s32 dScMgPachinko_c::Behavior()
         }
         break;
     case 2:
-        if (*(u16 *)(c + 0x5c18) != 0) {
-            (*(u16 *)(c + 0x5c18))--;
-            if (*(s16 *)(c + 0x5c18) <= 0) {
+        if (unk_5c18 != 0) {
+            unk_5c18--;
+            if ((s16)unk_5c18 <= 0) {
                 func_ov004_020b0a54(0x10);
-                *(u8 *)(c + 0xc3) = 0;
+                mPromptEnabled = 0;
             }
         }
         func_ov006_020fb7e0(c);
@@ -2804,10 +2814,10 @@ s32 dScMgPachinko_c::InitResources()
     func_ov006_020fae90((u8 *)c);
     func_ov004_020b04d0(0x20);
 
-    *(int *)(c + 0xa4) = 1;
-    *(u16 *)(c + 0x5c1c) = 0x10;
-    *(u16 *)(c + 0x5c24) = 0x60;
-    *(int *)(c + 0x5c10) = 1;
-    *(int *)(c + 0xa4) = 1;
+    unk_0a4 = 1;
+    unk_5c1c = 0x10;
+    unk_5c24 = 0x60;
+    unk_5c10 = 1;
+    unk_0a4 = 1;
     return 1;
 }

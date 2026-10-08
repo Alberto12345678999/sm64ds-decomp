@@ -171,8 +171,8 @@ struct dScMgBomroom_c : dScMgBase_c {
     u8  pad_62ec[0x2];       /* 0x62ec */
     u16 unk_62ee;            /* 0x62ee */
     u16 unk_62f0;            /* 0x62f0 -- delay waited out before state dispatch */
-    u16 unk_62f2;            /* 0x62f2 -- BG2-settle wait count, state 2 */
-    u8  unk_62f4;            /* 0x62f4 */
+    u16 mBg2Hold;            /* 0x62f2 -- frames BG2 stays raised (state 2) */
+    u8  mBg2State;           /* 0x62f4 -- BG2: 0 idle, 1 raising, 2 holding/lowering */
     u8  mWinColor;           /* 0x62f5 -- color that filled its pen */
     u8  mHeldColor;          /* 0x62f6 -- held bomb's color, 0xff = nothing held */
     u8  unk_62f7;            /* 0x62f7 */

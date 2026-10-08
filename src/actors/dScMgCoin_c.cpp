@@ -209,18 +209,16 @@ extern "C" dScMgCoin_c *_ZN11dScMgCoin_cD0Ev(dScMgCoin_c *thiz)
 #pragma opt_propagation off
 void dScMgCoin_c::func_ov006_020dbe9c()
 {
-    char *c = (char *)this;
-    char *s = c + 0x5000;
 
-    if (*(u8 *)(s + 0x1bd) == 0)
+    if (mBouncer.shown == 0)
         return;
     {
-        u16 idx_h = *(u16 *)(c + 0x5100 + 0xb8);
-        s32 xr = *(s32 *)(s + 0x1a8);
-        s32 yr = *(s32 *)(s + 0x1ac);
+        u16 idx_h = mBouncer.spin;
+        s32 xr = mBouncer.x;
+        s32 yr = mBouncer.y;
         int i = (idx_h >> 4) * 2;
         int vec[4];
-        u8 idx_l = *(u8 *)(s + 0x1be);
+        u8 idx_l = mBouncer.sprite;
 
         vec[0] = FX_MUL(data_02082214[i + 1], 0x1000);
         vec[1] = FX_MUL(data_02082214[i], 0x1000);
@@ -581,12 +579,11 @@ void dScMgCoin_c::func_ov006_020dc960(int index)
     /* Two strides, 0x18 and 0x10. The struct form keeps 0x18 alive
        past the coin and pushes a register. */
     char *coin = raw + index * 0x18;
-    char *popup = raw + index * 0x10;
-    *(int *)(popup + 0x5014) = *(int *)(coin + 0x4ac0);
-    *(int *)(popup + 0x5018) = *(int *)(coin + 0x4ac4);
-    *(short *)(popup + 0x501e) = *(unsigned char *)(coin + 0x4ad3);
-    *(unsigned char *)(popup + 0x5020) = 1;
-    *(short *)(popup + 0x501c) = 0x18;
+    mPopups[index].x = mCoins[index].x;
+    mPopups[index].y = mCoins[index].y;
+    mPopups[index].value = mCoins[index].value;
+    mPopups[index].live = 1;
+    mPopups[index].timer = 0x18;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dc99cEv
@@ -817,7 +814,7 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
     int stars;
     int need;
 
-    if (*(int *)(self + 0x5000 + 0x1c8) != 2)
+    if (unk_51c8 != 2)
         return;
 
     i = gActivePlayerSlot;
@@ -858,8 +855,8 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
 
     this->func_ov006_020dcb1c(idx);
     *(u8 *)(self + idx * 0x18 + 0x4000 + 0xad2) = 0;
-    *(int *)(self + 0x5000 + 0x1c8) = 3;
-    *(int *)(self + 0x5000 + 0x1cc) = 0x40;
+    unk_51c8 = 3;
+    mCountdown = 0x40;
 
     ang = (*p0 >> 12) - 0x80;
     ang >>= 1;
@@ -872,11 +869,11 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
     stars = (data_ov004_020beb68 != 0) ? *(int *)((char *)data_ov004_020beb68 + 0xa8) : 0;
-    need = *(int *)(self + 0x5000 + 0x1d4);
+    need = unk_51d4;
     if (stars > need)
-        *(u8 *)(self + 0x5000 + 0x1db) = 1;
+        unk_51db = 1;
     else
-        *(u8 *)(self + 0x5000 + 0x1db) = 0;
+        unk_51db = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dd2ccEv
@@ -946,13 +943,13 @@ void dScMgCoin_c::func_ov006_020dd4b0(int id)
         if (*(unsigned char *)(p + 0x4677) != 0 &&
             *(unsigned char *)(p + 0x4675) == 4 &&
             id == *(unsigned char *)(p + 0x467b)) {
-            int v = *(int *)(base + id * 0x18 + 0x4ac4);
-            *(int *)(base + i * 0x1c + 0x4664) = v - 0x20000;
-            *(unsigned char *)(base + i * 0x1c + 0x4676) = 1;
-            *(unsigned char *)(base + i * 0x1c + 0x4675) = 5;
-            *(int *)(base + i * 0x1c + 0x466c) = -0x4800;
-            *(short *)(base + i * 0x1c + 0x4670) = 0;
-            int w = (*(int *)(base + id * 0x18 + 0x4ac0) >> 12) - 0x80;
+            int v = mCoins[id].y;
+            mBlocks[i].y = v - 0x20000;
+            mBlocks[i].unk16 = 1;
+            mBlocks[i].state = 5;
+            mBlocks[i].vy = -0x4800;
+            mBlocks[i].delay = 0;
+            int w = (mCoins[id].x >> 12) - 0x80;
             int r = w >> 1;
             if (r >= 0x3c) r = 0x3c;
             if (r <= -0x3c) r = -0x3c;
@@ -1016,18 +1013,17 @@ extern "C" void func_ov004_020adfc4(int a, int b, struct Pair_dd658 *p2, struct 
 
 void dScMgCoin_c::func_ov006_020dd658(int i)
 {
-    char *self = (char *)this;
     int n = i * 0x1c;
-    int old466c;
+    int oldVy;
     struct Pair_dd658 pa;
     struct Pair_dd658 pb;
 
-    old466c = *(s32 *)(self + 0x466c + n);
-    *(s32 *)(self + 0x4664 + n) += old466c;
-    *(s32 *)(self + 0x466c + n) += 0x600;
+    oldVy = mBlocks[i].vy;
+    mBlocks[i].y += oldVy;
+    mBlocks[i].vy += 0x600;
 
-    if (old466c <= 0 && *(s32 *)(self + 0x466c + n) >= 0) {
-        int v = ((*(s32 *)(self + 0x4660 + n) >> 12) - 0x80) >> 1;
+    if (oldVy <= 0 && mBlocks[i].vy >= 0) {
+        int v = ((mBlocks[i].x >> 12) - 0x80) >> 1;
         if (v >= 0x3c)
             v = 0x3c;
         if (v <= -0x3c)
@@ -1036,21 +1032,21 @@ void dScMgCoin_c::func_ov006_020dd658(int i)
     }
 
     {
-        int y = *(s32 *)(self + 0x4664 + n) >> 12;
-        u8 idx = *(u8 *)(self + 0x4674 + n);
-        if (*(s32 *)(self + 0x466c + n) < 0)
+        int y = mBlocks[i].y >> 12;
+        u8 idx = mBlocks[i].row;
+        if (mBlocks[i].vy < 0)
             return;
         if (y <= data_ov006_0212e418[idx] - 0x20)
             return;
 
-        *(u8 *)(self + 0x4675 + n) = 4;
-        *(u8 *)(self + 0x4676 + n) = 0;
-        *(u8 *)(self + 0x4677 + n) = 0;
-        (*(u16 *)(self + 0x4d08))++;
+        mBlocks[i].state = 4;
+        mBlocks[i].unk16 = 0;
+        mBlocks[i].unk17 = 0;
+        mScore.total++;
 
         {
-            int v1 = *(s32 *)(self + 0x4664 + n);
-            int v0 = *(s32 *)(self + 0x4660 + n);
+            int v1 = mBlocks[i].y;
+            int v0 = mBlocks[i].x;
             pb.a = 0x6c000;
             pb.b = -0x80000;
             pa.a = v0;
@@ -1075,7 +1071,6 @@ void dScMgCoin_c::func_ov006_020dd7c0(int index)
     int new_var;
     int *pa = (int *)((thiz + 0x466c) + off);
     int *pb = (int *)((thiz + 0x4664) + off);
-    char *f = (thiz + off) + 0x4000;
     *pb = (*pb) + (*((int *)((thiz + 0x466c) + off)));
     *((int *)((thiz + 0x466c) + off)) = (*pa) + 0x400;
     new_var = 0x674;
@@ -1167,22 +1162,18 @@ void dScMgCoin_c::func_ov006_020dda94(int i)
 {
     char *self = (char *)this;
     int n = i * 0x1c;
-    char *pA = self + 0x4660;
     char *fp;
-    char *pD = self + 0x466c;
-    char *pB = self + 0x4664;
-    char *pC = self + 0x4668;
 
-    *(s32 *)(pA + n) += *(s32 *)(pC + n);
-    *(s32 *)(pB + n) += *(s32 *)(pD + n);
-    *(s32 *)(pD + n) += 0x400;
+    mBlocks[i].x += mBlocks[i].vx;
+    mBlocks[i].y += mBlocks[i].vy;
+    mBlocks[i].vy += 0x400;
 
     this->func_ov006_020ddcf8(i);
 
     {
-        u8 g = *(u8 *)(self + 0x4679 + n);
-        int y = *(s32 *)(pB + n) >> 12;
-        u8 h = *(u8 *)(self + 0x467a + n);
+        u8 g = mBlocks[i].hops;
+        int y = mBlocks[i].y >> 12;
+        u8 h = mBlocks[i].stage;
 
         if (g != 0) {
             int rnd, idx, a, v;
@@ -1193,33 +1184,33 @@ void dScMgCoin_c::func_ov006_020dda94(int i)
 
             rnd = RandomIntInternal(&data_0209d4b8);
             idx = ((((unsigned)rnd >> 16) & 0x7fff) * 3) >> 15;
-            *(s32 *)(pC + n) = data_ov006_0212e34c[idx];
-            *(s32 *)(pD + n) = -0x2e00;
-            *(s32 *)(pB + n) = (int)fp << 12;
-            *(u8 *)(self + 0x4679 + n) -= 1;
+            mBlocks[i].vx = data_ov006_0212e34c[idx];
+            mBlocks[i].vy = -0x2e00;
+            mBlocks[i].y = (int)fp << 12;
+            mBlocks[i].hops -= 1;
 
-            a = (*(s32 *)(pA + n) >> 12) - 0x80;
+            a = (mBlocks[i].x >> 12) - 0x80;
             v = a >> 1;
             if (v >= 0x3c) v = 0x3c;
             if (v <= -0x3c) v = -0x3c;
             func_020127a4(2, 0x197, 0xffff, v);
 
-            g3 = *(u8 *)(self + 0x4679 + n);
+            g3 = mBlocks[i].hops;
             if (g3 == 0) {
-                *(u8 *)(self + 0x467a + n) += 1;
+                mBlocks[i].stage += 1;
             }
             {
-                u8 hh = *(u8 *)(self + 0x467a + n);
-                u8 e = *(u8 *)(self + 0x4674 + n);
-                if (hh > e) *(u8 *)(self + 0x4675 + n) = 2;
+                u8 hh = mBlocks[i].stage;
+                u8 e = mBlocks[i].row;
+                if (hh > e) mBlocks[i].state = 2;
             }
         } else {
             unsigned r;
-            *(u8 *)(self + 0x4679 + n) = 1;
+            mBlocks[i].hops = 1;
             r = (unsigned)RandomIntInternal(&data_0209d4b8);
             r = (((r >> 16) & 0x7fff) << 3) >> 15;
             if (r == 2 || r == 5) {
-                *(u8 *)(self + 0x4679 + n) += 1;
+                mBlocks[i].hops += 1;
             }
             return;
         }
@@ -1248,17 +1239,16 @@ void dScMgCoin_c::func_ov006_020ddca0(int i)
 /* Keeps a block between x 8 and 0xf8, reversing vx at either wall. */
 void dScMgCoin_c::func_ov006_020ddcf8(int idx)
 {
-    char *c = (char *)this;
-    int *f60 = (int *)(c + 0x4660 + idx * 0x1c);
+    int *f60 = &mBlocks[idx].x;
     int v = *f60 >> 12;
     if (v < 8) {
         *f60 = 0x8000;
-        *(int *)(c + 0x4668 + idx * 0x1c) = -*(int *)(c + 0x4668 + idx * 0x1c);
+        mBlocks[idx].vx = -mBlocks[idx].vx;
         return;
     }
     if (v > 0xf8) {
         *f60 = 0xf8000;
-        *(int *)(c + 0x4668 + idx * 0x1c) = -*(int *)(c + 0x4668 + idx * 0x1c);
+        mBlocks[idx].vx = -mBlocks[idx].vx;
     }
 }
 
@@ -1283,8 +1273,8 @@ void dScMgCoin_c::func_ov006_020ddd6c()
     }
     if (n != 0)
         return;
-    *(int *)(thiz + 0x5000 + 0x1c8) = 2;
-    *(unsigned char *)(thiz + 0x4000 + 0xd13) = 1;
+    unk_51c8 = 2;
+    mScore.running = 1;
     Sound::PlayBank2_2D(0x151);
 }
 
@@ -1388,9 +1378,9 @@ void dScMgCoin_c::func_ov006_020ddf9c()
 
     *((u32 *)(c + 0x4d00)) = 0;
     *((u32 *)(c + 0x4d04)) = 0;
-    *((u16 *)(c + 0x4d08)) = 0;
-    *((u16 *)(c + 0x4d0a)) = 0;
-    *((u16 *)(c + 0x4d0c)) = 0;
+    *(&mScore.total) = 0;
+    *(&mScore.shown) = 0;
+    *(&mScore.tick) = 0;
     *((u8 *)(c + 0x4d13)) = 0;
     p = c;
     for (i3 = 0; i3 < 0x20; i3++) {
@@ -1423,27 +1413,27 @@ void dScMgCoin_c::func_ov006_020ddf9c()
 void dScMgCoin_c::func_ov006_020de0e0()
 {
     char *self = (char *)this;
-    if (*(int *)(self + 0x5000 + 0x1cc) == 0) return;
-    *(int *)(((int)self + 0x51cc)) -= 1;
+    if (mCountdown == 0) return;
+    mCountdown -= 1;
     unsigned int idx = gActivePlayerSlot;
     int flag = 0;
     if (gTouchHeld[idx * 4] != 0) {
         if (gTouchEdge[idx * 4] != 0) flag = 1;
     }
-    if (flag != 0 && *(int *)(self + 0x51cc) <= 0x80) {
-        *(int *)(self + 0x51cc) = 0;
+    if (flag != 0 && mCountdown <= 0x80) {
+        mCountdown = 0;
         Sound::PlayBank2_2D(0x62);
     } else {
-        *(int *)(self + 0x51cc) = 0x80;
+        mCountdown = 0x80;
     }
-    if (*(int *)(self + 0x51cc) > 0) return;
-    *(int *)(self + 0x51cc) = 0;
+    if (mCountdown > 0) return;
+    mCountdown = 0;
     if (*(unsigned char *)(self + 0x51df) != 0) {
         FreeGfxSlotsById(6);
         func_ov004_020ae20c();
     }
     func_ov004_020b0a54(0x10);
-    *(unsigned char *)(self + 0xc3) = 0;
+    mPromptEnabled = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de1d4Ev
@@ -1463,12 +1453,12 @@ void dScMgCoin_c::func_ov006_020de1d4()
         char *o = (char *)data_ov004_020beb68;
         int v = o != 0 ? *(int *)(o + 0xa8) : 0;
         if (v != 0) {
-            *(unsigned char *)(c + 0x51de) = 0;
+            mCaptionLatch = 0;
             this->func_ov006_020dc370();
         }
     }
-    *(int *)(c + 0x51cc) = 0xc0;
-    *(int *)(c + 0x51c8) = 5;
+    mCountdown = 0xc0;
+    unk_51c8 = 5;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de26cEv
@@ -1505,21 +1495,21 @@ void dScMgCoin_c::func_ov006_020de26c()
     this->func_ov006_020dca04();
     if (count != 0) return;
 
-    if (((int *)(self + 0x5000))[0x73] != 0) {
+    if ((&mSparkles[31].y)[0x73] != 0) {
         *(int *)(((long long)(int)(self + 0x51cc))) -= 1;
-        if (((int *)(self + 0x5000))[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] == 0)
+        if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] == 0)
             this->func_ov006_020dc348();
-        if (((int *)(self + 0x5000))[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] != 0) {
+        if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] != 0) {
             func_ov004_020b0cac(6, 0x80, -0x80, -1, -1, 0xd);
             func_ov004_020ae274(0);
         }
-        if (((int *)(self + 0x5000))[0x73] <= 0) ((int *)(self + 0x5000))[0x73] = 0;
+        if ((&mSparkles[31].y)[0x73] <= 0) (&mSparkles[31].y)[0x73] = 0;
         return;
     }
     g = (char *)data_ov004_020beb68;
     func_ov004_020adb1c(g != 0 ? *(int *)(g + 0xa8) : 0);
-    ((int *)(self + 0x5000))[0x73] = 0x70;
-    ((int *)(self + 0x5000))[0x72] = 4;
+    (&mSparkles[31].y)[0x73] = 0x70;
+    (&mSparkles[31].y)[0x72] = 4;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de440Ev
@@ -1539,7 +1529,7 @@ void dScMgCoin_c::func_ov006_020de440()
     }
     this->func_ov006_020dd2cc();
     this->func_ov006_020dca04();
-    if (*(s32 *)(c + 0x51c8) == 3) {
+    if (unk_51c8 == 3) {
         return;
     }
     {
@@ -1558,8 +1548,8 @@ void dScMgCoin_c::func_ov006_020de440()
             return;
         }
     }
-    *(s32 *)(c + 0x51c8) = 3;
-    *(s32 *)(c + 0x51cc) = 0x40;
+    unk_51c8 = 3;
+    mCountdown = 0x40;
     *(u8 *)(c + 0x51df) = 1;
     {
         int t;
@@ -1569,10 +1559,10 @@ void dScMgCoin_c::func_ov006_020de440()
         } else {
             t = 0;
         }
-        if (t > *(s32 *)(c + 0x51d4)) {
-            *(u8 *)(c + 0x51db) = 1;
+        if (t > unk_51d4) {
+            unk_51db = 1;
         } else {
-            *(u8 *)(c + 0x51db) = 0;
+            unk_51db = 0;
         }
     }
 }

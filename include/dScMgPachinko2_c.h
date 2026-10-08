@@ -35,11 +35,105 @@ struct dScMgPachinko2_Ball {
     s16 unk_36;       /* +0x36 */
     u8  unk_38;
     u8  state;        /* +0x39 -- 2 while released, 0 when reset */
-    u8  unk_3a[0x6];
+    u8  unk_3a;
+    u8  unk_3b;
+    u8  unk_3c;
+    u8  unk_3d;
+    u8  unk_3e;
+    u8  pad_3f;
 };
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char dScMgPachinko2_Ball_size_must_be_0x40[sizeof(struct dScMgPachinko2_Ball) == 0x40 ? 1 : -1];
+#endif
+
+/* One of the three paddles. State 0..14 dispatches through
+   data_ov006_02142734; func_ov006_02101148 parks the current motion in
+   home/saved* and later states restore it. */
+struct dScMgPachinko2_Paddle {
+    s32 x;            /* +0x00 -- Fix12 */
+    s32 y;            /* +0x04 */
+    s32 vx;           /* +0x08 */
+    s32 vy;           /* +0x0c */
+    s32 speed;        /* +0x10 */
+    u8  unk_14[0x8];
+    s32 homeX;        /* +0x1c */
+    s32 homeY;        /* +0x20 */
+    s32 savedVx;      /* +0x24 */
+    s32 savedVy;      /* +0x28 */
+    s32 sound;        /* +0x2c -- Sound_PlayIfNotActive handle */
+    s16 angle;        /* +0x30 */
+    u16 timer;        /* +0x32 */
+    u8  active;       /* +0x34 */
+    u8  visible;      /* +0x35 */
+    u8  state;        /* +0x36 */
+    u8  savedState;   /* +0x37 */
+    u8  dir;          /* +0x38 */
+    u8  ballsHeld;    /* +0x39 -- balls caught, dropped back one at a time */
+    u8  swing;        /* +0x3a */
+    u8  unk_3b;
+    u8  hits;         /* +0x3c -- four parks the paddle */
+    u8  flip;         /* +0x3d */
+    u8  pad_3e[0x2];
+};
+
+/* The flash at a paddle catch: four frames from data_ov006_02136bd4, eight
+   ticks each (func_ov006_02100380). */
+struct dScMgPachinko2_HitFx {
+    s32 x;            /* +0x00 */
+    s32 y;            /* +0x04 */
+    s32 unk_08;
+    s32 unk_0c;
+    u16 timer;        /* +0x10 */
+    u8  pad_12[0x2];
+    u8  visible;      /* +0x14 */
+    u8  frame;        /* +0x15 */
+    u8  active;       /* +0x16 */
+    u8  pad_17;
+};
+
+/* The popup a scoring ball throws up: rises, falls, and expires after
+   0x40 ticks (func_ov006_021001ac). */
+struct dScMgPachinko2_ScorePop {
+    s32 x;            /* +0x00 */
+    s32 y;            /* +0x04 */
+    s32 vy;           /* +0x08 */
+    s32 unk_0c;
+    u16 life;         /* +0x10 */
+    u8  pad_12[0x2];
+    u8  active;       /* +0x14 */
+    u8  visible;      /* +0x15 */
+    u8  sprite;       /* +0x16 */
+    u8  falling;      /* +0x17 */
+};
+
+/* One of the two cups. State 0..4 dispatches through data_ov006_021426cc. */
+struct dScMgPachinko2_Cup {
+    s32 x;            /* +0x00 -- Fix12 */
+    s32 y;            /* +0x04 */
+    s32 vx;           /* +0x08 */
+    s32 unk_0c;
+    u16 timer;        /* +0x10 */
+    u8  pad_12[0x2];
+    u8  active;       /* +0x14 */
+    u8  state;        /* +0x15 */
+    u8  phase;        /* +0x16 */
+    u8  frame;        /* +0x17 -- sprite index into data_ov006_02136b80 */
+    u8  animStep;     /* +0x18 */
+    u8  visible;      /* +0x19 */
+    u8  dir;          /* +0x1a */
+    u8  armed;        /* +0x1b */
+    u8  hops;         /* +0x1c */
+    u8  lastMove;     /* +0x1d -- 0xff before the first */
+    u8  repeats;      /* +0x1e */
+    u8  pad_1f;
+};
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char dScMgPachinko2_Paddle_size_must_be_0x40[sizeof(struct dScMgPachinko2_Paddle) == 0x40 ? 1 : -1];
+typedef char dScMgPachinko2_HitFx_size_must_be_0x18[sizeof(struct dScMgPachinko2_HitFx) == 0x18 ? 1 : -1];
+typedef char dScMgPachinko2_ScorePop_size_must_be_0x18[sizeof(struct dScMgPachinko2_ScorePop) == 0x18 ? 1 : -1];
+typedef char dScMgPachinko2_Cup_size_must_be_0x20[sizeof(struct dScMgPachinko2_Cup) == 0x20 ? 1 : -1];
 #endif
 
 struct dScMgPachinko2_c : dScMgBase_c {
@@ -126,13 +220,26 @@ struct dScMgPachinko2_c : dScMgBase_c {
     void func_ov006_0210397c(int i);       /* ball state 6: despawn */
     void func_ov006_02103994(int i);       /* ball state 7 */
 
-    dScMgPachinko2_Ball mBalls[0x40]; /* 0x4660 -- 0x40 x 0x40; see func_ov006_02102fe8 */
+    dScMgPachinko2_Ball     mBalls[0x30];      /* 0x4660 */
+    dScMgPachinko2_Paddle   mPaddles[3];       /* 0x5260 */
+    dScMgPachinko2_HitFx    mHitFx[0x10];      /* 0x5320 */
+    dScMgPachinko2_ScorePop mScorePops[0x10];  /* 0x54a0 */
+    dScMgPachinko2_Cup      mCups[2];          /* 0x5620 */
     s32 unk_5660;            /* 0x5660 -- Behavior switches on it, 0..3 */
-    u8  pad_5664[0x8];
+    s32 mGuideStep;          /* 0x5664 -- func_ov006_02102864 */
+    s32 mLaneConfig;         /* 0x5668 -- 0..5, func_ov006_02100084 */
     u16 unk_566c;            /* 0x566c */
     u16 unk_566e;            /* 0x566e -- set to 0x40; Behavior's case 3 counts it down */
+    u16 unk_5670;            /* 0x5670 */
+    u16 unk_5672;            /* 0x5672 */
+    u16 mCountdown;          /* 0x5674 -- seconds; func_ov006_0210265c */
+    u8  mHeldBall;           /* 0x5676 -- 1 + the ball in the pen, 0 for none */
+    u8  mResult;             /* 0x5677 */
+    u8  mCountdownArmed;     /* 0x5678 */
+    u8  mCountdownTick;      /* 0x5679 -- frames into the current second */
+    u8  mCountdownShown;     /* 0x567a */
     /* the factory allocates 0x567c bytes; see tools/opnew_sizes.py */
-    u8 pad_5670[0xc];
+    u8  pad_567b;
 };
 
 #ifndef SM64DS_PLATFORM_PC

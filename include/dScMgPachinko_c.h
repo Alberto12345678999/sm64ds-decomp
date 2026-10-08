@@ -80,6 +80,53 @@ struct dScMgPachinko_shot {
 typedef char dScMgPachinko_shot_size_must_be_0x38[sizeof(struct dScMgPachinko_shot) == 0x38 ? 1 : -1];
 #endif
 
+/* A score popup: 30 of them at 0x4cf0 (func_ov006_020fbb2c). */
+struct dScMgPachinko_popup {
+    s32 x;              /* 0x00 */
+    s32 y;              /* 0x04 */
+    u16 timer;          /* 0x08 */
+    u16 value;          /* 0x0a */
+};
+
+/* One of the three swinging rows at 0x4e58 (func_ov006_020fa844 swings
+   angle between -0x1000 and 0x1000; dir picks the way). */
+struct dScMgPachinko_row {
+    s32 x;              /* 0x00 */
+    s32 y;              /* 0x04 */
+    u8  pad08[0x8];
+    s16 angle;          /* 0x10 */
+    s16 unk12;          /* 0x12 */
+    u8  active;         /* 0x14 */
+    u8  visible;        /* 0x15 */
+    u8  dir;            /* 0x16 */
+    u8  pad17;
+};
+
+/* The two pipes at 0x4ea0. */
+struct dScMgPachinko_pipe {
+    s32 acc;            /* 0x00 */
+    u8  pad04[0x4];
+    s32 vel;            /* 0x08 */
+    u8  pad0c[0x4];
+    u16 timer;          /* 0x10 */
+    u8  pad12;
+    u8  out2;           /* 0x13 */
+    u8  state;          /* 0x14 */
+    u8  out;            /* 0x15 */
+    u8  frame;          /* 0x16 */
+    u8  unk17;          /* 0x17 */
+    u8  unk18;          /* 0x18 */
+    u8  pad19;
+    u8  laps;           /* 0x1a */
+    u8  pad1b;
+};
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char dScMgPachinko_popup_size_must_be_0xc[sizeof(dScMgPachinko_popup) == 0xc ? 1 : -1];
+typedef char dScMgPachinko_row_size_must_be_0x18[sizeof(dScMgPachinko_row) == 0x18 ? 1 : -1];
+typedef char dScMgPachinko_pipe_size_must_be_0x1c[sizeof(dScMgPachinko_pipe) == 0x1c ? 1 : -1];
+#endif
+
 struct dScMgPachinko_c : dScMgBase_c {
     virtual ~dScMgPachinko_c();
     virtual s32 InitResources();  /* slot 0 */
@@ -88,7 +135,9 @@ struct dScMgPachinko_c : dScMgBase_c {
     virtual void OnYoshiTryEat(int arg);               /* slot 18 */
 
     dScMgPachinko_ball mBall[30];    /* 0x4660, stride 0x38, ends 0x4cf0 */
-    u8  pad_4cf0[0x1e8];
+    dScMgPachinko_popup mPopup[30];  /* 0x4cf0 */
+    dScMgPachinko_row   mRow[3];     /* 0x4e58 */
+    dScMgPachinko_pipe  mPipe[2];    /* 0x4ea0 */
     dScMgPachinko_shot mShot[24];    /* 0x4ed8, stride 0x38; 24 puts the
                                         siblings' own 0x5418 field exactly
                                         one record past the end */

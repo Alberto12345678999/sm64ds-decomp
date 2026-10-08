@@ -270,7 +270,7 @@ void dScMgFlower_c::OnYoshiTryEat(int /* arg */)
     char *raw = (char *)this;
 
     if (mHoldTimer <= 0x14) {
-        (*(volatile int *)(raw + 0x5fe4))++;
+        mHoldTimer++;
     } else {
         mHoldTimer = 0;
     }

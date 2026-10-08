@@ -925,7 +925,6 @@ void dScMgTrampoline2_c::SpawnWave()
    mRamp is written into the particle's byte at +0x58. */
 s32 dScMgTrampoline2_c::Behavior()
 {
-    char *raw = (char *)this;
     int saved = data_ov006_02140830;
 
     func_ov006_02120c40();
@@ -1041,7 +1040,6 @@ int dScMgTrampoline2_c::OnPushed()
 /* OnAttacked2: the vtable slot is this class's own; the name is inferred. */
 int dScMgTrampoline2_c::OnAttacked2()
 {
-    char *raw = (char *)this;
 
     u16 buf[5];
 

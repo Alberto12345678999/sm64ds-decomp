@@ -175,7 +175,7 @@ s32 dScMgSlot1_c::InitResources()
     data_ov004_020bc8b8 = 0x80;
     data_ov004_020bc8b4 = 0x40;
 
-    if (*(int *)(c + 8) & 0xff) {
+    if ((int)param1 & 0xff) {
         unsigned char *tbl = data_ov006_0213ea20;
         char *p = c;
         for (j = 0; j < 3; j++) {
@@ -204,9 +204,9 @@ s32 dScMgSlot1_c::InitResources()
         }
     }
 
-    *(u8 *)(c + 0x4709) = 5;
-    *(int *)(c + 0x46bc) = 0xa;
-    func_ov004_020adb1c(*(int *)(c + 0x46bc));
+    unk_4709 = 5;
+    unk_46bc = 0xa;
+    func_ov004_020adb1c(unk_46bc);
     func_ov006_0210c478(c + 0x4660);
     ((struct Obj *)c)->m48(3);
     func_ov004_020b04d0(0x20);

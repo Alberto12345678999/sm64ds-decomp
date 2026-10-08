@@ -86,7 +86,8 @@ struct dScMgJump_c : dScMgD3DBase_c {
 
     s32   unk_5004;        /* 0x5004 -- written as an { int, int } pair */
     s32   unk_5008;        /* 0x5008 */
-    u8    pad_500c[0x8];   /* 0x500c */
+    s32   mAccum;          /* 0x500c -- gains mAccumStep >> 12 a tick */
+    s32   mAccumStep;      /* 0x5010 -- Fix12 */
     s16   unk_5014;        /* 0x5014 */
     u8    pad_5016[0x6];   /* 0x5016 */
     Model mModel;          /* 0x501c -- 0x50, destroyed last, see banner */

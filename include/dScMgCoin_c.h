@@ -54,6 +54,29 @@ typedef char dScMgCoin_Sparkle_size_must_be_0x18[sizeof(dScMgCoin_Sparkle) == 0x
 #endif
 
 /* The number that pops up over a coin that has just settled. */
+/* One of the 40 blocks that hop down the stages (func_ov006_020dda94).
+   State 1 waits out delay (func_ov006_020ddca0), 2 has passed its own row,
+   4 has landed and scored (func_ov006_020dd658). */
+struct dScMgCoin_Block {
+    s32 x;            /* 0x00 Fix12 */
+    s32 y;            /* 0x04 */
+    s32 vx;           /* 0x08 */
+    s32 vy;           /* 0x0c */
+    s16 delay;        /* 0x10 */
+    u8 pad12[2];      /* 0x12 */
+    u8 row;           /* 0x14 the stage it stops on */
+    u8 state;         /* 0x15 */
+    u8 unk16;         /* 0x16 */
+    u8 unk17;         /* 0x17 */
+    u8 unk18;         /* 0x18 */
+    u8 hops;          /* 0x19 hops left on this stage */
+    u8 stage;         /* 0x1a */
+    u8 unk1b;         /* 0x1b */
+};
+#ifndef SM64DS_PLATFORM_PC
+typedef char dScMgCoin_Block_size_must_be_0x1c[sizeof(dScMgCoin_Block) == 0x1c ? 1 : -1];
+#endif
+
 struct dScMgCoin_Popup {
     s32 x;            /* 0x00 */
     s32 y;            /* 0x04 */
@@ -174,7 +197,7 @@ struct dScMgCoin_c : dScMgBase_c {
     void func_ov006_020de584();
     void func_ov006_020de5ac();
 
-    u8 pad_4660[0x460];                      /* 0x4660 */
+    dScMgCoin_Block mBlocks[40];             /* 0x4660 */
     dScMgCoin_Coin mCoins[24];               /* 0x4ac0 */
     u8 pad_4d00[0x8];                        /* 0x4d00 */
     dScMgCoin_Score mScore;                  /* 0x4d08 */

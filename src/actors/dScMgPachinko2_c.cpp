@@ -285,10 +285,10 @@ void dScMgPachinko2_c::func_ov006_020ff534(int k)
     int *py = (int *)(c + k * 32 + 0x5624);
     for (; i < 0x30; i++) {
         int dx, dy;
-        if (*(unsigned char *)(c + i * 64 + 0x4698) == 0) continue;
-        if (*(unsigned char *)(c + i * 64 + 0x4699) < 3) continue;
-        dx = (*(int *)(c + i * 64 + 0x4660) - *px) >> 12;
-        dy = (*(int *)(c + i * 64 + 0x4664) - *py) >> 12;
+        if (mBalls[i].unk_38 == 0) continue;
+        if (mBalls[i].state < 3) continue;
+        dx = (mBalls[i].x - *px) >> 12;
+        dy = (mBalls[i].y - *py) >> 12;
         if (dx < -0x18) continue;
         if (dx > 0x18) continue;
         if (dy < 0) continue;
@@ -296,21 +296,21 @@ void dScMgPachinko2_c::func_ov006_020ff534(int k)
     }
     if (found == 0) return;
     if ((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16 & 0x7fff) * 2) >> 15) {
-        *(unsigned char *)(c + k * 32 + 0x5635) = 3;
-        *(unsigned char *)(c + k * 32 + 0x5636) = 0;
-        *(int *)(c + k * 32 + 0x5628) = 0x1800;
-        *(unsigned char *)(c + k * 32 + 0x5637) = 0x10;
-        *(unsigned char *)(c + k * 32 + 0x5638) = 0;
-        *(unsigned short *)(c + k * 32 + 0x5630) = 0;
-        *(unsigned char *)(c + k * 32 + 0x563a) = 1;
+        mCups[k].state = 3;
+        mCups[k].phase = 0;
+        mCups[k].vx = 0x1800;
+        mCups[k].frame = 0x10;
+        mCups[k].animStep = 0;
+        mCups[k].timer = 0;
+        mCups[k].dir = 1;
     } else {
-        *(unsigned char *)(c + k * 32 + 0x5635) = 2;
-        *(unsigned char *)(c + k * 32 + 0x5636) = 0;
-        *(int *)(c + k * 32 + 0x5628) = -0x1800;
-        *(unsigned char *)(c + k * 32 + 0x5637) = 0x10;
-        *(unsigned char *)(c + k * 32 + 0x5638) = 0;
-        *(unsigned short *)(c + k * 32 + 0x5630) = 0;
-        *(unsigned char *)(c + k * 32 + 0x563a) = 0;
+        mCups[k].state = 2;
+        mCups[k].phase = 0;
+        mCups[k].vx = -0x1800;
+        mCups[k].frame = 0x10;
+        mCups[k].animStep = 0;
+        mCups[k].timer = 0;
+        mCups[k].dir = 0;
     }
 }
 #pragma pop
@@ -320,7 +320,6 @@ void dScMgPachinko2_c::func_ov006_020ff534(int k)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_020ff690(int n)
 {
-    char *c = (char *)this;
     unsigned int r;
     int flag;
 
@@ -332,38 +331,38 @@ void dScMgPachinko2_c::func_ov006_020ff690(int n)
         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
         if ((((r >> 16) & 0x7fff) << 2) >> 0xf)
         {
-            *(char *)(c + (n << 5) + 0x5000 + 0x635) = 3;
-            *(int *)(c + (n << 5) + 0x5000 + 0x628) = 0x1800;
+            mCups[n].state = 3;
+            mCups[n].vx = 0x1800;
         }
         else
         {
-            *(char *)(c + (n << 5) + 0x5000 + 0x635) = 2;
-            *(int *)(c + (n << 5) + 0x5000 + 0x628) = -0x1800;
+            mCups[n].state = 2;
+            mCups[n].vx = -0x1800;
         }
         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        *(char *)(c + (n << 5) + 0x5000 + 0x63c) = (char)((((r >> 16) & 0x7fff) * 6 >> 0xf) + 1);
+        mCups[n].hops = (char)((((r >> 16) & 0x7fff) * 6 >> 0xf) + 1);
     }
     else
     {
-        *(char *)(c + (n << 5) + 0x5000 + 0x635) = 1;
+        mCups[n].state = 1;
         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        *(char *)(c + (n << 5) + 0x5000 + 0x63c) = (char)((((r >> 16) & 0x7fff) << 1) >> 0xf);
+        mCups[n].hops = (char)((((r >> 16) & 0x7fff) << 1) >> 0xf);
     }
 
     {
-        unsigned int state = *(unsigned char *)(c + (n << 5) + 0x5000 + 0x63d);
+        unsigned int state = mCups[n].lastMove;
         if (state != 0xff)
         {
             if (flag == state)
             {
-                *(unsigned char *)(c + 0x563e + (n << 5)) += 1;
-                if (*(unsigned char *)(c + (n << 5) + 0x5000 + 0x63e) >= 2)
+                mCups[n].repeats += 1;
+                if (mCups[n].repeats >= 2)
                 {
                     if (flag != 0)
                     {
-                        *(char *)(c + (n << 5) + 0x5000 + 0x635) = 1;
+                        mCups[n].state = 1;
                         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
-                        *(char *)(c + (n << 5) + 0x5000 + 0x63c) = (char)((((r >> 16) & 0x7fff) << 1) >> 0xf);
+                        mCups[n].hops = (char)((((r >> 16) & 0x7fff) << 1) >> 0xf);
                         flag = 0;
                     }
                     else
@@ -371,33 +370,33 @@ void dScMgPachinko2_c::func_ov006_020ff690(int n)
                         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
                         if ((((r >> 16) & 0x7fff) << 1) >> 0xf)
                         {
-                            *(char *)(c + (n << 5) + 0x5000 + 0x635) = 3;
-                            *(int *)(c + (n << 5) + 0x5000 + 0x628) = 0x1800;
+                            mCups[n].state = 3;
+                            mCups[n].vx = 0x1800;
                         }
                         else
                         {
-                            *(char *)(c + (n << 5) + 0x5000 + 0x635) = 2;
-                            *(int *)(c + (n << 5) + 0x5000 + 0x628) = -0x1800;
+                            mCups[n].state = 2;
+                            mCups[n].vx = -0x1800;
                         }
                         r = (unsigned int)RandomIntInternal(&data_0209d4b8);
-                        *(char *)(c + (n << 5) + 0x5000 + 0x63c) = (char)((((r >> 16) & 0x7fff) * 6 >> 0xf) + 1);
+                        mCups[n].hops = (char)((((r >> 16) & 0x7fff) * 6 >> 0xf) + 1);
                         flag = 1;
                     }
                 }
             }
             else
             {
-                *(char *)(c + (n << 5) + 0x5000 + 0x63e) = 0;
+                mCups[n].repeats = 0;
             }
         }
     }
 
-    *(char *)(c + (n << 5) + 0x5000 + 0x63d) = (char)flag;
-    *(char *)(c + (n << 5) + 0x5000 + 0x636) = 0;
-    *(char *)(c + (n << 5) + 0x5000 + 0x637) = 0x10;
-    *(char *)(c + (n << 5) + 0x5000 + 0x638) = 0;
-    *(short *)(c + (n << 5) + 0x5600 + 0x30) = 0;
-    *(char *)(c + (n << 5) + 0x5000 + 0x63a) = 1;
+    mCups[n].lastMove = (char)flag;
+    mCups[n].phase = 0;
+    mCups[n].frame = 0x10;
+    mCups[n].animStep = 0;
+    mCups[n].timer = 0;
+    mCups[n].dir = 1;
 }
 #pragma pop
 
@@ -406,78 +405,71 @@ void dScMgPachinko2_c::func_ov006_020ff690(int n)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_020ff8c8(int i)
 {
-    char *c = (char *)this;
     int v;
 
-    if (*(u8 *)(c + (i << 5) + 0x5000 + 0x636) == 1) {
-        (*(u16 *)(c + 0x5630 + (i << 5)))++;
-        if (*(u16 *)(c + (i << 5) + 0x5630) < 4)
+    if (mCups[i].phase == 1) {
+        mCups[i].timer++;
+        if (mCups[i].timer < 4)
             return;
-        *(u16 *)(c + (i << 5) + 0x5600 + 0x30) = 0;
-        (*(u8 *)(c + 0x5638 + (i << 5)))++;
-        if (*(u8 *)(c + (i << 5) + 0x5000 + 0x638) >= 3) {
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x638) = 0;
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x635) = 2;
-            if (*(u8 *)(c + (i << 5) + 0x5000 + 0x63b) != 0) {
-                if (*(u8 *)(c + (i << 5) + 0x5000 + 0x63c) != 0) {
-                    *(u8 *)(c + (i << 5) + 0x5000 + 0x636) = 0;
-                    (*(u8 *)(c + 0x563c + (i << 5)))--;
+        mCups[i].timer = 0;
+        mCups[i].animStep++;
+        if (mCups[i].animStep >= 3) {
+            mCups[i].animStep = 0;
+            mCups[i].state = 2;
+            if (mCups[i].armed != 0) {
+                if (mCups[i].hops != 0) {
+                    mCups[i].phase = 0;
+                    mCups[i].hops--;
                     return;
                 }
             }
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x636) = 2;
+            mCups[i].phase = 2;
             return;
         }
-        *(u8 *)(c + (i << 5) + 0x5000 + 0x637) =
-            data_ov006_0212ebac[*(u8 *)(c + (i << 5) + 0x5000 + 0x638)];
+        mCups[i].frame = data_ov006_0212ebac[mCups[i].animStep];
         return;
     }
 
-    (*(u16 *)(c + 0x5630 + (i << 5)))++;
-    if (*(u16 *)(c + (i << 5) + 0x5630) >= 4) {
-        *(u16 *)(c + (i << 5) + 0x5600 + 0x30) = 0;
-        (*(u8 *)(c + 0x5638 + (i << 5)))++;
-        if (*(u8 *)(c + (i << 5) + 0x5000 + 0x638) >= 6)
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x638) = 0;
-        *(u8 *)(c + (i << 5) + 0x5000 + 0x637) =
-            data_ov006_0212ebc8[*(u8 *)(c + (i << 5) + 0x5000 + 0x638)];
+    mCups[i].timer++;
+    if (mCups[i].timer >= 4) {
+        mCups[i].timer = 0;
+        mCups[i].animStep++;
+        if (mCups[i].animStep >= 6)
+            mCups[i].animStep = 0;
+        mCups[i].frame = data_ov006_0212ebc8[mCups[i].animStep];
     }
 
-    *(s32 *)(c + 0x5620 + (i << 5)) =
-        *(s32 *)(c + 0x5620 + (i << 5)) +
-        *(s32 *)(c + (i << 5) + 0x5000 + 0x628);
-    v = *(s32 *)(c + (i << 5) + 0x5000 + 0x620) >> 0xc;
+    mCups[i].x = mCups[i].x + mCups[i].vx;
+    v = mCups[i].x >> 0xc;
 
-    if (*(u8 *)(c + (i << 5) + 0x5000 + 0x636) == 2) {
+    if (mCups[i].phase == 2) {
         if (v >= data_ov006_0212ecbc[i + 4]) {
-            *(s32 *)(c + (i << 5) + 0x5000 + 0x620) =
+            mCups[i].x =
                 data_ov006_0212ecbc[i + 4] << 0xc;
-            *(s32 *)(c + (i << 5) + 0x5000 + 0x628) = 0;
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x636) = 0;
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x635) = 0;
+            mCups[i].vx = 0;
+            mCups[i].phase = 0;
+            mCups[i].state = 0;
             return;
         }
     }
 
     if (v >= data_ov006_0212ecbc[i + 2]) {
-        if (*(s32 *)(c + (i << 5) + 0x5000 + 0x628) >= 0x800) {
-            *(s32 *)(c + 0x5628 + (i << 5)) =
-                *(s32 *)(c + 0x5628 + (i << 5)) - 0x80;
+        if (mCups[i].vx >= 0x800) {
+            mCups[i].vx = mCups[i].vx - 0x80;
         }
     } else {
-        *(s32 *)(c + 0x5628 + (i << 5)) =
-            *(s32 *)(c + 0x5628 + (i << 5)) + 0x80;
+        mCups[i].vx = mCups[i].vx + 0x80;
     }
 
     if (v < data_ov006_0212ecbc[i])
         return;
 
-    *(s32 *)(c + (i << 5) + 0x5000 + 0x620) = data_ov006_0212ecbc[i] << 0xc;
-    *(s32 *)(c + (i << 5) + 0x5000 + 0x628) = -0x1000;
-    (*(u8 *)(c + 0x5636 + (i << 5)))++;
-    *(u16 *)(c + (i << 5) + 0x5600 + 0x30) = 0;
-    *(u8 *)(c + (i << 5) + 0x5000 + 0x638) = 0;
-    *(u8 *)(c + (i << 5) + 0x5000 + 0x637) = data_ov006_0212ebac[0];
+    mCups[i].x = data_ov006_0212ecbc[i] << 0xc;
+    mCups[i].vx = -0x1000;
+    mCups[i].phase++;
+    mCups[i].timer = 0;
+    mCups[i].animStep = 0;
+    mCups[i].frame = data_ov006_0212ebac[0];
 }
 #pragma pop
 
@@ -486,78 +478,71 @@ void dScMgPachinko2_c::func_ov006_020ff8c8(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_020ffb54(int i)
 {
-    char *c = (char *)this;
     int v;
 
-    if (*(u8 *)(c + (i << 5) + 0x5000 + 0x636) == 1) {
-        (*(u16 *)(c + 0x5630 + (i << 5)))++;
-        if (*(u16 *)(c + (i << 5) + 0x5630) < 4)
+    if (mCups[i].phase == 1) {
+        mCups[i].timer++;
+        if (mCups[i].timer < 4)
             return;
-        *(u16 *)(c + (i << 5) + 0x5600 + 0x30) = 0;
-        (*(u8 *)(c + 0x5638 + (i << 5)))++;
-        if (*(u8 *)(c + (i << 5) + 0x5000 + 0x638) >= 3) {
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x638) = 0;
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x635) = 3;
-            if (*(u8 *)(c + (i << 5) + 0x5000 + 0x63b) != 0) {
-                if (*(u8 *)(c + (i << 5) + 0x5000 + 0x63c) != 0) {
-                    *(u8 *)(c + (i << 5) + 0x5000 + 0x636) = 0;
-                    (*(u8 *)(c + 0x563c + (i << 5)))--;
+        mCups[i].timer = 0;
+        mCups[i].animStep++;
+        if (mCups[i].animStep >= 3) {
+            mCups[i].animStep = 0;
+            mCups[i].state = 3;
+            if (mCups[i].armed != 0) {
+                if (mCups[i].hops != 0) {
+                    mCups[i].phase = 0;
+                    mCups[i].hops--;
                     return;
                 }
             }
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x636) = 2;
+            mCups[i].phase = 2;
             return;
         }
-        *(u8 *)(c + (i << 5) + 0x5000 + 0x637) =
-            data_ov006_0212ebb0[*(u8 *)(c + (i << 5) + 0x5000 + 0x638)];
+        mCups[i].frame = data_ov006_0212ebb0[mCups[i].animStep];
         return;
     }
 
-    (*(u16 *)(c + 0x5630 + (i << 5)))++;
-    if (*(u16 *)(c + (i << 5) + 0x5630) >= 4) {
-        *(u16 *)(c + (i << 5) + 0x5600 + 0x30) = 0;
-        (*(u8 *)(c + 0x5638 + (i << 5)))++;
-        if (*(u8 *)(c + (i << 5) + 0x5000 + 0x638) >= 6)
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x638) = 0;
-        *(u8 *)(c + (i << 5) + 0x5000 + 0x637) =
-            data_ov006_0212ebc0[*(u8 *)(c + (i << 5) + 0x5000 + 0x638)];
+    mCups[i].timer++;
+    if (mCups[i].timer >= 4) {
+        mCups[i].timer = 0;
+        mCups[i].animStep++;
+        if (mCups[i].animStep >= 6)
+            mCups[i].animStep = 0;
+        mCups[i].frame = data_ov006_0212ebc0[mCups[i].animStep];
     }
 
-    *(s32 *)(c + 0x5620 + (i << 5)) =
-        *(s32 *)(c + 0x5620 + (i << 5)) +
-        *(s32 *)(c + (i << 5) + 0x5000 + 0x628);
-    v = *(s32 *)(c + (i << 5) + 0x5000 + 0x620) >> 0xc;
+    mCups[i].x = mCups[i].x + mCups[i].vx;
+    v = mCups[i].x >> 0xc;
 
-    if (*(u8 *)(c + (i << 5) + 0x5000 + 0x636) == 2) {
+    if (mCups[i].phase == 2) {
         if (v <= data_ov006_0212ecd4[i + 4]) {
-            *(s32 *)(c + (i << 5) + 0x5000 + 0x620) =
+            mCups[i].x =
                 data_ov006_0212ecd4[i + 4] << 0xc;
-            *(s32 *)(c + (i << 5) + 0x5000 + 0x628) = 0;
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x636) = 0;
-            *(u8 *)(c + (i << 5) + 0x5000 + 0x635) = 0;
+            mCups[i].vx = 0;
+            mCups[i].phase = 0;
+            mCups[i].state = 0;
             return;
         }
     }
 
     if (v <= data_ov006_0212ecd4[i + 2]) {
-        if (*(s32 *)(c + (i << 5) + 0x5000 + 0x628) <= -0x800) {
-            *(s32 *)(c + 0x5628 + (i << 5)) =
-                *(s32 *)(c + 0x5628 + (i << 5)) + 0x80;
+        if (mCups[i].vx <= -0x800) {
+            mCups[i].vx = mCups[i].vx + 0x80;
         }
     } else {
-        *(s32 *)(c + 0x5628 + (i << 5)) =
-            *(s32 *)(c + 0x5628 + (i << 5)) - 0x80;
+        mCups[i].vx = mCups[i].vx - 0x80;
     }
 
     if (v > data_ov006_0212ecd4[i])
         return;
 
-    *(s32 *)(c + (i << 5) + 0x5000 + 0x620) = data_ov006_0212ecd4[i] << 0xc;
-    *(s32 *)(c + (i << 5) + 0x5000 + 0x628) = 0x1000;
-    (*(u8 *)(c + 0x5636 + (i << 5)))++;
-    *(u16 *)(c + (i << 5) + 0x5600 + 0x30) = 0;
-    *(u8 *)(c + (i << 5) + 0x5000 + 0x638) = 0;
-    *(u8 *)(c + (i << 5) + 0x5000 + 0x637) = data_ov006_0212ebb0[0];
+    mCups[i].x = data_ov006_0212ecd4[i] << 0xc;
+    mCups[i].vx = 0x1000;
+    mCups[i].phase++;
+    mCups[i].timer = 0;
+    mCups[i].animStep = 0;
+    mCups[i].frame = data_ov006_0212ebb0[0];
 }
 #pragma pop
 
@@ -566,32 +551,31 @@ void dScMgPachinko2_c::func_ov006_020ffb54(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_020ffde4(int k)
 {
-    char *c = (char *)this;
-    if (*(unsigned char *)(c + k * 32 + 0x563b) != 0) {
-        (*(unsigned short *)(c + 0x5630 + k * 32))++;
-        if (*(unsigned short *)(c + k * 32 + 0x5630) >= data_ov006_0212ebe0[*(unsigned char *)(c + k * 32 + 0x5638)]) {
-            *(unsigned short *)(c + k * 32 + 0x5630) = 0;
-            (*(unsigned char *)(c + 0x5638 + k * 32))++;
-            if (*(unsigned char *)(c + k * 32 + 0x5638) >= 8) {
-                *(unsigned char *)(c + k * 32 + 0x5638) = 0;
-                if (*(unsigned char *)(c + k * 32 + 0x563c) == 0) {
-                    *(unsigned char *)(c + k * 32 + 0x5635) = 4;
-                    *(unsigned char *)(c + k * 32 + 0x5637) = 0x10;
+    if (mCups[k].armed != 0) {
+        mCups[k].timer++;
+        if (mCups[k].timer >= data_ov006_0212ebe0[mCups[k].animStep]) {
+            mCups[k].timer = 0;
+            mCups[k].animStep++;
+            if (mCups[k].animStep >= 8) {
+                mCups[k].animStep = 0;
+                if (mCups[k].hops == 0) {
+                    mCups[k].state = 4;
+                    mCups[k].frame = 0x10;
                     return;
                 }
-                (*(unsigned char *)(c + 0x563c + k * 32))--;
+                mCups[k].hops--;
             }
         }
-        *(unsigned char *)(c + k * 32 + 0x5637) = data_ov006_0212ebd8[*(unsigned char *)(c + k * 32 + 0x5638)];
+        mCups[k].frame = data_ov006_0212ebd8[mCups[k].animStep];
     } else {
-        (*(unsigned short *)(c + 0x5630 + k * 32))++;
-        if ((unsigned int)*(unsigned short *)(c + k * 32 + 0x5630) >= (unsigned int)data_ov006_0212ecac[*(unsigned char *)(c + k * 32 + 0x5638)]) {
-            *(unsigned short *)(c + k * 32 + 0x5630) = 0;
-            (*(unsigned char *)(c + 0x5638 + k * 32))++;
-            if (*(unsigned char *)(c + k * 32 + 0x5638) >= 7) {
-                *(unsigned char *)(c + k * 32 + 0x5638) = 0;
+        mCups[k].timer++;
+        if ((unsigned int)mCups[k].timer >= (unsigned int)data_ov006_0212ecac[mCups[k].animStep]) {
+            mCups[k].timer = 0;
+            mCups[k].animStep++;
+            if (mCups[k].animStep >= 7) {
+                mCups[k].animStep = 0;
             }
-            *(unsigned char *)(c + k * 32 + 0x5637) = data_ov006_0213daa4[k][*(unsigned char *)(c + k * 32 + 0x5638)];
+            mCups[k].frame = data_ov006_0213daa4[k][mCups[k].animStep];
         }
         func_ov006_020ff534(k);
     }
@@ -630,18 +614,17 @@ void dScMgPachinko2_c::func_ov006_020fff84()
 #pragma opt_strength_reduction off
 void dScMgPachinko2_c::func_ov006_020fffec()
 {
-    char *c = (char *)this;
     int i;
     for(i=0;i<2;i++){
-        *(unsigned char*)(c+(i<<5)+0x5000+0x634) = 1;
-        *(unsigned char*)(c+(i<<5)+0x5000+0x639) = 0;
-        *(unsigned char*)(c+(i<<5)+0x5000+0x635) = 0;
-        *(unsigned char*)(c+(i<<5)+0x5000+0x636) = 0;
-        *(unsigned char*)(c+(i<<5)+0x5000+0x637) = 0;
-        *(unsigned char*)(c+(i<<5)+0x5000+0x638) = 0;
-        *(unsigned char*)(c+(i<<5)+0x5000+0x63a) = 0;
-        *(int*)(c+(i<<5)+0x5000+0x620) = data_ov006_0212ec08[i] << 12;
-        *(int*)(c+(i<<5)+0x5000+0x624) = 0x68000;
+        mCups[i].active = 1;
+        mCups[i].visible = 0;
+        mCups[i].state = 0;
+        mCups[i].phase = 0;
+        mCups[i].frame = 0;
+        mCups[i].animStep = 0;
+        mCups[i].dir = 0;
+        mCups[i].x = data_ov006_0212ec08[i] << 12;
+        mCups[i].y = 0x68000;
     }
 }
 #pragma pop
@@ -661,19 +644,18 @@ void dScMgPachinko2_c::func_ov006_02100058()
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100084Ev
 void dScMgPachinko2_c::func_ov006_02100084()
 {
-    char *c = (char *)this;
     unsigned int a, b;
-    if (*(int *)(c + 0xbc) != 0) {
+    if ((int)unk_0bc != 0) {
         a = ((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 6) >> 0xf;
-        if (*(unsigned int *)(c + 0x5668) == a) {
+        if ((unsigned int)mLaneConfig == a) {
             b = (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5) >> 0xf) + 1;
             a = a + b;
             if ((int)a >= 6) a -= 6;
         }
-        *(unsigned int *)(c + 0x5668) = a;
+        mLaneConfig = a;
         return;
     }
-    *(unsigned int *)(c + 0x5668) = ((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 6) >> 0xf;
+    mLaneConfig = ((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 6) >> 0xf;
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100140Ev
@@ -727,13 +709,12 @@ void dScMgPachinko2_c::func_ov006_02100278(int r1, int r2, int r3)
     for (i = 0; i < 0x10; i++, p += 0x18) {
         if (*(unsigned char *)(p + 0x54b4) == 0) {
             int off = i * 0x18;
-            char *q = (char *)((int)c + off);
-            *(unsigned char *)(q + 0x54b4) = 1;
-            *(unsigned char *)(q + 0x54b5) = 1;
+            mScorePops[i].active = 1;
+            mScorePops[i].visible = 1;
             if (r1 >= 0x80000)
-                *(int *)(q + 0x54a0) = 0xa4000;
+                mScorePops[i].x = 0xa4000;
             else
-                *(int *)(q + 0x54a0) = 0x5c000;
+                mScorePops[i].x = 0x5c000;
             {
                 char *w = (char *)(int)(c + off);
                 *(int *)(w + 0x54a4) = r2 + 0x48000;
@@ -796,15 +777,14 @@ void dScMgPachinko2_c::func_ov006_02100408(int a2, int a3)
     char *p = c;
     do {
         if (*(unsigned char *)(p + 0x5336) == 0) {
-            char *e = c + i * 0x18;
-            *(int *)(e + 0x5320) = a2;
-            *(int *)(e + 0x5324) = a3;
-            *(unsigned char *)(e + 0x5336) = 1;
-            *(unsigned short *)(e + 0x5330) = 0;
-            *(int *)(e + 0x5328) = 0;
-            *(int *)(e + 0x532c) = 0;
-            *(unsigned char *)(e + 0x5334) = 1;
-            *(unsigned char *)(e + 0x5335) = 0;
+            mHitFx[i].x = a2;
+            mHitFx[i].y = a3;
+            mHitFx[i].active = 1;
+            mHitFx[i].timer = 0;
+            mHitFx[i].unk_08 = 0;
+            mHitFx[i].unk_0c = 0;
+            mHitFx[i].visible = 1;
+            mHitFx[i].frame = 0;
             return;
         }
         i++;
@@ -815,8 +795,7 @@ void dScMgPachinko2_c::func_ov006_02100408(int a2, int a3)
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100488Ev
 void dScMgPachinko2_c::func_ov006_02100488()
 {
-    char *c = (char *)this;
-  if (*(int *)(c + 0x5660) < 2) return;
+  if (unk_5660 < 2) return;
   func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
 }
 
@@ -833,15 +812,14 @@ void dScMgPachinko2_c::func_ov006_021004c0()
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_021004f4Ei
 void dScMgPachinko2_c::func_ov006_021004f4(int a)
 {
-    char *c = (char *)this;
     char *dst;
     volatile unsigned short v;
-    *(int *)(c + 0x5660) = 3;
-    *(short *)(c + 0x566e) = 0x40;
+    unk_5660 = 3;
+    unk_566e = 0x40;
     dst = (char *)_ZN3G2S13GetBG2CharPtrEv();
     v = 0;
     MultiStore16(v, dst, 0x6000);
-    *(unsigned char *)(c + 0x5677) = (unsigned char)a;
+    mResult = (unsigned char)a;
     func_ov006_02102dbc();
 }
 
@@ -852,12 +830,12 @@ void dScMgPachinko2_c::func_ov006_02100554()
     int count;
     int i;
 
-    if (*(u8 *)(s + 0x5299) && *(u8 *)(s + 0x5294)) return;
-    if (*(u8 *)(s + 0x52d9) && *(u8 *)(s + 0x52d4)) return;
-    if (*(u8 *)(s + 0x5319) && *(u8 *)(s + 0x5314)) return;
-    if (*(u8 *)(s + 0x5296) != 0xd && *(u8 *)(s + 0x5294)) return;
-    if (*(u8 *)(s + 0x52d6) != 0xd && *(u8 *)(s + 0x52d4)) return;
-    if (*(u8 *)(s + 0x5316) != 0xd && *(u8 *)(s + 0x5314)) return;
+    if (mPaddles[0].ballsHeld && mPaddles[0].active) return;
+    if (mPaddles[1].ballsHeld && mPaddles[1].active) return;
+    if (mPaddles[2].ballsHeld && mPaddles[2].active) return;
+    if (mPaddles[0].state != 0xd && mPaddles[0].active) return;
+    if (mPaddles[1].state != 0xd && mPaddles[1].active) return;
+    if (mPaddles[2].state != 0xd && mPaddles[2].active) return;
 
     count = 0;
     for (i = 0; i < 0x30; i++) {
@@ -911,13 +889,11 @@ void dScMgPachinko2_c::func_ov006_021006f4()
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100734Ei
 void dScMgPachinko2_c::func_ov006_02100734(int idx)
 {
-    char *c = (char *)this;
-    char* e = c + idx * 0x40;
-    if (*(unsigned char*)(e + 0x5294) == 0) return;
-    *(unsigned short*)(e + 0x5290) = 0;
-    *(int*)(e + 0x5270) = 0;
-    *(unsigned short*)(e + 0x5292) = 0x40;
-    *(unsigned char*)(e + 0x5296) = 0xc;
+    if (mPaddles[idx].active == 0) return;
+    mPaddles[idx].angle = 0;
+    mPaddles[idx].speed = 0;
+    mPaddles[idx].timer = 0x40;
+    mPaddles[idx].state = 0xc;
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_0210076cEi
@@ -1021,36 +997,35 @@ void dScMgPachinko2_c::func_ov006_0210076c(int idx)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_021009b8(int i)
 {
-    char *p = (char *)this;
     int v;
     u8 state;
 
-    if (*(u16 *)(p + 0x5200 + (i << 6) + 0x92) != 0) {
-        (*(u16 *)(p + 0x5292 + (i << 6)))--;
-        if (*(short *)(p + 0x5200 + (i << 6) + 0x92) > 0)
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer--;
+        if ((short)mPaddles[i].timer > 0)
             return;
-        *(int *)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-        *(int *)(p + 0x5000 + (i << 6) + 0x268) = data_ov006_0212ec80[i];
-        *(u8 *)(p + 0x5000 + (i << 6) + 0x298) = i;
+        mPaddles[i].vy = 0;
+        mPaddles[i].vx = data_ov006_0212ec80[i];
+        mPaddles[i].dir = i;
         return;
     }
 
-    *(int *)(p + 0x5260 + (i << 6)) += *(int *)(p + 0x5000 + (i << 6) + 0x268);
-    *(int *)(p + 0x5264 + (i << 6)) += *(int *)(p + 0x5000 + (i << 6) + 0x26c);
-    *(int *)(p + 0x526c + (i << 6)) -= 0x20;
-    state = *(u8 *)(p + 0x5000 + (i << 6) + 0x298);
+    mPaddles[i].x += mPaddles[i].vx;
+    mPaddles[i].y += mPaddles[i].vy;
+    mPaddles[i].vy -= 0x20;
+    state = mPaddles[i].dir;
     if (state == 0) {
-        if (*(int *)(p + 0x5000 + (i << 6) + 0x268) <= 0xc00)
-            *(int *)(p + 0x5268 + (i << 6)) += 0x80;
+        if (mPaddles[i].vx <= 0xc00)
+            mPaddles[i].vx += 0x80;
     } else if (state == 1) {
-        if (*(int *)(p + 0x5000 + (i << 6) + 0x268) >= -0xc00)
-            *(int *)(p + 0x5268 + (i << 6)) -= 0x80;
+        if (mPaddles[i].vx >= -0xc00)
+            mPaddles[i].vx -= 0x80;
     }
 
-    v = *(int *)(p + 0x5000 + (i << 6) + 0x264) >> 12;
+    v = mPaddles[i].y >> 12;
     if (v <= -0x120) {
-        *(u8 *)(p + 0x5000 + (i << 6) + 0x294) = 0;
-        *(u8 *)(p + 0x5000 + (i << 6) + 0x295) = 0;
+        mPaddles[i].active = 0;
+        mPaddles[i].visible = 0;
     }
 }
 #pragma pop
@@ -1058,25 +1033,23 @@ void dScMgPachinko2_c::func_ov006_021009b8(int i)
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02100b08Ei
 void dScMgPachinko2_c::func_ov006_02100b08(int idx)
 {
-    char *self = (char *)this;
-    char *base = self + idx * 64;
 
-    if (*(unsigned short *)(base + 0x5292) != 0) {
-        *(unsigned short *)(self + 0x5292 + idx * 64) -= 1;
-        if (*(short *)(base + 0x5292) < 0) {
-            *(unsigned short *)(base + 0x5292) = 0;
+    if (mPaddles[idx].timer != 0) {
+        mPaddles[idx].timer -= 1;
+        if ((short)mPaddles[idx].timer < 0) {
+            mPaddles[idx].timer = 0;
         }
         return;
     }
-    if (*(unsigned char *)(base + 0x5299) != 0) {
+    if (mPaddles[idx].ballsHeld != 0) {
         int x;
         int z;
 
-        *(unsigned char *)(self + 0x5299 + idx * 64) -= 1;
-        *(unsigned short *)(base + 0x5292) = 0x30;
-        x = *(int *)(base + 0x5260) >> 12;
-        z = *(int *)(base + 0x5264) >> 12;
-        func_ov006_02102c3c(x, z, *(unsigned char *)(base + 0x5299) & 1);
+        mPaddles[idx].ballsHeld -= 1;
+        mPaddles[idx].timer = 0x30;
+        x = mPaddles[idx].x >> 12;
+        z = mPaddles[idx].y >> 12;
+        func_ov006_02102c3c(x, z, mPaddles[idx].ballsHeld & 1);
     }
 }
 
@@ -1085,42 +1058,41 @@ void dScMgPachinko2_c::func_ov006_02100b08(int idx)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02100bac(int i)
 {
-    char *self = (char *)this;
     int b = i << 6;
 
-    if (*(u16*)(self + 0x5292 + b) != 0) {
-        (*(u16*)(self + 0x5292 + b))--;
-        if (*(s16*)(self + b + 0x5292) < 0)
-            *(s16*)(self + b + 0x5292) = 0;
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer--;
+        if ((s16)mPaddles[i].timer < 0)
+            mPaddles[i].timer = 0;
         return;
     }
 
     {
-        int r4 = data_ov006_0213db9c[*(int*)(self + 0x5668)][i];
-        int ax = 0x80 - (*(int*)(self + (i << 6) + 0x5260) >> 12);
-        int y_raw = *(int*)(self + (i << 6) + 0x5264);
+        int r4 = data_ov006_0213db9c[mLaneConfig][i];
+        int ax = 0x80 - (mPaddles[i].x >> 12);
+        int y_raw = mPaddles[i].y;
 
         y_raw = ax ? y_raw : y_raw;
-        *(s16*)(self + (i << 6) + 0x5290) = (s16)_ZN4cstd5atan2E5Fix12IiES1_(
+        mPaddles[i].angle = (s16)_ZN4cstd5atan2E5Fix12IiES1_(
             r4 - (y_raw >> 12), ax);
 
         {
-            s16 tv = data_02082214[((*(u16*)(self + (i << 6) + 0x5290) >> 4) << 1) + 1];
-            int spd = *(int*)(self + (i << 6) + 0x5270);
-            *(int*)(self + 0x5260 + (i << 6)) += (int)(((s64)tv * spd + 0x800) >> 0xc);
+            s16 tv = data_02082214[(((u16)mPaddles[i].angle >> 4) << 1) + 1];
+            int spd = mPaddles[i].speed;
+            mPaddles[i].x += (int)(((s64)tv * spd + 0x800) >> 0xc);
         }
 
         {
-            s16 tv = data_02082214[(*(u16*)(self + (i << 6) + 0x5290) >> 4) << 1];
-            int spd = *(int*)(self + (i << 6) + 0x5270);
-            *(int*)(self + 0x5264 + (i << 6)) += (int)(((s64)tv * spd + 0x800) >> 0xc);
+            s16 tv = data_02082214[((u16)mPaddles[i].angle >> 4) << 1];
+            int spd = mPaddles[i].speed;
+            mPaddles[i].y += (int)(((s64)tv * spd + 0x800) >> 0xc);
         }
 
-        *(int*)(self + 0x5270 + (i << 6)) += 0x100;
+        mPaddles[i].speed += 0x100;
 
         {
-            int dx = (*(int*)(self + (i << 6) + 0x5260) >> 12) - 0x80;
-            int dy = (*(int*)(self + (i << 6) + 0x5264) >> 12) - r4;
+            int dx = (mPaddles[i].x >> 12) - 0x80;
+            int dy = (mPaddles[i].y >> 12) - r4;
             if (dx < -3)
                 return;
             if (dx > 3)
@@ -1131,13 +1103,13 @@ void dScMgPachinko2_c::func_ov006_02100bac(int i)
                 return;
         }
 
-        *(int*)(self + (i << 6) + 0x5260) = 0x80000;
-        *(int*)(self + (i << 6) + 0x5264) = r4 << 12;
-        *(unsigned char*)(self + (i << 6) + 0x5296) = 0xd;
+        mPaddles[i].x = 0x80000;
+        mPaddles[i].y = r4 << 12;
+        mPaddles[i].state = 0xd;
         func_ov006_020ff4ec();
-        *(u16*)(self + (i << 6) + 0x5292) = 0x40;
+        mPaddles[i].timer = 0x40;
         if (i & 1) {
-            *(u16*)(self + 0x5292 + (i << 6)) += 0x20;
+            mPaddles[i].timer += 0x20;
         }
     }
 }
@@ -1211,24 +1183,23 @@ void dScMgPachinko2_c::func_ov006_02100e3c(int idx)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02100f7c(int i)
 {
-    char *c = (char *)this;
     int d;
-    *(int *)(c + 0x5264 + (i << 6)) += *(int *)(c + 0x5000 + (i << 6) + 0x26c);
-    d = *(int *)(c + 0x5000 + (i << 6) + 0x264) >> 12;
-    if (*(int *)(c + 0x5000 + (i << 6) + 0x26c) <= 0x4000)
-        *(int *)(c + 0x526c + (i << 6)) += 0x200;
+    mPaddles[i].y += mPaddles[i].vy;
+    d = mPaddles[i].y >> 12;
+    if (mPaddles[i].vy <= 0x4000)
+        mPaddles[i].vy += 0x200;
     if (d < 0xa0)
         return;
-    *(int *)(c + 0x5000 + (i << 6) + 0x264) = 0xa0000;
-    *(unsigned char *)(c + 0x5000 + (i << 6) + 0x296) = 0xa;
-    *(int *)(c + 0x5000 + (i << 6) + 0x26c) = 0;
-    *(unsigned short *)(c + 0x5200 + (i << 6) + 0x92) = 0x40;
+    mPaddles[i].y = 0xa0000;
+    mPaddles[i].state = 0xa;
+    mPaddles[i].vy = 0;
+    mPaddles[i].timer = 0x40;
     if ((((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) << 1) >> 15) {
-        *(int *)(c + 0x5000 + (i << 6) + 0x268) = 0x1000;
-        *(unsigned char *)(c + 0x5000 + (i << 6) + 0x29a) = 0;
+        mPaddles[i].vx = 0x1000;
+        mPaddles[i].swing = 0;
     } else {
-        *(int *)(c + 0x5000 + (i << 6) + 0x268) = -0x1000;
-        *(unsigned char *)(c + 0x5000 + (i << 6) + 0x29a) = 1;
+        mPaddles[i].vx = -0x1000;
+        mPaddles[i].swing = 1;
     }
 }
 #pragma pop
@@ -1238,20 +1209,19 @@ void dScMgPachinko2_c::func_ov006_02100f7c(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02101088(int i)
 {
-    char *p = (char *)this;
     int d;
-    *(int *)(p + 0x5264 + (i << 6)) += *(int *)(p + 0x5000 + (i << 6) + 0x26c);
-    d = (*(int *)(p + 0x5000 + (i << 6) + 0x264) - *(int *)(p + 0x5000 + (i << 6) + 0x280)) >> 12;
+    mPaddles[i].y += mPaddles[i].vy;
+    d = (mPaddles[i].y - mPaddles[i].homeY) >> 12;
     if (d >= 0x40) {
-        if (*(int *)(p + 0x5000 + (i << 6) + 0x26c) >= 0x1000)
-            *(int *)(p + 0x526c + (i << 6)) -= 0x100;
-    } else if (*(int *)(p + 0x5000 + (i << 6) + 0x26c) <= 0x4000) {
-        *(int *)(p + 0x526c + (i << 6)) += 0x200;
+        if (mPaddles[i].vy >= 0x1000)
+            mPaddles[i].vy -= 0x100;
+    } else if (mPaddles[i].vy <= 0x4000) {
+        mPaddles[i].vy += 0x200;
     }
     if (d < 0x60) return;
-    *(unsigned short *)(p + 0x5200 + (i << 6) + 0x92) = 0x10;
-    *(int *)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-    *(unsigned char *)(p + 0x5000 + (i << 6) + 0x296) = 0xb;
+    mPaddles[i].timer = 0x10;
+    mPaddles[i].vy = 0;
+    mPaddles[i].state = 0xb;
 }
 #pragma pop
 
@@ -1260,30 +1230,29 @@ void dScMgPachinko2_c::func_ov006_02101088(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02101148(int i)
 {
-    char *c = (char *)this;
-    if ((int)*(unsigned char*)(c + i * 0x40 + 0x5000 + 0x296) >= 8) return;
+    if ((int)mPaddles[i].state >= 8) return;
 
-    *(unsigned char*)(c + 0x529c + i * 0x40) += 1;
+    mPaddles[i].hits += 1;
 
-    if (*(unsigned char*)(c + i * 0x40 + 0x5000 + 0x29c) < 4) return;
+    if (mPaddles[i].hits < 4) return;
 
-    *(int*)(c + i * 0x40 + 0x5000 + 0x27c) = *(int*)(c + i * 0x40 + 0x5000 + 0x260);
-    *(int*)(c + i * 0x40 + 0x5000 + 0x280) = *(int*)(c + i * 0x40 + 0x5000 + 0x264);
-    *(unsigned char*)(c + i * 0x40 + 0x5000 + 0x297) = *(unsigned char*)(c + i * 0x40 + 0x5000 + 0x296);
-    *(int*)(c + i * 0x40 + 0x5000 + 0x284) = *(int*)(c + i * 0x40 + 0x5000 + 0x268);
-    *(int*)(c + i * 0x40 + 0x5000 + 0x288) = *(int*)(c + i * 0x40 + 0x5000 + 0x26c);
-    *(int*)(c + i * 0x40 + 0x5000 + 0x268) = 0;
-    *(int*)(c + i * 0x40 + 0x5000 + 0x268) = 0;
-    *(int*)(c + i * 0x40 + 0x5000 + 0x26c) = 0x2000;
+    mPaddles[i].homeX = mPaddles[i].x;
+    mPaddles[i].homeY = mPaddles[i].y;
+    mPaddles[i].savedState = mPaddles[i].state;
+    mPaddles[i].savedVx = mPaddles[i].vx;
+    mPaddles[i].savedVy = mPaddles[i].vy;
+    mPaddles[i].vx = 0;
+    mPaddles[i].vx = 0;
+    mPaddles[i].vy = 0x2000;
 
-    if (*(unsigned char*)(c + i * 0x40 + 0x5000 + 0x29d) != 0)
-        *(unsigned char*)(c + i * 0x40 + 0x5000 + 0x296) = 9;
+    if (mPaddles[i].flip != 0)
+        mPaddles[i].state = 9;
     else
-        *(unsigned char*)(c + i * 0x40 + 0x5000 + 0x296) = 8;
+        mPaddles[i].state = 8;
 
-    *(unsigned char*)(c + i * 0x40 + 0x5000 + 0x29c) = 0;
+    mPaddles[i].hits = 0;
 
-    *(unsigned char*)(c + 0x529d + i * 0x40) ^= 1;
+    mPaddles[i].flip ^= 1;
 }
 #pragma pop
 
@@ -1292,20 +1261,19 @@ void dScMgPachinko2_c::func_ov006_02101148(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02101224(int i)
 {
-    char *c = (char *)this;
-    *(int *)(c + (i << 6) + 0x5000 + 0x28c) = Sound_PlayIfNotActive(*(int *)(c + (i << 6) + 0x5000 + 0x28c), 2, 0x198, 0);
+    mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 
-    if (*(unsigned short *)(c + (i << 6) + 0x5200 + 0x92) != 0) {
-        *(unsigned short *)(c + 0x5292 + (i << 6)) -= 1;
-        if (*(short *)(c + (i << 6) + 0x5200 + 0x92) < 0)
-            *(short *)(c + (i << 6) + 0x5200 + 0x92) = 0;
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer -= 1;
+        if ((short)mPaddles[i].timer < 0)
+            mPaddles[i].timer = 0;
         return;
     }
 
-    if (*(int *)(c + 0x5000 + 0x668) == 3)
-        *(unsigned char *)(c + (i << 6) + 0x5000 + 0x296) = 3;
+    if (mLaneConfig == 3)
+        mPaddles[i].state = 3;
     else
-        *(unsigned char *)(c + (i << 6) + 0x5000 + 0x296) = 2;
+        mPaddles[i].state = 2;
 }
 #pragma pop
 
@@ -1314,99 +1282,98 @@ void dScMgPachinko2_c::func_ov006_02101224(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_021012cc(int i)
 {
-    char *p = (char *)this;
     int v1;
     int v2;
     u8 state;
 
-    if (*(u16*)(p + 0x5200 + (i << 6) + 0x92) != 0) {
-        (*(u16*)(p + 0x5292 + (i << 6)))--;
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer--;
         return;
     }
 
-    *(int*)(p + 0x5260 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x268);
-    *(int*)(p + 0x5264 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x26c);
-    v1 = *(int*)(p + 0x5000 + (i << 6) + 0x260) >> 12;
-    state = *(u8*)(p + 0x5000 + (i << 6) + 0x29b);
-    v2 = *(int*)(p + 0x5000 + (i << 6) + 0x264) >> 12;
+    mPaddles[i].x += mPaddles[i].vx;
+    mPaddles[i].y += mPaddles[i].vy;
+    v1 = mPaddles[i].x >> 12;
+    state = mPaddles[i].unk_3b;
+    v2 = mPaddles[i].y >> 12;
 
     if (state == 0) {
         if (v1 >= 0xe0) {
-            *(u16*)(p + 0x5200 + (i << 6) + 0x92) = 0x40;
-            (*(u8*)(p + 0x529b + (i << 6)))++;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+            mPaddles[i].timer = 0x40;
+            mPaddles[i].unk_3b++;
+            mPaddles[i].vx = 0;
+            mPaddles[i].vy = 0;
             return;
         }
         if (v1 >= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= 0x400)
-                *(int*)(p + 0x5268 + (i << 6)) -= 8;
+            if (mPaddles[i].vx >= 0x400)
+                mPaddles[i].vx -= 8;
             if (i == 0) {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0xc00)
-                    *(int*)(p + 0x526c + (i << 6)) += 0x10;
+                if (mPaddles[i].vy <= 0xc00)
+                    mPaddles[i].vy += 0x10;
             } else {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0xc00)
-                    *(int*)(p + 0x526c + (i << 6)) -= 0x10;
+                if (mPaddles[i].vy >= -0xc00)
+                    mPaddles[i].vy -= 0x10;
             }
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= 0xc00)
-                *(int*)(p + 0x5268 + (i << 6)) += 0x20;
+            if (mPaddles[i].vx <= 0xc00)
+                mPaddles[i].vx += 0x20;
             if (i == 0) {
                 if (v2 != data_ov006_0212ec30[i]) {
-                    if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0xc00)
-                        *(int*)(p + 0x526c + (i << 6)) -= 0x30;
+                    if (mPaddles[i].vy >= -0xc00)
+                        mPaddles[i].vy -= 0x30;
                 } else {
-                    *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+                    mPaddles[i].vy = 0;
                 }
             } else {
                 if (v2 != data_ov006_0212ec30[i]) {
-                    if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0xc00)
-                        *(int*)(p + 0x526c + (i << 6)) += 0x30;
+                    if (mPaddles[i].vy <= 0xc00)
+                        mPaddles[i].vy += 0x30;
                 } else {
-                    *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+                    mPaddles[i].vy = 0;
                 }
             }
         }
     } else if (state == 1) {
         if (v1 <= 0x20) {
-            *(u16*)(p + 0x5200 + (i << 6) + 0x92) = 0x40;
-            *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+            mPaddles[i].timer = 0x40;
+            mPaddles[i].unk_3b = 0;
+            mPaddles[i].vx = 0;
+            mPaddles[i].vy = 0;
             return;
         }
         if (v1 <= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= -0x400)
-                *(int*)(p + 0x5268 + (i << 6)) += 8;
+            if (mPaddles[i].vx <= -0x400)
+                mPaddles[i].vx += 8;
             if (i == 0) {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0xc00)
-                    *(int*)(p + 0x526c + (i << 6)) += 0x10;
+                if (mPaddles[i].vy <= 0xc00)
+                    mPaddles[i].vy += 0x10;
             } else {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0xc00)
-                    *(int*)(p + 0x526c + (i << 6)) -= 0x10;
+                if (mPaddles[i].vy >= -0xc00)
+                    mPaddles[i].vy -= 0x10;
             }
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= -0xc00)
-                *(int*)(p + 0x5268 + (i << 6)) -= 0x20;
+            if (mPaddles[i].vx >= -0xc00)
+                mPaddles[i].vx -= 0x20;
             if (i == 0) {
                 if (v2 != data_ov006_0212ec30[i]) {
-                    if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0xc00)
-                        *(int*)(p + 0x526c + (i << 6)) -= 0x30;
+                    if (mPaddles[i].vy >= -0xc00)
+                        mPaddles[i].vy -= 0x30;
                 } else {
-                    *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+                    mPaddles[i].vy = 0;
                 }
             } else {
                 if (v2 != data_ov006_0212ec30[i]) {
-                    if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0xc00)
-                        *(int*)(p + 0x526c + (i << 6)) += 0x30;
+                    if (mPaddles[i].vy <= 0xc00)
+                        mPaddles[i].vy += 0x30;
                 } else {
-                    *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+                    mPaddles[i].vy = 0;
                 }
             }
         }
     }
 
-    *(int*)(p + 0x5000 + (i << 6) + 0x28c) = Sound_PlayIfNotActive(*(int*)(p + 0x5000 + (i << 6) + 0x28c), 2, 0x198, 0);
+    mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 }
 #pragma pop
 
@@ -1415,69 +1382,68 @@ void dScMgPachinko2_c::func_ov006_021012cc(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_021016ec(int i)
 {
-    char *p = (char *)this;
     int v;
     u8 flag;
 
-    if (*(u16*)(p + (i << 6) + 0x5292) != 0) {
-        *(u16*)(p + 0x5292 + (i << 6)) -= 1;
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer -= 1;
         return;
     }
 
-    *(int*)(p + 0x5260 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x268);
-    *(int*)(p + 0x5264 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x26c);
-    flag = *(u8*)(p + 0x5000 + (i << 6) + 0x298);
-    v = *(int*)(p + 0x5000 + (i << 6) + 0x260) >> 12;
+    mPaddles[i].x += mPaddles[i].vx;
+    mPaddles[i].y += mPaddles[i].vy;
+    flag = mPaddles[i].dir;
+    v = mPaddles[i].x >> 12;
 
     if (flag != 0) {
         if (v >= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= 0x400)
-                *(int*)(p + 0x5268 + (i << 6)) -= 8;
+            if (mPaddles[i].vx >= 0x400)
+                mPaddles[i].vx -= 8;
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= 0x1000)
-                *(int*)(p + 0x5268 + (i << 6)) += 0x80;
-            if (*(u8*)(p + 0x5000 + (i << 6) + 0x29b) == 0) {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0x1000)
-                    *(int*)(p + 0x526c + (i << 6)) += 0xc;
+            if (mPaddles[i].vx <= 0x1000)
+                mPaddles[i].vx += 0x80;
+            if (mPaddles[i].unk_3b == 0) {
+                if (mPaddles[i].vy <= 0x1000)
+                    mPaddles[i].vy += 0xc;
             } else {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0x1000)
-                    *(int*)(p + 0x526c + (i << 6)) -= 0xc;
+                if (mPaddles[i].vy >= -0x1000)
+                    mPaddles[i].vy -= 0xc;
             }
         }
         if (v >= 0xe0) {
-            *(int*)(p + 0x5000 + (i << 6) + 0x260) = 0xe0000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-            *(u8*)(p + 0x5298 + (i << 6)) ^= 1;
-            *(u8*)(p + 0x529b + (i << 6)) ^= 1;
-            *(u16*)(p + (i << 6) + 0x5292) = 0x40;
+            mPaddles[i].x = 0xe0000;
+            mPaddles[i].vx = 0;
+            mPaddles[i].vy = 0;
+            mPaddles[i].dir ^= 1;
+            mPaddles[i].unk_3b ^= 1;
+            mPaddles[i].timer = 0x40;
         }
     } else {
         if (v <= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= -0x400)
-                *(int*)(p + 0x5268 + (i << 6)) += 8;
+            if (mPaddles[i].vx <= -0x400)
+                mPaddles[i].vx += 8;
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= -0x1000)
-                *(int*)(p + 0x5268 + (i << 6)) -= 0x80;
-            if (*(u8*)(p + 0x5000 + (i << 6) + 0x29b) == 0) {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0x1000)
-                    *(int*)(p + 0x526c + (i << 6)) += 0xc;
+            if (mPaddles[i].vx >= -0x1000)
+                mPaddles[i].vx -= 0x80;
+            if (mPaddles[i].unk_3b == 0) {
+                if (mPaddles[i].vy <= 0x1000)
+                    mPaddles[i].vy += 0xc;
             } else {
-                if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0x1000)
-                    *(int*)(p + 0x526c + (i << 6)) -= 0xc;
+                if (mPaddles[i].vy >= -0x1000)
+                    mPaddles[i].vy -= 0xc;
             }
         }
         if (v <= 0x20) {
-            *(int*)(p + 0x5000 + (i << 6) + 0x260) = 0x20000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-            *(u8*)(p + 0x5298 + (i << 6)) ^= 1;
-            *(u8*)(p + 0x529b + (i << 6)) ^= 1;
-            *(u16*)(p + (i << 6) + 0x5292) = 0x40;
+            mPaddles[i].x = 0x20000;
+            mPaddles[i].vx = 0;
+            mPaddles[i].vy = 0;
+            mPaddles[i].dir ^= 1;
+            mPaddles[i].unk_3b ^= 1;
+            mPaddles[i].timer = 0x40;
         }
     }
 
-    *(int*)(p + 0x5000 + (i << 6) + 0x28c) = Sound_PlayIfNotActive(*(int*)(p + 0x5000 + (i << 6) + 0x28c), 2, 0x198, 0);
+    mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 }
 #pragma pop
 
@@ -1490,22 +1456,22 @@ void dScMgPachinko2_c::func_ov006_021019e0(int i)
     {
         unsigned short angle = *(unsigned short *)(c + (i << 6) + 0x5200 + 0x90);
         long long t0 = (long long)data_02082214[(angle >> 4) * 2 + 1] * 0x50000 + 0x800;
-        *(int *)(c + (i << 6) + 0x5000 + 0x260) = (int)(t0 >> 12) + 0x80000;
+        mPaddles[i].x = (int)(t0 >> 12) + 0x80000;
     }
 
     {
         unsigned short angle = *(unsigned short *)(c + (i << 6) + 0x5200 + 0x90);
         long long t1 = (long long)data_02082214[(angle >> 4) * 2] * 0x50000 + 0x800;
-        *(int *)(c + (i << 6) + 0x5000 + 0x264) = (int)(t1 >> 12) - 0x80000;
+        mPaddles[i].y = (int)(t1 >> 12) - 0x80000;
     }
 
-    if (*(unsigned char *)(c + (i << 6) + 0x5000 + 0x29b) != 0) {
+    if (mPaddles[i].unk_3b != 0) {
         *(unsigned short *)(c + 0x5290 + (i << 6)) -= 0x40;
     } else {
         *(unsigned short *)(c + 0x5290 + (i << 6)) += 0x40;
     }
 
-    *(int *)(c + (i << 6) + 0x5000 + 0x28c) = Sound_PlayIfNotActive(*(int *)(c + (i << 6) + 0x5000 + 0x28c), 2, 0x198, 0);
+    mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 }
 #pragma pop
 
@@ -1514,90 +1480,89 @@ void dScMgPachinko2_c::func_ov006_021019e0(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02101af0(int i)
 {
-    char *p = (char *)this;
     int v;
     u8 state;
 
-    if (*(u16*)(p + 0x5200 + (i << 6) + 0x92) != 0) {
-        (*(u16*)(p + 0x5292 + (i << 6)))--;
+    if (mPaddles[i].timer != 0) {
+        mPaddles[i].timer--;
         return;
     }
 
-    state = *(u8*)(p + 0x5000 + (i << 6) + 0x29b);
+    state = mPaddles[i].unk_3b;
 
     if (state == 0) {
-        *(int*)(p + 0x5264 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x26c);
-        v = *(int*)(p + 0x5000 + (i << 6) + 0x264) >> 12;
+        mPaddles[i].y += mPaddles[i].vy;
+        v = mPaddles[i].y >> 12;
         if (v >= -0x60) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= 0x400)
-                *(int*)(p + 0x526c + (i << 6)) -= 8;
+            if (mPaddles[i].vy >= 0x400)
+                mPaddles[i].vy -= 8;
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= 0x1000)
-                *(int*)(p + 0x526c + (i << 6)) += 0x80;
+            if (mPaddles[i].vy <= 0x1000)
+                mPaddles[i].vy += 0x80;
         }
         if (v >= -0x40) {
-            *(int*)(p + 0x5000 + (i << 6) + 0x264) = -0x40000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(u16*)(p + 0x5200 + (i << 6) + 0x92) = 0;
-            (*(u8*)(p + 0x529b + (i << 6)))++;
+            mPaddles[i].y = -0x40000;
+            mPaddles[i].vy = 0;
+            mPaddles[i].vx = 0;
+            mPaddles[i].timer = 0;
+            mPaddles[i].unk_3b++;
             return;
         }
     } else if (state == 1) {
-        *(int*)(p + 0x5260 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x268);
-        v = *(int*)(p + 0x5000 + (i << 6) + 0x260) >> 12;
+        mPaddles[i].x += mPaddles[i].vx;
+        v = mPaddles[i].x >> 12;
         if (v >= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= 0x400)
-                *(int*)(p + 0x5268 + (i << 6)) -= 8;
+            if (mPaddles[i].vx >= 0x400)
+                mPaddles[i].vx -= 8;
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= 0x1000)
-                *(int*)(p + 0x5268 + (i << 6)) += 0x80;
+            if (mPaddles[i].vx <= 0x1000)
+                mPaddles[i].vx += 0x80;
         }
         if (v >= 0xe0) {
-            *(int*)(p + 0x5000 + (i << 6) + 0x260) = 0xe0000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(u16*)(p + 0x5200 + (i << 6) + 0x92) = 0;
-            (*(u8*)(p + 0x529b + (i << 6)))++;
+            mPaddles[i].x = 0xe0000;
+            mPaddles[i].vy = 0;
+            mPaddles[i].vx = 0;
+            mPaddles[i].timer = 0;
+            mPaddles[i].unk_3b++;
             return;
         }
     } else if (state == 2) {
-        *(int*)(p + 0x5264 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x26c);
-        v = *(int*)(p + 0x5000 + (i << 6) + 0x264) >> 12;
+        mPaddles[i].y += mPaddles[i].vy;
+        v = mPaddles[i].y >> 12;
         if (v <= -0xa0) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) <= -0x400)
-                *(int*)(p + 0x526c + (i << 6)) += 8;
+            if (mPaddles[i].vy <= -0x400)
+                mPaddles[i].vy += 8;
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x26c) >= -0x1000)
-                *(int*)(p + 0x526c + (i << 6)) -= 0x80;
+            if (mPaddles[i].vy >= -0x1000)
+                mPaddles[i].vy -= 0x80;
         }
         if (v <= -0xc0) {
-            *(int*)(p + 0x5000 + (i << 6) + 0x264) = -0xc0000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-            *(u16*)(p + 0x5200 + (i << 6) + 0x92) = 0;
-            (*(u8*)(p + 0x529b + (i << 6)))++;
+            mPaddles[i].y = -0xc0000;
+            mPaddles[i].vx = 0;
+            mPaddles[i].vy = 0;
+            mPaddles[i].timer = 0;
+            mPaddles[i].unk_3b++;
         }
     } else {
-        *(int*)(p + 0x5260 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x268);
-        v = *(int*)(p + 0x5000 + (i << 6) + 0x260) >> 12;
+        mPaddles[i].x += mPaddles[i].vx;
+        v = mPaddles[i].x >> 12;
         if (v <= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= -0x400)
-                *(int*)(p + 0x5268 + (i << 6)) += 8;
+            if (mPaddles[i].vx <= -0x400)
+                mPaddles[i].vx += 8;
         } else {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= -0x1000)
-                *(int*)(p + 0x5268 + (i << 6)) -= 0x80;
+            if (mPaddles[i].vx >= -0x1000)
+                mPaddles[i].vx -= 0x80;
         }
         if (v <= 0x20) {
-            *(int*)(p + 0x5000 + (i << 6) + 0x260) = 0x20000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
-            *(u16*)(p + 0x5200 + (i << 6) + 0x92) = 0;
-            *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 0;
+            mPaddles[i].x = 0x20000;
+            mPaddles[i].vx = 0;
+            mPaddles[i].vy = 0;
+            mPaddles[i].timer = 0;
+            mPaddles[i].unk_3b = 0;
         }
     }
 
-    *(int*)(p + 0x5000 + (i << 6) + 0x28c) = Sound_PlayIfNotActive(*(int*)(p + 0x5000 + (i << 6) + 0x28c), 2, 0x198, 0);
+    mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 }
 #pragma pop
 
@@ -1606,53 +1571,52 @@ void dScMgPachinko2_c::func_ov006_02101af0(int i)
 #pragma opt_common_subs off
 void dScMgPachinko2_c::func_ov006_02101e88(int i)
 {
-    char *p = (char *)this;
     int v;
     u8 flag;
 
-    *(int*)(p + 0x5260 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x268);
-    flag = *(u8*)(p + 0x5000 + (i << 6) + 0x298);
-    v = *(int*)(p + 0x5000 + (i << 6) + 0x260) >> 12;
+    mPaddles[i].x += mPaddles[i].vx;
+    flag = mPaddles[i].dir;
+    v = mPaddles[i].x >> 12;
 
     if (flag != 0) {
         if (v >= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= 0x400)
-                *(int*)(p + 0x5268 + (i << 6)) -= 8;
+            if (mPaddles[i].vx >= 0x400)
+                mPaddles[i].vx -= 8;
         } else {
-            int idx = *(int*)(p + 0x5668);
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= data_ov006_0213db84[idx][i])
-                *(int*)(p + 0x5268 + (i << 6)) += 0x80;
+            int idx = mLaneConfig;
+            if (mPaddles[i].vx <= data_ov006_0213db84[idx][i])
+                mPaddles[i].vx += 0x80;
         }
         if (v >= 0xe0) {
             u32 a;
-            *(int*)(p + 0x5000 + (i << 6) + 0x260) = 0xe0000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(u8*)(p + 0x5298 + (i << 6)) ^= 1;
+            mPaddles[i].x = 0xe0000;
+            mPaddles[i].vx = 0;
+            mPaddles[i].dir ^= 1;
             a = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-            *(u16*)(p + (i << 6) + 0x5292) = (u16)(((a << 3) >> 15) * 3 + 0x40);
-            *(u8*)(p + 0x5000 + (i << 6) + 0x296) = 7;
+            mPaddles[i].timer = (u16)(((a << 3) >> 15) * 3 + 0x40);
+            mPaddles[i].state = 7;
         }
     } else {
         if (v <= 0x80) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) <= -0x400)
-                *(int*)(p + 0x5268 + (i << 6)) += 8;
+            if (mPaddles[i].vx <= -0x400)
+                mPaddles[i].vx += 8;
         } else {
-            int idx = *(int*)(p + 0x5668);
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) >= -data_ov006_0213db84[idx][i])
-                *(int*)(p + 0x5268 + (i << 6)) -= 0x80;
+            int idx = mLaneConfig;
+            if (mPaddles[i].vx >= -data_ov006_0213db84[idx][i])
+                mPaddles[i].vx -= 0x80;
         }
         if (v <= 0x20) {
             u32 a;
-            *(int*)(p + 0x5000 + (i << 6) + 0x260) = 0x20000;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            *(u8*)(p + 0x5298 + (i << 6)) ^= 1;
+            mPaddles[i].x = 0x20000;
+            mPaddles[i].vx = 0;
+            mPaddles[i].dir ^= 1;
             a = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-            *(u16*)(p + (i << 6) + 0x5292) = (u16)(((a << 3) >> 15) * 3 + 0x40);
-            *(u8*)(p + 0x5000 + (i << 6) + 0x296) = 7;
+            mPaddles[i].timer = (u16)(((a << 3) >> 15) * 3 + 0x40);
+            mPaddles[i].state = 7;
         }
     }
 
-    *(int*)(p + 0x5000 + (i << 6) + 0x28c) = Sound_PlayIfNotActive(*(int*)(p + 0x5000 + (i << 6) + 0x28c), 2, 0x198, 0);
+    mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 }
 #pragma pop
 
@@ -1664,59 +1628,59 @@ void dScMgPachinko2_c::func_ov006_021020c4(int i)
     char *p = (char *)this;
     int limit;
 
-    *(int*)(p + 0x5264 + (i << 6)) += *(int*)(p + 0x5000 + (i << 6) + 0x26c);
-    limit = data_ov006_0213db6c[*(int*)(p + 0x5668)][i];
+    mPaddles[i].y += mPaddles[i].vy;
+    limit = data_ov006_0213db6c[mLaneConfig][i];
 
-    if ((*(int*)(p + 0x5000 + (i << 6) + 0x264) >> 12) >= limit) {
-        *(int*)(p + 0x5000 + (i << 6) + 0x264) = limit << 12;
-        *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0;
+    if ((mPaddles[i].y >> 12) >= limit) {
+        mPaddles[i].y = limit << 12;
+        mPaddles[i].vy = 0;
 
         if (i & 2) {
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) > 0)
-                *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0xc80;
+            if (mPaddles[i].vx > 0)
+                mPaddles[i].vx = 0xc80;
             else
-                *(int*)(p + 0x5000 + (i << 6) + 0x268) = -0xc80;
+                mPaddles[i].vx = -0xc80;
         }
 
-        if (*(int*)(p + 0x5668) == 1) {
-            *(u8*)(p + 0x5000 + (i << 6) + 0x296) = 4;
-            if (*(int*)(p + 0x5000 + (i << 6) + 0x268) > 0)
+        if (mLaneConfig == 1) {
+            mPaddles[i].state = 4;
+            if (mPaddles[i].vx > 0)
                 *(u16*)(p + 0x5000 + (i << 6) + 0x290) = 0x8000;
             else
                 *(u16*)(p + 0x5000 + (i << 6) + 0x290) = 0;
         }
 
-        if (*(int*)(p + 0x5668) == 3) {
-            *(u8*)(p + 0x5000 + (i << 6) + 0x296) = 3;
-            *(int*)(p + 0x5000 + (i << 6) + 0x268) = 0;
-            if (*(u8*)(p + 0x5000 + (i << 6) + 0x298) != 0) {
-                *(int*)(p + 0x5000 + (i << 6) + 0x26c) = 0xc00;
-                *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 0;
+        if (mLaneConfig == 3) {
+            mPaddles[i].state = 3;
+            mPaddles[i].vx = 0;
+            if (mPaddles[i].dir != 0) {
+                mPaddles[i].vy = 0xc00;
+                mPaddles[i].unk_3b = 0;
             } else {
-                *(int*)(p + 0x5000 + (i << 6) + 0x26c) = -0xc00;
-                *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 2;
+                mPaddles[i].vy = -0xc00;
+                mPaddles[i].unk_3b = 2;
             }
             return;
         }
 
-        if (*(int*)(p + 0x5668) == 4) {
-            *(u8*)(p + 0x5000 + (i << 6) + 0x296) = 5;
+        if (mLaneConfig == 4) {
+            mPaddles[i].state = 5;
             if (i == 0)
-                *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 0;
+                mPaddles[i].unk_3b = 0;
             else
-                *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 1;
+                mPaddles[i].unk_3b = 1;
         }
 
-        if (*(int*)(p + 0x5668) == 5) {
-            *(u8*)(p + 0x5000 + (i << 6) + 0x296) = 6;
-            if (*(u8*)(p + 0x5000 + (i << 6) + 0x298) != 0)
-                *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 0;
+        if (mLaneConfig == 5) {
+            mPaddles[i].state = 6;
+            if (mPaddles[i].dir != 0)
+                mPaddles[i].unk_3b = 0;
             else
-                *(u8*)(p + 0x5000 + (i << 6) + 0x29b) = 1;
+                mPaddles[i].unk_3b = 1;
             return;
         }
     } else {
-        *(int*)(p + 0x526c + (i << 6)) -= 0x20;
+        mPaddles[i].vy -= 0x20;
     }
 
     func_ov006_02101e88(i);
@@ -1757,7 +1721,7 @@ void dScMgPachinko2_c::func_ov006_02102274(int idx)
     bit = (int)(((unsigned int)r >> 16 & 0x7fffu) * 2u >> 15);
 
     if (idx & 1)
-        bit = *(unsigned char *)(c + 0x5298) ^ 1;
+        bit = mPaddles[0].dir ^ 1;
 
     ip = c + (idx << 6);
     ip += 0x5000;
@@ -1768,12 +1732,12 @@ void dScMgPachinko2_c::func_ov006_02102274(int idx)
         *(int *)(ip + 0x260) = -0x10000;
         *(int *)(ip + 0x268) = 0x200;
 
-        if (*(int *)(c + 0x5668) == 1) {
+        if (mLaneConfig == 1) {
             *(int *)(ip + 0x268) = 0xf00;
 
             if (idx) {
                 *(unsigned char *)(ip + 0x29b) =
-                    *(unsigned char *)(c + 0x529b);
+                    mPaddles[0].unk_3b;
             } else {
                 r = RandomIntInternal(&data_0209d4b8);
                 bit = (int)(((unsigned int)r >> 16 & 0x7fffu) * 2u >> 15);
@@ -1787,12 +1751,12 @@ void dScMgPachinko2_c::func_ov006_02102274(int idx)
         *(int *)(ip + 0x260) = 0x110000;
         *(int *)(ip + 0x268) = -0x200;
 
-        if (*(int *)(c + 0x5668) == 1) {
+        if (mLaneConfig == 1) {
             *(int *)(ip + 0x268) = -0xf00;
 
             if (idx) {
                 *(unsigned char *)(ip + 0x29b) =
-                    *(unsigned char *)(c + 0x529b);
+                    mPaddles[0].unk_3b;
             } else {
                 r = RandomIntInternal(&data_0209d4b8);
                 bit = (int)(((unsigned int)r >> 16 & 0x7fffu) * 2u >> 15);
@@ -1803,15 +1767,15 @@ void dScMgPachinko2_c::func_ov006_02102274(int idx)
         }
     }
 
-    *(int *)(c + (idx << 6) + 0x5264) = -0xf8000;
+    mPaddles[idx].y = -0xf8000;
     ip = c + (idx << 6);
     ip += 0x5000;
     *(unsigned char *)(ip + 0x299) = 0;
     *(int *)(ip + 0x26c) = 0x2000;
 
     r = func_020126e8(*(int *)(ip + 0x260));
-    *(int *)(c + (idx << 6) + 0x528c) = func_02012468(
-        *(int *)(c + (idx << 6) + 0x528c),
+    mPaddles[idx].sound = func_02012468(
+        mPaddles[idx].sound,
         2, 0x198, 4, 0, 0, r, 0);
 }
 #pragma pop
@@ -1834,7 +1798,7 @@ void dScMgPachinko2_c::func_ov006_0210246c()
 void dScMgPachinko2_c::func_ov006_021024e0()
 {
     char *c = (char *)this;
-    int n = data_ov006_0212ebb8[*(int*)(c + 0x5000 + 0x668)];
+    int n = data_ov006_0212ebb8[mLaneConfig];
     int i = 0;
     if (n <= 0) return;
     do {
@@ -1864,28 +1828,26 @@ void dScMgPachinko2_c::func_ov006_02102564()
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_0210258cEv
 void dScMgPachinko2_c::func_ov006_0210258c()
 {
-    char *c = (char *)this;
   volatile unsigned short v;
   char* dst;
-  if (*(unsigned short*)(c + 0x5674) != 0) return;
+  if (mCountdown != 0) return;
   func_ov006_02100734(0);
   func_ov006_02100734(1);
   func_ov006_02100734(2);
-  *(int*)(c + 0x5660) = 2;
-  *(short*)(c + 0x566e) = 0x40;
+  unk_5660 = 2;
+  unk_566e = 0x40;
   dst = (char*)_ZN3G2S13GetBG2CharPtrEv();
   v = 0;
   MultiStore16(v, dst, 0x6000);
-  *(unsigned char*)(c + 0x5677) = 0;
+  mResult = 0;
   func_ov006_02102dbc();
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02102624Ev
 void dScMgPachinko2_c::func_ov006_02102624()
 {
-    char *c = (char *)this;
-    if (*(unsigned char*)(c + 0x567a) == 0) return;
-    func_ov004_020b1e44(*(unsigned short*)(c + 0x5674));
+    if (mCountdownShown == 0) return;
+    func_ov004_020b1e44(mCountdown);
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_0210265cEv
@@ -1895,22 +1857,22 @@ void dScMgPachinko2_c::func_ov006_0210265c()
     unsigned char *q;
     unsigned short *h;
     unsigned short t;
-    if (*(unsigned short *)(c + 0x5674) == 0) return;
+    if (mCountdown == 0) return;
     q = (unsigned char *)(((int)c + 0x5679));
     *q += 1;
-    if (*(unsigned char *)(c + 0x5679) < 0x3c) return;
-    *(unsigned char *)(c + 0x5679) = 0;
-    h = (unsigned short *)(((int)c + 0x5674));
+    if (mCountdownTick < 0x3c) return;
+    mCountdownTick = 0;
+    h = &mCountdown;
     *h -= 1;
-    t = *(unsigned short *)(c + 0x5674);
+    t = mCountdown;
     if (t > 0xa)
         Sound::PlayBank2_2D(0xa8);
     else if (t > 3)
         Sound::PlayBank2_2D(0xa7);
     else
         Sound::PlayBank2_2D(0xa6);
-    if (*(unsigned short *)(c + 0x5674) == 0)
-        *(unsigned char *)(c + 0x567a) = 0;
+    if (mCountdown == 0)
+        mCountdownShown = 0;
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02102718Ev
@@ -1918,7 +1880,7 @@ void dScMgPachinko2_c::func_ov006_02102718()
 {
     char *c = (char *)this;
     volatile unsigned short tmp;
-    int n = *(unsigned char*)(c + 0x5676);
+    int n = mHeldBall;
     int a, b;
     char* base;
 
@@ -1934,7 +1896,7 @@ void dScMgPachinko2_c::func_ov006_02102718()
     if (b > 6) return;
     if (*(unsigned char*)(base + 0x4699) != 2) return;
 
-    *(unsigned char*)(c + 0x5676) = 0;
+    mHeldBall = 0;
     {
         char* dst = (char*)_ZN3G2S13GetBG2CharPtrEv();
         tmp = 0;
@@ -2001,11 +1963,11 @@ void dScMgPachinko2_c::func_ov006_02102864()
     int layer;                   /* r4 */
     int n;
 
-    n = *(unsigned char *)(c + 0x5676);
+    n = mHeldBall;
     if (n == 0) return;
     idx = n - 1;
-    if (*(int *)(c + idx * 0x40 + 0x4000 + 0x660) != *(int *)(c + idx * 0x40 + 0x4000 + 0x678)
-     || *(int *)(c + idx * 0x40 + 0x4000 + 0x664) != *(int *)(c + idx * 0x40 + 0x4000 + 0x67c)) {
+    if (mBalls[idx].x != *(int *)(c + idx * 0x40 + 0x4000 + 0x678)
+     || mBalls[idx].y != *(int *)(c + idx * 0x40 + 0x4000 + 0x67c)) {
         char *dst = (char *)_ZN3G2S13GetBG2CharPtrEv();
         int i2;
         tmp = 0;
@@ -2045,14 +2007,14 @@ void dScMgPachinko2_c::func_ov006_02102864()
             if (dy < 0) ady = -dy;
 
             if (adx >= ady) {
-                *(int *)(c + 0x5664) = adx / 2;
+                mGuideStep = adx / 2;
             LX:
                 if (dx == 0) {
                     func_ov006_021027e4(cx, cy, layer);
                 } else if (dx > 0) {
                     cx++;
                     LA(c) += ady;
-                    if (*(int *)(c + 0x5664) > adx) {
+                    if (mGuideStep > adx) {
                         if (dy >= 0) cy++; else cy--;
                         LB(c) -= adx;
                     }
@@ -2062,7 +2024,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                 } else {
                     cx--;
                     LC(c) += ady;
-                    if (*(int *)(c + 0x5664) > adx) {
+                    if (mGuideStep > adx) {
                         if (dy >= 0) cy++; else cy--;
                         LD(c) -= adx;
                     }
@@ -2071,14 +2033,14 @@ void dScMgPachinko2_c::func_ov006_02102864()
                     goto LX;
                 }
             } else {
-                *(int *)(c + 0x5664) = ady / 2;
+                mGuideStep = ady / 2;
             LY:
                 if (dy == 0) {
                     func_ov006_021027e4(cx, cy, layer);
                 } else if (dy > 0) {
                     cy++;
                     LE(c) += adx;
-                    if (*(int *)(c + 0x5664) > ady) {
+                    if (mGuideStep > ady) {
                         if (dx >= 0) cx++; else cx--;
                         LF(c) -= ady;
                     }
@@ -2088,7 +2050,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                 } else {
                     cy--;
                     LG(c) += adx;
-                    if (*(int *)(c + 0x5664) > ady) {
+                    if (mGuideStep > ady) {
                         if (dx >= 0) cx++; else cx--;
                         LH(c) -= ady;
                     }
@@ -2102,8 +2064,8 @@ void dScMgPachinko2_c::func_ov006_02102864()
     }
     {
         int i3 = (int)((unsigned long long)idx);
-        *(int *)(c + i3 * 0x40 + 0x4000 + 0x678) = *(int *)(c + i3 * 0x40 + 0x4000 + 0x660);
-        *(int *)(c + i3 * 0x40 + 0x4000 + 0x67c) = *(int *)(c + i3 * 0x40 + 0x4000 + 0x664);
+        *(int *)(c + i3 * 0x40 + 0x4000 + 0x678) = mBalls[i3].x;
+        *(int *)(c + i3 * 0x40 + 0x4000 + 0x67c) = mBalls[i3].y;
     }
 }
 #pragma pop
@@ -2128,10 +2090,10 @@ void dScMgPachinko2_c::func_ov006_02102c3c(int x, int z, int d)
                 *(u16 *)(q + 0x4694) = 0xd000;
             else
                 *(u16 *)(q + 0x4694) = 0xb000;
-            *(int *)(o + i * 0x40 + 0x4660) = x << 12;
-            *(int *)(o + i * 0x40 + 0x4664) = (z - 0x12) << 12;
-            *(int *)(o + i * 0x40 + 0x4668) = (int)(((s64)data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2 + 1] * 0x2000 + 0x800) >> 12);
-            *(int *)(o + i * 0x40 + 0x466c) = (int)(((s64)data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2] * 0x2000 + 0x800) >> 12);
+            mBalls[i].x = x << 12;
+            mBalls[i].y = (z - 0x12) << 12;
+            mBalls[i].vx = (int)(((s64)data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2 + 1] * 0x2000 + 0x800) >> 12);
+            mBalls[i].vy = (int)(((s64)data_02082214[((*(u16 *)(o + i * 0x40 + 0x4694)) >> 4) * 2] * 0x2000 + 0x800) >> 12);
             *(int *)(o + i * 0x40 + 0x4684) = 0;
             Sound::PlayBank2_2D(0x199);
             return;
@@ -2172,10 +2134,10 @@ void dScMgPachinko2_c::func_ov006_02102de4()
     char *p = (char *)this;
     int i;
     for (i = 0; i < 0x30; i++) {
-        if (*(unsigned char *)(p + i * 64 + 0x469a) != 0) {
-            int x = *(int *)(p + i * 64 + 0x4660) >> 12;
-            unsigned char t = *(unsigned char *)(p + i * 64 + 0x469c);
-            int y = *(int *)(p + i * 64 + 0x4664) >> 12;
+        if (mBalls[i].unk_3a != 0) {
+            int x = mBalls[i].x >> 12;
+            unsigned char t = mBalls[i].unk_3c;
+            int y = mBalls[i].y >> 12;
             if (t != 0) {
                 func_ov004_020afdd0((void *)data_ov006_02138d08[t - 1], x, y, -1, -1);
             } else {
@@ -2194,8 +2156,8 @@ void dScMgPachinko2_c::func_ov006_02102e8c()
 {
     int i;
     for (i = 0; i < 0x30; i++) {
-        if (*(unsigned char *)((char *)this + i * 0x40 + 0x4698) != 0) {
-            unsigned char k = *(unsigned char *)((char *)this + i * 0x40 + 0x4699);
+        if (mBalls[i].unk_38 != 0) {
+            unsigned char k = mBalls[i].state;
             (this->*data_ov006_021426f4[k].pmf)(i);
         }
     }
@@ -2206,10 +2168,10 @@ void dScMgPachinko2_c::func_ov006_02102e8c()
 void dScMgPachinko2_c::func_ov006_02102ef4()
 {
     unsigned char *r0 = (unsigned char *)this;
-    if (r0[0x5678] != 0) return;
-    *(unsigned short *)(r0 + 0x5674) = 0x1e;
-    r0[0x5679] = 0;
-    r0[0x567a] = 1;
+    if (mCountdownArmed != 0) return;
+    mCountdown = 0x1e;
+    mCountdownTick = 0;
+    mCountdownShown = 1;
     {
         unsigned char *p = (unsigned char *)(r0 + 0x5678);
         *p += 1;
@@ -2367,45 +2329,45 @@ void dScMgPachinko2_c::func_ov006_02103360(int i)
     int velX, velY;
     int idx2;
 
-    idx2 = (*(unsigned short*)(c + i * 0x40 + 0x4600 + 0x94) >> 4) * 2;
+    idx2 = ((unsigned short)mBalls[i].angle >> 4) * 2;
 
     if (data_02082214[idx2] <= 0) {
         {
             short tv = data_02082214[idx2 + 1];
-            int spd = *(int*)(c + i * 0x40 + 0x4000 + 0x680);
-            *(int*)(c + 0x4660 + i * 0x40) += (int)(((long long)tv * spd + 0x800) >> 12);
+            int spd = mBalls[i].speed;
+            mBalls[i].x += (int)(((long long)tv * spd + 0x800) >> 12);
         }
 
-        idx = *(unsigned short*)(c + i * 0x40 + 0x4600 + 0x94) >> 4;
+        idx = (unsigned short)mBalls[i].angle >> 4;
         {
             short tv = data_02082214[idx * 2];
-            int spd = *(int*)(c + i * 0x40 + 0x4000 + 0x680);
-            *(int*)(c + 0x4664 + i * 0x40) += (int)(((long long)tv * spd + 0x800) >> 12);
+            int spd = mBalls[i].speed;
+            mBalls[i].y += (int)(((long long)tv * spd + 0x800) >> 12);
         }
 
         *(int*)(c + 0x4684 + i * 0x40) += 0x10;
 
-        *(int*)(c + 0x4680 + i * 0x40) -= *(int*)(c + i * 0x40 + 0x4000 + 0x684);
+        mBalls[i].speed -= *(int*)(c + i * 0x40 + 0x4000 + 0x684);
 
         if (*(int*)(c + i * 0x40 + 0x4000 + 0x684) >= 0x600) {
             *(int*)(c + i * 0x40 + 0x4000 + 0x684) = 0x600;
         }
 
-        if (*(int*)(c + i * 0x40 + 0x4000 + 0x680) < 0) {
-            *(unsigned char*)(c + i * 0x40 + 0x4000 + 0x699) = 3;
-            *(int*)(c + i * 0x40 + 0x4000 + 0x680) = 0;
+        if (mBalls[i].speed < 0) {
+            mBalls[i].state = 3;
+            mBalls[i].speed = 0;
             *(int*)(c + i * 0x40 + 0x4000 + 0x684) = 0;
-            *(int*)(c + i * 0x40 + 0x4000 + 0x66c) = 0;
-            *(int*)(c + i * 0x40 + 0x4000 + 0x668) = 0;
+            mBalls[i].vy = 0;
+            mBalls[i].vx = 0;
         }
     } else {
-        *(int*)(c + 0x4660 + i * 0x40) += *(int*)(c + i * 0x40 + 0x4000 + 0x668);
-        *(int*)(c + 0x4664 + i * 0x40) += *(int*)(c + i * 0x40 + 0x4000 + 0x66c);
+        mBalls[i].x += mBalls[i].vx;
+        mBalls[i].y += mBalls[i].vy;
         *(int*)(c + 0x4684 + i * 0x40) += 0x10;
-        *(int*)(c + 0x466c + i * 0x40) += *(int*)(c + i * 0x40 + 0x4000 + 0x684);
+        mBalls[i].vy += *(int*)(c + i * 0x40 + 0x4000 + 0x684);
 
         {
-            int v = *(int*)(c + i * 0x40 + 0x4000 + 0x668);
+            int v = mBalls[i].vx;
             int nv;
             if (v > 0) {
                 nv = v - 0x200;
@@ -2414,33 +2376,33 @@ void dScMgPachinko2_c::func_ov006_02103360(int i)
                 nv = v + 0x200;
                 if (nv >= 0) nv = 0;
             } else {
-                *(unsigned char*)(c + i * 0x40 + 0x4000 + 0x699) = 3;
-                *(int*)(c + i * 0x40 + 0x4000 + 0x680) = 0;
+                mBalls[i].state = 3;
+                mBalls[i].speed = 0;
                 *(int*)(c + i * 0x40 + 0x4000 + 0x684) = 0;
-                *(int*)(c + i * 0x40 + 0x4000 + 0x668) = 0;
+                mBalls[i].vx = 0;
                 return;
             }
-            *(int*)(c + i * 0x40 + 0x4000 + 0x668) = nv;
+            mBalls[i].vx = nv;
         }
     }
 
     {
-        int rawX = *(int*)(c + i * 0x40 + 0x4000 + 0x660);
-        int rawY = *(int*)(c + i * 0x40 + 0x4000 + 0x664);
+        int rawX = mBalls[i].x;
+        int rawY = mBalls[i].y;
         velY = rawY >> 12;
-        *(unsigned short*)(c + 0x4690 + i * 0x40) += *(unsigned short*)(c + i * 0x40 + 0x4600 + 0x92);
+        *(unsigned short*)(c + 0x4690 + i * 0x40) += (unsigned short)mBalls[i].unk_32;
         velX = rawX >> 12;
     }
 
     if (velY <= -0x140 || velY >= 0xd0) {
-        *(unsigned char*)(c + i * 0x40 + 0x4000 + 0x699) = 6;
+        mBalls[i].state = 6;
     }
     if (velX >= 0x140 || velX <= -0x40) {
-        *(unsigned char*)(c + i * 0x40 + 0x4000 + 0x699) = 6;
+        mBalls[i].state = 6;
     }
 
     func_ov006_02102718();
-    if (*(unsigned char*)(c + 0x5676) != 0) {
+    if (mHeldBall != 0) {
         func_ov006_02102864();
     }
 }
@@ -2453,20 +2415,20 @@ void dScMgPachinko2_c::func_ov006_02103608(int i)
 {
     char *o = (char *)this;
     int v660, v664, t660;
-    *(int *)((char *)(((int)o + 0x4660)) + i * 0x40) += *(int *)(o + i * 0x40 + 0x4668);
-    *(int *)((char *)(((int)o + 0x4664)) + i * 0x40) += *(int *)(o + i * 0x40 + 0x466c);
+    *(int *)((char *)(((int)o + 0x4660)) + i * 0x40) += mBalls[i].vx;
+    *(int *)((char *)(((int)o + 0x4664)) + i * 0x40) += mBalls[i].vy;
     *(int *)((char *)(((int)o + 0x4684)) + i * 0x40) += 0x20;
     *(int *)((char *)(((int)o + 0x466c)) + i * 0x40) += *(int *)(o + i * 0x40 + 0x4684);
-    *(u16 *)((char *)(((int)o + 0x4690)) + i * 0x40) += *(u16 *)(o + i * 0x40 + 0x4692);
-    if (*(int *)(o + i * 0x40 + 0x466c) >= 0x8000)
-        *(int *)(o + i * 0x40 + 0x466c) = 0x8000;
-    t660 = *(int *)(o + i * 0x40 + 0x4664);
-    v660 = *(int *)(o + i * 0x40 + 0x4660) >> 12;
+    *(u16 *)((char *)(((int)o + 0x4690)) + i * 0x40) += (u16)mBalls[i].unk_32;
+    if (mBalls[i].vy >= 0x8000)
+        mBalls[i].vy = 0x8000;
+    t660 = mBalls[i].y;
+    v660 = mBalls[i].x >> 12;
     v664 = t660 >> 12;
     if (v664 <= -0x140)
-        *(u8 *)(o + i * 0x40 + 0x4699) = 6;
+        mBalls[i].state = 6;
     if (v660 >= 0x140 || v660 <= -0x40)
-        *(u8 *)(o + i * 0x40 + 0x4699) = 6;
+        mBalls[i].state = 6;
     if (v664 >= 0xa8)
         func_ov006_02102d6c(i);
 }
@@ -2482,39 +2444,39 @@ void dScMgPachinko2_c::func_ov006_0210371c(int i)
     int v;
     int w;
 
-    *(int *)(c + 0x4664 + i * 0x40) += *(int *)(c + i * 0x40 + 0x4000 + 0x66c);
-    old = *(int *)(c + i * 0x40 + 0x4000 + 0x66c);
-    *(int *)(c + 0x466c + i * 0x40) += 0x200;
+    mBalls[i].y += mBalls[i].vy;
+    old = mBalls[i].vy;
+    mBalls[i].vy += 0x200;
 
-    if (old < 0 && *(int *)(c + i * 0x40 + 0x4000 + 0x66c) >= 0) {
+    if (old < 0 && mBalls[i].vy >= 0) {
         *(u16 *)(c + i * 0x40 + 0x4600 + 0x90) = 0;
-        v = *(int *)(c + i * 0x40 + 0x4000 + 0x660) >> 12;
+        v = mBalls[i].x >> 12;
         if (v > 0x80) {
-            *(u8 *)(c + i * 0x40 + 0x4000 + 0x69e) = 1;
-            *(u8 *)(c + i * 0x40 + 0x4000 + 0x69c) = 5;
-            *(int *)(c + i * 0x40 + 0x4000 + 0x668) = 0x1000;
+            mBalls[i].unk_3e = 1;
+            mBalls[i].unk_3c = 5;
+            mBalls[i].vx = 0x1000;
         } else if (v < 0x80) {
-            *(u8 *)(c + i * 0x40 + 0x4000 + 0x69e) = 0;
-            *(u8 *)(c + i * 0x40 + 0x4000 + 0x69c) = 1;
-            *(int *)(c + i * 0x40 + 0x4000 + 0x668) = -0x1000;
+            mBalls[i].unk_3e = 0;
+            mBalls[i].unk_3c = 1;
+            mBalls[i].vx = -0x1000;
         } else {
             unsigned int r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
             if (((r << 1) >> 15) != 0) {
-                *(u8 *)(c + i * 0x40 + 0x4000 + 0x69e) = 1;
-                *(u8 *)(c + i * 0x40 + 0x4000 + 0x69c) = 5;
-                *(int *)(c + i * 0x40 + 0x4000 + 0x668) = 0x1000;
+                mBalls[i].unk_3e = 1;
+                mBalls[i].unk_3c = 5;
+                mBalls[i].vx = 0x1000;
             } else {
-                *(u8 *)(c + i * 0x40 + 0x4000 + 0x69e) = 0;
-                *(u8 *)(c + i * 0x40 + 0x4000 + 0x69c) = 1;
-                *(int *)(c + i * 0x40 + 0x4000 + 0x668) = -0x1000;
+                mBalls[i].unk_3e = 0;
+                mBalls[i].unk_3c = 1;
+                mBalls[i].vx = -0x1000;
             }
         }
     }
 
-    w = *(int *)(c + i * 0x40 + 0x4000 + 0x664) >> 12;
+    w = mBalls[i].y >> 12;
     if (w >= 0xa8) {
-        *(int *)(c + i * 0x40 + 0x4000 + 0x664) = 0xa8000;
-        *(u8 *)(c + i * 0x40 + 0x4000 + 0x699) = 5;
+        mBalls[i].y = 0xa8000;
+        mBalls[i].state = 5;
     }
 }
 #pragma pop
@@ -2529,25 +2491,25 @@ void dScMgPachinko2_c::func_ov006_02103870(int i)
 
     if (*(unsigned short *)(c + (i << 6) + 0x4600 + 0x96) >= 4) {
         *(unsigned short *)(c + (i << 6) + 0x4600 + 0x96) = 0;
-        *(unsigned char *)(c + 0x469d + (i << 6)) += 1;
-        if (*(unsigned char *)(c + (i << 6) + 0x4000 + 0x69d) >= 4)
-            *(unsigned char *)(c + (i << 6) + 0x4000 + 0x69d) = 0;
+        mBalls[i].unk_3d += 1;
+        if (mBalls[i].unk_3d >= 4)
+            mBalls[i].unk_3d = 0;
     }
 
     {
-        unsigned char idx = *(unsigned char *)(c + (i << 6) + 0x4000 + 0x69d);
-        *(unsigned char *)(c + (i << 6) + 0x4000 + 0x69c) = data_ov006_0212ebb4[idx];
-        if (*(unsigned char *)(c + (i << 6) + 0x4000 + 0x69e) != 0)
-            *(unsigned char *)(c + 0x469c + (i << 6)) += 4;
+        unsigned char idx = mBalls[i].unk_3d;
+        mBalls[i].unk_3c = data_ov006_0212ebb4[idx];
+        if (mBalls[i].unk_3e != 0)
+            mBalls[i].unk_3c += 4;
     }
 
-    *(int *)(c + 0x4660 + (i << 6)) += *(int *)(c + (i << 6) + 0x4000 + 0x668);
+    mBalls[i].x += mBalls[i].vx;
 
     {
-        int val = *(int *)(c + (i << 6) + 0x4000 + 0x660);
+        int val = mBalls[i].x;
         int scaled = val >> 12;
         if (scaled >= 0x110 || scaled <= -16) {
-            *(unsigned char *)(c + (i << 6) + 0x4000 + 0x699) = 6;
+            mBalls[i].state = 6;
         }
     }
 }
@@ -2556,9 +2518,8 @@ void dScMgPachinko2_c::func_ov006_02103870(int i)
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_0210397cEi
 void dScMgPachinko2_c::func_ov006_0210397c(int idx)
 {
-    unsigned char *base = (unsigned char *)this;
-    *(unsigned char*)(base + (idx << 6) + 0x4000 + 0x698) = 0;
-    *(unsigned char*)(base + (idx << 6) + 0x4000 + 0x69a) = 0;
+    mBalls[idx].unk_38 = 0;
+    mBalls[idx].unk_3a = 0;
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_02103994Ei
@@ -2567,13 +2528,13 @@ void dScMgPachinko2_c::func_ov006_0210397c(int idx)
 void dScMgPachinko2_c::func_ov006_02103994(int i)
 {
     char *c = (char *)this;
-    *(int*)(c + 0x4660 + i * 0x40) += *(int*)(c + i * 0x40 + 0x4000 + 0x668);
-    *(int*)(c + 0x4664 + i * 0x40) += *(int*)(c + i * 0x40 + 0x4000 + 0x66c);
+    mBalls[i].x += mBalls[i].vx;
+    mBalls[i].y += mBalls[i].vy;
     *(int*)(c + 0x4684 + i * 0x40) += 0x10;
-    *(int*)(c + 0x466c + i * 0x40) += *(int*)(c + i * 0x40 + 0x4000 + 0x684);
+    mBalls[i].vy += *(int*)(c + i * 0x40 + 0x4000 + 0x684);
 
-    if (*(int*)(c + i * 0x40 + 0x4000 + 0x66c) >= 0x8000)
-        *(int*)(c + i * 0x40 + 0x4000 + 0x66c) = 0x8000;
+    if (mBalls[i].vy >= 0x8000)
+        mBalls[i].vy = 0x8000;
 
     if (*(unsigned short*)(c + i * 0x40 + 0x4600 + 0x96) != 0)
     {
@@ -2582,14 +2543,14 @@ void dScMgPachinko2_c::func_ov006_02103994(int i)
         if (*(unsigned short*)(c + i * 0x40 + 0x4600 + 0x96) == 0x20)
         {
             int r3 = func_ov004_020adbc0();
-            int f660 = *(int*)(c + i * 0x40 + 0x4000 + 0x660);
-            int f664 = *(int*)(c + i * 0x40 + 0x4000 + 0x664);
+            int f660 = mBalls[i].x;
+            int f664 = mBalls[i].y;
             func_ov006_02100278(f660, f664, r3 + 1);
             func_ov004_020adb1c(func_ov004_020adbc0() + 1);
         }
     }
 
-    if ((*(int*)(c + i * 0x40 + 0x4000 + 0x664) >> 12) < 0xa8) return;
+    if ((mBalls[i].y >> 12) < 0xa8) return;
 
     func_ov006_02102d6c(i);
 }
@@ -2603,11 +2564,11 @@ void dScMgPachinko2_c::func_ov006_02103ac0()
     char *c = (char *)this;
     int i;
     unsigned short *q;
-    if (*(unsigned short *)(c + 0x566c) == 0) return;
-    q = (unsigned short *)(c + 0x566c);
+    if (unk_566c == 0) return;
+    q = &unk_566c;
     *q = *q - 1;
-    if (*(short *)(c + 0x566c) > 0) return;
-    *(unsigned short *)(c + 0x566c) = 0;
+    if ((short)unk_566c > 0) return;
+    unk_566c = 0;
     for (i = 0; i < 0x30; i++) {
         char *b = c + (i << 6);
         if (*(unsigned char *)(b + 0x4698) == 0) {
@@ -2630,12 +2591,12 @@ void dScMgPachinko2_c::func_ov006_02103ac0()
             *(unsigned char *)(b + 0x469e) = 0;
             *(int *)(b + 0x4688) = 0;
             *(int *)(b + 0x468c) = 4;
-            *(unsigned char *)(c + 0x5676) = (unsigned char)(i + 1);
-            if (*(unsigned short *)(c + 0x5670) != 0) {
+            mHeldBall = (unsigned char)(i + 1);
+            if (unk_5670 != 0) {
                 Sound::PlayBank2_2D(0x19d);
                 return;
             }
-            *(unsigned short *)(c + 0x5670) += 1;
+            unk_5670 += 1;
             return;
         }
     }
@@ -2651,7 +2612,7 @@ void dScMgPachinko2_c::func_ov006_02103bfc()
     int i;
     int j;
     char *p;
-    *(int *)(c + 0x5660) = 0;
+    unk_5660 = 0;
     for (i = 0; i < 0x30; i++) {
         char *r = c + (i << 6);
         *(int *)(r + 0x4660) = 0;
@@ -2672,13 +2633,13 @@ void dScMgPachinko2_c::func_ov006_02103bfc()
         *(unsigned char *)(p + 0x5334) = 0;
         p += 0x18;
     }
-    *(unsigned short *)(c + 0x566e) = 0;
-    *(unsigned short *)(c + 0x5672) = 0;
-    *(unsigned char *)(c + 0x5677) = 0;
-    *(unsigned char *)(c + 0x5678) = 0;
-    *(unsigned char *)(c + 0x5679) = 0;
-    *(unsigned char *)(c + 0x567a) = 0;
-    *(unsigned short *)(c + 0x5670) = 0;
+    unk_566e = 0;
+    unk_5672 = 0;
+    mResult = 0;
+    mCountdownArmed = 0;
+    mCountdownTick = 0;
+    mCountdownShown = 0;
+    unk_5670 = 0;
     func_ov004_020adb1c(0);
     func_ov006_02102564();
     func_ov006_02100058();

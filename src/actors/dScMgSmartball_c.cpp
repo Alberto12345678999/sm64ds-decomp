@@ -1579,6 +1579,7 @@ int cMgSmartball_slot_c::ReelsStopped()
 void cMgSmartball_slot_c::BeginStop()
 {
     char *c = (char *)this;
+    dScMgSmartball_c *self = (dScMgSmartball_c *)c;
   int i;
   unsigned char z;
   int *seed;
@@ -1595,7 +1596,7 @@ void cMgSmartball_slot_c::BeginStop()
   for (i = 0; i < 3; i++)
   {
     *((unsigned char *) ((c + i) + 0x70)) = z;
-    ((int *) (c + 0x64))[i] = ((((((unsigned) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 3) >> 15) + 3;
+    (&self->unk_064)[i] = ((((((unsigned) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) * 3) >> 15) + 3;
   }
 
 }
@@ -1627,6 +1628,7 @@ void cMgSmartball_slot_c::StartSpin()
 void cMgSmartball_slot_c::UpdateSpin()
 {
     char *c = (char *)this;
+    dScMgSmartball_c *self = (dScMgSmartball_c *)c;
     int ib, ic;
 
     if (*(u8 *)(c + 0x73) == 1) {
@@ -1706,26 +1708,26 @@ void cMgSmartball_slot_c::UpdateSpin()
             switch (first) {
             case 0: {
                 V2 a;
-                a.x = *(int *)(c + 8);
+                a.x = (int)self->param1;
                 a.y = *(int *)(c + 0xc);
-                ((dScMgSmartball_c *)((SArrays *)(*(int *)(c + 4))))->EmitScore((int *)&a,  0x1388,  0,  1);
-                ((dScMgSmartball_c *)((char *)(*(int *)(c + 4))))->CountAward(0);
+                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&a,  0x1388,  0,  1);
+                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(0);
                 break;
             }
             case 0x10000: {
                 V2 b;
-                b.x = *(int *)(c + 8);
+                b.x = (int)self->param1;
                 b.y = *(int *)(c + 0xc);
-                ((dScMgSmartball_c *)((SArrays *)(*(int *)(c + 4))))->EmitScore((int *)&b,  0x1f40,  0,  1);
-                ((dScMgSmartball_c *)((char *)(*(int *)(c + 4))))->CountAward(1);
+                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&b,  0x1f40,  0,  1);
+                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(1);
                 break;
             }
             case 0x20000: {
                 V2 d;
-                d.x = *(int *)(c + 8);
+                d.x = (int)self->param1;
                 d.y = *(int *)(c + 0xc);
-                ((dScMgSmartball_c *)((SArrays *)(*(int *)(c + 4))))->EmitScore((int *)&d,  0x2710,  0,  1);
-                ((dScMgSmartball_c *)((char *)(*(int *)(c + 4))))->CountAward(2);
+                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&d,  0x2710,  0,  1);
+                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(2);
                 break;
             }
             }
@@ -2348,24 +2350,24 @@ void cMgSmartball_propeller_c::Update()
 void cMgSmartball_propeller_c::SaveSnapshot()
 {
     char* c = (char*)this;
-    *(int*)(c+0x10) = *(int*)(c+8);
-    *(int*)(c+0x14) = *(int*)(c+0xc);
+    mSnapshot0 = mCurrent0;
+    mSnapshot1 = mCurrent1;
     if (*(unsigned char*)(*(char**)(c+4) + 0x595d) != 0)
         return;
-    if (*(short*)(c+0x36) < *(short*)(c+0x34)) {
-        short* p = (short*)(((int)c + 0x36));
+    if (mSpinSpeed < mSpinSpeedTarget) {
+        short* p = &mSpinSpeed;
         *p = *p + 8;
-        if (*(short*)(c+0x36) > *(short*)(c+0x34))
-            *(short*)(c+0x36) = *(short*)(c+0x34);
+        if (mSpinSpeed > mSpinSpeedTarget)
+            mSpinSpeed = mSpinSpeedTarget;
     } else {
-        short* p = (short*)(((int)c + 0x36));
+        short* p = &mSpinSpeed;
         *p = *p - 8;
-        if (*(short*)(c+0x36) < *(short*)(c+0x34))
-            *(short*)(c+0x36) = *(short*)(c+0x34);
+        if (mSpinSpeed < mSpinSpeedTarget)
+            mSpinSpeed = mSpinSpeedTarget;
     }
     {
         short* q = (short*)(((int)c + 0x32));
-        *q = *q + *(short*)(c+0x36);
+        *q = *q + mSpinSpeed;
     }
     ((cMgSmartball_propeller_c *)((C2 *)c))->RebuildVerts();
 }
@@ -3296,6 +3298,7 @@ L238:
 void cMgSmartball_ball_c::QueueBehind()
 {
     char *c = (char *)this;
+    dScMgSmartball_c *self = (dScMgSmartball_c *)c;
     int cur;
     int val;
     char *mgr;
@@ -3331,16 +3334,16 @@ block1:
     p = (cur >= 0xd) ? (int *)0 : *(int **)(mgr + 0x4688 + (cur << 2));
     CopyObjectPos(local1, p);
     newpos = local1[0] - 0x10000;
-    pos = *(int *)(c + 8);
+    pos = (int)self->param1;
     if (pos < newpos && pos < 0xc8000)
-        *(int *)(c + 8) = newpos;
+        self->param1 = newpos;
     else
-        *(int *)(c + 8) = *(int *)(c + 0x10);
+        self->param1 = *(int *)(c + 0x10);
     *(int *)(c + 0x20) = 0;
     *(int *)(c + 0x24) = 0;
 
     *(int *)(c + 0xc) = _ZN4cstd4fdivEii(
-        (int)(((long long)*(int *)(c + 8) * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
+        (int)(((long long)(int)self->param1 * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
 
     if (*(int *)(c + 0x2c) > *(int *)(*(char **)(c + 4) + 0x4664)) {
         *(int *)(c + 0x104) =
@@ -3351,12 +3354,12 @@ block1:
 block2:
     p = (vm1 >= 0xd) ? (int *)0 : *(int **)(mgr + 0x4688 + (vm1 << 2));
     CopyObjectPos(local2, p);
-    *(int *)(c + 8) = local2[0] - 0x10000;
+    self->param1 = local2[0] - 0x10000;
     *(int *)(c + 0x20) = 0;
     *(int *)(c + 0x24) = 0;
 
     *(int *)(c + 0xc) = _ZN4cstd4fdivEii(
-        (int)(((long long)*(int *)(c + 8) * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
+        (int)(((long long)(int)self->param1 * 0xa000 + 0x800) >> 12), 0xd8000) + 0x90000;
 
     if (*(int *)(c + 0x2c) > *(int *)(*(char **)(c + 4) + 0x4664)) {
         *(int *)(c + 0x104) =
@@ -4512,10 +4515,11 @@ void dScMgSmartball_c::EmitSparks(int *pair, int a3)
 void dScMgSmartball_c::RenderSparks()
 {
     char *self = (char *)this;
+    dScMgSmartball_c *scene = (dScMgSmartball_c *)self;
   int i; char* p = self;
   for (i = 0; i < 0x40; i++) {
     if (*(unsigned char*)(p + 0x5000 + 0x9bc) != 0) {
-      if ((*(int*)(self + 8) & 0xff) == 0) {
+      if (((int)scene->param1 & 0xff) == 0) {
         int idx = *(int*)(p + 0x5000 + 0x9b4) / 4 + 8;
         int b = *(unsigned char*)(p + 0x5000 + 0x9bd);
         if (b != 0) idx += 4;
@@ -4881,6 +4885,7 @@ extern "C" void dScMgSmartball_c::SpawnDust(int *origin)
 void dScMgSmartball_c::UpdateScores()
 {
     char *o = (char *)this;
+    dScMgSmartball_c *self = (dScMgSmartball_c *)o;
     int i;
     for (i = 0; i < 5; i++) {
         int *A = (int *)(((int)(o + i * 4) + 0x478c));
@@ -4901,7 +4906,7 @@ void dScMgSmartball_c::UpdateScores()
                 }
             }
             *C += 1;
-            if ((*(int *)(o + 8) & 0xff) == 0)
+            if (((int)self->param1 & 0xff) == 0)
                 *D1 -= 0x1000;
             else
                 *D1 -= 0x800;
@@ -5189,6 +5194,7 @@ void dScMgSmartball_c::CollideBalls()
 void dScMgSmartball_c::SpawnObjects()
 {
     char *c = (char *)this;
+    dScMgSmartball_c *self = (dScMgSmartball_c *)c;
     V2 pos[25];
 
     func_ov004_020adb1c(0);
@@ -5317,17 +5323,17 @@ void dScMgSmartball_c::SpawnObjects()
     func_ov004_020b04d0(0x30);
 
     if (GetOwnerLanguage() == 5) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, *(int *)(c + 0xbc) & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213ef8c, (int)self->unk_0bc & 1);
     } else if (GetOwnerLanguage() == 4) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, *(int *)(c + 0xbc) & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213efb8, (int)self->unk_0bc & 1);
     } else if (GetOwnerLanguage() == 3) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, *(int *)(c + 0xbc) & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213efe4, (int)self->unk_0bc & 1);
     } else if (GetOwnerLanguage() == 2) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, *(int *)(c + 0xbc) & 1);
-    } else if ((*(int *)(c + 8) & 0xff) == 0) {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, *(int *)(c + 0xbc) & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f010, (int)self->unk_0bc & 1);
+    } else if (((int)self->param1 & 0xff) == 0) {
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f03c, (int)self->unk_0bc & 1);
     } else {
-        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, *(int *)(c + 0xbc) & 1);
+        func_02057d00(data_ov006_02142c40, data_ov006_0213f068, (int)self->unk_0bc & 1);
     }
     {
         void *d = func_ov004_020adc74(data_ov006_02142c40);
@@ -5335,19 +5341,19 @@ void dScMgSmartball_c::SpawnObjects()
         DecompressLZ16(d, (void *)0x6600000);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, *(int *)(c + 0xbc) & 1);
+    func_02057d00(data_ov006_02142c40, data_ov006_0213f090, (int)self->unk_0bc & 1);
     {
         void *d = func_ov004_020adc74(data_ov006_02142c40);
         DecompressLZ16(d, c + 0x4954);
         Ov004_Deallocate(d);
     }
-    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, *(int *)(c + 0xbc) & 1);
+    func_02057d00(data_ov006_02142c40, data_ov006_0213f0c0, (int)self->unk_0bc & 1);
     {
         void *d = func_ov004_020adc74(data_ov006_02142c40);
         DecompressLZ16(d, c + 0x5154);
         Ov004_Deallocate(d);
     }
-    if ((*(int *)(c + 8) & 0xff) == 0) {
+    if (((int)self->param1 & 0xff) == 0) {
         void *d = func_ov004_020adc74(data_ov006_0213f0f0);
         DecompressLZ16(d, _ZN2G212GetBG2ScrPtrEv());
         Ov004_Deallocate(d);
@@ -5510,7 +5516,7 @@ void dScMgSmartball_c::SpawnObjects()
         }
     }
 
-    if ((*(int *)(c + 8) & 0xff) == 0) {
+    if (((int)self->param1 & 0xff) == 0) {
         *(int *)(c + 0x4000 + 0x668) = 0xc;
     } else {
         *(int *)(c + 0x4000 + 0x668) = 0xd;
@@ -6306,10 +6312,10 @@ s32 dScMgSmartball_c::Behavior()
     char* c = (char*)this;
     int vec[3];
 
-    if (*(unsigned char*)(c + 0xc4) == 0) {
-        c[0xc3] = 1;
-        c[0xc4] = 1;
-        *(short*)(c + 0xc0) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
 
     switch (*(int*)(c + 0x4660)) {
@@ -6424,7 +6430,7 @@ s32 dScMgSmartball_c::Behavior()
         break;
     case 1:
         ((dScMgSmartball_c *)(c))->UpdateScores();
-        c[0xc3] = 0;
+        mPromptEnabled = 0;
         if (*(int*)(c + 0x5960) == 0) {
             data_0209d454[0] |= 1;
         }
@@ -6443,7 +6449,7 @@ s32 dScMgSmartball_c::Behavior()
                     flag = 1;
                 }
                 if (flag != 0) {
-                    if ((*(int*)(c + 8) & 0xff) == 0) {
+                    if (((int)param1 & 0xff) == 0) {
                         data_ov004_020bc888 = 0x80;
                         data_ov004_020bc864 = -0x30;
                     }
@@ -6575,10 +6581,10 @@ s32 dScMgSmartball_c::InitResources()
   s32 i;
   if ((*((s32 *) (c + 8))) & 0xff)
   {
-    *((u32 *) (c + 0xbc)) = (u8) ((*((s32 *) (c + 8))) & 0xFF);
-    if ((*((u32 *) (c + 0xbc))) > 0x270e)
+    unk_0bc = (u8) ((*((s32 *) (c + 8))) & 0xFF);
+    if ((unk_0bc) > 0x270e)
     {
-      *((u32 *) (c + 0xbc)) = 0x270e;
+      unk_0bc = 0x270e;
     }
   }
   data_0208ee44 = 1;

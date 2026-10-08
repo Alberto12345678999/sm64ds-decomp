@@ -227,16 +227,17 @@ void func_ov006_0210ab90(void)
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
 void func_ov006_0210ab94(char* c){
+    dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
-        *(int*)(c + 0x5000) = 7;
+        self->mState = 7;
         func_ov004_020b0a54(0x12);
-        *(int*)(c + 0x5004) = 0;
+        self->unk_5004 = 0;
     }
-    if (*(unsigned char*)(c + 0x503e) >= 0x3c) return;
+    if (self->unk_503e >= 0x3c) return;
     {
-        int* a = (int*)(((int)c + 0x4ff4));
-        int* b = (int*)(((int)c + 0x4ff8));
-        int* d = (int*)(((int)c + 0x4ffc));
+        int* a = &self->mReelWinPos[0];
+        int* b = &self->mReelWinPos[1];
+        int* d = &self->mReelWinPos[2];
         *a = *a + 0x10000;
         *b = *b - 0x10000;
         *d = *d + 0x10000;
@@ -530,22 +531,22 @@ void dScMgSlot3_c::OnYoshiTryEat(int mode)
     char *c = (char *)this;
 
     if (mode == 3 || mode == 0x12) {
-        *(int *)(c + 0xa8) = 0xc;
-        *(int *)(c + 0xac) = *(int *)(c + 0xa8);
-        *(int *)(c + 0xbc) = *(int *)(c + 0x5004);
-        if (*(u32 *)(c + 0xbc) > 0x270e) {
-            *(int *)(c + 0xbc) = 0x270e;
+        unk_0a8 = 0xc;
+        unk_0ac = unk_0a8;
+        unk_0bc = unk_5004;
+        if (unk_0bc > 0x270e) {
+            unk_0bc = 0x270e;
         }
-        *(int *)(c + 0xb4) = 0;
-        func_ov004_020adb1c(*(int *)(c + 0xb4));
+        mHudScore = 0;
+        func_ov004_020adb1c(mHudScore);
         func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
     } else if (mode == 4) {
-        if (*(int *)(c + 0x5004) < 5) {
+        if (unk_5004 < 5) {
             *(int *)(int)(c + 0x5004) += 1;
         }
         *(int *)(int)(c + 0xbc) += 1;
-        if (*(u32 *)(c + 0xbc) > 0x270e) {
-            *(int *)(c + 0xbc) = 0x270e;
+        if (unk_0bc > 0x270e) {
+            unk_0bc = 0x270e;
         }
     }
 
@@ -557,24 +558,24 @@ void dScMgSlot3_c::OnYoshiTryEat(int mode)
         u8 k;
         int m;
 
-        v = *(int *)(c + 0x5004);
+        v = unk_5004;
         if (v <= 0) {
-            *(u8 *)(c + 0x503a) = 3;
+            mStripLength = 3;
         } else if (v <= 2) {
-            *(u8 *)(c + 0x503a) = 4;
+            mStripLength = 4;
         } else {
-            *(u8 *)(c + 0x503a) = 5;
+            mStripLength = 5;
         }
 
-        v2 = *(int *)(c + 0x5004);
+        v2 = unk_5004;
         if (v2 <= 0 || v2 == 1 || v2 == 3) {
-            *(u8 *)(c + 0x5040) = 0;
-            *(u8 *)(c + 0x5041) = 1;
-            *(u8 *)(c + 0x5042) = 0;
+            unk_5040 = 0;
+            unk_5041 = 1;
+            unk_5042 = 0;
         } else if (v2 == 2 || v2 == 4) {
-            *(u8 *)(c + 0x5040) = 1;
-            *(u8 *)(c + 0x5041) = 0;
-            *(u8 *)(c + 0x5042) = 1;
+            unk_5040 = 1;
+            unk_5041 = 0;
+            unk_5042 = 1;
         } else {
             for (i = 0; i < 3; i++) {
                 if ((u8)(((u32)RandomIntInternal(&data_0209e650) >> 16) & 1)) {
@@ -585,28 +586,28 @@ void dScMgSlot3_c::OnYoshiTryEat(int mode)
             }
         }
 
-        *(u8 *)(c + 0x503c) = ((u32)RandomIntInternal(&data_0209e650) >> 16) % *(u8 *)(c + 0x503a);
+        unk_503c = ((u32)RandomIntInternal(&data_0209e650) >> 16) % mStripLength;
         if (mode != 4) {
-            *(int *)(c + 0x500c) = 0;
-            *(u8 *)(c + 0x503b) = *(u8 *)(c + 0x503c);
+            mReelDrawY = 0;
+            mWinSymbol = unk_503c;
         } else {
-            *(int *)(c + 0x500c) = 0x50;
+            mReelDrawY = 0x50;
             func_02012790(0x1aa);
         }
 
         {
             char *w = c;
             for (j = 0; j < 3; j++, w += 5) {
-                for (k = 0; k < *(u8 *)(c + 0x503a); k++) {
+                for (k = 0; k < mStripLength; k++) {
                     if (j == 1) {
-                        *(u8 *)(c + k + 0x5021) = *(u8 *)(c + 0x503a) - k - 1;
+                        *(u8 *)(c + k + 0x5021) = mStripLength - k - 1;
                     } else {
                         *(u8 *)(w + k + 0x501c) = k;
                     }
                 }
             }
         }
-        *(int *)(c + 0x4ff0) = (*(u8 *)(c + 0x503a) * 0x50) << 12;
+        unk_4ff0 = (mStripLength * 0x50) << 12;
     }
 
     {
@@ -618,17 +619,17 @@ void dScMgSlot3_c::OnYoshiTryEat(int mode)
             *(u8 *)(c + j2 + 0x502b) = 1;
             *(u8 *)(c + j2 + 0x502e) = 0;
             for (k2 = 0; k2 < 3; k2++) {
-                *(u8 *)(w2 + k2 + 0x5031) = *(u8 *)(c + 0x503a);
+                *(u8 *)(w2 + k2 + 0x5031) = mStripLength;
             }
         }
         for (m2 = 0; m2 < 3; m2++) {
-            *(int *)(c + m2 * 4 + 0x4ff4) = 0;
+            mReelWinPos[m2] = 0;
         }
-        *(u8 *)(c + 0x503d) = 0;
-        *(u8 *)(c + 0x503e) = 0x3c;
-        *(int *)(c + 0x5000) = 0;
-        *(int *)(c + 0x5010) = -1;
-        *(int *)(c + 0x5014) = 0;
+        unk_503d = 0;
+        unk_503e = 0x3c;
+        mState = 0;
+        mWinColumn = -1;
+        unk_5014 = 0;
     }
 }
 
@@ -885,16 +886,16 @@ s32 dScMgSlot3_c::InitResources()
     func_ov006_020c2154(c + 0x4f38);
     func_ov006_020c1eb4(c + 0x4660);
 
-    *(int *)(c + 0x5004) = *(int *)(c + 0xbc);
+    unk_5004 = (int)unk_0bc;
 
     ((dScMgSlot3_c *)c)->OnYoshiTryEat(3);
 
-    *(u8 *)(c + 0x5000 + 0x3b) = *(u8 *)(c + 0x5000 + 0x3c);
-    *(int *)(c + 0x5000 + 0xc) = 0;
+    mWinSymbol = unk_503c;
+    mReelDrawY = 0;
 
     for (int i = 0; i < 3; i++) {
         int rnd = RandomIntInternal(&data_0209e650);
-        u32 divisor = *(u8 *)(c + 0x5000 + 0x3a);
+        u32 divisor = mStripLength;
         u32 val = ((u32)rnd >> 16) % divisor;
         ((u32 *)(c + 0x4fe4))[i] = val * 0x50000;
     }
@@ -912,8 +913,8 @@ s32 dScMgSlot3_c::InitResources()
 
     data_0208ee44 = 1;
 
-    *(u16 *)(c + 0x5018) = 0;
-    *(u16 *)(c + 0x501a) = 0;
+    mLamp1Angle = 0;
+    mLamp2Angle = 0;
     return 1;
 }
 
@@ -1232,8 +1233,8 @@ s32 dScMgSlot1_c::Render()
         cur += 0x15;
     }
     mBetIcon.Render();
-    func_ov004_020b2444(0x70, 0xb0, *(int*)(t + 0xa8), 0, 1, 1, 0x14);
-    if (*(int*)(t + 0x46b4) >= 5 && (*(t + 0x470a) != 0 || (*(t + 0x470b) != 0 && *(t + 0x470b) < 3))) {
+    func_ov004_020b2444(0x70, 0xb0, unk_0a8, 0, 1, 1, 0x14);
+    if (unk_46b4 >= 5 && (*(t + 0x470a) != 0 || (*(t + 0x470b) != 0 && *(t + 0x470b) < 3))) {
         b = *(t + 0x470b);
         if (b != 0 && b < 3) {
             i = 0;
