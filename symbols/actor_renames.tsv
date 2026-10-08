@@ -5543,6 +5543,30 @@ ov006	0x0212a224	func_ov006_0212a224	_ZN15dScMgSnowball_c19func_ov006_0212a224Ei
 ov006	0x0212a274	func_ov006_0212a274	_ZN15dScMgSnowball_c19func_ov006_0212a274Ei	object-as-this
 ov006	0x0212a2e0	func_ov006_0212a2e0	_ZN15dScMgSnowball_c19func_ov006_0212a2e0Ev	object-as-this
 ov006	0x0212a3c0	func_ov006_0212a3c0	_ZN15dScMgSnowball_c19func_ov006_0212a3c0Ev	object-as-this
+ov006	0x0212093c	func_ov006_0212093c	_ZN24dScMgTrampoline_DoorMark6RenderEi	coined: ROM symbol is address-only; receiver is mDoorMark (scene+0x5d84) via &mDoorMark.row at both call sites; body draws the mark while shown
+ov006	0x021209ac	func_ov006_021209ac	_ZN24dScMgTrampoline_DoorMark6UpdateEv	coined: ROM symbol is address-only; receiver is mDoorMark via &mDoorMark.row in Behavior; body ticks the blink timer
+ov006	0x02120a18	func_ov006_02120a18	_ZN24dScMgTrampoline_DoorMark4ShowEi	coined: ROM symbol is address-only; receiver is mDoorMark via (u16 *)&mDoorMark; body starts the blink on the given door
+ov006	0x02120a44	func_ov006_02120a44	_ZN24dScMgTrampoline_DoorMark4HideEv	coined: ROM symbol is address-only; receiver is mDoorMark via (char *)&mDoorMark in OnYoshiTryEat; body clears the blink
+ov006	0x02120a54	func_ov006_02120a54	_ZN24dScMgTrampoline_DoorMark4InitEv	coined: ROM symbol is address-only; called once by the factory on scene+0x5d84; body clears the blink
+ov006	0x02120a64	func_ov006_02120a64	_ZN4Desc6RenderEv	coined: ROM symbol is address-only; receiver is a live Desc walked off data_ov006_02142f64; body draws the score number
+ov006	0x02120ab8	func_ov006_02120ab8	_ZN4Desc6UpdateEv	coined: ROM symbol is address-only; receiver is a Desc from the pool func_ov006_02120d8c registers; body ticks life and eases toward targetY
+ov006	0x02120b30	func_ov006_02120b30	_ZN4Desc5SpawnEii	coined: ROM symbol is address-only; receiver is a free Desc slot picked by func_ov006_02120d0c; body fills it and links it live
+ov006	0x02120f18	func_ov006_02120f18	_ZN17dScMgTrampoline_c9InitBrushEi	coined: ROM symbol is address-only; receiver is the scene passed by func_ov006_0212231c; body fills the BG layer the stylus lines draw on
+ov006	0x02121750	func_ov006_02121750	_ZN17dScMgTrampoline_c11SetDoorSideEs	coined: ROM symbol is address-only; receiver is the scene at both StatePlay/OnYoshiTryEat call sites; body writes mDoorSide and mirrors it into data_ov006_02140538
+ov006	0x02121768	func_ov006_02121768	_ZN17dScMgTrampoline_c11GetDoorSideEv	coined: ROM symbol is address-only; receiver is the scene at the StatePlay call site; body returns mDoorSide
+ov006	0x0212231c	func_ov006_0212231c	_ZN17dScMgTrampoline_c11InitDisplayEv	coined: ROM symbol is address-only; receiver is the scene passed by InitResources; body loads the BG/OBJ screens for the current language
+ov006	0x02122e20	func_ov006_02122e20	_ZN18dScMgTrampoline2_c9InitBrushEi	coined: ROM symbol is address-only; receiver is the scene passed by func_ov006_021245a8; body fills the BG layer the stylus lines draw on
+ov006	0x02123428	func_ov006_02123428	_ZN18dScMgTrampoline2_c9SpawnWaveEv	coined: ROM symbol is address-only; called on the scene by StatePlay; body rolls one random wave of shapes from the spawn table
+ov006	0x02123938	func_ov006_02123938	_ZN18dScMgTrampoline2_c16UpdateTouchInputEv	coined: ROM symbol is address-only; receiver is the scene at the Behavior call site; body samples and tracks the stylus drag every frame
+ov006	0x02123b20	func_ov006_02123b20	_ZN18dScMgTrampoline2_c9StateDoneEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbd0 and the empty matched body identify the terminal state
+ov006	0x02123b24	func_ov006_02123b24	_ZN18dScMgTrampoline2_c13StateWaitExitEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbe0 and the matched body identify the exit-wait state
+ov006	0x02123bf4	func_ov006_02123bf4	_ZN18dScMgTrampoline2_c12StateResultsEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbf0 and the matched body identify the results transition state
+ov006	0x02123c78	func_ov006_02123c78	_ZN18dScMgTrampoline2_c12BeginResultsEv	coined: ROM symbol is address-only; helper initializes the results timer and installs the StateResults PMF descriptor
+ov006	0x02123cb4	func_ov006_02123cb4	_ZN18dScMgTrampoline2_c9StatePlayEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbe8 and the matched body identify the active-play state
+ov006	0x02124040	func_ov006_02124040	_ZN18dScMgTrampoline2_c9BeginPlayEv	coined: ROM symbol is address-only; helper enables input, initializes play fields, and installs the StatePlay PMF descriptor
+ov006	0x02124088	func_ov006_02124088	_ZN18dScMgTrampoline2_c10StateIntroEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbd8 and the matched body identify the intro state
+ov006	0x02124228	func_ov006_02124228	_ZN18dScMgTrampoline2_c10BeginIntroEv	coined: ROM symbol is address-only; helper initializes intro interpolation fields and installs the StateIntro PMF descriptor
+ov006	0x021245a8	func_ov006_021245a8	_ZN18dScMgTrampoline2_c11InitDisplayEv	coined: ROM symbol is address-only; receiver is the scene passed by InitResources; body loads the BG/OBJ screens for the current language
 ov006	0x021199c0	func_ov006_021199c0	_ZN12dScMgSound_c19func_ov006_021199c0Ev	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x02119a18	func_ov006_02119a18	_ZN12dScMgSound_c19func_ov006_02119a18Ev	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x02119a88	func_ov006_02119a88	_ZN12dScMgSound_c19func_ov006_02119a88Ev	object-as-this; receiver is the scene object, called with this in r0
