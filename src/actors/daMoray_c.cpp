@@ -498,7 +498,7 @@ int daMoray_c::func_ov016_02111860()
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&this->mPosX, worldTarget, 0x14000);
     if (Vec3_Dist((Vector3 *)&this->mPosX, &worldTarget) < 0x14000) {
         func_02012694(0xfa, (const Vector3 *)&this->mCamSpacePosX);
-        func_ov016_02111bf0(this, &data_ov016_02114dbc);
+        func_ov016_02111bf0(&data_ov016_02114dbc);
     }
     return 1;
 }
@@ -759,7 +759,7 @@ s32 daMoray_c::Behavior()
     mAngleX = mPrevAngleX;
     mAngleY = mPrevAngleY;
     mAngleZ = mPrevAngleZ;
-    func_ov016_02111c40(this);
+    func_ov016_02111c40();
 
     starUniqueID = mStarUniqueID;
     if (starUniqueID != 0) {
@@ -864,7 +864,7 @@ check_param2:
     if (mPathNodeIndex >= mPathNodeCount)
         mPathNodeIndex = 4;
     mPosY = mHomePosY;
-    func_ov016_02111bf0(this, &data_ov016_02114d8c);
+    func_ov016_02111bf0(&data_ov016_02114d8c);
     goto tail;
 ret0_a:
     return 0;
@@ -886,7 +886,7 @@ check_param1:
         spawned->mFlags = 0;
         _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(spawned, 0, 0x3e8000, 0x1f40000, 0x1f40000);
     }
-    func_ov016_02111bf0(this, &data_ov016_02114d8c);
+    func_ov016_02111bf0(&data_ov016_02114d8c);
     goto tail;
 ret0_b:
     return 0;
@@ -905,7 +905,7 @@ check_param0:
     }
     mPrevAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &node);
     mAngleY = mPrevAngleY;
-    func_ov016_02111bf0(this, &data_ov016_02114dbc);
+    func_ov016_02111bf0(&data_ov016_02114dbc);
     goto tail;
 ret0_c:
     return 0;
