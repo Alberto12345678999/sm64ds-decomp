@@ -750,26 +750,6 @@
    "ref": "src/func_ov006_020cb030.cpp"
   },
   {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/F.c"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/F.cpp"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/name.c"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/name.ext"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/x.c"
-  },
-  {
    "file": "tools/check_dead_references.py",
    "ref": "tools/foo.py"
   },
@@ -788,18 +768,6 @@
   {
    "file": "tools/check_header_offsets.py",
    "ref": "include/Enemy.h"
-  },
-  {
-   "file": "tools/check_src_tu.py",
-   "ref": "src_tu/actors/Actor.cpp"
-  },
-  {
-   "file": "tools/check_src_tu.py",
-   "ref": "src_tu/actors/CastleWater.cpp"
-  },
-  {
-   "file": "tools/check_src_tu_compiles.py",
-   "ref": "src_tu/actors/Actor.cpp"
   },
   {
    "file": "tools/d0_migrate.py",
@@ -840,10 +808,6 @@
   {
    "file": "tools/match.py",
    "ref": "config/reloc"
-  },
-  {
-   "file": "tools/match_provenance.py",
-   "ref": "src/x.c"
   },
   {
    "file": "tools/nearmiss_db.py",

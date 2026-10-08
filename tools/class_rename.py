@@ -69,7 +69,7 @@ LEDGER = "symbols/actor_renames.tsv"
 
 # Swept by default. `docs/` is generated and deliberately absent; `build/` is
 # gitignored output; `extracted/` is the cartridge and must never be edited.
-DEFAULT_PATHS = ("src", "src_tu", "include", "config", "symbols", "notes")
+DEFAULT_PATHS = ("src", "include", "config", "symbols", "notes")
 SKIP_DIRS = {".git", "build", "extracted", "docs", "__pycache__", "tools/mwccarm"}
 TEXT_SUFFIXES = {".c", ".cpp", ".h", ".hpp", ".txt", ".json", ".tsv", ".md", ".yaml", ".yml"}
 

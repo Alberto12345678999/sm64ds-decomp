@@ -77,7 +77,7 @@ Two shapes cover almost everything now:
   part (file move, manifest flip).
   That note is the canonical promotion workflow: the default build must consume
   the consolidated `src/` file and absorbed sources must be retired. Folder moves
-  and shadow-only commits do not complete a TU assignment. Temporary `src_tu/`
+  and shadow-only commits do not complete a TU assignment. Shadow-only
   experiments need a production continuation or a concrete recorded blocker.
 
 New byte-matches from scratch (previously-unclaimed ROM functions) still happen
