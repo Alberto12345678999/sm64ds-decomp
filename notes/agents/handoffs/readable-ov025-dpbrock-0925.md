@@ -48,7 +48,7 @@ This document describes this commit. The queue records its immutable output SHA.
 - Genuine methods; remaining free-function/ABI bridges: 8 member functions (D1, D0, InitResources, Behavior, Render, CleanupResources, UpdateStepClsnPosAndRot, UpdateStepModelPosAndRotY) plus the C-linkage factory. The remaining bridges are the two mangled Fix12 calls (DPB-F1) and `func_020393d4` (DPB-F3).
 - Recovered layout/fields; remaining shadow structs/raw offsets: unchanged; no `unk_` fields.
 - Lifecycle, vtable/RTTI, initializer and data ownership: unchanged. Two non-virtual members add neither layout nor vtable slots, and removing the class's operator new leaves the factory's call target `_ZN7fBase_cnwEj` unchanged.
-- Attribution preserved through each move/rename: the two `attribution.json` keys follow the renamed symbols with the same author. prepush_attribution reports 0 changed and 0 lost.
+- Attribution preserved through each move/rename: the two `attribution.json` keys follow the renamed symbols with the same author. the old credit check reports 0 changed and 0 lost.
 - Remaining agreed issue scope: DPB-F1, F3, F5, F6, F7 and F8 as in the table; F9 reported.
 
 Residue in `src/actors/daObjDpBrock_c.cpp`, counted as lines containing the token (the brief's convention):
@@ -71,7 +71,7 @@ All commands were run in the worktree on source commit `3d236db5d3`, which this 
 | Object comparison of `build/tu/ov025-daObjDpBrock_c/daObjDpBrock_c.o`, input commit against this commit, with pyelftools, the two old helper names mapped to the new ones | n/a | 51 and 51 undefined symbols, an identical set with no mapping needed; 23 of 23 defined function and object symbols identical in binding, type, value, size and section; 22 of 22 sections byte-identical; 15 of 15 relocation sections identical in offset, type, addend and target. Without the mapping the only differences are the two renamed definitions. |
 | `python tools/rombuild.py -j16` | 0 | 7189 enrolled, 7189 compiled, 0 reused. `build/src/actors/daObjDpBrock_c.o` was rebuilt and defines both new member symbols. 11,213 functions reproducing, 0 mismatching, 106/106 modules exact. `intactTuRom.identical` is true, sha256 `d1506e90...c478e8`. The baseline control step reports the same pre-existing `dsd check symbols` errors (arm9 main and ITCM) before any TU is substituted. |
 | `python tools/prepush_linkcheck.py --range 7423f8d73f..HEAD` | 0 | 9 checked, 9 VERIFIED, 0 blocking |
-| `python tools/prepush_attribution.py --base 7423f8d73f --head HEAD` | 0 | 0 changed, 0 lost |
+| `the old credit check` | 0 | 0 changed, 0 lost |
 | `python tools/check_decl_agreement.py --changed 7423f8d73f` | 0 | no new declaration disagreements |
 | `python tools/check_dead_references.py` | 0 | no new dead references, no broken markdown links |
 | `python tools/tiers_ratchet.py --check` | 0 | PASS, baseline 2994, current 3115 |

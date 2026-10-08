@@ -85,7 +85,7 @@ All commands ran in the producer worktree with the pinned `2004/b56` compiler. T
 | `python tools/check_decl_agreement.py --changed 4e48c28b97` | 0 | 6 files in scope, 0 disagreements, no new |
 | `python tools/check_decl_agreement.py`, at base and after | 0, 0 | both 14,534 disagreements with 1,384 banked rows gone; no new. Declarations fall from 35,770 to 35,762 |
 | `python tools/check_decl_agreement.py --list`, at base and after | 0, 0 | identical apart from that count, so no banked row is healed and `config/decl-agreement-baseline.json` is unchanged |
-| `python tools/prepush_attribution.py --base 4e48c28b97 --head HEAD` | 0 | 0 changed, 0 lost |
+| `the old credit check` | 0 | 0 changed, 0 lost |
 | `python tools/check_dead_references.py` | 0 | no new dead references, no broken markdown links |
 | `python tools/tiers_ratchet.py --check`, at base and after | 0, 0 | CONVERTED PASS, 3222 at base, 3228 after |
 | `python tools/check_src_tu_compiles.py --quiet` | 0 | 302 of 302 compile |

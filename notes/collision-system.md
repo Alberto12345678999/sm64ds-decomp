@@ -472,8 +472,8 @@ scores `cand=1750 equal=565 ratio=0.3203`, so Phase 0's gain survived intact.
 
 #### The recipe, as it actually works
 
-Two commits per family — `git mv` only, then content. That is what keeps
-`prepush_attribution` reporting *renamed, credit intact* instead of lost.
+Two commits per family — `git mv` only, then content. Who matched a
+function stays the row in `function-authors.json`. A rename does not change it.
 
 Substitution order inside the content pass is load-bearing:
 
@@ -510,7 +510,7 @@ Sequencing, from the tree's own scar tissue:
 - Check `config/rombuild-versions.txt` before renaming (currently one unrelated pin, so
   this should be clear).
 - `port_refcheck.py` is blind to mangled names — run it, but do not treat it as coverage.
-- Expect and accept `CREDIT LOST` on files that become key-function TUs.
+- Who matched a function stays the row in `function-authors.json`. A rename does not change it.
 
 Suggested order, easiest first: `dCc*` (4 classes, self-contained, headers already good) →
 `dBgW*` (4, single-inheritance chain, headers good) → `dBgPi`/`dBgPc`/`dM3dG*` (support

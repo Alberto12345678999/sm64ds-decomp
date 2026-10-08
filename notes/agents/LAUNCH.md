@@ -70,7 +70,8 @@ Use this alongside the producer prompt, preserving an existing candidate:
 > Promote the assigned evidenced TU using notes/tu-promotion-conventions.md.
 > Resolve its current source owner and reuse prior work. Deliver one canonical
 > production compiler input under src/, complete default-build enrollment,
-> retirement of absorbed source copies and per-symbol attribution. Reconstruct
+> retirement of absorbed source copies. Who matched a function stays in
+> function-authors.json. A move does not change that row. Reconstruct
 > genuine C++ and prove bytes, relocations, emitted output and affected consumers.
 > Do not add folder-localization or shadow-only PRs as routine phases. If a concrete
 > blocker requires staging or a smaller production slice, record its exact proof,
@@ -96,8 +97,9 @@ Use this alongside the producer prompt, preserving an existing candidate:
 > Recheck candidate and main SHAs, compose compatible work in your own wired
 > worktree, reconcile shared bookkeeping once, and run the required composition
 > gates. Publish only the coherent reviewed result, monitor terminal validation,
-> and record the PR and merged-main SHA. Account for superseded work and
-> attribution before completing the task. Do not convert a pending check to a pass.
+> and record the PR and merged-main SHA. Account for superseded work before
+> completing the task. Do not convert a pending check to a pass. Who matched a
+> function stays in function-authors.json.
 > Assigned tasks: [task IDs and issue URLs].
 
 ## Specialists

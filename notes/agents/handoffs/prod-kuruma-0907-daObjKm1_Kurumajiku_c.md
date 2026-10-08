@@ -256,7 +256,7 @@ figure below is from that re-run, not carried over from the produce stage.
 | `queue_audit --check` | red | **red identically on the clean base** — byte-for-byte the same counts |
 | `tubuild linkcheck` | red | **red identically on landed `ov102/daBmb_c`** |
 | `linkcheck.py --name` (×5) | could not run | **same failure on the clean base** |
-| `prepush_attribution` | red, 2 lost | **red on the landed `daBmb_c` commit, 13 lost** |
+| `the old credit check` | red, 2 lost | **red on the landed `daBmb_c` commit, 13 lost** |
 
 Two gates emit an expected *warning* while still passing, and both are the fold
 speaking, not a defect:
@@ -303,7 +303,7 @@ speaking, not a defect:
   main checkout and both worktrees. Same `FileNotFoundError` on the clean base.
   The coverage it would have given is supplied instead by `rombuild`, which links
   the real ROM and reports 0 mismatching functions and 106/106 exact modules.
-- **`prepush_attribution`** — 2 CREDIT LOST, `d_a_obj_km1_kurumajiku` and
+- **`the old credit check`** — 2 CREDIT LOST, `d_a_obj_km1_kurumajiku` and
   `_ZN11RickshawBdwD1Ev`, both `tangosdev`. Control: the **already-merged**
   `daBmb_c` promotion reports **13 lost** under the same command. The key is a
   basename, so any shard whose basename does not survive as a symbol name reads

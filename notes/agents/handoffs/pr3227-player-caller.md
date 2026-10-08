@@ -32,7 +32,7 @@ claimed repaired by this patch. The build compiled the final source (object writ
 after the final source edit); independent focused proof also covers the committed blob.
 
 `prepush_linkcheck.py --range 9fed4ec3d55f3c4413173d53e3d8b734e6541fe9..HEAD`:
-1 checked, 1 VERIFIED, 0 warnings, 0 blocking. `prepush_attribution.py` against the
+1 checked, 1 VERIFIED, 0 warnings, 0 blocking. `the old credit check` against the
 same base: 0 changed, 0 lost. Independent reviewer kpa3_review checked the exact
 source commit 3a7dda17eef039754979d02e4437f336a1904e34 and independently reproduced
 VERIFIED, diffs [], blind 0 from a wired checkout at the exact PR input base.
