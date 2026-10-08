@@ -28,13 +28,18 @@ extern "C" void *func_ov006_020ccfc8(void);
 extern "C" void func_ov006_020d1008(void);
 extern "C" void func_ov006_02120938(void);
 
-/* The flashing mark on the lit door, 0xc bytes at 0x5d84. The helpers that
-   drive it keep short* / char* parameters so they still match decl_common.h. */
+/* The flashing mark on the lit door, 0xc bytes at 0x5d84. */
 struct dScMgTrampoline_DoorMark {
     s16 row;            /* 0x00 -- which door the flash marks, 0 or 1 */
     s16 timer;          /* 0x02 -- counts down from 0x3c while it blinks */
     s32 active;         /* 0x04 -- nonzero while that blink is running */
     s32 shown;          /* 0x08 -- toggles with timer / 10 */
+
+    void Init();               /* ov006 0x02120a54 -- the factory's clear */
+    void Hide();               /* ov006 0x02120a44 -- OnYoshiTryEat's reset */
+    void Show(int side);       /* ov006 0x02120a18 -- starts the blink */
+    void Update();             /* ov006 0x021209ac -- ticks it */
+    void Render(int scrollY);  /* ov006 0x0212093c -- draws it when shown */
 };
 typedef char dScMgTrampoline_DoorMark_size_must_be_0xc[sizeof(dScMgTrampoline_DoorMark) == 0xc ? 1 : -1];
 
@@ -78,6 +83,10 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
 
     void UpdateTouchInput(); /* ov006 0x0212157c */
     void UpdateScroll();     /* ov006 0x02121bc8 */
+    void InitDisplay();      /* ov006 0x0212231c -- loads BG/OBJ screens */
+    void InitBrush(int layer); /* ov006 0x02120f18 -- fills the stroke layer */
+    s16  GetDoorSide();        /* ov006 0x02121768 */
+    void SetDoorSide(short v); /* ov006 0x02121750 -- mirrors pick to data_ov006_02140538 */
 
     u32 mState[2];          /* 0x5004 -- raw eight-byte State encoding; a
                                typed global PMF emits a non-ROM __sinit */

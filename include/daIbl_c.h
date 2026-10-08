@@ -152,6 +152,15 @@ struct daIbl_c : dEnemyBase_c {
     int CleanupResources();
     int InitResources();
     int Render();
+
+    void func_ov100_02141fb0();
+    void func_ov100_02142130();
+    void func_ov100_02142264();
+    int  func_ov100_0214233c();
+    int  func_ov100_021424c0();
+    void func_ov100_0214272c();
+    void func_ov100_02142918();
+    void func_ov100_02142b90();
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -169,7 +169,7 @@ jobs:
         with:
           # Full history, like source-coverage.yml and header-offsets.yml. Several of
           # these suites read git history rather than the working tree --
-          # test_attribution walks commits, test_validate_merge reads a committed merge,
+          # test_validate_merge reads a committed merge,
           # test_srcpath and test_bytegate resolve tracked paths -- and a shallow
           # checkout makes those assert against a one-commit repository.
           fetch-depth: 0
@@ -205,7 +205,6 @@ jobs:
             tools.test_affected_src \
             tools.test_asm_policy \
             tools.test_asset_catalog \
-            tools.test_attribution \
             tools.test_bytegate \
             tools.test_check_call_arity \
             tools.test_check_data_definitions \
@@ -260,8 +259,6 @@ jobs:
 #                                      source references into it, and `resolve`, which
 #                                      must read an integer as a runtime handle and
 #                                      never as a NitroFS file ID.
-#   test_attribution            (17)   chaos_db_ci.py -- rebuilds chaos-db.json from
-#                                      COMMITTED history; the credit data the site reads.
 #   test_bytegate               (39)   bytegate.py -- the byte-gate-failure half of the
 #                                      matched test, over layout_check/relocs/srcpath,
 #                                      plus is_zero_size_alias, which decides whether a

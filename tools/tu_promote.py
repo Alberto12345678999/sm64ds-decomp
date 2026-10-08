@@ -176,43 +176,6 @@ def rewrite_manifest(entry, p):
                     encoding="utf-8", newline="")
 
 
-def attribution_update(plans, lineage):
-    """Prepare attribution overrides without changing the worktree.
-
-    Without these, prepush_attribution reports every legacy basename as CREDIT LOST
-    and the merge gate needs a label to pass -- for a change that took nothing away
-    from anyone.
-    """
-    path = REPO / "attribution.json"
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise PromoteError(f"attribution data is unreadable: {exc}") from exc
-    ov = data.setdefault("overrides", {})
-    if not isinstance(ov, dict):
-        raise PromoteError("attribution overrides must be an object")
-    added = 0
-    for p in plans:
-        for f in p["functions"]:
-            stem = pathlib.PurePosixPath(f["legacy_source"]).stem
-            who = lineage.get(f"src/{stem}")
-            if not who:
-                continue
-            key = f"{p['dest']}#{f['symbol']}"
-            if key not in ov:
-                ov[key] = who
-                added += 1
-    return path, data, added
-
-
-def rewrite_attribution(plans, lineage, prepared=None):
-    """Write a preflighted attribution update."""
-    path, data, added = prepared or attribution_update(plans, lineage)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n",
-                    encoding="utf-8", newline="")
-    return added
-
-
 def converted_baseline_update(plans):
     """Prepare a CONVERTED identity rewrite without changing the worktree.
 

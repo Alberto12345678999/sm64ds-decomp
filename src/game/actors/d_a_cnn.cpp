@@ -31,11 +31,10 @@
  * the highest-address ROM function, the factory, is written FIRST here. Do
  * not reorder.
  *
- * Leftover: the four state bodies and the two helpers keep their
- *   func_ov098_* linker names as C-linkage functions over a daCnn_c pointer.
- *   The state table reaches the state bodies only by address, through the
- *   .data words the static initializer copies into it, and
- *   include/decl_common.h declares func_ov098_0213b15c by that name.
+ * Leftover: the four state bodies and the two helpers are members retaining
+ *   their linker addresses as names; the real names are unrecovered. The
+ *   state table's pointer-to-member records are still the sinit's .data
+ *   words, resolved to the mangled spellings through symbols.txt.
  * Leftover: dCcAc_c::Init, dActor_c::Earthquake and Particle::System::New
  *   stay mangled; each takes Fix12<int> by value (notes/mwccarm-codegen.md
  *   6az).
@@ -95,12 +94,6 @@ void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(dActor_c *self,
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 slot, u32 id, int x, int y, int z, const Vector3_16 *rot, void *cb);
 
-void func_ov098_0213a984(daCnn_c *self);
-void func_ov098_0213aa28(daCnn_c *self);
-void func_ov098_0213ad08(daCnn_c *self);
-void func_ov098_0213ade8(daCnn_c *self);
-void func_ov098_0213b0a4(daCnn_c *self);
-void func_ov098_0213b15c(daCnn_c *self);
 }
 
 enum {
@@ -138,7 +131,7 @@ int daCnn_c::InitResources()
         mTargetPitch = 0x2000;
         mTargetAngleY = mAngleY;
         mState = 0;
-        func_ov098_0213b15c(this);
+        func_ov098_0213b15c();
         _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
             &mdCcAc_c, this, 0xa0000, 0x12c000, 0x800004, 0);
     } else {
@@ -163,7 +156,7 @@ int daCnn_c::Behavior()
     if (mVariant != 1)
         (this->*data_ov098_0213c8fc[mState])();
 
-    func_ov098_0213a984(this);
+    func_ov098_0213a984();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     return 1;
@@ -192,49 +185,49 @@ int daCnn_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov098_0213b15c
+// @symbol _ZN7daCnn_c19func_ov098_0213b15cEv
 /* Pick the next aim: a random pitch in 0x1000..0x1fff and a random heading
    within a quarter turn either side of home, at least 0x800 from the current
    heading. */
-extern "C" void func_ov098_0213b15c(daCnn_c *self)
+void daCnn_c::func_ov098_0213b15c()
 {
     int angleY;
-    self->mTargetPitch = (short)(((unsigned int)RandomIntInternal(&data_0209e650) >> 16 & 0xfff) + 0x1000);
-    angleY = self->mAngleY;
+    mTargetPitch = (short)(((unsigned int)RandomIntInternal(&data_0209e650) >> 16 & 0xfff) + 0x1000);
+    angleY = mAngleY;
     do {
-        self->mTargetAngleY = (short)(self->mHomeAngleY + 0xe000 + ((unsigned int)RandomIntInternal(&data_0209e650) >> 16 & 0x3fff));
-    } while (AngleDiff(angleY, self->mTargetAngleY) < 0x800);
+        mTargetAngleY = (short)(mHomeAngleY + 0xe000 + ((unsigned int)RandomIntInternal(&data_0209e650) >> 16 & 0x3fff));
+    } while (AngleDiff(angleY, mTargetAngleY) < 0x800);
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov098_0213b0a4
+// @symbol _ZN7daCnn_c19func_ov098_0213b0a4Ev
 /* State 0, aim. */
-extern "C" void func_ov098_0213b0a4(daCnn_c *self)
+void daCnn_c::func_ov098_0213b0a4()
 {
-    short prevAngleY = self->mPrevAngleY;
-    ApproachLinear(self->mPrevAngleX, self->mTargetPitch, 0x100);
-    ApproachLinear(self->mPrevAngleY, self->mTargetAngleY, 0x100);
-    self->mAngleX = self->mPrevAngleX;
-    self->mAngleY = self->mPrevAngleY;
+    short prevAngleY = mPrevAngleY;
+    ApproachLinear(mPrevAngleX, mTargetPitch, 0x100);
+    ApproachLinear(mPrevAngleY, mTargetAngleY, 0x100);
+    mAngleX = mPrevAngleX;
+    mAngleY = mPrevAngleY;
     {
-        short target = self->mTargetAngleY;
-        if (prevAngleY != target && self->mPrevAngleY == target)
-            Sound::PlayBank3(0x14d, *(const Vector3 *)&self->mCamSpacePosX);
+        short target = mTargetAngleY;
+        if (prevAngleY != target && mPrevAngleY == target)
+            Sound::PlayBank3(0x14d, *(const Vector3 *)&mCamSpacePosX);
     }
-    if (self->mPrevAngleX != self->mTargetPitch) return;
-    if (self->mPrevAngleY == self->mTargetAngleY) {
-        self->mState = 1;
-        self->mTimer = 120;
+    if (mPrevAngleX != mTargetPitch) return;
+    if (mPrevAngleY == mTargetAngleY) {
+        mState = 1;
+        mTimer = 120;
     }
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov098_0213ade8
+// @symbol _ZN7daCnn_c19func_ov098_0213ade8Ev
 /* State 1, fire: while a player is within 2048.0, count down; at 60 launch a
    water bomb out of the barrel with a puff of smoke and kick the barrel back,
    and at 0 pick a new aim. The barrel slides back under mRecoilSpeed and
    springs home. */
-extern "C" void func_ov098_0213ade8(daCnn_c *self)
+void daCnn_c::func_ov098_0213ade8()
 {
     Vector3_16 rot;
     Vector3 pos;
@@ -246,18 +239,18 @@ extern "C" void func_ov098_0213ade8(daCnn_c *self)
     Player *closest;
     int timer;
 
-    if (self->mTimer != 0)
-        self->mTimer -= 1;
+    if (mTimer != 0)
+        mTimer -= 1;
 
-    closest = self->ClosestPlayer();
-    if (Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&closest->mPosX) >= 0x800000)
+    closest = ClosestPlayer();
+    if (Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&closest->mPosX) >= 0x800000)
         return;
 
-    timer = self->mTimer;
+    timer = mTimer;
     if (timer == 0) {
-        self->mState = 0;
-        func_ov098_0213b15c(self);
-        Sound::PlayBank3(0x14c, *(const Vector3 *)&self->mCamSpacePosX);
+        mState = 0;
+        func_ov098_0213b15c();
+        Sound::PlayBank3(0x14c, *(const Vector3 *)&mCamSpacePosX);
         return;
     }
 
@@ -268,17 +261,17 @@ extern "C" void func_ov098_0213ade8(daCnn_c *self)
         s16 elevation;
         int idx;
 
-        pos.x = self->mPosX;
-        pos.y = self->mPosY;
-        pos.z = self->mPosZ;
+        pos.x = mPosX;
+        pos.y = mPosY;
+        pos.z = mPosZ;
         pos.y += 0x80000;
 
         {
             dActor_c *spawned = dActor_c::Spawn(kWaterBombActorID, 3, pos, 0,
-                                                self->mAreaId, -1);
+                                                mAreaId, -1);
             s16 *table = data_02082214;
             int launchSpeed = 100;
-            s16 pitch = self->mPrevAngleX;
+            s16 pitch = mPrevAngleX;
             int up = (s16)(0x4000 - pitch);
             int i = (u16)up >> 4;
             int sine = table[i * 2];
@@ -290,12 +283,12 @@ extern "C" void func_ov098_0213ade8(daCnn_c *self)
             ball->unk_0ac = 0;
         }
 
-        elevation = (s16)(0x4000 - self->mPrevAngleX);
+        elevation = (s16)(0x4000 - mPrevAngleX);
         idx = (u16)elevation >> 4;
         ball->mHorzSpeed = sinCos[idx * 2 + 1] * speed;
 
         {
-            s16 yaw = self->mPrevAngleY;
+            s16 yaw = mPrevAngleY;
             ball->mPrevAngleX = 0;
             ball->mPrevAngleY = yaw;
             ball->mPrevAngleZ = 0;
@@ -318,45 +311,45 @@ extern "C" void func_ov098_0213ade8(daCnn_c *self)
             int pz = pos.z;
             vel[2] = vz;
             int y = py + (vy << 1);
-            self->mMuzzlePosX = x;
-            self->mMuzzlePosY = y;
-            self->mMuzzlePosZ = pz + (vz << 1);
+            mMuzzlePosX = x;
+            mMuzzlePosY = y;
+            mMuzzlePosZ = pz + (vz << 1);
         }
 
         rot.x = data_ov098_0213c63c[0];
         rot.y = data_ov098_0213c63c[1];
         rot.z = data_ov098_0213c63c[2];
-        rot.x = (u16)data_02082214[((u16)self->mPrevAngleY >> 4) * 2];
-        rot.z = (u16)data_02082214[((u16)self->mPrevAngleY >> 4) * 2 + 1];
+        rot.x = (u16)data_02082214[((u16)mPrevAngleY >> 4) * 2];
+        rot.z = (u16)data_02082214[((u16)mPrevAngleY >> 4) * 2 + 1];
 
         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 7, self->mMuzzlePosX, self->mMuzzlePosY, self->mMuzzlePosZ, &rot, 0);
+            0, 7, mMuzzlePosX, mMuzzlePosY, mMuzzlePosZ, &rot, 0);
         _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            0, 8, self->mMuzzlePosX, self->mMuzzlePosY, self->mMuzzlePosZ, &rot, 0);
+            0, 8, mMuzzlePosX, mMuzzlePosY, mMuzzlePosZ, &rot, 0);
 
-        Sound::PlayBank3(0xd4, *(const Vector3 *)&self->mCamSpacePosX);
-        self->mRecoilSpeed = -0x1800;
+        Sound::PlayBank3(0xd4, *(const Vector3 *)&mCamSpacePosX);
+        mRecoilSpeed = -0x1800;
         return;
     }
 
-    self->mRecoil += self->mRecoilSpeed;
-    self->mRecoilSpeed += 0xc00;
-    if (self->mRecoilSpeed >= 0x800)
-        self->mRecoilSpeed = 0x800;
-    if (self->mRecoil >= 0) {
-        self->mRecoilSpeed = 0;
-        self->mRecoil = self->mRecoilSpeed;
+    mRecoil += mRecoilSpeed;
+    mRecoilSpeed += 0xc00;
+    if (mRecoilSpeed >= 0x800)
+        mRecoilSpeed = 0x800;
+    if (mRecoil >= 0) {
+        mRecoilSpeed = 0;
+        mRecoil = mRecoilSpeed;
     }
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov098_0213ad08
+// @symbol _ZN7daCnn_c19func_ov098_0213ad08Ev
 /* State 2, wait: when a player touches the collider, climb them in and start
    the load sequence. A player carrying a Bob-omb has it handed to
    func_ov102_0214ae1c instead. */
-extern "C" void func_ov098_0213ad08(daCnn_c *self)
+void daCnn_c::func_ov098_0213ad08()
 {
-    u32 id = self->mdCcAc_c.otherOwner;
+    u32 id = mdCcAc_c.otherOwner;
     dActor_c *other;
     if (id == 0) return;
     other = dActor_c::FindWithID(id);
@@ -373,16 +366,16 @@ extern "C" void func_ov098_0213ad08(daCnn_c *self)
             }
         }
         if (func_ov002_020df34c(player) == 0) return;
-        self->mState = 3;
-        self->mLoadStep = 0;
-        self->mPlayer = player;
-        self->mdCcAc_c.flags |= 1;
-        Sound::PlayBank3(0x14b, *(const Vector3 *)&self->mCamSpacePosX);
+        mState = 3;
+        mLoadStep = 0;
+        mPlayer = player;
+        mdCcAc_c.flags |= 1;
+        Sound::PlayBank3(0x14b, *(const Vector3 *)&mCamSpacePosX);
     }
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov098_0213aa28
+// @symbol _ZN7daCnn_c19func_ov098_0213aa28Ev
 /* State 3, the load sequence. The rider is pinned 208.0 above the cannon
    (and turned with it until step 3) while the cannon
      0  rises out of the ground to its spawn height and shakes the camera,
@@ -390,133 +383,133 @@ extern "C" void func_ov098_0213ad08(daCnn_c *self)
      2  tilts its barrel up and hands the rider over to func_ov002_020df300,
      3  follows the camera until the rider has been shot out,
      4  sinks back into the ground and returns to waiting. */
-extern "C" void func_ov098_0213aa28(daCnn_c *self)
+void daCnn_c::func_ov098_0213aa28()
 {
     /* Never used, but it holds the frame at the ROM's 0x1c with quakePos at
        sp+0xc; without it the frame is 0xc. */
     Vector3 pos;
     Vector3 quakePos;
 
-    if (self->mLoadStep < 4) {
+    if (mLoadStep < 4) {
         Player *rider;
         int x, y, z;
         /* z first (statement order) colors y into r2 like the ROM */
-        z = self->mPosZ;
-        y = self->mPosY + 0xd0000;
-        rider = self->mPlayer;
-        x = self->mPosX;
+        z = mPosZ;
+        y = mPosY + 0xd0000;
+        rider = mPlayer;
+        x = mPosX;
         rider->mPosX = x;
         rider->mPosY = y;
         rider->mPosZ = z;
-        if (self->mLoadStep < 3) {
-            s16 angleY = self->mAngleY;
-            s16 angleX = self->mAngleX;
-            rider = self->mPlayer;
+        if (mLoadStep < 3) {
+            s16 angleY = mAngleY;
+            s16 angleX = mAngleX;
+            rider = mPlayer;
             s16 zero = 0;
             rider->mAngleX = angleX;
             rider->mAngleY = angleY;
             rider->mAngleZ = zero;
-            angleY = self->mAngleY;
-            angleX = self->mAngleX;
-            rider = self->mPlayer;
+            angleY = mAngleY;
+            angleX = mAngleX;
+            rider = mPlayer;
             rider->mPrevAngleX = angleX;
             rider->mPrevAngleY = angleY;
             rider->mPrevAngleZ = zero;
         }
     }
 
-    switch (self->mLoadStep) {
+    switch (mLoadStep) {
     case 0:
-        self->mPosY += 0xa000;
-        if (self->mPosY < self->mSpawnPosY)
+        mPosY += 0xa000;
+        if (mPosY < mSpawnPosY)
             break;
-        self->mPosY = self->mSpawnPosY;
-        self->mLoadStep++;
-        self->mTimer = 0;
-        quakePos.x = self->mPosX;
-        quakePos.y = self->mPosY;
-        quakePos.z = self->mPosZ;
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &quakePos, 0x1f4000);
-        Sound::PlayBank3(0x14c, *(const Vector3 *)&self->mCamSpacePosX);
+        mPosY = mSpawnPosY;
+        mLoadStep++;
+        mTimer = 0;
+        quakePos.x = mPosX;
+        quakePos.y = mPosY;
+        quakePos.z = mPosZ;
+        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quakePos, 0x1f4000);
+        Sound::PlayBank3(0x14c, *(const Vector3 *)&mCamSpacePosX);
         break;
 
     case 1:
-        if (self->mTimer <= 10)
+        if (mTimer <= 10)
             break;
-        if (!ApproachLinear(self->mAngleY, self->mTargetAngleY, 0x200))
+        if (!ApproachLinear(mAngleY, mTargetAngleY, 0x200))
             break;
-        self->mLoadStep++;
-        self->mTimer = 0;
-        Sound::PlayBank3(0x14d, *(const Vector3 *)&self->mCamSpacePosX);
+        mLoadStep++;
+        mTimer = 0;
+        Sound::PlayBank3(0x14d, *(const Vector3 *)&mCamSpacePosX);
         break;
 
     case 2:
-        if (self->mTimer <= 10)
+        if (mTimer <= 10)
             break;
-        if (!ApproachLinear(self->mAngleX, 0x2000, 0x200))
+        if (!ApproachLinear(mAngleX, 0x2000, 0x200))
             break;
-        if (!func_ov002_020df300(self->mPlayer))
+        if (!func_ov002_020df300(mPlayer))
             break;
-        Sound::PlayBank3(0x14e, *(const Vector3 *)&self->mCamSpacePosX);
-        self->mTimer = 0;
-        self->mLoadStep++;
+        Sound::PlayBank3(0x14e, *(const Vector3 *)&mCamSpacePosX);
+        mTimer = 0;
+        mLoadStep++;
         break;
 
     case 3:
-        self->mAngleY = GetAngleToCamera(self->mPlayer->mPlayerNo) + 0x4000;
-        if (!self->mPlayer->IsBeingShotOutOfCannon())
+        mAngleY = GetAngleToCamera(mPlayer->mPlayerNo) + 0x4000;
+        if (!mPlayer->IsBeingShotOutOfCannon())
             break;
-        self->mLoadStep++;
-        self->mTimer = 0;
+        mLoadStep++;
+        mTimer = 0;
         break;
 
     case 4:
     {
         u8 settled = 0;
-        self->mPosY -= 0x32000;
-        if (ApproachLinear(self->mAngleX, 0, 0x800))
+        mPosY -= 0x32000;
+        if (ApproachLinear(mAngleX, 0, 0x800))
             settled++;
-        if (ApproachLinear(self->mAngleY, self->mHomeAngleY, 0x800))
+        if (ApproachLinear(mAngleY, mHomeAngleY, 0x800))
             settled++;
         if (settled != 2)
             break;
-        if (self->mPosY > self->mSpawnPosY - 0x190000)
+        if (mPosY > mSpawnPosY - 0x190000)
             break;
-        self->mState = 2;
-        self->mdCcAc_c.flags &= ~1;
-        self->mPosY = self->mSpawnPosY - 0x190000;
-        self->mPlayer = 0;
-        self->mAngleY = self->mHomeAngleY;
-        self->mPrevAngleY = self->mAngleY;
+        mState = 2;
+        mdCcAc_c.flags &= ~1;
+        mPosY = mSpawnPosY - 0x190000;
+        mPlayer = 0;
+        mAngleY = mHomeAngleY;
+        mPrevAngleY = mAngleY;
         break;
     }
     }
 
-    self->mTimer++;
+    mTimer++;
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov098_0213a984
+// @symbol _ZN7daCnn_c19func_ov098_0213a984Ev
 /* Place the model and pose the barrel: yaw on the root bone, pitch and the
    recoil slide on the barrel bone. */
-extern "C" void func_ov098_0213a984(daCnn_c *self)
+void daCnn_c::func_ov098_0213a984()
 {
-    u16 pitch = self->mAngleX;
-    s16 yaw = self->mAngleY;
+    u16 pitch = mAngleX;
+    s16 yaw = mAngleY;
     u8 *bones;
     int idx;
 
-    Matrix4x3_FromTranslation(&self->mModel.mat4x3,
-        self->mPosX >> 3, self->mPosY >> 3, self->mPosZ >> 3);
+    Matrix4x3_FromTranslation(&mModel.mat4x3,
+        mPosX >> 3, mPosY >> 3, mPosZ >> 3);
 
-    bones = (u8 *)self->mModel.data.bones;
+    bones = (u8 *)mModel.data.bones;
     idx = pitch >> 4;
 
     *(s16 *)(bones + 0x1c) = yaw;
     *(u16 *)(bones + 0x4e) = pitch;
     *(s32 *)(bones + 0x54) = 0;
-    *(s32 *)(bones + 0x58) = self->mBarrelRestY + (self->mRecoil * data_02082214[idx * 2 + 1]) / 4096;
-    *(s32 *)(bones + 0x5c) = (self->mRecoil * data_02082214[idx * 2]) / 4096;
+    *(s32 *)(bones + 0x58) = mBarrelRestY + (mRecoil * data_02082214[idx * 2 + 1]) / 4096;
+    *(s32 *)(bones + 0x5c) = (mRecoil * data_02082214[idx * 2]) / 4096;
 }
 
 // @symbol _ZN7daCnn_cD0Ev

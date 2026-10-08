@@ -6562,6 +6562,31 @@
         "return:void"
       ]
     },
+    "_ZN18dScMgTrampoline2_c10StateIntroEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c12StateResultsEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c13StateWaitExitEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c9StateDoneEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c9StatePlayEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
     "_ZN19dMgMCarlo2CardObj_cD1Ev": {
       "include/dScMgMCarlo2_c.h": [
         "return:void"

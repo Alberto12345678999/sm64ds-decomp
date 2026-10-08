@@ -69,11 +69,12 @@ Two shapes cover almost everything now:
   key-function/vtable ownership, struct-copy and bool-widening quirks).
 - **A promoted translation unit**, once a class's files are all real methods:
   merge them into one genuine `.cpp` the way the original TU was almost
-  certainly shaped, partitioned-link verified, with `attribution.json` keeping
-  every symbol's original credit through a `path#symbol` override. Read
+  certainly shaped, partitioned-link verified. Who matched each function is
+  already recorded by its address in `function-authors.json`. Moving the
+  source does not change that, and there is no credit script to run. Read
   [`notes/tu-promotion-conventions.md`](notes/tu-promotion-conventions.md)
   before opening or reviewing one; `tools/tu_promote.py` does the mechanical
-  part (file move, manifest flip, attribution overrides).
+  part (file move, manifest flip).
   That note is the canonical promotion workflow: the default build must consume
   the consolidated `src/` file and absorbed sources must be retired. Folder moves
   and shadow-only commits do not complete a TU assignment. Temporary `src_tu/`

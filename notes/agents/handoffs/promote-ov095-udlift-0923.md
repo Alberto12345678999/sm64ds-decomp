@@ -97,7 +97,7 @@ This document describes this commit. The queue records its immutable output SHA.
 ---
 - Attribution: tu_promote added 11 `path#symbol` overrides carrying the
   original credit (andrewboudreau for D1 and D0, lunavyqo for `InitResources`,
-  tangosdev for the rest). prepush_attribution reports 11 consolidated with
+  tangosdev for the rest). the old credit check reports 11 consolidated with
   credit intact, 0 changed and 0 lost. No credit went to a bot or to the
   coordinator.
 ---
@@ -154,7 +154,7 @@ and this note were added after the byte and link gates ran.
   blocking, the same 2 outside BLIND warnings. All 11 TU functions and the
   three factories are VERIFIED.
 ---
-- `python tools/prepush_attribution.py --base eb8f46d46a --head HEAD` exit 0:
+- `the old credit check` exit 0:
   0 changed, 0 lost, 11 consolidated with credit intact.
 ---
 - `python tools/check_decl_agreement.py --changed eb8f46d46a`: exit 1 at first.
@@ -224,7 +224,7 @@ Proof on the fix commit (all run from the rework worktree):
   checked, 14 VERIFIED, 0 warnings, 0 blocking (the 11 TU functions and the
   three factories). The header is no longer changed, so consumers no longer
   expand to the 2062 of the first round.
-- `python tools/prepush_attribution.py --base eb8f46d46a --head HEAD` exit 0:
+- `the old credit check` exit 0:
   11 consolidated with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed eb8f46d46a` exit 0, no new
   declaration disagreements.
