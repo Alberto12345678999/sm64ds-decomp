@@ -37753,7 +37753,7 @@ matched: yes</title></rect><rect x="1458.49" y="488.73" width="3.42" height="22.
 module: ov066
 addr: 0x0211a370
 size: 168 bytes
-matched: yes</title></rect><rect x="1461.92" y="488.73" width="39.93" height="22.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov066_0211a418
+matched: yes</title></rect><rect x="1461.92" y="488.73" width="39.93" height="22.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_Eyerok.cpp
 module: ov066
 addr: 0x0211a418
 size: 1960 bytes
