@@ -12,12 +12,11 @@ That is not hypothetical. On 2026-09-14 cd8fad9e04 landed
 src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp as a draft that passes the u32 counter
 `unk_0bc` to func_ov006_020c44b4. The same day, 641d1c02d9 retyped that function's
 first parameter in decl_common.h to `void *`. The draft stopped compiling and nothing
-went red for nine days (#3085). It is the same false green `check_src_tu_compiles.py`
-closes for src_tu/: an unbuildable file is an ABSENT one, not a failing one.
+went red for nine days (#3085). An unbuildable file is an ABSENT one, not a failing one.
 
 WHERE IT RUNS
 -------------
-Beside check_src_tu_compiles.py in tools/hooks/pre-push, for the same reasons: it
+In tools/hooks/pre-push: it
 needs mwccarm and config/rombuild-versions.txt, not the ROM. It compiles and never
 compares bytes, about 0.1s per draft.
 

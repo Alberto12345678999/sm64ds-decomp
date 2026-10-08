@@ -12,7 +12,7 @@ Renames in this tree are heavy -- `Actor` -> `dActor_c`, `MeshCollider` -> `dBgW
 every sentence that names it untouched. Nothing in the build reads a docstring, so a
 citation to a header like `Enemy.h` survives indefinitely after that header stops
 existing. Three of those were found by hand in two days (`check_header_offsets.py`'s
-usage line, `check_src_tu.py`'s "does not compile" list, and a whole family of
+usage line, a retired checker's "does not compile" list, and a whole family of
 `plan-gen-header.md` citations that had outlived that note's move into the notes
 archive), and each one had already been repeated as fact by a reader who trusted it.
 
