@@ -9508,6 +9508,7 @@
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d8ff4Ev": "tangosdev",
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d9020Ev": "tangosdev",
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d904cEv": "tangosdev",
-    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d907cEv": "tangosdev"
+    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d907cEv": "tangosdev",
+    "src/actors/dPathLiftActor_c.cpp#__sinit_dPathLiftActor_c.cpp": "tangosdev"
   }
 }
