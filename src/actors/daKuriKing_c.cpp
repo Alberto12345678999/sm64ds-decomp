@@ -1918,7 +1918,7 @@ int daKuriKing_c::func_ov074_02122634()
     return 1;
 }
 
-/* Static-resource ownership (was src/unnamed/ov074/__sinit_ov074_02122978.c,
+/* Static-resource ownership (was the handwritten __sinit_ov074_02122978 shard,
  * 0x3f8). Definition order is the retail initializer's construction order:
  * the model handle (file 0x395), the texture-sequence handle (file 0x390),
  * then the twelve animation handles. Their registration nodes are compiler
