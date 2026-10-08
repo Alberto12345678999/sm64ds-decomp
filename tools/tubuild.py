@@ -6117,7 +6117,7 @@ _PROMOTE_TRACKERS_LIVE = (
     "config/layout-known-issues.txt", "config/converted-baseline.json",
     "config/unresolved-baseline.json", "config/port_linkage.json",
     "langmode-baseline.json",
-    "stranding-baseline.json", "CLAIMS.md",
+    "stranding-baseline.json",
 )
 _PROMOTE_TRACKERS_HISTORY = (
     "config/match_provenance.jsonl", "config/match_attempts.jsonl",

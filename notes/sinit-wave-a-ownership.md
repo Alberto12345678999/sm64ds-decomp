@@ -5,8 +5,7 @@ Research base: `7b26fa34f`; compiler: `mwccarm 2004/b56`; worktree:
 authorize moving any production source.
 
 The claims service was unavailable locally (`tools/claims_key.txt` and
-`CLAIMS_API_KEY` were both absent).  [CLAIMS.md](../CLAIMS.md) had no active span for the
-three owners (the `da1up_c` row -- the class the note called OneUpMushroom -- is already `done`), so this lane made no
+`CLAIMS_API_KEY` were both absent), so this lane made no
 claim and changed no production source, delinks, symbol file, or manifest.
 
 ## Verdict summary

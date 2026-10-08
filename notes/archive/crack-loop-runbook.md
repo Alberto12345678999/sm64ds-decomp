@@ -33,8 +33,8 @@ Ledger reads/writes go through tools/ledger.py: one canonical (module, addr) key
 locked atomic appends with an under-lock duplicate check, and bank refusals when a
 src/<name>.* file belongs to a different function.
 tools/claims.py is committed; its API key is NOT (CLAIMS_API_KEY env var or the
-gitignored tools/claims_key.txt). Without a key, claim checks still work read-only -
-coordinate via CLAIMS.md.
+gitignored tools/claims_key.txt). Without a key, claim checks still work read-only
+and the batch is not announced.
 ALWAYS run `land` (or at minimum `python tools/claims.py release-active`) even on a
 stopped or failed batch, so claims do not go stale.
 

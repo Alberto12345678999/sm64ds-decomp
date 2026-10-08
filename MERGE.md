@@ -20,8 +20,7 @@ coordinated v2 fleet.
 - Claims are **best-effort**. If they return `401` / "missing key", the claims service
   just is not configured on this machine — note it once and proceed. Each agent already
   gets a distinct batch, so an unclaimed target is fine to work.
-- `CLAIMS.md` is a historical/tooling log (`tools/claims_md.py` and friends read it), not
-  a step in this workflow — don't ask contributors to hand-edit it.
+- Locks live on the claims service.
 
 ## 2. What may be merged
 
@@ -68,8 +67,6 @@ coordinated v2 fleet.
 
 ## 4. Conflicts
 
-- A `CLAIMS.md` conflict resolves by taking **main's** version — the claim is moot once the
-  work lands — and keeping the `src` file.
 - For a fork PR with *maintainer edits allowed*, resolve on their branch and push the fix; keep
   their commit so authorship survives. Otherwise ask them to rebase.
 

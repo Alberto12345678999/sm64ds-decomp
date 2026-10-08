@@ -1691,8 +1691,7 @@ named-local webs descending from r3 in FIRST-DEFINITION order; a web whose singl
 definition must precede the load that consumes it is rank-pinned, and CSE re-merges every
 splitting attempt (func_ov006_020cb72c, 100+ variants; same signature as the previously
 asm-hatched func_02058568/func_ov007_020bfd70). Six more no-progress hypotheses from the
-fleet are in the nearmiss DB notes for their functions; the remaining unrun backlog is
-listed in CLAIMS.md.
+fleet are in the nearmiss DB notes for their functions.
 
 ## 6ac. Opus groups-of-5 batch (2026-07-26, 9 arm9 matches): the "s64 family" was a mirage, and eight new rules
 

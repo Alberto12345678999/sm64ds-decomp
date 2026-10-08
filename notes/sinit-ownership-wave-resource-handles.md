@@ -40,8 +40,7 @@ The audit ran in the wired worktree
 `research/sinit-wave-resources`, based on `7b26fa34f`. The compiler canary passed
 under `mwccarm 2004/b56`.
 
-`CLAIMS.md` has only historical `done`/`released` entries relevant to daSBird_c,
-daObjBkBillboard_c, and daObjMarioCap_c; no active span conflicts with this read-only
+No active lock conflicts with this read-only
 audit. A claims key is absent, so this experiment could not be announced through
 the claims service. It did not claim or alter any production span.
 

@@ -78,7 +78,7 @@ Self-audit of the base, numbered R1 to R24. The issue lists no numbered findings
 | R21 | address-named data | `data_02082214`, `data_020a0e68` | Still deferred | arm9 rows, not ov092's. |
 | R22 | unmeasured codegen notes | The `func_ov092_02131010` note ("escaped stack struct", `mwccarm 1.2/sp2p3`), the "recovered: shared common types" banners, the file-header claim about twelve-word matrix copies | Fixed | E10 shows the struct is not needed; the notes are gone and each kept form carries one measured comment. |
 | R23 | stale manifest notes | The `Frame` compiler-only entry named by source line number; the `_ZN7Vector3D1Ev` reason citing old function names; no note mapping the renames | Fixed | See Changed paths. |
-| R24 | stale notes and ledgers | `notes/butterfly-tornado-provenance.md` rows cite the old function names and the removed C field names (`mRestPosX`, `mPathNodeX`); `notes/mwccarm-codegen.md` cites `func_ov092_02131010`, `021311b0`, `021316d8`; `config/match_attempts.jsonl` and `CLAIMS.md` carry ov092 rows | Still deferred | Not in this task's reservation; the ledgers are append logs keyed by address. Owner: next producer on #3161. |
+| R24 | stale notes and ledgers | `notes/butterfly-tornado-provenance.md` rows cite the old function names and the removed C field names (`mRestPosX`, `mPathNodeX`); `notes/mwccarm-codegen.md` cites `func_ov092_02131010`, `021311b0`, `021316d8`; `config/match_attempts.jsonl` carries ov092 rows | Still deferred | Not in this task's reservation; the ledgers are append logs keyed by address. Owner: next producer on #3161. |
 
 ## Round 2
 

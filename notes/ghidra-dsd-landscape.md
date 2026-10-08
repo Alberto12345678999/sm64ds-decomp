@@ -33,7 +33,7 @@ Files\Microsoft\jdk-11.0.16.101-hotspot`); Ghidra 11.x needs JDK 21. Whatever pr
 the historical `ghidra_out` drafts ran elsewhere or has been removed.
 
 **G1.5 — The historical verdict on raw Ghidra drafts is mixed, and recorded.** [high]
-`CLAIMS.md` cites them by name both ways: a win ([ov102](../config/arm9/overlays/ov102/symbols.txt) [func_ov102_0214b53c](../src/actors/daBmb_c.cpp) — "Ghidra
+Match notes cite them by name both ways: a win ([ov102](../config/arm9/overlays/ov102/symbols.txt) [func_ov102_0214b53c](../src/actors/daBmb_c.cpp) — "Ghidra
 dest + ROM-order angle" → byte-identical) and repeated losses ([ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) — "Ghidra missed s64 matrix"; [arm9](../config/arm9/symbols.txt) `OAM::Render` — "Ghidra dump div=999 (frame 0x44)";
 [ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_0211e72c](../src/actors/dScMgTeresa_c.cpp) — "Ghidra-shaped 30w attractor" that*stalls* at 26 words).
 `README.md:102` states the house position: useful for reading a function, "its output
@@ -555,7 +555,7 @@ That is expected — dsd's config has symbols and relocations, not struct defini
 there is nothing for SyncDsd to import. Class layouts would have to come from our own
 headers via Ghidra's data-type manager, which nothing currently does.
 
-**G9.4 — The specific historical miss is still missed.** [high] [CLAIMS.md](../CLAIMS.md) records
+**G9.4 — The specific historical miss is still missed.** [high] Match notes recorded
 [ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) as "Ghidra missed s64 matrix". The SyncDsd'd draft is:
 
 ```c
