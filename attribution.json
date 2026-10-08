@@ -6398,6 +6398,7 @@
     "src/actors/daEykn_c.cpp#daEykn_c_classInit_EYEKUN": "tangosdev",
     "src/actors/daObjBkKillerdai_c.cpp#daObjBkKillerdai_c_classInit": "tangosdev",
     "src/actors/daObjPile_c.cpp#daObjPile_c_classInit": "tangosdev",
+    "src/actors/daObjPile_c.cpp#__sinit_daObjPile_c.cpp": "tangosdev",
     "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT": "tangosdev",
     "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT": "tangosdev",
     "src/actors/daBgSnmHed_c.cpp#daBgSnmHed_c_classInit": "tangosdev",
