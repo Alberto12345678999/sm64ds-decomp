@@ -17,9 +17,24 @@
       "end": "0x020b944c"
     },
     {
+      "name": ".init",
+      "start": "0x020b9b24",
+      "end": "0x020b9de4"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x020b9df0",
+      "end": "0x020b9df4"
+    },
+    {
       "name": ".data",
       "start": "0x020bca68",
       "end": "0x020bcaa0"
+    },
+    {
+      "name": ".bss",
+      "start": "0x020bfda8",
+      "end": "0x020bfec0"
     }
   ],
   "functions": [
@@ -183,9 +198,687 @@
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020b8c18"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9b48",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9b68",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9b88",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9ba8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9bc8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9be8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9c08",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9c28",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9c48",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9c68",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9c88",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9ca8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9cc8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9ce8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d08",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d28",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d48",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d58",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe74",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe74"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d5c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "NoOpDestructor",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0203b98c"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@33",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe20"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe74",
+      "addend": 4,
+      "target_module": "ov004",
+      "target_address": "0x020bfe78"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@36",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfdd8"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d6c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe74",
+      "addend": 8,
+      "target_module": "ov004",
+      "target_address": "0x020bfe7c"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@39",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfdcc"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d74",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe74",
+      "addend": 12,
+      "target_module": "ov004",
+      "target_address": "0x020bfe80"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@42",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfde4"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d7c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe74",
+      "addend": 16,
+      "target_module": "ov004",
+      "target_address": "0x020bfe84"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d80",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@45",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe68"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d84",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe88",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe88"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d88",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@47",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe50"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d8c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe88",
+      "addend": 4,
+      "target_module": "ov004",
+      "target_address": "0x020bfe8c"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@50",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe44"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe88",
+      "addend": 8,
+      "target_module": "ov004",
+      "target_address": "0x020bfe90"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@53",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe38"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9d9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe88",
+      "addend": 12,
+      "target_module": "ov004",
+      "target_address": "0x020bfe94"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9da0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@56",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe2c"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9da4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe88",
+      "addend": 16,
+      "target_module": "ov004",
+      "target_address": "0x020bfe98"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9da8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@59",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe14"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe9c"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9db0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@61",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe08"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9db4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 4,
+      "target_module": "ov004",
+      "target_address": "0x020bfea0"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9db8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@64",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfdb4"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dbc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 8,
+      "target_module": "ov004",
+      "target_address": "0x020bfea4"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dc0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@67",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfdf0"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dc4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 12,
+      "target_module": "ov004",
+      "target_address": "0x020bfea8"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dc8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@70",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfda8"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dcc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 16,
+      "target_module": "ov004",
+      "target_address": "0x020bfeac"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dd0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@73",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfe5c"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dd4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 20,
+      "target_module": "ov004",
+      "target_address": "0x020bfeb0"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9dd8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@76",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfdc0"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9ddc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov004_020bfe9c",
+      "addend": 24,
+      "target_module": "ov004",
+      "target_address": "0x020bfeb4"
+    },
+    {
+      "section": ".init",
+      "source": "0x020b9de0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@79",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020bfdfc"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x020b9df0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_dMgPsOpt_c.cpp",
+      "addend": 0,
+      "target_module": "ov004",
+      "target_address": "0x020b9b24"
     }
   ],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov004_020bfe74",
+      "address": "0x020bfe74",
+      "size": "0x14",
+      "binding": "STB_GLOBAL",
+      "evidence": "five IconDim half-extent records, sound caption, indexed by GetGameLanguage()"
+    },
+    {
+      "symbol": "@33",
+      "address": "0x020bfe20",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe74[0]"
+    },
+    {
+      "symbol": "@36",
+      "address": "0x020bfdd8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe74[1]"
+    },
+    {
+      "symbol": "@39",
+      "address": "0x020bfdcc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe74[2]"
+    },
+    {
+      "symbol": "@42",
+      "address": "0x020bfde4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe74[3]"
+    },
+    {
+      "symbol": "@45",
+      "address": "0x020bfe68",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe74[4]"
+    },
+    {
+      "symbol": "data_ov004_020bfe88",
+      "address": "0x020bfe88",
+      "size": "0x14",
+      "binding": "STB_GLOBAL",
+      "evidence": "five IconDim half-extent records, backlight caption, indexed by GetGameLanguage()"
+    },
+    {
+      "symbol": "@47",
+      "address": "0x020bfe50",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe88[0]"
+    },
+    {
+      "symbol": "@50",
+      "address": "0x020bfe44",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe88[1]"
+    },
+    {
+      "symbol": "@53",
+      "address": "0x020bfe38",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe88[2]"
+    },
+    {
+      "symbol": "@56",
+      "address": "0x020bfe2c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe88[3]"
+    },
+    {
+      "symbol": "@59",
+      "address": "0x020bfe14",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe88[4]"
+    },
+    {
+      "symbol": "data_ov004_020bfe9c",
+      "address": "0x020bfe9c",
+      "size": "0x1c",
+      "binding": "STB_GLOBAL",
+      "evidence": "seven IconDim half-extent records, indexed by touch style"
+    },
+    {
+      "symbol": "@61",
+      "address": "0x020bfe08",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[0]"
+    },
+    {
+      "symbol": "@64",
+      "address": "0x020bfdb4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[1]"
+    },
+    {
+      "symbol": "@67",
+      "address": "0x020bfdf0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[2]"
+    },
+    {
+      "symbol": "@70",
+      "address": "0x020bfda8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[3]"
+    },
+    {
+      "symbol": "@73",
+      "address": "0x020bfe5c",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[4]"
+    },
+    {
+      "symbol": "@76",
+      "address": "0x020bfdc0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[5]"
+    },
+    {
+      "symbol": "@79",
+      "address": "0x020bfdfc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for data_ov004_020bfe9c[6]"
+    },
+    {
+      "symbol": "data_ov004_020bfeb8",
+      "address": "0x020bfeb8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "unregistered zero-fill bss tail through the overlay bss region end at 0x020bfec0"
+    }
+  ],
   "production_mode": "intact-object",
   "compiler_only_output": [
     {
@@ -266,21 +959,21 @@
         "_ZN9dThIcon_cD2Ev"
       ],
       "droppedSections": [
-        5,
         6,
         7,
-        25,
-        26,
-        27,
-        28,
-        31,
-        32,
-        37,
-        38,
-        41,
-        42,
-        43,
-        44
+        8,
+        46,
+        47,
+        48,
+        49,
+        52,
+        53,
+        58,
+        59,
+        62,
+        63,
+        64,
+        65
       ],
       "data": [
         "_ZTI9dThIcon_c",
@@ -294,7 +987,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -326,16 +1019,36 @@
           "firstDiff": null
         },
         {
+          "section": ".init",
+          "start": "0x020b9b24",
+          "end": "0x020b9de4",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x020b9df0",
+          "end": "0x020b9df4",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
           "section": ".data",
           "start": "0x020bca68",
           "end": "0x020bcaa0",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x020bfda8",
+          "end": "0x020bfec0",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 14
+          "LICENSED": 37
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -344,20 +1057,166 @@
       "nontextSectionOrder": {
         "groups": [
           {
-            "section": ".data",
+            "section": ".init",
             "original": [
-              8,
-              10,
-              12
+              68
             ],
             "desired": [
-              8,
+              68
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              66
+            ],
+            "desired": [
+              66
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              19,
+              28,
+              33
+            ],
+            "desired": [
+              19,
+              28,
+              33
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              5,
+              9,
               10,
-              12
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              30,
+              31,
+              32
+            ],
+            "desired": [
+              15,
+              17,
+              13,
+              10,
+              12,
+              25,
+              9,
+              22,
+              18,
+              21,
+              11,
+              16,
+              23,
+              24,
+              14,
+              26,
+              27,
+              31,
+              30,
+              32,
+              5
             ]
           }
         ],
-        "objisolate": null,
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".bss",
+              "original": [
+                5,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                30,
+                31,
+                32
+              ],
+              "desired": [
+                15,
+                17,
+                13,
+                10,
+                12,
+                25,
+                9,
+                22,
+                18,
+                21,
+                11,
+                16,
+                23,
+                24,
+                14,
+                26,
+                27,
+                31,
+                30,
+                32,
+                5
+              ],
+              "slots": [
+                5,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                30,
+                31,
+                32
+              ]
+            }
+          ],
+          "symbolIndices": 21,
+          "sectionLinks": 0,
+          "sectionInfos": 0,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -392,5 +1251,155 @@
       },
       "linkerOutput": null
     }
-  }
+  },
+  "init": [
+    {
+      "symbol": "__sinit_dMgPsOpt_c.cpp",
+      "address": "0x020b9b24",
+      "size": "0x2c0",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov004_020b9b24 and carries the same relocation schedule: seventeen __register_global_object calls plus one literal word per IconDim element, per destructor-registration node and the shared arm9 destructor"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_dMgPsOpt_c.cpp",
+      "address": "0x020b9df0",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN7IconDimD1Ev",
+      "canonical_symbol": "NoOpDestructor",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203b98c",
+      "evidence": "retail destructor-registration destination for all seventeen records"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and the seventeen direct retail references in this initializer"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_dMgPsOpt_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_dMgPsOpt_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "@33",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe20"
+    },
+    {
+      "symbol": "@36",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfdd8"
+    },
+    {
+      "symbol": "@39",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfdcc"
+    },
+    {
+      "symbol": "@42",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfde4"
+    },
+    {
+      "symbol": "@45",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe68"
+    },
+    {
+      "symbol": "@47",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe50"
+    },
+    {
+      "symbol": "@50",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe44"
+    },
+    {
+      "symbol": "@53",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe38"
+    },
+    {
+      "symbol": "@56",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe2c"
+    },
+    {
+      "symbol": "@59",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe14"
+    },
+    {
+      "symbol": "@61",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe08"
+    },
+    {
+      "symbol": "@64",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfdb4"
+    },
+    {
+      "symbol": "@67",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfdf0"
+    },
+    {
+      "symbol": "@70",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfda8"
+    },
+    {
+      "symbol": "@73",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfe5c"
+    },
+    {
+      "symbol": "@76",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfdc0"
+    },
+    {
+      "symbol": "@79",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x020bfdfc"
+    }
+  ]
 }
