@@ -287,7 +287,6 @@ extern char data_ov065_0211d904;
 extern char data_ov065_0211d90c;
 extern char data_ov065_0211d97c[];
 extern char data_ov065_0211d98c[];
-extern char data_ov066_0211b07c;
 extern char data_ov070_021235bc[];
 extern char data_ov070_021235cc[];
 extern char data_ov071_02122f80;
@@ -976,7 +975,7 @@ extern int data_ov024_02113968[];
 extern int data_ov025_02112654(void*);
 extern int data_ov025_02113814[];
 extern int data_ov026_02113ea0[];
-extern int data_ov026_02113f2c;
+/* data_ov026_02113f2c is defined by daWater_Tatumaki_c.cpp. */
 extern int data_ov026_02113f58;
 extern int data_ov027_021138f4[];
 extern int data_ov027_021139d4[];
@@ -1051,8 +1050,6 @@ extern int data_ov064_0211c944;
 extern int data_ov064_0211c9c4[];
 extern int data_ov065_0211d680;
 extern int data_ov066_0211ad18[];
-extern int data_ov066_0211b05c[];
-extern int data_ov066_0211b09c[];
 extern int data_ov070_021234c4;
 extern int data_ov070_0212360c[];
 extern int data_ov072_02122004[];
@@ -1781,7 +1778,7 @@ extern void func_0201a428(void);
 extern void func_0201cd08(int);
 extern void func_0201cebc(int);
 extern void func_0201d418(int, int);
-/* Course/star index, 0..0x15. Matches the definition in src/func_0201d850.c, which
+/* Course/star index, 0..0x15. Matches the definition in src/unnamed/arm9/0201/func_0201d850.c, which
    compares it unsigned (`arg0 < 0xf`, `arg0 >= 0x15`) and uses it as an array index
    and a multiplier. Its two callers used to declare it locally and disagree -- `int
    func_0201d850(unsigned char)` in DisplayPauseText, `int func_0201d850(signed char)`
@@ -2472,7 +2469,7 @@ extern void*data_ov019_0211277c[];
 extern void*data_ov019_02112788[];
 extern void*data_ov019_02113498;
 extern void*data_ov023_02112088;
-extern void*data_ov026_02113f3c;
+/* data_ov026_02113f3c is defined by daWater_Tatumaki_c.cpp. */
 extern void*data_ov027_02112ca4[3];
 extern void*data_ov029_02112fb8;
 extern void*data_ov029_02112fec;
@@ -2500,7 +2497,6 @@ extern void*data_ov065_0211cd68[];
 extern void*data_ov065_0211cfd8[];
 extern void*data_ov065_0211d768[];
 extern void*data_ov065_0211d770[];
-extern void*data_ov066_0211b0cc;
 extern void*data_ov070_02123698;
 extern void*data_ov072_02121ffc;
 extern void*data_ov072_02122b20;
