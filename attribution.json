@@ -1852,6 +1852,7 @@
     "src/game/actors/d_a_obj_wc_obj03.cpp#_ZN15daObjWc_Obj03_cD0Ev": "andrewboudreau",
     "src/game/actors/d_a_obj_wc_obj03.cpp#_ZN15daObjWc_Obj03_cD1Ev": "andrewboudreau",
     "src/game/actors/d_a_obj_wc_obj03.cpp#daObjWc_Obj03_c_classInit": "github-actions[bot]",
+    "src/game/actors/d_a_obj_wc_obj03.cpp#__sinit_d_a_obj_wc_obj03.cpp": "tangosdev",
     "src/game/actors/d_a_obj_wc_obj04.cpp#_ZN15daObjWc_Obj04_c13InitResourcesEv": "github-actions[bot]",
     "src/game/actors/d_a_obj_wc_obj04.cpp#_ZN15daObjWc_Obj04_c16CleanupResourcesEv": "github-actions[bot]",
     "src/game/actors/d_a_obj_wc_obj04.cpp#_ZN15daObjWc_Obj04_c6RenderEv": "github-actions[bot]",
