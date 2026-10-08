@@ -1008,6 +1008,13 @@
       "evidence": "sixteen-entry palette/int table filled by Ent::func_ov004_020adcc8 and dispatched to func_ov004_020b1d60"
     },
     {
+      "symbol": "data_ov004_020beba8",
+      "address": "0x020beba8",
+      "size": "0x40",
+      "binding": "STB_GLOBAL",
+      "evidence": "sixteen-entry int table filled by Ent::func_ov004_020adcc8 and dispatched to func_ov004_020b1d60"
+    },
+    {
       "symbol": "data_ov004_020bebe8",
       "address": "0x020bebe8",
       "size": "0x800",
@@ -1022,7 +1029,8 @@
     "func_ov004_020b2220 matches through local static inline FX_Mul (with a named s64 product) and MTX_Rot22 helpers, the NitroSDK shapes; with the products written out in the body the thousands counter is allocated to ip or r3 instead of r0.",
     "The D2 and D0 shards carried _MSC_VER arms giving the host the flat D2 and D0 names. They are kept as one #ifdef _MSC_VER block after the destructor; mwccarm never defines _MSC_VER.",
     "The file-global #pragma opt_strength_reduction off the eight-member TU carried is gone: BeforeBehavior matches without it once the file is ROM-ascending under defer_codegen off.",
-    "Static-initializer fold: __sinit_ov004_020b948c retired; the unit now emits it from the static state -- the graphCallback_c registry object, the 0x40-entry Ent pool (__cxa_vec_ctor + __arraydtor$314 cleanup registration), and the two PMF state tables. func_ov004_020ae104 is the graphCallback_c complete-object ctor; func_ov004_020b2c58 is the array cleanup thunk; func_ov004_020b2c7c/020b2c80 are Ent's trivial dtor/ctor; the four state handlers memberized onto Ent."
+    "Static-initializer fold: __sinit_ov004_020b948c retired; the unit now emits it from the static state -- the graphCallback_c registry object, the 0x40-entry Ent pool (__cxa_vec_ctor + __arraydtor$314 cleanup registration), and the two PMF state tables. func_ov004_020ae104 is the graphCallback_c complete-object ctor; func_ov004_020b2c58 is the array cleanup thunk; func_ov004_020b2c7c/020b2c80 are Ent's trivial dtor/ctor; the four state handlers memberized onto Ent.",
+    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the five owned ranges matched."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1035,13 +1043,18 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 37 unlicensed section/symbol(s), 10 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "result": "unavailable-for-this-TU",
-      "why": "tools/tubuild.py linkcheck routes a promoted TU down the intact-object path and refuses at [4/8] because this TU is text-only (data: [], bss: []). The whole-tree production build (python tools/rombuild.py) is the link proof for the whole-unit range 0x020ad660..0x020b2c58."
+      "why": "tools/tubuild.py linkcheck routes a promoted TU down the intact-object path and refuses at [4/8] because this TU is text-only (data: [], bss: []). The whole-tree production build (python tools/rombuild.py) is the link proof for the whole-unit range 0x020ad660..0x020b2c58.",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      }
     },
     "compilerOnlyOutput": {
       "requested": [
@@ -1240,8 +1253,6 @@
     {
       "symbol": "_ZN11dScMgBase_c15graphCallback_cC2Ev",
       "disposition": "deadstrip",
-      "canonical_module": "ov004",
-      "canonical_address": null,
       "reason": "dScMgBase_c::graphCallback_c is defined once and mwccarm emits the C1/C2 pair from it. The ROM kept only the complete-object C1 at 0x020ae104 (the initializer's call destination); the C2 emitted here is the same 0x24-byte body under a second name with no cartridge home."
     }
   ],
@@ -1285,6 +1296,12 @@
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "__arraydtor$314",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local array destructor thunk for the Ent pool; it is a configured initializer relocation destination at 0x020b2c58"
     },
     {
       "symbol": "@315",
