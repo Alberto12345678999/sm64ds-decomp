@@ -143,7 +143,6 @@ data_ov010_02112d08 kind:bss addr:0x02112d08
 @744 kind:bss addr:0x02112d10
 @745 kind:bss addr:0x02112d1c
 data_ov010_02112d28 kind:bss addr:0x02112d28
-data_ov010_02112d48 kind:bss addr:0x02112d48 ambiguous
 data_ov010_02112d50 kind:bss addr:0x02112d50
 data_ov010_02112d58 kind:bss addr:0x02112d58
 data_ov010_02112d64 kind:bss addr:0x02112d64
