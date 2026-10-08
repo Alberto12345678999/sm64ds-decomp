@@ -341,7 +341,8 @@ class DraftClassificationIntegration(unittest.TestCase):
         self.stack = contextlib.ExitStack()
         self.addCleanup(self.stack.close)
         self.stack.enter_context(mock.patch.object(RV, "ALL_VERSIONS", ["test-compiler"]))
-        self.stack.enter_context(mock.patch.object(RV, "src_texts", return_value=[self.DRAFT]))
+        self.stack.enter_context(mock.patch.object(
+            RV, "src_candidates", return_value=[(self.DRAFT, pathlib.Path("src/wanted.cpp"))]))
         self.stack.enter_context(mock.patch.object(RA, "_as_the_build_links_it", side_effect=lambda o, n: o))
         # A lookup reaching real ROM/config or a real compiler is a test bug.
         self.stack.enter_context(mock.patch.object(RV, "mod_for", side_effect=AssertionError("ROM access")))
@@ -522,6 +523,54 @@ class DraftClassificationIntegration(unittest.TestCase):
         self.assertNotIn("also verified", md)
         self.assertIn("`passenger` (NO-SYM)", md)
         self.assertIn("failed validation", md)
+
+
+class WinningObjectSourceName(unittest.TestCase):
+    """The copy winning_object compiles is named like the source it copies.
+
+    mwcc names a TU's static initializer after the file it compiles, and the ROM build
+    compiles src/actors/dPathLiftActor_c.cpp, so the ROM symbol is
+    __sinit_dPathLiftActor_c.cpp. A temp copy named tmpXXXX.cpp emits
+    __sinit_tmpXXXX.cpp instead; isolation asked for the real name then keeps the
+    whole TU, and the destructors it emits for their legacy sources were checked with
+    their raw +8 vtable addend and reported WRONG (#3708).
+    """
+
+    def compiled_names(self, candidates, candidate=None):
+        seen = []
+
+        def compile_c(cfile, version, flags, include_dirs=()):
+            seen.append((cfile.name, cfile.read_text(encoding="utf-8")))
+            return None
+
+        with mock.patch.object(RV, "ALL_VERSIONS", ["test-compiler"]), \
+                mock.patch.object(RV, "src_candidates", return_value=candidates), \
+                mock.patch.object(RV, "rom_bytes", side_effect=lambda m, a, s: b"\0" * s), \
+                mock.patch.object(RA.M, "compile_c", side_effect=compile_c):
+            obj, _sym, err, _off = RA.winning_object("wanted", 0x02000000, 8, "arm9",
+                                                     candidate=candidate)
+        self.assertIsNone(obj)
+        self.assertEqual(err, "compile-failed")
+        return seen
+
+    def test_the_temp_copy_keeps_the_source_basename(self):
+        src = "//cpp\nvoid wanted() {}\n"
+        seen = self.compiled_names([(src, pathlib.Path("src/actors/dPathLiftActor_c.cpp"))])
+        self.assertEqual(seen, [("dPathLiftActor_c.cpp", src)])
+
+    def test_a_c_source_compiled_as_cpp_takes_the_attempts_suffix(self):
+        seen = self.compiled_names([("void wanted(void) {}\n", pathlib.Path("src/wanted.c"))])
+        self.assertTrue(seen)
+        self.assertTrue(all(name.startswith("wanted.") for name, _ in seen))
+
+    def test_a_supplied_candidate_is_compiled_in_place(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            path = pathlib.Path(d) / "workbench.cpp"
+            path.write_text("//cpp\nvoid wanted() {}\n", encoding="utf-8")
+            seen = self.compiled_names([], candidate=path)
+        self.assertEqual([name for name, _ in seen], ["workbench.cpp"])
+
 
 if __name__ == "__main__":
     unittest.main()
