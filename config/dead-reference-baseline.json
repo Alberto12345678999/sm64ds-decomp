@@ -243,11 +243,11 @@
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
-   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
+   "ref": "src/d_a_luigi.cpp"
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
-   "ref": "src/d_a_luigi.cpp"
+   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
   },
   {
    "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
@@ -299,11 +299,11 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
-   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
+   "ref": "src/d_a_luigi.cpp"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
-   "ref": "src/d_a_luigi.cpp"
+   "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
