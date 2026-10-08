@@ -47,7 +47,7 @@ This document describes this commit. The queue records its immutable output SHA.
 - ROM observations: the RTTI record at [ov095](../../../config/arm9/overlays/ov095/symbols.txt) 0x021375b0 reads
   [__si_class_type_info+8, 0x021375bc, _ZTI10dBgActor_c]; 0x021375bc holds
   "10daUdlift_c"; the typeinfo word before the vtable address point 0x02137628
-  is 0x021375b0. [__sinit_ov095_0213722c](../../../src/__sinit_ov095_0213722c.c) fills the `.bss` state table at
+  is 0x021375b0. [__sinit_ov095_0213722c](../../../src/unnamed/ov095/__sinit_ov095_0213722c.c) fills the `.bss` state table at
   0x02137910 with five pointer-to-member constants whose relocations resolve
   state 0..4 to 0x02136368, 0x02136298, 0x02136178, 0x02136090 and 0x02136104.
 ---
@@ -97,7 +97,7 @@ This document describes this commit. The queue records its immutable output SHA.
 ---
 - Attribution: tu_promote added 11 `path#symbol` overrides carrying the
   original credit (andrewboudreau for D1 and D0, lunavyqo for `InitResources`,
-  tangosdev for the rest). prepush_attribution reports 11 consolidated with
+  tangosdev for the rest). the old credit check reports 11 consolidated with
   credit intact, 0 changed and 0 lost. No credit went to a bot or to the
   coordinator.
 ---
@@ -154,7 +154,7 @@ and this note were added after the byte and link gates ran.
   blocking, the same 2 outside BLIND warnings. All 11 TU functions and the
   three factories are VERIFIED.
 ---
-- `python tools/prepush_attribution.py --base eb8f46d46a --head HEAD` exit 0:
+- `the old credit check` exit 0:
   0 changed, 0 lost, 11 consolidated with credit intact.
 ---
 - `python tools/check_decl_agreement.py --changed eb8f46d46a`: exit 1 at first.
@@ -224,7 +224,7 @@ Proof on the fix commit (all run from the rework worktree):
   checked, 14 VERIFIED, 0 warnings, 0 blocking (the 11 TU functions and the
   three factories). The header is no longer changed, so consumers no longer
   expand to the 2062 of the first round.
-- `python tools/prepush_attribution.py --base eb8f46d46a --head HEAD` exit 0:
+- `the old credit check` exit 0:
   11 consolidated with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed eb8f46d46a` exit 0, no new
   declaration disagreements.

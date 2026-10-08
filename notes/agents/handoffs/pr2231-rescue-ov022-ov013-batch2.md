@@ -288,7 +288,7 @@ inherited from PR #2231's own manifests or logs.
   `--check` is green again ("queue agrees with the tree"). `check_dead_references`
   re-run green after the edit; nothing else in this section can move on a
   queue-row line.
-- RED, known tool defect: `python tools/prepush_attribution.py` exits 1 with
+- RED, known tool defect: `the old credit check` exits 1 with
   14 `CREDIT LOST` rows on this tree, all this batch's folded or renamed
   shards (5 London, 7 clock, 2 volcano) -- issue #2433's basename-keyed
   false positive, as adjudicated for batch 1. The underlying credit loss in

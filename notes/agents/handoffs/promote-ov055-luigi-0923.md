@@ -36,7 +36,7 @@ This document describes this commit. The queue records its immutable output SHA.
   si record with a zero-offset `dActor_c` base. Its name string is at `0x02111aa4` and
   its vtable at `0x02111ae0`, the address the tree called `_ZTV11MirrorLuigi`.
   The state table at `0x02111a94` holds two words, which relocate to `0x021112bc` and
-  `0x02111288`.[ __sinit_ov055_021118d4](../../../src/__sinit_ov055_021118d4.c) copies it to `0x02111b70`, and `InitResources`
+  `0x02111288`.[ __sinit_ov055_021118d4](../../../src/unnamed/ov055/__sinit_ov055_021118d4.c) copies it to `0x02111b70`, and `InitResources`
   passes that copy to [func_ov055_021112c4](../../../config/tu_manifest.d/ov055/daLuigi_c.json)(current [_ZN9daLuigi_c8SetStateEP12daLuigiStateP6Player](../../../src/actors/daLuigi_c.cpp)). [ov063](../../../config/arm9/overlays/ov063/symbols.txt) calls [func_ov055_02111264](../../../src/actors/daLuigi_c.cpp).
 - Lineage evidence or structural inference: the state setter, the two-callback table and
   the mirror callback (it negates X and the Y angle) are inferred from the code.
@@ -89,7 +89,7 @@ This document describes this commit. The queue records its immutable output SHA.
     because the ROM pads them), 0 DIFFERS.
   - The static initializer and the factory stay outside this TU, where tu_map places
     them.
-- Attribution preserved through each move/rename: `prepush_attribution` reports 11
+- Attribution preserved through each move/rename: `the old credit check` reports 11
   consolidated with credit intact, 0 changed and 0 lost. One `tu_promote` override was
   corrected by hand: `OnPendingDestroy` goes to tangosdev, which is main's credit.
 - Remaining agreed issue scope:
@@ -121,7 +121,7 @@ All checks ran in `C:/tmp/promote-ov055-luigi-0923` on this branch, base `eb8f46
   and `src/d_a_luigi.cpp`. Both are VERIFIED above. `check_header_offsets` reports 6
   fields, 0 mismatched and 0 unparsed.
 - Port/path/reference and other applicable static gates:
-  - `prepush_attribution --base eb8f46d46a --head HEAD`: exit 0, 0 changed, 0 lost.
+  - the old credit check exit 0, 0 changed, 0 lost.
   - `check_decl_agreement --changed eb8f46d46a`: exit 0, no new disagreements. The
     full-tree run also reports none new.
     - The baseline was edited in place, not regenerated.

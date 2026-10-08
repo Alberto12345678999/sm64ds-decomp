@@ -103,8 +103,8 @@ Compiler command line:
 | Command | Exit | Result |
 |---|---|---|
 | `python tools/prepush_linkcheck.py --range 52e467a1ef..HEAD` | 0 | 6 checked, 6 verified, 0 warnings, 0 blocking |
-| `python tools/prepush_attribution.py --base 52e467a1ef` | 0 | 7,056 tracked, 0 moved, 0 renamed, 0 consolidated, 0 changed, 0 lost (see findings) |
-| `prepush_attribution.lineage` and `chaos_db_ci.first_matchers`, base against HEAD, for the six stems | 0 | unchanged: `andrewboudreau` for bomroom, curling and curling2; `tangosdev` for pachinko, panel and teresa |
+| `the old credit check` | 0 | 7,056 tracked, 0 moved, 0 renamed, 0 consolidated, 0 changed, 0 lost (see findings) |
+| `the old credit check` and `the old credit check`, base against HEAD, for the six stems | 0 | unchanged: `andrewboudreau` for bomroom, curling and curling2; `tangosdev` for pachinko, panel and teresa |
 | `python tools/check_decl_agreement.py --changed 52e467a1ef` | 0 | 12 files in scope, 6 symbols, 0 disagreements, no new |
 | `python tools/check_decl_agreement.py`, at base and candidate | 0, 0 | byte-identical output: 35,671 declarations, 14,422 disagreements, 1,505 banked gone, no new |
 | `python tools/check_decl_agreement.py --list`, at base and candidate | 0, 0 | byte-identical (57,692 lines); none of the six files appears |
@@ -116,7 +116,7 @@ Compiler command line:
 | `python tools/check_profile_campaign.py`, at base and candidate | 0, 0 | byte-identical output: 401 rows, 391 in scope, 391 complete, 0 pending, 0 diverged; 970 checks complete; 201 exempt; 790 ledger claims, 0 diverge |
 | per-row read of the six rows through `check_profile_campaign`'s own functions | 0 | descriptor, factory symbol and filename all COMPLETE, at base on the `.c` and at candidate on the `.cpp` |
 | control: `scan_registry` with the base registry against the renamed tree | 0 | 385 complete, 6 pending (the six filename checks), 0 diverged |
-| `python -m unittest tools.test_check_profile_campaign tools.test_profile_reconstruction tools.test_attribution` | 0 | 108 tests OK |
+| `python -m unittest tools.test_check_profile_campaign tools.test_profile_reconstruction` | 0 | 108 tests OK |
 | `python tools/port_refcheck.py` | 0 | 408 references resolve |
 | `python tools/check_src_tu_compiles.py --quiet` | 0 | 306 of 306 compile |
 | `python tools/check_tubuild_conflicts.py` | 0 | 306 entries; every conflict recorded |
@@ -142,6 +142,6 @@ Private validation: not run. Independent verification of this exact candidate is
 ## Findings
 
 1. rombuild picks the language from the `//cpp` marker alone. A `//cpp` file renamed from `.c` to `.cpp` gets the same command line apart from the path, and here produced byte-identical objects. The `assign_factory_filenames` docstring says a `.c` to `.cpp` rename "would cost the byte match". That holds only for a `.c` file without `//cpp`.
-2. `prepush_attribution.py` keys lineage on the path without its extension. An extension-only rename is neither "moved" nor "renamed" in its summary, so it prints `0 renamed with credit intact`, not 6. Credit is still checked, on the stem, and the per-stem authors above are unchanged. No `attribution.json` override was needed.
+2. `the old credit check` keys lineage on the path without its extension. An extension-only rename is neither "moved" nor "renamed" in its summary, so it prints `0 renamed with credit intact`, not 6. Credit is still checked, on the stem, and the per-stem authors above are unchanged. No `attribution.json` override was needed.
 3. Without the registry edit, `check_profile_campaign` would not fail. The control above reads the six rows as pending (385 complete, 6 pending), and the tool fails on pending rows only under `--strict`. Only the unchanged counts show that the edit is complete.
 4. PR #3195 also edits [ov006 `delinks.txt`](../../../config/arm9/overlays/ov006/delinks.txt) (line 377), not only the pilot doc. Both files merge cleanly with this branch.

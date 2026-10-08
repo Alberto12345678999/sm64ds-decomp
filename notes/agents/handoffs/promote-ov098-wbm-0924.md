@@ -151,7 +151,7 @@ This document describes this commit. The queue records its immutable output SHA.
   model file records and the profile are unowned ov098 rows.
 - Attribution: tu_promote added 14 `path#symbol` overrides carrying the
   original credit (andrewboudreau for func_ov098_0213b6e0, lunavyqo for
-  func_ov098_0213b9d8, tangosdev for the other twelve). prepush_attribution
+  func_ov098_0213b9d8, tangosdev for the other twelve). the old credit check
   reports 14 consolidated with credit intact, 0 changed and 0 lost. No credit
   went to a bot or to the coordinator.
 - CONVERTED, per `tools/tiers.py` score_member: D1, D0, Behavior, Render,
@@ -208,7 +208,7 @@ gates ran.
   src/actors/daWbm_c.cpp.
 - `python tools/check_header_offsets.py include/daWbm_c.h` exit 0: 15
   commented fields, 0 mismatched, 0 unparsed, spans 0x3cc.
-- `python tools/prepush_attribution.py --base 787633e5e7 --head HEAD` exit 0:
+- `the old credit check` exit 0:
   14 consolidated with credit intact, 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed 787633e5e7`: exit 1 at
   first, with 14 disagreements from the new file. Three were fixed in the

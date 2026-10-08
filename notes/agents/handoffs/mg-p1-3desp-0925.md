@@ -200,7 +200,7 @@ were copied into the worktree.
     declarations, 1,024 healed banked entries. [data_ov006_0213c88c](../../../config/arm9/overlays/ov006/symbols.txt) has one
     declaration, this file's, so retyping it moves no count.
 - **Other static gates**, each exit 0:
-  - `python tools/prepush_attribution.py --base e63828444b --head HEAD`: 7241 tracked,
+  - `the old credit check`: 7241 tracked,
     0 changed, 0 lost.
   - `python tools/check_dead_references.py`: no new dead references, no broken links.
     It was run again with this note in the working tree, with the same result.

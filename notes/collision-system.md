@@ -365,9 +365,9 @@ concentrated in structure, status, and numbers.
 #### Retraction: `dBgCh_Lin` 0x54 is not misnamed
 
 A first pass of this survey reported that 0x54 should be `clsnPos`, not `lineEnd`. **That was
-wrong, and it rested on an inverted premise** — that [func_ov002_020fea4c](../src/func_ov002_020fea4c.c) is `GetStart`. Read
+wrong, and it rested on an inverted premise** — that [func_ov002_020fea4c](../src/unnamed/ov002/func_ov002_020fea4c.c) is `GetStart`. Read
 the body: `a[0..2] = b[3..5]` reads offset 0x44, the `dM3dGLin`'s *second* `Vector3`, so it is
-**GetEnd**; [func_ov002_020fea68](../src/func_ov002_020fea68.c) (`b[0..2]`) is GetStart.
+**GetEnd**; [func_ov002_020fea68](../src/unnamed/ov002/func_ov002_020fea68.c) (`b[0..2]`) is GetStart.
 
 So `func_02037608` seeds 0x54 from the line **end**, and `dBgW_KcMbg::DetectClsn`
 depends on that, transforming 0x38 and 0x54 as the two endpoints of the scratch segment. On a
@@ -472,8 +472,8 @@ scores `cand=1750 equal=565 ratio=0.3203`, so Phase 0's gain survived intact.
 
 #### The recipe, as it actually works
 
-Two commits per family — `git mv` only, then content. That is what keeps
-`prepush_attribution` reporting *renamed, credit intact* instead of lost.
+Two commits per family — `git mv` only, then content. Who matched a
+function stays the row in `function-authors.json`. A rename does not change it.
 
 Substitution order inside the content pass is load-bearing:
 
@@ -510,7 +510,7 @@ Sequencing, from the tree's own scar tissue:
 - Check `config/rombuild-versions.txt` before renaming (currently one unrelated pin, so
   this should be clear).
 - `port_refcheck.py` is blind to mangled names — run it, but do not treat it as coverage.
-- Expect and accept `CREDIT LOST` on files that become key-function TUs.
+- Who matched a function stays the row in `function-authors.json`. A rename does not change it.
 
 Suggested order, easiest first: `dCc*` (4 classes, self-contained, headers already good) →
 `dBgW*` (4, single-inheritance chain, headers good) → `dBgPi`/`dBgPc`/`dM3dG*` (support

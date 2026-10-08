@@ -1,7 +1,7 @@
 # PR #3227: readable legacy Player caller
 
 User-requested follow-up to `9fed4ec3d55f3c4413173d53e3d8b734e6541fe9`.
-Scope: [src/func_ov002_020d7430.cpp](../../../src/func_ov002_020d7430.cpp), [ov002](../../../config/arm9/overlays/ov002/symbols.txt): `[0x020d7430, 0x020d7504)`.
+Scope: [src/unnamed/ov002/func_ov002_020d7430.cpp](../../../src/unnamed/ov002/func_ov002_020d7430.cpp), [ov002](../../../config/arm9/overlays/ov002/symbols.txt): `[0x020d7430, 0x020d7504)`.
 Task: `pr3227-player-caller`; producer/integration owner: `codex-pr3227-caller`.
 Independent source reviewer: `kpa3_review`. Publication endpoint: push to PR #3227;
 merge is outside this request.
@@ -17,7 +17,7 @@ its existing namespace declaration. No header, symbol, enrollment or credit chan
 Pinned compiler canary: 2004/b56. Final focused command:
 
 ```sh
-python tools/linkcheck.py --name func_ov002_020d7430 --c src/func_ov002_020d7430.cpp --addr 0x020d7430 --size 0xd4 --module ov002 --json build/player-caller-link-final.json
+python tools/linkcheck.py --name func_ov002_020d7430 --c src/unnamed/ov002/func_ov002_020d7430.cpp --addr 0x020d7430 --size 0xd4 --module ov002 --json build/player-caller-link-final.json
 python tools/check_decl_agreement.py --changed 9fed4ec3d55f3c4413173d53e3d8b734e6541fe9
 ```
 
@@ -32,7 +32,7 @@ claimed repaired by this patch. The build compiled the final source (object writ
 after the final source edit); independent focused proof also covers the committed blob.
 
 `prepush_linkcheck.py --range 9fed4ec3d55f3c4413173d53e3d8b734e6541fe9..HEAD`:
-1 checked, 1 VERIFIED, 0 warnings, 0 blocking. `prepush_attribution.py` against the
+1 checked, 1 VERIFIED, 0 warnings, 0 blocking. `the old credit check` against the
 same base: 0 changed, 0 lost. Independent reviewer kpa3_review checked the exact
 source commit 3a7dda17eef039754979d02e4437f336a1904e34 and independently reproduced
 VERIFIED, diffs [], blind 0 from a wired checkout at the exact PR input base.

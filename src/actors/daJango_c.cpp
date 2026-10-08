@@ -20,29 +20,29 @@
  *
  * Source runs REVERSE of ROM (highest address first). Do not reorder; the
  * classInit factory, now the highest address in the TU, is written first.
- * decl_common.h is deliberately NOT included (it collides with this
- * TU's C-linkage helper); the three needed names are local. One
- * helper is parsed as C (ldm/stm Vector3 copy); see its site.
+ * decl_common.h is deliberately NOT included; the three needed names
+ * are declared locally. One helper is parsed as C (ldm/stm Vector3
+ * copy); see its site.
  *
- * Leftover: the func_ov062 helpers keep linker names; naming belongs
- *   at their definitions.
- * Leftover: the Data shadow stays file-local (unowned row); the file words
- *   of the SharedFilePtr globals are still read through a cast at +4.
- * Leftover: NewSimple keeps its scalar-ABI spelling (wall 6az).
- * Leftover: func_ov062_0211ba84 is compiled as C, so it keeps raw offsets (its
- *   comment lists them); the other raw offsets left are the +0xc8 word of
- *   the held actor (dActor_c leaves it unnamed) and the +0x403 byte of a held
- *   cap (daObjMarioCap_c::unk_403).
- * Leftover: func_ov062_0211b51c keeps its `char *` parameter because
- *   include/decl_common.h declares it that way (retyping the definition is a new
- *   declaration disagreement); it casts to daJango_c * on entry. The two
- *   matrix members are 12-word arrays, not Matrix4x3, see the header.
- * Leftover: unk_43c, unk_440, unk_446 and unk_460 stay unk_ names (behaviour
- *   described at the header); sound ids 0xa / 0xee / 0xef and particle 0x7e
- *   are named only by where they are played; Player::Hurt's last three
- *   arguments are not decoded; the level ids 0x10, 0x18 and 0x19 are not named.
- * Leftover: the state record at data_ov062_0211e16c (RISE: b880 / b800) is
- *   not selected by any function in this file.
+ * deslop leftovers:
+ *   - the func_ov062_* members are named by address only; original names
+ *     unknown.
+ *   - the Data shadow stays file-local (unowned row); the file words of
+ *     the SharedFilePtr globals are still read through a cast at +4.
+ *   - NewSimple keeps its scalar-ABI spelling (wall 6az).
+ *   - func_ov062_0211ba84 is compiled as C, so it stays a free function and
+ *     keeps raw offsets (its comment lists them); the other raw offsets left
+ *     are the +0xc8 word of the held actor (dActor_c leaves it unnamed) and
+ *     the +0x403 byte of a held cap (daObjMarioCap_c::unk_403).
+ *   - the two matrix members are 12-word arrays, not Matrix4x3; see the
+ *     header.
+ *   - unk_43c, unk_440, unk_446 and unk_460 stay unk_ names (behaviour
+ *     described at the header); sound ids 0xa / 0xee / 0xef and particle 0x7e
+ *     are named only by where they are played; Player::Hurt's last three
+ *     arguments are not decoded; the level ids 0x10, 0x18 and 0x19 are not
+ *     named.
+ *   - the state record at data_ov062_0211e16c (RISE: b880 / b800) is not
+ *     selected by any function in this file.
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -51,11 +51,9 @@
 #include "daJango_c.h"
 #include "types.h"
 #include "common.h"
-/* decl_common.h deliberately NOT included: it declares func_ov062_0211b3ac
-   (C++-linkage, 1-arg) which collides with this TU's C-linkage definition.
-   The three names this TU needs from it are declared locally instead. */
+/* decl_common.h deliberately NOT included; the three names this TU needs
+   from it are declared locally instead. */
 extern char data_ov062_0211e15c;
-extern "C" int func_ov062_0211b51c(char *c);
 extern "C" int AngleDiff(int a, int b);
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
@@ -119,7 +117,6 @@ extern int data_020a0e68[];
 extern "C" void *_ZN7PathPtrC1Ev(void *self);
 extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
-extern "C" int func_ov062_0211c658(daJango_c *c, void *p);
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *a, int b, int c, int d, int e);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
 extern char data_ov062_0211e14c[];
@@ -136,8 +133,6 @@ extern "C" int data_0209e650;
 extern "C" int RandomIntInternal(int* seed);
 extern int Vec3_Dist(const void *a, const void *b);
 extern int ApproachAngle(s16 *cur, s16 target, int div, int band, int maxStep);
-extern "C" void func_ov062_0211b2fc(daJango_c *self);
-extern "C" int func_ov062_0211b3ac(daJango_c *self);
 extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int LenVec3(Vector3 *v);
 extern int _ZN4cstd4fdivEii(int a, int b);
@@ -231,7 +226,7 @@ enum {
 enum { PARTICLE_AT_HURT_ENTER = 0x7e };
 
 /* The five state records (two pointers-to-member each: enter, update), filled by
-   __sinit_ov062_0211d6fc. Selected with func_ov062_0211c658(self, record); the
+   __sinit_ov062_0211d6fc. Selected with func_ov062_0211c658(record); the
    record's address is stored in mState; only HURT (in Behavior) and SWOOP
    (in func_ov062_0211b51c) are ever compared against it by address, the others
    are just passed to func_ov062_0211c658.
@@ -345,7 +340,7 @@ int daJango_c::InitResources()
         mPosX = mPathNodePosX;
         mPosY = mPathNodePosY;
         mPosZ = mPathNodePosZ;
-        func_ov062_0211c658(this, JANGO_STATE_FLY_PATH);
+        func_ov062_0211c658(JANGO_STATE_FLY_PATH);
     } else {
         pl = (Player *)data_0209f394;
         /* No star: if the player has already lost the cap (and param1 is not 3),
@@ -367,7 +362,7 @@ int daJango_c::InitResources()
         }
         /* Taken while mPos still equals mSpawnPos, so the two vectors are equal. */
         mTargetAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mSpawnPosX);
-        func_ov062_0211c658(this, JANGO_STATE_CIRCLE);
+        func_ov062_0211c658(JANGO_STATE_CIRCLE);
     }
     return 1;
 }
@@ -377,13 +372,12 @@ int daJango_c::InitResources()
    records: two pointers-to-member, `enter` (called once by
    func_ov062_0211c658 when the state is selected) and `update` (called here
    every frame; the +0x08 member). */
-typedef void (daJango_c::*PMF)();
+typedef int (daJango_c::*PMF)();
 struct StateRecord { PMF enter; PMF update; };
 struct dCc_c;
 struct dBgCh_Actr;
 extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
-extern "C" void func_ov062_0211c6a8(daJango_c *self);
 extern char data_ov062_0211e17c[];
 }
 
@@ -424,7 +418,7 @@ int daJango_c::Behavior()
     mAngleX = mPrevAngleX;
     mAngleY = mPrevAngleY;
     mAngleZ = mPrevAngleZ;
-    func_ov062_0211c6a8(this);
+    func_ov062_0211c6a8();
 
     /* Carry the held actor along: it is moved to mHeldPos every frame. If the
        actor no longer exists, or (when mCarriedItem is not CARRIES_STAR) its
@@ -452,14 +446,14 @@ int daJango_c::Behavior()
                 mHeldActorID = 0;
                 ((void (*)(int, int))func_02012790)(SND_HELD_RELEASED, 0);
                 mTimer = 0x1e;
-                func_ov062_0211c658(this, JANGO_STATE_CIRCLE);
+                func_ov062_0211c658(JANGO_STATE_CIRCLE);
                 goto skip_destroy;
             }
         } else {
             mHeldActorID = 0;
             ((void (*)(int, int))func_02012790)(SND_HELD_RELEASED, 0);
             mTimer = 0x1e;
-            func_ov062_0211c658(this, JANGO_STATE_CIRCLE);
+            func_ov062_0211c658(JANGO_STATE_CIRCLE);
             goto skip_destroy;
         }
     }
@@ -476,7 +470,7 @@ skip_destroy:
     mBlendModelAnim.Advance();
     /* Hurt state excepted, test the cylinders for a hit or a player contact. */
     if (mState != (void *)JANGO_STATE_HURT) {
-        func_ov062_0211b51c((char *)this);
+        func_ov062_0211b51c();
     }
 
     mdCcAc_c1.Clear();
@@ -526,7 +520,7 @@ int daJango_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov062_0211c6a8
+// @symbol _ZN9daJango_c19func_ov062_0211c6a8Ev
 /* Per-frame matrices (called from Behavior).
    1. Model matrix: translation = mPos >> 3, rotation = mAngle X/Y/Z
       (Matrix4x3_ApplyInPlaceToRotationZXYExt), stored in mBlendModelAnim.mat4x3.
@@ -536,32 +530,32 @@ int daJango_c::CleanupResources()
       (one pair for a star, one for the cap) and hand it a pointer to mHeldMat.
    3. Shadow matrix: mPos >> 3 with Y lowered by 0x18000 (24 units). */
 extern "C" {
-void func_ov062_0211c6a8(daJango_c* c)
+void daJango_c::func_ov062_0211c6a8()
 {
     int v[3];
     dActor_c* actor;
 
-    Vec3_Asr(v, &c->mPosX, 3);
+    Vec3_Asr(v, &mPosX, 3);
     Matrix4x3_FromTranslation(data_020a0e68, v[0], v[1], v[2]);
-    Matrix4x3_ApplyInPlaceToRotationZXYExt(data_020a0e68, c->mAngleX, c->mAngleY, c->mAngleZ);
-    *(M48*)&c->mBlendModelAnim.mat4x3 = *(M48*)data_020a0e68;
+    Matrix4x3_ApplyInPlaceToRotationZXYExt(data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    *(M48*)&mBlendModelAnim.mat4x3 = *(M48*)data_020a0e68;
 
-    if (c->mHeldActorID != 0)
+    if (mHeldActorID != 0)
     {
-        actor = dActor_c::FindWithID(c->mHeldActorID);
+        actor = dActor_c::FindWithID(mHeldActorID);
         if (actor != 0)
         {
-            c->mHeldPosX = 0;
-            c->mHeldPosY = 0;
-            c->mHeldPosZ = 0;
-            MulMat4x3Mat4x3(&c->mBlendModelAnim.data.transforms[6], &c->mBlendModelAnim.mat4x3, &c->mHeldMat);
-            c->mHeldPosX = data_020a0e68[9];
-            c->mHeldPosY = data_020a0e68[10];
-            c->mHeldPosZ = data_020a0e68[11];
-            c->mHeldPosX <<= 3;
-            c->mHeldPosY <<= 3;
-            c->mHeldPosZ <<= 3;
-            if (c->mCarriedItem == CARRIES_STAR)
+            mHeldPosX = 0;
+            mHeldPosY = 0;
+            mHeldPosZ = 0;
+            MulMat4x3Mat4x3(&mBlendModelAnim.data.transforms[6], &mBlendModelAnim.mat4x3, &mHeldMat);
+            mHeldPosX = data_020a0e68[9];
+            mHeldPosY = data_020a0e68[10];
+            mHeldPosZ = data_020a0e68[11];
+            mHeldPosX <<= 3;
+            mHeldPosY <<= 3;
+            mHeldPosZ <<= 3;
+            if (mCarriedItem == CARRIES_STAR)
             {
                 /* Offset (-13.0, 3.0, -4.0), rotation X/Y/Z = 0, -180, -95.6 degrees. */
                 Matrix4x3_FromTranslation(data_020a0e68, -0xd000, 0x3000, -0x4000);
@@ -573,27 +567,26 @@ void func_ov062_0211c6a8(daJango_c* c)
                 Matrix4x3_FromTranslation(data_020a0e68, -0x7000, 0x1800, 0);
                 Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68, -0x3000, -0x8000, -0x4000);
             }
-            MulMat4x3Mat4x3(data_020a0e68, &c->mHeldMat, &c->mHeldMat);
+            MulMat4x3Mat4x3(data_020a0e68, &mHeldMat, &mHeldMat);
             /* dActor_c.h leaves the word at +0xc8 unnamed; the held actor reads it
                as the matrix to draw with, and clears it when it lets go. */
-            *(void**)((char*)actor + 0xc8) = &c->mHeldMat;
+            *(void**)((char*)actor + 0xc8) = &mHeldMat;
         }
     }
 
-    Matrix4x3_FromTranslation(data_020a0e68, c->mPosX >> 3, (c->mPosY - 0x18000) >> 3, c->mPosZ >> 3);
-    *(M48*)&c->mShadowMat = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, &c->mShadowModel, &c->mShadowMat, 0x40000, 0x258000, 0xf);
+    Matrix4x3_FromTranslation(data_020a0e68, mPosX >> 3, (mPosY - 0x18000) >> 3, mPosZ >> 3);
+    *(M48*)&mShadowMat = *(M48*)data_020a0e68;
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMat, 0x40000, 0x258000, 0xf);
 }
 }
 
-// @symbol func_ov062_0211c658
+// @symbol _ZN9daJango_c19func_ov062_0211c658EPv
 /* Select a state: store the record (its address) in mState, then call the
    record's first member, `enter`, on the actor if it has one and return its
    result (1 if it has none). */
-typedef int (daJango_c::*PMF658)();
-extern "C" int func_ov062_0211c658(daJango_c *c, void *p) { PMF658 *qq = (PMF658 *)p; c->mState = qq; PMF658 *q = (PMF658 *)c->mState; if (*q == 0) return 1; return (c->**q)(); }
+int daJango_c::func_ov062_0211c658(void *p) { StateRecord *qq = (StateRecord *)p; mState = qq; StateRecord *q = (StateRecord *)mState; if (*(int *)q == 0) return 1; return (this->*q->enter)(); }
 
-// @symbol func_ov062_0211c594
+// @symbol _ZN9daJango_c19func_ov062_0211c594Ev
 /* FLY_PATH enter. Clears the three velocity words (unk_0a4, mVertSpeed, unk_0ac).
    If unk_446 is 1 -- func_ov062_0211b3ac set it because the node it
    picked is index ^ 2 (assumed to be the far side of the square) -- the vector (0, 0, 20.0) is turned by mAngleY and
@@ -601,31 +594,31 @@ extern "C" int func_ov062_0211c658(daJango_c *c, void *p) { PMF658 *qq = (PMF658
    (magnitude 20 units per frame), with mStateTimer = 60 frames. Then starts
    jango_fly.bca (4 blend frames, flags 0, speed 1.0, from frame 0). */
 extern "C" {
-int func_ov062_0211c594(daJango_c *c) {
+int daJango_c::func_ov062_0211c594() {
     Vector3 in;
     Vector3 out;
 
-    c->unk_0a4 = 0;
-    c->mVertSpeed = 0;
-    c->unk_0ac = 0;
+    unk_0a4 = 0;
+    mVertSpeed = 0;
+    unk_0ac = 0;
 
-    if (c->unk_446 == 1) {
+    if (unk_446 == 1) {
         in.x = 0; in.y = 0; in.z = 0;
         out.x = 0; out.y = 0; out.z = 0;
         in.z = 0x14000;
-        Matrix4x3_FromRotationY(&data_020a0e68, c->mAngleY);
+        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, -0x4000);
         MulVec3Mat4x3(&in, &data_020a0e68, &out);
-        c->mVertSpeed = out.y;
-        c->mStateTimer = 0x3c;
+        mVertSpeed = out.y;
+        mStateTimer = 0x3c;
     }
 
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
     return 1;
 }
 }
 
-// @symbol func_ov062_0211c2f4
+// @symbol _ZN9daJango_c19func_ov062_0211c2f4Ev
 /* FLY_PATH update: follow the path through its four nodes.
    Each frame it steers mPrevAngleY toward the node at mPathNodeIndex and
    levels the roll. While more than 20 units from the node it is pulled toward
@@ -639,7 +632,7 @@ int func_ov062_0211c594(daJango_c *c) {
    random one that differs from the current), mPos is snapped to the node and
    copied to mPathNodePos, the velocity words (unk_0a4, mVertSpeed, unk_0ac) are
    set to (0, 0, 20.0) turned by mAngleY, and the actor re-enters CIRCLE. */
-extern "C" int func_ov062_0211c2f4(daJango_c *self) {
+int daJango_c::func_ov062_0211c2f4() {
     /* Real PathPtr object (as legacy had it via PathPtr.h): its implicit
        ctor call is genuine ROM bytes. Do NOT byte-buffer this one. */
     PathPtr path;
@@ -651,17 +644,17 @@ extern "C" int func_ov062_0211c2f4(daJango_c *self) {
     int len;
     u32 idx;
 
-    path.FromID(self->mPathId);
+    path.FromID(mPathId);
     zero[0] = 0; zero[1] = 0; zero[2] = 0; zero[3] = 0; zero[4] = 0; zero[5] = 0;
-    path.GetNode(node, self->mPathNodeIndex);
-    ApproachAngle(&self->mPrevAngleY, Vec3_HorzAngle((const Vector3 *)&self->mPosX, &node), 0xa, 0x200, 0x100);
-    ApproachAngle(&self->mPrevAngleZ, 0, 0xa, 0x100, 0x50);
+    path.GetNode(node, mPathNodeIndex);
+    ApproachAngle(&mPrevAngleY, Vec3_HorzAngle((const Vector3 *)&mPosX, &node), 0xa, 0x200, 0x100);
+    ApproachAngle(&mPrevAngleZ, 0, 0xa, 0x100, 0x50);
 
-    idx = self->mPathNodeIndex - 1;
+    idx = mPathNodeIndex - 1;
     if ((int)idx < 0)
-        idx = self->mPathNodeCount - 1;
+        idx = mPathNodeCount - 1;
     path.GetNode(node2, idx);
-    Vec3_Sub(&diff, (Vector3 *)&self->mPosX, &node);
+    Vec3_Sub(&diff, (Vector3 *)&mPosX, &node);
     len = LenVec3(&diff);
     if (len == 0)
         goto arrived;
@@ -669,53 +662,53 @@ extern "C" int func_ov062_0211c2f4(daJango_c *self) {
         goto faraway;
 
 arrived:
-    self->unk_460 = 7;
-    if (self->mSilverStarFlag == 2 || (u8)(s8)(data_0209f2f8 - 0x18) <= 1) {
-        self->mPathNodeIndex++;
-        if (self->mPathNodeIndex >= 4)
-            self->mPathNodeIndex = 0;
-    } else if (func_ov062_0211b3ac(self) == 0) {
+    unk_460 = 7;
+    if (mSilverStarFlag == 2 || (u8)(s8)(data_0209f2f8 - 0x18) <= 1) {
+        mPathNodeIndex++;
+        if (mPathNodeIndex >= 4)
+            mPathNodeIndex = 0;
+    } else if (func_ov062_0211b3ac() == 0) {
         u32 r = (u32)RandomIntInternal(&data_0209e650) >> 8 & 3;
-        if (self->mPathNodeIndex != r) {
-            self->mPathNodeIndex = r;
+        if (mPathNodeIndex != r) {
+            mPathNodeIndex = r;
         } else {
-            int *p = &self->mPathNodeIndex;
+            int *p = &mPathNodeIndex;
             (*p)++;
             *p &= 3;
         }
     }
-    self->mPosX = node.x; self->mPosY = node.y; self->mPosZ = node.z;
-    self->mPathNodePosX = self->mPosX;
-    self->mPathNodePosY = self->mPosY;
-    self->mPathNodePosZ = self->mPosZ;
+    mPosX = node.x; mPosY = node.y; mPosZ = node.z;
+    mPathNodePosX = mPosX;
+    mPathNodePosY = mPosY;
+    mPathNodePosZ = mPosZ;
     zero[2] = 0; zero[0] = 0; zero[1] = 0; zero[2] = 0x14000;
-    Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
-    MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&self->unk_0a4);
-    func_ov062_0211c658(self, JANGO_STATE_CIRCLE);
+    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+    MulVec3Mat4x3((Vector3 *)zero, data_020a0e68, (Vector3 *)&unk_0a4);
+    func_ov062_0211c658(JANGO_STATE_CIRCLE);
     return 1;
 
 faraway:
-    if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&self->mPosX, &node), self->mAngleY) >= 0x2000)
+    if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, &node), mAngleY) >= 0x2000)
         goto ret1;
     {
         int s;
-        zero[1] = self->mPosY;
+        zero[1] = mPosY;
         s = _ZN4cstd4fdivEii(0x14000, len);
         Vec3_MulScalar(&scaled, &diff, s);
-        SubVec3(&self->mPosX, &scaled, &self->mPosX);
-        if (self->unk_446 != 1)
+        SubVec3(&mPosX, &scaled, &mPosX);
+        if (unk_446 != 1)
             goto ret1;
-        self->mPosY = zero[1];
-        if (*(u16 *)&self->mStateTimer == 0) {
-            self->mVertSpeed = 0;
-            self->unk_446 = 0;
+        mPosY = zero[1];
+        if (*(u16 *)&mStateTimer == 0) {
+            mVertSpeed = 0;
+            unk_446 = 0;
         }
     }
 ret1:
     return 1;
 }
 
-// @symbol func_ov062_0211c218
+// @symbol _ZN9daJango_c19func_ov062_0211c218Ev
 /* CIRCLE enter. Takes the current yaw as the steering target, restarts the
    phase counter (unk_43c = 0) and sets mStateTimer to 300, 400, 500 or 600 frames
    (random, 100 apart) before the actor may leave along the path. If the last thing that happened was a hit on the player
@@ -724,27 +717,27 @@ ret1:
    level ids 0x18 / 0x19 (data_0209f2f8 is LEVEL_ID in symbols/verified.tsv). Plays
    jango_fly.bca (4 blend frames, flags 0, speed 1.0). */
 extern "C" {
-int func_ov062_0211c218(daJango_c *c)
+int daJango_c::func_ov062_0211c218()
 {
-    c->mTargetAngleY = c->mAngleY;
-    c->unk_43c = 0;
-    c->mStateTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 3) * 0x64 + 0x12c;
-    if (c->mHitPlayer == 1) {
-        c->mStateTimer = 0;
-        c->mHitPlayer = 0;
+    mTargetAngleY = mAngleY;
+    unk_43c = 0;
+    mStateTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 8) & 3) * 0x64 + 0x12c;
+    if (mHitPlayer == 1) {
+        mStateTimer = 0;
+        mHitPlayer = 0;
     }
-    c->unk_440 = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
-    if (c->mSilverStarFlag == 2 ||
+    unk_440 = 0;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+    if (mSilverStarFlag == 2 ||
         (unsigned char)(signed char)((signed char)data_0209f2f8 - 0x18) <= 1) {
-        c->unk_440 = 2;
-        c->mStateTimer = 0;
+        unk_440 = 2;
+        mStateTimer = 0;
     }
     return 1;
 }
 }
 
-// @symbol func_ov062_0211bd10
+// @symbol _ZN9daJango_c19func_ov062_0211bd10Ev
 /* CIRCLE update (Klepto flying a turning loop: constant yaw turn, pitch steered
    toward mSpawnPos when empty-handed or toward mPathNodePos otherwise). data_0209f2f8 is LEVEL_ID in symbols/verified.tsv; this code
    special-cases level 0x10 and levels 0x18 / 0x19.
@@ -777,7 +770,7 @@ extern "C" {
 /* data_ov062_0211e104/114 are TU-wide SharedFilePtr scalars (legacy InitResources view); words beside them go through casts (same addresses, no second type). */
 extern char data_ov062_0211e18c[];
 
-int func_ov062_0211bd10(daJango_c *c)
+int daJango_c::func_ov062_0211bd10()
 {
     s16 angV;
     s16 angD;
@@ -793,50 +786,50 @@ int func_ov062_0211bd10(daJango_c *c)
     int tmp;
     int flag;
 
-    if (c->mTimer != 0) {
-        if (c->mWithMeshClsn.IsOnWall() != 0) {
-            c->mTargetAngleY = (s16)(c->mPrevAngleY + 0x4000);
+    if (mTimer != 0) {
+        if (mWithMeshClsn.IsOnWall() != 0) {
+            mTargetAngleY = (s16)(mPrevAngleY + 0x4000);
         } else {
-            c->mTargetAngleY = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX);
+            mTargetAngleY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mSpawnPosX);
         }
-        ApproachLinear(c->mPrevAngleY, c->mTargetAngleY, 0x1000);
-        ApproachLinear(c->mPrevAngleX, Vec3_VertAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX), 0x500);
-        ApproachLinear(c->mPrevAngleZ, 0, 0x500);
-        if (Vec3_Dist(&c->mPosX, &c->mSpawnPosX) < 0x1f4000) {
-            c->mTimer = 0;
+        ApproachLinear(mPrevAngleY, mTargetAngleY, 0x1000);
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)&mSpawnPosX), 0x500);
+        ApproachLinear(mPrevAngleZ, 0, 0x500);
+        if (Vec3_Dist(&mPosX, &mSpawnPosX) < 0x1f4000) {
+            mTimer = 0;
         } else {
-            c->mTimer = 0x1e;
+            mTimer = 0x1e;
         }
-        func_ov062_0211b2fc(c);
+        func_ov062_0211b2fc();
         return 1;
     }
 
-    if (c->mCarriedItem == CARRIES_NO_STAR && c->mHeldActorID == 0) {
-        angV = Vec3_VertAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX);
-        angD = (s16)(AngleDiff(c->mTargetAngleY, c->mPrevAngleY) / 3);
+    if (mCarriedItem == CARRIES_NO_STAR && mHeldActorID == 0) {
+        angV = Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)&mSpawnPosX);
+        angD = (s16)(AngleDiff(mTargetAngleY, mPrevAngleY) / 3);
     } else {
-        angV = Vec3_VertAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mPathNodePosX);
-        angD = (s16)(AngleDiff(c->mTargetAngleY, c->mPrevAngleY) / 3);
+        angV = Vec3_VertAngle((const Vector3 *)&mPosX, (const Vector3 *)&mPathNodePosX);
+        angD = (s16)(AngleDiff(mTargetAngleY, mPrevAngleY) / 3);
     }
 
     if (data_0209f2f8 == 0x10) {
-        ApproachAngle(&c->mPrevAngleX, angV, 0xa, 0x400, 0x200);
+        ApproachAngle(&mPrevAngleX, angV, 0xa, 0x400, 0x200);
     } else {
-        ApproachLinear(c->mPrevAngleX, angV, 0x300);
+        ApproachLinear(mPrevAngleX, angV, 0x300);
     }
-    ApproachAngle(&c->mPrevAngleZ, angD, 0xa, 0x200, 0x100);
+    ApproachAngle(&mPrevAngleZ, angD, 0xa, 0x200, 0x100);
 
-    if (data_0209f2f8 == 0x10 || c->mSilverStarFlag == 2) {
-        p94 = &c->mPrevAngleY;
+    if (data_0209f2f8 == 0x10 || mSilverStarFlag == 2) {
+        p94 = &mPrevAngleY;
         *p94 = (s16)(*p94 - 0x200);
     } else {
-        p94 = &c->mPrevAngleY;
+        p94 = &mPrevAngleY;
         *p94 = (s16)(*p94 - 0x400);
     }
 
-    if (c->mHeldActorID == 0 && c->mCarriedItem == CARRIES_NO_STAR) {
+    if (mHeldActorID == 0 && mCarriedItem == CARRIES_NO_STAR) {
         if (SaveData::HasPlayerLostCap() == 0) {
-            player = c->ClosestPlayer();
+            player = ClosestPlayer();
             if (player != 0) {
                 pp = &player->mPosX;
                 tmp = pp[0];
@@ -847,74 +840,74 @@ int func_ov062_0211bd10(daJango_c *c)
                 tmp = pp[2];
                 ppos[2] = tmp;
                 if (stage != 0x10 &&
-                    (c->mPosY + 0x28000 < ppos[1] ||
+                    (mPosY + 0x28000 < ppos[1] ||
                      player->mIsUnderwater != 0)) {
-                    func_ov062_0211b2fc(c);
+                    func_ov062_0211b2fc();
                     return 1;
                 }
                 thr = 0x3e8000;
-                ppos[1] = c->mPosY;
+                ppos[1] = mPosY;
                 if (stage != 0x10) {
                     thr = 0x2bc000;
                 }
-                if (Vec3_Dist(&c->mPosX, ppos) < thr) {
+                if (Vec3_Dist(&mPosX, ppos) < thr) {
                     flag = player->mIsNoControl ? 1 : 0;
                     if (flag == 0) {
                         if (player->mIsVanish == 0) {
-                            func_ov062_0211c658(c, JANGO_STATE_SWOOP);
+                            func_ov062_0211c658(JANGO_STATE_SWOOP);
                         }
                     }
                 }
                 /* fall through to shared b2fc + return */
             }
         }
-        func_ov062_0211b2fc(c);
+        func_ov062_0211b2fc();
         return 1;
     }
 
     if (angD < 0x300) {
-        if (c->unk_43c == 1) {
+        if (unk_43c == 1) {
             _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &c->mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
-            if (c->mSilverStarFlag == 2 ||
+                &mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+            if (mSilverStarFlag == 2 ||
                 (unsigned)(u8)(s8)((s8)data_0209f2f8 - 0x18) <= 1u) {
-                p43c = &c->unk_440;
+                p43c = &unk_440;
                 *p43c = *p43c - 1;
-                if (c->unk_440 <= 0) {
-                    c->unk_440 = 0;
+                if (unk_440 <= 0) {
+                    unk_440 = 0;
                 }
             }
-            c->unk_43c = 2;
+            unk_43c = 2;
         }
-    } else if (c->unk_43c == 0) {
+    } else if (unk_43c == 0) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &c->mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e114)[1]), 4, 0, 0x1000, 0);
-        p43c = &c->unk_43c;
+            &mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e114)[1]), 4, 0, 0x1000, 0);
+        p43c = &unk_43c;
         *p43c = *p43c + 1;
     }
 
-    if (c->unk_43c >= 2) {
-        p43c = &c->unk_43c;
+    if (unk_43c >= 2) {
+        p43c = &unk_43c;
         *p43c = *p43c + 1;
-        if (c->unk_43c > 0x18) {
-            c->unk_43c = 0;
+        if (unk_43c > 0x18) {
+            unk_43c = 0;
         }
     }
 
-    if (c->mSilverStarFlag != 2 && data_0209f2f8 != 0x18 && data_0209f2f8 != 0x19 &&
-        (c->mCarriedItem != CARRIES_NO_STAR || c->mHeldActorID != 0) &&
-        func_ov062_0211b3ac(c) != 0 && *(u16 *)&c->mStateTimer != 0) {
-        c->mStateTimer = 0;
+    if (mSilverStarFlag != 2 && data_0209f2f8 != 0x18 && data_0209f2f8 != 0x19 &&
+        (mCarriedItem != CARRIES_NO_STAR || mHeldActorID != 0) &&
+        func_ov062_0211b3ac() != 0 && *(u16 *)&mStateTimer != 0) {
+        mStateTimer = 0;
     }
 
-    func_ov062_0211b2fc(c);
+    func_ov062_0211b2fc();
 
-    if (*(u16 *)&c->mStateTimer == 0 && c->unk_440 == 0) {
+    if (*(u16 *)&mStateTimer == 0 && unk_440 == 0) {
         _ZN7PathPtrC1Ev(path);
-        ((PathPtr *)path)->FromID(c->mPathId);
-        ((PathPtr *)path)->GetNode(node, c->mPathNodeIndex);
-        if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&c->mPosX, &node), c->mAngleY) < 0x2000) {
-            func_ov062_0211c658(c, JANGO_STATE_FLY_PATH);
+        ((PathPtr *)path)->FromID(mPathId);
+        ((PathPtr *)path)->GetNode(node, mPathNodeIndex);
+        if (AngleDiff(Vec3_HorzAngle((const Vector3 *)&mPosX, &node), mAngleY) < 0x2000) {
+            func_ov062_0211c658(JANGO_STATE_FLY_PATH);
         }
     }
 
@@ -922,7 +915,7 @@ int func_ov062_0211bd10(daJango_c *c)
 }
 }
 
-// @symbol func_ov062_0211bc54
+// @symbol _ZN9daJango_c19func_ov062_0211bc54Ev
 /* SWOOP enter. mStateTimer is the swoop length: 50 frames in level 0x10 (the
    LEVEL_ID in data_0209f2f8), else a random 20 to 35. Clears the velocity words,
    plays sound 0xee at the actor's camera-space position, picks the turn rate in
@@ -933,21 +926,21 @@ int func_ov062_0211bd10(daJango_c *c)
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" int func_ov062_0211bc54(daJango_c *thiz)
+int daJango_c::func_ov062_0211bc54()
 {
     if (data_0209f2f8 == 0x10) {
-        thiz->mStateTimer = 0x32;
+        mStateTimer = 0x32;
     } else {
-        thiz->mStateTimer =
+        mStateTimer =
             (((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 0xf) + 0x14;
     }
-    thiz->unk_0a4 = 0;
-    thiz->mVertSpeed = 0;
-    thiz->unk_0ac = 0;
-    func_02012694(SND_AT_SWOOP_ENTER, &thiz->mCamSpacePosX);
-    thiz->unk_43c =
+    unk_0a4 = 0;
+    mVertSpeed = 0;
+    unk_0ac = 0;
+    func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
+    unk_43c =
         ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, *(BCA_File*)((void**)&data_ov062_0211e114)[1], 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(BCA_File*)((void**)&data_ov062_0211e114)[1], 4, 0, 0x1000, 0);
     return 1;
 }
 
@@ -973,6 +966,10 @@ extern "C" int func_ov062_0211bc54(daJango_c *thiz)
 /* local extern: this function is compiled as C, which cannot call a member */
 extern char *_ZN8dActor_c13ClosestPlayerEv(char *self);
 /* local extern: this function is compiled as C, which cannot call a member */
+extern int _ZN9daJango_c19func_ov062_0211c658EPv(struct daJango_c *self, void *p);
+/* local extern: this function is compiled as C, which cannot call a member */
+extern int _ZN9daJango_c19func_ov062_0211b51cEv(struct daJango_c *self);
+/* local extern: this function is compiled as C, which cannot call a member */
 extern int _ZNK10dBgCh_Actr8IsOnWallEv(char *self);
 int func_ov062_0211ba84(char *c)
 {
@@ -992,7 +989,7 @@ int func_ov062_0211ba84(char *c)
     if (ip != 0) {
         if (*(u8 *)(ip + 0x6fb) == 1) {
             *(s16 *)(c + 0x444) = 0x1e;
-            func_ov062_0211c658((struct daJango_c *)c, JANGO_STATE_CIRCLE);
+            _ZN9daJango_c19func_ov062_0211c658EPv((struct daJango_c *)c, JANGO_STATE_CIRCLE);
             return 1;
         }
 
@@ -1022,16 +1019,16 @@ int func_ov062_0211ba84(char *c)
     Matrix4x3_FromRotationY(data_020a0e68, *(s16 *)(c + 0x8e));
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, *(s16 *)(c + 0x8c));
     MulVec3Mat4x3(&v, data_020a0e68, (Vector3 *)(c + 0xa4));
-    func_ov062_0211b51c(c);
+    _ZN9daJango_c19func_ov062_0211b51cEv((struct daJango_c *)c);
     if (*(u16 *)(c + 0x100) == 0 || _ZNK10dBgCh_Actr8IsOnWallEv(c + 0x178) != 0) {
         *(s16 *)(c + 0x444) = 0x1e;
-        func_ov062_0211c658((struct daJango_c *)c, JANGO_STATE_CIRCLE);
+        _ZN9daJango_c19func_ov062_0211c658EPv((struct daJango_c *)c, JANGO_STATE_CIRCLE);
     }
     return 1;
 }
 #pragma cplusplus on
 
-// @symbol func_ov062_0211b930
+// @symbol _ZN9daJango_c19func_ov062_0211b930Ev
 /* HURT enter. Starts jango_damage.bca (4 blend frames, flags 0x40000000, speed
    1.0, from frame 0; the animations that run continuously pass flags 0,
    this one passes 0x40000000 and func_ov062_0211b8d8 waits for its last frame). unk_43c = 1.
@@ -1048,54 +1045,54 @@ int func_ov062_0211ba84(char *c)
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" int func_ov062_0211b930(daJango_c* o)
+int daJango_c::func_ov062_0211b930()
 {
     dActor_c* found;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&(o->mBlendModelAnim), *(((Data *)&data_ov062_0211e10c)->f), 4, 0x40000000, 0x1000, 0);
-    o->unk_43c = 1;
-    if (o->mHeldActorID != 0 && (found = dActor_c::FindWithID(o->mHeldActorID)) != 0) {
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&(mBlendModelAnim), *(((Data *)&data_ov062_0211e10c)->f), 4, 0x40000000, 0x1000, 0);
+    unk_43c = 1;
+    if (mHeldActorID != 0 && (found = dActor_c::FindWithID(mHeldActorID)) != 0) {
         found->mVertAccel = -0x2000;
         found->mTerminalVelocity = -0x32000;
         *(int *)((char *)found + 0xc8) = 0;
-        if (o->mCarriedItem == CARRIES_STAR) {
+        if (mCarriedItem == CARRIES_STAR) {
             ((fBase_c*)found)->MarkForDestruction();
-            if (o->mSilverStarFlag != 2) {
-                dActor_c::Spawn(ACTOR_STAR, o->mHeldItemParam | 0x40, *(Vector3 *)&o->mPosX, (Vector3_16 *)&o->mAngleX, o->mAreaId, -1);
+            if (mSilverStarFlag != 2) {
+                dActor_c::Spawn(ACTOR_STAR, mHeldItemParam | 0x40, *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX, mAreaId, -1);
             } else {
-                dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, *(Vector3 *)&o->mPosX, (Vector3_16 *)&o->mAngleX, o->mAreaId, -1);
-                o->mCarriedItem = CARRIES_NO_STAR;
+                dActor_c::Spawn(ACTOR_SILVER_STAR, 0x10, *(Vector3 *)&mPosX, (Vector3_16 *)&mAngleX, mAreaId, -1);
+                mCarriedItem = CARRIES_NO_STAR;
             }
         } else {
             func_02012790(SND_HELD_RELEASED);
         }
-        o->unk_43c = 0;
-        o->mHeldActorID = 0;
-        o->mTimer = 0x1e;
+        unk_43c = 0;
+        mHeldActorID = 0;
+        mTimer = 0x1e;
     }
-    func_02012694(SND_AT_HURT_ENTER, &o->mCamSpacePosX);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PARTICLE_AT_HURT_ENTER, o->mPosX, o->mPosY, o->mPosZ);
-    o->unk_0a4 = 0;
-    o->mVertSpeed = 0;
-    o->unk_0ac = 0;
-    o->mVertAccel = 0;
+    func_02012694(SND_AT_HURT_ENTER, &mCamSpacePosX);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PARTICLE_AT_HURT_ENTER, mPosX, mPosY, mPosZ);
+    unk_0a4 = 0;
+    mVertSpeed = 0;
+    unk_0ac = 0;
+    mVertAccel = 0;
     return 1;
 }
 
-// @symbol func_ov062_0211b8d8
+// @symbol _ZN9daJango_c19func_ov062_0211b8d8Ev
 /* HURT update: when jango_damage.bca has reached its last frame (the integer
    part of the 20.12 frame counter, with its top four bits masked off, against
    the frame count minus 1), set mTimer to 30 and go back to CIRCLE. */
-extern "C" int func_ov062_0211b8d8(daJango_c* c) {
-    int f = c->mBlendModelAnim.currFrame;
-    int fc = c->mBlendModelAnim.GetFrameCount();
+int daJango_c::func_ov062_0211b8d8() {
+    int f = mBlendModelAnim.currFrame;
+    int fc = mBlendModelAnim.GetFrameCount();
     if ((int)((unsigned int)(f << 4) >> 16) >= fc - 1) {
-        c->mTimer = 0x1e;
-        func_ov062_0211c658(c, JANGO_STATE_CIRCLE);
+        mTimer = 0x1e;
+        func_ov062_0211c658(JANGO_STATE_CIRCLE);
     }
     return 1;
 }
 
-// @symbol func_ov062_0211b880
+// @symbol _ZN9daJango_c19func_ov062_0211b880Ev
 /* RISE enter (state record data_ov062_0211e16c, which nothing in this file
    selects): doubles the animation speed (0x2000 = 2.0), zeroes the three
    velocity words and mVertAccel, and starts jango_fly.bca (4 blend frames,
@@ -1104,39 +1101,39 @@ extern "C" int func_ov062_0211b8d8(daJango_c* c) {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" int func_ov062_0211b880(daJango_c* c) {
-    c->mBlendModelAnim.speed = 0x2000;
-    c->unk_0a4 = 0;
-    c->mVertSpeed = 0;
-    c->unk_0ac = 0;
-    c->mVertAccel = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+int daJango_c::func_ov062_0211b880() {
+    mBlendModelAnim.speed = 0x2000;
+    unk_0a4 = 0;
+    mVertSpeed = 0;
+    unk_0ac = 0;
+    mVertAccel = 0;
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
     return 1;
 }
 
-// @symbol func_ov062_0211b800
+// @symbol _ZN9daJango_c19func_ov062_0211b800Ev
 /* RISE update: climbs at 20 units per frame while pitch (mPrevAngleX) and roll
    (mPrevAngleZ) level off by 0x300 per frame. Once mPosY is within 2 units
    below mPathNodePosY or above it, it stops, snaps to that height, restores
    the animation speed to 1.0 and enters CIRCLE. */
 extern "C" {
-int func_ov062_0211b800(daJango_c *c) {
-    c->mVertSpeed = 0x14000;
-    ApproachLinear(c->mPrevAngleX, 0, 0x300);
-    ApproachLinear(c->mPrevAngleZ, 0, 0x300);
-    if (c->mPosY >= c->mPathNodePosY - 0x2000) {
-        c->unk_0a4 = 0;
-        c->mVertSpeed = 0;
-        c->unk_0ac = 0;
-        c->mPosY = c->mPathNodePosY;
-        c->mBlendModelAnim.speed = 0x1000;
-        func_ov062_0211c658(c, JANGO_STATE_CIRCLE);
+int daJango_c::func_ov062_0211b800() {
+    mVertSpeed = 0x14000;
+    ApproachLinear(mPrevAngleX, 0, 0x300);
+    ApproachLinear(mPrevAngleZ, 0, 0x300);
+    if (mPosY >= mPathNodePosY - 0x2000) {
+        unk_0a4 = 0;
+        mVertSpeed = 0;
+        unk_0ac = 0;
+        mPosY = mPathNodePosY;
+        mBlendModelAnim.speed = 0x1000;
+        func_ov062_0211c658(JANGO_STATE_CIRCLE);
     }
     return 1;
 }
 }
 
-// @symbol func_ov062_0211b51c
+// @symbol _ZN9daJango_c19func_ov062_0211b51cEv
 /* Contact tests, run by Behavior every frame outside HURT and by the SWOOP
    update every frame. The return value is incidental: the early outs
    return whatever value they just tested (0, a nonzero query result, a held
@@ -1162,9 +1159,8 @@ int func_ov062_0211b800(daJango_c *c) {
       other three are not decoded here) and, if that took effect, set
       mTimer = 30 and enter CIRCLE. */
 extern "C" {
-int func_ov062_0211b51c(char *cp)
+int daJango_c::func_ov062_0211b51c()
 {
-    daJango_c *c = (daJango_c *)cp;
     Player *pl;
     dActor_c *sp;
     Vector3 pos;
@@ -1179,26 +1175,26 @@ int func_ov062_0211b51c(char *cp)
     int newchar;
     int zero;
 
-    id = c->mdCcAc_c1.otherOwner;
+    id = mdCcAc_c1.otherOwner;
     if (id != 0) {
         pl = (Player *)dActor_c::FindWithID((unsigned int)id);
         if (pl == 0)
             return (int)pl;
-        fl = c->mdCcAc_c1.hitFlags;
+        fl = mdCcAc_c1.hitFlags;
         if ((fl & 0x4000) != 0)
-            return func_ov062_0211c658(c, JANGO_STATE_HURT);
+            return func_ov062_0211c658(JANGO_STATE_HURT);
         if ((fl & 0x27f0) != 0)
-            return func_ov062_0211c658(c, JANGO_STATE_HURT);
+            return func_ov062_0211c658(JANGO_STATE_HURT);
         isPlayer = (enum Bool)(pl->actorID == ACTOR_PLAYER);
         if (isPlayer) {
-            if (c->BumpedUnderneathByPlayer(*pl) == 1 ||
+            if (BumpedUnderneathByPlayer(*pl) == 1 ||
                 pl->mIsMetal == 1 ||
                 pl->IsOnShell() == 1)
-                return func_ov062_0211c658(c, JANGO_STATE_HURT);
+                return func_ov062_0211c658(JANGO_STATE_HURT);
         }
     }
 
-    id = c->mdCcAc_c2.otherOwner;
+    id = mdCcAc_c2.otherOwner;
     if (id == 0)
         return id;
     pl = (Player *)dActor_c::FindWithID((unsigned int)id);
@@ -1208,16 +1204,16 @@ int func_ov062_0211b51c(char *cp)
     if (!isPlayer)
         return (int)isPlayer;
     state = JANGO_STATE_SWOOP;
-    if (c->mState != state)
+    if (mState != state)
         return (int)state;
     r = pl->IsCollectingCap();
     if (r != 0)
         return r;
-    r = c->mHeldActorID;
+    r = mHeldActorID;
     if (r != 0)
         return r;
 
-    st = c->mSilverStarFlag;
+    st = mSilverStarFlag;
     hc = pl->mCharacter;
     if (st != 2 &&
         pl->mHasWings == 0 &&
@@ -1235,37 +1231,37 @@ int func_ov062_0211b51c(char *cp)
             SaveData::PlayerLoseCap();
         }
         {
-            int area = c->mAreaId;
+            int area = mAreaId;
             unsigned int ch = pl->param1;
             unsigned int param = 0;
             param = param | (ch << 8);
-            sp = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, *(Vector3 *)&c->mPosX, 0, area, -1);
+            sp = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, param, *(Vector3 *)&mPosX, 0, area, -1);
         }
         if (sp != 0) {
             _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(
                 sp, 0x64000, 0x258000, 0x1f40000, 0x1f40000);
-            c->mHeldActorID = sp->uniqueID;
-            func_ov062_0211c658(c, JANGO_STATE_CIRCLE);
+            mHeldActorID = sp->uniqueID;
+            func_ov062_0211c658(JANGO_STATE_CIRCLE);
         }
     }
 
-    c->mHitPlayer = 1;
+    mHitPlayer = 1;
     flag = 0;
-    if (c->mSilverStarFlag == 2 || (int)pl->param1 == 3)
+    if (mSilverStarFlag == 2 || (int)pl->param1 == 3)
         flag = 1;
 
-    pos.x = c->mPosX;
-    pos.y = c->mPosY;
-    pos.z = c->mPosZ;
+    pos.x = mPosX;
+    pos.y = mPosY;
+    pos.z = mPosZ;
     r = _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(pl, &pos, flag, 0xc000, 1, 0, 1);
     if (r == 0)
         return r;
-    c->mTimer = 0x1e;
-    return func_ov062_0211c658(c, JANGO_STATE_CIRCLE);
+    mTimer = 0x1e;
+    return func_ov062_0211c658(JANGO_STATE_CIRCLE);
 }
 }
 
-// @symbol func_ov062_0211b3ac
+// @symbol _ZN9daJango_c19func_ov062_0211b3acEv
 /* Pick which of the four path nodes to fly to next, based on where the player is.
    Called from the circling and path states; does its work on every eighth call
    (unk_460 counts 1..7 and wraps; c2f4 sets it to 7 so the next call runs).
@@ -1274,7 +1270,7 @@ int func_ov062_0211b51c(char *cp)
    in level 0x10 (LEVEL_ID in data_0209f2f8), sets unk_446 when the node
    chosen is index ^ 2 of the current one, stores the chosen index in
    mPathNodeIndex and returns 1. */
-extern "C" int func_ov062_0211b3ac(daJango_c* sl)
+int daJango_c::func_ov062_0211b3ac()
 {
     Player* player;
     /* Byte buffer (see c2f4 section above for why: no implicit ctor). */
@@ -1287,16 +1283,16 @@ extern "C" int func_ov062_0211b3ac(daJango_c* sl)
     int bestDist;
 
     {
-        int *ctr = &sl->unk_460;
+        int *ctr = &unk_460;
         *ctr = *ctr + 1;
         *ctr = *ctr & 7;
     }
-    if (sl->unk_460 != 0)
+    if (unk_460 != 0)
         return 0;
 
-    player = sl->ClosestPlayer();
+    player = ClosestPlayer();
     _ZN7PathPtrC1Ev(&path);
-    ((PathPtr *)&path)->FromID(sl->mPathId);
+    ((PathPtr *)&path)->FromID(mPathId);
 
     bestIdx = 0;
     node.x = bestIdx; node.y = bestIdx; node.z = bestIdx;
@@ -1320,25 +1316,25 @@ extern "C" int func_ov062_0211b3ac(daJango_c* sl)
         }
     }
 
-    if (Vec3_HorzDist(&best, (Vector3*)&sl->mPathNodePosX) == 0)
+    if (Vec3_HorzDist(&best, (Vector3*)&mPathNodePosX) == 0)
         return 0;
 
     if (data_0209f2f8 == 0x10) {
-        sl->unk_446 = 0;
-        if (sl->mPathNodeIndex == (bestIdx ^ 2))
-            sl->unk_446 = 1;
+        unk_446 = 0;
+        if (mPathNodeIndex == (bestIdx ^ 2))
+            unk_446 = 1;
     }
-    sl->mPathNodeIndex = bestIdx;
+    mPathNodeIndex = bestIdx;
     return 1;
 }
 
-// @symbol func_ov062_0211b2fc
+// @symbol _ZN9daJango_c19func_ov062_0211b2fcEv
 /* Sets the velocity words (unk_0a4, mVertSpeed, unk_0ac) for the circling
    state: the vector (0, 0, 20.0) turned by mAngleY then mAngleX. Empty-handed
    (nothing carried or held) it is (0, 0, 40.0) instead, and while mTimer is
    0 mPrevAngleY also drops by 0x100 (about 1.4 degrees) per call. */
 extern "C" {
-void func_ov062_0211b2fc(daJango_c* c){
+void daJango_c::func_ov062_0211b2fc(){
   Vector3 v[2];
   v[0].z = 0;
   v[0].x = 0;
@@ -1350,16 +1346,16 @@ void func_ov062_0211b2fc(daJango_c* c){
   v[0].x = 0;
   v[0].y = 0;
   v[0].z = 0x14000;
-  if (c->mCarriedItem == CARRIES_NO_STAR && c->mHeldActorID == 0) {
-    if (c->mTimer == 0) {
-      short* a = &c->mPrevAngleY;
+  if (mCarriedItem == CARRIES_NO_STAR && mHeldActorID == 0) {
+    if (mTimer == 0) {
+      short* a = &mPrevAngleY;
       *a = *a - 0x100;
     }
     v[0].z = 0x28000;
   }
-  Matrix4x3_FromRotationY(data_020a0e68, c->mAngleY);
-  Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, c->mAngleX);
-  MulVec3Mat4x3(&v[0], data_020a0e68, (Vector3*)&c->unk_0a4);
+  Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
+  Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, mAngleX);
+  MulVec3Mat4x3(&v[0], data_020a0e68, (Vector3*)&unk_0a4);
 }
 }
 

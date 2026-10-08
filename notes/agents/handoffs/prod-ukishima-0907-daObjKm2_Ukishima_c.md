@@ -165,7 +165,7 @@ All figures below are from the **rebased** branch on base `fed0c5e05`.
 | `port_refcheck` | exit 0, 423 references resolve | — |
 | `queue_audit --check` | **exit 0**, "queue agrees with the tree" | on the old base it had 4 foreign disagreements; `fed0c5e05` fixed them. Reverting my row alone raises `compiler-only` 3→4, proving the check sees it |
 | `tiers_ratchet --check` | **PASS**, baseline 2701 → current 2705, +8 gained, 4 clean ownership transitions | `--check` only; `--update` was never run |
-| `prepush_attribution` | **exit 1**, 1 changed / 1 lost | **not ours:** identical shape (1 changed, 1 lost, same `D1` member) on the verified `cpp/daObjKm1_Kurumajiku_c-tu` precedent |
+| `the old credit check` | **exit 1**, 1 changed / 1 lost | **not ours:** identical shape (1 changed, 1 lost, same `D1` member) on the verified `cpp/daObjKm1_Kurumajiku_c-tu` precedent |
 
 ## Things worth flagging to the next stage
 
@@ -183,7 +183,7 @@ All figures below are from the **rebased** branch on base `fed0c5e05`.
 2. **`git mv` did not carry credit, and could not have.** The brief expected
    lineage to follow the rename. It does not: both files are rewritten in the
    same commit, so git pairs neither even at `--find-renames=30%`, and
-   `prepush_attribution` says as much ("A commit may rewrite a file, or move it —
+   `the old credit check` says as much ("A commit may rewrite a file, or move it —
    not both"). What actually preserves credit is the five per-member
    `attribution.json` overrides in `eae3e85c2`, and `validate_merge` proves it:
    **5 changed without them, 0 changed with them.** Any future fold of this shape

@@ -540,6 +540,79 @@ ov004	0x020b8688	func_ov004_020b8688	_ZN10dMgState_c19func_ov004_020b8688Ev	dMgS
 ov005	0x020c0378	func_ov005_020c0378	_ZN11dScMiniGm_c19func_ov005_020c0378Ev	dScMiniGm_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov005	0x020c21ec	func_ov005_020c21ec	dScMiniGm_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov005	0x020c2440	data_ov005_020c2440	g_profile_MINIGAME	reconstructed profile global; literal ROM ID MINIGAME+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x020d5ab0	func_ov006_020d5ab0	_ZN14dScMgBomroom_c19func_ov006_020d5ab0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5b00	func_ov006_020d5b00	_ZN14dScMgBomroom_c19func_ov006_020d5b00Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5b10	func_ov006_020d5b10	_ZN14dScMgBomroom_c19func_ov006_020d5b10Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5c60	func_ov006_020d5c60	_ZN14dScMgBomroom_c19func_ov006_020d5c60Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5c88	func_ov006_020d5c88	_ZN14dScMgBomroom_c19func_ov006_020d5c88Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5d08	func_ov006_020d5d08	_ZN14dScMgBomroom_c19func_ov006_020d5d08Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5d90	func_ov006_020d5d90	_ZN14dScMgBomroom_c19func_ov006_020d5d90Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5dd4	func_ov006_020d5dd4	_ZN14dScMgBomroom_c19func_ov006_020d5dd4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5e1c	func_ov006_020d5e1c	_ZN14dScMgBomroom_c19func_ov006_020d5e1cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5e3c	func_ov006_020d5e3c	_ZN14dScMgBomroom_c19func_ov006_020d5e3cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5e5c	func_ov006_020d5e5c	_ZN14dScMgBomroom_c19func_ov006_020d5e5cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d5eb8	func_ov006_020d5eb8	_ZN14dScMgBomroom_c19func_ov006_020d5eb8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d5f28	func_ov006_020d5f28	_ZN14dScMgBomroom_c19func_ov006_020d5f28Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d5f2c	func_ov006_020d5f2c	_ZN14dScMgBomroom_c19func_ov006_020d5f2cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d5fd8	func_ov006_020d5fd8	_ZN14dScMgBomroom_c19func_ov006_020d5fd8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d5fec	func_ov006_020d5fec	_ZN14dScMgBomroom_c19func_ov006_020d5fecEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d604c	func_ov006_020d604c	_ZN14dScMgBomroom_c19func_ov006_020d604cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6084	func_ov006_020d6084	_ZN14dScMgBomroom_c19func_ov006_020d6084Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6098	func_ov006_020d6098	_ZN14dScMgBomroom_c19func_ov006_020d6098Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6100	func_ov006_020d6100	_ZN14dScMgBomroom_c19func_ov006_020d6100Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d6170	func_ov006_020d6170	_ZN14dScMgBomroom_c19func_ov006_020d6170Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d61dc	func_ov006_020d61dc	_ZN14dScMgBomroom_c19func_ov006_020d61dcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d6264	func_ov006_020d6264	_ZN14dScMgBomroom_c19func_ov006_020d6264Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d6278	func_ov006_020d6278	_ZN14dScMgBomroom_c19func_ov006_020d6278Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d62e0	func_ov006_020d62e0	_ZN14dScMgBomroom_c19func_ov006_020d62e0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d634c	func_ov006_020d634c	_ZN14dScMgBomroom_c19func_ov006_020d634cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d63ac	func_ov006_020d63ac	_ZN14dScMgBomroom_c19func_ov006_020d63acEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d63d4	func_ov006_020d63d4	_ZN14dScMgBomroom_c19func_ov006_020d63d4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6454	func_ov006_020d6454	_ZN14dScMgBomroom_c19func_ov006_020d6454Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d64c4	func_ov006_020d64c4	_ZN14dScMgBomroom_c19func_ov006_020d64c4Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d64c8	func_ov006_020d64c8	_ZN14dScMgBomroom_c19func_ov006_020d64c8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d65b4	func_ov006_020d65b4	_ZN14dScMgBomroom_c19func_ov006_020d65b4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d65c8	func_ov006_020d65c8	_ZN14dScMgBomroom_c19func_ov006_020d65c8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6630	func_ov006_020d6630	_ZN14dScMgBomroom_c19func_ov006_020d6630Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d669c	func_ov006_020d669c	_ZN14dScMgBomroom_c19func_ov006_020d669cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d66c4	func_ov006_020d66c4	_ZN14dScMgBomroom_c19func_ov006_020d66c4Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d672c	func_ov006_020d672c	_ZN14dScMgBomroom_c19func_ov006_020d672cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6784	func_ov006_020d6784	_ZN14dScMgBomroom_c19func_ov006_020d6784Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d68a8	func_ov006_020d68a8	_ZN14dScMgBomroom_c19func_ov006_020d68a8Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d69b8	func_ov006_020d69b8	_ZN14dScMgBomroom_c19func_ov006_020d69b8Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6b88	func_ov006_020d6b88	_ZN14dScMgBomroom_c19func_ov006_020d6b88Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6c90	func_ov006_020d6c90	_ZN14dScMgBomroom_c19func_ov006_020d6c90Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6d7c	func_ov006_020d6d7c	_ZN14dScMgBomroom_c19func_ov006_020d6d7cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d6e8c	func_ov006_020d6e8c	_ZN14dScMgBomroom_c19func_ov006_020d6e8cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d7524	func_ov006_020d7524	_ZN14dScMgBomroom_c19func_ov006_020d7524Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d7604	func_ov006_020d7604	_ZN14dScMgBomroom_c19func_ov006_020d7604Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d7778	func_ov006_020d7778	_ZN14dScMgBomroom_c19func_ov006_020d7778Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d777c	func_ov006_020d777c	_ZN14dScMgBomroom_c19func_ov006_020d777cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7958	func_ov006_020d7958	_ZN14dScMgBomroom_c19func_ov006_020d7958Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d795c	func_ov006_020d795c	_ZN14dScMgBomroom_c19func_ov006_020d795cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7a84	func_ov006_020d7a84	_ZN14dScMgBomroom_c19func_ov006_020d7a84Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7c00	func_ov006_020d7c00	_ZN14dScMgBomroom_c19func_ov006_020d7c00Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7c4c	func_ov006_020d7c4c	_ZN14dScMgBomroom_c19func_ov006_020d7c4cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7e7c	func_ov006_020d7e7c	_ZN14dScMgBomroom_c19func_ov006_020d7e7cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7edc	func_ov006_020d7edc	_ZN14dScMgBomroom_c19func_ov006_020d7edcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d7f5c	func_ov006_020d7f5c	_ZN14dScMgBomroom_c19func_ov006_020d7f5cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d816c	func_ov006_020d816c	_ZN14dScMgBomroom_c19func_ov006_020d816cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8324	func_ov006_020d8324	_ZN14dScMgBomroom_c19func_ov006_020d8324Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d836c	func_ov006_020d836c	_ZN14dScMgBomroom_c19func_ov006_020d836cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d8408	func_ov006_020d8408	_ZN14dScMgBomroom_c19func_ov006_020d8408Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d8904	func_ov006_020d8904	_ZN14dScMgBomroom_c19func_ov006_020d8904Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d893c	func_ov006_020d893c	_ZN14dScMgBomroom_c19func_ov006_020d893cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d89c4	func_ov006_020d89c4	_ZN14dScMgBomroom_c19func_ov006_020d89c4Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8af8	func_ov006_020d8af8	_ZN14dScMgBomroom_c19func_ov006_020d8af8Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8c88	func_ov006_020d8c88	_ZN14dScMgBomroom_c19func_ov006_020d8c88Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020d8cc4	func_ov006_020d8cc4	_ZN14dScMgBomroom_c19func_ov006_020d8cc4Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8d84	func_ov006_020d8d84	_ZN14dScMgBomroom_c19func_ov006_020d8d84Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8f34	func_ov006_020d8f34	_ZN14dScMgBomroom_c19func_ov006_020d8f34Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8f98	func_ov006_020d8f98	_ZN14dScMgBomroom_c19func_ov006_020d8f98Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d8ff4	func_ov006_020d8ff4	_ZN14dScMgBomroom_c19func_ov006_020d8ff4Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d9020	func_ov006_020d9020	_ZN14dScMgBomroom_c19func_ov006_020d9020Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d904c	func_ov006_020d904c	_ZN14dScMgBomroom_c19func_ov006_020d904cEv	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02141660..data_ov006_02141730)
+ov006	0x020d907c	func_ov006_020d907c	_ZN14dScMgBomroom_c19func_ov006_020d907cEv	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x020d5974	func_ov006_020d5974	dScMgAmida_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020d9574	func_ov006_020d9574	MgSortOrSplode_Spawn	spawnfunc
 ov006	0x020d9574	MgSortOrSplode_Spawn	dScMgBomroom_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
@@ -2168,6 +2241,11 @@ ov064	0x02117684	func_ov064_02117684	_ZN12daBDonketu_c8BehaviorEv	vtable slot 6
 ov064	0x02117784	func_ov064_02117784	_ZN12daBDonketu_c13InitResourcesEv	vtable slot 0
 ov064	0x0211791c	func_ov064_0211791c	BigBully_Spawn	spawnfunc
 ov064	0x0211791c	BigBully_Spawn	daBDonketu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov064	0x02117a14	func_ov064_02117a14	_ZN17daObjFl_Amilift_c19func_ov064_02117a14EP7Vector3S1_	daObjFl_Amilift_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117a44	func_ov064_02117a44	_ZN17daObjFl_Amilift_c19func_ov064_02117a44Ev	daObjFl_Amilift_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117b8c	func_ov064_02117b8c	_ZN17daObjFl_Amilift_c19func_ov064_02117b8cEv	daObjFl_Amilift_c method; state-table target. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117bdc	func_ov064_02117bdc	_ZN17daObjFl_Amilift_c19func_ov064_02117bdcEv	daObjFl_Amilift_c method; state-table target. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02117c24	func_ov064_02117c24	_ZN17daObjFl_Amilift_c19func_ov064_02117c24Ev	daObjFl_Amilift_c method; state-table target. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov064	0x02117fe8	func_ov064_02117fe8	MetalNetLift_Spawn	spawnfunc
 ov064	0x02117fe8	MetalNetLift_Spawn	daObjFl_Amilift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02118020	func_ov064_02118020	_ZN14daObjFl_Gura_cD1Ev	ROM RTTI class identity; vtable slot 16 (was _ZN18TiltingPlatformLllD1Ev)
@@ -3545,6 +3623,12 @@ ov098	0x0213a8e0	func_ov098_0213a8e0	daObjFallBlock_c_RequestShake	writes mShake
 ov098	0x0213a8ec	func_ov098_0213a8ec	daObjFallBlock_c_OnStoodOn	dBgW+0x1c callback veneer; drops collider, forwards actor into RequestShake
 ov098	0x0213a900	func_ov098_0213a900	_ZN7daCnn_cD1Ev	vtable slot 16
 ov098	0x0213a938	func_ov098_0213a938	_ZN7daCnn_cD0Ev	vtable slot 17
+ov098	0x0213a984	func_ov098_0213a984	_ZN7daCnn_c19func_ov098_0213a984Ev	daCnn_c method. The first argument is the cannon, so the function is a member and the parameter is this. The address is kept as the method name.
+ov098	0x0213aa28	func_ov098_0213aa28	_ZN7daCnn_c19func_ov098_0213aa28Ev	daCnn_c method; state-3 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c644). The address is kept as the method name.
+ov098	0x0213ad08	func_ov098_0213ad08	_ZN7daCnn_c19func_ov098_0213ad08Ev	daCnn_c method; state-2 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c654). The address is kept as the method name.
+ov098	0x0213ade8	func_ov098_0213ade8	_ZN7daCnn_c19func_ov098_0213ade8Ev	daCnn_c method; state-1 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c65c). The address is kept as the method name.
+ov098	0x0213b0a4	func_ov098_0213b0a4	_ZN7daCnn_c19func_ov098_0213b0a4Ev	daCnn_c method; state-0 body of the pointer-to-member table the sinit fills (record at ov098 0x0213c64c). The address is kept as the method name.
+ov098	0x0213b15c	func_ov098_0213b15c	_ZN7daCnn_c19func_ov098_0213b15cEv	daCnn_c method. The first argument is the cannon, so the function is a member and the parameter is this. The address is kept as the method name.
 ov098	0x0213b1d8	func_ov098_0213b1d8	_ZN7daCnn_c16CleanupResourcesEv	vtable slot 3
 ov098	0x0213b214	func_ov098_0213b214	_ZN7daCnn_c6RenderEv	vtable slot 9
 ov098	0x0213b26c	func_ov098_0213b26c	_ZN7daCnn_c8BehaviorEv	vtable slot 6
@@ -3595,6 +3679,14 @@ ov100	0x02141ea4	func_ov100_02141ea4	Butterfly_Spawn	spawnfunc
 ov100	0x02141ea4	Butterfly_Spawn	daBtfly_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov100	0x02141f04	func_ov100_02141f04	_ZN7daIbl_cD1Ev	vtable slot 16 (was _ZN15RollingIronBallD1Ev)
 ov100	0x02141f4c	func_ov100_02141f4c	_ZN7daIbl_cD0Ev	vtable slot 17 (was _ZN15RollingIronBallD0Ev)
+ov100	0x02141fb0	func_ov100_02141fb0	_ZN7daIbl_c19func_ov100_02141fb0Ev	object-first helper -> daIbl_c member
+ov100	0x02142130	func_ov100_02142130	_ZN7daIbl_c19func_ov100_02142130Ev	object-first helper -> daIbl_c member
+ov100	0x02142264	func_ov100_02142264	_ZN7daIbl_c19func_ov100_02142264Ev	object-first helper -> daIbl_c member
+ov100	0x0214233c	func_ov100_0214233c	_ZN7daIbl_c19func_ov100_0214233cEv	object-first helper -> daIbl_c member
+ov100	0x021424c0	func_ov100_021424c0	_ZN7daIbl_c19func_ov100_021424c0Ev	object-first helper -> daIbl_c member (PMF table 2 and 4)
+ov100	0x0214272c	func_ov100_0214272c	_ZN7daIbl_c19func_ov100_0214272cEv	object-first helper -> daIbl_c member (PMF table 3)
+ov100	0x02142918	func_ov100_02142918	_ZN7daIbl_c19func_ov100_02142918Ev	object-first helper -> daIbl_c member (PMF table 1)
+ov100	0x02142b90	func_ov100_02142b90	_ZN7daIbl_c19func_ov100_02142b90Ev	object-first helper -> daIbl_c member (PMF table 0)
 ov100	0x02142d1c	func_ov100_02142d1c	_ZN7daIbl_c16CleanupResourcesEv	vtable slot 3 (was _ZN15RollingIronBall16CleanupResourcesEv)
 ov100	0x02142d5c	func_ov100_02142d5c	_ZN7daIbl_c6RenderEv	vtable slot 9 (was _ZN15RollingIronBall6RenderEv)
 ov100	0x02142d98	func_ov100_02142d98	_ZN7daIbl_c8BehaviorEv	vtable slot 6 (was _ZN15RollingIronBall8BehaviorEv)
@@ -5350,6 +5442,79 @@ ov006	0x020e984c	func_ov006_020e984c	_ZN12dScMg3DEsp_c10ResetRoundEv	dScMg3DEsp_
 ov006	0x020e989c	func_ov006_020e989c	_ZN12dScMg3DEsp_c7ResultsEv	dScMg3DEsp_c method; PMF record in the play-phase table. Named Results: phase showing the round result.
 ov006	0x020e9b70	func_ov006_020e9b70	_ZN12dScMg3DEsp_c4PlayEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Play: round state dispatching the play phases.
 ov006	0x020e9bbc	func_ov006_020e9bbc	_ZN12dScMg3DEsp_c4WaitEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Wait: round state idling between rounds.
+ov006	0x0211cc2c	func_ov006_0211cc2c	_ZN13dScMgTeresa_c19func_ov006_0211cc2cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211cc90	func_ov006_0211cc90	_ZN13dScMgTeresa_c19func_ov006_0211cc90Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211cca8	func_ov006_0211cca8	_ZN13dScMgTeresa_c19func_ov006_0211cca8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211cd24	func_ov006_0211cd24	_ZN13dScMgTeresa_c19func_ov006_0211cd24Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211ce90	func_ov006_0211ce90	_ZN13dScMgTeresa_c19func_ov006_0211ce90Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211ce94	func_ov006_0211ce94	_ZN13dScMgTeresa_c19func_ov006_0211ce94Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211cef4	func_ov006_0211cef4	_ZN13dScMgTeresa_c19func_ov006_0211cef4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d018	func_ov006_0211d018	_ZN13dScMgTeresa_c19func_ov006_0211d018Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d0f8	func_ov006_0211d0f8	_ZN13dScMgTeresa_c19func_ov006_0211d0f8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d224	func_ov006_0211d224	_ZN13dScMgTeresa_c19func_ov006_0211d224Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d368	func_ov006_0211d368	_ZN13dScMgTeresa_c19func_ov006_0211d368Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d4e8	func_ov006_0211d4e8	_ZN13dScMgTeresa_c19func_ov006_0211d4e8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d5a8	func_ov006_0211d5a8	_ZN13dScMgTeresa_c19func_ov006_0211d5a8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d608	func_ov006_0211d608	_ZN13dScMgTeresa_c19func_ov006_0211d608Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d688	func_ov006_0211d688	_ZN13dScMgTeresa_c19func_ov006_0211d688Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d69c	func_ov006_0211d69c	_ZN13dScMgTeresa_c19func_ov006_0211d69cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d75c	func_ov006_0211d75c	_ZN13dScMgTeresa_c19func_ov006_0211d75cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d7b0	func_ov006_0211d7b0	_ZN13dScMgTeresa_c19func_ov006_0211d7b0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d7b4	func_ov006_0211d7b4	_ZN13dScMgTeresa_c19func_ov006_0211d7b4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d7d8	func_ov006_0211d7d8	_ZN13dScMgTeresa_c19func_ov006_0211d7d8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d7ec	func_ov006_0211d7ec	_ZN13dScMgTeresa_c19func_ov006_0211d7ecEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211d86c	func_ov006_0211d86c	_ZN13dScMgTeresa_c19func_ov006_0211d86cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211d924	func_ov006_0211d924	_ZN13dScMgTeresa_c19func_ov006_0211d924Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211dad0	func_ov006_0211dad0	_ZN13dScMgTeresa_c19func_ov006_0211dad0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211db7c	func_ov006_0211db7c	_ZN13dScMgTeresa_c19func_ov006_0211db7cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211dce0	func_ov006_0211dce0	_ZN13dScMgTeresa_c19func_ov006_0211dce0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211dd0c	func_ov006_0211dd0c	_ZN13dScMgTeresa_c19func_ov006_0211dd0cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211dd6c	func_ov006_0211dd6c	_ZN13dScMgTeresa_c19func_ov006_0211dd6cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211ddb8	func_ov006_0211ddb8	_ZN13dScMgTeresa_c19func_ov006_0211ddb8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211ddcc	func_ov006_0211ddcc	_ZN13dScMgTeresa_c19func_ov006_0211ddccEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211de54	func_ov006_0211de54	_ZN13dScMgTeresa_c19func_ov006_0211de54Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211de7c	func_ov006_0211de7c	_ZN13dScMgTeresa_c19func_ov006_0211de7cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211dec0	func_ov006_0211dec0	_ZN13dScMgTeresa_c19func_ov006_0211dec0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e020	func_ov006_0211e020	_ZN13dScMgTeresa_c19func_ov006_0211e020Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e0c8	func_ov006_0211e0c8	_ZN13dScMgTeresa_c19func_ov006_0211e0c8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e118	func_ov006_0211e118	_ZN13dScMgTeresa_c19func_ov006_0211e118Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e184	func_ov006_0211e184	_ZN13dScMgTeresa_c19func_ov006_0211e184Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e220	func_ov006_0211e220	_ZN13dScMgTeresa_c19func_ov006_0211e220Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e29c	func_ov006_0211e29c	_ZN13dScMgTeresa_c19func_ov006_0211e29cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e318	func_ov006_0211e318	_ZN13dScMgTeresa_c19func_ov006_0211e318Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e3e0	func_ov006_0211e3e0	_ZN13dScMgTeresa_c19func_ov006_0211e3e0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e460	func_ov006_0211e460	_ZN13dScMgTeresa_c19func_ov006_0211e460Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e4e0	func_ov006_0211e4e0	_ZN13dScMgTeresa_c19func_ov006_0211e4e0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e55c	func_ov006_0211e55c	_ZN13dScMgTeresa_c19func_ov006_0211e55cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e5cc	func_ov006_0211e5cc	_ZN13dScMgTeresa_c19func_ov006_0211e5ccEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e658	func_ov006_0211e658	_ZN13dScMgTeresa_c19func_ov006_0211e658Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e72c	func_ov006_0211e72c	_ZN13dScMgTeresa_c19func_ov006_0211e72cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e7d8	func_ov006_0211e7d8	_ZN13dScMgTeresa_c19func_ov006_0211e7d8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211e8a8	func_ov006_0211e8a8	_ZN13dScMgTeresa_c19func_ov006_0211e8a8Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211ea70	func_ov006_0211ea70	_ZN13dScMgTeresa_c19func_ov006_0211ea70Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211eb90	func_ov006_0211eb90	_ZN13dScMgTeresa_c19func_ov006_0211eb90Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211ebdc	func_ov006_0211ebdc	_ZN13dScMgTeresa_c19func_ov006_0211ebdcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211ee34	func_ov006_0211ee34	_ZN13dScMgTeresa_c19func_ov006_0211ee34Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f040	func_ov006_0211f040	_ZN13dScMgTeresa_c19func_ov006_0211f040Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f0d0	func_ov006_0211f0d0	_ZN13dScMgTeresa_c19func_ov006_0211f0d0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f1a4	func_ov006_0211f1a4	_ZN13dScMgTeresa_c19func_ov006_0211f1a4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f224	func_ov006_0211f224	_ZN13dScMgTeresa_c19func_ov006_0211f224Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f34c	func_ov006_0211f34c	_ZN13dScMgTeresa_c19func_ov006_0211f34cEi	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211f454	func_ov006_0211f454	_ZN13dScMgTeresa_c19func_ov006_0211f454Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211f51c	func_ov006_0211f51c	_ZN13dScMgTeresa_c19func_ov006_0211f51cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211f554	func_ov006_0211f554	_ZN13dScMgTeresa_c19func_ov006_0211f554Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f5d4	func_ov006_0211f5d4	_ZN13dScMgTeresa_c19func_ov006_0211f5d4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211f664	func_ov006_0211f664	_ZN13dScMgTeresa_c19func_ov006_0211f664Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211f6fc	func_ov006_0211f6fc	_ZN13dScMgTeresa_c19func_ov006_0211f6fcEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211f77c	func_ov006_0211f77c	_ZN13dScMgTeresa_c19func_ov006_0211f77cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211f9fc	func_ov006_0211f9fc	_ZN13dScMgTeresa_c19func_ov006_0211f9fcEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211fb1c	func_ov006_0211fb1c	_ZN13dScMgTeresa_c19func_ov006_0211fb1cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211fbf8	func_ov006_0211fbf8	_ZN13dScMgTeresa_c19func_ov006_0211fbf8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211fd44	func_ov006_0211fd44	_ZN13dScMgTeresa_c19func_ov006_0211fd44Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x0211fe78	func_ov006_0211fe78	_ZN13dScMgTeresa_c19func_ov006_0211fe78Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x02120008	func_ov006_02120008	_ZN13dScMgTeresa_c19func_ov006_02120008Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x021200a8	func_ov006_021200a8	_ZN13dScMgTeresa_c19func_ov006_021200a8Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x021200cc	func_ov006_021200cc	_ZN13dScMgTeresa_c19func_ov006_021200ccEv	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
 ov006	0x02125804	func_ov006_02125804	_ZN15dScMgSnowball_c19func_ov006_02125804Ev	object-as-this
 ov006	0x02125890	func_ov006_02125890	_ZN15dScMgSnowball_c19func_ov006_02125890Ev	object-as-this
 ov006	0x02125994	func_ov006_02125994	_ZN15dScMgSnowball_c19func_ov006_02125994Ev	object-as-this
@@ -5378,3 +5543,120 @@ ov006	0x0212a224	func_ov006_0212a224	_ZN15dScMgSnowball_c19func_ov006_0212a224Ei
 ov006	0x0212a274	func_ov006_0212a274	_ZN15dScMgSnowball_c19func_ov006_0212a274Ei	object-as-this
 ov006	0x0212a2e0	func_ov006_0212a2e0	_ZN15dScMgSnowball_c19func_ov006_0212a2e0Ev	object-as-this
 ov006	0x0212a3c0	func_ov006_0212a3c0	_ZN15dScMgSnowball_c19func_ov006_0212a3c0Ev	object-as-this
+ov006	0x0212093c	func_ov006_0212093c	_ZN24dScMgTrampoline_DoorMark6RenderEi	coined: ROM symbol is address-only; receiver is mDoorMark (scene+0x5d84) via &mDoorMark.row at both call sites; body draws the mark while shown
+ov006	0x021209ac	func_ov006_021209ac	_ZN24dScMgTrampoline_DoorMark6UpdateEv	coined: ROM symbol is address-only; receiver is mDoorMark via &mDoorMark.row in Behavior; body ticks the blink timer
+ov006	0x02120a18	func_ov006_02120a18	_ZN24dScMgTrampoline_DoorMark4ShowEi	coined: ROM symbol is address-only; receiver is mDoorMark via (u16 *)&mDoorMark; body starts the blink on the given door
+ov006	0x02120a44	func_ov006_02120a44	_ZN24dScMgTrampoline_DoorMark4HideEv	coined: ROM symbol is address-only; receiver is mDoorMark via (char *)&mDoorMark in OnYoshiTryEat; body clears the blink
+ov006	0x02120a54	func_ov006_02120a54	_ZN24dScMgTrampoline_DoorMark4InitEv	coined: ROM symbol is address-only; called once by the factory on scene+0x5d84; body clears the blink
+ov006	0x02120a64	func_ov006_02120a64	_ZN4Desc6RenderEv	coined: ROM symbol is address-only; receiver is a live Desc walked off data_ov006_02142f64; body draws the score number
+ov006	0x02120ab8	func_ov006_02120ab8	_ZN4Desc6UpdateEv	coined: ROM symbol is address-only; receiver is a Desc from the pool func_ov006_02120d8c registers; body ticks life and eases toward targetY
+ov006	0x02120b30	func_ov006_02120b30	_ZN4Desc5SpawnEii	coined: ROM symbol is address-only; receiver is a free Desc slot picked by func_ov006_02120d0c; body fills it and links it live
+ov006	0x02120f18	func_ov006_02120f18	_ZN17dScMgTrampoline_c9InitBrushEi	coined: ROM symbol is address-only; receiver is the scene passed by func_ov006_0212231c; body fills the BG layer the stylus lines draw on
+ov006	0x02121750	func_ov006_02121750	_ZN17dScMgTrampoline_c11SetDoorSideEs	coined: ROM symbol is address-only; receiver is the scene at both StatePlay/OnYoshiTryEat call sites; body writes mDoorSide and mirrors it into data_ov006_02140538
+ov006	0x02121768	func_ov006_02121768	_ZN17dScMgTrampoline_c11GetDoorSideEv	coined: ROM symbol is address-only; receiver is the scene at the StatePlay call site; body returns mDoorSide
+ov006	0x0212231c	func_ov006_0212231c	_ZN17dScMgTrampoline_c11InitDisplayEv	coined: ROM symbol is address-only; receiver is the scene passed by InitResources; body loads the BG/OBJ screens for the current language
+ov006	0x02122e20	func_ov006_02122e20	_ZN18dScMgTrampoline2_c9InitBrushEi	coined: ROM symbol is address-only; receiver is the scene passed by func_ov006_021245a8; body fills the BG layer the stylus lines draw on
+ov006	0x02123428	func_ov006_02123428	_ZN18dScMgTrampoline2_c9SpawnWaveEv	coined: ROM symbol is address-only; called on the scene by StatePlay; body rolls one random wave of shapes from the spawn table
+ov006	0x02123938	func_ov006_02123938	_ZN18dScMgTrampoline2_c16UpdateTouchInputEv	coined: ROM symbol is address-only; receiver is the scene at the Behavior call site; body samples and tracks the stylus drag every frame
+ov006	0x02123b20	func_ov006_02123b20	_ZN18dScMgTrampoline2_c9StateDoneEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbd0 and the empty matched body identify the terminal state
+ov006	0x02123b24	func_ov006_02123b24	_ZN18dScMgTrampoline2_c13StateWaitExitEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbe0 and the matched body identify the exit-wait state
+ov006	0x02123bf4	func_ov006_02123bf4	_ZN18dScMgTrampoline2_c12StateResultsEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbf0 and the matched body identify the results transition state
+ov006	0x02123c78	func_ov006_02123c78	_ZN18dScMgTrampoline2_c12BeginResultsEv	coined: ROM symbol is address-only; helper initializes the results timer and installs the StateResults PMF descriptor
+ov006	0x02123cb4	func_ov006_02123cb4	_ZN18dScMgTrampoline2_c9StatePlayEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbe8 and the matched body identify the active-play state
+ov006	0x02124040	func_ov006_02124040	_ZN18dScMgTrampoline2_c9BeginPlayEv	coined: ROM symbol is address-only; helper enables input, initializes play fields, and installs the StatePlay PMF descriptor
+ov006	0x02124088	func_ov006_02124088	_ZN18dScMgTrampoline2_c10StateIntroEv	coined: ROM symbol is address-only; PMF descriptor data_ov006_0213fbd8 and the matched body identify the intro state
+ov006	0x02124228	func_ov006_02124228	_ZN18dScMgTrampoline2_c10BeginIntroEv	coined: ROM symbol is address-only; helper initializes intro interpolation fields and installs the StateIntro PMF descriptor
+ov006	0x021245a8	func_ov006_021245a8	_ZN18dScMgTrampoline2_c11InitDisplayEv	coined: ROM symbol is address-only; receiver is the scene passed by InitResources; body loads the BG/OBJ screens for the current language
+ov006	0x021199c0	func_ov006_021199c0	_ZN12dScMgSound_c19func_ov006_021199c0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119a18	func_ov006_02119a18	_ZN12dScMgSound_c19func_ov006_02119a18Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119a88	func_ov006_02119a88	_ZN12dScMgSound_c19func_ov006_02119a88Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119aa8	func_ov006_02119aa8	_ZN12dScMgSound_c19func_ov006_02119aa8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119b00	func_ov006_02119b00	_ZN12dScMgSound_c19func_ov006_02119b00Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119ba4	func_ov006_02119ba4	_ZN12dScMgSound_c19func_ov006_02119ba4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119bc4	func_ov006_02119bc4	_ZN12dScMgSound_c19func_ov006_02119bc4Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119bdc	func_ov006_02119bdc	_ZN12dScMgSound_c19func_ov006_02119bdcEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119c74	func_ov006_02119c74	_ZN12dScMgSound_c19func_ov006_02119c74Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02119d50	func_ov006_02119d50	_ZN12dScMgSound_c19func_ov006_02119d50Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x02119dc4	func_ov006_02119dc4	_ZN12dScMgSound_c19func_ov006_02119dc4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x02119e5c	func_ov006_02119e5c	_ZN12dScMgSound_c19func_ov006_02119e5cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x02119eec	func_ov006_02119eec	_ZN12dScMgSound_c19func_ov006_02119eecEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x02119f3c	func_ov006_02119f3c	_ZN12dScMgSound_c19func_ov006_02119f3cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x02119fb0	func_ov006_02119fb0	_ZN12dScMgSound_c19func_ov006_02119fb0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a048	func_ov006_0211a048	_ZN12dScMgSound_c19func_ov006_0211a048Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a0d8	func_ov006_0211a0d8	_ZN12dScMgSound_c19func_ov006_0211a0d8Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a128	func_ov006_0211a128	_ZN12dScMgSound_c19func_ov006_0211a128Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a19c	func_ov006_0211a19c	_ZN12dScMgSound_c19func_ov006_0211a19cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a234	func_ov006_0211a234	_ZN12dScMgSound_c19func_ov006_0211a234Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a2c4	func_ov006_0211a2c4	_ZN12dScMgSound_c19func_ov006_0211a2c4Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a314	func_ov006_0211a314	_ZN12dScMgSound_c19func_ov006_0211a314Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a388	func_ov006_0211a388	_ZN12dScMgSound_c19func_ov006_0211a388Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a420	func_ov006_0211a420	_ZN12dScMgSound_c19func_ov006_0211a420Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a4b0	func_ov006_0211a4b0	_ZN12dScMgSound_c19func_ov006_0211a4b0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a500	func_ov006_0211a500	_ZN12dScMgSound_c19func_ov006_0211a500Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a578	func_ov006_0211a578	_ZN12dScMgSound_c19func_ov006_0211a578Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a5ec	func_ov006_0211a5ec	_ZN12dScMgSound_c19func_ov006_0211a5ecEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a648	func_ov006_0211a648	_ZN12dScMgSound_c19func_ov006_0211a648Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a698	func_ov006_0211a698	_ZN12dScMgSound_c19func_ov006_0211a698Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a69c	func_ov006_0211a69c	_ZN12dScMgSound_c19func_ov006_0211a69cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a714	func_ov006_0211a714	_ZN12dScMgSound_c19func_ov006_0211a714Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a7ac	func_ov006_0211a7ac	_ZN12dScMgSound_c19func_ov006_0211a7acEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a7fc	func_ov006_0211a7fc	_ZN12dScMgSound_c19func_ov006_0211a7fcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a910	func_ov006_0211a910	_ZN12dScMgSound_c19func_ov006_0211a910Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211a9fc	func_ov006_0211a9fc	_ZN12dScMgSound_c19func_ov006_0211a9fcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211aa44	func_ov006_0211aa44	_ZN12dScMgSound_c19func_ov006_0211aa44Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211aa94	func_ov006_0211aa94	_ZN12dScMgSound_c19func_ov006_0211aa94Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ab0c	func_ov006_0211ab0c	_ZN12dScMgSound_c19func_ov006_0211ab0cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ab80	func_ov006_0211ab80	_ZN12dScMgSound_c19func_ov006_0211ab80Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211abdc	func_ov006_0211abdc	_ZN12dScMgSound_c19func_ov006_0211abdcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ac2c	func_ov006_0211ac2c	_ZN12dScMgSound_c19func_ov006_0211ac2cEv	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ac30	func_ov006_0211ac30	_ZN12dScMgSound_c19func_ov006_0211ac30Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ad00	func_ov006_0211ad00	_ZN12dScMgSound_c19func_ov006_0211ad00Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ad44	func_ov006_0211ad44	_ZN12dScMgSound_c19func_ov006_0211ad44Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ad94	func_ov006_0211ad94	_ZN12dScMgSound_c19func_ov006_0211ad94Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211ae40	func_ov006_0211ae40	_ZN12dScMgSound_c19func_ov006_0211ae40Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211aed0	func_ov006_0211aed0	_ZN12dScMgSound_c19func_ov006_0211aed0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211af60	func_ov006_0211af60	_ZN12dScMgSound_c19func_ov006_0211af60Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211afb0	func_ov006_0211afb0	_ZN12dScMgSound_c19func_ov006_0211afb0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b05c	func_ov006_0211b05c	_ZN12dScMgSound_c19func_ov006_0211b05cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b0ec	func_ov006_0211b0ec	_ZN12dScMgSound_c19func_ov006_0211b0ecEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b17c	func_ov006_0211b17c	_ZN12dScMgSound_c19func_ov006_0211b17cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b1cc	func_ov006_0211b1cc	_ZN12dScMgSound_c19func_ov006_0211b1ccEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b278	func_ov006_0211b278	_ZN12dScMgSound_c19func_ov006_0211b278Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b308	func_ov006_0211b308	_ZN12dScMgSound_c19func_ov006_0211b308Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b398	func_ov006_0211b398	_ZN12dScMgSound_c19func_ov006_0211b398Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b3e8	func_ov006_0211b3e8	_ZN12dScMgSound_c19func_ov006_0211b3e8Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b3ec	func_ov006_0211b3ec	_ZN12dScMgSound_c19func_ov006_0211b3ecEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b4fc	func_ov006_0211b4fc	_ZN12dScMgSound_c19func_ov006_0211b4fcEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b590	func_ov006_0211b590	_ZN12dScMgSound_c19func_ov006_0211b590Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211b5e0	func_ov006_0211b5e0	_ZN12dScMgSound_c19func_ov006_0211b5e0Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211b654	func_ov006_0211b654	_ZN12dScMgSound_c19func_ov006_0211b654Ei	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211b790	func_ov006_0211b790	_ZN12dScMgSound_c19func_ov006_0211b790Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211b80c	func_ov006_0211b80c	_ZN12dScMgSound_c19func_ov006_0211b80cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211b954	func_ov006_0211b954	_ZN12dScMgSound_c19func_ov006_0211b954Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211b9c8	func_ov006_0211b9c8	_ZN12dScMgSound_c19func_ov006_0211b9c8Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211ba88	func_ov006_0211ba88	_ZN12dScMgSound_c19func_ov006_0211ba88Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211bbe0	func_ov006_0211bbe0	_ZN12dScMgSound_c19func_ov006_0211bbe0Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211bc68	func_ov006_0211bc68	_ZN12dScMgSound_c19func_ov006_0211bc68Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211bc8c	func_ov006_0211bc8c	_ZN12dScMgSound_c19func_ov006_0211bc8cEi	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211bf44	func_ov006_0211bf44	_ZN12dScMgSound_c19func_ov006_0211bf44Ei	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142cc0-02142e20)
+ov006	0x0211c080	func_ov006_0211c080	_ZN12dScMgSound_c19func_ov006_0211c080Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0211c478	func_ov006_0211c478	_ZN12dScMgSound_c19func_ov006_0211c478Ev	object-as-this; receiver is the scene object, called with this in r0
+ov002	0x020b91fc	func_ov002_020b91fc	_ZN18daObjPowerUpItem_c12StateRestingEv	coined: ROM symbol is address-only; resting-state update in the PMF table data_ov002_021097bc
+ov002	0x020b92b8	func_ov002_020b92b8	_ZN18daObjPowerUpItem_c12BeginRestingEv	coined: ROM symbol is address-only; resting-state enter in the PMF table data_ov002_021097bc
+ov002	0x020b92c4	func_ov002_020b92c4	_ZN18daObjPowerUpItem_c12StateOpeningEv	coined: ROM symbol is address-only; opening-state update in the PMF table data_ov002_021097bc
+ov002	0x020b9450	func_ov002_020b9450	_ZN18daObjPowerUpItem_c12BeginOpeningEv	coined: ROM symbol is address-only; opening-state enter in the PMF table data_ov002_021097bc
+ov002	0x020b94c4	func_ov002_020b94c4	_ZN18daObjPowerUpItem_c13StateLaunchedEv	coined: ROM symbol is address-only; launched-state update in the PMF table data_ov002_021097bc
+ov002	0x020b96c0	func_ov002_020b96c0	_ZN18daObjPowerUpItem_c13BeginLaunchedEv	coined: ROM symbol is address-only; launched-state enter in the PMF table data_ov002_021097bc
+ov002	0x020b9704	func_ov002_020b9704	_ZN18daObjPowerUpItem_c8SetStateEi	coined: ROM symbol is address-only; state switcher over the PMF table data_ov002_021097bc
+ov002	0x020b9750	func_ov002_020b9750	_ZN18daObjPowerUpItem_c11UpdateStateEv	coined: ROM symbol is address-only; state-update dispatcher over the PMF table data_ov002_021097bc
+ov002	0x020b979c	func_ov002_020b979c	_ZN18daObjPowerUpItem_c11CheckPickupEv	coined: ROM symbol is address-only; pickup check against the flower collider
+ov002	0x020b993c	func_ov002_020b993c	_ZN18daObjPowerUpItem_c10DropShadowEv	coined: ROM symbol is address-only; drop-shadow helper over dActor_c::DropShadowRadHeight
+ov002	0x020b9a1c	func_ov002_020b9a1c	_ZN18daObjPowerUpItem_c14UpdateMatricesEv	coined: ROM symbol is address-only; model-matrix updater
+ov004	0x020adc80	func_ov004_020adc80	_ZN3Ent19func_ov004_020adc80Ev	Ent method. The first argument is the record, so the function is a member and the parameter is this. The pointer-to-member descriptor at 0x020bbf64 names it as a target. The address is kept as the method name.
+ov004	0x020adcc8	func_ov004_020adcc8	_ZN3Ent19func_ov004_020adcc8Ev	Ent method. The first argument is the record, so the function is a member and the parameter is this. The pointer-to-member descriptor at 0x020bbf54 names it as a target. The address is kept as the method name.
+ov004	0x020addcc	func_ov004_020addcc	_ZN3Ent19func_ov004_020addccEv	Ent method. The first argument is the record, so the function is a member and the parameter is this. The pointer-to-member descriptor at 0x020bbf5c names it as a target. The address is kept as the method name.
+ov004	0x020adeb0	func_ov004_020adeb0	_ZN3Ent19func_ov004_020adeb0Ev	Ent method. The first argument is the record, so the function is a member and the parameter is this. The pointer-to-member descriptor at 0x020bbf4c names it as a target. The address is kept as the method name.
+ov004	0x020ae104	func_ov004_020ae104	_ZN11dScMgBase_c15graphCallback_cC1Ev	dScMgBase_c::graphCallback_c constructor. The body is the base callback_c vptr store, the derived vptr store (_ZTVN11dScMgBase_c15graphCallback_cE, 0x020bc03c), and mScene = 0 -- a complete-object ctor. Called once, by __sinit_d_s_mg_base.cpp.
+ov004	0x020b2c58	func_ov004_020b2c58	__arraydtor$314	compiler-generated array destructor thunk for the Ent record pool data_ov004_020bebe8; __sinit_d_s_mg_base.cpp registers it through __register_global_object.
+ov004	0x020b2c7c	func_ov004_020b2c7c	_ZN3EntD1Ev	Ent's trivial destructor, emitted for the data_ov004_020bebe8 record pool's __cxa_vec_ctor/__cxa_vec_cleanup calls.
+ov004	0x020b2c80	func_ov004_020b2c80	_ZN3EntC1Ev	Ent's trivial constructor, emitted for the data_ov004_020bebe8 record pool's __cxa_vec_ctor call.

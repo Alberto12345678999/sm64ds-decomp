@@ -8,10 +8,17 @@
  * applies to the whole file. TUBUILD CONFLICT comments are paired with
  * the manifest; leave them.
  *
- * The factory still builds the object by hand, so its offset stores stay
- * raw. Score-pop reads in func_ov006_02120a64, func_ov006_02120ab8 and
- * func_ov006_02120d0c stay offsets: the Desc member form DIFFed there.
- * ov004 helpers and most data symbols are unnamed.
+ * comment leftovers:
+ * - The factory still builds the object by hand, so its offset stores
+ *   stay raw.
+ * - Desc::Render, Desc::Update and func_ov006_02120d0c keep raw offsets:
+ *   the member-access form DIFFed there.
+ * - The score pool (func_ov006_02120b7c..func_ov006_02120d8c) stays free:
+ *   it works on the file-scope live-list globals, not one object, and
+ *   func_ov006_02120d0c is the entry dMgTrmpln2Mario_c calls.
+ * - func_ov006_021225a8 / func_ov006_02120938 stay free: the shared empty
+ *   ctor/dtor pair for the Desc pool, used by d_s_mg_trampoline2.cpp too.
+ * - ov004 helpers and most data symbols are unnamed.
  */
 
 #include "dScMgTrampoline_c.h"
@@ -51,10 +58,14 @@ struct Desc {
     u16 life;       /* +0x1c */
     u16 number;     /* +0x1e */
     u16 active;     /* +0x20 */
+
+    void Spawn(int y, int number); /* fills a slot and links it live */
+    void Update();                 /* ticks life, eases toward targetY */
+    void Render();                 /* draws the number when active */
 };
 
 /* Shadow of the scene's +0x68/+0x6c, which sit in dScMgBase_c padding.
-   Virtual88 reads the layer; func_ov006_02120f18 writes both. */
+   Virtual88 reads the layer; InitBrush writes both. */
 struct Obj {
     unsigned char pad0[0x68];
     unsigned char brushOn;
@@ -70,8 +81,6 @@ struct UnkObj {
 
 typedef struct Vec2s { s16 x, y; } Vec2s;
 
-/* The door mark's layout lives in the header. */
-typedef dScMgTrampoline_DoorMark DoorMark;
 
 /* Raw storage form of mwccarm's eight-byte single-inheritance PMF. Behavior
    gives the live scene storage its dScMgTrampoline_c::State meaning at the
@@ -137,11 +146,8 @@ extern int _Z15ApproachLinear2Rsss(s16 *dst, s16 a, s16 b);
 extern void func_ov004_020b2444(int,int,int,int,int,int,int);
 extern void func_ov006_02120bc8(int *self);
 extern struct Node* data_ov006_02142f64;
-extern void func_ov006_02120a64(char *p);
-extern void func_ov006_02120ab8(char *);
 extern int data_ov006_02142f70;
 extern int data_ov006_02142f68;
-extern void func_ov006_02120b30(struct Desc *, int, int);
 
 extern int data_ov006_02142f6c[];
 extern void *func_02054efc(void);
@@ -180,9 +186,6 @@ extern int data_0209e650;
 extern void func_ov006_020d0ac0(void);
 extern int func_ov006_020ccd04(int *r0);
 extern void func_ov006_020cc9fc(char *c);
-extern short func_ov006_02121768(char *c);
-extern void func_ov006_02121750(char *c, short v);
-extern void func_ov006_02120a18(u16 *a, int b);
 extern int RandomIntInternal(int *seed);
 extern "C" void func_ov006_020cd62c(int n);
 extern "C" void func_ov006_020cd510(int a);
@@ -194,7 +197,6 @@ extern void Camera_UpdateMatrices(void *cam);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void Deallocate(void *ptr);
-extern void func_ov006_02120f18(struct Obj *self, int a);
 extern int data_ov006_0213fadc[];
 extern void InitialiseVramGlobals(void);
 extern s16 data_02082414;
@@ -202,17 +204,13 @@ extern int func_ov006_020cd658(unsigned char *, int);
 extern void func_ov006_02120d8c(void *, int);
 extern void func_ov006_020d0b2c(void);
 extern void func_ov004_020b04d0(int);
-extern void func_ov006_0212231c(void *);
 extern void func_ov006_020cd424(unsigned int, int);
 extern void func_ov006_02120ca0(void);
 extern int data_ov006_0213fb18[];
-extern void func_ov006_02120a44(char *);
 extern void func_ov006_020c8a9c(int, int);
 extern void func_02012718(int, int);
 extern void func_ov006_02120c40(void);
-extern void func_ov006_021209ac(short *);
 extern void func_ov004_020adb1c(int);
-extern void func_ov006_0212093c(short *, int);
 extern void func_ov006_02120c08(void);
 extern int *data_ov006_0213fb04[];
 extern int data_ov006_02134ecc;
@@ -229,7 +227,6 @@ extern int _ZTV17dScMgTrampoline_c[];
 extern void func_ov006_020cd12c(void);
 extern void func_ov006_020d100c(void);
 extern void func_ov006_021225a8(void);
-extern void func_ov006_02120a54(char *self);
 
 void *dScMgTrampoline_c_classInit(void);
 /* Literal aliases used only to make the five ROM PMF relocations static data.
@@ -348,16 +345,14 @@ extern "C" void *dScMgTrampoline_c_classInit(void)
         __cxa_vec_ctor(scene + 0x5cd0, 5, 0x24,
                       (void *)func_ov006_021225a8,
                       (void *)func_ov006_02120938);
-        func_ov006_02120a54(scene + 0x5d84);
+        ((dScMgTrampoline_DoorMark *)(scene + 0x5d84))->Init();
     }
     return scene;
 }
 
-// @symbol func_ov006_0212231c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0212231c(void *arg0)
+// @symbol _ZN17dScMgTrampoline_c11InitDisplayEv
+void dScMgTrampoline_c::InitDisplay()
 {
-    void *sb = arg0;
     int r8, r7, r6, r5, r4;
     volatile u16 sp0;
 
@@ -393,8 +388,7 @@ void func_ov006_0212231c(void *arg0)
     Deallocate((void *)r5);
     Deallocate((void *)r4);
 
-    func_ov006_02120f18((Obj *)sb, 3);
-}
+    InitBrush(3);
 }
 
 // @symbol _ZN17dScMgTrampoline_c13InitResourcesEv
@@ -407,7 +401,7 @@ s32 dScMgTrampoline_c::InitResources()
 
     this->mScrollY = 0x20;
     this->mScrollTargetY = this->mScrollY;
-    func_ov006_0212231c(base);
+    InitDisplay();
     data_0209d45c = 0x1d;
     G3X::SetFog(false, 0, 2, 0x1000);
     *(u16 *)0x4000060 = (*(u16 *)0x4000060 & ~0x3000) | 8;
@@ -478,7 +472,7 @@ void dScMgTrampoline_c::OnYoshiTryEat(int /* arg */)
     func_ov006_02120ca0();
     func_ov006_020c8a9c(0, data_ov006_0213fb18[GetGameLanguage()]);
 
-    func_ov006_02120a44((char *)&mDoorMark);
+    mDoorMark.Hide();
 
     self->mInputEnabled = 0;
     self->mRoundOver = 0;
@@ -490,7 +484,7 @@ void dScMgTrampoline_c::OnYoshiTryEat(int /* arg */)
     self->mArrow1X = 0;
     self->mArrow2X = 0;
 
-    func_ov006_02121750(o, 0);
+    SetDoorSide(0);
 
     {
         char *dst = (char *)func_02054d88();
@@ -585,7 +579,7 @@ void dScMgTrampoline_c::BeginPlay()
 {
     mTimer = 0x1e;
     mInputEnabled = 1;
-    func_ov006_02120a18((u16 *)&mDoorMark, mDoorSide);
+    mDoorMark.Show(mDoorSide);
     mDragSoundHandle = 0;
     Sound::PlayBank2_2D(0x1b6);
     *(P2Words *)mState = *(P2Words *)&data_ov006_0213fac0;
@@ -628,7 +622,6 @@ void dScMgTrampoline_c::UpdateScroll()
 // @symbol _ZN17dScMgTrampoline_c9StatePlayEv
 void dScMgTrampoline_c::StatePlay()
 {
-    char *c = (char *)this;
     int old = data_ov006_02140588;
     func_ov006_020d0ac0();
     func_ov006_020cd39c();
@@ -665,12 +658,12 @@ void dScMgTrampoline_c::StatePlay()
 
     if (data_ov006_02142f60 == 0) {
         if (_Z15ApproachLinear2Rsss((short *)&mDoorSwitchTimer, 0, 1)) {
-            if (func_ov006_02121768(c)) {
-                func_ov006_02121750(c, 0);
-                func_ov006_02120a18((u16 *)&mDoorMark, mDoorSide);
+            if (GetDoorSide()) {
+                SetDoorSide(0);
+                mDoorMark.Show(mDoorSide);
             } else {
-                func_ov006_02121750(c, 1);
-                func_ov006_02120a18((u16 *)&mDoorMark, mDoorSide);
+                SetDoorSide(1);
+                mDoorMark.Show(mDoorSide);
             }
             Sound::PlayBank2_2D(0x1b6);
             {
@@ -760,20 +753,17 @@ void dScMgTrampoline_c::StateDone()
 {
 }
 
-// @symbol func_ov006_02121768
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-short func_ov006_02121768(char* scene) {
-  return ((dScMgTrampoline_c *)scene)->mDoorSide;
-}
+// @symbol _ZN17dScMgTrampoline_c11GetDoorSideEv
+s16 dScMgTrampoline_c::GetDoorSide()
+{
+    return mDoorSide;
 }
 
-// @symbol func_ov006_02121750
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_02121750(char *scene, short value)
+// @symbol _ZN17dScMgTrampoline_c11SetDoorSideEs
+void dScMgTrampoline_c::SetDoorSide(short value)
 {
     data_ov006_02140538 = value;
-    ((dScMgTrampoline_c *)scene)->mDoorSide = value;
-}
+    mDoorSide = value;
 }
 
 // @symbol _ZN17dScMgTrampoline_c16UpdateTouchInputEv
@@ -825,7 +815,7 @@ s32 dScMgTrampoline_c::Behavior()
     func_ov006_02120c40();
     (this->*(*(State *)mState))();
     UpdateTouchInput();
-    func_ov006_021209ac(&mDoorMark.row);
+    mDoorMark.Update();
     if (saved != data_ov006_02140588)
         func_ov004_020adb1c(data_ov006_02140588);
     return 1;
@@ -844,7 +834,7 @@ s32 dScMgTrampoline_c::Render()
     int r6, r5;
     int t;
 
-    func_ov006_0212093c(&mDoorMark.row, mScrollY);
+    mDoorMark.Render(mScrollY);
     func_ov006_02120c08();
 
     if (unk_4664 == 1) {
@@ -973,10 +963,10 @@ int dScMgTrampoline_c::OnAttacked2()
     return 1;
 }
 
-// @symbol func_ov006_02120f18
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_02120f18(struct Obj *self, int layer)
+// @symbol _ZN17dScMgTrampoline_c9InitBrushEi
+void dScMgTrampoline_c::InitBrush(int layer)
 {
+    Obj *self = (Obj *)this;
     volatile unsigned short t0;
     volatile unsigned short t1;
     int tile = 0x7000;
@@ -1018,7 +1008,6 @@ void func_ov006_02120f18(struct Obj *self, int layer)
     t1 = 0;
     MultiStore16(t1, charPtr, 0x6000);
     GX::LoadBGPltt(data_ov006_0212f0d0, 0xe0, 0x20);
-}
 }
 
 #pragma opt_loop_invariants off
@@ -1109,7 +1098,7 @@ void func_ov006_02120d0c(int x, int y) {
   int i;
   for (i = data_ov006_02142f70 - 1; i >= 0; i--) {
     if (*(short *)(data_ov006_02142f68 + i * 0x24 + 0x20) == 0) {
-      func_ov006_02120b30((Desc *)(data_ov006_02142f68 + i * 0x24), x, y);
+      ((Desc *)(data_ov006_02142f68 + i * 0x24))->Spawn(x, y);
       return;
     }
   }
@@ -1134,7 +1123,7 @@ void func_ov006_02120c40(void){
   if(data_ov006_02142f70 > 0){
     int off = 0;
     do {
-      func_ov006_02120ab8((char *)(data_ov006_02142f68 + off));
+      ((Desc *)(data_ov006_02142f68 + off))->Update();
       i++;
       off += 0x24;
     } while(i < data_ov006_02142f70);
@@ -1148,7 +1137,7 @@ void func_ov006_02120c08(void) {
     void *node = data_ov006_02142f64;
     if (node == 0) return;
     do {
-        func_ov006_02120a64((char *)node);
+        ((Desc *)node)->Render();
         node = *(void **)node;
     } while (node != 0);
 }
@@ -1191,33 +1180,28 @@ void func_ov006_02120b7c(struct Node* node) {
 }
 }
 
-// @symbol func_ov006_02120b30
-/* Fills a particle descriptor with fixed parameters and tail-calls
- * func_ov006_02120bc8. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_02120b30(struct Desc *self, int y, int number)
+// @symbol _ZN4Desc5SpawnEii
+/* Fills a slot with fixed parameters and tail-calls func_ov006_02120bc8. */
+void Desc::Spawn(int y, int number)
 {
-    self->x = 0x110000;
-    self->y = y;
-    self->speedX = -0x4000;
-    self->speedY = 0;
-    self->targetX = 0xc0000;
-    self->targetY = y;
-    self->life = 0x80;
-    self->active = 1;
-    self->number = number;
-    func_ov006_02120bc8((int *)self);
-}
+    x = 0x110000;
+    this->y = y;
+    speedX = -0x4000;
+    speedY = 0;
+    targetX = 0xc0000;
+    targetY = y;
+    life = 0x80;
+    active = 1;
+    this->number = number;
+    func_ov006_02120bc8((int *)this);
 }
 
-// @symbol func_ov006_02120ab8
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-
-int _Z14ApproachLinearRiii(int *a, int b, int c);
-void func_0203d630(int *p, int m);
+extern "C" void func_0203d630(int *p, int m);
+// @symbol _ZN4Desc6UpdateEv
 /* Member form of x += speedX DIFFed. Offsets are Desc's. */
-void func_ov006_02120ab8(char *self)
+void Desc::Update()
 {
+  char *self = (char *)this;
   if ((*((short *) (self + 0x20))) == 0)
   {
     return;
@@ -1234,78 +1218,63 @@ void func_ov006_02120ab8(char *self)
   _Z14ApproachLinearRiii((int *) (self + 8), *((int *) (self + 0x10)), 0x1800);
   func_0203d630((int *) (self + 0x14), 0xf00);
 }
-}
 
-// @symbol func_ov006_02120a64
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol _ZN4Desc6RenderEv
 /* Member form DIFFed (ldrsh of number). Offsets are Desc::active, x, y, number. */
-void func_ov006_02120a64(char *desc){
+void Desc::Render(){
+  char *desc = (char *)this;
   if(*(short*)(desc+0x20)==0) return;
   func_ov004_020b2444(*(int*)(desc+4)>>12,*(int*)(desc+8)>>12,*(short*)(desc+0x1e),-1,-1,0,0);
 }
+
+// @symbol _ZN24dScMgTrampoline_DoorMark4InitEv
+void dScMgTrampoline_DoorMark::Init()
+{
+    active = 0;
+    shown = 0;
 }
 
-// @symbol func_ov006_02120a54
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_02120a54(char *label)
+// @symbol _ZN24dScMgTrampoline_DoorMark4HideEv
+void dScMgTrampoline_DoorMark::Hide()
 {
-    DoorMark *mark = (DoorMark *)label;
-    mark->active = 0;
-    mark->shown = 0;
-}
+    active = 0;
+    shown = 0;
 }
 
-// @symbol func_ov006_02120a44
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_02120a44(char *label)
+// @symbol _ZN24dScMgTrampoline_DoorMark4ShowEi
+void dScMgTrampoline_DoorMark::Show(int side)
 {
-    DoorMark *mark = (DoorMark *)label;
-    mark->active = 0;
-    mark->shown = 0;
-}
-}
-
-// @symbol func_ov006_02120a18
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_02120a18(unsigned short* label, int row)
-{
-    DoorMark *mark = (DoorMark *)label;
-    mark->row = (s16)row;
-    mark->timer = 0x3c;
-    mark->shown = 1;
-    mark->active = 1;
+    row = (s16)side;
+    timer = 0x3c;
+    shown = 1;
+    active = 1;
     Sound::PlayBank2_2D(0x1B7);
 }
-}
 
-// @symbol func_ov006_021209ac
-extern "C" void func_ov006_021209ac(short *label)
+// @symbol _ZN24dScMgTrampoline_DoorMark6UpdateEv
+void dScMgTrampoline_DoorMark::Update()
 {
-    DoorMark *mark = (DoorMark *)label;
-    if (mark->active == 0) return;
-    if (_Z15ApproachLinear2Rsss(&mark->timer, 0, 1) != 0) {
-        mark->active = 0;
+    if (active == 0) return;
+    if (_Z15ApproachLinear2Rsss(&timer, 0, 1) != 0) {
+        active = 0;
     }
-    if (((mark->timer / 10) & 1) != 0) {
-        mark->shown = 0;
+    if (((timer / 10) & 1) != 0) {
+        shown = 0;
     } else {
-        mark->shown = 1;
+        shown = 1;
     }
 }
 
-// @symbol func_ov006_0212093c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0212093c(short* label, int scrollY) {
-    DoorMark *mark = (DoorMark *)label;
-    if (mark->active == 0) return;
-    if (mark->shown == 0) return;
+// @symbol _ZN24dScMgTrampoline_DoorMark6RenderEi
+void dScMgTrampoline_DoorMark::Render(int scrollY) {
+    if (active == 0) return;
+    if (shown == 0) return;
     func_ov004_020afdd0(
         (void *)data_ov006_02134f24,
         0xd0,
-        data_ov006_0212f0c8[mark->row] - scrollY - 8,
+        data_ov006_0212f0c8[row] - scrollY - 8,
         -1,
         -1);
-}
 }
 
 // @symbol func_ov006_02120938

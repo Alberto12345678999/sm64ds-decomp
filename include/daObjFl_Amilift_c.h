@@ -52,6 +52,12 @@ struct daObjFl_Amilift_c : dBgActor_c {
     virtual s32   Behavior();              /* slot  6 */
     virtual s32   Render();                /* slot  9 */
 
+    void func_ov064_02117a14(Vector3* a, Vector3* b);
+    int  func_ov064_02117a44();
+    void func_ov064_02117b8c();
+    int  func_ov064_02117bdc();
+    void func_ov064_02117c24();
+
     /* mState values. The state handlers live in a three-entry table in ov064's
        .data (see daObjFl_Amilift_c.cpp), indexed by mState. */
     enum {

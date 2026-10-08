@@ -6,6 +6,22 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
+   "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov002_02101588.c"
+  },
+  {
+   "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov018_02112c14.c"
+  },
+  {
+   "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov060_0211a388.c"
+  },
+  {
+   "file": "CLAIMS.md",
+   "ref": "src/unnamed/ov004/__sinit_ov004_020b948c.c"
+  },
+  {
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },
@@ -46,6 +62,10 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/five-cpp-cleanups-0919.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
    "ref": "src_tu/actors/Actor.cpp"
   },
@@ -66,8 +86,24 @@
    "ref": "src_tu/actors/Koopa+KoopaSmall.cpp"
   },
   {
+   "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411.md",
+   "ref": "tools/check_src_tu.py"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
    "ref": "src/func_ov006_020cb030.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2413.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
@@ -102,6 +138,10 @@
    "ref": "src/_ZN12dScMg3DEsp_cD1Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "src/d_s_mg_bomroom.c"
   },
@@ -124,6 +164,14 @@
   {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "src/d_s_mg_teresa.c"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-s3dbase-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-tamaire-0925.md",
@@ -154,8 +202,20 @@
    "ref": "src/d_s_mg_pachinko2.c"
   },
   {
+   "file": "notes/agents/handoffs/mg-p1-tamaire-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/mg-tool-ztv-single-0925.md",
    "ref": "src/d_s_mg_pachinko2.c"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-tool-ztv-single-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-tu-tamaire-0926.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/minigame-esp-state-readable-0922.md",
@@ -166,20 +226,44 @@
    "ref": "src/func_0201267c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/pr2231-rescue-ov002-batch1.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/pr2868-source-repair-0920.md",
    "ref": "include/BookShot.h"
   },
   {
+   "file": "notes/agents/handoffs/prod-dossunbar-0907-daObjBk_Dossunbar_c.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
    "ref": "src/game/actors/d_a_bg_snwmn.cpp"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov021-newslift-0923.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov025-dpbrock-0924.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
@@ -194,6 +278,14 @@
    "ref": "src/d_a_udlift_udlift_teresa.c"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov098-wbm-0924.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
    "ref": "src/func_020393c4.c"
   },
@@ -202,20 +294,60 @@
    "ref": "src/func_020393d4.c"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov021-newslift-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
    "ref": "src/func_020393d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov034-hanachan-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
    "ref": "src/d_a_luigi.cpp"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov065-basabasa-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov071-casket-0925.md",
    "ref": "src/func_020393d4.c"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov071-casket-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov071-eykn-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov084-fpkn-0925b.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov084-pkn-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov089-objkey-0925.md",
    "ref": "src/func_02012694.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov089-objkey-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
@@ -224,6 +356,18 @@
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
    "ref": "src/d_a_onms.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov095-udlift-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov098-wbm-0925.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
@@ -256,6 +400,26 @@
   {
    "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
    "ref": "src/func_ov020_0211216c.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/src-tu-inventory-test-repair-0926.md",
+   "ref": "tools/check_src_tu.py"
+  },
+  {
+   "file": "notes/agents/handoffs/src-tu-inventory-test-repair-0926.md",
+   "ref": "tools/test_check_src_tu.py"
+  },
+  {
+   "file": "notes/agents/handoffs/tu-ov063-trs-0927.md",
+   "ref": "tools/check_src_tu.py"
+  },
+  {
+   "file": "notes/agents/handoffs/tu-ov063-trs-0927.md",
+   "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/references/builder-v1.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/archive/crack-loop-runbook.md",
@@ -336,6 +500,14 @@
   {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/_ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h.cpp"
+  },
+  {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "tools/check_src_tu.py"
+  },
+  {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/collision-query-classes.md",
@@ -474,6 +646,10 @@
    "ref": "docs/class-reference-confidence"
   },
   {
+   "file": "notes/handoff-issue-2422.md",
+   "ref": "tools/check_src_tu.py"
+  },
+  {
    "file": "notes/handoff-marker-typing.md",
    "ref": "src/_ZN10FlameChomp13InitResourcesEv.cpp"
   },
@@ -492,6 +668,10 @@
   {
    "file": "notes/handoff-validator-and-tests.md",
    "ref": "tools/test_"
+  },
+  {
+   "file": "notes/handoff-validator-and-tests.md",
+   "ref": "tools/test_check_src_tu.py"
   },
   {
    "file": "notes/match-attempts.md",
@@ -626,6 +806,10 @@
    "ref": "src/func_ov006_020e0574.cpp"
   },
   {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02101968.c"
+  },
+  {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
    "ref": "include/Actor.h"
   },
@@ -710,26 +894,6 @@
    "ref": "src/func_ov006_020cb030.cpp"
   },
   {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/F.c"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/F.cpp"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/name.c"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/name.ext"
-  },
-  {
-   "file": "tools/chaos_db_ci.py",
-   "ref": "src/x.c"
-  },
-  {
    "file": "tools/check_dead_references.py",
    "ref": "tools/foo.py"
   },
@@ -748,18 +912,6 @@
   {
    "file": "tools/check_header_offsets.py",
    "ref": "include/Enemy.h"
-  },
-  {
-   "file": "tools/check_src_tu.py",
-   "ref": "src_tu/actors/Actor.cpp"
-  },
-  {
-   "file": "tools/check_src_tu.py",
-   "ref": "src_tu/actors/CastleWater.cpp"
-  },
-  {
-   "file": "tools/check_src_tu_compiles.py",
-   "ref": "src_tu/actors/Actor.cpp"
   },
   {
    "file": "tools/d0_migrate.py",
@@ -802,10 +954,6 @@
    "ref": "config/reloc"
   },
   {
-   "file": "tools/match_provenance.py",
-   "ref": "src/x.c"
-  },
-  {
    "file": "tools/nearmiss_db.py",
    "ref": "nearmiss/.lock"
   },
@@ -842,14 +990,6 @@
    "ref": "src/b.cpp"
   },
   {
-   "file": "tools/prepush_attribution.py",
-   "ref": "src/F.c"
-  },
-  {
-   "file": "tools/prepush_attribution.py",
-   "ref": "src/F.cpp"
-  },
-  {
    "file": "tools/prepush_linkcheck.py",
    "ref": "src/a.c"
   },
@@ -882,10 +1022,6 @@
    "ref": "src/_ZN12CylinderClsn7ProcessEv.cpp"
   },
   {
-   "file": "tools/srcpath.py",
-   "ref": "src/unnamed/ov006"
-  },
-  {
    "file": "tools/stamp_provenance.py",
    "ref": "src/arm9/func_02001b44.c"
   },
@@ -908,10 +1044,6 @@
   {
    "file": "tools/test_srcpath.py",
    "ref": "mods/X.c"
-  },
-  {
-   "file": "tools/test_srcpath.py",
-   "ref": "src/unnamed/ov006"
   },
   {
    "file": "tools/test_validate_merge.py",
