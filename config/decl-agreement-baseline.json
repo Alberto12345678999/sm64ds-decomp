@@ -18281,14 +18281,6 @@
         "return:ResourceDescriptor"
       ]
     },
-    "data_ov015_02114960": {
-      "src/__sinit_ov015_02112f9c.c": [
-        "return:int []"
-      ],
-      "src/game/actors/d_a_obj_bk_billboard.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov015_02114974": {
       "src/__sinit_ov015_02112fdc.c": [
         "return:int []"
@@ -22595,9 +22587,6 @@
       "src/__sinit_ov014_021132fc.c": [
         "kind:data"
       ],
-      "src/__sinit_ov015_02112f9c.c": [
-        "kind:data"
-      ],
       "src/__sinit_ov015_02112fdc.c": [
         "kind:data"
       ],
@@ -23305,9 +23294,6 @@
         "return:void"
       ],
       "src/__sinit_ov014_021132fc.c": [
-        "return:void"
-      ],
-      "src/__sinit_ov015_02112f9c.c": [
         "return:void"
       ],
       "src/__sinit_ov015_02112fdc.c": [
