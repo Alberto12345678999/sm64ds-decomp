@@ -7091,6 +7091,7 @@
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c6RenderEv": "tangosdev",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8BehaviorEv": "lunavyqo",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjTatefuda_c.cpp#__sinit_daObjTatefuda_c.cpp": "tangosdev",
     "src/actors/unit020c8a30.cpp#func_ov006_020c8a30": "tangosdev",
     "src/actors/unit020c8a30.cpp#func_ov006_020c8a64": "tangosdev",
     "src/actors/unit020c8a30.cpp#func_ov006_020c8a9c": "tangosdev",
