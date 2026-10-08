@@ -218,8 +218,61 @@ def object_reloc_dests(obj, func, name_index, vt_form="raw"):
     return dests, size
 
 
+_RENAME_POLICIES = None
+
+
+def _defined_symbol_rename_policies():
+    """[(function symbols, {from: to})] for every manifest that sets defined_symbol_renames."""
+    global _RENAME_POLICIES
+    if _RENAME_POLICIES is None:
+        policies = []
+        for path in sorted((REPO / "config" / "tu_manifest.d").glob("*/*.json")):
+            try:
+                entry = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            rows = entry.get("defined_symbol_renames") or []
+            mapping = {row.get("from"): row.get("to") for row in rows
+                       if isinstance(row, dict) and row.get("from") and row.get("to")}
+            funcs = frozenset(row["symbol"] for row in entry.get("functions") or []
+                              if isinstance(row, dict) and row.get("symbol"))
+            if mapping and funcs:
+                policies.append((funcs, mapping))
+        _RENAME_POLICIES = policies
+    return _RENAME_POLICIES
+
+
+def _with_manifest_renames(obj):
+    """Renumber the compiler temps a promoted TU's manifest renames, as tu_production does.
+
+    mwcc numbers `@NNN` per TU, so a fold can emit a name another module already
+    defines globally; the manifest's defined_symbol_renames gives it a fleet-unique
+    one, and the production link only ever sees the renamed object. Resolving the
+    compiled name through symbols.txt instead lands on the OTHER module's temp:
+    ov002 dPathLiftActor_c's `@653` read as ov079's `@653` and called a correct
+    `__sinit` WRONG. A policy applies only to the object that defines every function
+    its manifest lists and every name it renames; a refused rename keeps the raw
+    object, so the verdict fails closed.
+    """
+    policies = _defined_symbol_rename_policies()
+    if not policies:
+        return obj
+    try:
+        symtab = ELFFile(io.BytesIO(obj)).get_section_by_name(".symtab")
+        defined = {s.name for s in symtab.iter_symbols()
+                   if s.name and s["st_shndx"] != "SHN_UNDEF"}
+    except Exception:                                             # noqa: BLE001
+        return obj
+    for funcs, mapping in policies:
+        if funcs <= defined and set(mapping) <= defined:
+            import objisolate as OI
+            out, _plan = OI.rename_defined_symbols(obj, mapping)
+            return obj if out is None else out
+    return obj
+
+
 def _as_the_build_links_it(obj, name):
-    """Apply objisolate, because the ROM build does and the destinations differ.
+    """Apply manifest renames and objisolate, because the ROM build does and the destinations differ.
 
     A gate that checks relocation DESTINATIONS has to check the object the linker
     actually consumes. rombuild runs every enrolled object through objisolate, and
@@ -240,6 +293,7 @@ def _as_the_build_links_it(obj, name):
     wrong. Fails open -- if isolation cannot plan this object, check it unisolated
     rather than losing the verdict.
     """
+    obj = _with_manifest_renames(obj)
     try:
         import objisolate as OI
         fd, tmp = tempfile.mkstemp(suffix=".o")

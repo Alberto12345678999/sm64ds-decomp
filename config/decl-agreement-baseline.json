@@ -15163,10 +15163,8 @@
         "return:SharedFilePtr"
       ]
     },
-    "data_ov002_0210e0fc": {
-    },
-    "data_ov002_0210e104": {
-    },
+    "data_ov002_0210e0fc": {},
+    "data_ov002_0210e104": {},
     "data_ov002_0210e124": {
     },
     "data_ov002_0210e12c": {
@@ -18383,11 +18381,6 @@
     "data_ov036_0211411c": {
       "src/unnamed/ov036/__sinit_ov036_0211279c.c": [
         "return:int []"
-      ]
-    },
-    "data_ov039_021118e4": {
-      "src/game/actors/d_a_obj_kumo.cpp": [
-        "return:SharedFilePtr"
       ]
     },
     "data_ov043_02111c00": {
