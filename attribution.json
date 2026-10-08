@@ -9505,6 +9505,7 @@
     "src/actors/Player.cpp#func_ov002_020c19d0": "andrewboudreau",
     "src/actors/Player.cpp#func_ov002_020c607c": "andrewboudreau",
     "src/actors/Player.cpp#func_ov002_020ce9c8": "andrewboudreau",
-    "src/actors/dScMgHanachan_c.cpp#__sinit_dScMgHanachan_c.cpp": "tangosdev"
+    "src/actors/dScMgHanachan_c.cpp#__sinit_dScMgHanachan_c.cpp": "tangosdev",
+    "src/game/actors/d_a_obj_wc_obj03.cpp#__sinit_d_a_obj_wc_obj03.cpp": "tangosdev"
   }
 }
