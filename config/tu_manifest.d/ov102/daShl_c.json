@@ -242,7 +242,7 @@
       "evidence": "anonymous ridden-tick pointer-to-member; retail first word is 0x0214d044"
     },
     {
-      "symbol": "@707",
+      "symbol": "@722",
       "address": "0x0214e5e4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -256,7 +256,7 @@
       "evidence": "anonymous held-enter pointer-to-member; retail first word is 0x0214d020"
     },
     {
-      "symbol": "@709",
+      "symbol": "@723",
       "address": "0x0214e5f4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -270,14 +270,14 @@
       "evidence": "anonymous ridden-enter pointer-to-member; retail first word is 0x0214d0bc"
     },
     {
-      "symbol": "@711",
+      "symbol": "@724",
       "address": "0x0214e604",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "anonymous sliding-enter pointer-to-member; retail first word is 0x0214d148"
     },
     {
-      "symbol": "@713",
+      "symbol": "@725",
       "address": "0x0214e60c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -314,6 +314,28 @@
       "evidence": "sliding state record; the initializer copies its two descriptors into it"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@707",
+      "to": "@722",
+      "evidence": "idle-enter pointer-to-member descriptor; mwcc numbers it @707 per TU and ov060 daKirai_c also defines a global @707, so the scratch link collides"
+    },
+    {
+      "from": "@709",
+      "to": "@723",
+      "evidence": "idle-tick pointer-to-member descriptor; same per-TU @709 collision with ov060 daKirai_c"
+    },
+    {
+      "from": "@711",
+      "to": "@724",
+      "evidence": "sliding-enter pointer-to-member descriptor; same per-TU @711 collision with ov060 daKirai_c"
+    },
+    {
+      "from": "@713",
+      "to": "@725",
+      "evidence": "sliding-tick pointer-to-member descriptor; same per-TU @713 collision with ov060 daKirai_c"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_d_a_shl.cpp",
@@ -340,7 +362,7 @@
       "evidence": "compiler-local ridden-tick descriptor is a configured initializer relocation destination at 0x0214e5dc"
     },
     {
-      "symbol": "@707",
+      "symbol": "@722",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local idle-enter descriptor is a configured initializer relocation destination at 0x0214e5e4"
@@ -352,7 +374,7 @@
       "evidence": "compiler-local held-enter descriptor is a configured initializer relocation destination at 0x0214e5ec"
     },
     {
-      "symbol": "@709",
+      "symbol": "@723",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local idle-tick descriptor is a configured initializer relocation destination at 0x0214e5f4"
@@ -364,13 +386,13 @@
       "evidence": "compiler-local ridden-enter descriptor is a configured initializer relocation destination at 0x0214e5fc"
     },
     {
-      "symbol": "@711",
+      "symbol": "@724",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local sliding-enter descriptor is a configured initializer relocation destination at 0x0214e604"
     },
     {
-      "symbol": "@713",
+      "symbol": "@725",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local sliding-tick descriptor is a configured initializer relocation destination at 0x0214e60c"
@@ -382,7 +404,7 @@
       "source": "0x0214e070",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@707",
+      "symbol": "@722",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e5e4"
@@ -392,7 +414,7 @@
       "source": "0x0214e074",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@709",
+      "symbol": "@723",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e5f4"
@@ -402,7 +424,7 @@
       "source": "0x0214e078",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@711",
+      "symbol": "@724",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e604"
@@ -412,7 +434,7 @@
       "source": "0x0214e07c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@713",
+      "symbol": "@725",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e60c"
