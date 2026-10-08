@@ -70,6 +70,12 @@ struct daWater_Tatumaki_c : dEnemyBase_c {
     /* --- vtable --- */
     virtual ~daWater_Tatumaki_c();
 
+    /* Address-named state methods. The two records point at these. */
+    int func_ov026_02111b24();
+    int func_ov026_02111cb4();
+    int func_ov026_02111d4c();
+    int func_ov026_02111ed8();
+
     int Behavior();
     int InitResources();
     int Render();
