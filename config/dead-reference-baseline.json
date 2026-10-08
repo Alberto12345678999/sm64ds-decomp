@@ -7,7 +7,19 @@
   },
   {
    "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov002_02101588.c"
+  },
+  {
+   "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov018_02112c14.c"
+  },
+  {
+   "file": "CLAIMS.md",
    "ref": "src/__sinit_ov060_0211a388.c"
+  },
+  {
+   "file": "CLAIMS.md",
+   "ref": "src/unnamed/ov004/__sinit_ov004_020b948c.c"
   },
   {
    "file": "notes/actor-naming.md",
@@ -386,6 +398,14 @@
    "ref": "src/_ZN5ModelC1Ev.cpp"
   },
   {
+   "file": "notes/data/c-cpp-classification.tsv",
+   "ref": "src/unnamed/ov027/__sinit_ov027_02112cb0.c"
+  },
+  {
+   "file": "notes/data/c-cpp-classification.tsv",
+   "ref": "src/unnamed/ov090/__sinit_ov090_02133ce8.c"
+  },
+  {
    "file": "notes/declaration-centralization.md",
    "ref": "include/decl_"
   },
@@ -628,6 +648,10 @@
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/func_ov006_020e0574.cpp"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02101968.c"
   },
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
@@ -878,10 +902,6 @@
    "ref": "src/_ZN12CylinderClsn7ProcessEv.cpp"
   },
   {
-   "file": "tools/srcpath.py",
-   "ref": "src/unnamed/ov006"
-  },
-  {
    "file": "tools/stamp_provenance.py",
    "ref": "src/arm9/func_02001b44.c"
   },
@@ -904,10 +924,6 @@
   {
    "file": "tools/test_srcpath.py",
    "ref": "mods/X.c"
-  },
-  {
-   "file": "tools/test_srcpath.py",
-   "ref": "src/unnamed/ov006"
   },
   {
    "file": "tools/test_validate_merge.py",
