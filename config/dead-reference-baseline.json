@@ -630,6 +630,10 @@
    "ref": "src/func_ov006_020e0574.cpp"
   },
   {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02101968.c"
+  },
+  {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
    "ref": "include/Actor.h"
   },
@@ -886,10 +890,6 @@
    "ref": "src/_ZN12CylinderClsn7ProcessEv.cpp"
   },
   {
-   "file": "tools/srcpath.py",
-   "ref": "src/unnamed/ov006"
-  },
-  {
    "file": "tools/stamp_provenance.py",
    "ref": "src/arm9/func_02001b44.c"
   },
@@ -912,10 +912,6 @@
   {
    "file": "tools/test_srcpath.py",
    "ref": "mods/X.c"
-  },
-  {
-   "file": "tools/test_srcpath.py",
-   "ref": "src/unnamed/ov006"
   },
   {
    "file": "tools/test_validate_merge.py",

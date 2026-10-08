@@ -2264,6 +2264,7 @@
     "src/game/actors/d_a_obj_cannon_shutter.cpp#daObjCannonShutter_c_classInit": "tangosdev",
     "src/game/actors/d_a_obj_cannon_shutter.cpp#func_ov002_020bc990": "github-actions[bot]",
     "src/game/actors/d_a_obj_cannon_shutter.cpp#_ZN20daObjCannonShutter_c19func_ov002_020bc990Ev": "github-actions[bot]",
+    "src/game/actors/d_a_obj_cannon_shutter.cpp#__sinit_d_a_obj_cannon_shutter.cpp": "tangosdev",
     "src/game/actors/daObjCtMecha05_c.cpp#_ZN16daObjCtMecha05_c13InitResourcesEv": "tangosdev",
     "src/game/actors/daObjCtMecha05_c.cpp#_ZN16daObjCtMecha05_c16CleanupResourcesEv": "tangosdev",
     "src/game/actors/daObjCtMecha05_c.cpp#_ZN16daObjCtMecha05_c6RenderEv": "tangosdev",
