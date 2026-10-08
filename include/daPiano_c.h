@@ -50,6 +50,14 @@ struct daPiano_c : dBgActor_c {
     virtual int CleanupResources();
     virtual int Behavior();
     virtual int Render();
+
+    /* --- non-virtual --- */
+    /* The func_ov063_* methods. r0 is this piano; the address is the method
+       name. The two-state PMF table stores all four as member pointers. */
+    void func_ov063_0211d8cc();
+    void func_ov063_0211dba4();
+    void func_ov063_0211dbb8();
+    void func_ov063_0211dd78();
 };
 
 #ifndef SM64DS_PLATFORM_PC
