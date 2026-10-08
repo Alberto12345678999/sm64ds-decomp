@@ -17,8 +17,6 @@ The mechanical steps, all of which this performs and none of which it guesses at
   file's own credit follows) and ``git rm`` every ``legacy_source``;
 * rewrite the manifest entry to ``status: promoted`` with ``source`` at the
   production path, matching the entries already enrolled;
-* add one ``attribution.json`` override per absorbed symbol, so a many-to-one
-  consolidation reads as "consolidated with credit intact" instead of N lost.
 * migrate banked CONVERTED legacy paths to ``promoted-path#symbol`` identities,
   preserving the readability ratchet at function rather than physical-file granularity.
 
@@ -368,13 +366,6 @@ def main():
               "(dry run).")
         return 0
 
-    import prepush_attribution as PA
-    lineage = PA.lineage("HEAD")
-    try:
-        attribution = attribution_update(plans, lineage)
-    except PromoteError as exc:
-        print(f"  refused  {exc}")
-        return 1
     for p, entry in zip(plans, entries):
         rewrite_delinks(p)
         # `git mv` will not create the destination directory, and a promoted_source
@@ -385,10 +376,8 @@ def main():
             git("rm", "-q", source)
         rewrite_manifest(entry, p)
     converted = rewrite_converted_baseline(plans, converted_update)
-    added = rewrite_attribution(plans, lineage, attribution)
     print(f"tu_promote: {len(plans)} entry(ies) promoted, "
           f"{sum(len(p['functions']) for p in plans)} function(s) consolidated, "
-          f"{added} attribution override(s) added, "
           f"{converted} CONVERTED member identity/identities retained.")
     print("tu_promote: now refresh the content-bound control with "
           f"`python tools/tubuild.py linkcheck --baseline --module "

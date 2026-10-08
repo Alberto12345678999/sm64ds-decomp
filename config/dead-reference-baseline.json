@@ -6,6 +6,10 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
+   "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov060_0211a388.c"
+  },
+  {
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },
@@ -612,6 +616,10 @@
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/ChainChomp_Spawn.cpp"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/__sinit_ov020_02113674.c"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
