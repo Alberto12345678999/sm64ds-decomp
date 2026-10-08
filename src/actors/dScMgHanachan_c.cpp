@@ -1952,7 +1952,6 @@ tail:
 // @symbol _ZN15dScMgHanachan_c8BehaviorEv
 s32 dScMgHanachan_c::Behavior()
 {
-    char *raw = (char *)this;
 
     data_ov006_02141fcc = data_ov006_02141fcc + 0x800;
     (((CB *)this)->*(*(PMF *)&mPhaseFn))();
@@ -2271,9 +2270,10 @@ void func_ov006_020ed844(char *raw)
 // @symbol func_ov006_020ed8a4
 extern "C" {
 void func_ov006_020ed8a4(void *arg) {
+    dScMgHanachan_c *self = (dScMgHanachan_c *)arg;
     char *raw = (char *)arg;
-    if (*(s32 *)(raw + 0xbc) < 0xa) {
-        int bc = *(s32 *)(raw + 0xbc);
+    if ((s32)self->unk_0bc < 0xa) {
+        int bc = (s32)self->unk_0bc;
         data_ov006_02141fd8 = data_ov006_0212e80c[bc];
         data_ov006_0213c958 = data_ov006_0212e820[bc];
     } else {
@@ -2287,7 +2287,7 @@ void func_ov006_020ed8a4(void *arg) {
         }
     }
 
-    if (*(unsigned int *)(raw + 0xbc) < 0xa)
+    if (self->unk_0bc < 0xa)
         func_ov006_020ebd7c(2);
     else
         func_ov006_020ebd7c(3);
@@ -2297,7 +2297,7 @@ void func_ov006_020ed8a4(void *arg) {
         if (data_ov006_0213c958 > 0) {
             Thing *p = (Thing *)((dScMgHanachan_c *)raw)->mWiggler;
             do {
-                func_ov006_020ecdb8((char *)p, i, *(s32 *)(raw + 0xbc));
+                func_ov006_020ecdb8((char *)p, i, (s32)self->unk_0bc);
                 i++;
                 p++;
             } while (i < data_ov006_0213c958);
@@ -2419,5 +2419,24 @@ void func_ov006_020edcb0(void){
   Deallocate(r5);
   Deallocate(r4);
 }
+
+/* The OamAttr* table OAM::Render indexes: the five scalar attributes, the
+ * two data_ov006_021375dc entries, then every third pointer out of the
+ * vu32* ring data_ov006_02137560. Non-constant initializers, so the
+ * compiler emits __sinit_dScMgHanachan_c.cpp to copy them at load. */
+extern void* data_ov006_021374b8;
+extern void* data_ov006_021374c4;
+extern void* data_ov006_021374ac;
+extern void* data_ov006_021374e8;
+extern void* data_ov006_021374f4;
+extern void* data_ov006_021375dc[];
+
+void* data_ov006_02142018[11] = {
+    data_ov006_021374b8, data_ov006_021374c4, data_ov006_021374ac,
+    data_ov006_021374e8, data_ov006_021374f4,
+    data_ov006_021375dc[0], data_ov006_021375dc[1],
+    (void*)data_ov006_02137560[0], (void*)data_ov006_02137560[3],
+    (void*)data_ov006_02137560[6], (void*)data_ov006_02137560[9],
+};
 }
 

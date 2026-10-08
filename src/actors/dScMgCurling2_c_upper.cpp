@@ -307,7 +307,7 @@ void dScMgCurling2_c::NextStone()
     }
     if ((*((unsigned short *) ((self + 0x5500) + 0xb4))) != 0)
     {
-        *((unsigned short *) ((int)self + 0x55b4)) -= 1;
+        mSpawnTimer -= 1;
         if (*((short *) ((self + 0x5500) + 0xb4)) <= 0)
         {
             *((unsigned short *) ((self + 0x5500) + 0xb4)) = 0;
@@ -345,8 +345,8 @@ void dScMgCurling2_c::NextStone()
             Sound::PlayBank2_2D(0x1d7);
         }
         *((unsigned char *) ((int)self + 0x55ba)) += 1;
-        *((int *) (self + 0x5584)) = 0x80000;
-        *((int *) (self + 0x5588)) = 0xb0000;
+        unk_5584 = 0x80000;
+        unk_5588 = 0xb0000;
         *((unsigned char *) (self + 0x55b8)) = 0;
         *((unsigned char *) (self + 0x55b9)) = 1;
         ClearStoneFlags();
@@ -471,21 +471,21 @@ void dScMgCurling2_c::NextThrow()
 void dScMgCurling2_c::Play()
 {
     char *c = (char *)this;
-    if (*(u16*)(c + 0x55b6) != 0) {
-        u16* q = (u16*)(c + 0x55b6);
+    if (mStateTimer != 0) {
+        u16* q = &mStateTimer;
         *q = *q - 1;
         return;
     }
-    if (*(u8*)(c + 0xc4) == 0) {
-        *(u8*)(c + 0xc3) = 1;
-        *(u8*)(c + 0xc4) = 1;
-        *(u16*)(c + 0xc0) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
-    if (*(u8*)(c + 0x55bd) != 0) {
+    if (sndCooldown != 0) {
         u8* q = (u8*)(c + 0x55bd);
         *q = *q - 1;
     }
-    (((C*)c)->*data_ov006_02141978[*(u8*)(c + 0x55b8)])();
+    (((C*)c)->*data_ov006_02141978[unk_55b8])();
 
     {
         int count = 0;
@@ -505,8 +505,8 @@ void dScMgCurling2_c::Play()
         }
         if (count != 0) return;
     }
-    *(int*)(c + 0x5580) = 2;
-    *(u16*)(c + 0x55b6) = 0x40;
+    mState = 2;
+    mStateTimer = 0x40;
 }
 
 
@@ -607,11 +607,11 @@ void dScMgCurling2_c::ResetGame()
 
     *((short *) (c + 0x55b4)) = 0;
     *((unsigned char *) (c + 0x55ba)) = 0;
-    *((int *) (c + 0x5584)) = 0;
-    *((int *) (c + 0x5588)) = 0;
-    *((int *) (c + 0x5594)) = 0;
-    *((int *) (c + 0x5598)) = 0;
-    *((int *) (c + 0x559c)) = 0;
+    unk_5584 = 0;
+    unk_5588 = 0;
+    unk_5594 = 0;
+    unk_5598 = 0;
+    unk_559c = 0;
     *((short *) (c + 0x55b2)) = 0;
     *((unsigned char *) (c + 0x55b8)) = 0;
     *((unsigned char *) (c + 0x55b9)) = 0;

@@ -115,7 +115,6 @@ python tools/check_header_offsets.py <changed headers>   # 0 mismatched, 0 unpar
 python tools/eligible.py                                 # BEFORE and AFTER, diff them
 python tools/rombuild.py                                 # 106/106 exact, PASS
 python tools/check_references.py                         # must say OK
-python tools/prepush_attribution.py                      # 0 changed, 0 lost
 python tools/langmode_audit.py --check langmode-baseline.json
 python tools/test_gen_header.py                          # 17 tests
 ```

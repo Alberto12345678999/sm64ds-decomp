@@ -147,8 +147,8 @@ void dScMgCurling2_c::SpawnValue(int stone, int other)
     for (i = 0; i < 0x3c; i++) {
         if (mValue[i].live != 0) continue;
 
-        sx = *(int *)(raw + stone * 0x30 + 0x4660) + *(int *)(raw + 0x4000 + other * 0x30 + 0x660);
-        sy = *(int *)(raw + stone * 0x30 + 0x4664) + *(int *)(raw + 0x4000 + other * 0x30 + 0x664);
+        sx = mStone[stone].x + mStone[other].x;
+        sy = mStone[stone].y + mStone[other].y;
 
         mValue[i].live = 1;
         mValue[i].mode = 1;
@@ -160,18 +160,18 @@ void dScMgCurling2_c::SpawnValue(int stone, int other)
 
         /* The && and || arms really do compute the same value; collapsing them
            into one `||` changes the code, so the ROM branched twice too. */
-        if (*(unsigned char *)(raw + stone * 0x30 + 0x468d) != 0 && *(unsigned char *)(raw + 0x4000 + other * 0x30 + 0x68d) != 0) {
-            mValue[i].value = (*(unsigned char *)(raw + 0x55bf) + 1) * 10;
-        } else if (*(unsigned char *)(raw + stone * 0x30 + 0x468d) != 0 || *(unsigned char *)(raw + 0x4000 + other * 0x30 + 0x68d) != 0) {
-            mValue[i].value = (*(unsigned char *)(raw + 0x55bf) + 1) * 10;
+        if (mStone[stone].target != 0 && mStone[other].target != 0) {
+            mValue[i].value = (combo + 1) * 10;
+        } else if (mStone[stone].target != 0 || mStone[other].target != 0) {
+            mValue[i].value = (combo + 1) * 10;
         } else {
-            mValue[i].value = (*(unsigned char *)(raw + 0x55bf) + 1) * 100;
+            mValue[i].value = (combo + 1) * 100;
             mValue[i].mode = 2;
         }
 
         count = (unsigned char *)(raw + 0x55bf);
         *count = *count + 1;
-        if (*(unsigned char *)(raw + 0x55bf) >= 0x17) *(unsigned char *)(raw + 0x55bf) = 0x17;
+        if (combo >= 0x17) combo = 0x17;
         func_ov004_020adb1c(mValue[i].value + func_ov004_020adbc0());
         return;
     }
@@ -817,7 +817,6 @@ void dScMgCurling2_c::DragUpdate()
  * data_ov006_02141978; DragUpdate is entry 1. */
 void dScMgCurling2_c::DragBegin()
 {
-    char *raw = (char *)this;
     int idx;
     int flag = 0;
     int x;
@@ -843,15 +842,15 @@ void dScMgCurling2_c::DragBegin()
     unk_55b8 = 1;
     unk_55b2 = 0xc000;
 
-    if (*(u8 *)(raw + 0x55bd) == 0)
+    if (sndCooldown == 0)
     {
         func_02012718(0x1d2, unk_5584);
-        *(u8 *)(raw + 0x55bd) = 6;
+        sndCooldown = 6;
     }
 
-    *(int *)(raw + 0x55a0) = 0;
-    *(int *)(raw + 0x55a4) = 0;
-    *(int *)(raw + 0x558c) = unk_5584 + unk_5594;
+    unk_55a0 = 0;
+    unk_55a4 = 0;
+    unk_558c = unk_5584 + unk_5594;
     unk_5590 = unk_5588 + unk_5598;
     unk_55a8 = 0xff;
     unk_55be = 0;

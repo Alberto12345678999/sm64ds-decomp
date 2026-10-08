@@ -26,6 +26,8 @@ extern "C" Model *func_ov006_02122c68(Model *model);
 extern "C" void func_ov006_02120938(void);
 
 struct dScMgTrampoline2_c : dScMgD3DBase_c {
+    typedef void (dScMgTrampoline2_c::*State)();
+
     virtual ~dScMgTrampoline2_c() {
         __cxa_vec_cleanup(mArray6, 5, 0x24, (void *)func_ov006_02120938);
         __cxa_vec_cleanup(mArray5, 0x14, 0x78, (void *)func_ov006_02122c68);
@@ -40,6 +42,25 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     virtual int  OnKicked();                           /* slot 24 */
     virtual int  OnPushed();                           /* slot 25 */
     virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
+
+    /* State callbacks stored in mState, the same scheme dScMgTrampoline_c
+       uses: eight-byte PMF records in .data, dispatched by Behavior every
+       frame. The State/Begin names are coined from the matched bodies; the
+       ROM symbols were address-only. */
+    void StateDone();        /* ov006 0x02123b20 */
+    void StateWaitExit();    /* ov006 0x02123b24 */
+    void StateResults();     /* ov006 0x02123bf4 */
+    void StatePlay();        /* ov006 0x02123cb4 */
+    void StateIntro();       /* ov006 0x02124088 */
+
+    void BeginResults();     /* ov006 0x02123c78 */
+    void BeginPlay();        /* ov006 0x02124040 */
+    void BeginIntro();       /* ov006 0x02124228 */
+
+    void UpdateTouchInput(); /* ov006 0x02123938 */
+    void SpawnWave();        /* ov006 0x02123428 -- one random wave of shapes */
+    void InitDisplay();      /* ov006 0x021245a8 -- loads BG/OBJ screens */
+    void InitBrush(int layer); /* ov006 0x02122e20 -- fills the stroke layer */
 
     /* Raw eight-byte state PMF. Behavior calls through it. A typed
        global initializer emits a __sinit this ROM does not have. */

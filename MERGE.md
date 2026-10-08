@@ -20,8 +20,7 @@ coordinated v2 fleet.
 - Claims are **best-effort**. If they return `401` / "missing key", the claims service
   just is not configured on this machine — note it once and proceed. Each agent already
   gets a distinct batch, so an unclaimed target is fine to work.
-- `CLAIMS.md` is a historical/tooling log (`tools/claims_md.py` and friends read it), not
-  a step in this workflow — don't ask contributors to hand-edit it.
+- Locks live on the claims service.
 
 ## 2. What may be merged
 
@@ -59,30 +58,26 @@ coordinated v2 fleet.
   bug and fix the `port/` side before merging.
 - **Drafts:** never merge someone else's draft. That is the author saying "not ready."
 
-## 3. How to merge (preserve attribution)
+## 3. How to merge
 
-- Merge the contributor's **own PR** with `--squash`. GitHub keeps the PR author as the
-  commit author, so the contributor chart credits **them**.
-- **Never re-create someone's work as a new PR under your own name** — the squash then records
-  *you* as the author and strips their credit (this is exactly how a batch of matches once got
-  mis-attributed). If you must consolidate — e.g. drop bad files from a fork you cannot push to —
-  add a `src → login` entry under `overrides` in [`attribution.json`](attribution.json).
+- Merge the contributor's **own PR** with `--squash`.
+- **Never re-create someone's work as a new PR under your own name.** Who matched a
+  function is the row already in [`function-authors.json`](function-authors.json).
+  Moving or rewriting the source does not change that row.
 
 ## 4. Conflicts
 
-- A `CLAIMS.md` conflict resolves by taking **main's** version — the claim is moot once the
-  work lands — and keeping the `src` file.
 - For a fork PR with *maintainer edits allowed*, resolve on their branch and push the fix; keep
   their commit so authorship survives. Otherwise ask them to rebase.
 
-## 5. Attribution & the contributor chart
+## 5. Who matched a function
 
-- The chart reads **`contributions.json`** (`{login: matched count}`), regenerated and committed
-  to `main` on **every merge**. **Do not hand-edit it** — fix names in `attribution.json`.
-- One person shows up under several names? Git identity varies per machine and per squash. Add a
-  `git-handle → canonical GitHub login` entry under `aliases` in `attribution.json`.
-- A match landed under the wrong author (e.g. squashed under the maintainer)? Add a `src → login`
-  entry under `overrides` in `attribution.json`.
+- The record is [`function-authors.json`](function-authors.json). One row per matched
+  function. The key is the module and the address.
+- The chart in `contributions.json` is regenerated from that file. Do not hand-edit
+  the chart.
+- A new match needs a new row. Do not change or delete an existing author.
+- Moving a source file does not change the row, so a fold does not need a credit edit.
 
 ## 6. After merging
 

@@ -6,7 +6,7 @@ Do not independently start another merge train.
 
 Accept only an explicitly offered task with independent source verification.
 Record the candidate SHA and current main base before composing anything. Use
-your own wired integration worktree; preserve worker branches and attribution.
+your own wired integration worktree; preserve worker branches. Who matched a function is already in `function-authors.json`. Do not copy credit onto the new file.
 
 Source acceptance is mandatory before claiming integration. Inspect the actual
 review, its remaining work and compiler experiments. A byte-only predecessor pass
@@ -14,8 +14,8 @@ from an older task cannot satisfy this requirement.
 
 ## Compose deliberately
 
-Group only compatible, coherent changes. Shared headers, global attribution,
-generated manifests and symbol ledgers are real dependencies. Reserve the files
+Group only compatible, coherent changes. Shared headers, generated manifests
+and symbol books are real dependencies. Reserve the files
 before editing them; arrange a coordinator resource amendment while idle if
 needed. Do not hand-merge generated state when an authoritative refresh exists.
 Keep tooling, CI and protocol changes separate from source reconstruction.

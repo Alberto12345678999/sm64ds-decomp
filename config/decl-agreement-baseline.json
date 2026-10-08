@@ -2610,10 +2610,6 @@
       "src/unnamed/ov072/__sinit_ov072_021221f8.c": [
         "return:void"
       ],
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov075/__sinit_ov075_0211b5e0.c": [
         "param:#2 int",
         "return:int"
@@ -2677,14 +2673,8 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov009/__sinit_ov009_02112458.c": [
-        "kind:data"
-      ],
       "src/unnamed/ov009/__sinit_ov009_02112ac8.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:void"
       ],
       "src/unnamed/ov016/__sinit_ov016_021136ec.c": [
         "return:void"
@@ -2797,10 +2787,6 @@
         "return:void"
       ],
       "src/unnamed/ov073/__sinit_ov073_02122874.c": [
-        "arity:0",
-        "return:void"
-      ],
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
         "arity:0",
         "return:void"
       ],
@@ -2925,17 +2911,10 @@
       "src/unnamed/ov002/__sinit_ov002_02100d44.c": [
         "kind:data"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02101478.c": [
-        "kind:data"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02101588.c": [
         "kind:data"
       ],
       "src/unnamed/ov002/__sinit_ov002_02101738.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02101968.c": [
-        "arity:0",
         "return:void"
       ],
       "src/unnamed/ov002/__sinit_ov002_02107304.c": [
@@ -2989,9 +2968,6 @@
         "kind:data"
       ],
       "src/unnamed/ov016/__sinit_ov016_021139e4.c": [
-        "kind:data"
-      ],
-      "src/unnamed/ov016/__sinit_ov016_02113a50.c": [
         "kind:data"
       ],
       "src/unnamed/ov017/__sinit_ov017_0211198c.c": [
@@ -3344,10 +3320,6 @@
       ],
       "src/unnamed/ov072/__sinit_ov072_021221f8.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov075/__sinit_ov075_0211b5e0.c": [
         "arity:0",
@@ -5895,13 +5867,7 @@
         "param:#2 int",
         "return:int"
       ],
-      "src/unnamed/ov009/__sinit_ov009_02112458.c": [
-        "return:void"
-      ],
       "src/unnamed/ov009/__sinit_ov009_02112ac8.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
         "return:void"
       ],
       "src/unnamed/ov016/__sinit_ov016_021136ec.c": [
@@ -5999,10 +5965,6 @@
         "return:int"
       ],
       "src/unnamed/ov073/__sinit_ov073_02122874.c": [
-        "param:#2 int",
-        "return:int"
-      ],
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
         "param:#2 int",
         "return:int"
       ],
@@ -6570,6 +6532,31 @@
     "_ZN18dMgMCarloCardObj_cD1Ev": {
       "include/dScMgMCarlo_c.h": [
         "return:void"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c10StateIntroEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c12StateResultsEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c13StateWaitExitEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c9StateDoneEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
+      ]
+    },
+    "_ZN18dScMgTrampoline2_c9StatePlayEv": {
+      "src/minigames/d_s_mg_trampoline2.cpp": [
+        "arity:0"
       ]
     },
     "_ZN19dMgMCarlo2CardObj_cD1Ev": {
@@ -12150,6 +12137,9 @@
       ],
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:int"
+      ],
+      "src/actors/dScDSMT_c.cpp": [
+        "return:int []"
       ]
     },
     "data_0208ee3c": {
@@ -15122,14 +15112,8 @@
       ]
     },
     "data_ov002_0210df94": {
-      "src/unnamed/ov002/__sinit_ov002_02101478.c": [
-        "return:int []"
-      ]
     },
     "data_ov002_0210df9c": {
-      "src/unnamed/ov002/__sinit_ov002_02101478.c": [
-        "return:int []"
-      ]
     },
     "data_ov002_0210e05c": {
       "src/unnamed/ov002/__sinit_ov002_02101738.c": [
@@ -15151,19 +15135,11 @@
         "return:SharedFilePtr"
       ]
     },
-    "data_ov002_0210e0fc": {
-    },
-    "data_ov002_0210e104": {
-    },
+    "data_ov002_0210e0fc": {},
+    "data_ov002_0210e104": {},
     "data_ov002_0210e124": {
-      "src/unnamed/ov002/__sinit_ov002_02101968.c": [
-        "return:char []"
-      ]
     },
     "data_ov002_0210e12c": {
-      "src/unnamed/ov002/__sinit_ov002_02101968.c": [
-        "return:char []"
-      ]
     },
     "data_ov002_0210e160": {
       "src/_ZN6Player12St_Walk_InitEv.cpp": [
@@ -17489,18 +17465,14 @@
     },
     "data_ov009_02113c20": {
       "src/game/actors/d_a_s_bird.cpp": [
+        "return:SBirdModelFilePtr",
         "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov009/__sinit_ov009_02112458.c": [
-        "return:int []"
       ]
     },
     "data_ov009_02113c28": {
       "src/game/actors/d_a_s_bird.cpp": [
+        "return:SBirdAnimationFilePtr",
         "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov009/__sinit_ov009_02112458.c": [
-        "return:int []"
       ]
     },
     "data_ov009_02113c68": {
@@ -17614,37 +17586,6 @@
         "return:int []"
       ]
     },
-    "data_ov014_0211476c": {
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:S20 []"
-      ]
-    },
-    "data_ov014_02114968": {
-      "src/game/actors/d_a_wanwan.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:S8"
-      ]
-    },
-    "data_ov014_02114970": {
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:S8"
-      ]
-    },
-    "data_ov014_02114978": {
-      "src/game/actors/d_a_wanwan.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:S8"
-      ]
-    },
-    "data_ov014_02114980": {
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:S8"
-      ]
-    },
     "data_ov014_021149b8": {
       "src/unnamed/ov014/__sinit_ov014_021132fc.c": [
         "return:int []"
@@ -17683,14 +17624,6 @@
     "data_ov015_02114880": {
       "src/game/actors/d_a_obj_bk_fall_block.cpp": [
         "return:ResourceDescriptor"
-      ]
-    },
-    "data_ov015_02114960": {
-      "src/game/actors/d_a_obj_bk_billboard.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov015/__sinit_ov015_02112f9c.c": [
-        "return:int []"
       ]
     },
     "data_ov015_02114974": {
@@ -18377,11 +18310,6 @@
     "data_ov036_0211411c": {
       "src/unnamed/ov036/__sinit_ov036_0211279c.c": [
         "return:int []"
-      ]
-    },
-    "data_ov039_021118e4": {
-      "src/game/actors/d_a_obj_kumo.cpp": [
-        "return:SharedFilePtr"
       ]
     },
     "data_ov043_02111c00": {
@@ -19563,13 +19491,9 @@
         "return:int"
       ]
     },
-    "data_ov074_02123000": {
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov074_02123040": {
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
+    "data_ov074_02123030": {
+      "src/actors/daKuriKing_c.cpp": [
+        "return:KuriKingAnimationFilePtr",
         "return:void *"
       ]
     },
@@ -21827,9 +21751,6 @@
       "src/unnamed/ov002/__sinit_ov002_02100d44.c": [
         "kind:data"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02101478.c": [
-        "kind:data"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02101588.c": [
         "kind:data"
       ],
@@ -21838,10 +21759,6 @@
       ],
       "src/unnamed/ov002/__sinit_ov002_02101894.c": [
         "kind:data"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02101968.c": [
-        "arity:0",
-        "return:void"
       ],
       "src/unnamed/ov002/__sinit_ov002_021019d0.c": [
         "arity:0",
@@ -21875,9 +21792,6 @@
       "src/unnamed/ov006/__sinit_ov006_02130f00.c": [
         "arity:0",
         "return:void"
-      ],
-      "src/unnamed/ov009/__sinit_ov009_02112458.c": [
-        "kind:data"
       ],
       "src/unnamed/ov009/__sinit_ov009_02112524.c": [
         "kind:data"
@@ -21913,13 +21827,7 @@
       "src/unnamed/ov014/__sinit_ov014_021130ac.c": [
         "kind:data"
       ],
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:void"
-      ],
       "src/unnamed/ov014/__sinit_ov014_021132fc.c": [
-        "kind:data"
-      ],
-      "src/unnamed/ov015/__sinit_ov015_02112f9c.c": [
         "kind:data"
       ],
       "src/unnamed/ov015/__sinit_ov015_02112fdc.c": [
@@ -21951,9 +21859,6 @@
         "kind:data"
       ],
       "src/unnamed/ov016/__sinit_ov016_021139e4.c": [
-        "kind:data"
-      ],
-      "src/unnamed/ov016/__sinit_ov016_02113a50.c": [
         "kind:data"
       ],
       "src/unnamed/ov017/__sinit_ov017_0211198c.c": [
@@ -22325,10 +22230,6 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov075/__sinit_ov075_0211b5e0.c": [
         "arity:0",
         "return:void"
@@ -22507,9 +22408,6 @@
       "src/unnamed/ov002/__sinit_ov002_02100d44.c": [
         "return:void"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02101478.c": [
-        "return:void"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02101588.c": [
         "return:void"
       ],
@@ -22518,9 +22416,6 @@
       ],
       "src/unnamed/ov002/__sinit_ov002_02101894.c": [
         "return:void"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02101968.c": [
-        "return:int"
       ],
       "src/unnamed/ov002/__sinit_ov002_021019d0.c": [
         "param:#2 int",
@@ -22551,10 +22446,6 @@
         "return:void"
       ],
       "src/unnamed/ov006/__sinit_ov006_02130f00.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov009/__sinit_ov009_02112458.c": [
-        "param:#2 int",
         "return:void"
       ],
       "src/unnamed/ov009/__sinit_ov009_02112524.c": [
@@ -22591,13 +22482,7 @@
       "src/unnamed/ov014/__sinit_ov014_021130ac.c": [
         "return:void"
       ],
-      "src/unnamed/ov014/__sinit_ov014_02113118.c": [
-        "return:void"
-      ],
       "src/unnamed/ov014/__sinit_ov014_021132fc.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov015/__sinit_ov015_02112f9c.c": [
         "return:void"
       ],
       "src/unnamed/ov015/__sinit_ov015_02112fdc.c": [
@@ -22628,9 +22513,6 @@
         "return:void"
       ],
       "src/unnamed/ov016/__sinit_ov016_021139e4.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov016/__sinit_ov016_02113a50.c": [
         "return:void"
       ],
       "src/unnamed/ov017/__sinit_ov017_0211198c.c": [
@@ -22997,10 +22879,6 @@
       "src/unnamed/ov073/__sinit_ov073_02122d48.c": [
         "return:int"
       ],
-      "src/unnamed/ov074/__sinit_ov074_02122978.c": [
-        "param:#2 int",
-        "return:int"
-      ],
       "src/unnamed/ov075/__sinit_ov075_0211b5e0.c": [
         "param:#2 int",
         "return:int"
@@ -23159,17 +23037,11 @@
       "src/unnamed/ov002/__sinit_ov002_02100d44.c": [
         "return:void"
       ],
-      "src/unnamed/ov002/__sinit_ov002_02101478.c": [
-        "return:void"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02101588.c": [
         "return:void"
       ],
       "src/unnamed/ov002/__sinit_ov002_02101738.c": [
         "return:void"
-      ],
-      "src/unnamed/ov002/__sinit_ov002_02101968.c": [
-        "return:int"
       ],
       "src/unnamed/ov002/__sinit_ov002_02107304.c": [
         "return:void"
@@ -23221,9 +23093,6 @@
         "return:void"
       ],
       "src/unnamed/ov016/__sinit_ov016_021139e4.c": [
-        "return:void"
-      ],
-      "src/unnamed/ov016/__sinit_ov016_02113a50.c": [
         "return:void"
       ],
       "src/unnamed/ov017/__sinit_ov017_0211198c.c": [

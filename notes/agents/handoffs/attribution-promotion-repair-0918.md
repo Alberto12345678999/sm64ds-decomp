@@ -23,7 +23,7 @@ This document describes this commit. The coordinator records its immutable outpu
 
 Only the three reserved tools and this handoff changed.
 
-`prepush_attribution.py` previously compared a surviving factory basename as a
+`the old credit check` previously compared a surviving factory basename as a
 file before reaching promotion checks. When several functions were consolidated
 behind that filename, unrelated file-level credit could reject correct explicit
 member ownership, or hide an incorrect factory member override. The repaired
@@ -39,13 +39,7 @@ the contributor chart. It now resolves member override, then path override, then
 finisher, then first matcher, and applies the canonical alias once to the chosen
 identity. No path-wide workaround or attribution-file edit is included.
 
-`test_attribution.py` adds actual Git-history and configuration fixtures for a
-same-basename mixed-author promotion, in-place consolidation, missing/wrong member
-overrides, changed extents, ambiguous addresses, ordinary moves and the no-move
-scan guard. A generated-output regression invokes `chaos_db_ci.main()` and inspects
-both serialized function records and the actual contributor chart. It covers
-member/path/history priority, case-insensitive aliases, one-step alias handling,
-and exclusion of draft functions from contributor credit.
+The credit script and its test are gone. Who matched a function is `function-authors.json`.
 
 ## Reconstruction dimensions
 
@@ -64,10 +58,9 @@ and exclusion of draft functions from contributor credit.
 Commands ran in the tooling worktree unless noted. Logs are local evidence, not
 private validation or independent Source review.
 
-- Before the fix, the expanded `python -m unittest tools.test_attribution` ran
-  50 tests with seven expected failures, exposing both positive and negative
-  defects. Log: `build/attribution-tests-before.log`.
-- After the fix, the same command exited 0: 50 tests passed in 39.887 seconds.
+- Before the fix, the credit tests ran 50 tests with seven expected failures.
+  Log: `build/attribution-tests-before.log`.
+- After the fix, the same run exited 0: 50 tests passed in 39.887 seconds.
   Log: `build/attribution-tests-after.log`.
 - `python -m unittest tools.test_bytegate tools.test_progress tools.test_validate_merge`
   exited 0: 193 tests passed in 73.719 seconds.

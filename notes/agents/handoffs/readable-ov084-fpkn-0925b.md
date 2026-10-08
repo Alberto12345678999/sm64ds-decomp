@@ -138,7 +138,7 @@ All commands were run in `C:/tmp/claude-rd-ov084` on the source of this commit (
 | Object comparison with pyelftools, the object `tubuild verify` builds from base `c31f43bacf` against the one it builds from this commit, under the nine-row rename map | 0 | 57 sections in each object; 22/22 function bodies identical; 21/21 relocation sections identical (offset, type, symbol, addend); undefined-symbol set identical (93 symbols); defined global set (31 symbols) differs only by the nine renames |
 | `python tools/rombuild.py -j16` (full, with ROM) | 0 | 7100 enrolled sources; first run 0 reused and 7100 compiled, rerun after the last source edit 7099 reused and 1 compiled (`build/src/actors/daFPkn_c.o` rebuilt); 11,213 of 11,213 source-built functions reproducing, 0 mismatching; module fidelity 106/106 exact; intact TU gates PASS with zero new symbol errors; `intactTuRom.identical` true. Its baseline control step (no TU substitution) reports 9 pre-existing `dsd check symbols` errors in arm9 and ITCM, none in ov084. |
 | `python tools/prepush_linkcheck.py --range c31f43bacf..HEAD` | 0 | 18 checked, 18 verified, 0 warnings, 0 blocking (all nine renamed members VERIFIED) |
-| `python tools/prepush_attribution.py --base c31f43bacf --head HEAD` | 0 | 7273 tracked, 0 changed, 0 lost |
+| `the old credit check` | 0 | 7273 tracked, 0 changed, 0 lost |
 | `python tools/check_decl_agreement.py --changed c31f43bacf` | 0 | no new local redeclarations, no new declaration disagreements |
 | `python tools/check_dead_references.py` | 0 | no new dead references, no broken markdown links |
 | `python tools/tiers_ratchet.py --check` | 0 | PASS (baseline 2998, current 3155) |

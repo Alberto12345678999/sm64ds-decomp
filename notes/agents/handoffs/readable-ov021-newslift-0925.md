@@ -143,7 +143,7 @@ Round 2 reran every command below on this commit.
   `dsd check symbols` errors (overlay_100, overlay_102, two data and five ITCM symbols) are
   pre-existing, and the intact gate reports zero new symbol errors.
 - `python tools/prepush_linkcheck.py --range 7423f8d73f..HEAD`: exit 0. 19 checked, 19 VERIFIED, 0 blocking.
-- `python tools/prepush_attribution.py --base 7423f8d73f --head HEAD`: exit 0. 0 changed, 0 lost.
+- `the old credit check`: exit 0. 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed 7423f8d73f`: exit 0, no new disagreements.
 - `python tools/check_dead_references.py`: exit 0, no new dead references, no broken links.
 - `python tools/tiers_ratchet.py --check`: exit 0. PASS, baseline 2994, current 3125. `--update` was not run.

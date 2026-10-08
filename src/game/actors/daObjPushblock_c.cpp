@@ -27,9 +27,8 @@
  * - (Vector3 *)&mPosX / mPrevPosX / mHomePosX / mCamSpacePosX: dActor_c
  *   stores the triples as scalars; grouping as Vector3 is a shared-header
  *   campaign, and the address-of-first-component form is the MATCH shape.
- * - data_ov002_0210df9c / 0210df94 SharedFilePtr handles and
- *   data_ov002_0210d7b4 CLPS; this TU consumes them, overlay .data/.bss owns
- *   them. S14: g_profile_PUSHBLOCK stays outside the licensed .text.
+ * - data_ov002_0210d7b4 CLPS: this TU consumes it, overlay .data owns it.
+ *   S14: g_profile_PUSHBLOCK stays outside the licensed .text.
  * - func_020393a4 / func_02039394 store clip ranges on mMeshCollider
  *   (no setter).
  * - daSCoin_c::Collect linked-actor helper (Behavior).
@@ -45,6 +44,27 @@
 #include "daSCoin_c.h"
 #include "decl_Platform.h"
 #include "dBgCh_Gnd.h"
+
+/* The model handle constructs through func_02017acc and destroys through
+ * func_02017ab4; the mesh-collision handle constructs through func_02017b4c
+ * and destroys through SharedFilePtr_Destruct_Clsn. The manifest aliases
+ * those undefined members onto the ROM symbols. */
+struct PushblockModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PushblockModelFilePtr(u32 fileID);
+    ~PushblockModelFilePtr();
+};
+
+struct PushblockClsnFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PushblockClsnFilePtr(u32 fileID);
+    ~PushblockClsnFilePtr();
+};
+
+extern "C" PushblockModelFilePtr data_ov002_0210df9c;
+extern "C" PushblockClsnFilePtr data_ov002_0210df94;
 
 /* These seams preserve retail ABI details not expressible through the current
  * typed headers. The Fix12<int>-by-value entries change caller codegen when
@@ -66,8 +86,6 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, KCL_File *k, void *m, int fix, short s, void *clps);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *a, int b, int c, void *d, int e);
-extern SharedFilePtr data_ov002_0210df9c;
-extern SharedFilePtr data_ov002_0210df94;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -335,3 +353,8 @@ void daObjPushblock_c::Kill()
     Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
     MarkForDestruction();
 }
+
+/* Order is the retail initializer: model 0x486, mesh-collision 0x487. mwcc
+ * emits __sinit_daObjPushblock_c.cpp from these two definitions. */
+PushblockModelFilePtr data_ov002_0210df9c(0x486);
+PushblockClsnFilePtr data_ov002_0210df94(0x487);

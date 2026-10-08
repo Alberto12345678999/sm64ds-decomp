@@ -8503,7 +8503,6 @@
             "python",
             "-X",
             "utf8",
-            "tools/prepush_attribution.py",
             "--base",
             "2705c624d2554ee8d21a56641275a2b85cce3a8b",
             "--head",

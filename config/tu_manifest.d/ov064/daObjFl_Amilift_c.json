@@ -33,35 +33,35 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov064_02117a14",
+      "symbol": "_ZN17daObjFl_Amilift_c19func_ov064_02117a14EP7Vector3S1_",
       "address": "0x02117a14",
       "size": "0x00000030",
       "legacy_source": "src/func_ov064_02117a14.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov064_02117a44",
+      "symbol": "_ZN17daObjFl_Amilift_c19func_ov064_02117a44Ev",
       "address": "0x02117a44",
       "size": "0x00000148",
       "legacy_source": "src/func_ov064_02117a44.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov064_02117b8c",
+      "symbol": "_ZN17daObjFl_Amilift_c19func_ov064_02117b8cEv",
       "address": "0x02117b8c",
       "size": "0x00000050",
       "legacy_source": "src/func_ov064_02117b8c.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov064_02117bdc",
+      "symbol": "_ZN17daObjFl_Amilift_c19func_ov064_02117bdcEv",
       "address": "0x02117bdc",
       "size": "0x00000048",
       "legacy_source": "src/func_ov064_02117bdc.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov064_02117c24",
+      "symbol": "_ZN17daObjFl_Amilift_c19func_ov064_02117c24Ev",
       "address": "0x02117c24",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov064_02117c24.c",

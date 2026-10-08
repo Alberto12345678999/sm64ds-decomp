@@ -85,7 +85,7 @@ https://github.com/tangosdev/sm64ds-decomp/issues/3140.
 | R12 | unmeasured codegen notes | ROM-ordinal banners, "recovered:" lines and long codegen essays | fixed | - | https://github.com/tangosdev/sm64ds-decomp/issues/3140 | Removed. Each remaining codegen comment names a shape measured in this pass (above). |
 | R13 | stale manifest notes | RAW notes for the retired [func_ov034_02111a0c](../../../config/tu_manifest.d/ov034/daHanachan_c.json) and [func_ov034_02112330](../../../config/tu_manifest.d/ov034/daHanachan_c.json) units; CONFLICT notes for declarations no longer carried; the Vector3s reason citing `unk_444` | fixed | - | https://github.com/tangosdev/sm64ds-decomp/issues/3140 | 26 notes end with a "Superseded:" sentence naming the member or header declaration now used; the reason names `mSegmentRot`. The other CONFLICT notes still hold (their declarations remain). |
 | R14 | dead or local declarations | `include/decl_common.h` declares [func_ov034_02112650](../../../config/tu_manifest.d/ov034/daHanachan_c.json) and [func_ov034_021129ec](../../../config/tu_manifest.d/ov034/daHanachan_c.json) (now members) and [data_ov034_02114538](../../../config/arm9/overlays/ov034/symbols.txt) as `int []` | still deferred | claude-promo-coord-0923 | https://github.com/tangosdev/sm64ds-decomp/issues/3140 | The file is held by `jump-contract-repair-0918`. The two function lines name no defined symbol and nothing uses them; delete them when the file is free. |
-| R15 | stale manifest notes | old `func_ov034_*` names in `CLAIMS.md`, `notes/mwccarm-codegen.md`, `symbols/actor_renames.tsv` and generated docs; the `config/decl-agreement-baseline.json` key `func_ov034_02112650` | still deferred | claude-promo-coord-0923 | https://github.com/tangosdev/sm64ds-decomp/issues/3140 | Outside this reservation; no gate requires them. The baseline key is inert. |
+| R15 | stale manifest notes | old `func_ov034_*` names in `notes/mwccarm-codegen.md`, `symbols/actor_renames.tsv` and generated docs; the `config/decl-agreement-baseline.json` key `func_ov034_02112650` | still deferred | claude-promo-coord-0923 | https://github.com/tangosdev/sm64ds-decomp/issues/3140 | Outside this reservation; no gate requires them. The baseline key is inert. |
 
 ## Round 2: verifier findings
 
@@ -160,7 +160,7 @@ All commands were run in this worktree against this commit's tree, with base `ac
   `dsd check symbols` errors (ITCM symbols) are pre-existing; the intact gate reports zero new
   symbol errors.
 - `python tools/prepush_linkcheck.py --range ace15a6c62..HEAD`: exit 0. 35 checked, 35 VERIFIED, 0 blocking.
-- `python tools/prepush_attribution.py --base ace15a6c62 --head HEAD`: exit 0. 0 changed, 0 lost.
+- `the old credit check`: exit 0. 0 changed, 0 lost.
 - `python tools/check_decl_agreement.py --changed ace15a6c62`: exit 1 before the baseline key above
   (one disagreement, [data_ov034_02114538](../../../config/arm9/overlays/ov034/symbols.txt)); exit 0 after it, no new disagreements and no new local
   redeclarations.

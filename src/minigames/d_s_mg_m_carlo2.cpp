@@ -164,7 +164,7 @@ int dScMgMCarlo2_c::OnTurnIntoEgg(int /* mode */)
     switch (state) {
     case 4:
         if (func_ov006_020c1718((int *)(raw + 0x4f38)) != 0) {
-            short *p = (short *)(raw + 0x5928);
+            short *p = &unk_5928;
             *p += 1;
         }
         break;
@@ -181,7 +181,7 @@ int dScMgMCarlo2_c::OnTurnIntoEgg(int /* mode */)
             func_02012790(0x62);
             unk_592a = 0x1e;
             dScMgMCarlo2_c::FlipDealtCards();
-            p = (short *)(raw + 0x5928);
+            p = &unk_5928;
             *p += 1;
         }
         break;
@@ -207,7 +207,7 @@ s32 dScMgMCarlo2_c::Behavior()
     switch (unk_5928) {
     case 1:
         {
-            s16 *p = (s16 *)((int)raw + 0x5928);
+            s16 *p = &unk_5928;
             (*p)++;
         }
         if (mPromptBlinkCount == 0) {
@@ -222,7 +222,7 @@ s32 dScMgMCarlo2_c::Behavior()
             if (dScMgMCarlo2_c::BoardBusy() == 0) {
                 unk_592e = 0;
                 {
-                    s16 *p = (s16 *)((int)raw + 0x5928);
+                    s16 *p = &unk_5928;
                     (*p)++;
                 }
             }
@@ -262,7 +262,7 @@ s32 dScMgMCarlo2_c::Behavior()
                             func_ov004_020b0a54(0x12);
                             mPromptEnabled = 0;
                             {
-                                s16 *p = (s16 *)((int)raw + 0x5928);
+                                s16 *p = &unk_5928;
                                 (*p)++;
                             }
                         }

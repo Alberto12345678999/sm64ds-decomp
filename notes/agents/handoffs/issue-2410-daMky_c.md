@@ -135,8 +135,7 @@ Recorded separately, not combined into one score.
   non-text section, so `_ZTV7daMky_c`, `_ZTI7daMky_c`, `_ZTS7daMky_c` and the four
   inherited base RTTI records are all externalized — the ROM supplies them. This
   is the text-only promoted shape, shared by 107 of the tree's 124 promoted TUs.
-  The branch also touches [src/unnamed/ov029/__sinit_ov029_02112c10.c](../../../src/unnamed/ov029/__sinit_ov029_02112c10.c), a cross-overlay static
-  initializer in [ov029](../../../config/arm9/overlays/ov029/symbols.txt); it is covered by the full-ROM build below, which is green.
+  The ov029 static initializer at 02112c10 now lives in [src/game/actors/d_a_obj_wc_obj03.cpp](../../../src/game/actors/d_a_obj_wc_obj03.cpp).
 - Attribution preserved through each move/rename:
   `attribution.json` carries the 44-shard fold's `path#symbol` overrides; that was
   the input commit's own last change. `tools/port_refcheck.py` reports 402
@@ -282,7 +281,7 @@ only part that describes the composition.
   exact; `tubuild.py verify ov030/daMky_c` 44/44 MATCH; `romdata_check` 4 VERIFIED /
   5 PARTIAL / 0 DIFFERS; `premerge_check.py --base origin/main` all 8 static gates
   pass on base and merge tree; `check_rename_ledger`, `port_refcheck` (423 refs),
-  `check_dead_references`, `cpp_tu_state` and `prepush_attribution` clean.
+  `check_dead_references`, `cpp_tu_state` and `the old credit check` clean.
   `queue_audit` still reports only the unrelated pre-existing `dScMgAmida_c` row.
 - **Contributor credit.** The first validation run on the composed merge reported
   `0 added, 5 changed, 0 lost` — five [ov030](../../../config/arm9/overlays/ov030/symbols.txt) addresses (0x0211172c, 0x02111b20,
@@ -292,9 +291,9 @@ only part that describes the composition.
   own block; no existing row was changed or removed.
   With those eight rows the validator reports `0 added, **0 changed**, 0 lost` and
   "Committed merge introduces no reconstruction or attribution regression".
-- **`prepush_attribution` did not catch those five and the validator did.** The two
+- **`the old credit check` did not catch those five and the validator did.** The two
   gates key differently — `member_overrides_at` on the OLD basename, the validator
-  on the CURRENT symbol name — so a green `prepush_attribution` is not evidence that
+  on the CURRENT symbol name — so a green `the old credit check` is not evidence that
   credit survives a rename. Do not read one as covering the other.
 - **The gate passing is not the same claim as the chart being preserved, and this
   promotion does move the chart.** The published contributor chart is built by

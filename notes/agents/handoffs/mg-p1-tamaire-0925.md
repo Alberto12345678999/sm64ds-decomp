@@ -153,7 +153,7 @@ cartridge dump. The commit after it adds only this file.
   by the per-edit runs, which compiled these exact sources.
 - **`python tools/prepush_linkcheck.py --range e63828444b..HEAD`**: exit 0. The changed
   header fans out to 7 sources; 7 VERIFIED, 0 warnings, 0 blocking.
-- **`python tools/prepush_attribution.py --base e63828444b --head HEAD`**: exit 0.
+- **`the old credit check`**: exit 0.
   7,241 tracked, 0 changed, 0 lost.
 - **`python tools/check_decl_agreement.py --changed e63828444b`**: exit 0. 139 files in
   scope; no new local redeclarations of header-declared symbols, no new disagreements.

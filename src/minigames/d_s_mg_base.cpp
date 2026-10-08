@@ -39,9 +39,33 @@
 #pragma defer_codegen off
 
 /* The 0x40 records at data_ov004_020bebe8 are 0x20 bytes each; only the s16
-   at 0x1a (nonzero while the record is live) is known, so the type stays a
-   local view. */
-struct Ent { char pad[0x1a]; s16 f; char pad2[4]; };
+   at 0x1a (nonzero while the record is live) and the dispatch index at 0x1e
+   are known, so the type stays a local view. */
+struct Ent {
+    char pad[0x1a];
+    s16 f;                              /* 0x1a */
+    s16 g;                              /* 0x1c */
+    s16 idx;                            /* 0x1e -- state table index */
+    Ent() {}
+    ~Ent() {}
+    void func_ov004_020adc80();
+    void func_ov004_020adcc8();
+    void func_ov004_020addcc();
+    void func_ov004_020adeb0();
+};
+
+typedef void (Ent::*EntPMF)();
+
+extern "C" {
+/* Static minigame base state: the graphCallback_c registry instance, the
+   Ent record pool, and the two PMF state tables the dispatchers call
+   through. Declaration order is the ROM's __sinit order. */
+dScMgBase_c::graphCallback_c data_ov004_020beb74;
+Ent data_ov004_020bebe8[0x40];
+EntPMF data_ov004_020beb88[2] = { &Ent::func_ov004_020adeb0, &Ent::func_ov004_020addcc };
+EntPMF data_ov004_020beb98[2] = { &Ent::func_ov004_020adcc8, &Ent::func_ov004_020adc80 };
+int data_ov004_020beba8[16];
+}
 
 /* Local view of the stylus owner at data_0209f5bc, also used by
  * dScMiniGm_c. Only slot 5 is known: it says whether input is live. The
@@ -507,60 +531,56 @@ void *func_ov004_020adc74(const char *path)
 }
 }
 
-// @symbol func_ov004_020adc80
+// @symbol _ZN3Ent19func_ov004_020adc80Ev
 namespace s20adc80 {
 extern "C" {
 extern int GetGameLanguage(void);
 extern int *data_ov004_020bbfa8[];
 extern int func_ov004_020b1d60(int,int,int,long long);
-void func_ov004_020adc80(int *c){
-    int idx=GetGameLanguage();
-    int *t=data_ov004_020bbfa8[idx];
-    func_ov004_020b1d60(t[2], c[0]>>0xc, c[1]>>0xc, -1);
 }
 }
+void Ent::func_ov004_020adc80(){
+    int idx=s20adc80::GetGameLanguage();
+    int *t=s20adc80::data_ov004_020bbfa8[idx];
+    s20adc80::func_ov004_020b1d60(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
 }
 
-// @symbol func_ov004_020adcc8
+// @symbol _ZN3Ent19func_ov004_020adcc8Ev
 namespace s20adcc8 {
-extern "C" {
 extern "C" {
 extern void func_ov004_020b1d60(int a0,int a1,int a2,int a3,int a4);
 extern int data_ov004_020beb70;
 extern int data_ov004_020bea14[];
 extern int data_ov004_020beba8[];
-void func_ov004_020adcc8(short* obj){
-  if((data_ov004_020beb70 & 1) == 0){
-    int* s = data_ov004_020bea14;
-    int* d = data_ov004_020beba8;
+}
+}
+void Ent::func_ov004_020adcc8(){
+  if((s20adcc8::data_ov004_020beb70 & 1) == 0){
+    int* s = s20adcc8::data_ov004_020bea14;
+    int* d = s20adcc8::data_ov004_020beba8;
     d[0]=s[0];d[1]=s[0];d[2]=s[0];d[3]=s[0];d[4]=s[0];
     d[5]=s[4];d[6]=s[4];d[7]=s[3];d[8]=s[2];d[9]=s[1];
     d[10]=s[2];d[11]=s[2];d[12]=s[3];d[13]=s[4];d[14]=s[4];d[15]=s[0];
-    data_ov004_020beb70 |= 1;
+    s20adcc8::data_ov004_020beb70 |= 1;
   }
   {
-    int idx=((int)*(short*)((char*)obj+0x1a))&0xf;
-    int x=*(int*)obj>>0xc; int y=*(int*)((char*)obj+4)>>0xc;
-    func_ov004_020b1d60(data_ov004_020beba8[idx],x,y,-1,-1);
+    int idx=((int)f)&0xf;
+    int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;
+    s20adcc8::func_ov004_020b1d60(s20adcc8::data_ov004_020beba8[idx],x,y,-1,-1);
   }
-}
-}
-}
 }
 
 // @symbol func_ov004_020add88
 namespace s20add88 {
 extern "C" {
-struct C; typedef void (C::*PMF)();
-extern PMF data_ov004_020beb98[];
-struct C { char pad[0x1e]; short idx; };
-extern "C" void func_ov004_020add88(C *c) {
+extern EntPMF data_ov004_020beb98[];
+extern "C" void func_ov004_020add88(Ent *c) {
   (c->*data_ov004_020beb98[c->idx])();
 }
 }
 }
 
-// @symbol func_ov004_020addcc
+// @symbol _ZN3Ent19func_ov004_020addccEv
 namespace s20addcc {
 extern "C" {
 int _Z15ApproachLinear2Rsss(short *a, short b, short c);
@@ -570,9 +590,13 @@ inline long long inline_fn(int arg0)
 {
   return (long long) arg0;
 }
-
-void func_ov004_020addcc(char *r5)
+}
+}
+void Ent::func_ov004_020addcc()
 {
+  char *r5 = (char *)this;
+  using namespace s20addcc;
+  {
   if (_Z15ApproachLinear2Rsss((short *) (r5 + 0x1a), 0, 1))
   {
     func_ov004_020b1b40((void *) 1);
@@ -591,20 +615,21 @@ void func_ov004_020addcc(char *r5)
   long long m4 = inline_fn((int) ((m3 + 0x800) >> 0xc)) * inline_fn((*((int *) (r5 + 0xc))) - (*((int *) (r5 + 0x14))));
   *((int *) r5) = ((int) ((m1 + 0x800) >> 0xc)) + ((int) ((m2 + 0x800) >> 0xc));
   *((int *) (r5 + 4)) = (*((int *) (r5 + 0x14))) + ((int) ((m4 + 0x800) >> 0xc));
-}
-}
+  }
 }
 
-// @symbol func_ov004_020adeb0
+// @symbol _ZN3Ent19func_ov004_020adeb0Ev
 namespace s20adeb0 {
 extern "C" {
 extern int _Z15ApproachLinear2Rsss(short* dst, short to, short step);
 extern void func_0203d630(int* p, int m);
-
-void func_ov004_020adeb0(char* c)
+}
+}
+void Ent::func_ov004_020adeb0()
 {
-    _Z15ApproachLinear2Rsss((short*)(c + 0x1a), 0, 1);
-    func_0203d630((int*)(c + 8), 0xff8);
+    char* c = (char*)this;
+    s20adeb0::_Z15ApproachLinear2Rsss((short*)(c + 0x1a), 0, 1);
+    s20adeb0::func_0203d630((int*)(c + 8), 0xff8);
     int *p = (int*)(((int)c + 8));
     int *p2 = (int*)(((int)c + 0xc));
     *p += *(int*)(c + 0x10);
@@ -613,16 +638,12 @@ void func_ov004_020adeb0(char* c)
     *(int*)c += *(int*)(c + 8);
     *p += *(int*)(c + 0xc);
 }
-}
-}
 
 // @symbol func_ov004_020adf2c
 namespace s20adf2c {
 extern "C" {
-struct C; typedef void (C::*PMF)();
-extern PMF data_ov004_020beb88[];
-struct C { char pad[0x1e]; short idx; };
-extern "C" void func_ov004_020adf2c(C *c) {
+extern EntPMF data_ov004_020beb88[];
+extern "C" void func_ov004_020adf2c(Ent *c) {
   (c->*data_ov004_020beb88[c->idx])();
 }
 }
@@ -653,8 +674,6 @@ void func_ov004_020adf70(char* c, short a1, short a2, int* r3, int* sp0, int* sp
 namespace s20adfc4 {
 extern "C" {
 extern void func_ov004_020adf70(void* tbl, char* c, short a1, short a2, int* r3, int* sp0);
-struct E { char pad[0x1a]; short f; char pad2[0x20-0x1c]; };
-extern struct E data_ov004_020bebe8[];
 void func_ov004_020adfc4(char* c, short a1, short a2, int* r3, int* sp0, int* sp4){
   if(a2==0) return;
   int i;
@@ -785,18 +804,10 @@ int dScMgBase_c::graphCallback_c::GraphCallback0()
     return 1;
 }
 
-// @symbol func_ov004_020ae104
-namespace s20ae104 {
-extern "C" {
-extern int data_0208ee14[];
-extern int data_ov004_020bc03c[];
-void func_ov004_020ae104(void *c) {
-    *(int*)c = (int)data_0208ee14;
-    *(int*)c = (int)data_ov004_020bc03c;
-    *(int*)((char*)c+4) = 0;
-}
-}
-}
+// @symbol _ZN11dScMgBase_c15graphCallback_cC1Ev
+/* graphCallback_c ctor -- the base callback_c vptr store, the derived vptr
+   store, and mScene = 0 are the three writes the ROM body makes. */
+dScMgBase_c::graphCallback_c::graphCallback_c() : mScene(0) {}
 
 namespace s20ae128 {
 extern "C" {
@@ -1254,6 +1265,7 @@ extern int data_ov006_021346bc;
 
 extern "C" void func_ov004_020ae858(char *self)
 {
+    dScMgBase_c *scene = (dScMgBase_c *)self;
     int extra[3];
     s16 *tbl[3];
     int buf[4];
@@ -1269,9 +1281,9 @@ extern "C" void func_ov004_020ae858(char *self)
     extra[1] = *data_ov004_020bbfbc[GetGameLanguage()];
     extra[2] = *data_ov004_020bbfd0[GetGameLanguage()];
 
-    tbl[0] = (s16 *)(self + 0x4634);
-    tbl[1] = (s16 *)(self + 0x4638);
-    tbl[2] = (s16 *)(self + 0x463c);
+    tbl[0] = &scene->mMenuItem0X;
+    tbl[1] = &scene->mMenuItem1X;
+    tbl[2] = &scene->mMenuItem2X;
 
     i = 0;
     zero1 = 0;
@@ -1279,8 +1291,8 @@ extern "C" void func_ov004_020ae858(char *self)
     zero0 = 0;
 
     for (; i < 3; i++) {
-        if (i == *(s16 *)(self + 0x4646)) {
-            unsigned int field = *(unsigned int *)(self + 0x4640);
+        if (i == scene->mMenuCursor) {
+            unsigned int field = (unsigned int)scene->mMenuCursorPhase;
             unsigned int shifted = (field << 0xf) >> 0x10;
             int idx0 = (int)shifted >> 4;
             int s0 = data_02082214[idx0 * 2];
@@ -1428,6 +1440,7 @@ extern dWipe_c data_0209f61c;
 
 void func_ov004_020aeb24(char* c)
 {
+    dScMgBase_c *self = (dScMgBase_c *)c;
     unsigned char idx = gActivePlayerSlot;
     unsigned short flags = data_020a0e5a[idx * 2];
     int unlocked;
@@ -1442,9 +1455,9 @@ void func_ov004_020aeb24(char* c)
     }
     if (func_ov004_020b8f78(c + 0xf4) != 0) return;
 
-    _Z15ApproachLinear2Rsss((short*)(c + 0x4634), 0x80, 0x10);
-    _Z15ApproachLinear2Rsss((short*)(c + 0x4638), 0x80, 0x10);
-    _Z15ApproachLinear2Rsss((short*)(c + 0x463e), 0x90, 5);
+    _Z15ApproachLinear2Rsss(&self->mMenuItem0X, 0x80, 0x10);
+    _Z15ApproachLinear2Rsss(&self->mMenuItem1X, 0x80, 0x10);
+    _Z15ApproachLinear2Rsss(&self->mMenuItem2Y, 0x90, 5);
 
     idx = gActivePlayerSlot;
     unlocked = 0;
@@ -1452,18 +1465,18 @@ void func_ov004_020aeb24(char* c)
         unlocked = (gTouchEdge[idx * 4] != 0);
     }
     if (unlocked == 0) goto after;
-    if (*(short*)(c + 0x4646) >= 0) goto after;
+    if (self->mMenuCursor >= 0) goto after;
     tmp[0] = gTouchX[idx * 4];
     tmp[1] = gTouchY[idx * 4];
-    func_0203b958(d0, tmp, (short*)(c + 0x4634));
-    func_0203b958(d1, tmp, (short*)(c + 0x4638));
-    func_0203b958(d2, tmp, (short*)(c + 0x463c));
+    func_0203b958(d0, tmp, &self->mMenuItem0X);
+    func_0203b958(d1, tmp, &self->mMenuItem1X);
+    func_0203b958(d2, tmp, &self->mMenuItem2X);
     a = d0[0]; if (a < 0) a = -a;
     if (a < 0x60) {
         b = d0[1]; if (b < 0) b = -b;
         if (b < 0x18) {
             func_02012790(0x62);
-            *(short*)(c + 0x4646) = 0;
+            self->mMenuCursor = 0;
             *(short*)(c + 0x4644) = 0x10;
             goto after;
         }
@@ -1473,7 +1486,7 @@ void func_ov004_020aeb24(char* c)
         b = d1[1]; if (b < 0) b = -b;
         if (b < 0x13) {
             func_02012790(0x63);
-            *(short*)(c + 0x4646) = 1;
+            self->mMenuCursor = 1;
             *(short*)(c + 0x4644) = 0;
             goto after;
         }
@@ -1483,17 +1496,17 @@ void func_ov004_020aeb24(char* c)
         b = d2[1]; if (b < 0) b = -b;
         if (b < 0x13) {
             func_02012790(0x62);
-            *(short*)(c + 0x4646) = 2;
+            self->mMenuCursor = 2;
             *(short*)(c + 0x4644) = 0;
         }
     }
 
 after:
-    if (*(short*)(c + 0x4646) < 0) return;
-    if (_Z14ApproachLinearRiii((int*)(c + 0x4640), 0x10000, 0x1000) == 0) return;
+    if (self->mMenuCursor < 0) return;
+    if (_Z14ApproachLinearRiii(&self->mMenuCursorPhase, 0x10000, 0x1000) == 0) return;
     if (_Z15ApproachLinear2Rsss((short*)(c + 0x4644), 0, 1) == 0) return;
 
-    switch (*(short*)(c + 0x4646)) {
+    switch (self->mMenuCursor) {
     case 0:
         ((Obj*)c)->v28();
         return;
@@ -1501,14 +1514,14 @@ after:
         dScene_c::SetFaders(&data_0209f61c);
         data_0209f61c.func_0202ec9c(1);
         dScene_c::StartSceneFade(5, 0, 0);
-        if (*(int*)(c + 0x4648) != 0) return;
+        if (self->unk_4648 != 0) return;
         func_02012dd0(0x3c);
-        *(int*)(c + 0x4648) = 1;
+        self->unk_4648 = 1;
         return;
     case 2:
         func_ov004_020b9220(c + 0xf4);
-        *(short*)(c + 0x4646) = -1;
-        *(int*)(c + 0x4640) = 0;
+        self->mMenuCursor = -1;
+        self->mMenuCursorPhase = 0;
         return;
     default:
         ((Obj*)c)->v28();
@@ -2439,9 +2452,9 @@ int dScMgBase_c::BeforeRender()
         mStateController.Render();
     }
 
-    p = data_ov004_020bebe8;
+    p = (char *)data_ov004_020bebe8;
     for (j = 0; j < 0x40; j++, p += 0x20) {
-        if (((struct Ent *)data_ov004_020bebe8)[j].f != 0)
+        if (data_ov004_020bebe8[j].f != 0)
             func_ov004_020add88(p);
     }
 
@@ -2504,10 +2517,10 @@ int dScMgBase_c::BeforeBehavior()
 
     {
         int j;
-        char *p = data_ov004_020bebe8;
-        char *base = data_ov004_020bebe8;
+        char *p = (char *)data_ov004_020bebe8;
+        Ent *base = data_ov004_020bebe8;
         for (j = 0; j < 0x40; j++) {
-            if (((struct Ent *)base)[j].f != 0)
+            if (base[j].f != 0)
                 func_ov004_020adf2c(p);
             p += 0x20;
         }
@@ -2534,7 +2547,7 @@ void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
         if (((int *)data_0209b308)[4] == 0)
             func_ov004_020ad90c();
         data_0209d4a8 = 0;
-        data_ov004_020beb74[1] = 0;
+        data_ov004_020beb74.mScene = 0;
         FreeGfxSlotsById(0x1d);
         if (data_ov004_020beb60 != 0) {
             func_0203cbc0(data_ov004_020beb60);
@@ -2771,15 +2784,14 @@ void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6) {
 namespace s20b0d30 {
 extern "C" {
 extern void FreeGfxSlotsById(int);
-typedef struct { char pad[0x1a]; short field_1a; char pad2[4]; } Elem;
-extern Elem data_ov004_020bebe8[];
+extern Ent data_ov004_020bebe8[];
 extern char data_ov004_020bf3e8[];
 
 void func_ov004_020b0d30(void) {
     FreeGfxSlotsById(0x1d);
     int i = 0;
     do {
-        data_ov004_020bebe8[i].field_1a = 0;
+        data_ov004_020bebe8[i].f = 0;
         i++;
     } while (i < 0x40);
     int j = 0;
@@ -2823,19 +2835,20 @@ extern char* data_ov004_020bbfa8[];
 
 void func_ov004_020b0de0(char* c)
 {
-    if (*(unsigned char*)(c + 0xc3) == 0)
+    dScMgBase_c *self = (dScMgBase_c *)c;
+    if (self->mPromptEnabled == 0)
         return;
-    if ((unsigned int)*(unsigned char*)(c + 0xc4) < 4U) {
+    if ((unsigned int)self->mPromptBlinkCount < 4U) {
         unsigned short* p = (unsigned short*)LAU(c + 0xc0);
         *p = (unsigned short)(*p + 1);
-        if ((unsigned int)*(unsigned short*)(c + 0xc0) >= 0x30U) {
-            *(unsigned short*)(c + 0xc0) = 0U;
+        if ((unsigned int)self->mPromptBlinkTimer >= 0x30U) {
+            self->mPromptBlinkTimer = 0U;
             {
                 unsigned char* q = (unsigned char*)LAU(c + 0xc4);
                 *q = (unsigned char)(*q + 1);
             }
         }
-        if ((unsigned int)*(unsigned short*)(c + 0xc0) >= 0x18U)
+        if ((unsigned int)self->mPromptBlinkTimer >= 0x18U)
             return;
     }
     {
@@ -3686,7 +3699,6 @@ extern void FreeGfxSlotsById(int arg);
 extern int data_ov004_020beb6c;
 extern u8 data_0209d45c;
 extern int data_ov004_020bbfe4[];
-extern int data_ov004_020beb74[];
 extern u8 data_0209d454;
 extern void **data_0209d4a8;
 extern int data_0208ee44;
@@ -3694,7 +3706,7 @@ extern int data_0208ee44;
 }
 
 void dScMgBase_c::Virtual84()
-{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX15SetGraphicsModeEiii; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN3GXS15SetGraphicsModeEi; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::data_ov004_020beb74; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
+{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX15SetGraphicsModeEiii; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN3GXS15SetGraphicsModeEi; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
     char *obj = (char *)this;
 
     void *p;
@@ -3732,8 +3744,8 @@ void dScMgBase_c::Virtual84()
     _ZN3GXS11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
     Ov004_Deallocate(p);
     data_0209d454 = 0x10;
-    data_ov004_020beb74[1] = (int)obj;
-    data_0209d4a8 = (void **)data_ov004_020beb74;
+    data_ov004_020beb74.mScene = this;
+    data_0209d4a8 = (void **)&data_ov004_020beb74;
     func_ov004_020b0d30();
     FreeGfxSlotsById(0x1d);
     data_0208ee44 = 1;

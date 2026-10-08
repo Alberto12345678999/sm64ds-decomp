@@ -145,8 +145,8 @@ Two whole families of apparent shape-(b) candidates were rejected:
   historically false by construction. **ITCM and DTCM should be excluded from
   this workstream's candidate pool the same way `main` is** — for a different
   reason, but just as firmly.
-  (`MeshCollider` is separately disqualified: `CLAIMS.md` carries an active
-  "Collision chain" conversion claim, and `MeshCollider::DetectClsn(SphereClsn&)`
+  (`MeshCollider` is separately disqualified: a collision-chain conversion was
+  already underway, and `MeshCollider::DetectClsn(SphereClsn&)`
   is unmatched.)
 
 A direct search that bypassed `tu_map` entirely — cut every module's
@@ -227,7 +227,7 @@ function at `0x02037624..0x02037788`, with the empty stub also called from
 | no unexpected `.bss`/`.data`/`.rodata` | **PASS.** Verified by section inventory (§4), not by inspection of sources. |
 | no by-value class-parameter exclusions | **PASS at the definitions.** One *callee*, `LoadMinimapChangeObject`, takes a by-value `Fix12<int>`; it stays hand-spelled as an `extern "C"` symbol exactly as the legacy file had it, so the exclusion never reaches a definition here. |
 | small header blast radius | **PASS, unusually so.** `tools/affected_src.py include/LVL_Overlay.h` returns exactly fifteen files, and all fifteen are inside this TU. No header was edited. |
-| no active `CLAIMS.md` row | **PASS.** No row covers [ov002](../config/arm9/overlays/ov002/symbols.txt) `0x020fe190..0x020fea4c`. (The active "Collision chain" row is what disqualified the `MeshCollider` alternative.) |
+| no active lock on the span | **PASS.** Nothing covers [ov002](../config/arm9/overlays/ov002/symbols.txt) `0x020fe190..0x020fea4c`. (The collision-chain conversion is what disqualified the `MeshCollider` alternative.) |
 
 ---
 

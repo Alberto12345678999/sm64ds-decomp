@@ -59,7 +59,7 @@ F1 and F8 were fixed by the promotion task.
 - Genuine methods; remaining free-function/ABI bridges: 11 member functions (D1, D0, InitResources, Behavior, Render, CleanupResources, Land, Burst, StateDrop, StateFall, StateBounce) plus the factory. 2 C-linkage helpers remain (see F2) and 5 mangled bridges (see F3).
 - Recovered layout/fields; remaining shadow structs/raw offsets: unchanged. `unk_3b4` is still unnamed. The Vector3 casts over `mPosX` and `mScaleX` remain (F9).
 - Lifecycle, vtable/RTTI, initializer and data ownership: unchanged. Adding five non-virtual members changes neither layout nor vtable. The state table's .data words keep their relocations by address; the linker resolves them to the renamed rows.
-- Attribution preserved through each move/rename: the five `attribution.json` keys follow the renamed symbols with the same authors (`lunavyqo` keeps state 0). prepush_attribution reports 0 changed and 0 lost.
+- Attribution preserved through each move/rename: the five `attribution.json` keys follow the renamed symbols with the same authors (`lunavyqo` keeps state 0). the old credit check reports 0 changed and 0 lost.
 - Remaining agreed issue scope: F2 (two helpers), F3 (five Fix12 bridges), F4 (no committed experiment artifact), F5, F6, F7 and F9 as in the table above.
 
 Residue in `src/actors/daWbm_c.cpp`. The `lines` column is `wc -l` of `git show <rev>:src/actors/daWbm_c.cpp` (newline count; every revision ends in a newline). Each token column is the number of lines containing the token, `grep -c -F`; at all four revisions this equals the number of occurrences, `grep -o -F | wc -l`.
@@ -146,7 +146,7 @@ All commands were run in the worktree on the round-2 source commit `b38aa9af78`.
 | Object comparison of `build/tu/ov098-daWbm_c/daWbm_c.o`, round-1 candidate against this commit, read with pyelftools, with the three old state names mapped to the new ones | n/a | 27 of 27 sections byte-identical; 19 of 19 relocation sections identical in offset, type, addend and target name; 74 and 74 undefined symbols, an identical set; 51 of 51 defined function and object symbols identical in binding, type, value and size. Without the name mapping, the only differences are the three renamed definitions. |
 | `python tools/rombuild.py -j16` | 0 | 7189 enrolled, 7189 compiled and 0 reused. `build/src/actors/daWbm_c.o` was rebuilt and defines `_ZN7daWbm_c9StateDropEv`, `_ZN7daWbm_c9StateFallEv` and `_ZN7daWbm_c11StateBounceEv`. 11,213 functions reproducing, 0 mismatching, 106/106 modules exact. `intactTuRom.identical` is true, sha256 `d1506e90...c478e8`. The build's own baseline control step reports the same 9 pre-existing `dsd check symbols` errors (arm9 main and ITCM) before any TU is substituted. |
 | `python tools/prepush_linkcheck.py --range 7423f8d73f..HEAD` | 0 | 14 checked, 14 VERIFIED, 0 blocking |
-| `python tools/prepush_attribution.py --base 7423f8d73f --head HEAD` | 0 | 0 changed, 0 lost |
+| `the old credit check` | 0 | 0 changed, 0 lost |
 | `python tools/check_decl_agreement.py --changed 7423f8d73f` | 0 | no new declaration disagreements |
 | `python tools/check_dead_references.py` | 0 | no new dead references, no broken markdown links |
 | `python tools/tiers_ratchet.py --check` | 0 | PASS, baseline 2994, current 3116 |

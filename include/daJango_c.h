@@ -165,6 +165,25 @@ struct daJango_c : dEnemyBase_c {
     int InitResources();
     void OnPendingDestroy();
     int Render();
+
+    /* The helpers the five state records' pointer-to-member pairs name (the
+       enter/update halves), plus the ones they call. Each takes the object as
+       implicit this where the old C sources took it explicitly. The original
+       names are not recovered; the addresses stand in. */
+    void func_ov062_0211b2fc();    /* circle velocity words */
+    int  func_ov062_0211b3ac();    /* pick the next path node */
+    int  func_ov062_0211b51c();    /* cylinder contact tests (hurt, cap steal) */
+    int  func_ov062_0211b800();    /* RISE update */
+    int  func_ov062_0211b880();    /* RISE enter */
+    int  func_ov062_0211b8d8();    /* HURT update */
+    int  func_ov062_0211b930();    /* HURT enter */
+    int  func_ov062_0211bc54();    /* SWOOP enter */
+    int  func_ov062_0211bd10();    /* CIRCLE update */
+    int  func_ov062_0211c218();    /* CIRCLE enter */
+    int  func_ov062_0211c2f4();    /* FLY_PATH update */
+    int  func_ov062_0211c594();    /* FLY_PATH enter */
+    int  func_ov062_0211c658(void *p); /* select a state record */
+    void func_ov062_0211c6a8();    /* per-frame matrices */
 };
 
 #ifndef SM64DS_PLATFORM_PC

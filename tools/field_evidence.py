@@ -56,7 +56,7 @@ def struct_body(text, ob):
 
 def load_sources():
     out = {}
-    for p in list(SRC.rglob("*")) + list((REPO / "src_tu").rglob("*")):
+    for p in SRC.rglob("*"):
         if p.suffix in (".c", ".cpp"):
             out[p.name] = (p, p.read_text(encoding="utf-8", errors="replace"))
     return out

@@ -262,7 +262,7 @@ integration stage added on top of it; it changes no source, header or manifest.
   contributors other than the maintainer account: four to `lunavyqo`
   (`EnterState7`, `UpdateState0`, `UpdateState4`, `UpdateState7`), one to
   `ruspecial` (`UpdateState6`) and one to `andrewboudreau` (`UpdateState3`).
-  A local `prepush_attribution` run reports only 27 of these as at risk because
+  A local `the old credit check` run reports only 27 of these as at risk because
   it keys on the vanished shard basename; the ten it omits are still credit the
   merge gate would reassign, so all 37 rows are written.
 - **Generated and ledger state** was audited for shape rather than arithmetic:

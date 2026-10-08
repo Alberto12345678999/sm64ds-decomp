@@ -349,14 +349,12 @@ void dScMgCurling_c::func_ov006_020e0e18(int index)
 // @symbol _ZN14dScMgCurling_c19func_ov006_020e0edcEi
 void dScMgCurling_c::func_ov006_020e0edc(int index)
 {
-    char *bits = (char *)this;
     int off = index * 0x24;
 
-    *(int *)(bits + 0x478c + off) += *(int *)(bits + 0x4794 + off);
-    *(int *)(bits + 0x4790 + off) +=
-        *(int *)((char *)bits + off + 0x4798);
+    mBit[index].x += mBit[index].vx;
+    mBit[index].y += mBit[index].vy;
 
-    u16 *wait = (u16 *)(bits + 0x47a0 + off);
+    u16 *wait = &mBit[index].wait;
     if (*wait != 0) {
         *wait = *wait - 1;
         s16 left = *(s16 *)wait;
@@ -366,7 +364,7 @@ void dScMgCurling_c::func_ov006_020e0edc(int index)
         return;
     }
 
-    int *vx = (int *)(bits + 0x4794 + off);
+    int *vx = &mBit[index].vx;
     if (*vx > -0x400) {
         *vx -= 0x20;
         if (*vx <= -0x400) {
@@ -374,7 +372,7 @@ void dScMgCurling_c::func_ov006_020e0edc(int index)
         }
     }
 
-    u16 *timer = (u16 *)(bits + 0x47a2 + off);
+    u16 *timer = &mBit[index].timer;
     if (*timer != 0) {
         *timer = *timer - 1;
         s16 left = *(s16 *)timer;
@@ -384,7 +382,7 @@ void dScMgCurling_c::func_ov006_020e0edc(int index)
         return;
     }
 
-    *(unsigned char *)(bits + off + 0x47aa) = 3;
+    mBit[index].state = 3;
 }
 
 #pragma push
@@ -392,13 +390,12 @@ void dScMgCurling_c::func_ov006_020e0edc(int index)
 // @symbol _ZN14dScMgCurling_c19func_ov006_020e0ff0Ei
 void dScMgCurling_c::func_ov006_020e0ff0(int index)
 {
-    char* bits = (char*)this;
     int off = index * 0x24;
 
-    *(int*)(bits + 0x478c + off) += *(int*)(bits + 0x4794 + off);
-    *(int*)(bits + 0x4790 + off) += *(int*)((char*)bits + off + 0x4798);
+    mBit[index].x += mBit[index].vx;
+    mBit[index].y += mBit[index].vy;
 
-    unsigned short* wait = (unsigned short*)(bits + 0x47a0 + off);
+    unsigned short* wait = &mBit[index].wait;
     if (*wait != 0) {
         *wait = *wait - 1;
         short left = *(short*)wait;
@@ -408,7 +405,7 @@ void dScMgCurling_c::func_ov006_020e0ff0(int index)
         return;
     }
 
-    int* vx = (int*)(bits + 0x4794 + off);
+    int* vx = &mBit[index].vx;
     if (*vx < 0x400) {
         *vx = *vx + 0x20;
         if (*vx >= 0x400) {
@@ -416,7 +413,7 @@ void dScMgCurling_c::func_ov006_020e0ff0(int index)
         }
     }
 
-    unsigned short* timer = (unsigned short*)(bits + 0x47a2 + off);
+    unsigned short* timer = &mBit[index].timer;
     if (*timer != 0) {
         *timer = *timer - 1;
         short left = *(short*)timer;
@@ -426,7 +423,7 @@ void dScMgCurling_c::func_ov006_020e0ff0(int index)
         return;
     }
 
-    *(char*)(bits + off + 0x47aa) = 3;
+    mBit[index].state = 3;
 #pragma pop
 }
 
@@ -610,7 +607,7 @@ void dScMgCurling_c::func_ov006_020e1680()
     u8 *delay;
 
     for (j = 0; j < 5; j++) {
-        if (*(u8 *)(raw + j * 16 + 0x4748) == 0) {
+        if (mPopup[j].live == 0) {
             slot = j;
             break;
         }
@@ -630,22 +627,22 @@ void dScMgCurling_c::func_ov006_020e1680()
             int az = dz >> 12;
             dist = cstd::sqrt((u64)(s64)(ax * ax + az * az));
         }
-        *(u8 *)(raw + slot * 16 + 0x4748) = 1;
-        *(int *)(raw + slot * 16 + 0x473c) = *(int *)(stone + 0x4660);
+        mPopup[slot].live = 1;
+        mPopup[slot].x = *(int *)(stone + 0x4660);
         {
         int *popupY = M(raw + slot * 16 + 0x4740);
         *popupY = *(int *)(stone + 0x4664) + 0x1000;
-        *(short *)(raw + slot * 16 + 0x4746) = *delay;
+        mPopup[slot].countdown = *delay;
         if (dist <= 8)
-            *(short *)(raw + slot * 16 + 0x4744) = 1000;
+            mPopup[slot].points = 1000;
         else if (dist <= 0x18)
-            *(short *)(raw + slot * 16 + 0x4744) = 500;
+            mPopup[slot].points = 500;
         else if (dist <= 0x28)
-            *(short *)(raw + slot * 16 + 0x4744) = 300;
+            mPopup[slot].points = 300;
         else if (dist <= 0x38)
-            *(short *)(raw + slot * 16 + 0x4744) = 100;
+            mPopup[slot].points = 100;
         else
-            *(short *)(raw + slot * 16 + 0x4744) = 0;
+            mPopup[slot].points = 0;
         top = *popupY >> 12;
         if (top >= -32 && top <= 8)
             *popupY = -0x28000;
@@ -1413,14 +1410,14 @@ void dScMgCurling_c::func_ov006_020e3078()
 {
     char *c = (char *)this;
     if (mStateDelay != 0) {
-        u16 *q = (u16 *)(c + 0x4ee2);
+        u16 *q = &mStateDelay;
         *q = *q - 1;
         return;
     }
-    if (*(u8 *)(c + 0xc4) == 0) {
-        *(u8 *)(c + 0xc3) = 1;
-        *(u8 *)(c + 0xc4) = 1;
-        *(u16 *)(c + 0xc0) = 0;
+    if (mPromptBlinkCount == 0) {
+        mPromptEnabled = 1;
+        mPromptBlinkCount = 1;
+        mPromptBlinkTimer = 0;
     }
     if (mSwingTimer != 0) {
         u8 *q = (u8 *)(c + 0x4ee9);
@@ -1528,13 +1525,12 @@ void dScMgCurling_c::func_ov006_020e3388()
         r += 0x2c;
     }
     for (i = 0; i < 5; i++) {
-        char *q = c + i * 0x10;
-        *(int *)(q + 0x473c) = 0;
-        *(int *)(q + 0x4740) = 0;
-        *(short *)(q + 0x4744) = 0;
-        *(short *)(q + 0x4746) = 0;
-        *(unsigned char *)(q + 0x4748) = 0;
-        *(unsigned char *)(q + 0x4749) = 0;
+        mPopup[i].x = 0;
+        mPopup[i].y = 0;
+        mPopup[i].points = 0;
+        mPopup[i].countdown = 0;
+        mPopup[i].live = 0;
+        mPopup[i].shown = 0;
     }
     (s16&)mStoneDelay = 0;
     mThrown = 0;

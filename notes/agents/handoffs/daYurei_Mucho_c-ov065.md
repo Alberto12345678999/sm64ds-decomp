@@ -279,20 +279,20 @@ All commands run in `C:/tmp/sm64ds-sm64ds-yurei` at this tree, on the pinned
    link gate that does apply is the one inside `rombuild.py` step 4/6, which
    passed with "zero new symbol errors, storage aliases exact".
 
-2. **`tools/prepush_attribution.py --base 11ef9a7dd` reports 2 CREDIT LOST** --
+2. **The old credit check reports 2 CREDIT LOST** --
    `d_a_yurei_mucho` [tangosdev] and `_ZN6Snufit13OnYoshiTryEatEv` [andrewboudreau]
    -- alongside 17 consolidated-with-credit-intact and 1 renamed-with-credit-intact.
    CONTROL: the same tool over the landed, merged `daBmb_c` promotion reports
    **13 CREDIT LOST**, including `d_a_bmb`, the exact analogue of `d_a_yurei_mucho`.
    `validate_merge`, which is what actually gates the merge, reports
    **0 added, 0 changed, 0 lost** on this branch against both bases.
-   The two gates key differently -- `prepush_attribution` on the OLD basename stem,
+   The two gates key differently -- `the old credit check` on the OLD basename stem,
    `validate_merge` on the CURRENT symbol name -- so neither covers the other. No
    override row was invented to silence the stem-keyed report; the landed precedent
    does not carry one either.
    Independently checked: the owner banked for every one of the 23 symbols equals
    that symbol's owner at `11ef9a7dd`, computed through
-   `prepush_attribution.lineage` on both revisions. The gate passed and no
+   `the old credit check` on both revisions. The gate passed and no
    contributor's totals moved.
 
 ## What is deferred, and why

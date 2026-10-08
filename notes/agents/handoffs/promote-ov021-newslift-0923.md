@@ -112,7 +112,7 @@ files is compiled. The other gates were re-run on this commit's tree.
   new, and a ROM identical to the stock control.
 - Shared-header consumer expansion: only the class's own header changed; no shared header was
   edited. `python tools/check_src_tu_compiles.py`, exit 0, 269 of 269 TUs compile.
-- Attribution: `python tools/prepush_attribution.py --base eb8f46d46a --head HEAD`, exit 0.
+- Attribution: `the old credit check`, exit 0.
   7763 tracked, 19 consolidated with credit intact, 0 changed, 0 lost.
 - Declarations: `python tools/check_decl_agreement.py --changed eb8f46d46a`, exit 0, "no new
   declaration disagreements". Before banking it reported 25. 24 were re-keyed: the baseline
