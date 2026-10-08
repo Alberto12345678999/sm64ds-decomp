@@ -5737,6 +5737,8 @@
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_c8BehaviorEv": "lunavyqo",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_c13InitResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_ice_block.cpp#daObjIceBlock_c_classInit": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#__sinit_d_a_klr.cpp": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#__sinit_ov079_021279d4": "tangosdev",
     "src/game/actors/d_a_klr.cpp#_ZN7daKlr_cD1Ev": "tangosdev",
     "src/game/actors/d_a_klr.cpp#_ZN7daKlr_cD0Ev": "tangosdev",
     "src/game/actors/d_a_klr.cpp#_ZN7daKlr_c16OnAimedAtWithEggEv": "tangosdev",
