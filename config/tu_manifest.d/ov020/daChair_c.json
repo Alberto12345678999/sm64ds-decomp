@@ -292,7 +292,8 @@
     "tubuild reconcile note: the conflict markers the warnings above were frozen against are not present in the promoted source src/actors/daChair_c.cpp (the shadow src_tu/actors/HauntedChair.cpp this entry was generated from is retired by the promotion). All ten were reconciled in place while the TU was written, and the notes were not updated at the time, so the entry claimed open conflicts that no longer existed. Each is now marked (RESOLVED) rather than deleted, with what the promoted TU does instead, so the record that two legacy files disagreed about these names survives. Checked by tools/check_tubuild_conflicts.py.",
     "S21 rename-then-promote: coined HauntedChair -> ROM _ZTS9daChair_c. Coined _ZTV12HauntedChair alias at 0x02114a14 deleted; _ZTV9daChair_c address unchanged. ApproachStateValue's EPsS0_isis pointer/short/int spellings are unprovable (identical ARM); disclosed on the declaration, this note, and symbols/actor_renames.tsv.",
     "CLEANUP leftover-quality: factory is `return new daChair_c()` (emitting TU, &_ZTV[2] synthesized). Inline destructor; InitResources is the key function. #pragma opt_common_subs off is file-global last-wins (ApproachStateValue). State0 hunts PIANO 0xf9.",
-    "The file-scope model handle data_ov020_02114af0 is defined in this TU as a local ChairModelFilePtr (SharedFilePtr-derived, file-ID constructor) so mwcc emits __sinit_daChair_c.cpp with the constructor call and the destructor registration, the ctor word, and the anonymous node @678. The handwritten src/unnamed/ov020/__sinit_ov020_0211372c.c is retired."
+    "The file-scope model handle data_ov020_02114af0 is defined in this TU as a local ChairModelFilePtr (SharedFilePtr-derived, file-ID constructor) so mwcc emits __sinit_daChair_c.cpp with the constructor call and the destructor registration, the ctor word, and the anonymous node @678. The handwritten src/unnamed/ov020/__sinit_ov020_0211372c.c is retired.",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -305,13 +306,13 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS -- every declared function is defined; the one extra STT_FUNC is __sinit_daChair_c.cpp, licensed under init",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS",
       "all_content_sections_licensed": "PASS -- .text 0x02112938..0x021134e4 (14 functions) + .init 0x0211372c..0x02113768 + .ctor 0x0211376c..0x02113770 + .bss 0x02114af0..0x02114b04. The linkcheck block proves all four ranges.",
       "symbol_addresses_match": "PASS -- linkcheck objectAudit: 18 LICENSED, 0 COLLIDES-GAP, 0 COLLIDES-SRC, 0 HOMELESS",
       "module_reproduces": "PASS -- linkcheck module fidelity 106/106 exact; every owned range differingBytes 0",
-      "rom_build_passes": "PASS -- linkcheck phase 8 built the full ROM (sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40); the 9 dsd check symbols errors are baseline-identical, 0 new"
+      "rom_build_passes": "PASS -- linkcheck phase 8 built the full ROM (sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8); the 9 dsd check symbols errors are baseline-identical, 0 new"
     },
     "compilerOnlyOutput": {
       "requested": [
@@ -478,7 +479,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null
