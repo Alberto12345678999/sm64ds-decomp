@@ -1580,10 +1580,6 @@ src/unnamed/ov002/__sinit_ov002_021014e4.c:
     complete
     .init start:0x021014e4 end:0x02101588
 
-src/unnamed/ov002/__sinit_ov002_02101588.c:
-    complete
-    .init start:0x02101588 end:0x02101738
-
 src/unnamed/ov002/__sinit_ov002_02101894.c:
     complete
     .init start:0x02101894 end:0x02101900

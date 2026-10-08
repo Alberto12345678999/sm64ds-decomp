@@ -474,7 +474,7 @@
       "evidence": "anonymous state-table update descriptor for daKuriKing_c::func_ov074_0211fc38; retail first word is 0x0211fc38"
     },
     {
-      "symbol": "@672",
+      "symbol": "@989",
       "address": "0x02122db4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -558,7 +558,7 @@
       "evidence": "state 1 enter descriptor: function-pointer/PMF pair for the free stub func_ov074_021201ec; retail first word is 0x021201ec"
     },
     {
-      "symbol": "@671",
+      "symbol": "@988",
       "address": "0x02122e14",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -777,6 +777,18 @@
       "evidence": "the nine-entry state record func_ov074_021203e4/0212042c dispatch through, plus 0x18 of section-alignment fill to 0x021231a0; zero in the static image, entries filled by the initializer"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@672",
+      "to": "@989",
+      "evidence": "mwcc numbers this descriptor @672 per TU and ov027 already defines a global @672, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@671",
+      "to": "@988",
+      "evidence": "mwcc numbers this descriptor @671 per TU and ov027 already defines a global @671, so the scratch link would multiply-define it"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_daKuriKing_c.cpp",
@@ -821,7 +833,7 @@
       "evidence": "compiler-local member descriptor is a configured initializer relocation destination at 0x02122dac"
     },
     {
-      "symbol": "@672",
+      "symbol": "@989",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local member descriptor is a configured initializer relocation destination at 0x02122db4"
@@ -869,7 +881,7 @@
       "evidence": "compiler-local member descriptor is a configured initializer relocation destination at 0x02122df4"
     },
     {
-      "symbol": "@671",
+      "symbol": "@988",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local member descriptor is a configured initializer relocation destination at 0x02122e14"
@@ -1701,7 +1713,7 @@
       "source": "0x02122d5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@671",
+      "symbol": "@988",
       "addend": 0,
       "target_module": "ov074",
       "target_address": "0x02122e14"
@@ -1711,7 +1723,7 @@
       "source": "0x02122d60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@672",
+      "symbol": "@989",
       "addend": 0,
       "target_module": "ov074",
       "target_address": "0x02122db4"
@@ -1937,6 +1949,57 @@
       "target_address": "0x0211fb84"
     }
   ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN20KuriKingModelFilePtrC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail initializer call destination and the wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN20KuriKingModelFilePtrD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail destructor registration destination and the wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "_ZN21KuriKingTexSeqFilePtrC1Ej",
+      "canonical_symbol": "SharedFilePtr_Construct_TexSeq",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017934",
+      "evidence": "retail initializer call destination and the wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN21KuriKingTexSeqFilePtrD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_TexSeq",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201791c",
+      "evidence": "retail destructor registration destination and the wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "_ZN24KuriKingAnimationFilePtrC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "retail initializer call destination and the wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN24KuriKingAnimationFilePtrD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "retail destructor registration destination and the wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and fourteen direct retail references in this initializer"
+    }
+  ],
   "notes": [
     "Promoted by hand from the `tools/tubuild.py promote --dry-run` plan (promote is dry-run only). 36 of the class's 55 shards are folded in; the source's own header comment carries the reconciliation notes.",
     "THE DESTRUCTOR PAIR IS DELIBERATELY EXCLUDED, AND NOT FOR THE USUAL REASON. The cartridge orders them D1 (0x0211f000) then D0 (0x0211f0a0), which is the REPRODUCIBLE direction -- measured here on mwccarm 2004/b56, an inline in-class `virtual ~daKuriKing_c() {}` emits the pair with no D2, while an out-of-line definition emits D2 (0xa0), D0 (0xb4), D1 (0xa0) in that section order. The blocker is the KEY FUNCTION. With the destructor inline the key function becomes the first out-of-line virtual the class declares, Behavior at 0x02121bf0, which is on the far side of the near-miss hole. A TU that does not own the key function emits no vtable, and with no vtable nothing odr-uses the destructor, so neither variant is emitted at all (measured: a probe TU over the inline-destructor header emits zero symbols beyond its own function). A forcing scaffold does emit the pair, and in ROM order when `delete p;` precedes `p->~daKuriKing_c();` -- the variants come out in reverse order of first odr-use, measured here and recorded in no role file -- but mwccarm emits the scaffold itself into .text immediately BELOW D1, and D1 sits at 0x0211f000, the first byte of ov074's .text. There is no address below it. src/_ZN12daKuriKing_cD1Ev.cpp and src/_ZN12daKuriKing_cD0Ev.cpp therefore keep their own delinks entries and this object emits no copy of either.",
@@ -2088,17 +2151,406 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "superseded-by-production-rombuild",
-      "note": "the prior scratch-link-verified record covered the narrower pre-fold claim 0x0211f154..0x02121380 (36 functions). This fold widened the enrolled complete claim to 0x0211f000..0x02122764 (53 functions) -- D1/D0 at the head, the former 0x02121380 hole, the six middle helpers, the four virtual overrides, and the tail helpers -- and moved the key function in, so the object now emits the class RTTI/vtable and is consumed through the text-only path. As an already-enrolled text-only TU it hits the pre-existing tu_production gap documented in ov091/daObjSimpleLift_c and arm9/dScEntry: `tubuild.py linkcheck` forces the intact-candidate path and refuses 'intact production requires one .text claim and at least one non-text claim', even on unmodified landed controls.",
-      "rombuild": {
-        "round": "python tools/rombuild.py -j16 --no-rom",
-        "result": "106/106 modules exact, 0 mismatching functions, ROM-build analysis PASS; intact TU gates: dsd modules PASS, zero new symbol errors, storage aliases exact"
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov074-daKuriKing_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
       },
-      "baselineControl": {
-        "round": "python tools/tubuild.py linkcheck --baseline --module ov074 -j16 --clean",
-        "result": "PASS -- module link clean including daKuriKing_c.o's cross-module data references to data_ov010_021123f4/021124ac; ov074 built 16352 bytes == retail; modules 106/106 exact; ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 identical to this tree's last stock build; dsd check symbols reports the same 9 pre-existing errors as always (0 new)"
+      "tuRange": {
+        "start": "0x0211f000",
+        "end": "0x02122764",
+        "differingBytes": 0,
+        "firstDiff": null
       },
-      "externRename": "InitResources' two material blobs were declared func_021123f4/func_021124ac by the shard -- invented names bound nowhere, and the shard was never a `complete` delinks entry so the undefineds never reached a linker. The fold renamed both to the canonical ambiguous symbols.txt homes data_ov010_021123f4/data_ov010_021124ac (same absolute addresses, same emitted bytes; verified by the production link above)."
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x0211f000",
+          "end": "0x02122764",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02122978",
+          "end": "0x02122d70",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02122d70",
+          "end": "0x02122d74",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x02122d84",
+          "end": "0x02122e24",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02122fe0",
+          "end": "0x021231a0",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 104
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              195
+            ],
+            "desired": [
+              195
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              193
+            ],
+            "desired": [
+              193
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              5,
+              7,
+              9,
+              11,
+              13,
+              15,
+              17,
+              19,
+              21,
+              23,
+              25,
+              27,
+              29,
+              31,
+              33,
+              167,
+              169,
+              171,
+              172,
+              173
+            ],
+            "desired": [
+              17,
+              27,
+              21,
+              167,
+              19,
+              15,
+              9,
+              169,
+              29,
+              25,
+              23,
+              33,
+              31,
+              5,
+              7,
+              171,
+              172,
+              173,
+              11,
+              13
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              139,
+              140,
+              141,
+              142,
+              143,
+              144,
+              145,
+              146,
+              147,
+              148,
+              149,
+              150,
+              151,
+              152,
+              153,
+              154,
+              155,
+              156,
+              157,
+              158,
+              159,
+              160,
+              161,
+              162,
+              163,
+              164,
+              165,
+              166,
+              175
+            ],
+            "desired": [
+              162,
+              164,
+              150,
+              154,
+              140,
+              146,
+              166,
+              148,
+              160,
+              156,
+              158,
+              144,
+              142,
+              152,
+              145,
+              147,
+              149,
+              151,
+              153,
+              155,
+              157,
+              159,
+              161,
+              163,
+              165,
+              139,
+              141,
+              143,
+              175
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                5,
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23,
+                25,
+                27,
+                29,
+                31,
+                33,
+                167,
+                169,
+                171,
+                172,
+                173
+              ],
+              "desired": [
+                17,
+                27,
+                21,
+                167,
+                19,
+                15,
+                9,
+                169,
+                29,
+                25,
+                23,
+                33,
+                31,
+                5,
+                7,
+                171,
+                172,
+                173,
+                11,
+                13
+              ],
+              "slots": [
+                5,
+                7,
+                9,
+                11,
+                13,
+                15,
+                17,
+                19,
+                21,
+                23,
+                25,
+                27,
+                29,
+                31,
+                33,
+                167,
+                169,
+                171,
+                172,
+                173
+              ]
+            },
+            {
+              "section": ".bss",
+              "original": [
+                139,
+                140,
+                141,
+                142,
+                143,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                151,
+                152,
+                153,
+                154,
+                155,
+                156,
+                157,
+                158,
+                159,
+                160,
+                161,
+                162,
+                163,
+                164,
+                165,
+                166,
+                175
+              ],
+              "desired": [
+                162,
+                164,
+                150,
+                154,
+                140,
+                146,
+                166,
+                148,
+                160,
+                156,
+                158,
+                144,
+                142,
+                152,
+                145,
+                147,
+                149,
+                151,
+                153,
+                155,
+                157,
+                159,
+                161,
+                163,
+                165,
+                139,
+                141,
+                143,
+                175
+              ],
+              "slots": [
+                139,
+                140,
+                141,
+                142,
+                143,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                151,
+                152,
+                153,
+                154,
+                155,
+                156,
+                157,
+                158,
+                159,
+                160,
+                161,
+                162,
+                163,
+                164,
+                165,
+                166,
+                175
+              ]
+            }
+          ],
+          "symbolIndices": 49,
+          "sectionLinks": 0,
+          "sectionInfos": 18,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   },
   "compiler_only_output": [

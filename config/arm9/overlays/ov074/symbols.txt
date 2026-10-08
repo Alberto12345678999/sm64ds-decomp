@@ -67,7 +67,7 @@ data_ov074_02122d80 kind:data(any) addr:0x02122d80
 data_ov074_02122d9c kind:data(any) addr:0x02122d9c
 @667 kind:data(any) addr:0x02122da4
 @669 kind:data(any) addr:0x02122dac
-@672 kind:data(any) addr:0x02122db4
+@989 kind:data(any) addr:0x02122db4
 data_ov074_02122dbc kind:data(any) addr:0x02122dbc
 @662 kind:data(any) addr:0x02122dc4
 @664 kind:data(any) addr:0x02122dcc
@@ -79,7 +79,7 @@ data_ov074_02122dbc kind:data(any) addr:0x02122dbc
 data_ov074_02122dfc kind:data(any) addr:0x02122dfc
 data_ov074_02122e04 kind:data(any) addr:0x02122e04
 data_ov074_02122e0c kind:data(any) addr:0x02122e0c
-@671 kind:data(any) addr:0x02122e14
+@988 kind:data(any) addr:0x02122e14
 @670 kind:data(any) addr:0x02122e1c
 data_ov074_02122e24 kind:data(any) addr:0x02122e24
 _ZTI12daKuriKing_c kind:data(any) addr:0x02122e30
@@ -110,7 +110,6 @@ data_ov074_02123048 kind:bss addr:0x02123048
 @2064 kind:bss addr:0x02123050
 @2065 kind:bss addr:0x0212305c
 @2066 kind:bss addr:0x02123068
-data_ov074_0212306c kind:bss addr:0x0212306c ambiguous
 @2067 kind:bss addr:0x02123074
 @2068 kind:bss addr:0x02123080
 @2069 kind:bss addr:0x0212308c
@@ -123,6 +122,3 @@ data_ov074_0212306c kind:bss addr:0x0212306c ambiguous
 @2062 kind:bss addr:0x021230e0
 @2063 kind:bss addr:0x021230ec
 data_ov074_021230f8 kind:bss addr:0x021230f8
-data_ov074_02123144 kind:bss addr:0x02123144 ambiguous
-data_ov074_02123168 kind:bss addr:0x02123168 ambiguous
-data_ov074_02123184 kind:bss addr:0x02123184 ambiguous

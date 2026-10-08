@@ -3,6 +3,7 @@
   "module": "ov002",
   "source": "src/actors/dPathLiftActor_c.cpp",
   "promoted_source": "src/actors/dPathLiftActor_c.cpp",
+  "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
@@ -174,6 +175,24 @@
       "ordinal": 19
     }
   ],
+  "init": [
+    {
+      "symbol": "__sinit_dPathLiftActor_c.cpp",
+      "address": "0x021071f4",
+      "size": "0xa4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov002_021071f4 and carries the same seven relocation sites"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_dPathLiftActor_c.cpp",
+      "address": "0x0210811c",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
   "data": [
     {
       "symbol": "s_fallName",
@@ -200,7 +219,7 @@
       "evidence": "compiler temporary for the WAIT record's init pointer-to-member; retail first word is 0x020ef3f0"
     },
     {
-      "symbol": "@651",
+      "symbol": "@999",
       "address": "0x0210aed8",
       "size": "0x8",
       "evidence": "compiler temporary for the PATH record's init pointer-to-member; retail first word is 0x020efa44"
@@ -218,13 +237,13 @@
       "evidence": "compiler temporary for the WAIT record's execute pointer-to-member; retail first word is 0x020ef3ec"
     },
     {
-      "symbol": "@655",
+      "symbol": "@998",
       "address": "0x0210aef0",
       "size": "0x8",
       "evidence": "compiler temporary for the FALL record's init pointer-to-member; retail first word is 0x020ef57c"
     },
     {
-      "symbol": "@653",
+      "symbol": "@997",
       "address": "0x0210aef8",
       "size": "0x8",
       "evidence": "compiler temporary for the PATH record's execute pointer-to-member; retail first word is 0x020ef670"
@@ -255,6 +274,300 @@
     }
   ],
   "bss": [],
+  "defined_symbol_renames": [
+    {
+      "from": "@651",
+      "to": "@999",
+      "evidence": "mwcc numbers this descriptor @651 per TU and ov002 already defines a global @651, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@655",
+      "to": "@998",
+      "evidence": "mwcc numbers this descriptor @655 per TU and ov079 already defines a global @655, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@653",
+      "to": "@997",
+      "evidence": "mwcc numbers this descriptor @653 per TU and ov079 already defines a global @653, so the scratch link would multiply-define it"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_dPathLiftActor_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_dPathLiftActor_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "s_fallName",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "file-scope state-name slot referenced by a configured table relocation at 0x0210aeb8"
+    },
+    {
+      "symbol": "s_waitName",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "file-scope state-name slot referenced by a configured table relocation at 0x0210aec0"
+    },
+    {
+      "symbol": "s_pathName",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "file-scope state-name slot referenced by a configured table relocation at 0x0210aec8"
+    },
+    {
+      "symbol": "@647",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aed0"
+    },
+    {
+      "symbol": "@999",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aed8"
+    },
+    {
+      "symbol": "@657",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aee0"
+    },
+    {
+      "symbol": "@649",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aee8"
+    },
+    {
+      "symbol": "@998",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aef0"
+    },
+    {
+      "symbol": "@997",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aef8"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x0210727c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@647",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aed0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02107280",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@649",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aee8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02107284",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@999",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aed8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02107288",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@997",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aef8"
+    },
+    {
+      "section": ".init",
+      "source": "0x0210728c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@998",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aef0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02107290",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@657",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aee0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02107294",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov002_0210af2c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210af2c"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x0210811c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_dPathLiftActor_c.cpp",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x021071f4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210aed0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16dPathLiftActor_c13StateWaitInitEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ef3f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210aed8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16dPathLiftActor_c13StatePathInitEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020efa44"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210aee0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16dPathLiftActor_c9StateFallEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ef408"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210aee8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16dPathLiftActor_c9StateWaitEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ef3ec"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210aef0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16dPathLiftActor_c13StateFallInitEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ef57c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210aef8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16dPathLiftActor_c9StatePathEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ef670"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210af0c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210af10",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS16dPathLiftActor_c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210af18"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210af14",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI10dBgActor_c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x021089ec"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210af3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "s_waitName",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aec0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210af50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "s_pathName",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aec8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210af64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "s_fallName",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210aeb8"
+    }
+  ],
+  "notes": [
+    "Partial production promotion, not completion of the class/TU assignment.",
+    "Retain src/_ZN16dPathLiftActor_cD0Ev.cpp and src/_ZN16dPathLiftActor_cD1Ev.cpp as canonical destructor owners.",
+    "The state data data_ov002_0210af2c, the scale triple data_ov002_0210af00, the class metadata records and the __sinit_dPathLiftActor_c.cpp static initializer are this TU's own emission; the handwritten __sinit_ov002_021071f4 source is retired. Foreign-home compiler metadata duplicates are measured at configured ROM homes; no coined or unowned metadata waiver.",
+    "Follow-up: independently reconstruct the complete lifecycle and state-data TU boundary; current 20-function slice is the verified useful subset.",
+    "The 17 helper member names are inferred from matched bodies/state-table use; RTTI proves dPathLiftActor_c class identity, not original English member spellings. Const qualification on HasNonzeroAngleZ, Param10ModeIs1, Param12ModeIs1, Param08ModeIs2, Param08ModeIs1Or2 and IsUnk42cSet is inferred from read-only bodies; ARM bytes cannot distinguish the original qualification. SetState(int) uses an inferred int spelling for a word-sized argument."
+  ],
   "compiler_only_output": [
     {
       "symbol": "_ZN7Vector3D1Ev",
@@ -340,15 +653,6 @@
       "canonical_address": "0x210af70",
       "reason": "Compiler-emitted own-class vtable with configured ROM home in this module. The .data claim stops at the state table so the configured address point data_ov002_0210af70 stays gap-served for subclass consumers; the emitted duplicate storage is measured against its canonical bytes and discarded."
     }
-  ],
-  "notes": [
-    "Partial production promotion, not completion of the class/TU assignment.",
-    "Retain src/_ZN16dPathLiftActor_cD0Ev.cpp and src/_ZN16dPathLiftActor_cD1Ev.cpp as canonical destructor owners.",
-    "Retain state data data_ov002_0210af2c and src/unnamed/ov002/__sinit_ov002_021071f4.c as existing owners. Compiler-only metadata is measured at configured ROM homes; no coined or unowned metadata waiver.",
-    "Follow-up: independently reconstruct the complete lifecycle and state-data TU boundary; current 20-function slice is the verified useful subset.",
-    "The 17 helper member names are inferred from matched bodies/state-table use; RTTI proves dPathLiftActor_c class identity, not original English member spellings. Const qualification on HasNonzeroAngleZ, Param10ModeIs1, Param12ModeIs1, Param08ModeIs2, Param08ModeIs1Or2 and IsUnk42cSet is inferred from read-only bodies; ARM bytes cannot distinguish the original qualification. SetState(int) uses an inferred int spelling for a word-sized argument.",
-    "The state data data_ov002_0210af2c, the scale triple data_ov002_0210af00, the class metadata records and the __sinit_dPathLiftActor_c.cpp static initializer are this TU's own emission; the handwritten __sinit_ov002_021071f4 source is retired. Foreign-home compiler metadata duplicates are measured at configured ROM homes; no coined or unowned metadata waiver.",
-    "rom.sha256 records the stock ROM SHA-256 the other intact-object manifests share; this worktree's dump rebuilds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 with every compared range and all 106 modules byte-identical."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -621,294 +925,5 @@
       },
       "linkerOutput": null
     }
-  },
-  "production_mode": "intact-object",
-  "init": [
-    {
-      "symbol": "__sinit_dPathLiftActor_c.cpp",
-      "address": "0x021071f4",
-      "size": "0xa4",
-      "binding": "STB_GLOBAL",
-      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov002_021071f4 and carries the same seven relocation sites"
-    }
-  ],
-  "ctor": [
-    {
-      "symbol": ".p__sinit_dPathLiftActor_c.cpp",
-      "address": "0x0210811c",
-      "size": "0x4",
-      "binding": "STB_GLOBAL",
-      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
-    }
-  ],
-  "symbol_binding_rewrites": [
-    {
-      "symbol": "__sinit_dPathLiftActor_c.cpp",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
-    },
-    {
-      "symbol": ".p__sinit_dPathLiftActor_c.cpp",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
-    },
-    {
-      "symbol": "s_fallName",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "file-scope state-name slot referenced by a configured table relocation at 0x0210aeb8"
-    },
-    {
-      "symbol": "s_waitName",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "file-scope state-name slot referenced by a configured table relocation at 0x0210aec0"
-    },
-    {
-      "symbol": "s_pathName",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "file-scope state-name slot referenced by a configured table relocation at 0x0210aec8"
-    },
-    {
-      "symbol": "@647",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aed0"
-    },
-    {
-      "symbol": "@651",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aed8"
-    },
-    {
-      "symbol": "@657",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aee0"
-    },
-    {
-      "symbol": "@649",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aee8"
-    },
-    {
-      "symbol": "@655",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aef0"
-    },
-    {
-      "symbol": "@653",
-      "from": "STB_LOCAL",
-      "to": "STB_GLOBAL",
-      "evidence": "compiler-local pointer-to-member descriptor is a configured initializer relocation destination at 0x0210aef8"
-    }
-  ],
-  "relocations": [
-    {
-      "section": ".init",
-      "source": "0x0210727c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "@647",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aed0"
-    },
-    {
-      "section": ".init",
-      "source": "0x02107280",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "@649",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aee8"
-    },
-    {
-      "section": ".init",
-      "source": "0x02107284",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "@651",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aed8"
-    },
-    {
-      "section": ".init",
-      "source": "0x02107288",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "@653",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aef8"
-    },
-    {
-      "section": ".init",
-      "source": "0x0210728c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "@655",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aef0"
-    },
-    {
-      "section": ".init",
-      "source": "0x02107290",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "@657",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aee0"
-    },
-    {
-      "section": ".init",
-      "source": "0x02107294",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "data_ov002_0210af2c",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210af2c"
-    },
-    {
-      "section": ".ctor",
-      "source": "0x0210811c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "__sinit_dPathLiftActor_c.cpp",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x021071f4"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210aed0",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZN16dPathLiftActor_c13StateWaitInitEv",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x020ef3f0"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210aed8",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZN16dPathLiftActor_c13StatePathInitEv",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x020efa44"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210aee0",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZN16dPathLiftActor_c9StateFallEv",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x020ef408"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210aee8",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZN16dPathLiftActor_c9StateWaitEv",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x020ef3ec"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210aef0",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZN16dPathLiftActor_c13StateFallInitEv",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x020ef57c"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210aef8",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZN16dPathLiftActor_c9StatePathEv",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x020ef670"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210af0c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZTVN3abi20__si_class_type_infoE",
-      "addend": 8,
-      "target_module": "arm9",
-      "target_address": "0x0209a764"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210af10",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZTS16dPathLiftActor_c",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210af18"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210af14",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "_ZTI10dBgActor_c",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x021089ec"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210af3c",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "s_waitName",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aec0"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210af50",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "s_pathName",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aec8"
-    },
-    {
-      "section": ".data",
-      "source": "0x0210af64",
-      "type": "R_ARM_ABS32",
-      "kind": "load",
-      "symbol": "s_fallName",
-      "addend": 0,
-      "target_module": "ov002",
-      "target_address": "0x0210aeb8"
-    }
-  ]
+  }
 }
