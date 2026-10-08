@@ -6272,32 +6272,9 @@ def cmd_promote(args):
           "src/ subdirectory may need adding to port/CMakeLists.txt's source globs "
           "(not checked mechanically here).")
 
-    print("\n-- 4b. contributor attribution -- the structural cost of a promotion")
-    try:
-        import chaos_db_ci as CDB
-        owners = CDB.first_matchers()
-    except Exception as exc:                                     # noqa: BLE001
-        print(f"   could not run chaos_db_ci.first_matchers(): {exc}")
-        owners = None
-    if owners is not None:
-        by_author = collections.defaultdict(list)
-        for rel in legacy:
-            by_author[owners.get(rel, "(no lineage found)")].append(rel)
-        print(f"   the gate's own computation (chaos_db_ci.first_matchers, the same one "
-              f"tools/prepush_attribution.py runs) credits these {len(legacy)} files to "
-              f"{len(by_author)} contributor(s):")
-        for who, rels in sorted(by_author.items(), key=lambda kv: (-len(kv[1]), kv[0])):
-            print(f"     {who:20} {len(rels)} file(s)")
-        print(f"   A TU promotion is a {len(legacy)}-delete + 1-add collapse. Git can pair "
-              f"at most ONE delete with the add as a rename, and only if similarity "
-              f"survives; the other {len(legacy) - 1} lineages END, and the pusher becomes "
-              f"the owner of the merged file. This is NOT the rewrite-then-move hazard "
-              f"prepush_attribution.py documents, which a two-commit split fixes -- a "
-              f"many-to-one collapse has no commit arrangement that preserves N lineages, "
-              f"so `CREDIT LOST` is structural for this workstream. It no longer fails "
-              f"the merge gate, but an attribution.json override keyed on the surviving "
-              f"path still keeps credit correctly recorded before the first real "
-              f"promotion.")
+    print("\n-- 4b. contributor attribution")
+    print("   Who matched each function is function-authors.json, keyed by module and")
+    print("   address. Moving these files into one translation unit does not change it.")
     # validate_merge used to infer ownership only from filename stems. It now asks the
     # revision's delinks enrollment map first, so a single path can retain matched and
     # byte-verified coverage for every licensed function range it owns. Keep the dry
