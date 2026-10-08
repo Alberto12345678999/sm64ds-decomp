@@ -242,7 +242,6 @@ daMoray_c::~daMoray_c()
 // @symbol _ZN9daMoray_c19func_ov016_02111284Ev
 void daMoray_c::func_ov016_02111284()
 {
-    daMoray_c *this = (daMoray_c *)actor;
     Vector3 va;
     Vector3 vb;
     Vector3 out;
@@ -791,7 +790,7 @@ s32 daMoray_c::Behavior()
         }
     }
 
-    func_ov016_02111284(this);
+    func_ov016_02111284();
     mdCcAcPos_c1.Clear();
     mdCcAcPos_c1.Update();
     if (data_0209f220 == 1 && mState != &data_ov016_02114dbc) {
