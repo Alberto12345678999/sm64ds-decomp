@@ -1627,6 +1627,8 @@
     "src/game/actors/d_a_obj_bk_billboard.cpp#_ZN18daObjBkBillboard_c6RenderEv": "github-actions[bot]",
     "src/game/actors/d_a_obj_bk_billboard.cpp#_ZN18daObjBkBillboard_cD0Ev": "github-actions[bot]",
     "src/game/actors/d_a_obj_bk_billboard.cpp#_ZN18daObjBkBillboard_cD1Ev": "github-actions[bot]",
+    "src/game/actors/d_a_obj_bk_billboard.cpp#__sinit_d_a_obj_bk_billboard.cpp": "tangosdev",
+    "src/game/actors/d_a_obj_bk_billboard.cpp#daObjBkBillboard_c_classInit": "andrewboudreau",
     "src/game/actors/d_a_obj_bk_billboard.cpp#func_ov015_02111214": "github-actions[bot]",
     "src/game/actors/d_a_obj_bk_rotebar.cpp#_ZN17daObjBk_Rotebar_c13InitResourcesEv": "github-actions[bot]",
     "src/game/actors/d_a_obj_bk_rotebar.cpp#_ZN17daObjBk_Rotebar_c16CleanupResourcesEv": "github-actions[bot]",
