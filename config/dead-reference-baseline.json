@@ -595,6 +595,10 @@
   },
   {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
+   "ref": "src/unnamed/ov009/__sinit_ov009_02112458.c"
+  },
+  {
+   "file": "notes/sinit-ownership-wave-resource-handles.md",
    "ref": "tools/tu_config.py"
   },
   {
