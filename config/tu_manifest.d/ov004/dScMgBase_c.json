@@ -1008,13 +1008,6 @@
       "evidence": "sixteen-entry palette/int table filled by Ent::func_ov004_020adcc8 and dispatched to func_ov004_020b1d60"
     },
     {
-      "symbol": "data_ov004_020beba8",
-      "address": "0x020beba8",
-      "size": "0x40",
-      "binding": "STB_GLOBAL",
-      "evidence": "sixteen-entry int table filled by Ent::func_ov004_020adcc8 and dispatched to func_ov004_020b1d60"
-    },
-    {
       "symbol": "data_ov004_020bebe8",
       "address": "0x020bebe8",
       "size": "0x800",
@@ -1048,13 +1041,185 @@
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
-      "result": "unavailable-for-this-TU",
-      "why": "tools/tubuild.py linkcheck routes a promoted TU down the intact-object path and refuses at [4/8] because this TU is text-only (data: [], bss: []). The whole-tree production build (python tools/rombuild.py) is the link proof for the whole-unit range 0x020ad660..0x020b2c58.",
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov004-dScMgBase_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x020ad660",
+        "end": "0x020b2c84",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x020ad660",
+          "end": "0x020b2c84",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x020b948c",
+          "end": "0x020b955c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x020b9de4",
+          "end": "0x020b9de8",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x020bbf4c",
+          "end": "0x020bbf6c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x020beb74",
+          "end": "0x020bf3e8",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 140
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              276
+            ],
+            "desired": [
+              276
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              274
+            ],
+            "desired": [
+              274
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              5,
+              7,
+              9,
+              12
+            ],
+            "desired": [
+              5,
+              9,
+              12,
+              7
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              11,
+              14,
+              15,
+              16,
+              17,
+              18
+            ],
+            "desired": [
+              11,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                5,
+                7,
+                9,
+                12
+              ],
+              "desired": [
+                5,
+                9,
+                12,
+                7
+              ],
+              "slots": [
+                5,
+                7,
+                9,
+                12
+              ]
+            }
+          ],
+          "symbolIndices": 4,
+          "sectionLinks": 0,
+          "sectionInfos": 4,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
         "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
-      }
+      },
+      "linkerOutput": null
     },
     "compilerOnlyOutput": {
       "requested": [
