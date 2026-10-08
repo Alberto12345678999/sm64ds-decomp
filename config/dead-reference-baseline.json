@@ -386,6 +386,10 @@
    "ref": "src/_ZN5ModelC1Ev.cpp"
   },
   {
+   "file": "notes/data/c-cpp-classification.tsv",
+   "ref": "src/unnamed/ov027/__sinit_ov027_02112cb0.c"
+  },
+  {
    "file": "notes/declaration-centralization.md",
    "ref": "include/decl_"
   },
