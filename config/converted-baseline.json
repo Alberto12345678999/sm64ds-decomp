@@ -1897,6 +1897,7 @@
     "src/actors/daSanbo_c.cpp#_ZN9daSanbo_cD1Ev",
     "src/actors/daSanbo_c.cpp#daSanbo_c_classInit_SANBO",
     "src/actors/daSanbo_c.cpp#daSanbo_c_classInit_SANBO_BODY",
+    "src/actors/daTor_c.cpp#__sinit_daTor_c.cpp",
     "src/actors/daYurei_Mucho_c.cpp#_ZN15daYurei_Mucho_c13OnYoshiTryEatEv",
     "src/actors/daYurei_Mucho_c.cpp#_ZN15daYurei_Mucho_c16CleanupResourcesEv",
     "src/actors/daYurei_Mucho_c.cpp#_ZN15daYurei_Mucho_c16OnAimedAtWithEggEv",
@@ -3553,5 +3554,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3544
+  "count": 3545
 }
