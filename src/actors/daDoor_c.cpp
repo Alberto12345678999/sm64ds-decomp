@@ -77,7 +77,7 @@
  *   numbers; their meanings are not recovered here.
  * - the static vectors guarded by data_ov100_0214870c ..
  *   data_ov100_02148720 have the shape of function-local statics (guard bit,
- *   construct, register Vector3's destructor through func_020731dc); they
+ *   construct, register Vector3's destructor through __register_global_object); they
  *   stay spelled out against the cartridge's own objects.
  * - the state tables and the helpers that take one are declared
  *   daDoor_StateRecord; mState stays void * because the nine tables are
@@ -219,7 +219,10 @@ int func_02012694(int a, void *b);
 unsigned char DecIfAbove0_Byte(void *p);
 int DecIfAbove0_Short(void *p);
 int func_ov002_020ca78c(void *p);
-void func_020731dc(void *object, void *destructor, void *node);
+/* arm9:0x020731dc -- mwcc's runtime name for the atexit-style static-object
+   destructor registrar. The synthesized static initializer calls it under
+   this name too, so spelling it here keeps one shared undefined symbol. */
+void __register_global_object(void *object, void *destructor, void *node);
 void Vec3_RotateYAndTranslate(void *res, void *translation, short angY, void *v);
 void Vec3_Sub(void *out, void *a, void *b);
 void Vec3_Asr(void *d, void *s, int sh);
@@ -252,32 +255,25 @@ extern unsigned int data_ov100_02148714;
 extern int data_ov100_02148718;
 extern int data_ov100_0214871c;
 extern int data_ov100_02148720;
-extern SharedFilePtr data_ov100_02148744;
-extern void *data_ov100_02148790;
-extern Vec3i data_ov100_0214879c;
-extern void *data_ov100_021487b4;
-extern Vec3i data_ov100_021487c0;
-extern int data_ov100_021487cc[];
-extern void *data_ov100_021487d8;
-extern int data_ov100_021487e4[];
-extern Vec3i data_ov100_021487f0;
-extern int data_ov100_021487fc[];
-extern int data_ov100_02148808[];
-extern void *data_ov100_02148850;
-extern Vec3i data_ov100_02148880;
-/* The nine states, each a 16-byte {enter, execute} pointer-to-member pair
-   filled in by the module's static initializer (the table in the banner).
-   Declared as the int that include/decl_common.h gives two of them; only
-   their addresses are used. */
-extern int data_ov100_021488a4;
-extern int data_ov100_021488b4;
-extern int data_ov100_021488c4;
-extern int data_ov100_021488d4;
-extern int data_ov100_021488e4;
-extern int data_ov100_021488f4;
-extern int data_ov100_02148904;
-extern int data_ov100_02148914;
-extern int data_ov100_02148924;
+/* The pointer-to-member records the nine states are built from
+   (0x021480d4..0x02148144 in .data), and the null member the initializer
+   copies for the states that have no enter member. */
+extern daDoor_StatePmf data_02086b58;
+extern daDoor_StatePmf data_ov100_021480d4;
+extern daDoor_StatePmf data_ov100_021480dc;
+extern daDoor_StatePmf data_ov100_021480e4;
+extern daDoor_StatePmf data_ov100_021480ec;
+extern daDoor_StatePmf data_ov100_021480f4;
+extern daDoor_StatePmf data_ov100_021480fc;
+extern daDoor_StatePmf data_ov100_02148104;
+extern daDoor_StatePmf data_ov100_0214810c;
+extern daDoor_StatePmf data_ov100_02148114;
+extern daDoor_StatePmf data_ov100_0214811c;
+extern daDoor_StatePmf data_ov100_02148124;
+extern daDoor_StatePmf data_ov100_0214812c;
+extern daDoor_StatePmf data_ov100_02148134;
+extern daDoor_StatePmf data_ov100_0214813c;
+extern daDoor_StatePmf data_ov100_02148144;
 
 extern GlobCaa0 data_0209caa0;
 /* The camera, and the player array indexed by the current player id. */
@@ -302,6 +298,79 @@ extern int data_ov089_02132c50;
    element type. */
 extern void *data_ov089_02132894[];
 }
+
+/* The door's file-scope SharedFilePtr objects, spelled through the same
+   wrapper idiom the landed folds use: the handles' code is the veneer pair
+   the cartridge already carries, so the wrappers get no bodies of their
+   own. The constructors alias func_02017acc (model) and
+   SharedFilePtr::Construct (animation) in this unit's manifest, and the
+   destructors func_02017ab4 and SharedFilePtr_Destruct_Anim. */
+struct DoorModelFilePtr : SharedFilePtr {
+    int unk0; void *file;
+    DoorModelFilePtr(unsigned int id);
+    ~DoorModelFilePtr();
+};
+
+struct DoorAnimationFileHandle : SharedFilePtr {
+    int unk0; void *file;
+    DoorAnimationFileHandle(unsigned int id);
+    ~DoorAnimationFileHandle();
+};
+
+/* -------------------------------------------------------------------------- */
+/* The eleven model handles and the animation handle, in static-initializer
+   order: the initializer constructs each and registers its destructor.
+   data_ov100_02148744 is the one the helpers release and hand to
+   dExtFrameCtrl_c::LoadFile. */
+/* -------------------------------------------------------------------------- */
+// @symbol __sinit_daDoor_c.cpp
+DoorModelFilePtr    data_ov100_0214875c(0x9c09);
+DoorModelFilePtr    data_ov100_0214877c(0x9c0a);
+DoorModelFilePtr    data_ov100_0214873c(0x43e);
+DoorModelFilePtr    data_ov100_02148724(0x43f);
+DoorModelFilePtr    data_ov100_0214872c(0x441);
+DoorModelFilePtr    data_ov100_02148764(0x440);
+DoorModelFilePtr    data_ov100_02148774(0x443);
+DoorModelFilePtr    data_ov100_0214876c(0x444);
+DoorModelFilePtr    data_ov100_0214874c(0x9c0b);
+DoorModelFilePtr    data_ov100_02148754(0x445);
+DoorModelFilePtr    data_ov100_02148734(0x446);
+DoorAnimationFileHandle  data_ov100_02148744(0x9c08);
+
+/* The function-local statics of the helpers above, spelled out against the
+   cartridge's own objects: each is a {guard, vector, node} triple the
+   helper guards and registers with __register_global_object itself. The helpers treat
+   the vectors as Vec3i or three-integer records; only the addresses are
+   touched by the book-keeping calls, so the nodes are three-void* records
+   here. */
+void *data_ov100_02148790[3];
+Vec3i data_ov100_0214879c;
+void *data_ov100_021487b4[3];
+Vec3i data_ov100_021487c0;
+void *data_ov100_021487cc[3];
+void *data_ov100_021487d8[3];
+int data_ov100_021487e4[3];
+Vec3i data_ov100_021487f0;
+void *data_ov100_021487fc[3];
+int data_ov100_02148808[3];
+void *data_ov100_02148850[3];
+Vec3i data_ov100_02148880;
+
+/* -------------------------------------------------------------------------- */
+/* The nine door states, in static-initializer order. Each is a
+   16-byte {enter, execute} pointer-to-member pair; the enterless states
+   copy the null record arm9 keeps at data_02086b58. The .data records
+   above carry the individual members. */
+/* -------------------------------------------------------------------------- */
+daDoor_StateRecord data_ov100_021488b4 = {data_02086b58, data_ov100_0214813c};
+daDoor_StateRecord data_ov100_021488c4 = {data_ov100_021480dc, data_ov100_021480e4};
+daDoor_StateRecord data_ov100_021488d4 = {data_ov100_021480f4, data_ov100_021480ec};
+daDoor_StateRecord data_ov100_021488e4 = {data_ov100_0214810c, data_ov100_021480fc};
+daDoor_StateRecord data_ov100_021488f4 = {data_ov100_0214811c, data_ov100_02148104};
+daDoor_StateRecord data_ov100_02148904 = {data_ov100_02148124, data_ov100_0214812c};
+daDoor_StateRecord data_ov100_02148914 = {data_ov100_02148144, data_ov100_021480d4};
+daDoor_StateRecord data_ov100_02148924 = {data_02086b58, data_ov100_02148134};
+daDoor_StateRecord data_ov100_021488a4 = {data_02086b58, data_ov100_02148114};
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinals 0 and 1 -- _ZN8daDoor_cD1Ev, 0x021443f4, size 0x30;
@@ -593,7 +662,7 @@ int daDoor_c::func_ov100_02144a38(Player *p)
         data_ov100_02148880.x = 0x4b000;     /* 75 units */
         data_ov100_02148880.y = 0;
         data_ov100_02148880.z = 0x6e000;     /* 110 */
-        func_020731dc(&data_ov100_02148880, (void *)_ZN7Vector3D1Ev, &data_ov100_02148850);
+        __register_global_object(&data_ov100_02148880, (void *)_ZN7Vector3D1Ev, &data_ov100_02148850);
         data_ov100_02148720 |= 1;
     }
 
@@ -601,7 +670,7 @@ int daDoor_c::func_ov100_02144a38(Player *p)
         data_ov100_0214879c.x = 0x4b000;
         data_ov100_0214879c.y = 0;
         data_ov100_0214879c.z = -0x6e000;
-        func_020731dc(&data_ov100_0214879c, (void *)_ZN7Vector3D1Ev, &data_ov100_02148790);
+        __register_global_object(&data_ov100_0214879c, (void *)_ZN7Vector3D1Ev, &data_ov100_02148790);
         data_ov100_02148718 |= 1;
     }
 
@@ -611,7 +680,7 @@ int daDoor_c::func_ov100_02144a38(Player *p)
         data_ov100_021487f0.x = -0x4c000;    /* -76 units */
         data_ov100_021487f0.y = 0;
         data_ov100_021487f0.z = 0x6d000;     /* 109 */
-        func_020731dc(&data_ov100_021487f0, (void *)_ZN7Vector3D1Ev, &data_ov100_021487d8);
+        __register_global_object(&data_ov100_021487f0, (void *)_ZN7Vector3D1Ev, &data_ov100_021487d8);
         data_ov100_0214871c |= 1;
     }
 
@@ -911,14 +980,14 @@ int daDoor_c::func_ov100_021451c4(void *r5, Player *r4)
         data_ov100_021487e4[0] = 0;
         data_ov100_021487e4[1] = 0;
         data_ov100_021487e4[2] = 0x64000;    /* 100 units */
-        func_020731dc(data_ov100_021487e4, (void *)_ZN7Vector3D1Ev, data_ov100_021487cc);
+        __register_global_object(data_ov100_021487e4, (void *)_ZN7Vector3D1Ev, data_ov100_021487cc);
         data_ov100_0214870c |= 1;
     }
     if (!(data_ov100_02148714 & 1)) {
         data_ov100_02148808[0] = 0;
         data_ov100_02148808[1] = 0;
         data_ov100_02148808[2] = -0x64000;
-        func_020731dc(data_ov100_02148808, (void *)_ZN7Vector3D1Ev, data_ov100_021487fc);
+        __register_global_object(data_ov100_02148808, (void *)_ZN7Vector3D1Ev, data_ov100_021487fc);
         data_ov100_02148714 |= 1;
     }
     func_ov100_02145170(r4, (Vector3 *)data_ov100_021487e4, (Vector3 *)data_ov100_02148808);
@@ -1137,7 +1206,7 @@ s32 daDoor_c::InitResources()
         data_ov100_021487c0.x = 0x4b000;     /* 75 units */
         data_ov100_021487c0.y = 0;
         data_ov100_021487c0.z = 0;
-        func_020731dc(&data_ov100_021487c0, (void *)_ZN7Vector3D1Ev, &data_ov100_021487b4);
+        __register_global_object(&data_ov100_021487c0, (void *)_ZN7Vector3D1Ev, &data_ov100_021487b4);
         data_ov100_02148710 |= 1;
     }
 
