@@ -645,3 +645,6 @@
 {"path": "src/unnamed/ov027/__sinit_ov027_02112df8.cpp", "reason": "The handwritten static initializer is retired. daPgDfdr_c.cpp defines the six resource handles (one generic, three animation, one texture-sequence, one collision) and the four-pair state table for real, and mwcc emits __sinit_daPgDfdr_c.cpp with the same 0x178 bytes and the same thirty-three relocations."}
 {"path": "src/unnamed/ov036/__sinit_ov036_0211279c.c", "reason": "The handwritten static initializer is retired. d_a_obj_rc_dorifu.cpp defines the ten resource handles (five generic, five collision) and the state table for real, and mwcc emits __sinit_d_a_obj_rc_dorifu.cpp with the same 0x1a8 bytes and the same forty-two relocations."}
 {"path": "src/unnamed/ov060/__sinit_ov060_02119df0.c", "reason": "The handwritten static initializer is retired. daKpaFire_c.cpp defines the pair-entry state tables for real, and mwcc emits __sinit_daKpaFire_c.cpp with the same 0x1a4 bytes and the same eighteen relocations."}
+{"path": "src/unnamed/ov002/__sinit_ov002_02107118.c", "reason": "shard folded into its owning TU (batch sinit-folds-f-1010)"}
+{"path": "src/unnamed/ov004/__sinit_ov004_020b955c.c", "reason": "shard folded into its owning TU (batch sinit-folds-f-1010)"}
+{"path": "src/unnamed/ov064/__sinit_ov064_0211afc0.c", "reason": "shard folded into its owning TU (batch sinit-folds-f-1010)"}
