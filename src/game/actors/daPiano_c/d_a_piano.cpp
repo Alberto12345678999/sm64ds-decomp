@@ -5,7 +5,7 @@
  * then lunges across the floor and bites (Player::Hurt). Two PMF
  * states, search (0) and attack (1), dispatched through
  * data_ov063_0211efbc by func_ov063_0211ddf4/ddac;
- * __sinit_ov063_0211e5fc fills the table from the four ROM {ptr, adj}
+ * __sinit_d_a_piano.cpp fills the table from the four ROM {ptr, adj}
  * records. This is SM64's biting piano.
  *
  * Proof: RTTI names this class daPiano_c; the registry holds
@@ -19,8 +19,10 @@
  * d828 struct copy is the ROM's twelve-word copy (daBmb's note).
  *
  * This is a promoted translation unit: one delinks entry licenses the
- * whole .text run 0x0211d4b8..0x0211e1c0, seventeen functions, and the
- * manifest entry ov063/daPiano_c carries the licenses.
+ * whole .text run 0x0211d4b8..0x0211e1c0, seventeen functions, plus this
+ * TU's own .init initializer, its .ctor word, the four PMF descriptors
+ * and the .bss run that holds the handles, their dtor nodes and the
+ * state table. The manifest entry ov063/daPiano_c carries the licenses.
  *
  * deslop leftovers:
  * - Factory stays hand-rolled (see the comment above it): `return new
@@ -30,9 +32,6 @@
  *   but converting the factory is a codegen change this promotion did not
  *   measure, and promotion deliberately changes no codegen. Left as it is,
  *   for a follow-up that carries its own byte proof. daWanwan-consistent.
- * - __sinit_ov063_0211e5fc stays split: delinks places one range per
- *   file, and nothing owns .text plus .init. It keeps its own entry in
- *   config/arm9/overlays/ov063/delinks.txt and is NOT in this TU's range.
  * - ModelAnim::SetAnim / dBgCh_Actr::Init / dCcAcPos_c::Init /
  *   dBgW_KcMbg::SetFile stay mangled free declarations (wall 6az: the
  *   ROM signatures carry Fix12<int> by value; the header method forms
@@ -64,18 +63,36 @@
 
 bool ApproachLinear(short &value, short target, short step);
 
-extern SharedFilePtr gPianoModelFile;
-extern SharedFilePtr gPianoCollisionFile;
-extern SharedFilePtr gPianoAttackAnimationFile;
-extern char data_ov063_0211ecb8;
+/* The TU's three resource handles, defined at file end so mwcc emits their
+ * constructor calls, destructor registrations, and the PMF-table copy into
+ * __sinit_d_a_piano.cpp. Each flavor binds the constructor/destructor veneer
+ * the cartridge uses for its asset kind (model / mesh collision / animation). */
+struct PianoModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    PianoModelFilePtr(u32 fileID);
+    ~PianoModelFilePtr();
+};
+struct PianoCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+    PianoCollisionFilePtr(u32 fileID);
+    ~PianoCollisionFilePtr();
+};
+struct PianoAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+    PianoAnimationFilePtr(u32 fileID);
+    ~PianoAnimationFilePtr();
+};
 
-extern SharedFilePtr daPiano_c_AnimFile;
-extern SharedFilePtr daPiano_c_ClsnFile;
-extern SharedFilePtr daPiano_c_ModelFile;
+extern PianoModelFilePtr gPianoModelFile;
+extern PianoCollisionFilePtr gPianoCollisionFile;
+extern PianoAnimationFilePtr gPianoAttackAnimationFile;
+extern char data_ov063_0211ecb8;
 
 /* One file-scope extern "C" region: the union of the five legacy shards'
  * declarations, deduplicated. C++-named members cannot carry block-scope
  * linkage specifications, so everything they call lives here. */
+struct PianoVec3;
+struct Vec3;
 extern "C" {
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *, BCA_File *, int, int, unsigned int);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(dBgCh_Actr *, dActor_c *, Fix12i, Fix12i, Vector3_16 *, Vector3_16 *);
@@ -84,6 +101,14 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_ov063_0211d88c(daPiano_c *self);
 extern void func_ov063_0211d828(daPiano_c *self);
 extern void func_ov063_0211d5f4(daPiano_c *self);
+extern int func_ov063_0211dd84(int unused, dActor_c *cand);
+extern void func_ov063_0211ddac(daPiano_c *c, int state);
+extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
+extern int LenVec3(Vec3 *v);
+extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
+extern u8 DecIfAbove0_Byte(u8 *p);
+extern void func_0201267c(unsigned int id, const Vector3 *v);
+extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *a, unsigned int b, int dmg, unsigned char arg4, unsigned char arg5, unsigned char arg6);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
 void func_0203568c(int *clsn, int radius);
@@ -233,14 +258,14 @@ int daPiano_c::CleanupResources()
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }
-    daPiano_c_ModelFile.Release();
-    daPiano_c_AnimFile.Release();
-    daPiano_c_ClsnFile.Release();
+    gPianoModelFile.Release();
+    gPianoAttackAnimationFile.Release();
+    gPianoCollisionFile.Release();
     return 1;
 }
 
 /* The piano's two-state dispatch table (data_ov063_0211efbc, filled by
- * __sinit_ov063_0211e5fc from the four ROM {ptr, adj} records): per state,
+ * __sinit_d_a_piano.cpp from the four ROM {ptr, adj} records): per state,
  * an entry routine and a body routine. Bound to daPiano_c itself. An earlier
  * draft routed this through a non-polymorphic shadow layout on the theory
  * that a PMF of the real class does not carry the ROM's plain {ptr, adj}
@@ -248,6 +273,7 @@ int daPiano_c::CleanupResources()
  * gives byte-identical bodies and relocation records for all 17 functions. */
 typedef void (daPiano_c::*PianoPMF)();
 struct PianoStateEntry { PianoPMF pmf[2]; };
+extern PianoStateEntry data_ov063_0211efbc[2];
 /* State 0 searches (body func_ov063_0211dbb8, entry func_ov063_0211dd78);
  * state 1 attacks (body func_ov063_0211d8cc, entry func_ov063_0211dba4).
  * Proven by who calls ddac with what and which routine runs per-frame. */
@@ -264,7 +290,6 @@ extern "C" {
 /* Run the current state's body routine (pmf[1]) every frame. */
 void func_ov063_0211ddf4(daPiano_c *self)
 {
-    extern PianoStateEntry data_ov063_0211efbc[];
     int cur = self->mStateIdx;
     (self->*data_ov063_0211efbc[cur].pmf[1])();
 }
@@ -276,7 +301,6 @@ extern "C" {
  * re-read after the store is ROM-true. */
 void func_ov063_0211ddac(daPiano_c *self, int state)
 {
-    extern PianoStateEntry data_ov063_0211efbc[];
     self->mStateIdx = state;
     int cur = self->mStateIdx;
     (self->*data_ov063_0211efbc[cur].pmf[0])();
@@ -293,27 +317,19 @@ int func_ov063_0211dd84(int unused, dActor_c *cand) {
 }
 }
 
-extern "C" {
-// @symbol func_ov063_0211dd78
+// @symbol _ZN9daPiano_c19func_ov063_0211dd78Ev
 /* State-0 entry, reached via the PMF table: stop dead. */
-void func_ov063_0211dd78(daPiano_c *self)
+void daPiano_c::func_ov063_0211dd78()
 {
-    self->mHorzSpeed = 0;
-}
+    this->mHorzSpeed = 0;
 }
 
-extern "C" {
 #pragma opt_strength_reduction off
-// @symbol func_ov063_0211dbb8
+// @symbol _ZN9daPiano_c19func_ov063_0211dbb8Ev
 /* State-0 body, run every frame: scan the player slots for a moving target
  * within 500.0 and attack it; otherwise refresh the idle cylinder sweep
  * (current position plus a 36.0 lookahead along the facing). */
-void func_ov063_0211dbb8(daPiano_c *self) {
-    extern void Vec3_Sub(PianoVec3* out, PianoVec3* a, PianoVec3* b);
-    extern int LenVec3(PianoVec3* v);
-    extern int func_ov063_0211dd84(int unused, dActor_c* cand);
-    extern void func_ov063_0211ddac(daPiano_c* c, int state);
-
+void daPiano_c::func_ov063_0211dbb8() {
     extern unsigned char data_0209f21c;
     extern void* data_0209f394[];
     extern short data_02082214[];   /* sine table: (angle >> 4) * 2 taps sin/cos */
@@ -329,75 +345,63 @@ void func_ov063_0211dbb8(daPiano_c *self) {
     for (i = 0; i < data_0209f21c; i++) {
         cand = data_0209f394[i];
         if (cand == 0) continue;
-        Vec3_Sub(&v, (PianoVec3*)&self->mPosX, (PianoVec3*)&((dActor_c*)cand)->mPosX);
-        dist = LenVec3(&v);
-        if (func_ov063_0211dd84((int)self, (dActor_c*)cand) != 0 && dist < 0x1f4000 && dist < bestDist) {
-            self->mTarget = (dActor_c*)cand;
-            func_ov063_0211ddac(self, kStateAttack);
+        Vec3_Sub((Vec3*)&v, (Vec3*)&this->mPosX, (Vec3*)&((dActor_c*)cand)->mPosX);
+        dist = LenVec3((Vec3*)&v);
+        if (func_ov063_0211dd84((int)this, (dActor_c*)cand) != 0 && dist < 0x1f4000 && dist < bestDist) {
+            this->mTarget = (dActor_c*)cand;
+            func_ov063_0211ddac(this, kStateAttack);
             return;
         }
     }
 
     {
-        int x = self->mPosX;
+        int x = this->mPosX;
         int z;
         int j;
         dCcAcPos_c* cc;
 
         tmp.x = x;
-        tmp.y = self->mPosY;
-        z = self->mPosZ;
+        tmp.y = this->mPosY;
+        z = this->mPosZ;
         tmp.z = z;
         {
-            int sinVal = data_02082214[(*(volatile u16*)&self->mAngleY >> 4) * 2];
+            int sinVal = data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2];
             tmp.x = x + (int)(((s64)sinVal * 0x24000 + 0x800) >> 12);
         }
-        tmp.z = z + (int)(((s64)data_02082214[(*(volatile u16*)&self->mAngleY >> 4) * 2 + 1] * 0x24000 + 0x800) >> 12);
+        tmp.z = z + (int)(((s64)data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2 + 1] * 0x24000 + 0x800) >> 12);
 
-        self->mCylinderClsn[0].pos.x = *(volatile int*)&self->mPosX;
-        self->mCylinderClsn[0].pos.y = *(volatile int*)&self->mPosY;
-        self->mCylinderClsn[0].pos.z = *(volatile int*)&self->mPosZ;
-        self->mCylinderClsn[1].pos.x = tmp.x;
-        self->mCylinderClsn[1].pos.y = tmp.y;
-        self->mCylinderClsn[1].pos.z = tmp.z;
+        this->mCylinderClsn[0].pos.x = *(volatile int*)&this->mPosX;
+        this->mCylinderClsn[0].pos.y = *(volatile int*)&this->mPosY;
+        this->mCylinderClsn[0].pos.z = *(volatile int*)&this->mPosZ;
+        this->mCylinderClsn[1].pos.x = tmp.x;
+        this->mCylinderClsn[1].pos.y = tmp.y;
+        this->mCylinderClsn[1].pos.z = tmp.z;
 
-        cc = self->mCylinderClsn;
+        cc = this->mCylinderClsn;
         for (j = 0; j < 2; j++) {
-            self->mCylinderClsn[j].radius = 0x9b000;
+            this->mCylinderClsn[j].radius = 0x9b000;
             cc->Clear();
             cc++;
         }
     }
 }
-}
 
-extern "C" {
-// @symbol func_ov063_0211dba4
+// @symbol _ZN9daPiano_c19func_ov063_0211dba4Ev
 /* State-1 entry, reached via the PMF table: full-speed animation and a
  * 30-frame windup before the bite. */
-void func_ov063_0211dba4(daPiano_c *self)
+void daPiano_c::func_ov063_0211dba4()
 {
-    self->mModelAnim.speed = 4096;
-    self->mAttackTimer = 30;
-}
+    this->mModelAnim.speed = 4096;
+    this->mAttackTimer = 30;
 }
 
-extern "C" {
 #pragma opt_strength_reduction off
-// @symbol func_ov063_0211d8cc
+// @symbol _ZN9daPiano_c19func_ov063_0211d8ccEv
 /* State-1 body, run every frame: lunge at the target and bite any player
  * caught by the cylinders. Gives up (back to state 0) when the target is
  * gone or farther than 939.0 at a frame boundary. */
-void func_ov063_0211d8cc(daPiano_c* self)
+void daPiano_c::func_ov063_0211d8cc()
 {
-    extern u8 DecIfAbove0_Byte(u8* p);
-    extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* self, const PianoVec3* v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
-    extern void func_0201267c(int a, void* p);
-    extern void Vec3_Sub(PianoVec3* out, PianoVec3* a, PianoVec3* b);
-    extern int LenVec3(PianoVec3* v);
-    extern s16 Vec3_HorzAngle(const PianoVec3* v0, const PianoVec3* v1);
-    extern void func_ov063_0211ddac(daPiano_c* c, int state);
-
     extern s16 data_02082214[];   /* sine table: (angle >> 4) * 2 taps sin/cos */
 
     dActor_c* victim;
@@ -416,10 +420,10 @@ void func_ov063_0211d8cc(daPiano_c* self)
     int x;
     int z;
 
-    if (DecIfAbove0_Byte(&self->mAttackTimer) != 0)
+    if (DecIfAbove0_Byte(&this->mAttackTimer) != 0)
         return;
 
-    self->mHorzSpeed = 0x5000;
+    this->mHorzSpeed = 0x5000;
     victim = 0;
     i = 0;
     zero = 0;
@@ -428,7 +432,7 @@ void func_ov063_0211d8cc(daPiano_c* self)
     knock = 0xc000;
 
     for (; i < 2; i++) {
-        int id = self->mCylinderClsn[i].otherOwner;
+        int id = this->mCylinderClsn[i].otherOwner;
         if (id != 0) {
             victim = dActor_c::FindWithID((unsigned int)id);
             if (victim != 0) {
@@ -436,9 +440,9 @@ void func_ov063_0211d8cc(daPiano_c* self)
                  * name exists for dBase_c+0x0c, so the offset stays. */
                 int isPlayer = (*(u16*)((char*)victim + 0xc) == 0xbf);
                 if (isPlayer) {
-                    hurtPos.x = self->mPosX;
-                    hurtPos.y = self->mPosY;
-                    hurtPos.z = self->mPosZ;
+                    hurtPos.x = this->mPosX;
+                    hurtPos.y = this->mPosY;
+                    hurtPos.z = this->mPosZ;
                     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player*)victim, &hurtPos, three, knock, one, zero, one);
                 }
             }
@@ -447,60 +451,59 @@ void func_ov063_0211d8cc(daPiano_c* self)
             break;
     }
 
-    if ((u16)(self->mModelAnim.currFrame >> 12) == 0)
-        func_0201267c(0x106, &self->mCamSpacePosX);
+    if ((u16)(this->mModelAnim.currFrame >> 12) == 0)
+        func_0201267c(0x106, (const Vector3 *)&this->mCamSpacePosX);
 
-    target = self->mTarget;
+    target = this->mTarget;
     if (target != 0) {
-        Vec3_Sub(&tmp, (PianoVec3*)&self->mPosX, (PianoVec3*)&target->mPosX);
-        dist = LenVec3(&tmp);
+        Vec3_Sub((Vec3*)&tmp, (Vec3*)&this->mPosX, (Vec3*)&target->mPosX);
+        dist = LenVec3((Vec3*)&tmp);
         ApproachLinear(
-            self->mPrevAngleY,
-            Vec3_HorzAngle((PianoVec3*)&self->mPosX, (PianoVec3*)&self->mTarget->mPosX),
+            this->mPrevAngleY,
+            Vec3_HorzAngle((Vector3*)&this->mPosX, (Vector3*)&this->mTarget->mPosX),
             0x200);
-        self->mAngleY = self->mPrevAngleY;
+        this->mAngleY = this->mPrevAngleY;
         if (dist > 0x3ab000) {
-            if ((u16)(self->mModelAnim.currFrame >> 12) == 0) {
-                func_ov063_0211ddac(self, kStateSearch);
+            if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
+                func_ov063_0211ddac(this, kStateSearch);
                 return;
             }
         }
     } else {
-        if ((u16)(self->mModelAnim.currFrame >> 12) == 0) {
-            func_ov063_0211ddac(self, kStateSearch);
+        if ((u16)(this->mModelAnim.currFrame >> 12) == 0) {
+            func_ov063_0211ddac(this, kStateSearch);
             return;
         }
     }
 
-    self->mModelAnim.Advance();
+    this->mModelAnim.Advance();
 
-    x = self->mPosX;
+    x = this->mPosX;
     proj.x = x;
-    proj.y = self->mPosY;
-    z = self->mPosZ;
+    proj.y = this->mPosY;
+    z = this->mPosZ;
     proj.z = z;
     {
-        int sinVal = data_02082214[(*(volatile u16*)&self->mAngleY >> 4) * 2];
+        int sinVal = data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2];
         proj.x = x + (int)(((s64)sinVal * 0x24000 + 0x800) >> 12);
     }
-    proj.z = z + (int)(((s64)data_02082214[(*(volatile u16*)&self->mAngleY >> 4) * 2 + 1] * 0x24000 + 0x800) >> 12);
+    proj.z = z + (int)(((s64)data_02082214[(*(volatile u16*)&this->mAngleY >> 4) * 2 + 1] * 0x24000 + 0x800) >> 12);
 
-    self->mCylinderClsn[0].pos.x = *(volatile int*)&self->mPosX;
-    self->mCylinderClsn[0].pos.y = *(volatile int*)&self->mPosY;
-    self->mCylinderClsn[0].pos.z = *(volatile int*)&self->mPosZ;
-    self->mCylinderClsn[1].pos.x = proj.x;
-    self->mCylinderClsn[1].pos.y = proj.y;
-    self->mCylinderClsn[1].pos.z = proj.z;
+    this->mCylinderClsn[0].pos.x = *(volatile int*)&this->mPosX;
+    this->mCylinderClsn[0].pos.y = *(volatile int*)&this->mPosY;
+    this->mCylinderClsn[0].pos.z = *(volatile int*)&this->mPosZ;
+    this->mCylinderClsn[1].pos.x = proj.x;
+    this->mCylinderClsn[1].pos.y = proj.y;
+    this->mCylinderClsn[1].pos.z = proj.z;
 
-    cc = self->mCylinderClsn;
+    cc = this->mCylinderClsn;
     for (k = 0; k < 2; k++) {
-        self->mCylinderClsn[k].radius = 0x9b000;
+        this->mCylinderClsn[k].radius = 0x9b000;
         cc->Clear();
-        if (self->ClosestPlayer()->mIsVanish == 0)
+        if (this->ClosestPlayer()->mIsVanish == 0)
             cc->Update();
         cc++;
     }
-}
 }
 
 extern "C" {
@@ -606,3 +609,18 @@ void func_ov063_0211d5f4(daPiano_c *self)
  * directly under src/ and no longer exist; the manifest entry
  * config/tu_manifest.d/ov063/daPiano_c.json keeps their full paths in the two
  * legacy_source rows. */
+
+/* The TU's static-init globals in retail initializer order: the three
+ * resource handles (model 0x40a, mesh collision 0x40b, attack animation
+ * 0x40c) each construct and register a destructor node, then the two-state
+ * PMF table copies its four {ptr, adj} records. mwcc emits all of it as
+ * __sinit_d_a_piano.cpp in .init; the handwritten __sinit_ov063_0211e5fc.c
+ * is retired. */
+PianoModelFilePtr data_ov063_0211ef80(MAD_PIANO_MODEL_ASSET);
+PianoCollisionFilePtr data_ov063_0211ef88(MAD_PIANO_COLLISION_ASSET);
+PianoAnimationFilePtr data_ov063_0211ef90(MAD_PIANO_ATTACK_ANIMATION_ASSET);
+
+PianoStateEntry data_ov063_0211efbc[2] = {
+    { &daPiano_c::func_ov063_0211dd78, &daPiano_c::func_ov063_0211dbb8 },
+    { &daPiano_c::func_ov063_0211dba4, &daPiano_c::func_ov063_0211d8cc },
+};
