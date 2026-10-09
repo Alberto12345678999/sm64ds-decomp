@@ -1254,12 +1254,12 @@
   "defined_symbol_renames": [
     {
       "from": "@827",
-      "to": "@846",
+      "to": "@733",
       "evidence": "mwcc numbers this registration node @827 per TU and ov002 daObjSwitch_c already defines a global @827, so the scratch link would multiply-define it"
     },
     {
       "from": "@829",
-      "to": "@847",
+      "to": "@734",
       "evidence": "mwcc numbers this registration node @829 per TU and ov002 daObjSwitch_c already defines a global @829, so the scratch link would multiply-define it"
     },
     {
@@ -1286,16 +1286,6 @@
       "from": "@842",
       "to": "@732",
       "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111e28Ev; mwcc numbers it @842 per TU and ov032 daBakubaku_c (on main) also defines a global @842, so the scratch link collides"
-    },
-    {
-      "from": "@846",
-      "to": "@733",
-      "evidence": "compiler temporary; mwcc numbers it @846 per TU and ov032 daBakubaku_c (on main) also defines a global @846, so the scratch link collides"
-    },
-    {
-      "from": "@847",
-      "to": "@734",
-      "evidence": "compiler temporary; mwcc numbers it @847 per TU and ov032 daBakubaku_c (on main) also defines a global @847, so the scratch link collides"
     }
   ]
 }

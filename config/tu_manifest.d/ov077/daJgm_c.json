@@ -464,12 +464,12 @@
     },
     {
       "from": "@962",
-      "to": "@941",
+      "to": "@739",
       "evidence": "mwcc numbers this registration node @962 per TU and ov002 already defines a global @962, so the scratch link would multiply-define it"
     },
     {
       "from": "@963",
-      "to": "@943",
+      "to": "@740",
       "evidence": "mwcc numbers this registration node @963 per TU and ov092 already defines a global @963, so the scratch link would multiply-define it"
     },
     {
@@ -481,16 +481,6 @@
       "from": "@966",
       "to": "@947",
       "evidence": "mwcc numbers this registration node @966 per TU and ov092 already defines a global @966, so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@941",
-      "to": "@739",
-      "evidence": "compiler temporary; mwcc numbers it @941 per TU and ov100 daBtfly_c (on main) also defines a global @941, so the scratch link collides"
-    },
-    {
-      "from": "@943",
-      "to": "@740",
-      "evidence": "compiler temporary; mwcc numbers it @943 per TU and ov100 daBtfly_c (on main) also defines a global @943, so the scratch link collides"
     }
   ],
   "symbol_binding_rewrites": [
