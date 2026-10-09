@@ -56,11 +56,20 @@ bool ApproachLinear(short &value, short target, short step);
 /* SharedFilePtr publishes no fields. The loaded BCA is the word at +4. */
 #define TGZ_BCA (*(void **)((char *)&data_ov077_02127c14 + 4))
 
-extern SharedFilePtr data_ov077_02127b48;
-extern SharedFilePtr data_ov077_02127b38;
+/* Lakitu's model-file handles, owned and constructed by d_a_jgm.cpp's static
+ * init. Same TU-local wrapper spelling as the owning TU. */
+struct DaJgmModelFile : SharedFilePtr {
+    u32 words[2];
+
+    DaJgmModelFile(u32 fileID);
+    ~DaJgmModelFile();
+};
+
 extern SharedFilePtr data_ov077_02127c14;
 
 extern "C" {
+extern DaJgmModelFile data_ov077_02127b48;
+extern DaJgmModelFile data_ov077_02127b38;
 int func_ov077_02124c28(daTgz_c *self);
 void func_ov077_02124d08(daTgz_c *self, dBgCh_Actr *clsn);
 void func_ov077_021251d0(daTgz_c *self);
