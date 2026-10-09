@@ -1057,9 +1057,9 @@ extern int data_ov084_02130208[];
 extern int data_ov084_02130228[];
 extern int data_ov084_02130238[];
 extern int data_ov084_02130258[];
-extern int data_ov084_02130cc0[];
-extern int data_ov084_02130cc8[];
-extern int data_ov084_02130d74[];
+/* data_ov084_02130cc0, data_ov084_02130cc8 and data_ov084_02130d74 are defined
+   by daKrb_c.cpp as typed handles and its pointer-to-member state table; the
+   TU's own declarations carry the real types. */
 extern int data_ov085_0212f280[];
 extern int data_ov085_02130488[];
 extern int data_ov085_02130490[];
