@@ -10,13 +10,34 @@
     "class label(s): daKing_Donketu_c",
     "module sinit corroboration: 2 sinit(s) / 2 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
     "WIDENED to the whole tu_map unit 0x0211f000..0x02121ec8 (46 functions): Behavior (0x021218a0, 0x42c), InitResources (0x02121ccc, 0x1f4) and OnAimedAtWithEgg (0x02121ec0, 0x8) folded in above Render, in ROM-ascending order under the file's existing `#pragma defer_codegen off`. The right edge was then the unit's own; the abutting factory daKing_Donketu_c_classInit was folded in by the 0930c classInit fold (below).",
-    "classInit fold (0930c): the KING_DONKETU registry factory daKing_Donketu_c_classInit (0x02121ec8, 0xc8) abuts the tu_map unit's end 0x02121ec8 with no gap and no other symbol between; tu_map left it in its own unlabelled unit because it cuts on symbol name. The widened range 0x0211f000..0x02121f90 (47 functions) ends where the daObjEwbIce_c TU (src/actors/daObjEwbIce_c.cpp) begins."
+    "classInit fold (0930c): the KING_DONKETU registry factory daKing_Donketu_c_classInit (0x02121ec8, 0xc8) abuts the tu_map unit's end 0x02121ec8 with no gap and no other symbol between; tu_map left it in its own unlabelled unit because it cuts on symbol name. The widened range 0x0211f000..0x02121f90 (47 functions) ends where the daObjEwbIce_c TU (src/actors/daObjEwbIce_c.cpp) begins.",
+    "sinit fold: __sinit_ov073_02122874 (0x4d4) constructs eight file handles (model 0x359 via func_02017acc + func_02017ab4 dtor; animations 0x354..0x35b via SharedFilePtr::Construct + SharedFilePtr_Destruct_Anim) and copies the sixteen state records from the thirty-two PMF literals at 0x02122f40..0x02123040 into bss 0x02123320..0x02123410. Emitted .init is byte-identical to retail modulo relocations (0 diffs over 0x4d4)."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x0211f000",
       "end": "0x02121f90"
+    },
+    {
+      "name": ".init",
+      "start": "0x02122874",
+      "end": "0x02122d48"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02122f34",
+      "end": "0x02122f38"
+    },
+    {
+      "name": ".data",
+      "start": "0x02122f40",
+      "end": "0x02123040"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02123280",
+      "end": "0x02123420"
     }
   ],
   "functions": [
@@ -70,7 +91,7 @@
       "ordinal": 6
     },
     {
-      "symbol": "func_ov073_0211fbec",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fbecEv",
       "address": "0x0211fbec",
       "size": "0x00000008",
       "legacy_source": "src/func_ov073_0211fbec.c",
@@ -84,7 +105,7 @@
       "ordinal": 8
     },
     {
-      "symbol": "func_ov073_0211fc70",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fc70Ev",
       "address": "0x0211fc70",
       "size": "0x00000008",
       "legacy_source": "src/func_ov073_0211fc70.c",
@@ -98,7 +119,7 @@
       "ordinal": 10
     },
     {
-      "symbol": "func_ov073_0211fe84",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fe84Ev",
       "address": "0x0211fe84",
       "size": "0x00000008",
       "legacy_source": "src/func_ov073_0211fe84.c",
@@ -350,11 +371,460 @@
       "ordinal": 46
     }
   ],
-  "data": [],
-  "bss": [],
+  "data": [
+    {
+      "symbol": "@1850",
+      "address": "0x02122f40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120ed0"
+    },
+    {
+      "symbol": "@1852",
+      "address": "0x02122f48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120e60"
+    },
+    {
+      "symbol": "@1887",
+      "address": "0x02122f50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_212000c"
+    },
+    {
+      "symbol": "@1893",
+      "address": "0x02122f58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fc78"
+    },
+    {
+      "symbol": "@1884",
+      "address": "0x02122f60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120098"
+    },
+    {
+      "symbol": "@1897",
+      "address": "0x02122f68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fbf4"
+    },
+    {
+      "symbol": "@1886",
+      "address": "0x02122f70",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_212005c"
+    },
+    {
+      "symbol": "@1844",
+      "address": "0x02122f78",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2121378"
+    },
+    {
+      "symbol": "@1846",
+      "address": "0x02122f80",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_212128c"
+    },
+    {
+      "symbol": "@1882",
+      "address": "0x02122f88",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_21200e0"
+    },
+    {
+      "symbol": "@1866",
+      "address": "0x02122f90",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120910"
+    },
+    {
+      "symbol": "@1864",
+      "address": "0x02122f98",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120ad8"
+    },
+    {
+      "symbol": "@1862",
+      "address": "0x02122fa0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120b78"
+    },
+    {
+      "symbol": "@1856",
+      "address": "0x02122fa8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120d80"
+    },
+    {
+      "symbol": "@1854",
+      "address": "0x02122fb0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120dec"
+    },
+    {
+      "symbol": "@1874",
+      "address": "0x02122fb8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120610"
+    },
+    {
+      "symbol": "@1901",
+      "address": "0x02122fc0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fa74"
+    },
+    {
+      "symbol": "@1880",
+      "address": "0x02122fc8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120390"
+    },
+    {
+      "symbol": "@1876",
+      "address": "0x02122fd0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_21205f0"
+    },
+    {
+      "symbol": "@1899",
+      "address": "0x02122fd8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fbec"
+    },
+    {
+      "symbol": "@1870",
+      "address": "0x02122fe0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120844"
+    },
+    {
+      "symbol": "@1878",
+      "address": "0x02122fe8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_21203ac"
+    },
+    {
+      "symbol": "@1840",
+      "address": "0x02122ff0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2121538"
+    },
+    {
+      "symbol": "@1895",
+      "address": "0x02122ff8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fc70"
+    },
+    {
+      "symbol": "@1842",
+      "address": "0x02123000",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2121388"
+    },
+    {
+      "symbol": "@1868",
+      "address": "0x02123008",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_21208e4"
+    },
+    {
+      "symbol": "@1872",
+      "address": "0x02123010",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_212081c"
+    },
+    {
+      "symbol": "@1848",
+      "address": "0x02123018",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_212122c"
+    },
+    {
+      "symbol": "@1891",
+      "address": "0x02123020",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fe84"
+    },
+    {
+      "symbol": "@1858",
+      "address": "0x02123028",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120c7c"
+    },
+    {
+      "symbol": "@1860",
+      "address": "0x02123030",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_2120c08"
+    },
+    {
+      "symbol": "@1889",
+      "address": "0x02123038",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler PMF record for daKing_Donketu_c::func_ov073_211fe8c"
+    }
+  ],
+  "bss": [
+    {
+      "symbol": "data_ov073_02123280",
+      "address": "0x02123280",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x355"
+    },
+    {
+      "symbol": "data_ov073_02123288",
+      "address": "0x02123288",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x35b"
+    },
+    {
+      "symbol": "data_ov073_02123290",
+      "address": "0x02123290",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x357"
+    },
+    {
+      "symbol": "data_ov073_02123298",
+      "address": "0x02123298",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "model file handle constructed with file ID 0x359"
+    },
+    {
+      "symbol": "data_ov073_021232a0",
+      "address": "0x021232a0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x356"
+    },
+    {
+      "symbol": "data_ov073_021232a8",
+      "address": "0x021232a8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x354"
+    },
+    {
+      "symbol": "data_ov073_021232b0",
+      "address": "0x021232b0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x358"
+    },
+    {
+      "symbol": "data_ov073_021232b8",
+      "address": "0x021232b8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "animation file handle constructed with file ID 0x35a"
+    },
+    {
+      "symbol": "@1838",
+      "address": "0x021232c0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1831",
+      "address": "0x021232cc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1832",
+      "address": "0x021232d8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1833",
+      "address": "0x021232e4",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1834",
+      "address": "0x021232f0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1835",
+      "address": "0x021232fc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1836",
+      "address": "0x02123308",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "@1837",
+      "address": "0x02123314",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static-destructor registration node"
+    },
+    {
+      "symbol": "data_ov073_02123320",
+      "address": "0x02123320",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_021205f0, update func_ov073_021203ac"
+    },
+    {
+      "symbol": "data_ov073_02123330",
+      "address": "0x02123330",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02121538, update func_ov073_02121388"
+    },
+    {
+      "symbol": "data_ov073_02123340",
+      "address": "0x02123340",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02120390, update func_ov073_021200e0"
+    },
+    {
+      "symbol": "data_ov073_02123350",
+      "address": "0x02123350",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02121378, update func_ov073_0212128c"
+    },
+    {
+      "symbol": "data_ov073_02123360",
+      "address": "0x02123360",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_0212122c, update func_ov073_02120ed0"
+    },
+    {
+      "symbol": "data_ov073_02123370",
+      "address": "0x02123370",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_0211fbec, update func_ov073_0211fa74"
+    },
+    {
+      "symbol": "data_ov073_02123380",
+      "address": "0x02123380",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02120098, update func_ov073_0212005c"
+    },
+    {
+      "symbol": "data_ov073_02123390",
+      "address": "0x02123390",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02120e60, update func_ov073_02120dec"
+    },
+    {
+      "symbol": "data_ov073_021233a0",
+      "address": "0x021233a0",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02120d80, update func_ov073_02120c7c"
+    },
+    {
+      "symbol": "data_ov073_021233b0",
+      "address": "0x021233b0",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_0212000c, update func_ov073_0211fe8c"
+    },
+    {
+      "symbol": "data_ov073_021233c0",
+      "address": "0x021233c0",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02120c08, update func_ov073_02120b78"
+    },
+    {
+      "symbol": "data_ov073_021233d0",
+      "address": "0x021233d0",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_02120ad8, update func_ov073_02120910"
+    },
+    {
+      "symbol": "data_ov073_021233e0",
+      "address": "0x021233e0",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_0211fe84, update func_ov073_0211fc78"
+    },
+    {
+      "symbol": "data_ov073_021233f0",
+      "address": "0x021233f0",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_021208e4, update func_ov073_02120844"
+    },
+    {
+      "symbol": "data_ov073_02123400",
+      "address": "0x02123400",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_0212081c, update func_ov073_02120610"
+    },
+    {
+      "symbol": "data_ov073_02123410",
+      "address": "0x02123410",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "state record: enter func_ov073_0211fc70, update func_ov073_0211fbf4"
+    }
+  ],
   "notes": [
     "STATUS RECONCILED 2026-09-19: text-verified -> promoted. The consolidation had already happened; only the status field lagged. MEASURED, not inferred from missing legacy paths: exactly one .text stanza in config/arm9/overlays/ov073/delinks.txt overlaps this entry's run, it is 'complete', it covers 0x0211f000..0x021218a0 exactly, and it names THIS entry's own promoted_source src/actors/daKing_Donketu_c.cpp -- not another entry's. All 43 declared functions fall inside the run, they tile it with no gap, and the first starts at the range start while the last ends at the range end. The absence of the 43 legacy one-function sources is the expected steady state of a completed promotion, not evidence of one.",
-    "No production_mode is declared, and none is needed: this entry licenses .text only, so it takes the plain promotion shape rather than the intact-object path. Every promoted entry that claims a non-.text section carries production_mode 'intact-object' (23 of 23 at the time of this flip); this entry stays outside that set by claiming nothing but .text.",
     "Generated by tools/tubuild.py create. See the file's own header comment for what was and was not reconciled, and notes/translation-unit-reconstruction-plan.md section 7.3 for what this generator does and does not attempt to resolve automatically.",
     "tubuild create warning: RAW: src/func_ov073_0211fbf4.cpp (func_ov073_0211fbf4) did not split (the definition is inside the extern \"C\" block opened on line 2, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/func_ov073_02120098.cpp (func_ov073_02120098) did not split (the definition is inside the extern \"C\" block opened on line 3, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
@@ -487,7 +957,9 @@
     "PROMOTION IS REFUSED BY tools/tubuild.py promote --dry-run, and the TU is banked text-verified rather than promoted. The two printed reasons are 'manifest status is not link-verified or data-verified' and 'the promotion-ready status is not the recorded linkcheck result'. The recorded result is `scratch-link-verified`, which promotion_refusals() can never accept: it demands status in (link-verified, data-verified) AND linkcheck.result == status, while classify_link_result() returns the `scratch-` prefix whenever the compiler-only policy rewrites the object before the link -- which it does for every key-function TU, this one included (it deadstrips _ZN16daKing_Donketu_cD2Ev, _ZN7Vector3D1Ev and eleven typeinfo/vtable records). Census of config/tu_manifest.d on this tree: 213 manifests, 182 promoted, 169 of those carrying compiler_only_output, 80 promoted entries recording exactly this `scratch-*` result, and only 2 entries in the whole tree satisfying status == recorded result -- neither of them promoted. cmd_promote also has no mutating path at all: anything but --dry-run exits 2. The refusal is therefore structural to the gate, not a defect in this TU, and clearing it is a tools change that belongs in its own review.",
     "PROMOTED ON THIS BRANCH, BY HAND, FOLLOWING THE DRY RUN'S OWN PLAN: src_tu/actors/daKing_Donketu_c.cpp moved to src/actors/daKing_Donketu_c.cpp, the 43 superseded one-function sources deleted, and config/arm9/overlays/ov073/delinks.txt's 43 `complete` entries replaced by a single `complete` .text claim 0x0211f000..0x021218a0. Before the edit both invariants were asserted against HEAD: the 43 removed entries tiled that span with no gap and no overlap, and their path set equalled this manifest's functions[].legacy_source exactly. `status` is deliberately left at text-verified -- tools/tubuild.py promote still refuses this entry for the two structural reasons recorded above, and the verification level actually reached is the one banked. notes/data/tu-promotion-queue.tsv therefore keeps already_promoted = no, which is the value tools/queue_audit.py --check-promoted wants for any status other than exactly `promoted`, and which is independently correct here because this is a PARTIAL fold: 43 of the unit's 47 functions. Behavior, InitResources, OnAimedAtWithEgg and daKing_Donketu_c_classInit keep their own shards and their own delinks.txt entries -- see the source file's header for the opt_propagation measurement that splits the unit there.",
     "WIDEN 2026-09-28: the opt_propagation split is closed. Behavior's shard carried a file-scope `#pragma opt_propagation off`; at file scope in this TU it costs eight members (measured: 0211f2c0, 0211f494, 0211fa74, 021203ac, 02120d80, 0212128c, 021215cc and InitResources DIFF, 38/46). Because this TU already runs with `#pragma defer_codegen off`, a positional bracket binds: `#pragma push` / `opt_propagation off` directly above Behavior and `#pragma pop` after it gives 46/46 MATCH, objisolate clean, reloc-destinations clean. ONE placement detail is load-bearing and was measured both ways: the pop must not directly follow Behavior's closing brace. With the pop (or an `opt_propagation on`) immediately after the `}`, Behavior comes out DIFF (0x428 vs 0x42c with the propagated constant 0x2000 and a re-loaded &data_020a0e68 instead of the retail register copies) because the directive is read as lookahead before Behavior is generated; with no closing directive at all Behavior matches and InitResources DIFFs. Putting InitResources' extern declarations between Behavior and the pop keeps it clear. The three shards src/_ZN16daKing_Donketu_c8BehaviorEv.cpp, src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp and src/_ZN16daKing_Donketu_c16OnAimedAtWithEggEv.cpp are retired and their delinks entries merged into this TU's single .text claim. Their declarations were reconciled onto the TU's existing spellings (BCA_File*[2] globals cast to SharedFilePtr* at the dExtFrameCtrl_c/Model LoadFile calls, data_ov073_02123330 passed as (PMF *) as every other ChangeState call site here does, HugeLandingDustAt called as the dActor_c member the TU already uses); none moved a byte. Behavior adds one homeless compiler-only symbol, _ZN9RayParamsD1Ev, licensed as plain deadstrip.",
-    "classInit fold (0930c): daKing_Donketu_c_classInit is folded in last, in ROM order, under the file's `#pragma defer_codegen off`. `return new daKing_Donketu_c();` was tried first and DIFFs: types.h's Vector3 has no user-declared constructor, so the synthesized constructor omits the cartridge's three __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) calls over mWaypointsA (0x3e8, 8), mWaypointsB (0x448, 8) and unk_4d4 (0x4d4, 2) -- the same wall the ov095/daObjFlamethrower_c fold measured. The factory therefore keeps the retired source's hand-built sequence verbatim (operator new(sizeof = 0x504), dEnemyBase_c C2, vtable store, dCcAcPos_c / dBgCh_Actr / BlendModelAnim / dExtShadowModel_c C1, three __cxa_vec_ctor), with one change the merge requires: this TU is the key-function TU and defines _ZTV16daKing_Donketu_c at the start of the vtable object, so the store reads `&_ZTV16daKing_Donketu_c[2]` (declared `extern int[]` at namespace scope) instead of the loose file's address-point reference. The ABI-seam externs sit in the file's top extern \"C\" block, above the first @symbol marker; __cxa_vec_ctor is declared with the definition's (void *, unsigned int, unsigned int, ctor, dtor) spelling, so the retired file's banked declaration-agreement row is dropped rather than re-keyed. No new compiler-only output. tubuild verify: 47/47 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_king_donketu.cpp; its credit carries in attribution.json as a path#symbol override."
+    "classInit fold (0930c): daKing_Donketu_c_classInit is folded in last, in ROM order, under the file's `#pragma defer_codegen off`. `return new daKing_Donketu_c();` was tried first and DIFFs: types.h's Vector3 has no user-declared constructor, so the synthesized constructor omits the cartridge's three __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) calls over mWaypointsA (0x3e8, 8), mWaypointsB (0x448, 8) and unk_4d4 (0x4d4, 2) -- the same wall the ov095/daObjFlamethrower_c fold measured. The factory therefore keeps the retired source's hand-built sequence verbatim (operator new(sizeof = 0x504), dEnemyBase_c C2, vtable store, dCcAcPos_c / dBgCh_Actr / BlendModelAnim / dExtShadowModel_c C1, three __cxa_vec_ctor), with one change the merge requires: this TU is the key-function TU and defines _ZTV16daKing_Donketu_c at the start of the vtable object, so the store reads `&_ZTV16daKing_Donketu_c[2]` (declared `extern int[]` at namespace scope) instead of the loose file's address-point reference. The ABI-seam externs sit in the file's top extern \"C\" block, above the first @symbol marker; __cxa_vec_ctor is declared with the definition's (void *, unsigned int, unsigned int, ctor, dtor) spelling, so the retired file's banked declaration-agreement row is dropped rather than re-keyed. No new compiler-only output. tubuild verify: 47/47 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_king_donketu.cpp; its credit carries in attribution.json as a path#symbol override.",
+    "sinit fold (2026-10): the handwritten src/unnamed/ov073/__sinit_ov073_02122874.c is retired; the class TU now defines the eight file handles and the sixteen State records the initializer fills, so mwcc emits __sinit_daKing_Donketu_c.cpp itself. The three state-enter stubs func_ov073_0211fbec / _0211fc70 / _0211fe84 are PMF targets in the records, so they are members now (declared in the class header); func_ov073_0212000c returns short and is reinterpreted to the int-PMF slot. production_mode intact-object: this entry now licenses .init/.ctor/.data/.bss alongside .text.",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -513,23 +985,23 @@
         10,
         11,
         85,
-        91,
-        92,
-        93,
-        94,
-        95,
-        96,
-        97,
-        98,
-        99,
-        100,
-        101,
-        102,
-        103,
-        104,
-        105,
-        106,
-        107
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203
       ],
       "data": [
         "_ZTI16daKing_Donketu_c",
@@ -561,13 +1033,13 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov073-daKing_Donketu_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -580,7 +1052,7 @@
       },
       "tuRange": {
         "start": "0x0211f000",
-        "end": "0x021218a0",
+        "end": "0x02121f90",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -588,22 +1060,427 @@
         {
           "section": ".text",
           "start": "0x0211f000",
-          "end": "0x021218a0",
+          "end": "0x02121f90",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02122874",
+          "end": "0x02122d48",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02122f34",
+          "end": "0x02122f38",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x02122f40",
+          "end": "0x02123040",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02123280",
+          "end": "0x02123420",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 43
+          "LICENSED": 113
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              206
+            ],
+            "desired": [
+              206
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              204
+            ],
+            "desired": [
+              204
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              107,
+              109,
+              112,
+              114,
+              117,
+              119,
+              122,
+              124,
+              127,
+              129,
+              132,
+              134,
+              137,
+              139,
+              142,
+              144,
+              147,
+              149,
+              152,
+              154,
+              157,
+              159,
+              162,
+              164,
+              167,
+              169,
+              172,
+              174,
+              177,
+              179,
+              182,
+              184
+            ],
+            "desired": [
+              119,
+              122,
+              167,
+              174,
+              162,
+              179,
+              164,
+              112,
+              114,
+              159,
+              139,
+              137,
+              134,
+              127,
+              124,
+              149,
+              184,
+              157,
+              152,
+              182,
+              144,
+              154,
+              107,
+              177,
+              109,
+              142,
+              147,
+              117,
+              172,
+              129,
+              132,
+              169
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100,
+              101,
+              102,
+              103,
+              104,
+              105,
+              106,
+              111,
+              116,
+              121,
+              126,
+              131,
+              136,
+              141,
+              146,
+              151,
+              156,
+              161,
+              166,
+              171,
+              176,
+              181,
+              186
+            ],
+            "desired": [
+              94,
+              98,
+              102,
+              92,
+              96,
+              100,
+              104,
+              106,
+              105,
+              91,
+              93,
+              95,
+              97,
+              99,
+              101,
+              103,
+              156,
+              111,
+              161,
+              116,
+              121,
+              186,
+              166,
+              126,
+              131,
+              171,
+              136,
+              141,
+              176,
+              146,
+              151,
+              181
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                107,
+                109,
+                112,
+                114,
+                117,
+                119,
+                122,
+                124,
+                127,
+                129,
+                132,
+                134,
+                137,
+                139,
+                142,
+                144,
+                147,
+                149,
+                152,
+                154,
+                157,
+                159,
+                162,
+                164,
+                167,
+                169,
+                172,
+                174,
+                177,
+                179,
+                182,
+                184
+              ],
+              "desired": [
+                119,
+                122,
+                167,
+                174,
+                162,
+                179,
+                164,
+                112,
+                114,
+                159,
+                139,
+                137,
+                134,
+                127,
+                124,
+                149,
+                184,
+                157,
+                152,
+                182,
+                144,
+                154,
+                107,
+                177,
+                109,
+                142,
+                147,
+                117,
+                172,
+                129,
+                132,
+                169
+              ],
+              "slots": [
+                107,
+                109,
+                112,
+                114,
+                117,
+                119,
+                122,
+                124,
+                127,
+                129,
+                132,
+                134,
+                137,
+                139,
+                142,
+                144,
+                147,
+                149,
+                152,
+                154,
+                157,
+                159,
+                162,
+                164,
+                167,
+                169,
+                172,
+                174,
+                177,
+                179,
+                182,
+                184
+              ]
+            },
+            {
+              "section": ".bss",
+              "original": [
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                111,
+                116,
+                121,
+                126,
+                131,
+                136,
+                141,
+                146,
+                151,
+                156,
+                161,
+                166,
+                171,
+                176,
+                181,
+                186
+              ],
+              "desired": [
+                94,
+                98,
+                102,
+                92,
+                96,
+                100,
+                104,
+                106,
+                105,
+                91,
+                93,
+                95,
+                97,
+                99,
+                101,
+                103,
+                156,
+                111,
+                161,
+                116,
+                121,
+                186,
+                166,
+                126,
+                131,
+                171,
+                136,
+                141,
+                176,
+                146,
+                151,
+                181
+              ],
+              "slots": [
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                111,
+                116,
+                121,
+                126,
+                131,
+                136,
+                141,
+                146,
+                151,
+                156,
+                161,
+                166,
+                171,
+                176,
+                181,
+                186
+              ]
+            }
+          ],
+          "symbolIndices": 64,
+          "sectionLinks": 0,
+          "sectionInfos": 32,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -710,5 +1587,1467 @@
       "disposition": "deadstrip-data",
       "reason": "The class's own vtable, emitted because this TU owns the key function (the out-of-line destructor). Extent corroborated three ways: (a) the relocated run in config/arm9/overlays/ov073/relocs.txt is unbroken from 0x0212308c -- the typeinfo word of the 8-byte offset-to-top/typeinfo preamble -- through 0x02123108, 32 consecutive relocated words, 1 typeinfo + 31 slots, with the first unrelocated word at 0x02123110; (b) the next symbols.txt row after the address point is data_ov073_0212310c at 0x0212310c; (c) the vtable's own 31-slot length is what identifies the base as dEnemyBase_c. All three give symbol extent 0x02123090..0x0212310c = 0x7c = 31 slots, and STORAGE 0x02123088..0x0212310c = 0x84, which is exactly the size tubuild verify reports for the .data section this TU emits. The cartridge's copy sits inside the overlay's unclaimed .data gap (config/arm9/overlays/ov073/delinks.txt attributes no source file to 0x02122f40..0x02123280), so this promotion is text-only and the emitted copy is discarded rather than substituted."
     }
-  ]
+  ],
+  "init": [
+    {
+      "symbol": "__sinit_daKing_Donketu_c.cpp",
+      "address": "0x02122874",
+      "size": "0x4d4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov073_02122874 and carries the same relocation sites"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_daKing_Donketu_c.cpp",
+      "address": "0x02122f34",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".data",
+      "source": "0x02122ff0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02121538Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02121538"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123000",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02121388Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02121388"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02121378Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02121378"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f80",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0212128cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0212128c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123018",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0212122cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0212122c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120ed0Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120ed0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120e60Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120e60"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fb0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120decEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120dec"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fa8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120d80Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120d80"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123028",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120c7cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120c7c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123030",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120c08Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120c08"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fa0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120b78Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120b78"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120ad8Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120ad8"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120910Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120910"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123008",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_021208e4Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021208e4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fe0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120844Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120844"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123010",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0212081cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0212081c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fb8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120610Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120610"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fd0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_021205f0Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021205f0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fe8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_021203acEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021203ac"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fc8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120390Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120390"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f88",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_021200e0Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021200e0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_02120098Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02120098"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0212005cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0212005c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0212000cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0212000c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123038",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fe8cEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fe8c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02123020",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fe84Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fe84"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f58",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fc78Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fc78"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122ff8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fc70Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fc70"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122f68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fbf4Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fbf4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fd8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fbecEv",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fbec"
+    },
+    {
+      "section": ".data",
+      "source": "0x02122fc0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN16daKing_Donketu_c19func_ov073_0211fa74Ev",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x0211fa74"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02122f34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_daKing_Donketu_c.cpp",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122874"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122884",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017acc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122894",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228a0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228b0",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228bc",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228cc",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228d8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228e8",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021228f4",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122904",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122910",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122920",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212292c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212293c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122948",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122958",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123298",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123298"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_02017ab4",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017ab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1831",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232cc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123280",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123280"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "SharedFilePtr_Destruct_Anim",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017984"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1832",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232d8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021232a0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232a0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1833",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232e4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c54",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123288",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123288"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c5c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1834",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232f0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021232a8",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232a8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1835",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232fc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123290",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123290"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1836",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123308"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c74",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021232b0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232b0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1837",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123314"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c7c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021232b8",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232b8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c84",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1838",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021232c0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c88",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123330",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123330"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c8c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1840",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122ff0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1842",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123000"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123350",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123350"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1844",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f78"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122c9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1846",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f80"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ca0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123360",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123360"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ca4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1848",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123018"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ca8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1850",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f40"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123390",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123390"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cb0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1852",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f48"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cb4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1854",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fb0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cb8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021233a0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021233a0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cbc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1856",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fa8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cc0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1858",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123028"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cc4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021233c0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021233c0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cc8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1860",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123030"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ccc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1862",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fa0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cd0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021233d0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021233d0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cd4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1864",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f98"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cd8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1866",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f90"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cdc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021233f0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021233f0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ce0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1868",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123008"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ce4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1870",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fe0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122ce8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123400",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123400"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1872",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123010"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cf0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1874",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fb8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cf4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123320",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123320"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cf8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1876",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fd0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122cfc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1878",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fe8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123340",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123340"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d04",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1880",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fc8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d08",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1882",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f88"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d0c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123380",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123380"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d10",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1884",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f60"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d14",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1886",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f70"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d18",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021233b0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021233b0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d1c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1887",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f50"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d20",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1889",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123038"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d24",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_021233e0",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x021233e0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1891",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123020"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1893",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f58"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123410",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123410"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1895",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122ff8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1897",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122f68"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov073_02123370",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02123370"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1899",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fd8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02122d44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1901",
+      "addend": 0,
+      "target_module": "ov073",
+      "target_address": "0x02122fc0"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN26KingDonketuModelFileHandleC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail initializer call destination and the model file-handle wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN26KingDonketuModelFileHandleD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail destructor registration destination and the model file-handle wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "_ZN28KingDonketuAnimResFileHandleC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "retail initializer call destination and the animation file-handle wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN28KingDonketuAnimResFileHandleD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "retail destructor registration destination and the animation file-handle wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and the eight direct retail references in this initializer"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_daKing_Donketu_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_daKing_Donketu_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "@1850",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f40"
+    },
+    {
+      "symbol": "@1852",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f48"
+    },
+    {
+      "symbol": "@1887",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f50"
+    },
+    {
+      "symbol": "@1893",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f58"
+    },
+    {
+      "symbol": "@1884",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f60"
+    },
+    {
+      "symbol": "@1897",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f68"
+    },
+    {
+      "symbol": "@1886",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f70"
+    },
+    {
+      "symbol": "@1844",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f78"
+    },
+    {
+      "symbol": "@1846",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f80"
+    },
+    {
+      "symbol": "@1882",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f88"
+    },
+    {
+      "symbol": "@1866",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f90"
+    },
+    {
+      "symbol": "@1864",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122f98"
+    },
+    {
+      "symbol": "@1862",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fa0"
+    },
+    {
+      "symbol": "@1856",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fa8"
+    },
+    {
+      "symbol": "@1854",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fb0"
+    },
+    {
+      "symbol": "@1874",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fb8"
+    },
+    {
+      "symbol": "@1901",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fc0"
+    },
+    {
+      "symbol": "@1880",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fc8"
+    },
+    {
+      "symbol": "@1876",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fd0"
+    },
+    {
+      "symbol": "@1899",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fd8"
+    },
+    {
+      "symbol": "@1870",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fe0"
+    },
+    {
+      "symbol": "@1878",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122fe8"
+    },
+    {
+      "symbol": "@1840",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122ff0"
+    },
+    {
+      "symbol": "@1895",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02122ff8"
+    },
+    {
+      "symbol": "@1842",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123000"
+    },
+    {
+      "symbol": "@1868",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123008"
+    },
+    {
+      "symbol": "@1872",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123010"
+    },
+    {
+      "symbol": "@1848",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123018"
+    },
+    {
+      "symbol": "@1891",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123020"
+    },
+    {
+      "symbol": "@1858",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123028"
+    },
+    {
+      "symbol": "@1860",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123030"
+    },
+    {
+      "symbol": "@1889",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF record is a configured relocation destination at 0x02123038"
+    },
+    {
+      "symbol": "@1838",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x021232c0"
+    },
+    {
+      "symbol": "@1831",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x021232cc"
+    },
+    {
+      "symbol": "@1832",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x021232d8"
+    },
+    {
+      "symbol": "@1833",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x021232e4"
+    },
+    {
+      "symbol": "@1834",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x021232f0"
+    },
+    {
+      "symbol": "@1835",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x021232fc"
+    },
+    {
+      "symbol": "@1836",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x02123308"
+    },
+    {
+      "symbol": "@1837",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local registration node is a configured relocation destination at 0x02123314"
+    }
+  ],
+  "production_mode": "intact-object"
 }

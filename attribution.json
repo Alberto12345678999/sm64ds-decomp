@@ -6658,6 +6658,7 @@
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c13InitResourcesEv": "tangosdev",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c16OnAimedAtWithEggEv": "tangosdev",
     "src/actors/daKing_Donketu_c.cpp#daKing_Donketu_c_classInit": "tangosdev",
+    "src/actors/daKing_Donketu_c.cpp#__sinit_daKing_Donketu_c.cpp": "tangosdev",
     "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD1Ev": "tangosdev",
     "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD0Ev": "tangosdev",
     "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_cD1Ev": "tangosdev",
