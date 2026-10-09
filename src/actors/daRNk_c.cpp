@@ -109,15 +109,37 @@ enum {
     kAnimPlayOnce = 0x40000000
 };
 
+/* Non-virtual state handlers. daRNk_c is already complete here; the
+   pointer-to-member call through mState still matches. */
+typedef void (daRNk_c::*StateFunc)();
+
+/* The model handle's ctor/dtor are the cartridge's func_02017acc /
+   func_02017ab4 pair; the manifest aliases these. */
+struct RNkModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    RNkModelFileHandle(u32 fileID);
+    ~RNkModelFileHandle();
+};
+
+/* The seven animation handles construct through SharedFilePtr::Construct
+   and register SharedFilePtr_Destruct_Anim; the manifest aliases these. */
+struct RNkAnimationFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    RNkAnimationFileHandle(u32 fileID);
+    ~RNkAnimationFileHandle();
+};
+
 /* Each SharedFilePtr below is {?, loaded file} with the file at +4. Names are
    by when SetAnim plays them. */
-#define ANIM_IDLE      (*(void **)(data_ov062_0211e034 + 4))   /* after talking, after stopping, at spawn */
-#define ANIM_TALK      (*(void **)(data_ov062_0211e03c + 4))   /* turned to face the player and talking */
-#define ANIM_RUN_START ((void *)data_ov062_0211e014[1])        /* at the start of the race; then ANIM_RUN */
-#define ANIM_RUN       ((void *)data_ov062_0211e024[1])        /* the looping run; speed follows mHorzSpeed */
-#define ANIM_JUMP      ((void *)data_ov062_0211e02c[1])        /* in the air */
-#define ANIM_LAND      ((void *)data_ov062_0211e004[1])        /* on landing, or when the path ends; then ANIM_RUN */
-#define ANIM_BRAKE     (*(void **)(data_ov062_0211e01c + 4))   /* STATE_PULL_UP's last frame to a stop */
+#define ANIM_IDLE      (data_ov062_0211e034.file)   /* after talking, after stopping, at spawn */
+#define ANIM_TALK      (data_ov062_0211e03c.file)   /* turned to face the player and talking */
+#define ANIM_RUN_START (data_ov062_0211e014.file)   /* at the start of the race; then ANIM_RUN */
+#define ANIM_RUN       (data_ov062_0211e024.file)   /* the looping run; speed follows mHorzSpeed */
+#define ANIM_JUMP      (data_ov062_0211e02c.file)   /* in the air */
+#define ANIM_LAND      (data_ov062_0211e004.file)   /* on landing, or when the path ends; then ANIM_RUN */
+#define ANIM_BRAKE     (data_ov062_0211e01c.file)   /* STATE_PULL_UP's last frame to a stop */
 
 /* Play a BCA on Koopa's ModelAnim at normal speed (0x1000 = 1.0), from frame 0. */
 #define SET_ANIM(this, bca, flags) \
@@ -140,10 +162,10 @@ enum {
     BALL_AHEAD_JUMP = 1         /* ball ahead and slow enough to jump over */
 };
 
-extern "C" {
 /* Table of six pointers-to-member, one per State, built by
-   __sinit_ov062_0211d4a0. */
-extern int data_ov062_0211e0a4[];
+   __sinit_daRNk_c.cpp. */
+extern StateFunc data_ov062_0211e0a4[6];
+extern "C" {
 void _ZN5Sound22LoadAndSetMusic_Layer2Ej(u32 id);
 }
 
@@ -181,14 +203,14 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, i
    evidenced actor view here; repairing the shared initializer is separate. */
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int r, int h, void *p, int q);
 /* The files InitResources loads and CleanupResources releases; see ANIM_*. */
-extern char data_ov062_0211e00c[];  /* the model (BMD) */
-extern int data_ov062_0211e014[];   /* ANIM_RUN_START */
-extern int data_ov062_0211e024[];   /* ANIM_RUN */
-extern char data_ov062_0211e01c[];  /* ANIM_BRAKE */
-extern char data_ov062_0211e034[];  /* ANIM_IDLE */
-extern char data_ov062_0211e03c[];  /* ANIM_TALK */
-extern int data_ov062_0211e02c[];   /* ANIM_JUMP */
-extern int data_ov062_0211e004[];   /* ANIM_LAND */
+extern RNkModelFileHandle data_ov062_0211e00c;      /* the model (BMD) */
+extern RNkAnimationFileHandle data_ov062_0211e014;  /* ANIM_RUN_START */
+extern RNkAnimationFileHandle data_ov062_0211e024;  /* ANIM_RUN */
+extern RNkAnimationFileHandle data_ov062_0211e01c;  /* ANIM_BRAKE */
+extern RNkAnimationFileHandle data_ov062_0211e034;  /* ANIM_IDLE */
+extern RNkAnimationFileHandle data_ov062_0211e03c;  /* ANIM_TALK */
+extern RNkAnimationFileHandle data_ov062_0211e02c;  /* ANIM_JUMP */
+extern RNkAnimationFileHandle data_ov062_0211e004;  /* ANIM_LAND */
 }
 
 // @symbol daRNk_c_classInit
@@ -208,15 +230,15 @@ int daRNk_c::InitResources()
     unsigned char b;
     int zero;
 
-    Model::LoadFile(*(SharedFilePtr *)data_ov062_0211e00c);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e014);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e024);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e01c);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e034);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e03c);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e02c);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e004);
-    if (mModelAnim.SetFile(*(BMD_File **)(data_ov062_0211e00c + 4), 1, -1) == 0)
+    Model::LoadFile(*(SharedFilePtr *)&data_ov062_0211e00c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e014);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e024);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e01c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e034);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e03c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e02c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e004);
+    if (mModelAnim.SetFile((BMD_File *)data_ov062_0211e00c.file, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -285,8 +307,7 @@ int daRNk_c::CleanupResources()
    body cylinder and draw the drop shadow. */
 int daRNk_c::Behavior()
 {
-  typedef void (daRNk_c::*StateFunc)();
-  StateFunc *states = (StateFunc *)data_ov062_0211e0a4;
+  StateFunc *states = data_ov062_0211e0a4;
   (this->*states[mState])();
   mModelAnim.Advance();
   mAngleY = mPrevAngleY;
@@ -1017,3 +1038,23 @@ reset:
 /* D1 is emitted from the inline destructor in daRNk_c.h alongside D0
  * alongside D0. Members are destroyed in reverse declaration
  * order, then dEnemyBase_c::~dEnemyBase_c. */
+
+/* Construction order is source order: the state table first (its six PMF
+   records land in .data and the stores copy them into .bss), then the model
+   handle, then the seven animation handles in the initializer's call order. */
+StateFunc data_ov062_0211e0a4[6] = {
+    &daRNk_c::func_ov062_0211a9c4,
+    &daRNk_c::func_ov062_0211a740,
+    &daRNk_c::func_ov062_0211a1f4,
+    &daRNk_c::func_ov062_0211a168,
+    &daRNk_c::func_ov062_0211a0f0,
+    &daRNk_c::func_ov062_02119be0,
+};
+RNkModelFileHandle data_ov062_0211e00c(0x3ba);
+RNkAnimationFileHandle data_ov062_0211e014(0x3c6);
+RNkAnimationFileHandle data_ov062_0211e024(0x3c4);
+RNkAnimationFileHandle data_ov062_0211e01c(0x3c5);
+RNkAnimationFileHandle data_ov062_0211e034(0x3c2);
+RNkAnimationFileHandle data_ov062_0211e03c(0x3c3);
+RNkAnimationFileHandle data_ov062_0211e02c(0x3bf);
+RNkAnimationFileHandle data_ov062_0211e004(0x3be);

@@ -4599,6 +4599,7 @@
     "src/actors/daRNk_c.cpp#_ZN7daRNk_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daRNk_c.cpp#_ZN7daRNk_c13InitResourcesEv": "tangosdev",
     "src/actors/daRNk_c.cpp#daRNk_c_classInit": "tangosdev",
+    "src/actors/daRNk_c.cpp#__sinit_daRNk_c.cpp": "tangosdev",
     "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_cD1Ev": "tangosdev",
     "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_cD0Ev": "tangosdev",
     "src/game/actors/d_a_nknk.cpp#_ZN8daNknk_c16CleanupResourcesEv": "tangosdev",
