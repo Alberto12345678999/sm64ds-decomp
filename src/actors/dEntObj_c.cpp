@@ -34,6 +34,35 @@ namespace G3i {
 bool ApproachLinear(short &value, short target, short step);
 void CopyToViewMat(const Matrix4x3 *m);
 
+/* The resource handles as the ROM lays them out: {id, loaded file}. The
+   model handles construct through func_02017acc and destroy through
+   func_02017ab4; the animation handles construct through
+   SharedFilePtr::Construct and destroy through SharedFilePtr_Destruct_Anim;
+   the texture-sequence handles construct through
+   SharedFilePtr_Construct_TexSeq and destroy through
+   SharedFilePtr_Destruct_TexSeq. The manifest aliases each undefined member
+   onto its ROM symbol. */
+struct EntObjModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    EntObjModelFilePtr(u32 fileID);
+    ~EntObjModelFilePtr();
+};
+
+struct EntObjAnimationFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    EntObjAnimationFileHandle(u32 fileID);
+    ~EntObjAnimationFileHandle();
+};
+
+struct EntObjTextureSequenceFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    EntObjTextureSequenceFileHandle(u32 fileID);
+    ~EntObjTextureSequenceFileHandle();
+};
+
 /* Fix12<int> is passed by value at these call boundaries. Spelled as the
  * class type, mwccarm homes the register arguments and the callers grow, so
  * the measured scalar views stay. */
@@ -79,29 +108,29 @@ extern short data_02082614[];
 extern u8 data_0209fc5c[];
 extern signed char data_0209fc64[];
 
-/* SharedFilePtr handles; the loaded file sits at +4. */
-extern int data_ov075_0211d384[];
-extern int data_ov075_0211d38c[];
-extern int data_ov075_0211d394[];
-extern int data_ov075_0211d39c[];
-extern int data_ov075_0211d3a4[];
-extern int data_ov075_0211d3ac[];
-extern int data_ov075_0211d3b4[];
-extern int data_ov075_0211d3bc[];
-extern int data_ov075_0211d3c4[];
-extern int data_ov075_0211d3cc[];
-extern int data_ov075_0211d3d4[];
-extern int data_ov075_0211d3dc[];
-extern int data_ov075_0211d3e4[];
-extern int data_ov075_0211d3ec[];
-extern int data_ov075_0211d3f4[];
-extern int data_ov075_0211d3fc[];
-extern int data_ov075_0211d404[];
-extern int data_ov075_0211d40c[];
-extern int data_ov075_0211d414[];
-extern int data_ov075_0211d41c[];
-extern int data_ov075_0211d424[];
-extern int data_ov075_0211d42c[];
+/* SharedFilePtr handles; the loaded file sits at .ptr. */
+extern EntObjAnimationFileHandle data_ov075_0211d384;
+extern EntObjAnimationFileHandle data_ov075_0211d38c;
+extern EntObjAnimationFileHandle data_ov075_0211d394;
+extern EntObjAnimationFileHandle data_ov075_0211d39c;
+extern EntObjAnimationFileHandle data_ov075_0211d3a4;
+extern EntObjAnimationFileHandle data_ov075_0211d3ac;
+extern EntObjAnimationFileHandle data_ov075_0211d3b4;
+extern EntObjModelFilePtr data_ov075_0211d3bc;
+extern EntObjModelFilePtr data_ov075_0211d3c4;
+extern EntObjAnimationFileHandle data_ov075_0211d3cc;
+extern EntObjAnimationFileHandle data_ov075_0211d3d4;
+extern EntObjTextureSequenceFileHandle data_ov075_0211d3dc;
+extern EntObjAnimationFileHandle data_ov075_0211d3e4;
+extern EntObjAnimationFileHandle data_ov075_0211d3ec;
+extern EntObjAnimationFileHandle data_ov075_0211d3f4;
+extern EntObjModelFilePtr data_ov075_0211d3fc;
+extern EntObjModelFilePtr data_ov075_0211d404;
+extern EntObjTextureSequenceFileHandle data_ov075_0211d40c;
+extern EntObjAnimationFileHandle data_ov075_0211d414;
+extern EntObjAnimationFileHandle data_ov075_0211d41c;
+extern EntObjAnimationFileHandle data_ov075_0211d424;
+extern EntObjAnimationFileHandle data_ov075_0211d42c;
 extern int *data_ov075_0211c678[];
 extern int *data_ov075_0211c688[];
 
@@ -174,7 +203,7 @@ UnknownVsPlayer::~UnknownVsPlayer()
 void UnknownVsPlayer::func_ov075_02114010(){
     if (mSpeed < mMaxSpeed / 2) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mModel, (void *)data_ov075_0211d424[1], 4, 0, 0x1000, 0);
+            &mModel, (void *)data_ov075_0211d424.ptr, 4, 0, 0x1000, 0);
         mAnimState = 4;
     }
     mModel.speed = cstd::fdiv(mSpeed, mMaxSpeed) + 0x1000;
@@ -193,7 +222,7 @@ void UnknownVsPlayer::func_ov075_02114010(){
 void UnknownVsPlayer::func_ov075_021140e4(){
     if (mSpeed >= mMaxSpeed / 2) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mModel, (void *)data_ov075_0211d42c[1], 4, 0, 0x1000, 0);
+            &mModel, (void *)data_ov075_0211d42c.ptr, 4, 0, 0x1000, 0);
         mAnimState = 5;
     }
     mModel.speed = cstd::fdiv(mSpeed, mMaxSpeed) + 0x1000;
@@ -213,7 +242,7 @@ int UnknownVsPlayer::func_ov075_021141b8(){
     int finished = mModel.Finished();
     if (!finished) return finished;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mModel, (void *)data_ov075_0211d3ec[1], 4, 0, 0x1000, 0);
+        &mModel, (void *)data_ov075_0211d3ec.ptr, 4, 0, 0x1000, 0);
     mAnimState = 0;
     return 0;
 }
@@ -225,7 +254,7 @@ int UnknownVsPlayer::func_ov075_02114218(){
     int finished = mModel.Finished();
     if (!finished) return finished;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mModel, (void *)data_ov075_0211d3a4[1], 4, 0x40000000, 0x1000, 0);
+        &mModel, (void *)data_ov075_0211d3a4.ptr, 4, 0x40000000, 0x1000, 0);
     mAnimState = 3;
     return 3;
 }
@@ -291,17 +320,17 @@ void UnknownVsPlayer::func_ov075_021143e4(){
     }
     if (data_0209b2f0[mPlayerNo] != 0) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mModel, (void *)data_ov075_0211d3ac[1], 0, 0, 0x1000, 0);
-        btp = (void *)data_ov075_0211d40c[1];
+            &mModel, (void *)data_ov075_0211d3ac.ptr, 0, 0, 0x1000, 0);
+        btp = (void *)data_ov075_0211d40c.ptr;
         mMoveState = 8;
     } else {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
             &mModel, (void *)(data_ov075_0211c688[data_ov075_0211d380 & 3])[1], 0, 0, 0x1000, 0);
-        btp = (void *)data_ov075_0211d3dc[1];
+        btp = (void *)data_ov075_0211d3dc.ptr;
         mMoveState = 9;
         data_ov075_0211d380 >>= 2;
     }
-    TextureSequence::Prepare(*(BMD_File *)data_ov075_0211d3c4[1], *(BTP_File *)btp);
+    TextureSequence::Prepare(*(BMD_File *)data_ov075_0211d3c4.ptr, *(BTP_File *)btp);
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, btp, 0, 0x1000, 0);
     {
         unsigned int rv = (unsigned int)RandomIntInternal(&data_0209e650);
@@ -322,7 +351,7 @@ void UnknownVsPlayer::func_ov075_02114560(){
         mVertSpeed = 0x2a000;
         mInAir = 1;
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mModel, (void *)data_ov075_0211d41c[1], 4, 0x40000000, 0x1000, 0);
+            &mModel, (void *)data_ov075_0211d41c.ptr, 4, 0x40000000, 0x1000, 0);
         mAnimState = 0;
     }
 
@@ -415,7 +444,7 @@ void UnknownVsPlayer::func_ov075_02114894(){
     mSpeed = 0;
     mVertSpeed = 0;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mModel, (void *)data_ov075_0211d424[1], 4, 0, 0x1000, 0);
+        &mModel, (void *)data_ov075_0211d424.ptr, 4, 0, 0x1000, 0);
     mMoveState = 5;
     mAnimState = 4;
     mInAir = 0;
@@ -432,7 +461,7 @@ int UnknownVsPlayer::func_ov075_021148f0(){
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114904Ei
 void UnknownVsPlayer::func_ov075_02114904(int exitX){
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mModel, (void *)data_ov075_0211d384[1], 8, 0x40000000, 0x1000, 0);
+        &mModel, (void *)data_ov075_0211d384.ptr, 8, 0x40000000, 0x1000, 0);
     mWaitTimer = (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) + 0x1e) & 0xf;
     mExitPos.x = exitX;
     mExitPos.y = 0;
@@ -445,7 +474,7 @@ void UnknownVsPlayer::func_ov075_02114904(int exitX){
 // @symbol _ZN15UnknownVsPlayer19func_ov075_02114988Ev
 int UnknownVsPlayer::func_ov075_02114988(){
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mModel, (void *)data_ov075_0211d3a4[1], 8, 0x40000000, 0x1000, 0);
+        &mModel, (void *)data_ov075_0211d3a4.ptr, 8, 0x40000000, 0x1000, 0);
     mAnimState = 3;
     return 3;
 }
@@ -463,7 +492,7 @@ void UnknownVsPlayer::func_ov075_021149d0(int targetX){
     mMoveState = 1;
     mAnimState = 1;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-        &mModel, (void *)data_ov075_0211d42c[1], 4, 0, 0x1000, 0);
+        &mModel, (void *)data_ov075_0211d42c.ptr, 4, 0, 0x1000, 0);
     mModel.speed = 0x1000;
 }
 
@@ -621,25 +650,25 @@ void UnknownVsPlayer::func_ov075_02114cd8(){
 int UnknownVsPlayer::func_ov075_02114ddc(unsigned char kind, unsigned char playerNo, int x){
     void *btp;
 
-    mModel.SetFile((BMD_File *)data_ov075_0211d404[1], 1, 1);
+    mModel.SetFile((BMD_File *)data_ov075_0211d404.ptr, 1, 1);
     mMaterialColor = *(int *)((char *)mModel.data.materials + 0x20) + (playerNo << 1);
-    mAnimation.SetFile((BMD_File *)data_ov075_0211d3c4[1], 1, 1);
+    mAnimation.SetFile((BMD_File *)data_ov075_0211d3c4.ptr, 1, 1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mAnimation, (void *)data_ov075_0211d414[1], 0, 0x1000, 0);
+        &mAnimation, (void *)data_ov075_0211d414.ptr, 0, 0x1000, 0);
 
     if (kind == 0 || kind == 2) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
             &mModel, (void *)data_ov075_0211c678[playerNo][1], 0, 0, 0x1000, 0);
-        btp = (void *)data_ov075_0211d40c[1];
+        btp = (void *)data_ov075_0211d40c.ptr;
         mMoveState = 0;
     } else {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mModel, (void *)data_ov075_0211d3ac[1], 0, 0, 0x1000, 0);
-        btp = (void *)data_ov075_0211d40c[1];
+            &mModel, (void *)data_ov075_0211d3ac.ptr, 0, 0, 0x1000, 0);
+        btp = (void *)data_ov075_0211d40c.ptr;
         mMoveState = 7;
     }
 
-    TextureSequence::Prepare(*(BMD_File *)data_ov075_0211d3c4[1], *(BTP_File *)btp);
+    TextureSequence::Prepare(*(BMD_File *)data_ov075_0211d3c4.ptr, *(BTP_File *)btp);
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, btp, 0, 0x1000, 0);
 
     {
@@ -811,32 +840,32 @@ void dEntObj_c::func_ov075_021152d4(){
 int dEntObj_c::CleanupResources()
 {
     CleanCommonModelDataArr();
-    ((SharedFilePtr *)(data_ov075_0211d404))->Release();
-    ((SharedFilePtr *)(data_ov075_0211d3c4))->Release();
-    ((SharedFilePtr *)(data_ov075_0211d414))->Release();
+    data_ov075_0211d404.Release();
+    data_ov075_0211d3c4.Release();
+    data_ov075_0211d414.Release();
     if (param1 != 1) {
-        ((SharedFilePtr *)(data_ov075_0211d394))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3cc))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d39c))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3d4))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3a4))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3ec))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d384))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d424))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d42c))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d41c))->Release();
+        data_ov075_0211d394.Release();
+        data_ov075_0211d3cc.Release();
+        data_ov075_0211d39c.Release();
+        data_ov075_0211d3d4.Release();
+        data_ov075_0211d3a4.Release();
+        data_ov075_0211d3ec.Release();
+        data_ov075_0211d384.Release();
+        data_ov075_0211d424.Release();
+        data_ov075_0211d42c.Release();
+        data_ov075_0211d41c.Release();
     } else {
-        ((SharedFilePtr *)(data_ov075_0211d3ac))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3b4))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3f4))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d38c))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3dc))->Release();
+        data_ov075_0211d3ac.Release();
+        data_ov075_0211d3b4.Release();
+        data_ov075_0211d3f4.Release();
+        data_ov075_0211d38c.Release();
+        data_ov075_0211d3dc.Release();
     }
-    ((SharedFilePtr *)(data_ov075_0211d40c))->Release();
-    ((SharedFilePtr *)(data_ov075_0211d3fc))->Release();
+    data_ov075_0211d40c.Release();
+    data_ov075_0211d3fc.Release();
     if (param1 != 1) {
-        ((SharedFilePtr *)(data_ov075_0211d3bc))->Release();
-        ((SharedFilePtr *)(data_ov075_0211d3e4))->Release();
+        data_ov075_0211d3bc.Release();
+        data_ov075_0211d3e4.Release();
     }
     func_ov075_0211b3b8(&unk_e80);
     return 1;
@@ -934,40 +963,40 @@ int dEntObj_c::InitResources()
     int i; int kind; UnknownVsPlayer* player;
 
     InitialiseVramGlobals();
-    Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d3fc);
+    Model::LoadFile(data_ov075_0211d3fc);
     if (param1 != 1) {
-        Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d3bc);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3e4);
+        Model::LoadFile(data_ov075_0211d3bc);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3e4);
     }
-    Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d404);
-    Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d3c4);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d414);
+    Model::LoadFile(data_ov075_0211d404);
+    Model::LoadFile(data_ov075_0211d3c4);
+    dExtFrameCtrl_c::LoadFile(data_ov075_0211d414);
 
     if (param1 != 1) {
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d394);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3cc);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d39c);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3d4);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3a4);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3ec);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d384);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d424);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d42c);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d41c);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d394);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3cc);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d39c);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3d4);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3a4);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3ec);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d384);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d424);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d42c);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d41c);
     } else {
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3ac);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3b4);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3f4);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d38c);
-        TextureSequence::LoadFile(*(SharedFilePtr*)data_ov075_0211d3dc);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3ac);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3b4);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d3f4);
+        dExtFrameCtrl_c::LoadFile(data_ov075_0211d38c);
+        TextureSequence::LoadFile(data_ov075_0211d3dc);
     }
 
-    TextureSequence::LoadFile(*(SharedFilePtr*)data_ov075_0211d40c);
+    TextureSequence::LoadFile(data_ov075_0211d40c);
 
     _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
     dExtShadowModel_c::CleanAll();
 
-    mModel.SetFile(*(BMD_File**)((char*)data_ov075_0211d3fc + 4), 1, -1);
+    mModel.SetFile((BMD_File*)data_ov075_0211d3fc.ptr, 1, -1);
 
     func_0203c178(&data_020a0e68, 0x7d000, 0x7d000, 0x7d000);
     /* 0x888 is +0x1c inside the Model at 0x86c -- its mat4x3. The cartridge's own
@@ -975,8 +1004,8 @@ int dEntObj_c::InitResources()
     *(S48*)((char*)&mModel.mat4x3) = *(S48*)&data_020a0e68;
 
     if (param1 != 1) {
-        mModelAnim.SetFile(*(BMD_File**)((char*)data_ov075_0211d3bc + 4), 1, -1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void**)((char*)data_ov075_0211d3e4 + 4), 0, 0x1000, 0);
+        mModelAnim.SetFile((BMD_File*)data_ov075_0211d3bc.ptr, 1, -1);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)data_ov075_0211d3e4.ptr, 0, 0x1000, 0);
     }
 
     func_ov075_0211b458((char*)&unk_e80, (int*)&data_ov075_0211c654, 0);
@@ -1053,3 +1082,66 @@ extern "C" dEntObj_c* dEntObj_c_classInit(void){
 UnknownVsPlayer::UnknownVsPlayer()
 {
 }
+
+/* The twenty-two file-scope resource handles, in retail initializer order:
+   four model files (func_02017acc / func_02017ab4), sixteen animation files
+   (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim), then two
+   texture-sequence files (SharedFilePtr_Construct_TexSeq /
+   SharedFilePtr_Destruct_TexSeq). */
+EntObjModelFilePtr data_ov075_0211d3fc(0x9c05);
+EntObjModelFilePtr data_ov075_0211d3bc(0x8417);
+EntObjAnimationFileHandle data_ov075_0211d3e4(0x8416);
+EntObjModelFilePtr data_ov075_0211d404(0x80c4);
+EntObjModelFilePtr data_ov075_0211d3c4(0x80c2);
+EntObjAnimationFileHandle data_ov075_0211d414(0x8043);
+EntObjAnimationFileHandle data_ov075_0211d394(0x841e);
+EntObjAnimationFileHandle data_ov075_0211d3cc(0x8420);
+EntObjAnimationFileHandle data_ov075_0211d39c(0x8422);
+EntObjAnimationFileHandle data_ov075_0211d3d4(0x8424);
+EntObjAnimationFileHandle data_ov075_0211d3a4(0x8419);
+EntObjAnimationFileHandle data_ov075_0211d3ec(0x841a);
+EntObjAnimationFileHandle data_ov075_0211d3ac(0x8426);
+EntObjAnimationFileHandle data_ov075_0211d3b4(0x841b);
+EntObjAnimationFileHandle data_ov075_0211d3f4(0x841c);
+EntObjAnimationFileHandle data_ov075_0211d38c(0x841d);
+EntObjAnimationFileHandle data_ov075_0211d384(0x8050);
+EntObjAnimationFileHandle data_ov075_0211d424(0x8051);
+EntObjAnimationFileHandle data_ov075_0211d42c(0x8048);
+EntObjAnimationFileHandle data_ov075_0211d41c(0x8078);
+EntObjTextureSequenceFileHandle data_ov075_0211d40c(0x804f);
+EntObjTextureSequenceFileHandle data_ov075_0211d3dc(0x804e);
+
+/* Registry profile payload for the entry-stage object. */
+struct EntObjSpawnInfo {
+    dEntObj_c *(*classInit)();
+    s16 behaviorPriority;
+    s16 renderPriority;
+};
+extern "C" EntObjSpawnInfo g_profile_ENTRY_OBJECT = {
+    dEntObj_c_classInit, 0x015a, 0x015a
+};
+
+/* The two per-figure dispatch tables: ten movement handlers for mMoveState,
+   six animation handlers for mAnimState; the unused indices point at the
+   empty handlers. mwcc cannot link-time-initialize pointer-to-member
+   records, so the initializer copies the descriptor records in. */
+extern "C" UnknownVsPlayerStateRow data_ov075_0211d56c[10] = {
+    {&UnknownVsPlayer::func_ov075_02114890},
+    {&UnknownVsPlayer::func_ov075_021147d4},
+    {&UnknownVsPlayer::func_ov075_0211478c},
+    {&UnknownVsPlayer::func_ov075_0211473c},
+    {&UnknownVsPlayer::func_ov075_02114890},
+    {&UnknownVsPlayer::func_ov075_02114560},
+    {&UnknownVsPlayer::func_ov075_02114890},
+    {&UnknownVsPlayer::func_ov075_021143e4},
+    {&UnknownVsPlayer::func_ov075_02114390},
+    {&UnknownVsPlayer::func_ov075_02114300},
+};
+extern "C" UnknownVsPlayerStateRow data_ov075_0211d53c[6] = {
+    {&UnknownVsPlayer::func_ov075_021142fc},
+    {(UnknownVsPlayerState)&UnknownVsPlayer::func_ov075_0211427c},
+    {(UnknownVsPlayerState)&UnknownVsPlayer::func_ov075_02114218},
+    {(UnknownVsPlayerState)&UnknownVsPlayer::func_ov075_021141b8},
+    {&UnknownVsPlayer::func_ov075_021140e4},
+    {&UnknownVsPlayer::func_ov075_02114010},
+};
