@@ -766,6 +766,10 @@
    "ref": "tools/deepen_rtti.py"
   },
   {
+   "file": "notes/sinit-ownership-pilot-ov002.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02100938.c"
+  },
+  {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
    "ref": "src/unnamed/ov009/__sinit_ov009_02112458.c"
   },
