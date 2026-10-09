@@ -6497,6 +6497,7 @@
     "src/actors/daMoray_c.cpp#func_ov016_02111534": "tangosdev",
     "src/actors/daMoray_c.cpp#BookSwitch_Spawn": "tangosdev",
     "src/actors/daMoray_c.cpp#daMoray_c_classInit": "tangosdev",
+    "src/actors/daMoray_c.cpp#__sinit_daMoray_c.cpp": "tangosdev",
     "src/actors/daPicGate_c.cpp#daPicGate_c_classInit": "andrewboudreau",
     "src/actors/daWater_Tatumaki_c.cpp#daWater_Tatumaki_c_classInit": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev": "tangosdev",

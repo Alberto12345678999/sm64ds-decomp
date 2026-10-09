@@ -109,20 +109,37 @@ enum {
 
 /* decl_common.h types the four file handles as char[] and the state tables
  * as char / void *. This TU repeats the names it uses. SharedFilePtr.h
- * declares no fields; __sinit_ov016_021136ec constructs each handle with a
+ * declares no fields; __sinit_daMoray_c.cpp constructs each handle with a
  * file id, and SetAnim reads the loaded file at +4. */
 struct MorayFile {
     s32 fileId;                 /* 0x00 */
     void *file;                 /* 0x04 -- the pointer SetAnim is handed */
 };
 
-extern SharedFilePtr data_ov016_02114d38;   /* model, file 0x3b5 */
-extern SharedFilePtr data_ov016_02114d20;   /* lunge anim, file 0x3b6 */
-extern SharedFilePtr data_ov016_02114d30;   /* path-swim anim, file 0x3b7 */
-extern SharedFilePtr data_ov016_02114d28;   /* den / swim-out anim, file 0x3b8 */
+/* The model handle's ctor/dtor are the cartridge's func_02017acc /
+ * func_02017ab4 pair; the manifest aliases these. */
+struct MorayModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    MorayModelFileHandle(u32 fileID);
+    ~MorayModelFileHandle();
+};
 
-extern "C" {
-/* State tables filled by __sinit_ov016_021136ec from the PMFs at 0x02114878.
+/* The three animation handles construct through SharedFilePtr::Construct
+ * and register SharedFilePtr_Destruct_Anim; the manifest aliases these. */
+struct MorayAnimResFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    MorayAnimResFileHandle(u32 fileID);
+    ~MorayAnimResFileHandle();
+};
+
+extern MorayModelFileHandle data_ov016_02114d38;   /* model, file 0x3b5 */
+extern MorayAnimResFileHandle data_ov016_02114d20; /* lunge anim, file 0x3b6 */
+extern MorayAnimResFileHandle data_ov016_02114d30; /* path-swim anim, file 0x3b7 */
+extern MorayAnimResFileHandle data_ov016_02114d28; /* den / swim-out anim, file 0x3b8 */
+
+/* State tables filled by __sinit_daMoray_c.cpp from the PMFs at 0x02114878.
  * 02114d7c retreat (daMoray_c::BookSwitch_Spawn, then daMoray_c::func_ov016_02111534),
  * 02114d8c den wait, 02114d9c lunge, 02114dac swim out, 02114dbc path swim. */
 extern daMoray_c::State data_ov016_02114d7c;
@@ -130,6 +147,8 @@ extern daMoray_c::State data_ov016_02114d8c;
 extern daMoray_c::State data_ov016_02114d9c;
 extern daMoray_c::State data_ov016_02114dac;
 extern daMoray_c::State data_ov016_02114dbc;
+
+extern "C" {
 extern Vector3 data_ov016_02114d4c;         /* cylinder offset, bss */
 
 extern unsigned char data_0209f220; /* entrance filter */
@@ -967,3 +986,29 @@ extern "C" daMoray_c *daMoray_c_classInit()
     }
     return p;
 }
+
+/* Construction order is source order: the four file handles first, then the
+ * five State rows in the order the initializer copies them. The registration
+ * nodes and the PMF literals are compiler temporaries. */
+MorayModelFileHandle data_ov016_02114d38(0x3b5);
+MorayAnimResFileHandle data_ov016_02114d20(0x3b6);
+MorayAnimResFileHandle data_ov016_02114d30(0x3b7);
+MorayAnimResFileHandle data_ov016_02114d28(0x3b8);
+
+daMoray_c::State data_ov016_02114d8c = { &daMoray_c::func_ov016_02111bac,
+                                       &daMoray_c::func_ov016_021119ec };
+daMoray_c::State data_ov016_02114d9c = { &daMoray_c::func_ov016_02111860,
+                                       &daMoray_c::func_ov016_02111758 };
+daMoray_c::State data_ov016_02114dac = { &daMoray_c::func_ov016_02111994,
+                                       &daMoray_c::func_ov016_021118b4 };
+daMoray_c::State data_ov016_02114dbc = { &daMoray_c::func_ov016_02111718,
+                                       &daMoray_c::func_ov016_021115c0 };
+daMoray_c::State data_ov016_02114d7c = { &daMoray_c::BookSwitch_Spawn,
+                                       &daMoray_c::func_ov016_02111534 };
+
+/* The cylinder offset is a plain three-int scratch object: the retail image
+ * has no destructor registration for it, so it is defined in C mode, where
+ * Vector3 is POD and no .init entry is emitted. */
+#pragma cplusplus off
+Vector3 data_ov016_02114d4c;
+#pragma cplusplus on
