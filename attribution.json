@@ -6450,6 +6450,7 @@
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c19func_ov064_021197fcEv": "lunavyqo",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c19func_ov064_0211987cEv": "lunavyqo",
     "src/actors/daHanachan_c.cpp#daHanachan_c_classInit": "tangosdev",
+    "src/actors/daHanachan_c.cpp#__sinit_daHanachan_c.cpp": "tangosdev",
     "src/actors/daBasabasa_c.cpp#daBasabasa_c_classInit": "tangosdev",
     "src/actors/daOnms_c.cpp#daOnms_c_classInit": "tangosdev",
     "src/actors/daOnms_c.cpp#__sinit_daOnms_c.cpp": "tangosdev",
