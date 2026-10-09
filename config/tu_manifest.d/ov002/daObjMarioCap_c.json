@@ -389,14 +389,14 @@
       "evidence": "compiler-generated destructor-registration node for the 0x479 file handle"
     },
     {
-      "symbol": "@2164",
+      "symbol": "@2716",
       "address": "0x0210deb0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x477 file handle"
     },
     {
-      "symbol": "@2165",
+      "symbol": "@2717",
       "address": "0x0210debc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -410,7 +410,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x47b file handle"
     },
     {
-      "symbol": "@2166",
+      "symbol": "@2718",
       "address": "0x0210ded4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1083,13 +1083,13 @@
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210dea4"
     },
     {
-      "symbol": "@2164",
+      "symbol": "@2716",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210deb0"
     },
     {
-      "symbol": "@2165",
+      "symbol": "@2717",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210debc"
@@ -1101,7 +1101,7 @@
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210dec8"
     },
     {
-      "symbol": "@2166",
+      "symbol": "@2718",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210ded4"
@@ -1615,7 +1615,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@2164",
+      "symbol": "@2716",
       "target_module": "ov002",
       "target_address": "0x0210deb0"
     },
@@ -1635,7 +1635,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@2165",
+      "symbol": "@2717",
       "target_module": "ov002",
       "target_address": "0x0210debc"
     },
@@ -1675,7 +1675,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@2166",
+      "symbol": "@2718",
       "target_module": "ov002",
       "target_address": "0x0210ded4"
     },
@@ -2000,6 +2000,21 @@
       "from": "@1130",
       "to": "@2707",
       "evidence": "compiler temporary; mwcc numbers it @1130 per TU and ov062 daJango_c (this batch) also defines a global @1130, so the scratch link collides"
+    },
+    {
+      "from": "@2164",
+      "to": "@2716",
+      "evidence": "compiler-generated destructor-registration node for the 0x477 file handle; mwcc numbers it @2164 per TU and ov002 da1up_c (on main) also defines a global @2164, so the scratch link collides"
+    },
+    {
+      "from": "@2165",
+      "to": "@2717",
+      "evidence": "compiler-generated destructor-registration node for the 0x47d file handle; mwcc numbers it @2165 per TU and ov002 da1up_c (on main) also defines a global @2165, so the scratch link collides"
+    },
+    {
+      "from": "@2166",
+      "to": "@2718",
+      "evidence": "compiler-generated destructor-registration node for the 0x47a file handle; mwcc numbers it @2166 per TU and ov002 da1up_c (on main) also defines a global @2166, so the scratch link collides"
     }
   ]
 }

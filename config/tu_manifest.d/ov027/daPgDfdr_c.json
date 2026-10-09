@@ -1233,5 +1233,6 @@
       "canonical_module": "ov027",
       "canonical_address": "0x02113a90"
     }
-  ]
+  ],
+  "production_mode": "intact-object"
 }

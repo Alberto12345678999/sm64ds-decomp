@@ -1525,5 +1525,6 @@
       "canonical_address": "0x0212786c",
       "reason": "InitResources naturally emits the complete class vtable; romdata_check applies the measured eight-byte public address-point bias. Text-only: deadstripped, data: []. The symbols.txt address point 0x0212786c is unchanged."
     }
-  ]
+  ],
+  "production_mode": "intact-object"
 }
