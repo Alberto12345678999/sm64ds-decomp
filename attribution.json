@@ -888,6 +888,7 @@
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c6RenderEv": "tangosdev",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c8BehaviorEv": "tangosdev",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c13InitResourcesEv": "lunavyqo",
+    "src/game/actors/d_a_btn.cpp#__sinit_d_a_btn.cpp": "tangosdev",
     "src/game/actors/d_a_btn.cpp#daBtn_c_classInit_BATANKING": "tangosdev",
     "src/game/actors/d_a_btn.cpp#daBtn_c_classInit_BATAN": "tangosdev",
     "src/_ZN5dBgChC2Ev.cpp": "tangosdev",
