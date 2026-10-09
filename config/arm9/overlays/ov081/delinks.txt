@@ -27,6 +27,10 @@ src/actors/daSnowball_c.cpp:
 src/actors/daGmch_c.cpp:
     complete
     .text start:0x02126504 end:0x02127b34
+    .init start:0x021284f0 end:0x021287b8
+    .ctor start:0x02128830 end:0x02128834
+    .data start:0x02128b38 end:0x02128bc8
+    .bss start:0x02128ec4 end:0x02128fd0
 
 src/game/actors/d_a_obj_ice_block.cpp:
     complete
@@ -35,10 +39,6 @@ src/game/actors/d_a_obj_ice_block.cpp:
 src/unnamed/ov081/__sinit_ov081_021280e8.c:
     complete
     .init start:0x021280e8 end:0x02128154
-
-src/unnamed/ov081/__sinit_ov081_021284f0.c:
-    complete
-    .init start:0x021284f0 end:0x021287b8
 
 src/unnamed/ov081/__sinit_ov081_021287b8.c:
     complete
