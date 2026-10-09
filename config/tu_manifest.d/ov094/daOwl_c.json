@@ -217,7 +217,7 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN7daOwl_c19func_ov094_02136024Ev"
     },
     {
-      "symbol": "@940",
+      "symbol": "@900",
       "address": "0x021369d0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -238,14 +238,14 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN7daOwl_c19func_ov094_02136150Ev"
     },
     {
-      "symbol": "@948",
+      "symbol": "@901",
       "address": "0x021369e8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN7daOwl_c19func_ov094_021358b4Ev"
     },
     {
-      "symbol": "@946",
+      "symbol": "@902",
       "address": "0x021369f0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -266,7 +266,7 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN7daOwl_c19func_ov094_02135ee0Ev"
     },
     {
-      "symbol": "@942",
+      "symbol": "@903",
       "address": "0x02136a08",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -868,6 +868,28 @@
       "evidence": "mwcc registration call; retail initializer calls func_020731dc four times"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@940",
+      "to": "@900",
+      "evidence": "pointer-to-member descriptor; mwcc numbers it @940 per TU and ov002 dEnemyBase_c also defines a global @940, so the scratch link collides"
+    },
+    {
+      "from": "@948",
+      "to": "@901",
+      "evidence": "pointer-to-member descriptor; same per-TU @948 collision with ov002 dEnemyBase_c"
+    },
+    {
+      "from": "@946",
+      "to": "@902",
+      "evidence": "pointer-to-member descriptor; same per-TU @946 collision with ov002 dEnemyBase_c"
+    },
+    {
+      "from": "@942",
+      "to": "@903",
+      "evidence": "pointer-to-member descriptor; same per-TU @942 collision with ov002 dEnemyBase_c"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_daOwl_c.cpp",
@@ -894,7 +916,7 @@
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
     },
     {
-      "symbol": "@940",
+      "symbol": "@900",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
@@ -912,13 +934,13 @@
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
     },
     {
-      "symbol": "@948",
+      "symbol": "@901",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
     },
     {
-      "symbol": "@946",
+      "symbol": "@902",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
@@ -936,7 +958,7 @@
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
     },
     {
-      "symbol": "@942",
+      "symbol": "@903",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
@@ -1252,7 +1274,7 @@
       "source": "0x021369a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@940",
+      "symbol": "@900",
       "addend": 0,
       "target_module": "ov094",
       "target_address": "0x021369d0"
@@ -1262,7 +1284,7 @@
       "source": "0x021369a8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@942",
+      "symbol": "@903",
       "addend": 0,
       "target_module": "ov094",
       "target_address": "0x02136a08"
@@ -1282,7 +1304,7 @@
       "source": "0x021369b0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@946",
+      "symbol": "@902",
       "addend": 0,
       "target_module": "ov094",
       "target_address": "0x021369f0"
@@ -1292,7 +1314,7 @@
       "source": "0x021369b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@948",
+      "symbol": "@901",
       "addend": 0,
       "target_module": "ov094",
       "target_address": "0x021369e8"
