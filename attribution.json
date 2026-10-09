@@ -3629,6 +3629,7 @@
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug19func_ov071_0211f694Ev": "tangosdev",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug19func_ov071_02120278Ev": "tangosdev",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug16CleanupResourcesEv": "tangosdev",
+    "src/actors/Scuttlebug.cpp#__sinit_Scuttlebug.cpp": "github-actions[bot]",
     "src/actors/Scuttlebug.cpp#d_a_spd": "tangosdev",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug6RenderEv": "tangosdev",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug19func_ov071_0211fbf4Ev": "tangosdev",

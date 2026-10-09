@@ -1446,6 +1446,7 @@
     "src/actors/Player.cpp#_ZN6Player7IsInAirEv",
     "src/actors/Player.cpp#_ZN6Player9GetHealthEv",
     "src/actors/Player.cpp#_ZN6Player9IsOnShellEv",
+    "src/actors/Scuttlebug.cpp#__sinit_Scuttlebug.cpp",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug8SetStateEi",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug13OnYoshiTryEatEv",
     "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug16OnAimedAtWithEggEv",
@@ -3555,5 +3556,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3546
+  "count": 3547
 }

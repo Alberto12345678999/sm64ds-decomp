@@ -15,6 +15,9 @@ src/_ZN10ScuttlebugD0Ev.cpp:
 src/actors/Scuttlebug.cpp:
     complete
     .text start:0x0211f0a4 end:0x02120668
+    .init start:0x021226ac end:0x021228c8
+    .ctor start:0x02122b30 end:0x02122b34
+    .bss start:0x02122f80 end:0x02123038
 
 src/actors/daEykn_c.cpp:
     complete
@@ -27,10 +30,6 @@ src/game/actors/d_a_ey_bm.cpp:
 src/actors/daObjCasket_c.cpp:
     complete
     .text start:0x02121fe4 end:0x021226a0
-
-src/unnamed/ov071/__sinit_ov071_021226ac.c:
-    complete
-    .init start:0x021226ac end:0x021228c8
 
 src/unnamed/ov071/__sinit_ov071_021228c8.c:
     complete

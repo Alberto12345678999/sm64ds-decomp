@@ -11,8 +11,6 @@
  *    names; no original names are recovered. SetState was Scuttlebug_SetState.
  *  - Vec3 and Mtx43 stay plain words: spelling them as Vector3/Matrix4x3
  *    drags ~Vector3's vague-linkage D1 into functions that never had it.
- *  - data_ov071_02122f80/_02122f88 stay int[] views: the code indexes the
- *    SharedFilePtr pairs by word, not by object.
  *  - The extern "C" preamble is hand-spelt: Fix12<int>/Vector3 parameters
  *    are written as plain words where the true types break the register
  *    convention, and the spelled mangled calls stay where the member
@@ -48,7 +46,7 @@ typedef struct Mtx43 { int w[12]; } Mtx43;
 typedef void (Scuttlebug::*PMF)();
 
 /* One row of the state table at ov071:0x02122fa8: enter handler, then the
- * per-frame run handler. Built by __sinit_ov071_021226ac from .data words. */
+ * per-frame run handler. The static initializer copies it from .data words. */
 typedef struct { PMF enter, run; } ScuttlebugStateRow;
 
 /* ------------------------------------------------------------------------
@@ -113,9 +111,6 @@ void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
           void *self, dActor_c *actor, int radius, int height,
           Vector3_16 *a, Vector3_16 *b);
 
-extern int       data_ov071_02122f80[];   /* SharedFilePtr, model  */
-extern int       data_ov071_02122f88[];   /* SharedFilePtr, anim   */
-extern ScuttlebugStateRow data_ov071_02122fa8[]; /* state table           */
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern Mtx43     data_020a0e68;           /* scratch matrix        */
 extern s16       data_02082214[];         /* sin/cos table         */
@@ -124,6 +119,66 @@ extern s16       data_02082214[];         /* sin/cos table         */
  * order, so this file is written ROM-descending and nearly every intra-TU call
  * is a forward reference. */
 }
+
+/* The bug's file-scope SharedFilePtr objects, spelled through the same
+   wrapper idiom the landed folds use: the handles' code is the veneer pair
+   the cartridge already carries, so the wrappers get no bodies of their own.
+   The constructors alias func_02017acc (model) and SharedFilePtr::Construct
+   (animation) in this unit's manifest, and the destructors func_02017ab4
+   and SharedFilePtr_Destruct_Anim. */
+struct ScuttlebugModelFilePtr : SharedFilePtr {
+    int unk0; void *file;
+    ScuttlebugModelFilePtr(unsigned int id);
+    ~ScuttlebugModelFilePtr();
+};
+
+struct ScuttlebugAnimFileHandle : SharedFilePtr {
+    int unk0; void *file;
+    ScuttlebugAnimFileHandle(unsigned int id);
+    ~ScuttlebugAnimFileHandle();
+};
+
+/* ------------------------------------------------------------------------
+ * The model handle, the animation handle and the state table's eighteen
+ * member pointers (nine {enter, run} rows), in static-initializer order:
+ * the initializer constructs each handle, registers its destructor, then
+ * copies the pointers from .data. InitResources feeds the model to
+ * Model::LoadFile and the animation to dExtFrameCtrl_c::LoadFile.
+ * ------------------------------------------------------------------------ */
+// @symbol __sinit_Scuttlebug.cpp
+ScuttlebugModelFilePtr   data_ov071_02122f80(0x425);   /* model */
+ScuttlebugAnimFileHandle data_ov071_02122f88(0x426);   /* anim  */
+
+/* The member pointers the initializer copies into the table
+   (0x02122b60..0x02122bec in .data, an unclaimed run). Each record is one
+   eight-byte {fn, adj} pair. */
+extern PMF data_ov071_02122b88;
+extern PMF data_ov071_02122b80;
+extern PMF data_ov071_02122b68;
+extern PMF data_ov071_02122b70;
+extern PMF data_ov071_02122b78;
+extern PMF data_ov071_02122b60;
+extern PMF data_ov071_02122be8;
+extern PMF data_ov071_02122be0;
+extern PMF data_ov071_02122bd8;
+extern PMF data_ov071_02122bd0;
+extern PMF data_ov071_02122bc8;
+extern PMF data_ov071_02122bc0;
+extern PMF data_ov071_02122bb8;
+extern PMF data_ov071_02122b90;
+extern PMF data_ov071_02122bb0;
+extern PMF data_ov071_02122ba8;
+extern PMF data_ov071_02122ba0;
+extern PMF data_ov071_02122b98;
+
+PMF data_ov071_02122fa8[18] = {
+    data_ov071_02122b88, data_ov071_02122b80, data_ov071_02122b68,
+    data_ov071_02122b70, data_ov071_02122b78, data_ov071_02122b60,
+    data_ov071_02122be8, data_ov071_02122be0, data_ov071_02122bd8,
+    data_ov071_02122bd0, data_ov071_02122bc8, data_ov071_02122bc0,
+    data_ov071_02122bb8, data_ov071_02122b90, data_ov071_02122bb0,
+    data_ov071_02122ba8, data_ov071_02122ba0, data_ov071_02122b98,
+};
 
 /* Natural `new` selects the wrong allocator, so the measured actor
  * construction seam is retained verbatim. */
@@ -172,9 +227,9 @@ void Scuttlebug::OnTurnIntoEgg(Player &player)
 // @symbol _ZN10Scuttlebug13InitResourcesEv
 int Scuttlebug::InitResources()
 {
-    void *mf = Model::LoadFile(*(SharedFilePtr *)data_ov071_02122f80);
+    void *mf = Model::LoadFile(data_ov071_02122f80);
     ((ModelBase *)(&mModelAnim))->SetFile((BMD_File *)mf, 1, -1);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov071_02122f88);
+    dExtFrameCtrl_c::LoadFile(data_ov071_02122f88);
     if (((dExtShadowModel_c *)(&mShadowModel))->InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -247,8 +302,8 @@ void Scuttlebug::OnPendingDestroy()
 // @symbol _ZN10Scuttlebug16CleanupResourcesEv
 int Scuttlebug::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov071_02122f80)->Release();
-    ((SharedFilePtr *)data_ov071_02122f88)->Release();
+    data_ov071_02122f80.Release();
+    data_ov071_02122f88.Release();
     return 1;
 }
 
@@ -257,7 +312,7 @@ int Scuttlebug::CleanupResources()
 // @symbol _ZN10Scuttlebug8SetStateEi
 void Scuttlebug::SetState(int idx)
 {
-    mStateRow = &data_ov071_02122fa8[idx];
+    mStateRow = (ScuttlebugStateRow *)data_ov071_02122fa8 + idx;
     func_ov071_021202b4();
 }
 
@@ -316,7 +371,7 @@ int Scuttlebug::func_ov071_02120130()
     mTerminalVelocity = -0x3e000;
     mHorzSpeed = 0x16000;
     mVertSpeed = 0x4d000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov071_02122f88[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mWithMeshClsn.SetLimMovFlag();
     func_0201267c(0xf1, &mCamSpacePosX);
@@ -369,7 +424,7 @@ int Scuttlebug::func_ov071_0211ff84()
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x4000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)((char *)data_ov071_02122f88 + 4), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mState = 2;
     return 1;
@@ -405,7 +460,7 @@ int Scuttlebug::func_ov071_0211fe38()
     mAngleY = mLeapAngle;
     mPrevAngleY = mAngleY;
     *p3a0 += 0x12c000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov071_02122f88[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x2c00;
     mModelAnim.currFrame = 0;
     func_0201267c(0xf1, &mCamSpacePosX);
@@ -444,7 +499,7 @@ int Scuttlebug::func_ov071_0211fcd4()
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = -0x4000;
     mVertSpeed = 0x12000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov071_02122f88[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x2c00;
     func_0201267c(0xf1, &mCamSpacePosX);
     mState = 4;
@@ -473,7 +528,7 @@ int Scuttlebug::func_ov071_0211fbf4()
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x4000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov071_02122f88[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mState = 5;
     return 1;
@@ -656,7 +711,7 @@ int Scuttlebug::func_ov071_0211f6f8()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)((char *)data_ov071_02122f88 + 4), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX, mPosY + yOffset1, mPosZ);
