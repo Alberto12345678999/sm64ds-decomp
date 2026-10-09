@@ -4903,7 +4903,6 @@
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_cD1Ev": "tangosdev",
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_cC1Ev": "tangosdev",
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_c11TouchIcon_cC1Ev": "tangosdev",
-    "src/actors/dMgPsOpt_c.cpp#__sinit_dMgPsOpt_c.cpp": "andrewboudreau",
     "src/actors/daTgz_c.cpp#_ZN7daTgz_cD1Ev": "tangosdev",
     "src/actors/daTgz_c.cpp#_ZN7daTgz_cD0Ev": "tangosdev",
     "src/actors/daTgz_c.cpp#_ZN7daTgz_c13OnYoshiTryEatEv": "tangosdev",

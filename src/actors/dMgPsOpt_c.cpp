@@ -29,38 +29,10 @@
 /* The blitter's 2x2 matrix. This panel always passes none. */
 struct M;
 
-/* {halfW, halfH} records, stride 4. Width and height are two linker
-   symbols two bytes apart, and the ROM loads each base on its own. */
+/* {halfW, halfH} records laid down by __sinit_ov004_020b9b24, stride 4.
+   Width and height are two linker symbols two bytes apart, and the ROM
+   loads each base on its own. */
 #define HALF_AT(base, i) (*(short *)((char *)(base) + (i) * 4))
-
-/* One {halfW, halfH} pair: a touch icon's hit box half extents. Five
-   per-language pairs for the sound caption, five for the backlight
-   caption, then seven per-style pairs for the rest. The destructor is
-   the shared arm9 noop; the registrations keep the records alive for
-   the overlay's lifetime. */
-struct IconDim {
-    s16 w, h;
-    IconDim(s16 w_, s16 h_) : w(w_), h(h_) {}
-    ~IconDim();
-};
-
-/* Sound caption hit box, per language. */
-IconDim data_ov004_020bfe74[5] = {
-    IconDim(0x20, 0x10), IconDim(0x20, 0x10), IconDim(0x18, 0x10),
-    IconDim(0x1c, 0x10), IconDim(0x1c, 0x10)};
-
-/* Backlight caption hit box, per language. */
-IconDim data_ov004_020bfe88[5] = {
-    IconDim(0x30, 0x10), IconDim(0x18, 0x10), IconDim(0x30, 0x10),
-    IconDim(0x30, 0x10), IconDim(0x30, 0x10)};
-
-/* Per-style hit box for the remaining icons. */
-IconDim data_ov004_020bfe9c[7] = {
-    IconDim(0x3c, 0x10), IconDim(0x1c, 0x10), IconDim(0x08, 0x10),
-    IconDim(0x08, 0x10), IconDim(0x18, 0x10), IconDim(0x28, 0x10),
-    IconDim(0x20, 0x10)};
-
-int data_ov004_020bfeb8[2];
 
 /* dThIcon_c leaves these unk_. The other derived icons do not agree on
    names, so the names stay in this file.
@@ -128,6 +100,12 @@ extern u16 data_ov004_020bca60[];
 extern int GetGameLanguage(void);
 /* Writes the icon center, half extents, touch kind, and clears the blink. */
 extern void func_ov001_020ab5b0(char *icon, int kind, short x, short y, short halfW, short halfH);
+extern short data_ov004_020bfe74[];
+extern short data_ov004_020bfe76[];
+extern short data_ov004_020bfe88[];
+extern short data_ov004_020bfe8a[];
+extern short data_ov004_020bfe9c[];
+extern short data_ov004_020bfe9e[];
 extern "C" int func_ov004_020b8f18(void *panel);
 int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mBlink from the icon's +0x18. */
@@ -163,11 +141,11 @@ dMgPsOpt_c::dMgPsOpt_c()
     func_ov004_020b8dc0(&mIcons[kIconSoundPrev], kStyleSoundPrev, 0, 0x64, 0x38);
     func_ov004_020b8dc0(&mIcons[kIconSoundNext], kStyleSoundNext, 0, 0xf4, 0x38);
     func_ov004_020b8dc0(&mIcons[kIconSoundLabel], kStyleSoundLabel, 0,
-        data_ov004_020bfe74[GetGameLanguage()].w + 0x18, 0x38);
+        data_ov004_020bfe74[GetGameLanguage() * 2] + 0x18, 0x38);
     func_ov004_020b8dc0(&mIcons[kIconLightOn], kStyleLight, 0, 0x8c, 0x68);
     func_ov004_020b8dc0(&mIcons[kIconLightOff], kStyleLight, 0, 0xcc, 0x68);
     func_ov004_020b8dc0(&mIcons[kIconLightLabel], kStyleLightLabel, 0,
-        data_ov004_020bfe88[GetGameLanguage()].w + 0x18, 0x68);
+        data_ov004_020bfe88[GetGameLanguage() * 2] + 0x18, 0x68);
     func_ov004_020b8dc0(&mIcons[kIconBack], kStyleBack, 0, 0x80, 0xa8);
 
     /* The ROM stores the full count and then clears it. Both stores stay. */
@@ -381,17 +359,17 @@ extern "C" void func_ov004_020b8dc0(dMgPsOpt_c::TouchIcon_c *icon, int style, in
         lang2 = GetGameLanguage();
         func_ov001_020ab5b0((char *)icon, kind, x, y,
                             HALF_AT(data_ov004_020bfe74, lang),
-                            data_ov004_020bfe74[lang2].h);
+                            HALF_AT(data_ov004_020bfe76, lang2));
     } else if (style == kStyleLightLabel) {
         lang = GetGameLanguage();
         lang2 = GetGameLanguage();
         func_ov001_020ab5b0((char *)icon, kind, x, y,
                             HALF_AT(data_ov004_020bfe88, lang),
-                            data_ov004_020bfe88[lang2].h);
+                            HALF_AT(data_ov004_020bfe8a, lang2));
     } else {
         func_ov001_020ab5b0((char *)icon, kind, x, y,
                             HALF_AT(data_ov004_020bfe9c, style),
-                            data_ov004_020bfe9c[style].h);
+                            HALF_AT(data_ov004_020bfe9e, style));
     }
 }
 

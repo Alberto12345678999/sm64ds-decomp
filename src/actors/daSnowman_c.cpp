@@ -1105,7 +1105,7 @@ extern "C" daSnowman_c *daSnowman_c_classInit()
     return new daSnowman_c();
 }
 
-/* Formerly src/unnamed/ov081/__sinit_ov081_02128154.c. Definition order is
+/* Formerly the handwritten __sinit_ov081_02128154. Definition order is
  * the retail initializer's construction order. */
 daSnowmanModelFilePtr data_ov081_02128d90(0x424);
 daSnowmanModelFilePtr data_ov081_02128db0(0x420);

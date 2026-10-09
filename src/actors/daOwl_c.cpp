@@ -712,7 +712,7 @@ extern "C" daOwl_c *daOwl_c_classInit()
     return new daOwl_c();
 }
 
-/* Static-resource ownership, formerly src/unnamed/ov094/__sinit_ov094_021367e8.c.
+/* Static-resource ownership, formerly the handwritten __sinit_ov094_021367e8.
  * Definition order is the retail initializer's construction order. The
  * registration nodes and the pointer-to-member descriptors are compiler
  * temporaries. */

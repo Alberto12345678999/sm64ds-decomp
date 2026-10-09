@@ -22,8 +22,7 @@ DTCM_RELOCS = CFG / "dtcm" / "relocs.txt"
 DTCM_SYMS = CFG / "dtcm" / "symbols.txt"
 OVERLAYS = CFG / "overlays"
 
-_REL_RE = re.compile(r"from:0x([0-9a-fA-F]+) kind:(\S+) to:0x([0-9a-fA-F]+)"
-                     r"(?: add:(-?0x[0-9a-fA-F]+))? module:(\S+)")
+_REL_RE = re.compile(r"from:0x([0-9a-fA-F]+) kind:(\S+) to:0x([0-9a-fA-F]+) module:(\S+)")
 _SYM_RE = re.compile(r"^(\S+)\s+kind:\S+\s+addr:0x([0-9a-fA-F]+)")
 
 
@@ -117,20 +116,13 @@ def iter_reloc_files(include_itcm_dtcm: bool = True):
 
 
 def load_relocs_file(path):
-    """{from_addr: (kind, to_addr, to_module)} for one relocs.txt.
-
-    `to_addr` is the resolved destination: a `to:` carrying `add:` targets the
-    interior of the symbol at `to`, so the configured destination is `to + add`.
-    """
+    """{from_addr: (kind, to_addr, to_module)} for one relocs.txt."""
     d = {}
     for line in pathlib.Path(path).read_text(errors="ignore").splitlines():
         m = _REL_RE.match(line)
         if m:
-            add = m.group(4)
-            addend = (-1 if add.startswith("-") else 1) * int(add.lstrip("-"), 16) \
-                if add else 0
-            d[int(m.group(1), 16)] = (m.group(2), int(m.group(3), 16) + addend,
-                                      normalize_module(m.group(5)))
+            d[int(m.group(1), 16)] = (m.group(2), int(m.group(3), 16),
+                                      normalize_module(m.group(4)))
     return d
 
 
