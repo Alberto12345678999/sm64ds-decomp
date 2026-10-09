@@ -815,19 +815,7 @@ src/engine/collision/dCc_c.cpp:
 
 src/engine/collision/dClipper.cpp:
     complete
-    .text start:0x020150e8 end:0x020156fc
-
-src/_ZN8dClipperD0Ev.cpp:
-    complete
-    .text start:0x020156fc end:0x02015720
-
-src/_ZN8dClipperD1Ev.cpp:
-    complete
-    .text start:0x02015720 end:0x02015730
-
-src/_ZN8dClipperC1Ev.cpp:
-    complete
-    .text start:0x02015730 end:0x0201577c
+    .text start:0x020150e8 end:0x0201577c
 
 src/engine/model/MaterialChanger.cpp:
     complete

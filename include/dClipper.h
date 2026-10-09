@@ -46,14 +46,13 @@ struct dClipper {
 #ifdef __cplusplus
     /* methods */
 
-    /* Declared first so the compiler emits the two ROM-retained lifecycle
-       variants from the empty out-of-line body: D1 restores this vptr, while
-       D0 also takes the class-specific delete path below. There is no D2 in
-       the image because nothing derives from dClipper. */
-    virtual ~dClipper();     /* slots 0 (D1), 1 (D0) */
+    /* Inline, as the cartridge's D0-below-D1 order requires: dClipper.cpp
+       pulls the two variants out in that order. D1 restores this vptr; D0
+       also takes the class-specific delete path below. No D2 in the image,
+       since nothing derives from dClipper. */
+    virtual ~dClipper() {}     /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined as a method here -- src/_ZN8dClipperC1Ev.cpp owns
-       C1 (notes/ctor-migration.md section 2). */
+    /* Defined in src/engine/collision/dClipper.cpp. */
     dClipper();
 
     void Func_0201559C();

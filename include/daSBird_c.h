@@ -40,14 +40,12 @@ struct daSBird_c : dActor_c {
     u8          mIsLeader;       /* 0x180 */
     u8          pad_181[0x3];
 
-    /* Out-of-line on purpose. The 380-byte func_ov009_0211145c hatch sits
-       between D0 and the rest of the class run, so D1/D0 stay enrolled as
-       their own leftover files (src/_ZN9daSBird_cD1Ev.cpp / D0Ev.cpp) and
-       must not be synthesised into the class TU. Empty body: mShadowModel
+    /* Out of line: key function is ~daSBird_c(), the first declared
+       non-inline virtual. d_a_s_bird_head.cpp defines it, so that file
+       emits D1/D0 and the class vtable and RTTI; d_a_s_bird.cpp, above
+       the func_ov009_0211145c hatch, does not. Empty body: mShadowModel
        then mModelAnim teardown, the vptr store and dActor_c's teardown are
-       synthesised. Key function is ~daSBird_c(), the first declared
-       non-inline virtual; the leftover D1/D0 files emit the class
-       vtable and RTTI. This class TU does not. */
+       synthesised. */
     virtual ~daSBird_c();                      /* slots 16 (D1), 17 (D0) */
 
     virtual s32 InitResources();               /* slot  0 */

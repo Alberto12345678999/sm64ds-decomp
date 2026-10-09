@@ -1,9 +1,11 @@
 //cpp
 /* ov080/daPicGate_c -- picture-gate helpers: the mesh machinery under the
  * promoted TU (src/actors/daPicGate_c.cpp, .text 0x021264ec..0x02126fbc).
- * .text 0x02125460..0x021261f4, folded from the fifteen func_ov080_* shards
- * that filled the range between the destructor pair and the class TU.
+ * .text 0x02125404..0x021261f4: the destructor pair, then the fifteen
+ * func_ov080_* helpers that fill the range up to the class TU.
  *
+ *   ~daPicGate_c         D1 0x02125404, D0 0x02125428 -- the key function, so
+ *                        the vtable and typeinfo come out of this file too.
  *   func_ov080_02125460  LoadMaterial -- texture/palette/light GX ports from
  *                        the material record kept in mTexRecord; states 2/3
  *                        (and a stopped wave) force ambient white.
@@ -122,6 +124,14 @@ static inline void G3_TexImageParam(u32 addr, u32 texFmt, u32 texGen, u32 sizeS,
 static inline void G3_TexPlttBase(u32 addr, u32 texFmt)
 {
     reg_G3_TEXPLTT_BASE = addr >> (4 - (texFmt == 2 ? 1 : 0));
+}
+
+// @symbol _ZN11daPicGate_cD1Ev
+// @symbol _ZN11daPicGate_cD0Ev
+/* Members in reverse, then ~dActor_c. Written first: with codegen not
+ * deferred it comes out as D1, D0, D2 in place, the cartridge's order. */
+daPicGate_c::~daPicGate_c()
+{
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125460Ev
