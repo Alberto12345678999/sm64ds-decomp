@@ -32,12 +32,41 @@
 
 #pragma defer_codegen off
 
+/* decl_common.h declares these two handles as int[]. This TU defines them
+ * as the 8-byte file objects the static initializer constructs. */
+#define data_ov036_02114084 data_ov036_02114084_decl
+#define data_ov036_0211408c data_ov036_0211408c_decl
 #include "decl_common.h"
+#undef data_ov036_02114084
+#undef data_ov036_0211408c
 #include "daObjRc_Tikuwa_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct TikuwaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TikuwaModelFilePtr(u32 fileID);
+    ~TikuwaModelFilePtr();
+};
+
+struct TikuwaCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TikuwaCollisionFilePtr(u32 fileID);
+    ~TikuwaCollisionFilePtr();
+};
+
+typedef char TikuwaModelFilePtr_size_must_be_8[sizeof(TikuwaModelFilePtr) == 8 ? 1 : -1];
+typedef char TikuwaCollisionFilePtr_size_must_be_8[sizeof(TikuwaCollisionFilePtr) == 8 ? 1 : -1];
+
 extern "C" {
+extern TikuwaModelFilePtr data_ov036_0211408c;
+extern TikuwaCollisionFilePtr data_ov036_02114084;
+
 void dBgCh_Actr_UpdateContinuous_Veneer(dBgCh_Actr *clsn);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -59,8 +88,8 @@ s32 daObjRc_Tikuwa_c::CleanupResources()
 {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
-    ((SharedFilePtr *)data_ov036_0211408c)->Release();
-    ((SharedFilePtr *)data_ov036_02114084)->Release();
+    ((SharedFilePtr *)&data_ov036_0211408c)->Release();
+    ((SharedFilePtr *)&data_ov036_02114084)->Release();
     return 1;
 }
 
@@ -130,10 +159,10 @@ s32 daObjRc_Tikuwa_c::Behavior()
 // @symbol _ZN16daObjRc_Tikuwa_c13InitResourcesEv
 s32 daObjRc_Tikuwa_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov036_0211408c), 1, -1);
+    mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov036_0211408c), 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)data_ov036_02114084);
+    void *kcl = dBgW_Kc::LoadFile(*(SharedFilePtr *)&data_ov036_02114084);
     /* Leftover: dBgW_KcMbg::SetFile and dBgCh_Actr::Init take Fix12<int> by
      * value, so they stay mangled (the header spellings take Fix12i and would
      * mangle symbols the ROM does not have). */
@@ -190,3 +219,8 @@ extern "C" daObjRc_Tikuwa_c *daObjRc_Tikuwa_c_classInit()
 {
     return new daObjRc_Tikuwa_c;
 }
+
+/* Source order is construction order: model file 0x6af, then the collision
+ * file 0x6b0. The compiler registers each destructor beside the object. */
+TikuwaModelFilePtr data_ov036_0211408c(0x6af);
+TikuwaCollisionFilePtr data_ov036_02114084(0x6b0);
