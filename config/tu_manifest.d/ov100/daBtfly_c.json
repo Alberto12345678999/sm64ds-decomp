@@ -404,13 +404,12 @@
           "comparison": "NOBITS -- symbol/module gates"
         }
       ],
-      "linkedStorageAliases": null,
       "objectAudit": {
         "counts": {
           "LICENSED": 31
         },
-        "orderOk": true,
-        "nonLicensed": [],
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
@@ -422,16 +421,7 @@
             ],
             "desired": [
               75
-            ],
-            "anchors": {
-              "75": [
-                {
-                  "symbol": "__sinit_daBtfly_c.cpp",
-                  "address": 34894780,
-                  "sectionBase": 34894780
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".ctor",
@@ -440,16 +430,7 @@
             ],
             "desired": [
               73
-            ],
-            "anchors": {
-              "73": [
-                {
-                  "symbol": ".p__sinit_daBtfly_c.cpp",
-                  "address": 34897384,
-                  "sectionBase": 34897384
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".data",
@@ -472,65 +453,7 @@
               42,
               46,
               54
-            ],
-            "anchors": {
-              "42": [
-                {
-                  "symbol": "@929",
-                  "address": 34897480,
-                  "sectionBase": 34897480
-                }
-              ],
-              "44": [
-                {
-                  "symbol": "@931",
-                  "address": 34897472,
-                  "sectionBase": 34897472
-                }
-              ],
-              "46": [
-                {
-                  "symbol": "@933",
-                  "address": 34897488,
-                  "sectionBase": 34897488
-                }
-              ],
-              "48": [
-                {
-                  "symbol": "@935",
-                  "address": 34897448,
-                  "sectionBase": 34897448
-                }
-              ],
-              "50": [
-                {
-                  "symbol": "@937",
-                  "address": 34897456,
-                  "sectionBase": 34897456
-                }
-              ],
-              "52": [
-                {
-                  "symbol": "@939",
-                  "address": 34897440,
-                  "sectionBase": 34897440
-                }
-              ],
-              "54": [
-                {
-                  "symbol": "@941",
-                  "address": 34897496,
-                  "sectionBase": 34897496
-                }
-              ],
-              "56": [
-                {
-                  "symbol": "@943",
-                  "address": 34897464,
-                  "sectionBase": 34897464
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".bss",
@@ -547,44 +470,7 @@
               38,
               40,
               58
-            ],
-            "anchors": {
-              "38": [
-                {
-                  "symbol": "@926",
-                  "address": 34899472,
-                  "sectionBase": 34899472
-                }
-              ],
-              "39": [
-                {
-                  "symbol": "data_ov100_02148608",
-                  "address": 34899464,
-                  "sectionBase": 34899464
-                }
-              ],
-              "40": [
-                {
-                  "symbol": "@927",
-                  "address": 34899484,
-                  "sectionBase": 34899484
-                }
-              ],
-              "41": [
-                {
-                  "symbol": "data_ov100_02148600",
-                  "address": 34899456,
-                  "sectionBase": 34899456
-                }
-              ],
-              "58": [
-                {
-                  "symbol": "data_ov100_02148628",
-                  "address": 34899496,
-                  "sectionBase": 34899496
-                }
-              ]
-            }
+            ]
           }
         ],
         "objisolate": {
@@ -651,8 +537,10 @@
           "sectionLinks": 0,
           "sectionInfos": 8,
           "error": null
-        }
+        },
+        "errors": null
       },
+      "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
       "symbolCheckErrors": [
         "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
