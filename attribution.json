@@ -9539,6 +9539,7 @@
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d904cEv": "tangosdev",
     "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c19func_ov006_020d907cEv": "tangosdev",
     "src/actors/dPathLiftActor_c.cpp#__sinit_dPathLiftActor_c.cpp": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#__sinit_daObjBlockS_c.cpp": "tangosdev",
     "src/actors/daObjTatefuda_c.cpp#__sinit_daObjTatefuda_c.cpp": "tangosdev",
     "src/actors/daSanbo_c.cpp#__sinit_daSanbo_c.cpp": "tangosdev"
   }

@@ -11,6 +11,9 @@ src/actors/daObjYajirusi_c.cpp:
 src/actors/daObjBlockS_c.cpp:
     complete
     .text start:0x02138040 end:0x02139f70
+    .init start:0x0213c058 end:0x0213c214
+    .ctor start:0x0213c340 end:0x0213c344
+    .bss start:0x0213c850 end:0x0213c8e8
 
 src/actors/daObjFallBlock_c.cpp:
     complete
@@ -27,10 +30,6 @@ src/actors/daWbm_c.cpp:
 src/unnamed/ov098/__sinit_ov098_0213bf9c.c:
     complete
     .init start:0x0213bf9c end:0x0213c058
-
-src/unnamed/ov098/__sinit_ov098_0213c058.c:
-    complete
-    .init start:0x0213c058 end:0x0213c214
 
 src/unnamed/ov098/__sinit_ov098_0213c214.c:
     complete

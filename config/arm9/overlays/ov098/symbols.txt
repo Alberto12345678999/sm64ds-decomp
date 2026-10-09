@@ -94,11 +94,11 @@ data_ov098_0213bf64 kind:data(any) addr:0x0213bf64
 data_ov098_0213bf68 kind:data(any) addr:0x0213bf68
 data_ov098_0213bf90 kind:data(any) addr:0x0213bf90
 __sinit_ov098_0213bf9c kind:function(arm,size=0xbc) addr:0x0213bf9c
-__sinit_ov098_0213c058 kind:function(arm,size=0x1bc) addr:0x0213c058
+__sinit_daObjBlockS_c.cpp kind:function(arm,size=0x1bc) addr:0x0213c058
 __sinit_ov098_0213c214 kind:function(arm,size=0xa0) addr:0x0213c214
 __sinit_ov098_0213c2b4 kind:function(arm,size=0x88) addr:0x0213c2b4
 .p__sinit_ov098_0213bf9c kind:data(word) addr:0x0213c33c
-.p__sinit_ov098_0213c058 kind:data(word) addr:0x0213c340
+.p__sinit_daObjBlockS_c.cpp kind:data(word) addr:0x0213c340
 .p__sinit_ov098_0213c214 kind:data(word) addr:0x0213c344
 .p__sinit_ov098_0213c2b4 kind:data(word) addr:0x0213c348
 _ZTI15daObjYajirusi_c kind:data(any) addr:0x0213c360
@@ -159,8 +159,8 @@ data_ov098_0213c838 kind:bss addr:0x0213c838
 data_ov098_0213c844 kind:bss addr:0x0213c844
 data_ov098_0213c850 kind:bss addr:0x0213c850
 data_ov098_0213c858 kind:bss addr:0x0213c858
-data_ov098_0213c860 kind:bss addr:0x0213c860
-data_ov098_0213c86c kind:bss addr:0x0213c86c
+@1560 kind:bss addr:0x0213c860
+@1561 kind:bss addr:0x0213c86c
 data_ov098_0213c878 kind:bss addr:0x0213c878
 data_ov098_0213c8e8 kind:bss addr:0x0213c8e8
 data_ov098_0213c8f0 kind:bss addr:0x0213c8f0
