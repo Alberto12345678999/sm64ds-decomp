@@ -2808,7 +2808,7 @@
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD0Ev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv",
     "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit",
-    "src/actors/daMoray_c.cpp#BookSwitch_Spawn",
+    "src/actors/daMoray_c.cpp#_ZN9daMoray_c16BookSwitch_SpawnEv",
     "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit",
     "src/actors/dMap_c.cpp#dMap_c_classInit",
     "src/actors/dMeter_c.cpp#dMeter_c_classInit",

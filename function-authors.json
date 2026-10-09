@@ -30851,55 +30851,55 @@
     },
     "ov016:0x02111284": {
       "author": "lunavyqo",
-      "name": "func_ov016_02111284"
+      "name": "_ZN9daMoray_c19func_ov016_02111284Ev"
     },
     "ov016:0x02111534": {
       "author": "tangosdev",
-      "name": "func_ov016_02111534"
+      "name": "_ZN9daMoray_c19func_ov016_02111534Ev"
     },
     "ov016:0x021115a4": {
       "author": "tangosdev",
-      "name": "BookSwitch_Spawn"
+      "name": "_ZN9daMoray_c16BookSwitch_SpawnEv"
     },
     "ov016:0x021115c0": {
       "author": "tangosdev",
-      "name": "func_ov016_021115c0"
+      "name": "_ZN9daMoray_c19func_ov016_021115c0Ev"
     },
     "ov016:0x02111718": {
       "author": "tangosdev",
-      "name": "func_ov016_02111718"
+      "name": "_ZN9daMoray_c19func_ov016_02111718Ev"
     },
     "ov016:0x02111758": {
       "author": "tangosdev",
-      "name": "func_ov016_02111758"
+      "name": "_ZN9daMoray_c19func_ov016_02111758Ev"
     },
     "ov016:0x02111860": {
       "author": "tangosdev",
-      "name": "func_ov016_02111860"
+      "name": "_ZN9daMoray_c19func_ov016_02111860Ev"
     },
     "ov016:0x021118b4": {
       "author": "tangosdev",
-      "name": "func_ov016_021118b4"
+      "name": "_ZN9daMoray_c19func_ov016_021118b4Ev"
     },
     "ov016:0x02111994": {
       "author": "tangosdev",
-      "name": "func_ov016_02111994"
+      "name": "_ZN9daMoray_c19func_ov016_02111994Ev"
     },
     "ov016:0x021119ec": {
       "author": "tangosdev",
-      "name": "func_ov016_021119ec"
+      "name": "_ZN9daMoray_c19func_ov016_021119ecEv"
     },
     "ov016:0x02111bac": {
       "author": "tangosdev",
-      "name": "func_ov016_02111bac"
+      "name": "_ZN9daMoray_c19func_ov016_02111bacEv"
     },
     "ov016:0x02111bf0": {
       "author": "tangosdev",
-      "name": "func_ov016_02111bf0"
+      "name": "_ZN9daMoray_c19func_ov016_02111bf0EPNS_5StateE"
     },
     "ov016:0x02111c40": {
       "author": "tangosdev",
-      "name": "func_ov016_02111c40"
+      "name": "_ZN9daMoray_c19func_ov016_02111c40Ev"
     },
     "ov016:0x02111f38": {
       "author": "tangosdev",

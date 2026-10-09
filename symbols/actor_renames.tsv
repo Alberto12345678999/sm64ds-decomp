@@ -1049,7 +1049,18 @@ ov015	0x021148b8	daObjBk_Fall_Block_c_SpawnInfo	g_profile_BK_DOWN_B	reconstructe
 ov015	0x021148dc	data_ov015_021148dc	_ZTV20daObjBk_Fall_Block_c	vtable alloc=0x34c
 ov016	0x021111a0	func_ov016_021111a0	_ZN9daMoray_cD1Ev	vtable slot 16
 ov016	0x02111208	func_ov016_02111208	_ZN9daMoray_cD0Ev	vtable slot 17
-ov016	0x021115a4	func_ov016_021115a4	BookSwitch_Spawn	spawnfunc
+ov016	0x02111284	func_ov016_02111284	_ZN9daMoray_c19func_ov016_02111284Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111534	func_ov016_02111534	_ZN9daMoray_c19func_ov016_02111534Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x021115a4	func_ov016_021115a4	_ZN9daMoray_c16BookSwitch_SpawnEv	spawnfunc
+ov016	0x021115c0	func_ov016_021115c0	_ZN9daMoray_c19func_ov016_021115c0Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111718	func_ov016_02111718	_ZN9daMoray_c19func_ov016_02111718Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111860	func_ov016_02111860	_ZN9daMoray_c19func_ov016_02111860Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x021118b4	func_ov016_021118b4	_ZN9daMoray_c19func_ov016_021118b4Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111994	func_ov016_02111994	_ZN9daMoray_c19func_ov016_02111994Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x021119ec	func_ov016_021119ec	_ZN9daMoray_c19func_ov016_021119ecEv	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111bac	func_ov016_02111bac	_ZN9daMoray_c19func_ov016_02111bacEv	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111bf0	func_ov016_02111bf0	_ZN9daMoray_c19func_ov016_02111bf0EPNS_5StateE	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111c40	func_ov016_02111c40	_ZN9daMoray_c19func_ov016_02111c40Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov016	0x02111f38	func_ov016_02111f38	_ZN9daMoray_c16CleanupResourcesEv	vtable slot 3
 ov016	0x02111f80	func_ov016_02111f80	_ZN9daMoray_c16OnPendingDestroyEv	vtable slot 12
 ov016	0x02111f84	func_ov016_02111f84	_ZN9daMoray_c6RenderEv	vtable slot 9

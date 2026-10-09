@@ -82,6 +82,20 @@ struct daMoray_c : dEnemyBase_c {
     virtual s32 Behavior();
     virtual s32 Render();
     void OnPendingDestroy();
+
+    void func_ov016_02111284();
+    int func_ov016_02111534();
+    int BookSwitch_Spawn();
+    int func_ov016_021115c0();
+    int func_ov016_02111718();
+    int func_ov016_02111758();
+    int func_ov016_02111860();
+    int func_ov016_021118b4();
+    int func_ov016_02111994();
+    int func_ov016_021119ec();
+    int func_ov016_02111bac();
+    int func_ov016_02111bf0(State *state);
+    void func_ov016_02111c40();
 };
 
 #ifndef SM64DS_PLATFORM_PC
