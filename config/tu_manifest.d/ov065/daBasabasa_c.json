@@ -196,7 +196,7 @@
   ],
   "data": [
     {
-      "symbol": "@915",
+      "symbol": "@735",
       "address": "0x0211cc20",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -224,7 +224,7 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN12daBasabasa_c12ExecuteChaseEv"
     },
     {
-      "symbol": "@917",
+      "symbol": "@736",
       "address": "0x0211cc40",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -848,7 +848,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@915",
+      "symbol": "@735",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0211cc20"
@@ -872,7 +872,7 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0211cc38"
     },
     {
-      "symbol": "@917",
+      "symbol": "@736",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0211cc40"
@@ -1146,7 +1146,7 @@
       "source": "0x0211c420",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@915",
+      "symbol": "@735",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211cc20"
@@ -1156,7 +1156,7 @@
       "source": "0x0211c424",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@917",
+      "symbol": "@736",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211cc40"
@@ -1310,6 +1310,18 @@
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x021175b0"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@915",
+      "to": "@735",
+      "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @915 per TU and ov094 daOwl_c (on main) also defines a global @915, so the scratch link collides"
+    },
+    {
+      "from": "@917",
+      "to": "@736",
+      "evidence": "compiler temporary pointer-to-member descriptor; mwcc numbers it @917 per TU and ov094 daOwl_c (on main) also defines a global @917, so the scratch link collides"
     }
   ]
 }

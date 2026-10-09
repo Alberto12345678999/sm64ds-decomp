@@ -153,8 +153,8 @@ data_ov077_02127b50 kind:bss addr:0x02127b50
 data_ov077_02127b88 kind:bss addr:0x02127b88
 @959 kind:bss addr:0x02127b94
 @961 kind:bss addr:0x02127ba0
-@941 kind:bss addr:0x02127bac
-@943 kind:bss addr:0x02127bb8
+@739 kind:bss addr:0x02127bac
+@740 kind:bss addr:0x02127bb8
 data_ov077_02127bc4 kind:bss addr:0x02127bc4
 data_ov077_02127c14 kind:bss addr:0x02127c14
 data_ov077_02127c1c kind:bss addr:0x02127c1c
@@ -167,7 +167,7 @@ data_ov077_02127c98 kind:bss addr:0x02127c98
 data_ov077_02127ca0 kind:bss addr:0x02127ca0
 @804 kind:bss addr:0x02127ca8
 @805 kind:bss addr:0x02127cb4
-@802 kind:bss addr:0x02127cc0
+@738 kind:bss addr:0x02127cc0
 @803 kind:bss addr:0x02127ccc
 data_ov077_02127cd8 kind:bss addr:0x02127cd8
 data_ov077_02127ce8 kind:bss addr:0x02127ce8

@@ -129,7 +129,7 @@ data_ov090_0213454c kind:bss addr:0x0213454c
 data_ov090_0213455c kind:bss addr:0x0213455c
 data_ov090_02134564 kind:bss addr:0x02134564
 @620 kind:bss addr:0x0213456c
-@621 kind:bss addr:0x02134578
+@737 kind:bss addr:0x02134578
 data_ov090_02134584 kind:bss addr:0x02134584
 data_ov090_02134594 kind:bss addr:0x02134594
 data_ov090_021345a4 kind:bss addr:0x021345a4

@@ -209,35 +209,35 @@
       "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_021122ecEv"
     },
     {
-      "symbol": "@836",
+      "symbol": "@729",
       "address": "0x02113954",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_021121dcEv"
     },
     {
-      "symbol": "@840",
+      "symbol": "@731",
       "address": "0x0211395c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111f1cEv"
     },
     {
-      "symbol": "@838",
+      "symbol": "@730",
       "address": "0x02113964",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111facEv"
     },
     {
-      "symbol": "@842",
+      "symbol": "@732",
       "address": "0x0211396c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111e28Ev"
     },
     {
-      "symbol": "@834",
+      "symbol": "@728",
       "address": "0x02113974",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -281,7 +281,7 @@
       "evidence": "animation file handle constructed with file ID 0x408"
     },
     {
-      "symbol": "@846",
+      "symbol": "@733",
       "address": "0x02113c10",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -302,7 +302,7 @@
       "evidence": "compiler-local registration node is a configured relocation destination at 0x02113c28"
     },
     {
-      "symbol": "@847",
+      "symbol": "@734",
       "address": "0x02113c34",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -914,7 +914,7 @@
       "source": "0x02112db8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@846",
+      "symbol": "@733",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113c10"
@@ -964,7 +964,7 @@
       "source": "0x02112dd4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@847",
+      "symbol": "@734",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113c34"
@@ -1014,7 +1014,7 @@
       "source": "0x02112dec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@834",
+      "symbol": "@728",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113974"
@@ -1024,7 +1024,7 @@
       "source": "0x02112df0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@836",
+      "symbol": "@729",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113954"
@@ -1034,7 +1034,7 @@
       "source": "0x02112df4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@838",
+      "symbol": "@730",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113964"
@@ -1044,7 +1044,7 @@
       "source": "0x02112df8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@840",
+      "symbol": "@731",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x0211395c"
@@ -1054,7 +1054,7 @@
       "source": "0x02112dfc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@842",
+      "symbol": "@732",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x0211396c"
@@ -1191,7 +1191,7 @@
       "evidence": "compiler-local registration node is a configured relocation destination at 0x02113c28"
     },
     {
-      "symbol": "@846",
+      "symbol": "@733",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x02113c10"
@@ -1203,7 +1203,7 @@
       "evidence": "compiler-local registration node is a configured relocation destination at 0x02113c1c"
     },
     {
-      "symbol": "@847",
+      "symbol": "@734",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x02113c34"
@@ -1221,31 +1221,31 @@
       "evidence": "compiler-local PMF literal is a configured relocation destination at 0x0211394c"
     },
     {
-      "symbol": "@834",
+      "symbol": "@728",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal is a configured relocation destination at 0x02113974"
     },
     {
-      "symbol": "@836",
+      "symbol": "@729",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal is a configured relocation destination at 0x02113954"
     },
     {
-      "symbol": "@838",
+      "symbol": "@730",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal is a configured relocation destination at 0x02113964"
     },
     {
-      "symbol": "@840",
+      "symbol": "@731",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal is a configured relocation destination at 0x0211395c"
     },
     {
-      "symbol": "@842",
+      "symbol": "@732",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF literal is a configured relocation destination at 0x0211396c"
@@ -1261,6 +1261,41 @@
       "from": "@829",
       "to": "@847",
       "evidence": "mwcc numbers this registration node @829 per TU and ov002 daObjSwitch_c already defines a global @829, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@834",
+      "to": "@728",
+      "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02112234Ev; mwcc numbers it @834 per TU and ov032 daBakubaku_c (on main) also defines a global @834, so the scratch link collides"
+    },
+    {
+      "from": "@836",
+      "to": "@729",
+      "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_021121dcEv; mwcc numbers it @836 per TU and ov032 daBakubaku_c (on main) also defines a global @836, so the scratch link collides"
+    },
+    {
+      "from": "@838",
+      "to": "@730",
+      "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111facEv; mwcc numbers it @838 per TU and ov032 daBakubaku_c (on main) also defines a global @838, so the scratch link collides"
+    },
+    {
+      "from": "@840",
+      "to": "@731",
+      "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111f1cEv; mwcc numbers it @840 per TU and ov032 daBakubaku_c (on main) also defines a global @840, so the scratch link collides"
+    },
+    {
+      "from": "@842",
+      "to": "@732",
+      "evidence": "compiler-local PMF literal relocated to _ZN10daPgMthr_c19func_ov018_02111e28Ev; mwcc numbers it @842 per TU and ov032 daBakubaku_c (on main) also defines a global @842, so the scratch link collides"
+    },
+    {
+      "from": "@846",
+      "to": "@733",
+      "evidence": "compiler temporary; mwcc numbers it @846 per TU and ov032 daBakubaku_c (on main) also defines a global @846, so the scratch link collides"
+    },
+    {
+      "from": "@847",
+      "to": "@734",
+      "evidence": "compiler temporary; mwcc numbers it @847 per TU and ov032 daBakubaku_c (on main) also defines a global @847, so the scratch link collides"
     }
   ]
 }

@@ -49,9 +49,9 @@ data_ov089_02132c78 kind:bss addr:0x02132c78
 @1181 kind:bss addr:0x02132c8c
 @1179 kind:bss addr:0x02132c98
 data_ov089_02132ca4 kind:bss addr:0x02132ca4
-@1174 kind:bss addr:0x02132cb0
+@2708 kind:bss addr:0x02132cb0
 @1175 kind:bss addr:0x02132cbc
-@1176 kind:bss addr:0x02132cc8
+@2709 kind:bss addr:0x02132cc8
 @1177 kind:bss addr:0x02132cd4
 @1178 kind:bss addr:0x02132ce0
 data_ov089_02132cec kind:bss addr:0x02132cec

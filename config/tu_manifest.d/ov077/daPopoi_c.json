@@ -309,7 +309,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x410 animation handle"
     },
     {
-      "symbol": "@802",
+      "symbol": "@738",
       "address": "0x02127cc0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -664,7 +664,7 @@
               ],
               "46": [
                 {
-                  "symbol": "@802",
+                  "symbol": "@738",
                   "address": 34766016,
                   "sectionBase": 34766016
                 }
@@ -1105,7 +1105,7 @@
       "evidence": "compiler-local member descriptor is a configured initializer relocation destination at 0x02127a48"
     },
     {
-      "symbol": "@802",
+      "symbol": "@738",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02127cc0"
@@ -1235,7 +1235,7 @@
       "source": "0x02127768",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@802",
+      "symbol": "@738",
       "addend": 0,
       "target_module": "ov077",
       "target_address": "0x02127cc0"
@@ -1569,6 +1569,13 @@
       "addend": 0,
       "target_module": "ov077",
       "target_address": "0x021269a8"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@802",
+      "to": "@738",
+      "evidence": "compiler temporary; mwcc numbers it @802 per TU and ov063 daPiano_c (on main) also defines a global @802, so the scratch link collides"
     }
   ]
 }

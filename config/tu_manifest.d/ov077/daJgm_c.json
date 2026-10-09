@@ -377,14 +377,14 @@
       "evidence": "compiler-generated destructor-registration node for the 0x429 model handle"
     },
     {
-      "symbol": "@941",
+      "symbol": "@739",
       "address": "0x02127bac",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x42a model handle"
     },
     {
-      "symbol": "@943",
+      "symbol": "@740",
       "address": "0x02127bb8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -481,6 +481,16 @@
       "from": "@966",
       "to": "@947",
       "evidence": "mwcc numbers this registration node @966 per TU and ov092 already defines a global @966, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@941",
+      "to": "@739",
+      "evidence": "compiler temporary; mwcc numbers it @941 per TU and ov100 daBtfly_c (on main) also defines a global @941, so the scratch link collides"
+    },
+    {
+      "from": "@943",
+      "to": "@740",
+      "evidence": "compiler temporary; mwcc numbers it @943 per TU and ov100 daBtfly_c (on main) also defines a global @943, so the scratch link collides"
     }
   ],
   "symbol_binding_rewrites": [
@@ -509,13 +519,13 @@
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02127ba0"
     },
     {
-      "symbol": "@941",
+      "symbol": "@739",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02127bac"
     },
     {
-      "symbol": "@943",
+      "symbol": "@740",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02127bb8"
@@ -761,7 +771,7 @@
       "source": "0x0212742c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@941",
+      "symbol": "@739",
       "addend": 0,
       "target_module": "ov077",
       "target_address": "0x02127bac"
@@ -791,7 +801,7 @@
       "source": "0x0212743c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@943",
+      "symbol": "@740",
       "addend": 0,
       "target_module": "ov077",
       "target_address": "0x02127bb8"
@@ -1300,7 +1310,7 @@
               ],
               "26": [
                 {
-                  "symbol": "@943",
+                  "symbol": "@740",
                   "address": 34765752,
                   "sectionBase": 34765752
                 }
@@ -1314,7 +1324,7 @@
               ],
               "28": [
                 {
-                  "symbol": "@941",
+                  "symbol": "@739",
                   "address": 34765740,
                   "sectionBase": 34765740
                 }

@@ -178,11 +178,11 @@ _ZTI15daYurei_Mucho_c kind:data(any) addr:0x0211cb60
 _ZTS15daYurei_Mucho_c kind:data(any) addr:0x0211cb6c
 g_profile_YUREI_MUCHO kind:data(any) addr:0x0211cb80 ambiguous
 _ZTV15daYurei_Mucho_c kind:data(any) addr:0x0211cba4
-@915 kind:data(any) addr:0x0211cc20
+@735 kind:data(any) addr:0x0211cc20
 @919 kind:data(any) addr:0x0211cc28
 @911 kind:data(any) addr:0x0211cc30
 @921 kind:data(any) addr:0x0211cc38
-@917 kind:data(any) addr:0x0211cc40
+@736 kind:data(any) addr:0x0211cc40
 @925 kind:data(any) addr:0x0211cc48
 @913 kind:data(any) addr:0x0211cc50
 @923 kind:data(any) addr:0x0211cc58
@@ -190,9 +190,9 @@ _ZTI12daBasabasa_c kind:data(any) addr:0x0211cc60
 _ZTS12daBasabasa_c kind:data(any) addr:0x0211cc6c
 g_profile_BASABASA kind:data(any) addr:0x0211cc7c ambiguous
 _ZTV12daBasabasa_c kind:data(any) addr:0x0211cca0
-@1013 kind:data(any) addr:0x0211cd1c
-@1015 kind:data(any) addr:0x0211cd24
-@1011 kind:data(any) addr:0x0211cd2c
+@2701 kind:data(any) addr:0x0211cd1c
+@2702 kind:data(any) addr:0x0211cd24
+@2700 kind:data(any) addr:0x0211cd2c
 _ZTS9daDossy_c kind:data(any) addr:0x0211cd34
 _ZTI9daDossy_c kind:data(any) addr:0x0211cd40
 _ZTI12daDossyCap_c kind:data(any) addr:0x0211cd4c

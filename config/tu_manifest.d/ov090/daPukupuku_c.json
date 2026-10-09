@@ -184,7 +184,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x418 model handle"
     },
     {
-      "symbol": "@621",
+      "symbol": "@737",
       "address": "0x02134578",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -262,7 +262,7 @@
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0213456c"
     },
     {
-      "symbol": "@621",
+      "symbol": "@737",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02134578"
@@ -364,7 +364,7 @@
       "source": "0x02134004",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@621",
+      "symbol": "@737",
       "addend": 0,
       "target_module": "ov090",
       "target_address": "0x02134578"
@@ -656,7 +656,7 @@
               ],
               "18": [
                 {
-                  "symbol": "@621",
+                  "symbol": "@737",
                   "address": 34817400,
                   "sectionBase": 34817400
                 }
@@ -837,6 +837,13 @@
       "canonical_module": "ov090",
       "canonical_address": "0x02134324",
       "reason": "InitResources naturally emits the complete 0x84-byte class vtable storage. romdata_check applies the measured eight-byte public-address-point bias and proves every slot before isolation."
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@621",
+      "to": "@737",
+      "evidence": "compiler temporary; mwcc numbers it @621 per TU and ov064 daObjTbox_c (this batch) also defines a global @621, so the scratch link collides"
     }
   ]
 }

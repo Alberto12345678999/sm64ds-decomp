@@ -347,7 +347,7 @@
       "evidence": "SharedFilePtr resource handle constructed with file ID 0x47e"
     },
     {
-      "symbol": "@1122",
+      "symbol": "@2704",
       "address": "0x0210de68",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -361,7 +361,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x47f file handle"
     },
     {
-      "symbol": "@1124",
+      "symbol": "@2705",
       "address": "0x0210de80",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -375,7 +375,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x476 file handle"
     },
     {
-      "symbol": "@1126",
+      "symbol": "@2706",
       "address": "0x0210de98",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -403,7 +403,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x47d file handle"
     },
     {
-      "symbol": "@1130",
+      "symbol": "@2707",
       "address": "0x0210dec8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -424,7 +424,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x8012 file handle"
     },
     {
-      "symbol": "@1120",
+      "symbol": "@2703",
       "address": "0x0210deec",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1047,7 +1047,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@1122",
+      "symbol": "@2704",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210de68"
@@ -1059,7 +1059,7 @@
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210de74"
     },
     {
-      "symbol": "@1124",
+      "symbol": "@2705",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210de80"
@@ -1071,7 +1071,7 @@
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210de8c"
     },
     {
-      "symbol": "@1126",
+      "symbol": "@2706",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210de98"
@@ -1095,7 +1095,7 @@
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210debc"
     },
     {
-      "symbol": "@1130",
+      "symbol": "@2707",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210dec8"
@@ -1113,7 +1113,7 @@
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210dee0"
     },
     {
-      "symbol": "@1120",
+      "symbol": "@2703",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0210deec"
@@ -1455,7 +1455,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@1120",
+      "symbol": "@2703",
       "target_module": "ov002",
       "target_address": "0x0210deec"
     },
@@ -1495,7 +1495,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@1122",
+      "symbol": "@2704",
       "target_module": "ov002",
       "target_address": "0x0210de68"
     },
@@ -1535,7 +1535,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@1124",
+      "symbol": "@2705",
       "target_module": "ov002",
       "target_address": "0x0210de80"
     },
@@ -1575,7 +1575,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@1126",
+      "symbol": "@2706",
       "target_module": "ov002",
       "target_address": "0x0210de98"
     },
@@ -1655,7 +1655,7 @@
       "type": "R_ARM_ABS32",
       "kind": "load",
       "addend": 0,
-      "symbol": "@1130",
+      "symbol": "@2707",
       "target_module": "ov002",
       "target_address": "0x0210dec8"
     },
@@ -1975,6 +1975,31 @@
       "from": "@1131",
       "to": "@2166",
       "evidence": "mwcc numbers this registration node @1131 per TU and ov002/daObjTatefuda_c already defines a global @1131, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@1120",
+      "to": "@2703",
+      "evidence": "compiler temporary; mwcc numbers it @1120 per TU and ov062 daJango_c (this batch) also defines a global @1120, so the scratch link collides"
+    },
+    {
+      "from": "@1122",
+      "to": "@2704",
+      "evidence": "compiler temporary; mwcc numbers it @1122 per TU and ov062 daJango_c (this batch) also defines a global @1122, so the scratch link collides"
+    },
+    {
+      "from": "@1124",
+      "to": "@2705",
+      "evidence": "compiler temporary; mwcc numbers it @1124 per TU and ov062 daJango_c (this batch) also defines a global @1124, so the scratch link collides"
+    },
+    {
+      "from": "@1126",
+      "to": "@2706",
+      "evidence": "compiler temporary; mwcc numbers it @1126 per TU and ov062 daJango_c (this batch) also defines a global @1126, so the scratch link collides"
+    },
+    {
+      "from": "@1130",
+      "to": "@2707",
+      "evidence": "compiler temporary; mwcc numbers it @1130 per TU and ov062 daJango_c (this batch) also defines a global @1130, so the scratch link collides"
     }
   ]
 }
