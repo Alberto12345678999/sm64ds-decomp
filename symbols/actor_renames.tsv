@@ -5755,3 +5755,19 @@ ov002	0x020ae608	func_ov002_020ae608	_ZN11EnemyDeathC19func_ov002_020ae608ER10dB
 ov002	0x020ae4cc	func_ov002_020ae4cc	_ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
 ov002	0x020ae454	func_ov002_020ae454	_ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
 ov002	0x020aea24	func_ov002_020aea24	_ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
+ov002	0x020bccfc	func_ov002_020bccfc	_ZN6Player19func_ov002_020bccfcEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bcd18	func_ov002_020bcd18	_ZN6Player19func_ov002_020bcd18EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bcd38	func_ov002_020bcd38	_ZN6Player19func_ov002_020bcd38EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd06c	func_ov002_020bd06c	_ZN6Player19func_ov002_020bd06cEj	Player method; the step change func_ov002_020bd20c (a Kuppa-script command) makes, its only caller
+ov002	0x020bd20c	func_ov002_020bd20c	_ZN6Player19func_ov002_020bd20cEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd250	func_ov002_020bd250	_ZN6Player19func_ov002_020bd250EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd354	func_ov002_020bd354	_ZN6Player19func_ov002_020bd354EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd3a0	func_ov002_020bd3a0	_ZN6Player19func_ov002_020bd3a0EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd438	func_ov002_020bd438	_ZN6Player19func_ov002_020bd438EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd45c	func_ov002_020bd45c	_ZN6Player19func_ov002_020bd45cEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd480	func_ov002_020bd480	_ZN6Player19func_ov002_020bd480EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd4ac	func_ov002_020bd4ac	_ZN6Player19func_ov002_020bd4acEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd4c8	func_ov002_020bd4c8	_ZN6Player19func_ov002_020bd4c8EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd4e0	func_ov002_020bd4e0	_ZN6Player19func_ov002_020bd4e0EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd600	func_ov002_020bd600	_ZN6Player19func_ov002_020bd600EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd664	func_ov002_020bd664	_ZN6Player19func_ov002_020bd664EPhii	Player method; Kuppa-script player command dispatcher, called by func_0200e5ac on the player actor through pointer-to-member data_ov002_02110794

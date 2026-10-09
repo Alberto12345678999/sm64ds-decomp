@@ -197,76 +197,9 @@ src/game/actors/d_a_obj_cannon_shutter.cpp:
     .ctor start:0x0210810c end:0x02108110
     .bss start:0x0210e124 end:0x0210e14c
 
-src/unnamed/ov002/func_ov002_020bccfc.c:
-    complete
-    .text start:0x020bccfc end:0x020bcd18
-
-src/unnamed/ov002/func_ov002_020bcd18.c:
-    complete
-    .text start:0x020bcd18 end:0x020bcd38
-
-src/unnamed/ov002/func_ov002_020bcd38.c:
-    complete
-    .text start:0x020bcd38 end:0x020bcdf0
-
-src/unnamed/ov002/func_ov002_020bcdf0.c:
-    complete
-    .text start:0x020bcdf0 end:0x020bd06c
-
-src/unnamed/ov002/func_ov002_020bd06c.c:
-    complete
-    .text start:0x020bd06c end:0x020bd20c
-
-src/unnamed/ov002/func_ov002_020bd20c.c:
-    complete
-    .text start:0x020bd20c end:0x020bd250
-
-src/unnamed/ov002/func_ov002_020bd250.cpp:
-    complete
-    .text start:0x020bd250 end:0x020bd354
-
-src/unnamed/ov002/func_ov002_020bd354.c:
-    complete
-    .text start:0x020bd354 end:0x020bd3a0
-
-src/unnamed/ov002/func_ov002_020bd3a0.c:
-    complete
-    .text start:0x020bd3a0 end:0x020bd438
-
-src/unnamed/ov002/func_ov002_020bd438.c:
-    complete
-    .text start:0x020bd438 end:0x020bd45c
-
-src/unnamed/ov002/func_ov002_020bd45c.cpp:
-    complete
-    .text start:0x020bd45c end:0x020bd480
-
-src/unnamed/ov002/func_ov002_020bd480.cpp:
-    complete
-    .text start:0x020bd480 end:0x020bd4ac
-
-src/unnamed/ov002/func_ov002_020bd4ac.c:
-    complete
-    .text start:0x020bd4ac end:0x020bd4c8
-
-src/unnamed/ov002/func_ov002_020bd4c8.c:
-    complete
-    .text start:0x020bd4c8 end:0x020bd4e0
-
-src/unnamed/ov002/func_ov002_020bd4e0.c:
-    complete
-    .text start:0x020bd4e0 end:0x020bd600
-
-src/unnamed/ov002/func_ov002_020bd600.c:
-    complete
-    .text start:0x020bd600 end:0x020bd664
-
-src/unnamed/ov002/func_ov002_020bd664.cpp:
-    .text start:0x020bd664 end:0x020bd828
-
 src/actors/Player.cpp:
     complete
-    .text start:0x020bd828 end:0x020d3b9c
+    .text start:0x020bccfc end:0x020d3b9c
 
 src/unnamed/ov002/func_ov002_020d413c.c:
     complete
