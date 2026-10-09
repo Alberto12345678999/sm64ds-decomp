@@ -10,7 +10,7 @@ This lane independently audits three rows ranked `high` by
 | --- | --- | --- | --- |
 | [__sinit_ov009_02112458](../src/unnamed/ov009/__sinit_ov009_02112458.c) | [ov009](../config/arm9/overlays/ov009/symbols.txt)/`daSBird_c` | **CONFIRMED** | Not promotion-ready: resource-family symbol names, four original PMF member names, and unlicensed vtable/RTTI output remain |
 | [__sinit_ov015_02112f9c](../src/game/actors/d_a_obj_bk_billboard.cpp) | [ov015](../config/arm9/overlays/ov015/symbols.txt)/`daObjBkBillboard_c` | **CONFIRMED**, folded | Folded into the TU as an intact-object initializer (`__sinit_d_a_obj_bk_billboard.cpp`); manifest is `config/tu_manifest.d/ov015/daObjBkBillboard_c.json` |
-| [__sinit_ov002_02101064](../src/unnamed/ov002/__sinit_ov002_02101064.c) | [ov002](../config/arm9/overlays/ov002/symbols.txt)/`daObjMarioCap_c` | **CONFIRMED** | Not promotion-ready: `InitResources` is not a matching source, the PMF member names remain unknown, and [ov002](../config/arm9/overlays/ov002/symbols.txt) cannot be ordinal-partitioned |
+| [__sinit_ov002_02101064](../src/actors/daObjMarioCap_c.cpp) | [ov002](../config/arm9/overlays/ov002/symbols.txt)/`daObjMarioCap_c` | **CONFIRMED**, folded | Folded into the TU as an intact-object initializer (`__sinit_daObjMarioCap_c.cpp`); manifest is `config/tu_manifest.d/ov002/daObjMarioCap_c.json` |
 
 All three committed initializer transcriptions pass strict matching and linked
 verification with `blind: 0`. More importantly, ordinary static C++ objects and
