@@ -2880,10 +2880,6 @@
       "src/unnamed/ov096/__sinit_ov096_02137894.c": [
         "kind:data"
       ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "arity:0",
         "return:void"
@@ -6046,9 +6042,6 @@
       ],
       "src/unnamed/ov096/__sinit_ov096_02137894.c": [
         "return:void"
-      ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:int"
       ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "return:void"
@@ -20553,14 +20546,8 @@
       ]
     },
     "data_ov100_02148600": {
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:char []"
-      ]
     },
     "data_ov100_02148608": {
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:char []"
-      ]
     },
     "data_ov100_02148668": {
       "src/actors/daBtfly_c.cpp": [
@@ -22369,10 +22356,6 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "arity:0",
         "return:void"
@@ -23006,9 +22989,6 @@
       ],
       "src/unnamed/ov098/__sinit_ov098_0213c2b4.c": [
         "return:void"
-      ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:int"
       ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "return:void"
