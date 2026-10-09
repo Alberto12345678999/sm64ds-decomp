@@ -15995,7 +15995,7 @@
     },
     "data_ov002_0211092c": {
       "src/actors/daStar_c.cpp": [
-        "return:char"
+        "return:StarModelFilePtr"
       ],
       "src/unnamed/ov002/__sinit_ov002_02106e40.c": [
         "return:void *"
@@ -16007,6 +16007,9 @@
       ]
     },
     "data_ov002_0211093c": {
+      "src/actors/daStar_c.cpp": [
+        "return:StarModelFilePtr"
+      ],
       "src/unnamed/ov002/__sinit_ov002_02106e40.c": [
         "return:void *"
       ]
@@ -16021,7 +16024,7 @@
         "return:int"
       ],
       "src/actors/daStar_c.cpp": [
-        "return:SharedFilePtrRaw"
+        "return:StarModelFilePtr"
       ],
       "src/unnamed/ov002/__sinit_ov002_02106e40.c": [
         "return:void *"
