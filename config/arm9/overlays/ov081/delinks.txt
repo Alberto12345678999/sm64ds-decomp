@@ -7,6 +7,9 @@
 src/actors/daHuwa_c.cpp:
     complete
     .text start:0x02123740 end:0x02124090
+    .init start:0x021280e8 end:0x02128154
+    .ctor start:0x02128824 end:0x02128828
+    .bss start:0x02128d60 end:0x02128d88
 
 src/actors/daSnowman_c.cpp:
     complete
@@ -32,9 +35,6 @@ src/game/actors/d_a_obj_ice_block.cpp:
     complete
     .text start:0x02127b34 end:0x021280d8
 
-src/unnamed/ov081/__sinit_ov081_021280e8.c:
-    complete
-    .init start:0x021280e8 end:0x02128154
 
 src/unnamed/ov081/__sinit_ov081_021284f0.c:
     complete

@@ -34,6 +34,9 @@ src/actors/daObjPile_c.cpp:
 src/game/actors/d_a_hyuhyu.cpp:
     complete
     .text start:0x02133968 end:0x021344e8
+    .init start:0x02134a30 end:0x02134b68
+    .ctor start:0x02134b7c end:0x02134b80
+    .bss start:0x02135674 end:0x021356e0
 
 src/unnamed/ov091/__sinit_ov091_02134524.c:
     complete
@@ -50,7 +53,3 @@ src/unnamed/ov091/__sinit_ov091_021346e8.c:
 src/unnamed/ov091/__sinit_ov091_02134930.c:
     complete
     .init start:0x02134930 end:0x021349c4
-
-src/unnamed/ov091/__sinit_ov091_02134a30.c:
-    complete
-    .init start:0x02134a30 end:0x02134b68

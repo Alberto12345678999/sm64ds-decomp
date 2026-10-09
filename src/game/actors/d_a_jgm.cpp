@@ -129,18 +129,75 @@ struct DaJgmMatrixWords { int words[12]; };
 
 extern int _ZTV7daJgm_c[];
 
+/* File-scope objects at the end of this file construct the seven resource
+ * handles (model files 0x34c/0x429/0x42a, animation files 0x34f/0x34d,
+ * texture-sequence files 0x350/0x34e), fill the five-pair state table and
+ * set the collision-offset vector (0, -0x1e000, 0). mwcc emits
+ * __sinit_d_a_jgm.cpp from those definitions. The wrapper names are local;
+ * the handle constructors and destructors are the ROM resource-family
+ * functions, aliased in the manifest. The vector is a real Vector3: its
+ * inline destructor instantiates the TU-local vague-linkage D1 the
+ * registration references, licensed as a compiler-only duplicate of the
+ * ROM's canonical copy (this TU's text otherwise never instantiates it). */
+struct DaJgmModelFile : SharedFilePtr {
+    u32 words[2];
+
+    DaJgmModelFile(u32 fileID);
+    ~DaJgmModelFile();
+};
+
+struct DaJgmAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    DaJgmAnimationFilePtr(u32 fileID);
+    ~DaJgmAnimationFilePtr();
+};
+
+struct DaJgmTexSequenceFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    DaJgmTexSequenceFilePtr(u32 fileID);
+    ~DaJgmTexSequenceFilePtr();
+};
+
+/* Collision-offset vector: three plain words built by an inline constructor
+ * (mwcc inlines the stores into __sinit) with a declared-not-defined
+ * destructor (never ~Vector3: a Vector3 here would instantiate its
+ * vague-linkage D1 into this TU, which deliberately avoids it); the
+ * destructor alias points at the ROM's canonical copy. */
+struct JgmVector3 {
+    int x, y, z;
+    JgmVector3(int a, int b, int c)
+    {
+        x = a;
+        y = b;
+        z = c;
+    }
+    ~JgmVector3();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov077_02127b50;
-extern SharedFilePtr data_ov077_02127b48;
-extern SharedFilePtr data_ov077_02127b38;
-extern SharedFilePtr data_ov077_02127b28;
-extern SharedFilePtr data_ov077_02127b40;
-extern SharedFilePtr data_ov077_02127b20;
-extern SharedFilePtr data_ov077_02127b30;
+extern DaJgmModelFile data_ov077_02127b50;
+extern DaJgmModelFile data_ov077_02127b48;
+extern DaJgmModelFile data_ov077_02127b38;
+extern DaJgmAnimationFilePtr data_ov077_02127b28;
+extern DaJgmAnimationFilePtr data_ov077_02127b40;
+extern DaJgmTexSequenceFilePtr data_ov077_02127b20;
+extern DaJgmTexSequenceFilePtr data_ov077_02127b30;
 extern SharedFilePtr *data_ov077_02127238[];
 extern SharedFilePtr *data_ov077_02127230[];
 extern DaJgmStateHandlers data_ov077_02127bc4[];
-extern Vector3 data_ov077_02127b88;
+extern JgmVector3 data_ov077_02127b88;
+extern DaJgmStateHandler data_ov077_021277e0;
+extern DaJgmStateHandler data_ov077_02127828;
+extern DaJgmStateHandler data_ov077_02127820;
+extern DaJgmStateHandler data_ov077_021277e8;
+extern DaJgmStateHandler data_ov077_02127818;
+extern DaJgmStateHandler data_ov077_02127800;
+extern DaJgmStateHandler data_ov077_021277f0;
+extern DaJgmStateHandler data_ov077_02127808;
+extern DaJgmStateHandler data_ov077_02127810;
+extern DaJgmStateHandler data_ov077_021277f8;
 extern s16 data_02082214[];
 extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
@@ -825,6 +882,28 @@ int daJgm_c::OnAimedAtWithEgg()
 {
     return 245760;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov077_02127240 shard).
+ * Definition order is the retail initializer's construction order: the three
+ * model handles (files 0x34c/0x429/0x42a), the two animation handles (files
+ * 0x34f/0x34d), the two texture-sequence handles (files 0x350/0x34e), then
+ * the five-pair state table copied from the ROM PMF constants, then the
+ * collision-offset vector. */
+DaJgmModelFile data_ov077_02127b50(0x34c);
+DaJgmModelFile data_ov077_02127b48(0x429);
+DaJgmModelFile data_ov077_02127b38(0x42a);
+DaJgmAnimationFilePtr data_ov077_02127b28(0x34f);
+DaJgmAnimationFilePtr data_ov077_02127b40(0x34d);
+DaJgmTexSequenceFilePtr data_ov077_02127b20(0x350);
+DaJgmTexSequenceFilePtr data_ov077_02127b30(0x34e);
+DaJgmStateHandlers data_ov077_02127bc4[5] = {
+    {data_ov077_021277e0, data_ov077_02127828},
+    {data_ov077_02127820, data_ov077_021277e8},
+    {data_ov077_02127818, data_ov077_02127800},
+    {data_ov077_021277f0, data_ov077_02127808},
+    {data_ov077_02127810, data_ov077_021277f8}
+};
+JgmVector3 data_ov077_02127b88(0, -0x1e000, 0);
 
 // @symbol _ZN7daJgm_c13OnYoshiTryEatEv
 int daJgm_c::OnYoshiTryEat()

@@ -236,6 +236,32 @@ struct TabCmp { int unused; int match; };
 /* shadow struct 'D0211ac88' */
 struct D0211ac88 { int a, b; };
 
+/* The static-init file handles: the model file constructs through
+ * func_02017acc and destroys through func_02017ab4, animation handles through
+ * SharedFilePtr::Construct/SharedFilePtr_Destruct_Anim, and texture-sequence
+ * handles through SharedFilePtr_Construct_TexSeq/SharedFilePtr_Destruct_TexSeq.
+ * Each wrapper's ctor and dtor stay undefined here; the manifest aliases them
+ * onto those ROM veneers. */
+struct KpaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    KpaModelFilePtr(u32 fileID);
+    ~KpaModelFilePtr();
+};
+struct KpaAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+    KpaAnimationFileHandle(u32 fileID);
+    ~KpaAnimationFileHandle();
+};
+struct KpaTexSequenceFilePtr : SharedFilePtr {
+    u32 words[2];
+    KpaTexSequenceFilePtr(u32 fileID);
+    ~KpaTexSequenceFilePtr();
+};
+
+/* Tail's own PMF: data_ov060_0211ae9c is a daKpaTail_c state table, unlike
+ * PmfEnt's daKpa_c one. */
+typedef void (daKpaTail_c::*KpaTailState)();
+
 /* shadow typedef 'Vec3' */
 typedef struct Vec3 { int x, y, z; } Vec3;
 
@@ -319,7 +345,7 @@ extern int _ZN15dExtFrameCtrl_c8FinishedEv(void*);
  * actor; the shards held it as char* or void*, which C++ will not reconcile, so
  * they take daKpa_c*. */
 
-extern int data_ov060_0211acd0[];
+extern KpaAnimationFileHandle data_ov060_0211acd0;
 extern unsigned char data_ov060_02119264[];
 extern PmfEnt data_ov060_0211aeb4[];
 int _ZN8dActor_c14GetSubtractionEss(void* self, short a, short b);
@@ -340,7 +366,7 @@ void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vector3* out);
 int _ZNK10dBgCh_Actr13JustHitGroundEv(void* self);
 int _ZN4cstd4fdivEii(int a, int b);
 
-extern TabEnt data_ov060_0211aed4[];
+extern PmfEnt data_ov060_0211aed4[];
 extern s16 data_02082214[];
 
 extern int _ZN6Player9StartTalkER7fBase_cb(void *pl, void *a, int b);
@@ -364,7 +390,8 @@ extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, uns
  * site passes &mStepCounter). */
 extern void func_ov060_02115a84(daKpa_c *kpa, char* p);
 extern void func_ov060_02112350(daKpa_c *kpa);
-extern struct D0211ac88 data_ov060_0211ac88;
+extern KpaAnimationFileHandle data_ov060_0211ac88;
+extern KpaAnimationFileHandle data_ov060_0211ac60;
 /* The mangled name encodes the real signature: (u32, u32, Vector3*,
  * const Vector3_16*, int, int). Spelled to match so the two call sites that pass
  * a real Vector3_16* at c+0x92 bind without a cast. */
@@ -395,19 +422,19 @@ extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( v
 extern int _ZN6Player9GetHealthEv(void* player);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
-extern int data_ov060_0211abe0[];
+extern KpaAnimationFileHandle data_ov060_0211abe0;
 extern int func_ov060_0211469c(daKpa_c *kpa);
 extern void func_ov060_021145a8(daKpa_c *kpa);
 extern void func_0200fa04(void* c, void* v, int a);
-extern struct TabCmp data_ov060_0211acd8;
-extern struct TabCmp data_ov060_0211acf0;
+extern KpaAnimationFileHandle data_ov060_0211acd8;
+extern KpaAnimationFileHandle data_ov060_0211acf0;
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern int func_ov060_02115744(daKpa_c *kpa);
 extern int func_ov060_02115718(daKpa_c *kpa);
 extern int func_ov060_021156ec(daKpa_c *kpa);
-extern int data_ov060_0211ac20[];
-extern int data_ov060_0211ac68[];
-extern int data_ov060_0211ac70[];
+extern KpaAnimationFileHandle data_ov060_0211ac20;
+extern KpaAnimationFileHandle data_ov060_0211ac68;
+extern KpaAnimationFileHandle data_ov060_0211ac70;
 /* Both take this same actor. */
 extern void func_ov060_021150d0(daKpa_c *kpa);
 extern void func_ov060_021150c4(daKpa_c *kpa);
@@ -446,8 +473,8 @@ extern "C" void func_02011cfc(void);
 extern SharedFilePtr *data_ov060_021192dc[];
 extern SharedFilePtr *data_ov060_0211927c[];
 extern SharedFilePtr data_ov089_02132c50;
-extern SharedFilePtr *data_ov060_0211ac78[];
-extern SharedFilePtr *data_ov060_0211ac28[];
+extern KpaModelFilePtr data_ov060_0211ac78;
+extern KpaTexSequenceFilePtr data_ov060_0211ac28;
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
@@ -700,7 +727,7 @@ int daKpa_c::InitResources()
     daKpaTail_c *a2;
 
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&this->mModelAnim,
-        _ZN5Model8LoadFileER13SharedFilePtr(*(SharedFilePtr *)data_ov060_0211ac78), 1, 0x16);
+        _ZN5Model8LoadFileER13SharedFilePtr(data_ov060_0211ac78), 1, 0x16);
 
     for (i = 0; i < 0x1c; i++)
         _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((void *)data_ov060_021192dc[i]);
@@ -719,11 +746,11 @@ int daKpa_c::InitResources()
      * rather than widening the helper's signature for one caller. */
     func_ov060_02111cc0(BOWSER_ANIM_IDLE, 0);
 
-    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1],
-                             *(BTP_File *)data_ov060_0211ac28[1]);
+    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1],
+                             *(BTP_File *)data_ov060_0211ac28.words[1]);
 
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &this->mTextureSequence, (void *)data_ov060_0211ac28[1], 0, 0x1000, 0);
+        &this->mTextureSequence, (void *)data_ov060_0211ac28.words[1], 0, 0x1000, 0);
 
     _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0x40000000);
 
@@ -985,7 +1012,7 @@ its purpose is not established here) and return 1. */
 int daKpa_c::CleanupResources()
 {
     int i;
-    ((SharedFilePtr *)(&data_ov060_0211ac78))->Release();
+    data_ov060_0211ac78.Release();
     for (i = 0; i < 0x1c; i++)
         data_ov060_021192dc[i]->Release();
     for (i = 0; i < 6; i++)
@@ -1133,7 +1160,7 @@ collider (dCc_c::Clear and Update). */
  * forward declaration of C, which collided with the PMF already defined at the
  * top of this TU (on the real C). One typedef serves both; only the opaque
  * padding view of the object is local to this shard. */
-extern PMF data_ov060_0211ae9c[];
+extern KpaTailState data_ov060_0211ae9c[];
 extern "C" {
 extern void _ZN5dCc_c5ClearEv(void* cc);
 extern void _ZN5dCc_c6UpdateEv(void* cc);
@@ -1142,7 +1169,7 @@ struct C_func15b84 { char pad[0x800]; };
 void daKpaTail_c::func_ov060_02115b84(){
   daKpa_c *bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(this->mBowserUniqueID);
   int idx = this->mState;
-  (((daKpa_c *)this)->*data_ov060_0211ae9c[idx])();
+  (this->*data_ov060_0211ae9c[idx])();
   if (bowser->mState == BOWSER_STATE_DEFEATED) {
     this->mdCcAc_c.flags |= BOWSER_CC_DISABLED;
   }
@@ -1770,21 +1797,21 @@ BOWSER_STATE_IDLE, and after any other animation (the one playing when the state
 is entered) start animation 8; the three are started with 0x40000000 (play once). */
 void daKpa_c::func_ov060_02114e9c(){
     this->mHorzSpeed = 0;
-    if ((int)this->mModelAnim.file == data_ov060_0211ac20[1]) {
+    if ((int)this->mModelAnim.file == data_ov060_0211ac20.words[1]) {
         if (this->mModelAnim.WillHitFrame(8)) {
             func_02012694(BOWSER_SND_B5, (const Vector3 *)(&this->mCamSpacePosX));
         }
     }
     if (Bowser_IsAnimAtLastFrame() == 0) return;
-    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac20[1]) {
+    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac20.words[1]) {
         func_ov060_02111cc0(6, 0x40000000);
         return;
     }
-    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac68[1]) {
+    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac68.words[1]) {
         func_ov060_02111cc0(7, 0x40000000);
         return;
     }
-    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac70[1]) {
+    if (*(int *)&this->mModelAnim.file == data_ov060_0211ac70.words[1]) {
         this->mState = BOWSER_STATE_IDLE;
         return;
     }
@@ -1967,7 +1994,7 @@ void daKpa_c::func_ov060_02114858(){
   int new_var;
   int new_var2;
   s32 v134 = (s32)this->mModelAnim.file;
-  if ((v134 == data_ov060_0211acd8.match) || ((v134 == data_ov060_0211acf0.match) && ((((u32) (((u32) (this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a)))
+  if ((v134 == data_ov060_0211acd8.words[1]) || ((v134 == data_ov060_0211acf0.words[1]) && ((((u32) (((u32) (this->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a)))
   {
     s32 v12c = this->mModelAnim.currFrame;
     s32 v450 = *(volatile s32 *)&this->mSoundID;
@@ -2351,7 +2378,7 @@ void daKpa_c::func_ov060_021140c0(){
             this->mFireballShots = 3;
         }
     }
-    if ((int)this->mModelAnim.file == data_ov060_0211abe0[1]) {
+    if ((int)this->mModelAnim.file == data_ov060_0211abe0.words[1]) {
         if (this->mModelAnim.WillHitFrame(5)) {
             Vector3 pos;
             u16 dir[3];
@@ -2394,7 +2421,7 @@ void daKpa_c::func_ov060_021140c0(){
         }
     }
     if (Bowser_IsAnimAtLastFrame() != 0) {
-        if ((int)this->mModelAnim.file == data_ov060_0211abe0[1]) {
+        if ((int)this->mModelAnim.file == data_ov060_0211abe0.words[1]) {
             unsigned char* p = &this->mStep;
             *p = (*p) + 1;
             if (this->mStep >= this->mFireballShots) {
@@ -2919,7 +2946,7 @@ void daKpa_c::func_ov060_021134ac(){
     this->unk_422 = 1;
     func_ov060_02115a84((char *)&this->mStepCounter);
     if (_ZNK10dBgCh_Actr13JustHitGroundEv(&this->mWithMeshClsn)) {
-        if ((int)this->mModelAnim.file == data_ov060_0211ac88.b) {
+        if ((int)this->mModelAnim.file == (int)data_ov060_0211ac88.words[1]) {
             func_ov060_02111cc0(5, 0x40000000);
         }
         {
@@ -2954,7 +2981,7 @@ more than 0x6000 (135 degrees), that is, he is looking toward Bowser; otherwise
 int daKpa_c::func_ov060_02113404(){
   int r = 0;
   func_ov060_02112350();
-  if ((int)this->mModelAnim.file == *(int*)(data_ov060_0211ac60+4)) {
+  if ((int)this->mModelAnim.file == (int)data_ov060_0211ac60.words[1]) {
     char* base = (char *)this->mTargetPlayer;
     if (base != 0) {
       int* o = &this->mTargetPlayer->mPosX;
@@ -3406,17 +3433,7 @@ void daKpa_c::func_ov060_021128c0(){
     }
 
     s32 idx = this->mState;
-    {
-        TabEnt* e = &data_ov060_0211aed4[idx];
-        int off = e->target;
-        void* base = (void*)((char *)this + (off >> 1));
-        void (*fn)(void*);
-        if (off & 1)
-            fn = (void (*)(void*))*(void**)((char*)(*(void***)base) + e->slot);
-        else
-            fn = (void (*)(void*))e->slot;
-        fn(base);
-    }
+    (this->*data_ov060_0211aed4[idx].pmf)();
 
     {
         u16 *h = &this->mTimer;
@@ -3711,7 +3728,7 @@ is entry 5 of the animation table), start animation 3 (looping). */
 void daKpa_c::func_ov060_02112350(){
   int r=this->mModelAnim.Finished();
   if(!r) return;
-  if((int)this->mModelAnim.file != data_ov060_0211acd0[1]) return;
+  if((int)this->mModelAnim.file != data_ov060_0211acd0.words[1]) return;
   func_ov060_02111cc0(3,0);
 }
 
@@ -3860,13 +3877,13 @@ extern "C" {
  * cleanup path releases -- so they are declared once, there, and this shard's
  * `.w[1]` reads are respelled `[1]`. */
 extern SharedFilePtr *data_ov060_021192dc[];
-extern SharedFilePtr *data_ov060_0211ac78[];
-extern SharedFilePtr *data_ov060_0211ac40[];
-extern SharedFilePtr *data_ov060_0211acb8[];
-extern SharedFilePtr *data_ov060_0211ac10[];
-extern SharedFilePtr *data_ov060_0211abf0[];
-extern SharedFilePtr *data_ov060_0211ac30[];
-extern SharedFilePtr *data_ov060_0211ac28[];
+extern KpaModelFilePtr data_ov060_0211ac78;
+extern KpaTexSequenceFilePtr data_ov060_0211ac40;
+extern KpaTexSequenceFilePtr data_ov060_0211acb8;
+extern KpaTexSequenceFilePtr data_ov060_0211ac10;
+extern KpaTexSequenceFilePtr data_ov060_0211abf0;
+extern KpaTexSequenceFilePtr data_ov060_0211ac30;
+extern KpaTexSequenceFilePtr data_ov060_0211ac28;
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int d, unsigned e);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *file, int a, int d, unsigned e);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
@@ -3877,35 +3894,35 @@ void daKpa_c::func_ov060_02111cc0(int idx, int animFlags){
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void *)((int *)data_ov060_021192dc[idx])[1], a, 0x1000, 0);
     switch (idx) {
     case 1:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac40[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac40[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac40.words[1]);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac40.words[1], 0, 0x1000, 0);
         _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0x40000000);
         return;
     case 2:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211acb8[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211acb8[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211acb8.words[1]);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211acb8.words[1], 0, 0x1000, 0);
         _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0x40000000);
         return;
     case 3:
     case 5:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac10[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac10[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac10.words[1]);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac10.words[1], 0, 0x1000, 0);
         _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0);
         return;
     case 14:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211abf0[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211abf0[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211abf0.words[1]);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211abf0.words[1], 0, 0x1000, 0);
         _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0);
         return;
     case 10:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac30[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac30[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac30.words[1]);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac30.words[1], 0, 0x1000, 0);
         _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0x40000000);
         return;
     case 0:
     default:
-        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac28[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac28[1], 0, 0x1000, 0);
+        TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78.words[1], *(BTP_File *)data_ov060_0211ac28.words[1]);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&this->mTextureSequence, (void *)data_ov060_0211ac28.words[1], 0, 0x1000, 0);
         _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0);
         return;
     }
@@ -3922,11 +3939,11 @@ frame number minus 0x31 from frame 0x31 on; while animation 6 plays
 (data_ov060_0211ac68) it is the frame number plus 0xb; otherwise -1. */
 int daKpa_c::func_ov060_02111c68(){
   int v = (int)this->mModelAnim.file;
-  if(v == (int)data_ov060_0211ac20[1]){
+  if(v == (int)data_ov060_0211ac20.words[1]){
     unsigned int t = ((unsigned int)this->mModelAnim.currFrame << 4) >> 0x10;
     if(t >= 0x31) return t - 0x31;
   }
-  if(v == (int)data_ov060_0211ac68[1]){
+  if(v == (int)data_ov060_0211ac68.words[1]){
     return (((unsigned int)this->mModelAnim.currFrame << 4) >> 0x10) + 0xb;
   }
   return -1;
@@ -3956,12 +3973,12 @@ extern "C" {
  * second word (`x.w[1]`), compared against a value loaded from the actor. Spelled
  * as a two-int array rather than a named struct: mwccarm rejects a class declared
  * between function bodies in this position, reading the type as undeclared. */
-extern int data_ov060_0211acb0[];
-extern int data_ov060_0211ac00[];
-extern int data_ov060_0211ace0[];
-extern int data_ov060_0211aca0[];
-extern int data_ov060_0211abf8[];
-extern int data_ov060_0211ac90[];
+extern KpaAnimationFileHandle data_ov060_0211acb0;
+extern KpaAnimationFileHandle data_ov060_0211ac00;
+extern KpaAnimationFileHandle data_ov060_0211ace0;
+extern KpaAnimationFileHandle data_ov060_0211aca0;
+extern KpaAnimationFileHandle data_ov060_0211abf8;
+extern KpaAnimationFileHandle data_ov060_0211ac90;
 extern void _ZN8dActor_c17HugeLandingDustAtER7Vector3b(void *a, void *v, int b);
 extern void _ZN5Sound4PlayEjjRK7Vector3(unsigned a, unsigned b, void *v);
 }
@@ -3974,30 +3991,30 @@ void daKpa_c::func_ov060_02111a28(){
     int r1 = 0;
     this->mFootfallLatch = 0;
 
-    if (v == data_ov060_0211acb0[1]) {
+    if (v == data_ov060_0211acb0.words[1]) {
         if (n >= 0x14 && n <= 0x17)
             r1 = 2;
         else if (n == 0x29 || n < 2)
             r1 = 1;
-    } else if (v == data_ov060_0211ac00[1]) {
+    } else if (v == data_ov060_0211ac00.words[1]) {
         if (n >= 0xf && n <= 0x12)
             r1 = 2;
-    } else if (v == data_ov060_0211ace0[1]) {
+    } else if (v == data_ov060_0211ace0.words[1]) {
         if (n >= 0x1c)
             r1 = 1;
-    } else if (v == data_ov060_0211aca0[1]) {
+    } else if (v == data_ov060_0211aca0.words[1]) {
         if (n >= 6 && n <= 9)
             r1 = 2;
         else if (n >= 0xf)
             r1 = 1;
-    } else if (v == data_ov060_0211abf8[1]) {
+    } else if (v == data_ov060_0211abf8.words[1]) {
         if (n >= 0x10 && n <= 0x13)
             r1 = 1;
         else if (n >= 0x1e && n <= 0x21)
             r1 = 2;
         else if (n >= 0x2d && n <= 0x30)
             r1 = 1;
-    } else if (v == data_ov060_0211ac90[1]) {
+    } else if (v == data_ov060_0211ac90.words[1]) {
         if (n >= 0xa && n <= 0xd)
             r1 = 1;
         else if (n >= 0x18 && n <= 0x1b)
@@ -4032,3 +4049,65 @@ void daKpa_c::func_ov060_02111a28(){
         _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quake, 0x320000);
     }
 }
+
+/* The static-init globals -- mwcc emits __sinit_daKpa_c.cpp from these: one ctor
+ * veneer plus destructor registration per file handle (the anonymous @NNN
+ * registration nodes and .data descriptor records are compiler temporaries),
+ * then the three pointer-to-member state tables. Order matches the retail
+ * initializer exactly. */
+KpaModelFilePtr data_ov060_0211ac78(0x377);
+KpaAnimationFileHandle data_ov060_0211ac88(0x35f);
+KpaAnimationFileHandle data_ov060_0211ac50(0x362);
+KpaAnimationFileHandle data_ov060_0211ac58(0x360);
+KpaAnimationFileHandle data_ov060_0211ac60(0x364);
+KpaAnimationFileHandle data_ov060_0211ac18(0x366);
+KpaAnimationFileHandle data_ov060_0211acd0(0x367);
+KpaAnimationFileHandle data_ov060_0211ac68(0x36b);
+KpaAnimationFileHandle data_ov060_0211ac70(0x370);
+KpaAnimationFileHandle data_ov060_0211ac20(0x371);
+KpaAnimationFileHandle data_ov060_0211ac80(0x372);
+KpaAnimationFileHandle data_ov060_0211abe8(0x374);
+KpaAnimationFileHandle data_ov060_0211ac48(0x375);
+KpaAnimationFileHandle data_ov060_0211ac38(0x376);
+KpaAnimationFileHandle data_ov060_0211ac90(0x378);
+KpaAnimationFileHandle data_ov060_0211ac98(0x37a);
+KpaAnimationFileHandle data_ov060_0211abf8(0x37c);
+KpaAnimationFileHandle data_ov060_0211aca8(0x37e);
+KpaAnimationFileHandle data_ov060_0211acb0(0x37f);
+KpaAnimationFileHandle data_ov060_0211ac00(0x380);
+KpaAnimationFileHandle data_ov060_0211ac08(0x381);
+KpaAnimationFileHandle data_ov060_0211abe0(0x36c);
+KpaAnimationFileHandle data_ov060_0211acd8(0x36d);
+KpaAnimationFileHandle data_ov060_0211acf0(0x36f);
+KpaAnimationFileHandle data_ov060_0211ace8(0x36e);
+KpaAnimationFileHandle data_ov060_0211ace0(0x36a);
+KpaAnimationFileHandle data_ov060_0211aca0(0x368);
+KpaAnimationFileHandle data_ov060_0211acc8(0x369);
+KpaAnimationFileHandle data_ov060_0211acc0(0x379);
+KpaTexSequenceFilePtr data_ov060_0211ac40(0x363);
+KpaTexSequenceFilePtr data_ov060_0211acb8(0x361);
+KpaTexSequenceFilePtr data_ov060_0211ac10(0x365);
+KpaTexSequenceFilePtr data_ov060_0211abf0(0x37b);
+KpaTexSequenceFilePtr data_ov060_0211ac28(0x37d);
+KpaTexSequenceFilePtr data_ov060_0211ac30(0x373);
+
+PmfEnt data_ov060_0211aeb4[4] = {
+    {&daKpa_c::func_ov060_021128c0}, {&daKpa_c::func_ov060_02112724},
+    {&daKpa_c::func_ov060_021125f0}, {&daKpa_c::func_ov060_021125f0}
+};
+PmfEnt data_ov060_0211aed4[20] = {
+    {&daKpa_c::func_ov060_02114f88}, {&daKpa_c::func_ov060_02113b5c},
+    {&daKpa_c::func_ov060_02113740}, {&daKpa_c::func_ov060_02113710},
+    {&daKpa_c::func_ov060_02112ddc}, {&daKpa_c::func_ov060_021154e8},
+    {&daKpa_c::func_ov060_021153f8}, {&daKpa_c::func_ov060_02113d8c},
+    {&daKpa_c::func_ov060_02114858}, {&daKpa_c::func_ov060_021140c0},
+    {&daKpa_c::func_ov060_021142b4}, {&daKpa_c::func_ov060_02113fcc},
+    {&daKpa_c::func_ov060_021146d0}, {&daKpa_c::func_ov060_021143b8},
+    {&daKpa_c::func_ov060_02114d08}, {&daKpa_c::func_ov060_02114e9c},
+    {&daKpa_c::func_ov060_02114b60}, {&daKpa_c::func_ov060_02114300},
+    {&daKpa_c::func_ov060_02114ff8}, {&daKpa_c::func_ov060_02112bfc}
+};
+KpaTailState data_ov060_0211ae9c[3] = {
+    &daKpaTail_c::func_ov060_02115d68, &daKpaTail_c::func_ov060_02115d50,
+    &daKpaTail_c::func_ov060_02115c1c
+};

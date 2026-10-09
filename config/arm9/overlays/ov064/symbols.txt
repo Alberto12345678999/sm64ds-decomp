@@ -169,7 +169,7 @@ __sinit_ov064_0211b150 kind:function(arm,size=0x84) addr:0x0211b150
 __sinit_ov064_0211b1d4 kind:function(arm,size=0x308) addr:0x0211b1d4
 __sinit_ov064_0211b4dc kind:function(arm,size=0x3c) addr:0x0211b4dc
 __sinit_ov064_0211b518 kind:function(arm,size=0x84) addr:0x0211b518
-__sinit_ov064_0211b59c kind:function(arm,size=0xfc) addr:0x0211b59c
+__sinit_daObjTbox_c.cpp kind:function(arm,size=0xfc) addr:0x0211b59c
 __sinit_ov064_0211b698 kind:function(arm,size=0x94) addr:0x0211b698
 .p__sinit_ov064_0211ae00 kind:data(word) addr:0x0211b72c
 .p__sinit_ov064_0211aee0 kind:data(word) addr:0x0211b730
@@ -180,7 +180,7 @@ __sinit_ov064_0211b698 kind:function(arm,size=0x94) addr:0x0211b698
 .p__sinit_ov064_0211b1d4 kind:data(word) addr:0x0211b744
 .p__sinit_ov064_0211b4dc kind:data(word) addr:0x0211b748
 .p__sinit_ov064_0211b518 kind:data(word) addr:0x0211b74c
-.p__sinit_ov064_0211b59c kind:data(word) addr:0x0211b750
+.p__sinit_daObjTbox_c.cpp kind:data(word) addr:0x0211b750
 .p__sinit_ov064_0211b698 kind:data(word) addr:0x0211b754
 data_ov064_0211b768 kind:data(any) addr:0x0211b768
 _ZTV7daOts_c kind:data(any) addr:0x0211b768
@@ -278,12 +278,12 @@ _ZTI14daWater_Ring_c kind:data(any) addr:0x0211c3dc
 _ZTS14daWater_Ring_c kind:data(any) addr:0x0211c3e8
 g_profile_WATER_RING kind:data(any) addr:0x0211c3fc
 _ZTV14daWater_Ring_c kind:data(any) addr:0x0211c420
-data_ov064_0211c49c kind:data(any) addr:0x0211c49c
-data_ov064_0211c4a4 kind:data(any) addr:0x0211c4a4
-data_ov064_0211c4ac kind:data(any) addr:0x0211c4ac
-data_ov064_0211c4b4 kind:data(any) addr:0x0211c4b4
-data_ov064_0211c4bc kind:data(any) addr:0x0211c4bc
-data_ov064_0211c4c4 kind:data(any) addr:0x0211c4c4
+@631 kind:data(any) addr:0x0211c49c
+@627 kind:data(any) addr:0x0211c4a4
+@629 kind:data(any) addr:0x0211c4ac
+@625 kind:data(any) addr:0x0211c4b4
+@623 kind:data(any) addr:0x0211c4bc
+@621 kind:data(any) addr:0x0211c4c4
 _ZTI11daObjTbox_c kind:data(any) addr:0x0211c4cc
 _ZTS11daObjTbox_c kind:data(any) addr:0x0211c4d8
 g_profile_TREASURE_BOX kind:data(any) addr:0x0211c4e8
@@ -365,8 +365,8 @@ data_ov064_0211c944 kind:bss addr:0x0211c944
 data_ov064_0211c954 kind:bss addr:0x0211c954
 data_ov064_0211c964 kind:bss addr:0x0211c964
 data_ov064_0211c96c kind:bss addr:0x0211c96c
-data_ov064_0211c974 kind:bss addr:0x0211c974
-data_ov064_0211c980 kind:bss addr:0x0211c980
+@618 kind:bss addr:0x0211c974
+@619 kind:bss addr:0x0211c980
 data_ov064_0211c98c kind:bss addr:0x0211c98c
 data_ov064_0211c9bc kind:bss addr:0x0211c9bc
 data_ov064_0211c9c4 kind:bss addr:0x0211c9c4

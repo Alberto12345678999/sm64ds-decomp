@@ -43,16 +43,52 @@
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
 
+/* The resource handles as the ROM lays them out: {id, loaded file}. The
+   model handle constructs through func_02017acc and destroys through
+   func_02017ab4; the animation handles construct through
+   SharedFilePtr::Construct and destroy through SharedFilePtr_Destruct_Anim;
+   the collision handles construct through func_02017b4c and destroy through
+   SharedFilePtr_Destruct_Clsn. The manifest aliases each undefined member
+   onto its ROM symbol. */
+struct DossyModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    DossyModelFilePtr(u32 fileID);
+    ~DossyModelFilePtr();
+};
+
+struct DossyAnimationFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    DossyAnimationFileHandle(u32 fileID);
+    ~DossyAnimationFileHandle();
+};
+
+struct DossyCollisionFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    DossyCollisionFileHandle(u32 fileID);
+    ~DossyCollisionFileHandle();
+};
+
+extern DossyModelFilePtr data_ov065_0211d720;
+extern DossyAnimationFileHandle data_ov065_0211d768;
+extern DossyAnimationFileHandle data_ov065_0211d748;
+extern DossyAnimationFileHandle data_ov065_0211d770;
+extern DossyCollisionFileHandle data_ov065_0211d738;
+extern DossyCollisionFileHandle data_ov065_0211d750;
+extern DossyCollisionFileHandle data_ov065_0211d728;
+extern DossyCollisionFileHandle data_ov065_0211d760;
+extern DossyCollisionFileHandle data_ov065_0211d758;
+extern DossyCollisionFileHandle data_ov065_0211d740;
+extern DossyCollisionFileHandle data_ov065_0211d730;
+
 extern "C" {
 extern s16 data_02082214[];
 extern Matrix4x3 data_020a0e68;
 extern u8 data_ov065_0211c078[];
-extern char data_ov065_0211d748[];
-extern void *data_ov065_0211d768[];
-extern void *data_ov065_0211d770[];
 extern void *data_ov065_0211cd68[];
 extern SharedFilePtr data_ov002_0210d9c0;
-extern SharedFilePtr data_ov065_0211d720;
 extern SharedFilePtr *data_ov065_0211c080[];
 extern SharedFilePtr *data_ov065_0211c08c[];
 
@@ -188,7 +224,7 @@ int daDossy_c::InitResources()
     Model::LoadFile(data_ov002_0210d9c0);
     for (i = 0; i < 3; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov065_0211c080[i]);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d770[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d770.ptr, 0, 0x1000, 0);
     func_ov065_02118cc4();
     func_ov065_02118838();
 
@@ -551,7 +587,7 @@ void daDossy_c::func_ov065_02118634()
         mState++;
         mHorzSpeed = 0;
         mAngVelY = 0;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d768[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d768.ptr, 0x40000000, 0x1000, 0);
         mCylClsn1.Clear();
         mCylClsn2.Clear();
         mStateTimer = 0;
@@ -638,7 +674,7 @@ void daDossy_c::func_ov065_021183c8()
             mState++;
             mStateState = 0;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
-                (void *)*(int *)(data_ov065_0211d748 + 4), 0x40000000, 0x1000, 0);
+                data_ov065_0211d748.ptr, 0x40000000, 0x1000, 0);
             mRider = mClsnPlayer;
         }
     tail:
@@ -649,7 +685,7 @@ void daDossy_c::func_ov065_021183c8()
             mState++;
             mStateState = 0;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
-                (void *)*(int *)(data_ov065_0211d748 + 4), 0x40000000, 0x1000, 0);
+                data_ov065_0211d748.ptr, 0x40000000, 0x1000, 0);
         }
         mStateTimer++;
     }
@@ -663,7 +699,7 @@ void daDossy_c::func_ov065_021182e4()
     case 0:
         if (mModelAnim.Finished() == 0) return;
         mStateState = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d770[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov065_0211d770.ptr, 0, 0x1000, 0);
         if (mRider == 0) return;
         ((Player *)mRider)->Unk_020ca150(5);
         return;
@@ -765,3 +801,29 @@ fail:
 DorriePlatform::~DorriePlatform()
 {
 }
+
+/* The eleven file-scope resource handles, in retail initializer order: the
+   model file (func_02017acc / func_02017ab4), three animation files
+   (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim), then seven
+   collision files (func_02017b4c / SharedFilePtr_Destruct_Clsn). The
+   manifest aliases each wrapper ctor/dtor onto those ROM symbols. */
+DossyModelFilePtr data_ov065_0211d720(0x2e9);
+DossyAnimationFileHandle data_ov065_0211d768(0x2ee);
+DossyAnimationFileHandle data_ov065_0211d748(0x2ef);
+DossyAnimationFileHandle data_ov065_0211d770(0x2f3);
+DossyCollisionFileHandle data_ov065_0211d738(0x2ea);
+DossyCollisionFileHandle data_ov065_0211d750(0x2eb);
+DossyCollisionFileHandle data_ov065_0211d728(0x2f0);
+DossyCollisionFileHandle data_ov065_0211d760(0x2f1);
+DossyCollisionFileHandle data_ov065_0211d758(0x2f2);
+DossyCollisionFileHandle data_ov065_0211d740(0x2ec);
+DossyCollisionFileHandle data_ov065_0211d730(0x2ed);
+
+/* The state table Behavior dispatches through: three pointer-to-member
+   records. Retail stores the records as compiler temporaries in .data
+   (0x0211cd2c, 0x0211cd1c, 0x0211cd24) and the live table in .bss. */
+extern "C" StateFunc data_ov065_0211d7fc[3] = {
+    &daDossy_c::func_ov065_02118634,
+    &daDossy_c::func_ov065_021183c8,
+    &daDossy_c::func_ov065_021182e4,
+};

@@ -81,10 +81,25 @@ typedef void (daStar_c::*StateHandler)();
    star loads are read through .ptr. */
 struct SharedFilePtrRaw { u32 id; void *ptr; };
 
-/* Two-pointer entry InitResources loads; its second word is the animation the
-   star plays when it is collected out of water. */
-struct Anim2 { void *a; void *b; };
-extern Anim2 data_ov002_02110944;
+/* Model handles construct through func_02017acc and destroy through
+   func_02017ab4. Animation handles construct through SharedFilePtr::Construct
+   and destroy through SharedFilePtr_Destruct_Anim. The manifest aliases those
+   undefined members onto the ROM symbols. */
+struct StarModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    StarModelFilePtr(u32 fileID);
+    ~StarModelFilePtr();
+};
+
+struct StarAnimationFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    StarAnimationFileHandle(u32 fileID);
+    ~StarAnimationFileHandle();
+};
+
+extern StarAnimationFileHandle data_ov002_02110944;
 
 /* TUBUILD CONFLICT -- alternate body of struct 'Flags', from the legacy file for func_ov002_020e86ec, NOT applied:
 struct Flags { unsigned short b0 : 1, b1 : 1, b2 : 1, b3 : 1, fld : 2; };
@@ -148,7 +163,7 @@ extern void DeathTable_ClearBit(int);
 extern void FUN_0202a130(void);
 extern void UnloadSilverStarAndNumber(void);
 extern int _ZN8dActor_c11UntrackStarERa(void*, signed char*);
-extern char data_ov002_02110934[];
+extern StarAnimationFileHandle data_ov002_02110934;
 extern void* _ZN8dActor_c15FindWithActorIDEjPS_(unsigned int, void*);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
 extern int Vec3_Dist(void*, void*);
@@ -249,10 +264,10 @@ extern s8 data_0209f310[];
 extern "C" signed char data_0209f310[];
 extern int NumVsStarsObtained(void);
 extern int _Z14ApproachLinearRiii(int *v, int target, int step);
-extern char data_ov002_0211092c;
-extern char data_ov002_0211093c;
-extern char data_ov002_02110924[];
-extern SharedFilePtrRaw data_ov002_02110964;
+extern StarModelFilePtr data_ov002_0211092c;
+extern StarModelFilePtr data_ov002_0211093c;
+extern StarAnimationFileHandle data_ov002_02110924;
+extern StarAnimationFileHandle data_ov002_02110964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern void _ZN5dCc_c6UpdateEv(void *p);
 extern int _ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr(char *c, char *clsn);
@@ -266,9 +281,9 @@ extern int _ZN8dActor_c18GetBitInDeathTableEv(void *self);
 extern u8 data_0209f220;
 extern s32 data_0209cef0;
 extern s32 data_02092138;
-extern SharedFilePtrRaw data_ov002_0211094c;
-extern SharedFilePtrRaw data_ov002_02110954;
-extern SharedFilePtrRaw data_ov002_0211095c;
+extern StarModelFilePtr data_ov002_0211094c;
+extern StarModelFilePtr data_ov002_02110954;
+extern StarModelFilePtr data_ov002_0211095c;
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void LoadSilverStarAndNumber(void);
@@ -1453,9 +1468,9 @@ void daStar_c::func_ov002_020ea100() {
         func_ov002_020e9464();
 
         if (common->mIsUnderwater != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, (void *)*(int *)(data_ov002_02110924 + 4), 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110924.ptr, 0x40000000, 0x1000, 0);
         } else {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.b, 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.ptr, 0x40000000, 0x1000, 0);
         }
 
         {
@@ -3339,8 +3354,8 @@ void daStar_c::func_ov002_020e6fbc(int arg) {
 void daStar_c::func_ov002_020e6edc() {
     struct Vector3 v;
     mKind = KIND_8;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, *(struct BCA_File**)(data_ov002_02110934+4), 0x40000000, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, *(struct BCA_File**)(data_ov002_02110934+4), 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, (struct BCA_File *)data_ov002_02110934.ptr, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, (struct BCA_File *)data_ov002_02110934.ptr, 0x40000000, 0x1000, 0);
     v.x = data_ov002_0210aa0c[0];
     v.y = data_ov002_0210aa0c[1];
     v.z = data_ov002_0210aa0c[2];
@@ -3358,8 +3373,8 @@ void daStar_c::func_ov002_020e6edc() {
  * in STATE_COLLECT_HOLD. */
 void daStar_c::func_ov002_020e6df8() {
   mKind = KIND_9;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.b, 0x40000000, 0x1000, 0);
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110944.b, 0x40000000, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov002_02110944.ptr, 0x40000000, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov002_02110944.ptr, 0x40000000, 0x1000, 0);
   {
     Vector3 v;
     v.x = data_ov002_0210aa0c[0];
@@ -3404,3 +3419,36 @@ void force_daStarBase_c_dtor_order() {
     p->~daStarBase_c();
     func_02012790(0);
 }
+
+/* The nine file-scope resource handles, in retail initializer order. Five
+   model files (func_02017acc / func_02017ab4), then four animation files
+   (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim); the manifest
+   aliases each wrapper ctor/dtor onto those ROM symbols. */
+StarModelFilePtr data_ov002_0211094c(0x8015);
+StarModelFilePtr data_ov002_0211095c(0x8017);
+StarModelFilePtr data_ov002_02110954(0x8019);
+StarModelFilePtr data_ov002_0211093c(0x4a0);
+StarModelFilePtr data_ov002_0211092c(0x801c);
+StarAnimationFileHandle data_ov002_02110944(0x8016);
+StarAnimationFileHandle data_ov002_02110924(0x801a);
+StarAnimationFileHandle data_ov002_02110964(0x801b);
+StarAnimationFileHandle data_ov002_02110934(0x8018);
+
+/* One pointer-to-member per State. mwcc cannot link-time-initialize them, so
+   the initializer copies fourteen descriptor records in. */
+StateHandler data_ov002_021109d8[14] = {
+    &daStar_c::func_ov002_020ea9d0,   /* STATE_LAUNCH */
+    &daStar_c::func_ov002_020ea90c,   /* STATE_RISE */
+    &daStar_c::func_ov002_020ea824,   /* STATE_FLY_TO_MARKER */
+    &daStar_c::func_ov002_020ea7ac,   /* STATE_LAND */
+    &daStar_c::func_ov002_020ea420,   /* STATE_IDLE */
+    &daStar_c::func_ov002_020ea100,   /* STATE_COLLECT_BEGIN */
+    &daStar_c::func_ov002_020ea06c,   /* STATE_COLLECT_HOLD */
+    &daStar_c::func_ov002_020e9d18,   /* STATE_COLLECT_TALK */
+    &daStar_c::func_ov002_020e99e8,   /* STATE_BOUNCE */
+    &daStar_c::func_ov002_020e9840,   /* STATE_WAIT_MARKER */
+    &daStar_c::func_ov002_020ea410,   /* STATE_TOUCHED */
+    &daStar_c::func_ov002_020e9af4,   /* STATE_SAVE_MESSAGE */
+    &daStar_c::func_ov002_020e9804,   /* STATE_PLAY_AND_END */
+    &daStar_c::func_ov002_020e96a0,   /* STATE_SPIN_AND_END */
+};

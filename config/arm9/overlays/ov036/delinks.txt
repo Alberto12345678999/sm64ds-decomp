@@ -27,6 +27,9 @@ src/game/actors/d_a_obj_rc_dorifu.cpp:
     complete
     .text start:0x02111f8c end:0x02112158
     .data start:0x02113e4c end:0x02113f4c
+    .init start:0x0211279c end:0x02112944
+    .ctor start:0x021129f0 end:0x021129f4
+    .bss start:0x021140d4 end:0x0211419c
 
 src/game/actors/d_a_obj_rc_carpet.cpp:
     complete
@@ -55,7 +58,3 @@ src/unnamed/ov036/__sinit_ov036_021126c8.c:
 src/unnamed/ov036/__sinit_ov036_02112730.c:
     complete
     .init start:0x02112730 end:0x0211279c
-
-src/unnamed/ov036/__sinit_ov036_0211279c.c:
-    complete
-    .init start:0x0211279c end:0x02112944

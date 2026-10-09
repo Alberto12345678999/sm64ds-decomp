@@ -127,6 +127,9 @@ src/game/actors/d_a_obj_waterfall.cpp:
 src/actors/daObjMarioCap_c.cpp:
     complete
     .text start:0x020b6f18 end:0x020b8bf0
+    .init start:0x02101064 end:0x02101478
+    .ctor start:0x021080f0 end:0x021080f4
+    .bss start:0x0210de00 end:0x0210df94
 
 src/game/actors/daObjPushblock_c.cpp:
     complete
@@ -1247,6 +1250,10 @@ src/d_a_ply.cpp:
 src/actors/daStar_c.cpp:
     complete
     .text start:0x020e6c40 end:0x020ebe5c
+    .init start:0x02106e40 end:0x02107118
+    .ctor start:0x02108114 end:0x02108118
+    .data start:0x0210a990 end:0x0210aa00
+    .bss start:0x02110924 end:0x02110a48
 
 src/actors/StarCamera_Spawn.cpp:
     complete
@@ -1441,10 +1448,6 @@ src/unnamed/ov002/__sinit_ov002_02100f84.c:
     complete
     .init start:0x02100f84 end:0x02101064
 
-src/unnamed/ov002/__sinit_ov002_02101064.c:
-    complete
-    .init start:0x02101064 end:0x02101478
-
 src/unnamed/ov002/__sinit_ov002_021014e4.c:
     complete
     .init start:0x021014e4 end:0x02101588
@@ -1456,10 +1459,6 @@ src/unnamed/ov002/__sinit_ov002_02101894.c:
 src/unnamed/ov002/__sinit_ov002_021019d0.c:
     complete
     .init start:0x021019d0 end:0x02106e40
-
-src/unnamed/ov002/__sinit_ov002_02106e40.c:
-    complete
-    .init start:0x02106e40 end:0x02107118
 
 src/unnamed/ov002/__sinit_ov002_02107118.c:
     complete

@@ -7,6 +7,10 @@
 src/actors/daKpa_c.cpp:
     complete
     .text start:0x02111900 end:0x021163f0
+    .init start:0x021195dc end:0x02119df0
+    .ctor start:0x0211a4bc end:0x0211a4c0
+    .data start:0x0211a4e8 end:0x0211a5c0
+    .bss start:0x0211abe0 end:0x0211af74
 
 src/d_a_kpa_tail.c:
     complete
@@ -19,6 +23,9 @@ src/d_a_kpa.c:
 src/actors/daKpaFire_c.cpp:
     complete
     .text start:0x02116484 end:0x02117938
+    .init start:0x02119df0 end:0x02119f94
+    .ctor start:0x0211a4c0 end:0x0211a4c4
+    .bss start:0x0211af74 end:0x0211aff4
 
 src/d_a_kpa_fire.c:
     complete
@@ -68,13 +75,6 @@ src/d_a_f_ring.c:
     complete
     .text start:0x021191f4 end:0x02119264
 
-src/unnamed/ov060/__sinit_ov060_021195dc.c:
-    complete
-    .init start:0x021195dc end:0x02119df0
-
-src/unnamed/ov060/__sinit_ov060_02119df0.c:
-    complete
-    .init start:0x02119df0 end:0x02119f94
 
 src/unnamed/ov060/__sinit_ov060_02119f94.c:
     complete

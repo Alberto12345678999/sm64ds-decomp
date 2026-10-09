@@ -92,6 +92,33 @@
 typedef void (daChoropu_c::*ChoropuStateFn)();
 struct ChoropuStateRow { ChoropuStateFn fn[1]; };
 
+/* Static-init ownership (was the handwritten __sinit_ov080_021278c0 shard).
+ * The file-scope objects at the end of this file construct the six
+ * resource handles (model files 0x2d1, 0x2d6, animation files 0x2d2, 0x2d3,
+ * 0x2d4, 0x2d5) and fill the six one-entry state rows. mwcc emits
+ * __sinit_daChoropu_c.cpp from those definitions. */
+struct ChoropuModelFile : SharedFilePtr {
+    u32 words[2];
+
+    ChoropuModelFile(u32 fileID);
+    ~ChoropuModelFile();
+};
+
+struct ChoropuAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    ChoropuAnimationFilePtr(u32 fileID);
+    ~ChoropuAnimationFilePtr();
+};
+
+extern ChoropuModelFile data_ov080_021283c0;
+extern ChoropuModelFile data_ov080_021283c8;
+extern ChoropuAnimationFilePtr data_ov080_021283e8;
+extern ChoropuAnimationFilePtr data_ov080_021283d0;
+extern ChoropuAnimationFilePtr data_ov080_021283d8;
+extern ChoropuAnimationFilePtr data_ov080_021283e0;
+extern ChoropuStateRow data_ov080_02128438[6];
+
 #define LAUND(p) ((void*)((((long long)(int)(p)))))
 
 extern "C" {
@@ -120,14 +147,8 @@ void  func_ov080_02124418(daChoro_Rock_c *t);
 extern int data_0209e650;
 extern s16 data_02082214[];
 extern int data_ov080_0212767c[];
-extern int data_ov080_021283d0[];
-extern int data_ov080_021283e0[];
-extern int data_ov080_021283e8[];
 extern SharedFilePtr data_ov002_0210d9d8;
-extern SharedFilePtr data_ov080_021283c0;
-extern SharedFilePtr data_ov080_021283c8;
 extern SharedFilePtr *data_ov080_0212766c[];
-extern ChoropuStateRow data_ov080_02128438[];
 
 #pragma defer_codegen off
 
@@ -201,7 +222,7 @@ void daChoropu_c::func_ov080_02123924()
     mModelAnim.Advance();
     if (mModelAnim.Finished()) {
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
         return;
     }
     {
@@ -216,7 +237,7 @@ void daChoropu_c::func_ov080_02123924()
         if ((short)AngleDiff(mAngleY, Vec3_HorzAngle((Vector3 *)&mPosX, &v)) >= 0x4000) return;
         if (Vec3_HorzDist((Vector3 *)&mPosX, &v) >= 0x1f4000) return;
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
     }
 }
 
@@ -293,10 +314,10 @@ void daChoropu_c::func_ov080_02123a34()
 
     if (DistToCPlayer() < 0x3e8000) {
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
     } else {
         mState = daChoropu_ST_WAIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d0[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
     }
 }
 
@@ -357,16 +378,16 @@ void daChoropu_c::func_ov080_02123c24()
         unsigned int rem = (rv % 3) & 0xff;
         if (rem == 0) {
             mState = daChoropu_ST_THROW_ROCK;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
             return;
         }
         if (rem == 1) {
             mState = daChoropu_ST_WAIT;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
             return;
         }
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
         return;
     }
 
@@ -374,7 +395,7 @@ void daChoropu_c::func_ov080_02123c24()
         Player *player = ClosestPlayer();
         if (player == 0) {
             mState = daChoropu_ST_THROW_ROCK;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
             return;
         }
         {
@@ -389,10 +410,10 @@ void daChoropu_c::func_ov080_02123c24()
             diff = (short)AngleDiff(mAngleY, horz);
             if (diff < 0x4000) {
                 mState = daChoropu_ST_THROW_ROCK;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e0[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
             } else {
                 mState = daChoropu_ST_WAIT;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d0[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
             }
         }
     }
@@ -418,7 +439,7 @@ void daChoropu_c::func_ov080_02123ecc()
     if (*(signed char *)&mHasTurn != 1) return;   /* read signed, as the ROM does (ldrsb) */
     if (dist >= 0xfa000) {
         mState = daChoropu_ST_EMERGE;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0x40000000, 0x1000, 0);
         Player *p2 = ClosestPlayer();
         mAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&p2->mPosX);
         {
@@ -493,7 +514,7 @@ void daChoropu_c::func_ov080_02124088()
     daChoropu_c *a;
 
     mState = daChoropu_ST_HIDDEN;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d8[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0x40000000, 0x1000, 0);
 
     mModelAnim.currFrame = 0;
     {
@@ -819,7 +840,7 @@ s32 daChoropu_c::InitResources()
     Model::LoadFile(data_ov002_0210d9d8);
     Model::LoadFile(data_ov080_021283c8);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov080_021283c0), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0x200000, 0x66fe0);
     mGroupMode = param1 & 0xf;
     mState = daChoropu_ST_SETUP;
@@ -873,3 +894,23 @@ extern "C" daChoropu_c *daChoropu_c_classInit()
 {
     return new daChoropu_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov080_021278c0 shard).
+ * Definition order is the retail initializer's construction order: the two
+ * model handles, then the four animation handles, then the six state rows in
+ * Setup, Hidden, Emerge, ThrowRock, Wait, Leap order. */
+ChoropuModelFile data_ov080_021283c0(0x2d1);
+ChoropuModelFile data_ov080_021283c8(0x2d6);
+ChoropuAnimationFilePtr data_ov080_021283e8(0x2d2);
+ChoropuAnimationFilePtr data_ov080_021283d0(0x2d3);
+ChoropuAnimationFilePtr data_ov080_021283d8(0x2d4);
+ChoropuAnimationFilePtr data_ov080_021283e0(0x2d5);
+
+ChoropuStateRow data_ov080_02128438[6] = {
+    {{&daChoropu_c::func_ov080_02123fcc}},
+    {{&daChoropu_c::func_ov080_02123ecc}},
+    {{&daChoropu_c::func_ov080_02123c24}},
+    {{&daChoropu_c::func_ov080_02123a34}},
+    {{&daChoropu_c::func_ov080_02123924}},
+    {{&daChoropu_c::func_ov080_02123860}},
+};

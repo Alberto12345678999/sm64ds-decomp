@@ -55,14 +55,14 @@ __sinit_ov036_0211261c kind:function(arm,size=0x6c) addr:0x0211261c
 __sinit_ov036_02112688 kind:function(arm,size=0x40) addr:0x02112688
 __sinit_ov036_021126c8 kind:function(arm,size=0x68) addr:0x021126c8
 __sinit_ov036_02112730 kind:function(arm,size=0x6c) addr:0x02112730
-__sinit_ov036_0211279c kind:function(arm,size=0x1a8) addr:0x0211279c
+__sinit_d_a_obj_rc_dorifu.cpp kind:function(arm,size=0x1a8) addr:0x0211279c
 __sinit_d_a_obj_rc_carpet.cpp kind:function(arm,size=0x98) addr:0x02112944
 .p__sinit_ov036_021125b0 kind:data(word) addr:0x021129dc
 .p__sinit_ov036_0211261c kind:data(word) addr:0x021129e0
 .p__sinit_ov036_02112688 kind:data(word) addr:0x021129e4
 .p__sinit_ov036_021126c8 kind:data(word) addr:0x021129e8
 .p__sinit_ov036_02112730 kind:data(word) addr:0x021129ec
-.p__sinit_ov036_0211279c kind:data(word) addr:0x021129f0
+.p__sinit_d_a_obj_rc_dorifu.cpp kind:data(word) addr:0x021129f0
 .p__sinit_d_a_obj_rc_carpet.cpp kind:data(word) addr:0x021129f4
 data_ov036_02112a00 kind:data(any) addr:0x02112a00
 data_ov036_02112a04 kind:data(any) addr:0x02112a04
@@ -228,24 +228,21 @@ data_ov036_021140dc kind:bss addr:0x021140dc
 data_ov036_021140e4 kind:bss addr:0x021140e4
 data_ov036_021140ec kind:bss addr:0x021140ec
 data_ov036_021140f4 kind:bss addr:0x021140f4
-data_ov036_021140f8 kind:bss addr:0x021140f8 ambiguous
 data_ov036_021140fc kind:bss addr:0x021140fc
 data_ov036_02114104 kind:bss addr:0x02114104
-data_ov036_02114108 kind:bss addr:0x02114108 ambiguous
 data_ov036_0211410c kind:bss addr:0x0211410c
 data_ov036_02114114 kind:bss addr:0x02114114
 data_ov036_0211411c kind:bss addr:0x0211411c
-data_ov036_02114124 kind:bss addr:0x02114124
-data_ov036_02114130 kind:bss addr:0x02114130
-data_ov036_0211413c kind:bss addr:0x0211413c
-data_ov036_02114148 kind:bss addr:0x02114148
-data_ov036_02114154 kind:bss addr:0x02114154
-data_ov036_02114160 kind:bss addr:0x02114160
-data_ov036_0211416c kind:bss addr:0x0211416c
-data_ov036_02114178 kind:bss addr:0x02114178
-data_ov036_0211417c kind:bss addr:0x0211417c ambiguous
-data_ov036_02114184 kind:bss addr:0x02114184
-data_ov036_02114190 kind:bss addr:0x02114190
+@362 kind:bss addr:0x02114124
+@363 kind:bss addr:0x02114130
+@364 kind:bss addr:0x0211413c
+@365 kind:bss addr:0x02114148
+@366 kind:bss addr:0x02114154
+@367 kind:bss addr:0x02114160
+@368 kind:bss addr:0x0211416c
+@370 kind:bss addr:0x02114178
+@361 kind:bss addr:0x02114184
+@369 kind:bss addr:0x02114190
 data_ov036_0211419c kind:bss addr:0x0211419c
 data_ov036_021141a4 kind:bss addr:0x021141a4
 data_ov036_021141ac kind:bss addr:0x021141ac

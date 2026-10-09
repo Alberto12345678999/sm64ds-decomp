@@ -15979,7 +15979,7 @@
     },
     "data_ov002_0211092c": {
       "src/actors/daStar_c.cpp": [
-        "return:char"
+        "return:StarModelFilePtr"
       ],
       "src/unnamed/ov002/__sinit_ov002_02106e40.c": [
         "return:void *"
@@ -15991,6 +15991,9 @@
       ]
     },
     "data_ov002_0211093c": {
+      "src/actors/daStar_c.cpp": [
+        "return:StarModelFilePtr"
+      ],
       "src/unnamed/ov002/__sinit_ov002_02106e40.c": [
         "return:void *"
       ]
@@ -16005,7 +16008,7 @@
         "return:int"
       ],
       "src/actors/daStar_c.cpp": [
-        "return:SharedFilePtrRaw"
+        "return:StarModelFilePtr"
       ],
       "src/unnamed/ov002/__sinit_ov002_02106e40.c": [
         "return:void *"
@@ -18915,12 +18918,23 @@
         "return:char []"
       ]
     },
+    "data_ov065_0211d748": {
+      "src/actors/daDossy_c.cpp": [
+        "return:DossyAnimationFileHandle"
+      ]
+    },
     "data_ov065_0211d768": {
+      "src/actors/daDossy_c.cpp": [
+        "return:DossyAnimationFileHandle"
+      ],
       "src/unnamed/ov065/__sinit_ov065_0211c440.c": [
         "return:char []"
       ]
     },
     "data_ov065_0211d770": {
+      "src/actors/daDossy_c.cpp": [
+        "return:DossyAnimationFileHandle"
+      ],
       "src/unnamed/ov065/__sinit_ov065_0211c440.c": [
         "return:char []"
       ]
@@ -20055,6 +20069,9 @@
       ]
     },
     "data_ov084_02130cf8": {
+      "src/actors/daKuriKing_c.cpp": [
+        "return:SharedFilePtr"
+      ],
       "src/unnamed/ov084/__sinit_ov084_0213035c.c": [
         "return:char []"
       ]
@@ -20364,8 +20381,11 @@
       "src/actors/daDoor_c.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov089/__sinit_ov089_021328d4.c": [
-        "return:char []"
+      "src/actors/daKpa_c.cpp": [
+        "return:SharedFilePtr"
+      ],
+      "src/actors/daObjKey_c.cpp": [
+        "return:ObjKeyModelFile"
       ]
     },
     "data_ov089_02132c60": {

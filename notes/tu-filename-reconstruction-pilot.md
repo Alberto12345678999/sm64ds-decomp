@@ -67,8 +67,8 @@ assignments are:
 | under-segmented [arm9](../config/arm9/symbols.txt) / `BOOT`, `STAGE` | 16 initializers from `0x02073a24` through `0x02075154` | medium; cannot distinguish the two sampled classes |
 | [ov002](../config/arm9/overlays/ov002/symbols.txt) Cannon Shutter | [__sinit_ov002_02101968](../src/unnamed/ov002/__sinit_ov002_02101968.c) | high |
 | [ov010](../config/arm9/overlays/ov010/symbols.txt) C1 Trap | [d_a_obj_c1_trap.cpp](../src/game/actors/d_a_obj_c1_trap.cpp) | high |
-| [ov084](../config/arm9/overlays/ov084/symbols.txt) Kuribo | [__sinit_ov084_0213035c](../src/unnamed/ov084/__sinit_ov084_0213035c.c) | medium |
-| [ov063](../config/arm9/overlays/ov063/symbols.txt) Teresa / Boss Teresa | [__sinit_ov063_0211e29c](../src/unnamed/ov063/__sinit_ov063_0211e29c.c) | high; shared multi-profile TU |
+| [ov084](../config/arm9/overlays/ov084/symbols.txt) Kuribo | `__sinit_ov084_0213035c`, folded into [daKrb_c.cpp](../src/actors/daKrb_c.cpp) | medium |
+| [ov063](../config/arm9/overlays/ov063/symbols.txt) Teresa / Boss Teresa | `__sinit_ov063_0211e29c`, folded into [daTrs_c.cpp](../src/actors/daTrs_c.cpp) | high; shared multi-profile TU |
 | [ov014](../config/arm9/overlays/ov014/symbols.txt) Wanwan | `__sinit_ov014_02113118`, folded into [d_a_wanwan.cpp](../src/game/actors/d_a_wanwan.cpp) | high |
 | [ov085](../config/arm9/overlays/ov085/symbols.txt) Mip Key | [__sinit_ov085_0212f9bc](../src/unnamed/ov085/__sinit_ov085_0212f9bc.c) | high |
 | [ov070](../config/arm9/overlays/ov070/symbols.txt) Propeller Heyho | [__sinit_ov070_02122afc](../src/unnamed/ov070/__sinit_ov070_02122afc.c) | high |

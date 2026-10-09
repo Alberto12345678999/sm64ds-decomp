@@ -54,9 +54,6 @@ extern "C" {
 extern SharedFilePtr data_ov002_0210da40;
 extern SharedFilePtr data_ov002_0210d9a0;
 extern SharedFilePtr data_ov002_0210d9c0;
-extern SharedFilePtr data_ov091_02135674;         /* BMD */
-extern SharedFilePtr data_ov091_0213567c;         /* BCA: blow */
-extern SharedFilePtr data_ov091_02135684;         /* BCA: wait */
 extern daHyuhyu_c_State data_ov091_021356b0; /* cloud: blowing */
 extern daHyuhyu_c_State data_ov091_021356c0; /* gust: flying */
 extern daHyuhyu_c_State data_ov091_021356d0; /* cloud: waiting */
@@ -88,6 +85,46 @@ void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
 int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 slot, u32 effect, int x, int y, int z, const Vector3_16 *rot, void *cb);
 }
+
+/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
+ * veneer pairs (func_02017acc / func_02017ab4 for the BMD, SharedFilePtr::
+ * Construct / SharedFilePtr_Destruct_Anim for the two BCAs), spelled through
+ * declared-only subclasses so the static initializer names the real entry
+ * points. */
+struct HyuhyuModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    HyuhyuModelFilePtr(u32 fileID);
+    ~HyuhyuModelFilePtr();
+};
+struct HyuhyuAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+    HyuhyuAnimationFileHandle(u32 fileID);
+    ~HyuhyuAnimationFileHandle();
+};
+extern HyuhyuModelFilePtr data_ov091_02135674;    /* BMD */
+extern HyuhyuAnimationFileHandle data_ov091_0213567c;  /* BCA: blow */
+extern HyuhyuAnimationFileHandle data_ov091_02135684;  /* BCA: wait */
+
+// @symbol __sinit_d_a_hyuhyu.cpp
+HyuhyuModelFilePtr data_ov091_02135674(0x32f);    /* BMD */
+HyuhyuAnimationFileHandle data_ov091_0213567c(0x330);  /* BCA: blow */
+HyuhyuAnimationFileHandle data_ov091_02135684(0x331);  /* BCA: wait */
+
+typedef int (daHyuhyu_c::*HyuhyuStateFn)();
+
+/* The six state member-pointer records live in .data
+ * (0x0213533c..0x0213536c); the static initializer copies them into the
+ * three state records below, one {enter, execute} pair each. */
+extern "C" HyuhyuStateFn data_ov091_02135364;    /* func_ov091_0213400c */
+extern "C" HyuhyuStateFn data_ov091_0213535c;    /* func_ov091_02133f60 */
+extern "C" HyuhyuStateFn data_ov091_0213534c;    /* func_ov091_02133f24 */
+extern "C" HyuhyuStateFn data_ov091_02135354;    /* func_ov091_02133d30 */
+extern "C" HyuhyuStateFn data_ov091_02135344;    /* func_ov091_02133d1c */
+extern "C" HyuhyuStateFn data_ov091_0213533c;    /* func_ov091_02133c6c */
+
+daHyuhyu_c_State data_ov091_021356d0 = { data_ov091_02135364, data_ov091_0213535c }; /* cloud: waiting */
+daHyuhyu_c_State data_ov091_021356b0 = { data_ov091_0213534c, data_ov091_02135354 }; /* cloud: blowing */
+daHyuhyu_c_State data_ov091_021356c0 = { data_ov091_02135344, data_ov091_0213533c }; /* gust: flying */
 
 // @symbol daHyuhyu_c_classInit
 /* The dEnemyBase_c C2, the vptr store and the dCcAc_c / dBgCh_Actr /
