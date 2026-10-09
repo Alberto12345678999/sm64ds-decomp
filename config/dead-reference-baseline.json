@@ -6,6 +6,10 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
+   "file": "CLAIMS.md",
+   "ref": "src/__sinit_ov002_02100938.c"
+  },
+  {
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },
@@ -764,6 +768,10 @@
   {
    "file": "notes/runbook-type-reconstruction.md",
    "ref": "tools/deepen_rtti.py"
+  },
+  {
+   "file": "notes/sinit-ownership-pilot-ov002.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02100938.c"
   },
   {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
