@@ -53,7 +53,6 @@
 #include "common.h"
 /* decl_common.h deliberately NOT included; the three names this TU needs
    from it are declared locally instead. */
-extern char data_ov062_0211e15c;
 extern "C" int AngleDiff(int a, int b);
 #include "PathPtr.h"
 #include "SharedFilePtr.h"
@@ -62,6 +61,62 @@ extern "C" int AngleDiff(int a, int b);
 #include "Player.h"
 #include "BlendModelAnim.h"
 #include "dExtFrameCtrl_c.h"
+
+/* Static-init ownership (was the handwritten __sinit_ov062_0211d6fc shard).
+ * The file-scope objects at the end of this file construct the four
+ * resource handles (model file 0x348, animation files 0x349, 0x34a, 0x34b)
+ * and fill the five two-entry state records. mwcc emits
+ * __sinit_daJango_c.cpp from those definitions. */
+typedef int (daJango_c::*JangoPMF)();
+
+struct JangoModelFile : SharedFilePtr {
+    u32 words[2];
+
+    JangoModelFile(u32 fileID);
+    ~JangoModelFile();
+};
+
+struct JangoAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    JangoAnimationFilePtr(u32 fileID);
+    ~JangoAnimationFilePtr();
+};
+
+/* SWOOP's update slot targets a free function, not a member (ba84 is
+ * compiled as C), so its descriptor is a function-pointer/PMF pair. The
+ * first word carries the code relocation; the second is zero, like every
+ * other descriptor. */
+union JangoFreeState {
+    int (*fn)(char *);
+    JangoPMF pmf;
+};
+
+extern JangoFreeState data_ov062_0211dcd0;
+
+struct JangoSwoopRec {
+    JangoPMF enter;
+    JangoPMF update;
+    /* Section-alignment fill: retail BSS runs 4 bytes past the update slot,
+     * to the section end at 0x0211e1a0. The constructor never stores here. */
+    u8 tailFill[4];
+
+    JangoSwoopRec()
+    {
+        enter = &daJango_c::func_ov062_0211bc54;
+        update = data_ov062_0211dcd0.pmf;
+    }
+};
+
+extern JangoModelFile data_ov062_0211e0fc;
+extern JangoAnimationFilePtr data_ov062_0211e114;
+extern JangoAnimationFilePtr data_ov062_0211e10c;
+extern JangoAnimationFilePtr data_ov062_0211e104;
+extern JangoPMF data_ov062_0211e15c[2];
+extern JangoPMF data_ov062_0211e17c[2];
+extern JangoPMF data_ov062_0211e14c[2];
+extern JangoPMF data_ov062_0211e16c[2];
+extern JangoSwoopRec data_ov062_0211e18c;
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -119,14 +174,9 @@ extern "C" int Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern signed char data_0209f2f8;
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *a, int b, int c, int d, int e);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *pl, Vector3 *v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
-extern char data_ov062_0211e14c[];
-extern char data_ov062_0211e17c[];
 extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *, BCA_File& f, int a, int b, int d, unsigned short e);
-extern SharedFilePtr data_ov062_0211e104;
 extern "C" void func_02012790(int);
 extern "C" void func_02012694(unsigned int, void*);
-extern SharedFilePtr data_ov062_0211e10c;
-extern SharedFilePtr data_ov062_0211e114;
 extern s16 Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern s16 Vec3_VertAngle(const Vector3 *v0, const Vector3 *v1);
 extern "C" int data_0209e650;
@@ -146,7 +196,6 @@ extern void MulMat4x3Mat4x3(void* a, void* b, void* c);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, Fix12i r, Fix12i h, unsigned int d, unsigned int e);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *a, Fix12i b, Fix12i c, void *d, void *e);
-extern SharedFilePtr data_ov062_0211e0fc;
 extern SharedFilePtr data_ov002_0210da40;
 extern SharedFilePtr data_ov002_0210d9a0;
 extern SharedFilePtr data_ov002_0210d9c0;
@@ -240,8 +289,7 @@ enum { PARTICLE_AT_HURT_ENTER = 0x7e };
 #define JANGO_STATE_FLY_PATH  (&data_ov062_0211e15c)
 #define JANGO_STATE_RISE      data_ov062_0211e16c
 #define JANGO_STATE_CIRCLE    data_ov062_0211e17c
-#define JANGO_STATE_SWOOP     data_ov062_0211e18c
-extern char data_ov062_0211e16c[];
+#define JANGO_STATE_SWOOP     (&data_ov062_0211e18c)
 
 
 // @symbol daJango_c_classInit
@@ -378,7 +426,6 @@ struct dCc_c;
 struct dBgCh_Actr;
 extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
-extern char data_ov062_0211e17c[];
 }
 
 /* One frame: tick the two timers, run the current state's update, apply gravity
@@ -767,9 +814,6 @@ int daJango_c::func_ov062_0211c218()
    and in c2f4; the declared type compiles those tests to ldrsh, so they read it
    through a u16 cast (measured: both functions stop matching without it). */
 extern "C" {
-/* data_ov062_0211e104/114 are TU-wide SharedFilePtr scalars (legacy InitResources view); words beside them go through casts (same addresses, no second type). */
-extern char data_ov062_0211e18c[];
-
 int daJango_c::func_ov062_0211bd10()
 {
     s16 angV;
@@ -1386,3 +1430,36 @@ void daJango_c::func_ov062_0211b2fc(){
  *
  * (No out-of-line definition here either, for the same single-definition reason.)
  */
+
+/* Static-init globals (was the handwritten __sinit_ov062_0211d6fc shard).
+ * Definition order is the retail initializer's construction order: the model
+ * handle, then the three animation handles, then the five state records in
+ * FLY_PATH, CIRCLE, SWOOP, HURT, RISE order. */
+JangoModelFile data_ov062_0211e0fc(0x348);
+JangoAnimationFilePtr data_ov062_0211e114(0x349);
+JangoAnimationFilePtr data_ov062_0211e10c(0x34a);
+JangoAnimationFilePtr data_ov062_0211e104(0x34b);
+
+JangoFreeState data_ov062_0211dcd0 = { func_ov062_0211ba84 };
+
+JangoPMF data_ov062_0211e15c[2] = {
+    &daJango_c::func_ov062_0211c594,
+    &daJango_c::func_ov062_0211c2f4,
+};
+
+JangoPMF data_ov062_0211e17c[2] = {
+    &daJango_c::func_ov062_0211c218,
+    &daJango_c::func_ov062_0211bd10,
+};
+
+JangoSwoopRec data_ov062_0211e18c;
+
+JangoPMF data_ov062_0211e14c[2] = {
+    &daJango_c::func_ov062_0211b930,
+    &daJango_c::func_ov062_0211b8d8,
+};
+
+JangoPMF data_ov062_0211e16c[2] = {
+    &daJango_c::func_ov062_0211b880,
+    &daJango_c::func_ov062_0211b800,
+};
