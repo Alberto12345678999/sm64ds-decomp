@@ -8006,6 +8006,8 @@
     "src/typeinfo.cpp#_ZNSt9type_infoD2Ev": "tangosdev",
     "src/typeinfo.cpp#_ZNSt9type_infoD0Ev": "tangosdev",
     "src/typeinfo.cpp#_ZNSt9type_infoD1Ev": "tangosdev",
+    "src/game/actors/d_a_pic_gate.cpp#_ZN11daPicGate_cD1Ev": "andrewboudreau",
+    "src/game/actors/d_a_pic_gate.cpp#_ZN11daPicGate_cD0Ev": "andrewboudreau",
     "src/game/actors/d_a_pic_gate.cpp#_ZN11daPicGate_c19func_ov080_02125460Ev": "lunavyqo",
     "src/game/actors/d_a_pic_gate.cpp#func_ov080_02125460": "lunavyqo",
     "src/game/actors/d_a_pic_gate.cpp#_ZN11daPicGate_c19func_ov080_0212555cEv": "tangosdev",
