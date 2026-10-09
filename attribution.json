@@ -6176,6 +6176,7 @@
     "src/actors/daTrs_c.cpp#_ZN7daTrs_c13OnYoshiTryEatEv": "andrewboudreau",
     "src/actors/daTrs_c.cpp#daTrsIcon_c_classInit": "tangosdev",
     "src/actors/daTrs_c.cpp#daTBasket_c_classInit": "tangosdev",
+    "src/actors/daTrs_c.cpp#__sinit_daTrs_c.cpp": "tangosdev",
     "src/actors/daTrs_c.cpp#daTrs_c_classInit_BOSS_TERESA": "lunavyqo",
     "src/actors/daTrs_c.cpp#daTrs_c_classInit_TERESA": "lunavyqo",
     "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_cD1Ev": "tangosdev",
