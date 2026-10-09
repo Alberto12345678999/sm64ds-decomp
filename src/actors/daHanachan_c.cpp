@@ -48,7 +48,26 @@
 void ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
 
-/* The state table, filled in by __sinit_ov034_021138ec. */
+/* The file-scope resource handles. The model five use the plain SharedFilePtr
+ * pair (func_02017acc / func_02017ab4), the animation twenty-five use
+ * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim, and the texture
+ * sequence five use SharedFilePtr_Construct_TexSeq /
+ * SharedFilePtr_Destruct_TexSeq. */
+struct HanachanModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    HanachanModelFilePtr(u32 fileID);
+    ~HanachanModelFilePtr();
+};
+struct HanachanAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+    HanachanAnimationFileHandle(u32 fileID);
+    ~HanachanAnimationFileHandle();
+};
+struct HanachanTextureSeqFileHandle : SharedFilePtr {
+    u32 words[2];
+    HanachanTextureSeqFileHandle(u32 fileID);
+    ~HanachanTextureSeqFileHandle();
+};
 extern daHanachan_c::State data_ov034_02114538[];
 
 extern "C" {
@@ -1244,3 +1263,93 @@ extern "C" daHanachan_c *daHanachan_c_classInit()
     }
     return c;
 }
+
+HanachanModelFilePtr data_ov034_02114660(0x31e);
+HanachanModelFilePtr data_ov034_02114688(0x302);
+HanachanModelFilePtr data_ov034_02114670(0x309);
+HanachanModelFilePtr data_ov034_021146f0(0x310);
+HanachanModelFilePtr data_ov034_02114700(0x317);
+HanachanAnimationFileHandle data_ov034_021146b8(0x322);
+HanachanAnimationFileHandle data_ov034_02114728(0x306);
+HanachanAnimationFileHandle data_ov034_021146b0(0x30d);
+HanachanAnimationFileHandle data_ov034_021146c8(0x314);
+HanachanAnimationFileHandle data_ov034_021146a0(0x31b);
+HanachanAnimationFileHandle data_ov034_021146d0(0x324);
+HanachanAnimationFileHandle data_ov034_02114648(0x308);
+HanachanAnimationFileHandle data_ov034_021146d8(0x30f);
+HanachanAnimationFileHandle data_ov034_021146e0(0x316);
+HanachanAnimationFileHandle data_ov034_02114668(0x31d);
+HanachanAnimationFileHandle data_ov034_02114650(0x323);
+HanachanAnimationFileHandle data_ov034_02114678(0x307);
+HanachanAnimationFileHandle data_ov034_021146f8(0x30e);
+HanachanAnimationFileHandle data_ov034_02114680(0x315);
+HanachanAnimationFileHandle data_ov034_02114628(0x31c);
+HanachanAnimationFileHandle data_ov034_02114710(0x321);
+HanachanAnimationFileHandle data_ov034_02114630(0x305);
+HanachanAnimationFileHandle data_ov034_02114698(0x30c);
+HanachanAnimationFileHandle data_ov034_02114718(0x313);
+HanachanAnimationFileHandle data_ov034_02114638(0x31a);
+HanachanAnimationFileHandle data_ov034_02114620(0x320);
+HanachanAnimationFileHandle data_ov034_02114640(0x304);
+HanachanAnimationFileHandle data_ov034_021146a8(0x30b);
+HanachanAnimationFileHandle data_ov034_02114658(0x312);
+HanachanAnimationFileHandle data_ov034_021146e8(0x319);
+HanachanTextureSeqFileHandle data_ov034_02114730(0x31f);
+HanachanTextureSeqFileHandle data_ov034_02114708(0x303);
+HanachanTextureSeqFileHandle data_ov034_02114690(0x30a);
+HanachanTextureSeqFileHandle data_ov034_021146c0(0x311);
+HanachanTextureSeqFileHandle data_ov034_02114720(0x318);
+
+typedef void (daHanachan_c::*HanachanStatePmf)();
+
+/* The 8-byte PMF descriptors the static initializer copies into the state
+ * table rows, in table order. ROM-supplied .data, referenced by address. */
+extern "C" HanachanStatePmf data_ov034_02114370;   /* StateDemoWaitInit */
+extern "C" HanachanStatePmf data_ov034_021143b0;   /* StateDemoWaitMain */
+extern "C" HanachanStatePmf data_ov034_021143c0;   /* StateDemoCallInit */
+extern "C" HanachanStatePmf data_ov034_02114360;   /* StateDemoCallMain */
+extern "C" HanachanStatePmf data_ov034_02114378;   /* StateMoveStopInit */
+extern "C" HanachanStatePmf data_ov034_021143d8;   /* StateMoveStopMain */
+extern "C" HanachanStatePmf data_ov034_021143e8;   /* StateMoveStartInit */
+extern "C" HanachanStatePmf data_ov034_02114380;   /* StateMoveStartMain */
+extern "C" HanachanStatePmf data_ov034_02114390;   /* StateMoveInit */
+extern "C" HanachanStatePmf data_ov034_02114368;   /* StateMoveMain */
+extern "C" HanachanStatePmf data_ov034_02114388;   /* StateDamageInit */
+extern "C" HanachanStatePmf data_ov034_02114400;   /* StateDamageMain */
+extern "C" HanachanStatePmf data_ov034_021143f8;   /* StateDamageTalkInit */
+extern "C" HanachanStatePmf data_ov034_021143f0;   /* StateDamageTalkMain */
+extern "C" HanachanStatePmf data_ov034_021143e0;   /* StateDeadInit */
+extern "C" HanachanStatePmf data_ov034_021143b8;   /* StateDeadMain */
+extern "C" HanachanStatePmf data_ov034_021143c8;   /* StateDamageStopInit */
+extern "C" HanachanStatePmf data_ov034_021143a8;   /* StateDamageStopMain */
+extern "C" HanachanStatePmf data_ov034_02114358;   /* StateDamageWaitInit */
+extern "C" HanachanStatePmf data_ov034_021143d0;   /* StateDamageWaitMain */
+extern "C" HanachanStatePmf data_ov034_021143a0;   /* StateDamageStartInit */
+extern "C" HanachanStatePmf data_ov034_02114398;   /* StateDamageStartMain */
+
+/* The state-name strings the table's name pointers reference. */
+extern "C" char data_ov034_02114408[];   /* "DEMOWAIT" */
+extern "C" char data_ov034_02114414[];   /* "DEMOCALL" */
+extern "C" char data_ov034_02114420[];   /* "MOVE_STOP" */
+extern "C" char data_ov034_02114438[];   /* "MOVE_START" */
+extern "C" char data_ov034_02114348[];   /* "MOVE" */
+extern "C" char data_ov034_02114350[];   /* "DAMAGE" */
+extern "C" char data_ov034_0211442c[];   /* "DAMAGETALK" */
+extern "C" char data_ov034_02114340[];   /* "DEAD" */
+extern "C" char data_ov034_02114444[];   /* "DAMAGE_STOP" */
+extern "C" char data_ov034_02114450[];   /* "DAMAGE_WAIT" */
+extern "C" char data_ov034_02114468[];   /* "DAMAGE_START" */
+
+daHanachan_c::State data_ov034_02114538[11] = {
+    { data_ov034_02114370, data_ov034_021143b0, data_ov034_02114408 },   /* DEMOWAIT */
+    { data_ov034_021143c0, data_ov034_02114360, data_ov034_02114414 },   /* DEMOCALL */
+    { data_ov034_02114378, data_ov034_021143d8, data_ov034_02114420 },   /* MOVE_STOP */
+    { data_ov034_021143e8, data_ov034_02114380, data_ov034_02114438 },   /* MOVE_START */
+    { data_ov034_02114390, data_ov034_02114368, data_ov034_02114348 },   /* MOVE */
+    { data_ov034_02114388, data_ov034_02114400, data_ov034_02114350 },   /* DAMAGE */
+    { data_ov034_021143f8, data_ov034_021143f0, data_ov034_0211442c },   /* DAMAGETALK */
+    { data_ov034_021143e0, data_ov034_021143b8, data_ov034_02114340 },   /* DEAD */
+    { data_ov034_021143c8, data_ov034_021143a8, data_ov034_02114444 },   /* DAMAGE_STOP */
+    { data_ov034_02114358, data_ov034_021143d0, data_ov034_02114450 },   /* DAMAGE_WAIT */
+    { data_ov034_021143a0, data_ov034_02114398, data_ov034_02114468 },   /* DAMAGE_START */
+};
