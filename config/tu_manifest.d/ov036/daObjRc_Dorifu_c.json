@@ -1346,7 +1346,8 @@
     "FIX (read this first). ~daObjRc_Dorifu_c() is now `virtual ~daObjRc_Dorifu_c() {}`, defined INLINE in the class body in include/daObjRc_Dorifu_c.h, declared FIRST (matching the already-landed sibling classes daObjKm1_Dorifu_c and daObjWanwanShutter_c). Defined inline, mwccarm emits D1 then D0 in that order with no D2 at all -- `tools/tubuild.py verify` reports `all 5 function(s) in the expected ROM-ascending section order` and `objisolate check: clean`, and the two hand-transcribed mangled bodies and their private externs are gone, so the two config/converted-backslide-exceptions.jsonl rows for this class's destructor symbols are removed. Declaring the destructor makes it this class's key function: mwccarm now homes _ZTI/_ZTS/_ZTV16daObjRc_Dorifu_c in this TU as genuinely owned `data` (moved out of `compiler_only_output` below), matching config/tu_manifest.d/ov043/daObjKm1_Dorifu_c.json's shape for the same base chain. VPTR BIAS: because this TU now owns the vtable, every vptr store names the symbol with addend +8 (`&_ZTV16daObjRc_Dorifu_c[2]`), past the two-word ABI preamble -- addend 0 was only correct while the vtable was an unhomed vague-linkage passenger.",
     "The 10 remaining compiler_only_output entries are the vague-linkage RTTI passengers of the base chain daObjDorifu_c / dBgActor_c / dActor_c / fBase_c / dBase_c -- their own key functions live elsewhere and are unaffected by this fix.",
     "The inline class-body destructor makes mwccarm emit only D1 then D0 in retail order. return new also emits base D2 helpers; exact compiler-only policy deadstrips those. Inherited RTTI stays deadstrip-data at their canonical homes.",
-    "Static initializer folded: the five RcDorifuModelFilePtr handles (files 0x69a/0x69c/0x69e/0x6a0/0x6a2), the five RcDorifuCollisionFilePtr handles (files 0x69b/0x69d/0x69f/0x6a1/0x6a3) and their destructor-registration nodes make mwcc emit __sinit_d_a_obj_rc_dorifu.cpp itself (0x1a8, raw-byte-identical to retail __sinit_ov036_0211279c with the same instruction sequence, literal pool order and relocation sites); the handwritten src/unnamed/ov036/__sinit_ov036_0211279c.c is retired. Definition order is the retail construction order (five models, then five collisions), including the 0x6a0 file ID the compiler keeps as a mov immediate. The @360 node clashed with ov023 and is renamed @370; atdup reports 0 cross-module duplicates. This fold does NOT license the CLPS blocks or the .data table/profile/RTTI/vtable rows beyond what the manifest already claims."
+    "Static initializer folded: the five RcDorifuModelFilePtr handles (files 0x69a/0x69c/0x69e/0x6a0/0x6a2), the five RcDorifuCollisionFilePtr handles (files 0x69b/0x69d/0x69f/0x6a1/0x6a3) and their destructor-registration nodes make mwcc emit __sinit_d_a_obj_rc_dorifu.cpp itself (0x1a8, raw-byte-identical to retail __sinit_ov036_0211279c with the same instruction sequence, literal pool order and relocation sites); the handwritten src/unnamed/ov036/__sinit_ov036_0211279c.c is retired. Definition order is the retail construction order (five models, then five collisions), including the 0x6a0 file ID the compiler keeps as a mov immediate. The @360 node clashed with ov023 and is renamed @370; atdup reports 0 cross-module duplicates. This fold does NOT license the CLPS blocks or the .data table/profile/RTTI/vtable rows beyond what the manifest already claims.",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1473,13 +1474,12 @@
           "comparison": "NOBITS -- symbol/module gates"
         }
       ],
-      "linkedStorageAliases": null,
       "objectAudit": {
         "counts": {
           "LICENSED": 32
         },
-        "orderOk": true,
-        "nonLicensed": [],
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
@@ -1499,44 +1499,7 @@
               43,
               45,
               47
-            ],
-            "anchors": {
-              "29": [
-                {
-                  "symbol": "_ZTI16daObjRc_Dorifu_c",
-                  "address": 34684492,
-                  "sectionBase": 34684492
-                }
-              ],
-              "42": [
-                {
-                  "symbol": "_ZTS16daObjRc_Dorifu_c",
-                  "address": 34684504,
-                  "sectionBase": 34684504
-                }
-              ],
-              "43": [
-                {
-                  "symbol": "g_profile_RC_DORIFU",
-                  "address": 34684524,
-                  "sectionBase": 34684524
-                }
-              ],
-              "45": [
-                {
-                  "symbol": "data_ov036_02113e88",
-                  "address": 34684552,
-                  "sectionBase": 34684552
-                }
-              ],
-              "47": [
-                {
-                  "symbol": "_ZTV16daObjRc_Dorifu_c",
-                  "address": 34684612,
-                  "sectionBase": 34684612
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".init",
@@ -1545,16 +1508,7 @@
             ],
             "desired": [
               65
-            ],
-            "anchors": {
-              "65": [
-                {
-                  "symbol": "__sinit_d_a_obj_rc_dorifu.cpp",
-                  "address": 34678684,
-                  "sectionBase": 34678684
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".ctor",
@@ -1563,16 +1517,7 @@
             ],
             "desired": [
               63
-            ],
-            "anchors": {
-              "63": [
-                {
-                  "symbol": ".p__sinit_d_a_obj_rc_dorifu.cpp",
-                  "address": 34679280,
-                  "sectionBase": 34679280
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".bss",
@@ -1619,149 +1564,7 @@
               38,
               39,
               20
-            ],
-            "anchors": {
-              "5": [
-                {
-                  "symbol": "data_ov036_02114104",
-                  "address": 34685188,
-                  "sectionBase": 34685188
-                }
-              ],
-              "6": [
-                {
-                  "symbol": "data_ov036_021140fc",
-                  "address": 34685180,
-                  "sectionBase": 34685180
-                }
-              ],
-              "7": [
-                {
-                  "symbol": "data_ov036_021140ec",
-                  "address": 34685164,
-                  "sectionBase": 34685164
-                }
-              ],
-              "8": [
-                {
-                  "symbol": "data_ov036_021140dc",
-                  "address": 34685148,
-                  "sectionBase": 34685148
-                }
-              ],
-              "9": [
-                {
-                  "symbol": "data_ov036_021140d4",
-                  "address": 34685140,
-                  "sectionBase": 34685140
-                }
-              ],
-              "10": [
-                {
-                  "symbol": "data_ov036_0211411c",
-                  "address": 34685212,
-                  "sectionBase": 34685212
-                }
-              ],
-              "11": [
-                {
-                  "symbol": "data_ov036_021140f4",
-                  "address": 34685172,
-                  "sectionBase": 34685172
-                }
-              ],
-              "12": [
-                {
-                  "symbol": "data_ov036_021140e4",
-                  "address": 34685156,
-                  "sectionBase": 34685156
-                }
-              ],
-              "15": [
-                {
-                  "symbol": "data_ov036_0211410c",
-                  "address": 34685196,
-                  "sectionBase": 34685196
-                }
-              ],
-              "16": [
-                {
-                  "symbol": "data_ov036_02114114",
-                  "address": 34685204,
-                  "sectionBase": 34685204
-                }
-              ],
-              "20": [
-                {
-                  "symbol": "@369",
-                  "address": 34685328,
-                  "sectionBase": 34685328
-                }
-              ],
-              "21": [
-                {
-                  "symbol": "@362",
-                  "address": 34685220,
-                  "sectionBase": 34685220
-                }
-              ],
-              "24": [
-                {
-                  "symbol": "@363",
-                  "address": 34685232,
-                  "sectionBase": 34685232
-                }
-              ],
-              "25": [
-                {
-                  "symbol": "@364",
-                  "address": 34685244,
-                  "sectionBase": 34685244
-                }
-              ],
-              "28": [
-                {
-                  "symbol": "@365",
-                  "address": 34685256,
-                  "sectionBase": 34685256
-                }
-              ],
-              "31": [
-                {
-                  "symbol": "@366",
-                  "address": 34685268,
-                  "sectionBase": 34685268
-                }
-              ],
-              "34": [
-                {
-                  "symbol": "@367",
-                  "address": 34685280,
-                  "sectionBase": 34685280
-                }
-              ],
-              "37": [
-                {
-                  "symbol": "@368",
-                  "address": 34685292,
-                  "sectionBase": 34685292
-                }
-              ],
-              "38": [
-                {
-                  "symbol": "@370",
-                  "address": 34685304,
-                  "sectionBase": 34685304
-                }
-              ],
-              "39": [
-                {
-                  "symbol": "@361",
-                  "address": 34685316,
-                  "sectionBase": 34685316
-                }
-              ]
-            }
+            ]
           }
         ],
         "objisolate": {
@@ -1840,8 +1643,10 @@
           "sectionLinks": 0,
           "sectionInfos": 0,
           "error": null
-        }
+        },
+        "errors": null
       },
+      "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
       "symbolCheckErrors": [
         "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
