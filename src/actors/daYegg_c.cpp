@@ -1619,3 +1619,14 @@ extern "C" daYegg_c *daYegg_c_classInit(void)
 {
     return new daYegg_c;
 }
+
+/* The state table func_ov002_020ed63c / func_ov002_020ed684 dispatch
+   through: two member-function pointers per state, enter then execute.
+   Retail stores the records as compiler temporaries in .data
+   (0x0210ad38..0x0210ad78) and the live table in .bss. */
+Entry data_ov002_02110a5c[4] = {
+    {&daYegg_c::func_ov002_020ed5b0, &daYegg_c::func_ov002_020ed0d4},
+    {&daYegg_c::func_ov002_020ecfc8, &daYegg_c::func_ov002_020ecf94},
+    {&daYegg_c::func_ov002_020ecad4, &daYegg_c::func_ov002_020ec9c4},
+    {&daYegg_c::func_ov002_020ec978, &daYegg_c::func_ov002_020ec938},
+};
