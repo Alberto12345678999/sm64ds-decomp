@@ -245,8 +245,7 @@ python tools/linkcheck.py --c src/unnamed/ov009/__sinit_ov009_02112458.c --name 
 
 # __sinit_ov015_02112f9c is folded into daObjBkBillboard_c's TU; no standalone transcription remains.
 
-python tools/match.py --c src/unnamed/ov002/__sinit_ov002_02101064.c --func __sinit_ov002_02101064 --addr 0x02101064 --size 0x414 --version 2004/b56 --module ov002 --strict-relocs --brief
-python tools/linkcheck.py --c src/unnamed/ov002/__sinit_ov002_02101064.c --name __sinit_ov002_02101064 --addr 0x02101064 --size 0x414 --module ov002
+# __sinit_ov002_02101064 is folded into daObjMarioCap_c's TU; no standalone transcription remains.
 ```
 
 Observed when the transcriptions existed: all three `MATCH`; all three `VERIFIED`, `blind: 0`.
