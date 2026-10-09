@@ -948,6 +948,7 @@
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_c6RenderEv",
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_cD0Ev",
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_cD1Ev",
+    "src/game/actors/d_a_hyuhyu.cpp#__sinit_d_a_hyuhyu.cpp",
     "src/game/actors/d_a_hyuhyu.cpp#daHyuhyu_c_classInit",
     "src/Memory.cpp#_ZN6Memory10DeallocateEPv",
     "src/Memory.cpp#_ZN6Memory10DeallocateEPvP4Heap",
@@ -3559,5 +3560,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3550
+  "count": 3551
 }

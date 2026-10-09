@@ -1060,6 +1060,7 @@
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_c16OnAimedAtWithEggEv": "tangosdev",
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_c13OnTurnIntoEggER6Player": "ruspecial",
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_c13OnYoshiTryEatEv": "andrewboudreau",
+    "src/game/actors/d_a_hyuhyu.cpp#__sinit_d_a_hyuhyu.cpp": "tangosdev",
     "src/game/actors/d_a_hyuhyu.cpp#daHyuhyu_c_classInit": "tangosdev",
     "src/_ZN6Lakitu13OnTurnIntoEggER6Player.c": "tangosdev",
     "src/_ZN6Lakitu13OnTurnIntoEggER6Player.cpp": "tangosdev",
