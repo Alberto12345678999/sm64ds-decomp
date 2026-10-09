@@ -162,7 +162,7 @@ data_ov064_0211adbc kind:data(any) addr:0x0211adbc
 data_ov064_0211adc8 kind:data(any) addr:0x0211adc8
 __sinit_ov064_0211ae00 kind:function(arm,size=0xe0) addr:0x0211ae00
 __sinit_ov064_0211aee0 kind:function(arm,size=0xe0) addr:0x0211aee0
-__sinit_ov064_0211afc0 kind:function(arm,size=0xb8) addr:0x0211afc0
+__sinit_daObjFl_Amilift_c.cpp kind:function(arm,size=0xb8) addr:0x0211afc0
 __sinit_ov064_0211b078 kind:function(arm,size=0x6c) addr:0x0211b078
 __sinit_ov064_0211b0e4 kind:function(arm,size=0x6c) addr:0x0211b0e4
 __sinit_ov064_0211b150 kind:function(arm,size=0x84) addr:0x0211b150
@@ -173,7 +173,7 @@ __sinit_ov064_0211b59c kind:function(arm,size=0xfc) addr:0x0211b59c
 __sinit_ov064_0211b698 kind:function(arm,size=0x94) addr:0x0211b698
 .p__sinit_ov064_0211ae00 kind:data(word) addr:0x0211b72c
 .p__sinit_ov064_0211aee0 kind:data(word) addr:0x0211b730
-.p__sinit_ov064_0211afc0 kind:data(word) addr:0x0211b734
+.p__sinit_daObjFl_Amilift_c.cpp kind:data(word) addr:0x0211b734
 .p__sinit_ov064_0211b078 kind:data(word) addr:0x0211b738
 .p__sinit_ov064_0211b0e4 kind:data(word) addr:0x0211b73c
 .p__sinit_ov064_0211b150 kind:data(word) addr:0x0211b740
@@ -210,9 +210,9 @@ data_ov064_0211bb8c kind:data(any) addr:0x0211bb8c
 data_ov064_0211bbac kind:data(any) addr:0x0211bbac ambiguous
 data_ov064_0211bbcc kind:data(any) addr:0x0211bbcc
 data_ov064_0211bbec kind:data(any) addr:0x0211bbec
-data_ov064_0211bc0c kind:data(any) addr:0x0211bc0c
-data_ov064_0211bc14 kind:data(any) addr:0x0211bc14
-data_ov064_0211bc1c kind:data(any) addr:0x0211bc1c
+@559 kind:data(any) addr:0x0211bc0c
+@563 kind:data(any) addr:0x0211bc14
+@562 kind:data(any) addr:0x0211bc1c
 _ZTI17daObjFl_Amilift_c kind:data(any) addr:0x0211bc24
 _ZTS17daObjFl_Amilift_c kind:data(any) addr:0x0211bc30
 g_profile_FL_AMILIFT kind:data(any) addr:0x0211bc44
@@ -315,8 +315,8 @@ data_ov064_0211c710 kind:bss addr:0x0211c710
 data_ov064_0211c71c kind:bss addr:0x0211c71c
 data_ov064_0211c728 kind:bss addr:0x0211c728
 data_ov064_0211c730 kind:bss addr:0x0211c730
-data_ov064_0211c738 kind:bss addr:0x0211c738
-data_ov064_0211c744 kind:bss addr:0x0211c744
+@558 kind:bss addr:0x0211c738
+@557 kind:bss addr:0x0211c744
 data_ov064_0211c750 kind:bss addr:0x0211c750
 data_ov064_0211c768 kind:bss addr:0x0211c768
 data_ov064_0211c770 kind:bss addr:0x0211c770
