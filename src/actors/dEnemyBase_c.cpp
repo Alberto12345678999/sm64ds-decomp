@@ -33,6 +33,11 @@
  *     on it, and retyping to the polymorphic dEnemyBase_c changes the
  *     (c->*pmf) call sequence. Its padN/fNN fields are the raw offsets the
  *     dispatcher touches.
+ *   - EnemyDeathC is a derived stand-in receiver for the five death-state
+ *     handlers in the second table. They belong on dEnemyBase_c, but a
+ *     member declaration in dEnemyBase_c.h renumbers the @NNN temporaries
+ *     of every promoted TU that includes it, so the move waits for those
+ *     TUs to stop recording per-TU numbers.
  *   - The memberized handlers keep `char *c = (char *)this` aliases and
  *     c + 0xNNN puns: the header does not name every field they touch and
  *     member access reschedules the address math.
@@ -233,13 +238,28 @@ extern "C" void func_ov002_020aea30(Aea30C* c, dActor_c* a, dBgCh_Actr* b) {
   (*(unsigned int*)((char*)c + 0xb0)) &= ~0x10000000;
 }
 
+/* The five death-state handlers UpdateDeath dispatches through
+   data_ov002_0210dbc0. They are dEnemyBase_c methods in all but name, but a
+   member declaration added to dEnemyBase_c.h renumbers mwcc's @NNN
+   temporaries in every TU that includes it, and eleven promoted TUs record
+   theirs. So they are declared here on a derived stand-in receiver with no
+   fields or virtuals of its own; the table entries static_cast back to
+   dEnemyBase_c's pointer-to-member type, which is a zero adjustment. */
+struct EnemyDeathC : dEnemyBase_c {
+  int func_ov002_020ae64c(dBgCh_Actr & clsn_);
+  int func_ov002_020ae608(dBgCh_Actr & clsn_);
+  int func_ov002_020ae4cc(dBgCh_Actr & clsn_);
+  int func_ov002_020ae454(dBgCh_Actr & clsn_);
+  int func_ov002_020aea24(dBgCh_Actr & clsn_);
+};
+
 // @symbol _ZN6Aea30C19func_ov002_020aea2cEP8dActor_cP10dBgCh_Actr
 void Aea30C::func_ov002_020aea2c(dActor_c*, dBgCh_Actr*)
 {
 }
 
-// @symbol _ZN12dEnemyBase_c19func_ov002_020aea24ER10dBgCh_Actr
-int dEnemyBase_c::func_ov002_020aea24(dBgCh_Actr&)
+// @symbol _ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr
+int EnemyDeathC::func_ov002_020aea24(dBgCh_Actr&)
 {
     return 0;
 }
@@ -386,7 +406,8 @@ void Aea30C::func_ov002_020ae73c(dActor_c* a, dBgCh_Actr*)
 
 /* unk_10c selects which death handler from a table of POINTERS TO MEMBER
    FUNCTION, then the position and mesh collision are updated regardless. */
-extern int (dEnemyBase_c::*data_ov002_0210dbc0[])(dBgCh_Actr &);
+typedef int (dEnemyBase_c::*DeathPMF)(dBgCh_Actr &);
+extern DeathPMF data_ov002_0210dbc0[];
 
 extern "C" {
 extern void DecIfAbove0_Short(unsigned short *p);
@@ -419,8 +440,8 @@ int dEnemyBase_c::UpdateDeath(dBgCh_Actr & clsn_)
    carries the parameter unused. */
 extern "C" int func_ov002_020ae5c8(void *c, int x);
 
-// @symbol _ZN12dEnemyBase_c19func_ov002_020ae64cER10dBgCh_Actr
-int dEnemyBase_c::func_ov002_020ae64c(dBgCh_Actr& clsn){
+// @symbol _ZN11EnemyDeathC19func_ov002_020ae64cER10dBgCh_Actr
+int EnemyDeathC::func_ov002_020ae64c(dBgCh_Actr& clsn){
   char* c = (char*)this;
   int x = (int)&clsn;
   if(*(unsigned short*)(c+0x102) >= 5){
@@ -433,8 +454,8 @@ int dEnemyBase_c::func_ov002_020ae64c(dBgCh_Actr& clsn){
   return func_ov002_020ae5c8(c, x);
 }
 
-// @symbol _ZN12dEnemyBase_c19func_ov002_020ae608ER10dBgCh_Actr
-int dEnemyBase_c::func_ov002_020ae608(dBgCh_Actr& clsn){
+// @symbol _ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr
+int EnemyDeathC::func_ov002_020ae608(dBgCh_Actr& clsn){
   void* c = this;
   void* a = &clsn;
   if(((dBgCh_Actr *)a)->IsOnGround()==0) return 0;
@@ -463,8 +484,8 @@ extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_1
   u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, const Vector3_16f* dir);
 }
 
-// @symbol _ZN12dEnemyBase_c19func_ov002_020ae4ccER10dBgCh_Actr
-int dEnemyBase_c::func_ov002_020ae4cc(dBgCh_Actr& clsn_){
+// @symbol _ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr
+int EnemyDeathC::func_ov002_020ae4cc(dBgCh_Actr& clsn_){
   char* self = (char*)this;
   char* clsn = (char*)&clsn_;
   int v[3];
@@ -497,8 +518,8 @@ int dEnemyBase_c::func_ov002_020ae4cc(dBgCh_Actr& clsn_){
   return 0;
 }
 
-// @symbol _ZN12dEnemyBase_c19func_ov002_020ae454ER10dBgCh_Actr
-int dEnemyBase_c::func_ov002_020ae454(dBgCh_Actr& clsn){
+// @symbol _ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr
+int EnemyDeathC::func_ov002_020ae454(dBgCh_Actr& clsn){
   char* c = (char*)this;
   void* a = &clsn;
   if(*(unsigned short*)(c+0x102)==0 || ((dBgCh_Actr *)a)->IsOnGround()!=0 || ((dBgCh_Actr *)a)->IsOnWall()!=0){
@@ -1007,13 +1028,13 @@ Aea30PMF data_ov002_0210db80[8] = {
     &Aea30C::func_ov002_020aea2c,
 };
 
-int (dEnemyBase_c::*data_ov002_0210dbc0[8])(dBgCh_Actr&) = {
-    &dEnemyBase_c::func_ov002_020ae64c,
-    &dEnemyBase_c::func_ov002_020ae608,
-    &dEnemyBase_c::func_ov002_020ae608,
-    &dEnemyBase_c::func_ov002_020ae4cc,
-    &dEnemyBase_c::func_ov002_020ae608,
-    &dEnemyBase_c::func_ov002_020ae608,
-    &dEnemyBase_c::func_ov002_020ae454,
-    &dEnemyBase_c::func_ov002_020aea24,
+DeathPMF data_ov002_0210dbc0[8] = {
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae64c),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae608),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae608),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae4cc),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae608),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae608),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020ae454),
+    static_cast<DeathPMF>(&EnemyDeathC::func_ov002_020aea24),
 };
