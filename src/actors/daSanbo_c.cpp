@@ -79,19 +79,28 @@ extern int RandomIntInternal(void*);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
 extern int data_0209e650[];
 extern s16 data_02082214[];
-extern char data_ov096_02137b48;
 extern int Vec3_HorzDist(const void* a, const void* b);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_02038414(void *p);
 void UnloadBlueCoinModel(void *);
-extern int data_ov096_02137b20[];
-extern int data_ov096_02137b28[];
 extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *c, int d);
 void LoadBlueCoinModel(void* actor);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* actor, int r, int h, unsigned int d, unsigned int e);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, void* actor, int b, int c, void* v, int e);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 }
+
+/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
+ * pair (func_02017acc / func_02017ab4), spelled through a declared-only
+ * subclass so the static initializer names the real entry points. */
+struct SanboModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    SanboModelFilePtr(u32 fileID);
+    ~SanboModelFilePtr();
+};
+extern SanboModelFilePtr data_ov096_02137b20;
+extern SanboModelFilePtr data_ov096_02137b28;
+extern daSanbo_c::StateFunc data_ov096_02137b48[];
 
 /* Both profiles construct this class. The synthesized ctor stores
  * `_ZTV9daSanbo_c + 2`; do not restate a file-local `extern _ZTV`. */
@@ -126,15 +135,15 @@ int daSanbo_c::InitResources()
 
     t = (actorID == SANBO_HEAD);
     if (t != false) {
-        void* m = Model::LoadFile(*(SharedFilePtr *)data_ov096_02137b20);
+        void* m = Model::LoadFile(data_ov096_02137b20);
         mModel.SetFile((BMD_File *)m, 1, 1);
-        Model::LoadFile(*(SharedFilePtr *)data_ov096_02137b28);
+        Model::LoadFile(data_ov096_02137b28);
         LoadBlueCoinModel(this);
         unk_3a8 = 1;
     } else {
         t = (actorID == SANBO_BODY);
         if (t != false) {
-            void* m = Model::LoadFile(*(SharedFilePtr *)data_ov096_02137b28);
+            void* m = Model::LoadFile(data_ov096_02137b28);
             if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
                 return 0;
         }
@@ -228,12 +237,12 @@ int daSanbo_c::CleanupResources()
   int a = (id == SANBO_HEAD);
   if (a) {
     UnloadBlueCoinModel(this);
-    ((SharedFilePtr *)(data_ov096_02137b20))->Release();
-    ((SharedFilePtr *)(data_ov096_02137b28))->Release();
+    data_ov096_02137b20.Release();
+    data_ov096_02137b28.Release();
   } else {
     a = (id == SANBO_BODY);
     if (a) {
-      ((SharedFilePtr *)(data_ov096_02137b28))->Release();
+      data_ov096_02137b28.Release();
     }
   }
   return 1;
@@ -241,7 +250,7 @@ int daSanbo_c::CleanupResources()
 
 // @symbol _ZN9daSanbo_c19func_ov096_02136928Ei
 void daSanbo_c::func_ov096_02136928(int a) {
-    mStateFunctions = (daSanbo_c::StateFunc *)(&data_ov096_02137b48 + (a << 4));
+    mStateFunctions = data_ov096_02137b48 + (a << 1);
     func_ov096_021368f0();
 }
 
@@ -907,3 +916,32 @@ int daSanbo_c::OnYoshiTryEat()
 
 /* D1 and D0 come from the inline destructor in include/daSanbo_c.h.
  * An out-of-line body here would emit D2 and put D0 below D1. */
+
+// @symbol __sinit_daSanbo_c.cpp
+SanboModelFilePtr data_ov096_02137b20(0x41b);   /* head model */
+SanboModelFilePtr data_ov096_02137b28(0x41a);   /* segment model */
+
+/* The twelve state PMF records live in .data (0x02137920..0x02137980); the
+ * static initializer copies them into the .bss table below, an init/update
+ * pair per state. */
+extern "C" daSanbo_c::StateFunc data_ov096_02137948;
+extern "C" daSanbo_c::StateFunc data_ov096_02137940;
+extern "C" daSanbo_c::StateFunc data_ov096_02137950;
+extern "C" daSanbo_c::StateFunc data_ov096_02137928;
+extern "C" daSanbo_c::StateFunc data_ov096_02137930;
+extern "C" daSanbo_c::StateFunc data_ov096_02137920;
+extern "C" daSanbo_c::StateFunc data_ov096_02137978;
+extern "C" daSanbo_c::StateFunc data_ov096_02137970;
+extern "C" daSanbo_c::StateFunc data_ov096_02137938;
+extern "C" daSanbo_c::StateFunc data_ov096_02137968;
+extern "C" daSanbo_c::StateFunc data_ov096_02137960;
+extern "C" daSanbo_c::StateFunc data_ov096_02137958;
+
+daSanbo_c::StateFunc data_ov096_02137b48[12] = {
+    data_ov096_02137948, data_ov096_02137940,   /* state 0 */
+    data_ov096_02137950, data_ov096_02137928,   /* state 1 */
+    data_ov096_02137930, data_ov096_02137920,   /* state 2 */
+    data_ov096_02137978, data_ov096_02137970,   /* state 3 */
+    data_ov096_02137938, data_ov096_02137968,   /* state 4 */
+    data_ov096_02137960, data_ov096_02137958,   /* state 5 */
+};
