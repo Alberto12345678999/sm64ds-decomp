@@ -41,15 +41,28 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 
-/* Model file (sinit id 813) and animation (sinit id 814). SharedFilePtr has
- * no fields; SetAnim reads the loaded BCA out of the second word. */
-extern SharedFilePtr data_ov081_02128d60;
-extern SharedFilePtr data_ov081_02128d68;
+/* The resource handles as the ROM lays them out: {id, loaded file}. The
+   model handle constructs through func_02017acc and destroys through
+   func_02017ab4; the animation handle constructs through
+   SharedFilePtr::Construct and destroys through SharedFilePtr_Destruct_Anim.
+   The manifest aliases those undefined members onto the ROM symbols. */
+struct HuwaModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
 
-struct HuwaLoadedFile {
-    int fileId;
-    BCA_File *file;
+    HuwaModelFilePtr(u32 fileID);
+    ~HuwaModelFilePtr();
 };
+
+struct HuwaAnimationFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    HuwaAnimationFileHandle(u32 fileID);
+    ~HuwaAnimationFileHandle();
+};
+
+/* Model file (sinit id 813) and animation (sinit id 814). */
+extern HuwaModelFilePtr data_ov081_02128d60;
+extern HuwaAnimationFileHandle data_ov081_02128d68;
 
 extern "C" {
 extern struct Matrix4x3 data_020a0e68;
@@ -354,7 +367,7 @@ int daHuwa_c::InitResources()
     mModelAnim.ModelBase::SetFile((BMD_File *)modelFile, 1, -1);
     dExtFrameCtrl_c::LoadFile(data_ov081_02128d68);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, ((HuwaLoadedFile *)&data_ov081_02128d68)->file, 0, 0x1000, 0);
+        &mModelAnim, (BCA_File *)data_ov081_02128d68.ptr, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
@@ -390,3 +403,10 @@ extern "C" daHuwa_c *daHuwa_c_classInit()
 {
     return new daHuwa_c();
 }
+
+/* The two file-scope resource handles, in retail initializer order: the
+   model file (func_02017acc / func_02017ab4), then the animation file
+   (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim). The manifest
+   aliases each wrapper ctor/dtor onto those ROM symbols. */
+HuwaModelFilePtr data_ov081_02128d60(813);
+HuwaAnimationFileHandle data_ov081_02128d68(814);

@@ -107,12 +107,12 @@ _ZN15daObjIceBlock_c8BehaviorEv kind:function(arm,size=0x1d4) addr:0x02127e1c
 _ZN15daObjIceBlock_c13InitResourcesEv kind:function(arm,size=0xb0) addr:0x02127ff0
 daObjIceBlock_c_classInit kind:function(arm,size=0x38) addr:0x021280a0
 data_ov081_021280d8 kind:data(any) addr:0x021280d8
-__sinit_ov081_021280e8 kind:function(arm,size=0x6c) addr:0x021280e8
+__sinit_daHuwa_c.cpp kind:function(arm,size=0x6c) addr:0x021280e8
 __sinit_daSnowman_c.cpp kind:function(arm,size=0x360) addr:0x02128154
 __sinit_daSnowball_c.cpp kind:function(arm,size=0x3c) addr:0x021284b4
 __sinit_ov081_021284f0 kind:function(arm,size=0x2c8) addr:0x021284f0
 __sinit_ov081_021287b8 kind:function(arm,size=0x6c) addr:0x021287b8
-.p__sinit_ov081_021280e8 kind:data(word) addr:0x02128824
+.p__sinit_daHuwa_c.cpp kind:data(word) addr:0x02128824
 .p__sinit_daSnowman_c.cpp kind:data(word) addr:0x02128828
 .p__sinit_daSnowball_c.cpp kind:data(word) addr:0x0212882c
 .p__sinit_ov081_021284f0 kind:data(word) addr:0x02128830
@@ -183,8 +183,8 @@ g_profile_ICE_BLOCK_LL kind:data(any) addr:0x02128ca0
 _ZTV15daObjIceBlock_c kind:data(any) addr:0x02128cc4
 data_ov081_02128d60 kind:bss addr:0x02128d60
 data_ov081_02128d68 kind:bss addr:0x02128d68
-data_ov081_02128d70 kind:bss addr:0x02128d70
-data_ov081_02128d7c kind:bss addr:0x02128d7c
+@600 kind:bss addr:0x02128d70
+@748 kind:bss addr:0x02128d7c
 data_ov081_02128d88 kind:bss addr:0x02128d88
 data_ov081_02128d90 kind:bss addr:0x02128d90
 data_ov081_02128d98 kind:bss addr:0x02128d98
