@@ -963,7 +963,6 @@ extern int data_ov026_02113ea0[];
 /* data_ov026_02113f2c is defined by daWater_Tatumaki_c.cpp. */
 extern int data_ov026_02113f58;
 extern int data_ov027_021138f4[];
-extern int data_ov027_021139d4[];
 extern int data_ov029_02112b2c[];
 extern int data_ov029_0211306c[];
 extern struct daObjFloatBoard_c_Resources data_ov029_02113be8;
