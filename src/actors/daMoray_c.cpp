@@ -7,9 +7,9 @@
  *   02114d9c  lunge        init 02111860, execute 02111758
  *   02114dac  swim out     init 02111994, execute 021118b4
  *   02114dbc  path swim    init 02111718, execute 021115c0
- *   02114d7c  retreat      init BookSwitch_Spawn, execute _ZN9daMoray_c19func_ov016_02111534Ev
+ *   02114d7c  retreat      init daMoray_c::BookSwitch_Spawn, execute daMoray_c::func_ov016_02111534
  * BookSwitch_Spawn sets mStateTimer to 100 and mHorzSpeed to 0x14000;
- * _ZN9daMoray_c19func_ov016_02111534Ev restores the spawn angles when that timer hits 0 and
+ * daMoray_c::func_ov016_02111534 restores the spawn angles when that timer hits 0 and
  * goes back to den wait.
  *
  * BookSwitch_Spawn is the configured symbol name, not an identity. It came
@@ -79,9 +79,9 @@
  *   carrier cast, are kept from the byte-matching recovery.
  *
  * Leftover (not recovered):
- * - _ZN9daMoray_c19func_ov016_02111284Ev keeps its `void *` parameter (include/decl_common.h
- *   pins it) and the byte-stepped mSegmentPos walk, the volatile stores of
- *   mPos into va and the c1/c2 locals; those are what the bytes need.
+ * - daMoray_c::func_ov016_02111284 keeps the byte-stepped mSegmentPos walk,
+ *   the volatile stores of mPos into va and the c1/c2 locals; those are
+ *   what the bytes need.
  * - unk_400 is zeroed by the two idle-animation inits and read nowhere in
  *   this file; what it counts is unknown.
  * - Sound id 0xfa (bank 3) has no name here; The held spawn passes
@@ -123,7 +123,7 @@ extern SharedFilePtr data_ov016_02114d28;   /* den / swim-out anim, file 0x3b8 *
 
 extern "C" {
 /* State tables filled by __sinit_ov016_021136ec from the PMFs at 0x02114878.
- * 02114d7c retreat (_ZN9daMoray_c16BookSwitch_SpawnEv, then _ZN9daMoray_c19func_ov016_02111534Ev),
+ * 02114d7c retreat (daMoray_c::BookSwitch_Spawn, then daMoray_c::func_ov016_02111534),
  * 02114d8c den wait, 02114d9c lunge, 02114dac swim out, 02114dbc path swim. */
 extern daMoray_c::State data_ov016_02114d7c;
 extern daMoray_c::State data_ov016_02114d8c;
@@ -235,10 +235,7 @@ daMoray_c::~daMoray_c()
    (112 units). The segment positions are recomputed on the next Behavior.
    Hurts the actor recorded in the first cylinder's otherOwner (set by the
    hit test since the previous Clear) when that actor is the PLAYER (actor
-   191). Called from Behavior.
-
-   decl_common.h pins the parameter as void *, so it is cast to the class
-   here. */
+   191). Called from Behavior. */
 // @symbol _ZN9daMoray_c19func_ov016_02111284Ev
 void daMoray_c::func_ov016_02111284()
 {
@@ -368,7 +365,7 @@ int daMoray_c::func_ov016_02111534()
 }
 
 /* Retreat init: mStateTimer = 100 frames, mHorzSpeed = 0x14000 (20 units).
-   Behavior counts the timer down each frame; _ZN9daMoray_c19func_ov016_02111534Ev is the only
+   Behavior counts the timer down each frame; daMoray_c::func_ov016_02111534 is the only
    state in this file that tests it for 0. */
 // @symbol _ZN9daMoray_c16BookSwitch_SpawnEv
 int daMoray_c::BookSwitch_Spawn()
@@ -482,7 +479,7 @@ int daMoray_c::func_ov016_02111860()
    point along its facing at up to 0x14000 (20 units) per frame, and enters
    path-swim, with the sound, once within 20 units of it. */
 // @symbol _ZN9daMoray_c19func_ov016_021118b4Ev
- int daMoray_c::func_ov016_021118b4()
+int daMoray_c::func_ov016_021118b4()
 {
     Vector3 localOffset;
     Vector3 worldTarget;
