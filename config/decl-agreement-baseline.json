@@ -11594,6 +11594,9 @@
       "src/actors/daYegg_c.cpp": [
         "return:int"
       ],
+      "src/unnamed/ov002/func_ov002_020d6dac.c": [
+        "return:unsigned int"
+      ],
       "src/unnamed/ov002/func_ov002_020eed24.cpp": [
         "return:int"
       ]
