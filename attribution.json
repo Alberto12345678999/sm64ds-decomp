@@ -6937,6 +6937,7 @@
     "src/actors/daKpa_c.cpp#_ZN7daKpa_cD0Ev": "tangosdev",
     "src/actors/daKpa_c.cpp#_ZN11daKpaTail_cD1Ev": "tangosdev",
     "src/actors/daKpa_c.cpp#_ZN11daKpaTail_cD0Ev": "tangosdev",
+    "src/actors/daKpa_c.cpp#__sinit_daKpa_c.cpp": "andrewboudreau",
     "src/actors/daKpa_c.cpp#func_ov060_02111a28": "lunavyqo",
     "src/actors/daKpa_c.cpp#func_ov060_02111c68": "tangosdev",
     "src/actors/daKpa_c.cpp#func_ov060_02111cc0": "tangosdev",
