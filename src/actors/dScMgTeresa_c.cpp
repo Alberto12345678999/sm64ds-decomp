@@ -218,6 +218,35 @@ extern Pmf data_ov006_02142f18[];   /* big Boo flight states, by Boo::state */
 extern Pmf data_ov006_02142e88[];   /* reveal-pair states, by SlotElem::state */
 extern Pmf data_ov006_02142ed8[];   /* per-Boo states, one call per live row */
 extern PmfEntry data_ov006_02142eb0[]; /* scene states, by unk_4be8 */
+/* The ROM PMF constants the four state tables copy from (unlicensed .data),
+ * grouped by destination table in retail copy order. */
+extern Pmf0 data_ov006_0213f904;
+extern Pmf0 data_ov006_0213f92c;
+extern Pmf0 data_ov006_0213f954;
+extern Pmf0 data_ov006_0213f964;
+extern Pmf0 data_ov006_0213f914;
+extern Pmf data_ov006_0213f934;
+extern Pmf data_ov006_0213f8dc;
+extern Pmf data_ov006_0213f94c;
+extern Pmf data_ov006_0213f8ec;
+extern Pmf data_ov006_0213f8e4;
+extern Pmf data_ov006_0213f8d4;
+extern Pmf data_ov006_0213f93c;
+extern Pmf data_ov006_0213f96c;
+extern Pmf data_ov006_0213f99c;
+extern Pmf data_ov006_0213f994;
+extern Pmf data_ov006_0213f98c;
+extern Pmf data_ov006_0213f984;
+extern Pmf data_ov006_0213f97c;
+extern Pmf data_ov006_0213f90c;
+extern Pmf data_ov006_0213f95c;
+extern Pmf data_ov006_0213f91c;
+extern Pmf data_ov006_0213f8fc;
+extern Pmf data_ov006_0213f944;
+extern Pmf data_ov006_0213f8f4;
+extern Pmf data_ov006_0213f9ac;
+extern Pmf data_ov006_0213f9a4;
+extern Pmf data_ov006_0213f924;
 
 }  /* extern "C" */
 
@@ -2407,3 +2436,43 @@ s32 dScMgTeresa_c::InitResources()
     mHudScore = 0;
     return 1;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_02132f68 shard).
+ * The four PMF state tables plain-copied from the ROM PMF constants, in
+ * retail copy order: the scene table, the per-Boo table, the reveal-pair
+ * table, then the big-Boo flight table. */
+PmfEntry data_ov006_02142eb0[5] = {
+    {data_ov006_0213f904},
+    {data_ov006_0213f92c},
+    {data_ov006_0213f954},
+    {data_ov006_0213f964},
+    {data_ov006_0213f914},
+};
+Pmf data_ov006_02142ed8[8] = {
+    data_ov006_0213f934,
+    data_ov006_0213f8dc,
+    data_ov006_0213f94c,
+    data_ov006_0213f8ec,
+    data_ov006_0213f8e4,
+    data_ov006_0213f8d4,
+    data_ov006_0213f93c,
+    data_ov006_0213f96c,
+};
+Pmf data_ov006_02142e88[5] = {
+    data_ov006_0213f99c,
+    data_ov006_0213f994,
+    data_ov006_0213f98c,
+    data_ov006_0213f984,
+    data_ov006_0213f97c,
+};
+Pmf data_ov006_02142f18[9] = {
+    data_ov006_0213f90c,
+    data_ov006_0213f95c,
+    data_ov006_0213f91c,
+    data_ov006_0213f8fc,
+    data_ov006_0213f944,
+    data_ov006_0213f8f4,
+    data_ov006_0213f9ac,
+    data_ov006_0213f9a4,
+    data_ov006_0213f924,
+};
