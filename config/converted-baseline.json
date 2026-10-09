@@ -877,6 +877,7 @@
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c8BehaviorEv",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_cD0Ev",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_cD1Ev",
+    "src/game/actors/d_a_btn.cpp#__sinit_d_a_btn.cpp",
     "src/game/actors/d_a_btn.cpp#daBtn_c_classInit_BATAN",
     "src/game/actors/d_a_btn.cpp#daBtn_c_classInit_BATANKING",
     "src/_ZN5dBgCh18StopDetectingWaterEv.cpp",

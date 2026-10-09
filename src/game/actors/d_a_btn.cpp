@@ -5,8 +5,7 @@
  * the hit points and most tunings.
  *
  * Behavior runs one handler per mState out of the pointer-to-member table
- * data_ov079_02128280, which __sinit_ov079_02127618 fills at load (not
- * claimed here: text-only promotion):
+ * data_ov079_02128280, which the static initializer fills at load:
  *    0 func_ov079_02125b44  waiting (the king's introduction talk)
  *    1 func_ov079_021258fc  walking
  *    2 func_ov079_021256d4  the king walking
@@ -169,13 +168,78 @@ extern void *data_ov079_02127600[];
 extern CLPS_Block data_ov079_02127ba0;   /* the plain Whomp's CLPS block */
 extern void *data_ov079_02127bf0[];
 extern int data_ov079_02127cfc[];
-extern BtnFileRef data_ov079_02128168;
-extern BtnFileRef data_ov079_02128170;
-extern BtnFileRef data_ov079_02128178;
-extern BtnFileRef data_ov079_021281b0;
 }
 
-extern "C" daBtn_c::StateFunc data_ov079_02128280[];
+/* File-scope resource handles: each ctor/dtor pair is a ROM SharedFilePtr
+   veneer (func_02017acc/func_02017ab4 for the two BMDs, SharedFilePtr::
+   Construct/SharedFilePtr_Destruct_TexSeq for the king's face BTP,
+   Construct/Destruct_Anim for the eleven BCAs, func_02017b4c/
+   SharedFilePtr_Destruct_Clsn for the two KCLs), spelled through
+   declared-only subclasses so the static initializer names the real
+   entry points. */
+struct BtnModelFilePtr : SharedFilePtr {
+    int unk0; void *file;
+    BtnModelFilePtr(u32 fileID);
+    ~BtnModelFilePtr();
+};
+struct BtnTextureSeqFileHandle : SharedFilePtr {
+    int unk0; void *file;
+    BtnTextureSeqFileHandle(u32 fileID);
+    ~BtnTextureSeqFileHandle();
+};
+struct BtnAnimationFileHandle : SharedFilePtr {
+    int unk0; void *file;
+    BtnAnimationFileHandle(u32 fileID);
+    ~BtnAnimationFileHandle();
+};
+struct BtnCollisionFilePtr : SharedFilePtr {
+    int unk0; void *file;
+    BtnCollisionFilePtr(u32 fileID);
+    ~BtnCollisionFilePtr();
+};
+
+// @symbol __sinit_d_a_btn.cpp
+BtnModelFilePtr         data_ov079_02128170(0x29c);   /* the plain Whomp's BMD */
+BtnModelFilePtr         data_ov079_02128168(0x2a3);   /* the king's BMD */
+BtnTextureSeqFileHandle data_ov079_02128178(0x2a4);   /* the king's face BTP */
+BtnAnimationFileHandle  data_ov079_02128188(0x29e);   /* the plain Whomp's BCAs */
+BtnAnimationFileHandle  data_ov079_02128180(0x29f);
+BtnAnimationFileHandle  data_ov079_02128190(0x2a0);
+BtnAnimationFileHandle  data_ov079_02128158(0x2a1);
+BtnAnimationFileHandle  data_ov079_02128160(0x2a2);
+BtnAnimationFileHandle  data_ov079_021281a0(0x2a6);   /* the king's BCAs */
+BtnAnimationFileHandle  data_ov079_02128140(0x2a7);
+BtnAnimationFileHandle  data_ov079_02128148(0x2a9);
+BtnAnimationFileHandle  data_ov079_02128150(0x2aa);
+BtnAnimationFileHandle  data_ov079_021281b8(0x2ab);
+BtnAnimationFileHandle  data_ov079_021281b0(0x2a8);
+BtnCollisionFilePtr     data_ov079_021281a8(0x29d);   /* the plain Whomp's KCL */
+BtnCollisionFilePtr     data_ov079_02128198(0x2a5);   /* the king's KCL */
+
+/* The twelve state handler records live in .data (0x02127bc0..0x02127c28);
+   the static initializer copies them into the table below, one member
+   pointer per mState. */
+extern "C" {
+extern daBtn_c::StateFunc data_ov079_02127c00;   /* 0 func_ov079_02125b44 */
+extern daBtn_c::StateFunc data_ov079_02127bd0;   /* 1 func_ov079_021258fc */
+extern daBtn_c::StateFunc data_ov079_02127c10;   /* 2 func_ov079_021256d4 */
+extern daBtn_c::StateFunc data_ov079_02127bd8;   /* 3 func_ov079_021254b4 */
+extern daBtn_c::StateFunc data_ov079_02127bc0;   /* 4 func_ov079_0212538c */
+extern daBtn_c::StateFunc data_ov079_02127bc8;   /* 5 func_ov079_02125240 */
+extern daBtn_c::StateFunc data_ov079_02127c18;   /* 6 func_ov079_02124b08 */
+extern daBtn_c::StateFunc data_ov079_02127c20;   /* 7 func_ov079_021249f0 */
+extern daBtn_c::StateFunc data_ov079_02127be8;   /* 8 func_ov079_021246dc */
+extern daBtn_c::StateFunc data_ov079_02127bf8;   /* 9 func_ov079_021246d8 */
+extern daBtn_c::StateFunc data_ov079_02127be0;   /* 10 func_ov079_02124638 */
+extern daBtn_c::StateFunc data_ov079_02127c08;   /* 11 func_ov079_02124530 */
+}
+
+daBtn_c::StateFunc data_ov079_02128280[12] = {
+    data_ov079_02127c00, data_ov079_02127bd0, data_ov079_02127c10,
+    data_ov079_02127bd8, data_ov079_02127bc0, data_ov079_02127bc8,
+    data_ov079_02127c18, data_ov079_02127c20, data_ov079_02127be8,
+    data_ov079_02127bf8, data_ov079_02127be0, data_ov079_02127c08,
+};
 
 /* OnAimedAtWithEggReturnVec's view of func_ov079_02123d4c: the (out, this)
    pair of the definition is exactly the hidden-return-pointer shape of a
