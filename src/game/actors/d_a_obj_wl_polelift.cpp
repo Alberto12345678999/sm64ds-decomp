@@ -50,6 +50,18 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 
+/* The file-scope object at the end of this file constructs the resource
+ * handle (model file 0x6db). mwcc emits __sinit_d_a_obj_wl_polelift.cpp
+ * from that definition. The wrapper name is local; the handle constructor
+ * and destructor are the ROM resource-family functions, aliased in the
+ * manifest. */
+struct PoleliftModelFile : SharedFilePtr {
+    u32 words[2];
+
+    PoleliftModelFile(u32 fileID);
+    ~PoleliftModelFile();
+};
+
 /* The class vtable. mwccarm's own emitted _ZTV symbol addresses the vtable
  * object; the address recorded in ov026/symbols.txt is the public address
  * point eight bytes later, which is exactly what &_ZTV[2] on an int[]
@@ -88,7 +100,7 @@ void func_ov026_021112a4(daObjWlPolelift_c *actor);
 
 extern u32 data_0209caa0[];
 extern Vector3 data_ov026_02113a9c;
-extern SharedFilePtr data_ov026_02113ea0;
+extern PoleliftModelFile data_ov026_02113ea0;
 }
 
 // @symbol daObjWlPolelift_c_classInit
@@ -266,3 +278,7 @@ extern "C" void func_ov026_02111234(daObjWlPolelift_c *actor)
  * here on purpose, and carry no @symbol marker: the inline destructor in
  * include/daObjWlPolelift_c.h emits D1 then D0 -- the cartridge's order -- and
  * no D2. tools/tiers.py scores both through that inline definition. */
+
+/* Static-init global (was the handwritten __sinit_ov026_02112b7c shard):
+ * the model handle (file 0x6db). */
+PoleliftModelFile data_ov026_02113ea0(0x6db);
