@@ -19,6 +19,10 @@ src/actors/daBDonketu_c.cpp:
 src/actors/daObjFl_Amilift_c.cpp:
     complete
     .text start:0x02117978 end:0x02117fb4
+    .init start:0x0211afc0 end:0x0211b078
+    .ctor start:0x0211b734 end:0x0211b738
+    .data start:0x0211bc0c end:0x0211bc24
+    .bss start:0x0211c728 end:0x0211c768
 
 src/unnamed/ov064/func_ov064_02117fb4.cpp:
     complete
@@ -91,10 +95,6 @@ src/unnamed/ov064/__sinit_ov064_0211ae00.c:
 src/unnamed/ov064/__sinit_ov064_0211aee0.c:
     complete
     .init start:0x0211aee0 end:0x0211afc0
-
-src/unnamed/ov064/__sinit_ov064_0211afc0.c:
-    complete
-    .init start:0x0211afc0 end:0x0211b078
 
 src/unnamed/ov064/__sinit_ov064_0211b078.c:
     complete
