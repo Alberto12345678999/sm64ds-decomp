@@ -1061,6 +1061,11 @@ ov016	0x021119ec	func_ov016_021119ec	_ZN9daMoray_c19func_ov016_021119ecEv	daMora
 ov016	0x02111bac	func_ov016_02111bac	_ZN9daMoray_c19func_ov016_02111bacEv	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov016	0x02111bf0	func_ov016_02111bf0	_ZN9daMoray_c19func_ov016_02111bf0EPNS_5StateE	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov016	0x02111c40	func_ov016_02111c40	_ZN9daMoray_c19func_ov016_02111c40Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111f38	func_ov016_02111f38	_ZN9daMoray_c16CleanupResourcesEv	vtable slot 3
+ov016	0x02111f80	func_ov016_02111f80	_ZN9daMoray_c16OnPendingDestroyEv	vtable slot 12
+ov016	0x02111f84	func_ov016_02111f84	_ZN9daMoray_c6RenderEv	vtable slot 9
+ov016	0x02112010	func_ov016_02112010	_ZN9daMoray_c8BehaviorEv	vtable slot 6
+ov016	0x021121c0	func_ov016_021121c0	_ZN9daMoray_c13InitResourcesEv	vtable slot 0
 ov016	0x02112588	func_ov016_02112588	Unagi_Spawn	spawnfunc
 ov016	0x02112588	Unagi_Spawn	daMoray_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x0211260c	func_ov016_0211260c	_ZN14daObjKi_Fune_cD1Ev	vtable slot 16 (was _ZN6ShipUpD1Ev)
