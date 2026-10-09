@@ -11,6 +11,10 @@ src/actors/daYurei_Mucho_c.cpp:
 src/actors/daBasabasa_c.cpp:
     complete
     .text start:0x02116f98 end:0x02117f40
+    .init start:0x0211c2a8 end:0x0211c440
+    .ctor start:0x0211cae4 end:0x0211cae8
+    .data start:0x0211cc20 end:0x0211cc60
+    .bss start:0x0211d690 end:0x0211d720
 
 src/actors/daDossy_c.cpp:
     complete
@@ -47,10 +51,6 @@ src/actors/daObjCtMecha09_c.cpp:
 src/unnamed/ov065/__sinit_ov065_0211c110.c:
     complete
     .init start:0x0211c110 end:0x0211c2a8
-
-src/unnamed/ov065/__sinit_ov065_0211c2a8.c:
-    complete
-    .init start:0x0211c2a8 end:0x0211c440
 
 src/unnamed/ov065/__sinit_ov065_0211c440.c:
     complete
