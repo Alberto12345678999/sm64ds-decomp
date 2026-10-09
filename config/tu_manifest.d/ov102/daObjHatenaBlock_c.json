@@ -385,56 +385,56 @@
       "evidence": "the block resource handle constructed with file ID 0x465"
     },
     {
-      "symbol": "@739",
+      "symbol": "@115",
       "address": "0x0214e810",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x468 resource handle"
     },
     {
-      "symbol": "@720",
+      "symbol": "@116",
       "address": "0x0214e81c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x464 resource handle"
     },
     {
-      "symbol": "@741",
+      "symbol": "@117",
       "address": "0x0214e828",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x800d resource handle"
     },
     {
-      "symbol": "@734",
+      "symbol": "@110",
       "address": "0x0214e834",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x800e resource handle"
     },
     {
-      "symbol": "@735",
+      "symbol": "@111",
       "address": "0x0214e840",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x463 resource handle"
     },
     {
-      "symbol": "@736",
+      "symbol": "@112",
       "address": "0x0214e84c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x465 resource handle"
     },
     {
-      "symbol": "@737",
+      "symbol": "@113",
       "address": "0x0214e858",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x467 resource handle"
     },
     {
-      "symbol": "@738",
+      "symbol": "@114",
       "address": "0x0214e864",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1097,7 +1097,7 @@
       "source": "0x0214dd5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@734",
+      "symbol": "@110",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e834"
@@ -1117,7 +1117,7 @@
       "source": "0x0214dd68",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@735",
+      "symbol": "@111",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e840"
@@ -1137,7 +1137,7 @@
       "source": "0x0214dd74",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@736",
+      "symbol": "@112",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e84c"
@@ -1157,7 +1157,7 @@
       "source": "0x0214dd80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@737",
+      "symbol": "@113",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e858"
@@ -1177,7 +1177,7 @@
       "source": "0x0214dd8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@738",
+      "symbol": "@114",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e864"
@@ -1197,7 +1197,7 @@
       "source": "0x0214dd98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@739",
+      "symbol": "@115",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e810"
@@ -1227,7 +1227,7 @@
       "source": "0x0214dda8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@720",
+      "symbol": "@116",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e81c"
@@ -1257,7 +1257,7 @@
       "source": "0x0214ddb8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@741",
+      "symbol": "@117",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e828"
@@ -1788,49 +1788,49 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@734",
+      "symbol": "@110",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e834"
     },
     {
-      "symbol": "@735",
+      "symbol": "@111",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e840"
     },
     {
-      "symbol": "@736",
+      "symbol": "@112",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e84c"
     },
     {
-      "symbol": "@737",
+      "symbol": "@113",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e858"
     },
     {
-      "symbol": "@738",
+      "symbol": "@114",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e864"
     },
     {
-      "symbol": "@739",
+      "symbol": "@115",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e810"
     },
     {
-      "symbol": "@720",
+      "symbol": "@116",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e81c"
     },
     {
-      "symbol": "@741",
+      "symbol": "@117",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local resource-handle registration node is a configured initializer relocation destination at 0x0214e828"
@@ -1839,38 +1839,43 @@
   "defined_symbol_renames": [
     {
       "from": "@714",
-      "to": "@734",
-      "evidence": "mwcc numbers this resource-handle registration node @714 per TU; another module's emitted object already carries @714 globally, so the scratch link would multiply-define it"
+      "to": "@110",
+      "evidence": "mwcc emits this compiler temp as @714; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
       "from": "@715",
-      "to": "@735",
-      "evidence": "mwcc numbers this resource-handle registration node @715 per TU; another module's emitted object already carries @715 globally, so the scratch link would multiply-define it"
+      "to": "@111",
+      "evidence": "mwcc emits this compiler temp as @715; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
       "from": "@716",
-      "to": "@736",
-      "evidence": "mwcc numbers this resource-handle registration node @716 per TU; another module's emitted object already carries @716 globally, so the scratch link would multiply-define it"
+      "to": "@112",
+      "evidence": "mwcc emits this compiler temp as @716; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
       "from": "@717",
-      "to": "@737",
-      "evidence": "mwcc numbers this resource-handle registration node @717 per TU; another module's emitted object already carries @717 globally, so the scratch link would multiply-define it"
+      "to": "@113",
+      "evidence": "mwcc emits this compiler temp as @717; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
       "from": "@718",
-      "to": "@738",
-      "evidence": "mwcc numbers this resource-handle registration node @718 per TU; another module's emitted object already carries @718 globally, so the scratch link would multiply-define it"
+      "to": "@114",
+      "evidence": "mwcc emits this compiler temp as @718; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
       "from": "@719",
-      "to": "@739",
-      "evidence": "mwcc numbers this resource-handle registration node @719 per TU; another module's emitted object already carries @719 globally, so the scratch link would multiply-define it"
+      "to": "@115",
+      "evidence": "mwcc emits this compiler temp as @719; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
+    },
+    {
+      "from": "@720",
+      "to": "@116",
+      "evidence": "mwcc emits this compiler temp as @720; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
       "from": "@721",
-      "to": "@741",
-      "evidence": "mwcc numbers this resource-handle registration node @721 per TU; another module's emitted object already carries @721 globally, so the scratch link would multiply-define it"
+      "to": "@117",
+      "evidence": "mwcc emits this compiler temp as @721; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     }
   ]
 }

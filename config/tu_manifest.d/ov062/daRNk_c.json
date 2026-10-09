@@ -174,7 +174,7 @@
       "evidence": "compiler PMF record for daRNk_c::func_ov062_0211a740"
     },
     {
-      "symbol": "@907",
+      "symbol": "@119",
       "address": "0x0211db38",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -202,7 +202,7 @@
       "evidence": "compiler PMF record for daRNk_c::func_ov062_0211a168"
     },
     {
-      "symbol": "@919",
+      "symbol": "@118",
       "address": "0x0211db58",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -274,21 +274,21 @@
       "evidence": "compiler-local destructor-registration node for data_ov062_0211e02c"
     },
     {
-      "symbol": "@908",
+      "symbol": "@120",
       "address": "0x0211e050",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node for data_ov062_0211e00c"
     },
     {
-      "symbol": "@921",
+      "symbol": "@124",
       "address": "0x0211e05c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node for data_ov062_0211e004"
     },
     {
-      "symbol": "@909",
+      "symbol": "@121",
       "address": "0x0211e068",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -302,7 +302,7 @@
       "evidence": "compiler-local destructor-registration node for data_ov062_0211e024"
     },
     {
-      "symbol": "@911",
+      "symbol": "@122",
       "address": "0x0211e080",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -316,7 +316,7 @@
       "evidence": "compiler-local destructor-registration node for data_ov062_0211e034"
     },
     {
-      "symbol": "@913",
+      "symbol": "@123",
       "address": "0x0211e098",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -785,8 +785,8 @@
   "defined_symbol_renames": [
     {
       "from": "@901",
-      "to": "@919",
-      "evidence": "mwcc numbers this PMF record @901 per TU and ov094 already defines a global @901, so the scratch link would multiply-define it"
+      "to": "@118",
+      "evidence": "mwcc emits this compiler temp as @901; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
       "from": "@903",
@@ -794,9 +794,34 @@
       "evidence": "mwcc numbers this PMF record @903 per TU and ov094 already defines a global @903, so the scratch link would multiply-define it"
     },
     {
+      "from": "@907",
+      "to": "@119",
+      "evidence": "mwcc emits this compiler temp as @907; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
+    },
+    {
+      "from": "@908",
+      "to": "@120",
+      "evidence": "mwcc emits this compiler temp as @908; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
+    },
+    {
+      "from": "@909",
+      "to": "@121",
+      "evidence": "mwcc emits this compiler temp as @909; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
+    },
+    {
+      "from": "@911",
+      "to": "@122",
+      "evidence": "mwcc emits this compiler temp as @911; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
+    },
+    {
+      "from": "@913",
+      "to": "@123",
+      "evidence": "mwcc emits this compiler temp as @913; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
+    },
+    {
       "from": "@915",
-      "to": "@921",
-      "evidence": "mwcc numbers this destructor-registration node @915 per TU and ov094 already defines a global @915, so the scratch link would multiply-define it"
+      "to": "@124",
+      "evidence": "mwcc emits this compiler temp as @915; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     }
   ],
   "undefined_symbol_aliases": [
@@ -862,7 +887,7 @@
       "evidence": "compiler-local PMF record is a configured relocation destination at 0x0211db30"
     },
     {
-      "symbol": "@919",
+      "symbol": "@118",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF record is a configured relocation destination at 0x0211db58"
@@ -880,19 +905,19 @@
       "evidence": "compiler-local PMF record is a configured relocation destination at 0x0211db40"
     },
     {
-      "symbol": "@907",
+      "symbol": "@119",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF record is a configured relocation destination at 0x0211db38"
     },
     {
-      "symbol": "@908",
+      "symbol": "@120",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e050"
     },
     {
-      "symbol": "@909",
+      "symbol": "@121",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e068"
@@ -904,7 +929,7 @@
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e074"
     },
     {
-      "symbol": "@911",
+      "symbol": "@122",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e080"
@@ -916,7 +941,7 @@
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e08c"
     },
     {
-      "symbol": "@913",
+      "symbol": "@123",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e098"
@@ -928,7 +953,7 @@
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e044"
     },
     {
-      "symbol": "@921",
+      "symbol": "@124",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured relocation destination at 0x0211e05c"
@@ -1130,7 +1155,7 @@
       "source": "0x211d618",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@919",
+      "symbol": "@118",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211db58"
@@ -1160,7 +1185,7 @@
       "source": "0x211d624",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@907",
+      "symbol": "@119",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211db38"
@@ -1200,7 +1225,7 @@
       "source": "0x211d638",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@908",
+      "symbol": "@120",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e050"
@@ -1230,7 +1255,7 @@
       "source": "0x211d648",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@909",
+      "symbol": "@121",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e068"
@@ -1270,7 +1295,7 @@
       "source": "0x211d65c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@911",
+      "symbol": "@122",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e080"
@@ -1310,7 +1335,7 @@
       "source": "0x211d674",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@913",
+      "symbol": "@123",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e098"
@@ -1350,7 +1375,7 @@
       "source": "0x211d68c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@921",
+      "symbol": "@124",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e05c"

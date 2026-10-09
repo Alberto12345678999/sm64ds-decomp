@@ -118,21 +118,21 @@
   ],
   "data": [
     {
-      "symbol": "@559",
+      "symbol": "@107",
       "address": "0x0211bc0c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN17daObjFl_Amilift_c19func_ov064_02117c24Ev"
     },
     {
-      "symbol": "@563",
+      "symbol": "@108",
       "address": "0x0211bc14",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN17daObjFl_Amilift_c19func_ov064_02117bdcEv"
     },
     {
-      "symbol": "@562",
+      "symbol": "@109",
       "address": "0x0211bc1c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -155,7 +155,7 @@
       "evidence": "model resource handle constructed with file ID 0x5ef"
     },
     {
-      "symbol": "@558",
+      "symbol": "@106",
       "address": "0x0211c738",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -590,13 +590,23 @@
   "defined_symbol_renames": [
     {
       "from": "@556",
-      "to": "@558",
-      "evidence": "mwcc numbers this destructor-registration node @556 per TU and ov080 already defines a global @556, so the scratch link would multiply-define it"
+      "to": "@106",
+      "evidence": "mwcc emits this compiler temp as @556; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
+    },
+    {
+      "from": "@559",
+      "to": "@107",
+      "evidence": "mwcc emits this compiler temp as @559; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
     },
     {
       "from": "@560",
-      "to": "@563",
-      "evidence": "mwcc numbers this pointer-to-member descriptor @560 per TU and ov002 already defines a global @560, so the scratch link would multiply-define it"
+      "to": "@108",
+      "evidence": "mwcc emits this compiler temp as @560; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
+    },
+    {
+      "from": "@562",
+      "to": "@109",
+      "evidence": "mwcc emits this compiler temp as @562; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
     }
   ],
   "symbol_binding_rewrites": [
@@ -613,7 +623,7 @@
       "evidence": "compiler-generated constructor-table word is emitted local but must be exposed at 0x0211b734"
     },
     {
-      "symbol": "@558",
+      "symbol": "@106",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node must bind at 0x0211c738"
@@ -625,19 +635,19 @@
       "evidence": "compiler-generated destructor-registration node must bind at 0x0211c744"
     },
     {
-      "symbol": "@559",
+      "symbol": "@107",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated pointer-to-member descriptor must bind at 0x0211bc0c"
     },
     {
-      "symbol": "@563",
+      "symbol": "@108",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated pointer-to-member descriptor must bind at 0x0211bc14"
     },
     {
-      "symbol": "@562",
+      "symbol": "@109",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated pointer-to-member descriptor must bind at 0x0211bc1c"
@@ -709,7 +719,7 @@
       "source": "0x0211b058",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@558",
+      "symbol": "@106",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c738"
@@ -749,7 +759,7 @@
       "source": "0x0211b068",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@559",
+      "symbol": "@107",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211bc0c"
@@ -759,7 +769,7 @@
       "source": "0x0211b06c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@563",
+      "symbol": "@108",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211bc14"
@@ -769,7 +779,7 @@
       "source": "0x0211b070",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@562",
+      "symbol": "@109",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211bc1c"

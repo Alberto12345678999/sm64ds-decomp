@@ -210,9 +210,9 @@ data_ov064_0211bb8c kind:data(any) addr:0x0211bb8c
 data_ov064_0211bbac kind:data(any) addr:0x0211bbac ambiguous
 data_ov064_0211bbcc kind:data(any) addr:0x0211bbcc
 data_ov064_0211bbec kind:data(any) addr:0x0211bbec
-@559 kind:data(any) addr:0x0211bc0c
-@563 kind:data(any) addr:0x0211bc14
-@562 kind:data(any) addr:0x0211bc1c
+@107 kind:data(any) addr:0x0211bc0c
+@108 kind:data(any) addr:0x0211bc14
+@109 kind:data(any) addr:0x0211bc1c
 _ZTI17daObjFl_Amilift_c kind:data(any) addr:0x0211bc24
 _ZTS17daObjFl_Amilift_c kind:data(any) addr:0x0211bc30
 g_profile_FL_AMILIFT kind:data(any) addr:0x0211bc44
@@ -315,7 +315,7 @@ data_ov064_0211c710 kind:bss addr:0x0211c710
 data_ov064_0211c71c kind:bss addr:0x0211c71c
 data_ov064_0211c728 kind:bss addr:0x0211c728
 data_ov064_0211c730 kind:bss addr:0x0211c730
-@558 kind:bss addr:0x0211c738
+@106 kind:bss addr:0x0211c738
 @557 kind:bss addr:0x0211c744
 data_ov064_0211c750 kind:bss addr:0x0211c750
 data_ov064_0211c768 kind:bss addr:0x0211c768
