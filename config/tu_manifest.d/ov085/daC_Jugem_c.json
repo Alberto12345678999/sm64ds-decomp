@@ -1535,5 +1535,6 @@
       "canonical_address": "0x02086e60",
       "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
     }
-  ]
+  ],
+  "production_mode": "intact-object"
 }

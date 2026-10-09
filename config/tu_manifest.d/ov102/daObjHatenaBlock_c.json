@@ -892,7 +892,7 @@
     }
   ],
   "externalized_output": [],
-  "production_mode": "text-only",
+  "production_mode": "intact-object",
   "init": [
     {
       "symbol": "__sinit_daObjHatenaBlock_c.cpp",

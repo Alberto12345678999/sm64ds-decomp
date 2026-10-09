@@ -1440,5 +1440,6 @@
       "target_module": "ov062",
       "target_address": "0x0211a1f4"
     }
-  ]
+  ],
+  "production_mode": "intact-object"
 }

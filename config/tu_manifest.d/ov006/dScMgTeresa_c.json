@@ -1309,5 +1309,6 @@
       "target_module": "ov006",
       "target_address": "0x0213f924"
     }
-  ]
+  ],
+  "production_mode": "intact-object"
 }

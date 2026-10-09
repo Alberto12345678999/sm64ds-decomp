@@ -717,5 +717,6 @@
       "target_module": "ov006",
       "target_address": "0x02141870"
     }
-  ]
+  ],
+  "production_mode": "intact-object"
 }

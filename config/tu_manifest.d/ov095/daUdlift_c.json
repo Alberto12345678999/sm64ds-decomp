@@ -4,7 +4,7 @@
   "source": "src/actors/daUdlift_c.cpp",
   "promoted_source": "src/actors/daUdlift_c.cpp",
   "status": "promoted",
-  "production_mode": "text-only",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2135ff4..0x213682c, 16 function(s): the 11-member body run, then the rider-collision pair and the three classInit factories, ending exactly where daObjFlamethrower_c's TU begins. The per-class factories sit immediately after each class's methods across this overlay (seesaw callbacks+factories precede this run, flamethrower follows), which is the layout of one original file per actor, so the whole span is claimed as one TU.",

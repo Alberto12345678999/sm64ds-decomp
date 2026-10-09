@@ -1996,5 +1996,6 @@
       "evidence": "mwcc numbers this resource-handle registration node @561 per TU; daObjHeart_c's emitted object already carries @561 globally, so the scratch link would multiply-define it"
     }
   ],
-  "externalized_output": []
+  "externalized_output": [],
+  "production_mode": "intact-object"
 }
