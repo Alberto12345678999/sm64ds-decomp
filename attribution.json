@@ -4226,6 +4226,7 @@
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_c19func_ov102_021492d4Ev": "tangosdev",
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_c19func_ov102_02149384Ev": "tangosdev",
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_c19func_ov102_021493dcEv": "tangosdev",
+    "src/actors/daObjHatenaBlock_c.cpp#__sinit_daObjHatenaBlock_c.cpp": "github-actions[bot]",
     "src/actors/daObjHatenaBlock_c.cpp#func_ov102_02149428": "tangosdev",
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_c19func_ov102_02149428Ev": "tangosdev",
     "src/actors/daObjHatenaBlock_c.cpp#func_ov102_02149478": "tangosdev",
