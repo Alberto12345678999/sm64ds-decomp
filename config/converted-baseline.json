@@ -934,6 +934,7 @@
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_c8BehaviorEv",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_cD0Ev",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_cD1Ev",
+    "src/game/actors/d_a_cnn.cpp#__sinit_d_a_cnn.cpp",
     "src/game/actors/d_a_cnn.cpp#daCnn_c_classInit",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c16CleanupResourcesEv",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c6RenderEv",
@@ -1390,7 +1391,6 @@
     "src/unnamed/ov095/__sinit_ov095_02136fe0.c",
     "src/unnamed/ov095/__sinit_ov095_0213722c.c",
     "src/unnamed/ov098/__sinit_ov098_0213bf9c.c",
-    "src/unnamed/ov098/__sinit_ov098_0213c214.c",
     "src/unnamed/ov098/__sinit_ov098_0213c2b4.c",
     "src/unnamed/ov100/__sinit_ov100_021474e8.c",
     "src/unnamed/ov100/__sinit_ov100_02147d7c.c",
@@ -3554,5 +3554,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3547
+  "count": 3545
 }

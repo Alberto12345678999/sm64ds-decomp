@@ -66,11 +66,8 @@ bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 /* The cannon's model, and the water bomb's two (bomb and fragment), which
    InitResources preloads for the bombs it fires. */
-extern SharedFilePtr data_ov098_0213c8e8;
 extern SharedFilePtr data_ov098_0213c91c;
 extern SharedFilePtr data_ov002_0210da38;
-/* The state table, indexed by mState. */
-extern State data_ov098_0213c8fc[];
 /* The smoke particles' base rotation, x/y/z. */
 extern u16 data_ov098_0213c63c[3];
 /* The sine and cosine table. */
@@ -95,6 +92,42 @@ int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 slot, u32 id, int x, int y, int z, const Vector3_16 *rot, void *cb);
 
 }
+
+/* The cannon's file-scope SharedFilePtr object, spelled through the same
+   wrapper idiom the landed folds use: the handle's code is the veneer pair
+   the cartridge already carries, so the wrapper gets no bodies of its own.
+   The constructor aliases func_02017acc and the destructor func_02017ab4 in
+   this unit's manifest. */
+struct CnnModelFilePtr : SharedFilePtr {
+    int unk0;
+    void *file;
+    CnnModelFilePtr(unsigned int id);
+    ~CnnModelFilePtr();
+};
+
+/* ------------------------------------------------------------------------
+ * The model handle and the state table's four member pointers, in
+ * static-initializer order: the initializer constructs the handle, registers
+ * its destructor, then copies the pointers from .data. InitResources feeds
+ * the model to Model::LoadFile.
+ * ------------------------------------------------------------------------ */
+// @symbol __sinit_d_a_cnn.cpp
+CnnModelFilePtr data_ov098_0213c8e8(0x45e);
+
+/* The member pointers the initializer copies into the table
+   (0x0213c644..0x0213c664 in .data, an unclaimed run). Each record is one
+   eight-byte {fn, adj} pair. */
+extern State data_ov098_0213c64c;
+extern State data_ov098_0213c65c;
+extern State data_ov098_0213c654;
+extern State data_ov098_0213c644;
+
+State data_ov098_0213c8fc[4] = {
+    data_ov098_0213c64c,
+    data_ov098_0213c65c,
+    data_ov098_0213c654,
+    data_ov098_0213c644,
+};
 
 enum {
     kPlayerActorID = 0xbf,
