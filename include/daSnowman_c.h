@@ -36,6 +36,9 @@ struct daSnowman_c : dEnemyBase_c {
     struct State {
         int (daSnowman_c::*enter)();
         int (daSnowman_c::*execute)();
+
+        State(int (daSnowman_c::*enterFn)(), int (daSnowman_c::*executeFn)())
+            : enter(enterFn), execute(executeFn) {}
     };
 
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */

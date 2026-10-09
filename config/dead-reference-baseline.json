@@ -606,6 +606,10 @@
    "ref": "src/game/actors/daTrs_c/_ZN7daTrs_c13InitResourcesEv.cpp"
   },
   {
+   "file": "notes/experiments/piano-2712-sinit-split.md",
+   "ref": "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c"
+  },
+  {
    "file": "notes/ghidra-dsd-landscape.md",
    "ref": "assets/signatures"
   },
@@ -776,6 +780,10 @@
   {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
    "ref": "tools/tu_config.py"
+  },
+  {
+   "file": "notes/sinit-wave-a-ownership.md",
+   "ref": "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c"
   },
   {
    "file": "notes/smartball-provenance.md",

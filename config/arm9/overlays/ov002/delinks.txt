@@ -23,6 +23,10 @@ src/actors/dCapEnemy_c.cpp:
 src/actors/da1up_c.cpp:
     complete
     .text start:0x020aee40 end:0x020b05d0
+    .init start:0x02100adc end:0x02100c50
+    .ctor start:0x021080d8 end:0x021080dc
+    .data start:0x02108300 end:0x02108370
+    .bss start:0x0210dc00 end:0x0210dc70
 
 src/actors/daBar_c.cpp:
     complete
@@ -1487,10 +1491,6 @@ src/actors/daPropeller_Heyho_Fire_c.cpp:
 src/unnamed/ov002/__sinit_ov002_02100560.c:
     complete
     .init start:0x02100560 end:0x02100938
-
-src/unnamed/ov002/__sinit_ov002_02100adc.c:
-    complete
-    .init start:0x02100adc end:0x02100c50
 
 src/unnamed/ov002/__sinit_ov002_02100c50.c:
     complete
