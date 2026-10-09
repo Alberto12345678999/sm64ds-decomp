@@ -759,6 +759,7 @@
     "src/actors/daDoor_c.cpp#_ZN8daDoor_c8BehaviorEv",
     "src/actors/daDoor_c.cpp#_ZN8daDoor_cD0Ev",
     "src/actors/daDoor_c.cpp#_ZN8daDoor_cD1Ev",
+    "src/actors/daDoor_c.cpp#__sinit_daDoor_c.cpp",
     "src/game/actors/d_a_fish.cpp#_ZN8daFish_c16CleanupResourcesEv",
     "src/game/actors/d_a_fish.cpp#_ZN8daFish_c16OnPendingDestroyEv",
     "src/game/actors/d_a_fish.cpp#_ZN8daFish_c6RenderEv",
@@ -3559,5 +3560,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3550
+  "count": 3551
 }

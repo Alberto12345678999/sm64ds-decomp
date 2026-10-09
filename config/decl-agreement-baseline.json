@@ -12048,6 +12048,9 @@
     "data_02086b58": {
       "src/actors/dMgState_c.cpp": [
         "return:W2"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:daDoor_StatePmf"
       ]
     },
     "data_020874cc": {
