@@ -67,11 +67,11 @@ daShark_c_classInit kind:function(arm,size=0x48) addr:0x02133ca0
 __sinit_daMenbo_c.cpp kind:function(arm,size=0x1c0) addr:0x02133ce8
 __sinit_daManta_c.cpp kind:function(arm,size=0xa4) addr:0x02133ea8
 __sinit_ov090_02133f4c kind:function(arm,size=0xd4) addr:0x02133f4c
-__sinit_ov090_02134020 kind:function(arm,size=0xa4) addr:0x02134020
+__sinit_daShark_c.cpp kind:function(arm,size=0xa4) addr:0x02134020
 .p__sinit_daMenbo_c.cpp kind:data(word) addr:0x021340c4
 .p__sinit_daManta_c.cpp kind:data(word) addr:0x021340c8
 .p__sinit_ov090_02133f4c kind:data(word) addr:0x021340cc
-.p__sinit_ov090_02134020 kind:data(word) addr:0x021340d0
+.p__sinit_daShark_c.cpp kind:data(word) addr:0x021340d0
 @1153 kind:data(any) addr:0x021340e0
 @1151 kind:data(any) addr:0x021340e8
 @1155 kind:data(any) addr:0x021340f0
@@ -134,6 +134,6 @@ data_ov090_02134584 kind:bss addr:0x02134584
 data_ov090_02134594 kind:bss addr:0x02134594
 data_ov090_021345a4 kind:bss addr:0x021345a4
 data_ov090_021345ac kind:bss addr:0x021345ac
-data_ov090_021345b4 kind:bss addr:0x021345b4
-data_ov090_021345c0 kind:bss addr:0x021345c0
+@720 kind:bss addr:0x021345b4
+@722 kind:bss addr:0x021345c0
 data_ov090_021345cc kind:bss addr:0x021345cc
