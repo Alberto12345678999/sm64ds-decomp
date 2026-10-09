@@ -202,6 +202,9 @@ src/actors/dScMgSound_c.cpp:
 src/actors/dScMgTeresa_c.cpp:
     complete
     .text start:0x0211cbd0 end:0x021207a8
+    .init start:0x02132f68 end:0x0213322c
+    .ctor start:0x021335d8 end:0x021335dc
+    .bss start:0x02142e88 end:0x02142f60
 
 src/d_s_mg_teresa.cpp:
     complete
@@ -340,10 +343,6 @@ src/unnamed/ov006/__sinit_ov006_02132894.c:
 src/unnamed/ov006/__sinit_ov006_02132970.c:
     complete
     .init start:0x02132970 end:0x02132f68
-
-src/unnamed/ov006/__sinit_ov006_02132f68.c:
-    complete
-    .init start:0x02132f68 end:0x0213322c
 
 src/unnamed/ov006/__sinit_ov006_0213322c.c:
     complete
