@@ -1285,43 +1285,7 @@ src/actors/daYegg_c.cpp:
 
 src/actors/dBgActor_c.cpp:
     complete
-    .text start:0x020ee42c end:0x020eea84
-
-src/unnamed/ov002/func_ov002_020eea84.c:
-    complete
-    .text start:0x020eea84 end:0x020eeca8
-
-src/unnamed/ov002/func_ov002_020eeca8.cpp:
-    complete
-    .text start:0x020eeca8 end:0x020eed24
-
-src/unnamed/ov002/func_ov002_020eed24.cpp:
-    complete
-    .text start:0x020eed24 end:0x020eedc0
-
-src/unnamed/ov002/func_ov002_020eedc0.cpp:
-    complete
-    .text start:0x020eedc0 end:0x020eee3c
-
-src/unnamed/ov002/func_ov002_020eee3c.cpp:
-    complete
-    .text start:0x020eee3c end:0x020eeeb8
-
-src/unnamed/ov002/func_ov002_020eeeb8.cpp:
-    complete
-    .text start:0x020eeeb8 end:0x020ef070
-
-src/unnamed/ov002/func_ov002_020ef070.cpp:
-    complete
-    .text start:0x020ef070 end:0x020ef228
-
-src/unnamed/ov002/func_ov002_020ef228.cpp:
-    complete
-    .text start:0x020ef228 end:0x020ef2a4
-
-src/unnamed/ov002/func_ov002_020ef2a4.cpp:
-    complete
-    .text start:0x020ef2a4 end:0x020ef320
+    .text start:0x020ee42c end:0x020ef320
 
 src/actors/dPathLiftActor_c.cpp:
     complete
