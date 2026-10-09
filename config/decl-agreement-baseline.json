@@ -19921,19 +19921,24 @@
         "return:void *"
       ]
     },
+    "data_ov081_02128d90": {
+      "src/actors/daSnowball_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
     "data_ov081_02128da8": {
       "src/actors/daSnowman_c.cpp": [
-        "return:SharedFilePtr"
+        "return:daSnowmanAnimationFilePtr"
       ]
     },
     "data_ov081_02128db0": {
       "src/actors/daSnowman_c.cpp": [
-        "return:SharedFilePtr"
+        "return:daSnowmanModelFilePtr"
       ]
     },
     "data_ov081_02128db8": {
       "src/actors/daSnowman_c.cpp": [
-        "return:SharedFilePtr"
+        "return:daSnowmanAnimationFilePtr"
       ]
     },
     "data_ov081_02128e14": {
