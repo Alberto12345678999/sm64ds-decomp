@@ -4062,6 +4062,8 @@
     "src/actors/daObjBk_Lift_c.cpp#_ZN14daObjBk_Lift_c19func_ov015_021128e8EPv": "tangosdev",
     "src/actors/daObjBk_Lift_c.cpp#func_ov015_021128f8": "tangosdev",
     "src/actors/daObjBk_Lift_c.cpp#daObjBk_Lift_c_classInit": "tangosdev",
+    "src/game/actors/d_a_obj_maruta.cpp#_ZN13daObjMaruta_cD0Ev": "andrewboudreau",
+    "src/game/actors/d_a_obj_maruta.cpp#_ZN13daObjMaruta_cD1Ev": "andrewboudreau",
     "src/game/actors/d_a_obj_maruta.cpp#_ZN13daObjMaruta_c15OnHitByMegaCharER6Player": "andrewboudreau",
     "src/game/actors/d_a_obj_maruta.cpp#_ZN13daObjMaruta_c19func_ov080_02127094Ev": "tangosdev",
     "src/game/actors/d_a_obj_maruta.cpp#func_ov080_02127094": "tangosdev",

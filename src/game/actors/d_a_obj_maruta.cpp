@@ -2,20 +2,14 @@
 /* daObjMaruta_c -- the abstract base of the two rolling logs, and the shared
  * implementation both of them forward to.
  *
- * Licensed .text run: ov080 0x02127058 .. 0x0212766c, eight functions.
+ * Licensed .text run: ov080 0x02126fbc .. 0x0212766c, the two destructor
+ * variants (D0 0x02126fbc, D1 0x02127014) and then eight methods.
  *
- * The class's two destructor variants sit just below this run, at 0x02126fbc
- * (D0) and 0x02127014 (D1), and stay in their own enrolled sources. The
- * cartridge orders D0 BELOW D1; with the destructor defined in the class body
- * -- which include/daObjMaruta_c.h requires, so that both descendants inline
- * the body instead of calling it -- mwccarm 2004/b56 emits D1 then D0, and no
- * admissible source form reverses that. This TU emits its own copies of both
- * because it owns the key function, and they are licensed as deadstripped
- * duplicates.
- *
- * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S. mwccarm 2004/b56
- * emits one .text section per function in the reverse of source order, so the
- * highest-address ROM function is written FIRST here. Do not reorder.
+ * The file is in ROM order under `#pragma defer_codegen off`, with the two
+ * destructor forcers first. include/daObjMaruta_c.h keeps the destructor in
+ * the class body so that both descendants inline it; deferred codegen emits
+ * that inline body as D1 then D0, and the cartridge has D0 below D1. Do not
+ * reorder.
  *
  * ABSTRACT: no classInit in this TU. The leaves own the factories
  * (ov022 daObjFlMaruta_c, ov030 daObjHmMaruta_c).
@@ -49,12 +43,12 @@
  * Leftover: sine table data_02082214 (arm9).
  * Leftover: no return new -- this class is abstract; the leaves own
  *   classInit.
- * Leftover: inline destructor (out-of-line emits D0 before D1 plus a
- *   homeless D2). D0/D1 stay in their enrolled shards.
  * Leftover: common.h first so func_ov080_02127094's Matrix4x3 translation
  *   stores use the flat s32 m[12] spelling (math/Matrix.h nested form
  *   scalarises).
  */
+
+#pragma defer_codegen off
 
 #include "common.h"
 #include "daObjMaruta_c.h"
@@ -104,87 +98,84 @@ void func_ov080_02127658(void *a, void *b, void *c);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov080_02127658, 0x02127658, size 0x14 */
+/* ROM 0x02126fbc (D0, size 0x58) and 0x02127014 (D1, size 0x44)              */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov080_02127658
-/* Arg-shifting tail-call veneer, handed to the dBgW at mMeshCollider by
-   func_ov080_021274ac below. Drops the first argument and forwards the next
-   two; long_calls emits the pooled `ldr ip,[pc,#8]; bx ip` absolute
-   tail-call. Bracketed closed immediately: long_calls is positional. */
-#pragma long_calls on
-extern "C" void func_ov080_02127658(void *a, void *b, void *c)
+// @symbol _ZN13daObjMaruta_cD0Ev
+// @symbol _ZN13daObjMaruta_cD1Ev
+/* No source here: both destructor variants come from the ONE inline body in
+ * include/daObjMaruta_c.h, which daObjFlMaruta_c and daObjHmMaruta_c need
+ * visible to inline it.
+ *
+ * The two calls below are never executed. Under `#pragma defer_codegen off`
+ * the compiler emits ordinary functions at parse time in source order, so the
+ * delete-expression pulls the deleting variant out of line first and the
+ * explicit destructor call pulls the complete-object variant out second --
+ * the cartridge's D0-then-D1 order, with no D2. */
+
+/* Not called. Forces the out-of-line copy of the deleting destructor. */
+void daObjMaruta_c_EmitDeletingDestructor(daObjMaruta_c *p)
 {
-    func_ov080_0212758c((daObjMaruta_c *)b, (char *)c);
+    delete p;
 }
-#pragma long_calls off
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov080_0212758c, 0x0212758c, size 0xcc */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov080_0212758c
-/* BeforeClsn helper: if the other actor's actorID is PLAYER (0xbf), copy
-   its mPos into mHitPos, arm mHitByPlayer / mHitTimer, and shove that
-   actor along mAngleY by half of mHorzSpeed. The volatile load and the
-   a1 rebase onto +0x5c are load-bearing. */
-extern "C" void func_ov080_0212758c(daObjMaruta_c *self, char *a1)
+/* Not called. Forces the out-of-line copy of the inline destructor. */
+void daObjMaruta_c_EmitDestructor(daObjMaruta_c *p)
 {
-    int t;
-    int half;
-
-    t = (*(volatile u16 *)(a1 + 0xc) == 0xbf);
-    if (t != 0) {
-        a1 = (char *)(int)(a1 + 0x5c);
-        self->mHitPosX = *(int *)a1;
-        self->mHitPosY = *(int *)(a1 + 4);
-        self->mHitPosZ = *(int *)(a1 + 8);
-        self->mHitByPlayer = 1;
-        self->mHitTimer = 0x78;
-
-        half = self->mHorzSpeed >> 1;
-
-        {
-            int idx = ((u16)self->mAngleY) >> 4;
-            int sc = data_02082214[idx * 2];
-            int v = *(int *)a1;
-            *(int *)a1 = v + (int)(((long long)half * sc + 0x800) >> 12);
-        }
-
-        a1 = (char *)(int)(a1 + 8);
-        {
-            int idx = ((u16)self->mAngleY) >> 4;
-            int sc = data_02082214[idx * 2 + 1];
-            int v = *(int *)a1;
-            *(int *)a1 = v + (int)(((long long)half * sc + 0x800) >> 12);
-        }
-    }
+    p->~daObjMaruta_c();
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov080_021274ac, 0x021274ac, size 0xe0 */
+/* ROM ordinal 0 -- _ZN13daObjMaruta_c15OnHitByMegaCharER6Player, 0x02127058 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov080_021274ac
-extern "C" int func_ov080_021274ac(daObjMaruta_c *self, ResourceDescriptor *arg)
+// @symbol _ZN13daObjMaruta_c15OnHitByMegaCharER6Player
+/* Vtable slot 27, and this class's KEY FUNCTION: the destructor is inline in
+   the class body, so the first out-of-line virtual declared anchors
+   _ZTV13daObjMaruta_c and the RTTI chain, and this TU is where it is defined.
+   dBgActor_c::KillByMegaChar is non-virtual, so the unqualified call is the
+   direct `bl` the ROM has. */
+void daObjMaruta_c::OnHitByMegaChar(Player &player)
 {
-    struct Vector3 d;
-    self->mModel.SetFile(
-        (BMD_File *)Model::LoadFile(*arg->model), 1, -1);
-    self->func_ov080_02127094();
-    self->UpdateClsnPosAndRot();
-    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        &self->mMeshCollider,
-        (KCL_File *)dBgW_Kc::LoadFile(*arg->collision),
-        &self->mClsnMat, 0x1000, self->mAngleY, arg->clps);
-    func_020393d4((int *)&self->mMeshCollider,
-        (int)&dBgW::UpdatePosWithVelocity);
-    func_020393c4((int *)&self->mMeshCollider, (int)&func_ov080_02127658);
-    self->mRestPosX = self->mPosX;
-    self->mRestPosY = self->mPosY;
-    self->mRestPosZ = self->mPosZ;
-    Vec3_Sub(&d, (Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX);
-    LenVec3(&d);
-    self->mPathAngDiff = AngleDiff(
-        Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX),
-        self->mAngleY);
+    player.IncMegaKillCount();
+    func_02012694(0x1e, &mCamSpacePosX);
+    KillByMegaChar(player);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 1 -- func_ov080_02127094, 0x02127094, size 0x48 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjMaruta_c19func_ov080_02127094Ev
+void daObjMaruta_c::func_ov080_02127094()
+{
+    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3,
+        mAngleX, mAngleY, mAngleZ);
+    mModel.mat4x3.m[9]  = mPosX >> 3;
+    mModel.mat4x3.m[10] = mPosY >> 3;
+    mModel.mat4x3.m[11] = mPosZ >> 3;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 2 -- func_ov080_021270dc, 0x021270dc, size 0x48 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov080_021270dc
+extern "C" int func_ov080_021270dc(daObjMaruta_c *self, ResourceDescriptor *arg)
+{
+    if (self->mMeshCollider.IsEnabled())
+        self->mMeshCollider.Disable();
+    arg->model->Release();
+    arg->collision->Release();
+    return 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 3 -- _ZN13daObjMaruta_c6RenderEv, 0x02127124, size 0x28 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjMaruta_c6RenderEv
+/* Dispatches through the Model at 0xd4 (dBgActor_c's mModel, inherited) --
+   Model::Render(const Vector3 *) with a null scale, matching the ROM's
+   literal-0 argument. */
+s32 daObjMaruta_c::Render()
+{
+    mModel.Render(0);
     return 1;
 }
 
@@ -315,63 +306,86 @@ extern "C" int func_ov080_0212714c(daObjMaruta_c *self, int *maxDist)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN13daObjMaruta_c6RenderEv, 0x02127124, size 0x28 */
+/* ROM ordinal 5 -- func_ov080_021274ac, 0x021274ac, size 0xe0 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjMaruta_c6RenderEv
-/* Dispatches through the Model at 0xd4 (dBgActor_c's mModel, inherited) --
-   Model::Render(const Vector3 *) with a null scale, matching the ROM's
-   literal-0 argument. */
-s32 daObjMaruta_c::Render()
+// @symbol func_ov080_021274ac
+extern "C" int func_ov080_021274ac(daObjMaruta_c *self, ResourceDescriptor *arg)
 {
-    mModel.Render(0);
+    struct Vector3 d;
+    self->mModel.SetFile(
+        (BMD_File *)Model::LoadFile(*arg->model), 1, -1);
+    self->func_ov080_02127094();
+    self->UpdateClsnPosAndRot();
+    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+        &self->mMeshCollider,
+        (KCL_File *)dBgW_Kc::LoadFile(*arg->collision),
+        &self->mClsnMat, 0x1000, self->mAngleY, arg->clps);
+    func_020393d4((int *)&self->mMeshCollider,
+        (int)&dBgW::UpdatePosWithVelocity);
+    func_020393c4((int *)&self->mMeshCollider, (int)&func_ov080_02127658);
+    self->mRestPosX = self->mPosX;
+    self->mRestPosY = self->mPosY;
+    self->mRestPosZ = self->mPosZ;
+    Vec3_Sub(&d, (Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX);
+    LenVec3(&d);
+    self->mPathAngDiff = AngleDiff(
+        Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mRestPosX),
+        self->mAngleY);
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov080_021270dc, 0x021270dc, size 0x48 */
+/* ROM ordinal 6 -- func_ov080_0212758c, 0x0212758c, size 0xcc */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov080_021270dc
-extern "C" int func_ov080_021270dc(daObjMaruta_c *self, ResourceDescriptor *arg)
+// @symbol func_ov080_0212758c
+/* BeforeClsn helper: if the other actor's actorID is PLAYER (0xbf), copy
+   its mPos into mHitPos, arm mHitByPlayer / mHitTimer, and shove that
+   actor along mAngleY by half of mHorzSpeed. The volatile load and the
+   a1 rebase onto +0x5c are load-bearing. */
+extern "C" void func_ov080_0212758c(daObjMaruta_c *self, char *a1)
 {
-    if (self->mMeshCollider.IsEnabled())
-        self->mMeshCollider.Disable();
-    arg->model->Release();
-    arg->collision->Release();
-    return 1;
+    int t;
+    int half;
+
+    t = (*(volatile u16 *)(a1 + 0xc) == 0xbf);
+    if (t != 0) {
+        a1 = (char *)(int)(a1 + 0x5c);
+        self->mHitPosX = *(int *)a1;
+        self->mHitPosY = *(int *)(a1 + 4);
+        self->mHitPosZ = *(int *)(a1 + 8);
+        self->mHitByPlayer = 1;
+        self->mHitTimer = 0x78;
+
+        half = self->mHorzSpeed >> 1;
+
+        {
+            int idx = ((u16)self->mAngleY) >> 4;
+            int sc = data_02082214[idx * 2];
+            int v = *(int *)a1;
+            *(int *)a1 = v + (int)(((long long)half * sc + 0x800) >> 12);
+        }
+
+        a1 = (char *)(int)(a1 + 8);
+        {
+            int idx = ((u16)self->mAngleY) >> 4;
+            int sc = data_02082214[idx * 2 + 1];
+            int v = *(int *)a1;
+            *(int *)a1 = v + (int)(((long long)half * sc + 0x800) >> 12);
+        }
+    }
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- func_ov080_02127094, 0x02127094, size 0x48 */
+/* ROM ordinal 7 -- func_ov080_02127658, 0x02127658, size 0x14 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjMaruta_c19func_ov080_02127094Ev
-void daObjMaruta_c::func_ov080_02127094()
+// @symbol func_ov080_02127658
+/* Arg-shifting tail-call veneer, handed to the dBgW at mMeshCollider by
+   func_ov080_021274ac below. Drops the first argument and forwards the next
+   two; long_calls emits the pooled `ldr ip,[pc,#8]; bx ip` absolute
+   tail-call. Bracketed closed immediately: long_calls is positional. */
+#pragma long_calls on
+extern "C" void func_ov080_02127658(void *a, void *b, void *c)
 {
-    Matrix4x3_FromRotationXYZExt(&mModel.mat4x3,
-        mAngleX, mAngleY, mAngleZ);
-    mModel.mat4x3.m[9]  = mPosX >> 3;
-    mModel.mat4x3.m[10] = mPosY >> 3;
-    mModel.mat4x3.m[11] = mPosZ >> 3;
+    func_ov080_0212758c((daObjMaruta_c *)b, (char *)c);
 }
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN13daObjMaruta_c15OnHitByMegaCharER6Player, 0x02127058 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjMaruta_c15OnHitByMegaCharER6Player
-/* Vtable slot 27, and this class's KEY FUNCTION: the destructor is inline in
-   the class body, so the first out-of-line virtual declared anchors
-   _ZTV13daObjMaruta_c and the RTTI chain, and this TU is where it is defined.
-   dBgActor_c::KillByMegaChar is non-virtual, so the unqualified call is the
-   direct `bl` the ROM has. */
-void daObjMaruta_c::OnHitByMegaChar(Player &player)
-{
-    player.IncMegaKillCount();
-    func_02012694(0x1e, &mCamSpacePosX);
-    KillByMegaChar(player);
-}
-
-/* Below this point the compiler emits, unbidden, _ZN13daObjMaruta_cD1Ev and
-   _ZN13daObjMaruta_cD0Ev in that order, plus the vtable and the RTTI chain --
-   the price of owning the key function. Only the vtable and RTTI are wanted;
-   the two destructor bodies are the cartridge's, in the cartridge's bytes, but
-   in the opposite order, so they are deliberately outside the licensed run
-   above and stay in the two enrolled sources that already hold them. */
+#pragma long_calls off
