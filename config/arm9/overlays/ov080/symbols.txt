@@ -93,19 +93,18 @@ data_ov080_0212775c kind:data(any) addr:0x0212775c
 data_ov080_021277a8 kind:data(any) addr:0x021277a8
 data_ov080_02127834 kind:data(any) addr:0x02127834
 data_ov080_02127848 kind:data(any) addr:0x02127848 ambiguous
-__sinit_ov080_021278c0 kind:function(arm,size=0x1a0) addr:0x021278c0
+__sinit_daChoropu_c.cpp kind:function(arm,size=0x1a0) addr:0x021278c0
 __sinit_daBttBk_c.cpp kind:function(arm,size=0xcc) addr:0x02127a60
 __sinit_daPicGate_c.cpp kind:function(arm,size=0x434) addr:0x02127b2c
-.p__sinit_ov080_021278c0 kind:data(word) addr:0x02127f60
+.p__sinit_daChoropu_c.cpp kind:data(word) addr:0x02127f60
 .p__sinit_daBttBk_c.cpp kind:data(word) addr:0x02127f64
 .p__sinit_daPicGate_c.cpp kind:data(word) addr:0x02127f68
-data_ov080_02127f80 kind:data(any) addr:0x02127f80
-data_ov080_02127f88 kind:data(any) addr:0x02127f88
-data_ov080_02127f90 kind:data(any) addr:0x02127f90
-data_ov080_02127f94 kind:data(any) addr:0x02127f94 ambiguous
-data_ov080_02127f98 kind:data(any) addr:0x02127f98
-data_ov080_02127fa0 kind:data(any) addr:0x02127fa0
-data_ov080_02127fa8 kind:data(any) addr:0x02127fa8
+@1023 kind:data(any) addr:0x02127f80
+@1019 kind:data(any) addr:0x02127f88
+@1027 kind:data(any) addr:0x02127f90
+@1025 kind:data(any) addr:0x02127f98
+@1017 kind:data(any) addr:0x02127fa0
+@1021 kind:data(any) addr:0x02127fa8
 _ZTI14daChoro_Rock_c kind:data(any) addr:0x02127fb0
 _ZTI11daChoropu_c kind:data(any) addr:0x02127fbc
 _ZTS11daChoropu_c kind:data(any) addr:0x02127fc8
@@ -149,12 +148,12 @@ data_ov080_021283d0 kind:bss addr:0x021283d0
 data_ov080_021283d8 kind:bss addr:0x021283d8
 data_ov080_021283e0 kind:bss addr:0x021283e0
 data_ov080_021283e8 kind:bss addr:0x021283e8
-data_ov080_021283f0 kind:bss addr:0x021283f0
-data_ov080_021283fc kind:bss addr:0x021283fc
-data_ov080_02128408 kind:bss addr:0x02128408
-data_ov080_02128414 kind:bss addr:0x02128414
-data_ov080_02128420 kind:bss addr:0x02128420
-data_ov080_0212842c kind:bss addr:0x0212842c
+@1014 kind:bss addr:0x021283f0
+@1015 kind:bss addr:0x021283fc
+@1010 kind:bss addr:0x02128408
+@1013 kind:bss addr:0x02128414
+@1011 kind:bss addr:0x02128420
+@1012 kind:bss addr:0x0212842c
 data_ov080_02128438 kind:bss addr:0x02128438
 data_ov080_02128468 kind:bss addr:0x02128468
 @848 kind:bss addr:0x02128470
