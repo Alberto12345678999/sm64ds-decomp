@@ -20058,6 +20058,9 @@
       ]
     },
     "data_ov084_02130cf8": {
+      "src/actors/daKuriKing_c.cpp": [
+        "return:SharedFilePtr"
+      ],
       "src/unnamed/ov084/__sinit_ov084_0213035c.c": [
         "return:char []"
       ]
