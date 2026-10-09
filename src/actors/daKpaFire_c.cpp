@@ -1060,3 +1060,38 @@ daKpaFire_c::~daKpaFire_c()
 {
 }
 #pragma defer_codegen on
+
+/* ---- the static initializer's objects. __sinit_daKpaFire_c.cpp, emitted from
+ * these definitions, copies the 16 .data PMF descriptors at 0x0211a734..
+ * 0x0211a7ac into the two 8-slot .bss tables. A member-pointer initializer is
+ * not static here, so mwccarm emits a runtime copy for each slot; the
+ * descriptors keep their ROM bytes. First word is the handler, second the
+ * pointer-adjustor (0). The descriptor order and the copy order are the ROM's
+ * own. */
+extern PMF data_ov060_0211a734;
+extern PMF data_ov060_0211a73c;
+extern PMF data_ov060_0211a744;
+extern PMF data_ov060_0211a74c;
+extern PMF data_ov060_0211a754;
+extern PMF data_ov060_0211a75c;
+extern PMF data_ov060_0211a764;
+extern PMF data_ov060_0211a76c;
+extern PMF data_ov060_0211a774;
+extern PMF data_ov060_0211a77c;
+extern PMF data_ov060_0211a784;
+extern PMF data_ov060_0211a78c;
+extern PMF data_ov060_0211a794;
+extern PMF data_ov060_0211a79c;
+extern PMF data_ov060_0211a7a4;
+extern PMF data_ov060_0211a7ac;
+
+/* Behavior handler table (mVariant 0..7); one Entry{PMF} per slot. */
+extern "C" Entry data_ov060_0211afb4[8] = {
+    {data_ov060_0211a794}, {data_ov060_0211a78c}, {data_ov060_0211a76c}, {data_ov060_0211a77c},
+    {data_ov060_0211a764}, {data_ov060_0211a774}, {data_ov060_0211a744}, {data_ov060_0211a784}
+};
+/* InitResources handler table (mVariant 0..7); one ActorFn per slot. */
+extern "C" ActorFn data_ov060_0211af74[8] = {
+    data_ov060_0211a75c, data_ov060_0211a754, data_ov060_0211a73c, data_ov060_0211a74c,
+    data_ov060_0211a734, data_ov060_0211a7ac, data_ov060_0211a7a4, data_ov060_0211a79c
+};
