@@ -6393,6 +6393,7 @@
     "src/actors/daObjSlIceBlock_c.cpp#daObjSlIceBlock_c_classInit_SL_ICEBLOCK": "andrewboudreau",
     "src/actors/daObjWlSubmarine_c.cpp#daObjWlSubmarine_c_classInit": "tangosdev",
     "src/actors/daObjTtFuta_c.cpp#daObjTtFuta_c_classInit": "tangosdev",
+    "src/actors/daObjTtFuta_c.cpp#__sinit_daObjTtFuta_c.cpp": "github-actions[bot]",
     "src/actors/daObjWlKoopaShutter_c.cpp#daObjWlKoopaShutter_c_classInit": "tangosdev",
     "src/actors/daObjTtWater_c.cpp#daObjTtWater_c_classInit": "tangosdev",
     "src/actors/daObjCloset_c.cpp#daObjCloset_c_classInit": "tangosdev",

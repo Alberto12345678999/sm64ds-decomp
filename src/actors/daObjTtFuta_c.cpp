@@ -22,9 +22,27 @@
 #include "SharedFilePtr.h"
 #include "Sound.h"
 
-/* BSS file homes; Init loads them, Cleanup releases them. */
-extern SharedFilePtr data_ov033_021124c8;
-extern SharedFilePtr data_ov033_021124c0;
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct TtFutaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TtFutaModelFilePtr(u32 fileID);
+    ~TtFutaModelFilePtr();
+};
+
+struct TtFutaCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TtFutaCollisionFilePtr(u32 fileID);
+    ~TtFutaCollisionFilePtr();
+};
+
+/* BSS file homes; Init loads them, Cleanup releases them. Defined at the
+   end of this file so the constructors do not enter .text. */
+extern TtFutaModelFilePtr data_ov033_021124c8;
+extern TtFutaCollisionFilePtr data_ov033_021124c0;
 
 extern "C" {
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int x, int y, int z);
@@ -104,3 +122,10 @@ extern "C" daObjTtFuta_c *daObjTtFuta_c_classInit()
 {
     return new daObjTtFuta_c();
 }
+
+/* Source order is construction order: model file 1733, collision file 1734.
+ * __sinit_daObjTtFuta_c.cpp emits both constructions and registers the
+ * destructors; the registration nodes are compiler temporaries. */
+// @symbol __sinit_daObjTtFuta_c.cpp
+TtFutaModelFilePtr data_ov033_021124c8(1733);
+TtFutaCollisionFilePtr data_ov033_021124c0(1734);
