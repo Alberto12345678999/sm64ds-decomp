@@ -3,13 +3,15 @@
  *
  * The class linker run is 0x021111a0..0x02111a70, split by the
  * func_ov009_0211145c hatch at 0x0211145c. This file owns
- * 0x02111224..0x0211145c; the upper half lives in d_a_s_bird.cpp.
+ * 0x021111a0..0x0211145c; the upper half lives in d_a_s_bird.cpp.
  *
- * D1/D0 stay enrolled as their own files (src/_ZN9daSBird_cD1Ev.cpp /
- * D0Ev.cpp) -- the destructor is out of line and those files emit the
- * class vtable and RTTI. This TU does not.
+ * The out-of-line destructor is the key function, so this file emits the
+ * class vtable and RTTI. Under `#pragma defer_codegen off` it comes out
+ * D1 (0x021111a0), D0 (0x021111d8), then a D2 the cartridge has no home
+ * for (manifest: deadstrip), and .text is laid down in source order, so
+ * the file is written ROM-ascending.
  *
- * Both functions are daSBird_c members: 02111234 is ordinal 3 of the
+ * The two helpers are daSBird_c members: 02111234 is ordinal 3 of the
  * data_ov009_02113c48 PMF table (ROM record at 0x02113914), and 02111224
  * is the follower-attach the two spawn loops call on the spawned bird.
  * Helper names are not recovered; the members keep their addresses (S33).
@@ -23,6 +25,7 @@
  *   upper half).
  */
 
+#pragma defer_codegen off
 #include "daSBird_c.h"
 #include "common.h"
 
@@ -36,9 +39,24 @@ extern s32 LenVec3(void *v);
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
 }
 
+/* Empty body: mShadowModel then mModelAnim teardown, the vptr store and
+   dActor_c's teardown are synthesised. */
+// @symbol _ZN9daSBird_cD1Ev
+// @symbol _ZN9daSBird_cD0Ev
+daSBird_c::~daSBird_c()
+{
+}
+
+/* Follower attach -- spawn loops store the leader's uniqueID. */
+// @symbol _ZN9daSBird_c19func_ov009_02111224Ei
+void daSBird_c::func_ov009_02111224(int ownerID)
+{
+    mIsLeader = 0;
+    mOwnerID = ownerID;
+}
+
 /* Fly state -- data_ov009_02113c48[3]. Steers toward the leader's position
-   (or the target point when leading) and derives forward/vertical speed.
-   Defined first so the object emits in ROM order (02111224 < 02111234). */
+   (or the target point when leading) and derives forward/vertical speed. */
 // @symbol _ZN9daSBird_c19func_ov009_02111234Ev
 void daSBird_c::func_ov009_02111234()
 {
@@ -95,12 +113,4 @@ void daSBird_c::func_ov009_02111234()
         s16 s = data_02082214[(a >> 4) << 1];
         mVertSpeed = (s32)(((s64)t * s + 0x800) >> 12);
     }
-}
-
-/* Follower attach -- spawn loops store the leader's uniqueID. */
-// @symbol _ZN9daSBird_c19func_ov009_02111224Ei
-void daSBird_c::func_ov009_02111224(int ownerID)
-{
-    mIsLeader = 0;
-    mOwnerID = ownerID;
 }

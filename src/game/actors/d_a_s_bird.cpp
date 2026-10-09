@@ -9,10 +9,10 @@
  * Retail does not store that spelling. Historical alias: Bird_Spawn.
  *
  * Factory is `return new daSBird_c()`. fBase_c::operator new(unsigned long)
- * forwards `_ZN7fBase_cnwEj`. D1/D0 are leftover enrolled files -- the
- * destructor is out of line so this TU does not synthesise them.
- * Key function is ~daSBird_c(); those leftover files emit the class
- * vtable and RTTI. This TU does not.
+ * forwards `_ZN7fBase_cnwEj`. The destructor is out of line and is
+ * defined in d_a_s_bird_head.cpp, below the hatch. Key function is
+ * ~daSBird_c(), so that file emits D1/D0 and the class vtable and RTTI.
+ * This TU does not.
  *
  * deslop leftovers:
  * - ModelAnim::SetAnim / DropShadowRadHeight 6az: this TU passes Fix12<int>
@@ -30,9 +30,9 @@
  * - func_ov009_0211145c is a proven mwccarm 1.2/2004/b56 register-
  *   allocation wall. It lives in src/unnamed/ov009/func_ov009_0211145c.c as an
  *   unenrolled draft (not in this TU's delinks span).
- *   D1/D0 stay as leftover enrolled files below that hole;
- *   02111224/02111234 folded into d_a_s_bird_head.cpp as daSBird_c
- *   members, so this TU's complete range is 0x021115d8..0x02111a70.
+ *   D1/D0 and 02111224/02111234 sit below that hole in
+ *   d_a_s_bird_head.cpp, so this TU's complete range is
+ *   0x021115d8..0x02111a70.
  * - *(Vector3 *)&mPosX addressing shape (a Vector3 member at 0x05c is a
  *   dActor_c campaign, not this leaf).
  * - data_020a0e68 scratch matrix; data_02082214 sine table;
