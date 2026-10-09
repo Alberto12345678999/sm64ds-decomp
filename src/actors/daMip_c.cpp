@@ -7,8 +7,10 @@
  * Leftover: calls that take Fix12 by value stay mangled (ModelAnim::SetAnim,
  *   dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight, Sound::PlaySub,
  *   Particle::System::New). dBgCh_Actr::Init's header spells Fix12i, which
- *   mangles as int. dExtFrameCtrl_c handles and the eight state records stay
- *   data_ov085_*; their sinit is another file. g_profile_MIP stays outside.
+ *   mangles as int. The dExtFrameCtrl_c handles, the eight state records,
+ *   the four carry-offset vectors and the rabbit-count int are file-scope
+ *   objects at the end of this file (folded sinit 0x0212f5ec).
+ *   g_profile_MIP stays outside.
  *   Matrix copies use a local { s32 m[12] }: Matrix4x3 embeds Vector3, and a
  *   typed copy emits ~Vector3. StateFleeMain copies the player position
  *   through V3Blk { s32 w[3] } so the copy stays a block move. TestWaterBelow's
@@ -124,6 +126,91 @@ struct daMip_cSelf;
 typedef int (daMip_cSelf::*daMip_cStateFn)();
 struct daMip_cSelf { char pad[0x364]; daMip_cStateFn *pp; };
 
+/* File-scope objects at the end of this file construct the seven resource
+ * handles (model files 0x452/0x3a4, animation files 0x3a5/0x3a6/0x3a7/
+ * 0x3a8/0x3a9), build the four carry-offset vectors, fill the eight state
+ * pairs and read the glowing-rabbit count. mwcc emits __sinit_daMip_c.cpp
+ * from those definitions. The wrapper names are local; the handle
+ * constructors and destructors are the ROM resource-family functions,
+ * aliased in the manifest. MipVec3's plain overload builds the first vector
+ * with ordinary stores; the (int, int, long) overload builds the other
+ * three through a volatile lvalue, exactly as retail. Both share the one
+ * declared-not-defined destructor (never ~Vector3: a Vector3 here would
+ * instantiate its vague-linkage D1 into this TU, which deliberately avoids
+ * it); the destructor alias points at the ROM's canonical copy. */
+struct DaMipModelFile : SharedFilePtr {
+    u32 words[2];
+
+    DaMipModelFile(u32 fileID);
+    ~DaMipModelFile();
+};
+
+struct DaMipAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    DaMipAnimationFilePtr(u32 fileID);
+    ~DaMipAnimationFilePtr();
+};
+
+struct MipVec3 {
+    int x, y, z;
+    MipVec3(int a, int b, int c)
+    {
+        x = a;
+        y = b;
+        z = c;
+    }
+    MipVec3(int a, int b, long c)
+    {
+        volatile int *p = (volatile int *)&x;
+        p[0] = a;
+        p[1] = b;
+        p[2] = (int)c;
+    }
+    ~MipVec3();
+};
+
+struct MipStatePair {
+    daMip_cStateFn a, b;
+};
+
+extern DaMipModelFile data_ov085_021305d8;
+extern DaMipModelFile data_ov085_021305e0;
+extern DaMipAnimationFilePtr data_ov085_021305b8;
+extern DaMipAnimationFilePtr data_ov085_021305d0;
+extern DaMipAnimationFilePtr data_ov085_021305b0;
+extern DaMipAnimationFilePtr data_ov085_021305c8;
+extern DaMipAnimationFilePtr data_ov085_021305c0;
+extern MipVec3 data_ov085_021306ec;
+extern MipVec3 data_ov085_021306f8;
+extern MipVec3 data_ov085_02130704;
+extern MipVec3 data_ov085_02130710;
+extern MipStatePair data_ov085_021306cc;
+extern MipStatePair data_ov085_0213066c;
+extern MipStatePair data_ov085_0213067c;
+extern MipStatePair data_ov085_0213069c;
+extern MipStatePair data_ov085_021306ac;
+extern MipStatePair data_ov085_021306bc;
+extern MipStatePair data_ov085_021306dc;
+extern MipStatePair data_ov085_0213068c;
+extern daMip_cStateFn data_ov085_02130074;
+extern daMip_cStateFn data_ov085_02130044;
+extern daMip_cStateFn data_ov085_02130084;
+extern daMip_cStateFn data_ov085_02130094;
+extern daMip_cStateFn data_ov085_021300b4;
+extern daMip_cStateFn data_ov085_0213003c;
+extern daMip_cStateFn data_ov085_0213005c;
+extern daMip_cStateFn data_ov085_02130064;
+extern daMip_cStateFn data_ov085_0213007c;
+extern daMip_cStateFn data_ov085_0213008c;
+extern daMip_cStateFn data_ov085_02130054;
+extern daMip_cStateFn data_ov085_0213009c;
+extern daMip_cStateFn data_ov085_0213006c;
+extern daMip_cStateFn data_ov085_0213004c;
+extern daMip_cStateFn data_ov085_021300ac;
+extern daMip_cStateFn data_ov085_021300a4;
+extern int data_ov085_021305ac;
+
 #pragma defer_codegen off
 
 // @symbol _ZN7daMip_cD1Ev
@@ -172,8 +259,8 @@ int daMip_c::TestWaterBelow()
    (unk_426) goes to Released instead of Caught. */
 void daMip_c::UpdateGrab()
 {
-    extern int data_ov085_021306ac[];
-    extern int data_ov085_021306bc[];
+    extern MipStatePair data_ov085_021306ac;
+    extern MipStatePair data_ov085_021306bc;
 
     unsigned int id = mdCcAc_c.otherOwner;
     if (id == 0) return;
@@ -186,9 +273,9 @@ void daMip_c::UpdateGrab()
     mTalkingPlayer = (Player *)o;
     mdCcAc_c.flags |= 2;
     if (unk_426 == 0) {
-        SetState(data_ov085_021306ac);
+        SetState(&data_ov085_021306ac);
     } else {
-        SetState(data_ov085_021306bc);
+        SetState(&data_ov085_021306bc);
     }
 }
 
@@ -202,7 +289,7 @@ int daMip_c::StateSaveTalkMain()
     struct V3 { int x, y, z; };
     extern unsigned char data_0209d684;
     extern unsigned char data_0209d660;
-    extern char data_ov085_021306bc[];
+    extern MipStatePair data_ov085_021306bc;
 
     Player *player = mSaveTalkPlayer;
     struct V3 vec;
@@ -239,7 +326,7 @@ int daMip_c::StateSaveTalkMain()
                     *hp &= ~0x800;
                 }
                 Message::EndTalk();
-                SetState(data_ov085_021306bc);
+                SetState(&data_ov085_021306bc);
             }
         }
         break;
@@ -248,7 +335,7 @@ int daMip_c::StateSaveTalkMain()
             unsigned short *hp = (unsigned short *)((char *)player + 0x6ce);
             *hp &= ~0x800;
             Message::EndTalk();
-            SetState(data_ov085_021306bc);
+            SetState(&data_ov085_021306bc);
         }
         break;
     }
@@ -258,11 +345,11 @@ int daMip_c::StateSaveTalkMain()
 // @symbol _ZN7daMip_c17StateSaveTalkInitEv
 int daMip_c::StateSaveTalkInit()
 {
-    extern int data_ov085_021305c0[];
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
 
     mActionStep = 0;
     func_02013944();
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov085_021305c0[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov085_021305c0)[1], 0, 0x1000, 0);
     return 1;
 }
 
@@ -272,7 +359,7 @@ int daMip_c::StateSaveTalkInit()
 int daMip_c::StateTalkMain()
 {
     struct V3 { int x, y, z; };
-    extern int data_ov085_021306bc[];
+    extern MipStatePair data_ov085_021306bc;
 
     Player *player;
     int *pq;
@@ -313,7 +400,7 @@ int daMip_c::StateTalkMain()
     default:
         if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x26, 0x7f, 0, 0x7444, 0)) {
             Message::EndTalk();
-            SetState(data_ov085_021306bc);
+            SetState(&data_ov085_021306bc);
         }
         break;
     }
@@ -333,7 +420,7 @@ int daMip_c::StateTalkInit()
    and re-opens the conversation through StartTalk. */
 int daMip_c::StateReleasedMain()
 {
-    extern int data_ov085_021306dc;
+    extern MipStatePair data_ov085_021306dc;
 
     unsigned short h;
     int ok;
@@ -402,8 +489,7 @@ int daMip_c::StateReleasedMain()
 // @symbol _ZN7daMip_c17StateReleasedInitEv
 int daMip_c::StateReleasedInit()
 {
-    struct G { int w[2]; };
-    extern struct G data_ov085_021305c0;
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
 
     mVertAccel = -0x1000;
     unk_426 = 1;
@@ -411,7 +497,7 @@ int daMip_c::StateReleasedInit()
     mdCcAc_c.flags |= 0x4000000;
     mdCcAc_c.radius = 0x78000;
     mdCcAc_c.vulnFlags &= ~0x8000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov085_021305c0.w[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov085_021305c0)[1], 0, 0x1000, 0);
     return 1;
 }
 
@@ -430,9 +516,9 @@ int daMip_c::StateCaughtMain()
        ShowMessage and Spawn take by pointer; this local is not that type. */
     typedef struct { s32 x, y, z; } Vector3;
 
-    extern char data_ov085_021306cc[];
-    extern char data_ov085_021306bc[];
-    extern char data_ov085_0213068c[];
+    extern MipStatePair data_ov085_021306cc;
+    extern MipStatePair data_ov085_021306bc;
+    extern MipStatePair data_ov085_0213068c;
     extern u8 data_0209d660;
     extern u8 data_0209d6bc;
 
@@ -446,7 +532,7 @@ int daMip_c::StateCaughtMain()
 
     pl = mTalkingPlayer;
     if (pl == 0) {
-        SetState(data_ov085_021306cc);
+        SetState(&data_ov085_021306cc);
         return 1;
     }
 
@@ -604,7 +690,7 @@ int daMip_c::StateCaughtMain()
         func_02012790(0xa);
         mTalkState = 0;
         mTalkingPlayer = 0;
-        SetState(data_ov085_021306bc);
+        SetState(&data_ov085_021306bc);
         return 1;
     }
 
@@ -663,7 +749,7 @@ after_spawn:
     if (SaveData::NumGlowingRabbitsFound() != 8)
         goto flag_path;
 do_306bc:
-    SetState(data_ov085_021306bc);
+    SetState(&data_ov085_021306bc);
     goto final_return;
 flag_path:
     {
@@ -671,7 +757,7 @@ flag_path:
         *pf = (u16)(*pf | 0x800);
     }
     mSaveTalkPlayer = pl;
-    SetState(data_ov085_0213068c);
+    SetState(&data_ov085_0213068c);
 final_return:
     return 1;
 }
@@ -679,22 +765,22 @@ final_return:
 // @symbol _ZN7daMip_c15StateCaughtInitEv
 int daMip_c::StateCaughtInit()
 {
-    extern int data_ov085_021305b8[];
+    extern DaMipAnimationFilePtr data_ov085_021305b8;
 
     mActionStep = 0;
     mHorzSpeed = 0;
     mdCcAc_c.radius = 0x28000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)data_ov085_021305b8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)((int *)&data_ov085_021305b8)[1], 0, 0x1000, 0);
     return 1;
 }
 
 // @symbol _ZN7daMip_c13StateRestMainEv
 int daMip_c::StateRestMain()
 {
-    extern int data_ov085_021306cc[];
+    extern MipStatePair data_ov085_021306cc;
 
     if (mModelAnim.Finished() != 0) {
-        SetState(data_ov085_021306cc);
+        SetState(&data_ov085_021306cc);
     }
     return 1;
 }
@@ -702,9 +788,9 @@ int daMip_c::StateRestMain()
 // @symbol _ZN7daMip_c13StateRestInitEv
 int daMip_c::StateRestInit()
 {
-    extern int *data_ov085_021305b0[];
+    extern DaMipAnimationFilePtr data_ov085_021305b0;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b0[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305b0)[1], 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -717,7 +803,7 @@ int daMip_c::StateFleeMain()
        copy a block move; a three-scalar struct scalarises. */
     struct Vector3 { s32 x, y, z; };
     struct V3Blk   { s32 w[3]; };
-    extern char data_ov085_0213069c[];
+    extern MipStatePair data_ov085_0213069c;
 
     Player *pl;
     char pathptr[8];
@@ -738,7 +824,7 @@ int daMip_c::StateFleeMain()
       v = *((struct V3Blk *)&pl->mPosX);
       if (Vec3_Dist((struct Vector3 *)&mPosX, &v) > 0x4b0000)
       {
-        SetState(data_ov085_0213069c);
+        SetState(&data_ov085_0213069c);
         return 1;
       }
     }
@@ -848,10 +934,12 @@ int daMip_c::StateFleeMain()
 
 // @symbol _ZN7daMip_c13StateFleeInitEv
 /* Whichever neighbouring node is further from the player becomes mPathDir.
-   types.h Vector3's empty destructor is free in this function. */
+   The scratch triple is a local Vector3 shadow, not types.h Vector3: the
+   ROM emits no scope-exit cleanup here. */
 int daMip_c::StateFleeInit()
 {
-  extern void *data_ov085_021305d0[];
+    typedef struct Vector3 { int x, y, z; } Vector3;
+  extern DaMipAnimationFilePtr data_ov085_021305d0;
 
   char pathptr[8];
   int indices[2];
@@ -878,7 +966,7 @@ int daMip_c::StateFleeInit()
       indices[1] = 0;
 
     for (i = 0; i < 2; i++)
-      ((PathPtr *)pathptr)->GetNode(nodes[i], indices[i]);
+      ((PathPtr *)pathptr)->GetNode(*(::Vector3 *)&nodes[i], indices[i]);
 
     mPathDir = 1;
     d0 = Vec3_Dist(&v, &nodes[0]);
@@ -886,26 +974,26 @@ int daMip_c::StateFleeInit()
       mPathDir = -1;
   }
 
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305d0[1], 0, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305d0)[1], 0, 0x1000, 0);
   return 1;
 }
 
 // @symbol _ZN7daMip_c16StateStartleMainEv
 int daMip_c::StateStartleMain()
 {
-    extern int data_ov085_0213067c[];
+    extern MipStatePair data_ov085_0213067c;
 
     if (mModelAnim.Finished() != 0)
-        SetState(data_ov085_0213067c);
+        SetState(&data_ov085_0213067c);
     return 1;
 }
 
 // @symbol _ZN7daMip_c16StateStartleInitEv
 int daMip_c::StateStartleInit()
 {
-    extern int *data_ov085_021305c8[];
+    extern DaMipAnimationFilePtr data_ov085_021305c8;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c8[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305c8)[1], 0x40000000, 0x1000, 0);
     return 1;
 }
 
@@ -915,12 +1003,17 @@ int daMip_c::StateStartleInit()
    stored. */
 int daMip_c::StateIdleMain()
 {
+    /* Scratch triples are a local Vector3 shadow, not types.h Vector3: the
+       ROM emits no scope-exit cleanup here, so the genuine destructor must
+       not instantiate (its vague-linkage D1 lived in this TU only for
+       these two locals). */
+    typedef struct Vector3 { int x, y, z; } Vector3;
     extern int data_0209e650[];
-    extern void *data_ov085_0213066c;
-    extern void *data_ov085_021305d0[];
-    extern void *data_ov085_021305b0[];
-    extern void *data_ov085_021305c0[];
-    extern void *data_ov085_021305c8[];
+    extern MipStatePair data_ov085_0213066c;
+    extern DaMipAnimationFilePtr data_ov085_021305d0;
+    extern DaMipAnimationFilePtr data_ov085_021305b0;
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
+    extern DaMipAnimationFilePtr data_ov085_021305c8;
 
     Player *player = ClosestPlayer();
     if (player == 0) return 1;
@@ -975,17 +1068,17 @@ int daMip_c::StateIdleMain()
         switch (mActionStep) {
         case 1:
             mHorzSpeed = 0x4000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305d0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305d0)[1], 0x40000000, 0x1000, 0);
             (mActionStep)++;
             break;
         case 2:
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305b0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305b0)[1], 0x40000000, 0x1000, 0);
             mHorzSpeed = 0;
             (mActionStep)++;
             break;
         case 3:
             mStateTimer = (s16)((r & 0x1f) + 0x1e);
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c0[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305c0)[1], 0, 0x1000, 0);
             mActionStep = 0;
             break;
         }
@@ -997,7 +1090,7 @@ int daMip_c::StateIdleMain()
             s16 *ang = &mTargetAngY;
             *ang = *ang + (0x1800 - ((r & 3) << 12));
         }
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov085_021305c8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((void **)&data_ov085_021305c8)[1], 0x40000000, 0x1000, 0);
         mActionStep = 1;
     }
 
@@ -1008,7 +1101,7 @@ int daMip_c::StateIdleMain()
 // @symbol _ZN7daMip_c13StateIdleInitEv
 int daMip_c::StateIdleInit()
 {
-  extern char data_ov085_021305c0;
+  extern DaMipAnimationFilePtr data_ov085_021305c0;
 
   _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void**)((char*)&data_ov085_021305c0+4), 0, 0x1000, 0);
   mIdlePosX = mPosX;
@@ -1061,7 +1154,7 @@ void daMip_c::UpdateMatrixAndShadow()
 void daMip_c::UpdateCarriedMatrix()
 {
     struct Mtx43 { s32 m[12]; };
-    extern char data_ov085_021306ec[];
+    extern MipVec3 data_ov085_021306ec;
     extern int data_020a0e68[];
 
     int idx;
@@ -1075,7 +1168,7 @@ void daMip_c::UpdateCarriedMatrix()
     if ((int)mTalkingPlayer->param1 == 2) {
         idx = (idx + 2) & 0xff;
     }
-    res = UpdateCarry(*mTalkingPlayer, *(Vector3 *)(data_ov085_021306ec + idx * 0xc));
+    res = UpdateCarry(*mTalkingPlayer, *(Vector3 *)((char *)&data_ov085_021306ec + idx * 0xc));
     *(struct Mtx43 *)&mModelAnim.mat4x3 = *(struct Mtx43 *)res;
     Matrix4x3_FromTranslation(data_020a0e68, mPosX >> 3, (mPosY - 0xc000) >> 3, mPosZ >> 3);
     *(struct Mtx43 *)mShadowMtx = *(struct Mtx43 *)data_020a0e68;
@@ -1137,13 +1230,13 @@ void daMip_c::UpdateMirrorShadow()
    data_ov085_021305d8 is the handle the key actor releases too. */
 int daMip_c::CleanupResources()
 {
-    extern char data_ov085_021305d8;
-    extern char data_ov085_021305b8;
-    extern char data_ov085_021305d0;
-    extern char data_ov085_021305b0;
-    extern char data_ov085_021305c8;
-    extern char data_ov085_021305c0;
-    extern char data_ov085_021305e0;
+    extern DaMipModelFile data_ov085_021305d8;
+    extern DaMipAnimationFilePtr data_ov085_021305b8;
+    extern DaMipAnimationFilePtr data_ov085_021305d0;
+    extern DaMipAnimationFilePtr data_ov085_021305b0;
+    extern DaMipAnimationFilePtr data_ov085_021305c8;
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
+    extern DaMipModelFile data_ov085_021305e0;
 
     ((SharedFilePtr *)(&data_ov085_021305d8))->Release();
     ((SharedFilePtr *)(&data_ov085_021305b8))->Release();
@@ -1263,11 +1356,11 @@ int daMip_c::Behavior()
     extern s8 data_02092120;
     extern int data_0209caa0[];
     extern void* data_0209f33c;
-    extern char data_ov085_021305c0;
-    extern char data_ov085_0213068c;
-    extern char data_ov085_021306ac;
-    extern char data_ov085_021306bc;
-    extern char data_ov085_021306dc;
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
+    extern MipStatePair data_ov085_0213068c;
+    extern MipStatePair data_ov085_021306ac;
+    extern MipStatePair data_ov085_021306bc;
+    extern MipStatePair data_ov085_021306dc;
 
     char* c = (char*)this;
     void* r0p;
@@ -1441,14 +1534,14 @@ int daMip_c::Behavior()
 // @symbol _ZN7daMip_c13InitResourcesEv
 int daMip_c::InitResources()
 {
-    extern char data_ov085_021305b8;
-    extern char data_ov085_021305d0;
-    extern char data_ov085_021305b0;
-    extern char data_ov085_021305c8;
-    extern char data_ov085_021305c0;
-    extern char data_ov085_021305d8;
-    extern char data_ov085_021305e0;
-    extern char data_ov085_021306cc;
+    extern DaMipAnimationFilePtr data_ov085_021305b8;
+    extern DaMipAnimationFilePtr data_ov085_021305d0;
+    extern DaMipAnimationFilePtr data_ov085_021305b0;
+    extern DaMipAnimationFilePtr data_ov085_021305c8;
+    extern DaMipAnimationFilePtr data_ov085_021305c0;
+    extern DaMipModelFile data_ov085_021305d8;
+    extern DaMipModelFile data_ov085_021305e0;
+    extern MipStatePair data_ov085_021306cc;
     extern s32 data_ov085_021305ac;
     extern int data_0209caa0[];
     extern s8 data_0209f2f8;
@@ -1606,3 +1699,30 @@ extern "C" daMip_c *daMip_c_classInit(void)
 {
     return new daMip_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov085_0212f5ec shard).
+ * Definition order is the retail initializer's construction order: the two
+ * model handles (files 0x452/0x3a4), the five animation handles (files
+ * 0x3a5/0x3a6/0x3a7/0x3a8/0x3a9), the four carry-offset vectors (first plain,
+ * the rest volatile), the eight state pairs copied from the ROM PMF
+ * constants, then the glowing-rabbit count. */
+DaMipModelFile data_ov085_021305d8(0x452);
+DaMipModelFile data_ov085_021305e0(0x3a4);
+DaMipAnimationFilePtr data_ov085_021305b8(0x3a5);
+DaMipAnimationFilePtr data_ov085_021305d0(0x3a6);
+DaMipAnimationFilePtr data_ov085_021305b0(0x3a7);
+DaMipAnimationFilePtr data_ov085_021305c8(0x3a8);
+DaMipAnimationFilePtr data_ov085_021305c0(0x3a9);
+MipVec3 data_ov085_021306ec(0x1c000, -0x2a000, 0x18000);
+MipVec3 data_ov085_021306f8(0x1c000, -0x14000, (long)0x32000);
+MipVec3 data_ov085_02130704(0x2b000, -0x2a000, (long)0x18000);
+MipVec3 data_ov085_02130710(0x30000, -0xa000, (long)0x32000);
+MipStatePair data_ov085_021306cc = {data_ov085_02130074, data_ov085_02130044};
+MipStatePair data_ov085_0213066c = {data_ov085_02130084, data_ov085_02130094};
+MipStatePair data_ov085_0213067c = {data_ov085_021300b4, data_ov085_0213003c};
+MipStatePair data_ov085_0213069c = {data_ov085_0213005c, data_ov085_02130064};
+MipStatePair data_ov085_021306ac = {data_ov085_0213007c, data_ov085_0213008c};
+MipStatePair data_ov085_021306bc = {data_ov085_02130054, data_ov085_0213009c};
+MipStatePair data_ov085_021306dc = {data_ov085_0213006c, data_ov085_0213004c};
+MipStatePair data_ov085_0213068c = {data_ov085_021300ac, data_ov085_021300a4};
+int data_ov085_021305ac = SaveData::NumGlowingRabbitsFound();
