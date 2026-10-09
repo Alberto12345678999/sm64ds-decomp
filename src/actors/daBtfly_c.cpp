@@ -76,6 +76,23 @@ struct Vec3 { s32 x, y, z; };
 
 typedef void (daBtfly_c::*ButterflyState)();
 
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x43a, animation file 0x43b) and fill the eight-entry
+ * state table. mwcc emits __sinit_daBtfly_c.cpp from those definitions. */
+struct BtflyModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BtflyModelFilePtr(u32 fileID);
+    ~BtflyModelFilePtr();
+};
+
+struct BtflyAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BtflyAnimationFilePtr(u32 fileID);
+    ~BtflyAnimationFilePtr();
+};
+
 /* SharedFilePtr.h has no fields. LoadFile stashes the file in the second word. */
 #define LOADED(h) (((void **)&(h))[1])
 
@@ -103,9 +120,9 @@ extern Matrix4x3 data_020a0e68; /* scratch matrix */
 /* Init LoadFile: ov002 BMD shared with the other small fauna, this overlay's
  * BCA, the still-model BMD, and the animated-model BMD. Cleanup Release. */
 extern SharedFilePtr data_ov002_0210d9d8;
-extern SharedFilePtr data_ov100_02148600;
+extern BtflyAnimationFilePtr data_ov100_02148600;
 extern SharedFilePtr data_ov100_02148668;
-extern SharedFilePtr data_ov100_02148608;
+extern BtflyModelFilePtr data_ov100_02148608;
 extern ButterflyState data_ov100_02148628[];
 
 /* Fix12<int> by value. The header method form homes those arguments on the
@@ -603,3 +620,20 @@ extern "C" daBtfly_c *daBtfly_c_classInit()
 {
     return new daBtfly_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov100_021473bc shard).
+ * Definition order is the retail initializer's construction order: the model
+ * handle, then the animation handle, then the state table. */
+BtflyModelFilePtr data_ov100_02148608(0x43a);
+BtflyAnimationFilePtr data_ov100_02148600(0x43b);
+
+ButterflyState data_ov100_02148628[8] = {
+    &daBtfly_c::State0,
+    &daBtfly_c::State1,
+    &daBtfly_c::State2,
+    &daBtfly_c::State3,
+    &daBtfly_c::State4,
+    &daBtfly_c::State5,
+    &daBtfly_c::State6,
+    &daBtfly_c::State7,
+};
