@@ -19,9 +19,24 @@
       "end": "0x021124a8"
     },
     {
+      "name": ".init",
+      "start": "0x02112c10",
+      "end": "0x02112dbc"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02112e94",
+      "end": "0x02112e98"
+    },
+    {
       "name": ".data",
-      "start": "0x021137e4",
+      "start": "0x0211377c",
       "end": "0x021138a0"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02113a40",
+      "end": "0x02113acc"
     }
   ],
   "functions": [
@@ -194,7 +209,109 @@
       "ordinal": 23
     }
   ],
+  "init": [
+    {
+      "symbol": "__sinit_daBakubaku_c.cpp",
+      "address": "0x02112c10",
+      "size": "0x1ac",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov032_02112c10 and carries the same twenty-seven relocation sites"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_daBakubaku_c.cpp",
+      "address": "0x02112e94",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
   "data": [
+    {
+      "symbol": "@840",
+      "address": "0x0211377c",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous wander enter descriptor; retail first word is 0x02111f9c"
+    },
+    {
+      "symbol": "@851",
+      "address": "0x02113784",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous dive enter descriptor; retail first word is 0x02111b50"
+    },
+    {
+      "symbol": "@853",
+      "address": "0x0211378c",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous dive main descriptor; retail first word is 0x02111830"
+    },
+    {
+      "symbol": "@855",
+      "address": "0x02113794",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous surface enter descriptor; retail first word is 0x02111814"
+    },
+    {
+      "symbol": "@847",
+      "address": "0x0211379c",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous chase enter descriptor; retail first word is 0x02111d58"
+    },
+    {
+      "symbol": "@846",
+      "address": "0x021137a4",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous pause main descriptor; retail first word is 0x02111d7c"
+    },
+    {
+      "symbol": "@842",
+      "address": "0x021137ac",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous wander main descriptor; retail first word is 0x02111e24"
+    },
+    {
+      "symbol": "@844",
+      "address": "0x021137b4",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous pause enter descriptor; retail first word is 0x02111dd8"
+    },
+    {
+      "symbol": "@857",
+      "address": "0x021137bc",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous surface main descriptor; retail first word is 0x02111620"
+    },
+    {
+      "symbol": "@849",
+      "address": "0x021137c4",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "anonymous chase main descriptor; retail first word is 0x02111b9c"
+    },
+    {
+      "symbol": "data_ov032_021137cc",
+      "address": "0x021137cc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "body cylinder offset {0, -0x28000, 0x58000}; three plain words, no destructor registration in the retail initializer"
+    },
+    {
+      "symbol": "data_ov032_021137d8",
+      "address": "0x021137d8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "head cylinder offset {0, -0x30000, -0x20000}; three plain words, no destructor registration in the retail initializer"
+    },
     {
       "symbol": "_ZTI12daBakubaku_c",
       "address": "0x021137e4",
@@ -222,8 +339,245 @@
       "evidence": "compiler storage has the two-word ABI preamble; the configured public address point remains unchanged at 0x02113824"
     }
   ],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov032_02113a40",
+      "address": "0x02113a40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "model resource handle constructed with file ID 0x295"
+    },
+    {
+      "symbol": "data_ov032_02113a48",
+      "address": "0x02113a48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "bite animation handle constructed with file ID 0x296"
+    },
+    {
+      "symbol": "data_ov032_02113a50",
+      "address": "0x02113a50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "swim animation handle constructed with file ID 0x297"
+    },
+    {
+      "symbol": "@838",
+      "address": "0x02113a58",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for the 0x296 animation handle"
+    },
+    {
+      "symbol": "@834",
+      "address": "0x02113a64",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for the 0x295 model handle"
+    },
+    {
+      "symbol": "@836",
+      "address": "0x02113a70",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for the 0x297 animation handle"
+    },
+    {
+      "symbol": "data_ov032_02113a7c",
+      "address": "0x02113a7c",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "surface state record; the initializer copies the surface enter/main PMF descriptors into it"
+    },
+    {
+      "symbol": "data_ov032_02113a8c",
+      "address": "0x02113a8c",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "wander state record; the initializer copies the wander enter/main PMF descriptors into it"
+    },
+    {
+      "symbol": "data_ov032_02113a9c",
+      "address": "0x02113a9c",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "pause state record; the initializer copies the pause enter/main PMF descriptors into it"
+    },
+    {
+      "symbol": "data_ov032_02113aac",
+      "address": "0x02113aac",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "chase state record; the initializer copies the chase enter/main PMF descriptors into it"
+    },
+    {
+      "symbol": "data_ov032_02113abc",
+      "address": "0x02113abc",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "dive state record; the initializer copies the dive enter/main PMF descriptors into it"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN20BakubakuModelFilePtrC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail initializer call destination and the wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN20BakubakuModelFilePtrD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail destructor registration destination and the wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "_ZN27BakubakuAnimationFileHandleC1Ej",
+      "canonical_symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0201799c",
+      "evidence": "retail initializer call destination and the animation constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN27BakubakuAnimationFileHandleD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Anim",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017984",
+      "evidence": "retail destructor registration destination and the animation SharedFilePtr family identity"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and the three direct retail references in this initializer"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@835",
+      "to": "@834",
+      "evidence": "mwcc numbers this destructor-registration node @835 per TU and ov002 already defines a global @835, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@837",
+      "to": "@838",
+      "evidence": "mwcc numbers this destructor-registration node @837 per TU and ov002 already defines a global @837, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@839",
+      "to": "@840",
+      "evidence": "mwcc numbers this descriptor @839 per TU and ov002 already defines a global @839, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@841",
+      "to": "@842",
+      "evidence": "mwcc numbers this descriptor @841 per TU and ov002 already defines a global @841, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@843",
+      "to": "@844",
+      "evidence": "mwcc numbers this descriptor @843 per TU and ov002 already defines a global @843, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@845",
+      "to": "@846",
+      "evidence": "mwcc numbers this descriptor @845 per TU and ov002 already defines a global @845, so the scratch link would multiply-define it"
+    }
+  ],
   "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_daBakubaku_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": ".p__sinit_daBakubaku_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@834",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@836",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@838",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@840",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@851",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@853",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@855",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@847",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@846",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@842",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@844",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@857",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
+    {
+      "symbol": "@849",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated PMF descriptor emits local; the configured ROM symbol uses global binding"
+    },
     {
       "symbol": "_ZN12daBakubaku_cD1Ev",
       "from": "STB_LOPROC",
@@ -238,6 +592,406 @@
     }
   ],
   "relocations": [
+    {
+      "section": ".init",
+      "source": "0x02112c20",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017acc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112c30",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112c3c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112c4c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112c58",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x0201799c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112c68",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d54",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113a40",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a40"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d5c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_02017ab4",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017ab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@834",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a64"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113a50",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a50"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d6c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "SharedFilePtr_Destruct_Anim",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017984"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@836",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a70"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d74",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113a48",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a48"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d7c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@838",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a58"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d80",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113a8c",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a8c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d84",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@840",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x0211377c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d88",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@842",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x021137ac"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d8c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113a9c",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a9c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@844",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x021137b4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@846",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x021137a4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113aac",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113aac"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112d9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@847",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x0211379c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112da0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@849",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x021137c4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112da4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113abc",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113abc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112da8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@851",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113784"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112dac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@853",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x0211378c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112db0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov032_02113a7c",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113a7c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112db4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@855",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02113794"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112db8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@857",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x021137bc"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02112e94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_daBakubaku_c.cpp",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02112c10"
+    },
+    {
+      "section": ".data",
+      "source": "0x0211377c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111f9cEv",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111f9c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02113784",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111b50Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111b50"
+    },
+    {
+      "section": ".data",
+      "source": "0x0211378c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111830Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111830"
+    },
+    {
+      "section": ".data",
+      "source": "0x02113794",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111814Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111814"
+    },
+    {
+      "section": ".data",
+      "source": "0x0211379c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111d58Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111d58"
+    },
+    {
+      "section": ".data",
+      "source": "0x021137a4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111d7cEv",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111d7c"
+    },
+    {
+      "section": ".data",
+      "source": "0x021137ac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111e24Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111e24"
+    },
+    {
+      "section": ".data",
+      "source": "0x021137b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111dd8Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111dd8"
+    },
+    {
+      "section": ".data",
+      "source": "0x021137bc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111620Ev",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111620"
+    },
+    {
+      "section": ".data",
+      "source": "0x021137c4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111b9cEv",
+      "addend": 0,
+      "target_module": "ov032",
+      "target_address": "0x02111b9c"
+    },
     {
       "section": ".data",
       "source": "0x021137e4",
@@ -640,7 +1394,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'RandomIntInternal' differs between the legacy file that used to hold func_ov032_02111b9c and the one that held func_ov032_02111e24; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'RandomIntInternal' differs between the legacy file that used to hold func_ov032_02111b9c and the one that held func_ov032_02111f9c; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj' differs between the legacy file that used to hold func_ov032_02111620 and the one that held _ZN12daBakubaku_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov032_02111ff4' differs between the legacy file that used to hold func_ov032_02111620 and the one that held _ZN12daBakubaku_c13InitResourcesEv; kept the first, the other is commented out for review"
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov032_02111ff4' differs between the legacy file that used to hold func_ov032_02111620 and the one that held _ZN12daBakubaku_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "LOCAL WORKER NOTE: local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set, symbol inventory, and the five owned ranges matched."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -658,45 +1413,15 @@
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        19,
-        34
+        67
       ],
-      "data": [
-        "_ZTI7fBase_c",
-        "_ZTS7fBase_c",
-        "_ZTI7dBase_c",
-        "_ZTS7dBase_c",
-        "_ZTI8dActor_c",
-        "_ZTS8dActor_c",
-        "_ZTI12dEnemyBase_c",
-        "_ZTS12dEnemyBase_c"
-      ],
-      "dataExternalized": [
-        "_ZTI12dEnemyBase_c",
-        "_ZTI7dBase_c",
-        "_ZTI7fBase_c",
-        "_ZTI8dActor_c",
-        "_ZTS12dEnemyBase_c",
-        "_ZTS7dBase_c",
-        "_ZTS7fBase_c",
-        "_ZTS8dActor_c"
-      ]
+      "data": [],
+      "dataExternalized": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 15 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -728,16 +1453,36 @@
           "firstDiff": null
         },
         {
+          "section": ".init",
+          "start": "0x02112c10",
+          "end": "0x02112dbc",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02112e94",
+          "end": "0x02112e98",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
           "section": ".data",
-          "start": "0x021137e4",
+          "start": "0x0211377c",
           "end": "0x021138a0",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02113a40",
+          "end": "0x02113acc",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 28
+          "LICENSED": 53
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -746,18 +1491,89 @@
       "nontextSectionOrder": {
         "groups": [
           {
-            "section": ".data",
+            "section": ".init",
             "original": [
-              16,
-              18,
-              20,
-              22
+              101
             ],
             "desired": [
+              101
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              99
+            ],
+            "desired": [
+              99
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              5,
+              7,
+              9,
+              11,
+              13,
               16,
               18,
               20,
-              22
+              23,
+              28,
+              36,
+              37,
+              42,
+              46,
+              53,
+              55
+            ],
+            "desired": [
+              5,
+              7,
+              9,
+              11,
+              13,
+              16,
+              18,
+              20,
+              23,
+              28,
+              36,
+              37,
+              42,
+              46,
+              53,
+              55
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              15,
+              22,
+              27,
+              33,
+              44,
+              45,
+              48,
+              49,
+              50,
+              51,
+              52
+            ],
+            "desired": [
+              15,
+              22,
+              27,
+              33,
+              44,
+              45,
+              48,
+              49,
+              50,
+              51,
+              52
             ]
           }
         ],
