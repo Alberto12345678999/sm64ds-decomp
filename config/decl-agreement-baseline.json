@@ -18931,12 +18931,23 @@
         "return:char []"
       ]
     },
+    "data_ov065_0211d748": {
+      "src/actors/daDossy_c.cpp": [
+        "return:DossyAnimationFileHandle"
+      ]
+    },
     "data_ov065_0211d768": {
+      "src/actors/daDossy_c.cpp": [
+        "return:DossyAnimationFileHandle"
+      ],
       "src/unnamed/ov065/__sinit_ov065_0211c440.c": [
         "return:char []"
       ]
     },
     "data_ov065_0211d770": {
+      "src/actors/daDossy_c.cpp": [
+        "return:DossyAnimationFileHandle"
+      ],
       "src/unnamed/ov065/__sinit_ov065_0211c440.c": [
         "return:char []"
       ]
