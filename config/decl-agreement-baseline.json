@@ -20375,8 +20375,11 @@
       "src/actors/daDoor_c.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov089/__sinit_ov089_021328d4.c": [
-        "return:char []"
+      "src/actors/daKpa_c.cpp": [
+        "return:SharedFilePtr"
+      ],
+      "src/actors/daObjKey_c.cpp": [
+        "return:ObjKeyModelFile"
       ]
     },
     "data_ov089_02132c60": {
