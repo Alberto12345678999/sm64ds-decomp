@@ -56,10 +56,10 @@ data_ov032_02112ba8 kind:data(any) addr:0x02112ba8 ambiguous
 data_ov032_02112bdc kind:data(any) addr:0x02112bdc ambiguous
 data_ov032_02112bec kind:data(any) addr:0x02112bec ambiguous
 data_ov032_02112c08 kind:data(any) addr:0x02112c08 ambiguous
-__sinit_ov032_02112c10 kind:function(arm,size=0x1ac) addr:0x02112c10
+__sinit_daBakubaku_c.cpp kind:function(arm,size=0x1ac) addr:0x02112c10
 __sinit_ov032_02112dbc kind:function(arm,size=0x6c) addr:0x02112dbc
 __sinit_ov032_02112e28 kind:function(arm,size=0x6c) addr:0x02112e28
-.p__sinit_ov032_02112c10 kind:data(word) addr:0x02112e94
+.p__sinit_daBakubaku_c.cpp kind:data(word) addr:0x02112e94
 .p__sinit_ov032_02112dbc kind:data(word) addr:0x02112e98
 .p__sinit_ov032_02112e28 kind:data(word) addr:0x02112e9c
 data_ov032_02112ec0 kind:data(any) addr:0x02112ec0
@@ -108,16 +108,16 @@ data_ov032_021135f4 kind:data(any) addr:0x021135f4 ambiguous
 data_ov032_021136d4 kind:data(any) addr:0x021136d4 ambiguous
 data_ov032_021136f4 kind:data(any) addr:0x021136f4 ambiguous
 data_ov032_0211373c kind:data(any) addr:0x0211373c ambiguous
-data_ov032_0211377c kind:data(any) addr:0x0211377c
-data_ov032_02113784 kind:data(any) addr:0x02113784
-data_ov032_0211378c kind:data(any) addr:0x0211378c
-data_ov032_02113794 kind:data(any) addr:0x02113794
-data_ov032_0211379c kind:data(any) addr:0x0211379c
-data_ov032_021137a4 kind:data(any) addr:0x021137a4
-data_ov032_021137ac kind:data(any) addr:0x021137ac
-data_ov032_021137b4 kind:data(any) addr:0x021137b4
-data_ov032_021137bc kind:data(any) addr:0x021137bc
-data_ov032_021137c4 kind:data(any) addr:0x021137c4
+@840 kind:data(any) addr:0x0211377c
+@851 kind:data(any) addr:0x02113784
+@853 kind:data(any) addr:0x0211378c
+@855 kind:data(any) addr:0x02113794
+@847 kind:data(any) addr:0x0211379c
+@846 kind:data(any) addr:0x021137a4
+@842 kind:data(any) addr:0x021137ac
+@844 kind:data(any) addr:0x021137b4
+@857 kind:data(any) addr:0x021137bc
+@849 kind:data(any) addr:0x021137c4
 data_ov032_021137cc kind:data(any) addr:0x021137cc
 data_ov032_021137d8 kind:data(any) addr:0x021137d8
 _ZTI12daBakubaku_c kind:data(any) addr:0x021137e4
@@ -145,14 +145,12 @@ data_ov032_02113a00 kind:data(any) addr:0x02113a00 ambiguous
 data_ov032_02113a40 kind:bss addr:0x02113a40
 data_ov032_02113a48 kind:bss addr:0x02113a48
 data_ov032_02113a50 kind:bss addr:0x02113a50
-data_ov032_02113a58 kind:bss addr:0x02113a58
-data_ov032_02113a64 kind:bss addr:0x02113a64
-data_ov032_02113a70 kind:bss addr:0x02113a70
-data_ov032_02113a74 kind:bss addr:0x02113a74 ambiguous
+@838 kind:bss addr:0x02113a58
+@834 kind:bss addr:0x02113a64
+@836 kind:bss addr:0x02113a70
 data_ov032_02113a7c kind:bss addr:0x02113a7c
 data_ov032_02113a8c kind:bss addr:0x02113a8c
 data_ov032_02113a9c kind:bss addr:0x02113a9c
-data_ov032_02113aa0 kind:bss addr:0x02113aa0 ambiguous
 data_ov032_02113aac kind:bss addr:0x02113aac
 data_ov032_02113abc kind:bss addr:0x02113abc
 data_ov032_02113acc kind:bss addr:0x02113acc

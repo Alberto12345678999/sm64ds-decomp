@@ -39,9 +39,7 @@
  *   changes State2's size; the int-cast form matches.
  *   unk_0a4 and unk_0ac stay those names (lateral velocity beside
  *   mVertSpeed; the base header still spells them unk_).
- * Leftover: data_ov020_02114af0 is the BMD SharedFilePtr this TU
- *   loads and releases. ov020 sinit constructs it. g_profile_CHAIR
- *   is not in this TU.
+ * Leftover: g_profile_CHAIR is not in this TU.
  */
 
 #include "common.h"
@@ -52,7 +50,19 @@
 
 #pragma opt_common_subs off
 
-extern SharedFilePtr data_ov020_02114af0;
+/* 8-byte file handle. The model uses func_02017acc / func_02017ab4. The
+ * spelling is local; the manifest aliases the generated names to those ROM
+ * symbols. */
+struct ChairModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    ChairModelFilePtr(u32 fileID);
+    ~ChairModelFilePtr();
+};
+
+/* The chair model's shared file, defined at the end of this file so the
+ * constructor does not enter .text. Init loads it, Cleanup releases it. */
+extern ChairModelFilePtr data_ov020_02114af0;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
 typedef struct { s32 x, y, z; } Vec3;
@@ -450,3 +460,5 @@ place:
         mPosY = (s16)tip * (s16)0x28 + mHomePos.y;
     }
 }
+
+ChairModelFilePtr data_ov020_02114af0(0x2d0);
