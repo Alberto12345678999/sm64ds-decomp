@@ -5620,6 +5620,7 @@
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_c6RenderEv": "tangosdev",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_c8BehaviorEv": "tangosdev",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_c13InitResourcesEv": "andrewboudreau",
+    "src/game/actors/d_a_cnn.cpp#__sinit_d_a_cnn.cpp": "github-actions[bot]",
     "src/game/actors/d_a_cnn.cpp#daCnn_c_classInit": "tangosdev",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_cD1Ev": "tangosdev",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_cD0Ev": "tangosdev",
