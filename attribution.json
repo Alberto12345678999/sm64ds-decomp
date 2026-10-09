@@ -3750,6 +3750,7 @@
     "src/actors/da1up_c.cpp#_ZN7da1up_c19func_ov002_020afde4Ev": "tangosdev",
     "src/actors/da1up_c.cpp#_ZN7da1up_c19func_ov002_020afe4cEv": "tangosdev",
     "src/actors/da1up_c.cpp#_ZN7da1up_c19func_ov002_020aff10Ev": "tangosdev",
+    "src/actors/da1up_c.cpp#__sinit_da1up_c.cpp": "tangosdev",
     "src/actors/daGmch_c.cpp#_ZN8daGmch_c11EnterState0Ev": "tangosdev",
     "src/actors/daGmch_c.cpp#_ZN8daGmch_c11EnterState1Ev": "tangosdev",
     "src/actors/daGmch_c.cpp#_ZN8daGmch_c11EnterState2Ev": "tangosdev",
