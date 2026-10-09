@@ -39,6 +39,9 @@ src/game/actors/d_a_star_gate.cpp:
 src/game/actors/d_a_fish.cpp:
     complete
     .text start:0x0214620c end:0x02146d7c
+    .init start:0x02147bc0 end:0x02147d7c
+    .ctor start:0x02147dfc end:0x02147e00
+    .bss start:0x021489a4 end:0x02148a54
 
 src/game/actors/daObjPathLift_c.cpp:
     complete
@@ -55,10 +58,6 @@ src/unnamed/ov100/__sinit_ov100_021475a4.c:
 src/unnamed/ov100/__sinit_ov100_02147698.c:
     complete
     .init start:0x02147698 end:0x02147a70
-
-src/unnamed/ov100/__sinit_ov100_02147bc0.c:
-    complete
-    .init start:0x02147bc0 end:0x02147d7c
 
 src/unnamed/ov100/__sinit_ov100_02147d7c.c:
     complete
