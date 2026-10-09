@@ -1758,6 +1758,7 @@
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_c8OnKickedER8dActor_c",
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_cD0Ev",
     "src/actors/daObjHatenaBlock_c.cpp#_ZN18daObjHatenaBlock_cD1Ev",
+    "src/actors/daObjHatenaBlock_c.cpp#__sinit_daObjHatenaBlock_c.cpp",
     "src/actors/daObjHatenaBlock_c.cpp#daObjHatenaBlock_c_classInit_CAP_BLOCK_L",
     "src/actors/daObjHatenaBlock_c.cpp#daObjHatenaBlock_c_classInit_CAP_BLOCK_M",
     "src/actors/daObjHatenaBlock_c.cpp#daObjHatenaBlock_c_classInit_CAP_BLOCK_W",
@@ -3554,5 +3555,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3545
+  "count": 3546
 }

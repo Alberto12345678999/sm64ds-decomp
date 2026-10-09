@@ -190,9 +190,6 @@ extern char data_0209f318[];
 extern char data_020a0edc[];
 extern int data_0209caa0[];
 extern s16 data_02082214[];
-extern Entry data_ov102_0214e890[];
-extern PMF data_ov102_0214e870[][4];
-extern PMF data_ov102_0214e8c0[][4];
 
 extern SharedFilePtr data_ov002_0210d9a0;
 extern SharedFilePtr data_ov002_0210d9c0;
@@ -208,15 +205,6 @@ extern char data_ov002_0210da58[];
 extern char gPFlowerOpenModelFile[];
 extern char gPFlowerCloseModelFile[];
 extern CLPS_Block data_ov002_0210d954;
-
-extern SharedFilePtr data_ov102_0214e7d0; /* KCL */
-extern SharedFilePtr data_ov102_0214e7d8; /* CAP_BLOCK_L BMD */
-extern SharedFilePtr data_ov102_0214e7e0; /* CAP_BLOCK_W BMD */
-extern SharedFilePtr data_ov102_0214e7e8; /* HATENA_BLOCK BMD */
-extern SharedFilePtr data_ov102_0214e7f0; /* CAP_BLOCK_M BMD */
-extern SharedFilePtr data_ov102_0214e7f8; /* HATENA BCA */
-extern SharedFilePtr data_ov102_0214e800; /* ITEM/VS BMD */
-extern SharedFilePtr data_ov102_0214e808; /* HATENA anim BMD */
 
 extern int RandomIntInternal(int *seed);
 extern int Vec3_HorzDist(const void *a, const void *b);
@@ -236,6 +224,115 @@ extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, i
    swap the register operands. */
 void func_ov102_02149684(int *dst, daObjHatenaBlock_c *src);
 }
+
+/* The block's file-scope SharedFilePtr objects, spelled through the same
+   wrapper idiom the landed folds use: the handles' code is the veneer pair
+   the cartridge already carries, so the wrappers get no bodies of their own.
+   The constructors alias func_02017acc (model), SharedFilePtr::Construct
+   (animation) and func_02017b4c (collision) in this unit's manifest, and the
+   destructors func_02017ab4, SharedFilePtr_Destruct_Anim and
+   SharedFilePtr_Destruct_Clsn. */
+struct HatenaBlockModelFilePtr : SharedFilePtr {
+    int unk0; void *file;
+    HatenaBlockModelFilePtr(unsigned int id);
+    ~HatenaBlockModelFilePtr();
+};
+
+struct HatenaBlockAnimFileHandle : SharedFilePtr {
+    int unk0; void *file;
+    HatenaBlockAnimFileHandle(unsigned int id);
+    ~HatenaBlockAnimFileHandle();
+};
+
+struct HatenaBlockClsnFileHandle : SharedFilePtr {
+    int unk0; void *file;
+    HatenaBlockClsnFileHandle(unsigned int id);
+    ~HatenaBlockClsnFileHandle();
+};
+
+/* -------------------------------------------------------------------------- */
+/* The six model handles, the animation handle and the collision handle, in
+   static-initializer order: the initializer constructs each and registers
+   its destructor. InitResources feeds the models to Model::LoadFile, the
+   animation to dExtFrameCtrl_c::LoadFile and the collision one to
+   dBgW_Kc::LoadFile. */
+/* -------------------------------------------------------------------------- */
+// @symbol __sinit_daObjHatenaBlock_c.cpp
+HatenaBlockModelFilePtr   data_ov102_0214e800(0x800e); /* ITEM/VS BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7e8(0x463);  /* HATENA_BLOCK BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e808(0x465);  /* HATENA anim BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7f0(0x467);  /* CAP_BLOCK_M BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7d8(0x466);  /* CAP_BLOCK_L BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7e0(0x468);  /* CAP_BLOCK_W BMD */
+HatenaBlockAnimFileHandle data_ov102_0214e7f8(0x464);  /* HATENA BCA */
+HatenaBlockClsnFileHandle data_ov102_0214e7d0(0x800d); /* KCL */
+
+/* The pointer-to-member constants the initializer copies into the tables
+   below (0x0214e258..0x0214e3a0 in .data, an unclaimed run). */
+extern PMF data_ov102_0214e278;
+extern PMF data_ov102_0214e260;
+extern PMF data_ov102_0214e268;
+extern PMF data_ov102_0214e258;
+extern PMF data_ov102_0214e3a0;
+extern PMF data_ov102_0214e398;
+extern PMF data_ov102_0214e388;
+extern PMF data_ov102_0214e380;
+extern PMF data_ov102_0214e378;
+extern PMF data_ov102_0214e370;
+extern PMF data_ov102_0214e368;
+extern PMF data_ov102_0214e360;
+extern PMF data_ov102_0214e358;
+extern PMF data_ov102_0214e350;
+extern PMF data_ov102_0214e348;
+extern PMF data_ov102_0214e340;
+extern PMF data_ov102_0214e320;
+extern PMF data_ov102_0214e288;
+extern PMF data_ov102_0214e338;
+extern PMF data_ov102_0214e330;
+extern PMF data_ov102_0214e280;
+extern PMF data_ov102_0214e318;
+extern PMF data_ov102_0214e2a8;
+extern PMF data_ov102_0214e2b0;
+extern PMF data_ov102_0214e270;
+extern PMF data_ov102_0214e298;
+extern PMF data_ov102_0214e2a0;
+extern PMF data_ov102_0214e2f8;
+extern PMF data_ov102_0214e2f0;
+extern PMF data_ov102_0214e2e8;
+extern PMF data_ov102_0214e390;
+extern PMF data_ov102_0214e2d8;
+extern PMF data_ov102_0214e2d0;
+extern PMF data_ov102_0214e2c8;
+extern PMF data_ov102_0214e2c0;
+extern PMF data_ov102_0214e2b8;
+extern PMF data_ov102_0214e2e0;
+extern PMF data_ov102_0214e328;
+extern PMF data_ov102_0214e310;
+extern PMF data_ov102_0214e308;
+extern PMF data_ov102_0214e300;
+extern PMF data_ov102_0214e290;
+
+/* The three PMF tables, in static-initializer order: the mState {enter,
+   update} rows, the per-content spawner grid (eight rows of four columns,
+   each column pair copied from one record), then the VS rows. */
+Entry data_ov102_0214e890[3] = {
+    {data_ov102_0214e278, data_ov102_0214e260},
+    {data_ov102_0214e268, data_ov102_0214e258},
+    {data_ov102_0214e3a0, data_ov102_0214e398},
+};
+PMF data_ov102_0214e8c0[8][4] = {
+    {data_ov102_0214e388, data_ov102_0214e380, data_ov102_0214e378, data_ov102_0214e370},
+    {data_ov102_0214e368, data_ov102_0214e360, data_ov102_0214e358, data_ov102_0214e350},
+    {data_ov102_0214e348, data_ov102_0214e340, data_ov102_0214e320, data_ov102_0214e288},
+    {data_ov102_0214e338, data_ov102_0214e330, data_ov102_0214e280, data_ov102_0214e318},
+    {data_ov102_0214e2a8, data_ov102_0214e2b0, data_ov102_0214e270, data_ov102_0214e298},
+    {data_ov102_0214e2a0, data_ov102_0214e2f8, data_ov102_0214e2f0, data_ov102_0214e2e8},
+    {data_ov102_0214e390, data_ov102_0214e2d8, data_ov102_0214e2d0, data_ov102_0214e2c8},
+    {data_ov102_0214e2c0, data_ov102_0214e2b8, data_ov102_0214e2e0, data_ov102_0214e328},
+};
+PMF data_ov102_0214e870[1][4] = {
+    {data_ov102_0214e310, data_ov102_0214e308, data_ov102_0214e300, data_ov102_0214e290},
+};
 
 // @symbol daObjHatenaBlock_c_classInit_VS_ITEM_BLOCK
 extern "C" daObjHatenaBlock_c *daObjHatenaBlock_c_classInit_VS_ITEM_BLOCK()
