@@ -15,6 +15,9 @@ src/actors/dMg3DHeyhoObjAdapter_c.cpp:
 src/actors/dMgJump3DMario_c.cpp:
     complete
     .text start:0x020c6f8c end:0x020c8a30
+    .init start:0x0212f52c end:0x0212f660
+    .ctor start:0x02133570 end:0x02133574
+    .bss start:0x02140438 end:0x021404c4
 
 src/actors/unit020c8a30.cpp:
     complete
@@ -246,10 +249,6 @@ src/d_s_mg_flower.cpp:
 src/unnamed/ov006/__sinit_ov006_0212f4c4.c:
     complete
     .init start:0x0212f4c4 end:0x0212f52c
-
-src/unnamed/ov006/__sinit_ov006_0212f52c.c:
-    complete
-    .init start:0x0212f52c end:0x0212f660
 
 src/unnamed/ov006/__sinit_ov006_0212f660.c:
     complete
