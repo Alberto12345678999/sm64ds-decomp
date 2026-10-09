@@ -7,6 +7,8 @@
  * dragged in beside it. Mega Mario launches these actors flying via
  * KillByMegaChar/UpdateKillByMegaChar; IsClsnInRange* toggle the collider by
  * camera distance. Size is asserted in include/dBgActor_c.h (0x320).
+ * The TU ends with the collision events a mover sends to the object whose
+ * collider it hit (0x020eea84..0x020ef320, first in this file).
  *
  * Written last-to-first: mwccarm emits one .text section per function in
  * reverse source order. Do not reorder.
@@ -58,6 +60,354 @@ void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern Matrix4x3 data_020a0e68;
 }
+
+/* --- Collision events, 0x020eea84..0x020ef320. ------------------------------
+ *
+ * The character side of a hit on a level object: given the mover's dBgCh_Actr
+ * (its mesh collider checker) and the mover, find the actor that owns the
+ * collider it touched -- a dBgActor_c -- and deliver one dActor_c event to it.
+ * One function per event, written from the top slot down:
+ *
+ *   func_ov002_020ef2a4  floor    -> OnGroundPounded           (slot 21)
+ *   func_ov002_020ef228  wall     -> OnAttacked1               (slot 22)
+ *   func_ov002_020ef070  ray      -> OnAttacked2               (slot 23)
+ *   func_ov002_020eeeb8  ray      -> OnKicked                  (slot 24)
+ *   func_ov002_020eee3c  wall     -> OnPushed                  (slot 25)
+ *   func_ov002_020eedc0  wall     -> OnHitByCannonBlastedChar  (slot 26)
+ *   func_ov002_020eed24  any      -> OnHitByMegaChar           (slot 27)
+ *   func_ov002_020eeca8  ceiling  -> OnHitFromUnderneath       (slot 28)
+ *   func_ov002_020eea84  ceiling/wall hazards that hurt the player
+ *
+ * Callers are Player, daBmb_c and daObjBlockS_c. They take the mover as the
+ * event's `other'. The two ray functions cast 150 (130 when the mover's +0x8
+ * word is 2) or 100 units ahead along the mover's facing from 60 units up,
+ * and copy the hit
+ * record out of the line checker before asking it for the collider ID.
+ *
+ * Leftovers: C linkage and each caller's own scalar spelling of these names
+ * are kept, and the dBgCh_Actr result queries are called by mangled name. The
+ * hit record copy is the ROM's field-by-field copy into a local shape; the
+ * real dBgPi copy constructor is not what the bytes show. */
+
+extern "C" {
+int func_02035638(void *c);       /* ceiling hit */
+int func_0203567c(int c);         /* &mSphereClsn + 0x10: the hit record */
+int _ZNK10dBgCh_Actr8IsOnWallEv(void *c);
+int _ZNK10dBgCh_Actr10IsOnGroundEv(void *c);
+void *_ZNK10dBgCh_Actr13GetWallResultEv(void *c);
+void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *c);
+int _ZNK5dBgPi9GetClsnIDEv(void *r);
+void _ZN5dBgPiD1Ev(void *r);
+void func_ov002_020d8838(void *actor);
+extern int data_02099368[];   /* dBgPi's vtable */
+extern short data_02082214[];
+}
+
+/* The hit record as the ray functions copy it out of dBgCh_Lin (+0x10). */
+struct ClsnHitCopy {
+    void *tag;
+    int f04, f08, f0c, f10, f14;
+    unsigned short f18, f1a;
+    int f1c, f20, f24;
+};
+
+// @symbol func_ov002_020ef2a4
+extern "C" int func_ov002_020ef2a4(void *c, int arg)
+{
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(c)) {
+        void *res = _ZNK10dBgCh_Actr14GetFloorResultEv(c);
+        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
+            dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
+            if (a != 0) {
+                a->OnGroundPounded(*(dActor_c *)arg);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+// @symbol func_ov002_020ef228
+extern "C" int func_ov002_020ef228(void *c, int arg)
+{
+    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)) {
+        void *res = _ZNK10dBgCh_Actr13GetWallResultEv(c);
+        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
+            dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
+            if (a != 0) {
+                a->OnAttacked1(*(dActor_c *)arg);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+// @symbol func_ov002_020ef070
+extern "C" int func_ov002_020ef070(void *unused, char *actor)
+{
+    Vector3 v1, v2;
+    ClsnHitCopy tmp;
+
+    dBgCh_Lin line;
+
+    Vector3 *pos = (Vector3 *)(actor + 0x5c);
+    int x = pos->x;
+    v1.x = x;
+    int y = pos->y;
+    v1.y = y;
+    int z = pos->z;
+    v2.x = x;
+    v2.z = z;
+    v1.z = z;
+    v1.y = y + 0x3c000;
+    v2.y = y + 0x3c000;
+
+    int scale = 0x64;
+    if (*(int *)(actor + 8) == 2) scale = 0x82;
+    v2.x = scale * data_02082214[(*(unsigned short *)(actor + 0x8e) >> 4) << 1] + v2.x;
+    v2.z = scale * data_02082214[((*(unsigned short *)(actor + 0x8e) >> 4) << 1) + 1] + v2.z;
+
+    line.SetObjAndLine(v1, v2, (dActor_c *)actor);
+    if (line.DetectClsn()) {
+        int t = (*(unsigned short *)(actor + 0xc) == 0xbf);
+        if (t != false) {
+            func_ov002_020d8838(actor);
+        }
+        {
+            int *dst = &tmp.f04;
+            int w0 = *(int *)((char *)&line + 0x14);
+            int w1 = *(int *)((char *)&line + 0x18);
+            dst[0] = w1 ? w0 : w0;
+            dst[1] = w1;
+            dst[2] = *(int *)((char *)&line + 0x1c);
+            dst[3] = *(int *)((char *)&line + 0x20);
+            dst[4] = *(int *)((char *)&line + 0x24);
+            tmp.tag = data_02099368;
+            tmp.f18 = *(unsigned short *)((char *)&line + 0x28);
+            tmp.f1a = *(unsigned short *)((char *)&line + 0x2a);
+            tmp.f1c = *(int *)((char *)&line + 0x2c);
+            tmp.f20 = *(int *)((char *)&line + 0x30);
+            tmp.f24 = *(int *)((char *)&line + 0x34);
+            if (_ZNK5dBgPi9GetClsnIDEv(&tmp) != -1) {
+                dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&tmp));
+                if (a) {
+                    a->OnAttacked2(*(dActor_c *)actor);
+                    _ZN5dBgPiD1Ev(&tmp);
+                    return 1;
+                }
+            }
+            _ZN5dBgPiD1Ev(&tmp);
+        }
+    }
+    return 0;
+}
+
+// @symbol func_ov002_020eeeb8
+extern "C" int func_ov002_020eeeb8(void *unused, char *actor)
+{
+    Vector3 v1, v2;
+    ClsnHitCopy tmp;
+
+    dBgCh_Lin line;
+
+    Vector3 *pos =
+        (Vector3 *)(actor + 0x5c);
+    int x = pos->x;
+    v1.x = x;
+    int y = pos->y;
+    v1.y = y;
+    int z = pos->z;
+    v2.x = x;
+    v2.z = z;
+    v1.z = z;
+    v1.y = y + 0x3c000;
+    v2.y = y + 0x3c000;
+
+    int scale = 0x96;
+    if (*(int *)(actor + 8) == 2)
+        scale = 0x82;
+
+    v2.x = scale *
+        data_02082214[(*(unsigned short *)(actor + 0x8e) >> 4) << 1] +
+        v2.x;
+    v2.z = scale *
+        data_02082214[((*(unsigned short *)(actor + 0x8e) >> 4) << 1) + 1] +
+        v2.z;
+
+    line.SetObjAndLine(v1, v2, (dActor_c *)actor);
+
+    if (line.DetectClsn()) {
+        int t = (*(unsigned short *)(actor + 0xc) == 0xbf);
+        if (t != false)
+            func_ov002_020d8838(actor);
+
+        {
+            int *dst = &tmp.f04;
+            int w0 = *(int *)((char *)&line + 0x14);
+            int w1 = *(int *)((char *)&line + 0x18);
+
+            dst[0] = w1 ? w0 : w0;
+            dst[1] = w1;
+            dst[2] = *(int *)((char *)&line + 0x1c);
+            dst[3] = *(int *)((char *)&line + 0x20);
+            dst[4] = *(int *)((char *)&line + 0x24);
+
+            tmp.tag = data_02099368;
+            tmp.f18 = *(unsigned short *)((char *)&line + 0x28);
+            tmp.f1a = *(unsigned short *)((char *)&line + 0x2a);
+            tmp.f1c = *(int *)((char *)&line + 0x2c);
+            tmp.f20 = *(int *)((char *)&line + 0x30);
+            tmp.f24 = *(int *)((char *)&line + 0x34);
+
+            if (_ZNK5dBgPi9GetClsnIDEv(&tmp) != -1) {
+                dActor_c *a = dActor_c::FindWithID(
+                    _ZNK5dBgPi9GetClsnIDEv(&tmp));
+                if (a) {
+                    a->OnKicked(*(dActor_c *)actor);
+                    _ZN5dBgPiD1Ev(&tmp);
+                    return 1;
+                }
+            }
+        }
+        _ZN5dBgPiD1Ev(&tmp);
+    }
+
+    return 0;
+}
+
+// @symbol func_ov002_020eee3c
+extern "C" int func_ov002_020eee3c(void *c, int arg)
+{
+    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)) {
+        void *res = _ZNK10dBgCh_Actr13GetWallResultEv(c);
+        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
+            dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
+            if (a != 0) {
+                a->OnPushed(*(dActor_c *)arg);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+// @symbol func_ov002_020eedc0
+extern "C" int func_ov002_020eedc0(void *c, int arg)
+{
+    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)) {
+        void *res = _ZNK10dBgCh_Actr13GetWallResultEv(c);
+        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
+            dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
+            if (a != 0) {
+                a->OnHitByCannonBlastedChar(*(dActor_c *)arg);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+// @symbol func_ov002_020eed24
+extern "C" int func_ov002_020eed24(void *c, void *arg)
+{
+    void *r;
+    dActor_c *a;
+    if (_ZNK10dBgCh_Actr8IsOnWallEv(c)
+        || _ZNK10dBgCh_Actr10IsOnGroundEv(c)
+        || func_02035638(c)) {
+        r = (void *)func_0203567c((int)c);
+        if (_ZNK5dBgPi9GetClsnIDEv(r) != -1) {
+            a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(r));
+            if (a) {
+                a->OnHitByMegaChar(*(Player *)arg);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+// @symbol func_ov002_020eeca8
+extern "C" int func_ov002_020eeca8(void *c, int arg)
+{
+    if (func_02035638(c)) {
+        void *res = (void *)func_0203567c((int)c);
+        if (_ZNK5dBgPi9GetClsnIDEv(res) != -1) {
+            dActor_c *a = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(res));
+            if (a != 0) {
+                a->OnHitFromUnderneath(*(dActor_c *)arg);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+/* Only for the player (actor ID 0xbf): a ceiling owned by actor ID 0x3a hurts
+ * for 3, a wall owned by actor ID 0x139 hurts for 1 and plays sound 0xb5 at
+ * that actor; both with knockback 0xc000. C: as C++ the two-word
+ * head of the record copy is promoted out of its stack slot. */
+#pragma cplusplus off
+typedef struct { int a, b; } ClsnHitHead;
+
+// @symbol func_ov002_020eea84
+int func_ov002_020eea84(char *self, char *player)
+{
+    extern char *func_0203564c(char *p);
+    extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id);
+    extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
+    extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, void *v);
+    struct ClsnHitCopy res;
+    Vector3 v;
+    Vector3 v2;
+    char *actor;
+    int b;
+
+    b = (int)(*(unsigned short *)(player + 0xc) == 0xbf);
+    if (b == 0)
+        return 0;
+
+    if (func_02035638(self)) {
+        char *r = func_0203564c(self);
+        int *d = &res.f04;
+        *(ClsnHitHead *)d = *(ClsnHitHead *)(r + 4);
+        d[2] = *(int *)(r + 0xc);
+        d[3] = *(int *)(r + 0x10);
+        d[4] = *(int *)(r + 0x14);
+        res.tag = data_02099368;
+        res.f18 = *(unsigned short *)(r + 0x18);
+        res.f1a = *(unsigned short *)(r + 0x1a);
+        res.f1c = *(int *)(r + 0x1c);
+        res.f20 = *(int *)(r + 0x20);
+        res.f24 = *(int *)(r + 0x24);
+        if (_ZNK5dBgPi9GetClsnIDEv(&res) != -1) {
+            actor = (char *)_ZN8dActor_c10FindWithIDEj(_ZNK5dBgPi9GetClsnIDEv(&res));
+            if (actor != 0 && (b = (int)(*(unsigned short *)(actor + 0xc) == 0x3a)) != 0) {
+                { int *s = (int *)(((int)player + 0x5c)); v.x = s[0]; v.y = s[1]; v.z = s[2]; }
+                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 3, 0xc000, 1, 0, 1);
+                _ZN5dBgPiD1Ev(&res);
+                return 1;
+            }
+        }
+        _ZN5dBgPiD1Ev(&res);
+    }
+
+    if (_ZNK10dBgCh_Actr8IsOnWallEv(self)) {
+        char *wr = (char *)_ZNK10dBgCh_Actr13GetWallResultEv(self);
+        if (_ZNK5dBgPi9GetClsnIDEv(wr) != -1) {
+            actor = (char *)_ZN8dActor_c10FindWithIDEj(_ZNK5dBgPi9GetClsnIDEv(wr));
+            if (actor != 0 && (b = (int)(*(unsigned short *)(actor + 0xc) == 0x139)) != 0) {
+                { int *s = (int *)(((int)actor + 0x5c)); v2.x = s[0]; v2.y = s[1]; v2.z = s[2]; }
+                if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, 1, 0xc000, 1, 0, 1) != 0)
+                    _ZN5Sound9PlayBank0EjRK7Vector3(0xb5, actor + 0x74);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+#pragma cplusplus on
 
 /* Base step, vptr store, then mModel and mMeshCollider in declaration order:
  * the compiler's own sequence, so the body is empty. */
