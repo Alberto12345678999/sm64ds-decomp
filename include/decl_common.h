@@ -1000,8 +1000,6 @@ extern int data_ov075_0211d650[];
 extern int data_ov075_0211d930;
 extern int data_ov077_02127230[];
 extern int data_ov077_02127238[];
-extern int data_ov077_02127b28[];
-extern int data_ov077_02127b50[];
 extern int data_ov078_0212704c[];
 extern int data_ov078_0212706c[];
 extern int data_ov078_0212708c;
