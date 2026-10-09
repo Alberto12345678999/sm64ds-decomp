@@ -34,91 +34,91 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov016_02111284",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111284Ev",
       "address": "0x02111284",
       "size": "0x000002b0",
       "legacy_source": "src/func_ov016_02111284.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov016_02111534",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111534Ev",
       "address": "0x02111534",
       "size": "0x00000070",
       "legacy_source": "src/func_ov016_02111534.c",
       "ordinal": 3
     },
     {
-      "symbol": "BookSwitch_Spawn",
+      "symbol": "_ZN9daMoray_c16BookSwitch_SpawnEv",
       "address": "0x021115a4",
       "size": "0x0000001c",
       "legacy_source": "src/BookSwitch_Spawn.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov016_021115c0",
+      "symbol": "_ZN9daMoray_c19func_ov016_021115c0Ev",
       "address": "0x021115c0",
       "size": "0x00000158",
       "legacy_source": "src/func_ov016_021115c0.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov016_02111718",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111718Ev",
       "address": "0x02111718",
       "size": "0x00000040",
       "legacy_source": "src/func_ov016_02111718.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov016_02111758",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111758Ev",
       "address": "0x02111758",
       "size": "0x00000108",
       "legacy_source": "src/func_ov016_02111758.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov016_02111860",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111860Ev",
       "address": "0x02111860",
       "size": "0x00000054",
       "legacy_source": "src/func_ov016_02111860.cpp",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov016_021118b4",
+      "symbol": "_ZN9daMoray_c19func_ov016_021118b4Ev",
       "address": "0x021118b4",
       "size": "0x000000e0",
       "legacy_source": "src/func_ov016_021118b4.cpp",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov016_02111994",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111994Ev",
       "address": "0x02111994",
       "size": "0x00000058",
       "legacy_source": "src/func_ov016_02111994.cpp",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov016_021119ec",
+      "symbol": "_ZN9daMoray_c19func_ov016_021119ecEv",
       "address": "0x021119ec",
       "size": "0x000001c0",
       "legacy_source": "src/func_ov016_021119ec.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov016_02111bac",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111bacEv",
       "address": "0x02111bac",
       "size": "0x00000044",
       "legacy_source": "src/func_ov016_02111bac.cpp",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov016_02111bf0",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111bf0EPNS_5StateE",
       "address": "0x02111bf0",
       "size": "0x00000050",
       "legacy_source": "src/func_ov016_02111bf0.cpp",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov016_02111c40",
+      "symbol": "_ZN9daMoray_c19func_ov016_02111c40Ev",
       "address": "0x02111c40",
       "size": "0x000002f8",
       "legacy_source": "src/func_ov016_02111c40.c",
@@ -170,7 +170,7 @@
   "data": [],
   "bss": [],
   "notes": [
-    "Twenty-one-function unit 0x021111a0..0x0211260c: D1 and D0 from the out-of-line destructor, func_ov016_02111284 (the hit cylinders), the retreat pair func_ov016_02111534 / BookSwitch_Spawn, then the fifteen functions from func_ov016_021115c0 to InitResources, then the registry factory daMoray_c_classInit.",
+    "Twenty-one-function unit 0x021111a0..0x0211260c: D1 and D0 from the out-of-line destructor, daMoray_c::func_ov016_02111284 (the hit cylinders), the retreat pair daMoray_c::func_ov016_02111534 / daMoray_c::BookSwitch_Spawn, then the fifteen functions from daMoray_c::func_ov016_021115c0 to InitResources, then the registry factory daMoray_c_classInit.",
     "daMoray_c_classInit (0x02112588..0x0211260c) is folded but not written as `new daMoray_c()`: that does not emit the ROM's __cxa_vec_ctor(..., func_0203d384, ...) over mSegmentPos, because include/types.h's Vector3 has no user-declared constructor. Same limit and same verbatim hand-built factory as ov095/daObjFlamethrower_c's, with the vptr store reading &_ZTV9daMoray_c[2] because this key-function TU defines the vtable object from its RTTI header.",
     "classInit tail fold (0930c): folded the registry factory daMoray_c_classInit (0x02112588..0x0211260c) into this promoted TU and widened the complete delinks.txt claim to 0x021111a0..0x0211260c. Written at the end of the file under `#pragma defer_codegen off`. It keeps the loose source's hand-built sequence (fBase_c::operator new, dEnemyBase_c's base constructor, the vptr store, the two dCcAcPos_c, the dBgCh_Actr, the BlendModelAnim, then __cxa_vec_ctor over mSegmentPos with func_0203d384 and Vector3's destructor), now addressing the members by name instead of raw offsets."
   ],
