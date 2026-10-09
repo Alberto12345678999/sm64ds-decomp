@@ -3792,6 +3792,7 @@
     "src/actors/daGmch_c.cpp#_ZN8daGmch_cD0Ev": "tangosdev",
     "src/actors/daGmch_c.cpp#_ZN8daGmch_cD1Ev": "tangosdev",
     "src/actors/daGmch_c.cpp#daGmch_c_classInit": "tangosdev",
+    "src/actors/daGmch_c.cpp#__sinit_daGmch_c.cpp": "tangosdev",
     "src/actors/daMky_c.cpp#_ZN7daMky_c19func_ov030_02111890Ev": "tangosdev",
     "src/actors/daMky_c.cpp#_ZN7daMky_c19func_ov030_02111a00Ev": "tangosdev",
     "src/actors/daMky_c.cpp#_ZN7daMky_c19func_ov030_02111b20Ev": "lunavyqo",
