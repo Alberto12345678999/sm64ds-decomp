@@ -55,6 +55,9 @@ src/actors/daObjFl_London_c.cpp:
 src/actors/daObjFl_Seesaw_c.cpp:
     complete
     .text start:0x02111cac end:0x02111f6c
+    .init start:0x02112e58 end:0x02112ec0
+    .ctor start:0x02113108 end:0x0211310c
+    .bss start:0x021145a0 end:0x021145c8
 
 src/actors/daObjFl_Ukiyuka_c.cpp:
     complete
@@ -91,10 +94,6 @@ src/unnamed/ov022/__sinit_ov022_02112d14.c:
 src/unnamed/ov022/__sinit_ov022_02112dec.c:
     complete
     .init start:0x02112dec end:0x02112e58
-
-src/unnamed/ov022/__sinit_ov022_02112e58.c:
-    complete
-    .init start:0x02112e58 end:0x02112ec0
 
 src/unnamed/ov022/__sinit_ov022_02112ec0.c:
     complete
