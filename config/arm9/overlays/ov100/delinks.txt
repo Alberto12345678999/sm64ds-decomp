@@ -7,6 +7,10 @@
 src/actors/daBtfly_c.cpp:
     complete
     .text start:0x02140d80 end:0x02141f04
+    .init start:0x021473bc end:0x021474e8
+    .ctor start:0x02147de8 end:0x02147dec
+    .data start:0x02147e20 end:0x02147e60
+    .bss start:0x02148600 end:0x02148668
 
 src/actors/daIbl_c.cpp:
     complete
@@ -39,10 +43,6 @@ src/game/actors/d_a_fish.cpp:
 src/game/actors/daObjPathLift_c.cpp:
     complete
     .text start:0x02146d7c end:0x021473a4
-
-src/unnamed/ov100/__sinit_ov100_021473bc.c:
-    complete
-    .init start:0x021473bc end:0x021474e8
 
 src/unnamed/ov100/__sinit_ov100_021474e8.c:
     complete

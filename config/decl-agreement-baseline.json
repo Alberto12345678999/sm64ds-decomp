@@ -2636,9 +2636,6 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "kind:data"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02101064.c": [
         "arity:0",
         "return:void"
@@ -2880,10 +2877,6 @@
       "src/unnamed/ov096/__sinit_ov096_02137894.c": [
         "kind:data"
       ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "arity:0",
         "return:void"
@@ -2905,9 +2898,6 @@
       ]
     },
     "SharedFilePtr_Destruct_Clsn": {
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "kind:data"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02100d44.c": [
         "kind:data"
       ],
@@ -5831,9 +5821,6 @@
       "src/actors/unit020bfec0.cpp": [
         "return:void"
       ],
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "return:void"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02101064.c": [
         "param:#2 int",
         "return:int"
@@ -6046,9 +6033,6 @@
       ],
       "src/unnamed/ov096/__sinit_ov096_02137894.c": [
         "return:void"
-      ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:int"
       ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "return:void"
@@ -19937,19 +19921,24 @@
         "return:void *"
       ]
     },
+    "data_ov081_02128d90": {
+      "src/actors/daSnowball_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
     "data_ov081_02128da8": {
       "src/actors/daSnowman_c.cpp": [
-        "return:SharedFilePtr"
+        "return:daSnowmanAnimationFilePtr"
       ]
     },
     "data_ov081_02128db0": {
       "src/actors/daSnowman_c.cpp": [
-        "return:SharedFilePtr"
+        "return:daSnowmanModelFilePtr"
       ]
     },
     "data_ov081_02128db8": {
       "src/actors/daSnowman_c.cpp": [
-        "return:SharedFilePtr"
+        "return:daSnowmanAnimationFilePtr"
       ]
     },
     "data_ov081_02128e14": {
@@ -20553,14 +20542,8 @@
       ]
     },
     "data_ov100_02148600": {
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:char []"
-      ]
     },
     "data_ov100_02148608": {
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:char []"
-      ]
     },
     "data_ov100_02148668": {
       "src/actors/daBtfly_c.cpp": [
@@ -21741,9 +21724,6 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "kind:data"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02100560.c": [
         "arity:0",
         "return:void"
@@ -22369,10 +22349,6 @@
         "arity:0",
         "return:void"
       ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "arity:0",
-        "return:void"
-      ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "arity:0",
         "return:void"
@@ -22398,9 +22374,6 @@
       ]
     },
     "func_02017acc": {
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "return:void"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02100560.c": [
         "param:#2 int",
         "return:int"
@@ -23007,9 +22980,6 @@
       "src/unnamed/ov098/__sinit_ov098_0213c2b4.c": [
         "return:void"
       ],
-      "src/unnamed/ov100/__sinit_ov100_021473bc.c": [
-        "return:int"
-      ],
       "src/unnamed/ov100/__sinit_ov100_021475a4.c": [
         "return:void"
       ],
@@ -23031,9 +23001,6 @@
       ]
     },
     "func_02017b4c": {
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "return:void"
-      ],
       "src/unnamed/ov002/__sinit_ov002_02100d44.c": [
         "return:void"
       ],
@@ -31042,19 +31009,10 @@
       ]
     },
     "gPianoAttackAnimationFile": {
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "return:SharedFilePtrLayout"
-      ]
     },
     "gPianoCollisionFile": {
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "return:SharedFilePtrLayout"
-      ]
     },
     "gPianoModelFile": {
-      "src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c": [
-        "return:SharedFilePtrLayout"
-      ]
     },
     "gTouchEdge": {
       "src/actors/dMgJump3DMario_c.cpp": [

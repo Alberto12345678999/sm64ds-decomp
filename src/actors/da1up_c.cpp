@@ -68,7 +68,7 @@
  * InitResources (0). The other 26 members are the former free helpers:
  * fourteen are ROM-proven non-static members -- the {function pointer, 0}
  * descriptors at 0x02108300..0x02108370 are pointer-to-member-function
- * objects with a zero `this` adjustment, and __sinit_ov002_02100adc copies
+ * objects with a zero `this` adjustment, and the static initializer copies
  * them into the 14-element dispatch array at 0x0210dc00 that Behavior
  * indexes by mMushroomType; the rest each took the actor as arg0 in a
  * `char *`/`void *`/`da1up_c *` spelling and recast it. Their member-ness
@@ -1054,8 +1054,10 @@ int IsStarCollectedInCurLevel(int a);
 /* Ordinal 34 dispatches through this pointer-to-member-function type: the
    fourteen descriptors at 0x02108300..0x02108370 are {function pointer, 0}
    records on da1up_c, copied into the 14-element array at 0x0210dc00 by
-   __sinit_ov002_02100adc. */
+   the file-scope static initializer. */
 typedef void (da1up_c::*PMF)();
+
+extern PMF data_ov002_0210dc00[14];
 
 /* Ordinal 35's view of data_ov002_0210d9b8: a cached model handle whose second
    word is the BMD file pointer. */
@@ -1112,19 +1114,15 @@ int da1up_c::Render()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7da1up_c8BehaviorEv
-/* Vtable slot 6, and the only literal-pool reference to the 14-element dispatch array at
-   0x0210dc00 in the arm9/overlay images besides __sinit_ov002_02100adc, which fills it
-   from the 14 descriptors at 0x02108300..0x02108370. mMushroomType is the
-   index. The array stays `extern`: this TU claims .text only, so the sinit, the
-   descriptors and the array itself remain their own shards.
+/* Vtable slot 6, and the only code reference to the 14-element dispatch array at
+   0x0210dc00 besides the static initializer, which fills it from the 14
+   descriptors at 0x02108300..0x02108370. mMushroomType is the index.
    When UpdateYoshiEat returns nonzero only the matrix and shadow
    (func_ov002_020af4ec) and the cylinder Clear run. Otherwise it zeroes
    mEatingPlayer, calls the type's handler, advances mStateTimer and
    mStateFrames by one, and if the handler changed mState zeroes both. */
 int da1up_c::Behavior()
 {
-  extern PMF data_ov002_0210dc00[];
-
   if(UpdateYoshiEat(mWithMeshClsn) != 0){
     func_ov002_020af4ec();
     mdCcAc_c.Clear();
@@ -1271,3 +1269,26 @@ extern "C" da1up_c *da1up_c_classInit_ONEUPKINOKO()
 {
     return new da1up_c();
 }
+
+/* -------------------------------------------------------------------------- */
+/* The mushroom-type dispatch array Behavior indexes by mMushroomType. Entry n
+   is da1up_MushroomType n; entry 3's handler returns int, so it takes a cast.
+   The definition lives at the bottom so the descriptor objects mwccarm
+   materializes for the PMF constants are numbered clear of the anonymous
+   objects earlier TUs already pinned (@NNN is a shared namespace). */
+PMF data_ov002_0210dc00[14] = {
+    &da1up_c::func_ov002_020aff10,      /*  0 MUSHROOM_POP_OUT_DRIFT */
+    &da1up_c::func_ov002_020afe4c,      /*  1 MUSHROOM_POP_OUT_FLEE */
+    &da1up_c::func_ov002_020afd10,      /*  2 MUSHROOM_WAIT_THEN_ACCELERATE */
+    (PMF)&da1up_c::func_ov002_020afc44, /*  3 MUSHROOM_STATIONARY */
+    &da1up_c::func_ov002_020afbb4,      /*  4 MUSHROOM_WAIT_THEN_FACE_AWAY */
+    &da1up_c::func_ov002_020afa98,      /*  5 MUSHROOM_HIDDEN_FLEE */
+    &da1up_c::func_ov002_020afa6c,      /*  6 MUSHROOM_TRIGGER_FOR_5 */
+    &da1up_c::func_ov002_020af950,      /*  7 MUSHROOM_HIDDEN_CHASE */
+    &da1up_c::func_ov002_020af924,      /*  8 MUSHROOM_TRIGGER_FOR_7 */
+    &da1up_c::func_ov002_020af838,      /*  9 MUSHROOM_SPAWNER */
+    &da1up_c::func_ov002_020af7cc,      /* 10 MUSHROOM_RISE_THEN_POP_OUT */
+    &da1up_c::func_ov002_020afa50,      /* 11 MUSHROOM_SPIN_TRIGGER_FOR_5 */
+    &da1up_c::func_ov002_020af908,      /* 12 MUSHROOM_SPIN_TRIGGER_FOR_7 */
+    &da1up_c::func_ov002_020af724,      /* 13 MUSHROOM_FALL_THEN_WAIT */
+};
