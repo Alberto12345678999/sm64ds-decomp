@@ -3,7 +3,7 @@
  * daBakubaku_c -- Bubba, the fish that patrols Jolly Roger Bay.
  *
  * mState points at one of five { enter, main } State records in this
- * overlay's .bss, filled by __sinit_ov032_02112c10 from the PMF
+ * overlay's .bss, filled by __sinit_daBakubaku_c.cpp from the PMF
  * constants at 0x0211377c. Behavior runs state->main; transitions go
  * through func_ov032_02111ff4, which stores the record and runs enter.
  *
@@ -73,13 +73,34 @@ struct BakubakuSpawnInfo {
 typedef char BakubakuSpawnInfo_size_must_be_0x1c[
     sizeof(BakubakuSpawnInfo) == 0x1c ? 1 : -1];
 
+/* The model handle constructs through func_02017acc and destroys through
+ * func_02017ab4; the animation handles go through SharedFilePtr::Construct
+ * and SharedFilePtr_Destruct_Anim. The wrappers are declared, never defined:
+ * the manifest aliases their undefined members onto the ROM veneers. */
+struct BakubakuModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BakubakuModelFilePtr(u32 fileID);
+    ~BakubakuModelFilePtr();
+};
+
+struct BakubakuAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    BakubakuAnimationFileHandle(u32 fileID);
+    ~BakubakuAnimationFileHandle();
+};
+
+/* BakuVec3 is three plain words: the retail initializer registers no
+ * destructor for the cylinder offsets, so they were never Vector3 globals
+ * (Vector3 carries a declared ~Vector3, which would register at exit). */
+struct BakuVec3 { s32 x, y, z; };
+
 extern "C" {
-/* These four keep the int spellings __sinit_ov032_02112c10 and
-   decl_common.h give them; uses cast to SharedFilePtr/BcaHandle/State. */
-extern int data_ov032_02113a40[];
-extern int data_ov032_02113a48;
-extern int data_ov032_02113a50;
-extern int data_ov032_02113a8c; /* wander */
+extern BakubakuModelFilePtr data_ov032_02113a40;    /* model 0x295 */
+extern BakubakuAnimationFileHandle data_ov032_02113a50; /* swim anim 0x297 */
+extern BakubakuAnimationFileHandle data_ov032_02113a48; /* bite anim 0x296 */
+extern daBakubaku_c::State data_ov032_02113a8c; /* wander */
 extern daBakubaku_c::State data_ov032_02113a9c; /* pause */
 extern daBakubaku_c::State data_ov032_02113aac; /* chase */
 extern daBakubaku_c::State data_ov032_02113a7c; /* surface */
@@ -88,8 +109,8 @@ extern s32 data_0209f32c;
 extern Matrix4x3 data_020a0e68;
 extern int data_0209e650[];
 
-extern Vector3 data_ov032_021137cc; /* body cylinder */
-extern Vector3 data_ov032_021137d8; /* head cylinder */
+extern BakuVec3 data_ov032_021137cc; /* body cylinder */
+extern BakuVec3 data_ov032_021137d8; /* head cylinder */
 
 
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -160,7 +181,7 @@ s32 daBakubaku_c::InitResources()
     Vector3 headOffset;
     void *f;
 
-    f = Model::LoadFile(*(SharedFilePtr *)data_ov032_02113a40);
+    f = Model::LoadFile(*(SharedFilePtr *)&data_ov032_02113a40);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
@@ -254,7 +275,7 @@ void daBakubaku_c::OnPendingDestroy()
 // @symbol _ZN12daBakubaku_c16CleanupResourcesEv
 s32 daBakubaku_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov032_02113a40)->Release();
+    ((SharedFilePtr *)&data_ov032_02113a40)->Release();
     ((SharedFilePtr *)&data_ov032_02113a50)->Release();
     ((SharedFilePtr *)&data_ov032_02113a48)->Release();
     return 1;
@@ -757,3 +778,29 @@ int daBakubaku_c::func_ov032_02111254()
     }
     return 1;
 }
+
+/* Retail initializer order is model 0x295, swim anim 0x297, bite anim
+ * 0x296, then the wander/pause/chase/dive/surface State records. mwcc
+ * emits __sinit_daBakubaku_c.cpp from these definitions, including the
+ * destructor registrations and the PMF descriptor constants at
+ * 0x0211377c..0x021137c4. */
+BakubakuModelFilePtr data_ov032_02113a40(0x295);
+BakubakuAnimationFileHandle data_ov032_02113a50(0x297);
+BakubakuAnimationFileHandle data_ov032_02113a48(0x296);
+daBakubaku_c::State data_ov032_02113a8c = {
+    &daBakubaku_c::func_ov032_02111f9c, &daBakubaku_c::func_ov032_02111e24
+};
+daBakubaku_c::State data_ov032_02113a9c = {
+    &daBakubaku_c::func_ov032_02111dd8, &daBakubaku_c::func_ov032_02111d7c
+};
+daBakubaku_c::State data_ov032_02113aac = {
+    &daBakubaku_c::func_ov032_02111d58, &daBakubaku_c::func_ov032_02111b9c
+};
+daBakubaku_c::State data_ov032_02113abc = {
+    &daBakubaku_c::func_ov032_02111b50, &daBakubaku_c::func_ov032_02111830
+};
+daBakubaku_c::State data_ov032_02113a7c = {
+    &daBakubaku_c::func_ov032_02111814, &daBakubaku_c::func_ov032_02111620
+};
+BakuVec3 data_ov032_021137cc = { 0, -0x28000, 0x58000 };   /* body cylinder */
+BakuVec3 data_ov032_021137d8 = { 0, -0x30000, -0x20000 };  /* head cylinder */
