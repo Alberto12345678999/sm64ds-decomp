@@ -59,13 +59,13 @@ __sinit_ov045_021121a8 kind:function(arm,size=0x6c) addr:0x021121a8
 __sinit_d_a_obj_km2_ami_bou.cpp kind:function(arm,size=0x6c) addr:0x02112214
 __sinit_ov045_02112280 kind:function(arm,size=0x6c) addr:0x02112280
 __sinit_ov045_021122ec kind:function(arm,size=0x6c) addr:0x021122ec
-__sinit_ov045_02112358 kind:function(arm,size=0x68) addr:0x02112358
+__sinit_d_a_obj_km2_gura.cpp kind:function(arm,size=0x68) addr:0x02112358
 __sinit_ov045_021123c0 kind:function(arm,size=0x6c) addr:0x021123c0
 .p__sinit_ov045_021121a8 kind:data(word) addr:0x0211242c
 .p__sinit_d_a_obj_km2_ami_bou.cpp kind:data(word) addr:0x02112430
 .p__sinit_ov045_02112280 kind:data(word) addr:0x02112434
 .p__sinit_ov045_021122ec kind:data(word) addr:0x02112438
-.p__sinit_ov045_02112358 kind:data(word) addr:0x0211243c
+.p__sinit_d_a_obj_km2_gura.cpp kind:data(word) addr:0x0211243c
 .p__sinit_ov045_021123c0 kind:data(word) addr:0x02112440
 data_ov045_02112460 kind:data(any) addr:0x02112460
 data_ov045_02112464 kind:data(any) addr:0x02112464 ambiguous
@@ -174,8 +174,8 @@ data_ov045_02113208 kind:bss addr:0x02113208
 data_ov045_02113214 kind:bss addr:0x02113214
 data_ov045_02113220 kind:bss addr:0x02113220
 data_ov045_02113228 kind:bss addr:0x02113228
-data_ov045_02113230 kind:bss addr:0x02113230
-data_ov045_0211323c kind:bss addr:0x0211323c
+@973 kind:bss addr:0x02113230
+@975 kind:bss addr:0x0211323c
 data_ov045_02113248 kind:bss addr:0x02113248
 data_ov045_02113250 kind:bss addr:0x02113250
 data_ov045_02113258 kind:bss addr:0x02113258
