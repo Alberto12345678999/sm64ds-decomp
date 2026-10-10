@@ -39,10 +39,9 @@
  *   mdCcAc_c.Init makes InitResources 0x20 bytes longer.
  * - The hit check and the placement helper are members but keep their
  *   func_ov098_* address names.
- * - The state table (data_ov098_0213c930, .bss), the fragment angle table
- *   (data_ov098_0213bf90) and the bomb model file (data_ov098_0213c91c) are
- *   unnamed ov098 rows this TU does not own; func_0201267c, the sound call,
- *   is an unnamed arm9 function.
+ * - The fragment angle table (data_ov098_0213bf90) is an unnamed ov098 row
+ *   this TU does not own; func_0201267c, the sound call, is an unnamed arm9
+ *   function.
  * - Sound ids, particle ids and timer lengths stay numeric.
  */
 
@@ -69,12 +68,8 @@ s32 fdiv(s32 numerator, s32 denominator);
 }
 
 extern "C" {
-/* Model files: the fragment's, which the other variants load too, and the
-   bomb's. */
+/* Model files: the fragment's, which the other variants load too. */
 extern SharedFilePtr data_ov002_0210da38;
-extern SharedFilePtr data_ov098_0213c91c;
-/* The state table, indexed by mState. */
-extern State data_ov098_0213c930[];
 /* The five fragments' launch angles. */
 extern u16 data_ov098_0213bf90[];
 /* The sine and cosine table. */
@@ -102,6 +97,40 @@ int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, const Vector3 *from,
     u32 a, s32 b, u8 c, u8 d, u8 e);
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
 }
+
+/* The bomb's file-scope SharedFilePtr object, spelled through the same
+   wrapper idiom the landed folds use: the handle's code is the veneer pair
+   the cartridge already carries, so the wrapper gets no bodies of its own.
+   The constructor aliases func_02017acc and the destructor func_02017ab4 in
+   this unit's manifest. */
+struct WbmModelFilePtr : SharedFilePtr {
+    int unk0;
+    void *file;
+    WbmModelFilePtr(unsigned int id);
+    ~WbmModelFilePtr();
+};
+
+/* ------------------------------------------------------------------------
+ * The model handle and the state table's three member pointers, in
+ * static-initializer order: the initializer constructs the handle, registers
+ * its destructor, then copies the pointers from .data. The cannon preloads
+ * the same bomb model for the bombs it fires.
+ * ------------------------------------------------------------------------ */
+// @symbol __sinit_daWbm_c.cpp
+WbmModelFilePtr data_ov098_0213c91c(0x42c);
+
+/* The member pointers the initializer copies into the table
+   (0x0213c71c..0x0213c734 in .data, an unclaimed run). Each record is one
+   eight-byte {fn, adj} pair. */
+extern State data_ov098_0213c724;
+extern State data_ov098_0213c72c;
+extern State data_ov098_0213c71c;
+
+State data_ov098_0213c930[3] = {
+    data_ov098_0213c724,
+    data_ov098_0213c72c,
+    data_ov098_0213c71c,
+};
 
 // @symbol daWbm_c_classInit
 /* Reconstructed source-style name: SM64DS proves daWbm_c through RTTI,

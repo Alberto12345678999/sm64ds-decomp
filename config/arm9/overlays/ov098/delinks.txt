@@ -29,11 +29,11 @@ src/game/actors/d_a_cnn.cpp:
 src/actors/daWbm_c.cpp:
     complete
     .text start:0x0213b47c end:0x0213bf60
+    .init start:0x0213c2b4 end:0x0213c33c
+    .ctor start:0x0213c348 end:0x0213c34c
+    .bss start:0x0213c91c end:0x0213c948
 
 src/unnamed/ov098/__sinit_ov098_0213bf9c.c:
     complete
     .init start:0x0213bf9c end:0x0213c058
 
-src/unnamed/ov098/__sinit_ov098_0213c2b4.c:
-    complete
-    .init start:0x0213c2b4 end:0x0213c33c

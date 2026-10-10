@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3649,
+  "count": 3650,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2254,6 +2254,7 @@
     "src/actors/daWbm_c.cpp#_ZN7daWbm_c9StateFallEv",
     "src/actors/daWbm_c.cpp#_ZN7daWbm_cD0Ev",
     "src/actors/daWbm_c.cpp#_ZN7daWbm_cD1Ev",
+    "src/actors/daWbm_c.cpp#__sinit_daWbm_c.cpp",
     "src/actors/daWbm_c.cpp#daWbm_c_classInit",
     "src/actors/daYegg_c.cpp#_ZN8daYegg_c16CleanupResourcesEv",
     "src/actors/daYegg_c.cpp#_ZN8daYegg_c6RenderEv",
