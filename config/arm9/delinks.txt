@@ -2990,17 +2990,11 @@ src/func_02037e9c.c:
     complete
     .text start:0x02037e9c end:0x02037eb0
 
-src/func_02037eb0.c:
-    complete
-    .text start:0x02037eb0 end:0x02037ee4
 
 src/engine/collision/dBgPc.cpp:
     complete
-    .text start:0x02037ee4 end:0x02037f44
+    .text start:0x02037eb0 end:0x02037f4c
 
-src/unnamed/arm9/0203/func_02037f44.c:
-    complete
-    .text start:0x02037f44 end:0x02037f4c
 
 src/engine/collision/dBgPi.cpp:
     complete
