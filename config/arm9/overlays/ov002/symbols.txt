@@ -1616,7 +1616,7 @@ __sinit_ov002_021019d0 kind:function(arm,size=0x5470) addr:0x021019d0
 __sinit_daStar_c.cpp kind:function(arm,size=0x2d8) addr:0x02106e40
 __sinit_ov002_02107118 kind:function(arm,size=0xdc) addr:0x02107118
 __sinit_dPathLiftActor_c.cpp kind:function(arm,size=0xa4) addr:0x021071f4
-__sinit_ov002_02107298 kind:function(arm,size=0x6c) addr:0x02107298
+__sinit_daObj1UpLogo_c.cpp kind:function(arm,size=0x6c) addr:0x02107298
 __sinit_ov002_02107304 kind:function(arm,size=0x6c) addr:0x02107304
 __sinit_ov002_02107370 kind:function(arm,size=0xc18) addr:0x02107370
 __sinit_ov002_02107f88 kind:function(arm,size=0xc4) addr:0x02107f88
@@ -1642,7 +1642,7 @@ __sinit_ov002_02108094 kind:function(arm,size=0x3c) addr:0x02108094
 .p__sinit_daStar_c.cpp kind:data(word) addr:0x02108114
 .p__sinit_ov002_02107118 kind:data(word) addr:0x02108118
 .p__sinit_dPathLiftActor_c.cpp kind:data(word) addr:0x0210811c
-.p__sinit_ov002_02107298 kind:data(word) addr:0x02108120
+.p__sinit_daObj1UpLogo_c.cpp kind:data(word) addr:0x02108120
 .p__sinit_ov002_02107304 kind:data(word) addr:0x02108124
 .p__sinit_ov002_02107370 kind:data(word) addr:0x02108128
 .p__sinit_ov002_02107f88 kind:data(word) addr:0x0210812c
@@ -3700,8 +3700,8 @@ data_ov002_02110a48 kind:bss addr:0x02110a48
 data_ov002_02110a5c kind:bss addr:0x02110a5c
 data_ov002_02110a9c kind:bss addr:0x02110a9c
 data_ov002_02110aa4 kind:bss addr:0x02110aa4
-data_ov002_02110aac kind:bss addr:0x02110aac
-data_ov002_02110ab8 kind:bss addr:0x02110ab8
+@383 kind:bss addr:0x02110aac
+@384 kind:bss addr:0x02110ab8
 data_ov002_02110ac4 kind:bss addr:0x02110ac4
 daObjBC_Switch_c_ClsnFile kind:bss addr:0x02110ac4
 data_ov002_02110acc kind:bss addr:0x02110acc

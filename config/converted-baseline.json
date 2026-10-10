@@ -1252,7 +1252,6 @@
     "src/unnamed/ov002/__sinit_ov002_02100e50.c",
     "src/unnamed/ov002/__sinit_ov002_021014e4.c",
     "src/unnamed/ov002/__sinit_ov002_02107118.c",
-    "src/unnamed/ov002/__sinit_ov002_02107298.c",
     "src/unnamed/ov002/__sinit_ov002_02107304.c",
     "src/unnamed/ov002/__sinit_ov002_02107f88.c",
     "src/unnamed/ov002/__sinit_ov002_02108094.c",
@@ -3553,5 +3552,5 @@
     "src/engine/sound/Sound.cpp#_ZN5Sound8PlayLongEjjjRK7Vector3s",
     "src/engine/sound/Sound.cpp#_ZN5Sound8SetMusicEjj"
   ],
-  "count": 3544
+  "count": 3543
 }
