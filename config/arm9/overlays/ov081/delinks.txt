@@ -34,12 +34,10 @@ src/actors/daGmch_c.cpp:
 src/game/actors/d_a_obj_ice_block.cpp:
     complete
     .text start:0x02127b34 end:0x021280d8
-
+    .init start:0x021287b8 end:0x02128824
+    .ctor start:0x02128834 end:0x02128838
+    .bss start:0x02128fd0 end:0x02128ff8
 
 src/unnamed/ov081/__sinit_ov081_021284f0.c:
     complete
     .init start:0x021284f0 end:0x021287b8
-
-src/unnamed/ov081/__sinit_ov081_021287b8.c:
-    complete
-    .init start:0x021287b8 end:0x02128824
