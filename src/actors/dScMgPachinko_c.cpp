@@ -218,6 +218,34 @@ extern Ent7d0 data_ov006_02142644[];
 extern PMF2   data_ov006_0214266c[];
 extern Ent7d0 data_ov006_02142694[];
 
+/* The ROM {code pointer, adjustment} records the five tables copy from
+   (unlicensed .data), grouped by destination table in retail copy order. */
+extern Ent7d0 data_ov006_0213d8a8;
+extern Ent7d0 data_ov006_0213d8f0;
+extern Ent7d0 data_ov006_0213d8f8;
+extern Ent7d0 data_ov006_0213d8b8;
+extern Ent7d0 data_ov006_0213d908;
+extern Ent7d0 data_ov006_0213d8c0;
+extern Ent7d0 data_ov006_0213d8c8;
+extern Ent7d0 data_ov006_0213d898;
+extern Ent7d0 data_ov006_0213d920;
+extern Ent7d0 data_ov006_0213d8b0;
+extern Ent7d0 data_ov006_0213d880;
+extern Ent7d0 data_ov006_0213d8d8;
+extern Ent7d0 data_ov006_0213d930;
+extern Ent7d0 data_ov006_0213d940;
+extern Ent7d0 data_ov006_0213d938;
+extern Ent7d0 data_ov006_0213d8d0;
+extern PMF2   data_ov006_0213d878;
+extern PMF2   data_ov006_0213d8e8;
+extern PMF2   data_ov006_0213d8e0;
+extern PMF2   data_ov006_0213d890;
+extern PMF2   data_ov006_0213d888;
+extern PMF    data_ov006_0213d928;
+extern PMF    data_ov006_0213d918;
+extern PMF    data_ov006_0213d8a0;
+extern PMF    data_ov006_0213d900;
+
 /* This TU's own members, forward-declared for the callers below them. */
 extern void func_ov006_020fa7b8(char *thiz);
 extern void func_ov006_020fa844(char *self);
@@ -2821,3 +2849,43 @@ s32 dScMgPachinko_c::InitResources()
     unk_0a4 = 1;
     return 1;
 }
+
+/* The five state/record tables, defined in retail copy order: the 5-row
+   and 7-row Ent7d0 tables, the 4-row Ent7d0 table, the 5-row PMF2 table,
+   then the 4-row Entry table. mwcc emits __sinit_dScMgPachinko_c.cpp from
+   these definitions, copying the ROM .data records. */
+Ent7d0 data_ov006_02142644[5] = {
+    data_ov006_0213d8a8,
+    data_ov006_0213d8f0,
+    data_ov006_0213d8f8,
+    data_ov006_0213d8b8,
+    data_ov006_0213d908,
+};
+Ent7d0 data_ov006_02142694[7] = {
+    data_ov006_0213d8c0,
+    data_ov006_0213d8c8,
+    data_ov006_0213d898,
+    data_ov006_0213d920,
+    data_ov006_0213d8b0,
+    data_ov006_0213d880,
+    data_ov006_0213d8d8,
+};
+Ent7d0 data_ov006_02142624[4] = {
+    data_ov006_0213d930,
+    data_ov006_0213d940,
+    data_ov006_0213d938,
+    data_ov006_0213d8d0,
+};
+PMF2 data_ov006_0214266c[5] = {
+    data_ov006_0213d878,
+    data_ov006_0213d8e8,
+    data_ov006_0213d8e0,
+    data_ov006_0213d890,
+    data_ov006_0213d888,
+};
+Entry data_ov006_02142604[4] = {
+    {data_ov006_0213d928},
+    {data_ov006_0213d918},
+    {data_ov006_0213d8a0},
+    {data_ov006_0213d900},
+};
