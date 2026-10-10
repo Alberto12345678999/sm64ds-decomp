@@ -1669,6 +1669,7 @@
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_cD0Ev": "tangosdev",
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_cD1Ev": "tangosdev",
     "src/game/actors/d_a_obj_c0_water.cpp#daObjC0Water_c_classInit": "andrewboudreau",
+    "src/game/actors/d_a_obj_c0_water.cpp#__sinit_d_a_obj_c0_water.cpp": "github-actions[bot]",
     "src/game/actors/d_a_obj_clock_huriko.cpp#_ZN18daObjClockHuriko_c13InitResourcesEv": "github-actions[bot]",
     "src/game/actors/d_a_obj_clock_huriko.cpp#_ZN18daObjClockHuriko_c16CleanupResourcesEv": "andrewboudreau",
     "src/game/actors/d_a_obj_clock_huriko.cpp#_ZN18daObjClockHuriko_c6RenderEv": "andrewboudreau",

@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3653,
+  "count": 3654,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2832,6 +2832,7 @@
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_c8BehaviorEv",
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_cD0Ev",
     "src/game/actors/d_a_obj_c0_water.cpp#_ZN14daObjC0Water_cD1Ev",
+    "src/game/actors/d_a_obj_c0_water.cpp#__sinit_d_a_obj_c0_water.cpp",
     "src/game/actors/d_a_obj_c0_water.cpp#daObjC0Water_c_classInit",
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_c16CleanupResourcesEv",
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_c20UpdateModelTransformEv",
