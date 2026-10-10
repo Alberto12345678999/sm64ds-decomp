@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3654,
+  "count": 3655,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2840,6 +2840,7 @@
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_c8BehaviorEv",
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_cD0Ev",
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_cD1Ev",
+    "src/game/actors/d_a_obj_c1_hikari.cpp#__sinit_d_a_obj_c1_hikari.cpp",
     "src/game/actors/d_a_obj_c1_hikari.cpp#daObjC1Hikari_c_classInit",
     "src/game/actors/d_a_obj_c1_trap.cpp#_ZN14daObjC1_Trap_c10GetSpawnerEv",
     "src/game/actors/d_a_obj_c1_trap.cpp#_ZN14daObjC1_Trap_c11OnCollisionER8dActor_c",
