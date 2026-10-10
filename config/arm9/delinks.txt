@@ -4092,29 +4092,9 @@ src/unnamed/arm9/0204/func_0204335c.c:
     complete
     .text start:0x0204335c end:0x020433b8
 
-src/unnamed/arm9/0204/func_020433b8.c:
-    complete
-    .text start:0x020433b8 end:0x02043444
-
 src/actors/ActorBase.cpp:
     complete
-    .text start:0x02043444 end:0x02043f4c
-
-src/unnamed/arm9/0204/func_02043f4c.c:
-    complete
-    .text start:0x02043f4c end:0x02043f98
-
-src/unnamed/arm9/0204/func_02043f98.c:
-    complete
-    .text start:0x02043f98 end:0x02043fdc
-
-src/unnamed/arm9/0204/func_02043fdc.cpp:
-    complete
-    .text start:0x02043fdc end:0x0204405c
-
-src/func_0204405c.c:
-    complete
-    .text start:0x0204405c end:0x020440e8
+    .text start:0x020433b8 end:0x020440e8
 
 src/_ZN11fLiNdBaPr_cD1Ev.cpp:
     complete

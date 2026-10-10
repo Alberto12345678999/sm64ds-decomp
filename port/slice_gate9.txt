@@ -49,7 +49,6 @@ src/engine/collision/dBgW_Kc_itcm.cpp
 # The fBase_c framework hook virtuals are already covered above by
 # src/actors/ActorBase.cpp, the single translation unit that defines them.
 src/func_0203b27c.c
-src/func_0204405c.c
 src/func_0203b3c0.c
 src/func_02044334.cpp
 src/func_0204424c.c
