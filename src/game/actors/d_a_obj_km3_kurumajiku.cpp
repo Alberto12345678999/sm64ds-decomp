@@ -27,6 +27,28 @@
 
 #include "SharedFilePtr.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct Km3KurumajikuModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km3KurumajikuModelFilePtr(unsigned int fileID);
+    ~Km3KurumajikuModelFilePtr();
+};
+
+struct Km3KurumajikuClsnFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km3KurumajikuClsnFilePtr(unsigned int fileID);
+    ~Km3KurumajikuClsnFilePtr();
+};
+
+typedef char Km3KurumajikuModelFilePtr_size_must_be_8[
+    sizeof(Km3KurumajikuModelFilePtr) == 8 ? 1 : -1];
+typedef char Km3KurumajikuClsnFilePtr_size_must_be_8[
+    sizeof(Km3KurumajikuClsnFilePtr) == 8 ? 1 : -1];
+
 struct CLPS_Block;
 
 struct ResourceDescriptor {
@@ -38,8 +60,8 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
     sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern "C" {
-extern SharedFilePtr data_ov047_021125e8;
-extern SharedFilePtr data_ov047_021125e0;
+extern Km3KurumajikuModelFilePtr data_ov047_021125e8;
+extern Km3KurumajikuClsnFilePtr data_ov047_021125e0;
 extern CLPS_Block data_ov047_02111b54;
 }
 
@@ -104,3 +126,8 @@ s32 daObjKm3_Kurumajiku_c::CleanupResources()
 {
     return func_ov002_020b6ac8(this, &data_ov047_02112258);
 }
+
+/* Source order is construction order: model file 1665, then the collision
+ * file 1666. The compiler registers each destructor beside the object. */
+Km3KurumajikuModelFilePtr data_ov047_021125e8(1665);
+Km3KurumajikuClsnFilePtr data_ov047_021125e0(1666);
