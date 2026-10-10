@@ -5221,6 +5221,7 @@
     "src/actors/daObjEwbIce_c.cpp#_ZN13daObjEwbIce_c6RenderEv": "tangosdev",
     "src/actors/daObjEwbIce_c.cpp#_ZN13daObjEwbIce_c8BehaviorEv": "tangosdev",
     "src/actors/daObjEwbIce_c.cpp#_ZN13daObjEwbIce_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjEwbIce_c.cpp#__sinit_daObjEwbIce_c.cpp": "github-actions[bot]",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_cD1Ev": "tangosdev",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_cD0Ev": "tangosdev",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c16CleanupResourcesEv": "tangosdev",
