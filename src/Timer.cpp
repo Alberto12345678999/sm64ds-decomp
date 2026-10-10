@@ -1,7 +1,7 @@
 //cpp
 /* Timer.cpp -- arm9 system stopwatch: one 64-bit tick count plus a running
  * flag. mTime is the start tick while running and the frozen elapsed count
- * while stopped. Covers 0x02019584..0x0201964c; GetSoundMode ends the Sound
+ * while stopped. Covers 0x02019584..0x02019664; GetSoundMode ends the Sound
  * TU immediately above and the power-management system functions begin
  * immediately below, so this class is the whole TU.
  *
@@ -42,4 +42,14 @@ void Timer::ResetTimer()
 {
     mIsRunning = 0;
     mTime = 0;
+}
+
+/* The C1 constructor (ResetTimer, then return this) stays an extern "C"
+   helper under its address name; the Timer::Timer() spelling would rename
+   the symbol. */
+// @symbol func_0201964c
+extern "C" Timer *func_0201964c(Timer *__this)
+{
+    __this->ResetTimer();
+    return __this;
 }
