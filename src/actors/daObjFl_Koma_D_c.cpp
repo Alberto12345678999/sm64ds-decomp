@@ -7,11 +7,11 @@
  * model and collision files to daObjKaitendai_c's shared ov002
  * helpers, with a fixed spin step of 0x100. The destructor is out
  * of line: defer_codegen off lays down D1, D0, CleanupResources,
- * InitResources in ROM order.
+ * InitResources and the registry factory in ROM order.
  *
  * daObjFl_Koma_D_c_classInit is reconstructed (RTTI
- * daObjFl_Koma_D_c, FL_KOMA_D registry) and is not in this text
- * slice. Retail does not store that spelling.
+ * daObjFl_Koma_D_c, FL_KOMA_D registry). Retail does not store that
+ * spelling.
  *
  * Leftover: func_ov002_020b676c / func_ov002_020b66a8 are still the
  *   linker names of daObjKaitendai_c Init/Cleanup (the base leaves
@@ -19,8 +19,7 @@
  * Leftover: data_ov022_02113da4 is the model/collision/CLPS row
  *   between typeinfo at 02113d98 and the type name at 02113db0.
  *   Not owned here.
- * Leftover: g_profile_FL_KOMA_D and the classInit factory live
- *   outside this TU.
+ * Leftover: g_profile_FL_KOMA_D lives outside this TU.
  * Leftover: #pragma defer_codegen off stays on line 2. Dropping it
  *   still matches each body, but the four functions emit in reverse
  *   ROM order (ordinal pairs (0, 1), (1, 2), (2, 3)).
@@ -72,6 +71,20 @@ int daObjFl_Koma_D_c::CleanupResources()
 int daObjFl_Koma_D_c::InitResources()
 {
     return func_ov002_020b676c(this, &data_ov022_02113da4, 0x100);
+}
+
+// @symbol daObjFl_Koma_D_c_classInit
+/* Reconstructed source-style name: SM64DS proves daObjFl_Koma_D_c through
+ * RTTI, allocation size, most-derived vtable identity, and the FL_KOMA_D
+ * registry profile; later EAD lineage supplies classInit. Exact original
+ * spelling is not preserved. Historical alias: RotatingPlatformLll_Spawn.
+ *
+ * `new daObjFl_Koma_D_c` is the whole sequence the loose factory spelled
+ * by hand: fBase_c::operator new(0x320), dBgActor_c's base constructor,
+ * then daObjKaitendai_c's vptr store and this class's own. */
+extern "C" daObjFl_Koma_D_c *daObjFl_Koma_D_c_classInit(void)
+{
+    return new daObjFl_Koma_D_c;
 }
 
 #ifdef _MSC_VER

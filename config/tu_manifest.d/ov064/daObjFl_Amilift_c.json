@@ -6,15 +6,16 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x2117978..0x2117fb4, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "HISTORY: contiguous linker run: 0x2117978..0x2117fb4, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjFl_Amilift_c",
-    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "CLASSINIT TAIL FOLD (2026-10-09): the three one-function sources right of this run -- func_ov064_02117fb4 (0x20), func_ov064_02117fd4 (0x14) and daObjFl_Amilift_c_classInit (0x38), 0x02117fb4..0x02118020 -- abut its .text end with no gap and are now inside it. All three are this class's: func_ov064_02117fb4 stores 1 to byte 0x33a of its first argument (daObjFl_Amilift_c::mRiderOn, which Behavior reads and clears) when the second argument's actor ID is 0xbf; func_ov064_02117fd4 is the collision callback this TU's InitResources installs in mMeshCollider and only forwards its last two arguments to func_ov064_02117fb4 (pooled long-call tail call); the factory allocates sizeof(daObjFl_Amilift_c) (0x368), runs dBgActor_c's base ctor, stores _ZTV17daObjFl_Amilift_c and constructs mPathPtr at 0x360. The next .text entry in ov064 delinks (src/game/actors/d_a_obj_fl_gura.cpp) starts exactly at 0x02118020. Written at the end of the file because the TU sets #pragma defer_codegen off (source order is ROM order). The TU no longer includes decl_common.h: its only use was the `int func_ov064_02117fd4()` prototype, which C++ cannot overload with the three-argument definition, so the callback is declared locally instead."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02117978",
-      "end": "0x02117fb4"
+      "end": "0x02118020"
     }
   ],
   "functions": [
@@ -94,6 +95,27 @@
       "size": "0x00000170",
       "legacy_source": "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp",
       "ordinal": 10
+    },
+    {
+      "symbol": "func_ov064_02117fb4",
+      "address": "0x02117fb4",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/ov064/func_ov064_02117fb4.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_ov064_02117fd4",
+      "address": "0x02117fd4",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/ov064/func_ov064_02117fd4.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "daObjFl_Amilift_c_classInit",
+      "address": "0x02117fe8",
+      "size": "0x00000038",
+      "legacy_source": "src/d_a_obj_fl_amilift.c",
+      "ordinal": 13
     }
   ],
   "data": [],
@@ -126,7 +148,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov064",
       "canonical_address": "0x0211bc68",
-      "reason": "Key-function vtable. symbols.txt address point is ov064:0x0211bc68; the factories stay out of this TU."
+      "reason": "Key-function vtable. symbols.txt address point is ov064:0x0211bc68. (Until the 2026-10-09 classInit tail fold the factory stayed out of this TU; it is now folded in and only stores this vtable.)"
     },
     {
       "symbol": "_ZTI17daObjFl_Amilift_c",
@@ -197,6 +219,11 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60",
       "reason": "Inherited vague-linkage RTTI name; the canonical copy stays in arm9."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (2026-10-09): the folded factory's `return new daObjFl_Amilift_c;` instantiates the class, so mwccarm emits dBgActor_c's base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjBlockL_c)."
     }
   ],
   "verification": {
@@ -205,14 +232,16 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov064-daObjFl_Amilift_c/daObjFl_Amilift_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 11,
-    "functions_declared": 11,
+    "functions_matched": 14,
+    "functions_declared": 14,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN17daObjFl_Amilift_cD2Ev",
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN10dBgActor_cD2Ev"
       ],
       "deadstripped": [
+        "_ZN10dBgActor_cD2Ev",
         "_ZN17daObjFl_Amilift_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
@@ -220,11 +249,6 @@
         9,
         10,
         13,
-        29,
-        30,
-        31,
-        32,
-        33,
         34,
         35,
         36,
@@ -236,7 +260,14 @@
         42,
         43,
         44,
-        45
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
       ],
       "data": [
         "_ZTV17daObjFl_Amilift_c",

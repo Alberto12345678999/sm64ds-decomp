@@ -1,6 +1,6 @@
 //cpp
 /* Production translation unit for ov022/daObjFl_Ring_c, hand-curated.
- * 6 function(s), .text 0x021111a0..0x02111558.
+ * 9 function(s), .text 0x021111a0..0x021115a8.
  *
  * FL_RING, the fire ring of Lethal Lava Land (ov022): a dBgActor_c that turns
  * about Y at a rate kept in its own Z channel (mPrevAngleZ). It starts at
@@ -16,8 +16,7 @@
  * The destructor is the key function, so this TU also emits _ZTV14daObjFl_Ring_c,
  * _ZTI14daObjFl_Ring_c and _ZTS14daObjFl_Ring_c as vague linkage, alongside the
  * inherited bases' RTTI records. Every one of them has a configured ROM home,
- * so all of them license as deadstrip-data and the six-function object isolates
- * cleanly. The destructor is declared and defined inline and empty in the class
+ * so all of them license as deadstrip-data and the object isolates cleanly. The destructor is declared and defined inline and empty in the class
  * header (see that file for why), so there is no destructor text here for an
  * @symbol marker to sit above.
  *
@@ -37,11 +36,10 @@
  *   SharedFilePtrs at 0x02114500 and 0x02114508, and the ov064 CLPS block at
  *   0x0211bbac -- are unnamed rows in their own modules' data, which this TU
  *   does not own.
- * - func_ov022_02111564, the collision callback InitResources installs, sits at
- *   0x02111564 just past this run's right edge and is still a one-function C
- *   source; so is the factory daObjFl_Ring_c_classInit at 0x02111578.
- *   tu_map.py cuts those three as their own candidate
- *   (ov022/@02111558-021115a8), so they are deliberately out of scope here.
+ * - The run ends with the trigger helper func_ov022_02111558, the collision
+ *   callback func_ov022_02111564 that InitResources installs, and the registry
+ *   factory daObjFl_Ring_c_classInit; the two helpers keep their address names
+ *   and stay free extern "C" functions.
  * - g_profile_FL_RING, the registry row that names that factory, is ov022
  *   .data at 0x02113cf4 and lives outside this TU.
  */
@@ -77,7 +75,41 @@ void func_020393a4(void *p, int v);
 void func_02039394(void *p, int v);
 void func_020393d4(void *p, void *fn);
 void func_020393c4(void *p, void *fn);
-void func_ov022_02111564(void *);
+void func_ov022_02111558(daObjFl_Ring_c *self, dActor_c *other);
+}
+
+// @symbol daObjFl_Ring_c_classInit
+/* Reconstructed source-style name: SM64DS proves daObjFl_Ring_c through RTTI,
+ * allocation size, vtable identity, and the FL_RING registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: VolcanoRing_Spawn.
+ *
+ * `new daObjFl_Ring_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x328), dBgActor_c's base constructor, then the
+ * vptr store. */
+extern "C" daObjFl_Ring_c *daObjFl_Ring_c_classInit(void)
+{
+    return new daObjFl_Ring_c;
+}
+
+/* The collision callback InitResources installs in mMeshCollider's slot. The
+ * slot passes three arguments; the trigger helper wants the last two.
+ * long_calls keeps the pooled absolute tail call. */
+#pragma push
+#pragma long_calls on
+// @symbol func_ov022_02111564
+extern "C" void func_ov022_02111564(void *collider, daObjFl_Ring_c *self, dActor_c *other)
+{
+    func_ov022_02111558(self, other);
+}
+#pragma pop
+
+// @symbol func_ov022_02111558
+/* Something touched the ring: raise mTriggered, which the next Behavior
+ * reads once and clears. */
+extern "C" void func_ov022_02111558(daObjFl_Ring_c *self, dActor_c *other)
+{
+    self->mTriggered = 1;
 }
 
 // @symbol _ZN14daObjFl_Ring_c13InitResourcesEv

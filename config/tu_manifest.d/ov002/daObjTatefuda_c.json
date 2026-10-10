@@ -6,15 +6,16 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x020badd0..0x020bc3c8, 28 function(s), from build/tu_map.json (tools/tu_map.py, regenerated post-rename as ov002/daObjTatefuda_c). 27 carry complete delinks entries; _ZN15daObjTatefuda_c4TalkEv (the talk routine) verifies OK under the pin and is marked complete with this promotion. Boundaries medium on both sides; the daObjSwdoor_c run ends exactly where this one opens (0x020badd0), and daObjTatefuda_c_classInit (0x020bc3c8) abuts its end.",
+    "HISTORY: contiguous linker run: 0x020badd0..0x020bc3c8, 28 function(s), from build/tu_map.json (tools/tu_map.py, regenerated post-rename as ov002/daObjTatefuda_c). 27 carry complete delinks entries; _ZN15daObjTatefuda_c4TalkEv (the talk routine) verifies OK under the pin and is marked complete with this promotion. Boundaries medium on both sides; the daObjSwdoor_c run ends exactly where this one opens (0x020badd0), and daObjTatefuda_c_classInit (0x020bc3c8) abuts its end.",
     "class label: daObjTatefuda_c (ROM RTTI triple homed at ov002 0x02109ab4/0x02109ac0/0x02109af8; the tree's former SignPost was coined). Kill (slot 31, overriding dBgActor_c) is the key function: it emits the vtable, RTTI and destructor variants, so D1/D0 need no bodies here.",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide)",
+    "CLASSINIT TAIL FOLD (2026-10-09): daObjTatefuda_c_classInit (0x020bc3c8..0x020bc414, 0x4c) abuts this TU's .text end with no gap and is now inside it; its retired source src/d_a_obj_tatefuda.c held nothing else. It allocates sizeof(daObjTatefuda_c) (0x5a4) and runs exactly this class's construction (dBgActor_c base ctor, _ZTV15daObjTatefuda_c store, the dCcAc_c/dExtShadowModel_c/dBgCh_Actr member ctors at 0x320/0x358/0x3c8), so it belongs with the class's TU; src/game/actors/d_a_obj_wakame.cpp starts exactly at 0x020bc414 above it. Placed first in the file (the TU emits .text in reverse source order)."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020badd0",
-      "end": "0x020bc3c8"
+      "end": "0x020bc414"
     },
     {
       "name": ".init",
@@ -233,6 +234,13 @@
       "size": "0x00000188",
       "legacy_source": "src/_ZN15daObjTatefuda_c13InitResourcesEv.cpp",
       "ordinal": 27
+    },
+    {
+      "symbol": "daObjTatefuda_c_classInit",
+      "address": "0x020bc3c8",
+      "size": "0x0000004c",
+      "legacy_source": "src/d_a_obj_tatefuda.c",
+      "ordinal": 28
     }
   ],
   "data": [
@@ -244,7 +252,7 @@
       "evidence": "anonymous Idle state descriptor; retail first word is 0x020bb9fc"
     },
     {
-      "symbol": "@1135",
+      "symbol": "@2760",
       "address": "0x02109a6c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -401,39 +409,64 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1139",
+      "from": "@1145",
       "to": "@2155",
       "evidence": "mwcc numbers this descriptor @1139 per TU and ov090 already defines a global @1139, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1137",
+      "from": "@1143",
       "to": "@2156",
       "evidence": "mwcc numbers this descriptor @1137 per TU and ov090 already defines a global @1137, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1149",
+      "from": "@1155",
       "to": "@2157",
       "evidence": "mwcc numbers this descriptor @1149 per TU and ov090 already defines a global @1149, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1143",
+      "from": "@1149",
       "to": "@2158",
       "evidence": "mwcc numbers this descriptor @1143 per TU and ov090 already defines a global @1143, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1145",
+      "from": "@1151",
       "to": "@2159",
       "evidence": "mwcc numbers this descriptor @1145 per TU and ov090 already defines a global @1145, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1147",
+      "from": "@1153",
       "to": "@2160",
       "evidence": "mwcc numbers this descriptor @1147 per TU and ov090 already defines a global @1147, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1141",
+      "from": "@1147",
       "to": "@2161",
       "evidence": "mwcc numbers this descriptor @1141 per TU and ov090 already defines a global @1141, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@1139",
+      "to": "@1133",
+      "evidence": "classInit tail fold (2026-10-09): the folded factory sits above the static data in source (this TU emits .text in reverse source order), and its definition advances mwcc's per-TU anonymous counter by six, so this descriptor/registration node is now emitted under the compiled name six higher; renamed back to its configured ROM name, which is unchanged."
+    },
+    {
+      "from": "@1141",
+      "to": "@2760",
+      "evidence": "classInit tail fold (2026-10-09): the folded factory sits above the static data in source (this TU emits .text in reverse source order) and advances mwcc's per-TU anonymous counter by six, so the InitTalk descriptor is now emitted as @1141 while the compiled @1135 is the collision registration node (renamed to @1129). objisolate's rename cannot chain a destination that is also a source, so this descriptor's configured name moves from @1135 to the fleet-unique @2760 (symbols.txt row 0x02109a6c renumbered with it)."
+    },
+    {
+      "from": "@1137",
+      "to": "@1131",
+      "evidence": "classInit tail fold (2026-10-09): the folded factory sits above the static data in source (this TU emits .text in reverse source order), and its definition advances mwcc's per-TU anonymous counter by six, so this descriptor/registration node is now emitted under the compiled name six higher; renamed back to its configured ROM name, which is unchanged."
+    },
+    {
+      "from": "@1134",
+      "to": "@1128",
+      "evidence": "classInit tail fold (2026-10-09): the folded factory sits above the static data in source (this TU emits .text in reverse source order), and its definition advances mwcc's per-TU anonymous counter by six, so this descriptor/registration node is now emitted under the compiled name six higher; renamed back to its configured ROM name, which is unchanged."
+    },
+    {
+      "from": "@1135",
+      "to": "@1129",
+      "evidence": "classInit tail fold (2026-10-09): the folded factory sits above the static data in source (this TU emits .text in reverse source order), and its definition advances mwcc's per-TU anonymous counter by six, so this descriptor/registration node is now emitted under the compiled name six higher; renamed back to its configured ROM name, which is unchanged."
     }
   ],
   "symbol_binding_rewrites": [
@@ -474,7 +507,7 @@
       "evidence": "compiler-local Idle descriptor is a configured initializer relocation destination at 0x02109a64"
     },
     {
-      "symbol": "@1135",
+      "symbol": "@2760",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local InitTalk descriptor is a configured initializer relocation destination at 0x02109a6c"
@@ -534,14 +567,18 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daObjTatefuda_c/daObjTatefuda_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 28,
-    "functions_declared": 28,
+    "functions_matched": 29,
+    "functions_declared": 29,
     "compilerOnlyOutput": {
       "requested": [
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN10dBgActor_cD2Ev",
+        "_ZN9Matrix4x3D1Ev"
       ],
       "deadstripped": [
-        "_ZN7Vector3D1Ev"
+        "_ZN10dBgActor_cD2Ev",
+        "_ZN7Vector3D1Ev",
+        "_ZN9Matrix4x3D1Ev"
       ],
       "droppedSections": [
         21,
@@ -561,7 +598,10 @@
         43,
         45,
         46,
-        57
+        57,
+        100,
+        101,
+        102
       ],
       "data": [
         "_ZTV15daObjTatefuda_c",
@@ -593,7 +633,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 12 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -612,7 +652,7 @@
       },
       "tuRange": {
         "start": "0x020badd0",
-        "end": "0x020bc3c8",
+        "end": "0x020bc414",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -620,7 +660,7 @@
         {
           "section": ".text",
           "start": "0x020badd0",
-          "end": "0x020bc3c8",
+          "end": "0x020bc414",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -654,7 +694,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 45
+          "LICENSED": 46
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -665,19 +705,19 @@
           {
             "section": ".init",
             "original": [
-              100
+              105
             ],
             "desired": [
-              100
+              105
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              98
+              103
             ],
             "desired": [
-              98
+              103
             ]
           },
           {
@@ -915,6 +955,16 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "_ZN15daObjTatefuda_c6ThrownEv holds a real Vector3 local (vec) and types.h gives Vector3 an inline destructor, so the compiler emits its own copy of the four-byte body. The ROM homes it in arm9:0x020072c0; this copy is discarded by text-only isolation."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (2026-10-09): the folded factory's `return new daObjTatefuda_c;` instantiates the class, so mwccarm emits dBgActor_c's base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjBlockL_c)."
+    },
+    {
+      "symbol": "_ZN9Matrix4x3D1Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (2026-10-09): mwccarm emits Matrix4x3's vague-linkage D1 while lowering the synthesized constructor from `return new daObjTatefuda_c;` over the Matrix4x3 member mShadowMat at 0x380; no configured ROM symbol of that name exists in any module and no surviving reference reaches it (same row as ov070/daKpFr_c)."
     }
   ],
   "relocations": [
@@ -1043,7 +1093,7 @@
       "source": "0x02101870",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@1135",
+      "symbol": "@2760",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02109a6c"

@@ -172,15 +172,11 @@ src/actors/daObjSwdoor_c.cpp:
 
 src/actors/daObjTatefuda_c.cpp:
     complete
-    .text start:0x020badd0 end:0x020bc3c8
+    .text start:0x020badd0 end:0x020bc414
     .init start:0x02101738 end:0x02101894
     .ctor start:0x02108100 end:0x02108104
     .data start:0x02109a64 end:0x02109ab4
     .bss start:0x0210e05c end:0x0210e0d4
-
-src/d_a_obj_tatefuda.c:
-    complete
-    .text start:0x020bc3c8 end:0x020bc414
 
 src/game/actors/d_a_obj_wakame.cpp:
     complete
@@ -1341,12 +1337,8 @@ src/actors/daMugenBGM_c.cpp:
 
 src/actors/daDemo_c.cpp:
     complete
-    .text start:0x020f1f70 end:0x020f8808
+    .text start:0x020f1f70 end:0x020f8838
     .data start:0x0210b940 end:0x0210b958
-
-src/d_a_demo.c:
-    complete
-    .text start:0x020f8808 end:0x020f8838
 
 src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp:
     complete
