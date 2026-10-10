@@ -7,8 +7,8 @@
  * _ZTV8daDemo_c at 0x0210bd60. The nested model helpers read as
  * _ZTSN8daDemo_c10anmModel_cE / _ZTSN8daDemo_c13simpleModel_cE over the
  * shared _ZTIN8daDemo_c7param_cE tail base at 0x0210b888. The run is
- * 0x020f1f70..0x020f8858; it ends with the registry factory
- * daDemo_c_classInit and the two anmModel_c thunks.
+ * 0x020f1f70..0x020f8838; it ends with the registry factory
+ * daDemo_c_classInit.
  *
  * daDemo_c's out-of-line destructor is the key function. Under
  * `#pragma defer_codegen off` it emits D1 at 0x020f1f70 and D0 at
@@ -16,8 +16,8 @@
  * simpleModel_c emit the same D1/D0/D2 shape. Source order is
  * ROM-ascending so emission order stays ROM-ascending; the compiler
  * places simpleModel_c's D0/D1 pair out of order on its own. The
- * `_ZThn80_` Animation-base thunks come out last, after the factory, at
- * ov002:0x020f8838/0x020f8848.
+ * `_ZThn80_` Animation-base thunks live in their own sources at
+ * ov002:0x020f8838/0x020f8848; this TU's copies are discarded.
  *
  * The vague-linkage typeinfo copies name the model family by the
  * project's own spellings (ModelAnim for dExtAnmModel_c, Model for
@@ -4907,11 +4907,3 @@ extern "C" daDemo_c *daDemo_c_classInit(void)
 {
     return new daDemo_c;
 }
-
-// @symbol _ZThn80_N8daDemo_c10anmModel_cD0Ev
-// @symbol _ZThn80_N8daDemo_c10anmModel_cD1Ev
-/* No source of their own: these are the non-virtual Animation-base thunks
- * for anmModel_c's deleting and complete destructors, which mwccarm writes
- * for the anmModel_c destructor defined above. It places them after
- * everything else in the file, which is where the cartridge keeps them
- * (0x020f8838, 0x020f8848). */
