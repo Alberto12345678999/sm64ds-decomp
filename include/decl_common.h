@@ -2104,7 +2104,6 @@ extern void func_ov007_020cb3dc(int);
 extern void func_ov014_02111ebc(void*, int);
 extern void func_ov015_02111214(char*);
 extern int func_ov015_021128f8();
-extern void func_ov016_021126a8(char*);
 extern void func_ov016_021130a4(char*);
 extern void func_ov018_021123d0(char*, int);
 extern void func_ov021_0211129c(void*);
