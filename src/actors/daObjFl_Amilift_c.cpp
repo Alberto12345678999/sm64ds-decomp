@@ -1,12 +1,12 @@
 //cpp
-/* daObjFl_Amilift_c: a platform that rides a path, ov064 0x02117978..0x02117fb4,
- * 11 functions. It walks between the nodes of a PathPtr, sinks a little while
+/* daObjFl_Amilift_c: a platform that rides a path, ov064 0x02117978..0x02118020,
+ * 14 functions. It walks between the nodes of a PathPtr, sinks a little while
  * the player stands on it and bobs on a sine table.
  *
  * ROM name from _ZTS17daObjFl_Amilift_c. Vtable _ZTV17daObjFl_Amilift_c
- * at 0x0211bc68. daObjFl_Amilift_c_classInit at 0x02117fe8 and the two
- * functions after InitResources (func_ov064_02117fb4, func_ov064_02117fd4)
- * stay out.
+ * at 0x0211bc68. The run ends with the touch helper func_ov064_02117fb4, the
+ * collision callback func_ov064_02117fd4 and the registry factory
+ * daObjFl_Amilift_c_classInit.
  *
  * STATES: mState indexes a three-entry table of pointers-to-member at
  * data_ov064_0211c750, filled by ov064's __sinit from the constants at
@@ -36,7 +36,6 @@
 
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
-#include "decl_common.h"
 #include "SharedFilePtr.h"
 
 /* Lets Behavior call the state table's entries as members of the lift. */
@@ -65,6 +64,8 @@ extern CLPS_Block data_ov064_0211bb6c;
 extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 extern void Vec3_Sub(Vector3* dst, Vector3* a, Vector3* b);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+/* The collision callback this TU installs; defined at the end of the file. */
+void func_ov064_02117fd4(void *collider, daObjFl_Amilift_c *self, dActor_c *other);
 }
 
 /* Emission order is ROM order. Do not reorder. */
@@ -292,4 +293,40 @@ s32 daObjFl_Amilift_c::InitResources() {
     mHomeZ = mPosZ;
 
     return 1;
+}
+
+// @symbol func_ov064_02117fb4
+/* The player (actor 0xbf) touched the lift: raise mRiderOn, which Behavior
+ * reads to sink the lift and clears every frame. */
+extern "C" void func_ov064_02117fb4(daObjFl_Amilift_c *self, dActor_c *other)
+{
+    u8 isPlayer = other->actorID == 0xbf;
+    if (isPlayer)
+        self->mRiderOn = 1;
+}
+
+/* The collision callback InitResources installs in mMeshCollider's slot. The
+ * slot passes three arguments; the touch helper wants the last two.
+ * long_calls keeps the pooled absolute tail call. */
+#pragma push
+#pragma long_calls on
+// @symbol func_ov064_02117fd4
+extern "C" void func_ov064_02117fd4(void *collider, daObjFl_Amilift_c *self, dActor_c *other)
+{
+    func_ov064_02117fb4(self, other);
+}
+#pragma pop
+
+// @symbol daObjFl_Amilift_c_classInit
+/* Reconstructed source-style name: SM64DS proves daObjFl_Amilift_c through
+ * RTTI, allocation size, vtable identity, and the FL_AMILIFT registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MetalNetLift_Spawn.
+ *
+ * `new daObjFl_Amilift_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x368), dBgActor_c's base constructor, the vptr
+ * store, then mPathPtr's constructor. */
+extern "C" daObjFl_Amilift_c *daObjFl_Amilift_c_classInit(void)
+{
+    return new daObjFl_Amilift_c;
 }

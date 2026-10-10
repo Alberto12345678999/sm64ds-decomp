@@ -1,10 +1,11 @@
 //cpp
 /* daObjTatefuda_c: the wooden signpost (TATEFUDA profile, ov002).
  *
- * The whole unit, ov002 .text 0x020badd0..0x020bc3c8, 28 functions: the
+ * The whole unit, ov002 .text 0x020badd0..0x020bc414, 29 functions: the
  * destructor pair, eight other methods (Kill, OnHitByMegaChar,
  * OnGroundPounded, OnAttacked1, Behavior, Render, CleanupResources,
- * InitResources), and eighteen helpers. Talking to it runs the
+ * InitResources), eighteen helpers, and last the registry factory
+ * daObjTatefuda_c_classInit. Talking to it runs the
  * 0x3dc-byte talk routine (approach, face the reading spot, show the
  * sign's message). Pounding sinks it into the ground (it comes back
  * later); a bob-omb hit or a mega character kills it (Kill resets and
@@ -205,7 +206,26 @@ extern "C" CLPS_Block data_ov002_0210d714;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 -- _ZN15daObjTatefuda_c13InitResourcesEv, 0x020bc240, size 0x188 */
+/* ROM ordinal 28 -- daObjTatefuda_c_classInit, 0x020bc3c8, size 0x4c */
+/* -------------------------------------------------------------------------- */
+// @symbol daObjTatefuda_c_classInit
+/* recovered: vtable identified, globals resolved, declarations from a shared header */
+/* Reconstructed source-style name: SM64DS proves daObjTatefuda_c through RTTI,
+ * allocation size, vtable identity, and the TATEFUDA registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: SignPost_Spawn.
+ *
+ * `new daObjTatefuda_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x5a4), dBgActor_c's base constructor, the
+ * vptr store, then the dCcAc_c, dExtShadowModel_c and dBgCh_Actr member
+ * constructors in declaration order. */
+extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
+{
+    return new daObjTatefuda_c;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 27 --_ZN15daObjTatefuda_c13InitResourcesEv, 0x020bc240, size 0x188 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */

@@ -6,15 +6,16 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x20f1f70..0x20f8808, 145 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "HISTORY: contiguous linker run: 0x20f1f70..0x20f8808, 145 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): CutsceneObject, daDemo_c",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "CLASSINIT TAIL FOLD (2026-10-09): the three one-function sources right of this run -- daDemo_c_classInit (0x30, 0x020f8808), _ZThn80_N8daDemo_c10anmModel_cD0Ev (0x10, 0x020f8838) and _ZThn80_N8daDemo_c10anmModel_cD1Ev (0x10, 0x020f8848), 0x020f8808..0x020f8858 -- abut its .text end with no gap and are now inside it. The factory allocates sizeof(daDemo_c) (0x104), runs dActor_c's base ctor and stores _ZTV8daDemo_c; it is written last in the file because the TU sets #pragma defer_codegen off. The two non-virtual Animation-base thunks for anmModel_c's destructors are compiler output of this TU's anmModel_c key function: they were already emitted here and discarded as deadstrip-duplicate copies of the cartridge's thunks, and mwccarm places them after the factory, which is exactly the cartridge's order. The deadstrip-duplicate rows are retired and the thunks are licensed as this TU's functions. The next .text entry in ov002 delinks (src/actors/daFPknBall_c.cpp) starts exactly at 0x020f8858."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020f1f70",
-      "end": "0x020f8808"
+      "end": "0x020f8858"
     },
     {
       "name": ".data",
@@ -1037,6 +1038,27 @@
       "size": "0x00000464",
       "legacy_source": "src/_ZN14CutsceneObject13InitResourcesEv.cpp",
       "ordinal": 144
+    },
+    {
+      "symbol": "daDemo_c_classInit",
+      "address": "0x020f8808",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_demo.c",
+      "ordinal": 145
+    },
+    {
+      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
+      "address": "0x020f8838",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp",
+      "ordinal": 146
+    },
+    {
+      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD1Ev",
+      "address": "0x020f8848",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp",
+      "ordinal": 147
     }
   ],
   "data": [
@@ -1146,24 +1168,20 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daDemo_c/daDemo_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 145,
-    "functions_declared": 145,
+    "functions_matched": 148,
+    "functions_declared": 148,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN8daDemo_cD2Ev",
         "_ZN8daDemo_c10anmModel_cD2Ev",
         "_ZN8daDemo_c13simpleModel_cD2Ev",
-        "_ZN7Vector3D1Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD1Ev"
+        "_ZN7Vector3D1Ev"
       ],
       "deadstripped": [
         "_ZN7Vector3D1Ev",
         "_ZN8daDemo_c10anmModel_cD2Ev",
         "_ZN8daDemo_c13simpleModel_cD2Ev",
-        "_ZN8daDemo_cD2Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD1Ev"
+        "_ZN8daDemo_cD2Ev"
       ],
       "droppedSections": [
         9,
@@ -1173,10 +1191,8 @@
         198,
         205,
         206,
-        264,
-        265,
-        269,
-        270,
+        266,
+        267,
         271,
         272,
         273,
@@ -1188,10 +1204,8 @@
         279,
         280,
         281,
-        303,
-        304,
-        305,
-        306
+        282,
+        283
       ],
       "data": [
         "_ZTV8daDemo_c",
@@ -1238,7 +1252,7 @@
       },
       "tuRange": {
         "start": "0x020f1f70",
-        "end": "0x020f8808",
+        "end": "0x020f8858",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -1246,7 +1260,7 @@
         {
           "section": ".text",
           "start": "0x020f1f70",
-          "end": "0x020f8808",
+          "end": "0x020f8858",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -1260,7 +1274,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 147
+          "LICENSED": 150
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1271,12 +1285,12 @@
           {
             "section": ".data",
             "original": [
-              266,
-              267
+              268,
+              269
             ],
             "desired": [
-              266,
-              267
+              268,
+              269
             ]
           }
         ],
@@ -1338,20 +1352,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "A Vector3 local emits the inline destructor. The ROM homes that four-byte body in arm9 at 0x020072c0; this copy is discarded."
-    },
-    {
-      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
-      "disposition": "deadstrip-duplicate",
-      "canonical_module": "ov002",
-      "canonical_address": "0x020f8838",
-      "reason": "Non-virtual thunk to the Animation base for anmModel_c::D0. The cartridge homes the identical 0x10-byte thunk at ov002:0x020f8838, owned by the classInit source; this copy is discarded."
-    },
-    {
-      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD1Ev",
-      "disposition": "deadstrip-duplicate",
-      "canonical_module": "ov002",
-      "canonical_address": "0x020f8848",
-      "reason": "Non-virtual thunk to the Animation base for anmModel_c::D1. The cartridge homes the identical 0x10-byte thunk at ov002:0x020f8848, owned by the classInit source; this copy is discarded."
     },
     {
       "symbol": "_ZTV8daDemo_c",
