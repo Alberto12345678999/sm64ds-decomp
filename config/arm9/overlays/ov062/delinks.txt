@@ -19,6 +19,9 @@ src/actors/daRNk_c.cpp:
 src/actors/daRFlag_c.cpp:
     complete
     .text start:0x0211af38 end:0x0211b248
+    .init start:0x0211d690 end:0x0211d6fc
+    .ctor start:0x0211d8d8 end:0x0211d8dc
+    .bss start:0x0211e0d4 end:0x0211e0fc
 
 src/actors/daJango_c.cpp:
     complete
@@ -39,7 +42,3 @@ src/unnamed/ov062/__sinit_ov062_0211d2d8.c:
 src/unnamed/ov062/__sinit_ov062_0211d4a0.c:
     complete
     .init start:0x0211d4a0 end:0x0211d690
-
-src/unnamed/ov062/__sinit_ov062_0211d690.c:
-    complete
-    .init start:0x0211d690 end:0x0211d6fc
