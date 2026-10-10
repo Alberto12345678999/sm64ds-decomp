@@ -47,6 +47,23 @@ struct Vec3;
 
 typedef void (dBgActor_c::*StateFunc)();
 
+/* 8-byte file handles. The models use func_02017acc / func_02017ab4 and the
+ * collision files func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct Linelift2ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Linelift2ModelFilePtr(u32 fileID);
+    ~Linelift2ModelFilePtr();
+};
+
+struct Linelift2CollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Linelift2CollisionFilePtr(u32 fileID);
+    ~Linelift2CollisionFilePtr();
+};
+
 extern "C" {
 extern SharedFilePtr *data_ov091_021344fc[]; /* BMD, by mVariant */
 extern SharedFilePtr *data_ov091_021344f4[]; /* KCL, by mVariant */
@@ -327,3 +344,26 @@ extern "C" void func_ov091_02131cb0(dActor_c *self, const Vector3 *to, const Vec
 // @symbol _ZN13daLinelift2_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline destructor in the header
    emits D1 then D0 -- the cartridge's order -- and no D2. */
+
+/* The member pointers the initializer copies into the state table
+   (0x02134e44..0x02134e5c in .data, an unclaimed run). Each record is one
+   eight-byte {fn, adj} pair. */
+extern StateFunc data_ov091_02134e54;
+extern StateFunc data_ov091_02134e44;
+extern StateFunc data_ov091_02134e4c;
+
+/* Source order is construction order: the two model files, the two
+ * collision files, then the three state records. __sinit_d_a_linelift2.cpp
+ * emits the constructions, registers the destructors -- the registration
+ * nodes are compiler temporaries -- and copies the records. */
+// @symbol __sinit_d_a_linelift2.cpp
+Linelift2ModelFilePtr     data_ov091_02135498(0x683);
+Linelift2ModelFilePtr     data_ov091_021354a8(0x669);
+Linelift2CollisionFilePtr data_ov091_021354a0(0x684);
+Linelift2CollisionFilePtr data_ov091_02135490(0x66a);
+
+StateFunc data_ov091_021354e0[3] = {
+    data_ov091_02134e54,
+    data_ov091_02134e44,
+    data_ov091_02134e4c,
+};

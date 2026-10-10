@@ -5612,6 +5612,7 @@
     "src/game/actors/d_a_linelift2.cpp#func_ov091_02132380": "tangosdev",
     "src/game/actors/d_a_linelift2.cpp#daLinelift2_c_classInit_KM2_SUSUMU": "tangosdev",
     "src/game/actors/d_a_linelift2.cpp#daLinelift2_c_classInit_KM3_LIFT": "tangosdev",
+    "src/game/actors/d_a_linelift2.cpp#__sinit_d_a_linelift2.cpp": "github-actions[bot]",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_cD1Ev": "tangosdev",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_cD0Ev": "tangosdev",
     "src/game/actors/d_a_cnn.cpp#_ZN7daCnn_c19func_ov098_0213a984Ev": "andrewboudreau",
