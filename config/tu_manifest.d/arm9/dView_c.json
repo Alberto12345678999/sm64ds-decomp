@@ -10,13 +10,14 @@
     "contiguous linker run 0x0202fc98..0x0202fd2c: the three delinks entries tile it exactly once -- D1 0x0202fc98, D0 0x0202fcc8, Render 0x0202fd0c -- with no interior hole.",
     "class-label homogeneity: every named symbol in the run is a member of dView_c (the shared 0x80-byte view base dCamera_c derives from, include/dView_c.h).",
     "ROM evidence says one object and names it: the vtable at 0x02092720 (_ZTV7dView_c) carries the canonical {0, _ZTI} preamble whose typeinfo pointer names 0x02086ecc (_ZTI7dView_c, an __si_class_type_info on _ZTI7dBase_c); _ZTS7dView_c at 0x02086e48 reads \"7dView_c\". The tree previously coined `View`; the class is renamed to the cartridge's RTTI spelling so the emitted typeinfo externalizes at the real records.",
-    "neighbour below: func_0202fc40 at 0x0202fc40..0x0202fc98 (unattributed C function). Neighbour above: func_0202fd2c at 0x0202fd2c (unattributed C function). The run is bracketed rather than cut out of a uniform stretch."
+    "neighbour below: func_0202fc40 at 0x0202fc40..0x0202fc98 (unattributed C function). Neighbour above: func_0202fd2c at 0x0202fd2c (unattributed C function). The run is bracketed rather than cut out of a uniform stretch.",
+    "absorb/dView_c grows .text to 0x0202fc98..0x0202fd4c: func_0202fd2c (0x20, C++OK:hoist) prepended in source so reverse emission lands it at the right edge; fwd stop is Quaternion_FromVector3.c at 0x0202fd4c"
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x0202fc98",
-      "end": "0x0202fd2c"
+      "end": "0x0202fd4c"
     }
   ],
   "functions": [
@@ -40,6 +41,13 @@
       "size": "0x00000020",
       "legacy_source": "src/_ZN4View6RenderEv.cpp",
       "ordinal": 2
+    },
+    {
+      "symbol": "func_0202fd2c",
+      "address": "0x0202fd2c",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0202/func_0202fd2c.c",
+      "ordinal": 3
     }
   ],
   "data": [],
@@ -105,7 +113,7 @@
       "reason": "compiler-emitted vtable (two-word ABI preamble + slots naming D1=0x0202fc98 D0=0x0202fcc8 Render=0x0202fd0c among inherited dBase_c/fBase_c entries); canonical bytes verified, contribution is gap data"
     }
   ],
-  "notes": "Complete fold of dView_c (the class the tree coined `View`; _ZTS7dView_c at 0x02086e48 is the ROM name). All three enrolled members are the whole class: the constructor is implicit -- derived constructors generate the fBase_c->dBase_c->dView_c vptr sequence inline, per include/dView_c.h. The destructor is declared inline in the header; dView_c_EmitDestructor/dView_c_EmitDeletingDestructor are the byte-required emit-forcers the legacy shards already used -- the out-of-line D1/D0 copies they pin are the licensed symbols, the wrappers themselves are emitted-then-discarded output. mwccarm emits .text in reverse source order: Render, the D0-forcer, the D1-forcer land ascending at 0x0202fc98..0x0202fd2c.",
+  "notes": "Complete fold of dView_c (the class the tree coined `View`; _ZTS7dView_c at 0x02086e48 is the ROM name). All three enrolled members are the whole class: the constructor is implicit -- derived constructors generate the fBase_c->dBase_c->dView_c vptr sequence inline, per include/dView_c.h. The destructor is declared inline in the header; dView_c_EmitDestructor/dView_c_EmitDeletingDestructor are the byte-required emit-forcers the legacy shards already used -- the out-of-line D1/D0 copies they pin are the licensed symbols, the wrappers themselves are emitted-then-discarded output. mwccarm emits .text in reverse source order: Render, the D0-forcer, the D1-forcer land ascending at 0x0202fc98..0x0202fd2c. absorb/dView_c absorbs the tail kuppa-script-word clearer with the shard int spelling (no header declares the words); it verifies byte-identical in place (prepush_linkcheck carries the proof; the banked verify round predates the absorb).",
   "relocations": [],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

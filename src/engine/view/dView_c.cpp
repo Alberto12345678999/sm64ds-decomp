@@ -9,10 +9,28 @@
  * The destructor is declared inline on the header (dCamera_c's ROM dtor
  * inlines dView_c's vptr store), so the two emit-forcers below pin the
  * out-of-line D1/D0 copies the vtable slots point at.
+ *
+ * func_0202fd2c (arm9 0x0202fd2c..0x0202fd4c) is absorbed below: it only
+ * zeroes the two kuppa-script words. Defined first because this file emits
+ * .text in reverse source order, so the tail body lands at the run's right
+ * edge.
  */
 #include "dView_c.h"
 
 void CopyToViewMat(const Matrix4x3 *mat);
+
+// @symbol func_0202fd2c
+/* Absorbed from src/unnamed/arm9/0202/func_0202fd2c.c: clear the kuppa-script
+ * running/script words. The data words keep the shard's own `int' spelling:
+ * no header declares them and the tree's other spellings disagree. */
+extern "C" {
+extern int data_0209fc48, data_0209fc4c;
+void func_0202fd2c(void)
+{
+    data_0209fc48 = 0;
+    data_0209fc4c = 0;
+}
+}
 
 // @symbol _ZN7dView_c6RenderEv
 s32 dView_c::Render()
