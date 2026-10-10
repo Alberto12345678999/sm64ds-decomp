@@ -9,9 +9,11 @@
  * own cuboid dExtShadowModel_c, and func_ov015_021123c8 is the helper that
  * re-aims it every frame.
  *
- * This TU owns text only: ov015 delinks no .data here, so the _ZTV / _ZTI /
- * _ZTS group the class names is compiler-only output, compared against the
- * cartridge's own copies at ov015 0x02114650 / 0x0211460c / 0x02114618.
+ * The class's .text, its .init/.ctor pair and the two resource handles'
+ * .bss are owned here. ov015 delinks no .data for this class, so the
+ * _ZTV / _ZTI / _ZTS group it names is compiler-only output, compared
+ * against the cartridge's own copies at ov015 0x02114650 / 0x0211460c /
+ * 0x02114618.
  *
  * SOURCE ORDER IS REVERSE ROM ORDER. mwccarm 2004/b56 emits .text back to
  * front under this tree's flags, so the factory is written first and Kill()
@@ -33,9 +35,11 @@
  * Leftover: func_ov015_021128e8 keeps a second unused parameter. The veneer
  * Leftover: forwards two registers after dropping the collider, and a 1-arg
  * Leftover: callee drops mov r1, r2.
- * Leftover: data_ov015_02114a5c / data_ov015_02114a64 are this overlay's KCL and
- * Leftover: BMD handles. symbols.txt also coins MovingBarSmall_ClsnFile /
- * Leftover: MovingBarSmall_ModelFile on those addresses, so this TU uses the
+ * Leftover: data_ov015_02114a5c / data_ov015_02114a64 are this class's KCL and
+ * Leftover: BMD handles, defined at the file end so mwcc emits the .init.
+ * Leftover: symbols.txt used to coin MovingBarSmall_ClsnFile /
+ * Leftover: MovingBarSmall_ModelFile on those addresses -- a stale spelling
+ * Leftover: of this class's old coined name -- so this TU keeps the
  * Leftover: address-true spelling.
  * Leftover: data_ov015_02113594 is the CLPS block this TU does not own.
  * Leftover: data_02082214 is arm9's sin/cos table. data_0209f220 / data_0209f2f8
@@ -63,9 +67,26 @@
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
 
+/* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
+ * constructors and destructors are the ROM resource-family veneers, aliased
+ * in the manifest. */
+struct BkLiftModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BkLiftModelFilePtr(u32 fileID);
+    ~BkLiftModelFilePtr();
+};
+
+struct BkLiftCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BkLiftCollisionFilePtr(u32 fileID);
+    ~BkLiftCollisionFilePtr();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov015_02114a5c;   /* collision KCL */
-extern SharedFilePtr data_ov015_02114a64;   /* step BMD */
+extern BkLiftCollisionFilePtr data_ov015_02114a5c;   /* collision KCL */
+extern BkLiftModelFilePtr data_ov015_02114a64;       /* step BMD */
 extern CLPS_Block    data_ov015_02113594;
 extern s16 data_02082214[];                 /* arm9 sin/cos table */
 extern s8  data_0209f2f8;
@@ -313,3 +334,9 @@ void daObjBk_Lift_c::Kill()
     Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
     MarkForDestruction();
 }
+
+/* The ROM's initializer constructs the model handle with file ID 1433 and
+ * the collision handle with file ID 1434, registering a destructor node for
+ * each. mwcc emits __sinit_daObjBk_Lift_c.cpp from these definitions. */
+BkLiftModelFilePtr data_ov015_02114a64(1433);
+BkLiftCollisionFilePtr data_ov015_02114a5c(1434);
