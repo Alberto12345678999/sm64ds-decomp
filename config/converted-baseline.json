@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3657,
+  "count": 3658,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2007,6 +2007,7 @@
     "src/actors/daObj_Mip_Key_c.cpp#_ZN15daObj_Mip_Key_c6RenderEv",
     "src/actors/daObj_Mip_Key_c.cpp#_ZN15daObj_Mip_Key_cD0Ev",
     "src/actors/daObj_Mip_Key_c.cpp#_ZN15daObj_Mip_Key_cD1Ev",
+    "src/actors/daObj_Mip_Key_c.cpp#__sinit_daObj_Mip_Key_c.cpp",
     "src/actors/daObj_Mip_Key_c.cpp#daObj_Mip_Key_c_classInit",
     "src/actors/daOnms_c.cpp#_ZN8daOnms_c13StateRollNegXEv",
     "src/actors/daOnms_c.cpp#_ZN8daOnms_c13StateRollNegZEv",
