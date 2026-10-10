@@ -12032,6 +12032,12 @@
     "data_02086b58": {
       "src/actors/dMgState_c.cpp": [
         "return:W2"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:daDoor_StatePmf"
+      ],
+      "src/actors/unit020b2c84.cpp": [
+        "return:PairW"
       ]
     },
     "data_020874cc": {
@@ -16220,6 +16226,9 @@
       ]
     },
     "data_ov004_020bf648": {
+      "include/decl_common.h": [
+        "return:char []"
+      ],
       "src/unnamed/ov004/__sinit_ov004_020b955c.c": [
         "return:void *"
       ]

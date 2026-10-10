@@ -7,6 +7,10 @@
 src/actors/dEntObj_c.cpp:
     complete
     .text start:0x02113ee0 end:0x02115ab8
+    .init start:0x0211b5e0 end:0x0211bb00
+    .ctor start:0x0211c5a4 end:0x0211c5a8
+    .data start:0x0211c5c0 end:0x0211c648
+    .bss start:0x0211d384 end:0x0211d5bc
 
 src/actors/dScEntry_c.cpp:
     complete
@@ -355,10 +359,6 @@ src/unnamed/ov075/func_ov075_0211b418.cpp:
 src/unnamed/ov075/func_ov075_0211b458.cpp:
     complete
     .text start:0x0211b458 end:0x0211b524
-
-src/unnamed/ov075/__sinit_ov075_0211b5e0.c:
-    complete
-    .init start:0x0211b5e0 end:0x0211bb00
 
 src/unnamed/ov075/__sinit_ov075_0211bb00.c:
     complete

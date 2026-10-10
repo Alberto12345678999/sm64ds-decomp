@@ -78,6 +78,33 @@ enum {
 
 void ApproachLinear(int &value, int target, int step);
 
+/* File-scope objects at the end of this file construct the six resource
+ * handles (model files 0x6bf/0x5db/0x6ab, collision files 0x6c0/0x5dc/0x6ac)
+ * and fill the five-entry state table. mwcc emits __sinit_daUdlift_c.cpp
+ * from those definitions. The wrapper names are local; the handle
+ * constructors and destructors are the ROM resource-family functions,
+ * aliased in the manifest. */
+struct UdliftModelFile : SharedFilePtr {
+    u32 words[2];
+
+    UdliftModelFile(u32 fileID);
+    ~UdliftModelFile();
+};
+
+struct UdliftCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    UdliftCollisionFilePtr(u32 fileID);
+    ~UdliftCollisionFilePtr();
+};
+
+extern UdliftModelFile data_ov095_02137898;
+extern UdliftModelFile data_ov095_021378a8;
+extern UdliftModelFile data_ov095_021378c0;
+extern UdliftCollisionFilePtr data_ov095_021378b0;
+extern UdliftCollisionFilePtr data_ov095_021378b8;
+extern UdliftCollisionFilePtr data_ov095_021378a0;
+
 extern "C" {
 /* Per-variant model and collision files, and the CLPS block handed to
  * dBgW_KcMbg::SetFile, all indexed by mVariant. */
@@ -86,6 +113,12 @@ extern SharedFilePtr *data_ov095_02136f74[];
 extern CLPS_Block *data_ov095_021375a4[];
 /* The state table, indexed by mState. */
 extern State data_ov095_02137910[];
+/* The ROM PMF constants the state table copies from (unlicensed .data). */
+extern State data_ov095_02137594;
+extern State data_ov095_0213757c;
+extern State data_ov095_02137584;
+extern State data_ov095_0213758c;
+extern State data_ov095_0213759c;
 
 /* Fix12<int> by value. The member call grows InitResources; see the leftovers. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -375,3 +408,26 @@ void daUdlift_c::StateStop()
     if (mIsArmed == 1)
         mState = 0;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov095_0213722c shard).
+ * Definition order is the retail initializer's construction order: the
+ * three model handles (files 0x6bf/0x5db/0x6ab), the three collision
+ * handles (files 0x6c0/0x5dc/0x6ac), then the five state records copied
+ * from the ROM PMF constants. */
+UdliftModelFile data_ov095_02137898(0x6bf);
+UdliftModelFile data_ov095_021378a8(0x5db);
+UdliftModelFile data_ov095_021378c0(0x6ab);
+UdliftCollisionFilePtr data_ov095_021378b0(0x6c0);
+UdliftCollisionFilePtr data_ov095_021378b8(0x5dc);
+UdliftCollisionFilePtr data_ov095_021378a0(0x6ac);
+/* Six slots: the five states plus section-alignment fill. Retail BSS runs
+ * 8 bytes past the fifth entry to the section end at 0x02137940. The
+ * initializer never touches the sixth slot; it is zeros. The claim has to
+ * span it because dsd sizes the trailing symbol to the section end. */
+State data_ov095_02137910[6] = {
+    data_ov095_02137594,
+    data_ov095_0213757c,
+    data_ov095_02137584,
+    data_ov095_0213758c,
+    data_ov095_0213759c,
+};

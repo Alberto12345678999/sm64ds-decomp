@@ -444,6 +444,15 @@ struct Obj {
 #define A1C ((s16 *)(thiz->d4 + 0x1c))
 #define A14 ((u16 *)(thiz->d4 + 0x14))
 
+/* Lakitu's model-file handle, owned and constructed by daC_Jugem_c.cpp's
+ * static init. Same TU-local wrapper spelling as the owning TU. */
+struct JugemModelFile : SharedFilePtr {
+    u32 words[2];
+
+    JugemModelFile(u32 fileID);
+    ~JugemModelFile();
+};
+
 extern "C" {
 extern void _ZN3G2x13SetBlendAlphaEPVttttj( volatile void *reg, unsigned short a, unsigned short b, int c, int d);
 extern unsigned char data_0209d454;
@@ -656,7 +665,7 @@ extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 data_0209b41c;
 extern unsigned char data_0209f2d8;
 extern char data_ov002_0211094c;
-extern char data_ov085_0213074c;
+extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f23f0, NOT applied: extern u8 data_0209d454; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2aec, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, unsigned short c, int d); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2bf4, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, int c, unsigned short d); */

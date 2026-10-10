@@ -109,11 +109,11 @@ data_ov070_02122898 kind:data(any) addr:0x02122898 ambiguous
 data_ov070_02122954 kind:data(any) addr:0x02122954 ambiguous
 data_ov070_02122968 kind:data(any) addr:0x02122968
 data_ov070_02122a6c kind:data(any) addr:0x02122a6c ambiguous
-__sinit_ov070_02122afc kind:function(arm,size=0x284) addr:0x02122afc
+__sinit_d_a_propeller_heyho.cpp kind:function(arm,size=0x284) addr:0x02122afc
 __sinit_ov070_02122d80 kind:function(arm,size=0x1b0) addr:0x02122d80
 __sinit_ov070_02122f30 kind:function(arm,size=0x100) addr:0x02122f30
 __sinit_ov070_02123030 kind:function(arm,size=0x74) addr:0x02123030
-.p__sinit_ov070_02122afc kind:data(word) addr:0x021230a4
+.p__sinit_d_a_propeller_heyho.cpp kind:data(word) addr:0x021230a4
 .p__sinit_ov070_02122d80 kind:data(word) addr:0x021230a8
 .p__sinit_ov070_02122f30 kind:data(word) addr:0x021230ac
 .p__sinit_ov070_02123030 kind:data(word) addr:0x021230b0
@@ -176,13 +176,13 @@ data_ov070_02123518 kind:bss addr:0x02123518
 data_ov070_02123520 kind:bss addr:0x02123520
 data_ov070_02123528 kind:bss addr:0x02123528
 data_ov070_02123530 kind:bss addr:0x02123530
-data_ov070_02123538 kind:bss addr:0x02123538
-data_ov070_02123544 kind:bss addr:0x02123544
-data_ov070_02123550 kind:bss addr:0x02123550
-data_ov070_0212355c kind:bss addr:0x0212355c
-data_ov070_02123568 kind:bss addr:0x02123568
-data_ov070_02123574 kind:bss addr:0x02123574
-data_ov070_02123580 kind:bss addr:0x02123580
+@146 kind:bss addr:0x02123538
+@140 kind:bss addr:0x02123544
+@141 kind:bss addr:0x02123550
+@142 kind:bss addr:0x0212355c
+@143 kind:bss addr:0x02123568
+@144 kind:bss addr:0x02123574
+@145 kind:bss addr:0x02123580
 data_ov070_0212358c kind:bss addr:0x0212358c
 data_ov070_0212359c kind:bss addr:0x0212359c
 data_ov070_021235ac kind:bss addr:0x021235ac

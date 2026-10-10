@@ -38,6 +38,25 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 
+/* The resource handles as the ROM lays them out: {id, loaded file}. The
+ * model handle constructs through func_02017acc and destroys through
+ * func_02017ab4; the collision handle constructs through func_02017b4c and
+ * destroys through SharedFilePtr_Destruct_Clsn. The manifest aliases each
+ * undefined member onto its ROM symbol. */
+struct AmiliftModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    AmiliftModelFilePtr(u32 fileID);
+    ~AmiliftModelFilePtr();
+};
+
+struct AmiliftClsnFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    AmiliftClsnFilePtr(u32 fileID);
+    ~AmiliftClsnFilePtr();
+};
+
 /* Lets Behavior call the state table's entries as members of the lift. */
 typedef void (daObjFl_Amilift_c::*LiftStateFn)();
 struct LiftState {
@@ -58,8 +77,8 @@ KCL_File *_ZN7dBgW_Kc8LoadFileER13SharedFilePtr(SharedFilePtr &f);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block( void *self, KCL_File *k, Matrix4x3 *m, int fix, short s, CLPS_Block *clps);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
-extern SharedFilePtr data_ov064_0211c730;
-extern SharedFilePtr data_ov064_0211c728;
+extern AmiliftModelFilePtr data_ov064_0211c730;
+extern AmiliftClsnFilePtr data_ov064_0211c728;
 extern CLPS_Block data_ov064_0211bb6c;
 extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 extern void Vec3_Sub(Vector3* dst, Vector3* a, Vector3* b);
@@ -294,6 +313,20 @@ s32 daObjFl_Amilift_c::InitResources() {
 
     return 1;
 }
+
+/* The two file-scope resource handles, in retail initializer order: the
+ * model file, then the collision file. */
+AmiliftModelFilePtr data_ov064_0211c730(0x5ef);
+AmiliftClsnFilePtr data_ov064_0211c728(0x5f0);
+
+/* The three-entry state dispatch table: wait, forward, backward. mwcc cannot
+ * link-time-initialize pointer-to-member records, so the initializer copies
+ * the descriptor records in. */
+extern "C" LiftState data_ov064_0211c750[3] = {
+    {&daObjFl_Amilift_c::func_ov064_02117c24},
+    {(LiftStateFn)&daObjFl_Amilift_c::func_ov064_02117bdc},
+    {&daObjFl_Amilift_c::func_ov064_02117b8c},
+};
 
 // @symbol func_ov064_02117fb4
 /* The player (actor 0xbf) touched the lift: raise mRiderOn, which Behavior

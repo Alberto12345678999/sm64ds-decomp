@@ -36,7 +36,8 @@ struct RestPos { s32 x, y; };
    so [i].a there is the second cup. */
 struct IdxPair { s32 a, b; };
 
-/* __sinit_ov006_021303d0 writes this eight-entry table. */
+/* The eight-entry Cup PMF table at 0x02141870, defined at the end of this
+ * file (folded sinit 0x021303d0). */
 typedef void (dScMgCup_c::*PMF)();
 
 /* One step of data_ov006_0213c0d8. list is an OamAttr run ending at attr3
@@ -109,6 +110,15 @@ void func_ov004_020b2574(int arg0, int arg1);
 void func_ov004_020b1e34(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
 extern PMF data_ov006_02141870[];
+/* The ROM PMF constants the table copies from (unlicensed .data). */
+extern PMF data_ov006_0213c030;
+extern PMF data_ov006_0213c000;
+extern PMF data_ov006_0213c028;
+extern PMF data_ov006_0213bff8;
+extern PMF data_ov006_0213c010;
+extern PMF data_ov006_0213c040;
+extern PMF data_ov006_0213c008;
+extern PMF data_ov006_0213bfe8;
 extern AnimStep *data_ov006_0213c0d8[];
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
@@ -1047,3 +1057,18 @@ extern "C" void *dScMgCup_c_classInit()
 extern "C" void func_ov006_020e0634()
 {
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_021303d0 shard).
+ * The eight Cup state records plain-copied from the ROM PMF constants;
+ * Behavior indexes this table by mState. Definition order is the retail
+ * initializer's copy order. */
+PMF data_ov006_02141870[8] = {
+    data_ov006_0213c030,
+    data_ov006_0213c000,
+    data_ov006_0213c028,
+    data_ov006_0213bff8,
+    data_ov006_0213c010,
+    data_ov006_0213c040,
+    data_ov006_0213c008,
+    data_ov006_0213bfe8,
+};

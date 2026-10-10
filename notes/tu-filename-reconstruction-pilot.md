@@ -71,7 +71,7 @@ assignments are:
 | [ov063](../config/arm9/overlays/ov063/symbols.txt) Teresa / Boss Teresa | `__sinit_ov063_0211e29c`, folded into [daTrs_c.cpp](../src/actors/daTrs_c.cpp) | high; shared multi-profile TU |
 | [ov014](../config/arm9/overlays/ov014/symbols.txt) Wanwan | `__sinit_ov014_02113118`, folded into [d_a_wanwan.cpp](../src/game/actors/d_a_wanwan.cpp) | high |
 | [ov085](../config/arm9/overlays/ov085/symbols.txt) Mip Key | [__sinit_ov085_0212f9bc](../src/unnamed/ov085/__sinit_ov085_0212f9bc.c) | high |
-| [ov070](../config/arm9/overlays/ov070/symbols.txt) Propeller Heyho | [__sinit_ov070_02122afc](../src/unnamed/ov070/__sinit_ov070_02122afc.c) | high |
+| [ov070](../config/arm9/overlays/ov070/symbols.txt) Propeller Heyho | [__sinit_d_a_propeller_heyho.cpp](../src/game/actors/d_a_propeller_heyho.cpp) | high |
 | [ov020](../config/arm9/overlays/ov020/symbols.txt) Book / Book Generator | [__sinit_ov020_02113674](../src/__sinit_ov020_02113674.c) | high; shared multi-class TU |
 | [ov006](../config/arm9/overlays/ov006/symbols.txt) MG Curling | [__sinit_ov006_021304ac](../src/unnamed/ov006/__sinit_ov006_021304ac.c) | medium |
 

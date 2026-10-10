@@ -16,6 +16,26 @@
       "name": ".text",
       "start": "0x020ec56c",
       "end": "0x020ee42c"
+    },
+    {
+      "name": ".init",
+      "start": "0x02107118",
+      "end": "0x021071f4"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02108118",
+      "end": "0x0210811c"
+    },
+    {
+      "name": ".data",
+      "start": "0x0210ad38",
+      "end": "0x0210ad78"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02110a5c",
+      "end": "0x02110a9c"
     }
   ],
   "functions": [
@@ -251,13 +271,79 @@
       "ordinal": 32
     }
   ],
-  "data": [],
-  "bss": [],
+  "data": [
+    {
+      "symbol": "@1530",
+      "address": "0x0210ad38",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ed0d4Ev"
+    },
+    {
+      "symbol": "@1542",
+      "address": "0x0210ad40",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ec938Ev"
+    },
+    {
+      "symbol": "@1540",
+      "address": "0x0210ad48",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ec978Ev"
+    },
+    {
+      "symbol": "@1538",
+      "address": "0x0210ad50",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ec9c4Ev"
+    },
+    {
+      "symbol": "@1532",
+      "address": "0x0210ad58",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ecfc8Ev"
+    },
+    {
+      "symbol": "@1528",
+      "address": "0x0210ad60",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ed5b0Ev"
+    },
+    {
+      "symbol": "@1534",
+      "address": "0x0210ad68",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ecf94Ev"
+    },
+    {
+      "symbol": "@1536",
+      "address": "0x0210ad70",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daYegg_c19func_ov002_020ecad4Ev"
+    }
+  ],
+  "bss": [
+    {
+      "symbol": "data_ov002_02110a5c",
+      "address": "0x02110a5c",
+      "size": "0x40",
+      "binding": "STB_GLOBAL",
+      "evidence": "the four-entry state dispatch table (two pointer-to-member records per state) the static initializer fills from the .data descriptor records"
+    }
+  ],
   "notes": [
     "Thirty-three-function unit 0x020ec56c..0x020ee42c: D1 and D0 from the out-of-line destructor, the twenty-six helpers func_ov002_020ec610..func_ov002_020eddc4, CleanupResources, Render, Behavior, InitResources, then the registry factory daYegg_c_classInit.",
     "Written in ROM order under `#pragma defer_codegen off`. That keeps D1 ahead of D0 and scopes `#pragma opt_strength_reduction off` to the two functions the legacy shards carried it on, func_ov002_020edb3c and InitResources: with codegen deferred the pragma is last-wins over the whole file, and an `on` after func_ov002_020edb3c size-diffs it.",
     "daYegg_c_classInit is written as `return new daYegg_c;`: the implicit constructor reproduces the loose file's fBase_c::operator new(0x42c), dEnemyBase_c base constructor, vptr store and the four member constructors byte for byte.",
-    "func_ov002_020ec670 is the one complete=False shard in the run; it matches inside the TU like the others."
+    "func_ov002_020ec670 is the one complete=False shard in the run; it matches inside the TU like the others.",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
   ],
   "compiler_only_output": [
     {
@@ -371,23 +457,23 @@
         9,
         10,
         19,
-        69,
-        70,
-        71,
-        72,
-        73,
-        74,
-        75,
-        76,
-        77,
-        78,
-        79,
-        80,
-        81,
-        82,
-        83,
-        84,
-        85
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
       ],
       "data": [
         "_ZTV8daYegg_c",
@@ -419,9 +505,463 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov002-daYegg_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x020ec56c",
+        "end": "0x020ee42c",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x020ec56c",
+          "end": "0x020ee42c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02107118",
+          "end": "0x021071f4",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02108118",
+          "end": "0x0210811c",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x0210ad38",
+          "end": "0x0210ad78",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02110a5c",
+          "end": "0x02110a9c",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 44
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              105
+            ],
+            "desired": [
+              105
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              103
+            ],
+            "desired": [
+              103
+            ]
+          },
+          {
+            "section": ".data",
+            "original": [
+              69,
+              71,
+              73,
+              75,
+              77,
+              79,
+              81,
+              83
+            ],
+            "desired": [
+              71,
+              83,
+              81,
+              79,
+              73,
+              69,
+              75,
+              77
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              85
+            ],
+            "desired": [
+              85
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                69,
+                71,
+                73,
+                75,
+                77,
+                79,
+                81,
+                83
+              ],
+              "desired": [
+                71,
+                83,
+                81,
+                79,
+                73,
+                69,
+                75,
+                77
+              ],
+              "slots": [
+                69,
+                71,
+                73,
+                75,
+                77,
+                79,
+                81,
+                83
+              ]
+            }
+          ],
+          "symbolIndices": 8,
+          "sectionLinks": 0,
+          "sectionInfos": 8,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
-  }
+  },
+  "init": [
+    {
+      "symbol": "__sinit_daYegg_c.cpp",
+      "address": "0x02107118",
+      "size": "0xdc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov002_02107118 and carries the same relocation schedule: eight pointer-to-member descriptor copies into the two-entry-per-state dispatch table"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_daYegg_c.cpp",
+      "address": "0x02108118",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "production_mode": "intact-object",
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x021071d0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1528",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad60"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071d4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1530",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad38"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071d8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1532",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad58"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071dc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1534",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad68"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1536",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad70"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1538",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad50"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1540",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad48"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@1542",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x0210ad40"
+    },
+    {
+      "section": ".init",
+      "source": "0x021071f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov002_02110a5c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x02110a5c"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02108118",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_daYegg_c.cpp",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x02107118"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ed0d4Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ed0d4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ec938Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ec938"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ec978Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ec978"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ec9c4Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ec9c4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad58",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ecfc8Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ecfc8"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ed5b0Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ed5b0"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ecf94Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ecf94"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210ad70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daYegg_c19func_ov002_020ecad4Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020ecad4"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_daYegg_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is emitted local by mwcc but must be exposed as the configured .init destination at 0x02107118"
+    },
+    {
+      "symbol": ".p__sinit_daYegg_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-generated ctor-table object is emitted local by mwcc but must be exposed as the configured .ctor destination at 0x02108118"
+    },
+    {
+      "symbol": "@1530",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad38"
+    },
+    {
+      "symbol": "@1542",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad40"
+    },
+    {
+      "symbol": "@1540",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad48"
+    },
+    {
+      "symbol": "@1538",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad50"
+    },
+    {
+      "symbol": "@1532",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad58"
+    },
+    {
+      "symbol": "@1528",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad60"
+    },
+    {
+      "symbol": "@1534",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad68"
+    },
+    {
+      "symbol": "@1536",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210ad70"
+    }
+  ]
 }

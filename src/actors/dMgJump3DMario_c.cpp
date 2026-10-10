@@ -115,14 +115,28 @@ extern BCA_File *data_ov006_02140424;
 extern BCA_File *data_ov006_0214042c;
 extern BCA_File *data_ov006_02140430;
 
-/* The model file plus the six anim files. */
-extern SharedFilePtr data_ov006_02140438;
-extern SharedFilePtr data_ov006_02140440;
-extern SharedFilePtr data_ov006_02140448;
-extern SharedFilePtr data_ov006_02140450;
-extern SharedFilePtr data_ov006_02140458;
-extern SharedFilePtr data_ov006_02140460;
-extern SharedFilePtr data_ov006_02140468;
+/* Six anim handles call SharedFilePtr::Construct. The model handle calls
+   func_02017a24. The second word is the loaded file. */
+struct Jump3DMarioAnimFilePtr : SharedFilePtr {
+    unsigned words[2];
+    Jump3DMarioAnimFilePtr(unsigned fileId);
+    ~Jump3DMarioAnimFilePtr();
+};
+struct Jump3DModelFilePtr : SharedFilePtr {
+    unsigned words[2];
+    Jump3DModelFilePtr(unsigned fileId);
+    ~Jump3DModelFilePtr();
+};
+typedef char Jump3DMarioAnimFilePtr_size[sizeof(Jump3DMarioAnimFilePtr) == 8 ? 1 : -1];
+typedef char Jump3DModelFilePtr_size[sizeof(Jump3DModelFilePtr) == 8 ? 1 : -1];
+
+extern Jump3DMarioAnimFilePtr data_ov006_02140438;
+extern Jump3DMarioAnimFilePtr data_ov006_02140440;
+extern Jump3DMarioAnimFilePtr data_ov006_02140448;
+extern Jump3DModelFilePtr data_ov006_02140450;
+extern Jump3DMarioAnimFilePtr data_ov006_02140458;
+extern Jump3DMarioAnimFilePtr data_ov006_02140460;
+extern Jump3DMarioAnimFilePtr data_ov006_02140468;
 
 /* The pool the minigame scenes hand in: count, base pointer, level, round
  * and the three player slots. */
@@ -943,3 +957,11 @@ dMgJump3DMario_c::~dMgJump3DMario_c()
 dMgJump3DMario_c::dMgJump3DMario_c()
 {
 }
+
+Jump3DMarioAnimFilePtr data_ov006_02140460(32888);
+Jump3DMarioAnimFilePtr data_ov006_02140468(32797);
+Jump3DMarioAnimFilePtr data_ov006_02140458(32910);
+Jump3DMarioAnimFilePtr data_ov006_02140438(32958);
+Jump3DMarioAnimFilePtr data_ov006_02140440(32914);
+Jump3DMarioAnimFilePtr data_ov006_02140448(32932);
+Jump3DModelFilePtr data_ov006_02140450(534);
