@@ -1042,8 +1042,6 @@ extern int data_ov100_0214871c;
 extern int data_ov100_02148720;
 extern int data_ov100_021488b4;
 extern int data_ov100_02148914;
-extern int data_ov100_02148a54;
-extern int data_ov100_02148a5c;
 extern void func_01ffb07c(void*, void*);
 extern int func_01ffb0fc(void*, void*);
 extern int func_02007cec(void*, const struct Vector3*, int);

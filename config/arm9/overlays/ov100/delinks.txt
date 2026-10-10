@@ -43,6 +43,9 @@ src/game/actors/d_a_fish.cpp:
 src/game/actors/daObjPathLift_c.cpp:
     complete
     .text start:0x02146d7c end:0x021473a4
+    .init start:0x02147d7c end:0x02147de8
+    .ctor start:0x02147e00 end:0x02147e04
+    .bss start:0x02148a54 end:0x02148a7c
 
 src/unnamed/ov100/__sinit_ov100_021474e8.c:
     complete
@@ -59,7 +62,3 @@ src/unnamed/ov100/__sinit_ov100_02147698.c:
 src/unnamed/ov100/__sinit_ov100_02147bc0.c:
     complete
     .init start:0x02147bc0 end:0x02147d7c
-
-src/unnamed/ov100/__sinit_ov100_02147d7c.c:
-    complete
-    .init start:0x02147d7c end:0x02147de8
