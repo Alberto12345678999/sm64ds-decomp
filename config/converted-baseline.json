@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3652,
+  "count": 3653,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2925,6 +2925,7 @@
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_c6RenderEv",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_cD0Ev",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_cD1Ev",
+    "src/game/actors/d_a_obj_ice_block.cpp#__sinit_d_a_obj_ice_block.cpp",
     "src/game/actors/d_a_obj_ice_block.cpp#daObjIceBlock_c_classInit",
     "src/game/actors/d_a_obj_ice_board.cpp#_ZN15daObjIceBoard_c15OnGroundPoundedER8dActor_c",
     "src/game/actors/d_a_obj_ice_board.cpp#_ZN15daObjIceBoard_c15OnHitByMegaCharER6Player",
