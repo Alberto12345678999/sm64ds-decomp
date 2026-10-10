@@ -467,12 +467,16 @@ extern "C" void func_02011cfc(void);
  * C++ rejects the pair. Typed here from the loader, which is the real consumer.
  *
  *   data_ov060_021192dc / _0211927c  indexed by i, ->Release()  -> SharedFilePtr[]
- *   data_ov060_0211b208 is SharedFilePtr here, but decl_common.h owns an
- *   int[] decl for daFRing_c -- cast through it at the use sites.
+ *   data_ov060_0211b208 is SharedFilePtr here; daFRing_c defines it as its
+ *   own typed handle, so the flat int[] view lives as a local extern below.
  *   data_ov060_0211ac78              indexed [1] and .w[1]       -> SharedFilePtr[] */
 extern SharedFilePtr *data_ov060_021192dc[];
 extern SharedFilePtr *data_ov060_0211927c[];
 extern SharedFilePtr data_ov089_02132c50;
+/* local extern: daFRing_c now defines this handle as a real typed object; the
+ * decl_common.h row it used to share with that TU is retired, so the flat
+ * int[] view it casts through lives here. */
+extern int data_ov060_0211b208[];
 extern KpaModelFilePtr data_ov060_0211ac78;
 extern KpaTexSequenceFilePtr data_ov060_0211ac28;
 /* local extern: the call passes an untyped this, so it cannot use the header method. */

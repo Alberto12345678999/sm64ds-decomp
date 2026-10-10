@@ -5273,6 +5273,7 @@
     "src/actors/daFRing_c.cpp#_ZN9daFRing_c6RenderEv": "tangosdev",
     "src/actors/daFRing_c.cpp#_ZN9daFRing_c8BehaviorEv": "tangosdev",
     "src/actors/daFRing_c.cpp#_ZN9daFRing_c13InitResourcesEv": "tangosdev",
+    "src/actors/daFRing_c.cpp#__sinit_daFRing_c.cpp": "tangosdev",
     "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_cD1Ev": "tangosdev",
     "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_cD0Ev": "tangosdev",
     "src/actors/daObjSeesaw_c.cpp#func_ov095_0213579c": "tangosdev",
