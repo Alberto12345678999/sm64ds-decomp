@@ -58,11 +58,28 @@
 #include "daObjDpBrock_c.h"
 #include "SharedFilePtr.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct BrockModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BrockModelFilePtr(u32 fileID);
+    ~BrockModelFilePtr();
+};
+
+struct BrockCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BrockCollisionFilePtr(u32 fileID);
+    ~BrockCollisionFilePtr();
+};
+
 extern "C" {
 /* The block's model file and collision file (ov025 .bss), and the CLPS
    block handed to dBgW_KcMbg::SetFile. */
-extern SharedFilePtr data_ov025_02113ab8;
-extern SharedFilePtr data_ov025_02113ab0;
+extern BrockModelFilePtr data_ov025_02113ab8;
+extern BrockCollisionFilePtr data_ov025_02113ab0;
 extern CLPS_Block data_ov025_02112ce8;
 
 void Matrix4x3_FromRotationY(void *m, int angleY);
@@ -207,3 +224,9 @@ void daObjDpBrock_c::UpdateStepClsnPosAndRot()
  * order, with no D2. */
 // @symbol _ZN14daObjDpBrock_cD1Ev
 // @symbol _ZN14daObjDpBrock_cD0Ev
+
+/* Source order is construction order: model file 1503, collision file 1504.
+ * __sinit_daObjDpBrock_c.cpp emits both constructions and registers the
+ * destructors; the registration nodes are compiler temporaries. */
+BrockModelFilePtr data_ov025_02113ab8(1503);
+BrockCollisionFilePtr data_ov025_02113ab0(1504);

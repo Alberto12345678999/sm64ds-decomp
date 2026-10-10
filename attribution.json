@@ -5112,6 +5112,7 @@
     "src/actors/daObjDpBrock_c.cpp#_ZN14daObjDpBrock_c8BehaviorEv": "tangosdev",
     "src/actors/daObjDpBrock_c.cpp#_ZN14daObjDpBrock_c13InitResourcesEv": "andrewboudreau",
     "src/actors/daObjDpBrock_c.cpp#daObjDpBrock_c_classInit": "tangosdev",
+    "src/actors/daObjDpBrock_c.cpp#__sinit_daObjDpBrock_c.cpp": "tangosdev",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_cD1Ev": "tangosdev",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_cD0Ev": "tangosdev",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c20UpdateModelTransformEv": "tangosdev",
