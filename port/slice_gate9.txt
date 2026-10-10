@@ -18,7 +18,6 @@ src/actors/dActor_c.cpp
 src/_ZN8dActor_cC2Ev.cpp
 # SceneNode's constructor and Reset now share their production translation unit.
 src/actors/ActorBase_SceneNode.cpp
-src/func_0203b438.c
 # fBase_c is one production translation unit; operator new, the framework
 # hook virtuals and the helper at 0x02043810 this slice used to name
 # separately all live in it.
@@ -50,6 +49,7 @@ src/engine/collision/dBgW_Kc_itcm.cpp
 # src/actors/ActorBase.cpp, the single translation unit that defines them.
 src/func_0203b27c.c
 src/func_0203b3c0.c
+src/func_0204405c.c
 src/func_02044334.cpp
 src/func_0204424c.c
 src/MulVec3Mat4x3.c

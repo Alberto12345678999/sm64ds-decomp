@@ -3159,17 +3159,9 @@ src/unnamed/arm9/0203/func_0203b394.c:
     complete
     .text start:0x0203b394 end:0x0203b3c0
 
-src/func_0203b3c0.c:
-    complete
-    .text start:0x0203b3c0 end:0x0203b438
-
-src/func_0203b438.c:
-    complete
-    .text start:0x0203b438 end:0x0203b4ac
-
 src/actors/ActorBase_SceneNode.cpp:
     complete
-    .text start:0x0203b4ac end:0x0203b4dc
+    .text start:0x0203b3c0 end:0x0203b4dc
 
 src/_ZN4cstd5atan2E5Fix12IiES1_.c:
     .text start:0x0203b4dc end:0x0203b684
