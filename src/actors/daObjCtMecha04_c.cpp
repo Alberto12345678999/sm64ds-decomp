@@ -41,6 +41,22 @@ enum {
     CLOCK_SETTING_STOPPED = 3   /* Behavior skips the belt texture, sound and callback */
 };
 
+/* Resource handles constructed by this TU's static initializer. The
+ * constructor and destructor bodies stay out of line; mwcc registers them. */
+struct Mecha04ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha04ModelFilePtr(u32 fileID);
+    ~Mecha04ModelFilePtr();
+};
+
+struct Mecha04ClsnFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha04ClsnFilePtr(u32 fileID);
+    ~Mecha04ClsnFilePtr();
+};
+
 /* Fix12-by-value calls retain their measured raw ABI declarations. Natural
  * class-typed declarations make mwccarm home arguments absent from retail. */
 extern "C" {
@@ -290,3 +306,12 @@ void daObjCtMecha04_c::UpdateShadow()
 /* No separate body lives here. The inline virtual destructor in the directly
  * included class header makes mwccarm emit retail's D1 then D0 order without
  * the otherwise homeless D2 variant. */
+
+/* The ROM's initializer constructs both model handles (file IDs 1472 and
+ * 1470) then both collision handles (1473 and 1471), registering a
+ * destructor node for each. mwcc emits __sinit_daObjCtMecha04_c.cpp from
+ * these definitions. */
+Mecha04ModelFilePtr data_ov065_0211d8cc(1472);
+Mecha04ModelFilePtr data_ov065_0211d8bc(1470);
+Mecha04ClsnFilePtr data_ov065_0211d8b4(1473);
+Mecha04ClsnFilePtr data_ov065_0211d8c4(1471);
