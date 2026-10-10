@@ -31,6 +31,9 @@ src/actors/daObjCtRotateBlock_c.cpp:
 src/actors/daObjCtMecha03_c.cpp:
     complete
     .text start:0x02119f3c end:0x0211a494
+    .init start:0x0211c76c end:0x0211c7d8
+    .ctor start:0x0211caf0 end:0x0211caf4
+    .bss start:0x0211d88c end:0x0211d8b4
 
 src/actors/daObjCtMecha04_c.cpp:
     complete
@@ -60,10 +63,6 @@ src/unnamed/ov065/__sinit_ov065_0211c110.c:
 src/unnamed/ov065/__sinit_ov065_0211c660.c:
     complete
     .init start:0x0211c660 end:0x0211c76c
-
-src/unnamed/ov065/__sinit_ov065_0211c76c.c:
-    complete
-    .init start:0x0211c76c end:0x0211c7d8
 
 src/unnamed/ov065/__sinit_ov065_0211c7d8.c:
     complete
