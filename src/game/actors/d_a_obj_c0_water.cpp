@@ -22,8 +22,9 @@
  *   reference spelling -- the header's definition-side reading does.
  *   SharedFilePtr.h has no fields: Prepare reads the BMD at
  *   data_ov012_021124d0 +4.
- * - data_ov012_021124c8 / 021124d0 / 02111c24 / 02111c90 KCL / BMD / BTA /
- *   CLPS handles; this TU consumes them, overlay .bss/.data owns them.
+ * - data_ov012_02111c24 / 02111c90 BTA / CLPS handles; this TU consumes
+ *   them, overlay .data owns them. The 021124c8 / 021124d0 KCL / BMD
+ *   handles are defined at the end of this file.
  * - data_0209caa0[2] & 0x80000 is the same group flag
  *   daObjC0_Switch_c::OnGroundPounded writes; this water drains when it is
  *   set. data_0209f32c is the arm9 water-height word this TU publishes.
@@ -43,6 +44,23 @@ struct BTA_File;
 struct KCL_File;
 struct CLPS_Block;
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct C0WaterModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    C0WaterModelFilePtr(u32 fileID);
+    ~C0WaterModelFilePtr();
+};
+
+struct C0WaterCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    C0WaterCollisionFilePtr(u32 fileID);
+    ~C0WaterCollisionFilePtr();
+};
+
 extern "C" {
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
     TextureTransformer *self, BTA_File *file, int flags, int speed, u32 startFrame);
@@ -50,8 +68,9 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
     CLPS_Block *clps);
 
-extern SharedFilePtr data_ov012_021124d0;
-extern SharedFilePtr data_ov012_021124c8;
+/* Defined at the end of this file so the constructors do not enter .text. */
+extern C0WaterModelFilePtr     data_ov012_021124d0;
+extern C0WaterCollisionFilePtr data_ov012_021124c8;
 extern BTA_File      data_ov012_02111c24;
 extern CLPS_Block    data_ov012_02111c90;
 extern int           data_0209caa0[];
@@ -143,3 +162,10 @@ int daObjC0Water_c::CleanupResources()
     data_ov012_021124c8.Release();
     return 1;
 }
+
+/* Source order is construction order: model file 1451, collision file 1452.
+ * __sinit_d_a_obj_c0_water.cpp emits both constructions and registers the
+ * destructors; the registration nodes are compiler temporaries. */
+// @symbol __sinit_d_a_obj_c0_water.cpp
+C0WaterModelFilePtr     data_ov012_021124d0(1451);
+C0WaterCollisionFilePtr data_ov012_021124c8(1452);
