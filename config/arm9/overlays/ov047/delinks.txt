@@ -11,7 +11,10 @@ src/game/actors/d_a_obj_km3_kurumajiku.cpp:
 src/game/actors/d_a_obj_km3_kaitendai.cpp:
     complete
     .text start:0x021112bc end:0x021113f8
+    .init start:0x02111748 end:0x021117b4
+    .ctor start:0x021119c8 end:0x021119cc
     .data start:0x02112328 end:0x021123fc
+    .bss start:0x02112608 end:0x02112630
 
 src/game/actors/d_a_obj_km3_kuruma.cpp:
     complete
@@ -25,10 +28,6 @@ src/game/actors/d_a_obj_km3_dorifu.cpp:
 src/unnamed/ov047/__sinit_ov047_021116dc.c:
     complete
     .init start:0x021116dc end:0x02111748
-
-src/unnamed/ov047/__sinit_ov047_02111748.c:
-    complete
-    .init start:0x02111748 end:0x021117b4
 
 src/unnamed/ov047/__sinit_ov047_021117b4.c:
     complete
