@@ -136,6 +136,29 @@
  * casts these to SharedFilePtr*. */
 struct AnimRec { void *f0; void *file; };
 
+/* The static initializer's own types. __sinit_ov002_02101064 constructs the 13
+ * file handles with SharedFilePtr's constructor and registers each for
+ * destruction through func_020731dc, then copies 18 pointer-to-member records
+ * into the nine {enter, per-frame} state records. SharedFilePtr's layout is
+ * not recovered, so a handle is a subclass carrying the two words, its
+ * constructor/destructor the ROM's SharedFilePtr entry points (the manifest
+ * aliases those symbols). */
+struct daObjMarioCapFileHandle : SharedFilePtr {
+    u32 f0;
+    void *file;
+
+    daObjMarioCapFileHandle(u32 fileID);
+    ~daObjMarioCapFileHandle();
+};
+
+/* A state record: the enter pointer-to-member at +0 (run by EnterState on
+ * install) and the per-frame one at +8 (run by Behavior). The 18 source
+ * records the initializer copies from are ov002 .data (0x0210951c..95a4);
+ * a member-pointer initializer is not static here, so the nine state records
+ * copy their bytes at load. */
+typedef int (daObjMarioCap_c::*McapStatePmf)();
+struct McapStateRec { McapStatePmf enter; McapStatePmf exec; };
+
 /* Behavior walks a pointer-to-member stashed at +0x3bc. NOT the real
  * dEnemyBase_c: a PMF on a non-polymorphic single-base class is laid out
  * differently from one on the real class, so the stand-in shape here is
@@ -251,17 +274,33 @@ extern short          data_02082214[];
 extern int            data_02092138;
 extern u8             data_0209f2d8[];
 
-extern struct AnimRec data_ov002_0210de00, data_ov002_0210de08;
-extern struct AnimRec data_ov002_0210de10, data_ov002_0210de18;
-extern struct AnimRec data_ov002_0210de20, data_ov002_0210de28;
-extern struct AnimRec data_ov002_0210de30, data_ov002_0210de38;
-extern struct AnimRec data_ov002_0210de40, data_ov002_0210de48;
-extern struct AnimRec data_ov002_0210de50, data_ov002_0210de58;
-extern struct AnimRec data_ov002_0210de60;
+extern daObjMarioCapFileHandle data_ov002_0210de00, data_ov002_0210de08;
+extern daObjMarioCapFileHandle data_ov002_0210de10, data_ov002_0210de18;
+extern daObjMarioCapFileHandle data_ov002_0210de20, data_ov002_0210de28;
+extern daObjMarioCapFileHandle data_ov002_0210de30, data_ov002_0210de38;
+extern daObjMarioCapFileHandle data_ov002_0210de40, data_ov002_0210de48;
+extern daObjMarioCapFileHandle data_ov002_0210de50, data_ov002_0210de58;
+extern daObjMarioCapFileHandle data_ov002_0210de60;
 
-/* data_ov002_0210df04..df84 are declared by decl_common.h as `char`; only
-   df54 is missing there. Keep the family's spelling. */
-extern char           data_ov002_0210df54;
+/* The nine {enter, per-frame} state records EnterState is handed (their
+   .bss is filled by this unit's own static initializer below). */
+extern McapStateRec data_ov002_0210df04, data_ov002_0210df14;
+extern McapStateRec data_ov002_0210df24, data_ov002_0210df34;
+extern McapStateRec data_ov002_0210df44, data_ov002_0210df54;
+extern McapStateRec data_ov002_0210df64, data_ov002_0210df74;
+extern McapStateRec data_ov002_0210df84;
+
+/* The 18 pointer-to-member source records the initializer copies from (ov002
+   .data 0x0210951c..95a4), ROM data this unit only names. */
+extern McapStatePmf data_ov002_0210951c, data_ov002_02109524;
+extern McapStatePmf data_ov002_0210952c, data_ov002_02109534;
+extern McapStatePmf data_ov002_0210953c, data_ov002_02109544;
+extern McapStatePmf data_ov002_0210954c, data_ov002_02109554;
+extern McapStatePmf data_ov002_0210955c, data_ov002_02109564;
+extern McapStatePmf data_ov002_0210956c, data_ov002_02109574;
+extern McapStatePmf data_ov002_0210957c, data_ov002_02109584;
+extern McapStatePmf data_ov002_0210958c, data_ov002_02109594;
+extern McapStatePmf data_ov002_0210959c, data_ov002_021095a4;
 
 extern struct AnimRec *data_ov002_020ff0a0[];
 extern struct AnimRec *data_ov002_020ff0b8[];
@@ -310,29 +349,29 @@ int daObjMarioCap_c::InitResources()
        pair at the bottom. */
     switch (mType) {
     case 0xf:
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de50);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de60);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de48);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de50);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de60);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de48);
         break;
     case 0x14:
     case 0x15:
     case 0x16:
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de28);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de08);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de20);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de40);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de10);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de00);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de58);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de18);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de28);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de08);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de20);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de40);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de10);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de00);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de58);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de18);
         break;
     case 0x10:
     case 0x11:
     case 0x12:
     case 0x13:
     default:
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de30);
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de38);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de30);
+        dExtFrameCtrl_c::LoadFile(data_ov002_0210de38);
         break;
     }
 
@@ -706,11 +745,11 @@ void daObjMarioCap_c::UpdateMatrix()
 
     {
         char *s = *(char **)&mStateEntry;
-        if (s == &data_ov002_0210df54)
+        if (s == (char *)&data_ov002_0210df54)
             return;
-        if (s == &data_ov002_0210df74)
+        if (s == (char *)&data_ov002_0210df74)
             return;
-        if (s == &data_ov002_0210df44)
+        if (s == (char *)&data_ov002_0210df44)
             return;
     }
 
@@ -1399,3 +1438,38 @@ void daObjMarioCap_c::CheckTouch()
 
     EnterState(&data_ov002_0210df54);
 }
+
+/* ---- the static initializer's objects. __sinit_daObjMarioCap_c.cpp, emitted
+ * from these definitions at the bottom of the file, constructs the 13 file
+ * handles and registers each with its destructor through func_020731dc, then
+ * copies the 18 pointer-to-member records into the nine {enter, per-frame}
+ * state records. The records and handles are in the initializer's own order.
+ * The constructor and destructor of a handle are the ROM's SharedFilePtr entry
+ * points (aliased in this unit's manifest), and func_020731dc is the register
+ * call the compiler emits as __register_global_object. */
+
+/* The 13 file handles, in construct order. */
+daObjMarioCapFileHandle data_ov002_0210de30(0x8012);
+daObjMarioCapFileHandle data_ov002_0210de38(0x8013);
+daObjMarioCapFileHandle data_ov002_0210de50(0x480);
+daObjMarioCapFileHandle data_ov002_0210de60(0x47e);
+daObjMarioCapFileHandle data_ov002_0210de48(0x47f);
+daObjMarioCapFileHandle data_ov002_0210de28(0x478);
+daObjMarioCapFileHandle data_ov002_0210de08(0x476);
+daObjMarioCapFileHandle data_ov002_0210de20(0x47c);
+daObjMarioCapFileHandle data_ov002_0210de40(0x479);
+daObjMarioCapFileHandle data_ov002_0210de10(0x477);
+daObjMarioCapFileHandle data_ov002_0210de00(0x47d);
+daObjMarioCapFileHandle data_ov002_0210de58(0x47b);
+daObjMarioCapFileHandle data_ov002_0210de18(0x47a);
+
+/* The nine state records, in copy order: { enter, per-frame }. */
+McapStateRec data_ov002_0210df64 = { data_ov002_02109534, data_ov002_0210952c };
+McapStateRec data_ov002_0210df84 = { data_ov002_02109524, data_ov002_0210958c };
+McapStateRec data_ov002_0210df04 = { data_ov002_0210959c, data_ov002_02109544 };
+McapStateRec data_ov002_0210df24 = { data_ov002_0210955c, data_ov002_02109564 };
+McapStateRec data_ov002_0210df34 = { data_ov002_0210956c, data_ov002_02109574 };
+McapStateRec data_ov002_0210df54 = { data_ov002_0210957c, data_ov002_0210954c };
+McapStateRec data_ov002_0210df74 = { data_ov002_02109594, data_ov002_02109554 };
+McapStateRec data_ov002_0210df14 = { data_ov002_0210951c, data_ov002_021095a4 };
+McapStateRec data_ov002_0210df44 = { data_ov002_02109584, data_ov002_0210953c };

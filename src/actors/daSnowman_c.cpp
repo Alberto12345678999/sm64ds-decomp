@@ -114,14 +114,33 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 extern void MulVec3Mat4x3(void *a, void *m, void *b);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *self, void *bca, int a, int fix, unsigned int b);
-extern SharedFilePtr data_ov081_02128d90; /* snowball model; this TU only LoadFile's it */
-extern SharedFilePtr data_ov081_02128db0; /* body model, SetFile'd in InitResources */
-extern SharedFilePtr data_ov081_02128d88; /* hop start */
-extern SharedFilePtr data_ov081_02128da0; /* hop land */
-extern SharedFilePtr data_ov081_02128d98; /* wait */
-extern SharedFilePtr data_ov081_02128da8; /* sink */
-extern SharedFilePtr data_ov081_02128db8; /* throw */
 }
+
+/* File handles the static initializer constructs. The two models use
+ * func_02017acc; the five animations use SharedFilePtr::Construct.
+ * The wrapper names are long enough that their mangled constructor
+ * symbols can be aliased onto those retail functions. */
+struct daSnowmanModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    daSnowmanModelFilePtr(u32 fileID);
+    ~daSnowmanModelFilePtr();
+};
+struct daSnowmanAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+    daSnowmanAnimationFilePtr(u32 fileID);
+    ~daSnowmanAnimationFilePtr();
+};
+typedef char daSnowmanModelFilePtr_size_must_be_8[sizeof(daSnowmanModelFilePtr) == 8 ? 1 : -1];
+typedef char daSnowmanAnimationFilePtr_size_must_be_8[sizeof(daSnowmanAnimationFilePtr) == 8 ? 1 : -1];
+typedef char daSnowman_State_size_must_be_0x10[sizeof(daSnowman_c::State) == 0x10 ? 1 : -1];
+
+extern daSnowmanModelFilePtr data_ov081_02128d90; /* snowball model, file 0x424 */
+extern daSnowmanModelFilePtr data_ov081_02128db0; /* body model, file 0x420 */
+extern daSnowmanAnimationFilePtr data_ov081_02128d98; /* wait, file 0x423 */
+extern daSnowmanAnimationFilePtr data_ov081_02128db8; /* throw, file 0x422 */
+extern daSnowmanAnimationFilePtr data_ov081_02128da8; /* sink, file 0x421 */
+extern daSnowmanAnimationFilePtr data_ov081_02128d88; /* hop start, file 0x41f */
+extern daSnowmanAnimationFilePtr data_ov081_02128da0; /* hop land, file 0x41e */
 
 /* The ten states, by the address of their .bss record, with the handlers
    the static initializer pairs into each as (enter, execute). */
@@ -1085,3 +1104,24 @@ extern "C" daSnowman_c *daSnowman_c_classInit()
 {
     return new daSnowman_c();
 }
+
+/* Formerly the handwritten __sinit_ov081_02128154. Definition order is
+ * the retail initializer's construction order. */
+daSnowmanModelFilePtr data_ov081_02128d90(0x424);
+daSnowmanModelFilePtr data_ov081_02128db0(0x420);
+daSnowmanAnimationFilePtr data_ov081_02128d98(0x423);
+daSnowmanAnimationFilePtr data_ov081_02128db8(0x422);
+daSnowmanAnimationFilePtr data_ov081_02128da8(0x421);
+daSnowmanAnimationFilePtr data_ov081_02128d88(0x41f);
+daSnowmanAnimationFilePtr data_ov081_02128da0(0x41e);
+
+daSnowman_c::State data_ov081_02128e54(&daSnowman_c::func_ov081_0212538c, &daSnowman_c::func_ov081_02125208);
+daSnowman_c::State data_ov081_02128e74(&daSnowman_c::func_ov081_02125200, &daSnowman_c::func_ov081_021250c8);
+daSnowman_c::State data_ov081_02128e84(&daSnowman_c::func_ov081_02125068, &daSnowman_c::func_ov081_02125038);
+daSnowman_c::State data_ov081_02128ea4(&daSnowman_c::func_ov081_02124f7c, &daSnowman_c::func_ov081_02124f20);
+daSnowman_c::State data_ov081_02128e14(&daSnowman_c::func_ov081_02124ec0, &daSnowman_c::func_ov081_02124e64);
+daSnowman_c::State data_ov081_02128e34(&daSnowman_c::func_ov081_02124dfc, &daSnowman_c::func_ov081_02124d50);
+daSnowman_c::State data_ov081_02128e44(&daSnowman_c::func_ov081_02124d14, &daSnowman_c::func_ov081_02124b98);
+daSnowman_c::State data_ov081_02128e64(&daSnowman_c::func_ov081_02124b08, &daSnowman_c::func_ov081_021249f4);
+daSnowman_c::State data_ov081_02128e94(&daSnowman_c::func_ov081_0212498c, &daSnowman_c::func_ov081_02124894);
+daSnowman_c::State data_ov081_02128e24(&daSnowman_c::func_ov081_0212479c, &daSnowman_c::func_ov081_021246a0);

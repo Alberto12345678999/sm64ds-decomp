@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_obj_wl_polelift.cpp",
   "promoted_source": "src/game/actors/d_a_obj_wl_polelift.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x021111a0..0x021116c8, nine functions with no foreign symbol inside the span (config/arm9/overlays/ov026/symbols.txt runs _ZN17daObjWlPolelift_cD1Ev .. daObjWlPolelift_c_classInit with nothing else between)",
@@ -16,6 +17,21 @@
       "name": ".text",
       "start": "0x021111a0",
       "end": "0x021116c8"
+    },
+    {
+      "name": ".init",
+      "start": "0x02112b7c",
+      "end": "0x02112bbc"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02112da4",
+      "end": "0x02112da8"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02113ea0",
+      "end": "0x02113eb4"
     }
   ],
   "functions": [
@@ -84,11 +100,27 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov026_02113ea0",
+      "address": "0x02113ea0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "model file handle constructed with file ID 0x6db; InitResources loads it and the destructor path releases it"
+    },
+    {
+      "symbol": "@127",
+      "address": "0x02113ea8",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated destructor-registration node for the 0x6db model handle"
+    }
+  ],
   "notes": [
     "Promoted from nine per-function sources. The destructor was moved inline into include/daObjWlPolelift_c.h: written out of line mwccarm 2004/b56 emits the synthesized D0 ahead of the written D1 and adds a homeless D2, which is the reverse of the cartridge's 0x021111a0 (D1) / 0x021111e0 (D0) pair. Inline emits D1 then D0 and no D2, and moves the key function to the first non-inline virtual, InitResources -- which is why this TU now emits the class vtable and RTTI chain as compiler-only output.",
     "func_ov026_02111234 and func_ov026_021112a4 keep their placeholder names. They are file-local helpers with no ROM-proven spelling; the delinked .c source for func_ov026_021112a4 was rewritten as C++ with an explicit extern \"C\" definition and a daObjWlPolelift_c* parameter so one TU can declare and define it once. The bodies still walk a char cursor because the fields they touch are still modelled as padding.",
-    "The factory's vptr store changed spelling from `*(void **)actor = &_ZTV17daObjWlPolelift_c;` to `*(int *)actor = (int)&_ZTV17daObjWlPolelift_c[2];`. The per-function shard referenced the ROM's data symbol, which config/arm9/overlays/ov026/symbols.txt records at the public address point 0x02113ae0. This TU emits its own vtable, whose _ZTV symbol addresses the vtable object eight bytes lower, so the source has to compute the same address point itself -- the measured eight-byte bias tools/objisolate.py and tools/reloc_audit.py both pin. The symbols.txt address is unchanged."
+    "The factory's vptr store changed spelling from `*(void **)actor = &_ZTV17daObjWlPolelift_c;` to `*(int *)actor = (int)&_ZTV17daObjWlPolelift_c[2];`. The per-function shard referenced the ROM's data symbol, which config/arm9/overlays/ov026/symbols.txt records at the public address point 0x02113ae0. This TU emits its own vtable, whose _ZTV symbol addresses the vtable object eight bytes lower, so the source has to compute the same address point itself -- the measured eight-byte bias tools/objisolate.py and tools/reloc_audit.py both pin. The symbols.txt address is unchanged.",
+    "Static initializer folded: the PoleliftModelFile handle (file 0x6db) and its destructor-registration node make mwcc emit __sinit_d_a_obj_wl_polelift.cpp itself (0x40, raw-byte-identical to retail __sinit_ov026_02112b7c with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @422 clashed with the fleet and is renamed (@422->@127)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -106,7 +138,6 @@
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        5,
         6,
         7,
         8,
@@ -118,9 +149,10 @@
         14,
         15,
         16,
-        17,
         18,
-        32
+        19,
+        20,
+        34
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -148,13 +180,13 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 2 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov026-daObjWlPolelift_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -178,18 +210,68 @@
           "end": "0x021116c8",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02112b7c",
+          "end": "0x02112bbc",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02112da4",
+          "end": "0x02112da8",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02113ea0",
+          "end": "0x02113eb4",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 9
+          "LICENSED": 13
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              41
+            ],
+            "desired": [
+              41
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              39
+            ],
+            "desired": [
+              39
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              5,
+              17
+            ],
+            "desired": [
+              5,
+              17
+            ]
+          }
+        ],
         "objisolate": null,
         "errors": null
       },
@@ -296,6 +378,136 @@
       "canonical_module": "ov026",
       "canonical_address": "0x02113ae0",
       "reason": "This class's own vtable, emitted because the inline destructor makes the first declared non-inline virtual (InitResources, defined here) the key function. The cartridge's public address point is ov026:0x02113ae0, outside the .text run; the emitted storage starts eight bytes earlier, which is why the factory's vptr store is spelled &_ZTV17daObjWlPolelift_c[2]. The address in config/arm9/overlays/ov026/symbols.txt is unchanged."
+    }
+  ],
+  "init": [
+    {
+      "symbol": "__sinit_d_a_obj_wl_polelift.cpp",
+      "address": "0x02112b7c",
+      "size": "0x40",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov026_02112b7c (0x40, same instruction sequence and literal pool) and carries the same relocation sites: one handle construction with destructor registration"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_d_a_obj_wl_polelift.cpp",
+      "address": "0x02112da4",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail; the other .ctor words belong to the remaining shards"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN17PoleliftModelFileC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail initializer call destination and the model wrapper constructor exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN17PoleliftModelFileD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail destructor registration destination and the model wrapper destructor exact ABS32 relocation"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and the direct retail reference in this initializer"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@422",
+      "to": "@127",
+      "evidence": "mwcc numbers this registration node @422 per TU and the fleet already defines a global @422, so the scratch link would multiply-define it; the first target @108 collides with ov064 daObjFl_Amilift_c's global @108 on main, so it lands on @127"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_d_a_obj_wl_polelift.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_d_a_obj_wl_polelift.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "@127",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02113ea8"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".ctor",
+      "source": "0x02112da4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_d_a_obj_wl_polelift.cpp",
+      "addend": 0,
+      "target_module": "ov026",
+      "target_address": "0x02112b7c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112b8c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017acc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112b9c",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112bac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov026_02113ea0",
+      "addend": 0,
+      "target_module": "ov026",
+      "target_address": "0x02113ea0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112bb4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_02017ab4",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017ab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112bb8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@127",
+      "addend": 0,
+      "target_module": "ov026",
+      "target_address": "0x02113ea8"
     }
   ]
 }

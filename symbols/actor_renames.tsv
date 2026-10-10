@@ -1049,7 +1049,18 @@ ov015	0x021148b8	daObjBk_Fall_Block_c_SpawnInfo	g_profile_BK_DOWN_B	reconstructe
 ov015	0x021148dc	data_ov015_021148dc	_ZTV20daObjBk_Fall_Block_c	vtable alloc=0x34c
 ov016	0x021111a0	func_ov016_021111a0	_ZN9daMoray_cD1Ev	vtable slot 16
 ov016	0x02111208	func_ov016_02111208	_ZN9daMoray_cD0Ev	vtable slot 17
-ov016	0x021115a4	func_ov016_021115a4	BookSwitch_Spawn	spawnfunc
+ov016	0x02111284	func_ov016_02111284	_ZN9daMoray_c19func_ov016_02111284Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111534	func_ov016_02111534	_ZN9daMoray_c19func_ov016_02111534Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x021115a4	func_ov016_021115a4	_ZN9daMoray_c16BookSwitch_SpawnEv	spawnfunc
+ov016	0x021115c0	func_ov016_021115c0	_ZN9daMoray_c19func_ov016_021115c0Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111718	func_ov016_02111718	_ZN9daMoray_c19func_ov016_02111718Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111860	func_ov016_02111860	_ZN9daMoray_c19func_ov016_02111860Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x021118b4	func_ov016_021118b4	_ZN9daMoray_c19func_ov016_021118b4Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111994	func_ov016_02111994	_ZN9daMoray_c19func_ov016_02111994Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x021119ec	func_ov016_021119ec	_ZN9daMoray_c19func_ov016_021119ecEv	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111bac	func_ov016_02111bac	_ZN9daMoray_c19func_ov016_02111bacEv	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111bf0	func_ov016_02111bf0	_ZN9daMoray_c19func_ov016_02111bf0EPNS_5StateE	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov016	0x02111c40	func_ov016_02111c40	_ZN9daMoray_c19func_ov016_02111c40Ev	daMoray_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov016	0x02111f38	func_ov016_02111f38	_ZN9daMoray_c16CleanupResourcesEv	vtable slot 3
 ov016	0x02111f80	func_ov016_02111f80	_ZN9daMoray_c16OnPendingDestroyEv	vtable slot 12
 ov016	0x02111f84	func_ov016_02111f84	_ZN9daMoray_c6RenderEv	vtable slot 9
@@ -1081,6 +1092,7 @@ ov016	0x02113434	func_ov016_02113434	_ZN13daSlide_Box_c13InitResourcesEv	vtable 
 ov016	0x02113510	func_ov016_02113510	SlidingBox_Spawn	spawnfunc
 ov016	0x02113510	SlidingBox_Spawn	daSlide_Box_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114898	data_ov016_02114898	BookSwitch_SpawnInfo	spawninfo
+ov016	0x02114898	BookSwitch_SpawnInfo	@1111	daMoray_c sinit fold: the TU licenses the object as its emitted PMF record @1111; the coined spawn-table name cannot reach symbols.txt because objisolate cannot grow a name
 ov016	0x021148e0	data_ov016_021148e0	Unagi_SpawnInfo	spawninfo
 ov016	0x021148e0	Unagi_SpawnInfo	g_profile_MORAY	reconstructed profile global; literal ROM ID MORAY+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114958	data_ov016_02114958	_ZTV9daMoray_c	vtable alloc=0x4b0
@@ -5442,6 +5454,68 @@ ov006	0x020e984c	func_ov006_020e984c	_ZN12dScMg3DEsp_c10ResetRoundEv	dScMg3DEsp_
 ov006	0x020e989c	func_ov006_020e989c	_ZN12dScMg3DEsp_c7ResultsEv	dScMg3DEsp_c method; PMF record in the play-phase table. Named Results: phase showing the round result.
 ov006	0x020e9b70	func_ov006_020e9b70	_ZN12dScMg3DEsp_c4PlayEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Play: round state dispatching the play phases.
 ov006	0x020e9bbc	func_ov006_020e9bbc	_ZN12dScMg3DEsp_c4WaitEv	dScMg3DEsp_c method; PMF record in the round-state table. Named Wait: round state idling between rounds.
+ov006	0x021042e8	func_ov006_021042e8	_ZN12dScMgPanel_c19func_ov006_021042e8Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104354	func_ov006_02104354	_ZN12dScMgPanel_c19func_ov006_02104354Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210446c	func_ov006_0210446c	_ZN12dScMgPanel_c19func_ov006_0210446cEiii	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104558	func_ov006_02104558	_ZN12dScMgPanel_c19func_ov006_02104558Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104580	func_ov006_02104580	_ZN12dScMgPanel_c19func_ov006_02104580Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104870	func_ov006_02104870	_ZN12dScMgPanel_c19func_ov006_02104870Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021048b0	func_ov006_021048b0	_ZN12dScMgPanel_c19func_ov006_021048b0Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021048e4	func_ov006_021048e4	_ZN12dScMgPanel_c19func_ov006_021048e4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104920	func_ov006_02104920	_ZN12dScMgPanel_c19func_ov006_02104920Ei	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104a10	func_ov006_02104a10	_ZN12dScMgPanel_c19func_ov006_02104a10Ei	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104ac4	func_ov006_02104ac4	_ZN12dScMgPanel_c19func_ov006_02104ac4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104b24	func_ov006_02104b24	_ZN12dScMgPanel_c19func_ov006_02104b24Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104b4c	func_ov006_02104b4c	_ZN12dScMgPanel_c19func_ov006_02104b4cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104b5c	func_ov006_02104b5c	_ZN12dScMgPanel_c19func_ov006_02104b5cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104bb0	func_ov006_02104bb0	_ZN12dScMgPanel_c19func_ov006_02104bb0Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104c08	func_ov006_02104c08	_ZN12dScMgPanel_c19func_ov006_02104c08Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104c60	func_ov006_02104c60	_ZN12dScMgPanel_c19func_ov006_02104c60Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104cfc	func_ov006_02104cfc	_ZN12dScMgPanel_c19func_ov006_02104cfcEi	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104d44	func_ov006_02104d44	_ZN12dScMgPanel_c19func_ov006_02104d44Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104d94	func_ov006_02104d94	_ZN12dScMgPanel_c19func_ov006_02104d94Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104e70	func_ov006_02104e70	_ZN12dScMgPanel_c19func_ov006_02104e70Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104e80	func_ov006_02104e80	_ZN12dScMgPanel_c19func_ov006_02104e80Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104ea8	func_ov006_02104ea8	_ZN12dScMgPanel_c19func_ov006_02104ea8Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104eb8	func_ov006_02104eb8	_ZN12dScMgPanel_c19func_ov006_02104eb8Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104ecc	func_ov006_02104ecc	_ZN12dScMgPanel_c19func_ov006_02104eccEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02104fb4	func_ov006_02104fb4	_ZN12dScMgPanel_c19func_ov006_02104fb4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210500c	func_ov006_0210500c	_ZN12dScMgPanel_c19func_ov006_0210500cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210508c	func_ov006_0210508c	_ZN12dScMgPanel_c19func_ov006_0210508cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021050bc	func_ov006_021050bc	_ZN12dScMgPanel_c19func_ov006_021050bcEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105118	func_ov006_02105118	_ZN12dScMgPanel_c19func_ov006_02105118Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105134	func_ov006_02105134	_ZN12dScMgPanel_c19func_ov006_02105134Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021051dc	func_ov006_021051dc	_ZN12dScMgPanel_c19func_ov006_021051dcEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021053a8	func_ov006_021053a8	_ZN12dScMgPanel_c19func_ov006_021053a8Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105670	func_ov006_02105670	_ZN12dScMgPanel_c19func_ov006_02105670Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105730	func_ov006_02105730	_ZN12dScMgPanel_c19func_ov006_02105730Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021057f0	func_ov006_021057f0	_ZN12dScMgPanel_c19func_ov006_021057f0Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105854	func_ov006_02105854	_ZN12dScMgPanel_c19func_ov006_02105854Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105ab4	func_ov006_02105ab4	_ZN12dScMgPanel_c19func_ov006_02105ab4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105c1c	func_ov006_02105c1c	_ZN12dScMgPanel_c19func_ov006_02105c1cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105c88	func_ov006_02105c88	_ZN12dScMgPanel_c19func_ov006_02105c88Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105d20	func_ov006_02105d20	_ZN12dScMgPanel_c19func_ov006_02105d20Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02105de4	func_ov006_02105de4	_ZN12dScMgPanel_c19func_ov006_02105de4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106048	func_ov006_02106048	_ZN12dScMgPanel_c19func_ov006_02106048Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106080	func_ov006_02106080	_ZN12dScMgPanel_c19func_ov006_02106080Ei	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106168	func_ov006_02106168	_ZN12dScMgPanel_c19func_ov006_02106168Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021063a0	func_ov006_021063a0	_ZN12dScMgPanel_c19func_ov006_021063a0Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106664	func_ov006_02106664	_ZN12dScMgPanel_c19func_ov006_02106664Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106758	func_ov006_02106758	_ZN12dScMgPanel_c19func_ov006_02106758Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021067a4	func_ov006_021067a4	_ZN12dScMgPanel_c19func_ov006_021067a4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021068d8	func_ov006_021068d8	_ZN12dScMgPanel_c19func_ov006_021068d8Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106910	func_ov006_02106910	_ZN12dScMgPanel_c19func_ov006_02106910Ei	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106a08	func_ov006_02106a08	_ZN12dScMgPanel_c19func_ov006_02106a08Ei	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106aa8	func_ov006_02106aa8	_ZN12dScMgPanel_c19func_ov006_02106aa8Ei	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106bac	func_ov006_02106bac	_ZN12dScMgPanel_c19func_ov006_02106bacEi	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106bc0	func_ov006_02106bc0	_ZN12dScMgPanel_c19func_ov006_02106bc0Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106ca4	func_ov006_02106ca4	_ZN12dScMgPanel_c19func_ov006_02106ca4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106eb8	func_ov006_02106eb8	_ZN12dScMgPanel_c19func_ov006_02106eb8Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106f44	func_ov006_02106f44	_ZN12dScMgPanel_c19func_ov006_02106f44Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x02106fdc	func_ov006_02106fdc	_ZN12dScMgPanel_c19func_ov006_02106fdcEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210709c	func_ov006_0210709c	_ZN12dScMgPanel_c19func_ov006_0210709cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x0210713c	func_ov006_0210713c	_ZN12dScMgPanel_c19func_ov006_0210713cEv	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
+ov006	0x021071d4	func_ov006_021071d4	_ZN12dScMgPanel_c19func_ov006_021071d4Ev	dScMgPanel_c method. object-as-this; receiver is the scene object, called with this in r0
 ov006	0x0211cc2c	func_ov006_0211cc2c	_ZN13dScMgTeresa_c19func_ov006_0211cc2cEv	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x0211cc90	func_ov006_0211cc90	_ZN13dScMgTeresa_c19func_ov006_0211cc90Ev	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x0211cca8	func_ov006_0211cca8	_ZN13dScMgTeresa_c19func_ov006_0211cca8Ev	object-as-this; receiver is the scene object, called with this in r0
@@ -5515,6 +5589,15 @@ ov006	0x0211fe78	func_ov006_0211fe78	_ZN13dScMgTeresa_c19func_ov006_0211fe78Ev	o
 ov006	0x02120008	func_ov006_02120008	_ZN13dScMgTeresa_c19func_ov006_02120008Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
 ov006	0x021200a8	func_ov006_021200a8	_ZN13dScMgTeresa_c19func_ov006_021200a8Ev	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
 ov006	0x021200cc	func_ov006_021200cc	_ZN13dScMgTeresa_c19func_ov006_021200ccEv	object-as-this; sinit .data stores pointer-to-member records (state tables at data_ov006_02142e88/02142eb0/02142ed8/02142f18)
+ov006	0x020ed274	func_ov006_020ed274	_ZN15dScMgHanachan_c19func_ov006_020ed274Ev	dScMgHanachan_c method; pointer-to-member target of the phase records in .data, dispatched through mPhaseFn
+ov006	0x020ed300	func_ov006_020ed300	_ZN15dScMgHanachan_c19func_ov006_020ed300Ev	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ed32c	func_ov006_020ed32c	_ZN15dScMgHanachan_c19func_ov006_020ed32cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ed34c	func_ov006_020ed34c	_ZN15dScMgHanachan_c19func_ov006_020ed34cEv	dScMgHanachan_c method; pointer-to-member target of the phase records in .data, dispatched through mPhaseFn
+ov006	0x020ed40c	func_ov006_020ed40c	_ZN15dScMgHanachan_c19func_ov006_020ed40cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ed494	func_ov006_020ed494	_ZN15dScMgHanachan_c19func_ov006_020ed494Ev	dScMgHanachan_c method; pointer-to-member target of the phase records in .data, dispatched through mPhaseFn
+ov006	0x020ed81c	func_ov006_020ed81c	_ZN15dScMgHanachan_c19func_ov006_020ed81cEv	object-as-this; receiver is the scene object, called with this in r0
+ov006	0x020ed844	func_ov006_020ed844	_ZN15dScMgHanachan_c19func_ov006_020ed844Ev	dScMgHanachan_c method; pointer-to-member target of the phase records in .data, dispatched through mPhaseFn
+ov006	0x020ed8a4	func_ov006_020ed8a4	_ZN15dScMgHanachan_c19func_ov006_020ed8a4Ev	object-as-this; receiver is the scene object, called with this in r0
 ov006	0x02125804	func_ov006_02125804	_ZN15dScMgSnowball_c19func_ov006_02125804Ev	object-as-this
 ov006	0x02125890	func_ov006_02125890	_ZN15dScMgSnowball_c19func_ov006_02125890Ev	object-as-this
 ov006	0x02125994	func_ov006_02125994	_ZN15dScMgSnowball_c19func_ov006_02125994Ev	object-as-this
@@ -5660,3 +5743,32 @@ ov004	0x020ae104	func_ov004_020ae104	_ZN11dScMgBase_c15graphCallback_cC1Ev	dScMg
 ov004	0x020b2c58	func_ov004_020b2c58	__arraydtor$314	compiler-generated array destructor thunk for the Ent record pool data_ov004_020bebe8; __sinit_d_s_mg_base.cpp registers it through __register_global_object.
 ov004	0x020b2c7c	func_ov004_020b2c7c	_ZN3EntD1Ev	Ent's trivial destructor, emitted for the data_ov004_020bebe8 record pool's __cxa_vec_ctor/__cxa_vec_cleanup calls.
 ov004	0x020b2c80	func_ov004_020b2c80	_ZN3EntC1Ev	Ent's trivial constructor, emitted for the data_ov004_020bebe8 record pool's __cxa_vec_ctor call.
+ov002	0x020ae9f8	func_ov002_020ae9f8	_ZN6Aea30C19func_ov002_020ae9f8EP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae954	func_ov002_020ae954	_ZN6Aea30C19func_ov002_020ae954EP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae890	func_ov002_020ae890	_ZN6Aea30C19func_ov002_020ae890EP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae87c	func_ov002_020ae87c	_ZN6Aea30C19func_ov002_020ae87cEP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae844	func_ov002_020ae844	_ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae80c	func_ov002_020ae80c	_ZN6Aea30C19func_ov002_020ae80cEP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae73c	func_ov002_020ae73c	_ZN6Aea30C19func_ov002_020ae73cEP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020aea2c	func_ov002_020aea2c	_ZN6Aea30C19func_ov002_020aea2cEP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
+ov002	0x020ae64c	func_ov002_020ae64c	_ZN11EnemyDeathC19func_ov002_020ae64cER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
+ov002	0x020ae608	func_ov002_020ae608	_ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
+ov002	0x020ae4cc	func_ov002_020ae4cc	_ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
+ov002	0x020ae454	func_ov002_020ae454	_ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
+ov002	0x020aea24	func_ov002_020aea24	_ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr	pointer-to-member target of data_ov002_0210dbc0, dispatched by UpdateDeath on mDeathState
+ov002	0x020bccfc	func_ov002_020bccfc	_ZN6Player19func_ov002_020bccfcEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bcd18	func_ov002_020bcd18	_ZN6Player19func_ov002_020bcd18EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bcd38	func_ov002_020bcd38	_ZN6Player19func_ov002_020bcd38EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd06c	func_ov002_020bd06c	_ZN6Player19func_ov002_020bd06cEj	Player method; the step change func_ov002_020bd20c (a Kuppa-script command) makes, its only caller
+ov002	0x020bd20c	func_ov002_020bd20c	_ZN6Player19func_ov002_020bd20cEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd250	func_ov002_020bd250	_ZN6Player19func_ov002_020bd250EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd354	func_ov002_020bd354	_ZN6Player19func_ov002_020bd354EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd3a0	func_ov002_020bd3a0	_ZN6Player19func_ov002_020bd3a0EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd438	func_ov002_020bd438	_ZN6Player19func_ov002_020bd438EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd45c	func_ov002_020bd45c	_ZN6Player19func_ov002_020bd45cEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd480	func_ov002_020bd480	_ZN6Player19func_ov002_020bd480EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd4ac	func_ov002_020bd4ac	_ZN6Player19func_ov002_020bd4acEPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd4c8	func_ov002_020bd4c8	_ZN6Player19func_ov002_020bd4c8EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd4e0	func_ov002_020bd4e0	_ZN6Player19func_ov002_020bd4e0EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd600	func_ov002_020bd600	_ZN6Player19func_ov002_020bd600EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
+ov002	0x020bd664	func_ov002_020bd664	_ZN6Player19func_ov002_020bd664EPhii	Player method; Kuppa-script player command dispatcher, called by func_0200e5ac on the player actor through pointer-to-member data_ov002_02110794

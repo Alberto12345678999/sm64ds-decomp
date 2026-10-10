@@ -726,6 +726,32 @@ struct Player : dActor_c {
     void TurnOffToonShading(unsigned int j);
     void Unk_020ca488();
 
+    /* Player commands of the Kuppa script (ov002 0x020bccfc..0x020bd828).
+       func_ov002_020bd664 dispatches a command record to one of fourteen of
+       these through a table of pointers to members, all of one signature:
+       the command's parameter bytes and its begin and end frame.
+       func_ov002_020bd06c is the step change func_ov002_020bd20c makes.
+       The parameters are left unnamed on purpose: each NAMED parameter here
+       advances mwccarm's @NNN counter in every file that includes this
+       header (measured: 33 of 258 consumers renumbered their @NNN locals),
+       and unnamed they leave all 258 objects byte-identical. */
+    int func_ov002_020bccfc(unsigned char *, int, int);
+    int func_ov002_020bcd18(unsigned char *, int, int);
+    int func_ov002_020bcd38(unsigned char *, int, int);
+    void func_ov002_020bd06c(unsigned int);
+    int func_ov002_020bd20c(unsigned char *, int, int);
+    int func_ov002_020bd250(unsigned char *, int, int);
+    int func_ov002_020bd354(unsigned char *, int, int);
+    int func_ov002_020bd3a0(unsigned char *, int, int);
+    int func_ov002_020bd438(unsigned char *, int, int);
+    int func_ov002_020bd45c(unsigned char *, int, int);
+    int func_ov002_020bd480(unsigned char *, int, int);
+    int func_ov002_020bd4ac(unsigned char *, int, int);
+    int func_ov002_020bd4c8(unsigned char *, int, int);
+    int func_ov002_020bd4e0(unsigned char *, int, int);
+    int func_ov002_020bd600(unsigned char *, int, int);
+    int func_ov002_020bd664(unsigned char *, int, int);
+
     void func_ov002_020bda48();
     void func_ov002_020bdd9c();
     void func_ov002_020bdef0();

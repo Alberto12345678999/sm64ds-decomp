@@ -19,9 +19,23 @@
 #include "daObjMc_Metalnet_c.h"
 #include "SharedFilePtr.h"
 
+struct McMetalnetModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    McMetalnetModelFilePtr(u32 fileID);
+    ~McMetalnetModelFilePtr();
+};
+
+struct McMetalnetClsnFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    McMetalnetClsnFileHandle(u32 fileID);
+    ~McMetalnetClsnFileHandle();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov009_02113e90;   /* the net's BMD        */
-extern SharedFilePtr data_ov009_02113e88;   /* its collision KCL    */
+extern McMetalnetModelFilePtr data_ov009_02113e90;   /* the net's BMD        */
+extern McMetalnetClsnFileHandle data_ov009_02113e88; /* its collision KCL    */
 extern CLPS_Block    data_ov009_02112bf8;
 
 /* The global mode byte. Unnamed in config; compared against 1 in fifty-odd
@@ -163,3 +177,6 @@ s32 daObjMc_Metalnet_c::CleanupResources()
    dBgActor_c's -- inlined, because that destructor is defined in its class
    body -- then dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class
    adds no member with a destructor of its own. */
+
+McMetalnetModelFilePtr data_ov009_02113e90(0x691);
+McMetalnetClsnFileHandle data_ov009_02113e88(0x692);

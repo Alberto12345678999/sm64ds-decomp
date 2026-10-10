@@ -7,6 +7,10 @@
 src/actors/daChoropu_c.cpp:
     complete
     .text start:0x02123740 end:0x02124a20
+    .init start:0x021278c0 end:0x02127a60
+    .ctor start:0x02127f60 end:0x02127f64
+    .data start:0x02127f80 end:0x02127fb0
+    .bss start:0x021283c0 end:0x02128468
 
 src/actors/daBttBk_c.cpp:
     complete
@@ -16,17 +20,9 @@ src/actors/daBttBk_c.cpp:
     .data start:0x0212812c end:0x0212815c
     .bss start:0x02128468 end:0x021284ac
 
-src/_ZN11daPicGate_cD1Ev.cpp:
-    complete
-    .text start:0x02125404 end:0x02125428
-
-src/_ZN11daPicGate_cD0Ev.cpp:
-    complete
-    .text start:0x02125428 end:0x02125460
-
 src/game/actors/d_a_pic_gate.cpp:
     complete
-    .text start:0x02125460 end:0x021261f4
+    .text start:0x02125404 end:0x021261f4
 
 src/actors/daPicGate_c.cpp:
     complete
@@ -36,18 +32,6 @@ src/actors/daPicGate_c.cpp:
     .data start:0x02128214 end:0x02128274
     .bss start:0x021284ac end:0x02128688
 
-src/_ZN13daObjMaruta_cD0Ev.cpp:
-    complete
-    .text start:0x02126fbc end:0x02127014
-
-src/_ZN13daObjMaruta_cD1Ev.cpp:
-    complete
-    .text start:0x02127014 end:0x02127058
-
 src/game/actors/d_a_obj_maruta.cpp:
     complete
-    .text start:0x02127058 end:0x0212766c
-
-src/unnamed/ov080/__sinit_ov080_021278c0.c:
-    complete
-    .init start:0x021278c0 end:0x02127a60
+    .text start:0x02126fbc end:0x0212766c

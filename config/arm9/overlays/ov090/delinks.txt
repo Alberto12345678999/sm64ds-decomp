@@ -26,15 +26,15 @@ src/actors/daManta_c.cpp:
 src/actors/daPukupuku_c.cpp:
     complete
     .text start:0x02133034 end:0x0213367c
+    .init start:0x02133f4c end:0x02134020
+    .ctor start:0x021340cc end:0x021340d0
+    .bss start:0x0213455c end:0x021345a4
 
 src/actors/daShark_c.cpp:
     complete
     .text start:0x0213367c end:0x02133ce8
-
-src/unnamed/ov090/__sinit_ov090_02133f4c.c:
-    complete
-    .init start:0x02133f4c end:0x02134020
-
-src/unnamed/ov090/__sinit_ov090_02134020.c:
-    complete
     .init start:0x02134020 end:0x021340c4
+    .ctor start:0x021340d0 end:0x021340d4
+    .data start:0x021343a0 end:0x021343b0
+    .bss start:0x021345a4 end:0x021345e0
+

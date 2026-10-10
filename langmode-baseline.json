@@ -45,12 +45,12 @@
         "unmigrated": 65
       }
     },
-    "cpp_still_handspelled": 63,
-    "mangled_c": 15,
+    "cpp_still_handspelled": 66,
+    "mangled_c": 12,
     "mangled_cpp": 4828,
     "mangled_total": 4843,
     "nonmatching_drafts": 5,
-    "unmigrated_total": 75
+    "unmigrated_total": 78
   },
   "shadow_decls": {
     "local_body_no_include": 472,

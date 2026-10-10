@@ -32,8 +32,8 @@
  *   `(dExtFrameCtrl_c *)((char *)this + 0x350)` view; measured: `(char *)&mModelAnim + 0x50`
  *   DIFFs).
  *   data_ov070_* SharedFilePtr handles (Init LoadFile / Cleanup Release) and
- *   state records (FlyGuy_ChangeState) are sinit-owned BSS, not this TU's data
- *   claim. FlyGuy_ChangeState keeps its C-ABI name. Helpers stay func_ov070_*
+ *   the six state records are file-scope objects at the end of this file
+ *   (folded sinit 0x02122afc). FlyGuy_ChangeState keeps its C-ABI name. Helpers stay func_ov070_*
  *   (cartridge addresses, no identifiers). ApproachAngle int-target vs short
  *   via namespace ApproachAngleInt (this TU). V3w/V3h array-wrapper for struct copy
  *   (this TU). func_ov070_0211f6e0 and func_ov070_0211f48c keep the V3w/V3h
@@ -181,13 +181,33 @@ s32 daPropeller_Heyho_c::OnAimedAtWithEgg() {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN19daPropeller_Heyho_c13InitResourcesEv
 #include "SharedFilePtr.h"
-extern SharedFilePtr data_ov070_02123530;
-extern SharedFilePtr data_ov070_02123520;
-extern SharedFilePtr data_ov070_02123518;
-extern SharedFilePtr data_ov070_02123510;
-extern SharedFilePtr data_ov070_02123528;
-extern SharedFilePtr data_ov070_02123508;
-extern SharedFilePtr data_ov070_02123500;
+/* File-scope objects at the end of this file construct the seven resource
+ * handles (model file 0x411, animation files 0x417/0x412/0x413/0x414/0x415/
+ * 0x416) and fill the six state records. mwcc emits __sinit_d_a_propeller_heyho.cpp
+ * from those definitions. The wrapper names are local; the handle
+ * constructors and destructors are the ROM resource-family functions,
+ * aliased in the manifest. */
+struct HeyhoModelFile : SharedFilePtr {
+    u32 words[2];
+
+    HeyhoModelFile(u32 fileID);
+    ~HeyhoModelFile();
+};
+
+struct HeyhoAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    HeyhoAnimationFilePtr(u32 fileID);
+    ~HeyhoAnimationFilePtr();
+};
+
+extern HeyhoModelFile data_ov070_02123530;
+extern HeyhoAnimationFilePtr data_ov070_02123520;
+extern HeyhoAnimationFilePtr data_ov070_02123518;
+extern HeyhoAnimationFilePtr data_ov070_02123510;
+extern HeyhoAnimationFilePtr data_ov070_02123528;
+extern HeyhoAnimationFilePtr data_ov070_02123508;
+extern HeyhoAnimationFilePtr data_ov070_02123500;
 /* The six state records (each {init PMF, main PMF}, built by __sinit_ov070_02122afc
  * from PMF literals in .data). The role names below are read off the handler
  * bodies; none is a recovered name:
@@ -201,6 +221,20 @@ extern SharedFilePtr data_ov070_02123500;
  * wind-down back to wander after a dive or when the player is lost, "knocked" a
  * short (3-frame) pop-up and tilt that ends in coins and death. */
 extern daPropeller_Heyho_c::State data_ov070_0212359c;
+/* The ROM PMF constants the six state records copy from (unlicensed .data):
+ * init slots return int, main slots return void. */
+extern int (daPropeller_Heyho_c::*data_ov070_021230e8)();
+extern void (daPropeller_Heyho_c::*data_ov070_021230c8)();
+extern int (daPropeller_Heyho_c::*data_ov070_021230d8)();
+extern void (daPropeller_Heyho_c::*data_ov070_021230f0)();
+extern int (daPropeller_Heyho_c::*data_ov070_021230c0)();
+extern void (daPropeller_Heyho_c::*data_ov070_02123118)();
+extern int (daPropeller_Heyho_c::*data_ov070_02123108)();
+extern void (daPropeller_Heyho_c::*data_ov070_021230d0)();
+extern int (daPropeller_Heyho_c::*data_ov070_02123110)();
+extern void (daPropeller_Heyho_c::*data_ov070_021230e0)();
+extern int (daPropeller_Heyho_c::*data_ov070_021230f8)();
+extern void (daPropeller_Heyho_c::*data_ov070_02123100)();
 extern "C" {
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, int r, int h, Vector3_16* p, Vector3_16* q);
@@ -1138,3 +1172,22 @@ extern "C" int func_ov070_0211f0a4(daPropeller_Heyho_c *c) {
     _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(c, pos, coins, 0xa000, 0);
     c->KillAndTrackInDeathTable();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov070_02122afc shard).
+ * Definition order is the retail initializer's construction order: the
+ * model handle (file 0x411), the six animation handles (files 0x417/0x412/
+ * 0x413/0x414/0x415/0x416), then the six state records copied from the ROM
+ * PMF constants. */
+HeyhoModelFile data_ov070_02123530(0x411);
+HeyhoAnimationFilePtr data_ov070_02123520(0x417);
+HeyhoAnimationFilePtr data_ov070_02123518(0x412);
+HeyhoAnimationFilePtr data_ov070_02123510(0x413);
+HeyhoAnimationFilePtr data_ov070_02123528(0x414);
+HeyhoAnimationFilePtr data_ov070_02123508(0x415);
+HeyhoAnimationFilePtr data_ov070_02123500(0x416);
+daPropeller_Heyho_c::State data_ov070_0212359c = {data_ov070_021230e8, data_ov070_021230c8};
+daPropeller_Heyho_c::State data_ov070_021235ac = {data_ov070_021230d8, data_ov070_021230f0};
+daPropeller_Heyho_c::State data_ov070_021235cc = {data_ov070_021230c0, data_ov070_02123118};
+daPropeller_Heyho_c::State data_ov070_021235dc = {data_ov070_02123108, data_ov070_021230d0};
+daPropeller_Heyho_c::State data_ov070_0212358c = {data_ov070_02123110, data_ov070_021230e0};
+daPropeller_Heyho_c::State data_ov070_021235bc = {data_ov070_021230f8, data_ov070_02123100};

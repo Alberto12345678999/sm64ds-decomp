@@ -67,6 +67,46 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 
+/* Resource handles the static initializer constructs. The wrapper spellings
+ * are reconstructed; the constructor and destructor addresses, the file IDs
+ * and the 8-byte width are the ROM's. */
+struct OwlModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    OwlModelFilePtr(u32 fileID);
+    ~OwlModelFilePtr();
+};
+
+struct daOwlAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    daOwlAnimationFilePtr(u32 fileID);
+    ~daOwlAnimationFilePtr();
+};
+
+/* One BSS state: two pointer-to-member constants, copied by the initializer. */
+struct OwlState {
+    int (daOwl_c::*enter)();
+    int (daOwl_c::*main)();
+
+    OwlState(int (daOwl_c::*enterFn)(), int (daOwl_c::*mainFn)())
+        : enter(enterFn), main(mainFn) {}
+};
+
+typedef char OwlModelFilePtr_size_must_be_8[sizeof(OwlModelFilePtr) == 8 ? 1 : -1];
+typedef char daOwlAnimationFilePtr_size_must_be_8[sizeof(daOwlAnimationFilePtr) == 8 ? 1 : -1];
+typedef char OwlState_size_must_be_0x10[sizeof(OwlState) == 0x10 ? 1 : -1];
+
+extern OwlModelFilePtr data_ov094_02136ae0;
+extern daOwlAnimationFilePtr data_ov094_02136ae8;
+extern daOwlAnimationFilePtr data_ov094_02136af0;
+extern daOwlAnimationFilePtr data_ov094_02136af8;
+extern OwlState data_ov094_02136b30;
+extern OwlState data_ov094_02136b40;
+extern OwlState data_ov094_02136b50;
+extern OwlState data_ov094_02136b60;
+extern OwlState data_ov094_02136b70;
+
 /* decl_common.h includes common.h, so Matrix4x3 is the flat s32 m[12]
  * spelling. math/Matrix.h (via daOwl_c.h -> ModelAnim.h) stands down. */
 typedef char Matrix4x3_size_must_be_0x30[sizeof(Matrix4x3) == 0x30 ? 1 : -1];
@@ -89,7 +129,7 @@ enum {
     TALK_DONE = 2
 };
 
-#define OWL_STATE(sym)      ((daOwl_c::State *)(sym))
+#define OWL_STATE(sym)      ((daOwl_c::State *)&(sym))
 #define OWL_STATE_DORMANT   OWL_STATE(data_ov094_02136b40)
 #define OWL_STATE_HOVER     OWL_STATE(data_ov094_02136b60)
 #define OWL_STATE_TALK      OWL_STATE(data_ov094_02136b50)
@@ -103,8 +143,6 @@ enum {
 #define OWL_FRAME(o)        ((u16)((o)->mModelAnim.currFrame >> 12))
 
 extern "C" {
-extern char data_ov094_02136b40[];
-extern char data_ov094_02136b60[];
 extern signed char data_0209f2f8;
 extern unsigned char data_0209f220;
 extern short data_02082214[];
@@ -235,7 +273,7 @@ int daOwl_c::func_ov094_0213598c()
     unk_3e8 = 0;
     mStateTimer = 0;
     mAnimSpeed = 0x2000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af8.words[1], 0, 0x1000, 0);
     return 1;
 }
 
@@ -249,7 +287,7 @@ int daOwl_c::func_ov094_021359d8()
     Player *rider;
 
     if (OWL_TIMER(this) == 1) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136ae8[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136ae8.words[1], 0, 0x1000, 0);
         mAnimSpeed = 0x1000;
     }
 
@@ -270,7 +308,7 @@ int daOwl_c::func_ov094_021359d8()
     rider = mRider;
     if (rider != 0 && func_ov002_020df7f4(rider) == 1) {
         OWL_TIMER(this) = 0xa;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af8[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af8.words[1], 0, 0x1000, 0);
     }
 
     ApproachAngle(&mPrevAngleX, 0, 0xa, 0x200, 0x100);
@@ -311,7 +349,7 @@ int daOwl_c::func_ov094_02135bd4()
 {
     mStateTimer = 0x1e;
     unk_3e8 = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af8.words[1], 0, 0x1000, 0);
     mAnimSpeed = 0x2000;
     return 1;
 }
@@ -385,7 +423,7 @@ int daOwl_c::func_ov094_02135c28()
  * 50..113 frame wander timer. */
 int daOwl_c::func_ov094_02135e64()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af0[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af0.words[1], 0, 0x1000, 0);
     mWanderAngleY = (short)((RandomIntInternal(data_0209e650) >> 8) << 0xc);
     mStateTimer = (short)(((RandomIntInternal(data_0209e650) >> 8) & 0x3f) + 0x32);
     mAnimSpeed = 0x1000;
@@ -428,7 +466,7 @@ int daOwl_c::func_ov094_02135fe0()
     unk_0a4 = 0;
     mVertSpeed = 0;
     unk_0ac = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af0[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov094_02136af0.words[1], 0, 0x1000, 0);
     return 1;
 }
 
@@ -481,7 +519,7 @@ int daOwl_c::func_ov094_02136024()
 /* Enter of the dormant state: animation data_ov094_02136af0[1]. */
 int daOwl_c::func_ov094_02136150()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)((char *)data_ov094_02136af0 + 4), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(void **)((char *)&data_ov094_02136af0 + 4), 0, 0x1000, 0);
     return 1;
 }
 
@@ -552,10 +590,10 @@ void daOwl_c::func_ov094_021362e0()
 // @symbol _ZN7daOwl_c16CleanupResourcesEv
 int daOwl_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov094_02136ae0)->Release();
-    ((SharedFilePtr *)data_ov094_02136af8)->Release();
-    ((SharedFilePtr *)data_ov094_02136ae8)->Release();
-    ((SharedFilePtr *)data_ov094_02136af0)->Release();
+    data_ov094_02136ae0.Release();
+    data_ov094_02136af8.Release();
+    data_ov094_02136ae8.Release();
+    data_ov094_02136af0.Release();
     return 1;
 }
 
@@ -637,12 +675,12 @@ int daOwl_c::InitResources()
     int v0[3];
     void *f;
 
-    f = Model::LoadFile(*(SharedFilePtr *)data_ov094_02136ae0);
+    f = Model::LoadFile(data_ov094_02136ae0);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov094_02136af8);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov094_02136ae8);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov094_02136af0);
+    dExtFrameCtrl_c::LoadFile(data_ov094_02136af8);
+    dExtFrameCtrl_c::LoadFile(data_ov094_02136ae8);
+    dExtFrameCtrl_c::LoadFile(data_ov094_02136af0);
     v0[0] = data_ov094_02136a1c[0];
     v0[1] = data_ov094_02136a1c[1];
     v0[2] = data_ov094_02136a1c[2];
@@ -673,3 +711,18 @@ extern "C" daOwl_c *daOwl_c_classInit()
 {
     return new daOwl_c();
 }
+
+/* Static-resource ownership, formerly the handwritten __sinit_ov094_021367e8.
+ * Definition order is the retail initializer's construction order. The
+ * registration nodes and the pointer-to-member descriptors are compiler
+ * temporaries. */
+OwlModelFilePtr data_ov094_02136ae0(0x3cb);
+daOwlAnimationFilePtr data_ov094_02136af8(0x3cc);
+daOwlAnimationFilePtr data_ov094_02136ae8(0x3cd);
+daOwlAnimationFilePtr data_ov094_02136af0(0x3ce);
+
+OwlState data_ov094_02136b40(&daOwl_c::func_ov094_02136150, &daOwl_c::func_ov094_02136024);
+OwlState data_ov094_02136b50(&daOwl_c::func_ov094_02135fe0, &daOwl_c::func_ov094_02135ee0);
+OwlState data_ov094_02136b60(&daOwl_c::func_ov094_02135e64, &daOwl_c::func_ov094_02135c28);
+OwlState data_ov094_02136b70(&daOwl_c::func_ov094_02135bd4, &daOwl_c::func_ov094_021359d8);
+OwlState data_ov094_02136b30(&daOwl_c::func_ov094_0213598c, &daOwl_c::func_ov094_021358b4);

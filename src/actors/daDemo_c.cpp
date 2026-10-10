@@ -7,7 +7,8 @@
  * _ZTV8daDemo_c at 0x0210bd60. The nested model helpers read as
  * _ZTSN8daDemo_c10anmModel_cE / _ZTSN8daDemo_c13simpleModel_cE over the
  * shared _ZTIN8daDemo_c7param_cE tail base at 0x0210b888. The run is
- * 0x020f1f70..0x020f8808.
+ * 0x020f1f70..0x020f8838; it ends with the registry factory
+ * daDemo_c_classInit.
  *
  * daDemo_c's out-of-line destructor is the key function. Under
  * `#pragma defer_codegen off` it emits D1 at 0x020f1f70 and D0 at
@@ -15,7 +16,7 @@
  * simpleModel_c emit the same D1/D0/D2 shape. Source order is
  * ROM-ascending so emission order stays ROM-ascending; the compiler
  * places simpleModel_c's D0/D1 pair out of order on its own. The
- * `_ZThn80_` Animation-base thunks live in the classInit TU at
+ * `_ZThn80_` Animation-base thunks live in their own sources at
  * ov002:0x020f8838/0x020f8848; this TU's copies are discarded.
  *
  * The vague-linkage typeinfo copies name the model family by the
@@ -443,6 +444,15 @@ struct Obj {
 #define A1C ((s16 *)(thiz->d4 + 0x1c))
 #define A14 ((u16 *)(thiz->d4 + 0x14))
 
+/* Lakitu's model-file handle, owned and constructed by daC_Jugem_c.cpp's
+ * static init. Same TU-local wrapper spelling as the owning TU. */
+struct JugemModelFile : SharedFilePtr {
+    u32 words[2];
+
+    JugemModelFile(u32 fileID);
+    ~JugemModelFile();
+};
+
 extern "C" {
 extern void _ZN3G2x13SetBlendAlphaEPVttttj( volatile void *reg, unsigned short a, unsigned short b, int c, int d);
 extern unsigned char data_0209d454;
@@ -655,7 +665,7 @@ extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 data_0209b41c;
 extern unsigned char data_0209f2d8;
 extern char data_ov002_0211094c;
-extern char data_ov085_0213074c;
+extern JugemModelFile data_ov085_0213074c;
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d454, from the legacy file for func_ov002_020f23f0, NOT applied: extern u8 data_0209d454; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2aec, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, unsigned short c, int d); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN3G2x13SetBlendAlphaEPVttttj, from the legacy file for func_ov002_020f2bf4, NOT applied: extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, unsigned short a, unsigned short b, int c, unsigned short d); */
@@ -4891,4 +4901,18 @@ int daDemo_c::InitResources()
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
     return 1;
+}
+
+// @symbol daDemo_c_classInit
+/* Reconstructed source-style name: SM64DS proves daDemo_c through RTTI,
+ * allocation size, vtable identity, and the DEMO registry profile; later EAD
+ * lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: CutsceneObject_Spawn.
+ *
+ * `new daDemo_c` is the whole sequence the loose factory spelled by hand:
+ * fBase_c::operator new(0x104), dActor_c's base constructor, then the vptr
+ * store. */
+extern "C" daDemo_c *daDemo_c_classInit(void)
+{
+    return new daDemo_c;
 }

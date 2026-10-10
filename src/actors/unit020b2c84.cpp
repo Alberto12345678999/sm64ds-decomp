@@ -14,10 +14,10 @@
  * of the three destructor helpers (func_ov004_020b2c58, func_ov004_020b2c7c,
  * func_ov004_020b2c80) that __sinit_ov004_020b948c registers for the preceding
  * unit; those stay with dScMgBase_c. 0x020b4aa4 is the next function after
- * func_ov004_020b4aa0, the last of the three destructor helpers
- * (func_ov004_020b4a70, func_ov004_020b4a7c, func_ov004_020b4aa0) that
+ * _ZN4ElemD1Ev, the last of the three destructor helpers
+ * (_ZN4ElemC1Ev, __arraydtor$940, _ZN4ElemD1Ev) that
  * __sinit_ov004_020b955c registers for this unit's static array at
- * data_ov004_020bf648; func_ov004_020b4a7c runs __cxa_vec_cleanup over it.
+ * data_ov004_020bf648; __arraydtor$940 runs __cxa_vec_cleanup over it.
  * The unit emits one data object of its own, the anonymous initializer template
  * of func_ov004_020b2cb8's local array at 0x020bc6e8 (0xe8 bytes), which this
  * file's .data claim covers. Everything else it touches is reached by extern.
@@ -73,9 +73,9 @@
  *   0x020b4a40  func_ov004_020b4a40
  *   0x020b4a4c  func_ov004_020b4a4c
  *   0x020b4a64  func_ov004_020b4a64
- *   0x020b4a70  func_ov004_020b4a70
- *   0x020b4a7c  func_ov004_020b4a7c
- *   0x020b4aa0  func_ov004_020b4aa0
+ *   0x020b4a70  _ZN4ElemC1Ev
+ *   0x020b4a7c  __arraydtor$940
+ *   0x020b4aa0  _ZN4ElemD1Ev
  */
 
 #pragma defer_codegen off
@@ -133,6 +133,15 @@ struct Obj {
 struct Base { virtual void dummy(); };
 typedef void (Base::*PMF)();
 
+/* The 3 records at data_ov004_020bf648 are 0x134 bytes each; the field at
+   0x20 (29 while live) is all this unit writes in the constructor. The real
+   class is not recovered. */
+struct Elem {
+    char pad[0x134];
+    Elem();
+    ~Elem() {}
+};
+
 extern int ApproachLinear(int &, int, int);
 
 extern "C" {
@@ -144,7 +153,7 @@ int func_ov004_020af5e0(int a, void *b, int c, int d);
 int _ZN4cstd4fdivEii(int a, int b);
 int func_02053200(int x);
 unsigned int func_02012790(unsigned int x);
-void func_020731dc(void *object, void *destructor, void **node);
+void __register_global_object(void *object, void *destructor, void **node);
 void func_0203d704(int *o, int *a, int *b);
 void func_0203d388(int *p, int angle);
 int RandomIntInternal(int *seed);
@@ -160,7 +169,6 @@ void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
 void func_ov004_020b42c0(char *c);
 void func_ov004_020b37f0(int *obj);
 void func_ov004_020b39a4(char *c);
-void func_ov004_020b4aa0(void);
 }
 
 extern s16 data_02082214[];
@@ -187,11 +195,10 @@ extern int data_ov004_020bf3fc[2];
 extern void *data_ov004_020bf404[3];
 extern void *data_ov004_020bf410[3];
 extern PairW data_ov004_020bf428[];
-extern PMF data_ov004_020bf490[];
+extern PairW data_ov004_020bf490[];
 extern PairW data_ov004_020bf4f8[];
 extern int data_ov004_020bf560[];
 extern int data_ov004_020bf5d4[];
-extern char data_ov004_020bf648[];
 
 extern int data_ov004_020bc42c[];
 extern int data_ov004_020bc65c[];
@@ -463,8 +470,8 @@ extern "C" void func_ov004_020b3278(char *self, int arg1, short arg2, short arg3
 
     {
         int st = *(short *)(self + 0x2e);
-        if (data_ov004_020bf490[st])
-            (((Base *)self)->*data_ov004_020bf490[st])();
+        if (((PMF *)data_ov004_020bf490)[st])
+            (((Base *)self)->*((PMF *)data_ov004_020bf490)[st])();
     }
 
     {
@@ -662,7 +669,7 @@ extern "C" void func_ov004_020b39a4(char* c) {
     if (flags == 0) {
         data_ov004_020bf3f4[0] = 0;
         data_ov004_020bf3f4[1] = 0xc0;
-        func_020731dc(data_ov004_020bf3f4, (void *)NullDestructor_0203d47c, data_ov004_020bf410);
+        __register_global_object(data_ov004_020bf3f4, (void *)NullDestructor_0203d47c, data_ov004_020bf410);
         data_ov004_020bf3ec = data_ov004_020bf3ec | 1;
     }
 
@@ -1110,7 +1117,7 @@ extern "C" void func_ov004_020b484c(char* c)
     if (flags == 0) {
         data_ov004_020bf3fc[0] = 0;
         data_ov004_020bf3fc[1] = 0xc0;
-        func_020731dc(data_ov004_020bf3fc, (void*)NullDestructor_0203d47c, data_ov004_020bf404);
+        __register_global_object(data_ov004_020bf3fc, (void*)NullDestructor_0203d47c, data_ov004_020bf404);
         data_ov004_020bf3f0 = data_ov004_020bf3f0 | 1;
     }
 
@@ -1176,19 +1183,67 @@ extern "C" void func_ov004_020b4a64(short *p)
     *(short *)((char *)p + 0x12) = -8;
 }
 
-// @symbol func_ov004_020b4a70
-extern "C" void func_ov004_020b4a70(int *p)
+Elem::Elem()
 {
-    p[8] = 29;
+    *(int *)&pad[0x20] = 29;
 }
 
-// @symbol func_ov004_020b4a7c
-extern "C" void func_ov004_020b4a7c(void)
-{
-    __cxa_vec_cleanup(data_ov004_020bf648, 3, 0x134, (void (*)(void *))func_ov004_020b4aa0);
+/* __sinit_ov004_020b955c sources: the PMF records the dispatch table at
+   data_ov004_020bf490 copies, the two-word records the two coordinate
+   tables copy, and the words the 29-entry file-id table copies. */
+extern "C" {
+extern PairW data_02086b58;
+extern PairW data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244, data_ov004_020bc16c;
+extern PairW data_ov004_020bc1bc, data_ov004_020bc1ac, data_ov004_020bc25c, data_ov004_020bc264;
+extern PairW data_ov004_020bc1c4, data_ov004_020bc164, data_ov004_020bc15c, data_ov004_020bc1d4;
+extern PairW data_ov004_020bc22c, data_ov004_020bc19c, data_ov004_020bc184, data_ov004_020bc204;
+extern PairW data_ov004_020bc18c, data_ov004_020bc1fc, data_ov004_020bc1f4, data_ov004_020bc154;
+extern PairW data_ov004_020bc1dc, data_ov004_020bc1e4, data_ov004_020bc214;
+extern PairW data_ov004_020bc1a4, data_ov004_020bc24c, data_ov004_020bc21c, data_ov004_020bc26c;
+extern PairW data_ov004_020bc1cc, data_ov004_020bc174, data_ov004_020bc194;
+extern int data_ov004_020b9e98, data_ov004_020b9e8c, data_ov004_020b9f2c;
+extern int data_ov004_020b9ea4, data_ov004_020b9fd8, data_ov004_020b9eb8, data_ov004_020b9f5c;
+extern int data_ov004_020ba010, data_ov004_020b9e90, data_ov004_020b9ed4, data_ov004_020b9ffc;
+extern int data_ov004_020b9f78, data_ov004_020b9fa0, data_ov004_020b9e7c, data_ov004_020b9ebc;
+extern int data_ov004_020b9ee4, data_ov004_020b9ea8, data_ov004_020b9ef0, data_ov004_020b9f7c;
+extern int data_ov004_020b9f0c, data_ov004_020b9e50, data_ov004_020b9e70, data_ov004_020b9f60;
+extern int data_ov004_020b9efc, data_ov004_020b9f88, data_ov004_020b9e78, data_ov004_020b9fc8;
+extern int data_ov004_020b9ee8;
 }
 
-// @symbol func_ov004_020b4aa0
-extern "C" void func_ov004_020b4aa0(void)
-{
+namespace s20b955c {
+extern "C" {
+Elem data_ov004_020bf648[3];
+}
+}
+
+extern "C" {
+int data_ov004_020bf5d4[29] = {
+    data_ov004_020b9e98, data_ov004_020b9f54, data_ov004_020b9e8c, data_ov004_020b9f2c,
+    data_ov004_020b9ea4, data_ov004_020b9fd8, data_ov004_020b9eb8, data_ov004_020b9f5c,
+    data_ov004_020ba010, data_ov004_020b9e90, data_ov004_020b9ed4, data_ov004_020b9ffc,
+    data_ov004_020b9f78, data_ov004_020b9fa0, data_ov004_020b9e7c, data_ov004_020b9ebc,
+    data_ov004_020b9ee4, data_ov004_020b9ea8, data_ov004_020b9ef0, data_ov004_020b9f7c,
+    data_ov004_020b9f0c, data_ov004_020b9e50, data_ov004_020b9e70, data_ov004_020b9f60,
+    data_ov004_020b9efc, data_ov004_020b9f88, data_ov004_020b9e78, data_ov004_020b9fc8,
+    data_ov004_020b9ee8
+};
+PairW data_ov004_020bf490[13] = {
+    data_02086b58, data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244,
+    data_ov004_020bc16c, data_ov004_020bc1bc, data_ov004_020bc1ac, data_ov004_020bc25c,
+    data_ov004_020bc264, data_ov004_020bc1c4, data_ov004_020bc164, data_ov004_020bc15c,
+    data_ov004_020bc1d4
+};
+PairW data_ov004_020bf428[13] = {
+    data_02086b58, data_ov004_020bc22c, data_ov004_020bc19c, data_ov004_020bc184,
+    data_ov004_020bc204, data_ov004_020bc18c, data_ov004_020bc1fc, data_ov004_020bc1f4,
+    data_ov004_020bc154, data_ov004_020bc1dc, data_ov004_020bc1e4, data_ov004_020bc214,
+    data_02086b58
+};
+PairW data_ov004_020bf4f8[13] = {
+    data_02086b58, data_02086b58, data_02086b58, data_02086b58, data_02086b58,
+    data_ov004_020bc1a4, data_ov004_020bc24c, data_ov004_020bc21c, data_ov004_020bc26c,
+    data_ov004_020bc1cc, data_ov004_020bc174, data_02086b58, data_ov004_020bc194
+};
+int data_ov004_020bf560[29];
 }

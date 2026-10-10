@@ -8,7 +8,10 @@
  * dBgActor_c. The empty destructor is inline in the class header. It is
  * the key function, so this TU emits the vtable and the typeinfo records
  * and has no destructor body of its own. mwccarm emits one .text section
- * per function in reverse source order. Do not reorder these four.
+ * per function in reverse source order. Do not reorder these seven: the
+ * registry factory, the collision callback and its touch helper sit at the
+ * top because they are the highest-address .text in the run
+ * (.text 0x021116c4..0x02111980).
  *
  * Leftover: mMeshCollider.SetFile with a Fix12<int> scale local
  *   size-DIFF InitResources 0xac->0xb8. The scalar extern stays.
@@ -22,10 +25,9 @@
  * Leftover: putting the limit on the left of the compare
  *   (`mMaxPosY - 0xc8000 > mPosY`, `mMaxPosY < mPosY`) keeps Behavior
  *   at 0xa4 and changes its words. mPosY on the left matches.
- * Leftover: func_ov022_0211193c is not defined in this TU
- *   (src/unnamed/ov022/func_ov022_0211193c.c). InitResources only stores it.
- *   func_ov022_0211191c, which that callback calls, writes mHadClsn
- *   for actor 0xbf. The factory and g_profile_FL_BLOCK are outside too.
+ * Leftover: the callback func_ov022_0211193c and its helper
+ *   func_ov022_0211191c keep their address names and stay free extern "C"
+ *   functions. g_profile_FL_BLOCK lives outside this TU.
  * Leftover: data_ov064_0211bb0c is an unnamed row in its own module.
  * The two file handles live at the bottom of this file; the compiler's
  *   __sinit_daObjFl_Block_c.cpp constructs them at overlay load. Their
@@ -72,7 +74,43 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int radius, in
 void func_020393a4(int *mesh, int range);
 void func_020393d4(int *mesh, int callback);
 void func_020393c4(int *mesh, int callback);
-void func_ov022_0211193c(void *self, void *other, void *info);
+void func_ov022_0211191c(daObjFl_Block_c *self, dActor_c *other);
+}
+
+// @symbol daObjFl_Block_c_classInit
+/* Reconstructed source-style name: SM64DS proves daObjFl_Block_c through RTTI,
+ * allocation size, vtable identity, and the FL_BLOCK registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: FloatOnLavaPlatform_Spawn.
+ *
+ * `new daObjFl_Block_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x328), dBgActor_c's base constructor, then the
+ * vptr store. */
+extern "C" daObjFl_Block_c *daObjFl_Block_c_classInit(void)
+{
+    return new daObjFl_Block_c;
+}
+
+/* The collision callback InitResources installs in mMeshCollider's slot. The
+ * slot passes three arguments; the touch helper wants the last two.
+ * long_calls keeps the pooled absolute tail call. */
+#pragma push
+#pragma long_calls on
+// @symbol func_ov022_0211193c
+extern "C" void func_ov022_0211193c(void *collider, daObjFl_Block_c *self, dActor_c *other)
+{
+    func_ov022_0211191c(self, other);
+}
+#pragma pop
+
+// @symbol func_ov022_0211191c
+/* The player (actor 0xbf) touched the block: raise mHadClsn, which Behavior
+ * reads to decide whether to sink. */
+extern "C" void func_ov022_0211191c(daObjFl_Block_c *self, dActor_c *other)
+{
+    u8 isPlayer = other->actorID == 0xbf;
+    if (isPlayer)
+        self->mHadClsn = 1;
 }
 
 // @symbol _ZN15daObjFl_Block_c13InitResourcesEv

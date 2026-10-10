@@ -6,15 +6,16 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x2118b50..0x211929c, 21 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "HISTORY: contiguous linker run: 0x2118b50..0x211929c, 21 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjFl_Coin_c, daObjFl_Puzzle_c",
-    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "CLASSINIT TAIL FOLD (2026-10-09): the four one-function sources right of this run -- func_ov064_0211929c (0x20), func_ov064_021192bc (0x14), daObjFl_Coin_c_classInit (0x30) and daObjFl_Puzzle_c_classInit (0x30), 0x0211929c..0x02119330 -- abut its .text end with no gap and are now inside it. All four belong to this two-class TU: func_ov064_0211929c stores 1 to byte 0x338 of its first argument (daObjFl_Puzzle_c::mHadClsn, which the piece's Behavior reads) when the second argument's actor ID is 0xbf; func_ov064_021192bc is the collision callback this TU's daObjFl_Puzzle_c::InitResources installs in mMeshCollider and only forwards its last two arguments to func_ov064_0211929c (pooled long-call tail call); daObjFl_Coin_c_classInit allocates sizeof(daObjFl_Coin_c) (0xd8), runs dActor_c's base ctor and stores _ZTV14daObjFl_Coin_c; daObjFl_Puzzle_c_classInit allocates sizeof(daObjFl_Puzzle_c) (0x33c), runs dBgActor_c's base ctor and stores _ZTV16daObjFl_Puzzle_c. The next .text entry in ov064 delinks (src/actors/daWater_Hakidasi_c.cpp) starts exactly at 0x02119330. Written at the top of the file, Puzzle factory first, because the TU emits .text in reverse source order. The TU no longer includes decl_common.h: its only uses were the `int func_ov064_021192bc()` prototype, which C++ cannot overload with the three-argument definition, and data_ov064_0211c198, now declared locally with the header's exact type."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02118b50",
-      "end": "0x0211929c"
+      "end": "0x02119330"
     }
   ],
   "functions": [
@@ -164,6 +165,34 @@
       "size": "0x00000018",
       "legacy_source": "src/_ZN14daObjFl_Coin_c13InitResourcesEv.cpp",
       "ordinal": 20
+    },
+    {
+      "symbol": "func_ov064_0211929c",
+      "address": "0x0211929c",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/ov064/func_ov064_0211929c.cpp",
+      "ordinal": 21
+    },
+    {
+      "symbol": "func_ov064_021192bc",
+      "address": "0x021192bc",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/ov064/func_ov064_021192bc.c",
+      "ordinal": 22
+    },
+    {
+      "symbol": "daObjFl_Coin_c_classInit",
+      "address": "0x021192d0",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_obj_fl_coin.c",
+      "ordinal": 23
+    },
+    {
+      "symbol": "daObjFl_Puzzle_c_classInit",
+      "address": "0x02119300",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_obj_fl_puzzle.c",
+      "ordinal": 24
     }
   ],
   "data": [],
@@ -175,22 +204,24 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov064-daObjFl_Coin_c+daObjFl_Puzzle_c/daObjFl_Coin_c+daObjFl_Puzzle_c.o (gitignored)",
+    "object": "build/tu/ov064-daObjFl_Coin_c+daObjFl_Puzzle_c/daObjFl_Coin_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 21,
-    "functions_declared": 21,
+    "functions_matched": 25,
+    "functions_declared": 25,
     "compilerOnlyOutput": {
       "requested": [
         "_Z39daObjFl_Puzzle_c_EmitDeletingDestructorP16daObjFl_Puzzle_c",
         "_Z31daObjFl_Puzzle_c_EmitDestructorP16daObjFl_Puzzle_c",
         "_Z37daObjFl_Coin_c_EmitDeletingDestructorP14daObjFl_Coin_c",
-        "_Z29daObjFl_Coin_c_EmitDestructorP14daObjFl_Coin_c"
+        "_Z29daObjFl_Coin_c_EmitDestructorP14daObjFl_Coin_c",
+        "_ZN10dBgActor_cD2Ev"
       ],
       "deadstripped": [
         "_Z29daObjFl_Coin_c_EmitDestructorP14daObjFl_Coin_c",
         "_Z31daObjFl_Puzzle_c_EmitDestructorP16daObjFl_Puzzle_c",
         "_Z37daObjFl_Coin_c_EmitDeletingDestructorP14daObjFl_Coin_c",
-        "_Z39daObjFl_Puzzle_c_EmitDeletingDestructorP16daObjFl_Puzzle_c"
+        "_Z39daObjFl_Puzzle_c_EmitDeletingDestructorP16daObjFl_Puzzle_c",
+        "_ZN10dBgActor_cD2Ev"
       ],
       "droppedSections": [
         5,
@@ -218,7 +249,9 @@
         35,
         36,
         37,
-        38
+        38,
+        78,
+        79
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -379,6 +412,11 @@
       "symbol": "_Z29daObjFl_Coin_c_EmitDestructorP14daObjFl_Coin_c",
       "disposition": "deadstrip",
       "reason": "Not called and not in the ROM. An explicit destructor call forces the coin manager's out-of-line D1. Homeless: no symbols.txt row."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (2026-10-09): the folded factory's `return new daObjFl_Puzzle_c;` instantiates the class, so mwccarm emits dBgActor_c's base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjBlockL_c)."
     }
   ]
 }

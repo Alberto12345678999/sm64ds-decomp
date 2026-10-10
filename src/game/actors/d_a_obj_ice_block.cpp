@@ -38,9 +38,27 @@
 struct KCL_File;
 struct CLPS_Block;
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct IceBlockModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    IceBlockModelFilePtr(u32 fileID);
+    ~IceBlockModelFilePtr();
+};
+
+struct IceBlockCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    IceBlockCollisionFilePtr(u32 fileID);
+    ~IceBlockCollisionFilePtr();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov081_02128fd0; /* the KCL */
-extern SharedFilePtr data_ov081_02128fd8; /* the BMD */
+/* Defined at the end of this file so the constructors do not enter .text. */
+extern IceBlockCollisionFilePtr data_ov081_02128fd0; /* the KCL */
+extern IceBlockModelFilePtr data_ov081_02128fd8; /* the BMD */
 extern CLPS_Block data_ov002_0210d8d4;
 
 u8 DecIfAbove0_Byte(u8 *counter);
@@ -246,3 +264,10 @@ extern "C" void func_ov081_02127be0(daObjIceBlock_c *self)
 // @symbol _ZN15daObjIceBlock_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline destructor in the header
    emits D1 then D0 -- the cartridge's order -- and no D2. */
+
+/* Source order is construction order: model file 1114, collision file 1115.
+ * __sinit_d_a_obj_ice_block.cpp emits both constructions and registers the
+ * destructors; the registration nodes are compiler temporaries. */
+// @symbol __sinit_d_a_obj_ice_block.cpp
+IceBlockModelFilePtr data_ov081_02128fd8(1114);
+IceBlockCollisionFilePtr data_ov081_02128fd0(1115);

@@ -11,6 +11,10 @@ src/unnamed/ov002/func_ov002_020ad660.cpp:
 src/actors/dEnemyBase_c.cpp:
     complete
     .text start:0x020ad838 end:0x020aedbc
+    .init start:0x02100938 end:0x02100adc
+    .ctor start:0x021080d4 end:0x021080d8
+    .data start:0x02108140 end:0x021081c0
+    .bss start:0x0210db80 end:0x0210dc00
 
 src/actors/dCapEnemy_c.cpp:
     complete
@@ -19,6 +23,10 @@ src/actors/dCapEnemy_c.cpp:
 src/actors/da1up_c.cpp:
     complete
     .text start:0x020aee40 end:0x020b05d0
+    .init start:0x02100adc end:0x02100c50
+    .ctor start:0x021080d8 end:0x021080dc
+    .data start:0x02108300 end:0x02108370
+    .bss start:0x0210dc00 end:0x0210dc70
 
 src/actors/daBar_c.cpp:
     complete
@@ -40,7 +48,10 @@ src/game/actors/d_a_ch_scene.cpp:
 src/actors/daCoin_c.cpp:
     complete
     .text start:0x020b0f54 end:0x020b2ba0
-    .data start:0x02108778 end:0x02108868
+    .init start:0x02100c50 end:0x02100d44
+    .ctor start:0x021080dc end:0x021080e0
+    .data start:0x02108730 end:0x02108868
+    .bss start:0x0210dc70 end:0x0210dcb8
 
 src/game/actors/daFeather_c/daFeather_c.cpp:
     complete
@@ -57,6 +68,10 @@ src/actors/daObjBlockL_c.cpp:
 src/actors/daObjBlockItemTag_c.cpp:
     complete
     .text start:0x020b415c end:0x020b46a0
+    .init start:0x02100e50 end:0x02100ec4
+    .ctor start:0x021080e4 end:0x021080e8
+    .data start:0x02108b5c end:0x02108b7c
+    .bss start:0x0210dd30 end:0x0210dd50
 
 src/game/actors/d_a_obj_kinoko_tag.cpp:
     complete
@@ -79,77 +94,29 @@ src/actors/daObjFire_c.cpp:
     .text start:0x020b5734 end:0x020b5a18
     .data start:0x02108edc end:0x02108fb4
 
-src/_ZN17daObjFloatBoard_cD0Ev.cpp:
-    complete
-    .text start:0x020b5a18 end:0x020b5a70
-
-src/_ZN17daObjFloatBoard_cD1Ev.cpp:
-    complete
-    .text start:0x020b5a70 end:0x020b5ab4
-
 src/actors/daObjFloatBoard_c.cpp:
     complete
-    .text start:0x020b5ab4 end:0x020b5fd8
-
-src/_ZN15daObjGuragura_cD0Ev.cpp:
-    complete
-    .text start:0x020b5fd8 end:0x020b6030
-
-src/_ZN15daObjGuragura_cD1Ev.cpp:
-    complete
-    .text start:0x020b6030 end:0x020b6074
+    .text start:0x020b5a18 end:0x020b5fd8
 
 src/actors/daObjGuragura_c.cpp:
     complete
-    .text start:0x020b6074 end:0x020b6388
-
-src/_ZN14daObjUkiyuka_cD0Ev.cpp:
-    complete
-    .text start:0x020b6388 end:0x020b63e0
-
-src/_ZN14daObjUkiyuka_cD1Ev.cpp:
-    complete
-    .text start:0x020b63e0 end:0x020b6424
+    .text start:0x020b5fd8 end:0x020b6388
 
 src/actors/daObjUkiyuka_c.cpp:
     complete
-    .text start:0x020b6424 end:0x020b660c
-
-src/_ZN16daObjKaitendai_cD0Ev.cpp:
-    complete
-    .text start:0x020b660c end:0x020b6664
-
-src/_ZN16daObjKaitendai_cD1Ev.cpp:
-    complete
-    .text start:0x020b6664 end:0x020b66a8
+    .text start:0x020b6388 end:0x020b660c
 
 src/actors/daObjKaitendai_c.cpp:
     complete
-    .text start:0x020b66a8 end:0x020b6814
-
-src/_ZN13daObjKuruma_cD0Ev.cpp:
-    complete
-    .text start:0x020b6814 end:0x020b686c
-
-src/_ZN13daObjKuruma_cD1Ev.cpp:
-    complete
-    .text start:0x020b686c end:0x020b68b0
+    .text start:0x020b660c end:0x020b6814
 
 src/actors/daObjKuruma_c.cpp:
     complete
-    .text start:0x020b68b0 end:0x020b69e4
-
-src/_ZN17daObjKurumajiku_cD0Ev.cpp:
-    complete
-    .text start:0x020b69e4 end:0x020b6a3c
-
-src/_ZN17daObjKurumajiku_cD1Ev.cpp:
-    complete
-    .text start:0x020b6a3c end:0x020b6a80
+    .text start:0x020b6814 end:0x020b69e4
 
 src/actors/daObjKurumajiku_c.cpp:
     complete
-    .text start:0x020b6a80 end:0x020b6c54
+    .text start:0x020b69e4 end:0x020b6c54
 
 src/unnamed/ov002/func_ov002_020b6c54.c:
     complete
@@ -167,6 +134,9 @@ src/game/actors/d_a_obj_waterfall.cpp:
 src/actors/daObjMarioCap_c.cpp:
     complete
     .text start:0x020b6f18 end:0x020b8bf0
+    .init start:0x02101064 end:0x02101478
+    .ctor start:0x021080f0 end:0x021080f4
+    .bss start:0x0210de00 end:0x0210df94
 
 src/game/actors/daObjPushblock_c.cpp:
     complete
@@ -203,29 +173,17 @@ src/d_a_obj_switch_hanswitch.c:
     complete
     .text start:0x020baadc end:0x020bab0c
 
-src/_ZN13daObjSwdoor_cD0Ev.cpp:
-    complete
-    .text start:0x020bab0c end:0x020bab64
-
-src/_ZN13daObjSwdoor_cD1Ev.cpp:
-    complete
-    .text start:0x020bab64 end:0x020baba8
-
 src/actors/daObjSwdoor_c.cpp:
     complete
-    .text start:0x020baba8 end:0x020badd0
+    .text start:0x020bab0c end:0x020badd0
 
 src/actors/daObjTatefuda_c.cpp:
     complete
-    .text start:0x020badd0 end:0x020bc3c8
+    .text start:0x020badd0 end:0x020bc414
     .init start:0x02101738 end:0x02101894
     .ctor start:0x02108100 end:0x02108104
     .data start:0x02109a64 end:0x02109ab4
     .bss start:0x0210e05c end:0x0210e0d4
-
-src/d_a_obj_tatefuda.c:
-    complete
-    .text start:0x020bc3c8 end:0x020bc414
 
 src/game/actors/d_a_obj_wakame.cpp:
     complete
@@ -245,76 +203,9 @@ src/game/actors/d_a_obj_cannon_shutter.cpp:
     .ctor start:0x0210810c end:0x02108110
     .bss start:0x0210e124 end:0x0210e14c
 
-src/unnamed/ov002/func_ov002_020bccfc.c:
-    complete
-    .text start:0x020bccfc end:0x020bcd18
-
-src/unnamed/ov002/func_ov002_020bcd18.c:
-    complete
-    .text start:0x020bcd18 end:0x020bcd38
-
-src/unnamed/ov002/func_ov002_020bcd38.c:
-    complete
-    .text start:0x020bcd38 end:0x020bcdf0
-
-src/unnamed/ov002/func_ov002_020bcdf0.c:
-    complete
-    .text start:0x020bcdf0 end:0x020bd06c
-
-src/unnamed/ov002/func_ov002_020bd06c.c:
-    complete
-    .text start:0x020bd06c end:0x020bd20c
-
-src/unnamed/ov002/func_ov002_020bd20c.c:
-    complete
-    .text start:0x020bd20c end:0x020bd250
-
-src/unnamed/ov002/func_ov002_020bd250.cpp:
-    complete
-    .text start:0x020bd250 end:0x020bd354
-
-src/unnamed/ov002/func_ov002_020bd354.c:
-    complete
-    .text start:0x020bd354 end:0x020bd3a0
-
-src/unnamed/ov002/func_ov002_020bd3a0.c:
-    complete
-    .text start:0x020bd3a0 end:0x020bd438
-
-src/unnamed/ov002/func_ov002_020bd438.c:
-    complete
-    .text start:0x020bd438 end:0x020bd45c
-
-src/unnamed/ov002/func_ov002_020bd45c.cpp:
-    complete
-    .text start:0x020bd45c end:0x020bd480
-
-src/unnamed/ov002/func_ov002_020bd480.cpp:
-    complete
-    .text start:0x020bd480 end:0x020bd4ac
-
-src/unnamed/ov002/func_ov002_020bd4ac.c:
-    complete
-    .text start:0x020bd4ac end:0x020bd4c8
-
-src/unnamed/ov002/func_ov002_020bd4c8.c:
-    complete
-    .text start:0x020bd4c8 end:0x020bd4e0
-
-src/unnamed/ov002/func_ov002_020bd4e0.c:
-    complete
-    .text start:0x020bd4e0 end:0x020bd600
-
-src/unnamed/ov002/func_ov002_020bd600.c:
-    complete
-    .text start:0x020bd600 end:0x020bd664
-
-src/unnamed/ov002/func_ov002_020bd664.cpp:
-    .text start:0x020bd664 end:0x020bd828
-
 src/actors/Player.cpp:
     complete
-    .text start:0x020bd828 end:0x020d3b9c
+    .text start:0x020bccfc end:0x020d3b9c
 
 src/unnamed/ov002/func_ov002_020d413c.c:
     complete
@@ -1362,6 +1253,10 @@ src/d_a_ply.cpp:
 src/actors/daStar_c.cpp:
     complete
     .text start:0x020e6c40 end:0x020ebe5c
+    .init start:0x02106e40 end:0x02107118
+    .ctor start:0x02108114 end:0x02108118
+    .data start:0x0210a990 end:0x0210aa00
+    .bss start:0x02110924 end:0x02110a48
 
 src/actors/StarCamera_Spawn.cpp:
     complete
@@ -1390,58 +1285,18 @@ src/game/actors/d_a_warpkun.cpp:
 src/actors/daYegg_c.cpp:
     complete
     .text start:0x020ec56c end:0x020ee42c
+    .init start:0x02107118 end:0x021071f4
+    .ctor start:0x02108118 end:0x0210811c
+    .data start:0x0210ad38 end:0x0210ad78
+    .bss start:0x02110a5c end:0x02110a9c
 
 src/actors/dBgActor_c.cpp:
     complete
-    .text start:0x020ee42c end:0x020eea84
-
-src/unnamed/ov002/func_ov002_020eea84.c:
-    complete
-    .text start:0x020eea84 end:0x020eeca8
-
-src/unnamed/ov002/func_ov002_020eeca8.cpp:
-    complete
-    .text start:0x020eeca8 end:0x020eed24
-
-src/unnamed/ov002/func_ov002_020eed24.cpp:
-    complete
-    .text start:0x020eed24 end:0x020eedc0
-
-src/unnamed/ov002/func_ov002_020eedc0.cpp:
-    complete
-    .text start:0x020eedc0 end:0x020eee3c
-
-src/unnamed/ov002/func_ov002_020eee3c.cpp:
-    complete
-    .text start:0x020eee3c end:0x020eeeb8
-
-src/unnamed/ov002/func_ov002_020eeeb8.cpp:
-    complete
-    .text start:0x020eeeb8 end:0x020ef070
-
-src/unnamed/ov002/func_ov002_020ef070.cpp:
-    complete
-    .text start:0x020ef070 end:0x020ef228
-
-src/unnamed/ov002/func_ov002_020ef228.cpp:
-    complete
-    .text start:0x020ef228 end:0x020ef2a4
-
-src/unnamed/ov002/func_ov002_020ef2a4.cpp:
-    complete
-    .text start:0x020ef2a4 end:0x020ef320
-
-src/_ZN16dPathLiftActor_cD0Ev.cpp:
-    complete
-    .text start:0x020ef320 end:0x020ef390
-
-src/_ZN16dPathLiftActor_cD1Ev.cpp:
-    complete
-    .text start:0x020ef390 end:0x020ef3ec
+    .text start:0x020ee42c end:0x020ef320
 
 src/actors/dPathLiftActor_c.cpp:
     complete
-    .text start:0x020ef3ec end:0x020effb8
+    .text start:0x020ef320 end:0x020effb8
     .init start:0x021071f4 end:0x02107298
     .ctor start:0x0210811c end:0x02108120
     .data start:0x0210aeb8 end:0x0210af68
@@ -1474,6 +1329,9 @@ src/game/actors/d_a_obj_number.cpp:
 src/actors/daObj1UpLogo_c.cpp:
     complete
     .text start:0x020f0dd0 end:0x020f11b0
+    .init start:0x02107298 end:0x02107304
+    .ctor start:0x02108120 end:0x02108124
+    .bss start:0x02110a9c end:0x02110ac4
 
 src/game/actors/d_a_obj_bc_switch.cpp:
     complete
@@ -1493,12 +1351,8 @@ src/actors/daMugenBGM_c.cpp:
 
 src/actors/daDemo_c.cpp:
     complete
-    .text start:0x020f1f70 end:0x020f8808
+    .text start:0x020f1f70 end:0x020f8838
     .data start:0x0210b940 end:0x0210b958
-
-src/d_a_demo.c:
-    complete
-    .text start:0x020f8808 end:0x020f8838
 
 src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp:
     complete
@@ -1548,33 +1402,13 @@ src/unnamed/ov002/__sinit_ov002_02100560.c:
     complete
     .init start:0x02100560 end:0x02100938
 
-src/unnamed/ov002/__sinit_ov002_02100938.c:
-    complete
-    .init start:0x02100938 end:0x02100adc
-
-src/unnamed/ov002/__sinit_ov002_02100adc.c:
-    complete
-    .init start:0x02100adc end:0x02100c50
-
-src/unnamed/ov002/__sinit_ov002_02100c50.c:
-    complete
-    .init start:0x02100c50 end:0x02100d44
-
 src/unnamed/ov002/__sinit_ov002_02100d44.c:
     complete
     .init start:0x02100d44 end:0x02100e50
 
-src/unnamed/ov002/__sinit_ov002_02100e50.c:
-    complete
-    .init start:0x02100e50 end:0x02100ec4
-
 src/unnamed/ov002/__sinit_ov002_02100f84.c:
     complete
     .init start:0x02100f84 end:0x02101064
-
-src/unnamed/ov002/__sinit_ov002_02101064.c:
-    complete
-    .init start:0x02101064 end:0x02101478
 
 src/unnamed/ov002/__sinit_ov002_021014e4.c:
     complete
@@ -1587,18 +1421,6 @@ src/unnamed/ov002/__sinit_ov002_02101894.c:
 src/unnamed/ov002/__sinit_ov002_021019d0.c:
     complete
     .init start:0x021019d0 end:0x02106e40
-
-src/unnamed/ov002/__sinit_ov002_02106e40.c:
-    complete
-    .init start:0x02106e40 end:0x02107118
-
-src/unnamed/ov002/__sinit_ov002_02107118.c:
-    complete
-    .init start:0x02107118 end:0x021071f4
-
-src/unnamed/ov002/__sinit_ov002_02107298.c:
-    complete
-    .init start:0x02107298 end:0x02107304
 
 src/unnamed/ov002/__sinit_ov002_02107304.c:
     complete

@@ -1,12 +1,13 @@
 //cpp
-/* Lethal Lava Land coin puzzle, ov064 0x02118b50..0x0211929c.
+/* Lethal Lava Land coin puzzle, ov064 0x02118b50..0x02119330.
  *
  * Two classes, one translation unit: their methods are interleaved in the
  * ROM, so one file has to emit both. daObjFl_Coin_c is the manager
  * (FL_COIN, 0xd8). daObjFl_Puzzle_c is a piece (FL_PUZZLE, 0x33c).
  * Typeinfo: _ZTI14daObjFl_Coin_c at 0x0211bf98, _ZTI16daObjFl_Puzzle_c at
- * 0x0211bfa4. The factories and both g_profile rows sit past 0x0211929c
- * and stay outside this file.
+ * 0x0211bfa4. The run ends with the piece's touch helper
+ * func_ov064_0211929c, its collision callback func_ov064_021192bc and the
+ * two registry factories; both g_profile rows live outside this file.
  *
  * Source order is the reverse of the ROM. mwccarm 2004/b56 emits one .text
  * section per function in reverse source order, so the highest address is
@@ -35,14 +36,13 @@
  * free-function form (Fix12 by value). Model::LoadFile and
  * dBgW_KcMbg::SetFile stay ABI-exact free declarations; SetFile's by-value
  * Fix12<int> grows the call when spelled as the real method. unk_32c is only
- * zeroed in this file, the callback func_ov064_0211929c is outside this TU,
- * and the sound played at the end of a shake (bank-3 id 0xe7) is unnamed. The
+ * zeroed in this file, the two callback helpers keep their address names
+ * and stay free extern "C" functions, and the sound played at the end of a shake (bank-3 id 0xe7) is unnamed. The
  * two daWater_Hakidasi_c slots past this span are not piece methods.
  */
 #include "daObjFl_Puzzle_c.h"
 #include "daObjFl_Coin_c.h"
 #include "common.h"
-#include "decl_common.h"
 #include "types.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -78,6 +78,63 @@ extern SharedFilePtr data_ov064_0211c800;
 extern CLPS_Block data_ov064_0211baac;
 extern Matrix4x3 data_020a0e68;
 void _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void* self, const Matrix4x3&, s16);
+/* Per-type step scripts, indexed by mType (ov064 .data). */
+extern int data_ov064_0211c198[];
+/* The collision callback piece InitResources installs, and the touch helper
+ * it forwards to; both are defined just below. */
+void func_ov064_0211929c(daObjFl_Puzzle_c *self, dActor_c *other);
+void func_ov064_021192bc(void *collider, daObjFl_Puzzle_c *self, dActor_c *other);
+}
+
+// @symbol daObjFl_Puzzle_c_classInit
+/* Reconstructed source-style name: SM64DS proves daObjFl_Puzzle_c through RTTI,
+ * allocation size, vtable identity, and the FL_PUZZLE registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * The implementation was earlier named BowserPuzzlePiece.
+ * Historical alias: BowserPuzzlePiece_Spawn.
+ *
+ * `new daObjFl_Puzzle_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x33c), dBgActor_c's base constructor, then the
+ * vptr store. */
+extern "C" daObjFl_Puzzle_c *daObjFl_Puzzle_c_classInit(void)
+{
+    return new daObjFl_Puzzle_c;
+}
+
+// @symbol daObjFl_Coin_c_classInit
+/* Reconstructed source-style name: SM64DS proves daObjFl_Coin_c through RTTI,
+ * allocation size, vtable identity, and the FL_COIN registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * The implementation was earlier named BowserPuzzleManager.
+ * Historical alias: BowserPuzzleManager_Spawn.
+ *
+ * `new daObjFl_Coin_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0xd8), dActor_c's base constructor, then the
+ * vptr store. */
+extern "C" daObjFl_Coin_c *daObjFl_Coin_c_classInit(void)
+{
+    return new daObjFl_Coin_c;
+}
+
+/* The collision callback piece InitResources installs in mMeshCollider's
+ * slot. The slot passes three arguments; the touch helper wants the last
+ * two. long_calls keeps the pooled absolute tail call. */
+#pragma push
+#pragma long_calls on
+// @symbol func_ov064_021192bc
+extern "C" void func_ov064_021192bc(void *collider, daObjFl_Puzzle_c *self, dActor_c *other)
+{
+    func_ov064_0211929c(self, other);
+}
+#pragma pop
+
+// @symbol func_ov064_0211929c
+/* The player (actor 0xbf) touched the piece: raise mHadClsn. */
+extern "C" void func_ov064_0211929c(daObjFl_Puzzle_c *self, dActor_c *other)
+{
+    u8 isPlayer = other->actorID == 0xbf;
+    if (isPlayer)
+        self->mHadClsn = 1;
 }
 
 /* -------------------------------------------------------------------------- */

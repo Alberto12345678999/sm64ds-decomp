@@ -12,7 +12,7 @@
  * Leftover: data_020a0e68 is shared arm9 matrix scratch.
  * Leftover: func_02012790 / func_02013868 are arm9 stubs.
  * Leftover: the file home is sinit-constructed
- *   (src/unnamed/ov085/__sinit_ov085_0212f5ec.c); g_profile stays where the
+ *   (src/actors/daMip_c.cpp folded __sinit_ov085_0212f5ec); g_profile stays where the
  *   registry owns it (S14).
  */
 
@@ -54,9 +54,24 @@ extern int   data_0209caa0[];
 extern u8    data_0209d660;
 extern u8    data_0209d684;
 extern Matrix4x3 data_020a0e68;
-extern SharedFilePtr data_ov085_021305d8;
+/* MIPS's model-file handle, owned and constructed by daMip_c.cpp's static
+ * init. Same TU-local wrapper spelling as the owning TU. */
+struct DaMipModelFile : SharedFilePtr {
+    u32 words[2];
+
+    DaMipModelFile(u32 fileID);
+    ~DaMipModelFile();
+};
+extern DaMipModelFile data_ov085_021305d8;
 extern MipKeyState data_ov085_0213071c;
 extern MipKeyState data_ov085_0213072c;
+
+/* PMF literals in unowned .data; the initializer copies them pairwise
+ * into the two state records below. */
+extern MipKeyPMF data_ov085_02130184;
+extern MipKeyPMF data_ov085_0213018c;
+extern MipKeyPMF data_ov085_0213017c;
+extern MipKeyPMF data_ov085_02130174;
 
 }
 
@@ -367,3 +382,11 @@ extern "C" daObj_Mip_Key_c *daObj_Mip_Key_c_classInit(void)
 {
     return new daObj_Mip_Key_c();
 }
+
+
+/* Static-init globals (was the handwritten __sinit_ov085_0212f9bc shard).
+ * Each 16-byte state record takes its enter/execute PMFs from the .data
+ * literals above. */
+// @symbol __sinit_daObj_Mip_Key_c.cpp
+MipKeyState data_ov085_0213071c = { data_ov085_02130184, data_ov085_0213018c };
+MipKeyState data_ov085_0213072c = { data_ov085_0213017c, data_ov085_02130174 };

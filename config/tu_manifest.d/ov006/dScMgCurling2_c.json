@@ -4,6 +4,7 @@
   "source": "src/actors/dScMgCurling2_c.cpp",
   "promoted_source": "src/actors/dScMgCurling2_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "PARTIAL RUN, 31 of 52. tools/tu_map.py calls 0x020e3854..0x020e6bf4 one contiguous linker run of 52 function(s) (build/tu_map.json), and queue_audit.py extends it over the zero-gap factory dScMgCurling2_c_classInit at 0x020e6bf4 for 53 in a 0x020e3854..0x020e6c28 span. This TU licenses 0x020e3854..0x020e5450, 31 function(s), ROM ordinals 0..30. The other 21 keep their own shards and their own delinks.txt entries; the 22nd is the sourceless hole in EDGE 1 below, which has neither.",
@@ -17,6 +18,21 @@
       "name": ".text",
       "start": "0x020e3854",
       "end": "0x020e5450"
+    },
+    {
+      "name": ".init",
+      "start": "0x02130758",
+      "end": "0x02130a04"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02133594",
+      "end": "0x02133598"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02141978",
+      "end": "0x02141a40"
     }
   ],
   "functions": [
@@ -239,7 +255,57 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov006_02141978",
+      "address": "0x02141978",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "two no-arg scene states (upper half dispatches through this), plain-copied from the ROM PMF constants"
+    },
+    {
+      "symbol": "data_ov006_02141988",
+      "address": "0x02141988",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "three kind states, plain-copied from the ROM PMF constants"
+    },
+    {
+      "symbol": "data_ov006_021419a0",
+      "address": "0x021419a0",
+      "size": "0x18",
+      "binding": "STB_GLOBAL",
+      "evidence": "three state2 states, plain-copied from the ROM PMF constants"
+    },
+    {
+      "symbol": "data_ov006_021419b8",
+      "address": "0x021419b8",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four Entry states, plain-copied from the ROM PMF constants"
+    },
+    {
+      "symbol": "data_ov006_021419d8",
+      "address": "0x021419d8",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four per-state handlers (upper half dispatches through this), plain-copied from the ROM PMF constants"
+    },
+    {
+      "symbol": "data_ov006_021419f8",
+      "address": "0x021419f8",
+      "size": "0x20",
+      "binding": "STB_GLOBAL",
+      "evidence": "four reveal states, plain-copied from the ROM PMF constants"
+    },
+    {
+      "symbol": "data_ov006_02141a18",
+      "address": "0x02141a18",
+      "size": "0x28",
+      "binding": "STB_GLOBAL",
+      "evidence": "five no-arg scene states (upper half dispatches through this), plain-copied from the ROM PMF constants"
+    }
+  ],
   "compiler_only_output": [
     {
       "symbol": "_ZTI15dScMgCurling2_c",
@@ -347,7 +413,8 @@
     "SYMBOLS.TXT IS PART OF THIS EDIT. Sixteen of the seventeen renamed members are the target of an 8-byte {code pointer, zero adjustment} pointer-to-member record in unowned ov006 .data (0x0213c40c..0x0213c4b4), which __sinit_ov006_02130758 copies into the BSS dispatch arrays. dsd resolves those records BY SYMBOL NAME, so all seventeen rows in config/arm9/overlays/ov006/symbols.txt move to the mangled spelling in the same commit; a row left behind would link its .data code word as 0x00000000 with a green compile. SpawnValue is the seventeenth: it carries no .data record and is reached only from inside this TU and from the sourceless hole's own cartridge bytes.",
     "TWELVE MEMBERS REFUSED CONVERSION, AND THE REASON IS MEASURED AND IS NOT BYTES. With all 29 converted the TU still reports 31/31 MATCH / objisolate clean / ROM-ascending, but `python tools/rombuild.py -j 6 --no-rom` fails with exactly twelve `mwldarm.exe: Undefined` lines: func_ov006_020e38b0, _020e3948, _020e3bc4, _020e4a84, _020e4b78, _020e4fe8, _020e507c (referenced from dScMgCurling2_c::Render()), _020e4800 and _020e3948 (Behavior()), _020e48d4 (InitResources()), _020e3b9c (func_ov006_020e668c), _020e4b00 (func_ov006_020e628c) and _020e513c (func_ov006_020e5e3c). Those callers are still one-function shards above the sourceless hole, and they -- and include/decl_common.h -- spell the target by its C name. The twelve convert byte-neutrally the day segment B is promoted; nothing else blocks them.",
     "THE SEVENTEEN NAMES ARE COINED. The ROM proves member-ness (a zero-adjustment pointer-to-member record) and each handler's index in its own table, both read out of __sinit_ov006_02130758 and quoted in include/dScMgCurling2_c.h. It does not carry the original identifiers, and the gameplay semantics of the 0x48c0 and 0x4fe0 record arrays remain on the scout's `unproven` list; no name asserts them.",
-    "UPPER SIDE PROMOTED (segment B, fold/ov006-curling2-1005). The 20-member run above the func_ov006_020e5450 hole is src/actors/dScMgCurling2_c_upper.cpp under config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json -- the second half of this same linker run, licensed as its own TU because no manifest shape expresses a .text claim with a hole in it. With every C-name caller folded, the twelve members this manifest's earlier notes marked byte-neutrally convertible all took their real dScMgCurling2_c:: names in the same edit (DrawValues, AgeValues, ClearValues, DrawPieces, StepPieces, SeedPieces, DrawMarks, AgeMarks, DrawCursor, DrawCounter, DrawStones, SeparateStones), 31/31 MATCH unchanged. The decl_common.h decls note 101 enumerates are gone with them; note 105's migration is complete. The eight new names are coined the same way note 106 records for the first seventeen: .data pointer-to-member records prove member-ness, the ROM preserves no identifiers."
+    "UPPER SIDE PROMOTED (segment B, fold/ov006-curling2-1005). The 20-member run above the func_ov006_020e5450 hole is src/actors/dScMgCurling2_c_upper.cpp under config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json -- the second half of this same linker run, licensed as its own TU because no manifest shape expresses a .text claim with a hole in it. With every C-name caller folded, the twelve members this manifest's earlier notes marked byte-neutrally convertible all took their real dScMgCurling2_c:: names in the same edit (DrawValues, AgeValues, ClearValues, DrawPieces, StepPieces, SeedPieces, DrawMarks, AgeMarks, DrawCursor, DrawCounter, DrawStones, SeparateStones), 31/31 MATCH unchanged. The decl_common.h decls note 101 enumerates are gone with them; note 105's migration is complete. The eight new names are coined the same way note 106 records for the first seventeen: .data pointer-to-member records prove member-ness, the ROM preserves no identifiers.",
+    "Static initializer folded: all seven PMF state tables (0x02141978..0x02141a40) move out of the handwritten src/unnamed shard into src/actors/dScMgCurling2_c.cpp, defined through the existing PMF typedef (plus a TU-local PMF0 for the two no-arg tables) and plain-copied from the ROM PMF constants at data_ov006_0213c3d4..0x0213c4b4. The block is one contiguous .bss run shared with the upper half of this class, so every table is defined here and the upper TU externs resolve to these definitions. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -367,13 +434,6 @@
       "droppedSections": [
         9,
         10,
-        62,
-        63,
-        64,
-        65,
-        66,
-        67,
-        68,
         69,
         70,
         71,
@@ -383,7 +443,14 @@
         75,
         76,
         77,
-        78
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85
       ],
       "data": [
         "_ZTI15dScMgCurling2_c",
@@ -415,13 +482,13 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov006-dScMgCurling2_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -445,19 +512,116 @@
           "end": "0x020e5450",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02130758",
+          "end": "0x02130a04",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02133594",
+          "end": "0x02133598",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02141978",
+          "end": "0x02141a40",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 31
+          "LICENSED": 40
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              88
+            ],
+            "desired": [
+              88
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              86
+            ],
+            "desired": [
+              86
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68
+            ],
+            "desired": [
+              64,
+              65,
+              68,
+              66,
+              63,
+              67,
+              62
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".bss",
+              "original": [
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68
+              ],
+              "desired": [
+                64,
+                65,
+                68,
+                66,
+                63,
+                67,
+                62
+              ],
+              "slots": [
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68
+              ]
+            }
+          ],
+          "symbolIndices": 7,
+          "sectionLinks": 0,
+          "sectionInfos": 0,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -492,5 +656,369 @@
       },
       "linkerOutput": null
     }
-  }
+  },
+  "init": [
+    {
+      "symbol": "__sinit_dScMgCurling2_c.cpp",
+      "address": "0x02130758",
+      "size": "0x2ac",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov006_02130758 (0x2ac, same instruction sequence) and carries the same relocation sites: the seven PMF table copies"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_dScMgCurling2_c.cpp",
+      "address": "0x02133594",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail; the other .ctor words belong to the remaining shards"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_dScMgCurling2_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_dScMgCurling2_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".ctor",
+      "source": "0x02133594",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_dScMgCurling2_c.cpp",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02130758"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130984",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c47c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c47c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130988",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c414",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c414"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213098c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_02141a18",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141a18"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130990",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c404",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c404"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130994",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c424",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c424"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130998",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c3f4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c3f4"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213099c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c3e4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c3e4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309a0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c3dc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c3dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309a4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_021419d8",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021419d8"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309a8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c3d4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c3d4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309ac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c3ec",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c3ec"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309b0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c4b4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c4b4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309b4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_02141978",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141978"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309b8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c4ac",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c4ac"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309bc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c42c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c42c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309c0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_02141988",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02141988"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309c4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c494",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c494"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309c8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c48c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c48c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309cc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c474",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c474"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309d0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c40c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c40c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309d4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c464",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c464"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309d8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_021419b8",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021419b8"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309dc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c45c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c45c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309e0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c49c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c49c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309e4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c444",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c444"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c43c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c43c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_021419f8",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021419f8"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c4a4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c4a4"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c41c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c41c"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c484",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c484"
+    },
+    {
+      "section": ".init",
+      "source": "0x021309fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213c46c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213c46c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02130a00",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_021419a0",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021419a0"
+    }
+  ]
 }

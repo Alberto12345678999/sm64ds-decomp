@@ -7,20 +7,21 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x21116c4..0x211191c, 6 function(s), from build/tu_map.json (tools/tu_map.py); this entry licenses the whole run as one file.",
-    "MEASURED: the run's edges are labelled on both sides with zero gap. The preceding function is daObjFl_Koma_D_c_classInit at 0x02111688 (size 0x3c, ending exactly at 0x021116c4), which is not a daObjFl_Block_c member; the following function is func_ov022_0211191c at 0x0211191c, which is not a daObjFl_Block_c member either. Every one of the six addresses in between carries a daObjFl_Block_c name in config/arm9/overlays/ov022/symbols.txt, and all six are `complete` one-function sources in that module's delinks.txt, so nothing unenrolled sits inside the run.",
+    "HISTORY: contiguous linker run: 0x21116c4..0x211191c, 6 function(s), from build/tu_map.json (tools/tu_map.py); this entry licenses the whole run as one file.",
+    "HISTORY: MEASURED: the run's edges are labelled on both sides with zero gap. The preceding function is daObjFl_Koma_D_c_classInit at 0x02111688 (size 0x3c, ending exactly at 0x021116c4), which is not a daObjFl_Block_c member; the following function is func_ov022_0211191c at 0x0211191c, which is not a daObjFl_Block_c member either. Every one of the six addresses in between carries a daObjFl_Block_c name in config/arm9/overlays/ov022/symbols.txt, and all six are `complete` one-function sources in that module's delinks.txt, so nothing unenrolled sits inside the run.",
     "class label(s): daObjFl_Block_c -- the cartridge's own RTTI spelling. Read out of extracted/overlays/overlay_0022.bin (ov022 loads at 0x021111a0): _ZTS at 0x02113e74 is the 17-byte string \"15daObjFl_Block_c\" plus its NUL; _ZTI at 0x02113e68 reads [__si_class_type_info+8 (0x0209a764), that string, _ZTI10dBgActor_c (0x021089ec)], so the ROM states the direct base too; and the word at 0x02113ea8 -- the typeinfo slot of the two-word header that precedes the _ZTV address point at 0x02113eac -- relocates to that same _ZTI (ov022 relocs.txt `from:0x02113ea8 kind:load to:0x02113e68`). The class carried the coined name FloatOnLavaPlatform until the commit before this one; under that spelling the vtable symbol and the _ZTI/_ZTS pair named different classes and this object could not license its RTTI.",
     "MEASURED: the destructor is this class's key function, so the source defining _ZN15daObjFl_Block_cD1Ev/_ZN15daObjFl_Block_cD0Ev also emits _ZTV15daObjFl_Block_c, _ZTI15daObjFl_Block_c and _ZTS15daObjFl_Block_c as vague linkage, plus the four inherited bases' records. All eleven have configured ROM homes in config/arm9/symbols.txt and the ov002/ov022 overlay tables, so each licenses as deadstrip-data and objisolate reduces the six-function object cleanly.",
     "MEASURED: the empty inline destructor in the class header is what emits D1 ahead of D0, the cartridge's own order (0x021116c4 then 0x02111708), and emits no D2 at all. Same lever, same overlay, as config/tu_manifest.d/ov022/daObjFl_Ring_c.json and daObjFl_UkiKi_c.json.",
-    "SCOPE: the two helpers at 0x0211191c and 0x0211193c -- func_ov022_0211193c is the collision callback this TU's InitResources installs, and it forwards to func_ov022_0211191c, which sets mHadClsn -- and the factory daObjFl_Block_c_classInit (0x02111950) sit immediately to the right of this run. tools/tu_map.py ends this candidate at 0x0211191c, so they are deliberately not claimed here and remain one-function sources, exactly as daObjFl_Ring_c left its own callback and factory.",
+    "HISTORY: SCOPE: the two helpers at 0x0211191c and 0x0211193c -- func_ov022_0211193c is the collision callback this TU's InitResources installs, and it forwards to func_ov022_0211191c, which sets mHadClsn -- and the factory daObjFl_Block_c_classInit (0x02111950) sit immediately to the right of this run. tools/tu_map.py ends this candidate at 0x0211191c, so they are deliberately not claimed here and remain one-function sources, exactly as daObjFl_Ring_c left its own callback and factory.",
     "module sinit corroboration: 10 sinit(s) / 10 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU)",
-    "the compiler-generated __sinit_daObjFl_Block_c.cpp is byte-identical to retail __sinit_ov022_02112d80 (0x6c, ten relocations). It constructs the model handle at 0x02114558 (file 1521) and the collision handle at 0x02114550 (file 1522) and registers both destructors. The ctor word at 0x02113100 points at that initializer."
+    "the compiler-generated __sinit_daObjFl_Block_c.cpp is byte-identical to retail __sinit_ov022_02112d80 (0x6c, ten relocations). It constructs the model handle at 0x02114558 (file 1521) and the collision handle at 0x02114550 (file 1522) and registers both destructors. The ctor word at 0x02113100 points at that initializer.",
+    "CLASSINIT TAIL FOLD (2026-10-09): the three one-function sources right of this run -- func_ov022_0211191c (0x20), func_ov022_0211193c (0x14) and daObjFl_Block_c_classInit (0x30), 0x0211191c..0x02111980 -- abut its .text end with no gap and are now inside it. All three are this class's: func_ov022_0211191c stores 1 to byte 0x324 of its first argument (daObjFl_Block_c::mHadClsn, which Behavior reads) when the second argument's actor ID is 0xbf; func_ov022_0211193c is the collision callback this TU's InitResources installs in mMeshCollider and only forwards its last two arguments to func_ov022_0211191c (pooled long-call tail call); the factory allocates sizeof(daObjFl_Block_c) (0x328), runs dBgActor_c's base ctor and stores _ZTV15daObjFl_Block_c. The next .text entry in ov022 delinks starts exactly at 0x02111980. Written factory-first because the TU emits .text in reverse source order."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x021116c4",
-      "end": "0x0211191c"
+      "end": "0x02111980"
     },
     {
       "name": ".init",
@@ -80,6 +81,27 @@
       "size": "0x000000ac",
       "legacy_source": "src/_ZN15daObjFl_Block_c13InitResourcesEv.cpp",
       "ordinal": 5
+    },
+    {
+      "symbol": "func_ov022_0211191c",
+      "address": "0x0211191c",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/ov022/func_ov022_0211191c.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_ov022_0211193c",
+      "address": "0x0211193c",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/ov022/func_ov022_0211193c.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "daObjFl_Block_c_classInit",
+      "address": "0x02111950",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_obj_fl_block.c",
+      "ordinal": 8
     }
   ],
   "init": [
@@ -320,11 +342,15 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov022-daObjFl_Block_c/daObjFl_Block_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 6,
-    "functions_declared": 6,
+    "functions_matched": 9,
+    "functions_declared": 9,
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": [],
+      "requested": [
+        "_ZN10dBgActor_cD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN10dBgActor_cD2Ev"
+      ],
       "droppedSections": [
         6,
         7,
@@ -342,7 +368,9 @@
         22,
         23,
         24,
-        25
+        25,
+        42,
+        43
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -374,7 +402,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS -- every declared function is defined; the one extra STT_FUNC is __sinit_daObjFl_Block_c.cpp, licensed under init",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 15 unlicensed section/symbol(s), 1 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS",
       "all_content_sections_licensed": "PASS -- .text 0x021116c4..0x0211191c (6 functions) + .init 0x02112d80..0x02112dec + .ctor 0x02113100..0x02113104 + .bss 0x02114550..0x02114578. The linkcheck block proves all four ranges.",
@@ -397,7 +425,7 @@
       },
       "tuRange": {
         "start": "0x021116c4",
-        "end": "0x0211191c",
+        "end": "0x02111980",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -405,7 +433,7 @@
         {
           "section": ".text",
           "start": "0x021116c4",
-          "end": "0x0211191c",
+          "end": "0x02111980",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -432,7 +460,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 12
+          "LICENSED": 15
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -443,19 +471,19 @@
           {
             "section": ".init",
             "original": [
-              39
+              46
             ],
             "desired": [
-              39
+              46
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              37
+              44
             ],
             "desired": [
-              37
+              44
             ]
           },
           {
@@ -587,6 +615,23 @@
       "canonical_module": "ov022",
       "canonical_address": "0x02113eac",
       "reason": "This class's own vtable, emitted as vague linkage because the destructor is this class's key function. The compiled object is 0x88 bytes because it includes the two-word [offset-to-top][typeinfo] header; the cartridge's _ZTV symbol at ov022:0x02113eac points past that header, at the first virtual slot, so the ROM interval is 0x02113ea4..0x02113f2c. Either way it is this module's .data, outside the .text range this entry claims, so it is discarded rather than claimed."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (2026-10-09): the folded factory's `return new daObjFl_Block_c;` instantiates the class, so mwccarm emits dBgActor_c's base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjBlockL_c)."
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@396",
+      "to": "@377",
+      "evidence": "CLASSINIT TAIL FOLD (2026-10-09): the three folded functions sit above the two file-handle definitions, so mwccarm's anonymous numbering of the __sinit destructor-registration nodes moves by 19; this row maps the compiled name back to the configured ROM name."
+    },
+    {
+      "from": "@395",
+      "to": "@376",
+      "evidence": "CLASSINIT TAIL FOLD (2026-10-09): the three folded functions sit above the two file-handle definitions, so mwccarm's anonymous numbering of the __sinit destructor-registration nodes moves by 19; this row maps the compiled name back to the configured ROM name."
     }
   ]
 }

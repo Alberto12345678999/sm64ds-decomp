@@ -45,8 +45,8 @@
  * - func_02012790 / func_02012694 are still linker names; State0 calls them
  *   with a sound code (and, for the second, a position). No further name is
  *   coined.
- * - data_ov064_0211c98c, the three PMF pairs, and the four SharedFilePtr
- *   handles are overlay data this TU consumes and does not own.
+ * - data_ov002_0210d9a8 and data_ov002_0210da38 are ov002 handles this TU
+ *   borrows; its own two handles and the PMF-pair table are defined below.
  * - The "// address (size)" line above each definition is its ROM location.
  * - The sixteen one-function sources this TU consolidates are recorded, with
  *   their retired paths, in its manifest entry.
@@ -74,6 +74,25 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 
+/* The resource handles as the ROM lays them out: {id, loaded file}. The
+   model handle constructs through func_02017acc and destroys through
+   func_02017ab4; the animation handle constructs through
+   SharedFilePtr::Construct and destroys through SharedFilePtr_Destruct_Anim.
+   The manifest aliases those undefined members onto the ROM symbols. */
+struct TboxModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    TboxModelFilePtr(u32 fileID);
+    ~TboxModelFilePtr();
+};
+
+struct TboxAnimationFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    TboxAnimationFileHandle(u32 fileID);
+    ~TboxAnimationFileHandle();
+};
+
 extern "C" {
 void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
 /* Decrements a u16 in place and yields its new value. The two legacy shards
@@ -87,10 +106,10 @@ s16 Vec3_HorzAngle(const Vector3 *from, const Vector3 *to);
 s32 AngleDiff(s32 a, s32 b);
 void func_02012694(u32 code, const Vector3 *pos);
 /* The overlay's three {init, behavior} pointer-to-member pairs, filled by the
- * ov064 static initializer at 0x0211b65c. */
+ * static initializer this TU now carries at 0x0211b59c. */
 extern daObjTbox_c::StateFunc data_ov064_0211c98c[][2];
-extern SharedFilePtr data_ov064_0211c96c;
-extern SharedFilePtr data_ov064_0211c964;
+extern TboxModelFilePtr data_ov064_0211c96c;
+extern TboxAnimationFileHandle data_ov064_0211c964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern SharedFilePtr data_ov002_0210da38;
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
@@ -389,3 +408,19 @@ void daObjTbox_c::UpdateModelTransform()
  * dActor_c base. D0 additionally returns the object to the actor heap through
  * the inline operator delete.
  */
+
+/* The two file-scope resource handles, in retail initializer order: the
+   model file (func_02017acc / func_02017ab4), then the animation file
+   (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim). The manifest
+   aliases each wrapper ctor/dtor onto those ROM symbols. */
+TboxModelFilePtr data_ov064_0211c96c(0x4a6);
+TboxAnimationFileHandle data_ov064_0211c964(0x4a7);
+
+/* One {init, behavior} pointer-to-member pair per state. mwcc cannot
+   link-time-initialize them, so the initializer copies six descriptor
+   records in. */
+daObjTbox_c::StateFunc data_ov064_0211c98c[3][2] = {
+    { &daObjTbox_c::InitState0, &daObjTbox_c::State0 },
+    { &daObjTbox_c::InitState1, &daObjTbox_c::State1 },
+    { &daObjTbox_c::InitState2, &daObjTbox_c::State2 },
+};

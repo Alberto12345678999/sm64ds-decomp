@@ -43,10 +43,10 @@ _ZN20daObjWanwanShutter_c13InitResourcesEv kind:function(arm,size=0x80) addr:0x0
 daObjWanwanShutter_c_classInit kind:function(arm,size=0x30) addr:0x0211307c
 __sinit_ov014_021130ac kind:function(arm,size=0x6c) addr:0x021130ac
 __sinit_d_a_wanwan.cpp kind:function(arm,size=0x1e4) addr:0x02113118
-__sinit_ov014_021132fc kind:function(arm,size=0x6c) addr:0x021132fc
+__sinit_d_a_obj_wanwan_shutter.cpp kind:function(arm,size=0x6c) addr:0x021132fc
 .p__sinit_ov014_021130ac kind:data(word) addr:0x02113368
 .p__sinit_d_a_wanwan.cpp kind:data(word) addr:0x0211336c
-.p__sinit_ov014_021132fc kind:data(word) addr:0x02113370
+.p__sinit_d_a_obj_wanwan_shutter.cpp kind:data(word) addr:0x02113370
 data_ov014_02113380 kind:data(any) addr:0x02113380
 data_ov014_02113384 kind:data(any) addr:0x02113384
 data_ov014_02113388 kind:data(any) addr:0x02113388
@@ -213,5 +213,5 @@ data_ov014_02114980 kind:bss addr:0x02114980
 @1168 kind:bss addr:0x021149ac
 data_ov014_021149b8 kind:bss addr:0x021149b8
 data_ov014_021149c0 kind:bss addr:0x021149c0
-data_ov014_021149c8 kind:bss addr:0x021149c8
-data_ov014_021149d4 kind:bss addr:0x021149d4
+@404 kind:bss addr:0x021149c8
+@137 kind:bss addr:0x021149d4

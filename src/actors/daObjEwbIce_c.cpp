@@ -48,6 +48,47 @@ struct daObjEwbIce_State {
 };
 typedef char daObjEwbIce_State_must_be_0x10[sizeof(daObjEwbIce_State) == 0x10 ? 1 : -1];
 
+/* The six file handles __sinit_daObjEwbIce_c.cpp constructs below, one model
+ * and one collision per EWB_ICE variant. SharedFilePtr.h declares no fields;
+ * this TU repeats the names used through the file-slot table. The models'
+ * ctor/dtor are the cartridge's func_02017acc / func_02017ab4 pair and the
+ * collisions' func_02017b4c / SharedFilePtr_Destruct_Clsn; the manifest
+ * aliases these. */
+struct EwbIceModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    struct BMD_File *file;
+    EwbIceModelFileHandle(u32 fileID);
+    ~EwbIceModelFileHandle();
+};
+struct EwbIceCollisionFileHandle : SharedFilePtr {
+    s32 fileId;
+    struct KCL_File *file;
+    EwbIceCollisionFileHandle(u32 fileID);
+    ~EwbIceCollisionFileHandle();
+};
+
+extern EwbIceModelFileHandle data_ov073_02123428;     /* model, file 0x5e7 */
+extern EwbIceModelFileHandle data_ov073_02123430;     /* model, file 0x5e9 */
+extern EwbIceModelFileHandle data_ov073_02123440;     /* model, file 0x5eb */
+extern EwbIceCollisionFileHandle data_ov073_02123448; /* clsn, file 0x5e8 */
+extern EwbIceCollisionFileHandle data_ov073_02123450; /* clsn, file 0x5ea */
+extern EwbIceCollisionFileHandle data_ov073_02123438; /* clsn, file 0x5ec */
+
+/* The four {enter, update} state records __sinit_daObjEwbIce_c.cpp fills
+ * from the PMF literals in .data. */
+typedef int (daObjEwbIce_c::*EwbIceStateFunc)();
+extern EwbIceStateFunc data_ov073_02123134;
+extern EwbIceStateFunc data_ov073_0212312c;
+extern EwbIceStateFunc data_ov073_0212311c;
+extern EwbIceStateFunc data_ov073_0212310c;
+extern EwbIceStateFunc data_ov073_02123114;
+extern EwbIceStateFunc data_ov073_02123124;
+extern EwbIceStateFunc data_ov073_02123144;
+extern EwbIceStateFunc data_ov073_0212313c;
+extern daObjEwbIce_State data_ov073_021234b0;
+extern daObjEwbIce_State data_ov073_021234c0;
+extern daObjEwbIce_State data_ov073_021234d0;
+
 enum {
     ACTOR_EWB_ICE_A = 0xaa,
     ACTOR_EWB_ICE_B = 0xab,
@@ -89,7 +130,6 @@ extern char data_ov073_021231bc[];
 extern char data_ov073_021231c0[];
 extern char data_ov073_021231c4[];
 extern daObjEwbIce_State data_ov073_021234a0;
-extern void *data_ov073_021234b0;
 int func_ov073_021223a4(daObjEwbIce_c *ice, daObjEwbIce_State *state);
 int func_ov073_021227d0(void *a, void *b, void *c);
 void Matrix4x3_FromRotationXYZExt(Matrix4x3 *mat, int x, int y, int z);
@@ -366,3 +406,23 @@ int daObjEwbIce_c::InitResources()
     func_ov073_021223a4(this, (daObjEwbIce_State *)&data_ov073_021234b0);
     return 1;
 }
+
+
+/* Static-init globals (was the handwritten __sinit_ov073_02122d48 shard).
+ * Definition order is the retail initializer's construction order: the
+ * three model handles (files 0x5e7, 0x5e9, 0x5eb), the three collision
+ * handles (files 0x5e8, 0x5ea, 0x5ec), then the four state records in
+ * 234b0, 234c0, 234d0, 234a0 order, each copied from two PMF literals in
+ * .data. */
+// @symbol __sinit_daObjEwbIce_c.cpp
+EwbIceModelFileHandle     data_ov073_02123428(0x5e7);
+EwbIceModelFileHandle     data_ov073_02123430(0x5e9);
+EwbIceModelFileHandle     data_ov073_02123440(0x5eb);
+EwbIceCollisionFileHandle data_ov073_02123448(0x5e8);
+EwbIceCollisionFileHandle data_ov073_02123450(0x5ea);
+EwbIceCollisionFileHandle data_ov073_02123438(0x5ec);
+
+daObjEwbIce_State data_ov073_021234b0 = { data_ov073_02123134, data_ov073_0212312c };
+daObjEwbIce_State data_ov073_021234c0 = { data_ov073_0212311c, data_ov073_0212310c };
+daObjEwbIce_State data_ov073_021234d0 = { data_ov073_02123114, data_ov073_02123124 };
+daObjEwbIce_State data_ov073_021234a0 = { data_ov073_02123144, data_ov073_0212313c };

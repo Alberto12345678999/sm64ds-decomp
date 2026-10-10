@@ -20,10 +20,11 @@
  * sequence; the factory now appends after InitResources, at the end of
  * source order, matching its ROM placement. g_profile_SHARK is not this TU.
  *
- * The two state words __sinit_ov090_02134020 copies into data_ov090_021345cc
- * are pointer-to-member records (function, this-delta 0): enter is
- * func_ov090_0213387c, and the per-frame body is func_ov090_02133830.
- * Those names are the ROM symbols the state table points at.
+ * The two state slots live in data_ov090_021345cc as one SharkStateTable:
+ * enter is func_ov090_0213387c and the per-frame body is
+ * func_ov090_02133830. Both targets are free functions, so each .data
+ * descriptor is a SharkFreeState function-pointer/PMF pair, and the table
+ * constructor copies them into the BSS slots at startup.
  *
  * deslop leftovers:
  * - func_ov090_02133710: a reference through pad_380[4] differs by 3 words
@@ -49,12 +50,8 @@
 #include "SharedFilePtr.h"
 #include "Player.h"
 
-/* sinit constructs 021345a4 as file 0x325 (model) and 021345ac as file
- * 0x326 (animation). SharedFilePtr has no fields; the loaded pointer is
- * the word at +4. */
-extern char data_ov090_021345a4[];
-extern char data_ov090_021345ac[];
-extern char data_ov090_021345cc[];
+/* Scratch matrix, owned by the overlay. */
+
 extern char data_020a0e68[];
 
 extern "C" {
@@ -93,6 +90,51 @@ struct SharkState {
     SharkFn enter;
     SharkFn update;
 };
+
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x325, animation file 0x326) and fill the two-entry
+ * state table. mwcc emits __sinit_daShark_c.cpp from those definitions. */
+struct SharkModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    SharkModelFilePtr(u32 fileID);
+    ~SharkModelFilePtr();
+};
+
+struct SharkAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    SharkAnimationFilePtr(u32 fileID);
+    ~SharkAnimationFilePtr();
+};
+
+/* Both state slots target free functions, not members, so each descriptor
+ * is a function-pointer/PMF pair. The first word carries the code
+ * relocation; the second is zero, like every other descriptor. */
+union SharkFreeState {
+    int (*fn)(daShark_c *);
+    SharkFn pmf;
+};
+
+extern SharkFreeState data_ov090_021343a0;
+extern SharkFreeState data_ov090_021343a8;
+
+struct SharkStateTable {
+    SharkFn slots[2];
+    /* Section-alignment fill: retail BSS runs 4 bytes past the second slot,
+     * to the section end at 0x021345e0. The constructor never stores here. */
+    u8 tailFill[4];
+
+    SharkStateTable()
+    {
+        slots[0] = data_ov090_021343a0.pmf;
+        slots[1] = data_ov090_021343a8.pmf;
+    }
+};
+
+extern SharkModelFilePtr data_ov090_021345a4;
+extern SharkAnimationFilePtr data_ov090_021345ac;
+extern SharkStateTable data_ov090_021345cc;
 
 // @symbol _ZN9daShark_cD1Ev
 // @symbol _ZN9daShark_cD0Ev
@@ -156,7 +198,7 @@ extern "C" int func_ov090_0213387c(daShark_c *self)
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         (char *)&self->mModelAnim,
-        ((SharkLoadedFile *)data_ov090_021345ac)->file,
+        ((SharkLoadedFile *)&data_ov090_021345ac)->file,
         0, 0x1000, 0);
     return 1;
 }
@@ -189,8 +231,8 @@ extern "C" void func_ov090_02133904(daShark_c *self)
 // @symbol _ZN9daShark_c16CleanupResourcesEv
 int daShark_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov090_021345a4)->Release();
-    ((SharedFilePtr *)data_ov090_021345ac)->Release();
+    ((SharedFilePtr *)&data_ov090_021345a4)->Release();
+    ((SharedFilePtr *)&data_ov090_021345ac)->Release();
     return 1;
 }
 
@@ -272,9 +314,9 @@ int daShark_c::InitResources()
     /* Each PathPtr constructs at its declaration. The first call is
      * before the cylinder init and the second is after it. */
     mModelAnim.SetFile(
-        (BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov090_021345a4),
+        (BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov090_021345a4),
         1, -1);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov090_021345ac);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov090_021345ac);
     mPathID = (*(s32 *)&param1) & 0xff;
     if (mPathID < 0)
         mPathID = 0;
@@ -295,7 +337,7 @@ int daShark_c::InitResources()
         mPathNodeIdx = 1;
         path.GetNode(*(Vector3 *)&mPosX, mPathNodeIdx);
     }
-    func_ov090_021338b4(this, data_ov090_021345cc);
+    func_ov090_021338b4(this, &data_ov090_021345cc);
     return 1;
 }
 
@@ -304,3 +346,15 @@ extern "C" daShark_c *daShark_c_classInit()
 {
     return new daShark_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov090_02134020 shard).
+ * Definition order is the retail initializer's construction order: the model
+ * handle, then the animation handle, then the free-function descriptors and
+ * the state table they are copied into. */
+SharkModelFilePtr data_ov090_021345a4(0x325);
+SharkAnimationFilePtr data_ov090_021345ac(0x326);
+
+SharkFreeState data_ov090_021343a0 = { func_ov090_0213387c };
+SharkFreeState data_ov090_021343a8 = { func_ov090_02133830 };
+
+SharkStateTable data_ov090_021345cc;
