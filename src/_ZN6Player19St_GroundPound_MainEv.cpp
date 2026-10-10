@@ -15,8 +15,6 @@
 extern "C" {
 void _ZN6Player7SetAnimEji5Fix12IiEj(void* self, unsigned int anim, int a, int b, unsigned int c);
 void func_ov002_020ef2a4(void* c, void* arg);
-void func_ov002_020c2f64(void* c);
-void func_ov002_020c0364(void* c, u32 arg);
 int func_ov002_020e2c84(void* self);
 void func_ov002_020dd908(void* sb);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
@@ -64,7 +62,7 @@ int Player::St_GroundPound_Main()
         st = mStateTimer;
         if (st != 0) {
             if (st == 1) {
-                func_ov002_020c2f64(this);
+                ((Player *)(this))->func_ov002_020c2f64();
                 _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x42, 0x40000000, 0x1000, 0);
                 mStateStep = 0xff;
                 *(u32*)&mdCcAcPos_c.flags &= ~0x20;
@@ -72,7 +70,7 @@ int Player::St_GroundPound_Main()
             {
                 u16 f = mStateFlags & 1;
                 if (f != 0) {
-                    func_ov002_020c0364(this, 1);
+                    ((Player *)(this))->func_ov002_020c0364(1);
                     return 1;
                 }
             }

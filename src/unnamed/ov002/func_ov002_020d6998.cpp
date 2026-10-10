@@ -27,7 +27,7 @@ struct VObj {
 extern "C" {
 typedef int (*VFunc)(void*);
 
-extern int func_ov002_020bea7c(char* c);
+extern int _ZN6Player19func_ov002_020bea7cEv(char* c); // local extern: include-free shard, the call passes the object as an untyped pointer so it cannot use the header member
 extern int _ZN6Player15IsCollectingCapEv(char* self);
 extern int func_ov002_020d6dac(char* self);
 extern void func_ov002_020d71ec(char* self, int arg1);
@@ -54,7 +54,7 @@ int func_ov002_020d6998(char* self)
     void* other;
     u32 id;
 
-    if (func_ov002_020bea7c(self)) {
+    if (_ZN6Player19func_ov002_020bea7cEv(self)) {
         if (_ZN6Player15IsCollectingCapEv(self) != 0) return 0;
         if (*(u8*)(self + 0x6dd) != 3) return 0;
     }

@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "PlayerInput.h"
 extern "C" {
-extern void func_ov002_020c06fc(char* c, u32 a);
 extern int func_ov002_020dd2f4(char* c);
 extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern int func_0201226c(int a0, int a1, int a2, char* a3, int a4, int a5);
@@ -31,7 +30,7 @@ int Player::St_ButtSlide_Main()
         func_ov002_020bf90c();
         if (mIsAirborne == 0) {
             mIsSlidingOnGround = 1;
-            func_ov002_020c06fc(((char*)this), 0x4000);
+            ((Player *)(((char*)this)))->func_ov002_020c06fc(0x4000);
             func_ov002_020dd2f4(((char*)this));
         }
         if (mHorzSpeed == 0) {

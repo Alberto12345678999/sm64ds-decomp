@@ -21,7 +21,6 @@ extern "C" {
 extern void _ZN6Player11ChangeStateERNS_5StateE(void *c, void *st);
 extern void func_02012694(unsigned int id, const void *v);
 extern int func_ov002_020d91e0(void *thiz, int damage, int doPre);
-extern void func_ov002_020c5dec(void *c, int r1);
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int sys, unsigned int id, int x, int y, int z, const s16 *vec, void *cb);
 extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int handle, unsigned int id, unsigned int vol, const void *vec, unsigned int flags);
@@ -52,7 +51,7 @@ int Player::St_BurnFire_Main()
         u16 lvl = mStateTimer;
         if (lvl == 0x50 || lvl == 0x32 || lvl == 0x14) {
             if (func_ov002_020d91e0(this, 0x100, 1) != 0) {
-                func_ov002_020c5dec(this, 2);
+                ((Player *)(this))->func_ov002_020c5dec(2);
                 return 1;
             }
         }

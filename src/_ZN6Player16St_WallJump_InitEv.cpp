@@ -28,7 +28,6 @@
 
 extern "C" {
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(Player *thiz, u32 a, int b, int c, u32 d);
-extern void func_ov002_020bf2d8(void *c, int a);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const void *v);
 }
 
@@ -44,7 +43,7 @@ int Player::St_WallJump_Init()
     if (param1 == 2) {
         mVertSpeed = 0x2aa00;
     } else {
-        func_ov002_020bf2d8(this, 0x3e000);
+        ((Player *)(this))->func_ov002_020bf2d8(0x3e000);
     }
     mHorzSpeed = 0x18000;
     mAngleY = mAngleY + 0x8000;

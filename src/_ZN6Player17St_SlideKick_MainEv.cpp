@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "PlayerInput.h"
 extern "C" {
-extern void func_ov002_020c06fc(void* c, u32 flag);
 extern int func_ov002_020dd2f4(void* c);
 extern int _ZN6Player12FinishedAnimEv(void* c);
 extern int _ZN6Player6IsAnimEj(void* c, u32 id);
@@ -28,7 +27,7 @@ int Player::St_SlideKick_Main()
     func_ov002_020bf90c();
     if (mIsAirborne == 0) {
         mIsSlidingOnGround = 1;
-        func_ov002_020c06fc(((char*)this), 0x4000);
+        ((Player *)(((char*)this)))->func_ov002_020c06fc(0x4000);
         func_ov002_020dd2f4(((char*)this));
     }
 

@@ -25,7 +25,6 @@ struct Obj {
 };
 extern "C" {
 extern void _Z14ApproachLinearRiii(int*, int, int);
-extern void func_ov002_020c2f64(char*);
 extern int _ZNK6Player14GetBodyModelIDEjb(char*, unsigned int, int);
 extern int func_ov002_020d6998(char*);
 extern int _ZN6Player12FinishedAnimEv(char*);
@@ -75,7 +74,7 @@ int Player::St_YoshiPower_Main()
 
     if (mIsAirborne == 0) {
         _Z14ApproachLinearRiii((int*)(&mHorzSpeed), 0, 0x1000);
-        func_ov002_020c2f64(c);
+        ((Player *)(c))->func_ov002_020c2f64();
     }
 
     switch (mStateStep) {

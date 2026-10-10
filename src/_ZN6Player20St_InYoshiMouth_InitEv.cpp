@@ -13,7 +13,7 @@ int Player::St_InYoshiMouth_Init()
     char *slot;
     unsigned int r1;
 
-    func_ov002_020bdb50(((char *)this), 0);
+    ((Player *)(((char *)this)))->func_ov002_020bdb50(0);
     r3 = 0;
     mStateWork = (unsigned char)r3;
     mStatePhase = (unsigned char)r3;

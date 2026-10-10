@@ -58,7 +58,7 @@ int Player::St_Cannon_Main()
     }
     case 2:
         if ((mClsnFlags & 6) != 0) {
-            func_ov002_020c1eb4(((char*)this), (short)(mAngleY + 0x8000));
+            ((Player *)(((char*)this)))->func_ov002_020c1eb4((short)(mAngleY + 0x8000));
             return 1;
         }
         if (mIsAirborne == 0) {

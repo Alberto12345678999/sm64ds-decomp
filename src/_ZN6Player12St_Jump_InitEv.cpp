@@ -16,13 +16,11 @@ extern int func_ov002_020e2be4(void *c);
 extern int func_ov002_020e2b6c(void *c);
 extern int Player_ScaleByCharFactor(void *c, int a);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void *c, void *s);
-extern void func_ov002_020bf2d8(void *c, int a);
 extern void func_ov002_020e2ad0(void *c);
 /* SetAnim takes a Fix12<int> by value -- the mwccarm 6az wall, runbook
    section 7 -- so it stays extern "C" with a scalar in that slot. */
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *c, u32 a, int b, int fx, u32 d);
 extern int AngleDiff(int a, int b);
-extern int func_ov002_020c19d0(void *c, int a, int b);
 extern void func_ov002_020e25f0(void *c, int a);
 extern int data_ov002_0210a59c[];   /* launch speed, by combo stage */
 extern int data_ov002_0210a5a8[];   /* jump animation, by combo stage */
@@ -72,9 +70,9 @@ skipclear:
     } else {
         int v = data_ov002_0210a59c[mJumpComboStage] + (mHorzSpeed >> 2);
         if (mIsMega != 0) {
-            func_ov002_020bf2d8(this, (int)(((long long)v * 0x1400 + 0x800) >> 12));
+            ((Player *)(this))->func_ov002_020bf2d8((int)(((long long)v * 0x1400 + 0x800) >> 12));
         } else {
-            func_ov002_020bf2d8(this, v);
+            ((Player *)(this))->func_ov002_020bf2d8(v);
         }
         func_ov002_020e2ad0(this);
         if (mIsMega == 0) {
@@ -104,7 +102,7 @@ skipclear:
         mHorzSpeed >>= 2;
     }
 
-    if (func_ov002_020c19d0(this, 0x64, 0x32) != 0) {
+    if (((Player *)(this))->func_ov002_020c19d0(0x64, 0x32) != 0) {
         mStateFlags |= 0x200;
         mHorzSpeed = 0;
     }

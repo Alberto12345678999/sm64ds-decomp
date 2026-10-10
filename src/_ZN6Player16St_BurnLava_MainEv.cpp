@@ -22,7 +22,6 @@ extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callback
 extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(int, unsigned int, unsigned int, void *, unsigned int);
 extern void func_ov002_020e28d4(void *, int, int);
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, unsigned int);
-extern void func_ov002_020c5dec(void *, int);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void *, char *);
 extern void Player_AdvanceAnims(void *);
 }
@@ -89,7 +88,7 @@ int Player::St_BurnLava_Main()
         if (FinishedAnim() != 0) {
             mPrevAngleY = mAngleY;
             if (GetHealth() == 0)
-                func_ov002_020c5dec(this, 2);
+                ((Player *)(this))->func_ov002_020c5dec(2);
             else
                 _ZN6Player11ChangeStateERNS_5StateE(this, &data_ov002_0211013c);
         }

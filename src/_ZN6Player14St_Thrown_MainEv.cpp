@@ -6,7 +6,6 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void func_ov002_020c06fc(char* c, u32 mask);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const Vector3& v);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, int b);
@@ -33,7 +32,7 @@ int Player::St_Thrown_Main()
         if (mIsAirborne == 0) {
             mAngleX = 0;
             *(int*)((int)((char*)this) + 0x2ec) &= ~0x2000;
-            func_ov002_020c06fc(((char*)this), 0x8000);
+            ((Player *)(((char*)this)))->func_ov002_020c06fc(0x8000);
             if (mStateArg == 0) {
                 mStateArg = 1;
                 _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 6, *(Vector3*)((char*)&mCamSpacePosX));

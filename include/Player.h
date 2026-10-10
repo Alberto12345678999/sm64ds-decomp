@@ -129,7 +129,7 @@ struct Player : dActor_c {
     /* EIGHT more models, same element type and the same evidence: CleanupResources
        destroys `i < 4` and then `i + 4` over this one base, TurnOffToonShading
        indexes it at `j` and `j + 4`, and Render indexes it with
-       func_ov002_020becf4(mBodyModelId, 1). That helper can also return 8 or 9,
+       _ZN6Player19func_ov002_020becf4Eii(mBodyModelId, 1). That helper can also return 8 or 9,
        which are "no model" sentinels -- Render loads the slot FIRST and only then
        tests `i != 9 && i != 8`, so the ROM itself reads one word past this run in
        those two cases. Kept as written; the read lands in mModelAnim4 below and
@@ -219,13 +219,13 @@ struct Player : dActor_c {
     s32 mFloorNormalY;            /* 0x558 */
     s32 mFloorNormalZ;            /* 0x55c */
     /* Wall normal, fx12, and the exact counterpart of the floor normal above.
-     * func_ov002_020c25a8 writes all three from
+     * _ZN6Player19func_ov002_020c25a8Ei writes all three from
      * SurfaceInfo::CopyNormalTo(dBgCh_Actr::GetWallResult(&mMeshClsn) + 4, &wn)
      * -- the same helper, the same shape, one surface over. It then pushes the
      * actor out along it (`mPosX -= mWallNormalX * 2`, `mPosZ -= mWallNormalZ * 2`).
      * Seven bodies read the pair back as `cstd::atan2(mWallNormalX, mWallNormalZ)`
      * to get the wall's facing: St_Shell_Main, St_OnWall_Main (twice),
-     * St_Balloon_Main, St_CrazedCrate_Main, func_ov002_020c2138,
+     * St_Balloon_Main, St_CrazedCrate_Main, _ZN6Player19func_ov002_020c2138Ev,
      * func_ov002_020dd2f4 and func_ov002_020e28d4. 0x564 was marked padding until
      * that store was disassembled, exactly as 0x554/0x55c were. */
     s32 mWallNormalX;            /* 0x560 */
@@ -752,14 +752,25 @@ struct Player : dActor_c {
     int func_ov002_020bd600(unsigned char *, int, int);
     int func_ov002_020bd664(unsigned char *, int, int);
 
+    void func_ov002_020bd8c0(unsigned int);
+    void func_ov002_020bd928(unsigned int);
+    void func_ov002_020bd984(unsigned int);
+    void func_ov002_020bd9ec(unsigned int);
     void func_ov002_020bda48();
+    void func_ov002_020bdb50(int);
+    void func_ov002_020bdc18();
+    void func_ov002_020bdd2c();
     void func_ov002_020bdd9c();
     void func_ov002_020bdef0();
     void func_ov002_020bdf8c();
     void func_ov002_020be3b0();
+    int func_ov002_020bea7c();
     void func_ov002_020beabc();
     int func_ov002_020beb38();
+    int func_ov002_020becf4(int, int);
     void func_ov002_020bf13c();
+    void func_ov002_020bf2d8(Fix12i);
+    void func_ov002_020bf36c(void *);
     int func_ov002_020bf40c();
     void func_ov002_020bf5e0();
     void func_ov002_020bf88c();
@@ -767,28 +778,53 @@ struct Player : dActor_c {
     void func_ov002_020bf9d4();
     int func_ov002_020bfa74();
     int func_ov002_020bfec0();
+    int func_ov002_020c0108(int);
+    int func_ov002_020c031c();
+    void func_ov002_020c0364(u32);
     int func_ov002_020c0434();
     int func_ov002_020c04ac();
     int func_ov002_020c04e0();
     int func_ov002_020c0688();
+    int func_ov002_020c06fc(int);
     int func_ov002_020c0cbc();
+    int func_ov002_020c0d90(int);
+    int func_ov002_020c0fb4();
 
     void func_ov002_020c1234();
     void func_ov002_020c133c();
+    void func_ov002_020c14b8();
+    int func_ov002_020c19d0(int, int);
+    int func_ov002_020c1ad8(int);
+    int func_ov002_020c1c84(int);
+    void func_ov002_020c1eb4(int);
+    int func_ov002_020c200c(int);
+    int func_ov002_020c2138();
     int func_ov002_020c231c();
+    int func_ov002_020c25a8(int);
     void func_ov002_020c29d4();
+    void func_ov002_020c2b08();
+    void func_ov002_020c2db8();
     void func_ov002_020c2e78();
+    void func_ov002_020c2f64();
+    int func_ov002_020c2fec(int *);
+    void func_ov002_020c3148();
+    void func_ov002_020c37a4(char *);
     void func_ov002_020c38a0();
     int func_ov002_020c3a48();
     void func_ov002_020c3bdc();
     void func_ov002_020c3cf0();
     int func_ov002_020c3ea0();
     int func_ov002_020c4188();
+    void func_ov002_020c43c4(unsigned int);
     int func_ov002_020c44c4();
     int func_ov002_020c47f4();
     void func_ov002_020c5444();
     int func_ov002_020c5d0c();
+    void func_ov002_020c5d60();
+    int func_ov002_020c5dec(int);
+    int func_ov002_020c607c(int, int, int *);
     int func_ov002_020c61ac();
+    int func_ov002_020c647c(int);
     int func_ov002_020c6538();
     int func_ov002_020c6908();
     int func_ov002_020c6adc();
@@ -800,8 +836,10 @@ struct Player : dActor_c {
     void func_ov002_020c7350();
     void func_ov002_020c75f0();
     int func_ov002_020c7cbc();
+    void func_ov002_020c7dd0(int);
     int func_ov002_020c7f10();
     void func_ov002_020c7ff8();
+    unsigned char func_ov002_020c84b0();
     int func_ov002_020c8540();
     int func_ov002_020c8714();
     int func_ov002_020c897c();
@@ -812,6 +850,7 @@ struct Player : dActor_c {
     int func_ov002_020c8d14();
     int func_ov002_020c8f0c();
     int func_ov002_020c8f80();
+    int func_ov002_020c904c();
     int func_ov002_020c9128();
     int func_ov002_020c91bc();
 
@@ -820,6 +859,7 @@ struct Player : dActor_c {
     int func_ov002_020c92fc();
     int func_ov002_020c94a4();
     int func_ov002_020c965c();
+    void func_ov002_020c9718();
     void func_ov002_020c97e0();
     void func_ov002_020c97f8();
     void func_ov002_020c9840();

@@ -14,13 +14,11 @@ struct VB { virtual void v0(); virtual void v1(); };
 #pragma opt_strength_reduction off
 
 extern "C" {
-/* func_ov002_020bdd2c, _020bdef0, _020bdd9c, _020e032c and func_02073244 come from
-   decl_common.h above. Declaring them again here with `char *` where that header
-   says `void *` is not a redeclaration but an attempt to overload a C-linkage
-   name, which mwccarm rejects outright -- so this file has not compiled since it
-   gained that include. Nothing caught it: a file that will not compile is never
-   enrolled, so every byte gate skips it and the ROM keeps the original bytes for
-   this range. Declare only what decl_common.h does not. */
+/* _020bdef0, _020bdd9c, _020e032c and func_02073244 come from decl_common.h
+   above; redeclaring one here with `char *` where that header says `void *`
+   is not a redeclaration but an attempt to overload a C-linkage name, which
+   mwccarm rejects outright. _ZN6Player19func_ov002_020bdd2cEv is a Player
+   member now, so it is declared here instead. */
 void func_0203cbc0(void *p);
 void *_ZN7Vector3D1Ev(void *self);
 void func_ov002_020bebd4(char *c);
@@ -47,7 +45,7 @@ int Player::CleanupResources()
     int i;
     u32 b;
 
-    func_ov002_020bdd2c(((char *)this));
+    ((Player *)(((char *)this)))->func_ov002_020bdd2c();
     func_ov002_020bdef0();
     func_ov002_020bdd9c();
     func_ov002_020e032c(((char *)this));

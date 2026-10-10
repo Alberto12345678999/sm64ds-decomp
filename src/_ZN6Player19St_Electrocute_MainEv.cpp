@@ -19,7 +19,6 @@ extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, Vector3* v, u3
    runbook section 7 -- so it stays extern "C" with scalars in those slots. */
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 sysHandle, u32 kind, s32 scale, s32 p1, s32 p2, void* pos16, void* cb);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* self, void* state);
-extern int func_ov002_020c5dec(void* c, int r1);
 extern void Player_AdvanceAnims(void* self);
 
 extern void* data_ov002_0211013c;   /* the walk state */
@@ -64,10 +63,10 @@ int Player::St_Electrocute_Main()
             }
         } else {
             if ((flags & 2) != 0) {
-                func_ov002_020c5dec(this, 8);
+                ((Player *)(this))->func_ov002_020c5dec(8);
             } else {
                 mInvincibleTimer = 0x24;
-                if (func_ov002_020c5dec(this, 4) == 0) {
+                if (((Player *)(this))->func_ov002_020c5dec(4) == 0) {
                     _ZN6Player11ChangeStateERNS_5StateE(this, &data_ov002_0211013c);
                 }
             }

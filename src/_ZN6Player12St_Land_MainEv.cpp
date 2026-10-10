@@ -7,8 +7,6 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void func_ov002_020c0364(void* c, u32 arg);
-extern void func_ov002_020c06fc(void* c, u32 arg);
 extern int func_ov002_020e3078(void* c, void* s);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern int _ZN6Player6IsAnimEj(void* c, u32 a);
@@ -30,8 +28,8 @@ extern int data_ov002_0211013c[];
 int Player::St_Land_Main()
 {
     if (func_ov002_020c0434()) {
-        func_ov002_020c0364(((char*)this), 3);
-        func_ov002_020c06fc(((char*)this), 0x4000);
+        ((Player *)(((char*)this)))->func_ov002_020c0364(3);
+        ((Player *)(((char*)this)))->func_ov002_020c06fc(0x4000);
         return 1;
     }
 

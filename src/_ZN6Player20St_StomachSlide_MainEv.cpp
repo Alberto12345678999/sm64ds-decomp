@@ -9,9 +9,7 @@
 extern "C" {
 extern int _ZN6Player7IsStateERNS_5StateE(void* c, void* s);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
-extern void func_ov002_020c06fc(void* c, u32 arg);
 extern int func_ov002_020dd2f4(void* c);
-extern void func_ov002_020c0364(void* c, u32 arg);
 extern int func_ov002_020e2ea0(void* c);
 extern int _ZN6Player6IsAnimEj(void* c, u32 anim);
 extern int _ZN6Player12FinishedAnimEv(void* c);
@@ -56,12 +54,12 @@ int Player::St_StomachSlide_Main()
             {
                 u32 arg = 0x4000;
                 if (mSlideType == 0) arg = 0x8000;
-                func_ov002_020c06fc(((char*)this), arg);
+                ((Player *)(((char*)this)))->func_ov002_020c06fc(arg);
             }
             func_ov002_020dd2f4(((char*)this));
             if (_ZN6Player7IsStateERNS_5StateE(((char*)this), data_ov002_021105bc) &&
                 (u16)(mStateFlags & 1)) {
-                func_ov002_020c0364(((char*)this), 2);
+                ((Player *)(((char*)this)))->func_ov002_020c0364(2);
             }
         }
     case0_e0:

@@ -10,8 +10,6 @@
 extern "C" {
 extern void func_ov002_020d8a50(void* c, u32 a);
 extern void _Z14ApproachLinearRiii(int* a, int b, int c);
-extern void func_ov002_020c2f64(void* c);
-extern void func_ov002_020c0364(char* c, u32 arg);
 extern int _ZN6Player12FinishedAnimEv(void* c);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
@@ -54,10 +52,10 @@ int Player::St_PunchKick_Main()
         }
 
         _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x800);
-        func_ov002_020c2f64(((char*)this));
+        ((Player *)(((char*)this)))->func_ov002_020c2f64();
 
         if (func_ov002_020c0434() != 0) {
-            func_ov002_020c0364(((char*)this), 3);
+            ((Player *)(((char*)this)))->func_ov002_020c0364(3);
             return 1;
         }
 
