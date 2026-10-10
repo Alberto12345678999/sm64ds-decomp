@@ -31,6 +31,25 @@
 
 struct CLPS_Block;
 
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x5f9, collision file 0x5fa). mwcc emits
+ * __sinit_daObjFl_Fall_Block_c.cpp from those definitions. The wrapper
+ * names are local; the handle constructors and destructors are the ROM
+ * resource-family functions, aliased in the manifest. */
+struct FallBlockModelFile : SharedFilePtr {
+    u32 words[2];
+
+    FallBlockModelFile(u32 fileID);
+    ~FallBlockModelFile();
+};
+
+struct FallBlockCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    FallBlockCollisionFilePtr(u32 fileID);
+    ~FallBlockCollisionFilePtr();
+};
+
 struct ResourceDescriptor {
     SharedFilePtr *model;
     SharedFilePtr *collision;
@@ -65,3 +84,9 @@ int daObjFl_Fall_Block_c::CleanupResources()
 
 // @symbol _ZN20daObjFl_Fall_Block_cD1Ev
 // @symbol _ZN20daObjFl_Fall_Block_cD0Ev
+
+/* Static-init globals (was the handwritten __sinit_ov022_02112fe4 shard).
+ * Definition order is the retail initializer's construction order: the
+ * model handle (file 0x5f9), then the collision handle (file 0x5fa). */
+FallBlockModelFile data_ov022_02114648(0x5f9);
+FallBlockCollisionFilePtr data_ov022_02114640(0x5fa);
