@@ -13,6 +13,7 @@ src/engine/collision/dBgW_Kc_itcm.cpp
 src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp
 src/engine/collision/dBgPc.cpp
 src/engine/collision/dBgPi.cpp
+# func_020381cc is the tail of dBgPi.cpp.
 src/engine/collision/dBgCh_Lin.cpp
 # dBgW is one production translation unit; the constructor, the shared
 # func_02039624 init and the static ShouldPassThroughImpl this slice used
