@@ -2181,7 +2181,7 @@ __sinit_dScMgHanachan_c.cpp kind:function(arm,size=0xa4) addr:0x02130df8
 __sinit_ov006_02130e9c kind:function(arm,size=0x64) addr:0x02130e9c
 __sinit_ov006_02130f00 kind:function(arm,size=0x64) addr:0x02130f00
 __sinit_ov006_02130f64 kind:function(arm,size=0x264) addr:0x02130f64
-__sinit_ov006_021311c8 kind:function(arm,size=0x31c) addr:0x021311c8
+__sinit_d_s_mg_memory.cpp kind:function(arm,size=0x31c) addr:0x021311c8
 __sinit_ov006_021314e4 kind:function(arm,size=0x3bc) addr:0x021314e4
 __sinit_ov006_021318a0 kind:function(arm,size=0xbc) addr:0x021318a0
 __sinit_ov006_0213195c kind:function(arm,size=0xdc) addr:0x0213195c
@@ -2212,7 +2212,7 @@ __sinit_ov006_021333e0 kind:function(arm,size=0x18c) addr:0x021333e0
 .p__sinit_ov006_02130e9c kind:data(word) addr:0x021335a4
 .p__sinit_ov006_02130f00 kind:data(word) addr:0x021335a8
 .p__sinit_ov006_02130f64 kind:data(word) addr:0x021335ac
-.p__sinit_ov006_021311c8 kind:data(word) addr:0x021335b0
+.p__sinit_d_s_mg_memory.cpp kind:data(word) addr:0x021335b0
 .p__sinit_ov006_021314e4 kind:data(word) addr:0x021335b4
 .p__sinit_ov006_021318a0 kind:data(word) addr:0x021335b8
 .p__sinit_ov006_0213195c kind:data(word) addr:0x021335bc
