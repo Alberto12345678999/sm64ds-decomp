@@ -17,7 +17,7 @@
 
 #include "types.h"
 
-extern u32 data_02099fd0;  // RENDER_DMA_CHANNEL: DMA channel number, -1 if none
+extern int data_02099fd0;  // RENDER_DMA_CHANNEL: DMA channel number, -1 if none
 extern u32 data_020a60ac;  // texture upload window: base address
 extern u32 data_020a60b0;  // texture-palette VRAM base address
 extern u32 data_020a60b4;  // texture-palette bank selector (BeginLoadTexPltt result)
