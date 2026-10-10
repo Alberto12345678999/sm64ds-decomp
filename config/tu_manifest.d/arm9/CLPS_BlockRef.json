@@ -7,14 +7,14 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "The class's complete member set in one contiguous run: operator= at 0x0203821c, D1 at 0x02038224, C1 at 0x02038228 -- the entire ABI surface of a non-polymorphic one-word handle.",
-    "func_020381cc below walks the collider table through a pointer-to-pointer argument (the arm9/dBgPi manifest places it in this CLPS_BlockRef neighbourhood but it is a free helper, not a member); func_02038234 above is likewise unenrolled free code.",
+    "func_020381cc below walks the collider table through a pointer-to-pointer argument (the arm9/dBgPi manifest places it in this CLPS_BlockRef neighbourhood but it is a free helper, not a member); func_02038234 above is the same helper shape -- a void(int,int) free function gating on func_02038298 and dispatching the enabled-collider table's stored callback. It folds in under its func_ name.",
     "No vtable or RTTI emits here: CLPS_BlockRef has no virtuals, so there is no key-function machinery. The C2 and D2 variants the member definitions emit have no cartridge homes and deadstrip."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x0203821c",
-      "end": "0x02038234"
+      "end": "0x02038298"
     }
   ],
   "functions": [
@@ -38,6 +38,13 @@
       "size": "0x0000000c",
       "legacy_source": "src/_ZN13CLPS_BlockRefC1Ev.cpp",
       "ordinal": 2
+    },
+    {
+      "symbol": "func_02038234",
+      "address": "0x02038234",
+      "size": "0x00000064",
+      "legacy_source": "src/unnamed/arm9/0203/func_02038234.c",
+      "ordinal": 3
     }
   ],
   "data": [],
@@ -66,8 +73,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-CLPS_BlockRef/CLPS_BlockRef.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 3,
-    "functions_declared": 3,
+    "functions_matched": 4,
+    "functions_declared": 4,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN13CLPS_BlockRefC2Ev",

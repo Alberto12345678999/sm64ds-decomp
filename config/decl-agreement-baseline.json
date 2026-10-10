@@ -13652,9 +13652,6 @@
       "src/engine/collision/dBgW.cpp": [
         "return:void * []"
       ],
-      "src/unnamed/arm9/0203/func_02038234.c": [
-        "return:int []"
-      ],
       "src/unnamed/arm9/0203/func_02038298.c": [
         "return:void * []"
       ],
@@ -23730,7 +23727,7 @@
       ]
     },
     "func_02038298": {
-      "src/unnamed/arm9/0203/func_02038234.c": [
+      "src/engine/collision/CLPS_BlockRef.cpp": [
         "arity:2"
       ]
     },
@@ -23816,18 +23813,11 @@
       "src/_ZN9dBgCh_Gnd10DetectClsnEv.cpp": [
         "param:#1 ClsnActor *",
         "return:ClsnObj *"
-      ],
-      "src/unnamed/arm9/0203/func_02038234.c": [
-        "param:#1 int"
       ]
     },
     "func_020393bc": {
       "src/actors/daObjCtMecha04_c.cpp": [
         "param:#1 dBgW *"
-      ],
-      "src/unnamed/arm9/0203/func_02038234.c": [
-        "param:#1 int",
-        "return:void (*)(int, int, int)"
       ]
     },
     "func_020393c4": {

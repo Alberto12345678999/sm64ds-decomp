@@ -2996,11 +2996,7 @@ src/func_020381cc.c:
 
 src/engine/collision/CLPS_BlockRef.cpp:
     complete
-    .text start:0x0203821c end:0x02038234
-
-src/unnamed/arm9/0203/func_02038234.c:
-    complete
-    .text start:0x02038234 end:0x02038298
+    .text start:0x0203821c end:0x02038298
 
 src/unnamed/arm9/0203/func_02038298.c:
     complete
