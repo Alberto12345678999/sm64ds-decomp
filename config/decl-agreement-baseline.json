@@ -12298,7 +12298,7 @@
       "src/func_02053c40.c": [
         "return:int"
       ],
-      "src/func_020554bc.c": [
+      "src/engine/gx/G3X.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0205/func_02056314.c": [

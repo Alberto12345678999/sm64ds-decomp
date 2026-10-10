@@ -5129,17 +5129,9 @@ src/unnamed/arm9/0205/func_02055490.c:
     complete
     .text start:0x02055490 end:0x020554bc
 
-src/func_020554bc.c:
-    complete
-    .text start:0x020554bc end:0x02055574
-
 src/engine/gx/G3X.cpp:
     complete
-    .text start:0x02055574 end:0x02055624
-
-src/unnamed/arm9/0205/func_02055624.c:
-    complete
-    .text start:0x02055624 end:0x020556d0
+    .text start:0x020554bc end:0x020556d0
 
 src/unnamed/arm9/0205/func_020556d0.c:
     complete
