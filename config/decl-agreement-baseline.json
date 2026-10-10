@@ -556,98 +556,16 @@
         "param:#4 int"
       ]
     },
-    "DMASyncHalfTransfer": {
-      "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
-        "param:#1 int"
-      ],
-      "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp": [
-        "param:#1 int"
-      ],
-      "src/_ZN3GXS11LoadOBJPlttEPKvjj.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0205/func_02056434.c": [
-        "param:#1 int",
-        "param:#4 int"
-      ],
-      "src/unnamed/arm9/0205/func_02056494.c": [
-        "param:#1 int",
-        "param:#4 int"
-      ],
-      "src/unnamed/arm9/0205/func_020564f4.c": [
-        "param:#1 int",
-        "param:#4 int"
-      ],
-      "src/unnamed/arm9/0205/func_02056554.c": [
-        "param:#1 int",
-        "param:#4 int"
-      ]
-    },
     "DMASyncWordTransfer": {
       "src/WM_SendCommand.c": [
         "param:#1 int"
-      ],
-      "src/_ZN2GX11LoadBG0CharEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/_ZN2GX11LoadBG1CharEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/_ZN2GX7LoadOBJEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/_ZN3GXS11LoadBG1CharEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
       ],
       "src/engine/gx/GX.cpp": [
         "param:#1 unsigned int",
         "param:#2 const void *",
         "param:#3 void *"
       ],
-      "src/func_02056674.c": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/func_020566dc.c": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0205/func_02055fb4.c": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0205/func_02056014.c": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0205/func_02056074.c": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0205/func_020560d4.c": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *"
-      ],
-      "src/unnamed/arm9/0205/func_020565b4.c": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int",
         "param:#2 const void *",
         "param:#3 void *"
@@ -1915,25 +1833,7 @@
       ]
     },
     "MultiCopyHalf": {
-      "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS11LoadOBJPlttEPKvjj.cpp": [
-        "param:#3 unsigned int"
-      ],
       "src/actors/daDemo_c.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_020562b4.c": [
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_02056374.c": [
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_020563d4.c": [
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0205/func_02059eb0.c": [
@@ -1965,55 +1865,7 @@
       "src/LoadFont3D.c": [
         "param:#3 unsigned int"
       ],
-      "src/_ZN2GX11LoadBG0CharEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN2GX11LoadBG1CharEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN2GX7LoadOBJEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS11LoadBG1CharEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/func_02056674.c": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/func_020566dc.c": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
       "src/unnamed/arm9/0204/func_02040638.c": [
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_02055fb4.c": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_02056014.c": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_02056074.c": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_020560d4.c": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/unnamed/arm9/0205/func_020565b4.c": [
-        "param:#1 const void *",
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0206/func_02065730.c": [
@@ -6565,9 +6417,6 @@
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0205/func_02056554.c": [
-        "return:volatile unsigned char *"
-      ],
       "src/unnamed/ov003/func_ov003_020adcbc.cpp": [
         "return:short *"
       ]
@@ -6578,9 +6427,6 @@
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02056494.c": [
-        "return:volatile unsigned char *"
       ],
       "src/unnamed/ov075/func_ov075_02116128.cpp": [
         "return:unsigned short *"
@@ -6808,9 +6654,6 @@
       "src/unnamed/arm9/0203/func_02034414.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0205/func_020564f4.c": [
-        "return:volatile unsigned char *"
-      ],
       "src/unnamed/ov075/func_ov075_021188b4.c": [
         "return:void *"
       ]
@@ -6840,9 +6683,6 @@
       ],
       "src/unnamed/arm9/0203/func_02030500.c": [
         "return:void *"
-      ],
-      "src/unnamed/arm9/0205/func_02056434.c": [
-        "return:volatile unsigned char *"
       ]
     },
     "_ZN3G2S12GetBG2ScrPtrEv": {
@@ -6869,9 +6709,6 @@
       ],
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0205/func_02056374.c": [
-        "return:void *"
       ],
       "src/unnamed/ov075/func_ov075_02116ad4.c": [
         "return:void *"
@@ -6902,9 +6739,6 @@
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0205/func_020562b4.c": [
-        "return:void *"
-      ],
       "src/unnamed/ov075/func_ov075_02118378.c": [
         "return:void *"
       ],
@@ -6924,9 +6758,6 @@
       ],
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
-      ],
-      "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
-        "return:void *"
       ],
       "src/_ZN7Message16DisplayPauseTextEth.cpp": [
         "return:int"
@@ -7012,9 +6843,6 @@
       ]
     },
     "_ZN3G2S13GetBG1CharPtrEv": {
-      "src/_ZN3GXS11LoadBG1CharEPKvjj.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:int *"
@@ -7039,9 +6867,6 @@
       ],
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0205/func_02056074.c": [
-        "return:void *"
       ]
     },
     "_ZN3G2S13GetBG3CharPtrEv": {
@@ -7060,9 +6885,6 @@
       ],
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0205/func_02055fb4.c": [
-        "return:void *"
       ]
     },
     "_ZN3G2x13SetBlendAlphaEPVttttj": {
@@ -12286,34 +12108,10 @@
       ]
     },
     "data_02099fd0": {
-      "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
-        "return:int"
-      ],
-      "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp": [
-        "return:int"
-      ],
-      "src/_ZN3GXS11LoadOBJPlttEPKvjj.cpp": [
-        "return:int"
-      ],
       "src/func_02053c40.c": [
         "return:int"
       ],
       "src/engine/gx/G3X.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02056314.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02056434.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02056494.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_020564f4.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0205/func_02056554.c": [
         "return:int"
       ]
     },
@@ -15104,10 +14902,6 @@
         "return:S16"
       ]
     },
-    "data_ov002_0210df94": {
-    },
-    "data_ov002_0210df9c": {
-    },
     "data_ov002_0210e05c": {
       "src/unnamed/ov002/__sinit_ov002_02101738.c": [
         "return:int []"
@@ -15127,12 +14921,6 @@
       "src/game/actors/d_a_obj_wakame.cpp": [
         "return:SharedFilePtr"
       ]
-    },
-    "data_ov002_0210e0fc": {},
-    "data_ov002_0210e104": {},
-    "data_ov002_0210e124": {
-    },
-    "data_ov002_0210e12c": {
     },
     "data_ov002_0210e160": {
       "src/_ZN6Player12St_Walk_InitEv.cpp": [
@@ -20473,10 +20261,6 @@
         "return:State []"
       ]
     },
-    "data_ov100_02148600": {
-    },
-    "data_ov100_02148608": {
-    },
     "data_ov100_02148668": {
       "src/actors/daBtfly_c.cpp": [
         "return:SharedFilePtr"
@@ -25499,9 +25283,6 @@
       ],
       "src/unnamed/arm9/0203/func_020319fc.c": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0205/func_02056014.c": [
-        "return:void *"
       ]
     },
     "func_02054ea8": {
@@ -30939,12 +30720,6 @@
       "src/unnamed/ov002/__sinit_ov002_02100560.c": [
         "return:void *"
       ]
-    },
-    "gPianoAttackAnimationFile": {
-    },
-    "gPianoCollisionFile": {
-    },
-    "gPianoModelFile": {
     },
     "gTouchEdge": {
       "src/actors/dMgJump3DMario_c.cpp": [
