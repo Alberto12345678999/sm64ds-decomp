@@ -35195,15 +35195,15 @@
     },
     "ov060:0x02117db8": {
       "author": "andrewboudreau",
-      "name": "func_ov060_02117db8"
+      "name": "_ZN10daKpa3Bg_c19func_ov060_02117db8Ev"
     },
     "ov060:0x021180e0": {
       "author": "tangosdev",
-      "name": "func_ov060_021180e0"
+      "name": "_ZN10daKpa3Bg_c19func_ov060_021180e0Ev"
     },
     "ov060:0x021181b4": {
       "author": "tangosdev",
-      "name": "func_ov060_021181b4"
+      "name": "_ZN10daKpa3Bg_c19func_ov060_021181b4Ev"
     },
     "ov060:0x021181e8": {
       "author": "tangosdev",
@@ -35339,7 +35339,7 @@
     },
     "ov060:0x0211a000": {
       "author": "tangosdev",
-      "name": "__sinit_ov060_0211a000"
+      "name": "__sinit_daKpa3Bg_c.cpp"
     },
     "ov060:0x0211a388": {
       "author": "lunavyqo",
