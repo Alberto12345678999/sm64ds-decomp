@@ -13,6 +13,28 @@
 #include "Sound.h"
 #include "SharedFilePtr.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct WanwanShutterModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    WanwanShutterModelFilePtr(unsigned int fileID);
+    ~WanwanShutterModelFilePtr();
+};
+
+struct WanwanShutterClsnFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    WanwanShutterClsnFilePtr(unsigned int fileID);
+    ~WanwanShutterClsnFilePtr();
+};
+
+typedef char WanwanShutterModelFilePtr_size_must_be_8[
+    sizeof(WanwanShutterModelFilePtr) == 8 ? 1 : -1];
+typedef char WanwanShutterClsnFilePtr_size_must_be_8[
+    sizeof(WanwanShutterClsnFilePtr) == 8 ? 1 : -1];
+
 extern "C" {
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- reached through the
    mangled name because the two by-value Fix12<int> parameters are wall 6az
@@ -31,10 +53,10 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
     unsigned int t, int x, int y, int z);
 
-/* This overlay's file handles and collision-parameter block. This TU claims
-   .text only and does not define them. */
-extern SharedFilePtr data_ov014_021149c0;   /* the BMD model */
-extern SharedFilePtr data_ov014_021149b8;   /* the KCL collision mesh */
+/* This overlay's file handles and collision-parameter block. The two handles
+   are constructed by this TU's static initializer. */
+extern WanwanShutterModelFilePtr data_ov014_021149c0;   /* the BMD model */
+extern WanwanShutterClsnFilePtr data_ov014_021149b8;   /* the KCL collision mesh */
 extern CLPS_Block    data_ov014_02114558;
 }
 
@@ -148,3 +170,8 @@ extern "C" void func_ov014_02112ea8(daObjWanwanShutter_c *a)
    dBgActor_c's -- inlined, because that destructor is defined in its class
    body -- then dBgActor_c's dBgW_KcMbg and Model, then dActor_c. This class
    adds no member with a destructor of its own. */
+
+/* Source order is construction order: model file 1447, then the collision
+ * file 1448. The compiler registers each destructor beside the object. */
+WanwanShutterModelFilePtr data_ov014_021149c0(1447);
+WanwanShutterClsnFilePtr data_ov014_021149b8(1448);
