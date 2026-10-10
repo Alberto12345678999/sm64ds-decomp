@@ -34,14 +34,31 @@
 struct KCL_File;
 struct CLPS_Block;
 
+/* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
+ * constructors and destructors are the ROM resource-family veneers, aliased
+ * in the manifest. */
+struct BkRotebarModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BkRotebarModelFilePtr(u32 fileID);
+    ~BkRotebarModelFilePtr();
+};
+
+struct BkRotebarCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BkRotebarCollisionFilePtr(u32 fileID);
+    ~BkRotebarCollisionFilePtr();
+};
+
 namespace Sound {
 unsigned PlayLong(unsigned handle, unsigned a, unsigned id,
                   const Vector3 &pos, short f);
 }
 
 extern "C" {
-extern SharedFilePtr data_ov015_02114a84;   /* collision KCL */
-extern SharedFilePtr data_ov015_02114a8c;   /* bar BMD */
+extern BkRotebarCollisionFilePtr data_ov015_02114a84;   /* collision KCL */
+extern BkRotebarModelFilePtr data_ov015_02114a8c;       /* bar BMD */
 extern CLPS_Block    data_ov015_02113654;
 
 unsigned char DecIfAbove0_Byte(unsigned char *p);
@@ -135,3 +152,9 @@ s32 daObjBk_Rotebar_c::CleanupResources()
  * member with a destructor of its own. D0's trailing deallocation is the
  * inherited inline operator delete, which is why nothing here names a heap.
  */}
+
+/* The ROM's initializer constructs the model handle with file ID 1435 and
+ * the collision handle with file ID 1436, registering a destructor node for
+ * each. mwcc emits __sinit_d_a_obj_bk_rotebar.cpp from these definitions. */
+BkRotebarModelFilePtr data_ov015_02114a8c(1435);
+BkRotebarCollisionFilePtr data_ov015_02114a84(1436);
