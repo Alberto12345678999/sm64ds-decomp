@@ -6400,6 +6400,7 @@
     "src/actors/daObjTtFuta_c.cpp#__sinit_daObjTtFuta_c.cpp": "github-actions[bot]",
     "src/actors/daObjWlKoopaShutter_c.cpp#daObjWlKoopaShutter_c_classInit": "tangosdev",
     "src/actors/daObjTtWater_c.cpp#daObjTtWater_c_classInit": "tangosdev",
+    "src/actors/daObjTtWater_c.cpp#__sinit_daObjTtWater_c.cpp": "github-actions[bot]",
     "src/actors/daObjCloset_c.cpp#daObjCloset_c_classInit": "tangosdev",
     "src/actors/daBDonketu_c.cpp#daBDonketu_c_classInit": "tangosdev",
     "src/actors/daBtfly_c.cpp#daBtfly_c_classInit": "tangosdev",

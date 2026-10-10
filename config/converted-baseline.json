@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3651,
+  "count": 3652,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -1978,6 +1978,7 @@
     "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c6RenderEv",
     "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_cD0Ev",
     "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_cD1Ev",
+    "src/actors/daObjTtWater_c.cpp#__sinit_daObjTtWater_c.cpp",
     "src/actors/daObjTtWater_c.cpp#daObjTtWater_c_classInit",
     "src/actors/daObjUkiyuka_c.cpp#_ZN14daObjUkiyuka_c6RenderEv",
     "src/actors/daObjUkiyuka_c.cpp#_ZN14daObjUkiyuka_cD0Ev",

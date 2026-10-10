@@ -903,8 +903,6 @@ extern struct daObjFloatBoard_c_Resources data_ov029_02113f00;
 extern int data_ov032_02112f98[];
 extern int data_ov033_02111bc8[];
 extern int data_ov033_02111c1c[];
-extern int data_ov033_021124e8[];
-extern int data_ov033_021124f0[];
 extern int data_ov035_02111bfc[];
 extern int data_ov035_021121d8[];
 extern int data_ov036_02112b48[];
