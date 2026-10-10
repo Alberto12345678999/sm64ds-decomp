@@ -1167,3 +1167,19 @@ extern "C" CoinSpawnInfo g_profile_BLUE_COIN = {
     daCoin_c_classInit_BLUE_COIN, 0x0122, 0x009c, 0x00000002,
     0x00028000, 0x00028000, 0x01000000, 0x00bb8000
 };
+
+/* Per-behavior handler table (indexed by mBehaviorType). */
+typedef void (daCoin_c::*CoinHandler)();
+
+// @symbol data_ov002_0210dc70
+CoinHandler data_ov002_0210dc70[9] = {
+    &daCoin_c::func_ov002_020b2150,
+    &daCoin_c::func_ov002_020b20b4,
+    &daCoin_c::func_ov002_020b1cc0,
+    &daCoin_c::func_ov002_020b1bfc,
+    &daCoin_c::func_ov002_020b2070,
+    &daCoin_c::func_ov002_020b1ad4,
+    &daCoin_c::func_ov002_020b1cc0,
+    &daCoin_c::func_ov002_020b20b4,
+    &daCoin_c::func_ov002_020b1a60
+};
