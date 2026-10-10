@@ -37,6 +37,10 @@ extern "C" dScMgMemory_cState data_ov006_021422bc[];
 extern "C" dScMgMemory_cState data_ov006_021422dc[];
 extern dScMgMemory_cState data_ov006_02142304[];
 extern dScMgMemory_cCardState data_ov006_02142334[];
+/* The player-state table filled by the same initializer; no enrolled
+ * consumer names it yet, so it keeps the shard's grouping with the
+ * no-arg tables. */
+extern "C" dScMgMemory_cState data_ov006_021422a4[];
 
 /* A walk that advances the scene pointer. The card sits at 0x51a8 so the
  * address stays add #0x5000 plus the field. mCards[i] did not match in
@@ -1100,4 +1104,89 @@ extern "C" void *dScMgMemory_c_classInit()
     }
     return scene;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_021311c8 shard).
+ * The sprite-pointer table plus the five PMF state tables plain-copied
+ * from the ROM constants, in retail copy order: the permuted sprite
+ * pointers, the five main states, the six round states, the four result
+ * states, the seven card states, then the three player states. */
+extern "C" int data_ov006_02133810[];
+extern "C" dScMgMemory_cState data_ov006_0213cfd0;
+extern "C" dScMgMemory_cState data_ov006_0213cfc0;
+extern "C" dScMgMemory_cState data_ov006_0213d088;
+extern "C" dScMgMemory_cState data_ov006_0213d080;
+extern "C" dScMgMemory_cState data_ov006_0213d078;
+extern "C" dScMgMemory_cState data_ov006_0213d068;
+extern "C" dScMgMemory_cState data_ov006_0213d060;
+extern "C" dScMgMemory_cState data_ov006_0213d058;
+extern "C" dScMgMemory_cState data_ov006_0213d050;
+extern "C" dScMgMemory_cState data_ov006_0213d000;
+extern "C" dScMgMemory_cState data_ov006_0213cfe0;
+extern "C" dScMgMemory_cState data_ov006_0213d038;
+extern "C" dScMgMemory_cState data_ov006_0213d020;
+extern "C" dScMgMemory_cState data_ov006_0213d030;
+extern "C" dScMgMemory_cState data_ov006_0213d028;
+extern "C" dScMgMemory_cCardState data_ov006_0213d018;
+extern "C" dScMgMemory_cCardState data_ov006_0213cff0;
+extern "C" dScMgMemory_cCardState data_ov006_0213cfe8;
+extern "C" dScMgMemory_cCardState data_ov006_0213cfc8;
+extern "C" dScMgMemory_cCardState data_ov006_0213d010;
+extern "C" dScMgMemory_cCardState data_ov006_0213d008;
+extern "C" dScMgMemory_cCardState data_ov006_0213d070;
+extern "C" dScMgMemory_cState data_ov006_0213cff8;
+extern "C" dScMgMemory_cState data_ov006_0213d048;
+extern "C" dScMgMemory_cState data_ov006_0213d040;
+
+void *data_ov006_0214236c[15] = {
+    (void *)data_ov006_02133810[0],
+    (void *)data_ov006_02133810[1],
+    (void *)data_ov006_02133810[2],
+    (void *)data_ov006_02133810[11],
+    (void *)data_ov006_02133810[12],
+    (void *)data_ov006_02133810[13],
+    (void *)data_ov006_02133810[14],
+    (void *)data_ov006_02133810[3],
+    (void *)data_ov006_02133810[4],
+    (void *)data_ov006_02133810[5],
+    (void *)data_ov006_02133810[6],
+    (void *)data_ov006_02133810[9],
+    (void *)data_ov006_02133810[10],
+    (void *)data_ov006_02133810[7],
+    (void *)data_ov006_02133810[8],
+};
+dScMgMemory_cState data_ov006_021422dc[5] = {
+    data_ov006_0213cfd0,
+    data_ov006_0213cfc0,
+    data_ov006_0213d088,
+    data_ov006_0213d080,
+    data_ov006_0213d078,
+};
+dScMgMemory_cState data_ov006_02142304[6] = {
+    data_ov006_0213d068,
+    data_ov006_0213d060,
+    data_ov006_0213d058,
+    data_ov006_0213d050,
+    data_ov006_0213d000,
+    data_ov006_0213cfe0,
+};
+dScMgMemory_cState data_ov006_021422bc[4] = {
+    data_ov006_0213d038,
+    data_ov006_0213d020,
+    data_ov006_0213d030,
+    data_ov006_0213d028,
+};
+dScMgMemory_cCardState data_ov006_02142334[7] = {
+    data_ov006_0213d018,
+    data_ov006_0213cff0,
+    data_ov006_0213cfe8,
+    data_ov006_0213cfc8,
+    data_ov006_0213d010,
+    data_ov006_0213d008,
+    data_ov006_0213d070,
+};
+dScMgMemory_cState data_ov006_021422a4[3] = {
+    data_ov006_0213cff8,
+    data_ov006_0213d048,
+    data_ov006_0213d040,
+};
 
