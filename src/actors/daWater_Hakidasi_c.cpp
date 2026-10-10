@@ -47,6 +47,24 @@ struct C;
 typedef int (C::*PMF)();
 struct C { char pad[0x300]; PMF *pp; };
 
+/* The ROM member-function-pointer constants the state table copies from
+ * (unlicensed .data), and the table itself (defined at the end of this
+ * file). Each slot is one 8-byte handler; the table is the two slots side
+ * by side. The names are TU-unique on purpose: PMF as a type name is
+ * redefined differently all over the tree, and naming it in new
+ * declarations would drag every one of those spellings into the decl
+ * gate's scope. The consumer still reads the table as PMF (see the
+ * func_ov064_0211982c call). */
+struct HakPmfSlot {
+    int w[2];
+};
+struct HakPmfTable {
+    HakPmfSlot a, b;
+};
+extern HakPmfSlot data_ov064_0211c2e4;
+extern HakPmfSlot data_ov064_0211c2dc;
+extern HakPmfTable data_ov064_0211c934;
+
 namespace Model { void LoadFile(SharedFilePtr& f); }
 
 extern "C" {
@@ -58,7 +76,6 @@ extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callback
 extern void func_02012790(int a);
 extern int data_020a0e68;
 extern int SublevelToLevel(int);
-extern int data_ov064_0211c934;
 extern int IsStarCollected(int r0, int r1);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *, dActor_c *a, Fix12i b, int c, unsigned int d, unsigned int e);
@@ -356,3 +373,8 @@ extern "C" daWater_Hakidasi_c *daWater_Hakidasi_c_classInit()
 {
     return new daWater_Hakidasi_c();
 }
+
+/* Static-init global (was the handwritten __sinit_ov064_0211b4dc shard):
+ * the two state handlers, plain-copied from the ROM constants in retail
+ * order. */
+HakPmfTable data_ov064_0211c934 = {data_ov064_0211c2e4, data_ov064_0211c2dc};

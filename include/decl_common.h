@@ -940,7 +940,6 @@ extern int data_ov063_0211edc0;
 extern int data_ov064_0211b834;
 extern int data_ov064_0211b93c;
 extern int data_ov064_0211c198[];
-extern int data_ov064_0211c934;
 extern int data_ov064_0211c944;
 extern int data_ov064_0211c9c4[];
 extern int data_ov065_0211d680;
