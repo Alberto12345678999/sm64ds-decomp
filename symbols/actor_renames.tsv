@@ -5779,3 +5779,17 @@ ov002	0x020bd4c8	func_ov002_020bd4c8	_ZN6Player19func_ov002_020bd4c8EPhii	Player
 ov002	0x020bd4e0	func_ov002_020bd4e0	_ZN6Player19func_ov002_020bd4e0EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
 ov002	0x020bd600	func_ov002_020bd600	_ZN6Player19func_ov002_020bd600EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
 ov002	0x020bd664	func_ov002_020bd664	_ZN6Player19func_ov002_020bd664EPhii	Player method; Kuppa-script player command dispatcher, called by func_0200e5ac on the player actor through pointer-to-member data_ov002_02110794
+ov002	0x0020d4748	func_ov002_0020d4748	_ZN6Player19func_ov002_020d4748Ev	Player method void(); walk-init speed helper; called from St_Walk_Init/Main on this; method-review 020d2f24-020db8d8
+ov002	0x0020d5338	func_ov002_0020d5338	_ZN6Player19func_ov002_020d5338Ev	Player method int(); state-gated helper; called from Player TU on (Player*)c; method-review 020d2f24-020db8d8
+ov002	0x0020d5ed0	func_ov002_0020d5ed0	_ZN6Player19func_ov002_020d5ed0Ev	Player method int(); mouth-object helper; call site tag-checks 0xbf before calling; method-review 020d2f24-020db8d8
+ov002	0x0020d5f98	func_ov002_0020d5f98	_ZN6Player19func_ov002_020d5f98EPhS0_	Player method int(u8*,u8*); egg-wobble query; daYegg_c calls on mPlayer (Player*); method-review 020d2f24-020db8d8
+ov002	0x0020d6048	func_ov002_0020d6048	_ZN6Player19func_ov002_020d6048Ev	Player method int(); egg-destroy query; daYegg_c calls on mPlayer (Player*); method-review 020d2f24-020db8d8
+ov002	0x0020d6998	func_ov002_0020d6998	_ZN6Player19func_ov002_020d6998Ev	Player method int(); yoshi-power gate; called on this/tagged mouth Player; method-review 020d2f24-020db8d8
+ov002	0x0020d708c	func_ov002_0020d708c	_ZN6Player19func_ov002_020d708cEv	Player method char*(); nearest-targetable-actor search over dActor_c list; method-review 020d2f24-020db8d8
+ov002	0x0020d718c	func_ov002_0020d718c	_ZN6Player19func_ov002_020d718cEv	Player method void(); post-grab reset; called on this/eaten Player incl. daBmb/daStar mEatingPlayer; method-review 020d2f24-020db8d8
+ov002	0x0020d71a0	func_ov002_0020d71a0	_ZN6Player19func_ov002_020d71a0Ev	Player method void(); anim reset; called on this incl. Player TU bdb50; method-review 020d2f24-020db8d8
+ov002	0x0020d93ac	func_ov002_0020d93ac	_ZN6Player19func_ov002_020d93acEv	Player method int(); cap-loss reaction; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020d94cc	func_ov002_0020d94cc	_ZN6Player19func_ov002_020d94ccEv	Player method int(); hurt reaction; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020d98b4	func_ov002_0020d98b4	_ZN6Player19func_ov002_020d98b4Ev	Player method void(); hurt-particle helper; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020daa74	func_ov002_0020daa74	_ZN6Player19func_ov002_020daa74Ev	Player method int(); grab-release helper; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020db8d8	func_ov002_0020db8d8	_ZN6Player19func_ov002_020db8d8Ev	Player method void(); fail-path helper; called on this from 6998; method-review 020d2f24-020db8d8

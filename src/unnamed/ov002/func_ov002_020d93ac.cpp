@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol func_ov002_020d93ac
+// @symbol _ZN6Player19func_ov002_020d93acEv
 /* recovered: shared common types */
 #include "common.h"
+#include "Player.h"
 extern "C" {
-int func_ov002_020d93ac(char *self);
 short GetAngleToCamera(int i);
 }
 
@@ -17,8 +17,9 @@ extern void _ZN6Player18SetNewHatCharacterEjjb(char *self, u32 a, u32 b, bool c)
 extern char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 a, u32 b, const Vector3 &pos, const void *v, int e, int f);
 }
 
-extern "C" int func_ov002_020d93ac(char *self)
+int Player::func_ov002_020d93ac()
 {
+    char *self = (char*)this;
     Vector3 pos;
     char *spawned;
     u32 chr;

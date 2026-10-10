@@ -1,4 +1,6 @@
 //cpp
+// @symbol _ZN6Player19func_ov002_020d708cEv
+#include "Player.h"
 struct VObj {
     virtual void f00();
     virtual void f01();
@@ -26,10 +28,10 @@ extern char* _ZN8dActor_c4NextEPKS_(const char* a);
 extern int Vec3_Dist(const void* a, const void* b);
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern short Vec3_VertAngle(const void* a, const void* b);
-extern char* func_ov002_020d708c(char* self);
 }
 
-char* func_ov002_020d708c(char* self) {
+char* Player::func_ov002_020d708c() {
+    char* self = (char*)this;
     char* a;
     char* best = 0;
     int bestAng = 0x238e;

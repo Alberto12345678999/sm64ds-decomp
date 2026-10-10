@@ -1,7 +1,10 @@
 //cpp
+// @symbol _ZN6Player19func_ov002_020daa74Ev
+#include "Player.h"
 extern "C" void func_ov002_020db54c(void* s, int a, int b, int c);
 
-extern "C" int func_ov002_020daa74(char* self){
+int Player::func_ov002_020daa74(){
+    char* self = (char*)this;
     char* s = *(char**)(self + 0x358);
     int b = (s != 0);
     if (!b)

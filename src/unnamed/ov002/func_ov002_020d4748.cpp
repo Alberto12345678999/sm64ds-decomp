@@ -1,4 +1,5 @@
 //cpp
+// @symbol _ZN6Player19func_ov002_020d4748Ev
 #include "Player.h"
 #include "PlayerInput.h"
 extern "C" {
@@ -29,8 +30,9 @@ static inline unsigned int AnimSpeed(char* c)
     return (unsigned short)(GetAnim(c)[2] >> 12);
 }
 
-extern "C" void func_ov002_020d4748(char* c)
+void Player::func_ov002_020d4748()
 {
+    char* c = (char*)this;
     int i = gActivePlayerSlot * 0x18;
     int flag = 0;
 

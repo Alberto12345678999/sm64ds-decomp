@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov002_020d98b4
+// @symbol _ZN6Player19func_ov002_020d98b4Ev
 /* recovered: shared common types, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: shared common types */
@@ -12,8 +12,10 @@ extern void MulVec3Mat4x3(void* a, void* b, struct Vector3* out);
 extern void Vec3_MulScalar(struct Vector3* out, struct Vector3* in, int s);
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
   unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g);
+}
 
-void func_ov002_020d98b4(char* self){
+void Player::func_ov002_020d98b4(){
+  char* self = (char*)this;
   int t = ((Player *)(self))->func_ov002_020beb38();
   *(unsigned short*)(((int)self + 0x6a4)) -= t;
   {
@@ -33,5 +35,4 @@ void func_ov002_020d98b4(char* self){
       *(unsigned int*)(self+0x628), 0xd6, s.x, s.y, s.z, 0, 0);
   }
   *(int*)(((int)self + 0xb0)) |= 0x80;
-}
 }

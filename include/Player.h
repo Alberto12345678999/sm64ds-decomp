@@ -756,6 +756,25 @@ struct Player : dActor_c {
     void func_ov002_020bd928(unsigned int);
     void func_ov002_020bd984(unsigned int);
     void func_ov002_020bd9ec(unsigned int);
+    /* Player state helpers in the 0x020d2f24..0x020db8d8 span (method review
+       020d2f24-020db8d8). Address-named Player methods, verified against the
+       ROM bodies; parameters stay unnamed so the 258 Player.h consumers keep
+       byte-identical objects (see the Kuppa note above). */
+    void func_ov002_020d4748();
+    int func_ov002_020d5ed0();
+    int func_ov002_020d5338();
+    int func_ov002_020d5f98(unsigned char *, unsigned char *);
+    int func_ov002_020d6048();
+    int func_ov002_020d6998();
+    char *func_ov002_020d708c();
+    void func_ov002_020d718c();
+    void func_ov002_020d71a0();
+    int func_ov002_020d93ac();
+    int func_ov002_020d94cc();
+    void func_ov002_020d98b4();
+    int func_ov002_020daa74();
+    void func_ov002_020db8d8();
+
     void func_ov002_020bda48();
     void func_ov002_020bdb50(int);
     void func_ov002_020bdc18();

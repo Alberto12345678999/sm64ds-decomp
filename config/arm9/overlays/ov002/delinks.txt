@@ -375,11 +375,11 @@ src/unnamed/ov002/func_ov002_020d708c.cpp:
     complete
     .text start:0x020d708c end:0x020d718c
 
-src/unnamed/ov002/func_ov002_020d718c.c:
+src/unnamed/ov002/func_ov002_020d718c.cpp:
     complete
     .text start:0x020d718c end:0x020d71a0
 
-src/unnamed/ov002/func_ov002_020d71a0.c:
+src/unnamed/ov002/func_ov002_020d71a0.cpp:
     complete
     .text start:0x020d71a0 end:0x020d71ec
 

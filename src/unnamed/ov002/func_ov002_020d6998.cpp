@@ -1,8 +1,9 @@
 //cpp
 #include "types.h"
-// @symbol func_ov002_020d6998
+// @symbol _ZN6Player19func_ov002_020d6998Ev
 /* recovered: shared common types */
 #include "common.h"
+#include "Player.h"
 struct VObj {
     virtual void f00();
     virtual void f01();
@@ -39,17 +40,16 @@ extern void _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callbac
 extern int func_ov002_020d7030(char* self, void* other);
 extern void Player_DisableInteraction(char* self);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const struct Vector3* pos);
-extern void func_ov002_020db8d8(char* self);
 extern void _ZN5dCc_c5ClearEv(char* c);
 extern void _ZN5dCc_c6UpdateEv(char* c);
 
 extern s16 data_02082214[];
-extern int func_ov002_020d6998(char* self);
 }
 
 
-int func_ov002_020d6998(char* self)
+int Player::func_ov002_020d6998()
 {
+    char* self = (char*)this;
     s16 saved;
     void* other;
     u32 id;
@@ -80,7 +80,7 @@ int func_ov002_020d6998(char* self)
     if (id == 0) goto fail;
     other = _ZN8dActor_c10FindWithIDEj(id);
     if (other == 0) goto fail;
-    if (other == self) goto fail;
+    if (other == this) goto fail;
 
     if (_ZN6Player15IsCollectingCapEv(self) != 0) goto react;
     if (((VObj*)other)->V18() == 0) goto react;
@@ -131,7 +131,7 @@ react:
     return 1;
 
 fail:
-    func_ov002_020db8d8(self);
+    func_ov002_020db8d8();
     _ZN5dCc_c5ClearEv(self + 0x314);
     _ZN5dCc_c6UpdateEv(self + 0x314);
     return 0;
