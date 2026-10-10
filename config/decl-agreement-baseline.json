@@ -11594,6 +11594,9 @@
       "src/actors/daYegg_c.cpp": [
         "return:int"
       ],
+      "src/unnamed/ov002/func_ov002_020d6dac.c": [
+        "return:unsigned int"
+      ],
       "src/unnamed/ov002/func_ov002_020eed24.cpp": [
         "return:int"
       ]
@@ -18577,19 +18580,9 @@
         "return:int []"
       ]
     },
-    "data_ov060_0211b1f8": {
-      "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov060_0211b200": {
-      "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "return:void *"
-      ]
-    },
     "data_ov060_0211b208": {
-      "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "return:void *"
+      "src/actors/daFRing_c.cpp": [
+        "return:FRingModelFilePtr"
       ]
     },
     "data_ov062_0211dde8": {
