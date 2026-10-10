@@ -71,6 +71,9 @@ src/actors/daWater_Hakidasi_c.cpp:
 src/actors/daWater_Ring_c.cpp:
     complete
     .text start:0x02119a58 end:0x0211a200
+    .init start:0x0211b518 end:0x0211b59c
+    .ctor start:0x0211b74c end:0x0211b750
+    .bss start:0x0211c944 end:0x0211c964
 
 src/actors/daObjTbox_c.cpp:
     complete
@@ -115,10 +118,6 @@ src/unnamed/ov064/__sinit_ov064_0211b1d4.c:
 src/unnamed/ov064/__sinit_ov064_0211b4dc.c:
     complete
     .init start:0x0211b4dc end:0x0211b518
-
-src/unnamed/ov064/__sinit_ov064_0211b518.c:
-    complete
-    .init start:0x0211b518 end:0x0211b59c
 
 src/unnamed/ov064/__sinit_ov064_0211b698.c:
     complete
