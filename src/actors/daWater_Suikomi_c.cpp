@@ -52,6 +52,20 @@ struct SuikomiStateRec {
     SuikomiStateFn execute;
 };
 
+/* The ROM member-function-pointer constants the state table copies from
+ * (unlicensed .data). */
+extern SuikomiStateFn data_ov026_02113dd8;
+extern SuikomiStateFn data_ov026_02113dd0;
+
+/* The state table at 0x02113f58: the two handlers this TU's InitResources
+ * hands to func_ov026_021122d4, plus section-end fill (see the definition
+ * at the end of this file). */
+struct SuikomiStateTable {
+    SuikomiStateFn handlers[2];
+    u8 tailFill[0x18];
+};
+extern SuikomiStateTable data_ov026_02113f58;
+
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 struct V3 {
@@ -188,3 +202,13 @@ extern "C" daWater_Suikomi_c *daWater_Suikomi_c_classInit()
 {
     return new daWater_Suikomi_c();
 }
+
+/* Static-init global (was the handwritten __sinit_ov026_02112d68 shard):
+ * the two state handlers, plain-copied from the ROM constants in retail
+ * order. The trailing fill runs to the 0x02113f80 section end, which dsd
+ * sizes the trailing symbol to; the initializer never touches it and it is
+ * zeros (kuriking precedent). */
+SuikomiStateTable data_ov026_02113f58 = {
+    {data_ov026_02113dd8, data_ov026_02113dd0},
+    {},
+};
