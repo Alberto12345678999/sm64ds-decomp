@@ -1,6 +1,6 @@
 //cpp
 /* dBase_c -- the middle link of the actor hierarchy: fBase_c -> dBase_c ->
- * dActor_c (arm9 0x02013e80..0x02013f28).
+ * dActor_c (arm9 0x02013e80..0x02013f4c).
  *
  * Adds no members and no new virtuals; AfterInitResources (slot 2) is the key
  * function, so this TU owns the vtable with D1/D0 dragged in beside it and no
@@ -25,6 +25,22 @@
 extern "C" {
 extern void func_02042fe4(int a, int b, int c);
 extern fBase_c *func_02042ffc(u32 actorID, fBase_c *parent);
+/* local extern: no header declares it; the next ROM entry's crash-forward
+ * target, called only by the absorbed spin below. */
+extern void func_02013f4c(void);
+}
+
+// @symbol func_02013f28
+/* Absorbed from src/unnamed/arm9/0201/func_02013f28.c
+ * (arm9 0x02013f28..0x02013f4c): fatal-error spin, IME off then call the
+ * next entry forever. Defined first because this file emits in reverse
+ * source order, so the tail body lands at the run's right edge. */
+extern "C" void func_02013f28(void)
+{
+    *(volatile unsigned short *)0x4000208;
+    *(volatile unsigned short *)0x4000208 = 0;
+    for (;;)
+        func_02013f4c();
 }
 
 // @symbol _ZN7dBase_c18AfterInitResourcesEj
