@@ -18,11 +18,10 @@ src/game/actors/d_a_wanwan.cpp:
 src/game/actors/d_a_obj_wanwan_shutter.cpp:
     complete
     .text start:0x02112e0c end:0x021130ac
+    .init start:0x021132fc end:0x02113368
+    .ctor start:0x02113370 end:0x02113374
+    .bss start:0x021149b8 end:0x021149e0
 
 src/unnamed/ov014/__sinit_ov014_021130ac.c:
     complete
     .init start:0x021130ac end:0x02113118
-
-src/unnamed/ov014/__sinit_ov014_021132fc.c:
-    complete
-    .init start:0x021132fc end:0x02113368
