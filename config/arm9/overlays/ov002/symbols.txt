@@ -1601,7 +1601,7 @@ __sinit_dEnemyBase_c.cpp kind:function(arm,size=0x1a4) addr:0x02100938
 __sinit_da1up_c.cpp kind:function(arm,size=0x174) addr:0x02100adc
 __sinit_daCoin_c.cpp kind:function(arm,size=0xf4) addr:0x02100c50
 __sinit_ov002_02100d44 kind:function(arm,size=0x10c) addr:0x02100d44
-__sinit_ov002_02100e50 kind:function(arm,size=0x74) addr:0x02100e50
+__sinit_daObjBlockItemTag_c.cpp kind:function(arm,size=0x74) addr:0x02100e50
 __sinit_d_a_obj_hatena_switch.cpp kind:function(arm,size=0xc0) addr:0x02100ec4
 __sinit_ov002_02100f84 kind:function(arm,size=0xe0) addr:0x02100f84
 __sinit_daObjMarioCap_c.cpp kind:function(arm,size=0x414) addr:0x02101064
@@ -1627,7 +1627,7 @@ __sinit_ov002_02108094 kind:function(arm,size=0x3c) addr:0x02108094
 .p__sinit_da1up_c.cpp kind:data(word) addr:0x021080d8
 .p__sinit_daCoin_c.cpp kind:data(word) addr:0x021080dc
 .p__sinit_ov002_02100d44 kind:data(word) addr:0x021080e0
-.p__sinit_ov002_02100e50 kind:data(word) addr:0x021080e4
+.p__sinit_daObjBlockItemTag_c.cpp kind:data(word) addr:0x021080e4
 .p__sinit_d_a_obj_hatena_switch.cpp kind:data(word) addr:0x021080e8
 .p__sinit_ov002_02100f84 kind:data(word) addr:0x021080ec
 .p__sinit_daObjMarioCap_c.cpp kind:data(word) addr:0x021080f0
@@ -1745,10 +1745,10 @@ data_ov002_02108ab0 kind:data(any) addr:0x02108ab0
 data_ov002_02108ab4 kind:data(any) addr:0x02108ab4
 data_ov002_02108ab8 kind:data(any) addr:0x02108ab8
 _ZTV13daObjBlockL_c kind:data(any) addr:0x02108adc
-data_ov002_02108b5c kind:data(any) addr:0x02108b5c
-data_ov002_02108b64 kind:data(any) addr:0x02108b64
-data_ov002_02108b6c kind:data(any) addr:0x02108b6c
-data_ov002_02108b74 kind:data(any) addr:0x02108b74
+@564 kind:data(any) addr:0x02108b5c
+@568 kind:data(any) addr:0x02108b64
+@562 kind:data(any) addr:0x02108b6c
+@566 kind:data(any) addr:0x02108b74
 _ZTI19daObjBlockItemTag_c kind:data(any) addr:0x02108b7c
 _ZTS19daObjBlockItemTag_c kind:data(any) addr:0x02108b88
 g_profile_BLK_SKINOKO_TAG kind:data(any) addr:0x02108ba0

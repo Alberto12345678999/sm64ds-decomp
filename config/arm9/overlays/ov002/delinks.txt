@@ -68,6 +68,10 @@ src/actors/daObjBlockL_c.cpp:
 src/actors/daObjBlockItemTag_c.cpp:
     complete
     .text start:0x020b415c end:0x020b46a0
+    .init start:0x02100e50 end:0x02100ec4
+    .ctor start:0x021080e4 end:0x021080e8
+    .data start:0x02108b5c end:0x02108b7c
+    .bss start:0x0210dd30 end:0x0210dd50
 
 src/game/actors/d_a_obj_kinoko_tag.cpp:
     complete
@@ -1401,10 +1405,6 @@ src/unnamed/ov002/__sinit_ov002_02100560.c:
 src/unnamed/ov002/__sinit_ov002_02100d44.c:
     complete
     .init start:0x02100d44 end:0x02100e50
-
-src/unnamed/ov002/__sinit_ov002_02100e50.c:
-    complete
-    .init start:0x02100e50 end:0x02100ec4
 
 src/unnamed/ov002/__sinit_ov002_02100f84.c:
     complete
