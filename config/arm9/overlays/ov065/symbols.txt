@@ -155,7 +155,7 @@ __sinit_ov065_0211c7d8 kind:function(arm,size=0xb8) addr:0x0211c7d8
 __sinit_ov065_0211c890 kind:function(arm,size=0x6c) addr:0x0211c890
 __sinit_ov065_0211c8fc kind:function(arm,size=0xbc) addr:0x0211c8fc
 __sinit_ov065_0211c9b8 kind:function(arm,size=0xbc) addr:0x0211c9b8
-__sinit_ov065_0211ca74 kind:function(arm,size=0x6c) addr:0x0211ca74
+__sinit_daObjCtMecha09_c.cpp kind:function(arm,size=0x6c) addr:0x0211ca74
 .p__sinit_ov065_0211c110 kind:data(word) addr:0x0211cae0
 .p__sinit_daBasabasa_c.cpp kind:data(word) addr:0x0211cae4
 .p__sinit_daDossy_c.cpp kind:data(word) addr:0x0211cae8
@@ -165,7 +165,7 @@ __sinit_ov065_0211ca74 kind:function(arm,size=0x6c) addr:0x0211ca74
 .p__sinit_ov065_0211c890 kind:data(word) addr:0x0211caf8
 .p__sinit_ov065_0211c8fc kind:data(word) addr:0x0211cafc
 .p__sinit_ov065_0211c9b8 kind:data(word) addr:0x0211cb00
-.p__sinit_ov065_0211ca74 kind:data(word) addr:0x0211cb04
+.p__sinit_daObjCtMecha09_c.cpp kind:data(word) addr:0x0211cb04
 data_ov065_0211cb20 kind:data(any) addr:0x0211cb20
 data_ov065_0211cb28 kind:data(any) addr:0x0211cb28
 data_ov065_0211cb30 kind:data(any) addr:0x0211cb30
@@ -354,5 +354,6 @@ data_ov065_0211d9bc kind:bss addr:0x0211d9bc ambiguous
 data_ov065_0211d9c0 kind:bss addr:0x0211d9c0
 data_ov065_0211d9cc kind:bss addr:0x0211d9cc
 data_ov065_0211d9d4 kind:bss addr:0x0211d9d4
-data_ov065_0211d9dc kind:bss addr:0x0211d9dc
-data_ov065_0211d9e8 kind:bss addr:0x0211d9e8
+@539 kind:bss addr:0x0211d9dc
+@537 kind:bss addr:0x0211d9e8
+data_ov065_0211d9f4 kind:bss addr:0x0211d9f4
