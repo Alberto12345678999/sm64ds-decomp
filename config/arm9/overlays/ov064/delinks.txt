@@ -67,6 +67,9 @@ src/d_a_obj_fl_puzzle.c:
 src/actors/daWater_Hakidasi_c.cpp:
     complete
     .text start:0x02119330 end:0x02119a58
+    .init start:0x0211b4dc end:0x0211b518
+    .ctor start:0x0211b748 end:0x0211b74c
+    .bss start:0x0211c934 end:0x0211c944
 
 src/actors/daWater_Ring_c.cpp:
     complete
@@ -111,10 +114,6 @@ src/unnamed/ov064/__sinit_ov064_0211b150.c:
 src/unnamed/ov064/__sinit_ov064_0211b1d4.c:
     complete
     .init start:0x0211b1d4 end:0x0211b4dc
-
-src/unnamed/ov064/__sinit_ov064_0211b4dc.c:
-    complete
-    .init start:0x0211b4dc end:0x0211b518
 
 src/unnamed/ov064/__sinit_ov064_0211b518.c:
     complete
