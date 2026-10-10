@@ -26,10 +26,6 @@ src/unnamed/ov070/__sinit_ov070_02122f30.c:
     complete
     .init start:0x02122f30 end:0x02123030
 
-src/unnamed/ov070/__sinit_ov070_02123030.c:
-    complete
-    .init start:0x02123030 end:0x021230a4
-
 src/game/actors/d_a_krpa.cpp:
     complete
     .text start:0x02121118 end:0x02121b48
@@ -37,3 +33,6 @@ src/game/actors/d_a_krpa.cpp:
 src/game/actors/d_a_kp_fr.cpp:
     complete
     .text start:0x02121b48 end:0x02122244
+    .init start:0x02123030 end:0x021230a4
+    .ctor start:0x021230b0 end:0x021230b4
+    .bss start:0x021236ec end:0x0212370c
