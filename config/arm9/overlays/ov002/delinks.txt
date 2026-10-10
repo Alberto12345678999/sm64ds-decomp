@@ -1325,6 +1325,9 @@ src/game/actors/d_a_obj_number.cpp:
 src/actors/daObj1UpLogo_c.cpp:
     complete
     .text start:0x020f0dd0 end:0x020f11b0
+    .init start:0x02107298 end:0x02107304
+    .ctor start:0x02108120 end:0x02108124
+    .bss start:0x02110a9c end:0x02110ac4
 
 src/game/actors/d_a_obj_bc_switch.cpp:
     complete
@@ -1418,10 +1421,6 @@ src/unnamed/ov002/__sinit_ov002_02101894.c:
 src/unnamed/ov002/__sinit_ov002_021019d0.c:
     complete
     .init start:0x021019d0 end:0x02106e40
-
-src/unnamed/ov002/__sinit_ov002_02107298.c:
-    complete
-    .init start:0x02107298 end:0x02107304
 
 src/unnamed/ov002/__sinit_ov002_02107304.c:
     complete
