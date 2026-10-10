@@ -336,7 +336,7 @@
       "ordinal": 41
     },
     {
-      "symbol": "__arraydtor$939",
+      "symbol": "__arraydtor$940",
       "address": "0x020b4a7c",
       "size": "0x00000024",
       "legacy_source": "src/func_ov004_020b4a7c.c",
@@ -365,7 +365,7 @@
       "address": "0x020bf41c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-generated destructor-registration node for the Elem record pool (emitted @940, renamed: @940 is already promoted by other modules)"
+      "evidence": "compiler-generated destructor-registration node for the Elem record pool (emitted @941, renamed: @941 is already promoted by other modules)"
     },
     {
       "symbol": "data_ov004_020bf428",
@@ -407,7 +407,7 @@
       "address": "0x020bf648",
       "size": "0x39c",
       "binding": "STB_GLOBAL",
-      "evidence": "the 3 x 0x134 Elem record pool; the initializer runs __cxa_vec_ctor over it and registers __arraydtor$939 for cleanup"
+      "evidence": "the 3 x 0x134 Elem record pool; the initializer runs __cxa_vec_ctor over it and registers __arraydtor$940 for cleanup"
     }
   ],
   "notes": [
@@ -427,15 +427,22 @@
     "functions_matched": 44,
     "functions_declared": 44,
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": [],
+      "requested": [
+        "_ZN4ElemC2Ev"
+      ],
+      "deadstripped": [
+        "_ZN4ElemC2Ev"
+      ],
+      "droppedSections": [
+        80
+      ],
       "data": [],
       "dataExternalized": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 2 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -507,19 +514,19 @@
           {
             "section": ".init",
             "original": [
-              90
+              91
             ],
             "desired": [
-              90
+              91
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              88
+              89
             ],
             "desired": [
-              88
+              89
             ]
           },
           {
@@ -534,22 +541,22 @@
           {
             "section": ".bss",
             "original": [
-              81,
               82,
               83,
               84,
               85,
               86,
-              87
+              87,
+              88
             ],
             "desired": [
-              81,
-              85,
-              84,
+              82,
               86,
+              85,
               87,
-              83,
-              82
+              88,
+              84,
+              83
             ]
           }
         ],
@@ -558,31 +565,31 @@
             {
               "section": ".bss",
               "original": [
-                81,
                 82,
                 83,
                 84,
                 85,
-                86,
-                87
-              ],
-              "desired": [
-                81,
-                85,
-                84,
                 86,
                 87,
-                83,
-                82
+                88
+              ],
+              "desired": [
+                82,
+                86,
+                85,
+                87,
+                88,
+                84,
+                83
               ],
               "slots": [
-                81,
                 82,
                 83,
                 84,
                 85,
                 86,
-                87
+                87,
+                88
               ]
             }
           ],
@@ -627,7 +634,13 @@
     }
   },
   "production_mode": "intact-object",
-  "compiler_only_output": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN4ElemC2Ev",
+      "disposition": "deadstrip",
+      "reason": "mwccarm emits the base-object constructor beside the licensed complete-object C1; the ROM has no configured C2 home"
+    }
+  ],
   "init": [
     {
       "symbol": "__sinit_unit020b2c84.cpp",
@@ -657,9 +670,9 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@940",
+      "from": "@941",
       "to": "@938",
-      "evidence": "mwcc emits the destructor-registration node as @940, already promoted by other modules; @938 is unused fleet-wide and the same length"
+      "evidence": "mwcc emits the destructor-registration node as @941, already promoted by other modules; @938 is unused fleet-wide and the same length"
     }
   ],
   "symbol_binding_rewrites": [
@@ -682,7 +695,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "__arraydtor$939",
+      "symbol": "__arraydtor$940",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local array destructor thunk for the Elem pool; it is a configured initializer relocation destination at 0x020b4a7c"
@@ -760,7 +773,7 @@
       "source": "0x20b99c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__arraydtor$939",
+      "symbol": "__arraydtor$940",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20b4a7c"

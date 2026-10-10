@@ -1092,6 +1092,7 @@ ov016	0x02113434	func_ov016_02113434	_ZN13daSlide_Box_c13InitResourcesEv	vtable 
 ov016	0x02113510	func_ov016_02113510	SlidingBox_Spawn	spawnfunc
 ov016	0x02113510	SlidingBox_Spawn	daSlide_Box_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114898	data_ov016_02114898	BookSwitch_SpawnInfo	spawninfo
+ov016	0x02114898	BookSwitch_SpawnInfo	@1111	daMoray_c sinit fold: the TU licenses the object as its emitted PMF record @1111; the coined spawn-table name cannot reach symbols.txt because objisolate cannot grow a name
 ov016	0x021148e0	data_ov016_021148e0	Unagi_SpawnInfo	spawninfo
 ov016	0x021148e0	Unagi_SpawnInfo	g_profile_MORAY	reconstructed profile global; literal ROM ID MORAY+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114958	data_ov016_02114958	_ZTV9daMoray_c	vtable alloc=0x4b0
