@@ -30,8 +30,27 @@ enum {
     kLastFrame = 7
 };
 
-extern SharedFilePtr data_ov002_02110aa4; /* BMD */
-extern SharedFilePtr data_ov002_02110a9c; /* BTP */
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x436, texture-sequence file 0x437). mwcc emits
+ * __sinit_daObj1UpLogo_c.cpp from those definitions. The wrapper names
+ * are local; the handle constructors and destructors are the ROM
+ * resource-family functions, aliased in the manifest. */
+struct OneUpLogoModelFile : SharedFilePtr {
+    u32 words[2];
+
+    OneUpLogoModelFile(u32 fileID);
+    ~OneUpLogoModelFile();
+};
+
+struct OneUpLogoTexSeqFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    OneUpLogoTexSeqFilePtr(u32 fileID);
+    ~OneUpLogoTexSeqFilePtr();
+};
+
+extern OneUpLogoModelFile data_ov002_02110aa4; /* BMD */
+extern OneUpLogoTexSeqFilePtr data_ov002_02110a9c; /* BTP */
 
 extern "C" {
 void Matrix4x3_FromTranslation(Matrix4x3 *matrix, s32 x, s32 y, s32 z);
@@ -172,3 +191,10 @@ extern "C" daObj1UpLogo_c *daObj1UpLogo_c_classInit()
 {
     return new daObj1UpLogo_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov002_02107298 shard).
+ * Definition order is the retail initializer's construction order: the
+ * model handle (file 0x436), then the texture-sequence handle
+ * (file 0x437). */
+OneUpLogoModelFile data_ov002_02110aa4(0x436);
+OneUpLogoTexSeqFilePtr data_ov002_02110a9c(0x437);

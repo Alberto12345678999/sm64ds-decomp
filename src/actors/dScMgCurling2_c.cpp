@@ -24,6 +24,12 @@
  * complete. */
 struct C;
 typedef void (C::*PMF)(int);
+typedef void (C::*PMF0)();
+/* PMF1 mirrors the upper half's spelling of its own table element type
+ * (src/actors/dScMgCurling2_c_upper.cpp); the decl gate compares
+ * cross-TU spellings, and the table defined below resolves that TU's
+ * extern. Structurally it is the same pointer-to-member as PMF. */
+typedef void (C::*PMF1)(int);
 
 /* Everything this file calls or reads that no included header declares.
  * Keep it above the first function. */
@@ -62,6 +68,35 @@ extern PMF data_ov006_02141988[];
 extern PMF data_ov006_021419a0[];
 extern PMF data_ov006_021419b8[];
 extern PMF data_ov006_021419f8[];
+/* The ROM PMF constants all seven state tables copy from (unlicensed
+ * .data), grouped by destination table in retail copy order. The other
+ * three tables live on the upper half of this class
+ * (src/actors/dScMgCurling2_c_upper.cpp), whose externs resolve here. */
+extern PMF0 data_ov006_0213c47c;
+extern PMF0 data_ov006_0213c414;
+extern PMF0 data_ov006_0213c404;
+extern PMF0 data_ov006_0213c424;
+extern PMF0 data_ov006_0213c3f4;
+extern PMF1 data_ov006_0213c3e4;
+extern PMF1 data_ov006_0213c3dc;
+extern PMF1 data_ov006_0213c3d4;
+extern PMF1 data_ov006_0213c3ec;
+extern PMF0 data_ov006_0213c4b4;
+extern PMF0 data_ov006_0213c4ac;
+extern PMF data_ov006_0213c42c;
+extern PMF data_ov006_0213c494;
+extern PMF data_ov006_0213c48c;
+extern PMF data_ov006_0213c474;
+extern PMF data_ov006_0213c40c;
+extern PMF data_ov006_0213c464;
+extern PMF data_ov006_0213c45c;
+extern PMF data_ov006_0213c49c;
+extern PMF data_ov006_0213c444;
+extern PMF data_ov006_0213c43c;
+extern PMF data_ov006_0213c4a4;
+extern PMF data_ov006_0213c41c;
+extern PMF data_ov006_0213c484;
+extern PMF data_ov006_0213c46c;
 
 }  /* extern "C" */
 
@@ -969,3 +1004,48 @@ void dScMgCurling2_c::SeparateStones(int idx)
         }
     }
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_02130758 shard).
+ * All seven PMF state tables plain-copied from the ROM PMF constants, in
+ * retail copy order. The block is one contiguous .bss run shared with the
+ * upper half of this class, so every table is defined here and the upper
+ * TU's externs resolve to these definitions. */
+PMF0 data_ov006_02141a18[5] = {
+    data_ov006_0213c47c,
+    data_ov006_0213c414,
+    data_ov006_0213c404,
+    data_ov006_0213c424,
+    data_ov006_0213c3f4,
+};
+PMF1 data_ov006_021419d8[4] = {
+    data_ov006_0213c3e4,
+    data_ov006_0213c3dc,
+    data_ov006_0213c3d4,
+    data_ov006_0213c3ec,
+};
+PMF0 data_ov006_02141978[2] = {
+    data_ov006_0213c4b4,
+    data_ov006_0213c4ac,
+};
+PMF data_ov006_02141988[3] = {
+    data_ov006_0213c42c,
+    data_ov006_0213c494,
+    data_ov006_0213c48c,
+};
+PMF data_ov006_021419b8[4] = {
+    data_ov006_0213c474,
+    data_ov006_0213c40c,
+    data_ov006_0213c464,
+    data_ov006_0213c45c,
+};
+PMF data_ov006_021419f8[4] = {
+    data_ov006_0213c49c,
+    data_ov006_0213c444,
+    data_ov006_0213c43c,
+    data_ov006_0213c4a4,
+};
+PMF data_ov006_021419a0[3] = {
+    data_ov006_0213c41c,
+    data_ov006_0213c484,
+    data_ov006_0213c46c,
+};

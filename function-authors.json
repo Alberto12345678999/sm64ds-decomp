@@ -30187,7 +30187,7 @@
     },
     "ov010:0x0211215c": {
       "author": "tangosdev",
-      "name": "__sinit_ov010_0211215c"
+      "name": "__sinit_daObjC1Peach_c.cpp"
     },
     "ov012:0x021111a0": {
       "author": "github-actions[bot]",
@@ -30819,7 +30819,7 @@
     },
     "ov015:0x02112fdc": {
       "author": "tangosdev",
-      "name": "__sinit_ov015_02112fdc"
+      "name": "__sinit_daObjBk_Botaosi_c.cpp"
     },
     "ov015:0x02113048": {
       "author": "tangosdev",
@@ -30827,11 +30827,11 @@
     },
     "ov015:0x02113264": {
       "author": "tangosdev",
-      "name": "__sinit_ov015_02113264"
+      "name": "__sinit_daObjBk_Lift_c.cpp"
     },
     "ov015:0x021132d0": {
       "author": "tangosdev",
-      "name": "__sinit_ov015_021132d0"
+      "name": "__sinit_d_a_obj_bk_rotebar.cpp"
     },
     "ov015:0x0211333c": {
       "author": "tangosdev",
@@ -33071,7 +33071,7 @@
     },
     "ov029:0x02112ba4": {
       "author": "tangosdev",
-      "name": "__sinit_ov029_02112ba4"
+      "name": "__sinit_d_a_obj_wc_obj02.cpp"
     },
     "ov029:0x02112c10": {
       "author": "tangosdev",
@@ -33079,7 +33079,7 @@
     },
     "ov029:0x02112c4c": {
       "author": "tangosdev",
-      "name": "__sinit_ov029_02112c4c"
+      "name": "__sinit_d_a_obj_wc_obj05.cpp"
     },
     "ov029:0x02112cb8": {
       "author": "tangosdev",
@@ -33091,11 +33091,11 @@
     },
     "ov029:0x02112d90": {
       "author": "tangosdev",
-      "name": "__sinit_ov029_02112d90"
+      "name": "__sinit_d_a_obj_wc_mizu.cpp"
     },
     "ov029:0x02112dfc": {
       "author": "tangosdev",
-      "name": "__sinit_ov029_02112dfc"
+      "name": "__sinit_d_a_obj_wc_obj04.cpp"
     },
     "ov030:0x021111a0": {
       "author": "tangosdev",
@@ -33339,7 +33339,7 @@
     },
     "ov030:0x0211484c": {
       "author": "tangosdev",
-      "name": "__sinit_ov030_0211484c"
+      "name": "__sinit_d_a_obj_hm_bskt.cpp"
     },
     "ov030:0x021148b8": {
       "author": "tangosdev",
@@ -34423,7 +34423,7 @@
     },
     "ov045:0x021121a8": {
       "author": "tangosdev",
-      "name": "__sinit_ov045_021121a8"
+      "name": "__sinit_d_a_obj_km2_agaru.cpp"
     },
     "ov045:0x02112214": {
       "author": "tangosdev",
@@ -35195,15 +35195,15 @@
     },
     "ov060:0x02117db8": {
       "author": "andrewboudreau",
-      "name": "func_ov060_02117db8"
+      "name": "_ZN10daKpa3Bg_c19func_ov060_02117db8Ev"
     },
     "ov060:0x021180e0": {
       "author": "tangosdev",
-      "name": "func_ov060_021180e0"
+      "name": "_ZN10daKpa3Bg_c19func_ov060_021180e0Ev"
     },
     "ov060:0x021181b4": {
       "author": "tangosdev",
-      "name": "func_ov060_021181b4"
+      "name": "_ZN10daKpa3Bg_c19func_ov060_021181b4Ev"
     },
     "ov060:0x021181e8": {
       "author": "tangosdev",
@@ -35339,7 +35339,7 @@
     },
     "ov060:0x0211a000": {
       "author": "tangosdev",
-      "name": "__sinit_ov060_0211a000"
+      "name": "__sinit_daKpa3Bg_c.cpp"
     },
     "ov060:0x0211a388": {
       "author": "lunavyqo",
@@ -37707,7 +37707,7 @@
     },
     "ov065:0x0211c7d8": {
       "author": "tangosdev",
-      "name": "__sinit_ov065_0211c7d8"
+      "name": "__sinit_daObjCtMecha04_c.cpp"
     },
     "ov065:0x0211c890": {
       "author": "tangosdev",

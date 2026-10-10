@@ -1,7 +1,7 @@
 extern void func_ov073_021223a4(char *c, void *p);
-extern int data_ov073_021234b0;
-extern int data_ov073_021234c0;
-extern int data_ov073_021234d0;
+extern struct daObjEwbIce_State data_ov073_021234b0;
+extern struct daObjEwbIce_State data_ov073_021234c0;
+extern struct daObjEwbIce_State data_ov073_021234d0;
 void func_ov073_02122730(char *r0, char *r1)
 {
     int b = (int)(*(unsigned short*)(r1 + 0xc) == 0xda);

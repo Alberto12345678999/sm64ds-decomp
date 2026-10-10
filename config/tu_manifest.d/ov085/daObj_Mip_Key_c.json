@@ -4,6 +4,7 @@
   "source": "src/actors/daObj_Mip_Key_c.cpp",
   "promoted_source": "src/actors/daObj_Mip_Key_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x212cc88..0x212d4e8, 14 function(s), from build/tu_map.json (tools/tu_map.py); extended to 0x212d528 to take in daObj_Mip_Key_c_classInit at 0x212d4e8, which tu_map cannot label because its symbol is neither func_ov085_* nor _ZN15daObj_Mip_Key_c*. It is contiguous with the run, it is this class's own factory (it allocates this class's 0x1a0 and installs this class's vtable), and 0x212d528 is the next class's destructor. The sibling TUs ov085/daMip_c and ov085/daC_Jugem_c took in their own classInit on the same grounds.",
@@ -16,6 +17,21 @@
       "name": ".text",
       "start": "0x0212cc88",
       "end": "0x0212d528"
+    },
+    {
+      "name": ".init",
+      "start": "0x0212f9bc",
+      "end": "0x0212fa40"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x0212fdfc",
+      "end": "0x0212fe00"
+    },
+    {
+      "name": ".bss",
+      "start": "0x0213071c",
+      "end": "0x0213073c"
     }
   ],
   "functions": [
@@ -125,8 +141,127 @@
       "ordinal": 14
     }
   ],
+  "init": [
+    {
+      "symbol": "__sinit_daObj_Mip_Key_c.cpp",
+      "address": "0x0212f9bc",
+      "size": "0x84",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov085_0212f9bc and carries the same six relocation sites"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_daObj_Mip_Key_c.cpp",
+      "address": "0x0212fdfc",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov085_0213071c",
+      "address": "0x0213071c",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "MipKeyState {enter, execute}; the initializer copies the .data PMF literals at 0x02130184 and 0x0213018c into it"
+    },
+    {
+      "symbol": "data_ov085_0213072c",
+      "address": "0x0213072c",
+      "size": "0x10",
+      "binding": "STB_GLOBAL",
+      "evidence": "MipKeyState {enter, execute}; the initializer copies the .data PMF literals at 0x0213017c and 0x02130174 into it"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_daObj_Mip_Key_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_daObj_Mip_Key_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x0212fa28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov085_02130184",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x02130184"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212fa2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov085_0213018c",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x0213018c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212fa30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov085_0213017c",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x0213017c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212fa34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov085_02130174",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x02130174"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212fa38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov085_0213071c",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x0213071c"
+    },
+    {
+      "section": ".init",
+      "source": "0x0212fa3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov085_0213072c",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x0213072c"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x0212fdfc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_daObj_Mip_Key_c.cpp",
+      "addend": 0,
+      "target_module": "ov085",
+      "target_address": "0x0212f9bc"
+    }
+  ],
   "notes": [
     "Historical shadow-TU construction and verification are preserved in https://github.com/tangosdev/sm64ds-decomp/blob/e4d76233ccebc942180bcdeb4a19d34d2d65bdd6/config/tu_manifest.d/ov085/daObj_Mip_Key_c.json . Those text-only results do not establish genuine method form for the seven address-named helper entry points.",
     "Current producer source corrections replace MipKeyHost, manual state dispatch, fake model vtable, volatile carry vector and local vector shadow types with the actual class fields, PMF calls, model interfaces and Vector3. Pinned per-site probes are recorded in notes/experiments/mip-key-2853-source-forms.md.",
@@ -155,8 +290,6 @@
         9,
         10,
         15,
-        35,
-        36,
         37,
         38,
         39,
@@ -171,7 +304,9 @@
         48,
         49,
         50,
-        51
+        51,
+        52,
+        53
       ],
       "data": [
         "_ZTV15daObj_Mip_Key_c",
@@ -203,9 +338,133 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 17 unlicensed section/symbol(s), 1 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov085-daObj_Mip_Key_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x0212cc88",
+        "end": "0x0212d528",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x0212cc88",
+          "end": "0x0212d528",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x0212f9bc",
+          "end": "0x0212fa40",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x0212fdfc",
+          "end": "0x0212fe00",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x0213071c",
+          "end": "0x0213073c",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 19
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              56
+            ],
+            "desired": [
+              56
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              54
+            ],
+            "desired": [
+              54
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              35,
+              36
+            ],
+            "desired": [
+              35,
+              36
+            ]
+          }
+        ],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true,
+        "note": "LOCAL WORKER NOTE: this PC's EU dump builds ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40; the fleet-canonical stock hash is recorded per #3691."
+      },
+      "linkerOutput": null
     }
   },
   "compiler_only_output": [

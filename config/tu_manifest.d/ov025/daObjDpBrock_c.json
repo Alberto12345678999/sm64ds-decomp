@@ -17,6 +17,21 @@
       "name": ".text",
       "start": "0x02111d40",
       "end": "0x021120e4"
+    },
+    {
+      "name": ".init",
+      "start": "0x02112a44",
+      "end": "0x02112aac"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x02112b20",
+      "end": "0x02112b24"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02113ab0",
+      "end": "0x02113ad8"
     }
   ],
   "functions": [
@@ -85,7 +100,36 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov025_02113ab0",
+      "address": "0x02113ab0",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "collision file handle constructed with file ID 1504"
+    },
+    {
+      "symbol": "data_ov025_02113ab8",
+      "address": "0x02113ab8",
+      "size": "0x8",
+      "binding": "STB_GLOBAL",
+      "evidence": "model handle constructed with file ID 1503"
+    },
+    {
+      "symbol": "@391",
+      "address": "0x02113ac0",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated collision destructor-registration node"
+    },
+    {
+      "symbol": "@388",
+      "address": "0x02113acc",
+      "size": "0xc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated model destructor-registration node"
+    }
+  ],
   "notes": [
     "Hand-curated from the nine legacy one-function sources: six C++ members, one C++ helper (src/func_ov025_02111dec.cpp), one C helper (src/func_ov025_02111e30.c) and the C factory (src/d_a_obj_dp_brock.c). tubuild create generated a starting point that was then rewritten by hand; see the file's own header comment.",
     "RESOLVED tubuild create CONFLICT: the two helper shards declared Matrix4x3_FromRotationY as (void *, short) and (void *, int). The TU uses (void *m, int angleY), the signature of the symbol's definition in src/Matrix4x3_FromRotationY.c and the spelling src/actors/dBgActor_c.cpp uses. Bytes unchanged.",
@@ -113,25 +157,25 @@
         "_ZN10dBgActor_cD2Ev"
       ],
       "droppedSections": [
-        5,
         6,
         7,
-        8,
         9,
         10,
         11,
         12,
         13,
-        14,
         15,
         16,
         17,
         18,
         19,
         20,
-        21,
-        39,
-        40
+        22,
+        23,
+        24,
+        25,
+        43,
+        44
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -163,13 +207,13 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 2 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov025-daObjDpBrock_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -193,18 +237,72 @@
           "end": "0x021120e4",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02112a44",
+          "end": "0x02112aac",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x02112b20",
+          "end": "0x02112b24",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02113ab0",
+          "end": "0x02113ad8",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 9
+          "LICENSED": 15
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              47
+            ],
+            "desired": [
+              47
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              45
+            ],
+            "desired": [
+              45
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              5,
+              8,
+              14,
+              21
+            ],
+            "desired": [
+              5,
+              8,
+              14,
+              21
+            ]
+          }
+        ],
         "objisolate": null,
         "errors": null
       },
@@ -323,6 +421,208 @@
       "canonical_module": "ov025",
       "canonical_address": "0x02113914",
       "reason": "The class's vtable, emitted by this TU because it defines the key function (daObjDpBrock_c::Behavior -- the first declared virtual that is neither inline nor pure, now that the destructor is defined in the class body). Section size 0x88 = 2 preamble words + 32 slots. The slot count is proven from the cartridge rather than from symbols.txt spacing: config/arm9/overlays/ov025/relocs.txt relocates every word from 0x02113910 (the typeinfo pointer, to _ZTI14daObjDpBrock_c at 0x021138d0) through 0x02113990 (slot 31, to ov002:0x020ee55c dBgActor_c::Kill), and the next relocated word 0x02113994 already belongs to _ZTI10daDpLift_c. The two ambiguous data_ov025_02113934/02113980 rows fall inside the table and are phantom interior symbols. The canonical copy is in THIS module at ov025:0x02113914 (the address point) but outside the licensed range (.text 0x02111d40-0x021120e4), which is .text only, so dsd supplies it as ROM data."
+    }
+  ],
+  "externalized_output": [],
+  "production_mode": "intact-object",
+  "init": [
+    {
+      "symbol": "__sinit_daObjDpBrock_c.cpp",
+      "address": "0x02112a44",
+      "size": "0x68",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov025_02112a44 and carries the same ten relocation sites"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_daObjDpBrock_c.cpp",
+      "address": "0x02112b20",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
+    }
+  ],
+  "undefined_symbol_aliases": [
+    {
+      "symbol": "_ZN17BrockModelFilePtrC1Ej",
+      "canonical_symbol": "func_02017acc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017acc",
+      "evidence": "retail initializer call destination and the model wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN17BrockModelFilePtrD1Ev",
+      "canonical_symbol": "func_02017ab4",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017ab4",
+      "evidence": "retail destructor registration destination and the model wrapper destructor's exact ABS32 relocation"
+    },
+    {
+      "symbol": "_ZN21BrockCollisionFilePtrC1Ej",
+      "canonical_symbol": "func_02017b4c",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017b4c",
+      "evidence": "retail initializer call destination and the collision wrapper constructor's exact PC24 relocation"
+    },
+    {
+      "symbol": "_ZN21BrockCollisionFilePtrD1Ev",
+      "canonical_symbol": "SharedFilePtr_Destruct_Clsn",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02017b34",
+      "evidence": "retail destructor registration destination and the collision SharedFilePtr family identity"
+    },
+    {
+      "symbol": "__register_global_object",
+      "canonical_symbol": "func_020731dc",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020731dc",
+      "evidence": "compiler-generated static initialization call shape and the two direct retail references in this initializer"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_daObjDpBrock_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_daObjDpBrock_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    },
+    {
+      "symbol": "@388",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local model registration node is a configured initializer relocation destination at 0x02113acc"
+    },
+    {
+      "symbol": "@391",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "compiler-local collision registration node is a configured initializer relocation destination at 0x02113ac0"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@389",
+      "to": "@391",
+      "evidence": "mwcc numbers this node @389 per TU and the fleet already defines a global @389 in ov012, so the merged link would multiply-define it"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".init",
+      "source": "0x02112a54",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017acc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112a64",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112a70",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_02017b4c",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x02017b4c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112a80",
+      "type": "R_ARM_PC24",
+      "kind": "arm_call",
+      "symbol": "func_020731dc",
+      "addend": -8,
+      "target_module": "arm9",
+      "target_address": "0x020731dc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112a90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov025_02113ab8",
+      "addend": 0,
+      "target_module": "ov025",
+      "target_address": "0x02113ab8"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112a98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "func_02017ab4",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017ab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112a9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@388",
+      "addend": 0,
+      "target_module": "ov025",
+      "target_address": "0x02113acc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112aa0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov025_02113ab0",
+      "addend": 0,
+      "target_module": "ov025",
+      "target_address": "0x02113ab0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112aa4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "SharedFilePtr_Destruct_Clsn",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02017b34"
+    },
+    {
+      "section": ".init",
+      "source": "0x02112aa8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "@391",
+      "addend": 0,
+      "target_module": "ov025",
+      "target_address": "0x02113ac0"
+    },
+    {
+      "section": ".ctor",
+      "source": "0x02112b20",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_daObjDpBrock_c.cpp",
+      "addend": 0,
+      "target_module": "ov025",
+      "target_address": "0x02112a44"
     }
   ]
 }

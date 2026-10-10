@@ -39,9 +39,25 @@
 struct KCL_File;
 struct CLPS_Block;
 
+/* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
+ * cartridge's ctor/dtor imports are the functions the wrappers' aliases name. */
+struct HmBsktModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    HmBsktModelFilePtr(u32 fileID);
+    ~HmBsktModelFilePtr();
+};
+
+struct HmBsktCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    HmBsktCollisionFilePtr(u32 fileID);
+    ~HmBsktCollisionFilePtr();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov030_02115c80; /* the KCL */
-extern SharedFilePtr data_ov030_02115c88; /* the BMD */
+extern HmBsktCollisionFilePtr data_ov030_02115c80; /* the KCL */
+extern HmBsktModelFilePtr data_ov030_02115c88;     /* the BMD */
 extern CLPS_Block data_ov030_02114ee4;
 
 int func_ov030_0211124c(char *c, char *mc);
@@ -171,3 +187,9 @@ extern "C" int func_ov030_0211124c(char *c, char *mc)
    PURPOSE, and carry no @symbol marker. The inline destructor in
    include/daObjHmBskt_c.h emits D1 then D0 -- the cartridge's order -- and no
    D2, and tools/tiers.py scores both through that inline definition. */
+
+/* The ROM's initializer constructs the model handle with file ID 1560 and
+ * the collision handle with file ID 1561, registering a destructor node for
+ * each. mwcc emits __sinit_d_a_obj_hm_bskt.cpp from these definitions. */
+HmBsktModelFilePtr data_ov030_02115c88(1560);
+HmBsktCollisionFilePtr data_ov030_02115c80(1561);

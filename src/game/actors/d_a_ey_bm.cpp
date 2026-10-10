@@ -35,7 +35,7 @@
  *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
  *
  * Known limits:
- *   data_ov071_021230b8 (the collider offset) is owned by overlay .data.
+ *   data_ov071_021230b8 (the collider offset) is this TU's dynamic bss.
  *   UpdateCollision takes R10dBgCh_Actr; a pointer would generate identical
  *   ARM.
  *   g_profile_EYEKUN_BEAM is overlay data outside this TU's .text.
@@ -53,6 +53,20 @@ namespace Particle { struct Callback; }
  * these stack values are plain fixed-point words and must not instantiate its
  * otherwise unrelated vague-linkage D1 in this class TU. */
 struct DaEyBmVector3Words { Fix12i x, y, z; };
+
+/* Dynamic offset at 0x021230b8. A user constructor keeps the three stores in
+ * the sinit (bss, not .data). The undefined destructor is Vector3's D1. */
+struct EyBmVec3 {
+    int x, y, z;
+    EyBmVec3(int a, int b, int c) {
+        x = a;
+        y = b;
+        z = c;
+    }
+    ~EyBmVec3();
+};
+
+extern EyBmVec3 data_ov071_021230b8;
 
 /* Typed reconstruction of the actor-table descriptor at ov071:0x02122dc4. */
 struct DaEyBmSpawnInfo {
@@ -99,7 +113,6 @@ extern int _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
     void *a, void *b);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
-extern DaEyBmVector3Words data_ov071_021230b8;
 }
 
 int daEyBm_c::InitResources()
@@ -147,7 +160,7 @@ int daEyBm_c::Behavior()
 
     beingEaten = (int)((flags & 0x20000) != 0);
     if (!beingEaten) {
-        offset = data_ov071_021230b8;
+        offset = *(DaEyBmVector3Words *)&data_ov071_021230b8;
         mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&offset);
 
         velocity.z = mHorzSpeed;
@@ -293,6 +306,8 @@ int daEyBm_c::OnYoshiTryEat()
 {
     return 4;
 }
+
+EyBmVec3 data_ov071_021230b8(0, -0x19000, 0);
 // @symbol _ZN8daEyBm_cD1Ev
 // @symbol _ZN8daEyBm_cD0Ev
 /* The inline class destructor and InitResources vtable instantiation emit both naturally. */

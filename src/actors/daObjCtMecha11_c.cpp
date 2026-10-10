@@ -40,12 +40,28 @@
  * does not call. */
 struct V3 { int x, y, z; };
 
+/* Resource handles constructed by this TU's static initializer. The
+ * constructor and destructor bodies stay out of line; mwcc registers them. */
+struct Mecha11ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha11ModelFilePtr(u32 fileID);
+    ~Mecha11ModelFilePtr();
+};
+
+struct Mecha11ClsnFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha11ClsnFilePtr(u32 fileID);
+    ~Mecha11ClsnFilePtr();
+};
+
 extern "C" {
 extern void Matrix4x3_FromRotationY(void *m, short ang);
 extern void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern short data_02082214[];
-extern SharedFilePtr RotatingClockHand_ClsnFile;
-extern SharedFilePtr RotatingClockHand_ModelFile;
+extern Mecha11ClsnFilePtr RotatingClockHand_ClsnFile;
+extern Mecha11ModelFilePtr RotatingClockHand_ModelFile;
 extern int DecIfAbove0_Short(char *p);
 extern int RandomIntInternal(char *p);
 extern void func_020393a4(int *p, int v);
@@ -59,8 +75,6 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_020393d4(void *p, void *v);
 extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
-extern SharedFilePtr data_ov035_02112cb0;
-extern SharedFilePtr data_ov035_02112cb8;
 extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
 }
@@ -160,12 +174,12 @@ int daObjCtMecha11_c::Behavior()
 // @symbol _ZN16daObjCtMecha11_c13InitResourcesEv
 int daObjCtMecha11_c::InitResources()
 {
-    void *mf = Model::LoadFile(data_ov035_02112cb0);
+    void *mf = Model::LoadFile(RotatingClockHand_ModelFile);
     mModel.SetFile((BMD_File *)mf, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModel();
     UpdateClsnPosAndRot();
-    KCL_File *kf = (KCL_File *)dBgW_Kc::LoadFile(data_ov035_02112cb8);
+    KCL_File *kf = (KCL_File *)dBgW_Kc::LoadFile(RotatingClockHand_ClsnFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, kf,
         mClsnMat, 0x1000, mAngleY, data_ov035_02112238);
@@ -194,3 +208,6 @@ extern "C" daObjCtMecha11_c *daObjCtMecha11_c_classInit()
 {
     return new daObjCtMecha11_c();
 }
+
+Mecha11ModelFilePtr RotatingClockHand_ModelFile(1488);
+Mecha11ClsnFilePtr RotatingClockHand_ClsnFile(1489);

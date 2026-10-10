@@ -56,6 +56,22 @@ struct CLPS_Block;
    from 0x190 to 0x184. The masked absolute address is the store that matches. */
 #define I16(off) (*(short *)(((int)this + (off)) & 0xFFFFFFFF))
 
+/* Resource handles constructed by this TU's static initializer. The
+ * constructor and destructor bodies stay out of line; mwcc registers them. */
+struct Mecha03ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha03ModelFilePtr(u32 fileID);
+    ~Mecha03ModelFilePtr();
+};
+
+struct Mecha03ClsnFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha03ClsnFilePtr(u32 fileID);
+    ~Mecha03ClsnFilePtr();
+};
+
 /* Fix12-by-value calls retain their measured raw ABI declarations. Natural
  * class-typed declarations make mwccarm home arguments absent from retail. */
 extern "C" {
@@ -79,8 +95,8 @@ extern Matrix4x3 data_020a0e68;
 extern u8 data_0209f2c0;
 extern int data_0209e650;
 extern s16 data_ov065_0211c0b0[];
-extern SharedFilePtr data_ov065_0211d88c;
-extern SharedFilePtr data_ov065_0211d894;
+extern Mecha03ModelFilePtr data_ov065_0211d88c;
+extern Mecha03ClsnFilePtr data_ov065_0211d894;
 extern int data_ov035_02112198;
 }
 
@@ -245,3 +261,6 @@ void daObjCtMecha03_c::func_ov065_02119fe8()
 /* No separate body lives here. The inline virtual destructor in the directly
  * included class header makes mwccarm emit retail's D1 then D0 order without
  * the otherwise homeless D2 variant. */
+
+Mecha03ModelFilePtr data_ov065_0211d88c(1468);
+Mecha03ClsnFilePtr data_ov065_0211d894(1469);

@@ -11594,6 +11594,9 @@
       "src/actors/daYegg_c.cpp": [
         "return:int"
       ],
+      "src/unnamed/ov002/func_ov002_020d6dac.c": [
+        "return:unsigned int"
+      ],
       "src/unnamed/ov002/func_ov002_020eed24.cpp": [
         "return:int"
       ]
@@ -16049,6 +16052,9 @@
       ],
       "src/actors/daObj1UpLogo_c.cpp": [
         "return:SharedFilePtr"
+      ],
+      "src/unnamed/ov002/func_ov002_020e5948.c": [
+        "return:struct OneUpLogoModelFile"
       ]
     },
     "data_ov002_02110ac4": {
@@ -16690,91 +16696,6 @@
     "data_ov006_02141a50": {
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "return:char *"
-      ]
-    },
-    "data_ov006_02141e54": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e5c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e64": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e6c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e74": {
-      "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov006_02141e7c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e84": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e8c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e94": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov006_02141e9c": {
-      "src/actors/dMg3DEspAnimSet_c.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov006_02141f1c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
-      ]
-    },
-    "data_ov006_02141f2c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
-      ]
-    },
-    "data_ov006_02141f44": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
-      ]
-    },
-    "data_ov006_02141f5c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
-      ]
-    },
-    "data_ov006_02141f74": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
-      ]
-    },
-    "data_ov006_02141f8c": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
-      ]
-    },
-    "data_ov006_02141fac": {
-      "src/unnamed/ov006/__sinit_ov006_02130a08.c": [
-        "return:S8 []"
       ]
     },
     "data_ov006_02142018": {
@@ -18586,19 +18507,9 @@
         "return:int []"
       ]
     },
-    "data_ov060_0211b1f8": {
-      "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "return:void *"
-      ]
-    },
-    "data_ov060_0211b200": {
-      "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "return:void *"
-      ]
-    },
     "data_ov060_0211b208": {
-      "src/unnamed/ov060/__sinit_ov060_0211a428.c": [
-        "return:void *"
+      "src/actors/daFRing_c.cpp": [
+        "return:FRingModelFilePtr"
       ]
     },
     "data_ov062_0211dde8": {
@@ -19288,14 +19199,6 @@
     },
     "data_ov070_0212365c": {
       "src/unnamed/ov070/__sinit_ov070_02122d80.cpp": [
-        "return:int []"
-      ]
-    },
-    "data_ov070_02123698": {
-      "src/game/actors/d_a_krpa.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov070/__sinit_ov070_02122f30.c": [
         "return:int []"
       ]
     },

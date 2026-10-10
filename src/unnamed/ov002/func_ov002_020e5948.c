@@ -64,7 +64,8 @@ extern int data_ov002_0210e8d0[];
 extern int data_ov002_0210ebd8[];
 extern int data_ov002_0210e750[];
 extern int data_ov002_0210d9a8[];
-extern int data_ov002_02110aa4[];
+typedef struct OneUpLogoModelFile OneUpLogoModelFile; /* defined in src/actors/daObj1UpLogo_c.cpp */
+extern OneUpLogoModelFile data_ov002_02110aa4;
 extern int data_ov002_0210e588[];
 extern int data_ov002_0210e7e8[];
 extern int data_ov002_0210e450[];
@@ -208,7 +209,7 @@ void func_ov002_020e5948(void* arg0)
         if (mode == 0) {
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e750);
             _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_0210d9a8);
-            _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_02110aa4);
+            _ZN5Model8LoadFileER13SharedFilePtr(&data_ov002_02110aa4);
             _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov002_0210e588);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e7e8);
             _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov002_0210e450);

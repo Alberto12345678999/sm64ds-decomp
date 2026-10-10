@@ -12,11 +12,12 @@
  * `#pragma opt_propagation off` is last in the file: deferred codegen uses that
  * setting, which is what func_ov060_02117db8 matched under. Do not move it.
  *
- * Behavior dispatches data_ov060_0211b1ac[mState]. The three helpers are the
- * records that sinit copies into that table (ov060 0x0211a930, 0x0211a938,
- * 0x0211a940, each a function address and a zero adjustment). They stay free
- * extern "C" functions: the table is a plain address, and giving them member
- * linkage would rename the symbols the records point at.
+ * Behavior dispatches data_ov060_0211b1ac[mState] as pointer-to-member
+ * records (a function address and a zero adjustment, copied by sinit from
+ * ov060 0x0211a930/938/940). The helpers are declared members so &daKpa3Bg_c::
+ * func_ov060_... is a real PMF constant, but defined as free functions under
+ * their literal mangled spellings: func_ov060_02117db8's body only matches
+ * under `#pragma cplusplus off`, which has no member syntax.
  *
  * Leftover:
  * - The three helpers keep their ROM-address names.
@@ -75,15 +76,36 @@ void func_020393c4(void *p, void *v);
 void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 void func_ov060_021183f4();
 
-void func_ov060_02117db8(char *self);
-void func_ov060_021180e0(char *c);
-int func_ov060_021181b4(char *c);
+// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
+void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self);
+// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
+void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char *c);
+// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
+int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c);
 
 }
 
 typedef void (daKpa3Bg_c::*Handler)();
 struct HandlerEntry { Handler pmf; };
 extern HandlerEntry data_ov060_0211b1ac[];
+
+/* The ten model handles construct through func_02017acc and destroy through
+ * func_02017ab4; the ten collision handles construct through func_02017b4c
+ * and destroy through SharedFilePtr_Destruct_Clsn. The wrappers are declared,
+ * never defined: the manifest aliases their members onto the ROM veneers. */
+struct Kpa3BgModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Kpa3BgModelFilePtr(u32 fileID);
+    ~Kpa3BgModelFilePtr();
+};
+
+struct Kpa3BgCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Kpa3BgCollisionFilePtr(u32 fileID);
+    ~Kpa3BgCollisionFilePtr();
+};
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 8 -- _ZN10daKpa3Bg_c13InitResourcesEv, 0x021182b0, size 0x11c */
@@ -156,9 +178,9 @@ s32 daKpa3Bg_c::CleanupResources()
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- func_ov060_021181b4, 0x021181b4, size 0x34 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov060_021181b4
+// @symbol _ZN10daKpa3Bg_c19func_ov060_021181b4Ev
 /* Finds the daKpa actor (id 0x117) and remembers its uniqueID. */
-extern "C" int func_ov060_021181b4(char *c)
+extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
 {
     daKpa3Bg_c *bg = (daKpa3Bg_c *)c;
     dActor_c *koopa = dActor_c::FindWithActorID(0x117, 0);
@@ -173,12 +195,12 @@ extern "C" int func_ov060_021181b4(char *c)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- func_ov060_021180e0, 0x021180e0, size 0xd4 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov060_021180e0
+// @symbol _ZN10daKpa3Bg_c19func_ov060_021180e0Ev
 /* Leftover: naming mKoopaUniqueId / mTimer / mState here changed 7 words
    (measured). The body stays the offset form that matches. */
 extern "C" {
 void* _ZN8dActor_c10FindWithIDEj(unsigned int);
-void func_ov060_021180e0(char* c){
+void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char* c){
   char* a;
   a=(char*)_ZN8dActor_c10FindWithIDEj(*(unsigned int*)(c+0x320));
   if(a==0){ ((fBase_c*)c)->MarkForDestruction(); return; }
@@ -206,13 +228,13 @@ void func_ov060_021180e0(char* c){
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 2 -- func_ov060_02117db8, 0x02117db8, size 0x328 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov060_02117db8
+// @symbol _ZN10daKpa3Bg_c19func_ov060_02117db8Ev
 /* Leftover: the same body compiled as C++ changed 89 words and two relocation
    destinations (data_ov060_02119564 versus data_02082214). It parses as C.
    int yimm is declared with the other locals: the C front end inside a C++
    TU rejects a declaration after a statement. */
 #pragma cplusplus off
-void func_ov060_02117db8(char *self) {
+void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self) {
     volatile int saved[3];
     int v[6];
     Vec3 eq;
@@ -324,3 +346,33 @@ daKpa3Bg_c::~daKpa3Bg_c()
 }
 #pragma defer_codegen on
 #pragma opt_propagation off
+
+/* The static-init globals -- mwcc emits __sinit_daKpa3Bg_c.cpp from these:
+ * one ctor veneer plus destructor registration per file handle, then the
+ * three pointer-to-member records copied into the dispatch table. Order
+ * matches the retail initializer exactly. */
+Kpa3BgModelFilePtr data_ov060_0211b06c(0x625);
+Kpa3BgModelFilePtr data_ov060_0211b034(0x627);
+Kpa3BgModelFilePtr data_ov060_0211b0a4(0x629);
+Kpa3BgModelFilePtr data_ov060_0211b03c(0x62b);
+Kpa3BgModelFilePtr data_ov060_0211b0b4(0x62d);
+Kpa3BgModelFilePtr data_ov060_0211b044(0x62f);
+Kpa3BgModelFilePtr data_ov060_0211b094(0x631);
+Kpa3BgModelFilePtr data_ov060_0211b09c(0x633);
+Kpa3BgModelFilePtr data_ov060_0211b054(0x635);
+Kpa3BgModelFilePtr data_ov060_0211b024(0x637);
+Kpa3BgCollisionFilePtr data_ov060_0211b0ac(0x626);
+Kpa3BgCollisionFilePtr data_ov060_0211b02c(0x628);
+Kpa3BgCollisionFilePtr data_ov060_0211b05c(0x62a);
+Kpa3BgCollisionFilePtr data_ov060_0211b064(0x62c);
+Kpa3BgCollisionFilePtr data_ov060_0211b07c(0x62e);
+Kpa3BgCollisionFilePtr data_ov060_0211b01c(0x630);
+Kpa3BgCollisionFilePtr data_ov060_0211b074(0x632);
+Kpa3BgCollisionFilePtr data_ov060_0211b084(0x634);
+Kpa3BgCollisionFilePtr data_ov060_0211b08c(0x636);
+Kpa3BgCollisionFilePtr data_ov060_0211b04c(0x638);
+HandlerEntry data_ov060_0211b1ac[3] = {
+    { &daKpa3Bg_c::func_ov060_021181b4 },
+    { &daKpa3Bg_c::func_ov060_021180e0 },
+    { &daKpa3Bg_c::func_ov060_02117db8 },
+};

@@ -39,8 +39,26 @@ void Matrix4x3_FromRotationY(void *, int);
 extern Timer data_0209d4c8;
 }
 
-extern SharedFilePtr data_ov062_0211e0d4;
-extern SharedFilePtr data_ov062_0211e0dc;
+/* The model handle constructs through func_02017acc and registers
+   func_02017ab4; the animation handle constructs through
+   SharedFilePtr::Construct and registers SharedFilePtr_Destruct_Anim.
+   The manifest aliases these. */
+struct RFlagModelFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    RFlagModelFileHandle(u32 fileID);
+    ~RFlagModelFileHandle();
+};
+
+struct RFlagAnimResFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    RFlagAnimResFileHandle(u32 fileID);
+    ~RFlagAnimResFileHandle();
+};
+
+extern RFlagModelFileHandle data_ov062_0211e0d4;
+extern RFlagAnimResFileHandle data_ov062_0211e0dc;
 
 #pragma defer_codegen off
 
@@ -143,3 +161,6 @@ extern "C" daRFlag_c *daRFlag_c_classInit(void)
 {
     return new daRFlag_c();
 }
+
+RFlagModelFileHandle data_ov062_0211e0d4(0x488);
+RFlagAnimResFileHandle data_ov062_0211e0dc(0x489);

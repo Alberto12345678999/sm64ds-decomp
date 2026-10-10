@@ -57,11 +57,11 @@ data_ov032_02112bdc kind:data(any) addr:0x02112bdc ambiguous
 data_ov032_02112bec kind:data(any) addr:0x02112bec ambiguous
 data_ov032_02112c08 kind:data(any) addr:0x02112c08 ambiguous
 __sinit_daBakubaku_c.cpp kind:function(arm,size=0x1ac) addr:0x02112c10
-__sinit_ov032_02112dbc kind:function(arm,size=0x6c) addr:0x02112dbc
-__sinit_ov032_02112e28 kind:function(arm,size=0x6c) addr:0x02112e28
+__sinit_d_a_obj_td_futa.cpp kind:function(arm,size=0x6c) addr:0x02112dbc
+__sinit_d_a_obj_td_water.cpp kind:function(arm,size=0x6c) addr:0x02112e28
 .p__sinit_daBakubaku_c.cpp kind:data(word) addr:0x02112e94
-.p__sinit_ov032_02112dbc kind:data(word) addr:0x02112e98
-.p__sinit_ov032_02112e28 kind:data(word) addr:0x02112e9c
+.p__sinit_d_a_obj_td_futa.cpp kind:data(word) addr:0x02112e98
+.p__sinit_d_a_obj_td_water.cpp kind:data(word) addr:0x02112e9c
 data_ov032_02112ec0 kind:data(any) addr:0x02112ec0
 data_ov032_02112ec4 kind:data(any) addr:0x02112ec4
 data_ov032_02112ec8 kind:data(any) addr:0x02112ec8
@@ -155,9 +155,10 @@ data_ov032_02113aac kind:bss addr:0x02113aac
 data_ov032_02113abc kind:bss addr:0x02113abc
 data_ov032_02113acc kind:bss addr:0x02113acc
 data_ov032_02113ad4 kind:bss addr:0x02113ad4
-data_ov032_02113adc kind:bss addr:0x02113adc
-data_ov032_02113ae8 kind:bss addr:0x02113ae8
+@372 kind:bss addr:0x02113adc
+@371 kind:bss addr:0x02113ae8
 data_ov032_02113af4 kind:bss addr:0x02113af4
 data_ov032_02113afc kind:bss addr:0x02113afc
-data_ov032_02113b04 kind:bss addr:0x02113b04
-data_ov032_02113b10 kind:bss addr:0x02113b10
+@395 kind:bss addr:0x02113b04
+@394 kind:bss addr:0x02113b10
+data_ov032_02113b1c kind:bss addr:0x02113b1c

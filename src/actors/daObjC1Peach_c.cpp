@@ -20,8 +20,9 @@
  *   _ZN14daObjC1Peach_c13InitResourcesEv       0x02111fc0
  *   daObjC1Peach_c_classInit                  0x02112004
  *
- * data_ov010_02112d64 is the model SharedFilePtr this Init LoadFile's.
- * g_profile_C1_PEACH and the ov010 sinit stay outside this .text run.
+ * data_ov010_02112d64 is the model SharedFilePtr this Init LoadFile's,
+ * defined at the end of this file (constructed as file ID 1454).
+ * g_profile_C1_PEACH stays outside this .text run.
  *
  * deslop
  * Leftover: cstd::fdiv is the shared coined fixed-point division used
@@ -33,10 +34,19 @@
 
 namespace cstd { int fdiv(int a, int b); }
 
+/* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
+ * cartridge's ctor/dtor imports are the functions the wrapper's aliases name. */
+struct C1PeachModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    C1PeachModelFilePtr(u32 fileID);
+    ~C1PeachModelFilePtr();
+};
+
 extern "C" {
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, s32 angle);
-/* decl plurality is int[] (the ov010 sinit). SharedFilePtr has no fields. */
-extern int data_ov010_02112d64[];
+/* Defined at the end of this file so its constructor does not enter .text. */
+extern C1PeachModelFilePtr data_ov010_02112d64;
 }
 
 /* Reconstructed source-style name. SM64DS proves daObjC1Peach_c through
@@ -54,7 +64,7 @@ extern "C" daObjC1Peach_c *daObjC1Peach_c_classInit()
 // @symbol _ZN14daObjC1Peach_c13InitResourcesEv
 int daObjC1Peach_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov010_02112d64), 1, -1);
+    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov010_02112d64), 1, -1);
     mOpacity = 0xff;
     UpdateModelTransform();
     return 1;
@@ -91,7 +101,7 @@ int daObjC1Peach_c::Render()
 // @symbol _ZN14daObjC1Peach_c16CleanupResourcesEv
 int daObjC1Peach_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov010_02112d64)->Release();
+    data_ov010_02112d64.Release();
     return 1;
 }
 
@@ -103,3 +113,8 @@ void daObjC1Peach_c::UpdateModelTransform()
     mModel.mat4x3.t.y = mPosY >> 3;
     mModel.mat4x3.t.z = mPosZ >> 3;
 }
+
+/* The ROM's initializer constructs the model handle with file ID 1454 and
+ * registers a destructor node for it. mwcc emits
+ * __sinit_daObjC1Peach_c.cpp from this definition. */
+C1PeachModelFilePtr data_ov010_02112d64(1454);

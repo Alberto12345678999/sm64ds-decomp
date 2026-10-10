@@ -236,3 +236,11 @@ extern "C" daObjBlockItemTag_c *daObjBlockItemTag_c_classInit_BLK_OKINOKO_TAG()
 {
     return new daObjBlockItemTag_c();
 }
+
+// @symbol data_ov002_0210dd30
+ItemTagAction data_ov002_0210dd30[4] = {
+    &daObjBlockItemTag_c::SpawnOneUpMushroom,
+    &daObjBlockItemTag_c::SpawnMegaMushroom,
+    &daObjBlockItemTag_c::SpawnKoopaShell,
+    &daObjBlockItemTag_c::SpawnSilverStar
+};

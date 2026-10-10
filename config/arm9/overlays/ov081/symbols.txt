@@ -111,12 +111,12 @@ __sinit_daHuwa_c.cpp kind:function(arm,size=0x6c) addr:0x021280e8
 __sinit_daSnowman_c.cpp kind:function(arm,size=0x360) addr:0x02128154
 __sinit_daSnowball_c.cpp kind:function(arm,size=0x3c) addr:0x021284b4
 __sinit_daGmch_c.cpp kind:function(arm,size=0x2c8) addr:0x021284f0
-__sinit_ov081_021287b8 kind:function(arm,size=0x6c) addr:0x021287b8
+__sinit_d_a_obj_ice_block.cpp kind:function(arm,size=0x6c) addr:0x021287b8
 .p__sinit_daHuwa_c.cpp kind:data(word) addr:0x02128824
 .p__sinit_daSnowman_c.cpp kind:data(word) addr:0x02128828
 .p__sinit_daSnowball_c.cpp kind:data(word) addr:0x0212882c
 .p__sinit_daGmch_c.cpp kind:data(word) addr:0x02128830
-.p__sinit_ov081_021287b8 kind:data(word) addr:0x02128834
+.p__sinit_d_a_obj_ice_block.cpp kind:data(word) addr:0x02128834
 _ZTS8daHuwa_c kind:data(any) addr:0x02128840
 _ZTI8daHuwa_c kind:data(any) addr:0x0212884c
 g_profile_HUWAHUWA kind:data(any) addr:0x02128858 ambiguous
@@ -225,5 +225,6 @@ data_ov081_02128ef8 kind:bss addr:0x02128ef8
 data_ov081_02128f40 kind:bss addr:0x02128f40
 data_ov081_02128fd0 kind:bss addr:0x02128fd0
 data_ov081_02128fd8 kind:bss addr:0x02128fd8
-data_ov081_02128fe0 kind:bss addr:0x02128fe0
-data_ov081_02128fec kind:bss addr:0x02128fec
+@786 kind:bss addr:0x02128fe0
+@785 kind:bss addr:0x02128fec
+data_ov081_02128ff8 kind:bss addr:0x02128ff8

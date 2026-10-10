@@ -20,10 +20,16 @@
 #include "Player.h"
 
 extern "C" {
-/* The two state tables, ov064 .bss; the overlay's static initializer fills
-   them from .data rows holding these methods' addresses. */
-extern daWater_Ring_c::State data_ov064_0211c944[2];   /* passed */
-extern daWater_Ring_c::State data_ov064_0211c954[2];   /* active */
+/* The two state tables, ov064 .bss; the definitions at the end of this
+   file fill them from .data rows holding these methods' addresses. Each
+   table is one State (init + execute); the descriptors below are the
+   single-handler constants it copies. */
+extern daWater_Ring_c::State data_ov064_0211c944;   /* passed */
+extern daWater_Ring_c::State data_ov064_0211c954;   /* active */
+extern int (daWater_Ring_c::*data_ov064_0211c3b0)();
+extern int (daWater_Ring_c::*data_ov064_0211c3c8)();
+extern int (daWater_Ring_c::*data_ov064_0211c3c0)();
+extern int (daWater_Ring_c::*data_ov064_0211c3b8)();
 extern Vector3 data_ov064_0211c3d0;         /* the collider offset */
 extern s16 data_02082214[];                 /* sine/cosine table */
 extern char data_ov002_0210d6dc[];          /* the ring's BTA */
@@ -85,7 +91,7 @@ void daWater_Ring_c::func_ov064_02119afc()
         if (mRingType == 1)
             ((Player *)other)->Heal(0x100);
         mTextureTransformer.speed = 0x4000;
-        func_ov064_02119ecc(data_ov064_0211c944);
+        func_ov064_02119ecc(&data_ov064_0211c944);
     } else {
         mPrevPlayerAngle = HorzAngleToCPlayer();
     }
@@ -256,7 +262,7 @@ int daWater_Ring_c::InitResources()
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x88000, 0xe8000, 0x800006, 0);
 
     mOpacity = 0x1f;
-    func_ov064_02119ecc(data_ov064_0211c954);
+    func_ov064_02119ecc(&data_ov064_0211c954);
     return 1;
 }
 
@@ -269,3 +275,9 @@ extern "C" daWater_Ring_c *daWater_Ring_c_classInit()
 {
     return new daWater_Ring_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov064_0211b518 shard):
+ * the two state tables, plain-copied from the ROM constants in retail
+ * order. */
+daWater_Ring_c::State data_ov064_0211c954 = {data_ov064_0211c3b0, data_ov064_0211c3c8};
+daWater_Ring_c::State data_ov064_0211c944 = {data_ov064_0211c3c0, data_ov064_0211c3b8};

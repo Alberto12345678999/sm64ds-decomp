@@ -20,8 +20,9 @@
  *   site.
  * - The five state hooks keep their address labels as method names; the ROM
  *   records no English name for them.
- * - The two State tables at 0x0211c7b8/0x0211c7c8 are this overlay's .bss,
- *   filled by the module's static initializer -- consumed here, not owned.
+ * - The two State tables at 0x0211c7b8/0x0211c7c8 are this overlay's .bss.
+ *   This TU's static initializer copies the four .data pointer-to-member
+ *   constants into them.
  * - func_ov064_02118760's volatile spawn-position array is load-bearing:
  *   retail stores the words y, z, x; a plain Vector3 lets mwcc reorder the
  *   stores.
@@ -66,11 +67,15 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *self, int actor, int radius, int height, int rotA, int rotB);
 
-/* The two state tables, this overlay's .bss. include/decl_common.h declares
- * both as raw byte arrays for the whole tree, so they keep that spelling here
- * and the class's own view of them is applied where they are handed over. */
-extern char data_ov064_0211c7b8[];
-extern char data_ov064_0211c7c8[];
+/* Eight-byte pointer-to-member records. The cartridge stores the four
+ * constants in .data and copies them into the two .bss tables below. */
+struct BblPmfPair { int ptr; int adj; };
+extern BblPmfPair data_ov064_0211bea0;
+extern BblPmfPair data_ov064_0211be90;
+extern BblPmfPair data_ov064_0211bea8;
+extern BblPmfPair data_ov064_0211be98;
+extern BblPmfPair data_ov064_0211c7b8[2];
+extern BblPmfPair data_ov064_0211c7c8[2];
 }
 
 // @symbol daBbl_c_classInit
@@ -302,4 +307,11 @@ int daBbl_c::func_ov064_02118644()
     if ((u16)mStateTimer == 0)
         MarkForDestruction();
     return 1;
+}
+
+/* Declaration order is the retail __sinit order: the fountain table, then
+ * the jumping table. Each entry is one pointer-to-member pair. */
+extern "C" {
+BblPmfPair data_ov064_0211c7b8[2] = { data_ov064_0211bea0, data_ov064_0211be90 };
+BblPmfPair data_ov064_0211c7c8[2] = { data_ov064_0211bea8, data_ov064_0211be98 };
 }

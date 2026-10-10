@@ -14,7 +14,6 @@ src/game/actors/d_a_obj_c0_switch.cpp:
 src/game/actors/d_a_obj_c0_water.cpp:
     complete
     .text start:0x02111450 end:0x02111768
-
-src/unnamed/ov012/__sinit_ov012_02111af4.c:
-    complete
     .init start:0x02111af4 end:0x02111b60
+    .ctor start:0x02111b64 end:0x02111b68
+    .bss start:0x021124c8 end:0x021124f0

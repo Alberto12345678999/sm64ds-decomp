@@ -6,6 +6,9 @@
 src/game/actors/d_a_obj_km1_ukishima.cpp:
     complete
     .text start:0x021111a0 end:0x021113fc
+    .init start:0x021117fc end:0x02111868
+    .ctor start:0x02111ae8 end:0x02111aec
+    .bss start:0x021125e0 end:0x02112608
 
 src/game/actors/d_a_obj_km1_kurumajiku.cpp:
     complete
@@ -19,10 +22,6 @@ src/game/actors/d_a_obj_km1_dorifu.cpp:
     complete
     .text start:0x02111630 end:0x021117fc
     .data start:0x021124dc end:0x021125dc
-
-src/unnamed/ov043/__sinit_ov043_021117fc.c:
-    complete
-    .init start:0x021117fc end:0x02111868
 
 src/unnamed/ov043/__sinit_ov043_02111868.c:
     complete

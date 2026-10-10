@@ -4,6 +4,7 @@
   "source": "src/actors/dScMgPachinko2_c.cpp",
   "promoted_source": "src/actors/dScMgPachinko2_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x20ff420..0x210428c, 74 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -15,6 +16,21 @@
       "name": ".text",
       "start": "0x020ff420",
       "end": "0x0210428c"
+    },
+    {
+      "name": ".init",
+      "start": "0x02131cd0",
+      "end": "0x02131fa4"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x021335c4",
+      "end": "0x021335c8"
+    },
+    {
+      "name": ".bss",
+      "start": "0x021426cc",
+      "end": "0x021427ac"
     }
   ],
   "functions": [
@@ -538,7 +554,29 @@
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov006_021426f4",
+      "address": "0x021426f4",
+      "size": "0x40",
+      "binding": "STB_GLOBAL",
+      "evidence": "eight ball-state Entry records, plain-copied from the ROM .data constants"
+    },
+    {
+      "symbol": "data_ov006_02142734",
+      "address": "0x02142734",
+      "size": "0x78",
+      "binding": "STB_GLOBAL",
+      "evidence": "fifteen paddle-state pointer-to-member entries, plain-copied from the ROM .data constants"
+    },
+    {
+      "symbol": "data_ov006_021426cc",
+      "address": "0x021426cc",
+      "size": "0x28",
+      "binding": "STB_GLOBAL",
+      "evidence": "five cup-state Entry records, plain-copied from the ROM .data constants"
+    }
+  ],
   "notes": [
     "Hand-assembled from the 74 legacy one-function sources of ROM ordinals 0..73 in ROM-ascending order under #pragma defer_codegen off. tools/tubuild.py create was used only for the function table: its splitter emits members in reverse order and drops per-function pragmas, and it cannot split func_ov006_0210258c, whose legacy body sits inside an extern \"C\" block.",
     "Each legacy per-function pragma is carried in its own #pragma push and pop bracket around that member.",
@@ -563,9 +601,6 @@
       "droppedSections": [
         9,
         10,
-        138,
-        139,
-        140,
         141,
         142,
         143,
@@ -579,7 +614,10 @@
         151,
         152,
         153,
-        154
+        154,
+        155,
+        156,
+        157
       ],
       "data": [
         "_ZTV16dScMgPachinko2_c",
@@ -611,13 +649,13 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov006-dScMgPachinko2_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -641,19 +679,96 @@
           "end": "0x0210428c",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02131cd0",
+          "end": "0x02131fa4",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x021335c4",
+          "end": "0x021335c8",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x021426cc",
+          "end": "0x021427ac",
+          "comparison": "NOBITS -- symbol/module gates"
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 74
+          "LICENSED": 79
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              160
+            ],
+            "desired": [
+              160
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              158
+            ],
+            "desired": [
+              158
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              138,
+              139,
+              140
+            ],
+            "desired": [
+              140,
+              138,
+              139
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".bss",
+              "original": [
+                138,
+                139,
+                140
+              ],
+              "desired": [
+                140,
+                138,
+                139
+              ],
+              "slots": [
+                138,
+                139,
+                140
+              ]
+            }
+          ],
+          "symbolIndices": 3,
+          "sectionLinks": 0,
+          "sectionInfos": 0,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
@@ -771,6 +886,361 @@
       "reason": "Ancestor passenger. This TU defines dScMgPachinko2_c's key function -- the destructor, which include/dScMgPachinko2_c.h declares out of line and declares FIRST -- so mwcc emits the whole inheritance chain's typeinfo as vague linkage. The cartridge keeps its canonical copy at arm9:0x02086e60, outside this TU's only licensed range (.text 0x020ff420-0x0210428c), so dsd delinks it from the cartridge independently and discarding this object's copy cannot cost the image a byte. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60"
+    }
+  ],
+  "externalized_output": [],
+  "init": [
+    {
+      "symbol": "__sinit_dScMgPachinko2_c.cpp",
+      "address": "0x02131cd0",
+      "size": "0x2d4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov006_02131cd0 (0x2d4, same instruction sequence) and carries the same relocation sites: the twenty-eight record copies into the three tables"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_dScMgPachinko2_c.cpp",
+      "address": "0x021335c4",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail; the other .ctor words belong to the remaining shards"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_dScMgPachinko2_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_dScMgPachinko2_c.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".ctor",
+      "source": "0x021335c4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_dScMgPachinko2_c.cpp",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02131cd0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f28",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da84",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da84"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f2c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213daf4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213daf4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f30",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_021426f4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021426f4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f34",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da74",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da74"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f38",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da94",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da94"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f3c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da9c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da9c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f40",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da7c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da7c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f44",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dadc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dadc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f48",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dad4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dad4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f4c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dafc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dafc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f50",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db04",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db04"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f54",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dae4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dae4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f58",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db0c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db0c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f5c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_02142734",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02142734"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f60",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db14",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db14"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f64",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da8c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da8c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f68",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da5c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da5c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f6c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213da6c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213da6c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f70",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213daec",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213daec"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f74",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db44",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db44"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f78",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db3c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db3c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f7c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db34",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db34"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f80",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db2c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db2c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f84",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db24",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db24"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f88",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213db1c",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213db1c"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f8c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dacc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dacc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f90",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dac4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dac4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f94",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dabc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dabc"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f98",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213dab4",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213dab4"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131f9c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213daac",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213daac"
+    },
+    {
+      "section": ".init",
+      "source": "0x02131fa0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_021426cc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x021426cc"
     }
   ]
 }

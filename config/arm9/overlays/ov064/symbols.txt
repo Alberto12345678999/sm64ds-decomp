@@ -165,10 +165,10 @@ __sinit_ov064_0211aee0 kind:function(arm,size=0xe0) addr:0x0211aee0
 __sinit_daObjFl_Amilift_c.cpp kind:function(arm,size=0xb8) addr:0x0211afc0
 __sinit_ov064_0211b078 kind:function(arm,size=0x6c) addr:0x0211b078
 __sinit_ov064_0211b0e4 kind:function(arm,size=0x6c) addr:0x0211b0e4
-__sinit_ov064_0211b150 kind:function(arm,size=0x84) addr:0x0211b150
+__sinit_daBbl_c.cpp kind:function(arm,size=0x84) addr:0x0211b150
 __sinit_ov064_0211b1d4 kind:function(arm,size=0x308) addr:0x0211b1d4
-__sinit_ov064_0211b4dc kind:function(arm,size=0x3c) addr:0x0211b4dc
-__sinit_ov064_0211b518 kind:function(arm,size=0x84) addr:0x0211b518
+__sinit_daWater_Hakidasi_c.cpp kind:function(arm,size=0x3c) addr:0x0211b4dc
+__sinit_daWater_Ring_c.cpp kind:function(arm,size=0x84) addr:0x0211b518
 __sinit_daObjTbox_c.cpp kind:function(arm,size=0xfc) addr:0x0211b59c
 __sinit_ov064_0211b698 kind:function(arm,size=0x94) addr:0x0211b698
 .p__sinit_ov064_0211ae00 kind:data(word) addr:0x0211b72c
@@ -176,10 +176,10 @@ __sinit_ov064_0211b698 kind:function(arm,size=0x94) addr:0x0211b698
 .p__sinit_daObjFl_Amilift_c.cpp kind:data(word) addr:0x0211b734
 .p__sinit_ov064_0211b078 kind:data(word) addr:0x0211b738
 .p__sinit_ov064_0211b0e4 kind:data(word) addr:0x0211b73c
-.p__sinit_ov064_0211b150 kind:data(word) addr:0x0211b740
+.p__sinit_daBbl_c.cpp kind:data(word) addr:0x0211b740
 .p__sinit_ov064_0211b1d4 kind:data(word) addr:0x0211b744
-.p__sinit_ov064_0211b4dc kind:data(word) addr:0x0211b748
-.p__sinit_ov064_0211b518 kind:data(word) addr:0x0211b74c
+.p__sinit_daWater_Hakidasi_c.cpp kind:data(word) addr:0x0211b748
+.p__sinit_daWater_Ring_c.cpp kind:data(word) addr:0x0211b74c
 .p__sinit_daObjTbox_c.cpp kind:data(word) addr:0x0211b750
 .p__sinit_ov064_0211b698 kind:data(word) addr:0x0211b754
 data_ov064_0211b768 kind:data(any) addr:0x0211b768

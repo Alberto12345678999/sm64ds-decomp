@@ -54,18 +54,44 @@ struct BTP_File;
 struct BTA_File;
 struct ModelComponents;
 
+/* Retail constructs these 8-byte handles in this order and registers
+ * their destructors. The wrapper names are local; the ctor/dtor
+ * addresses are the ROM resource-family functions. The wrappers are
+ * declared, never defined: the manifest aliases their undefined members
+ * onto the ROM veneers. */
+struct EspAnimSetModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    EspAnimSetModelFilePtr(u32 fileID);
+    ~EspAnimSetModelFilePtr();
+};
+
+struct EspAnimSetAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    EspAnimSetAnimationFileHandle(u32 fileID);
+    ~EspAnimSetAnimationFileHandle();
+};
+
+struct EspAnimSetTexSequenceFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    EspAnimSetTexSequenceFilePtr(u32 fileID);
+    ~EspAnimSetTexSequenceFilePtr();
+};
+
 extern "C" {
 /* The file handles: word 1 of a SharedFilePtr is its loaded file. */
-extern SharedFilePtr data_ov006_02141e54;
-extern SharedFilePtr data_ov006_02141e5c;
-extern SharedFilePtr data_ov006_02141e64;
-extern SharedFilePtr data_ov006_02141e6c;
-extern SharedFilePtr data_ov006_02141e74;
-extern SharedFilePtr data_ov006_02141e7c;
-extern SharedFilePtr data_ov006_02141e84;
-extern SharedFilePtr data_ov006_02141e8c;
-extern SharedFilePtr data_ov006_02141e94;
-extern SharedFilePtr data_ov006_02141e9c;
+extern EspAnimSetModelFilePtr data_ov006_02141e54;
+extern EspAnimSetAnimationFileHandle data_ov006_02141e5c;
+extern EspAnimSetTexSequenceFilePtr data_ov006_02141e64;
+extern EspAnimSetAnimationFileHandle data_ov006_02141e6c;
+extern EspAnimSetModelFilePtr data_ov006_02141e74;
+extern EspAnimSetAnimationFileHandle data_ov006_02141e7c;
+extern EspAnimSetAnimationFileHandle data_ov006_02141e84;
+extern EspAnimSetAnimationFileHandle data_ov006_02141e8c;
+extern EspAnimSetModelFilePtr data_ov006_02141e94;
+extern EspAnimSetModelFilePtr data_ov006_02141e9c;
 
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
@@ -512,6 +538,31 @@ extern "C" dScMg3DEsp_cObjState data_ov006_02141f1c[];
 extern "C" dScMg3DEsp_cObjState data_ov006_02141f5c[];
 extern "C" dScMg3DEsp_cObjState data_ov006_02141f74[];
 extern "C" dScMg3DEsp_cObjState data_ov006_02141f8c[];
+
+/* The ROM PMF constants the seven state tables copy from (unlicensed
+ * .data), grouped by destination table in retail copy order. */
+extern "C" dScMg3DEsp_cState data_ov006_0213c6cc;
+extern "C" dScMg3DEsp_cState data_ov006_0213c6fc;
+extern "C" dScMg3DEsp_cState data_ov006_0213c7b4;
+extern "C" dScMg3DEsp_cState data_ov006_0213c7ac;
+extern "C" dScMg3DEsp_cState data_ov006_0213c72c;
+extern "C" dScMg3DEsp_cState data_ov006_0213c79c;
+extern "C" dScMg3DEsp_cState data_ov006_0213c794;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c734;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c77c;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c714;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c6e4;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c71c;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c73c;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c7a4;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c70c;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c6f4;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c74c;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c6ec;
+extern "C" dScMg3DEsp_cObjState data_ov006_0213c6c4;
+extern "C" dScMg3DEsp_cState data_ov006_0213c6dc;
+extern "C" dScMg3DEsp_cState data_ov006_0213c724;
+extern "C" dScMg3DEsp_cState data_ov006_0213c784;
 
 // @symbol _ZN12dScMg3DEsp_c10DrawBannerEv
 void dScMg3DEsp_c::DrawBanner()
@@ -1703,3 +1754,55 @@ void *dScMg3DEsp_c_classInit(void){
     return o;
 }
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_02130a08 shard).
+ * Retail order: the four model handles, the five animation handles, the
+ * texture sequence, then the seven PMF state tables plain-copied from
+ * the ROM PMF constants. */
+EspAnimSetModelFilePtr data_ov006_02141e9c(0x1ef);
+EspAnimSetModelFilePtr data_ov006_02141e74(0x202);
+EspAnimSetModelFilePtr data_ov006_02141e54(0x1e7);
+EspAnimSetModelFilePtr data_ov006_02141e94(0x1ee);
+EspAnimSetAnimationFileHandle data_ov006_02141e5c(0x1eb);
+EspAnimSetAnimationFileHandle data_ov006_02141e7c(0x1ec);
+EspAnimSetAnimationFileHandle data_ov006_02141e8c(0x1e9);
+EspAnimSetAnimationFileHandle data_ov006_02141e84(0x1ea);
+EspAnimSetAnimationFileHandle data_ov006_02141e6c(0x1ed);
+EspAnimSetTexSequenceFilePtr data_ov006_02141e64(0x1e8);
+
+dScMg3DEsp_cState data_ov006_02141f2c[3] = {
+    data_ov006_0213c6cc,
+    data_ov006_0213c6fc,
+    data_ov006_0213c7b4,
+};
+dScMg3DEsp_cState data_ov006_02141fac[4] = {
+    data_ov006_0213c7ac,
+    data_ov006_0213c72c,
+    data_ov006_0213c79c,
+    data_ov006_0213c794,
+};
+dScMg3DEsp_cObjState data_ov006_02141f5c[3] = {
+    data_ov006_0213c734,
+    data_ov006_0213c77c,
+    data_ov006_0213c714,
+};
+dScMg3DEsp_cObjState data_ov006_02141f74[3] = {
+    data_ov006_0213c6e4,
+    data_ov006_0213c71c,
+    data_ov006_0213c73c,
+};
+dScMg3DEsp_cObjState data_ov006_02141f1c[2] = {
+    data_ov006_0213c7a4,
+    data_ov006_0213c70c,
+};
+dScMg3DEsp_cObjState data_ov006_02141f8c[4] = {
+    data_ov006_0213c6f4,
+    data_ov006_0213c74c,
+    data_ov006_0213c6ec,
+    data_ov006_0213c6c4,
+};
+dScMg3DEsp_cState data_ov006_02141f44[3] = {
+    data_ov006_0213c6dc,
+    data_ov006_0213c724,
+    data_ov006_0213c784,
+};

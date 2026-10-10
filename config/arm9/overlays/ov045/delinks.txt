@@ -7,6 +7,9 @@
 src/game/actors/d_a_obj_km2_agaru.cpp:
     complete
     .text start:0x021111a0 end:0x0211150c
+    .init start:0x021121a8 end:0x02112214
+    .ctor start:0x0211242c end:0x02112430
+    .bss start:0x02113180 end:0x021131a8
 
 src/game/actors/d_a_obj_km2_ami_bou.cpp:
     complete
@@ -19,6 +22,9 @@ src/game/actors/d_a_obj_km2_ami_bou.cpp:
 src/actors/daObjKm2_Nobiru_c.cpp:
     complete
     .text start:0x02111840 end:0x02111b14
+    .init start:0x02112280 end:0x021122ec
+    .ctor start:0x02112434 end:0x02112438
+    .bss start:0x021131d0 end:0x021131f8
 
 src/game/actors/d_a_obj_km2_ukishima.cpp:
     complete
@@ -27,27 +33,18 @@ src/game/actors/d_a_obj_km2_ukishima.cpp:
 src/game/actors/d_a_obj_km2_gura.cpp:
     complete
     .text start:0x02111c30 end:0x02111d48
+    .init start:0x02112358 end:0x021123c0
+    .ctor start:0x0211243c end:0x02112440
     .data start:0x02112fdc end:0x021130a0
+    .bss start:0x02113220 end:0x02113248
 
 src/game/actors/d_a_obj_km2_fall_block.cpp:
     complete
     .text start:0x02111d48 end:0x02111e60
 
-src/unnamed/ov045/__sinit_ov045_021121a8.c:
-    complete
-    .init start:0x021121a8 end:0x02112214
-
-src/unnamed/ov045/__sinit_ov045_02112280.c:
-    complete
-    .init start:0x02112280 end:0x021122ec
-
 src/unnamed/ov045/__sinit_ov045_021122ec.c:
     complete
     .init start:0x021122ec end:0x02112358
-
-src/unnamed/ov045/__sinit_ov045_02112358.c:
-    complete
-    .init start:0x02112358 end:0x021123c0
 
 src/unnamed/ov045/__sinit_ov045_021123c0.c:
     complete

@@ -42,6 +42,10 @@ src/d_a_kpa2_bg.c:
 src/actors/daKpa3Bg_c.cpp:
     complete
     .text start:0x02117d1c end:0x021183cc
+    .init start:0x0211a000 end:0x0211a388
+    .ctor start:0x0211a4c8 end:0x0211a4cc
+    .data start:0x0211a930 end:0x0211a948
+    .bss start:0x0211b01c end:0x0211b1c4
 
 src/unnamed/ov060/func_ov060_021183cc.c:
     complete
@@ -70,20 +74,15 @@ src/d_a_kirai.c:
 src/actors/daFRing_c.cpp:
     complete
     .text start:0x02118cfc end:0x021191f4
+    .init start:0x0211a428 end:0x0211a4bc
+    .ctor start:0x0211a4d0 end:0x0211a4d4
+    .bss start:0x0211b1f8 end:0x0211b234
 
 src/d_a_f_ring.c:
     complete
     .text start:0x021191f4 end:0x02119264
 
-
 src/unnamed/ov060/__sinit_ov060_02119f94.c:
     complete
     .init start:0x02119f94 end:0x0211a000
 
-src/unnamed/ov060/__sinit_ov060_0211a000.c:
-    complete
-    .init start:0x0211a000 end:0x0211a388
-
-src/unnamed/ov060/__sinit_ov060_0211a428.c:
-    complete
-    .init start:0x0211a428 end:0x0211a4bc

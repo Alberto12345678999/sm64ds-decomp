@@ -11,6 +11,9 @@ src/actors/daObjRotateUpdownLift_c.cpp:
 src/game/actors/d_a_linelift2.cpp:
     complete
     .text start:0x02131c14 end:0x02132404
+    .init start:0x021345dc end:0x021346e8
+    .ctor start:0x02134b6c end:0x02134b70
+    .bss start:0x02135490 end:0x021354f8
 
 src/actors/daObjSimpleLift_c.cpp:
     complete
@@ -41,10 +44,6 @@ src/game/actors/d_a_hyuhyu.cpp:
 src/unnamed/ov091/__sinit_ov091_02134524.c:
     complete
     .init start:0x02134524 end:0x021345dc
-
-src/unnamed/ov091/__sinit_ov091_021345dc.c:
-    complete
-    .init start:0x021345dc end:0x021346e8
 
 src/unnamed/ov091/__sinit_ov091_021346e8.c:
     complete

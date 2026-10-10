@@ -25,9 +25,27 @@ namespace Event { s32 GetBit(u32 bit); }
 struct KCL_File;
 struct CLPS_Block;
 
+/* Model handles construct through func_02017acc and destroy through
+ * func_02017ab4; collision handles construct through func_02017b4c and
+ * destroy through SharedFilePtr_Destruct_Clsn. The manifest aliases those
+ * undefined members onto the ROM symbols. */
+struct TdFutaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TdFutaModelFilePtr(u32 fileID);
+    ~TdFutaModelFilePtr();
+};
+
+struct TdFutaClsnFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    TdFutaClsnFileHandle(u32 fileID);
+    ~TdFutaClsnFileHandle();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov032_02113acc;
-extern SharedFilePtr data_ov032_02113ad4;
+extern TdFutaClsnFileHandle data_ov032_02113acc;
+extern TdFutaModelFilePtr data_ov032_02113ad4;
 extern CLPS_Block data_ov032_02112f98;
 
 /* dBgActor_c::IsClsnInRange takes two Fix12<int> by value. A real member
@@ -110,3 +128,8 @@ s32 daObjTdFuta_c::CleanupResources()
  * member of its own: this class's vptr store, then dBgActor_c's -- inlined,
  * which destroys the Model at 0xd4 and the dBgW_KcMbg at 0x124 -- then
  * dActor_c. */
+
+/* File-scope objects, in __sinit_d_a_obj_td_futa.cpp construction order:
+ * the model's SharedFilePtr, then the collision file's. */
+TdFutaModelFilePtr data_ov032_02113ad4(0x6b5);
+TdFutaClsnFileHandle data_ov032_02113acc(0x6b6);

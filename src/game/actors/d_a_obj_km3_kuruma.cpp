@@ -5,8 +5,8 @@
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjKuruma_c's shared ov002 helpers.
  * func_ov002_020b6958 loads slot 0 with Model::LoadFile, slot 1 with
- * dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. ov047 sinit
- * constructs those SharedFilePtrs as file IDs 1663 / 1664.
+ * dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. This TU's static
+ * initializer constructs those SharedFilePtrs as file IDs 1663 / 1664.
  *
  * The three-word file table is defined in this TU. Retail .data
  * order is typeinfo, descriptor, type-name, profile, vtable.
@@ -24,6 +24,28 @@
 
 #include "SharedFilePtr.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct Km3KurumaModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km3KurumaModelFilePtr(unsigned int fileID);
+    ~Km3KurumaModelFilePtr();
+};
+
+struct Km3KurumaClsnFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km3KurumaClsnFilePtr(unsigned int fileID);
+    ~Km3KurumaClsnFilePtr();
+};
+
+typedef char Km3KurumaModelFilePtr_size_must_be_8[
+    sizeof(Km3KurumaModelFilePtr) == 8 ? 1 : -1];
+typedef char Km3KurumaClsnFilePtr_size_must_be_8[
+    sizeof(Km3KurumaClsnFilePtr) == 8 ? 1 : -1];
+
 struct CLPS_Block;
 
 struct ResourceDescriptor {
@@ -35,8 +57,8 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
     sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern "C" {
-extern SharedFilePtr data_ov047_02112638;
-extern SharedFilePtr data_ov047_02112630;
+extern Km3KurumaModelFilePtr data_ov047_02112638;
+extern Km3KurumaClsnFilePtr data_ov047_02112630;
 extern CLPS_Block data_ov047_02111ab4;
 }
 
@@ -96,3 +118,8 @@ s32 daObjKm3_Kuruma_c::CleanupResources()
 {
     return func_ov002_020b68b0(this, &data_ov047_02112408);
 }
+
+/* Source order is construction order: model file 1663, then the collision
+ * file 1664. The compiler registers each destructor beside the object. */
+Km3KurumaModelFilePtr data_ov047_02112638(1663);
+Km3KurumaClsnFilePtr data_ov047_02112630(1664);

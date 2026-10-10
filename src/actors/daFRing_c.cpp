@@ -22,6 +22,32 @@
 #include "Player.h"
 #include "SharedFilePtr.h"
 
+/* The static-init file handles: the model file constructs through
+ * func_02017acc and destroys through func_02017ab4, the animation handle
+ * through SharedFilePtr::Construct/SharedFilePtr_Destruct_Anim, and the
+ * texture-sequence handle through SharedFilePtr_Construct_TexSeq/
+ * SharedFilePtr_Destruct_TexSeq. Each wrapper's ctor and dtor stay
+ * undefined here; the manifest aliases them onto those ROM veneers. */
+struct FRingModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    FRingModelFilePtr(u32 fileID);
+    ~FRingModelFilePtr();
+};
+struct FRingAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+    FRingAnimationFileHandle(u32 fileID);
+    ~FRingAnimationFileHandle();
+};
+struct FRingTexSequenceFilePtr : SharedFilePtr {
+    u32 words[2];
+    FRingTexSequenceFilePtr(u32 fileID);
+    ~FRingTexSequenceFilePtr();
+};
+
+extern FRingAnimationFileHandle data_ov060_0211b1f8;
+extern FRingTexSequenceFilePtr data_ov060_0211b200;
+extern FRingModelFilePtr data_ov060_0211b208;
+
 extern "C" {
 /* The ring's material and texture animations live in the level overlay, not
  * in ov060. ov060 relocs.txt lists the two literals at 0x021191ec/0x021191f0
@@ -113,7 +139,7 @@ s32 daFRing_c::Behavior()
 s32 daFRing_c::InitResources()
 {
     mModelAnim1.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov060_0211b208), 1, 0x13);
-    mModelAnim2.SetFile((BMD_File *)data_ov060_0211b208[1], 1, 0x13);
+    mModelAnim2.SetFile((BMD_File *)data_ov060_0211b208.words[1], 1, 0x13);
 
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1f8);
     TextureSequence::LoadFile(*(SharedFilePtr *)&data_ov060_0211b200);
@@ -121,24 +147,30 @@ s32 daFRing_c::InitResources()
     func_02016b24(&mModelAnim1, 0x4000);
     func_02016b24(&mModelAnim2, 0x4000);
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, (BCA_File *)data_ov060_0211b1f8[1], 0x40000000, 0x1000, 0);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, (BCA_File *)data_ov060_0211b1f8[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, (BCA_File *)data_ov060_0211b1f8.words[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, (BCA_File *)data_ov060_0211b1f8.words[1], 0x40000000, 0x1000, 0);
 
-    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208[1], *(BTP_File *)data_ov060_0211b200[1]);
-    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208[1], *(BTP_File *)data_ov060_0211b200[1]);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence1, (BTP_File *)data_ov060_0211b200[1], 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence2, (BTP_File *)data_ov060_0211b200[1], 0x40000000, 0x1000, 0);
+    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208.words[1], *(BTP_File *)data_ov060_0211b200.words[1]);
+    TextureSequence::Prepare(*(BMD_File *)data_ov060_0211b208.words[1], *(BTP_File *)data_ov060_0211b200.words[1]);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence1, (BTP_File *)data_ov060_0211b200.words[1], 0x40000000, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence2, (BTP_File *)data_ov060_0211b200.words[1], 0x40000000, 0x1000, 0);
 
-    MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208[1], data_ov048_021115e4);
-    MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208[1], data_ov048_021115e4);
+    MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208.words[1], data_ov048_021115e4);
+    MaterialChanger::Prepare(*(BMD_File *)data_ov060_0211b208.words[1], data_ov048_021115e4);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger1, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger2, &data_ov048_021115e4, 0x40000000, 0x1000, 0);
 
-    TextureTransformer::Prepare(*(BMD_File *)data_ov060_0211b208[1], data_ov048_021115f4);
-    TextureTransformer::Prepare(*(BMD_File *)data_ov060_0211b208[1], data_ov048_021115f4);
+    TextureTransformer::Prepare(*(BMD_File *)data_ov060_0211b208.words[1], data_ov048_021115f4);
+    TextureTransformer::Prepare(*(BMD_File *)data_ov060_0211b208.words[1], data_ov048_021115f4);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer1, &data_ov048_021115f4, 0x40000000, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer2, &data_ov048_021115f4, 0x40000000, 0x1000, 0);
 
     mFrame = 0;
     return 1;
 }
+
+/* Definition order is the retail initializer's construction order: the model
+ * handle, then the animation handle, then the texture-sequence handle. */
+FRingModelFilePtr data_ov060_0211b208(0x384);
+FRingAnimationFileHandle data_ov060_0211b1f8(0x383);
+FRingTexSequenceFilePtr data_ov060_0211b200(0x385);
