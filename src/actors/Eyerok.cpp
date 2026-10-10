@@ -3,9 +3,11 @@
  * 62 functions). ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30);
  * this tree keeps the coined name.
  *
- * The unit's two destructors (D1 0x02115ee0, D0 0x02115f84) stay in their
- * own files: ~Eyerok is the key function, and defining it here would emit
- * the vtable and RTTI as _ZTS6Eyerok, a name the ROM does not have. The
+ * The unit's two destructors (D1 0x02115ee0, D0 0x02115f84) are defined at
+ * the top of this file: ~Eyerok is the key function, so defining it here
+ * also emits the vtable as _ZTV6Eyerok. The class carries the ROM's
+ * daIwante_c spelling, so the TU compiles with #pragma RTTI off (no
+ * homeless _ZTI/_ZTS records); the manifest deadstrips the vtable with D2. The
  * tail folds the three zero-gap neighbours and the static initializer up to
  * the .ctor word at 0x0211abc0: the free helper func_ov066_0211a2e4, its
  * tail-call veneer func_ov066_0211a35c (this unit's dBgW callback), the
@@ -386,6 +388,38 @@ extern void func_ov066_0211a35c(void *a, void *b, void *c);
 }
 
 typedef struct { int w[12]; } M48;
+
+/* The cartridge spells this class daIwante_c, so the compiler-emitted
+ * _ZTS6Eyerok / _ZTI6Eyerok records would be homeless under the project
+ * spelling. Compiling with RTTI off emits no records at all; the vtable
+ * preamble's typeinfo word deadstrips with the rest of the data sections. */
+#pragma RTTI off
+
+// @symbol _ZN6EyerokD1Ev
+// @symbol _ZN6EyerokD0Ev
+/* recovered: real C++ destructors -- the compiler emits the whole bodies
+ * (folded from the retired src/_ZN6EyerokD1Ev.cpp / src/_ZN6EyerokD0Ev.cpp,
+ * whose .text is address-contiguous below).
+ *
+ * Own vptr, then the members in reverse declaration order (the class-owned
+ * dBgW_KcMbg at 0x674, the Vector3 span at 0x4dc via __cxa_vec_cleanup,
+ * TextureSequence, dExtShadowModel_c, Model, BlendModelAnim,
+ * dCcAcPos_c), then dBgActor_c's vptr -- inlined, because
+ * dBgActor_c's destructor is defined in its class body -- then dBgActor_c's
+ * own dBgW_Kc and Model, then dActor_c. See include/Eyerok.h for why
+ * this is a direct dBgActor_c child, not three levels deep.
+ *
+ * Out-of-line ~Eyerok is the key function, so this TU also emits the vtable
+ * as _ZTV6Eyerok (deadstrip-data in the manifest: the cartridge keeps the
+ * record at ov066:0x0211ad64) and D2 next to the ROM's D1/D0 pair
+ * (deadstripped: the cartridge has no Eyerok D2). No _ZTI/_ZTS records
+ * accompany them: the class carries the ROM's daIwante_c spelling, so the
+ * TU compiles with #pragma RTTI off. The
+ * deallocation in D0 is an inline operator delete, inherited from
+ * dActor_c. */
+Eyerok::~Eyerok()
+{
+}
 
 // @symbol _ZN6Eyerok19func_ov066_0211603cEv
 /* Hit check for a hand. The hitter is mdCcAcPos_c.otherOwner, a uniqueID

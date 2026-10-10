@@ -13,7 +13,7 @@
   "sections": [
     {
       "name": ".text",
-      "start": "0x0211603c",
+      "start": "0x02115ee0",
       "end": "0x0211a418"
     },
     {
@@ -33,6 +33,20 @@
     }
   ],
   "functions": [
+    {
+      "symbol": "_ZN6EyerokD1Ev",
+      "address": "0x02115ee0",
+      "size": "0x000000a4",
+      "legacy_source": "src/_ZN6EyerokD1Ev.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN6EyerokD0Ev",
+      "address": "0x02115f84",
+      "size": "0x000000b8",
+      "legacy_source": "src/_ZN6EyerokD0Ev.cpp",
+      "ordinal": 1
+    },
     {
       "symbol": "_ZN6Eyerok19func_ov066_0211603cEv",
       "address": "0x0211603c",
@@ -625,154 +639,154 @@
       "evidence": "texture-sequence resource handle constructed with file ID 0x334 and registered with SharedFilePtr_Destruct_TexSeq"
     },
     {
-      "symbol": "@2129",
+      "symbol": "@158",
       "address": "0x0211aec4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33a model handle"
     },
     {
-      "symbol": "@2131",
+      "symbol": "@160",
       "address": "0x0211aed0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x339 model handle"
     },
     {
-      "symbol": "@2132",
+      "symbol": "@161",
       "address": "0x0211aedc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x335 animation handle"
     },
     {
-      "symbol": "@2133",
+      "symbol": "@162",
       "address": "0x0211aee8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x336 animation handle"
     },
     {
-      "symbol": "@2134",
+      "symbol": "@163",
       "address": "0x0211aef4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x337 animation handle"
     },
     {
-      "symbol": "@2135",
+      "symbol": "@164",
       "address": "0x0211af00",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x338 animation handle"
     },
     {
-      "symbol": "@2136",
+      "symbol": "@165",
       "address": "0x0211af0c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x340 animation handle"
     },
     {
-      "symbol": "@2137",
+      "symbol": "@166",
       "address": "0x0211af18",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x341 animation handle"
     },
     {
-      "symbol": "@2138",
+      "symbol": "@167",
       "address": "0x0211af24",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x342 animation handle"
     },
     {
-      "symbol": "@2139",
+      "symbol": "@168",
       "address": "0x0211af30",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x344 animation handle"
     },
     {
-      "symbol": "@2140",
+      "symbol": "@169",
       "address": "0x0211af3c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x346 animation handle"
     },
     {
-      "symbol": "@2141",
+      "symbol": "@2167",
       "address": "0x0211af48",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x347 animation handle"
     },
     {
-      "symbol": "@2142",
+      "symbol": "@2168",
       "address": "0x0211af54",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x333 texture-sequence handle"
     },
     {
-      "symbol": "@2143",
+      "symbol": "@2169",
       "address": "0x0211af60",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x334 texture-sequence handle"
     },
     {
-      "symbol": "@2144",
+      "symbol": "@2170",
       "address": "0x0211af6c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33d texture-sequence handle"
     },
     {
-      "symbol": "@2145",
+      "symbol": "@2171",
       "address": "0x0211af78",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33e texture-sequence handle"
     },
     {
-      "symbol": "@2146",
+      "symbol": "@2172",
       "address": "0x0211af84",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x332 collision handle"
     },
     {
-      "symbol": "@2147",
+      "symbol": "@2173",
       "address": "0x0211af90",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33b collision handle"
     },
     {
-      "symbol": "@2148",
+      "symbol": "@2174",
       "address": "0x0211af9c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33c collision handle"
     },
     {
-      "symbol": "@2149",
+      "symbol": "@2175",
       "address": "0x0211afa8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x343 collision handle"
     },
     {
-      "symbol": "@2130",
+      "symbol": "@159",
       "address": "0x0211afb4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33f model handle"
     },
     {
-      "symbol": "@2150",
+      "symbol": "@2176",
       "address": "0x0211afc0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1083,7 +1097,7 @@
         "rom": true
       },
       "tuRange": {
-        "start": "0x0211603c",
+        "start": "0x02115ee0",
         "end": "0x0211a418",
         "differingBytes": 0,
         "firstDiff": null
@@ -1091,7 +1105,7 @@
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x0211603c",
+          "start": "0x02115ee0",
           "end": "0x0211a418",
           "differingBytes": 0,
           "firstDiff": null
@@ -1119,7 +1133,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 127
+          "LICENSED": 129
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1130,30 +1144,42 @@
           {
             "section": ".init",
             "original": [
-              178
+              186
             ],
             "desired": [
-              178
-            ]
+              186
+            ],
+            "anchors": {
+              "186": [
+                {
+                  "symbol": "__sinit_Eyerok.cpp",
+                  "address": 34710552,
+                  "sectionBase": 34710552
+                }
+              ]
+            }
           },
           {
             "section": ".ctor",
             "original": [
-              176
+              184
             ],
             "desired": [
-              176
-            ]
+              184
+            ],
+            "anchors": {
+              "184": [
+                {
+                  "symbol": ".p__sinit_Eyerok.cpp",
+                  "address": 34712512,
+                  "sectionBase": 34712512
+                }
+              ]
+            }
           },
           {
             "section": ".bss",
             "original": [
-              113,
-              114,
-              115,
-              116,
-              117,
-              118,
               119,
               120,
               121,
@@ -1210,35 +1236,38 @@
               172,
               173,
               174,
-              175
+              175,
+              176,
+              177,
+              178,
+              179,
+              180,
+              181
             ],
             "desired": [
-              152,
+              158,
+              160,
               154,
-              148,
-              144,
-              156,
-              140,
-              134,
-              116,
-              128,
-              120,
-              132,
-              118,
-              136,
-              138,
-              122,
-              126,
-              130,
-              146,
-              124,
               150,
-              114,
+              162,
+              146,
+              140,
+              122,
+              134,
+              126,
+              138,
+              124,
               142,
-              113,
-              117,
+              144,
+              128,
+              132,
+              136,
+              152,
+              130,
+              156,
+              120,
+              148,
               119,
-              121,
               123,
               125,
               127,
@@ -1255,28 +1284,474 @@
               149,
               151,
               153,
-              115,
               155,
+              157,
+              159,
+              121,
               161,
-              162,
-              172,
-              163,
-              164,
-              173,
-              165,
-              166,
-              174,
               167,
               168,
-              175,
+              178,
               169,
-              157,
-              158,
               170,
-              159,
-              160,
-              171
-            ]
+              179,
+              171,
+              172,
+              180,
+              173,
+              174,
+              181,
+              175,
+              163,
+              164,
+              176,
+              165,
+              166,
+              177
+            ],
+            "anchors": {
+              "119": [
+                {
+                  "symbol": "@158",
+                  "address": 34713284,
+                  "sectionBase": 34713284
+                }
+              ],
+              "120": [
+                {
+                  "symbol": "data_ov066_0211aeb4",
+                  "address": 34713268,
+                  "sectionBase": 34713268
+                }
+              ],
+              "121": [
+                {
+                  "symbol": "@159",
+                  "address": 34713524,
+                  "sectionBase": 34713524
+                }
+              ],
+              "122": [
+                {
+                  "symbol": "data_ov066_0211ae4c",
+                  "address": 34713164,
+                  "sectionBase": 34713164
+                }
+              ],
+              "123": [
+                {
+                  "symbol": "@160",
+                  "address": 34713296,
+                  "sectionBase": 34713296
+                }
+              ],
+              "124": [
+                {
+                  "symbol": "data_ov066_0211ae6c",
+                  "address": 34713196,
+                  "sectionBase": 34713196
+                }
+              ],
+              "125": [
+                {
+                  "symbol": "@161",
+                  "address": 34713308,
+                  "sectionBase": 34713308
+                }
+              ],
+              "126": [
+                {
+                  "symbol": "data_ov066_0211ae5c",
+                  "address": 34713180,
+                  "sectionBase": 34713180
+                }
+              ],
+              "127": [
+                {
+                  "symbol": "@162",
+                  "address": 34713320,
+                  "sectionBase": 34713320
+                }
+              ],
+              "128": [
+                {
+                  "symbol": "data_ov066_0211ae84",
+                  "address": 34713220,
+                  "sectionBase": 34713220
+                }
+              ],
+              "129": [
+                {
+                  "symbol": "@163",
+                  "address": 34713332,
+                  "sectionBase": 34713332
+                }
+              ],
+              "130": [
+                {
+                  "symbol": "data_ov066_0211aea4",
+                  "address": 34713252,
+                  "sectionBase": 34713252
+                }
+              ],
+              "131": [
+                {
+                  "symbol": "@164",
+                  "address": 34713344,
+                  "sectionBase": 34713344
+                }
+              ],
+              "132": [
+                {
+                  "symbol": "data_ov066_0211ae8c",
+                  "address": 34713228,
+                  "sectionBase": 34713228
+                }
+              ],
+              "133": [
+                {
+                  "symbol": "@165",
+                  "address": 34713356,
+                  "sectionBase": 34713356
+                }
+              ],
+              "134": [
+                {
+                  "symbol": "data_ov066_0211ae54",
+                  "address": 34713172,
+                  "sectionBase": 34713172
+                }
+              ],
+              "135": [
+                {
+                  "symbol": "@166",
+                  "address": 34713368,
+                  "sectionBase": 34713368
+                }
+              ],
+              "136": [
+                {
+                  "symbol": "data_ov066_0211ae94",
+                  "address": 34713236,
+                  "sectionBase": 34713236
+                }
+              ],
+              "137": [
+                {
+                  "symbol": "@167",
+                  "address": 34713380,
+                  "sectionBase": 34713380
+                }
+              ],
+              "138": [
+                {
+                  "symbol": "data_ov066_0211ae64",
+                  "address": 34713188,
+                  "sectionBase": 34713188
+                }
+              ],
+              "139": [
+                {
+                  "symbol": "@168",
+                  "address": 34713392,
+                  "sectionBase": 34713392
+                }
+              ],
+              "140": [
+                {
+                  "symbol": "data_ov066_0211ae44",
+                  "address": 34713156,
+                  "sectionBase": 34713156
+                }
+              ],
+              "141": [
+                {
+                  "symbol": "@169",
+                  "address": 34713404,
+                  "sectionBase": 34713404
+                }
+              ],
+              "142": [
+                {
+                  "symbol": "data_ov066_0211ae74",
+                  "address": 34713204,
+                  "sectionBase": 34713204
+                }
+              ],
+              "143": [
+                {
+                  "symbol": "@2167",
+                  "address": 34713416,
+                  "sectionBase": 34713416
+                }
+              ],
+              "144": [
+                {
+                  "symbol": "data_ov066_0211ae7c",
+                  "address": 34713212,
+                  "sectionBase": 34713212
+                }
+              ],
+              "145": [
+                {
+                  "symbol": "@2168",
+                  "address": 34713428,
+                  "sectionBase": 34713428
+                }
+              ],
+              "146": [
+                {
+                  "symbol": "data_ov066_0211ae3c",
+                  "address": 34713148,
+                  "sectionBase": 34713148
+                }
+              ],
+              "147": [
+                {
+                  "symbol": "@2169",
+                  "address": 34713440,
+                  "sectionBase": 34713440
+                }
+              ],
+              "148": [
+                {
+                  "symbol": "data_ov066_0211aebc",
+                  "address": 34713276,
+                  "sectionBase": 34713276
+                }
+              ],
+              "149": [
+                {
+                  "symbol": "@2170",
+                  "address": 34713452,
+                  "sectionBase": 34713452
+                }
+              ],
+              "150": [
+                {
+                  "symbol": "data_ov066_0211ae2c",
+                  "address": 34713132,
+                  "sectionBase": 34713132
+                }
+              ],
+              "151": [
+                {
+                  "symbol": "@2171",
+                  "address": 34713464,
+                  "sectionBase": 34713464
+                }
+              ],
+              "152": [
+                {
+                  "symbol": "data_ov066_0211ae9c",
+                  "address": 34713244,
+                  "sectionBase": 34713244
+                }
+              ],
+              "153": [
+                {
+                  "symbol": "@2172",
+                  "address": 34713476,
+                  "sectionBase": 34713476
+                }
+              ],
+              "154": [
+                {
+                  "symbol": "data_ov066_0211ae24",
+                  "address": 34713124,
+                  "sectionBase": 34713124
+                }
+              ],
+              "155": [
+                {
+                  "symbol": "@2173",
+                  "address": 34713488,
+                  "sectionBase": 34713488
+                }
+              ],
+              "156": [
+                {
+                  "symbol": "data_ov066_0211aeac",
+                  "address": 34713260,
+                  "sectionBase": 34713260
+                }
+              ],
+              "157": [
+                {
+                  "symbol": "@2174",
+                  "address": 34713500,
+                  "sectionBase": 34713500
+                }
+              ],
+              "158": [
+                {
+                  "symbol": "data_ov066_0211ae14",
+                  "address": 34713108,
+                  "sectionBase": 34713108
+                }
+              ],
+              "159": [
+                {
+                  "symbol": "@2175",
+                  "address": 34713512,
+                  "sectionBase": 34713512
+                }
+              ],
+              "160": [
+                {
+                  "symbol": "data_ov066_0211ae1c",
+                  "address": 34713116,
+                  "sectionBase": 34713116
+                }
+              ],
+              "161": [
+                {
+                  "symbol": "@2176",
+                  "address": 34713536,
+                  "sectionBase": 34713536
+                }
+              ],
+              "162": [
+                {
+                  "symbol": "data_ov066_0211ae34",
+                  "address": 34713140,
+                  "sectionBase": 34713140
+                }
+              ],
+              "163": [
+                {
+                  "symbol": "data_ov066_0211b09c",
+                  "address": 34713756,
+                  "sectionBase": 34713756
+                }
+              ],
+              "164": [
+                {
+                  "symbol": "data_ov066_0211b0ac",
+                  "address": 34713772,
+                  "sectionBase": 34713772
+                }
+              ],
+              "165": [
+                {
+                  "symbol": "data_ov066_0211b0cc",
+                  "address": 34713804,
+                  "sectionBase": 34713804
+                }
+              ],
+              "166": [
+                {
+                  "symbol": "data_ov066_0211b0dc",
+                  "address": 34713820,
+                  "sectionBase": 34713820
+                }
+              ],
+              "167": [
+                {
+                  "symbol": "data_ov066_0211afcc",
+                  "address": 34713548,
+                  "sectionBase": 34713548
+                }
+              ],
+              "168": [
+                {
+                  "symbol": "data_ov066_0211afdc",
+                  "address": 34713564,
+                  "sectionBase": 34713564
+                }
+              ],
+              "169": [
+                {
+                  "symbol": "data_ov066_0211affc",
+                  "address": 34713596,
+                  "sectionBase": 34713596
+                }
+              ],
+              "170": [
+                {
+                  "symbol": "data_ov066_0211b00c",
+                  "address": 34713612,
+                  "sectionBase": 34713612
+                }
+              ],
+              "171": [
+                {
+                  "symbol": "data_ov066_0211b02c",
+                  "address": 34713644,
+                  "sectionBase": 34713644
+                }
+              ],
+              "172": [
+                {
+                  "symbol": "data_ov066_0211b03c",
+                  "address": 34713660,
+                  "sectionBase": 34713660
+                }
+              ],
+              "173": [
+                {
+                  "symbol": "data_ov066_0211b05c",
+                  "address": 34713692,
+                  "sectionBase": 34713692
+                }
+              ],
+              "174": [
+                {
+                  "symbol": "data_ov066_0211b06c",
+                  "address": 34713708,
+                  "sectionBase": 34713708
+                }
+              ],
+              "175": [
+                {
+                  "symbol": "data_ov066_0211b08c",
+                  "address": 34713740,
+                  "sectionBase": 34713740
+                }
+              ],
+              "176": [
+                {
+                  "symbol": "data_ov066_0211b0bc",
+                  "address": 34713788,
+                  "sectionBase": 34713788
+                }
+              ],
+              "177": [
+                {
+                  "symbol": "data_ov066_0211b0ec",
+                  "address": 34713836,
+                  "sectionBase": 34713836
+                }
+              ],
+              "178": [
+                {
+                  "symbol": "data_ov066_0211afec",
+                  "address": 34713580,
+                  "sectionBase": 34713580
+                }
+              ],
+              "179": [
+                {
+                  "symbol": "data_ov066_0211b01c",
+                  "address": 34713628,
+                  "sectionBase": 34713628
+                }
+              ],
+              "180": [
+                {
+                  "symbol": "data_ov066_0211b04c",
+                  "address": 34713676,
+                  "sectionBase": 34713676
+                }
+              ],
+              "181": [
+                {
+                  "symbol": "data_ov066_0211b07c",
+                  "address": 34713724,
+                  "sectionBase": 34713724
+                }
+              ]
+            }
           }
         ],
         "objisolate": {
@@ -1284,12 +1759,6 @@
             {
               "section": ".bss",
               "original": [
-                113,
-                114,
-                115,
-                116,
-                117,
-                118,
                 119,
                 120,
                 121,
@@ -1346,35 +1815,38 @@
                 172,
                 173,
                 174,
-                175
+                175,
+                176,
+                177,
+                178,
+                179,
+                180,
+                181
               ],
               "desired": [
-                152,
+                158,
+                160,
                 154,
-                148,
-                144,
-                156,
-                140,
-                134,
-                116,
-                128,
-                120,
-                132,
-                118,
-                136,
-                138,
-                122,
-                126,
-                130,
-                146,
-                124,
                 150,
-                114,
+                162,
+                146,
+                140,
+                122,
+                134,
+                126,
+                138,
+                124,
                 142,
-                113,
-                117,
+                144,
+                128,
+                132,
+                136,
+                152,
+                130,
+                156,
+                120,
+                148,
                 119,
-                121,
                 123,
                 125,
                 127,
@@ -1391,35 +1863,32 @@
                 149,
                 151,
                 153,
-                115,
                 155,
+                157,
+                159,
+                121,
                 161,
-                162,
-                172,
-                163,
-                164,
-                173,
-                165,
-                166,
-                174,
                 167,
                 168,
-                175,
+                178,
                 169,
-                157,
-                158,
                 170,
-                159,
-                160,
-                171
+                179,
+                171,
+                172,
+                180,
+                173,
+                174,
+                181,
+                175,
+                163,
+                164,
+                176,
+                165,
+                166,
+                177
               ],
               "slots": [
-                113,
-                114,
-                115,
-                116,
-                117,
-                118,
                 119,
                 120,
                 121,
@@ -1476,7 +1945,13 @@
                 172,
                 173,
                 174,
-                175
+                175,
+                176,
+                177,
+                178,
+                179,
+                180,
+                181
               ]
             }
           ],
@@ -1532,6 +2007,18 @@
       "symbol": "_ZN4Vec4D1Ev",
       "disposition": "deadstrip",
       "reason": "Implicit destructor of the file-local shadow struct `Vec4 { int a, b, c, d; ~Vec4(){} }` that ROM ordinal 50 (func_ov066_02119398) declares to force a stack slot group. It is a compiler artefact of the reconstruction, not a cartridge symbol: no module's symbols.txt names any address for it, so it is homeless and deadstripped outright."
+    },
+    {
+      "symbol": "_ZN6EyerokD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line ~Eyerok under #pragma defer_codegen off emits D1, D0, then D2. The cartridge has D1 at 0x02115ee0 and D0 at 0x02115f84 and no Eyerok D2."
+    },
+    {
+      "symbol": "_ZTV6Eyerok",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov066",
+      "canonical_address": "0x0211ad64",
+      "reason": "Key function is the out-of-line destructor, so this TU emits the vtable. symbols.txt names the address point 0x0211ad64; the licensed spans cover only .text/.init/.ctor/.bss. The class carries the ROM's daIwante_c spelling, so no _ZTI/_ZTS records accompany it: the TU compiles with #pragma RTTI off."
     }
   ],
   "production_mode": "intact-object",
@@ -1618,6 +2105,68 @@
       "evidence": "compiler-generated static initialization call shape and the 22 direct retail references in this initializer"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@2155",
+      "to": "@158",
+      "evidence": "mwcc numbers this registration node @2155 per TU and the fleet already defines a global @2155 (ov002), so the scratch link would multiply-define it; it lands on @158"
+    },
+    {
+      "from": "@2156",
+      "to": "@159",
+      "evidence": "mwcc numbers this registration node @2156 per TU and the fleet already defines a global @2156 (ov002), so the scratch link would multiply-define it; it lands on @159"
+    },
+    {
+      "from": "@2157",
+      "to": "@160",
+      "evidence": "mwcc numbers this registration node @2157 per TU and the fleet already defines a global @2157 (ov002), so the scratch link would multiply-define it; it lands on @160"
+    },
+    {
+      "from": "@2158",
+      "to": "@161",
+      "evidence": "mwcc numbers this registration node @2158 per TU and the fleet already defines a global @2158 (ov002), so the scratch link would multiply-define it; it lands on @161"
+    },
+    {
+      "from": "@2159",
+      "to": "@162",
+      "evidence": "mwcc numbers this registration node @2159 per TU and the fleet already defines a global @2159 (ov002), so the scratch link would multiply-define it; it lands on @162"
+    },
+    {
+      "from": "@2160",
+      "to": "@163",
+      "evidence": "mwcc numbers this registration node @2160 per TU and the fleet already defines a global @2160 (ov002), so the scratch link would multiply-define it; it lands on @163"
+    },
+    {
+      "from": "@2161",
+      "to": "@164",
+      "evidence": "mwcc numbers this registration node @2161 per TU and the fleet already defines a global @2161 (ov002), so the scratch link would multiply-define it; it lands on @164"
+    },
+    {
+      "from": "@2162",
+      "to": "@165",
+      "evidence": "mwcc numbers this registration node @2162 per TU and the fleet already defines a global @2162 (ov002), so the scratch link would multiply-define it; it lands on @165"
+    },
+    {
+      "from": "@2163",
+      "to": "@166",
+      "evidence": "mwcc numbers this registration node @2163 per TU and the fleet already defines a global @2163 (ov002), so the scratch link would multiply-define it; it lands on @166"
+    },
+    {
+      "from": "@2164",
+      "to": "@167",
+      "evidence": "mwcc numbers this registration node @2164 per TU and the fleet already defines a global @2164 (ov002), so the scratch link would multiply-define it; it lands on @167"
+    },
+    {
+      "from": "@2165",
+      "to": "@168",
+      "evidence": "mwcc numbers this registration node @2165 per TU and the fleet already defines a global @2165 (ov002), so the scratch link would multiply-define it; it lands on @168"
+    },
+    {
+      "from": "@2166",
+      "to": "@169",
+      "evidence": "mwcc numbers this registration node @2166 per TU and the fleet already defines a global @2166 (ov002), so the scratch link would multiply-define it; it lands on @169"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_Eyerok.cpp",
@@ -1632,133 +2181,133 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@2129",
+      "symbol": "@158",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aec4"
     },
     {
-      "symbol": "@2131",
+      "symbol": "@160",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aed0"
     },
     {
-      "symbol": "@2132",
+      "symbol": "@161",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aedc"
     },
     {
-      "symbol": "@2133",
+      "symbol": "@162",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aee8"
     },
     {
-      "symbol": "@2134",
+      "symbol": "@163",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aef4"
     },
     {
-      "symbol": "@2135",
+      "symbol": "@164",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af00"
     },
     {
-      "symbol": "@2136",
+      "symbol": "@165",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af0c"
     },
     {
-      "symbol": "@2137",
+      "symbol": "@166",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af18"
     },
     {
-      "symbol": "@2138",
+      "symbol": "@167",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af24"
     },
     {
-      "symbol": "@2139",
+      "symbol": "@168",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af30"
     },
     {
-      "symbol": "@2140",
+      "symbol": "@169",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af3c"
     },
     {
-      "symbol": "@2141",
+      "symbol": "@2167",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af48"
     },
     {
-      "symbol": "@2142",
+      "symbol": "@2168",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af54"
     },
     {
-      "symbol": "@2143",
+      "symbol": "@2169",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af60"
     },
     {
-      "symbol": "@2144",
+      "symbol": "@2170",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af6c"
     },
     {
-      "symbol": "@2145",
+      "symbol": "@2171",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af78"
     },
     {
-      "symbol": "@2146",
+      "symbol": "@2172",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af84"
     },
     {
-      "symbol": "@2147",
+      "symbol": "@2173",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af90"
     },
     {
-      "symbol": "@2148",
+      "symbol": "@2174",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af9c"
     },
     {
-      "symbol": "@2149",
+      "symbol": "@2175",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afa8"
     },
     {
-      "symbol": "@2130",
+      "symbol": "@159",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afb4"
     },
     {
-      "symbol": "@2150",
+      "symbol": "@2176",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afc0"
@@ -2230,7 +2779,7 @@
       "source": "0x0211a9e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2129",
+      "symbol": "@158",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aec4"
@@ -2250,7 +2799,7 @@
       "source": "0x0211a9f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2130",
+      "symbol": "@159",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afb4"
@@ -2270,7 +2819,7 @@
       "source": "0x0211a9fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2131",
+      "symbol": "@160",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aed0"
@@ -2300,7 +2849,7 @@
       "source": "0x0211aa0c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2132",
+      "symbol": "@161",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aedc"
@@ -2320,7 +2869,7 @@
       "source": "0x0211aa18",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2133",
+      "symbol": "@162",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aee8"
@@ -2340,7 +2889,7 @@
       "source": "0x0211aa24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2134",
+      "symbol": "@163",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aef4"
@@ -2360,7 +2909,7 @@
       "source": "0x0211aa2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2135",
+      "symbol": "@164",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af00"
@@ -2380,7 +2929,7 @@
       "source": "0x0211aa34",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2136",
+      "symbol": "@165",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af0c"
@@ -2400,7 +2949,7 @@
       "source": "0x0211aa40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2137",
+      "symbol": "@166",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af18"
@@ -2420,7 +2969,7 @@
       "source": "0x0211aa4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2138",
+      "symbol": "@167",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af24"
@@ -2440,7 +2989,7 @@
       "source": "0x0211aa54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2139",
+      "symbol": "@168",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af30"
@@ -2460,7 +3009,7 @@
       "source": "0x0211aa60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2140",
+      "symbol": "@169",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af3c"
@@ -2480,7 +3029,7 @@
       "source": "0x0211aa6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2141",
+      "symbol": "@2167",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af48"
@@ -2510,7 +3059,7 @@
       "source": "0x0211aa7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2142",
+      "symbol": "@2168",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af54"
@@ -2530,7 +3079,7 @@
       "source": "0x0211aa84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2143",
+      "symbol": "@2169",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af60"
@@ -2550,7 +3099,7 @@
       "source": "0x0211aa90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2144",
+      "symbol": "@2170",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af6c"
@@ -2570,7 +3119,7 @@
       "source": "0x0211aa9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2145",
+      "symbol": "@2171",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af78"
@@ -2600,7 +3149,7 @@
       "source": "0x0211aaac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2146",
+      "symbol": "@2172",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af84"
@@ -2620,7 +3169,7 @@
       "source": "0x0211aab8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2147",
+      "symbol": "@2173",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af90"
@@ -2640,7 +3189,7 @@
       "source": "0x0211aac0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2148",
+      "symbol": "@2174",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af9c"
@@ -2660,7 +3209,7 @@
       "source": "0x0211aacc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2149",
+      "symbol": "@2175",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afa8"
@@ -2680,7 +3229,7 @@
       "source": "0x0211aad8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2150",
+      "symbol": "@2176",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afc0"

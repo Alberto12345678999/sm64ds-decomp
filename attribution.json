@@ -2997,6 +2997,8 @@
     "src/actors/Eyerok.cpp#_ZN6Eyerok16OnPendingDestroyEv": "tangosdev",
     "src/actors/Eyerok.cpp#_ZN6Eyerok6RenderEv": "tangosdev",
     "src/actors/Eyerok.cpp#_ZN6Eyerok8BehaviorEv": "lunavyqo",
+    "src/actors/Eyerok.cpp#_ZN6EyerokD0Ev": "tangosdev",
+    "src/actors/Eyerok.cpp#_ZN6EyerokD1Ev": "tangosdev",
     "src/actors/Eyerok.cpp#func_ov066_0211a2e4": "tangosdev",
     "src/actors/Eyerok.cpp#func_ov066_0211a35c": "tangosdev",
     "src/actors/Eyerok.cpp#daIwante_c_classInit": "tangosdev",
