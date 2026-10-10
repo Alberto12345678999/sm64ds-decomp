@@ -30,8 +30,6 @@
  *   dBgCh_Actr::GetFloorResult: not in dBgCh_Actr.h yet.
  *
  * Known limits:
- *   data_ov070_021236ec, the state table, is sinit-owned BSS, not this TU's
- *   data claim.
  *   `return new` synthesizes a vague-linkage _ZN9Matrix4x3D1Ev over mMatrix
  *   (deadstripped; no ROM symbol).
  */
@@ -155,6 +153,12 @@ int daKpFr_c::CleanupResources()
 }
 
 extern "C" daKpFrState data_ov070_021236ec[];
+/* The ROM PMF constants the state table copies from (unlicensed .data):
+ * the init/behavior halves of the two states, in retail copy order. */
+extern "C" daKpFrStateMethod data_ov070_021233ec;
+extern "C" daKpFrStateMethod data_ov070_021233fc;
+extern "C" daKpFrStateMethod data_ov070_021233f4;
+extern "C" daKpFrStateMethod data_ov070_02123404;
 
 // @symbol _ZN8daKpFr_c19func_ov070_02122044Ei
 void daKpFr_c::func_ov070_02122044(int idx)
@@ -351,3 +355,11 @@ int daKpFr_c::OnYoshiTryEat()
 
 /* No separate body: the inline class destructor emits this complete variant
  * first, through the class vtable instantiated in this TU. */
+
+/* Static-init globals (was the handwritten __sinit_ov070_02123030 shard).
+ * The two-entry state table plain-copied from the ROM PMF constants, in
+ * retail copy order: state 0's init/behavior halves, then state 1's. */
+daKpFrState data_ov070_021236ec[2] = {
+    {data_ov070_021233ec, data_ov070_021233fc},
+    {data_ov070_021233f4, data_ov070_02123404},
+};
