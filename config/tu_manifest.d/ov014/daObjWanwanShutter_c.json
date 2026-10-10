@@ -139,7 +139,7 @@
       "evidence": "compiler-generated collision destructor-registration node"
     },
     {
-      "symbol": "@403",
+      "symbol": "@137",
       "address": "0x021149d4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -160,7 +160,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@403",
+      "symbol": "@137",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local model registration node is a configured initializer relocation destination at 0x021149d4"
@@ -207,6 +207,13 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020731dc",
       "evidence": "compiler-generated static initialization call shape and the two direct retail references in this initializer"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@403",
+      "to": "@137",
+      "evidence": "compiler temporary; mwcc numbers it @403 per TU and ov029 daObjWc_Obj04_c (this batch) also defines a global @403, so the scratch link collides"
     }
   ],
   "relocations": [
@@ -275,7 +282,7 @@
       "source": "0x02113354",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@403",
+      "symbol": "@137",
       "addend": 0,
       "target_module": "ov014",
       "target_address": "0x021149d4"
@@ -327,7 +334,7 @@
     "Reconstructed source-style factory symbol daObjWanwanShutter_c_classInit: class identity is ROM-proven by RTTI/allocation/vtable and profile identity by literal ROM ID WANWAN_SHUTTER; classInit spelling is later-EAD lineage reconstruction. Historical alias: ChainChompFence_Spawn.",
     "SUPERSEDES note 2 on one point: there is no symbol named Spawn in this tree. The vptr store &_ZTV20daObjWanwanShutter_c[2] is emitted by the factory daObjWanwanShutter_c_classInit (ov014 0x02112e0c) and by the destructor, not by any 'Spawn'; 'Spawn' is the historical shadow-era spelling (ChainChompFence_Spawn) and survives in symbols/actor_renames.tsv only as the OLD column. The rest of note 2 stands.",
     "Cleanup leftover pass: factory is `return new daObjWanwanShutter_c()`. That instantiates the class and inlines dBgActor_c's destructor as a homeless D2 helper; exact compiler-only policy deadstrips it. Init/Behavior/Render/Cleanup and func_ov014_02112ea8 use the named members. SetFile, IsClsnInRange, and Particle::System::NewSimple stay mangled (Fix12i vs Fix12<int> wall 6az on this TU).",
-    "The static initializer at 0x021132fc is this TU's compiler __sinit_. data_ov014_021149c0 (file 1447) and data_ov014_021149b8 (file 1448) are the two objects it constructs. The registration nodes keep the compiler temps @403 and @404, which no other module defines. No new data was added.",
+    "The static initializer at 0x021132fc is this TU's compiler __sinit_. data_ov014_021149c0 (file 1447) and data_ov014_021149b8 (file 1448) are the two objects it constructs. @403 clashed with ov029 daObjWc_Obj04_c's global @403 in this batch and is renamed (@403->@137) through defined_symbol_renames; the collision node keeps the compiler temp @404, which no other module defines. No new data was added.",
     "LOCAL WORKER NOTE: this machine stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to this tree stock build and to the strict control, while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container fields outside every module range. The content proof is the same either way: moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, and the four owned ranges identical."
   ],
   "verification": {

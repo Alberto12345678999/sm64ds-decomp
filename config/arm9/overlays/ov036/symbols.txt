@@ -216,8 +216,8 @@ data_ov036_02114070 kind:bss addr:0x02114070
 @307 kind:bss addr:0x02114078
 data_ov036_02114084 kind:bss addr:0x02114084
 data_ov036_0211408c kind:bss addr:0x0211408c
-@572 kind:bss addr:0x02114094
-@571 kind:bss addr:0x021140a0
+@151 kind:bss addr:0x02114094
+@150 kind:bss addr:0x021140a0
 data_ov036_021140ac kind:bss addr:0x021140ac
 data_ov036_021140b4 kind:bss addr:0x021140b4
 data_ov036_021140b8 kind:bss addr:0x021140b8 ambiguous

@@ -387,7 +387,7 @@ data_ov060_0211b1d8 kind:bss addr:0x0211b1d8
 data_ov060_0211b1f8 kind:bss addr:0x0211b1f8
 data_ov060_0211b200 kind:bss addr:0x0211b200
 data_ov060_0211b208 kind:bss addr:0x0211b208
-@557 kind:bss addr:0x0211b210
+@130 kind:bss addr:0x0211b210
 @541 kind:bss addr:0x0211b21c
 @543 kind:bss addr:0x0211b228
 data_ov060_0211b234 kind:bss addr:0x0211b234

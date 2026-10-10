@@ -264,8 +264,8 @@ data_ov062_0211e03c kind:bss addr:0x0211e03c
 data_ov062_0211e0a4 kind:bss addr:0x0211e0a4
 data_ov062_0211e0d4 kind:bss addr:0x0211e0d4
 data_ov062_0211e0dc kind:bss addr:0x0211e0dc
-@402 kind:bss addr:0x0211e0e4
-@403 kind:bss addr:0x0211e0f0
+@135 kind:bss addr:0x0211e0e4
+@136 kind:bss addr:0x0211e0f0
 data_ov062_0211e0fc kind:bss addr:0x0211e0fc
 data_ov062_0211e104 kind:bss addr:0x0211e104
 data_ov062_0211e10c kind:bss addr:0x0211e10c

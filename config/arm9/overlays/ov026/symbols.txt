@@ -213,7 +213,7 @@ data_ov026_02113e50 kind:data(any) addr:0x02113e50 ambiguous
 data_ov026_02113e6c kind:data(any) addr:0x02113e6c ambiguous
 data_ov026_02113e88 kind:data(any) addr:0x02113e88 ambiguous
 data_ov026_02113ea0 kind:bss addr:0x02113ea0
-@108 kind:bss addr:0x02113ea8
+@127 kind:bss addr:0x02113ea8
 data_ov026_02113eb4 kind:bss addr:0x02113eb4
 BowserShutter_ClsnFile kind:bss addr:0x02113eb4
 data_ov026_02113ebc kind:bss addr:0x02113ebc

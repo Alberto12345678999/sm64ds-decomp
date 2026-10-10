@@ -78,6 +78,6 @@ data_ov017_02111c20 kind:data(any) addr:0x02111c20 ambiguous
 data_ov017_02111c54 kind:data(any) addr:0x02111c54 ambiguous
 data_ov017_02111c80 kind:bss addr:0x02111c80
 data_ov017_02111c88 kind:bss addr:0x02111c88
-@481 kind:bss addr:0x02111c90
+@149 kind:bss addr:0x02111c90
 @480 kind:bss addr:0x02111c9c
 data_ov017_02111ca8 kind:bss addr:0x02111ca8

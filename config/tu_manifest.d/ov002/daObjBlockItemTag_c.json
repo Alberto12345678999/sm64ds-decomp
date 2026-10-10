@@ -140,25 +140,25 @@
   ],
   "data": [
     {
-      "symbol": "@564",
+      "symbol": "@132",
       "address": "0x02108b5c",
       "size": "0x00000008",
       "evidence": "compiler-emitted pointer-to-member image element for the sinit copy into data_ov002_0210dd30; content relocates to _ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv"
     },
     {
-      "symbol": "@568",
+      "symbol": "@134",
       "address": "0x02108b64",
       "size": "0x00000008",
       "evidence": "compiler-emitted pointer-to-member image element for the sinit copy into data_ov002_0210dd30; content relocates to _ZN19daObjBlockItemTag_c15SpawnSilverStarEv"
     },
     {
-      "symbol": "@562",
+      "symbol": "@131",
       "address": "0x02108b6c",
       "size": "0x00000008",
       "evidence": "compiler-emitted pointer-to-member image element for the sinit copy into data_ov002_0210dd30; content relocates to _ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv"
     },
     {
-      "symbol": "@566",
+      "symbol": "@133",
       "address": "0x02108b74",
       "size": "0x00000008",
       "evidence": "compiler-emitted pointer-to-member image element for the sinit copy into data_ov002_0210dd30; content relocates to _ZN19daObjBlockItemTag_c15SpawnKoopaShellEv"
@@ -510,6 +510,28 @@
       "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@562",
+      "to": "@131",
+      "evidence": "compiler temporary .data image; mwcc numbers it @562 per TU and ov100 daDoor_c (on main) also defines a global @562, so the scratch link collides"
+    },
+    {
+      "from": "@564",
+      "to": "@132",
+      "evidence": "compiler temporary .data image; mwcc numbers it @564 per TU and ov100 daDoor_c (on main) also defines a global @564, so the scratch link collides"
+    },
+    {
+      "from": "@566",
+      "to": "@133",
+      "evidence": "compiler temporary .data image; mwcc numbers it @566 per TU and ov100 daDoor_c (on main) also defines a global @566, so the scratch link collides"
+    },
+    {
+      "from": "@568",
+      "to": "@134",
+      "evidence": "compiler temporary .data image; mwcc numbers it @568 per TU and ov100 daDoor_c (on main) also defines a global @568, so the scratch link collides"
+    }
+  ],
   "relocations": [
     {
       "section": ".data",
@@ -556,7 +578,7 @@
       "source": "0x02100eb0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@562",
+      "symbol": "@131",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108b6c"
@@ -566,7 +588,7 @@
       "source": "0x02100eb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@564",
+      "symbol": "@132",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108b5c"
@@ -576,7 +598,7 @@
       "source": "0x02100eb8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@566",
+      "symbol": "@133",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108b74"
@@ -586,7 +608,7 @@
       "source": "0x02100ebc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@568",
+      "symbol": "@134",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108b64"
@@ -626,25 +648,25 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@564",
+      "symbol": "@132",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member image element is a configured relocation destination at 0x02108b5c"
     },
     {
-      "symbol": "@568",
+      "symbol": "@134",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member image element is a configured relocation destination at 0x02108b64"
     },
     {
-      "symbol": "@562",
+      "symbol": "@131",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member image element is a configured relocation destination at 0x02108b6c"
     },
     {
-      "symbol": "@566",
+      "symbol": "@133",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member image element is a configured relocation destination at 0x02108b74"

@@ -1745,10 +1745,10 @@ data_ov002_02108ab0 kind:data(any) addr:0x02108ab0
 data_ov002_02108ab4 kind:data(any) addr:0x02108ab4
 data_ov002_02108ab8 kind:data(any) addr:0x02108ab8
 _ZTV13daObjBlockL_c kind:data(any) addr:0x02108adc
-@564 kind:data(any) addr:0x02108b5c
-@568 kind:data(any) addr:0x02108b64
-@562 kind:data(any) addr:0x02108b6c
-@566 kind:data(any) addr:0x02108b74
+@132 kind:data(any) addr:0x02108b5c
+@134 kind:data(any) addr:0x02108b64
+@131 kind:data(any) addr:0x02108b6c
+@133 kind:data(any) addr:0x02108b74
 _ZTI19daObjBlockItemTag_c kind:data(any) addr:0x02108b7c
 _ZTS19daObjBlockItemTag_c kind:data(any) addr:0x02108b88
 g_profile_BLK_SKINOKO_TAG kind:data(any) addr:0x02108ba0

@@ -128,14 +128,14 @@
       "evidence": "model file handle constructed with file ID 0x6af"
     },
     {
-      "symbol": "@572",
+      "symbol": "@151",
       "address": "0x02114094",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated collision destructor-registration node"
     },
     {
-      "symbol": "@571",
+      "symbol": "@150",
       "address": "0x021140a0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -553,7 +553,7 @@
       "source": "0x02112720",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@571",
+      "symbol": "@150",
       "addend": 0,
       "target_module": "ov036",
       "target_address": "0x021140a0"
@@ -583,7 +583,7 @@
       "source": "0x0211272c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@572",
+      "symbol": "@151",
       "addend": 0,
       "target_module": "ov036",
       "target_address": "0x02114094"
@@ -636,6 +636,18 @@
       "evidence": "compiler-generated static initialization call shape and the two direct retail references in this initializer"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@571",
+      "to": "@150",
+      "evidence": "compiler temporary; mwcc numbers it @571 per TU and ov100 daDoor_c (on main) also defines a global @571, so the scratch link collides"
+    },
+    {
+      "from": "@572",
+      "to": "@151",
+      "evidence": "compiler temporary; mwcc numbers it @572 per TU and ov073 daObjEwbIce_c (this batch) also defines a global @572, so the scratch link collides"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_daObjRc_Tikuwa_c.cpp",
@@ -650,13 +662,13 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@571",
+      "symbol": "@150",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local model registration node is a configured initializer relocation destination at 0x021140a0"
     },
     {
-      "symbol": "@572",
+      "symbol": "@151",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local collision registration node is a configured initializer relocation destination at 0x02114094"

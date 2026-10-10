@@ -205,42 +205,42 @@
       "evidence": "animation file handle constructed with file ID 0x44c; InitResources loads it and CleanupResources releases it"
     },
     {
-      "symbol": "@679",
+      "symbol": "@152",
       "address": "0x021489d4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x447 model handle"
     },
     {
-      "symbol": "@680",
+      "symbol": "@153",
       "address": "0x021489e0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x448 model handle"
     },
     {
-      "symbol": "@681",
+      "symbol": "@154",
       "address": "0x021489ec",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x44a model handle"
     },
     {
-      "symbol": "@682",
+      "symbol": "@155",
       "address": "0x021489f8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x44b animation handle"
     },
     {
-      "symbol": "@683",
+      "symbol": "@156",
       "address": "0x02148a04",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x44c animation handle"
     },
     {
-      "symbol": "@684",
+      "symbol": "@157",
       "address": "0x02148a10",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -256,7 +256,7 @@
   ],
   "notes": [
     "Hand-assembled: tubuild create generated the seventeen class members and helpers; the classInit factory was folded in by hand, following the ov045 daObjKm2_Agaru_c and ov091 daLinelift2_c promotions.",
-    "Static initializer folded: the FishModelFilePtr handles (files 0x447/0x448/0x44a), the three FishAnimationFileHandle handles (files 0x44b/0x44c/0x449), their destructor-registration nodes and the seven state-record copies make mwcc emit __sinit_d_a_fish.cpp itself (0x1bc, raw-byte-identical to retail __sinit_ov100_02147bc0 with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @679-@684 are fleet-free, no renames. This fold does NOT license the .data PMF descriptors or any other .data."
+    "Static initializer folded: the FishModelFilePtr handles (files 0x447/0x448/0x44a), the three FishAnimationFileHandle handles (files 0x44b/0x44c/0x449), their destructor-registration nodes and the seven state-record copies make mwcc emit __sinit_d_a_fish.cpp itself (0x1bc, raw-byte-identical to retail __sinit_ov100_02147bc0 with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @679-@684 clash with ov070 daKrpa_c's renamed nodes in this batch and are renamed (@679->@152, @680->@153, @681->@154, @682->@155, @683->@156, @684->@157). This fold does NOT license the .data PMF descriptors or any other .data."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -648,6 +648,38 @@
       "evidence": "compiler-generated static initialization call shape and the direct retail reference in this initializer"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@679",
+      "to": "@152",
+      "evidence": "compiler temporary; mwcc numbers it @679 per TU and ov070 daKrpa_c (this batch) also defines a global @679, so the scratch link collides"
+    },
+    {
+      "from": "@680",
+      "to": "@153",
+      "evidence": "compiler temporary; mwcc numbers it @680 per TU and ov070 daKrpa_c (this batch) also defines a global @680, so the scratch link collides"
+    },
+    {
+      "from": "@681",
+      "to": "@154",
+      "evidence": "compiler temporary; mwcc numbers it @681 per TU and ov070 daKrpa_c (this batch) also defines a global @681, so the scratch link collides"
+    },
+    {
+      "from": "@682",
+      "to": "@155",
+      "evidence": "compiler temporary; mwcc numbers it @682 per TU and ov070 daKrpa_c (this batch) also defines a global @682, so the scratch link collides"
+    },
+    {
+      "from": "@683",
+      "to": "@156",
+      "evidence": "compiler temporary; mwcc numbers it @683 per TU and ov070 daKrpa_c (this batch) also defines a global @683, so the scratch link collides"
+    },
+    {
+      "from": "@684",
+      "to": "@157",
+      "evidence": "compiler temporary; mwcc numbers it @684 per TU and ov070 daKrpa_c (this batch) also defines a global @684, so the scratch link collides"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_d_a_fish.cpp",
@@ -662,37 +694,37 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@679",
+      "symbol": "@152",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x021489d4"
     },
     {
-      "symbol": "@680",
+      "symbol": "@153",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x021489e0"
     },
     {
-      "symbol": "@681",
+      "symbol": "@154",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x021489ec"
     },
     {
-      "symbol": "@682",
+      "symbol": "@155",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x021489f8"
     },
     {
-      "symbol": "@683",
+      "symbol": "@156",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02148a04"
     },
     {
-      "symbol": "@684",
+      "symbol": "@157",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02148a10"
@@ -854,7 +886,7 @@
       "source": "0x02147d18",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@679",
+      "symbol": "@152",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x021489d4"
@@ -874,7 +906,7 @@
       "source": "0x02147d24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@680",
+      "symbol": "@153",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x021489e0"
@@ -894,7 +926,7 @@
       "source": "0x02147d30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@681",
+      "symbol": "@154",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x021489ec"
@@ -924,7 +956,7 @@
       "source": "0x02147d40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@682",
+      "symbol": "@155",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x021489f8"
@@ -944,7 +976,7 @@
       "source": "0x02147d4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@683",
+      "symbol": "@156",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x02148a04"
@@ -964,7 +996,7 @@
       "source": "0x02147d58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@684",
+      "symbol": "@157",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x02148a10"

@@ -138,7 +138,7 @@
       "evidence": "compiler-generated collision resource destructor-registration node"
     },
     {
-      "symbol": "@437",
+      "symbol": "@138",
       "address": "0x02114264",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -182,6 +182,13 @@
       "evidence": "retail destructor-registration call destination"
     }
   ],
+  "defined_symbol_renames": [
+    {
+      "from": "@437",
+      "to": "@138",
+      "evidence": "compiler temporary; mwcc numbers it @437 per TU and ov096 daTor_c (this batch) also defines a global @437, so the scratch link collides"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_d_a_obj_wc_obj02.cpp",
@@ -196,7 +203,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@437",
+      "symbol": "@138",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local model registration node is a configured initializer relocation destination"
@@ -274,7 +281,7 @@
       "source": "0x02112bfc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@437",
+      "symbol": "@138",
       "addend": 0,
       "target_module": "ov029",
       "target_address": "0x02114264"
@@ -326,7 +333,7 @@
     "(RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differed between Behavior and InitResources; both call sites now use the real dBgActor_c method.",
     "9/9 text MATCH, all three executable checks clean. daObjWc_Obj02_c now has a real inline class-body destructor, so this intact shadow TU emits the cartridge-shaped D1/D0 pair naturally and the factory's vptr store uses the ABI storage-start + 8 address point. RENAMED AND PROMOTED. Promotion was refused while the class was spelled ArrowLift: it emitted _ZTI9ArrowLift/_ZTS9ArrowLift/_ZTV9ArrowLift plus the base RTTI passengers, while the ROM vtable preamble points at _ZTI15daObjWc_Obj02_c -- records that cannot be dispositioned against a cartridge address they disagree with, so all 11 were deliberately left unlicensed. Spelling the class as the cartridge spells it makes them agree, and they are now licensed in compiler_only_output as deadstrip-data, each with a canonical ROM home outside this entry's licensed .text. tools/romdata_check.py --files src/game/actors/d_a_obj_wc_obj02.cpp word-compares all 11 against the cartridge with relocations applied: 6 VERIFIED (184 bytes), 5 PARTIAL (52 bytes), 0 DIFFERS. The PARTIALs are extent shortfalls, not disagreements -- every byte compared is equal; daObjWc_Obj05_c reports the same split. decl_common declares func_ov029_021116e4 as `extern int` DATA (the callback-address view InitResources uses); the function definition lives in a namespace so both spellings of the one C symbol coexist. The tail-call veneer's #pragma long_calls remains restored and bracketed; its int-returning view of the void callee is namespaced.",
     "Leftover cleanup: factory is return new daObjWc_Obj02_c(); leaf operator new(unsigned long) forwards fBase_c::operator new. return new emits homeless _ZN10dBgActor_cD2Ev, deadstripped like daObjKi_Ita_c.",
-    "File-scope resource handles data_ov029_02114250 (model, file ID 1742) and data_ov029_02114248 (collision, file ID 1743) are defined in this TU as local WcObj02ModelFilePtr/WcObj02CollisionFilePtr subclasses of SharedFilePtr so mwcc emits __sinit_d_a_obj_wc_obj02.cpp with the constructor calls and destructor registrations, the .ctor word, and the anonymous nodes @437 (model)/@438 (collision). The handwritten src/unnamed/ov029/__sinit_ov029_02112ba4.c is retired.",
+    "File-scope resource handles data_ov029_02114250 (model, file ID 1742) and data_ov029_02114248 (collision, file ID 1743) are defined in this TU as local WcObj02ModelFilePtr/WcObj02CollisionFilePtr subclasses of SharedFilePtr so mwcc emits __sinit_d_a_obj_wc_obj02.cpp with the constructor calls and destructor registrations, the .ctor word, and the anonymous nodes @138 (model)/@438 (collision). The handwritten src/unnamed/ov029/__sinit_ov029_02112ba4.c is retired.",
     "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock control -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 that every intact entry on main shares (S38)."
   ],
   "verification": {

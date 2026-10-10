@@ -108,7 +108,7 @@
       "evidence": "model file handle constructed with file ID 0x6db; InitResources loads it and the destructor path releases it"
     },
     {
-      "symbol": "@108",
+      "symbol": "@127",
       "address": "0x02113ea8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -119,7 +119,7 @@
     "Promoted from nine per-function sources. The destructor was moved inline into include/daObjWlPolelift_c.h: written out of line mwccarm 2004/b56 emits the synthesized D0 ahead of the written D1 and adds a homeless D2, which is the reverse of the cartridge's 0x021111a0 (D1) / 0x021111e0 (D0) pair. Inline emits D1 then D0 and no D2, and moves the key function to the first non-inline virtual, InitResources -- which is why this TU now emits the class vtable and RTTI chain as compiler-only output.",
     "func_ov026_02111234 and func_ov026_021112a4 keep their placeholder names. They are file-local helpers with no ROM-proven spelling; the delinked .c source for func_ov026_021112a4 was rewritten as C++ with an explicit extern \"C\" definition and a daObjWlPolelift_c* parameter so one TU can declare and define it once. The bodies still walk a char cursor because the fields they touch are still modelled as padding.",
     "The factory's vptr store changed spelling from `*(void **)actor = &_ZTV17daObjWlPolelift_c;` to `*(int *)actor = (int)&_ZTV17daObjWlPolelift_c[2];`. The per-function shard referenced the ROM's data symbol, which config/arm9/overlays/ov026/symbols.txt records at the public address point 0x02113ae0. This TU emits its own vtable, whose _ZTV symbol addresses the vtable object eight bytes lower, so the source has to compute the same address point itself -- the measured eight-byte bias tools/objisolate.py and tools/reloc_audit.py both pin. The symbols.txt address is unchanged.",
-    "Static initializer folded: the PoleliftModelFile handle (file 0x6db) and its destructor-registration node make mwcc emit __sinit_d_a_obj_wl_polelift.cpp itself (0x40, raw-byte-identical to retail __sinit_ov026_02112b7c with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @422 clashed with the fleet and is renamed (@422->@108)."
+    "Static initializer folded: the PoleliftModelFile handle (file 0x6db) and its destructor-registration node make mwcc emit __sinit_d_a_obj_wl_polelift.cpp itself (0x40, raw-byte-identical to retail __sinit_ov026_02112b7c with the same instruction sequence, literal pool order and relocation sites); the handwritten shard is retired. @422 clashed with the fleet and is renamed (@422->@127)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -423,8 +423,8 @@
   "defined_symbol_renames": [
     {
       "from": "@422",
-      "to": "@108",
-      "evidence": "mwcc numbers this registration node @422 per TU and the fleet already defines a global @422, so the scratch link would multiply-define it"
+      "to": "@127",
+      "evidence": "mwcc numbers this registration node @422 per TU and the fleet already defines a global @422, so the scratch link would multiply-define it; the first target @108 collides with ov064 daObjFl_Amilift_c's global @108 on main, so it lands on @127"
     }
   ],
   "symbol_binding_rewrites": [
@@ -441,7 +441,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@108",
+      "symbol": "@127",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x02113ea8"
@@ -503,7 +503,7 @@
       "source": "0x02112bb8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@108",
+      "symbol": "@127",
       "addend": 0,
       "target_module": "ov026",
       "target_address": "0x02113ea8"

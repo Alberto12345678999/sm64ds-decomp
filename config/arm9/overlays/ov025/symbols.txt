@@ -146,8 +146,8 @@ data_ov025_02113a00 kind:data(any) addr:0x02113a00 ambiguous
 data_ov025_02113a50 kind:data(any) addr:0x02113a50 ambiguous
 data_ov025_02113a60 kind:bss addr:0x02113a60
 data_ov025_02113a68 kind:bss addr:0x02113a68
-@468 kind:bss addr:0x02113a70
-@467 kind:bss addr:0x02113a7c
+@148 kind:bss addr:0x02113a70
+@147 kind:bss addr:0x02113a7c
 data_ov025_02113a88 kind:bss addr:0x02113a88
 data_ov025_02113a90 kind:bss addr:0x02113a90
 data_ov025_02113a98 kind:bss addr:0x02113a98
