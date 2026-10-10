@@ -88,6 +88,10 @@ src/actors/dScMgCurling2_c.cpp:
     complete
     .text start:0x020e3854 end:0x020e5450
 
+src/unnamed/ov006/func_ov006_020e5450.cpp:
+    complete
+    .text start:0x020e5450 end:0x020e59b0
+
 src/actors/dScMgCurling2_c_upper.cpp:
     complete
     .text start:0x020e59b0 end:0x020e6bf4
