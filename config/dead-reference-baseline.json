@@ -226,10 +226,6 @@
    "ref": "include/BookShot.h"
   },
   {
-   "file": "notes/agents/handoffs/pr3199-subset-repair-0926.md",
-   "ref": "src/__sinit_ov002_021071f4.c"
-  },
-  {
    "file": "notes/agents/handoffs/prod-dossunbar-0907-daObjBk_Dossunbar_c.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
@@ -292,6 +288,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
    "ref": "src/func_020393d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
+   "ref": "src/unnamed/ov025/__sinit_ov025_02112a44.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
@@ -807,10 +807,6 @@
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
-   "ref": "src/__sinit_ov014_02113118.c"
-  },
-  {
-   "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/__sinit_ov020_02113674.c"
   },
   {
@@ -824,6 +820,10 @@
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/unnamed/ov002/__sinit_ov002_02101968.c"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/unnamed/ov006/__sinit_ov006_021304ac.c"
   },
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
