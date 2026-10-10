@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3655,
+  "count": 3656,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2763,6 +2763,7 @@
     "src/game/actors/d_a_linelift2.cpp#_ZN13daLinelift2_c6RenderEv",
     "src/game/actors/d_a_linelift2.cpp#_ZN13daLinelift2_cD0Ev",
     "src/game/actors/d_a_linelift2.cpp#_ZN13daLinelift2_cD1Ev",
+    "src/game/actors/d_a_linelift2.cpp#__sinit_d_a_linelift2.cpp",
     "src/game/actors/d_a_linelift2.cpp#daLinelift2_c_classInit_KM2_SUSUMU",
     "src/game/actors/d_a_linelift2.cpp#daLinelift2_c_classInit_KM3_LIFT",
     "src/game/actors/d_a_mc_flag.cpp#_ZN10daMcFlag_c16CleanupResourcesEv",
