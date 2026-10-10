@@ -6,15 +6,16 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x2117978..0x2117fb4, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "HISTORY: contiguous linker run: 0x2117978..0x2117fb4, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjFl_Amilift_c",
-    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "CLASSINIT TAIL FOLD (2026-10-09): the three one-function sources right of this run -- func_ov064_02117fb4 (0x20), func_ov064_02117fd4 (0x14) and daObjFl_Amilift_c_classInit (0x38), 0x02117fb4..0x02118020 -- abut its .text end with no gap and are now inside it. All three are this class's: func_ov064_02117fb4 stores 1 to byte 0x33a of its first argument (daObjFl_Amilift_c::mRiderOn, which Behavior reads and clears) when the second argument's actor ID is 0xbf; func_ov064_02117fd4 is the collision callback this TU's InitResources installs in mMeshCollider and only forwards its last two arguments to func_ov064_02117fb4 (pooled long-call tail call); the factory allocates sizeof(daObjFl_Amilift_c) (0x368), runs dBgActor_c's base ctor, stores _ZTV17daObjFl_Amilift_c and constructs mPathPtr at 0x360. The next .text entry in ov064 delinks (src/game/actors/d_a_obj_fl_gura.cpp) starts exactly at 0x02118020. Written at the end of the file because the TU sets #pragma defer_codegen off (source order is ROM order). The TU no longer includes decl_common.h: its only use was the `int func_ov064_02117fd4()` prototype, which C++ cannot overload with the three-argument definition, so the callback is declared locally instead."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02117978",
-      "end": "0x02117fb4"
+      "end": "0x02118020"
     },
     {
       "name": ".init",
@@ -114,6 +115,27 @@
       "size": "0x00000170",
       "legacy_source": "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp",
       "ordinal": 10
+    },
+    {
+      "symbol": "func_ov064_02117fb4",
+      "address": "0x02117fb4",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/ov064/func_ov064_02117fb4.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_ov064_02117fd4",
+      "address": "0x02117fd4",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/ov064/func_ov064_02117fd4.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "daObjFl_Amilift_c_classInit",
+      "address": "0x02117fe8",
+      "size": "0x00000038",
+      "legacy_source": "src/d_a_obj_fl_amilift.c",
+      "ordinal": 13
     }
   ],
   "data": [
@@ -184,7 +206,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c21UpdateModelPosAndRotYEv' differs between the legacy file that used to hold _ZN17daObjFl_Amilift_c8BehaviorEv and the one that held _ZN17daObjFl_Amilift_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN17daObjFl_Amilift_c8BehaviorEv and the one that held _ZN17daObjFl_Amilift_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZNK7PathPtr7GetNodeER7Vector3j' differs between the legacy file that used to hold func_ov064_02117a44 and the one that held _ZN17daObjFl_Amilift_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov064_02117a14' differs between the legacy file that used to hold func_ov064_02117a44 and the one that held _ZN17daObjFl_Amilift_c13InitResourcesEv; kept the first, the other is commented out for review"
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov064_02117a14' differs between the legacy file that used to hold func_ov064_02117a44 and the one that held _ZN17daObjFl_Amilift_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); rom.sha256 above records the fleet-canonical d1506e90...c478e8 that every intact entry shares."
   ],
   "compiler_only_output": [
     {
@@ -204,7 +227,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov064",
       "canonical_address": "0x0211bc68",
-      "reason": "Key-function vtable. symbols.txt address point is ov064:0x0211bc68; the factories stay out of this TU."
+      "reason": "Key-function vtable. symbols.txt address point is ov064:0x0211bc68. (Until the 2026-10-09 classInit tail fold the factory stayed out of this TU; it is now folded in and only stores this vtable.)"
     },
     {
       "symbol": "_ZTI17daObjFl_Amilift_c",
@@ -275,6 +298,11 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60",
       "reason": "Inherited vague-linkage RTTI name; the canonical copy stays in arm9."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (2026-10-09): the folded factory's `return new daObjFl_Amilift_c;` instantiates the class, so mwccarm emits dBgActor_c's base-object destructor helper. The cartridge has dBgActor_c D1/D0 only (ov002 0x020ee42c, 0x020ee464), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov002/daObjBlockL_c)."
     }
   ],
   "verification": {
@@ -283,14 +311,16 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov064-daObjFl_Amilift_c/daObjFl_Amilift_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 11,
-    "functions_declared": 11,
+    "functions_matched": 14,
+    "functions_declared": 14,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN17daObjFl_Amilift_cD2Ev",
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN10dBgActor_cD2Ev"
       ],
       "deadstripped": [
+        "_ZN10dBgActor_cD2Ev",
         "_ZN17daObjFl_Amilift_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
@@ -298,11 +328,6 @@
         9,
         10,
         13,
-        40,
-        41,
-        42,
-        43,
-        44,
         45,
         46,
         47,
@@ -314,7 +339,14 @@
         53,
         54,
         55,
-        56
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
       ],
       "data": [
         "_ZTV17daObjFl_Amilift_c",
@@ -346,7 +378,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 3 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 6 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -365,7 +397,7 @@
       },
       "tuRange": {
         "start": "0x02117978",
-        "end": "0x02117fb4",
+        "end": "0x02118020",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -373,7 +405,7 @@
         {
           "section": ".text",
           "start": "0x02117978",
-          "end": "0x02117fb4",
+          "end": "0x02118020",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -407,7 +439,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 21
+          "LICENSED": 24
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -418,19 +450,19 @@
           {
             "section": ".init",
             "original": [
-              59
+              66
             ],
             "desired": [
-              59
+              66
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              57
+              64
             ],
             "desired": [
-              57
+              64
             ]
           },
           {
@@ -589,24 +621,29 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@556",
+      "from": "@545",
       "to": "@106",
-      "evidence": "mwcc emits this compiler temp as @556; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
+      "evidence": "mwcc emits this compiler temp as @545; ov091 promotes @545 globally, so the configured @106 stays the licensed name"
     },
     {
-      "from": "@559",
+      "from": "@546",
+      "to": "@557",
+      "evidence": "mwcc emits this compiler temp as @546; ov080 promotes @546 globally, so the configured @557 stays the licensed name"
+    },
+    {
+      "from": "@548",
       "to": "@107",
-      "evidence": "mwcc emits this compiler temp as @559; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
+      "evidence": "mwcc emits this compiler temp as @548; ov080 promotes @548 globally, so the configured @107 stays the licensed name"
     },
     {
-      "from": "@560",
+      "from": "@549",
       "to": "@108",
-      "evidence": "mwcc emits this compiler temp as @560; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
+      "evidence": "mwcc emits this compiler temp as @549; ov091 promotes @549 globally, so the configured @108 stays the licensed name"
     },
     {
-      "from": "@562",
+      "from": "@551",
       "to": "@109",
-      "evidence": "mwcc emits this compiler temp as @562; batch renumber to unused same-length name, batch-mate ov100/daDoor_c promotes the same temp names globally"
+      "evidence": "mwcc emits this compiler temp as @551; the configured @109 stays the licensed name so the ov064 symbol surface is unchanged by the classInit tail merge"
     }
   ],
   "symbol_binding_rewrites": [
