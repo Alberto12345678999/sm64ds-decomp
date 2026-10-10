@@ -35,6 +35,9 @@ src/actors/daObjFl_KomaU_c.cpp:
 src/actors/daBbl_c.cpp:
     complete
     .text start:0x021185c0 end:0x02118b50
+    .init start:0x0211b150 end:0x0211b1d4
+    .ctor start:0x0211b740 end:0x0211b744
+    .bss start:0x0211c7b8 end:0x0211c7d8
 
 src/actors/daObjFl_Coin_c.cpp:
     complete
@@ -75,10 +78,6 @@ src/unnamed/ov064/__sinit_ov064_0211b078.c:
 src/unnamed/ov064/__sinit_ov064_0211b0e4.c:
     complete
     .init start:0x0211b0e4 end:0x0211b150
-
-src/unnamed/ov064/__sinit_ov064_0211b150.c:
-    complete
-    .init start:0x0211b150 end:0x0211b1d4
 
 src/unnamed/ov064/__sinit_ov064_0211b1d4.c:
     complete
