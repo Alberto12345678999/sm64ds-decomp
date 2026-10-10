@@ -757,25 +757,9 @@ src/engine/collision/dCcPos_c.cpp:
     complete
     .text start:0x020147d4 end:0x0201489c
 
-src/_ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3.cpp:
-    complete
-    .text start:0x0201489c end:0x020148c8
-
-src/_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj.cpp:
-    complete
-    .text start:0x020148c8 end:0x0201490c
-
 src/engine/collision/dCcAc_c.cpp:
     complete
-    .text start:0x0201490c end:0x02014a20
-
-src/unnamed/arm9/0201/func_02014a20.c:
-    complete
-    .text start:0x02014a20 end:0x02014a2c
-
-src/_ZN10dCcAcPos_c6GetPosEv.cpp:
-    complete
-    .text start:0x02014a2c end:0x02014a34
+    .text start:0x0201489c end:0x02014a34
 
 src/_ZN10dCcAcPos_cD0Ev.cpp:
     complete
