@@ -58,6 +58,13 @@ extern SharedFilePtr data_ov085_021305d8;
 extern MipKeyState data_ov085_0213071c;
 extern MipKeyState data_ov085_0213072c;
 
+/* PMF literals in unowned .data; the initializer copies them pairwise
+ * into the two state records below. */
+extern MipKeyPMF data_ov085_02130184;
+extern MipKeyPMF data_ov085_0213018c;
+extern MipKeyPMF data_ov085_0213017c;
+extern MipKeyPMF data_ov085_02130174;
+
 }
 
 int ApproachLinear(int &cur, int tgt, int step);
@@ -367,3 +374,11 @@ extern "C" daObj_Mip_Key_c *daObj_Mip_Key_c_classInit(void)
 {
     return new daObj_Mip_Key_c();
 }
+
+
+/* Static-init globals (was the handwritten __sinit_ov085_0212f9bc shard).
+ * Each 16-byte state record takes its enter/execute PMFs from the .data
+ * literals above. */
+// @symbol __sinit_daObj_Mip_Key_c.cpp
+MipKeyState data_ov085_0213071c = { data_ov085_02130184, data_ov085_0213018c };
+MipKeyState data_ov085_0213072c = { data_ov085_0213017c, data_ov085_02130174 };

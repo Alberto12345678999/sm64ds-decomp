@@ -19,6 +19,9 @@ src/actors/daMip_c.cpp:
 src/actors/daObj_Mip_Key_c.cpp:
     complete
     .text start:0x0212cc88 end:0x0212d528
+    .init start:0x0212f9bc end:0x0212fa40
+    .ctor start:0x0212fdfc end:0x0212fe00
+    .bss start:0x0213071c end:0x0213073c
 
 src/actors/daC_Jugem_c.cpp:
     complete
@@ -42,10 +45,6 @@ src/unnamed/ov085/__sinit_ov085_0212f3a0.c:
 src/unnamed/ov085/__sinit_ov085_0212f5ec.c:
     complete
     .init start:0x0212f5ec end:0x0212f9bc
-
-src/unnamed/ov085/__sinit_ov085_0212f9bc.c:
-    complete
-    .init start:0x0212f9bc end:0x0212fa40
 
 src/unnamed/ov085/__sinit_ov085_0212fa40.c:
     complete
