@@ -7,7 +7,7 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x20ad838..0x20aedbc, 31 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "contiguous linker run: 0x20ad660..0x20aedbc, 32 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): dEnemyBase_c",
     "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
     "the compiler-generated __sinit_dEnemyBase_c.cpp is raw-byte-identical to retail __sinit_ov002_02100938 (0x1a4, eighteen ABS32 relocations). It copies sixteen pointer-to-member descriptors at 0x02108140..0x021081bf into the two PMF tables at 0x0210db80 and 0x0210dbc0. The ctor word at 0x021080d4 points at that initializer. See notes/sinit-ownership-pilot-ov002.md for the ownership proof."
@@ -15,7 +15,7 @@
   "sections": [
     {
       "name": ".text",
-      "start": "0x020ad838",
+      "start": "0x020ad660",
       "end": "0x020aedbc"
     },
     {
@@ -41,303 +41,310 @@
   ],
   "functions": [
     {
+      "symbol": "func_ov002_020ad660",
+      "address": "0x020ad660",
+      "size": "0x000001d8",
+      "legacy_source": "src/func_ov002_020ad660.cpp",
+      "ordinal": 0
+    },
+    {
       "symbol": "_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj",
       "address": "0x020ad838",
       "size": "0x00000208",
       "legacy_source": "src/_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj.cpp",
-      "ordinal": 0
+      "ordinal": 1
     },
     {
       "symbol": "_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE",
       "address": "0x020ada40",
       "size": "0x00000100",
       "legacy_source": "src/_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE.cpp",
-      "ordinal": 1
+      "ordinal": 2
     },
     {
       "symbol": "_ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc",
       "address": "0x020adb40",
       "size": "0x00000280",
       "legacy_source": "src/_ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc.cpp",
-      "ordinal": 2
+      "ordinal": 3
     },
     {
       "symbol": "_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER5dCc_c",
       "address": "0x020addc0",
       "size": "0x000000b8",
       "legacy_source": "src/_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER5dCc_c.cpp",
-      "ordinal": 3
+      "ordinal": 4
     },
     {
       "symbol": "_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr",
       "address": "0x020ade78",
       "size": "0x000003cc",
       "legacy_source": "src/_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr.cpp",
-      "ordinal": 4
+      "ordinal": 5
     },
     {
       "symbol": "_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER10dBgCh_ActrRs",
       "address": "0x020ae244",
       "size": "0x00000074",
       "legacy_source": "src/_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER10dBgCh_ActrRs.cpp",
-      "ordinal": 5
+      "ordinal": 6
     },
     {
       "symbol": "_ZN12dEnemyBase_c15IsGoingOffCliffER10dBgCh_Actrisbbi",
       "address": "0x020ae2b8",
       "size": "0x0000019c",
       "legacy_source": "src/_ZN12dEnemyBase_c15IsGoingOffCliffER10dBgCh_Actrisbbi.cpp",
-      "ordinal": 6
+      "ordinal": 7
     },
     {
       "symbol": "_ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr",
       "address": "0x020ae454",
       "size": "0x00000078",
       "legacy_source": "src/func_ov002_020ae454.cpp",
-      "ordinal": 7
+      "ordinal": 8
     },
     {
       "symbol": "_ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr",
       "address": "0x020ae4cc",
       "size": "0x000000fc",
       "legacy_source": "src/func_ov002_020ae4cc.cpp",
-      "ordinal": 8
+      "ordinal": 9
     },
     {
       "symbol": "func_ov002_020ae5c8",
       "address": "0x020ae5c8",
       "size": "0x00000040",
       "legacy_source": "src/func_ov002_020ae5c8.c",
-      "ordinal": 9
+      "ordinal": 10
     },
     {
       "symbol": "_ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr",
       "address": "0x020ae608",
       "size": "0x00000044",
       "legacy_source": "src/func_ov002_020ae608.c",
-      "ordinal": 10
+      "ordinal": 11
     },
     {
       "symbol": "_ZN11EnemyDeathC19func_ov002_020ae64cER10dBgCh_Actr",
       "address": "0x020ae64c",
       "size": "0x0000005c",
       "legacy_source": "src/func_ov002_020ae64c.c",
-      "ordinal": 11
+      "ordinal": 12
     },
     {
       "symbol": "_ZN12dEnemyBase_c11UpdateDeathER10dBgCh_Actr",
       "address": "0x020ae6a8",
       "size": "0x00000094",
       "legacy_source": "src/_ZN12dEnemyBase_c11UpdateDeathER10dBgCh_Actr.cpp",
-      "ordinal": 12
+      "ordinal": 13
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae73cEP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae73c",
       "size": "0x000000d0",
       "legacy_source": "src/func_ov002_020ae73c.c",
-      "ordinal": 13
+      "ordinal": 14
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae80cEP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae80c",
       "size": "0x00000038",
       "legacy_source": "src/func_ov002_020ae80c.c",
-      "ordinal": 14
+      "ordinal": 15
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae844",
       "size": "0x00000038",
       "legacy_source": "src/func_ov002_020ae844.c",
-      "ordinal": 15
+      "ordinal": 16
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae87cEP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae87c",
       "size": "0x00000014",
       "legacy_source": "src/func_ov002_020ae87c.c",
-      "ordinal": 16
+      "ordinal": 17
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae890EP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae890",
       "size": "0x00000028",
       "legacy_source": "src/func_ov002_020ae890.c",
-      "ordinal": 17
+      "ordinal": 18
     },
     {
       "symbol": "func_ov002_020ae8b8",
       "address": "0x020ae8b8",
       "size": "0x0000009c",
       "legacy_source": "src/func_ov002_020ae8b8.c",
-      "ordinal": 18
+      "ordinal": 19
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae954EP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae954",
       "size": "0x00000014",
       "legacy_source": "src/func_ov002_020ae954.c",
-      "ordinal": 19
+      "ordinal": 20
     },
     {
       "symbol": "func_ov002_020ae968",
       "address": "0x020ae968",
       "size": "0x00000090",
       "legacy_source": "src/func_ov002_020ae968.c",
-      "ordinal": 20
+      "ordinal": 21
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020ae9f8EP8dActor_cP10dBgCh_Actr",
       "address": "0x020ae9f8",
       "size": "0x0000002c",
       "legacy_source": "src/func_ov002_020ae9f8.c",
-      "ordinal": 21
+      "ordinal": 22
     },
     {
       "symbol": "_ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr",
       "address": "0x020aea24",
       "size": "0x00000008",
       "legacy_source": "src/func_ov002_020aea24.c",
-      "ordinal": 22
+      "ordinal": 23
     },
     {
       "symbol": "_ZN6Aea30C19func_ov002_020aea2cEP8dActor_cP10dBgCh_Actr",
       "address": "0x020aea2c",
       "size": "0x00000004",
       "legacy_source": "src/func_ov002_020aea2c.c",
-      "ordinal": 23
+      "ordinal": 24
     },
     {
       "symbol": "func_ov002_020aea30",
       "address": "0x020aea30",
       "size": "0x0000008c",
       "legacy_source": "src/func_ov002_020aea30.cpp",
-      "ordinal": 24
+      "ordinal": 25
     },
     {
       "symbol": "_ZN12dEnemyBase_c9SpawnCoinEv",
       "address": "0x020aeabc",
       "size": "0x0000013c",
       "legacy_source": "src/_ZN12dEnemyBase_c9SpawnCoinEv.cpp",
-      "ordinal": 25
+      "ordinal": 26
     },
     {
       "symbol": "_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj",
       "address": "0x020aebf8",
       "size": "0x00000120",
       "legacy_source": "src/_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj.cpp",
-      "ordinal": 26
+      "ordinal": 27
     },
     {
       "symbol": "_ZN12dEnemyBase_cD2Ev",
       "address": "0x020aed18",
       "size": "0x00000024",
       "legacy_source": "src/_ZN12dEnemyBase_cD2Ev.cpp",
-      "ordinal": 27
+      "ordinal": 28
     },
     {
       "symbol": "_ZN12dEnemyBase_cD0Ev",
       "address": "0x020aed3c",
       "size": "0x00000038",
       "legacy_source": "src/_ZN12dEnemyBase_cD0Ev.cpp",
-      "ordinal": 28
+      "ordinal": 29
     },
     {
       "symbol": "_ZN12dEnemyBase_cD1Ev",
       "address": "0x020aed74",
       "size": "0x00000024",
       "legacy_source": "src/_ZN12dEnemyBase_cD1Ev.cpp",
-      "ordinal": 29
+      "ordinal": 30
     },
     {
       "symbol": "_ZN12dEnemyBase_cC2Ev",
       "address": "0x020aed98",
       "size": "0x00000024",
       "legacy_source": "src/_ZN12dEnemyBase_cC2Ev.cpp",
-      "ordinal": 30
+      "ordinal": 31
     }
   ],
   "data": [
     {
-      "symbol": "@952",
+      "symbol": "@956",
       "address": "0x02108140",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae73cEP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@960",
+      "symbol": "@986",
       "address": "0x02108148",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr"
     },
     {
-      "symbol": "@942",
+      "symbol": "@960",
       "address": "0x02108150",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae954EP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@948",
+      "symbol": "@985",
       "address": "0x02108158",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@946",
+      "symbol": "@983",
       "address": "0x02108160",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae87cEP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@944",
+      "symbol": "@958",
       "address": "0x02108168",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae890EP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@950",
+      "symbol": "@987",
       "address": "0x02108170",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae80cEP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@984",
+      "symbol": "@946",
       "address": "0x02108178",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr"
     },
     {
-      "symbol": "@985",
+      "symbol": "@948",
       "address": "0x02108180",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr"
     },
     {
-      "symbol": "@986",
+      "symbol": "@942",
       "address": "0x02108188",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr"
     },
     {
-      "symbol": "@987",
+      "symbol": "@944",
       "address": "0x02108190",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr"
     },
     {
-      "symbol": "@962",
+      "symbol": "@984",
       "address": "0x02108198",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -351,21 +358,21 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020aea2cEP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@958",
+      "symbol": "@950",
       "address": "0x021081a8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr"
     },
     {
-      "symbol": "@956",
+      "symbol": "@952",
       "address": "0x021081b0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN11EnemyDeathC19func_ov002_020ae64cER10dBgCh_Actr"
     },
     {
-      "symbol": "@940",
+      "symbol": "@962",
       "address": "0x021081b8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -390,24 +397,69 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@964",
-      "to": "@987",
-      "evidence": "mwcc numbers this descriptor @964 per TU and ov092 already defines a global @964, so the scratch link would multiply-define it"
+      "from": "@1001",
+      "to": "@944",
+      "evidence": "mwcc numbers this descriptor @1001 per TU (was @964 before func_ov002_020ad660 joined this TU) and ov092 already defines a global @964; it renames to @944 because daChoropu_c already defines globals @1010/@1011, so the scratch link would multiply-define it either way"
     },
     {
-      "from": "@966",
+      "from": "@1003",
+      "to": "@942",
+      "evidence": "mwcc numbers this descriptor @1003 per TU (was @966 before func_ov002_020ad660 joined this TU) and ov092 already defines a global @966; it renames to @942 because daChoropu_c already defines globals @1010/@1011, so the scratch link would multiply-define it either way"
+    },
+    {
+      "from": "@1005",
+      "to": "@948",
+      "evidence": "mwcc numbers this descriptor @1005 per TU and ov065 daDossy_c (DorriePlatform TU) already defines a global @1005, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@1007",
+      "to": "@946",
+      "evidence": "mwcc numbers this descriptor @1007 per TU and ov065 daDossy_c (DorriePlatform TU) already defines a global @1007, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@997",
       "to": "@986",
-      "evidence": "mwcc numbers this descriptor @966 per TU and ov092 already defines a global @966, so the scratch link would multiply-define it"
+      "evidence": "mwcc numbers this descriptor @997 per TU and dPathLiftActor_c already defines a global @997 (its own rename destination @837->@997), so the scratch link would multiply-define it"
     },
     {
-      "from": "@968",
-      "to": "@985",
-      "evidence": "mwcc numbers this descriptor @968 per TU and ov092 already defines a global @968, so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@970",
+      "from": "@999",
       "to": "@984",
-      "evidence": "mwcc numbers this descriptor @970 per TU and ov092 already defines a global @970, so the scratch link would multiply-define it"
+      "evidence": "mwcc numbers this descriptor @999 per TU and dPathLiftActor_c already defines a global @999 (its own rename destination @835->@999), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@977",
+      "to": "@962",
+      "evidence": "mwcc numbers this descriptor @977 per TU and ov047/daObjKm3_Kurumajiku_c already defines a global @977 (renamed from its @364), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@979",
+      "to": "@960",
+      "evidence": "mwcc numbers this descriptor @979 per TU and ov092/daOnms_c already defines a global @979 (its anonymous bounce state descriptor), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@981",
+      "to": "@958",
+      "evidence": "mwcc numbers this descriptor @981 per TU and ov092/daOnms_c already defines a global @981 (its anonymous sink state descriptor), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@989",
+      "to": "@956",
+      "evidence": "mwcc numbers this descriptor @989 per TU and ov074/daKuriKing_c already defines a global @989 (its state-table enter descriptor), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@991",
+      "to": "@954",
+      "evidence": "mwcc numbers this descriptor @991 per TU and ov063/daTrsTrap_c already defines a global @991 (its destructor-registration node), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@993",
+      "to": "@952",
+      "evidence": "mwcc numbers this descriptor @993 per TU and ov010/daObjC1_Trap_c already defines a global @993 (its collision resource destructor-registration node), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@995",
+      "to": "@950",
+      "evidence": "mwcc numbers this descriptor @995 per TU and ov010/daObjC1_Trap_c already defines a global @995 (its compiler temporary for State2), so the scratch link would multiply-define it"
     }
   ],
   "notes": [
@@ -417,7 +469,8 @@
     "_ZN12dEnemyBase_cC2Ev (ordinal 30) is written as a real constructor body, which is the form its legacy shard recovered and byte-matched. dEnemyBase_c.h DECLARES dEnemyBase_c() without defining it, so the base construction stays an out-of-line `bl` instead of being synthesised and inlined into the subclasses. One definition emits C1 and C2; the ROM keeps only C2, and the C1 this TU emits is licensed below as compiler-only output.",
     "Members are spelled over the real classes wherever the cartridge bytes allow it, and each claim below was measured, not assumed: ordinal 6 (_ZN12dEnemyBase_c15IsGoingOffCliffER10dBgCh_Actrisbbi) is a real dEnemyBase_c::IsGoingOffCliff method taking its two by-value Fix12i parameters as themselves over real dBgCh_Lin/dBgPi locals; ordinals 2 and 4 use types.h's Vector3 rather than a POD shadow of it; and ordinal 26 uses the real 0x14-byte SurfaceInfo from include/SurfaceInfo.h. All 31 functions still reproduce byte-for-byte with objisolate and reloc-destination checks clean.",
     "The file-scope PMF tables data_ov002_0210db80 and data_ov002_0210dbc0 are defined in this TU as non-const arrays, so mwcc emits __sinit_dEnemyBase_c.cpp, the ctor word, and the sixteen anonymous pointer-to-member descriptors. The thirteen PMF targets became real member definitions: eight on the TU-local dispatch receiver struct Aea30C (the type the first table's PMF representation was already formed on, kept so the (c->*pmf) call codegen is unchanged) and five on dEnemyBase_c for the UpdateDeath table. The handwritten src/__sinit_ov002_02100938.c is retired.",
-    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set (f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b), symbol inventory, and the five owned ranges matched."
+    "Local scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, identical to this machine's stock control (EU ASMP dump; the divergent bytes are NDS container/packaging fields outside every module range). The recorded rom.sha256 is the fleet SHA every other intact entry shares. Module set (f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b), symbol inventory, and the five owned ranges matched.",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, 106/106 modules, symbol inventory and the five owned ranges all equal the canonical records)."
   ],
   "compiler_only_output": [
     {
@@ -502,8 +555,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-dEnemyBase_c/dEnemyBase_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 31,
-    "functions_declared": 31,
+    "functions_matched": 32,
+    "functions_declared": 32,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN12dEnemyBase_cC1Ev",
@@ -528,9 +581,9 @@
         48,
         51,
         52,
-        59,
-        111,
-        112
+        61,
+        113,
+        114
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -558,7 +611,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 31 unlicensed section/symbol(s), 1 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 15 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -576,7 +629,7 @@
         "rom": true
       },
       "tuRange": {
-        "start": "0x020ad838",
+        "start": "0x020ad660",
         "end": "0x020aedbc",
         "differingBytes": 0,
         "firstDiff": null
@@ -584,7 +637,7 @@
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x020ad838",
+          "start": "0x020ad660",
           "end": "0x020aedbc",
           "differingBytes": 0,
           "firstDiff": null
@@ -619,10 +672,10 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 51
+          "LICENSED": 52
         },
-        "orderOk": true,
-        "nonLicensed": [],
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
@@ -630,38 +683,20 @@
           {
             "section": ".init",
             "original": [
-              117
+              119
             ],
             "desired": [
-              117
-            ],
-            "anchors": {
-              "117": [
-                {
-                  "symbol": "__sinit_dEnemyBase_c.cpp",
-                  "address": 34605368,
-                  "sectionBase": 34605368
-                }
-              ]
-            }
+              119
+            ]
           },
           {
             "section": ".ctor",
             "original": [
-              115
+              117
             ],
             "desired": [
-              115
-            ],
-            "anchors": {
-              "115": [
-                {
-                  "symbol": ".p__sinit_dEnemyBase_c.cpp",
-                  "address": 34635988,
-                  "sectionBase": 34635988
-                }
-              ]
-            }
+              117
+            ]
           },
           {
             "section": ".data",
@@ -700,121 +735,7 @@
               35,
               37,
               21
-            ],
-            "anchors": {
-              "5": [
-                {
-                  "symbol": "@942",
-                  "address": 34636112,
-                  "sectionBase": 34636112
-                }
-              ],
-              "7": [
-                {
-                  "symbol": "@952",
-                  "address": 34636096,
-                  "sectionBase": 34636096
-                }
-              ],
-              "9": [
-                {
-                  "symbol": "@954",
-                  "address": 34636192,
-                  "sectionBase": 34636192
-                }
-              ],
-              "11": [
-                {
-                  "symbol": "@944",
-                  "address": 34636136,
-                  "sectionBase": 34636136
-                }
-              ],
-              "13": [
-                {
-                  "symbol": "@950",
-                  "address": 34636144,
-                  "sectionBase": 34636144
-                }
-              ],
-              "15": [
-                {
-                  "symbol": "@948",
-                  "address": 34636120,
-                  "sectionBase": 34636120
-                }
-              ],
-              "19": [
-                {
-                  "symbol": "@946",
-                  "address": 34636128,
-                  "sectionBase": 34636128
-                }
-              ],
-              "21": [
-                {
-                  "symbol": "@940",
-                  "address": 34636216,
-                  "sectionBase": 34636216
-                }
-              ],
-              "23": [
-                {
-                  "symbol": "@984",
-                  "address": 34636152,
-                  "sectionBase": 34636152
-                }
-              ],
-              "25": [
-                {
-                  "symbol": "@985",
-                  "address": 34636160,
-                  "sectionBase": 34636160
-                }
-              ],
-              "27": [
-                {
-                  "symbol": "@986",
-                  "address": 34636168,
-                  "sectionBase": 34636168
-                }
-              ],
-              "29": [
-                {
-                  "symbol": "@987",
-                  "address": 34636176,
-                  "sectionBase": 34636176
-                }
-              ],
-              "31": [
-                {
-                  "symbol": "@962",
-                  "address": 34636184,
-                  "sectionBase": 34636184
-                }
-              ],
-              "33": [
-                {
-                  "symbol": "@960",
-                  "address": 34636104,
-                  "sectionBase": 34636104
-                }
-              ],
-              "35": [
-                {
-                  "symbol": "@958",
-                  "address": 34636200,
-                  "sectionBase": 34636200
-                }
-              ],
-              "37": [
-                {
-                  "symbol": "@956",
-                  "address": 34636208,
-                  "sectionBase": 34636208
-                }
-              ]
-            }
+            ]
           },
           {
             "section": ".bss",
@@ -825,23 +746,7 @@
             "desired": [
               50,
               49
-            ],
-            "anchors": {
-              "49": [
-                {
-                  "symbol": "data_ov002_0210dbc0",
-                  "address": 34659264,
-                  "sectionBase": 34659264
-                }
-              ],
-              "50": [
-                {
-                  "symbol": "data_ov002_0210db80",
-                  "address": 34659200,
-                  "sectionBase": 34659200
-                }
-              ]
-            }
+            ]
           }
         ],
         "objisolate": {
@@ -923,7 +828,8 @@
           "sectionLinks": 0,
           "sectionInfos": 16,
           "error": null
-        }
+        },
+        "errors": null
       },
       "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
@@ -990,73 +896,73 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@952",
+      "symbol": "@956",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108140"
     },
     {
-      "symbol": "@960",
+      "symbol": "@986",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108148"
     },
     {
-      "symbol": "@942",
+      "symbol": "@960",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108150"
     },
     {
-      "symbol": "@948",
+      "symbol": "@985",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108158"
     },
     {
-      "symbol": "@946",
+      "symbol": "@983",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108160"
     },
     {
-      "symbol": "@944",
+      "symbol": "@958",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108168"
     },
     {
-      "symbol": "@950",
+      "symbol": "@987",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108170"
     },
     {
-      "symbol": "@984",
+      "symbol": "@946",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108178"
     },
     {
-      "symbol": "@985",
+      "symbol": "@948",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108180"
     },
     {
-      "symbol": "@986",
+      "symbol": "@942",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108188"
     },
     {
-      "symbol": "@987",
+      "symbol": "@944",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108190"
     },
     {
-      "symbol": "@962",
+      "symbol": "@984",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108198"
@@ -1068,19 +974,19 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021081a0"
     },
     {
-      "symbol": "@958",
+      "symbol": "@950",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021081a8"
     },
     {
-      "symbol": "@956",
+      "symbol": "@952",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021081b0"
     },
     {
-      "symbol": "@940",
+      "symbol": "@962",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021081b8"
@@ -1092,7 +998,7 @@
       "source": "0x02100a94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@940",
+      "symbol": "@962",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021081b8"
@@ -1102,7 +1008,7 @@
       "source": "0x02100a98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@942",
+      "symbol": "@960",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108150"
@@ -1122,7 +1028,7 @@
       "source": "0x02100aa0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@944",
+      "symbol": "@958",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108168"
@@ -1132,7 +1038,7 @@
       "source": "0x02100aa4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@946",
+      "symbol": "@983",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108160"
@@ -1142,7 +1048,7 @@
       "source": "0x02100aa8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@948",
+      "symbol": "@985",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108158"
@@ -1152,7 +1058,7 @@
       "source": "0x02100aac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@950",
+      "symbol": "@987",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108170"
@@ -1162,7 +1068,7 @@
       "source": "0x02100ab0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@952",
+      "symbol": "@956",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108140"
@@ -1182,7 +1088,7 @@
       "source": "0x02100ab8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@956",
+      "symbol": "@952",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021081b0"
@@ -1192,7 +1098,7 @@
       "source": "0x02100abc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@958",
+      "symbol": "@950",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021081a8"
@@ -1202,7 +1108,7 @@
       "source": "0x02100ac0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@960",
+      "symbol": "@986",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108148"
@@ -1212,7 +1118,7 @@
       "source": "0x02100ac4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@987",
+      "symbol": "@944",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108190"
@@ -1222,7 +1128,7 @@
       "source": "0x02100ac8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@986",
+      "symbol": "@942",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108188"
@@ -1232,7 +1138,7 @@
       "source": "0x02100acc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@985",
+      "symbol": "@948",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108180"
@@ -1242,7 +1148,7 @@
       "source": "0x02100ad0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@984",
+      "symbol": "@946",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108178"
@@ -1262,7 +1168,7 @@
       "source": "0x02100ad8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@962",
+      "symbol": "@984",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108198"
