@@ -743,13 +743,9 @@ src/nds_print.c:
     complete
     .text start:0x02014770 end:0x020147bc
 
-src/unnamed/arm9/0201/func_020147bc.c:
-    complete
-    .text start:0x020147bc end:0x020147d4
-
 src/engine/collision/dCcPos_c.cpp:
     complete
-    .text start:0x020147d4 end:0x0201489c
+    .text start:0x020147bc end:0x0201489c
 
 src/engine/collision/dCcAc_c.cpp:
     complete
