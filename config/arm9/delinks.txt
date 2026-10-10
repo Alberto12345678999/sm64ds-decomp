@@ -3067,11 +3067,7 @@ src/engine/collision/dM3dGSph.cpp:
 
 src/engine/path/PathPtr.cpp:
     complete
-    .text start:0x0203ac80 end:0x0203ad84
-
-src/unnamed/arm9/0203/func_0203ad84.c:
-    complete
-    .text start:0x0203ad84 end:0x0203adbc
+    .text start:0x0203ac80 end:0x0203adbc
 
 src/DecIfAbove0_Short.c:
     complete
