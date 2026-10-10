@@ -17,7 +17,7 @@ extern void Vec3_MulScalarInPlace(int *v, int s);
 extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *self, void *a, void *b, void *act);
 extern int _ZN9dBgCh_Lin10DetectClsnEv(void *self);
 extern void _ZN9dBgCh_Lin10GetClsnPosEv(void *res, void *self);
-extern unsigned int _ZNK5dBgPi9GetClsnIDEv(void *r);
+extern int _ZNK5dBgPi9GetClsnIDEv(void *r);
 extern char *_ZN8dActor_c10FindWithIDEj(unsigned int id);
 extern void _ZN5dBgPiD1Ev(void *r);
 extern int func_02053274(int *a, int *b);
