@@ -105,7 +105,7 @@ __sinit_ov022_02112ec0 kind:function(arm,size=0xb8) addr:0x02112ec0
 __sinit_ov022_02112f78 kind:function(arm,size=0x6c) addr:0x02112f78
 __sinit_ov022_02112fe4 kind:function(arm,size=0x6c) addr:0x02112fe4
 __sinit_ov022_02113050 kind:function(arm,size=0x6c) addr:0x02113050
-__sinit_ov022_021130bc kind:function(arm,size=0x3c) addr:0x021130bc
+__sinit_d_a_obj_fl_maruta.cpp kind:function(arm,size=0x3c) addr:0x021130bc
 .p__sinit_ov022_02112ca8 kind:data(word) addr:0x021130f8
 .p__sinit_ov022_02112d14 kind:data(word) addr:0x021130fc
 .p__sinit_daObjFl_Block_c.cpp kind:data(word) addr:0x02113100
@@ -115,7 +115,7 @@ __sinit_ov022_021130bc kind:function(arm,size=0x3c) addr:0x021130bc
 .p__sinit_ov022_02112f78 kind:data(word) addr:0x02113110
 .p__sinit_ov022_02112fe4 kind:data(word) addr:0x02113114
 .p__sinit_ov022_02113050 kind:data(word) addr:0x02113118
-.p__sinit_ov022_021130bc kind:data(word) addr:0x0211311c
+.p__sinit_d_a_obj_fl_maruta.cpp kind:data(word) addr:0x0211311c
 data_ov022_02113140 kind:data(any) addr:0x02113140
 data_ov022_02113144 kind:data(any) addr:0x02113144
 data_ov022_02113148 kind:data(any) addr:0x02113148

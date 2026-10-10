@@ -60,6 +60,13 @@ int RandomIntInternal(int *seed);
 extern int data_0209e650;
 void func_ov022_02112654(char *c);
 
+/* The volcano cannon's state table, ov022 .bss; the definition at
+   the end of this file fills it from the two .data handler constants.
+   The table is one State (init + behavior). */
+extern daObj_volcanoCannon_c::State data_ov022_02114690;
+extern daObj_volcanoCannon_c::StateFunc data_ov022_0211442c;
+extern daObj_volcanoCannon_c::StateFunc data_ov022_02114424;
+
 }
 
 /* One vtable declaration per class this TU installs, at namespace scope above
@@ -235,3 +242,8 @@ extern "C" int *daObj_volcanoCannon_c_classInit(void)
     }
     return p;
 }
+
+/* Static-init global (was the handwritten __sinit_ov022_021130bc shard):
+ * the volcano cannon's state table, plain-copied from the ROM constants
+ * in retail order. */
+daObj_volcanoCannon_c::State data_ov022_02114690 = {data_ov022_0211442c, data_ov022_02114424};
