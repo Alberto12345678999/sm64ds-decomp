@@ -7,7 +7,7 @@
  *
  * This TU is the class's scene methods: the button-row redraw helper
  * func_02005348, the slot-6 state machine Behavior and the slot-0
- * InitResources, .text 0x02005348..0x02005d94. The destructor pair and the
+ * InitResources, .text 0x02005324..0x02005d94. The destructor pair and the
  * dScBoot_c_classInit factory live in the second TU, src/d_s_boot.cpp.
  * Source order is the reverse of the ROM's -- mwccarm emits .text in
  * reverse source order. Do not reorder.
@@ -29,6 +29,7 @@
  */
 #include "dScBoot_c.h"
 
+#include "dCamera_c.h"
 #include "Sound.h"
 #include "Message.h"
 #include "SaveData.h"
@@ -401,4 +402,18 @@ void dScBoot_c::func_02005348()
             (&row[j])[0x60] = v + ((&row[j])[0x60] & 0x3ff);
         }
     }
+}
+
+// @symbol func_02005324
+/* Absorbed from src/unnamed/arm9/0200/func_02005324.c
+ * (arm9 0x02005324..0x02005348): pre-talk camera backup plus event-flag
+ * setup, returns 1. Defined last because this file emits .text in reverse
+ * source order, so the lead body lands at the run's left edge. The camera
+ * call is spelled as the member it is (dCamera_c.h); func_0200cb58 comes
+ * from decl_common.h. */
+extern "C" int func_02005324(void *p)
+{
+    ((dCamera_c *)p)->SaveCameraStateBeforeTalk();
+    func_0200cb58(p, 0x19);
+    return 1;
 }

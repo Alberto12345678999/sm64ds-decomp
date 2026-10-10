@@ -41,13 +41,10 @@ src/unnamed/arm9/0200/func_02005110.c:
     complete
     .text start:0x02005110 end:0x02005324
 
-src/unnamed/arm9/0200/func_02005324.c:
-    complete
-    .text start:0x02005324 end:0x02005348
 
 src/actors/dScBoot_c.cpp:
     complete
-    .text start:0x02005348 end:0x02005d94
+    .text start:0x02005324 end:0x02005d94
 
 src/actors/dCapEnemy_c_arm9.cpp:
     complete
