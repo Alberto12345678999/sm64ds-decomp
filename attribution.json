@@ -3901,6 +3901,7 @@
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_cD1Ev": "tangosdev",
     "src/game/actors/d_a_obj_c1_hikari.cpp#_ZN15daObjC1Hikari_c20UpdateModelTransformEv": "tangosdev",
     "src/game/actors/d_a_obj_c1_hikari.cpp#daObjC1Hikari_c_classInit": "tangosdev",
+    "src/game/actors/d_a_obj_c1_hikari.cpp#__sinit_d_a_obj_c1_hikari.cpp": "github-actions[bot]",
     "src/actors/daChair_c.cpp#_ZN9daChair_cD1Ev": "tangosdev",
     "src/actors/daChair_c.cpp#_ZN9daChair_cD0Ev": "tangosdev",
     "src/actors/daChair_c.cpp#_ZN9daChair_c6State3Ev": "tangosdev",
