@@ -19282,14 +19282,6 @@
         "return:int []"
       ]
     },
-    "data_ov070_02123698": {
-      "src/game/actors/d_a_krpa.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/unnamed/ov070/__sinit_ov070_02122f30.c": [
-        "return:int []"
-      ]
-    },
     "data_ov071_02122f80": {
       "include/decl_common.h": [
         "return:char"

@@ -2230,6 +2230,7 @@
     "src/game/actors/d_a_krpa.cpp#func_ov070_02121880": "tangosdev",
     "src/game/actors/d_a_krpa.cpp#func_ov070_02121a64": "tangosdev",
     "src/game/actors/d_a_krpa.cpp#func_ov070_02121ae0": "tangosdev",
+    "src/game/actors/d_a_krpa.cpp#__sinit_d_a_krpa.cpp": "tangosdev",
     "src/game/actors/d_a_obj_abuku.cpp#_ZN12daObjAbuku_c13InitResourcesEv": "tangosdev",
     "src/game/actors/d_a_obj_abuku.cpp#_ZN12daObjAbuku_c8BehaviorEv": "andrewboudreau",
     "src/game/actors/d_a_obj_abuku.cpp#_ZN12daObjAbuku_cD0Ev": "tangosdev",

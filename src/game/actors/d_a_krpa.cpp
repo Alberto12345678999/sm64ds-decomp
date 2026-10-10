@@ -107,8 +107,14 @@ u32 daKrpaFrameController::func_ov070_02121a64()
 /* The Fix12-by-value Init methods are typed ABI seams: ordinary method calls
  * home their class-typed values and do not reproduce the retail callers. */
 struct M48 { int w[12]; };
+struct KrpaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    KrpaModelFilePtr(u32 fileID);
+    ~KrpaModelFilePtr();
+};
 extern "C" {
-extern SharedFilePtr data_ov070_02123698;
+extern KrpaModelFilePtr data_ov070_02123698;
 extern int IDENTITY_MATRIX4X3[];
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset,
@@ -450,3 +456,18 @@ int daKrpa_c::OnYoshiTryEat()
 
 /* No separate body: the inline class destructor emits this complete variant
  * first, through the class vtable instantiated in this TU. */
+
+/* Retail initializer order is the model handle (file 0x351) with its
+ * destructor registration, then the eight {init,behavior} state-method
+ * records copied in ascending table slot. */
+KrpaModelFilePtr data_ov070_02123698(0x351);
+daKrpaState data_ov070_021236ac[4] = {
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_021217ac,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_02121710},
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_021216b8,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_0212156c},
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_02121548,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_021214f8},
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_02121438,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_021213cc},
+};
