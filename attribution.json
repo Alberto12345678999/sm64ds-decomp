@@ -6502,6 +6502,7 @@
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c13InitResourcesEv": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#__sinit_daObjCtMecha09_c.cpp": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#daWater_Ring_c_classInit": "tangosdev",
     "src/actors/daCoin_c.cpp#daCoin_c_classInit_BLUE_COIN": "tangosdev",
     "src/actors/daCoin_c.cpp#daCoin_c_classInit_RED_COIN": "tangosdev",

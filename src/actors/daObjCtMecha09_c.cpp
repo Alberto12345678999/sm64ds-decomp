@@ -25,6 +25,22 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 
+/* Resource handles constructed by this TU's static initializer. The
+ * constructor and destructor bodies stay out of line; mwcc registers them. */
+struct Mecha09ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha09ModelFilePtr(u32 fileID);
+    ~Mecha09ModelFilePtr();
+};
+
+struct Mecha09ClsnFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha09ClsnFilePtr(u32 fileID);
+    ~Mecha09ClsnFilePtr();
+};
+
 /* Fix12-by-value calls keep their raw ABI declarations (header forms take
  * Fix12<int> by value, which cannot be called with literals; see
  * include/dActor_c.h). */
@@ -34,8 +50,8 @@ extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix
     dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     int scaleX, int scaleY, int scaleZ, u32 opacity);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
-extern SharedFilePtr data_ov065_0211d9cc;
-extern SharedFilePtr data_ov065_0211d9d4;
+extern Mecha09ClsnFilePtr data_ov065_0211d9cc;
+extern Mecha09ModelFilePtr data_ov065_0211d9d4;
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
 extern u8 data_0209f2c0;
@@ -187,3 +203,6 @@ extern "C" daObjCtMecha09_c *daObjCtMecha09_c_classInit()
 {
     return new daObjCtMecha09_c();
 }
+
+Mecha09ModelFilePtr data_ov065_0211d9d4(1484);
+Mecha09ClsnFilePtr data_ov065_0211d9cc(1485);
