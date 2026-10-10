@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_linelift2.cpp",
   "promoted_source": "src/game/actors/d_a_linelift2.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2131c14..0x2132404, 15 function(s): the eleven from build/tu_map.json (tools/tu_map.py), extended over the mesh-collider callback pair and the two zero-gap classInit factories tu_map cannot label because it cuts on symbol name",

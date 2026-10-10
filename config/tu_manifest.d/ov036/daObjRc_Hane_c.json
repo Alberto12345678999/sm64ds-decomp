@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_obj_rc_hane.cpp",
   "promoted_source": "src/game/actors/d_a_obj_rc_hane.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2111580..0x2111904, 7 function(s), from build/tu_map.json (tools/tu_map.py)",

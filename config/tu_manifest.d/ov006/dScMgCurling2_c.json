@@ -4,6 +4,7 @@
   "source": "src/actors/dScMgCurling2_c.cpp",
   "promoted_source": "src/actors/dScMgCurling2_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "PARTIAL RUN, 31 of 52. tools/tu_map.py calls 0x020e3854..0x020e6bf4 one contiguous linker run of 52 function(s) (build/tu_map.json), and queue_audit.py extends it over the zero-gap factory dScMgCurling2_c_classInit at 0x020e6bf4 for 53 in a 0x020e3854..0x020e6c28 span. This TU licenses 0x020e3854..0x020e5450, 31 function(s), ROM ordinals 0..30. The other 21 keep their own shards and their own delinks.txt entries; the 22nd is the sourceless hole in EDGE 1 below, which has neither.",
@@ -650,7 +651,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null

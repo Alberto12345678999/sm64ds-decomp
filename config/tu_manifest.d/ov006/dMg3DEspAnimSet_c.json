@@ -713,7 +713,7 @@
     "Each member keeps its own legacy shadow types, suffixed with the member's address (G2_7d7c, Ent_82fc, Outer_8354, C_8a44, C_8d08, P_8e10, C_9374, C_989c, C_9b70, ...) so that the retired files' independently-invented tags coexist. The incomplete structs and PMF typedefs above the pointer-to-member dispatchers (C_8a44, C_8d08, C_9374, C_9b70) keep their order: completing a struct before its PMF typedef changes the pointer-to-member representation mwcc emits.",
     "The classInit tail fold keeps the hand-built construction sequence (fBase_c::operator new, dScMgBase_c C2, the Single3DBase vptr store, SysTracker, the own-vptr store, then the four embedded constructors) rather than `new dScMg3DEsp_c`: the header still keeps the Model/dMg3DEspModel_c/TextureTransformer members as raw storage, and typing them is a separate reconstruction that must change the factory and the destructor together. The own-vtable store is spelled `(int)&_ZTV12dScMg3DEsp_c[2]`: now that this TU owns the vtable, the emitted symbol addresses the storage start and the +8 address-point bias is computed by the compiler (the retired stand-alone file stored the bare symbol, which tubuild verify rejects here as an addend-0 relocation). The base vtable store is unchanged."
   ],
-  "production_mode": "text-only",
+  "production_mode": "intact-object",
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
@@ -1072,7 +1072,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null

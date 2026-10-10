@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_obj_ice_block.cpp",
   "promoted_source": "src/game/actors/d_a_obj_ice_block.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2127b34..0x21280d8, 10 function(s): the nine class members (including the func_ov081_02127be0 cargo-release helper) from build/tu_map.json (tools/tu_map.py), extended over the zero-gap daObjIceBlock_c_classInit factory tu_map cannot label because it cuts on symbol name. LEFT bound: daGmch_c_classInit ends exactly at 0x02127b34. RIGHT bound: 0x021280d8 is the end of ov081 .text; the .rodata that follows (data_ov081_021280d8) is referenced only from daGmch_c (0x021277d8, 0x02127a70) and is not claimed here.",

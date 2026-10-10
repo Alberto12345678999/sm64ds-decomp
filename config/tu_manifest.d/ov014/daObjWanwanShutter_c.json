@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_obj_wanwan_shutter.cpp",
   "promoted_source": "src/game/actors/d_a_obj_wanwan_shutter.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2112e0c..0x21130ac, 8 function(s), from build/tu_map.json (tools/tu_map.py)",

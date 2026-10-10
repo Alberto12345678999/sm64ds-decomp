@@ -4,6 +4,7 @@
   "source": "src/actors/dScMgCurling_c.cpp",
   "promoted_source": "src/actors/dScMgCurling_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "WHOLE UNIT, 46 of 46. tools/tu_map.py calls 0x020e0638..0x020e3820 one contiguous linker run of 46 function(s) (build/tu_map.json); queue_audit.py extends it over the zero-gap factory dScMgCurling_c_classInit at 0x020e3820, and the real object run reaches the next class's first symbol at 0x020e3854. This TU licenses 0x020e0638..0x020e3820, all 46 function(s), ROM ordinals 0..45, in ROM-ascending source order. The factory dScMgCurling_c_classInit (0x020e3820..0x020e3854) stays its own file, src/d_s_mg_curling.cpp, and its own delinks entry, as every landed ov006 minigame class keeps its factory.",
@@ -661,7 +662,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null

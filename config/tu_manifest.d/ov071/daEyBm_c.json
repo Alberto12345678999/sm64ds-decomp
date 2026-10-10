@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_ey_bm.cpp",
   "promoted_source": "src/game/actors/d_a_ey_bm.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x02121a6c..0x02121fe4, 13 functions, ending immediately before Coffin D1",

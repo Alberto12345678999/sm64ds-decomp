@@ -4,6 +4,7 @@
   "source": "src/actors/daTor_c.cpp",
   "promoted_source": "src/actors/daTor_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2136db0..0x21376bc, 10 function(s), from build/tu_map.json (tools/tu_map.py)",

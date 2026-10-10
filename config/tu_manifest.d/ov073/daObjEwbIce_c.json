@@ -4,6 +4,7 @@
   "source": "src/actors/daObjEwbIce_c.cpp",
   "promoted_source": "src/actors/daObjEwbIce_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2121f90..0x2122730, 16 function(s), from build/tu_map.json (tools/tu_map.py)",

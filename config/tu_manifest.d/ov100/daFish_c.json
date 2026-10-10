@@ -4,6 +4,7 @@
   "source": "src/game/actors/d_a_fish.cpp",
   "promoted_source": "src/game/actors/d_a_fish.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x214620c..0x2146d7c, 18 function(s): the seventeen from build/tu_map.json (tools/tu_map.py), extended over the zero-gap daFish_c_classInit factory tu_map cannot label because it cuts on symbol name; the run sits between daStarGate_c_classInit (ends 0x214620c) and _ZN15daObjPathLift_cD1Ev (0x2146d7c), and no other class's symbol falls inside it",
@@ -515,7 +516,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null

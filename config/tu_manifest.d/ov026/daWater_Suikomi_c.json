@@ -4,6 +4,7 @@
   "source": "src/actors/daWater_Suikomi_c.cpp",
   "promoted_source": "src/actors/daWater_Suikomi_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous run 0x021121fc..0x02112490, 13 functions, each delink complete and abutting: D1, D0, five state-machine helpers, five virtuals, then the registry factory daWater_Suikomi_c_classInit at 0x02112450. 0x02112490 is the end of ov026 .text (.rodata starts there).",
@@ -411,7 +412,7 @@
       "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
       "linkerOutput": null

@@ -4,6 +4,7 @@
   "source": "src/actors/daWbm_c.cpp",
   "promoted_source": "src/actors/daWbm_c.cpp",
   "status": "promoted",
+  "production_mode": "intact-object",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x213b47c..0x213bf10, 13 function(s), from build/tu_map.json (tools/tu_map.py), plus the class factory daWbm_c_classInit at 0x0213bf10..0x0213bf60, which tu_map.py leaves as its own one-function run; this entry licenses 0x0213b47c..0x0213bf60 as one file.",
