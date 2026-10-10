@@ -76,8 +76,11 @@ void func_020393c4(void *p, void *v);
 void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 void func_ov060_021183f4();
 
+// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
 void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self);
+// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
 void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char *c);
+// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
 int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c);
 
 }

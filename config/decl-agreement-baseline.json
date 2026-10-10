@@ -16052,6 +16052,9 @@
       ],
       "src/actors/daObj1UpLogo_c.cpp": [
         "return:SharedFilePtr"
+      ],
+      "src/unnamed/ov002/func_ov002_020e5948.c": [
+        "return:struct OneUpLogoModelFile"
       ]
     },
     "data_ov002_02110ac4": {
