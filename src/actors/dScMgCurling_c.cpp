@@ -138,6 +138,33 @@ extern Entry data_ov006_021418f0[];
 extern PMF   data_ov006_02141910[];
 extern PMF   data_ov006_02141930[];
 extern PMF0  data_ov006_02141950[];
+/* The ROM PMF constants the seven state tables copy from (unlicensed
+ * .data), grouped by destination table in retail copy order. */
+extern PMF0 data_ov006_0213c21c;
+extern PMF0 data_ov006_0213c20c;
+extern PMF0 data_ov006_0213c2b4;
+extern PMF0 data_ov006_0213c1fc;
+extern PMF0 data_ov006_0213c254;
+extern PMF data_ov006_0213c204;
+extern PMF data_ov006_0213c244;
+extern PMF data_ov006_0213c22c;
+extern PMF data_ov006_0213c25c;
+extern PMF0 data_ov006_0213c23c;
+extern PMF0 data_ov006_0213c2bc;
+extern PMF data_ov006_0213c234;
+extern PMF data_ov006_0213c29c;
+extern PMF data_ov006_0213c294;
+extern PMF data_ov006_0213c28c;
+extern PMF data_ov006_0213c274;
+extern PMF data_ov006_0213c26c;
+extern PMF data_ov006_0213c24c;
+extern PMF data_ov006_0213c2a4;
+extern PMF data_ov006_0213c1ec;
+extern PMF data_ov006_0213c1e4;
+extern PMF data_ov006_0213c1f4;
+extern PMF data_ov006_0213c224;
+extern PMF data_ov006_0213c284;
+extern PMF data_ov006_0213c27c;
 
 }  /* extern "C" */
 
@@ -1659,3 +1686,48 @@ s32 dScMgCurling_c::InitResources()
     unk_4ed8 = func_ov004_020adc1c();
     return 1;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_021304ac shard).
+ * The seven PMF state tables plain-copied from the ROM PMF constants, in
+ * retail copy order: the five no-arg scene states, the four per-state
+ * tables, the two stylus states, the three kind states, the four Entry
+ * states, the four reveal states, then the three state2 states. */
+PMF0 data_ov006_02141950[5] = {
+    data_ov006_0213c21c,
+    data_ov006_0213c20c,
+    data_ov006_0213c2b4,
+    data_ov006_0213c1fc,
+    data_ov006_0213c254,
+};
+PMF data_ov006_02141910[4] = {
+    data_ov006_0213c204,
+    data_ov006_0213c244,
+    data_ov006_0213c22c,
+    data_ov006_0213c25c,
+};
+PMF0 data_ov006_021418b0[2] = {
+    data_ov006_0213c23c,
+    data_ov006_0213c2bc,
+};
+PMF data_ov006_021418c0[3] = {
+    data_ov006_0213c234,
+    data_ov006_0213c29c,
+    data_ov006_0213c294,
+};
+Entry data_ov006_021418f0[4] = {
+    {data_ov006_0213c28c},
+    {data_ov006_0213c274},
+    {data_ov006_0213c26c},
+    {data_ov006_0213c24c},
+};
+PMF data_ov006_02141930[4] = {
+    data_ov006_0213c2a4,
+    data_ov006_0213c1ec,
+    data_ov006_0213c1e4,
+    data_ov006_0213c1f4,
+};
+PMF data_ov006_021418d8[3] = {
+    data_ov006_0213c224,
+    data_ov006_0213c284,
+    data_ov006_0213c27c,
+};
