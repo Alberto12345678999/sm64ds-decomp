@@ -1646,22 +1646,7 @@ src/unnamed/arm9/0201/func_0201cd08.cpp:
 
 src/Message.cpp:
     complete
-    .text start:0x0201ce10 end:0x0201fb4c
-
-src/unnamed/arm9/0201/func_0201fb4c.c:
-    .text start:0x0201fb4c end:0x0201fc10
-
-src/ObjectMessageIDToActualMessageID.c:
-    complete
-    .text start:0x0201fc10 end:0x0201fc88
-
-src/unnamed/arm9/0201/func_0201fc88.c:
-    complete
-    .text start:0x0201fc88 end:0x0201fcac
-
-src/_ZN7Message15ResetAllGlobalsEv.cpp:
-    complete
-    .text start:0x0201fcac end:0x0201fcd4
+    .text start:0x0201ce10 end:0x0201fcd4
 
 src/LoadFont.cpp:
     complete

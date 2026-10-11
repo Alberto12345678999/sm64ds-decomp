@@ -1,5 +1,5 @@
 //cpp
-/* arm9/Message -- the message-window display TU. 0x0201ce10..0x0201fb4c, 26 functions.
+/* arm9/Message -- the message-window display TU. 0x0201ce10..0x0201fcd4, 30 functions.
  *
  * `#pragma defer_codegen off` gives source-order emission, so the file runs
  * ROM-ascending and the emitted .text does too. The optimization pragmas are
@@ -36,6 +36,7 @@ extern u8 data_0209d654;
 extern u8 data_0209d658;
 extern u8 data_0209d65c;
 extern u8 data_0209d660;
+extern u8 data_0209d664;
 extern u8 data_0209d668;
 extern u8 data_0209d66c;
 extern u8 data_0209d670;
@@ -1450,4 +1451,64 @@ extern "C" void func_0201f32c(int arg0)
     *(volatile s32 *)0x04000000 = (*(volatile s32 *)0x04000000 & ~0xe000) | 0x2000;
     data_0209d45c |= 8;
     *(volatile s32 *)0x04000000 = (*(volatile s32 *)0x04000000 & ~0x1f00) | (data_0209d45c << 8);
+}
+
+/* Course ids that must not open the talk window. data_0209d664 is the byte
+   after the shared reset flag at data_0209d660. */
+// @symbol func_0201fb4c
+extern "C" int func_0201fb4c(void)
+{
+    short v;
+    unsigned int b;
+    if (data_0209d664 != 0) goto no;
+    b = (data_0209f2d8 == 2);
+    if (b != 0) goto no;
+    v = data_0209d6d4;
+    if (v == 0xcc) goto no;
+    if (v == 0xce) goto no;
+    if (v == 0xd0) goto no;
+    if (v == 0xd3) goto no;
+    if (v == 0xd4) goto no;
+    if (v == 0xd5) goto no;
+    if (v == 0xd6) goto no;
+    if (v == 0xdb) goto no;
+    if (v == 0xdc) goto no;
+    if (v == 0xdd) goto no;
+    if (v == 0xde) goto no;
+    if (v == 0xe3) goto no;
+    if (v == 0xe4) goto no;
+    if (v == 0xe5) goto no;
+    if (v == 0xe6) goto no;
+    return 1;
+no:
+    return 0;
+}
+
+struct Pair { unsigned short v; unsigned short pad; };
+
+// @symbol ObjectMessageIDToActualMessageID
+extern "C" int ObjectMessageIDToActualMessageID(int id) {
+    int i;
+    extern struct Pair data_0208eeec[];
+    extern struct Pair data_0208eeee[];
+    for (i = 0x61; i > 0; i--) {
+        if (data_0208eeec[i].v > id && data_0208eeec[i - 1].v <= id) {
+            return (unsigned short)((id - data_0208eeec[i - 1].v) + data_0208eeee[i - 1].v);
+        }
+    }
+    return id;
+}
+
+// @symbol func_0201fc88
+extern "C" void func_0201fc88(s16 objectMsgID)
+{
+    s16 id = (s16)ObjectMessageIDToActualMessageID(objectMsgID);
+    func_0201f32c(id);
+}
+
+// @symbol _ZN7Message15ResetAllGlobalsEv
+void Message::ResetAllGlobals()
+{
+    func_0201eaac();
+    data_0209d660 = 0;
 }

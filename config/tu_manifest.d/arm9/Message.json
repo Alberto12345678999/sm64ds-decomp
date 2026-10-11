@@ -6,15 +6,15 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x0201ce10..0x0201fb4c, 26 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
-    "TOP EDGE: src/unnamed/arm9/0201/func_0201cd08.cpp (0x0201cd08..0x0201ce10) ends exactly where the run begins -- an unrelated shard, not a Message member. BOTTOM EDGE: src/unnamed/arm9/0201/func_0201fb4c.c begins exactly at 0x0201fb4c and is INCOMPLETE/unmatched -- it is the stop, not part of the run.",
+    "contiguous linker run: 0x0201ce10..0x0201fcd4, 30 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "TOP EDGE: src/unnamed/arm9/0201/func_0201cd08.cpp (0x0201cd08..0x0201ce10) ends exactly where the run begins -- an unrelated shard, not a Message member. BOTTOM EDGE: src/LoadFont.cpp begins exactly at 0x0201fcd4, which is the end of the \"Message, menu and course text\" run in notes/mangled-fold-decisions.md (0x0201CE10..0x0201FCD4). Message::ResetAllGlobals at 0x0201fcac is the last function of this file.",
     "CLASS-LOCAL COMPLETE: the run is every Message::* display entry point plus the message-window helpers they call (star-entry table walk, tile fill, BG clear), ending at the shared state reset func_0201eaac's consumers. DisplayText/Display self-calls resolve inside the TU."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x0201ce10",
-      "end": "0x0201fb4c"
+      "end": "0x0201fcd4"
     }
   ],
   "functions": [
@@ -199,6 +199,34 @@
       "size": "0x00000820",
       "legacy_source": "src/unnamed/arm9/0201/func_0201f32c.c",
       "ordinal": 25
+    },
+    {
+      "symbol": "func_0201fb4c",
+      "address": "0x0201fb4c",
+      "size": "0x000000c4",
+      "legacy_source": "src/unnamed/arm9/0201/func_0201fb4c.c",
+      "ordinal": 26
+    },
+    {
+      "symbol": "ObjectMessageIDToActualMessageID",
+      "address": "0x0201fc10",
+      "size": "0x00000078",
+      "legacy_source": "src/ObjectMessageIDToActualMessageID.c",
+      "ordinal": 27
+    },
+    {
+      "symbol": "func_0201fc88",
+      "address": "0x0201fc88",
+      "size": "0x00000024",
+      "legacy_source": "src/unnamed/arm9/0201/func_0201fc88.c",
+      "ordinal": 28
+    },
+    {
+      "symbol": "_ZN7Message15ResetAllGlobalsEv",
+      "address": "0x0201fcac",
+      "size": "0x00000028",
+      "legacy_source": "src/_ZN7Message15ResetAllGlobalsEv.cpp",
+      "ordinal": 29
     }
   ],
   "data": [],
@@ -219,8 +247,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-Message/Message.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 26,
-    "functions_declared": 26,
+    "functions_matched": 30,
+    "functions_declared": 30,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
@@ -249,7 +277,7 @@
       },
       "tuRange": {
         "start": "0x0201ce10",
-        "end": "0x0201fb4c",
+        "end": "0x0201fcd4",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -257,14 +285,14 @@
         {
           "section": ".text",
           "start": "0x0201ce10",
-          "end": "0x0201fb4c",
+          "end": "0x0201fcd4",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 26
+          "LICENSED": 30
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],

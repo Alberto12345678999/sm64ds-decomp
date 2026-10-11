@@ -9305,6 +9305,9 @@
       ]
     },
     "_ZN7Message11DisplayTextEt": {
+      "src/Message.cpp": [
+        "param:#1 void *"
+      ],
       "src/actors/dScStage_c.cpp": [
         "param:#1 int"
       ]
@@ -23062,19 +23065,11 @@
     "func_0201eaac": {
       "include/decl_common.h": [
         "return:int"
-      ],
-      "src/_ZN7Message15ResetAllGlobalsEv.cpp": [
-        "return:int"
       ]
     },
     "func_0201ef50": {
       "src/actors/daDemo_c.cpp": [
         "param:#1 unsigned char"
-      ]
-    },
-    "func_0201f32c": {
-      "src/unnamed/arm9/0201/func_0201fc88.c": [
-        "param:#1 short"
       ]
     },
     "func_02020028": {
