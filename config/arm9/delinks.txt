@@ -7351,17 +7351,9 @@ src/unnamed/arm9/0206/func_0206ccd8.c:
     complete
     .text start:0x0206ccd8 end:0x0206cd44
 
-src/_ZN4cstd8__assertEPKcS1_S1_i.cpp:
+src/cstd3.cpp:
     complete
-    .text start:0x0206cd44 end:0x0206cd9c
-
-src/unnamed/arm9/0206/func_0206cd9c.c:
-    complete
-    .text start:0x0206cd9c end:0x0206ce20
-
-src/unnamed/arm9/0206/func_0206ce20.c:
-    complete
-    .text start:0x0206ce20 end:0x0206ce90
+    .text start:0x0206cd44 end:0x0206ce90
 
 src/unnamed/arm9/0206/func_0206da64.c:
     complete

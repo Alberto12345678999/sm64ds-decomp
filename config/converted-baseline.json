@@ -347,7 +347,7 @@
   "src/_ZN4cstd6strcmpEPKcS1_.cpp",
   "src/_ZN4cstd6strlenEPKc.cpp",
   "src/_ZN4cstd7strncpyEPcPKcj.cpp",
-  "src/_ZN4cstd8__assertEPKcS1_S1_i.cpp",
+  "src/cstd3.cpp#_ZN4cstd8__assertEPKcS1_S1_i",
   "src/_ZN5Model12HideMaterialEii.cpp",
   "src/_ZN5Model12SetPolygonIDEi.cpp",
   "src/_ZN5Model12ShowMaterialEii.cpp",
