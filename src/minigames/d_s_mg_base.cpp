@@ -228,9 +228,10 @@ extern int data_0209b308[];
 extern int data_0209b300[];
 
 /* Saves a two-value result into saved records 0 and 1 of the current scene.
-   A value <= 0 falls back to the menu row's defaults (words 5 and 6); a
-   positive one is capped at 9999. Nothing is written when both already
-   match; otherwise data_0209b300 is set to 1. */
+   A first value <= 0 replaces both with the menu row's defaults (words 5
+   and 6); a second value <= 0 alone falls back to word 6. A positive value
+   is capped at 9999. Nothing is written when both already match;
+   otherwise data_0209b300 is set to 1. */
 void func_ov004_020ad79c(int first, int second) {
     int v0 = first, v1 = second;
     if (data_ov004_020beb68 == 0) return;
@@ -307,11 +308,13 @@ void func_ov004_020ada40(int score);
 int func_ov004_020adbc0(void);
 extern unsigned char data_0209b300[];
 
-/* Inserts the submitted score (unk_464c) into the five saved records at
-   the rank func_ov004_020ad6fc gives, shifting the lower records down, and
-   keeps that rank in unk_064 (-1 when it placed nowhere). Either way the
-   session best moves to unk_4658, the new-record flag is cleared and the
-   session best is reset. */
+/* Ranks the session best (unk_4654, from func_ov004_020adafc) among the
+   five saved records with func_ov004_020ad6fc and keeps that rank in
+   unk_064 (-1 when it placed nowhere). If it placed, the lower rows shift
+   down and the submitted score unk_464c (func_ov004_020adbc0) -- not the
+   ranked value -- is written into that row, and data_0209b300 is set to 1.
+   Either way the new-record flag is cleared, the session best moves to
+   unk_4658 and is then reset to 0. */
 void func_ov004_020ad940(dScMgBase_c *scene)
 {
     int n = func_ov004_020ad6fc(scene, func_ov004_020adafc());
@@ -360,8 +363,9 @@ extern int data_0209b308[];
 extern int func_ov004_020adc1c(void);
 
 /* Stores `score` as the session best (unk_4654). If it beats the record
-   copy at +0x4650 (lower and nonzero in scoring mode 5, higher otherwise,
-   compared unsigned), it becomes the new copy and unk_465c is set. */
+   copy at +0x4650, it becomes the new copy and unk_465c is set. Beating
+   it means, compared unsigned: in scoring mode 5, nonzero and either lower
+   or the copy is 0; otherwise higher. */
 void func_ov004_020ada40(int score)
 {
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
@@ -460,10 +464,15 @@ int func_ov004_020adbe0(void) {
 namespace s20adc00 {
 extern "C" {
 /* Spelled char * here and in func_ov004_020adc1c, as unit020b4aa4.cpp
-   spells it: with fewer char * copies the declaration-agreement plurality
-   flips to the header's void * and reds that file. */
+   spells it: with no char * copy in this file the declaration-agreement
+   count ties 1-1 with the header's void *, the tie goes to the header and
+   unit020b4aa4.cpp goes red. */
 extern char *data_ov004_020beb68;
-/* Sets the record copy at +0x4650 (unnamed padding in the header). */
+/* Sets the record copy at +0x4650 (unnamed padding in the header). Here
+   and in func_ov004_020adc1c the base is a char *: with an int-typed base
+   mwcc materializes the +0x46xx offset from the literal pool instead of
+   splitting it as add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the
+   cartridge does. */
 void func_ov004_020adc00(int v) {
     char *scene = data_ov004_020beb68;
     if (scene != 0) {
@@ -904,9 +913,12 @@ extern "C" {
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern int func_ov004_020ae1cc(void);
 extern int func_ov004_020ae1f0(void);
-/* Plays sound 0 at volume 0x7f (Sound::PlaySub's sound-ID and volume
-   arguments), then, in music mode 1, the scene's track. PlaySub stays
-   mangled: nothing in the tree mangles to its Fix12<int> parameter (see
+/* Sound::PlaySub with third argument 0 and its flag set starts nothing:
+   it only sets the music volume target (data_0208e42c, which
+   ChangeMusicVolume and PauseMusic also write) back to 0x7f, with step
+   0x7f000, and zeroes data_0209b470. Then, while a scene exists and in
+   music mode 1, this loads the scene's track. PlaySub stays mangled:
+   nothing in the tree mangles to its Fix12<int> parameter (see
    include/Sound.h). */
 void func_ov004_020ae20c(void)
 {
@@ -924,8 +936,10 @@ extern "C" {
 extern int func_ov004_020ae1cc(void);
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 
-/* Plays sound `id` at volume 0x40 while a scene exists. The
-   func_ov004_020ae1cc result is not used. */
+/* While a scene exists, starts sequence `id` on Sound::PlaySub's own
+   player (data_0209b4b0) unless it is already the current one, and sets
+   the music volume target to 0x40 [GUESS: ducks the music; PauseMusic uses
+   0x40 too]. The func_ov004_020ae1cc result is not used. */
 void func_ov004_020ae274(void* id) {
     if (data_ov004_020beb68 == 0) return;
     func_ov004_020ae1cc();
@@ -961,7 +975,8 @@ extern int func_ov004_020ae1f0(void);
 extern unsigned short data_0209b308;
 
 /* Music mode 0 stops the music, and replays the scene's track only when
-   the menu row's first halfword is 0x16f; any other mode plays the track. */
+   the menu row's first halfword is 0x16f; any nonzero mode plays the
+   track. */
 void func_ov004_020ae330(void){
     if(data_ov004_020beb68==0) return;
     if(func_ov004_020ae1cc()==0){
@@ -1220,8 +1235,8 @@ extern int data_ov006_021346bc;
    at its mMenuItemNX/Y, followed by data_ov006_021346bc at the same spot.
    The highlighted item (mMenuCursor) goes through a matrix whose diagonal
    is func_02053200 of a pulse that mMenuCursorPhase drives through the
-   sin/cos table data_02082214. Nothing
-   is drawn while func_ov004_020b8f18 reports the touch options busy. */
+   sin/cos table data_02082214. Nothing is drawn while
+   func_ov004_020b8f18 returns nonzero for mTouchOptions. */
 extern "C" void func_ov004_020ae858(dScMgBase_c *scene)
 {
     int extra[3];
@@ -2648,9 +2663,9 @@ namespace s20b0d8c {
 extern "C" {
 extern s32 GetGameLanguage(void);
 extern void Hud_RenderSprite(void *fn, s32 a, s32 b, s32 r3arg, s32 stack_arg);
-/* Draws per-language sprite 0x11 or 0x12 at (arg1, arg2): 0x11 for the
-   first 20 frames of the scene's 40-frame mFrameCounter cycle, 0x12 for
-   the rest. */
+/* Draws per-language sprite word 0x11 or 0x12 at (arg1, arg2): word 0x11
+   for the first 20 frames of the scene's 40-frame mFrameCounter cycle,
+   word 0x12 for the rest. */
 void func_ov004_020b0d8c(void *c, s32 arg1, s32 arg2)
 {
     s32 idx1 = ((dScMgBase_c *)c)->mFrameCounter;
@@ -2714,8 +2729,9 @@ static inline int sdiv2(int e) {
    whole fives as a number (func_ov004_020b1ea4) beside sprite word 11 with
    only the remainder as icons. unk_050 holds the last tally. A rise plays
    sound 0x1bb (func_02012790) and starts the unk_054 counter -- one step a
-   frame, two when slot 26 returns 2 -- while the newest icon blinks on a
-   60-frame period; a fall stops it. When the tally reaches a multiple of
+   frame, two when slot 26 returns 2 -- while the newest icon blinks with a
+   period of 60 unk_054 steps (30 frames when slot 26 returns 2); a fall
+   stops it. When the tally reaches a multiple of
    five, the icons close up as unk_054 runs from mTimeLimit to
    mTimeLimit + 0x20, with sound 0x1ba as they start. */
 extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
@@ -3749,8 +3765,8 @@ void dScMgBase_c::OnYoshiTryEat(int arg)
 
 // @symbol func_ov004_020b29a0
 namespace s20b29a0 {
-/* Calls the scene's OnYoshiTryEat (slot 18). Its one caller, dMgState_c,
-   passes the scene singleton and its mState, declaring the state as a
+/* Calls the scene's OnYoshiTryEat (slot 18). Its callers, all in dMgState_c,
+   pass the scene singleton and its mState, declaring the state as a
    void *, so the parameter stays one here. */
 extern "C" void func_ov004_020b29a0(dScMgBase_c *scene, void *state)
 {
