@@ -9,7 +9,7 @@
  * (_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3) carries six
  * by-value Fix12<int> parameters, the by-value-class ABI wall of
  * include/OAM.h's note: callers keep `extern "C"` declarations of the literal
- * symbol, and the definition in engine/gx/G3i.cpp stays literal-mangled under
+ * symbol, and the definition in engine/gx/GXS.cpp stays literal-mangled under
  * `#pragma cplusplus off` because the ROM body is the C front end's output.
  */
 #ifndef G3I_H
