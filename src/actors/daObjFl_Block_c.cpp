@@ -12,28 +12,29 @@
  * registry factory, the collision callback and its touch helper sit at the
  * top because they are the highest-address .text in the run
  * (.text 0x021116c4..0x02111980).
- *
- * Leftover: mMeshCollider.SetFile with a Fix12<int> scale local
- *   size-DIFF InitResources 0xac->0xb8. The scalar extern stays.
- * Leftover: IsClsnInRange(Fix12<int>, Fix12<int>) size-DIFF Behavior
- *   0xa4->0xc0. The scalar extern called as (this, 0, 0) matches.
- * Leftover: mMeshCollider.unk_0c = 0x150000 size-DIFF Behavior 0xa4->0xa0.
- *   func_020393a4 is the call the ROM makes.
- * Leftover: assigning beforeClsnCallback size-DIFF InitResources
- *   0xac->0xa8. Assigning unk_1c from func_ov022_0211193c size-DIFF
- *   0xac->0xa8. func_020393d4 and func_020393c4 stay.
- * Leftover: putting the limit on the left of the compare
- *   (`mMaxPosY - 0xc8000 > mPosY`, `mMaxPosY < mPosY`) keeps Behavior
- *   at 0xa4 and changes its words. mPosY on the left matches.
- * Leftover: the callback func_ov022_0211193c and its helper
- *   func_ov022_0211191c keep their address names and stay free extern "C"
- *   functions. g_profile_FL_BLOCK lives outside this TU.
- * Leftover: data_ov064_0211bb0c is an unnamed row in its own module.
- * The two file handles live at the bottom of this file; the compiler's
- *   __sinit_daObjFl_Block_c.cpp constructs them at overlay load. Their
- *   wrapper names are local -- the constructors are the ROM
- *   resource-family functions, recorded as aliases in the manifest.
  */
+
+// leftovers:
+// - mMeshCollider.SetFile with a Fix12<int> scale local size-DIFFs
+//   InitResources 0xac->0xb8. The scalar extern stays.
+// - IsClsnInRange(Fix12<int>, Fix12<int>) size-DIFFs Behavior 0xa4->0xc0.
+//   The scalar extern called as (this, 0, 0) matches.
+// - mMeshCollider.unk_0c = 0x150000 size-DIFFs Behavior 0xa4->0xa0.
+//   func_020393a4 is the call the ROM makes.
+// - Assigning beforeClsnCallback size-DIFFs InitResources 0xac->0xa8.
+//   Assigning unk_1c from func_ov022_0211193c size-DIFFs 0xac->0xa8.
+//   func_020393d4 and func_020393c4 stay.
+// - Putting the limit on the left of the compare
+//   (`mMaxPosY - 0xc8000 > mPosY`, `mMaxPosY < mPosY`) keeps Behavior at
+//   0xa4 and changes its words. mPosY on the left matches.
+// - The callback func_ov022_0211193c and its helper func_ov022_0211191c
+//   keep their address names and stay free extern "C" functions.
+// - g_profile_FL_BLOCK lives outside this TU.
+// - data_ov064_0211bb0c is an unnamed row in its own module.
+// - The two file handles live at the bottom of this file; the compiler's
+//   __sinit_daObjFl_Block_c.cpp constructs them at overlay load. Their
+//   wrapper names are local -- the constructors are the ROM
+//   resource-family functions, recorded as aliases in the manifest.
 
 #include "daObjFl_Block_c.h"
 #include "SharedFilePtr.h"

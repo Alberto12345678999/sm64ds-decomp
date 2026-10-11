@@ -1,29 +1,26 @@
 //cpp
-/* Production translation unit for ov056/daObjEwmIceBlock_c.
- * 7 function(s), .text 0x021111a0..0x021115cc. The big ice block that moves
- * along a path (registry profile EWM_ICE_BLOCK).
- *
- * NAME: _ZTS18daObjEwmIceBlock_c is "18daObjEwmIceBlock_c" at ov056
- * 0x0211332c; _ZTI at 0x02113320 reads [__si_class_type_info, that string,
- * _ZTI10dBgActor_c]. The tree previously called the class BigMovingIceBlock
- * (coined).
- *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x021111a0), D0
- * (0x021111e4), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is
- * ROM-ascending, and the classInit factory appends after InitResources.
- *
- * daObjEwmIceBlock_c_classInit (0x02111594, historical alias
- * BigMovingIceBlock_Spawn) is a reconstructed name (RTTI daObjEwmIceBlock_c,
- * the sole EWM_ICE_BLOCK registry profile); retail does not store it. It
- * hand-called fBase_c::operator new(0x330) + the inherited dBgActor_c ctor +
- * this class's vtable store + PathPtr::PathPtr() at +0x320, spelled as
- * mangled calls in its own former (now-retired) loose source file. The
- * class has no user-declared constructor, so `new daObjEwmIceBlock_c()`
- * reproduces the identical sequence (the compiler-synthesized default
- * constructor base-calls dBgActor_c then constructs mPath in field order).
+/* The big ice block that moves along a path (registry profile EWM_ICE_BLOCK),
+ * .text 0x021111a0..0x021115cc. The out-of-line destructor is the key
+ * function, so this TU emits _ZTV/_ZTI/_ZTS18daObjEwmIceBlock_c: _ZTS is
+ * "18daObjEwmIceBlock_c" at ov056 0x0211332c and _ZTI at 0x02113320 reads
+ * [__si_class_type_info, that string, _ZTI10dBgActor_c]. The tree
+ * previously called the class BigMovingIceBlock (coined). #pragma
+ * defer_codegen off lays .text down in source order, and the classInit
+ * factory appends after InitResources. The factory name is reconstructed
+ * (historical alias BigMovingIceBlock_Spawn); retail does not store it.
  */
+
+// leftovers:
+// - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange take Fix12<int> by
+//   value, so they stay mangled; a member call homes the argument and
+//   changes the ROM ABI.
+// - func_020393d4 is the 4-byte store of the collision callback into
+//   dBgW's slot; naming belongs with dBgW in arm9.
+// - This TU emits its own __sinit for the file handles below, which the
+//   manifest does not license. The handles stay: nothing else defines
+//   their BSS or .init range.
+// - q stays branch-scoped: hoisting it renumbers the static-init
+//   temporaries (@490/@491), which the manifest pins.
 
 #include "decl_common.h"
 #include "daObjEwmIceBlock_c.h"
@@ -70,7 +67,6 @@ int daObjEwmIceBlock_c::Render()
 }
 
 // @symbol _ZN18daObjEwmIceBlock_c8BehaviorEv
-/* Leftover: dBgActor_c::IsClsnInRange takes Fix12<int> by value, so it stays mangled. */
 int daObjEwmIceBlock_c::Behavior()
 {
     Vector3 prev;
@@ -92,7 +88,7 @@ int daObjEwmIceBlock_c::Behavior()
                 delta = (int)mPath.NumNodes() - 1;
         } else {
             if (delta >= (int)mPath.NumNodes())
-                delta = looped;
+                delta = 0;
         }
         mPath.GetNode(node, delta);
     } else {
@@ -146,9 +142,6 @@ int daObjEwmIceBlock_c::Behavior()
 }
 
 // @symbol _ZN18daObjEwmIceBlock_c13InitResourcesEv
-/* Leftover: dBgW_KcMbg::SetFile takes Fix12<int> by value, so it stays
- * mangled. func_020393d4 stays unnamed because it is a 4-byte store into
- * dBgW's callback slot whose naming belongs with dBgW in arm9. */
 int daObjEwmIceBlock_c::InitResources()
 {
     mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov056_02113314[0]), 1, -1);
@@ -174,11 +167,9 @@ extern "C" daObjEwmIceBlock_c *daObjEwmIceBlock_c_classInit()
     return new daObjEwmIceBlock_c();
 }
 
-/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
- * veneer pairs (func_02017acc / func_02017ab4 for the model, func_02017b4c /
- * SharedFilePtr_Destruct_Clsn for the collision), spelled through
- * declared-only subclasses so the static initializer names the real entry
- * points. */
+/* The ctor/dtor pairs are the ROM's SharedFilePtr veneers (func_02017acc /
+ * func_02017ab4 for the model, func_02017b4c / SharedFilePtr_Destruct_Clsn
+ * for the collision); the subclasses exist to spell those entry points. */
 struct EwmIceBlockModelFilePtr : SharedFilePtr {
     u32 words[2];
     EwmIceBlockModelFilePtr(u32 fileID);
