@@ -3,14 +3,18 @@
  * once y passes 0xc8. mValue is the number SpawnValue drops between two
  * stones when they collide.
  *
- * Leftover: SpawnValue still reads the other stone as
- *   raw + 0x4000 + other * 0x30 + 0x660. mStone[other] folds that into one
- *   constant and loses the raw + 0x4000 base the ROM shares.
- * Leftover: DragUpdate and SeparateStones call
- *   _ZN4cstd5atan2E5Fix12IiES1_. cstd::atan2 takes Fix12 by value.
  * The state machine and the rest of the class live above the sourceless
  * hole in src/actors/dScMgCurling2_c_upper.cpp.
  */
+
+// leftovers: SpawnValue still reads the other stone as
+// raw + 0x4000 + other * 0x30 + 0x660 -- mStone[other] folds that into one
+// constant and loses the raw + 0x4000 base the ROM shares with the stone
+// operand (this TU's SpawnValue). DragUpdate and SeparateStones call
+// _ZN4cstd5atan2E5Fix12IiES1_ -- cstd::atan2 takes Fix12 by value, and no
+// header declares the scalar overload. The unk_55xx drag fields keep their
+// names -- renaming them is header work on include/dScMgCurling2_c.h, which
+// the upper-half TU also includes.
 
 /* Required: ROM order, and the brackets on AgeMarks and DragUpdate. */
 #pragma defer_codegen off
