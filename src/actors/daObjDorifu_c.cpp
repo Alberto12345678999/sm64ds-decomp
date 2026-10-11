@@ -10,56 +10,26 @@
  * _ZTS13daObjDorifu_c at ov002 0x02108d7c ("13daObjDorifu_c"). The vtable
  * storage begins at 0x02108d8c and its public address point is
  * _ZTV13daObjDorifu_c at 0x02108d94, 32 slots, running to 0x02108e14.
+ * Behavior is the key function (first non-pure, non-inline virtual), so
+ * this TU owns the RTTI/type name/vtable as compiler-only deadstrip output.
  *
- * Abstract: vtable slots 0 and 3 are bare zero words with no relocation --
- * InitResources() and CleanupResources() are pure. The three concrete
- * descendants each supply the no-argument override and forward to the
- * resource-table overloads defined here; those descendants live in ov036,
- * ov043 and ov047, outside this module, so nothing of theirs is claimed.
- *
- * Why `#pragma defer_codegen off` and two forcing functions
- *
- * The cartridge orders this run D0 (0x020b4a70) then D1 (0x020b4af8), and a
- * promoted object has to emit its licensed functions in ROM-ascending order
- * or the linker lays the range out wrong. Under mwccarm's default deferred
- * codegen the destructor variant group of a header-inline destructor always
- * comes out D1-then-D0, whatever the source does: a `delete` forcer, a
- * forcer pair in either order, moving the destructor declaration to the end
- * of the class, an out-of-class `inline` definition and leaving the
- * destructor implicit were each measured and each emitted D1 first.
- *
- * The one lever that does flip the pair is `#pragma defer_codegen off`, which
- * emits ordinary functions at PARSE time in SOURCE order. The two forcing
- * calls below are therefore parse-time triggers: the delete-expression pulls
- * D0 out of line first, the explicit destructor call pulls D1 out second, and
- * the four real members then follow in ascending ROM order. That is the whole
- * reason this file reads low-address-first while every deferred TU in the
- * tree reads high-address-first.
- *
- * Moving the destructor out of line also produces the ROM's order, and is
- * refuted: with the body removed from the class the three descendants stop
- * inlining the vptr store, and all six of their destructors change size. The
- * header's inline body is load-bearing for them, so it stays and this file
- * pays with the pragma instead.
- *
- * Behavior is this class's key function -- the first non-pure, non-inline
- * virtual the header declares -- so this TU also owns the class RTTI, type
- * name and vtable; all of that is compiler-only output with a ROM home
- * elsewhere and is licensed to deadstrip in the manifest.
- *
- * Known limits:
- * - Event::GetBit is still reached through its mangled spelling; there is no
- *   Event header this TU can take without a shared-header campaign.
- * - dBgW_KcMbg::SetFile takes its scale as Fix12<int> BY VALUE. The natural
- *   member spelling trips the known by-value Fix12 reload wall and grows
- *   InitResources by eight bytes, so the ABI-exact declaration stays.
- * - InitResources still addresses the Model[5] and dBgW_KcMbg[5] arrays and
- *   the dBgActor_c transform words by raw offset: the ROM's ldm/stm matrix
- *   copies do not survive ordinary C++ struct assignment, which scalarizes
- *   them, and the 0x33c/0x360/0xdbc words belong to dBgActor_c rather than to
- *   this leaf.
- * - DecIfAbove0_Byte has no shared header.
+ * The cartridge orders this run D0 (0x020b4a70) then D1 (0x020b4af8), but
+ * the header-inline destructor always emits D1-then-D0 under deferred
+ * codegen (every other lever measured and refuted, and moving it out of
+ * line breaks the three descendants' inlined vptr stores). So this file
+ * uses `#pragma defer_codegen off` with two parse-time forcing calls --
+ * `delete p` pulls D0 first, `p->~daObjDorifu_c()` pulls D1 second -- and
+ * reads low-address-first. Do not reorder.
  */
+
+// leftovers: Event::GetBit stays mangled (no Event header without a
+// shared-header campaign -- this TU's Behavior calls).
+// dBgW_KcMbg::SetFile stays ABI-exact (by-value Fix12<int> scale; the member
+// spelling grows InitResources by eight bytes). InitResources still addresses
+// the Model[5]/dBgW_KcMbg[5] arrays and the dBgActor_c transform words by raw
+// offset (C++ struct assignment scalarizes the ROM's ldm/stm matrix copies;
+// the 0x33c/0x360/0xdbc words belong to dBgActor_c). DecIfAbove0_Byte has no
+// shared header.
 
 #pragma defer_codegen off
 
