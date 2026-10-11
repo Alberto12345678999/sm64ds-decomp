@@ -31,9 +31,14 @@
  * Under `#pragma defer_codegen off` .text is laid down in source order, so
  * this file is ROM-ascending.
  *
- * Leftover: the helpers keep their func_ov026_* names and C linkage, because
- * the static initializer and the state record name them by address; none has
- * a recovered name.
+ * leftovers:
+ * - The helpers keep their func_ov026_* names and C linkage: the static
+ *   initializer and the state record name them by address, and none has a
+ *   recovered name.
+ * - dCcAcPos_c::Init stays the mangled extern (InitResources): the real
+ *   member takes its radius and height as Fix12<int> by value and mwccarm
+ *   homes both in stack temporaries; measured 0x88 -> 0x98 with a 0x20
+ *   frame instead of 0x18.
  */
 #include "decl_common.h"
 #include "daWater_Suikomi_c.h"
@@ -184,10 +189,8 @@ int daWater_Suikomi_c::InitResources()
     V3 vec;
     unk_314 = param1 & 0xff;
     vec = data_ov026_02113f4c;
-    /* Leftover: dCcAcPos_c::Init stays the mangled extern. The real member
-       takes its radius and height as Fix12<int> by value, and mwccarm homes
-       both in stack temporaries before the call: measured, InitResources
-       grows from 0x88 to 0x98 bytes with a 0x20 frame instead of 0x18. */
+    /* See leftovers: the mangled extern stands in for the Fix12-by-value
+       member. */
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &vec, 0x64000, 0xa4000, 0x800006, 0);
     func_ov026_021122d4(this, &data_ov026_02113f58);
     return 1;

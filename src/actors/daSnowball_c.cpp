@@ -30,7 +30,7 @@
  * player calls Player::Hurt, plays the sound and bursts; a metal player makes
  * it burst without Hurt; a vanished player is ignored (no burst).
  *
- * Leftover / known limits:
+ * leftovers:
  * - func_ov081_02125fb8, func_ov081_021261d4 and func_ov081_02126224 stay
  *   free functions under those address names. None has a recovered name.
  *   The state-record targets are methods under the same addresses. The
@@ -285,7 +285,7 @@ int daSnowball_c::Render()
  *     rebuild the model matrix;
  *   - clear the cylinder and, if there is a closest player and it is not
  *     vanished (mIsVanish), re-register it with dCcAc_c::Update.
- * Leftover: the read and write-back of unk_0ac around the mVertSpeed store is
+ * leftover: the read and write-back of unk_0ac around the mVertSpeed store is
  * a no-op in source terms; it stays as written, the shape these bytes were
  * matched with. */
 int daSnowball_c::Behavior()
@@ -329,7 +329,7 @@ int daSnowball_c::InitResources()
 
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
-    /* Leftover: both Init calls below stay on their mangled names.
+    /* leftover: both Init calls below stay on their mangled names.
        dCcAc_c::Init takes Fix12<int> by value, and passing the radii that way
        spills them into .rodata, so the method call no longer matches.
        dBgCh_Actr::Init is declared with Fix12i, a plain s32 that mangles as

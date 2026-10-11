@@ -32,7 +32,7 @@
  * the highest-address ROM function, the factory, is written FIRST here. Do
  * not reorder.
  *
- * Known limits:
+ * leftovers:
  * - dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::DropShadowRadHeight,
  *   Player::Hurt and Particle::System::NewSimple stay mangled. Each takes
  *   Fix12<int> by value (wall 6az): passing a Fix12<int> local to
