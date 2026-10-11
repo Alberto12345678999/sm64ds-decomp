@@ -1,22 +1,18 @@
 //cpp
 /* Shell game (MG_CUP). Three cups shuffle on the sub screen; touch the cup
  * containing the requested item.
- *
- * Leftover: func_ov006_020dec88 calls the mangled Fix12 OAM::Render.
- *   include/OAM.h will not declare that overload.
- * Leftover: func_ov006_020ded00 keeps two spellings of frame. One shared
- *   spelling reuses the address and the body shrinks.
- * Leftover: func_ov006_020def80 keeps the 0x5000 bases. mFlags[i] / mAnim[i]
- *   come out 0xa0 bytes instead of 0xa4.
- * Leftover: StatePrepareShuffle re-reads mTimer as raw+0x5000+0x41c and
- *   decrements mSparkleShuffles through a byte pointer. The member form misses.
- * Leftover: StateShuffle's angle read-modify-write stays on raw+0x5400.
- *   mShuffleAngle += folds the address.
- * Leftover: Render's cup x/y arguments retain two different spellings.
- * Leftover: Behavior's mAnim / mFrame / mTick loads stay (int) casts.
- * Leftover: the factory is still _ZN11dScMgBase_cC2Ev plus SysTracker C1.
- *   There is no dScMgCup_c constructor.
  */
+
+// leftovers:
+// func_ov006_020dec88 calls the mangled Fix12 OAM::Render. include/OAM.h will not declare that overload.
+// func_ov006_020ded00 keeps two spellings of frame. One shared spelling reuses the address and the body shrinks.
+// func_ov006_020def80 keeps the 0x5000 bases. mFlags[i] / mAnim[i] come out 0xa0 bytes instead of 0xa4.
+// StatePrepareShuffle re-reads mTimer as raw+0x5000+0x41c and decrements mSparkleShuffles through a byte pointer. The member form misses.
+// StateShuffle's angle read-modify-write stays on raw+0x5400. mShuffleAngle += folds the address.
+// Render's cup x/y arguments retain two different spellings.
+// Behavior's mAnim / mFrame / mTick loads stay (int) casts.
+// the factory is still _ZN11dScMgBase_cC2Ev plus SysTracker C1. There is
+// no dScMgCup_c constructor.
 
 #include "dScMgCup_c.h"
 #include "types.h"

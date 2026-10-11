@@ -212,10 +212,10 @@ struct dScMgCoin_c : dScMgBase_c {
     s32 unk_51c8;                            /* 0x51c8 phase; 5 is the result */
     s32 mCountdown;                          /* 0x51cc */
     u8 pad_51d0[0x4];                        /* 0x51d0 */
-    s32 unk_51d4;                            /* 0x51d4 this player's score */
+    s32 mPlayerScore;                        /* 0x51d4 this player's score */
     u8 pad_51d8[0x2];                        /* 0x51d8 */
-    u8 unk_51da;                             /* 0x51da */
-    u8 unk_51db;                             /* 0x51db */
+    u8 mWins;                                /* 0x51da win count */
+    u8 mWonLast;                             /* 0x51db last round won */
     u8 unk_51dc;                             /* 0x51dc */
     u8 pad_51dd;                             /* 0x51dd */
     u8 mCaptionLatch;                        /* 0x51de */

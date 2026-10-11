@@ -23,22 +23,15 @@
  * classInit stays a literal construction bridge: the fader member's
  * constructor is the out-of-line arm9 _ZN10dFdDummy_cC1Ev, so
  * `new dScDSMT_c` would not spell the same call.
- *
- * Leftovers:
- * - The four func_ov007_* helpers, the dispatcher and the wrappers keep
- *   address-derived names; the image carries no original symbol table for
- *   them.
- * - data_0209b340 is decl_common.h's `int[]` (word stores at 0, 1 and
- *   0x27); func_ov007_020cc168 writes it bytewise, so byte accesses take a
- *   cast view of the same array rather than a second declaration.
- * - The overlay operands are the FS_OVERLAY_ID idiom: `(int)&OVERLAY_100_ID`
- *   and `(int)&OVERLAY_102_ID` pool-load the absolute linker constants the
- *   generated arm9.lcf defines (values 0x64/0x66 -- the cartridge's pool
- *   words at 0x020cc450/0x020cc454). Plain literals are immediate-encodable
- *   and would compile to `mov`, not the cartridge's loads; decl_common.h's
- *   `overlay_N` names are dsd bookkeeping rows the lcf never defines, so
- *   they do not link.
  */
+
+// leftovers: the four func_ov007_* helpers, the dispatcher and the wrappers
+// keep address-derived names (no ROM symbol table for them --
+// func_ov007_020cc600, 020cc168, 020cc118, 020cc0e4, 020cc0cc). data_0209b340
+// is decl_common.h's int[] while func_ov007_020cc168 writes it bytewise, so
+// byte accesses cast-view the same array. The overlay operands pool-load the
+// absolute linker constants ((int)&OVERLAY_100_ID/102_ID); plain literals
+// would compile to mov, and decl_common.h's overlay_N names do not link.
 
 #include "dScDSMT_c.h"
 #include "types.h"
@@ -110,17 +103,9 @@ void DispOn();
 void DisableAllBanks();
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020ccad0 -- the factory. The literal construction bridge: allocates 0x64,
- * runs the fBase_c base constructor, walks the vtable chain fBase_c -> dScene_c
- * -> dScDSMT_c (the store is spelled with the data_ov007 aliases of the two
- * vtables this TU emits -- the same aliasing dScMB_c uses: ov007's _ZTV rows
- * sit at the vtable address point, and a TU-local _ZTV store spelled by name
- * trips objisolate's defined-then-externalised survey), ORs the two spawn-flag
- * bits at +0x13, gives the graphCallback_c sub-object at +0x50 its
- * base-then-derived vptr pair, and finishes the dFdDummy_c member at +0x54 via
- * the arm9 constructor _ZN10dFdDummy_cC1Ev. */
-/* -------------------------------------------------------------------------- */
+/* Factory: literal construction bridge (fBase chain, vtable aliasing, spawn-flag
+ * bits, graphCallback vptr pair, dFdDummy_c member). `new` would not spell
+ * the same arm9 C1 call. */
 // @symbol dScDSMT_c_classInit
 extern "C" int *dScDSMT_c_classInit(void)
 {
@@ -141,11 +126,7 @@ extern "C" int *dScDSMT_c_classInit(void)
     return p;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020ccab4 / 0x020cca98 / 0x020cca80 -- heap thunks for the interface the
- * client calls: forward onto the game heap at data_020a0ea0. All three are
- * `bx ip` sibcalls under -interworking. */
-/* -------------------------------------------------------------------------- */
+/* Heap thunks onto the game heap; `bx ip` sibcalls. */
 // @symbol func_ov007_020ccab4
 extern "C" void *func_ov007_020ccab4(u32 a) {
     return ((Heap *)data_020a0ea0)->Allocate(a);
@@ -161,11 +142,7 @@ extern "C" void func_ov007_020cca80(void) {
     (void)((Heap *)data_020a0ea0)->MaxAllocationUnitSize();
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cca74 / 0x020cca68 -- file-op veneers, three-word `ldr ip,[pc] / bx ip`
- * thunks. #pragma long_calls makes mwccarm emit the pooled absolute tail call
- * the ROM uses to reach the targets. */
-/* -------------------------------------------------------------------------- */
+/* File-op veneers: `#pragma long_calls` emits the pooled absolute tail call. */
 #pragma long_calls on
 extern "C" int LoadFile(int);
 // @symbol func_ov007_020cca74
@@ -178,14 +155,7 @@ extern "C" void func_ov007_020cca68(void *p) {
 }
 #pragma long_calls off
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc600 -- the client's command dispatcher. Answers one command code:
- * sound mode and backlight requests, per-file erase and copy (3-file buffer
- * at data_0209b33c, records read through func_ov007_020cc0cc), deferred music
- * changes through func_ov007_020cc118, a fresh read of all three save files,
- * minigame-record load/store, then refreshes the per-file summary for the
- * current file before returning a status byte. */
-/* -------------------------------------------------------------------------- */
+/* Client command dispatcher: sound/backlight/save-file/minigame codes. */
 // @symbol func_ov007_020cc600
 extern "C" u8 func_ov007_020cc600(s32 arg)
 {
@@ -273,15 +243,7 @@ extern "C" u8 func_ov007_020cc600(s32 arg)
     return r;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc4c0 -- vtable slot 0, the key function.
- *
- * Brings the scene up: clears the archives and the two minigame-menu overlays
- * a previous scene may have left loaded, turns the 3D engine and both display
- * engines on, registers the graphCallback_c sub-object with the graph
- * (data_0209d4a8), hands dScene_c this object's own `fader`, seeds the
- * download-play session out of data_0209b340 and asks for sound group 2. */
-/* -------------------------------------------------------------------------- */
+/* InitResources (key function): engines on, graph callback registered, session seeded. */
 // @symbol _ZN9dScDSMT_c13InitResourcesEv
 s32 dScDSMT_c::InitResources()
 {
@@ -314,11 +276,7 @@ s32 dScDSMT_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc45c -- vtable slot 3. Unregisters the graph callback, hands the
- * colour fader back, records the exit reason in data_0209b340, then releases
- * the download-play voice group and the save-slot buffer. */
-/* -------------------------------------------------------------------------- */
+/* CleanupResources: unregister callback, record exit reason, release voice group. */
 // @symbol _ZN9dScDSMT_c16CleanupResourcesEv
 s32 dScDSMT_c::CleanupResources()
 {
@@ -332,12 +290,7 @@ s32 dScDSMT_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc2cc -- vtable slot 6. Pumps the download-play state machine and
- * dispatches on its return code: 3..5 load one of three saved files, 6 pulls
- * in the minigame overlays and fades out, 7 opens the minigame menu, 2 fades
- * back. Ends by handing its own `fader` member to dScene_c. */
-/* -------------------------------------------------------------------------- */
+/* Behavior: pump the session state machine and dispatch its return code. */
 // @symbol _ZN9dScDSMT_c8BehaviorEv
 s32 dScDSMT_c::Behavior()
 {
@@ -388,10 +341,7 @@ s32 dScDSMT_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc2b0 -- vtable slot 9. Forwards `this` to the overlay's own
- * download-play draw routine and reports success unconditionally. */
-/* -------------------------------------------------------------------------- */
+/* Render: forward to the overlay's draw routine. */
 // @symbol _ZN9dScDSMT_c6RenderEv
 s32 dScDSMT_c::Render()
 {
@@ -399,22 +349,13 @@ s32 dScDSMT_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc2ac -- vtable slot 12. Nothing to unwind; the slot exists only so
- * dScene_c's teardown has something to call. */
-/* -------------------------------------------------------------------------- */
+/* OnPendingDestroy: no unwind; the slot exists for dScene_c's teardown. */
 // @symbol _ZN9dScDSMT_c16OnPendingDestroyEv
 void dScDSMT_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc168 -- fills in guest slot `idx` of the download-play record table:
- * sound mode, the frame-rate byte, the preference bit out of data_0209caa0,
- * how many of the three extra characters are unlocked, and then per course
- * whether its first star is taken, how many others are, and the coin record.
- * Writes BYTES into data_0209b340, which the class members read as words. */
-/* -------------------------------------------------------------------------- */
+/* Fill guest slot `idx` of the download-play record table (bytes into the word-read array). */
 // @symbol func_ov007_020cc168
 extern "C" void func_ov007_020cc168(u32 idx)
 {
@@ -454,11 +395,7 @@ extern "C" void func_ov007_020cc168(u32 idx)
     data_0209b3d8[idx] = CountStarsCollectedInLevelToDisplay(0x1d);
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc118 -- arms the deferred music change Behavior later commits:
- * remembers track `a` and a countdown `b`, and stops the current layer-1 music
- * over the same number of frames. Declines if one is already pending. */
-/* -------------------------------------------------------------------------- */
+/* Arm the deferred music change Behavior commits. Declines if one is pending. */
 // @symbol func_ov007_020cc118
 extern "C" int func_ov007_020cc118(int a, unsigned int b)
 {
@@ -471,21 +408,14 @@ extern "C" int func_ov007_020cc118(int a, unsigned int b)
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc110 -- dScDSMT_c::graphCallback_c slot 0. Declines it: the ROM body
- * is `mov r0,#0; bx lr`, against dGraph_c::callback_c's default of 1. */
-/* -------------------------------------------------------------------------- */
+/* graphCallback_c slot 0: decline (`mov r0,#0`), against dGraph_c's default 1. */
 // @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev
 int dScDSMT_c::graphCallback_c::GraphCallback0()
 {
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc0f4 -- dScDSMT_c::graphCallback_c slot 2. Hands the callback object
- * itself to func_ov007_020b6eb4 and declines the slot. The callee is still an
- * unnamed ov007 free function; it takes this object, not the owning scene. */
-/* -------------------------------------------------------------------------- */
+/* graphCallback_c slot 2: hand the callback object to the ov007 routine. */
 // @symbol _ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev
 int dScDSMT_c::graphCallback_c::GraphCallback2()
 {
@@ -493,20 +423,14 @@ int dScDSMT_c::graphCallback_c::GraphCallback2()
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc0e4 -- installs the save-slot buffer pointer. Writes the pointer
- * word itself, not through it. */
-/* -------------------------------------------------------------------------- */
+/* Install the save-slot buffer pointer. */
 // @symbol func_ov007_020cc0e4
 extern "C" void func_ov007_020cc0e4(FileSaveData *files)
 {
     data_0209b33c = files;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 0x020cc0cc -- address of save-slot record `idx`. The `mov r1,#0x44;
- * mla r0,r1,r0,r2` is where the 0x44 record stride is proven. */
-/* -------------------------------------------------------------------------- */
+/* Address of save-slot record `idx` (0x44 stride is in the ROM's mla). */
 // @symbol func_ov007_020cc0cc
 extern "C" FileSaveData *func_ov007_020cc0cc(int idx)
 {
