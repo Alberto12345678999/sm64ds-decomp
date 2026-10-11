@@ -15,6 +15,11 @@
  * their class ownership, bodies, calls, and ordering are byte/relocation
  * proven.
  *
+ * _ZTS16daObjFm_Battan_c 0x02111fac. _ZTI16daObjFm_Battan_c 0x02111fa0.
+ * _ZTV16daObjFm_Battan_c 0x02111fe4. InitResources is the key function;
+ * with the inline destructor in the real header this emits retail D1
+ * (0x021111a0) then D0 (0x021111ec).
+ *
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *   Source is reverse ROM order: keep the ROM-high factory first and the
  *   ROM-low helper last. InitResources is the key function; with the inline
@@ -43,6 +48,18 @@
  *   sine table.
  *   No Player.h / dCamera_c.h. The leaf operator new stays until #2570.
  */
+
+// leftovers:
+// - func_020393d4: InitResources stores dBgW::UpdatePosWithTransform on
+//   mMeshCollider; dBgW.h has no setter.
+// - func_0200fa04 is Behavior's impact dust; no named method in this TU.
+// - AddVec3 / Matrix4x3_FromRotationY / Matrix4x3_FromRotationXYZExt: no
+//   shared header this TU can take without a wider change.
+// - data_ov023_02112088 / 02112080 are resource handles this TU's sinit
+//   owns; data_ov064_0211ba4c (CLPS) is overlay .data; data_02082214 is the
+//   sine table.
+// - No Player.h / dCamera_c.h here. The leaf operator new stays until the
+//   fBase_c size_t overload work lands.
 
 #include "daObjFm_Battan_c.h"
 #include "SharedFilePtr.h"
