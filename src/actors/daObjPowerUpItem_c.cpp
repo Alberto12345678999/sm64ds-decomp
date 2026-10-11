@@ -23,7 +23,7 @@
  * are zero in the overlay image and filled at run time by this TU's
  * __sinit from six descriptor records.
  *
- * comment leftovers:
+ * leftovers:
  *  - DropShadow and InitResources keep their mangled `_ZN` spellings for
  *    DropShadowRadHeight, dCcAc_c::Init and dBgCh_Actr::Init: those take
  *    Fix12<int> by value, and Fix12<int> has no int conversion (the Fix12

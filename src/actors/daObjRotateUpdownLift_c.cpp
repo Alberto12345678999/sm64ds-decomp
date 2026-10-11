@@ -27,7 +27,7 @@
  * this TU. The "// address (size)" line above each definition is its ROM
  * location.
  *
- * Known limits:
+ * leftovers (member spellings measured and rejected on size):
  * - Kill: Particle::System::NewSimple(Fix12<int> x, y, z) is +0x24
  *   (0x8c -> 0xb0). The scalar extern passes the three positions in r1-r3.
  * - func_ov091_02131160: dActor_c::DropShadowScaleXYZ as a method is +0x1c

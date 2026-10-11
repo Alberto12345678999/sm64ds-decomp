@@ -15,18 +15,19 @@
  * (0x02111988), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  *
- * Leftover: dBgW_KcMbg::SetFile, dBgCh_Actr::Init and
+ * leftovers:
+ * - dBgW_KcMbg::SetFile, dBgCh_Actr::Init and
  *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
  *   a member call homes the argument and changes the ROM ABI.
- * Leftover: func_020393d4 / func_020393c4 are 4-byte stores into dBgW's
+ * - func_020393d4 / func_020393c4 are 4-byte stores into dBgW's
  *   callback slots; naming belongs with dBgW in arm9.
- * Leftover: func_ov036_02111ca4 and its veneer func_ov036_02111cc4 keep the
+ * - func_ov036_02111ca4 and its veneer func_ov036_02111cc4 keep the
  *   cartridge's unmangled linker names. The first is the collision callback
  *   body, the second the C-ABI entry InitResources installs into dBgW's slot.
  *   Neither can become a method: C++ would mangle the symbol and the link
  *   would stop resolving the name the ROM carries. Its +0x4e8 store is this
  *   class's mHadClsn, named here because the callback only has a void*.
- * Leftover: the named local in func_ov036_02111ca4 is load-bearing -- folded
+ * - The named local in func_ov036_02111ca4 is load-bearing -- folded
  *   into the `if`, mwcc emits 0x14 and the cartridge's is 0x20.
  */
 
