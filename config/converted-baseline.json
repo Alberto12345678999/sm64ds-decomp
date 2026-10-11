@@ -7,7 +7,7 @@
   "no_codegen_trick",
   "no_mangled_refs"
  ],
- "count": 3519,
+ "count": 3520,
  "converted": [
   "src/ARMMathLoadState.c",
   "src/ARMMathSaveState.c",
@@ -390,6 +390,7 @@
   "src/Message3.cpp#_ZN7Message10LoadTextVSEv",
   "src/Message3.cpp#_ZN7Message16SetTextGlobalsVSEv",
   "src/_ZN7Vector3D1Ev.cpp",
+  "src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp",
   "src/_ZN8Particle10SysTracker6UpdateEv.cpp",
   "src/_ZN8Particle10SysTrackerC1Ev.cpp",
   "src/_ZN8Particle19SetSelfDestructFlagEj.cpp",

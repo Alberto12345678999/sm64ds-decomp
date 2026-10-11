@@ -9342,7 +9342,7 @@
       ]
     },
     "_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": {
-      "src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c": [
+      "src/engine/particle/Particle.cpp": [
         "param:#3 void *",
         "param:#4 const void *",
         "return:void *"
@@ -9366,26 +9366,6 @@
         "return:void *"
       ],
       "src/_ZN6Player19St_Electrocute_MainEv.cpp": [
-        "return:unsigned int"
-      ],
-      "src/_ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_.c": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
-      "src/_ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj.c": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
-      "src/_ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_.c": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
-      "src/_ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f.c": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
-      "src/_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_.c": [
-        "param:#6 const void *",
         "return:unsigned int"
       ],
       "src/actors/Eyerok.cpp": [
@@ -9609,6 +9589,10 @@
       ],
       "src/unnamed/arm9/0202/func_02022d44.c": [
         "return:unsigned int"
+      ],
+      "src/unnamed/ov002/func_ov002_020d6998.cpp": [
+        "param:#6 const void *",
+        "return:void"
       ],
       "src/unnamed/ov002/func_ov002_020d6dac.c": [
         "param:#6 const void *",
@@ -9836,11 +9820,6 @@
       ]
     },
     "_ZN8Particle7Manager9AddSystemEiR7Vector3": {
-      "src/_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_.c": [
-        "param:#2 unsigned int",
-        "param:#3 Vector3 *",
-        "return:void *"
-      ],
       "src/unnamed/ov007/func_ov007_020b7708.c": [
         "param:#3 void *",
         "return:PtclSys *"
@@ -11124,7 +11103,7 @@
       ]
     },
     "_ZNK8Particle10SysTracker8Contents8FindDataEj": {
-      "src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c": [
+      "src/engine/particle/Particle.cpp": [
         "return:System *"
       ]
     },
@@ -11823,9 +11802,6 @@
       ]
     },
     "data_0209b3ec": {
-      "src/_ZN8Particle9RenderAllEv.cpp": [
-        "return:int"
-      ],
       "src/actors/dEntObj_c.cpp": [
         "return:int []"
       ],
@@ -11837,6 +11813,9 @@
       ],
       "src/actors/unit020cd744.cpp": [
         "return:char []"
+      ],
+      "src/engine/particle/Particle.cpp": [
+        "return:int"
       ],
       "src/unnamed/ov075/func_ov075_0211afb0.c": [
         "return:int"
@@ -12357,41 +12336,6 @@
     "data_0209ee74": {
       "include/Particle__System.h": [
         "return:Particle::SysTracker *"
-      ],
-      "src/_ZN8Particle10SysTrackerC1Ev.cpp": [
-        "return:void *"
-      ],
-      "src/_ZN8Particle10SysTrackerD1Ev.cpp": [
-        "return:void *"
-      ],
-      "src/_ZN8Particle19SetSelfDestructFlagEj.cpp": [
-        "return:Particle::SysTracker *"
-      ],
-      "src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c": [
-        "return:void *"
-      ],
-      "src/_ZN8Particle9RenderAllEv.cpp": [
-        "return:Particle__SysTracker *"
-      ]
-    },
-    "data_0209ee78": {
-      "src/unnamed/arm9/0202/func_02023178.c": [
-        "return:int"
-      ]
-    },
-    "data_0209ee84": {
-      "src/_ZN8Particle10SysTracker10InitialiseEv.cpp": [
-        "return:int"
-      ]
-    },
-    "data_0209ee88": {
-      "src/_ZN8Particle7Texture12AllocTexVramEjb.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_0209ee8c": {
-      "src/_ZN8Particle10SysTracker10InitialiseEv.cpp": [
-        "return:int"
       ]
     },
     "data_0209ee90": {
@@ -22888,19 +22832,8 @@
       ]
     },
     "func_02022cbc": {
-      "include/decl_common.h": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#6 int"
-      ],
       "src/actors/daMip_c.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ]
-    },
-    "func_02023178": {
-      "include/decl_common.h": [
-        "return:char *"
+        "param:#6 const void *"
       ]
     },
     "func_0202af80": {
@@ -24140,7 +24073,7 @@
       ]
     },
     "func_02049ee8": {
-      "src/_ZN8Particle9RenderAllEv.cpp": [
+      "src/engine/particle/Particle.cpp": [
         "param:#2 void *"
       ],
       "src/unnamed/ov007/func_ov007_020b7658.c": [
