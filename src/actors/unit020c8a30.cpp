@@ -1,43 +1,20 @@
 //cpp
-/*
- * ov006 0x020c8a30..0x020c8dd4 (.text), ten functions: the small sprite
- * pool whose reset function (0x020c8a9c) is called by the Jump, Jump2,
- * Trampoline and Trampoline2 minigame scenes.
+/* ov006 sprite pool, 0x020c8a30..0x020c8dd4.
  *
- * The pool is a static array of three 0x20-byte records at
- * data_ov006_021404d8 (a counter at data_ov006_021404c4 that is stamped into
- * each claimed record, capped at 3, and an optional sprite table pointer at
- * data_ov006_021404c8 that overrides the per-language table). The ROM
- * carries no RTTI and no vtable for the record type, so the unit has no
- * evidenced class name; the functions keep their address names.
+ * Three 0x20-byte records at data_ov006_021404d8. Jump, Jump2,
+ * Trampoline and Trampoline2 reset the pool through 0x020c8a9c.
+ * No RTTI or vtable, so the functions keep their address names.
+ * The empty constructor and destructor are what the sinit at
+ * 0x0212f660 passes to __cxa_vec_ctor.
  *
- *   0x020c8a30  draw every record, last to first          (3 x 0x020c8af4)
- *   0x020c8a64  update every record                       (3 x 0x020c8ba8)
- *   0x020c8a9c  reset the pool: clear each record's active flag via
- *               0x020c8c6c, then store the counter and sprite table
- *   0x020c8af4  draw one record through Hud_RenderSprite
- *   0x020c8ba8  update one record (moves it; clears its active flag when
- *               its timer runs out)
- *   0x020c8c6c  clear one record's active flag
- *   0x020c8c78  claim a free record at (x, y); called from
- *               dMgJump3DMario_c and from the unit at 0x020c8dd4
- *   0x020c8da8  array destructor for the pool (__cxa_vec_cleanup)
- *   0x020c8dcc  empty record destructor
- *   0x020c8dd0  empty record constructor
- *
- * The last three are what the module's static initialiser (__sinit at
- * 0x0212f660) passes to __cxa_vec_ctor and registers with the exit chain.
- *
- * Folded from ten one-function shards, one per address-named function
- * (func_ov006_020c8a30 .. func_ov006_020c8dd0); the one C++ shard,
- * func_ov006_020c8ba8, is the only one that needed C++ (it calls the
- * reference-taking ApproachLinear helpers). The run sits between the
- * promoted dMgJump3DMario_c unit (ends 0x020c8a30) and the unpromoted
- * Player/dMgTrmpln2Mario_c/dMgTrmpln3DMario_c unit (starts 0x020c8dd4)
- * with no gap on either side.
- *
- * Functions are written highest address first: mwccarm emits .text in
- * reverse source order.
+ * leftovers:
+ * - 020c8ba8 and 020c8af4 still address the record as bytes. The
+ *   ((int)c + offset) form is the one those bodies matched.
+ * - 020c8c6c clears the active flag through a short* at index 12.
+ * - ApproachLinear and ApproachLinear2 stay local externs. They
+ *   take the value by reference.
+ * - The pool, the counter and the sprite table are overlay data,
+ *   not this TU's.
  */
 
 typedef long long s64;
@@ -45,14 +22,14 @@ typedef long long s64;
 struct Ent_ov006 {
     int x;
     int y;
-    int f08;
-    int f0c;
-    int f10;
-    int f14;
-    short f18;
-    short f1a;
-    short f1c;
-    short f1e;
+    int mVelX;
+    int mVelY;
+    int mSpread;
+    int mScale;
+    short mActive;
+    short mIndex;
+    short mAngle;
+    short mTimer;
 };
 
 extern int ApproachLinear(int&, int, int);
@@ -101,10 +78,10 @@ void func_ov006_020c8c78(int x, int y)
         return;
     }
     for (i = 0; i < 3; i++) {
-        if (data_ov006_021404d8[i].f18 != 0) {
+        if (data_ov006_021404d8[i].mActive != 0) {
             continue;
         }
-        data_ov006_021404d8[i].f1a = data_ov006_021404c4;
+        data_ov006_021404d8[i].mIndex = data_ov006_021404c4;
         data_ov006_021404d8[i].x = x << 12;
         v = data_ov006_021404d8[i].x;
         if (v < 0x20000) {
@@ -114,13 +91,13 @@ void func_ov006_020c8c78(int x, int y)
         }
         data_ov006_021404d8[i].x = v;
         data_ov006_021404d8[i].y = y << 12;
-        data_ov006_021404d8[i].f08 = 0;
-        data_ov006_021404d8[i].f0c = -0x400;
-        data_ov006_021404d8[i].f18 = 1;
-        data_ov006_021404d8[i].f1c = 0;
-        data_ov006_021404d8[i].f14 = 0x1000;
-        data_ov006_021404d8[i].f10 = 0x30000;
-        data_ov006_021404d8[i].f1e = 0x5A;
+        data_ov006_021404d8[i].mVelX = 0;
+        data_ov006_021404d8[i].mVelY = -0x400;
+        data_ov006_021404d8[i].mActive = 1;
+        data_ov006_021404d8[i].mAngle = 0;
+        data_ov006_021404d8[i].mScale = 0x1000;
+        data_ov006_021404d8[i].mSpread = 0x30000;
+        data_ov006_021404d8[i].mTimer = 90;
         data_ov006_021404c4++;
         return;
     }
