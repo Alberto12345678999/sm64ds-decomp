@@ -1,19 +1,16 @@
 //cpp
-/* dBgW -- the root of the mesh-collision collider family (KCL-backed walls).
- * ROM's own RTTI names it: _ZTS4dBgW @ 0x02099370, _ZTI4dBgW @ 0x02099378
- * (root __class_type_info), _ZTV4dBgW @ 0x02099388, 13 slots.
- *
- * This TU also carries the two collision-family members the original file
- * shared it with: dScStage_c::ResetMeshColliders, which clears the same
- * 0x18-entry registry data_020a0c80 that Enable fills, and the static
- * dBgCh::ShouldPassThroughImpl the DetectClsn queries consult.
- *
- * Deferred codegen emits definitions in reverse source order, so the file
- * opens with the two trailing setters and the ctor/dtor pair. The ten
- * func_0203938c..020393d4 accessors and func_020396c0/func_020396d0 keep
- * their func_ names: weak-emitted field accessors consumed by the dBgCh
- * query TUs and the derived colliders (callers in config/arm9/relocs.txt),
- * not dBgW members themselves.
+/* leftovers:
+ * The func_0203938c..020393d4 accessors and func_020396c0 / func_020396d0
+ * stay free functions. The query TUs and the derived colliders call them
+ * by address; they are not dBgW methods. Definitions stay in reverse
+ * source order, so the setters and the constructor come first.
+ * ShouldPassThroughImpl keeps the int* view of CLPS and the unsigned char*
+ * view of the query. data_020a0c80 is the 0x18-entry enabled-collider
+ * table Enable fills and dScStage_c::ResetMeshColliders clears.
+ */
+/* dBgW: root of the KCL collider family. Type name 0x02099370, typeinfo
+ * 0x02099378, vtable 0x02099388, 13 slots. This TU also defines
+ * dScStage_c::ResetMeshColliders and dBgCh::ShouldPassThroughImpl.
  */
 #include "dBgW.h"
 #include "dBgCh.h"
