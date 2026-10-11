@@ -44,11 +44,24 @@
  * .text section per function in reverse source order, so the highest-address ROM
  * function is written first. Do not reorder.
  *
- * Known limits:
+ * leftovers:
  * - The HUD globals are data_ names: symbols.txt has no recovered name for them.
- * - HUDInfo, S154, Rec18 and VObj below are file-local shadows of objects the
- *   tree has no header for; they carry only the offsets and slot this TU uses.
+ * - VObj below is a file-local shadow of the object data_0209f5bc points at;
+ *   the tree has no header for it and only its slot-5 method is called.
  * - The OAM class below stands in for the OamAttr statics include/OAM.h lacks.
+ * - The OAM::Render overloads that take Fix12<int> by value keep their mangled
+ *   spellings: the natural static member call homes the Fix12 arguments
+ *   differently under mwccarm (the Fix12 wall) and rewrites every call site.
+ * - data_ov002_0211117c[0]'s self-decrement in UpdateHealthMeter keeps the
+ *   volatile self-read -- the ROM reloads the byte rather than reusing the
+ *   value still live from the comparison above it.
+ * - data_0209f49c is declared unsigned short[] (the plurality spelling) but
+ *   read through a (u8 *) byte address: the ROM computes the 0x18-stride row
+ *   in bytes, and u16 indexing folds an extra shift into the addressing mode.
+ * - InitResources keeps two launders: the volatile pun on mVsTimer in the
+ *   data_0209f2f8 == 0x2B branch (a plain member store emits different code)
+ *   and the `idx ? table : table` conditional over a (void* volatile*) cast of
+ *   data_0209f394 (folding it changes where the player-health read lands).
  * - data_0209f2d8 is CURRENT_GAMEMODE (symbols/verified.tsv); mode 1 is the one
  *   dMap_c draws its VS icons for.
  */
@@ -59,6 +72,7 @@
 #include "types.h"
 #include "decl_Player.h"
 #include "Player.h"
+#include "dCamera_c.h"
 #include "dScStage_c.h"
 #include "PlayerInput.h"
 
@@ -93,12 +107,6 @@ public:
     static void Render(bool vis, OamAttr* attr, int x, int y, int a, int b, Matrix2x2* m);
 };
 
-/* One row of the pad-state table at 0209f49c and 0209f4ae. */
-typedef struct { u8 pad[0x18]; } Rec18;
-
-/* The camera record data_0209f318 points at; only its flag word is read. */
-typedef struct { u8 pad[0x154]; u32 flags; } S154;
-
 /* The object data_0209f5bc points at, reached through slot 5 alone. */
 struct VObj {
     virtual void v0();
@@ -131,17 +139,13 @@ extern signed char data_0209f2f4;
 struct OamAttr;
 extern OamAttr* _ZN3OAM10LIFE_ICONSE[];
 extern OamAttr _ZN3OAM5TIMESE;
-struct HUDInfo {
-    char pad[0x6d9];
-    unsigned char field_6d9;
-};
-extern HUDInfo* data_0209f394[];
+extern void *data_0209f394[];
 extern u8 data_ov002_02111180;
-extern S154 *data_0209f318;
-extern Rec18 data_0209f4ae[];
+extern void *data_0209f318;
+extern u8 data_0209f4ae[];
 extern int data_0208ee44;
 extern u32 data_0209b454;
-extern Rec18 data_0209f49c[];
+extern unsigned short data_0209f49c[];
 extern u8 data_0209d660;
 extern signed char data_0209f310[];
 extern int data_ov001_020abac8[];
@@ -186,7 +190,6 @@ extern struct OamAttr* data_ov002_0210c230[];
 extern struct OamAttr data_ov002_0210d5d0;
 extern struct OamAttr data_ov002_0210d4f0;
 extern struct OamAttr data_ov002_0210c690;
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 extern int _ZN5Event6GetBitEj(unsigned int bit);
 extern int data_0209caa0[];
 extern unsigned char data_0209f284;
@@ -195,9 +198,6 @@ void* LoadFile(int handle);
 void DecompressLZ16(void* handle, int addr);
 void Deallocate(void* handle);
 void func_0203da4c(void);
-/* reconciled: data_ov002_0211117c is declared above as `unsigned char []`. The legacy file for InitResources spelled it `u8 data_ov002_0211117c[0]`, a zero-length
- * array; the unsized form is the one every use here needs -- the element reads at
- * [0] and the byte read at line 663 takes its address directly. */
 }
 
 /* ROM ordinal 19 -- dMeter_c_classInit, 0x020fe154, size 0x3c.
@@ -489,8 +489,6 @@ body:
 
 /* ROM ordinal 16 -- _ZN8dMeter_c6RenderEv, 0x020fd5e0, size 0x1c4 */
 // @symbol _ZN8dMeter_c6RenderEv
-// _ZN8dMeter_c6RenderEv at 0x020fd5e0
-// Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 int dMeter_c::Render()
 {
     int b = (data_0209f2d8 == 1);
@@ -566,7 +564,7 @@ s32 dMeter_c::CleanupResources()
 void dMeter_c::UpdateHealthMeter()
 {
     int chr = data_0209f250;
-    char *player = (char *)data_0209f394[chr];
+    Player *player = (Player *)data_0209f394[chr];
     unsigned int health = (data_02092144[chr] >> 8) & 0xff;
     if ((unsigned char)(data_0209f2c4 | data_0209f20c | data_0209f294) != 0)
         return;
@@ -583,7 +581,7 @@ void dMeter_c::UpdateHealthMeter()
     }
     switch (mHealthMeterState) {
     case 0:
-        if (*(unsigned char *)(player + 0x706) != 0) {
+        if (player->mIsUnderwater != 0) {
             mHealthMeterY = 0x39;
             mHealthMeterState = 1;
             return;
@@ -617,7 +615,7 @@ void dMeter_c::UpdateHealthMeter()
                 }
                 data_ov002_0211117c[0] = health;
                 func_02012790(0xd);
-                if (*(unsigned char *)(player + 0x706) != 0)
+                if (player->mIsUnderwater != 0)
                     return;
                 if (health != 8)
                     return;
@@ -637,9 +635,9 @@ void dMeter_c::UpdateHealthMeter()
             }
             if (cur != 8)
                 return;
-            if (*(unsigned char *)(player + 0x706) != 0)
+            if (player->mIsUnderwater != 0)
                 return;
-            if (((Player *)player)->IsInAir())
+            if (player->IsInAir())
                 return;
             if (data_ov002_02111178 == 1) {
                 data_ov002_02111178 = 3;
@@ -687,41 +685,35 @@ void dMeter_c::UpdateHealthMeter()
 
 /* ROM ordinal 12 -- _ZN8dMeter_c17RenderHealthMeterEv, 0x020fcfec, size 0x22c */
 // @symbol _ZN8dMeter_c17RenderHealthMeterEv
-// _ZN8dMeter_c17RenderHealthMeterEv at 0x020fcfec
-// Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 void dMeter_c::RenderHealthMeter()
 {
-    if (_ZN6Player16IsInsideOfCannonEv(data_0209f394[data_0209f250])) return;
+    if (((Player *)data_0209f394[data_0209f250])->IsInsideOfCannon()) return;
 
     if (GetOwnerLanguage() == 5) {
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, data_ov002_0210c254[data_ov002_0211117c[0]], 0x80, *(short*)((char*)&mHealthMeterY), -1, 1, 0x1000, 0x1000, 0, -1);
+            0, data_ov002_0210c254[data_ov002_0211117c[0]], 0x80, mHealthMeterY, -1, 1, 0x1000, 0x1000, 0, -1);
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, &data_ov002_0210d5d0, 0x80, *(short*)((char*)&mHealthMeterY), -1, 1, 0x1000, 0x1000, 0, -1);
+            0, &data_ov002_0210d5d0, 0x80, mHealthMeterY, -1, 1, 0x1000, 0x1000, 0, -1);
     } else if (GetOwnerLanguage() == 4 || GetOwnerLanguage() == 2) {
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, data_ov002_0210c278[data_ov002_0211117c[0]], 0x80, *(short*)((char*)&mHealthMeterY), -1, 1, 0x1000, 0x1000, 0, -1);
+            0, data_ov002_0210c278[data_ov002_0211117c[0]], 0x80, mHealthMeterY, -1, 1, 0x1000, 0x1000, 0, -1);
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, &data_ov002_0210d4f0, 0x80, *(short*)((char*)&mHealthMeterY), -1, 1, 0x1000, 0x1000, 0, -1);
+            0, &data_ov002_0210d4f0, 0x80, mHealthMeterY, -1, 1, 0x1000, 0x1000, 0, -1);
     } else {
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, data_ov002_0210c230[data_ov002_0211117c[0]], 0x80, *(short*)((char*)&mHealthMeterY), -1, 1, 0x1000, 0x1000, 0, -1);
+            0, data_ov002_0210c230[data_ov002_0211117c[0]], 0x80, mHealthMeterY, -1, 1, 0x1000, 0x1000, 0, -1);
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
-            0, &data_ov002_0210c690, 0x80, *(short*)((char*)&mHealthMeterY), -1, 1, 0x1000, 0x1000, 0, -1);
+            0, &data_ov002_0210c690, 0x80, mHealthMeterY, -1, 1, 0x1000, 0x1000, 0, -1);
     }
 
-    _ZN2GX11LoadOBJPlttEPKvjj(
+    GX::LoadOBJPltt(
         &data_ov002_0210c310[data_ov002_0210c29c[data_ov002_0211117c[0]]], 0x60, 0x20);
 }
 
 /* ROM ordinal 11 -- _ZN8dMeter_c13UpdateVsTimerEv, 0x020fce9c, size 0x150 */
 // @symbol _ZN8dMeter_c13UpdateVsTimerEv
-/* include/dMeter_c.h does not declare this member, and a member cannot be added to
- * a class from outside it, so it takes the hand-mangled free-function form.
- * Same ABI: the object still arrives in r0. */
 void dMeter_c::UpdateVsTimer()
 {
-    unsigned short *q;
     unsigned int v;
 
     if (data_0209f2bc != 0)
@@ -738,8 +730,7 @@ void dMeter_c::UpdateVsTimer()
     if (data_ov002_02111188 == 0)
     {
         data_ov002_02111188 = 0xb4;
-        q = &mVsTimer;
-        *q = *q - 1;
+        mVsTimer -= 1;
         v = mVsTimer;
         if (v <= 3 && v != 0)
             func_02012790(0x28);
@@ -756,8 +747,7 @@ void dMeter_c::UpdateVsTimer()
         return;
     if (mVsTimerY < 0x30)
     {
-        q = &mVsTimerY;
-        *q = *q + 4;
+        mVsTimerY += 4;
     }
     else
     {
@@ -835,10 +825,6 @@ void dMeter_c::RenderVsTimer()
 
 /* ROM ordinal 9 -- _ZN8dMeter_c15RenderCoinCountEv, 0x020fc81c, size 0x1fc */
 // @symbol _ZN8dMeter_c15RenderCoinCountEv
-/* _ZN8dMeter_c15RenderCoinCountEv at 0x020fc81c (ov002), size 0x1fc
- * Matched byte-for-byte with mwccarm 1.2/sp2p3.
- * flags: -O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
- */
 void dMeter_c::RenderCoinCount()
 {
     int t = (data_0209f2d8 == 1);
@@ -897,7 +883,7 @@ void dMeter_c::RenderRedCoins()
   int count = (unsigned char)data_0209f30c[idx];
   int sl = flag ? 0x1c : 0xa;
   for(int i=0;i<count;i++){
-    OAM::Render(false, &data_ov002_0210c6b8, 0x10 + i*0xb, sl, -1, 1, (struct Matrix2x2*)0);
+    OAM::Render(false, &data_ov002_0210c6b8, 0x10 + i*0xb, sl, -1, 1, (Matrix2x2*)0);
   }
 }
 
@@ -946,9 +932,9 @@ void dMeter_c::RenderStarCount()
     CalculateDigits(NumStars());
 
     {
-        unsigned char m = data_0209f2fc;
-        if ((m != 2 && data_ov002_02111178 == 4) ||
-            (m == 1 && data_ov002_02111178 >= 3 && data_ov002_02111178 < 6)) {
+        unsigned char mode = data_0209f2fc;
+        if ((mode != 2 && data_ov002_02111178 == 4) ||
+            (mode == 1 && data_ov002_02111178 >= 3 && data_ov002_02111178 < 6)) {
             int flag;
             if (data_0209f2ac != 0) {
                 if (data_0209f2d4 == 3 && (data_020a0db0 & 0x18) == 0) {
@@ -1019,8 +1005,8 @@ void dMeter_c::RenderSilverStars()
 void dMeter_c::RenderCameraButtons()
 {
     int idx = gActivePlayerSlot;
-    u8 mode = *(u8 *)&data_0209f4ae[idx];
-    S154 *p = data_0209f318;
+    u8 mode = data_0209f4ae[idx * 0x18];
+    dCamera_c *cam = (dCamera_c *)data_0209f318;
     u8 t = data_ov002_02111180;
 
     if (t != 0)
@@ -1029,16 +1015,16 @@ void dMeter_c::RenderCameraButtons()
     if (data_0209b454 & 0x40000000)
         return;
 
-    if (p->flags & 0x1000) {
+    if (cam->mFlags & 0x1000) {
         if (mode == 0) {
-            if (*(u16 *)&data_0209f49c[idx] & 0x200) {
+            if (*(u16 *)((u8 *)data_0209f49c + idx * 0x18) & 0x200) {
                 OAM::RenderSub(&OAM::CAM_BUTTON_L_PRESSED, 0x19, 0xa5, -1, 1);
                 OAM::RenderSub(&OAM::CAM_BUTTON_L_PRESSED, 0xbf, 0xa5, -1, 1);
             } else {
                 OAM::RenderSub(&OAM::CAM_BUTTON_L, 0x19, 0xa5, -1, 1);
                 OAM::RenderSub(&OAM::CAM_BUTTON_L, 0xbf, 0xa5, -1, 1);
             }
-            if (*(u16 *)&data_0209f49c[gActivePlayerSlot] & 0x100) {
+            if (*(u16 *)((u8 *)data_0209f49c + gActivePlayerSlot * 0x18) & 0x100) {
                 OAM::RenderSub(&OAM::CAM_BUTTON_R_PRESSED, 0x41, 0xa5, -1, 1);
                 OAM::RenderSub(&OAM::CAM_BUTTON_R_PRESSED, 0xe7, 0xa5, -1, 1);
             } else {
@@ -1046,12 +1032,12 @@ void dMeter_c::RenderCameraButtons()
                 OAM::RenderSub(&OAM::CAM_BUTTON_R, 0xe7, 0xa5, -1, 1);
             }
         } else if (mode == 2) {
-            if (*(u16 *)&data_0209f49c[idx] & 0x200) {
+            if (*(u16 *)((u8 *)data_0209f49c + idx * 0x18) & 0x200) {
                 OAM::RenderSub(&OAM::S_CAM_BUTTON_L_PRESSED, 0xbf, 0xad, -1, 1);
             } else {
                 OAM::RenderSub(&OAM::S_CAM_BUTTON_L, 0xbf, 0xad, -1, 1);
             }
-            if (*(u16 *)&data_0209f49c[gActivePlayerSlot] & 0x100) {
+            if (*(u16 *)((u8 *)data_0209f49c + gActivePlayerSlot * 0x18) & 0x100) {
                 OAM::RenderSub(&OAM::S_CAM_BUTTON_R_PRESSED, 0xe7, 0xad, -1, 1);
             } else {
                 OAM::RenderSub(&OAM::S_CAM_BUTTON_R, 0xe7, 0xad, -1, 1);
@@ -1085,11 +1071,11 @@ void dMeter_c::RenderCameraButtons()
 void dMeter_c::RenderLifeCount()
 {
     unsigned char idx = data_0209f250;
-    HUDInfo* info = data_0209f394[idx];
+    Player *player = (Player *)data_0209f394[idx];
     unsigned char state = data_ov002_02111178;
 
     if (state >= 3 && state < 6) {
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM10LIFE_ICONSE[info->field_6d9], mLifeCountX, 0xa, -1, 1, 0x1000, 0x1000, 0, -1);
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM10LIFE_ICONSE[player->mCharacter], mLifeCountX, 0xa, -1, 1, 0x1000, 0x1000, 0, -1);
         OAM::Render(false, &_ZN3OAM5TIMESE, mLifeCountX + 0x10, 0xa, -1, 1, 0);
         CalculateDigits((unsigned short)data_0209f2f4);
         int x = mLifeCountX + 0x18;
@@ -1101,7 +1087,7 @@ void dMeter_c::RenderLifeCount()
             }
         }
     } else {
-        OAM::RenderSub(_ZN3OAM10LIFE_ICONSE[info->field_6d9], mLifeCountX, 0xa, -1, 1);
+        OAM::RenderSub(_ZN3OAM10LIFE_ICONSE[player->mCharacter], mLifeCountX, 0xa, -1, 1);
         OAM::Render(true, &_ZN3OAM5TIMESE, mLifeCountX + 0x10, 0xa, -1, 1, 0);
         CalculateDigits((unsigned short)data_0209f2f4);
         int i;
@@ -1147,7 +1133,6 @@ void dMeter_c::CalculateDigits(unsigned short value)
 
 /* ROM ordinal 2 -- _ZN8dMeter_c15RenderTimeTimerEv, 0x020fb96c, size 0x440 */
 // @symbol _ZN8dMeter_c15RenderTimeTimerEv
-// _ZN8dMeter_c15RenderTimeTimerEv at 0x020fb96c (ov002)
 void dMeter_c::RenderTimeTimer()
 {
     unsigned long long t;
@@ -1223,9 +1208,4 @@ void dMeter_c::RenderTimeTimer()
  * destructor in its class body, so it inlines into every derived destructor.
  * There is no third store and no second call: dMeter_c adds no member with a
  * destructor of its own.
- *
- * An earlier revision of this comment described a dBgActor_c base with Model
- * and dBgW_KcMbg members. That was inherited from a sibling class and is wrong
- * for dMeter_c; _ZTI8dMeter_c's base word names dBase_c and the bytes above
- * show the single chain call.
  */

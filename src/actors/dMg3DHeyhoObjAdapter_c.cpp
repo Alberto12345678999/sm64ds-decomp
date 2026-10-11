@@ -4,7 +4,23 @@
    plus 49 Heyho-minigame helper functions (see config/tu_manifest.d/ov006/dMg3DHeyhoObjAdapter_c.json).
    Function order is the reverse of the ROM: mwccarm 2004/b56 emits .text in reverse source order.
    Each former one-function C source sits in its own namespace so the per-file local types and
-   extern declarations, which disagree with one another, stay as they were. */
+   extern declarations, which disagree with one another, stay as they were.
+
+   leftovers:
+   - The 49 func_ov006_* helpers keep their per-function n<addr> namespaces and
+     raw-offset spellings. The object they operate on is an unnamed Heyho-adapter
+     record (0xf0 stride, position at +0x9c, velocity at +0xa8); no class header
+     names its layout, and the per-file typedef/extern universes disagree, so a
+     shared Obj struct would change decl surface across all 49 call sites.
+   - _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj keeps scalar parameter spellings:
+     it takes Fix12<int> by value and a natural typed declaration homes the
+     arguments differently under mwccarm (the Fix12 wall, notes/mwccarm-codegen.md 6az).
+   - _ZN9ModelAnimC1Ev/_ZN9ModelAnimD1Ev/_ZN7Vector3D1Ev and
+     __register_global_object are ctor/dtor/atexit ABI calls, spelled as free
+     functions because the bodies are the compiler's own sinit glue.
+   - Volatile and long-long launders (e.g. func_ov006_020c6378's const-view
+     re-reads, func_ov006_020c42bc's (long long)(int) cast) are codegen-pinned;
+     the inline comments at each site say what the ROM does. */
 #include "common.h"
 #include "decl_common.h"
 #include "types.h"
@@ -173,8 +189,6 @@ void func_ov006_020c6ca4(char* dst, char* src)
 namespace n020c6a9c {
 extern "C" {
 // @symbol func_ov006_020c6a9c
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z15ApproachLinear2Rsss(short *v, short target, short step);
 
@@ -589,8 +603,6 @@ void func_ov006_020c6248(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xa
 namespace n020c61c4 {
 extern "C" {
 // @symbol func_ov006_020c61c4
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *out);
 void func_ov006_020c61c4(int this_) {
     int f24 = *(int*)(this_ + 0x24);
@@ -629,8 +641,6 @@ void func_ov006_020c6188(void *c){
 namespace n020c6088 {
 extern "C" {
 // @symbol func_ov006_020c6088
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -845,8 +855,6 @@ void func_ov006_020c5cf4(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(
 namespace n020c5bf8 {
 extern "C" {
 // @symbol func_ov006_020c5bf8
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -1155,8 +1163,6 @@ void func_ov006_020c561c(void *c){
 namespace n020c5530 {
 extern "C" {
 // @symbol func_ov006_020c5530
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -1209,8 +1215,6 @@ void func_ov006_020c54f4(void *c){
 namespace n020c53f8 {
 extern "C" {
 // @symbol func_ov006_020c53f8
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -1554,8 +1558,6 @@ extern "C" void func_ov006_020c4cd8(struct Foo *c){
 /* ---- func_ov006_020c4c54 ---- */
 namespace n020c4c54 {
 // @symbol func_ov006_020c4c54
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 
 extern "C" void Vec3_MulScalar(Vector3 *res, Vector3 *v, int scalar);
 struct Sub {
@@ -1587,7 +1589,6 @@ extern "C" void func_ov006_020c4c54(int this_) {
 namespace n020c4c00 {
 extern "C" {
 // @symbol func_ov006_020c4c00
-/* recovered: shared common types */
 extern struct Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3* m, short angY);
@@ -1970,9 +1971,6 @@ void func_ov006_020c44b4(void *arg0, int arg1)
 /* ---- func_ov006_020c42bc ---- */
 namespace n020c42bc {
 extern "C" {
-/* func_ov006_020c42bc at 0x020c42bc (ov006)
- * Matched byte-for-byte with mwccarm 1.2/sp2p3.
- */
 typedef struct { int x, y, z; } Vec3;
 
 struct Obj {
