@@ -1,52 +1,34 @@
 //cpp
 /*
- * ov006 0x020c8dd4..0x020cd744 (.text), 88 functions: the two player-controlled
- * Mario classes of the trampoline minigames, dMgTrmpln2Mario_c and
- * dMgTrmpln3DMario_c, with their helpers and the object-adapter functions that
- * follow them.
+ * The two player-controlled Mario classes of the trampoline minigames,
+ * dMgTrmpln2Mario_c and dMgTrmpln3DMario_c, with their helpers and the
+ * object-adapter functions that follow them: 88 functions,
+ * ov006 .text 0x020c8dd4..0x020cd744.
  *
- * What anchors the unit:
- *   - 0x020ca604 is the D1 of dMgTrmpln2Mario_c (it releases the class's
- *     SharedFilePtr members and rewrites the vptr down the base chain) and
- *     0x020ca78c is its constructor. The constructor was filed under the
- *     name _ZN6Player29TryExitCharacterDoorWithIntroEv; it is not a Player
- *     method (it calls 0x020cd6f4, stores the vptr data_ov006_0213b2e0, and
- *     constructs a ModelAnim at +0x78), and the name is kept only because
- *     symbols.txt carries it for the address.
- *   - 0x020ccfc8 is the D1 of dMgTrmpln3DMario_c and 0x020cd12c its
- *     constructor.
- *   - ROM RTTI: _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c
- *     0x0213b244, with the adapter classes dMgTrmpObjAdapter_c and
- *     dMgTrmpRingObjAdapter_c beside them.
- *   No call runs from one class's methods into the other's.
+ * ROM evidence: D1 0x020ca604 and constructor 0x020ca78c of
+ * dMgTrmpln2Mario_c (filed under _ZN6Player29TryExitCharacterDoorWithIntroEv;
+ * not a Player method -- it stores vptr data_ov006_0213b2e0 and constructs
+ * a ModelAnim at +0x78, and the name stays because symbols.txt carries it);
+ * D1 0x020ccfc8 and constructor 0x020cd12c of dMgTrmpln3DMario_c;
+ * _ZTI17dMgTrmpln2Mario_c 0x0213b250, _ZTI18dMgTrmpln3DMario_c 0x0213b244,
+ * beside dMgTrmpObjAdapter_c / dMgTrmpRingObjAdapter_c. No call runs from
+ * one class's methods into the other's. Functions are written in ROM order
+ * under defer_codegen off; do not reorder.
  *
- * Both classes are still written as address-named free functions over a
- * char* object: neither class has a header, and no key function is defined
- * as a real method here, so this TU emits no vtable, typeinfo or type-name
- * record (the cartridge copies stay in the module's .data). The only
- * compiler-only output is Vector3's trivial vague-linkage D1.
- *
- * Folded from 88 one-function shards, one per address-named function
- * (func_ov006_020c8dd4 .. func_ov006_020cd72c; the constructor at 0x020ca78c
- * keeps its symbol name).
- * Each shard keeps its own local declarations inside a namespace of its own
- * (ns_<address>), because the shards were written independently and declare
- * the same names with different shapes; every function keeps its unmangled
- * address name under extern "C", and every data symbol is declared extern "C"
- * so the namespace does not enter its name. The few classes whose member or
- * free-function names are mangled (SharedFilePtr::Release, ~ModelAnim,
- * dExtFrameCtrl_c::Advance and ::WillHitFrame, Sound::PlayBank2_2D and the
- * ApproachLinear overloads) are declared once, at global scope, ahead of the
- * shards. Shards that were C are wrapped in
- * extern "C" and had the parameter named `this` renamed `self`. Two shards
- * carried a file-global pragma (optimize_for_size on at 0x020cc9fc,
- * opt_common_subs off at 0x020cd270); each is now bracketed with
- * push/pop around that one function. Five two-word struct copies were
- * respelled through a W2 array-member struct so the C++ build keeps the
- * ldm-free load-load-store-store order the C shards produced.
- *
- * Functions are written in ROM order under defer_codegen off.
+ * Each function keeps its own namespace (ns_<address>) because the shards
+ * declare the same names with different shapes; mangled-name callees are
+ * declared once at global scope. Five two-word struct copies go through
+ * the W2 array-member struct so the build keeps the load-load-store-store
+ * order; the two file-global pragmas stay bracketed around their function.
  */
+
+// leftovers: both classes stay address-named free functions over char* --
+// neither class has a header and no key function is defined as a real method
+// here, so this TU emits no vtable/typeinfo (cartridge copies stay in the
+// module's .data; only Vector3's trivial D1 is compiler-only output). The
+// per-shard namespaces stay (independent decl shapes would collide). r5v/r4v
+// hold the +0x10/+0x14 words the vector helpers consume; their class slots
+// are unnamed without a header.
 #pragma defer_codegen off
 #include "types.h"
 #include "common.h"
@@ -850,16 +832,16 @@ extern "C" void *data_ov006_02140580;
 void func_ov006_020c9d7c(char *c)
 {
     unsigned int r;
-    int r5;
+    int tbl;
     *(short*)(c + 0x6c) -= 1;
     if (*(short*)(c + 0x6c) == 0) {
     *(int*)(c + 0x28) = 0x100000;
     r = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
     *(int*)(c + 0x24) = ((int)r - 0x800) * 0xc0;
     *(int*)(c + 0x40) = 0;
-    r5 = data_ov006_021405a4;
+    tbl = data_ov006_021405a4;
     r = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
-    *(int*)(c + 0x3c) = (int)(((long long)(((int)r - 0x800) << 1) * r5 + 0x800) >> 12);
+    *(int*)(c + 0x3c) = (int)(((long long)(((int)r - 0x800) << 1) * tbl + 0x800) >> 12);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, data_ov006_02140580, 0x40000000, 0x800, 0);
     *(int*)(c + 0x30) = *(int*)(c + 0x24);
     *(int*)(c + 0x34) = *(int*)(c + 0x28);
