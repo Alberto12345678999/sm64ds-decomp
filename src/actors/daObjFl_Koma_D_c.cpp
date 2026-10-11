@@ -12,31 +12,27 @@
  * daObjFl_Koma_D_c_classInit is reconstructed (RTTI
  * daObjFl_Koma_D_c, FL_KOMA_D registry). Retail does not store that
  * spelling.
- *
- * Leftover: func_ov002_020b676c / func_ov002_020b66a8 are still the
- *   linker names of daObjKaitendai_c Init/Cleanup (the base leaves
- *   those slots pure virtual). Naming belongs in ov002.
- * Leftover: data_ov022_02113da4 is the model/collision/CLPS row
- *   between typeinfo at 02113d98 and the type name at 02113db0.
- *   Not owned here. The two handles it points at are defined at the
- *   bottom of this file; __sinit_daObjFl_Koma_D_c.cpp constructs them.
- * Leftover: g_profile_FL_KOMA_D lives outside this TU.
- * Leftover: #pragma defer_codegen off stays on line 2. Dropping it
- *   still matches each body, but the four functions emit in reverse
- *   ROM order (ordinal pairs (0, 1), (1, 2), (2, 3)).
- * Leftover: an inline empty destructor still matches D1 (size 0x50)
- *   and D0 (size 0x64), but ordinal pair (1, 2) flips, D2 is not
- *   emitted, and 13 RTTI/vtable symbols come out unlicensed.
- * Leftover: #pragma long_calls is not an mwccarm pragma. Deleting
- *   both brackets still matches CleanupResources (size 0x14) and
- *   InitResources (size 0x18). A local s16 angle = 0x100 also
- *   matches InitResources at size 0x18; the immediate stays.
  */
 
+// leftovers:
+// - func_ov002_020b676c / func_ov002_020b66a8 are still the linker names
+//   of daObjKaitendai_c Init/Cleanup (the base leaves those slots pure
+//   virtual). Naming belongs in ov002.
+// - data_ov022_02113da4 is the model/collision/CLPS row between typeinfo
+//   at 02113d98 and the type name at 02113db0. Not owned here. The two
+//   handles it points at are defined at the bottom of this file;
+//   __sinit_daObjFl_Koma_D_c.cpp constructs them.
+// - g_profile_FL_KOMA_D lives outside this TU.
+// - #pragma defer_codegen off stays on line 2. Dropping it still matches
+//   each body, but the four functions emit in reverse ROM order.
+// - An inline empty destructor still matches D1 and D0, but the ordinal
+//   pair flips, D2 is not emitted, and 13 RTTI/vtable symbols come out
+//   unlicensed.
+
 #include "daObjFl_Koma_D_c.h"
+#include "SharedFilePtr.h"
 
 /* This descriptor matches the shared helpers in daObjKaitendai_c.cpp. */
-struct SharedFilePtr;
 
 struct CLPS_Block;
 
@@ -87,8 +83,6 @@ extern "C" daObjFl_Koma_D_c *daObjFl_Koma_D_c_classInit(void)
 {
     return new daObjFl_Koma_D_c;
 }
-
-#include "SharedFilePtr.h"
 
 /* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
  * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
