@@ -16,7 +16,7 @@
  * The registry factory daObjPile_c_classInit (0x02133938) abuts the rest
  * of the run and is written last.
  *
- * Leftover, remeasured on this TU:
+ * leftovers:
  * - dBgActor_c::IsClsnInRangeOnScreen, dActor_c::SpawnCoins and
  *   dBgW_KcMbg::SetFile take Fix12<int> by value. Fix12<int>{0} does not
  *   compile. The calls stay the scalar externs.
