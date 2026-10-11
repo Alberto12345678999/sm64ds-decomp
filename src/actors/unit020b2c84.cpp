@@ -36,8 +36,9 @@
  * every named parameter (prototypes included), local and temporary before a
  * definition advances. The array data_ov004_020bf648 at the end of the file
  * gets __arraydtor$954 (and @955), and symbols.txt and the manifest name
- * __arraydtor$954, so an edit here has to keep that count. The named parameters on the ApproachLinear2 and
- * __cxa_vec_cleanup prototypes stand in for names removed elsewhere, and the
+ * __arraydtor$954, so an edit here has to keep that count. The named
+ * parameters on the ApproachLinear2 and __cxa_vec_cleanup prototypes stand
+ * in for names removed elsewhere, and the
  * six record copies in func_ov004_020b37f0, func_ov004_020b39a4 and
  * func_ov004_020b422c stay W2 (int[2]) copies: assigning the records as
  * ElemFn emits the same code but moves the counter by 8 (measured).
@@ -132,7 +133,7 @@ struct Elem {
     s16 mX, mY;          /* 0x10 screen position, pixels */
     s16 mTargetX;        /* 0x14 where the slide-in handlers stop */
     s16 mTargetY;        /* 0x16 */
-    int mPriority;       /* 0x18 last argument of every draw call */
+    int mPriority;       /* 0x18 passed right after mScreen to every draw call */
     int mScreen;         /* 0x1c -1 draws on both screens (func_ov004_020b1cf0) */
     int mFileIndex;      /* 0x20 index into the file table; 29 when free */
     int mTimer;          /* 0x24 mostly stepped 0x1000 (1.0) per frame toward
@@ -141,7 +142,8 @@ struct Elem {
     s16 mOamCount;       /* 0x2c records func_ov004_020af5e0 copied */
     s16 mStyle;          /* 0x2e index into the three handler tables */
     s16 mGfxSlot;        /* 0x30 0..2, see data_ov004_020bf3e8 */
-    s16 mArrived;        /* 0x32 set when a slide-in reaches its target */
+    s16 mArrived;        /* 0x32 set when mX reaches mTargetX
+                            (func_ov004_020b49b8, func_ov004_020b49f0) */
     u8 mOam[0x100];      /* 0x34 8-byte OAM records; 0xffff at +6 ends the list */
     Elem();
     ~Elem() {}
@@ -1193,9 +1195,10 @@ Elem::Elem()
     mFileIndex = 29;
 }
 
-/* __sinit_ov004_020b955c sources: the PMF records the dispatch table at
-   data_ov004_020bf490 copies, the two-word records the two coordinate
-   tables copy, and the words the 29-entry file-id table copies. */
+/* __sinit_ov004_020b955c sources: the member-pointer records the three
+   per-style tables copy (setup data_ov004_020bf490, behavior
+   data_ov004_020bf428, render data_ov004_020bf4f8), and the words the
+   29-entry file-id table copies. */
 extern "C" {
 extern PairW data_02086b58;  /* __ptmf_null's address: the null member pointer */
 extern PairW data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244, data_ov004_020bc16c;

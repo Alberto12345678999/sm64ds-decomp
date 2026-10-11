@@ -17,8 +17,9 @@
  * (or clears) when it is done. The external entry points that start a
  * sequence are func_ov004_020b66d4 (reset), func_ov004_020b56c8,
  * func_ov004_020b5ed0, func_ov004_020b5e40, func_ov004_020b5dd4,
- * func_ov004_020b5d74, func_ov004_020b6324, func_ov004_020b6234 and
- * func_ov004_020b63a0.
+ * func_ov004_020b5d74, func_ov004_020b6324 and func_ov004_020b63a0.
+ * func_ov004_020b6234 is internal: its one caller is the touch check in
+ * func_ov004_020b65e4.
  *
  * Edges: 0x020b4aa4 is the first function after func_ov004_020b4aa0, the
  * last destructor helper __sinit_ov004_020b955c registers for the previous
@@ -95,7 +96,7 @@ struct Sprite {
     Vec2i mPos;        /* 0x08 */
     Vec2i mTarget;     /* 0x10 */
     Vec2i mStep;       /* 0x18 per-frame step toward mTarget, both positive */
-    s16 mDelay;        /* 0x20 frames to wait; also the hop counter */
+    s16 mDelay;        /* 0x20 frames to wait; also the rise counter */
     u8 mVisible;       /* 0x22 drawn while nonzero */
 };
 
@@ -261,8 +262,9 @@ extern "C" void func_ov004_020b65e4(void) {
 }
 
 // @symbol func_ov004_020b653c
-/* Draw the signed count at (0x6e..0x92, 0x60): the per-language +0x34
-   graphic for arg >= 0, +0x38 for arg < 0, then |arg|. */
+/* Draw the signed count on row 0x60: the sprite icon (func_ov004_020b1de8)
+   at x 0x6e, the per-language +0x34 graphic for arg >= 0 or +0x38 for
+   arg < 0 at x 0x80, then |arg| at x 0x92. */
 extern "C" void func_ov004_020b653c(int arg)
 {
     int absv;
@@ -340,7 +342,8 @@ extern "C" void func_ov004_020b6324(int c) {
 
 // @symbol func_ov004_020b6234
 /* Add one sprite and launch it, or play sound 0xe when the scene's unk_0a8
-   is 0, the count is at its cap, or func_ov004_020b63a0 has run. */
+   is 0, the count is at its cap, or func_ov004_020b63a0 has run. Does
+   nothing while a launch is pending (data_ov004_020bfa10). */
 extern "C" void func_ov004_020b6234(void) {
     int x;
     if (data_ov004_020beb68 != 0) {
@@ -398,7 +401,8 @@ extern "C" void func_ov004_020b612c(void)
 
 // @symbol func_ov004_020b5f6c
 /* Step: as func_ov004_020b612c, but only the first data_ov004_020bfa1c
-   sprites wait 0x18 frames and play the sound; the rest go at once. */
+   sprites wait 0x18 frames and play the sound; the rest go one per frame,
+   with no wait or sound. */
 extern "C" void func_ov004_020b5f6c(void)
 {
     int inA[2];
@@ -472,7 +476,8 @@ extern "C" void func_ov004_020b5e40(int x){
 }
 
 // @symbol func_ov004_020b5dd4
-/* Start func_ov004_020b5aac over one more sprite than the last run. */
+/* Start func_ov004_020b5aac with one more sprite still to step
+   (data_ov004_020bf9fc + 1; 1 after a finished run). */
 extern "C" void func_ov004_020b5dd4(void){
   data_ov004_020bf9e4 = 2;
   data_ov004_020bfa04 = 0;
@@ -492,8 +497,8 @@ extern "C" void func_ov004_020b5d74(void) {
 
 // @symbol func_ov004_020b5c18
 /* Step: every 0x10 frames send the current sprite off with
-   func_ov004_020b506c, walking the index down; then wait for the last one
-   to land and hold 0x3c frames (func_ov004_020b5a54). */
+   func_ov004_020b506c, walking the index down; then wait until the last
+   one is hidden (mVisible 0) and hold 0x3c frames (func_ov004_020b5a54). */
 extern "C" void func_ov004_020b5c18(void)
 {
     if (data_ov004_020bf9fc > 0) {
@@ -560,8 +565,8 @@ extern "C" void func_ov004_020b5a54(void) {
 // @symbol func_ov004_020b58c4
 /* Step: every 0x10 frames bring a sprite in with func_ov004_020b4e78,
    walking the index up and wrapping at 0x14, while the scene's unk_0a8 is
-   nonzero; then wait for the last one to land and hold 0x3c frames
-   (func_ov004_020b586c). */
+   nonzero; then wait until the last one is hidden (mVisible 0) and hold
+   0x3c frames (func_ov004_020b586c). */
 extern "C" void func_ov004_020b58c4(void)
 {
     if (data_ov004_020bf9fc > 0 && (data_ov004_020beb68 ? *(int*)(data_ov004_020beb68 + 0xa8) : 0) != 0) {
@@ -601,7 +606,7 @@ extern "C" void func_ov004_020b586c(void) {
 // @symbol func_ov004_020b5768
 /* Step: every 0xc frames send the current sprite back to the corner with
    func_ov004_020b4cc4, walking the index down; finish when the last one
-   lands. */
+   reaches the corner. */
 extern "C" void func_ov004_020b5768() {
     if (data_ov004_020bf9fc > 0) {
         if (ApproachLinear(data_ov004_020bfa04, 0, 1) == 0)
@@ -695,8 +700,8 @@ extern "C" void func_ov004_020b556c(void)
 
 // @symbol func_ov004_020b53f0
 /* Step: once no sprite is visible, lay out the next batch the same way
-   (the count is decremented as sprites land); when none are left, hold
-   0x3c frames and go to func_ov004_020b5368. */
+   (the count is decremented as sprites reach the corner); when none are
+   left, hold 0x3c frames and go to func_ov004_020b5368. */
 extern "C" void func_ov004_020b53f0(void)
 {
     int step, i, idx, n, limit;
@@ -851,8 +856,8 @@ extern "C" void func_ov004_020b5108(Sprite* s, int* in)
 }
 
 // @symbol func_ov004_020b506c
-/* Send the sprite to x = 128 at 0xc0/0x1000 of the distance per frame,
-   with a 0x14-frame hop to follow (func_ov004_020b4ff0). */
+/* Send the sprite to x = 128 at 0xc0/0x1000 of the distance per frame
+   (move state func_ov004_020b4ff0, then the rise in func_ov004_020b4f44). */
 extern "C" void func_ov004_020b506c(Sprite *s)
 {
     Vec2i a;
@@ -878,7 +883,7 @@ extern "C" void func_ov004_020b506c(Sprite *s)
 }
 
 // @symbol func_ov004_020b4ff0
-/* State: move; on arrival hop (func_ov004_020b4f44). */
+/* State: move; on arrival rise (func_ov004_020b4f44). */
 extern "C" void func_ov004_020b4ff0(Sprite *s) {
     int v[2];
     ApproachLinear(s->mPos.x, s->mTarget.x, s->mStep.x);
@@ -889,9 +894,10 @@ extern "C" void func_ov004_020b4ff0(Sprite *s) {
 }
 
 // @symbol func_ov004_020b4f44
-/* State: hop. g = data_ov004_020b9488[0] is 0x14 in the ROM, so as mDelay
-   counts 0x14 down to 0, y changes by -3.5 rising to +0.5 pixels a frame.
-   At 0 the sprite leaves play and resets. */
+/* State: rise. g = data_ov004_020b9488[0] is 0x14 in the ROM; for mDelay
+   0x14 down to 1, y changes by -3.5 px a frame, 0.2 px less each frame,
+   ending near +0.3 px (about 32 px up in all). When mDelay reaches 0 the
+   sprite leaves play and resets. */
 extern "C" void func_ov004_020b4f44(Sprite* s){
   int* p = &s->mPos.y;
   int g = data_ov004_020b9488[0];
@@ -910,8 +916,8 @@ extern "C" void func_ov004_020b4f44(Sprite* s){
 
 // @symbol func_ov004_020b4e78
 /* Bring a sprite from the corner (12, 12) to
-   (128, -func_ov004_020b04c0() - 16), with a 0x14-frame hop to follow
-   (func_ov004_020b4dfc). */
+   (128, -func_ov004_020b04c0() - 16) (move state func_ov004_020b4dfc,
+   then the rise in func_ov004_020b4d50). */
 extern "C" void func_ov004_020b4e78(Sprite *s)
 {
     Vec2i a;
@@ -942,7 +948,7 @@ extern "C" void func_ov004_020b4e78(Sprite *s)
 }
 
 // @symbol func_ov004_020b4dfc
-/* State: move; on arrival hop (func_ov004_020b4d50). */
+/* State: move; on arrival rise (func_ov004_020b4d50). */
 extern "C" void func_ov004_020b4dfc(Sprite *s) {
     int v[2];
     ApproachLinear(s->mPos.x, s->mTarget.x, s->mStep.x);
@@ -953,7 +959,7 @@ extern "C" void func_ov004_020b4dfc(Sprite *s) {
 }
 
 // @symbol func_ov004_020b4d50
-/* State: func_ov004_020b4f44's hop, dividing with `/`. */
+/* State: func_ov004_020b4f44's rise, dividing with `/`. */
 extern "C" void func_ov004_020b4d50(Sprite* s){
   int* p = &s->mPos.y;
   int g = data_ov004_020b9488[0];

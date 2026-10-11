@@ -35,8 +35,9 @@
  *
  * Many states share one shape. The enter handler sets mTimer, shows a
  * graphic through func_ov004_020b0cac (file index, x, y; the x/y words at
- * data_ov004_020bc850..0x020bc8b8 are set by func_ov004_020b8a8c and
- * patched by func_ov004_020b6808 and func_ov004_020b682c) and installs a
+ * data_ov004_020bc850..0x020bc8b8, except 0x020bc8a0, the file-index
+ * override, are set by func_ov004_020b8a8c and patched by
+ * func_ov004_020b6808 and func_ov004_020b682c) and installs a
  * behavior. data_ov004_020bc8a0 replaces the next such file index once;
  * 0x1d there means no override. The behavior waits for mTimer to run out
  * and for the scene's OnTurnIntoEgg(mState) to return nonzero, in several
