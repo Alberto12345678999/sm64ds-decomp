@@ -5459,29 +5459,9 @@ src/unnamed/arm9/0205/func_02059c18.c:
     complete
     .text start:0x02059c18 end:0x02059cb4
 
-src/unnamed/arm9/0205/func_02059cb4.c:
+src/IRQ3.cpp:
     complete
-    .text start:0x02059cb4 end:0x02059d08
-
-src/_ZN3IRQ6EnableEv.cpp:
-    complete
-    .text start:0x02059d08 end:0x02059d1c
-
-src/_ZN3IRQ7DisableEv.cpp:
-    complete
-    .text start:0x02059d1c end:0x02059d30
-
-src/_ZN3IRQ7RestoreEj.cpp:
-    complete
-    .text start:0x02059d30 end:0x02059d48
-
-src/_ZN3IRQ10DisableAllEv.cpp:
-    complete
-    .text start:0x02059d48 end:0x02059d5c
-
-src/_ZN3IRQ10RestoreAllEj.cpp:
-    complete
-    .text start:0x02059d5c end:0x02059d74
+    .text start:0x02059cb4 end:0x02059d74
 
 src/ARMProcessorMode.c:
     complete
