@@ -7,6 +7,7 @@
 src/engine/model/Model.cpp
 src/_ZN5Model8LoadFileER13SharedFilePtr.cpp
 src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp
+src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp
 src/_ZN5Model13LoadTexAndPalER8BMD_File.cpp
 src/_ZN5Model17LoadTextureToVramEPcj.cpp
 src/_ZN5Model27LoadCompressedTextureToVramEPcjS0_.cpp

@@ -7,15 +7,15 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
-    "contiguous linker run 0x02016b78..0x02016fd4: the home entry covers the span (absorb/Model retires CleanCommonModelDataArr.c, func_02016e70.c, _ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp and _ZN5Model14LoadAndSetFileEtii.cpp into it; config/arm9/delinks.txt, config/arm9/symbols.txt).",
-    "class-label homogeneity: every symbol in the run is a member of Model (the concrete model class of include/Model.h, struct Model : ModelBase; _ZTV5Model at 0x0208e90c names the class, and the cartridge RTTI spells it _ZTI17dExtSimpleModel_c at 0x0208e794) plus the two file-global helpers the run brackets (CleanCommonModelDataArr, func_02016e70).",
-    "neighbour below: func_02016b24 ends at 0x02016b78, a free helper DoSetFile also calls. Neighbour above: ModelBase::SetFile at 0x02016fd4, the next block, out of this job."
+    "contiguous linker run 0x02016b78..0x02016df8: the nine delinks entries tile the span exactly with no hole (config/arm9/delinks.txt, config/arm9/symbols.txt).",
+    "class-label homogeneity: every symbol in the run is a member of Model (the concrete model class of include/Model.h, `struct Model : ModelBase`; _ZTV5Model at 0x0208e90c names the class, and the cartridge RTTI spells it _ZTI17dExtSimpleModel_c at 0x0208e794).",
+    "neighbour below: func_02016b24 ends at 0x02016b78, a free helper DoSetFile also calls. Neighbour above: CleanCommonModelDataArr at 0x02016df8, an unenrolled free function (include/decl_common.h) whose bytes the ROM supplies."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02016b78",
-      "end": "0x02016fd4"
+      "end": "0x02016df8"
     }
   ],
   "functions": [
@@ -81,34 +81,6 @@
       "size": "0x00000050",
       "legacy_source": "src/_ZN5ModelC2Ev.cpp",
       "ordinal": 8
-    },
-    {
-      "symbol": "CleanCommonModelDataArr",
-      "address": "0x02016df8",
-      "size": "0x00000078",
-      "legacy_source": "src/CleanCommonModelDataArr.c",
-      "ordinal": 9
-    },
-    {
-      "symbol": "func_02016e70",
-      "address": "0x02016e70",
-      "size": "0x00000098",
-      "legacy_source": "src/unnamed/arm9/0201/func_02016e70.c",
-      "ordinal": 10
-    },
-    {
-      "symbol": "_ZN5Model23AddToCommonModelDataArrER8BMD_File",
-      "address": "0x02016f08",
-      "size": "0x00000094",
-      "legacy_source": "src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp",
-      "ordinal": 11
-    },
-    {
-      "symbol": "_ZN5Model14LoadAndSetFileEtii",
-      "address": "0x02016f9c",
-      "size": "0x00000038",
-      "legacy_source": "src/_ZN5Model14LoadAndSetFileEtii.cpp",
-      "ordinal": 12
     }
   ],
   "data": [],
@@ -128,8 +100,7 @@
     "This run carries the class's complete lifecycle: the cartridge homes D2, D0, D1 AND C1, C2, the exact five-variant order one ~Model() plus one Model() emits under deferred codegen, so every emitted function enrols and nothing deadstrips.",
     "The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen; the emitted object carries the nine functions ascending 0x02016b78..0x02016df8.",
     "The cartridge spells this class dExtSimpleModel_c and its vtable is homed under the project spelling _ZTV5Model at 0x0208e90c, so _ZTS/_ZTI records emitted under the project's Model spelling would have no configured ROM home. This TU therefore compiles with #pragma RTTI off, the same lever the merged ShadowModel and MaterialChanger folds use for the identical dExt* coined-name situation: no RTTI records are emitted, and the vtable preamble's typeinfo word deadstrips with the rest of the .data output.",
-    "common.h precedes Model.h so this TU sees the flat Matrix4x3 { s32 m[12]; } spelling: the ctor's `mat4x3 = IDENTITY_MATRIX4X3` block-moves twelve words under it, where the structured Matrix3x3+Vector3 spelling scalarizes into a longer sequence. Virtual10 keeps the same flat view for its twelve-word copy into data.transforms.",
-    "absorb/Model grows the TU forward to 0x02016fd4 (CleanCommonModelDataArr, func_02016e70, AddToCommonModelDataArr, LoadAndSetFileEtii; the file stays ROM-descending). CleanCommonModelDataArr enrols corrected: the ROM calls the delete veneer func_0203cbc0 at +0x28 (relocs.txt), not the global _ZdlPv the unenrolled shard named. Below 0x02016b78 stays separate, walled by the one-argument func_02016aac call into three-parameter func_0204605c."
+    "common.h precedes Model.h so this TU sees the flat Matrix4x3 { s32 m[12]; } spelling: the ctor's `mat4x3 = IDENTITY_MATRIX4X3` block-moves twelve words under it, where the structured Matrix3x3+Vector3 spelling scalarizes into a longer sequence. Virtual10 keeps the same flat view for its twelve-word copy into data.transforms."
   ],
   "relocations": [],
   "verification": {
@@ -137,8 +108,8 @@
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 13,
-    "functions_declared": 13,
+    "functions_matched": 9,
+    "functions_declared": 9,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

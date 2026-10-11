@@ -933,10 +933,19 @@ src/func_02016b24.c:
 
 src/engine/model/Model.cpp:
     complete
-    .text start:0x02016b78 end:0x02016fd4
+    .text start:0x02016b78 end:0x02016df8
 
+src/unnamed/arm9/0201/func_02016e70.c:
+    complete
+    .text start:0x02016e70 end:0x02016f08
 
+src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp:
+    complete
+    .text start:0x02016f08 end:0x02016f9c
 
+src/_ZN5Model14LoadAndSetFileEtii.cpp:
+    complete
+    .text start:0x02016f9c end:0x02016fd4
 
 src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp:
     complete

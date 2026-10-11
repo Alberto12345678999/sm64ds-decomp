@@ -354,7 +354,7 @@
   "src/_ZN5Model12ShowMaterialEii.cpp",
   "src/_ZN5Model13GetVramOffsetEj.cpp",
   "src/_ZN5Model13LoadTexAndPalER8BMD_File.cpp",
-  "src/engine/model/Model.cpp#_ZN5Model14LoadAndSetFileEtii",
+  "src/_ZN5Model14LoadAndSetFileEtii.cpp",
   "src/_ZN5Model14SetPolygonModeEi.cpp",
   "src/_ZN5Model17LoadTextureToVramEPcj.cpp",
   "src/_ZN5Model27LoadCompressedTextureToVramEPcjS0_.cpp",
