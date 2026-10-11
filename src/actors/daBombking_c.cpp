@@ -1,52 +1,35 @@
 //cpp
-/* daBombking_c -- King Bob-omb, Bob-omb Battlefield (BOMBKING).
- *
- * Out-of-line destructor first and `#pragma defer_codegen off`: that pair
- * emits D1 then D0 at the head of this TU. Source order is ROM order.
- * common.h is included first so Matrix4x3 stays the flat 12-word spelling;
- * shadow and hold copies go through M12.
- *
- * Pragmas are file-global last-wins, so the ones this TU needs are push/pop
- * around one member: opt_propagation off on func_ov078_021240a0,
- * opt_strength_reduction and opt_common_subs off on func_ov078_02125448,
- * opt_strength_reduction off on InitResources.
- *
-comment leftovers:
- * - BlendModelAnim::SetAnim, dCcAcPos_c::Init and DropShadowRadHeight take
- *   Fix12<int> by value. func_ov078_02124060 cannot call SetAnim with a
- *   scalar speed (illegal implicit conversion) and Fix12<int>(0x1000) is
- *   the same illegal conversion. A class temporary is the caller-side cost
- *   in notes/mwccarm-codegen.md. The calls stay the scalar externs.
- * - dBgCh_Actr::Init's definition is
- *   _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_. The header
- *   spells Fix12i, which mangles as i, so InitResources keeps the extern.
- * - Player::param1 and Player::mStateFlags are used. The held matrix at
- *   actor+0xc8 is inside dActor_c's pad (0xc5..0xcb); naming it is a base
- *   change. func_ov078_02125de0, Render and the throw helper still store it.
- * - dCamera_c::mFlags (0x154, bit 8) is used. Behavior's store at dCamera_c+0x114
- *   is the word after mTargetPlayer, still pad_114.
- * - func_02035550 is the call that ORs 0x4000 into dBgCh_Actr::mFlags;
- *   inlining the or would delete the call.
- * - func_02012694 plays bank 3 at mCamSpacePos. It is not Sound::PlayBank3
- *   (that body is 0x02012664). func_0200d8c8 shakes the camera.
- *   func_ov002_020db54c launches the grabbed player; func_ov002_020db5f4
- *   starts the player's hold state. func_ov102_0214b384 arms a bob-omb
- *   fuse; func_ov102_0214ad14 makes it chase. GetHealth is called with no
- *   receiver in func_ov078_02123f1c: r0 is whatever the previous call left.
- * - func_ov078_021240a0 stays a free function: it is method-shaped (object
- *   in arg0, in a sinit PMF record) but the member spelling — and even the
- *   `extern "C" int` definition spelling — reschedules the clamp arm's
- *   register allocation under opt_propagation off (7 words). The
- *   `extern "C" { }` block form is byte-correct; it still calls the
- *   member helpers through k.
- * - File handles are BombkingFile (id, file at +4), filled by
- *   __sinit_ov078_02126660. State records stay data_ov078_021270*: the
- *   sinit copies an {enter, tick} PMF pair into each. g_profile_BOMBKING
- *   stays in the overlay data.
- * - A few address launders stay because the plain member form moved a
- *   word: mPrevAngleY in func_ov078_02123d3c, mHealth in
- *   func_ov078_021243c0, mVertSpeed in func_ov078_021247bc, unk_50a in
- *   func_ov078_021259ec.
+/* daBombking_c -- King Bob-omb (BOMBKING), Bob-omb Battlefield.
+ * The destructor is out of line and first. defer_codegen off emits D1 then
+ * D0 at the head, so source order is ROM order. common.h is first so the
+ * shadow and hold copies stay flat 12-word moves through M12.
+ * opt_propagation is off around func_ov078_021240a0. opt_strength_reduction
+ * and opt_common_subs are off around func_ov078_02125448. InitResources
+ * has opt_strength_reduction off. Each pragma is push/pop on that member.
+ */
+/* leftovers: BlendModelAnim::SetAnim, dCcAcPos_c::Init and
+ * DropShadowRadHeight stay scalar externs. func_ov078_02124060 cannot pass
+ * a scalar speed to SetAnim, and Fix12<int>(0x1000) is the same illegal
+ * conversion. InitResources keeps
+ * _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_ because
+ * include/dBgCh_Actr.h spells Fix12i, which mangles as i.
+ * The held matrix at actor+0xc8 sits in dActor_c's pad (0xc5..0xcb).
+ * func_ov078_02125de0, Render and the throw helper still store it; naming
+ * the field is a base-class change. Behavior's store at dCamera_c+0x114 is
+ * the word after mTargetPlayer, still pad_114. func_02035550 is the call
+ * that ORs 0x4000 into dBgCh_Actr::mFlags; inlining the or deletes the call.
+ * func_02012694 plays bank 3 at mCamSpacePos. It is not Sound::PlayBank3
+ * (that body is 0x02012664). func_0200d8c8 shakes the camera.
+ * func_ov002_020db54c launches the grabbed player; func_ov002_020db5f4
+ * starts the hold state. func_ov102_0214b384 arms a bob-omb fuse;
+ * func_ov102_0214ad14 makes it chase. GetHealth in func_ov078_02123f1c is
+ * called with no receiver: r0 is whatever the previous call left.
+ * func_ov078_021240a0 stays a free function. It is method-shaped, but the
+ * member spelling reschedules the clamp under opt_propagation off.
+ * File handles stay BombkingFile, filled by __sinit_ov078_02126660.
+ * State records stay data_ov078_021270*. A plain member read moved a word
+ * for mPrevAngleY in func_ov078_02123d3c, mHealth in func_ov078_021243c0,
+ * mVertSpeed in func_ov078_021247bc, and unk_50a in func_ov078_021259ec.
  */
 
 /* common.h FIRST: daBombking_c.h reaches math/Matrix.h through BlendModelAnim.h,
@@ -174,35 +157,8 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* se
  * D0 at 0x02123740 / 0x02123798, the two lowest addresses in the run. */
 daBombking_c::~daBombking_c() {}
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_cD1Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body
- *
- * A consequence of `struct daBombking_c : dEnemyBase_c`: its own vptr store,
- * then the destructors of the five members that have one -- dBgCh_Actr at
- * +0x110, BlendModelAnim at +0x2cc, dCcAcPos_c at +0x33c and +0x37c, and
- * dExtCommonModel_c at +0x3bc -- then the base chain. Each of those member calls is
- * a relocation the ROM build checks, which is what named the members.
- *
- * DEFINED OUT OF LINE at the top of this file, and DECLARED FIRST in the
- * header. Both halves are load-bearing; see the block above the definition.
- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_cD0Ev
-/* recovered: real C++ deleting destructor -- the compiler emits the whole body
- *
- * D0 is the DELETING destructor: destroy through this class and its bases --
- * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~daBombking_c()` is enough, because
- * mwcc emits D1, D0 and D2 together (measured on this TU, in that order) and
- * objisolate keeps the ones this file is bound to. D2 is homeless -- the ROM
- * has no D2 -- and is licensed as `deadstrip` in the manifest.
- *
- * The deallocation is an inline operator delete, which is why nothing below
- * mentions a heap.
- */
-
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c19func_ov078_02123804Ev
 
 int daBombking_c::func_ov078_02123804()
@@ -1746,17 +1702,14 @@ int daBombking_c::InitResources()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daBombking_c16OnAimedAtWithEggEv
-// recovered name: KingBobOmb_OnAimedAtWithEgg
-/* daBombking_c::OnAimedAtWithEgg - recovered from vtable slot identity */
+/* Egg-aim query. Returns the fixed distance the slot stores. */
 s32 daBombking_c::OnAimedAtWithEgg() {
     return 1024000;
 }
 
 /* -------------------------------------------------------------------------- */
-/* The factory immediately follows ordinal 50 and ends at the .init boundary. */
 // @symbol daBombking_c_classInit
-/* The registry factory behind the BOMBKING profile. `return new daBombking_c()`
- * MATCHES (size 0x64); the synthesized ctor stores `_ZTV12daBombking_c + 2`. */
+/* Registry factory for the BOMBKING profile. */
 extern "C" daBombking_c *daBombking_c_classInit(void)
 {
     return new daBombking_c();
