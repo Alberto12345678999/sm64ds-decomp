@@ -24,23 +24,16 @@
  *   1 func_ov084_0212c89c / func_ov084_0212c508  talk
  *   2 func_ov084_0212c4a0 / func_ov084_0212c1a0  open the cannon
  *
- * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S. mwccarm 2004/b56
- * emits one .text section per function in the REVERSE of source order, so
- * the highest-address ROM function, the factory, is written FIRST here. Do
- * not reorder.
- *
- * The state bodies and helpers are daRedBombhei_c members under their
- *   address names. The state table reaches the state bodies only by
- *   address, through the .data words the static initializer copies into
- *   it.
- * Leftover: ModelAnim::SetAnim, dCcAc_c::Init and
- *   dActor_c::DropShadowRadHeight stay mangled; each takes Fix12<int> by
- *   value (notes/mwccarm-codegen.md 6az). Player::ShowMessage and
- *   dCamera_c::SetFlag_3 stay mangled too; the reasons are at their
- *   declarations.
- * Leftover: the two shared files (0x02130da4 model, 0x02130d9c animation)
- *   and the state table live in .bss this text-only TU does not own, and keep
- *   their address names.
+ * Source order is the reverse of the ROM. The factory is written first.
+ */
+/* leftovers: ModelAnim::SetAnim, dCcAc_c::Init and
+ * dActor_c::DropShadowRadHeight stay mangled. This file calls them, and
+ * each takes Fix12<int> by value. Player::ShowMessage stays a local
+ * extern: the member re-masks the flag bytes and func_ov084_0212c9f0
+ * grows. dCamera_c::SetFlag_3 has no declaration in dCamera_c.h.
+ * data_ov084_02130da4, data_ov084_02130d9c and data_ov084_02130dc4 keep
+ * address names. This text-only TU does not own that .bss. The state
+ * bodies stay address-named members; the table reaches them by address.
  */
 
 #include "daRedBombhei_c.h"
@@ -136,9 +129,8 @@ void  Matrix4x3_FromRotationY(void *m, int angle);
 int   Math_Function_0203b14c(int *value, int target, int a, int b, int c);
 int   _ZN4cstd4fdivEii(int a, int b);
 
-/* local extern: Player::ShowMessage takes its two flag bytes as unsigned
-   char; the real member call re-masks the caller's word (measured: +1
-   instruction in func_ov084_0212c9f0). */
+/* Player::ShowMessage takes the two flag bytes as unsigned char. The
+   member re-masks the caller's word and func_ov084_0212c9f0 grows. */
 int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(Player *self, fBase_c *actor, unsigned int msgID, const Vector3 *pos, unsigned int a, unsigned int b);
 
 /* local extern: dCamera_c.h does not declare this member. */
