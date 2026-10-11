@@ -1,16 +1,23 @@
 //cpp
-/* Production translation unit for ov002/daObj1UpLogo_c.
- * 8 function(s), .text 0x020f0dd0..0x020f11b0. The 1-Up logo popup
- * (OBJ_1UPLOGO / 331).
+/* daObj1UpLogo_c -- 1-Up logo popup (OBJ_1UPLOGO 331).
  *
- * NAME: _ZTS14daObj1UpLogo_c is "14daObj1UpLogo_c" at ov002 0x0210b174; _ZTI
- * at 0x0210b168 reads [__si_class_type_info, that string, _ZTI8dActor_c]. The
- * tree previously called the class OneUpLogo (coined; vtable address only).
+ * _ZTS14daObj1UpLogo_c at ov002 0x0210b174, _ZTI at 0x0210b168 (base
+ * _ZTI8dActor_c). The tree used to call this class OneUpLogo. The
+ * out-of-line destructor is the key function: D1 at 0x020f0dd0, D0 at
+ * 0x020f0e08, then a D2 the cartridge does not keep. defer_codegen off
+ * lays this file down in ROM order.
  *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x020f0dd0), D0
- * (0x020f0e08), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is ROM-ascending.
+ * leftovers:
+ * - TextureSequence::SetFile and Particle::System::NewSimple stay
+ *   mangled. Both take Fix12<int> by value.
+ * - SharedFilePtr has no fields, so InitResources reads the loaded
+ *   BMD and BTP at +4 of data_ov002_02110aa4 and 02110a9c.
+ * - Behavior keeps a volatile read of mPosY and of pos.z. A plain
+ *   read is folded into the add and the stores above it.
+ * - The follow target's position stays (Vector3 *)&mPosX. dActor_c
+ *   has no Pos(), and naming that actor's mPosX/Y/Z DIFFs.
+ * - func_ov002_020f0e54 keeps the char * parameters decl_common.h
+ *   declares. It is Player::IncMegaKillCount's attach helper.
  */
 
 #include "common.h"
@@ -126,7 +133,7 @@ s32 daObj1UpLogo_c::Behavior()
         break;
     case 1:
         if (mPosY < mStartPos.y) {
-            /* Behavior: a plain mPosY read here CSE's with the add above. */
+            /* Volatile: a plain mPosY read is folded into the add above. */
             _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
                 kPopParticle, mPosX, *(volatile s32 *)&mPosY, mPosZ);
             MarkForDestruction();
@@ -140,7 +147,7 @@ s32 daObj1UpLogo_c::Behavior()
     if (mOwnerUniqueID != 0) {
         dActor_c *other = FindWithID(mOwnerUniqueID);
         if (other != 0) {
-            /* Behavior: named mPosX/Y/Z on the follow target DIFF. No Pos(). */
+            /* dActor_c has no Pos(). Naming these three scalars DIFFs. */
             Vector3 *otherPos = (Vector3 *)&other->mPosX;
             s32 otherY;
             pos.x = otherPos->x;
@@ -149,7 +156,7 @@ s32 daObj1UpLogo_c::Behavior()
             pos.y = otherY + (mFollowOffsetY + (mPosY - mStartPos.y));
         }
     }
-    /* Behavior: a plain pos.z >> 3 CSE's with the stores above. */
+    /* Volatile: a plain pos.z >> 3 is folded into the stores above. */
     Matrix4x3_FromTranslation(&mModel.mat4x3, pos.x >> 3, pos.y >> 3,
                               (*(volatile s32 *)&pos.z) >> 3);
     return 1;
@@ -186,7 +193,7 @@ s32 daObj1UpLogo_c::InitResources()
 }
 
 // @symbol daObj1UpLogo_c_classInit
-/* Reconstructed source-style name; historical alias OneUpLogo_Spawn. */
+/* Historical alias OneUpLogo_Spawn. */
 extern "C" daObj1UpLogo_c *daObj1UpLogo_c_classInit()
 {
     return new daObj1UpLogo_c();
