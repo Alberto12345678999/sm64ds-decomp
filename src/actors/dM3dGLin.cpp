@@ -1,10 +1,14 @@
 //cpp
-/**
- * The line segment primitive: two endpoints, Set copies both.
+/* leftovers:
+ * - func_ov002_020fea68 and func_ov002_020fea4c stay extern "C"
+ *   int* copies. The first argument is the caller's out-buffer, not
+ *   the line, and a Vector3 copy emits a destructor. 020fea68 copies
+ *   the start (words 0..2). 020fea4c copies the end (words 3..5).
+ *   dBgCh_Lin calls them by those addresses.
+ * - Only D2 is in the ROM. The D1 this definition also emits is
+ *   deadstripped.
  *
- * Non-polymorphic (no vptr, no vtable); the ROM keeps only the
- * trivial base-subobject D2 (`bx lr`). The D1 the same definition
- * emits is homeless and deadstripped by the manifest.
+ * dM3dGLin, a line of two endpoints. Set copies both. No vtable.
  */
 
 #include "dM3dGLin.h"
