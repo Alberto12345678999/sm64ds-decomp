@@ -9,7 +9,6 @@ src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.cpp
 src/engine/heap/ExpandingHeapAllocator.cpp
 src/_ZN4HeapC2EPvjPS_.cpp
 src/_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator.cpp
-src/Memory.cpp
 
 # The ExpandingHeap overrides (VAllocate, VDeallocate, VSizeof, VMemoryLeft,
 # VDestroy, VDeallocateAll, VIntact, VRescue, VReallocate,
