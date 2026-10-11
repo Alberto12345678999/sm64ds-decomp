@@ -5,6 +5,10 @@
  * engine's blend/affine registers through the caller's `volatile u16*`
  * (include/G2x.h). The file is written ROM-descending because mwccarm
  * emits .text in reverse source order under default deferred codegen.
+ *
+ * leftovers:
+ * - Matrix2x2 is defined TU-locally: G2x.h forward-declares it and no
+ *   shared header owns the layout.
  */
 #include "G2x.h"
 #include "types.h"

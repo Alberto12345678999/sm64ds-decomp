@@ -9,6 +9,8 @@
  * per-scene graphCallback_c classes all derive from it. No virtual
  * destructor exists and nothing constructs callback_c directly, so the TU
  * emits no ctor/dtor members.
+ *
+ * leftovers: none.
  */
 #include "dGraph_c.h"
 
