@@ -310,7 +310,7 @@
   "src/IRQ.cpp#_ZN3IRQ13DmaTimHandlerEj",
   "src/IRQ.cpp#_ZN3IRQ13GetIRQHandlerEj",
   "src/IRQ.cpp#_ZN3IRQ13SetIRQHandlerEjPFvvE",
-  "src/_ZN3IRQ13VBlankHandlerEv.cpp",
+  "src/IRQ2.cpp#_ZN3IRQ13VBlankHandlerEv",
   "src/IRQ.cpp#_ZN3IRQ15ClearInterruptsEj",
   "src/IRQ.cpp#_ZN3IRQ19Tim0OverflowHandlerEv",
   "src/IRQ.cpp#_ZN3IRQ19Tim1OverflowHandlerEv",
