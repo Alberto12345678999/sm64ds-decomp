@@ -455,9 +455,13 @@ int func_ov004_020adbe0(void) {
 // @symbol func_ov004_020adc00
 namespace s20adc00 {
 extern "C" {
+/* Spelled char * here and in func_ov004_020adc1c, as unit020b4aa4.cpp
+   spells it: with fewer char * copies the declaration-agreement plurality
+   flips to the header's void * and reds that file. */
+extern char *data_ov004_020beb68;
 /* Sets the record copy at +0x4650 (unnamed padding in the header). */
 void func_ov004_020adc00(int v) {
-    char *scene = (char *)data_ov004_020beb68;
+    char *scene = data_ov004_020beb68;
     if (scene != 0) {
         *(int*)(scene + 0x4650) = v;
     }
@@ -468,9 +472,10 @@ void func_ov004_020adc00(int v) {
 // @symbol func_ov004_020adc1c
 namespace s20adc1c {
 extern "C" {
+extern char *data_ov004_020beb68;
 /* The record copy at +0x4650; 0 with no scene. */
 int func_ov004_020adc1c(void) {
-    char *scene = (char *)data_ov004_020beb68;
+    char *scene = data_ov004_020beb68;
     if (scene != 0) {
         return *(int*)(scene + 0x4650);
     }
@@ -1888,11 +1893,21 @@ void Render(bool draw, OamAttr *obj, int px, int py, int pal, int prio, Matrix2x
 void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
 }
 
+/* The sprite wrappers from here to func_ov004_020b0380 share one gate.
+ * With no scene they draw nothing. With the menu closed and the scene's
+ * OnHitByCannonBlastedChar (slot 26) returning 2 -- the value
+ * dScMgD3DBase_c's body returns -- they read the u16 at +0x4664
+ * (dScMgD3DBase_c::unk_4664) and draw once, or not at all. Otherwise they
+ * take their normal path. +0x4664 is past dScMgBase_c, so it is read
+ * raw: including dScMgD3DBase_c.h renumbers this file's
+ * compiler-generated @ labels (@329 becomes @529). The OAM::Render
+ * overloads taking a Fix12<int> by value stay mangled (see
+ * include/OAM.h). */
+
 // @symbol Hud_RenderSprite
 namespace s20af68c {
 extern "C" {
 extern "C" {
-extern void *data_ov004_020beb68;
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, s32, s32, int, int, int, int, int, int);
 void Hud_RenderSprite(void* attr, int x, int y, int palette, int priority){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
@@ -1915,7 +1930,6 @@ namespace s20af770 {
 extern "C" {
 extern "C" {
 struct OamAttr;
-extern char* data_ov004_020beb68;
 }
 typedef int Fix12i;
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
@@ -1923,12 +1937,11 @@ extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
 
 extern "C" int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
 {
-    char* g = data_ov004_020beb68;
-    if (g == 0) return 0;
-    if (*(int*)(g + 0x4628) == 0) {
-        int (*vf)(char*) = *(int(**)(char*))(*(char**)g + 0x68);
-        if (vf(g) == 2) {
-            if (*(unsigned short*)(data_ov004_020beb68 + 0x4664) != 0) return 0;
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return 0;
+    if (scene->mMenuOpen == 0) {
+        if (scene->OnHitByCannonBlastedChar() == 2) {
+            if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr*)a0, a1, a2, a3, a4, a5, a6);
         }
     }
@@ -1940,25 +1953,17 @@ extern "C" int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a
 // @symbol func_ov004_020af868
 namespace s20af868 {
 extern "C" {
-extern "C" {
-extern char* data_ov004_020beb68;
-int _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
-typedef int (*GetFn)(void*);
 void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5){
-  char* g = data_ov004_020beb68;
-  if(g == 0) return;
-  if(*(int*)(g+0x4628) == 0){
-    void** vt = *(void***)g;
-    GetFn f = (GetFn)vt[0x1a];
-    if(f(g) == 2){
-      char* g2 = data_ov004_020beb68;
-      if(*(unsigned short*)(g2+0x4664) != 0) return;
-      _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2, a3, a4, a5);
+  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  if(scene == 0) return;
+  if(scene->mMenuOpen == 0){
+    if(scene->OnHitByCannonBlastedChar() == 2){
+      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
+      OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
       return;
     }
   }
-  _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, a0, a1, a2, a3, a4, a5);
-}
+  OAM::Render(1, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
 }
 }
 }
@@ -1966,23 +1971,18 @@ void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5){
 // @symbol func_ov004_020af948
 namespace s20af948 {
 extern "C" {
-extern "C" {
-extern void* data_ov004_020beb68;
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(bool b, void* a, int x, int y, int z, int w, void* m);
-
 void func_ov004_020af948(void* a, int b, int c, void* m)
 {
-    if (data_ov004_020beb68 == 0) return;
-    if (*(int*)((char*)data_ov004_020beb68 + 0x4628) == 0) {
-        int (**vt)(void*) = *(int(***)(void*))data_ov004_020beb68;
-        if (vt[0x68/4]((void*)data_ov004_020beb68) == 2) {
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return;
+    if (scene->mMenuOpen == 0) {
+        if (scene->OnHitByCannonBlastedChar() == 2) {
             if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
-            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(false, a, b, c, -1, -1, m);
+            OAM::Render(false, (OamAttr*)a, b, c, -1, -1, (Matrix2x2*)m);
             return;
         }
     }
-    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(true, a, b, c, -1, -1, m);
-}
+    OAM::Render(true, (OamAttr*)a, b, c, -1, -1, (Matrix2x2*)m);
 }
 }
 }
@@ -1991,7 +1991,6 @@ void func_ov004_020af948(void* a, int b, int c, void* m)
 namespace s20afa20 {
 extern "C" {
 extern "C" {
-extern void *data_ov004_020beb68;
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, s32, s32, int, int, int, int, int, int);
 
 extern "C" void RenderOamMainScreen(int oam, int x, int y, int palette, int priority)
@@ -2016,7 +2015,6 @@ namespace s20afb20 {
 extern "C" {
 extern "C" {
 struct OamAttr;
-extern char* data_ov004_020beb68;
 }
 typedef int Fix12i;
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
@@ -2024,12 +2022,11 @@ extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
 
 extern "C" int func_ov004_020afb20(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
 {
-    char* g = data_ov004_020beb68;
-    if (g == 0) return 0;
-    if (*(int*)(g + 0x4628) == 0) {
-        int (*vf)(char*) = *(int(**)(char*))(*(char**)g + 0x68);
-        if (vf(g) == 2) {
-            if (*(unsigned short*)(data_ov004_020beb68 + 0x4664) != 1) return 0;
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return 0;
+    if (scene->mMenuOpen == 0) {
+        if (scene->OnHitByCannonBlastedChar() == 2) {
+            if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr*)a0, a1, a2, a3, a4, a5, a6);
         }
     }
@@ -2041,25 +2038,17 @@ extern "C" int func_ov004_020afb20(int a0, int a1, int a2, int a3, int a4, int a
 // @symbol func_ov004_020afc18
 namespace s20afc18 {
 extern "C" {
-extern "C" {
-extern char* data_ov004_020beb68;
-int _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
-typedef int (*GetFn)(void*);
 void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5){
-  char* g = data_ov004_020beb68;
-  if(g == 0) return;
-  if(*(int*)(g+0x4628) == 0){
-    void** vt = *(void***)g;
-    GetFn f = (GetFn)vt[0x1a];
-    if(f(g) == 2){
-      char* g2 = data_ov004_020beb68;
-      if(*(unsigned short*)(g2+0x4664) != 1) return;
-      _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2, a3, a4, a5);
+  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  if(scene == 0) return;
+  if(scene->mMenuOpen == 0){
+    if(scene->OnHitByCannonBlastedChar() == 2){
+      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
+      OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
       return;
     }
   }
-  _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2, a3, a4, a5);
-}
+  OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
 }
 }
 }
@@ -2067,22 +2056,11 @@ void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5){
 // @symbol DrawOamSprite
 namespace s20afcf8 {
 extern "C" {
-struct Base {
-    virtual int v00(); virtual int v01(); virtual int v02(); virtual int v03();
-    virtual int v04(); virtual int v05(); virtual int v06(); virtual int v07();
-    virtual int v08(); virtual int v09(); virtual int v10(); virtual int v11();
-    virtual int v12(); virtual int v13(); virtual int v14(); virtual int v15();
-    virtual int v16(); virtual int v17(); virtual int v18(); virtual int v19();
-    virtual int v20(); virtual int v21(); virtual int v22(); virtual int v23();
-    virtual int v24(); virtual int v25(); virtual int m();
-};
-extern "C" Base *data_ov004_020beb68;
-
 extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
 {
-    Base *g = data_ov004_020beb68;
-    if (g == 0) return;
-    if (*(int*)((char*)g + 0x4628) == 0 && g->m() == 2) {
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return;
+    if (scene->mMenuOpen == 0 && scene->OnHitByCannonBlastedChar() == 2) {
         if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
         OAM::Render(false, (OamAttr*)arg0, (int)arg1, arg2, -1, -1, (Matrix2x2*)arg3);
         return;
@@ -2096,20 +2074,14 @@ extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
 namespace s20afdd0 {
 extern "C" {
 extern "C" {
-extern char* data_ov004_020beb68;
 extern int data_ov004_020beb6c;
 int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
-int _ZN3OAM9RenderSubEP7OamAttriiii(void*, int, int, int, int);
-typedef int (*GetFn)(void*);
 void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4){
-  char* g = data_ov004_020beb68;
-  if(g == 0) return;
-  if(*(int*)(g+0x4628) == 0){
-    void** vt = *(void***)g;
-    GetFn f = (GetFn)vt[0x1a];
-    if(f(g) == 2){
-      char* g2 = data_ov004_020beb68;
-      if(*(unsigned short*)(g2+0x4664) == 1){
+  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  if(scene == 0) return;
+  if(scene->mMenuOpen == 0){
+    if(scene->OnHitByCannonBlastedChar() == 2){
+      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, a4, 0x1000, 0x1000, 0, -1);
         return;
       }
@@ -2118,7 +2090,7 @@ void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4){
     }
   }
   _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, a4, 0x1000, 0x1000, 0, -1);
-  _ZN3OAM9RenderSubEP7OamAttriiii(a0, a1, a2, a3, a4);
+  OAM::RenderSub((OamAttr*)a0, a1, a2, a3, a4);
 }
 }
 }
@@ -2127,11 +2099,8 @@ void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4){
 // @symbol func_ov004_020aff38
 namespace s20aff38 {
 extern "C" {
-// func_ov004_020aff38 at 0x020aff38
-// Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov004).
 extern "C" {
 struct OamAttr;
-extern char* data_ov004_020beb68;
 extern int data_ov004_020beb6c;
 }
 typedef int Fix12i;
@@ -2140,10 +2109,10 @@ extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
 
 extern "C" int func_ov004_020aff38(struct OamAttr* a0, int a1, int a2, int a3, int a4, Fix12i a5, int a6)
 {
-    char* g = data_ov004_020beb68;
-    if (g == 0) return 0;
-    if (*(int*)(g + 0x4628) == 0 && (*(int(**)(char*))(*(char**)g + 0x68))(g) == 2) {
-        if (*(unsigned short*)(data_ov004_020beb68 + 0x4664) == 1) {
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return 0;
+    if (scene->mMenuOpen == 0 && scene->OnHitByCannonBlastedChar() == 2) {
+        if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1) {
             int hp = data_ov004_020beb6c;
             if (a2 >= -0x100 - hp && a2 < -hp) {
                 return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4, a5, a6);
@@ -2170,7 +2139,6 @@ extern "C" int func_ov004_020aff38(struct OamAttr* a0, int a1, int a2, int a3, i
 namespace s20b0104 {
 extern "C" {
 extern "C" {
-extern void *data_ov004_020beb68;
 extern int data_ov004_020beb6c;
 void RenderOamBothScreens(void* attr, int x, int y, int palette, int priority, void* mtx){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
@@ -2195,31 +2163,23 @@ void RenderOamBothScreens(void* attr, int x, int y, int palette, int priority, v
 // @symbol func_ov004_020b023c
 namespace s20b023c {
 extern "C" {
-// func_ov004_020b023c at 0x020b023c
-// Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov004).
 extern "C" {
-extern char* data_ov004_020beb68;
 extern int data_ov004_020beb6c;
-int _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
-typedef int (*GetFn)(void*);
 void func_ov004_020b023c(void* a0, int a1, int a2, int a3, void* a4){
-  char* g = data_ov004_020beb68;
-  if(g == 0) return;
-  if(*(int*)(g+0x4628) == 0){
-    void** vt = *(void***)g;
-    GetFn f = (GetFn)vt[0x1a];
-    if(f(g) == 2){
-      char* g2 = data_ov004_020beb68;
-      if(*(unsigned short*)(g2+0x4664) == 1){
-        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, a4);
+  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  if(scene == 0) return;
+  if(scene->mMenuOpen == 0){
+    if(scene->OnHitByCannonBlastedChar() == 2){
+      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
+        OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, (Matrix2x2*)a4);
         return;
       }
-      _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2, a3, -1, a4);
+      OAM::Render(0, (OamAttr*)a0, a1, a2, a3, -1, (Matrix2x2*)a4);
       return;
     }
   }
-  _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, a4);
-  _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, a0, a1, a2, a3, -1, a4);
+  OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, (Matrix2x2*)a4);
+  OAM::Render(1, (OamAttr*)a0, a1, a2, a3, -1, (Matrix2x2*)a4);
 }
 }
 }
@@ -2228,31 +2188,23 @@ void func_ov004_020b023c(void* a0, int a1, int a2, int a3, void* a4){
 // @symbol func_ov004_020b0380
 namespace s20b0380 {
 extern "C" {
-// func_ov004_020b0380 at 0x020b0380
-// Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov004).
 extern "C" {
-extern char* data_ov004_020beb68;
 extern int data_ov004_020beb6c;
-int _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
-typedef int (*GetFn)(void*);
 void func_ov004_020b0380(void* a0, int a1, int a2, void* a3){
-  char* g = data_ov004_020beb68;
-  if(g == 0) return;
-  if(*(int*)(g+0x4628) == 0){
-    void** vt = *(void***)g;
-    GetFn f = (GetFn)vt[0x1a];
-    if(f(g) == 2){
-      char* g2 = data_ov004_020beb68;
-      if(*(unsigned short*)(g2+0x4664) == 1){
-        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, a3);
+  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  if(scene == 0) return;
+  if(scene->mMenuOpen == 0){
+    if(scene->OnHitByCannonBlastedChar() == 2){
+      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
+        OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, (Matrix2x2*)a3);
         return;
       }
-      _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2, -1, -1, a3);
+      OAM::Render(0, (OamAttr*)a0, a1, a2, -1, -1, (Matrix2x2*)a3);
       return;
     }
   }
-  _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, a3);
-  _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, a0, a1, a2, -1, -1, a3);
+  OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, (Matrix2x2*)a3);
+  OAM::Render(1, (OamAttr*)a0, a1, a2, -1, -1, (Matrix2x2*)a3);
 }
 }
 }
@@ -2262,6 +2214,8 @@ void func_ov004_020b0380(void* a0, int a1, int a2, void* a3){
 namespace s20b04c0 {
 extern "C" {
 extern int data_ov004_020beb6c[];
+/* Get and set data_ov004_020beb6c: the offset Virtual88 and the sprite
+   wrappers above add, with 0xc0, to y on their upper-screen path. */
 int func_ov004_020b04c0(void) { return data_ov004_020beb6c[0]; }
 }
 }
@@ -3139,7 +3093,6 @@ int func_ov004_020b1aec(void) {
 // @symbol func_ov004_020b1b08
 namespace s20b1b08 {
 extern "C" {
-extern void *data_ov004_020beb68;
 extern void func_ov004_020b1b78(void *a0, void *a1);
 void func_ov004_020b1b08(void *c) {
     void *v = data_ov004_020beb68;
@@ -3152,7 +3105,6 @@ void func_ov004_020b1b08(void *c) {
 // @symbol func_ov004_020b1b40
 namespace s20b1b40 {
 extern "C" {
-extern void *data_ov004_020beb68;
 extern void func_ov004_020b1ba0(void *a0, void *a1);
 void func_ov004_020b1b40(void *c) {
     void *v = data_ov004_020beb68;
