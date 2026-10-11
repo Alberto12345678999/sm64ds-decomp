@@ -26876,7 +26876,7 @@
       ]
     },
     "func_0206a928": {
-      "src/unnamed/arm9/0206/func_0206ccd8.c": [
+      "src/cstd3.cpp": [
         "arity:4"
       ]
     },
@@ -26921,7 +26921,7 @@
       ]
     },
     "func_0206cbc0": {
-      "src/unnamed/arm9/0206/func_0206ccd8.c": [
+      "src/cstd3.cpp": [
         "arity:0"
       ]
     },

@@ -6,38 +6,45 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x0206cd44..0x0206ce90, 3 function(s), gapless in config/arm9/delinks.txt (marked `complete`).",
-    "TOP EDGE: func_0206ccd8 (0x0206ccd8..0x0206cd44) ends exactly where the run begins -- the unnamed print helper cstd::__assert calls, delinked as its own source. BOTTOM EDGE: an undelinked ROM gap begins at 0x0206ce90; the next delinked entry is func_0206da64 (0x0206da64..0x0206da94).",
+    "contiguous linker run: 0x0206ccd8..0x0206ce90, 4 function(s), gapless in config/arm9/delinks.txt (marked `complete`).",
+    "TOP EDGE: func_0206cbc0 (0x0206cbc0..0x0206ccd8) ends exactly where the run begins -- an unnamed helper the print helper stores as its callback; the grow stops before it. BOTTOM EDGE: an undelinked ROM gap begins at 0x0206ce90; the next delinked entry is func_0206da64 (0x0206da64..0x0206da94).",
     "CLASS-LOCAL COMPLETE: the run is cstd::__assert plus the two card-wait register helpers func_0206cd9c/func_0206ce20 that share its 'struct S' state; the division-unit cstd TU (arm9/cstd) and square-root TU (arm9/cstd2) are not contiguous with it, so this is its own original file -- a TU claims one contiguous .text span."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x0206cd44",
+      "start": "0x0206ccd8",
       "end": "0x0206ce90"
     }
   ],
   "functions": [
     {
+      "symbol": "func_0206ccd8",
+      "address": "0x0206ccd8",
+      "size": "0x0000006c",
+      "legacy_source": "src/unnamed/arm9/0206/func_0206ccd8.c",
+      "ordinal": 0
+    },
+    {
       "symbol": "_ZN4cstd8__assertEPKcS1_S1_i",
       "address": "0x0206cd44",
       "size": "0x00000058",
       "legacy_source": "src/_ZN4cstd8__assertEPKcS1_S1_i.cpp",
-      "ordinal": 0
+      "ordinal": 1
     },
     {
       "symbol": "func_0206cd9c",
       "address": "0x0206cd9c",
       "size": "0x00000084",
       "legacy_source": "src/unnamed/arm9/0206/func_0206cd9c.c",
-      "ordinal": 1
+      "ordinal": 2
     },
     {
       "symbol": "func_0206ce20",
       "address": "0x0206ce20",
       "size": "0x00000070",
       "legacy_source": "src/unnamed/arm9/0206/func_0206ce20.c",
-      "ordinal": 2
+      "ordinal": 3
     }
   ],
   "data": [],
@@ -49,7 +56,8 @@
     "Definitions are written in descending address order (func_0206ce20, func_0206cd9c, __assert) so mwccarm reverse-source emission lands the ROM-ascending run.",
     "func_0206cd9c's opt_common_subs-off and optimize_for_size pragmas lead their own extern \"C\" blocks -- mwccarm binds such pragmas only at block lead (or file scope) and ignores them mid-block.",
     "func_0206ccd8 is declared (const char* first, ...): the callee's real definition is varargs, so the shard's 4-fixed-parameter spelling's banked arity disagreement resolves instead of re-keying.",
-    "Text-only. The TU emits no data of its own."
+    "Text-only. The TU emits no data of its own.",
+    "absorb/cstd3-grow extends the TU downward to 0x0206ccd8 (func_0206ccd8, the varargs print helper __assert calls; the file stays ROM-descending, so the new definition appends after __assert with the lowest address last). The shard's print-argument struct S would collide with the TU's register-helper struct S, so it goes function-local with identical layout; the shard's file-scope optimize_for_size pragma is scoped push/pop with opt_common_subs restored on, undoing the off state func_0206cd9c leaks."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -57,8 +65,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-cstd3/cstd3.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 3,
-    "functions_declared": 3,
+    "functions_matched": 4,
+    "functions_declared": 4,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
@@ -86,7 +94,7 @@
         "rom": true
       },
       "tuRange": {
-        "start": "0x0206cd44",
+        "start": "0x0206ccd8",
         "end": "0x0206ce90",
         "differingBytes": 0,
         "firstDiff": null
@@ -94,7 +102,7 @@
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x0206cd44",
+          "start": "0x0206ccd8",
           "end": "0x0206ce90",
           "differingBytes": 0,
           "firstDiff": null
@@ -102,7 +110,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 3
+          "LICENSED": 4
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
