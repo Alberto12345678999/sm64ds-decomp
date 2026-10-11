@@ -1,21 +1,21 @@
 //cpp
-/* arm9/Particle_SysTracker_Contents -- the live-system registry nested inside
- * Particle::SysTracker, folded from nine legacy shards at .text
- * 0x02021a04..0x02021e40. The run is all of Contents and its Entry: the
- * intrusive bucket list (Unlink/Link/FindData), the pool lifecycle
- * (Create/Clear/Update/C1) and Entry::Reset/Initialise. The span is bounded
- * on both sides by different classes: the OAM run ends at 0x02021a04 below,
- * and dPa_c::level_c::cleanParticleCallback_c::OnUpdate begins at 0x02021e40
- * above. mwccarm emits .text in reverse source order, so the definitions
- * below run ROM-descending; the roster reads ROM-ascending.
+/* Particle::SysTracker::Contents, arm9 .text 0x02021a04..0x02021e40.
  *
- *   Entry::Initialise, Entry::Reset -- single-node setup and teardown.
- *   Contents::Contents .. Update -- pool walk, list upkeep, per-frame step.
- *   Contents::FindData .. Unlink -- bucket lookup and list surgery.
+ * The live-system registry: 64 entries and 16 buckets, hashed by
+ * uniqueID & 0xf. Entry::Initialise and Entry::Reset set one node up
+ * and tear it down. Contents walks the pool, creates a system and
+ * links or unlinks the node.
  *
- * Method and field names on Contents/Entry are the tree's readable
- * inferences (see Particle__SysTracker.h's header comment); offsets,
- * extents and the bucket hash are ROM-proven.
+ * leftovers:
+ * - unk_000 is the next unique id. Create skips 0. The header still
+ *   calls the field unk_000, and dScStage_c embeds that class.
+ * - Entry::Reset clears callbackFlags bit 0 and then sets it. A
+ *   single |= on the field DIFFs Reset.
+ * - Update widens active == 1 to an int before testing it. A plain
+ *   if on entry->active DIFFs Update.
+ * - system->flags.unk_000, unk_006 and unk_00c stay the bitfield
+ *   names on Particle::System.
+ * - data_0209ee74 is the global tracker. This TU does not own it.
  */
 
 #include "Particle__System.h"
