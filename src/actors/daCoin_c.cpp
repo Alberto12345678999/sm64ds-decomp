@@ -7,24 +7,24 @@
  * functions, ending with the three registry factories
  * (daCoin_c_classInit_BLUE_COIN, _RED_COIN, _COIN), each `new daCoin_c()`.
  *
- * One out-of-line destructor is the key function. Under
- * `#pragma defer_codegen off` it emits D1, D0, then a D2 the cartridge does not
- * keep, and .text follows source order, so this file is ROM-ascending.
- * `#pragma opt_common_subs off` is bracketed around InitResources only; the
- * other functions do not need it.
- *
- * Known limits:
- *  - The FL_COIN puzzle manager (actor 0x4f) has no header, so its live-coin
- *    count at +0xd6 stays a raw offset.
- *  - Several bodies keep `(int)ptr + off`, `(long long)` and LAUNDER-style
- *    casts from the byte-matching recovery. The remaining `_ZN` callee names
- *    are deliberate: ReflectAngle and DropShadowRadHeight take Fix12<int>
- *    by value (caller wall), GetClsnPos returns Vector3 by value (wall 6az,
- *    see its definition file), GetWallResult/GetFloorResult have no header
- *    member, and the dBgCh_Lin/dBgPi C1/D1 pairs run on raw char buffers.
- *  - func_ov002_020b18f0 stays a free extern "C": GiveCoins calls it with a
- *    Player, not a coin.
+ * One out-of-line destructor is the key function. Under defer_codegen off
+ * it emits D1, D0, then a D2 the cartridge does not keep, and .text follows
+ * source order. opt_common_subs off is bracketed around InitResources only.
  */
+// leftovers:
+// - The FL_COIN puzzle manager (actor 0x4f) has no header, so its live-coin
+//   count at +0xd6 stays a raw offset.
+// - ReflectAngle and DropShadowRadHeight stay mangled (Fix12<int> by value).
+//   GetClsnPos keeps the free (res, self) spelling: the real member returns
+//   Vector3 by value. GetWallResult and GetFloorResult have no header member.
+//   dBgCh_Lin and dBgPi C1/D1 run on raw char buffers.
+// - func_ov002_020b18f0 stays a free extern "C": GiveCoins passes a Player,
+//   not a coin.
+// - DiscreteNoLava_veneer keeps a local extern. Its definition drops the r0
+//   it forwards.
+// - Several bodies keep `(int)ptr + off` and `(long long)` casts. PMF records
+//   stay on the sinit side, not this TU's .data.
+
 
 #pragma defer_codegen off
 
@@ -1126,12 +1126,7 @@ s32 daCoin_c::OnYoshiTryEat()
     return 4;
 }
 
-/* The three registry factories, one per spawn profile, in ROM order.
- * Reconstructed source-style names: SM64DS proves daCoin_c through RTTI,
- * allocation size, vtable identity, and the BLUE_COIN, RED_COIN and COIN
- * registry profiles; later EAD lineage supplies classInit. Exact original
- * spellings are not preserved. Historical aliases: BlueCoin_Spawn,
- * RedCoin_Spawn, Coin_Spawn. */
+/* Blue, red and yellow coin factories, in ROM order. */
 // @symbol daCoin_c_classInit_BLUE_COIN
 extern "C" daCoin_c *daCoin_c_classInit_BLUE_COIN()
 {
