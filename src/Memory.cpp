@@ -1,10 +1,12 @@
 //cpp
+/* leftovers:
+ * The Heap* forms are defined first. Deferred codegen emits definitions in
+ * reverse source order, and the convenience overloads call those forms.
+ * A null heap selects defaultHeapPtr.
+ */
+/* Memory: allocate and free on a Heap, or on the default heap. */
 #include "Memory.h"
 #include "Heap.h"
-
-// Deferred codegen emits the definitions in reverse order, so the Heap*-taking
-// forms come first in the file; each earlier definition is also the declaration
-// the convenience overloads call.
 
 namespace Memory {
 
