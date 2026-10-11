@@ -1,31 +1,19 @@
 //cpp
-/* dScBoot_c -- the boot scene: the title/language screen with the two-button
- * menu that can erase all save data. Class root
- * fBase_c -> dBase_c -> dScene_c -> dScBoot_c (the ROM's own RTTI name), a
- * leaf. Layout
- * and derivation evidence: include/dScBoot_c.h, notes/scene-provenance.md.
+/* leftovers:
+ * - Source order stays highest address first.
+ * - func_02005348 stays that address. It is a dScBoot_c method:
+ *   Behavior is its only caller, and the body reads mSelectedButton
+ *   and mButtonFlashTimer. symbols.txt has the mangled spelling.
+ * - opt_common_subs off stays file-global. Behavior's countdown
+ *   updates need it.
+ * - The volatile reads and LADR() writes in Behavior stay. A plain
+ *   member read lets the compiler reuse the field address and drops
+ *   an instruction.
+ * - The destructor pair and dScBoot_c_classInit live in src/d_s_boot.cpp.
  *
- * This TU is the class's scene methods: the button-row redraw helper
- * func_02005348, the slot-6 state machine Behavior and the slot-0
- * InitResources, .text 0x02005324..0x02005d94. The destructor pair and the
- * dScBoot_c_classInit factory live in the second TU, src/d_s_boot.cpp.
- * Source order is the reverse of the ROM's -- mwccarm emits .text in
- * reverse source order. Do not reorder.
- *
- * func_02005348 is a real dScBoot_c member: its only caller is Behavior,
- * always on `this`, and the body reads mSelectedButton and mButtonFlashTimer.
- * Kept under its address-derived label; symbols.txt carries the mangled
- * spelling _ZN9dScBoot_c13func_02005348Ev (S33).
- *
- * #pragma opt_common_subs off is file-global last-wins in mwccarm 2004/b56.
- * Behavior's countdown read-modify-writes need it; the other two functions
- * verify with it set, so it costs nothing.
- *
- * Do NOT tidy the `volatile' reads or the LADR() writes in Behavior: they
- * are per-site and measured. Each is a read-modify-write on a countdown,
- * where spelling the member plainly lets mwccarm CSE the field address and
- * costs an instruction. The plain member reads sitting next to them are
- * fine as they are.
+ * dScBoot_c, the title screen. fBase_c, dBase_c, dScene_c, then this
+ * leaf. .text 0x02005324..0x02005d94 is the button redraw, Behavior
+ * and InitResources.
  */
 #include "dScBoot_c.h"
 
