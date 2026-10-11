@@ -4008,41 +4008,9 @@ src/unnamed/arm9/0204/func_0204488c.c:
 src/unnamed/arm9/0204/func_02044b30.c:
     .text start:0x02044b30 end:0x02044dc4
 
-src/unnamed/arm9/0204/func_02044dc4.c:
+src/engine/model/ModelComponents.cpp:
     complete
-    .text start:0x02044dc4 end:0x02044e50
-
-src/unnamed/arm9/0204/func_02044e50.c:
-    complete
-    .text start:0x02044e50 end:0x02044efc
-
-src/unnamed/arm9/0204/func_02044efc.c:
-    complete
-    .text start:0x02044efc end:0x02044f74
-
-src/unnamed/arm9/0204/func_02044f74.c:
-    complete
-    .text start:0x02044f74 end:0x0204504c
-
-src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.cpp:
-    complete
-    .text start:0x0204504c end:0x02045074
-
-src/func_02045074.c:
-    complete
-    .text start:0x02045074 end:0x02045178
-
-src/func_02045178.c:
-    complete
-    .text start:0x02045178 end:0x0204531c
-
-src/unnamed/arm9/0204/func_0204531c.c:
-    complete
-    .text start:0x0204531c end:0x02045394
-
-src/_ZN15ModelComponents11UpdateBonesEP8BCA_Filei.cpp:
-    complete
-    .text start:0x02045394 end:0x020453c0
+    .text start:0x02044dc4 end:0x020453c0
 
 src/func_020453c0.c:
     complete

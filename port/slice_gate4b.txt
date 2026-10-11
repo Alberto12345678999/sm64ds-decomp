@@ -16,7 +16,10 @@ src/_ZN5Model12SetPolygonIDEi.cpp
 # ModelComponents::Render: HOST copy in port/unmatched -- the matched TU
 # passes the material index by leaving it in r1 (see the file header there).
 port/unmatched/ModelComponents_Render.cpp
-src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.cpp
+# ModelComponents::UpdateVertsUsingBones/UpdateBones + the 7 helpers between
+# them are one production translation unit; the four shards this slice used
+# to name separately all live in it.
+src/engine/model/ModelComponents.cpp
 
 # GX upload path (no textual MMIO; VRAM windows come from HAL globals)
 src/engine/gx/GX.cpp
@@ -30,8 +33,6 @@ src/func_02046564.c
 src/MulMat4x3Mat4x3.c
 src/func_020458a8.c
 src/func_02016b24.c
-src/func_02045074.c
-src/func_02045178.c
 src/func_02048234.c
 src/func_02046008.c
 src/MulMat3x3Mat3x3.c
@@ -42,7 +43,6 @@ src/func_0203cc0c.c
 src/func_0204605c.c
 
 # gate 4c additions: the animation path (UpdateBones recursion)
-src/_ZN15ModelComponents11UpdateBonesEP8BCA_Filei.cpp
 src/func_020453c0.c
 src/func_0204547c.c
 src/func_020457f0.c

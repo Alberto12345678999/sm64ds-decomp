@@ -1,0 +1,189 @@
+{
+  "id": "arm9/ModelComponents",
+  "module": "arm9",
+  "source": "src/engine/model/ModelComponents.cpp",
+  "promoted_source": "src/engine/model/ModelComponents.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "contiguous linker run: 0x02044dc4..0x020453c0, 9 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "BOTTOM EDGE: func_02044b30.c (0x02044b30..0x02044dc4) ends exactly where the run begins but is not complete, so Render (0x020443c8) and the helpers under it stay out of scope. TOP EDGE: func_020453c0.c (0x020453c0..0x0204547c) begins exactly where the run ends; it is not ModelComponents-tagged and stays a one-function source, called by UpdateBones.",
+    "NAMESPACE-LOCAL COMPLETE: the run is UpdateVertsUsingBones, UpdateBones and the seven helpers that drive the same DIV/SQRT/matrix registers between them. No other ModelComponents run belongs to this job."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02044dc4",
+      "end": "0x020453c0"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "func_02044dc4",
+      "address": "0x02044dc4",
+      "size": "0x0000008c",
+      "legacy_source": "src/unnamed/arm9/0204/func_02044dc4.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_02044e50",
+      "address": "0x02044e50",
+      "size": "0x000000ac",
+      "legacy_source": "src/unnamed/arm9/0204/func_02044e50.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_02044efc",
+      "address": "0x02044efc",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0204/func_02044efc.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_02044f74",
+      "address": "0x02044f74",
+      "size": "0x000000d8",
+      "legacy_source": "src/unnamed/arm9/0204/func_02044f74.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN15ModelComponents21UpdateVertsUsingBonesEv",
+      "address": "0x0204504c",
+      "size": "0x00000028",
+      "legacy_source": "src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "func_02045074",
+      "address": "0x02045074",
+      "size": "0x00000104",
+      "legacy_source": "src/func_02045074.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "func_02045178",
+      "address": "0x02045178",
+      "size": "0x000001a4",
+      "legacy_source": "src/func_02045178.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_0204531c",
+      "address": "0x0204531c",
+      "size": "0x00000078",
+      "legacy_source": "src/unnamed/arm9/0204/func_0204531c.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "_ZN15ModelComponents11UpdateBonesEP8BCA_Filei",
+      "address": "0x02045394",
+      "size": "0x0000002c",
+      "legacy_source": "src/_ZN15ModelComponents11UpdateBonesEP8BCA_Filei.cpp",
+      "ordinal": 8
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "compiler_only_output": [],
+  "notes": [
+    "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the `main` module is unsegmentable, so there is no create candidate id.",
+    "ModelComponents is the bone/skeleton half of a loaded model; the file takes the class name already used in the tree (include/ModelBase.h), per Juan 2026-10-11. No vtable, RTTI, or emitted data.",
+    "mwccarm emits .text in reverse source order here, so the file runs from the highest address (UpdateBones) down to the lowest (func_02044dc4). Descending order defines every in-span callee before its callers, so only out-of-span callees need extern declarations.",
+    "No helper is promoted: none has ROM method evidence, so all seven stay extern \"C\" under their existing names. The two struct Node layouts are one shared definition (exact prefix, identical accessed offsets); the func_02044efc Matrix4x3 typedef is include/ModelBase.h's."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-ModelComponents/ModelComponents.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 9,
+    "functions_declared": 9,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "link-verified",
+      "scratch": "build/tu/arm9-ModelComponents/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02044dc4",
+        "end": "0x020453c0",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02044dc4",
+          "end": "0x020453c0",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 9
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
+    }
+  }
+}
