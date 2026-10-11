@@ -1,22 +1,15 @@
 //cpp
-/* daPeach_c: Princess Peach in the castle courtyard (ov085, registry
- * profile PEACH_PRINCESS). 25 functions: states, talk, model, factory.
- *
- * Source is ROM-ascending under defer_codegen off (D1 below D0, no D2). Do
- * not reorder. The class is built from five state pairs (InitStateN /
- * StateN); SetState selects one, and each state writes its own code
- * (0..4) into mStateValue.
- *
- * Known limits:
- * - func_ov085_02129f8c keeps its linker name; it is the one function here
- *   the cartridge does not name, so it stays a C-linkage free function taking
- *   `char *`.
- * - ModelAnim::SetAnim is called by its mangled name and the ModelAnim/
- *   dExtFrameCtrl_c views are reached by cast: both take Fix12<int> by value (see
- *   notes/mwccarm-codegen.md 6az).
- * - Offsets 0xa4, 0xac (dActor_c's unk_0a4 / unk_0ac) and 0xe8 (inside the
- *   Model's ModelComponents) are still read raw, through words[] and a cast.
+/* Princess Peach in the castle courtyard (PEACH_PRINCESS). Five state
+ * pairs. SetState selects one, and each state writes 0..4 into mStateValue.
+ * defer_codegen off: D1 then D0, no D2. Source follows the ROM.
  */
+// leftovers:
+// - func_ov085_02129f8c stays a free function taking char *. The cartridge
+//   does not name it, and it is the one body here that is not a method.
+// - ModelAnim::SetAnim stays mangled. The ModelAnim and dExtFrameCtrl_c
+//   views are reached by cast because both take Fix12<int> by value.
+// - Offsets 0xa4 and 0xac are dActor_c's unk_0a4 and unk_0ac. Offset 0xe8
+//   sits inside the model's ModelComponents and is still read through words[].
 #include "common.h"
 #include "daPeach_c.h"
 #include "dActor_c.h"
@@ -391,10 +384,7 @@ void daPeach_c::OnPendingDestroy()
 }
 
 // @symbol _ZN9daPeach_c6RenderEv
-/* THE CALL IS QUALIFIED, AND THAT IS LOAD-BEARING. Model::Render is virtual
- * (slot 5 of _ZTV5Model) and ModelAnim overrides it, so a plain
- * `mModelAnim.Render(0)` emits the vtable dispatch -- three words where the
- * ROM has one `bl`. Naming the base explicitly suppresses the dispatch. */
+/* Qualified Model::Render. ModelAnim overrides the slot. */
 int daPeach_c::Render()
 {
     mModelAnim.Model::Render(0);
@@ -444,19 +434,7 @@ int daPeach_c::InitResources()
 }
 
 // @symbol daPeach_c_classInit
-/* The registry factory behind the PEACH_PRINCESS profile. It allocates 0x36c
- * -- this class's own sizeof -- and installs this class's vtable, the second
- * of the two independent witnesses the header's layout is read from.
- *
- * Reconstructed source-style name: SM64DS proves daPeach_c through RTTI,
- * allocation size, vtable identity and the PEACH_PRINCESS registry profile;
- * later EAD lineage supplies classInit. The exact original spelling is not
- * preserved. Historical alias: PrincessPeach_Spawn.
- *
- * `return new daPeach_c()` is the whole body: the synthesized constructor is
- * what runs dActor_c's base step, stores the vptr and then constructs the
- * ModelAnim at 0xd4, the dExtShadowModel_c at 0x138, the dCcAc_c at 0x160 and the
- * dBgCh_Actr at 0x194, in that order, and `operator new` is fBase_c's. */
+/* PEACH_PRINCESS factory. */
 extern "C" daPeach_c *daPeach_c_classInit(void)
 {
     return new daPeach_c();
