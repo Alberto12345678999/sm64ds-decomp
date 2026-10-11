@@ -1,11 +1,30 @@
 //cpp
-/* Slot1 and Slot3 minigame scenes. The shared compiler unit currently covers
- * ROM 0x0210a8c0..0x0210c9e0. Slot1 Behavior is not yet byte-matching;
- * its initialization and factory retain their existing production owners.
+/* Slot_machine scenes: Slot1 (three-reel slots) and Slot3 (the lamp/reel
+ * variant), ov006 .text 0x0210a8c0..0x0210c9e0.
  *
- * With defer_codegen disabled, optimisation pragmas apply at each function
- * and emitted functions follow source order. Keep the ROM order below.
+ * _ZTS12dScMgSlot1_c 0x0213e5bc. _ZTI12dScMgSlot1_c 0x0213e5a0.
+ * _ZTV12dScMgSlot1_c 0x0213eb40. _ZTS12dScMgSlot3_c 0x0213e5ac.
+ * _ZTI12dScMgSlot3_c 0x0213e588. _ZTV12dScMgSlot3_c 0x0213eaa8.
+ * Slot1: D1 at 0x0210a8c0, D0 at 0x0210a900. Slot3: D1 at 0x0210a954,
+ * D0 at 0x0210a9a8.
+ *
+ * With defer_codegen off the optimizer brackets below bind to the functions
+ * they enclose, and .text is emitted in source order, so this file is
+ * written in ascending ROM order. Keep it.
  */
+
+// leftovers:
+// - Slot1 Behavior is not yet byte-matching; its initialization and factory
+//   keep their existing production owners outside this TU.
+// - The SlotReels view (reel strips, stops, matchSymbol, wilds) is local:
+//   the strip lengths and win state on dScMgSlot1_c.h/dScMgSlot3_c.h are
+//   still pads, so the reel helpers index through it (callers: the Slot3
+//   state-table handlers dispatching through data_ov006_02142bdc).
+// - The ROM PMF constants the Slot3 state table copies (data_ov006_0213e5xx)
+//   come from unlicensed .data, in retail copy order.
+// - OnAimedAtWithEgg/OnAimedAtWithEggReturnVec keep slot-identity names from
+//   the vtable; the OAM SECONDSE symbol read at Render is a link artifact of
+//   the address, not a proven field.
 
 #include "dScMgSlot1_c.h"
 #include "dScMgSlot3_c.h"

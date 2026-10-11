@@ -2,18 +2,26 @@
 /* dScMgRoulette_c -- Mushroom Roulette. Racers are dealt onto a spinning
  * board, the countdown runs, and each racer is paid by the tile it stops on.
  *
+ * _ZTS15dScMgRoulette_c 0x0213e30c. _ZTI15dScMgRoulette_c 0x0213e300.
+ * _ZTV15dScMgRoulette_c 0x0213e39c. The destructor is the key function,
+ * inline in the header: D1 at 0x0210788c, D0 at 0x02107920, no D2.
+ * 40 functions, .text 0x0210788c..0x0210a400.
+ *
  * Functions are in reverse ROM order; do not reorder.
  *
  * common.h comes first so its flat Matrix4x3 wins the MATRIX4X3_DEFINED
  * guard; func_ov006_02107db8 copies a whole matrix and needs that spelling.
- *
- * Leftover: the camera at 0x4660 stays an offset; it lives on the base.
- * Behavior keeps mPhase, mPhaseTimer, mDealIndex, mTableReady (0x53d8),
- * mTilesScored (0x53dc) and the payout clear at 0x53f4 behind H/HA/I,
- * and its meter and slider calls at raw offsets: member form DIFFed
- * there. The slider's PMF stays a local view.
- * Most func_ and data_ helpers are unnamed.
  */
+
+// leftovers:
+// - The camera at 0x4660 stays an offset; it lives on the base.
+// - Behavior keeps mPhase, mPhaseTimer, mDealIndex, mTableReady (0x53d8),
+//   mTilesScored (0x53dc) and the payout clear at 0x53f4 behind the H/HA/I
+//   views, and its meter and slider calls stay at raw offsets: the member
+//   form emits different code there (callers: Behavior and the slider
+//   helper func_ov006_02107db8).
+// - The slider's PMF stays a local view; most func_ and data_ helpers are
+//   unnamed in symbols.txt.
 
 #include "common.h"
 #include "types.h"
