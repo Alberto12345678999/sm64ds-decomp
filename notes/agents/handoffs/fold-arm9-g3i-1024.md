@@ -7,7 +7,7 @@ Both matched byte-identical on first compile; the fold needed one policy row.
 
 ## Shape
 
-- `src/engine/gx/G3i.cpp`, promoted TU claiming `0x02055a64..0x02055dec`.
+- `src/engine/gx/GXS.cpp`, promoted TU claiming `0x02055a64..0x02055dec`.
 - `LookAt_` was a `namespace G3i` dodge in its shard; it is now a real
   `G3i::LookAt_` static-member definition under the new `include/G3i.h`
   (`struct G3i`, all-static — the `G2x.h`/`OAM.h` shape).

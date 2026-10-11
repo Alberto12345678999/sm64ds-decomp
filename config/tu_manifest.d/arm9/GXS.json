@@ -6,237 +6,880 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x02055dec..0x02056870, 29 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start).",
-    "TOP EDGE: src/engine/gx/G3i.cpp ends at 0x02055dec exactly where the run begins -- G3i's TU ends here (see G3i.json); that is a delinks-run boundary, not independent proof of where the GXS TU starts.",
-    "BOTTOM EDGE: src/engine/gx/GX.cpp starts at 0x02056870 exactly where the run ends -- the GX/GXS file pair meets here; the GX TU continues to 0x02056c1c (see GX.json).",
-    "GXS is a namespace (Nitro SDK sub-screen family), not a class: no this, no vtable, no layout -- plain static functions only. GX/GXS are one original file pair, so GX:: members that lie inside this stretch (LoadBG1Char, LoadBG0Char, LoadOBJ, LoadOBJPltt) are owned here too."
+    "contiguous linker run: 0x02053abc..0x02056870, 119 function(s) in ROM-ascending order, including the hand-asm primitive func_020553c0 at 0x020553c0..0x02055454, owned here as a whole-function asm block (shard bytes verbatim, flat C symbol).",
+    "TOP EDGE: GXS::SetGraphicsMode at 0x02053abc opens the run -- below it sits func_02053a90 (0x02053a90..0x02053abc), the tail of the neighbouring stretch, a delinks-run boundary.",
+    "BOTTOM EDGE: src/engine/gx/GX.cpp starts at 0x02056870 exactly where the run ends -- the GX/GXS file pair meets here (see GX.json).",
+    "One TU per ida-hole-classification #2 and notes/mangled-fold-decisions.md (Juan's byte-verified corrections override): GX/GXS bank and mode writers, the G2/G2S readers, G2x, G3X and G3i are one original file; all are namespaces (no this, no vtable, no layout). Merges G2x.cpp, G3X.cpp, G3i.cpp and 78 shards; GX.cpp above stays separate."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x02055dec",
+      "start": "0x02053abc",
       "end": "0x02056870"
     }
   ],
   "functions": [
     {
+      "symbol": "_ZN3GXS15SetGraphicsModeEi",
+      "address": "0x02053abc",
+      "size": "0x0000001c",
+      "legacy_source": "src/_ZN3GXS15SetGraphicsModeEi.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN2GX15SetGraphicsModeEiii",
+      "address": "0x02053ad8",
+      "size": "0x00000074",
+      "legacy_source": "src/_ZN2GX15SetGraphicsModeEiii.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN2GX6DispOnEv",
+      "address": "0x02053b4c",
+      "size": "0x0000004c",
+      "legacy_source": "src/_ZN2GX6DispOnEv.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_02053b98",
+      "address": "0x02053b98",
+      "size": "0x00000048",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053b98.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "func_02053be0",
+      "address": "0x02053be0",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053be0.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "func_02053c10",
+      "address": "0x02053c10",
+      "size": "0x00000030",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053c10.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "func_02053c40",
+      "address": "0x02053c40",
+      "size": "0x0000015c",
+      "legacy_source": "src/func_02053c40.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_02053d9c",
+      "address": "0x02053d9c",
+      "size": "0x00000080",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053d9c.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_02053e1c",
+      "address": "0x02053e1c",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053e1c.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "func_02053e34",
+      "address": "0x02053e34",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053e34.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "func_02053e4c",
+      "address": "0x02053e4c",
+      "size": "0x00000054",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053e4c.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "func_02053ea0",
+      "address": "0x02053ea0",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053ea0.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_02053eb0",
+      "address": "0x02053eb0",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053eb0.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "func_02053ec0",
+      "address": "0x02053ec0",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053ec0.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "func_02053ed0",
+      "address": "0x02053ed0",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053ed0.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "func_02053ee0",
+      "address": "0x02053ee0",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053ee0.c",
+      "ordinal": 15
+    },
+    {
+      "symbol": "func_02053f08",
+      "address": "0x02053f08",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f08.c",
+      "ordinal": 16
+    },
+    {
+      "symbol": "func_02053f30",
+      "address": "0x02053f30",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f30.c",
+      "ordinal": 17
+    },
+    {
+      "symbol": "func_02053f44",
+      "address": "0x02053f44",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f44.c",
+      "ordinal": 18
+    },
+    {
+      "symbol": "func_02053f58",
+      "address": "0x02053f58",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f58.c",
+      "ordinal": 19
+    },
+    {
+      "symbol": "func_02053f6c",
+      "address": "0x02053f6c",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f6c.c",
+      "ordinal": 20
+    },
+    {
+      "symbol": "func_02053f80",
+      "address": "0x02053f80",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f80.c",
+      "ordinal": 21
+    },
+    {
+      "symbol": "func_02053f94",
+      "address": "0x02053f94",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053f94.c",
+      "ordinal": 22
+    },
+    {
+      "symbol": "func_02053fa8",
+      "address": "0x02053fa8",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053fa8.c",
+      "ordinal": 23
+    },
+    {
+      "symbol": "func_02053fbc",
+      "address": "0x02053fbc",
+      "size": "0x00000024",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053fbc.c",
+      "ordinal": 24
+    },
+    {
+      "symbol": "func_02053fe0",
+      "address": "0x02053fe0",
+      "size": "0x00000024",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053fe0.c",
+      "ordinal": 25
+    },
+    {
+      "symbol": "func_02054004",
+      "address": "0x02054004",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054004.c",
+      "ordinal": 26
+    },
+    {
+      "symbol": "func_02054018",
+      "address": "0x02054018",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054018.c",
+      "ordinal": 27
+    },
+    {
+      "symbol": "DisableVramBanks",
+      "address": "0x0205402c",
+      "size": "0x000000c4",
+      "legacy_source": "src/DisableVramBanks.c",
+      "ordinal": 28
+    },
+    {
+      "symbol": "func_020540f0",
+      "address": "0x020540f0",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_020540f0.c",
+      "ordinal": 29
+    },
+    {
+      "symbol": "func_02054118",
+      "address": "0x02054118",
+      "size": "0x00000028",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054118.c",
+      "ordinal": 30
+    },
+    {
+      "symbol": "func_02054140",
+      "address": "0x02054140",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054140.c",
+      "ordinal": 31
+    },
+    {
+      "symbol": "func_02054154",
+      "address": "0x02054154",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054154.c",
+      "ordinal": 32
+    },
+    {
+      "symbol": "func_02054168",
+      "address": "0x02054168",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054168.c",
+      "ordinal": 33
+    },
+    {
+      "symbol": "func_0205417c",
+      "address": "0x0205417c",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205417c.c",
+      "ordinal": 34
+    },
+    {
+      "symbol": "func_02054190",
+      "address": "0x02054190",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054190.c",
+      "ordinal": 35
+    },
+    {
+      "symbol": "func_020541a4",
+      "address": "0x020541a4",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_020541a4.c",
+      "ordinal": 36
+    },
+    {
+      "symbol": "func_020541b8",
+      "address": "0x020541b8",
+      "size": "0x00000038",
+      "legacy_source": "src/unnamed/arm9/0205/func_020541b8.c",
+      "ordinal": 37
+    },
+    {
+      "symbol": "_ZN2GX23SetBankForSubOBJExtPlttEt",
+      "address": "0x020541f0",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN2GX23SetBankForSubOBJExtPlttEt.cpp",
+      "ordinal": 38
+    },
+    {
+      "symbol": "_ZN2GX22SetBankForSubBGExtPlttEt",
+      "address": "0x0205427c",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN2GX22SetBankForSubBGExtPlttEt.cpp",
+      "ordinal": 39
+    },
+    {
+      "symbol": "_ZN2GX16SetBankForSubOBJEt",
+      "address": "0x02054308",
+      "size": "0x0000007c",
+      "legacy_source": "src/_ZN2GX16SetBankForSubOBJEt.cpp",
+      "ordinal": 40
+    },
+    {
+      "symbol": "_ZN2GX15SetBankForSubBGEt",
+      "address": "0x02054384",
+      "size": "0x000000ac",
+      "legacy_source": "src/_ZN2GX15SetBankForSubBGEt.cpp",
+      "ordinal": 41
+    },
+    {
+      "symbol": "func_02054430",
+      "address": "0x02054430",
+      "size": "0x00000020",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054430.c",
+      "ordinal": 42
+    },
+    {
+      "symbol": "_ZN2GX17SetBankForTexPlttEt",
+      "address": "0x02054450",
+      "size": "0x000000f4",
+      "legacy_source": "src/_ZN2GX17SetBankForTexPlttEt.cpp",
+      "ordinal": 43
+    },
+    {
+      "symbol": "_ZN2GX13SetBankForTexEt",
+      "address": "0x02054544",
+      "size": "0x00000204",
+      "legacy_source": "src/_ZN2GX13SetBankForTexEt.cpp",
+      "ordinal": 44
+    },
+    {
+      "symbol": "func_02054748",
+      "address": "0x02054748",
+      "size": "0x00000114",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054748.c",
+      "ordinal": 45
+    },
+    {
+      "symbol": "_ZN2GX13SetBankForOBJEt",
+      "address": "0x0205485c",
+      "size": "0x0000016c",
+      "legacy_source": "src/_ZN2GX13SetBankForOBJEt.cpp",
+      "ordinal": 46
+    },
+    {
+      "symbol": "_ZN2GX12SetBankForBGEt",
+      "address": "0x020549c8",
+      "size": "0x000002b8",
+      "legacy_source": "src/_ZN2GX12SetBankForBGEt.cpp",
+      "ordinal": 47
+    },
+    {
+      "symbol": "Vram__Map",
+      "address": "0x02054c80",
+      "size": "0x000000b8",
+      "legacy_source": "src/Vram__Map.c",
+      "ordinal": 48
+    },
+    {
+      "symbol": "_ZN3G2S13GetBG3CharPtrEv",
+      "address": "0x02054d38",
+      "size": "0x00000050",
+      "legacy_source": "src/_ZN3G2S13GetBG3CharPtrEv.cpp",
+      "ordinal": 49
+    },
+    {
+      "symbol": "func_02054d88",
+      "address": "0x02054d88",
+      "size": "0x00000060",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054d88.c",
+      "ordinal": 50
+    },
+    {
+      "symbol": "_ZN3G2S13GetBG2CharPtrEv",
+      "address": "0x02054de8",
+      "size": "0x00000048",
+      "legacy_source": "src/_ZN3G2S13GetBG2CharPtrEv.cpp",
+      "ordinal": 51
+    },
+    {
+      "symbol": "_ZN2G213GetBG2CharPtrEv",
+      "address": "0x02054e30",
+      "size": "0x00000058",
+      "legacy_source": "src/_ZN2G213GetBG2CharPtrEv.cpp",
+      "ordinal": 52
+    },
+    {
+      "symbol": "_ZN3G2S13GetBG1CharPtrEv",
+      "address": "0x02054e88",
+      "size": "0x00000020",
+      "legacy_source": "src/_ZN3G2S13GetBG1CharPtrEv.cpp",
+      "ordinal": 53
+    },
+    {
+      "symbol": "func_02054ea8",
+      "address": "0x02054ea8",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054ea8.c",
+      "ordinal": 54
+    },
+    {
+      "symbol": "_ZN3G2S13GetBG0CharPtrEv",
+      "address": "0x02054edc",
+      "size": "0x00000020",
+      "legacy_source": "src/_ZN3G2S13GetBG0CharPtrEv.cpp",
+      "ordinal": 55
+    },
+    {
+      "symbol": "func_02054efc",
+      "address": "0x02054efc",
+      "size": "0x00000034",
+      "legacy_source": "src/unnamed/arm9/0205/func_02054efc.c",
+      "ordinal": 56
+    },
+    {
+      "symbol": "_ZN3G2S12GetBG3ScrPtrEv",
+      "address": "0x02054f30",
+      "size": "0x00000080",
+      "legacy_source": "src/_ZN3G2S12GetBG3ScrPtrEv.cpp",
+      "ordinal": 57
+    },
+    {
+      "symbol": "_ZN2G212GetBG3ScrPtrEv",
+      "address": "0x02054fb0",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN2G212GetBG3ScrPtrEv.cpp",
+      "ordinal": 58
+    },
+    {
+      "symbol": "_ZN3G2S12GetBG2ScrPtrEv",
+      "address": "0x0205503c",
+      "size": "0x00000080",
+      "legacy_source": "src/_ZN3G2S12GetBG2ScrPtrEv.cpp",
+      "ordinal": 59
+    },
+    {
+      "symbol": "_ZN2G212GetBG2ScrPtrEv",
+      "address": "0x020550bc",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN2G212GetBG2ScrPtrEv.cpp",
+      "ordinal": 60
+    },
+    {
+      "symbol": "_ZN3G2S12GetBG1ScrPtrEv",
+      "address": "0x02055148",
+      "size": "0x00000020",
+      "legacy_source": "src/_ZN3G2S12GetBG1ScrPtrEv.cpp",
+      "ordinal": 61
+    },
+    {
+      "symbol": "_ZN2G212GetBG1ScrPtrEv",
+      "address": "0x02055168",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN2G212GetBG1ScrPtrEv.cpp",
+      "ordinal": 62
+    },
+    {
+      "symbol": "_ZN3G2S12GetBG0ScrPtrEv",
+      "address": "0x0205519c",
+      "size": "0x00000020",
+      "legacy_source": "src/_ZN3G2S12GetBG0ScrPtrEv.cpp",
+      "ordinal": 63
+    },
+    {
+      "symbol": "_ZN2G212GetBG0ScrPtrEv",
+      "address": "0x020551bc",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN2G212GetBG0ScrPtrEv.cpp",
+      "ordinal": 64
+    },
+    {
+      "symbol": "func_020551f0",
+      "address": "0x020551f0",
+      "size": "0x00000048",
+      "legacy_source": "src/unnamed/arm9/0205/func_020551f0.c",
+      "ordinal": 65
+    },
+    {
+      "symbol": "_ZN3G2x18SetBlendBrightnessEPVtts",
+      "address": "0x02055238",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZN3G2x18SetBlendBrightnessEPVtts.cpp",
+      "ordinal": 66
+    },
+    {
+      "symbol": "_ZN3G2x13SetBlendAlphaEPVttttj",
+      "address": "0x0205525c",
+      "size": "0x0000001c",
+      "legacy_source": "src/_ZN3G2x13SetBlendAlphaEPVttttj.cpp",
+      "ordinal": 67
+    },
+    {
+      "symbol": "_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii",
+      "address": "0x02055278",
+      "size": "0x000000b4",
+      "legacy_source": "src/_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii.cpp",
+      "ordinal": 68
+    },
+    {
+      "symbol": "func_0205532c",
+      "address": "0x0205532c",
+      "size": "0x00000040",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205532c.c",
+      "ordinal": 69
+    },
+    {
+      "symbol": "Geometry_MatrixMultiply3x3",
+      "address": "0x0205536c",
+      "size": "0x0000001c",
+      "legacy_source": "src/Geometry_MatrixMultiply3x3.c",
+      "ordinal": 70
+    },
+    {
+      "symbol": "func_02055388",
+      "address": "0x02055388",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02055388.c",
+      "ordinal": 71
+    },
+    {
+      "symbol": "func_020553a4",
+      "address": "0x020553a4",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/arm9/0205/func_020553a4.c",
+      "ordinal": 72
+    },
+    {
+      "symbol": "func_020553c0",
+      "address": "0x020553c0",
+      "size": "0x00000094",
+      "legacy_source": "src/unnamed/arm9/0205/func_020553c0.c",
+      "ordinal": 73
+    },
+    {
+      "symbol": "func_02055454",
+      "address": "0x02055454",
+      "size": "0x00000010",
+      "legacy_source": "src/unnamed/arm9/0205/func_02055454.c",
+      "ordinal": 74
+    },
+    {
+      "symbol": "func_02055464",
+      "address": "0x02055464",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02055464.c",
+      "ordinal": 75
+    },
+    {
+      "symbol": "func_02055490",
+      "address": "0x02055490",
+      "size": "0x0000002c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02055490.c",
+      "ordinal": 76
+    },
+    {
+      "symbol": "func_020554bc",
+      "address": "0x020554bc",
+      "size": "0x000000b8",
+      "legacy_source": "src/func_020554bc.c",
+      "ordinal": 77
+    },
+    {
+      "symbol": "_ZN3G3X13SetClearColorEtiiib",
+      "address": "0x02055574",
+      "size": "0x00000030",
+      "legacy_source": "src/_ZN3G3X13SetClearColorEtiiib.cpp",
+      "ordinal": 78
+    },
+    {
+      "symbol": "func_020555a4",
+      "address": "0x020555a4",
+      "size": "0x00000018",
+      "legacy_source": "src/func_020555a4.c",
+      "ordinal": 79
+    },
+    {
+      "symbol": "_ZN3G3X11SetFogTableEPv",
+      "address": "0x020555bc",
+      "size": "0x00000014",
+      "legacy_source": "src/_ZN3G3X11SetFogTableEPv.cpp",
+      "ordinal": 80
+    },
+    {
+      "symbol": "_ZN3G3X6SetFogEbiii",
+      "address": "0x020555d0",
+      "size": "0x00000054",
+      "legacy_source": "src/_ZN3G3X6SetFogEbiii.cpp",
+      "ordinal": 81
+    },
+    {
+      "symbol": "func_02055624",
+      "address": "0x02055624",
+      "size": "0x000000ac",
+      "legacy_source": "src/unnamed/arm9/0205/func_02055624.c",
+      "ordinal": 82
+    },
+    {
+      "symbol": "func_020556d0",
+      "address": "0x020556d0",
+      "size": "0x000000b0",
+      "legacy_source": "src/unnamed/arm9/0205/func_020556d0.c",
+      "ordinal": 83
+    },
+    {
+      "symbol": "func_02055780",
+      "address": "0x02055780",
+      "size": "0x00000034",
+      "legacy_source": "src/func_02055780.c",
+      "ordinal": 84
+    },
+    {
+      "symbol": "func_020557b4",
+      "address": "0x020557b4",
+      "size": "0x00000088",
+      "legacy_source": "src/unnamed/arm9/0205/func_020557b4.c",
+      "ordinal": 85
+    },
+    {
+      "symbol": "func_0205583c",
+      "address": "0x0205583c",
+      "size": "0x0000015c",
+      "legacy_source": "src/unnamed/arm9/0205/func_0205583c.c",
+      "ordinal": 86
+    },
+    {
+      "symbol": "func_02055998",
+      "address": "0x02055998",
+      "size": "0x000000cc",
+      "legacy_source": "src/unnamed/arm9/0205/func_02055998.c",
+      "ordinal": 87
+    },
+    {
+      "symbol": "_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3",
+      "address": "0x02055a64",
+      "size": "0x00000198",
+      "legacy_source": "src/_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3.cpp",
+      "ordinal": 88
+    },
+    {
+      "symbol": "_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3",
+      "address": "0x02055bfc",
+      "size": "0x000001f0",
+      "legacy_source": "src/_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3.c",
+      "ordinal": 89
+    },
+    {
       "symbol": "_ZN3GXS17EndLoadOBJExtPlttEv",
       "address": "0x02055dec",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp",
-      "ordinal": 0
+      "ordinal": 90
     },
     {
       "symbol": "_ZN3GXS14LoadOBJExtPlttEPKvjj",
       "address": "0x02055e38",
       "size": "0x00000074",
       "legacy_source": "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp",
-      "ordinal": 1
+      "ordinal": 91
     },
     {
       "symbol": "_ZN3GXS19BeginLoadOBJExtPlttEv",
       "address": "0x02055eac",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp",
-      "ordinal": 2
+      "ordinal": 92
     },
     {
       "symbol": "_ZN3GXS16EndLoadBGExtPlttEv",
       "address": "0x02055ed0",
       "size": "0x0000004c",
       "legacy_source": "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp",
-      "ordinal": 3
+      "ordinal": 93
     },
     {
       "symbol": "_ZN3GXS13LoadBGExtPlttEPKvjj",
       "address": "0x02055f1c",
       "size": "0x00000074",
       "legacy_source": "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp",
-      "ordinal": 4
+      "ordinal": 94
     },
     {
       "symbol": "_ZN3GXS18BeginLoadBGExtPlttEv",
       "address": "0x02055f90",
       "size": "0x00000024",
       "legacy_source": "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp",
-      "ordinal": 5
+      "ordinal": 95
     },
     {
       "symbol": "func_02055fb4",
       "address": "0x02055fb4",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02055fb4.c",
-      "ordinal": 6
+      "ordinal": 96
     },
     {
       "symbol": "func_02056014",
       "address": "0x02056014",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056014.c",
-      "ordinal": 7
+      "ordinal": 97
     },
     {
       "symbol": "func_02056074",
       "address": "0x02056074",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056074.c",
-      "ordinal": 8
+      "ordinal": 98
     },
     {
       "symbol": "func_020560d4",
       "address": "0x020560d4",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_020560d4.c",
-      "ordinal": 9
+      "ordinal": 99
     },
     {
       "symbol": "_ZN3GXS11LoadBG1CharEPKvjj",
       "address": "0x02056134",
       "size": "0x00000060",
       "legacy_source": "src/_ZN3GXS11LoadBG1CharEPKvjj.cpp",
-      "ordinal": 10
+      "ordinal": 100
     },
     {
       "symbol": "_ZN2GX11LoadBG1CharEPKvjj",
       "address": "0x02056194",
       "size": "0x00000060",
       "legacy_source": "src/_ZN2GX11LoadBG1CharEPKvjj.cpp",
-      "ordinal": 11
+      "ordinal": 101
     },
     {
       "symbol": "_ZN3GXS11LoadBG0CharEPKvjj",
       "address": "0x020561f4",
       "size": "0x00000060",
       "legacy_source": "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp",
-      "ordinal": 12
+      "ordinal": 102
     },
     {
       "symbol": "_ZN2GX11LoadBG0CharEPKvjj",
       "address": "0x02056254",
       "size": "0x00000060",
       "legacy_source": "src/_ZN2GX11LoadBG0CharEPKvjj.cpp",
-      "ordinal": 13
+      "ordinal": 103
     },
     {
       "symbol": "func_020562b4",
       "address": "0x020562b4",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_020562b4.c",
-      "ordinal": 14
+      "ordinal": 104
     },
     {
       "symbol": "func_02056314",
       "address": "0x02056314",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056314.c",
-      "ordinal": 15
+      "ordinal": 105
     },
     {
       "symbol": "func_02056374",
       "address": "0x02056374",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056374.c",
-      "ordinal": 16
+      "ordinal": 106
     },
     {
       "symbol": "func_020563d4",
       "address": "0x020563d4",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_020563d4.c",
-      "ordinal": 17
+      "ordinal": 107
     },
     {
       "symbol": "func_02056434",
       "address": "0x02056434",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056434.c",
-      "ordinal": 18
+      "ordinal": 108
     },
     {
       "symbol": "func_02056494",
       "address": "0x02056494",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056494.c",
-      "ordinal": 19
+      "ordinal": 109
     },
     {
       "symbol": "func_020564f4",
       "address": "0x020564f4",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_020564f4.c",
-      "ordinal": 20
+      "ordinal": 110
     },
     {
       "symbol": "func_02056554",
       "address": "0x02056554",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_02056554.c",
-      "ordinal": 21
+      "ordinal": 111
     },
     {
       "symbol": "func_020565b4",
       "address": "0x020565b4",
       "size": "0x00000060",
       "legacy_source": "src/unnamed/arm9/0205/func_020565b4.c",
-      "ordinal": 22
+      "ordinal": 112
     },
     {
       "symbol": "_ZN2GX7LoadOBJEPKvjj",
       "address": "0x02056614",
       "size": "0x00000060",
       "legacy_source": "src/_ZN2GX7LoadOBJEPKvjj.cpp",
-      "ordinal": 23
+      "ordinal": 113
     },
     {
       "symbol": "func_02056674",
       "address": "0x02056674",
       "size": "0x00000068",
       "legacy_source": "src/func_02056674.c",
-      "ordinal": 24
+      "ordinal": 114
     },
     {
       "symbol": "func_020566dc",
       "address": "0x020566dc",
       "size": "0x0000005c",
       "legacy_source": "src/func_020566dc.c",
-      "ordinal": 25
+      "ordinal": 115
     },
     {
       "symbol": "_ZN3GXS11LoadOBJPlttEPKvjj",
       "address": "0x02056738",
       "size": "0x00000068",
       "legacy_source": "src/_ZN3GXS11LoadOBJPlttEPKvjj.cpp",
-      "ordinal": 26
+      "ordinal": 116
     },
     {
       "symbol": "_ZN2GX11LoadOBJPlttEPKvjj",
       "address": "0x020567a0",
       "size": "0x00000068",
       "legacy_source": "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp",
-      "ordinal": 27
+      "ordinal": 117
     },
     {
       "symbol": "_ZN3GXS10LoadBGPlttEPKvjj",
       "address": "0x02056808",
       "size": "0x00000068",
       "legacy_source": "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp",
-      "ordinal": 28
+      "ordinal": 118
     }
   ],
   "data": [],
   "bss": [],
-  "compiler_only_output": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "reason": "LookAt_ declares three stack Vector3s; types.h gives Vector3 a non-trivial (empty) destructor, so the front end emits D1 in this TU but elides every call site. The cartridge body (four bytes, bx lr) has a configured home at 0x020072c0 owned by src/_ZN7Vector3D1Ev.cpp, so this emitted copy deadstrips as a duplicate."
+    }
+  ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-GXS/GXS.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 29,
-    "functions_declared": 29,
+    "functions_matched": 119,
+    "functions_declared": 119,
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": [],
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        150
+      ],
       "data": [],
       "dataExternalized": []
     },
@@ -246,6 +889,79 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-link-verified",
+      "scratch": "build/tu/arm9-GXS/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02053abc",
+        "end": "0x02056870",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02053abc",
+          "end": "0x02056870",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 119
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   }
 }

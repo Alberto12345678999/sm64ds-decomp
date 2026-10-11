@@ -171,8 +171,8 @@ had no alternative:
 
 ```sh
 src/actors/dScene_c.cpp (ResetHardwareRegisters)  74 volatile hits, all 0x0400xxxx
-src/_ZN2GX13SetBankForTexEt.cpp                  25 volatile hits, all VRAM banks
-src/engine/gx/G2x.cpp (SetBGyAffine)              the register block is a PARAMETER
+src/engine/gx/GXS.cpp#_ZN2GX13SetBankForTexEt                  25 volatile hits, all VRAM banks
+src/engine/gx/GXS.cpp (SetBGyAffine)              the register block is a PARAMETER
 ```
 
 A reconstructed TU that absorbs any of those inherits the failure for the whole
