@@ -13,20 +13,33 @@
  * carries the class's vtable and RTTI chain; the manifest licenses those
  * against their ROM homes (config/tu_manifest.d/ov002/dMap_c.json).
  *
- * Known limits:
- * - Behavior keeps its goto structure. The labels are named for the offset in
- *   the ROM function (L274 is +0x274, L2a4 is +0x2a4).
- * - Player, Obj and Vtbl below are file-local slices of the objects Render and
- *   Behavior touch, not the real classes. The shared world state they read
- *   (the data_0209f... player table, camera and flags) keeps its address names.
- * - The OAM, G2x and Vec3 helpers are reached through C-linkage or
- *   hand-mangled externs, and the two projection helpers are extern "C"
- *   definitions.
+ * leftovers:
+ * - Behavior keeps its goto structure, and InitResources keeps one; the
+ *   labels are named for the offset in the ROM function (L274 is +0x274).
+ * - Vtbl/VtblOwner stay a file-local slice: the object data_0209f5bc points
+ *   at is reached through vtable slot 5 alone (dMeter_c cuts the same slice).
+ * - The camera's follow word is mTargetPlayer in dCamera_c.h, typed s32;
+ *   this TU reads it as the object the map follows. (Vector3*)&o->mPosX is
+ *   the shared-header leftover: dActor_c has no Pos() accessor.
+ * - focusPos/playerPos keep their (int)o + 0x5c integer launders: the
+ *   ROM forms the copy source with `add r, o, #0x5c` plus three offset
+ *   loads; a *(Vector3*)&o->mPosX pun uses [r8,#0x5c] addressing and
+ *   shortens the copy.
+ * - GetMinimapID's extern keeps GetMinimapID.c's own `struct Obj` slice
+ *   spelling; the Obj tag is only a forward here so the declaration agrees.
+ * - struct Vec3 stays the launder for the two projection helpers; their
+ *   Fix12-by-value signatures keep measured scalar extern "C" spellings
+ *   (the Fix12 wall -- member decls would home the register arguments).
+ * - The OAM, G2x and Vec3 helpers stay on C-linkage or hand-mangled
+ *   externs for the same reason.
  */
 #include "dMap_c.h"
 #include "decl_common.h"
 #include "types.h"
 #include "PlayerInput.h"
+#include "Player.h"
+#include "dActor_c.h"
+#include "dCamera_c.h"
 
 #pragma defer_codegen off
 /* Codegen is deferred by default in mwccarm 2004/b56, which makes its
@@ -50,31 +63,9 @@ struct Event {
     static int GetBit(unsigned int bit);
 };
 
-/* The slice of Player that Render reads. */
-struct Player {
-    int unk0, unk4;
-    int unk8;                   // 0x008
-    u8 padC[0x8e - 0xc];
-    s16 unk8E;                  // 0x08e
-    u8 pad90[0x6c8 - 0x90];
-    u16 unk6C8;                 // 0x6c8
-    u8 pad6CA[0x6d9 - 0x6ca];
-    u8 unk6D9;                  // 0x6d9
-    int HasNoCap();
-};
-
-struct Obj {
-    char pad0[0x5c];
-    Vector3 pos;        /* 0x5c */
-    char pad1[0xcc - 0x68];
-    s8 f0cc;            /* 0xcc */
-    char pad2[0x110 - 0xcd];
-    void *f110;         /* 0x110 */
-    char pad3[0x154 - 0x114];
-    s32 f154;           /* 0x154 */
-    char pad4[0x17c - 0x158];
-    s16 f17c;           /* 0x17c */
-};
+/* Forward tag for GetMinimapID's parameter: its own file cuts a `struct Obj`
+   slice, and this declaration must spell the param the same way. */
+struct Obj;
 
 struct Vtbl { s32 (*f[8])(void *); };
 
@@ -105,7 +96,7 @@ extern u8 data_0209f294;
 extern u8 data_0209f250;
 extern u8 data_0209f2d4;
 extern u8 data_0209f2d8;
-extern Player *data_0209f394[];
+extern void *data_0209f394[];
 extern void *_ZN3OAM18MM_VS_PLAYER_ICONSE[];
 extern s16 data_02082214[];
 extern char _ZN3OAM8MM_ARROWE[];
@@ -126,7 +117,7 @@ extern u32 data_020a0db0;
 extern void *_ZN3OAM12MM_STAR_KEYSE[];
 extern char _ZN3OAM13MM_SPIKE_BOMBE[];
 extern VtblOwner *data_0209f5bc;
-extern Obj  *data_0209f318;
+extern void *data_0209f318;
 extern u32  data_0209b454;
 extern s32  data_0209d4b0;
 extern u8   data_0209f350[];
@@ -140,16 +131,15 @@ extern u8   data_0209f4a9[];
 extern u8   data_0209f4ae[];
 extern u8   data_ov002_0211114c;
 extern u8   data_ov002_02111144;
-extern Obj  *data_0209f40c[];
-extern Obj  *data_0209f3e8[];
-extern Obj  *data_0209f3a4[];
-extern s32  _ZN6Player12Unk_020ca8f8Ev(Obj *p);
+extern int data_0209f40c[];
+extern int data_0209f3e8[];
+extern int data_0209f3a4[];
 extern void SetSubBg2Offset(s32 a, s32 b);
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern void _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(Vector3 *a, Vector3 *b, int c, s16 d, Vector3 *e);
 extern void _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(Vector3 *a, Vector3 *b, int c, s16 d, Vector3 *e);
 extern void AddVec3(Vector3 *a, Vector3 *b, Vector3 *c);
-extern s32  GetMinimapID(Obj *obj, s32 arg);
+extern s32  GetMinimapID(struct Obj *obj, s32 arg);
 extern s32  GetMinimapScale(s32 idx);
 extern void UpdateMinimap(s32 *a, s32 b, s32 c, s32 d, s32 e);
 void Vec3_DivScalarInPlace(struct Vec3* v, int s);
@@ -405,14 +395,14 @@ int dMap_c::Render()
     u8 idx = data_0209f250;
 
     if ((u8)(flag294 | (flag2c4 | flag20c)) == 0 || !(data_0209caa0[2] & 0x80) || (flag20c != 0 && (u32)data_0209f2d4 < 3)) {
-        Player *player = data_0209f394[idx];
+        Player *player = (Player *)data_0209f394[idx];
         int vs = (data_0209f2d8 == 1);
         if (vs != 0) {
             _ZN3OAM9RenderSubEP7OamAttriiii(
-                _ZN3OAM18MM_VS_PLAYER_ICONSE[player->unk8 + idx * 4],
+                _ZN3OAM18MM_VS_PLAYER_ICONSE[player->param1 + idx * 4],
                 this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
             {
-                u16 ang = (s16)this->mAngle + ((player->unk8E ^ 0xffff) + 0x8001);
+                u16 ang = (s16)this->mAngle + ((player->mAngleY ^ 0xffff) + 0x8001);
                 int angIdx = ((u16)(s16)ang >> 4) * 2;
                 s16 sn = data_02082214[angIdx + 1];
                 this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
@@ -432,7 +422,7 @@ int dMap_c::Render()
                             if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
                                     _ZN3OAM9RenderSubEP7OamAttriiii(
-                                        _ZN3OAM20MM_VS_PLAYER_ICONS_SE[j + data_0209f394[i]->unk8],
+                                        _ZN3OAM20MM_VS_PLAYER_ICONS_SE[j + ((Player *)data_0209f394[i])->param1],
                                         x, y, -1, 2);
                                 }
                             }
@@ -441,16 +431,16 @@ int dMap_c::Render()
                 }
             }
         } else {
-            u16 flickerTimer = player->unk6C8;
+            u16 flickerTimer = player->mTeleportTimer;
             /* While the timer is nonzero the icon is skipped on alternate
              * spans of 10. */
             if (flickerTimer == 0 || ((flickerTimer / 10) & 1) == 0) {
                 if (this->mInIntroCutscene == 0) {
                     int icon;
                     if (player->HasNoCap() != 0)
-                        icon = player->unk6D9 * 4 + 3;
+                        icon = player->mCharacter * 4 + 3;
                     else
-                        icon = player->unk8 + player->unk6D9 * 4;
+                        icon = player->param1 + player->mCharacter * 4;
                     _ZN3OAM9RenderSubEP7OamAttriiii(_ZN3OAM15MM_PLAYER_ICONSE[icon],
                         this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
                 }
@@ -459,9 +449,9 @@ int dMap_c::Render()
                     if (s != 0) {
                         u16 ang;
                         if (s == 1)
-                            ang = (player->unk8E ^ 0xffff) + 0x8001;
+                            ang = (player->mAngleY ^ 0xffff) + 0x8001;
                         else
-                            ang = (s16)this->mAngle + ((player->unk8E ^ 0xffff) + 0x8001);
+                            ang = (s16)this->mAngle + ((player->mAngleY ^ 0xffff) + 0x8001);
                         {
                             int angIdx = ((u16)(s16)ang >> 4) * 2;
                             s16 sn = data_02082214[angIdx + 1];
@@ -584,23 +574,23 @@ int dMap_c::Render()
  */
 s32 dMap_c::Behavior()
 {
-    Obj *focus;
+    dActor_c *focus;
     Vector3 miniPos, focusPos, clampedWorld, playerPos, scrollDelta;
     Vector3 *focusPosSrc;
-    Obj *player;
-    Obj *cam;
+    Player *player;
+    dCamera_c *cam;
     u32 flagsOr;
     s32 i;
 
-    cam = data_0209f318;
-    player = (Obj *)data_0209f394[data_0209f250];
+    cam = (dCamera_c *)data_0209f318;
+    player = (Player *)data_0209f394[data_0209f250];
     focus = 0;
 
     if (data_0209f5bc->vt->f[5](data_0209f5bc) == 0) goto L274;
     if (data_0209b454 & 0x40000000) goto L274;
     if (data_0209d4b0 != 0) goto L274;
     if (data_0209f350[data_0209f250] != 0) goto L274;
-    if (_ZN6Player12Unk_020ca8f8Ev(player) == 1) goto L274;
+    if (player->Unk_020ca8f8() == 1) goto L274;
 
     if (this->mTouchCircleTimer != 0) {
         this->mTouchCircleTimer -= data_0208ee44;
@@ -682,15 +672,15 @@ L360:
 L3a4:
     if (data_0209d660 != 0) goto L3e0;
     {
-        s32 f = cam->f154;
+        s32 f = cam->mFlags;
         if (f & 0xc000) goto L3e0;
         if (f & 8) goto L3e0;
     }
-    this->mAngle = (s16)(cam->f17c & 0xffe0);
+    this->mAngle = (s16)(cam->mAngleY & 0xffe0);
 
 L3e0:
-    /* The object at camera+0x110 is what the map follows. */
-    focus = (Obj *)cam->f110;
+    /* The camera's target player is what the map follows. */
+    focus = (dActor_c *)cam->mTargetPlayer;
 
 L3e8:
     if (focus == 0) goto Lae4;
@@ -775,7 +765,7 @@ L738:
     /* Project each object list onto the map. A missing object gets map id -1. Stars whose
      * kind byte in data_0209f37c is 4 are the ones Render draws as MM_RED_COIN. */
     for (i = 0; i < 4; i++) {
-        Obj *o = (Obj *)data_0209f394[i];
+        Player *o = (Player *)data_0209f394[i];
         if (o != 0) {
             playerPos = *(Vector3 *)(((int)o + 0x5c));
             FixTHIPaintingRoomPos(playerPos);
@@ -783,22 +773,22 @@ L738:
             this->mPlayerIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mPlayerIconY[i] = (miniPos.z + 0x800) >> 12;
             if (i != data_0209f250)
-                this->mPlayerMapIDs[i] = (s8)GetMinimapID(o, -1);
+                this->mPlayerMapIDs[i] = (s8)GetMinimapID((Obj *)o, -1);
             else
-                this->mPlayerMapIDs[i] = (s8)GetMinimapID(o, data_ov002_02111148);
+                this->mPlayerMapIDs[i] = (s8)GetMinimapID((Obj *)o, data_ov002_02111148);
         } else {
             this->mPlayerMapIDs[i] = -1;
         }
     }
 
     for (i = 0; i < 0xc; i++) {
-        Obj *o = data_0209f40c[i];
+        dActor_c *o = (dActor_c *)data_0209f40c[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
             this->mStarIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mStarIconY[i] = (miniPos.z + 0x800) >> 12;
             if (data_0209f37c[i] != 4)
-                this->mStarMapIDs[i] = (s8)GetMinimapID(o, -1);
+                this->mStarMapIDs[i] = (s8)GetMinimapID((Obj *)o, -1);
             else
                 this->mStarMapIDs[i] = 1;
         } else {
@@ -807,12 +797,12 @@ L738:
     }
 
     for (i = 0; i < 9; i++) {
-        Obj *o = data_0209f3e8[i];
+        dActor_c *o = (dActor_c *)data_0209f3e8[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
             this->mCapIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mCapIconY[i] = (miniPos.z + 0x800) >> 12;
-            this->mCapMapIDs[i] = (s8)GetMinimapID(o, -1);
+            this->mCapMapIDs[i] = (s8)GetMinimapID((Obj *)o, -1);
         } else {
             this->mCapMapIDs[i] = -1;
         }
@@ -822,9 +812,9 @@ L738:
     if (data_0209caa0[1] & 0x40) goto La64;
     if ((data_0209caa0[2] & 0x20000) == 0) goto La64;
     {
-        Obj *o = (Obj *)data_0209f33c;
+        dActor_c *o = (dActor_c *)data_0209f33c;
         if (o == 0) { this->mStarKeyMapID = -1; goto La64; }
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
         this->mStarKeyIconX = (miniPos.x + 0x800) >> 12;
         this->mStarKeyIconY = (miniPos.z + 0x800) >> 12;
         this->mStarKeyMapID = 1;
@@ -832,12 +822,12 @@ L738:
 
 La64:
     for (i = 0; i < 8; i++) {
-        Obj *o = data_0209f3a4[i];
+        dActor_c *o = (dActor_c *)data_0209f3a4[i];
         if (o != 0) {
-            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_((Vector3*)&o->mPosX, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
             this->mSpikeBombIconX[i] = (miniPos.x + 0x800) >> 12;
             this->mSpikeBombIconY[i] = (miniPos.z + 0x800) >> 12;
-            this->mSpikeBombMapIDs[i] = o->f0cc;
+            this->mSpikeBombMapIDs[i] = o->mAreaId;
         } else {
             this->mSpikeBombMapIDs[i] = -1;
         }
@@ -845,7 +835,7 @@ La64:
 
 Lae4:
     {
-        s32 id = GetMinimapID(focus, data_ov002_02111148);
+        s32 id = GetMinimapID((Obj *)focus, data_ov002_02111148);
         if (id == data_ov002_02111148) goto Lc30;
         if (id >= 0x10) goto Lc30;
         if (id < 0) goto Lbf0;

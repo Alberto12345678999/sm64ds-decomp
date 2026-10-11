@@ -38,7 +38,7 @@ extern SharedFilePtr *data_ov002_020ff028[];
 
 extern unsigned char data_0209f2d8;
 extern unsigned char data_0208a0e0;
-extern Player *data_0209f394[];
+extern void *data_0209f394[];
 
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
@@ -271,7 +271,7 @@ int dCapEnemy_c::func_02005e28()
     if (b != 0) {
         n = data_0208a0e0;
         for (i = 0; i < n; i++) {
-            Player *p = data_0209f394[i];
+            Player *p = (Player *)data_0209f394[i];
             if (p != 0) {
                 if (p->param1 == mCapId) return 1;
             }
