@@ -13,6 +13,10 @@
  * One TU, 25 functions. It began as the old one-function files
  * concatenated in reverse ROM order.
  *
+ * _ZTS8daKrpa_c 0x02123334. _ZTI8daKrpa_c 0x02123340.
+ * _ZTV8daKrpa_c 0x02123370. The inline destructor in the header is the key
+ * function: D1 at 0x02121118, D0 at 0x02121160, no D2.
+ *
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *   mwcc emits one .text section per ordinary definition in reverse source
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
@@ -27,12 +31,14 @@
  *   dCcAcPos_c::Init, dBgCh_Actr::Init (its header Fix12i also mangles as
  *   int), ModelAnim::SetAnim, DropShadowRadHeight and
  *   Particle::System::NewSimple.
- *
- * Known limits:
- *   The data_ov070_* SharedFilePtr / BCA / frame tables / state records are
- *   overlay .data, not this TU's data claim.
- *   func_0201267c is the sound call behind the spit (0x105).
  */
+
+// leftovers:
+// - The data_ov070_* SharedFilePtr / BCA / frame tables / state records are
+//   overlay .data, not this TU's data claim (consumers: the spit sequencer
+//   and the size-pulse reader in this TU).
+// - func_0201267c is the bank-3 Sound::Play wrapper behind the spit sound;
+//   no header declares it yet.
 #include "daKrpa_c.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
@@ -56,7 +62,7 @@ typedef char daKrpaSpawnInfo_size_must_be_0x1c[
     sizeof(daKrpaSpawnInfo) == 0x1c ? 1 : -1];
 
 // @symbol daKrpa_c_classInit
-/* `return new daKrpa_c()` MATCHES (size 0x50); the leaf unsigned-long
+/* `return new daKrpa_c()` emits 0x50; the leaf unsigned-long
  * operator new forwards `_ZN7fBase_cnwEj`. Historical aliases: daKrpa_c_Spawn
  * and FlameChomp_Spawn. */
 extern "C" daKrpa_c *daKrpa_c_classInit()
