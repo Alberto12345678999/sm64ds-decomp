@@ -1,30 +1,20 @@
 //cpp
-/* daBasabasa_c (BASABASA, the swoop), ov065 0x02116f98..0x02117f40,
- * 22 functions.
- *
- * RTTI names daBasabasa_c. The vtable address point is 0x0211cca0; the word
- * at -4 is _ZTI12daBasabasa_c (0x0211cc60), whose string at 0x0211cc6c is
- * "12daBasabasa_c" and whose single base is dEnemyBase_c. The registry
- * factory daBasabasa_c_classInit (0x02117ee8..0x02117f40, historical alias
- * Swoop_Spawn) closes the run: operator new(0x440), the dEnemyBase_c
- * constructor, this class's vtable store and the five member constructors,
- * which is exactly `new daBasabasa_c()`. Its name is reconstructed from the
- * BASABASA profile; retail does not store it.
- *
- * The out-of-line destructor is the key function, so this TU emits the
- * vtable and RTTI. Under `#pragma defer_codegen off` it comes out D1, D0,
- * then a D2 the cartridge has no home for (manifest: deadstrip), and .text
- * is laid down in source order, so the file is ROM-ascending.
- *
- * Leftover:
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   dEnemyBase_c::KillByInvincibleChar, dActor_c::SpawnCoins,
- *   dActor_c::DropShadowRadHeight, Player::Hurt and Player::Bounce stay
- *   mangled. Each symbol carries a Fix12<int> by value.
- * - The shared files and the four state records keep their address names.
- *   Their definitions at the bottom emit this TU's static initializer.
- * - Testing actorID and mFlags through an int, ExecutePerch's base pointer,
- *   the reload of unk_0ac, and EnterDrop's PoofPos are the forms that matched.
+/* daBasabasa_c -- the swoop (BASABASA), ov065 0x02116f98..0x02117f40.
+ * _ZTI12daBasabasa_c is at 0x0211cc60; the vtable address point is 0x0211cca0.
+ * The base is dEnemyBase_c. The destructor is the key function. defer_codegen
+ * off emits D1, D0, then a D2 with no ROM home, in source order. The factory
+ * (was Swoop_Spawn) is `new daBasabasa_c()`.
+ */
+/* leftovers: ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ * dEnemyBase_c::KillByInvincibleChar, dActor_c::SpawnCoins,
+ * dActor_c::DropShadowRadHeight, Player::Hurt and Player::Bounce stay
+ * mangled. This file calls them, and each symbol takes Fix12<int> by value.
+ * The shared file handles and the four state records keep address names;
+ * their definitions at the bottom are this file's static initializer.
+ * actorID and mFlags are tested through an int. ExecutePerch keeps its base
+ * pointer. unk_0ac is reloaded because a named temporary moves a word.
+ * EnterDrop's PoofPos is a three-int constructor; a Vector3 assignment does
+ * not schedule the same stores.
  */
 
 #pragma defer_codegen off
