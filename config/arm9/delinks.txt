@@ -4296,6 +4296,7 @@ src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp:
     .text start:0x020465fc end:0x020468a0
 
 src/_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File.cpp:
+    complete
     .text start:0x020468a0 end:0x020469ac
 
 src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp:
