@@ -1701,7 +1701,7 @@ extern void func_ov002_020b4714(void*);
 extern void func_ov002_020b47ec(void*);
 
 extern void func_ov002_020bc488(char*);
-extern void func_ov002_020bc664(void*);
+
 extern void func_ov002_020bcdf0(void*);
 extern void func_ov002_020bdb50(char*, int);
 extern void func_ov002_020bdd2c(void*);

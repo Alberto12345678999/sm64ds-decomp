@@ -35,6 +35,9 @@ struct daObjHeart_c : dActor_c {
     virtual s32 CleanupResources(); /* slot  3 */
     virtual s32 Behavior();         /* slot  6 */
     virtual s32 Render();           /* slot  9 */
+
+    /* Rebuilds mModelAnim's rotation/translation from mAngleY/mPos. */
+    void func_ov002_020bc664();
 };
 
 #ifndef SM64DS_PLATFORM_PC

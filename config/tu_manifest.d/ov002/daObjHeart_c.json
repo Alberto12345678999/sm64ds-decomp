@@ -49,7 +49,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020bc664",
+      "symbol": "_ZN12daObjHeart_c19func_ov002_020bc664Ev",
       "address": "0x020bc664",
       "size": "0x00000040",
       "legacy_source": "src/func_ov002_020bc664.c",
@@ -126,18 +126,25 @@
       "evidence": "model resource handle constructed with file ID 0x470"
     },
     {
-      "symbol": "@560",
+      "symbol": "@561",
       "address": "0x0210e10c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x470 model handle"
     },
     {
-      "symbol": "@561",
+      "symbol": "@560",
       "address": "0x0210e118",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x471 animation handle"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@559",
+      "to": "@561",
+      "evidence": "emitted destructor-registration node for the 0x470 model handle; its configured name at 0x0210e10c is @561 (the two configured slot names were swapped so the emitted @560 at 0x0210e118 resolves without a chained rename)"
     }
   ],
   "symbol_binding_rewrites": [
@@ -232,7 +239,7 @@
       "source": "0x02101954",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@560",
+      "symbol": "@561",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210e10c"
@@ -262,7 +269,7 @@
       "source": "0x02101964",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@561",
+      "symbol": "@560",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210e118"
@@ -403,7 +410,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 2 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
