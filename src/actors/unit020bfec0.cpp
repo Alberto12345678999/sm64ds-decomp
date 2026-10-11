@@ -1,30 +1,17 @@
 //cpp
-/*
- * ov006 .text 0x020bfec0..0x020c4048, 93 functions: the first linker unit of
- * the overlay, from the .text base up to the next unit at 0x020c4048. The ROM
- * carries no RTTI, vtable or static initialiser that names a type in this
- * run, and no source or note names it, so it keeps the unit<addr> name and
- * the functions keep their address names.
+/* ov006 0x020bfec0..0x020c4048, the overlay's first linker unit.
  *
- * Data the run touches (all of it is in this overlay, and none of it is
- * referenced from any other linker unit): .data/.rodata words in
- * 0x0213ac48..0x0213aee8, 0x0213ad28, 0x0212b890, 0x0212b89c, 0x0212b8fc and
- * 0x0212c9e4, and .bss 0x021402e0..0x021402fc.
+ * No RTTI, vtable or static initialiser names a type in this run.
+ * Camera_UpdateMatrices at 0x020c0134 is the one named entry.
  *
- * Folded from 93 one-function shards, func_ov006_020bfec0 through
- * func_ov006_020c402c plus Camera_UpdateMatrices (0x020c0134). The
- * boundaries inside the run could not be proven (no sinit, RTTI or
- * bss/destructor evidence separates anything in it), so it is folded as the
- * linker unit tools/tu_map.py reports.
- *
- * Layout of this file: one block of declarations for the external symbols,
- * then each function in its own namespace. The functions describe the same
- * actor memory with different recovered layouts, so each namespace holds the
- * layout structs and data externs that one function needed; the functions
- * themselves are extern "C" and the namespaces change no symbol. Functions
- * are written highest address first, since mwccarm emits .text in reverse
- * source order.
+ * leftovers:
+ * - The other functions keep their address names.
+ * - Each function keeps its own namespace. The local layouts and
+ *   externs disagree, and one shared view changes codegen.
+ * - A char* or void* parameter stays where the typed header form
+ *   changes the call.
  */
+
 #include "types.h"
 #include "common.h"
 #include "SharedFilePtr.h"
@@ -223,7 +210,6 @@ void* func_ov006_020c3e70(char* c); // local extern: raw char*/void* view of the
 void* func_ov006_020c3f54(char* c);
 int func_ov006_020c402c(char *t);}
 
-// ---- func_ov006_020c402c.c ----
 namespace s020c402c {
 extern "C" {
 int func_ov006_020c402c(char *t)
@@ -234,7 +220,6 @@ int func_ov006_020c402c(char *t)
 }
 }
 
-// ---- func_ov006_020c3f54.cpp ----
 namespace s020c3f54 {
 extern "C" {
 }
@@ -253,7 +238,6 @@ extern "C" void* func_ov006_020c3f54(char* c)
 }
 }
 
-// ---- func_ov006_020c3e70.cpp ----
 namespace s020c3e70 {
 extern "C" {
 }
@@ -276,7 +260,6 @@ extern "C" void* func_ov006_020c3e70(char* c){
 }
 }
 
-// ---- func_ov006_020c3e54.c ----
 namespace s020c3e54 {
 extern "C" {
 int func_ov006_020c3e54(char *t)
@@ -287,7 +270,6 @@ int func_ov006_020c3e54(char *t)
 }
 }
 
-// ---- func_ov006_020c3d88.cpp ----
 namespace s020c3d88 {
 struct SharedFilePtr; struct BMD_File;
 struct ModelBase { int d; };
@@ -316,7 +298,6 @@ extern "C" int func_ov006_020c3d88(char *c)
 }
 }
 
-// ---- func_ov006_020c3d18.cpp ----
 namespace s020c3d18 {
 extern "C" {
 void func_ov006_020c3d18(char *c)
@@ -346,10 +327,8 @@ void func_ov006_020c3d18(char *c)
 }
 }
 
-// ---- func_ov006_020c3bf4.cpp ----
 namespace s020c3bf4 {
 // @symbol func_ov006_020c3bf4
-/* recovered: shared common types */
 
 extern "C" {
 extern "C" { extern int data_ov006_0213aee8[12]; }
@@ -404,7 +383,6 @@ extern "C" void func_ov006_020c3bf4(void *self)
 }
 }
 
-// ---- func_ov006_020c3bc8.c ----
 namespace s020c3bc8 {
 extern "C" {
 void func_ov006_020c3bc8(void *a)
@@ -421,7 +399,6 @@ void func_ov006_020c3bc8(void *a)
 }
 }
 
-// ---- func_ov006_020c3b80.c ----
 namespace s020c3b80 {
 extern "C" {
 extern int data_ov006_0213aee0[];
@@ -437,11 +414,9 @@ int func_ov006_020c3b80(int* c){
 }
 }
 
-// ---- func_ov006_020c3b2c.c ----
 namespace s020c3b2c {
 extern "C" {
 // @symbol func_ov006_020c3b2c
-/* recovered: shared common types */
 /* func_ov006_020c3b2c at 0x020c3b2c
  *
  * dCamera_c preset init: sets eye/target vectors and angle, then
@@ -475,7 +450,6 @@ void func_ov006_020c3b2c(struct dCamera_c *self)
 }
 }
 
-// ---- func_ov006_020c3adc.c ----
 namespace s020c3adc {
 extern "C" {
 struct S { int w[2]; };
@@ -487,7 +461,6 @@ void func_ov006_020c3adc(char *p) {
 }
 }
 
-// ---- func_ov006_020c3ad8.c ----
 namespace s020c3ad8 {
 extern "C" {
 void func_ov006_020c3ad8(void)
@@ -496,7 +469,6 @@ void func_ov006_020c3ad8(void)
 }
 }
 
-// ---- func_ov006_020c3990.c ----
 namespace s020c3990 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -544,14 +516,12 @@ void func_ov006_020c3990(char *c)
 }
 }
 
-// ---- func_ov006_020c395c.c ----
 namespace s020c395c {
 extern "C" {
 void func_ov006_020c395c(int* c){ if(_ZN15dExtFrameCtrl_c8FinishedEv((char*)c+0xd68)==0) return; func_ov006_020c3adc((char *)c); }
 }
 }
 
-// ---- func_ov006_020c3908.c ----
 namespace s020c3908 {
 extern "C" {
 struct S { int w[2]; };
@@ -563,7 +533,6 @@ void func_ov006_020c3908(char *p) {
 }
 }
 
-// ---- func_ov006_020c3904.c ----
 namespace s020c3904 {
 extern "C" {
 void func_ov006_020c3904(void)
@@ -572,7 +541,6 @@ void func_ov006_020c3904(void)
 }
 }
 
-// ---- func_ov006_020c38b0.c ----
 namespace s020c38b0 {
 extern "C" {
 struct S { int w[2]; };
@@ -584,7 +552,6 @@ void func_ov006_020c38b0(char *p) {
 }
 }
 
-// ---- func_ov006_020c38ac.c ----
 namespace s020c38ac {
 extern "C" {
 void func_ov006_020c38ac(void)
@@ -593,7 +560,6 @@ void func_ov006_020c38ac(void)
 }
 }
 
-// ---- func_ov006_020c3884.c ----
 namespace s020c3884 {
 extern "C" {
 void func_ov006_020c3884(char *t, int a1)
@@ -604,7 +570,6 @@ void func_ov006_020c3884(char *t, int a1)
 }
 }
 
-// ---- func_ov006_020c3754.c ----
 namespace s020c3754 {
 extern "C" {
 extern "C" { extern int data_ov006_021402e0; }
@@ -648,7 +613,6 @@ void func_ov006_020c3754(int *r6, int *r5, int *r4)
 }
 }
 
-// ---- func_ov006_020c35e8.c ----
 namespace s020c35e8 {
 extern "C" {
 typedef struct { int x, y, z; } Vec3;
@@ -701,10 +665,8 @@ void func_ov006_020c35e8(char* self)
 }
 }
 
-// ---- func_ov006_020c35a8.cpp ----
 namespace s020c35a8 {
 // @symbol func_ov006_020c35a8
-/* recovered: shared common types */
 extern "C" {
 }
 
@@ -723,10 +685,8 @@ extern "C" void func_ov006_020c35a8(char* c) {
 }
 }
 
-// ---- func_ov006_020c3528.cpp ----
 namespace s020c3528 {
 // @symbol func_ov006_020c3528
-/* recovered: shared common types */
 extern "C" {
 struct Q{int a,b,c,d;};
 
@@ -744,7 +704,6 @@ void func_ov006_020c3528(char* c){
 }
 }
 
-// ---- func_ov006_020c33dc.c ----
 namespace s020c33dc {
 extern "C" {
 int func_ov006_020c33dc(char *t)
@@ -778,7 +737,6 @@ int func_ov006_020c33dc(char *t)
 }
 }
 
-// ---- func_ov006_020c3288.c ----
 namespace s020c3288 {
 extern "C" {
 int func_ov006_020c3288(char *t)
@@ -828,13 +786,10 @@ int func_ov006_020c3288(char *t)
 }
 }
 
-// ---- func_ov006_020c3050.c ----
 namespace s020c3050 {
 extern "C" {
 extern "C" { extern char data_ov006_0213ae00[]; extern char data_ov006_0213ae18[]; extern char data_ov006_0213ae30[]; extern char data_ov006_0213ae48[]; extern char data_ov006_0213ae60[]; extern char data_ov006_0213ae78[]; extern char data_ov006_0213ae90[]; extern char data_ov006_0213aea8[]; }
 // @symbol func_ov006_020c3050
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
 
 
@@ -902,7 +857,6 @@ int func_ov006_020c3050(char *c)
 }
 }
 
-// ---- func_ov006_020c2be8.c ----
 namespace s020c2be8 {
 extern "C" {
 
@@ -963,7 +917,6 @@ void func_ov006_020c2be8(char* c)
 }
 }
 
-// ---- func_ov006_020c2b8c.cpp ----
 namespace s020c2b8c {
 extern "C" {
 struct C;
@@ -980,7 +933,6 @@ void func_ov006_020c2b8c(C* c) {
 }
 }
 
-// ---- func_ov006_020c29dc.cpp ----
 namespace s020c29dc {
 extern "C" {
 extern "C" { extern char data_ov006_0212b8fc; }
@@ -1030,7 +982,6 @@ extern "C" void func_ov006_020c29dc(char *c)
 }
 }
 
-// ---- func_ov006_020c2994.c ----
 namespace s020c2994 {
 extern "C" {
 struct P{int x,y;};
@@ -1047,7 +998,6 @@ int func_ov006_020c2994(struct P* c){
 }
 }
 
-// ---- func_ov006_020c2984.c ----
 namespace s020c2984 {
 extern "C" {
 /* func_ov006_020c2984 @ 0x20c2984 (ov006) -- veneer: add r0,r0,#0x58; b dExtFrameCtrl_c::Finished(). */
@@ -1058,7 +1008,6 @@ int func_ov006_020c2984(void* a) {
 }
 }
 
-// ---- func_ov006_020c2924.cpp ----
 namespace s020c2924 {
 extern "C" {
 extern "C" { extern void* data_0209f5bc; }
@@ -1078,7 +1027,6 @@ void func_ov006_020c2924(char* c){
 }
 }
 
-// ---- func_ov006_020c2848.cpp ----
 namespace s020c2848 {
 extern "C" {
 extern "C" { extern void* data_ov006_0213ae48; }
@@ -1119,7 +1067,6 @@ extern "C" void func_ov006_020c2848(char* c)
 }
 }
 
-// ---- func_ov006_020c27c4.cpp ----
 namespace s020c27c4 {
 extern "C" {
 extern "C" { extern void* data_ov006_0213ae48; }
@@ -1132,7 +1079,6 @@ void func_ov006_020c27c4(char* c){
 }
 }
 
-// ---- func_ov006_020c271c.c ----
 namespace s020c271c {
 extern "C" {
 extern "C" { extern int data_ov006_0213aea8; }
@@ -1161,7 +1107,6 @@ void func_ov006_020c271c(void *c)
 }
 }
 
-// ---- func_ov006_020c26f4.c ----
 namespace s020c26f4 {
 extern "C" {
 void func_ov006_020c26f4(char *t)
@@ -1173,7 +1118,6 @@ void func_ov006_020c26f4(char *t)
 }
 }
 
-// ---- func_ov006_020c2664.c ----
 namespace s020c2664 {
 extern "C" {
 extern int data_ov006_0213ae60[];
@@ -1191,7 +1135,6 @@ void func_ov006_020c2664(char *c)
 }
 }
 
-// ---- func_ov006_020c263c.c ----
 namespace s020c263c {
 extern "C" {
 void func_ov006_020c263c(char *t)
@@ -1203,7 +1146,6 @@ void func_ov006_020c263c(char *t)
 }
 }
 
-// ---- func_ov006_020c2594.c ----
 namespace s020c2594 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae90; }
@@ -1223,7 +1165,6 @@ void func_ov006_020c2594(void *c)
 }
 }
 
-// ---- func_ov006_020c24e4.cpp ----
 namespace s020c24e4 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae18; }
@@ -1239,7 +1180,6 @@ void func_ov006_020c24e4(void* c){
 }
 }
 
-// ---- func_ov006_020c2440.cpp ----
 namespace s020c2440 {
 extern "C" {
 struct G2 { int w[2]; };
@@ -1255,7 +1195,6 @@ void func_ov006_020c2440(char* c){
 }
 }
 
-// ---- func_ov006_020c23a8.cpp ----
 namespace s020c23a8 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae00; }
@@ -1270,7 +1209,6 @@ void func_ov006_020c23a8(void* c){
 }
 }
 
-// ---- func_ov006_020c2300.c ----
 namespace s020c2300 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae90; }
@@ -1291,7 +1229,6 @@ void func_ov006_020c2300(void *c)
 }
 }
 
-// ---- func_ov006_020c22d8.c ----
 namespace s020c22d8 {
 extern "C" {
 void func_ov006_020c22d8(char *t)
@@ -1303,11 +1240,9 @@ void func_ov006_020c22d8(char *t)
 }
 }
 
-// ---- func_ov006_020c2290.c ----
 namespace s020c2290 {
 extern "C" {
 // @symbol func_ov006_020c2290
-/* recovered: shared common types */
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
 void func_ov006_020c2290(char* c) {
     Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x180), *(int*)(c+0x184), *(int*)(c+0x188));
@@ -1316,11 +1251,9 @@ void func_ov006_020c2290(char* c) {
 }
 }
 
-// ---- func_ov006_020c225c.c ----
 namespace s020c225c {
 extern "C" {
 // @symbol func_ov006_020c225c
-/* recovered: shared common types */
 /* func_ov006_020c225c at 0x020c225c
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
@@ -1353,7 +1286,6 @@ void func_ov006_020c225c(struct dCamera_c *self)
 }
 }
 
-// ---- func_ov006_020c221c.c ----
 namespace s020c221c {
 extern "C" {
 int func_ov006_020c221c(char *t)
@@ -1367,7 +1299,6 @@ int func_ov006_020c221c(char *t)
 }
 }
 
-// ---- func_ov006_020c21e4.c ----
 namespace s020c21e4 {
 extern "C" {
 int func_ov006_020c21e4(char *t)
@@ -1382,7 +1313,6 @@ int func_ov006_020c21e4(char *t)
 }
 }
 
-// ---- func_ov006_020c2154.c ----
 namespace s020c2154 {
 extern "C" {
 void func_ov006_020c2154(char *c)
@@ -1403,7 +1333,6 @@ void func_ov006_020c2154(char *c)
 }
 }
 
-// ---- func_ov006_020c2144.c ----
 namespace s020c2144 {
 extern "C" {
 /* func_ov006_020c2144 @ 0x20c2144 (ov006) -- veneer: add r0,r0,#0x10; b BlendModelAnim::Advance(). */
@@ -1414,7 +1343,6 @@ void func_ov006_020c2144(void* a) {
 }
 }
 
-// ---- func_ov006_020c201c.cpp ----
 namespace s020c201c {
 typedef short s16;
 
@@ -1460,10 +1388,8 @@ extern "C" void func_ov006_020c201c(C *c)
 }
 }
 
-// ---- func_ov006_020c1f4c.cpp ----
 namespace s020c1f4c {
 // @symbol func_ov006_020c1f4c
-/* recovered: shared common types */
 typedef short s16;
 
 extern "C" {
@@ -1491,7 +1417,6 @@ extern "C" void func_ov006_020c1f4c(char* c){
 }
 }
 
-// ---- func_ov006_020c1f04.c ----
 namespace s020c1f04 {
 extern "C" {
 void func_ov006_020c1f04(char* c, int* src) {
@@ -1509,7 +1434,6 @@ void func_ov006_020c1f04(char* c, int* src) {
 }
 }
 
-// ---- func_ov006_020c1ef8.c ----
 namespace s020c1ef8 {
 extern "C" {
 void func_ov006_020c1ef8(int *p)
@@ -1519,11 +1443,9 @@ void func_ov006_020c1ef8(int *p)
 }
 }
 
-// ---- func_ov006_020c1eb4.c ----
 namespace s020c1eb4 {
 extern "C" {
 // @symbol func_ov006_020c1eb4
-/* recovered: shared common types */
 /* func_ov006_020c1eb4 at 0x020c1eb4
  *
  * dCamera_c preset init: sets eye/target vectors and angle, then
@@ -1557,7 +1479,6 @@ void func_ov006_020c1eb4(struct dCamera_c *self)
 }
 }
 
-// ---- func_ov006_020c1d80.c ----
 namespace s020c1d80 {
 extern "C" {
 int func_ov006_020c1d80(char *t)
@@ -1592,7 +1513,6 @@ int func_ov006_020c1d80(char *t)
 }
 }
 
-// ---- func_ov006_020c1c64.c ----
 namespace s020c1c64 {
 extern "C" {
 int func_ov006_020c1c64(char *t)
@@ -1635,12 +1555,9 @@ int func_ov006_020c1c64(char *t)
 }
 }
 
-// ---- func_ov006_020c1a88.c ----
 namespace s020c1a88 {
 extern "C" {
 // @symbol func_ov006_020c1a88
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern "C" { extern struct Vector3 data_020a0ebc; }
 extern "C" { extern struct Vector3_16 data_020a0edc; }
 
@@ -1698,7 +1615,6 @@ int func_ov006_020c1a88(char *c)
 }
 }
 
-// ---- func_ov006_020c19d0.cpp ----
 namespace s020c19d0 {
 struct C;
 typedef void (C::*PMF)();
@@ -1728,11 +1644,8 @@ extern "C" void func_ov006_020c19d0(char* thiz)
 }
 }
 
-// ---- func_ov006_020c1804.cpp ----
 namespace s020c1804 {
 // @symbol func_ov006_020c1804
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 
 extern "C" {
 }
@@ -1805,7 +1718,6 @@ extern "C" void func_ov006_020c1804(void *self)
 }
 }
 
-// ---- func_ov006_020c1764.cpp ----
 namespace s020c1764 {
 typedef int Fix12;
 struct BCA_File;
@@ -1835,7 +1747,6 @@ extern "C" void func_ov006_020c1764(char *c)
 }
 }
 
-// ---- func_ov006_020c1760.c ----
 namespace s020c1760 {
 extern "C" {
 void func_ov006_020c1760(void)
@@ -1844,7 +1755,6 @@ void func_ov006_020c1760(void)
 }
 }
 
-// ---- func_ov006_020c1718.c ----
 namespace s020c1718 {
 extern "C" {
 extern int data_ov006_0213ac58[];
@@ -1860,7 +1770,6 @@ int func_ov006_020c1718(int* r0) {
 }
 }
 
-// ---- func_ov006_020c16b4.c ----
 namespace s020c16b4 {
 extern "C" {
 extern int data_ov006_0213ac90[];
@@ -1879,7 +1788,6 @@ int func_ov006_020c16b4(char *c)
 }
 }
 
-// ---- func_ov006_020c1604.c ----
 namespace s020c1604 {
 extern "C" {
 typedef int Fix12;
@@ -1907,7 +1815,6 @@ void func_ov006_020c1604(char* c, int unused, short a2, int a3) {
 }
 }
 
-// ---- func_ov006_020c14bc.cpp ----
 namespace s020c14bc {
 struct V {
     virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03();
@@ -1957,7 +1864,6 @@ extern "C" void func_ov006_020c14bc(char* c)
 }
 }
 
-// ---- func_ov006_020c1420.cpp ----
 namespace s020c1420 {
 typedef int Fix12;
 struct BCA_File;
@@ -1985,7 +1891,6 @@ extern "C" void func_ov006_020c1420(char *c, short arg1, int arg2)
 }
 }
 
-// ---- func_ov006_020c11c0.cpp ----
 namespace s020c11c0 {
 extern "C" {
 
@@ -2056,7 +1961,6 @@ void func_ov006_020c11c0(char *c)
 }
 }
 
-// ---- func_ov006_020c1164.c ----
 namespace s020c1164 {
 extern "C" {
 struct P2 { int w[2]; };
@@ -2072,7 +1976,6 @@ void func_ov006_020c1164(int *t, int a1, int a2)
 }
 }
 
-// ---- func_ov006_020c0f9c.cpp ----
 namespace s020c0f9c {
 extern "C" {
 }
@@ -2130,7 +2033,6 @@ other:
 }
 }
 
-// ---- func_ov006_020c0f0c.c ----
 namespace s020c0f0c {
 extern "C" {
 extern "C" { extern int data_ov006_0213acb0[2]; }
@@ -2161,7 +2063,6 @@ int func_ov006_020c0f0c(int *c)
 }
 }
 
-// ---- func_ov006_020c0efc.c ----
 namespace s020c0efc {
 extern "C" {
 /* func_ov006_020c0efc @ 0x20c0efc (ov006) -- veneer: add r0,r0,#0x6c; b dExtFrameCtrl_c::Finished(). */
@@ -2172,7 +2073,6 @@ int func_ov006_020c0efc(void* a) {
 }
 }
 
-// ---- func_ov006_020c0e8c.c ----
 namespace s020c0e8c {
 extern "C" {
 struct P2 { int w[2]; };
@@ -2188,7 +2088,6 @@ void func_ov006_020c0e8c(int *t)
 }
 }
 
-// ---- func_ov006_020c0df0.cpp ----
 namespace s020c0df0 {
 
 extern "C" void func_ov006_020c0df0(char *c)
@@ -2207,7 +2106,6 @@ extern "C" void func_ov006_020c0df0(char *c)
 }
 }
 
-// ---- func_ov006_020c0d68.cpp ----
 namespace s020c0d68 {
 typedef int Fix12;
 struct BCA_File;
@@ -2231,7 +2129,6 @@ extern "C" void func_ov006_020c0d68(char *c)
 }
 }
 
-// ---- func_ov006_020c0ce8.c ----
 namespace s020c0ce8 {
 extern "C" {
 typedef int Fix12;
@@ -2248,7 +2145,6 @@ void func_ov006_020c0ce8(char *c){
 }
 }
 
-// ---- func_ov006_020c0c80.cpp ----
 namespace s020c0c80 {
 extern "C" {
 struct G2 { int w[2]; };
@@ -2264,7 +2160,6 @@ void func_ov006_020c0c80(void *c)
 }
 }
 
-// ---- func_ov006_020c0b74.c ----
 namespace s020c0b74 {
 extern "C" {
 typedef struct {
@@ -2291,13 +2186,10 @@ void func_ov006_020c0b74(char *p) {
 }
 }
 
-// ---- func_ov006_020c0af8.c ----
 namespace s020c0af8 {
 extern "C" {
 extern "C" { extern volatile struct Matrix4x3 data_ov006_0213ad28; }
 // @symbol func_ov006_020c0af8
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 void func_ov006_020c0af8(char* c)
 {
     struct Matrix4x3 tmp;
@@ -2308,11 +2200,9 @@ void func_ov006_020c0af8(char* c)
 }
 }
 
-// ---- func_ov006_020c0aa8.c ----
 namespace s020c0aa8 {
 extern "C" {
 // @symbol func_ov006_020c0aa8
-/* recovered: shared common types */
 /* func_ov006_020c0aa8 at 0x020c0aa8
  *
  * dCamera_c preset init: sets eye/target vectors and angle, then
@@ -2346,7 +2236,6 @@ void func_ov006_020c0aa8(struct dCamera_c *self)
 }
 }
 
-// ---- func_ov006_020c0a48.c ----
 namespace s020c0a48 {
 extern "C" {
 int func_ov006_020c0a48(char *t)
@@ -2364,7 +2253,6 @@ int func_ov006_020c0a48(char *t)
 }
 }
 
-// ---- func_ov006_020c09f8.c ----
 namespace s020c09f8 {
 extern "C" {
 int func_ov006_020c09f8(char *t)
@@ -2382,10 +2270,8 @@ int func_ov006_020c09f8(char *t)
 }
 }
 
-// ---- func_ov006_020c092c.cpp ----
 namespace s020c092c {
 // @symbol func_ov006_020c092c
-/* recovered: shared common types */
 typedef int Fix12i;
 struct SharedFilePtr; struct BMD_File; struct BCA_File;
 struct ModelBase { int d; };
@@ -2425,7 +2311,6 @@ extern "C" void func_ov006_020c092c(char* thiz)
 }
 }
 
-// ---- func_ov006_020c07e8.cpp ----
 namespace s020c07e8 {
 typedef int s16;
 struct Vector3 { int x, y, z; };
@@ -2487,7 +2372,6 @@ extern "C" void func_ov006_020c07e8(C* c)
 }
 }
 
-// ---- func_ov006_020c07a0.c ----
 namespace s020c07a0 {
 extern "C" {
 void func_ov006_020c07a0(char *t)
@@ -2499,10 +2383,8 @@ void func_ov006_020c07a0(char *t)
 }
 }
 
-// ---- func_ov006_020c06dc.cpp ----
 namespace s020c06dc {
 // @symbol func_ov006_020c06dc
-/* recovered: shared common types */
 typedef short s16;
 
 
@@ -2536,7 +2418,6 @@ extern "C" void func_ov006_020c06dc(char* thiz)
 }
 }
 
-// ---- func_ov006_020c057c.cpp ----
 namespace s020c057c {
 typedef struct Pair { int a, b; } Pair;
 extern "C" {
@@ -2590,7 +2471,6 @@ void func_ov006_020c057c(char* c) {
 }
 }
 
-// ---- func_ov006_020c0364.c ----
 namespace s020c0364 {
 extern "C" {
 typedef short s16;
@@ -2681,7 +2561,6 @@ void func_ov006_020c0364(char *c)
 }
 }
 
-// ---- func_ov006_020c0304.c ----
 namespace s020c0304 {
 extern "C" {
 struct P2 { int w[2]; };
@@ -2697,7 +2576,6 @@ void func_ov006_020c0304(int *t)
 }
 }
 
-// ---- func_ov006_020c0264.cpp ----
 namespace s020c0264 {
 typedef int Fix12;
 struct BCA_File;
@@ -2726,12 +2604,9 @@ extern "C" void func_ov006_020c0264(char *c)
 }
 }
 
-// ---- Camera_UpdateMatrices.c ----
 namespace s020c0134 {
 extern "C" {
 // @symbol Camera_UpdateMatrices
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 /* Camera_UpdateMatrices at 0x020c0134
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
@@ -2796,7 +2671,6 @@ void Camera_UpdateMatrices(struct dCamera_c *self)
 }
 }
 
-// ---- func_ov006_020bfff8.cpp ----
 namespace s020bfff8 {
 extern "C" {
 extern short data_02082214[];
@@ -2821,7 +2695,6 @@ void func_ov006_020bfff8(char* r4, void* r1, int* r6, int* r5) {
 }
 }
 
-// ---- func_ov006_020bfec0.cpp ----
 namespace s020bfec0 {
 extern "C" {
 extern short data_02082214[];
