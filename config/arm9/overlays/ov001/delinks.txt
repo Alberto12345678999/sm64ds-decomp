@@ -9,11 +9,7 @@ src/actors/CapIconMgr.cpp:
 
 src/actors/dCapIcon_c.cpp:
     complete
-    .text start:0x020ab110 end:0x020ab3f0
-
-src/unnamed/ov001/func_ov001_020ab3f0.c:
-    complete
-    .text start:0x020ab3f0 end:0x020ab41c
+    .text start:0x020ab110 end:0x020ab41c
 
 src/unnamed/ov001/func_ov001_020ab41c.c:
     complete

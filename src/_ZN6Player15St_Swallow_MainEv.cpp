@@ -23,7 +23,7 @@ int Player::St_Swallow_Main()
     void* p360;
 
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)(*(void**)(((char*)this) + (_ZNK6Player14GetBodyModelIDEjb(((char*)this), param1 & 0xff, 0) << 2) + 0xdc)) + 0x50, 3)) {
-        func_ov002_020d71a0(((char*)this));
+        func_ov002_020d71a0();
         goto L65ec;
     }
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)(*(void**)(((char*)this) + (_ZNK6Player14GetBodyModelIDEjb(((char*)this), param1 & 0xff, 0) << 2) + 0xdc)) + 0x50, 7) == 0) {

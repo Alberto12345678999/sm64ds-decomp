@@ -4,7 +4,7 @@
  * 0x020991ec). Derives from dBgCh; nothing derives from it, so no D2/C2 ever
  * emitted.
  *
- * Owns the contiguous text run 0x02035564..0x02037464, between dBgCh's own
+ * Owns the contiguous text run 0x0203553c..0x02037464, between dBgCh's own
  * functions below and dBgCh_Gnd's workers above. Deferred codegen emits the
  * lifecycle group at the tail -- D0 0x020373b8, D1 0x020373f8, C1 0x02037430 --
  * so the ctor and dtor are defined first and the plain functions land in
@@ -28,7 +28,6 @@ void func_020353e0(char *self);
 void func_020353f4(char *self);
 void func_02035414(char *self);
 void func_02035428(char *self);
-int  func_0203553c(int *p);   /* mFlags & 0x4000 -- the water-tracking bit */
 
 /* Checker-family helpers shared across the collision TUs, spelled as
    defined. */
@@ -67,6 +66,8 @@ void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(dBgCh_SphCrr *self,
 extern int data_02099368[];  /* _ZTV5dBgPi -- same address, see symbols.txt */
 
 /* This TU's own workers, defined below. */
+int  func_0203553c(int *p);       /* (mFlags & 0x4000) == 0 -- water-tracking bit */
+void func_02035550(char *self);   /* mFlags |= 0x4000 */
 int  func_020355a0(int *p);       /* (mFlags & 0x800) == 0 */
 int  func_020355dc(int *p);       /* mFlags & 0x400 */
 void func_020356d4(char *self);   /* mFlags |= 0x40 -- left ground */
@@ -1339,4 +1340,16 @@ s32 dBgCh_Actr::ShouldUpdatePosY() const
 s32 dBgCh_Actr::ShouldUpdatePos() const
 {
     return (mFlags & 0x2000) == 0;
+}
+
+// @symbol func_02035550
+extern "C" void func_02035550(char *self)
+{
+    *(unsigned int *)(self + 0x10) |= 0x4000;
+}
+
+// @symbol func_0203553c
+extern "C" int func_0203553c(int *p)
+{
+    return (p[4] & 16384) == 0;
 }

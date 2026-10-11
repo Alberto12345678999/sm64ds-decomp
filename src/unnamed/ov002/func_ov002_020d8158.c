@@ -2,7 +2,7 @@
 struct State;
 extern int _ZN6Player7IsStateERNS_5StateE(void* self, struct State* s);
 extern void func_ov002_020d8118(char* c);
-extern void func_ov002_020bdc18(char* c);
+extern void _ZN6Player19func_ov002_020bdc18Ev(char* c);
 extern struct State data_ov002_02110034;
 extern struct State data_ov002_0211004c;
 
@@ -18,7 +18,7 @@ void func_ov002_020d8158(char* c)
     if ((u16)(*(u16*)(c + 0x6ce) & 0x1000) == 0) return;
     func_ov002_020d8118(c);
     *(u8*)(c + 0x6f4) = 1;
-    func_ov002_020bdc18(c);
+    _ZN6Player19func_ov002_020bdc18Ev(c);
     *(u16*)(int)(c + 0x6ce) &= ~0x1000;
     *(u8*)(c + 0x714) = 1;
 }
