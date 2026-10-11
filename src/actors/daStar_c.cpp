@@ -271,6 +271,11 @@ extern StarAnimationFileHandle data_ov002_02110964;
 extern SharedFilePtr data_ov002_0210d9a8;
 extern void _ZN5dCc_c6UpdateEv(void *p);
 extern int _ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr(char *c, char *clsn);
+/* Numbering pin: func_ov002_020d718c is now a Player member (see Player.h);
+   no call in this TU uses the free spelling anymore. The declaration stays,
+   spelled exactly as it was, because each named parameter advances mwccarm's
+   @NNN counter: removing or un-naming it renumbers this TU's .data temps
+   (measured on daYegg_c, same mechanism). */
 extern void func_ov002_020d718c(void *p);
 extern void _ZN8dActor_c9UpdatePosEP5dCc_c(char *c, void *clsn);
 extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(char *c, const void *v);
@@ -849,7 +854,7 @@ int daStar_c::Behavior()
     if (_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr((char *)this, (char *)&mWithMeshClsn) != 0) {
         int state = mState;
         if (state >= STATE_COLLECT_BEGIN && state <= STATE_COLLECT_TALK && mEatingPlayer != 0) {
-            func_ov002_020d718c((void *)mEatingPlayer);
+            ((Player *)mEatingPlayer)->func_ov002_020d718c();
             mEatingPlayer = 0;
             mFlags &= ~0xe0000;
             func_ov002_020e84ec();

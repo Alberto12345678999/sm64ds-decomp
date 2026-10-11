@@ -31,7 +31,6 @@ extern "C" {
     void LoadSilverStarAndNumber(void);
     int _ZN8SaveData16HasPlayerLostCapEv(void);
     void func_02013a00(void);
-    void func_ov002_020c7dd0(void* p, int a);
     void *_ZN9dBgCh_GndC1Ev(void* p);
     void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void* p, void* v, void* a);
     void _ZN5dBgCh19StartDetectingWaterEv(void* p);
@@ -166,7 +165,7 @@ Ld0:
     if (data_0209f2fc == 1) {
         if (_ZN8SaveData16HasPlayerLostCapEv() != 0) func_02013a00();
     }
-    func_ov002_020c7dd0(c, n8);
+    ((Player *)(c))->func_ov002_020c7dd0(n8);
     _ZN9dBgCh_GndC1Ev(rc);
     tz = mPosZ;
     tx = mPosX;

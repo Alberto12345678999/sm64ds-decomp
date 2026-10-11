@@ -7,60 +7,67 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED: one unit covering the whole module text with dozens of class labels, so there is no tu_map boundary or `tubuild.py create` candidate id here; every line below is hand-derived and independently checkable.",
-    "contiguous linker run 0x020147d4..0x0201489c: the six delinks entries tile it exactly once -- Init 0x020147d4, GetOwnerID 0x02014818, GetPos 0x02014820, D0 0x02014828, D1 0x02014854, C1 0x02014878 -- with no interior hole.",
+    "contiguous linker run 0x020147bc..0x0201489c: the seven delinks entries tile it exactly once -- func_020147bc 0x020147bc, Init 0x020147d4, GetOwnerID 0x02014818, GetPos 0x02014820, D0 0x02014828, D1 0x02014854, C1 0x02014878 -- with no interior hole.",
     "class-label homogeneity: every named symbol in the run is a member of dCcPos_c (the dCc_c leaf that carries its own position, include/dCcPos_c.h).",
     "ROM evidence says one object: the emitted vtable lands at 0x0208e6bc (_ZTV8dCcPos_c) whose slots read [D1 0x02014854, D0 0x02014828, GetPos 0x02014820, GetOwnerID 0x02014818] -- all inside this run; _ZTS8dCcPos_c 0x0208e674 and _ZTI8dCcPos_c 0x0208e68c (a __si_class_type_info whose base pointer names dCc_c) exist in the cartridge and externalize at their configured homes.",
-    "neighbour below: func_020147bc at 0x020147bc..0x020147d4 (unattributed C function). Neighbour above: _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3 at 0x0201489c (the dCcAcPos_c sibling class). The run is bracketed rather than cut out of a uniform stretch."
+    "neighbour below: nds_print.c at 0x02014770..0x020147bc (a named print TU, the expected stop). Neighbour above: _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3 at 0x0201489c (the dCcAcPos_c sibling class). The run is bracketed rather than cut out of a uniform stretch."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x020147d4",
+      "start": "0x020147bc",
       "end": "0x0201489c"
     }
   ],
   "functions": [
     {
+      "symbol": "func_020147bc",
+      "address": "0x020147bc",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_020147bc.c",
+      "ordinal": 0
+    },
+    {
       "symbol": "_ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj",
       "address": "0x020147d4",
       "size": "0x00000044",
       "legacy_source": "src/_ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj.cpp",
-      "ordinal": 0
+      "ordinal": 1
     },
     {
       "symbol": "_ZN8dCcPos_c10GetOwnerIDEv",
       "address": "0x02014818",
       "size": "0x00000008",
       "legacy_source": "src/_ZN8dCcPos_c10GetOwnerIDEv.cpp",
-      "ordinal": 1
+      "ordinal": 2
     },
     {
       "symbol": "_ZN8dCcPos_c6GetPosEv",
       "address": "0x02014820",
       "size": "0x00000008",
       "legacy_source": "src/_ZN8dCcPos_c6GetPosEv.cpp",
-      "ordinal": 2
+      "ordinal": 3
     },
     {
       "symbol": "_ZN8dCcPos_cD0Ev",
       "address": "0x02014828",
       "size": "0x0000002c",
       "legacy_source": "src/_ZN8dCcPos_cD0Ev.cpp",
-      "ordinal": 3
+      "ordinal": 4
     },
     {
       "symbol": "_ZN8dCcPos_cD1Ev",
       "address": "0x02014854",
       "size": "0x00000024",
       "legacy_source": "src/_ZN8dCcPos_cD1Ev.cpp",
-      "ordinal": 4
+      "ordinal": 5
     },
     {
       "symbol": "_ZN8dCcPos_cC1Ev",
       "address": "0x02014878",
       "size": "0x00000024",
       "legacy_source": "src/_ZN8dCcPos_cC1Ev.cpp",
-      "ordinal": 5
+      "ordinal": 6
     }
   ],
   "data": [],
@@ -132,8 +139,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-dCcPos_c/dCcPos_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 6,
-    "functions_declared": 6,
+    "functions_matched": 7,
+    "functions_declared": 7,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN8dCcPos_cC2Ev",
@@ -154,11 +161,11 @@
         10,
         11,
         12,
-        17,
-        18,
-        25,
-        26,
-        27
+        19,
+        20,
+        27,
+        28,
+        29
       ],
       "data": [
         "_ZTS5dCc_c",

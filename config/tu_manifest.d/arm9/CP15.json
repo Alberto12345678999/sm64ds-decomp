@@ -10,7 +10,7 @@
     {
       "name": ".text",
       "start": "0x02058bb0",
-      "end": "0x02058c84"
+      "end": "0x02058d80"
     }
   ],
   "functions": [
@@ -62,6 +62,34 @@
       "size": "0x1c",
       "ordinal": 6,
       "legacy_source": "src/_ZN4CP1526InvalidateInstructionCacheEjj.cpp"
+    },
+    {
+      "symbol": "func_02058c84",
+      "address": "0x02058c84",
+      "size": "0x4c",
+      "ordinal": 7,
+      "legacy_source": "src/unnamed/arm9/0205/func_02058c84.c"
+    },
+    {
+      "symbol": "func_02058cd0",
+      "address": "0x02058cd0",
+      "size": "0x88",
+      "ordinal": 8,
+      "legacy_source": "src/unnamed/arm9/0205/func_02058cd0.c"
+    },
+    {
+      "symbol": "func_02058d58",
+      "address": "0x02058d58",
+      "size": "0x14",
+      "ordinal": 9,
+      "legacy_source": "src/unnamed/arm9/0205/func_02058d58.c"
+    },
+    {
+      "symbol": "func_02058d6c",
+      "address": "0x02058d6c",
+      "size": "0x14",
+      "ordinal": 10,
+      "legacy_source": "src/unnamed/arm9/0205/func_02058d6c.c"
     }
   ],
   "verification": {
@@ -70,8 +98,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-CP15/CP15.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 7,
-    "functions_declared": 7,
+    "functions_matched": 11,
+    "functions_declared": 11,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

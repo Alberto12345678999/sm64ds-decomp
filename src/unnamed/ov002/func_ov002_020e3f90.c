@@ -8,7 +8,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(struct M48* m, int a);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(struct M48* m, int a);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(struct M48* m, int x, int y, int z);
 extern unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int j, int b);
-extern unsigned int func_ov002_020becf4(void* self, unsigned int j, int b);
+extern int _ZN6Player19func_ov002_020becf4Eii(void* self, unsigned int j, int b);
 
 extern struct M48 data_020a0e68;
 
@@ -87,7 +87,7 @@ int func_ov002_020e3f90(char* self) {
     m = *(char**)((self + (n << 2)) + 0xdc);
     *(struct M48*)(m + 0x1c) = data_020a0e68;
     *(struct M48*)(self + 0x190) = data_020a0e68;
-    n = func_ov002_020becf4(self, *(int*)(self + 8) & 0xff, 0);
+    n = _ZN6Player19func_ov002_020becf4Eii(self, *(int*)(self + 8) & 0xff, 0);
     if (n != 9 && n != 8) {
         m = *(char**)((self + (n << 2)) + 0x154);
         if (m != 0) {

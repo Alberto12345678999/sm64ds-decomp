@@ -55,7 +55,7 @@ do_anim:
             _ZN6Player7SetAnimEji5Fix12IiEj(((char *)this), 0x47, 0, 0x1000, 0);
         }
     } else {
-        func_ov002_020d4748(((char *)this));
+        func_ov002_020d4748();
     }
 merge:
     mStateTimer = 0;

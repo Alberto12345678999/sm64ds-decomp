@@ -1,12 +1,16 @@
 //cpp
 /* arm9/SaveData -- the save-file manager: cap-loss flags, file slots and the
- * minigame block, folded from fourteen legacy shards at .text
- * 0x02013ad4..0x02013e80. The span also carries the two free functions that
+ * minigame block, folded from nineteen legacy shards at .text
+ * 0x02013984..0x02013e80. The span also carries the free functions that
  * share this TU's concern: func_02013c84 copies a file block and either
- * records the character or forwards to SaveFile, and func_02013e64 zeroes the
- * whole save block. mwccarm emits .text in reverse source order, so the
+ * records the character or forwards to SaveFile, func_02013e64 zeroes the
+ * whole save block, and func_020139b8..func_02013a88 are the cap-flag
+ * helpers (clear/set/test the 0x8000000<<character and 0x1000000<<character
+ * bits) around NumGlowingRabbitsFound. mwccarm emits .text in reverse source order, so the
  * definitions below run ROM-descending; the roster reads ROM-ascending.
  *
+ *   NumGlowingRabbitsFound -- rabbit bits 20..27 of the flags word.
+ *   func_020139b8..func_02013a88 -- cap-flag clear/set/test helpers.
  *   PlayerLoseCap..CanPlayerHaveCap -- cap-loss flags on the live block.
  *   SaveCurrentFile..SetDefaultValuesMg -- file and minigame writes.
  *   func_02013c84 -- block copy + character record / SaveFile forwarder.
@@ -48,6 +52,7 @@ extern u8 data_0209caa0[];            /* the live save block */
 extern u8 data_0209f2d8[];            /* gate byte read by CanPlayerHaveCap */
 extern void func_0205a588(void* dest, int value, int size);
 extern void CpuCopy8(void* dst, void* src, u32 count);
+extern void func_020139b8(void);      /* forward: called by func_02013a88 above its definition */
 }
 
 // @symbol func_02013e64
@@ -186,4 +191,53 @@ void SaveData::PlayerLoseCap()
     if (!SaveData::CanPlayerHaveCap())
         return;
     *(int*)(data_0209caa0 + 4) = *(int*)(data_0209caa0 + 4) | (0x1000000u << data_0209caa0[0x41]);
+}
+
+// @symbol func_02013a88
+extern "C" void func_02013a88(void)
+{
+    if (!SaveData::CanPlayerHaveCap())
+        return;
+    *(int*)(data_0209caa0 + 4) = *(int*)(data_0209caa0 + 4) & ~(0x1000000u << data_0209caa0[0x41]);
+    func_020139b8();
+}
+
+// @symbol func_02013a44
+extern "C" int func_02013a44(void)
+{
+    if (!SaveData::CanPlayerHaveCap())
+        return 0;
+    return *(int*)(data_0209caa0 + 4) & (0x8000000u << data_0209caa0[0x41]);
+}
+
+// @symbol func_02013a00
+extern "C" void func_02013a00(void)
+{
+    if (!SaveData::CanPlayerHaveCap())
+        return;
+    *(int*)(data_0209caa0 + 4) = *(int*)(data_0209caa0 + 4) | (0x8000000u << data_0209caa0[0x41]);
+}
+
+// @symbol func_020139b8
+extern "C" void func_020139b8(void)
+{
+    if (!SaveData::CanPlayerHaveCap())
+        return;
+    *(int*)(data_0209caa0 + 4) = *(int*)(data_0209caa0 + 4) & ~(0x8000000u << data_0209caa0[0x41]);
+}
+
+// @symbol _ZN8SaveData22NumGlowingRabbitsFoundEv
+int SaveData::NumGlowingRabbitsFound()
+{
+    int count = 0;
+    int f = *(int*)(data_0209caa0 + 8);
+    unsigned int mask = 0x100000;
+    int i = 0;
+    do {
+        i++;
+        if (f & mask)
+            count++;
+        mask <<= 1;
+    } while (i < 8);
+    return count;
 }
