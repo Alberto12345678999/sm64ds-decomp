@@ -7,7 +7,7 @@
   "no_codegen_trick",
   "no_mangled_refs"
  ],
- "count": 3618,
+ "count": 3617,
  "converted": [
   "src/ARMMathLoadState.c",
   "src/ARMMathSaveState.c",
@@ -264,7 +264,6 @@
   "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
   "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
   "src/_ZN15dExtFrameCtrl_cD2Ev.cpp",
-  "src/_ZN15daObjFlMaruta_cD0Ev.cpp",
   "src/_ZN2G212GetBG0ScrPtrEv.cpp",
   "src/_ZN2G212GetBG1ScrPtrEv.cpp",
   "src/_ZN2G212GetBG2ScrPtrEv.cpp",
