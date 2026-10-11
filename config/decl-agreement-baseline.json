@@ -4509,8 +4509,30 @@
       ]
     },
     "_Z11UpdateAngleRssis": {
+      "src/actors/dMgTrmpln2Mario_c.cpp": [
+        "param:#1 short *"
+      ],
+      "src/actors/daDemo_c.cpp": [
+        "param:#1 void *"
+      ],
+      "src/actors/daMky_c.cpp": [
+        "param:#1 short *"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#1 short *"
+      ],
+      "src/actors/daObjMarioCap_c.cpp": [
+        "param:#1 void *"
+      ],
       "src/actors/daYegg_c.cpp": [
+        "param:#1 short *",
         "param:#2 int"
+      ],
+      "src/actors/unit020bfec0.cpp": [
+        "param:#1 short *"
+      ],
+      "src/game/actors/d_a_pg_rcer.cpp": [
+        "param:#1 short *"
       ]
     },
     "_Z14ApproachLinearR7Vector3RKS_5Fix12IiE": {
@@ -4544,79 +4566,292 @@
       ]
     },
     "_Z14ApproachLinearRiii": {
+      "src/_ZN6Player11St_Owl_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/_ZN6Player12St_Bonk_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/_ZN6Player12St_Land_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
       "src/_ZN6Player13St_Throw_MainEv.cpp": [
         "param:#1 int &",
         "return:int"
       ],
       "src/_ZN6Player15St_Balloon_MainEv.cpp": [
-        "param:#1 int &"
+        "param:#1 int &",
+        "return:void"
+      ],
+      "src/_ZN6Player16St_BurnFire_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/_ZN6Player17St_PunchKick_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/_ZN6Player17St_SlopeJump_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/actors/Eyerok.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "return:int"
+        "param:#1 int *",
+        "return:int",
+        "return:void"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "param:#1 int &",
-        "return:int"
+        "param:#1 int *",
+        "return:int",
+        "return:void"
+      ],
+      "src/actors/daBakubaku_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/actors/daBtfly_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/actors/daC_Jugem_c.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/actors/daDemo_c.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
+      "src/actors/daIbl_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/actors/daKing_Donketu_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
       "src/actors/daKpa_c.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
       "src/actors/daKrb_c.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
       "src/actors/daMenbo_c.cpp": [
-        "param:#1 int &"
+        "param:#1 int &",
+        "return:void"
       ],
       "src/actors/daObjBlockS_c.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
       "src/actors/daObjFl_Amilift_c.cpp": [
+        "param:#1 int *",
         "return:int"
+      ],
+      "src/actors/daObjMarioCap_c.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/actors/daObjSlIceBlock_c.cpp": [
+        "param:#1 int *",
         "return:int"
+      ],
+      "src/actors/daObjTatefuda_c.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/actors/daOts_c.cpp": [
+        "param:#1 int *",
         "return:int"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/actors/daStar_c.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
+      "src/actors/daTrs_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
       "src/actors/daWanwan2_c.cpp": [
-        "param:#1 int &"
+        "param:#1 int &",
+        "return:void"
+      ],
+      "src/actors/daYurei_Mucho_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/actors/unit020b2c84.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/actors/unit020bfec0.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
       "src/actors/unit020cd744.cpp": [
-        "return:int"
+        "param:#1 int *",
+        "return:int",
+        "return:void"
+      ],
+      "src/engine/fader/dFader_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/game/actors/d_a_jgm.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/game/actors/d_a_linelift2.cpp": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/game/actors/d_a_nknk.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
+      "src/game/actors/d_a_obj_abuku.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/game/actors/d_a_pg_rcer.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/game/actors/d_a_propeller_heyho.cpp": [
+        "param:#1 void *",
+        "return:void"
+      ],
+      "src/game/actors/daFeather_c/daFeather_c.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
       "src/minigames/d_s_mg_base.cpp": [
+        "param:#1 int *",
         "return:int"
       ],
       "src/minigames/d_s_mg_trampoline.cpp": [
+        "param:#1 int *",
         "return:int"
+      ],
+      "src/unnamed/arm9/0200/func_020071e0.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/arm9/0200/func_020072c4.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/arm9/0200/func_020073a0.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/arm9/0200/func_02007484.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/arm9/0200/func_020074e8.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/arm9/0200/func_02007fcc.c": [
+        "param:#1 int *",
+        "return:void"
       ],
       "src/unnamed/ov002/func_ov002_020d4d88.c": [
+        "param:#1 int *",
         "return:int"
       ],
+      "src/unnamed/ov002/func_ov002_020d9aac.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
       "src/unnamed/ov002/func_ov002_020db704.c": [
+        "param:#1 int *",
+        "return:int"
+      ],
+      "src/unnamed/ov002/func_ov002_020dc560.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/ov002/func_ov002_020e28d4.c": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/unnamed/ov002/func_ov002_020e3f90.c": [
+        "param:#1 int *",
+        "return:void"
+      ]
+    },
+    "_Z14ApproachLinearRsss": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/actors/dMgTrmpln2Mario_c.cpp": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/actors/daDemo_c.cpp": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/actors/daIbl_c.cpp": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/actors/daKpa_c.cpp": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/actors/daObjTatefuda_c.cpp": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/unnamed/arm9/0200/func_0200b990.c": [
+        "param:#1 short *",
+        "return:int"
+      ],
+      "src/unnamed/arm9/0200/func_0200bb28.c": [
+        "param:#1 short *",
         "return:int"
       ]
     },
     "_Z15ApproachLinear2Riii": {
+      "src/actors/daGmch_c.cpp": [
+        "param:#1 int *"
+      ],
+      "src/actors/unit020cd744.cpp": [
+        "param:#1 int *"
+      ],
       "src/game/actors/d_a_kinopio.cpp": [
+        "param:#1 int *",
         "return:void"
       ]
     },
     "_Z15ApproachLinear2Rsss": {
       "src/_ZN6Player14St_Thrown_MainEv.cpp": [
+        "param:#1 short *",
         "return:void"
       ],
       "src/_ZN6Player15St_Balloon_MainEv.cpp": [
@@ -4624,32 +4859,77 @@
         "return:void"
       ],
       "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
+        "param:#1 short *",
         "return:void"
       ],
+      "src/_ZN6Player19St_SwingPlayer_MainEv.cpp": [
+        "param:#1 short *"
+      ],
       "src/_ZN6Player20St_StomachSlide_MainEv.cpp": [
+        "param:#1 short *",
         "return:void"
       ],
       "src/_ZN6Player22St_GrabBowserTail_MainEv.cpp": [
+        "param:#1 short *",
         "return:void"
       ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 short *"
+      ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 short *",
         "return:void"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "param:#1 short &",
+        "param:#1 short *",
         "return:void"
       ],
+      "src/actors/dScEntry_c.cpp": [
+        "param:#1 short *"
+      ],
       "src/actors/daDemo_c.cpp": [
+        "param:#1 short *",
         "return:void"
       ],
       "src/actors/daYegg_c.cpp": [
+        "param:#1 short *",
         "return:void"
+      ],
+      "src/actors/unit020b2c84.cpp": [
+        "param:#1 short *"
+      ],
+      "src/actors/unit020bfec0.cpp": [
+        "param:#1 short *"
+      ],
+      "src/actors/unit020cd744.cpp": [
+        "param:#1 short *"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "param:#1 short *"
+      ],
+      "src/game/actors/daFeather_c/daFeather_c.cpp": [
+        "param:#1 short *"
+      ],
+      "src/minigames/d_s_mg_base.cpp": [
+        "param:#1 short *"
+      ],
+      "src/minigames/d_s_mg_trampoline.cpp": [
+        "param:#1 short *"
       ],
       "src/unnamed/arm9/0200/func_0200840c.c": [
+        "param:#1 short *",
         "return:short"
       ],
+      "src/unnamed/arm9/0200/func_02008b08.c": [
+        "param:#1 short *"
+      ],
       "src/unnamed/ov002/func_ov002_020df8f0.c": [
+        "param:#1 short *",
         "return:void"
+      ],
+      "src/unnamed/ov002/func_ov002_020e640c.c": [
+        "param:#1 short *"
       ]
     },
     "_Z23LoadMinimapChangeObjecti5Fix12IiEh": {

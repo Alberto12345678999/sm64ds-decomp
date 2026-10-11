@@ -375,6 +375,10 @@
   },
   {
    "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/_Z14ApproachLinearRsss.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
    "ref": "src/_ZN8BookShot13InitResourcesEv.cpp"
   },
   {
@@ -404,6 +408,14 @@
   {
    "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
    "ref": "src/func_ov020_0211216c.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-kinopio-0920.md",
+   "ref": "src/_Z14ApproachLinearRsss.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-spiny-0920.md",
+   "ref": "src/_Z14ApproachLinearRsss.cpp"
   },
   {
    "file": "notes/agents/handoffs/src-tu-inventory-test-repair-0926.md",

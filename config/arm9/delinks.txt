@@ -2263,29 +2263,9 @@ src/DecIfAbove0_Byte.c:
     complete
     .text start:0x0203add4 end:0x0203adec
 
-src/_Z14ApproachLinearRsss.cpp:
+src/ApproachAngle.cpp:
     complete
-    .text start:0x0203adec end:0x0203ae58
-
-src/_Z14ApproachLinearRiii.cpp:
-    complete
-    .text start:0x0203ae58 end:0x0203aed8
-
-src/_Z15ApproachLinear2Rsss.cpp:
-    complete
-    .text start:0x0203aed8 end:0x0203af34
-
-src/_Z15ApproachLinear2Riii.cpp:
-    complete
-    .text start:0x0203af34 end:0x0203af90
-
-src/_Z11UpdateAngleRssis.cpp:
-    complete
-    .text start:0x0203af90 end:0x0203b008
-
-src/ApproachAngle.c:
-    complete
-    .text start:0x0203b008 end:0x0203b0e8
+    .text start:0x0203adec end:0x0203b0e8
 
 src/AngleDiff.c:
     complete
