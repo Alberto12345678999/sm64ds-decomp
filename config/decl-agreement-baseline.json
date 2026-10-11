@@ -6665,14 +6665,14 @@
       "src/Initialise3dGraphics.cpp": [
         "param:#5 int"
       ],
-      "src/unnamed/arm9/0204/func_02045d9c.c": [
-        "param:#5 int"
-      ],
       "src/unnamed/ov007/func_ov007_020b6c54.c": [
         "param:#5 int"
       ],
       "src/unnamed/ov007/func_ov007_020bcf90.c": [
         "param:#1 int",
+        "param:#5 int"
+      ],
+      "src/engine/model/Model4.cpp": [
         "param:#5 int"
       ]
     },
@@ -7298,7 +7298,7 @@
       ]
     },
     "_ZN4CP1510EnableDTCMEv": {
-      "src/unnamed/arm9/0204/func_02045d9c.c": [
+      "src/engine/model/Model4.cpp": [
         "return:void"
       ]
     },
@@ -13699,53 +13699,14 @@
         "return:int (*)(void) * *"
       ]
     },
-    "data_020a4bc8": {
-      "src/_ZN5Model13GetVramOffsetEj.cpp": [
-        "return:unsigned int"
-      ],
-      "src/_ZN5Model27LoadCompressedTextureToVramEPcjS0_.cpp": [
-        "return:unsigned int"
-      ]
-    },
-    "data_020a4bcc": {
-      "src/InitialiseVramGlobals.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0204/func_02045cf0.c": [
-        "return:int"
-      ]
-    },
     "data_020a4bd4": {
       "src/engine/model/ModelComponents.cpp": [
         "return:unsigned int"
       ]
     },
-    "data_020a4bd8": {
-      "src/InitialiseVramGlobals.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0204/func_02045ce0.c": [
-        "return:int"
-      ]
-    },
     "data_020a4bdc": {
-      "src/_ZN5Model13GetVramOffsetEj.cpp": [
+      "src/engine/model/Model4.cpp": [
         "return:unsigned int"
-      ]
-    },
-    "data_020a4be0": {
-      "src/InitialiseVramGlobals.c": [
-        "return:int"
-      ]
-    },
-    "data_020a4be4": {
-      "src/InitialiseVramGlobals.c": [
-        "return:int"
-      ]
-    },
-    "data_020a4be8": {
-      "src/InitialiseVramGlobals.c": [
-        "return:int"
       ]
     },
     "data_020a4bec": {
@@ -23964,11 +23925,6 @@
         "param:#1 Ctx *"
       ]
     },
-    "func_02045ec4": {
-      "src/unnamed/arm9/0204/func_02045e70.c": [
-        "param:#2 void *"
-      ]
-    },
     "func_02046008": {
       "src/_ZN5Model12SetPolygonIDEi.cpp": [
         "param:#2 int"
@@ -24563,22 +24519,22 @@
       ]
     },
     "func_02053e1c": {
-      "src/InitialiseVramGlobals.c": [
+      "src/engine/model/Model4.cpp": [
         "return:int"
       ]
     },
     "func_02053e34": {
-      "src/InitialiseVramGlobals.c": [
+      "src/engine/model/Model4.cpp": [
         "return:int"
       ]
     },
     "func_02053ec0": {
-      "src/unnamed/arm9/0204/func_02045d9c.c": [
+      "src/engine/model/Model4.cpp": [
         "return:unsigned short"
       ]
     },
     "func_02053ed0": {
-      "src/unnamed/arm9/0204/func_02045d9c.c": [
+      "src/engine/model/Model4.cpp": [
         "return:unsigned short"
       ]
     },
