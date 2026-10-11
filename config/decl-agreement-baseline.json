@@ -4987,15 +4987,24 @@
     "_ZN10dBgCh_Actr20UpdateDiscreteNoLavaEv": {
       "src/dBgCh_Actr_UpdateDiscreteNoLava_veneer.c": [
         "arity:0"
+      ],
+      "src/engine/collision/dBgCh_SphCrr_query.cpp": [
+        "arity:0"
       ]
     },
     "_ZN10dBgCh_Actr20UpdateExtraContinousEv": {
       "src/unnamed/arm9/0203/func_020383e4.c": [
         "arity:0"
+      ],
+      "src/engine/collision/dBgCh_SphCrr_query.cpp": [
+        "arity:0"
       ]
     },
     "_ZN10dBgCh_Actr22UpdateDiscreteNoLava_2Ev": {
       "src/unnamed/arm9/0203/func_02038414.c": [
+        "arity:0"
+      ],
+      "src/engine/collision/dBgCh_SphCrr_query.cpp": [
         "arity:0"
       ]
     },
@@ -11217,9 +11226,13 @@
         "return:int"
       ],
       "src/unnamed/ov002/func_ov002_020d6dac.c": [
+        "return:int",
         "return:unsigned int"
       ],
       "src/unnamed/ov002/func_ov002_020eed24.cpp": [
+        "return:int"
+      ],
+      "src/actors/dBgActor_c.cpp": [
         "return:int"
       ]
     },
@@ -13270,6 +13283,9 @@
       ],
       "src/unnamed/arm9/0203/func_02038ea4.cpp": [
         "return:Obj *"
+      ],
+      "src/engine/collision/dBgCh_SphCrr_query.cpp": [
+        "return:dBgW * []"
       ]
     },
     "data_020a0d0c": {
@@ -23083,6 +23099,9 @@
     "func_02036acc": {
       "src/unnamed/arm9/0203/func_02038408.c": [
         "arity:0"
+      ],
+      "src/engine/collision/dBgCh_SphCrr_query.cpp": [
+        "arity:0"
       ]
     },
     "func_02037dc4": {
@@ -30101,6 +30120,37 @@
     "_ZN2GX23SetBankForSubOBJExtPlttEt": {
       "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
+      ]
+    },
+    "_ZN5dBgPi9RecordHitEsP11SurfaceInfo": {
+      "src/engine/collision/dBgCh_SphCrr.cpp": [
+        "param:#2 int"
+      ],
+      "src/engine/collision/dBgCh_SphCrr_query.cpp": [
+        "param:#2 int"
+      ],
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
+        "param:#2 int"
+      ]
+    },
+    "_ZN9dBgCh_Lin10DetectClsnEv": {
+      "src/engine/collision/dBgCh_Actr.cpp": [
+        "return:int"
+      ],
+      "src/engine/view/dCamera_c.cpp": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0200/func_02008cb4.c": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0200/func_0200b990.c": [
+        "return:int"
+      ],
+      "src/unnamed/ov002/func_ov002_020d6dac.c": [
+        "return:int"
+      ],
+      "src/unnamed/ov002/func_ov002_020d8a50.c": [
+        "return:int"
       ]
     }
   },

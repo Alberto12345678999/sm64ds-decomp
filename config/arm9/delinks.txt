@@ -2104,131 +2104,9 @@ src/engine/collision/dBgCh_SphCrr.cpp:
     .text start:0x0203782c end:0x02037dc4
     .data start:0x020992f8 end:0x02099360
 
-src/unnamed/arm9/0203/func_02037dc4.c:
-    complete
-    .text start:0x02037dc4 end:0x02037dcc
-
-src/_ZNK11SurfaceInfo12CopyNormalToER7Vector3.cpp:
-    complete
-    .text start:0x02037dcc end:0x02037de8
-
-src/func_02037de8.c:
-    complete
-    .text start:0x02037de8 end:0x02037e14
-
-src/func_02037e14.c:
-    complete
-    .text start:0x02037e14 end:0x02037e20
-
-src/func_02037e20.c:
-    complete
-    .text start:0x02037e20 end:0x02037e2c
-
-src/func_02037e2c.c:
-    complete
-    .text start:0x02037e2c end:0x02037e38
-
-src/func_02037e38.c:
-    complete
-    .text start:0x02037e38 end:0x02037e48
-
-src/unnamed/arm9/0203/func_02037e48.c:
-    complete
-    .text start:0x02037e48 end:0x02037e58
-
-src/unnamed/arm9/0203/func_02037e58.c:
-    complete
-    .text start:0x02037e58 end:0x02037e68
-
-src/unnamed/arm9/0203/func_02037e68.c:
-    complete
-    .text start:0x02037e68 end:0x02037e78
-
-src/SurfaceInfo_TestFlag0x20.c:
-    complete
-    .text start:0x02037e78 end:0x02037e84
-
-src/unnamed/arm9/0203/func_02037e84.c:
-    complete
-    .text start:0x02037e84 end:0x02037e90
-
-src/unnamed/arm9/0203/func_02037e90.c:
-    complete
-    .text start:0x02037e90 end:0x02037e9c
-
-src/func_02037e9c.c:
-    complete
-    .text start:0x02037e9c end:0x02037eb0
-
-
-src/engine/collision/dBgPc.cpp:
-    complete
-    .text start:0x02037eb0 end:0x02037f4c
-
-
-src/engine/collision/dBgPi.cpp:
-    complete
-    .text start:0x02037f4c end:0x0203821c
-
-src/engine/collision/CLPS_BlockRef.cpp:
-    complete
-    .text start:0x0203821c end:0x02038298
-
-src/unnamed/arm9/0203/func_02038298.c:
-    complete
-    .text start:0x02038298 end:0x02038324
-
-src/unnamed/arm9/0203/func_02038324.cpp:
-    complete
-    .text start:0x02038324 end:0x020383e4
-
-src/unnamed/arm9/0203/func_020383e4.c:
-    complete
-    .text start:0x020383e4 end:0x020383f0
-
-src/unnamed/arm9/0203/func_020383f0.c:
-    complete
-    .text start:0x020383f0 end:0x020383fc
-
-src/dBgCh_Actr_UpdateContinuous_Veneer.c:
-    complete
-    .text start:0x020383fc end:0x02038408
-
-src/unnamed/arm9/0203/func_02038408.c:
-    complete
-    .text start:0x02038408 end:0x02038414
-
-src/unnamed/arm9/0203/func_02038414.c:
-    complete
-    .text start:0x02038414 end:0x02038420
-
-src/dBgCh_Actr_UpdateDiscreteNoLava_veneer.c:
-    complete
-    .text start:0x02038420 end:0x0203842c
-
-src/unnamed/arm9/0203/func_0203842c.cpp:
-    complete
-    .text start:0x0203842c end:0x0203859c
-
-src/unnamed/arm9/0203/func_0203859c.cpp:
-    complete
-    .text start:0x0203859c end:0x02038638
-
-src/_ZN9dBgCh_Lin10DetectClsnEv.cpp:
-    complete
-    .text start:0x02038638 end:0x02038824
-
 src/engine/collision/dBgCh_SphCrr_query.cpp:
     complete
-    .text start:0x02038824 end:0x02038ea4
-
-src/unnamed/arm9/0203/func_02038ea4.cpp:
-    complete
-    .text start:0x02038ea4 end:0x02038f44
-
-src/_ZN9dBgCh_Gnd10DetectClsnEv.cpp:
-    complete
-    .text start:0x02038f44 end:0x02039140
+    .text start:0x02037dc4 end:0x02039140
 
 src/engine/collision/dBgW.cpp:
     complete
@@ -6219,3 +6097,4 @@ src/unnamed/arm9/0207/__sinit_02075150.c:
 src/unnamed/arm9/0207/__sinit_02075154.c:
     complete
     .init start:0x02075154 end:0x02075230
+

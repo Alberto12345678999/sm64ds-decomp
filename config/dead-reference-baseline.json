@@ -54,6 +54,14 @@
    "ref": "src_tu/actors/Actor.cpp"
   },
   {
+   "file": "notes/agents/handoffs/fold-arm9-clpsblockref-1020.md",
+   "ref": "src/engine/collision/CLPS_BlockRef.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-dbgpc-1020.md",
+   "ref": "src/engine/collision/dBgPc.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
    "ref": "src/func_ov006_020cb030.cpp"
   },
@@ -359,6 +367,10 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "src/dBgCh_Actr_UpdateContinuous_Veneer.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
    "ref": "src/d_a_onms.cpp"
   },
   {
@@ -467,11 +479,19 @@
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/func_02037e38.c"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "src/game/mario.c"
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "src/game/mario_step.c"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/unnamed/arm9/0203/func_02037e58.c"
   },
   {
    "file": "notes/archive/plan-gen-header.md",
@@ -572,6 +592,10 @@
   {
    "file": "notes/ctor-migration.md",
    "ref": "src/_ZN5ModelC1Ev.cpp"
+  },
+  {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/engine/collision/dBgPi.cpp"
   },
   {
    "file": "notes/declaration-centralization.md",
