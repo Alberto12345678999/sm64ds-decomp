@@ -460,6 +460,11 @@
       "from": "@995",
       "to": "@950",
       "evidence": "mwcc numbers this descriptor @995 per TU and ov010/daObjC1_Trap_c already defines a global @995 (its compiler temporary for State2), so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@983",
+      "to": "@91",
+      "evidence": "mwcc numbers this descriptor @983 per TU and ov091/daObjSimpleLift_c already defines a global @983, so the scratch link would multiply-define it; it lands on @91"
     }
   ],
   "notes": [

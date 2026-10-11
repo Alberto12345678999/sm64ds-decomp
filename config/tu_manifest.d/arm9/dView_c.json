@@ -121,8 +121,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-dView_c/dView_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 3,
-    "functions_declared": 3,
+    "functions_matched": 4,
+    "functions_declared": 4,
     "compilerOnlyOutput": {
       "requested": [
         "_Z22dView_c_EmitDestructorP7dView_c",
