@@ -1,12 +1,15 @@
 # Gate-3b slice: SharedFilePtr over the host card seam (port/hal/fs.cpp),
 # on top of gate 3a's heap (the smoke links slices 2 + 3a as well).
 #
-# src/SharedFilePtr.cpp compiles LoadFile / Release / func_02017c24 here;
+# src/SharedFilePtr.cpp compiles LoadFile / Release / func_02017c24 and the
+# four X::LoadFile(SharedFilePtr&) members here;
 # its SM64DS_PLATFORM_PC guards drop the pieces the HAL replaces:
 #   SharedFilePtr::Load -- the seam itself (card hardware).
-#   func_02017b4c -- on the DS it passes ov0FileID by leaving it in r1
-#   across a one-argument func_02017e48 call; the HAL provides an
-#   ABI-portable Construct instead.
+#   SharedFilePtr::Construct / ReallocateModelFile -- host members in
+#   port/hal/fs.cpp / gx_upload_bridge.cpp.
+#   func_02017b4c and the ride-through/destructor C helpers -- on the DS
+#   they chain through func_02017e34/func_02017e48/func_02017060, which the
+#   HAL never provides.
 
 src/SharedFilePtr.cpp
 src/func_02017e0c.c

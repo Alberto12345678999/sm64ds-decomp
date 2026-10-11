@@ -7873,10 +7873,6 @@
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *"
       ],
-      "src/unnamed/arm9/0201/func_020179b4.c": [
-        "param:#1 SharedFilePtr *",
-        "return:BMD_File *"
-      ],
       "src/unnamed/ov002/func_ov002_020b6c54.c": [
         "param:#1 void *"
       ],
@@ -22973,28 +22969,6 @@
     "func_02017c24": {
       "src/_ZN13SharedFilePtr7ReleaseEv.cpp": [
         "param:#1 SharedFilePtr *"
-      ]
-    },
-    "func_02017e34": {
-      "src/SharedFilePtr_Destruct_Anim.c": [
-        "return:int"
-      ],
-      "src/SharedFilePtr_Destruct_Clsn.c": [
-        "return:int"
-      ],
-      "src/SharedFilePtr_Destruct_TexSeq.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_02017a9c.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_02017ab4.c": [
-        "return:int"
-      ]
-    },
-    "func_02017e48": {
-      "src/_ZN13SharedFilePtr9ConstructEj.cpp": [
-        "return:void"
       ]
     },
     "func_02017e60": {

@@ -1016,77 +1016,9 @@ src/unnamed/arm9/0201/func_020178cc.c:
     complete
     .text start:0x020178cc end:0x020178e4
 
-src/_ZN15TextureSequence8LoadFileER13SharedFilePtr.cpp:
-    complete
-    .text start:0x020178e4 end:0x0201791c
-
-src/SharedFilePtr_Destruct_TexSeq.c:
-    complete
-    .text start:0x0201791c end:0x02017934
-
-src/SharedFilePtr_Construct_TexSeq.c:
-    complete
-    .text start:0x02017934 end:0x0201794c
-
-src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp:
-    complete
-    .text start:0x0201794c end:0x02017984
-
-src/SharedFilePtr_Destruct_Anim.c:
-    complete
-    .text start:0x02017984 end:0x0201799c
-
-src/_ZN13SharedFilePtr9ConstructEj.cpp:
-    complete
-    .text start:0x0201799c end:0x020179b4
-
-src/unnamed/arm9/0201/func_020179b4.c:
-    complete
-    .text start:0x020179b4 end:0x02017a0c
-
-src/unnamed/arm9/0201/func_02017a0c.c:
-    complete
-    .text start:0x02017a0c end:0x02017a24
-
-src/unnamed/arm9/0201/func_02017a24.c:
-    complete
-    .text start:0x02017a24 end:0x02017a3c
-
-src/_ZN5Model8LoadFileER13SharedFilePtr.cpp:
-    complete
-    .text start:0x02017a3c end:0x02017a8c
-
-src/_ZN13SharedFilePtr19ReallocateModelFileEv.cpp:
-    complete
-    .text start:0x02017a8c end:0x02017a9c
-
-src/unnamed/arm9/0201/func_02017a9c.c:
-    complete
-    .text start:0x02017a9c end:0x02017ab4
-
-src/unnamed/arm9/0201/func_02017ab4.c:
-    complete
-    .text start:0x02017ab4 end:0x02017acc
-
-src/unnamed/arm9/0201/func_02017acc.c:
-    complete
-    .text start:0x02017acc end:0x02017ae4
-
-src/unnamed/arm9/0201/func_02017ae4.c:
-    complete
-    .text start:0x02017ae4 end:0x02017afc
-
-src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp:
-    complete
-    .text start:0x02017afc end:0x02017b34
-
-src/SharedFilePtr_Destruct_Clsn.c:
-    complete
-    .text start:0x02017b34 end:0x02017b4c
-
 src/SharedFilePtr.cpp:
     complete
-    .text start:0x02017b4c end:0x02017e0c
+    .text start:0x020178e4 end:0x02017e0c
 
 src/func_02017e0c.c:
     complete

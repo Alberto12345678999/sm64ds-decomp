@@ -5,7 +5,7 @@
 
 # Model
 src/engine/model/Model.cpp
-src/_ZN5Model8LoadFileER13SharedFilePtr.cpp
+src/SharedFilePtr.cpp
 src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp
 src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp
 src/_ZN5Model13LoadTexAndPalER8BMD_File.cpp
@@ -50,7 +50,6 @@ src/func_020456a0.c
 # src/_ZN4cstd3absEi.cpp moved to slice_gate2.txt: the allocator layer needs it
 # too, and every target that links this slice links gate 2 as well, so listing it
 # in both would be a duplicate definition.
-src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp
 src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp
 
 # Whole-class slice. Once a constructor is a real C++ constructor its TU

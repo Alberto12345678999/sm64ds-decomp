@@ -6,58 +6,179 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run 0x02017b4c..0x02017e0c, 5 functions, gapless in config/arm9/delinks.txt, all complete.",
-    "BOTTOM EDGE: SharedFilePtr_Destruct_Clsn (0x02017b34) and _ZN7dBgW_Kc8LoadFileER13SharedFilePtr (0x02017afc) below; TOP EDGE: func_02017e0c above."
+    "contiguous linker run 0x020178e4..0x02017e0c, 22 functions, gapless in config/arm9/delinks.txt, all complete.",
+    "BOTTOM EDGE: func_020178cc (src/unnamed/arm9/0201/func_020178cc.c, the Construct(0x8418) sinit for the ov075 SharedFilePtr -- opens the next file's run) below; TOP EDGE: func_02017e0c (src/func_02017e0c.c) above.",
+    "SharedFilePtr_Destruct_Clsn (0x02017b34) is a canonical_symbol target in overlay manifests (e.g. ov023 daObjFm_Battan_c.json); it keeps its name and address here."
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x02017b4c",
+      "start": "0x020178e4",
       "end": "0x02017e0c"
     }
   ],
   "functions": [
     {
+      "symbol": "_ZN15TextureSequence8LoadFileER13SharedFilePtr",
+      "address": "0x020178e4",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN15TextureSequence8LoadFileER13SharedFilePtr.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "SharedFilePtr_Destruct_TexSeq",
+      "address": "0x0201791c",
+      "size": "0x00000018",
+      "legacy_source": "src/SharedFilePtr_Destruct_TexSeq.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "SharedFilePtr_Construct_TexSeq",
+      "address": "0x02017934",
+      "size": "0x00000018",
+      "legacy_source": "src/SharedFilePtr_Construct_TexSeq.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr",
+      "address": "0x0201794c",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "SharedFilePtr_Destruct_Anim",
+      "address": "0x02017984",
+      "size": "0x00000018",
+      "legacy_source": "src/SharedFilePtr_Destruct_Anim.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN13SharedFilePtr9ConstructEj",
+      "address": "0x0201799c",
+      "size": "0x00000018",
+      "legacy_source": "src/_ZN13SharedFilePtr9ConstructEj.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "func_020179b4",
+      "address": "0x020179b4",
+      "size": "0x00000058",
+      "legacy_source": "src/unnamed/arm9/0201/func_020179b4.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_02017a0c",
+      "address": "0x02017a0c",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017a0c.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_02017a24",
+      "address": "0x02017a24",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017a24.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "_ZN5Model8LoadFileER13SharedFilePtr",
+      "address": "0x02017a3c",
+      "size": "0x00000050",
+      "legacy_source": "src/_ZN5Model8LoadFileER13SharedFilePtr.cpp",
+      "ordinal": 9
+    },
+    {
+      "symbol": "_ZN13SharedFilePtr19ReallocateModelFileEv",
+      "address": "0x02017a8c",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN13SharedFilePtr19ReallocateModelFileEv.cpp",
+      "ordinal": 10
+    },
+    {
+      "symbol": "func_02017a9c",
+      "address": "0x02017a9c",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017a9c.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_02017ab4",
+      "address": "0x02017ab4",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017ab4.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "func_02017acc",
+      "address": "0x02017acc",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017acc.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "func_02017ae4",
+      "address": "0x02017ae4",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017ae4.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "_ZN7dBgW_Kc8LoadFileER13SharedFilePtr",
+      "address": "0x02017afc",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp",
+      "ordinal": 15
+    },
+    {
+      "symbol": "SharedFilePtr_Destruct_Clsn",
+      "address": "0x02017b34",
+      "size": "0x00000018",
+      "legacy_source": "src/SharedFilePtr_Destruct_Clsn.c",
+      "ordinal": 16
+    },
+    {
       "symbol": "func_02017b4c",
       "address": "0x02017b4c",
       "size": "0x00000018",
       "legacy_source": "src/unnamed/arm9/0201/func_02017b4c.c",
-      "ordinal": 0
+      "ordinal": 17
     },
     {
       "symbol": "_ZN13SharedFilePtr7ReleaseEv",
       "address": "0x02017b64",
       "size": "0x00000060",
       "legacy_source": "src/_ZN13SharedFilePtr7ReleaseEv.cpp",
-      "ordinal": 1
+      "ordinal": 18
     },
     {
       "symbol": "_ZN13SharedFilePtr8LoadFileEv",
       "address": "0x02017bc4",
       "size": "0x00000060",
       "legacy_source": "src/_ZN13SharedFilePtr8LoadFileEv.cpp",
-      "ordinal": 2
+      "ordinal": 19
     },
     {
       "symbol": "func_02017c24",
       "address": "0x02017c24",
       "size": "0x00000030",
       "legacy_source": "src/func_02017c24.c",
-      "ordinal": 3
+      "ordinal": 20
     },
     {
       "symbol": "_ZN13SharedFilePtr4LoadEv",
       "address": "0x02017c54",
       "size": "0x000001b8",
       "legacy_source": "src/_ZN13SharedFilePtr4LoadEv.cpp",
-      "ordinal": 4
+      "ordinal": 21
     }
   ],
   "data": [],
   "bss": [],
   "compiler_only_output": [],
   "notes": [
-    "PROBE (Grok Bot, 2026-10-11): new TU named after the tree class SharedFilePtr (include/SharedFilePtr.h), no ROM RTTI. Reverse source order: lower addresses at the bottom of the file."
+    "PROBE (Grok Bot, 2026-10-11): new TU named after the tree class SharedFilePtr (include/SharedFilePtr.h), no ROM RTTI. Reverse source order: lower addresses at the bottom of the file.",
+    "GROW (G03): extended downward by the loader block 0x020178e4..0x02017b4c. The X::LoadFile(SharedFilePtr&) members of TextureSequence, dExtFrameCtrl_c, Model and dBgW_Kc live in this file on the cartridge and are kept under their existing mangled names per Juan 2026-10-11 05:18 (other-system methods in another system's TU are an accepted original-layout outcome). SharedFilePtr::Construct/ReallocateModelFile and the ride-through/destructor C helpers keep their existing names. SM64DS_PLATFORM_PC guards: Load and func_02017b4c (as before), plus Construct (fs.cpp member), ReallocateModelFile (gx_upload_bridge member) and every helper calling the DS-only func_02017e34/func_02017e48/func_02017060; the four X::LoadFile methods stay host-visible because tests and hal/cxxname_bridge.cpp call the real members."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -65,8 +186,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-SharedFilePtr/SharedFilePtr.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 5,
-    "functions_declared": 5,
+    "functions_matched": 22,
+    "functions_declared": 22,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
