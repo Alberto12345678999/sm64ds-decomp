@@ -7,12 +7,10 @@
 src/engine/model/Model.cpp
 src/_ZN5Model8LoadFileER13SharedFilePtr.cpp
 src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp
-src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp
 src/_ZN5Model13LoadTexAndPalER8BMD_File.cpp
 src/_ZN5Model17LoadTextureToVramEPcj.cpp
 src/_ZN5Model27LoadCompressedTextureToVramEPcjS0_.cpp
 src/_ZN5Model13GetVramOffsetEj.cpp
-src/_ZN5Model12SetPolygonIDEi.cpp
 # ModelComponents::Render: HOST copy in port/unmatched -- the matched TU
 # passes the material index by leaving it in r1 (see the file header there).
 port/unmatched/ModelComponents_Render.cpp
@@ -29,13 +27,11 @@ src/func_020462d0.c
 src/func_02046564.c
 src/MulMat4x3Mat4x3.c
 src/func_020458a8.c
-src/func_02016b24.c
 src/func_02045074.c
 src/func_02045178.c
 src/func_02048234.c
 src/func_02046008.c
 src/MulMat3x3Mat3x3.c
-src/_ZN9ModelBaseC2Ev.cpp
 src/DMASyncWordTransfer.c
 src/func_02059fd0.c
 src/func_0203cc0c.c

@@ -33,7 +33,7 @@ src/engine/collision/dBgW_KcMbg.cpp
 # Enable/Disable/IsEnabled, the slot-registry helpers and the func_020393*
 # accessors this slice used to name separately all live in it.
 src/engine/collision/dBgW.cpp
-src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp
+src/engine/model/Model.cpp
 src/InvMat4x3.c
 src/func_02053200.c
 # dBgW_Kc is two production translation units, one per module; the C2
