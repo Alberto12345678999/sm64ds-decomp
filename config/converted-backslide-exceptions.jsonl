@@ -809,3 +809,4 @@
 {"path": "src/unnamed/ov091/__sinit_ov091_02134930.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov095/__sinit_ov095_02136fe0.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov102/__sinit_ov102_0214d714.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
+{"path": "src/actors/dScMgCurling2_c.cpp#dScMgCurling2_c_classInit", "reason": "dScMgCurling2_c_classInit absorbs src/d_s_mg_curling2.cpp into ov006/dScMgCurling2_c: 'return new dScMgCurling2_c' must call the vague-linkage _Znwj by its mangled name or the range does not link -- byte-required mangled call (S43)"}
