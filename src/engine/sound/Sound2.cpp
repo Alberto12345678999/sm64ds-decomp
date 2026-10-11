@@ -1,29 +1,42 @@
 //cpp
-/* arm9/Sound2 -- the second Sound::Func_* run at .text 0x02048e94..0x02048ef4,
- * folded from five legacy shards. The run is three wrappers around the
- * shared func_02048fd4 worker plus the two address-named helpers
- * that call it: func_02048e94 arms the player-count global and forwards to
- * Sound::Player::SetPlayableSeqCount, func_02048ed4 forwards 6. The Func_
- * wrappers keep their literal mangled names under extern "C", the same
- * spelling the home TU src/engine/sound/Sound.cpp already declares them
- * with. That home TU exists but is not contiguous with this run
- * (other files sit in between), so this is its own original file. The span
- * is bounded on both sides by unnamed helpers: func_02048e74.c ends at
- * 0x02048e94 below and func_02048ef4.c begins at 0x02048ef4 above.
- * mwccarm emits .text in reverse source order, so the definitions below run
- * ROM-descending; the roster reads ROM-ascending.
- *
- *   Sound::Func_02048ee4, func_02048ed4, Sound::Func_02048ec4,
- *     Sound::Func_02048eb4, func_02048e94 -- each in its own extern "C"
- *   block at its address position.
+/* arm9/Sound2 -- eight tail-call thunks, .text 0x02048eb4..0x02048f34.
+ * Each one loads func_02048fd4 and branches with r0 = 0, 7, 6, 5, 4, 3, 2, 1
+ * in ROM order. func_02048fd4 is the next body and is not in this file.
+ * func_02048e94 is the previous body and stays its own shard.
+ * The Func_ wrappers keep the literal mangled names src/engine/sound/Sound.cpp
+ * already declares. mwccarm emits .text in reverse source order, so the
+ * definitions below run ROM-descending. The Sound thunks are one file
+ * through 0x02048F34.
  */
 
 #include "types.h"
 
 extern "C" {
 extern void func_02048fd4(int i);
-extern int _ZN5Sound6Player19SetPlayableSeqCountEii(int a, int b);
-extern int data_02099fb0;
+}
+
+// @symbol func_02048f24
+extern "C" void func_02048f24(void)
+{
+    func_02048fd4(1);
+}
+
+// @symbol func_02048f14
+extern "C" void func_02048f14(void)
+{
+    func_02048fd4(2);
+}
+
+// @symbol func_02048f04
+extern "C" void func_02048f04(void)
+{
+    func_02048fd4(3);
+}
+
+// @symbol func_02048ef4
+extern "C" void func_02048ef4(void)
+{
+    func_02048fd4(4);
 }
 
 // @symbol _ZN5Sound13Func_02048ee4Ev
@@ -32,12 +45,10 @@ extern "C" void _ZN5Sound13Func_02048ee4Ev(void)
     func_02048fd4(5);
 }
 
-extern "C" {
 // @symbol func_02048ed4
-void func_02048ed4(void)
+extern "C" void func_02048ed4(void)
 {
     func_02048fd4(6);
-}
 }
 
 // @symbol _ZN5Sound13Func_02048ec4Ev
@@ -50,12 +61,4 @@ extern "C" void _ZN5Sound13Func_02048ec4Ev(void)
 extern "C" void _ZN5Sound13Func_02048eb4Ev(void)
 {
     func_02048fd4(0);
-}
-
-extern "C" {
-// @symbol func_02048e94
-int func_02048e94(void) {
-    data_02099fb0 = 4;
-    return _ZN5Sound6Player19SetPlayableSeqCountEii(9, 4);
-}
 }

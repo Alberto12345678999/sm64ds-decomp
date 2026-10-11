@@ -8112,7 +8112,7 @@
       "src/unnamed/arm9/0204/func_02048e74.c": [
         "return:void"
       ],
-      "src/engine/sound/Sound2.cpp": [
+      "src/unnamed/arm9/0204/func_02048e94.c": [
         "return:int"
       ]
     },
