@@ -11,25 +11,27 @@
  * instead. Variant 1 keeps a companion actor 0x10d keyed to the nearest
  * player's character.
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing (all measured):
- *   common.h before math/Matrix.h: the flat Matrix4x3 keeps the destructor
- *   group D1, D0 (see the note on the includes).
- *   Source is ROM-ascending under defer_codegen off; the destructor is
- *   declared in the header and defined out of line below (D1 then D0, no D2).
- *   The two opt_propagation off brackets (St_Talk_Main, InitResources).
- *   Model::Render is called qualified in Render.
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS:
- *   dCcAc_c::Init, ModelAnim::SetAnim, DropShadowRadHeight and
- *   Sound::PlaySub take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
- *   The companion Spawn: forming a Vector3 reference over int storage is
- *   not free, unlike the star Spawn's real local.
- *
- * Known limits:
- *   Math/vector helpers and game-state free functions keep linker names (no
- *   header homes).
- *   data_0209f2f8 / data_0209caa0 and the ov085/ov002 file handles keep
- *   linker names.
+ * leftovers:
+ * - common.h before math/Matrix.h is load-bearing: the flat m[12]
+ *   Matrix4x3 keeps the destructor group at D1, D0, D2 where the
+ *   cartridge keeps D1 below D0 and no D2 (measured note below).
+ * - Source is ROM-ascending under defer_codegen off; the destructor is
+ *   header-declared and defined out of line (D1 then D0, no D2).
+ * - The opt_propagation off brackets on St_Talk_Main and InitResources
+ *   and the qualified `mModelAnim.Model::Render(0)` are the matched
+ *   form.
+ * - dCcAc_c::Init, ModelAnim::SetAnim, DropShadowRadHeight and
+ *   Sound::PlaySub stay mangled: by-value Fix12<int> is wall 6az. The
+ *   companion Spawn keeps its Vector3 pun (a real Vector3 local changes
+ *   codegen, unlike the star Spawn's).
+ * - Vec3_* helpers, func_020138dc / func_02013a44,
+ *   ObjectMessageIDToActualMessageID, IsStarCollectedInCurLevel,
+ *   NumStars and data_0209f2f8 / data_0209caa0 keep linker names; the
+ *   ov085/ov002 file handles stay address-named.
+ * - MatrixWords keeps UpdateModelPose's aggregate 12-word copies in
+ *   ldm/stm form; `char *c` offset spelling stays where the ROM reads
+ *   untyped fields (mTalkPlayer, the model internals at +0x11c, the
+ *   spawned actor's words).
  */
 /* common.h FIRST, and the order is load-bearing. Both it and math/Matrix.h
  * define Matrix4x3 behind one shared guard -- flat `s32 m[12]` here, and

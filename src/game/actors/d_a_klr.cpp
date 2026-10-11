@@ -18,15 +18,19 @@
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
  * section per function in the reverse of source order.
  *
- * Known limits:
- * - func_ov079_0212682c and func_ov079_02126794 are the state-table methods.
- *   This file defines data_ov079_021282e0; the compiler copies its two
- *   pointer-to-member descriptors in at overlay load.
+ * leftovers:
+ * - func_ov079_0212682c, func_ov079_02126794 and func_ov079_02126704
+ *   keep address names: the two state-table methods have no recovered
+ *   name evidence, and the pose helper is a plain free function.
  * - Particle::System::New/NewSimple, dActor_c::DropShadowRadHeight,
- *   dCcAcPos_c::Init, dBgCh_Actr::Init and Player::Hurt take Fix12<int> by
- *   value, so they stay mangled (notes/mwccarm-codegen.md 6az).
- * - data_ov079_02128300 / 021282f0 are the two model file handles, in
+ *   dCcAcPos_c::Init, dBgCh_Actr::Init and Player::Hurt take Fix12<int>
+ *   by value, so they stay mangled (notes/mwccarm-codegen.md 6az);
+ *   dBgCh_Actr::GetWallResult has no header decl.
+ * - func_0200f760, func_0201267c, func_02012694 and Vec3_Add keep linker
+ *   names. data_ov079_02128300 / 021282f0 are the model handles, in
  *   overlay data this TU does not own.
+ * - MatrixWords keeps the one 0x30-byte mat4x3 block copy; Matrix4x3's
+ *   own memberwise assignment comes out 0x18 bytes longer.
  */
 
 #include "daKlr_c.h"

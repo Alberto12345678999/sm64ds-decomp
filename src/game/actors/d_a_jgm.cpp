@@ -11,83 +11,43 @@
  * does not store that spelling. Historical aliases: Lakitu_Spawn and
  * Lakitu_SpawnInfo.
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *
- *   Ordinary .text is reverse source order: keep the ROM-high factory first
- *   and OnYoshiTryEat last. The inline dtor in the header emits retail D1
- *   then D0, and no D2. The factory stays `return new daJgm_c()` (MATCHES
- *   0x60); the leaf unsigned-long operator new forwards `_ZN7fBase_cnwEj`.
- *
- *   common.h must be first. The nested Matrix.h spelling scalarizes the
- *   12-word mat4x3 copies; UpdateModels writes the translation as m[9..11].
- *
- *   The sizeof wraps on DaJgmStateHandlers / daJgm_c / DaJgmSpawnInfo /
- *   DaJgmVector3Words.
- *
- *   DaJgmVector3Words: a local Vector3 emits a vague-linkage ~Vector3 into
- *   this text-only TU. UpdateHoverState / UpdateThrowState /
- *   UpdateWallAndWater / HandlePlayerCollision / DieAndDropCoins.
- *
- *   *(Vector3 *)&mPosX / mSpawnPosX: dActor_c has no Pos() accessor.
- *   UpdateHoverState / UpdateFlight / HandlePlayerCollision.
- *
- *   dBgCh_Actr_UpdateDiscreteNoLava_veneer is the retail call
- *   (UpdateFallState / UpdateWallAndWater). The named UpdateDiscreteNoLava
- *   is WRONG-DEST (ROM 0x02038420).
- *
- *   InitResources / UpdateThrowState keep `char *c = (char *)this` offset
- *   soup and the 64-bit launder on the spawn-pos stores (named fields CSE).
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS:
- *
- *   (a) Fix12<int> passed by value (notes/mwccarm-codegen.md 6az):
- *       dCcAcPos_c::Init / dBgCh_Actr::Init (InitResources; the dBgCh Init
- *       header's Fix12i mangles as i, the ROM's as 5Fix12IiE);
- *       ModelAnim::SetAnim / TextureSequence::SetFile (EnterHoverState /
- *       EnterThrowState / EnterFallState); dActor_c::DropShadowRadHeight /
- *       SpawnCoins (UpdateModels / DieAndDropCoins); Player::Bounce / Hurt
- *       (HandlePlayerCollision; Player.h has neither);
- *       Particle::System::NewSimple (EnterFallState; Particle__System.h has
- *       no NewSimple).
- *
- *   (b) No usable declaration: dActor_c::IsTooFarAwayFromPlayer is not on
- *       dActor_c.h (Behavior). dBgCh_Actr::GetWallResult is not on
- *       dBgCh_Actr.h (UpdateWallAndWater). Sound::PlayLong's header takes
- *       Vector3 & + s16 while this TU passes a pointer + unsigned
- *       (UpdateHoverState / UpdateThrowState). PlayBank0 puns mCamSpacePosX
- *       (dActor_c has no accessor), and a Vector3 local would emit a Vector3
- *       D1 destructor -- EnterFallState /
- *       HandlePlayerCollision.
- *
- *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss) in
- *   UpdateSpitState.
- *
- * Known limits:
- *   SharedFilePtr has no recovered fields; SetAnim / SetFile / Prepare read
- *   [1] as the loaded pointer (EnterHoverState / EnterThrowState /
- *   InitResources).
- *   OnTurnIntoEgg's R6Player and UpdateWallAndWater's R10dBgCh_Actr: a
- *   pointer generates identical ARM. SetState's `int`: the signedness is
- *   indistinguishable from other 32-bit forms.
- *   func_0201267c is the throw SFX 0xd2 at +0x74 (mCamSpacePosX) in
- *   UpdateThrowState; no named method in this TU.
- *
- * NOT OWNED BY THIS TU (this TU claims .text only):
- *   data_ov077_02127b50 / 7b48 / 7b38 / 7b28 / 7b40 / 7b20 / 7b30 -- the
- *     overlay BSS SharedFilePtr handles this TU loads, sets and releases.
- *     sinit 0x02127240 constructs them (file IDs 0x34c / 0x429 / 0x42a /
- *     0x34f / 0x34d / 0x350 / 0x34e); naming belongs with that sinit.
- *   data_ov077_02127238[] / 02127230[] -- the BCA/BTP pointer tables Init
- *     loads and Cleanup releases.
- *   data_ov077_02127bc4 -- the PMF state table SetState indexes; sinit
- *     copies ten ROM PMF constants into it.
- *   data_ov077_02127b88 -- the collision-offset Vector3 that InitResources /
- *     UpdateHoverState / UpdateThrowState feed dCcAcPos_c; sinit constructs
- *     it.
- *   data_02082214 -- the NitroSDK sin/cos table (EnterSpitState /
- *     UpdateHoverBob).
- *   data_020a0e68 -- the arm9 scratch Matrix4x3 UpdateModels writes.
- *   g_profile_JUGEM is overlay data outside this TU's .text.
+ * leftovers:
+ * - ROM-descending source order (factory first, OnYoshiTryEat last); the
+ *   inline destructor emits D1 then D0 with no D2. The factory stays
+ *   `return new daJgm_c()`; the leaf operator new forwards fBase_c's.
+ * - common.h first is load-bearing: the flat m[12] Matrix4x3 keeps the
+ *   12-word ldm/stm copies; UpdateModels writes translation as m[9..11].
+ * - DaJgmVector3Words (not Vector3): a Vector3 stack local emits a
+ *   vague-linkage ~Vector3 into this text-only TU. JgmVector3's
+ *   declared-not-defined destructor aliases the ROM's canonical D1.
+ * - *(Vector3 *)&mPosX / mSpawnPosX stay punned: dActor_c has no Pos()
+ *   accessor.
+ * - dBgCh_Actr_UpdateDiscreteNoLava_veneer stays: the named
+ *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
+ * - InitResources / UpdateThrowState keep the `char *c` offset spelling
+ *   and the 64-bit launder on the spawn-pos stores (named fields CSE).
+ * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
+ *   dBgCh_Actr::Init (whose header mangles Fix12i as `i`, not the ROM's
+ *   5Fix12IiE), ModelAnim::SetAnim, TextureSequence::SetFile,
+ *   DropShadowRadHeight, SpawnCoins, Player::Bounce / Hurt and
+ *   Particle::System::NewSimple (Particle__System.h lacks it).
+ * - dActor_c::IsTooFarAwayFromPlayer and dBgCh_Actr::GetWallResult have
+ *   no header decl. Sound::PlayLong's header takes Vector3& + s16 while
+ *   this TU passes a pointer + unsigned; PlayBank0 puns mCamSpacePosX
+ *   (a Vector3 local would instantiate Vector3's D1). ApproachLinear2
+ *   keeps C++ linkage (_Z15ApproachLinear2Rsss).
+ * - SharedFilePtr has no recovered fields: SetAnim / SetFile / Prepare
+ *   read [1] as the loaded pointer.
+ * - OnTurnIntoEgg's R6Player and UpdateWallAndWater's R10dBgCh_Actr take
+ *   reference spelling; a pointer emits identical ARM. SetState's `int`
+ *   signedness is indistinguishable.
+ * - func_0201267c (throw SFX 0xd2 at +0x74, mCamSpacePosX),
+ *   data_02082214 (sin/cos pairs) and data_020a0e68 (arm9 scratch
+ *   matrix) keep linker names.
+ * - This TU claims .text only: the SharedFilePtr handles, the BCA/BTP
+ *   pointer tables, the PMF state table data_ov077_02127bc4 and the
+ *   collision-offset vector are defined at this file's tail (its sinit,
+ *   outside the claimed range); g_profile_JUGEM is overlay data.
  */
 
 #include "common.h"

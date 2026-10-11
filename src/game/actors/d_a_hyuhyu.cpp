@@ -29,7 +29,7 @@
  * initializer copies their pointer-to-members into the three state
  * records mState points at.
  *
- * Known limits:
+ * leftovers:
  * - dCcAc_c::Init, dBgCh_Actr::Init, ModelAnim::SetAnim and
  *   Particle::System::New stay mangled: each takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
@@ -37,8 +37,11 @@
  *   two BCA SharedFilePtr handles; data_ov002_0210da40 / 0210d9a0 /
  *   0210d9c0 are shared ov002 files the cloud also claims. symbols.txt has
  *   no recovered names for any of them.
- * - func_ov002_020aea30 (fire hit) and func_02012694 (sound at a
- *   camera-space position) are unnamed.
+ * - func_ov002_020aea30 (fire hit), func_02012694 (sound at a
+ *   camera-space position), data_02082214 (sin/cos pairs) and
+ *   data_0209e650 (random seed) keep linker names.
+ * - The SharedFilePtr subclasses and the loaded-file word at [1] stay
+ *   spelled through handles: SharedFilePtr has no recovered fields.
  */
 
 #include "common.h"
