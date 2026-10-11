@@ -6,31 +6,45 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x20fea84..0x20feabc, 2 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "contiguous linker run: 0x20fea4c..0x20feabc, 4 function(s): the unnamed helpers at 0x020fea4c/0x020fea68 are this class's endpoint accessors GetEnd/GetStart (include/dM3dGLin.h); LevelObjects.json's right boundary already records the corrected cut -- 'the four functions at 0x020fea4c..0x020feabc are a dBgCh_Lin group', tu_map's 0x020fea84 cut was wrong",
     "class label(s): dM3dGLin",
     "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
     {
       "name": ".text",
-      "start": "0x020fea84",
+      "start": "0x020fea4c",
       "end": "0x020feabc"
     }
   ],
   "functions": [
     {
+      "symbol": "func_ov002_020fea4c",
+      "address": "0x020fea4c",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020fea4c.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_ov002_020fea68",
+      "address": "0x020fea68",
+      "size": "0x0000001c",
+      "legacy_source": "src/unnamed/ov002/func_ov002_020fea68.c",
+      "ordinal": 1
+    },
+    {
       "symbol": "_ZN8dM3dGLin3SetERK7Vector3S2_",
       "address": "0x020fea84",
       "size": "0x00000034",
       "legacy_source": "src/_ZN8dM3dGLin3SetERK7Vector3S2_.cpp",
-      "ordinal": 0
+      "ordinal": 2
     },
     {
       "symbol": "_ZN8dM3dGLinD2Ev",
       "address": "0x020feab8",
       "size": "0x00000004",
       "legacy_source": "src/_ZN8dM3dGLinD2Ev.cpp",
-      "ordinal": 1
+      "ordinal": 3
     }
   ],
   "data": [],
@@ -51,8 +65,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-dM3dGLin/dM3dGLin.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 2,
-    "functions_declared": 2,
+    "functions_matched": 4,
+    "functions_declared": 4,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN8dM3dGLinD1Ev"
@@ -61,7 +75,7 @@
         "_ZN8dM3dGLinD1Ev"
       ],
       "droppedSections": [
-        7
+        9
       ],
       "data": [],
       "dataExternalized": []
