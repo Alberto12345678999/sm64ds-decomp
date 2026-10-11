@@ -1,53 +1,24 @@
 //cpp
-/*
- * ov006 .text 0x020cd744..0x020d1018, 59 functions: the whole linker unit
- * between the promoted dMgTrmpln2Mario_c TU, whose .text ends at 0x020cd744,
- * and the promoted dScMgAmida_c TU, whose first member _ZN12dScMgAmida_cD1Ev
- * starts at 0x020d1018. The ROM carries no RTTI, vtable or static initialiser
- * that names a type in this run, and no source or note names it, so it keeps
- * the unit<addr> name and the functions keep their address names.
+/* ov006 stylus-drawn trampolines, 0x020cd744..0x020d1018.
  *
- * What the run does: object code for the trampoline minigame's stylus-drawn
- * trampolines (the globals it shares are dMgTrmpln2Mario_c's and
- * d_s_mg_trampoline2's). The upper part, func_ov006_020cf2fc to
- * func_ov006_020d100c, is the drawn-line side: a 4x4 vertex patch per line slot
- * (positions at +0x5c, normals at +0x1dc, packed normals at +0x2dc), the
- * gate-crossing test over the five tracked objects at data_ov006_0214097c,
- * slot placement (func_ov006_020d0c38), slot setup (func_ov006_020d01e0),
- * drawing (func_ov006_020cf2fc, called per live slot by func_ov006_020d09e0),
- * texture loading (func_ov006_020d0b2c) and the __cxa_vec_cleanup pair for
- * the four 0x32c-byte slots at data_ov006_02140990.
+ * The run sits between dMgTrmpln2Mario_c and dScMgAmida_c. No RTTI
+ * in it. A line slot is a 4x4 patch: positions at +0x5c, normals at
+ * +0x1dc, packed normals at +0x2dc. Four slots of 0x32c bytes sit at
+ * data_ov006_02140990. defer_codegen off keeps ROM order.
  *
- * Data the run touches: globals the dMgTrmpln2Mario_c TU also uses
- * (0x021405a8..0x021405b4), the score words d_s_mg_trampoline2 also uses
- * (0x02140818, 0x02140828, 0x02140830), its own bss 0x02140808..0x0214095c
- * (function-local statics with guard words), the slot array 0x02140990 and the
- * texture handles 0x02140814/0x02140844, and words in 0x0212e060..0x0212e0f0
- * and 0x0213b2f4..0x0213b414.
- *
- * Folded from 59 one-function shards, func_ov006_020cd744 through
- * func_ov006_020d100c. Each was matched on its own against the pinned
- * compiler; func_ov006_020cf2fc, the last of them, matched on 2026-10-02 after
- * a run as a decompiled-not-matched draft (see its own comment). The 39
- * functions below it were folded first, while it still split the unit; the 20
- * from 0x020cf2fc up were folded once it matched. The boundaries inside the
- * run could not be proven, so it is folded as the tu_map unit, text only.
- *
- * Layout of this file: each former one-function source keeps its own
- * namespace block, because their local struct views and extern declarations
- * disagree with each other and unifying them changes code generation. The
- * functions and the externs they use are extern "C", so the namespaces change
- * no symbol. Definitions are in ROM order, lowest address first, under
- * defer_codegen off. func_ov006_020cdc8c keeps its opt_propagation off,
- * func_ov006_020cf124 its opt_strength_reduction off and func_ov006_020cfc74
- * its opt_common_subs off plus opt_propagation off as push/pop brackets.
- *
- * The empty Vector3 destructor from include/types.h is emitted here for the
- * Vector3 locals; it is licensed as a deadstrip duplicate of the arm9 copy.
- * func_ov006_020d01e0's Spare4 (a four-byte type whose declared destructor
- * reserves a stack slot the ROM frame has) emits a second empty destructor,
- * deadstripped as compiler-only output.
+ * leftovers:
+ * - Address names stay. Each function keeps its namespace, because
+ *   the local structs and externs disagree.
+ * - func_ov006_020cdc8c keeps opt_propagation off.
+ *   func_ov006_020cf124 keeps opt_strength_reduction off.
+ *   func_ov006_020cfc74 keeps opt_common_subs off and opt_propagation off.
+ * - Vector3 locals emit an empty destructor, licensed as a deadstrip
+ *   duplicate of the arm9 copy. Spare4 in func_ov006_020d01e0 emits
+ *   another, deadstripped as compiler-only output.
+ * - The slot fields stay offsets. These bodies do not share one
+ *   struct for the 0x32c record.
  */
+
 #include "types.h"
 #include "decl_common.h"
 #include "common.h"
@@ -60,7 +31,6 @@ struct ModelBase { void SetFile(BMD_File*, int, int); };
 struct Model : ModelBase { void SetPolygonID(int); static unsigned int LoadTextureToVram(char *, unsigned int); };
 struct TextureTransformer { static void Prepare(BMD_File&, BTA_File&); void SetFile(BTA_File&, int, int, unsigned int); };
 
-// ---- func_ov006_020cd744.c ----
 namespace s020cd744 {
 extern "C" extern void _Z14ApproachLinearRiii(int* a, int b, int c);
 extern "C" extern int _Z15ApproachLinear2Riii(int* a, int b, int c);
@@ -76,7 +46,6 @@ extern "C" void func_ov006_020cd744(char* c) {
 }
 }
 
-// ---- func_ov006_020cd7b8.c ----
 namespace s020cd7b8 {
 extern "C" extern void func_ov006_020bfff8(void* a, void* b, int* c, int* d);
 extern "C" extern int func_ov004_020b04c0(void);
@@ -100,11 +69,8 @@ extern "C" void func_ov006_020cd7b8(char* c, int arg1)
 }
 }
 
-// ---- func_ov006_020cd864.c ----
 namespace s020cd864 {
 // @symbol func_ov006_020cd864
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
@@ -140,7 +106,6 @@ extern "C" void func_ov006_020cd864(char* arg) {
 }
 }
 
-// ---- func_ov006_020cd98c.c ----
 namespace s020cd98c {
 struct S{int w[2];};
 extern "C" {extern struct S data_ov006_0213b36c;}
@@ -150,7 +115,6 @@ extern "C" void func_ov006_020cd98c(int *c){
 }
 }
 
-// ---- func_ov006_020cd9b0.c ----
 namespace s020cd9b0 {
 typedef struct { int x, y, z; } Vec3;
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
@@ -198,18 +162,14 @@ extern "C" void func_ov006_020cd9b0(char* self)
 }
 }
 
-// ---- func_ov006_020cdad0.c ----
 namespace s020cdad0 {
 struct S { int w[2]; };
 extern "C" {extern struct S data_ov006_0213b31c;}
 extern "C" void func_ov006_020cdad0(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b31c; }
 }
 
-// ---- func_ov006_020cdaec.c ----
 namespace s020cdaec {
 // @symbol func_ov006_020cdaec
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern "C" extern void *_ZN7Vector3D1Ev(void *object);
 
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
@@ -245,13 +205,11 @@ extern "C" void func_ov006_020cdaec(char* arg) {
 }
 }
 
-// ---- func_ov006_020cdc14.c ----
 namespace s020cdc14 {
 struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b394;}
 extern "C" void func_ov006_020cdc14(char*c){*(short*)(c+0x9a)=0x2000;*(struct S*)c=data_ov006_0213b394;}
 }
 
-// ---- func_ov006_020cdc38.c ----
 namespace s020cdc38 {
 extern "C" void func_ov006_020cdc38(void *arg0)
 {
@@ -264,13 +222,11 @@ extern "C" void func_ov006_020cdc38(void *arg0)
 }
 }
 
-// ---- func_ov006_020cdc68.c ----
 namespace s020cdc68 {
 struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b38c;}
 extern "C" void func_ov006_020cdc68(char*c){*(short*)(c+0x9a)=0;*(struct S*)c=data_ov006_0213b38c;}
 }
 
-// ---- func_ov006_020cdc8c.c ----
 namespace s020cdc8c {
 extern "C" extern int _ZN4cstd4fdivEii(int a, int b);
 
@@ -298,13 +254,11 @@ extern "C" void func_ov006_020cdc8c(char *self)
 #pragma pop
 }
 
-// ---- func_ov006_020cdce4.c ----
 namespace s020cdce4 {
 struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b384;}
 extern "C" void func_ov006_020cdce4(char*c){*(short*)(c+0x9a)=0x2000;*(struct S*)c=data_ov006_0213b384;}
 }
 
-// ---- func_ov006_020cdd08.c ----
 namespace s020cdd08 {
 typedef struct { int x, y, z; } Vec3;
 extern "C" extern void func_020731dc(void *object, void *destructor, void **node);
@@ -352,13 +306,11 @@ extern "C" void func_ov006_020cdd08(char* self)
 }
 }
 
-// ---- func_ov006_020cde28.c ----
 namespace s020cde28 {
 struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b39c;}
 extern "C" void func_ov006_020cde28(char*c){*(int*)(c+0x30)=0;*(struct S*)c=data_ov006_0213b39c;}
 }
 
-// ---- func_ov006_020cde4c.c ----
 namespace s020cde4c {
 extern "C" void func_ov006_020cde4c(char*c){
 int v=*(int*)(c+0xc);
@@ -367,13 +319,11 @@ if(v<-0x60000)*(int*)(c+0x30)=0x1000;
 }
 }
 
-// ---- func_ov006_020cde7c.c ----
 namespace s020cde7c {
 struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b35c;}
 extern "C" void func_ov006_020cde7c(char*c){*(int*)(c+0x30)=0x1000;*(struct S*)c=data_ov006_0213b35c;}
 }
 
-// ---- func_ov006_020cdea0.c ----
 namespace s020cdea0 {
 extern "C" {extern int data_ov006_0212e07c[];}
 extern "C" {extern int data_ov006_0212e088[];}
@@ -389,7 +339,6 @@ extern "C" void func_ov006_020cdea0(char *c) {
 }
 }
 
-// ---- func_ov006_020cdeec.c ----
 namespace s020cdeec {
 extern "C" {extern int data_ov006_0212e088[];}
 struct S2 { int w[2]; };
@@ -401,21 +350,18 @@ extern "C" void func_ov006_020cdeec(char *c) {
 }
 }
 
-// ---- func_ov006_020cdf1c.c ----
 namespace s020cdf1c {
 extern "C" void func_ov006_020cdf1c(void)
 {
 }
 }
 
-// ---- func_ov006_020cdf20.c ----
 namespace s020cdf20 {
 struct S { int w[2]; };
 extern "C" {extern struct S data_ov006_0213b34c;}
 extern "C" void func_ov006_020cdf20(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b34c; }
 }
 
-// ---- func_ov006_020cdf3c.c ----
 namespace s020cdf3c {
 /* func_ov006_020cdf3c at 0x020cdf3c
  *
@@ -455,7 +401,6 @@ extern "C" void func_ov006_020cdf3c(char* c)
 }
 }
 
-// ---- func_ov006_020ce0ac.cpp ----
 namespace s020ce0ac {
 extern "C" {extern int data_ov006_02140838;}
 extern "C" {extern int data_ov006_02140828;}
@@ -471,11 +416,8 @@ extern "C" void func_ov006_020ce0ac(char *c) {
 }
 }
 
-// ---- func_ov006_020ce108.cpp ----
 namespace s020ce108 {
 // @symbol func_ov006_020ce108
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 
 
 extern "C" {
@@ -611,7 +553,6 @@ extern "C" void func_ov006_020ce108(char *a, Obj *o)
 }
 }
 
-// ---- func_ov006_020ce46c.c ----
 namespace s020ce46c {
 extern "C" {extern int data_ov006_021405ac;}
 extern "C" {extern int data_ov006_02140838;}
@@ -679,7 +620,6 @@ extern "C" void func_ov006_020ce46c(void *thiz, int arg1)
 }
 }
 
-// ---- func_ov006_020ce674.c ----
 namespace s020ce674 {
 struct V2 { int x, y; };
 
@@ -744,10 +684,8 @@ done:
 }
 }
 
-// ---- func_ov006_020ce8a0.cpp ----
 namespace s020ce8a0 {
 // @symbol func_ov006_020ce8a0
-/* recovered: shared common types */
 
 extern "C" void Vec3_Sub(struct Vector3* out, struct Vector3* a, struct Vector3* b);
 extern "C" int DotVec3(struct Vector3* a, struct Vector3* b);
@@ -777,10 +715,8 @@ extern "C" void func_ov006_020ce8a0(char* self, struct Obj* o, int* outR5, int* 
 }
 }
 
-// ---- func_ov006_020ce988.cpp ----
 namespace s020ce988 {
 // @symbol func_ov006_020ce988
-/* recovered: shared common types */
 
 extern "C" {
 void Matrix4x3_FromQuaternion(const void* q, struct Matrix4x3* mF);
@@ -809,7 +745,6 @@ extern "C" void func_ov006_020ce988(char* c){
 }
 }
 
-// ---- func_ov006_020cea2c.cpp ----
 namespace s020cea2c {
 extern "C" {
 void AddVec3(void *a, void *b, void *c);
@@ -838,7 +773,6 @@ extern "C" void func_ov006_020cea2c(char *c)
 }
 }
 
-// ---- func_ov006_020ceabc.c ----
 namespace s020ceabc {
 typedef struct { int x, y, z; } Vec3;
 
@@ -919,7 +853,6 @@ extern "C" void func_ov006_020ceabc(char *self, int *v1, int *v2, int a3, short 
 }
 }
 
-// ---- func_ov006_020cecb4.c ----
 namespace s020cecb4 {
 extern "C" void func_ov006_020cecb4(int *p)
 {
@@ -927,7 +860,6 @@ extern "C" void func_ov006_020cecb4(int *p)
 }
 }
 
-// ---- func_ov006_020cecc0.cpp ----
 namespace s020cecc0 {
 extern "C" {
 void func_ov006_020cecb4(int *p);
@@ -959,7 +891,6 @@ extern "C" void func_ov006_020cecc0(char* c)
 }
 }
 
-// ---- func_ov006_020ced84.c ----
 namespace s020ced84 {
 /* func_ov006_020ced84 at 0x020ced84
  *
@@ -981,7 +912,6 @@ extern "C" void func_ov006_020ced84(void)
 }
 }
 
-// ---- func_ov006_020cedf0.c ----
 namespace s020cedf0 {
 /* func_ov006_020cedf0 at 0x020cedf0
  *
@@ -1008,7 +938,6 @@ extern "C" void func_ov006_020cedf0(void){
 }
 }
 
-// ---- func_ov006_020cee5c.c ----
 namespace s020cee5c {
 extern "C" {extern int data_ov006_02140838;}
 extern "C" {extern unsigned char* data_ov006_0214082c;}
@@ -1033,7 +962,6 @@ extern "C" void func_ov006_020cee5c(void){
 }
 }
 
-// ---- func_ov006_020ceedc.c ----
 namespace s020ceedc {
 extern "C" extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern "C" {extern int data_ov006_02140850[];}
@@ -1047,7 +975,6 @@ extern "C" void func_ov006_020ceedc(void)
 }
 }
 
-// ---- func_ov006_020cef14.c ----
 namespace s020cef14 {
 extern "C" extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern "C" extern void func_ov006_020cecc0(void *p);
@@ -1078,7 +1005,6 @@ extern "C" void func_ov006_020cef14(char *a, int count)
 }
 }
 
-// ---- func_ov006_020cefa4.c ----
 namespace s020cefa4 {
 /* func_ov006_020cefa4 at 0x020cefa4
  *
@@ -1109,7 +1035,6 @@ extern "C" char *func_ov006_020cefa4(int a0, int a1, int a2, int a3)
 }
 }
 
-// ---- func_ov006_020cf040.c ----
 namespace s020cf040 {
 struct Vec3
 {
@@ -1153,7 +1078,6 @@ extern "C" void func_ov006_020cf040(char *sl, void *arg1, struct Vec3 *r2)
 }
 }
 
-// ---- func_ov006_020cf124.c ----
 namespace s020cf124 {
 typedef struct { int x, y, z; } Vec3;
 
@@ -1220,7 +1144,6 @@ extern "C" void func_ov006_020cf124(char* self)
 #pragma pop
 }
 
-// ---- func_ov006_020cf2fc.c ----
 namespace s020cf2fc {
 typedef volatile unsigned int vu32;
 
@@ -1362,7 +1285,6 @@ extern "C" void func_ov006_020cf2fc(char *obj)
 }
 }
 
-// ---- func_ov006_020cf758.cpp ----
 namespace s020cf758 {
 struct C;
 typedef void (C::*PMF)();
@@ -1373,7 +1295,6 @@ extern "C" void func_ov006_020cf758(C *c) {
 }
 }
 
-// ---- func_ov006_020cf790.c ----
 namespace s020cf790 {
 extern "C" extern int _Z15ApproachLinear2Riii(int* a, int b, int c);
 extern "C" extern void func_ov006_020cf124(char* c);
@@ -1391,7 +1312,6 @@ extern "C" void func_ov006_020cf790(char* c) {
 }
 }
 
-// ---- func_ov006_020cf804.c ----
 namespace s020cf804 {
 struct S { int w[2]; };
 extern "C" {extern struct S data_ov006_0213b37c;}
@@ -1399,7 +1319,6 @@ extern "C" {extern struct S data_ov006_0213b37c;}
 extern "C" void func_ov006_020cf804(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b37c; }
 }
 
-// ---- func_ov006_020cf820.c ----
 namespace s020cf820 {
 extern "C" extern int _Z15ApproachLinear2Riii(int *p, int a, int b);
 extern "C" extern int _Z14ApproachLinearRiii(int *p, int a, int b);
@@ -1465,7 +1384,6 @@ extern "C" void func_ov006_020cf820(char *c)
 }
 }
 
-// ---- func_ov006_020cfa28.c ----
 namespace s020cfa28 {
 struct S { int w[2]; };
 extern "C" {extern struct S data_ov006_0213b374;}
@@ -1473,7 +1391,6 @@ extern "C" {extern struct S data_ov006_0213b374;}
 extern "C" void func_ov006_020cfa28(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b374; }
 }
 
-// ---- func_ov006_020cfa44.c ----
 namespace s020cfa44 {
 typedef struct { int x, y, z; } Vec3;
 
@@ -1552,7 +1469,6 @@ extern "C" void func_ov006_020cfa44(char *o)
 }
 }
 
-// ---- func_ov006_020cfc58.c ----
 namespace s020cfc58 {
 struct S { int w[2]; };
 extern "C" {extern struct S data_ov006_0213b364;}
@@ -1560,7 +1476,6 @@ extern "C" {extern struct S data_ov006_0213b364;}
 extern "C" void func_ov006_020cfc58(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b364; }
 }
 
-// ---- func_ov006_020cfc74.c ----
 namespace s020cfc74 {
 /*
  * Per-frame gate-crossing check over the five tracked objects
@@ -1769,7 +1684,6 @@ extern "C" int func_ov006_020cfc74(char *c)
 #pragma pop
 }
 
-// ---- func_ov006_020d01e0.cpp ----
 namespace s020d01e0 {
 /* The minigame's touch-drawn line becomes a strip of grid points, and the
  * routine then picks the object that line cuts closest.
@@ -2068,7 +1982,6 @@ extern "C" void func_ov006_020d01e0(char *c, short *p1, short *p2)
 }
 }
 
-// ---- func_ov006_020d09e0.c ----
 namespace s020d09e0 {
 struct V3 { int z, y, x; };
 extern "C" extern void func_020553a4(void* p);
@@ -2101,7 +2014,6 @@ extern "C" void func_ov006_020d09e0(void) {
 }
 }
 
-// ---- func_ov006_020d0ac0.c ----
 namespace s020d0ac0 {
 extern "C" {extern char data_ov006_02140990[];}
 extern "C" extern void func_ov006_020cf758(void *c);
@@ -2118,7 +2030,6 @@ extern "C" void func_ov006_020d0ac0(void) {
 }
 }
 
-// ---- func_ov006_020d0b04.c ----
 namespace s020d0b04 {
 extern "C" {extern unsigned char data_ov006_02140990[];}
 
@@ -2135,7 +2046,6 @@ extern "C" void func_ov006_020d0b04(void) {
 }
 }
 
-// ---- func_ov006_020d0b2c.cpp ----
 namespace s020d0b2c {
 extern "C" {
 extern unsigned int func_02045a50(const void *src, unsigned int size);
@@ -2151,7 +2061,6 @@ extern "C" void func_ov006_020d0b2c(void) {
 }
 }
 
-// ---- func_ov006_020d0b78.c ----
 namespace s020d0b78 {
 extern "C" {extern short data_ov006_02141314[];}
 extern "C" {extern short data_ov006_02141590[];}
@@ -2171,7 +2080,6 @@ extern "C" void func_ov006_020d0b78(void) {
 }
 }
 
-// ---- func_ov006_020d0bd8.c ----
 namespace s020d0bd8 {
 extern "C" {extern short data_ov006_02141314[];}
 extern "C" {extern short data_ov006_02141590[];}
@@ -2191,7 +2099,6 @@ extern "C" void func_ov006_020d0bd8(void) {
 }
 }
 
-// ---- func_ov006_020d0c38.c ----
 namespace s020d0c38 {
 /*
  * Try to place a new line segment between two 16-bit points (sl, sb).
@@ -2390,7 +2297,6 @@ extern "C" int func_ov006_020d0c38(s16* sl, s16* sb) {
 }
 }
 
-// ---- func_ov006_020d0fe4.c ----
 namespace s020d0fe4 {
 extern "C" extern int __cxa_vec_cleanup(void *dest, int a, int size, void (*func)(void));
 extern "C" {extern char data_ov006_02140990;}
@@ -2403,7 +2309,6 @@ extern "C" void func_ov006_020d0fe4(void)
 }
 }
 
-// ---- func_ov006_020d1008.c ----
 namespace s020d1008 {
 // @symbol func_ov006_020d1008
 extern "C" void func_ov006_020d1008(void)
@@ -2411,7 +2316,6 @@ extern "C" void func_ov006_020d1008(void)
 }
 }
 
-// ---- func_ov006_020d100c.c ----
 namespace s020d100c {
 // @symbol func_ov006_020d100c
 extern "C" void func_ov006_020d100c(char *p)

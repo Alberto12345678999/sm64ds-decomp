@@ -1,81 +1,19 @@
 //cpp
-/* unit020b2c84 -- the 44 functions of the ov004 linker unit 0x020b2c84..0x020b4aa4.
+/* ov004 minigame file table and a small effect, 0x020b2c84..0x020b4aa4.
  *
- * This is the unlabelled run between the end of dScMgBase_c's unit and the unit
- * that starts at 0x020b4aa4. No class label, RTTI record or vtable falls in it,
- * so the file keeps the unit<addr> name. What the functions do, from their
- * bodies: the first group manages a table of 29 loaded files (func_ov004_020b2c84
- * frees them, func_ov004_020b2cb8 loads them by language, func_ov004_020b3278
- * decompresses one into a graphics slot), and the rest are the per-state
- * handlers of a small effect object whose layout the cartridge code assumes
- * (position words at +0x00..+0x0c, state at +0x20, timer at +0x24).
+ * No RTTI or vtable in the run, so the unit keeps its address name.
+ * The first functions load and free 29 files. The rest step an effect
+ * whose position is the first three words, with the state at +0x20 and
+ * a timer at +0x24. defer_codegen off stays on so the opt pragmas
+ * around 020b2cb8, 020b3b38, 020b4360 and 020b45c0 bind to those
+ * functions. This TU owns .text, .init, .ctor, .data and .bss.
  *
- * Edges. 0x020b2c84 is the first function after func_ov004_020b2c80, the last
- * of the three destructor helpers (func_ov004_020b2c58, func_ov004_020b2c7c,
- * func_ov004_020b2c80) that __sinit_ov004_020b948c registers for the preceding
- * unit; those stay with dScMgBase_c. 0x020b4aa4 is the next function after
- * _ZN4ElemD1Ev, the last of the three destructor helpers
- * (_ZN4ElemC1Ev, __arraydtor$954, _ZN4ElemD1Ev) that
- * __sinit_ov004_020b955c registers for this unit's static array at
- * data_ov004_020bf648; __arraydtor$954 runs __cxa_vec_cleanup over it.
- * The unit emits one data object of its own, the anonymous initializer template
- * of func_ov004_020b2cb8's local array at 0x020bc6e8 (0xe8 bytes), which this
- * file's .data claim covers. Everything else it touches is reached by extern.
- *
- * Emission order. `#pragma defer_codegen off` is load-bearing here: with codegen
- * deferred the opt_* pragmas around func_ov004_020b2cb8, func_ov004_020b3b38,
- * func_ov004_020b4360 and func_ov004_020b45c0 do not bind to the one function
- * they bracket. Source is therefore ROM-ascending.
- *
- * The bodies were matched as one-function C or C++ sources and keep that
- * spelling under extern "C" and their ROM names. Two-word struct copies go
- * through W2 (an int[2] wrapper) so C++ keeps the ROM's block move.
- *
- * Retired one-function sources (ROM address order):
- *   0x020b2c84  func_ov004_020b2c84
- *   0x020b2cb8  func_ov004_020b2cb8
- *   0x020b3194  func_ov004_020b3194
- *   0x020b31b4  func_ov004_020b31b4
- *   0x020b321c  func_ov004_020b321c
- *   0x020b3278  func_ov004_020b3278
- *   0x020b35d8  func_ov004_020b35d8
- *   0x020b3698  func_ov004_020b3698
- *   0x020b369c  func_ov004_020b369c
- *   0x020b37c4  func_ov004_020b37c4
- *   0x020b37f0  func_ov004_020b37f0
- *   0x020b3834  func_ov004_020b3834
- *   0x020b3888  func_ov004_020b3888
- *   0x020b38ac  func_ov004_020b38ac
- *   0x020b3978  func_ov004_020b3978
- *   0x020b39a4  func_ov004_020b39a4
- *   0x020b3b38  func_ov004_020b3b38
- *   0x020b3c58  func_ov004_020b3c58
- *   0x020b3c9c  func_ov004_020b3c9c
- *   0x020b3cb8  func_ov004_020b3cb8
- *   0x020b3e9c  func_ov004_020b3e9c
- *   0x020b4080  func_ov004_020b4080
- *   0x020b40ac  func_ov004_020b40ac
- *   0x020b40c0  func_ov004_020b40c0
- *   0x020b410c  func_ov004_020b410c
- *   0x020b4214  func_ov004_020b4214
- *   0x020b422c  func_ov004_020b422c
- *   0x020b42c0  func_ov004_020b42c0
- *   0x020b433c  func_ov004_020b433c
- *   0x020b4360  func_ov004_020b4360
- *   0x020b45c0  func_ov004_020b45c0
- *   0x020b4820  func_ov004_020b4820
- *   0x020b484c  func_ov004_020b484c
- *   0x020b49b8  func_ov004_020b49b8
- *   0x020b49e4  func_ov004_020b49e4
- *   0x020b49f0  func_ov004_020b49f0
- *   0x020b4a1c  func_ov004_020b4a1c
- *   0x020b4a28  func_ov004_020b4a28
- *   0x020b4a40  func_ov004_020b4a40
- *   0x020b4a4c  func_ov004_020b4a4c
- *   0x020b4a64  func_ov004_020b4a64
- *   0x020b4a70  _ZN4ElemC1Ev
- *   0x020b4a7c  __arraydtor$954
- *   0x020b4aa0  _ZN4ElemD1Ev
+ * leftovers:
+ * - The functions stay extern "C" under their address names.
+ * - Two-word copies go through W2. A typed pair emits a destructor.
+ * - Elem is a 0x134-byte pad. Its constructor only stores 29 at +0x20.
+ * - Each handler keeps the layout it is handed. These bodies do not
+ *   share one class.
  */
 
 #pragma defer_codegen off

@@ -1,76 +1,15 @@
 //cpp
-/* ov004 unit 0x020b4aa4..0x020b67e8: 43 functions, .text only.
+/* ov004 minigame unit 0x020b4aa4..0x020b67e8, text only.
  *
- * What this is: the code of one translation unit of the shared minigame
- * overlay (ov004), between the dScMgBase_c unit and the unit that holds
- * dMgState_c. It works on a 20-element array of 0x24-byte entries
- * (data_ov004_020bfa34; each has a position at +8, a target at +0x10, a
- * step at +0x18 and an active byte at +0x22). __sinit_ov004_020b9ad0
- * registers the array for destruction through __cxa_vec_cleanup in
- * func_ov004_020b67bc, with the empty per-element destructor
- * func_ov004_020b67e0. A state machine steps through the function pointer
- * data_ov004_020bfa20. No ROM RTTI or vtable falls in the range, so no class
- * name is claimed; the file takes the unit<addr> name.
+ * Twenty 0x24-byte entries at data_ov004_020bfa34: a position at +8,
+ * a target at +0x10, a step at +0x18, and an active byte at +0x22.
+ * func_ov004_020b67bc runs __cxa_vec_cleanup over them. The state
+ * machine steps through data_ov004_020bfa20. No RTTI or vtable.
  *
- * Edges: 0x020b4aa4 is the first function after func_ov004_020b4aa0, the
- * last destructor helper __sinit_ov004_020b955c registers for the previous
- * unit. 0x020b67e8 is the end of func_ov004_020b67e4, the last helper
- * __sinit_ov004_020b9ad0 registers for this one; the next function reads
- * the .data block that starts at 0x020bc850, which is outside this unit's
- * .data window (0x020bc7d0..0x020bc83c).
- *
- * Emission order: mwccarm 2004/b56 emits one .text section per function in
- * the reverse of source order, so the highest-address function is written
- * first here and the functions come out in ROM order.
- *
- * Several members were written C-style (extern "C" names) and keep that form
- * so the link names stay the ROM's. Struct copies go through structs whose
- * only member is an int[2], which keeps the C block-move shape under C++.
- *
- * Retired one-function sources (ROM address order):
- *   0x020b4aa4  func_ov004_020b4aa4
- *   0x020b4b84  func_ov004_020b4b84
- *   0x020b4c30  func_ov004_020b4c30
- *   0x020b4cc4  func_ov004_020b4cc4
- *   0x020b4d50  func_ov004_020b4d50
- *   0x020b4dfc  func_ov004_020b4dfc
- *   0x020b4e78  func_ov004_020b4e78
- *   0x020b4f44  func_ov004_020b4f44
- *   0x020b4ff0  func_ov004_020b4ff0
- *   0x020b506c  func_ov004_020b506c
- *   0x020b5108  func_ov004_020b5108
- *   0x020b51e4  func_ov004_020b51e4
- *   0x020b51f0  func_ov004_020b51f0
- *   0x020b5288  func_ov004_020b5288
- *   0x020b52b8  func_ov004_020b52b8
- *   0x020b52fc  func_ov004_020b52fc
- *   0x020b5334  func_ov004_020b5334
- *   0x020b5368  func_ov004_020b5368
- *   0x020b53f0  func_ov004_020b53f0
- *   0x020b556c  func_ov004_020b556c
- *   0x020b56c8  func_ov004_020b56c8
- *   0x020b5768  func_ov004_020b5768
- *   0x020b586c  func_ov004_020b586c
- *   0x020b58c4  func_ov004_020b58c4
- *   0x020b5a54  func_ov004_020b5a54
- *   0x020b5aac  func_ov004_020b5aac
- *   0x020b5c18  func_ov004_020b5c18
- *   0x020b5d74  func_ov004_020b5d74
- *   0x020b5dd4  func_ov004_020b5dd4
- *   0x020b5e40  func_ov004_020b5e40
- *   0x020b5ed0  func_ov004_020b5ed0
- *   0x020b5f6c  func_ov004_020b5f6c
- *   0x020b612c  func_ov004_020b612c
- *   0x020b6234  func_ov004_020b6234
- *   0x020b6324  func_ov004_020b6324
- *   0x020b63a0  func_ov004_020b63a0
- *   0x020b6430  func_ov004_020b6430
- *   0x020b653c  func_ov004_020b653c
- *   0x020b65e4  func_ov004_020b65e4
- *   0x020b66d4  func_ov004_020b66d4
- *   0x020b67bc  func_ov004_020b67bc
- *   0x020b67e0  func_ov004_020b67e0
- *   0x020b67e4  func_ov004_020b67e4
+ * leftovers:
+ * - Address names and extern "C" stay. There is no class to hang them on.
+ * - Struct copies go through an int[2] member so C++ keeps the block move.
+ * - The entry array and the state pointer belong to the sinit, not this TU.
  */
 
 #include "types.h"
@@ -173,9 +112,6 @@ extern char* data_ov004_020beb68;
 extern int data_020a0db0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 42 -- func_ov004_020b67e4, 0x020b67e4, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b67e4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b67e4(void)
@@ -183,9 +119,6 @@ void func_ov004_020b67e4(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 41 -- func_ov004_020b67e0, 0x020b67e0, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b67e0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b67e0(void)
@@ -193,9 +126,6 @@ void func_ov004_020b67e0(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 40 -- func_ov004_020b67bc, 0x020b67bc, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b67bc
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b67bc(void)
@@ -204,9 +134,6 @@ void func_ov004_020b67bc(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 39 -- func_ov004_020b66d4, 0x020b66d4, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b66d4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b66d4(void) {
@@ -230,9 +157,6 @@ void func_ov004_020b66d4(void) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 38 -- func_ov004_020b65e4, 0x020b65e4, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b65e4
 /* func_ov004_020b65e4 at 0x020b65e4
  *
@@ -267,9 +191,6 @@ void func_ov004_020b65e4(void) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 37 -- func_ov004_020b653c, 0x020b653c, size 0xa8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b653c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b653c(int arg)
@@ -296,9 +217,6 @@ void func_ov004_020b653c(int arg)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 36 -- func_ov004_020b6430, 0x020b6430, size 0x10c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b6430
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b6430(void) {
@@ -322,9 +240,6 @@ void func_ov004_020b6430(void) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 35 -- func_ov004_020b63a0, 0x020b63a0, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b63a0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b63a0(int r0){
@@ -341,9 +256,6 @@ void func_ov004_020b63a0(int r0){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 34 -- func_ov004_020b6324, 0x020b6324, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b6324
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b6324(int c) {
@@ -357,9 +269,6 @@ void func_ov004_020b6324(int c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 33 -- func_ov004_020b6234, 0x020b6234, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b6234
 extern "C" void func_ov004_020b6234(void) {
     int x;
@@ -386,9 +295,6 @@ extern "C" void func_ov004_020b6234(void) {
     data_ov004_020bfa20 = func_ov004_020b5f6c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 32 -- func_ov004_020b612c, 0x020b612c, size 0x108 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b612c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b612c(void)
@@ -418,9 +324,6 @@ void func_ov004_020b612c(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 31 -- func_ov004_020b5f6c, 0x020b5f6c, size 0x1c0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5f6c
 extern "C" void func_ov004_020b5f6c(void)
 {
@@ -465,9 +368,6 @@ extern "C" void func_ov004_020b5f6c(void)
     data_ov004_020bfa00 = data_ov004_020bfa00 + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 30 -- func_ov004_020b5ed0, 0x020b5ed0, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5ed0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5c18(void);
@@ -485,9 +385,6 @@ void func_ov004_020b5ed0(void) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 29 -- func_ov004_020b5e40, 0x020b5e40, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5e40
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5e40(int x){
@@ -504,9 +401,6 @@ void func_ov004_020b5e40(int x){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- func_ov004_020b5dd4, 0x020b5dd4, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5dd4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5aac(void);
@@ -519,9 +413,6 @@ void func_ov004_020b5dd4(void){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 -- func_ov004_020b5d74, 0x020b5d74, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5d74
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5d74(void) {
@@ -532,9 +423,6 @@ void func_ov004_020b5d74(void) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- func_ov004_020b5c18, 0x020b5c18, size 0x15c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5c18
 extern "C" void func_ov004_020b5c18(void)
 {
@@ -562,9 +450,6 @@ extern "C" void func_ov004_020b5c18(void)
     data_ov004_020bfa20 = func_ov004_020b5a54;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- func_ov004_020b5aac, 0x020b5aac, size 0x16c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5aac
 extern "C" void func_ov004_020b5aac(void)
 {
@@ -592,9 +477,6 @@ extern "C" void func_ov004_020b5aac(void)
     data_ov004_020bfa20 = func_ov004_020b5a54;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 24 -- func_ov004_020b5a54, 0x020b5a54, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5a54
 extern "C" void func_ov004_020b5a54(void) {
     if (ApproachLinear(data_ov004_020bfa04, 0, 1) == 0)
@@ -603,9 +485,6 @@ extern "C" void func_ov004_020b5a54(void) {
     data_ov004_020bfa20 = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- func_ov004_020b58c4, 0x020b58c4, size 0x190 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b58c4
 extern "C" void func_ov004_020b58c4(void)
 {
@@ -634,9 +513,6 @@ extern "C" void func_ov004_020b58c4(void)
     data_ov004_020bfa20 = func_ov004_020b586c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 22 -- func_ov004_020b586c, 0x020b586c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b586c
 extern "C" void func_ov004_020b586c(void) {
     if (ApproachLinear(data_ov004_020bfa04, 0, 1) == 0)
@@ -645,9 +521,6 @@ extern "C" void func_ov004_020b586c(void) {
     data_ov004_020bfa20 = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- func_ov004_020b5768, 0x020b5768, size 0x104 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5768
 extern "C" {
 void func_ov004_020b5768() {
@@ -669,9 +542,6 @@ void func_ov004_020b5768() {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- func_ov004_020b56c8, 0x020b56c8, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b56c8
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b56c8(char* p)
@@ -695,9 +565,6 @@ void func_ov004_020b56c8(char* p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 19 -- func_ov004_020b556c, 0x020b556c, size 0x15c */
-/* -------------------------------------------------------------------------- */
 inline short load_s(short* p) { return *p; }
 struct EI { char* e; int i; };
 
@@ -750,9 +617,6 @@ extern "C" void func_ov004_020b556c(void)
     data_ov004_020bfa20 = func_ov004_020b53f0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 18 -- func_ov004_020b53f0, 0x020b53f0, size 0x17c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b53f0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b53f0(void)
@@ -813,9 +677,6 @@ void func_ov004_020b53f0(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- func_ov004_020b5368, 0x020b5368, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5368
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5368(void){
@@ -830,9 +691,6 @@ void func_ov004_020b5368(void){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 16 -- func_ov004_020b5334, 0x020b5334, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5334
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5334(char *c) {
@@ -842,17 +700,11 @@ void func_ov004_020b5334(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- func_ov004_020b52fc, 0x020b52fc, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b52fc
 extern "C" void func_ov004_020b52fc(C *c) {
   (c->*(c->pmf))();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- func_ov004_020b52b8, 0x020b52b8, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b52b8
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b52b8(char *c)
@@ -863,9 +715,6 @@ void func_ov004_020b52b8(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- func_ov004_020b5288, 0x020b5288, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5288
 extern "C" void func_ov004_020b5288(char *c)
 {
@@ -873,9 +722,6 @@ extern "C" void func_ov004_020b5288(char *c)
     ApproachLinear(*(int*)(c + 0xc), *(int*)(c + 0x14), *(int*)(c + 0x1c));
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- func_ov004_020b51f0, 0x020b51f0, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b51f0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b51f0(char* c) {
@@ -891,9 +737,6 @@ void func_ov004_020b51f0(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- func_ov004_020b51e4, 0x020b51e4, size 0xc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b51e4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b51e4(char *p)
@@ -902,9 +745,6 @@ void func_ov004_020b51e4(char *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov004_020b5108, 0x020b5108, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b5108
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b5108(char* c, int* in)
@@ -941,9 +781,6 @@ end:
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov004_020b506c, 0x020b506c, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b506c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b506c(char *c)
@@ -971,9 +808,6 @@ void func_ov004_020b506c(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov004_020b4ff0, 0x020b4ff0, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4ff0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4ff0(char *c) {
@@ -986,9 +820,6 @@ void func_ov004_020b4ff0(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov004_020b4f44, 0x020b4f44, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4f44
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4f44(char* c){
@@ -1008,9 +839,6 @@ void func_ov004_020b4f44(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov004_020b4e78, 0x020b4e78, size 0xcc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4e78
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4e78(char *c)
@@ -1043,9 +871,6 @@ void func_ov004_020b4e78(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov004_020b4dfc, 0x020b4dfc, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4dfc
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4dfc(char *c) {
@@ -1058,9 +883,6 @@ void func_ov004_020b4dfc(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov004_020b4d50, 0x020b4d50, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4d50
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4d50(char* c){
@@ -1077,9 +899,6 @@ void func_ov004_020b4d50(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov004_020b4cc4, 0x020b4cc4, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4cc4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4cc4(char* r4){
@@ -1102,9 +921,6 @@ void func_ov004_020b4cc4(char* r4){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov004_020b4c30, 0x020b4c30, size 0x94 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4c30
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4c30(char* r4){
@@ -1120,9 +936,6 @@ void func_ov004_020b4c30(char* r4){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- func_ov004_020b4b84, 0x020b4b84, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4b84
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4b84(char* c, int* in){
@@ -1153,9 +966,6 @@ void func_ov004_020b4b84(char* c, int* in){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- func_ov004_020b4aa4, 0x020b4aa4, size 0xe0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov004_020b4aa4
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov004_020b4aa4(char* c) {
