@@ -82,7 +82,7 @@ A pass must not change a single emitted byte or relocation target.
 11. **Hand-rolled vtable views.**
     - Readable form: a real virtual call, such as `OnYoshiTryEat(-1)`.
     - Proven in `dScMgTrampoline2_c`, `dScMgCup_c` and `dScMg3DEsp_c` (`OnYoshiTryEat(-1)` in `InitResources`, `Model::Render(0)` in `Render`).
-    - Proven in the ov004 runtime: `GraphCallback0`-`3`, `OnKicked`, the menu functions, the OAM sprite wrappers, `func_ov004_020b0e84` and `func_ov004_020b29a0` in `d_s_mg_base.cpp` (the 27- and 29-slot stand-in views and `include/private/ov004_obj_vtbl.h` are gone), and `dMgState_c`'s scene slots 18-20 and `dFader_c` slots.
+    - Proven in the ov004 runtime: `GraphCallback0`-`3`, `OnKicked`, the menu functions, the OAM sprite wrappers, `func_ov004_020b0e84` and `func_ov004_020b29a0` in `d_s_mg_base.cpp` (the 27- and 29-slot stand-in views are gone, and so is the private header that held the 27-slot one), and `dMgState_c`'s scene slots 18-20 and `dFader_c` slots.
 12. **The sine table `data_02082214`.** It holds interleaved fx16 sine and cosine pairs [ROM].
     - Readable form: a named table or accessor. [GUESS] It is NitroSDK's `FX_SinCosTable_`.
     - Status: untested.
