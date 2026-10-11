@@ -1,36 +1,34 @@
 //cpp
-/* daDossy_c (DOSSY, Dorrie) and daDossyCap_c (DOSSY_CAP, the cap she
- * wears), with the DorriePlatform element type of daDossy_c::mPlatforms.
- * One translation unit: ov065 0x02117f40..0x021196d8, 29 functions.
+/* Dorrie (DOSSY) and the cap she wears (DOSSY_CAP), plus the platform
+ * element of mPlatforms. ov065 0x02117f40..0x021196d8, 29 functions.
  *
- * WHY ONE FILE. The run is one contiguous linker unit that holds both
- * classes' destructors, classInit factories and virtuals, the platform
- * element's C1/D1, and the state helpers daDossy_c's state table
- * (data_ov065_0211d7fc) dispatches to. Both class names are the cartridge's
- * own RTTI spellings: _ZTS9daDossy_c at 0x0211cd34 and _ZTS12daDossyCap_c at
- * 0x0211cd58, each __si_class_type_info naming _ZTI8dActor_c as its base.
- * Both destructors are inline in their class bodies and InitResources is the
- * first non-inline virtual of each, so this TU owns both vtables
- * (_ZTV9daDossy_c at 0x0211ce48, _ZTV12daDossyCap_c at 0x0211cdc4) and emits
- * each D1/D0 pair at the bottom of the run, where the cartridge has them.
- *
- * EMISSION ORDER. Functions are written in descending ROM order; mwccarm
- * emits .text in reverse source order, so the object comes out ascending.
- *
- * FILE-WIDE PRAGMAS. `opt_common_subs off` and `opt_strength_reduction off`
- * are both needed, and both must be file-wide. Measured with
- * tools/tubuild.py verify: without them func_ov065_02118838 DIFFs, either one
- * alone still DIFFs, and a push/pop bracket around that one function does not
- * bind. The legacy per-file `opt_propagation off` that daDossy_c::Behavior's
- * old source carried is not needed here.
- *
- * Leftover: ModelAnim::SetAnim and the other Fix12<int>-by-value calls stay mangled. A member SetAnim with `Fix12<int> speed = { 0x1000 }` in func_ov065_021182e4 changes that function (notes/mwccarm-codegen.md 6az).
- * Leftover: func_ov065_021180d4, func_ov065_02118c4c and func_ov065_02119210 take daDossyCap_c, so they stay free functions. decl_common.h still declares those forms.
- * Leftover: func_ov065_02118838 keeps `(i << 9)` platform addressing and the hoisted locals. A typed DorriePlatform walk or mPlatforms[i] indexing changes the code, as the char* walks in CleanupResources and InitResources do.
- * Leftover: daDossyCap_c::Render tests its cap-icon flag as `(flags << 30) >> 31`. The `>> 1 & 1` spelling selects asr/ands instead of lsl/lsrs.
- * Leftover: data keeps address names (data_ov065_*), including the state table.
- * Leftover: func_ov065_021195bc and func_ov065_021195d0 are veneers. The first argument is not the actor. mwcc rejects an explicit cast of &daDossy_c::method to a function pointer, so each veneer calls the method through its mangled extern "C" name with the second and third arguments.
+ * _ZTS9daDossy_c 0x0211cd34, _ZTS12daDossyCap_c 0x0211cd58, each naming
+ * _ZTI8dActor_c. _ZTV9daDossy_c 0x0211ce48, _ZTV12daDossyCap_c 0x0211cdc4.
+ * Both destructors are inline, so each D1/D0 pair lands at the bottom of
+ * the run and InitResources is the key function. Highest address first.
+ * opt_common_subs off and opt_strength_reduction off are file-wide:
+ * func_ov065_02118838 needs both, and a bracket around that function
+ * does not bind.
  */
+// leftovers:
+// - ModelAnim::SetAnim and the other Fix12<int>-by-value calls stay
+//   mangled. A member SetAnim with Fix12<int> speed in func_ov065_021182e4
+//   changes that function.
+// - func_ov065_021180d4, func_ov065_02118c4c and func_ov065_02119210 take
+//   daDossyCap_c, so they stay free functions. decl_common.h still
+//   declares those forms.
+// - func_ov065_02118838 keeps `(i << 9)` platform addressing. A typed
+//   DorriePlatform walk, or mPlatforms[i], changes that function and the
+//   char* walks in CleanupResources and InitResources.
+// - daDossyCap_c::Render tests the cap-icon flag as `(flags << 30) >> 31`.
+//   `>> 1 & 1` selects asr/ands instead of lsl/lsrs.
+// - data_ov065_* keep their address names, including the state table
+//   data_ov065_0211d7fc.
+// - func_ov065_021195bc and func_ov065_021195d0 are veneers. The first
+//   argument is not the actor. An explicit cast of &daDossy_c::method to
+//   a function pointer is rejected, so each veneer calls the method
+//   through its mangled name with the second and third arguments.
+
 
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
@@ -136,34 +134,29 @@ bool ApproachLinear(short &value, short target, short step);
 typedef void (daDossy_c::*StateFunc)();
 extern "C" StateFunc data_ov065_0211d7fc[];
 
-/* ROM ordinal 28 */
 // @symbol _ZN14DorriePlatformC1Ev
 DorriePlatform::DorriePlatform()
 {
 }
 
-/* ROM ordinal 27 */
 // @symbol daDossy_c_classInit
 extern "C" daDossy_c *daDossy_c_classInit(void)
 {
     return new daDossy_c();
 }
 
-/* ROM ordinal 26 */
 // @symbol daDossyCap_c_classInit
 extern "C" daDossyCap_c *daDossyCap_c_classInit(void)
 {
     return new daDossyCap_c();
 }
 
-/* ROM ordinal 25 */
 // @symbol _ZN12daDossyCap_c13OnYoshiTryEatEv
 int daDossyCap_c::OnYoshiTryEat()
 {
     return 4;
 }
 
-/* ROM ordinal 24 */
 #pragma long_calls on
 // @symbol func_ov065_021195d0
 extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
@@ -172,7 +165,6 @@ extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
 }
 #pragma long_calls off
 
-/* ROM ordinal 23 */
 #pragma long_calls on
 // @symbol func_ov065_021195bc
 extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
@@ -181,7 +173,6 @@ extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
 }
 #pragma long_calls off
 
-/* ROM ordinal 22 */
 // @symbol _ZN9daDossy_c19func_ov065_02119594EP8dActor_c
 void daDossy_c::func_ov065_02119594(dActor_c *other)
 {
@@ -192,7 +183,6 @@ void daDossy_c::func_ov065_02119594(dActor_c *other)
     }
 }
 
-/* ROM ordinal 21 */
 // @symbol _ZN9daDossy_c19func_ov065_0211956cEP8dActor_c
 void daDossy_c::func_ov065_0211956c(dActor_c *other)
 {
@@ -203,7 +193,6 @@ void daDossy_c::func_ov065_0211956c(dActor_c *other)
     }
 }
 
-/* ROM ordinal 20 */
 // @symbol _ZN12daDossyCap_c13InitResourcesEv
 int daDossyCap_c::InitResources()
 {
@@ -214,7 +203,6 @@ int daDossyCap_c::InitResources()
     return 1;
 }
 
-/* ROM ordinal 19 */
 // @symbol _ZN9daDossy_c13InitResourcesEv
 int daDossy_c::InitResources()
 {
@@ -302,7 +290,6 @@ int daDossy_c::InitResources()
     return 1;
 }
 
-/* ROM ordinal 18 */
 // @symbol func_ov065_02119210
 extern "C" int func_ov065_02119210(unsigned char *c)
 {
@@ -311,7 +298,6 @@ extern "C" int func_ov065_02119210(unsigned char *c)
     return ((unsigned)flags >> 31) != 0;
 }
 
-/* ROM ordinal 17 */
 // @symbol _ZN12daDossyCap_c8BehaviorEv
 int daDossyCap_c::Behavior()
 {
@@ -352,7 +338,6 @@ int daDossyCap_c::Behavior()
     return 1;
 }
 
-/* ROM ordinal 16 */
 // @symbol _ZN9daDossy_c8BehaviorEv
 int daDossy_c::Behavior()
 {
@@ -410,7 +395,6 @@ int daDossy_c::Behavior()
     return 1;
 }
 
-/* ROM ordinal 15 */
 // @symbol _ZN12daDossyCap_c6RenderEv
 int daDossyCap_c::Render()
 {
@@ -425,7 +409,6 @@ int daDossyCap_c::Render()
     return 1;
 }
 
-/* ROM ordinal 14 */
 // @symbol _ZN9daDossy_c6RenderEv
 int daDossy_c::Render()
 {
@@ -433,7 +416,6 @@ int daDossy_c::Render()
     return 1;
 }
 
-/* ROM ordinal 13 */
 // @symbol _ZN9daDossy_c16CleanupResourcesEv
 int daDossy_c::CleanupResources()
 {
@@ -452,7 +434,6 @@ int daDossy_c::CleanupResources()
     return 1;
 }
 
-/* ROM ordinal 12 */
 // @symbol _ZN9daDossy_c19func_ov065_02118cc4Ev
 void daDossy_c::func_ov065_02118cc4()
 {
@@ -462,7 +443,6 @@ void daDossy_c::func_ov065_02118cc4()
     mModelAnim.mat4x3.m[11] = mPosZ >> 3;
 }
 
-/* ROM ordinal 11 */
 // @symbol func_ov065_02118c4c
 extern "C" void func_ov065_02118c4c(char *c)
 {
@@ -475,7 +455,6 @@ extern "C" void func_ov065_02118c4c(char *c)
     cap->mModel.mat4x3 = data_020a0e68;
 }
 
-/* ROM ordinal 10 */
 // @symbol _ZN9daDossy_c19func_ov065_02118838Ev
 void daDossy_c::func_ov065_02118838()
 {
@@ -567,7 +546,6 @@ void daDossy_c::func_ov065_02118838()
     }
 }
 
-/* ROM ordinal 9 */
 // @symbol _ZN9daDossy_c19func_ov065_02118634Ev
 void daDossy_c::func_ov065_02118634()
 {
@@ -633,7 +611,6 @@ void daDossy_c::func_ov065_02118634()
     }
 }
 
-/* ROM ordinal 8 */
 // @symbol _ZN9daDossy_c19func_ov065_021183c8Ev
 void daDossy_c::func_ov065_021183c8()
 {
@@ -691,7 +668,6 @@ void daDossy_c::func_ov065_021183c8()
     }
 }
 
-/* ROM ordinal 7 */
 // @symbol _ZN9daDossy_c19func_ov065_021182e4Ev
 void daDossy_c::func_ov065_021182e4()
 {
@@ -714,7 +690,6 @@ void daDossy_c::func_ov065_021182e4()
     }
 }
 
-/* ROM ordinal 6 */
 // @symbol _ZN9daDossy_c19func_ov065_02118248Ev
 int daDossy_c::func_ov065_02118248()
 {
@@ -739,7 +714,6 @@ int daDossy_c::func_ov065_02118248()
     return 0;
 }
 
-/* ROM ordinal 5 */
 // @symbol func_ov065_021180d4
 extern "C" int func_ov065_021180d4(char *self)
 {
@@ -796,7 +770,6 @@ fail:
     return 0;
 }
 
-/* ROM ordinal 4 */
 // @symbol _ZN14DorriePlatformD1Ev
 DorriePlatform::~DorriePlatform()
 {
