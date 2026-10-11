@@ -1,6 +1,18 @@
 //cpp
-/* dBgW_Kc_itcm -- the ITCM half of dBgW_Kc (arm9's static-mesh collider, vtable
- * _ZTV7dBgW_Kc @ 0x020993dc). The cartridge keeps the hot collision-query code
+/* leftovers:
+ * #pragma exceptions off stays: DetectClsn's pool word and four zero-init
+ * stores change when exceptions are left on. SQRT_RESULT is a const s32*;
+ * a volatile read coalesces the three hypotenuses into the spill pool.
+ * DetectClsn(dBgCh_SphCrr&) keeps the volatile round-trip on rsc so the
+ * radius lands at sp+0x104; spelled inline, the compiler recomputes it.
+ * DetectClsn(dBgCh_Lin&) keeps info, normal and pos at function scope with
+ * an explicit dBgPc ctor and dtor, declares the leaf pointer among the cell
+ * temps, and dots the edge normals inline. RecordHit and
+ * ShouldPassThroughImpl stay mangled: this TU passes an int triangle id
+ * and the raw slope flag. The func_01ffb0* helpers stay address names.
+ */
+/* dBgW_Kc_itcm: the ITCM half of dBgW_Kc (static-mesh collider, vtable
+ * 0x020993dc). The cartridge keeps the hot collision-query code
  * in fast memory: six vtable slots (GetSurfaceInfo, GetNormal,
  * GetTriangleOrigin, the DetectClsn triple) and the TU's own helpers, all
  * enrolled under config/arm9/itcm/. The lifecycle and SetFile side of the same
@@ -546,26 +558,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
     }
 
     rsc = sphere.radius << 4;
-    /* A volatile round-trip, and it costs ZERO instructions -- casting a prvalue to
-       a cv-qualified scalar type discards the qualifier, so the statement generates
-       nothing at all and the count stays 1778.  What it does is mark the value
-       volatile inside mwcc's front end, which demotes `rsc` out of the declaration
-       CHAIN into the coalesced-locals band of the temp POOL, landing it on 0x104 --
-       the cartridge's own slot.  That is the whole 16-word slot defect.
-
-       The flavour of the demotion picks the landing zone, which is why nothing else
-       worked.  `rsc * k1` (k1 == 1) also demotes, but only to the annex right after
-       the last chained local at 0xd4, and since the pool always begins at chain
-       end + 8 that still shifts every temp by four.  `rsc + k0` (k0 == 0) folds and
-       forgets, demoting nothing.  Only the volatile round-trip reaches the pool --
-       the same family as the volatile pointee that used to demote `c`.
-
-       This is a MATCHING HACK, not a reconstruction: no 2004 author wrote this.  The
-       real source almost certainly reached the same allocator state some other way,
-       and finding it is open work.  What is established is the mechanism and the
-       fact that the cartridge's rsc is a demoted named local, not an inline
-       subexpression -- spelled inline, mwcc recomputes instead of building the
-       0x104 temp, and the count goes to 1779. */
+    /* Demotes rsc into the temp pool at sp+0x104. An inline spelling recomputes it. */
     rsc = (s32)(volatile s32)rsc;
 
     hiPX = loPX = 0;
@@ -989,15 +982,10 @@ ret0:
  * leaf shared across row cells is walked once; rowStep/rowLeaf track the row's
  * first leaf.
  *
- * MATCHING NOTES, all load-bearing:
- *   - `this` lives in r7 and `&info` is hoisted into r8 because `info`,
- *     `normal` and `pos` are function-scope and the dBgPc ctor/dtor on info
- *     are spelled explicitly -- the same shape the port preserves
- *     (port/slice_gate9.txt).
- *   - `u16 *leaf` is declared among the x-body's cell temps and walked with
- *     `*++leaf`; that register pressure is what lands leaf in fp.
- *   - The edge-normal dots are spelled inline against `f->normals[...]`, not
- *     through a named `en` local -- one local too many spills leaf.
+ * info, normal and pos stay at function scope, with the dBgPc ctor and
+ * dtor spelled on info. The leaf pointer is declared among the cell temps
+ * and walked with *++leaf. The edge-normal dots stay inline; a named local
+ * for them spills the leaf pointer.
  */
 // @symbol _ZN7dBgW_Kc10DetectClsnER9dBgCh_Lin
 s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
