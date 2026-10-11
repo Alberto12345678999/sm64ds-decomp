@@ -1,64 +1,29 @@
 //cpp
-/* daPropeller_Heyho_c -- the Fly Guy (PROPELLER_HEYHO), ov070, 27 functions
- * (.text 0x0211f000..0x02120570: the two inline destructor variants D1/D0 plus
- * the 25 functions below).
- *
- * Behaviour in one paragraph: the actor wanders around a home position and chases
- * a player who comes within 1000 units, then either dives at them or (when
- * param1's low byte is non-zero, half the time) spits a fireball. It returns to
- * wander directly after a fireball or a dive that hurt the player, and via the
- * settle state when a dive times out, hits a wall, or the player is lost or goes
- * underwater. Contact hits are sorted in func_ov070_0211f100: attack-mask, fire,
- * mega-character and metal/shell hits send it through the knocked state, which
- * ends in unk_10a + 1 coins; stomps and spin/ground-pound hits kill it through
- * mDeathState (coin handling not examined here). The six states are
- * {init, main} PMF records (see the table above InitResources).
- *
- * Function order is the REVERSE of the ROM's: mwccarm 2004/b56 emits one
- * .text section per function in reverse source order. Do not reorder.
- *
- * This file was assembled by hand -- tubuild create refused the TU because
- * the legacy bodies were wrapped in extern "C" { } -- by concatenating the
- * complete legacy files and reconciling their conflicting declarations; the
- * manifest notes record how each conflict was settled.
- *
- * Known limits: dCcAc_c::Init / dBgCh_Actr::Init stay mangled (Fix12-by-value, 6az;
- *   dBgCh Init header Fix12i mangles as int -- this TU's InitResources call).
- *   ModelAnim::SetAnim, DropShadowRadHeight, SpawnCoins, SpawnFireball,
- *   Particle::System::New / NewUnkCallback818, Player::SpinBounce / Hurt stay
- *   mangled (Fix12-by-value, 6az -- this TU). dExtFrameCtrl_c::Finished / WillHitFrame
- *   in func_ov070_0211f48c / 0211f62c / 0211f6e0 are called as
- *   `mModelAnim.dExtFrameCtrl_c::Finished()` (byte-identical to the old
- *   `(dExtFrameCtrl_c *)((char *)this + 0x350)` view; measured: `(char *)&mModelAnim + 0x50`
- *   DIFFs).
- *   data_ov070_* SharedFilePtr handles (Init LoadFile / Cleanup Release) and
- *   the six state records are file-scope objects at the end of this file
- *   (folded sinit 0x02122afc). FlyGuy_ChangeState keeps its C-ABI name. Helpers stay func_ov070_*
- *   (cartridge addresses, no identifiers). ApproachAngle int-target vs short
- *   via namespace ApproachAngleInt (this TU). V3w/V3h array-wrapper for struct copy
- *   (this TU). func_ov070_0211f6e0 and func_ov070_0211f48c keep the V3w/V3h
- *   array-wrapper block copies of the player position / own angles (this TU,
- *   measured).
- *
- * Leftover (honest list):
- *   - Player-position reads through an `int *` view (func_ov070_0211fd98,
- *     func_ov070_0211fae4, func_ov070_0211f48c) and the Vector3 write through
- *     `((int *)&v)[i]` (func_ov070_0211f368) are kept as written. Spelling
- *     them as plain member reads changed the compiled function sizes (this
- *     pass tried fd98 and fae4 one at a time; the 0211f368 and 0211f48c
- *     spellings were tried together and not separated).
- *   - SharedFilePtr has no recovered fields, so the loaded-file pointer is still
- *     read as `((int *)&handle)[1]` when passed to SetAnim.
- *   - The hit-flag bit meanings are only the dCc_c.h table's plausible reading
- *     (egg 0x2000 and explosion 0x4000 are proven there); the level 0x16 special
- *     case, OnYoshiTryEat's 5, Player::Hurt's arguments (2, 12.0, 1, 0, 1) and the
- *     ApproachAngle step arguments are not recovered.
- *   - unk_0a4 / unk_0ac (velocity X / Z around mVertSpeed), unk_104/108/10a and
- *     the mPrevAngle triple (smoothed angles copied to mAngleY/Z, but
- *     never mAngleX) keep dActor_c / dEnemyBase_c's names, which are shared headers.
- *   - Which animation file is which (02123500 .. 02123528) is only known by the
- *     state that plays it, not by name.
- *   - daPropeller_Heyho_Fire_c (the fireball) is a separate translation unit.
+/* Fly Guy (PROPELLER_HEYHO), ov070. .text 0x0211f000..0x02120570,
+ * inline destructor D1 then D0, plus the 25 functions below. It wanders
+ * a home position, chases a player inside 1000 units, then dives or
+ * (when param1's low byte is nonzero, half the time) spits a fireball.
+ * func_ov070_0211f100 sorts contact. Source order is the reverse of the
+ * ROM, so the one .text section emits ascending.
+ */
+/* leftovers: dCcAc_c::Init and dBgCh_Actr::Init stay mangled.
+ * InitResources calls them, and each takes Fix12<int> by value; the
+ * header spells Fix12i. ModelAnim::SetAnim, DropShadowRadHeight,
+ * SpawnCoins, SpawnFireball, Particle::System::New, NewUnkCallback818,
+ * Player::SpinBounce and Player::Hurt stay mangled for the same reason.
+ * Finished and WillHitFrame stay qualified through mModelAnim; a char*
+ * view of that member moves a word in func_ov070_0211f48c,
+ * func_ov070_0211f62c and func_ov070_0211f6e0. Player-position reads
+ * through int* in func_ov070_0211fd98, func_ov070_0211fae4 and
+ * func_ov070_0211f48c, and the Vector3 write through ((int *)&v)[i] in
+ * func_ov070_0211f368, stay as written. SharedFilePtr has no fields, so
+ * the loaded file is ((int *)&handle)[1]. unk_0a4, unk_0ac, unk_104,
+ * unk_108, unk_10a and the mPrevAngle triple keep the base-class names.
+ * FlyGuy_ChangeState keeps its C-ABI name. ApproachAngleInt is the
+ * int-target overload. V3w and V3h keep the ldm/stm copy in
+ * func_ov070_0211f6e0 and func_ov070_0211f48c. The six state records and
+ * the file handles keep address names; this file's static initializer
+ * fills them. daPropeller_Heyho_Fire_c is a separate TU.
  */
 
 #include "daPropeller_Heyho_c.h"
@@ -136,9 +101,7 @@ enum {
 
 /* -------------------------------------------------------------------------- */
 // @symbol daPropeller_Heyho_c_classInit
-/* The registry factory behind the PROPELLER_HEYHO profile.
- * `return new daPropeller_Heyho_c()` MATCHES (size 0x50); the synthesized
- * ctor stores `_ZTV19daPropeller_Heyho_c + 2`. Historical alias: FlyGuy_Spawn. */
+/* Registry factory for the PROPELLER_HEYHO profile. */
 extern "C" daPropeller_Heyho_c *daPropeller_Heyho_c_classInit(void)
 {
     return new daPropeller_Heyho_c();
@@ -153,12 +116,7 @@ s32 daPropeller_Heyho_c::OnYoshiTryEat() {
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN19daPropeller_Heyho_c13OnTurnIntoEggER6Player
-// recovered name: FlyGuy_OnTurnIntoEgg
-/* daPropeller_Heyho_c::OnTurnIntoEgg -- vtable slot 19, verified against ov070
- * relocs.txt: _ZTV19daPropeller_Heyho_c (0x02123168) + 0x4c -> 0x021204ec, exactly this
- * placeholder's former address (former name func_ov070_021204ec).
- * Matched byte-for-byte with mwccarm 2004/b56 (ov070).
- */
+/* Vtable slot 19. _ZTV19daPropeller_Heyho_c at 0x02123168 + 0x4c is this body. */
 #include "Player.h"
 
 /* Turned into an egg: the player is paid unk_10a + 1 coins (unk_10a is the
@@ -172,8 +130,7 @@ void daPropeller_Heyho_c::OnTurnIntoEgg(Player &player)
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN19daPropeller_Heyho_c16OnAimedAtWithEggEv
-// recovered name: FlyGuy_OnAimedAtWithEgg
-/* daPropeller_Heyho_c::OnAimedAtWithEgg - recovered from vtable slot identity */
+/* Egg-aim query. Returns the fixed height the slot stores. */
 s32 daPropeller_Heyho_c::OnAimedAtWithEgg() {
     return 0x2b000; /* Fix12 egg-aim HEIGHT added to pos.y, per dEnemyBase_c.h slot-29: 43.0 units */
 }
@@ -210,7 +167,7 @@ extern HeyhoAnimationFilePtr data_ov070_02123508;
 extern HeyhoAnimationFilePtr data_ov070_02123500;
 /* The six state records (each {init PMF, main PMF}, built by __sinit_ov070_02122afc
  * from PMF literals in .data). The role names below are read off the handler
- * bodies; none is a recovered name:
+ * bodies:
  *   data_ov070_0212359c  wander   init func_ov070_0211ffa8   main func_ov070_0211fd98
  *   data_ov070_021235ac  chase    init func_ov070_0211fd60   main func_ov070_0211fae4
  *   data_ov070_021235cc  dive     init func_ov070_0211fa80   main func_ov070_0211f6e0
@@ -379,10 +336,7 @@ int daPropeller_Heyho_c::Render()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN19daPropeller_Heyho_c16OnPendingDestroyEv
-/* recovered: shared header, real C++ method
- *
- * fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`.
- */
+/* Empty. Four bytes, bx lr. */
 
 void daPropeller_Heyho_c::OnPendingDestroy()
 {
@@ -390,13 +344,7 @@ void daPropeller_Heyho_c::OnPendingDestroy()
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN19daPropeller_Heyho_c16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * Releases the 7 shared file(s) InitResources claimed.
- *
- * TOUCHES NO FIELD. The ROM body takes no `this`; as a method it now receives
- * one and ignores it, which measured byte-free.
- */
+/* Releases the seven files InitResources claimed. The body does not read this. */
 
 
 int daPropeller_Heyho_c::CleanupResources()
@@ -902,10 +850,7 @@ int daPropeller_Heyho_c::func_ov070_0211f62c()
 // @symbol func_ov070_0211f5f0
 struct BCA_File;
 /* (ModelAnim: real header type in scope) */
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
+/* SetAnim takes Fix12<int> by value, so this call stays the mangled extern. */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 
 
@@ -1153,10 +1098,7 @@ extern "C" void func_ov070_0211f100(daPropeller_Heyho_c* c)
 
 
 /* (dActor_c: real header type in scope; SpawnCoins goes through the mangled extern below) */
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
+/* SpawnCoins takes Fix12<int> by value, so this call stays the mangled extern. */
 extern "C" void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *, Vector3 const &, unsigned int, int, short);
 
 
