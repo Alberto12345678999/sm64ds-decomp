@@ -33,7 +33,6 @@
 #include "Sound.h"
 #include "types.h"
 #include "dEnemyBase_c.h"
-#include "private/ov004_obj_vtbl.h"
 #include "PlayerInput.h"
 
 #pragma defer_codegen off
@@ -112,6 +111,11 @@ extern unsigned char data_0209d458[];
 int func_02013580(int table, int index);
 void func_02013568(int table, int index, int value);
 int func_ov004_020adc3c(void *scene);
+
+/* One table of sprite-list words per language, indexed by
+   GetGameLanguage(); the helpers below hand its words to the OAM
+   wrappers. */
+extern int *data_ov004_020bbfa8[];
 }
 
 namespace s20ad660 {
@@ -538,7 +542,6 @@ void *func_ov004_020adc74(const char *path)
 namespace s20adc80 {
 extern "C" {
 extern int GetGameLanguage(void);
-extern int *data_ov004_020bbfa8[];
 extern int func_ov004_020b1d60(int,int,int,long long);
 }
 }
@@ -546,7 +549,7 @@ extern int func_ov004_020b1d60(int,int,int,long long);
    data_ov004_020bbfa8, at mPos >> 12. */
 void Ent::func_ov004_020adc80(){
     int idx=s20adc80::GetGameLanguage();
-    int *t=s20adc80::data_ov004_020bbfa8[idx];
+    int *t=data_ov004_020bbfa8[idx];
     s20adc80::func_ov004_020b1d60(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
 }
 
@@ -2648,8 +2651,6 @@ namespace s20b0d8c {
 extern "C" {
 extern s32 GetGameLanguage(void);
 extern void Hud_RenderSprite(void *fn, s32 a, s32 b, s32 r3arg, s32 stack_arg);
-extern void **data_ov004_020bbfa8[];
-
 /* Draws per-language sprite 0x11 or 0x12 at (arg1, arg2): 0x11 for the
    first 20 frames of the scene's 40-frame mFrameCounter cycle, 0x12 for
    the rest. */
@@ -2658,9 +2659,8 @@ void func_ov004_020b0d8c(void *c, s32 arg1, s32 arg2)
     s32 idx1 = ((dScMgBase_c *)c)->mFrameCounter;
     s32 r4 = (idx1 < 0x14) ? 0x11 : 0x12;
     s32 idx2 = GetGameLanguage();
-    void **table = (void**)data_ov004_020bbfa8[idx2];
-    void *fn = table[r4];
-    Hud_RenderSprite(fn, arg1, arg2, -1, -1);
+    int *table = data_ov004_020bbfa8[idx2];
+    Hud_RenderSprite((void *)table[r4], arg1, arg2, -1, -1);
 }
 }
 }
@@ -2670,7 +2670,6 @@ namespace s20b0de0 {
 extern "C" {
 s32 GetGameLanguage(void);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern char* data_ov004_020bbfa8[];
 
 /* Draws the per-language prompt sprite at (0xc0, 0xb0) while mPromptEnabled
    is set: blinking (shown for the first 0x18 frames of each 0x30-frame
@@ -2691,7 +2690,7 @@ void func_ov004_020b0de0(char* c)
     }
     {
         int i = GetGameLanguage();
-        RenderOamMainScreen(*(int*)(data_ov004_020bbfa8[i] + 0x28), 0xc0, 0xb0, -1, -1);
+        RenderOamMainScreen(data_ov004_020bbfa8[i][10], 0xc0, 0xb0, -1, -1);
     }
 }
 }
@@ -2703,8 +2702,6 @@ extern "C" {
 extern "C" void func_02012790(int);
 extern "C" int GetGameLanguage(void);
 extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern "C" void func_ov004_020b1ea4(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
-extern "C" void *data_ov004_020bbfa8[];
 
 static inline int sdiv4(int d) {
     int t = d + (int)((unsigned)(d >> 1) >> 0x1e);
@@ -2715,26 +2712,35 @@ static inline int sdiv2(int e) {
     return (e + (int)((unsigned)e >> 31)) >> 1;
 }
 
-extern "C" void func_ov004_020b0e84(Obj *sl, int sb) {
-    void *r8;
+/* Draws a tally of `sb` in a column at x 0xf0, upward from y 0xa8: one
+   icon (per-language sprite word 9) per unit, and from five upward the
+   whole fives as a number (func_ov004_020b1ea4) beside sprite word 11 with
+   only the remainder as icons. unk_050 holds the last tally. A rise plays
+   sound 0x1bb (func_02012790) and starts the unk_054 counter -- one step a
+   frame, two when slot 26 returns 2 -- while the newest icon blinks on a
+   60-frame period; a fall stops it. When the tally reaches a multiple of
+   five, the icons close up as unk_054 runs from mTimeLimit to
+   mTimeLimit + 0x20, with sound 0x1ba as they start. */
+extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
+    int *r8;
     int r7;
     int i;
     int pin;
 
     {
-        int t = sl->unk50;
+        int t = sl->unk_050;
         if (t < sb) {
-            sl->unk54 = 1;
-            sl->unk50 = sb;
+            sl->unk_054 = 1;
+            sl->unk_050 = sb;
             func_02012790(0x1bb);
         } else if (t > sb) {
-            sl->unk54 = 0;
-            sl->unk50 = sb;
-        } else if (sl->unk54 > 0) {
-            if (sl->f68() == 2) {
-                sl->unk54 += 2;
+            sl->unk_054 = 0;
+            sl->unk_050 = sb;
+        } else if (sl->unk_054 > 0) {
+            if (sl->OnHitByCannonBlastedChar() == 2) {
+                sl->unk_054 += 2;
             } else {
-                sl->unk54 += 1;
+                sl->unk_054 += 1;
             }
         }
     }
@@ -2747,60 +2753,60 @@ extern "C" void func_ov004_020b0e84(Obj *sl, int sb) {
         i = 0;
         if (sb > 0) {
             do {
-                if (i == sb - 1 && sl->unk54 > 0 && sl->unk54 % 0x3c >= 0x1e) {
+                if (i == sb - 1 && sl->unk_054 > 0 && sl->unk_054 % 0x3c >= 0x1e) {
                     break;
                 }
-                RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+                RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                 i += 1;
                 r7 -= 0x10;
             } while (i < sb);
         }
-        if (sl->unk54 >= sl->unk58) {
-            sl->unk54 = 0;
+        if (sl->unk_054 >= sl->mTimeLimit) {
+            sl->unk_054 = 0;
         }
         return;
     }
 
     if (sb == 5) {
-        int u = sl->unk54;
+        int u = sl->unk_054;
         if (u == 0) {
             func_ov004_020b1ea4(0xf0, r7, 5, 1, 0, 0, 0x14);
-            RenderOamMainScreen(((int *)r8)[0x2c / 4], 0xf0, r7, -1, -1);
-        } else if (u < sl->unk58) {
+            RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
+        } else if (u < sl->mTimeLimit) {
             r7 -= 8;
             i = 0;
             do {
-                RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+                RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                 i += 1;
                 r7 -= 0x10;
             } while (i < 4);
-            if (sl->unk54 % 0x3c < 0x1e) {
-                RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+            if (sl->unk_054 % 0x3c < 0x1e) {
+                RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
             }
         } else {
-            int d = (sl->unk58 + 0x20) - sl->unk54;
+            int d = (sl->mTimeLimit + 0x20) - sl->unk_054;
             r7 -= sdiv4(d);
             i = 0;
             do {
-                RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+                RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                 {
-                    unsigned e = (sl->unk58 + 0x20) - sl->unk54;
+                    unsigned e = (sl->mTimeLimit + 0x20) - sl->unk_054;
                     r7 -= sdiv2((int)e);
                 }
                 i += 1;
             } while (i < 5);
         }
-        if (sl->f68() == 2) {
-            int b = sl->unk58;
-            int c = sl->unk54;
+        if (sl->OnHitByCannonBlastedChar() == 2) {
+            int b = sl->mTimeLimit;
+            int c = sl->unk_054;
             if (c == b || c == b + 1) {
                 func_02012790(0x1ba);
             }
-        } else if (sl->unk54 == sl->unk58) {
+        } else if (sl->unk_054 == sl->mTimeLimit) {
             func_02012790(0x1ba);
         }
-        if (sl->unk54 >= sl->unk58 + 0x20) {
-            sl->unk54 = 0;
+        if (sl->unk_054 >= sl->mTimeLimit + 0x20) {
+            sl->unk_054 = 0;
         }
         return;
     }
@@ -2808,48 +2814,48 @@ extern "C" void func_ov004_020b0e84(Obj *sl, int sb) {
     {
         int rem = sb % 5;
         if (rem == 0) {
-            int u = sl->unk54;
+            int u = sl->unk_054;
             if (u == 0) {
                 func_ov004_020b1ea4(0xf0, r7, sb, 1, 0, 0, 0x14);
-                RenderOamMainScreen(((int *)r8)[0x2c / 4], 0xf0, r7, -1, -1);
-            } else if (u < sl->unk58) {
+                RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
+            } else if (u < sl->mTimeLimit) {
                 func_ov004_020b1ea4(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
-                RenderOamMainScreen(((int *)r8)[0x2c / 4], 0xf0, r7, -1, -1);
+                RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
                 r7 -= 0x18;
                 i = 0;
                 do {
-                    if (i == 4 && sl->unk54 > 0 && sl->unk54 % 0x3c >= 0x1e) {
+                    if (i == 4 && sl->unk_054 > 0 && sl->unk_054 % 0x3c >= 0x1e) {
                         break;
                     }
-                    RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+                    RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                     i += 1;
                     r7 -= 0x10;
                 } while (i < 5);
             } else {
                 int d;
                 func_ov004_020b1ea4(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
-                RenderOamMainScreen(((int *)r8)[0x2c / 4], 0xf0, r7, -1, -1);
-                d = (sl->unk58 + 0x20) - sl->unk54;
+                RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
+                d = (sl->mTimeLimit + 0x20) - sl->unk_054;
                 r7 -= sdiv4(d);
                 i = 0;
                 do {
-                    unsigned e = (sl->unk58 + 0x20) - sl->unk54;
+                    unsigned e = (sl->mTimeLimit + 0x20) - sl->unk_054;
                     r7 -= sdiv2((int)e);
-                    RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+                    RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                     i += 1;
                 } while (i < 5);
             }
-            if (sl->f68() == 2) {
-                int b = sl->unk58;
-                int c = sl->unk54;
+            if (sl->OnHitByCannonBlastedChar() == 2) {
+                int b = sl->mTimeLimit;
+                int c = sl->unk_054;
                 if (c == b || c == b + 1) {
                     func_02012790(0x1ba);
                 }
-            } else if (sl->unk54 == sl->unk58) {
+            } else if (sl->unk_054 == sl->mTimeLimit) {
                 func_02012790(0x1ba);
             }
-            if (sl->unk54 >= sl->unk58 + 0x20) {
-                sl->unk54 = 0;
+            if (sl->unk_054 >= sl->mTimeLimit + 0x20) {
+                sl->unk_054 = 0;
             }
             return;
         }
@@ -2858,22 +2864,22 @@ extern "C" void func_ov004_020b0e84(Obj *sl, int sb) {
             int base5 = (sb / 5) * 5;
             func_ov004_020b1ea4(0xf0, r7, base5, 1, 0, 0, 0x14);
         }
-        RenderOamMainScreen(((int *)r8)[0x2c / 4], 0xf0, r7, -1, -1);
+        RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
         r7 -= 0x18;
         sb = 0;
         if (rem > 0) {
             pin = rem - 1;
             do {
-                if (sb == pin && sl->unk54 > 0 && sl->unk54 % 0x3c >= 0x1e) {
+                if (sb == pin && sl->unk_054 > 0 && sl->unk_054 % 0x3c >= 0x1e) {
                     break;
                 }
-                RenderOamMainScreen(((int *)r8)[0x24 / 4], 0xf0, r7, -1, -1);
+                RenderOamMainScreen(r8[9], 0xf0, r7, -1, -1);
                 sb += 1;
                 r7 -= 0x10;
             } while (sb < rem);
         }
-        if (sl->unk54 >= sl->unk58) {
-            sl->unk54 = 0;
+        if (sl->unk_054 >= sl->mTimeLimit) {
+            sl->unk_054 = 0;
         }
     }
 }
@@ -2883,28 +2889,32 @@ extern "C" void func_ov004_020b0e84(Obj *sl, int sb) {
 // @symbol func_ov004_020b14f0
 namespace s20b14f0 {
 extern "C" {
-typedef long long s64;
-
-#define AT(p,off) ((int*)(int)((char*)(p)+(off)))
-
 extern int func_ov004_020ad6f4(void* self, int a);
 extern int func_ov004_020adc3c(void* self);
 extern int func_02013580(int a, int b);
 extern void func_ov004_020b1710(void* self, int a1, int a2, int a3);
 
+/* Draws the five saved records in rows 0x18 apart from (0xa8, 0x28),
+   revealing one more row every 0x14 frames as unk_060 counts up. unk_060
+   then loops over 0x64..0x8b, and the session best (unk_4658) blinks on
+   that 40-frame loop: in the row of the rank it took (unk_064, read
+   through func_ov004_020ad6f4), or in a row below the five when it placed
+   nowhere. func_ov004_020ad6f4 takes only the scene; the second argument
+   passed here is unused. */
 void func_ov004_020b14f0(char* self)
 {
+    dScMgBase_c *scene = (dScMgBase_c *)self;
     int a2 = 0x28;
     int n;
     int i;
     int j;
     int k;
 
-    *AT(self, 0x60) += 1;
-    if (*(int*)(self + 0x60) >= 0x8c)
-        *(int*)(self + 0x60) = 0x64;
+    scene->unk_060 += 1;
+    if (scene->unk_060 >= 0x8c)
+        scene->unk_060 = 0x64;
 
-    n = func_ov004_020ad6f4(self, *(int*)(self + 0x4658));
+    n = func_ov004_020ad6f4(self, scene->unk_4658);
     if (n < 0)
         goto neg;
 
@@ -2913,17 +2923,17 @@ void func_ov004_020b14f0(char* self)
     {
         do
         {
-            if (*(int*)(self + 0x60) >= i * 0x14)
+            if (scene->unk_060 >= i * 0x14)
                 func_ov004_020b1710(self, 0xa8, a2, func_02013580(func_ov004_020adc3c(self), i));
             a2 += 0x18;
             i++;
         } while (i < n);
     }
 
-    if (*(int*)(self + 0x60) >= n * 0x14)
+    if (scene->unk_060 >= n * 0x14)
     {
-        if (*(int*)(self + 0x60) < 0x64 || *(int*)(self + 0x60) - 0x64 < 0x14)
-            func_ov004_020b1710(self, 0xa8, a2, *(int*)(self + 0x4658));
+        if (scene->unk_060 < 0x64 || scene->unk_060 - 0x64 < 0x14)
+            func_ov004_020b1710(self, 0xa8, a2, scene->unk_4658);
         else
             func_ov004_020b1710(self, 0xa8, a2, -1);
     }
@@ -2934,7 +2944,7 @@ void func_ov004_020b14f0(char* self)
         return;
     do
     {
-        if (*(int*)(self + 0x60) >= j * 0x14)
+        if (scene->unk_060 >= j * 0x14)
             func_ov004_020b1710(self, 0xa8, a2, func_02013580(func_ov004_020adc3c(self), j));
         a2 += 0x18;
         j++;
@@ -2945,17 +2955,17 @@ neg:
     k = 0;
     do
     {
-        if (*(int*)(self + 0x60) >= k * 0x14)
+        if (scene->unk_060 >= k * 0x14)
             func_ov004_020b1710(self, 0xa8, a2, func_02013580(func_ov004_020adc3c(self), k));
         a2 += 0x18;
         k++;
     } while (k < 5);
 
-    if (*(int*)(self + 0x60) < 0x64)
+    if (scene->unk_060 < 0x64)
         return;
 
-    if (*(int*)(self + 0x60) - 0x64 < 0x14)
-        func_ov004_020b1710(self, 0xa8, a2 + 0x10, *(int*)(self + 0x4658));
+    if (scene->unk_060 - 0x64 < 0x14)
+        func_ov004_020b1710(self, 0xa8, a2 + 0x10, scene->unk_4658);
     else
         func_ov004_020b1710(self, 0xa8, a2 + 0x10, -1);
 }
@@ -2966,18 +2976,21 @@ neg:
 namespace s20b1710 {
 extern "C" {
 extern int GetGameLanguage(void);
-extern void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int fb);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 
-extern int data_0209b308;
-extern int *data_ov004_020bbfa8;
+extern int data_0209b308[];
 
+/* Draws one record row at y. In scoring mode 5 (word 2 of the menu row)
+   `val` is a time in frames, drawn as seconds, sprite word 7, tenths and
+   hundredths ending at x, and a negative val draws nothing. Otherwise
+   modes 1, 2 and 4 draw two label sprites at x 0x58 and 0x68 first; mode
+   3 then draws val 4 px left through func_ov004_020b1ea4, every other mode
+   through func_ov004_020b2444. A negative val draws no number. */
 void func_ov004_020b1710(int a0, int x, int y, int val)
 {
     int idx = GetGameLanguage();
-    int mode = (&data_0209b308)[2];
-    int *tbl = (int *)(&data_ov004_020bbfa8)[idx];
+    int mode = data_0209b308[2];
+    int *tbl = data_ov004_020bbfa8[idx];
     int flag = 0;
 
     if (mode == 5) {
@@ -3037,15 +3050,15 @@ void func_ov004_020b1710(int a0, int x, int y, int val)
 // @symbol func_ov004_020b19f0
 namespace s20b19f0 {
 extern "C" {
-typedef int s32;
 s32 GetGameLanguage(void);
 int RenderOamMainScreen(int a, int b, int c, int d, int e);
 int func_ov004_020b1ea4(int a, int b, void* c, int d, int e, int f, int g);
-extern char* data_ov004_020bbfa8[];
-int func_ov004_020b19f0(void* self){
+/* Draws sprite word 8 at (0x20, 0xc) and `value`, starting at x
+   0x48, through func_ov004_020b1ea4. */
+int func_ov004_020b19f0(void* value){
   int i = GetGameLanguage();
-  RenderOamMainScreen(*(int*)(data_ov004_020bbfa8[i]+0x20), 0x20, 0xc, -1, -1);
-  return func_ov004_020b1ea4(0x48, 0xc, self, 1, -1, 2, 0xa);
+  RenderOamMainScreen(data_ov004_020bbfa8[i][8], 0x20, 0xc, -1, -1);
+  return func_ov004_020b1ea4(0x48, 0xc, value, 1, -1, 2, 0xa);
 }
 }
 }
@@ -3053,16 +3066,12 @@ int func_ov004_020b19f0(void* self){
 // @symbol func_ov004_020b1a5c
 namespace s20b1a5c {
 extern "C" {
-/* func_ov004_020b1a5c at 0x020b1a5c
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov004).
- */
-typedef int s32;
 s32 GetGameLanguage(void);
 int RenderOamMainScreen(int a, int b, int c, int d, int e);
 int func_ov004_020b1ea4(int a, int b, int c, int d, int e, int f, int g);
 extern int data_ov004_020b944c[];
-extern char* data_ov004_020bbfa8[];
+/* Draws a0, capped at data_ov004_020b944c[a1], right-aligned at (0xf4,
+   0xc), and sprite word 4 to its left at an x that a1 sets. */
 void func_ov004_020b1a5c(int a0, int a1){
   int lim = data_ov004_020b944c[a1];
   int c = a0;
@@ -3072,7 +3081,7 @@ void func_ov004_020b1a5c(int a0, int a1){
   func_ov004_020b1ea4(0xf4, 0xc, c, 1, -1, 1, 0xa);
   r4 = r4 - (0x44 - (6 - a1) * 8);
   i = GetGameLanguage();
-  RenderOamMainScreen(*(int*)(data_ov004_020bbfa8[i]+0x10), r4, 0xc, -1, -1);
+  RenderOamMainScreen(data_ov004_020bbfa8[i][4], r4, 0xc, -1, -1);
 }
 }
 }
@@ -3080,10 +3089,10 @@ void func_ov004_020b1a5c(int a0, int a1){
 // @symbol func_ov004_020b1aec
 namespace s20b1aec {
 extern "C" {
-extern int *data_ov004_020beb68;
+/* The scene's unk_0bc; 0 with no scene. */
 int func_ov004_020b1aec(void) {
-    int *g = data_ov004_020beb68;
-    if (g != 0) return *(int *)((char *)g + 0xbc);
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene != 0) return scene->unk_0bc;
     return 0;
 }
 }
@@ -3092,11 +3101,13 @@ int func_ov004_020b1aec(void) {
 // @symbol func_ov004_020b1b08
 namespace s20b1b08 {
 extern "C" {
-extern void func_ov004_020b1b78(void *a0, void *a1);
-void func_ov004_020b1b08(void *c) {
+extern void func_ov004_020b1b78(void *c, int val);
+/* Subtracts `amount` from the scene's unk_0a8 (func_ov004_020b1b78). Most
+   callers declare the amount as a void *, so it stays one here. */
+void func_ov004_020b1b08(void *amount) {
     void *v = data_ov004_020beb68;
     if (v == 0) return;
-    func_ov004_020b1b78(v, c);
+    func_ov004_020b1b78(v, (int)amount);
 }
 }
 }
@@ -3104,11 +3115,12 @@ void func_ov004_020b1b08(void *c) {
 // @symbol func_ov004_020b1b40
 namespace s20b1b40 {
 extern "C" {
-extern void func_ov004_020b1ba0(void *a0, void *a1);
-void func_ov004_020b1b40(void *c) {
+extern void func_ov004_020b1ba0(void *c, s32 delta);
+/* Adds `amount` to the scene's unk_0a8 (func_ov004_020b1ba0). */
+void func_ov004_020b1b40(void *amount) {
     void *v = data_ov004_020beb68;
     if (v == 0) return;
-    func_ov004_020b1ba0(v, c);
+    func_ov004_020b1ba0(v, (s32)amount);
 }
 }
 }
@@ -3116,12 +3128,14 @@ void func_ov004_020b1b40(void *c) {
 // @symbol func_ov004_020b1b78
 namespace s20b1b78 {
 extern "C" {
+/* unk_0a8 -= val, clamped to 0..9999. */
 void func_ov004_020b1b78(void* c, int val) {
-    int r2 = *(int*)((char*)c + 0xa8);
+    dScMgBase_c *scene = (dScMgBase_c *)c;
+    int r2 = scene->unk_0a8;
     r2 -= val;
     if (r2 < 0) r2 = 0;
     else if (r2 > 0x270f) r2 = 0x270f;
-    *(int*)((char*)c + 0xa8) = r2;
+    scene->unk_0a8 = r2;
 }
 }
 }
@@ -3129,12 +3143,14 @@ void func_ov004_020b1b78(void* c, int val) {
 // @symbol func_ov004_020b1ba0
 namespace s20b1ba0 {
 extern "C" {
+/* unk_0a8 += delta, clamped to 0..9999. */
 void func_ov004_020b1ba0(void *c, s32 delta)
 {
-    s32 v = *(s32*)((char*)c + 0xa8) + delta;
+    dScMgBase_c *scene = (dScMgBase_c *)c;
+    s32 v = scene->unk_0a8 + delta;
     if (v < 0) v = 0;
     else if (v > 0x270f) v = 0x270f;
-    *(s32*)((char*)c + 0xa8) = v;
+    scene->unk_0a8 = v;
 }
 }
 }
@@ -3143,12 +3159,13 @@ void func_ov004_020b1ba0(void *c, s32 delta)
 namespace s20b1bc8 {
 extern "C" {
 extern void func_ov004_020b1de8(int r0, int r1, int r2, int r3);
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
-extern void func_ov004_020b1ea4(int a, int b, int c, int d, int e, int f, int g);
+/* Draws sprite word 2 at (a1, a2) on wrapper a3 (func_ov004_020b1de8),
+   then the scene's unk_0ac beside it: below 100 through
+   func_ov004_020b2444, otherwise through func_ov004_020b1ea4. */
 void func_ov004_020b1bc8(char *a0, int a1, int a2, int a3)
 {
     func_ov004_020b1de8(a1, a2, a3, -1);
-    int v = *(int*)(a0+0xac);
+    int v = ((dScMgBase_c *)a0)->unk_0ac;
     if (v < 0x64) {
         func_ov004_020b2444(a1+0x12, a2, v, a3, -1, 2, 0);
     } else {
@@ -3163,8 +3180,9 @@ namespace s20b1c68 {
 extern "C" {
 struct M { int _00, _01, _10, _11; };
 extern void RenderOamBothScreens(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5);
 extern void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5);
+/* a3 picks the wrapper: -1 RenderOamBothScreens, 0 func_ov004_020af868,
+   anything else func_ov004_020afc18; each is passed -1 in its place. */
 void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5){
   if(a3==-1){
     RenderOamBothScreens(a0, a1, a2, -1, a4, a5);
@@ -3185,6 +3203,8 @@ extern "C" {
 void func_ov004_020afdd0(int a, int b, int c, int d, int e);
 void Hud_RenderSprite(int a, int b, int c, int d, int e);
 void RenderOamMainScreen(int a, int b, int c, int d, int e);
+/* `sel` picks the wrapper: -1 func_ov004_020afdd0, 0 Hud_RenderSprite,
+   anything else RenderOamMainScreen; each is passed -1 in its place. */
 void func_ov004_020b1cf0(int a, int b, int c, int sel, int e){
   if(sel == -1){ func_ov004_020afdd0(a,b,c,-1,e); return; }
   if(sel == 0){ Hud_RenderSprite(a,b,c,-1,e); return; }
@@ -3197,8 +3217,8 @@ void func_ov004_020b1cf0(int a, int b, int c, int sel, int e){
 namespace s20b1d60 {
 extern "C" {
 extern void RenderOamBothScreens(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5);
 extern void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5);
+/* func_ov004_020b1c68 without a matrix: the wrappers get 0. */
 void func_ov004_020b1d60(void* a0, int a1, int a2, int a3, int a4){
   if(a3==-1){
     RenderOamBothScreens(a0, a1, a2, -1, a4, 0);
@@ -3217,9 +3237,9 @@ void func_ov004_020b1d60(void* a0, int a1, int a2, int a3, int a4){
 namespace s20b1de8 {
 extern "C" {
 extern int GetGameLanguage(void);
-extern int *data_ov004_020bbfa8[];
 extern int func_ov004_020b1d60(int, int, int, int, int);
 
+/* Draws sprite word 2 at (r0, r1) through func_ov004_020b1d60. */
 void func_ov004_020b1de8(int r0, int r1, int r2, int r3) {
     int idx = GetGameLanguage();
     int *t = data_ov004_020bbfa8[idx];
@@ -3231,11 +3251,11 @@ void func_ov004_020b1de8(int r0, int r1, int r2, int r3) {
 // @symbol func_ov004_020b1e34
 namespace s20b1e34 {
 extern "C" {
-/* func_ov004_020b1e34 @ 0x20b1e34 (ov004) -- veneer: ldr r1,[r0,#0xb4]; b func_ov004_020b0e84. */
-extern void func_ov004_020b0e84(void*, u32);
+extern void func_ov004_020b0e84(dScMgBase_c *sl, int sb);
 
+/* Draws the mHudScore tally through func_ov004_020b0e84 (a tail call). */
 void func_ov004_020b1e34(void* a, int unused1, int unused2, int unused3) {
-    func_ov004_020b0e84(a, *(u32*)((char*)a + 0xb4));
+    func_ov004_020b0e84((dScMgBase_c *)a, ((dScMgBase_c *)a)->mHudScore);
 }
 }
 }
@@ -3243,10 +3263,9 @@ void func_ov004_020b1e34(void* a, int unused1, int unused2, int unused3) {
 // @symbol func_ov004_020b1e44
 namespace s20b1e44 {
 extern "C" {
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(int a, int b, int c, int d);
-extern int* data_ov004_020bbfa8[];
+/* Draws `arg` centred at (0x80, 0xc) and sprite word 3 at (0x60, 0xc). */
 void func_ov004_020b1e44(int arg) {
     int r;
     func_ov004_020b2444(0x80, 0xc, arg, 1, -1, 0, 0);
@@ -3262,6 +3281,10 @@ extern "C" {
 extern int data_ov006_02137cd8[];
 extern void func_ov004_020b1d60(void *glyph, int x, int a2, int a3, int a4);
 
+/* Draws `val`, capped at 999999, in digits 8 px apart: glyph
+   data_ov006_02137cd8[fb + digit], where fb 0 means 0xa and 0x14 means
+   0x1e. Mode 0 centres the number on x, mode 1 ends it at x, any other
+   mode starts it at x. */
 void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int fb) {
     int d[6];
     int i;
@@ -3408,6 +3431,11 @@ extern "C" {
 extern int data_ov006_02137cd8[];
 extern void func_ov004_020b1d60(int a0, int a1, int a2, int a3, int a4);
 
+/* Draws `num` in digits 16 px apart, glyph data_ov006_02137cd8[idx +
+   digit]. The units digit sits at a1 for sel 1 (or any value but 0 and
+   2), at a1 + 8 per extra digit for sel 0, and at a1 + 16 per extra digit
+   for sel 2, so the number ends at, centres on, or starts at a1. 0 draws
+   one glyph; a negative num draws nothing. */
 void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx)
 {
     unsigned t = num;
@@ -3450,18 +3478,18 @@ namespace s20b2574 {
 extern "C" {
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
-extern void func_ov004_020af948(void *a, int b, int c, void *m);
-extern void **data_ov004_020bbfa8[];
 
+/* Unless arg1 is 1, draws sprite words 0 and 1 at (12, 12) and (30, 12)
+   and arg0 from x 0x30. With arg1 1, draws sprite word 0 arg0 times,
+   16 px apart from (12, 12). */
 void func_ov004_020b2574(int arg0, int arg1)
 {
-    void **table = data_ov004_020bbfa8[GetGameLanguage()];
-    void *sb = table[0];
+    int *table = data_ov004_020bbfa8[GetGameLanguage()];
+    void *sb = (void *)table[0];
     int b = 12;
     if (arg1 != 1) {
         DrawOamSprite(sb, (void *)b, b, 0);
-        DrawOamSprite(data_ov004_020bbfa8[GetGameLanguage()][1], (void *)30, b, 0);
+        DrawOamSprite((void *)data_ov004_020bbfa8[GetGameLanguage()][1], (void *)30, b, 0);
         func_ov004_020b2444(0x30, b, arg0, 1, -1, 2, 0);
     } else {
         int i;
