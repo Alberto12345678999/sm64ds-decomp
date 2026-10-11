@@ -1,28 +1,24 @@
 //cpp
-/* dCamera_c -- the main camera (arm9 .text 0x0200bec4..0x0200e494).
+/* dCamera_c, the main camera. arm9 .text 0x0200bec4..0x0200e494.
  *
- * Identity is read off the cartridge: _ZTS9dCamera_c at 0x02086e6c and
- * _ZTI9dCamera_c at 0x02086ee4 name the class; _ZTV9dCamera_c at 0x02086f84
- * points at InitResources/Render/Behavior/CleanupResources/OnPendingDestroy in
- * the inherited fBase_c slots, and dCamera_c_classInit writes the dBase_c ->
- * dView_c -> dCamera_c vptr sequence. ChangeState's mangling PNS_5StateE proves
- * the nested State type the header forward-declares.
+ * _ZTS9dCamera_c is at 0x02086e6c, _ZTI9dCamera_c at 0x02086ee4,
+ * _ZTV9dCamera_c at 0x02086f84. ChangeState's mangling names the
+ * nested State. The D1/D0 pair is at 0x0200705c, outside this run.
  *
- * The 16 named members are interleaved in the ROM with 44 func_* state
- * handlers/dispatchers that all take the camera object; mwccarm emits .text in
- * reverse source order, so the file runs ROM-descending. The D1/D0 destructor
- * pair sits at 0x0200705c, outside the contiguous run, and stays as its own
- * shards. Most handlers were recovered as C; each sits under
- * `#pragma cplusplus off` so its original parse mode (and its unmangled symbol
- * name) is preserved inside this C++ translation unit. The single canonical
- * extern pool below replaces each shard's private decl block; the few decl
- * spellings that disagreed on width (data_0209f250) turned out to be read only
- * through `*(u8*)&` casts, so `u8` is the canonical type.
- *
- * The seven functions below this range (0x0200af0c..0x0200bb28) stay shards:
- * func_0200bb28 only matches with `#pragma opt_common_subs off`, which is
- * TU-global in this mwccarm, while func_0200b798/Behavior need it on -- one
- * file cannot hold both (notes/mwccarm-pragmas.txt, the unscoped-pragma trap).
+ * leftovers:
+ * - The func_0200* handlers stay free functions under cplusplus off.
+ *   The ROM symbol is unmangled, so a method would rename the linkage.
+ *   They take the camera as char*.
+ * - Vec3 stays a POD triple. A Vector3 in those C bodies emits a
+ *   destructor.
+ * - The state records in the 0x0209b008 table stay int. These bodies
+ *   only take their address.
+ * - CleanupResources keeps both null checks. The second is the
+ *   inlined deleting destructor.
+ * - Render's C body writes dView_c's matrix through (char *)self + 0x50.
+ * - The handlers below 0x0200bec4 stay out of this file.
+ *   func_0200bb28 needs opt_common_subs off, and that pragma is
+ *   TU-global, while Behavior needs it on.
  */
 #include "dCamera_c.h"
 #include "decl_common.h"
