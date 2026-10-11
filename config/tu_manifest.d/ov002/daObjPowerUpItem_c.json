@@ -185,7 +185,7 @@
       "evidence": "the CLOSE state-name slot the launched FlowerEntry row points at; an 8-byte field holding a six-byte string"
     },
     {
-      "symbol": "@589",
+      "symbol": "@932",
       "address": "0x02109740",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -213,7 +213,7 @@
       "evidence": "anonymous PMF descriptor for BeginLaunched; retail first word is 0x020b96c0"
     },
     {
-      "symbol": "@932",
+      "symbol": "@589",
       "address": "0x02109760",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -314,7 +314,7 @@
       "source": "0x0210157c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@589",
+      "symbol": "@932",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02109740"
@@ -324,7 +324,7 @@
       "source": "0x02101580",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@932",
+      "symbol": "@589",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02109760"
@@ -822,9 +822,9 @@
       "evidence": "mwcc numbers this PMF descriptor @911 per TU and other modules already define a global @911, so the scratch link would multiply-define it"
     },
     {
-      "from": "@930",
+      "from": "@932",
       "to": "@589",
-      "evidence": "mwcc numbers this PMF descriptor @913 per TU and other modules already define a global @913, so the scratch link would multiply-define it"
+      "evidence": "mwcc numbers this PMF descriptor @915 per TU and other modules already define a global @915, so the scratch link would multiply-define it"
     }
   ],
   "notes": [
@@ -964,13 +964,13 @@
       "evidence": "compiler-emitted descriptor temp; DSD requires a configured global symbol at the same exact address"
     },
     {
-      "symbol": "@589",
+      "symbol": "@932",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted descriptor temp; DSD requires a configured global symbol at the same exact address"
     },
     {
-      "symbol": "@932",
+      "symbol": "@589",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted descriptor temp; DSD requires a configured global symbol at the same exact address"

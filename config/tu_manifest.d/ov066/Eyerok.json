@@ -1656,64 +1656,109 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@2155",
+      "from": "@2176",
       "to": "@174",
       "evidence": "mwcc numbers this registration node @2155 per TU and the fleet already defines a global @2155 (ov002), so the scratch link would multiply-define it; it lands on @174"
     },
     {
-      "from": "@2156",
+      "from": "@2177",
       "to": "@175",
       "evidence": "mwcc numbers this registration node @2156 per TU and the fleet already defines a global @2156 (ov002), so the scratch link would multiply-define it; it lands on @175"
     },
     {
-      "from": "@2157",
+      "from": "@2178",
       "to": "@176",
       "evidence": "mwcc numbers this registration node @2157 per TU and the fleet already defines a global @2157 (ov002), so the scratch link would multiply-define it; it lands on @176"
     },
     {
-      "from": "@2158",
+      "from": "@2179",
       "to": "@177",
       "evidence": "mwcc numbers this registration node @2158 per TU and the fleet already defines a global @2158 (ov002), so the scratch link would multiply-define it; it lands on @177"
     },
     {
-      "from": "@2159",
+      "from": "@2180",
       "to": "@178",
       "evidence": "mwcc numbers this registration node @2159 per TU and the fleet already defines a global @2159 (ov002), so the scratch link would multiply-define it; it lands on @178"
     },
     {
-      "from": "@2160",
+      "from": "@2181",
       "to": "@179",
       "evidence": "mwcc numbers this registration node @2160 per TU and the fleet already defines a global @2160 (ov002), so the scratch link would multiply-define it; it lands on @179"
     },
     {
-      "from": "@2161",
+      "from": "@2182",
       "to": "@180",
       "evidence": "mwcc numbers this registration node @2161 per TU and the fleet already defines a global @2161 (ov002), so the scratch link would multiply-define it; it lands on @180"
     },
     {
-      "from": "@2162",
+      "from": "@2183",
       "to": "@181",
       "evidence": "mwcc numbers this registration node @2162 per TU and the fleet already defines a global @2162 (ov002), so the scratch link would multiply-define it; it lands on @181"
     },
     {
-      "from": "@2163",
+      "from": "@2184",
       "to": "@182",
       "evidence": "mwcc numbers this registration node @2163 per TU and the fleet already defines a global @2163 (ov002), so the scratch link would multiply-define it; it lands on @182"
     },
     {
-      "from": "@2164",
+      "from": "@2185",
       "to": "@183",
       "evidence": "mwcc numbers this registration node @2164 per TU and the fleet already defines a global @2164 (ov002), so the scratch link would multiply-define it; it lands on @183"
     },
     {
-      "from": "@2165",
+      "from": "@2186",
       "to": "@184",
       "evidence": "mwcc numbers this registration node @2165 per TU and the fleet already defines a global @2165 (ov002), so the scratch link would multiply-define it; it lands on @184"
     },
     {
-      "from": "@2166",
+      "from": "@2187",
       "to": "@185",
       "evidence": "mwcc numbers this registration node @2166 per TU and the fleet already defines a global @2166 (ov002), so the scratch link would multiply-define it; it lands on @185"
+    },
+    {
+      "from": "@2188",
+      "to": "@2167",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2188 now; licensed under the existing pin @2167"
+    },
+    {
+      "from": "@2189",
+      "to": "@2168",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2189 now; licensed under the existing pin @2168"
+    },
+    {
+      "from": "@2190",
+      "to": "@2169",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2190 now; licensed under the existing pin @2169"
+    },
+    {
+      "from": "@2191",
+      "to": "@2170",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2191 now; licensed under the existing pin @2170"
+    },
+    {
+      "from": "@2192",
+      "to": "@2171",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2192 now; licensed under the existing pin @2171"
+    },
+    {
+      "from": "@2193",
+      "to": "@2172",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2193 now; licensed under the existing pin @2172"
+    },
+    {
+      "from": "@2194",
+      "to": "@2173",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2194 now; licensed under the existing pin @2173"
+    },
+    {
+      "from": "@2195",
+      "to": "@2174",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2195 now; licensed under the existing pin @2174"
+    },
+    {
+      "from": "@2196",
+      "to": "@2175",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2196 now; licensed under the existing pin @2175"
     }
   ],
   "symbol_binding_rewrites": [

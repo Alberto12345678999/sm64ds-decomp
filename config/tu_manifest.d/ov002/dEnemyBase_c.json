@@ -397,74 +397,84 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1001",
+      "from": "@1015",
       "to": "@944",
       "evidence": "mwcc numbers this descriptor @1001 per TU (was @964 before func_ov002_020ad660 joined this TU) and ov092 already defines a global @964; it renames to @944 because daChoropu_c already defines globals @1010/@1011, so the scratch link would multiply-define it either way"
     },
     {
-      "from": "@1003",
+      "from": "@1017",
       "to": "@942",
       "evidence": "mwcc numbers this descriptor @1003 per TU (was @966 before func_ov002_020ad660 joined this TU) and ov092 already defines a global @966; it renames to @942 because daChoropu_c already defines globals @1010/@1011, so the scratch link would multiply-define it either way"
     },
     {
-      "from": "@1005",
+      "from": "@1019",
       "to": "@948",
       "evidence": "mwcc numbers this descriptor @1005 per TU and ov065 daDossy_c (DorriePlatform TU) already defines a global @1005, so the scratch link would multiply-define it"
     },
     {
-      "from": "@1007",
+      "from": "@1021",
       "to": "@946",
       "evidence": "mwcc numbers this descriptor @1007 per TU and ov065 daDossy_c (DorriePlatform TU) already defines a global @1007, so the scratch link would multiply-define it"
     },
     {
-      "from": "@997",
+      "from": "@1011",
       "to": "@986",
       "evidence": "mwcc numbers this descriptor @997 per TU and dPathLiftActor_c already defines a global @997 (its own rename destination @837->@997), so the scratch link would multiply-define it"
     },
     {
-      "from": "@999",
+      "from": "@1013",
       "to": "@984",
       "evidence": "mwcc numbers this descriptor @999 per TU and dPathLiftActor_c already defines a global @999 (its own rename destination @835->@999), so the scratch link would multiply-define it"
     },
     {
-      "from": "@977",
+      "from": "@991",
       "to": "@962",
       "evidence": "mwcc numbers this descriptor @977 per TU and ov047/daObjKm3_Kurumajiku_c already defines a global @977 (renamed from its @364), so the scratch link would multiply-define it"
     },
     {
-      "from": "@979",
+      "from": "@993",
       "to": "@960",
       "evidence": "mwcc numbers this descriptor @979 per TU and ov092/daOnms_c already defines a global @979 (its anonymous bounce state descriptor), so the scratch link would multiply-define it"
     },
     {
-      "from": "@981",
+      "from": "@995",
       "to": "@958",
       "evidence": "mwcc numbers this descriptor @981 per TU and ov092/daOnms_c already defines a global @981 (its anonymous sink state descriptor), so the scratch link would multiply-define it"
     },
     {
-      "from": "@989",
+      "from": "@1003",
       "to": "@956",
       "evidence": "mwcc numbers this descriptor @989 per TU and ov074/daKuriKing_c already defines a global @989 (its state-table enter descriptor), so the scratch link would multiply-define it"
     },
     {
-      "from": "@991",
+      "from": "@1005",
       "to": "@954",
       "evidence": "mwcc numbers this descriptor @991 per TU and ov063/daTrsTrap_c already defines a global @991 (its destructor-registration node), so the scratch link would multiply-define it"
     },
     {
-      "from": "@993",
+      "from": "@1007",
       "to": "@952",
       "evidence": "mwcc numbers this descriptor @993 per TU and ov010/daObjC1_Trap_c already defines a global @993 (its collision resource destructor-registration node), so the scratch link would multiply-define it"
     },
     {
-      "from": "@995",
+      "from": "@1009",
       "to": "@950",
       "evidence": "mwcc numbers this descriptor @995 per TU and ov010/daObjC1_Trap_c already defines a global @995 (its compiler temporary for State2), so the scratch link would multiply-define it"
     },
     {
-      "from": "@983",
+      "from": "@997",
       "to": "@91",
       "evidence": "mwcc numbers this descriptor @983 per TU and ov091/daObjSimpleLift_c already defines a global @983, so the scratch link would multiply-define it; it lands on @91"
+    },
+    {
+      "from": "@999",
+      "to": "@985",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @999 now; licensed under the existing pin @985"
+    },
+    {
+      "from": "@1001",
+      "to": "@987",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1001 now; licensed under the existing pin @987"
     }
   ],
   "notes": [
