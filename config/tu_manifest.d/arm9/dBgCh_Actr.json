@@ -462,6 +462,11 @@
       "reason": "Empty destructor mwccarm synthesizes for the TU-local dBgPiLoc layout struct used by UpdateExtraContinous's tmp image. The type is this file's own spelling of dBgPi's layout for the field-by-field copy; no canonical owner exists -- discarded."
     },
     {
+      "symbol": "_ZN11SurfaceInfoD1Ev",
+      "disposition": "deadstrip",
+      "reason": "The member surface's implicit destructor, emitted beside the other 4-byte vague-linkage stubs when the Update* bodies touch a SurfaceInfo by value. The body is trivial (empty), nothing in the cartridge calls it, and it has no cartridge home, so the emitted section is dropped unenrolled. This row is forced by include/types.h's added Vector3 ctors: the member ctors now construct Vector3 members, which makes the surface's destructor odr-used here too."
+    },
+    {
       "symbol": "_ZTV10dBgCh_Actr",
       "disposition": "deadstrip-data",
       "reason": "Key function is the out-of-line destructor, so this TU emits the vtable. symbols.txt names the address point arm9:0x02099204; the emitted copy is licensed deadstrip-data against that canonical home."
@@ -500,11 +505,13 @@
         "_ZN10dBgCh_ActrD2Ev",
         "_ZN10dBgCh_ActrC2Ev",
         "_ZN7Vector3D1Ev",
-        "_ZN8dBgPiLocD1Ev"
+        "_ZN8dBgPiLocD1Ev",
+        "_ZN11SurfaceInfoD1Ev"
       ],
       "deadstripped": [
         "_ZN10dBgCh_ActrC2Ev",
         "_ZN10dBgCh_ActrD2Ev",
+        "_ZN11SurfaceInfoD1Ev",
         "_ZN7Vector3D1Ev",
         "_ZN8dBgPiLocD1Ev"
       ],
@@ -519,10 +526,11 @@
         12,
         72,
         73,
-        91,
+        74,
         92,
-        99,
-        100
+        93,
+        100,
+        101
       ],
       "data": [
         "_ZTV10dBgCh_Actr",
