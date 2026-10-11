@@ -7512,33 +7512,9 @@ src/unnamed/arm9/0206/func_0206fd6c.c:
     complete
     .text start:0x0206fd6c end:0x02070348
 
-src/unnamed/arm9/0207/func_02070348.c:
+src/cstd6.cpp:
     complete
-    .text start:0x02070348 end:0x0207037c
-
-src/unnamed/arm9/0207/func_0207037c.c:
-    complete
-    .text start:0x0207037c end:0x020704cc
-
-src/_ZN4cstd6strchrEPKcc.cpp:
-    complete
-    .text start:0x020704cc end:0x02070508
-
-src/_ZN4cstd6strcmpEPKcS1_.cpp:
-    complete
-    .text start:0x02070508 end:0x0207063c
-
-src/_ZN4cstd7strncpyEPcPKcj.cpp:
-    complete
-    .text start:0x0207063c end:0x020706b0
-
-src/unnamed/arm9/0207/func_020706b0.c:
-    complete
-    .text start:0x020706b0 end:0x02070788
-
-src/_ZN4cstd6strlenEPKc.cpp:
-    complete
-    .text start:0x02070788 end:0x020707a4
+    .text start:0x02070348 end:0x020707a4
 
 src/unnamed/arm9/0207/func_020707a4.c:
     complete

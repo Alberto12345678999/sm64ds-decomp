@@ -14262,6 +14262,9 @@
       ],
       "src/unnamed/arm9/0207/func_0207037c.c": [
         "return:char * []"
+      ],
+      "src/cstd6.cpp": [
+        "return:char * []"
       ]
     },
     "data_020a6188": {

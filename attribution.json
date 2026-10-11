@@ -9602,6 +9602,13 @@
     "src/cstd.cpp#func_020531a4": "tangosdev",
     "src/cstd.cpp#func_02053200": "tangosdev",
     "src/cstd.cpp#_ZN4cstd4ldivEii": "tangosdev",
-    "src/cstd.cpp#_ZN4cstd4fdivEii": "tangosdev"
+    "src/cstd.cpp#_ZN4cstd4fdivEii": "tangosdev",
+    "src/cstd6.cpp#func_02070348": "tangosdev",
+    "src/cstd6.cpp#func_0207037c": "tangosdev",
+    "src/cstd6.cpp#_ZN4cstd6strchrEPKcc": "tangosdev",
+    "src/cstd6.cpp#_ZN4cstd6strcmpEPKcS1_": "tangosdev",
+    "src/cstd6.cpp#_ZN4cstd7strncpyEPcPKcj": "tangosdev",
+    "src/cstd6.cpp#func_020706b0": "tangosdev",
+    "src/cstd6.cpp#_ZN4cstd6strlenEPKc": "tangosdev"
   }
 }
