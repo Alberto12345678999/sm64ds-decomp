@@ -25,30 +25,31 @@
  * popup helpers before them take no object, and func_ov006_020ed270,
  * func_ov006_020ed328 and func_ov006_020edcb0 take nothing.
  *
- * Leftover: the sixteen popups at data_ov006_02142044 are read through
+ * leftovers:
+ * - the sixteen popups at data_ov006_02142044 are read through
  *   four record spellings (func_ov006_020ea670, func_ov006_020ea71c,
  *   func_ov006_020ea81c, func_ov006_020ea8e0).
- * Leftover: the popup at data_ov006_02141fe4 is read through raw byte
+ * - the popup at data_ov006_02141fe4 is read through raw byte
  *   offsets, and func_ov006_020ea3d0 reaches its +0xc byte through a
  *   separate symbol, data_ov006_02141ff0.
- * Leftover: func_ov006_020ea914 repeats func_ov006_020eac38's segment
+ * - func_ov006_020ea914 repeats func_ov006_020eac38's segment
  *   walk with its own point type, Vec2_ea914, whose trivial destructor
  *   is part of the match.
- * Leftover: dScMgHanachan_c::Render, `Thing *base; &base[i]` and `slot++`
+ * - dScMgHanachan_c::Render, `Thing *base; &base[i]` and `slot++`
  *   on the 0x98 array, DIFF, 6 words. `char *arr += 0x98` stays.
  *   Behavior's `&base[i]` matches.
- * Leftover: func_ov006_020ed40c, `C *p = (C *)mWiggler; p->alive = 0; p++`
+ * - func_ov006_020ed40c, `C *p = (C *)mWiggler; p->alive = 0; p++`
  *   and mHit / mPhaseTimer / mPhaseFn, DIFF. The 0x4000 splits stay.
- * Leftover: func_ov006_020eb1e0, func_ov006_020eb31c, func_ov006_020eb3e4,
+ * - func_ov006_020eb1e0, func_ov006_020eb31c, func_ov006_020eb3e4,
  *   func_ov006_020eb558, member access on C (flower, sub, seg, hold, state,
  *   bob), DIFF. The byte offsets stay.
- * Leftover: func_ov006_020ebf20, func_ov006_020ec134, func_ov006_020ec2bc,
+ * - func_ov006_020ebf20, func_ov006_020ec134, func_ov006_020ec2bc,
  *   func_ov006_020ec6e8, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
- * Leftover: func_ov006_020eac38, OAM::Render(int, OamAttr*, int, int, int,
+ * - func_ov006_020eac38, OAM::Render(int, OamAttr*, int, int, int,
  *   int, int, int), does not typecheck (the sprite table is void*). The
  *   ROM symbol's scale parameter is Fix12<int>, which this tree cannot spell.
- * Leftover: func_ov006_020eb9dc and func_ov006_020ec4dc, a state copy of two
+ * - func_ov006_020eb9dc and func_ov006_020ec4dc, a state copy of two
  *   named ints, DIFF (ldr/str/ldr/str). int[2] block-moves, so ObjB and Obj stay.
  */
 
