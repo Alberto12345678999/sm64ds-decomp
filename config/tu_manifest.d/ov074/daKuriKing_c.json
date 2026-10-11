@@ -796,147 +796,147 @@
     {
       "from": "@675",
       "to": "@661",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @675 now; licensed under the existing pin @661"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@676",
       "to": "@662",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @676 now; licensed under the existing pin @662"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@677",
       "to": "@663",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @677 now; licensed under the existing pin @663"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@678",
       "to": "@664",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @678 now; licensed under the existing pin @664"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@679",
       "to": "@665",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @679 now; licensed under the existing pin @665"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@680",
       "to": "@666",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @680 now; licensed under the existing pin @666"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@681",
       "to": "@667",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @681 now; licensed under the existing pin @667"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@682",
       "to": "@668",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @682 now; licensed under the existing pin @668"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@683",
       "to": "@669",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @683 now; licensed under the existing pin @669"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@684",
       "to": "@670",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @684 now; licensed under the existing pin @670"
-    },
-    {
-      "from": "@685",
-      "to": "@988",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @685 now; licensed under the existing pin @988"
-    },
-    {
-      "from": "@686",
-      "to": "@989",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @686 now; licensed under the existing pin @989"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@687",
       "to": "@673",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @687 now; licensed under the existing pin @673"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@688",
       "to": "@674",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @688 now; licensed under the existing pin @674"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@689",
       "to": "@79",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @689 now; licensed under the existing pin @79"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+    },
+    {
+      "from": "@685",
+      "to": "@988",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+    },
+    {
+      "from": "@686",
+      "to": "@989",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2113",
       "to": "@2061",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2113 now; licensed under the existing pin @2061"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2114",
       "to": "@2062",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2114 now; licensed under the existing pin @2062"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2115",
       "to": "@2063",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2115 now; licensed under the existing pin @2063"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2116",
       "to": "@2064",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2116 now; licensed under the existing pin @2064"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2117",
       "to": "@2065",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2117 now; licensed under the existing pin @2065"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2118",
       "to": "@2066",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2118 now; licensed under the existing pin @2066"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2119",
       "to": "@2067",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2119 now; licensed under the existing pin @2067"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2120",
       "to": "@2068",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2120 now; licensed under the existing pin @2068"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2121",
       "to": "@2069",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2121 now; licensed under the existing pin @2069"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2122",
       "to": "@2070",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2122 now; licensed under the existing pin @2070"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2123",
       "to": "@2071",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2123 now; licensed under the existing pin @2071"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2124",
       "to": "@2072",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2124 now; licensed under the existing pin @2072"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2125",
       "to": "@2073",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2125 now; licensed under the existing pin @2073"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
       "from": "@2126",
       "to": "@2074",
-      "evidence": "compiler temp; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it as @2126 now; licensed under the existing pin @2074"
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     }
   ],
   "symbol_binding_rewrites": [
@@ -2295,7 +2295,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 3 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 29 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
