@@ -75,70 +75,70 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov006_020ee2c0",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee2c0Ev",
       "address": "0x020ee2c0",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020ee2c0.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov006_020ee2c4",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee2c4Ev",
       "address": "0x020ee2c4",
       "size": "0x000000f8",
       "legacy_source": "src/func_ov006_020ee2c4.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov006_020ee3bc",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee3bcEv",
       "address": "0x020ee3bc",
       "size": "0x00000030",
       "legacy_source": "src/func_ov006_020ee3bc.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov006_020ee3ec",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee3ecEv",
       "address": "0x020ee3ec",
       "size": "0x00000060",
       "legacy_source": "src/func_ov006_020ee3ec.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov006_020ee44c",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee44cEv",
       "address": "0x020ee44c",
       "size": "0x00000094",
       "legacy_source": "src/func_ov006_020ee44c.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov006_020ee4e0",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee4e0Ev",
       "address": "0x020ee4e0",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020ee4e0.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov006_020ee508",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee508Ev",
       "address": "0x020ee508",
       "size": "0x00000090",
       "legacy_source": "src/func_ov006_020ee508.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov006_020ee598",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee598Ev",
       "address": "0x020ee598",
       "size": "0x00000020",
       "legacy_source": "src/func_ov006_020ee598.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov006_020ee5b8",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee5b8Ev",
       "address": "0x020ee5b8",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov006_020ee5b8.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov006_020ee658",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee658Ev",
       "address": "0x020ee658",
       "size": "0x00000038",
       "legacy_source": "src/func_ov006_020ee658.c",
@@ -215,8 +215,6 @@
       "droppedSections": [
         5,
         6,
-        7,
-        8,
         9,
         10,
         11,
@@ -224,15 +222,17 @@
         13,
         14,
         15,
-        16,
         17,
         18,
         19,
         20,
         21,
         22,
-        23,
-        24
+        24,
+        25,
+        26,
+        27,
+        28
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -268,7 +268,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 3 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -564,9 +564,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@600",
+      "from": "@590",
+      "to": "@599",
+      "evidence": "emitted destructor-registration node name collides with the configured @590 on ov002 on main; @599 is this slot's configured name at 0x02142198"
+    },
+    {
+      "from": "@591",
       "to": "@77",
-      "evidence": "emitted destructor-registration node name collides with the configured @600 on ov081 on main; @77 is unused everywhere and shorter than the original"
+      "evidence": "emitted destructor-registration node name collides with the configured @591 on ov002 on main; @77 is this slot's configured name at 0x021421a4"
     }
   ],
   "symbol_binding_rewrites": [
