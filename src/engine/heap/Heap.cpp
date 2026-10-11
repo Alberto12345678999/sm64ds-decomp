@@ -8,7 +8,12 @@
    ExpandingHeap overrides of the slot it calls (ResizeToFit through Destroy);
    then the three factories, CreateSolidHeap, CreateExpandingHeap and
    CreateRootHeap. Written back-to-front: mwccarm emits .text in reverse
-   source order under default deferred codegen. */
+   source order under default deferred codegen.
+ *
+ * leftovers:
+ * - The Heap* forms are defined first. Deferred codegen emits definitions in
+ *   reverse source order, and the convenience overloads call those forms.
+ *   A null heap selects defaultHeapPtr. */
 #include "Heap.h"
 #include "decl_common.h"
 #include "SolidHeap.h"
