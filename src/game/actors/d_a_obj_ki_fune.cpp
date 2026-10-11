@@ -1,41 +1,20 @@
 //cpp
-/* daObjKi_Fune_c -- the Jolly Roger Bay ship (KI_FUNE / KI_FUNE_UP), ov016.
+/* leftovers:
+ * - dBgW_KcMbg::SetFile stays a mangled call. It takes Fix12<int> by
+ *   value, and the header method changes InitResources.
+ * - func_020393a4 and func_020393d4 stay the arm9 dBgW hook names.
+ *   data_02082214 is the sine table. data_0209f220 is the star index.
+ * - data_ov016_021136dc, 021136e4 and 021149d4 are the overlay file
+ *   and CLPS tables, indexed by mModelIndex. This TU does not own them.
+ * - mBobAngle += 0xda is an s16 pun. The u16 member spelling fails.
+ * - func_ov016_021126a8 is a member and keeps its address name.
  *
- * One class drives both halves of the pair: actor 0x39 takes model index 0,
- * the ship that rocks on a sine of mBobAngle and loops a long sound while
- * the player is within 3000.0; anything else takes index 1, the still hull,
- * whose Behavior only keeps its collider live. InitResources succeeds for
- * index 0 only once star 1 of SublevelToLevel(8) is collected (with
- * data_0209f220 > 1), and for index 1 only until then, so the two never
- * coexist.
- *
- * This TU owns the nine-function linker run 0x0211260c..0x02112a00: the
- * seven class members plus the two daObjKi_Fune_c_classInit_* registry
- * factories (KI_FUNE_UP at 0x021129a0, KI_FUNE at 0x021129d0). mwccarm lays
- * object sections out in reverse source order, so the file is written
- * last-ROM-first: the factories, then InitResources down to
- * func_ov016_021126a8. The destructor is defined in the class body in
- * include/daObjKi_Fune_c.h: that emits D1 (0x0211260c) ahead of D0
- * (0x02112650) with no D2, and makes InitResources the key function, so
- * this TU also emits the class vtable and the inherited RTTI chain.
- *
- * comment leftovers:
- * - dBgW_KcMbg::SetFile (InitResources) is still called through its mangled
- *   symbol on void* arguments: it takes Fix12<int> by value, and the header
- *   method form changes the code size (notes/mwccarm-codegen.md 6az).
- * - func_020393a4 / func_020393d4 are still the linker names of two arm9
- *   dBgW hook helpers, data_02082214 the arm9 sine table Behavior indexes
- *   with mBobAngle, and data_0209f220 the star index this mission was
- *   entered for. Naming those belongs in arm9.
- * - data_ov016_021136dc, data_ov016_021136e4 and data_ov016_021149d4 are
- *   still the linker names of this overlay's per-model file and CLPS
- *   tables, indexed by mModelIndex; this TU does not own them.
- * - mBobAngle += 0xda is written through an s16 pun: the u16 member
- *   spelling fails ov016.
- * - func_ov016_021126a8 takes the object and recasts it, so it is a member
- *   now; it keeps its address-derived name because the ROM records none.
+ * daObjKi_Fune_c, the Jolly Roger Bay ship (KI_FUNE / KI_FUNE_UP).
+ * ov016 .text 0x0211260c..0x02112a00. Actor 0x39 is the rocking hull;
+ * the other index is the still hull, and the two never coexist.
+ * D1 is 0x0211260c and D0 is 0x02112650, both from the inline
+ * destructor in daObjKi_Fune_c.h. InitResources is the key function.
  */
-
 #include "daObjKi_Fune_c.h"
 #include "decl_common.h"
 #include "SharedFilePtr.h"
