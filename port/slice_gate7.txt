@@ -2,9 +2,7 @@
 # dExtFrameCtrl_c::Advance owns frame progression (speed, loop/clamp mode bits)
 # instead of a harness counter. Sits on the gate-4/5 stack.
 
-src/_ZN9ModelAnimC1Ev.cpp
-src/_ZN9ModelAnimC2Ev.cpp
-src/engine/model/ModelAnim.cpp
+src/engine/model/Model.cpp
 src/_ZN15dExtFrameCtrl_cC1Ev.cpp
 # src/_ZN15dExtFrameCtrl_cC2Ev.cpp is the C2 sibling of the C1 above and has the
 # identical body. Itanium keeps them as two symbols; MSVC has one, so
@@ -13,8 +11,8 @@ src/_ZN15dExtFrameCtrl_cC1Ev.cpp
 src/engine/animation/dExtFrameCtrl_c.cpp
 src/_ZN15dExtFrameCtrl_cD1Ev.cpp
 
-# ModelAnim comes across whole now that its constructor is real C++: the TU
-# is the vtable's key function for MSVC too, so every virtual has to be
-# defined. Virtual18 and the destructor were the two the gate never
-# exercised and so never sliced.
-src/_ZN9ModelAnimD1Ev.cpp
+# ModelAnim's member destructor lives only in the thunk shards now: the
+# merged Model.cpp writes the cartridge's D-variant bodies as free functions
+# (the member-def vtable-emission wall its banner records), so MSVC takes the
+# member definition from this shard to fill the vtable slot.
+src/_ZThn80_N9ModelAnimD0Ev.cpp

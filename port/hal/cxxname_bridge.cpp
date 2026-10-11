@@ -28,6 +28,7 @@ char data_ov098_0213c388[0x18];
 // ---- gate-9 method bridges (C name -> MSVC method), the gx_upload pattern -
 #include "dBgActor_c.h"
 #include "dExtShadowModel_c.h"
+#include "dExtFrameCtrl_c.h"
 #include "Model.h"
 extern "C" {
 void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *self)
@@ -157,6 +158,14 @@ void Heap::_Destroy() { Heap_Destroy(this); }
 extern "C" {
 void *_ZN5Model23AddToCommonModelDataArrER8BMD_File(void *file)
 { return Model::AddToCommonModelDataArr(*(BMD_File *)file); }
+/* the merged Model.cpp writes the MI classes' cartridge D-variant bodies as
+   free functions (see its banner), and their base-subobject steps call the
+   D2 C-names below; MSVC folds every destructor variant into ??1, so these
+   forward to the one member dtor. */
+Model *_ZN5ModelD2Ev(Model *thiz)
+{ thiz->Model::~Model(); return thiz; }
+dExtFrameCtrl_c *_ZN15dExtFrameCtrl_cD2Ev(dExtFrameCtrl_c *thiz)
+{ thiz->dExtFrameCtrl_c::~dExtFrameCtrl_c(); return thiz; }
 void *func_0203cc0c(unsigned size);
 void _ZN6Memory10DeallocateEPv(void *p);
 /* the DS global operator new/delete route through the Memory layer */
