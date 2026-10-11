@@ -7,7 +7,7 @@
   "no_codegen_trick",
   "no_mangled_refs"
  ],
- "count": 3548,
+ "count": 3553,
  "converted": [
   "src/ARMMathLoadState.c",
   "src/ARMMathSaveState.c",
@@ -2494,6 +2494,11 @@
   "src/engine/heap/Heap.cpp#_ZN4Heap8_DestroyEv",
   "src/engine/heap/Heap.cpp#_ZN4Heap9SetNodeIDEj",
   "src/engine/heap/Heap.cpp#_ZN4Heap9_AllocateEji",
+  "src/engine/heap/Heap.cpp#_ZN6Memory10DeallocateEPv",
+  "src/engine/heap/Heap.cpp#_ZN6Memory10DeallocateEPvP4Heap",
+  "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEj",
+  "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEji",
+  "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEjiP4Heap",
   "src/engine/heap/Heap.cpp#_ZN9SolidHeap10VGetNodeIDEv",
   "src/engine/heap/Heap.cpp#_ZN9SolidHeap10VSetNodeIDEj",
   "src/engine/heap/Heap.cpp#_ZN9SolidHeap11VDeallocateEPv",

@@ -8106,11 +8106,6 @@
     "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD0Ev": "tangosdev",
     "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD1Ev": "tangosdev",
     "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerC1Ev": "tangosdev",
-    "src/Memory.cpp#_ZN6Memory10DeallocateEPv": "ruspecial",
-    "src/Memory.cpp#_ZN6Memory8AllocateEj": "ruspecial",
-    "src/Memory.cpp#_ZN6Memory8AllocateEji": "ruspecial",
-    "src/Memory.cpp#_ZN6Memory10DeallocateEPvP4Heap": "ruspecial",
-    "src/Memory.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev",
     "src/engine/collision/dCc_c.cpp#_ZN5dCc_c7ProcessEv": "andrewboudreau",
     "src/engine/collision/dCc_c.cpp#func_02014f44": "tangosdev",
     "src/engine/collision/dCc_c.cpp#func_02014f5c": "tangosdev",
@@ -9619,6 +9614,11 @@
     "src/engine/model/ModelComponents.cpp#func_02045074": "tangosdev",
     "src/engine/model/ModelComponents.cpp#func_02045178": "tangosdev",
     "src/engine/model/ModelComponents.cpp#func_0204531c": "tangosdev",
-    "src/engine/model/ModelComponents.cpp#_ZN15ModelComponents11UpdateBonesEP8BCA_Filei": "tangosdev"
+    "src/engine/model/ModelComponents.cpp#_ZN15ModelComponents11UpdateBonesEP8BCA_Filei": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN6Memory10DeallocateEPv": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEj": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEji": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN6Memory10DeallocateEPvP4Heap": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev"
   }
 }
