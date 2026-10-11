@@ -202,73 +202,76 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "link-failed",
+      "result": "scratch-link-verified",
       "scratch": "build/tu/arm9-Scene/link (gitignored)",
       "phases": {
         "delink": true,
         "lcf": true,
         "compile": true,
-        "link": false
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
       },
-      "tuRange": null,
+      "tuRange": {
+        "start": "0x0202e140",
+        "end": "0x0202ec9c",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x0202e140",
+          "end": "0x0202ec9c",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
       "objectAudit": {
         "counts": {
-          "HOMELESS": 6,
-          "COLLIDES-GAP": 1,
           "LICENSED": 21
         },
         "emittedTextOrderIsRomAscending": true,
-        "nonLicensedSymbols": [
-          "HOMELESS _ZTS8dScene_c STB_LOPROC .data size=0x7",
-          "HOMELESS _ZTI7fBase_c STB_LOPROC .data size=0x8",
-          "HOMELESS _ZTS7fBase_c STB_LOPROC .data size=0xb",
-          "HOMELESS _ZTI7dBase_c STB_LOPROC .data size=0xc",
-          "HOMELESS _ZTS7dBase_c STB_LOPROC .data size=0xf",
-          "HOMELESS _ZTI8dScene_c STB_LOPROC .data size=0xc",
-          "COLLIDES-GAP _ZTV8dScene_c STB_GLOBAL .data size=0x50 already at arm9:0x02092680"
-        ],
-        "unlicensedSections": [
-          {
-            "name": ".data",
-            "size": 7
-          },
-          {
-            "name": ".data",
-            "size": 8
-          },
-          {
-            "name": ".data",
-            "size": 11
-          },
-          {
-            "name": ".data",
-            "size": 12
-          },
-          {
-            "name": ".data",
-            "size": 12
-          },
-          {
-            "name": ".data",
-            "size": 15
-          },
-          {
-            "name": ".data",
-            "size": 80
-          }
-        ]
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
       },
-      "symbolCheckNewVsBaseline": null,
-      "linkerOutput": "mwldarm.exe: Multiply-defined: \"virtual table for Scene\" in Scene.o\nmwldarm.exe: Previously defined in _dsd_gap@main_44.o\n\nErrors caused tool to abort.",
-      "whyWholeRangeCannotPassYet": [
-        "THE KEY-FUNCTION LINK WALL, measured rather than predicted. This TU defines dScene_c's key function, so it emits _ZTV8dScene_c STB_GLOBAL; dsd's gap object supplies the same symbol from ROM data at arm9:0x02092680, and mwldarm aborts: 'Multiply-defined: \"virtual table for Scene\" in Scene.o / Previously defined in _dsd_gap@main_44.o'. The licensing audit predicted it (1 COLLIDES-GAP) and the link was run anyway so the verdict was measured.",
-        "BLOCKER A -- TOOLING, in principle fixable. To stop the gap object claiming the vtable the TU would have to OWN the .data it lands in. tubuild.splice_tu_entry cannot express that: it hardcodes a single `.text start:.. end:..` line per spliced entry with no path for any other section. The range is already known from boundary_evidence (0x02092660..0x020926c8, the vtable object occupying 0x02092678..0x020926c8), so the claim is knowable; writing it is not currently possible. _ZTV8dScene_c's own 20 words are plausible content -- every slot points at a real ROM function -- so this blocker is about plumbing, not about the bytes. RE-CHECKED STATICALLY 2026-09-19, no link re-run: config/arm9/symbols.txt still carries _ZTV8dScene_c at 0x02092680, the exact address banked above, with data_02092660 / data_02092664 / data_02092668 ahead of it and data_020926c8 immediately behind it. The collision this blocker describes still stands as written, and it remains the tooling problem it was.",
-        "BLOCKER B -- NAMING. THE MEASUREMENT THIS BLOCKER RESTED ON HAS EXPIRED, AND WHAT FOLLOWS REPLACES IT. As banked, the six STB_LOPROC RTTI records this object emits -- _ZTI/_ZTS for dScene_c, dBase_c and fBase_c -- were audited HOMELESS, and the blocker asserted that no symbols.txt anywhere named them. That assertion is false today, and the banked sizes show the fault was a NAME MISMATCH rather than an absence.",
-        "    THE ARITHMETIC. An _ZTS record holds the length-prefixed Itanium type-name string, so its size must be len(str(n)) + n + 1. _ZTS8dScene_c must therefore be 0xa, but 0x7 is banked; _ZTS7fBase_c must be 0x9, but 0xb is banked; _ZTS7dBase_c must be 0x9, but 0xf is banked. All three contradict their own spelling, and each banked size is exactly the size the record would have under the project coinage the class carried when the audit ran -- 0x7 for a 5-character name, 0xb for a 9-character name, 0xf for a 12-character name, i.e. Scene, ActorBase and ActorDerived. The spellings were swept to the cartridge's names afterwards; the numbers were never re-measured, so they stayed frozen and now date the receipt.",
-        "    THE RE-CHECK, 2026-09-19, static symbol lookup only -- no link was re-run and no byte was re-measured. All six records have a configured ROM home: _ZTI7fBase_c arm9:0x02086d70, _ZTS7dBase_c arm9:0x02086e54, _ZTS7fBase_c arm9:0x02086e60, _ZTI7dBase_c arm9:0x02086e78, _ZTS8dScene_c arm9:0x020914b0, _ZTI8dScene_c arm9:0x020914d4. The search covered all 106 config/**/symbols.txt, not arm9's alone. Controls, so that a zero cannot be mistaken for a finding: the retired spellings _ZTS5Scene, _ZTS9ActorBase and _ZTS12ActorDerived return zero hits each, and _ZTS9dScBoot_c -- the record sitting immediately behind _ZTS8dScene_c, at arm9:0x020914bc -- returns exactly one.",
-        "    WHAT IS LEFT OF THIS BLOCKER. The rename it prescribed has landed: Scene is dScene_c, ActorDerived is dBase_c, ActorBase is fBase_c, and the cartridge homes all six of their RTTI records. The tree-wide rule this blocker used to state -- that no key-function TU could reach whole-range link-verified while its class name was a project coinage -- is DELETED rather than restated. It was extrapolated from this single object's audit, that audit has expired, and a stale rule outlives the measurement it came from every time it is quoted. What replaces it is a question, not a rule: whether whole-range linking passes now is UNMEASURED. Nothing in this correction re-ran linkcheck, and BLOCKER A is untouched and still blocks it. Read the captured linkerOutput above with the same caution -- it demangles the vtable as 'virtual table for Scene' because that was the class's name on the day the link was run.",
-        "WHY --partial IS UNAFFECTED: objisolate.derive drops exactly this material per function, which is why the partial route reproduces the module and the ROM byte-for-byte while the whole-range splice cannot. Neither blocker is a source change to this file, and the text-only result stands regardless -- a linkcheck failure says nothing about it."
-      ]
+      "nontextSectionOrder": {
+        "groups": [],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     },
     "baseline_control": "Run BEFORE the merge, so a green merged result cannot be an environment artefact: all 21 untouched legacy sources re-verified with build_pin.verify() under their own pin, strict=(reloc_audit destination check) -- 21/21 OK, every one 2004/b56, which is also what resolve_tu_version derives for the merged TU. config/rombuild-versions.txt carries no override for any of the 21 stems.",
     "compilerOnlyOutput": {
