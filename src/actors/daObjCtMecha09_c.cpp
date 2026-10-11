@@ -19,6 +19,13 @@
  * names data_ov035_02112118.
  */
 
+// leftovers: DropShadowScaleXYZ / IsClsnInRange / dBgW_KcMbg::SetFile stay
+// mangled (Fix12<int> by value -- the header forms cannot be called with
+// literals; this TU's func_ov065_0211bc88/Behavior/InitResources calls).
+// func_ov065_0211bc88 keeps its address name (beam shadow helper, no
+// recovered name). The two file-scope handles keep data_ov065_* spellings
+// (only names in the tree).
+
 #pragma defer_codegen off
 
 #include "daObjCtMecha09_c.h"
