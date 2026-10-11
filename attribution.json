@@ -9589,6 +9589,19 @@
     "src/actors/daObjBlockS_c.cpp#__sinit_daObjBlockS_c.cpp": "tangosdev",
     "src/actors/daObjTatefuda_c.cpp#__sinit_daObjTatefuda_c.cpp": "tangosdev",
     "src/actors/daSanbo_c.cpp#__sinit_daSanbo_c.cpp": "tangosdev",
-    "src/actors/dScMgPachinko_c.cpp#__sinit_dScMgPachinko_c.cpp": "tangosdev"
+    "src/actors/dScMgPachinko_c.cpp#__sinit_dScMgPachinko_c.cpp": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd3modEii": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd3divEii": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd10fdiv_asyncE5Fix12IiE5Fix12IiE": "tangosdev",
+    "src/cstd.cpp#func_02052fdc": "tangosdev",
+    "src/cstd.cpp#func_02053008": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd16reciprocal_asyncE5Fix12IiE": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd11fdiv_resultEv": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd11ldiv_resultEv": "tangosdev",
+    "src/cstd.cpp#func_02053130": "tangosdev",
+    "src/cstd.cpp#func_020531a4": "tangosdev",
+    "src/cstd.cpp#func_02053200": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd4ldivEii": "tangosdev",
+    "src/cstd.cpp#_ZN4cstd4fdivEii": "tangosdev"
   }
 }
