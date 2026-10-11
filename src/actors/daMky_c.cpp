@@ -1,60 +1,43 @@
 //cpp
-/* Tall Tall Mountain Ukiki. UKIKI_THIEF is actor 0x10b and UKIKI_STAR is
- * actor 0x10c. ov030:0x02115b78 is the bytes 7daMky_c. The star monkey's
- * talk (func_ov030_02112578) finds UKIKI_CAGE, actor 0x67, and shoves it.
+/* daMky_c -- Tall Tall Mountain Ukiki (UKIKI_THIEF 0x10b, UKIKI_STAR 0x10c).
  *
- * ROM-ascending under `#pragma defer_codegen off`, so ~daMky_c emits D1
- * then D0 (0x02111688, 0x021116d0). D2 has no ROM home. The destructor is
- * the key function. daMky_c_classInit_MONKEY_STAR (0x021145e0, historical
- * alias UkikiStar_Spawn) and daMky_c_classInit_MONKEY_THIEF (0x02114638,
- * historical alias UkikiThief_Spawn), folded in from fold-lane-c-0929, are
- * now the last two functions in the file, in that ROM order.
+ * ov030 0x02115b78 is the bytes 7daMky_c. The star monkey's talk
+ * (func_ov030_02112578) finds UKIKI_CAGE (0x67) and shoves it.
+ * defer_codegen off lays the file down in ROM order, so the
+ * destructor emits D1 then D0 (0x02111688, 0x021116d0). D2 has no
+ * ROM home. The destructor is the key function. The two factories
+ * (historical aliases UkikiStar_Spawn and UkikiThief_Spawn) are last.
  *
- * Still address-shaped, measured on this TU:
- * - func_ov030_* are daMky_c methods. The cartridge does not spell them,
- *   so the method name is the address. Of the 22 pointer-to-member
- *   records at 0x02115ac8, EnterState0..10 store mState. The other
- *   eleven are the ticks, also methods. Helpers those ticks call take
- *   the same Ukiki in r0, so they are methods too.
+ * leftovers:
+ * - The func_ov030_* methods keep their address names. Of the 22
+ *   pointer-to-member records at 0x02115ac8, EnterState0..10 store
+ *   mState. The other eleven are the ticks. Helpers those ticks call
+ *   take the same Ukiki, so they are methods too.
  * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, IsTooFarAwayFromPlayer, dClipper::Func_02015560
- *   and Sound::PlaySub pass Fix12<int> by value. The method form changes
- *   the call. dBgCh_Actr::Init's header is Fix12i, which mangles as i;
- *   the ROM symbol is Fix12<int>.
- * - func_0201267c is the bank-3 wrapper at 0x0201267c. PlayBank3 is the
- *   other wrapper, at 0x02012664. func_02012790 is Sound::Play2D(2, id).
- * - func_020383f0 and dBgCh_Actr_UpdateContinuous_Veneer are tail-call
- *   veneers. The bl targets the veneer, not UpdateContinuousNoLava or
- *   UpdateContinuous.
- * - func_0203567c returns its argument plus 0x30. GetFloorResult is the
- *   previous symbol, 0x0203566c. dBgCh_Actr.h declares it; this TU still
- *   calls func_0203567c.
- *   func_02038ea4 is not dBgCh_Gnd::DetectClsn: 02111ea4 calls DetectClsn
- *   and 02111dd0 calls func_02038ea4.
- * - func_02037f44 returns word 8 of the record it is handed. The polygon
- *   fill in 02112400 and 02112a84 is a field copy. A dBgPi local would
- *   emit C1, which those bodies do not call.
- * - data_ov030_* file handles stay address labels. decl_common.h types
- *   four of them as void*[] where this TU's blocks say int[]; a second
- *   data declaration is rejected. g_profile is not this TU's data.
- * - func_ov030_02112094 copies the model matrix through a 12-word POD:
- *   Matrix4x3 embeds Vector3, and Vector3 has a destructor.
- *
- * Leftover: named daMky_c / dActor_c / Player / dCamera_c fields replaced the
- * char* recasts of this, and tubuild verify stayed 46/46. Measured DIFF,
- * reverted: func_ov030_02112094 spelled the bone as
- * &mModelAnim.data.transforms[5] and came out 999 words off, with reloc
- * data_ov030_02115ddc != 0x020a0e68:arm9. The byte add
- * (char *)mModelAnim.data.transforms + 0xf0 matches; that is bone 5
- * (Matrix4x3 is 0x30) and indexing the matrix is not a POD address.
- * Still raw, because nothing names them: carrier and cap +0xc8 (the word
- * inside dActor_c::pad_0c5; daObjMarioCap_c does not name it), and the
- * cap's word at +0xd0, past dActor_c. GetFloorResult and GetWallResult
- * are declared; this TU still reads the SurfaceInfo at result + 4.
- * PathPtr::GetNode stays the mangled call: the member form costs
- * 02111b20 four words. mPathNode's compare stays a signed word; the
- * field is unsigned. Fix12-by-value calls, the veneers, func_0203567c,
- * func_02038ea4 and func_02037f44 stay calls.
+ *   DropShadowRadHeight, IsTooFarAwayFromPlayer,
+ *   dClipper::Func_02015560 and Sound::PlaySub pass Fix12<int> by
+ *   value. dBgCh_Actr::Init's header is Fix12i, which mangles as int.
+ * - func_0201267c and PlayBank3 are the bank-3 wrappers.
+ *   func_02012790 is Sound::Play2D(2, id). func_020383f0 and
+ *   dBgCh_Actr_UpdateContinuous_Veneer are the tail-call veneers the
+ *   bl targets. func_0203567c returns its argument plus 0x30;
+ *   GetFloorResult is the previous symbol, and this TU still calls
+ *   func_0203567c. func_02038ea4 is not dBgCh_Gnd::DetectClsn.
+ *   func_02037f44 returns word 8 of the record it is handed; a dBgPi
+ *   local would emit a constructor those bodies do not call.
+ * - func_ov030_02112094 copies the model matrix through a 12-word
+ *   POD. Matrix4x3 embeds Vector3. Indexing transforms[5] DIFFs and
+ *   the reloc becomes data_ov030_02115ddc; (char *)transforms + 0xf0
+ *   is bone 5.
+ * - The carrier and the cap's word at +0xc8 sit in dActor_c::pad_0c5.
+ *   The cap's word at +0xd0 is past dActor_c. GetFloorResult and
+ *   GetWallResult are declared; this TU still reads SurfaceInfo at
+ *   result + 4. PathPtr::GetNode stays mangled: the member form
+ *   costs 02111b20 four words. mPathNode's compare stays a signed
+ *   word; the field is unsigned.
+ * - data_ov030_* handles stay address labels. decl_common.h types
+ *   four of them as void*[] where this file's blocks say int[].
+ *   g_profile is not this TU's data.
  */
 #pragma defer_codegen off
 
