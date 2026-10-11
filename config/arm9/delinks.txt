@@ -4061,11 +4061,7 @@ src/unnamed/arm9/0205/func_02058b9c.c:
 
 src/engine/cp15/CP15.cpp:
     complete
-    .text start:0x02058bb0 end:0x02058d80
-
-src/OS_GetInitArenaLo.c:
-    complete
-    .text start:0x02058d80 end:0x02058df4
+    .text start:0x02058bb0 end:0x02058df4
 
 src/unnamed/arm9/0205/func_02058df4.c:
     .text start:0x02058df4 end:0x02058ea0

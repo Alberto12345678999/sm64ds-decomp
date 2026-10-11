@@ -7,7 +7,7 @@
   "no_codegen_trick",
   "no_mangled_refs"
  ],
- "count": 3609,
+ "count": 3611,
  "converted": [
   "src/ARMMathLoadState.c",
   "src/ARMMathSaveState.c",
@@ -150,6 +150,8 @@
   "src/NumVsStarsObtained.c",
   "src/OSReadROMArea.c",
   "src/OS_GetInitArenaLo.c",
+  "src/engine/cp15/CP15.cpp#OS_GetInitArenaLo",
+  "src/ObjectMessageIDToActualMessageID.c",
   "src/OpenCannon.c",
   "src/OpenCannonInCurLevel.c",
   "src/OpenCannonInLevel.c",
