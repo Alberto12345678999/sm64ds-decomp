@@ -1,44 +1,27 @@
 //cpp
-/**
- * daPgRcer_c -- Cool, Cool Mountain racing penguin (PENGUIN_RACER 259), ov019.
+/* leftovers:
+ * - opt_common_subs off stays file-global.
+ * - dCcAc_c::Init, SetAnim, SetFile and DropShadowRadHeight stay
+ *   scalar externs. Fix12<int> has no converting constructor.
+ * - dBgCh_Actr::Init's member call mangles with int. symbols.txt
+ *   names the body Fix12<int>. SetRanges is not a method.
+ *   GetFloorResult and GetWallResult are not on the header.
+ * - func_02038414 is the veneer to UpdateDiscreteNoLava_2.
+ *   func_0201267c is Sound::Play(3, id, pos). func_02012790 is
+ *   Sound::Play2D(2, id).
+ * - There is no Pos(). GetNode and Render take (Vector3 *)&mPosX.
+ *   mTargetAngY is addressed as ((int)self + 0x300) + 0x8c.
+ *   mActionStep increments other than the race site add a pooled
+ *   0x38f. The player's race position is player + 0x5c.
+ * - The helpers stay func_ov019_*. The state table is PMF records
+ *   the sinit builds. data_ov019_* and g_profile_PENGUIN_RACER are
+ *   not this TU's data.
  *
- * He waits, talks the player into a race, then runs the path in param1's low
- * byte. func_ov019_02111254 rubber-bands his speed from how many checkpoints
- * the player is ahead. A long fall (mFallAccum past 0x7d0000) or the cheat
- * volume sets mPlayerCheated; the finish volume is data_ov019_021134e8.
- * NumStars() == 0x96 (every star) makes him the big penguin and changes the
- * invite message.
- *
- * daPgRcer_c_classInit is reconstructed (RTTI daPgRcer_c, allocation 0x398,
- * PENGUIN_RACER). Retail does not store that spelling. `return new` matches.
- *
- * Load-bearing, measured on this TU:
- *   #pragma opt_common_subs off stays file-global (last one wins).
- *   dCcAc_c::Init's ints do not match Init(dActor_c *, Fix12<int>, Fix12<int>,
- *   unsigned, unsigned): Fix12<int> has no converting constructor, so the
- *   method call does not compile. SetAnim, SetFile and DropShadowRadHeight
- *   take Fix12<int> by value the same way, so they stay scalar externs.
- *   dBgCh_Actr::Init is declared with Fix12i. The member call compiles and the
- *   bytes match, but it mangles _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_,
- *   and symbols.txt names the body 5Fix12IiE. SetRanges is not a method.
- *   dBgCh_Actr.h has no GetFloorResult / GetWallResult. The floor result is a
- *   dBgPi; its surface (dBgPc) sits at +4.
- *   func_02038414 is the 0xc veneer to UpdateDiscreteNoLava_2, not that body.
- *   func_0201267c is Sound::Play(3, id, pos). func_02012790 is Sound::Play2D(2, id).
- *   This TU calls the wrappers.
- *   dActor_c has no Pos(). GetNode and Render take (Vector3 *)&mPosX / &mScaleX.
- *   mTargetAngY is a halfword past ldrh's immediate. The path helpers address
- *   it as ((int)self + 0x300) + 0x8c.
- *   A member increment of mActionStep folds to ldrb [self, #0x38f]. The talk,
- *   countdown, walk and result sites add a pooled 0x38f. The race site's ++
- *   already does. The player's race position is (int)player + 0x5c, then three
- *   word loads, not mPosX.
- *   The helpers stay func_ov019_*. They are the state functions and the
- *   symbols.txt names. The state table is PMF records the sinit builds.
- *   data_ov019_* are that sinit's file handles, volumes and state table.
- *   g_profile_PENGUIN_RACER is not this TU's data.
+ * daPgRcer_c, the Cool Cool Mountain racing penguin (PENGUIN_RACER).
+ * He runs the path in param1. A fall past 0x7d0000 or the cheat
+ * volume sets mPlayerCheated. NumStars() == 0x96 makes him the big
+ * penguin. classInit is reconstructed. return new matches.
  */
-
 #pragma opt_common_subs off
 
 #include "daPgRcer_c.h"
