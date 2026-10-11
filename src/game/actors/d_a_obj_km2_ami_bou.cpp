@@ -1,33 +1,20 @@
 //cpp
-/**
- * daKpa_c in the Fire Sea net pole.
+/* leftovers:
+ * - SetFile, dCcAc_c::Init and IsClsnInRangeOnScreen stay scalar
+ *   adapters. The Fix12<int> method calls grew InitResources from
+ *   0xd0 to 0xf8.
+ * - data_ov045_02112510 is the CLPS block, outside this TU. The KCL
+ *   and BMD handles are the file-scope objects at the bottom.
+ * - data_02082214 is the sine table.
+ * - The phase step is *(s16 *)&mHeightAng += kPhaseStep. Adding
+ *   0x100 to the u16 is a different halfword load.
+ * - The destructor stays inline so D1 stays above D0.
  *
- * Oscillates vertically from the sine table. param1 != 0xffff
- * drops spawn Y by 300 and bobs up by 7; otherwise bobs down by 3.
- *
- * daObjKm2_Ami_Bou_c_classInit is the KM2_AMI_BOU factory. Retail
- * does not store that spelling.
- *
- * Leftover: SetMeshFile / InitClsn / ClsnInRangeOnScreen are scalar
- *   adapters. dBgW_KcMbg::SetFile, dCcAc_c::Init, and
- *   dBgActor_c::IsClsnInRangeOnScreen take Fix12<int> by value.
- *   Calling those methods with Fix12 locals grew InitResources from
- *   0xd0 to 0xf8 in this TU.
- * Leftover: data_ov045_02112510 is the CLPS block handed to
- *   SetFile and stays outside this TU. The KCL and BMD handles
- *   are file-scope objects at the bottom of this file.
- * Leftover: data_02082214 is the sine table. Its name belongs with
- *   that table, not this actor.
- * Leftover: the phase step is *(s16 *)&mHeightAng += kPhaseStep.
- *   mHeightAng += 0x100 on the u16 is ldrh; Behavior's add is ldrsh
- *   (1 word, this TU). mHeightAng = mHeightAng + 0x100 still differs
- *   by 4 words.
- * Leftover: the destructor stays inline so D1 stays above D0.
- *
- * Folded 2026-10-01: g_profile_KM2_AMI_BOU now lives in this TU as
- * AmiBouSpawnInfo. S14 closed; 7/7 MATCH, reloc addend +0 (S24).
+ * daObjKm2_Ami_Bou_c, the Fire Sea net pole. It bobs on the sine
+ * table. param1 other than 0xffff drops the spawn Y by 300 and bobs
+ * up by 7; otherwise it bobs down by 3. classInit is the KM2_AMI_BOU
+ * factory. This TU owns g_profile_KM2_AMI_BOU.
  */
-
 #include "daObjKm2_Ami_Bou_c.h"
 #include "SharedFilePtr.h"
 
