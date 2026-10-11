@@ -6,9 +6,11 @@
  * so the file keeps the unit<addr> name. What the functions do, from their
  * bodies: the first group manages a table of 29 loaded files (func_ov004_020b2c84
  * frees them, func_ov004_020b2cb8 loads them by language, func_ov004_020b3278
- * decompresses one into a graphics slot), and the rest are the per-state
- * handlers of a small effect object whose layout the cartridge code assumes
- * (position words at +0x00..+0x0c, state at +0x20, timer at +0x24).
+ * decompresses one into a graphics slot and sets up an Elem to show it), and
+ * the rest are the behavior and render handlers of Elem, the 0x134-byte record
+ * of which data_ov004_020bf648 holds three. An Elem draws its graphic as a
+ * list of OAM records; its behavior moves it toward mTargetX/mTargetY or
+ * animates it against mTimer.
  *
  * Edges. 0x020b2c84 is the first function after func_ov004_020b2c80, the last
  * of the three destructor helpers (func_ov004_020b2c58, func_ov004_020b2c7c,
@@ -28,8 +30,20 @@
  * they bracket. Source is therefore ROM-ascending.
  *
  * The bodies were matched as one-function C or C++ sources and keep that
- * spelling under extern "C" and their ROM names. Two-word struct copies go
- * through W2 (an int[2] wrapper) so C++ keeps the ROM's block move.
+ * spelling under extern "C" and their ROM names.
+ *
+ * Numbered names. mwccarm numbers its generated names from one counter that
+ * every named parameter (prototypes included), local and temporary before a
+ * definition advances. The array data_ov004_020bf648 at the end of the file
+ * gets __arraydtor$954 (and @955), and symbols.txt and the manifest name
+ * __arraydtor$954, so an edit here has to keep that count. The named
+ * parameters on the ApproachLinear2 and __cxa_vec_cleanup prototypes stand
+ * in for names removed elsewhere, and the
+ * six record copies in func_ov004_020b37f0, func_ov004_020b39a4 and
+ * func_ov004_020b422c stay W2 (int[2]) copies: assigning the records as
+ * ElemFn emits the same code but moves the counter by 8 (measured).
+ * func_ov004_020b3278's `b ? a : a` copies are a code shape, not a count:
+ * a plain record copy there changes 12 words of that function (measured).
  *
  * Retired one-function sources (ROM address order):
  *   0x020b2c84  func_ov004_020b2c84
@@ -90,59 +104,53 @@ struct S3 { int v[3]; };
 struct Entry { int id; int ptr; };
 struct EntryTable { Entry e[29]; };
 
-/* Local views of the object each handler is handed, one per layout the
-   cartridge code assumes. */
-struct S433c { char pad24[0x24]; int f24; int f28; short f2c; };
-struct S49b8 { char pad10[0x10]; short f10; short f12; short f14; char pad16[0x32 - 0x16]; short f32; };
-struct Obj35d8 {
-    char pad0[0x10];
-    s16 f10;
-    s16 f12;
-    char pad1[0x18 - 0x14];
-    int f18;
-    int f1c;
-    char pad2[0x34 - 0x20];
-    int f34;
-};
-
-struct C31b4;
-typedef void (C31b4::*PMF31b4)();
-struct C31b4 {
-    char pad[8];
-    PMF31b4 pmf;
-    char pad2[0x10];
-    int state;
-};
-struct C321c;
-typedef void (C321c::*PMF321c)();
-struct C321c {
-    PMF321c pmf;
-    char pad[0x18];
-    int state;
-};
-
+/* The minigame scene at data_ov004_020beb68, seen through the one virtual
+   used here. Slot 26 is dScMgBase_c.h's OnHitByCannonBlastedChar; its scene
+   bodies return 0 (dScMgBase_c), 1 (dScMgSingle3DBase_c) or 2
+   (dScMgD3DBase_c), and this file only compares the result with 2. The
+   view keeps the name Obj, the spelling config/decl-agreement-baseline.json
+   records for this extern. */
 struct Obj {
-    virtual int m00(); virtual int m01(); virtual int m02(); virtual int m03();
-    virtual int m04(); virtual int m05(); virtual int m06(); virtual int m07();
-    virtual int m08(); virtual int m09(); virtual int m10(); virtual int m11();
-    virtual int m12(); virtual int m13(); virtual int m14(); virtual int m15();
-    virtual int m16(); virtual int m17(); virtual int m18(); virtual int m19();
-    virtual int m20(); virtual int m21(); virtual int m22(); virtual int m23();
-    virtual int m24(); virtual int m25(); virtual int m26();
+    virtual int v00(); virtual int v01(); virtual int v02(); virtual int v03();
+    virtual int v04(); virtual int v05(); virtual int v06(); virtual int v07();
+    virtual int v08(); virtual int v09(); virtual int v10(); virtual int v11();
+    virtual int v12(); virtual int v13(); virtual int v14(); virtual int v15();
+    virtual int v16(); virtual int v17(); virtual int v18(); virtual int v19();
+    virtual int v20(); virtual int v21(); virtual int v22(); virtual int v23();
+    virtual int v24(); virtual int v25();
+    virtual int OnHitByCannonBlastedChar();  /* slot 26 */
 };
-struct Base { virtual void dummy(); };
-typedef void (Base::*PMF)();
 
-/* The 3 records at data_ov004_020bf648 are 0x134 bytes each; the field at
-   0x20 (29 while live) is all this unit writes in the constructor. The real
-   class is not recovered. */
+/* One of the three 0x134-byte records at data_ov004_020bf648: a graphic
+   loaded from the file table and drawn as a list of OAM records. The class
+   name Elem is the one its constructor and destructor symbols carry; the
+   real class is not recovered. */
+struct Elem;
+typedef void (Elem::*ElemFn)();
 struct Elem {
-    char pad[0x134];
+    ElemFn mBehavior;    /* 0x00 run by func_ov004_020b321c */
+    ElemFn mRender;      /* 0x08 run by func_ov004_020b31b4; 0 draws plainly */
+    s16 mX, mY;          /* 0x10 screen position, pixels */
+    s16 mTargetX;        /* 0x14 where the slide-in handlers stop */
+    s16 mTargetY;        /* 0x16 */
+    int mPriority;       /* 0x18 passed right after mScreen to every draw call */
+    int mScreen;         /* 0x1c -1 draws on both screens (func_ov004_020b1cf0) */
+    int mFileIndex;      /* 0x20 index into the file table; 29 when free */
+    int mTimer;          /* 0x24 mostly stepped 0x1000 (1.0) per frame toward
+                            mTimerEnd; func_ov004_020b3834 counts it by 1 */
+    int mTimerEnd;       /* 0x28 */
+    s16 mOamCount;       /* 0x2c records func_ov004_020af5e0 copied */
+    s16 mStyle;          /* 0x2e index into the three handler tables */
+    s16 mGfxSlot;        /* 0x30 0..2, see data_ov004_020bf3e8 */
+    s16 mArrived;        /* 0x32 set when mX reaches mTargetX
+                            (func_ov004_020b49b8, func_ov004_020b49f0) */
+    u8 mOam[0x100];      /* 0x34 8-byte OAM records; 0xffff at +6 ends the list */
     Elem();
     ~Elem() {}
 };
 
 extern int ApproachLinear(int &, int, int);
+extern int ApproachLinear2(short &value, short target, short step);
 
 extern "C" {
 void Deallocate(void *ptr);
@@ -159,16 +167,14 @@ void func_0203d388(int *p, int angle);
 int RandomIntInternal(int *seed);
 void func_ov004_020adfc4(int c, short a1, int *a2, int *r3, int *sp0);
 void NullDestructor_0203d47c(void);
-void __cxa_vec_cleanup(void *, unsigned int, unsigned int, void (*)(void *));
-void _Z14ApproachLinearRiii(int *r, int a, int b);
-int _Z15ApproachLinear2Rsss(short *r, short a, short b);
+void __cxa_vec_cleanup(void *array, unsigned int count, unsigned int size, void (*dtor)(void *));
 void func_ov004_020b1c68(void *a0, int a1, int a2, int a3, int a4, M *a5);
 void func_ov004_020b1cf0(int a, int b, int c, int d, int e);
 int func_ov004_020b1aec(void);
 void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
-void func_ov004_020b42c0(char *c);
-void func_ov004_020b37f0(int *obj);
-void func_ov004_020b39a4(char *c);
+void func_ov004_020b42c0(Elem *e);
+void func_ov004_020b37f0(Elem *e);
+void func_ov004_020b39a4(Elem *e);
 }
 
 extern s16 data_02082214[];
@@ -353,36 +359,36 @@ extern "C" void func_ov004_020b2cb8(void)
 #pragma opt_strength_reduction on
 
 // @symbol func_ov004_020b3194
-extern "C" void func_ov004_020b3194(void *c)
+extern "C" void func_ov004_020b3194(Elem *e)
 {
-    *(int*)((char*)c+0x20) = 0x1d;
-    s16 idx = *(s16*)((char*)c+0x30);
+    e->mFileIndex = 0x1d;
+    s16 idx = e->mGfxSlot;
     data_ov004_020bf3e8[idx] = 0;
 }
 
 // @symbol func_ov004_020b31b4
-extern "C" void func_ov004_020b31b4(C31b4* c) {
-    if (c->state == 0x1d) return;
-    if (c->pmf != 0) {
-        (c->*(c->pmf))();
+extern "C" void func_ov004_020b31b4(Elem *e) {
+    if (e->mFileIndex == 0x1d) return;
+    if (e->mRender != 0) {
+        (e->*(e->mRender))();
         return;
     }
-    func_ov004_020b42c0((char*)c);
+    func_ov004_020b42c0(e);
 }
 
 // @symbol func_ov004_020b321c
-extern "C" void func_ov004_020b321c(C321c* c) {
-    if (c->state == 0x1d) return;
-    if (c->pmf == 0) return;
-    (c->*(c->pmf))();
+extern "C" void func_ov004_020b321c(Elem *e) {
+    if (e->mFileIndex == 0x1d) return;
+    if (e->mBehavior == 0) return;
+    (e->*(e->mBehavior))();
 }
 
 // @symbol func_ov004_020b3278
-extern "C" void func_ov004_020b3278(char *self, int arg1, short arg2, short arg3, int arg4, int arg5, short arg6)
+extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int screen, int priority, short style)
 {
     int a, b;
 
-    if (data_ov004_020beb68->m26() == 2) {
+    if (data_ov004_020beb68->OnHitByCannonBlastedChar() == 2) {
         a = 0x6400000;
         b = 0;
     } else {
@@ -390,128 +396,129 @@ extern "C" void func_ov004_020b3278(char *self, int arg1, short arg2, short arg3
         b = 0x6400000;
     }
 
-    switch (arg1) {
+    switch (file) {
     case 3: case 4: case 5: case 6:
     case 8: case 9: case 10: case 11: case 12:
     case 14: case 16: case 17: case 18: case 19: case 20: case 21:
         if (data_ov004_020bf3e8[0] != 0)
             return;
-        DecompressLZ16((void *)data_ov004_020bf560[arg1], (void *)(a + 0x7000));
+        DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(a + 0x7000));
         if (b != 0)
-            DecompressLZ16((void *)data_ov004_020bf560[arg1], (void *)(b + 0x7000));
-        *(short *)(self + 0x30) = 0;
+            DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(b + 0x7000));
+        e->mGfxSlot = 0;
         data_ov004_020bf3e8[0] = 1;
         break;
     default:
         if (data_ov004_020bf3e8[1] == 0) {
-            DecompressLZ16((void *)data_ov004_020bf560[arg1], (void *)(a + 0x6000));
+            DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(a + 0x6000));
             if (b != 0)
-                DecompressLZ16((void *)data_ov004_020bf560[arg1], (void *)(b + 0x6000));
-            *(short *)(self + 0x30) = 1;
+                DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(b + 0x6000));
+            e->mGfxSlot = 1;
             data_ov004_020bf3e8[1] = 1;
             break;
         }
         if (data_ov004_020bf3e8[2] == 0) {
-            DecompressLZ16((void *)data_ov004_020bf560[arg1], (void *)(a + 0x6800));
+            DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(a + 0x6800));
             if (b != 0)
-                DecompressLZ16((void *)data_ov004_020bf560[arg1], (void *)(b + 0x6800));
-            *(short *)(self + 0x30) = 2;
+                DecompressLZ16((void *)data_ov004_020bf560[file], (void *)(b + 0x6800));
+            e->mGfxSlot = 2;
             data_ov004_020bf3e8[2] = 1;
             break;
         }
         return;
     }
 
-    *(int *)(self + 0x20) = arg1;
-    *(short *)(self + 0x10) = arg2;
-    *(short *)(self + 0x12) = arg3;
-    *(short *)(self + 0x14) = *(short *)(self + 0x10);
-    *(short *)(self + 0x16) = *(short *)(self + 0x12);
-    *(int *)(self + 0x1c) = arg4;
-    *(int *)(self + 0x18) = arg5;
-    *(short *)(self + 0x32) = 0;
+    e->mFileIndex = file;
+    e->mX = x;
+    e->mY = y;
+    e->mTargetX = e->mX;
+    e->mTargetY = e->mY;
+    e->mScreen = screen;
+    e->mPriority = priority;
+    e->mArrived = 0;
 
-    if (arg6 != 0xd) {
-        *(short *)(self + 0x2e) = arg6;
+    if (style != 0xd) {
+        e->mStyle = style;
     } else {
-        switch (arg1) {
+        switch (file) {
         case 11:
-            *(short *)(self + 0x2e) = 7;
+            e->mStyle = 7;
             break;
         case 3: case 4: case 5: case 6: case 20: case 21:
-            *(short *)(self + 0x2e) = 8;
+            e->mStyle = 8;
             break;
         case 8: case 14:
-            *(short *)(self + 0x2e) = 9;
+            e->mStyle = 9;
             break;
         case 0:
-            *(short *)(self + 0x2e) = 3;
+            e->mStyle = 3;
             break;
         case 1: case 2:
-            *(short *)(self + 0x2e) = 4;
+            e->mStyle = 4;
             break;
         case 13:
-            *(short *)(self + 0x2e) = 0xc;
+            e->mStyle = 0xc;
             break;
         default:
-            *(short *)(self + 0x2e) = 0;
+            e->mStyle = 0;
             break;
         }
     }
 
     {
         S3 tmp = data_ov004_020bc27c;
-        *(short *)(self + 0x2c) = (short)func_ov004_020af5e0(
-            data_ov004_020bf5d4[*(int *)(self + 0x20)],
-            self + 0x34,
-            tmp.v[*(short *)(self + 0x30)],
-            *(int *)(self + 0x20));
+        e->mOamCount = (short)func_ov004_020af5e0(
+            data_ov004_020bf5d4[e->mFileIndex],
+            e->mOam,
+            tmp.v[e->mGfxSlot],
+            e->mFileIndex);
     }
 
     {
-        int st = *(short *)(self + 0x2e);
-        if (((PMF *)data_ov004_020bf490)[st])
-            (((Base *)self)->*((PMF *)data_ov004_020bf490)[st])();
+        int st = e->mStyle;
+        if (((ElemFn *)data_ov004_020bf490)[st])
+            (e->*((ElemFn *)data_ov004_020bf490)[st])();
     }
 
     {
         short st;
-        PairW *e;
-        st = *(short *)(self + 0x2e);
-        e = &data_ov004_020bf428[st];
+        PairW *r;
+        st = e->mStyle;
+        r = &data_ov004_020bf428[st];
         a = data_ov004_020bf428[st].w0;
-        b = e->w1;
-        *(int *)(self + 0) = b ? a : a;
-        *(int *)(self + 4) = b;
-        st = *(short *)(self + 0x2e);
-        e = &data_ov004_020bf4f8[st];
+        b = r->w1;
+        ((int *)&e->mBehavior)[0] = b ? a : a;
+        ((int *)&e->mBehavior)[1] = b;
+        st = e->mStyle;
+        r = &data_ov004_020bf4f8[st];
         a = data_ov004_020bf4f8[st].w0;
-        b = e->w1;
-        *(int *)(self + 8) = b ? a : a;
-        *(int *)(self + 0xc) = b;
+        b = r->w1;
+        ((int *)&e->mRender)[0] = b ? a : a;
+        ((int *)&e->mRender)[1] = b;
     }
 }
 
 // @symbol func_ov004_020b35d8
-extern "C" void func_ov004_020b35d8(Obj35d8 *self)
+extern "C" void func_ov004_020b35d8(Elem *e)
 {
   int x;
-  int y = self->f10;
+  int originX = e->mX;
   int n;
-  s16 new_var2;
-  int v = (int) (((unsigned int) (self->f34 << 7)) >> 0x17);
+  s16 drawY;
+  /* the first OAM record's 9-bit signed x, made positive */
+  int oamX = (int) (((unsigned int) (*(int *)e->mOam << 7)) >> 0x17);
   int w;
-  unsigned long new_var;
+  unsigned long left;
   n = func_ov004_020b1aec() + 1;
-  if (v > 0x100)
+  if (oamX > 0x100)
   {
-    v -= 0x200;
+    oamX -= 0x200;
   }
-  if (v < 0)
+  if (oamX < 0)
   {
-    v = -v;
+    oamX = -oamX;
   }
-  x = (x = (self->f10 + v) + 0x10);
+  x = (x = (e->mX + oamX) + 0x10);
   w = 0x10;
   {
     int p = 1;
@@ -522,12 +529,13 @@ extern "C" void func_ov004_020b35d8(Obj35d8 *self)
     }
 
   }
+  /* both draws shift left by w/2; w grows 0x10 per power of ten below n */
   x = x - (w >> 1);
-  new_var = w >> 1;
-  new_var = y - new_var;
-  func_ov004_020b1cf0((int) (&self->f34), new_var, self->f12, self->f1c, self->f18);
-  new_var2 = self->f12;
-  func_ov004_020b2444(x, new_var2, n, self->f1c, self->f18, 2, 0);
+  left = w >> 1;
+  left = originX - left;
+  func_ov004_020b1cf0((int) e->mOam, left, e->mY, e->mScreen, e->mPriority);
+  drawY = e->mY;
+  func_ov004_020b2444(x, drawY, n, e->mScreen, e->mPriority, 2, 0);
 }
 
 // @symbol func_ov004_020b3698
@@ -536,9 +544,9 @@ extern "C" void func_ov004_020b3698(void)
 }
 
 // @symbol func_ov004_020b369c
-extern "C" void func_ov004_020b369c(char* self) {
-    char* el = self + 0x34;
-    int angle = (u16)*(int*)(self + 0x24);
+extern "C" void func_ov004_020b369c(Elem *e) {
+    u8* el = e->mOam;
+    int angle = (u16)e->mTimer;
     M m;
     u16 flag;
     do {
@@ -553,8 +561,8 @@ extern "C" void func_ov004_020b369c(char* self) {
         m._11 = fc;
         m._01 = fs;
         m._10 = -fs;
-        func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                            *(int*)(self + 0x1c), *(int*)(self + 0x18), &m);
+        func_ov004_020b1c68(el, e->mX, e->mY,
+                            e->mScreen, e->mPriority, &m);
         angle = (u16)(angle + 0x4000);
         flag = *(u16*)(el + 6);
         el += 8;
@@ -562,43 +570,41 @@ extern "C" void func_ov004_020b369c(char* self) {
 }
 
 // @symbol func_ov004_020b37c4
-extern "C" void func_ov004_020b37c4(char *c) {
-    if (ApproachLinear(*(int*)(c + 0x24), *(int*)(c + 0x28), 0x1000)) {
-        *(int*)(c + 0x24) = 0;
+extern "C" void func_ov004_020b37c4(Elem *e) {
+    if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
+        e->mTimer = 0;
     }
 }
 
 // @symbol func_ov004_020b37f0
-extern "C" void func_ov004_020b37f0(int* r0){
-  char* c=(char*)r0;
-  *(int*)(c+0x24)=0;
-  *(int*)(c+0x28)=0x27000;
-  *(W2*)(c+0)=*(W2*)data_ov004_020bc20c;
-  *(W2*)(c+8)=*(W2*)data_ov004_020bc1b4;
+extern "C" void func_ov004_020b37f0(Elem *e){
+  e->mTimer=0;
+  e->mTimerEnd=0x27000;
+  *(W2*)&e->mBehavior=*(W2*)data_ov004_020bc20c;
+  *(W2*)&e->mRender=*(W2*)data_ov004_020bc1b4;
 }
 
 // @symbol func_ov004_020b3834
-extern "C" void func_ov004_020b3834(int* obj){
-    char* c = (char*)obj;
-    if (*(int*)(c + 0x24) < 0x30){
-        *(unsigned*)(c + 0x24) += 1;
+extern "C" void func_ov004_020b3834(Elem *e){
+    if (e->mTimer < 0x30){
+        *(unsigned *)&e->mTimer += 1;
         return;
     }
-    if (_Z15ApproachLinear2Rsss((short*)(c + 0x12), *(short*)(c + 0x16), 0x10)){
-        func_ov004_020b37f0(obj);
+    if (ApproachLinear2(e->mY, e->mTargetY, 0x10)){
+        func_ov004_020b37f0(e);
     }
 }
 
 // @symbol func_ov004_020b3888
-extern "C" void func_ov004_020b3888(char* r0) {
-    *(int*)(r0+0x24) = 0;
-    *(short*)(r0+0x12) = -(data_ov004_020beb6c + 0x60);
+extern "C" void func_ov004_020b3888(Elem *e) {
+    e->mTimer = 0;
+    e->mY = -(data_ov004_020beb6c + 0x60);
 }
 
 // @symbol func_ov004_020b38ac
-extern "C" void func_ov004_020b38ac(char* self) {
-    char* el = self + 0x34;
-    int x = *(int*)(self + 0x24) >> 2;
+extern "C" void func_ov004_020b38ac(Elem *e) {
+    u8* el = e->mOam;
+    int x = e->mTimer >> 2;
     int t = 0x1000;
     int base = t;
 
@@ -613,8 +619,8 @@ extern "C" void func_ov004_020b38ac(char* self) {
             M m = {0};
             m._00 = v;
             m._11 = v;
-            func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                *(int*)(self + 0x1c), *(int*)(self + 0x18), &m);
+            func_ov004_020b1c68(el, e->mX, e->mY,
+                                e->mScreen, e->mPriority, &m);
         }
         t += 0x1000;
         flag = *(u16*)(el + 6);
@@ -623,14 +629,14 @@ extern "C" void func_ov004_020b38ac(char* self) {
 }
 
 // @symbol func_ov004_020b3978
-extern "C" void func_ov004_020b3978(char *c) {
-    if (ApproachLinear(*(int*)(c + 0x24), *(int*)(c + 0x28), 0x1000)) {
-        *(int*)(c + 0x24) = 0;
+extern "C" void func_ov004_020b3978(Elem *e) {
+    if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
+        e->mTimer = 0;
     }
 }
 
 // @symbol func_ov004_020b39a4
-extern "C" void func_ov004_020b39a4(char* c) {
+extern "C" void func_ov004_020b39a4(Elem* e) {
     int i;
     int angle;
     int boxA[2], boxB[2], boxC[2];
@@ -640,14 +646,14 @@ extern "C" void func_ov004_020b39a4(char* c) {
 
     int shifted;
 
-    *(int*)(c + 0x24) = 0;
-    angle = *(short*)(c + 0x2c);
+    e->mTimer = 0;
+    angle = e->mOamCount;
     angle = angle + 1;
     shifted = angle << 14;
-    *(int*)(c + 0x28) = shifted;
+    e->mTimerEnd = shifted;
 
-    *(W2*)(c + 0)   = *(W2*)&data_ov004_020bc17c;
-    *(W2*)(c + 8)   = *(W2*)&data_ov004_020bc1ec;
+    *(W2*)&e->mBehavior = *(W2*)&data_ov004_020bc17c;
+    *(W2*)&e->mRender   = *(W2*)&data_ov004_020bc1ec;
 
     boxA[0] = 0; boxA[1] = -0x2000;
     boxB[0] = 0; boxB[1] = -0x1800;
@@ -656,8 +662,8 @@ extern "C" void func_ov004_020b39a4(char* c) {
     flags = data_ov004_020bf3ec;
 
     {
-        int y12 = *(short*)(c + 0x12);
-        int y10 = *(short*)(c + 0x10);
+        int y12 = e->mY;
+        int y10 = e->mX;
         int sY12, sY10;
         flags = flags & 1;
         sY12 = y12 << 12;
@@ -695,13 +701,13 @@ extern "C" void func_ov004_020b39a4(char* c) {
 
 // @symbol func_ov004_020b3b38
 #pragma opt_propagation off
-extern "C" void func_ov004_020b3b38(char* c) {
+extern "C" void func_ov004_020b3b38(Elem* e) {
     int m, fd, t, v;
     unsigned short term;
-    if (*(int*)(c + 0x24) == 0) return;
-    m = (int)(((s64)*(int*)(c + 0x24) * 0xcc + 0x800) >> 12);
+    if (e->mTimer == 0) return;
+    m = (int)(((s64)e->mTimer * 0xcc + 0x800) >> 12);
     {
-        char* e = c + 0x34;
+        u8* el = e->mOam;
         fd = _ZN4cstd4fdivEii(m, 0x1000);
         t = (int)(((s64)fd * 0x1000 + 0x800) >> 12);
         v = func_02053200(m);
@@ -711,16 +717,16 @@ extern "C" void func_ov004_020b3b38(char* c) {
             buf._11 = v;
             t = 0x1000 - t;
             do {
-                s16 f = (s16)(((unsigned int)(*(int*)e << 7)) >> 23);
+                s16 f = (s16)(((unsigned int)(*(int*)el << 7)) >> 23);
                 int off;
                 if (f > 0x100) f -= 0x200;
                 off = f * t;
-                func_ov004_020b1c68(e,
-                    *(s16*)(c + 0x10) - ((off << 4) >> 16),
-                    *(s16*)(c + 0x12), *(int*)(c + 0x1c),
-                    *(int*)(c + 0x18), &buf);
-                term = *(unsigned short*)(e + 6);
-                e += 8;
+                func_ov004_020b1c68(el,
+                    e->mX - ((off << 4) >> 16),
+                    e->mY, e->mScreen,
+                    e->mPriority, &buf);
+                term = *(unsigned short*)(el + 6);
+                el += 8;
             } while (term != 0xffff);
         }
     }
@@ -728,35 +734,35 @@ extern "C" void func_ov004_020b3b38(char* c) {
 #pragma opt_propagation on
 
 // @symbol func_ov004_020b3c58
-extern "C" void func_ov004_020b3c58(char *c)
+extern "C" void func_ov004_020b3c58(Elem *e)
 {
-    _Z14ApproachLinearRiii((int*)(c+0x24), *(int*)(c+0x28), 0x1000);
-    if (_Z15ApproachLinear2Rsss((short*)(c+0x12), *(short*)(c+0x16), 0x10) == 0)
+    ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000);
+    if (ApproachLinear2(e->mY, e->mTargetY, 0x10) == 0)
         return;
-    func_ov004_020b39a4(c);
+    func_ov004_020b39a4(e);
 }
 
 // @symbol func_ov004_020b3c9c
-extern "C" void func_ov004_020b3c9c(char *p)
+extern "C" void func_ov004_020b3c9c(Elem *e)
 {
-    *(int *)(p + 0x24) = 0;
-    *(int *)(p + 0x28) = 81920;
-    *(short *)(p + 0x12) = 96;
+    e->mTimer = 0;
+    e->mTimerEnd = 81920;
+    e->mY = 96;
 }
 
 // @symbol func_ov004_020b3cb8
-extern "C" void func_ov004_020b3cb8(char* self) {
+extern "C" void func_ov004_020b3cb8(Elem *e) {
     u16 flag;
-    if (*(int*)(self + 0x24) == 0) return;
+    if (e->mTimer == 0) return;
     {
-        char* el = self + 0x34;
-        if (*(int*)(self + 0x24) < 0x18000) {
+        u8* el = e->mOam;
+        if (e->mTimer < 0x18000) {
             int v = 0x2000;
-            if (*(int*)(self + 0x24) >= 0x14000) {
+            if (e->mTimer >= 0x14000) {
                 v = 0x1000;
             } else {
                 int t = _ZN4cstd4fdivEii(0x1000, 0x18000);
-                v -= (int)(((s64)*(int*)(self + 0x24) * t + 0x800) >> 12);
+                v -= (int)(((s64)e->mTimer * t + 0x800) >> 12);
                 v = func_02053200(v);
             }
             {
@@ -764,14 +770,14 @@ extern "C" void func_ov004_020b3cb8(char* self) {
                 m._00 = v;
                 m._11 = v;
                 do {
-                    func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                        *(int*)(self + 0x1c), *(int*)(self + 0x18), &m);
+                    func_ov004_020b1c68(el, e->mX, e->mY,
+                                        e->mScreen, e->mPriority, &m);
                     flag = *(u16*)(el + 6);
                     el += 8;
                 } while (flag != 0xffff);
             }
         } else {
-            int angle = (u16)(*(int*)(self + 0x24) - 0x18000);
+            int angle = (u16)(e->mTimer - 0x18000);
             M m2;
             do {
                 int s0 = data_02082214[(angle >> 4) * 2];
@@ -785,8 +791,8 @@ extern "C" void func_ov004_020b3cb8(char* self) {
                 m2._11 = fc;
                 m2._01 = fs;
                 m2._10 = -fs;
-                func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                    *(int*)(self + 0x1c), *(int*)(self + 0x18), &m2);
+                func_ov004_020b1c68(el, e->mX, e->mY,
+                                    e->mScreen, e->mPriority, &m2);
                 angle = (u16)(angle + 0x4000);
                 flag = *(u16*)(el + 6);
                 el += 8;
@@ -796,18 +802,18 @@ extern "C" void func_ov004_020b3cb8(char* self) {
 }
 
 // @symbol func_ov004_020b3e9c
-extern "C" void func_ov004_020b3e9c(char* self) {
+extern "C" void func_ov004_020b3e9c(Elem *e) {
     u16 flag;
-    if (*(int*)(self + 0x24) == 0) return;
+    if (e->mTimer == 0) return;
     {
-        char* el = self + 0x34;
-        if (*(int*)(self + 0x24) < 0x18000) {
+        u8* el = e->mOam;
+        if (e->mTimer < 0x18000) {
             int v = 0x2000;
-            if (*(int*)(self + 0x24) >= 0x14000) {
+            if (e->mTimer >= 0x14000) {
                 v = 0x1000;
             } else {
                 int t = _ZN4cstd4fdivEii(0x1000, 0x18000);
-                v -= (int)(((s64)*(int*)(self + 0x24) * t + 0x800) >> 12);
+                v -= (int)(((s64)e->mTimer * t + 0x800) >> 12);
                 v = func_02053200(v);
             }
             {
@@ -815,14 +821,14 @@ extern "C" void func_ov004_020b3e9c(char* self) {
                 m._00 = v;
                 m._11 = v;
                 do {
-                    func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                        *(int*)(self + 0x1c), *(int*)(self + 0x18), &m);
+                    func_ov004_020b1c68(el, e->mX, e->mY,
+                                        e->mScreen, e->mPriority, &m);
                     flag = *(u16*)(el + 6);
                     el += 8;
                 } while (flag != 0xffff);
             }
         } else {
-            int angle = (u16)(*(int*)(self + 0x24) - 0x18000);
+            int angle = (u16)(e->mTimer - 0x18000);
             M m2;
             do {
                 int s0 = data_02082214[(angle >> 4) * 2];
@@ -836,8 +842,8 @@ extern "C" void func_ov004_020b3e9c(char* self) {
                 m2._11 = fc;
                 m2._01 = fs;
                 m2._10 = -fs;
-                func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                    *(int*)(self + 0x1c), *(int*)(self + 0x18), &m2);
+                func_ov004_020b1c68(el, e->mX, e->mY,
+                                    e->mScreen, e->mPriority, &m2);
                 angle = (u16)(angle + 0x4000);
                 flag = *(u16*)(el + 6);
                 el += 8;
@@ -847,32 +853,33 @@ extern "C" void func_ov004_020b3e9c(char* self) {
 }
 
 // @symbol func_ov004_020b4080
-extern "C" void func_ov004_020b4080(char *c) {
-    if (ApproachLinear(*(int*)(c + 0x24), *(int*)(c + 0x28), 0x1000)) {
-        *(int*)(c + 0x24) = 98304;
+extern "C" void func_ov004_020b4080(Elem *e) {
+    if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
+        e->mTimer = 98304;
     }
 }
 
 // @symbol func_ov004_020b40ac
-extern "C" void func_ov004_020b40ac(char *p)
+extern "C" void func_ov004_020b40ac(Elem *e)
 {
-    *(int *)(p + 0x24) = 0;
-    *(int *)(p + 0x28) = 159744;
+    e->mTimer = 0;
+    e->mTimerEnd = 159744;
 }
 
 // @symbol func_ov004_020b40c0
-extern "C" int func_ov004_020b40c0(int* o){
+extern "C" int func_ov004_020b40c0(Elem* e){
   int* d = data_ov004_020bc254;
-  if(o[0] == d[0] && (o[1] == d[1] || o[0] == 0) && o[9] == o[10])
+  int* o = (int*)&e->mBehavior;
+  if(o[0] == d[0] && (o[1] == d[1] || o[0] == 0) && e->mTimer == e->mTimerEnd)
     return 1;
   return 0;
 }
 
 // @symbol func_ov004_020b410c
-extern "C" void func_ov004_020b410c(char* self)
+extern "C" void func_ov004_020b410c(Elem *e)
 {
-    char* el = self + 0x34;
-    int x = *(int*)(self + 0x24);
+    u8* el = e->mOam;
+    int x = e->mTimer;
     int idx = (int)(((unsigned int)x << 15) >> 16) >> 4;
     s16 s = *(s16*)((int)data_02082214 + (idx << 2));
     int v = func_02053200((int)((((s64)s << 11) + 0x800) >> 12) + 0x1000);
@@ -883,29 +890,29 @@ extern "C" void func_ov004_020b410c(char* self)
     m._11 = v;
     do {
         func_ov004_020b1c68(el,
-            *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-            *(int*)(self + 0x1c), *(int*)(self + 0x18), &m);
+            e->mX, e->mY,
+            e->mScreen, e->mPriority, &m);
         flag = *(u16*)(el + 6);
         el += 8;
     } while (flag != lim);
 
-    x = *(int*)(self + 0x20);
+    x = e->mFileIndex;
     if (x != 0 && x != 1 && x != 2)
         return;
     func_ov004_020b1cf0(data_ov006_021346bc,
-        *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-        *(int*)(self + 0x1c), *(int*)(self + 0x18));
+        e->mX, e->mY,
+        e->mScreen, e->mPriority);
 }
 
 // @symbol func_ov004_020b4214
-extern "C" void func_ov004_020b4214(char* p) {
-    _Z14ApproachLinearRiii((int*)(p + 0x24), *(int*)(p + 0x28), 0x1000);
+extern "C" void func_ov004_020b4214(Elem *e) {
+    ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000);
 }
 
 // @symbol func_ov004_020b422c
-extern "C" void func_ov004_020b422c(char* r4){
+extern "C" void func_ov004_020b422c(Elem* e){
   data_ov004_020bc150 = 0;
-  switch (*(int*)(r4 + 0x20)) {
+  switch (e->mFileIndex) {
   case 0:
     func_02012790(0x62);
     break;
@@ -914,34 +921,34 @@ extern "C" void func_ov004_020b422c(char* r4){
     func_02012790(0x63);
     break;
   }
-  *(int*)(r4 + 0x24) = 0;
-  *(int*)(r4 + 0x28) = 0x10000;
-  *(W2*)r4 = *(W2*)&data_ov004_020bc224;
-  *(W2*)(r4 + 8) = *(W2*)&data_ov004_020bc274;
+  e->mTimer = 0;
+  e->mTimerEnd = 0x10000;
+  *(W2*)&e->mBehavior = *(W2*)&data_ov004_020bc224;
+  *(W2*)&e->mRender = *(W2*)&data_ov004_020bc274;
 }
 
 // @symbol func_ov004_020b42c0
-extern "C" void func_ov004_020b42c0(char *c) {
-    func_ov004_020b1cf0((int)(c + 0x34), *(short*)(c + 0x10), *(short*)(c + 0x12), *(int*)(c + 0x1c), *(int*)(c + 0x18));
-    if (*(int*)(c + 0x20) != 0 && *(int*)(c + 0x20) != 1 && *(int*)(c + 0x20) != 2)
+extern "C" void func_ov004_020b42c0(Elem *e) {
+    func_ov004_020b1cf0((int)e->mOam, e->mX, e->mY, e->mScreen, e->mPriority);
+    if (e->mFileIndex != 0 && e->mFileIndex != 1 && e->mFileIndex != 2)
         return;
-    func_ov004_020b1cf0(data_ov006_021346bc, *(short*)(c + 0x10), *(short*)(c + 0x12), *(int*)(c + 0x1c), *(int*)(c + 0x18));
+    func_ov004_020b1cf0(data_ov006_021346bc, e->mX, e->mY, e->mScreen, e->mPriority);
 }
 
 // @symbol func_ov004_020b433c
-extern "C" void func_ov004_020b433c(S433c* s) {
-    s->f24 = 0;
-    s->f28 = ((s->f2c + 1) << 2) + 0x1e << 0xc;
+extern "C" void func_ov004_020b433c(Elem *e) {
+    e->mTimer = 0;
+    e->mTimerEnd = ((e->mOamCount + 1) << 2) + 0x1e << 0xc;
 }
 
 // @symbol func_ov004_020b4360
 #pragma opt_propagation off
-extern "C" void func_ov004_020b4360(char* self) {
+extern "C" void func_ov004_020b4360(Elem *e) {
     u16 flag;
-    int val = *(int*)(self + 0x24);
+    int val = e->mTimer;
     if (val == 0) return;
     {
-        char* el = self + 0x34;
+        u8* el = e->mOam;
         if (val < 0x1e000) {
             int d;
             int scale;
@@ -969,9 +976,9 @@ extern "C" void func_ov004_020b4360(char* self) {
                     if (f > 0x100) f -= 0x200;
                     off = f * scale;
                     func_ov004_020b1c68(el,
-                                        *(s16*)(self + 0x10) - ((off << 4) >> 16),
-                                        *(s16*)(self + 0x12), *(int*)(self + 0x1c),
-                                        *(int*)(self + 0x18), &m);
+                                        e->mX - ((off << 4) >> 16),
+                                        e->mY, e->mScreen,
+                                        e->mPriority, &m);
                     flag = *(u16*)(el + 6);
                     el += 8;
                 } while (flag != 0xffff);
@@ -991,8 +998,8 @@ extern "C" void func_ov004_020b4360(char* self) {
                     M m2 = {0};
                     m2._00 = r;
                     m2._11 = r;
-                    func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                        *(int*)(self + 0x1c), *(int*)(self + 0x18), &m2);
+                    func_ov004_020b1c68(el, e->mX, e->mY,
+                                        e->mScreen, e->mPriority, &m2);
                 }
                 i += 0x1000;
                 flag = *(u16*)(el + 6);
@@ -1005,12 +1012,12 @@ extern "C" void func_ov004_020b4360(char* self) {
 
 // @symbol func_ov004_020b45c0
 #pragma opt_propagation off
-extern "C" void func_ov004_020b45c0(char* self) {
+extern "C" void func_ov004_020b45c0(Elem *e) {
     u16 flag;
-    int val = *(int*)(self + 0x24);
+    int val = e->mTimer;
     if (val == 0) return;
     {
-        char* el = self + 0x34;
+        u8* el = e->mOam;
         if (val < 0x1e000) {
             int d;
             int scale;
@@ -1038,9 +1045,9 @@ extern "C" void func_ov004_020b45c0(char* self) {
                     if (f > 0x100) f -= 0x200;
                     off = f * scale;
                     func_ov004_020b1c68(el,
-                                        *(s16*)(self + 0x10) - ((off << 4) >> 16),
-                                        *(s16*)(self + 0x12), *(int*)(self + 0x1c),
-                                        *(int*)(self + 0x18), &m);
+                                        e->mX - ((off << 4) >> 16),
+                                        e->mY, e->mScreen,
+                                        e->mPriority, &m);
                     flag = *(u16*)(el + 6);
                     el += 8;
                 } while (flag != 0xffff);
@@ -1060,8 +1067,8 @@ extern "C" void func_ov004_020b45c0(char* self) {
                     M m2 = {0};
                     m2._00 = r;
                     m2._11 = r;
-                    func_ov004_020b1c68(el, *(s16*)(self + 0x10), *(s16*)(self + 0x12),
-                                        *(int*)(self + 0x1c), *(int*)(self + 0x18), &m2);
+                    func_ov004_020b1c68(el, e->mX, e->mY,
+                                        e->mScreen, e->mPriority, &m2);
                 }
                 i += 0x1000;
                 flag = *(u16*)(el + 6);
@@ -1073,14 +1080,14 @@ extern "C" void func_ov004_020b45c0(char* self) {
 #pragma opt_propagation on
 
 // @symbol func_ov004_020b4820
-extern "C" void func_ov004_020b4820(char *c) {
-    if (ApproachLinear(*(int*)(c + 0x24), *(int*)(c + 0x28), 0x1000)) {
-        *(int*)(c + 0x24) = 122880;
+extern "C" void func_ov004_020b4820(Elem *e) {
+    if (ApproachLinear(e->mTimer, e->mTimerEnd, 0x1000)) {
+        e->mTimer = 122880;
     }
 }
 
 // @symbol func_ov004_020b484c
-extern "C" void func_ov004_020b484c(char* c)
+extern "C" void func_ov004_020b484c(Elem* e)
 {
     int i;
     int boxA[2], boxB[2], boxC[2];
@@ -1091,8 +1098,8 @@ extern "C" void func_ov004_020b484c(char* c)
     int ang;
     s16 spawnAngle;
 
-    *(int*)(c + 0x24) = 0;
-    *(int*)(c + 0x28) = (((*(s16*)(c + 0x2c) + 1) << 2) + 0x1e) << 0xc;
+    e->mTimer = 0;
+    e->mTimerEnd = (((e->mOamCount + 1) << 2) + 0x1e) << 0xc;
 
     boxA[0] = 0;
     boxA[1] = -0x2000;
@@ -1104,8 +1111,8 @@ extern "C" void func_ov004_020b484c(char* c)
     flags = data_ov004_020bf3f0;
 
     {
-        int y12 = *(s16*)(c + 0x12);
-        int y10 = *(s16*)(c + 0x10);
+        int y12 = e->mY;
+        int y10 = e->mX;
         int sY12, sY10;
         flags = flags & 1;
         sY12 = y12 << 12;
@@ -1138,61 +1145,62 @@ extern "C" void func_ov004_020b484c(char* c)
 }
 
 // @symbol func_ov004_020b49b8
-extern "C" void func_ov004_020b49b8(S49b8* s) {
-    if (_Z15ApproachLinear2Rsss((short*)((char*)s + 0x10), s->f14, 0x10))
-        s->f32 = 1;
+extern "C" void func_ov004_020b49b8(Elem *e) {
+    if (ApproachLinear2(e->mX, e->mTargetX, 0x10))
+        e->mArrived = 1;
 }
 
 // @symbol func_ov004_020b49e4
-extern "C" void func_ov004_020b49e4(short *p)
+extern "C" void func_ov004_020b49e4(Elem *e)
 {
-    p[8] = 320;
+    e->mX = 320;
 }
 
 // @symbol func_ov004_020b49f0
-extern "C" void func_ov004_020b49f0(S49b8* s) {
-    if (_Z15ApproachLinear2Rsss((short*)((char*)s + 0x10), s->f14, 0x10))
-        s->f32 = 1;
+extern "C" void func_ov004_020b49f0(Elem *e) {
+    if (ApproachLinear2(e->mX, e->mTargetX, 0x10))
+        e->mArrived = 1;
 }
 
 // @symbol func_ov004_020b4a1c
-extern "C" void func_ov004_020b4a1c(short *p)
+extern "C" void func_ov004_020b4a1c(Elem *e)
 {
-    *(short *)((char *)p + 0x10) = -0x40;
+    e->mX = -0x40;
 }
 
 // @symbol func_ov004_020b4a28
-extern "C" void func_ov004_020b4a28(char* p) {
-    _Z15ApproachLinear2Rsss((short*)(p + 0x12), *(short*)(p + 0x16), 4);
+extern "C" void func_ov004_020b4a28(Elem *e) {
+    ApproachLinear2(e->mY, e->mTargetY, 4);
 }
 
 // @symbol func_ov004_020b4a40
-extern "C" void func_ov004_020b4a40(short *p)
+extern "C" void func_ov004_020b4a40(Elem *e)
 {
-    p[9] = 200;
+    e->mY = 200;
 }
 
 // @symbol func_ov004_020b4a4c
-extern "C" void func_ov004_020b4a4c(char* p) {
-    _Z15ApproachLinear2Rsss((short*)(p + 0x12), *(short*)(p + 0x16), 4);
+extern "C" void func_ov004_020b4a4c(Elem *e) {
+    ApproachLinear2(e->mY, e->mTargetY, 4);
 }
 
 // @symbol func_ov004_020b4a64
-extern "C" void func_ov004_020b4a64(short *p)
+extern "C" void func_ov004_020b4a64(Elem *e)
 {
-    *(short *)((char *)p + 0x12) = -8;
+    e->mY = -8;
 }
 
 Elem::Elem()
 {
-    *(int *)&pad[0x20] = 29;
+    mFileIndex = 29;
 }
 
-/* __sinit_ov004_020b955c sources: the PMF records the dispatch table at
-   data_ov004_020bf490 copies, the two-word records the two coordinate
-   tables copy, and the words the 29-entry file-id table copies. */
+/* __sinit_ov004_020b955c sources: the member-pointer records the three
+   per-style tables copy (setup data_ov004_020bf490, behavior
+   data_ov004_020bf428, render data_ov004_020bf4f8), and the words the
+   29-entry file-id table copies. */
 extern "C" {
-extern PairW data_02086b58;
+extern PairW data_02086b58;  /* __ptmf_null's address: the null member pointer */
 extern PairW data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244, data_ov004_020bc16c;
 extern PairW data_ov004_020bc1bc, data_ov004_020bc1ac, data_ov004_020bc25c, data_ov004_020bc264;
 extern PairW data_ov004_020bc1c4, data_ov004_020bc164, data_ov004_020bc15c, data_ov004_020bc1d4;
