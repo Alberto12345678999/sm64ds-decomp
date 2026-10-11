@@ -24997,7 +24997,7 @@ matched: yes</title></rect><rect x="698.61" y="774.12" width="8.54" height="13.7
 module: ov006
 addr: 0x02104a10
 size: 176 bytes
-matched: yes</title></rect><rect x="707.15" y="443.61" width="0.75" height="3.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_02104ac0
+matched: yes</title></rect><rect x="707.15" y="443.61" width="0.75" height="3.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgPanel_c19func_ov006_02104ac0Ei
 module: ov006
 addr: 0x02104ac0
 size: 4 bytes
@@ -25017,7 +25017,7 @@ matched: yes</title></rect><rect x="736.39" y="443.61" width="15.00" height="3.5
 module: ov006
 addr: 0x02104b5c
 size: 80 bytes
-matched: yes</title></rect><rect x="751.39" y="443.61" width="0.75" height="3.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_02104bac
+matched: yes</title></rect><rect x="751.39" y="443.61" width="0.75" height="3.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgPanel_c19func_ov006_02104bacEv
 module: ov006
 addr: 0x02104bac
 size: 4 bytes
@@ -25061,7 +25061,7 @@ matched: yes</title></rect><rect x="897.62" y="443.61" width="3.00" height="3.57
 module: ov006
 addr: 0x02104eb8
 size: 16 bytes
-matched: yes</title></rect><rect x="900.62" y="443.61" width="0.75" height="3.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_02104ec8
+matched: yes</title></rect><rect x="900.62" y="443.61" width="0.75" height="3.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgPanel_c19func_ov006_02104ec8Ev
 module: ov006
 addr: 0x02104ec8
 size: 4 bytes
@@ -27445,7 +27445,7 @@ matched: yes</title></rect><rect x="944.33" y="781.97" width="17.57" height="5.9
 module: ov006
 addr: 0x021300b0
 size: 156 bytes
-matched: yes</title></rect><rect x="961.90" y="684.72" width="24.94" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov006_0213014c
+matched: yes</title></rect><rect x="961.90" y="684.72" width="24.94" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgCoin_c.cpp
 module: ov006
 addr: 0x0213014c
 size: 644 bytes
@@ -27477,7 +27477,7 @@ matched: yes</title></rect><rect x="981.48" y="701.98" width="4.43" height="15.0
 module: ov006
 addr: 0x02130f00
 size: 100 bytes
-matched: yes</title></rect><rect x="985.91" y="701.98" width="27.14" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov006_02130f64
+matched: yes</title></rect><rect x="985.91" y="701.98" width="27.14" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgLuigi_c.cpp
 module: ov006
 addr: 0x02130f64
 size: 612 bytes
@@ -27505,7 +27505,7 @@ matched: yes</title></rect><rect x="988.91" y="717.05" width="28.39" height="17.
 module: ov006
 addr: 0x02131cd0
 size: 724 bytes
-matched: yes</title></rect><rect x="1017.29" y="717.05" width="31.05" height="17.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_ov006_02131fa4
+matched: yes</title></rect><rect x="1017.29" y="717.05" width="31.05" height="17.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgPanel_c.cpp
 module: ov006
 addr: 0x02131fa4
 size: 792 bytes
