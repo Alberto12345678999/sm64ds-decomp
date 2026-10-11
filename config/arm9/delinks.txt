@@ -3686,13 +3686,9 @@ src/unnamed/arm9/0204/func_020427f8.c:
     complete
     .text start:0x020427f8 end:0x02042804
 
-src/_ZN8SaveData16ReadDataFromCartEPcjj.cpp:
+src/engine/save/SaveData2.cpp:
     complete
-    .text start:0x02042804 end:0x02042c3c
-
-src/_ZN8SaveData14SaveDataToCartEPcjj.cpp:
-    complete
-    .text start:0x02042c3c end:0x02042f68
+    .text start:0x02042804 end:0x02042f68
 
 src/unnamed/arm9/0204/func_02042f68.c:
     complete

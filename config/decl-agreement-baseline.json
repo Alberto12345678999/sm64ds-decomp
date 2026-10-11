@@ -24658,10 +24658,7 @@
       ]
     },
     "func_02057078": {
-      "src/_ZN8SaveData14SaveDataToCartEPcjj.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN8SaveData16ReadDataFromCartEPcjj.cpp": [
+      "src/engine/save/SaveData2.cpp": [
         "param:#1 unsigned short"
       ]
     },
@@ -25561,18 +25558,12 @@
       ]
     },
     "func_0205ff70": {
-      "src/_ZN8SaveData14SaveDataToCartEPcjj.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN8SaveData16ReadDataFromCartEPcjj.cpp": [
+      "src/engine/save/SaveData2.cpp": [
         "param:#1 unsigned short"
       ]
     },
     "func_0205ff80": {
-      "src/_ZN8SaveData14SaveDataToCartEPcjj.cpp": [
-        "param:#1 unsigned short"
-      ],
-      "src/_ZN8SaveData16ReadDataFromCartEPcjj.cpp": [
+      "src/engine/save/SaveData2.cpp": [
         "param:#1 unsigned short"
       ]
     },
@@ -25614,12 +25605,12 @@
       ]
     },
     "func_0206045c": {
-      "src/_ZN8SaveData16ReadDataFromCartEPcjj.cpp": [
+      "src/engine/save/SaveData2.cpp": [
         "return:unsigned int"
       ]
     },
     "func_02060558": {
-      "src/_ZN8SaveData16ReadDataFromCartEPcjj.cpp": [
+      "src/engine/save/SaveData2.cpp": [
         "param:#1 unsigned int",
         "param:#2 void *",
         "param:#3 unsigned int"
