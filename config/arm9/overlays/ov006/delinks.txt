@@ -69,18 +69,10 @@ src/actors/dScMgCurling_c.cpp:
 
 src/actors/dScMgCurling2_c.cpp:
     complete
-    .text start:0x020e3854 end:0x020e59b0
+    .text start:0x020e3854 end:0x020e6c28
     .init start:0x02130758 end:0x02130a04
     .ctor start:0x02133594 end:0x02133598
     .bss start:0x02141978 end:0x02141a40
-
-src/actors/dScMgCurling2_c_upper.cpp:
-    complete
-    .text start:0x020e59b0 end:0x020e6bf4
-
-src/d_s_mg_curling2.cpp:
-    complete
-    .text start:0x020e6bf4 end:0x020e6c28
 
 src/actors/dScMgD3DBase_c.cpp:
     complete

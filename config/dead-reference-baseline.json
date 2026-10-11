@@ -62,6 +62,14 @@
    "ref": "src/engine/collision/dBgPc.cpp"
   },
   {
+   "file": "notes/agents/handoffs/fold-ov006-curling2-1005.md",
+   "ref": "config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-ov006-curling2-1005.md",
+   "ref": "src/actors/dScMgCurling2_c_upper.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
    "ref": "src/func_ov006_020cb030.cpp"
   },
@@ -92,6 +100,10 @@
   {
    "file": "notes/agents/handoffs/issue-2413.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
+   "ref": "src/d_s_mg_curling2.cpp"
   },
   {
    "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
@@ -742,6 +754,10 @@
    "ref": "src/func_ov006_02110a20.c"
   },
   {
+   "file": "notes/minigames/themes.md",
+   "ref": "src/d_s_mg_curling2.cpp"
+  },
+  {
    "file": "notes/mwccarm-codegen.md",
    "ref": "docs/_private/CodeWarrior/mwccarm.help.txt"
   },
@@ -868,6 +884,10 @@
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/__sinit_ov020_02113674.c"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/d_s_mg_curling2.cpp"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
