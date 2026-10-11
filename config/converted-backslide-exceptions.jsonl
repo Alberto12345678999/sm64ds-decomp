@@ -809,3 +809,6 @@
 {"path": "src/unnamed/ov091/__sinit_ov091_02134930.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov095/__sinit_ov095_02136fe0.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov102/__sinit_ov102_0214d714.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
+{"path": "src/unnamed/ov006/__sinit_ov006_0213014c.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
+{"path": "src/unnamed/ov006/__sinit_ov006_02131fa4.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
+{"path": "src/unnamed/ov006/__sinit_ov006_02130f64.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}

@@ -52,6 +52,9 @@ src/minigames/d_s_mg_card.cpp:
 src/actors/dScMgCoin_c.cpp:
     complete
     .text start:0x020dbe40 end:0x020de988
+    .init start:0x0213014c end:0x021303d0
+    .ctor start:0x02133588 end:0x0213358c
+    .bss start:0x021417b0 end:0x02141870
 
 src/actors/dScMgCup_c.cpp:
     complete
@@ -125,6 +128,10 @@ src/minigames/d_s_mg_jump2.cpp:
 src/actors/dScMgLuigi_c.cpp:
     complete
     .text start:0x020efc0c end:0x020f3834
+    .init start:0x02130f64 end:0x021311c8
+    .ctor start:0x021335ac end:0x021335b0
+    .data start:0x0213cd8c end:0x0213ce54
+    .bss start:0x021421ec end:0x021422a4
 
 src/minigames/d_s_mg_memory.cpp:
     complete
@@ -171,6 +178,10 @@ src/actors/dScMgPachinko2_c.cpp:
 src/actors/dScMgPanel_c.cpp:
     complete
     .text start:0x0210428c end:0x0210788c
+    .init start:0x02131fa4 end:0x021322bc
+    .ctor start:0x021335c8 end:0x021335cc
+    .data start:0x0213dc4c end:0x0213dd34
+    .bss start:0x021427bc end:0x021428c8
 
 src/actors/dScMgRoulette_c.cpp:
     complete
@@ -258,21 +269,9 @@ src/unnamed/ov006/__sinit_ov006_0212fd48.c:
     complete
     .init start:0x0212fd48 end:0x021300b0
 
-src/unnamed/ov006/__sinit_ov006_0213014c.c:
-    complete
-    .init start:0x0213014c end:0x021303d0
-
 src/unnamed/ov006/__sinit_ov006_02130a04.c:
     complete
     .init start:0x02130a04 end:0x02130a08
-
-src/unnamed/ov006/__sinit_ov006_02130f64.c:
-    complete
-    .init start:0x02130f64 end:0x021311c8
-
-src/unnamed/ov006/__sinit_ov006_02131fa4.c:
-    complete
-    .init start:0x02131fa4 end:0x021322bc
 
 src/unnamed/ov006/__sinit_ov006_021322bc.c:
     complete
