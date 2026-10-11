@@ -2,17 +2,20 @@
 /* Enemy creation and event-switch actors. The cartridge RTTI names both
  * classes; their adjacent, interleaved methods support this combined TU.
  * The original source boundary remains an inference.
+ *
+ * leftovers:
+ * - dCcAc_c::Init stays a mangled call: the real signature takes
+ *   Fix12<int> by value and 2004/b56 homes class-typed by-value
+ *   parameters on the stack (wall 6az), which changes InitResources'
+ *   size (documented on the extern).
+ * - func_ov102_0214ad14 and data_ov002_0210d9e0 keep linker names; the
+ *   spawn target (actor 0xce) has no recovered header.
  */
 #include "EnemySwitchTag.h"
 #include "EnemySpawner.h"
 #include "SharedFilePtr.h"
 #include "Model.h"
-
-namespace Event {
-    int GetBit(u32 bit);
-    int ClearBit(u32 bit);
-    void SetBit(u32 bit);
-}
+#include "Event.h"
 
 extern "C" {
     extern SharedFilePtr data_ov002_0210d9e0;
