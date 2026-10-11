@@ -7,9 +7,11 @@
  * constructor and destructor callbacks keeps D1 ahead of D0 as in the
  * cartridge.
  *
- * Blocked: the ROM has no dScMgCard_c constructor, so the factory builds the
- * scene by hand and its base constructor, operator new and vtable stores stay
- * mangled; and the ov004 and ov006 helpers are unnamed in symbols.txt.
+ * leftovers:
+ *   - the ROM has no dScMgCard_c constructor, so the factory builds the
+ *     scene by hand and its base constructor, operator new and vtable
+ *     stores stay mangled.
+ *   - the ov004 and ov006 helpers are unnamed in symbols.txt.
  */
 
 #include "dScMgCard_c.h"
@@ -108,16 +110,6 @@ extern int _ZTV12dMgCardObj_c[];
 extern int _ZTV17dMgDilarCardObj_c[];
 void _ZN12dMgCardObj_cC1Ev(void*);
 void _ZN17dMgDilarCardObj_cC1Ev(void*);
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da8e4, from the legacy file for func_ov006_020d9c5c, NOT applied: int func_ov006_020da8e4(void); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da8e4, from the legacy file for func_ov006_020da00c, NOT applied: extern "C" int func_ov006_020da8e4(void); */
-/* TUBUILD CONFLICT -- alternate declaration of Vec2_Sub, from the legacy file for func_ov006_020da0ac, NOT applied: extern "C" void Vec2_Sub(int *o, int *a, int *b); */
-/* TUBUILD CONFLICT -- alternate declaration of func_0203d680, from the legacy file for func_ov006_020da0ac, NOT applied: extern "C" void func_0203d680(int *out, int *in, int scale); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da8e4, from the legacy file for func_ov006_020da0ac, NOT applied: extern "C" int func_ov006_020da8e4(void); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da834, from the legacy file for func_ov006_020dac34, NOT applied: extern int func_ov006_020da834(void *p); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da860, from the legacy file for func_ov006_020dac34, NOT applied: extern int func_ov006_020da860(void *p, int v); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c1718, from the legacy file for _ZN11dScMgCard_c13OnTurnIntoEggEi, NOT applied: extern int func_ov006_020c1718(void* p); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02134028, from the legacy file for _ZN11dScMgCard_c13InitResourcesEv, NOT applied: extern u32 *data_ov006_02134028; */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c0aa8, from the legacy file for _ZN11dScMgCard_c13InitResourcesEv, NOT applied: extern void func_ov006_020c0aa8(char *); */
 }
 
 // @symbol _ZN12dMgCardObj_cC1Ev

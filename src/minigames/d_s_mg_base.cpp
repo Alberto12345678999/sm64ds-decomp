@@ -6,12 +6,10 @@
  * This is the whole ov004 linker unit, from dScMgBase_c::Virtual8C at the
  * first byte of ov004's .text up to the constructor, which ends where
  * func_ov004_020b2c58 begins. It holds the eight scene overrides at
- * 0x020b04e8..0x020b0a38 plus 117 former one-function sources folded in
+ * 0x020b04e8..0x020b0a38 plus the former one-function sources folded in
  * around them, among them the score-number drawer func_ov004_020b2220, the
  * engine and background set-up slots 31 to 33, the destructor and the
- * constructor. Each former source keeps its own namespace block: their local
- * struct views and extern declarations disagree with each other, and
- * unifying them changes code generation, so that is left as separate work.
+ * constructor.
  *
  * Definitions are in ROM order, lowest address first, under
  * defer_codegen off. The one exception is the constructor and destructor
@@ -22,9 +20,13 @@
  * and so is ~dScMgBase_c, the key function of dScMgBase_c itself, so this
  * file emits both classes' vtables and RTTI.
  *
- * Still raw: unk_0a4, 0a8, 0ac, 0b8, 0c8, 462c and 465c are unnamed in the
- * header, and the func_ov004 and data_ov004 helpers they feed are unnamed
- * in symbols.txt.
+ * leftovers:
+ *   - unk_0a4, 0a8, 0ac, 0b8, 0c8, 462c and 465c are unnamed in the
+ *     header, and the func_ov004 and data_ov004 helpers they feed are
+ *     unnamed in symbols.txt.
+ *   - each former source keeps its own namespace block: their local
+ *     struct views and extern declarations disagree with each other, and
+ *     unifying them changes code generation.
  */
 
 #include "dScMgBase_c.h"
@@ -812,13 +814,7 @@ dScMgBase_c::graphCallback_c::graphCallback_c() : mScene(0) {}
 namespace s20ae128 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c8OnPushedEv
-/* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBase_c_OnPushed
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnPushed - recovered from vtable slot identity.
-   Converted from .c to .cpp: dScMgBase_c.h now includes the real dScene_c.h,
-   which -- like dBase_c.h -- has no C spelling. Same shape as dScene_c.h's
-   own two affected .c files in the prior slice. */
 }
 }
 
@@ -831,8 +827,6 @@ namespace s20ae140 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c8OnKickedEv
 // recovered name: dScMgBase_c_OnKicked
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnKicked - recovered from vtable slot identity */
 struct Obj {
     virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0c();
     virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1c();
@@ -870,8 +864,6 @@ namespace s20ae198 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c11OnAttacked1Ev
 // recovered name: dScMgBase_c_OnAttacked1
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnAttacked1 - recovered from vtable slot identity */
 }
 }
 
@@ -884,8 +876,6 @@ namespace s20ae1a0 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c11OnAttacked2Ev
 // recovered name: dScMgBase_c_OnAttacked2
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnAttacked2 - recovered from vtable slot identity */
 }
 }
 
@@ -1341,8 +1331,6 @@ extern "C" void func_ov004_020ae858(char *self)
 namespace s20aea30 {
 extern "C" {
 // @symbol func_ov004_020aea30
-/* recovered: named members + shared header, declarations from a shared header */
-/* recovered: named members + shared header */
 extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
 {
     void *r8 = self;
@@ -1536,14 +1524,7 @@ namespace s20aeed8 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv
 // recovered name: dScMgBase_c_OnAimedAtWithEggReturnVec
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations
-   from a shared header */
 /* dScMgBase_c::OnAimedAtWithEggReturnVec - slot 30.
-
-   The 27-method shadow scaffold this file used to carry is gone.  Its only
-   purpose was `o->f68()`, index 26 in a hand-counted stand-in vtable, and slot
-   26 is dScMgBase_c::OnHitByCannonBlastedChar now -- so the call is spelled
-   with its name and the scaffold is dead weight.
 
    WHAT IT DOES, because the name says the opposite of both halves.  This is
    the exact mirror of slot 29: 29 saves the screen and draws the three-item
@@ -1625,19 +1606,9 @@ namespace s20af04c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c19OnHitFromUnderneathEv
 // recovered name: dScMgBase_c_OnHitFromUnderneath
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
-/* dScMgBase_c::OnHitFromUnderneath - recovered from vtable slot identity.
+/* dScMgBase_c::OnHitFromUnderneath.
 
-   THE 27-METHOD SHADOW SCAFFOLD IS GONE, and declaring slot 26 is what let it
-   go.  This file used to carry a local `struct Base` of twenty-six placeholder
-   virtuals plus `struct Obj : Base` with a `char pad[0x4627]`, existing for one
-   reason: so that `self->Init()` would compile to a load of vtable+0x68.  Slot
-   26 is OnHitByCannonBlastedChar and dScMgBase_c declares it now, so the class
-   itself does that job and the call can be written for what it is.  The two
-   raw offsets go with the scaffold -- 0x4628 is mMenuOpen and 0xf4 is
-   mTouchOptions, both named fields on the real struct.
-
-   Reading it back: a hit from underneath closes the three-item overlay menu
+   A hit from underneath closes the three-item overlay menu
    that OnHitByMegaChar opens, resets the polymorphic touch-icon set, and
    re-enables the 3D engines only if the class's own OnHitByCannonBlastedChar
    says so. */
@@ -1672,20 +1643,9 @@ namespace s20af094 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c16OnAimedAtWithEggEv
 // recovered name: dScMgBase_c_OnAimedAtWithEgg
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations
-   from a shared header */
-/* dScMgBase_c::OnAimedAtWithEgg - recovered from vtable slot identity.
-
-   THE 27-METHOD SHADOW SCAFFOLD IS GONE.  This file used to carry a local
-   `struct Base` of twenty-six placeholder virtuals plus `struct Obj : Base`
-   with a `char pad[0x4700]`, existing only so that `self->Init()` would compile
-   to a load of vtable+0x68.  Slot 26 is OnHitByCannonBlastedChar and
-   dScMgBase_c declares it now, so the class does that job and both calls can be
-   written for what they are.  Every field this body touches was already named
-   in the header before this change -- mSavedMainBgBits's comment there names
-   this function -- so those offsets go too.  The two buffers at +0x2228 and
-   +0x4228 stay as raw offsets: they are inside pad_228, and this body is the
-   only evidence for their extent.
+/* dScMgBase_c::OnAimedAtWithEgg - slot 29. The two buffers at +0x2228 and
+   +0x4228 stay as raw offsets: they are inside pad_228, and this body is
+   the only evidence for their extent.
 
    WHAT IT DOES, worth writing down because the NAME DOES NOT SAY IT.
    `OnAimedAtWithEgg` is transplanted from include/dActor_c.h at the same slot
@@ -1784,13 +1744,7 @@ int dScMgBase_c::OnAimedAtWithEgg()
 namespace s20af27c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15OnHitByMegaCharEv
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
-/* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBase_c_OnHitByMegaChar
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnHitByMegaChar - recovered from vtable slot identity.
-   Converted from .c to .cpp -- see the banner on
-   src/minigames/d_s_mg_base.cpp. */
 }
 }
 
@@ -2393,10 +2347,7 @@ namespace s20b04e0 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c24OnHitByCannonBlastedCharEv
 // recovered name: dScMgBase_c_OnHitByCannonBlastedChar
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnHitByCannonBlastedChar - slot 26.  The recovered name above is
- * this one's own and is correct; the two overrides' were not, and both are
- * corrected where they live.
+/* dScMgBase_c::OnHitByCannonBlastedChar - slot 26.
  *
  * `return 0;` here, `return 1;` in dScMgSingle3DBase_c's override and
  * `return 2;` in dScMgD3DBase_c's.  Three distinct constants out of three
@@ -3755,17 +3706,11 @@ namespace s20b27f4 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c9Virtual80Ev
 // recovered name: dScMgBase_c_AfterClsn  -- WRONG, see below
-/* recovered: renamed to Class_Method, declarations from a shared header */
 /* dScMgBase_c::Virtual80 - slot 32.
 
-   The `recovered name:` line above is kept visible because it is wrong.  This
-   time the borrowed name is a REAL ROM name -- _ZN16dPathLiftActor_c9AfterClsnEi,
-   declared at include/PathLift.h:58 -- which makes it the more misleading of the
-   two.  dPathLiftActor_c derives from dBgActor_c, which derives from dActor_c;
-   dScMgBase_c is a dScene_c.  The chains share only dBase_c, which adds no
-   virtual, so the two slot 32s have fBase_c's first eighteen entries in common
-   and nothing else.  That AfterClsn also takes an int.  See the slot-32 block in
-   include/dScMgBase_c.h.
+   The borrowed name is wrong and stays a placeholder: AfterClsn belongs to
+   dPathLiftActor_c, a dBgActor_c line that shares only dBase_c with this
+   scene. See the slot-32 block in include/dScMgBase_c.h.
 
    It touches no collision.  It is slot 31 with the other display engine: three
    read-modify-writes leave the MAIN BG1CNT at 0x0400000a holding exactly 0x1000,
@@ -3797,16 +3742,12 @@ namespace s20b2880 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c9Virtual7CEv
 // recovered name: dScMgBase_c_Kill  -- WRONG, see below
-/* recovered: renamed to Class_Method, declarations from a shared header */
 /* dScMgBase_c::Virtual7C - slot 31.
 
-   The `recovered name:` line above is kept visible because it is wrong.  The
-   ROM names nothing here: dScMgBase_c is a SCENE (fBase_c -> dBase_c ->
-   dScene_c -> dScMgBase_c), not an actor, and dActor_c -- whose names slots
-   18-30 borrowed by index -- has no slot 31 at all.  `Kill` was carried across
-   from dBgActor_c, dActor_c's own child, where _ZN10dBgActor_c4KillEv
-   (ov002:0x020ee55c) is that class's new slot 31.  Different branch, same
-   index, no relationship.  See the slot-31 block in include/dScMgBase_c.h.
+   The borrowed name is wrong and stays a placeholder: `Kill` was carried
+   across from dBgActor_c, a different branch where slot 31 is that
+   class's own. dActor_c has no slot 31. See the slot-31 block in
+   include/dScMgBase_c.h.
 
    It also does not kill anything.  Three read-modify-writes leave the sub
    engine's BG1CNT holding exactly 0x10 -- priority 0, no mosaic -- then the
@@ -3870,8 +3811,7 @@ void func_ov004_020b2980(void) { _ZN2GX15DisableAllBanksEv(); }
 
 // @symbol _ZN11dScMgBase_c15OnGroundPoundedEv
 // recovered name: dScMgBase_c_OnGroundPounded
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnGroundPounded - recovered from vtable slot identity */
+/* vtable slot 21; the base does nothing. */
 void dScMgBase_c::OnGroundPounded()
 {
 }
@@ -3886,11 +3826,7 @@ void dScMgBase_c::Virtual50()
 
 // @symbol _ZN11dScMgBase_c13OnTurnIntoEggEi
 // recovered name: dScMgBase_c_OnTurnIntoEgg
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnTurnIntoEgg - recovered from vtable slot identity */
-/* vtable slot 19. Both the name and the signature are evidenced here: this
-   body carries its own `recovered name:` above, and dScMgJump_c and
-   dScMgBSC_c carry theirs. The parameter is an int, not dActor_c.h:132's
+/* vtable slot 19. The parameter is an int, not dActor_c.h:132's
    `Player &` -- see include/dScMgBase_c.h. The base ignores the mode. */
 int dScMgBase_c::OnTurnIntoEgg(int /* mode */)
 {

@@ -6,11 +6,13 @@
  * Functions run in REVERSE of ROM order (highest address first); do not
  * reorder.
  *
- * Still raw: the func_ov004_ helpers and the data_ov006_ board globals are
- * unnamed in symbols.txt, and the unk_ fields have no evidence for a name
- * yet. The card methods and the static board helpers have coined names;
- * the ROM has only addresses for them. The factory writes the allocation
- * and vptr stores out by hand because the ROM has no dScMgMCarlo_c C1.
+ * leftovers:
+ *   - the func_ov004_ helpers and the data_ov006_ board globals are
+ *     unnamed in symbols.txt, and the unk_ fields have no evidence for a
+ *     name yet. The card methods and the static board helpers have coined
+ *     names; the ROM has only addresses for them.
+ *   - the factory writes the allocation and vptr stores out by hand
+ *     because the ROM has no dScMgMCarlo_c C1.
  */
 
 #include "dScMgMCarlo_c.h"
@@ -30,68 +32,12 @@ enum CardState {
     CARD_LEAVING = 5
 };
 
-/* The TUBUILD CONFLICT notes below are the merged legacy files' own
- * spellings of the card and scene structs; the manifest records them, so
- * they stay. The code uses dMgMCarloCardObj_c from the header. */
-
 /* Engine helpers; the parameter types are the ones the mangled names
  * encode. */
 namespace GXS { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 namespace Sound { void PlayBank2_2D(u32 id); }
 int  ApproachLinear(int &value, int target, int step);
 int  ApproachLinear2(s16 &value, s16 target, s16 step);
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Node', from the legacy file for func_ov006_020f7994, NOT applied:
-struct Node { char pad[8]; struct Node* next; };
-*/
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Node', from the legacy file for func_ov006_020f7b90, NOT applied:
-struct Node { char pad[8]; struct Node *next; char pad2[0x1e]; short key; };
-*/
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Obj', from the legacy file for func_ov006_020f8224, NOT applied:
-struct Obj
-*/
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Obj', from the legacy file for func_ov006_020f82d0, NOT applied:
-struct Obj { char pad[1]; };
-*/
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Obj', from the legacy file for func_ov006_020f8320, NOT applied:
-struct Obj {
-    char pad_00[0xc];
-    int f_0c;
-    int f_10;
-    int f_14;
-    int f_18;
-    int f_1c;
-    int f_20;
-    int f_24;
-    char pad_28[2];
-    short f_2a;
-    unsigned char f_2c;
-    unsigned char f_2d;
-};
-*/
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Node', from the legacy file for _ZN13dScMgMCarlo_c6RenderEv, NOT applied:
-struct Node {
-    virtual void f0();
-    Node* next;
-    char pad[0x18];
-    int field20;
-};
-*/
-
-/* TUBUILD CONFLICT -- alternate body of struct 'Obj', from the legacy file for _ZN13dScMgMCarlo_c13InitResourcesEv, NOT applied:
-struct Obj {
-    virtual void v0();  virtual void v1();  virtual void v2();  virtual void v3();
-    virtual void v4();  virtual void v5();  virtual void v6();  virtual void v7();
-    virtual void v8();  virtual void v9();  virtual void v10(); virtual void v11();
-    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
-    virtual void v16(); virtual void v17(); virtual void v18(int x);
-};
-*/
 
 extern "C" {
 extern dMgMCarloCardObj_c *data_ov006_021424fc; /* first pick */
@@ -147,20 +93,6 @@ void __cxa_vec_ctor(void*, int, int, void*, void*);
 extern int _ZTV19dScMgSingle3DBase_c;
 extern int _ZTV13dScMgMCarlo_c[];
 void *_ZN18dMgMCarloCardObj_cC1Ev(void*);
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_0213d574, from the legacy file for func_ov006_020f7994, NOT applied: extern Fix12 data_ov006_0213d574; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142500, from the legacy file for func_ov006_020f7994, NOT applied: extern struct Node* data_ov006_02142500; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_021424fc, from the legacy file for func_ov006_020f7a90, NOT applied: extern int data_ov006_021424fc; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142508, from the legacy file for func_ov006_020f7a90, NOT applied: extern int data_ov006_02142508; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_021424fc, from the legacy file for func_ov006_020f7b10, NOT applied: extern int data_ov006_021424fc; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142508, from the legacy file for func_ov006_020f7b10, NOT applied: extern int data_ov006_02142508; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142500, from the legacy file for func_ov006_020f7b90, NOT applied: extern struct Node *data_ov006_02142500; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_021424fc, from the legacy file for func_ov006_020f7c10, NOT applied: extern int data_ov006_021424fc; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142508, from the legacy file for func_ov006_020f7c10, NOT applied: extern int data_ov006_02142508; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142500, from the legacy file for func_ov006_020f7c10, NOT applied: extern char *data_ov006_02142500; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142504, from the legacy file for func_ov006_020f8320, NOT applied: extern int data_ov006_02142504; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142504, from the legacy file for func_ov006_020f84a8, NOT applied: extern void* data_ov006_02142504; */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c0aa8, from the legacy file for _ZN13dScMgMCarlo_c13InitResourcesEv, NOT applied: extern void func_ov006_020c0aa8(void *p); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov004_020beb68, from the legacy file for _ZN13dScMgMCarlo_c13InitResourcesEv, NOT applied: extern void *data_ov004_020beb68; */
 }
 
 // @symbol _ZN18dMgMCarloCardObj_cC1Ev
