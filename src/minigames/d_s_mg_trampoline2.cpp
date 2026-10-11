@@ -7,7 +7,7 @@
  * opt_loop_invariants is off for the whole file. TUBUILD CONFLICT lines
  * stay; the manifest pairs them.
  *
- * comment leftovers:
+ * leftovers:
  * - dScMgTrampoline2_c::StatePlay keeps raw int offsets for mTimer,
  *   mPattern, mScoreGate, mScriptDone and mWaveStep: member form DIFFs
  *   there (code shifts; the function grows). Its mRamp access matches.
