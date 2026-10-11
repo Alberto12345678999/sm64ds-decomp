@@ -269,7 +269,7 @@
   "src/_ZN13ExpandingHeapD1Ev.cpp",
   "src/engine/model/ModelComponents.cpp#_ZN15ModelComponents11UpdateBonesEP8BCA_Filei",
   "src/engine/model/ModelComponents.cpp#_ZN15ModelComponents21UpdateVertsUsingBonesEv",
-  "src/_ZN15ModelComponents6RenderEP9Matrix4x3P7Vector3.cpp",
+  "src/engine/model/ModelComponents.cpp#_ZN15ModelComponents6RenderEP9Matrix4x3P7Vector3",
   "src/_ZN15dExtFrameCtrl_cC1Ev.cpp",
   "src/_ZN15dExtFrameCtrl_cC2Ev.cpp",
   "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
