@@ -30,6 +30,8 @@ src/Memory.cpp
 # three ROM addresses -- and MSVC folds the variants into a single
 # ??1Heap@@UAE@XZ, so linking two of them is a duplicate-symbol error. D1 is
 # picked because it is the complete-object variant the host's own deleting
-# destructor calls. Same for ExpandingHeap.
+# destructor calls. Same for ExpandingHeap. Same for SolidHeap: its C1 shard
+# (line 8) needs ??1SolidHeap@@UAE@XZ, which Heap.cpp does not define.
 src/_ZN4HeapD1Ev.cpp
 src/_ZN13ExpandingHeapD1Ev.cpp
+src/_ZN9SolidHeapD1Ev.cpp

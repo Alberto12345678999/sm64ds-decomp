@@ -3791,7 +3791,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/unnamed/ov002/func_ov002_020d708c.cpp": [
+      "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -3952,7 +3952,7 @@
         "param:#1 const V3 *",
         "param:#2 const V3 *"
       ],
-      "src/unnamed/ov002/func_ov002_020d708c.cpp": [
+      "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -4189,7 +4189,7 @@
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *"
       ],
-      "src/unnamed/ov002/func_ov002_020d98b4.cpp": [
+      "src/_ZN6Player19func_ov002_020d98b4Ev.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -4518,7 +4518,7 @@
         "param:#1 const struct Vector3 *",
         "param:#2 const struct Vector3 *"
       ],
-      "src/unnamed/ov002/func_ov002_020d708c.cpp": [
+      "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -8008,7 +8008,7 @@
         "param:#3 void *",
         "return:void"
       ],
-      "src/unnamed/ov002/func_ov002_020d6998.cpp": [
+      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
         "param:#3 const Vector3 *",
         "return:void"
       ],
@@ -8627,7 +8627,7 @@
         "param:#2 void *",
         "return:void"
       ],
-      "src/unnamed/ov002/func_ov002_020d5338.cpp": [
+      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
         "param:#2 void *",
         "return:void"
       ],
@@ -8635,7 +8635,7 @@
         "param:#2 State *",
         "return:void"
       ],
-      "src/unnamed/ov002/func_ov002_020d5ed0.cpp": [
+      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
         "param:#2 void *"
       ],
       "src/unnamed/ov002/func_ov002_020d5f34.cpp": [
@@ -8734,7 +8734,7 @@
       ]
     },
     "_ZN6Player15IsCollectingCapEv": {
-      "src/unnamed/ov002/func_ov002_020d6998.cpp": [
+      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
         "param:#1 char *"
       ]
     },
@@ -8751,8 +8751,8 @@
       ]
     },
     "_ZN6Player18SetNewHatCharacterEjjb": {
-      "src/unnamed/ov002/func_ov002_020d93ac.cpp": [
-        "param:#4 bool"
+      "src/unnamed/ov002/func_ov002_020d6c60.cpp": [
+        "param:#4 int"
       ]
     },
     "_ZN6Player29TryExitCharacterDoorWithIntroEv": {
@@ -9099,7 +9099,7 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d5338.cpp": [
+      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
         "param:#2 void *",
         "return:int"
       ],
@@ -9111,11 +9111,11 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d5ed0.cpp": [
+      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
         "param:#2 void *",
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d5f98.cpp": [
+      "src/_ZN6Player19func_ov002_020d5f98EPhS0_.cpp": [
         "param:#2 void *",
         "return:int"
       ],
@@ -9123,7 +9123,7 @@
         "param:#2 State *",
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d6048.cpp": [
+      "src/_ZN6Player19func_ov002_020d6048Ev.cpp": [
         "param:#2 State *",
         "return:int"
       ],
@@ -9412,7 +9412,7 @@
         "param:#5 unsigned int",
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d4748.cpp": [
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
         "param:#5 unsigned int"
       ],
       "src/unnamed/ov002/func_ov002_020d5cec.cpp": [
@@ -9459,7 +9459,7 @@
       "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d93ac.cpp": [
+      "src/_ZN6Player19func_ov002_020d93acEv.cpp": [
         "return:bool"
       ]
     },
@@ -9920,7 +9920,7 @@
       "src/unnamed/arm9/0202/func_02022d44.c": [
         "return:unsigned int"
       ],
-      "src/unnamed/ov002/func_ov002_020d6998.cpp": [
+      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
         "param:#6 const void *",
         "return:void"
       ],
@@ -9932,7 +9932,7 @@
         "param:#6 const void *",
         "return:unsigned int"
       ],
-      "src/unnamed/ov002/func_ov002_020d98b4.cpp": [
+      "src/_ZN6Player19func_ov002_020d98b4Ev.cpp": [
         "param:#6 const void *",
         "return:void *"
       ]
@@ -10454,7 +10454,7 @@
       "src/actors/daStar_c.cpp": [
         "return:char *"
       ],
-      "src/unnamed/ov002/func_ov002_020d94cc.cpp": [
+      "src/_ZN6Player19func_ov002_020d94ccEv.cpp": [
         "return:char *"
       ]
     },
@@ -10781,7 +10781,7 @@
         "param:#1 const void *",
         "return:char *"
       ],
-      "src/unnamed/ov002/func_ov002_020d708c.cpp": [
+      "src/_ZN6Player19func_ov002_020d708cEv.cpp": [
         "param:#1 const char *",
         "return:char *"
       ]
@@ -10839,12 +10839,12 @@
       "src/unnamed/ov002/func_ov002_020d6c60.cpp": [
         "return:int"
       ],
-      "src/unnamed/ov002/func_ov002_020d93ac.cpp": [
+      "src/_ZN6Player19func_ov002_020d93acEv.cpp": [
         "param:#3 const Vector3 &",
         "param:#4 const void *",
         "return:char *"
       ],
-      "src/unnamed/ov002/func_ov002_020d94cc.cpp": [
+      "src/_ZN6Player19func_ov002_020d94ccEv.cpp": [
         "param:#3 const Vector3 &",
         "param:#4 const void *",
         "return:char *"
@@ -11410,13 +11410,13 @@
       "src/unnamed/ov002/func_ov002_020d853c.c": [
         "return:unsigned int"
       ],
-      "src/unnamed/ov002/func_ov002_020d98b4.cpp": [
+      "src/_ZN6Player19func_ov002_020d98b4Ev.cpp": [
         "return:unsigned int"
       ],
       "src/unnamed/ov002/func_ov002_020dacb4.c": [
         "param:#3 unsigned char"
       ],
-      "src/unnamed/ov002/func_ov002_020db8d8.cpp": [
+      "src/_ZN6Player19func_ov002_020db8d8Ev.cpp": [
         "param:#3 bool"
       ],
       "src/unnamed/ov002/func_ov002_020e3f90.c": [
@@ -12971,7 +12971,7 @@
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:unsigned char []"
       ],
-      "src/unnamed/ov002/func_ov002_020d94cc.cpp": [
+      "src/_ZN6Player19func_ov002_020d94ccEv.cpp": [
         "return:signed char"
       ]
     },
@@ -13267,7 +13267,7 @@
       "src/unnamed/ov002/func_ov002_020d3b9c.c": [
         "return:char []"
       ],
-      "src/unnamed/ov002/func_ov002_020d4748.cpp": [
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
         "return:unsigned short"
       ],
       "src/unnamed/ov002/func_ov002_020dde74.cpp": [
@@ -13310,7 +13310,7 @@
       "src/unnamed/ov002/func_ov002_020bd4e0.c": [
         "return:char []"
       ],
-      "src/unnamed/ov002/func_ov002_020d4748.cpp": [
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
         "return:short"
       ],
       "src/unnamed/ov002/func_ov002_020dc560.c": [
@@ -13351,7 +13351,7 @@
       "src/unnamed/ov002/func_ov002_020bd4e0.c": [
         "return:char []"
       ],
-      "src/unnamed/ov002/func_ov002_020d4748.cpp": [
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
         "return:unsigned char"
       ]
     },
@@ -13359,7 +13359,7 @@
       "src/actors/dMeter_c.cpp": [
         "return:Rec18 []"
       ],
-      "src/unnamed/ov002/func_ov002_020d4748.cpp": [
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
         "return:unsigned char"
       ]
     },
@@ -14900,7 +14900,7 @@
       "src/unnamed/ov002/__sinit_ov002_021019d0.c": [
         "return:char []"
       ],
-      "src/unnamed/ov002/func_ov002_020d5f98.cpp": [
+      "src/_ZN6Player19func_ov002_020d5f98EPhS0_.cpp": [
         "return:int []"
       ],
       "src/unnamed/ov002/func_ov002_020e25f0.c": [
@@ -15393,7 +15393,7 @@
       "src/unnamed/ov002/func_ov002_020d600c.cpp": [
         "return:State"
       ],
-      "src/unnamed/ov002/func_ov002_020d6048.cpp": [
+      "src/_ZN6Player19func_ov002_020d6048Ev.cpp": [
         "return:State"
       ]
     },
@@ -15422,7 +15422,7 @@
       ]
     },
     "data_ov002_021100f4": {
-      "src/unnamed/ov002/func_ov002_020d5338.cpp": [
+      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
         "return:char []"
       ],
       "src/unnamed/ov002/func_ov002_020d9298.cpp": [
@@ -15468,7 +15468,7 @@
       "src/_ZN6Player9DropActorEv.cpp": [
         "return:State"
       ],
-      "src/unnamed/ov002/func_ov002_020d5ed0.cpp": [
+      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
         "return:char []"
       ],
       "src/unnamed/ov002/func_ov002_020d6790.cpp": [
@@ -27604,7 +27604,7 @@
       "src/unnamed/ov002/func_ov002_020da9d4.cpp": [
         "param:#4 int"
       ],
-      "src/unnamed/ov002/func_ov002_020daa74.cpp": [
+      "src/_ZN6Player19func_ov002_020daa74Ev.cpp": [
         "param:#4 int"
       ]
     },
