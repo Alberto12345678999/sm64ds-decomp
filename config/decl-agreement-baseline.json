@@ -323,9 +323,6 @@
       ]
     },
     "CpuCopy8": {
-      "src/SharedFilePtr.cpp": [
-        "arity:3"
-      ],
       "src/engine/save/SaveData.cpp": [
         "arity:3"
       ],
@@ -463,6 +460,9 @@
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.c": [
+        "arity:3"
+      ],
+      "src/SharedFilePtr.cpp": [
         "arity:3"
       ]
     },
@@ -757,9 +757,6 @@
       ]
     },
     "FS_CloseFile": {
-      "src/SharedFilePtr.cpp": [
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
         "return:void"
       ],
@@ -780,6 +777,9 @@
       ],
       "src/unnamed/arm9/0206/func_020685cc.c": [
         "param:#1 int *",
+        "return:void"
+      ],
+      "src/SharedFilePtr.cpp": [
         "return:void"
       ]
     },
@@ -1029,10 +1029,6 @@
       ]
     },
     "IsStarCollected": {
-      "src/Message.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 unsigned char"
-      ],
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
@@ -1062,6 +1058,10 @@
       ],
       "src/game/actors/d_a_red_bombhei.cpp": [
         "param:#1 int"
+      ],
+      "src/Message.cpp": [
+        "param:#1 unsigned int",
+        "param:#2 unsigned char"
       ]
     },
     "IsStarCollectedInCurLevel": {
@@ -1227,10 +1227,6 @@
       ]
     },
     "LoadFile": {
-      "src/LoadFont3D.c": [
-        "param:#1 unsigned int",
-        "return:void *"
-      ],
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
@@ -1860,9 +1856,6 @@
       ]
     },
     "MultiCopy_Int": {
-      "src/LoadFont3D.c": [
-        "param:#3 unsigned int"
-      ],
       "src/unnamed/arm9/0204/func_02040638.c": [
         "param:#3 unsigned int"
       ],
@@ -1879,14 +1872,6 @@
       "src/ResetCrashScreen.c": [
         "param:#2 volatile void *"
       ],
-      "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
       "src/actors/dScMgSnowball_c.cpp": [
         "param:#1 int"
       ],
@@ -1895,18 +1880,6 @@
         "param:#2 int"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_020338b0.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_02033ae0.c": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_02034414.cpp": [
         "param:#1 int",
         "param:#2 int"
       ],
@@ -1936,35 +1909,11 @@
       "src/Entry.c": [
         "arity:0"
       ],
-      "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "param:#2 int"
-      ],
       "src/unnamed/arm9/0201/func_02017fd0.c": [
         "param:#1 unsigned int",
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_020331fc.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_020338b0.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_02033ae0.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_02034098.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_020341a8.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0203/func_02034414.cpp": [
         "param:#2 int"
       ]
     },
@@ -2082,9 +2031,6 @@
       ]
     },
     "OS_WakeupThread": {
-      "src/IRQ2.cpp": [
-        "param:#1 int *"
-      ],
       "src/_ZN3IRQ13VBlankHandlerEv.cpp": [
         "param:#1 int *"
       ],
@@ -2096,6 +2042,9 @@
       ],
       "src/unnamed/arm9/0206/func_0206081c.c": [
         "param:#1 char *"
+      ],
+      "src/IRQ2.cpp": [
+        "param:#1 int *"
       ]
     },
     "ObjectMessageIDToActualMessageID": {
@@ -4124,11 +4073,6 @@
       ]
     },
     "Vec3_RotateYAndTranslate": {
-      "src/engine/collision/dCcAc_c.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#4 const Vector3 *"
-      ],
       "src/_ZN6Player20St_InYoshiMouth_MainEv.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -4196,6 +4140,11 @@
         "param:#4 Vector3 *"
       ],
       "src/unnamed/ov002/func_ov002_020e640c.c": [
+        "param:#1 Vector3 *",
+        "param:#2 const Vector3 *",
+        "param:#4 const Vector3 *"
+      ],
+      "src/engine/collision/dCcAc_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "param:#4 const Vector3 *"
@@ -6353,15 +6302,6 @@
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0203/func_02033390.cpp": [
-        "return:char *"
-      ],
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020345b0.c": [
-        "return:int"
       ]
     },
     "_ZN2G213GetBG2CharPtrEv": {
@@ -6383,9 +6323,6 @@
       ],
       "src/unnamed/arm9/0201/func_0201b100.c": [
         "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0203/func_02034098.cpp": [
-        "return:int"
       ]
     },
     "_ZN2GX10LoadBGPlttEPKvjj": {
@@ -6435,12 +6372,6 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "return:int"
-      ],
       "src/actors/dScMgSmartball_c.cpp": [
         "return:void *"
       ],
@@ -6456,31 +6387,10 @@
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0203/func_020331fc.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020337ec.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020338b0.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02033ae0.c": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0203/func_02033bb8.c": [
         "return:int"
       ],
       "src/unnamed/arm9/0203/func_02033e50.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020341a8.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02034414.cpp": [
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_021188b4.c": [
@@ -6582,12 +6492,6 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "return:int"
-      ],
       "src/actors/dScMgSmartball_c.cpp": [
         "return:void *"
       ],
@@ -6610,31 +6514,10 @@
       "src/unnamed/arm9/0203/func_020319fc.c": [
         "return:char *"
       ],
-      "src/unnamed/arm9/0203/func_020331fc.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020337ec.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020338b0.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02033ae0.c": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0203/func_02033bb8.c": [
         "return:int"
       ],
       "src/unnamed/arm9/0203/func_02033e50.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020341a8.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02034414.cpp": [
         "return:int"
       ]
     },
@@ -6740,10 +6623,6 @@
       ]
     },
     "_ZN3G2x18SetBlendBrightnessEPVtts": {
-      "src/Message.cpp": [
-        "param:#2 int",
-        "param:#3 int"
-      ],
       "src/_ZN10dScStage_c7PS_InitEv.cpp": [
         "param:#2 int",
         "param:#3 int"
@@ -6755,10 +6634,6 @@
         "param:#3 int"
       ],
       "src/engine/fader/dWipe_c.cpp": [
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0203/func_020345b0.c": [
-        "param:#2 int",
         "param:#3 int"
       ],
       "src/unnamed/ov007/func_ov007_020c86c4.c": [
@@ -6773,6 +6648,14 @@
       ],
       "src/unnamed/ov075/func_ov075_02119d3c.c": [
         "arity:4"
+      ],
+      "src/Message.cpp": [
+        "param:#2 int",
+        "param:#3 int"
+      ],
+      "src/Message3.cpp": [
+        "param:#2 int",
+        "param:#3 int"
       ]
     },
     "_ZN3G3X13SetClearColorEtiiib": {
@@ -6921,9 +6804,6 @@
       ]
     },
     "_ZN3IRQ13SetIRQHandlerEjPFvvE": {
-      "src/IRQ2.cpp": [
-        "param:#2 void (*)(void)"
-      ],
       "src/unnamed/arm9/0201/func_0201a4e4.c": [
         "param:#2 void (*)(void)"
       ],
@@ -6943,6 +6823,9 @@
         "param:#2 void (*)(void)"
       ],
       "src/unnamed/arm9/0206/func_02061138.c": [
+        "param:#2 void (*)(void)"
+      ],
+      "src/IRQ2.cpp": [
         "param:#2 void (*)(void)"
       ]
     },
@@ -7316,9 +7199,6 @@
       ],
       "src/unnamed/arm9/0202/func_0202048c.cpp": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020326ac.c": [
-        "return:void *"
       ],
       "src/unnamed/ov075/func_ov075_02116f40.cpp": [
         "param:#1 bool",
@@ -7825,10 +7705,6 @@
         "param:#3 void *",
         "return:void"
       ],
-      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
-        "param:#3 const Vector3 *",
-        "return:void"
-      ],
       "src/unnamed/ov002/func_ov002_020d869c.cpp": [
         "param:#3 const Vector3 *",
         "return:void"
@@ -7860,6 +7736,10 @@
         "return:void"
       ],
       "src/unnamed/ov002/func_ov002_020e2c84.c": [
+        "param:#3 const Vector3 *",
+        "return:void"
+      ],
+      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
         "param:#3 const Vector3 *",
         "return:void"
       ]
@@ -8230,21 +8110,21 @@
       ]
     },
     "_ZN6Memory8AllocateEj": {
-      "src/SharedFilePtr.cpp": [
+      "src/unnamed/arm9/0201/func_0201818c.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/0201/func_0201818c.c": [
+      "src/SharedFilePtr.cpp": [
         "return:int"
       ]
     },
     "_ZN6Memory8AllocateEji": {
-      "src/SharedFilePtr.cpp": [
-        "return:int"
-      ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_0201a244.c": [
+        "return:int"
+      ],
+      "src/SharedFilePtr.cpp": [
         "return:int"
       ]
     },
@@ -8441,16 +8321,9 @@
         "param:#2 void *",
         "return:void"
       ],
-      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
-        "param:#2 void *",
-        "return:void"
-      ],
       "src/unnamed/ov002/func_ov002_020d5c6c.c": [
         "param:#2 State *",
         "return:void"
-      ],
-      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
-        "param:#2 void *"
       ],
       "src/unnamed/ov002/func_ov002_020d5f34.cpp": [
         "param:#2 void *"
@@ -8540,6 +8413,13 @@
       "src/unnamed/ov002/func_ov002_020e2c84.c": [
         "param:#2 void *",
         "return:void"
+      ],
+      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
+        "param:#2 void *",
+        "return:void"
+      ],
+      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
+        "param:#2 void *"
       ]
     },
     "_ZN6Player14St_Owl_CleanupEv": {
@@ -8913,10 +8793,6 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
-        "param:#2 void *",
-        "return:int"
-      ],
       "src/unnamed/ov002/func_ov002_020d5ab4.c": [
         "param:#2 void *",
         "return:int"
@@ -8925,19 +8801,7 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
-        "param:#2 void *",
-        "return:int"
-      ],
-      "src/_ZN6Player19func_ov002_020d5f98EPhS0_.cpp": [
-        "param:#2 void *",
-        "return:int"
-      ],
       "src/unnamed/ov002/func_ov002_020d600c.cpp": [
-        "param:#2 State *",
-        "return:int"
-      ],
-      "src/_ZN6Player19func_ov002_020d6048Ev.cpp": [
         "param:#2 State *",
         "return:int"
       ],
@@ -9018,6 +8882,22 @@
       ],
       "src/unnamed/ov002/func_ov002_020e2c84.c": [
         "param:#2 void *",
+        "return:int"
+      ],
+      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
+        "param:#2 void *",
+        "return:int"
+      ],
+      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
+        "param:#2 void *",
+        "return:int"
+      ],
+      "src/_ZN6Player19func_ov002_020d5f98EPhS0_.cpp": [
+        "param:#2 void *",
+        "return:int"
+      ],
+      "src/_ZN6Player19func_ov002_020d6048Ev.cpp": [
+        "param:#2 State *",
         "return:int"
       ]
     },
@@ -9226,9 +9106,6 @@
         "param:#5 unsigned int",
         "return:int"
       ],
-      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
-        "param:#5 unsigned int"
-      ],
       "src/unnamed/ov002/func_ov002_020d5cec.cpp": [
         "param:#5 unsigned int"
       ],
@@ -9252,6 +9129,9 @@
         "param:#5 unsigned int"
       ],
       "src/unnamed/ov002/func_ov002_020e200c.c": [
+        "param:#5 unsigned int"
+      ],
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
         "param:#5 unsigned int"
       ]
     },
@@ -9305,11 +9185,11 @@
       ]
     },
     "_ZN7Message11DisplayTextEt": {
-      "src/Message.cpp": [
-        "param:#1 void *"
-      ],
       "src/actors/dScStage_c.cpp": [
         "param:#1 int"
+      ],
+      "src/Message.cpp": [
+        "param:#1 void *"
       ]
     },
     "_ZN7Message16DisplayPauseTextEth": {
@@ -9734,10 +9614,6 @@
       "src/unnamed/arm9/0202/func_02022d44.c": [
         "return:unsigned int"
       ],
-      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
-        "param:#6 const void *",
-        "return:void"
-      ],
       "src/unnamed/ov002/func_ov002_020d6dac.c": [
         "param:#6 const void *",
         "return:void *"
@@ -9745,6 +9621,10 @@
       "src/unnamed/ov002/func_ov002_020d8d10.c": [
         "param:#6 const void *",
         "return:unsigned int"
+      ],
+      "src/_ZN6Player19func_ov002_020d6998Ev.cpp": [
+        "param:#6 const void *",
+        "return:void"
       ],
       "src/_ZN6Player19func_ov002_020d98b4Ev.cpp": [
         "param:#6 const void *",
@@ -10653,6 +10533,9 @@
       "src/unnamed/ov002/func_ov002_020d6c60.cpp": [
         "return:int"
       ],
+      "src/unnamed/ov009/func_ov009_0211145c.c": [
+        "return:char *"
+      ],
       "src/_ZN6Player19func_ov002_020d93acEv.cpp": [
         "param:#3 const Vector3 &",
         "param:#4 const void *",
@@ -10661,9 +10544,6 @@
       "src/_ZN6Player19func_ov002_020d94ccEv.cpp": [
         "param:#3 const Vector3 &",
         "param:#4 const void *",
-        "return:char *"
-      ],
-      "src/unnamed/ov009/func_ov009_0211145c.c": [
         "return:char *"
       ]
     },
@@ -11224,14 +11104,8 @@
       "src/unnamed/ov002/func_ov002_020d853c.c": [
         "return:unsigned int"
       ],
-      "src/_ZN6Player19func_ov002_020d98b4Ev.cpp": [
-        "return:unsigned int"
-      ],
       "src/unnamed/ov002/func_ov002_020dacb4.c": [
         "param:#3 unsigned char"
-      ],
-      "src/_ZN6Player19func_ov002_020db8d8Ev.cpp": [
-        "param:#3 bool"
       ],
       "src/unnamed/ov002/func_ov002_020e3f90.c": [
         "return:unsigned int"
@@ -11242,6 +11116,12 @@
       "src/unnamed/ov002/func_ov002_020e4bb8.c": [
         "param:#3 char",
         "return:unsigned int"
+      ],
+      "src/_ZN6Player19func_ov002_020d98b4Ev.cpp": [
+        "return:unsigned int"
+      ],
+      "src/_ZN6Player19func_ov002_020db8d8Ev.cpp": [
+        "param:#3 bool"
       ]
     },
     "_ZNK7PathPtr7GetNodeER7Vector3j": {
@@ -11735,14 +11615,14 @@
       ]
     },
     "data_0208ee14": {
-      "src/actors/dScDSMT_c.cpp": [
-        "return:int []"
-      ],
       "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:char"
       ],
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:int"
+      ],
+      "src/actors/dScDSMT_c.cpp": [
+        "return:int []"
       ]
     },
     "data_0208ee3c": {
@@ -11829,11 +11709,6 @@
     "data_02092778": {
       "src/unnamed/ov075/func_ov075_02116c8c.c": [
         "return:unsigned char []"
-      ]
-    },
-    "data_02092818": {
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "return:unsigned char"
       ]
     },
     "data_02099368": {
@@ -12404,9 +12279,6 @@
       ]
     },
     "data_0209d6f4": {
-      "src/Message.cpp": [
-        "return:volatile int"
-      ],
       "src/unnamed/arm9/0201/func_0201b100.c": [
         "return:unsigned char *"
       ],
@@ -12415,6 +12287,9 @@
       ],
       "src/unnamed/arm9/0201/func_0201b7cc.c": [
         "return:unsigned char *"
+      ],
+      "src/Message.cpp": [
+        "return:volatile int"
       ]
     },
     "data_0209d6f8": {
@@ -13023,9 +12898,6 @@
       "src/unnamed/ov002/func_ov002_020d3b9c.c": [
         "return:char []"
       ],
-      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
-        "return:unsigned short"
-      ],
       "src/unnamed/ov002/func_ov002_020dde74.cpp": [
         "return:char []"
       ],
@@ -13037,6 +12909,9 @@
       ],
       "src/unnamed/ov002/func_ov002_020e200c.c": [
         "return:unsigned char []"
+      ],
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
+        "return:unsigned short"
       ]
     },
     "data_0209f49e": {
@@ -13066,11 +12941,11 @@
       "src/unnamed/ov002/func_ov002_020bd4e0.c": [
         "return:char []"
       ],
-      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
-        "return:short"
-      ],
       "src/unnamed/ov002/func_ov002_020dc560.c": [
         "return:char []"
+      ],
+      "src/_ZN6Player19func_ov002_020d4748Ev.cpp": [
+        "return:short"
       ]
     },
     "data_0209f4a2": {
@@ -13079,9 +12954,6 @@
       ],
       "src/unnamed/arm9/0200/func_02008abc.c": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020326ac.c": [
-        "return:unsigned char"
       ]
     },
     "data_0209f4a4": {
@@ -13090,9 +12962,6 @@
       ],
       "src/unnamed/arm9/0200/func_02008a70.c": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020326ac.c": [
-        "return:unsigned char"
       ]
     },
     "data_0209f4a6": {
@@ -13277,9 +13146,6 @@
     "data_0209fc78": {
       "src/unnamed/arm9/0203/func_020316d8.c": [
         "return:unsigned char []"
-      ],
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "return:volatile unsigned char"
       ]
     },
     "data_0209fc88": {
@@ -13297,74 +13163,12 @@
         "return:unsigned char []"
       ]
     },
-    "data_0209fce8": {
-      "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
-        "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0203/func_02033a80.c": [
-        "return:unsigned short"
-      ]
-    },
-    "data_0209fcf8": {
-      "src/_ZN7Message16SetTextGlobalsVSEv.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_020345b0.c": [
-        "return:void *"
-      ]
-    },
-    "data_0209fd00": {
-      "src/unnamed/arm9/0203/func_02031e00.c": [
-        "return:unsigned char *"
-      ],
-      "src/unnamed/arm9/0203/func_02032f9c.c": [
-        "return:StarEntry *"
-      ],
-      "src/unnamed/arm9/0203/func_020345b0.c": [
-        "return:void *"
-      ]
-    },
-    "data_0209fd08": {
-      "src/unnamed/arm9/0203/func_02032f9c.c": [
-        "return:StarEntry *"
-      ],
-      "src/unnamed/arm9/0203/func_020345b0.c": [
-        "return:void *"
-      ]
-    },
     "data_0209fd0c": {
       "src/unnamed/arm9/0203/func_0203128c.c": [
         "return:unsigned char *"
       ],
       "src/unnamed/arm9/0203/func_020318a4.c": [
         "return:unsigned char *"
-      ],
-      "src/unnamed/arm9/0203/func_02031cd4.c": [
-        "return:unsigned char *"
-      ],
-      "src/unnamed/arm9/0203/func_02031e00.c": [
-        "return:unsigned char *"
-      ]
-    },
-    "data_0209fd14": {
-      "src/_ZN7Message10LoadTextVSEv.cpp": [
-        "return:int *"
-      ]
-    },
-    "data_0209fd18": {
-      "src/unnamed/arm9/0203/func_02031cd4.c": [
-        "return:unsigned int"
-      ]
-    },
-    "data_0209fd5c": {
-      "src/unnamed/arm9/0203/func_02031b84.c": [
-        "return:int []"
-      ],
-      "src/unnamed/arm9/0203/func_02031e00.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "return:int"
       ]
     },
     "data_020a0c68": {
@@ -13468,9 +13272,6 @@
       ],
       "src/actors/dScStarSel_c.cpp": [
         "return:unsigned short [][]"
-      ],
-      "src/unnamed/arm9/0203/func_020326ac.c": [
-        "return:unsigned char"
       ]
     },
     "data_020a0e68": {
@@ -14386,9 +14187,6 @@
       ]
     },
     "data_023c0000": {
-      "src/IRQ2.cpp": [
-        "return:char []"
-      ],
       "src/_ZN3IRQ13DmaTimHandlerEj.cpp": [
         "return:unsigned int []"
       ],
@@ -14406,6 +14204,9 @@
       ],
       "src/unnamed/arm9/0205/func_02059834.c": [
         "return:int"
+      ],
+      "src/IRQ2.cpp": [
+        "return:char []"
       ]
     },
     "data_ov002_020ff480": {
@@ -14662,10 +14463,10 @@
       "src/unnamed/ov002/__sinit_ov002_021019d0.c": [
         "return:char []"
       ],
-      "src/_ZN6Player19func_ov002_020d5f98EPhS0_.cpp": [
+      "src/unnamed/ov002/func_ov002_020e25f0.c": [
         "return:int []"
       ],
-      "src/unnamed/ov002/func_ov002_020e25f0.c": [
+      "src/_ZN6Player19func_ov002_020d5f98EPhS0_.cpp": [
         "return:int []"
       ]
     },
@@ -15184,11 +14985,11 @@
       ]
     },
     "data_ov002_021100f4": {
-      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
-        "return:char []"
-      ],
       "src/unnamed/ov002/func_ov002_020d9298.cpp": [
         "return:State"
+      ],
+      "src/_ZN6Player19func_ov002_020d5338Ev.cpp": [
+        "return:char []"
       ]
     },
     "data_ov002_0211010c": {
@@ -15230,14 +15031,14 @@
       "src/_ZN6Player9DropActorEv.cpp": [
         "return:State"
       ],
-      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
-        "return:char []"
-      ],
       "src/unnamed/ov002/func_ov002_020d6790.cpp": [
         "return:char"
       ],
       "src/unnamed/ov002/func_ov002_020d7430.cpp": [
         "return:char"
+      ],
+      "src/_ZN6Player19func_ov002_020d5ed0Ev.cpp": [
+        "return:char []"
       ]
     },
     "data_ov002_02110154": {
@@ -22786,10 +22587,6 @@
       ]
     },
     "func_020185c0": {
-      "src/SharedFilePtr.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
         "param:#1 void *",
         "param:#2 int",
@@ -22798,6 +22595,10 @@
       "src/unnamed/arm9/0201/func_02018270.c": [
         "param:#1 void *",
         "param:#2 int",
+        "return:void"
+      ],
+      "src/SharedFilePtr.cpp": [
+        "param:#1 void *",
         "return:void"
       ]
     },
@@ -22837,11 +22638,6 @@
       ]
     },
     "func_02018d48": {
-      "src/SharedFilePtr.cpp": [
-        "param:#1 void *",
-        "param:#2 void *",
-        "param:#3 unsigned int"
-      ],
       "src/unnamed/arm9/0201/func_0201834c.c": [
         "param:#1 Obj *",
         "param:#2 void *",
@@ -22862,6 +22658,11 @@
       "src/unnamed/arm9/0201/func_02018cbc.c": [
         "param:#1 void *",
         "param:#2 void *"
+      ],
+      "src/SharedFilePtr.cpp": [
+        "param:#1 void *",
+        "param:#2 void *",
+        "param:#3 unsigned int"
       ]
     },
     "func_02018d98": {
@@ -23213,17 +23014,8 @@
         "param:#1 int"
       ]
     },
-    "func_02031028": {
-      "src/unnamed/arm9/0203/func_02031cd4.c": [
-        "param:#1 void *"
-      ]
-    },
     "func_020316d8": {
       "src/unnamed/arm9/0203/func_020318a4.c": [
-        "param:#3 int",
-        "param:#4 int"
-      ],
-      "src/unnamed/arm9/0203/func_020331fc.c": [
         "param:#3 int",
         "param:#4 int"
       ]
@@ -23233,20 +23025,6 @@
         "param:#1 int"
       ],
       "src/unnamed/arm9/0203/func_0203128c.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0203/func_02031e00.c": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0203/func_02033464.c": [
-        "param:#1 unsigned char"
-      ]
-    },
-    "func_02031cd4": {
-      "src/unnamed/arm9/0203/func_02034098.cpp": [
-        "param:#1 int"
-      ],
-      "src/unnamed/arm9/0203/func_020341a8.cpp": [
         "param:#1 int"
       ]
     },
@@ -23289,11 +23067,6 @@
         "return:int"
       ],
       "src/unnamed/ov075/func_ov075_021173a8.c": [
-        "return:int"
-      ]
-    },
-    "func_02034504": {
-      "src/unnamed/arm9/0203/func_02034414.cpp": [
         "return:int"
       ]
     },
@@ -24871,9 +24644,6 @@
       ]
     },
     "func_02054d88": {
-      "src/LoadFont3D.c": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int *"
       ],
@@ -26640,8 +26410,7 @@
         "arity:0"
       ]
     },
-    "func_0206ccd8": {
-    },
+    "func_0206ccd8": {},
     "func_0206d32c": {
       "src/unnamed/arm9/0201/func_02018b64.c": [
         "param:#2 int",
@@ -26958,10 +26727,10 @@
       ]
     },
     "func_02073238": {
-      "src/cstd4.cpp": [
+      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
         "return:int"
       ],
-      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
+      "src/cstd4.cpp": [
         "return:int"
       ]
     },
