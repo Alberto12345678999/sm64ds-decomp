@@ -18,24 +18,20 @@
  * is the loaded BCA/BMD). data_0209f32c is the stage water height
  * (daObjC0Water_c publishes it); data_ov032_021137cc / 021137d8 are
  * the body and head cylinder offsets.
- *
- * Leftovers, each load-bearing on mwccarm 2004/b56:
- *   - common.h precedes daBakubaku_c.h: Model.h's nested Matrix4x3
- *     scalarizes the mShadowMat / mat4x3 twelve-word copies.
- *   - mSpawnPos* / mTargetPos* are three s32s: a Vector3 member runs
- *     ~Vector3 from the inline D1.
- *   - mStateTimer (dEnemyBase_c, s16) is read through unsigned-halfword
- *     puns where the ROM does; the tests emit ldrh, a signed read is ldrsh.
- *   - The double stores into the forward vector's Z, the gotos, and the
- *     register-named locals (r5, v1, v2, s5) are the shape that matches.
- *   - func_ov032_02111ff4 reads mState back through a StateFn *:
- *     flattening it drops the ROM's store-then-load.
- *   - Fix12-by-value callees stay scalar externs: dBgCh_Actr::Init's
- *     header method mangles Fix12i as int and the link fails; typed
- *     SetAnim / dCcAcPos_c::Init / DropShadowRadHeight with a
- *     Fix12<int> local grow the caller and retarget its relocs.
- *     Player::Hurt has no header decl at all.
- *   - g_profile_BAKUBAKU is this TU's .data, not a class member.
+ */
+/* leftovers: common.h precedes daBakubaku_c.h. Model.h's nested Matrix4x3
+ * scalarizes the mShadowMat and mat4x3 copies this file makes.
+ * mSpawnPos and mTargetPos stay three s32s: a Vector3 member emits ~Vector3
+ * from the inline destructor. mStateTimer is an s16 on dEnemyBase_c; the
+ * reads that match are unsigned halfwords (ldrh, not ldrsh).
+ * func_ov032_02111ff4 reloads mState through a StateFn *; flattening that
+ * drops the store-then-load. dBgCh_Actr::Init, SetAnim, dCcAcPos_c::Init
+ * and DropShadowRadHeight stay scalar externs: this file's call sites grow
+ * when the argument is a Fix12<int> temporary, and the header's Fix12i
+ * spelling of Init does not link. Player::Hurt has no header declaration.
+ * g_profile_BAKUBAKU is this file's .data, not a class member. The forward
+ * vector's doubled Z store and the register-shaped locals stay; renaming
+ * them reschedules the matched bodies.
  */
 
 #include "common.h"
