@@ -186,16 +186,8 @@
     "functions_declared": 16,
     "compilerOnlyOutput": {
       "requested": [],
-      "deadstripped": [],
-      "droppedSections": [
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
+      "unhandled": [
+        "func_020381cc"
       ],
       "data": [
         "_ZTI5dBgPc",
@@ -203,19 +195,12 @@
         "_ZTV5dBgPi",
         "_ZTI5dBgPi",
         "_ZTS5dBgPi"
-      ],
-      "dataExternalized": [
-        "_ZTI5dBgPc",
-        "_ZTI5dBgPi",
-        "_ZTS5dBgPc",
-        "_ZTS5dBgPi",
-        "_ZTV5dBgPi"
       ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 6 unlicensed section/symbol(s), 1 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     }

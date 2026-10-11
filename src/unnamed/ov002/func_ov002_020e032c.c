@@ -1,4 +1,4 @@
-extern void func_ov002_020bd984(char* c, unsigned int r1);
+extern void _ZN6Player19func_ov002_020bd984Ej(char* c, unsigned int r1);
 extern unsigned char data_0209f2d8;
 extern int data_0209caa0;
 
@@ -12,5 +12,5 @@ void func_ov002_020e032c(unsigned char* c)
         if (((&data_0209caa0)[2] & 0x80) == 0) return;
         if ((int)(st == 2) != 0) return;
     }
-    func_ov002_020bd984((char*)c, 0x33);
+    _ZN6Player19func_ov002_020bd984Ej((char*)c, 0x33);
 }

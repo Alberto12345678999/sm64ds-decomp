@@ -1,6 +1,5 @@
 //cpp
 #include "Player.h"
-extern "C" int func_ov002_020c031c(void* c);
 extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* self, void* state);
 
 extern char data_ov002_021103f4;
@@ -9,7 +8,7 @@ extern "C" int func_ov002_020e2be4(char* self){
     int thr;
     if (((Player *)(self))->func_ov002_020c04ac())
         return 0;
-    switch (func_ov002_020c031c(self)) {
+    switch (((Player *)(self))->func_ov002_020c031c()) {
     case 4:
     case 5:
         thr = 0xf74;

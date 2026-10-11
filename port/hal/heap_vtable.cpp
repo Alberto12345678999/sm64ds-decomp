@@ -44,6 +44,9 @@ void *_ZN6Memory8AllocateEjiP4Heap(u32 size, int align, Heap *heap)
 extern "C" {
 void *data_020a0e9c;   /* Heap::rootHeap */
 void *data_020a0ea0;   /* Memory::defaultHeapPtr */
+Heap *GAME_HEAP_PTR;   /* the game heap; Heap::InitializeGameHeap publishes it */
+Heap *data_020a0ea8;   /* where SetupSolidHeapAsDefault parks the outgoing default */
+unsigned char data_020a0e98; /* Heap::Intact's latched-corruption flag (decl_common.h) */
 int data_02099d90;     /* heap bring-up state flag */
 }
 
@@ -119,8 +122,8 @@ extern "C" void *_ZTV13ExpandingHeap[15] = {
 
 // ---- ExpandingHeap's constructor, under its Itanium spelling ---------------
 //
-// src/_ZN4Heap14CreateRootHeapEPvj.cpp and src/_ZN4Heap19CreateExpandingHeapEjPS_i.cpp
-// call `_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator' as an extern "C"
+// src/engine/heap/Heap.cpp's CreateRootHeap and CreateExpandingHeap call
+// `_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator' as an extern "C"
 // function, for the reason hal/heap_globals.cpp's constructor-bridge block gives:
 // C1 is an Itanium ABI variant tag and MSVC has no syntax that emits or references
 // one, so the only way to satisfy that string is to write a function with it.
@@ -141,4 +144,33 @@ extern "C" ExpandingHeap *_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocato
     void *self, void *start, u32 size, Heap *root, ExpandingHeapAllocator *allocator)
 {
     return ::new (self) ExpandingHeap(start, size, root, allocator);
+}
+
+// ---- SolidHeap's constructor, under its Itanium spelling -------------------
+//
+// Same seam as above, for the other factory src/engine/heap/Heap.cpp's
+// CreateSolidHeap calls: `_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator'.
+// Here (not in heap_globals.cpp) for the same smoke_heap reason: the body
+// names SolidHeap's constructor, which only smoke_roots compiles -- through
+// src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.cpp in slice_gate3a.txt.
+#include "SolidHeap.h"
+
+extern "C" SolidHeap *_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator(
+    void *self, void *start, u32 size, Heap *root, SolidHeapAllocator *allocator)
+{
+    return ::new (self) SolidHeap(start, size, root, allocator);
+}
+
+// ---- SolidHeapAllocator's constructor, under its Itanium spelling ----------
+//
+// Same seam once more: src/engine/heap/SolidHeapAllocator.cpp's
+// CreateSolidHeapAllocator factory calls `_ZN18SolidHeapAllocatorC1EPvj'.
+// The real constructor is compiled into smoke_roots with that same TU
+// (slice_gate3a.txt), so placement new resolves it there.
+#include "SolidHeapAllocator.h"
+
+extern "C" SolidHeapAllocator *_ZN18SolidHeapAllocatorC1EPvj(
+    void *self, void *heapEnd, u32 flags)
+{
+    return ::new (self) SolidHeapAllocator(heapEnd, flags);
 }
