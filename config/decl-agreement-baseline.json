@@ -1029,6 +1029,10 @@
       ]
     },
     "IsStarCollected": {
+      "src/Message.cpp": [
+        "param:#1 unsigned int",
+        "param:#2 unsigned char"
+      ],
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
@@ -1058,10 +1062,6 @@
       ],
       "src/game/actors/d_a_red_bombhei.cpp": [
         "param:#1 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d850.c": [
-        "param:#1 unsigned int",
-        "param:#2 unsigned char"
       ]
     },
     "IsStarCollectedInCurLevel": {
@@ -1879,47 +1879,11 @@
       "src/ResetCrashScreen.c": [
         "param:#2 volatile void *"
       ],
-      "src/_ZN7Message11DisplayTextEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message13DisplaySavingEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message16DisplayPauseTextEth.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
       "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
         "param:#1 int",
         "param:#2 int"
       ],
       "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message19DisplayDontSaveTextEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message21DisplaySaveStatusTextEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message22DisplayOptionsMenuTextEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message25DisplayControllerModeTextEt.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message30DisplayCourseNameForStarSelectEj.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/_ZN7Message7DisplayEj.cpp": [
         "param:#1 int",
         "param:#2 int"
       ],
@@ -1931,14 +1895,6 @@
         "param:#2 int"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201e220.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201f138.cpp": [
         "param:#1 int",
         "param:#2 int"
       ],
@@ -1980,43 +1936,10 @@
       "src/Entry.c": [
         "arity:0"
       ],
-      "src/Message_DrawCenteredLine.c": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message11DisplayTextEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message13DisplaySavingEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message16DisplayPauseTextEth.cpp": [
-        "param:#2 int"
-      ],
       "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
         "param:#2 int"
       ],
       "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message19DisplayDontSaveTextEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message21DisplaySaveStatusTextEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message22DisplayOptionsMenuTextEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message25DisplayControllerModeTextEt.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message28DisplayStarNameForStarSelectEj.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message30DisplayCourseNameForStarSelectEj.cpp": [
-        "param:#2 int"
-      ],
-      "src/_ZN7Message7DisplayEj.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0201/func_02017fd0.c": [
@@ -2024,18 +1947,6 @@
         "param:#3 unsigned int"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d418.c": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d590.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201e220.cpp": [
-        "param:#2 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201f138.cpp": [
         "param:#2 int"
       ],
       "src/unnamed/arm9/0203/func_020331fc.c": [
@@ -6408,9 +6319,6 @@
       ]
     },
     "_ZN2G212GetBG2ScrPtrEv": {
-      "src/LoadControllerModeText.c": [
-        "return:int"
-      ],
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
@@ -6437,21 +6345,6 @@
       ]
     },
     "_ZN2G212GetBG3ScrPtrEv": {
-      "src/_ZN7Message11DisplayTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message13DisplaySavingEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message28DisplayStarNameForStarSelectEj.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message30DisplayCourseNameForStarSelectEj.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message7DisplayEj.cpp": [
-        "return:int"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ],
@@ -6460,9 +6353,6 @@
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0201/func_0201f138.cpp": [
-        "return:int"
       ],
       "src/unnamed/arm9/0203/func_02033390.cpp": [
         "return:char *"
@@ -6493,9 +6383,6 @@
       ],
       "src/unnamed/arm9/0201/func_0201b100.c": [
         "return:unsigned int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d590.cpp": [
-        "return:int"
       ],
       "src/unnamed/arm9/0203/func_02034098.cpp": [
         "return:int"
@@ -6545,34 +6432,13 @@
       ]
     },
     "_ZN3G2S12GetBG0ScrPtrEv": {
-      "src/Message_DrawCenteredLine.c": [
-        "return:int"
-      ],
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
-      ],
-      "src/_ZN7Message16DisplayPauseTextEth.cpp": [
-        "return:int"
       ],
       "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
         "return:int"
       ],
       "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message19DisplayDontSaveTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message21DisplaySaveStatusTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message22DisplayOptionsMenuTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message25DisplayControllerModeTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message7DisplayEj.cpp": [
         "return:int"
       ],
       "src/actors/dScMgSmartball_c.cpp": [
@@ -6589,18 +6455,6 @@
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
         "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201cebc.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d418.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201e220.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201f108.c": [
-        "return:unsigned short *"
       ],
       "src/unnamed/arm9/0203/func_020331fc.c": [
         "return:int"
@@ -6652,9 +6506,6 @@
       ],
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
-        "return:void *"
       ],
       "src/unnamed/arm9/0203/func_02030500.c": [
         "return:void *"
@@ -6728,34 +6579,13 @@
       ]
     },
     "_ZN3G2S13GetBG0CharPtrEv": {
-      "src/Message_DrawCenteredLine.c": [
-        "return:int"
-      ],
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
-      ],
-      "src/_ZN7Message16DisplayPauseTextEth.cpp": [
-        "return:int"
       ],
       "src/_ZN7Message17DisplayVsExitTextEt.cpp": [
         "return:int"
       ],
       "src/_ZN7Message18DisplayPauseTextVSEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message19DisplayDontSaveTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message21DisplaySaveStatusTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message22DisplayOptionsMenuTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message25DisplayControllerModeTextEt.cpp": [
-        "return:int"
-      ],
-      "src/_ZN7Message7DisplayEj.cpp": [
         "return:int"
       ],
       "src/actors/dScMgSmartball_c.cpp": [
@@ -6772,15 +6602,6 @@
         "return:char *"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201cebc.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d418.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201e220.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0203/func_020316d8.c": [
@@ -6919,11 +6740,11 @@
       ]
     },
     "_ZN3G2x18SetBlendBrightnessEPVtts": {
-      "src/_ZN10dScStage_c7PS_InitEv.cpp": [
+      "src/Message.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/_ZN7Message13DisplaySavingEt.cpp": [
+      "src/_ZN10dScStage_c7PS_InitEv.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
@@ -6934,10 +6755,6 @@
         "param:#3 int"
       ],
       "src/engine/fader/dWipe_c.cpp": [
-        "param:#3 int"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
-        "param:#2 int",
         "param:#3 int"
       ],
       "src/unnamed/arm9/0203/func_020345b0.c": [
@@ -8079,9 +7896,6 @@
         "return:void"
       ],
       "src/actors/daTrs_c.cpp": [
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
         "return:void"
       ]
     },
@@ -9491,7 +9305,7 @@
       ]
     },
     "_ZN7Message11DisplayTextEt": {
-      "src/_ZN7Message7DisplayEj.cpp": [
+      "src/Message.cpp": [
         "param:#1 void *"
       ],
       "src/actors/dScStage_c.cpp": [
@@ -11921,14 +11735,14 @@
       ]
     },
     "data_0208ee14": {
+      "src/actors/dScDSMT_c.cpp": [
+        "return:int []"
+      ],
       "src/unnamed/arm9/0207/__sinit_02074e84.cpp": [
         "return:char"
       ],
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:int"
-      ],
-      "src/actors/dScDSMT_c.cpp": [
-        "return:int []"
       ]
     },
     "data_0208ee3c": {
@@ -12295,9 +12109,6 @@
       "src/unnamed/arm9/0201/func_02013a00.c": [
         "return:SaveData"
       ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
-        "return:unsigned int []"
-      ],
       "src/unnamed/ov002/func_ov002_020e032c.c": [
         "return:int"
       ]
@@ -12383,9 +12194,6 @@
         "return:unsigned char []"
       ],
       "src/minigames/d_s_mg_bsc.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/arm9/0201/func_0201ef38.c": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_02117918.c": [
@@ -12580,26 +12388,11 @@
       ]
     },
     "data_0209d6d4": {
-      "src/_ZN7Message19DisplaySaveMenuTextEt.cpp": [
-        "return:unsigned short"
-      ],
-      "src/_ZN7Message21DisplayLevelClearTextEta.cpp": [
-        "return:unsigned short"
-      ],
-      "src/_ZN7Message21DisplaySaveStatusTextEt.cpp": [
-        "return:unsigned short"
-      ],
       "src/game/actors/d_a_red_bombhei.cpp": [
-        "return:unsigned short"
-      ],
-      "src/unnamed/arm9/0201/func_0201cfb8.c": [
         "return:unsigned short"
       ]
     },
     "data_0209d6f0": {
-      "src/Message_DrawCenteredLine.c": [
-        "return:int"
-      ],
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:Struct6f0 *"
       ],
@@ -12608,22 +12401,10 @@
       ],
       "src/unnamed/arm9/0201/func_0201b7cc.c": [
         "return:unsigned char *"
-      ],
-      "src/unnamed/arm9/0201/func_0201d418.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d590.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d850.c": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
-        "return:void *"
       ]
     },
     "data_0209d6f4": {
-      "src/_ZN7Message30DisplayCourseNameForStarSelectEj.cpp": [
+      "src/Message.cpp": [
         "return:volatile int"
       ],
       "src/unnamed/arm9/0201/func_0201b100.c": [
@@ -12638,31 +12419,6 @@
     },
     "data_0209d6f8": {
       "src/_ZN7Message7AddCharEc.cpp": [
-        "return:void *"
-      ]
-    },
-    "data_0209d708": {
-      "src/Message_DrawCenteredLine.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d418.c": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d590.cpp": [
-        "return:int"
-      ],
-      "src/unnamed/arm9/0201/func_0201d850.c": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
-        "return:void *"
-      ]
-    },
-    "data_0209d70c": {
-      "src/unnamed/arm9/0201/func_0201d850.c": [
-        "return:void *"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
         "return:void *"
       ]
     },
@@ -21024,10 +20780,6 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN7Message13DisplaySavingEt.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/_ZN7Message6UpdateEv.cpp": [
         "param:#1 int",
         "return:void"
@@ -21143,10 +20895,6 @@
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_02019ac4.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/unnamed/arm9/0201/func_0201f32c.c": [
         "param:#1 int",
         "return:void"
       ],
@@ -23306,19 +23054,11 @@
     "func_0201eaac": {
       "include/decl_common.h": [
         "return:int"
-      ],
-      "src/_ZN7Message15ResetAllGlobalsEv.cpp": [
-        "return:int"
       ]
     },
     "func_0201ef50": {
       "src/actors/daDemo_c.cpp": [
         "param:#1 unsigned char"
-      ]
-    },
-    "func_0201f32c": {
-      "src/unnamed/arm9/0201/func_0201fc88.c": [
-        "param:#1 short"
       ]
     },
     "func_02020028": {
