@@ -129,7 +129,7 @@ struct Player : dActor_c {
     /* EIGHT more models, same element type and the same evidence: CleanupResources
        destroys `i < 4` and then `i + 4` over this one base, TurnOffToonShading
        indexes it at `j` and `j + 4`, and Render indexes it with
-       _ZN6Player19func_ov002_020becf4Eii(mBodyModelId, 1). That helper can also return 8 or 9,
+       func_ov002_020becf4(mBodyModelId, 1). That helper can also return 8 or 9,
        which are "no model" sentinels -- Render loads the slot FIRST and only then
        tests `i != 9 && i != 8`, so the ROM itself reads one word past this run in
        those two cases. Kept as written; the read lands in mModelAnim4 below and
@@ -219,13 +219,13 @@ struct Player : dActor_c {
     s32 mFloorNormalY;            /* 0x558 */
     s32 mFloorNormalZ;            /* 0x55c */
     /* Wall normal, fx12, and the exact counterpart of the floor normal above.
-     * _ZN6Player19func_ov002_020c25a8Ei writes all three from
+     * func_ov002_020c25a8 writes all three from
      * SurfaceInfo::CopyNormalTo(dBgCh_Actr::GetWallResult(&mMeshClsn) + 4, &wn)
      * -- the same helper, the same shape, one surface over. It then pushes the
      * actor out along it (`mPosX -= mWallNormalX * 2`, `mPosZ -= mWallNormalZ * 2`).
      * Seven bodies read the pair back as `cstd::atan2(mWallNormalX, mWallNormalZ)`
      * to get the wall's facing: St_Shell_Main, St_OnWall_Main (twice),
-     * St_Balloon_Main, St_CrazedCrate_Main, _ZN6Player19func_ov002_020c2138Ev,
+     * St_Balloon_Main, St_CrazedCrate_Main, func_ov002_020c2138,
      * func_ov002_020dd2f4 and func_ov002_020e28d4. 0x564 was marked padding until
      * that store was disassembled, exactly as 0x554/0x55c were. */
     s32 mWallNormalX;            /* 0x560 */

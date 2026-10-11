@@ -63,10 +63,10 @@ int Player::St_Electrocute_Main()
             }
         } else {
             if ((flags & 2) != 0) {
-                ((Player *)(this))->func_ov002_020c5dec(8);
+                func_ov002_020c5dec(8);
             } else {
                 mInvincibleTimer = 0x24;
-                if (((Player *)(this))->func_ov002_020c5dec(4) == 0) {
+                if (func_ov002_020c5dec(4) == 0) {
                     _ZN6Player11ChangeStateERNS_5StateE(this, &data_ov002_0211013c);
                 }
             }

@@ -22,8 +22,8 @@ void Player::InitBalloonMario()
     mIsBalloon = 1;
     mBalloonTimer = 0x258;
     _ZN6Player11ChangeStateERNS_5StateE(((char*)this), &data_ov002_0211028c);
-    ((Player *)(((char*)this)))->func_ov002_020bd9ec(0x30);
-    ((Player *)(((char*)this)))->func_ov002_020c43c4(2);
+    func_ov002_020bd9ec(0x30);
+    func_ov002_020c43c4(2);
 
     v.x = mPosX;
     v.y = mPosY;

@@ -17,6 +17,6 @@ int Player::St_Owl_Init()
   mHorzSpeed=0;
   _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this),0x5b,0x40000000,0x1000,0);
   func_0200d6b4((void*)data_0209f318[0], mPlayerNo);
-  ((Player *)(((char*)this)))->func_ov002_020bd928(0x2f);
+  func_ov002_020bd928(0x2f);
   return 1;
 }

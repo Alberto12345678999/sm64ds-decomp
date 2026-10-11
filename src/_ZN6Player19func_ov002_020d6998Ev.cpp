@@ -28,8 +28,6 @@ struct VObj {
 extern "C" {
 typedef int (*VFunc)(void*);
 
-extern int _ZN6Player19func_ov002_020bea7cEv(char* c); // local extern: include-free shard, the call passes the object as an untyped pointer so it cannot use the header member
-extern int _ZN6Player15IsCollectingCapEv(char* self);
 extern int func_ov002_020d6dac(char* self);
 extern void func_ov002_020d71ec(char* self, int arg1);
 extern void* _ZN8dActor_c10FindWithIDEj(u32 id);
@@ -54,8 +52,8 @@ int Player::func_ov002_020d6998()
     void* other;
     u32 id;
 
-    if (_ZN6Player19func_ov002_020bea7cEv(self)) {
-        if (_ZN6Player15IsCollectingCapEv(self) != 0) return 0;
+    if (func_ov002_020bea7c()) {
+        if (IsCollectingCap() != 0) return 0;
         if (*(u8*)(self + 0x6dd) != 3) return 0;
     }
     {
@@ -82,7 +80,7 @@ int Player::func_ov002_020d6998()
     if (other == 0) goto fail;
     if (other == this) goto fail;
 
-    if (_ZN6Player15IsCollectingCapEv(self) != 0) goto react;
+    if (IsCollectingCap() != 0) goto react;
     if (((VObj*)other)->V18() == 0) goto react;
 
     {

@@ -43,7 +43,7 @@ int Player::St_WallJump_Init()
     if (param1 == 2) {
         mVertSpeed = 0x2aa00;
     } else {
-        ((Player *)(this))->func_ov002_020bf2d8(0x3e000);
+        func_ov002_020bf2d8(0x3e000);
     }
     mHorzSpeed = 0x18000;
     mAngleY = mAngleY + 0x8000;

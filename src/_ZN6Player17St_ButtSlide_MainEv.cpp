@@ -30,7 +30,7 @@ int Player::St_ButtSlide_Main()
         func_ov002_020bf90c();
         if (mIsAirborne == 0) {
             mIsSlidingOnGround = 1;
-            ((Player *)(((char*)this)))->func_ov002_020c06fc(0x4000);
+            func_ov002_020c06fc(0x4000);
             func_ov002_020dd2f4(((char*)this));
         }
         if (mHorzSpeed == 0) {

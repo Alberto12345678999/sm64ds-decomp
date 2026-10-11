@@ -51,7 +51,7 @@ int Player::St_BurnFire_Main()
         u16 lvl = mStateTimer;
         if (lvl == 0x50 || lvl == 0x32 || lvl == 0x14) {
             if (func_ov002_020d91e0(this, 0x100, 1) != 0) {
-                ((Player *)(this))->func_ov002_020c5dec(2);
+                func_ov002_020c5dec(2);
                 return 1;
             }
         }

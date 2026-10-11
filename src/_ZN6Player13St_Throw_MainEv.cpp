@@ -9,8 +9,6 @@
 extern "C" {
 extern int _Z14ApproachLinearRiii(int&, int, int);
 extern int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned, int);
-extern void func_ov002_020daa74(void*);
-extern int func_ov002_020c19d0(void*, int, int);
 extern void func_ov002_020da9d4(void*);
 extern int _ZN6Player12FinishedAnimEv(void*);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
@@ -28,7 +26,7 @@ int Player::St_Throw_Main()
     int id=_ZNK6Player14GetBodyModelIDEjb(((char*)this),param1&0xff,0);
     void* anim=*(void**)(((char*)this)+(id<<2)+0xdc);
     if(_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)anim+0x50,0)){
-      if(((Player *)(((char*)this)))->func_ov002_020c19d0(0x40, 0x32)) r4=0;
+      if(func_ov002_020c19d0(0x40, 0x32)) r4=0;
     }
     char* q=*(char**)((char*)&mHeldObj);
     unsigned short a=*(unsigned short*)(q+0xc);

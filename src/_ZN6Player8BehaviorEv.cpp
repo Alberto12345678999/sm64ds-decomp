@@ -149,7 +149,7 @@ after_player_slot:
             func_ov002_020bdd9c();
         }
         if (DecIfAbove0_Short(&unk_6c2) == 0)
-            ((Player *)(((char *)this)))->func_ov002_020bdd2c();
+            func_ov002_020bdd2c();
 
         if (mPrevAreaId != mAreaId) {
             mPrevAreaId = mAreaId;
@@ -224,7 +224,7 @@ after_player_slot:
     mPreClsnPosX = mPosX;
     mPreClsnPosY = mPosY;
     mPreClsnPosZ = mPosZ;
-    ((Player *)(((char *)this)))->func_ov002_020bf36c(((char *)this) + 0x2d4);
+    func_ov002_020bf36c(((char *)this) + 0x2d4);
     func_ov002_020bf13c();
 
     {
@@ -252,7 +252,7 @@ after_player_slot:
     v1.y = v0.y;
     v1.z = v0.z;
     _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(((char *)this) + 0x2d4, &v1);
-    ((Player *)(((char *)this)))->func_ov002_020c2db8();
+    func_ov002_020c2db8();
 
     if (mIsInShallowWater != 0)
         mGroundSoundType = 3;

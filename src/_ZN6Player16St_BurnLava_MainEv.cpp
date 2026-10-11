@@ -88,7 +88,7 @@ int Player::St_BurnLava_Main()
         if (FinishedAnim() != 0) {
             mPrevAngleY = mAngleY;
             if (GetHealth() == 0)
-                ((Player *)(this))->func_ov002_020c5dec(2);
+                func_ov002_020c5dec(2);
             else
                 _ZN6Player11ChangeStateERNS_5StateE(this, &data_ov002_0211013c);
         }

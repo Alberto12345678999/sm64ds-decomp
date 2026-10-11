@@ -52,10 +52,10 @@ int Player::St_PunchKick_Main()
         }
 
         _Z14ApproachLinearRiii((int*)((char*)&mHorzSpeed), 0, 0x800);
-        ((Player *)(((char*)this)))->func_ov002_020c2f64();
+        func_ov002_020c2f64();
 
         if (func_ov002_020c0434() != 0) {
-            ((Player *)(((char*)this)))->func_ov002_020c0364(3);
+            func_ov002_020c0364(3);
             return 1;
         }
 

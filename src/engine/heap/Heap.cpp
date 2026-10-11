@@ -1,11 +1,14 @@
 //cpp
 /* Heap -- abstract base of the ROM's mHeap::Heap_t family (RTTI at
    0x02099ce4 spells the cartridge name; SolidHeap and ExpandingHeap derive
-   from it). TU claims 0x0203c24c..0x0203c33c, the class's own contiguous run
+   from it). TU claims 0x0203c24c..0x0203c970, the class's own contiguous run
    in delinks order: the game-heap bootstrap, the four tail-call veneers, the
-   scratch-heap push/pop pair, and the default-heap setter. Written
-   back-to-front: mwccarm emits .text in reverse source order under default
-   deferred codegen. */
+   scratch-heap push/pop pair and the default-heap setter; then the dispatch
+   run, where each public Heap forwarder follows the SolidHeap and
+   ExpandingHeap overrides of the slot it calls (ResizeToFit through Destroy);
+   then the three factories, CreateSolidHeap, CreateExpandingHeap and
+   CreateRootHeap. Written back-to-front: mwccarm emits .text in reverse
+   source order under default deferred codegen. */
 #include "Heap.h"
 #include "decl_common.h"
 #include "SolidHeap.h"
@@ -68,16 +71,11 @@ Heap* Heap::CreateRootHeap(void* mem, u32 size)
 // @symbol _ZN4Heap19CreateExpandingHeapEjPS_i
 /* Heap::CreateExpandingHeap(u32, Heap*, int) at 0x0203c844 -- the expanding twin
  * of Heap::CreateSolidHeap, instruction for instruction bar the allocator it
- * builds and the constructor it calls. See that file for the 0x18 and for why
+ * builds and the constructor it calls. See CreateSolidHeap for the 0x18 and for why
  * neither could be migrated until ExpandingHeap became a real type.
  *
  * Same correction: 0x08 is `heapSize' and always held a size, not an end
  * address. */
-
-namespace Memory { extern Heap* defaultHeapPtr; }   /* 0x020a0ea0 */
-
-extern "C" ExpandingHeap* _ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator(
-    ExpandingHeap* heap, void* start, u32 size, Heap* root, ExpandingHeapAllocator* allocator);
 
 Heap* Heap::CreateExpandingHeap(u32 size, Heap* root, int align)
 {
@@ -129,8 +127,6 @@ Heap* Heap::CreateExpandingHeap(u32 size, Heap* root, int align)
  * The `if (heap != 0)' before the constructor is redundant -- the enclosing
  * branch already established it -- but the ROM emits the second test, so it
  * stays. */
-
-namespace Memory { extern Heap* defaultHeapPtr; }   /* 0x020a0ea0 */
 
 extern "C" SolidHeap* _ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator(
     SolidHeap* heap, void* start, u32 size, Heap* root, SolidHeapAllocator* allocator);
@@ -249,13 +245,12 @@ void SolidHeap::VDestroy()
  * slot 3, and if it comes back empty on a fail-fast heap, do not return the
  * NULL to the caller, Crash() instead.
  *
- * RETURN TYPE: void*, from the definition. This file used to declare `int
- * Heap::Allocate(...)' while the sibling overload -- now in
- * src/engine/heap/Heap.cpp and forwarding to this one -- declared the same
- * function `void*'. Two files
+ * RETURN TYPE: void*, from the definition. Its old shard declared `int
+ * Heap::Allocate(...)' while the sibling overload in this file, which
+ * forwards to it, declared the same function `void*'. Two sources
  * disagreeing about one signature is exactly the debt the shadow structs
  * create. ExpandingHeap::VAllocate and SolidHeap::VAllocate both return void*,
- * so void* it is, and the two files now agree because they share a header.
+ * so void* it is, and both definitions now agree because they share a header.
  *
  * Was a cast of `this' to a local `struct Base' with three anonymous virtuals
  * padding `m' out to index 3, plus an address-cast read of `&unk_010'. */
@@ -379,7 +374,7 @@ bool SolidHeap::VIntact()
  * forwarder -- r0 simply carries whatever the callee left -- so it byte-matched
  * while claiming a result that does not exist. Both overrides are void
  * (ExpandingHeap::VRescue, SolidHeap::VRescue), and the reconstruction that was
- * already sitting in _ZN4Heap11ResizeToFitEv.c said `void Rescue()' too. */
+ * already written for Heap::ResizeToFit said `void Rescue()' too. */
 
 void Heap::Rescue()
 {
@@ -505,7 +500,7 @@ u32 SolidHeap::VMemoryLeft()
  * bodies: SolidHeapAllocator::Reallocate returns `size' or 0, and
  * ExpandingHeapAllocator::Reallocate returns `size', 0 or `node->size'. The
  * `void*' this once claimed came from a local shadow in
- * _ZN13ExpandingHeap11VReallocateEPvj.cpp that declared the allocator method
+ * ExpandingHeap::VReallocate's old shard that declared the allocator method
  * itself as pointer-returning -- a guess nothing ever checked, because a
  * forwarder cannot disagree with its callee about a value it merely passes on.
  *
@@ -848,10 +843,10 @@ u32 ExpandingHeap::VResizeToFit()
  *
  * Returns the new total block size, or 0 if either step refused.
  *
- * This file used to re-declare `struct Heap' and `struct SolidHeap' locally and
+ * Its old shard re-declared `struct Heap' and `struct SolidHeap' locally and
  * reach the base through `thiz->base.parentHeap'. It is the same layout, said
  * once. Its call to Heap::Reallocate is also what proved that method returns a
- * value at all -- see _ZN4Heap10ReallocateEPvj.cpp. */
+ * value at all -- see Heap::Reallocate. */
 
 u32 SolidHeap::VResizeToFit()
 {

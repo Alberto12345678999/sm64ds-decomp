@@ -28,8 +28,8 @@ extern int data_ov002_0211013c[];
 int Player::St_Land_Main()
 {
     if (func_ov002_020c0434()) {
-        ((Player *)(((char*)this)))->func_ov002_020c0364(3);
-        ((Player *)(((char*)this)))->func_ov002_020c06fc(0x4000);
+        func_ov002_020c0364(3);
+        func_ov002_020c06fc(0x4000);
         return 1;
     }
 

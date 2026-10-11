@@ -96,7 +96,7 @@ int Player::Render()
             _ZN9ModelBase12ApplyOpacityEjj(((char*)this) + 0xf0, mOpacity, 0);
             ((VObj*)((char*)&mModelAnim3))->m14((char*)&mScaleX);
         }
-        i = ((Player *)(((char*)this)))->func_ov002_020becf4(mBodyModelId, 1);
+        i = func_ov002_020becf4(mBodyModelId, 1);
         {
             char* mdl4 = (char*)unk_154[i];
             if (mdl4 != 0 && i != 9 && i != 8) {
@@ -129,7 +129,7 @@ int Player::Render()
                     _ZN15TextureSequence6UpdateER15ModelComponents(((char*)this) + 0x268, (char*)unk_154[1] + 8);
                     mTexSeqPlayer[1].currFrame = mPlayerTexFrame << 12;
                 }
-                if (((Player *)(((char*)this)))->func_ov002_020bea7c() == 0) {
+                if (func_ov002_020bea7c() == 0) {
                     _ZN15TextureSequence6UpdateER15ModelComponents(((char*)this) + 0x1dc + mBodyModelId * 0x14, (char*)unk_154[i] + 8);
                 }
                 func_ov002_020e3e00((char*)unk_154[i], ((char*)this) + 0x80, mOpacity);

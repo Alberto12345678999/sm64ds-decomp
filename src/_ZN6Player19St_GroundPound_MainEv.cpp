@@ -62,7 +62,7 @@ int Player::St_GroundPound_Main()
         st = mStateTimer;
         if (st != 0) {
             if (st == 1) {
-                ((Player *)(this))->func_ov002_020c2f64();
+                func_ov002_020c2f64();
                 _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x42, 0x40000000, 0x1000, 0);
                 mStateStep = 0xff;
                 *(u32*)&mdCcAcPos_c.flags &= ~0x20;
@@ -70,7 +70,7 @@ int Player::St_GroundPound_Main()
             {
                 u16 f = mStateFlags & 1;
                 if (f != 0) {
-                    ((Player *)(this))->func_ov002_020c0364(1);
+                    func_ov002_020c0364(1);
                     return 1;
                 }
             }

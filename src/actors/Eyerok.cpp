@@ -1,6 +1,6 @@
 //cpp
-/* Eyerok, the two-handed pyramid boss (.text 0x0211603c..0x0211a418,
- * 62 functions). ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30);
+/* Eyerok, the two-handed pyramid boss (.text 0x02115ee0..0x0211a418,
+ * 64 functions). ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30);
  * this tree keeps the coined name.
  *
  * The unit's two destructors (D1 0x02115ee0, D0 0x02115f84) are defined at

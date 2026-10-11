@@ -4,7 +4,7 @@
  * 0x020991ec). Derives from dBgCh; nothing derives from it, so no D2/C2 ever
  * emitted.
  *
- * Owns the contiguous text run 0x02035564..0x02037464, between dBgCh's own
+ * Owns the contiguous text run 0x0203553c..0x02037464, between dBgCh's own
  * functions below and dBgCh_Gnd's workers above. Deferred codegen emits the
  * lifecycle group at the tail -- D0 0x020373b8, D1 0x020373f8, C1 0x02037430 --
  * so the ctor and dtor are defined first and the plain functions land in

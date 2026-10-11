@@ -7,7 +7,7 @@ extern "C" {
 
 int Player::St_Owl_Cleanup()
 {
-  ((Player *)(((char*)this)))->func_ov002_020bd8c0(0x2f);
+  func_ov002_020bd8c0(0x2f);
   mHeldObj=0;
   return 1;
 }

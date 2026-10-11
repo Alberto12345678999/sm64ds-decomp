@@ -17,8 +17,8 @@ extern "C" {
 /* _020bdef0, _020bdd9c, _020e032c and func_02073244 come from decl_common.h
    above; redeclaring one here with `char *` where that header says `void *`
    is not a redeclaration but an attempt to overload a C-linkage name, which
-   mwccarm rejects outright. _ZN6Player19func_ov002_020bdd2cEv is a Player
-   member now, so it is declared here instead. */
+   mwccarm rejects outright. func_ov002_020bdd2c is a Player member now and
+   comes from Player.h. */
 void func_0203cbc0(void *p);
 void *_ZN7Vector3D1Ev(void *self);
 void func_ov002_020bebd4(char *c);
@@ -45,7 +45,7 @@ int Player::CleanupResources()
     int i;
     u32 b;
 
-    ((Player *)(((char *)this)))->func_ov002_020bdd2c();
+    func_ov002_020bdd2c();
     func_ov002_020bdef0();
     func_ov002_020bdd9c();
     func_ov002_020e032c(((char *)this));

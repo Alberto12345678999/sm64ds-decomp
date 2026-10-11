@@ -32,7 +32,7 @@ int Player::St_Thrown_Main()
         if (mIsAirborne == 0) {
             mAngleX = 0;
             *(int*)((int)((char*)this) + 0x2ec) &= ~0x2000;
-            ((Player *)(((char*)this)))->func_ov002_020c06fc(0x8000);
+            func_ov002_020c06fc(0x8000);
             if (mStateArg == 0) {
                 mStateArg = 1;
                 _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 6, *(Vector3*)((char*)&mCamSpacePosX));

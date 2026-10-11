@@ -70,9 +70,9 @@ skipclear:
     } else {
         int v = data_ov002_0210a59c[mJumpComboStage] + (mHorzSpeed >> 2);
         if (mIsMega != 0) {
-            ((Player *)(this))->func_ov002_020bf2d8((int)(((long long)v * 0x1400 + 0x800) >> 12));
+            func_ov002_020bf2d8((int)(((long long)v * 0x1400 + 0x800) >> 12));
         } else {
-            ((Player *)(this))->func_ov002_020bf2d8(v);
+            func_ov002_020bf2d8(v);
         }
         func_ov002_020e2ad0(this);
         if (mIsMega == 0) {
@@ -102,7 +102,7 @@ skipclear:
         mHorzSpeed >>= 2;
     }
 
-    if (((Player *)(this))->func_ov002_020c19d0(0x64, 0x32) != 0) {
+    if (func_ov002_020c19d0(0x64, 0x32) != 0) {
         mStateFlags |= 0x200;
         mHorzSpeed = 0;
     }

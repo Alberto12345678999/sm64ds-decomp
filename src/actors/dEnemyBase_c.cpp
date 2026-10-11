@@ -1018,40 +1018,7 @@ int dEnemyBase_c::UpdateKillByInvincibleChar(dBgCh_Actr & ww_, ModelAnim & mm_, 
    the enemy, its collision and its model anim as raw pointers plus the
    coin/death-table flags, and running the wall-reflect variant of the
    collision update. Lowest address in the TU, so it is defined last: this
-   file runs highest ROM address first. */
-struct VB {
-    virtual void d00();
-    virtual void d01();
-    virtual void d02();
-    virtual void d03();
-    virtual void d04();
-    virtual void d05();
-    virtual void d06();
-    virtual void d07();
-    virtual void d08();
-    virtual void d09();
-    virtual void d10();
-    virtual void d11();
-    virtual void d12();
-    virtual void d13();
-    virtual void d14();
-    virtual void d15();
-    virtual void d16();
-    virtual void d17();
-    virtual void d18();
-    virtual void d19();
-    virtual void d20();
-    virtual void d21();
-    virtual void d22();
-    virtual void d23();
-    virtual void d24();
-    virtual void d25();
-    virtual void d26();
-    virtual void d27();
-    virtual void d28();
-    virtual int m29();
-};
-
+   file runs highest ROM address first. The slot-29 spin reuses KbicVB. */
 extern "C" {
 /* local extern: free-call spelling of the dBgCh_Actr const member */
 extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *o);
@@ -1103,11 +1070,11 @@ extern "C" int func_ov002_020ad660(void *cc, void *pp, void *r5p, int flags)
         Vec3_Asr(v, c + 0x5c, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v[0], v[1], v[2]);
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0,
-            ((VB *)(void *)c)->m29() >> 3, 0);
+            ((KbicVB *)(void *)c)->m29() >> 3, 0);
         Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68,
             *(short *)(c + 0x8c), *(short *)(c + 0x8e), *(short *)(c + 0x90));
         Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0,
-            (-((VB *)(void *)c)->m29()) >> 3, 0);
+            (-((KbicVB *)(void *)c)->m29()) >> 3, 0);
         *(Matrix4x3 *)(r5 + 0x1c) = *(Matrix4x3 *)&data_020a0e68;
     }
     return 1;
