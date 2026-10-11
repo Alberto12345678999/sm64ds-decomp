@@ -3,22 +3,27 @@
  * normal and the small registry profiles construct this same class.
  * Reactions pick a state into mDeathState; the state machine does the rest.
  *
- * Source REVERSE of ROM order (highest address first). Do not reorder.
+ * _ZTS8daNknk_c 0x0211da5c. _ZTI8daNknk_c 0x0211da68.
+ * _ZTV8daNknk_c 0x0211dab4. The out-of-line destructor is the key function:
+ * D1 at 0x021174cc, D0 at 0x02117514.
  *
- * Leftover: Particle::System::New / SetSelfDestructFlag / FromUniqueID,
- *   ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   dActor_c::ReflectAngle / DropShadowRadHeight / IsTooFarAwayFromPlayer,
- *   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
- *   Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
- *   by value (notes/mwccarm-codegen.md 6az), or the header declaration
- *   does not mangle to the ROM symbol. func_0201267c is the bank-3
- *   Sound::Play wrapper.
- *   GetWallResult / GetFloorResult are not methods on dBgCh_Actr.h.
- *   Particle bytes at +0x50 are Particle::System::callbackScale
- *   (func_ov062_021175c0 / func_ov062_02117724).
- * Leftover: some helpers below still read fields through raw offsets;
- *   tracked in #2871.
+ * Source runs in reverse ROM order (highest address first). Do not reorder.
  */
+
+// leftovers:
+// - Particle::System::New / SetSelfDestructFlag / FromUniqueID,
+//   ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+//   dActor_c::ReflectAngle / DropShadowRadHeight / IsTooFarAwayFromPlayer,
+//   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
+//   Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
+//   by value (notes/mwccarm-codegen.md 6az), or the header declaration
+//   does not mangle to the ROM symbol. func_0201267c is the bank-3
+//   Sound::Play wrapper.
+// - GetWallResult / GetFloorResult are not methods on dBgCh_Actr.h.
+// - Particle bytes at +0x50 are Particle::System::callbackScale
+//   (func_ov062_021175c0 / func_ov062_02117724).
+// - Some helpers below still read fields through raw offsets (unk_104,
+//   unk_108); naming them needs the Koopa header layout recovered first.
 // Inline definitions in Koopa.h, emitted here by the two factories:
 #include "Koopa.h"
 #include "common.h"
@@ -141,7 +146,6 @@ s32 daNknk_c::OnYoshiTryEat() {
 /* daNknk_c::OnTurnIntoEgg -- vtable slot 19, verified against ov062 relocs.txt:
  * _ZTV8daNknk_c (0x0211dab4) + 0x4c -> 0x02119628, exactly this placeholder's
  * former address (former name func_ov062_02119628).
- * Matched byte-for-byte with mwccarm 2004/b56 (ov062).
  */
 void daNknk_c::OnTurnIntoEgg(Player &player)
 {
@@ -156,7 +160,7 @@ void daNknk_c::OnTurnIntoEgg(Player &player)
 }
 
 // @symbol _ZN8daNknk_c16OnAimedAtWithEggEv
-/* daNknk_c::OnAimedAtWithEgg - recovered from vtable slot identity */
+/* daNknk_c::OnAimedAtWithEgg - named from vtable slot identity */
 s32 daNknk_c::OnAimedAtWithEgg() {
     unsigned short v = actorID;
     int r;
@@ -372,9 +376,7 @@ int daNknk_c::Render()
 }
 
 // @symbol _ZN8daNknk_c16OnPendingDestroyEv
-/* recovered: shared header, real C++ method
- *
- * fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`.
+/* fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`.
  */
 void daNknk_c::OnPendingDestroy()
 {
@@ -701,14 +703,14 @@ void daNknk_c::func_ov062_021183e0()
 // @symbol _ZN8daNknk_c19func_ov062_02118334Ev
 void daNknk_c::func_ov062_02118334()
 {
-  short *new_var;
+  short *angleY;
   struct Vec3 v;
   Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
   if (1)
   {
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    new_var = &mAngleY;
-    Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *new_var);
+    angleY = &mAngleY;
+    Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *angleY);
     { struct M12w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
       *(M12w *)&mModelAnim.mat4x3 = *(M12w *)&data_020a0e68; }
     {

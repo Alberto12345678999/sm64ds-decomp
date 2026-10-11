@@ -14,28 +14,32 @@
  * does not store those spellings. Historical aliases:
  * SquareMetalNetLift_Spawn, ArrowPathLift_Spawn.
  *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
- * section per function in the reverse of source order.
+ * _ZTS13daLinelift2_c 0x02134e70. _ZTI13daLinelift2_c 0x02134e64.
+ * _ZTV13daLinelift2_c 0x02134ec0. InitResources is the key function, first
+ * non-inline virtual: D1 at 0x02131c14, D0 at 0x02131c58.
  *
- * Known limits:
- * - The three state functions, the path stepper and the mesh callback's
- *   target are members retaining their linker addresses as names; no ROM
- *   spelling survives. The state table's pointer-to-member records are the
- *   sinit's .data words, resolved through symbols.txt.
- * - func_ov091_02132380 stays free: it is stored as a dBgW callback word,
- *   so it cannot be a non-static member.
- * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled:
- *   both take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
- * - func_020393d4 / func_020393c4 install dBgW's two callback words;
- *   dBgW carries no setter for them.
- * - (Vector3 *)&mPosX / &mTargetPosX / &unk_0a4: dActor_c and this class
- *   store the triples as scalars.
- * - func_ov091_02131cb0 stays free: it is typed on dActor_c and its body
- *   only touches the base's velocity triples (unk_0a4 / unk_0ac), which the
- *   shared header has not named yet.
- * - Behavior lowers mPosY by the sink offset and restores it before the
- *   model update, which the cartridge does too; the dead store is its own.
+ * Functions run in reverse ROM order; do not reorder.
  */
+
+// leftovers:
+// - The three state functions, the path stepper and the mesh callback's
+//   target are members keeping their linker addresses as names; no ROM
+//   spelling survives (callers: the state table and the path follower in
+//   this TU; the table's pointer-to-member records are the sinit's .data
+//   words, resolved through symbols.txt).
+// - func_ov091_02132380 stays free: it is stored as a dBgW callback word,
+//   so it cannot be a non-static member.
+// - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled: both
+//   take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
+// - func_020393d4 / func_020393c4 install dBgW's two callback words;
+//   dBgW carries no setter for them.
+// - (Vector3 *)&mPosX / &mTargetPosX / &unk_0a4: dActor_c and this class
+//   store the triples as scalars; the shared header has not named unk_0a4
+//   / unk_0ac yet.
+// - func_ov091_02131cb0 stays free: it is typed on dActor_c and its body
+//   only touches the base's velocity triples (unk_0a4 / unk_0ac).
+// - Behavior lowers mPosY by the sink offset and restores it before the
+//   model update, which the cartridge does too; the dead store is its own.
 
 #include "daLinelift2_c.h"
 #include "SharedFilePtr.h"
