@@ -550,21 +550,21 @@
   ],
   "data": [
     {
-      "symbol": "@2222",
+      "symbol": "@2236",
       "address": "0x0213dc4c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_0210713cEv, 0}, copied into data_ov006_02142888"
     },
     {
-      "symbol": "@8802",
+      "symbol": "@2240",
       "address": "0x0213dc54",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106fdcEv, 0}, copied into data_ov006_02142888; mwcc numbers it @2226, which arm9 already defines, so the manifest renames it to @8802"
     },
     {
-      "symbol": "@8801",
+      "symbol": "@2238",
       "address": "0x0213dc5c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -578,35 +578,35 @@
       "evidence": "MG_PANEL registry profile; the first word relocates to dScMgPanel_c_classInit (0x02107858) and the halfword pair 0x017c, 0x017c matches retail"
     },
     {
-      "symbol": "@8804",
+      "symbol": "@2244",
       "address": "0x0213dc6c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106eb8Ev, 0}, copied into data_ov006_02142888; mwcc numbers it @2230, which arm9 already defines, so the manifest renames it to @8804"
     },
     {
-      "symbol": "@8803",
+      "symbol": "@2242",
       "address": "0x0213dc74",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106f44Ev, 0}, copied into data_ov006_02142888; mwcc numbers it @2228, which arm9 already defines, so the manifest renames it to @8803"
     },
     {
-      "symbol": "@2256",
+      "symbol": "@8814",
       "address": "0x0213dc7c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104fb4Ev, 0}, copied into data_ov006_02142860"
     },
     {
-      "symbol": "@2232",
+      "symbol": "@2246",
       "address": "0x0213dc84",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106ca4Ev, 0}, copied into data_ov006_02142888"
     },
     {
-      "symbol": "@8805",
+      "symbol": "@2276",
       "address": "0x0213dc8c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -620,133 +620,133 @@
       "evidence": "two-word record inside this TU's .data run; retail words 0x01fc00fc and 0xffff2099 match byte-for-byte"
     },
     {
-      "symbol": "@2250",
+      "symbol": "@8811",
       "address": "0x0213dc9c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_021051dcEv, 0}, copied into data_ov006_02142820"
     },
     {
-      "symbol": "@2258",
+      "symbol": "@8815",
       "address": "0x0213dca4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104eccEv, 0}, copied into data_ov006_02142860"
     },
     {
-      "symbol": "@2244",
+      "symbol": "@2258",
       "address": "0x0213dcac",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02105730Ev, 0}, copied into data_ov006_02142820"
     },
     {
-      "symbol": "@2260",
+      "symbol": "@8816",
       "address": "0x0213dcb4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104ec8Ev, 0}, copied into data_ov006_02142860"
     },
     {
-      "symbol": "@8808",
+      "symbol": "@2282",
       "address": "0x0213dcbc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104ac0Ei, 0}, copied into data_ov006_021427bc; mwcc numbers it @2268, which arm9 already defines, so the manifest renames it to @8808"
     },
     {
-      "symbol": "@2254",
+      "symbol": "@8813",
       "address": "0x0213dcc4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_0210500cEv, 0}, copied into data_ov006_02142860"
     },
     {
-      "symbol": "@2234",
+      "symbol": "@2248",
       "address": "0x0213dccc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106bc0Ev, 0}, copied into data_ov006_02142888"
     },
     {
-      "symbol": "@2252",
+      "symbol": "@8812",
       "address": "0x0213dcd4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_0210508cEv, 0}, copied into data_ov006_02142860"
     },
     {
-      "symbol": "@2246",
+      "symbol": "@2260",
       "address": "0x0213dcdc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02105670Ev, 0}, copied into data_ov006_02142820"
     },
     {
-      "symbol": "@2238",
+      "symbol": "@2252",
       "address": "0x0213dce4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106aa8Ei, 0}, copied into data_ov006_02142840"
     },
     {
-      "symbol": "@2248",
+      "symbol": "@8810",
       "address": "0x0213dcec",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_021053a8Ev, 0}, copied into data_ov006_02142820"
     },
     {
-      "symbol": "@8809",
+      "symbol": "@2284",
       "address": "0x0213dcf4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104a10Ei, 0}, copied into data_ov006_021427bc; mwcc numbers it @2270, which arm9 already defines, so the manifest renames it to @8809"
     },
     {
-      "symbol": "@2240",
+      "symbol": "@2254",
       "address": "0x0213dcfc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106a08Ei, 0}, copied into data_ov006_02142840"
     },
     {
-      "symbol": "@8806",
+      "symbol": "@2278",
       "address": "0x0213dd04",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104bb0Ev, 0}, copied into data_ov006_021427ec; mwcc numbers it @2264, which arm9 already defines, so the manifest renames it to @8806"
     },
     {
-      "symbol": "@2220",
+      "symbol": "@2234",
       "address": "0x0213dd0c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_021071d4Ev, 0}, copied into data_ov006_02142888"
     },
     {
-      "symbol": "@2236",
+      "symbol": "@2250",
       "address": "0x0213dd14",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106bacEi, 0}, copied into data_ov006_02142840"
     },
     {
-      "symbol": "@2242",
+      "symbol": "@2256",
       "address": "0x0213dd1c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02106910Ei, 0}, copied into data_ov006_02142840"
     },
     {
-      "symbol": "@8810",
+      "symbol": "@2286",
       "address": "0x0213dd24",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF record {_ZN12dScMgPanel_c19func_ov006_02104920Ei, 0}, copied into data_ov006_021427bc; mwcc numbers it @2272, which arm9 already defines, so the manifest renames it to @8810"
     },
     {
-      "symbol": "@8807",
+      "symbol": "@2280",
       "address": "0x0213dd2c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -918,7 +918,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 11 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 8 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -1404,54 +1404,39 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@2224",
-      "to": "@8801",
-      "evidence": "mwcc numbers this PMF record @2224. arm9 already defines @2224, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8801."
-    },
-    {
-      "from": "@2226",
-      "to": "@8802",
-      "evidence": "mwcc numbers this PMF record @2226. arm9 already defines @2226, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8802."
-    },
-    {
-      "from": "@2228",
-      "to": "@8803",
-      "evidence": "mwcc numbers this PMF record @2228. arm9 already defines @2228, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8803."
-    },
-    {
-      "from": "@2230",
-      "to": "@8804",
-      "evidence": "mwcc numbers this PMF record @2230. arm9 already defines @2230, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8804."
-    },
-    {
       "from": "@2262",
-      "to": "@8805",
-      "evidence": "mwcc numbers this PMF record @2262. arm9 already defines @2262, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8805."
+      "to": "@8810",
+      "evidence": "mwcc numbers this PMF record @2262. Another module already defines @2262, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8810."
     },
     {
       "from": "@2264",
-      "to": "@8806",
-      "evidence": "mwcc numbers this PMF record @2264. arm9 already defines @2264, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8806."
+      "to": "@8811",
+      "evidence": "mwcc numbers this PMF record @2264. Another module already defines @2264, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8811."
     },
     {
       "from": "@2266",
-      "to": "@8807",
-      "evidence": "mwcc numbers this PMF record @2266. arm9 already defines @2266, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8807."
+      "to": "@8812",
+      "evidence": "mwcc numbers this PMF record @2266. Another module already defines @2266, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8812."
     },
     {
       "from": "@2268",
-      "to": "@8808",
-      "evidence": "mwcc numbers this PMF record @2268. arm9 already defines @2268, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8808."
+      "to": "@8813",
+      "evidence": "mwcc numbers this PMF record @2268. Another module already defines @2268, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8813."
     },
     {
       "from": "@2270",
-      "to": "@8809",
-      "evidence": "mwcc numbers this PMF record @2270. arm9 already defines @2270, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8809."
+      "to": "@8814",
+      "evidence": "mwcc numbers this PMF record @2270. Another module already defines @2270, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8814."
     },
     {
       "from": "@2272",
-      "to": "@8810",
-      "evidence": "mwcc numbers this PMF record @2272. arm9 already defines @2272, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8810."
+      "to": "@8815",
+      "evidence": "mwcc numbers this PMF record @2272. Another module already defines @2272, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8815."
+    },
+    {
+      "from": "@2274",
+      "to": "@8816",
+      "evidence": "mwcc numbers this PMF record @2274. Another module already defines @2274, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @8816."
     }
   ],
   "symbol_binding_rewrites": [
@@ -1468,163 +1453,163 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@2222",
+      "symbol": "@2236",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc4c"
     },
     {
-      "symbol": "@8802",
+      "symbol": "@2240",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc54"
     },
     {
-      "symbol": "@8801",
+      "symbol": "@2238",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc5c"
     },
     {
-      "symbol": "@8804",
+      "symbol": "@2244",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc6c"
     },
     {
-      "symbol": "@8803",
+      "symbol": "@2242",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc74"
     },
     {
-      "symbol": "@2256",
+      "symbol": "@8814",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc7c"
     },
     {
-      "symbol": "@2232",
+      "symbol": "@2246",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc84"
     },
     {
-      "symbol": "@8805",
+      "symbol": "@2276",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc8c"
     },
     {
-      "symbol": "@2250",
+      "symbol": "@8811",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dc9c"
     },
     {
-      "symbol": "@2258",
+      "symbol": "@8815",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dca4"
     },
     {
-      "symbol": "@2244",
+      "symbol": "@2258",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcac"
     },
     {
-      "symbol": "@2260",
+      "symbol": "@8816",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcb4"
     },
     {
-      "symbol": "@8808",
+      "symbol": "@2282",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcbc"
     },
     {
-      "symbol": "@2254",
+      "symbol": "@8813",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcc4"
     },
     {
-      "symbol": "@2234",
+      "symbol": "@2248",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dccc"
     },
     {
-      "symbol": "@2252",
+      "symbol": "@8812",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcd4"
     },
     {
-      "symbol": "@2246",
+      "symbol": "@2260",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcdc"
     },
     {
-      "symbol": "@2238",
+      "symbol": "@2252",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dce4"
     },
     {
-      "symbol": "@2248",
+      "symbol": "@8810",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcec"
     },
     {
-      "symbol": "@8809",
+      "symbol": "@2284",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcf4"
     },
     {
-      "symbol": "@2240",
+      "symbol": "@2254",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dcfc"
     },
     {
-      "symbol": "@8806",
+      "symbol": "@2278",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dd04"
     },
     {
-      "symbol": "@2220",
+      "symbol": "@2234",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dd0c"
     },
     {
-      "symbol": "@2236",
+      "symbol": "@2250",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dd14"
     },
     {
-      "symbol": "@2242",
+      "symbol": "@2256",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dd1c"
     },
     {
-      "symbol": "@8810",
+      "symbol": "@2286",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dd24"
     },
     {
-      "symbol": "@8807",
+      "symbol": "@2280",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF record; DSD requires a configured global symbol at 0x0213dd2c"
@@ -1676,7 +1661,7 @@
       "source": "0x02132238",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2220",
+      "symbol": "@2234",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dd0c"
@@ -1686,7 +1671,7 @@
       "source": "0x0213223c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2222",
+      "symbol": "@2236",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc4c"
@@ -1706,7 +1691,7 @@
       "source": "0x02132244",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8801",
+      "symbol": "@2238",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc5c"
@@ -1716,7 +1701,7 @@
       "source": "0x02132248",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8802",
+      "symbol": "@2240",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc54"
@@ -1726,7 +1711,7 @@
       "source": "0x0213224c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8803",
+      "symbol": "@2242",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc74"
@@ -1736,7 +1721,7 @@
       "source": "0x02132250",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2242",
+      "symbol": "@2256",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dd1c"
@@ -1746,7 +1731,7 @@
       "source": "0x02132254",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8804",
+      "symbol": "@2244",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc6c"
@@ -1756,7 +1741,7 @@
       "source": "0x02132258",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2232",
+      "symbol": "@2246",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc84"
@@ -1766,7 +1751,7 @@
       "source": "0x0213225c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2234",
+      "symbol": "@2248",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dccc"
@@ -1776,7 +1761,7 @@
       "source": "0x02132260",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2236",
+      "symbol": "@2250",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dd14"
@@ -1796,7 +1781,7 @@
       "source": "0x02132268",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2238",
+      "symbol": "@2252",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dce4"
@@ -1806,7 +1791,7 @@
       "source": "0x0213226c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2240",
+      "symbol": "@2254",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcfc"
@@ -1816,7 +1801,7 @@
       "source": "0x02132270",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2244",
+      "symbol": "@2258",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcac"
@@ -1836,7 +1821,7 @@
       "source": "0x02132278",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2246",
+      "symbol": "@2260",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcdc"
@@ -1846,7 +1831,7 @@
       "source": "0x0213227c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2248",
+      "symbol": "@8810",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcec"
@@ -1856,7 +1841,7 @@
       "source": "0x02132280",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2252",
+      "symbol": "@8812",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcd4"
@@ -1866,7 +1851,7 @@
       "source": "0x02132284",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2250",
+      "symbol": "@8811",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc9c"
@@ -1876,7 +1861,7 @@
       "source": "0x02132288",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2258",
+      "symbol": "@8815",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dca4"
@@ -1886,7 +1871,7 @@
       "source": "0x0213228c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2254",
+      "symbol": "@8813",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcc4"
@@ -1896,7 +1881,7 @@
       "source": "0x02132290",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2256",
+      "symbol": "@8814",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc7c"
@@ -1906,7 +1891,7 @@
       "source": "0x02132294",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2260",
+      "symbol": "@8816",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcb4"
@@ -1926,7 +1911,7 @@
       "source": "0x0213229c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8805",
+      "symbol": "@2276",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dc8c"
@@ -1936,7 +1921,7 @@
       "source": "0x021322a0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8806",
+      "symbol": "@2278",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dd04"
@@ -1946,7 +1931,7 @@
       "source": "0x021322a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8807",
+      "symbol": "@2280",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dd2c"
@@ -1956,7 +1941,7 @@
       "source": "0x021322a8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8808",
+      "symbol": "@2282",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcbc"
@@ -1966,7 +1951,7 @@
       "source": "0x021322ac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8809",
+      "symbol": "@2284",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dcf4"
@@ -1976,7 +1961,7 @@
       "source": "0x021322b0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@8810",
+      "symbol": "@2286",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dd24"
