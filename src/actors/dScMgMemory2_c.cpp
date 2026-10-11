@@ -5,16 +5,17 @@
  * emission. Earlier probes are in
  * notes/experiments/pr2875-source-repair-0920.json.
  *
- * Leftover: DrawCards, RoundWaitDeal, RoundReadyCards, RoundHideCards,
+ * leftovers:
+ * - DrawCards, RoundWaitDeal, RoundReadyCards, RoundHideCards,
  *   RoundShowCards, ResultFinish, ResetGame and InitPlayers step char* by
  *   0x18 or 0x14 from this. A card or player pointer changes those loops.
- * Leftover: CardFlyAway keeps the Ctx view. mCards[idx] misses.
- * Leftover: CheckFinished calls inline_fn(this+0xa8) and this+0xb4.
+ * - CardFlyAway keeps the Ctx view. mCards[idx] misses.
+ * - CheckFinished calls inline_fn(this+0xa8) and this+0xb4.
  *   unk_0a8 and mHudScore directly miss. unk_5407 is only cleared.
- * Leftover: ResultWait decrements mResultTimer as (int)this+0x53e4.
- * Leftover: func_ov006_020c0aa8 sets the camera at this+0x4660 and tail-calls
+ * - ResultWait decrements mResultTimer as (int)this+0x53e4.
+ * - func_ov006_020c0aa8 sets the camera at this+0x4660 and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
- * Leftover: func_ov004_020b1e34, func_ov004_020ad79c and func_ov006_020c1a88
+ * - func_ov004_020b1e34, func_ov004_020ad79c and func_ov006_020c1a88
  *   stay the linker names. Their bodies are not in this file.
  */
 
