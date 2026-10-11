@@ -19293,7 +19293,7 @@ matched: yes</title></rect><rect x="1092.19" y="34.61" width="7.46" height="14.7
 module: ov004
 addr: 0x020b2adc
 size: 380 bytes
-matched: yes</title></rect><rect x="1099.65" y="27.00" width="1.24" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__arraydtor$314
+matched: yes</title></rect><rect x="1099.65" y="27.00" width="1.24" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__arraydtor$328
 module: ov004
 addr: 0x020b2c58
 size: 36 bytes
@@ -19473,7 +19473,7 @@ matched: yes</title></rect><rect x="1197.61" y="43.66" width="2.43" height="1.43
 module: ov004
 addr: 0x020b4a70
 size: 12 bytes
-matched: yes</title></rect><rect x="1197.61" y="45.09" width="2.43" height="4.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__arraydtor$940
+matched: yes</title></rect><rect x="1197.61" y="45.09" width="2.43" height="4.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__arraydtor$954
 module: ov004
 addr: 0x020b4a7c
 size: 36 bytes
