@@ -1,79 +1,29 @@
 //cpp
-/* daBttBk_c -- the BATTA_BLOCK crate. InitResources drops it onto the ground
- * below its spawn point and enters state 0, where it falls and bounces;
- * landing on a carrier actor (mCarrier) moves it to state 1, where it rides
- * that actor's angles and matrix. A Mega Mario hit (func_ov080_02124acc), or
- * the flag test in state 1 (func_ov080_02124edc), breaks it into dust and
- * five coins.
+/* BATTA_BLOCK crate. Drops onto the ground, falls and bounces, then rides a
+ * carrier. A Mega Mario hit, or the flag test in state 1, breaks it into
+ * dust and five coins.
  *
- * ov080 .text 0x02124a20..0x02125404, 21 functions: tu_map's 20-function run
- * 0x02124a20..0x021253b4 plus the abutting registry factory
- * daBttBk_c_classInit (0x021253b4; reconstructed name, historical alias
- * CrazedCrate_Spawn), written last.
- *
- * NAME: daBttBk_c is the cartridge's RTTI spelling -- _ZTS at ov080
- * 0x0212815c is the byte string "9daBttBk_c", and _ZTI at 0x02128168 reads
- * [__si_class_type_info vtable (0x0209a764), that string, _ZTI8dActor_c
- * (0x0208e390)]. The vtable's offset-to-top word (0x02128190) is 0 and its
- * RTTI word (0x02128194) is that _ZTI; the address point _ZTV9daBttBk_c is
- * 0x02128198 (slot 0, InitResources). The class was previously the coined
- * name CrazedCrate.
- *
- * THE DESTRUCTOR IS THE KEY FUNCTION, declared first in daBttBk_c.h and
- * defined first below, so this TU emits _ZTV9daBttBk_c and the RTTI chain
- * as vague linkage. Under `#pragma defer_codegen off` mwccarm emits each
- * function as it is parsed, so the file is written in ROM-ascending order
- * and the out-of-line destructor comes out D1 (0x02124a20), D0
- * (0x02124a68), then a D2 the cartridge has no home for (deadstripped;
- * vtable slots 16/17 hold D1 and D0 only). D0's deallocation is an inline
- * operator delete, which is why nothing below mentions a heap.
- *
- * THE STATE MACHINE. The eleven func_ov080_* functions of this run are
- * non-static methods. The cartridge preserves no spelling for them, so the
- * method name is the ROM address. The first parameter was the actor, so it
- * is this. The ROM ties each one to this class --
- *   - the six state bodies are the pointer-to-member constants at ov080
- *     0x0212812c..0x02128158, the .data words directly before
- *     _ZTS9daBttBk_c. __sinit_daBttBk_c.cpp constructs this class's model
- *     file data_ov080_02128468 and copies those constants into the 3-row
- *     state table data_ov080_0212847c (.bss): state 0 = {0212509c enter,
- *     0212500c update}, state 1 = {02124fec, 02124edc}, state 2 =
- *     {02124eb0, 02124e60}. Each enter function stores its own index in
- *     mState;
- *   - 0212513c points mStateRow at a row and runs its enter function
- *     through 02125104; 021250c8 runs the row's update function from
- *     Behavior;
- *   - 02124acc (collision reaction, from state 0's update) and 02124c3c
- *     (matrices and drop shadow, from Behavior and InitResources) have no
- *     callers outside this run.
- * All eleven lie between OnYoshiTryEat (0x02124ac4) and CleanupResources
- * (0x02125158) with no gap, and nothing outside this run and its PMF
- * constants references any of them.
- *
- * Known limits, and what this pass measured and left:
- * - func_ov080_02124eb0's old one-function source called it "MontyMole_Kill"
- *   (daChoropu_c::Kill); the state table makes it this class's state-2 enter
- *   function, not a daChoropu_c method.
- * Leftover: dActor_c::SpawnCoins as a member, with a Fix12<int> spread built
- *   and passed by value, size-DIFFed func_ov080_02124acc (ROM 0x170, object
- *   0x17c) and func_ov080_02124edc (ROM 0x110, object 0x11c). Reverted to the
- *   mangled extern "C" call. Particle::System::NewSimple has no header method.
- *   DropShadowScaleXYZ, dCcAc_c::Init and dBgCh_Actr::Init stay the matching
- *   mangled calls on the same by-value Fix12 wall; those three were not
- *   re-spelled.
- * Leftover: the carrier's +0xc8 Matrix4x3 pointer is read raw. dActor_c's
- *   pad_0c5 covers 0xc5..0xcb, and this header has no name for it.
- * Leftover: *(Vector3 *)&mCamSpacePosX. dActor_c stores that triple as three
- *   s32 fields, not a Vector3.
- * Leftover: mShadowMtx stays u8[0x30] and is cast to Matrix4x3. The header
- *   names the array, not a Matrix4x3 member, so it was not retyped.
- * Leftover: func_ov080_02124e60 stores 0 through *(int *)pad_0d0. The only
- *   name at 0x0d0 is that 4-byte pad in front of mModel.
- * Leftover: func_02010304, Matrix4x3_ApplyInPlaceToTranslation,
- *   Vec3_LslInPlace, Matrix4x3_FromRotationY and
- *   dBgCh_Actr_UpdateDiscreteNoLava_veneer stay free calls. They are defined
- *   outside this TU.
+ * _ZTS9daBttBk_c ov080:0x0212815c, _ZTI 0x02128168 (base _ZTI8dActor_c
+ * 0x0208e390), _ZTV 0x02128198. Key function ~daBttBk_c, written first under
+ * defer_codegen off: D1 0x02124a20, D0 0x02124a68, D2 deadstripped. Was
+ * CrazedCrate. .text 0x02124a20..0x02125404. The six state bodies are the
+ * pointer-to-member constants at 0x0212812c..0x02128158.
  */
+// leftovers:
+// - SpawnCoins, Particle::System::NewSimple, DropShadowScaleXYZ, dCcAc_c::Init
+//   and dBgCh_Actr::Init stay mangled extern "C". SpawnCoins as a member, with
+//   Fix12<int> by value, grew func_ov080_02124acc (0x170 to 0x17c) and
+//   func_ov080_02124edc (0x110 to 0x11c). NewSimple has no header method.
+// - The carrier matrix is read at +0xc8. dActor_c::pad_0c5 covers that word.
+// - *(Vector3 *)&mCamSpacePosX: dActor_c stores the triple as three s32 fields.
+// - mShadowMtx stays u8[0x30] and is cast to Matrix4x3. The header names the
+//   array, not a Matrix4x3.
+// - func_ov080_02124e60 stores 0 through *(int *)pad_0d0, the pad in front of
+//   mModel.
+// - func_02010304, Matrix4x3_ApplyInPlaceToTranslation, Vec3_LslInPlace,
+//   Matrix4x3_FromRotationY and dBgCh_Actr_UpdateDiscreteNoLava_veneer stay
+//   free calls defined outside this TU.
+
 
 #include "decl_common.h"
 #include "daBttBk_c.h"
