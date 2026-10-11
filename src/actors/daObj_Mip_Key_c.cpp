@@ -1,20 +1,17 @@
 //cpp
-/* The key dropped by Mip chases the player, then runs the save conversation.
- * The loose/carried states each have an entry and an update callback.
- *
- * Four callbacks are stored as PMFs in the ROM. Their address-derived entry
- * names remain pending reconstruction; the caller census does not establish
- * original file-static linkage. See notes/experiments/mip-key-2853-source-forms.md
- * for the boundary evidence and retained ABI bridges.
- *
- * Leftover: unk_0a4/0ac/190/19c are unrecovered header fields (0a4/0ac
- *   ride the loose-update approach; 19c selects the entry).
- * Leftover: data_020a0e68 is shared arm9 matrix scratch.
- * Leftover: func_02012790 / func_02013868 are arm9 stubs.
- * Leftover: the file home is sinit-constructed
- *   (src/actors/daMip_c.cpp folded __sinit_ov085_0212f5ec); g_profile stays where the
- *   registry owns it (S14).
+/* The key Mip drops. It chases the player, then runs the save conversation.
+ * The loose and carried states each have an entry and an update.
  */
+// leftovers:
+// - unk_0a4, unk_0ac, unk_190 and unk_19c stay the header's names. The
+//   loose update approaches through 0a4/0ac, and 19c selects the entry.
+// - DropShadowRadHeight stays mangled. The scalar bridge is 16 bytes
+//   smaller than the Fix12 aggregate call in this helper.
+// - data_020a0e68 is the shared arm9 matrix scratch this TU copies.
+// - func_02012790 and func_02013868 stay arm9 stubs. This TU calls them
+//   from the conversation.
+// - The model handle data_ov085_021305d8 is constructed by daMip_c.
+//   g_profile stays with the registry.
 
 #include "daObj_Mip_Key_c.h"
 #include "common.h"

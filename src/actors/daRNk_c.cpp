@@ -1,44 +1,23 @@
 //cpp
-/* Koopa the Quick (ROM RTTI: daRNk_c), overlay 62.
- * This production TU owns the 18 functions at 0x0211975c..0x0211af38.
- * Class identity, lifecycle and four actor overrides are reconstructed; the
- * remaining address-named helpers still retain some raw field and ABI views.
- * Their original source lineage is recorded in the TU manifest.
- *
- * What the class does. Koopa waits until the player walks up
- * (STATE_WAIT_FOR_PLAYER), turns to face them and puts up a two-way message
- * (STATE_OFFER_RACE); if the player picks answer 1 he runs the level's path
- * toward the RACE_FLAG actor (STATE_RACE), jumping at the nodes param1 names
- * and to avoid a rolling iron ball (IRONBALL, daIbl_c) that gets in his way.
- * The course timer runs from the start. When he reaches the end of the path
- * he slows to a stop (STATE_PULL_UP, STATE_STOP) and then talks about who got
- * to the flag first (STATE_POST_RACE_TALK), spawning the star if the player
- * did. The states are listed with mState in include/daRNk_c.h.
- *
- * param1: the low nibble is the path ID; bits 4..9 and bits 10..15 each give
- * a jump node (see mPathPtToJumpAt1). mAngleX's low nibble is the star number.
- *
- * The pinned compiler emits these functions in reverse source order. The
- * inline destructor and factory supply the retail D1/D0 order and class data;
- * the text-only manifest verifies and externalizes the emitted RTTI/vtable.
- * Measured source-form constraints: notes/experiments/pr2859-source-repair-0920.json.
- *
- * Leftover:
- *  - the helpers keep their addresses as method names; real naming belongs
- *    at their definitions (the State enum gives each state handler its role).
- *  - the SetAnim, PlaySub and shadow calls still go through mangled C names
- *    carrying 5Fix12IiE; their scalar signatures are what the bytes need.
- *  - Player::Unk_020c4f40(0x5a), the 0x1f PlaySub pairs, sounds 0x4d and 0xec
- *    and the 0xf last argument of DropShadowRadHeight have no recovered
- *    meaning; the sounds are named by when they play (0xec as kSfxTurnToTalk),
- *    the rest are annotated with where they happen, nothing more.
- *  - unk_3aa is written and never read in this TU.
- *  - the ANIM_* macros name each BCA by when it plays, not from its contents;
- *    the animation files themselves have not been inspected.
- *  - only the radius and height of the dCcAc_c::Init and dBgCh_Actr::Init
- *    calls are understood; the trailing arguments are passed as the bytes
- *    have them.
+/* Koopa the Quick (daRNk_c), ov062 0x0211975c..0x0211af38. He waits, offers
+ * a race, runs the path to the flag, and talks about who arrived first.
+ * param1's low nibble is the path id; bits 4..9 and 10..15 are jump nodes.
+ * mAngleX's low nibble is the star number. Highest address first. The
+ * destructor is inline, so D1 then D0 come from daRNk_c.h.
  */
+// leftovers:
+// - The helpers keep their addresses as method names. The State enum in
+//   daRNk_c.h says which handler is which.
+// - SetAnim, PlaySub and DropShadowRadHeight stay mangled. Their symbols
+//   carry 5Fix12IiE, and the scalar signatures are what these calls need.
+// - Player::Unk_020c4f40(0x5a), the 0x1f PlaySub pairs, sounds 0x4d and
+//   0xec, and DropShadowRadHeight's last argument 0xf are named only by
+//   when this TU uses them.
+// - unk_3aa is written and never read here.
+// - ANIM_* names each BCA by when it plays. The animation files were not
+//   opened.
+// - dCcAc_c::Init and dBgCh_Actr::Init: only the radius and height are
+//   named. The trailing flag words stay the literals InitResources passes.
 #include "daRNk_c.h"
 #include "daRFlag_c.h"
 #include "daIbl_c.h"
