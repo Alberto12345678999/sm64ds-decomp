@@ -8048,13 +8048,10 @@
       ]
     },
     "_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE": {
-      "src/_ZN7Message11PrepareTalkEv.cpp": [
+      "src/Message2.cpp": [
         "return:void"
       ],
       "src/_ZN7Message12UpdateWindowEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN7Message7EndTalkEv.cpp": [
         "return:void"
       ],
       "src/actors/Eyerok.cpp": [
@@ -12623,6 +12620,9 @@
       ]
     },
     "data_0209d6f4": {
+      "src/Message2.cpp": [
+        "return:unsigned char *"
+      ],
       "src/_ZN7Message30DisplayCourseNameForStarSelectEj.cpp": [
         "return:volatile int"
       ],
