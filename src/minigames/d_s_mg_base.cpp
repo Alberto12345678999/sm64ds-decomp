@@ -38,14 +38,20 @@
 
 #pragma defer_codegen off
 
-/* The 0x40 records at data_ov004_020bebe8 are 0x20 bytes each; only the s16
-   at 0x1a (nonzero while the record is live) and the dispatch index at 0x1e
-   are known, so the type stays a local view. */
+/* The 0x40 records at data_ov004_020bebe8 are 0x20 bytes each. func_ov004_020adf70
+   fills one: a Fix12 position, two optional vectors, a frame timer and a state.
+   State 0 (func_ov004_020adeb0 / func_ov004_020adcc8) adds mVecB into mVecA and
+   mVecA into mPos each frame; state 1 (func_ov004_020addcc /
+   func_ov004_020adc80) interpolates mPos between the two vectors as the timer
+   runs down. The class is not recovered, so the type stays a local view.
+   The three s32 pairs stay raw offsets: declaring them as s32 members makes
+   the struct 4-aligned, and the pool's .bss section goes from 2-byte to
+   4-byte alignment. */
 struct Ent {
-    char pad[0x1a];
-    s16 f;                              /* 0x1a */
-    s16 g;                              /* 0x1c */
-    s16 idx;                            /* 0x1e -- state table index */
+    char pad[0x1a];                     /* 0x00 mPos, 0x08 mVecA, 0x10 mVecB */
+    s16 mTimer;                         /* 0x1a -- counts down to 0; 0 = free */
+    s16 mDuration;                      /* 0x1c -- mTimer's starting value */
+    s16 mState;                         /* 0x1e -- index into both PMF tables */
     Ent() {}
     ~Ent() {}
     void func_ov004_020adc80();
@@ -76,6 +82,8 @@ struct SceneVCall6 {
 };
 
 int ApproachLinear(int &value, int target, int step);
+int ApproachLinear2(short &value, short target, short step);
+namespace cstd { int fdiv(int num, int den); }
 
 extern "C" {
 extern void *data_ov004_020beb60;
@@ -97,6 +105,13 @@ extern char data_0209b308[];
 extern dWipe_c data_0209f61c;
 extern unsigned char data_0209d460[];
 extern unsigned char data_0209d458[];
+
+/* The scene's five saved records: func_02013580(table, i) reads record i of
+   save table `table`, func_02013568(table, i, v) writes it, and
+   func_ov004_020adc3c(scene) picks the table from byte 1 of param1. */
+int func_02013580(int table, int index);
+void func_02013568(int table, int index, int value);
+int func_ov004_020adc3c(void *scene);
 }
 
 namespace s20ad660 {
@@ -141,8 +156,6 @@ int dScMgBase_c::Virtual8C()
 // @symbol GetGameLanguage
 namespace s20ad674 {
 extern "C" {
-typedef int s32;
-extern s32 GetOwnerLanguage(void);
 s32 GetGameLanguage(void)
 {
     switch (GetOwnerLanguage())
@@ -165,9 +178,12 @@ s32 GetGameLanguage(void)
 // @symbol func_ov004_020ad6f4
 namespace s20ad6f4 {
 extern "C" {
-int func_ov004_020ad6f4(int *p)
+/* Returns unk_064: the index (0..4) at which func_ov004_020ad940 last
+   inserted a score into the five saved records, or -1 if it placed nowhere
+   (the constructor also seeds -1). */
+int func_ov004_020ad6f4(dScMgBase_c *scene)
 {
-    return p[25];
+    return scene->unk_064;
 }
 }
 }
@@ -176,21 +192,24 @@ int func_ov004_020ad6f4(int *p)
 namespace s20ad6fc {
 extern "C" {
 extern int data_0209b308[];
-extern unsigned func_ov004_020adc3c(void* c);
-extern unsigned func_02013580(unsigned a, int b);
-int func_ov004_020ad6fc(void* c, int v){
-  int i;
-  if(data_0209b308[2]==5){
-    if(v<=0) return -1;
-    for(i=0;i<5;i++){
-      if(func_02013580(func_ov004_020adc3c(c), i) > (unsigned)v) return i;
+/* Returns the index (0..4) at which `value` would enter the scene's five
+   saved records, or -1. Scoring mode 5 (word 2 of the menu row) is
+   lower-is-better and never places a value <= 0; every other mode is
+   higher-is-better. The `(unsigned)` casts make the compares unsigned. */
+int func_ov004_020ad6fc(void *scene, int value)
+{
+    int i;
+    if (data_0209b308[2] == 5) {
+        if (value <= 0) return -1;
+        for (i = 0; i < 5; i++) {
+            if (func_02013580(func_ov004_020adc3c(scene), i) > (unsigned)value) return i;
+        }
+    } else {
+        for (i = 0; i < 5; i++) {
+            if (func_02013580(func_ov004_020adc3c(scene), i) < (unsigned)value) return i;
+        }
     }
-  } else {
-    for(i=0;i<5;i++){
-      if(func_02013580(func_ov004_020adc3c(c), i) < (unsigned)v) return i;
-    }
-  }
-  return -1;
+    return -1;
 }
 }
 }
@@ -198,33 +217,34 @@ int func_ov004_020ad6fc(void* c, int v){
 // @symbol func_ov004_020ad79c
 namespace s20ad79c {
 extern "C" {
-extern int data_ov004_020beb68;
 extern int data_0209b308[];
 extern int data_0209b300[];
 int func_ov004_020ad8b8(void);
 int func_ov004_020ad878(void);
-int func_ov004_020adc3c(void *c);
-void func_02013568(int a, int b, int v);
 
-void func_ov004_020ad79c(int r0arg, int r1arg) {
-    int v0 = r0arg, v1 = r1arg;
+/* Saves a two-value result into saved records 0 and 1 of the current scene.
+   A value <= 0 falls back to the menu row's defaults (words 5 and 6); a
+   positive one is capped at 9999. Nothing is written when both already
+   match; otherwise data_0209b300 is set to 1. */
+void func_ov004_020ad79c(int first, int second) {
+    int v0 = first, v1 = second;
     if (data_ov004_020beb68 == 0) return;
     if (v0 <= 0) {
         v0 = data_0209b308[5];
         v1 = data_0209b308[6];
     } else {
-        if (v0 > 0x270f) v0 = 0x270f;
+        if (v0 > 9999) v0 = 9999;
     }
     if (v1 <= 0) {
         v1 = data_0209b308[6];
     } else {
-        if (v1 > 0x270f) v1 = 0x270f;
+        if (v1 > 9999) v1 = 9999;
     }
     if (v0 == func_ov004_020ad8b8()) {
         if (v1 == func_ov004_020ad878()) return;
     }
-    func_02013568(func_ov004_020adc3c((void*)data_ov004_020beb68), 0, v0);
-    func_02013568(func_ov004_020adc3c((void*)data_ov004_020beb68), 1, v1);
+    func_02013568(func_ov004_020adc3c(data_ov004_020beb68), 0, v0);
+    func_02013568(func_ov004_020adc3c(data_ov004_020beb68), 1, v1);
     *(unsigned char*)data_0209b300 = 1;
 }
 }
@@ -233,13 +253,11 @@ void func_ov004_020ad79c(int r0arg, int r1arg) {
 // @symbol func_ov004_020ad878
 namespace s20ad878 {
 extern "C" {
-extern int* data_ov004_020beb68;
-extern int func_ov004_020adc3c(int* p);
-extern int func_02013580(int a, int b);
-int func_ov004_020ad878(void){
-  int* p=data_ov004_020beb68;
-  if(p==0) return 0;
-  return func_02013580(func_ov004_020adc3c(p), 1);
+/* Saved record 1 of the current scene, or 0 with no scene. */
+int func_ov004_020ad878(void) {
+    void *scene = data_ov004_020beb68;
+    if (scene == 0) return 0;
+    return func_02013580(func_ov004_020adc3c(scene), 1);
 }
 }
 }
@@ -247,17 +265,16 @@ int func_ov004_020ad878(void){
 // @symbol func_ov004_020ad8b8
 namespace s20ad8b8 {
 extern "C" {
-extern int data_ov004_020beb68;
 extern int data_0209b308[];
-extern int func_ov004_020adc3c(void);
-extern int func_02013580(int a, int b);
-int func_ov004_020ad8b8(void){
-  if(data_ov004_020beb68 != 0){
-    int r=func_02013580(func_ov004_020adc3c(),0);
-    if(r==0) return data_0209b308[0x14/4];
-    return r;
-  }
-  return 0;
+/* Saved record 0 of the current scene; an empty record reads as the menu
+   row's word 5. 0 with no scene. */
+int func_ov004_020ad8b8(void) {
+    if (data_ov004_020beb68 != 0) {
+        int r = func_02013580(func_ov004_020adc3c(data_ov004_020beb68), 0);
+        if (r == 0) return data_0209b308[5];
+        return r;
+    }
+    return 0;
 }
 }
 }
@@ -265,13 +282,12 @@ int func_ov004_020ad8b8(void){
 // @symbol func_ov004_020ad90c
 namespace s20ad90c {
 extern "C" {
-extern void func_ov004_020ad940(char *c);
-extern int data_ov004_020beb68;
+extern void func_ov004_020ad940(dScMgBase_c *scene);
 
 void func_ov004_020ad90c(void) {
-    char *p = *(char **)&data_ov004_020beb68;
-    if (p == 0) return;
-    func_ov004_020ad940(p);
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return;
+    func_ov004_020ad940(scene);
 }
 }
 }
@@ -279,42 +295,42 @@ void func_ov004_020ad90c(void) {
 // @symbol func_ov004_020ad940
 namespace s20ad940 {
 extern "C" {
-extern "C" {
 int func_ov004_020adafc(void);
-int func_ov004_020ad6fc(void* c, int v);
+int func_ov004_020ad6fc(void *scene, int value);
 void func_ov004_020ada20(void);
-void func_ov004_020ada40(int);
-int func_ov004_020adc3c(void *c);
-int func_02013580(int a, int b);
-void func_02013568(int a, int b, int v);
+void func_ov004_020ada40(int score);
 int func_ov004_020adbc0(void);
 extern unsigned char data_0209b300[];
 
-void func_ov004_020ad940(char* c)
+/* Inserts the submitted score (unk_464c) into the five saved records at
+   the rank func_ov004_020ad6fc gives, shifting the lower records down, and
+   keeps that rank in unk_064 (-1 when it placed nowhere). Either way the
+   session best moves to unk_4658, the new-record flag is cleared and the
+   session best is reset. */
+void func_ov004_020ad940(dScMgBase_c *scene)
 {
-    int n = func_ov004_020ad6fc(c, func_ov004_020adafc());
-    *(int*)(c+0x64) = n;
-    if (*(int*)(c+0x64) < 0) {
+    int n = func_ov004_020ad6fc(scene, func_ov004_020adafc());
+    scene->unk_064 = n;
+    if (scene->unk_064 < 0) {
         func_ov004_020ada20();
-        *(int*)(c+0x4000+0x658) = func_ov004_020adafc();
+        scene->unk_4658 = func_ov004_020adafc();
         func_ov004_020ada40(0);
         return;
     }
     int i;
-    for (i = 4; i > *(int*)(c+0x64); i--) {
-        int a = func_ov004_020adc3c(c);
-        int b = func_ov004_020adc3c(c);
+    for (i = 4; i > scene->unk_064; i--) {
+        int a = func_ov004_020adc3c(scene);
+        int b = func_ov004_020adc3c(scene);
         int v = func_02013580(b, i-1);
         func_02013568(a, i, v);
     }
-    int a = func_ov004_020adc3c(c);
+    int a = func_ov004_020adc3c(scene);
     int v = func_ov004_020adbc0();
-    func_02013568(a, *(int*)(c+0x64), v);
+    func_02013568(a, scene->unk_064, v);
     data_0209b300[0] = 1;
     func_ov004_020ada20();
-    *(int*)(c+0x4000+0x658) = func_ov004_020adafc();
+    scene->unk_4658 = func_ov004_020adafc();
     func_ov004_020ada40(0);
-}
 }
 }
 }
@@ -322,12 +338,11 @@ void func_ov004_020ad940(char* c)
 // @symbol func_ov004_020ada20
 namespace s20ada20 {
 extern "C" {
-extern int data_ov004_020beb68;
-
+/* Clears the new-record flag unk_465c. */
 void func_ov004_020ada20(void) {
-    char *ptr = *(char **)&data_ov004_020beb68;
-    if (ptr != 0) {
-        *(ptr + 0x4000 + 0x65c) = 0;
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene != 0) {
+        scene->unk_465c = 0;
     }
 }
 }
@@ -336,30 +351,30 @@ void func_ov004_020ada20(void) {
 // @symbol func_ov004_020ada40
 namespace s20ada40 {
 extern "C" {
-struct Obj;
-extern struct Obj *data_ov004_020beb68;
 extern int data_0209b308[];
 extern int func_ov004_020adc1c(void);
 extern void func_ov004_020adc00(int v);
 
-void func_ov004_020ada40(int thiz, int a1, int a2)
+/* Stores `score` as the session best (unk_4654). If it beats the record
+   copy at +0x4650 (lower and nonzero in scoring mode 5, higher otherwise,
+   compared unsigned), it becomes the new copy and unk_465c is set. */
+void func_ov004_020ada40(int score)
 {
-    char *g = (char*)data_ov004_020beb68;
-    if (g == 0) return;
-    g += 0x4000;
-    *(int*)(g + 0x654) = thiz;
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return;
+    scene->unk_4654 = score;
     if (data_0209b308[2] == 5) {
-        if (thiz == 0) return;
+        if (score == 0) return;
         if (func_ov004_020adc1c() != 0) {
-            if ((unsigned)thiz >= (unsigned)func_ov004_020adc1c()) return;
+            if ((unsigned)score >= (unsigned)func_ov004_020adc1c()) return;
         }
-        func_ov004_020adc00(thiz);
-        *((char*)data_ov004_020beb68 + 0x4000 + 0x65c) = 1;
+        func_ov004_020adc00(score);
+        ((dScMgBase_c *)data_ov004_020beb68)->unk_465c = 1;
         return;
     }
-    if ((unsigned)thiz <= (unsigned)func_ov004_020adc1c()) return;
-    func_ov004_020adc00(thiz);
-    *((char*)data_ov004_020beb68 + 0x4000 + 0x65c) = 1;
+    if ((unsigned)score <= (unsigned)func_ov004_020adc1c()) return;
+    func_ov004_020adc00(score);
+    ((dScMgBase_c *)data_ov004_020beb68)->unk_465c = 1;
 }
 }
 }
@@ -367,15 +382,11 @@ void func_ov004_020ada40(int thiz, int a1, int a2)
 // @symbol func_ov004_020adafc
 namespace s20adafc {
 extern "C" {
-/* The state block pointer is a char*: with an int-typed base mwcc materializes
-   the +0x46xx offset from the literal pool instead of splitting it as
-   add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the cartridge does. */
-extern char *data_ov004_020beb68;
-
+/* The session best, unk_4654; 0 with no scene. */
 int func_ov004_020adafc(void) {
-    char *val = data_ov004_020beb68;
-    if (val != 0) {
-        return *(int*)(val + 0x4654);
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene != 0) {
+        return scene->unk_4654;
     }
     return 0;
 }
@@ -387,26 +398,28 @@ namespace s20adb1c {
 extern "C" {
 extern int func_ov004_020adafc(void);
 extern int func_ov004_020ada40(int);
-extern char* data_ov004_020beb68[];
 extern int data_0209b308[];
-void func_ov004_020adb1c(int self){
-  char* r2 = data_ov004_020beb68[0];
-  if(r2 == 0) return;
-  if(data_0209b308[2] == 5){
-    *(int*)(r2 + 0x4000 + 0x64c) = self;
-    if(func_ov004_020adafc() != 0){
-      if((unsigned)self >= (unsigned)func_ov004_020adafc()) return;
+/* Submits a score: stores it in unk_464c (outside scoring mode 5, capped
+   at the menu row's word 3 when that is nonzero) and passes it to
+   func_ov004_020ada40 when it beats the session best. */
+void func_ov004_020adb1c(int score) {
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return;
+    if (data_0209b308[2] == 5) {
+        scene->unk_464c = score;
+        if (func_ov004_020adafc() != 0) {
+            if ((unsigned)score >= (unsigned)func_ov004_020adafc()) return;
+        }
+        func_ov004_020ada40(score);
+    } else {
+        int cap = data_0209b308[3];
+        if (cap != 0) {
+            if ((unsigned)score > (unsigned)cap) score = cap;
+        }
+        scene->unk_464c = score;
+        if ((unsigned)score <= (unsigned)func_ov004_020adafc()) return;
+        func_ov004_020ada40(score);
     }
-    func_ov004_020ada40(self);
-  } else {
-    int o = data_0209b308[3];
-    if(o != 0){
-      if((unsigned)self > (unsigned)o) self = o;
-    }
-    *(int*)(r2 + 0x4000 + 0x64c) = self;
-    if((unsigned)self <= (unsigned)func_ov004_020adafc()) return;
-    func_ov004_020ada40(self);
-  }
 }
 }
 }
@@ -414,15 +427,11 @@ void func_ov004_020adb1c(int self){
 // @symbol func_ov004_020adbc0
 namespace s20adbc0 {
 extern "C" {
-/* The state block pointer is a char*: with an int-typed base mwcc materializes
-   the +0x46xx offset from the literal pool instead of splitting it as
-   add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the cartridge does. */
-extern char *data_ov004_020beb68;
-
+/* The submitted score, unk_464c; 0 with no scene. */
 int func_ov004_020adbc0(void) {
-    char *val = data_ov004_020beb68;
-    if (val != 0) {
-        return *(int*)(val + 0x464c);
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene != 0) {
+        return scene->unk_464c;
     }
     return 0;
 }
@@ -432,15 +441,11 @@ int func_ov004_020adbc0(void) {
 // @symbol func_ov004_020adbe0
 namespace s20adbe0 {
 extern "C" {
-/* The state block pointer is a char*: with an int-typed base mwcc materializes
-   the +0x46xx offset from the literal pool instead of splitting it as
-   add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the cartridge does. */
-extern char *data_ov004_020beb68;
-
+/* The new-record flag, unk_465c; 0 with no scene. */
 int func_ov004_020adbe0(void) {
-    char *val = data_ov004_020beb68;
-    if (val != 0) {
-        return *(unsigned char*)(val + 0x465c);
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene != 0) {
+        return scene->unk_465c;
     }
     return 0;
 }
@@ -450,15 +455,11 @@ int func_ov004_020adbe0(void) {
 // @symbol func_ov004_020adc00
 namespace s20adc00 {
 extern "C" {
-/* The state block pointer is a char*: with an int-typed base mwcc materializes
-   the +0x46xx offset from the literal pool instead of splitting it as
-   add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the cartridge does. */
-extern char *data_ov004_020beb68;
-
+/* Sets the record copy at +0x4650 (unnamed padding in the header). */
 void func_ov004_020adc00(int v) {
-    char *val = data_ov004_020beb68;
-    if (val != 0) {
-        *(int*)(val + 0x4650) = v;
+    char *scene = (char *)data_ov004_020beb68;
+    if (scene != 0) {
+        *(int*)(scene + 0x4650) = v;
     }
 }
 }
@@ -467,15 +468,11 @@ void func_ov004_020adc00(int v) {
 // @symbol func_ov004_020adc1c
 namespace s20adc1c {
 extern "C" {
-/* The state block pointer is a char*: with an int-typed base mwcc materializes
-   the +0x46xx offset from the literal pool instead of splitting it as
-   add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the cartridge does. */
-extern char *data_ov004_020beb68;
-
+/* The record copy at +0x4650; 0 with no scene. */
 int func_ov004_020adc1c(void) {
-    char *val = data_ov004_020beb68;
-    if (val != 0) {
-        return *(int*)(val + 0x4650);
+    char *scene = (char *)data_ov004_020beb68;
+    if (scene != 0) {
+        return *(int*)(scene + 0x4650);
     }
     return 0;
 }
@@ -485,8 +482,9 @@ int func_ov004_020adc1c(void) {
 // @symbol func_ov004_020adc3c
 namespace s20adc3c {
 extern "C" {
-int func_ov004_020adc3c(void *c) {
-    return (*(unsigned int*)((char*)c + 8) & 0xff00) >> 8;
+/* The scene's save-table id: byte 1 of param1. */
+int func_ov004_020adc3c(void *scene) {
+    return (((dScMgBase_c *)scene)->param1 & 0xff00) >> 8;
 }
 }
 }
@@ -539,6 +537,8 @@ extern int *data_ov004_020bbfa8[];
 extern int func_ov004_020b1d60(int,int,int,long long);
 }
 }
+/* State 1's draw: word 2 of the current language's entry in
+   data_ov004_020bbfa8, at mPos >> 12. */
 void Ent::func_ov004_020adc80(){
     int idx=s20adc80::GetGameLanguage();
     int *t=s20adc80::data_ov004_020bbfa8[idx];
@@ -554,6 +554,10 @@ extern int data_ov004_020bea14[];
 extern int data_ov004_020beba8[];
 }
 }
+/* State 0's draw. The first call builds the 16-entry frame table
+   data_ov004_020beba8 from five words at data_ov004_020bea14 (bit 0 of
+   data_ov004_020beb70 marks it built); the frame is picked by the low four
+   bits of mTimer. */
 void Ent::func_ov004_020adcc8(){
   if((s20adcc8::data_ov004_020beb70 & 1) == 0){
     int* s = s20adcc8::data_ov004_020bea14;
@@ -564,7 +568,7 @@ void Ent::func_ov004_020adcc8(){
     s20adcc8::data_ov004_020beb70 |= 1;
   }
   {
-    int idx=((int)f)&0xf;
+    int idx=((int)mTimer)&0xf;
     int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;
     s20adcc8::func_ov004_020b1d60(s20adcc8::data_ov004_020beba8[idx],x,y,-1,-1);
   }
@@ -574,8 +578,9 @@ void Ent::func_ov004_020adcc8(){
 namespace s20add88 {
 extern "C" {
 extern EntPMF data_ov004_020beb98[];
+/* Draws one record through its state's handler. */
 extern "C" void func_ov004_020add88(Ent *c) {
-  (c->*data_ov004_020beb98[c->idx])();
+  (c->*data_ov004_020beb98[c->mState])();
 }
 }
 }
@@ -583,30 +588,32 @@ extern "C" void func_ov004_020add88(Ent *c) {
 // @symbol _ZN3Ent19func_ov004_020addccEv
 namespace s20addcc {
 extern "C" {
-int _Z15ApproachLinear2Rsss(short *a, short b, short c);
 void func_ov004_020b1b40(void *c);
-int _ZN4cstd4fdivEii(int a, int b);
 inline long long inline_fn(int arg0)
 {
   return (long long) arg0;
 }
 }
 }
+/* State 1's update. Counts mTimer down, calling func_ov004_020b1b40(1) on
+   the frame it reaches 0, then places mPos between the two vectors by the
+   remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
+   y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
 void Ent::func_ov004_020addcc()
 {
   char *r5 = (char *)this;
   using namespace s20addcc;
   {
-  if (_Z15ApproachLinear2Rsss((short *) (r5 + 0x1a), 0, 1))
+  if (ApproachLinear2(mTimer, 0, 1))
   {
     func_ov004_020b1b40((void *) 1);
   }
-  int a = *((short *) (r5 + 0x1a));
-  int b = *((short *) (r5 + 0x1c));
-  int s = _ZN4cstd4fdivEii(a << 0xc, b << 0xc);
-  int c3 = *((short *) (r5 + 0x1c));
-  int c2 = *((short *) (r5 + 0x1a));
-  int t = _ZN4cstd4fdivEii((c3 - c2) << 0xc, c3 << 0xc);
+  int a = mTimer;
+  int b = mDuration;
+  int s = cstd::fdiv(a << 0xc, b << 0xc);
+  int c3 = mDuration;
+  int c2 = mTimer;
+  int t = cstd::fdiv((c3 - c2) << 0xc, c3 << 0xc);
   int v8 = *((int *) (r5 + 8));
   int v10 = *((int *) (r5 + 0x10));
   long long m1 = inline_fn(v8) * inline_fn(s);
@@ -619,17 +626,13 @@ void Ent::func_ov004_020addcc()
 }
 
 // @symbol _ZN3Ent19func_ov004_020adeb0Ev
-namespace s20adeb0 {
-extern "C" {
-extern int _Z15ApproachLinear2Rsss(short* dst, short to, short step);
-extern void func_0203d630(int* p, int m);
-}
-}
+/* State 0's update: counts mTimer down, passes mVecA to func_0203d630 with
+   0xff8, then adds mVecB into mVecA and mVecA into mPos. */
 void Ent::func_ov004_020adeb0()
 {
     char* c = (char*)this;
-    s20adeb0::_Z15ApproachLinear2Rsss((short*)(c + 0x1a), 0, 1);
-    s20adeb0::func_0203d630((int*)(c + 8), 0xff8);
+    ApproachLinear2(mTimer, 0, 1);
+    func_0203d630((int*)(c + 8), 0xff8);
     int *p = (int*)(((int)c + 8));
     int *p2 = (int*)(((int)c + 0xc));
     *p += *(int*)(c + 0x10);
@@ -643,8 +646,9 @@ void Ent::func_ov004_020adeb0()
 namespace s20adf2c {
 extern "C" {
 extern EntPMF data_ov004_020beb88[];
+/* Updates one record through its state's handler. */
 extern "C" void func_ov004_020adf2c(Ent *c) {
-  (c->*data_ov004_020beb88[c->idx])();
+  (c->*data_ov004_020beb88[c->mState])();
 }
 }
 }
@@ -652,19 +656,22 @@ extern "C" void func_ov004_020adf2c(Ent *c) {
 // @symbol func_ov004_020adf70
 namespace s20adf70 {
 extern "C" {
-void func_ov004_020adf70(char* c, short a1, short a2, int* r3, int* sp0, int* sp4){
-  *(short*)(c+0x1e)=a1;
-  *(short*)(c+0x1a)=a2;
-  *(short*)(c+0x1c)=*(short*)(c+0x1a);
-  *(int*)(c)=r3[0];
-  *(int*)(c+4)=r3[1];
-  if(sp0){
-    *(int*)(c+8)=sp0[0];
-    *(int*)(c+0xc)=sp0[1];
+/* Fills record `c`. mDuration starts equal to mTimer; either vector may
+   be omitted with a null pointer. */
+void func_ov004_020adf70(char *c, short state, short timer, int *pos, int *vecA, int *vecB){
+  Ent *e=(Ent*)c;
+  e->mState=state;
+  e->mTimer=timer;
+  e->mDuration=e->mTimer;
+  *(int*)(c)=pos[0];
+  *(int*)(c+4)=pos[1];
+  if(vecA){
+    *(int*)(c+8)=vecA[0];
+    *(int*)(c+0xc)=vecA[1];
   }
-  if(sp4){
-    *(int*)(c+0x10)=sp4[0];
-    *(int*)(c+0x14)=sp4[1];
+  if(vecB){
+    *(int*)(c+0x10)=vecB[0];
+    *(int*)(c+0x14)=vecB[1];
   }
 }
 }
@@ -673,13 +680,19 @@ void func_ov004_020adf70(char* c, short a1, short a2, int* r3, int* sp0, int* sp
 // @symbol func_ov004_020adfc4
 namespace s20adfc4 {
 extern "C" {
-extern void func_ov004_020adf70(void* tbl, char* c, short a1, short a2, int* r3, int* sp0);
-void func_ov004_020adfc4(char* c, short a1, short a2, int* r3, int* sp0, int* sp4){
-  if(a2==0) return;
+extern void func_ov004_020adf70(void *rec, char *state, short timer, short pos, int *vecA, int *vecB);
+/* Fills the first free record of the 0x40 at data_ov004_020bebe8 (see
+   func_ov004_020adf70); does nothing without a position or a free record.
+   The parameter types are not the callers': `state` arrives as an int and
+   `pos` is the position pointer, tested whole (movs r4, r2). They are left
+   as they are because retyping them adds new disagreements with the
+   callers' differing declarations in the declaration-agreement gate. */
+void func_ov004_020adfc4(char *state, short timer, short pos, int *vecA, int *vecB, int *unused){
+  if(pos==0) return;
   int i;
   for(i=0;i<0x40;i++){
-    if(data_ov004_020bebe8[i].f == 0){
-      func_ov004_020adf70(&data_ov004_020bebe8[i], c, a1, a2, r3, sp0);
+    if(data_ov004_020bebe8[i].mTimer == 0){
+      func_ov004_020adf70(&data_ov004_020bebe8[i], state, timer, pos, vecA, vecB);
       return;
     }
   }
@@ -2454,7 +2467,7 @@ int dScMgBase_c::BeforeRender()
 
     p = (char *)data_ov004_020bebe8;
     for (j = 0; j < 0x40; j++, p += 0x20) {
-        if (data_ov004_020bebe8[j].f != 0)
+        if (data_ov004_020bebe8[j].mTimer != 0)
             func_ov004_020add88(p);
     }
 
@@ -2520,7 +2533,7 @@ int dScMgBase_c::BeforeBehavior()
         char *p = (char *)data_ov004_020bebe8;
         Ent *base = data_ov004_020bebe8;
         for (j = 0; j < 0x40; j++) {
-            if (base[j].f != 0)
+            if (base[j].mTimer != 0)
                 func_ov004_020adf2c(p);
             p += 0x20;
         }
@@ -2791,7 +2804,7 @@ void func_ov004_020b0d30(void) {
     FreeGfxSlotsById(0x1d);
     int i = 0;
     do {
-        data_ov004_020bebe8[i].f = 0;
+        data_ov004_020bebe8[i].mTimer = 0;
         i++;
     } while (i < 0x40);
     int j = 0;
@@ -3934,8 +3947,6 @@ extern "C" void func_ov004_020b29a0(Base *c, void *arg) { c->v18(arg); }
 namespace s20b2adc {
 extern "C" {
 // @symbol _ZN11dScMgBase_cC2Ev
-int func_ov004_020adc3c(void *scene);
-int func_02013580(int value, int arg);
 void func_ov004_020adc00(int value);
 
 extern char data_0209b308;
@@ -3945,7 +3956,7 @@ extern short data_ov004_020bc070[];
 
 dScMgBase_c::dScMgBase_c()
     : unk_0a4(0), unk_0c2(1)
-{ using s20b2adc::data_0209b308; using s20b2adc::data_ov004_020bc070; using s20b2adc::func_02013580; using s20b2adc::func_ov004_020adc00; using s20b2adc::func_ov004_020adc3c;
+{ using s20b2adc::data_0209b308; using s20b2adc::data_ov004_020bc070; using s20b2adc::func_ov004_020adc00;
     mMenuOpen = 0;
     unk_462c = 0;
     unk_4630 = 0;
