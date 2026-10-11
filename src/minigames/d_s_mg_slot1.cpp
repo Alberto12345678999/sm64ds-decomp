@@ -11,13 +11,21 @@
  * (measured; do not reorder). The allocation, the base C2 call and the
  * three vptr stores are written out by hand: the ROM has
  * no dScMgSlot1_c C1, so `new dScMgSlot1_c` cannot link.
- * Still raw: pad_4684, pad_4690 and pad_469c are embedded objects of
- * unknown type, set up by the unnamed func_ov006_0210c2b0 and func_ov006_0210c208.
+ *
+ * leftovers:
+ * - pad_4684, pad_4690 and pad_469c are embedded objects of unknown type,
+ *   set up by the still-unnamed func_ov006_0210c2b0 and func_ov006_0210c208.
+ * - The reel-table fill stays a raw char* cursor over 0x46c0..0x46ff: the
+ *   member-indexed form (u8 *p = unk_46c0 with p[i]) DIFFs (measured), so
+ *   only the scalar stores use the unk_46ff/unk_46a4/unk_4702 members.
+ * - The ov004 scroll words (data_ov004_020bc85c..data_ov004_020bc8b8) name
+ *   no struct; InitResources stores them raw.
  */
 
 #include "types.h"
 #include "decl_common.h"
 #include "dScMgSlot1_c.h"
+#include "G2x.h"
 
 extern int data_ov004_020bc8b4;
 
@@ -40,7 +48,6 @@ extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern int GetGameLanguage(void);
 extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
@@ -74,28 +81,6 @@ void *dScMgSlot1_c_classInit(void)
     return scene;
 }
 }
-
-struct Obj {
-    virtual void m00();
-    virtual void m04();
-    virtual void m08();
-    virtual void m0c();
-    virtual void m10();
-    virtual void m14();
-    virtual void m18();
-    virtual void m1c();
-    virtual void m20();
-    virtual void m24();
-    virtual void m28();
-    virtual void m2c();
-    virtual void m30();
-    virtual void m34();
-    virtual void m38();
-    virtual void m3c();
-    virtual void m40();
-    virtual void m44();
-    virtual void m48(int a);   /* vtable offset 0x48 */
-};
 
 s32 dScMgSlot1_c::InitResources()
 {
@@ -166,7 +151,7 @@ s32 dScMgSlot1_c::InitResources()
 
     data_0209d454 = 0x1d;
     *(volatile u16 *)0x4000050 = 0;
-    _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 1, 0x1c, 7, 9);
+    G2x::SetBlendAlpha((volatile u16 *)0x4001050, 1, 0x1c, 7, 9);
 
     data_ov004_020bc88c = 0x80;
     data_ov004_020bc860 = 0x40;
@@ -182,9 +167,9 @@ s32 dScMgSlot1_c::InitResources()
             for (i = 0; i < 0x15; i++) {
                 *(u8 *)(p + 0x46c0 + i) = tbl[i];
             }
-            *(u8 *)(c + 0x46ff + j) = 0;
-            ((u32 *)(c + 0x46a4))[j] = 0x40000;
-            *(u8 *)(c + 0x4702 + j) = 1;
+            unk_46ff[j] = 0;
+            unk_46a4[j] = 0x40000;
+            unk_4702[j] = 1;
             tbl += 0x15;
             p += 0x15;
         }
@@ -196,9 +181,9 @@ s32 dScMgSlot1_c::InitResources()
             for (i = 0; i < 0x15; i++) {
                 *(u8 *)(p + 0x46c0 + i) = tbl[i];
             }
-            *(u8 *)(c + 0x46ff + k) = 0;
-            ((u32 *)(c + 0x46a4))[k] = 0x40000;
-            *(u8 *)(c + 0x4702 + k) = 1;
+            unk_46ff[k] = 0;
+            unk_46a4[k] = 0x40000;
+            unk_4702[k] = 1;
             tbl += 0x15;
             p += 0x15;
         }
@@ -207,8 +192,8 @@ s32 dScMgSlot1_c::InitResources()
     unk_4709 = 5;
     unk_46bc = 0xa;
     func_ov004_020adb1c(unk_46bc);
-    func_ov006_0210c478(c + 0x4660);
-    ((struct Obj *)c)->m48(3);
+    func_ov006_0210c478((char *)&mBetIcon);
+    OnYoshiTryEat(3);
     func_ov004_020b04d0(0x20);
     data_0208ee44 = 1;
     return 1;
