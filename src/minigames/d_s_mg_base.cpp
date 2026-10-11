@@ -1017,7 +1017,7 @@ extern int data_ov004_020beb6c;
 }
 }
 
-void dScMgBase_c::Virtual88(int cx, int cy, int val, int n)
+void dScMgBase_c::Virtual88(int cx, int cy, int colour, int size)
 { using s20ae3b4::MultiCopy_Int; using s20ae3b4::_ZN2G213GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv; using s20ae3b4::data_ov004_020beb64; using s20ae3b4::data_ov004_020beb6c; using s20ae3b4::func_02054d88; using s20ae3b4::func_02054ea8; using s20ae3b4::func_02054efc;
     char *obj = (char *)this;
 
@@ -1032,9 +1032,9 @@ void dScMgBase_c::Virtual88(int cx, int cy, int val, int n)
     int four;
     int half;
 
-    half = n / 2;
+    half = size / 2;
     oi = 0;
-    if (n <= 0)
+    if (size <= 0)
         return;
     x0 = cx - half;
     ci0 = oi;
@@ -1043,7 +1043,7 @@ void dScMgBase_c::Virtual88(int cx, int cy, int val, int n)
     four = 4;
     do {
         ci = ci0;
-        if (n > 0) {
+        if (size > 0) {
             do {
                 yy = yrow;
                 xx = ci + x0;
@@ -1084,14 +1084,14 @@ void dScMgBase_c::Virtual88(int cx, int cy, int val, int n)
                 cell = (int*)((char*)base + ((xx / 8 + (yy / 8) * 32) * 32) + ((yy & 7) * 4));
                 MultiCopy_Int(cell, &data_ov004_020beb64, four);
                 sh = (xx & 7) << 2;
-                data_ov004_020beb64 = (data_ov004_020beb64 & (-1 ^ (m << sh))) | (val << sh);
+                data_ov004_020beb64 = (data_ov004_020beb64 & (-1 ^ (m << sh))) | (colour << sh);
                 MultiCopy_Int(&data_ov004_020beb64, cell, four);
             inc:;
-            } while (++ci < n);
+            } while (++ci < size);
         }
         yrow += 1;
         oi += 1;
-    } while (oi < n);
+    } while (oi < size);
 }
 
 // @symbol func_ov004_020ae5c4
@@ -1198,15 +1198,9 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
 // @symbol func_ov004_020ae858
 namespace s20ae858 {
 extern "C" {
-typedef short s16;
-typedef unsigned short u16;
-typedef long long s64;
-
 extern "C" {
 int func_ov004_020b8f18(void *c);
 int GetGameLanguage(void);
-int func_02053200(int x);
-int func_ov004_020aea78(void *a, void *b, void *c, void *d);
 void func_ov004_020aea30(void *self, int a1, int a2, int a3);
 }
 
@@ -1216,9 +1210,14 @@ extern int *data_ov004_020bbfd0[];
 extern s16 data_02082214[];
 extern int data_ov006_021346bc;
 
-extern "C" void func_ov004_020ae858(char *self)
+/* Draws the three-item overlay menu: each item's per-language sprite list
+   at its mMenuItemNX/Y, followed by data_ov006_021346bc at the same spot.
+   The highlighted item (mMenuCursor) goes through a matrix whose diagonal
+   is func_02053200 of a pulse that mMenuCursorPhase drives through the
+   sin/cos table data_02082214. Nothing
+   is drawn while func_ov004_020b8f18 reports the touch options busy. */
+extern "C" void func_ov004_020ae858(dScMgBase_c *scene)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)self;
     int extra[3];
     s16 *tbl[3];
     int buf[4];
@@ -1227,7 +1226,7 @@ extern "C" void func_ov004_020ae858(char *self)
     int zero0;
     int i;
 
-    if (func_ov004_020b8f18((void *)(self + 0xf4)) != 0)
+    if (func_ov004_020b8f18((void *)&scene->mTouchOptions) != 0)
         return;
 
     extra[0] = *data_ov004_020bc020[GetGameLanguage()];
@@ -1293,9 +1292,8 @@ extern "C" void func_ov004_020ae858(char *self)
 // @symbol func_ov004_020aea30
 namespace s20aea30 {
 extern "C" {
-// @symbol func_ov004_020aea30
-/* recovered: named members + shared header, declarations from a shared header */
-/* recovered: named members + shared header */
+/* Draws a sprite list: calls func_ov004_020aea78 on each 8-byte entry
+   from `self`, up to and including the one whose halfword at +6 is 0xffff. */
 extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
 {
     void *r8 = self;
@@ -1316,48 +1314,21 @@ extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
 // @symbol func_ov004_020aea78
 namespace s20aea78 {
 extern "C" {
-struct C {
-    virtual int f0();
-    virtual int f1();
-    virtual int f2();
-    virtual int f3();
-    virtual int f4();
-    virtual int f5();
-    virtual int f6();
-    virtual int f7();
-    virtual int f8();
-    virtual int f9();
-    virtual int f10();
-    virtual int f11();
-    virtual int f12();
-    virtual int f13();
-    virtual int f14();
-    virtual int f15();
-    virtual int f16();
-    virtual int f17();
-    virtual int f18();
-    virtual int f19();
-    virtual int f20();
-    virtual int f21();
-    virtual int f22();
-    virtual int f23();
-    virtual int f24();
-    virtual int f25();
-    virtual int f26();
-};
 struct M { int _00, _01, _10, _11; };
 extern "C" {
-extern C* data_ov004_020beb68;
 extern void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
 }
 
 struct BF { unsigned int lo:10; unsigned int hi:22; };
 struct S { int x; BF y; };
 
+/* Draws one sprite-list entry at (a1, a2) through func_ov004_020b1c68.
+   When the scene's OnHitByCannonBlastedChar (slot 26) returns 2, the copy
+   drawn has 0x200 subtracted from the low ten bits of its second word. */
 extern "C" void func_ov004_020aea78(S* self, int a1, int a2, struct M* a3)
 {
     S v = *self;
-    if (data_ov004_020beb68->f26() == 2) {
+    if (((dScMgBase_c *)data_ov004_020beb68)->OnHitByCannonBlastedChar() == 2) {
         v.y.lo = (self->y.lo - 0x200) & 0x3ff;
     }
     func_ov004_020b1c68(&v, a1, a2, 0, -1, a3);
@@ -1368,29 +1339,24 @@ extern "C" void func_ov004_020aea78(S* self, int a1, int a2, struct M* a3)
 // @symbol func_ov004_020aeb24
 namespace s20aeb24 {
 extern "C" {
-struct Obj {
-    virtual void v0();  virtual void v1();  virtual void v2();  virtual void v3();
-    virtual void v4();  virtual void v5();  virtual void v6();  virtual void v7();
-    virtual void v8();  virtual void v9();  virtual void v10(); virtual void v11();
-    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
-    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
-    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
-    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
-    virtual void v28();
-};
-
 extern "C" {
 extern void func_02012790(int a);
 extern int func_ov004_020b8f78(char* p);
-extern int _Z15ApproachLinear2Rsss(short* v, short a, short b);
 extern void func_0203b958(short* o, short* a, short* b);
-extern int _Z14ApproachLinearRiii(int* v, int a, int b);
 extern void func_02012dd0(int a);
 extern void func_ov004_020b9220(char* p);
 
 extern unsigned short data_020a0e5a[];
 extern dWipe_c data_0209f61c;
 
+/* The overlay menu's frame while it is open: slides the items in and, on
+   a new touch with nothing highlighted, highlights the touched item in
+   mMenuCursor (within 0x60 x 0x18 of item 0, 0x40 x 0x13 of the others, by
+   func_0203b958's offsets) and sets the s16 timer at +0x4644 (0x10 for
+   item 0, else 0). Once mMenuCursorPhase reaches 0x10000 and that timer
+   reaches 0, item 0 (and any other value) calls OnHitFromUnderneath
+   (slot 28), item 1 starts a scene fade, and item 2 calls
+   func_ov004_020b9220 on the touch options and clears the highlight. */
 void func_ov004_020aeb24(char* c)
 {
     dScMgBase_c *self = (dScMgBase_c *)c;
@@ -1406,11 +1372,11 @@ void func_ov004_020aeb24(char* c)
     if ((flags & 0x40) || (flags & 0x80) || (flags & 0x20) || (flags & 0x10)) {
         func_02012790(0xe);
     }
-    if (func_ov004_020b8f78(c + 0xf4) != 0) return;
+    if (func_ov004_020b8f78((char *)&self->mTouchOptions) != 0) return;
 
-    _Z15ApproachLinear2Rsss(&self->mMenuItem0X, 0x80, 0x10);
-    _Z15ApproachLinear2Rsss(&self->mMenuItem1X, 0x80, 0x10);
-    _Z15ApproachLinear2Rsss(&self->mMenuItem2Y, 0x90, 5);
+    ApproachLinear2(self->mMenuItem0X, 0x80, 0x10);
+    ApproachLinear2(self->mMenuItem1X, 0x80, 0x10);
+    ApproachLinear2(self->mMenuItem2Y, 0x90, 5);
 
     idx = gActivePlayerSlot;
     unlocked = 0;
@@ -1456,12 +1422,12 @@ void func_ov004_020aeb24(char* c)
 
 after:
     if (self->mMenuCursor < 0) return;
-    if (_Z14ApproachLinearRiii(&self->mMenuCursorPhase, 0x10000, 0x1000) == 0) return;
-    if (_Z15ApproachLinear2Rsss((short*)(c + 0x4644), 0, 1) == 0) return;
+    if (ApproachLinear(self->mMenuCursorPhase, 0x10000, 0x1000) == 0) return;
+    if (ApproachLinear2(*(short*)(c + 0x4644), 0, 1) == 0) return;
 
     switch (self->mMenuCursor) {
     case 0:
-        ((Obj*)c)->v28();
+        self->OnHitFromUnderneath();
         return;
     case 1:
         dScene_c::SetFaders(&data_0209f61c);
@@ -1472,12 +1438,12 @@ after:
         self->unk_4648 = 1;
         return;
     case 2:
-        func_ov004_020b9220(c + 0xf4);
+        func_ov004_020b9220((char *)&self->mTouchOptions);
         self->mMenuCursor = -1;
         self->mMenuCursorPhase = 0;
         return;
     default:
-        ((Obj*)c)->v28();
+        self->OnHitFromUnderneath();
         return;
     }
 }
