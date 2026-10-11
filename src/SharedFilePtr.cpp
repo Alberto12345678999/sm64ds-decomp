@@ -1,6 +1,6 @@
 //cpp
 /* arm9/SharedFilePtr -- the shared-file handle and its loader block at .text
- * 0x020178e4..0x02017e0c, folded from twenty-two legacy shards. mwccarm emits
+ * 0x020178e4..0x02017e60, folded from twenty-five legacy shards. mwccarm emits
  * .text in reverse source order, so the definitions below run ROM-descending:
  *
  *   SharedFilePtr::Load      0x02017c54
@@ -52,6 +52,7 @@ int func_02018d48(void *a, void *b, unsigned int c);
 void _ZN6Memory10DeallocateEPv(void *p);
 void *func_02017e48(void *self, unsigned int fileID);
 void *func_02017e34(void *c);
+void func_02017e0c(void *self, unsigned int fileID);
 unsigned int func_02017060(void *ptr);
 }
 
@@ -66,6 +67,37 @@ struct SharedFilePtr {
     SharedFilePtr &Construct(unsigned int fileID);
     unsigned int ReallocateModelFile();
 };
+
+#ifndef SM64DS_PLATFORM_PC
+/* The host port never provides these three helpers: they are the DS-only
+ * file-handle init path (func_02017e48 / func_02017e34 ride fileID through,
+ * func_02017e0c stamps the handle). Definitions run ROM-descending like
+ * the rest of this TU. */
+// @symbol func_02017e48
+extern "C" void *func_02017e48(void *self, unsigned int fileID)
+{
+    func_02017e0c(self, fileID);
+    return self;
+}
+
+// @symbol func_02017e34
+extern "C" void *func_02017e34(void *c)
+{
+    data_0209d3bc = *(unsigned short *)c;
+    return c;
+}
+
+// @symbol func_02017e0c
+extern "C" {
+extern unsigned int func_02018a24(unsigned int);
+void func_02017e0c(void *c, unsigned int arg)
+{
+    *(int *)((char *)c + 4) = 0;
+    *(unsigned char *)((char *)c + 2) = 0;
+    *(unsigned short *)c = func_02018a24(arg);
+}
+}
+#endif
 
 #ifndef SM64DS_PLATFORM_PC
 /* The host port does not compile this body: Load is the card seam, and

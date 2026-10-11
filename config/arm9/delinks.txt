@@ -1018,19 +1018,7 @@ src/unnamed/arm9/0201/func_020178cc.c:
 
 src/SharedFilePtr.cpp:
     complete
-    .text start:0x020178e4 end:0x02017e0c
-
-src/func_02017e0c.c:
-    complete
-    .text start:0x02017e0c end:0x02017e34
-
-src/unnamed/arm9/0201/func_02017e34.c:
-    complete
-    .text start:0x02017e34 end:0x02017e48
-
-src/unnamed/arm9/0201/func_02017e48.c:
-    complete
-    .text start:0x02017e48 end:0x02017e60
+    .text start:0x020178e4 end:0x02017e60
 
 src/unnamed/arm9/0201/func_02017e60.c:
     complete
