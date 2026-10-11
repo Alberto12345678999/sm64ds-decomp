@@ -15,8 +15,6 @@ extern void func_ov002_020d99a4(unsigned char *self);
 extern void func_ov002_020d9aac(void* c);
 extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int a, void* v);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
-extern void func_ov002_020d94cc(void *self);
-extern void func_ov002_020d98b4(void* self);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void Player_AdvanceAnims(void* c);
 extern int func_ov002_020e2c84(void *self);
@@ -46,7 +44,7 @@ int Player::St_Hurt_Main()
         if (mHurtDamage != 0) {
             u32 masked = mStateStep & 0xf0;
             if (masked == 0 || masked == 0x10) {
-                func_ov002_020d94cc(this);
+                func_ov002_020d94cc();
             }
             mHurtDamage = 0;
         }
@@ -70,7 +68,7 @@ int Player::St_Hurt_Main()
 
     case 2:
         if (mStateTimer != 0) {
-            func_ov002_020d98b4(this);
+            func_ov002_020d98b4();
             return 1;
         }
         mFlags &= ~0x80;
