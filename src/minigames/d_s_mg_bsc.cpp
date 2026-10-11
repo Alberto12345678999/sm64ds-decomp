@@ -6,10 +6,12 @@
  * does not bind (last setting wins), and the other functions do not care.
  * Functions run in REVERSE of ROM order; do not reorder.
  *
- * Still raw: the func_ov004 and func_ov006 helpers and most data_ globals
- * are unnamed in symbols.txt, and unk_0a8 and unk_0b8 are unnamed in the
- * header. The factory builds the object by hand because the class has no
- * constructor declared yet.
+ * leftovers:
+ *   - the func_ov004 and func_ov006 helpers and most data_ globals are
+ *     unnamed in symbols.txt; unk_0a8 and unk_0b8 are unnamed in the
+ *     header.
+ *   - the factory builds the object by hand because the class has no
+ *     constructor declared yet.
  */
 #pragma opt_strength_reduction off
 
