@@ -10,6 +10,18 @@
  * ~dWipe_c() is the key function: mwcc emits D2, D0 and D1 with the
  * definition, the cartridge keeps D0 (0x0202fbc8) and D1 (0x0202fc08), and
  * the vtable/RTTI records land in .data at 0x020926d0..0x02092718.
+ *
+ * leftovers:
+ * - SetBackwardTime keeps its 3-argument extern-C form: the ROM entry
+ *   forwards r2 untouched, which the header's 2-param member would drop
+ *   (vtable slot 3 still binds through the header decl).
+ * - G2x::SetBlendBrightness stays a local extern (the ROM passes r2 with
+ *   no sign-extend; the header's s16 emits sxth at this call site).
+ * - opt_strength_reduction off runs to end of file: its reset reaches
+ *   backward, so it cannot be restored between the two table builders
+ *   (measured). func_0202f2c4, func_0202f3a4, func_02053c10, the
+ *   data_023c0000 wake word and the 0x400xxxx registers stay
+ *   address-named.
  */
 #include "types.h"
 #include "dWipe_c.h"
