@@ -1,26 +1,22 @@
 //cpp
-/* Production translation unit for ov052/daObjEmmYuka_c.
- * 6 function(s), .text 0x02111440..0x02111830. Tiny-Huge Island's square
- * path lift, actor 175 EMM_YUKA.
- *
- * NAME: _ZTS14daObjEmmYuka_c is "14daObjEmmYuka_c" at ov052 0x021125b8; _ZTI
- * at 0x021125ac reads [__si_class_type_info, that string, _ZTI10dBgActor_c].
- * The tree previously called the class SquarePathLift (coined; vtable address
- * only).
- *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02111440), D0
- * (0x02111484), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is ROM-ascending.
- *
- * Leftover: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange take
- *   Fix12<int> by value, so they stay mangled; a member call homes the
- *   argument and changes the ROM ABI.
- * Leftover: func_020393d4 is a 4-byte store into dBgW's callback slot;
- *   naming belongs with dBgW in arm9.
- * Leftover: the factory daObjEmmYuka_c_classInit (0x02111830) sits just past
- *   this run's right edge and stays a one-function source.
+/* Tiny-Huge Island's square path lift (actor 175, EMM_YUKA),
+ * .text 0x02111440..0x02111830. The out-of-line destructor is the key
+ * function, so this TU emits _ZTV/_ZTI/_ZTS14daObjEmmYuka_c: _ZTS is
+ * "14daObjEmmYuka_c" at ov052 0x021125b8 and _ZTI at 0x021125ac reads
+ * [__si_class_type_info, that string, _ZTI10dBgActor_c]. The tree
+ * previously called the class SquarePathLift (coined; vtable address
+ * only). #pragma defer_codegen off lays .text down in source order.
  */
+
+// leftovers:
+// - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange take Fix12<int> by
+//   value, so they stay mangled; a member call homes the argument and
+//   changes the ROM ABI.
+// - func_020393d4 is the 4-byte store of the collision callback into
+//   dBgW's slot; naming belongs with dBgW in arm9.
+// - This TU emits its own __sinit for the file handles below, which the
+//   manifest does not license. The handles stay: nothing else defines
+//   their BSS or .init range.
 
 #include "decl_common.h"
 #include "daObjEmmYuka_c.h"
@@ -34,11 +30,9 @@ struct EmmYukaFiles {
     CLPS_Block *clps;
 };
 
-/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
- * veneer pairs (func_02017acc / func_02017ab4 for the model, func_02017b4c /
- * SharedFilePtr_Destruct_Clsn for the collision), spelled through
- * declared-only subclasses so the static initializer names the real entry
- * points. */
+/* The ctor/dtor pairs are the ROM's SharedFilePtr veneers (func_02017acc /
+ * func_02017ab4 for the model, func_02017b4c / SharedFilePtr_Destruct_Clsn
+ * for the collision); the subclasses exist to spell those entry points. */
 struct EmmYukaModelFilePtr : SharedFilePtr {
     u32 words[2];
     EmmYukaModelFilePtr(u32 fileID);
@@ -93,6 +87,8 @@ int daObjEmmYuka_c::Render()
 // @symbol _ZN14daObjEmmYuka_c8BehaviorEv
 int daObjEmmYuka_c::Behavior()
 {
+    /* Plain ints, not Vector3: its inline destructor comes out out-of-line
+     * here (_ZN7Vector3D1Ev), which the link step refuses as unlicensed. */
     struct Vec { int x, y, z; } prev, node, diff, scaled1, scaled2;
     int looped;
     int delta;
