@@ -2,12 +2,12 @@
 /* cstd -- the tree's C++ namespace of math wrappers: the division-unit
  * routines (mod/div/fdiv/ldiv plus the async/result pairs) and the
  * square-root-unit helpers that live in the same contiguous run, arm9
- * 0x02052ef4..0x02053274, 13 functions. The file takes the class name the
+ * 0x02052ef4..0x02053320, 14 functions. The file takes the class name the
  * tree already uses for the namespace (shard file names, decl_common.h
  * externs), per Juan 2026-10-11.
  *
  * mwccarm emits .text in reverse source order here, so definitions run from
- * the highest address (fdiv) down to the lowest (mod); each earlier
+ * the highest address (func_02053274) down to the lowest (mod); each earlier
  * definition is the declaration its callers need, with the remaining
  * callees forward-declared below. The two Fix12-taking routines keep the
  * shards' extern "C" spelling under their identical identifiers: in C they
@@ -33,6 +33,34 @@ int _ZN4cstd11fdiv_resultEv(void);
 long long _ZN4cstd11ldiv_resultEv(void);
 int func_02052fdc(void);
 void func_02053008(int n);
+}
+
+// @symbol func_02053274
+extern "C" {
+int func_02053274(int *a, int *b)
+{
+    volatile unsigned short *ime_reg = (volatile unsigned short *)0x4000208;
+    volatile unsigned short *cnt = (volatile unsigned short *)0x40002b0;
+    volatile unsigned int *param = (volatile unsigned int *)0x40002b8;
+    int dx = a[0] - b[0];
+    long long sq = (long long)dx * dx;
+    int dy = a[1] - b[1];
+    int dz;
+    unsigned short ime;
+    sq += (long long)dy * dy;
+    dz = a[2] - b[2];
+    sq += (long long)dz * dz;
+    sq <<= 2;
+    ime = *ime_reg;
+    *ime_reg = 0;
+    *cnt = 1;
+    param[0] = (unsigned int)sq;
+    param[1] = (unsigned int)(sq >> 32);
+    *ime_reg;
+    *ime_reg = ime;
+    while (*cnt & 0x8000);
+    return (*(volatile int *)0x40002b4 + 1) >> 1;
+}
 }
 
 // @symbol _ZN4cstd4fdivEii

@@ -6,15 +6,15 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x02052ef4..0x02053274, 13 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
-    "BOTTOM EDGE: InvMat4x3.c (0x02052b34..0x02052ec8) ends exactly where the run begins -- an unrelated matrix helper. TOP EDGE: func_02053274.c (0x02053274..0x02053320) begins exactly where the run ends and stays a one-function source.",
+    "contiguous linker run: 0x02052ef4..0x02053320, 14 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "BOTTOM EDGE: InvMat4x3.c (0x02052b34..0x02052ec8) ends exactly where the run begins -- an unrelated matrix helper. TOP EDGE: func_02053320.c (0x02053320..0x02053380) begins exactly where the run ends and stays a one-function source.",
     "NAMESPACE-LOCAL COMPLETE: the run is every cstd division/square-root-unit wrapper in this span (mod/div/fdiv/ldiv, the fdiv_async/fdiv_result and reciprocal_async/ldiv_result async pairs, and the func_02052fdc/func_02053008/func_02053130/func_020531a4/func_02053200 helpers that drive the same DIV/SQRT registers). No other cstd run belongs to this job."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02052ef4",
-      "end": "0x02053274"
+      "end": "0x02053320"
     }
   ],
   "functions": [
@@ -108,6 +108,13 @@
       "size": "0x0000001c",
       "legacy_source": "src/_ZN4cstd4fdivEii.cpp",
       "ordinal": 12
+    },
+    {
+      "symbol": "func_02053274",
+      "address": "0x02053274",
+      "size": "0x000000ac",
+      "legacy_source": "src/unnamed/arm9/0205/func_02053274.c",
+      "ordinal": 13
     }
   ],
   "data": [],
@@ -116,7 +123,7 @@
   "notes": [
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the `main` module is unsegmentable, so there is no create candidate id.",
     "cstd is the tree's C++ namespace of math wrappers; the file takes the class name already used in the tree, per Juan 2026-10-11. No vtable, RTTI, or emitted data.",
-    "mwccarm emits .text in reverse source order here, so the file runs from the highest address (fdiv) down to the lowest (mod); each earlier definition is the declaration its callers need, with the remaining callees forward-declared at the top.",
+    "mwccarm emits .text in reverse source order here, so the file runs from the highest address (func_02053274) down to the lowest (mod); each earlier definition is the declaration its callers need, with the remaining callees forward-declared at the top.",
     "The two Fix12-taking routines (fdiv_async, reciprocal_async) keep the shards' extern \"C\" spelling under their identical identifiers: in C they define the mangled identifier verbatim, and the mangled symbol comes out identical in the C++ TU."
   ],
   "verification": {
@@ -125,8 +132,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-cstd/cstd.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 13,
-    "functions_declared": 13,
+    "functions_matched": 14,
+    "functions_declared": 14,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
@@ -155,7 +162,7 @@
       },
       "tuRange": {
         "start": "0x02052ef4",
-        "end": "0x02053274",
+        "end": "0x02053320",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -163,14 +170,14 @@
         {
           "section": ".text",
           "start": "0x02052ef4",
-          "end": "0x02053274",
+          "end": "0x02053320",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 13
+          "LICENSED": 14
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],

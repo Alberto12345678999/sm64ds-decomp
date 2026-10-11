@@ -9609,6 +9609,7 @@
     "src/cstd6.cpp#_ZN4cstd6strcmpEPKcS1_": "tangosdev",
     "src/cstd6.cpp#_ZN4cstd7strncpyEPcPKcj": "tangosdev",
     "src/cstd6.cpp#func_020706b0": "tangosdev",
-    "src/cstd6.cpp#_ZN4cstd6strlenEPKc": "tangosdev"
+    "src/cstd6.cpp#_ZN4cstd6strlenEPKc": "tangosdev",
+    "src/cstd.cpp#func_02053274": "tangosdev"
   }
 }
