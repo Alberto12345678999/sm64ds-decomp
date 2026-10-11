@@ -92,7 +92,7 @@
  *   by value, which has no implicit int conversion (notes/mwccarm-codegen.md
  *   6az). dBgCh_Actr::GetFloorResult / GetWallResult are not declared.
  *
- * Known limits:
+ * leftovers:
  *   InitResources keeps two `(u32)param1` read-side casts; spelled plainly,
  *   2004/b56 materialises the param1 address once for each read-modify-write
  *   and the body grows from 0x4c8 to 0x4d0 (see the comments at both sites).
