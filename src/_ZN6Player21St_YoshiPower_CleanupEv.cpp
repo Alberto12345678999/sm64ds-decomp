@@ -5,7 +5,6 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void func_ov002_020d718c(char*);
 extern void func_ov002_020d6790(char*);
 }
 
@@ -16,7 +15,7 @@ int Player::St_YoshiPower_Cleanup()
         int t = (int)((*(int*)(r2+0xb0) & 0x20000) != 0);
         if (t != 0) {
             *(int*)(((int)r2 + 0xb0)) &= ~0xe0000;
-            func_ov002_020d718c(((char*)this));
+            func_ov002_020d718c();
             return 1;
         }
         *(int*)(((int)r2 + 0xb0)) &= ~0x20000;
@@ -30,10 +29,10 @@ int Player::St_YoshiPower_Cleanup()
                 goto end;
             }
         }
-        func_ov002_020d718c(((char*)this));
+        func_ov002_020d718c();
     } else {
         if (*(char**)((char*)&mObjInMouth) == 0 && unk_6f4 == 0)
-            func_ov002_020d71a0(((char*)this));
+            func_ov002_020d71a0();
     }
 end:
     return 1;

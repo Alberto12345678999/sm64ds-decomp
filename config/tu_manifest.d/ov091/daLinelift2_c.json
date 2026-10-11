@@ -196,14 +196,14 @@
       "evidence": "compiler-generated destructor-registration node for the 0x669 model handle"
     },
     {
-      "symbol": "@508",
+      "symbol": "@511",
       "address": "0x021354bc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x683 model handle"
     },
     {
-      "symbol": "@511",
+      "symbol": "@508",
       "address": "0x021354c8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -275,7 +275,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@508",
+      "symbol": "@511",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local model registration node is a configured initializer relocation destination at 0x021354bc"
@@ -287,7 +287,7 @@
       "evidence": "compiler-local model registration node is a configured initializer relocation destination at 0x021354b0"
     },
     {
-      "symbol": "@511",
+      "symbol": "@508",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local collision registration node is a configured initializer relocation destination at 0x021354c8"
@@ -301,22 +301,17 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@492",
-      "to": "@508",
+      "from": "@506",
+      "to": "@511",
       "evidence": "mwcc numbers this registration node @492 per TU and other overlays already define global @492 symbols, so the scratch link would multiply-define it"
     },
     {
-      "from": "@493",
+      "from": "@507",
       "to": "@510",
       "evidence": "mwcc numbers this registration node @493 per TU and ov100 already defines a global @493 at 0x0214834c, so the scratch link would multiply-define it"
     },
     {
-      "from": "@494",
-      "to": "@511",
-      "evidence": "mwcc numbers this registration node @494 per TU and other overlays already define global @494 symbols, so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@495",
+      "from": "@509",
       "to": "@512",
       "evidence": "mwcc numbers this registration node @495 per TU and ov100 already defines a global @495 at 0x0214835c, so the scratch link would multiply-define it"
     }
@@ -427,7 +422,7 @@
       "source": "0x021346ac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@508",
+      "symbol": "@511",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x021354bc"
@@ -477,7 +472,7 @@
       "source": "0x021346c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@511",
+      "symbol": "@508",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x021354c8"

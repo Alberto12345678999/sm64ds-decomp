@@ -611,5 +611,17 @@
       "canonical_address": "0x02113a98",
       "reason": "This class's own vtable, vague-linkage and emitted here because the inline destructor makes every TU that names the class a candidate emitter. The cartridge's own copy lives at ov036:0x02113a98, outside the .text run this entry claims, so dsd delinks it from the image whatever this object does. MEASURED in extracted/overlays/overlay_0036.bin: symbols.txt's 0x02113a98 IS the address point -- 0x02113a90 is the offset-to-top word 0, 0x02113a94 is 0x02113a54 (&_ZTI16daObjRcBuranko_c), and 0x02113a98 is slot 0 = 0x0211137c (InitResources); slot 3 at 0x02113aa4 is 0x02111284 (CleanupResources), slot 6 at 0x02113ab0 is 0x021112f0 (Behavior), slot 9 at 0x02113abc is 0x021112c8 (Render), and slots 16/17 at 0x02113ad8/0x02113adc are 0x021111a0/0x021111e4 (D1 then D0), matching the header. Every other slot holds dBgActor_c's own word and is inherited, including slot 31 at 0x02113b14 = 0x020ee55c (Kill)."
     }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@401",
+      "to": "@387",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @401 now; licensed under the existing pin @387"
+    },
+    {
+      "from": "@400",
+      "to": "@386",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @400 now; licensed under the existing pin @386"
+    }
   ]
 }

@@ -4,9 +4,9 @@
  * follows the X and Z angles; the moving mesh collider follows all three. The class name is the ROM's own RTTI
  * spelling (evidence in include/daKpa2Bg_c.h).
  *
- * ROM span 0x02117980..0x02117cdc: D1 through InitResources, nine functions in
- * ROM order under `#pragma defer_codegen off`. daKpa2Bg_c_classInit at
- * 0x02117cdc stays out of this TU.
+ * ROM span 0x02117980..0x02117d1c: D1 through InitResources, then the registry
+ * factory daKpa2Bg_c_classInit -- ten functions in ROM order under
+ * `#pragma defer_codegen off`.
  *
  * Known limits:
  * - common.h must come first. Matrix4x3 has two 0x30-byte spellings behind
@@ -27,10 +27,26 @@
 
 struct CLPS_Block;
 
+/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
+ * veneer pairs (func_02017acc / func_02017ab4 for the model, func_02017b4c /
+ * SharedFilePtr_Destruct_Clsn for the collision), spelled through
+ * declared-only subclasses so the static initializer names the real entry
+ * points. */
+struct Kpa2BgModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    Kpa2BgModelFilePtr(u32 fileID);
+    ~Kpa2BgModelFilePtr();
+};
+struct Kpa2BgCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+    Kpa2BgCollisionFilePtr(u32 fileID);
+    ~Kpa2BgCollisionFilePtr();
+};
+
 extern "C" {
 
-extern SharedFilePtr daKpa2Bg_c_ModelFile;
-extern SharedFilePtr daKpa2Bg_c_ClsnFile;
+extern Kpa2BgModelFilePtr daKpa2Bg_c_ModelFile;
+extern Kpa2BgCollisionFilePtr daKpa2Bg_c_ClsnFile;
 extern Matrix4x3 data_020a0e68;
 extern CLPS_Block data_ov046_021115bc;
 
@@ -142,3 +158,18 @@ int daKpa2Bg_c::InitResources()
     mSoundHandle = 0;
     return 1;
 }
+
+/* recovered: vtable identified, globals resolved */
+/* `new daKpa2Bg_c` is the whole sequence the loose factory spelled by hand:
+ * fBase_c::operator new(0x570), dBgActor_c's base constructor, the vptr store,
+ * then the Model and dBgW_KcMbg member constructors. */
+// @symbol daKpa2Bg_c_classInit
+extern "C" daKpa2Bg_c *daKpa2Bg_c_classInit(void)
+{
+    return new daKpa2Bg_c;
+}
+
+/* The KOOPA2BG model and collision file handles; the extern block above
+ * declares them for CleanupResources / InitResources. */
+Kpa2BgModelFilePtr daKpa2Bg_c_ModelFile(1571);
+Kpa2BgCollisionFilePtr daKpa2Bg_c_ClsnFile(1572);

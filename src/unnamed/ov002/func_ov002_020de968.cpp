@@ -2,7 +2,7 @@
 extern "C" {
 typedef int Fix12i;
 struct Vector3 { int x, y, z; ~Vector3(){} };
-extern void func_ov002_020bd984(void* c, unsigned int r1);
+extern void _ZN6Player19func_ov002_020bd984Ej(char* c, unsigned int r1); // local extern: this file's local Vector3/Fix12i shadow the shared headers, so it cannot include Player.h and use the member
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i d);
 extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, Vector3* v);
 void func_ov002_020de968(char* c){
@@ -10,7 +10,7 @@ void func_ov002_020de968(char* c){
   if (*(unsigned char*)(c+0x6fd) != 1) return;
   *(unsigned char*)(c+0x6fd) = 0;
   *(unsigned char*)(c+0x6f5) = 0x1f;
-  func_ov002_020bd984(c, 0x30);
+  _ZN6Player19func_ov002_020bd984Ej(c, 0x30);
   Vector3 v;
   v.x = *(int*)(c+0x5c);
   v.y = *(int*)(c+0x60);

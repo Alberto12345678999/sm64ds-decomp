@@ -1238,7 +1238,6 @@ void func_ov102_0214ae1c(void *cv) {
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
     extern void func_ov002_020ef228(void *a, void *b);
     extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vec3 *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
-    extern void func_ov002_020d718c(void *a);
 
     daBmb_c *self = (daBmb_c *)cv;
     Vec3 v;
@@ -1288,7 +1287,7 @@ void func_ov102_0214ae1c(void *cv) {
         w.y = self->mPosY;
         w.z = self->mPosZ;
         _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((Player *)self->mEatingPlayer, &w, self->unk_3e0, 0xc000, 1, 0, 1);
-        func_ov002_020d718c((Player *)self->mEatingPlayer);
+        ((Player *)self->mEatingPlayer)->func_ov002_020d718c();
         self->mEatingPlayer = 0;
     }
     func_ov102_0214baa0((char *)self);

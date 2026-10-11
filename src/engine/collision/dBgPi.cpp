@@ -40,6 +40,24 @@
 
 extern "C" void func_02037de8(int *dst, int *src);
 
+/* CLPS entry lookup. Deferred codegen emits definitions in reverse
+ * source order, so this helper is written first to land last in the ROM. */
+extern "C" {
+extern void func_02037e9c(char *p);
+extern char data_020a0c78;
+
+void func_020381cc(void *r0, int i, void **out)
+{
+    unsigned char *e = *(unsigned char **)r0;
+    if (e == 0 || *(unsigned short *)(e + 4) != 8) {
+        func_02037e9c(&data_020a0c78);
+        *out = &data_020a0c78;
+        return;
+    }
+    *out = e + 8 + (i << 3);
+}
+}
+
 dBgPi::dBgPi()
 {
     Reset();

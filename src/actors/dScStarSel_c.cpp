@@ -6,7 +6,7 @@
  * evidence is in include/dScStarSel_c.h.
  *
  * ELEVEN of the class's fifteen functions are here: the destructor (slots
- * 16/17), the seven free helpers Render and Behavior drive, the empty
+ * 16/17), the seven member helpers Render and Behavior drive, the empty
  * OnPendingDestroy (slot 12) and Render (slot 9). .text
  * 0x020addfc..0x020af038, 4668 bytes, one object, byte-identical to retail
  * through the real link.
@@ -51,21 +51,23 @@
  *   and this file is the larger side: everything from the destructor up to
  *   Behavior. Still in their own files: Behavior, CleanupResources,
  *   InitResources and the factory dScStarSel_c_classInit.
- * - The seven func_ov003_* helpers are written free, and those names are
- *   address-derived analysis labels, not recovered spellings: the image
- *   preserves no linker symbol table and RTTI supplies class identities,
- *   not function names (notes/tu-promotion-conventions.md section 1,
+ * - The seven func_ov003_* helpers are members now (declared non-virtual
+ *   in include/dScStarSel_c.h), and those names are address-derived
+ *   analysis labels, not recovered spellings: the image preserves no
+ *   linker symbol table and RTTI supplies class identities, not function
+ *   names (notes/tu-promotion-conventions.md section 1,
  *   notes/symbol-name-provenance.md). What IS measured is that every
  *   inbound relocation to each of them comes from inside this class's own
- *   run and no other module reaches any of them -- evidence to narrow
- *   ownership on later, not proof the originals were free functions.
+ *   run, every caller passes the same pointer the callee spends as the
+ *   object, and every access in each body is a this-relative field of this
+ *   class (the DIGIT/STRIP/CHAR/ANIM region at 0x104..0x13a).
  * - Where two legacy shards declared the same object with different
  *   shapes, one spelling had to win for the merged file, and the winner is
  *   the one the surviving call sites already hold: data_02092110 and
  *   data_02092128 as scalars, data_020a0e58 as u16[], data_020a0e5a as
  *   u16[][2] (the stride-carrying form -- the flat u16[i*2] spelling costs
  *   func_ov003_020ae358 seventeen words), OAM::TIMES as a scalar, and
- *   func_ov003_020ae1a4's first parameter as char*. Every one of these is
+ *   func_ov003_020ae1a4's value parameter as int. Every one of these is
  *   the same address arithmetic written differently; none changes a byte.
  * - OAM::Render and the G3i/G2/GX entry points stay mangled with local
  *   shadow parameter types. The ROM names carry by-value class parameters
@@ -128,8 +130,6 @@ extern "C" {
 extern unsigned char data_ov003_020b169c[];
 extern unsigned short data_ov003_020b16ac[];
 extern void func_02012790(int a);
-extern int func_ov003_020adec0(char *scene, unsigned int chr);
-extern void func_ov003_020ae1a4(char *scene, int value);
 extern unsigned char NumStars(void);
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern unsigned char gActivePlayerSlot;
@@ -198,14 +198,12 @@ dScStarSel_c::~dScStarSel_c()
 // source of its own: mwccarm emits it from the definition above, directly
 // after D1, ending with dScene_c's inline operator delete.
 
-extern "C" {  /* .c-derived members: C linkage for the whole block */
-
-// @symbol func_ov003_020adec0
+// @symbol _ZN12dScStarSel_c19func_ov003_020adec0Ej
 // ROM 0x020adec0, size 0x90. The inverse of func_ov003_020adf50: maps a
 // character index to its strip slot, or 0 when it has none.
-int func_ov003_020adec0(char *c, unsigned int chr)
+int dScStarSel_c::func_ov003_020adec0(unsigned int chr)
 {
-    unsigned char mode = STRIP_MODE(c);
+    unsigned char mode = STRIP_MODE(this);
     if (mode == 4) {
         unsigned char *p = data_ov003_020b169c;
         int i;
@@ -230,22 +228,22 @@ int func_ov003_020adec0(char *c, unsigned int chr)
     return 0;
 }
 
-// @symbol func_ov003_020adf50
+// @symbol _ZN12dScStarSel_c19func_ov003_020adf50Ev
 // ROM 0x020adf50, size 0x78. Maps the strip slot CHAR_CURSOR to a character
 // index: through data_ov003_020b169c when STRIP_MODE is 4, otherwise the
 // CHAR_CURSOR-th unlocked character when STRIP_MODE is 2 or more; else 0.
-int func_ov003_020adf50(char *c)
+int dScStarSel_c::func_ov003_020adf50()
 {
-    unsigned char mode = STRIP_MODE(c);
+    unsigned char mode = STRIP_MODE(this);
     if (mode == 4) {
-        return data_ov003_020b169c[CHAR_CURSOR(c)];
+        return data_ov003_020b169c[CHAR_CURSOR(this)];
     }
     if (mode >= 2) {
         int slot = 0;
         int chr = 0;
         for (; chr < 3; chr++) {
             if (SaveData::IsCharacterUnlocked((unsigned int)chr) != 0) {
-                if (slot == CHAR_CURSOR(c)) {
+                if (slot == CHAR_CURSOR(this)) {
                     return chr;
                 }
                 slot++;
@@ -255,19 +253,19 @@ int func_ov003_020adf50(char *c)
     return 0;
 }
 
-// @symbol func_ov003_020adfc8
+// @symbol _ZN12dScStarSel_c19func_ov003_020adfc8Ev
 // ROM 0x020adfc8, size 0xe8. Draws the coin record of the current level
 // (SaveData::GetCoinRecord) as three digits drawn right to left, then the
 // TIMES and COIN sprites.
-void func_ov003_020adfc8(char *scene)
+void dScStarSel_c::func_ov003_020adfc8()
 {
     int x = 0xb8;
     int lvl = SublevelToLevel(data_02092110);
     int coin = SaveData::GetCoinRecord(lvl);
-    func_ov003_020ae1a4(scene, coin);
+    func_ov003_020ae1a4(coin);
     int i;
     for (i = 2; i >= 0; i--) {
-        signed char d = DIGIT(scene, i);
+        signed char d = DIGIT(this, i);
         if (d >= 0) {
             OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], x, 0x4c, 8, -1, 0);
             x -= 9;
@@ -277,10 +275,10 @@ void func_ov003_020adfc8(char *scene)
     OAM::Render(0, (OamAttr *)_ZN3OAM4COINE, x - 0x10, 0x4c, -1, -1, 0);
 }
 
-// @symbol func_ov003_020ae0b0
+// @symbol _ZN12dScStarSel_c19func_ov003_020ae0b0Ev
 // ROM 0x020ae0b0, size 0xf4. Draws the power-star count: NumStars() as three
 // digits, drawn right to left, then the TIMES and POWER_STAR sprites.
-void func_ov003_020ae0b0(char *scene)
+void dScStarSel_c::func_ov003_020ae0b0()
 {
     int x;
     int y;
@@ -291,11 +289,11 @@ void func_ov003_020ae0b0(char *scene)
         y = 0xac;
         x = 0xf4;
     }
-    func_ov003_020ae1a4(scene, NumStars());
+    func_ov003_020ae1a4(NumStars());
     {
         int i = 2;
         do {
-            signed char d = DIGIT(scene, i);
+            signed char d = DIGIT(this, i);
             if (d >= 0) {
                 OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], x, y, 8, -1, 0);
                 x -= 9;
@@ -307,11 +305,11 @@ void func_ov003_020ae0b0(char *scene)
     OAM::Render(0, (OamAttr *)&_ZN3OAM10POWER_STARE, x - 0x10, y + 8, -1, -1, 0);
 }
 
-// @symbol func_ov003_020ae1a4
+// @symbol _ZN12dScStarSel_c19func_ov003_020ae1a4Ei
 // ROM 0x020ae1a4, size 0x94. Splits value into three decimal digits in
-// DIGIT(scene, 0..2), dividing by data_ov003_020b16ac[i] in turn; leading
+// DIGIT(this, 0..2), dividing by data_ov003_020b16ac[i] in turn; leading
 // zeros are stored as -1 (blank) except the last digit.
-void func_ov003_020ae1a4(char *scene, int value)
+void dScStarSel_c::func_ov003_020ae1a4(int value)
 {
     int found = 0;
     int one = 1;
@@ -321,19 +319,19 @@ void func_ov003_020ae1a4(char *scene, int value)
         unsigned short place = data_ov003_020b16ac[i];
         int digit = value / place;
         if (digit == 0 && found == 0 && i != 2) {
-            DIGIT(scene, i) = (char)blank;
+            DIGIT(this, i) = (char)blank;
         } else {
             found = one;
-            DIGIT(scene, i) = (char)digit;
+            DIGIT(this, i) = (char)digit;
         }
         value = (unsigned short)(value % place);
     }
 }
 
-// @symbol func_ov003_020ae238
+// @symbol _ZN12dScStarSel_c19func_ov003_020ae238Ev
 // ROM 0x020ae238, size 0x120. Draws the life counter: the LIFE_ICONS entry for
 // LIFE_ICON, the TIMES sprite, and the three digits of data_0209f2f4[0].
-void func_ov003_020ae238(char *scene)
+void dScStarSel_c::func_ov003_020ae238()
 {
     int x;
     int y;
@@ -344,14 +342,14 @@ void func_ov003_020ae238(char *scene)
         x = 0x10;
         y = 0xac;
     }
-    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM10LIFE_ICONSE[LIFE_ICON(scene)], x, y + 8, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM10LIFE_ICONSE[LIFE_ICON(this)], x, y + 8, -1, -1, 0x1000, 0x1000, 0, -1);
     OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, x + 0x10, y + 8, -1, -1, 0);
-    func_ov003_020ae1a4(scene, (unsigned short)data_0209f2f4[0]);
+    func_ov003_020ae1a4((unsigned short)data_0209f2f4[0]);
     {
         int i = 0;
         x += 0x18;
         do {
-            signed char d = DIGIT(scene, i);
+            signed char d = DIGIT(this, i);
             if (d >= 0) {
                 OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], x, y, 8, -1, 0);
                 x += 9;
@@ -361,7 +359,7 @@ void func_ov003_020ae238(char *scene)
     }
 }
 
-// @symbol func_ov003_020ae358
+// @symbol _ZN12dScStarSel_c19func_ov003_020ae358Ev
 // ROM 0x020ae358, size 0x398. Per-frame selection handling: record hit
 // tests and the D-pad.
 //
@@ -391,7 +389,7 @@ void func_ov003_020ae238(char *scene)
 // record read instead of naming the row POINTER: a named row pointer welds both
 // reads onto one address temp and inverts the r2/r3 assignment, while the named
 // index leaves each read to fold its own scale and hands the row temp r2.
-void func_ov003_020ae358(char *c)
+void dScStarSel_c::func_ov003_020ae358()
 {
     int idx = gActivePlayerSlot;
     int valid = 0;
@@ -402,16 +400,16 @@ void func_ov003_020ae358(char *c)
     if (valid == 0) {
         goto sect2;
     }
-    if ((((unsigned char)(gTouchX[idx][0] - 0x58)) < 0x50) && (((unsigned char)((gTouchY[idx][0] - PANEL_Y(c)) + 0x28)) < 0x50)) {
-        CURSOR_MODE(c) = 2;
-        PICKED_CHAR(c) = 3;
-        FB(c, 0x118) = (unsigned char)(data_0208ee44 * 6);
-        ANIM_MODE(c) = 1;
-        FB(c, 0x119) = 0x10;
+    if ((((unsigned char)(gTouchX[idx][0] - 0x58)) < 0x50) && (((unsigned char)((gTouchY[idx][0] - PANEL_Y(this)) + 0x28)) < 0x50)) {
+        CURSOR_MODE(this) = 2;
+        PICKED_CHAR(this) = 3;
+        FB(this, 0x118) = (unsigned char)(data_0208ee44 * 6);
+        ANIM_MODE(this) = 1;
+        FB(this, 0x119) = 0x10;
         func_02012790(data_0209caa0[0x41] + 0x3c);
         return;
     }
-    if (STRIP_MODE(c) <= 1) {
+    if (STRIP_MODE(this) <= 1) {
         return;
     }
     if (data_0209caa0[0x41] != 3) {
@@ -420,16 +418,16 @@ void func_ov003_020ae358(char *c)
     for (i = 0; i < 3; i++) {
         if (SaveData::IsCharacterUnlocked(i) != 0) {
             int ri = gActivePlayerSlot;
-            if (((unsigned short)((gTouchHeld[gActivePlayerSlot][2] - CHAR_X(c, i)) + 0x18)) < 0x30) {
-                if (((unsigned short)((gTouchHeld[ri][3] - CHAR_Y(c, i)) + 0x18)) < 0x2b) {
-                    CURSOR_MODE(c) = 1;
-                    CHAR_CURSOR(c) = (unsigned char)func_ov003_020adec0(c, i);
+            if (((unsigned short)((gTouchHeld[gActivePlayerSlot][2] - CHAR_X(this, i)) + 0x18)) < 0x30) {
+                if (((unsigned short)((gTouchHeld[ri][3] - CHAR_Y(this, i)) + 0x18)) < 0x2b) {
+                    CURSOR_MODE(this) = 1;
+                    CHAR_CURSOR(this) = (unsigned char)func_ov003_020adec0(i);
                     data_02092128 = (unsigned char)i;
                     data_02092114 = (unsigned char)i;
-                    PICKED_CHAR(c) = (unsigned char)i;
-                    FB(c, 0x118) = (unsigned char)(data_0208ee44 * 3);
-                    ANIM_MODE(c) = 2;
-                    FB(c, 0x119) = 0x10;
+                    PICKED_CHAR(this) = (unsigned char)i;
+                    FB(this, 0x118) = (unsigned char)(data_0208ee44 * 3);
+                    ANIM_MODE(this) = 2;
+                    FB(this, 0x119) = 0x10;
                     func_02012790(data_0209caa0[0x41] + 0x3c);
                     return;
                 }
@@ -442,49 +440,47 @@ sect2:
     if (data_0209caa0[0x42] == 0) {
         unsigned short ctrl = data_020a0e58[0];
         if ((ctrl & 0x30) != 0) {
-            unsigned short timer = REPEAT_TIMER(c);
+            unsigned short timer = REPEAT_TIMER(this);
             unsigned char next;
             if (timer != 0) {
-                REPEAT_TIMER(c) -= 1;
+                REPEAT_TIMER(this) -= 1;
                 return;
             }
-            if (CURSOR_ON(c) == 0) {
+            if (CURSOR_ON(this) == 0) {
                 return;
             }
-            if (CURSOR_MODE(c) != 1) {
+            if (CURSOR_MODE(this) != 1) {
                 return;
             }
-            if (STRIP_MODE(c) < 3) {
+            if (STRIP_MODE(this) < 3) {
                 return;
             }
-            next = CHAR_CURSOR(c);
+            next = CHAR_CURSOR(this);
             if (ctrl & 0x20) {
                 if (((data_020a0e58[1] & 0x20) != 0) || (timer == 0)) {
-                    REPEAT_TIMER(c) = (data_020a0e5a[idx][0] & 0x20) ? (0x10) : (8);
-                    if (CHAR_CURSOR(c) != 0) {
+                    REPEAT_TIMER(this) = (data_020a0e5a[idx][0] & 0x20) ? (0x10) : (8);
+                    if (CHAR_CURSOR(this) != 0) {
                         next = next - 1;
                     }
                 }
             } else if (ctrl & 0x10) {
                 if (((data_020a0e58[1] & 0x10) != 0) || (timer == 0)) {
-                    REPEAT_TIMER(c) = (data_020a0e5a[idx][0] & 0x10) ? (0x10) : (8);
-                    if (CHAR_CURSOR(c) != (STRIP_MODE(c) - 2)) {
+                    REPEAT_TIMER(this) = (data_020a0e5a[idx][0] & 0x10) ? (0x10) : (8);
+                    if (CHAR_CURSOR(this) != (STRIP_MODE(this) - 2)) {
                         next = next + 1;
                     }
                 }
             }
-            if (next == CHAR_CURSOR(c)) {
+            if (next == CHAR_CURSOR(this)) {
                 return;
             }
-            CHAR_CURSOR(c) = next;
+            CHAR_CURSOR(this) = next;
             func_02012790(0x12e);
             return;
         }
     }
 
-    REPEAT_TIMER(c) = 0;
-}
-
+    REPEAT_TIMER(this) = 0;
 }
 
 // @symbol _ZN12dScStarSel_c16OnPendingDestroyEv
@@ -514,13 +510,13 @@ s32 dScStarSel_c::Render()
     s32 pressY;
     Matrix4x3 mtx;
 
-    func_ov003_020ae238((char *)this);
-    func_ov003_020ae0b0((char *)this);
+    func_ov003_020ae238();
+    func_ov003_020ae0b0();
 
     if (SublevelToLevel(data_02092110) < 0xf) {
         u8 levelNum;
         s32 numX;
-        func_ov003_020adfc8((char *)this);
+        func_ov003_020adfc8();
         levelNum = SublevelToLevel(data_02092110) + 1;
         if (levelNum <= 0xf) {
             if (levelNum >= 10) {
@@ -568,7 +564,7 @@ s32 dScStarSel_c::Render()
             if (CURSOR_MODE(this) == 0) {
                 OAM::RenderSub((OamAttr *)&data_ov001_020abd78, PLATE_X(this, SELECTED_PLATE(this)), 6);
             } else if (CURSOR_MODE(this) == 1) {
-                u8 *sel = (u8 *)this + func_ov003_020adf50((char *)this);
+                u8 *sel = (u8 *)this + func_ov003_020adf50();
                 OAM::RenderSub((OamAttr *)&data_ov001_020abd80, FB(sel, 0x124) - 0x24, FB(sel, 0x128) - 8);
             } else {
                 OAM::RenderSub((OamAttr *)&data_ov001_020abd80, 0x50, PANEL_Y(this) + 8);
@@ -639,7 +635,7 @@ s32 dScStarSel_c::Render()
                 }
                 if (SaveData::IsCharacterUnlocked(i) != 0) {
                     if (ANIM_MODE(this) == 2) {
-                        if (i == func_ov003_020adf50((char *)this)) {
+                        if (i == func_ov003_020adf50()) {
                             if (ANIM_FLIP(this) == 0) {
                                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(1, data_ov001_020abcb4[i + 3], CHAR_X(this, i), CHAR_Y(this, i), -1, -1, ICON_SCALE_X(this), ICON_SCALE_Y(this), 0, -1);
                                 _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(1, data_ov001_020abcb4[CHAR_SPRITE(this, i)], CHAR_X(this, i), CHAR_Y(this, i), -1, -1, ICON_SCALE_X(this), ICON_SCALE_Y(this), 0, -1);

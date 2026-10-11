@@ -82,8 +82,8 @@ or used as a DMA destination — it cannot be redirected by redefining an lvalue
 - `src/game/actors/d_a_obj_fm_battan.cpp:148` — `_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &pos, 0x04000000);`
 - `src/func_02053c40.c:19` — `DMASyncFillTransfer((&data_02099fd0)[0], 0x4000008, 0, 0x60);`
 - `src/func_02053c40.c:21` — `DMASyncFillTransfer((&data_02099fd0)[0], 0x4001000, 0, 0x70);`
-- `src/func_020554bc.c:10` — `func_0205a064((&data_02099fd0)[0], 0x4000330, 0, 0x10, 0, 0);`
-- `src/func_020554bc.c:11` — `DMASyncFillTransfer((&data_02099fd0)[0], 0x4000360, 0, 0x50);`
+- `src/engine/gx/G3X.cpp:83` — `func_0205a064((&data_02099fd0)[0], 0x4000330, 0, 0x10, 0, 0);`
+- `src/engine/gx/G3X.cpp:84` — `DMASyncFillTransfer((&data_02099fd0)[0], 0x4000360, 0, 0x50);`
 - `src/func_02055780.c:4` — `func_020553c0(0x4000400);`
 - `src/func_0205a290.c:35` — `DMAStartTransfer(data_020a6460.f4, base, 0x4000400, -0x3bc00000 | (len >> 2));`
 - `src/func_0205a290.c:38` — `DMAStartTransfer(data_020a6460.f4, base, 0x4000400, 0x84400000 | (len >> 2));`

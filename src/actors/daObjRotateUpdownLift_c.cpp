@@ -93,6 +93,27 @@ struct UpdownClpsSlot {
     u32 pad8;
 };
 
+/* File-scope objects at the end of this file construct the four resource
+ * handles (model files 0x493/0x61f, collision files 0x494/0x620). mwcc
+ * emits __sinit_daObjRotateUpdownLift_c.cpp from those definitions. The
+ * wrapper names are local; the handle constructors and destructors are
+ * the ROM resource-family functions, aliased in the manifest. Nothing in
+ * this TU names the handles directly; the UpdownFileSlot rows above
+ * point at them. */
+struct RotateUpdownLiftModelFile : SharedFilePtr {
+    u32 words[2];
+
+    RotateUpdownLiftModelFile(u32 fileID);
+    ~RotateUpdownLiftModelFile();
+};
+
+struct RotateUpdownLiftCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    RotateUpdownLiftCollisionFilePtr(u32 fileID);
+    ~RotateUpdownLiftCollisionFilePtr();
+};
+
 extern UpdownPath data_ov091_02134cdc[3];
 extern UpdownTopY data_ov091_02134d1c[3];
 extern s32 data_ov091_021344e8[];
@@ -183,7 +204,11 @@ void daObjRotateUpdownLift_c::func_ov091_02130fac()
 void daObjRotateUpdownLift_c::Kill()
 {
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xbb, mPosX, mPosY, mPosZ);
-    Vector3 v = { mPosX, mPosY, mPosZ };
+    /* memberwise stores: the (x,y,z) ctor form batches the loads */
+    Vector3 v;
+    v.x = mPosX;
+    v.y = mPosY;
+    v.z = mPosZ;
     PoofDustAt(v);
     Sound::PlayBank3(0xf, *(Vector3 *)&mCamSpacePosX);
     mIsDead = 1;
@@ -562,3 +587,10 @@ extern "C" daObjRotateUpdownLift_c *daObjRotateUpdownLift_c_classInit_UPDOWN_LIF
 {
     return new daObjRotateUpdownLift_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov091_02134524 shard).
+ * Definition order is the retail initializer's construction order. */
+RotateUpdownLiftModelFile data_ov091_02135448(0x493);
+RotateUpdownLiftCollisionFilePtr data_ov091_02135450(0x494);
+RotateUpdownLiftModelFile data_ov091_02135440(0x61f);
+RotateUpdownLiftCollisionFilePtr data_ov091_02135458(0x620);

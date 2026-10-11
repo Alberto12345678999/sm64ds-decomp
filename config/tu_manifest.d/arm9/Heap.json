@@ -5,12 +5,12 @@
   "promoted_source": "src/engine/heap/Heap.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
-  "boundary_evidence": "Contiguous .text span 0x0203c24c..0x0203c33c: nine Heap members tile the range exactly (config/arm9/delinks.txt, config/arm9/symbols.txt), every symbol in the run a member of Heap (the mHeap::Heap_t abstract base of include/Heap.h). Left edge begins exactly where Memory::AllocateEjiP4Heap ends, right edge ends where SolidHeap::VResizeToFit begins. The rest of the class's members live in other TUs' runs (the veneer targets Sizeof/Deallocate/Allocate(u32,int), the statics CreateRootHeap/CreateSolidHeap/CreateExpandingHeap, the remaining guards) and stay their own shards.",
+  "boundary_evidence": "Contiguous .text span 0x0203c24c..0x0203c970: nine Heap members tile 0x0203c24c..0x0203c33c and 43 family leftovers (SolidHeap/ExpandingHeap virtual overrides, Heap guards/statics, ExpandingHeapAllocator::InvokeDeallocate) tile 0x0203c33c..0x0203c970 exactly (config/arm9/delinks.txt, config/arm9/symbols.txt). Left edge begins exactly where Memory::AllocateEjiP4Heap ends; right edge ends where SolidHeap::D0 begins (the dtor/ctor cluster 0x0203c970..0x0203cbc0 stays separate: each D0/D1/D2 shard defines the same ~X(){}, so one TU cannot hold a pair).",
   "sections": [
     {
       "name": ".text",
       "start": "0x0203c24c",
-      "end": "0x0203c33c"
+      "end": "0x0203c970"
     }
   ],
   "functions": [
@@ -76,6 +76,307 @@
       "size": "0x18",
       "ordinal": 8,
       "legacy_source": "src/_ZN4Heap10SetDefaultEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap12VResizeToFitEv",
+      "address": "0x0203c33c",
+      "size": "0x4c",
+      "ordinal": 9,
+      "legacy_source": "src/_ZN9SolidHeap12VResizeToFitEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap12VResizeToFitEv",
+      "address": "0x0203c388",
+      "size": "0x8",
+      "ordinal": 10,
+      "legacy_source": "src/_ZN13ExpandingHeap12VResizeToFitEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap11ResizeToFitEv",
+      "address": "0x0203c390",
+      "size": "0x48",
+      "ordinal": 11,
+      "legacy_source": "src/_ZN4Heap11ResizeToFitEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap10VGetNodeIDEv",
+      "address": "0x0203c3d8",
+      "size": "0x8",
+      "ordinal": 12,
+      "legacy_source": "src/_ZN9SolidHeap10VGetNodeIDEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap10VGetNodeIDEv",
+      "address": "0x0203c3e0",
+      "size": "0x10",
+      "ordinal": 13,
+      "legacy_source": "src/_ZN13ExpandingHeap10VGetNodeIDEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap10VSetNodeIDEj",
+      "address": "0x0203c3f0",
+      "size": "0x8",
+      "ordinal": 14,
+      "legacy_source": "src/_ZN9SolidHeap10VSetNodeIDEj.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap10VSetNodeIDEj",
+      "address": "0x0203c3f8",
+      "size": "0x10",
+      "ordinal": 15,
+      "legacy_source": "src/_ZN13ExpandingHeap10VSetNodeIDEj.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap9SetNodeIDEj",
+      "address": "0x0203c408",
+      "size": "0x20",
+      "ordinal": 16,
+      "legacy_source": "src/_ZN4Heap9SetNodeIDEj.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap7VSizeofEPv",
+      "address": "0x0203c428",
+      "size": "0x1c",
+      "ordinal": 17,
+      "legacy_source": "src/_ZN9SolidHeap7VSizeofEPv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap7VSizeofEPv",
+      "address": "0x0203c444",
+      "size": "0x10",
+      "ordinal": 18,
+      "legacy_source": "src/_ZN13ExpandingHeap7VSizeofEPv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap6SizeofEPv",
+      "address": "0x0203c454",
+      "size": "0x48",
+      "ordinal": 19,
+      "legacy_source": "src/_ZN4Heap6SizeofEPv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap14VDeallocateAllEv",
+      "address": "0x0203c49c",
+      "size": "0x14",
+      "ordinal": 20,
+      "legacy_source": "src/_ZN9SolidHeap14VDeallocateAllEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap14VDeallocateAllEv",
+      "address": "0x0203c4b0",
+      "size": "0x1c",
+      "ordinal": 21,
+      "legacy_source": "src/_ZN13ExpandingHeap14VDeallocateAllEv.cpp"
+    },
+    {
+      "symbol": "_ZN22ExpandingHeapAllocator16InvokeDeallocateEPvPS_j",
+      "address": "0x0203c4cc",
+      "size": "0x18",
+      "ordinal": 22,
+      "legacy_source": "src/_ZN22ExpandingHeapAllocator16InvokeDeallocateEPvPS_j.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap11VDeallocateEPv",
+      "address": "0x0203c4e4",
+      "size": "0x28",
+      "ordinal": 23,
+      "legacy_source": "src/_ZN9SolidHeap11VDeallocateEPv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap11VDeallocateEPv",
+      "address": "0x0203c50c",
+      "size": "0x2c",
+      "ordinal": 24,
+      "legacy_source": "src/_ZN13ExpandingHeap11VDeallocateEPv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap10DeallocateEPv",
+      "address": "0x0203c538",
+      "size": "0x20",
+      "ordinal": 25,
+      "legacy_source": "src/_ZN4Heap10DeallocateEPv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap11VReallocateEPvj",
+      "address": "0x0203c558",
+      "size": "0x10",
+      "ordinal": 26,
+      "legacy_source": "src/_ZN9SolidHeap11VReallocateEPvj.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap11VReallocateEPvj",
+      "address": "0x0203c568",
+      "size": "0x10",
+      "ordinal": 27,
+      "legacy_source": "src/_ZN13ExpandingHeap11VReallocateEPvj.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap10ReallocateEPvj",
+      "address": "0x0203c578",
+      "size": "0x20",
+      "ordinal": 28,
+      "legacy_source": "src/_ZN4Heap10ReallocateEPvj.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap11VMemoryLeftEv",
+      "address": "0x0203c598",
+      "size": "0x14",
+      "ordinal": 29,
+      "legacy_source": "src/_ZN9SolidHeap11VMemoryLeftEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap11VMemoryLeftEv",
+      "address": "0x0203c5ac",
+      "size": "0x10",
+      "ordinal": 30,
+      "legacy_source": "src/_ZN13ExpandingHeap11VMemoryLeftEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap19VMaxAllocatableSizeEv",
+      "address": "0x0203c5bc",
+      "size": "0x14",
+      "ordinal": 31,
+      "legacy_source": "src/_ZN9SolidHeap19VMaxAllocatableSizeEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap19VMaxAllocatableSizeEv",
+      "address": "0x0203c5d0",
+      "size": "0x14",
+      "ordinal": 32,
+      "legacy_source": "src/_ZN13ExpandingHeap19VMaxAllocatableSizeEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap22VMaxAllocationUnitSizeEv",
+      "address": "0x0203c5e4",
+      "size": "0x14",
+      "ordinal": 33,
+      "legacy_source": "src/_ZN9SolidHeap22VMaxAllocationUnitSizeEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap22VMaxAllocationUnitSizeEv",
+      "address": "0x0203c5f8",
+      "size": "0x14",
+      "ordinal": 34,
+      "legacy_source": "src/_ZN13ExpandingHeap22VMaxAllocationUnitSizeEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap21MaxAllocationUnitSizeEv",
+      "address": "0x0203c60c",
+      "size": "0x20",
+      "ordinal": 35,
+      "legacy_source": "src/_ZN4Heap21MaxAllocationUnitSizeEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap7VRescueEv",
+      "address": "0x0203c62c",
+      "size": "0x4",
+      "ordinal": 36,
+      "legacy_source": "src/_ZN9SolidHeap7VRescueEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap7VRescueEv",
+      "address": "0x0203c630",
+      "size": "0x4",
+      "ordinal": 37,
+      "legacy_source": "src/_ZN13ExpandingHeap7VRescueEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap6RescueEv",
+      "address": "0x0203c634",
+      "size": "0x20",
+      "ordinal": 38,
+      "legacy_source": "src/_ZN4Heap6RescueEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap7VIntactEv",
+      "address": "0x0203c654",
+      "size": "0x8",
+      "ordinal": 39,
+      "legacy_source": "src/_ZN9SolidHeap7VIntactEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap7VIntactEv",
+      "address": "0x0203c65c",
+      "size": "0x8",
+      "ordinal": 40,
+      "legacy_source": "src/_ZN13ExpandingHeap7VIntactEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap6IntactEv",
+      "address": "0x0203c664",
+      "size": "0x48",
+      "ordinal": 41,
+      "legacy_source": "src/_ZN4Heap6IntactEv.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap9VAllocateEji",
+      "address": "0x0203c6ac",
+      "size": "0x10",
+      "ordinal": 42,
+      "legacy_source": "src/_ZN9SolidHeap9VAllocateEji.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap9VAllocateEji",
+      "address": "0x0203c6bc",
+      "size": "0x10",
+      "ordinal": 43,
+      "legacy_source": "src/_ZN13ExpandingHeap9VAllocateEji.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap8AllocateEji",
+      "address": "0x0203c6cc",
+      "size": "0x40",
+      "ordinal": 44,
+      "legacy_source": "src/_ZN4Heap8AllocateEji.cpp"
+    },
+    {
+      "symbol": "_ZN9SolidHeap8VDestroyEv",
+      "address": "0x0203c70c",
+      "size": "0x20",
+      "ordinal": 45,
+      "legacy_source": "src/_ZN9SolidHeap8VDestroyEv.cpp"
+    },
+    {
+      "symbol": "_ZN13ExpandingHeap8VDestroyEv",
+      "address": "0x0203c72c",
+      "size": "0x20",
+      "ordinal": 46,
+      "legacy_source": "src/_ZN13ExpandingHeap8VDestroyEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap8_DestroyEv",
+      "address": "0x0203c74c",
+      "size": "0xc",
+      "ordinal": 47,
+      "legacy_source": "src/_ZN4Heap8_DestroyEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap7DestroyEv",
+      "address": "0x0203c758",
+      "size": "0x48",
+      "ordinal": 48,
+      "legacy_source": "src/_ZN4Heap7DestroyEv.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap15CreateSolidHeapEjPS_i",
+      "address": "0x0203c7a0",
+      "size": "0xa4",
+      "ordinal": 49,
+      "legacy_source": "src/_ZN4Heap15CreateSolidHeapEjPS_i.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap19CreateExpandingHeapEjPS_i",
+      "address": "0x0203c844",
+      "size": "0xa4",
+      "ordinal": 50,
+      "legacy_source": "src/_ZN4Heap19CreateExpandingHeapEjPS_i.cpp"
+    },
+    {
+      "symbol": "_ZN4Heap14CreateRootHeapEPvj",
+      "address": "0x0203c8e8",
+      "size": "0x88",
+      "ordinal": 51,
+      "legacy_source": "src/_ZN4Heap14CreateRootHeapEPvj.cpp"
     }
   ],
   "data": [],
@@ -86,7 +387,8 @@
     "Heap is the abstract base of the mHeap family (cartridge RTTI `N5mHeap6Heap_tE' at 0x02099ce4): this run is the bootstrap and the veneer layer -- InitializeGameHeap carves the game heap, RestoreFromTemporary / InitializeSolidHeapAsDefault / SetupSolidHeapAsDefault are the scratch-heap pop and push pair, SetDefault installs the process-wide default, and _Sizeof/_Deallocate/_Allocate/Allocate(u32) are the guards and tail-call veneers over slots implemented by the derived heaps.",
     "InitializeSolidHeapAsDefault is a ldr-ip/bx-ip tail-call veneer whose target SetupSolidHeapAsDefault sits twelve bytes later inside this same TU; the emitted veneer form is preserved because the call is extern-visible under -interworking.",
     "No virtual member is defined here -- all sixteen slots are pure or defined in other TUs -- so no key function is emitted, no _ZTV4Heap/_ZTI4Heap output accompanies this TU, and no compiler-only deadstrip rows are needed.",
-    "The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen; the emitted object carries the nine functions ascending 0x0203c24c..0x0203c33c."
+    "The file is written ROM-descending because mwccarm emits .text in reverse source order under default deferred codegen; the emitted object carries the nine functions ascending 0x0203c24c..0x0203c33c.",
+    "absorb/Heap: folded the 43 family leftovers at 0x0203c33c..0x0203c970 into this TU, bodies verbatim (includes merged, externs kept), prepended in descending address order so mwccarm deferred codegen still emits ascending. No key function moves (dtors/ctors stay out), so no vtable/RTTI emission changes and no compiler-only rows are needed."
   ],
   "relocations": [],
   "verification": {
@@ -95,8 +397,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-Heap/Heap.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 9,
-    "functions_declared": 9,
+    "functions_matched": 52,
+    "functions_declared": 52,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

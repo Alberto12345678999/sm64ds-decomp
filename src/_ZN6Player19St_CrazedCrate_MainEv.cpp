@@ -14,7 +14,6 @@ extern int AngleDiff(int, int);
 extern void func_ov002_020e0f38(void*, int);
 extern void _ZN7fBase_c18MarkForDestructionEv(void*);
 extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3&, unsigned int, int, short);
-extern void func_ov002_020d718c(void*);
 extern void Player_ReleaseHeldActor(void*);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int);
@@ -61,7 +60,7 @@ int Player::St_CrazedCrate_Main() {
                 pos.y = mPosY;
                 pos.z = mPosZ;
                 _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(self, pos, 5, 0xf000, 0);
-                func_ov002_020d718c(self);
+                func_ov002_020d718c();
             } else {
                 Player_ReleaseHeldActor(self);
             }

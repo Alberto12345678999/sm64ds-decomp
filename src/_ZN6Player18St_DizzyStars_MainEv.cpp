@@ -3,14 +3,13 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int func_ov002_020d98b4(void*);
 extern int data_ov002_0211013c[];   /* the walk state */
 extern int _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
 }
 
 int Player::St_DizzyStars_Main()
 {
-    func_ov002_020d98b4(this);
+    func_ov002_020d98b4();
     /* Read SIGNED on purpose. mStateTimer is u16 and every other user treats
        it that way, but this test is `> 0` against a signed short, which is a
        bgt rather than a bhi. Spelling it unsigned changes the instruction. */

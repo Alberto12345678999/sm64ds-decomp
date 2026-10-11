@@ -5,111 +5,146 @@
   "promoted_source": "src/engine/save/SaveData.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
-  "boundary_evidence": "Contiguous .text span 0x02013ad4..0x02013e80: the twelve SaveData file/minigame/cap methods plus two free functions that share the TU's concern -- func_02013c84 copies a file block and either records the character byte at +0x328 or forwards to SaveFile, and func_02013e64 zeroes the whole 0x32c-byte save block at 0x0209caa0. Left edge begins where func_02013a88 (an unrelated shard) ends, right edge ends where src/actors/ActorDerived.cpp begins. SaveData is non-polymorphic per include/SaveData.h: no vtable, no RTTI, all methods static.",
+  "boundary_evidence": "Contiguous .text span 0x02013984..0x02013e80: the twelve SaveData file/minigame/cap methods plus six free functions that share the TU's concern -- func_02013c84 copies a file block and either records the character byte at +0x328 or forwards to SaveFile, func_02013e64 zeroes the whole 0x32c-byte save block at 0x0209caa0, and func_020139b8..func_02013a88 are the cap-flag clear/set/test helpers around NumGlowingRabbitsFound (rabbit bits 20..27). Left edge begins where func_02013944 ends, right edge ends where src/actors/ActorDerived.cpp begins. SaveData is non-polymorphic per include/SaveData.h: no vtable, no RTTI, all methods static.",
   "sections": [
     {
       "name": ".text",
-      "start": "0x02013ad4",
+      "start": "0x02013984",
       "end": "0x02013e80"
     }
   ],
   "functions": [
     {
+      "symbol": "_ZN8SaveData22NumGlowingRabbitsFoundEv",
+      "address": "0x02013984",
+      "size": "0x34",
+      "ordinal": 0,
+      "legacy_source": "src/_ZN8SaveData22NumGlowingRabbitsFoundEv.cpp"
+    },
+    {
+      "symbol": "func_020139b8",
+      "address": "0x020139b8",
+      "size": "0x48",
+      "ordinal": 1,
+      "legacy_source": "src/unnamed/arm9/0201/func_020139b8.c"
+    },
+    {
+      "symbol": "func_02013a00",
+      "address": "0x02013a00",
+      "size": "0x44",
+      "ordinal": 2,
+      "legacy_source": "src/unnamed/arm9/0201/func_02013a00.c"
+    },
+    {
+      "symbol": "func_02013a44",
+      "address": "0x02013a44",
+      "size": "0x44",
+      "ordinal": 3,
+      "legacy_source": "src/unnamed/arm9/0201/func_02013a44.c"
+    },
+    {
+      "symbol": "func_02013a88",
+      "address": "0x02013a88",
+      "size": "0x4c",
+      "ordinal": 4,
+      "legacy_source": "src/unnamed/arm9/0201/func_02013a88.c"
+    },
+    {
       "symbol": "_ZN8SaveData13PlayerLoseCapEv",
       "address": "0x02013ad4",
       "size": "0x44",
-      "ordinal": 0,
+      "ordinal": 5,
       "legacy_source": "src/_ZN8SaveData13PlayerLoseCapEv.cpp"
     },
     {
       "symbol": "_ZN8SaveData16HasPlayerLostCapEv",
       "address": "0x02013b18",
       "size": "0x44",
-      "ordinal": 1,
+      "ordinal": 6,
       "legacy_source": "src/_ZN8SaveData16HasPlayerLostCapEv.cpp"
     },
     {
       "symbol": "_ZN8SaveData16CanPlayerHaveCapEv",
       "address": "0x02013b5c",
       "size": "0x40",
-      "ordinal": 2,
+      "ordinal": 7,
       "legacy_source": "src/_ZN8SaveData16CanPlayerHaveCapEv.cpp"
     },
     {
       "symbol": "_ZN8SaveData15SaveCurrentFileEv",
       "address": "0x02013b9c",
       "size": "0x44",
-      "ordinal": 3,
+      "ordinal": 8,
       "legacy_source": "src/_ZN8SaveData15SaveCurrentFileEv.cpp"
     },
     {
       "symbol": "_ZN8SaveData13SaveMinigamesEP16MinigameSaveData",
       "address": "0x02013be0",
       "size": "0x2c",
-      "ordinal": 4,
+      "ordinal": 9,
       "legacy_source": "src/_ZN8SaveData13SaveMinigamesEP16MinigameSaveData.cpp"
     },
     {
       "symbol": "_ZN8SaveData16ReadMinigameDataEP16MinigameSaveData",
       "address": "0x02013c0c",
       "size": "0x50",
-      "ordinal": 5,
+      "ordinal": 10,
       "legacy_source": "src/_ZN8SaveData16ReadMinigameDataEP16MinigameSaveData.cpp"
     },
     {
       "symbol": "_ZN8SaveData18SetDefaultValuesMgEP16MinigameSaveData",
       "address": "0x02013c5c",
       "size": "0x28",
-      "ordinal": 6,
+      "ordinal": 11,
       "legacy_source": "src/_ZN8SaveData18SetDefaultValuesMgEP16MinigameSaveData.cpp"
     },
     {
       "symbol": "func_02013c84",
       "address": "0x02013c84",
       "size": "0x50",
-      "ordinal": 7,
+      "ordinal": 12,
       "legacy_source": "src/func_02013c84.c"
     },
     {
       "symbol": "_ZN8SaveData13EraseSaveFileEjPc",
       "address": "0x02013cd4",
       "size": "0x40",
-      "ordinal": 8,
+      "ordinal": 13,
       "legacy_source": "src/_ZN8SaveData13EraseSaveFileEjPc.cpp"
     },
     {
       "symbol": "_ZN8SaveData8SaveFileEjP12FileSaveData",
       "address": "0x02013d14",
       "size": "0x40",
-      "ordinal": 9,
+      "ordinal": 14,
       "legacy_source": "src/_ZN8SaveData8SaveFileEjP12FileSaveData.cpp"
     },
     {
       "symbol": "_ZN8SaveData12ReadFileDataEjP12FileSaveData",
       "address": "0x02013d54",
       "size": "0x70",
-      "ordinal": 10,
+      "ordinal": 15,
       "legacy_source": "src/_ZN8SaveData12ReadFileDataEjP12FileSaveData.cpp"
     },
     {
       "symbol": "_ZN8SaveData16SetDefaultValuesEP12FileSaveData",
       "address": "0x02013dc4",
       "size": "0x48",
-      "ordinal": 11,
+      "ordinal": 16,
       "legacy_source": "src/_ZN8SaveData16SetDefaultValuesEP12FileSaveData.cpp"
     },
     {
       "symbol": "_ZN8SaveData16EraseAllSaveDataEv",
       "address": "0x02013e0c",
       "size": "0x58",
-      "ordinal": 12,
+      "ordinal": 17,
       "legacy_source": "src/_ZN8SaveData16EraseAllSaveDataEv.cpp"
     },
     {
       "symbol": "func_02013e64",
       "address": "0x02013e64",
       "size": "0x1c",
-      "ordinal": 13,
+      "ordinal": 18,
       "legacy_source": "src/func_02013e64.c"
     }
   ],
@@ -119,8 +154,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-SaveData/SaveData.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 14,
-    "functions_declared": 14,
+    "functions_matched": 19,
+    "functions_declared": 19,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],

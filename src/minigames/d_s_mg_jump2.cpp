@@ -1,6 +1,8 @@
 //cpp
-/* ov006/dScMgJump2_c -- the second jump minigame, 29 functions
- * (.text 0x020eebe8..0x020efc08).
+/* ov006/dScMgJump2_c -- the second jump minigame, 30 functions
+ * (.text 0x020eebe8..0x020efc0c), ending with the factory
+ * dScMgJump2_c_classInit and the element constructor func_ov006_020efc08
+ * it registers.
  *
  * Functions run in REVERSE of ROM order (highest address first); do not
  * reorder. The legacy file for func_ov006_020ef5ac had
@@ -11,9 +13,10 @@
  *   - func_ov006_020ef0d4, ..ef05c, ..eeff0, ..eef90, ..eef58 and ..ef2b8
  *     stay free: none takes the object (they walk the element list globals
  *     or program the light registers), so a receiver exists only to be
- *     passed, not used. func_ov006_020eed64 is the shared empty element
- *     destructor -- dScMgTrampoline2_c's array cleanup calls it too --
- *     and is registered through the C __cxa_vec_ctor boundary.
+ *     passed, not used. func_ov006_020eed64 and func_ov006_020efc08 are
+ *     the shared empty element destructor and constructor --
+ *     dScMgTrampoline2_c's factory and array cleanup use them too -- and
+ *     are registered through the C __cxa_vec_ctor boundary.
  *   - pad_5004 stays bytes: the state functions copy the whole eight-byte
  *     PMF record into it with a struct assign, and Behavior calls through
  *     it. See the header's state-machine note.
@@ -94,6 +97,21 @@ struct Base {
     virtual void m48(int x);
 };
 
+/* File-scope objects at the end of this file construct the two model
+ * handles (files 0x203 and 0x204). mwcc emits __sinit_d_s_mg_jump2.cpp
+ * from those definitions. The wrapper name is local; the handle
+ * constructor and destructor are the ROM resource-family functions,
+ * aliased in the manifest. */
+struct Jump2ModelFile : SharedFilePtr {
+    u32 words[2];
+
+    Jump2ModelFile(u32 fileID);
+    ~Jump2ModelFile();
+};
+
+extern Jump2ModelFile data_ov006_021421cc; /* model file 0x203 */
+extern Jump2ModelFile data_ov006_021421c4; /* model file 0x204 */
+
 extern "C" {
 extern void func_0203d630(int* p, int m);
 extern struct Node* data_ov006_021421c0;
@@ -159,7 +177,16 @@ extern char _ZTV14dScMgD3DBase_c[];
 dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
 dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
 int func_ov006_020c6f70(char *object);
-void func_ov006_020efc08(void *object);
+
+// @symbol func_ov006_020efc08
+/* The empty constructor of mArray3's 0x24-byte elements, the partner of
+ * the shared empty destructor func_ov006_020eed64. The factory below hands
+ * the pair to __cxa_vec_ctor; dScMgTrampoline2_c's factory reuses both.
+ * Written above the factory because this TU emits .text in reverse source
+ * order, and the ROM has it directly after the factory. */
+void func_ov006_020efc08(void *object)
+{
+}
 
 /* The array runtime passes each element address and ignores callback results.
  * The casts below adapt the existing lifecycle entries at that ABI boundary. */
@@ -694,3 +721,9 @@ void func_ov006_020eed64(void *object)
 // @symbol _ZN12dScMgJump2_cD1Ev
 /* Defined in the class body in include/dScMgJump2_c.h, which explains why.
    mwccarm emits D1 and D0 from it, in this order. */
+
+/* Static-init globals (was the handwritten __sinit_ov006_02130f00 shard).
+ * Definition order is the retail initializer's construction order: the
+ * 0x203 model handle, then the 0x204 model handle. */
+Jump2ModelFile data_ov006_021421cc(0x203);
+Jump2ModelFile data_ov006_021421c4(0x204);

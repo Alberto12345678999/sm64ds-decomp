@@ -14,15 +14,18 @@
  *   linker names of daObjUkiyuka_c Init/Cleanup (the base leaves
  *   those slots pure virtual). Naming belongs in ov002.
  * Leftover: the file table is still data_ov022_021140d4 (two
- *   ResourceDescriptor rows, indexed by mVariant).
+ *   ResourceDescriptor rows, indexed by mVariant). The four handles
+ *   it points at are defined at the bottom of this file;
+ *   __sinit_daObjFl_Ukiyuka_c.cpp constructs them.
  * Leftover: func_020393a4 is still the linker name of the dBgW range
  *   setter both Init arms call on mMeshCollider.
  * Leftover: InitResources returns nothing, faithfully: the header
  *   declares `int`, the body sets no return value and neither does
  *   the ROM. A `return` emits a real instruction and breaks the
  *   match. A host-port caller reading the result gets garbage.
- * Leftover: the factories live outside this TU (S14: the FL_UKIYUKA_L
- *   / FL_UKIYUKA g_profile rows stay where the registry owns them).
+ * The two registry factories (FL_UKIYUKA_L, then FL_UKIYUKA) close the
+ *   unit, ov022 .text 0x02111f6c..0x02112130. The g_profile rows that
+ *   name them stay in this overlay's .data, outside this TU.
  */
 
 #include "daObjFl_Ukiyuka_c.h"
@@ -88,4 +91,54 @@ int daObjFl_Ukiyuka_c::InitResources()
         break;
     }
     func_ov002_020b6584(this, &data_ov022_021140d4[mVariant], kBobAmplitude);
+}
+
+/* 8-byte file handles. Both models use func_02017acc / func_02017ab4 and
+ * both collision files func_02017b4c / SharedFilePtr_Destruct_Clsn. The
+ * spellings are local; the manifest aliases the generated names to those
+ * ROM symbols. */
+struct UkiyukaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    UkiyukaModelFilePtr(u32 fileID);
+    ~UkiyukaModelFilePtr();
+};
+
+struct UkiyukaCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    UkiyukaCollisionFilePtr(u32 fileID);
+    ~UkiyukaCollisionFilePtr();
+};
+
+/* Source order is construction order. __sinit_daObjFl_Ukiyuka_c.cpp emits
+ * all four constructions and registers the destructors; the registration
+ * nodes are compiler temporaries. */
+UkiyukaModelFilePtr data_ov022_021145e0(0x614);
+UkiyukaCollisionFilePtr data_ov022_021145d0(0x615);
+UkiyukaModelFilePtr data_ov022_021145d8(0x610);
+UkiyukaCollisionFilePtr data_ov022_021145c8(0x611);
+
+// @symbol daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA_L
+/* Reconstructed source-style name: SM64DS proves daObjFl_Ukiyuka_c through RTTI,
+ * allocation size, vtable identity, and the FL_UKIYUKA_L registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: FloatingFloorLllSmall_Spawn.
+ *
+ * `new daObjFl_Ukiyuka_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x330), dBgActor_c's base constructor, then
+ * daObjUkiyuka_c's vptr store and this class's. */
+extern "C" daObjFl_Ukiyuka_c *daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA_L(void)
+{
+    return new daObjFl_Ukiyuka_c;
+}
+
+// @symbol daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA
+/* Reconstructed source-style name: SM64DS proves daObjFl_Ukiyuka_c through RTTI,
+ * allocation size, vtable identity, and the FL_UKIYUKA registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: FloatingFloorLllBig_Spawn. */
+extern "C" daObjFl_Ukiyuka_c *daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA(void)
+{
+    return new daObjFl_Ukiyuka_c;
 }

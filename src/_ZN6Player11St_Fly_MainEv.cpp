@@ -13,7 +13,6 @@ extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int, int, int, 
 
 
 extern "C" int func_ov002_020d674c(char *c);
-extern "C" void func_ov002_020c2f64(void *c);
 extern "C" void func_ov002_020df8f0(void *c);
 extern "C" int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32, u32, s32, s32, s32, void *, void *);
 extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32, void *);
@@ -56,7 +55,7 @@ skip:
         return 1;
     }
     if (mIsAirborne == 0) {
-        func_ov002_020c2f64(c);
+        ((Player *)(c))->func_ov002_020c2f64();
         _ZN6Player11ChangeStateERNS_5StateE(this, data_ov002_021105bc);
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x43, 0x40000000, 0x1000, 0);
         mVertSpeed = 0;

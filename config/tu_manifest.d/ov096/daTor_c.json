@@ -648,9 +648,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@436",
+      "from": "@450",
       "to": "@449",
       "evidence": "mwcc numbers this destructor-registration node @436 per TU; ov100's daStarGate_c already licenses @436 globally, so the scratch link would multiply-define it"
+    },
+    {
+      "from": "@451",
+      "to": "@437",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @451 now; licensed under the existing pin @437"
     }
   ]
 }

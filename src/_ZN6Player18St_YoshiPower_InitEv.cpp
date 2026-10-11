@@ -36,12 +36,12 @@ int Player::St_YoshiPower_Init()
         } else if (*(void**)((char*)&mObjInMouth) == 0) {
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 0x6c, 0x40000000, 0x1000, 0);
             if (mUseAltBodyModel != 0) {
-                func_ov002_020d71a0(((char*)this));
+                func_ov002_020d71a0();
             }
             mStateStep = 0;
             mStateArg = 0;
             _ZN5dCc_c5ClearEv((char*)&mAttackClsn);
-            func_ov002_020d708c(((char*)this));
+            func_ov002_020d708c();
             _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0xfc, ((char*)this)+0x74);
         } else {
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 0x6d, 0x40000000, 0x1000, 0);

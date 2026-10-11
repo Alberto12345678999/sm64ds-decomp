@@ -13,7 +13,7 @@
   "sections": [
     {
       "name": ".text",
-      "start": "0x0211603c",
+      "start": "0x02115ee0",
       "end": "0x0211a418"
     },
     {
@@ -33,6 +33,20 @@
     }
   ],
   "functions": [
+    {
+      "symbol": "_ZN6EyerokD1Ev",
+      "address": "0x02115ee0",
+      "size": "0x000000a4",
+      "legacy_source": "src/_ZN6EyerokD1Ev.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN6EyerokD0Ev",
+      "address": "0x02115f84",
+      "size": "0x000000b8",
+      "legacy_source": "src/_ZN6EyerokD0Ev.cpp",
+      "ordinal": 1
+    },
     {
       "symbol": "_ZN6Eyerok19func_ov066_0211603cEv",
       "address": "0x0211603c",
@@ -625,154 +639,154 @@
       "evidence": "texture-sequence resource handle constructed with file ID 0x334 and registered with SharedFilePtr_Destruct_TexSeq"
     },
     {
-      "symbol": "@2129",
+      "symbol": "@2176",
       "address": "0x0211aec4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33a model handle"
     },
     {
-      "symbol": "@2131",
+      "symbol": "@2178",
       "address": "0x0211aed0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x339 model handle"
     },
     {
-      "symbol": "@2132",
+      "symbol": "@2179",
       "address": "0x0211aedc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x335 animation handle"
     },
     {
-      "symbol": "@2133",
+      "symbol": "@2180",
       "address": "0x0211aee8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x336 animation handle"
     },
     {
-      "symbol": "@2134",
+      "symbol": "@2181",
       "address": "0x0211aef4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x337 animation handle"
     },
     {
-      "symbol": "@2135",
+      "symbol": "@2182",
       "address": "0x0211af00",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x338 animation handle"
     },
     {
-      "symbol": "@2136",
+      "symbol": "@2183",
       "address": "0x0211af0c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x340 animation handle"
     },
     {
-      "symbol": "@2137",
+      "symbol": "@2184",
       "address": "0x0211af18",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x341 animation handle"
     },
     {
-      "symbol": "@2138",
+      "symbol": "@2185",
       "address": "0x0211af24",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x342 animation handle"
     },
     {
-      "symbol": "@2139",
+      "symbol": "@2186",
       "address": "0x0211af30",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x344 animation handle"
     },
     {
-      "symbol": "@2140",
+      "symbol": "@2187",
       "address": "0x0211af3c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x346 animation handle"
     },
     {
-      "symbol": "@2141",
+      "symbol": "@2188",
       "address": "0x0211af48",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x347 animation handle"
     },
     {
-      "symbol": "@2142",
+      "symbol": "@2189",
       "address": "0x0211af54",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x333 texture-sequence handle"
     },
     {
-      "symbol": "@2143",
+      "symbol": "@2190",
       "address": "0x0211af60",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x334 texture-sequence handle"
     },
     {
-      "symbol": "@2144",
+      "symbol": "@2191",
       "address": "0x0211af6c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33d texture-sequence handle"
     },
     {
-      "symbol": "@2145",
+      "symbol": "@2192",
       "address": "0x0211af78",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33e texture-sequence handle"
     },
     {
-      "symbol": "@2146",
+      "symbol": "@2193",
       "address": "0x0211af84",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x332 collision handle"
     },
     {
-      "symbol": "@2147",
+      "symbol": "@2194",
       "address": "0x0211af90",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33b collision handle"
     },
     {
-      "symbol": "@2148",
+      "symbol": "@2195",
       "address": "0x0211af9c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33c collision handle"
     },
     {
-      "symbol": "@2149",
+      "symbol": "@2196",
       "address": "0x0211afa8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x343 collision handle"
     },
     {
-      "symbol": "@2130",
+      "symbol": "@2177",
       "address": "0x0211afb4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33f model handle"
     },
     {
-      "symbol": "@2150",
+      "symbol": "@2197",
       "address": "0x0211afc0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1044,30 +1058,40 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov066-Eyerok/Eyerok.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 62,
-    "functions_declared": 62,
+    "functions_matched": 63,
+    "functions_declared": 64,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN7Vector3D1Ev",
-        "_ZN4Vec4D1Ev"
+        "_ZN4Vec4D1Ev",
+        "_ZN6EyerokD2Ev"
       ],
       "deadstripped": [
         "_ZN4Vec4D1Ev",
+        "_ZN6EyerokD2Ev",
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        85,
-        90
+        9,
+        10,
+        11,
+        96,
+        182,
+        183
       ],
-      "data": [],
-      "dataExternalized": []
+      "data": [
+        "_ZTV6Eyerok"
+      ],
+      "dataExternalized": [
+        "_ZTV6Eyerok"
+      ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 13 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
-      "relocation_destinations_verified": "PASS"
+      "relocation_destinations_verified": "FAIL -- see DIFF/objisolate lines above"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
@@ -1083,7 +1107,7 @@
         "rom": true
       },
       "tuRange": {
-        "start": "0x0211603c",
+        "start": "0x02115ee0",
         "end": "0x0211a418",
         "differingBytes": 0,
         "firstDiff": null
@@ -1091,7 +1115,7 @@
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x0211603c",
+          "start": "0x02115ee0",
           "end": "0x0211a418",
           "differingBytes": 0,
           "firstDiff": null
@@ -1119,7 +1143,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 127
+          "LICENSED": 129
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1130,30 +1154,24 @@
           {
             "section": ".init",
             "original": [
-              178
+              186
             ],
             "desired": [
-              178
+              186
             ]
           },
           {
             "section": ".ctor",
             "original": [
-              176
+              184
             ],
             "desired": [
-              176
+              184
             ]
           },
           {
             "section": ".bss",
             "original": [
-              113,
-              114,
-              115,
-              116,
-              117,
-              118,
               119,
               120,
               121,
@@ -1210,35 +1228,38 @@
               172,
               173,
               174,
-              175
+              175,
+              176,
+              177,
+              178,
+              179,
+              180,
+              181
             ],
             "desired": [
-              152,
+              158,
+              160,
               154,
-              148,
-              144,
-              156,
-              140,
-              134,
-              116,
-              128,
-              120,
-              132,
-              118,
-              136,
-              138,
-              122,
-              126,
-              130,
-              146,
-              124,
               150,
-              114,
+              162,
+              146,
+              140,
+              122,
+              134,
+              126,
+              138,
+              124,
               142,
-              113,
-              117,
+              144,
+              128,
+              132,
+              136,
+              152,
+              130,
+              156,
+              120,
+              148,
               119,
-              121,
               123,
               125,
               127,
@@ -1255,27 +1276,30 @@
               149,
               151,
               153,
-              115,
               155,
+              157,
+              159,
+              121,
               161,
-              162,
-              172,
-              163,
-              164,
-              173,
-              165,
-              166,
-              174,
               167,
               168,
-              175,
+              178,
               169,
-              157,
-              158,
               170,
-              159,
-              160,
-              171
+              179,
+              171,
+              172,
+              180,
+              173,
+              174,
+              181,
+              175,
+              163,
+              164,
+              176,
+              165,
+              166,
+              177
             ]
           }
         ],
@@ -1284,12 +1308,6 @@
             {
               "section": ".bss",
               "original": [
-                113,
-                114,
-                115,
-                116,
-                117,
-                118,
                 119,
                 120,
                 121,
@@ -1346,35 +1364,38 @@
                 172,
                 173,
                 174,
-                175
+                175,
+                176,
+                177,
+                178,
+                179,
+                180,
+                181
               ],
               "desired": [
-                152,
+                158,
+                160,
                 154,
-                148,
-                144,
-                156,
-                140,
-                134,
-                116,
-                128,
-                120,
-                132,
-                118,
-                136,
-                138,
-                122,
-                126,
-                130,
-                146,
-                124,
                 150,
-                114,
+                162,
+                146,
+                140,
+                122,
+                134,
+                126,
+                138,
+                124,
                 142,
-                113,
-                117,
+                144,
+                128,
+                132,
+                136,
+                152,
+                130,
+                156,
+                120,
+                148,
                 119,
-                121,
                 123,
                 125,
                 127,
@@ -1391,35 +1412,32 @@
                 149,
                 151,
                 153,
-                115,
                 155,
+                157,
+                159,
+                121,
                 161,
-                162,
-                172,
-                163,
-                164,
-                173,
-                165,
-                166,
-                174,
                 167,
                 168,
-                175,
+                178,
                 169,
-                157,
-                158,
                 170,
-                159,
-                160,
-                171
+                179,
+                171,
+                172,
+                180,
+                173,
+                174,
+                181,
+                175,
+                163,
+                164,
+                176,
+                165,
+                166,
+                177
               ],
               "slots": [
-                113,
-                114,
-                115,
-                116,
-                117,
-                118,
                 119,
                 120,
                 121,
@@ -1476,7 +1494,13 @@
                 172,
                 173,
                 174,
-                175
+                175,
+                176,
+                177,
+                178,
+                179,
+                180,
+                181
               ]
             }
           ],
@@ -1532,6 +1556,18 @@
       "symbol": "_ZN4Vec4D1Ev",
       "disposition": "deadstrip",
       "reason": "Implicit destructor of the file-local shadow struct `Vec4 { int a, b, c, d; ~Vec4(){} }` that ROM ordinal 50 (func_ov066_02119398) declares to force a stack slot group. It is a compiler artefact of the reconstruction, not a cartridge symbol: no module's symbols.txt names any address for it, so it is homeless and deadstripped outright."
+    },
+    {
+      "symbol": "_ZN6EyerokD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Out-of-line ~Eyerok under #pragma defer_codegen off emits D1, D0, then D2. The cartridge has D1 at 0x02115ee0 and D0 at 0x02115f84 and no Eyerok D2."
+    },
+    {
+      "symbol": "_ZTV6Eyerok",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov066",
+      "canonical_address": "0x0211ad64",
+      "reason": "Key function is the out-of-line destructor, so this TU emits the vtable. symbols.txt names the address point 0x0211ad64; the licensed spans cover only .text/.init/.ctor/.bss. The class carries the ROM's daIwante_c spelling, so no _ZTI/_ZTS records accompany it: the TU compiles with #pragma RTTI off."
     }
   ],
   "production_mode": "intact-object",
@@ -1632,133 +1668,133 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@2129",
+      "symbol": "@2176",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aec4"
     },
     {
-      "symbol": "@2131",
+      "symbol": "@2178",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aed0"
     },
     {
-      "symbol": "@2132",
+      "symbol": "@2179",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aedc"
     },
     {
-      "symbol": "@2133",
+      "symbol": "@2180",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aee8"
     },
     {
-      "symbol": "@2134",
+      "symbol": "@2181",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aef4"
     },
     {
-      "symbol": "@2135",
+      "symbol": "@2182",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af00"
     },
     {
-      "symbol": "@2136",
+      "symbol": "@2183",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af0c"
     },
     {
-      "symbol": "@2137",
+      "symbol": "@2184",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af18"
     },
     {
-      "symbol": "@2138",
+      "symbol": "@2185",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af24"
     },
     {
-      "symbol": "@2139",
+      "symbol": "@2186",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af30"
     },
     {
-      "symbol": "@2140",
+      "symbol": "@2187",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af3c"
     },
     {
-      "symbol": "@2141",
+      "symbol": "@2188",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af48"
     },
     {
-      "symbol": "@2142",
+      "symbol": "@2189",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af54"
     },
     {
-      "symbol": "@2143",
+      "symbol": "@2190",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af60"
     },
     {
-      "symbol": "@2144",
+      "symbol": "@2191",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af6c"
     },
     {
-      "symbol": "@2145",
+      "symbol": "@2192",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af78"
     },
     {
-      "symbol": "@2146",
+      "symbol": "@2193",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af84"
     },
     {
-      "symbol": "@2147",
+      "symbol": "@2194",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af90"
     },
     {
-      "symbol": "@2148",
+      "symbol": "@2195",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af9c"
     },
     {
-      "symbol": "@2149",
+      "symbol": "@2196",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afa8"
     },
     {
-      "symbol": "@2130",
+      "symbol": "@2177",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afb4"
     },
     {
-      "symbol": "@2150",
+      "symbol": "@2197",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afc0"
@@ -2230,7 +2266,7 @@
       "source": "0x0211a9e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2129",
+      "symbol": "@2176",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aec4"
@@ -2250,7 +2286,7 @@
       "source": "0x0211a9f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2130",
+      "symbol": "@2177",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afb4"
@@ -2270,7 +2306,7 @@
       "source": "0x0211a9fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2131",
+      "symbol": "@2178",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aed0"
@@ -2300,7 +2336,7 @@
       "source": "0x0211aa0c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2132",
+      "symbol": "@2179",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aedc"
@@ -2320,7 +2356,7 @@
       "source": "0x0211aa18",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2133",
+      "symbol": "@2180",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aee8"
@@ -2340,7 +2376,7 @@
       "source": "0x0211aa24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2134",
+      "symbol": "@2181",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aef4"
@@ -2360,7 +2396,7 @@
       "source": "0x0211aa2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2135",
+      "symbol": "@2182",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af00"
@@ -2380,7 +2416,7 @@
       "source": "0x0211aa34",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2136",
+      "symbol": "@2183",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af0c"
@@ -2400,7 +2436,7 @@
       "source": "0x0211aa40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2137",
+      "symbol": "@2184",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af18"
@@ -2420,7 +2456,7 @@
       "source": "0x0211aa4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2138",
+      "symbol": "@2185",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af24"
@@ -2440,7 +2476,7 @@
       "source": "0x0211aa54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2139",
+      "symbol": "@2186",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af30"
@@ -2460,7 +2496,7 @@
       "source": "0x0211aa60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2140",
+      "symbol": "@2187",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af3c"
@@ -2480,7 +2516,7 @@
       "source": "0x0211aa6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2141",
+      "symbol": "@2188",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af48"
@@ -2510,7 +2546,7 @@
       "source": "0x0211aa7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2142",
+      "symbol": "@2189",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af54"
@@ -2530,7 +2566,7 @@
       "source": "0x0211aa84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2143",
+      "symbol": "@2190",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af60"
@@ -2550,7 +2586,7 @@
       "source": "0x0211aa90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2144",
+      "symbol": "@2191",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af6c"
@@ -2570,7 +2606,7 @@
       "source": "0x0211aa9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2145",
+      "symbol": "@2192",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af78"
@@ -2600,7 +2636,7 @@
       "source": "0x0211aaac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2146",
+      "symbol": "@2193",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af84"
@@ -2620,7 +2656,7 @@
       "source": "0x0211aab8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2147",
+      "symbol": "@2194",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af90"
@@ -2640,7 +2676,7 @@
       "source": "0x0211aac0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2148",
+      "symbol": "@2195",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af9c"
@@ -2660,7 +2696,7 @@
       "source": "0x0211aacc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2149",
+      "symbol": "@2196",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afa8"
@@ -2680,7 +2716,7 @@
       "source": "0x0211aad8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2150",
+      "symbol": "@2197",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afc0"

@@ -25,9 +25,7 @@ struct Obj {
 };
 extern "C" {
 extern void _Z14ApproachLinearRiii(int*, int, int);
-extern void func_ov002_020c2f64(char*);
 extern int _ZNK6Player14GetBodyModelIDEjb(char*, unsigned int, int);
-extern int func_ov002_020d6998(char*);
 extern int _ZN6Player12FinishedAnimEv(char*);
 extern void func_ov002_020d71ec(char*, int);
 extern void _Z15ApproachLinear2Rsss(short*, short, short);
@@ -35,8 +33,6 @@ extern void MulVec3Mat4x3(void*, void*, void*);
 extern void Vec3_MulScalarInPlace(void*, int);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void*, int);
-extern int func_ov002_020d5ed0(void*);
-extern void func_ov002_020d718c(char*);
 extern void func_ov002_020d8118(char*);
 extern void _ZN6Player11ChangeStateERNS_5StateE(char*, void*);
 extern int func_ov002_020e0ccc(char*, void*);
@@ -49,7 +45,6 @@ extern void func_ov002_020dc09c(char*);
 extern void _ZN5dCc_c5ClearEv(void*);
 extern void _ZN5dCc_c6UpdateEv(void*);
 extern void ApproachAngle(void*, short, int, int, int);
-extern void func_ov002_020daa74(char*);
 extern void Player_AdvanceAnims(char*);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void*);
@@ -75,7 +70,7 @@ int Player::St_YoshiPower_Main()
 
     if (mIsAirborne == 0) {
         _Z14ApproachLinearRiii((int*)(&mHorzSpeed), 0, 0x1000);
-        func_ov002_020c2f64(c);
+        ((Player *)(c))->func_ov002_020c2f64();
     }
 
     switch (mStateStep) {
@@ -88,7 +83,7 @@ int Player::St_YoshiPower_Main()
             *(unsigned int*)(dp + 8) = (unsigned int)t4 >> 4;
             mStateArg = 1;
         }
-        if (func_ov002_020d6998(c) != 0) {
+        if (((Player*)c)->func_ov002_020d6998() != 0) {
             return 1;
         }
         if (_ZN6Player12FinishedAnimEv(c) != 0) {
@@ -128,8 +123,8 @@ int Player::St_YoshiPower_Main()
                 int cond = (*(unsigned short*)((char*)o+0xc) == 0xbf);
                 if (cond != 0) {
                     *(int*)((int)o + 0xb0) &= ~0x20000;
-                    if (func_ov002_020d5ed0(*(void**)(&mObjInMouth)) == 0) {
-                        func_ov002_020d718c(c);
+                    if (((Player*)(*(void**)(&mObjInMouth)))->func_ov002_020d5ed0() == 0) {
+                        func_ov002_020d718c();
                     }
                 } else {
                     *(int*)((int)o + 0xb0) |= 0x40000;
@@ -297,7 +292,7 @@ int Player::St_YoshiPower_Main()
         mPrevAngleY = mAngleY;
         int id10 = _ZNK6Player14GetBodyModelIDEjb(c, *(unsigned int*)(c+8) & 0xff, 0);
         if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)*(void**)(c + (id10<<2) + 0xdc) + 0x50, 6) != 0) {
-            func_ov002_020daa74(c);
+            ((Player*)c)->func_ov002_020daa74();
             _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x102, c+0x74);
             goto common_tail;
         }

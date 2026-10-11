@@ -581,21 +581,21 @@
   ],
   "data": [
     {
-      "symbol": "@2255",
+      "symbol": "@22",
       "address": "0x0210a990",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020e9af4Ev"
     },
     {
-      "symbol": "@2245",
+      "symbol": "@23",
       "address": "0x0210a998",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020ea06cEv"
     },
     {
-      "symbol": "@2241",
+      "symbol": "@24",
       "address": "0x0210a9a0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -609,63 +609,63 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020ea9d0Ev"
     },
     {
-      "symbol": "@2257",
+      "symbol": "@27",
       "address": "0x0210a9b0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020e9804Ev"
     },
     {
-      "symbol": "@2247",
+      "symbol": "@28",
       "address": "0x0210a9b8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020e9d18Ev"
     },
     {
-      "symbol": "@2259",
+      "symbol": "@29",
       "address": "0x0210a9c0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020e96a0Ev"
     },
     {
-      "symbol": "@2249",
+      "symbol": "@31",
       "address": "0x0210a9c8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020e99e8Ev"
     },
     {
-      "symbol": "@2253",
+      "symbol": "@32",
       "address": "0x0210a9d0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020ea410Ev"
     },
     {
-      "symbol": "@2251",
+      "symbol": "@56",
       "address": "0x0210a9d8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020e9840Ev"
     },
     {
-      "symbol": "@2243",
+      "symbol": "@57",
       "address": "0x0210a9e0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020ea100Ev"
     },
     {
-      "symbol": "@2239",
+      "symbol": "@58",
       "address": "0x0210a9e8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN8daStar_c19func_ov002_020ea7acEv"
     },
     {
-      "symbol": "@2237",
+      "symbol": "@59",
       "address": "0x0210a9f0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -1056,7 +1056,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 10 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 16 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -1570,19 +1570,19 @@
       "evidence": "compiler-generated ctor-table object is emitted local by mwcc but must be exposed as the configured .ctor destination at 0x02108114"
     },
     {
-      "symbol": "@2255",
+      "symbol": "@22",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a990"
     },
     {
-      "symbol": "@2245",
+      "symbol": "@23",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a998"
     },
     {
-      "symbol": "@2241",
+      "symbol": "@24",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9a0"
@@ -1594,55 +1594,55 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9a8"
     },
     {
-      "symbol": "@2257",
+      "symbol": "@27",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9b0"
     },
     {
-      "symbol": "@2247",
+      "symbol": "@28",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9b8"
     },
     {
-      "symbol": "@2259",
+      "symbol": "@29",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9c0"
     },
     {
-      "symbol": "@2249",
+      "symbol": "@31",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9c8"
     },
     {
-      "symbol": "@2253",
+      "symbol": "@32",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9d0"
     },
     {
-      "symbol": "@2251",
+      "symbol": "@56",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9d8"
     },
     {
-      "symbol": "@2243",
+      "symbol": "@57",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9e0"
     },
     {
-      "symbol": "@2239",
+      "symbol": "@58",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9e8"
     },
     {
-      "symbol": "@2237",
+      "symbol": "@59",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210a9f0"
@@ -2124,7 +2124,7 @@
       "source": "0x021070e8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2237",
+      "symbol": "@59",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9f0"
@@ -2134,7 +2134,7 @@
       "source": "0x021070ec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2239",
+      "symbol": "@58",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9e8"
@@ -2144,7 +2144,7 @@
       "source": "0x021070f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2241",
+      "symbol": "@24",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9a0"
@@ -2154,7 +2154,7 @@
       "source": "0x021070f4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2243",
+      "symbol": "@57",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9e0"
@@ -2164,7 +2164,7 @@
       "source": "0x021070f8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2245",
+      "symbol": "@23",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a998"
@@ -2174,7 +2174,7 @@
       "source": "0x021070fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2247",
+      "symbol": "@28",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9b8"
@@ -2184,7 +2184,7 @@
       "source": "0x02107100",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2249",
+      "symbol": "@31",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9c8"
@@ -2194,7 +2194,7 @@
       "source": "0x02107104",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2251",
+      "symbol": "@56",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9d8"
@@ -2204,7 +2204,7 @@
       "source": "0x02107108",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2253",
+      "symbol": "@32",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9d0"
@@ -2214,7 +2214,7 @@
       "source": "0x0210710c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2255",
+      "symbol": "@22",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a990"
@@ -2224,7 +2224,7 @@
       "source": "0x02107110",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2257",
+      "symbol": "@27",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9b0"
@@ -2234,7 +2234,7 @@
       "source": "0x02107114",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2259",
+      "symbol": "@29",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210a9c0"
@@ -2388,6 +2388,123 @@
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x020ea90c"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@2237",
+      "to": "@2223",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2237 now; licensed under the existing pin @2223"
+    },
+    {
+      "from": "@2238",
+      "to": "@2224",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2238 now; licensed under the existing pin @2224"
+    },
+    {
+      "from": "@2239",
+      "to": "@2225",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2239 now; licensed under the existing pin @2225"
+    },
+    {
+      "from": "@2240",
+      "to": "@2226",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2240 now; licensed under the existing pin @2226"
+    },
+    {
+      "from": "@2241",
+      "to": "@2227",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2241 now; licensed under the existing pin @2227"
+    },
+    {
+      "from": "@2242",
+      "to": "@2228",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2242 now; licensed under the existing pin @2228"
+    },
+    {
+      "from": "@2243",
+      "to": "@2229",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2243 now; licensed under the existing pin @2229"
+    },
+    {
+      "from": "@2244",
+      "to": "@2230",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2244 now; licensed under the existing pin @2230"
+    },
+    {
+      "from": "@2245",
+      "to": "@2231",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2245 now; licensed under the existing pin @2231"
+    },
+    {
+      "from": "@2247",
+      "to": "@2233",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2247 now; licensed under the existing pin @2233"
+    },
+    {
+      "from": "@2249",
+      "to": "@2235",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2249 now; licensed under the existing pin @2235"
+    },
+    {
+      "from": "@2251",
+      "to": "@59",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2253",
+      "to": "@58",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2255",
+      "to": "@24",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2257",
+      "to": "@57",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2259",
+      "to": "@23",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2261",
+      "to": "@28",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2263",
+      "to": "@31",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2265",
+      "to": "@56",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2267",
+      "to": "@32",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2269",
+      "to": "@22",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2271",
+      "to": "@27",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+    },
+    {
+      "from": "@2273",
+      "to": "@29",
+      "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
     }
   ]
 }

@@ -7,7 +7,6 @@ extern "C" {
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char* player, Vector3* pos,
     unsigned int damage, int knockback, unsigned int arg4,
     unsigned int arg5, unsigned int arg6);
-void func_ov002_020d718c(char* player);
 // State globals still have incompatible declarations across the legacy callers.
 int _ZN6Player7IsStateERNS_5StateE(char* player, void* state);
 void _ZN6Player11ChangeStateERNS_5StateE(char* player, void* state);
@@ -32,7 +31,7 @@ void func_ov002_020d7430(Player& player)
     if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_02110034)) {
         _ZN6Player11ChangeStateERNS_5StateE(c, &data_ov002_0211013c);
     }
-    func_ov002_020d718c(c);
+    player.func_ov002_020d718c();
     Sound::PlayCharVoice(0, 0xfd,
         *reinterpret_cast<const Vector3*>(&player.mCamSpacePosX));
 }

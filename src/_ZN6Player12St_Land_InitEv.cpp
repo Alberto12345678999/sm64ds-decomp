@@ -10,7 +10,6 @@ extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int animID, int
 
 
 extern "C" {
-    void func_ov002_020c2f64(void* c);
     int func_ov002_020e0a64(char* c);
     void func_ov002_020e25d4(char* c);
     int func_ov002_020e2c84(char* c);
@@ -33,7 +32,7 @@ int Player::St_Land_Init()
     char* c = (char*)this;
     int r4;
 
-    func_ov002_020c2f64(c);
+    ((Player *)(c))->func_ov002_020c2f64();
     r4 = *(int*)(c + 0x374);
 
     if (mJumpedFromQuicksand == 0) {

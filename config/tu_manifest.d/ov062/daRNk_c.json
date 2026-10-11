@@ -785,44 +785,74 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@901",
+      "from": "@915",
       "to": "@118",
       "evidence": "mwcc emits this compiler temp as @901; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
-      "from": "@903",
+      "from": "@917",
       "to": "@920",
       "evidence": "mwcc numbers this PMF record @903 per TU and ov094 already defines a global @903, so the scratch link would multiply-define it"
     },
     {
-      "from": "@907",
+      "from": "@921",
       "to": "@119",
       "evidence": "mwcc emits this compiler temp as @907; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
-      "from": "@908",
+      "from": "@922",
       "to": "@120",
       "evidence": "mwcc emits this compiler temp as @908; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
-      "from": "@909",
+      "from": "@923",
       "to": "@121",
       "evidence": "mwcc emits this compiler temp as @909; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
-      "from": "@911",
+      "from": "@925",
       "to": "@122",
       "evidence": "mwcc emits this compiler temp as @911; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
-      "from": "@913",
+      "from": "@927",
       "to": "@123",
       "evidence": "mwcc emits this compiler temp as @913; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
     },
     {
-      "from": "@915",
+      "from": "@929",
       "to": "@124",
       "evidence": "mwcc emits this compiler temp as @915; batch renumber to unused same-length name, batch-2 ov065 folds on main already promote these names globally"
+    },
+    {
+      "from": "@913",
+      "to": "@899",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @913 now; licensed under the existing pin @899"
+    },
+    {
+      "from": "@919",
+      "to": "@905",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @919 now; licensed under the existing pin @905"
+    },
+    {
+      "from": "@911",
+      "to": "@897",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @911 now; licensed under the existing pin @897"
+    },
+    {
+      "from": "@928",
+      "to": "@914",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @928 now; licensed under the existing pin @914"
+    },
+    {
+      "from": "@924",
+      "to": "@910",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @924 now; licensed under the existing pin @910"
+    },
+    {
+      "from": "@926",
+      "to": "@912",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @926 now; licensed under the existing pin @912"
     }
   ],
   "undefined_symbol_aliases": [

@@ -8,7 +8,6 @@
 extern "C" {
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(char* thiz, u32 anim, int a, int fix, u32 b);
 extern int _ZNK6Player14GetBodyModelIDEjb(char* thiz, u32 a, int b);
-extern void func_ov002_020d93ac(char* thiz);
 }
 extern char* data_0209f318;
 
@@ -29,7 +28,7 @@ int Player::St_Hurt_Init()
     mStateArg = 0;
     if (mHurtDamage != 0) {
         mStateArg = 2;
-        func_ov002_020d93ac(((char*)this));
+        func_ov002_020d93ac();
     }
     mIsTakingDamage = 1;
     mPrevVertSpeed = mVertSpeed;

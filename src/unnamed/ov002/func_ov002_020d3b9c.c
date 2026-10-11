@@ -20,7 +20,7 @@ extern int Player_ScaleByCharFactor(void *c, int a);
 extern int func_ov002_020bf224(int c, int a, int b);
 extern int func_ov002_020bf56c(void *c, int b);
 extern void _ZN6Player19func_ov002_020bf88cEv(void *c);
-extern int func_ov002_020c031c(void *c);
+extern int _ZN6Player19func_ov002_020c031cEv(void *c);
 extern int func_ov002_020f035c(unsigned int sel, int r1);
 extern int AngleDiff(int a, int b);
 extern int __aeabi_idiv(int a, int b);
@@ -142,7 +142,7 @@ int func_ov002_020d3b9c(char *c)
         }
       }
     }
-    if (func_ov002_020f035c(func_ov002_020c031c(c), *((int *) (c + 0x558))) != 0)
+    if (func_ov002_020f035c(_ZN6Player19func_ov002_020c031cEv(c), *((int *) (c + 0x558))) != 0)
     {
       acc = 0x1000;
     }

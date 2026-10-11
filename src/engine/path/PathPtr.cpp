@@ -1,4 +1,5 @@
 //cpp
+// @symbol func_0203ad84
 // @symbol _ZN7PathPtr6FromIDEj
 // @symbol _ZN7PathPtr12SetPathTableEP7PathDefi
 // @symbol _ZN7PathPtr12GetNodeTableEv
@@ -25,6 +26,18 @@
 extern PathDef *PATH_DEFS;  /* the level's PathDef table */
 extern char *PATH_NODES;    /* flat node records, six bytes each */
 extern int NUM_PATHS;       /* entries in PATH_DEFS */
+
+extern "C" {
+void func_02018434(int a0, int a1, int a2);
+extern char data_020994d4[];
+extern char data_020a0d90[];
+}
+
+// @symbol func_0203ad84
+extern "C" void func_0203ad84(void) {
+    func_02018434((int)data_020994d4, (int)data_020a0d90, 0x1f);
+    data_020a0d90[0x1f] = 0;
+}
 
 PathPtr::PathPtr() : def(0), unk_004(0) {}
 

@@ -13,7 +13,7 @@ extern int func_ov002_020d91e0(char *thiz, int damage, int doPre);
 extern void func_0200d8c8(struct dCamera_c *cam, const struct Vector3 *v, int strength);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, const struct Vector3 *v);
 extern int _ZN6Player7IsStateERNS_5StateE(char *self, void *state);
-extern int func_ov002_020c5dec(char *c, int r1);
+extern int _ZN6Player19func_ov002_020c5decEi(char *c, int r1);
 extern void func_ov002_020db8bc(unsigned char *p, unsigned char val);
 
 extern char data_ov002_02110454;
@@ -63,7 +63,7 @@ int func_ov002_020e2c84(char *self)
                     }
                     _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_0211010c);
                 } else {
-                    func_ov002_020c5dec(self, 2);
+                    _ZN6Player19func_ov002_020c5decEi(self, 2);
                 }
                 return 1;
             }

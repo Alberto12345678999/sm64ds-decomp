@@ -1,5 +1,5 @@
 //cpp
-/* engine/gx/G3i.cpp — G3i TU (arm9 0x02055a64..0x02055dec)
+/* engine/gx/G3i.cpp — G3i TU (arm9 0x02055998..0x02055dec)
  *
  * G3i is the geometry engine's matrix-command writer set: LookAt_ builds a
  * camera basis (right/up2/forward) and streams it to the position-matrix port,
@@ -7,7 +7,8 @@
  * projection and streams it to the projection port. Both are static (no this)
  * and both optionally mirror the matrix into a caller's Matrix4x3. The file is
  * written ROM-descending because mwccarm emits .text in reverse source order
- * under default deferred codegen.
+ * under default deferred codegen. func_02055998 is the lowest address, so it
+ * is last in this file.
  *
  * PerspectiveW_ keeps its literal-mangled `extern "C"` name and C body: the
  * six `Fix12<int>` by-value parameters in its mangled name are the by-value-
@@ -169,4 +170,27 @@ void G3i::LookAt_(const Vector3 *at, const Vector3 *up, const Vector3 *eye,
     mat->t.x = tx;
     mat->t.y = ty;
     mat->t.z = tz;
+}
+
+extern "C" {
+void func_02055998(int *m)
+{
+    *(volatile int *)0x4000440 = 3;
+    *(volatile int *)0x4000458 = m[0] << 4;
+    *(volatile int *)0x4000458 = m[1] << 4;
+    *(volatile int *)0x4000458 = m[2] << 4;
+    *(volatile int *)0x4000458 = m[3] << 4;
+    *(volatile int *)0x4000458 = m[4] << 4;
+    *(volatile int *)0x4000458 = m[5] << 4;
+    *(volatile int *)0x4000458 = m[6] << 4;
+    *(volatile int *)0x4000458 = m[7] << 4;
+    *(volatile int *)0x4000458 = m[8] << 4;
+    *(volatile int *)0x4000458 = m[9] << 4;
+    *(volatile int *)0x4000458 = m[10] << 4;
+    *(volatile int *)0x4000458 = m[11] << 4;
+    *(volatile int *)0x4000458 = m[12];
+    *(volatile int *)0x4000458 = m[13];
+    *(volatile int *)0x4000458 = m[14];
+    *(volatile int *)0x4000458 = m[15];
+}
 }

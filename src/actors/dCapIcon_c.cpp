@@ -1,5 +1,6 @@
 //cpp
 /* dCapIcon_c -- the cap-icon list node and its per-character lists, ov001.
+ * .text 0x020ab110..0x020ab41c.
  *
  * RTTI names dCapIcon_c. This TU owns Unlink, the link helper, the list
  * reset, the constructor, and the destructor pair.
@@ -119,7 +120,21 @@ void dCapIcon_c::func_ov001_020ab228(char *a1, int idx, int a3,
 #pragma opt_common_subs on
 #pragma defer_codegen on
 
-/* Deferred half, descending ROM order: ctor, dtor pair, then reset. */
+/* Deferred half, descending ROM order: ctor, dtor pair, then reset. The
+ * absorbed helper below is defined first so reverse emission puts it
+ * highest (0x020ab3f0). */
+
+// @symbol func_ov001_020ab3f0
+extern "C" void func_ov001_020ab3f0(void *r0) {
+    unsigned char *ptr = (unsigned char *)r0;
+    if (ptr[0x10] != 0) {
+        ptr[0x10] = 0;
+    } else {
+        ptr[0x10] = 1;
+    }
+    ptr[0x11] = 0;
+    *(int *)(ptr + 0xc) = *(int *)(ptr + 0x18);
+}
 
 // @symbol _ZN10dCapIcon_cC1Ev
 dCapIcon_c::dCapIcon_c()

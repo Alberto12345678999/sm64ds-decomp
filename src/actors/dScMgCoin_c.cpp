@@ -6,11 +6,10 @@
  * hops down six stages and drops off the bottom. Phase 5 is the
  * result: a countdown, then this score against the other player's.
  *
- * This file is the whole ov006 unit 0x020dbe40..0x020de940: 62
- * functions in ROM order, from the destructor to InitResources. The
- * destructor is the key function, so the vtable and RTTI are emitted
- * here too. dScMgCoin_c_classInit, just above at 0x020de940, is still
- * its own file (src/d_s_mg_coin.cpp).
+ * This file is the whole ov006 unit 0x020dbe40..0x020de988: 63
+ * functions in ROM order, from the destructor through InitResources to
+ * the registry factory dScMgCoin_c_classInit. The destructor is the key
+ * function, so the vtable and RTTI are emitted here too.
  *
  * The functions from func_ov006_020dd0e0 up, and the three below
  * func_ov006_020dbf7c, came from one-function files. Their bodies are
@@ -22,8 +21,8 @@
  * The five state tables (the coin handlers at data_ov006_021417b0, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
  * 02141810 and the blocks' at 02141840) are {pmf, delta} records on
- * dScMgCoin_c. __sinit_ov006_0213014c copies them into .bss from the
- * data_ov006_0213be** literals.
+ * dScMgCoin_c. They are defined here, and the TU's static initialiser
+ * fills them from the pointer-to-member constants at data_ov006_0213be**.
  *
  * Leftover: func_ov006_020dd594 and func_ov006_020dde28 still use
  *   local layout structs instead of the class members.
@@ -160,17 +159,72 @@ extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern int data_0208ee44;
+extern void func_0203b9b4(int *p, int v);
 }
 
-/* The per-state handler tables for the coins, the blocks, the caption and
-   the moneybag: {pmf, delta} records indexed by the record's own state byte.
-   __sinit_ov006_0213014c copies them from data_ov006_0213be** literals. */
+/* The per-state handler tables: {pmf, delta} records indexed by the
+   record's own state byte. Static initialisation fills each one from the
+   pointer-to-member constants at 0x0213be44..0x0213bf0c in .data, which
+   stay outside this TU's claim, so they are reached by extern. The
+   definitions are in the order the initialiser fills them. */
 typedef void (dScMgCoin_c::*CoinPmf)(int);
 struct CoinPmfEntry { CoinPmf pmf; };
-extern "C" CoinPmfEntry data_ov006_021417b0[];
-extern "C" CoinPmfEntry data_ov006_021417c8[];
-extern "C" CoinPmfEntry data_ov006_021417e8[];
-extern "C" CoinPmfEntry data_ov006_02141840[];
+typedef void (dScMgCoin_c::*PMF_Behavior)();
+struct Entry_Behavior { PMF_Behavior pmf; };
+extern "C" {
+extern const Entry_Behavior data_ov006_0213bee4, data_ov006_0213be6c,
+    data_ov006_0213be7c, data_ov006_0213bea4, data_ov006_0213be54,
+    data_ov006_0213be5c;
+extern const CoinPmfEntry data_ov006_0213beec, data_ov006_0213be74,
+    data_ov006_0213be64, data_ov006_0213be84, data_ov006_0213beb4,
+    data_ov006_0213be9c;
+extern const CoinPmfEntry data_ov006_0213befc, data_ov006_0213bf04,
+    data_ov006_0213be94;
+extern const CoinPmfEntry data_ov006_0213bec4, data_ov006_0213bed4,
+    data_ov006_0213becc, data_ov006_0213beac, data_ov006_0213bebc;
+extern const CoinPmfEntry data_ov006_0213be44, data_ov006_0213be4c,
+    data_ov006_0213bef4, data_ov006_0213be8c;
+
+/* the phases (Behavior) */
+Entry_Behavior data_ov006_02141810[6] = {
+    { data_ov006_0213bee4 },
+    { data_ov006_0213be6c },
+    { data_ov006_0213be7c },
+    { data_ov006_0213bea4 },
+    { data_ov006_0213be54 },
+    { data_ov006_0213be5c }
+};
+/* the blocks */
+CoinPmfEntry data_ov006_02141840[6] = {
+    { data_ov006_0213beec },
+    { data_ov006_0213be74 },
+    { data_ov006_0213be64 },
+    { data_ov006_0213be84 },
+    { data_ov006_0213beb4 },
+    { data_ov006_0213be9c }
+};
+/* the coins */
+CoinPmfEntry data_ov006_021417b0[3] = {
+    { data_ov006_0213befc },
+    { data_ov006_0213bf04 },
+    { data_ov006_0213be94 }
+};
+/* the caption */
+CoinPmfEntry data_ov006_021417e8[5] = {
+    { data_ov006_0213bec4 },
+    { data_ov006_0213bed4 },
+    { data_ov006_0213becc },
+    { data_ov006_0213beac },
+    { data_ov006_0213bebc }
+};
+/* the moneybag */
+CoinPmfEntry data_ov006_021417c8[4] = {
+    { data_ov006_0213be44 },
+    { data_ov006_0213be4c },
+    { data_ov006_0213bef4 },
+    { data_ov006_0213be8c }
+};
+}
 
 // @symbol _ZN11dScMgCoin_cD1Ev
 // @symbol _ZN11dScMgCoin_cD0Ev
@@ -1629,9 +1683,6 @@ int dScMgCoin_c::Render()
 // @symbol _ZN11dScMgCoin_c8BehaviorEv
 /* Runs this phase's handler from data_ov006_02141810, then the caption,
    the moneybag, the popups and the score. */
-typedef void (dScMgCoin_c::*PMF_Behavior)();
-struct Entry_Behavior { PMF_Behavior pmf; };
-extern Entry_Behavior data_ov006_02141810[];
 
 int dScMgCoin_c::Behavior()
 {
@@ -1708,4 +1759,21 @@ int dScMgCoin_c::InitResources()
     self->unk_51d4 = func_ov004_020adc1c();
     self->unk_0a4 = 1;
     return 1;
+}
+
+/* The base constructor and the vptr store are the compiler's; the body is
+   the one member that needs construction. */
+inline dScMgCoin_c::dScMgCoin_c()
+{
+    func_0203b9b4(&mSeed, 1);
+}
+
+/* Reconstructed source-style name: SM64DS proves dScMgCoin_c through RTTI,
+ * allocation size, vtable identity, and the MG_COIN registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MgCoincentration_Spawn. */
+// @symbol dScMgCoin_c_classInit
+extern "C" void *dScMgCoin_c_classInit()
+{
+    return new dScMgCoin_c;
 }

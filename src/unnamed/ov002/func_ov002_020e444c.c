@@ -11,7 +11,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *mF, s16 angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *mF, s16 angX);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(struct Matrix4x3 *mF, s16 angZ);
 extern int _ZNK6Player14GetBodyModelIDEjb(void *self, u32 unk, int b);
-extern int func_ov002_020becf4(void *self, u32 v, int arg2);
+extern int _ZN6Player19func_ov002_020becf4Eii(void *self, u32 v, int arg2);
 extern int func_ov002_020d225c(void *o);
 extern void Matrix4x3_ApplyInPlaceToTranslation(struct Matrix4x3 *mF, Fix12i x, Fix12i y, Fix12i z);
 extern void func_ov002_020e4374(void *c, int *p1, int *p2);
@@ -59,7 +59,7 @@ void func_ov002_020e444c(char *c)
         }
 
         {
-            int r0 = func_ov002_020becf4(c, *(u32 *)(c + 8) & 0xff, 0);
+            int r0 = _ZN6Player19func_ov002_020becf4Eii(c, *(u32 *)(c + 8) & 0xff, 0);
             if (r0 != 9 && r0 != 8) {
                 char *q = *(char **)(c + r0 * 4 + 0x154);
                 if (q != 0) {

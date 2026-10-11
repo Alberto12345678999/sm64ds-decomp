@@ -492,6 +492,13 @@ ov003	0x020adc10	func_ov003_020adc10	dScTitle_c_classInit	reconstructed classIni
 ov003	0x020b1380	data_ov003_020b1380	g_profile_TITLE	reconstructed profile global; literal ROM ID TITLE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov003	0x020b060c	func_ov003_020b060c	_ZN13dScGameOver_c19func_ov003_020b060cEv	dScGameOver_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov003	0x020b0730	func_ov003_020b0730	_ZN13dScGameOver_c19func_ov003_020b0730Ei	dScGameOver_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020adec0	func_ov003_020adec0	_ZN12dScStarSel_c19func_ov003_020adec0Ej	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020adf50	func_ov003_020adf50	_ZN12dScStarSel_c19func_ov003_020adf50Ev	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020adfc8	func_ov003_020adfc8	_ZN12dScStarSel_c19func_ov003_020adfc8Ev	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020ae0b0	func_ov003_020ae0b0	_ZN12dScStarSel_c19func_ov003_020ae0b0Ev	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020ae1a4	func_ov003_020ae1a4	_ZN12dScStarSel_c19func_ov003_020ae1a4Ei	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020ae238	func_ov003_020ae238	_ZN12dScStarSel_c19func_ov003_020ae238Ev	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov003	0x020ae358	func_ov003_020ae358	_ZN12dScStarSel_c19func_ov003_020ae358Ev	dScStarSel_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov003	0x020b1118	func_ov003_020b1118	dScGameOver_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov003	0x020b1750	data_ov003_020b1750	g_profile_GAME_OVER	reconstructed profile global; literal ROM ID GAME_OVER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov004	0x020b68e8	func_ov004_020b68e8	_ZN10dMgState_c19func_ov004_020b68e8Ev	dMgState_c method. The first argument is the object, so the function is a member and the parameter is this. The pointer-to-member records at 0x020bc8bc..0x020bca3c name it as a target. The address is kept as the method name.
@@ -5740,7 +5747,7 @@ ov004	0x020adcc8	func_ov004_020adcc8	_ZN3Ent19func_ov004_020adcc8Ev	Ent method. 
 ov004	0x020addcc	func_ov004_020addcc	_ZN3Ent19func_ov004_020addccEv	Ent method. The first argument is the record, so the function is a member and the parameter is this. The pointer-to-member descriptor at 0x020bbf5c names it as a target. The address is kept as the method name.
 ov004	0x020adeb0	func_ov004_020adeb0	_ZN3Ent19func_ov004_020adeb0Ev	Ent method. The first argument is the record, so the function is a member and the parameter is this. The pointer-to-member descriptor at 0x020bbf4c names it as a target. The address is kept as the method name.
 ov004	0x020ae104	func_ov004_020ae104	_ZN11dScMgBase_c15graphCallback_cC1Ev	dScMgBase_c::graphCallback_c constructor. The body is the base callback_c vptr store, the derived vptr store (_ZTVN11dScMgBase_c15graphCallback_cE, 0x020bc03c), and mScene = 0 -- a complete-object ctor. Called once, by __sinit_d_s_mg_base.cpp.
-ov004	0x020b2c58	func_ov004_020b2c58	__arraydtor$314	compiler-generated array destructor thunk for the Ent record pool data_ov004_020bebe8; __sinit_d_s_mg_base.cpp registers it through __register_global_object.
+ov004	0x020b2c58	func_ov004_020b2c58	__arraydtor$328	compiler-generated array destructor thunk for the Ent record pool data_ov004_020bebe8; __sinit_d_s_mg_base.cpp registers it through __register_global_object.
 ov004	0x020b2c7c	func_ov004_020b2c7c	_ZN3EntD1Ev	Ent's trivial destructor, emitted for the data_ov004_020bebe8 record pool's __cxa_vec_ctor/__cxa_vec_cleanup calls.
 ov004	0x020b2c80	func_ov004_020b2c80	_ZN3EntC1Ev	Ent's trivial constructor, emitted for the data_ov004_020bebe8 record pool's __cxa_vec_ctor call.
 ov002	0x020ae9f8	func_ov002_020ae9f8	_ZN6Aea30C19func_ov002_020ae9f8EP8dActor_cP10dBgCh_Actr	pointer-to-member target of data_ov002_0210db80, dispatched on f10c index
@@ -5772,3 +5779,17 @@ ov002	0x020bd4c8	func_ov002_020bd4c8	_ZN6Player19func_ov002_020bd4c8EPhii	Player
 ov002	0x020bd4e0	func_ov002_020bd4e0	_ZN6Player19func_ov002_020bd4e0EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
 ov002	0x020bd600	func_ov002_020bd600	_ZN6Player19func_ov002_020bd600EPhii	Player method; Kuppa-script command, pointer-to-member target in the func_ov002_020bd664 dispatch table
 ov002	0x020bd664	func_ov002_020bd664	_ZN6Player19func_ov002_020bd664EPhii	Player method; Kuppa-script player command dispatcher, called by func_0200e5ac on the player actor through pointer-to-member data_ov002_02110794
+ov002	0x0020d4748	func_ov002_0020d4748	_ZN6Player19func_ov002_020d4748Ev	Player method void(); walk-init speed helper; called from St_Walk_Init/Main on this; method-review 020d2f24-020db8d8
+ov002	0x0020d5338	func_ov002_0020d5338	_ZN6Player19func_ov002_020d5338Ev	Player method int(); state-gated helper; called from Player TU on (Player*)c; method-review 020d2f24-020db8d8
+ov002	0x0020d5ed0	func_ov002_0020d5ed0	_ZN6Player19func_ov002_020d5ed0Ev	Player method int(); mouth-object helper; call site tag-checks 0xbf before calling; method-review 020d2f24-020db8d8
+ov002	0x0020d5f98	func_ov002_0020d5f98	_ZN6Player19func_ov002_020d5f98EPhS0_	Player method int(u8*,u8*); egg-wobble query; daYegg_c calls on mPlayer (Player*); method-review 020d2f24-020db8d8
+ov002	0x0020d6048	func_ov002_0020d6048	_ZN6Player19func_ov002_020d6048Ev	Player method int(); egg-destroy query; daYegg_c calls on mPlayer (Player*); method-review 020d2f24-020db8d8
+ov002	0x0020d6998	func_ov002_0020d6998	_ZN6Player19func_ov002_020d6998Ev	Player method int(); yoshi-power gate; called on this/tagged mouth Player; method-review 020d2f24-020db8d8
+ov002	0x0020d708c	func_ov002_0020d708c	_ZN6Player19func_ov002_020d708cEv	Player method char*(); nearest-targetable-actor search over dActor_c list; method-review 020d2f24-020db8d8
+ov002	0x0020d718c	func_ov002_0020d718c	_ZN6Player19func_ov002_020d718cEv	Player method void(); post-grab reset; called on this/eaten Player incl. daBmb/daStar mEatingPlayer; method-review 020d2f24-020db8d8
+ov002	0x0020d71a0	func_ov002_0020d71a0	_ZN6Player19func_ov002_020d71a0Ev	Player method void(); anim reset; called on this incl. Player TU bdb50; method-review 020d2f24-020db8d8
+ov002	0x0020d93ac	func_ov002_0020d93ac	_ZN6Player19func_ov002_020d93acEv	Player method int(); cap-loss reaction; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020d94cc	func_ov002_0020d94cc	_ZN6Player19func_ov002_020d94ccEv	Player method int(); hurt reaction; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020d98b4	func_ov002_0020d98b4	_ZN6Player19func_ov002_020d98b4Ev	Player method void(); hurt-particle helper; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020daa74	func_ov002_0020daa74	_ZN6Player19func_ov002_020daa74Ev	Player method int(); grab-release helper; called on this; method-review 020d2f24-020db8d8
+ov002	0x0020db8d8	func_ov002_0020db8d8	_ZN6Player19func_ov002_020db8d8Ev	Player method void(); fail-path helper; called on this from 6998; method-review 020d2f24-020db8d8

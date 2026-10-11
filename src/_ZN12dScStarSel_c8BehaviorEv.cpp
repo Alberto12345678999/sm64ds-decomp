@@ -154,7 +154,7 @@ s32 dScStarSel_c::Behavior()
                 func_02012790(0x12e);
             } else if (FB(this, 0x139) == 0) {
                 if (mode == 1) {
-                    u8 ch = func_ov003_020adf50((char *)this);
+                    u8 ch = func_ov003_020adf50();
                     data_02092128 = ch;
                     data_02092114 = ch;
                     FB(this, 0x132) = ch;
@@ -234,7 +234,7 @@ s32 dScStarSel_c::Behavior()
                 FB(this, 0x117) = data_0208ee44 * 3;
             }
             if (FB(this, 0x139) == 0) {
-                func_ov003_020ae358((char *)this);
+                func_ov003_020ae358();
             }
         }
 

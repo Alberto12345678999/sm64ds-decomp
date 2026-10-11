@@ -140,10 +140,12 @@ struct dScMgPanel_c : dScMgBase_c {
     void func_ov006_021048e4();
     void func_ov006_02104920(int index);
     void func_ov006_02104a10(int index);
+    void func_ov006_02104ac0(int index);
     void func_ov006_02104ac4();
     void func_ov006_02104b24();
     void func_ov006_02104b4c();
     void func_ov006_02104b5c();
+    void func_ov006_02104bac();
     void func_ov006_02104bb0();
     void func_ov006_02104c08();
     void func_ov006_02104c60();
@@ -154,6 +156,7 @@ struct dScMgPanel_c : dScMgBase_c {
     void func_ov006_02104e80();
     void func_ov006_02104ea8();
     void func_ov006_02104eb8();
+    void func_ov006_02104ec8();
     void func_ov006_02104ecc();
     void func_ov006_02104fb4();
     void func_ov006_0210500c();

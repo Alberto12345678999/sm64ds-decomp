@@ -202,6 +202,12 @@ extern void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *thiz, const voi
 extern int RandomIntInternal(int *seed);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int b, unsigned int u);
 extern void _Z15ApproachLinear2Rsss(s16 *p, short a, short b);
+/* Numbering pins: func_ov002_020d5f98/020d6048 are now Player members (see
+   Player.h) and no call in this TU uses these free spellings anymore. The
+   declarations stay, spelled exactly as they were, because each named
+   parameter advances mwccarm's @NNN counter: removing or un-naming them
+   renumbers this TU's .data temps and rotates __sinit_daYegg_c.cpp's pool
+   destinations (measured). */
 extern int func_ov002_020d5f98(void *c, unsigned char *a, unsigned char *b);
 extern int func_ov002_020d6048(void *c);
 extern void _ZN7fBase_c18MarkForDestructionEv(void *c);
@@ -518,7 +524,7 @@ void daYegg_c::func_ov002_020ec9c4(){
     }
   } else {
     unsigned char a, b;
-    if (func_ov002_020d5f98(mPlayer, &a, &b)){
+    if (mPlayer->func_ov002_020d5f98(&a, &b)){
       unsigned char ip;
       a = a * 2;
       ip = a;
@@ -527,7 +533,7 @@ void daYegg_c::func_ov002_020ec9c4(){
       mWobbling = 1;
     }
   }
-  if (!func_ov002_020d6048(mPlayer))
+  if (!mPlayer->func_ov002_020d6048())
     _ZN7fBase_c18MarkForDestructionEv(this);
   _ZN5dCc_c5ClearEv(&mdCcAc_c);
   _ZN5dCc_c6UpdateEv(&mdCcAc_c);

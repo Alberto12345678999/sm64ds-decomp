@@ -54,8 +54,6 @@
  *   ba84). `#pragma cplusplus off/on` around the definition only.
  * - func_ov060_02116740 and func_ov060_021172c8 stay free: decl_common.h
  *   declares them for other users.
- * - daKpaFire_c_classInit (0x02117938) abuts this run and stays a
- *   one-function C source (src/d_a_kpa_fire.c).
  * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight, Particle::New
  *   and SaveData helpers stay mangled scalar externs (Fix12-by-value
  *   member form is the 6az wall).
@@ -100,6 +98,11 @@
  * Bullet's 020fed2c keeper). */
 struct Vector3_16f;
 struct dCc_c;
+/* POD spelling of Matrix4x3's 0x30 bytes: with a user-declared constructor on
+ * Vector3 the copy in func_ov060_02117624 scalarizes even under `#pragma
+ * cplusplus off`; the ROM copy is the block move, so it goes through this. */
+struct RawMatrix4x3 { int m[12]; };
+typedef struct RawMatrix4x3 RawMatrix4x3;
 typedef void (dActor_c::*PMF)();
 struct Entry { PMF pmf; };
 typedef void (dActor_c::*ActorFn)();
@@ -175,6 +178,25 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, i
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
 extern ActorFn data_ov060_0211af74[];
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 26 -- daKpaFire_c_classInit, 0x02117938, size 0x48 */
+/* -------------------------------------------------------------------------- */
+// @symbol daKpaFire_c_classInit
+/* recovered: vtable identified, globals resolved */
+/* Reconstructed source-style name: SM64DS proves daKpaFire_c through RTTI,
+ * allocation size, vtable identity, and the KOOPAFIRE registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: BowserFire_Spawn.
+ *
+ * `new daKpaFire_c` is the whole sequence the loose factory spelled by hand:
+ * fBase_c::operator new(0x38c), dEnemyBase_c's base constructor, the vptr
+ * store, then the three member constructors in declaration order. Highest
+ * address in the unit, so first in source (codegen is deferred). */
+extern "C" daKpaFire_c *daKpaFire_c_classInit(void)
+{
+    return new daKpaFire_c;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -334,7 +356,7 @@ void func_ov060_02117624(char *c) {
     struct daKpaFire_c *self = (struct daKpaFire_c *)c;
     if (self->mDropsShadow == 0) return;
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX>>3, self->mGroundY>>3, self->mPosZ>>3);
-    *(Matrix4x3*)self->pad_32c = data_020a0e68;
+    *(RawMatrix4x3*)self->pad_32c = *(RawMatrix4x3*)&data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, self->pad_32c, self->mShadowRadiusMul * self->mFireScale, 0x1e000, 0xf);
 }
 #pragma cplusplus on

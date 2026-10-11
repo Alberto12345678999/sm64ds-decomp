@@ -1,5 +1,5 @@
 //cpp
-/* Positional collision cylinders (arm9 .text 0x020147d4..0x0201489c):
+/* Positional collision cylinders (arm9 .text 0x020147bc..0x0201489c):
  * dCcPos_c, the dCc_c leaf that carries its own position -- a fixed
  * cylinder, not bound to an actor, which is why GetOwnerID is a constant
  * 0 and GetPos returns the member at +0x30.
@@ -21,6 +21,8 @@ extern "C" {
    class-typed by-value parameters, so callers go through the real method
    while the callee stays the mangled scalar spelling dCc_c's TU defines. */
 void _ZN5dCc_c4InitE5Fix12IiES1_jj(dCc_c *self, int radius, int height, u32 flags, u32 vulnFlags);
+/* The font-base halfword the absorbed print helper below adds the glyph index to. */
+extern unsigned short data_0208e500;
 }
 
 // @symbol _ZN8dCcPos_cC1Ev
@@ -65,4 +67,14 @@ extern "C" void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(dCcPos_c *self, const
     self->pos.y = pos->y;
     self->pos.z = pos->z;
     _ZN5dCc_c4InitE5Fix12IiES1_jj(self, radius, height, flags, vulnFlags);
+}
+
+/* ROM ordinal 0 -- the run's backward neighbour, absorbed (reverse emission
+ * puts the lowest address last). A print helper shared with nds_print.c and
+ * nds_printt.c, which keep their own matching extern declarations and call
+ * sites; only the definition moves. Body as recovered. */
+
+// @symbol func_020147bc
+extern "C" void func_020147bc(unsigned short* r0, int r1){
+  *r0 = (unsigned short)(data_0208e500 + r1);
 }
