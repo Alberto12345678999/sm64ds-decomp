@@ -4069,6 +4069,11 @@
       ]
     },
     "Vec3_RotateYAndTranslate": {
+      "src/engine/collision/dCcAc_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 const Vector3 *",
+        "param:#4 const Vector3 *"
+      ],
       "src/_ZN6Player20St_InYoshiMouth_MainEv.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",

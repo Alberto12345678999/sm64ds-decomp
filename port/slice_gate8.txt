@@ -28,9 +28,8 @@ src/SurfaceInfo_TestFlag0x20.c
 src/func_020353d4.c
 src/func_02035408.c
 src/func_0203543c.c
-src/func_0203545c.c
-src/func_0203547c.c
-src/func_020354b0.c
+# func_0203545c, func_0203547c and func_020354b0 live in dBgCh.cpp now.
+src/engine/collision/dBgCh.cpp
 src/func_02037e14.c
 src/func_02037e20.c
 src/func_02037e2c.c

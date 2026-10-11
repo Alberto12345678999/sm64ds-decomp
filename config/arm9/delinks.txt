@@ -2328,53 +2328,9 @@ src/func_0203543c.c:
     complete
     .text start:0x0203543c end:0x02035448
 
-src/_ZN5dBgCh19StartDetectingToxicEv.cpp:
+src/engine/collision/dBgCh.cpp:
     complete
-    .text start:0x02035448 end:0x0203545c
-
-src/func_0203545c.c:
-    complete
-    .text start:0x0203545c end:0x02035468
-
-src/unnamed/arm9/0203/func_02035468.c:
-    complete
-    .text start:0x02035468 end:0x0203547c
-
-src/func_0203547c.c:
-    complete
-    .text start:0x0203547c end:0x02035488
-
-src/_ZN5dBgCh18StopDetectingWaterEv.cpp:
-    complete
-    .text start:0x02035488 end:0x0203549c
-
-src/_ZN5dBgCh19StartDetectingWaterEv.cpp:
-    complete
-    .text start:0x0203549c end:0x020354b0
-
-src/func_020354b0.c:
-    complete
-    .text start:0x020354b0 end:0x020354bc
-
-src/_ZN5dBgCh21StopDetectingOrdinaryEv.cpp:
-    complete
-    .text start:0x020354bc end:0x020354d0
-
-src/_ZN5dBgChD2Ev.cpp:
-    complete
-    .text start:0x020354d0 end:0x020354e0
-
-src/_ZN5dBgChD0Ev.cpp:
-    complete
-    .text start:0x020354e0 end:0x02035504
-
-src/_ZN5dBgChD1Ev.cpp:
-    complete
-    .text start:0x02035504 end:0x02035514
-
-src/_ZN5dBgChC2Ev.cpp:
-    complete
-    .text start:0x02035514 end:0x0203553c
+    .text start:0x02035448 end:0x0203553c
 
 src/engine/collision/dBgCh_Actr.cpp:
     complete
