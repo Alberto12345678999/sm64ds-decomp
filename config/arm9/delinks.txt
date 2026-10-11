@@ -7411,24 +7411,13 @@ src/unnamed/arm9/0206/func_0206ce20.c:
     complete
     .text start:0x0206ce20 end:0x0206ce90
 
+src/engine/cp15/CP154.cpp:
+    complete
+    .text start:0x0206da64 end:0x0206dab4
+
 src/cstd4.cpp:
     complete
-    .text start:0x0206da64 end:0x0206e330
-
-src/unnamed/arm9/0206/func_0206e330.c:
-    .text start:0x0206e330 end:0x0206e3dc
-
-src/unnamed/arm9/0206/func_0206e3dc.c:
-    complete
-    .text start:0x0206e3dc end:0x0206e450
-
-src/unnamed/arm9/0206/func_0206e450.c:
-    complete
-    .text start:0x0206e450 end:0x0206e4a4
-
-src/unnamed/arm9/0206/func_0206e4a4.c:
-    complete
-    .text start:0x0206e4a4 end:0x0206ece0
+    .text start:0x0206dab4 end:0x0206ece0
 
 src/unnamed/arm9/0206/func_0206ece0.c:
     .text start:0x0206ece0 end:0x0206f338

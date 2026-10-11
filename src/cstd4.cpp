@@ -1,92 +1,19 @@
 //cpp
-/* cstd and CP15 runtime helpers, 0x0206da64..0x0206e330.
-   func_0206ce20 ends at 0x0206ce90 and the next enrolled function is this
-   run, so it is not the cstd3 file. func_0206e330 is incomplete and is not
-   taken. CP15::MPUDataRegion7 and CP15::MPUGetDataRegion7 stay CP15 methods
-   in this file. Whole-function asm is emitted in source order; compiled
-   bodies are too, under a per-function defer_codegen off. */
+/* cstd tail -- MSL runtime helpers, 0x0206dab4..0x0206ece0.
+   __builtin_trap through __pformatter. The five CP15 coprocessor functions
+   ahead of this run live in src/engine/cp15/CP154.cpp.
+
+   leftovers: func_0206ece0..func_0206fb08 stay one-function sources. They
+   match under -lang c++, but enrolling them is unresolvable: func_0206ece0
+   calls func_01ff9e2c and func_0206f46c calls _deq, both inner addresses of
+   the enrolled itcm asm blob func_01ff97d8.o, which exports only its outer
+   symbol. A TU claims one contiguous .text span, so those two walls stop the
+   absorb before func_0206f338/func_0206f820/func_0206fb08 as well.
+   func_0206fd6c (parse_format) is C-only under -lang c++ and stays a
+   one-function source; cstd6 (0x02070348..0x020707a4) sits beyond it. Whole-
+   function asm is emitted in source order; compiled bodies are too, under a
+   per-function defer_codegen off. */
 #include "types.h"
-
-extern "C" {
-// HAND-ASM PRIMITIVE: byte-faithful asm-block match. This function was assembly
-// in the original (SDK/runtime primitive: block copy, matrix/math, CP15, context
-// switch, etc.), so there is no C to decompile it to -- the asm block is the
-// faithful source. Counts as matched (asm-primitive policy), not a C transcription.
-// @symbol func_0206da64
-asm int func_0206da64(void) {
-    mov r0, #1
-    b lbl
-    mov r0, #0
-    b lbl
-lbl:
-    mrc p15, 0, r1, c1, c0, 0
-    and r2, r1, #1
-    tst r0, r0
-    biceq r1, r1, #1
-    orrne r1, r1, #1
-    mcr p15, 0, r1, c1, c0, 0
-    mov r0, r2
-    bx lr
-}
-
-// HAND-ASM PRIMITIVE: byte-faithful asm-block match. This function was assembly
-// in the original (SDK/runtime primitive: block copy, matrix/math, CP15, context
-// switch, etc.), so there is no C to decompile it to -- the asm block is the
-// faithful source. Counts as matched (asm-primitive policy), not a C transcription.
-// @symbol func_0206da94
-asm void func_0206da94(void) { mrc p15, 0, r0, c7, c10, 1; bx lr }
-
-// HAND-ASM PRIMITIVE: byte-faithful asm-block match. This function was assembly
-// in the original (SDK/runtime primitive: block copy, matrix/math, CP15, context
-// switch, etc.), so there is no C to decompile it to -- the asm block is the
-// faithful source. Counts as matched (asm-primitive policy), not a C transcription.
-// @symbol func_0206da9c
-asm void func_0206da9c(void) { mrc p15, 0, r0, c7, c6, 1; bx lr }
-}
-
-#pragma push
-#pragma defer_codegen off
-// @symbol _ZN4CP1517MPUGetDataRegion7Ev
-/* CP15::MPUGetDataRegion7() at 0x0206daa4 -- read back MPU data region 7.
- *
- * HAND-ASM PRIMITIVE: `mrc`/`mcr p15` are coprocessor accesses and no C
- * construct compiles to them, so the asm block is the faithful source rather
- * than a transcription of something lost. The asm-primitive policy is unchanged
- * by this migration; what changes is only that the compiler mangles the symbol
- * instead of the file spelling it by hand. Layout-free (plan phase 1): no
- * `this`, no vtable, no struct, no includers. */
-namespace CP15 {
-
-unsigned int MPUGetDataRegion7(void)
-{
-    unsigned int v;
-    asm { mrc p15,0,v,c6,c7,0 }
-    return v;
-}
-
-}
-#pragma pop
-
-#pragma push
-#pragma defer_codegen off
-// @symbol _ZN4CP1514MPUDataRegion7Ej
-/* CP15::MPUDataRegion7(u32) at 0x0206daac -- write MPU data region 7 (c6,c7).
- *
- * HAND-ASM PRIMITIVE: `mrc`/`mcr p15` are coprocessor accesses and no C
- * construct compiles to them, so the asm block is the faithful source rather
- * than a transcription of something lost. The asm-primitive policy is unchanged
- * by this migration; what changes is only that the compiler mangles the symbol
- * instead of the file spelling it by hand. Layout-free (plan phase 1): no
- * `this`, no vtable, no struct, no includers. */
-namespace CP15 {
-
-void MPUDataRegion7(unsigned int x)
-{
-    asm { mcr p15,0,x,c6,c7,0 }
-}
-
-}
-#pragma pop
 
 extern "C" {
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match. The `swp` atomic swap has no C
@@ -689,7 +616,7 @@ u8 *func_0206e2cc(u8 *p, int c, unsigned int n)
 /* recovered: MSL memset -- the thin wrapper over __fill_mem.
  *
  * The return type is `void *`, not `int`. func_0206e330, already recovered in
- * src/unnamed/arm9/0206/func_0206e330.c as the MSL byte-head / 32-byte-block / word-tail fill
+ * this file as the MSL byte-head / 32-byte-block / word-tail fill
  * loop, is __fill_mem(void *dst, int val, u32 n); this function forwards all
  * three arguments to it unchanged and returns its own first argument, which is
  * exactly memset's contract. The one caller in the tree, _ZN7fBase_cnwEj,
@@ -717,6 +644,396 @@ void *func_0206e310(void *dst, const void *src, unsigned int n)
         n--;
     }
     return dst;
+}
+#pragma pop
+
+/* MSL printf cluster shared layout: print_format is the specifier frame
+ * parse_format fills and the render helpers consume by value. */
+typedef struct {
+    unsigned char justification_options;
+    unsigned char sign_options;
+    unsigned char precision_specified;
+    unsigned char alternate_form;
+    unsigned char argument_options;
+    unsigned char conversion_char;
+    char fill_char;
+    char pad7;
+    int field_width;
+    int precision;
+} print_format;
+
+enum { only_minus = 0, sign_always = 1, space_holder = 2 };
+enum { left_justification = 0, right_justification = 1, zero_fill = 2 };
+enum {
+    normal_argument = 0,
+    char_argument,
+    short_argument,
+    long_argument,
+    intmax_argument,
+    size_t_argument,
+    ptrdiff_argument,
+    long_long_argument,
+    long_double_argument,
+    wchar_argument
+};
+
+#define MAX_BUFF 512
+
+extern unsigned char *func_0206fd6c(unsigned char *format_string, char **arg, print_format *format); /* parse_format */
+extern char *_ZN4cstd6strchrEPKcc(const char *s, char c);
+extern unsigned int _ZN4cstd6strlenEPKc(const char *s);
+
+extern int func_0206e450(char *obj, const void *src, unsigned int n);
+extern int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
+                         const unsigned char *format_str, char *arg);
+extern char *func_0206ece0(double x, char *buff_end, print_format format);
+extern char *func_0206f46c(double x, char *buff_end, print_format format);
+extern char *func_0206f820(long long num, char *buff_end, print_format format);
+extern char *func_0206fb08(long num, char *buff_end, print_format format);
+
+extern unsigned short data_0209a5e4[];
+extern char data_0209a5e8[];
+
+#pragma push
+#pragma defer_codegen off
+#pragma opt_lifetimes off
+/* recovered: MSL memset/__fill_mem -- byte head, 32-byte unrolled block,
+ * word tail, byte tail. The head and block loops share one counter, which is
+ * what colours both into r3; opt_lifetimes off keeps the word counter separate. */
+// @symbol func_0206e330
+void func_0206e330(void *dst, int val, u32 n)
+{
+    u8 *p = (u8 *)dst;
+    u32 c = (u32)val & 0xff;
+
+    if (n >= 0x20) {
+        u32 k, w;
+
+        k = (u32)(-(int)p) & 3;
+        if (k != 0) {
+            n -= k;
+            do {
+                *p++ = (u8)c;
+            } while (--k);
+        }
+
+        if (c != 0) {
+            c |= (c << 24) | (c << 16) | (c << 8);
+        }
+
+        k = n >> 5;
+        if (k != 0) {
+            do {
+                ((u32 *)p)[0] = c;
+                ((u32 *)p)[1] = c;
+                ((u32 *)p)[2] = c;
+                ((u32 *)p)[3] = c;
+                ((u32 *)p)[4] = c;
+                ((u32 *)p)[5] = c;
+                ((u32 *)p)[6] = c;
+                ((u32 *)p)[7] = c;
+                p += 0x20;
+            } while (--k);
+        }
+
+        w = (n & 0x1f) >> 2;
+        if (w != 0) {
+            do {
+                *(u32 *)p = c;
+                p += 4;
+            } while (--w);
+        }
+
+        n &= 3;
+    }
+
+    if (n != 0) {
+        do {
+            *p++ = (u8)c;
+        } while (--n);
+    }
+}
+#pragma pop
+
+#pragma push
+#pragma defer_codegen off
+struct Ctx { char *buf; unsigned int len; int z; };
+// @symbol func_0206e3dc
+unsigned int func_0206e3dc(char *buf, unsigned int len,
+                           unsigned int fmtAddr, unsigned int val) {
+    struct Ctx ctx;
+    unsigned int r;
+    ctx.buf = buf;
+    ctx.len = len;
+    ctx.z = 0;
+    r = func_0206e4a4((int (*)(void *, const char *, size_t))func_0206e450, &ctx,
+                      (const unsigned char *)fmtAddr, (char *)val);
+    if (buf == 0) return r;
+    if (r < len) {
+        buf[r] = 0;
+        return r;
+    }
+    if (len != 0) {
+        char *end = buf + len;
+        end[-1] = 0;
+    }
+    return r;
+}
+#pragma pop
+
+#pragma push
+#pragma defer_codegen off
+// @symbol func_0206e450
+int func_0206e450(char *obj, const void *src, unsigned int n)
+{
+    unsigned int off = *(unsigned int*)(obj + 8);
+    unsigned int len = *(unsigned int*)(obj + 4);
+    if (off + n > len)
+        n = len - off;
+    func_0206e310(*(char**)(obj) + off, src, n);
+    {
+        int *p = (int*)(obj + 8);
+        *p = *p + n;
+    }
+    return 1;
+}
+#pragma pop
+
+#pragma push
+#pragma defer_codegen off
+/* func_0206e4a4 @ 0x0206e4a4 (arm9, size 0x83c)
+ * MSL __pformatter: the printf formatting engine. Walks the format string,
+ * hands each %-specifier to parse_format (func_0206fd6c), pulls the matching
+ * argument off the va_list, renders it with the long/float/hex-float helpers
+ * and emits the result through the caller's WriteProc, applying field width,
+ * justification and fill. Returns the character count, or -1 if WriteProc fails.
+ */
+// @symbol func_0206e4a4
+int func_0206e4a4(int (*WriteProc)(void *, const char *, size_t), void *WriteProcArg,
+                  const unsigned char *format_str, char *arg)
+{
+    int num_chars;
+    long long long_long_num;
+    const unsigned char *curr_format;
+    int n;
+    int chars_written;
+    long long_num;
+    long double long_double_num;
+    unsigned char *buff_ptr;
+    unsigned char fill_char = ' ';
+    char blank;
+    print_format format;
+    char conv_buff[MAX_BUFF];
+
+    num_chars = 0;
+
+    while (*format_str) {
+        curr_format = (unsigned char *)_ZN4cstd6strchrEPKcc((const char *)format_str, '%');
+
+        if (curr_format == 0) {
+            num_chars += (n = _ZN4cstd6strlenEPKc((const char *)format_str));
+            if (n && !(*WriteProc)(WriteProcArg, (const char *)format_str, n))
+                return -1;
+            break;
+        }
+
+        num_chars += (n = curr_format - format_str);
+        if (n && !(*WriteProc)(WriteProcArg, (const char *)format_str, n))
+            return -1;
+
+        format_str = func_0206fd6c((unsigned char *)curr_format, &arg, &format);
+
+        switch (format.conversion_char) {
+        case 'd':
+        case 'i':
+            if (format.argument_options == long_argument)
+                long_num = *(long *)((arg += sizeof(long)) - sizeof(long));
+            else if (format.argument_options == long_long_argument)
+                long_long_num = *(long long *)((arg += sizeof(long long)) - sizeof(long long));
+            else if (format.argument_options == intmax_argument)
+                long_num = (long)*(long long *)((arg += sizeof(long long)) - sizeof(long long));
+            else if (format.argument_options == size_t_argument)
+                long_num = *(long *)((arg += sizeof(long)) - sizeof(long));
+            else if (format.argument_options == ptrdiff_argument)
+                long_num = *(long *)((arg += sizeof(long)) - sizeof(long));
+            else
+                long_num = *(int *)((arg += sizeof(int)) - sizeof(int));
+
+            if (format.argument_options == short_argument)
+                long_num = (short)long_num;
+            if (format.argument_options == char_argument)
+                long_num = (signed char)long_num;
+
+            if (format.argument_options == long_long_argument) {
+                if (!(buff_ptr = (unsigned char *)func_0206f820(long_long_num, conv_buff + MAX_BUFF, format)))
+                    goto invalid_conversion;
+            } else {
+                if (!(buff_ptr = (unsigned char *)func_0206fb08(long_num, conv_buff + MAX_BUFF, format)))
+                    goto invalid_conversion;
+            }
+            n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
+            break;
+
+        case 'o':
+        case 'u':
+        case 'x':
+        case 'X':
+            if (format.argument_options == long_argument)
+                long_num = *(long *)((arg += sizeof(long)) - sizeof(long));
+            else if (format.argument_options == long_long_argument)
+                long_long_num = *(long long *)((arg += sizeof(long long)) - sizeof(long long));
+            else if (format.argument_options == intmax_argument)
+                long_num = (long)*(long long *)((arg += sizeof(long long)) - sizeof(long long));
+            else if (format.argument_options == size_t_argument)
+                long_num = *(long *)((arg += sizeof(long)) - sizeof(long));
+            else if (format.argument_options == ptrdiff_argument)
+                long_num = *(long *)((arg += sizeof(long)) - sizeof(long));
+            else
+                long_num = *(int *)((arg += sizeof(int)) - sizeof(int));
+
+            if (format.argument_options == short_argument)
+                long_num = (unsigned short)long_num;
+            if (format.argument_options == char_argument)
+                long_num = (unsigned char)long_num;
+
+            if (format.argument_options == long_long_argument) {
+                if (!(buff_ptr = (unsigned char *)func_0206f820(long_long_num, conv_buff + MAX_BUFF, format)))
+                    goto invalid_conversion;
+            } else {
+                if (!(buff_ptr = (unsigned char *)func_0206fb08(long_num, conv_buff + MAX_BUFF, format)))
+                    goto invalid_conversion;
+            }
+            n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
+            break;
+
+        case 'f':
+        case 'F':
+        case 'e':
+        case 'E':
+        case 'g':
+        case 'G':
+            if (format.argument_options == long_double_argument)
+                long_double_num = *(long double *)((arg += sizeof(long double)) - sizeof(long double));
+            else
+                long_double_num = *(double *)((arg += sizeof(double)) - sizeof(double));
+            if (!(buff_ptr = (unsigned char *)func_0206ece0(long_double_num, conv_buff + MAX_BUFF, format)))
+                goto invalid_conversion;
+            n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
+            break;
+
+        case 'a':
+        case 'A':
+            if (format.argument_options == long_double_argument)
+                long_double_num = *(long double *)((arg += sizeof(long double)) - sizeof(long double));
+            else
+                long_double_num = *(double *)((arg += sizeof(double)) - sizeof(double));
+            if (!(buff_ptr = (unsigned char *)func_0206f46c(long_double_num, conv_buff + MAX_BUFF, format)))
+                goto invalid_conversion;
+            n = (unsigned char *)&conv_buff[MAX_BUFF - 1] - buff_ptr;
+            break;
+
+        case 's':
+            if (format.argument_options == wchar_argument) {
+                unsigned short *ws = *(unsigned short **)((arg += sizeof(void *)) - sizeof(void *));
+                if (ws == 0)
+                    ws = data_0209a5e4;
+                if ((int)func_0206e184(conv_buff, ws, MAX_BUFF) < 0)
+                    goto invalid_conversion;
+                buff_ptr = (unsigned char *)conv_buff;
+            } else {
+                buff_ptr = *(unsigned char **)((arg += sizeof(void *)) - sizeof(void *));
+            }
+            if (buff_ptr == 0)
+                buff_ptr = (unsigned char *)data_0209a5e8;
+            if (format.alternate_form) {
+                n = *buff_ptr++;
+                if (format.precision_specified && n > format.precision)
+                    n = format.precision;
+            } else if (format.precision_specified) {
+                unsigned char *e;
+                n = format.precision;
+                if ((e = (unsigned char *)func_0206e2cc((u8 *)buff_ptr, 0, n)) != 0)
+                    n = e - buff_ptr;
+            } else {
+                n = _ZN4cstd6strlenEPKc((const char *)buff_ptr);
+            }
+            break;
+
+        case 'n': {
+            void *p = *(void **)((arg += sizeof(void *)) - sizeof(void *));
+            switch (format.argument_options) {
+            case normal_argument:
+                *(int *)p = num_chars;
+                break;
+            case short_argument:
+                *(short *)p = num_chars;
+                break;
+            case long_argument:
+                *(long *)p = num_chars;
+                break;
+            case long_long_argument:
+                *(long long *)p = num_chars;
+                break;
+            }
+            continue;
+        }
+
+        case 'c':
+            conv_buff[0] = (char)*(int *)((arg += sizeof(int)) - sizeof(int));
+            buff_ptr = (unsigned char *)conv_buff;
+            n = 1;
+            break;
+
+        case '%':
+            conv_buff[0] = '%';
+            buff_ptr = (unsigned char *)conv_buff;
+            n = 1;
+            break;
+
+        case 0xFF:
+        default:
+        invalid_conversion:
+            num_chars += (n = _ZN4cstd6strlenEPKc((const char *)curr_format));
+            if (n && !(*WriteProc)(WriteProcArg, (const char *)curr_format, n))
+                return -1;
+            return num_chars;
+        }
+
+        chars_written = n;
+
+        if (format.justification_options != left_justification) {
+            fill_char = (format.justification_options == zero_fill) ? '0' : ' ';
+
+            if ((*buff_ptr == '+' || *buff_ptr == '-' || *buff_ptr == ' ') && fill_char == '0') {
+                if (!(*WriteProc)(WriteProcArg, (const char *)buff_ptr, 1))
+                    return -1;
+                buff_ptr++;
+                n--;
+            }
+
+            while (chars_written < format.field_width) {
+                if (!(*WriteProc)(WriteProcArg, (const char *)&fill_char, 1))
+                    return -1;
+                chars_written++;
+            }
+        }
+
+        if (n && !(*WriteProc)(WriteProcArg, (const char *)buff_ptr, n))
+            return -1;
+
+        if (format.justification_options == left_justification) {
+            while (chars_written < format.field_width) {
+                blank = ' ';
+                if (!(*WriteProc)(WriteProcArg, &blank, 1))
+                    return -1;
+                chars_written++;
+            }
+        }
+
+        num_chars += chars_written;
+    }
+
+    return num_chars;
 }
 #pragma pop
 }

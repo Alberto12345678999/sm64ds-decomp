@@ -7,7 +7,7 @@
   "no_codegen_trick",
   "no_mangled_refs"
  ],
- "count": 3523,
+ "count": 3521,
  "converted": [
   "src/ARMMathLoadState.c",
   "src/ARMMathSaveState.c",
@@ -2224,8 +2224,6 @@
   "src/actors/daYurei_Mucho_c.cpp#_ZN15daYurei_Mucho_cD0Ev",
   "src/actors/daYurei_Mucho_c.cpp#_ZN15daYurei_Mucho_cD1Ev",
   "src/actors/daYurei_Mucho_c.cpp#daYurei_Mucho_c_classInit",
-  "src/cstd4.cpp#_ZN4CP1514MPUDataRegion7Ej",
-  "src/cstd4.cpp#_ZN4CP1517MPUGetDataRegion7Ev",
   "src/cstd4.cpp#_ZN4cstd14__builtin_trapEv",
   "src/cstd4.cpp#_ZN4cstd3absEi",
   "src/d_s_boot.cpp#_ZN9dScBoot_cD0Ev",
