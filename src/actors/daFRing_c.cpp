@@ -1,18 +1,24 @@
 //cpp
-/* Production translation unit for ov060/daFRing_c.
- * 7 function(s), .text 0x02118cfc..0x02119264. daKpa_c's shockwave rings
- * (registry profile FIRERING).
+/* daFRing_c: Bowser's shockwave rings (FIRERING), ov060.
  *
- * NAME: _ZTS9daFRing_c is "9daFRing_c" at ov060 0x0211ab08; _ZTI at 0x0211ab14
- * reads [__si_class_type_info, that string, _ZTI8dActor_c]. The tree
- * previously called the class BowserShockwaves (coined).
- *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02118cfc), D0
- * (0x02118d64), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is
- * ROM-ascending. The registry factory daFRing_c_classInit (0x021191f4) is the
- * last function.
+ * _ZTS9daFRing_c at 0x0211ab08, _ZTI at 0x0211ab14 (base _ZTI8dActor_c).
+ * Out-of-line destructor is the key function: D1 0x02118cfc, D0 0x02118d64,
+ * then a deadstripped D2. .text 0x02118cfc..0x02119264 is ROM-ascending
+ * under defer_codegen off. daFRing_c_classInit is last. Was BowserShockwaves.
+ */
+/* leftovers:
+ * - ModelAnim::SetAnim, TextureSequence::SetFile, MaterialChanger::SetFile
+ *   and TextureTransformer::SetFile stay mangled. Each takes Fix12<int> by
+ *   value; the member spelling spills the 0x1000 and InitResources stops
+ *   matching.
+ * - data_ov060_0211b208 / 0211b1f8 / 0211b200 are the model, animation and
+ *   texture-sequence handles. SharedFilePtr has no fields, so LoadFile takes
+ *   the handle and SetAnim / Prepare read words[1].
+ * - data_ov048_021115e4 / 021115f4 are the BMA and BTA this TU's
+ *   MaterialChanger::Prepare and TextureTransformer::Prepare load. They sit
+ *   in the level overlay; only ov048 has an animation record at both words.
+ * - (Vector3 *)&mPosX and &player->mPosX: dActor_c has no Pos().
+ * - func_02016b24 is the unnamed model-mask call in InitResources.
  */
 
 #pragma defer_codegen off
@@ -49,14 +55,6 @@ extern FRingTexSequenceFilePtr data_ov060_0211b200;
 extern FRingModelFilePtr data_ov060_0211b208;
 
 extern "C" {
-/* The ring's material and texture animations live in the level overlay, not
- * in ov060. ov060 relocs.txt lists the two literals at 0x021191ec/0x021191f0
- * as ambiguous between ~20 level overlays; tools/overlay_residency.py narrows
- * them to the three daKpa_c fights (ov044/ov046/ov048). Only ov048 holds an
- * animation record at both addresses: a frame count of 0x64 followed by
- * pointers ov048 relocates into its own data (ov048 relocs.txt, from
- * 0x021115e8..0x02111608). ov044's words there sit inside
- * g_profile_KB1_BILLBOARD, and ov046's carry no relocations. */
 extern BMA_File data_ov048_021115e4;
 extern BTA_File data_ov048_021115f4;
 void func_02016b24(void *model, unsigned int mask);
@@ -175,16 +173,7 @@ FRingModelFilePtr data_ov060_0211b208(0x384);
 FRingAnimationFileHandle data_ov060_0211b1f8(0x383);
 FRingTexSequenceFilePtr data_ov060_0211b200(0x385);
 
-/* recovered: vtable identified, globals resolved */
-/* Reconstructed source-style name: SM64DS proves daFRing_c through RTTI,
- * allocation size, vtable identity, and the FIRERING registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: BowserShockwaves_Spawn.
- *
- * `new daFRing_c` is the whole sequence the loose factory spelled by hand:
- * fBase_c::operator new(0x218), dActor_c's base constructor, the vptr store,
- * then the eight member constructors (two ModelAnim / TextureSequence /
- * MaterialChanger / TextureTransformer sets) in declaration order. */
+/* return new builds the ring and its eight animators. */
 // @symbol daFRing_c_classInit
 extern "C" daFRing_c *daFRing_c_classInit(void)
 {

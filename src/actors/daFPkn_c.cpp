@@ -15,21 +15,19 @@
  * are defeated.
  *
  * `#pragma defer_codegen off` is load-bearing: the destructor defined
- * first emits D1 then D0 in parse order, as the cartridge has them
- * (deferred codegen reorders the pair). The out-of-line destructor is
- * also the key function, so this object owns _ZTV8daFPkn_c and the RTTI
- * chain.
- *
- * Leftover, remeasured on this TU:
+ * first emits D1 then D0 in parse order, as the cartridge has them.
+ * That destructor is the key function, so this object owns its vtable
+ * and RTTI.
+ */
+/* leftovers:
  * - ModelAnim::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init,
  *   Particle::System::New, dActor_c::SpawnFireball / SpawnCoins and
- *   Player::Hurt / Bounce are called by their mangled names. Each carries
- *   a Fix12<int> by value and the member spelling DIFFs.
- * - The int cmp / isFirepakun / inYoshiMouth locals and the gotos in
- *   CheckClsnHits, StateGrow and StateSpit are kept; each site names the
- *   direct spelling that DIFFs.
- * - The mFlags bit 0x10000000 and the sound ids stay numeric, named only
- *   by where they are used.
+ *   Player::Hurt / Bounce stay mangled. Each takes Fix12<int> by value
+ *   and the member spelling of those calls stops matching.
+ * - CheckClsnHits, StateGrow and StateSpit keep their int locals and
+ *   gotos. The direct spelling at each of those sites stops matching.
+ * - mFlags bit 0x10000000 and the sound ids stay numeric. They are named
+ *   by the site that uses them; no flag or sound table gives them a name.
  */
 
 #include "common.h"

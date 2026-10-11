@@ -1,65 +1,33 @@
 //cpp
-/* daIbl_c -- the rolling iron ball (registry profile IRONBALL).
+/* daIbl_c: the rolling iron ball (IRONBALL), ov100.
  *
- * param1's low nibble picks the kind (mVariant, see daIbl_Kind in
- * daIbl_c.h), and Behavior runs that kind's handler out of the
- * pointer-to-member table at data_ov100_0214867c, which the startup code
- * fills as { func_ov100_02142b90, func_ov100_02142918, func_ov100_021424c0,
- * func_ov100_0214272c, func_ov100_021424c0 }:
+ * param1's low nibble is mVariant. Behavior runs that kind's handler:
+ * 0 spawner, 1 free roll, 2 path (slope speed), 3 off-path (breaks at
+ * mKillY), 4 path (ramps to the cap). Positions and speeds are 20.12;
+ * angles are 0x10000 per turn; model and shadow matrices take pos >> 3.
  *
- *   0  func_ov100_02142b90  spawner: makes more balls on a timer
- *   1  func_ov100_02142918  free-rolling ball
- *   2  func_ov100_021424c0  path follower, speed follows the slope
- *   3  func_ov100_0214272c  ball that has left its path; breaks at mKillY
- *   4  func_ov100_021424c0  path follower, speed ramps to the cap
- *
- * func_ov100_0214233c steps along the path for the followers.
- * func_ov100_02141fb0 is the shared contact check, func_ov100_02142130 the
- * shared wall and floor probe, func_ov100_02142264 the per-frame model and
- * shadow matrices.
- *
- * Units, for the numbers below: positions and speeds are 20.12 fixed point
- * (0x1000 = 1 unit, 0x1000 per frame = 1 unit per frame); angles are 16 bit
- * (0x10000 = a full turn, 0x4000 = a quarter turn); model and shadow matrices
- * take a position >> 3.
- *
- * This file is the whole linker unit 0x02141f04..0x021431c4, 16 functions:
- * D1 and D0 (daBtfly_c_classInit, the last function of
- * src/actors/daBtfly_c.cpp, ends exactly at 0x02141f04 below them),
- * OnAimedAtWithEgg, the eight helpers func_ov100_02141fb0 through
- * func_ov100_02142b90, CleanupResources, Render, Behavior, InitResources,
- * and last the registry factory daIbl_c_classInit (0x0214316c);
- * daWanwan2_c's D1 starts exactly at 0x021431c4 above it. The out-of-line
- * destructor is the key function, so this TU also emits the vtable and the
- * RTTI.
- *
- * It replaces the one-function sources for _ZN7daIbl_cD1Ev,
- * _ZN7daIbl_cD0Ev, _ZN7daIbl_c16OnAimedAtWithEggEv, func_ov100_02141fb0 ..
- * func_ov100_02142b90, _ZN7daIbl_c16CleanupResourcesEv,
- * _ZN7daIbl_c6RenderEv, _ZN7daIbl_c8BehaviorEv,
- * _ZN7daIbl_c13InitResourcesEv and daIbl_c_classInit. Each member keeps the
- * provenance notes its source carried.
- *
- * `#pragma defer_codegen off` keeps this file in ROM order.
- *
- * Leftover: the eight helpers are members but keep their func_ov100_*
- *   address names; the real names are not recovered. Behavior's dispatch
- *   reads the two-word pointer-to-member records by hand because the table
- *   at data_ov100_0214867c is .bss the startup code fills.
- * Leftover: the callees with Fix12<int> parameters (Particle::System,
- *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drop, Player::Hurt) stay
- *   spelled as mangled extern-C free functions. A real method call homes
- *   a class-typed by-value argument and size-DIFFs the caller
- *   (notes/mwccarm-codegen.md 6az).
- * Leftover: "sublevel" below is shorthand for the signed byte at data_0209f2f8
- *   (symbols/verified.tsv calls it LEVEL_ID). Its numbers tested here (6, 0x16,
- *   0x18, 0x19) have no level names in this tree, and neither do the
- *   per-level distances, speeds and kill heights chosen from them.
- * Leftover: func_020383f0 and func_02038414, which the probe picks between by
- *   sublevel, are unidentified. func_02012694 is known to be a bank-3
- *   Sound::Play wrapper (sound ID, position); only its name is unrecovered.
- * Leftover: Behavior's pointer-to-member dispatch and InitResources's param1
- *   shift keep the spellings the byte match depends on.
+ * .text 0x02141f04..0x021431c4, between daBtfly_c_classInit and
+ * daWanwan2_c's D1. Out-of-line destructor is the key function (D1
+ * 0x02141f04, D0 0x02141f4c), so this TU emits the vtable and RTTI.
+ * ROM-ascending under defer_codegen off. Factory daIbl_c_classInit
+ * at 0x0214316c.
+ */
+/* leftovers:
+ * - The eight helpers stay func_ov100_02141fb0 .. 02142b90. Behavior
+ *   reads data_ov100_0214867c by hand: the table is .bss the startup
+ *   code fills with two-word pointer-to-member records.
+ * - Particle::System::NewSimple, dCcAc_c::Init, dBgCh_Actr::Init,
+ *   DropShadowRadHeight and Player::Hurt stay mangled. Each takes
+ *   Fix12<int> by value and the member call changes the caller's size.
+ * - data_0209f2f8 is the level id (a signed byte). The tests 6, 0x16,
+ *   0x18 and 0x19 have no level names here, and neither do the distances,
+ *   speeds and kill heights chosen from them.
+ * - func_020383f0 and func_02038414 are the two probes picked by that
+ *   level id. func_02012694 plays a bank-3 sound at a position.
+ * - unk_0a4 / unk_0ac stay. They are the base world-velocity X/Z this
+ *   TU adds the floor normal into. dActor_c.h still spells them unk_.
+ * - Behavior's dispatch and InitResources' param1 shift keep the
+ *   spellings the bytes need.
  */
 
 #pragma defer_codegen off
@@ -185,25 +153,10 @@ extern s16 data_02082214[];
 extern char data_ov100_02148668;
 extern struct VtEntry data_ov100_0214867c[];
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0 and 1 -- _ZN7daIbl_cD1Ev, 0x02141f04, size 0x48;
- *                         _ZN7daIbl_cD0Ev, 0x02141f4c, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_cD1Ev
 // @symbol _ZN7daIbl_cD0Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body.
- *
- * D1 is one vtable store and five destructor calls, every one a consequence
- * of `struct daIbl_c : dEnemyBase_c` and the members that declaration types:
- * its own vptr, then dCcAc_c (0x374), dExtShadowModel_c (0x31c), Model (0x2cc),
- * dBgCh_Actr (0x110) in reverse declaration order, then
- * dEnemyBase_c::~dEnemyBase_c. D0 is the deleting destructor: the same
- * teardown, then an inline operator delete -- dEnemyBase_c's, reached
- * because dEnemyBase_c is this class's immediate base.
- *
- * This body is the evidence for the header. It was the hand-written C that
- * named those offsets in the first place, and daIbl_c_classInit constructs
- * the same types at the same offsets. */
+/* D1 tears the members down in reverse declaration order, then the
+ * dEnemyBase_c base. D0 is that teardown plus the base operator delete. */
 daIbl_c::~daIbl_c()
 {
 }
@@ -222,22 +175,14 @@ extern "C" daIbl_c *_ZN7daIbl_cD0Ev(daIbl_c *thiz)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN7daIbl_c16OnAimedAtWithEggEv, 0x02141fa8, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c16OnAimedAtWithEggEv
-/* recovered from vtable slot identity (slot 29); historical alias
-   RollingIronBall_OnAimedAtWithEgg.
-   Returns 532480 = 0x82000 = 130 units. func_ov100_02141fb0 adds it to the
-   ball's Y before handing the ball to KillByInvincibleChar. */
+/* Returns 0x82000 (130 units). func_ov100_02141fb0 adds it to the ball's Y
+ * before KillByInvincibleChar. */
 s32 daIbl_c::OnAimedAtWithEgg()
 {
     return 532480;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov100_02141fb0, 0x02141fb0, size 0x180 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_02141fb0Ev
 /* Contact check, shared by every handler. mdCcAc_c.otherOwner is the uniqueID
    of the actor that touched the ball; when that is a Player (actor 191) who is
@@ -298,9 +243,6 @@ void daIbl_c::func_ov100_02141fb0()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov100_02142130, 0x02142130, size 0x134 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_02142130Ev
 /* The wall and floor probe. mHitWall is cleared, the collision object is
    updated (sublevel 0x19 runs func_020383f0, every other sublevel
@@ -334,9 +276,6 @@ void daIbl_c::func_ov100_02142130()
     mVertSpeed = -(_ZN4cstd4fdivEii(s, mFloorNormalY) + 0x8000);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov100_02142264, 0x02142264, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_02142264Ev
 /* Per-frame model and shadow matrices. The model matrix is the identity with
    its translation set to mPos >> 3 (the ball's position in model units). It
@@ -363,9 +302,6 @@ void daIbl_c::func_ov100_02142264()
         this, &mShadowModel, mShadowMtx, mDrawScaleX * 0xc8, k * mDrawScaleX, 0xf);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov100_0214233c, 0x0214233c, size 0x184 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_0214233cEv
 /* Path-node advance. mNextNodePos is the node the ball is heading for and
  * mPrevNodePos the one it last passed. Stores the atan2 heading to the node
@@ -480,9 +416,6 @@ int daIbl_c::func_ov100_0214233c()
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov100_021424c0, 0x021424c0, size 0x26c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_021424c0Ev
 /* Kinds 2 and 4, the path followers. First the knock-away death that
  * KillByInvincibleChar starts: func_ov002_020ad660 (a sibling of
@@ -576,9 +509,6 @@ int daIbl_c::func_ov100_021424c0()
     return _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov100_0214272c, 0x0214272c, size 0x1ec */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_0214272cEv
 /* Kind 3, the ball that has left its path. After the knock-away death step
    (see func_ov100_021424c0) and the contact check, it breaks up in a triple
@@ -670,9 +600,6 @@ ground:
     _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov100_02142918, 0x02142918, size 0x278 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_02142918Ev
 /* Kind 1, the free-rolling ball: after the knock-away death step and the
    contact check (a mDeathState of 8 ends the handler), it bounces off walls
@@ -761,9 +688,6 @@ Lend:
     _ZN5dCc_c6UpdateEv(&mdCcAc_c);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov100_02142b90, 0x02142b90, size 0x18c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c19func_ov100_02142b90Ev
 /* Kind 0, the spawner. mStateTimer is its countdown. When it is zero, and the
    spawner has fewer than 3 balls out in sublevel 6 or 6 elsewhere
@@ -834,9 +758,6 @@ void daIbl_c::func_ov100_02142b90()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN7daIbl_c16CleanupResourcesEv, 0x02142d1c, size 0x40 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c16CleanupResourcesEv
 /* Gives a spawner's slot back: a ball made by a spawner holds it in
    mDispenser, and its count of balls out drops by one. Then the model file
@@ -853,9 +774,6 @@ int daIbl_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN7daIbl_c6RenderEv, 0x02142d5c, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c6RenderEv
 /* Draws the model with mDrawScale, except kind 0, the spawner, which has
    nothing to draw. */
@@ -869,9 +787,6 @@ int daIbl_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN7daIbl_c8BehaviorEv, 0x02142d98, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c8BehaviorEv
 /* Calls the pointer-to-member handler for this ball's kind from the table at
    data_ov100_0214867c, on this actor. */
@@ -891,9 +806,6 @@ int daIbl_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- _ZN7daIbl_c13InitResourcesEv, 0x02142de0, size 0x38c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN7daIbl_c13InitResourcesEv
 /* Byte-matches under the pinned 2004/b56, 0x38c for 0x38c, relocation
    destinations checked. It did not until the param1 shift below was respelt;
@@ -1038,19 +950,8 @@ end:
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- daIbl_c_classInit, 0x0214316c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol daIbl_c_classInit
-/* recovered: vtable identified, globals resolved */
-/* Reconstructed source-style name: SM64DS proves daIbl_c through RTTI,
- * allocation size, vtable identity, and the IRONBALL registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: RollingIronBall_Spawn.
- *
- * `new daIbl_c` is the whole sequence the loose factory spelled by hand:
- * fBase_c::operator new(0x3fc), dEnemyBase_c's base constructor, the vptr
- * store, then the five member constructors in declaration order. */
+/* return new builds the ball and its five members. */
 extern "C" daIbl_c *daIbl_c_classInit(void)
 {
     return new daIbl_c;
