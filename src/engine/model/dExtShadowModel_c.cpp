@@ -13,6 +13,23 @@
  * (0x0208e770/0x0208e888), but no data section is enrolled for this TU to
  * own them, so this TU compiles with RTTI off (see below), and no enrolled D2 or C2;
  * those variants are licensed compiler-only in the manifest.
+ *
+ * leftovers:
+ * - RTTI stays off: the cartridge's _ZTI/_ZTS records sit in data this TU
+ *   does not own.
+ * - The two BMD_File externs use data_ov000_ spellings: arm9's own
+ *   symbols.txt rows for 0x020ad524/0x020ad560 name nothing the link
+ *   defines.
+ * - func_02016e70, func_0203c178, MulMat4x3Mat4x3, func_02046120,
+ *   func_02046088 and the list-head/render-matrix globals have no
+ *   declaring header.
+ * - InitModel keeps its C-front-end body: the real signature carries
+ *   three Fix12<int> by value and the member form homes them to the
+ *   stack (wall 6az); the (char*) launders inside are the scalar
+ *   spellings that keep the bytes.
+ * - *(u32 *)(&mat->flags) and the +0x30 byte stride in DoSetFile's
+ *   material loop keep the ROM's materialized addresses.
+ * - CleanAll re-reads the list head for each store the way the ROM does.
  */
 
 #include "dExtShadowModel_c.h"
