@@ -1,11 +1,12 @@
 //cpp
-/* arm9/OAM -- the sprite/OAM manager. 0x02020884..0x02021a04, 12 members.
+/* arm9/OAM -- the sprite/OAM manager. 0x02020820..0x02021a04, 13 functions.
  *
  * OAM is not polymorphic (no RTTI, no vtable, no ctor/dtor -- include/OAM.h):
  * every member is static and the two OAM staging buffers are file-scope bss,
  * so the key-function/vtable partition rules never engage. The run is
- * contiguous and exhaustive: bounded below by func_02020820 and above by
- * Particle::SysTracker::Contents::Unlink.
+ * contiguous and exhaustive: bounded below by func_02020768 and above by
+ * Particle::SysTracker::Contents::Unlink. The OamAttr field initializer
+ * func_02020820 opens the run under its own address name.
  *
  * Two Render overloads stay `extern "C"` free functions -- the by-value
  * Fix12<int> scale/rotation parameters are on the by-value-class wall
@@ -100,6 +101,29 @@ void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
     int sub, OamAttr *data, s32 x, s32 y,
     s32 palette, s32 priority, s32 scaleX, s32 scaleY,
     s32 rotation, s32 mode);
+int func_0202043c(int thiz);
+}
+
+/* -------------------------------------------------------------------------- */
+extern "C" {
+
+/* @symbol func_02020820 */
+void func_02020820(char *self, int *src, int arg2, int arg3, u8 arg5, u8 arg6)
+{
+    *(int *)(self + 0) = src[0];
+    *(int *)(self + 0x10) = src[1];
+    func_0202043c((int)self);
+    *(signed char *)(self + 0x22) = -1;
+    *(signed char *)(self + 0x23) = -1;
+    *(int *)(self + 8) = 0x1000;
+    *(int *)(self + 0xc) = 0x1000;
+    *(short *)(self + 0x20) = 0;
+    *(u8 *)(self + 0x24) = (u8)arg3;
+    *(u8 *)(self + 0x25) = (u8)arg5;
+    *(u8 *)(self + 0x26) = (u8)arg6;
+    *(int *)(self + 0x28) = arg2;
+}
+
 }
 
 /* -------------------------------------------------------------------------- */
