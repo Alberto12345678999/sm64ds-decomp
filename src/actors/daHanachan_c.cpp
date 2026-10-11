@@ -1,37 +1,24 @@
 //cpp
-/* daHanachan_c: the Wiggler (ov034, registry profile HANACHAN). 35 functions,
- * .text 0x021111a0..0x02113820: D1, D0, four virtual methods, 28
- * non-virtual members (22 state functions, SetState, ExecState and four
- * helpers) and the factory. The run is gap-free and this is the only class
- * in it.
+/* daHanachan_c: the Wiggler (HANACHAN), ov034. Was coined Wiggler.
  *
- * ROM evidence: _ZTS12daHanachan_c is "12daHanachan_c" at ov034 0x02114478;
- * _ZTI at 0x0211445c reads [__si_class_type_info, that string,
- * _ZTI12dEnemyBase_c]. The vtable's address point is 0x021144bc; the word
- * before it (0x021144b8) is that _ZTI. The tree previously called the class
- * Wiggler (coined).
- *
- * #pragma defer_codegen off emits .text in source order, so the file is
- * ROM-ascending. One out-of-line destructor is the key function, so this TU
- * emits _ZTV, _ZTI and _ZTS: D1 (0x021111a0), D0 (0x021112b0), then a D2 the
- * cartridge has no home for (manifest: deadstrip). The registry factory
- * daHanachan_c_classInit (0x021136a4) closes the unit and ov034's .text.
- *
- * Leftover: indexing the segment fields instead of the row pointers DIFFs.
- * StateDemoWaitInit as mSegmentPos[seg] / mSegmentRot[seg]: 47 words, size
- * stays 0x134. UpdateSegments indexed the same way: size 0x178 grows to
- * 0x18c. UpdateSegments with &mSegmentPos[seg - 1] in place of
- * (char *)&mSegmentPos[0] + (seg - 1) * 0xc: size 0x178 grows to 0x180 and
- * the NormalizeVec3IfNonZero relocation moves. UpdateSegmentModels with
- * &mModelAnims[i].mat4x3: 2 words (add r6, r8, #0x110 / add r0, r6, #0x1c
- * become add r6, r8, #0x12c / mov r0, r6). Dropping that function's rot
- * induction and keeping only the model walk: 2 words, add r8, #6 and
- * add r6, #0x64 swap. InitResources with the row pointers removed: 152
- * words. The pointers stay; the stores name the member off that base.
- * data_0209f318 + 0x154 and camera + 0x80 / + 0x8c (func_020092c4) are not
- * daHanachan_c fields. SharedFilePtr has no fields, so the loaded file
- * stays the word at +4. func_ov002_020c51d0 is ov002. Fix12 by-value calls
- * stay the mangled bridges. The factory is still not `new` (comment there).
+ * _ZTS12daHanachan_c at 0x02114478, _ZTI at 0x0211445c (base
+ * _ZTI12dEnemyBase_c). Vtable address point 0x021144bc. Out-of-line
+ * destructor is the key function: D1 0x021111a0, D0 0x021112b0, then a
+ * deadstripped D2. .text 0x021111a0..0x02113820, ROM-ascending under
+ * defer_codegen off. daHanachan_c_classInit closes ov034's .text.
+ */
+/* leftovers:
+ * - StateDemoWaitInit, UpdateSegments, UpdateSegmentModels and
+ *   InitResources walk segment rows through char* bases. Indexing
+ *   mSegmentPos[seg] / &mModelAnims[i].mat4x3 changes those sizes, and
+ *   UpdateSegments' NormalizeVec3IfNonZero relocation moves with them.
+ * - data_0209f318 + 0x154 and the camera words func_020092c4 takes at
+ *   +0x80 / +0x8c are not this class's fields.
+ * - SharedFilePtr has no fields, so the loaded BCA/BTP stays the word at +4.
+ * - func_ov002_020c51d0 is ov002's. ModelAnim::SetAnim, TextureSequence::SetFile,
+ *   dCcAcPos_c::Init, dBgCh_Actr::Init, Player::Hurt and Particle::System::New
+ *   stay mangled (Fix12<int> by value).
+ * - The factory is still not `return new` (see its comment).
  */
 
 #pragma defer_codegen off
