@@ -1,16 +1,17 @@
 //cpp
 /* ModelComponents -- the bone/skeleton half of a loaded model (transforms at
- * +0x0c rebuilt from the BMD bone list), arm9 0x02044dc4..0x0204547c,
- * 10 functions: UpdateVertsUsingBones, UpdateBones, func_020453c0 + 7 helpers.
+ * +0x0c rebuilt from the BMD bone list), arm9 0x020443c8..0x0204547c,
+ * 14 functions: Render, func_02044534/0204488c/02044b30, UpdateVertsUsingBones,
+ * UpdateBones, func_020453c0 + 10 helpers.
  * The file takes the class name already used in the tree (include/ModelBase.h),
  * per Juan 2026-10-11.
  *
- * SCOPE: func_02044b30.c below is not complete, so Render (0x020443c8) and the
- * helpers under it stay out. func_020453c0 is the bone-tree walk UpdateBones
- * forwards to. Next above is func_0204547c.c, a Model leftover, and it stays out.
+ * SCOPE: func_02044334 above Render stays out (a different object, PURE-C).
+ * func_020453c0 is the bone-tree walk UpdateBones forwards to. Next above is
+ * func_0204547c.c, a Model leftover, and it stays out.
  *
  * mwccarm emits .text in reverse source order here, so definitions run from
- * the highest address (func_020453c0) down to the lowest (func_02044dc4).
+ * the highest address (func_020453c0) down to the lowest (Render).
  * Descending order defines every in-span callee before its callers, so only
  * out-of-span callees need extern declarations.
  *
@@ -20,10 +21,29 @@
  * touches f0/f8/fa/fc, so every accessed offset is identical. The
  * func_02044efc Matrix4x3 typedef is dropped for include/ModelBase.h's; both
  * bodies use it opaquely through pointers. No helper is promoted: none has
- * ROM method evidence, so all seven stay extern "C" under their existing
+ * ROM method evidence, so all eleven stay extern "C" under their existing
  * names. func_0204531c's UpdateVertsUsingBones call is spelled as the member
  * it is (ModelBase.h); the mangled extern the shard used would be a new
  * local redeclaration of a header member.
+ *
+ * Leftovers, all measured byte-neutral by tubuild verify:
+ * - Render is the member ModelBase.h declares; info/modules reach modelFile/
+ *   materials through casts (the header models the BMD half, and Info/
+ *   ModuleEntry are its render-half views at the same offsets). RenderNode is
+ *   the shard's Node renamed: the bone-record Node already lives here.
+ * - MeshPart/MeshEntry are func_02044534's Part/Entry renamed: func_0204488c's
+ *   same-named records differ. Vec3w is the array view for the ROM's ldm-shaped
+ *   3-word copy (the Player P2w precedent); the scalar spelling scalarizes.
+ * - func_02044534/0204488c keep their local Mtx43/Vec3 spellings (common.h's
+ *   Matrix4x3 is a flat m[12] with no r0..r3 rows), so Render's calls and the
+ *   three MulMat4x3Mat4x3 sites carry reinterpret casts that emit no code.
+ * - func_02044b30's buf[] is block-copied from data_02099f94 (the ROM's
+ *   +0x284 load relocates against the table, so an init-list's anonymous
+ *   .rodata would be a WRONG-DEST); the void*+int site takes the char* cast
+ *   C++ requires.
+ * - Render calls func_02044b30 through a one-word function-pointer cast: the
+ *   definition takes (obj, idx) while this site passes only the object and the
+ *   extra register rides along.
  */
 #include "ModelBase.h"
 #include "types.h"
@@ -74,6 +94,42 @@ struct G {
     int fc;
 };
 
+typedef struct Vec3 { int x, y, z; } Vec3;
+typedef struct Mtx43 { Vec3 r0, r1, r2, r3; } Mtx43;
+typedef struct Vec3w { int w[3]; } Vec3w;
+struct Buf8 { s16 v[8]; };
+struct MeshPart {
+    int count;
+    unsigned char* ids;
+    int f8;
+    int fc;
+};
+struct MeshEntry {
+    int count;
+    struct MeshPart* part;
+};
+struct Matrix3x3_Vecs { struct Vector3 v0, v1, v2; };
+struct RenderNode {
+    u8 pad[0x30];
+    u16 innerCount;
+    u8 pad2[2];
+    u8* arrA;
+    u8* arrB;
+    u16 flags;
+    u8 pad3[2];
+};
+struct RenderInfo {
+    u8 field0;
+    u8 pad[3];
+    u32 count;
+    struct RenderNode* nodes;
+};
+struct RenderModule {
+    u8 pad[0x24];
+    u32 flags;
+    u8 pad2[8];
+};
+
 extern "C" {
 void Matrix4x3_LoadIdentity(Matrix4x3 *mat);
 int InvMat4x3(int *a, int *b);
@@ -84,6 +140,29 @@ void func_02047218(void *a, void *b, void *out, int c);
 void func_02047910(int *m0, int *m1, int *dst, int t);
 void func_0204547c(int *a, int b, int c, void *elem);
 extern s16 data_02082214[];
+void func_020527e8(Mtx43 *m, int x, int y, int z);
+void NormalizeVec3(Vec3 *a, Vec3 *b);
+void func_020458a8(void *src, void *dst);
+void Geometry_MatrixMultiply3x3(void *m);
+void func_0205a358(int a0, int a1, int a2, int a3, int a4);
+void func_02059fa8(int ch);
+extern Vec3 data_02099f88;
+extern u32 data_020a4bd4;
+extern int data_02082190;
+extern void *data_020a4bd0;
+extern u8 data_020a4bbc;
+extern u16 data_02099f94[8];
+extern s16 data_020a4bc0;
+extern s16 data_020a4bc4;
+void func_020553a4(void *m);
+void func_02055388(void *m);
+void MulMat3x3Mat3x3(void *a, void *b, void *dst);
+void func_02052514(void *a, void *b);
+void func_02055998(int *n);
+void func_01ffde98(int a, int b, int c);
+void func_02044b30(char *obj, int idx);
+void func_02044534(char *self, int index, Mtx43 *mtx, Vec3 *light);
+void func_0204488c(char *self, int index, int *color);
 }
 
 // @symbol func_020453c0
@@ -298,4 +377,371 @@ void func_02044dc4(struct Self *self) {
         r7 += 0x30;
     }
 }
+}
+
+// @symbol func_02044b30
+extern "C" {
+void func_02044b30(char *obj, int idx)
+{
+  char *m = (*((char **) (obj + 4))) + (idx * 0x30);
+  int new_var;
+  int texParam;
+  *((int *) 0x40004a4) = *((int *) (m + 0x24));
+  *((int *) 0x40004c0) = *((int *) (m + 0x28));
+  *((int *) 0x40004c4) = *((int *) (m + 0x2c));
+  *((int *) 0x40004ac) = *((int *) (m + 0x20));
+  texParam = *((int *) (m + 0x1c));
+  *((int *) 0x40004a8) = texParam;
+  data_020a4bbc = (u8) (((u32) texParam) >> 0x1e);
+  switch (data_020a4bbc)
+  {
+    case 1:
+    {
+      int mtx[12];
+      int A;
+      int B;
+      int C;
+      int D;
+      u16 elemFieldE;
+      u16 elemFieldC;
+      char *elem;
+      int m0;
+      u16 rawAngle;
+      int angle;
+      int k;
+      s16 sinVal;
+      s16 cosVal;
+      int D0;
+      int D1;
+      *((int *) 0x4000440) = 3;
+      rawAngle = *((u16 *) (m + 0x10));
+      m0 = *((volatile int *) m);
+      elem = (*((char **) ((char *)(*((void **) obj)) + 0x18))) + (m0 * 0x14);
+      angle = ((u16) (rawAngle << 4)) >> 4;
+      k = angle << 1;
+      sinVal = data_02082214[k];
+      cosVal = data_02082214[k + 1];
+      C = (int) ((((long long) (*((int *) (m + 0x8)))) * sinVal) >> 12);
+      B = (int) ((((long long) (*((int *) (m + 0x8)))) * cosVal) >> 12);
+      A = (int) ((((long long) (*((int *) (m + 0xc)))) * sinVal) >> 12);
+      D = (int) ((((long long) (*((int *) (m + 0xc)))) * cosVal) >> 12);
+      elemFieldE = *((u16 *) (elem + 0xe));
+      elemFieldC = *((u16 *) (elem + 0xc));
+      D0 = (A * (-((int) elemFieldE))) / elemFieldC;
+      new_var = (C * elemFieldC) / elemFieldE;
+      mtx[0] = B;
+      mtx[1] = D0;
+      mtx[2] = 0;
+      D1 = new_var;
+      mtx[3] = D1;
+      mtx[4] = D;
+      mtx[5] = 0;
+      mtx[6] = 0;
+      mtx[7] = 0;
+      mtx[8] = 0;
+      mtx[9] = ((elemFieldC * ((*((int *) (m + 0x8))) - (C + B))) * 8) - (elemFieldC * ((int) ((((long long) (*((int *) (m + 0x8)))) * (*((int *) (m + 0x14)))) >> 8)));
+      mtx[10] = ((elemFieldE * (((A - D) - (*((int *) (m + 0xc)))) + 0x2000)) * 8) + (elemFieldE * ((int) ((((long long) (*((int *) (m + 0xc)))) * (*((int *) (m + 0x18)))) >> 8)));
+      mtx[11] = 0;
+      func_020553a4(mtx);
+    }
+      break;
+
+    case 2:
+    {
+      /* The texture-size template {4,8,16,32,64,128,256,512} (4 << i) is
+         block-copied from data_02099f94: the ROM's load at +0x284 relocates
+         against the table itself, so an init-list (anonymous .rodata) would be
+         a WRONG-DEST. The struct assignment keeps the ROM's block-copy shape. */
+      s16 buf[8];
+      *(struct Buf8 *)buf = *(const struct Buf8 *)data_02099f94;
+      int idx1;
+      int idx2;
+      s16 sa;
+      s16 sb_;
+      idx1 = (((u32) texParam) >> 0x17) & 7;
+      idx2 = (((u32) texParam) >> 0x14) & 7;
+      data_020a4bc0 = ((s16 *) buf)[idx2];
+      data_020a4bc4 = (s16) (-((s16 *) buf)[idx1]);
+      sa = (s16) ((*((int *) (m + 0x14))) >> 8);
+      sb_ = (s16) ((*((int *) (m + 0x18))) >> 8);
+      *((int *) 0x4000488) = ((u16) sa) | (((u16) sb_) << 16);
+    }
+      break;
+
+  }
+
+}
+}
+
+// @symbol func_0204488c
+
+struct Part {
+    int count;
+    unsigned char* cmd;
+    int f8;
+    int fc;
+};
+struct Entry {
+    int count;
+    struct Part* parts;
+};
+
+extern "C" {
+void func_0204488c(char* self, int index, int* color)
+{
+    int M[9];
+    int N[16];
+    int i;
+    struct Part* part;
+    struct Entry* e;
+    int j;
+    int fp_index;
+    unsigned char* cmd;
+    void* partMtx;
+    void* lastMat;
+    volatile int* mtxScale;
+
+    e = &(*(struct Entry**)(*(char**)self + 0x10))[index];
+    part = e->parts;
+
+    mtxScale = (volatile int*)0x400046c;
+
+    for (i = 0; i < e->count; i++, part++) {
+        cmd = part->cmd;
+        for (j = 0; j < part->count; j++, cmd++) {
+            unsigned char b = *cmd;
+            int check;
+            if (b == 0xff)
+                continue;
+
+            fp_index = (*(unsigned short**)(*(char**)self + 0x2c))[b];
+            partMtx = (char*)*(void**)(self + 0xc) + fp_index * 0x30;
+
+            *(volatile int*)0x4000440 = 2;
+            *(volatile int*)0x4000454 = 0;
+            Geometry_MatrixMultiply3x3(data_020a4bd0);
+
+            check = *(unsigned short*)((char*)*(void**)(self + 8) + fp_index * 0x34 + 0x18);
+            if (check) {
+                func_020458a8((struct Matrix3x3_Vecs*)partMtx, (struct Matrix3x3_Vecs*)M);
+                Geometry_MatrixMultiply3x3(M);
+                lastMat = M;
+            } else {
+                Geometry_MatrixMultiply3x3(partMtx);
+                lastMat = partMtx;
+            }
+
+            *(volatile int*)0x4000440 = 1;
+            func_020553a4(data_020a4bd0);
+            if (color) {
+                int c2 = color[2];
+                int c1 = color[1];
+                int c0 = color[0];
+                *mtxScale = c0;
+                *mtxScale = c1;
+                *mtxScale = c2;
+            }
+            func_02055388(partMtx);
+            {
+                int white = data_020a4bd4;
+                *mtxScale = white;
+                *mtxScale = white;
+                *mtxScale = white;
+            }
+            *(volatile int*)0x400044c = j;
+        }
+
+        if (data_020a4bbc == 2) {
+            int sx;
+            int sy;
+            MulMat3x3Mat3x3(lastMat, data_020a4bd0, M);
+            func_02052514(M, N);
+            sx = data_020a4bc0;
+            N[0] = M[0] * sx;
+            N[4] = M[3] * sx;
+            N[8] = M[6] * sx;
+            sy = data_020a4bc4;
+            N[1] = M[1] * sy;
+            N[5] = M[4] * sy;
+            N[9] = M[7] * sy;
+            func_02055998(N);
+            *(volatile int*)0x400044c = 0;
+        }
+
+        func_01ffde98(3, part->fc, part->f8);
+    }
+}
+}
+
+#define FIXMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
+
+// @symbol func_02044534
+extern "C" {
+void func_02044534(char* self, int index, Mtx43* mtx, Vec3* light)
+{
+    int i;
+    struct MeshEntry* e;
+    int off;
+    int j0;
+    int z14;
+    int z18;
+    int z1c;
+    int z20;
+    int z24;
+    int two;
+    int z2c;
+    int z30;
+    int three;
+    Vec3 dirv;
+    Mtx43 mw;
+    Mtx43 m;
+    int out[9];
+    Vec3* dir;
+    struct MeshPart* part;
+    int j;
+    Mtx43* mp;
+    struct MeshEntry* base;
+    int cnt;
+    int t0;
+    char* obj;
+
+    dir = &dirv;
+    *(struct Vec3w *)&dirv = *(struct Vec3w *)&data_02099f88;
+    if (light)
+        dir = light;
+    obj = *(char**)self;
+    i = 0;
+    base = *(struct MeshEntry **)(obj + 0x10);
+    cnt = base[index].count;
+    e = base + index;
+    if (cnt <= 0)
+        return;
+
+    t0 = i;
+    z14 = t0;
+    z20 = t0;
+    z24 = t0;
+    z18 = t0;
+    z1c = t0;
+    two = 2;
+    t0 = i;
+    z2c = t0;
+    z30 = t0;
+    three = 3;
+    j0 = i;
+
+    do {
+        part = e->part;
+        j = j0;
+        if (part->count > 0) {
+            do {
+                unsigned char b = *(volatile unsigned char*)(part->ids + j);
+                int t;
+                int ix = *(volatile unsigned short*)((*(unsigned short**)(*(char**)self + 0x2c)) + b);
+                mp = *(Mtx43* volatile*)(self + 0xc) + ix;
+                off = ix * 0x30;
+                if (mtx) {
+                    func_020527e8(&mw, dir->x, dir->y, dir->z);
+                    MulMat4x3Mat4x3((const int *)&mw, (const int *)mtx, (int *)&mw);
+                    MulMat4x3Mat4x3((const int *)mp, (const int *)&mw, (int *)&mw);
+                    mp = &mw;
+                }
+                m.r2.y = m.r2.x = z14;
+                m.r2.z = dir->z;
+                m.r3.x = mp->r3.x;
+                m.r3.y = mp->r3.y;
+                m.r3.z = mp->r3.z;
+                if (mtx) {
+                    MulMat4x3Mat4x3((const int *)((*(char **)(self + 0xc)) + off), (const int *)mtx, (int *)&mw);
+                    mp = &mw;
+                }
+                if (mp->r1.x * mp->r1.x + mp->r1.y * mp->r1.y > 0x4000) {
+                    m.r1.x = mp->r1.x;
+                    m.r1.y = mp->r1.y;
+                    m.r1.z = z18;
+                    NormalizeVec3(&m.r1, &m.r1);
+                    t = FIXMUL(m.r1.x, dir->x);
+                    m.r1.x = t;
+                    { int dy = dir->y; int ry = m.r1.y;
+                    m.r0.y = -t;
+                    t = FIXMUL(ry, dy); }
+                    { int zz = z1c;
+                    m.r1.y = t;
+                    m.r0.x = t;
+                    m.r0.z = zz; }
+                } else {
+                    m.r0.x = mp->r0.x;
+                    m.r0.y = mp->r0.y;
+                    m.r0.z = z20;
+                    NormalizeVec3(&m.r0, &m.r0);
+                    m.r0.x = FIXMUL(m.r0.x, dir->x);
+                    t = FIXMUL(m.r0.y, dir->y);
+                    m.r1.y = m.r0.x;
+                    m.r1.x = -t;
+                    { int zz = z24;
+                    m.r0.y = t;
+                    m.r1.z = zz; }
+                }
+                func_020458a8(&m, out);
+                *(int*)0x4000440 = two;
+                *(int*)0x4000454 = z2c;
+                Geometry_MatrixMultiply3x3(out);
+                *(int*)0x4000440 = 1;
+                func_020553a4(&m);
+                {
+                    int v = 1 << (*(unsigned char*)*(char**)self + 12);
+                    *(int*)0x400046c = v;
+                    *(int*)0x400046c = v;
+                    *(int*)0x400046c = v;
+                }
+                *(int*)0x400044c = j;
+                j++;
+            } while (j < part->count);
+        }
+        { int a5 = z30; int a4 = z30;
+        func_0205a358(three, part->fc, part->f8, a4, a5); }
+        func_02059fa8(three);
+        i = i + 1;
+        cnt = e->count;
+    } while (i < cnt);
+}
+}
+
+// @symbol _ZN15ModelComponents6RenderEP9Matrix4x3P7Vector3
+void ModelComponents::Render(Matrix4x3 *mat, Vector3 *vec) {
+    data_020a4bd4 = 1u << (((RenderInfo *)modelFile)->field0 + 12);
+    if (!mat) {
+        data_020a4bd0 = &data_02082190;
+    } else {
+        data_020a4bd0 = mat;
+    }
+
+    u32 i = 0;
+    RenderNode* node = ((RenderInfo *)modelFile)->nodes;
+    if (i < ((RenderInfo *)modelFile)->count) {
+        do {
+            if (node->flags & 1) {
+                for (int j = 0; j < node->innerCount; j++) {
+                    u8 idx = node->arrA[j];
+                    u32 hidden = ((((RenderModule *)materials)[idx].flags >> 31)) & 1;
+                    if (!hidden) {
+                        ((void (*)(void *))func_02044b30)(this);
+                        func_02044534((char *)this, node->arrB[j], (Mtx43 *)mat, (Vec3 *)vec);
+                    }
+                }
+            } else {
+                for (int j = 0; j < node->innerCount; j++) {
+                    u8 idx = *(volatile u8*)&node->arrA[j];
+                    RenderModule* m = (RenderModule *)materials;
+                    m += idx;
+                    if (!(m->flags & 0x80000000)) {
+                        ((void (*)(void *))func_02044b30)(this);
+                        func_0204488c((char *)this, node->arrB[j], (int *)vec);
+                    }
+                }
+            }
+            i++;
+            node++;
+        } while (i < ((RenderInfo *)modelFile)->count);
+    }
 }
