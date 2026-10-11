@@ -1652,7 +1652,7 @@ __sinit_daPropeller_Heyho_Fire_c.cpp kind:function(arm,size=0x3c) addr:0x0210809
 @986 kind:data(any) addr:0x02108148
 @960 kind:data(any) addr:0x02108150
 @985 kind:data(any) addr:0x02108158
-@983 kind:data(any) addr:0x02108160
+@91 kind:data(any) addr:0x02108160
 @958 kind:data(any) addr:0x02108168
 @987 kind:data(any) addr:0x02108170
 @946 kind:data(any) addr:0x02108178
