@@ -14,37 +14,19 @@
  * player (type 0xbf) and not vanished, the fireball bursts and hurts it --
  * unless the player is metal, which turns the fireball round instead.
  *
- * This file is the whole linker unit 0x020feabc..0x020ff014, 13 functions:
- * D1 and D0 (src/actors/dM3dGLin.cpp ends exactly at 0x020feabc below
- * them), the five helpers func_ov002_020feb50 through func_ov002_020fed7c,
- * CleanupResources, OnPendingDestroy, Render, Behavior, InitResources, and
- * last the registry factory daPropeller_Heyho_Fire_c_classInit
- * (0x020fefcc), which closes ov002's .text at 0x020ff014. The out-of-line
- * destructor is the key function, so this TU also emits the vtable and the
- * RTTI.
- *
- * It replaces the one-function sources for
- * _ZN24daPropeller_Heyho_Fire_cD1Ev, _ZN24daPropeller_Heyho_Fire_cD0Ev,
- * func_ov002_020feb50, func_ov002_020fec94, func_ov002_020fed18,
- * func_ov002_020fed2c, func_ov002_020fed7c,
- * _ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv,
- * _ZN24daPropeller_Heyho_Fire_c16OnPendingDestroyEv,
- * _ZN24daPropeller_Heyho_Fire_c6RenderEv,
- * _ZN24daPropeller_Heyho_Fire_c8BehaviorEv,
- * _ZN24daPropeller_Heyho_Fire_c13InitResourcesEv and
- * daPropeller_Heyho_Fire_c_classInit. Each member keeps the provenance
- * notes its source carried.
- *
- * `#pragma defer_codegen off` keeps this file in ROM order.
- *
- * Leftover: the helpers keep their C-ABI cartridge names and reach the
- *   fireball through raw offsets; daPropeller_Heyho_Fire_c.h names only the
- *   fields Behavior and InitResources use.
- * Leftover: the callees with Fix12<int> parameters (dCcAc_c::Init,
- *   dBgCh_Actr::Init, Player::Hurt) stay spelled as mangled extern-C free
- *   functions. A real method call homes a class-typed by-value argument and
- *   size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
+ * defer_codegen off keeps this file in ROM order. .text
+ * 0x020feabc..0x020ff014, 13 functions. The out-of-line destructor is
+ * the key function.
  */
+// leftovers:
+// - func_ov002_020feb50, 020fec94, 020fed18, 020fed2c and 020fed7c stay
+//   free functions. They reach the fireball through raw offsets.
+//   daPropeller_Heyho_Fire_c.h names only the fields Behavior and
+//   InitResources use.
+// - dCcAc_c::Init, dBgCh_Actr::Init and Player::Hurt stay mangled.
+//   A member call with Fix12<int> by value changes the caller.
+// - Render draws through a local Base/Derived view of the model at 0x300.
+//   func_ov002_020fed7c copies the scratch matrix as twelve plain words.
 
 #pragma defer_codegen off
 
@@ -113,22 +95,9 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(char *self, dActor_c *a, i
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(char *self, dActor_c *a, int r, int h, Vector3_16 *rot, int f);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0-1 -- _ZN24daPropeller_Heyho_Fire_cD1Ev, 0x020feabc, size 0x40 */
-/*                     _ZN24daPropeller_Heyho_Fire_cD0Ev, 0x020feafc, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24daPropeller_Heyho_Fire_cD1Ev
 // @symbol _ZN24daPropeller_Heyho_Fire_cD0Ev
-/* One native destructor definition emits both ROM variants. D1 is one
- * vtable store and a destructor call per member, every one a consequence of
- * `struct daPropeller_Heyho_Fire_c : dEnemyBase_c` and the members that
- * declaration types, destroyed in reverse declaration order, then
- * dEnemyBase_c::~dEnemyBase_c. D0 is the same destruction followed by the
- * inherited actor-heap operator delete -- dEnemyBase_c's, reachable because
- * it is this class's immediate base. This body is the evidence for the
- * header: each member's size closes exactly on the next one's offset. Being
- * the first out-of-line virtual, it makes this file the key function's
- * home, so the vtable and RTTI are emitted here too. */
+/* Empty. D1 then D0 follow from the members. */
 daPropeller_Heyho_Fire_c::~daPropeller_Heyho_Fire_c()
 {
 }
@@ -147,11 +116,7 @@ extern "C" daPropeller_Heyho_Fire_c *_ZN24daPropeller_Heyho_Fire_cD0Ev(daPropell
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov002_020feb50, 0x020feb50, size 0x144 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020feb50
-/* recovered: shared common types */
 extern "C" void func_ov002_020feb50(char* self) {
     char* a;
     int b;
@@ -198,9 +163,6 @@ extern "C" void func_ov002_020feb50(char* self) {
     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, v, 1, 0xc000, 1, 0, 1);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov002_020fec94, 0x020fec94, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020fec94
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020fec94(void* c) {
@@ -217,9 +179,6 @@ int func_ov002_020fec94(void* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov002_020fed18, 0x020fed18, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020fed18
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov002_020fed18(char *p)
@@ -229,17 +188,10 @@ int func_ov002_020fed18(char *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov002_020fed2c, 0x020fed2c, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020fed2c
 extern "C" int func_ov002_020fed2c(C *c, PMF *p) { c->pp = p; PMF *q = c->pp; if (*q == 0) return 1; return (c->**q)(); }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov002_020fed7c, 0x020fed7c, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020fed7c
-/* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov002_020fed7c(char *c) {
     int v[3];
@@ -251,50 +203,27 @@ void func_ov002_020fed7c(char *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv, 0x020fedf0, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * Releases the 1 shared file(s) InitResources claimed.
- *
- * TOUCHES NO FIELD. The ROM body takes no `this`; as a method it now receives
- * one and ignores it, which measured byte-free.
- */
+/* Releases the shared file InitResources claimed. */
 int daPropeller_Heyho_Fire_c::CleanupResources()
 {
     ((SharedFilePtr *)data_ov065_0211d610)->Release();
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN24daPropeller_Heyho_Fire_c16OnPendingDestroyEv, 0x020fee14, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24daPropeller_Heyho_Fire_c16OnPendingDestroyEv
-/* recovered: shared header, real C++ method
- *
- * fBase_c slot 12. Empty in the ROM: four bytes, `bx lr`.
- */
+/* Empty. */
 void daPropeller_Heyho_Fire_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN24daPropeller_Heyho_Fire_c6RenderEv, 0x020fee18, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24daPropeller_Heyho_Fire_c6RenderEv
-/* recovered: named members + shared header, real C++ method */
 int daPropeller_Heyho_Fire_c::Render()
 {
  Base *b = &((Derived *)this)->base; b->m(0); return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN24daPropeller_Heyho_Fire_c8BehaviorEv, 0x020fee44, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24daPropeller_Heyho_Fire_c8BehaviorEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
 /* This file used to carry `struct dActor_c { char pad[0x350]; Holder* h; }` and
  * cast `this` to it. That stand-in was how the state pointer at 0x350 was
  * reached; daPropeller_Heyho_Fire_c.h declares it now, so the cast and the three dummy structs
@@ -331,11 +260,7 @@ int daPropeller_Heyho_Fire_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN24daPropeller_Heyho_Fire_c13InitResourcesEv, 0x020feef4, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24daPropeller_Heyho_Fire_c13InitResourcesEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
 int daPropeller_Heyho_Fire_c::InitResources()
 {
     struct BMD_File* f = _ZN5Model8LoadFileER13SharedFilePtr(data_ov065_0211d610);
@@ -350,18 +275,8 @@ int daPropeller_Heyho_Fire_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- daPropeller_Heyho_Fire_c_classInit, 0x020fefcc, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol daPropeller_Heyho_Fire_c_classInit
-/* recovered: vtable identified, globals resolved */
-/* Reconstructed source-style name: SM64DS proves daPropeller_Heyho_Fire_c through RTTI,
- * allocation size, vtable identity, and the PROPELLER_HEYHO_FIRE registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: Bullet_Spawn. `new daPropeller_Heyho_Fire_c`
- * is the whole sequence: fBase_c::operator new(0x35c), dEnemyBase_c's C2,
- * the vtable store, then the dCcAc_c, dBgCh_Actr and Model constructors in
- * declaration order. */
+/* PROPELLER_HEYHO_FIRE factory. */
 extern "C" daPropeller_Heyho_Fire_c *daPropeller_Heyho_Fire_c_classInit(void)
 {
     return new daPropeller_Heyho_Fire_c;
