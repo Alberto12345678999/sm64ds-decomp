@@ -1,41 +1,22 @@
 //cpp
-/* ov027/daSnmBth_c -- the snowman's breath (d_a_snm_bth). 17 functions,
- * .text 0x021120c4..0x02112b14, the end of ov027 .text.
+/* The snowman's breath. Fifty SnowmanBreathParticle members sit in this
+ * file because their functions sit between the actor's destructor and its
+ * other methods. .text 0x021120c4..0x02112b14.
  *
- * daSnmBth_c owns fifty SnowmanBreathParticle members. The particle's eight
- * functions sit in the cartridge between this actor's destructors and its
- * other methods, so both types were compiled from this one file.
- *
- * RTTI (ov027): _ZTS10daSnmBth_c "10daSnmBth_c" at 0x02113b1c; _ZTI10daSnmBth_c
- * at 0x02113b10 is an __si_class_type_info whose base is _ZTI8dActor_c
- * (0x0208e390); _ZTV10daSnmBth_c at 0x02113b50 (two-word header at 0x02113b48)
- * has dActor_c's 31 slots, slot 16 = D1 0x021120c4, slot 17 = D0 0x02112104.
- * The class was coined "SnowmanBreath" before its RTTI name was read.
- * SnowmanBreathParticle is still a coined name: ov027 carries no type string
- * for it (it is a non-polymorphic member struct), so there is no ROM name to
- * adopt.
- *
- * ~daSnmBth_c() is the key function (first non-inline virtual), so this file
- * emits the vtable and RTTI; the build externalizes them to the addresses
- * above. The one out-of-line destructor emits D1 then D0; its D2, and the
- * particle's C2/D2, are deadstripped (no module gives them a symbol).
- * `#pragma defer_codegen off` makes the out-of-line destructor emit D1, D0,
- * D2 and the rest of the file emit in source order, so the source is
- * ROM-ascending. A Matrix4x3 member, whose implicit destructor runs
- * Vector3's inline one, flips the group back to D2, D0, D1 even with the
- * pragma (measured), which is why mInvModelMat is flat words in
- * daSnmBth_c.h. The particle array does not have that effect. The registry
- * factory daSnmBth_c_classInit (0x02112ab4) is the last function.
- *
- * Known limits:
- * - The Particle::System, Sound::PlayLong, dCcPos_c::Init and Player::BlowAway /
- *   HasFinishedTalking calls keep their mangled names; Fix12<int> arguments are
- *   passed by value (mwccarm 6az wall); match.py wildcards these relocations.
- * - SnowmanBreathParticle is a coined name (no ROM type string).
- * - mInvModelMat stays flat words: a Matrix4x3 member reorders the destructors.
- * - IsPlayerInRange keeps its goto chain: folding the six range tests into one ||
- *   condition (measured) makes the function 4 bytes larger.
+ * _ZTS 0x02113b1c, _ZTI 0x02113b10 (base _ZTI8dActor_c 0x0208e390),
+ * _ZTV 0x02113b50. Was SnowmanBreath. Key function ~daSnmBth_c under
+ * defer_codegen off: D1 0x021120c4, D0 0x02112104, D2 deadstripped.
  */
+// leftovers:
+// - Particle::System::New and NewSimple, Sound::PlayLong, dCcPos_c::Init,
+//   Player::BlowAway and HasFinishedTalking stay mangled. This TU passes
+//   Fix12<int> by value.
+// - SnowmanBreathParticle is a coined name. ov027 has no type string for
+//   the member struct.
+// - mInvModelMat stays flat words. A Matrix4x3 member reorders the
+//   destructor group to D2, D0, D1.
+// - IsPlayerInRange keeps its goto chain. Folding the six tests into one
+//   condition makes the function 4 bytes larger.
 
 #pragma defer_codegen off
 
@@ -90,20 +71,17 @@ extern SharedFilePtr data_ov002_0210d9c0;
 typedef struct { s32 words[12]; } MatrixWords;
 }
 
-// 0x021120c4 (0x40), 0x02112104 (0x54)
 // @symbol _ZN10daSnmBth_cD1Ev
 // @symbol _ZN10daSnmBth_cD0Ev
 daSnmBth_c::~daSnmBth_c()
 {
 }
 
-// 0x02112158 (0x18)
 // @symbol _ZN21SnowmanBreathParticleD1Ev
 SnowmanBreathParticle::~SnowmanBreathParticle()
 {
 }
 
-// 0x02112170 (0x1cc)
 // @symbol _ZN21SnowmanBreathParticle9HitPlayerEv
 void SnowmanBreathParticle::HitPlayer()
 {
@@ -166,7 +144,6 @@ void SnowmanBreathParticle::HitPlayer()
     cap->mHorzSpeed = 0x1c000;
 }
 
-// 0x0211233c (0x74)
 // @symbol _ZN21SnowmanBreathParticle12CheckSnowmanEv
 void SnowmanBreathParticle::CheckSnowman()
 {
@@ -180,7 +157,6 @@ void SnowmanBreathParticle::CheckSnowman()
     mTimer = 0;
 }
 
-// 0x021123b0 (0x74)
 // @symbol _ZN21SnowmanBreathParticle14UpdatePositionEv
 void SnowmanBreathParticle::UpdatePosition()
 {
@@ -192,7 +168,6 @@ void SnowmanBreathParticle::UpdatePosition()
     AddVec3(&mPos, &offset, &mPos);
 }
 
-// 0x02112424 (0x5c)
 // @symbol _ZN21SnowmanBreathParticle6RenderEv
 void SnowmanBreathParticle::Render()
 {
@@ -203,7 +178,6 @@ void SnowmanBreathParticle::Render()
             mParticleID, 0x111, mPos.x, mPos.y, mPos.z, 0, 0);
 }
 
-// 0x02112480 (0x64)
 // @symbol _ZN21SnowmanBreathParticle8BehaviorEv
 void SnowmanBreathParticle::Behavior()
 {
@@ -217,7 +191,6 @@ void SnowmanBreathParticle::Behavior()
     mCollider.Update();
 }
 
-// 0x021124e4 (0xc4)
 // @symbol _ZN21SnowmanBreathParticle8TrySpawnER6Player
 int SnowmanBreathParticle::TrySpawn(Player &player)
 {
@@ -240,7 +213,6 @@ int SnowmanBreathParticle::TrySpawn(Player &player)
     return 1;
 }
 
-// 0x021125a8 (0x70)
 // @symbol _ZN21SnowmanBreathParticleC1Ev
 SnowmanBreathParticle::SnowmanBreathParticle()
 {
@@ -250,7 +222,6 @@ SnowmanBreathParticle::SnowmanBreathParticle()
     mTimer = 0;
 }
 
-// 0x02112618 (0xe8)
 // @symbol _ZN10daSnmBth_c15IsPlayerInRangeEv
 int daSnmBth_c::IsPlayerInRange()
 {
@@ -282,7 +253,6 @@ fail:
     return 0;
 }
 
-// 0x02112700 (0x3c)
 // @symbol _ZN10daSnmBth_c16CleanupResourcesEv
 /* daSnmBth_c::CleanupResources -- vtable slot 3. Releases the three shared
  * files the class holds; it never touches `this`. */
@@ -294,7 +264,6 @@ int daSnmBth_c::CleanupResources()
     return 1;
 }
 
-// 0x0211273c (0x4)
 // @symbol _ZN10daSnmBth_c16OnPendingDestroyEv
 /* daSnmBth_c::OnPendingDestroy -- vtable slot 12. The ROM body is empty: the
  * override exists only to occupy the slot. */
@@ -302,7 +271,6 @@ void daSnmBth_c::OnPendingDestroy()
 {
 }
 
-// 0x02112740 (0x64)
 // @symbol _ZN10daSnmBth_c6RenderEv
 int daSnmBth_c::Render()
 {
@@ -318,7 +286,6 @@ int daSnmBth_c::Render()
   return 1;
 }
 
-// 0x021127a4 (0x238)
 // @symbol _ZN10daSnmBth_c8BehaviorEv
 int daSnmBth_c::Behavior()
 {
@@ -396,7 +363,6 @@ int daSnmBth_c::Behavior()
     return 1;
 }
 
-// 0x021129dc (0xd8)
 // @symbol _ZN10daSnmBth_c13InitResourcesEv
 int daSnmBth_c::InitResources()
 {
@@ -416,10 +382,7 @@ int daSnmBth_c::InitResources()
     return 1;
 }
 
-/* Reconstructed source-style name: SM64DS proves daSnmBth_c through RTTI,
- * allocation size, vtable identity, and the SNOWMAN_BREATH registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: SnowmanBreath_Spawn. */
+/* SNOWMAN_BREATH factory. */
 // @symbol daSnmBth_c_classInit
 extern "C" daSnmBth_c *daSnmBth_c_classInit()
 {
