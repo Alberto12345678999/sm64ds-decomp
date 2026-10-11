@@ -13,7 +13,7 @@
 // factories (STAR_SWITCH, then HANSWITCH). They are the highest-address
 // .text, so they sit at the top of the file.
 //
-// comment leftovers:
+// leftovers:
 //   - ChangeMusicVolume / IsClsnInRange / KcMbg::SetFile stay computed-spelling
 //     externs: the member form changes codegen under 2004/b56 (Fix12<int> by
 //     value, wall 6az -- noted at use).
@@ -417,7 +417,7 @@ void daObjSwitch_c::func_ov002_020ba1ac()
         return;
     }
     if (mTargetActor == 0) return;
-    if (static_cast<daStar_c *>(mTargetActor)->unk_440 != 5) return;
+    if (static_cast<daStar_c *>(mTargetActor)->mState != 5) return;
     func_ov002_020ba4d8(4);
 }
 
@@ -431,8 +431,7 @@ void daObjSwitch_c::func_ov002_020ba0f8()
         int b = (actorID == 0xc);
         if (b) {
             dActor_c *p = mTargetActor;
-            // This foreign star field is still unnamed in daStar_c.h.
-            if (p != 0 && *reinterpret_cast<int *>(reinterpret_cast<char *>(p) + 0x438) == 0) {
+            if (p != 0 && static_cast<daStar_c *>(p)->mPlayer == 0) {
                 static_cast<daStar_c *>(p)->func_ov002_020e7104(0);
             }
             mAreaId = mHomeAreaId;
@@ -490,7 +489,7 @@ int daObjSwitch_c::func_ov002_020b9f00()
     if (mTargetActorID) return 0;
     star = dActor_c::FindWithActorID(0xb2, 0);
     while (star) {
-        if (mStarID == static_cast<daStar_c *>(star)->unk_49d) {
+        if (mStarID == static_cast<daStar_c *>(star)->mStarID) {
             mTargetActorID = star->uniqueID;
             return 1;
         }

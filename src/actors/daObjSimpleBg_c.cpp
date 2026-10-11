@@ -29,11 +29,12 @@
  * at 0x02148fbc, which has no such pragma and so emits in the reverse of
  * source order -- its classInit block sits at the top of its file instead).
  *
- * Leftover: dBgW_KcMbg::SetFile takes Fix12<int> by value, so it stays
+ * leftovers:
+ * - dBgW_KcMbg::SetFile takes Fix12<int> by value, so it stays
  *   mangled; the method spelling was measured to size-DIFF.
- * Leftover: dBgActor_c::IsClsnInRangeOnScreen stays mangled because
+ * - dBgActor_c::IsClsnInRangeOnScreen stays mangled because
  *   dBgActor_c.h does not declare it.
- * The 0xc-stride file rows are local: only this TU indexes those tables.
+ * - The 0xc-stride file rows are local: only this TU indexes those tables.
  */
 
 #include "decl_common.h"

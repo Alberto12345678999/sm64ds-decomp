@@ -19,19 +19,9 @@
  *   size  0x174             the literal the factory hands operator new
  * The RTTI name is the ROM's own; no class name here is coined.
  *
- * Why this is one translation unit: the run 0x0211a930..0x0211adb0 is
- * contiguous and ends this overlay's .text. Its left edge is the first
- * instruction after daObjTbox_c's own factory, where that already promoted TU
- * stops; its right edge is the end of the section. Every function inside it is
- * either a named daObjShell_c member, this class's factory, or the one
- * still-unnamed helper at 0x0211a9b4 that InitResources calls -- no foreign
- * class appears anywhere in the span. The factory run that follows
- * InitResources carries no mangled name for tu_map to attribute, but it
- * allocates this class's own 0x174, installs this class's vptr, constructs
- * this class's two members and is the address the OBJ_SHELL profile stores --
- * the same registry/factory-backed join ov064/daObjTbox_c was promoted on.
- * config/arm9/overlays/ov064/delinks.txt enrolled all eight as adjacent
- * `complete` entries with no hole, so the whole run could be claimed at once.
+ * The TU is the contiguous run 0x0211a930..0x0211adb0 ending this overlay's
+ * .text: daObjTbox_c stops on its left edge, and every function inside is a
+ * daObjShell_c member, its factory or its own unnamed helper.
  *
  * Function order is deliberately the reverse of the ROM's -- mwccarm 2004/b56
  * emits one .text section per function, in the REVERSE of source order, so
@@ -39,7 +29,7 @@
  * inline destructor in include/daObjShell_c.h emits the retail D1/D0 pair
  * first and emits no D2 body.
  *
- * Known limits:
+ * leftovers:
  * - ModelAnim::SetAnim, dCcAc_c::Init, Particle::System::NewSimple and
  *   Player::Hurt keep their C ABI spellings: their real declarations pass
  *   Fix12<int> by value, which mwccarm lowers differently at a C++ call site.
@@ -55,19 +45,6 @@
  *   call passes is still read as the raw word at +4.
  * - the three file handles at 0x0211c9bc/0x0211c9c4/0x0211c9cc are defined at
  *   the end of this file. Their constructors are not written out here.
- *
- * Consolidated from eight one-function sources, one per symbol below. Their
- * retired paths are recorded per function in this TU's manifest entry; naming
- * them here would leave the comment pointing at files the fold deletes.
- * ROM address order:
- *   [0] 0x0211a930  _ZN12daObjShell_cD1Ev
- *   [1] 0x0211a968  _ZN12daObjShell_cD0Ev
- *   [2] 0x0211a9b4  _ZN12daObjShell_c19func_ov064_0211a9b4Ev
- *   [3] 0x0211a9f4  _ZN12daObjShell_c16CleanupResourcesEv
- *   [4] 0x0211aa30  _ZN12daObjShell_c6RenderEv
- *   [5] 0x0211aa58  _ZN12daObjShell_c8BehaviorEv
- *   [6] 0x0211acc4  _ZN12daObjShell_c13InitResourcesEv
- *   [7] 0x0211ad70  daObjShell_c_classInit
  */
 
 #include "daObjShell_c.h"

@@ -12,14 +12,15 @@
  * (0x021111e4), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  *
- * Leftover: dBgW_KcMbg::SetFile, dBgActor_c::UpdateKillByMegaChar and
+ * leftovers:
+ * - dBgW_KcMbg::SetFile, dBgActor_c::UpdateKillByMegaChar and
  *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
  *   a member call homes the argument and changes the ROM ABI.
- * Leftover: the Sound::PlayLong extern is the shards' own spelling.
+ * - The Sound::PlayLong extern is the shards' own spelling.
  *   Retyping it is declaration-changing matching work, so its banked
  *   decl-agreement entry moved to this file unchanged. The path handles
  *   are still 8-byte local views of PathPtr, constructed explicitly.
- * Leftover: InitResources keeps the param1 mask, the yaw adjust, and the
+ * - InitResources keeps the param1 mask, the yaw adjust, and the
  *   node-index add as offset writes. Naming them changed the function size.
  * The file ends with the mesh-collider callback func_ov018_021117e8, the
  * veneer func_ov018_02111804 that InitResources installs, and the registry
