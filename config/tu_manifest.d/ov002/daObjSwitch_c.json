@@ -212,7 +212,7 @@
   ],
   "data": [
     {
-      "symbol": "@92",
+      "symbol": "@839",
       "address": "0x0210987c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -233,7 +233,7 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN13daObjSwitch_c19func_ov002_020ba2acEv"
     },
     {
-      "symbol": "@91",
+      "symbol": "@837",
       "address": "0x02109894",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -247,14 +247,14 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN13daObjSwitch_c19func_ov002_020ba4c0Ev"
     },
     {
-      "symbol": "@174",
+      "symbol": "@845",
       "address": "0x021098a4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN13daObjSwitch_c19func_ov002_020ba0bcEv"
     },
     {
-      "symbol": "@94",
+      "symbol": "@843",
       "address": "0x021098ac",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -275,7 +275,7 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN13daObjSwitch_c19func_ov002_020ba3a8Ev"
     },
     {
-      "symbol": "@93",
+      "symbol": "@841",
       "address": "0x021098c4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -857,7 +857,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@92",
+      "symbol": "@839",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210987c"
@@ -875,7 +875,7 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210988c"
     },
     {
-      "symbol": "@91",
+      "symbol": "@837",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02109894"
@@ -887,13 +887,13 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0210989c"
     },
     {
-      "symbol": "@174",
+      "symbol": "@845",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021098a4"
     },
     {
-      "symbol": "@94",
+      "symbol": "@843",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021098ac"
@@ -911,7 +911,7 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021098bc"
     },
     {
-      "symbol": "@93",
+      "symbol": "@841",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x021098c4"
@@ -1187,7 +1187,7 @@
       "source": "0x02101724",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@91",
+      "symbol": "@837",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02109894"
@@ -1197,7 +1197,7 @@
       "source": "0x02101728",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@92",
+      "symbol": "@839",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x0210987c"
@@ -1207,7 +1207,7 @@
       "source": "0x0210172c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@93",
+      "symbol": "@841",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021098c4"
@@ -1217,7 +1217,7 @@
       "source": "0x02101730",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@94",
+      "symbol": "@843",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021098ac"
@@ -1227,7 +1227,7 @@
       "source": "0x02101734",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@174",
+      "symbol": "@845",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x021098a4"
@@ -1391,28 +1391,28 @@
     },
     {
       "from": "@947",
-      "to": "@91",
-      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @947 where main emits @933; licensed under the existing pin @91"
+      "to": "@837",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @947 where main emits @933; licensed under the existing pin @837"
     },
     {
       "from": "@949",
-      "to": "@92",
-      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @949 where main emits @935; licensed under the existing pin @92"
+      "to": "@839",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @949 where main emits @935; licensed under the existing pin @839"
     },
     {
       "from": "@951",
-      "to": "@93",
-      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @951 where main emits @937; licensed under the existing pin @93"
+      "to": "@841",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @951 where main emits @937; licensed under the existing pin @841"
     },
     {
       "from": "@953",
-      "to": "@94",
-      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @953 where main emits @939; licensed under the existing pin @94"
+      "to": "@843",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @953 where main emits @939; licensed under the existing pin @843"
     },
     {
       "from": "@955",
-      "to": "@174",
-      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @955 where main emits @941; licensed under the existing pin @174"
+      "to": "@845",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @955 where main emits @941; licensed under the existing pin @845"
     }
   ]
 }
