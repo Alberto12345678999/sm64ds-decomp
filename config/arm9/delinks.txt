@@ -5112,13 +5112,9 @@ src/unnamed/arm9/0205/func_0205583c.c:
     complete
     .text start:0x0205583c end:0x02055998
 
-src/unnamed/arm9/0205/func_02055998.c:
-    complete
-    .text start:0x02055998 end:0x02055a64
-
 src/engine/gx/G3i.cpp:
     complete
-    .text start:0x02055a64 end:0x02055dec
+    .text start:0x02055998 end:0x02055dec
 
 src/engine/gx/GXS.cpp:
     complete
