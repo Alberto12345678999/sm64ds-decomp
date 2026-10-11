@@ -3,12 +3,13 @@
  * the five 8-byte entries inside each of its fifteen 0x98-byte elements.
  * The scene's own methods are in src/actors/dScMgHanachan_c.cpp.
  *
- * The factory builds the object by hand (operator new, base constructor,
- * vtable word, array construction) because dScMgHanachan_c has no
- * constructor declared yet. data_ov006_0213cab8 is the vtable
- * (_ZTV15dScMgHanachan_c at the same address). The element and entry types
- * are not recovered, so their constructors keep linker names and the
- * entries stay at raw offset 0x18.
+ * leftovers:
+ *   - dScMgHanachan_c has no constructor declared, so the factory builds
+ *     the object by hand: operator new, base constructor, vtable word
+ *     (data_ov006_0213cab8 is _ZTV15dScMgHanachan_c), array construction.
+ *   - The element and entry types are not recovered, so their
+ *     constructors keep linker names and the entries stay at raw offset
+ *     0x18.
  */
 
 #include "dScMgHanachan_c.h"
