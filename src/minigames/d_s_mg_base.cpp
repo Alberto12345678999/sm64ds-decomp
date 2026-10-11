@@ -703,18 +703,8 @@ void func_ov004_020adfc4(char *state, short timer, short pos, int *vecA, int *ve
 namespace s20ae03c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback3Ev
-/* dScMgBase_c::graphCallback_c::GraphCallback3 -- slot 3, ov004.
- *
- * Forwards to the registered scene's own virtual at vtable offset +0x64
- * (slot 25) and reports handled.
- *
- * THE DISPATCH STAYS RAW. dScMgBase_c's slots 18-35 are eighteen virtuals whose
- * signatures are not reconstructed yet (see include/dScMgBase_c.h), so slot
- * 25 cannot be called by name -- declaring it would require declaring
- * slots 18-25 above it in order, and guessing those would misnumber the
- * table. The compiler owns this function's symbol, `this` and mScene; only the
- * callee's identity is still an offset.
- */
+/* dScMgBase_c::graphCallback_c::GraphCallback3 -- slot 3: calls the
+   registered scene's OnPushed (slot 25, +0x64) and reports handled. */
 }
 }
 
@@ -723,8 +713,7 @@ int dScMgBase_c::graphCallback_c::GraphCallback3()
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
-        void (*fn)(dScMgBase_c *) = *(void (**)(dScMgBase_c *))((char *)*(void **)p + 0x64);
-        fn(p);
+        p->OnPushed();
     }
 
     return 1;
@@ -733,15 +722,11 @@ int dScMgBase_c::graphCallback_c::GraphCallback3()
 namespace s20ae06c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback2Ev
-/* dScMgBase_c::graphCallback_c::GraphCallback2 -- slot 2, ov004 0x020ae06c.
+/* dScMgBase_c::graphCallback_c::GraphCallback2 -- slot 2.
  *
- * Unlike slots 0, 1 and 3, this one RETURNS the scene virtual's own result
- * rather than discarding it and reporting handled; it only reports handled
- * when no scene is registered.
- *
- * The dispatch stays raw for the reason the sibling slots give: dScMgBase_c's
- * slots 18-35 have no reconstructed signatures, so slot 24 (+0x60) cannot be
- * called by name.
+ * Unlike slots 0, 1 and 3, this one RETURNS the scene's OnKicked (slot 24,
+ * +0x60) result rather than discarding it and reporting handled; it only
+ * reports handled when no scene is registered.
  */
 }
 }
@@ -754,24 +739,14 @@ int dScMgBase_c::graphCallback_c::GraphCallback2()
         return 1;
     }
 
-    return (*(int (**)(dScMgBase_c *))((char *)*(void **)p + 0x60))(p);
+    return p->OnKicked();
 }
 
 namespace s20ae0a4 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback1Ev
-/* dScMgBase_c::graphCallback_c::GraphCallback1 -- slot 1, ov004.
- *
- * Forwards to the registered scene's own virtual at vtable offset +0x58
- * (slot 22) and reports handled.
- *
- * THE DISPATCH STAYS RAW. dScMgBase_c's slots 18-35 are eighteen virtuals whose
- * signatures are not reconstructed yet (see include/dScMgBase_c.h), so slot
- * 22 cannot be called by name -- declaring it would require declaring
- * slots 18-22 above it in order, and guessing those would misnumber the
- * table. The compiler owns this function's symbol, `this` and mScene; only the
- * callee's identity is still an offset.
- */
+/* dScMgBase_c::graphCallback_c::GraphCallback1 -- slot 1: calls the
+   registered scene's OnAttacked1 (slot 22, +0x58) and reports handled. */
 }
 }
 
@@ -780,8 +755,7 @@ int dScMgBase_c::graphCallback_c::GraphCallback1()
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
-        void (*fn)(dScMgBase_c *) = *(void (**)(dScMgBase_c *))((char *)*(void **)p + 0x58);
-        fn(p);
+        p->OnAttacked1();
     }
 
     return 1;
@@ -790,18 +764,8 @@ int dScMgBase_c::graphCallback_c::GraphCallback1()
 namespace s20ae0d4 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback0Ev
-/* dScMgBase_c::graphCallback_c::GraphCallback0 -- slot 0, ov004.
- *
- * Forwards to the registered scene's own virtual at vtable offset +0x5c
- * (slot 23) and reports handled.
- *
- * THE DISPATCH STAYS RAW. dScMgBase_c's slots 18-35 are eighteen virtuals whose
- * signatures are not reconstructed yet (see include/dScMgBase_c.h), so slot
- * 23 cannot be called by name -- declaring it would require declaring
- * slots 18-23 above it in order, and guessing those would misnumber the
- * table. The compiler owns this function's symbol, `this` and mScene; only the
- * callee's identity is still an offset.
- */
+/* dScMgBase_c::graphCallback_c::GraphCallback0 -- slot 0: calls the
+   registered scene's OnAttacked2 (slot 23, +0x5c) and reports handled. */
 }
 }
 
@@ -810,8 +774,7 @@ int dScMgBase_c::graphCallback_c::GraphCallback0()
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
-        void (*fn)(dScMgBase_c *) = *(void (**)(dScMgBase_c *))((char *)*(void **)p + 0x5c);
-        fn(p);
+        p->OnAttacked2();
     }
 
     return 1;
@@ -825,13 +788,8 @@ dScMgBase_c::graphCallback_c::graphCallback_c() : mScene(0) {}
 namespace s20ae128 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c8OnPushedEv
-/* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBase_c_OnPushed
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnPushed - recovered from vtable slot identity.
-   Converted from .c to .cpp: dScMgBase_c.h now includes the real dScene_c.h,
-   which -- like dBase_c.h -- has no C spelling. Same shape as dScene_c.h's
-   own two affected .c files in the prior slice. */
+/* dScMgBase_c::OnPushed - slot 25: nonzero while the menu is closed. */
 }
 }
 
@@ -844,37 +802,23 @@ namespace s20ae140 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c8OnKickedEv
 // recovered name: dScMgBase_c_OnKicked
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnKicked - recovered from vtable slot identity */
-struct Obj {
-    virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0c();
-    virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1c();
-    virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2c();
-    virtual void v30(); virtual void v34(); virtual void v38(); virtual void v3c();
-    virtual void v40(); virtual void v44(); virtual void v48(); virtual void v4c();
-    virtual void v50(); virtual void v54(); virtual void v58(); virtual void v5c();
-    virtual void v60(); virtual void v64(); virtual void v68(); virtual void v6c();
-    virtual void v70();
-    virtual void method74();
-    virtual void method78();
-};
+/* dScMgBase_c::OnKicked - slot 24. When mMenuOpen differs from its latch
+   unk_462c, calls OnAimedAtWithEgg (slot 29) if the menu has opened or
+   OnAimedAtWithEggReturnVec (slot 30) if it has closed, then latches it. */
 }
 }
 
 int dScMgBase_c::OnKicked()
-{ using s20ae140::Obj;
-    Obj *self = (Obj *)this;
-
-    void* base = (char*)self + 0x4000;
-    int v2 = *(int*)((char*)base + 0x628);
-    int v1 = *(int*)((char*)base + 0x62c);
+{
+    int v2 = mMenuOpen;
+    int v1 = unk_462c;
     if (v1 == v2) goto done;
     if (v2 == 0) {
-        self->method78();
+        OnAimedAtWithEggReturnVec();
     } else {
-        self->method74();
+        OnAimedAtWithEgg();
     }
-    *(int*)((char*)self + 0x462c) = *(int*)((char*)self + 0x4628);
+    unk_462c = mMenuOpen;
 done:
     return 1;
 }
@@ -883,8 +827,7 @@ namespace s20ae198 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c11OnAttacked1Ev
 // recovered name: dScMgBase_c_OnAttacked1
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnAttacked1 - recovered from vtable slot identity */
+/* dScMgBase_c::OnAttacked1 - slot 22 */
 }
 }
 
@@ -897,8 +840,7 @@ namespace s20ae1a0 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c11OnAttacked2Ev
 // recovered name: dScMgBase_c_OnAttacked2
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnAttacked2 - recovered from vtable slot identity */
+/* dScMgBase_c::OnAttacked2 - slot 23 */
 }
 }
 
@@ -910,8 +852,8 @@ int dScMgBase_c::OnAttacked2()
 // @symbol func_ov004_020ae1a8
 namespace s20ae1a8 {
 extern "C" {
-extern int data_ov004_020beb68;
 extern int data_0209b308[];
+/* The menu row's scoring mode (word 2), or -1 with no scene. */
 int func_ov004_020ae1a8(void) {
     if (data_ov004_020beb68 != 0) {
         return data_0209b308[2];
@@ -924,13 +866,14 @@ int func_ov004_020ae1a8(void) {
 // @symbol func_ov004_020ae1cc
 namespace s20ae1cc {
 extern "C" {
-extern int data_ov004_020beb68;
 extern int data_0209b308[];
 
+/* The menu row's music mode (word 11, +0x2c), or 0 with no scene. The
+   music helpers below treat 0 as "stop the music" and 1 as "play
+   func_ov004_020ae1f0's track". */
 int func_ov004_020ae1cc(void) {
-    int r0 = data_ov004_020beb68;
-    if (r0 != 0) {
-        return *(int*)((char*)data_0209b308 + 0x2c);
+    if (data_ov004_020beb68 != 0) {
+        return data_0209b308[11];
     }
     return 0;
 }
@@ -940,10 +883,10 @@ int func_ov004_020ae1cc(void) {
 // @symbol func_ov004_020ae1f0
 namespace s20ae1f0 {
 extern "C" {
-extern int *data_ov004_020beb68;
+/* The scene's music track, unk_0c8; 5 with no scene. */
 int func_ov004_020ae1f0(void) {
-    int *g = data_ov004_020beb68;
-    if (g != 0) return *(int *)((char *)g + 0xc8);
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene != 0) return scene->unk_0c8;
     return 5;
 }
 }
@@ -955,14 +898,16 @@ extern "C" {
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
 extern int func_ov004_020ae1cc(void);
 extern int func_ov004_020ae1f0(void);
-extern void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int x);
-extern int data_ov004_020beb68;
+/* Plays sound 0 at volume 0x7f (Sound::PlaySub's sound-ID and volume
+   arguments), then, in music mode 1, the scene's track. PlaySub stays
+   mangled: nothing in the tree mangles to its Fix12<int> parameter (see
+   include/Sound.h). */
 void func_ov004_020ae20c(void)
 {
     _ZN5Sound7PlaySubEjjj5Fix12IiEb(0, 0x7f, 0, 0x7f000, 1);
     if (data_ov004_020beb68 == 0) return;
     if (func_ov004_020ae1cc() != 1) return;
-    _ZN5Sound22LoadAndSetMusic_Layer1Ei(func_ov004_020ae1f0());
+    Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
 }
 }
 }
@@ -973,11 +918,12 @@ extern "C" {
 extern int func_ov004_020ae1cc(void);
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 
-void func_ov004_020ae274(void* c) {
-    extern int data_ov004_020beb68[];
-    if (*data_ov004_020beb68 == 0) return;
+/* Plays sound `id` at volume 0x40 while a scene exists. The
+   func_ov004_020ae1cc result is not used. */
+void func_ov004_020ae274(void* id) {
+    if (data_ov004_020beb68 == 0) return;
     func_ov004_020ae1cc();
-    _ZN5Sound7PlaySubEjjj5Fix12IiEb((unsigned int)c, 0x40, 0x7f, 0x7f000, 1);
+    _ZN5Sound7PlaySubEjjj5Fix12IiEb((unsigned int)id, 0x40, 0x7f, 0x7f000, 1);
 }
 }
 }
@@ -985,23 +931,18 @@ void func_ov004_020ae274(void* c) {
 // @symbol func_ov004_020ae2c8
 namespace s20ae2c8 {
 extern "C" {
-extern "C" {
-extern void *data_ov004_020beb68;
 int func_ov004_020ae1cc(void);
 int func_ov004_020ae1f0(void);
-void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
-void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int);
-void func_ov004_020ae2c8(void);
-}
+/* Music mode 0 stops the music; mode 1 plays the scene's track. */
 void func_ov004_020ae2c8(void) {
     if (data_ov004_020beb68 == 0) return;
     int r = func_ov004_020ae1cc();
     if (r == 0) {
-        _ZN5Sound22StopLoadedMusic_Layer1Ej(1);
+        Sound::StopLoadedMusic_Layer1(1);
         return;
     }
     if (r != 1) return;
-    _ZN5Sound22LoadAndSetMusic_Layer1Ei(func_ov004_020ae1f0());
+    Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
 }
 }
 }
@@ -1009,22 +950,21 @@ void func_ov004_020ae2c8(void) {
 // @symbol func_ov004_020ae330
 namespace s20ae330 {
 extern "C" {
-extern int data_ov004_020beb68;
 extern int func_ov004_020ae1cc(void);
-extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 extern int func_ov004_020ae1f0(void);
-extern void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int);
 extern unsigned short data_0209b308;
 
+/* Music mode 0 stops the music, and replays the scene's track only when
+   the menu row's first halfword is 0x16f; any other mode plays the track. */
 void func_ov004_020ae330(void){
     if(data_ov004_020beb68==0) return;
     if(func_ov004_020ae1cc()==0){
-        _ZN5Sound22StopLoadedMusic_Layer1Ej(1);
+        Sound::StopLoadedMusic_Layer1(1);
         if(data_0209b308 != 0x16f) return;
-        _ZN5Sound22LoadAndSetMusic_Layer1Ei(func_ov004_020ae1f0());
+        Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
         return;
     }
-    _ZN5Sound22LoadAndSetMusic_Layer1Ei(func_ov004_020ae1f0());
+    Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
 }
 }
 }
