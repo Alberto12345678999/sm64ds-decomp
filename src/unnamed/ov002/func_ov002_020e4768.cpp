@@ -4,7 +4,7 @@ extern unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int idx,
 extern void func_020167a4(void* p);
 extern void func_ov002_020e640c(void* self);
 extern void _ZN15ModelComponents21UpdateVertsUsingBonesEv(void* self);
-extern int func_ov002_020becf4(void* self, unsigned int idx, int flag);
+extern int _ZN6Player19func_ov002_020becf4Eii(void* self, unsigned int idx, int flag); // local extern: include-free shard, the call passes the object as an untyped pointer so it cannot use the header member
 extern void MulMat4x3Mat4x3(void* dst, void* a, void* b);
 extern int data_020a0e68[12];
 }
@@ -35,7 +35,7 @@ extern "C" void func_ov002_020e4768(char* self)
     comp = *(void**)(self + mid*4 + 0xdc);
     _ZN15ModelComponents21UpdateVertsUsingBonesEv((char*)comp + 8);
 
-    idx = func_ov002_020becf4(self, *(unsigned int*)(self+8) & 0xff, 0);
+    idx = _ZN6Player19func_ov002_020becf4Eii(self, *(unsigned int*)(self+8) & 0xff, 0);
 
     if (idx == 3) {
         unsigned int m2 = _ZNK6Player14GetBodyModelIDEjb(self, *(unsigned int*)(self+8) & 0xff, 0);

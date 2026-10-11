@@ -1,6 +1,6 @@
 //cpp
-/* fBase_c, the root of the actor hierarchy (arm9). 25 functions,
- * .text 0x02043444..0x02043f4c, enrolled and canonical (delinks
+/* fBase_c, the root of the actor hierarchy (arm9). 30 functions,
+ * .text 0x020433b8..0x020440e8, enrolled and canonical (delinks
  * points here, not at per-function files).
  *
  * Source runs REVERSE of ROM (highest address first). Do not reorder.
@@ -40,7 +40,9 @@ extern int  func_0203b20c(void *list, void *node);
 extern int  func_0203b244(void *list, void *node);
 extern int  func_0204405c(void *list, void *node);
 extern int  func_0203b438(void *root, void *node, void *parent);
+extern int  func_0203b2ec(void *l, void *n, void *p);
 
+extern void *data_020a4b68;
 extern int  data_020a4b6c[];
 extern int  data_020a4b78[];
 extern int  data_020a4b88[];
@@ -55,6 +57,7 @@ extern void *data_020a4b64;
 extern fBaseActorInfo **data_020a4bb8;
 
 extern void func_02044334(void *p);
+extern int func_0204335c(void *self);
 extern int  func_0204424c(char *p);
 extern void *func_0206e2f8(void *p, int fill, unsigned int size);
 
@@ -85,6 +88,120 @@ extern void *_ZTV7fBase_c[];
    which needs them for its inline operator delete. */
 extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *heap);
 
+}
+
+/* ROM ordinals 26..29 -- the run's forward neighbours, absorbed in
+ * descending address order (reverse emission). Each keeps its own
+ * namespace so the file-local struct tags do not collide; the functions
+ * themselves keep C linkage under their existing names. */
+
+// @symbol func_0204405c
+namespace Absorb0204405c {
+struct N {
+    struct N *prev;
+    struct N *next;
+    int pad8;
+    volatile unsigned short c;
+};
+struct L {
+    struct N *head;
+    struct N *tail;
+};
+
+extern "C" int func_0204405c(void *list, void *nodep)
+{
+    struct L *l = (struct L *)list;
+    struct N *n = (struct N *)nodep;
+    struct N *node;
+    struct N *next;
+    node = l->head;
+    if (n == 0)
+        return 0;
+    if (node == 0)
+        return func_0203b244(l, n);
+    if (node->c > n->c)
+        return func_0203b2ec(l, n, 0);
+    goto enter;
+advance:
+    node = next;
+enter:
+    next = node->next;
+    if (next == 0)
+        goto done;
+    if (next->c <= n->c)
+        goto advance;
+done:
+    return func_0203b2ec(l, n, node);
+}
+}
+
+// @symbol func_02043fdc
+namespace Absorb02043fdc {
+class Obj { public: int dummy; };
+typedef void (Obj::*PMF)();
+
+struct Node {
+    int pad;        // 0x0
+    Node *next;     // 0x4
+    Obj *obj;       // 0x8
+};
+
+struct Thing {
+    Node *head;     // 0x0
+    int pad;        // 0x4
+    PMF callback;   // 0x8
+};
+
+extern "C" void *func_02043fdc(Thing *thiz)
+{
+    Node *node;
+    if (thiz->callback == 0) return (void *)1;
+    node = thiz->head;
+    while (node != 0) {
+        Node *next;
+        data_020a4b68 = node;
+        next = node->next;
+        (node->obj->*thiz->callback)();
+        node = next;
+    }
+    data_020a4b68 = node;
+    return (void *)1;
+}
+}
+
+// @symbol func_02043f98
+namespace Absorb02043f98 {
+struct Node {
+    void* x0;
+    struct Node* next;  /* 0x4 */
+    int* x8;            /* 0x8 */
+};
+
+extern "C" struct Node* func_02043f98(struct Node** head, int key) {
+    struct Node* node = *head;
+    while (node != 0) {
+        int b = (int)(node->x8[1] != key);
+        if (b == 0) return node;
+        node = node->next;
+    }
+    return 0;
+}
+}
+
+// @symbol func_02043f4c
+namespace Absorb02043f4c {
+struct Inner { char pad[0xc]; unsigned short id; };
+struct Node { char pad[4]; struct Node* next; struct Inner* inner; };
+
+extern "C" struct Node* func_02043f4c(struct Node** pp, int key, struct Node* alt) {
+    struct Node* n = alt ? alt->next : *pp;
+    while (n != 0) {
+        int b = (int)(n->inner->id != key);
+        if (b == 0) return n;
+        n = n->next;
+    }
+    return 0;
+}
 }
 
 // @symbol _ZN7fBase_cC2Ev
@@ -680,4 +797,31 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
         return 0;
     func_0206e2f8(p, 0, size);
     return p;
+}
+
+/* ROM ordinal 0 -- the run's backward neighbour, absorbed (reverse
+ * emission puts the lowest address last). Body as recovered. */
+
+// @symbol func_020433b8
+extern "C" {
+void func_020433b8(char* self)
+{
+    func_0204335c(self);
+    if (*(u8*)(self + 0xf) != 0) return;
+    if (*(u8*)(self + 0x10) != 0) return;
+    {
+        volatile u8* q = (u8*)(self + 0xe);
+        int b = q[0] == 0 ? 1 : 0;
+        if (b == 0) return;
+    }
+    {
+        volatile int* p = data_02099f24;
+        int c = p[0] == 2 ? 1 : 0;
+        if (c) {
+            *(u8*)(self + 0x11) = 1;
+            return;
+        }
+    }
+    func_0203b244(data_020a4b88, self + 0x28);
+}
 }

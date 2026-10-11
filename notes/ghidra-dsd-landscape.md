@@ -531,7 +531,7 @@ analyzeHeadless C:\tools\ghidra_proj sm64ds -process sm64.nds -noanalysis `
 **G9.1 — The sync is essentially complete.** [high] `ListBlocks` reports **486 memory
 blocks** and **11,382 functions** against the 11,394 `kind:function` symbols in the dsd
 config — a 99.9% import. Overlays land in their own address spaces, and the ambiguity of
-§5 is directly visible in the memory map: `arm9_ov002::`[020ad660](../src/unnamed/ov002/func_ov002_020ad660.cpp) and
+§5 is directly visible in the memory map: `arm9_ov002::`[020ad660](../src/actors/dEnemyBase_c.cpp) and
 `arm9_ov003::`[020ad660](../config/arm9/overlays/ov003/symbols.txt) both exist.
 
 **G9.2 — Names: transformed. Zero `FUN_xxxxxxxx` in any of the three drafts.** [high]
