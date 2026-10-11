@@ -4,14 +4,18 @@
  * spawns (STUMP 0x1b, daObjPile_c) and the fence it finds
  * (CHAIN_CHOMP_FENCE 0x29, daObjWanwanShutter_c).
  *
- * common.h stays first. Matrix4x3 has two 0x30-byte spellings, and the
- * shadow placement copies twelve words of whichever one is already in scope.
- *
- * g_profile_WANWAN is not defined here. The func_ov014_* bodies stay free
- * functions: the state table data_ov014_0211476c installs them as 8-byte PMFs,
- * enter at +0 and update at +8. This TU defines the table, the four resource
- * handles and their destructor-registration nodes; mwcc emits
- * __sinit_d_a_wanwan.cpp from those definitions at the bottom of the file.
+ * common.h stays first so the shadow matrix copy stays twelve words.
+ */
+/* leftovers: func_ov014_02111fb8 and the other func_ov014_* bodies stay
+ * free functions. data_ov014_0211476c installs them as 8-byte PMFs.
+ * g_profile_WANWAN is not this file's data. ModelAnim::SetAnim,
+ * dCcAcPos_c::Init, DropShadowRadHeight, Player::Hurt and cstd::atan2
+ * stay mangled: this file calls them, and each takes Fix12<int> by
+ * value. The factory stays hand-rolled. return new daWanwan_c() changes
+ * the size and relocates dExtShadowModel_c's D1 where the ROM still has
+ * 0x020733a8. func_0203d384 constructs the two Vector3[7] arrays. The
+ * four resource handles keep address names; their definitions are this
+ * file's static initializer.
  */
 
 #include "common.h"
@@ -141,19 +145,15 @@ namespace call3_267c {
 extern "C" int func_0201267c(int id, void *pos, int unused);
 }
 
-/* ModelAnim::SetAnim(BCA_File *, int, Fix12<int>, u32) measured +8 bytes:
-   02111e74 0x48->0x50, 02111dc4 0x50->0x58, 02111a6c 0x84->0x8c,
-   02111b70 0x138->0x140. The scalar extern stays. */
+/* SetAnim takes Fix12<int> by value. The scalar extern stays. */
 #define SetChompAnim(self, bca) \
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj( \
         &(self)->mModelAnim, (BCA_File *)(bca).words[1], 0, 0x1000, 0)
 
 // @symbol daWanwan_c_classInit
-/* Hand-rolled. The two Vector3[7] arrays are constructed by func_0203d384,
- * not by Vector3's implicit default. */
-/* return new daWanwan_c() measured 0xf0->0xa0, and the vec_ctor slot
-   relocates dExtShadowModel_c's D1 where the ROM still has 0x020733a8. func_0203d384
-   stays the Vector3[7] constructor. */
+/* Hand-rolled. return new daWanwan_c() changes the size and relocates
+ * dExtShadowModel_c's D1 where the ROM still has 0x020733a8.
+ * func_0203d384 constructs the two Vector3[7] arrays. */
 extern "C" daWanwan_c *daWanwan_c_classInit()
 {
     daWanwan_c *c = (daWanwan_c *)fBase_c::operator new(0x620);
@@ -215,7 +215,7 @@ int daWanwan_c::InitResources()
         v[0] = data_ov014_02114700[0];
         v[1] = data_ov014_02114700[1];
         v[2] = data_ov014_02114700[2];
-        /* dCcAcPos_c::Init(Fix12<int>, Fix12<int>) measured 0x208->0x218. */
+        /* dCcAcPos_c::Init takes Fix12<int> by value. */
         _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
             &mdCcAcPos_c, this, (Vector3 *)v, 0x96000, 0x12c000, 0x200004, 0x26ff0);
     }
@@ -350,7 +350,7 @@ void func_ov014_02112788(char *c)
     t = *(int *)(c + 0x60) - *(int *)(c + 0x5f0);
     if (t <= 0x1000)
         t = 0x1000;
-    /* DropShadowRadHeight(Fix12<int>, Fix12<int>) measured 0x1c4->0x1e4 for both calls. */
+    /* DropShadowRadHeight takes Fix12<int> by value. */
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         (dActor_c *)c, (dExtShadowModel_c *)(c + 0x1b4), (Matrix4x3 *)(c + 0x16c),
         0x15e000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
@@ -468,7 +468,7 @@ void func_ov014_0211250c(char *raw)
             dvec.y = t - prev->y;
         }
 
-        /* cstd::atan2(Fix12<int>, Fix12<int>) measured 0x27c->0x2a4 on this function. */
+        /* cstd::atan2 takes Fix12<int> by value. */
         angY = _ZN4cstd5atan2E5Fix12IiES1_(dvec.x, dvec.z);
         angX = (short)(-_ZN4cstd5atan2E5Fix12IiES1_(dvec.y, Vec3_HorzLen(&dvec)));
         Matrix4x3_FromRotationY(&data_020a0e68, angY);
@@ -551,7 +551,7 @@ void func_ov014_0211236c(char *raw)
         tmp.x = diff.x;
         tmp.y = diff.y;
         tmp.z = diff.z;
-        /* cstd::atan2(Fix12<int>, Fix12<int>) measured 0x1a0->0x1c4 on this function. */
+        /* cstd::atan2 takes Fix12<int> by value. */
         angY = _ZN4cstd5atan2E5Fix12IiES1_(tmp.x, tmp.z);
         angX = (short)(-_ZN4cstd5atan2E5Fix12IiES1_(tmp.y, Vec3_HorzLen(&tmp)));
         Matrix4x3_FromRotationY(&data_020a0e68, angY);
@@ -724,7 +724,7 @@ fail:
 /* CodeWarrior's pointer-to-member is 8 bytes for a complete single-inheritance
  * class. MSVC picks 16 bytes if the class is still incomplete here, and then
  * `20 - 8 - sizeof(PMF)` does not fit. The class is complete above, so both
- * compilers agree. mwccarm's object does not change either way.
+ * compilers agree.
  *
  * The state table data_ov014_0211476c: enter PMF at +0, update PMF at +8, name
  * pointer at +0x10. The table is defined at the bottom of this file; the
@@ -1141,8 +1141,8 @@ extern "C" void func_ov014_02111484(char *raw)
 
 // @symbol _ZN10daWanwan_cD0Ev
 // @symbol _ZN10daWanwan_cD1Ev
-/* Both variants come from the inline destructor in daWanwan_c.h. Inline,
- * mwccarm emits D1 then D0 and no D2, which is the ROM order. */
+/* Both variants come from the inline destructor in daWanwan_c.h.
+ * That emits D1 then D0 and no D2, which is the ROM order. */
 
 /* Order is the retail initializer: model 0x9c02, model 0x9c01, anim 0x9c04,
  * anim 0x9c03, then the six state rows. The model constructors and both
