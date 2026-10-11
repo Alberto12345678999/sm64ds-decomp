@@ -5,7 +5,7 @@
 // collider's own DetectClsn(dBgCh_SphCrr&) -- vtable slot 8 -- and record
 // the floor / wall / underneath hits it reports.
 //
-// comment leftovers:
+// leftovers:
 //   - func_02035354 stays a free extern: the shared dBgCh-side bound-to
 //     check is owned by its shard and called by the Gnd/Lin scans as well.
 //   - func_0203938c/9c/ac/b4 stay free externs: weak dBgW field accessors
