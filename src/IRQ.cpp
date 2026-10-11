@@ -1,9 +1,9 @@
 //cpp
-/* src/IRQ.cpp — IRQ TU (arm9 0x02056c40..0x02057000)
+/* src/IRQ.cpp — IRQ TU (arm9 0x02056c40..0x02057014)
  *
- * The eighteen complete entries from Tim3OverflowHandler through SetIRQHandler,
+ * The nineteen complete entries from Tim3OverflowHandler through func_02057000,
  * one contiguous .text run. mwccarm emits .text in reverse source order under
- * default deferred codegen, so the file is descending: SetIRQHandler first,
+ * default deferred codegen, so the file is descending: func_02057000 first,
  * Tim3OverflowHandler last. The name is the class already declared in
  * include/IRQ.h.
  *
@@ -36,6 +36,12 @@ struct IRQTableSlot {
 extern "C" {
 extern IRQ::Handler data_02099fe4[];
 extern IRQTableSlot data_020a60c4[];
+extern short data_023c0000[];
+}
+
+extern "C" {
+// @symbol func_02057000
+void func_02057000(void) { data_023c0000[0] = 0; }
 }
 
 namespace IRQ {
@@ -139,7 +145,6 @@ void EmptyHandler(void)
 
 extern "C" {
 extern u16 data_02099fd4[];
-extern short data_023c0000[];
 }
 
 inline void (*inline_fn(IRQTableSlot *arg0, u32 arg1))(void *)

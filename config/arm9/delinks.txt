@@ -5080,11 +5080,7 @@ src/Copy48BytesFixed.c:
 
 src/IRQ.cpp:
     complete
-    .text start:0x02056c40 end:0x02057000
-
-src/unnamed/arm9/0205/func_02057000.c:
-    complete
-    .text start:0x02057000 end:0x02057014
+    .text start:0x02056c40 end:0x02057014
 
 src/unnamed/arm9/0205/func_020570a8.c:
     complete

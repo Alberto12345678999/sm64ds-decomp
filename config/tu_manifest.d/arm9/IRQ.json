@@ -6,15 +6,15 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x02056c40..0x02057000, 18 function(s), gapless in config/arm9/delinks.txt (each entry end was the next entry start, all marked complete).",
+    "contiguous linker run: 0x02056c40..0x02057014, 19 function(s), gapless in config/arm9/delinks.txt (each entry end was the next entry start, all marked complete).",
     "TOP EDGE: Copy48BytesFixed (0x02056c1c..0x02056c40) ends exactly where the run begins. It is a byte-copy helper, not an IRQ member.",
-    "BOTTOM EDGE: func_02057000 (0x02057000..0x02057014) begins exactly where the run ends. It stores to data_023c0000 and is not an IRQ member, so the run stops there. Other IRQ functions (0x0201a4e4, 0x02059cb4, itcm 0x01ffd97c, and 0x0205b864..0x020610fc) are separate runs and are not this TU."
+    "BOTTOM EDGE: undelinked ROM (0x02057014..0x020570a8, not decompiled) follows the run; the next delinked entry is func_020570a8. Other IRQ functions (0x0201a4e4, 0x02059cb4, itcm 0x01ffd97c, and 0x0205b864..0x020610fc) are separate runs and are not this TU."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02056c40",
-      "end": "0x02057000"
+      "end": "0x02057014"
     }
   ],
   "functions": [
@@ -143,6 +143,13 @@
       "size": "0x00000090",
       "legacy_source": "src/_ZN3IRQ13SetIRQHandlerEjPFvvE.cpp",
       "ordinal": 17
+    },
+    {
+      "symbol": "func_02057000",
+      "address": "0x02057000",
+      "size": "0x00000014",
+      "legacy_source": "src/unnamed/arm9/0205/func_02057000.c",
+      "ordinal": 18
     }
   ],
   "data": [],
@@ -151,8 +158,9 @@
   "notes": [
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the main module is unsegmentable, so there is no create candidate id.",
     "The file name is the class name already used by include/IRQ.h, per Juan 2026-10-11. IRQ has no ROM RTTI spelling and had no home TU.",
-    "Default deferred codegen emits .text in reverse source order, so the definitions are written descending and the object carries the eighteen functions ascending 0x02056c40..0x02057000. No file-wide pragma.",
-    "func_02056e4c and func_02056e98 stay extern C under their existing names (probe: C++ byte-identical). They share data_020a60c4 with SetIRQHandler, GetIRQHandler, and DmaTimHandler; two casts in func_02056e98 keep that one 12-byte slot layout."
+    "Default deferred codegen emits .text in reverse source order, so the definitions are written descending and the object carries the nineteen functions ascending 0x02056c40..0x02057014. No file-wide pragma.",
+    "func_02056e4c and func_02056e98 stay extern C under their existing names (probe: C++ byte-identical). They share data_020a60c4 with SetIRQHandler, GetIRQHandler, and DmaTimHandler; two casts in func_02056e98 keep that one 12-byte slot layout.",
+    "func_02057000 (P04 grow) stays extern C under its existing name. It clears the DTCM wake mask data_023c0000[0] that DmaTimHandler signals into at +0x3ff8, so it belongs to this TU's run; its only caller is the unaffiliated helper func_02058c84."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -160,8 +168,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-IRQ/IRQ.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 18,
-    "functions_declared": 18,
+    "functions_matched": 19,
+    "functions_declared": 19,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
@@ -174,6 +182,79 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "link-verified",
+      "scratch": "build/tu/arm9-IRQ/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x02056c40",
+        "end": "0x02057014",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x02056c40",
+          "end": "0x02057014",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 19
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   }
 }
