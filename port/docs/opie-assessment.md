@@ -198,7 +198,7 @@ callback-signature widening, staticness toggles, and `NitroStaticInit` shims.)*
 We have the same problem plus in-place 32-bit fixup written back into loaded file images:
 
 ```c
-/* src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp */
+/* src/engine/model/Model4.cpp */
 int base = (int)&file;
 if (g->lists) g->lists = (BMD_DisplayList *)((int)g->lists + base);
 ```
