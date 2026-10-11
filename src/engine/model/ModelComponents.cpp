@@ -1,17 +1,16 @@
 //cpp
 /* ModelComponents -- the bone/skeleton half of a loaded model (transforms at
- * +0x0c rebuilt from the BMD bone list), arm9 0x02044dc4..0x020453c0,
- * 9 functions: UpdateVertsUsingBones, UpdateBones + 7 helpers. The file takes
- * the class name already used in the tree (include/ModelBase.h), per
- * Juan 2026-10-11.
+ * +0x0c rebuilt from the BMD bone list), arm9 0x02044dc4..0x0204547c,
+ * 10 functions: UpdateVertsUsingBones, UpdateBones, func_020453c0 + 7 helpers.
+ * The file takes the class name already used in the tree (include/ModelBase.h),
+ * per Juan 2026-10-11.
  *
  * SCOPE: func_02044b30.c below is not complete, so Render (0x020443c8) and the
- * helpers under it stay out; next above is func_020453c0.c (not
- * ModelComponents-tagged), which UpdateBones forwards to and which stays a
- * one-function source.
+ * helpers under it stay out. func_020453c0 is the bone-tree walk UpdateBones
+ * forwards to. Next above is func_0204547c.c, a Model leftover, and it stays out.
  *
  * mwccarm emits .text in reverse source order here, so definitions run from
- * the highest address (UpdateBones) down to the lowest (func_02044dc4).
+ * the highest address (func_020453c0) down to the lowest (func_02044dc4).
  * Descending order defines every in-span callee before its callers, so only
  * out-of-span callees need extern declarations.
  *
@@ -83,8 +82,35 @@ void func_02048234(int *out, int sa, int sb, int sc, int ax, int ay, int az, int
 void MulMat4x3Mat4x3(const int *A, const int *B, int *dst);
 void func_02047218(void *a, void *b, void *out, int c);
 void func_02047910(int *m0, int *m1, int *dst, int t);
-void func_020453c0(int *a, short *node, int *p2, int p3);
+void func_0204547c(int *a, int b, int c, void *elem);
 extern s16 data_02082214[];
+}
+
+// @symbol func_020453c0
+/* Bone-tree walk at 0x020453c0. UpdateBones forwards here. Recurses on the
+ * node's child and sibling slots and calls func_0204547c, which stays out. */
+extern "C" {
+void func_020453c0(int *a, short *node, int *p2, int p3)
+{
+    int idx = node[0];
+    char *elem = (char*)a[2] + idx * 0x34;
+    int f2c = *(int*)(elem + 0x2c);
+    int *r6 = p2;
+    int r5 = p3;
+    if (f2c != 0) {
+        r6 = (int*)f2c;
+        r5 = *(unsigned short*)(elem + 0x30);
+    }
+    int mla = idx * 0x24 + r6[5];
+    unsigned short *dst;
+    func_0204547c(r6, mla, r5, elem);
+    dst = (unsigned short*)(int)(elem + 0x18);
+    *dst = (unsigned short)(*dst | *(unsigned short*)(elem + node[4] * 0x34 + 0x18));
+    if (node[5] != 0)
+        func_020453c0(a, (short*)((char*)node + (node[5] << 6)), r6, r5);
+    if (node[6] != 0)
+        func_020453c0(a, (short*)((char*)node + (node[6] << 6)), r6, r5);
+}
 }
 
 // @symbol _ZN15ModelComponents11UpdateBonesEP8BCA_Filei

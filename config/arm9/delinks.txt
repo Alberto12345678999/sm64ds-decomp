@@ -4010,11 +4010,7 @@ src/unnamed/arm9/0204/func_02044b30.c:
 
 src/engine/model/ModelComponents.cpp:
     complete
-    .text start:0x02044dc4 end:0x020453c0
-
-src/func_020453c0.c:
-    complete
-    .text start:0x020453c0 end:0x0204547c
+    .text start:0x02044dc4 end:0x0204547c
 
 src/func_0204547c.c:
     complete

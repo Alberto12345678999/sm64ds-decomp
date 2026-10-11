@@ -6,15 +6,15 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x02044dc4..0x020453c0, 9 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
-    "BOTTOM EDGE: func_02044b30.c (0x02044b30..0x02044dc4) ends exactly where the run begins but is not complete, so Render (0x020443c8) and the helpers under it stay out of scope. TOP EDGE: func_020453c0.c (0x020453c0..0x0204547c) begins exactly where the run ends; it is not ModelComponents-tagged and stays a one-function source, called by UpdateBones.",
-    "NAMESPACE-LOCAL COMPLETE: the run is UpdateVertsUsingBones, UpdateBones and the seven helpers that drive the same DIV/SQRT/matrix registers between them. No other ModelComponents run belongs to this job."
+    "contiguous linker run: 0x02044dc4..0x0204547c, 10 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
+    "BOTTOM EDGE: func_02044b30.c (0x02044b30..0x02044dc4) ends exactly where the run begins but is not complete, so Render (0x020443c8) and the helpers under it stay out of scope. TOP EDGE: func_020453c0 (0x020453c0..0x0204547c) is the bone-tree walk UpdateBones forwards to and is inside this run. func_0204547c.c begins exactly where the run ends; it is a Model leftover and stays out.",
+    "NAMESPACE-LOCAL COMPLETE: the run is UpdateVertsUsingBones, UpdateBones, the bone-tree walk func_020453c0, and the seven helpers that drive the same DIV/SQRT/matrix registers between them. No other ModelComponents run belongs to this job."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02044dc4",
-      "end": "0x020453c0"
+      "end": "0x0204547c"
     }
   ],
   "functions": [
@@ -80,6 +80,13 @@
       "size": "0x0000002c",
       "legacy_source": "src/_ZN15ModelComponents11UpdateBonesEP8BCA_Filei.cpp",
       "ordinal": 8
+    },
+    {
+      "symbol": "func_020453c0",
+      "address": "0x020453c0",
+      "size": "0x000000bc",
+      "legacy_source": "src/func_020453c0.c",
+      "ordinal": 9
     }
   ],
   "data": [],
@@ -88,7 +95,7 @@
   "notes": [
     "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the `main` module is unsegmentable, so there is no create candidate id.",
     "ModelComponents is the bone/skeleton half of a loaded model; the file takes the class name already used in the tree (include/ModelBase.h), per Juan 2026-10-11. No vtable, RTTI, or emitted data.",
-    "mwccarm emits .text in reverse source order here, so the file runs from the highest address (UpdateBones) down to the lowest (func_02044dc4). Descending order defines every in-span callee before its callers, so only out-of-span callees need extern declarations.",
+    "mwccarm emits .text in reverse source order here, so the file runs from the highest address (func_020453c0) down to the lowest (func_02044dc4). Descending order defines every in-span callee before its callers, so only out-of-span callees need extern declarations.",
     "No helper is promoted: none has ROM method evidence, so all seven stay extern \"C\" under their existing names. The two struct Node layouts are one shared definition (exact prefix, identical accessed offsets); the func_02044efc Matrix4x3 typedef is include/ModelBase.h's."
   ],
   "verification": {
@@ -97,8 +104,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/arm9-ModelComponents/ModelComponents.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 9,
-    "functions_declared": 9,
+    "functions_matched": 10,
+    "functions_declared": 10,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
@@ -127,7 +134,7 @@
       },
       "tuRange": {
         "start": "0x02044dc4",
-        "end": "0x020453c0",
+        "end": "0x0204547c",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -135,14 +142,14 @@
         {
           "section": ".text",
           "start": "0x02044dc4",
-          "end": "0x020453c0",
+          "end": "0x0204547c",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 9
+          "LICENSED": 10
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],

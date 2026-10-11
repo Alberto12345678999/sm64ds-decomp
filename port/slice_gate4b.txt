@@ -42,8 +42,8 @@ src/func_02059fd0.c
 src/func_0203cc0c.c
 src/func_0204605c.c
 
-# gate 4c additions: the animation path (UpdateBones recursion)
-src/func_020453c0.c
+# gate 4c additions: the animation path (UpdateBones recursion).
+# func_020453c0 lives in the ModelComponents TU listed above.
 src/func_0204547c.c
 src/func_020457f0.c
 src/func_020456a0.c

@@ -24449,7 +24449,7 @@
       ]
     },
     "func_0204547c": {
-      "src/func_020453c0.c": [
+      "src/engine/model/ModelComponents.cpp": [
         "param:#1 int *",
         "param:#2 int"
       ]
