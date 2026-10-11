@@ -11,7 +11,23 @@
    this object, and the secondary table's preamble lands inside the
    primary's compared extent, where RTTI-off zeros cannot license the
    discard. Written back-to-front: mwccarm emits .text in reverse source
-   order under default deferred codegen. */
+   order under default deferred codegen.
+
+   leftovers:
+   - the lifecycle pair (D0, D1, C1) and the two _ZThn80_ thunks stay
+     enrolled shards for the MI-vtable reason above.
+   - SetAnim and its SetAnimation call keep mangled spellings: the real
+     signatures carry Fix12<int> by value and the member declaration homes
+     the argument (wall 6az, notes/mwccarm-codegen.md).
+   - func_020165c4 stays a C-linkage free function: it is DoSetFile's tail
+     in the ROM and DoSetFile is its only caller.
+   - func_0204531c, func_020462bc, func_020462b4 and Memory::operator_new2
+     have no declaring header; BCA_File is only the 2-field header word
+     SetAnim reads.
+   - Virtual18 keeps its u32 mat parameter and cast -- the vtable slot's
+     Ej signature fixes that spelling.
+   - *(int *)(&blendWeight) in Advance is the RMW launder the ROM's
+     member re-read needs. */
 #include "BlendModelAnim.h"
 
 extern "C" {

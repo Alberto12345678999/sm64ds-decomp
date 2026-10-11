@@ -4,7 +4,16 @@
    pair); the cartridge RTTI names it dExtAnmTexSRT_c. TU claims
    0x0201587c..0x0201597c, the whole class run in delinks order. Written
    back-to-front: mwccarm emits .text in reverse source order under default
-   deferred codegen. */
+   deferred codegen.
+
+   leftovers:
+   - SetFile and its SetAnimation call keep mangled spellings (Fix12<int>
+     by value, wall 6az); the member declarations in the headers are real.
+   - func_020469e8 and func_02046b64 stay extern "C" helpers with no
+     declaring header; Prepare's ROM body is a 0xc long-call veneer, so it
+     calls func_02046b64 with that function's own two-argument signature.
+   - RTTI stays off: the cartridge names the class dExtAnmTexSRT_c, so the
+     emitted _ZTS/_ZTI records would have no configured home. */
 #include "TextureTransformer.h"
 
 /* The cartridge spells this class dExtAnmTexSRT_c, so the compiler-emitted

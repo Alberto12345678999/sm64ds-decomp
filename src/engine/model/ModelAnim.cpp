@@ -12,7 +12,19 @@
    preamble lands inside the primary's compared extent, where RTTI-off
    zeros cannot license the discard -- the same wall BlendModelAnim
    recorded. Written back-to-front: mwccarm emits .text in reverse source
-   order under default deferred codegen. */
+   order under default deferred codegen.
+
+   leftovers:
+   - the lifecycle row (D2, D0, D1, C1, C2) and the two _ZThn80_ thunks
+     stay enrolled shards for the MI-vtable reason above.
+   - SetAnim and its SetAnimation call keep mangled spellings (Fix12<int>
+     by value, wall 6az); the member declaration in ModelAnim.h is real.
+   - func_020167a4 stays a C-linkage free function: the file-local
+     bones-only half of UpdateVerts that daMoray_c calls on a
+     BlendModelAnim *.
+   - BCA_File is only the 2-field header word SetAnim reads.
+   - Virtual18 keeps its u32 mat parameter and cast -- the vtable slot's
+     Ej signature fixes that spelling. */
 #include "ModelAnim.h"
 
 extern "C" {
