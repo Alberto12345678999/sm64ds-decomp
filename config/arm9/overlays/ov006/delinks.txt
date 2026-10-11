@@ -125,6 +125,10 @@ src/minigames/d_s_mg_jump2.cpp:
 src/actors/dScMgLuigi_c.cpp:
     complete
     .text start:0x020efc0c end:0x020f3834
+    .init start:0x02130f64 end:0x021311c8
+    .ctor start:0x021335ac end:0x021335b0
+    .data start:0x0213cd8c end:0x0213ce54
+    .bss start:0x021421ec end:0x021422a4
 
 src/minigames/d_s_mg_memory.cpp:
     complete
@@ -269,10 +273,6 @@ src/unnamed/ov006/__sinit_ov006_0213014c.c:
 src/unnamed/ov006/__sinit_ov006_02130a04.c:
     complete
     .init start:0x02130a04 end:0x02130a08
-
-src/unnamed/ov006/__sinit_ov006_02130f64.c:
-    complete
-    .init start:0x02130f64 end:0x021311c8
 
 src/unnamed/ov006/__sinit_ov006_021322bc.c:
     complete

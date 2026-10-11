@@ -3,7 +3,8 @@
  * the touch screen and the player taps the match. A hit adds time and pops
  * a reward, a miss drops a mark and costs ten seconds, and curtains plus an
  * iris close the round. The timer running out fails it. dScMgLuigi_c is the
- * scene.
+ * scene. Its state tables and registry profile close the file, and mwcc
+ * builds the tables in __sinit_dScMgLuigi_c.cpp.
  *
  * Keep source order. The local optimization pragmas stay with the functions
  * that need them.
@@ -1899,3 +1900,53 @@ int *dScMgLuigi_c_classInit(void)
 }
 }
 
+
+/* The state tables, in the order the static initializer fills them. Each
+   entry's {function, 0} record is a compiler temporary in .data. */
+LuigiStateHandler data_ov006_02142234[4] = {
+    &dScMgLuigi_c::StateSetup,
+    &dScMgLuigi_c::StatePlace,
+    &dScMgLuigi_c::StatePlay,
+    &dScMgLuigi_c::StateCatch,
+};
+LuigiSlotHandler data_ov006_02142254[10] = {
+    &dScMgLuigi_c::RestartPicture,
+    &dScMgLuigi_c::StopPicture,
+    &dScMgLuigi_c::MovePictureDriftFixed,
+    &dScMgLuigi_c::MovePictureDriftByLevel,
+    &dScMgLuigi_c::MovePictureDriftByColumn,
+    &dScMgLuigi_c::MovePictureDriftByRow,
+    &dScMgLuigi_c::MovePictureDriftRandom,
+    &dScMgLuigi_c::MovePictureSway,
+    &dScMgLuigi_c::MovePictureBounce,
+    &dScMgLuigi_c::TickPictureFlash,
+};
+LuigiSlotHandler data_ov006_02142204[3] = {
+    &dScMgLuigi_c::CurtainStart,
+    &dScMgLuigi_c::CurtainUpdate,
+    &dScMgLuigi_c::CurtainStateSlow,
+};
+LuigiSlotHandler data_ov006_0214221c[3] = {
+    &dScMgLuigi_c::CurtainStateBounce,
+    &dScMgLuigi_c::CurtainStateHold,
+    &dScMgLuigi_c::CurtainStateFast,
+};
+LuigiSlotHandler data_ov006_021421ec[3] = {
+    &dScMgLuigi_c::IrisHold,
+    &dScMgLuigi_c::IrisGrow,
+    &dScMgLuigi_c::IrisStop,
+};
+
+/* MG_LUIGI's registry profile: the factory, then the same priority in both
+   halfwords. */
+struct MgLuigiProfile {
+    int *(*spawn)();
+    s16 behaviorPriority;
+    s16 renderPriority;
+};
+MgLuigiProfile g_profile_MG_LUIGI = {
+    dScMgLuigi_c_classInit, 0x16e, 0x16e
+};
+
+/* ChooseTarget's tile-number table, indexed by the wanted character. */
+u16 data_ov006_0213cdec[4] = { 0x0308, 0x0300, 0x0318, 0x0310 };
