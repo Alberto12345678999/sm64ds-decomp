@@ -19,7 +19,7 @@
  * descriptor records they are built from live at data_ov006_0213da*; the
  * runtime copies are made by __sinit_ov006_02131cd0.
  *
- * comment leftovers:
+ * leftovers:
  * - The helpers still address the scene through byte offsets and the local
  *   view structs below. mBalls[0x40] is the typed name for 0x4660..0x565f,
  *   but only balls 0..0x2f are live balls: the tail overlaps three 0x40-byte
