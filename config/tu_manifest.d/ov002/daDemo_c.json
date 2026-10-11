@@ -9,13 +9,13 @@
     "HISTORY: contiguous linker run: 0x20f1f70..0x20f8808, 145 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): CutsceneObject, daDemo_c",
     "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "CLASSINIT TAIL FOLD (2026-10-09): daDemo_c_classInit (0x30, 0x020f8808), the one-function source right of this run, abuts its .text end with no gap and is now inside it (0x020f1f70..0x020f8838). The factory allocates sizeof(daDemo_c) (0x104), runs dActor_c's base ctor and stores _ZTV8daDemo_c; it is written last in the file because the TU sets #pragma defer_codegen off. The two _ZThn80_ anmModel_c thunks after it (0x020f8838..0x020f8858) stay with their own sources: this TU's copies remain deadstrip-duplicate, because _ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp is the source whose project-spelled nested vtables (_ZTVN8daDemo_c10anmModel_cE, _ZTVN8daDemo_c13simpleModel_cE) romdata_check verifies; retiring it loses those two exact symbols."
+    "CLASSINIT+THUNK TAIL FOLD: daDemo_c_classInit (0x30, 0x020f8808) and the two _ZThn80_ anmModel_c thunks (0x10 each, 0x020f8838/0x020f8848, D0 below D1) abut this run's .text end with no gap and are now inside it (0x020f1f70..0x020f8858). The factory allocates sizeof(daDemo_c) (0x104), runs dActor_c's base ctor and stores _ZTV8daDemo_c; it is written last in the file because the TU sets #pragma defer_codegen off. The thunks are this TU's own emitted copies -- defining the out-of-line anmModel_c destructor makes the compiler emit the -0x50 adjustment thunks with its vtable group; the absorbed shards carried the identical bodies only to host the project-spelled vtables. Their romdata verification is preserved on this TU's emitted copies: symbols.txt gained the eight dExt*-spelled member rows (the cartridge RTTI spellings aliasing the ModelAnim/Model member addresses), so the emitted _ZTVN8daDemo_c10anmModel_cE/_ZTVN8daDemo_c13simpleModel_cE slot words resolve and verify 44/44 + 24/24."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020f1f70",
-      "end": "0x020f8838"
+      "end": "0x020f8858"
     },
     {
       "name": ".data",
@@ -1045,6 +1045,20 @@
       "size": "0x00000030",
       "legacy_source": "src/d_a_demo.c",
       "ordinal": 145
+    },
+    {
+      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
+      "address": "0x020f8838",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp",
+      "ordinal": 146
+    },
+    {
+      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD1Ev",
+      "address": "0x020f8848",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp",
+      "ordinal": 147
     }
   ],
   "data": [
@@ -1146,7 +1160,8 @@
     "tubuild create warning: CONFLICT: local declaration ('typedef', 's16') differs between the legacy file that used to hold func_ov002_020f237c and the one that held func_ov002_020f7bb8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('typedef', 'void') differs between the legacy file that used to hold func_ov002_020f3310 and the one that held func_ov002_020f7d74; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'Obj') differs between the legacy file that used to hold func_ov002_020f2210 and the one that held _ZN8daDemo_c16CleanupResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: local declaration ('struct', 'Obj') differs between the legacy file that used to hold func_ov002_020f2210 and the one that held _ZN8daDemo_c13InitResourcesEv; kept the first, the other is commented out for review"
+    "tubuild create warning: CONFLICT: local declaration ('struct', 'Obj') differs between the legacy file that used to hold func_ov002_020f2210 and the one that held _ZN8daDemo_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 matches the canonical record)."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1154,24 +1169,20 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daDemo_c/daDemo_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 146,
-    "functions_declared": 146,
+    "functions_matched": 148,
+    "functions_declared": 148,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN8daDemo_cD2Ev",
         "_ZN8daDemo_c10anmModel_cD2Ev",
         "_ZN8daDemo_c13simpleModel_cD2Ev",
-        "_ZN7Vector3D1Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD1Ev"
+        "_ZN7Vector3D1Ev"
       ],
       "deadstripped": [
         "_ZN7Vector3D1Ev",
         "_ZN8daDemo_c10anmModel_cD2Ev",
         "_ZN8daDemo_c13simpleModel_cD2Ev",
-        "_ZN8daDemo_cD2Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
-        "_ZThn80_N8daDemo_c10anmModel_cD1Ev"
+        "_ZN8daDemo_cD2Ev"
       ],
       "droppedSections": [
         9,
@@ -1195,11 +1206,7 @@
         280,
         281,
         282,
-        283,
-        305,
-        306,
-        307,
-        308
+        283
       ],
       "data": [
         "_ZTV8daDemo_c",
@@ -1246,7 +1253,7 @@
       },
       "tuRange": {
         "start": "0x020f1f70",
-        "end": "0x020f8838",
+        "end": "0x020f8858",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -1254,7 +1261,7 @@
         {
           "section": ".text",
           "start": "0x020f1f70",
-          "end": "0x020f8838",
+          "end": "0x020f8858",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -1268,7 +1275,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 148
+          "LICENSED": 150
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1346,20 +1353,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "A Vector3 local emits the inline destructor. The ROM homes that four-byte body in arm9 at 0x020072c0; this copy is discarded."
-    },
-    {
-      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD0Ev",
-      "disposition": "deadstrip-duplicate",
-      "canonical_module": "ov002",
-      "canonical_address": "0x020f8838",
-      "reason": "Non-virtual thunk to the Animation base for anmModel_c::D0. The cartridge homes the identical 0x10-byte thunk at ov002:0x020f8838, owned by the classInit source; this copy is discarded."
-    },
-    {
-      "symbol": "_ZThn80_N8daDemo_c10anmModel_cD1Ev",
-      "disposition": "deadstrip-duplicate",
-      "canonical_module": "ov002",
-      "canonical_address": "0x020f8848",
-      "reason": "Non-virtual thunk to the Animation base for anmModel_c::D1. The cartridge homes the identical 0x10-byte thunk at ov002:0x020f8848, owned by the classInit source; this copy is discarded."
     },
     {
       "symbol": "_ZTV8daDemo_c",

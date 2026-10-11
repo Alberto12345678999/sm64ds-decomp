@@ -1359,16 +1359,8 @@ src/actors/daMugenBGM_c.cpp:
 
 src/actors/daDemo_c.cpp:
     complete
-    .text start:0x020f1f70 end:0x020f8838
+    .text start:0x020f1f70 end:0x020f8858
     .data start:0x0210b940 end:0x0210b958
-
-src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp:
-    complete
-    .text start:0x020f8838 end:0x020f8848
-
-src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
-    complete
-    .text start:0x020f8848 end:0x020f8858
 
 src/actors/daFPknBall_c.cpp:
     complete
