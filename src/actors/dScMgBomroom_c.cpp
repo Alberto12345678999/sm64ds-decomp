@@ -21,28 +21,20 @@
  * Each pragma bracket below carries the file-global pragma of the shard
  * that function came from; every bracket moves bytes, and they bind only
  * under defer_codegen off.
- *
- * comment leftovers:
- * func_ov006_020d68a8: a state field (and &state) differs from
- * (u8 *)(bomb + 0x4697), the idle-bomb timer store stays
- * raw + i*0x40 + 0x4690, and the color read goes through
- * (dScMgBomroom_Bomb *)(bomb + 0x4660) -- mBombs[i].color swaps the
- * compare's register pairing by one word.
- * func_ov006_020d7604: &f3c differs from
- * (unsigned char *)(int)(bomb + 0x469c).
- * func_ov006_020d7c4c: the sine-table value stays the first factor of
- * each product (s16 sinv/cosv); inline table reads flip smull operand
- * order. The spawner keeps its raw (c + (j << 6)) + 0x46NN stores.
- * func_ov006_020d5eb8, _020d5f2c, _020d6100, _020d6170, _020d6454:
- * the rec = this + index*0x10 temp and its *(ty *)(rec + 0x62NN) puns
- * are load-bearing -- mSlots* member access reschedules the address
- * math. func_ov006_020d5fd8 keeps its BrEnt5fd8 pad overlay for the
- * same reason (mSlotsB[index + 2].timer emits an extra add).
- * func_ov006_020d7edc, _020d8324: slot/h pointer temps likewise.
- * iarr[i][0x119c] in func_ov006_020d89c4 and _020d8af8 is a parallel
- * 0x40-stride int array outside the bomb records; nothing else names
- * that region.
  */
+
+// leftovers: func_ov006_020d68a8 keeps raw bomb-record addressing (a state
+// field and &state differ from (u8 *)(bomb + 0x4697); the idle-bomb timer
+// stays raw + i*0x40 + 0x4690; mBombs[i].color swaps the compare's register
+// pairing). func_ov006_020d7604 keeps &f3c over (unsigned char *)(bomb +
+// 0x469c). func_ov006_020d7c4c keeps the sine-table value as the first factor
+// (inline reads flip smull order) and the spawner keeps raw (c + (j << 6)) +
+// 0x46NN stores. func_ov006_020d5eb8/_020d5f2c/_020d6100/_020d6170/_020d6454
+// keep the rec = this + index*0x10 temp and its *(ty *)(rec + 0x62NN) puns
+// (member access reschedules the address math); _020d5fd8 keeps its BrEnt5fd8
+// pad overlay; _020d7edc/_020d8324 keep slot/h pointer temps. iarr[i][0x119c]
+// in _020d89c4/_020d8af8 is a parallel 0x40-stride int array outside the bomb
+// records that nothing else names.
 
 #include "dScMgBomroom_c.h"
 #include "types.h"
@@ -2104,13 +2096,13 @@ int dScMgBomroom_c::func_ov006_020d8c88() {
 #pragma opt_strength_reduction off
 
 void dScMgBomroom_c::func_ov006_020d8cc4() {
-    char * r5 = (char *)this;
+    char * base = (char *)this;
     func_ov006_020d836c();
     int c4 = 0;
     int c2 = 0;
     int i = 0;
     do {
-        char *e = r5 + (i << 6);
+        char *e = base + (i << 6);
         e = e + 0x4000;
         if (*(unsigned char *)(e + 0x698) != 0 && *(unsigned char *)(e + 0x697) == 6) {
             unsigned char v = *(unsigned char *)(e + 0x69b);
@@ -2119,14 +2111,14 @@ void dScMgBomroom_c::func_ov006_020d8cc4() {
         }
         i++;
     } while (i < 0x70);
-    if (c2 == 0 && *(unsigned char *)(r5 + 0x6000 + 0x2f4) == 0) {
+    if (c2 == 0 && *(unsigned char *)(base + 0x6000 + 0x2f4) == 0) {
         func_ov006_020d7604();
     }
     if (c4 != 0) return;
     func_ov006_020d5e1c();
     mStateTimer = 0x10;
-    *(int *)(r5 + 0x6000 + 0x2d4) = 2;
-    *(unsigned char *)(r5 + 0x6000 + 0x2f9) = 1;
+    *(int *)(base + 0x6000 + 0x2d4) = 2;
+    *(unsigned char *)(base + 0x6000 + 0x2f9) = 1;
 }
 
 #pragma pop
@@ -2352,9 +2344,9 @@ s32 dScMgBomroom_c::InitResources()
 {
     char *c = (char *)this;
     char *b;
-    volatile u16 sp4;
+    volatile u16 fill;
     int f;
-    int r5;
+    int arc;
 
     data_0209d45c |= 8;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 2;
@@ -2378,8 +2370,8 @@ s32 dScMgBomroom_c::InitResources()
 
     f = LoadFile(3);
     b = (char *)_ZN2G212GetBG2ScrPtrEv();
-    sp4 = 0xf23f;
-    MultiStore16(sp4, b, 0x1000);
+    fill = 0xf23f;
+    MultiStore16(fill, b, 0x1000);
     func_020563d4((const void *)f, 0, 0x800);
     Deallocate((void *)f);
 
@@ -2397,9 +2389,9 @@ s32 dScMgBomroom_c::InitResources()
 
     G2x::SetBlendAlpha((volatile u16 *)0x4000050, 1, 0x1c, 4, 3);
 
-    r5 = LoadFile(0xb5);
+    arc = LoadFile(0xb5);
     f = LoadFile(0xb6);
-    DecompressLZ16((void *)r5, (void *)0x6400000);
+    DecompressLZ16((void *)arc, (void *)0x6400000);
     _ZN2GX11LoadOBJPlttEPKvjj((const void *)f, 0, 0x100);
 
     data_0209d454 |= 8;
@@ -2419,9 +2411,9 @@ s32 dScMgBomroom_c::InitResources()
         func_020562b4((const void *)f7, 0, 0x800);
         Deallocate((void *)f7);
 
-        DecompressLZ16((void *)r5, (void *)0x6600000);
+        DecompressLZ16((void *)arc, (void *)0x6600000);
         _ZN3GXS11LoadOBJPlttEPKvjj((const void *)f, 0, 0x100);
-        Deallocate((void *)r5);
+        Deallocate((void *)arc);
         Deallocate((void *)f);
     }
 
