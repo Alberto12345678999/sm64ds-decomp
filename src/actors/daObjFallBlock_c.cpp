@@ -8,35 +8,35 @@
  * common.h stays first. ApplyModelXyz writes Model::mat4x3 as a flat
  * s32 m[12]; math/Matrix.h's {Matrix3x3 r; Vector3 t;} is the other
  * spelling of the same 0x30 bytes, and this TU needs the word stores.
- *
- * Leftover: func_ov098_0213a2cc is shared CleanupResources. Its body
- *   disables mMeshCollider and Release()s the model and collision
- *   SharedFilePtrs (descriptor slots 0 and 1). The four leaves import
- *   that linker name, and the virtual slot stays pure, so it is not
- *   renamed here.
- * Leftover: dBgW_KcMbg::SetFile's definition takes an int scale (this
- *   InitResources passes 0x199). The header method takes Fix12<int> by
- *   value and changes the caller, so the call stays the mangled symbol.
- * Leftover: dBgActor_c::IsClsnInRange's definition takes two ints
- *   (Behavior passes 0, 0). There is no int method on the class.
- * Leftover: Particle::System::NewSimple's definition takes three s32
- *   positions (Kill). A Fix12<int> declaration changes the caller.
- * Leftover: func_020393c4 is `p[7] = v`, the store of OnStoodOn into
- *   dBgW::unk_1c. The ROM calls it; an inlined store would drop the bl.
- *   Naming belongs on dBgW.
- * Leftover: OnStoodOn keeps long_calls. The ROM tail is the pooled
- *   absolute veneer (size 0x14); a near branch to RequestShake is 0xc.
- * Leftover: RequestShake keeps the unused second parameter. The veneer
- *   forwards it, and a 1-arg callee drops `mov r1, r2`.
- * Leftover: Behavior case 2 keeps the masked address of mAngleX
- *   (this+0x8c) and mAngleZ (this+0x90). Named stores change the size.
- *   Case 1 keeps `(long long)sinv * 0x19000`.
- * Leftover: Kill materialises `(actorID == KM2_KUZURE)` into an int
- *   before the branch. Folding the test changes the compare.
  * The file is in ROM order under `#pragma defer_codegen off`, with the two
  * destructors first (D0 0x02139f70, D1 0x02139fc8): the inline destructor
  * emits D1 then D0 under deferred codegen, and the ROM has D0 below D1.
  */
+
+// leftovers:
+// - func_ov098_0213a2cc is shared CleanupResources. Its body disables
+//   mMeshCollider and Release()s the model and collision SharedFilePtrs
+//   (descriptor slots 0 and 1). The four leaves import that linker name,
+//   and the virtual slot stays pure, so it is not renamed here.
+// - dBgW_KcMbg::SetFile's definition takes an int scale (this
+//   InitResources passes 0x199). The header method takes Fix12<int> by
+//   value and changes the caller, so the call stays the mangled symbol.
+// - dBgActor_c::IsClsnInRange's definition takes two ints (Behavior
+//   passes 0, 0). There is no int method on the class.
+// - Particle::System::NewSimple's definition takes three s32 positions
+//   (Kill). A Fix12<int> declaration changes the caller.
+// - func_020393c4 is `p[7] = v`, the store of OnStoodOn into dBgW::unk_1c.
+//   The ROM calls it; an inlined store would drop the bl. Naming belongs
+//   on dBgW.
+// - OnStoodOn keeps long_calls. The ROM tail is the pooled absolute
+//   veneer (size 0x14); a near branch to RequestShake is 0xc.
+// - RequestShake keeps the unused second parameter. The veneer forwards
+//   it, and a 1-arg callee drops `mov r1, r2`.
+// - Behavior case 2 keeps the masked address of mAngleX (this+0x8c) and
+//   mAngleZ (this+0x90). Named stores change the size. Case 1 keeps
+//   `(long long)sinv * 0x19000`.
+// - Kill materialises `(actorID == KM2_KUZURE)` into an int before the
+//   branch. Folding the test changes the compare.
 
 #pragma defer_codegen off
 
