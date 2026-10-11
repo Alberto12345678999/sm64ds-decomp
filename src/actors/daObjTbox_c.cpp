@@ -1,74 +1,21 @@
 //cpp
-/* Production translation unit for ov064/daObjTbox_c.
- * 16 function(s), .text 0x0211a200..0x0211a930.
+/* Jolly Roger Bay treasure chest (TREASURE_BOX, actor 0x0d). Each chest
+ * has a 1-based order. The wrong order shocks the player and resets the
+ * room. The last chest spawns the star.
  *
- * The treasure chests of Jolly Roger Bay and the sunken ship (profile
- * TREASURE_BOX, actor 0x0d). Each chest carries a 1-based order number; a
- * player who touches them out of order is shocked and every other chest in
- * the room is reset. Opening the last one spawns this room's star.
- *
- * WHAT THE CARTRIDGE PROVES:
- *   _ZTS  ov064 0x0211c4d8  "11daObjTbox_c"
- *   _ZTI  ov064 0x0211c4cc  __si_class_type_info; one direct base, dActor_c
- *                           at arm9:0x0208e390, at offset zero
- *   _ZTV  ov064 0x0211c50c  the address point; 31 slots, the same extent as
- *                           dActor_c, with 0, 3, 6, 9, 16 and 17 overridden
- *   profile ov064 0x0211c4e8  g_profile_TREASURE_BOX, whose factory word is
- *                           daObjTbox_c_classInit at 0x0211a8f0
- *   size  0x178             the literal the factory hands operator new
- * The RTTI name is the ROM's own and is final; the coined `TreasureChest`
- * spelling this class used to be glossed with is gone.
- *
- * WHY THIS IS ONE TRANSLATION UNIT: build/tu_map.json isolates the fifteen
- * daObjTbox_c methods as a contiguous linker run, 0x0211a200..0x0211a8f0,
- * between daWater_Ring_c's factory and daObjShell_c's destructor, with no
- * foreign function inside it and no unlabelled neighbour at either edge. The
- * factory run that follows, 0x0211a8f0..0x0211a930, carries no mangled name
- * for tu_map to attribute, but it allocates this class's own 0x178, installs
- * this class's vptr, constructs this class's two members and is the address
- * the TREASURE_BOX profile stores -- and it ends exactly where the next
- * class's D1 begins. The join is registry/factory-backed rather than
- * tu_map-proven, the same evidence ov064/daObjFl_Gura_c was joined on.
- * config/arm9/overlays/ov064/delinks.txt enrolled all sixteen as adjacent
- * `complete` entries with no hole, so the whole run could be claimed at once.
- *
- * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
- * emits one .text section per function, in the REVERSE of source order, so
- * the highest-address ROM function is written FIRST here. Do not reorder. The
- * inline destructor in include/daObjTbox_c.h emits the retail D1/D0 pair
- * first and emits no D2 body.
- *
- * Known limits:
- * - ModelAnim::SetAnim and dCcAc_c::Init keep their C ABI spellings in
- *   InitResources: their real declarations pass Fix12<int> by value, which
- *   mwccarm lowers differently at a C++ call site.
- * - func_02012790 / func_02012694 are still linker names; State0 calls them
- *   with a sound code (and, for the second, a position). No further name is
- *   coined.
- * - data_ov002_0210d9a8 and data_ov002_0210da38 are ov002 handles this TU
- *   borrows; its own two handles and the PMF-pair table are defined below.
- * - The "// address (size)" line above each definition is its ROM location.
- * - The sixteen one-function sources this TU consolidates are recorded, with
- *   their retired paths, in its manifest entry.
- *
- * ROM address order:
- *   [ 0] 0x0211a200  _ZN11daObjTbox_cD1Ev
- *   [ 1] 0x0211a238  _ZN11daObjTbox_cD0Ev
- *   [ 2] 0x0211a284  _ZN11daObjTbox_c20UpdateModelTransformEv
- *   [ 3] 0x0211a2c4  _ZN11daObjTbox_c6State2Ev
- *   [ 4] 0x0211a380  _ZN11daObjTbox_c10InitState2Ev
- *   [ 5] 0x0211a39c  _ZN11daObjTbox_c6State1Ev
- *   [ 6] 0x0211a49c  _ZN11daObjTbox_c10InitState1Ev
- *   [ 7] 0x0211a4c4  _ZN11daObjTbox_c6State0Ev
- *   [ 8] 0x0211a6e0  _ZN11daObjTbox_c10InitState0Ev
- *   [ 9] 0x0211a6ec  _ZN11daObjTbox_c8SetStateEi
- *   [10] 0x0211a734  _ZN11daObjTbox_c17CallStateBehaviorEv
- *   [11] 0x0211a77c  _ZN11daObjTbox_c16CleanupResourcesEv
- *   [12] 0x0211a7c4  _ZN11daObjTbox_c6RenderEv
- *   [13] 0x0211a7ec  _ZN11daObjTbox_c8BehaviorEv
- *   [14] 0x0211a814  _ZN11daObjTbox_c13InitResourcesEv
- *   [15] 0x0211a8f0  daObjTbox_c_classInit
+ * _ZTS 0x0211c4d8, _ZTI 0x0211c4cc (base _ZTI8dActor_c 0x0208e390),
+ * _ZTV 0x0211c50c. Was TreasureChest. .text 0x0211a200..0x0211a930.
+ * The destructor is inline in daObjTbox_c.h: D1 then D0, no D2.
+ * Highest address first.
  */
+// leftovers:
+// - ModelAnim::SetAnim and dCcAc_c::Init stay C ABI spellings in
+//   InitResources. Fix12<int> by value lowers differently as a member call.
+// - func_02012790 and func_02012694 stay linker names. State0 calls them
+//   with a sound id, and the second also takes a position.
+// - data_ov002_0210d9a8 and data_ov002_0210da38 are ov002 handles this TU
+//   borrows.
+// - g_profile_TREASURE_BOX stays at 0x0211c4e8, outside this text span.
 
 #include "daObjTbox_c.h"
 #include "Player.h"
@@ -119,39 +66,14 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     u32 flags, u32 vulnFlags);
 }
 
-// 0x0211a8f0 (0x40)
 // @symbol daObjTbox_c_classInit
-/* Reconstructed source-style name: the cartridge proves daObjTbox_c through
- * RTTI, allocation size and vtable identity, and the TREASURE_BOX profile at
- * 0x0211c4e8 takes this function's address as its factory slot; later EAD
- * lineage supplies the classInit spelling. The exact original spelling is not
- * preserved. Historical alias: TreasureChest_Spawn.
- *
- * Every instruction the cartridge has here falls out of the one `new`. The
- * literal 0x178 is the class's own size, handed to the leaf operator new the
- * header declares; then dActor_c's C2, this class's vptr store, and the
- * ModelAnim (0x0d4) and dCcAc_c (0x138) member constructors, in declaration
- * order. The null check is the one `new` itself emits, and the implicit
- * default constructor is what keeps that construction inlined -- declaring a
- * constructor of our own would emit a `bl` the factory does not have.
- *
- * The legacy one-function file this replaces had to spell the allocation as a
- * direct call to the mangled fBase_c::operator new, because without a leaf
- * `operator new` in scope `new daObjTbox_c` reached for the global one. The
- * header now declares that leaf, so the factory is a plain `new` and the ROM's
- * own allocator call is what the compiler emits.
- */
+/* TREASURE_BOX factory. */
 extern "C" daObjTbox_c *daObjTbox_c_classInit()
 {
     return new daObjTbox_c();
 }
 
-// 0x0211a814 (0xdc)
 // @symbol _ZN11daObjTbox_c13InitResourcesEv
-/* ModelAnim::SetAnim and dCcAc_c::Init keep their C ABI spellings here. Their
- * real declarations pass Fix12<int> by value, which mwccarm lowers differently
- * at a C++ call site (the documented Fix12 caller wall); the scalar ABI forms
- * are the measured ROM calls. */
 int daObjTbox_c::InitResources()
 {
     Model::LoadFile(data_ov002_0210d9a8);
@@ -173,7 +95,6 @@ int daObjTbox_c::InitResources()
     return 1;
 }
 
-// 0x0211a7ec (0x28)
 // @symbol _ZN11daObjTbox_c8BehaviorEv
 int daObjTbox_c::Behavior()
 {
@@ -183,7 +104,6 @@ int daObjTbox_c::Behavior()
     return 1;
 }
 
-// 0x0211a7c4 (0x28)
 // @symbol _ZN11daObjTbox_c6RenderEv
 int daObjTbox_c::Render()
 {
@@ -192,7 +112,6 @@ int daObjTbox_c::Render()
     return 1;
 }
 
-// 0x0211a77c (0x48)
 // @symbol _ZN11daObjTbox_c16CleanupResourcesEv
 /* Four releases: two handles live in this
  * overlay and two in ov002, borrowed from the always-resident module. The
@@ -206,7 +125,6 @@ int daObjTbox_c::CleanupResources()
     return 1;
 }
 
-// 0x0211a734 (0x48)
 // @symbol _ZN11daObjTbox_c17CallStateBehaviorEv
 void daObjTbox_c::CallStateBehavior()
 {
@@ -214,7 +132,6 @@ void daObjTbox_c::CallStateBehavior()
     (this->*data_ov064_0211c98c[index][1])();
 }
 
-// 0x0211a6ec (0x48)
 // @symbol _ZN11daObjTbox_c8SetStateEi
 void daObjTbox_c::SetState(s32 state)
 {
@@ -223,14 +140,12 @@ void daObjTbox_c::SetState(s32 state)
     (this->*data_ov064_0211c98c[index][0])();
 }
 
-// 0x0211a6e0 (0xc)
 // @symbol _ZN11daObjTbox_c10InitState0Ev
 void daObjTbox_c::InitState0()
 {
     mModelAnim.currFrame = 0;
 }
 
-// 0x0211a4c4 (0x21c)
 // @symbol _ZN11daObjTbox_c6State0Ev
 void daObjTbox_c::State0()
 {
@@ -307,7 +222,6 @@ void daObjTbox_c::State0()
     }
 }
 
-// 0x0211a49c (0x28)
 // @symbol _ZN11daObjTbox_c10InitState1Ev
 void daObjTbox_c::InitState1()
 {
@@ -317,7 +231,6 @@ void daObjTbox_c::InitState1()
     mFlags &= ~1;
 }
 
-// 0x0211a39c (0x100)
 // @symbol _ZN11daObjTbox_c6State1Ev
 void daObjTbox_c::State1()
 {
@@ -352,7 +265,6 @@ void daObjTbox_c::State1()
         SetState(2);
 }
 
-// 0x0211a380 (0x1c)
 // @symbol _ZN11daObjTbox_c10InitState2Ev
 void daObjTbox_c::InitState2()
 {
@@ -360,7 +272,6 @@ void daObjTbox_c::InitState2()
         mFlags |= 1;
 }
 
-// 0x0211a2c4 (0xbc)
 // @symbol _ZN11daObjTbox_c6State2Ev
 void daObjTbox_c::State2()
 {
@@ -383,7 +294,6 @@ void daObjTbox_c::State2()
     mFlags |= 1;
 }
 
-// 0x0211a284 (0x40)
 // @symbol _ZN11daObjTbox_c20UpdateModelTransformEv
 void daObjTbox_c::UpdateModelTransform()
 {
@@ -393,21 +303,9 @@ void daObjTbox_c::UpdateModelTransform()
     mModelAnim.mat4x3.t.z = mPosZ >> 3;
 }
 
-// 0x0211a238 (0x4c), 0x0211a200 (0x38)
 // @symbol _ZN11daObjTbox_cD1Ev
 // @symbol _ZN11daObjTbox_cD0Ev
-/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjTbox_c() {}` in the header is
- * the whole source of both variants: from an inline body mwccarm emits D1 and
- * then D0 -- the cartridge's own order -- and no leaf D2. Written out of line
- * here instead, the two legacy shards' body reproduces the same bytes but the
- * variants come out D0-before-D1, and the isolation step rejects the object.
- *
- * Every instruction in both is compiler-generated teardown implied by
- * `struct daObjTbox_c : dActor_c`: this class's own vptr store, then dCcAc_c
- * at 0x138 and ModelAnim at 0x0d4 in reverse construction order, then the
- * dActor_c base. D0 additionally returns the object to the actor heap through
- * the inline operator delete.
- */
+/* D1 and D0 come from the inline destructor in daObjTbox_c.h. */
 
 /* The two file-scope resource handles, in retail initializer order: the
    model file (func_02017acc / func_02017ab4), then the animation file
