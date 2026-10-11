@@ -9,6 +9,9 @@
  * the class's own overrides, and last the factory dScMgTeresa_c_classInit.
  * Below it is dScMgSound_c.
  *
+ * _ZTS13dScMgTeresa_c 0x0213f9c0. _ZTI13dScMgTeresa_c 0x0213f9b4.
+ * _ZTV13dScMgTeresa_c 0x0213fa0c.
+ *
  * Nothing in the ROM names the helpers, so the members keep their
  * func_ov006_ names. InitResources, Behavior, Render and OnYoshiTryEat were
  * named from their vtable slots; Virtual50 and Virtual88 are placeholders
@@ -31,17 +34,18 @@
  * from the .data descriptor records at data_ov006_0213f8xx.
  *
  * OAM::Render takes Fix12<int> by value, so that call stays mangled.
- *
- * comment leftovers:
- *  - dScMgTeresa_c.h leaves 0x4660..0x4be8 as padding, so the 16
- *    0x24-byte Boo rows at 0x4660, the 0x20-stride pair at 0x4bac, the HUD
- *    sprites at 0x4960, and the bytes at 0x4c1b and 0x4c1f are still reached
- *    through the local views below or raw offsets on `this`. Naming them in
- *    the header is what would unblock typed access -- but each function's
- *    base choice (fresh cast per access vs one saved pointer) is what
- *    mwccarm's addressing actually follows, so the conversion has to be
- *    measured one function at a time.
  */
+
+// leftovers:
+// - dScMgTeresa_c.h leaves 0x4660..0x4be8 as padding, so the 16 0x24-byte
+//   Boo rows at 0x4660, the 0x20-stride pair at 0x4bac, the HUD sprites at
+//   0x4960, and the bytes at 0x4c1b and 0x4c1f are still reached through the
+//   local views below or raw offsets on `this` (callers: the Boo flight,
+//   reveal and 16-Boo row handlers dispatching through the PMF tables).
+//   Naming them in the header would unblock typed access, but each
+//   function's base choice (fresh cast per access vs one saved pointer) is
+//   what the addressing follows, so the conversion has to be measured one
+//   function at a time.
 
 #pragma defer_codegen off
 
