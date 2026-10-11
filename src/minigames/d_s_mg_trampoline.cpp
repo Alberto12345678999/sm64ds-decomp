@@ -8,7 +8,7 @@
  * applies to the whole file. TUBUILD CONFLICT comments are paired with
  * the manifest; leave them.
  *
- * comment leftovers:
+ * leftovers:
  * - The factory still builds the object by hand, so its offset stores
  *   stay raw.
  * - Desc::Render, Desc::Update and func_ov006_02120d0c keep raw offsets:
