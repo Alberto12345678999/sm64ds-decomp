@@ -21,35 +21,39 @@
  * include/daObjBk_Lift_c.h and lands ahead of everything, D1 then D0, which
  * is the order the cartridge has (0x02112290, then 0x021122dc).
  *
- * Leftover: dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange, dActor_c::UpdatePos,
- * Leftover: Sound::PlayLong, Particle::System::NewSimple and
- * Leftover: dActor_c::DropShadowScaleXYZ stay mangled extern-C free functions.
- * Leftover: Each takes Fix12<int> by value, and a real method call homes the
- * Leftover: argument and size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
- * Leftover: func_02039394 / func_020393a4 / func_020393c4 / func_020393d4 are
- * Leftover: small stores into dBgW. This TU calls them; naming belongs to dBgW.
- * Leftover: func_ov015_021128f8 stays a free function. Its first argument is the
- * Leftover: collider, not the lift. It keeps #pragma long_calls: the ROM veneer
- * Leftover: is the pooled ldr ip,[pc,#8]; bx ip absolute tail-call (size 0x14);
- * Leftover: a near b to func_ov015_021128e8 in this same TU is 0xc.
- * Leftover: func_ov015_021128e8 keeps a second unused parameter. The veneer
- * Leftover: forwards two registers after dropping the collider, and a 1-arg
- * Leftover: callee drops mov r1, r2.
- * Leftover: data_ov015_02114a5c / data_ov015_02114a64 are this class's KCL and
- * Leftover: BMD handles, defined at the file end so mwcc emits the .init.
- * Leftover: symbols.txt used to coin MovingBarSmall_ClsnFile /
- * Leftover: MovingBarSmall_ModelFile on those addresses -- a stale spelling
- * Leftover: of this class's old coined name -- so this TU keeps the
- * Leftover: address-true spelling.
- * Leftover: data_ov015_02113594 is the CLPS block this TU does not own.
- * Leftover: data_02082214 is arm9's sin/cos table. data_0209f220 / data_0209f2f8
- * Leftover: are arm9 scene state. g_profile_BK_LIFT01 lives outside this TU.
- * Leftover: Behavior kind 1 writes the half-turn through s16 *p = &mPrevAngleY
- * Leftover: and a u8 temporary for 0x87. A direct member add if-converts
- * Leftover: (ldrsheq / addeq / strheq) and Behavior shrinks from 0x1cc to 0x1c4.
- * Leftover: Behavior kind 2 keeps the 0/1 flag, the second compare, and the
- * Leftover: equal-arm ternary. Direct mPosY < mMinPosY / mPosY > mMaxPosY
- * Leftover: clamps compile to 0x1a4 against the ROM's 0x1cc.
+ * leftovers:
+ * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange, dActor_c::UpdatePos,
+ *   Sound::PlayLong, Particle::System::NewSimple and
+ *   dActor_c::DropShadowScaleXYZ stay mangled extern-C free functions:
+ *   each takes Fix12<int> by value, and a real method call homes the
+ *   argument and size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
+ * - func_02039394 / func_020393a4 / func_020393c4 / func_020393d4 are
+ *   small stores into dBgW. This TU calls them; naming belongs to dBgW.
+ * - func_ov015_021128f8 stays a free function: its first argument is the
+ *   collider, not the lift. It keeps #pragma long_calls -- the ROM veneer
+ *   is the pooled ldr ip,[pc,#8]; bx ip absolute tail-call (size 0x14);
+ *   a near b to func_ov015_021128e8 in this same TU is 0xc.
+ * - func_ov015_021128e8 keeps a second unused parameter: the veneer
+ *   forwards two registers after dropping the collider, and a 1-arg
+ *   callee drops mov r1, r2.
+ * - data_ov015_02114a5c / data_ov015_02114a64 are this class's KCL and
+ *   BMD handles, defined at the file end so mwcc emits the .init.
+ *   symbols.txt used to coin MovingBarSmall_ClsnFile /
+ *   MovingBarSmall_ModelFile on those addresses -- a stale spelling of
+ *   this class's old coined name -- so this TU keeps the address-true
+ *   spelling.
+ * - data_ov015_02113594 is the CLPS block this TU does not own;
+ *   data_02082214 is arm9's sin/cos table; data_0209f220 / data_0209f2f8
+ *   are arm9 scene state; g_profile_BK_LIFT01 lives outside this TU.
+ * - Behavior kind 1 writes the half-turn through s16 *p = &mPrevAngleY
+ *   and a u8 temporary for 0x87: a direct member add if-converts
+ *   (ldrsheq / addeq / strheq) and Behavior shrinks from 0x1cc to 0x1c4.
+ * - Behavior kind 2 keeps the 0/1 flag, the second compare, and the
+ *   equal-arm ternary: direct mPosY < mMinPosY / mPosY > mMaxPosY clamps
+ *   compile to 0x1a4 against the ROM's 0x1cc.
+ * - Vec3_Dist, DecIfAbove0_Byte and IsStarCollectedInCurLevel stay local
+ *   externs; Vec3_Dist is called on raw s32 triplets and its header
+ *   copies take Vector3 * in unrelated leaf headers.
  */
 
 /* MEASURED -- MUST STAY AHEAD OF daObjBk_Lift_c.h, which reaches math/Matrix.h

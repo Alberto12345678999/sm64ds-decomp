@@ -16,7 +16,7 @@
  * func_ov065_02119fe8 and func_ov065_0211a114 are methods. The ROM address is
  * the method name. No other TU calls the old free-function spelling.
  *
- * Leftover:
+ * leftovers:
  * - dBgW_KcMbg::SetFile with a Fix12<int> local sizes InitResources
  *   0x104->0x110. dActor_c::DropShadowScaleXYZ with Fix12<int> locals sizes
  *   func_ov065_02119fe8 0x12c->0x144. Fix12<int>{...} does not compile

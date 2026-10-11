@@ -23,6 +23,23 @@
  * dBgActor_c ctor + this class's vtable store. daObjBkKillerdai_c has no
  * user-declared constructor, so `new daObjBkKillerdai_c()` reproduces the
  * identical sequence.
+ *
+ * leftovers:
+ * - Particle::System::NewSimple, dBgActor_c::UpdateKillByMegaChar,
+ *   dBgActor_c::IsClsnInRange and dBgW_KcMbg::SetFile take Fix12<int> by
+ *   value, so the calls stay on the mangled spelling.
+ * - Kill stores pos and dustPos memberwise; a Vector3 assignment does not
+ *   match. Behavior widens mPosY through `long long` before the
+ *   spawn-height add.
+ * - dActor_c has no Pos()/CamSpacePos() view, so the (Vector3 *)&mPosX and
+ *   *(Vector3 *)&mCamSpacePosX puns stay.
+ * - The launcher's link to its bill is an unnamed word at +0x3dc; actor
+ *   0xde has no header.
+ * - data_0209f2f8 (level id), data_0209caa0 (per-level flags) and
+ *   data_0209f220 (star flag) keep linker names; IsStarCollectedInCurLevel
+ *   is a shared coined helper, naming belongs at its definition.
+ * - Vec3_HorzDist / Vec3_HorzAngle stay local externs: their header copies
+ *   live in unrelated leaf headers, not a shared home.
  */
 
 #include "decl_common.h"
@@ -60,8 +77,8 @@ daObjBkKillerdai_c::~daObjBkKillerdai_c()
 }
 
 // @symbol _ZN18daObjBkKillerdai_c4KillEv
-/* Leftover: Particle::System::NewSimple takes Fix12<int> by value, so it
- * stays mangled. dustPos is stored memberwise; a Vector3 assignment does not
+/* Particle::System::NewSimple takes Fix12<int> by value, so it stays
+ * mangled. dustPos is stored memberwise; a Vector3 assignment does not
  * match. */
 void daObjBkKillerdai_c::Kill()
 {
@@ -110,10 +127,9 @@ s32 daObjBkKillerdai_c::Render()
 }
 
 // @symbol _ZN18daObjBkKillerdai_c8BehaviorEv
-/* Leftover: dBgActor_c::UpdateKillByMegaChar and dBgActor_c::IsClsnInRange
- * take Fix12<int> by value, so they stay mangled.
- * mPosY is widened through a long long before the spawn-height add;
- * a plain add misses. */
+/* dBgActor_c::UpdateKillByMegaChar and dBgActor_c::IsClsnInRange take
+ * Fix12<int> by value, so they stay mangled. mPosY is widened through a
+ * long long before the spawn-height add; a plain add misses. */
 s32 daObjBkKillerdai_c::Behavior()
 {
     if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, 0x2000, 0, 0, 0xc8000))
@@ -142,8 +158,7 @@ s32 daObjBkKillerdai_c::Behavior()
 }
 
 // @symbol _ZN18daObjBkKillerdai_c13InitResourcesEv
-/* Leftover: dBgW_KcMbg::SetFile takes Fix12<int> by value, so it stays
- * mangled. */
+/* dBgW_KcMbg::SetFile takes Fix12<int> by value, so it stays mangled. */
 s32 daObjBkKillerdai_c::InitResources()
 {
     void *file;
