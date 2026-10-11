@@ -1870,13 +1870,9 @@ src/unnamed/arm9/0202/func_02020768.c:
     complete
     .text start:0x02020768 end:0x02020820
 
-src/unnamed/arm9/0202/func_02020820.c:
-    complete
-    .text start:0x02020820 end:0x02020884
-
 src/engine/oam/OAM.cpp:
     complete
-    .text start:0x02020884 end:0x02021a04
+    .text start:0x02020820 end:0x02021a04
 
 src/engine/particle/Particle_SysTracker_Contents.cpp:
     complete

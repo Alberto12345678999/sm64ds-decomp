@@ -23377,10 +23377,6 @@
       "src/unnamed/arm9/0202/func_02020768.c": [
         "param:#1 char *",
         "return:void"
-      ],
-      "src/unnamed/arm9/0202/func_02020820.c": [
-        "param:#1 void *",
-        "return:void"
       ]
     },
     "func_0202044c": {
