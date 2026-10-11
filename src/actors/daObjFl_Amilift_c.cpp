@@ -20,19 +20,20 @@
  *
  * #pragma defer_codegen off lays .text down in source order. One out-of-line
  * destructor emits D1 then D0.
- *
- * Known limits:
- * - The three state handlers and their helpers are daObjFl_Amilift_c members
- *   that keep their ROM addresses as names.
- * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange and cstd::atan2 take
- *   Fix12<int> by value, so they stay mangled calls.
- * - The collider callbacks registered in InitResources
- *   (dBgW::UpdatePosWithTransform and func_ov064_02117fd4) are passed as raw
- *   addresses to func_020393d4 / func_020393c4, which have no header.
- * - Behavior updates mStateFrames and mBobPhase through pointer locals and
- *   re-reads mBobPhase as unsigned; writing both as plain member updates came
- *   out 8 bytes short.
  */
+
+// leftovers:
+// - The three state handlers and their helpers are daObjFl_Amilift_c members
+//   that keep their ROM addresses as names. Renaming is a reviewer call;
+//   the bodies already read as methods.
+// - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange and cstd::atan2 take
+//   Fix12<int> by value, so they stay mangled calls.
+// - The collider callbacks registered in InitResources
+//   (dBgW::UpdatePosWithTransform and func_ov064_02117fd4) are passed as raw
+//   addresses to func_020393d4 / func_020393c4, which have no header.
+// - Behavior updates mStateFrames and mBobPhase through pointer locals and
+//   re-reads mBobPhase as unsigned; plain member updates came out 8 bytes
+//   short.
 
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
@@ -197,7 +198,7 @@ void daObjFl_Amilift_c::func_ov064_02117c24()
                 return;
         }
         mState = daObjFl_Amilift_c::STATE_FORWARD;
-        struct Vector3 v0, v1;
+        Vector3 v0, v1;
         v0.x = mToX;
         v0.y = mToY;
         v0.z = mToZ;
