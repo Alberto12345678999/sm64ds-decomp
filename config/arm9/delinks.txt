@@ -626,85 +626,9 @@ src/unnamed/arm9/0201/func_02013638.c:
     complete
     .text start:0x02013638 end:0x02013650
 
-src/_ZN8SaveData21SetCoinRecordIfHigherEah.cpp:
-    complete
-    .text start:0x02013650 end:0x0201366c
-
-src/_ZN8SaveData13GetCoinRecordEj.cpp:
-    complete
-    .text start:0x0201366c end:0x0201367c
-
-src/NumStars.c:
-    complete
-    .text start:0x0201367c end:0x020136dc
-
-src/CollectStarInLevel.c:
-    complete
-    .text start:0x020136dc end:0x020136f8
-
-src/IsStarCollectedInLevel.c:
-    complete
-    .text start:0x020136f8 end:0x02013714
-
-src/CountStarsCollectedInLevelToDisplay.c:
-    complete
-    .text start:0x02013714 end:0x02013768
-
-src/_ZN8SaveData26CountStarsCollectedInLevelEj.cpp:
-    complete
-    .text start:0x02013768 end:0x020137a8
-
-src/CollectStar.c:
-    complete
-    .text start:0x020137a8 end:0x020137e0
-
-src/IsStarCollected.c:
-    complete
-    .text start:0x020137e0 end:0x020137fc
-
-src/OpenCannonInLevel.c:
-    complete
-    .text start:0x020137fc end:0x02013818
-
-src/IsCannonOpenInLevel.c:
-    complete
-    .text start:0x02013818 end:0x02013834
-
-src/OpenCannon.c:
-    complete
-    .text start:0x02013834 end:0x02013850
-
-src/IsCannonOpen.c:
-    complete
-    .text start:0x02013850 end:0x02013868
-
-src/unnamed/arm9/0201/func_02013868.c:
-    complete
-    .text start:0x02013868 end:0x02013890
-
-src/unnamed/arm9/0201/func_02013890.c:
-    complete
-    .text start:0x02013890 end:0x020138dc
-
-src/unnamed/arm9/0201/func_020138dc.c:
-    complete
-    .text start:0x020138dc end:0x02013910
-
-src/_ZN8SaveData17SetCharacterIntroEi.cpp:
-    complete
-    .text start:0x02013910 end:0x0201392c
-
-src/_ZN8SaveData19IsCharacterUnlockedEj.cpp:
-    complete
-    .text start:0x0201392c end:0x02013944
-
-src/unnamed/arm9/0201/func_02013944.c:
-    complete
-    .text start:0x02013944 end:0x02013984
-
 src/engine/save/SaveData.cpp:
     complete
-    .text start:0x02013984 end:0x02013e80
+    .text start:0x02013650 end:0x02013e80
 
 src/actors/ActorDerived.cpp:
     complete
