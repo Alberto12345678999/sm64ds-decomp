@@ -1,26 +1,40 @@
 /* GXS -- sub-screen VRAM upload helpers (Nitro SDK namespace, not a class).
- * Owns .text 0x02055dec..0x02055fb4: the extended-palette banked upload
+ * Owns .text 0x02055dec..0x02056870: the VRAM load family -- BG character and
+ * screen loads (LoadBG3Char..LoadBG0Scr, the GXS/GX twins interleaved in ROM
+ * order), the OBJ/OAM/palette loads, and the extended-palette banked upload
  * family (EndLoadOBJExtPltt .. BeginLoadBGExtPltt). Below sits G3i's TU
- * ending at 0x02055dec; above is func_02055fb4, whose own header calls it
- * "likely GXS::LoadBG3Char".
+ * ending at 0x02055dec; above is the GX.cpp TU starting at 0x02056870.
+ *
+ * GX/GXS are one original file pair: the GX:: members that lie inside this
+ * stretch (LoadBG1Char, LoadBG0Char, LoadOBJ, LoadOBJPltt) are defined here
+ * too, in ROM order like everything else.
  *
  * Each old shard re-declared the shared globals and DMA callees privately;
- * they are unified here. SetBankForSub*ExtPltt keep the shards' wide u32
- * extern "C" spellings (local extern): the shards' u32 spelling is what the
- * bytes were built against.
+ * they are unified here, spelled to match the callee definitions. The
+ * helpers keep their address names under extern "C" (no recovered name
+ * exists). DMASyncWordTransfer keeps the shards' wide u32 spelling (local
+ * extern): the definition's u8 channel inserts a narrowing op at the call.
+ * DMASyncHalfTransfer / MultiCopyHalf keep volatile dst: some callers pass
+ * volatile pointers.
  *
- * Definitions run EndLoadOBJExtPltt .. BeginLoadBGExtPltt, descending,
+ * Definitions run descending (LoadBGPltt first, EndLoadOBJExtPltt last)
  * because mwccarm emits .text in reverse source order; the @symbol roster
  * is what ties each one back to its ROM address.
  */
 
 #include "types.h"
 
+/* opt_propagation off is what LoadOBJ and func_020565b4 (the two
+ * constant-based VRAM destinations, 0x6400000/0x6600000) were built under;
+ * it is file-global last-wins under deferred codegen, and every other member
+ * here is byte-identical either way. */
+#pragma opt_propagation off
+
 /* GX sub-screen extended palette VRAM bases */
 #define GXS_OBJ_EXT_PLTT_BASE 0x068a0000u
 #define GXS_BG_EXT_PLTT_BASE  0x06898000u
 
-extern u32 data_02099fd0;  // RENDER_DMA_CHANNEL: DMA channel number, -1 if none
+extern int data_02099fd0;  // RENDER_DMA_CHANNEL: DMA channel number, -1 if none
 extern u32 data_020a60a4;  // BG ext-palette bank saved by BeginLoadBG, restored by EndLoadBG
 extern u32 data_020a60a8;  // OBJ ext-palette bank saved by BeginLoadOBJ, restored by EndLoadOBJ
 
@@ -29,10 +43,381 @@ extern u16 func_020540f0(void);
 extern u16 func_02054118(void);
 extern void func_02059fa8(int ch);
 extern void func_02059fd0(int ch, int src, int dst, u32 size, void (*cb)(int), int cbarg);
-extern void MultiCopy_Int(int *dst, int *src, int len);
+// local extern: u8 channel per the definition inserts a narrowing op at the call
+extern void DMASyncWordTransfer(u32 ch, const void *src, void *dst, u32 size);
+extern void DMASyncHalfTransfer(u32 ch, const void *src, volatile void *dst, u32 count);
+extern void MultiCopyHalf(const void *src, volatile void *dst, int count);
+extern void MultiCopy_Int(int *src, int *dst, int len);
+
+/* VRAM base-pointer getters, kept as literal symbol spellings (no header
+ * declares them), returned the way each definition spells it: G2S for the
+ * sub screen, G2 for the main screen. */
+extern unsigned int _ZN3G2S13GetBG3CharPtrEv(void);
+extern unsigned int _ZN3G2S13GetBG2CharPtrEv(void);
+extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
+extern unsigned int _ZN3G2S13GetBG0CharPtrEv(void);
+extern void *_ZN2G213GetBG2CharPtrEv(void);
+extern int func_02054d88(void);
+extern void *func_02054ea8(void);
+extern void *func_02054efc(void);
+extern unsigned int _ZN3G2S12GetBG3ScrPtrEv(void);
+extern void *_ZN2G212GetBG3ScrPtrEv(void);
+extern unsigned int _ZN3G2S12GetBG2ScrPtrEv(void);
+extern void *_ZN2G212GetBG2ScrPtrEv(void);
+extern unsigned int _ZN3G2S12GetBG1ScrPtrEv(void);
+extern void *_ZN2G212GetBG1ScrPtrEv(void);
+extern unsigned int _ZN3G2S12GetBG0ScrPtrEv(void);
+extern void *_ZN2G212GetBG0ScrPtrEv(void);
+
 // local extern: u16 parameter per the definition inserts narrowing shifts at the call
 extern void _ZN2GX22SetBankForSubBGExtPlttEt(u32 bank);
 extern void _ZN2GX23SetBankForSubOBJExtPlttEt(u32 bank);
+}
+
+namespace GXS {
+
+// Loads BG palette data to sub-screen (GXS) palette VRAM at 0x05000400.
+// @symbol _ZN3GXS10LoadBGPlttEPKvjj
+void LoadBGPltt(const void* src, unsigned int offset, unsigned int size){
+    int channel = data_02099fd0;
+    if (channel != -1) {
+        DMASyncHalfTransfer(channel, src, (void*)((char*)0x05000400 + offset), size);
+    } else {
+        MultiCopyHalf(src, (void*)((char*)0x05000400 + offset), size);
+    }
+}
+
+}
+
+namespace GX {
+
+// Loads OBJ palette data to main screen (GX) palette VRAM at 0x05000200.
+// @symbol _ZN2GX11LoadOBJPlttEPKvjj
+void LoadOBJPltt(const void* src, unsigned int offset, unsigned int size){
+    int channel = data_02099fd0;
+    if (channel != -1) {
+        DMASyncHalfTransfer(channel, src, (void*)((char*)0x05000200 + offset), size);
+    } else {
+        MultiCopyHalf(src, (void*)((char*)0x05000200 + offset), size);
+    }
+}
+
+}
+
+namespace GXS {
+
+// Loads OBJ palette data to sub-screen (GXS) palette VRAM at 0x05000600.
+// @symbol _ZN3GXS11LoadOBJPlttEPKvjj
+void LoadOBJPltt(const void* src, unsigned int offset, unsigned int size){
+    int channel = data_02099fd0;
+    if (channel != -1) {
+        DMASyncHalfTransfer(channel, src, (void*)((char*)0x05000600 + offset), size);
+    } else {
+        MultiCopyHalf(src, (void*)((char*)0x05000600 + offset), size);
+    }
+}
+
+}
+
+extern "C" {
+
+// Copies count words from src to VRAM address (0x07000000 + offset) -- the
+// main-engine OAM block (ARM9 view). DMA channel if assigned, else CPU copy.
+// @symbol func_020566dc
+void func_020566dc(const void *src, unsigned int offset, unsigned int count)
+{
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (void *)(0x7000000 + offset), count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)(0x7000000 + offset), count);
+    }
+}
+
+// Copies count words from src to VRAM address (0x07000400 + offset) -- the
+// sub-engine OAM block (ARM9 view). DMA channel if assigned, else CPU copy.
+// @symbol func_02056674
+void func_02056674(const void *src, unsigned int offset, unsigned int count)
+{
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (void *)(0x07000400 + offset), count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)(0x07000400 + offset), count);
+    }
+}
+
+}
+
+namespace GX {
+
+// Copies count words from src to VRAM address (0x6400000 + offset) -- main
+// OBJ VRAM. Needs opt_propagation off: the constant is kept out of the
+// address arithmetic.
+// @symbol _ZN2GX7LoadOBJEPKvjj
+void LoadOBJ(const void *src, unsigned int offset, unsigned int count){
+    unsigned int channel = data_02099fd0;
+    unsigned int base = 0x6400000;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (void *)(base + offset), count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)(base + offset), count);
+    }
+}
+
+}
+
+extern "C" {
+
+// Copies count words from src to VRAM address (0x6600000 + offset) -- sub
+// OBJ VRAM. Same opt_propagation-off build as GX::LoadOBJ.
+// @symbol func_020565b4
+void func_020565b4(const void *src, unsigned int offset, unsigned int count)
+{
+    unsigned int channel = data_02099fd0;
+    unsigned int base = 0x6600000;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (void *)(base + offset), count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)(base + offset), count);
+    }
+}
+
+// Loads BG0 screen data to the main-engine plane (G2::GetBG0ScrPtr).
+// @symbol func_02056554
+void func_02056554(const void* src, int offset, int count)
+{
+    volatile unsigned char* ptr = (volatile unsigned char*)_ZN2G212GetBG0ScrPtrEv();
+    int ch = data_02099fd0;
+    if (ch != -1)
+    {
+        DMASyncHalfTransfer(ch, src, ptr + offset, count);
+    }
+    else
+    {
+        MultiCopyHalf(src, ptr + offset, count);
+    }
+}
+
+// Loads BG0 screen data to the sub-engine plane (G2S::GetBG0ScrPtr).
+// @symbol func_020564f4
+void func_020564f4(const void* src, int offset, int count)
+{
+    volatile unsigned char* ptr = (volatile unsigned char*)_ZN3G2S12GetBG0ScrPtrEv();
+    int ch = data_02099fd0;
+    if (ch != -1)
+    {
+        DMASyncHalfTransfer(ch, src, ptr + offset, count);
+    }
+    else
+    {
+        MultiCopyHalf(src, ptr + offset, count);
+    }
+}
+
+// Loads BG1 screen data to the main-engine plane (G2::GetBG1ScrPtr).
+// @symbol func_02056494
+void func_02056494(const void* src, int offset, int count)
+{
+    volatile unsigned char* ptr = (volatile unsigned char*)_ZN2G212GetBG1ScrPtrEv();
+    int ch = data_02099fd0;
+    if (ch != -1)
+    {
+        DMASyncHalfTransfer(ch, src, ptr + offset, count);
+    }
+    else
+    {
+        MultiCopyHalf(src, ptr + offset, count);
+    }
+}
+
+// Loads BG1 screen data to the sub-engine plane (G2S::GetBG1ScrPtr).
+// @symbol func_02056434
+void func_02056434(const void* src, int offset, int count)
+{
+    volatile unsigned char* ptr = (volatile unsigned char*)_ZN3G2S12GetBG1ScrPtrEv();
+    int ch = data_02099fd0;
+    if (ch != -1)
+    {
+        DMASyncHalfTransfer(ch, src, ptr + offset, count);
+    }
+    else
+    {
+        MultiCopyHalf(src, ptr + offset, count);
+    }
+}
+
+// Loads BG2 screen data to the main-engine plane (G2::GetBG2ScrPtr).
+// @symbol func_020563d4
+void func_020563d4(const void *src, u32 offset, u32 count)
+{
+    void *bgPtr;
+    u32 ch;
+
+    bgPtr = _ZN2G212GetBG2ScrPtrEv();
+    ch = data_02099fd0;
+    if (ch != (u32)~0)
+        DMASyncHalfTransfer(ch, src, (char *)bgPtr + offset, count);
+    else
+        MultiCopyHalf(src, (char *)bgPtr + offset, count);
+}
+
+// Loads BG2 screen data to the sub-engine plane (G2S::GetBG2ScrPtr).
+// @symbol func_02056374
+void func_02056374(const void *src, u32 offset, u32 count)
+{
+    void *bgPtr;
+    u32 ch;
+
+    bgPtr = (void*)_ZN3G2S12GetBG2ScrPtrEv();
+    ch = data_02099fd0;
+    if (ch != (u32)~0)
+        DMASyncHalfTransfer(ch, src, (char *)bgPtr + offset, count);
+    else
+        MultiCopyHalf(src, (char *)bgPtr + offset, count);
+}
+
+// Loads BG3 screen data to the main-engine plane (G2::GetBG3ScrPtr).
+// @symbol func_02056314
+void func_02056314(void *dst, u32 offset, u32 len) {
+    void *ip = _ZN2G212GetBG3ScrPtrEv();
+    s32 chan = data_02099fd0;
+    if (chan != -1) {
+        DMASyncHalfTransfer(chan, dst, (char *)ip + offset, len);
+    } else {
+        MultiCopyHalf(dst, (char *)ip + offset, len);
+    }
+}
+
+// Loads BG3 screen data to the sub-engine plane (G2S::GetBG3ScrPtr).
+// @symbol func_020562b4
+void func_020562b4(const void *src, u32 offset, u32 count)
+{
+    void *bgPtr;
+    u32 ch;
+
+    bgPtr = (void*)_ZN3G2S12GetBG3ScrPtrEv();
+    ch = data_02099fd0;
+    if (ch != (u32)~0)
+        DMASyncHalfTransfer(ch, src, (char *)bgPtr + offset, count);
+    else
+        MultiCopyHalf(src, (char *)bgPtr + offset, count);
+}
+
+}
+
+namespace GX {
+
+// Loads character data into MAIN BG0 VRAM (G2::GetBG0CharPtr, 0x2054efc).
+// @symbol _ZN2GX11LoadBG0CharEPKvjj
+void LoadBG0Char(const void *src, unsigned int offset, unsigned int count){
+    void *base = func_02054efc();
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (char *)base + offset, count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)((char *)base + offset), count);
+    }
+}
+
+}
+
+namespace GXS {
+
+// Loads BG0 character data into SUB BG0 VRAM (G2S::GetBG0CharPtr).
+// @symbol _ZN3GXS11LoadBG0CharEPKvjj
+void LoadBG0Char(const void *src, u32 offset, u32 size){
+    void *charPtr = (void*)_ZN3G2S13GetBG0CharPtrEv();
+    if (data_02099fd0 != (u32)-1)
+        DMASyncWordTransfer(data_02099fd0, src, (char *)charPtr + offset, size);
+    else
+        MultiCopy_Int((int*)src, (int*)((char *)charPtr + offset), size);
+}
+
+}
+
+namespace GX {
+
+// Loads character data into MAIN BG1 VRAM (G2::GetBG1CharPtr, 0x2054ea8).
+// @symbol _ZN2GX11LoadBG1CharEPKvjj
+void LoadBG1Char(const void *src, unsigned int offset, unsigned int count){
+    void *base = func_02054ea8();
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (char *)base + offset, count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)((char *)base + offset), count);
+    }
+}
+
+}
+
+namespace GXS {
+
+// Loads BG1 character data into SUB BG1 VRAM (G2S::GetBG1CharPtr).
+// @symbol _ZN3GXS11LoadBG1CharEPKvjj
+void LoadBG1Char(const void *src, unsigned int offset, unsigned int count){
+    void *base = (void*)_ZN3G2S13GetBG1CharPtrEv();
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (char *)base + offset, count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)((char *)base + offset), count);
+    }
+}
+
+}
+
+extern "C" {
+
+// Loads BG2 char data into MAIN BG2 VRAM (G2::GetBG2CharPtr).
+// @symbol func_020560d4
+void func_020560d4(const void *src, u32 offset, u32 size)
+{
+    void *charPtr = _ZN2G213GetBG2CharPtrEv();
+    if (data_02099fd0 != (u32)-1)
+        DMASyncWordTransfer(data_02099fd0, src, (char *)charPtr + offset, size);
+    else
+        MultiCopy_Int((int*)src, (int*)((char *)charPtr + offset), size);
+}
+
+// Loads BG2 char data into SUB BG2 VRAM (G2S::GetBG2CharPtr).
+// @symbol func_02056074
+void func_02056074(const void *src, unsigned int offset, unsigned int count)
+{
+    void *base = (void*)_ZN3G2S13GetBG2CharPtrEv();
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (char *)base + offset, count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)((char *)base + offset), count);
+    }
+}
+
+// Loads BG3 char data into MAIN BG3 VRAM (0x2054d88 getter).
+// @symbol func_02056014
+void func_02056014(const void *src, unsigned int offset, unsigned int count)
+{
+    void *base = (void*)func_02054d88();
+    unsigned int channel = data_02099fd0;
+    if (channel != (unsigned int)-1) {
+        DMASyncWordTransfer(channel, src, (char *)base + offset, count);
+    } else {
+        MultiCopy_Int((int*)src, (int*)((char *)base + offset), count);
+    }
+}
+
+// Loads BG3 char data into SUB BG3 VRAM (G2S::GetBG3CharPtr).
+// @symbol func_02055fb4
+void func_02055fb4(const void *src, u32 offset, u32 size)
+{
+    void *charPtr = (void*)_ZN3G2S13GetBG3CharPtrEv();
+    if (data_02099fd0 != (u32)-1)
+        DMASyncWordTransfer(data_02099fd0, src, (char *)charPtr + offset, size);
+    else
+        MultiCopy_Int((int*)src, (int*)((char *)charPtr + offset), size);
+}
+
 }
 
 namespace GXS {

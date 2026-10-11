@@ -10,7 +10,6 @@ extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void *, State& st);
 extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void *, unsigned int a, int b, Fix12i c, unsigned int d);
 
 
-extern "C" void func_ov002_020c2f64(void* c);
 extern "C" void func_ov002_020e28d4(void* c, int a, int b);
 extern "C" void Player_AdvanceAnims(char* self);
 extern "C" int __aeabi_idiv(int a, int b);
@@ -22,7 +21,7 @@ int Player::St_WindCarry_Main()
     char* c = (char*)this;
 
     if (mIsAirborne == 0) {
-        func_ov002_020c2f64(c);
+        ((Player *)(c))->func_ov002_020c2f64();
         _ZN6Player11ChangeStateERNS_5StateE(this, data_ov002_021105bc);
         _ZN6Player7SetAnimEji5Fix12IiEj(this, 0x43, 0x40000000, 0x1000, 0);
         mVertSpeed = 0;

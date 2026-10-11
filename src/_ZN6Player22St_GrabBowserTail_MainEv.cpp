@@ -8,7 +8,6 @@ extern "C" {
 extern int _ZN6Player12FinishedAnimEv(char* c);
 extern void _ZN6Player7SetAnimEji5Fix12IiEj(char* c, u32 anim, int a, Fix12i b, u32 d);
 extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
-extern void func_ov002_020daa74(char* c);
 extern void _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
 extern void func_02012694(u32 id, void* v);
 extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
@@ -39,7 +38,7 @@ int Player::St_GrabBowserTail_Main()
                 _ZN5Sound13PlayCharVoiceEjjRK7Vector3(mCharacter, 0x33, ((char*)this) + 0x74);
             mStateStep = 2;
             _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 0x7f, 0x40000000, 0x1000, 0);
-            func_ov002_020daa74(((char*)this));
+            func_ov002_020daa74();
             return 1;
         }
         if (*(int*)(data_0209ee90 + 0x24c) != 0)
@@ -50,7 +49,7 @@ int Player::St_GrabBowserTail_Main()
             if (v > 0x78) {
                 mStateStep = 2;
                 _ZN6Player7SetAnimEji5Fix12IiEj(((char*)this), 0x7f, 0x40000000, 0x1000, 0);
-                func_ov002_020daa74(((char*)this));
+                func_ov002_020daa74();
                 return 1;
             }
         } else {
