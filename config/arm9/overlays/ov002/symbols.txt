@@ -1649,7 +1649,7 @@ __sinit_daPropeller_Heyho_Fire_c.cpp kind:function(arm,size=0x3c) addr:0x0210809
 .p__sinit_ov002_0210804c kind:data(word) addr:0x02108130
 .p__sinit_daPropeller_Heyho_Fire_c.cpp kind:data(word) addr:0x02108134
 @952 kind:data(any) addr:0x02108140
-@30 kind:data(any) addr:0x02108148
+@218 kind:data(any) addr:0x02108148
 @942 kind:data(any) addr:0x02108150
 @948 kind:data(any) addr:0x02108158
 @946 kind:data(any) addr:0x02108160
