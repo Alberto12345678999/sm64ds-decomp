@@ -49,10 +49,12 @@
  *   - The .data member-pointer records keep their data_ov004_* names and
  *     are declared as dMgState_c::Callback; the comment on each extern names
  *     the member it points at.
- *   - Scene and SceneFader are TU-local views; each says why it is not the
- *     shared header's class.
- *   - mState doubles as the id passed to Scene::OnTurnIntoEgg and, through
- *     func_ov004_020b29a0, to Scene::OnYoshiTryEat. The `(void *)mState`
+ *   - Base (the scene) and Obj (the fader) are TU-local views; each says
+ *     why it is not the shared header's class. Their names, and the W2 type
+ *     of data_02086b58, are the spellings config/decl-agreement-baseline.json
+ *     records for those externs.
+ *   - mState doubles as the id passed to the scene's OnTurnIntoEgg and,
+ *     through func_ov004_020b29a0, to its OnYoshiTryEat. The `(void *)mState`
  *     spelling follows that helper's declaration.
  *
  * Retired one-function sources (ROM address order):
@@ -121,7 +123,7 @@ namespace Sound { u32 PlayBank2_2D(u32); }
    (sEnterTable$184 becomes $208), and the manifest pins $184. Named
    parameters declared above SetState move that number too (measured: one
    name fewer gives $183), so these two views keep five between them. */
-struct Scene {
+struct Base {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
     virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
@@ -137,7 +139,7 @@ struct Scene {
    dFader_c.h's slot names. The ROM sets r2 = 0 at every SetBackwardTime and
    SetForwardTime call here, which the header's one-argument spelling does
    not do, so this view declares the second argument. */
-struct SceneFader {
+struct Obj {
     virtual void v0(); virtual void v1();
     virtual void AdvanceFade();                        /* slot 2 */
     virtual int SetBackwardTime(u32 frames, int arg);  /* slot 3 */
@@ -169,10 +171,11 @@ extern void func_ov004_020b29a0(void* c, void* arg);
 extern void func_ov004_020b67e8(int);
 }
 
-extern dMgState_c::Callback data_02086b58;  /* __ptmf_null's address: the null member pointer */
-extern SceneFader* data_0209f5bc;
+struct W2 { int w[2]; };
+extern W2 data_02086b58;  /* __ptmf_null's address: the null member pointer */
+extern Obj* data_0209f5bc;
 extern dWipe_c data_0209f61c;
-extern Scene* data_ov004_020beb68;
+extern Base* data_ov004_020beb68;
 extern int data_ov004_020beb6c;
 extern int data_ov004_020bc150;
 extern int data_ov004_020bc7d4;
@@ -369,7 +372,7 @@ void dMgState_c::func_ov004_020b8688() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b8560Ev
 void dMgState_c::func_ov004_020b8560() {
-  Scene* r4 = data_ov004_020beb68;
+  Base* r4 = data_ov004_020beb68;
   if (data_0209f5bc->IsAtEnd()) {
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
@@ -399,7 +402,7 @@ void dMgState_c::func_ov004_020b853c() { mTimer = 15; mBehavior = data_ov004_020
 // @symbol _ZN10dMgState_c19func_ov004_020b841cEv
 void dMgState_c::func_ov004_020b841c() {
   if (data_0209f5bc->IsAtEnd() != 0) {
-    Scene* r5 = data_ov004_020beb68;
+    Base* r5 = data_ov004_020beb68;
     if (r5 == 0) return;
     if (r5->OnTurnIntoEgg(mState) == 0) return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
@@ -427,7 +430,7 @@ void dMgState_c::func_ov004_020b83ac() {
 // @symbol _ZN10dMgState_c19func_ov004_020b8284Ev
 void dMgState_c::func_ov004_020b8284() {
   if (data_0209f5bc->IsAtEnd()) {
-    Scene* r5 = data_ov004_020beb68;
+    Base* r5 = data_ov004_020beb68;
     if (r5 == 0)
       return;
     if (r5->OnTurnIntoEgg(mState) == 0)
@@ -463,7 +466,7 @@ void dMgState_c::func_ov004_020b81f8() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b8098Ev
 void dMgState_c::func_ov004_020b8098() {
-  SceneFader* o;
+  Obj* o;
   if (func_ov004_020b0b1c(0)) {
     o = data_0209f5bc;
     o->SetForwardTime(0x1e, 0);
@@ -522,7 +525,7 @@ void dMgState_c::func_ov004_020b7eac() {
     return;
   if (mTimer != 0)
     return;
-  Scene* o = data_ov004_020beb68;
+  Base* o = data_ov004_020beb68;
   if (o == 0)
     return;
   if (o->OnTurnIntoEgg(mState) == 0)
@@ -550,12 +553,12 @@ void dMgState_c::func_ov004_020b7cd0() {
   int state = mTimer;
   if (state > 0x64)
     return;
-  Scene* p = data_ov004_020beb68;
+  Base* p = data_ov004_020beb68;
   int a8 = (p != 0) ? p->unk_0a8 : 0;
   if (a8 == 0) {
     if (state != 0)
       return;
-    Scene* q = data_ov004_020beb68;
+    Base* q = data_ov004_020beb68;
     if (q == 0)
       return;
     if (q->OnTurnIntoEgg(mState) == 0)
@@ -569,7 +572,7 @@ void dMgState_c::func_ov004_020b7cd0() {
   } else {
     if (state != 0)
       return;
-    Scene* r5 = data_ov004_020beb68;
+    Base* r5 = data_ov004_020beb68;
     if (r5 == 0)
       return;
     if (r5->OnTurnIntoEgg(mState) == 0)
@@ -587,7 +590,7 @@ void dMgState_c::func_ov004_020b7cd0() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b7c04Ev
 void dMgState_c::func_ov004_020b7c04() {
-    SceneFader* o;
+    Obj* o;
     int v = mTimer;
     if (v == 0xb3) {
         func_ov004_020b0cac(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
@@ -625,7 +628,7 @@ void dMgState_c::func_ov004_020b7b20() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b7a18Ev
 void dMgState_c::func_ov004_020b7a18() {
-    Scene *g = data_ov004_020beb68;
+    Base *g = data_ov004_020beb68;
     int cond = g ? g->unk_0a8 : 0;
     if (cond == 0) {
         g = data_ov004_020beb68;
@@ -660,7 +663,7 @@ void dMgState_c::func_ov004_020b798c() { mTimer = 0; mBehavior = data_ov004_020b
 
 // @symbol _ZN10dMgState_c19func_ov004_020b78f4Ev
 void dMgState_c::func_ov004_020b78f4() {
-  Scene* r4;
+  Base* r4;
   if (mTimer != 0) return;
   r4 = data_ov004_020beb68;
   if (r4 == 0) return;
@@ -688,7 +691,7 @@ void dMgState_c::func_ov004_020b7854() {
 void dMgState_c::func_ov004_020b77b4() {
   if (mTimer != 0)
     return;
-  Scene* o = data_ov004_020beb68;
+  Base* o = data_ov004_020beb68;
   if (o == 0)
     return;
   if (o->OnTurnIntoEgg(mState) == 0)
@@ -713,7 +716,7 @@ void dMgState_c::func_ov004_020b7744() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b75e4Ev
 void dMgState_c::func_ov004_020b75e4() {
-  SceneFader* o;
+  Obj* o;
   if (func_ov004_020b0b1c(0)) {
     o = data_0209f5bc;
     o->SetForwardTime(0x1e, 0);
@@ -747,7 +750,7 @@ void dMgState_c::func_ov004_020b7594() {
 // @symbol _ZN10dMgState_c19func_ov004_020b746cEv
 void dMgState_c::func_ov004_020b746c() {
   if (data_0209f5bc->IsAtEnd()) {
-    Scene* r5 = data_ov004_020beb68;
+    Base* r5 = data_ov004_020beb68;
     if (r5 == 0)
       return;
     if (r5->OnTurnIntoEgg(mState) == 0)
@@ -814,7 +817,7 @@ void dMgState_c::func_ov004_020b724c() {
 // @symbol _ZN10dMgState_c19func_ov004_020b7124Ev
 void dMgState_c::func_ov004_020b7124() {
   if (data_0209f5bc->IsAtEnd()) {
-    Scene* r5 = data_ov004_020beb68;
+    Base* r5 = data_ov004_020beb68;
     if (r5 == 0)
       return;
     if (r5->OnTurnIntoEgg(mState) == 0)
@@ -872,7 +875,7 @@ void dMgState_c::func_ov004_020b6f88() {
   if (ok == 0) return;
   func_02012790(0x62);
   FreeGfxSlotsById(7);
-  mRender = data_02086b58;
+  *(W2 *)&mRender = data_02086b58;
   func_ov004_020b7460();
 }
 
@@ -889,7 +892,7 @@ void dMgState_c::func_ov004_020b6f14() {
 void dMgState_c::func_ov004_020b6ddc() {
     int idx;
     int flag;
-    Scene *o;
+    Base *o;
     int v;
     int s;
     int r4;
@@ -904,7 +907,7 @@ void dMgState_c::func_ov004_020b6ddc() {
         if (flag != 0) {
             FreeGfxSlotsById(7);
             func_02012790(0x62);
-            mRender = data_02086b58;
+            *(W2 *)&mRender = data_02086b58;
             func_ov004_020b7460();
         }
     }
@@ -943,7 +946,7 @@ void dMgState_c::func_ov004_020b6d6c() {
 // @symbol _ZN10dMgState_c19func_ov004_020b6c9cEv
 void dMgState_c::func_ov004_020b6c9c() {
     int x = mTimer;
-    Scene *g = data_ov004_020beb68;
+    Base *g = data_ov004_020beb68;
     if (x != 0) {
         unsigned char idx = gActivePlayerSlot;
         int off = idx * 4;
@@ -956,7 +959,7 @@ void dMgState_c::func_ov004_020b6c9c() {
     }
     if (g->OnTurnIntoEgg(mState) == 0)
         return;
-    mRender = data_02086b58;
+    *(W2 *)&mRender = data_02086b58;
     FreeGfxSlotsById(0x1d);
     if (func_ov004_020adbe0() != 0) {
         func_ov004_020b6f14();
@@ -980,7 +983,7 @@ void dMgState_c::func_ov004_020b6c10() {
 // @symbol _ZN10dMgState_c19func_ov004_020b6b40Ev
 void dMgState_c::func_ov004_020b6b40() {
     int x = mTimer;
-    Scene *g = data_ov004_020beb68;
+    Base *g = data_ov004_020beb68;
     if (x != 0) {
         unsigned char idx = gActivePlayerSlot;
         int off = idx * 4;
@@ -993,7 +996,7 @@ void dMgState_c::func_ov004_020b6b40() {
     }
     if (g->OnTurnIntoEgg(mState) == 0)
         return;
-    mRender = data_02086b58;
+    *(W2 *)&mRender = data_02086b58;
     FreeGfxSlotsById(0x1d);
     if (func_ov004_020adbe0() != 0) {
         func_ov004_020b6f14();

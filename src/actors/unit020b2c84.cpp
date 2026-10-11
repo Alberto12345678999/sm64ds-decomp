@@ -106,8 +106,10 @@ struct EntryTable { Entry e[29]; };
 /* The minigame scene at data_ov004_020beb68, seen through the one virtual
    used here. Slot 26 is dScMgBase_c.h's OnHitByCannonBlastedChar; its scene
    bodies return 0 (dScMgBase_c), 1 (dScMgSingle3DBase_c) or 2
-   (dScMgD3DBase_c), and this file only compares the result with 2. */
-struct Scene {
+   (dScMgD3DBase_c), and this file only compares the result with 2. The
+   view keeps the name Obj, the spelling config/decl-agreement-baseline.json
+   records for this extern. */
+struct Obj {
     virtual int v00(); virtual int v01(); virtual int v02(); virtual int v03();
     virtual int v04(); virtual int v05(); virtual int v06(); virtual int v07();
     virtual int v08(); virtual int v09(); virtual int v10(); virtual int v11();
@@ -175,7 +177,7 @@ void func_ov004_020b39a4(Elem *e);
 
 extern s16 data_02082214[];
 extern int data_0209e650;
-extern Scene *data_ov004_020beb68;
+extern Obj *data_ov004_020beb68;
 extern S3 data_ov004_020bc27c;
 extern int data_ov004_020b9f54;
 static EntryTable data_ov004_020bc6e8 = { { { 0, 0 }, { 0x140, (int)&data_ov004_020b9f54 } } };
