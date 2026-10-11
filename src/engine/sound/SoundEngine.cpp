@@ -1,11 +1,17 @@
 //cpp
-/* SoundEngine -- the sequencer-side half of the sound module: the 32-record
- * player table at data_020a4d6c with its voice allocator, the SDAT info-entry
- * tables (sequence/instrument-bank GetWithID), and the channel/stream worker
- * pool the public Sound:: API drives. The folded Sound TU (0x02011654..)
- * calls deep into this range; span 0x0204eda4..0x020524e4.
+/* SoundEngine, the sequencer half of the sound module.
+ * arm9 .text 0x0204eda4..0x020524e4. The 32-record player table is
+ * data_020a4d6c. The public Sound:: calls in the earlier sound TU
+ * land in this range. No RTTI names a class for these workers.
  *
- * Deferred codegen emits definitions in reverse source order.
+ * leftovers:
+ * - The address-named workers stay func_0204* and func_0205*. There
+ *   is no class to hang them on, and each one keeps the layout it is
+ *   handed (Obj2, Elem, the HeapAllocator views). Those layouts disagree.
+ * - IRQ::Disable and IRQ::Restore stay namespace-scope externs so
+ *   they mangle as the IRQ TU defines them.
+ * - Channel and heap records stay address arithmetic. A guessed
+ *   sequencer member is not what these bodies share.
  */
 #include "types.h"
 #include "Sound.h"
