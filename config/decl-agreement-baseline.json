@@ -269,11 +269,6 @@
         "param:#1 char *"
       ]
     },
-    "CollectStar": {
-      "src/CollectStarInLevel.c": [
-        "param:#1 signed char"
-      ]
-    },
     "Color_Interp": {
       "src/unnamed/ov002/func_ov002_020e6a78.c": [
         "param:#1 void *",
@@ -1004,11 +999,6 @@
         "return:int"
       ]
     },
-    "IsCannonOpen": {
-      "src/IsCannonOpenInLevel.c": [
-        "param:#1 signed char"
-      ]
-    },
     "IsCannonOpenInCurLevel": {
       "include/decl_common.h": [
         "return:int"
@@ -1024,9 +1014,6 @@
     },
     "IsStarCollected": {
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
-        "param:#1 int"
-      ],
-      "src/_ZN8SaveData26CountStarsCollectedInLevelEj.cpp": [
         "param:#1 int"
       ],
       "src/actors/dMap_c.cpp": [
@@ -2037,11 +2024,6 @@
       "src/game/actors/d_a_kinopio.cpp": [
         "param:#1 short",
         "return:unsigned short"
-      ]
-    },
-    "OpenCannon": {
-      "src/OpenCannonInLevel.c": [
-        "param:#1 signed char"
       ]
     },
     "Player_AdvanceAnims": {
@@ -3203,19 +3185,7 @@
       ]
     },
     "SublevelToLevel": {
-      "src/CollectStarInLevel.c": [
-        "param:#1 signed char",
-        "return:signed char"
-      ],
-      "src/IsCannonOpenInLevel.c": [
-        "param:#1 signed char",
-        "return:signed char"
-      ],
-      "src/IsStarCollectedInLevel.c": [
-        "param:#1 signed char",
-        "return:signed char"
-      ],
-      "src/OpenCannonInLevel.c": [
+      "src/engine/save/SaveData.cpp": [
         "param:#1 signed char",
         "return:signed char"
       ]
@@ -9797,11 +9767,6 @@
         "param:#1 int"
       ]
     },
-    "_ZN8SaveData22NumGlowingRabbitsFoundEv": {
-      "src/unnamed/arm9/0201/func_02013944.c": [
-        "return:unsigned int"
-      ]
-    },
     "_ZN8SaveData26CountStarsCollectedInLevelEj": {
       "include/decl_SaveData.h": [
         "return:unsigned int"
@@ -11861,9 +11826,6 @@
       "src/actors/daObjWlSubmarine_c.cpp": [
         "return:char []"
       ],
-      "src/engine/save/SaveData.cpp": [
-        "return:unsigned char []"
-      ],
       "src/game/actors/d_a_obj_hatena_switch.cpp": [
         "return:unsigned int []"
       ],
@@ -11875,18 +11837,6 @@
       ],
       "src/unnamed/arm9/0201/func_020135d0.c": [
         "return:unsigned char []"
-      ],
-      "src/unnamed/arm9/0201/func_02013868.c": [
-        "return:unsigned int []"
-      ],
-      "src/unnamed/arm9/0201/func_02013890.c": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/arm9/0201/func_020138dc.c": [
-        "return:unsigned char []"
-      ],
-      "src/unnamed/arm9/0201/func_02013944.c": [
-        "return:FileSaveData"
       ],
       "src/unnamed/arm9/0201/func_020139b8.c": [
         "return:SaveData"
