@@ -21,7 +21,7 @@
  * - data_ov006_0213cb4c..0213cb84 are ROM-owned {fn, 0} table rows kept as
  *   address-named StatePmf externs; data_ov004_020beb68 is the ov004 shared
  *   scene data, read raw at +0xb4/+0xb8 because its type is not recovered.
- * - the func_ov006_020c*/func_ov004_* externs are other TUs' workers; they
+ * - the func_ov006_020c and func_ov004 externs are other TUs' workers; they
  *   keep address names until their owners name them.
  */
 
