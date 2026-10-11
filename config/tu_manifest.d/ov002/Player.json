@@ -2622,23 +2622,23 @@
         "rom": true
       },
       "tuRange": {
-        "start": "0x020bd828",
-        "end": "0x020cfea4",
+        "start": "0x020bccfc",
+        "end": "0x020d3b9c",
         "differingBytes": 0,
         "firstDiff": null
       },
       "tuRanges": [
         {
           "section": ".text",
-          "start": "0x020bd828",
-          "end": "0x020cfea4",
+          "start": "0x020bccfc",
+          "end": "0x020d3b9c",
           "differingBytes": 0,
           "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 301
+          "LICENSED": 361
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
