@@ -9,9 +9,10 @@
  * 0x020b04e8..0x020b0a38 plus 117 former one-function sources folded in
  * around them, among them the score-number drawer func_ov004_020b2220, the
  * engine and background set-up slots 31 to 33, the destructor and the
- * constructor. Each former source keeps its own namespace block: their local
- * struct views and extern declarations disagree with each other, and
- * unifying them changes code generation, so that is left as separate work.
+ * constructor. Each former source keeps its own namespace block. Copies
+ * that repeated decl_common.h or dScMgBase_c.h are gone; the local struct
+ * views and extern declarations left disagree with a header or with each
+ * other, and are separate work.
  *
  * Definitions are in ROM order, lowest address first, under
  * defer_codegen off. The one exception is the constructor and destructor
@@ -22,9 +23,11 @@
  * and so is ~dScMgBase_c, the key function of dScMgBase_c itself, so this
  * file emits both classes' vtables and RTTI.
  *
- * Still raw: unk_0a4, 0a8, 0ac, 0b8, 0c8, 462c and 465c are unnamed in the
- * header, and the func_ov004 and data_ov004 helpers they feed are unnamed
- * in symbols.txt.
+ * Still unnamed: the header's unk_ fields, and the bytes it leaves as
+ * padding that this file reaches by offset (+0x68/+0x6c, +0xb0,
+ * +0x2228/+0x4228, +0x4000, +0x4644, +0x4650), plus dScMgD3DBase_c's
+ * +0x4664; the func_ov004 and data_ov004 helpers are unnamed in
+ * symbols.txt.
  */
 
 #include "dScMgBase_c.h"
@@ -223,8 +226,6 @@ namespace s20ad79c {
 extern "C" {
 extern int data_0209b308[];
 extern int data_0209b300[];
-int func_ov004_020ad8b8(void);
-int func_ov004_020ad878(void);
 
 /* Saves a two-value result into saved records 0 and 1 of the current scene.
    A value <= 0 falls back to the menu row's defaults (words 5 and 6); a
@@ -357,7 +358,6 @@ namespace s20ada40 {
 extern "C" {
 extern int data_0209b308[];
 extern int func_ov004_020adc1c(void);
-extern void func_ov004_020adc00(int v);
 
 /* Stores `score` as the session best (unk_4654). If it beats the record
    copy at +0x4650 (lower and nonzero in scoring mode 5, higher otherwise,
@@ -509,8 +509,6 @@ int func_ov004_020adc4c(void) { return data_ov004_020beb60[0]; }
 // @symbol Ov004_Deallocate
 namespace s20adc5c {
 extern "C" {
-extern void Deallocate(void *ptr);
-
 void Ov004_Deallocate(void *ptr)
 {
     Deallocate(ptr);
@@ -1714,7 +1712,6 @@ extern int func_02054ea8(void);
 extern int _ZN3G2S13GetBG1CharPtrEv(void);
 extern int _ZN2G213GetBG2CharPtrEv(void);
 extern int _ZN3G2S13GetBG2CharPtrEv(void);
-extern int func_02054d88(void);
 extern int _ZN3G2S13GetBG3CharPtrEv(void);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
@@ -3505,15 +3502,9 @@ void func_ov004_020b2574(int arg0, int arg1)
 namespace s20b265c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c9Virtual84Ev
-/* dScMgBase_c::Virtual84 - slot 33, and the only slot in this campaign with
-   NOTHING to correct.  There was no `recovered name:` line on this function or
-   on any of its overrides: the recovery pass never guessed a name here, so
-   unlike slots 26, 29, 30, 31 and 32 there is no borrowed label to retire.
-   The ROM names nothing either -- dScMgBase_c is a SCENE (fBase_c -> dBase_c
-   -> dScene_c -> dScMgBase_c) and dActor_c, whose names slots 18-30 borrowed
-   by index, has no slot 33 at all.  Virtual84 is the repo's own no-name
-   spelling, after the +0x84 vtable offset, the same convention fBase_c uses
-   for Virtual34 and Virtual38.  See the slot-33 block in
+/* dScMgBase_c::Virtual84 - slot 33.  The ROM names nothing here: Virtual84
+   is the repo's no-name spelling after the +0x84 vtable offset, as fBase_c
+   uses for Virtual34 and Virtual38.  See the slot-33 block in
    include/dScMgBase_c.h.
 
    ENGINE BRING-UP.  Graphics modes for both engines (GX mode 1/0/0, GXS mode
@@ -3543,8 +3534,6 @@ extern "C" {
    re-running it at +0x80 and reproducing slot 32's known call site.
    return type: void, which is what all three bodies do -- none assigns a
    result and the one caller ignores whatever falls out. */
-extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
-extern void _ZN3GXS15SetGraphicsModeEi(int a);
 extern void func_ov004_020b2980(void);
 extern void func_ov004_020b290c(void);
 extern void _ZN2GX12SetBankForBGEt(u16 a);
@@ -3570,7 +3559,7 @@ extern int data_0208ee44;
 }
 
 void dScMgBase_c::Virtual84()
-{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX15SetGraphicsModeEiii; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN3GXS15SetGraphicsModeEi; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
+{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
     char *obj = (char *)this;
 
     void *p;
@@ -3619,7 +3608,6 @@ namespace s20b27f4 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c9Virtual80Ev
 // recovered name: dScMgBase_c_AfterClsn  -- WRONG, see below
-/* recovered: renamed to Class_Method, declarations from a shared header */
 /* dScMgBase_c::Virtual80 - slot 32.
 
    The `recovered name:` line above is kept visible because it is wrong.  This
@@ -3661,7 +3649,6 @@ namespace s20b2880 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c9Virtual7CEv
 // recovered name: dScMgBase_c_Kill  -- WRONG, see below
-/* recovered: renamed to Class_Method, declarations from a shared header */
 /* dScMgBase_c::Virtual7C - slot 31.
 
    The `recovered name:` line above is kept visible because it is wrong.  The
@@ -3702,15 +3689,7 @@ int dScMgBase_c::Virtual7C()
 // @symbol func_ov004_020b290c
 namespace s20b290c {
 extern "C" {
-void SetBg0Offset(int a, int b);
-void SetBg1Offset(int a, int b);
-void SetBg2Offset(int a, int b);
-void SetBg3Offset(int a, int b);
-void SetSubBg0Offset(int a, int b);
-void SetSubBg1Offset(int a, int b);
-void SetSubBg2Offset(int a, int b);
-void SetSubBg3Offset(int a, int b);
-
+/* Resets the scroll of all eight BG layers, main and sub, to (0, 0). */
 void func_ov004_020b290c(void) {
     SetBg0Offset(0, 0);
     SetBg1Offset(0, 0);
@@ -3727,15 +3706,13 @@ void func_ov004_020b290c(void) {
 // @symbol func_ov004_020b2980
 namespace s20b2980 {
 extern "C" {
-extern void _ZN2GX15DisableAllBanksEv(void);
 void func_ov004_020b2980(void) { _ZN2GX15DisableAllBanksEv(); }
 }
 }
 
 // @symbol _ZN11dScMgBase_c15OnGroundPoundedEv
 // recovered name: dScMgBase_c_OnGroundPounded
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnGroundPounded - recovered from vtable slot identity */
+/* dScMgBase_c::OnGroundPounded - slot 21. */
 void dScMgBase_c::OnGroundPounded()
 {
 }
@@ -3750,9 +3727,7 @@ void dScMgBase_c::Virtual50()
 
 // @symbol _ZN11dScMgBase_c13OnTurnIntoEggEi
 // recovered name: dScMgBase_c_OnTurnIntoEgg
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnTurnIntoEgg - recovered from vtable slot identity */
-/* vtable slot 19. Both the name and the signature are evidenced here: this
+/* dScMgBase_c::OnTurnIntoEgg - vtable slot 19. Both the name and the signature are evidenced here: this
    body carries its own `recovered name:` above, and dScMgJump_c and
    dScMgBSC_c carry theirs. The parameter is an int, not dActor_c.h:132's
    `Player &` -- see include/dScMgBase_c.h. The base ignores the mode. */
@@ -3774,16 +3749,13 @@ void dScMgBase_c::OnYoshiTryEat(int arg)
 
 // @symbol func_ov004_020b29a0
 namespace s20b29a0 {
-/* Calls slot 18 of the object it is given, passing the argument through.
-   The class is not recovered, so a local view of nineteen slots stands in. */
-struct Base {
-    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
-    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
-    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
-    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
-    virtual void v16(); virtual void v17(); virtual void v18(void*);
-};
-extern "C" void func_ov004_020b29a0(Base *c, void *arg) { c->v18(arg); }
+/* Calls the scene's OnYoshiTryEat (slot 18). Its one caller, dMgState_c,
+   passes the scene singleton and its mState, declaring the state as a
+   void *, so the parameter stays one here. */
+extern "C" void func_ov004_020b29a0(dScMgBase_c *scene, void *state)
+{
+    scene->OnYoshiTryEat((int)state);
+}
 }
 
 /* The constructor and destructor are the end of the unit, and the one place
@@ -3798,25 +3770,25 @@ extern "C" void func_ov004_020b29a0(Base *c, void *arg) { c->v18(arg); }
 namespace s20b2adc {
 extern "C" {
 // @symbol _ZN11dScMgBase_cC2Ev
-void func_ov004_020adc00(int value);
-
-extern char data_0209b308;
 extern short data_ov004_020bc070[];
 }
 }
 
 dScMgBase_c::dScMgBase_c()
     : unk_0a4(0), unk_0c2(1)
-{ using s20b2adc::data_0209b308; using s20b2adc::data_ov004_020bc070; using s20b2adc::func_ov004_020adc00;
+{ using s20b2adc::data_ov004_020bc070;
     mMenuOpen = 0;
     unk_462c = 0;
     unk_4630 = 0;
     unk_4648 = 0;
 
     data_ov004_020beb68 = this;
-    unk_0bc = *(u32 *)(&data_0209b308 + 0x30);
+    unk_0bc = *(u32 *)(data_0209b308 + 0x30);
 
     mSceneKind = data_ov004_020bc070[(param1 >> 16) & 0xff];
+    /* param1 &= 0xffff, through a char *: spelled with the member, either
+       as &= or as a plain assignment, mwccarm forms the address this + 8
+       in ip first and the constructor grows by 4 bytes. */
     *(s32 *)((char *)this + 8) =
         *(u32 *)((char *)this + 8) & 0xffff;
     unk_050 = 0;
