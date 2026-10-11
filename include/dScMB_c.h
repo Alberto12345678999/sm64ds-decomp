@@ -61,8 +61,8 @@ struct dScMB_c : dScene_c {
     class graphCallback_c;
     dFdColor_c fader;      /* 0x50 -- placement-constructed by InitResources,
                                destroyed by ~dScMB_c; see derivation above */
-    s32 unk_060;            /* 0x60 -- Behavior state-machine step */
-    s32 unk_064;            /* 0x064 -- Behavior frame-timeout counter */
+    s32 mStep;              /* 0x60 -- Behavior state-machine step */
+    s32 mTimeout;           /* 0x064 -- Behavior frame-timeout counter */
 
     /* Declared first -- key function. Defined out of line; that definition
        emits D1 then D0. */
