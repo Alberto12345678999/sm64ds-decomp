@@ -15,17 +15,22 @@
  * only); the inline vague copies would land past
  * func_ov022_02112654.
  *
- * Leftover: func_ov080_* are cross-overlay helpers; data_ov022_*
- *   tables, data_0209e650 and the State table at data_ov022_02114690
- *   keep linker names.
- * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
- *   Fix12<int> parameters, wall 6az).
- * Leftover: c + 0xf8 is the flame's tracked-actor ID, unnamed in any
- *   header.
- * Leftover: both factories stay hand-spelled (`new` would call the
- *   unavailable global `_Znwm`); the vptr stores keep the [2] form
- *   objisolate requires.
+ * _ZTS15daObjFlMaruta_c 0x0211436c. _ZTI15daObjFlMaruta_c 0x02114344.
+ * _ZTV15daObjFlMaruta_c 0x021143a4.
+ * _ZTS21daObj_volcanoCannon_c 0x02114440. _ZTI21daObj_volcanoCannon_c
+ * 0x02114434. _ZTV21daObj_volcanoCannon_c 0x0211447c.
  */
+
+// leftovers:
+// - func_ov080_* are cross-overlay helpers; data_ov022_* tables,
+//   data_0209e650 and the State table at data_ov022_02114690 keep linker
+//   names (consumers: the maruta roller and the cannon state machine in
+//   this TU).
+// - dBgW_KcMbg::SetFile keeps its mangled spelling (by-value Fix12<int>
+//   parameters, wall 6az).
+// - c + 0xf8 is the flame's tracked-actor ID, unnamed in any header.
+// - Both factories stay hand-spelled (`new` would call the unavailable
+//   global `_Znwm`); the vptr stores keep the [2] form objisolate requires.
 
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
