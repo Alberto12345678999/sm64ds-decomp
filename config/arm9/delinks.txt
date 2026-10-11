@@ -1248,25 +1248,9 @@ src/unnamed/arm9/0201/func_0201aaec.c:
     complete
     .text start:0x0201aaec end:0x0201ab04
 
-src/_ZN7Message7EndTalkEv.cpp:
+src/Message2.cpp:
     complete
-    .text start:0x0201ab04 end:0x0201ab38
-
-src/_ZN7Message11PrepareTalkEv.cpp:
-    complete
-    .text start:0x0201ab38 end:0x0201ab6c
-
-src/unnamed/arm9/0201/func_0201ab6c.c:
-    complete
-    .text start:0x0201ab6c end:0x0201aca4
-
-src/unnamed/arm9/0201/func_0201aca4.c:
-    complete
-    .text start:0x0201aca4 end:0x0201adac
-
-src/unnamed/arm9/0201/func_0201adac.c:
-    complete
-    .text start:0x0201adac end:0x0201adfc
+    .text start:0x0201ab04 end:0x0201adfc
 
 src/unnamed/arm9/0201/func_0201adfc.c:
     complete
