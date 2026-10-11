@@ -1,19 +1,15 @@
 //cpp
-/* dBgW_Kc -- the static-mesh collider: the base every KCL-backed wall
- * collider shares (KcMbg the plain mesh, KcMbgSclY the y-stretched one).
- * ROM's own RTTI names it (_ZTS7dBgW_Kc @ 0x020993bc, _ZTI7dBgW_Kc @ 0x020993c8, vtable
- * _ZTV7dBgW_Kc @ 0x020993dc).
- *
- * Deferred codegen emits the lifecycle groups in their fixed order -- D2,D0,D1
- * for the destructor, then C1,C2 for the constructor -- and the plain members
- * land in reverse definition order, so the file defines ctor and dtor first.
- * The four func_ workers keep their func_ names: they are TU-local helpers the
- * ITCM DetectClsn overrides and other collider TUs call by raw address, not
- * vtable slots. func_020396dc is the prism -> triangle-index helper,
- * func_02039794 the slope-band classify, func_020397b8 the wall-facing test
- * and func_020397dc the near-zero divisor guard. The DetectClsn triple and
- * the three geometry/surface slots live in the ITCM TU
- * (src/engine/collision/dBgW_Kc_itcm.cpp).
+/* leftovers:
+ * func_020396dc, func_02039794, func_020397b8 and func_020397dc stay free
+ * functions. The ITCM DetectClsn overrides call them by address.
+ * func_020396dc turns a prism pointer into a triangle index,
+ * func_02039794 classifies the slope band, func_020397b8 tests wall facing,
+ * func_020397dc guards a near-zero divisor. The destructor is defined
+ * first (D2, then D0, then D1) and the constructor after it. The
+ * DetectClsn triple and the geometry slots live in dBgW_Kc_itcm.cpp.
+ */
+/* dBgW_Kc: static-mesh collider, the base KcMbg and KcMbgSclY share.
+ * Type name 0x020993bc, typeinfo 0x020993c8, vtable 0x020993dc.
  */
 #include "dBgW_Kc.h"
 #include "dBgW.h"
