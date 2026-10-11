@@ -1,46 +1,40 @@
 //cpp
-/**
- * daChair_c -- Big Boo's Haunt haunted chair (CHAIR 326), ov020.
+/* Big Boo's Haunt haunted chair (CHAIR 326), ov020.
  *
- * RTTI ov020:0x021149d8 names the class. State0 looks up actor 0xf9
- * (PIANO) and, if that piano is within 300.0, stores its uniqueID.
- * State1 rattles until the piano or a player is close, then tips
- * toward it (State3) or hops off (State2). State2 launches at the
- * player and breaks on the ground, or on a wall faced the wrong way.
- * State3 rocks mAngleX or mAngleZ toward mTargetAngle and slides the
- * cylinder with the tip.
+ * State0 looks up actor 0xf9 (PIANO) and, within 300 units, stores its
+ * uniqueID. State1 rattles, then tips (State3) or hops (State2). State2
+ * launches at the player and breaks on the ground or on a wall faced the
+ * wrong way. State3 rocks mAngleX or mAngleZ toward mTargetAngle.
  *
- * common.h comes before daChair_c.h. InitResources copies
- * IDENTITY_MATRIX4X3 into mShadowMat, and only the flat s32 m[12]
- * spelling is the twelve-word copy.
- *
- * Leftover: dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
- *   Particle::System::NewSimple and Player::Hurt stay scalar externs.
- *   Calling the header with Fix12<int> by value pools the constants
- *   (InitResources and UpdateModel grew .rodata; remeasured).
- *   dBgCh_Actr::Init's header spells Fix12i, which mangles as int,
- *   not 5Fix12IiE.
- * Leftover: GetWallResult has no dBgCh_Actr method. The result's
- *   SurfaceInfo sits at +4; CopyNormalTo is the real method.
- * Leftover: the ROM calls dBgCh_Actr_UpdateContinuous_Veneer
- *   (0x020383fc), not UpdateContinuous.
- * Leftover: func_0201267c is the bank-3 player just after
- *   Sound::PlayBank3 (0x02012664). This TU calls 0x0201267c.
- *   func_0200f760 sets the cylinder movement bit from the closest
- *   player's vanish flag. Neither symbol has a header name.
- * Leftover: cstd::atan2's symbol carries 5Fix12IiE. A scalar
- *   namespace declaration would mangle as ii.
- * Leftover: dActor_c has no Pos(). Callers pass &mPosX.
- *   State2 still copies the player's position through a plain Vec3;
- *   player->mPosX by name changes that function's size.
- * Leftover: State2 compares mStateTimer and mActionTimer through a
- *   view based at this+0x300. The same words are updated through
- *   (int)&mStateTimer / (int)&mActionTimer. mAngleY += 0x2710
- *   changes State2's size; the int-cast form matches.
- *   unk_0a4 and unk_0ac stay those names (lateral velocity beside
- *   mVertSpeed; the base header still spells them unk_).
- * Leftover: g_profile_CHAIR is not in this TU.
+ * RTTI ov020:0x021149d8. common.h comes before daChair_c.h so
+ * IDENTITY_MATRIX4X3 copies as twelve s32 words into mShadowMat.
  */
+// leftovers:
+// - dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
+//   Particle::System::NewSimple and Player::Hurt stay scalar externs. The
+//   header Fix12<int> forms pool constants (InitResources and UpdateModel
+//   grew .rodata). dBgCh_Actr::Init's header spells Fix12i, which mangles
+//   as int, not 5Fix12IiE.
+// - GetWallResult has no dBgCh_Actr method. This TU's State2 reads the
+//   result's SurfaceInfo at +4; CopyNormalTo is the real method.
+// - Behavior calls dBgCh_Actr_UpdateContinuous_Veneer (0x020383fc), not
+//   UpdateContinuous.
+// - func_0201267c is the bank-3 player just after Sound::PlayBank3
+//   (0x02012664). func_0200f760 sets the cylinder movement bit from the
+//   closest player's vanish flag. Neither has a header name.
+// - cstd::atan2's symbol is 5Fix12IiE. A scalar namespace declaration
+//   would mangle as ii. State2 calls it for the launch and the wall normal.
+// - dActor_c has no Pos(). Callers pass &mPosX. State2 copies the player's
+//   position through a plain Vec3; player->mPosX by name changes that
+//   function's size.
+// - State2 compares mStateTimer and mActionTimer through a view based at
+//   this+0x300. mAngleY += 0x2710 changes State2's size; the int-cast form
+//   matches.
+// - unk_0a4 and unk_0ac stay the base header's names (lateral velocity
+//   beside mVertSpeed).
+// - g_profile_CHAIR is not in this TU. data_ov020_02114af0 is the model
+//   handle.
+
 
 #include "common.h"
 #include "daChair_c.h"
@@ -108,9 +102,7 @@ extern s16 data_02082214[];
 }
 
 // @symbol daChair_c_classInit
-/* CHAIR registry factory. `return new daChair_c()` matches; the
- * synthesized ctor stores the vtable because this TU defines it.
- * classInit is reconstructed, not a preserved identifier. */
+/* CHAIR registry factory. */
 extern "C" daChair_c *daChair_c_classInit(void)
 {
     return new daChair_c();

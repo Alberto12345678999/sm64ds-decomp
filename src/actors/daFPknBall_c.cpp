@@ -8,32 +8,26 @@
  * ov002 0x020f8858..0x020f934c, 10 functions; the last is the registry
  * factory daFPknBall_c_classInit (0x020f9304), `new daFPknBall_c()`.
  *
- * NAME: RTTI names daFPknBall_c. One out-of-line destructor under
- * #pragma defer_codegen off emits D1, D0, then a homeless D2, and .text
- * follows source order. common.h is first so the flat Matrix4x3 is what
- * the particle helper copies.
- *
- * Known limits:
- * - The Particle::System calls, dCcAc_c::Init, dBgCh_Actr::Init and
- *   dActor_c::DropShadowRadHeight pass Fix12<int> by value, so they stay
- *   mangled calls (dActor_c.h notes why such methods are never defined as
- *   members). The dBgCh_Actr::UpdateContinuous veneer, TouchesWater,
- *   SaveData::IsCharacterUnlocked, func_02012694 and func_ov002_020ad660
- *   have no declaration in a header.
- * - The file-local POD Vec3F is not types.h's Vector3, which is not a POD;
- *   the struct copies in Behavior are kept on the POD spelling from the
- *   byte-matching recovery. The choice is per function; re-measure before
- *   assuming it applies elsewhere.
- * - The Bool enum and the volatile sparkPos are codegen scaffolding that
- *   Behavior needs, kept from the byte-matching recovery and not re-measured
- *   in this pass. They mean nothing to the reader.
- * - Behavior adds dActor_c virtual slot 29 (the header calls it
- *   OnAimedAtWithEgg) to the spark's Y. That name does not fit this use, so
- *   the call goes through the local Obj table.
- * - func_ov002_020f897c sets a byte at +0x42b on the actor with ID 279 (0x117)
- *   so a second cap is not dropped; nothing here names that field.
- * - mStateTimer is incremented through a u16 cast: the ROM loads it unsigned.
+ * RTTI names daFPknBall_c. One out-of-line destructor under defer_codegen
+ * off emits D1, D0, then a homeless D2, and .text follows source order.
+ * common.h is first so the particle helper copies the flat Matrix4x3.
  */
+// leftovers:
+// - Particle::System::New, NewSimple and NewUnkCallback818, dCcAc_c::Init,
+//   dBgCh_Actr::Init and DropShadowRadHeight stay mangled (Fix12<int> by
+//   value). UpdateContinuous's veneer, TouchesWater,
+//   SaveData::IsCharacterUnlocked, func_02012694 and func_ov002_020ad660
+//   have no header declaration.
+// - Behavior's position copies use the file-local POD Vec3F. types.h's
+//   Vector3 is not a POD.
+// - The Bool enum and the volatile sparkPos stay. Behavior needs both.
+// - Behavior adds virtual slot 29 to the spark's Y through the local Obj
+//   table. The header name OnAimedAtWithEgg does not fit that use.
+// - func_ov002_020f897c writes a byte at +0x42b on actor 279 so a second
+//   cap is not dropped. Nothing here names that field.
+// - mStateTimer is incremented through a u16 cast. The ROM loads it unsigned.
+// - unk_0a4 and unk_0ac stay the base header's lateral-velocity names.
+
 
 #pragma defer_codegen off
 
@@ -451,10 +445,7 @@ s32 daFPknBall_c::OnYoshiTryEat() {
     return 0;
 }
 
-/* Reconstructed source-style name: SM64DS proves daFPknBall_c through RTTI,
- * allocation size, vtable identity, and the FPAKUN_BALL registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: Fireball_Spawn. */
+/* FPAKUN_BALL registry factory. */
 // @symbol daFPknBall_c_classInit
 extern "C" daFPknBall_c *daFPknBall_c_classInit()
 {
