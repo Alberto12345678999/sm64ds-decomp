@@ -1292,8 +1292,8 @@ extern "C" void func_ov004_020ae858(dScMgBase_c *scene)
 // @symbol func_ov004_020aea30
 namespace s20aea30 {
 extern "C" {
-/* Draws a sprite list: calls func_ov004_020aea78 on each 8-byte entry
-   from `self`, up to and including the one whose halfword at +6 is 0xffff. */
+/* Draws an OAM sprite list: calls func_ov004_020aea78 on each 8-byte
+   entry from `self`, up to and including the one whose attr3 is 0xffff. */
 extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
 {
     void *r8 = self;
@@ -1324,7 +1324,7 @@ struct S { int x; BF y; };
 
 /* Draws one sprite-list entry at (a1, a2) through func_ov004_020b1c68.
    When the scene's OnHitByCannonBlastedChar (slot 26) returns 2, the copy
-   drawn has 0x200 subtracted from the low ten bits of its second word. */
+   drawn has 0x200 subtracted from its tile number (attr2 bits 0..9). */
 extern "C" void func_ov004_020aea78(S* self, int a1, int a2, struct M* a3)
 {
     S v = *self;
@@ -1455,14 +1455,7 @@ namespace s20aeed8 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv
 // recovered name: dScMgBase_c_OnAimedAtWithEggReturnVec
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations
-   from a shared header */
 /* dScMgBase_c::OnAimedAtWithEggReturnVec - slot 30.
-
-   The 27-method shadow scaffold this file used to carry is gone.  Its only
-   purpose was `o->f68()`, index 26 in a hand-counted stand-in vtable, and slot
-   26 is dScMgBase_c::OnHitByCannonBlastedChar now -- so the call is spelled
-   with its name and the scaffold is dead weight.
 
    WHAT IT DOES, because the name says the opposite of both halves.  This is
    the exact mirror of slot 29: 29 saves the screen and draws the three-item
@@ -1477,9 +1470,6 @@ extern "C" {
    down.  It is not a Yoshi egg, and it does not return a vector -- see the
    slot-30 block in include/dScMgBase_c.h for the AAPCS measurement that
    refutes the `ReturnVec` in the name. */
-extern "C" {
-    extern void MultiCopy_Int(int*, int*, int);
-}
 extern "C" u8 data_0209d45c;
 extern "C" u8 data_0209d454;
 extern "C" u8 data_0209d460;
@@ -1505,8 +1495,7 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 }
 
 void dScMgBase_c::OnAimedAtWithEggReturnVec()
-{ using s20aeed8::MultiCopy_Int; using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
-    struct dScMgBase_c *self = this;
+{ using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
     char *c = (char *)this;
 
     data_0209d45c = 0;
@@ -1514,7 +1503,7 @@ void dScMgBase_c::OnAimedAtWithEggReturnVec()
 
     *(u32*)0x4000000 &= ~0x1f00;
     *(u32*)0x4001000 &= ~0x1f00;
-    *(u16*)0x4000304 = (self->mSavedScreenSwap << 15) | (*(u16*)0x4000304 & ~0x8000);
+    *(u16*)0x4000304 = (mSavedScreenSwap << 15) | (*(u16*)0x4000304 & ~0x8000);
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0xe000) | ((u32)data_0209d460 << 13);
     *(u32*)0x4001000 = (*(u32*)0x4001000 & ~0xe000) | ((u32)data_0209d458 << 13);
 
@@ -1524,16 +1513,16 @@ void dScMgBase_c::OnAimedAtWithEggReturnVec()
         _ZN3GXS10LoadBGPlttEPKvjj(p, 0, 0x80);
     }
 
-    if (self->OnHitByCannonBlastedChar() != 2)
+    if (OnHitByCannonBlastedChar() != 2)
     {
         char *src = (char*)0x6600000; src += 0x6000;
         MultiCopy_Int((int*)(c + 0x2228), (int*)src, 0x2000);
     }
 
-    data_0209d45c = (u8)self->mSavedMainBgBits;
-    data_0209d454 = (u8)self->mSavedSubBgBits;
+    data_0209d45c = (u8)mSavedMainBgBits;
+    data_0209d454 = (u8)mSavedSubBgBits;
 
-    if (self->OnHitByCannonBlastedChar() == 2)
+    if (OnHitByCannonBlastedChar() == 2)
         return;
 
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0x1f00) | ((u32)data_0209d45c << 8);
@@ -1544,19 +1533,9 @@ namespace s20af04c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c19OnHitFromUnderneathEv
 // recovered name: dScMgBase_c_OnHitFromUnderneath
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
-/* dScMgBase_c::OnHitFromUnderneath - recovered from vtable slot identity.
+/* dScMgBase_c::OnHitFromUnderneath - slot 28.
 
-   THE 27-METHOD SHADOW SCAFFOLD IS GONE, and declaring slot 26 is what let it
-   go.  This file used to carry a local `struct Base` of twenty-six placeholder
-   virtuals plus `struct Obj : Base` with a `char pad[0x4627]`, existing for one
-   reason: so that `self->Init()` would compile to a load of vtable+0x68.  Slot
-   26 is OnHitByCannonBlastedChar and dScMgBase_c declares it now, so the class
-   itself does that job and the call can be written for what it is.  The two
-   raw offsets go with the scaffold -- 0x4628 is mMenuOpen and 0xf4 is
-   mTouchOptions, both named fields on the real struct.
-
-   Reading it back: a hit from underneath closes the three-item overlay menu
+   A hit from underneath closes the three-item overlay menu
    that OnHitByMegaChar opens, resets the polymorphic touch-icon set, and
    re-enables the 3D engines only if the class's own OnHitByCannonBlastedChar
    says so. */
@@ -1577,13 +1556,10 @@ extern "C" void Enable3dEngines();
 
 int dScMgBase_c::OnHitFromUnderneath()
 { using s20af04c::Enable3dEngines; using s20af04c::func_02012e1c;
-    void *c = (void *)this;
-
-    struct dScMgBase_c *self = (struct dScMgBase_c *)(void *)c;
-    func_02012e1c((char *)self);
-    self->mMenuOpen = 0;
-    func_ov004_020b91fc((char *)&self->mTouchOptions);
-    int r = self->OnHitByCannonBlastedChar();
+    func_02012e1c((char *)this);
+    mMenuOpen = 0;
+    func_ov004_020b91fc((char *)&mTouchOptions);
+    int r = OnHitByCannonBlastedChar();
     if (r != 0) Enable3dEngines();
 }
 
@@ -1591,20 +1567,10 @@ namespace s20af094 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c16OnAimedAtWithEggEv
 // recovered name: dScMgBase_c_OnAimedAtWithEgg
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations
-   from a shared header */
-/* dScMgBase_c::OnAimedAtWithEgg - recovered from vtable slot identity.
+/* dScMgBase_c::OnAimedAtWithEgg - slot 29.
 
-   THE 27-METHOD SHADOW SCAFFOLD IS GONE.  This file used to carry a local
-   `struct Base` of twenty-six placeholder virtuals plus `struct Obj : Base`
-   with a `char pad[0x4700]`, existing only so that `self->Init()` would compile
-   to a load of vtable+0x68.  Slot 26 is OnHitByCannonBlastedChar and
-   dScMgBase_c declares it now, so the class does that job and both calls can be
-   written for what they are.  Every field this body touches was already named
-   in the header before this change -- mSavedMainBgBits's comment there names
-   this function -- so those offsets go too.  The two buffers at +0x2228 and
-   +0x4228 stay as raw offsets: they are inside pad_228, and this body is the
-   only evidence for their extent.
+   The two buffers at +0x2228 and +0x4228 stay as raw offsets: they are
+   inside pad_228, and this body is the only evidence for their extent.
 
    WHAT IT DOES, worth writing down because the NAME DOES NOT SAY IT.
    `OnAimedAtWithEgg` is transplanted from include/dActor_c.h at the same slot
@@ -1629,8 +1595,6 @@ extern "C" void DecompressLZ16(void *src, void *dst);
 extern "C" unsigned char data_0209d45c;
 extern "C" unsigned char data_0209d454;
 
-/* The parameter is spelled void* to agree with decl_common.h, which the two
-   overrides reach this symbol through; `this` is recovered on the first line. */
 /* THE EARLY EXITS ARE SPELT AS NESTED IFS, NOT `return;`. mwccarm accepts a
    valueless `return` in a non-void function; C++ does not, and no host option
    reaches it (MSVC C2561). The ROM sets no return value on these paths -- it
@@ -1644,18 +1608,15 @@ extern "C" unsigned char data_0209d454;
 
 int dScMgBase_c::OnAimedAtWithEgg()
 { using s20af094::DecompressLZ16; using s20af094::GetGameLanguage; using s20af094::MultiStore16; using s20af094::_ZN2GX10LoadBGPlttEPKvjj; using s20af094::_ZN3GXS10LoadBGPlttEPKvjj; using s20af094::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20af094::data_0209d454; using s20af094::data_0209d45c; using s20af094::func_0201f32c;
-    void *cv = (void *)this;
+    char *c = (char *)this;
 
-    struct dScMgBase_c *self = (struct dScMgBase_c *)cv;
-    char *c = (char *)cv;
-
-    if (self->OnHitByCannonBlastedChar() != 0)
+    if (OnHitByCannonBlastedChar() != 0)
         func_02019028();
 
-    self->mSavedScreenSwap = (*(volatile u16 *)0x4000304 & 0x8000) >> 15;
+    mSavedScreenSwap = (*(volatile u16 *)0x4000304 & 0x8000) >> 15;
 
-    self->mSavedMainBgBits = data_0209d45c;
-    self->mSavedSubBgBits = data_0209d454;
+    mSavedMainBgBits = data_0209d45c;
+    mSavedSubBgBits = data_0209d454;
 
     *(volatile u16 *)0x4000304 |= 0x8000;
     data_0209d45c = 0;
@@ -1685,12 +1646,12 @@ int dScMgBase_c::OnAimedAtWithEgg()
         MultiStore16(tmp, (char *)0x5000400, 2);
     }
 
-    func_0201f32c(self->mSceneKind);
+    func_0201f32c(mSceneKind);
 
     data_0209d45c = 0x12;
     data_0209d454 = 0x10;
 
-    if (self->OnHitByCannonBlastedChar() != 2) {
+    if (OnHitByCannonBlastedChar() != 2) {
         int *vbase = (int *)0x6600000;
         int *vram = vbase + 0x1800;
         MultiCopy_Int(vram, (int *)(c + 0x2228), 0x2000);
@@ -1703,33 +1664,27 @@ int dScMgBase_c::OnAimedAtWithEgg()
 namespace s20af27c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15OnHitByMegaCharEv
-/* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
-/* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBase_c_OnHitByMegaChar
-/* recovered: renamed to Class_Method */
-/* dScMgBase_c::OnHitByMegaChar - recovered from vtable slot identity.
-   Converted from .c to .cpp -- see the banner on
-   src/minigames/d_s_mg_base.cpp. */
+/* dScMgBase_c::OnHitByMegaChar - slot 27. Unless unk_4630 is set, opens
+   the three-item overlay menu: items start at their slide-in positions,
+   the prompt is disabled and nothing is highlighted. */
 }
 }
 
 void dScMgBase_c::OnHitByMegaChar()
 {
-    void *c = (void *)this;
-
-    struct dScMgBase_c *self = (struct dScMgBase_c *)(void *)c;
-    if (self->unk_4630 != 0) return;
+    if (unk_4630 != 0) return;
     func_02012e78();
-    self->mMenuItem0X = -0x80;
-    self->mMenuItem0Y = 0x30;
-    self->mMenuItem1X = 0x180;
-    self->mMenuItem1Y = 0x60;
-    self->mMenuItem2X = 0x80;
-    self->mMenuItem2Y = 0xe0;
-    self->mPromptEnabled = 0;
-    self->mMenuOpen = 1;
-    self->mMenuCursor = -1;
-    self->mMenuCursorPhase = 0;
+    mMenuItem0X = -0x80;
+    mMenuItem0Y = 0x30;
+    mMenuItem1X = 0x180;
+    mMenuItem1Y = 0x60;
+    mMenuItem2X = 0x80;
+    mMenuItem2Y = 0xe0;
+    mPromptEnabled = 0;
+    mMenuOpen = 1;
+    mMenuCursor = -1;
+    mMenuCursorPhase = 0;
 }
 
 // @symbol func_ov004_020af2f8
@@ -1758,6 +1713,13 @@ extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned in
 
 extern char data_ov004_020b9468;
 
+/* Sets up the brush that Virtual88 paints with. Stores `en` at +0x68 and
+   the layer `mode` (0..3) at +0x6c, fills the first 0x300 screen entries of
+   that sub-screen BG layer (and of the main-screen one when `en` is set)
+   with tile numbers 0..0x2ff under palette `base`, zeroes 0x6000 bytes of
+   the layer's character data, and loads the 0x20-byte palette
+   data_ov004_020b9468 into palette slot `base` on both screens. Any other
+   mode returns at once. */
 void func_ov004_020af2f8(char* sb, char en, int mode, int base)
 {
     volatile unsigned short v0, v1, v2, v3, v4, v5, v6, v7;
@@ -1884,6 +1846,10 @@ typedef struct Item {
     u32 rest : 22;
 } Item;
 
+/* Copies an OAM sprite list (8-byte entries, ending at the one whose
+   attr3 is 0xffff) from `src` to `dst`, adding `add` to each tile number
+   (the low ten bits of attr2). At most 0x20 entries: the 32nd is given the
+   0xffff terminator. Returns the number of entries written. */
 int func_ov004_020af5e0(Item* src, Item* dst, int add)
 {
     int n = 1;
