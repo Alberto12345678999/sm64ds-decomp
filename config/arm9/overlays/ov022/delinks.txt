@@ -42,18 +42,10 @@ src/actors/daObjFl_Seesaw_c.cpp:
 
 src/actors/daObjFl_Ukiyuka_c.cpp:
     complete
-    .text start:0x02111f6c end:0x021120b8
+    .text start:0x02111f6c end:0x02112130
     .init start:0x02112ec0 end:0x02112f78
     .ctor start:0x0211310c end:0x02113110
     .bss start:0x021145c8 end:0x02114618
-
-src/d_a_obj_fl_ukiyuka_fl_ukiyuka_l.c:
-    complete
-    .text start:0x021120b8 end:0x021120f4
-
-src/d_a_obj_fl_ukiyuka_fl_ukiyuka.c:
-    complete
-    .text start:0x021120f4 end:0x02112130
 
 src/actors/daObjFl_UkiKi_c.cpp:
     complete
