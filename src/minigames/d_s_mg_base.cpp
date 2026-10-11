@@ -2232,7 +2232,6 @@ namespace s20b04e0 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c24OnHitByCannonBlastedCharEv
 // recovered name: dScMgBase_c_OnHitByCannonBlastedChar
-/* recovered: renamed to Class_Method */
 /* dScMgBase_c::OnHitByCannonBlastedChar - slot 26.  The recovered name above is
  * this one's own and is correct; the two overrides' were not, and both are
  * corrected where they live.
@@ -2444,13 +2443,13 @@ bool dScMgBase_c::BeforeInitResources()
 // @symbol func_ov004_020b0a38
 namespace s20b0a38 {
 extern "C" {
-extern int *data_ov004_020beb68[];
-
+/* Clears mStateController.unk_024, so BeforeBehavior and BeforeRender
+   step and draw the UI state controller again. */
 void func_ov004_020b0a38(void)
 {
-    int *p = (int *)data_ov004_020beb68[0];
-    if (p == 0) return;
-    *(int *)((char *)p + 0xf0) = 0;
+    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    if (scene == 0) return;
+    scene->mStateController.unk_024 = 0;
 }
 }
 }
@@ -2458,6 +2457,8 @@ void func_ov004_020b0a38(void)
 // @symbol func_ov004_020b0a54
 namespace s20b0a54 {
 extern "C" {
+/* Sets the UI state controller's state and clears unk_060. The singleton
+   is read again after SetState, as the ROM does. */
 extern "C" void func_ov004_020b0a54(s32 state)
 {
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
@@ -2480,6 +2481,9 @@ struct E
   char pad2[0x134 - 0x24];
 };
 extern struct E data_ov004_020bf648[];
+/* Calls func_ov004_020b3194 on each of the three 0x134-byte records at
+   data_ov004_020bf648 whose word at +0x20 equals `arg` -- or, for 0x1d,
+   on each whose word is not 0x1d. */
 void FreeGfxSlotsById(int arg)
 {
   int i;
@@ -2536,7 +2540,6 @@ struct Obj004 {
 
 extern struct Obj004 data_ov004_020bf648[3];
 extern int data_ov004_020bc150;
-extern int data_ov004_020beb68;
 
 extern void func_ov004_020b422c(struct Obj004 *o);
 extern int func_ov004_020b40c0(struct Obj004 *o);
@@ -2570,11 +2573,7 @@ int func_ov004_020b0b1c(int arg) {
                     if (data_ov004_020bc150 != 0) {
                         func_ov004_020b422c(o);
                         if ((unsigned int)(arg - 1) <= 1) {
-                            /* The state block pointer is read as a char*: an int-typed base
-                               makes mwcc materialize 0x4630 from the literal pool and store
-                               with a register index (strls r4,[r1,r0]); the cartridge splits
-                               it as addls r0,r0,#0x4000 / strls r4,[r0,#0x630]. */
-                            *(int *)(*(char **)&data_ov004_020beb68 + 0x4000 + 0x630) = 1;
+                            ((dScMgBase_c *)data_ov004_020beb68)->unk_4630 = 1;
                         }
                     }
                 }
@@ -2607,6 +2606,9 @@ extern "C" {
 struct Elem { char pad[0x134]; };
 extern struct Elem data_ov004_020bf648[];
 extern void func_ov004_020b3278(struct Elem *e, int c, int a1, int a2, int a3, int s1, short s2);
+/* Hands its arguments to func_ov004_020b3278 for the first of the three
+   records at data_ov004_020bf648 whose word at +0x20 is 0x1d; does nothing
+   when none is. */
 void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6) {
     int i;
     for (i = 0; i < 3; i++) {
@@ -2622,8 +2624,6 @@ void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6) {
 // @symbol func_ov004_020b0d30
 namespace s20b0d30 {
 extern "C" {
-extern void FreeGfxSlotsById(int);
-extern Ent data_ov004_020bebe8[];
 extern char data_ov004_020bf3e8[];
 
 void func_ov004_020b0d30(void) {
@@ -2650,9 +2650,12 @@ extern s32 GetGameLanguage(void);
 extern void Hud_RenderSprite(void *fn, s32 a, s32 b, s32 r3arg, s32 stack_arg);
 extern void **data_ov004_020bbfa8[];
 
+/* Draws per-language sprite 0x11 or 0x12 at (arg1, arg2): 0x11 for the
+   first 20 frames of the scene's 40-frame mFrameCounter cycle, 0x12 for
+   the rest. */
 void func_ov004_020b0d8c(void *c, s32 arg1, s32 arg2)
 {
-    s32 idx1 = *(s32*)((char*)c + 0x5c);
+    s32 idx1 = ((dScMgBase_c *)c)->mFrameCounter;
     s32 r4 = (idx1 < 0x14) ? 0x11 : 0x12;
     s32 idx2 = GetGameLanguage();
     void **table = (void**)data_ov004_020bbfa8[idx2];
@@ -2665,27 +2668,23 @@ void func_ov004_020b0d8c(void *c, s32 arg1, s32 arg2)
 // @symbol func_ov004_020b0de0
 namespace s20b0de0 {
 extern "C" {
-typedef int s32;
 s32 GetGameLanguage(void);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern char* data_ov004_020bbfa8[];
 
-#define LAU(p) ((int)(p))
-
+/* Draws the per-language prompt sprite at (0xc0, 0xb0) while mPromptEnabled
+   is set: blinking (shown for the first 0x18 frames of each 0x30-frame
+   mPromptBlinkTimer cycle) for four cycles, then every frame. */
 void func_ov004_020b0de0(char* c)
 {
     dScMgBase_c *self = (dScMgBase_c *)c;
     if (self->mPromptEnabled == 0)
         return;
     if ((unsigned int)self->mPromptBlinkCount < 4U) {
-        unsigned short* p = (unsigned short*)LAU(c + 0xc0);
-        *p = (unsigned short)(*p + 1);
+        self->mPromptBlinkTimer++;
         if ((unsigned int)self->mPromptBlinkTimer >= 0x30U) {
             self->mPromptBlinkTimer = 0U;
-            {
-                unsigned char* q = (unsigned char*)LAU(c + 0xc4);
-                *q = (unsigned char)(*q + 1);
-            }
+            self->mPromptBlinkCount++;
         }
         if ((unsigned int)self->mPromptBlinkTimer >= 0x18U)
             return;
