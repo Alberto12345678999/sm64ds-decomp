@@ -1,0 +1,179 @@
+{
+  "id": "arm9/IRQ",
+  "module": "arm9",
+  "source": "src/IRQ.cpp",
+  "promoted_source": "src/IRQ.cpp",
+  "status": "promoted",
+  "boundary_confidence": "high",
+  "boundary_evidence": [
+    "contiguous linker run: 0x02056c40..0x02057000, 18 function(s), gapless in config/arm9/delinks.txt (each entry end was the next entry start, all marked complete).",
+    "TOP EDGE: Copy48BytesFixed (0x02056c1c..0x02056c40) ends exactly where the run begins. It is a byte-copy helper, not an IRQ member.",
+    "BOTTOM EDGE: func_02057000 (0x02057000..0x02057014) begins exactly where the run ends. It stores to data_023c0000 and is not an IRQ member, so the run stops there. Other IRQ functions (0x0201a4e4, 0x02059cb4, itcm 0x01ffd97c, and 0x0205b864..0x020610fc) are separate runs and are not this TU."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02056c40",
+      "end": "0x02057000"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZN3IRQ19Tim3OverflowHandlerEv",
+      "address": "0x02056c40",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ19Tim3OverflowHandlerEv.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN3IRQ19Tim2OverflowHandlerEv",
+      "address": "0x02056c50",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ19Tim2OverflowHandlerEv.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN3IRQ19Tim1OverflowHandlerEv",
+      "address": "0x02056c60",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ19Tim1OverflowHandlerEv.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZN3IRQ19Tim0OverflowHandlerEv",
+      "address": "0x02056c70",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ19Tim0OverflowHandlerEv.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN3IRQ11Dma3HandlerEv",
+      "address": "0x02056c80",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ11Dma3HandlerEv.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN3IRQ11Dma2HandlerEv",
+      "address": "0x02056c90",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ11Dma2HandlerEv.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "_ZN3IRQ11Dma1HandlerEv",
+      "address": "0x02056ca0",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ11Dma1HandlerEv.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "_ZN3IRQ11Dma0HandlerEv",
+      "address": "0x02056cb0",
+      "size": "0x00000010",
+      "legacy_source": "src/_ZN3IRQ11Dma0HandlerEv.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "_ZN3IRQ13DmaTimHandlerEj",
+      "address": "0x02056cc0",
+      "size": "0x000000a0",
+      "legacy_source": "src/_ZN3IRQ13DmaTimHandlerEj.cpp",
+      "ordinal": 8
+    },
+    {
+      "symbol": "_ZN3IRQ12EmptyHandlerEv",
+      "address": "0x02056d60",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN3IRQ12EmptyHandlerEv.cpp",
+      "ordinal": 9
+    },
+    {
+      "symbol": "_ZN3IRQ15ClearInterruptsEj",
+      "address": "0x02056d64",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN3IRQ15ClearInterruptsEj.cpp",
+      "ordinal": 10
+    },
+    {
+      "symbol": "_ZN3IRQ11DisableIRQsEj",
+      "address": "0x02056d98",
+      "size": "0x00000048",
+      "legacy_source": "src/_ZN3IRQ11DisableIRQsEj.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "_ZN3IRQ10EnableIRQsEj",
+      "address": "0x02056de0",
+      "size": "0x00000038",
+      "legacy_source": "src/_ZN3IRQ10EnableIRQsEj.cpp",
+      "ordinal": 12
+    },
+    {
+      "symbol": "_ZN3IRQ7SetIRQsEj",
+      "address": "0x02056e18",
+      "size": "0x00000034",
+      "legacy_source": "src/_ZN3IRQ7SetIRQsEj.cpp",
+      "ordinal": 13
+    },
+    {
+      "symbol": "func_02056e4c",
+      "address": "0x02056e4c",
+      "size": "0x0000004c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02056e4c.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "func_02056e98",
+      "address": "0x02056e98",
+      "size": "0x0000004c",
+      "legacy_source": "src/unnamed/arm9/0205/func_02056e98.c",
+      "ordinal": 15
+    },
+    {
+      "symbol": "_ZN3IRQ13GetIRQHandlerEj",
+      "address": "0x02056ee4",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN3IRQ13GetIRQHandlerEj.cpp",
+      "ordinal": 16
+    },
+    {
+      "symbol": "_ZN3IRQ13SetIRQHandlerEjPFvvE",
+      "address": "0x02056f70",
+      "size": "0x00000090",
+      "legacy_source": "src/_ZN3IRQ13SetIRQHandlerEjPFvvE.cpp",
+      "ordinal": 17
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "compiler_only_output": [],
+  "notes": [
+    "HAND-BUILT manifest entry, not tools/tubuild.py create output -- the main module is unsegmentable, so there is no create candidate id.",
+    "The file name is the class name already used by include/IRQ.h, per Juan 2026-10-11. IRQ has no ROM RTTI spelling and had no home TU.",
+    "Default deferred codegen emits .text in reverse source order, so the definitions are written descending and the object carries the eighteen functions ascending 0x02056c40..0x02057000. No file-wide pragma.",
+    "func_02056e4c and func_02056e98 stay extern C under their existing names (probe: C++ byte-identical). They share data_020a60c4 with SetIRQHandler, GetIRQHandler, and DmaTimHandler; two casts in func_02056e98 keep that one 12-byte slot layout."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-IRQ/IRQ.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 18,
+    "functions_declared": 18,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
