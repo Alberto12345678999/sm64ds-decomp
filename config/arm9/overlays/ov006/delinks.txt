@@ -52,6 +52,9 @@ src/minigames/d_s_mg_card.cpp:
 src/actors/dScMgCoin_c.cpp:
     complete
     .text start:0x020dbe40 end:0x020de988
+    .init start:0x0213014c end:0x021303d0
+    .ctor start:0x02133588 end:0x0213358c
+    .bss start:0x021417b0 end:0x02141870
 
 src/actors/dScMgCup_c.cpp:
     complete
@@ -257,10 +260,6 @@ src/unnamed/ov006/__sinit_ov006_0212fc7c.c:
 src/unnamed/ov006/__sinit_ov006_0212fd48.c:
     complete
     .init start:0x0212fd48 end:0x021300b0
-
-src/unnamed/ov006/__sinit_ov006_0213014c.c:
-    complete
-    .init start:0x0213014c end:0x021303d0
 
 src/unnamed/ov006/__sinit_ov006_02130a04.c:
     complete

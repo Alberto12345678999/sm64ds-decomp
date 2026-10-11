@@ -6773,6 +6773,7 @@
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c6RenderEv": "andrewboudreau",
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c8BehaviorEv": "andrewboudreau",
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/dScMgCoin_c.cpp#__sinit_dScMgCoin_c.cpp": "lunavyqo",
     "src/actors/dScMgHanachan_c.cpp#_ZN15dScMgHanachan_cD1Ev": "andrewboudreau",
     "src/actors/dScMgHanachan_c.cpp#_ZN15dScMgHanachan_cD0Ev": "andrewboudreau",
     "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea324": "tangosdev",
