@@ -10,7 +10,7 @@
  * Source order is the reverse of the ROM's. mwccarm emits .text backwards.
  * Do not reorder.
  *
- * deslop leftovers:
+ * Measured constraints (the alternative, and what it costs):
  * - func_ov004_020b8f78: Sound::Play2D(2, id) grows it 0x284 to 0x298 and
  *   retargets the calls to _ZN5Sound6Play2DEjj. The ROM calls func_02012790,
  *   whose body is that Play2D.
@@ -106,7 +106,7 @@ extern short data_ov004_020bfe88[];
 extern short data_ov004_020bfe8a[];
 extern short data_ov004_020bfe9c[];
 extern short data_ov004_020bfe9e[];
-extern "C" int func_ov004_020b8f18(void *panel);
+int func_ov004_020b8f18(void *panel);
 int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mBlink from the icon's +0x18. */
 void func_ov001_020ab3f0(void *icon);
@@ -306,7 +306,7 @@ extern "C" u8 func_ov004_020b8f78(char *raw)
 // @symbol func_ov004_020b8f18
 /* Draw every live icon. Returns 1 while the panel is up, which makes
    func_ov004_020ae858 skip the rest of the touch-screen UI. */
-int func_ov004_020b8f18(void *raw)
+extern "C" int func_ov004_020b8f18(void *raw)
 {
     dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
     int i;
