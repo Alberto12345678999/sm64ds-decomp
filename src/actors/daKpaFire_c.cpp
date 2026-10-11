@@ -1,82 +1,49 @@
 //cpp
-/* daKpaFire_c: Bowser's Koopa-fire (KOOPAFIRE profile, ov060).
+/* daKpaFire_c -- Bowser's fire (KOOPAFIRE, ov060).
  *
- * The whole unit, ov060 .text 0x02116484..0x02117938, 26 functions: the
- * destructor pair, twenty helpers, CleanupResources, Render, Behavior and
- * InitResources. Eight variants from param1 & 7 (plus a sub-variant at
- * >> 4 & 3): gravity-falling flames with mesh and cylinder collision,
- * drawn by the particle system (Render only reports success). Behavior
- * runs the variant's handler from the data_ov060_0211afb4 PMF table;
- * InitResources runs its data_ov060_0211af74 ActorFn, then finishes setup.
+ * _ZTS11daKpaFire_c at ov060 0x0211a7c0, _ZTI at 0x0211a7b4 (base
+ * _ZTI12dEnemyBase_c), _ZTV at 0x0211a7f4. The tree used to call this
+ * class BowserFire. The out-of-line destructor is the key function:
+ * D1 at 0x02116484, D0 at 0x021164c4, then a D2 the cartridge does not
+ * keep. Codegen is deferred, so .text is the reverse of source order.
+ * The destructor alone sits under defer_codegen off, which is what
+ * emits D1 before D0.
  *
- * The two tables, read out of the ROM (__sinit_ov060_02119df0 fills them from
- * the records at 0x0211a734..0x0211a7ac); each entry is a plain function
- * address:
+ * Eight variants, param1 & 7. Behavior runs data_ov060_0211afb4.
+ * InitResources runs data_ov060_0211af74, then finishes setup.
+ *   0  rides Bowser's mouth and spits variant 5
+ *   1  grows, then splits into variant 2
+ *   2  flies, then lands as variant 7 or 3
+ *   3  one frame: spawns three variant 4
+ *   4  bounces, and vanishes when Bowser's hold state is idle
+ *   5  sprays on a pitch and heading, then lands as variant 6
+ *   6  falls, burns on the ground, ends in a burst
+ *   7  same handler as 6, tossed straight up
+ * FIRE_PARAM packs variant in bits 0..2 and the sub-variant in bits 4..5.
  *
- *   mVariant  Behavior handler        init              what the handler does
- *   0         func_ov060_0211747c     func_ov060_021167c8  rides Bowser's mouth, spawns variant 5
- *   1         func_ov060_021169f8     func_ov060_02116b18  grows, then splits into variant 2 and dies
- *   2         func_ov060_02116b68     func_ov060_02116c68  flies, lands into variant 7 or 3
- *   3         func_ov060_021167ec     func_ov060_021167c8  one frame: spawns three variant 4
- *   4         func_ov060_021168c4     func_ov060_021169b0  bounces; vanishes near Bowser
- *   5         func_ov060_02116d78     func_ov060_02116f74  sprays from a pitch/heading, lands into variant 6
- *   6         func_ov060_02116f90     func_ov060_0211722c  falls, burns on the ground, ends in a burst
- *   7         func_ov060_02116f90     func_ov060_021171e8  same handler as 6; tossed straight up, scale 6.0, default gravity
- *
- * (The right-hand column is a reading of each handler, not ROM data.) The
- * `FIRE_PARAM(variant, sub)` macro below spells the param1 words the handlers
- * hand to dActor_c::Spawn.
- *
- * The tree used to call this class BowserFire (coined): the cartridge's
- * _ZTS11daKpaFire_c at ov060 0x0211a7c0, _ZTI at 0x0211a7b4 and _ZTV at
- * 0x0211a7f4 name it daKpaFire_c, and daKpaFire_c_classInit builds it
- * for the KOOPAFIRE registry profile.
- *
- * The out-of-line destructor is the key function, so this TU emits the
- * vtable and RTTI (manifest: deadstrip-data against the homed triple).
- * The file is ROM-descending: codegen is deferred, so .text comes out in
- * reverse source order. The destructor alone is bracketed by
- * `#pragma defer_codegen off/on`, so it is generated as it is parsed --
- * ahead of every deferred function -- and comes out D1, D0, then a D2 the
- * cartridge has no home for (manifest: deadstrip). Left deferred it comes
- * out D2, D0, D1 and the ROM's D1-before-D0 pair at 0x02116484 inverts.
- *
- * Known limits:
- * - The twenty func_ov060_* helpers stay free extern "C" functions, but they
- *   now take daKpaFire_c * and read named members instead of bytes (the three
- *   whose signatures decl_common.h fixes -- func_ov060_02116740, _02117624 and
- *   _021172c8 -- keep their char * / unsigned char * parameter and cast on
- *   entry). Several are reached through the variant PMF/ActorFn tables rather
- *   than direct calls, so method conversion still needs per-helper review --
- *   verify alone cannot catch a wrong-this (bytes still match).
- * - func_ov060_02117624 stays free AND parses as C: its Matrix4x3 block
- *   store scalarizes under C++ (same wall as Bullet 020fed7c and ov062
- *   ba84). `#pragma cplusplus off/on` around the definition only.
- * - func_ov060_02116740 and func_ov060_021172c8 stay free: decl_common.h
- *   declares them for other users.
- * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight, Particle::New
- *   and SaveData helpers stay mangled scalar externs (Fix12-by-value
- *   member form is the 6az wall).
- * - Leftover raw offsets, each commented where it occurs: two daKpa_c
- *   fields this class reaches into (+0x410 and the dExtFrameCtrl_c at +0x124) and
- *   the Particle fields at +0x44 / +0x4c / +0x50 (Particle__System.h names
- *   +0x4c callbackVelocity and +0x50 callbackScale; +0x44 is unnamed padding
- *   there; they are reached through a void *, so they stay raw). The
- *   Matrix4x3 scratch at 0x32c is still the header's pad_32c.
- * - Not decoded: the meaning of daKpa_c's mState value 0xf and its +0x410
- *   word beyond what daKpa_c.cpp already says, the sound id 0x180 and the
- *   `3` passed beside it, what DropShadowRadHeight's opacity argument 0xf means (every caller passes it), the 0x380
- *   divisor of variant 5's velocity, what player param1 == 3 means, and
- *   the fire ids in the two particle id pairs (a kind and kind + 1).
- * - The per-variant labels in the table above are descriptions of the
- *   handlers, not recovered names.
+ * leftovers:
+ * - func_ov060_02116740, 02117624 and 021172c8 stay free functions with
+ *   the char * / unsigned char * decl_common.h declares. 02117624
+ *   parses as C: assigning a Matrix4x3 scalarizes under C++.
+ * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
+ *   Particle::System::New / NewSimple / NewUnkCallback818 and
+ *   SaveData::IsCharacterUnlocked stay mangled. Those calls pass
+ *   Fix12<int> by value; the header spelling of dBgCh_Actr::Init is
+ *   Fix12i, which mangles as int.
+ * - GetFrameCount stays the void* extern. The argument is
+ *   static_cast<dExtFrameCtrl_c *>(&o->mModelAnim), ModelAnim's
+ *   second base, which is Bowser + 0x124. The header method is not
+ *   that symbol's spelling at this site.
+ * - Particle::System::callbackScale and callbackVelocity are named.
+ *   The word at +0x44 sits in pad_042 and stays a raw store.
+ * - DropShadowRadHeight's matrix is pad_32c. daKpaFire_c.h has no
+ *   Matrix4x3 member there.
+ * - Sound 0x180, player param1 == 3, and the particle kind pairs are
+ *   named only by the use-site enums below.
  * - data_ov060_0211af74 / 0211afb4 / 0211934c / 02119358 / 02119364 and
  *   g_profile_KOOPAFIRE are not this TU's data.
  */
 
-/* Includes: union of the legacy files', first-seen in ROM-ascending
- * processing order. NOT verified for header ordering constraints (e.g. a
- * common.h-before-X rule) -- watch for new compile errors after this. */
 #include "daKpaFire_c.h"
 #include "types.h"
 #include "common.h"
@@ -87,16 +54,11 @@
 #include "dActor_c.h"
 #include "daKpa_c.h"
 #include "Player.h"
+#include "Particle__System.h"
 
-/* Local shadow declarations carried from the legacy files verbatim.
- * NOT reconciled against real project headers -- check include/*.h for
- * each of these before compiling; a real header should usually win. */
-/* PMF-table views. Behavior calls data_ov060_0211afb4[mVariant].pmf and
- * InitResources calls data_ov060_0211af74[mVariant] as pointer-to-member
- * on this; the legacy shards proved swapping their empty stand-ins for
- * the real dActor_c byte-identical under the pin (same survivor shape as
- * Bullet's 020fed2c keeper). */
-struct Vector3_16f;
+/* Behavior calls data_ov060_0211afb4[mVariant].pmf. InitResources calls
+ * data_ov060_0211af74[mVariant]. Both tables are pointer-to-member on
+ * dActor_c, which is what the sinit records store. */
 struct dCc_c;
 /* POD spelling of Matrix4x3's 0x30 bytes: with a user-declared constructor on
  * Vector3 the copy in func_ov060_02117624 scalarizes even under `#pragma
@@ -147,7 +109,6 @@ enum { SOUND_ID_MOUTH = 0x180 };
 extern "C" {
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
-extern void* _ZN8Particle6System12FromUniqueIDEj(u32 id);
 extern void* _ZN8dActor_c13ClosestPlayerEv(void* self);
 extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
 extern char* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int a, int b, const void *pos, const void *rot, int e, int f);
@@ -168,7 +129,7 @@ void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, 
 void* _ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void* prev);
 int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 extern char* _ZN8dActor_c10FindWithIDEj(unsigned int id);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
+/* local extern: the header method is not this symbol's spelling here. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
 extern u16 data_ov060_02119364[];
@@ -180,28 +141,13 @@ extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
 extern ActorFn data_ov060_0211af74[];
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- daKpaFire_c_classInit, 0x02117938, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol daKpaFire_c_classInit
-/* recovered: vtable identified, globals resolved */
-/* Reconstructed source-style name: SM64DS proves daKpaFire_c through RTTI,
- * allocation size, vtable identity, and the KOOPAFIRE registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: BowserFire_Spawn.
- *
- * `new daKpaFire_c` is the whole sequence the loose factory spelled by hand:
- * fBase_c::operator new(0x38c), dEnemyBase_c's base constructor, the vptr
- * store, then the three member constructors in declaration order. Highest
- * address in the unit, so first in source (codegen is deferred). */
+/* Historical alias BowserFire_Spawn. First in source because codegen is deferred. */
 extern "C" daKpaFire_c *daKpaFire_c_classInit(void)
 {
     return new daKpaFire_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- _ZN11daKpaFire_c13InitResourcesEv, 0x02117790, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_c13InitResourcesEv
 /* Sets up collision and state (no files of its own; daKpa_c owns the fight's).
  * The ground probe uses the real dBgCh_Gnd (clsnY is seed on entry, hit on
@@ -266,9 +212,6 @@ int daKpaFire_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 24 -- _ZN11daKpaFire_c8BehaviorEv, 0x021176d4, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_c8BehaviorEv
 /* Once per frame: bump mTickCount, run the variant's handler from the
  * data_ov060_0211afb4 table, bump mFrameCount, then -- while gravity is still
@@ -297,40 +240,20 @@ int daKpaFire_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- _ZN11daKpaFire_c6RenderEv, 0x021176cc, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_c6RenderEv
-/* recovered: shared header, real C++ method
- *
- * `return 1` and nothing else -- the whole ROM body is `mov r0,#1; bx lr`.
- * The flame is drawn by the particle system, so the render slot only has to
- * report success.
- */
+/* The flame is drawn by the particle system. This slot only reports success. */
 int daKpaFire_c::Render()
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 22 -- _ZN11daKpaFire_c16CleanupResourcesEv, 0x021176c4, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_c16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * `return 1` with no releases, which is the finding rather than a stub:
- * daKpaFire_c holds no SharedFilePtr of its own. daKpa_c loads and frees the
- * whole fight's files -- 0x1c models, six more, and three singles -- and the
- * fire it breathes borrows from that set without taking a reference.
- */
+/* No files of its own. daKpa_c loads and releases the fight's models. */
 int daKpaFire_c::CleanupResources()
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- func_ov060_02117624, 0x02117624, size 0xa0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02117624
 /* C block store (same wall as Bullet 020fed7c and ov062 ba84): the Matrix4x3
  * copy scalarizes under C++. Parsed as C; the TU returns to C++ after it. */
@@ -343,7 +266,6 @@ int daKpaFire_c::CleanupResources()
  * that value means is not decoded; every caller passes 0xf).
  * Parsed as C, so the class is named `struct daKpaFire_c`; the Matrix4x3 at
  * 0x32c is still the header's pad_32c bytes, reached through a cast. */
-/* recovered: shared common types */
 #include "common.h"
 extern "C" {
 
@@ -361,9 +283,6 @@ void func_ov060_02117624(char *c) {
 }
 #pragma cplusplus on
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- func_ov060_0211747c, 0x0211747c, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_0211747c
 /* Variant 0 Behavior: ride Bowser's mouth.
  *
@@ -385,8 +304,8 @@ void func_ov060_02117624(char *c) {
  * its own position, passing its own pitch/heading words as the spawn rotation.
  *
  * Bowser's position goes through v[] first (volatile, so the reads keep their
- * ROM order). Raw offsets left: Bowser +0x124 (the dExtFrameCtrl_c inside his
- * mModelAnim); his yaw is read unsigned through mAngleY. */
+ * order). Yaw is the unsigned half of mAngleY. Frame count is the
+ * dExtFrameCtrl_c inside mModelAnim. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_0211747c(daKpaFire_c *self)
 {
@@ -425,7 +344,8 @@ void func_ov060_0211747c(daKpaFire_c *self)
     v[2] = p[2];
     t = data_ov060_02119364;
 
-    if (n == _ZNK15dExtFrameCtrl_c13GetFrameCountEv((char *)o + 0x124))
+    if (n == _ZNK15dExtFrameCtrl_c13GetFrameCountEv(
+            static_cast<dExtFrameCtrl_c *>(&o->mModelAnim)))
         n = 0;
 
     t += n * 5;
@@ -452,9 +372,6 @@ void func_ov060_0211747c(daKpaFire_c *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 19 -- func_ov060_021172e0, 0x021172e0, size 0x19c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021172e0
 /* End of a variant 6/7 fire, called once its mFireScale has burnt down to 0 or
  * below: plays the one-shot particle PARTICLE_END_PUFF at the fire's position
@@ -467,7 +384,6 @@ void func_ov060_0211747c(daKpaFire_c *self)
  *     unlocked), sets the daKpa_c's mCapActorAlive to 1 if the spawn worked,
  *     and stops -- this branch returns whether or not the spawn worked;
  *   - otherwise it spawns a coin and zeroes the coin's three velocity words. */
-/* recovered: shared common types */
 extern "C" void func_ov060_021172e0(daKpaFire_c* self)
 {
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
@@ -518,9 +434,6 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 18 -- func_ov060_021172c8, 0x021172c8, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021172c8
 /* 1 if more than n Behavior frames have passed (mFrameCount > n), else 0.
  * Keeps the unsigned char * parameter decl_common.h declares. */
@@ -530,9 +443,6 @@ int func_ov060_021172c8(unsigned char *p, unsigned int n){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- func_ov060_0211722c, 0x0211722c, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_0211722c
 /* Variant 6 init: random heading (16 random bits); vertical speed 30.0 units
  * with a 2 in 10 chance, else 10.0; horizontal speed 5.0 (0x5000); gravity
@@ -555,9 +465,6 @@ void func_ov060_0211722c(daKpaFire_c *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 16 -- func_ov060_021171e8, 0x021171e8, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021171e8
 /* Variant 7 init: random heading, vertical speed 10.0 units (0xa000), no
  * horizontal speed, mFireScale 6.0 (0x6000), shadow multiplier 0x10. Gravity
@@ -574,9 +481,6 @@ void func_ov060_021171e8(daKpaFire_c *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- func_ov060_0211712c, 0x0211712c, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_0211712c
 /* Sideways wobble, called by the variant 2 handler and the variant 6/7
  * handler. Forms a phase angle ((mTickCount + mPhaseOffset) & 0x3f) << 10 --
@@ -600,9 +504,6 @@ void func_ov060_0211712c(daKpaFire_c *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- func_ov060_02116f90, 0x02116f90, size 0x19c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116f90
 /* Variant 6 and 7 Behavior: a flame that falls, lands, burns down and bursts.
  *
@@ -659,9 +560,6 @@ void func_ov060_02116f90(daKpaFire_c *self) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- func_ov060_02116f74, 0x02116f74, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116f74
 /* Variant 5 init: horizontal speed is stored as the raw integer 30 (not
  * 30.0 units; variant 5's handler multiplies it straight into the sine
@@ -675,9 +573,6 @@ void func_ov060_02116f74(daKpaFire_c *p)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- func_ov060_02116d78, 0x02116d78, size 0x1fc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116d78
 /* Variant 5 Behavior: a spray flame that is thrown along a pitch and heading
  * (the words spawners leave in 0x92 and 0x94, which dActor_c names
@@ -739,9 +634,6 @@ void func_ov060_02116d78(daKpaFire_c *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- func_ov060_02116c68, 0x02116c68, size 0x110 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116c68
 /* Variant 2 init: random heading (16 random bits) and phase; horizontal speed
  * random (r % 10 in 0.5-unit steps, up to 4.5, when mSubVariant is non-zero;
@@ -776,9 +668,6 @@ void func_ov060_02116c68(daKpaFire_c *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov060_02116b68, 0x02116b68, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116b68
 /* Variant 2 Behavior: a flame in flight. Shows the particle id that
  * data_ov060_02119358[mSubVariant] picks (0xa2, 0xa4, 0xa4 for sub-variants 0..2)
@@ -808,9 +697,6 @@ void func_ov060_02116b68(daKpaFire_c *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov060_02116b18, 0x02116b18, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116b18
 /* Variant 1 init: vertical speed 7.0 units (0x7000), horizontal speed 17.5
  * (0x11800), gravity +1.0 (0x1000, upward -- unlike the InitResources
@@ -826,9 +712,6 @@ void func_ov060_02116b18(daKpaFire_c* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov060_021169f8, 0x021169f8, size 0x120 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021169f8
 /* Variant 1 Behavior: grows, then splits and vanishes. mFireScale grows by
  * 0x200 per frame while below 5.0 (0x5000); it moves (UpdatePos) and shows
@@ -839,7 +722,6 @@ void func_ov060_02116b18(daKpaFire_c* c){
  * children get this fire's pitch/heading words as their spawn rotation and
  * their mFireScale is set after the spawn returns. Then it destroys itself.
  * Before frame 21 it only grows and moves. */
-/* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_021169f8(daKpaFire_c* sl)
 {
@@ -867,18 +749,9 @@ void func_ov060_021169f8(daKpaFire_c* sl)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov060_021169b0, 0x021169b0, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021169b0
-// recovered name: Bowser_Kill
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* recovered: renamed to Class_Method */
-/* daKpa_c::Kill - recovered from vtable slot identity */
-/* The two labels above do not fit what the function does: data_ov060_0211af74
- * makes it the INIT of variant 4. Vertical speed 30.0 units (0x1e000),
- * horizontal speed 15.0 (0xf000), random phase, SetLimMovFlag on the mesh
- * collision, shadow multiplier 0x10. */
+/* Variant 4 init. Vertical speed 30.0, horizontal speed 15.0, random
+ * phase, SetLimMovFlag on the mesh collision, shadow multiplier 0x10. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_021169b0(daKpaFire_c* thiz) {
     thiz->mVertSpeed = 0x1e000;
@@ -889,9 +762,6 @@ void func_ov060_021169b0(daKpaFire_c* thiz) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov060_021168c4, 0x021168c4, size 0xec */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021168c4
 /* Variant 4 Behavior: a bouncing flame that is called off near Bowser.
  *
@@ -900,20 +770,18 @@ void func_ov060_021169b0(daKpaFire_c* thiz) {
  * mesh collision reports it has just hit the ground its vertical speed is
  * set to 30.0 units (0x1e000) -- the bounce. Moves (UpdatePos), shows
  * PARTICLE_VARIANT_4 at a 50 unit (0x32000) y offset, destroys itself once
- * mFrameCount exceeds 150 (0x96). It also destroys itself when the daKpa_c
- * was found, its +0x410 word (daKpa_c.cpp uses it as an index into a
- * pointer-to-member table) is 0, and the horizontal distance to it is under
- * 150 units (0x96000).
- * Raw offset left: daKpa_c +0x410. */
+ * mFrameCount exceeds 150 (0x96). It also destroys itself when Bowser is
+ * still there, his hold state is idle, and he is within 150 units.
+ */
 extern "C" void func_ov060_021168c4(daKpaFire_c* c)
 {
-    daKpa_c* r4;
+    daKpa_c* koopa;
     if (c->mFrameCount == 0) {
         dActor_c* a = dActor_c::FindWithActorID(ACTOR_KOOPA, 0);
-        r4 = (daKpa_c*)a;
-        c->mKpaUniqueID = r4->uniqueID;
+        koopa = (daKpa_c*)a;
+        c->mKpaUniqueID = koopa->uniqueID;
     } else {
-        r4 = (daKpa_c*)dActor_c::FindWithID(c->mKpaUniqueID);
+        koopa = (daKpa_c*)dActor_c::FindWithID(c->mKpaUniqueID);
     }
     if (c->mWithMeshClsn.JustHitGround() != 0) {
         c->mVertSpeed = 0x1e000;
@@ -923,15 +791,12 @@ extern "C" void func_ov060_021168c4(daKpaFire_c* c)
     if (func_ov060_021172c8((unsigned char*)c, 0x96) != 0) {
         c->MarkForDestruction();
     }
-    if (r4 == 0) return;
-    if (*(int*)((char*)r4 + 0x410) != 0) return;
-    if (Vec3_HorzDist((Vector3*)&c->mPosX, (Vector3*)&r4->mPosX) >= 0x96000) return;
+    if (koopa == 0) return;
+    if (koopa->mHoldState != 0) return;
+    if (Vec3_HorzDist((Vector3*)&c->mPosX, (Vector3*)&koopa->mPosX) >= 0x96000) return;
     c->MarkForDestruction();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov060_021167ec, 0x021167ec, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021167ec
 /* Variant 3 Behavior: acts on its first frame only (mFrameCount 0; after that
  * it does nothing, and it also does nothing if there is no player). Aims at
@@ -941,7 +806,6 @@ extern "C" void func_ov060_021168c4(daKpaFire_c* c)
  * being a full turn) and mFireScale copied from this one, then destroys itself.
  * The children are spawned with no rotation and have their pitch/heading words
  * written afterwards. */
-/* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_021167ec(daKpaFire_c* c)
 {
@@ -969,9 +833,6 @@ void func_ov060_021167ec(daKpaFire_c* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov060_021167c8, 0x021167c8, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021167c8
 /* Init shared by variants 0 and 3: cylinder flags bit 0 set (cylinder
  * disabled), mFireScale 2.0 (0x2000), shadow multiplier 0x10. */
@@ -984,9 +845,6 @@ void func_ov060_021167c8(daKpaFire_c *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov060_02116740, 0x02116740, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116740
 /* Burn the player the fire's cylinder touched. Reads mdCcAc_c.otherOwner (the
  * dCc_c field Clear zeroes; here it is used as an actor uniqueID, 0 for none)
@@ -1009,9 +867,6 @@ void func_ov060_02116740(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov060_02116518, 0x02116518, size 0x228 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02116518
 /* Particle helper. Keeps two particles alive at the fire's position, y raised
  * by a3 (Fix12): `kind` in mParticleHandle_37c and `kind + 1` in
@@ -1020,18 +875,15 @@ void func_ov060_02116740(char* c){
  * through the NewUnkCallback818 form of Particle::System::New; the rest use
  * the plain New.
  *
- * With a2 non-zero each live particle is then resized: its word at +0x50
- * is set to mFireScale as a halfword value (0x7fff when mFireScale is 0x8000
- * or more). For kind 0x9a only, its words at +0x44 and +0x4c are also set from
- * mFireScale * 0x2800 and mFireScale * 0xa66, each rounded (+0x800) and shifted
- * down 12 (about * 2.5 and * 0.65; the second is truncated to a halfword
- * first). +0x50 and +0x4c are Particle::System's callbackScale and
- * callbackVelocity in Particle__System.h and +0x44 is unnamed there; all three
- * stay raw because they are reached through a void *. */
+ * With a2 non-zero each live particle is resized. callbackScale becomes
+ * mFireScale as a halfword (0x7fff once mFireScale reaches 0x8000). Kind
+ * 0x9a also writes the unnamed word at +0x44 and callbackVelocity from
+ * mFireScale * 0x2800 and mFireScale * 0xa66.
+ */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_02116518(daKpaFire_c* self, u32 kind, int a2, int a3)
 {
-    void* o;
+    Particle::System *sys;
 
     if (kind == 0xa2 || kind == 0xa4) {
         self->mParticleHandle_37c = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
@@ -1042,12 +894,12 @@ void func_ov060_02116518(daKpaFire_c* self, u32 kind, int a2, int a3)
     }
 
     if (self->mParticleHandle_37c != 0 && a2 != 0) {
-        o = _ZN8Particle6System12FromUniqueIDEj(self->mParticleHandle_37c);
-        if (self->mFireScale >= 0x8000) { *(int*)((char*)o + 0x50) = 0x7fff; } else { *(int*)((char*)o + 0x50) = (short)self->mFireScale; }
+        sys = Particle::System::FromUniqueID(self->mParticleHandle_37c);
+        if (self->mFireScale >= 0x8000) { sys->callbackScale = 0x7fff; } else { sys->callbackScale = (short)self->mFireScale; }
 
         if (kind == PARTICLE_SCALED_9A) {
-            *(int*)((char*)o + 0x44) = (int)(((long long)(self->mFireScale) * 0x2800 + 0x800) >> 12);
-            *(int*)((char*)o + 0x4c) = (short)(Fix12i)(((long long)(self->mFireScale) * 0xa66 + 0x800) >> 12);
+            *(int *)((char *)sys + 0x44) = (int)(((long long)(self->mFireScale) * 0x2800 + 0x800) >> 12);
+            sys->callbackVelocity = (short)(Fix12i)(((long long)(self->mFireScale) * 0xa66 + 0x800) >> 12);
         }
     }
 
@@ -1058,25 +910,20 @@ void func_ov060_02116518(daKpaFire_c* self, u32 kind, int a2, int a3)
     if (a2 == 0)
         return;
 
-    o = _ZN8Particle6System12FromUniqueIDEj(self->mParticleHandle_380);
-    if (self->mFireScale >= 0x8000) { *(int*)((char*)o + 0x50) = 0x7fff; } else { *(int*)((char*)o + 0x50) = (short)self->mFireScale; }
+    sys = Particle::System::FromUniqueID(self->mParticleHandle_380);
+    if (self->mFireScale >= 0x8000) { sys->callbackScale = 0x7fff; } else { sys->callbackScale = (short)self->mFireScale; }
 
     if (kind != PARTICLE_SCALED_9A)
         return;
 
-    *(int*)((char*)o + 0x44) = (int)(((long long)(self->mFireScale) * 0x2800 + 0x800) >> 12);
-    *(int*)((char*)o + 0x4c) = (short)(Fix12i)(((long long)(self->mFireScale) * 0xa66 + 0x800) >> 12);
+    *(int *)((char *)sys + 0x44) = (int)(((long long)(self->mFireScale) * 0x2800 + 0x800) >> 12);
+    sys->callbackVelocity = (short)(Fix12i)(((long long)(self->mFireScale) * 0xa66 + 0x800) >> 12);
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* D1 then D0 from one out-of-line definition; the homeless D2 is deadstripped. */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_cD1Ev
 // @symbol _ZN11daKpaFire_cD0Ev
-/* The compiler writes both bodies: store this vtable, destroy the members in
- * reverse declaration order, chain to dEnemyBase_c, then (D0) the inline
- * operator delete. */
+/* One definition emits D1, then D0, then a D2 the cartridge does not keep. */
 #pragma defer_codegen off
 daKpaFire_c::~daKpaFire_c()
 {
