@@ -1,10 +1,24 @@
 //cpp
-/* Scene lifecycle, transitions and graphics setup: arm9:0x0202e140..0x0202ec9c.
- * The manifest records the inferred TU boundary and emitted metadata policy.
- * Definitions run in reverse ROM order under mwccarm 2004/b56. Defining the
- * key function emits both inline destructor variants through the vtable;
- * no destructor-forcing functions are needed.
+/* The scene base class: lifecycle, transitions and graphics setup for every
+ * playable level and minigame scene.
+ *
+ * _ZTS8dScene_c 0x020914b0. _ZTI8dScene_c 0x020914d4, base word _ZTI8dBase_c
+ * (fBase_c -> dBase_c -> dScene_c). _ZTV8dScene_c 0x02092680. The destructor is the key
+ * function: D1 at 0x0202e140, D0 at 0x0202e170, both inline through the
+ * vtable. 21 functions, .text 0x0202e140..0x0202ec9c, in reverse ROM order.
  */
+
+// leftovers:
+// - The transition calls pass a second word to fader slots 3/4, but the
+//   shared fader classes declare only the frame count, so the calls go
+//   through the local FaderVTable/FaderObject view above; typing the second
+//   word on the shared class needs the fader-family contract reconstructed
+//   first (callers: Before/AfterCleanupResources in this TU).
+// - dScStage_c::SetVramBanks and GX::DisableAllBanks sit between the scene
+//   graphics methods in this span; co-residence is inferred from the
+//   contiguous run, not from an object map.
+// - func_02053c10/02053be0/02053a90/02053fxx and data_02092660/64/68 keep
+//   linker names: no header home proven for them yet.
 #include "dScene_c.h"
 #include "dScStage_c.h"
 #include "dFdColor_c.h"

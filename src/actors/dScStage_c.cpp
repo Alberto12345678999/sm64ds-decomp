@@ -14,17 +14,20 @@
  * the key function. Under `#pragma defer_codegen off` it emits D1
  * (0x02023688), D0 (0x020236f0), then a base-object D2 the cartridge does
  * not carry.
- *
- * Leftover: OAM::Render, OAM::RenderSub, Sound::PlaySub and the dScene_c
- * fade stay mangled (Fix12 by value). RenderNumber keeps a local extern
- * spelled over the member's mask-emitting parameter conversions.
- * CheckCameraInput keeps `#pragma opt_strength_reduction off` and a local
- * CamInput overlay of the camera input array; PS_Update keeps
- * `#pragma opt_common_subs off`, the stale-tmpv levers in its case 0xa and
- * the address-rematerialization pokes in its case-1 star scroll. The touch
- * and controller globals (gTouchHeld..gTouchY, gActivePlayerSlot, data_0209f498)
- * have no header; data_ov001_ and data_ov002_ handles keep linker names.
  */
+
+// leftovers:
+// - OAM::Render, OAM::RenderSub, Sound::PlaySub and the dScene_c
+//   fade stay mangled (Fix12 by value). RenderNumber keeps a local extern
+//   spelled over the member's mask-emitting parameter conversions.
+// - CheckCameraInput keeps `#pragma opt_strength_reduction off` and a local
+//   CamInput overlay of the camera input array; PS_Update keeps
+//   `#pragma opt_common_subs off`, the stale-tmpv levers in its case 0xa and
+//   the address-rematerialization pokes in its case-1 star scroll, and its
+//   sp0..sp10/var_r0/var_sl/var_fp locals stay unrenamed until each slot's
+//   role is recovered. The touch
+//   and controller globals (gTouchHeld..gTouchY, gActivePlayerSlot, data_0209f498)
+//   have no header; data_ov001_ and data_ov002_ handles keep linker names.
 #include "types.h"
 #include "dScStage_c.h"
 #include "Timer.h"
@@ -211,9 +214,7 @@ namespace G2S { u16 *GetBG1ScrPtr(); }
 #pragma defer_codegen off
 
 // @symbol _ZN10dScStage_cD1Ev, _ZN10dScStage_cD0Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body
- *
- * Destroy through dScStage_c's own three fields -- dBgW_Kc at 0x91c, Model at
+/* Destroy through dScStage_c's own three fields -- dBgW_Kc at 0x91c, Model at
  * 0x86c, Particle::SysTracker at 0x50 -- in reverse declaration order, then
  * dScene_c (now inline-defined in dScene_c.h, so its vptr store and dBase_c's
  * inline in turn), then fBase_c's subobject destructor, called rather than
@@ -221,8 +222,7 @@ namespace G2S { u16 *GetBG1ScrPtr(); }
  * chain and then hands the object back through dScene_c's inline operator
  * delete -- declared there rather than on dBase_c, because mwcc only inlines
  * it when found on the class itself or its IMMEDIATE base, which for
- * dScStage_c is dScene_c. One definition emits both; the per-function shards
- * carried the pair as two empty definitions. */
+ * dScStage_c is dScene_c. One definition emits both. */
 dScStage_c::~dScStage_c()
 {
 }
@@ -1113,28 +1113,13 @@ void dScStage_c::PS_Cleanup(){
   data_0209f2c4=0;
 }
 // @symbol _ZN10dScStage_c9PS_UpdateEv
-// Cases 0/2/3/8/0xa..0x13 BYTE-EXACT.
-/*
- * dScStage_c::PS_Update @ 0x0202635c size 0x30ac, mwccarm 1.2/sp2p3 -O4,p -lang c++
- *
- * 2026-07-10 refine (69 -> 2):
- *   1) sel3_0 stored data_0209f1ec = 2 but ROM stores data_0209f2c4 = 2 (pool
- *      slot 0x9a8). Semantic fix, not regperm: match.py wildcards reloc slots,
- *      so only the ldr displacement field betrayed it (+0xc48).
- *   2) backlight_on guard reads the STALE tmpv (= tx - 0x6e, left from the
- *      snd_next chain guard), NOT t6. Writing "tmpv = tx - 0x6e;
- *      if ((u8)tmpv < 0x7c)" at the chain guard and "(u8)tmpv < 0x3c" at
- *      backlight_on extends tmpv's live range r0-shaped and flipped the whole
- *      case-0xa tx/ty cascade (tx=r3, ty reloads=r2) in one move: 68 -> 3.
- *   3) opt_okback first gTouchY check reads gTouchY[gActivePlayerSlot * 4]
- *      DIRECTLY (fresh gActivePlayerSlot load indexes the ldrb, +0x26e4); the old
- *      "u8 s4 = gActivePlayerSlot; (void)s4" kept slot/r6 as index. With (2) in place the
- *      direct read no longer drops slot's r6 coloring.
- *
- * Final match: moving the f238 store into the following unconditional scope,
- *   after the displayed-level normalization, makes MWCC schedule the case-1
- *   literal loads in ROM order without changing behavior.
- */
+/* Pause-screen update. Three spellings below are load-bearing for the
+ * emitted code: sel3_0 stores data_0209f2c4 (not data_0209f1ec); the
+ * backlight_on guard reuses the stale tmpv left by the snd_next chain guard
+ * (tmpv = tx - 0x6e); the first gTouchY check indexes with a fresh
+ * gActivePlayerSlot load; and the f238 store sits in the unconditional scope
+ * after the displayed-level normalization so the case-1 literal loads keep
+ * ROM order. */
 #pragma opt_common_subs off
 void dScStage_c::PS_Update()
 {
