@@ -12,14 +12,15 @@
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x021196d8), D0
  * (0x0211972c), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
- *
- * Leftover: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
- *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
- *   a member call homes the argument and changes the ROM ABI.
- * Leftover: func_020393d4 is a 4-byte store into dBgW's callback slot;
- *   naming belongs with dBgW in arm9.
- *
- * The two registry factories close the run in ROM order:
+ */
+
+// leftovers: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
+// dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled
+// (a member call homes the argument and changes the ROM ABI -- this TU's
+// InitResources/Behavior/UpdateShadow calls). func_020393d4 is a 4-byte
+// store into dBgW's callback slot; naming belongs with dBgW in arm9.
+
+/* The two registry factories close the run in ROM order:
  * daObjCtRotateBlock_c_classInit_CT_MECHA02 (0x02119ebc, historical alias
  * TtcRotatingPrism_Spawn) and daObjCtRotateBlock_c_classInit_CT_MECHA01
  * (0x02119efc, historical alias TtcRotatingCube_Spawn). Each is operator
@@ -111,9 +112,9 @@ int daObjCtRotateBlock_c::UpdateShadow()
         int idx = (unsigned short)(short)(mAngleZ << 1) >> 4;
         int s = data_02082214[idx << 1];
         int sa = s < 0 ? -s : s;
-        int r3 = (int)(((long long)sa * 0x64000 + 0x800) >> 12);
+        int depthAdd = (int)(((long long)sa * 0x64000 + 0x800) >> 12);
         return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            this, &mShadowModel, &mShadowMat, d + r3, b, d, 0xf);
+            this, &mShadowModel, &mShadowMat, d + depthAdd, b, d, 0xf);
     }
 }
 
@@ -287,11 +288,11 @@ int daObjCtRotateBlock_c::InitResources()
         vb.y -= 0xd2000;
 
         ground.SetObjAndPos(vb, 0);
-        s32 r5 = vb.y;
+        s32 probeFloor = vb.y;
         if (ground.DetectClsn() != 0) {
-            r5 = ground.clsnY;
+            probeFloor = ground.clsnY;
         }
-        if (r5 != mFloorY) {
+        if (probeFloor != mFloorY) {
             mUnevenGround = 1;
         }
     }
