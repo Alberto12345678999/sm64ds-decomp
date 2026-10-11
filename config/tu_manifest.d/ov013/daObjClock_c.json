@@ -734,12 +734,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@291",
+      "from": "@305",
       "to": "@284",
       "evidence": "mwcc numbers the first-constructed (0x0211229c long-hand) destructor node @291 per TU; @284 is fleet-free and carries the 0x021122b0 claim"
     },
     {
-      "from": "@292",
+      "from": "@306",
       "to": "@283",
       "evidence": "mwcc numbers the second-constructed (0x02112294 short-hand) destructor node @292 per TU; @283 is fleet-free and carries the 0x021122a4 claim"
     }

@@ -653,5 +653,17 @@
       "target_module": "ov065",
       "target_address": "0x0211c76c"
     }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@518",
+      "to": "@504",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @518 now; licensed under the existing pin @504"
+    },
+    {
+      "from": "@519",
+      "to": "@505",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @519 now; licensed under the existing pin @505"
+    }
   ]
 }

@@ -1396,5 +1396,52 @@
       "to": "STB_GLOBAL",
       "evidence": "compiler-local pointer-to-member image element is a configured relocation destination at 0x02108770"
     }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@1565",
+      "to": "@1543",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1565 now; licensed under the existing pin @1543"
+    },
+    {
+      "from": "@1581",
+      "to": "@1559",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1581 now; licensed under the existing pin @1559"
+    },
+    {
+      "from": "@1573",
+      "to": "@1551",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1573 now; licensed under the existing pin @1551"
+    },
+    {
+      "from": "@1569",
+      "to": "@1547",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1569 now; licensed under the existing pin @1547"
+    },
+    {
+      "from": "@1577",
+      "to": "@1555",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1577 now; licensed under the existing pin @1555"
+    },
+    {
+      "from": "@1575",
+      "to": "@1553",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1575 now; licensed under the existing pin @1553"
+    },
+    {
+      "from": "@1571",
+      "to": "@1549",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1571 now; licensed under the existing pin @1549"
+    },
+    {
+      "from": "@1579",
+      "to": "@1557",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1579 now; licensed under the existing pin @1557"
+    },
+    {
+      "from": "@1567",
+      "to": "@1545",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1567 now; licensed under the existing pin @1545"
+    }
   ]
 }

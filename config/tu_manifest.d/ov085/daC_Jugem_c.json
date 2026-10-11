@@ -491,7 +491,33 @@
       "evidence": "compiler-generated static initialization call shape and the direct retail reference in this initializer"
     }
   ],
-  "defined_symbol_renames": [],
+  "defined_symbol_renames": [
+    {
+      "from": "@1080",
+      "to": "@1066",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1080 now; licensed under the existing pin @1066"
+    },
+    {
+      "from": "@1081",
+      "to": "@1067",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1081 now; licensed under the existing pin @1067"
+    },
+    {
+      "from": "@1077",
+      "to": "@1063",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1077 now; licensed under the existing pin @1063"
+    },
+    {
+      "from": "@1078",
+      "to": "@1064",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1078 now; licensed under the existing pin @1064"
+    },
+    {
+      "from": "@1079",
+      "to": "@1065",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1079 now; licensed under the existing pin @1065"
+    }
+  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_daC_Jugem_c.cpp",

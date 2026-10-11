@@ -119,84 +119,84 @@
  ],
  "data": [
   {
-   "symbol": "@534",
+   "symbol": "@186",
    "address": "0x02128224",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_02126a54"
   },
   {
-   "symbol": "@536",
+   "symbol": "@187",
    "address": "0x0212822c",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_021269b8"
   },
   {
-   "symbol": "@538",
+   "symbol": "@217",
    "address": "0x0212824c",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_0212677c"
   },
   {
-   "symbol": "@540",
+   "symbol": "@219",
    "address": "0x0212825c",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_021265ec"
   },
   {
-   "symbol": "@542",
+   "symbol": "@221",
    "address": "0x0212826c",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_021264ec"
   },
   {
-   "symbol": "@544",
+   "symbol": "@94",
    "address": "0x0212821c",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_021261f4"
   },
   {
-   "symbol": "@546",
+   "symbol": "@93",
    "address": "0x02128214",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_02126124"
   },
   {
-   "symbol": "@548",
+   "symbol": "@188",
    "address": "0x02128234",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_02126120"
   },
   {
-   "symbol": "@550",
+   "symbol": "@200",
    "address": "0x02128244",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_02125fd0"
   },
   {
-   "symbol": "@552",
+   "symbol": "@220",
    "address": "0x02128264",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_02125f00"
   },
   {
-   "symbol": "@554",
+   "symbol": "@227",
    "address": "0x02128254",
    "size": "0x8",
    "binding": "STB_GLOBAL",
    "evidence": "compiler PMF record for daPicGate_c::func_ov080_02126120"
   },
   {
-   "symbol": "@556",
+   "symbol": "@199",
    "address": "0x0212823c",
    "size": "0x8",
    "binding": "STB_GLOBAL",
@@ -408,7 +408,7 @@
    "evidence": "picture file handle constructed with file ID 0x4b1"
   },
   {
-   "symbol": "@528",
+   "symbol": "@224",
    "address": "0x021285e0",
    "size": "0xc",
    "binding": "STB_GLOBAL",
@@ -422,7 +422,7 @@
    "evidence": "picture file handle constructed with file ID 0x4b0"
   },
   {
-   "symbol": "@529",
+   "symbol": "@225",
    "address": "0x021285ec",
    "size": "0xc",
    "binding": "STB_GLOBAL",
@@ -436,7 +436,7 @@
    "evidence": "picture file handle constructed with file ID 0x4b2"
   },
   {
-   "symbol": "@530",
+   "symbol": "@226",
    "address": "0x021285f8",
    "size": "0xc",
    "binding": "STB_GLOBAL",
@@ -450,7 +450,7 @@
    "evidence": "picture file handle constructed with file ID 0x4ba"
   },
   {
-   "symbol": "@531",
+   "symbol": "@222",
    "address": "0x02128544",
    "size": "0xc",
    "binding": "STB_GLOBAL",
@@ -464,7 +464,7 @@
    "evidence": "picture file handle constructed with file ID 0x4bb"
   },
   {
-   "symbol": "@532",
+   "symbol": "@223",
    "address": "0x0212855c",
    "size": "0xc",
    "binding": "STB_GLOBAL",
@@ -1628,7 +1628,7 @@
    "source": "0x2127efc",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@528",
+   "symbol": "@224",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x021285e0"
@@ -1648,7 +1648,7 @@
    "source": "0x2127f04",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@529",
+   "symbol": "@225",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x021285ec"
@@ -1668,7 +1668,7 @@
    "source": "0x2127f10",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@530",
+   "symbol": "@226",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x021285f8"
@@ -1688,7 +1688,7 @@
    "source": "0x2127f1c",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@531",
+   "symbol": "@222",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128544"
@@ -1708,7 +1708,7 @@
    "source": "0x2127f28",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@532",
+   "symbol": "@223",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212855c"
@@ -1728,7 +1728,7 @@
    "source": "0x2127f30",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@534",
+   "symbol": "@186",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128224"
@@ -1738,7 +1738,7 @@
    "source": "0x2127f34",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@536",
+   "symbol": "@187",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212822c"
@@ -1748,7 +1748,7 @@
    "source": "0x2127f38",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@538",
+   "symbol": "@217",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212824c"
@@ -1758,7 +1758,7 @@
    "source": "0x2127f3c",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@540",
+   "symbol": "@219",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212825c"
@@ -1768,7 +1768,7 @@
    "source": "0x2127f40",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@542",
+   "symbol": "@221",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212826c"
@@ -1778,7 +1778,7 @@
    "source": "0x2127f44",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@544",
+   "symbol": "@94",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212821c"
@@ -1788,7 +1788,7 @@
    "source": "0x2127f48",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@546",
+   "symbol": "@93",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128214"
@@ -1798,7 +1798,7 @@
    "source": "0x2127f4c",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@548",
+   "symbol": "@188",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128234"
@@ -1808,7 +1808,7 @@
    "source": "0x2127f50",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@550",
+   "symbol": "@200",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128244"
@@ -1818,7 +1818,7 @@
    "source": "0x2127f54",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@552",
+   "symbol": "@220",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128264"
@@ -1828,7 +1828,7 @@
    "source": "0x2127f58",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@554",
+   "symbol": "@227",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x02128254"
@@ -1838,7 +1838,7 @@
    "source": "0x2127f5c",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "@556",
+   "symbol": "@199",
    "addend": 0,
    "target_module": "ov080",
    "target_address": "0x0212823c"
@@ -2072,103 +2072,103 @@
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x021285d4"
   },
   {
-   "symbol": "@528",
+   "symbol": "@224",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x021285e0"
   },
   {
-   "symbol": "@529",
+   "symbol": "@225",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x021285ec"
   },
   {
-   "symbol": "@530",
+   "symbol": "@226",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x021285f8"
   },
   {
-   "symbol": "@531",
+   "symbol": "@222",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128544"
   },
   {
-   "symbol": "@532",
+   "symbol": "@223",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212855c"
   },
   {
-   "symbol": "@534",
+   "symbol": "@186",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128224"
   },
   {
-   "symbol": "@536",
+   "symbol": "@187",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212822c"
   },
   {
-   "symbol": "@538",
+   "symbol": "@217",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212824c"
   },
   {
-   "symbol": "@540",
+   "symbol": "@219",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212825c"
   },
   {
-   "symbol": "@542",
+   "symbol": "@221",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212826c"
   },
   {
-   "symbol": "@544",
+   "symbol": "@94",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212821c"
   },
   {
-   "symbol": "@546",
+   "symbol": "@93",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128214"
   },
   {
-   "symbol": "@548",
+   "symbol": "@188",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128234"
   },
   {
-   "symbol": "@550",
+   "symbol": "@200",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128244"
   },
   {
-   "symbol": "@552",
+   "symbol": "@220",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128264"
   },
   {
-   "symbol": "@554",
+   "symbol": "@227",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x02128254"
   },
   {
-   "symbol": "@556",
+   "symbol": "@199",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "compiler-local registration node or PMF record is a configured relocation destination at 0x0212823c"
@@ -2196,5 +2196,162 @@
    "canonical_address": "0x020731dc",
    "evidence": "compiler-generated static initialization call shape and the nineteen direct retail references in this initializer"
   }
+ ],
+ "defined_symbol_renames": [
+   {
+     "from": "@528",
+     "to": "@514",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @528 now; licensed under the existing pin @514"
+   },
+   {
+     "from": "@529",
+     "to": "@515",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @529 now; licensed under the existing pin @515"
+   },
+   {
+     "from": "@530",
+     "to": "@516",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @530 now; licensed under the existing pin @516"
+   },
+   {
+     "from": "@531",
+     "to": "@517",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @531 now; licensed under the existing pin @517"
+   },
+   {
+     "from": "@532",
+     "to": "@518",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @532 now; licensed under the existing pin @518"
+   },
+   {
+     "from": "@533",
+     "to": "@519",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @533 now; licensed under the existing pin @519"
+   },
+   {
+     "from": "@534",
+     "to": "@520",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @534 now; licensed under the existing pin @520"
+   },
+   {
+     "from": "@535",
+     "to": "@521",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @535 now; licensed under the existing pin @521"
+   },
+   {
+     "from": "@536",
+     "to": "@522",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @536 now; licensed under the existing pin @522"
+   },
+   {
+     "from": "@537",
+     "to": "@523",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @537 now; licensed under the existing pin @523"
+   },
+   {
+     "from": "@538",
+     "to": "@524",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @538 now; licensed under the existing pin @524"
+   },
+   {
+     "from": "@539",
+     "to": "@525",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @539 now; licensed under the existing pin @525"
+   },
+   {
+     "from": "@540",
+     "to": "@526",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @540 now; licensed under the existing pin @526"
+   },
+   {
+     "from": "@541",
+     "to": "@527",
+     "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @541 now; licensed under the existing pin @527"
+   },
+   {
+     "from": "@542",
+     "to": "@224",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@543",
+     "to": "@225",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@544",
+     "to": "@226",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@545",
+     "to": "@222",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@546",
+     "to": "@223",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@548",
+     "to": "@186",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@550",
+     "to": "@187",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@552",
+     "to": "@217",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@554",
+     "to": "@219",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@556",
+     "to": "@221",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@558",
+     "to": "@94",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@560",
+     "to": "@93",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@562",
+     "to": "@188",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@564",
+     "to": "@200",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@566",
+     "to": "@220",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@568",
+     "to": "@227",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   },
+   {
+     "from": "@570",
+     "to": "@199",
+     "evidence": "compiler temp renamed under the pin this row claims; include/types.h's added Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwccarm emits it under this name now"
+   }
  ]
 }

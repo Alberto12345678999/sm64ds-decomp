@@ -672,5 +672,17 @@
       "target_module": "ov002",
       "target_address": "0x02110ab8"
     }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@399",
+      "to": "@383",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @399 now; licensed under the existing pin @383"
+    },
+    {
+      "from": "@400",
+      "to": "@384",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @400 now; licensed under the existing pin @384"
+    }
   ]
 }

@@ -646,22 +646,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@986",
+      "from": "@1006",
       "to": "@169",
       "evidence": "mwcc numbers this registration node @986 per TU and the fleet already defines a global @986, so the scratch link would multiply-define it"
     },
     {
-      "from": "@987",
+      "from": "@1007",
       "to": "@170",
       "evidence": "mwcc numbers this registration node @987 per TU and the fleet already defines a global @987, so the scratch link would multiply-define it"
     },
     {
-      "from": "@988",
+      "from": "@1008",
       "to": "@171",
       "evidence": "mwcc numbers this registration node @988 per TU and the fleet already defines a global @988, so the scratch link would multiply-define it"
     },
     {
-      "from": "@989",
+      "from": "@1009",
       "to": "@172",
       "evidence": "mwcc numbers this registration node @989 per TU and the fleet already defines a global @989, so the scratch link would multiply-define it"
     }

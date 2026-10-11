@@ -405,34 +405,34 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@860",
-      "to": "@572",
-      "evidence": "mwcc numbers this registration node per TU (@579 before the 2026-10-10 classInit tail fold, @860 after it: daKing_Donketu_c.h plus the five folded functions advance the counter by 281); the configured name is @572, and ov016 already defines a global @579 at 0x02114e88, so the compiled name could not be kept"
-    },
-    {
-      "from": "@855",
+      "from": "@872",
       "to": "@574",
-      "evidence": "classInit tail fold (2026-10-10): daKing_Donketu_c.h (the touch helper reads the boss's mWaypointCursor/unk_4c5) plus the five folded functions advance mwcc's per-TU temp counter by 281; these six static-init Vector3 temps compile as @855..@860 and keep their configured ov073 .bss names."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @872 where main emits @855; licensed under the existing pin @574"
     },
     {
-      "from": "@856",
+      "from": "@873",
       "to": "@575",
-      "evidence": "classInit tail fold (2026-10-10): daKing_Donketu_c.h (the touch helper reads the boss's mWaypointCursor/unk_4c5) plus the five folded functions advance mwcc's per-TU temp counter by 281; these six static-init Vector3 temps compile as @855..@860 and keep their configured ov073 .bss names."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @873 where main emits @856; licensed under the existing pin @575"
     },
     {
-      "from": "@857",
+      "from": "@874",
       "to": "@576",
-      "evidence": "classInit tail fold (2026-10-10): daKing_Donketu_c.h (the touch helper reads the boss's mWaypointCursor/unk_4c5) plus the five folded functions advance mwcc's per-TU temp counter by 281; these six static-init Vector3 temps compile as @855..@860 and keep their configured ov073 .bss names."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @874 where main emits @857; licensed under the existing pin @576"
     },
     {
-      "from": "@858",
+      "from": "@875",
       "to": "@577",
-      "evidence": "classInit tail fold (2026-10-10): daKing_Donketu_c.h (the touch helper reads the boss's mWaypointCursor/unk_4c5) plus the five folded functions advance mwcc's per-TU temp counter by 281; these six static-init Vector3 temps compile as @855..@860 and keep their configured ov073 .bss names."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @875 where main emits @858; licensed under the existing pin @577"
     },
     {
-      "from": "@859",
+      "from": "@876",
       "to": "@578",
-      "evidence": "classInit tail fold (2026-10-10): daKing_Donketu_c.h (the touch helper reads the boss's mWaypointCursor/unk_4c5) plus the five folded functions advance mwcc's per-TU temp counter by 281; these six static-init Vector3 temps compile as @855..@860 and keep their configured ov073 .bss names."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @876 where main emits @859; licensed under the existing pin @578"
+    },
+    {
+      "from": "@877",
+      "to": "@572",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @877 where main emits @860; licensed under the existing pin @572"
     }
   ],
   "relocations": [

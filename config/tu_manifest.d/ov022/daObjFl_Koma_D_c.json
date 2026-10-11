@@ -652,12 +652,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@390",
+      "from": "@404",
       "to": "@392",
       "evidence": "mwcc numbers the model-handle destructor-registration node @390. ov012 already defines @390, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @392."
     },
     {
-      "from": "@391",
+      "from": "@405",
       "to": "@606",
       "evidence": "batch-5 atdup: @391 collides cross-module (temps are fleet-global); renumber to unused same-length @606"
     }

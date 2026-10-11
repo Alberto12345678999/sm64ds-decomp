@@ -621,27 +621,27 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@545",
+      "from": "@566",
       "to": "@106",
       "evidence": "mwcc emits this compiler temp as @545; ov091 promotes @545 globally, so the configured @106 stays the licensed name"
     },
     {
-      "from": "@546",
+      "from": "@567",
       "to": "@557",
       "evidence": "mwcc emits this compiler temp as @546; ov080 promotes @546 globally, so the configured @557 stays the licensed name"
     },
     {
-      "from": "@548",
+      "from": "@569",
       "to": "@107",
       "evidence": "mwcc emits this compiler temp as @548; ov080 promotes @548 globally, so the configured @107 stays the licensed name"
     },
     {
-      "from": "@549",
+      "from": "@570",
       "to": "@108",
       "evidence": "mwcc emits this compiler temp as @549; ov091 promotes @549 globally, so the configured @108 stays the licensed name"
     },
     {
-      "from": "@551",
+      "from": "@572",
       "to": "@109",
       "evidence": "mwcc emits this compiler temp as @551; the configured @109 stays the licensed name so the ov064 symbol surface is unchanged by the classInit tail merge"
     }

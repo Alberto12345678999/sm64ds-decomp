@@ -613,5 +613,12 @@
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured ini-file symbol only"
     }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@527",
+      "to": "@513",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @527 now; licensed under the existing pin @513"
+    }
   ]
 }

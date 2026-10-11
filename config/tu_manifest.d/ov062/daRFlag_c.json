@@ -435,12 +435,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@362",
+      "from": "@376",
       "to": "@135",
       "evidence": "compiler-local registration node; @362 is taken on main, renamed to an unused fleet temp of equal length; the first target @402 collides with ov029 daObjWc_Obj04_c's global @402 (this batch), so it lands on @135"
     },
     {
-      "from": "@363",
+      "from": "@377",
       "to": "@136",
       "evidence": "compiler-local registration node; @363 is taken on main, renamed to an unused fleet temp of equal length; the first target @403 collides with ov029 daObjWc_Obj04_c's global @403 (this batch), so it lands on @136"
     }

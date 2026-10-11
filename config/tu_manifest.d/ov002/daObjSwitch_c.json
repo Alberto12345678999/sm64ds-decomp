@@ -1345,74 +1345,74 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@918",
+      "from": "@932",
       "to": "@822",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@919",
-      "to": "@823",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@920",
-      "to": "@824",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@921",
-      "to": "@825",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@923",
-      "to": "@827",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@925",
-      "to": "@829",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@927",
-      "to": "@831",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@929",
-      "to": "@833",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
-    },
-    {
-      "from": "@931",
-      "to": "@835",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @932 where main emits @918; licensed under the existing pin @822"
     },
     {
       "from": "@933",
-      "to": "@837",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
+      "to": "@823",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @933 where main emits @919; licensed under the existing pin @823"
+    },
+    {
+      "from": "@934",
+      "to": "@824",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @934 where main emits @920; licensed under the existing pin @824"
     },
     {
       "from": "@935",
-      "to": "@839",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
+      "to": "@825",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @935 where main emits @921; licensed under the existing pin @825"
     },
     {
       "from": "@937",
-      "to": "@841",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
+      "to": "@827",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @937 where main emits @923; licensed under the existing pin @827"
     },
     {
       "from": "@939",
-      "to": "@843",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
+      "to": "@829",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @939 where main emits @925; licensed under the existing pin @829"
     },
     {
       "from": "@941",
+      "to": "@831",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @941 where main emits @927; licensed under the existing pin @831"
+    },
+    {
+      "from": "@943",
+      "to": "@833",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @943 where main emits @929; licensed under the existing pin @833"
+    },
+    {
+      "from": "@945",
+      "to": "@835",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @945 where main emits @931; licensed under the existing pin @835"
+    },
+    {
+      "from": "@947",
+      "to": "@837",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @947 where main emits @933; licensed under the existing pin @837"
+    },
+    {
+      "from": "@949",
+      "to": "@839",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @949 where main emits @935; licensed under the existing pin @839"
+    },
+    {
+      "from": "@951",
+      "to": "@841",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @951 where main emits @937; licensed under the existing pin @841"
+    },
+    {
+      "from": "@953",
+      "to": "@843",
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @953 where main emits @939; licensed under the existing pin @843"
+    },
+    {
+      "from": "@955",
       "to": "@845",
-      "evidence": "classInit tail fold (2026-10-10): the folded touch helper reads Player fields, so the TU now includes Player.h, and the folded factories and callback sit above the static data in source; together they advance mwcc's per-TU anonymous counter by 96, so this destructor-registration node / pointer-to-member descriptor is emitted under the compiled name 96 higher. Renamed back to its configured ROM name, which is unchanged."
+      "evidence": "compiler temp; the types.h Vector3 ctors advance this TU's per-TU @NNN counter, so mwcc emits it as @955 where main emits @941; licensed under the existing pin @845"
     }
   ]
 }

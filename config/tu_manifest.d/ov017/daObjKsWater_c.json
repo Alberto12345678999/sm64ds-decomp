@@ -573,9 +573,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@481",
+      "from": "@495",
       "to": "@149",
       "evidence": "compiler temporary; mwcc numbers it @481 per TU and ov060 daKpa3Bg_c (this batch) also defines a global @481, so the scratch link collides"
+    },
+    {
+      "from": "@494",
+      "to": "@480",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @494 now; licensed under the existing pin @480"
     }
   ],
   "symbol_binding_rewrites": [

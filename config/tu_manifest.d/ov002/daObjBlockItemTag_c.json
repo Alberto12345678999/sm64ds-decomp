@@ -513,22 +513,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@562",
+      "from": "@580",
       "to": "@131",
       "evidence": "compiler temporary .data image; mwcc numbers it @562 per TU and ov100 daDoor_c (on main) also defines a global @562, so the scratch link collides"
     },
     {
-      "from": "@564",
+      "from": "@582",
       "to": "@132",
       "evidence": "compiler temporary .data image; mwcc numbers it @564 per TU and ov100 daDoor_c (on main) also defines a global @564, so the scratch link collides"
     },
     {
-      "from": "@566",
+      "from": "@584",
       "to": "@133",
       "evidence": "compiler temporary .data image; mwcc numbers it @566 per TU and ov100 daDoor_c (on main) also defines a global @566, so the scratch link collides"
     },
     {
-      "from": "@568",
+      "from": "@586",
       "to": "@134",
       "evidence": "compiler temporary .data image; mwcc numbers it @568 per TU and ov100 daDoor_c (on main) also defines a global @568, so the scratch link collides"
     }

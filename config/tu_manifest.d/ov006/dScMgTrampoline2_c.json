@@ -2300,5 +2300,12 @@
     },
     "state": "partitioned-text-refused",
     "stateMeaning": "The latest scratch-only partition attempt did not earn full-ROM verification. It is evidence only and never a production enrollment or promotion state."
-  }
+  },
+  "defined_symbol_renames": [
+    {
+      "from": "@1100",
+      "to": "@1086",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1100 now; licensed under the existing pin @1086"
+    }
+  ]
 }

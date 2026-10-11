@@ -412,12 +412,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@369",
+      "from": "@383",
       "to": "@636",
       "evidence": "compiler temporary; mwcc numbers it @369 per TU and ov036 defines a global @369, so the scratch link collides"
     },
     {
-      "from": "@370",
+      "from": "@384",
       "to": "@633",
       "evidence": "compiler temporary; mwcc numbers it @370 per TU and ov036 defines a global @370, so the scratch link collides"
     }

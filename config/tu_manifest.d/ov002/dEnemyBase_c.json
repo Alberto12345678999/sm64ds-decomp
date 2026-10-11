@@ -295,7 +295,7 @@
       "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr"
     },
     {
-      "symbol": "@91",
+      "symbol": "@218",
       "address": "0x02108160",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -397,74 +397,84 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1001",
-      "to": "@944",
-      "evidence": "mwcc numbers this descriptor @1001 per TU (was @964 before func_ov002_020ad660 joined this TU) and ov092 already defines a global @964; it renames to @944 because daChoropu_c already defines globals @1010/@1011, so the scratch link would multiply-define it either way"
-    },
-    {
-      "from": "@1003",
-      "to": "@942",
-      "evidence": "mwcc numbers this descriptor @1003 per TU (was @966 before func_ov002_020ad660 joined this TU) and ov092 already defines a global @966; it renames to @942 because daChoropu_c already defines globals @1010/@1011, so the scratch link would multiply-define it either way"
-    },
-    {
-      "from": "@1005",
-      "to": "@948",
-      "evidence": "mwcc numbers this descriptor @1005 per TU and ov065 daDossy_c (DorriePlatform TU) already defines a global @1005, so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@1007",
-      "to": "@946",
-      "evidence": "mwcc numbers this descriptor @1007 per TU and ov065 daDossy_c (DorriePlatform TU) already defines a global @1007, so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@997",
-      "to": "@986",
-      "evidence": "mwcc numbers this descriptor @997 per TU and dPathLiftActor_c already defines a global @997 (its own rename destination @837->@997), so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@999",
-      "to": "@984",
-      "evidence": "mwcc numbers this descriptor @999 per TU and dPathLiftActor_c already defines a global @999 (its own rename destination @835->@999), so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@977",
-      "to": "@962",
-      "evidence": "mwcc numbers this descriptor @977 per TU and ov047/daObjKm3_Kurumajiku_c already defines a global @977 (renamed from its @364), so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@979",
-      "to": "@960",
-      "evidence": "mwcc numbers this descriptor @979 per TU and ov092/daOnms_c already defines a global @979 (its anonymous bounce state descriptor), so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@981",
-      "to": "@958",
-      "evidence": "mwcc numbers this descriptor @981 per TU and ov092/daOnms_c already defines a global @981 (its anonymous sink state descriptor), so the scratch link would multiply-define it"
-    },
-    {
-      "from": "@989",
-      "to": "@956",
-      "evidence": "mwcc numbers this descriptor @989 per TU and ov074/daKuriKing_c already defines a global @989 (its state-table enter descriptor), so the scratch link would multiply-define it"
-    },
-    {
       "from": "@991",
-      "to": "@954",
-      "evidence": "mwcc numbers this descriptor @991 per TU and ov063/daTrsTrap_c already defines a global @991 (its destructor-registration node), so the scratch link would multiply-define it"
+      "to": "@962",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
     },
     {
       "from": "@993",
-      "to": "@952",
-      "evidence": "mwcc numbers this descriptor @993 per TU and ov010/daObjC1_Trap_c already defines a global @993 (its collision resource destructor-registration node), so the scratch link would multiply-define it"
+      "to": "@960",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
     },
     {
       "from": "@995",
-      "to": "@950",
-      "evidence": "mwcc numbers this descriptor @995 per TU and ov010/daObjC1_Trap_c already defines a global @995 (its compiler temporary for State2), so the scratch link would multiply-define it"
+      "to": "@958",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
     },
     {
-      "from": "@983",
-      "to": "@91",
-      "evidence": "mwcc numbers this descriptor @983 per TU and ov091/daObjSimpleLift_c already defines a global @983, so the scratch link would multiply-define it; it lands on @91"
+      "from": "@997",
+      "to": "@218",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it; the 0x02108160 pin is spelled @218 because daObjSwitch_c already pins @91 in ov002"
+    },
+    {
+      "from": "@999",
+      "to": "@985",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1001",
+      "to": "@987",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1003",
+      "to": "@956",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1005",
+      "to": "@954",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1007",
+      "to": "@952",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1009",
+      "to": "@950",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1011",
+      "to": "@986",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1013",
+      "to": "@984",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1015",
+      "to": "@944",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1017",
+      "to": "@942",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1019",
+      "to": "@948",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
+    },
+    {
+      "from": "@1021",
+      "to": "@946",
+      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name; paired to its pin by the relocation sites that reference it"
     }
   ],
   "notes": [
@@ -925,7 +935,7 @@
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108158"
     },
     {
-      "symbol": "@91",
+      "symbol": "@218",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x02108160"
@@ -1043,7 +1053,7 @@
       "source": "0x02100aa4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@91",
+      "symbol": "@218",
       "addend": 0,
       "target_module": "ov002",
       "target_address": "0x02108160"

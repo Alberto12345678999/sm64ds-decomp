@@ -1838,42 +1838,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@714",
+      "from": "@728",
       "to": "@110",
       "evidence": "mwcc emits this compiler temp as @714; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@715",
+      "from": "@729",
       "to": "@111",
       "evidence": "mwcc emits this compiler temp as @715; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@716",
+      "from": "@730",
       "to": "@112",
       "evidence": "mwcc emits this compiler temp as @716; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@717",
+      "from": "@731",
       "to": "@113",
       "evidence": "mwcc emits this compiler temp as @717; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@718",
+      "from": "@732",
       "to": "@114",
       "evidence": "mwcc emits this compiler temp as @718; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@719",
+      "from": "@733",
       "to": "@115",
       "evidence": "mwcc emits this compiler temp as @719; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@720",
+      "from": "@734",
       "to": "@116",
       "evidence": "mwcc emits this compiler temp as @720; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     },
     {
-      "from": "@721",
+      "from": "@735",
       "to": "@117",
       "evidence": "mwcc emits this compiler temp as @721; batch renumber to unused same-length name, batch-2 folds on main already promote these names globally"
     }

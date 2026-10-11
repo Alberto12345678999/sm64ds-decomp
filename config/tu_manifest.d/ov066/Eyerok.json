@@ -639,154 +639,154 @@
       "evidence": "texture-sequence resource handle constructed with file ID 0x334 and registered with SharedFilePtr_Destruct_TexSeq"
     },
     {
-      "symbol": "@174",
+      "symbol": "@2176",
       "address": "0x0211aec4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33a model handle"
     },
     {
-      "symbol": "@176",
+      "symbol": "@2178",
       "address": "0x0211aed0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x339 model handle"
     },
     {
-      "symbol": "@177",
+      "symbol": "@2179",
       "address": "0x0211aedc",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x335 animation handle"
     },
     {
-      "symbol": "@178",
+      "symbol": "@2180",
       "address": "0x0211aee8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x336 animation handle"
     },
     {
-      "symbol": "@179",
+      "symbol": "@2181",
       "address": "0x0211aef4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x337 animation handle"
     },
     {
-      "symbol": "@180",
+      "symbol": "@2182",
       "address": "0x0211af00",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x338 animation handle"
     },
     {
-      "symbol": "@181",
+      "symbol": "@2183",
       "address": "0x0211af0c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x340 animation handle"
     },
     {
-      "symbol": "@182",
+      "symbol": "@2184",
       "address": "0x0211af18",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x341 animation handle"
     },
     {
-      "symbol": "@183",
+      "symbol": "@2185",
       "address": "0x0211af24",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x342 animation handle"
     },
     {
-      "symbol": "@184",
+      "symbol": "@2186",
       "address": "0x0211af30",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x344 animation handle"
     },
     {
-      "symbol": "@185",
+      "symbol": "@2187",
       "address": "0x0211af3c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x346 animation handle"
     },
     {
-      "symbol": "@2167",
+      "symbol": "@2188",
       "address": "0x0211af48",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x347 animation handle"
     },
     {
-      "symbol": "@2168",
+      "symbol": "@2189",
       "address": "0x0211af54",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x333 texture-sequence handle"
     },
     {
-      "symbol": "@2169",
+      "symbol": "@2190",
       "address": "0x0211af60",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x334 texture-sequence handle"
     },
     {
-      "symbol": "@2170",
+      "symbol": "@2191",
       "address": "0x0211af6c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33d texture-sequence handle"
     },
     {
-      "symbol": "@2171",
+      "symbol": "@2192",
       "address": "0x0211af78",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33e texture-sequence handle"
     },
     {
-      "symbol": "@2172",
+      "symbol": "@2193",
       "address": "0x0211af84",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x332 collision handle"
     },
     {
-      "symbol": "@2173",
+      "symbol": "@2194",
       "address": "0x0211af90",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33b collision handle"
     },
     {
-      "symbol": "@2174",
+      "symbol": "@2195",
       "address": "0x0211af9c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33c collision handle"
     },
     {
-      "symbol": "@2175",
+      "symbol": "@2196",
       "address": "0x0211afa8",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x343 collision handle"
     },
     {
-      "symbol": "@175",
+      "symbol": "@2177",
       "address": "0x0211afb4",
       "size": "0xc",
       "binding": "STB_GLOBAL",
       "evidence": "compiler-generated destructor-registration node for the 0x33f model handle"
     },
     {
-      "symbol": "@2176",
+      "symbol": "@2197",
       "address": "0x0211afc0",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1654,68 +1654,6 @@
       "evidence": "compiler-generated static initialization call shape and the 22 direct retail references in this initializer"
     }
   ],
-  "defined_symbol_renames": [
-    {
-      "from": "@2155",
-      "to": "@174",
-      "evidence": "mwcc numbers this registration node @2155 per TU and the fleet already defines a global @2155 (ov002), so the scratch link would multiply-define it; it lands on @174"
-    },
-    {
-      "from": "@2156",
-      "to": "@175",
-      "evidence": "mwcc numbers this registration node @2156 per TU and the fleet already defines a global @2156 (ov002), so the scratch link would multiply-define it; it lands on @175"
-    },
-    {
-      "from": "@2157",
-      "to": "@176",
-      "evidence": "mwcc numbers this registration node @2157 per TU and the fleet already defines a global @2157 (ov002), so the scratch link would multiply-define it; it lands on @176"
-    },
-    {
-      "from": "@2158",
-      "to": "@177",
-      "evidence": "mwcc numbers this registration node @2158 per TU and the fleet already defines a global @2158 (ov002), so the scratch link would multiply-define it; it lands on @177"
-    },
-    {
-      "from": "@2159",
-      "to": "@178",
-      "evidence": "mwcc numbers this registration node @2159 per TU and the fleet already defines a global @2159 (ov002), so the scratch link would multiply-define it; it lands on @178"
-    },
-    {
-      "from": "@2160",
-      "to": "@179",
-      "evidence": "mwcc numbers this registration node @2160 per TU and the fleet already defines a global @2160 (ov002), so the scratch link would multiply-define it; it lands on @179"
-    },
-    {
-      "from": "@2161",
-      "to": "@180",
-      "evidence": "mwcc numbers this registration node @2161 per TU and the fleet already defines a global @2161 (ov002), so the scratch link would multiply-define it; it lands on @180"
-    },
-    {
-      "from": "@2162",
-      "to": "@181",
-      "evidence": "mwcc numbers this registration node @2162 per TU and the fleet already defines a global @2162 (ov002), so the scratch link would multiply-define it; it lands on @181"
-    },
-    {
-      "from": "@2163",
-      "to": "@182",
-      "evidence": "mwcc numbers this registration node @2163 per TU and the fleet already defines a global @2163 (ov002), so the scratch link would multiply-define it; it lands on @182"
-    },
-    {
-      "from": "@2164",
-      "to": "@183",
-      "evidence": "mwcc numbers this registration node @2164 per TU and the fleet already defines a global @2164 (ov002), so the scratch link would multiply-define it; it lands on @183"
-    },
-    {
-      "from": "@2165",
-      "to": "@184",
-      "evidence": "mwcc numbers this registration node @2165 per TU and the fleet already defines a global @2165 (ov002), so the scratch link would multiply-define it; it lands on @184"
-    },
-    {
-      "from": "@2166",
-      "to": "@185",
-      "evidence": "mwcc numbers this registration node @2166 per TU and the fleet already defines a global @2166 (ov002), so the scratch link would multiply-define it; it lands on @185"
-    }
-  ],
   "symbol_binding_rewrites": [
     {
       "symbol": "__sinit_Eyerok.cpp",
@@ -1730,133 +1668,133 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@174",
+      "symbol": "@2176",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aec4"
     },
     {
-      "symbol": "@176",
+      "symbol": "@2178",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aed0"
     },
     {
-      "symbol": "@177",
+      "symbol": "@2179",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aedc"
     },
     {
-      "symbol": "@178",
+      "symbol": "@2180",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aee8"
     },
     {
-      "symbol": "@179",
+      "symbol": "@2181",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211aef4"
     },
     {
-      "symbol": "@180",
+      "symbol": "@2182",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af00"
     },
     {
-      "symbol": "@181",
+      "symbol": "@2183",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af0c"
     },
     {
-      "symbol": "@182",
+      "symbol": "@2184",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af18"
     },
     {
-      "symbol": "@183",
+      "symbol": "@2185",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af24"
     },
     {
-      "symbol": "@184",
+      "symbol": "@2186",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af30"
     },
     {
-      "symbol": "@185",
+      "symbol": "@2187",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af3c"
     },
     {
-      "symbol": "@2167",
+      "symbol": "@2188",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af48"
     },
     {
-      "symbol": "@2168",
+      "symbol": "@2189",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af54"
     },
     {
-      "symbol": "@2169",
+      "symbol": "@2190",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af60"
     },
     {
-      "symbol": "@2170",
+      "symbol": "@2191",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af6c"
     },
     {
-      "symbol": "@2171",
+      "symbol": "@2192",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af78"
     },
     {
-      "symbol": "@2172",
+      "symbol": "@2193",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af84"
     },
     {
-      "symbol": "@2173",
+      "symbol": "@2194",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af90"
     },
     {
-      "symbol": "@2174",
+      "symbol": "@2195",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211af9c"
     },
     {
-      "symbol": "@2175",
+      "symbol": "@2196",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afa8"
     },
     {
-      "symbol": "@175",
+      "symbol": "@2177",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afb4"
     },
     {
-      "symbol": "@2176",
+      "symbol": "@2197",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local registration node is a configured initializer relocation destination at 0x0211afc0"
@@ -2328,7 +2266,7 @@
       "source": "0x0211a9e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@174",
+      "symbol": "@2176",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aec4"
@@ -2348,7 +2286,7 @@
       "source": "0x0211a9f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@175",
+      "symbol": "@2177",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afb4"
@@ -2368,7 +2306,7 @@
       "source": "0x0211a9fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@176",
+      "symbol": "@2178",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aed0"
@@ -2398,7 +2336,7 @@
       "source": "0x0211aa0c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@177",
+      "symbol": "@2179",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aedc"
@@ -2418,7 +2356,7 @@
       "source": "0x0211aa18",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@178",
+      "symbol": "@2180",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aee8"
@@ -2438,7 +2376,7 @@
       "source": "0x0211aa24",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@179",
+      "symbol": "@2181",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211aef4"
@@ -2458,7 +2396,7 @@
       "source": "0x0211aa2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@180",
+      "symbol": "@2182",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af00"
@@ -2478,7 +2416,7 @@
       "source": "0x0211aa34",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@181",
+      "symbol": "@2183",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af0c"
@@ -2498,7 +2436,7 @@
       "source": "0x0211aa40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@182",
+      "symbol": "@2184",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af18"
@@ -2518,7 +2456,7 @@
       "source": "0x0211aa4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@183",
+      "symbol": "@2185",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af24"
@@ -2538,7 +2476,7 @@
       "source": "0x0211aa54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@184",
+      "symbol": "@2186",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af30"
@@ -2558,7 +2496,7 @@
       "source": "0x0211aa60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@185",
+      "symbol": "@2187",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af3c"
@@ -2578,7 +2516,7 @@
       "source": "0x0211aa6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2167",
+      "symbol": "@2188",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af48"
@@ -2608,7 +2546,7 @@
       "source": "0x0211aa7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2168",
+      "symbol": "@2189",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af54"
@@ -2628,7 +2566,7 @@
       "source": "0x0211aa84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2169",
+      "symbol": "@2190",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af60"
@@ -2648,7 +2586,7 @@
       "source": "0x0211aa90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2170",
+      "symbol": "@2191",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af6c"
@@ -2668,7 +2606,7 @@
       "source": "0x0211aa9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2171",
+      "symbol": "@2192",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af78"
@@ -2698,7 +2636,7 @@
       "source": "0x0211aaac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2172",
+      "symbol": "@2193",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af84"
@@ -2718,7 +2656,7 @@
       "source": "0x0211aab8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2173",
+      "symbol": "@2194",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af90"
@@ -2738,7 +2676,7 @@
       "source": "0x0211aac0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2174",
+      "symbol": "@2195",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211af9c"
@@ -2758,7 +2696,7 @@
       "source": "0x0211aacc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2175",
+      "symbol": "@2196",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afa8"
@@ -2778,7 +2716,7 @@
       "source": "0x0211aad8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2176",
+      "symbol": "@2197",
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211afc0"

@@ -176,8 +176,8 @@ data_ov091_02135498 kind:bss addr:0x02135498
 data_ov091_021354a0 kind:bss addr:0x021354a0
 data_ov091_021354a8 kind:bss addr:0x021354a8
 @510 kind:bss addr:0x021354b0
-@508 kind:bss addr:0x021354bc
-@511 kind:bss addr:0x021354c8
+@511 kind:bss addr:0x021354bc
+@508 kind:bss addr:0x021354c8
 @512 kind:bss addr:0x021354d4
 data_ov091_021354e0 kind:bss addr:0x021354e0
 data_ov091_021354f8 kind:bss addr:0x021354f8
