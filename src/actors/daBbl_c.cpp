@@ -1,31 +1,17 @@
 //cpp
-/* daBbl_c -- the Lava Bubble (Podoboo), BUBBLE, ov064
- * 0x021185c0..0x02118b50.
- *
- * The Lava Bubble of the lava levels. Two variants share the class, chosen
- * by the spawn parameter's low bit: a fixed flame that only hurts what walks
- * into it, and the jumping bubble that leaps out of the lava under gravity,
- * can be hit, and dies when its fuse runs out. Both run the same two-entry
- * pointer-to-member state table.
- *
- * Source order is the reverse of the ROM: mwccarm 2004/b56 emits one .text
- * section per function in reverse source order, so the highest-address
- * function is written first. Do not reorder. The inline destructor in
- * include/daBbl_c.h emits the retail D1/D0 pair first and no D2 body.
- *
- * Leftovers:
- * - Particle::System::New, dActor_c::IsTooFarAwayFromPlayer, dCcAc_c::Init
- *   and dBgCh_Actr::Init keep their C ABI spellings: their real declarations
- *   pass Fix12<int> by value, which mwccarm lowers differently at a C++ call
- *   site.
- * - The five state hooks keep their address labels as method names; the ROM
- *   records no English name for them.
- * - The two State tables at 0x0211c7b8/0x0211c7c8 are this overlay's .bss.
- *   This TU's static initializer copies the four .data pointer-to-member
- *   constants into them.
- * - func_ov064_02118760's volatile spawn-position array is load-bearing:
- *   retail stores the words y, z, x; a plain Vector3 lets mwcc reorder the
- *   stores.
+/* daBbl_c -- Lava Bubble (Podoboo), BUBBLE, ov064 0x021185c0..0x02118b50.
+ * The spawn parameter's low bit picks a fixed flame or the jumping bubble.
+ * Both use the same two-entry state table. Source order is the reverse of
+ * the ROM. Do not reorder. The inline destructor in include/daBbl_c.h emits
+ * D1 then D0 and no D2.
+ */
+/* leftovers: Particle::System::New, dActor_c::IsTooFarAwayFromPlayer,
+ * dCcAc_c::Init and dBgCh_Actr::Init stay C-ABI externs. This file calls
+ * them, and each definition passes Fix12<int> by value. The five state
+ * hooks keep address names; the ROM records no English name. The State
+ * tables at 0x0211c7b8 and 0x0211c7c8 are filled from this file's static
+ * initializer. func_ov064_02118760 stores the spawn words y, z, x through
+ * a volatile array; a plain Vector3 lets the compiler reorder those stores.
  */
 
 #include "daBbl_c.h"

@@ -3,18 +3,18 @@
  * Invisible climbable pole.
  *
  * No model. Mario grabs a cylinder. Height is 10 * (param1 low byte - 10)
- * in Fix12, floored at 1.0. Bit 8 of param1 makes the cylinder hurt.
- *
- * daBar_c_classInit / g_profile_BAR are reconstructed (RTTI daBar_c, BAR
- * registry). Retail does not store those spellings.
+ * in 20.12, floored at 1.0. Bit 8 of param1 makes the cylinder hurt.
+ * daBar_c_classInit and g_profile_BAR are reconstructed from RTTI daBar_c
+ * and the BAR registry. Retail does not store those spellings.
+ */
+/* leftovers: dActor_c::SetRanges and dCcAc_c::Init stay TU-local externs.
+ * InitResources calls both. A member call changes that function's size
+ * because each definition takes Fix12<int> by value.
  */
 
 #include "daBar_c.h"
 
 extern "C" {
-/* local extern: dActor_c::SetRanges and dCcAc_c::Init take Fix12<int> by
-   value; spelled as real member calls they change this TU's InitResources
-   size, so the scalar-ABI seam stays TU-local (S13). */
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(
     dActor_c *self, int offsetY, int radius, int clipDistance, int farDistance);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
