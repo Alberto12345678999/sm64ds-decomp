@@ -1,40 +1,31 @@
 //cpp
 /* daManta_c -- Jolly Roger Bay manta (MANTA 226).
  *
- * Swims the path in param1's low byte. Every 0x27 frames it drops a
+ * _ZTS at ov090 0x021341f4 names daManta_c. Base is dEnemyBase_c.
+ * Swims the path in param1's low byte. Every 39 frames it drops a
  * WATER_RING (244) on bone 3 and remembers that ring's uniqueID.
- * Rings taken in that order play the collection jingle and count up.
- * Five of them, then 0x1e frames, spawn STAR (178) with the star index
- * from param1 bits 12..15. A cylinder on data_ov090_02134200 hurts
- * PLAYER (191).
+ * Rings taken in that order play the collection jingle. Five of them,
+ * then 30 frames, spawn STAR (178) with the star index from param1
+ * bits 12..15. The cylinder on data_ov090_02134200 hurts PLAYER (191).
  *
- * daManta_c_classInit (0x02132fe8..0x02133034, historical alias
- * MantaRay_Spawn) hand-called fBase_c::operator new(1028) + the inherited
- * dEnemyBase_c ctor + this class's vtable store + three member subobjects
- * in field order (dCcAcPos_c, dBgCh_Actr, ModelAnim). daManta_c has no
- * user-declared constructor, so `new daManta_c()` reproduces the identical
- * sequence. g_profile_MANTA stays in its own file. #pragma defer_codegen off
- * below emits .text in source order, which is the ROM order, so the
- * classInit factory appends after InitResources.
+ * daManta_c_classInit (historical alias MantaRay_Spawn) is
+ * `new daManta_c()`. defer_codegen off, above the includes, lays
+ * .text down in ROM order, so the factory follows InitResources.
+ * g_profile_MANTA stays in its own file.
  *
- * Leftover: measured, and left because the object changed.
- * func_ov090_021327e4: mRingIDs[mRingRead] == mHitRing->uniqueID, and the
- * swapped uniqueID == mRingIDs[mRingRead], both stay 0x274 and differ by
- * one word at instruction 98 (cartridge cmp r0, r1; candidate cmp r1, r0).
- * The 0x3ac/+4 dance stays. mRingIDs is that array; uniqueID is the word
- * at +4 of the hit ring.
- * func_ov090_02132a58: mModelAnim.SetAnim with a Fix12<int> speed is
- * 0x6c -> 0x78 (27 -> 30 insns). The scalar
- * _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj call stays.
- * InitResources: mdCcAcPos_c.Init with Fix12<int> radius and height is
- * 0x1b0 -> 0x1c0 (frame 0x28 -> 0x30) and moves reloc destinations
- * (data_ov090_02134524 compared as 0x02134200). The scalar
- * _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj call stays.
- * Behavior: dropping the unk_0ac copy after the terminal clamp is
- * 0x1a4 -> 0x19c (105 -> 103 insns; drops ldr/str of [r4,#0xac]).
- * The copy stays. Matrix4x3 stays decl_common.h's flat s32[12];
- * func_ov090_02132b14 indexes .m. #pragma defer_codegen off stays
- * above the includes.
+ * leftovers:
+ * - func_ov090_021327e4 compares mRingIDs[mRingRead] with the hit
+ *   ring's uniqueID in cartridge order (cmp r0, r1). Swapping the
+ *   operands DIFFs. The 0x3ac/+4 dance stays; uniqueID is the word
+ *   at +4 of that ring.
+ * - ModelAnim::SetAnim and dCcAcPos_c::Init stay the scalar
+ *   Fix12<int> externs. The member calls grow those functions and
+ *   move InitResources' reloc off data_ov090_02134524.
+ * - Behavior keeps the unk_0ac copy after the terminal clamp.
+ *   Dropping it loses the reload of dActor_c's z speed.
+ * - Matrix4x3 stays decl_common.h's flat s32[12].
+ *   func_ov090_02132b14 indexes .m. common.h must not replace it.
+ * - Player::Hurt stays mangled (Fix12 by value).
  */
 
 #pragma defer_codegen off
