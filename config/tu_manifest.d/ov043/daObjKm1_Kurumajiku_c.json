@@ -521,12 +521,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@364",
+      "from": "@378",
       "to": "@99",
       "evidence": "emitted destructor-registration node name collides with ov036's configured @364 on main; @99 is unused fleet-wide and shorter than the original"
     },
     {
-      "from": "@365",
+      "from": "@379",
       "to": "@98",
       "evidence": "emitted destructor-registration node name collides with ov036's configured @365 on main; @98 is unused fleet-wide and shorter than the original"
     }

@@ -526,12 +526,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@517",
+      "from": "@531",
       "to": "@637",
       "evidence": "mwcc numbers this registration node @517 per TU and the fleet already defines a global @517, so the scratch link would multiply-define it"
     },
     {
-      "from": "@518",
+      "from": "@532",
       "to": "@634",
       "evidence": "mwcc numbers this registration node @518 per TU and the fleet already defines a global @518, so the scratch link would multiply-define it"
     }

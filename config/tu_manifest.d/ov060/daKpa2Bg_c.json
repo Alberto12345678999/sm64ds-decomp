@@ -518,12 +518,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@421",
+      "from": "@435",
       "to": "@65",
       "evidence": "emitted destructor-registration node name is contended fleet-wide (three pending-fold pool claims); @65 is unused everywhere on main and shorter than the original"
     },
     {
-      "from": "@422",
+      "from": "@436",
       "to": "@66",
       "evidence": "emitted destructor-registration node name is contended fleet-wide (three pending-fold pool claims); @66 is unused everywhere on main and shorter than the original"
     }

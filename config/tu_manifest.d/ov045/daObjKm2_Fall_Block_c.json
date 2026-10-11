@@ -534,12 +534,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@363",
+      "from": "@377",
       "to": "@617",
       "evidence": "mwcc numbers this registration node @363 per TU and another module already defines @363"
     },
     {
-      "from": "@364",
+      "from": "@378",
       "to": "@616",
       "evidence": "mwcc numbers this registration node @364 per TU and another module already defines @364"
     }

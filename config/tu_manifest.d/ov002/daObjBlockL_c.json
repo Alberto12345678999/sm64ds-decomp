@@ -312,32 +312,32 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1072",
+      "from": "@1089",
       "to": "@1701",
       "evidence": "mwcc numbers this registration node @1072 per TU and ov081 already defines a global @1072"
     },
     {
-      "from": "@1073",
+      "from": "@1090",
       "to": "@1702",
       "evidence": "mwcc numbers this registration node @1073 per TU and ov081 already defines a global @1073"
     },
     {
-      "from": "@1074",
+      "from": "@1091",
       "to": "@1703",
       "evidence": "mwcc numbers this registration node @1074 per TU and ov081 already defines a global @1074"
     },
     {
-      "from": "@1075",
+      "from": "@1092",
       "to": "@1704",
       "evidence": "mwcc numbers this registration node @1075 per TU and ov075 already defines a global @1075"
     },
     {
-      "from": "@1076",
+      "from": "@1093",
       "to": "@1705",
       "evidence": "mwcc numbers this registration node @1076 per TU and ov081 already defines a global @1076"
     },
     {
-      "from": "@1077",
+      "from": "@1094",
       "to": "@1706",
       "evidence": "mwcc numbers this registration node @1077 per TU and ov075 already defines a global @1077"
     }

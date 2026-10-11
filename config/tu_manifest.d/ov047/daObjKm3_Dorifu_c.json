@@ -696,52 +696,52 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@360",
+      "from": "@374",
       "to": "@812",
       "evidence": "mwcc numbers this registration node @360 per TU and another module already defines @360"
     },
     {
-      "from": "@361",
+      "from": "@375",
       "to": "@808",
       "evidence": "mwcc numbers this registration node @361 per TU and another module already defines @361"
     },
     {
-      "from": "@362",
+      "from": "@376",
       "to": "@801",
       "evidence": "mwcc numbers this registration node @362 per TU and another module already defines @362"
     },
     {
-      "from": "@363",
+      "from": "@377",
       "to": "@797",
       "evidence": "mwcc numbers this registration node @363 per TU and another module already defines @363"
     },
     {
-      "from": "@364",
+      "from": "@378",
       "to": "@139",
       "evidence": "mwcc numbers this registration node @364 per TU and another module already defines @364"
     },
     {
-      "from": "@365",
+      "from": "@379",
       "to": "@790",
       "evidence": "mwcc numbers this registration node @365 per TU and another module already defines @365"
     },
     {
-      "from": "@366",
+      "from": "@380",
       "to": "@787",
       "evidence": "mwcc numbers this registration node @366 per TU and another module already defines @366"
     },
     {
-      "from": "@367",
+      "from": "@381",
       "to": "@781",
       "evidence": "mwcc numbers this registration node @367 per TU and another module already defines @367"
     },
     {
-      "from": "@368",
+      "from": "@382",
       "to": "@779",
       "evidence": "mwcc numbers this registration node @368 per TU and another module already defines @368"
     },
     {
-      "from": "@369",
+      "from": "@383",
       "to": "@778",
       "evidence": "mwcc numbers this registration node @369 per TU and another module already defines @369"
     }

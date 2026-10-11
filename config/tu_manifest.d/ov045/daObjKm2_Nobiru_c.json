@@ -635,12 +635,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@420",
+      "from": "@435",
       "to": "@405",
       "evidence": "compiler-local registration node; @420 is taken by ov035 on main, renamed to an unused fleet temp of equal length"
     },
     {
-      "from": "@421",
+      "from": "@436",
       "to": "@408",
       "evidence": "compiler-local registration node; @421 is taken by ov035 on main, renamed to an unused fleet temp of equal length"
     }

@@ -798,22 +798,22 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@369",
+      "from": "@383",
       "to": "@609",
       "evidence": "mwcc numbers the 0x614 model-handle destructor-registration node @369. ov036 already defines @369, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @609."
     },
     {
-      "from": "@370",
+      "from": "@384",
       "to": "@608",
       "evidence": "mwcc numbers the 0x615 collision-handle destructor-registration node @370. ov036 already defines @370, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @608."
     },
     {
-      "from": "@371",
+      "from": "@385",
       "to": "@611",
       "evidence": "batch-5 atdup: @371 collides cross-module (temps are fleet-global); renumber to unused same-length @611"
     },
     {
-      "from": "@372",
+      "from": "@386",
       "to": "@610",
       "evidence": "batch-5 atdup: @372 collides cross-module (temps are fleet-global); renumber to unused same-length @610"
     }

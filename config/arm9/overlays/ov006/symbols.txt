@@ -4345,12 +4345,12 @@ _ZTV10dScMgBSC_c kind:data(any) addr:0x0213fec8
 @2722 kind:data(any) addr:0x0213ff70
 @2723 kind:data(any) addr:0x0213ff78
 @2720 kind:data(any) addr:0x0213ff80
-@2719 kind:data(any) addr:0x0213ff88
-@2725 kind:data(any) addr:0x0213ff90
-@2727 kind:data(any) addr:0x0213ff98
+@2725 kind:data(any) addr:0x0213ff88
+@2719 kind:data(any) addr:0x0213ff90
+@2721 kind:data(any) addr:0x0213ff98
 @2724 kind:data(any) addr:0x0213ffa0
 @2734 kind:data(any) addr:0x0213ffa8
-@2721 kind:data(any) addr:0x0213ffb0
+@2727 kind:data(any) addr:0x0213ffb0
 g_profile_MG_SNOWBALL kind:data(any) addr:0x0213ffb8 ambiguous
 @2736 kind:data(any) addr:0x0213ffc0
 @2732 kind:data(any) addr:0x0213ffc8

@@ -605,12 +605,12 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@421",
+      "from": "@435",
       "to": "@80",
       "evidence": "emitted model registration-node temp collides with ov035's configured @421; @80 is unused in every module's symbols.txt on origin/main and shorter than the emitted spelling"
     },
     {
-      "from": "@422",
+      "from": "@436",
       "to": "@81",
       "evidence": "emitted collision registration-node temp collides with ov035's configured @422; @81 is unused in every module's symbols.txt on origin/main and shorter than the emitted spelling"
     }

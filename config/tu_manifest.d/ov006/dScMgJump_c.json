@@ -564,9 +564,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@600",
+      "from": "@614",
       "to": "@77",
       "evidence": "emitted destructor-registration node name collides with the configured @600 on ov081 on main; @77 is unused everywhere and shorter than the original"
+    },
+    {
+      "from": "@613",
+      "to": "@599",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @613 now; licensed under the existing pin @599"
     }
   ],
   "symbol_binding_rewrites": [

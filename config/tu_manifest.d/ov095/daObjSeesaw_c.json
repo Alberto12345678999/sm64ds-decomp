@@ -968,72 +968,72 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@905",
+      "from": "@919",
       "to": "@982",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @905 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@906",
+      "from": "@920",
       "to": "@898",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @906 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@907",
+      "from": "@921",
       "to": "@893",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @907 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@908",
+      "from": "@922",
       "to": "@889",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @908 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@909",
+      "from": "@923",
       "to": "@884",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @909 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@910",
+      "from": "@924",
       "to": "@880",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @910 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@911",
+      "from": "@925",
       "to": "@876",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @911 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@912",
+      "from": "@926",
       "to": "@865",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @912 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@913",
+      "from": "@927",
       "to": "@861",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @913 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@914",
+      "from": "@928",
       "to": "@814",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @914 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@915",
+      "from": "@929",
       "to": "@788",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @915 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@916",
+      "from": "@930",
       "to": "@782",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @916 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@917",
+      "from": "@931",
       "to": "@780",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @917 per TU and that name collides with global @NNN rows owned by other TUs on main"
     },
     {
-      "from": "@918",
+      "from": "@932",
       "to": "@650",
       "evidence": "compiler-local destructor-registration node; mwcc numbers it @918 per TU and that name collides with global @NNN rows owned by other TUs on main"
     }

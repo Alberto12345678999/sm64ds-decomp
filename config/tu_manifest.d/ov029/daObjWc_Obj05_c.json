@@ -610,5 +610,17 @@
       "canonical_module": "ov029",
       "canonical_address": "0x02113e74"
     }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@455",
+      "to": "@441",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @455 now; licensed under the existing pin @441"
+    },
+    {
+      "from": "@454",
+      "to": "@440",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @454 now; licensed under the existing pin @440"
+    }
   ]
 }

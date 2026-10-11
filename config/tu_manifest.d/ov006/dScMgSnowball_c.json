@@ -386,21 +386,21 @@
       "evidence": "PMF descriptor for func_ov006_02129eec, copied into data_ov006_02143050"
     },
     {
-      "symbol": "@2719",
+      "symbol": "@2725",
       "address": "0x0213ff88",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF descriptor for func_ov006_0212a274, copied into data_ov006_02143038; mwcc numbers it @2710, which ov060 already uses, so the manifest renames it to @2719"
     },
     {
-      "symbol": "@2725",
+      "symbol": "@2719",
       "address": "0x0213ff90",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "PMF descriptor for func_ov006_0212a110, copied into data_ov006_02143050; mwcc numbers it @2716, which ov002 already uses, so the manifest renames it to @2725"
     },
     {
-      "symbol": "@2727",
+      "symbol": "@2721",
       "address": "0x0213ff98",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -421,7 +421,7 @@
       "evidence": "PMF descriptor for func_ov006_021297c0, copied into data_ov006_02143020"
     },
     {
-      "symbol": "@2721",
+      "symbol": "@2727",
       "address": "0x0213ffb0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -964,29 +964,64 @@
   "undefined_symbol_aliases": [],
   "defined_symbol_renames": [
     {
-      "from": "@2710",
-      "to": "@2719",
-      "evidence": "mwcc numbers this PMF descriptor @2710. ov060 already defines @2710, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2719."
-    },
-    {
-      "from": "@2712",
-      "to": "@2721",
-      "evidence": "mwcc numbers this PMF descriptor @2712. ov060 already defines @2712, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2721."
-    },
-    {
-      "from": "@2714",
+      "from": "@2729",
       "to": "@2723",
       "evidence": "mwcc numbers this PMF descriptor @2714. ov060 already defines @2714, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2723."
     },
     {
-      "from": "@2716",
-      "to": "@2725",
+      "from": "@2731",
+      "to": "@2719",
       "evidence": "mwcc numbers this PMF descriptor @2716. ov002 already defines @2716, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2725."
     },
     {
-      "from": "@2718",
-      "to": "@2727",
+      "from": "@2733",
+      "to": "@2721",
       "evidence": "mwcc numbers this PMF descriptor @2718. ov002 already defines @2718, and objisolate cannot grow a name, so this row maps the compiled name to the unused same-length @2727."
+    },
+    {
+      "from": "@2745",
+      "to": "@2730",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2745 now; licensed under the existing pin @2730"
+    },
+    {
+      "from": "@2743",
+      "to": "@2728",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2743 now; licensed under the existing pin @2728"
+    },
+    {
+      "from": "@2741",
+      "to": "@2726",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2741 now; licensed under the existing pin @2726"
+    },
+    {
+      "from": "@2737",
+      "to": "@2722",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2737 now; licensed under the existing pin @2722"
+    },
+    {
+      "from": "@2735",
+      "to": "@2720",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2735 now; licensed under the existing pin @2720"
+    },
+    {
+      "from": "@2739",
+      "to": "@2724",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2739 now; licensed under the existing pin @2724"
+    },
+    {
+      "from": "@2749",
+      "to": "@2734",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2749 now; licensed under the existing pin @2734"
+    },
+    {
+      "from": "@2751",
+      "to": "@2736",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2751 now; licensed under the existing pin @2736"
+    },
+    {
+      "from": "@2747",
+      "to": "@2732",
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2747 now; licensed under the existing pin @2732"
     }
   ],
   "symbol_binding_rewrites": [
@@ -1003,13 +1038,13 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@2719",
+      "symbol": "@2725",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF descriptor; DSD requires a configured global symbol at the same exact address"
     },
     {
-      "symbol": "@2721",
+      "symbol": "@2727",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF descriptor; DSD requires a configured global symbol at the same exact address"
@@ -1021,13 +1056,13 @@
       "evidence": "compiler-emitted PMF descriptor; DSD requires a configured global symbol at the same exact address"
     },
     {
-      "symbol": "@2725",
+      "symbol": "@2719",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF descriptor; DSD requires a configured global symbol at the same exact address"
     },
     {
-      "symbol": "@2727",
+      "symbol": "@2721",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-emitted PMF descriptor; DSD requires a configured global symbol at the same exact address"
@@ -1093,7 +1128,7 @@
       "source": "0x02133524",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2719",
+      "symbol": "@2725",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213ff88"
@@ -1113,7 +1148,7 @@
       "source": "0x0213352c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2721",
+      "symbol": "@2727",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213ffb0"
@@ -1133,7 +1168,7 @@
       "source": "0x02133534",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2725",
+      "symbol": "@2719",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213ff90"
@@ -1143,7 +1178,7 @@
       "source": "0x02133538",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@2727",
+      "symbol": "@2721",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213ff98"

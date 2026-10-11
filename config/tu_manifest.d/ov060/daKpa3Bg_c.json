@@ -126,7 +126,7 @@
   ],
   "data": [
     {
-      "symbol": "@506",
+      "symbol": "@467",
       "address": "0x0211a930",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -401,7 +401,7 @@
       "evidence": "compiler-generated destructor-registration node for the 0x631 model handle"
     },
     {
-      "symbol": "@467",
+      "symbol": "@506",
       "address": "0x0211b17c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
@@ -1055,7 +1055,7 @@
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
     },
     {
-      "symbol": "@506",
+      "symbol": "@467",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local PMF descriptor is a configured initializer relocation destination at 0x0211a930"
@@ -1169,7 +1169,7 @@
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0211b170"
     },
     {
-      "symbol": "@467",
+      "symbol": "@506",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-local destructor-registration node is a configured initializer relocation destination at 0x0211b17c"
@@ -1849,7 +1849,7 @@
       "source": "0x0211a318",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@467",
+      "symbol": "@506",
       "addend": 0,
       "target_module": "ov060",
       "target_address": "0x0211b17c"
@@ -2049,7 +2049,7 @@
       "source": "0x0211a384",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "@506",
+      "symbol": "@467",
       "addend": 0,
       "target_module": "ov060",
       "target_address": "0x0211a930"
@@ -2097,112 +2097,112 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@495",
+      "from": "@509",
       "to": "@470",
       "evidence": "compiler-local destructor-registration node at 0x0211b0bc; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@496",
+      "from": "@510",
       "to": "@471",
       "evidence": "compiler-local destructor-registration node at 0x0211b0c8; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@482",
+      "from": "@496",
       "to": "@457",
       "evidence": "compiler-local destructor-registration node at 0x0211b0d4; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@497",
+      "from": "@511",
       "to": "@472",
       "evidence": "compiler-local destructor-registration node at 0x0211b0e0; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@484",
+      "from": "@498",
       "to": "@459",
       "evidence": "compiler-local destructor-registration node at 0x0211b0ec; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@485",
+      "from": "@499",
       "to": "@460",
       "evidence": "compiler-local destructor-registration node at 0x0211b0f8; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@498",
+      "from": "@512",
       "to": "@473",
       "evidence": "compiler-local destructor-registration node at 0x0211b104; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@486",
+      "from": "@500",
       "to": "@461",
       "evidence": "compiler-local destructor-registration node at 0x0211b110; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@483",
+      "from": "@497",
       "to": "@458",
       "evidence": "compiler-local destructor-registration node at 0x0211b11c; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@499",
+      "from": "@513",
       "to": "@474",
       "evidence": "compiler-local destructor-registration node at 0x0211b128; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@488",
+      "from": "@502",
       "to": "@463",
       "evidence": "compiler-local destructor-registration node at 0x0211b134; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@489",
+      "from": "@503",
       "to": "@464",
       "evidence": "compiler-local destructor-registration node at 0x0211b140; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@500",
+      "from": "@514",
       "to": "@475",
       "evidence": "compiler-local destructor-registration node at 0x0211b14c; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@490",
+      "from": "@504",
       "to": "@465",
       "evidence": "compiler-local destructor-registration node at 0x0211b158; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@491",
+      "from": "@505",
       "to": "@466",
       "evidence": "compiler-local destructor-registration node at 0x0211b164; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@487",
+      "from": "@501",
       "to": "@462",
       "evidence": "compiler-local destructor-registration node at 0x0211b170; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@492",
+      "from": "@520",
       "to": "@467",
-      "evidence": "compiler-local destructor-registration node at 0x0211b17c; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
+      "evidence": "compiler-local PMF descriptor at 0x0211a930; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals and the types.h Vector3 ctors advance mwcc's per-TU label counter to @520, which is itself another module's pin; the descriptor is bound to this TU's swapped data pin at 0x0211a930"
     },
     {
-      "from": "@493",
+      "from": "@507",
       "to": "@468",
       "evidence": "compiler-local destructor-registration node at 0x0211b188; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@494",
+      "from": "@508",
       "to": "@469",
       "evidence": "compiler-local destructor-registration node at 0x0211b194; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@481",
+      "from": "@495",
       "to": "@456",
       "evidence": "compiler-local destructor-registration node at 0x0211b1a0; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@502",
+      "from": "@516",
       "to": "@477",
       "evidence": "compiler-local pointer-to-member descriptor at 0x0211a938; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     },
     {
-      "from": "@504",
+      "from": "@518",
       "to": "@479",
       "evidence": "compiler-local pointer-to-member descriptor at 0x0211a940; the classInit fold places `new daKpa3Bg_c` ahead of the static-init globals, advancing mwcc's label counter by 25, and the shifted name collides with temps other modules define, so the compiled name maps back to the configured one"
     }

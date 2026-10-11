@@ -50,6 +50,13 @@ struct ClpsRow {
     u8 pad[8];
 };
 
+/* POD spelling of Vector3's 0x0c bytes: with a user-declared constructor on
+   Vector3, copy-init lowers memberwise; the ROM copy is the block move, so the
+   local copy in Render goes through this. */
+struct RawVector3 {
+    int x, y, z;
+};
+
 /* Model handles construct through func_02017acc and destroy through
  * func_02017ab4. Collision handles construct through func_02017b4c and
  * destroy through SharedFilePtr_Destruct_Clsn. The manifest aliases those
@@ -423,8 +430,8 @@ int daObjBlockL_c::Render()
   }
   int b2 = (actorID == 0x10);
   if (b2 != 0) {
-    Vector3 v = data_ov002_021089e0;
-    mModel.Render(&v);
+    RawVector3 v = *(RawVector3 *)&data_ov002_021089e0;
+    mModel.Render((Vector3 *)&v);
   } else {
     mModel.Render(0);
   }
