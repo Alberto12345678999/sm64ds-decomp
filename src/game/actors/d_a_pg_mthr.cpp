@@ -1,47 +1,22 @@
 //cpp
-/**
- * daPgMthr_c -- Cool, Cool Mountain mother penguin (PENGUIN_MOTHER 257), ov018.
+/* leftovers:
+ * - SetAnim, SetFile, dCcAc_c::Init and DropShadowRadHeight stay
+ *   scalar externs. The Fix12<int> method form grows those bodies
+ *   and emits an unlicensed .data word.
+ * - dBgCh_Actr::Init's member call mangles with int. The ROM row is
+ *   Fix12<int>. GetFloorResult and GetWallResult are not on the header.
+ * - func_0201267c is Sound::Play(3, id, pos). The state helpers stay
+ *   func_ov018_* because the PMF literals relocate to those names.
+ * - data_ov018_* handles are constructed by the sinit. g_profile is
+ *   not this TU. common.h stays first so the matrix copy stays flat.
+ * - 02111b3c keeps the (int) actorID compare. 02111d28 keeps the
+ *   bone store. The follow state reloads mPlayer.
  *
- * She stands at her home (state 0 holds mHorzSpeed at 0) and talks when a
- * player touches her. The actor in his hand picks the message: 0xac with
- * nothing, 0xad with her own BABY_PENGUIN (actor 0x100, param1 0), 0xae
- * with the other baby (param1 1). Yoshi is player param1 3 and carries the
- * baby in mObjInMouth; the other characters use mHeldObj. The idle touch
- * path only looks at the hand. When the 0xad talk ends she spawns
- * POWER_STAR (actor 0xb2, param (param1 & 0xf) | 0x40) and sets mGaveStar.
- * After that, a player within 1500 of her home who holds her own baby --
- * mouth included -- sends her to state 2. She walks toward him and returns
- * to state 0 when he lets go or leaves that range.
- *
- * State pairs live in data_ov018_02113c4c, filled by __sinit_d_a_pg_mthr.cpp
- * from the PMF literals at 0211394c. Index << 4 selects {enter, update}:
- *   0  021122ec / 02112234   stand
- *   1  021121dc / 02111fac   talk
- *   2  02111f1c / 02111e28   follow
- * common.h stays first: Matrix4x3 is the flat 12-word copy this file assigns.
- *
- * Measured on this file, 2004/b56, and left as the call that matches:
- *   SetAnim(Fix12<int> speed = {0x1000}) is 021121dc 0x58->0x60 and
- *   021122ec 0x70->0x78. SetFile the same way is 02111f1c 0x90->0x9c.
- *   dCcAc_c::Init(Fix12<int> radius/height = {...}) is InitResources
- *   0x1ac->0x1bc; an int literal does not convert, so that call does not
- *   compile. Each aggregate also emitted an unlicensed local .data word.
- *   DropShadowRadHeight the same way is 02111d28 0x100->0x110.
- *   dBgCh_Actr::Init(this, 0x32000, 0x32000, 0, 0) keeps the 0x1ac body, but
- *   the reloc is _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which is
- *   not the ROM row (5Fix12IiE). The header parameter is Fix12i, a typedef
- *   of s32. 02111b3c without the (int) actorID compare is 0xa8, not 0xb4.
- *   Writing 02111d28's translation through mat4x3.m[] and passing that
- *   member into DropShadow, then storing the bone back through one pointer,
- *   is 0xfc, not 0x100. Hoisting the follow state's Player* is 0xf8, not
- *   0xf4; reloading mPlayer matches.
- *   func_0201267c is Sound::Play(3, id, pos) at 0x0201267c. PlayBank3 is the
- *   other wrapper, at 0x02012664. GetFloorResult and GetWallResult are not
- *   on dBgCh_Actr.h. The state helpers stay func_ov018_*: the PMF literals
- *   relocate to those names. The file symbols stay data_ov018_*; the sinit
- *   TU constructs them. g_profile_PENGUIN_MOTHER is not in this text TU.
+ * daPgMthr_c, the Cool Cool Mountain mother penguin (PENGUIN_MOTHER).
+ * She talks from the actor in the player's hand and, after giving
+ * the star, walks toward whoever still holds her own baby.
+ * State pairs are data_ov018_02113c4c: stand, talk, follow.
  */
-
 #include "common.h"
 #include "daPgMthr_c.h"
 #include "types.h"
