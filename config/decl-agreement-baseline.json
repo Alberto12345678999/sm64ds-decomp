@@ -7749,7 +7749,7 @@
       ]
     },
     "_ZN4cstd7strncpyEPcPKcj": {
-      "src/unnamed/arm9/0206/func_0206e184.c": [
+      "src/cstd4.cpp": [
         "return:void"
       ]
     },
@@ -20412,7 +20412,7 @@
       ]
     },
     "func_01ffb008": {
-      "src/unnamed/arm9/0206/func_0206de14.c": [
+      "src/cstd4.cpp": [
         "param:#1 int",
         "param:#2 int",
         "return:int"
@@ -27023,37 +27023,8 @@
         "return:void"
       ]
     },
-    "func_0206de14": {
-      "src/unnamed/arm9/0206/func_0206dc7c.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0206/func_0206dcd4.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0206/func_0206dd30.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0206/func_0206dd7c.c": [
-        "arity:0"
-      ],
-      "src/unnamed/arm9/0206/func_0206ddcc.c": [
-        "arity:0"
-      ]
-    },
-    "func_0206e06c": {
-      "src/unnamed/arm9/0206/func_0206dac4.c": [
-        "param:#1 int",
-        "return:void"
-      ]
-    },
     "func_0206e184": {
       "src/unnamed/arm9/0206/func_0206e4a4.c": [
-        "return:int"
-      ]
-    },
-    "func_0206e218": {
-      "src/unnamed/arm9/0206/func_0206e184.c": [
-        "param:#1 void *",
         "return:int"
       ]
     },
@@ -27116,7 +27087,7 @@
       ]
     },
     "func_0207037c": {
-      "src/unnamed/arm9/0206/func_0206de14.c": [
+      "src/cstd4.cpp": [
         "return:void"
       ]
     },
@@ -27272,10 +27243,10 @@
       ]
     },
     "func_02073238": {
-      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
+      "src/cstd4.cpp": [
         "return:int"
       ],
-      "src/unnamed/arm9/0206/func_0206de14.c": [
+      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
         "return:int"
       ]
     },

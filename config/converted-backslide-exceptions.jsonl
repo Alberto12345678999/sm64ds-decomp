@@ -809,3 +809,5 @@
 {"path": "src/unnamed/ov091/__sinit_ov091_02134930.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov095/__sinit_ov095_02136fe0.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov102/__sinit_ov102_0214d714.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
+{"path": "src/cstd4.cpp#_ZN4CP1514MPUDataRegion7Ej", "reason": "X03: _ZN4CP1517MPUGetDataRegion7Ev and _ZN4CP1514MPUDataRegion7Ej moved from src/cstd4.cpp to src/engine/cp15/CP154.cpp -- the CP15 region-7 run per notes/mangled-fold-decisions.md"}
+{"path": "src/cstd4.cpp#_ZN4CP1517MPUGetDataRegion7Ev", "reason": "X03: _ZN4CP1517MPUGetDataRegion7Ev and _ZN4CP1514MPUDataRegion7Ej moved from src/cstd4.cpp to src/engine/cp15/CP154.cpp -- the CP15 region-7 run per notes/mangled-fold-decisions.md"}

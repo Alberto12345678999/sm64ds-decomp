@@ -27,4 +27,4 @@ src/engine/heap/NestedHeapIterator.cpp
 # slice_gate4b.txt and moved here rather than being listed twice: the nine targets
 # that link gate 4b all link gate 2 as well, so two entries would be a duplicate
 # definition, and the layer that needs it first is this one.
-src/_ZN4cstd3absEi.cpp
+src/cstd4.cpp
