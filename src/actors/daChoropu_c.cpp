@@ -1,82 +1,41 @@
 //cpp
-/* ov080/daChoro_Rock_c+daChoropu_c -- the Monty Mole (daChoropu_c) and the rock it throws
- * (daChoro_Rock_c). 26 functions, .text 0x02123740..0x02124a20: tu_map's
- * 24-function run 0x02123740..0x02124998 plus the two registry factories
- * that abut it, daChoro_Rock_c_classInit and daChoropu_c_classInit.
+/* Monty Mole (daChoropu_c) and the rock it throws (daChoro_Rock_c), ov080.
+ * The mole stays underground until the nearest Player is 250..1500 units
+ * away and it holds the turn, then emerges, throws, leaps, and dives,
+ * passing the turn on. A group's knock-backs (mTimesHit) spawn a 1-Up
+ * (actor 0x114) at 7. Behavior indexes data_ov080_02128438 by mState.
  *
- * Class identity comes from the ROM RTTI:
- *   daChoropu_c     _ZTI 0x02127fbc, _ZTS 0x02127fc8, _ZTV 0x021280b0
- *   daChoro_Rock_c  _ZTI 0x02127fb0, _ZTS 0x02127fd8, _ZTV 0x0212802c
- *                   (__si_class_type_info, parent dEnemyBase_c)
- *
- * SOURCE ORDER IS ROM ORDER. `defer_codegen off` makes mwccarm emit each
- * function as it is parsed, so the definitions below follow the ROM layout.
- * Each empty out-of-line destructor emits D1 then D0; its D2 has no ROM home
- * and is deadstripped (policy rows in the TU manifest). The two classes'
- * members are interleaved in the ROM, and so they are here.
- *
- * What the actors do, as far as these functions show. A daChoropu_c is a mole that
- * stays underground until the nearest Player is 250..1500 units away (horizontal
- * distance) and it holds the turn, then emerges, throws a daChoro_Rock_c (or waits),
- * leaps, and dives back, passing the turn to another mole of its group. Moles
- * gather into a group through param1 (see InitResources); the group's total of
- * knock-backs (mTimesHit) is tallied over the mole and up to four partners, and the
- * knock-back that finds the tally at 7 spawns a 1-Up mushroom (actor 0x114,
- * ONEUPKINOKO) and pins that mole's mTimesHit at 8. A hit that matches the
- * vulnerability mask, a stomp, or a Metal or Mega Player knocks the mole back
- * underground; other Player contact hurts the Player, except a Vanish Player, which has
- * no effect (func_ov080_02124208).
- *
- * daChoropu_c::Behavior dispatches through the six-row state table at
- * data_ov080_02128438 -- one pointer-to-member per state, indexed by mState. The
- * table is .bss, filled by __sinit_ov080_021278c0 from six records in .data
- * (the row-to-record order and each state's handler are in the table comment in
- * include/daChoropu_c.h). The state names there (SETUP, HIDDEN, EMERGE, THROW_ROCK,
- * WAIT, LEAP) say what each handler does; they are not labels from the cartridge.
- *
- * Helpers: func_ov080_02124088 knocks the mole underground, func_ov080_02124208
- * reacts to contact, func_ov080_02124360 passes the turn, func_ov080_021243d8 and
- * func_ov080_02124418 rebuild the model matrices. The ten mole helpers are members
- * and the ROM address is the method name. func_ov080_02124418 stays a free function.
- *
- * Leftover:
- *  - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c, so it
- *    is not a daChoropu_c method. No other translation unit calls the ten mole helpers.
- *  - calls that pass Fix12<int> by value (ModelAnim::SetAnim, dCcAc_c::Init,
- *    dBgCh_Actr::Init, Player::Hurt, Particle::System::New/NewSimple) are
- *    still spelled as mangled extern "C" calls: the headers declare those
- *    parameters as Fix12i (a plain s32), so a member call would mangle to a
- *    symbol the ROM does not have; dActor_c::Spawn from the Throw
- *    handler and from the 1-Up spawn in func_ov080_02124088 is also still the mangled
- *    call (the odd `py ? 0x137 : 0x137` id expression is Throw-only, and the match
- *    needs it);
- *  - LAUND() keeps three field addresses opaque in func_ov080_02124088 (the
- *    cylinder flags, mFlags and mTimesHit);
- *  - a few reads keep a cast the ROM's instruction choice needs: mAngleX/Y/Z are read
- *    as unsigned short in the Throw state, and mHasTurn as signed char in Hidden;
- *  - data_ov080_021283d0..021283e8 are still typed `int[]` (they are
- *    SharedFilePtr animation slots -- data_ov080_0212766c points at them); word 1
- *    of each is the loaded animation file that ModelAnim::SetAnim takes.
- *    Files: 021283c0 = 0x2d1 (mole model), 021283c8 = 0x2d6 (rock model),
- *    021283e8 = 0x2d2, 021283d0 = 0x2d3, 021283d8 = 0x2d4, 021283e0 = 0x2d5
- *    (the ids __sinit_ov080_021278c0 constructs them with);
- *  - the SetAnim flag word is 0 in InitResources but 0x40000000 in every state
- *    handler; what that bit does is not recovered;
- *  - the collision flag words (0x200000 for the mole, 0x200004 for the rock) and the
- *    Player::Hurt arguments (2, 0xc000, 1, 0, 1) and (1, 0xc000, 1, 0, 1) are not
- *    decoded;
- *  - the sound ids (0xd2 throw, 0xd5 knocked back, 0x116 emerge, 0x1d Mega kill) and
- *    particle effect ids (0x29, 0x2a, 0x2b) are only named by when they fire; which
- *    banks and effects they are is not recovered;
- *  - pad_0d0 (4 bytes at 0xd0 in daChoropu_c) is untouched by any function here;
- *  - the tables data_ov080_0212767c (Leap cylinder heights) and data_ov080_021276c4
- *    (Emerge cylinder heights) are read through int arrays and described in
- *    the handler comments; the hit-flag mask 0x66fe0 is spelled as a literal.
- *
- * The registry factories daChoro_Rock_c_classInit (0x02124998) and
- * daChoropu_c_classInit (0x021249e0) come last, in ROM order. Neither class
- * declares a constructor, so each is a plain `return new`.
+ * daChoropu_c _ZTI 0x02127fbc, _ZTS 0x02127fc8, _ZTV 0x021280b0.
+ * daChoro_Rock_c _ZTI 0x02127fb0, _ZTS 0x02127fd8, _ZTV 0x0212802c
+ * (base dEnemyBase_c). Key functions are the empty out-of-line destructors
+ * under defer_codegen off: each emits D1 then D0, D2 deadstripped.
+ * .text 0x02123740..0x02124a20. The two classes are interleaved in ROM
+ * order. Factories daChoro_Rock_c_classInit and daChoropu_c_classInit
+ * are `return new`.
  */
+// leftovers:
+// - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c,
+//   so it is not a daChoropu_c method.
+// - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, Player::Hurt,
+//   Particle::System::New/NewSimple and dActor_c::Spawn stay mangled. The
+//   headers spell Fix12i, which would not match 5Fix12IiE. Throw's spawn
+//   id stays `py ? 0x137 : 0x137`.
+// - LAUND() in func_ov080_02124088 keeps the cylinder flags, mFlags and
+//   mTimesHit addresses opaque.
+// - Throw reads mAngleX/Y/Z as unsigned short. Hidden reads mHasTurn as
+//   signed char.
+// - data_ov080_021283d0..021283e8 stay int[] (animation slots SetAnim
+//   reads at word 1). File ids: mole model 0x2d1, rock model 0x2d6,
+//   animations 0x2d2..0x2d5.
+// - SetAnim's flag word is 0 in InitResources and 0x40000000 in the state
+//   handlers. Collision words 0x200000 (mole) and 0x200004 (rock), and
+//   Player::Hurt's (2, 0xc000, 1, 0, 1) / (1, 0xc000, 1, 0, 1), are still
+//   literals. Sound ids 0xd2, 0xd5, 0x116, 0x1d and particles 0x29, 0x2a,
+//   0x2b are named only by when they fire.
+// - pad_0d0 is untouched. data_ov080_0212767c and data_ov080_021276c4
+//   (leap and emerge cylinder heights) are read as int arrays. The
+//   hit-flag mask 0x66fe0 stays a literal.
+
 
 #include "decl_common.h"
 #include "daChoropu_c.h"
