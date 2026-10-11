@@ -1,26 +1,36 @@
 //cpp
-/* dExtFrameCtrl_c ("dExtFrameCtrl_c" in the tree), the animation-playback root and
- * arm9 .text 0x02015a7c..0x02015cb4: a frame cursor the model and animation
- * classes drive. Layout is 0x10 bytes -- vptr, frame count in the low 30 bits
- * of +0x4 with the loop flags in the top two, current frame at +0x8 as 20.12,
- * playback speed at +0xc -- pinned by C2 and read the same way by
- * Copy/Advance/Finished. The two-slot vtable at _ZTV15dExtFrameCtrl_c (0x0208e7e4)
- * is the destructor pair alone; notes/model-rtti-names.md recovers the
- * family from the ROM's own typeinfo records.
+/* dExtFrameCtrl_c, the animation-playback root and arm9 .text
+ * 0x02015a7c..0x02015cb4: a frame cursor the model and animation classes
+ * drive. Layout is 0x10 bytes -- vptr, frame count in the low 30 bits of
+ * +0x4 with the loop flags in the top two, current frame at +0x8 as
+ * 20.12, playback speed at +0xc -- pinned by C2 and read the same way by
+ * Copy/Advance/Finished. The two-slot vtable at _ZTV15dExtFrameCtrl_c
+ * (0x0208e7e4) is the destructor pair alone; notes/model-rtti-names.md
+ * recovers the family from the ROM's own typeinfo records.
  *
- * The destructor/constructor ABI cluster at 0x02015cb4..0x02015d38 keeps its
- * per-function shards: ~dExtFrameCtrl_c() is the key function, so a TU that defines
- * it also emits _ZTV/_ZTI/_ZTS. Those records spell the coined "9Animation"
- * where the cartridge's records spell "15dExtFrameCtrl_c", and a manifest
- * cannot license data whose emitted name has no configured ROM home. The
- * split is the honest shape until the class is renamed.
+ * The destructor/constructor ABI cluster at 0x02015cb4..0x02015d38 keeps
+ * its per-function shards: the legacy dtor shard emits and deadstrips the
+ * class's _ZTV/_ZTI/_ZTS into the cartridge's .data, so those records do
+ * not move here.
  *
- * mwccarm emits .text in reverse source order, so the definitions below run
- * ROM-descending.
+ * mwccarm emits .text in reverse source order, so the definitions below
+ * run ROM-descending.
  *
  * LoadFile (0x0201794c) and UpdateFileOffsets (0x020469ac) are statics of
  * this class too, but they link in other translation units and keep their
  * own files.
+ *
+ * leftovers:
+ * - The destructor pair stays in its shard: ~dExtFrameCtrl_c() is the
+ *   key function, a TU that defines it emits _ZTV/_ZTI/_ZTS, and the
+ *   legacy shard already emits and deadstrips those records into the
+ *   cartridge .data at 0x0208e744..0x0208e858.
+ * - SetAnimation's definition stays a mangled extern-C free function:
+ *   its declared signature takes Fix12<int> by value and wall 6az
+ *   (notes/mwccarm-codegen.md) homes class-typed by-value parameters,
+ *   so the member spelling changes bytes.
+ * - Advance's `(int)this + 8` read-modify-write launder is load-bearing
+ *   (the member reload the ROM's way; see the site comment).
  */
 #include "dExtFrameCtrl_c.h"
 
