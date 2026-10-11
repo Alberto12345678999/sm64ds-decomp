@@ -34,25 +34,21 @@
  * retail does not store them. Historical aliases: RotatingClockHand_Spawn
  * (CT_MECHA10) and func_ov035_0211168c (CT_MECHA12L); CT_MECHA12S has none
  * on record.
- *
- * Leftover: measured, and left in the form that matches.
- * Folding both actorID tests into their ifs: InitResources 0x17c -> 0x164
- * (5 reloc destinations wrong) and CleanupResources 0x88 -> 0x7c (1 reloc
- * destination wrong). The widened int idMatch / isMecha12L stay.
- * dBgW_KcMbg::SetFile with a Fix12<int> local: InitResources 0x17c -> 0x184
- * and a 4-byte local .data symbol. The mangled call with scalar 0x1000 stays.
- * IsClsnInRange(int, int) does not compile (no conversion to Fix12<int>).
- * IsClsnInRange with two Fix12<int> zeros: Behavior 0x1f4 -> 0x224. The
- * mangled (this, 0, 0) call stays.
- * Writing mMeshCollider.unk_48 and beforeClsnCallback directly:
- * InitResources 0x17c -> 0x170. func_020396c0 and func_020393d4 stay.
- * One local for both data_ov035_02111ef0 stores: InitResources 0x17c -> 0x170.
- * Both stores stay. unk_326 is written and has no reader in this TU.
- * DecIfAbove0_Short, RandomIntInternal, the data_ov035_* files, tables and
- * CLPS block, data_0209f2c0 and data_0209e650 keep linker names. The three
- * g_profile_* descriptors live outside this TU. func_ov035_0211168c is the
- * historical alias of classInit_CT_MECHA12L, not a function defined here.
  */
+
+// leftovers (each measured; the noted form size-DIFFs or breaks relocs):
+// the widened int idMatch / isMecha12L stay (folding the actorID tests into
+// the ifs reorders the body). The mangled SetFile call with scalar 0x1000
+// stays (Fix12<int> local grows InitResources and adds .data). The mangled
+// IsClsnInRange (this, 0, 0) stays (no Fix12<int> conversion; Fix12 pair
+// grows Behavior). func_020396c0 / func_020393d4 and the mMeshCollider.unk_48
+// / beforeClsnCallback stores stay (dBgW field naming belongs in arm9).
+// Both data_ov035_02111ef0 stores stay (one local shrinks InitResources).
+// unk_326 is written with no reader in this TU. DecIfAbove0_Short,
+// RandomIntInternal, the data_ov035_* files/tables/CLPS block,
+// data_0209f2c0, data_0209e650 keep linker names. The three g_profile_*
+// descriptors live outside this TU. func_ov035_0211168c is the historical
+// alias of classInit_CT_MECHA12L, not a function defined here.
 
 #include "daObjCtMecha10_c.h"
 #include "SharedFilePtr.h"
