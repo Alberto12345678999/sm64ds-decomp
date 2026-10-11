@@ -13,6 +13,16 @@
  * GX/CP15/MMIO writers and the Model-/filesystem-touching dFdWipe_c members
  * stay NDS-only behind _MSC_VER, exactly the subset port/slice_gate1.txt and
  * port/hal/shims.cpp already arrange.
+ *
+ * leftovers:
+ * - dFdWipe_c::AdvanceFade reads currInterp/speed through (char*)&
+ *   launders; the alias pins are the matched form.
+ * - GX::LoadBGPltt, GXS::LoadBGPltt, CP15::FlushAndInvalidateDataCache,
+ *   G2x::SetBlendBrightness and ModelComponents::Render stay extern-C
+ *   calls under literal/untyped spellings -- no shared typed decl for
+ *   the register/void* argument shapes this file needs.
+ * - The 0x400xxxx MMIO addresses stay literal; no shared register-name
+ *   header owns them.
  */
 #include "types.h"
 #include "dFdWipe_c.h"

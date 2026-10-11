@@ -40,6 +40,10 @@
  * definition (its shard spelled a private two-parameter extern). The call is
  * kept through a cast to the two-parameter function type: same two argument
  * registers, same direct branch, same return register.
+ *
+ * leftovers:
+ * - Matrix2x2 is defined TU-locally: G2x.h forward-declares it and no
+ *   shared header owns the layout.
  */
 
 

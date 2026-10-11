@@ -11,6 +11,16 @@
  * the cartridge stores D0 (0x020156fc) below D1 (0x02015720) with C1
  * (0x02015730) behind them, so two uncalled functions below ask for the
  * destructor's variants in that order before the constructor is written.
+ *
+ * leftovers:
+ * - Func_020150E8 and Func_02015560 stay mangled free definitions: the
+ *   real signatures take Fix12<int> by value and wall 6az homes
+ *   class-typed by-value parameters (the dClipper.h declarations are
+ *   the real ones for callers).
+ * - Func_020150E8's opt_propagation off pair and goto-shaped body are
+ *   the matched form; dClipper_EmitDeletingDestructor/EmitDestructor
+ *   are uncalled stubs that force D0 then D1 out of the inline
+ *   destructor (ROM order).
  */
 #pragma defer_codegen off
 
