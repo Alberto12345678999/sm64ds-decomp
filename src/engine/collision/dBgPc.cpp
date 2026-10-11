@@ -17,7 +17,7 @@
 #include "dBgPc.h"
 
 extern "C" {
-/* Absorbed from src/unnamed/arm9/0203/func_02037f44.c
+/* Absorbed from the retired arm9 helper func_02037f44
  * (arm9 0x02037f44..0x02037f4c). */
 int func_02037f44(int *p)
 {
@@ -46,7 +46,7 @@ dBgPc::~dBgPc()
 }
 
 extern "C" {
-/* Absorbed from src/func_02037eb0.c (arm9 0x02037eb0..0x02037ee4). Local
+/* Absorbed from the retired arm9 helper func_02037eb0 (arm9 0x02037eb0..0x02037ee4). Local
  * record spellings travel with the body; struct Vector3 comes from the
  * header chain. */
 struct AB { int a; int b; };

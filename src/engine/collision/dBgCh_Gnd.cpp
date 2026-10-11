@@ -47,7 +47,7 @@ void dBgCh_Gnd::SetObjAndPos(const Vector3 &pos, dActor_c *actor)
 }
 
 // @symbol func_02037464
-/* Absorbed from src/unnamed/arm9/0203/func_02037464.c
+/* Absorbed from the retired arm9 helper func_02037464
  * (arm9 0x02037464..0x0203748c): reset the embedded dBgPi hit record, then
  * flag "no floor" (0x80000000) and clear the hit byte. Defined last because
  * this file emits .text in reverse source order, so the lead body lands at

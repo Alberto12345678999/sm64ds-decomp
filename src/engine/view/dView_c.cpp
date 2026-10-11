@@ -20,7 +20,7 @@
 void CopyToViewMat(const Matrix4x3 *mat);
 
 // @symbol func_0202fd2c
-/* Absorbed from src/unnamed/arm9/0202/func_0202fd2c.c: clear the kuppa-script
+/* Absorbed from the retired arm9 helper func_0202fd2c: clear the kuppa-script
  * running/script words. The data words keep the shard's own `int' spelling:
  * no header declares them and the tree's other spellings disagree. */
 extern "C" {

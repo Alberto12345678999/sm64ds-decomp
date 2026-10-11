@@ -398,7 +398,7 @@ typedef struct { int w[12]; } M48;
 // @symbol _ZN6EyerokD1Ev
 // @symbol _ZN6EyerokD0Ev
 /* recovered: real C++ destructors -- the compiler emits the whole bodies
- * (folded from the retired src/_ZN6EyerokD1Ev.cpp / src/_ZN6EyerokD0Ev.cpp,
+ * (folded from the retired D1/D0 shards,
  * whose .text is address-contiguous below).
  *
  * Own vptr, then the members in reverse declaration order (the class-owned

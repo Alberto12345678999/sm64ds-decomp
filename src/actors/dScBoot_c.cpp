@@ -405,7 +405,7 @@ void dScBoot_c::func_02005348()
 }
 
 // @symbol func_02005324
-/* Absorbed from src/unnamed/arm9/0200/func_02005324.c
+/* Absorbed from the retired arm9 helper func_02005324
  * (arm9 0x02005324..0x02005348): pre-talk camera backup plus event-flag
  * setup, returns 1. Defined last because this file emits .text in reverse
  * source order, so the lead body lands at the run's left edge. The camera
