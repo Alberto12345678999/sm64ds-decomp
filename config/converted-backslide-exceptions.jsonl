@@ -809,3 +809,4 @@
 {"path": "src/unnamed/ov091/__sinit_ov091_02134930.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov095/__sinit_ov095_02136fe0.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
 {"path": "src/unnamed/ov102/__sinit_ov102_0214d714.c", "reason": "shard folded into its owning TU (batch sinit-1010-5)"}
+{"date": "2026-10-11", "path": "src/engine/collision/dBgCh_SphCrr_query.cpp#_ZN5dBgPi5ResetEv", "reason": "dBgPi::Reset keeps the offset arithmetic and the mangled call that reproduce the ROM. The middle collision fold moves it into dBgCh_SphCrr_query.cpp and those spellings stay."}
