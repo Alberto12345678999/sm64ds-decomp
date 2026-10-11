@@ -1,87 +1,30 @@
 //cpp
-/* dScStarSel_c -- the star-select screen (ov003), the scene between the
- * level select and the level itself. It shows a row of star plates for the
- * picked course, a character strip along the bottom, and a cursor the D-pad
- * walks across both. ROM RTTI name dScStarSel_c, base dScene_c; the layout
- * evidence is in include/dScStarSel_c.h.
+/* leftovers:
+ * - defer_codegen off stays, and the file stays in ROM order.
+ *   Reordering moves the run.
+ * - The destructor is written so D1 lands at 0x020addfc and D0 at
+ *   0x020ade54. The extra D2 is unreferenced and dropped at link.
+ *   It is the key function, so this file emits the vtable. The
+ *   cartridge's copies of that vtable sit outside this range.
+ * - opt_strength_reduction off is file-global. Without it Render
+ *   grows by 0x10 bytes.
+ * - common.h stays before dScStarSel_c.h. The other order grows
+ *   Render by 0x18 bytes.
+ * - Behavior sits in the middle of the class run and does not match,
+ *   so this file stops at 0x020af038. CleanupResources,
+ *   InitResources and the factory stay in their own files.
+ * - The seven helpers stay func_ov003_*. Every caller is in this
+ *   class, and the bodies only touch this object's fields.
+ * - data_020a0e5a stays u16[][2]. The flat u16[i*2] form costs
+ *   func_ov003_020ae358 seventeen words.
+ * - OAM::Render and the G3i/G2/GX calls stay mangled. They take
+ *   class arguments by value.
+ * - The bytes after the Model pair stay offset macros. The header
+ *   still holds that tail as opaque storage.
  *
- * ELEVEN of the class's fifteen functions are here: the destructor (slots
- * 16/17), the seven member helpers Render and Behavior drive, the empty
- * OnPendingDestroy (slot 12) and Render (slot 9). .text
- * 0x020addfc..0x020af038, 4668 bytes, one object, byte-identical to retail
- * through the real link.
- *
- * Source order IS the ROM's: `#pragma defer_codegen off` below makes
- * mwccarm emit .text in source order instead of reverse. Do not reorder.
- *
- * THE DESTRUCTOR. The cartridge places D1 (0x020addfc) BELOW D0
- * (0x020ade54). Under deferred codegen an out-of-line destructor emits D2,
- * D0, D1 -- the wrong order -- which is why the destructor pair used to
- * stay in its own files. With `#pragma defer_codegen off` and the file in
- * ascending order, the same out-of-line definition emits D1, D0, D2: the
- * cartridge's order, both byte-identical, written first so they land
- * first. The extra D2 is unreferenced and is dropped at link, as the
- * retail link did. Because the destructor is the first declared
- * non-inline virtual in dScStarSel_c.h, it is the key function, so this
- * file also emits the vtable and the typeinfo chain; the cartridge's
- * copies of those are outside this range and stay canonical.
- *
- * #pragma opt_strength_reduction off is FILE-GLOBAL and last-wins in
- * mwccarm 2004/b56, not positional, so it applies to every function here
- * and there is no way to scope it to one. It is not decoration: of the
- * four cells of {strength reduction, loop invariants} x {on, off}, this is
- * the only one in which all of these functions reproduce. Leaving both at
- * their defaults, or turning loop invariants off as well, costs Render 0x10
- * bytes of frame. Bracketing it around a single member does nothing --
- * measured; the last directive in the file wins for the whole file. (Those
- * measurements predate `defer_codegen off`; here the directive sits above
- * every function, so it covers all eleven in either regime.)
- *
- * common.h MUST precede dScStarSel_c.h. With the order reversed, Render
- * builds 0x18 bytes long. That is the only include-order constraint found.
- *
- * Known limits:
- * - PARTIAL FOLD, and exactly where the line falls. The class occupies one
- *   contiguous linker run, 0x020addfc..0x020b0580, fifteen functions.
- *   Behavior (slot 6, 0x020af038..0x020af86c) does not match. It is a
- *   long-standing near-miss and it did not close when folded in here; the
- *   residual is register allocation only, no schedule change. It sits in
- *   the MIDDLE of the run, and a delinks entry carries exactly one .text
- *   range, so a licensed range cannot skip it. That splits the run in two
- *   and this file is the larger side: everything from the destructor up to
- *   Behavior. Still in their own files: Behavior, CleanupResources,
- *   InitResources and the factory dScStarSel_c_classInit.
- * - The seven func_ov003_* helpers are members now (declared non-virtual
- *   in include/dScStarSel_c.h), and those names are address-derived
- *   analysis labels, not recovered spellings: the image preserves no
- *   linker symbol table and RTTI supplies class identities, not function
- *   names (notes/tu-promotion-conventions.md section 1,
- *   notes/symbol-name-provenance.md). What IS measured is that every
- *   inbound relocation to each of them comes from inside this class's own
- *   run, every caller passes the same pointer the callee spends as the
- *   object, and every access in each body is a this-relative field of this
- *   class (the DIGIT/STRIP/CHAR/ANIM region at 0x104..0x13a).
- * - Where two legacy shards declared the same object with different
- *   shapes, one spelling had to win for the merged file, and the winner is
- *   the one the surviving call sites already hold: data_02092110 and
- *   data_02092128 as scalars, data_020a0e58 as u16[], data_020a0e5a as
- *   u16[][2] (the stride-carrying form -- the flat u16[i*2] spelling costs
- *   func_ov003_020ae358 seventeen words), OAM::TIMES as a scalar, and
- *   func_ov003_020ae1a4's value parameter as int. Every one of these is
- *   the same address arithmetic written differently; none changes a byte.
- * - OAM::Render and the G3i/G2/GX entry points stay mangled with local
- *   shadow parameter types. The ROM names carry by-value class parameters
- *   that mwccarm passes differently at the call site, so declaring the
- *   true types breaks the byte match (notes/mwccarm-codegen.md 6az).
- *   Carried from the legacy sources unchanged.
- * - The scalar layout past dScStarSel_c's Model pair has not been recovered
- *   field-by-field: include/dScStarSel_c.h holds it as opaque bytes. The
- *   accessor macros below name each offset by what this file does with it;
- *   they are file-local views, not header members. Offsets that are only
- *   copied or compared without a visible meaning (0x118, 0x119, the
- *   ANIM_MODE 1 phase byte 0x137 and the level-number limit 0xf) are left as numbers.
+ * dScStarSel_c, the star-select screen. ov003 .text
+ * 0x020addfc..0x020af038. Base is dScene_c.
  */
-
 #pragma defer_codegen off
 #pragma opt_strength_reduction off
 #include "common.h"
