@@ -1054,9 +1054,6 @@
       ]
     },
     "LenVec3": {
-      "src/_Z14ApproachLinearR7Vector3RKS_5Fix12IiE.cpp": [
-        "param:#1 const Vector3 *"
-      ],
       "src/actors/daC_Jugem_c.cpp": [
         "param:#1 const void *"
       ],
@@ -3076,11 +3073,6 @@
       ]
     },
     "SubVec3": {
-      "src/_Z14ApproachLinearR7Vector3RKS_5Fix12IiE.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#3 const Vector3 *"
-      ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -3620,10 +3612,6 @@
       ]
     },
     "Vec3_Equal": {
-      "src/_Z14ApproachLinearR7Vector3RKS_5Fix12IiE.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Vector3 *"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *"
@@ -3873,9 +3861,6 @@
       ]
     },
     "Vec3_HorzLen": {
-      "src/Vec3_ApproachHorz.c": [
-        "param:#1 Vec3 *"
-      ],
       "src/actors/dActor_c.cpp": [
         "param:#1 Vector3 *"
       ],
@@ -3950,14 +3935,6 @@
       ]
     },
     "Vec3_MulScalar": {
-      "src/Vec3_ApproachHorz.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
-      "src/_Z14ApproachLinearR7Vector3RKS_5Fix12IiE.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *"
-      ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 Vec3 *",
         "param:#1 Vector3 *",
@@ -4113,11 +4090,6 @@
     },
     "Vec3_Sub": {
       "src/Vec3_VertAngle.c": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#3 const Vector3 *"
-      ],
-      "src/_Z14ApproachLinearR7Vector3RKS_5Fix12IiE.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
