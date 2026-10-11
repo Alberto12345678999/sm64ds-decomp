@@ -1,13 +1,12 @@
 # Gate-3b slice: SharedFilePtr over the host card seam (port/hal/fs.cpp),
 # on top of gate 3a's heap (the smoke links slices 2 + 3a as well).
 #
-# Excluded on purpose:
-#   _ZN13SharedFilePtr9ConstructEj.c and func_02017e48.c -- on the DS they
-#   pass ov0FileID by leaving it in r1 across a one-argument call; the HAL
-#   provides an ABI-portable Construct instead.
-#   _ZN13SharedFilePtr4LoadEv.cpp -- the seam itself (card hardware).
+# src/SharedFilePtr.cpp compiles LoadFile / Release / func_02017c24 here;
+# its SM64DS_PLATFORM_PC guards drop the pieces the HAL replaces:
+#   SharedFilePtr::Load -- the seam itself (card hardware).
+#   func_02017b4c -- on the DS it passes ov0FileID by leaving it in r1
+#   across a one-argument func_02017e48 call; the HAL provides an
+#   ABI-portable Construct instead.
 
-src/_ZN13SharedFilePtr8LoadFileEv.cpp
-src/_ZN13SharedFilePtr7ReleaseEv.cpp
-src/func_02017c24.c
+src/SharedFilePtr.cpp
 src/func_02017e0c.c

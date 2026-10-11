@@ -1,0 +1,84 @@
+{
+  "id": "arm9/SharedFilePtr",
+  "module": "arm9",
+  "source": "src/SharedFilePtr.cpp",
+  "promoted_source": "src/SharedFilePtr.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "contiguous linker run 0x02017b4c..0x02017e0c, 5 functions, gapless in config/arm9/delinks.txt, all complete.",
+    "BOTTOM EDGE: SharedFilePtr_Destruct_Clsn (0x02017b34) and _ZN7dBgW_Kc8LoadFileER13SharedFilePtr (0x02017afc) below; TOP EDGE: func_02017e0c above."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02017b4c",
+      "end": "0x02017e0c"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "func_02017b4c",
+      "address": "0x02017b4c",
+      "size": "0x00000018",
+      "legacy_source": "src/unnamed/arm9/0201/func_02017b4c.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN13SharedFilePtr7ReleaseEv",
+      "address": "0x02017b64",
+      "size": "0x00000060",
+      "legacy_source": "src/_ZN13SharedFilePtr7ReleaseEv.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN13SharedFilePtr8LoadFileEv",
+      "address": "0x02017bc4",
+      "size": "0x00000060",
+      "legacy_source": "src/_ZN13SharedFilePtr8LoadFileEv.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_02017c24",
+      "address": "0x02017c24",
+      "size": "0x00000030",
+      "legacy_source": "src/func_02017c24.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN13SharedFilePtr4LoadEv",
+      "address": "0x02017c54",
+      "size": "0x000001b8",
+      "legacy_source": "src/_ZN13SharedFilePtr4LoadEv.cpp",
+      "ordinal": 4
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "compiler_only_output": [],
+  "notes": [
+    "PROBE (Grok Bot, 2026-10-11): new TU named after the tree class SharedFilePtr (include/SharedFilePtr.h), no ROM RTTI. Reverse source order: lower addresses at the bottom of the file."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/arm9-SharedFilePtr/SharedFilePtr.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 5,
+    "functions_declared": 5,
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

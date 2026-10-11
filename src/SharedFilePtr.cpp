@@ -1,19 +1,23 @@
 //cpp
-/* SharedFilePtr::Load() at 0x02017c54
+/* arm9/SharedFilePtr -- the shared-file handle's load/release band at .text
+ * 0x02017b4c..0x02017e0c, folded from five legacy shards. mwccarm emits .text
+ * in reverse source order, so the definitions below run ROM-descending:
  *
- * Resolve the file for this->fileID (either already resident in the
- * overlay-file table, or streamed from card), decompress it if LZ16
- * compressed, and stash + return the resulting buffer in this->filePtr.
+ *   SharedFilePtr::Load      0x02017c54
+ *   func_02017c24            0x02017c24  (extern "C", frees filePtr)
+ *   SharedFilePtr::LoadFile  0x02017bc4
+ *   SharedFilePtr::Release   0x02017b64
+ *   func_02017b4c            0x02017b4c  (extern "C", fileID rides through r1)
  *
- * Structurally mirrors the already-matched func_0201818c/func_0201834c
- * pair (same helper calls, same Obj context layout) but inlined into a
- * single member function instead of split across two free functions.
+ * Fields: +0x0 u16 fileID, +0x2 u8 numRefs, +0x4 void *filePtr (the layout
+ * src/_ZN13SharedFilePtr4LoadEv.cpp already used). Release/LoadFile keep the
+ * raw-offset bodies they matched with.
  */
 
 struct Obj { char pad[0x20]; unsigned int cur; unsigned int end; char pad2[0x1c]; };
 
 extern "C" {
-extern unsigned int data_0209d3bc;
+extern int data_0209d3bc;
 
 int func_020186c0(unsigned int val);
 int func_02018568(int a);
@@ -30,6 +34,7 @@ void Crash(void);
 void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
 int func_02018d48(void *a, void *b, unsigned int c);
 void _ZN6Memory10DeallocateEPv(void *p);
+void *func_02017e48(void *self, unsigned int fileID);
 }
 
 struct SharedFilePtr {
@@ -37,9 +42,15 @@ struct SharedFilePtr {
     unsigned char numRefs;
     void *filePtr;
 
+    void Release();
+    void *LoadFile();
     void *Load();
 };
 
+#ifndef SM64DS_PLATFORM_PC
+/* The host port does not compile this body: Load is the card seam, and
+   port/hal/fs.cpp supplies its own SharedFilePtr::Load member over the
+   host file system. */
 void *SharedFilePtr::Load()
 {
     data_0209d3bc = fileID;
@@ -100,3 +111,58 @@ void *SharedFilePtr::Load()
     filePtr = (void *)raw;
     return filePtr;
 }
+#endif
+
+extern "C" void func_02017c24(SharedFilePtr *self)
+{
+    data_0209d3bc = self->fileID;
+    _ZN6Memory10DeallocateEPv(self->filePtr);
+    self->filePtr = 0;
+}
+
+void *SharedFilePtr::LoadFile()
+{
+    char *self = (char *)this;
+
+    data_0209d3bc = *(unsigned short *)self;
+
+    if (*(unsigned char *)(self + 2) == 0) {
+        if (!Load())
+            return 0;
+    }
+
+    if (*(unsigned char *)(self + 2) >= 0xff) {
+        return 0;
+    }
+
+    *(unsigned char *)(self + 2) += 1;
+    return *(void **)(self + 4);
+}
+
+void SharedFilePtr::Release()
+{
+    char *self = (char *)this;
+
+    data_0209d3bc = *(unsigned short *)self;
+
+    if (*(unsigned char *)(self + 2) == 0)
+        return;
+
+    *(unsigned char *)(self + 2) -= 1;
+
+    if (*(unsigned char *)(self + 2) != 0)
+        return;
+
+    func_02017c24(this);
+}
+
+#ifndef SM64DS_PLATFORM_PC
+/* fileID rides through r1 untouched; returns self. The host port never
+   provides func_02017e48 -- the ride-through Construct variants are
+   DS-only, and the HAL's Construct path goes through func_02017e0c. */
+extern "C" void *func_02017b4c(void *self, unsigned int fileID)
+{
+    func_02017e48(self, fileID);
+    return self;
+}
+#endif

@@ -261,8 +261,6 @@
   "src/_ZN13ExpandingHeapD0Ev.cpp",
   "src/_ZN13ExpandingHeapD1Ev.cpp",
   "src/_ZN13SharedFilePtr19ReallocateModelFileEv.cpp",
-  "src/_ZN13SharedFilePtr7ReleaseEv.cpp",
-  "src/_ZN13SharedFilePtr8LoadFileEv.cpp",
   "src/_ZN13SharedFilePtr9ConstructEj.cpp",
   "src/_ZN15ModelComponents11UpdateBonesEP8BCA_Filei.cpp",
   "src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.cpp",

@@ -323,7 +323,7 @@
       ]
     },
     "CpuCopy8": {
-      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+      "src/SharedFilePtr.cpp": [
         "arity:3"
       ],
       "src/engine/save/SaveData.cpp": [
@@ -757,7 +757,7 @@
       ]
     },
     "FS_CloseFile": {
-      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+      "src/SharedFilePtr.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
@@ -8422,7 +8422,7 @@
       ]
     },
     "_ZN6Memory8AllocateEj": {
-      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+      "src/SharedFilePtr.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
@@ -8430,7 +8430,7 @@
       ]
     },
     "_ZN6Memory8AllocateEji": {
-      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+      "src/SharedFilePtr.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
@@ -23061,7 +23061,7 @@
       ]
     },
     "func_020185c0": {
-      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+      "src/SharedFilePtr.cpp": [
         "param:#1 void *",
         "return:void"
       ],
@@ -23112,7 +23112,7 @@
       ]
     },
     "func_02018d48": {
-      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+      "src/SharedFilePtr.cpp": [
         "param:#1 void *",
         "param:#2 void *",
         "param:#3 unsigned int"
