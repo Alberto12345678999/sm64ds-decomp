@@ -13,9 +13,8 @@
  * in an asm block a symbol, so the link has nothing to resolve those calls to.
  * It stays where the ROM build takes it today, and everything above it,
  * including Player's destructor variants and constructor, stays a one-function
- * source with it.  Two tail members, func_ov002_020d71ec and
- * func_ov002_020d9dcc, are compiled as C, like func_ov002_020bcdf0 (reasons
- * at their definitions).
+ * source with it.  One tail member, func_ov002_020d9dcc, is compiled as C,
+ * like func_ov002_020bcdf0 (reasons at their definitions).
  *
  * Ordinals 0..16 (0x020bccfc..0x020bd828) are the Player half of the Kuppa-script
  * interpreter, folded after the first 344: func_ov002_020bd664 dispatches a
@@ -17811,14 +17810,15 @@ void Player::func_ov002_020d71a0() {
 // @symbol func_ov002_020d71ec
 #pragma push
 #pragma opt_propagation off
-/* Parsed as C, as its shard was. Compiled as C++, the two struct P2
- * copies into arr[] take their registers in the other order and the
- * zero for the stack argument moves (5 words differ, measured). */
-#pragma cplusplus off
-#pragma c99 on
+/* P2's only member is an array. With named members, C++ copies each
+ * table into arr[] member by member, and the arr base and the zero for
+ * the stack argument take their registers in the other order (5 words
+ * differ, measured); a copy of an array member is one block move, as C
+ * made it. */
+extern "C" {
 void func_ov002_020d71ec(char* p, int arg1)
 {
-    struct P2 { int a, b; };
+    struct P2 { int w[2]; };
     extern int _ZNK6Player14GetBodyModelIDEjb(void* self, u32 a, int b);
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, int b, u32 d);
     extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* ma, void* file, int a, int b, u32 d);
@@ -17862,8 +17862,7 @@ void func_ov002_020d71ec(char* p, int arg1)
     *(u8*)(p + 0x6e3) = 2;
     *(u16*)(p + 0x6a4) = 0xa;
 }
-#pragma c99 off
-#pragma cplusplus on
+}
 #pragma pop
 
 /* -------------------------------------------------------------------------- */
