@@ -12,4 +12,3 @@
 #   HAL never provides.
 
 src/SharedFilePtr.cpp
-src/func_02017e0c.c

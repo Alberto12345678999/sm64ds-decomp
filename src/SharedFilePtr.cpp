@@ -20,7 +20,7 @@
  *                          names per the original file's layout)
  *
  * Fields: +0x0 u16 fileID, +0x2 u8 numRefs, +0x4 void *filePtr (the layout
- * src/_ZN13SharedFilePtr4LoadEv.cpp already used). Release/LoadFile keep the
+ * Load already used before the fold). Release/LoadFile keep the
  * raw-offset bodies they matched with. include/SharedFilePtr.h stays fieldless
  * on purpose; the TU-local shadow below is what the member definitions use.
  */

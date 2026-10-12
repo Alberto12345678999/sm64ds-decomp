@@ -35,7 +35,7 @@
 //   __cxa_vec_ctor call for the mArray3/mArray4 records, not dispatch
 //   targets on the scene.
 // - func_ov006_021295ac stays free: it is the C2 construction body called by
-//   dScMgSnowball_c_classInit in src/d_s_mg_snowball.cpp after allocation;
+//   dScMgSnowball_c_classInit, below, after allocation;
 //   writing it as a real ctor changes codegen.
 // - The raw-pointer and view-struct puns (C_0212a224, C_02129d94,
 //   Obj_02129690, the H()/I()/B()/AT() macros) are load-bearing: the
