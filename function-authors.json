@@ -18849,6 +18849,10 @@
       "author": "tangosdev",
       "name": "_ZN12dScStarSel_c6RenderEv"
     },
+    "ov003:0x020af038": {
+      "author": "andrewboudreau",
+      "name": "_ZN12dScStarSel_c8BehaviorEv"
+    },
     "ov003:0x020af86c": {
       "author": "tangosdev",
       "name": "_ZN12dScStarSel_c16CleanupResourcesEv"
