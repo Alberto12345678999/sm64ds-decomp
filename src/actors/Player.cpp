@@ -13,8 +13,8 @@
  * in an asm block a symbol, so the link has nothing to resolve those calls to.
  * It stays where the ROM build takes it today, and everything above it,
  * including Player's destructor variants and constructor, stays a one-function
- * source with it.  One tail member, func_ov002_020d9dcc, is compiled as C,
- * like func_ov002_020bcdf0 (reasons at their definitions).
+ * source with it.  Every tail member is compiled as C++; the one C body in
+ * the file is func_ov002_020bcdf0 (reason at its definition).
  *
  * Ordinals 0..16 (0x020bccfc..0x020bd828) are the Player half of the Kuppa-script
  * interpreter, folded after the first 344: func_ov002_020bd664 dispatches a
@@ -19673,12 +19673,13 @@ void func_ov002_020d9c70(char *o)
 /* ROM ordinal 445 -- func_ov002_020d9dcc, 0x020d9dcc, size 0x1f8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d9dcc
-/* Parsed as C (C99, for its mixed declarations), as its shard was.
- * Compiled as C++, `(long long)(x == 0xbf)` widens a bool rather than an
- * int and the early returns are laid out differently (29 words differ,
- * measured). */
-#pragma cplusplus off
-#pragma c99 on
+/* The state test compares the comparison as an int,
+ * `(int)(x == 0xbf) == 0`.  In C++ the comparison is a bool: tested
+ * directly, the 0/1 is folded into the branch (12 bytes short), and
+ * widened to long long, as the C shard spelled it, the early return's 0
+ * is loaded ahead of the branch and reused below it (29 words differ).
+ * The int view keeps the 0/1 and gives the return 0 its own path. */
+extern "C" {
 int func_ov002_020d9dcc(char* c)
 {
     extern int AngleDiff(int a, int b);
@@ -19691,7 +19692,7 @@ int func_ov002_020d9dcc(char* c)
         return 0;
 
     p = *(char**)(c + 0x358);
-    if (p == 0 || (int)(((long long)(*(u16*)(p + 0xc) == 0xbf))) == 0)
+    if (p == 0 || (int)(*(u16*)(p + 0xc) == 0xbf) == 0)
         return 0;
 
     if (*(s16*)((char*)data_0209f4a0 + gActivePlayerSlot * 0x18) == 0 || *(u8*)(c + 0x6de) != 0) {
@@ -19743,8 +19744,7 @@ int func_ov002_020d9dcc(char* c)
     _ZN6Player11ChangeStateERNS_5StateE(c, data_ov002_02110604);
     return 1;
 }
-#pragma c99 off
-#pragma cplusplus on
+}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 446 -- _ZN6Player22St_SwingPlayer_CleanupEv, 0x020d9fc4, size 0x28 */
