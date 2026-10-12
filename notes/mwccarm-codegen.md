@@ -6551,6 +6551,20 @@ the Rm field and the operand's colour are one decision keyed on the syntactic op
 
 ## 6cm. There are FOUR cells for a scaled index, not three, and 2004/b56 can only reach three of them; a 16-bit index type is the one size-neutral way to stop the fold (_ZN12dScMgSlot1_c8BehaviorEv, ov006 0x0210c9e0, 0x81c, div 20 -> 19, floor; 2026-09-13, run link100 waves 9 and 10, lanes CRK-H and CRK2-H)
 
+**SUPERSEDED 2026-10-12: the function MATCHED (div 0, 0x81c).** The "floor" below was a source
+artefact, not a compiler limit. Every cell of the grids recorded here kept the draft's habit of
+naming the object two ways -- some fields as `this->member`, others through `char *c = (char
+*)this` plus literal offsets -- and that mix is the one axis the grids never varied. Synthetic
+probes (one function, one hit block, one factor at a time) showed 2004/b56 folds the hoisted
+touch-record address into `add r0, r0, r2, lsl #2` exactly when the enclosing function names
+the object two ways (member/offset mix, in a member function or a free function over a `X *p`),
+and materializes `lsl r1, r2, #2` / `add r0, r0, r1` when it names it one way (all members, or
+all offsets). Spelling the whole function through members, with case 7 keeping its strided
+`char *p = (char *)this; p += 0x15` row walk and the touch x/y read inside the hit loop through
+a 4-byte record view, gives the retail bytes. The 16-bit index below is not needed. See the
+banner on `_ZN12dScMgSlot1_c8BehaviorEv` in `src/actors/dScMgSlots.cpp` and manifest
+`config/tu_manifest.d/ov006/dScMgSlot1_c+dScMgSlot3_c.json` (boundary_evidence[3], [4]).
+
 This section replaces the wave-9 text filed under the same number ("declare the scaled index
 BETWEEN the guards and the use"), which is right about the placement axis and stops one cell
 short of the mechanism. The wave-9 evidence still stands and is folded in below: twenty
