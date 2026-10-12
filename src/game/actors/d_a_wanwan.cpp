@@ -70,10 +70,10 @@ extern WanwanModelFilePtr data_ov014_02114978;
 extern WanwanAnimationFileHandle data_ov014_02114980;
 extern WanwanAnimationFileHandle data_ov014_02114970;
 extern int data_ov014_02114700[]; /* collision offset (0, -200, 0) */
-extern Matrix4x3 data_020a0e68;
+extern Matrix4x3 data_020a0e68;     /* MATRIX_SCRATCH_PAPER */
 extern const Matrix4x3 IDENTITY_MATRIX4X3;
-extern s16 data_02082214[];
-extern void *data_0209f318;
+extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
+extern void *data_0209f318;         /* CAMERA */
 
 extern int func_ov014_02111fb8(char *c);
 void func_ov014_02112114(void *c);
@@ -81,7 +81,7 @@ void func_ov014_02111fe0(char *c);
 void func_ov014_0211250c(char *c);
 void func_ov014_0211236c(char *c);
 void func_ov014_021122dc(char *c);
-void func_ov014_02112788(char *c);
+void func_ov014_02112788(daWanwan_c *c);
 void func_ov014_02112ea8(void *fence);
 void func_ov102_0214ae1c(void *bomb);
 
@@ -187,23 +187,22 @@ int daWanwan_c::InitResources()
 
     {
         int i = 0;
-        unsigned char *p = (unsigned char *)mLinkModels;
+        Model *p = mLinkModels;
         do {
-            ((Model *)p)->SetFile(
-                (BMD_File *)data_ov014_02114978.words[1], 1, 1);
+            p->SetFile((BMD_File *)data_ov014_02114978.words[1], 1, 1);
             i = i + 1;
-            p = p + 0x50;
+            p++;
         } while (i < 7);
     }
 
     mShadowModel.InitCylinder();
     {
         int si = 0;
-        unsigned char *sp = (unsigned char *)mLinkShadows;
+        dExtShadowModel_c *sp = mLinkShadows;
         do {
-            ((dExtShadowModel_c *)sp)->InitCylinder();
+            sp->InitCylinder();
             si = si + 1;
-            sp = sp + 0x28;
+            sp++;
         } while (si < 7);
     }
 
@@ -223,16 +222,17 @@ int daWanwan_c::InitResources()
     func_ov014_02111ebc(1);
 
     {
-        /* dst stays the actor. The stores are [dst, #0x524] -- mLinkPos -- and
-           a pointer that already points at the array is two instructions longer. */
+        /* dst is the actor address advanced by one Vector3 per link, so
+           dst->mLinkPos[0] is link cnt's position. A pointer that already
+           points at the array is two instructions longer. */
         int cnt = 0;
-        unsigned char *dst = (unsigned char *)this;
+        daWanwan_c *dst = this;
         do {
-            *(int *)(dst + 0x524) = mPosX;
+            dst->mLinkPos[0].x = mPosX;
             cnt = cnt + 1;
-            *(int *)(dst + 0x528) = mPosY;
-            *(int *)(dst + 0x52c) = mPosZ;
-            dst = dst + 0xc;
+            dst->mLinkPos[0].y = mPosY;
+            dst->mLinkPos[0].z = mPosZ;
+            dst = (daWanwan_c *)((char *)dst + sizeof(Vector3));
         } while (cnt < 7);
     }
 
@@ -286,7 +286,7 @@ int daWanwan_c::Behavior()
         func_ov014_0211236c((char *)this);
         func_ov014_021122dc((char *)this);
     }
-    func_ov014_02112788((char *)this);
+    func_ov014_02112788(this);
     {
         int v[3];
         v[0] = data_ov014_02114700[0];
@@ -330,55 +330,57 @@ int daWanwan_c::CleanupResources()
 /* Place the head and each link, then drop a cylinder shadow under them. */
 extern "C" {
 // @symbol func_ov014_02112788
-void func_ov014_02112788(char *c)
+void func_ov014_02112788(daWanwan_c *c)
 {
-    /* Head matrix is mModelAnim.mat4x3 (actor+0x16c); translation is m[9..11]
-       at +0x190. Link models sit at +0x1dc, their translation at o+0x21c while
-       o walks from the actor by 0x50. e+0x524 is mLinkPos. A named base for
-       those stores changes the register the loop keeps live. */
+    /* Translation is m[9..11] of each matrix: the position divided by 8.
+       m and sm walk mLinkModels and mLinkShadows. e and o are the actor
+       address advanced by one Vector3 and one Model per link, so
+       e->mLinkPos[0] is link i's position and o->mLinkModels[0] is the model
+       m points at. Storing the translation through m, or walking mLinkPos
+       with a Vector3 pointer, changes the emitted loop. */
     Matrix4x3 tmp;
     int i;
     int t;
-    char *m;
-    char *e;
-    char *o;
-    char *sm;
-    Matrix4x3_FromRotationXYZExt(c + 0x16c, *(s16 *)(c + 0x8c), *(s16 *)(c + 0x8e), *(s16 *)(c + 0x90));
-    *(int *)(c + 0x190) = *(int *)(c + 0x5c) >> 3;
-    *(int *)(c + 0x194) = *(int *)(c + 0x60) >> 3;
-    *(int *)(c + 0x198) = *(int *)(c + 0x64) >> 3;
-    t = *(int *)(c + 0x60) - *(int *)(c + 0x5f0);
+    Model *m;
+    daWanwan_c *e;
+    daWanwan_c *o;
+    dExtShadowModel_c *sm;
+    Matrix4x3_FromRotationXYZExt(&c->mModelAnim.mat4x3, c->mAngleX, c->mAngleY, c->mAngleZ);
+    c->mModelAnim.mat4x3.m[9] = c->mPosX >> 3;
+    c->mModelAnim.mat4x3.m[10] = c->mPosY >> 3;
+    c->mModelAnim.mat4x3.m[11] = c->mPosZ >> 3;
+    t = c->mPosY - c->mSpawnPosY;
     if (t <= 0x1000)
         t = 0x1000;
     /* DropShadowRadHeight takes Fix12<int> by value. */
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        (dActor_c *)c, (dExtShadowModel_c *)(c + 0x1b4), (Matrix4x3 *)(c + 0x16c),
+        c, &c->mShadowModel, &c->mModelAnim.mat4x3,
         0x15e000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
         t + 0x28000,
         0xf);
     tmp = IDENTITY_MATRIX4X3;
-    sm = c + 0x40c;
+    sm = c->mLinkShadows;
     i = 0;
-    m = c + 0x1dc;
+    m = c->mLinkModels;
     e = c;
     o = c;
     for (; i < 7; i++) {
-        *(Matrix4x3 *)(m + 0x1c) = tmp;
-        *(int *)(o + 0x21c) = *(int *)(e + 0x524) >> 3;
-        *(int *)(o + 0x220) = *(int *)(e + 0x528) >> 3;
-        *(int *)(o + 0x224) = *(int *)(e + 0x52c) >> 3;
-        t = *(int *)(e + 0x528) - *(int *)(c + 0x5f0);
+        m->mat4x3 = tmp;
+        o->mLinkModels[0].mat4x3.m[9] = e->mLinkPos[0].x >> 3;
+        o->mLinkModels[0].mat4x3.m[10] = e->mLinkPos[0].y >> 3;
+        o->mLinkModels[0].mat4x3.m[11] = e->mLinkPos[0].z >> 3;
+        t = e->mLinkPos[0].y - c->mSpawnPosY;
         if (t <= 0x1000)
             t = 0x1000;
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            (dActor_c *)c, (dExtShadowModel_c *)sm, (Matrix4x3 *)(m + 0x1c),
+            c, sm, &m->mat4x3,
             0x78000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
             t + 0x28000,
             0xf);
-        m += 0x50;
-        e += 0xc;
-        o += 0x50;
-        sm += 0x28;
+        m++;
+        e = (daWanwan_c *)((char *)e + sizeof(Vector3));
+        o = (daWanwan_c *)((char *)o + sizeof(Model));
+        sm++;
     }
 }
 }
@@ -457,7 +459,7 @@ void func_ov014_0211250c(char *raw)
         if (i == 0)
             prev = &saved;
         else
-            prev = (WanwanVec *)((char *)seg - 0xc);
+            prev = seg - 1;
 
         dvec.x = (seg->x - prev->x) + dst->x;
         dvec.z = (seg->z - prev->z) + dst->z;
@@ -491,8 +493,8 @@ void func_ov014_0211250c(char *raw)
         if (*bound <= c->mSpawnPosY)
             *bound = c->mSpawnPosY + 0x28000;
 
-        seg = (WanwanVec *)((char *)seg + 0xc);
-        dst = (WanwanVec *)((char *)dst + 0xc);
+        seg++;
+        dst++;
     }
 }
 }
@@ -546,7 +548,7 @@ void func_ov014_0211236c(char *raw)
     cur = (WanwanVec *)&c->mLinkPos[6];
     i = 6;
     do {
-        target = (i == 6) ? &prevpos : (WanwanVec *)((char *)cur + 0xc);
+        target = (i == 6) ? &prevpos : cur + 1;
         Vec3_Sub(&diff, cur, target);
         tmp.x = diff.x;
         tmp.y = diff.y;
@@ -570,7 +572,7 @@ void func_ov014_0211236c(char *raw)
         sum.y = mul.y;
         sum.z = mul.z;
         i = i - 1;
-        cur = (WanwanVec *)((char *)cur - 0xc);
+        cur--;
     } while (i >= 0);
 }
 }
@@ -593,7 +595,7 @@ void func_ov014_021122dc(char *raw)
         Vec3_MulScalar(scaled, diff, (7 - i) / 7);
         AddVec3(p, scaled, p);
         i++;
-        p = (WanwanVec *)((char *)p + 0xc);
+        p++;
     } while (i < 7);
 }
 }
@@ -976,6 +978,9 @@ extern "C" void func_ov014_021115ec(u8 *raw)
     camera = (dCamera_c *)data_0209f318;
     angleToPlayer = self->HorzAngleToCPlayer();
     angleToAnchor = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mSpawnPosX);
+    /* camera+0x118 has no name in dCamera_c.h. dCamera_c::Behavior clears
+       it and ORs 4 into mFlags when it was non-zero; steps 0-6 write the
+       chomp there. */
     switch (self->mReleaseStep) {
     case 0:
         *(daWanwan_c **)((char *)camera + 0x118) = self;
