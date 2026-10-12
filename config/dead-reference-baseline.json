@@ -171,6 +171,10 @@
   },
   {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
+   "ref": "src/minigames/d_s_mg_slot1.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
