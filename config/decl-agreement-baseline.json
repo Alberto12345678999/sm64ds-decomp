@@ -4085,11 +4085,6 @@
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "param:#4 const Vector3 *"
-      ],
-      "src/engine/collision/dCcAc_c.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#4 const Vector3 *"
       ]
     },
     "Vec3_Sub": {
@@ -12411,11 +12406,17 @@
       ]
     },
     "data_0209d6f4": {
+      "src/Message.cpp": [
+        "return:volatile int"
+      ],
       "src/Message2.cpp": [
         "return:unsigned char *"
       ],
       "src/_ZN7Message30DisplayCourseNameForStarSelectEj.cpp": [
         "return:volatile int"
+      ],
+      "src/_ZN7Message6UpdateEv.cpp": [
+        "return:int"
       ],
       "src/unnamed/arm9/0201/func_0201b100.c": [
         "return:unsigned char *"
@@ -12425,9 +12426,6 @@
       ],
       "src/unnamed/arm9/0201/func_0201b7cc.c": [
         "return:unsigned char *"
-      ],
-      "src/Message.cpp": [
-        "return:volatile int"
       ]
     },
     "data_0209d6f8": {

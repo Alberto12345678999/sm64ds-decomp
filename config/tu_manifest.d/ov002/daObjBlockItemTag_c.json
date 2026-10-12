@@ -514,24 +514,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@781",
+      "from": "@799",
       "to": "@131",
-      "evidence": "compiler temporary .data image; mwcc numbers it @781 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
+      "evidence": "compiler temporary .data image; mwcc numbers it @799 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     },
     {
-      "from": "@783",
+      "from": "@801",
       "to": "@132",
-      "evidence": "compiler temporary .data image; mwcc numbers it @783 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
+      "evidence": "compiler temporary .data image; mwcc numbers it @801 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     },
     {
-      "from": "@785",
+      "from": "@803",
       "to": "@133",
-      "evidence": "compiler temporary .data image; mwcc numbers it @785 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
+      "evidence": "compiler temporary .data image; mwcc numbers it @803 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     },
     {
-      "from": "@787",
+      "from": "@805",
       "to": "@134",
-      "evidence": "compiler temporary .data image; mwcc numbers it @787 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
+      "evidence": "compiler temporary .data image; mwcc numbers it @805 per TU (the @NNN numbering shifted when cleanup added the daShl_c/daStar_c/daStarBase_c includes); renamed to a fleet-unique name because anonymous compiler temporaries collide across TUs in the scratch link"
     }
   ],
   "relocations": [

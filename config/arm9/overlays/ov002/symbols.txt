@@ -2797,8 +2797,8 @@ data_ov002_0210e0dc kind:bss addr:0x0210e0dc
 @296 kind:bss addr:0x0210e0f0
 data_ov002_0210e0fc kind:bss addr:0x0210e0fc
 data_ov002_0210e104 kind:bss addr:0x0210e104
-@561 kind:bss addr:0x0210e10c
-@560 kind:bss addr:0x0210e118
+@560 kind:bss addr:0x0210e10c
+@561 kind:bss addr:0x0210e118
 data_ov002_0210e124 kind:bss addr:0x0210e124
 data_ov002_0210e12c kind:bss addr:0x0210e12c
 @652 kind:bss addr:0x0210e134
