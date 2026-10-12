@@ -167,9 +167,9 @@ not the same as the last field the object has. The trailing `pad_9c0[0x8]` and t
 
 **`Particle::SysTracker`, embedded at `dScStage_c+0x50`.** Not its own header yet:
 `include/Particle.h` and `include/Particle__SysTracker.h` are two *separate*
-`gen_header.py` shadows of this same class. `src/_ZN8Particle10SysTrackerC1Ev.cpp` writes
+`gen_header.py` shadows of this same class. `src/engine/particle/Particle.cpp` writes
 fields through `struct Particle *self` up to `unk_818`, while
-`src/_ZN8Particle10SysTracker10InitialiseEv.cpp` and `6UpdateEv.c` read `mManager`/`mContents`
+`src/engine/particle/Particle.cpp` and `6UpdateEv.c` read `mManager`/`mContents`
 through `struct Particle__SysTracker *self` — the same offsets `Particle.h` also
 carries. Their union is what `dScStage_c.h` declares locally: `Particle.h`'s full 34-field
 layout, last field `unk_818` (1 byte, ends 0x819), padded to 0x81c for 4-byte
@@ -178,7 +178,7 @@ second independent check on the same number. Declared locally rather than mergin
 two real headers because neither `dScStage_c` source file includes them and a merge has its
 own blast radius across every file that already casts through one shadow or the other.
 
-Its destructor is declared, never defined: `src/_ZN8Particle10SysTrackerD1Ev.cpp`
+Its destructor is declared, never defined: `src/engine/particle/Particle.cpp`
 already supplies `_ZN8Particle10SysTrackerD1Ev` as an `extern "C"` free function; the
 declaration only lets `dScStage_c`'s implicit destructor find it by name. Not virtual —
 `dtor_variant_audit.py` established `Particle::SysTracker` has no RTTI record and no

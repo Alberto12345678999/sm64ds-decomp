@@ -14,34 +14,25 @@
  * destructor pair at the end is the one documented exception, because the
  * compiler picks the order inside a D0/D1 group itself.
  *
- * Members, in ROM address order (each was a one-function shard before this
- * TU took over the run; the shards are gone):
- *   [0] 0x021113bc  daObjClock_c::~daObjClock_c   (D1)
- *   [1] 0x021113ec  daObjClock_c::~daObjClock_c   (D0)
- *   [2] 0x02111430  func_ov013_02111430           (state helper)
- *   [3] 0x02111478  daObjClock_c::CleanupResources
- *   [4] 0x021114a4  daObjClock_c::Render
- *   [5] 0x021114cc  daObjClock_c::Behavior
- *   [6] 0x021115cc  daObjClock_c::InitResources
- *   [7] 0x0211163c  daObjClock_c_classInit_CLOCK_SHORT   (factory, actor 292)
- *   [8] 0x02111674  daObjClock_c_classInit_CLOCK_LONG    (factory, actor 293)
- *
- * Leftover: measured under mwccarm 2004/b56, and left in the form that matches.
- * Folding actorID == 0x125 into the if: InitResources 0x70 -> 0x64.
- * A ternary, or mHandIndex = actorID != 0x125: InitResources 0x70 -> 0x60.
- * The widened int isLongHand stays.
- * Lower-bound-first quadrant compares: Behavior stays 0x100 and 21 words differ.
- * Dropping the repeated lower bounds: Behavior 0x100 -> 0xe0.
- * Folding the two stopped quadrants into one test: Behavior 0x100 -> 0xf8.
- * mAngleZ = mAngleZ + step: Behavior 0x100 -> 0xfc.
- * Testing mHandIndex before IsAreaShowing: Behavior stays 0x100 and 5 words differ.
- * Assigning a Vector3 to mModel.mat4x3.t: func_ov013_02111430 0x48 -> 0x50.
- * The three translation stores stay.
- * data_ov013_021116ac and data_ov013_021116b0 keep linker names. This TU
- * reads them; it does not own that .data. The two factories stay
- * CLOCK_SHORT / CLOCK_LONG, because one C name cannot cover both.
- * Matrix4x3_FromRotationZXYExt stays a call. No free function defined in
- * this TU takes the clock; func_ov013_02111430 is already the method.
+ * leftovers: measured under mwccarm 2004/b56, and left in the form that
+ * matches.
+ * - the widened `int isLongHand` stays: folding actorID == 0x125 into the
+ *   if sizes InitResources 0x70 -> 0x64; a ternary, or
+ *   mHandIndex = actorID != 0x125, sizes it 0x70 -> 0x60.
+ * - Behavior's quadrant chain keeps the measured shape: lower-bound-first
+ *   compares stay 0x100 and 21 words differ; dropping the repeated lower
+ *   bounds sizes it 0xe0; folding the two stopped quadrants into one test
+ *   sizes it 0xf8; mAngleZ = mAngleZ + step sizes it 0xfc; testing
+ *   mHandIndex before IsAreaShowing stays 0x100 and 5 words differ.
+ * - func_ov013_02111430 keeps the three memberwise mat4x3.t stores:
+ *   assigning a Vector3 sizes it 0x50 against 0x48.
+ * - data_ov013_021116ac (per-hand speeds) and data_ov013_021116b0 (model
+ *   handles) keep linker names: this TU reads them; it does not own that
+ *   .data. data_02092110 / data_0209f2c0 are arm9's level id and clock
+ *   setting. The two factories stay CLOCK_SHORT / CLOCK_LONG, because one
+ *   C name cannot cover both.
+ * - Matrix4x3_FromRotationZXYExt and IsAreaShowing stay local externs;
+ *   no shared header owns them.
  */
 
 #include "daObjClock_c.h"

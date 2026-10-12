@@ -11,6 +11,10 @@
  * concatenated in reverse ROM order: their bodies were wrapped in
  * extern "C" { }, which the merge tool could not take apart.
  *
+ * _ZTS8daKpFr_c 0x0212340c. _ZTI8daKpFr_c 0x02123418.
+ * _ZTV8daKpFr_c 0x02123448. The inline destructor in the header is the key
+ * function: D1 at 0x02121b48, D0 at 0x02121b88, no D2.
+ *
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *   mwcc emits one .text section per ordinary definition in reverse source
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
@@ -28,11 +32,14 @@
  *   Particle::System::NewUnkCallback818.
  *   dBgCh_Actr::Init: its header's Fix12i mangles as int.
  *   dBgCh_Actr::GetFloorResult: not in dBgCh_Actr.h yet.
- *
- * Known limits:
- *   `return new` synthesizes a vague-linkage _ZN9Matrix4x3D1Ev over mMatrix
- *   (deadstripped; no ROM symbol).
  */
+
+// leftovers:
+// - `return new` synthesizes a vague-linkage _ZN9Matrix4x3D1Ev over mMatrix
+//   (deadstripped; no ROM symbol).
+// - unk_0a4/unk_0ac stay raw in func_ov070_02121d50's smull: the velocity
+//   triples live on the shared dActor_c header, which has not named them yet
+//   (same header work as the linelift2 leaf below).
 #include "daKpFr_c.h"
 #include "dBgCh_Gnd.h"
 #include "Particle__System.h"
@@ -57,7 +64,7 @@ typedef char daKpFrSpawnInfo_size_must_be_0x1c[
     sizeof(daKpFrSpawnInfo) == 0x1c ? 1 : -1];
 
 /* The registry factory behind the KERONPA_FIRE profile.
- * `return new daKpFr_c()` MATCHES (size 0x48); the synthesized ctor stores
+ * `return new daKpFr_c()` emits 0x48 with the synthesized ctor storing
  * `_ZTV8daKpFr_c + 2`. Historical aliases: daKpFr_c_Spawn, FlameChompFire_Spawn. */
 // @symbol daKpFr_c_classInit
 extern "C" daKpFr_c *daKpFr_c_classInit(void)
@@ -260,7 +267,7 @@ void daKpFr_c::func_ov070_02121e14() {
 // @symbol _ZN8daKpFr_c19func_ov070_02121d50EPv
 /* GetFloorResult is not declared in the shared header yet; keep only that
  * proven typed ABI seam. ROM calls the UpdateContinuous veneer, not the
- * method. (long long) smull is the MATCH addressing form. */
+ * method. (long long) smull is the addressing form the ROM uses. */
 namespace cstd { int fdiv(int a, int b); }
 
 extern "C" void dBgCh_Actr_UpdateContinuous_Veneer(void* c);

@@ -52,7 +52,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN10daObjKey_c19func_ov089_02130fb4EPii",
+      "symbol": "_ZN10daObjKey_c19func_ov089_02130fb4EP7Vector3i",
       "address": "0x02130fb4",
       "size": "0x00000118",
       "legacy_source": "src/func_ov089_02130fb4.c",
@@ -101,14 +101,14 @@
       "ordinal": 8
     },
     {
-      "symbol": "_ZN10daObjKey_c19func_ov089_02131dccEPc",
+      "symbol": "_ZN10daObjKey_c19func_ov089_02131dccER6Player",
       "address": "0x02131dcc",
       "size": "0x00000028",
       "legacy_source": "src/func_ov089_02131dcc.c",
       "ordinal": 9
     },
     {
-      "symbol": "_ZN10daObjKey_c19func_ov089_02131df4EPc",
+      "symbol": "_ZN10daObjKey_c19func_ov089_02131df4ER6Player",
       "address": "0x02131df4",
       "size": "0x00000110",
       "legacy_source": "src/func_ov089_02131df4.c",
@@ -1515,42 +1515,42 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1209",
+      "from": "@1208",
       "to": "@2708",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1210",
+      "from": "@1209",
       "to": "@1175",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1211",
+      "from": "@1210",
       "to": "@2709",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1212",
+      "from": "@1211",
       "to": "@1177",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1213",
+      "from": "@1212",
       "to": "@1178",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1214",
+      "from": "@1213",
       "to": "@1179",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1215",
+      "from": "@1214",
       "to": "@1180",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },
     {
-      "from": "@1216",
+      "from": "@1215",
       "to": "@1181",
       "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
     },

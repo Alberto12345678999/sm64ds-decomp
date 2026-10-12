@@ -2,14 +2,15 @@
 /* Memory Match. Twelve cards sit on the touch screen; two equal values
  * are a pair, and too many misses ends the round.
  *
- * Leftover: func_ and data_ helpers are still the linker names.
- * Leftover: CheckFinished reads unk_0a8 through WordAt. As a plain member
- *   the multiply-add takes its registers the other way round.
- * Leftover: ShuffleCards. mValueCounts[slot] hoists the base; adding the
- *   slot to 0x5330 matches.
- * Leftover: cstd::atan2 stays the mangled symbol.
- * Leftover: the factory builds the object by hand because the class has no
- *   constructor declared yet.
+ * leftovers:
+ *   - func_ and data_ helpers are still the linker names.
+ *   - CheckFinished reads unk_0a8 through WordAt. As a plain member the
+ *     multiply-add takes its registers the other way round.
+ *   - ShuffleCards: mValueCounts[slot] hoists the base; adding the slot
+ *     to 0x5330 matches.
+ *   - cstd::atan2 stays the mangled symbol (Fix12<int> by value).
+ *   - the factory builds the object by hand because the class has no
+ *     constructor declared yet.
  */
 
 #include "dScMgMemory_c.h"

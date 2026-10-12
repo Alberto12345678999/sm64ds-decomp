@@ -1,75 +1,55 @@
 //cpp
 /* daKrb_c -- Goomba (KURIBO 200 / KURIBO_S 201 / KURIBO_L 202), ov084.
  *
- * ov084 is mixed (BOB_OMB_BUDDY / GOOMBA / PIRANHA_PLANT). RTTI names this
- * class daKrb_c; the debug table names KURIBO / KURIBO_S / KURIBO_L. One
- * class, three C-linkage factories. Base is dCapEnemy_c. This TU is the
- * .text range 0x02129020..0x0212c10c: 35 functions: the two destructor
- * variants, 30 methods and helpers, and the three factories.
+ * RTTI ov084 0x021308d4 is 7daKrb_c; _ZTI7daKrb_c at 0x021308e0 names
+ * dCapEnemy_c as its base. The tree used to call this class Goomba.
+ * One class, three factories. Text is 0x02129020..0x0212c10c.
+ * defer_codegen off is load-bearing: the out-of-line destructor
+ * emits D1, then D0, then a D2 the cartridge does not keep.
  *
- * What the class does. mGoombaType (KURIBO_S 0, KURIBO 1, KURIBO_L 2, and 3
- * for the minions the Goomba King daKuriKing_c spawns) picks the per-type
- * tables. mState picks one of five handlers (STATE_*, in daKrb_c.h): walk
- * (wander / chase / follow the king), hop start, airborne, tumble after the
- * cap is knocked off, and pause. Behavior runs, in order: the Yoshi-eat
- * update (func_ov084_02129a00), the state handler, the hit reaction
- * (func_ov084_02129ed4), position update, ledge check, collision update and
- * the stuck check. Rewards (a silver star carried by the Goomba) are
- * handled by func_ov084_02129864 / func_ov084_021296cc.
+ * mGoombaType picks the per-type tables (small, normal, large, and
+ * the minions the Goomba King spawns). mState picks walk, hop,
+ * airborne, tumble, or pause. Behavior runs the Yoshi-eat update,
+ * the state handler, the hit reaction, the position update, the
+ * ledge check, collision, and the stuck check.
  *
- * Factories are `return new daKrb_c()`. `#pragma defer_codegen off` is
- * load-bearing: out-of-line D1 then D0 then homeless D2 matches the
- * cartridge (deferred codegen emits D2, D0, D1).
- *
- * Units used in the comments below: Fix12 values are shown as world units
- * (0x1000 = 1.0, so 0x6c000 = 108.0); angles are 16-bit (0x10000 = a full
- * turn, 0x4000 = a quarter turn, 0x800 = 11.25 degrees).
- *
- * Leftover, remeasured on this TU:
+ * leftovers:
  * - ModelAnim::SetAnim, MaterialChanger::SetFile, dCcAc_c::Init,
- *   DropShadowRadHeight and KillByInvincibleChar take Fix12<int> by value.
- *   The header call size-DIFFs (0212a6f8, 02129a00, 0212a580, 02129ed4,
- *   InitResources). The bridges below pass those bits as scalars and still
- *   name the 5Fix12IiE symbols.
- * - dBgCh_Actr::Init stays the mangled free call. types.h makes Fix12i a
- *   plain s32, so the header method mangles as int and the link fails.
- * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer are
- *   not declared on those classes. The scalar bridges stay in this file.
- * - dBgCh_Actr::GetFloorResult and dCapEnemy_c::UpdateCapPos have no header
- *   member. UpdateCapPos still needs the unsigned Vector3_16_local and the
- *   equal-arm ternary so r2 is set up before r1.
- * - dExtFrameCtrl_c::Advance is called on the subobject at +0x3c0. mModelAnim.Advance()
- *   this-adjusts.
- * - func_ov084_021290d4 recomputes the chase radius at each store. A named
- *   temporary size-DIFFs, and mUnstickTimer spelled the same way on both sides
- *   of the decrement CSEs the halfword.
- * - OnTurnIntoEgg and the reward helper load param1 through a raw word.
- *   Spelling both sides as the member CSEs +8.
- * - mInitAngleY is the spawn heading but func_ov084_02129cf4 overwrites it
- *   with the chase / home heading, so the name only fits InitResources.
- *   mWanderRerollTimer is s16 in the header and this TU loads it unsigned.
- * - Flags / Flag stay. The bitfield test is lsl/lsrs; `&= ~n` on the u8
- *   member compiles to and, and the ROM has bic.
- * - data_ov084_02130cf8 is the BMD. 02130278[7] is the BCA table.
+ *   DropShadowRadHeight and KillByInvincibleChar take Fix12<int> by
+ *   value. The header calls size-DIFF 0212a6f8, 02129a00, 0212a580,
+ *   02129ed4 and InitResources. The bridges pass those bits as
+ *   scalars and still name the 5Fix12IiE symbols.
+ * - dBgCh_Actr::Init stays mangled. Fix12i is a plain s32, so the
+ *   header method mangles as int.
+ * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer
+ *   are not declared on those classes.
+ * - dBgCh_Actr::GetFloorResult and dCapEnemy_c::UpdateCapPos have no
+ *   header member. UpdateCapPos still needs the unsigned
+ *   Vector3_16_local and the equal-arm ternary so r2 is set up
+ *   before r1.
+ * - dExtFrameCtrl_c::Advance is called on the subobject at +0x3c0.
+ *   mModelAnim.Advance() this-adjusts.
+ * - func_ov084_021290d4 recomputes the chase radius at each store.
+ *   A named temporary DIFFs, and spelling mUnstickTimer on both
+ *   sides of the decrement folds the halfword.
+ * - OnTurnIntoEgg and the reward helper load param1 through a raw
+ *   word. Spelling both sides as the member folds +8.
+ * - mInitAngleY is the spawn heading, but func_ov084_02129cf4
+ *   overwrites it with the chase heading. mWanderRerollTimer is s16
+ *   in the header and this TU loads it unsigned.
+ * - The flag test is lsl/lsrs. `&= ~n` on the u8 compiles to and;
+ *   the ROM has bic.
+ * - data_ov084_02130cf8 is the BMD. 02130278 is the BCA table.
  *   02130ce0/ce8/cf0/cc0/cc8/cd0 are BCA handles (SetAnim reads [1]).
- *   0213089c / 0213088c are BMA. 02130258 / 02130208 / 02130228 /
- *   02130238 / 02130248 / 02130268 / 02130204 / 02130218 are the per-type
- *   tables.
- * - Render keeps a volatile Vector3 backup of the scale (frame slot).
- * - func_ov002_020aea30 takes the receiver, the attacker, and a nullable
- *   collision pointer.
- * - Still unrecovered: what dCcAc_c flag bits 0x4 and 0x20000 mean (they are
- *   set and cleared around hops and knock-aways), what hit bit 0x20000 is,
- *   the king's mState 4 that unk_475 watches, the dEnemyBase_c field unk_104
- *   (values 0 and 5 only are tested here), what sounds 0xd0 / 0xe0 / 0xd6 / 0x110 /
- *   0x111 / 0x118 / 0x13a / 0x13b actually are, what mFlags bits 0x8 and
- *   0x10000000 are used for here, what data_0209f2f8 values 6 and 0x1b mean,
- *   the roles of unk_467 and unk_475, that nothing in this TU enters
- *   STATE_PAUSE (its handler 0212a6f8 is reachable only through the table),
- *   that dCapEnemy_c::GetCapState has no header member, and the names of the BCA / BMA
- *   handles, which are described by when they are selected.
+ *   0213089c / 0213088c are BMA. The 021302xx words are the per-type
+ *   tables. Render keeps a volatile Vector3 backup of the scale.
+ * - What dCcAc_c bits 0x4 and 0x20000 mean, the king's mState 4 that
+ *   unk_475 watches, dEnemyBase_c::unk_104, sounds 0xd0 / 0xe0 /
+ *   0xd6 / 0x110 / 0x111 / 0x118 / 0x13a / 0x13b, mFlags bits 0x8 and
+ *   0x10000000, and data_0209f2f8 values 6 and 0x1b are not named here.
+ *   Nothing in this TU enters STATE_PAUSE except through the table.
+ *   dCapEnemy_c::GetCapState has no header member.
  */
-
 #pragma defer_codegen off
 
 #include "daKrb_c.h"

@@ -19,6 +19,31 @@
  * they are declared as ordinary out-of-line members here; member form is
  * byte-identical under 2004/b56.
  *
+ * State machine (data_ov074_021230f8): func_ov074_021203e4 sets mState and
+ * runs the entry's first handler (enter); Behavior runs the second (tick)
+ * every frame for the main boss (not param1 0x1111) through
+ * func_ov074_0212042c. The roles below are read off the
+ * tick bodies.
+ *   0  intro cutscene and first talk           tick 021201f0
+ *   1  wait for the talk to close, boss music  tick 0212018c
+ *   2  summon a wave of Goombas                enter 0211ffac, tick 0211fd74
+ *   3  walk the arena ring                     enter 0212016c, tick 02120080
+ *   4  player close behind: clip 5, then 3/2   tick 0211ffcc
+ *   5  knocked back by a hit (mSizeIndex--)    enter 0211fd48, tick 0211fc38
+ *   6  shrink one size step                    enter 0211fb84, tick 0211fa74
+ *   7  defeat: talk, vanish wave and shrink,   enter 0211fa08, tick 0211f5b8
+ *      burst, then spawns actor 0x11a (key)
+ *   8  hit by a Mega player, slides to a stop  tick 0211fbd0
+ * States 0, 1 and 4 enter through empty free stubs; state 8's enter is the
+ * empty member 0211fc34.
+ *
+ * The compiler-numbered statics (the PMF descriptors and the static
+ * initializer's registration nodes) are pinned by name in the TU manifest.
+ * mwcc's counter for them advances on every named variable and named
+ * parameter before them (prototypes included) and on some compiler
+ * temporaries, so an edit here must keep that count unchanged or re-pin the
+ * manifest's defined_symbol_renames.
+ *
  * deslop leftovers:
  * - func_ov074_0212087c and func_ov074_02121270 take the object as arg1 (out
  *   param in arg0); func_ov074_02121a4c is reached through a (char*,int,int)
@@ -30,6 +55,15 @@
  * - State dispatch stays a pointer-to-member on a non-virtual stand-in:
  *   daKuriKing_c has virtuals, so its own member pointers are wider than the
  *   8-byte records the sinit copies in.
+ * - pad_2ec holds the three drop-shadow matrices and the body matrix (+0x37c)
+ *   and is reached by cast. The body matrix's reason is the item above; the
+ *   drop-shadow matrices are left untyped with it [GUESS: same ~Vector3 cost].
+ * - The remaining mangled calls that carry Fix12<int> (Particle::System::
+ *   NewSimple, Player::Hurt, ModelAnim::SetAnim, the SetFile/Init family,
+ *   Earthquake, DropShadowRadHeight, cstd::atan2, Sound::ChangeMusicVolume)
+ *   pass it as a raw int. The header form with Fix12<int> locals builds a
+ *   stack temporary and changes size (021223bc goes 0x278 -> 0x288 through
+ *   DropShadowRadHeight).
  */
 
 /* common.h BEFORE daKuriKing_c.h: with the structured Matrix4x3,
@@ -46,8 +80,6 @@
 #include "dCamera_c.h"
 #include "Message.h"
 
-#define AT(p,off) ((void*)(int)((char*)(p)+(off)))
-#define LI(v) ((int)((long long)(v)))
 #define FX(a, b) (int)(((long long)(a) * (long long)(b) + 0x800) >> 12)
 
 /* include/SharedFilePtr.h has no fields; filePtr is the word LoadFile stashes
@@ -104,20 +136,26 @@ extern "C" s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0
 extern "C" s16 data_02082214[];
 extern "C" void func_02012694(u32 a, void* b);
 extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
-extern "C" void _ZN5Sound22StopLoadedMusic_Layer3Ev();
+/* local extern: include/Sound.h does not declare the layer-3 pair yet. */
+namespace Sound {
+void StopLoadedMusic_Layer3();
+void LoadAndSetMusic_Layer3(unsigned int musicId);
+}
 extern "C" void func_02011cfc();
 extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, int f);
-extern "C" int func_01ffa344(int);
+extern "C" int func_01ffa344(int f);
 extern "C" unsigned short data_ov074_02122e04[];
 extern "C" int ApproachAngle(void*,int,int,int,int);
 extern "C" void func_ov084_021296b0(void* a, void* b);
 extern "C" int __aeabi_idiv(int a, int b);
 extern "C" int AngleDiff(int a, int b);
-extern "C" void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int id);
 extern "C" int func_01ffa594(int a, int b);
 extern "C" int func_01ffa4bc(int a);
 extern "C" int func_01ff9378(int a, int b);
-extern "C" int _ZN4cstd4fdivEii(int a, int b);
+/* local extern: no header declares cstd::fdiv (daBgSnmBdy_c spells it the same way). */
+namespace cstd {
+int fdiv(int numerator, int denominator);
+}
 extern "C" int Math_Function_0203b14c(int* p, int a, int b, int d, int e);
 extern "C" unsigned short data_ov074_02122dfc[];
 extern "C" int data_ov074_0212291c[];
@@ -141,8 +179,6 @@ extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern "C" void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, void *v, int f);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
@@ -176,7 +212,7 @@ extern SharedFilePtr *data_ov074_0212292c[];
 extern SharedFilePtr *data_ov074_02122948[];
 
 /* Intra-TU forward decls: calls run both ways across the file. */
-extern "C" void func_ov074_02121270(Vector3* r4, daKuriKing_c* r8, int r7);
+extern "C" void func_ov074_02121270(Vector3* out, daKuriKing_c* self, int bone);
 extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_);
 extern "C" void func_ov074_021203e0(void);
 extern "C" void func_ov074_021201ec(void);
@@ -248,9 +284,9 @@ daKuriKing_c::~daKuriKing_c() {}
 // @symbol _ZN12daKuriKing_c19func_ov074_0211f154Ev
 void daKuriKing_c::func_ov074_0211f154() {
     struct Vector3 look, pos, in, out;
-    void* cam;
-    cam = data_0209f318;
-    ((dCamera_c *)cam)->SetFlag_3();
+    dCamera_c* cam;
+    cam = (dCamera_c *)data_0209f318;
+    cam->SetFlag_3();
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
     look.x = this->mPosX;
@@ -266,8 +302,8 @@ void daKuriKing_c::func_ov074_0211f154() {
     pos.x = pos.x + out.x;
     pos.y = pos.y + 0x300000;
     pos.z = pos.z + out.z;
-    ((dCamera_c *)cam)->SetLookAt(look);
-    ((dCamera_c *)cam)->SetPos(pos);
+    cam->SetLookAt(look);
+    cam->SetPos(pos);
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0211f244Ev
@@ -313,6 +349,14 @@ void daKuriKing_c::func_ov074_0211f344(u8 value) {
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0211f38cEv
+/* Release one KURIKING_VANISH copy (actor 0xc7, param 0x1111, drawn with the
+   ov084 Goomba model) on a timer during the defeat (state 7, substate 2 of
+   0211f5b8), and report whether the whole wave has been released.  This is
+   not state 2's Goomba wave (0211fd74, actor 0xc8).  The wave is built in
+   three tiers: the first seven copies ring the base, the next five sit higher
+   on a narrower ring, the next three higher and narrower still, and the
+   sixteenth onward spawns dead centre, highest of all.  The spawn count needed is a table lookup on mSizeIndex, with one
+   extra on size 1 unless the closest player's param1 reads 3. */
 int daKuriKing_c::func_ov074_0211f38c(){
     struct Vector3 spawnPos, basePos;
     struct Vector3_16 spawnAngle;
@@ -357,7 +401,7 @@ int daKuriKing_c::func_ov074_0211f38c(){
         this->mTimer = 2;
     }
     spawnTarget=data_ov074_02122d80[this->mSizeIndex];
-    player=(Player*)this->ClosestPlayer();
+    player=this->ClosestPlayer();
     if(this->mSizeIndex==1){ if((int)player->param1!=3) spawnTarget+=1; }
     return this->mSpawnedCount>=spawnTarget ? 1 : 0;
 }
@@ -369,7 +413,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
     Vector3 vmsg;
     Player* player;
     s32 state;
-    void* data0209f318;
+    dCamera_c* cam;
 
     vzero.x = 0;
     vzero.y = 0;
@@ -378,7 +422,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
     vmsg.y = this->mPosY;
     vmsg.z = this->mPosZ;
     vmsg.y = vmsg.y + 0x78000;
-    data0209f318 = data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     player = this->mTalkPlayer;
 
     if (this->mModelAnim.Finished() != 0) {
@@ -395,7 +439,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
                 if (state == 1)
                     return;
                 if (state == 2)
-                    goto inc603;
+                    goto nextSubState;
                 return;
             }
             if (player->ShowMessage(*this, (s16)msgId, &vmsg, 1, 2) == 0)
@@ -403,7 +447,7 @@ void daKuriKing_c::func_ov074_0211f5b8()
             func_0201277c(0x15a);
         }
         return;
-    inc603:
+    nextSubState:
         this->mSubState += 1;
         return;
     case 1:
@@ -476,9 +520,9 @@ void daKuriKing_c::func_ov074_0211f5b8()
         func_02012694(0x15f, &this->mCamSpacePosX);
         func_ov074_0211f344(1);
         func_ov074_0211f244();
-        *(s32*)AT(data0209f318, 0x154) &= ~8;
+        cam->mFlags &= ~8;
         Message::EndTalk();
-        _ZN5Sound22StopLoadedMusic_Layer3Ev();
+        Sound::StopLoadedMusic_Layer3();
         func_02011cfc();
         _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x15666);
         this->mNoShadow = 1;
@@ -498,13 +542,6 @@ void daKuriKing_c::func_ov074_0211f5b8()
         return;
     }
 }
-
-/* Release one Goomba on a timer, and report whether the whole wave has been
-   released.  The wave is built in three tiers: the first seven Goombas ring
-   the base, the next five sit higher on a narrower ring, the next three higher
-   and narrower still, and the sixteenth onward spawns dead centre, highest of
-   all.  The spawn count needed is a table lookup on mSizeIndex, with one
-   extra on size 1 unless the closest player's param1 reads 3. */
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0211fa08Ev
 void daKuriKing_c::func_ov074_0211fa08(){
@@ -587,7 +624,7 @@ void daKuriKing_c::func_ov074_0211fc38()
     if (this->mModelAnim.Finished() == 0) return;
     if (this->mSizeIndex != 0) goto detox;
     {
-        Player* player = (Player*)this->ClosestPlayer();
+        Player* player = this->ClosestPlayer();
         if (player->StartTalk(*this, 1) == 0) return;
         Message::PrepareTalk();
         if (func_ov074_02121a20(1) != 0 || func_ov074_02121a20(2) != 0) {
@@ -633,7 +670,7 @@ void daKuriKing_c::func_ov074_0211fd74()
 
 L90:;
     int spawnTarget = data_ov074_02122d80[this->mSizeIndex];
-    Player* pl = (Player*)this->ClosestPlayer();
+    Player* pl = this->ClosestPlayer();
     if (this->mSizeIndex == 1 && (int)pl->param1 != 3) spawnTarget = spawnTarget + 1;
 
     if (this->mModelAnim.Finished() == 0) return;
@@ -661,13 +698,13 @@ L90:;
     v2.z = this->mSpawnPosZ;
     func_ov084_021296b0(sp2, &v2);
 
-    *(u8*)((char*)sp2 + 0x474) = this->mSpawnedCount;
+    sp2->mMinionIndex = this->mSpawnedCount;
     /* Same pool-address increment as mSubState: 0x602 is not an ARM immediate. */
-    u8* p602 = (u8*)(((int)&this->mSpawnedCount));
-    *p602 = (u8)(*p602 + 1);
+    u8* spawnedCount = (u8*)(((int)&this->mSpawnedCount));
+    *spawnedCount = (u8)(*spawnedCount + 1);
     this->mTimer = 2;
 
-    Player* pl2 = (Player*)this->ClosestPlayer();
+    Player* pl2 = this->ClosestPlayer();
     int dv = 3;
     if ((int)pl2->param1 != 3) {
         if (this->mSizeIndex == 1) dv = 5;
@@ -691,10 +728,10 @@ void daKuriKing_c::func_ov074_0211ffcc() {
     func_ov074_02121a4c((char*)this, 5);
     return;
   }
-  if (((dActor_c *)((char*)this))->DistToCPlayer() >= 0x4b0000) {
+  if (this->DistToCPlayer() >= 0x4b0000) {
     func_ov074_021203e4(3);
   } else {
-    if (AngleDiff(((dActor_c *)((char*)this))->HorzAngleToCPlayer(), this->mAngleY) < 0x3000) {
+    if (AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) < 0x3000) {
       func_ov074_021203e4(3);
       return;
     }
@@ -721,8 +758,8 @@ void daKuriKing_c::func_ov074_02120080(){
   }
   ApproachAngle(&this->mWalkSpeed, this->mMaxWalkSpeed, 0xa, 0x20, 1);
   func_ov074_021216f4();
-  if(((dActor_c *)((char*)this))->DistToCPlayer() >= 0x4b0000) return;
-  if(AngleDiff(((dActor_c *)((char*)this))->HorzAngleToCPlayer(), this->mAngleY) <= 0x4000) return;
+  if(this->DistToCPlayer() >= 0x4b0000) return;
+  if(AngleDiff(this->HorzAngleToCPlayer(), this->mAngleY) <= 0x4000) return;
   func_ov074_021203e4(4);
 }
 
@@ -734,13 +771,12 @@ void daKuriKing_c::func_ov074_0212016c() {
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0212018cEv
 extern "C" void func_02011d20(void);
-extern "C" char *data_0209f318;
 void daKuriKing_c::func_ov074_0212018c()
 {
-    if (((Player *)this->mTalkPlayer)->GetTalkState() != -1)
+    if (this->mTalkPlayer->GetTalkState() != -1)
         return;
-    (*(int *)(((int)data_0209f318 + 0x154))) &= ~8;
-    _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+    ((dCamera_c *)data_0209f318)->mFlags &= ~8;
+    Sound::LoadAndSetMusic_Layer3(0x2d);
     func_02011d20();
     Message::EndTalk();
     func_ov074_021203e4(2);
@@ -752,7 +788,7 @@ extern "C" void func_ov074_021201ec(void)
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_021201f0Ev
-/* daKuriKing_c (daKuriKing_c) state-0 tick -- the intro cutscene.
+/* daKuriKing_c state-0 tick -- the intro cutscene.
  *
  * Frames the boss for the opening conversation: pins the camera to a fixed
  * look-at/eye pair derived from the boss position, turns the closest player
@@ -777,12 +813,12 @@ void daKuriKing_c::func_ov074_021201f0() {
     struct Vector3 look, pos;
     struct Vector3 msgpos[2];
     Player* player;
-    void* cam;
+    dCamera_c* cam;
     short msg;
 
-    player = (Player*)this->ClosestPlayer();
-    cam = data_0209f318;
-    ((dCamera_c *)cam)->SetFlag_3();
+    player = this->ClosestPlayer();
+    cam = (dCamera_c *)data_0209f318;
+    cam->SetFlag_3();
 
     look.x = this->mPosX;
     look.y = this->mPosY;
@@ -796,8 +832,8 @@ void daKuriKing_c::func_ov074_021201f0() {
     pos.x -= 0x2f0000;
     pos.y += 0x20000;
     pos.z += 0x254000;
-    ((dCamera_c *)cam)->SetLookAt(look);
-    ((dCamera_c *)cam)->SetPos(pos);
+    cam->SetLookAt(look);
+    cam->SetPos(pos);
 
     ang = *(struct Ang16*)&this->mAngleX;
     ang.v[1] += 0x7fff;
@@ -821,7 +857,7 @@ void daKuriKing_c::func_ov074_021201f0() {
     if (player->StartTalk(*this, 1) == 0) return;
     Message::PrepareTalk();
     if (this->mMusicStarted == 0) {
-        _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2c);
+        Sound::LoadAndSetMusic_Layer3(0x2c);
         this->mMusicStarted = 1;
     }
     msg = (unsigned short)((int)player->param1 + 0xd3);
@@ -865,17 +901,17 @@ int daKuriKing_c::func_ov074_02120474() {
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_021204c0Ev
-/* daKuriKing_c (daKuriKing_c) shrink/grow interpolation tick.
+/* daKuriKing_c shrink/grow interpolation tick.
  *
- * Reached from func_ov074_0211f860 and func_ov074_0211fb44. Picks a pair of
+ * Called from func_ov074_0211f5b8 and func_ov074_0211fa74. Picks a pair of
  * float sizes out of data_ov074_02122e4c (12288.0f, 9557.0f, 6826.0f,
  * 4096.0f -- Fix12 scales stored as IEEE singles), divides their difference
  * by the remaining step count in mScaleSteps, and steps mTargetScale toward
  * the next one. Math_Function_0203b14c eases mCurrentScale toward that target;
- * while it is still moving, the scale triple is driven from a sin/cos pair
- * out of data_02082214 indexed by mScalePhase, which advances 0x1230 per
- * frame. Every step below the last also spits a 0xb1 particle a fixed Fix12
- * offset above the boss.
+ * unless the last step has just finished, the scale triple then gets a
+ * wobble from a sin/cos pair out of data_02082214 indexed by mScalePhase,
+ * which advances 0x1230 per frame. In state 6, each finished step except
+ * the last also spits particle 0xb1 at 400.0 * mCurrentScale above the boss.
  *
  * The float arithmetic goes through the ITCM soft-float block by hand, the
  * way the rest of this tree calls it: func_01ffa594 (single add/sub),
@@ -898,7 +934,7 @@ int daKuriKing_c::func_ov074_021204c0() {
 
     this->mTargetScale = func_01ffa344(func_01ff9378(
         (int)data_ov074_02122e4c[this->mSizeIndex + 1],
-        func_01ffa4bc(_ZN4cstd4fdivEii(
+        func_01ffa4bc(cstd::fdiv(
             func_01ffa344(func_01ffa594((int)data_ov074_02122e4c[this->mSizeIndex],
                                         (int)data_ov074_02122e4c[this->mSizeIndex + 1])),
             this->mScaleSteps << 12))));
@@ -975,7 +1011,7 @@ int daKuriKing_c::func_ov074_021207b8()
 void daKuriKing_c::func_ov074_02120808()
 {
     int ang = (short)(this->mWalkAngle + this->mDirection * 0x4500);
-    if (AngleDiff(ang, ((dActor_c *)((char*)this))->HorzAngleToCPlayer()) <= 0x4000)
+    if (AngleDiff(ang, this->HorzAngleToCPlayer()) <= 0x4000)
         return;
     func_ov074_02121a4c((char*)this, 6);
     this->mDirection *= -1;
@@ -986,13 +1022,13 @@ extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
 {
     int n;
 
-    n = LI(n_);
+    n = n_;
 
     out[0] = self->mPosX;
     out[1] = self->mPosY;
     out[2] = self->mPosZ;
 
-    if (*(int*)((char *)self->ClosestPlayer() + 8) == 3) {
+    if ((int)self->ClosestPlayer()->param1 == 3) {
         int rem;
         int quo;
         int scale;
@@ -1004,7 +1040,7 @@ extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
         u8 mode;
 
         rem = n % 3;
-        quo = LI(n) / 3;
+        quo = n / 3;
         mode = self->mSizeIndex;
         if (mode == 3) {
             scale = 0x546000;
@@ -1021,7 +1057,7 @@ extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
         idx = ((u16)(s16)diff >> 4) * 2;
 
         out[0] = (int)(((s64)scale * data_02082214[idx] + 0x800) >> 12);
-        *(int*)AT(out, 4) += 0x32000;
+        out[1] += 0x32000;
         out[2] = (int)(((s64)scale * data_02082214[idx + 1] + 0x800) >> 12);
     } else {
         int lim;
@@ -1060,7 +1096,7 @@ extern "C" void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
         idx2 = ((u16)(s16)diff2 >> 4) * 2;
 
         out[0] = (int)(((s64)scale2 * data_02082214[idx2] + 0x800) >> 12);
-        *(int*)AT(out, 4) += 0x32000;
+        out[1] += 0x32000;
         out[2] = (int)(((s64)scale2 * data_02082214[idx2 + 1] + 0x800) >> 12);
     }
 }
@@ -1073,7 +1109,7 @@ int daKuriKing_c::func_ov074_02120b24()
     int r;
     if (num < 0) num = -num;
     den = data_ov074_0212291c[this->mSizeIndex] + (data_ov074_02122dfc[3] << 12) + 1;
-    r = _ZN4cstd4fdivEii(num, den);
+    r = cstd::fdiv(num, den);
     if (r < 0x1000) return 0x1000;
     if (r > 0x3000) return 0x3000;
     return r;
@@ -1194,7 +1230,7 @@ void daKuriKing_c::func_ov074_02120d74()
                 if (!(flags & 0x26fe0) && *(u8 *)&pl->mIsTakingDamage == 0) {
                     if (cur == &this->mdCc_cs[2]) {
                         if (this->mWalkSpeed != 0) {
-                            ((Player *)((char *)pl))->Unk_020c6a10(2);
+                            pl->Unk_020c6a10(2);
                             this->mHurtTimer = 0x1e;
                         } else {
                             v1.x = this->mPosX;
@@ -1204,7 +1240,7 @@ void daKuriKing_c::func_ov074_02120d74()
                         }
                     } else if (cur == &this->mdCc_cs[3]) {
                         if (this->mWalkSpeed != 0) {
-                            ((Player *)((char *)pl))->Unk_020c6a10(2);
+                            pl->Unk_020c6a10(2);
                             this->mHurtTimer = 0x1e;
                         } else {
                             v2.x = this->mPosX;
@@ -1250,7 +1286,7 @@ void daKuriKing_c::func_ov074_02120d74()
                                     v0.x = (int)(((long long)data_02082214[k * 2] * 0x546000LL + 0x800) >> 12);
                                     v0.y += 0x32000;
                                     v0.z = (int)(((long long)data_02082214[k * 2 + 1] * 0x546000LL + 0x800) >> 12);
-                                    this->mMegaMushroomID = ((fBase_c *)dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1))->uniqueID;
+                                    this->mMegaMushroomID = dActor_c::Spawn(0x115, 0, v0, 0, this->mAreaId, -1)->uniqueID;
                                 }
                             }
                         }
@@ -1284,19 +1320,22 @@ void daKuriKing_c::func_ov074_02120d74()
 }
 
 // @symbol func_ov074_02121270
-extern "C" void func_ov074_02121270(Vector3* r4v, daKuriKing_c* r8, int r7){
-  char* r4 = (char*)r4v;
-  char* dst;
-  *(int*)r4 = 0;
-  *(int*)(r4 + 4) = 0;
-  *(int*)(r4 + 8) = 0;
-  data_020a0e68 = *(struct Matrix4x3*)((char*)r8 + 0x37c);
-  dst = (char*)r8->mModelAnim.data.transforms + r7 * 0x30;
-  MulMat4x3Mat4x3(dst, &data_020a0e68, &data_020a0e68);
-  *(int*)r4 = *(int*)((char*)&data_020a0e68 + 0x24);
-  *(int*)(r4 + 4) = *(int*)((char*)&data_020a0e68 + 0x28);
-  *(int*)(r4 + 8) = *(int*)((char*)&data_020a0e68 + 0x2c);
-  Vec3_LslInPlace(r4, 3);
+/* World position of model bone `bone`: that bone's transform composed with
+ * the body matrix at +0x37c, translation row out, shifted back up from model
+ * space (<< 3). */
+extern "C" void func_ov074_02121270(Vector3* out, daKuriKing_c* self, int bone){
+  Vector3* v = out;
+  Matrix4x3* boneMat;
+  v->x = 0;
+  v->y = 0;
+  v->z = 0;
+  data_020a0e68 = *(struct Matrix4x3*)((char*)self + 0x37c);
+  boneMat = (Matrix4x3*)self->mModelAnim.data.transforms + bone;
+  MulMat4x3Mat4x3(boneMat, &data_020a0e68, &data_020a0e68);
+  v->x = data_020a0e68.m[9];
+  v->y = data_020a0e68.m[10];
+  v->z = data_020a0e68.m[11];
+  Vec3_LslInPlace(v, 3);
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_02121300Ev
@@ -1342,6 +1381,8 @@ void daKuriKing_c::func_ov074_02121380() {
     yoff[0] = FX(this->mScaleY, 0x14000);
     rad[0] = FX(this->mScaleX, 0xb4000);
     hgt[0] = FX(this->mScaleY, 0x104000);
+    /* q walks mCylClsnPos[i] (+0x3ac) with the member offset left in each
+     * load, the same walk func_ov074_02121800 keeps. */
     q = (char*)this;
     for (i = 0; i < 3; i++) {
         int ax, ay, az;
@@ -1426,66 +1467,74 @@ int daKuriKing_c::func_ov074_021216f4()
 void daKuriKing_c::func_ov074_02121800()
 {
     Matrix4x3 mtx;
-    int i, sl, fp, r1_310, r2_314, r3_318;
-    char *self, *src, *m, *sm;
+    int i, height, rad, footX, posY, radius; /* footX is never used: it keeps the @NNN count */
+    char *self, *src, *m;
+    dExtShadowModel_c *shadow;
 
     if (this->mNoShadow != 0)
         return;
 
+    /* pad_2ec holds the three shadow matrices (0x2ec + 0x30 * i); the
+     * translation row is +0x24. self and src walk the matrices and
+     * mCylClsnPos with the member offset left in each load: typed
+     * pointers or indexing re-base them and the loop changes. */
     mtx = IDENTITY_MATRIX4X3;
     self = (char *)this;
     src = (char *)this;
-    m = (char *)this + 0x2ec;
-    sm = (char *)this + 0x274;
+    m = (char *)pad_2ec;
+    shadow = mShadowModels;
     for (i = 0; i < 3; i++) {
-        sl = this->mPosY - this->mSpawnPosY;
-        if (sl <= 0x1000)
-            sl = 0x1000;
-        fp = (*(int *)((char *)this + 0x40 * (i + 1) + 0x114) << 1)
-             - (int)(((s64)sl * 0x180 + 0x800) >> 12);
-        if (fp < 0xa000)
-            fp = 0xa000;
-        r3_318 = fp;
+        height = this->mPosY - this->mSpawnPosY;
+        if (height <= 0x1000)
+            height = 0x1000;
+        rad = (this->mdCc_cs[i + 1].radius << 1)
+             - (int)(((s64)height * 0x180 + 0x800) >> 12);
+        if (rad < 0xa000)
+            rad = 0xa000;
+        radius = rad;
         *(Matrix4x3 *)(self + 0x2ec) = mtx;
-        *(int *)(self + 0x310) = (r1_310 = *(int *)(src + 0x3ac) >> 3);
-        r2_314 = this->mPosY;
-        *(int *)(self + 0x314) = (r3_318 ? r2_314 : r2_314) >> 3;
-        fp = *(int *)(src + 0x3b4);
-        sl += 0x28000;
-        *(int *)(self + 0x318) = fp >> 3;
+        *(int *)(self + 0x310) = *(int *)(src + 0x3ac) >> 3;
+        posY = this->mPosY;
+        /* Both arms are the same; the select is never needed for codegen,
+           but its compiler temporaries keep the @2113.. pins (dropping it
+           renumbers by 4). */
+        *(int *)(self + 0x314) = (radius ? posY : posY) >> 3;
+        height += 0x28000;
+        *(int *)(self + 0x318) = *(int *)(src + 0x3b4) >> 3;
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-            this, sm, m, r3_318, sl, 0xf);
+            this, shadow, m, radius, height, 0xf);
         self += 0x30;
         src += 0xc;
         m += 0x30;
-        sm += 0x28;
+        shadow++;
     }
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0212195cEv
-/* Fills the model matrix at +0x22c from mAngleY and the position. */
+/* Fills the model matrix from mAngleY and the position (model space is
+ * world >> 3). */
 void daKuriKing_c::func_ov074_0212195c()
 {
-    Matrix4x3_FromRotationY((char *)this + 0x22c, this->mAngleY);
-    *(int *)((char *)this + 0x250) = this->mPosX >> 3;
-    *(int *)((char *)this + 0x254) = this->mPosY >> 3;
-    *(int *)((char *)this + 0x258) = this->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
+    mModelAnim.mat4x3.m[9] = mPosX >> 3;
+    mModelAnim.mat4x3.m[10] = mPosY >> 3;
+    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0212199cEv
 void daKuriKing_c::func_ov074_0212199c()
 {
     if (func_ov074_02121a20(8)) {
-        *(int *)((char *)this + 0x26c) = func_ov074_02120b24();
+        mModelAnim.speed = func_ov074_02120b24();
     } else if (func_ov074_02121a20(0xb)) {
-        if (((*(unsigned int *)((char *)this + 0x268) << 4) >> 0x10) == 8) {
-            func_02012694(0x15d, (char *)this + 0x74);
+        if ((((unsigned int)mModelAnim.currFrame << 4) >> 0x10) == 8) {
+            func_02012694(0x15d, &mCamSpacePosX);
         }
     } else {
-        *(int *)((char *)this + 0x26c) = 0x1000;
+        mModelAnim.speed = 0x1000;
     }
-    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)this + 0x260);
-    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)this + 0x3f8);
+    mModelAnim.Advance();
+    mTextureTransformer.Advance();
 }
 
 /* The animation table behind data_ov074_02122f34: one record per clip --
@@ -1508,11 +1557,11 @@ int daKuriKing_c::func_ov074_02121a20(int idx)
 extern "C" void func_ov074_02121a4c(char* c, int idx)
 {
     int off = idx * 0xc;
-    void* file1 = *(void**)(*(char**)((char*)data_ov074_02122f34 + off) + 4);
+    void* file1 = data_ov074_02122f34[idx].anim->filePtr;
     int arg2 = *(int*)(data_ov074_02122f3c + off);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x210, file1, arg2, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&((daKuriKing_c *)c)->mModelAnim, file1, arg2, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
-        c + 0x3f8, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
+        &((daKuriKing_c *)c)->mTextureTransformer, *(void**)(data_ov074_02122f38 + off), 0, 0x1000, 0);
 }
 
 // @symbol _ZN12daKuriKing_c16CleanupResourcesEv
@@ -1562,6 +1611,9 @@ int daKuriKing_c::Behavior()
     u = ((s64)t * 0x546000 + 0x800) >> 12;
     mGoombaTargetSpeed = u < 0 ? -u : u;
 
+    /* Camera word +0x114 (still padding in dCamera_c.h) gets the boss every
+       frame for the main boss (not param1 0x1111) except in state 7
+       (defeat). */
     if (mState != 7) {
         *(void **)(data_0209f318 + 0x114) = this;
     }
@@ -1785,7 +1837,7 @@ int daKuriKing_c::func_ov074_021222e0()
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x6400, 0);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, -0x6400, 0);
-    *(Matrix4x3 *)((char *)this + 0x22c) = data_020a0e68;
+    this->mModelAnim.mat4x3 = data_020a0e68;
 
     if (this->mShouldRender == 0) return 1;
 
@@ -1861,14 +1913,15 @@ int daKuriKing_c::func_ov074_021223bc()
         this->mAngleX += 0x1800;
     }
 
-    *(Matrix4x3 *)((char *)this + 0x2ec) = IDENTITY_MATRIX4X3;
+    /* One drop shadow, through the first shadow matrix in pad_2ec. */
+    *(Matrix4x3 *)pad_2ec = IDENTITY_MATRIX4X3;
 
-    *(int *)((char *)this + 0x310) = this->mPosX >> 3;
-    *(int *)((char *)this + 0x314) = this->mPosY >> 3;
-    *(int *)((char *)this + 0x318) = this->mPosZ >> 3;
+    ((Matrix4x3 *)pad_2ec)->m[9] = this->mPosX >> 3;
+    ((Matrix4x3 *)pad_2ec)->m[10] = this->mPosY >> 3;
+    ((Matrix4x3 *)pad_2ec)->m[11] = this->mPosZ >> 3;
 
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
-        this, (char *)this + 0x274, (char *)this + 0x2ec, 0x8c000, 0x3e8000, 0xf);
+        this, &this->mShadowModels[0], pad_2ec, 0x8c000, 0x3e8000, 0xf);
 
     return 1;
 }

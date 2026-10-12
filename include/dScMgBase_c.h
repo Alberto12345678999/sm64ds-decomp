@@ -82,7 +82,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
 
            The address goes to r1 because r0 still held the call's result, not
            because r0 was reserved for a return value, and the trailing
-           `mov r0,#0` is the constant being stored to unk_51c8.  A `return 0;`
+           `mov r0,#0` is the constant being stored to mPhase.  A `return 0;`
            written after it costs nothing, so Coin is byte-identical under
            BOTH spellings and pins neither.
 

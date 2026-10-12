@@ -544,6 +544,7 @@ struct Player : dActor_c {
     int St_Climb_Main();
     int St_Crawl_Init();
     int St_Crawl_Main();
+    int St_CrazedCrate_Cleanup();
     int St_CrazedCrate_Init();
     int St_CrazedCrate_Main();
     int St_Crouch_Init();

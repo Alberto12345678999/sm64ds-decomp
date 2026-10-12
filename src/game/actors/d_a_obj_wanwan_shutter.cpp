@@ -1,12 +1,16 @@
 //cpp
-/* Bob-omb Battlefield Chain Chomp fence -- the barred gate the chomp is
- * tethered in front of. ov014/daObjWanwanShutter_c, profile WANWAN_SHUTTER
- * (CHAIN_CHOMP_FENCE 41). This is the fence, not the chomp (daWanwan_c).
+/* leftovers:
+ * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange and
+ *   Particle::System::NewSimple stay mangled. Each takes Fix12<int>
+ *   by value.
+ * - The model and collision handles are local SharedFilePtr
+ *   subclasses. The manifest aliases them to the ROM symbols.
+ * - The destructor stays inline in the header.
+ * - dBgActor_c.h is included first so common.h wins over Model.h.
  *
- * Order is load-bearing: source runs REVERSE of ROM (highest address
- * first). Do not reorder. The destructor stays inline in the header.
+ * daObjWanwanShutter_c, the Bob-omb Battlefield Chain Chomp fence
+ * (WANWAN_SHUTTER). This is the fence, not the chomp.
  */
-
 /* daObjWanwanShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach
    common.h ahead of Model.h or the wrong Matrix4x3 spelling wins. */
 #include "daObjWanwanShutter_c.h"

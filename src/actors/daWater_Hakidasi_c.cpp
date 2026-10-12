@@ -16,7 +16,7 @@
  * the same pragma lays .text down in source order, so this file is
  * ROM-ascending.
  *
- * Known limits:
+ * leftovers:
  * - func_ov064_0211982c keeps its C-ABI cartridge name and TU-local C/PMF
  *   view: it reads the state-table slot at +0x350, while Behavior reads
  *   the handler at +0x08 through State::mMain. Same survivor as daPropeller_Heyho_Fire_c's

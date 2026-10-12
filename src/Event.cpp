@@ -5,6 +5,8 @@
  *
  * `#pragma defer_codegen off` makes mwccarm emit .text in source order, which
  * is the ROM's order here. Do not reorder.
+ *
+ * leftovers: none.
  */
 #include "Event.h"
 

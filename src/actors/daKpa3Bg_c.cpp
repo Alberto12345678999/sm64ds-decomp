@@ -1,41 +1,50 @@
 //cpp
-/* daKpa3Bg_c -- KOOPA3BG, a dBgActor_c in ov060. The class name is the ROM's
- * own RTTI spelling (evidence in include/daKpa3Bg_c.h). The tree used to call
- * it BowserSkyPlatform.
+/* daKpa3Bg_c -- Bowser's sky platform (KOOPA3BG, ov060).
  *
- * ROM span 0x02117d1c..0x02118438: D1, D0, three helpers, CleanupResources,
- * Render, Behavior, InitResources, the mesh-collider callback
- * func_ov060_021183cc and its veneer func_ov060_021183f4, then the registry
- * factory daKpa3Bg_c_classInit. Source order is the reverse of the ROM. The destructor is under `#pragma opt_propagation on`
- * and `#pragma defer_codegen off`, so it is emitted as it is parsed (D1, D0,
- * then a D2 the cartridge has no home for) before the deferred functions.
- * `#pragma opt_propagation off` is last in the file: deferred codegen uses that
- * setting, which is what func_ov060_02117db8 matched under. Do not move it.
+ * _ZTS10daKpa3Bg_c at ov060 0x0211a954, _ZTI at 0x0211a948 (base
+ * _ZTI10dBgActor_c), _ZTV at 0x0211a9b0. The tree used to call this
+ * class BowserSkyPlatform. Text is 0x02117d1c..0x02118438. The
+ * destructor is under opt_propagation on and defer_codegen off, so it
+ * emits D1, D0, then a D2 the cartridge does not keep, ahead of the
+ * deferred functions. opt_propagation off stays last: deferred codegen
+ * of func_ov060_02117db8 uses that setting. Do not move it.
  *
- * Behavior dispatches data_ov060_0211b1ac[mState] as pointer-to-member
- * records (a function address and a zero adjustment, copied by sinit from
- * ov060 0x0211a930/938/940). The helpers are declared members so &daKpa3Bg_c::
- * func_ov060_... is a real PMF constant, but defined as free functions under
- * their literal mangled spellings: func_ov060_02117db8's body only matches
- * under `#pragma cplusplus off`, which has no member syntax.
+ * Behavior runs data_ov060_0211b1ac[mState]: 0 finds Bowser, 1 watches
+ * him, 2 drops the platform. The three handlers are declared in the
+ * header so the table's pointer-to-member constants are real.
+ * func_ov060_021180e0 is defined as a member; the other two are free
+ * functions under the members' mangled names.
  *
- * Leftover:
- * - The three helpers keep their ROM-address names.
- * - func_ov060_021180e0 reads three bytes of the daKpa actor that daKpa_c.h
- *   does not name: the word at +0x410, the word at +0x418 (tested against
- *   0x10000) and the signed byte at +0x41e. mState at +0x40c is the real field.
- * - func_ov060_02117db8 still calls Earthquake and PoofDustAt through their
- *   mangled names. Earthquake is not declared on dActor_c.h. It also calls
- *   func_02012694(0xbc) at the saved camera-space position; that symbol has
- *   no recovered name here.
- * - dBgW_KcMbg::SetFile stays a mangled bridge (Fix12 by value).
- * - func_020393d4 / func_020393c4 stay address-taking calls. The first stores
- *   dBgW::UpdatePosWithTransform; the second stores func_ov060_021183f4.
- * - data_ov060_02119564 / 02119568 / 0211956c are one 0xc-stride table split
- *   into three symbols (x, z, angle). Each reference stays, so the
- *   relocations keep their destinations.
- * - What mState values 1 and 2 mean, beyond which helper the table calls, is
- *   not recovered. Neither is variant's model pair, nor daKpa mState 0xd / 3.
+ * __sinit at the end of this file emits compiler-numbered statics; they
+ * compile as @495..@520 and the manifest maps them to the ROM's
+ * @456..@479 and @506. mwcc's counter for those names advances for
+ * named variables, named parameters (prototypes included) and some
+ * compiler temporaries declared before them (`new daKpa3Bg_c` alone
+ * advances it by 25), so adding or deleting one renumbers them. These
+ * names are there for the count:
+ * - the local-extern prototype of func_ov060_021181b4 names its
+ *   parameter c. Making the function a member drops that name; the
+ *   bytes stay the same, and one extra named local restores the count.
+ * - InitResources loads the model through the named local bmd.
+ * - func_ov060_021180e0 steps its timer through two named locals.
+ * - func_ov060_02117db8 keeps live, p and py (never read) and steps
+ *   mVertSpeed/mPosY through the speed/posY pointers.
+ *
+ * leftovers:
+ * - The three handlers keep their address names.
+ * - func_ov060_02117db8 parses as C (cplusplus off): the same body as
+ *   C++ DIFFs. It reaches the members through a struct daKpa3Bg_c *.
+ *   dActor_c::Earthquake, PoofDustAt and fBase_c::MarkForDestruction
+ *   stay mangled because the body is C (Earthquake also takes
+ *   Fix12<int> and is not on dActor_c.h). func_02012694 plays bank-3 sound
+ *   0xbc at a point written into mCamSpacePos, restored afterwards.
+ * - dBgW_KcMbg::SetFile is called through its mangled name, with the
+ *   Fix12<int> argument passed as a raw int.
+ * - func_020393d4 stores dBgW::UpdatePosWithTransform.
+ *   func_020393c4 stores the touch veneer func_ov060_021183f4.
+ * - data_ov060_02119564 / 02119568 / 0211956c are one 0xc-byte stride
+ *   (x, z, angle) split into three symbols so each relocation keeps
+ *   its destination.
  */
 
 #include "common.h"
@@ -73,15 +82,12 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, KCL_File *f, const Matrix4x3 &m, int fix, short sh, CLPS_Block &b);
 void func_020393d4(void *p, void *v);
 void func_020393c4(void *p, void *v);
-void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 void func_ov060_021183f4(void *collider, daKpa3Bg_c *self, dActor_c *other);
 void func_ov060_021183cc(daKpa3Bg_c *self, dActor_c *other);
 
 // local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
-void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self);
-// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
-void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char *c);
-// local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
+void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(daKpa3Bg_c *self);
+// local extern: defined below as a free function; this prototype's named c counts toward the @NNN statics (see the banner). The header declares the member spelling for the PMF table.
 int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c);
 
 }
@@ -108,26 +114,13 @@ struct Kpa3BgCollisionFilePtr : SharedFilePtr {
     ~Kpa3BgCollisionFilePtr();
 };
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- daKpa3Bg_c_classInit, 0x02118408, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol daKpa3Bg_c_classInit
-/* Reconstructed source-style name: SM64DS proves daKpa3Bg_c through RTTI,
- * allocation size, vtable identity, and the KOOPA3BG registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: BowserSkyPlatform_Spawn.
- *
- * `new daKpa3Bg_c` is the whole sequence the loose factory spelled by hand:
- * fBase_c::operator new(0x32c), dBgActor_c's base constructor and the vptr
- * store (the class adds no member with a constructor). */
+/* Historical alias BowserSkyPlatform_Spawn. */
 extern "C" daKpa3Bg_c *daKpa3Bg_c_classInit(void)
 {
     return new daKpa3Bg_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov060_021183f4, 0x021183f4, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021183f4
 /* dBgW callback veneer, armed by func_020393c4 in InitResources. Drops the
    collider and forwards the platform and the touching actor into
@@ -137,9 +130,6 @@ extern "C" void func_ov060_021183f4(void *collider, daKpa3Bg_c *self, dActor_c *
     func_ov060_021183cc(self, other);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov060_021183cc, 0x021183cc, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021183cc
 /* Flags the platform when the actor that touched it is Bowser
    (actor ID 0x117); Behavior clears the flag every frame. The comparison
@@ -151,16 +141,14 @@ extern "C" void func_ov060_021183cc(daKpa3Bg_c *self, dActor_c *other)
         self->mTouchedKoopa = 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN10daKpa3Bg_c13InitResourcesEv, 0x021182b0, size 0x11c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c13InitResourcesEv
 s32 daKpa3Bg_c::InitResources()
 {
     mVariant = (u8)(param1 & 0xf);
     data_0208e738 = 0;
-    mModel.SetFile(
-        (BMD_File *)Model::LoadFile(*data_ov060_02119514[mVariant]), 1, -1);
+    /* bmd is named for the @NNN count (see the banner). */
+    BMD_File *bmd = (BMD_File *)Model::LoadFile(*data_ov060_02119514[mVariant]);
+    mModel.SetFile(bmd, 1, -1);
     CopyTexPalFromLevelModel(&mModel.data);
     data_0208e738 = 1;
     UpdateClsnPosAndRot();
@@ -170,7 +158,7 @@ s32 daKpa3Bg_c::InitResources()
         mClsnMat, 0x1000, mAngleY,
         *data_ov060_0211a980[mVariant]);
     func_020393d4(&mMeshCollider,
-                  (void *)&_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);
+                  (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, (void *)&func_ov060_021183f4);
     mMeshCollider.Enable(this);
     mKoopaUniqueId = 0;
@@ -184,9 +172,6 @@ s32 daKpa3Bg_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN10daKpa3Bg_c8BehaviorEv, 0x02118254, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c8BehaviorEv
 s32 daKpa3Bg_c::Behavior()
 {
@@ -197,9 +182,6 @@ s32 daKpa3Bg_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN10daKpa3Bg_c6RenderEv, 0x0211822c, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c6RenderEv
 s32 daKpa3Bg_c::Render()
 {
@@ -207,9 +189,6 @@ s32 daKpa3Bg_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN10daKpa3Bg_c16CleanupResourcesEv, 0x021181e8, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c16CleanupResourcesEv
 s32 daKpa3Bg_c::CleanupResources()
 {
@@ -219,11 +198,9 @@ s32 daKpa3Bg_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov060_021181b4, 0x021181b4, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021181b4Ev
-/* Finds the daKpa actor (id 0x117) and remembers its uniqueID. */
+/* mState 0: finds the daKpa actor (id 0x117), remembers its uniqueID and
+   moves to mState 1. Retries every frame until Bowser exists. */
 extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
 {
     daKpa3Bg_c *bg = (daKpa3Bg_c *)c;
@@ -236,106 +213,111 @@ extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
     return (int)koopa;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov060_021180e0, 0x021180e0, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021180e0Ev
-/* Leftover: naming mKoopaUniqueId / mTimer / mState here changed 7 words
-   (measured). The body stays the offset form that matches. */
-extern "C" {
-void* _ZN8dActor_c10FindWithIDEj(unsigned int);
-void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char* c){
-  char* a;
-  a=(char*)_ZN8dActor_c10FindWithIDEj(*(unsigned int*)(c+0x320));
-  if(a==0){ ((fBase_c*)c)->MarkForDestruction(); return; }
-  if(*(unsigned char*)(c+0x32b)!=0 && *(int*)(a+0x40c)==0xd){
-    if((*(int*)(a+0x418)&0x10000)!=0) *(unsigned char*)(c+0x328)=2;
-  }
-  if(*(signed char*)(a+0x41e)==1){
-    if(*(int*)(a+0x40c)==3 || *(int*)(a+0x410)!=0){
-      *(unsigned char*)(c+0x32a)=1;
+/* mState 1. Destroys the platform once Bowser is gone. Drops it at once
+   (mState 2) if Bowser touched it this frame in state 0xd with condition
+   bit 0x10000 set (BOWSER_STATE_JUMP and BOWSER_COND_RECOVERING in
+   daKpa_c.cpp). On his last hit point, in state 3 or while held or being released
+   (mHoldState != 0), mActive latches; from then on mTimer counts each frame and the
+   platform drops once it passes mVariant * 20.
+   koopa+0x40c/0x410/0x418/0x41e are daKpa_c's mState, mHoldState,
+   mCondFlags and mHealth. Including daKpa_c.h keeps the bytes but
+   renumbers the @NNN statics the manifest pins. */
+void daKpa3Bg_c::func_ov060_021180e0()
+{
+    char *koopa = (char *)dActor_c::FindWithID(mKoopaUniqueId);
+    if (koopa == 0) {
+        MarkForDestruction();
+        return;
     }
-  }
-  if(*(unsigned char*)(c+0x32a)==0){
-    *(short*)(c+0x324)=0;
-    return;
-  }
-  {
-    int idx=*(unsigned char*)(c+0x329)*0x14;
-    unsigned short* p=(unsigned short*)(c+0x324);
-    if(idx<*(unsigned short*)(c+0x300+0x24)) *(unsigned char*)(c+0x328)=2;
-    *p+=1;
-  }
-}
+    if (mTouchedKoopa != 0 && *(int *)(koopa + 0x40c) == 0xd) {
+        if ((*(int *)(koopa + 0x418) & 0x10000) != 0)
+            mState = 2;
+    }
+    if (*(s8 *)(koopa + 0x41e) == 1) {
+        if (*(int *)(koopa + 0x40c) == 3 || *(int *)(koopa + 0x410) != 0)
+            mActive = 1;
+    }
+    if (mActive == 0) {
+        mTimer = 0;
+        return;
+    }
+    int dropAfter = mVariant * 20;
+    u16 *timer = &mTimer;
+    if (dropAfter < mTimer)
+        mState = 2;
+    (*timer)++;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov060_02117db8, 0x02117db8, size 0x328 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c19func_ov060_02117db8Ev
-/* Leftover: the same body compiled as C++ changed 89 words and two relocation
-   destinations (data_ov060_02119564 versus data_02082214). It parses as C.
-   int yimm is declared with the other locals: the C front end inside a C++
-   TU rejects a declaration after a statement. */
+/* mState 2: the platform lifts, then falls away. On mPhase 0 and 0x16 it
+ * plays sound 0xbc at a point computed from this variant's (x, z, angle)
+ * row. Before mPhase 0x16 it calls Earthquake and moves up at mVertSpeed
+ * 0x8000 (8.0) with no gravity; from 0x16 mVertAccel is -0x4000. Every even
+ * mPhase below 0xe puffs dust at two points either side of the row's angle,
+ * closing in as mPhase grows. Past mPhase 0x12c the platform destroys
+ * itself.
+ *
+ * Parsed as C: the C++ body DIFFs, including which sine-table symbol the
+ * pool names. 0x12c000 goes through the local yimm: storing the constant
+ * straight into v[1] swaps two pool entries. */
 #pragma cplusplus off
-void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self) {
+void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(struct daKpa3Bg_c *self) {
     volatile int saved[3];
+    int yimm;
     int v[6];
     Vec3 eq;
     Vec3 dust1;
     Vec3 dust2;
     u16 state;
-    int live = 2;
     int off;
     int ang;
     s16 mul;
     int bx, bz, k;
     int x, y, z;
     int a;
+    int live = 2; /* live, p and py are never read: they keep the @NNN count */
     int *p;
     int *py;
 
-    state = *(u16 *)(self + 0x326);
+    state = self->mPhase;
     if (state == 0 || state == 0x16) {
-        saved[0] = *(int *)(self + 0x74);
-        saved[1] = *(int *)(self + 0x78);
-        {
-        int yimm;
-        saved[2] = *(int *)(self + 0x7c);
+        saved[0] = self->mCamSpacePosX;
+        saved[1] = self->mCamSpacePosY;
+        saved[2] = self->mCamSpacePosZ;
         yimm = 0x12c000;
-        v[0] = *(int *)(self + 0x5c);
-        v[1] = *(int *)(self + 0x60);
-        v[2] = *(int *)(self + 0x64);
-        off = *(u8 *)(self + 0x329) * 0xc;
+        v[0] = self->mPosX;
+        v[1] = self->mPosY;
+        v[2] = self->mPosZ;
+        off = self->mVariant * 0xc;
         ang = *(u16 *)((char *)data_ov060_0211956c + off);
         v[1] = yimm;
         v[0] = (s16)data_02082214[(ang >> 4) * 2] * (s16)0x366
             + (*(int *)((char *)data_ov060_02119564 + off) << 12);
         v[2] = (s16)data_02082214[(ang >> 4) * 2 + 1] * (s16)0x366
-            + (*(int *)((char *)data_ov060_02119568 + *(u8 *)(self + 0x329) * 0xc) << 12);
+            + (*(int *)((char *)data_ov060_02119568 + self->mVariant * 0xc) << 12);
         Vec3_AsrInPlace((Vec3 *)v, 3);
-        MulVec3Mat4x3((Vec3 *)v, &data_0209b3ec, self + 0x74);
-        func_02012694(0xbc, self + 0x74);
-        *(int *)(self + 0x74) = saved[0];
-        *(int *)(self + 0x78) = saved[1];
-        *(int *)(self + 0x7c) = saved[2];
-        }
+        MulVec3Mat4x3((Vec3 *)v, &data_0209b3ec, &self->mCamSpacePosX);
+        func_02012694(0xbc, &self->mCamSpacePosX);
+        self->mCamSpacePosX = saved[0];
+        self->mCamSpacePosY = saved[1];
+        self->mCamSpacePosZ = saved[2];
     }
 
-    if ((u16)*(u16 *)(self + 0x326) >= 0x16u) {
-        *(int *)(self + 0x9c) = -0x4000;
+    if (self->mPhase >= 0x16u) {
+        self->mVertAccel = -0x4000;
     } else {
-        eq.x = *(int *)(self + 0x5c);
-        eq.y = *(int *)(self + 0x60);
-        eq.z = *(int *)(self + 0x64);
+        eq.x = self->mPosX;
+        eq.y = self->mPosY;
+        eq.z = self->mPosZ;
         _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &eq, 0x7d0000);
-        *(int *)(self + 0xa8) = 0x8000;
-        *(int *)(self + 0x9c) = 0;
+        self->mVertSpeed = 0x8000;
+        self->mVertAccel = 0;
     }
 
-    state = *(u16 *)(self + 0x326);
-    if (state % 2 == 0 && (u16)state < 0xeu) {
-        off = *(u8 *)(self + 0x329) * 0xc;
+    state = self->mPhase;
+    if (state % 2 == 0 && state < 0xe) {
+        off = self->mVariant * 0xc;
         mul = *(s16 *)((char *)data_ov060_0211956c + off);
         k = (6 - ((int)state >> 1)) * 0x122;
         bx = *(int *)((char *)data_ov060_02119564 + off);
@@ -367,17 +349,16 @@ void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self) {
     }
 
     {
-        int *pa = (int *)(((int)self + 0xa8));
-        int *pypos = (int *)(((int)self + 0x60));
-        *pa = *pa + *(int *)(self + 0x9c);
-        if (*(int *)(self + 0xa8) <= *(int *)(self + 0xa0))
-            *(int *)(self + 0xa8) = *(int *)(self + 0xa0);
-        *pypos = *pypos + *(int *)(self + 0xa8);
+        int *speed = &self->mVertSpeed;
+        int *posY = &self->mPosY;
+        *speed += self->mVertAccel;
+        if (self->mVertSpeed <= self->mTerminalVelocity)
+            self->mVertSpeed = self->mTerminalVelocity;
+        *posY += self->mVertSpeed;
     }
-    if ((u16)*(u16 *)(self + 0x326) > 0x12cu)
+    if (self->mPhase > 0x12cu)
         _ZN7fBase_c18MarkForDestructionEv(self);
-    (*(u16 *)(((int)self + 0x326)))++;
-    (void)live;
+    self->mPhase++;
 }
 #pragma cplusplus on
 

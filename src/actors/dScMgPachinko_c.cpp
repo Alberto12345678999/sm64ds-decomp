@@ -6,6 +6,10 @@
  * pair-match card game (d_s_mg_m_carlo2.cpp); above it is the next class's
  * destructor.
  *
+ * _ZTS15dScMgPachinko_c 0x0213d960. _ZTI15dScMgPachinko_c 0x0213d948.
+ * _ZTV15dScMgPachinko_c 0x0213d9cc. The destructor is the key function:
+ * D1 at 0x020fa75c, D0 at 0x020fa780, no D2.
+ *
  * The 30 functions from 0x020fc8c0 up were folded in from one-function
  * sources. The ball drawer at 0x020fc8c0 was the last to match: its
  * products go through FX_Mul, under opt_prelinearize off. 0x020fcb4c,
@@ -13,21 +17,20 @@
  * (declaration order, which of two locals is read first); each one is
  * noted at its function.
  *
- * The destructor is declared first in the header, so this TU owns the key
- * function and emits the vtable and RTTI; the ROM's own copies live
- * elsewhere and these are discarded at link time.
- *
  * Functions run in ROM order here, lowest address first, under `#pragma
  * defer_codegen off`. Do not reorder.
- *
- * Still raw: the func_ and data_ helpers are unnamed in symbols.txt. The
- * targets at 0x5bcc, the effects at 0x5958 and the scrolling background at
- * 0x5bfc are padding in the header, so they are reached by offset; so are
- * the pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset macros, which
- * take a pre-scaled offset rather than an index. Shot and ball fields go
- * through `p + i * 0x38`: indexing mShot[i]/mBall[i] is one word different,
- * so the multiply forms stay.
  */
+
+// leftovers:
+// - The func_ and data_ helpers are unnamed in symbols.txt.
+// - The targets at 0x5bcc, the effects at 0x5958 and the scrolling
+//   background at 0x5bfc are padding in the header, so they are reached by
+//   offset (callers: the target/effect updaters and the background scroller
+//   in this TU); so are the pipe fields behind the ST/CTA/FB/ACC/VEL
+//   byte-offset macros, which take a pre-scaled offset rather than an index.
+// - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
+//   is one word different, so the multiply forms stay; the r5 cursor locals
+//   in the two table walkers are named for the register they color.
 
 #pragma defer_codegen off
 

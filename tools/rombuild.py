@@ -59,6 +59,7 @@ import rombuild_cache as RBK  # noqa: E402
 import rombuild_check as RBC  # noqa: E402
 import romdata_check as RDC  # noqa: E402
 import layout_check as LAY  # noqa: E402
+import lcf_interior as LI  # noqa: E402
 import rombuild_profile as RP  # noqa: E402
 import srcpath as SP  # noqa: E402
 import relocs as RL  # noqa: E402
@@ -1281,6 +1282,10 @@ def main():
                 cache.prune(args.cache_max_mb * 1024 * 1024)
         report["phases"].append("mwccarm")
 
+        defined_interior = LI.patch(BUILD / "arm9.lcf", BUILD / "objects.txt", config_root)
+        if defined_interior:
+            print(f"      lcf: defined {len(defined_interior)} interior row(s) at their ROM "
+                  f"address ({', '.join(n for n, _a in defined_interior)})")
         print("[4/6] mwldarm")
         run([*launcher(), str(MW / LD_VERSION / "mwldarm.exe"), *LDFLAGS.split(),
              f"@{BUILD / 'objects.txt'}", str(BUILD / "arm9.lcf"),

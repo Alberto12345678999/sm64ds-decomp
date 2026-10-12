@@ -61,6 +61,7 @@ sys.path.insert(0, str(TOOLS))
 
 import build_pin as BP          # noqa: E402
 import enroll as EN             # noqa: E402
+import lcf_interior as LI       # noqa: E402
 import match as M               # noqa: E402
 import modules as MOD           # noqa: E402
 import objisolate as OI         # noqa: E402
@@ -5546,6 +5547,11 @@ def cmd_linkcheck(args):
                   "were resolved.")
 
     # -------------------------------------------------------------------------- link
+    defined_interior = LI.patch(scratch / "arm9.lcf", scratch / "objects.txt", cfg_root)
+    if defined_interior:
+        print(f"      lcf: defined {len(defined_interior)} interior row(s) at their ROM "
+              f"address ({', '.join(n for n, _a in defined_interior)})")
+    report["lcfInteriorDefinitions"] = [n for n, _a in defined_interior]
     print("[5/8] mwldarm (scratch module link)")
     ok, out, dt = _run_dsd([*RB.launcher(), str(RB.MW / RB.LD_VERSION / "mwldarm.exe"),
                             *RB.LDFLAGS.split(), f"@{scratch / 'objects.txt'}",

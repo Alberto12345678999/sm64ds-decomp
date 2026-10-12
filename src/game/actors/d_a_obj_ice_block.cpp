@@ -12,6 +12,10 @@
  * ICE_BLOCK_LL registry). Retail does not store that spelling.
  * Historical alias: IceBlock_Spawn.
  *
+ * _ZTS15daObjIceBlock_c 0x02128c8c. _ZTI15daObjIceBlock_c 0x02128c80.
+ * _ZTV15daObjIceBlock_c 0x02128cc4. InitResources is the key function,
+ * first non-inline virtual: D1 at 0x02127b34, D0 at 0x02127b80.
+ *
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
  * section per function in the reverse of source order.
  *
@@ -26,6 +30,20 @@
  * - func_ov081_02127be0 keeps its placeholder name, and the particle
  *   system word at +0x44 has no member in Particle::System yet.
  */
+
+// leftovers:
+// - dBgW_KcMbg::SetFile, dCcAc_c::Init, Particle::System::New / NewSimple
+//   and dBgActor_c::IsClsnInRangeOnScreen stay mangled: each takes
+//   Fix12<int> by value (notes/mwccarm-codegen.md 6az). cstd::fdiv stays
+//   mangled because no header declares the cstd namespace yet.
+// - data_ov081_02128fd0 / 02128fd8 are this overlay's KCL / BMD file
+//   handles and data_ov002_0210d8d4 the CLPS block, all in data this TU
+//   does not own.
+// - func_ov081_02127be0 keeps its placeholder name (caller: Kill and the
+//   melt-out path in this TU), and the particle system word at +0x44 has no
+//   member in Particle::System yet.
+// - daStar_c's unk_49f (written when the star is let go) lives on another
+//   class's header, which has not named it yet.
 
 #include "daObjIceBlock_c.h"
 #include "Player.h"

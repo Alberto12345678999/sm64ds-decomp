@@ -15,6 +15,29 @@
  * #pragma defer_codegen off lays .text down in source order, so the file
  * reads in ROM order: the structors, the helpers, the four vtable methods,
  * the classInit factory, then UnknownVsPlayer's constructor.
+ *
+ * leftovers:
+ *  - The Fix12-by-value member calls (BlendModelAnim::SetAnim,
+ *    ModelAnim::SetAnim, TextureSequence::SetFile, dClipper Func_02015560,
+ *    dExtShadowModel_c::InitModel, Particle::System::New,
+ *    G3i::PerspectiveW_) keep measured scalar-extern spellings: spelled as
+ *    the real member types, mwccarm homes the register arguments and the
+ *    callers grow.
+ *  - LAUNDER((char*)) stays on the mModel.data / mAnimation.data /
+ *    mModel.mat4x3 alias reads in func_ov075_02114be4 -- the plain member
+ *    read changes which value-numbering class mwcc folds them into.
+ *  - dEntObj_c_classInit keeps its hand-written ABI construction
+ *    (fBase_c C2, explicit _ZTV9dEntObj_c + 2 store, __cxa_vec_ctor over
+ *    the four UnknownVsPlayer elements): the natural `new dEntObj_c`
+ *    emits the base steps inline instead of the C2 branch and no vec
+ *    ctor call.
+ *  - VsBoneFile/VsBoneComponents/S48 stay file-layout shadows: the bone
+ *    record offsets are measured, not the BMD/ModelComponents layouts.
+ *  - Behavior's unk_155 probe keeps the second `walk` induction variable
+ *    alongside `player`: folding it into `player->unk_155` drops a
+ *    register and rewrites the whole function.
+ *  - func_ov075_0211524c's row*16/playerNo*4 byte form stays: the
+ *    int[]-indexed spelling emits a different addressing pair.
  */
 
 #include "dEntObj_c.h"

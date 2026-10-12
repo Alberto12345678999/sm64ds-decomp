@@ -1,59 +1,45 @@
-// NONMATCHING: hand-written asm, not a C decompilation. Byte-exact via an asm hatch on a
-// proven mwccarm 1.2 register-allocation/scheduling wall; does NOT count as matched. Reverts
-// to a draft until someone reproduces the bytes from real C.
-/* func_02068398 @ 0x02068398 size 0x78 — arm9
- * Double-guard predication floor from plain C: two sequential null checks that both
- * branch to a shared tail with a 1-instr reassignment (mov r1,r0) between them.
- * mwccarm cond-opt collapses the trailing guard to movne; the c048 2-pred join costs
- * extra bytes. Hand-asm matches: ldmeqia (not ldmeq alone) spells the ROM's
- * predicated early-return (ldmeq sp!,{lr}; bxeq lr).
- * mwccarm 1.2/sp2p3: -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e
+#include "types.h"
+
+/* func_02068398 @ 0x02068398 size 0x78 (arm9). Picks the object the
+ * 0x020a9d2c controller works on: the one its current object points to at
+ * +0x4b4 when there is one, otherwise the default at +0, then latches its
+ * +0x4ac byte and moves the controller to state 2. Returns 0 with no default.
  *
- * Re-measured 2026-09-12 under 2004/b56, three axes notes 6u had not covered, all inert
- * (the stored draft's div stays 1, residual unchanged at +0x38):
- *   #pragma peephole off, #pragma opt_rebuildconditionals off,
- *   #pragma opt_rebuildlogicals off, #pragma opt_collapselogicalselectionintobittest off
- *     -- byte-identical output, consistent with 6u's finding that cond-opt runs on post-RA
- *        physical code where no IRO-level pragma reaches it;
- *   #pragma optimization_level 1 -- changes the function's size (0x80 vs 0x78), the same
- *        trade -O1 makes: the branch comes back but the predicated early-return goes;
- *   the TU language (the 6al lever): the same draft as //cpp with extern "C" linkage is
- *        byte-identical to the C build, div 1.
- * 6u's verdict stands. Ordinary ARM, so it is NOT an asm primitive and stays NONMATCHING.
- */
-extern unsigned char data_020a9d2c;
+ * Matched 2004/b56. The fallback is written as the `||` arm of an if/else:
+ * both failed tests then reach `res = sel`, a two-predecessor block that
+ * mwccarm will not predicate, and once `res` and `sel` share r1 that copy
+ * is gone, leaving the ROM's `beq` over a lone `mov r1, r0`. A plain
+ * `if (q != 0) sel = q;` predicates into `movne` instead (notes 6u). */
+struct G9d2c {
+    u8 *fallback;   /* 0x0 */
+    u8 *current;    /* 0x4 */
+    char pad8[4];
+    u8 state;       /* 0xc */
+    char padd;
+    u8 mode;        /* 0xe */
+};
+extern struct G9d2c data_020a9d2c;
+
 extern void func_02068484(void);
 
-asm void func_02068398(void)
+int func_02068398(void)
 {
-    stmdb sp!, {lr}
-    sub sp, sp, #4
-    ldr r0, =data_020a9d2c
-    ldr r1, [r0]
-    cmp r1, #0
-    addeq sp, sp, #4
-    moveq r0, #0
-    ldmeqia sp!, {lr}
-    bxeq lr
-    ldr r0, [r0, #4]
-    cmp r0, #0
-    beq L_done
-    ldr r0, [r0, #0x4b4]
-    cmp r0, #0
-    beq L_done
-    mov r1, r0
-L_done:
-    ldr r0, =data_020a9d2c
-    str r1, [r0, #4]
-    bl func_02068484
-    ldr r1, =data_020a9d2c
-    mov r2, #2
-    ldr r3, [r1, #4]
-    mov r0, #1
-    ldrb r3, [r3, #0x4ac]
-    strb r3, [r1, #0xe]
-    strb r2, [r1, #0xc]
-    add sp, sp, #4
-    ldmia sp!, {lr}
-    bx lr
+    u8 *sel = data_020a9d2c.fallback;
+    u8 *p;
+    u8 *res;
+
+    if (sel == 0)
+        return 0;
+
+    p = data_020a9d2c.current;
+    if (p == 0 || (p = *(u8 **)(p + 0x4b4)) == 0)
+        res = sel;
+    else
+        res = p;
+    data_020a9d2c.current = res;
+
+    func_02068484();
+    data_020a9d2c.mode = data_020a9d2c.current[0x4ac];
+    data_020a9d2c.state = 2;
+    return 1;
 }

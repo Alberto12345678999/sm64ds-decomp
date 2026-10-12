@@ -20,40 +20,20 @@
  * Function order is the reverse of the ROM's: mwccarm 2004/b56 emits one .text
  * section per function in the reverse of source order, so the highest-address
  * ROM function is written first. Do not reorder.
- *
- * Leftover:
- * - SetFile as a method, Fix12<int> scale with scale.val = 0x1000:
- *   InitResources size-DIFF 0x10c->0x118. Fix12<int> scale = {0x1000}
- *   size-DIFF 0x10c->0x114 and adds a 4-byte local .data.
- *   Fix12<int>{0x1000} does not compile ("( expected"). The free call
- *   with int 0x1000 matches.
- * - IsClsnInRange as a Fix12<int> method, locals with .val = 0:
- *   Behavior size-DIFF 0xcc->0xe0. Fix12<int>{0} does not compile
- *   ("( expected"). The free call with two ints matches. Spelling those
- *   two prototypes Fix12i also matches; they stay int.
- * - mMeshCollider.beforeClsnCallback = &dBgW::UpdatePosWithTransform
- *   does not compile (illegal implicit conversion from a
- *   reference-parameter function to the pointer-parameter field). The
- *   same store through a C cast size-DIFF InitResources 0x10c->0x108.
- *   func_020393d4 stays the call.
- * - .t on the real Matrix4x3 does not compile (undefined identifier
- *   't'): the type in this TU is the flat s32 m[12]. A shadow
- *   { s32 r[9]; Vector3 t; } over the matrix: UpdateStepClsnPosAndRot
- *   stays 0x44 and DIFFs 6 words; UpdateStepModelPosAndRotY
- *   size-DIFF 0x40->0x44. s32 *t = &mat.m[9] size-DIFF
- *   UpdateStepClsnPosAndRot 0x44->0x48 and UpdateStepModelPosAndRotY
- *   0x40->0x44. offsetof(daObjDpBrock_c, mClsnMat2) does not compile
- *   ("( expected").
- * - Vector3 &pos = *(Vector3 *)&mPosX in InitResources, Behavior and
- *   both updates: size-DIFF InitResources 0x10c->0x110, Behavior
- *   0xcc->0xd0, UpdateStepModelPosAndRotY 0x40->0x4c,
- *   UpdateStepClsnPosAndRot 0x44->0x50.
- * - mStateTimer = mStateTimer + 1 stays 0xcc and DIFFs 4 words.
- *   mStateTimer = mStateTimer + 50 size-DIFF InitResources
- *   0x10c->0x108. mStateTimer += 1, ++mStateTimer and
- *   kFramesPerState == mStateTimer each match. The source keeps
- *   mStateTimer++ and mStateTimer == kFramesPerState.
  */
+
+// leftovers (each measured; the noted form size-DIFFs or breaks the build):
+// SetFile stays the free call with int 0x1000 (method spellings grow
+// InitResources; Fix12<int>{0x1000} does not compile -- this TUs InitResources).
+// IsClsnInRange stays the free call with two ints (method spellings grow
+// Behavior; Fix12<int>{0} does not compile).
+// mMeshCollider.beforeClsnCallback goes through func_020393d4 (direct member
+// store does not compile; the C-cast store shrinks InitResources).
+// mClsnMat2 and mStepModel.mat4x3 stay flat s32 m[12] (.t does not compile;
+// Vector3 overlays and address temps move bytes in both updates).
+// InitResources, Behavior and the updates keep scalar pos (Vector3 refs grow them).
+// mStateTimer++ and mStateTimer == kFramesPerState stay (the +1/+50 forms
+// move bytes).
 
 #include "daObjDpBrock_c.h"
 #include "SharedFilePtr.h"

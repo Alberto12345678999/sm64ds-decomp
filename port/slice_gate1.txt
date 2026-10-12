@@ -21,7 +21,7 @@ src/DotVec3.c
 src/CrossVec3.c
 src/MulVec3Mat4x3.c
 src/Matrix3x3_FromQuaternion.c
-src/_Z14ApproachLinearRiii.cpp
+src/ApproachAngle.cpp
 
 # Timer (plain struct + methods, no externs)
 src/Timer.cpp

@@ -86,7 +86,7 @@ struct daNknk_c : dEnemyBase_c {
     void func_ov062_02117acc();
     void func_ov062_02117b48();
     int  func_ov062_02117b60();
-    void *func_ov062_02117b9c();
+    dActor_c *func_ov062_02117b9c(); /* nearest SHELL (actor 0x11d), or 0 */
     void func_ov062_02117bf4();
     void func_ov062_02117c98();
     void func_ov062_02118004(int limit);

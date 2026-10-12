@@ -161,7 +161,7 @@ a documented contamination vector worth a policy note. *This was not verified �
 
 ## 5. Defects found along the way (actionable)
 
-1. **[src/_ZN6Player16St_WallJump_InitEv.cpp](../../src/_ZN6Player16St_WallJump_InitEv.cpp) is misattributed.** Its own banner admits it is
+1. **`Player::St_WallJump_Init` ([src/actors/Player.cpp](../../src/actors/Player.cpp)) is misattributed.** Its own banner admits it is
    *"NOT a Player method"*; it dereferences `this+0x4eb0`, `+0x4eb4`, `+0x4ee5` — ~0x4700 bytes
    past the end of a 0x768-byte `Player`. The real `St_WallJump_Main` is in [ov002](../../config/arm9/overlays/ov002/symbols.txt); this one is in
    [ov006](../../config/arm9/overlays/ov006/symbols.txt). **The bad assumption has already leaked into `include/Player.h:536-540`** as a footnote
@@ -180,7 +180,7 @@ a documented contamination vector worth a policy note. *This was not verified �
 4. **[src/AngleDiff.c](../../src/AngleDiff.c)** has no header comment, no `@symbol` line, no matching claim — unlike every
    neighbour in the math set. Lowest-confidence file in that group.
 
-5. **[src/_ZN6Player11ChangeStateERNS_5StateE.cpp](../../src/_ZN6Player11ChangeStateERNS_5StateE.cpp)** declares a local `struct State` and a
+5. **`Player::ChangeState` ([src/actors/Player.cpp](../../src/actors/Player.cpp))** declares a local `struct State` and a
    `struct C3;` inside the .cpp, and writes fields through `*(State**)((char*)&self->unk_378)`
    casts. The ROM confirms the 0x18/3-PMF layout, so the *shape* is right — but this is an
    un-recovered type re-declared per-file instead of living in a header.
@@ -195,7 +195,7 @@ a documented contamination vector worth a policy note. *This was not verified �
 | `data_02082214` | `FX_SinCosTable_` — 0x1000 interleaved fx16 sin/cos pairs, 0x4000 bytes, ends 0x02086214 | *NitroSDK* standard |
 | [data_ov002_0210a59c](../../config/arm9/overlays/ov002/symbols.txt) | `sJumpVelocities` / `sPlayerJumpComboVelY` | rodata {42.0, 52.0, 69.0} |
 | [data_ov002_0210a5a8](../../config/arm9/overlays/ov002/symbols.txt) | jump-combo animation IDs | rodata {0x53, 0x4f, 0x4b} |
-| [func_ov002_020e28d4](../../src/unnamed/ov002/func_ov002_020e28d4.c) | `Player::UpdateAirMovement` — cf. N64 `update_air_with_turn` (`mario_actions_airborne.c:186`) | long-jump drag special case + 16.0/2.0 backwards drag + `ApproachLinear` on `mHorzSpeed` |
+| [func_ov002_020e28d4](../../src/actors/Player.cpp) | `Player::UpdateAirMovement` — cf. N64 `update_air_with_turn` (`mario_actions_airborne.c:186`) | long-jump drag special case + 16.0/2.0 backwards drag + `ApproachLinear` on `mHorzSpeed` |
 | [func_ov002_020bf2d8](../../src/actors/Player.cpp) (ROM ordinal 39 used to assemble `Player.cpp`) | `Player_SetVertSpeedByCharFactor` (sibling of `Player_ScaleByCharFactor` @0x020bf30c) | scales arg by per-char factor → `+0xa8` |
 | `func_02037e38` | `CLPS::GetType` | the only CLPS getter used in a jump-table dispatch ([ov098](../../config/arm9/overlays/ov098/symbols.txt) @0x02139264) |
 | 0x02037e14–0x02037e90 | eight more CLPS bitfield getters | 3-instruction accessors, bit extents recovered |
@@ -498,10 +498,10 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
 | [`0x020c06fc`](../../src/actors/Player.cpp) (ROM ordinal 61) | `Player::UpdateSliding` |
 | [`0x020bf56c`](../../src/actors/Player.cpp) (ROM ordinal 46; currently [`func_ov002_020bf56c`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::GetSlopeDecelCoef` |
 | [`0x020c16ec`](../../src/actors/Player.cpp) (ROM ordinal 68) | `Player::SetFloorSurfaceInfo` |
-| [`0x020d4d88`](../../src/unnamed/ov002/func_ov002_020d4d88.c) | `Player::UpdateGroundSpeed` |
-| [`0x020d3b9c`](../../src/unnamed/ov002/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` |
-| [`0x020d45c0`](../../src/unnamed/ov002/func_ov002_020d45c0.c) | `Player::Walk_UpdateRunDustFx` |
-| [`0x020d413c`](../../src/unnamed/ov002/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` |
+| [`0x020d4d88`](../../src/actors/Player.cpp) | `Player::UpdateGroundSpeed` |
+| [`0x020d3b9c`](../../src/actors/Player.cpp) | `Player::UpdateWalkingSpeed` |
+| [`0x020d45c0`](../../src/actors/Player.cpp) | `Player::Walk_UpdateRunDustFx` |
+| [`0x020d413c`](../../src/actors/Player.cpp) | `Player::Walk_UpdateBodyLean` |
 | [`0x020bf30c`](../../src/actors/Player.cpp) (ROM ordinal 40; currently [`Player_ScaleByCharFactor`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::ScaleSpeedByCharacter` |
 | [`0x020c29d4`](../../src/actors/Player.cpp) (ROM ordinal 81; currently [`_ZN6Player19func_ov002_020c29d4Ev`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::UpdateQuicksandFlag` |
 | [ov098](../../config/arm9/overlays/ov098/symbols.txt):[`0x02139228`](../../src/actors/daObjBlockS_c.cpp) (ROM ordinal 25; currently [`func_ov098_02139228`](../../config/tu_manifest.d/ov098/daObjBlockS_c.json)) | `Crate::UpdateQuicksand` |

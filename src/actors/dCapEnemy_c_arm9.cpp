@@ -1,9 +1,9 @@
 //cpp
-/* dCapEnemy_c, arm9 half (0x02005d94..0x0200651c).
- *
- * src/actors/dCapEnemy_c.cpp is the ov002 half and already owns that path, so
- * this file is the other module. rombuild refuses one complete path in two
- * modules. D2 and D0 stay in the ov002 TU.
+/* dCapEnemy_c, the arm9 half (0x02005d94..0x0200651c): the cap attach,
+ * release, respawn and state helpers. src/actors/dCapEnemy_c.cpp is the
+ * ov002 half and already owns that path, so this file is the other module.
+ * rombuild refuses one complete path in two modules; D2 and D0 stay in the
+ * ov002 TU.
  *
  * D1 (0x0200651c) and C2 (0x02006554) keep their single-function files. The
  * destructor is this class's key function -- a member ~dCapEnemy_c() is the
@@ -12,25 +12,33 @@
  * homed to the ov002 TU, which plan_many cannot deadstrip.
  *
  * Source order is reverse ROM order.
+ *
+ * leftovers:
+ *  - ModelBase::SetFile has no header member, so AddCap keeps the mangled
+ *    extern for it; SharedFilePtr::Release's return value feeds AddCap's
+ *    failure path, so that call keeps the int-returning mangled spelling
+ *    too (the member returns void).
+ *  - The 0x17f flags byte (mCapIcon.mFlags high byte) and the 0xf4 shadow
+ *    flags word have no member names; the measured ldrb/launder forms stay.
+ *    AddCap's mFlags &= ~1 and its mCapId store also keep the laundered
+ *    pointer forms -- plain member access there merges value-numbering
+ *    classes and shortens the function by three words.
+ *  - UpdateCapPos keeps CapVec/CapMtx POD shadows: Vector3's empty
+ *    destructor and Matrix4x3's embedded Vector3 change the frame.
  */
 #include "dCapEnemy_c.h"
+#include "Player.h"
+#include "SharedFilePtr.h"
 
 struct Vector3_16 { s16 x, y, z; };
 
 extern "C" {
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *this_, void *file, int a, int b);
 extern int _ZN13SharedFilePtr7ReleaseEv(void *sfp);
-extern void *data_ov002_020ff028[];
+extern SharedFilePtr *data_ov002_020ff028[];
 
 extern unsigned char data_0209f2d8;
 extern unsigned char data_0208a0e0;
 extern void *data_0209f394[];
-extern int *_ZN8dActor_c13ClosestPlayerEv(void *self);
-
-extern struct dActor_c *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-    unsigned int a1, unsigned int a2, const struct Vector3 *a3,
-    const struct Vector3_16 *a4, int a5, int a6);
 
 extern void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 
@@ -49,7 +57,7 @@ void dCapEnemy_c::UnloadCapModel()
 {
     s32 idx = mCapId & 7;
     if (idx >= 6) return;
-    _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff028[idx]);
+    data_ov002_020ff028[idx]->Release();
 }
 
 // @symbol _ZN11dCapEnemy_c6AddCapEj
@@ -70,8 +78,8 @@ int dCapEnemy_c::AddCap(unsigned int param)
         mCapBank = 0;
     }
 
-    void *file = _ZN5Model8LoadFileER13SharedFilePtr(data_ov002_020ff028[mCapId]);
-    int ok = _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel, file, 1, -1);
+    void *file = Model::LoadFile(*data_ov002_020ff028[mCapId]);
+    int ok = mModel.SetFile((BMD_File *)file, 1, -1);
     if (ok == 0) {
         mCapId = 6;
         return _ZN13SharedFilePtr7ReleaseEv(data_ov002_020ff028[mCapId]);
@@ -104,18 +112,16 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
         unsigned char b3to7 : 5;
     };
     if (((CapFlags*)(self + 0x17f))->b2 != 0 || ((CapFlags*)(self + 0x17f))->b1 == 0) {
-        if ((*(unsigned char*)(self + 0x113) & 0xf) < 6) {
-            unsigned char* p = (unsigned char*)(((long long)(int)(self + 0x113)));
-            *p = *p | 0x80;
+        if ((mCapId & 0xf) < 6) {
+            mCapId |= 0x80;
         }
     } else {
-        unsigned char* p = (unsigned char*)(((long long)(int)(self + 0x113)));
-        *p = *p & 7;
+        mCapId &= 7;
     }
-    if (*(unsigned char*)(self + 0x113) >= 6) return;
+    if (mCapId >= 6) return;
 
     CapVec sum, asr;
-    Vec3_Add((Vector3 *)&sum, (Vector3 *)(self + 0x5c), &pos);
+    Vec3_Add((Vector3 *)&sum, (Vector3 *)&mPosX, &pos);
     Vec3_Asr(&asr, &sum, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, rot.x, rot.y, rot.z);
@@ -125,20 +131,13 @@ void dCapEnemy_c::UpdateCapPos(const Vector3& pos, const Vector3_16& rot)
 // @symbol _ZN11dCapEnemy_c14RenderCapModelEPK7Vector3
 void dCapEnemy_c::RenderCapModel(const Vector3 * v)
 {
-  if((unsigned char)((char*)this)[0x113] >= 6) return;
-  struct CapModel {
-    virtual void f0(); virtual void f1(); virtual void f2();
-    virtual void f3(); virtual void f4();
-    virtual void render(const Vector3*);
-  };
-  CapModel* o=(CapModel*)((char*)&mModel);
-  o->render(v);
+    if (mCapId >= 6) return;
+    mModel.Render(v);
 }
 
 // @symbol _ZN11dCapEnemy_c10ReleaseCapERK7Vector3
 struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
 {
-    unsigned char *c = (unsigned char *)this;
     const struct Vector3 *v = &v_;
     struct dActor_c *ret = 0;
 
@@ -149,12 +148,12 @@ struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
             Vec3_Add((Vector3 *)&out, (const Vector3 *)&mPosX, v);
             ret = dActor_c::Spawn(0x10d, 0x1012 | (mCapId << 8), *(const Vector3 *)&out, (const Vector3_16 *)&mAngleX, mAreaId, -1);
             if (mCapBank != 0) {
-                *(unsigned char *)((int)c + 0x113) |= 8;
+                mCapId |= 8;
             } else {
-                *(unsigned char *)((int)c + 0x113) |= 0x80;
+                mCapId |= 0x80;
             }
         } else {
-            ret = (struct dActor_c *)c;
+            ret = this;
         }
     }
     return ret;
@@ -163,7 +162,6 @@ struct dActor_c *dCapEnemy_c::ReleaseCap(const Vector3 & v_)
 // @symbol _ZN11dCapEnemy_c16GetCapEatenOffItERK7Vector3
 int dCapEnemy_c::GetCapEatenOffIt(const Vector3 & v_)
 {
-    unsigned char *c = (unsigned char *)this;
     const Vector3 *v = &v_;
     CapVec local;
     unsigned char *p;
@@ -171,16 +169,16 @@ int dCapEnemy_c::GetCapEatenOffIt(const Vector3 & v_)
     local.y = v->y;
     local.z = v->z;
     p = (unsigned char *)ReleaseCap(*(const Vector3 *)&local);
-    if (p != 0 && p != c) {
+    if (p != 0 && p != (unsigned char *)this) {
         unsigned char idx;
-        *(int *)(p + 0xd0) = mEatingPlayer;
-        *(unsigned char **)(*(unsigned char **)(c + 0xd0) + 0x360) = p;
-        *(int *)(((int)p + 0xb0)) |= 0x20000;
-        *(int *)(((int)c + 0xb0)) &= ~0x20000;
+        ((dEnemyBase_c *)p)->mEatingPlayer = mEatingPlayer;
+        ((Player *)mEatingPlayer)->mObjInMouth = (s32)p;
+        ((dActor_c *)p)->mFlags |= 0x20000;
+        mFlags &= ~0x20000;
         mEatingPlayer = 0;
         if (mCapBank == 0) {
             idx = mCapId & 7;
-            mCapIcon.func_ov001_020ab228((char *)c, idx, 0, 0);
+            mCapIcon.func_ov001_020ab228((char *)this, idx, 0, 0);
         }
         return 1;
     }
@@ -192,20 +190,19 @@ struct dActor_c * dCapEnemy_c::RespawnIfHasCap()
 {
     struct dActor_c *r;
     func_02005ed8();
-    if ((((unsigned char *)this)[0x113] & 0xf) >= 6) return 0;
-    r = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
+    if ((mCapId & 0xf) >= 6) return 0;
+    r = dActor_c::Spawn(
         actorID, param1,
-        (const struct Vector3 *)((unsigned char *)&mPosX),
-        (const struct Vector3_16 *)((unsigned char *)&mAngleX),
+        *(const Vector3 *)&mPosX,
+        (const Vector3_16 *)&mAngleX,
         mAreaId, -1);
     if (!r) return r;
-    *(unsigned char *)((char *)r + 0x111) = 1;
-    *(int *)((char *)r + 0xf4) = *(int *)((char *)r + 0xb0);
-    *(unsigned char *)((char *)r + 0x108) = 0;
+    ((dCapEnemy_c *)r)->mIsDormant = 1;
+    *(int *)((char *)r + 0xf4) = r->mFlags;
+    ((dEnemyBase_c *)r)->unk_108 = 0;
     {
-        int *p = (int *)((unsigned long long)((char *)r + 0xb0));
-        *p &= ~1;
-        *p &= ~0x10000000;
+        r->mFlags &= ~1;
+        r->mFlags &= ~0x10000000;
     }
     return r;
 }
@@ -223,10 +220,10 @@ int dCapEnemy_c::GetCapState() {
     unsigned char val = *(unsigned char *)&data_0209f2d8;
     int check = (val == 1) ? 1 : 0;
     if (check == 0) {
-        int *p = _ZN8dActor_c13ClosestPlayerEv(this);
+        Player *p = ClosestPlayer();
         if (p != 0) {
             int s = mCapId & 7;
-            int ps = p[2];
+            int ps = p->param1;
             if (s == ps) {
                 return 0;
             }
@@ -241,18 +238,18 @@ int dCapEnemy_c::GetCapState() {
 
     mIsDormant = 0;
     mFlags = *(int *)((long long)(int)((char *)this + 0xf4));
-    *(unsigned char *)((int)this + 0x113) &= 7;
+    mCapId &= 7;
     return 1;
 }
 
 // @symbol _ZN11dCapEnemy_c21DestroyIfCapNotNeededEv
 int dCapEnemy_c::DestroyIfCapNotNeeded()
 {
-  if (((unsigned char *)this)[0x113] >= 6) return 1;
+  if (mCapId >= 6) return 1;
   if ((int)(data_0209f2d8 == 1) != 0) return 1;
-  unsigned char *p = (unsigned char *)_ZN8dActor_c13ClosestPlayerEv(this);
+  Player *p = ClosestPlayer();
   if (p == 0) { func_02005ed8(); return 0; }
-  if (((unsigned char *)this)[0x113] != p[0x6d9]) return 1;
+  if (mCapId != p->mCharacter) return 1;
   func_02005ed8();
   return 0;
 }
@@ -274,18 +271,18 @@ int dCapEnemy_c::func_02005e28()
     if (b != 0) {
         n = data_0208a0e0;
         for (i = 0; i < n; i++) {
-            int *p = (int*)data_0209f394[i];
+            Player *p = (Player *)data_0209f394[i];
             if (p != 0) {
-                if (p[2] == ((unsigned char *)this)[0x113]) return 1;
+                if (p->param1 == mCapId) return 1;
             }
         }
         return 0;
     } else {
-        int *p = _ZN8dActor_c13ClosestPlayerEv(this);
+        Player *p = ClosestPlayer();
         int r1;
-        if (p != 0) r1 = p[2];
-        else r1 = ((unsigned char *)this)[0x113];
-        return (r1 == ((unsigned char *)this)[0x113]) ? 1 : 0;
+        if (p != 0) r1 = p->param1;
+        else r1 = mCapId;
+        return (r1 == mCapId) ? 1 : 0;
     }
 }
 
@@ -294,14 +291,14 @@ void dCapEnemy_c::Unk_02005d94()
 {
     int b1;
     int b2;
-    if (!(((unsigned char *)this)[0x113] & 0x80)) return;
+    if (!(mCapId & 0x80)) return;
     b1 = (mFlags & 8) ? 1 : 0;
     if (b1 == 0) {
         volatile unsigned char *q = &data_0209f2d8;
         b2 = (q[0] == 1) ? 1 : 0;
         if (b2 == 0) return;
     }
-    *(unsigned char *)((int)((unsigned char *)this) + 0x113) &= 7;
+    mCapId &= 7;
     if (func_02005e28())
-        *(unsigned char *)((int)((unsigned char *)&mCapId)) |= 0x80;
+        mCapId |= 0x80;
 }

@@ -1,14 +1,19 @@
 //cpp
 /* Heap -- abstract base of the ROM's mHeap::Heap_t family (RTTI at
    0x02099ce4 spells the cartridge name; SolidHeap and ExpandingHeap derive
-   from it). TU claims 0x0203c24c..0x0203c970, the class's own contiguous run
+   from it). TU claims 0x0203c1b4..0x0203c970. Memory's five wrappers sit at the low end; the class's own contiguous run
    in delinks order: the game-heap bootstrap, the four tail-call veneers, the
    scratch-heap push/pop pair and the default-heap setter; then the dispatch
    run, where each public Heap forwarder follows the SolidHeap and
    ExpandingHeap overrides of the slot it calls (ResizeToFit through Destroy);
    then the three factories, CreateSolidHeap, CreateExpandingHeap and
    CreateRootHeap. Written back-to-front: mwccarm emits .text in reverse
-   source order under default deferred codegen. */
+   source order under default deferred codegen.
+ *
+ * leftovers:
+ * - The Heap* forms are defined first. Deferred codegen emits definitions in
+ *   reverse source order, and the convenience overloads call those forms.
+ *   A null heap selects defaultHeapPtr. */
 #include "Heap.h"
 #include "decl_common.h"
 #include "SolidHeap.h"
@@ -948,3 +953,45 @@ void Heap::InitializeGameHeap(u32 size, Heap* root)
 {
     GAME_HEAP_PTR = CreateExpandingHeap(size, root, 4);
 }
+
+/* Memory::Allocate / Deallocate, 0x0203c1b4..0x0203c24c.
+ * The Heap*-taking forms come first so reverse emission puts them
+ * above the one-argument wrappers, which call them. */
+namespace Memory {
+
+// @symbol _ZN6Memory8AllocateEjiP4Heap
+void *Allocate(u32 size, int align, Heap *heap)
+{
+    if (!heap)
+        heap = defaultHeapPtr;
+    return heap->Allocate(size, align);
+}
+
+// @symbol _ZN6Memory10DeallocateEPvP4Heap
+void Deallocate(void *ptr, Heap *heap)
+{
+    if (!heap)
+        heap = defaultHeapPtr;
+    heap->Deallocate(ptr);
+}
+
+// @symbol _ZN6Memory8AllocateEji
+void *Allocate(u32 size, int align)
+{
+    return Allocate(size, align, 0);
+}
+
+// @symbol _ZN6Memory8AllocateEj
+void *Allocate(u32 size)
+{
+    return Allocate(size, 4, 0);
+}
+
+// @symbol _ZN6Memory10DeallocateEPv
+void Deallocate(void *ptr)
+{
+    Deallocate(ptr, 0);
+}
+
+}
+

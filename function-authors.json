@@ -11505,6 +11505,10 @@
       "author": "tangosdev",
       "name": "func_0206834c"
     },
+    "arm9:0x02068398": {
+      "author": "andrewboudreau",
+      "name": "func_02068398"
+    },
     "arm9:0x02068410": {
       "author": "tangosdev",
       "name": "func_02068410"
@@ -15721,6 +15725,10 @@
       "author": "andrewboudreau",
       "name": "_ZN6Player12St_Walk_MainEv"
     },
+    "ov002:0x020d3b9c": {
+      "author": "andrewboudreau",
+      "name": "func_ov002_020d3b9c"
+    },
     "ov002:0x020d413c": {
       "author": "tangosdev",
       "name": "func_ov002_020d413c"
@@ -16060,6 +16068,10 @@
     "ov002:0x020d9fc4": {
       "author": "ruspecial",
       "name": "_ZN6Player22St_SwingPlayer_CleanupEv"
+    },
+    "ov002:0x020d9fec": {
+      "author": "andrewboudreau",
+      "name": "_ZN6Player19St_SwingPlayer_MainEv"
     },
     "ov002:0x020da3b0": {
       "author": "ruspecial",
@@ -18836,6 +18848,10 @@
     "ov003:0x020ae6f4": {
       "author": "tangosdev",
       "name": "_ZN12dScStarSel_c6RenderEv"
+    },
+    "ov003:0x020af038": {
+      "author": "andrewboudreau",
+      "name": "_ZN12dScStarSel_c8BehaviorEv"
     },
     "ov003:0x020af86c": {
       "author": "tangosdev",

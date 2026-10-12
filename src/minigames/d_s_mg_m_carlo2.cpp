@@ -6,10 +6,13 @@
  * reorder. There is no opt_propagation pragma: it applies to the whole
  * file, and turning it off breaks four other functions.
  *
- * Blocked: the ov004 helpers and the data_ov006 globals are unnamed in
- * symbols.txt; the ROM has no dScMgMCarlo2_c constructor, so the factory
- * builds the scene by hand; and the shared table at 0x4f38 is opaque in
- * dScMgMCarlo2_c.h, so its helpers take its address.
+ * leftovers:
+ *   - the ov004 helpers and the data_ov006 globals are unnamed in
+ *     symbols.txt.
+ *   - the ROM has no dScMgMCarlo2_c constructor, so the factory builds the
+ *     scene by hand.
+ *   - the shared table at 0x4f38 is opaque in dScMgMCarlo2_c.h, so its
+ *     helpers take its address.
  */
 
 

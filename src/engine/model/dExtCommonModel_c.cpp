@@ -13,6 +13,17 @@
  * (0x0208e7a0/0x0208e8b0), but no data section is enrolled for this TU to
  * own them, so this TU compiles with RTTI off (see below), and no enrolled D2 or C2;
  * those variants are licensed compiler-only in the manifest.
+ *
+ * leftovers:
+ * - common.h must come first: the ctor's `mat4x3 = IDENTITY_MATRIX4X3`
+ *   needs the flat Matrix4x3 { s32 m[12]; } spelling for its block copy;
+ *   math/Matrix.h's nested form scalarizes it.
+ * - RTTI stays off: the cartridge's _ZTI/_ZTS records sit in data this TU
+ *   does not own.
+ * - func_02016e70, func_02046008, MulMat4x3Mat4x3, data_0209b3ec and
+ *   IDENTITY_MATRIX4X3 have no declaring header.
+ * - The (u32 *)(&p->flags) launder in Func_020160AC keeps the ROM's
+ *   materialized address for the read-modify-write.
  */
 
 /* common.h comes first so this TU sees the flat Matrix4x3 { s32 m[12]; }

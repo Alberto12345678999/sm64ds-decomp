@@ -65,124 +65,43 @@
  * ..33d0 -> ..33f0 -> ..33b0 -> ..33e0 -> ..3410 -> ..3370, each hop being a
  * transition its update handler makes. There are two waypoint sets and a
  * ground-ray guard in Behavior.
- *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *
- *   `#pragma defer_codegen off` (file-global). Out-of-line D1, then D0, then a
- *   homeless D2 is the cartridge's order; with codegen deferred mwccarm emits
- *   D2, D0, D1 instead.
- *
- *   `#pragma opt_loop_invariants off` (file-global), for func_ov073_0211f61c.
- *
- *   common.h must be included first. Otherwise BlendModelAnim.h's nested
- *   Matrix4x3 wins and the twelve-word copies size-DIFF.
- *
- *   The struct C / V3 / Vec3 / Mtx43 / Base / Bool shadows, for PMF
- *   dispatch, the Render vcall and the POD triples. `struct C` is complete
- *   here on purpose: mwccarm 2004/b56 picks its pointer-to-member
- *   representation from completeness.
- *
- *   The sizeof wrap in the header (0x504).
- *
- * WHY SO MANY CALLS ARE SPELLED AS MANGLED SYMBOLS. Reasons (a) and (c) below
- * explain the calls they list. The other mangled externs (the UpdatePos family,
- * dCc_c, the constructors, the loaders, Sound::PlayLong, Message::PrepareTalk)
- * are spelled that way because the bytes or the available headers needed it;
- * (b) lists the calls that are real member calls:
- *
- *   (a) Fix12<int> passed by value -- wall 6az. A method call homes the
- *       argument and the bytes move. This is BlendModelAnim::SetAnim,
- *       Particle::System::New, Particle::System::NewSimple,
- *       Particle::RunningSlidingDustAt, Player::Hurt,
- *       Sound::ChangeMusicVolume, DropShadowRadHeight and cstd::atan2.
- *       Their callers are func_ov073_0211f144 / 0211f2c0 / 0211f494 /
- *       0211f61c / 0211fa74 / 0211fe8c / 0212000c / 021200e0 / 021203ac /
- *       02120610 / 02120ad8 / 02120c08 / 02120c7c / 02120ed0 / 0212122c /
- *       02121538 / 021215cc.
- *
- *   (b) The calls that are NOT mangled are real member calls now that the
- *       helpers take daKing_Donketu_c *: dActor_c::FindWithID /
- *       ClosestPlayer / HorzAngleToCPlayer / DistToCPlayer / Spawn /
- *       PoofDustAt / HugeLandingDustAt / JumpedOnByPlayer / FindWithActorID;
- *       dCamera_c::SetLookAt / SetPos; fBase_c::MarkForDestruction;
- *       dExtFrameCtrl_c::Finished / WillHitFrame (through mBlendModelAnim);
- *       dBgCh_Actr::IsOnGround (mWithMeshClsn); Player::StartTalk /
- *       ShowMessage / GetTalkState / GetHurtState / Unk_020c6a10;
- *       Message::EndTalk; SaveData::IsCharacterUnlocked.
- *
- *   (c) No declaration exists to call: Particle.h has no System::NewSimple;
- *       dCamera_c::SetFlag_3 is a real method but is not on dCamera_c.h; Sound.h has
- *       PlayLong but not Layer3 Load/Stop. Particle::System::FromUniqueID is
- *       on Particle__System.h, but this TU pokes sys+0x44 after the call
- *       (the word lies in Particle::System's unnamed pad_042 bytes).
- *       The Vec3_* / Matrix4x3_* / ApproachLinear family (HorzAngle,
- *       VertAngle, HorzLen, Sub, Lsl, Asr, FromRotationY, FromTranslation,
- *       ApplyInPlaceToRotationX, ApplyInPlaceToRotationXYZExt, MulVec3Mat4x3,
- *       MulMat4x3Mat4x3) has no shared header this TU can take without a
- *       campaign across its other consumers.
- *
- * NOT OWNED BY THIS TU. State records are still dispatched as PMFs through
- * the struct C shadow. Of the function and data
- * symbols only ChiefChilly_ChangeState is coined (an English gloss for the
- * dispatcher); the member names, the enums and the state labels in the
- * table are descriptions, not recovered names.
- * data_02082214 is the NitroSDK FX_SinCosTable_
- * (func_ov073_0211f494 indexes it) and naming it belongs with the SDK table;
- * data_0209f318 (camera), data_020a0e68 (scratch matrix) and data_0209e650
- * (RNG seed) are arm9 globals, as are func_02012694 (sound), func_0200d8c8
- * (camera shake), func_0200fa8c and func_02011cfc. data_ov002_0210da30 is
- * ov002's and Cleanup only Releases it; naming belongs in ov002.
- * g_profile_KING_DONKETU lives outside this TU (S14).
- *
- * SCOPE. All 47 of the class's functions, 0x0211f000..0x02121f90: the whole
- * tu_map unit (0x0211f000..0x02121ec8) plus the abutting registry factory
- * daKing_Donketu_c_classInit (0x02121ec8..0x02121f90), written last. Behavior
- * needs `opt_propagation off`, which at file scope recompiles eight other
- * members; here it is a push/pop bracket around Behavior alone (see the note
- * above Behavior for why the closing pop sits behind a declaration).
- * daKing_Donketu_c_classInit is a reconstructed name (RTTI daKing_Donketu_c,
- * KING_DONKETU registry); retail does not store that spelling, and the
- * historical alias was ChiefChilly_Spawn. It keeps the hand-built
- * construction rather than `return new` (see the note above it).
- *
- * Function order is ROM-ascending, not reversed.
- *
- * Leftover: 47/47 MATCH after the method batch. No spelling DIFFed, so
- * nothing was reverted.
- *   - ChiefChilly_ChangeState's first parameter is C* (the PMF shadow), not
- *     char* or void* cast to daKing_Donketu_c. It stays the coined dispatcher.
- *   - Actor fields the header already names are member reads. Left raw, and
- *     not a class field this header names: dCamera_c +0x114 (pad_114),
- *     Particle::System +0x44, and the data_020a0e68 translation words
- *     (`.m[9..11]` moves bytes).
- *   - The cartridge's names for the sixteen states and for the func_ov073_*
- *     handlers; the labels in the table are descriptions. The state records
- *     are dispatched through the `struct C` shadow, not a real PMF member.
- *   - dCamera_c +0x114 (Behavior publishes `this` there): dCamera_c.h has it inside
- *     pad_114. Particle::System +0x44 likewise. Both stay raw.
- *   - What the ground ray's miss means (mNoGroundAhead) and how that
- *     relates to the mHitsRemaining counter: see the notes in the
- *     header; the reading is from the handlers, not from retail strings.
- *   - unk_4a8..4b0, unk_4c5, unk_4ca, unk_4d0 and unk_4d4 keep their offset
- *     names; each has a comment saying what the code does with it.
- *   - The hit-flag masks in func_ov073_0211f61c are literals: dCc_c.h's bit
- *     table is itself a best-effort reading and bit 0x10000 is not in it.
- *   - The sound ids are named for the site that plays them; no sound table
- *     was consulted.
- *   - Spellings kept ONLY because the bytes need them (each measured: the
- *     alternative was compiled and the object compared): `void *cam` (not
- *     dCamera_c *) in func_ov073_0211fa74 / 0212128c / 02121388, where the
- *     typed pointer swaps two registers; the (unsigned short) reads of
- *     mStateTimer and of mAngleX/Y/Z in func_ov073_0211fa74 (the members are
- *     s16, the cartridge loads them with ldrh and a plain read gives ldrsh);
- *     the `s16 *py` pointer behind mPrevAngleY in func_ov073_0211f61c and
- *     func_ov073_02120d80; `const s32 *pv = &x->mPosX` walks (a direct member read
- *     emits different addressing); array-indexed unk_4d4[i] in the dust
- *     loops (a Vector3 pointer walk hoists the base); `*(void **)&c->mState`
- *     in func_ov073_0211f2c0 (a plain member read is shared with the later
- *     load, the cartridge reloads it); the data_020a0e68 translation words
- *     read through (char *) in the same function (`.m[9..11]` changes bytes).
  */
+
+/* leftovers:
+ * - defer_codegen off stays file-global: deferred codegen emits D2, D0, D1
+ *   and the cartridge has D1 then D0. opt_loop_invariants off stays
+ *   file-global for func_ov073_0211f61c. common.h stays first; BlendModelAnim's
+ *   Matrix4x3 makes the twelve-word copies change size.
+ * - struct C is a complete PMF shadow on purpose (mwccarm picks the
+ *   pointer-to-member shape from completeness). ChiefChilly_ChangeState
+ *   takes C*. The sixteen state labels are descriptions; the sinit owns
+ *   the records. The header's 0x504 size wrap stays.
+ * - BlendModelAnim::SetAnim, Particle::System::New / NewSimple,
+ *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
+ *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
+ *   NewSimple, dCamera_c::SetFlag_3 and the layer-3 sound calls have no
+ *   header declaration this file can use. FromUniqueID is followed by a
+ *   store at sys+0x44, which is still pad_042 on Particle::System.
+ * - Vec3_* / Matrix4x3_* / ApproachLinear have no shared header this TU
+ *   can include alone. data_02082214 is the sine table func_ov073_0211f494
+ *   indexes. data_0209f318, data_020a0e68 and data_0209e650 are arm9
+ *   globals. data_ov002_0210da30 is ov002's; Cleanup only Releases it.
+ *   g_profile_KING_DONKETU is outside this TU.
+ * - Behavior's opt_propagation off is a push/pop around that function.
+ *   The factory stays the hand-built construction, not return new.
+ * - void* cam in func_ov073_0211fa74 / 0212128c / 02121388: a dCamera_c*
+ *   swaps two registers. Those functions also ldrh mStateTimer and
+ *   mAngleX/Y/Z through unsigned short; a plain s16 read is ldrsh.
+ * - s16* behind mPrevAngleY in func_ov073_0211f61c and 02120d80, the
+ *   const s32* walk of mPosX, unk_4d4[i] in the dust loops, and
+ *   *(void**)&mState in func_ov073_0211f2c0 stay. The direct member forms
+ *   change addressing. data_020a0e68's translation words stay a char*
+ *   walk; .m[9..11] changes bytes. dCamera_c +0x114 is inside pad_114.
+ * - unk_4a8..4b0, unk_4c5, unk_4ca, unk_4d0 and unk_4d4 keep offset names.
+ *   The hit masks in func_ov073_0211f61c stay literals (0x10000 is not in
+ *   dCc_c.h's bit table). Sound ids are named for the site that plays them.
+ */
+
 
 #pragma defer_codegen off
 #pragma opt_loop_invariants off

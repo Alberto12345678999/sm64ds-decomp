@@ -20,14 +20,14 @@
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  * The registry factory daObjCtMecha11_c_classInit (0x02111b98) closes the
  * unit and ov035's .text.
- *
- * Leftover: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
- *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
- *   the method spelling homes that argument and changes the ROM ABI.
- * Leftover: func_020393a4 / func_02039394 / func_020393d4 / func_020396c0
- *   are small stores into dBgW's fields and callback slots; naming belongs
- *   with dBgW in arm9.
  */
+
+// leftovers: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
+// dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled
+// (the method spelling homes that argument and changes the ROM ABI -- this
+// TU's InitResources/Behavior/UpdateShadow calls). func_020393a4 /
+// func_02039394 / func_020393d4 / func_020396c0 are small stores into dBgW's
+// fields and callback slots; naming belongs with dBgW in arm9.
 
 #pragma defer_codegen off
 
@@ -91,11 +91,11 @@ int daObjCtMecha11_c::UpdateShadow()
     int d1 = mPosY - mFloorPosY;
     int ad = d1 < 0 ? -d1 : d1;
     if (ad > 0x7d0000) return ad;
-    int r2 = ad + 0x350000;
+    int clipD = ad + 0x350000;
     int half = ad / 2;
-    if (r2 < 0x350000) r2 = 0x350000;
+    if (clipD < 0x350000) clipD = 0x350000;
     mClipOffsetY = -half;
-    mClipRadius = (int)(r2 + ((unsigned)r2 >> 31)) >> 4;
+    mClipRadius = (int)(clipD + ((unsigned)clipD >> 31)) >> 4;
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mFloorPosY >> 3;
