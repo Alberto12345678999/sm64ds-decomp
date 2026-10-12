@@ -18604,7 +18604,6 @@ int func_ov002_020d853c(char* c, char* o) {
 extern "C" {
 extern "C" int func_ov002_020d85fc(char* self, char* arg, int flags){
     extern int _ZN6Player7IsStateERNS_5StateE(void* self, void* state);
-    extern int _ZN6Player7TryGrabER8dActor_c(void* arg, void* self);
     extern int func_ov002_020db5f4(void* self, void* arg);
     extern char data_ov002_0211034c;
     extern char data_ov002_02110094;
@@ -18613,7 +18612,7 @@ extern "C" int func_ov002_020d85fc(char* self, char* arg, int flags){
         && (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_0211034c)
             || (_ZN6Player7IsStateERNS_5StateE(self, &data_ov002_02110094)
                 && *(unsigned short*)(self + 0x6a4) != 0))
-        && _ZN6Player7TryGrabER8dActor_c(arg, self)) {
+        && ((Player*)arg)->TryGrab(*(dActor_c*)self)) {
         func_ov002_020db5f4(self, arg);
         return 1;
     }

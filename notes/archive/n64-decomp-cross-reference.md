@@ -498,10 +498,10 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
 | [`0x020c06fc`](../../src/actors/Player.cpp) (ROM ordinal 61) | `Player::UpdateSliding` |
 | [`0x020bf56c`](../../src/actors/Player.cpp) (ROM ordinal 46; currently [`func_ov002_020bf56c`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::GetSlopeDecelCoef` |
 | [`0x020c16ec`](../../src/actors/Player.cpp) (ROM ordinal 68) | `Player::SetFloorSurfaceInfo` |
-| [`0x020d4d88`](../../src/unnamed/ov002/func_ov002_020d4d88.c) | `Player::UpdateGroundSpeed` |
-| [`0x020d3b9c`](../../src/unnamed/ov002/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` |
-| [`0x020d45c0`](../../src/unnamed/ov002/func_ov002_020d45c0.c) | `Player::Walk_UpdateRunDustFx` |
-| [`0x020d413c`](../../src/unnamed/ov002/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` |
+| [`0x020d4d88`](../../src/actors/Player.cpp) | `Player::UpdateGroundSpeed` |
+| [`0x020d3b9c`](../../src/actors/Player.cpp) | `Player::UpdateWalkingSpeed` |
+| [`0x020d45c0`](../../src/actors/Player.cpp) | `Player::Walk_UpdateRunDustFx` |
+| [`0x020d413c`](../../src/actors/Player.cpp) | `Player::Walk_UpdateBodyLean` |
 | [`0x020bf30c`](../../src/actors/Player.cpp) (ROM ordinal 40; currently [`Player_ScaleByCharFactor`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::ScaleSpeedByCharacter` |
 | [`0x020c29d4`](../../src/actors/Player.cpp) (ROM ordinal 81; currently [`_ZN6Player19func_ov002_020c29d4Ev`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::UpdateQuicksandFlag` |
 | [ov098](../../config/arm9/overlays/ov098/symbols.txt):[`0x02139228`](../../src/actors/daObjBlockS_c.cpp) (ROM ordinal 25; currently [`func_ov098_02139228`](../../config/tu_manifest.d/ov098/daObjBlockS_c.json)) | `Crate::UpdateQuicksand` |
