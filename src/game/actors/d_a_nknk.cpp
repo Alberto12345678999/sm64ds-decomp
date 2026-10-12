@@ -19,10 +19,11 @@
 //   by value (notes/mwccarm-codegen.md 6az), or the header declaration
 //   does not mangle to the ROM symbol. func_0201267c is the bank-3
 //   Sound::Play wrapper.
-// - GetFloorResult is still called through its local extern. Deleting
-//   that prototype drops one named parameter, and mwcc's @NNN counter
-//   then renumbers the static initializer's temps that the intact-object
-//   manifest pins by name (the code bytes are otherwise identical).
+// - GetFloorResult is still called through its local extern (the wall
+//   lookup uses the dBgCh_Actr method). Deleting that prototype drops one
+//   named parameter, and mwcc's @NNN counter then renumbers the static
+//   initializer's temps that the intact-object manifest pins by name (the
+//   code bytes are otherwise identical).
 // - Vec3 / V3 below are local three-int aggregates for Vec3_Asr and the
 //   Render scale save. inline_fn() returns MATRIX_SCRATCH_PAPER; deleting
 //   its definition renumbers the same @NNN temps (bytes otherwise equal).
@@ -44,6 +45,7 @@
 #include "decl_dCcAc_c.h"
 #include "decl_ShadowModel.h"
 #include "Particle__System.h"
+#include "dBgPi.h"
 
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -111,8 +113,8 @@ inline struct Matrix4x3 *inline_fn()
   return &data_020a0e68;
 }
 
-extern struct dBgCh_Actr *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
-extern int SurfaceInfo_TestFlag0x20(int *p);
+extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
+extern int SurfaceInfo_TestFlag0x20(int *p); /* CLPS bit 0x20: water */
 }
 
 // @symbol daNknk_c_classInit_NOKONOKO
@@ -490,8 +492,8 @@ void daNknk_c::func_ov062_02118a50()
 {
     if (mHorzSpeed != 0) {
         if (mWithMeshClsn.IsOnWall() != 0) {
-            void *sr = mWithMeshClsn.GetWallResult();
-            ((SurfaceInfo*)((char*)sr + 4))->CopyNormalTo(*(Vector3*)&mWallNormalX);
+            dBgPi *wall = (dBgPi *)mWithMeshClsn.GetWallResult();
+            wall->surface.CopyNormalTo(*(Vector3*)&mWallNormalX);
             mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
                 this, mWallNormalX, mWallNormalZ, mPrevAngleY);
         }
@@ -1158,10 +1160,11 @@ void daNknk_c::func_ov062_021175c0()
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02117570Ev
+/* Standing on a water floor: drop a coin and die. */
 void daNknk_c::func_ov062_02117570() {
     if (!mWithMeshClsn.IsOnGround()) return;
-    struct dBgCh_Actr *floor = _ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
-    if (!SurfaceInfo_TestFlag0x20((int*)((char*)floor + 4))) return;
+    dBgPi *floor = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface)) return;
     SpawnCoin();
     KillAndTrackInDeathTable();
 }
