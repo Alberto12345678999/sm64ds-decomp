@@ -20,7 +20,16 @@
  * LoadPathNodeObjects the node table (src/stage/LevelObjects.cpp).
  *
  * mwccarm emits .text in reverse source order, so the definitions below run
- * ROM-descending; the roster above reads ROM-ascending. */
+ * ROM-descending; the roster above reads ROM-ascending.
+ *
+ * leftovers:
+ * - GetUnk004/unk_004 keep the decompiler name: the sole consumer
+ *   (func_0200b0fc) compares it to 0xff and shifts it << 12 as a cap, but
+ *   what the PathDef byte means is unrecovered; renaming the method would
+ *   rename the mangled symbol tree-wide.
+ * - func_0203ad84 formats data_020994d4 into data_020a0d90 (0x1f chars plus
+ *   forced NUL) via func_02018434; both globals are unrelated to paths and
+ *   their contents are unrecovered, so they keep linker names. */
 #include "PathPtr.h"
 
 extern PathDef *PATH_DEFS;  /* the level's PathDef table */
