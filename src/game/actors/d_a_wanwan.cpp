@@ -332,7 +332,7 @@ extern "C" {
 // @symbol func_ov014_02112788
 void func_ov014_02112788(daWanwan_c *c)
 {
-    /* Translation is m[9..11] of each matrix: the position divided by 8.
+    /* Translation is m[9..11] of each matrix: position >> 3.
        m and sm walk mLinkModels and mLinkShadows. e and o are the actor
        address advanced by one Vector3 and one Model per link, so
        e->mLinkPos[0] is link i's position and o->mLinkModels[0] is the model

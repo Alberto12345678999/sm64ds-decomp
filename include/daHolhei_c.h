@@ -21,7 +21,8 @@ struct daHolhei_c : dEnemyBase_c {
     dCcAc_c     mdCc_c;        /* 0x110 */
     dBgCh_Actr  mMeshClsn;     /* 0x144 */
     ModelAnim   mModel;        /* 0x300 */
-    /* Current state record. Behavior calls its update PMF each frame.
+    /* Current state record. Behavior calls its update PMF, when non-null,
+       unless UpdateKillByInvincibleChar has already ended the frame.
        InitResources enters data_ov062_0211dee0 through
        daHolhei_c_ChangeState. */
     HolheiState *mState;       /* 0x364 */

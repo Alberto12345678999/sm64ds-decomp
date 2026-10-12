@@ -15,13 +15,14 @@
  *   dEnemyBase_c::KillByInvincibleChar stay mangled. Each carries
  *   Fix12<int> by value (notes/mwccarm-codegen.md, wall 6az).
  * - The six file handles and the ten state records keep data_ov062_*
- *   names and the element types decl_common.h and
- *   __sinit_ov062_0211cf30 already declare; the sinit constructs them and
- *   symbols.txt has no other name. The second word of each file handle is
- *   the loaded BMD or BCA.
+ *   names; symbols.txt has no other. de90, dec0 and def0 keep the
+ *   char[]/int[] types decl_common.h declares (another type is a new
+ *   check_decl_agreement disagreement); the other seven keep their
+ *   existing spellings, so each use casts to HolheiState *.
+ *   __sinit_ov062_0211cf30 constructs the file handles and copies each
+ *   record's two PMFs in. The second word of each file handle is the
+ *   loaded BMD or BCA.
  * - g_profile_HOLHEI stays outside this text-only TU.
- * - Helpers keep func_ov062_* names. daHolhei_c_ChangeState is coined.
- *   The extern "C" helpers take the actor as an explicit daHolhei_c *self.
  * - func_ov062_02116d28 reloads mHeld before each pos word.
  *   func_ov062_02116a08 copies the player's position through one int
  *   pointer; three separate pl->mPos loads change the code.
@@ -29,6 +30,9 @@
  *   before dActor_c::mAreaId. func_ov062_02116e80 stores &mHoldMtx there.
  * - func_ov062_021165e8 keeps a volatile Vector3 so the player's position
  *   occupies that stack slot.
+ *
+ * Naming: helpers keep func_ov062_* names; daHolhei_c_ChangeState is
+ * coined. The extern "C" helpers take the actor as daHolhei_c *self.
  */
 
 #include "common.h"
@@ -45,8 +49,9 @@
 struct HolheiFile { int id; void *file; };
 
 /* A state record: daHolhei_c_ChangeState stores its address in mState
-   and calls a non-null enter; Behavior calls a non-null update each time
-   it runs. The records themselves are filled by __sinit_ov062_0211cf30. */
+   and calls a non-null enter; past the UpdateKillByInvincibleChar check,
+   Behavior calls a non-null update. __sinit_ov062_0211cf30 copies each
+   record's two PMFs in. */
 typedef int (daHolhei_c::*HolheiEnter)();
 typedef void (daHolhei_c::*HolheiUpdate)();
 struct HolheiState {
@@ -72,7 +77,7 @@ extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12
 
 extern short func_02010844(void* unused, Vector3* v, short angle);
 extern void func_02012694(int a, void *p);
-extern int daHolhei_c_ChangeState(daHolhei_c *c, HolheiState *p);
+extern int daHolhei_c_ChangeState(daHolhei_c *self, HolheiState *p);
 extern int func_ov002_020db5f4(void *c, void *arg);
 extern int func_ov002_020db54c(int p, int a, int b, int s);
 extern void func_0200d8c8(void* cam, void* v, int strength);
@@ -98,8 +103,8 @@ extern void *data_ov062_0211de00[]; /* animation 0x32a, grab */
 extern int *data_ov062_0211de08[]; /* animation 0x32b */
 extern void *data_ov062_0211ddf8; /* animation 0x32c, walk */
 
-/* The ten state records (HolheiState, 0x10 apart). These keep the element
-   types decl_common.h and __sinit_ov062_0211cf30 already declare. */
+/* The ten state records (HolheiState, 0x10 apart). See the banner for
+   why they keep these element types. */
 extern int data_ov062_0211dea0[];
 extern int data_ov062_0211deb0[];
 extern char data_ov062_0211df00[];
@@ -350,13 +355,13 @@ void daHolhei_c::func_ov062_02116d28()
 /* Coined name. Switches to state p and runs its enter function, if any;
    Behavior runs the record's update from then on. */
 // @symbol daHolhei_c_ChangeState
-extern "C" int daHolhei_c_ChangeState(daHolhei_c *c, HolheiState *p)
+extern "C" int daHolhei_c_ChangeState(daHolhei_c *self, HolheiState *p)
 {
-    c->mState = p;
-    HolheiState *q = c->mState;
+    self->mState = p;
+    HolheiState *q = self->mState;
     if (q->enter == 0)
         return 1;
-    return (c->*q->enter)();
+    return (self->*q->enter)();
 }
 
 /* Face home, on the walk animation, and wait before turning. */
@@ -711,10 +716,11 @@ extern "C" int func_ov062_021161a8(daHolhei_c *self)
     return 1;
 }
 
-/* Hit flag 0x10 kills through KillByInvincibleChar. Otherwise, for a
-   PLAYER (actor 0xbf): more than 0x2000 off Chuckya's facing, hit flag
-   0x1000 lets the player try to grab it; within 0x2000, Chuckya tries to
-   grab the player (func_ov002_020db5f4). */
+/* Hit flag 0x10 kills through KillByInvincibleChar. Otherwise, when the
+   hitter is a PLAYER (actor 0xbf): with the closest player's bearing more
+   than 0x2000 (45 degrees) off Chuckya's facing, hit flag 0x1000 lets the
+   hitter try to grab it; within 0x2000, Chuckya tries to grab the hitter
+   (func_ov002_020db5f4). */
 // @symbol func_ov062_02116010
 extern "C" void func_ov062_02116010(daHolhei_c *self)
 {

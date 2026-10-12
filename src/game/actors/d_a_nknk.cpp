@@ -20,13 +20,12 @@
 //   does not mangle to the ROM symbol. func_0201267c is the bank-3
 //   Sound::Play wrapper.
 // - GetFloorResult is still called through its local extern (the wall
-//   lookup uses the dBgCh_Actr method). Deleting that prototype drops one
-//   named parameter, and mwcc's @NNN counter then renumbers the static
-//   initializer's temps that the intact-object manifest pins by name (the
-//   code bytes are otherwise identical).
-// - Vec3 / V3 below are local three-int aggregates for Vec3_Asr and the
-//   Render scale save. inline_fn() returns MATRIX_SCRATCH_PAPER; deleting
-//   its definition renumbers the same @NNN temps (bytes otherwise equal).
+//   lookup uses the dBgCh_Actr method). Deleting that prototype shifts the
+//   static initializer's @NNN temps, which the intact-object manifest pins
+//   by name, by one (code bytes otherwise identical).
+// - Vec3 / V3 below are local three-int aggregates. inline_fn() returns
+//   MATRIX_SCRATCH_PAPER; deleting its definition shifts the same @NNN
+//   temps by three (code bytes otherwise identical).
 // Inline definitions in Koopa.h, emitted here by the two factories:
 #include "Koopa.h"
 #include "common.h"
