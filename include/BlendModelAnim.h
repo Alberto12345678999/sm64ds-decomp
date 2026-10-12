@@ -11,10 +11,10 @@
  *
  * THE DESTRUCTOR IS DECLARED FIRST -- see include/ModelAnim.h; the D1
  * additionally frees unk_6c before chaining to ModelAnim::D2. Defined
- * out of line: D1 and D0 as free functions in
- * src/engine/model/Model.cpp -- a member definition would emit this MI
- * class's coined-spelling vtable group, which has no byte-compare home
- * (see src/engine/model/Model.cpp's banner and manifest).
+ * out of line: D1 in src/_ZN14BlendModelAnimD1Ev.cpp, D0 in
+ * src/_ZN14BlendModelAnimD0Ev.cpp -- the lifecycle stays shard-enrolled
+ * because this MI class's vtable group cannot ride in the promoted TU
+ * (see its manifest).
  *
  * LAYOUT: ModelAnim 0x00..0x64, then the blend state. blendWeight ramps
  * 0 -> 0x1000 (1.0) by blendStep per Advance; below 1.0 UpdateVerts and
@@ -52,7 +52,7 @@ struct BlendModelAnim : ModelAnim {
     virtual void Render(const Vector3 *scale);            /* slot 5 */
     virtual void Virtual18(u32 mat, const Vector3 *scale);/* slot 6 */
 
-    /* DECLARED, defined out of line in src/engine/model/Model.cpp as
+    /* DECLARED, defined out of line in src/_ZN14BlendModelAnimC1Ev.cpp as
      * real C++ -- complete-object context for every ROM caller (it is a
      * member subobject in daKing_Donketu_c/Eyerok/daJango_c/daMoray_c...), hence C1.
      * Body is empty; blendWeight and unk_6c are initialised through the init

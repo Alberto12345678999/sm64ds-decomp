@@ -50,6 +50,7 @@ func_0206da18
 # an empty daObjCloset_c::~daObjCloset_c(); the compiler picks D2 itself and
 # the ROM build carries both. Cast-and-call is the shape to look for in whatever
 # is still listed here.
+CleanCommonModelDataArr
 func_020313d8
 
 # --- itcm: two unreferenced argument-swap entries that fall THROUGH into their successor ---

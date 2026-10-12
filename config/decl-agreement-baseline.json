@@ -1208,6 +1208,10 @@
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
+      "src/_ZN5Model14LoadAndSetFileEtii.cpp": [
+        "param:#1 unsigned short",
+        "return:void *"
+      ],
       "src/actors/dMeter_c.cpp": [
         "return:void *"
       ],
@@ -7540,6 +7544,9 @@
     "_ZN4Heap7_SizeofEPv": {
       "include/decl_Heap.h": [
         "return:unsigned int"
+      ],
+      "src/unnamed/arm9/0201/func_02017060.c": [
+        "return:unsigned int"
       ]
     },
     "_ZN4Heap9SetNodeIDEj": {
@@ -7676,6 +7683,12 @@
       ],
       "src/unnamed/ov007/func_ov007_020b3f20.c": [
         "param:#1 void *"
+      ]
+    },
+    "_ZN5Model23AddToCommonModelDataArrER8BMD_File": {
+      "src/unnamed/arm9/0201/func_02016e70.c": [
+        "param:#1 void *",
+        "return:Entry *"
       ]
     },
     "_ZN5Model8LoadFileER13SharedFilePtr": {
@@ -10962,14 +10975,6 @@
         "param:#5 unsigned int"
       ]
     },
-    "_ZN9ModelAnimC1Ev": {
-      "src/actors/daWanwan2_c.cpp": [
-        "return:ModelAnim *"
-      ],
-      "src/game/actors/d_a_wanwan.cpp": [
-        "return:ModelAnim *"
-      ]
-    },
     "_ZN9ModelAnimD1Ev": {
       "include/decl_ModelAnim.h": [
         "return:void"
@@ -11746,6 +11751,11 @@
         "return:void * []"
       ]
     },
+    "data_0208e738": {
+      "src/_ZN5Model23AddToCommonModelDataArrER8BMD_File.cpp": [
+        "return:int []"
+      ]
+    },
     "data_0208eb54": {
       "src/unnamed/arm9/0201/func_020186c0.c": [
         "return:unsigned char"
@@ -12133,9 +12143,19 @@
         "return:unsigned char"
       ]
     },
+    "data_0209cef0": {
+      "src/CleanCommonModelDataArr.c": [
+        "return:void *"
+      ]
+    },
     "data_0209cef4": {
       "src/engine/model/dExtShadowModel_c.cpp": [
         "return:dExtShadowModel_c *"
+      ]
+    },
+    "data_0209cef8": {
+      "src/CleanCommonModelDataArr.c": [
+        "return:int"
       ]
     },
     "data_0209d3b8": {
@@ -20902,6 +20922,16 @@
         "return:ModelComponents *"
       ]
     },
+    "func_02016ff4": {
+      "src/_ZN5Model14LoadAndSetFileEtii.cpp": [
+        "param:#1 Model *"
+      ]
+    },
+    "func_02017060": {
+      "src/unnamed/arm9/0201/func_02016ff4.cpp": [
+        "return:int"
+      ]
+    },
     "func_020178b4": {
       "src/unnamed/ov075/__sinit_ov075_0211c51c.c": [
         "arity:0",
@@ -23931,6 +23961,9 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "param:#1 ModelComponents *"
+      ],
+      "src/engine/model/BlendModelAnim.cpp": [
+        "param:#1 ModelComponents *"
       ]
     },
     "func_020453c0": {
@@ -23952,7 +23985,7 @@
       ]
     },
     "func_02045e2c": {
-      "src/engine/model/Model.cpp": [
+      "src/unnamed/arm9/0201/func_020162a4.c": [
         "param:#4 int"
       ]
     },
@@ -23961,34 +23994,12 @@
         "param:#1 Ctx *"
       ]
     },
-    "func_02045e70": {
-      "src/engine/model/Model.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_02045ec4": {
-      "src/unnamed/arm9/0204/func_02045e70.c": [
-        "param:#2 void *"
-      ]
-    },
-    "func_02045ef8": {
-      "src/engine/model/Model.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_02045f80": {
-      "src/engine/model/Model.cpp": [
-        "arity:1"
-      ]
-    },
     "func_02046008": {
+      "src/_ZN5Model12SetPolygonIDEi.cpp": [
+        "param:#2 int"
+      ],
       "src/engine/model/dExtCommonModel_c.cpp": [
         "param:#2 unsigned int"
-      ]
-    },
-    "func_0204605c": {
-      "src/engine/model/Model.cpp": [
-        "arity:1"
       ]
     },
     "func_02046088": {
@@ -24009,7 +24020,15 @@
         "param:#2 int"
       ]
     },
+    "func_02046234": {
+      "src/_ZN5Model14SetPolygonModeEi.cpp": [
+        "param:#2 int"
+      ]
+    },
     "func_020462bc": {
+      "src/engine/model/BlendModelAnim.cpp": [
+        "return:unsigned int"
+      ],
       "src/unnamed/ov007/func_ov007_020bc6d4.c": [
         "return:int"
       ]
@@ -24027,6 +24046,9 @@
       "src/engine/model/Model.cpp": [
         "param:#1 BMD_File *",
         "return:unsigned int"
+      ],
+      "src/unnamed/arm9/0201/func_02016e70.c": [
+        "return:unsigned int"
       ]
     },
     "func_02046590": {
@@ -24036,6 +24058,11 @@
       "src/unnamed/arm9/0204/func_020470e8.c": [
         "param:#1 const struct Table *",
         "return:short"
+      ]
+    },
+    "func_020469e0": {
+      "src/unnamed/arm9/0201/func_02017060.c": [
+        "return:unsigned int"
       ]
     },
     "func_020469e8": {

@@ -323,10 +323,6 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov034-hanachan-0925.md",
-   "ref": "src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp"
-  },
-  {
-   "file": "notes/agents/handoffs/readable-ov034-hanachan-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
@@ -664,10 +660,6 @@
   {
    "file": "notes/experiments/boo-2710-setanim-6az.md",
    "ref": "src/game/actors/daTrs_c/_ZN7daTrs_c13InitResourcesEv.cpp"
-  },
-  {
-   "file": "notes/experiments/koopa-2864-source-forms.md",
-   "ref": "src/engine/model/ModelAnim.cpp"
   },
   {
    "file": "notes/experiments/piano-2712-sinit-split.md",
