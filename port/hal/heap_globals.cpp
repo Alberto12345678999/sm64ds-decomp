@@ -161,8 +161,17 @@ extern "C" MemoryNode::Target *_ZN10MemoryNode6TargetC1EPS_(
 // the source file's move from slice_gate4b.txt to slice_gate2.txt, for the same
 // reason: the nine targets that link gx_upload_bridge.cpp all link this file too,
 // so the pair can have one home instead of one per layer that reaches it.
-// Declared locally: there is no cstd header in include/, and this is the
-// declaration hal/gx_upload_bridge.cpp carried for the same call.
-namespace cstd { int abs(int); }
+//
+// The definition is the host's own, like hal/cstd_div.c's fdiv. cstd::abs now
+// lives in src/cstd4.cpp, the runtime-library TU, which also owns hand-asm
+// primitives (swp, dcd, the soft-float compare stubs) that no host compiler
+// accepts -- so the slice can no longer compile the src/ definition. The body
+// is the one src/cstd4.cpp carries.
+namespace cstd {
+int abs(int x)
+{
+    return x < 0 ? -x : x;
+}
+}
 
 extern "C" int _ZN4cstd3absEi(int value) { return cstd::abs(value); }

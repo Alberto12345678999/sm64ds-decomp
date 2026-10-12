@@ -23,8 +23,7 @@ src/engine/heap/NestedHeapIterator.cpp
 # method is a one-line call into this layer, so a host link that has the
 # override and not its target has half of a pair.
 
-# cstd::abs, which ExpandingHeapAllocator::MaxAllocatableSize calls. It was in
-# slice_gate4b.txt and moved here rather than being listed twice: the nine targets
-# that link gate 4b all link gate 2 as well, so two entries would be a duplicate
-# definition, and the layer that needs it first is this one.
-src/cstd4.cpp
+# cstd::abs, which ExpandingHeapAllocator::MaxAllocatableSize calls, is not
+# sliced: it lives in src/cstd4.cpp, the runtime-library TU, whose hand-asm
+# primitives no host compiler accepts. hal/heap_globals.cpp defines it for the
+# host instead, the way hal/cstd_div.c defines cstd::fdiv.

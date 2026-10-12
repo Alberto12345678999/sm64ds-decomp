@@ -39,9 +39,9 @@ src/func_0203cc0c.c
 src/func_0204547c.c
 src/func_020457f0.c
 src/func_020456a0.c
-# src/_ZN4cstd3absEi.cpp moved to slice_gate2.txt: the allocator layer needs it
-# too, and every target that links this slice links gate 2 as well, so listing it
-# in both would be a duplicate definition.
+# cstd::abs is defined host-side in hal/heap_globals.cpp: its src/ home,
+# src/cstd4.cpp, carries hand-asm the host cannot compile, and every target that
+# links this slice links heap_globals.cpp as well.
 src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp
 
 # Whole-class slice. Once a constructor is a real C++ constructor its TU
