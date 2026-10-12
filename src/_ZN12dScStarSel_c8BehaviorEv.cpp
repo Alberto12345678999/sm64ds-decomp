@@ -1,24 +1,22 @@
 //cpp
 // @symbol _ZN12dScStarSel_c8BehaviorEv
-// NONMATCHING: 8/525 at exact size 0x834. Real dScStarSel_c method over
-// include/dScStarSel_c.h, vtable slot 6.
+// Matched 2004/b56. Real dScStarSel_c method over include/dScStarSel_c.h, vtable
+// slot 6.
 //
 // The stylus-hit loop reads the touch record through a 4-byte row type (TouchRecord,
 // the gTouchHeld/gTouchEdge/gTouchX/gTouchY layout PlayerInput.h describes). The
-// record's y byte is NOT a named local: it is read in the loop condition straight off
-// the row, and the compiler hoists that invariant read into the preheader itself.
-// That is what gives it the fresh r7 the ROM uses (+0x248 ldrb r7,[r6,#3]) instead of
-// the recycled r6 a named `ty` gets; it closes the whole +0x248..+0x278 window. A
-// flat gTouchHeld[idx * 4 + 3] spelling grows the body (0x83c), and with a 32-bit idx
-// the edge read then CSEs idx * 4 instead of refolding it (+0x28c), so idx is a byte.
+// record's y byte is not a named local: it is read in the loop condition straight off
+// the row, and the compiler hoists that invariant read into the preheader itself,
+// which is what gives it a fresh register. The slot index is a byte; a 32-bit index
+// CSEs idx * 4 instead of refolding it for the edge read.
 //
-// What remains is ONE cluster: idx and n swap r0 <-> r2 (+0x214, +0x220, +0x224,
-// +0x230, +0x238, +0x288/+0x28c, +0x2ec). We coalesce idx into its address temp
-// (ldrb r0,[r0]); the ROM keeps them apart (ldrb r2,[r0]). Measured inert on it: idx
-// and n declaration rank x type name jointly (1,800 cells, LICM on and off), head
-// statement order, dropping the idx/n locals for re-reads, and hill-climbs over the
-// whole declaration block from three seeds. opt_strength_reduction off is load-bearing
-// (without it the frame is rebuilt at 0x830 and pushes r8).
+// Two scratch locals are shared between the character-pick branch and the stylus
+// branch: `val` carries the cursor mode (c+0x133) in the first and the stylus-held
+// flag in the second, `num` the picked character and then the plate count. The
+// register allocator orders webs by where their variable is first assigned, so the
+// sharing is what puts the plate count in r0 and the slot index in r2 at the loop;
+// as four fresh locals they colour the other way round. opt_strength_reduction off
+// keeps the frame at 0x834 (with it on, r8 is pushed).
 #pragma opt_strength_reduction off
 #include "common.h"
 #include "PlayerInput.h"
@@ -65,8 +63,8 @@ s32 dScStarSel_c::Behavior()
     u32 found;
     s32 i;
     long tx;
-    s32 n;
-    u8 touched;
+    s32 num;
+    u8 val;
     unsigned char idx;
 
     if (data_0209f5bc->v5() != 0) {
@@ -86,16 +84,16 @@ s32 dScStarSel_c::Behavior()
                 }
             }
         } else if (FB(this, 0x135) != 0 && IsButtonInputValid() != 0) {
-            u8 mode = FB(this, 0x133);
-            if (mode == 0 && FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
+            val = FB(this, 0x133);
+            if (val == 0 && FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
                 FB(this, 0x133) = 2;
                 func_02012790(0x12e);
             } else if (FB(this, 0x139) == 0) {
-                if (mode == 1) {
-                    u8 ch = func_ov003_020adf50();
-                    data_02092128 = ch;
-                    data_02092114 = ch;
-                    FB(this, 0x132) = ch;
+                if (val == 1) {
+                    num = func_ov003_020adf50();
+                    data_02092128 = num;
+                    data_02092114 = num;
+                    FB(this, 0x132) = num;
                     FB(this, 0x118) = data_0208ee44 * 3;
                     FB(this, 0x139) = 2;
                 } else {
@@ -111,16 +109,16 @@ s32 dScStarSel_c::Behavior()
             idx = gActivePlayerSlot;
             cur = FB(this, 0x115);
             found = 0;
-            touched = gTouchHeld[idx * 4];
-            if (touched != 0) {
-                n = FB(this, 0x114);
+            val = gTouchHeld[idx * 4];
+            if (val != 0) {
+                num = FB(this, 0x114);
                 i = 0;
-                if (n > 0) {
+                if (num > 0) {
                     rec = ((TouchRecord *)gTouchHeld)[idx];
                     tx = rec[2];
                     do {
                     if ((u8)(tx - FB((u8 *)this + i, 0x11a) + 8) < 0x10 && ((TouchRecord *)gTouchHeld)[idx][3] < 0x28 && ((FB(this, 0x131) >> i) & 1)) {
-                        hit = (touched != 0 && gTouchEdge[idx * 4] != 0);
+                        hit = (val != 0 && gTouchEdge[idx * 4] != 0);
                         if (hit != 0 || cur != i) {
                             FB(this, 0x117) = data_0208ee44 * 3;
                         }
@@ -133,7 +131,7 @@ s32 dScStarSel_c::Behavior()
                         break;
                     }
                     i++;
-                    } while (i < n);
+                    } while (i < num);
                 }
             }
             if (found == 0 && FB(this, 0x135) == 2 && FB(this, 0x133) == 0 && data_0209caa0[0x42] == 0) {
