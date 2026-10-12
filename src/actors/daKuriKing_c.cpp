@@ -21,7 +21,8 @@
  *
  * State machine (data_ov074_021230f8): func_ov074_021203e4 sets mState and
  * runs the entry's first handler (enter); Behavior runs the second (tick)
- * every frame through func_ov074_0212042c. The roles below are read off the
+ * every frame for the main boss (not param1 0x1111) through
+ * func_ov074_0212042c. The roles below are read off the
  * tick bodies.
  *   0  intro cutscene and first talk           tick 021201f0
  *   1  wait for the talk to close, boss music  tick 0212018c
@@ -30,7 +31,8 @@
  *   4  player close behind: clip 5, then 3/2   tick 0211ffcc
  *   5  knocked back by a hit (mSizeIndex--)    enter 0211fd48, tick 0211fc38
  *   6  shrink one size step                    enter 0211fb84, tick 0211fa74
- *   7  defeat talk, then spawns actor 0x11a    enter 0211fa08, tick 0211f5b8
+ *   7  defeat: talk, vanish wave and shrink,   enter 0211fa08, tick 0211f5b8
+ *      burst, then spawns actor 0x11a (key)
  *   8  hit by a Mega player, slides to a stop  tick 0211fbd0
  * States 0, 1 and 4 enter through empty free stubs; state 8's enter is the
  * empty member 0211fc34.
@@ -53,12 +55,15 @@
  * - State dispatch stays a pointer-to-member on a non-virtual stand-in:
  *   daKuriKing_c has virtuals, so its own member pointers are wider than the
  *   8-byte records the sinit copies in.
- * - pad_2ec holds the three drop-shadow matrices and the body matrix (+0x37c).
- *   The header is shared with daKrb_c, so they are reached by cast here.
- * - The remaining mangled extern "C" calls (Particle::System::NewSimple,
- *   Player::Hurt, ModelAnim::SetAnim, the SetFile/Init family, Earthquake,
- *   DropShadowRadHeight, cstd::atan2, Sound::ChangeMusicVolume) carry
- *   Fix12<int> by value, which no header type mangles to.
+ * - pad_2ec holds the three drop-shadow matrices and the body matrix (+0x37c)
+ *   and is reached by cast. The body matrix's reason is the item above; the
+ *   drop-shadow matrices are left untyped with it [GUESS: same ~Vector3 cost].
+ * - The remaining mangled calls that carry Fix12<int> (Particle::System::
+ *   NewSimple, Player::Hurt, ModelAnim::SetAnim, the SetFile/Init family,
+ *   Earthquake, DropShadowRadHeight, cstd::atan2, Sound::ChangeMusicVolume)
+ *   pass it as a raw int. The header form with Fix12<int> locals builds a
+ *   stack temporary and changes size (021223bc goes 0x278 -> 0x288 through
+ *   DropShadowRadHeight).
  */
 
 /* common.h BEFORE daKuriKing_c.h: with the structured Matrix4x3,
@@ -344,11 +349,13 @@ void daKuriKing_c::func_ov074_0211f344(u8 value) {
 }
 
 // @symbol _ZN12daKuriKing_c19func_ov074_0211f38cEv
-/* Release one Goomba on a timer, and report whether the whole wave has been
-   released.  The wave is built in three tiers: the first seven Goombas ring
-   the base, the next five sit higher on a narrower ring, the next three higher
-   and narrower still, and the sixteenth onward spawns dead centre, highest of
-   all.  The spawn count needed is a table lookup on mSizeIndex, with one
+/* Release one KURIKING_VANISH copy (actor 0xc7, param 0x1111, drawn with the
+   ov084 Goomba model) on a timer during the defeat (state 7, substate 2 of
+   0211f5b8), and report whether the whole wave has been released.  This is
+   not state 2's Goomba wave (0211fd74, actor 0xc8).  The wave is built in
+   three tiers: the first seven copies ring the base, the next five sit higher
+   on a narrower ring, the next three higher and narrower still, and the
+   sixteenth onward spawns dead centre, highest of all.  The spawn count needed is a table lookup on mSizeIndex, with one
    extra on size 1 unless the closest player's param1 reads 3. */
 int daKuriKing_c::func_ov074_0211f38c(){
     struct Vector3 spawnPos, basePos;
@@ -693,8 +700,8 @@ L90:;
 
     sp2->mMinionIndex = this->mSpawnedCount;
     /* Same pool-address increment as mSubState: 0x602 is not an ARM immediate. */
-    u8* spawned = (u8*)(((int)&this->mSpawnedCount));
-    *spawned = (u8)(*spawned + 1);
+    u8* spawnedCount = (u8*)(((int)&this->mSpawnedCount));
+    *spawnedCount = (u8)(*spawnedCount + 1);
     this->mTimer = 2;
 
     Player* pl2 = this->ClosestPlayer();
@@ -1460,7 +1467,7 @@ int daKuriKing_c::func_ov074_021216f4()
 void daKuriKing_c::func_ov074_02121800()
 {
     Matrix4x3 mtx;
-    int i, height, rad, footX, posY, radius;
+    int i, height, rad, footX, posY, radius; /* footX is never used: it keeps the @NNN count */
     char *self, *src, *m;
     dExtShadowModel_c *shadow;
 
@@ -1486,13 +1493,14 @@ void daKuriKing_c::func_ov074_02121800()
             rad = 0xa000;
         radius = rad;
         *(Matrix4x3 *)(self + 0x2ec) = mtx;
-        *(int *)(self + 0x310) = (footX = *(int *)(src + 0x3ac) >> 3);
+        *(int *)(self + 0x310) = *(int *)(src + 0x3ac) >> 3;
         posY = this->mPosY;
-        /* Both arms are the same; the select is the matched shape. */
+        /* Both arms are the same; the select is never needed for codegen,
+           but its compiler temporaries keep the @2113.. pins (dropping it
+           renumbers by 4). */
         *(int *)(self + 0x314) = (radius ? posY : posY) >> 3;
-        rad = *(int *)(src + 0x3b4);    /* reused as scratch for the foot's z */
         height += 0x28000;
-        *(int *)(self + 0x318) = rad >> 3;
+        *(int *)(self + 0x318) = *(int *)(src + 0x3b4) >> 3;
         _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, shadow, m, radius, height, 0xf);
         self += 0x30;
@@ -1604,7 +1612,8 @@ int daKuriKing_c::Behavior()
     mGoombaTargetSpeed = u < 0 ? -u : u;
 
     /* Camera word +0x114 (still padding in dCamera_c.h) gets the boss every
-       frame outside the defeat talk. */
+       frame for the main boss (not param1 0x1111) except in state 7
+       (defeat). */
     if (mState != 7) {
         *(void **)(data_0209f318 + 0x114) = this;
     }

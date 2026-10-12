@@ -15,22 +15,31 @@
  * func_ov060_021180e0 is defined as a member; the other two are free
  * functions under the members' mangled names.
  *
- * The manifest pins the compiler-numbered statics (@495..@520) that
- * __sinit emits at the end of this file. mwcc's counter for those names
- * advances once per named variable or parameter declared before them, so
- * deleting a local, or turning a free function's named parameter into
- * `this`, renumbers them. That is why func_ov060_021181b4 stays a free
- * function, func_ov060_021180e0 steps its timer through two named locals,
- * and func_ov060_02117db8 keeps three unused locals and two pointer ones.
+ * __sinit at the end of this file emits compiler-numbered statics; they
+ * compile as @495..@520 and the manifest maps them to the ROM's
+ * @456..@479 and @506. mwcc's counter for those names advances for
+ * named variables, named parameters (prototypes included) and some
+ * compiler temporaries declared before them (`new daKpa3Bg_c` alone
+ * advances it by 25), so adding or deleting one renumbers them. These
+ * names are there for the count:
+ * - the local-extern prototype of func_ov060_021181b4 names its
+ *   parameter c. Making the function a member drops that name; the
+ *   bytes stay the same, and one extra named local restores the count.
+ * - InitResources loads the model through the named local bmd.
+ * - func_ov060_021180e0 steps its timer through two named locals.
+ * - func_ov060_02117db8 keeps live, p and py (never read) and steps
+ *   mVertSpeed/mPosY through the speed/posY pointers.
  *
  * leftovers:
  * - The three handlers keep their address names.
  * - func_ov060_02117db8 parses as C (cplusplus off): the same body as
  *   C++ DIFFs. It reaches the members through a struct daKpa3Bg_c *.
- *   dActor_c::Earthquake and PoofDustAt stay mangled (Fix12 by value;
- *   Earthquake is not on dActor_c.h). func_02012694 plays bank-3 sound
+ *   dActor_c::Earthquake, PoofDustAt and fBase_c::MarkForDestruction
+ *   stay mangled because the body is C (Earthquake also takes
+ *   Fix12<int> and is not on dActor_c.h). func_02012694 plays bank-3 sound
  *   0xbc at a point written into mCamSpacePos, restored afterwards.
- * - dBgW_KcMbg::SetFile stays mangled (Fix12 by value).
+ * - dBgW_KcMbg::SetFile is called through its mangled name, with the
+ *   Fix12<int> argument passed as a raw int.
  * - func_020393d4 stores dBgW::UpdatePosWithTransform.
  *   func_020393c4 stores the touch veneer func_ov060_021183f4.
  * - data_ov060_02119564 / 02119568 / 0211956c are one 0xc-byte stride
@@ -78,7 +87,7 @@ void func_ov060_021183cc(daKpa3Bg_c *self, dActor_c *other);
 
 // local extern: defined below as a free function (cplusplus off has no member syntax); the header declares the member spelling for the PMF table.
 void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(daKpa3Bg_c *self);
-// local extern: defined below as a free function (keeps the @NNN count, see the banner); the header declares the member spelling for the PMF table.
+// local extern: defined below as a free function; this prototype's named c counts toward the @NNN statics (see the banner). The header declares the member spelling for the PMF table.
 int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c);
 
 }
@@ -137,6 +146,7 @@ s32 daKpa3Bg_c::InitResources()
 {
     mVariant = (u8)(param1 & 0xf);
     data_0208e738 = 0;
+    /* bmd is named for the @NNN count (see the banner). */
     BMD_File *bmd = (BMD_File *)Model::LoadFile(*data_ov060_02119514[mVariant]);
     mModel.SetFile(bmd, 1, -1);
     CopyTexPalFromLevelModel(&mModel.data);
@@ -207,8 +217,8 @@ extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
 /* mState 1. Destroys the platform once Bowser is gone. Drops it at once
    (mState 2) if Bowser touched it this frame in state 0xd with condition
    bit 0x10000 set (BOWSER_STATE_JUMP and BOWSER_COND_RECOVERING in
-   daKpa_c.cpp). On his last hit point, in state 3 or while held,
-   mActive latches; from then on mTimer counts each frame and the
+   daKpa_c.cpp). On his last hit point, in state 3 or while held or being released
+   (mHoldState != 0), mActive latches; from then on mTimer counts each frame and the
    platform drops once it passes mVariant * 20.
    koopa+0x40c/0x410/0x418/0x41e are daKpa_c's mState, mHoldState,
    mCondFlags and mHealth. Including daKpa_c.h keeps the bytes but
