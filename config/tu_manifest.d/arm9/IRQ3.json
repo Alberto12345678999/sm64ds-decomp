@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "contiguous linker run: 0x02059cb4..0x02059d74, 6 function(s), gapless in config/arm9/delinks.txt (each entry's end is the next entry's start, all marked `complete`).",
     "TOP EDGE: func_02059c18 (0x02059c18..0x02059cb4) ends exactly where the run begins -- an unattributed helper outside the IRQ CPSR family. BOTTOM EDGE: ARMProcessorMode (0x02059d74..0x02059d80) begins exactly where the run ends -- processor-mode setup, not an IRQ primitive.",
-    "NAMESPACE-LOCAL COMPLETE: the run is every IRQ CPSR primitive (Enable/Disable/Restore/DisableAll/RestoreAll) plus the IRQ-state init helper below them; the other `_ZN3IRQ*` functions live in separate runs (e.g. src/IRQ.cpp at 0x02056c40) -- a TU claims one contiguous .text span, so they cannot fold here."
+    "NAMESPACE-LOCAL COMPLETE: the run is every IRQ CPSR primitive (Enable/Disable/Restore/DisableAll/RestoreAll) plus the IRQ-state init helper below them; the other `_ZN3IRQ*` functions live in separate runs (e.g. the run at 0x02056c40) -- a TU claims one contiguous .text span, so they cannot fold here."
   ],
   "sections": [
     {

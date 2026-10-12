@@ -940,9 +940,105 @@ src/unnamed/arm9/0201/func_020178cc.c:
     complete
     .text start:0x020178cc end:0x020178e4
 
-src/SharedFilePtr.cpp:
+src/_ZN15TextureSequence8LoadFileER13SharedFilePtr.cpp:
     complete
-    .text start:0x020178e4 end:0x02017e60
+    .text start:0x020178e4 end:0x0201791c
+
+src/SharedFilePtr_Destruct_TexSeq.c:
+    complete
+    .text start:0x0201791c end:0x02017934
+
+src/SharedFilePtr_Construct_TexSeq.c:
+    complete
+    .text start:0x02017934 end:0x0201794c
+
+src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp:
+    complete
+    .text start:0x0201794c end:0x02017984
+
+src/SharedFilePtr_Destruct_Anim.c:
+    complete
+    .text start:0x02017984 end:0x0201799c
+
+src/_ZN13SharedFilePtr9ConstructEj.cpp:
+    complete
+    .text start:0x0201799c end:0x020179b4
+
+src/unnamed/arm9/0201/func_020179b4.c:
+    complete
+    .text start:0x020179b4 end:0x02017a0c
+
+src/unnamed/arm9/0201/func_02017a0c.c:
+    complete
+    .text start:0x02017a0c end:0x02017a24
+
+src/unnamed/arm9/0201/func_02017a24.c:
+    complete
+    .text start:0x02017a24 end:0x02017a3c
+
+src/_ZN5Model8LoadFileER13SharedFilePtr.cpp:
+    complete
+    .text start:0x02017a3c end:0x02017a8c
+
+src/_ZN13SharedFilePtr19ReallocateModelFileEv.cpp:
+    complete
+    .text start:0x02017a8c end:0x02017a9c
+
+src/unnamed/arm9/0201/func_02017a9c.c:
+    complete
+    .text start:0x02017a9c end:0x02017ab4
+
+src/unnamed/arm9/0201/func_02017ab4.c:
+    complete
+    .text start:0x02017ab4 end:0x02017acc
+
+src/unnamed/arm9/0201/func_02017acc.c:
+    complete
+    .text start:0x02017acc end:0x02017ae4
+
+src/unnamed/arm9/0201/func_02017ae4.c:
+    complete
+    .text start:0x02017ae4 end:0x02017afc
+
+src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp:
+    complete
+    .text start:0x02017afc end:0x02017b34
+
+src/SharedFilePtr_Destruct_Clsn.c:
+    complete
+    .text start:0x02017b34 end:0x02017b4c
+
+src/unnamed/arm9/0201/func_02017b4c.c:
+    complete
+    .text start:0x02017b4c end:0x02017b64
+
+src/_ZN13SharedFilePtr7ReleaseEv.cpp:
+    complete
+    .text start:0x02017b64 end:0x02017bc4
+
+src/_ZN13SharedFilePtr8LoadFileEv.cpp:
+    complete
+    .text start:0x02017bc4 end:0x02017c24
+
+src/func_02017c24.c:
+    complete
+    .text start:0x02017c24 end:0x02017c54
+
+src/_ZN13SharedFilePtr4LoadEv.cpp:
+    complete
+    .text start:0x02017c54 end:0x02017e0c
+
+src/func_02017e0c.c:
+    complete
+    .text start:0x02017e0c end:0x02017e34
+
+src/unnamed/arm9/0201/func_02017e34.c:
+    complete
+    .text start:0x02017e34 end:0x02017e48
+
+src/unnamed/arm9/0201/func_02017e48.c:
+    complete
+    .text start:0x02017e48 end:0x02017e60
 
 src/unnamed/arm9/0201/func_02017e60.c:
     complete
@@ -4064,9 +4160,81 @@ src/Copy48BytesFixed.c:
     complete
     .text start:0x02056c1c end:0x02056c40
 
-src/IRQ.cpp:
+src/_ZN3IRQ19Tim3OverflowHandlerEv.cpp:
     complete
-    .text start:0x02056c40 end:0x02057014
+    .text start:0x02056c40 end:0x02056c50
+
+src/_ZN3IRQ19Tim2OverflowHandlerEv.cpp:
+    complete
+    .text start:0x02056c50 end:0x02056c60
+
+src/_ZN3IRQ19Tim1OverflowHandlerEv.cpp:
+    complete
+    .text start:0x02056c60 end:0x02056c70
+
+src/_ZN3IRQ19Tim0OverflowHandlerEv.cpp:
+    complete
+    .text start:0x02056c70 end:0x02056c80
+
+src/_ZN3IRQ11Dma3HandlerEv.cpp:
+    complete
+    .text start:0x02056c80 end:0x02056c90
+
+src/_ZN3IRQ11Dma2HandlerEv.cpp:
+    complete
+    .text start:0x02056c90 end:0x02056ca0
+
+src/_ZN3IRQ11Dma1HandlerEv.cpp:
+    complete
+    .text start:0x02056ca0 end:0x02056cb0
+
+src/_ZN3IRQ11Dma0HandlerEv.cpp:
+    complete
+    .text start:0x02056cb0 end:0x02056cc0
+
+src/_ZN3IRQ13DmaTimHandlerEj.cpp:
+    complete
+    .text start:0x02056cc0 end:0x02056d60
+
+src/_ZN3IRQ12EmptyHandlerEv.cpp:
+    complete
+    .text start:0x02056d60 end:0x02056d64
+
+src/_ZN3IRQ15ClearInterruptsEj.cpp:
+    complete
+    .text start:0x02056d64 end:0x02056d98
+
+src/_ZN3IRQ11DisableIRQsEj.cpp:
+    complete
+    .text start:0x02056d98 end:0x02056de0
+
+src/_ZN3IRQ10EnableIRQsEj.cpp:
+    complete
+    .text start:0x02056de0 end:0x02056e18
+
+src/_ZN3IRQ7SetIRQsEj.cpp:
+    complete
+    .text start:0x02056e18 end:0x02056e4c
+
+src/unnamed/arm9/0205/func_02056e4c.c:
+    complete
+    .text start:0x02056e4c end:0x02056e98
+
+src/unnamed/arm9/0205/func_02056e98.c:
+    complete
+    .text start:0x02056e98 end:0x02056ee4
+
+src/_ZN3IRQ13GetIRQHandlerEj.cpp:
+    complete
+    .text start:0x02056ee4 end:0x02056f70
+
+src/_ZN3IRQ13SetIRQHandlerEjPFvvE.cpp:
+    complete
+    .text start:0x02056f70 end:0x02057000
+
+src/unnamed/arm9/0205/func_02057000.c:
+    complete
+    .text start:0x02057000 end:0x02057014
 
 src/unnamed/arm9/0205/func_020570a8.c:
     complete

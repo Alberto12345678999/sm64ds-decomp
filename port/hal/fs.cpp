@@ -214,9 +214,9 @@ struct SharedFilePtrC *_ZN13SharedFilePtr9ConstructEj(
 
 /* The seam above is spelled as a C function because that is how src/ reached it
    before the callers were converted. include/SharedFilePtr.h now declares Load as
-   the real member, and src/SharedFilePtr.cpp calls it as one -- so
+   the real member, and src/_ZN13SharedFilePtr8LoadFileEv.cpp calls it as one -- so
    this target, which deliberately does NOT compile the card-hardware
-   src/SharedFilePtr.cpp, has to export the member too. Same seam, one
+   src/_ZN13SharedFilePtr4LoadEv.cpp, has to export the member too. Same seam, one
    spelling forwarding to the other. */
 #include "SharedFilePtr.h"
 

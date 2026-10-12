@@ -10,7 +10,7 @@ port/unmatched/MeshCollider_DetectClsn_RaycastLine.cpp
 # to name separately all live in them.
 src/engine/collision/dBgW_Kc.cpp
 src/engine/collision/dBgW_Kc_itcm.cpp
-src/SharedFilePtr.cpp
+src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp
 # dBgPc, dBgPi, the CLPS block reference, the SurfaceInfo accessors and
 # the func_02037de8..func_02037e9c helpers this slice used to name
 # separately all live in the dBgCh_SphCrr_query translation unit now.

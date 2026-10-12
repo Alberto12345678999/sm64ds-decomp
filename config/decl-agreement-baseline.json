@@ -318,6 +318,9 @@
       ]
     },
     "CpuCopy8": {
+      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+        "arity:3"
+      ],
       "src/engine/save/SaveData.cpp": [
         "arity:3"
       ],
@@ -455,9 +458,6 @@
         "return:int"
       ],
       "src/unnamed/arm9/0206/func_02068e4c.c": [
-        "arity:3"
-      ],
-      "src/SharedFilePtr.cpp": [
         "arity:3"
       ]
     },
@@ -752,6 +752,9 @@
       ]
     },
     "FS_CloseFile": {
+      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+        "return:void"
+      ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
         "return:void"
       ],
@@ -772,9 +775,6 @@
       ],
       "src/unnamed/arm9/0206/func_020685cc.c": [
         "param:#1 int *",
-        "return:void"
-      ],
-      "src/SharedFilePtr.cpp": [
         "return:void"
       ]
     },
@@ -7795,6 +7795,10 @@
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *"
       ],
+      "src/unnamed/arm9/0201/func_020179b4.c": [
+        "param:#1 SharedFilePtr *",
+        "return:BMD_File *"
+      ],
       "src/unnamed/ov002/func_ov002_020b6c54.c": [
         "param:#1 void *"
       ],
@@ -8334,21 +8338,21 @@
       ]
     },
     "_ZN6Memory8AllocateEj": {
-      "src/unnamed/arm9/0201/func_0201818c.c": [
+      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
         "return:int"
       ],
-      "src/SharedFilePtr.cpp": [
+      "src/unnamed/arm9/0201/func_0201818c.c": [
         "return:int"
       ]
     },
     "_ZN6Memory8AllocateEji": {
+      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+        "return:int"
+      ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
         "return:int"
       ],
       "src/unnamed/arm9/0201/func_0201a244.c": [
-        "return:int"
-      ],
-      "src/SharedFilePtr.cpp": [
         "return:int"
       ]
     },
@@ -22643,6 +22647,28 @@
         "param:#1 SharedFilePtr *"
       ]
     },
+    "func_02017e34": {
+      "src/SharedFilePtr_Destruct_Anim.c": [
+        "return:int"
+      ],
+      "src/SharedFilePtr_Destruct_Clsn.c": [
+        "return:int"
+      ],
+      "src/SharedFilePtr_Destruct_TexSeq.c": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0201/func_02017a9c.c": [
+        "return:int"
+      ],
+      "src/unnamed/arm9/0201/func_02017ab4.c": [
+        "return:int"
+      ]
+    },
+    "func_02017e48": {
+      "src/_ZN13SharedFilePtr9ConstructEj.cpp": [
+        "return:void"
+      ]
+    },
     "func_02017e60": {
       "src/unnamed/arm9/0201/func_02018aa4.c": [
         "return:int"
@@ -22707,6 +22733,10 @@
       ]
     },
     "func_020185c0": {
+      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+        "param:#1 void *",
+        "return:void"
+      ],
       "src/unnamed/arm9/0201/func_0201818c.c": [
         "param:#1 void *",
         "param:#2 int",
@@ -22715,10 +22745,6 @@
       "src/unnamed/arm9/0201/func_02018270.c": [
         "param:#1 void *",
         "param:#2 int",
-        "return:void"
-      ],
-      "src/SharedFilePtr.cpp": [
-        "param:#1 void *",
         "return:void"
       ]
     },
@@ -22758,6 +22784,11 @@
       ]
     },
     "func_02018d48": {
+      "src/_ZN13SharedFilePtr4LoadEv.cpp": [
+        "param:#1 void *",
+        "param:#2 void *",
+        "param:#3 unsigned int"
+      ],
       "src/unnamed/arm9/0201/func_0201834c.c": [
         "param:#1 Obj *",
         "param:#2 void *",
@@ -22778,11 +22809,6 @@
       "src/unnamed/arm9/0201/func_02018cbc.c": [
         "param:#1 void *",
         "param:#2 void *"
-      ],
-      "src/SharedFilePtr.cpp": [
-        "param:#1 void *",
-        "param:#2 void *",
-        "param:#3 unsigned int"
       ]
     },
     "func_02018d98": {
@@ -26505,7 +26531,6 @@
         "arity:0"
       ]
     },
-    "func_0206ccd8": {},
     "func_0206d32c": {
       "src/unnamed/arm9/0201/func_02018b64.c": [
         "param:#2 int",
