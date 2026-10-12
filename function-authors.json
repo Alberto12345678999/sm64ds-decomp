@@ -25757,6 +25757,10 @@
       "author": "tangosdev",
       "name": "_ZN12dScMgSlot1_c6RenderEv"
     },
+    "ov006:0x0210c9e0": {
+      "author": "andrewboudreau",
+      "name": "_ZN12dScMgSlot1_c8BehaviorEv"
+    },
     "ov006:0x0210d1fc": {
       "author": "tangosdev",
       "name": "_ZN12dScMgSlot1_c13InitResourcesEv"
