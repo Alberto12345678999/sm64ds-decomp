@@ -15,13 +15,16 @@
  * this TU's own reads and writes. g_profile_HOLHEI stays outside the TU.
  */
 
+struct HolheiState;  /* enter / update PMF pair, defined in d_a_holhei.cpp */
+
 struct daHolhei_c : dEnemyBase_c {
     dCcAc_c     mdCc_c;        /* 0x110 */
     dBgCh_Actr  mMeshClsn;     /* 0x144 */
     ModelAnim   mModel;        /* 0x300 */
-    /* Behavior calls the PMF at *mState + 8. InitResources enters
-       data_ov062_0211dee0 through daHolhei_c_ChangeState. */
-    void       *mState;        /* 0x364 */
+    /* Current state record. Behavior calls its update PMF each frame.
+       InitResources enters data_ov062_0211dee0 through
+       daHolhei_c_ChangeState. */
+    HolheiState *mState;       /* 0x364 */
     dExtShadowModel_c mShadowModel;  /* 0x368 */
     /* func_ov062_02116dbc / 02116d28 copy identity here, write pos>>3 into
        the translation, and pass it to DropShadowRadHeight. */
