@@ -27317,9 +27317,11 @@ after_player_slot:
 // @symbol _ZN6Player13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
 // Match: Player::InitResources (ov002:0x020e558c).
-// Heap zero of operator_new(0x14) at +0x588 uses mwccarm CLEAR shape
-// (4x strb post-inc). Pure C never emits that for a heap pointer under
-// -O4,p (only stack u8[N]={0} does); small asm block reproduces it.
+// The 0x14-byte block allocated for mHeldObjQueue is zeroed in place with
+// mwccarm's __builtin__clear intrinsic: that is the compiler's inline CLEAR
+// (5 x 4 strb post-inc, subs/bne) aimed at the heap pointer itself. Value-
+// init, placement new, struct assignment and memset all go through a stack
+// temporary or an out-of-line __clear/memset call instead.
 // Also: pin data_0209f2d8 in local `d` so ==2 keeps r1 bool (preserves r0);
 // decl order td,tx,tz + load order for dBgCh_Gnd pos regs.
 extern "C" {
@@ -27372,7 +27374,6 @@ s32 Player::InitResources()
     int t;
     int changed;
     int i; unsigned int u;
-    u8* q;
     u8 f254;
     u8 cur;
     int td, tx, tz;
@@ -27421,18 +27422,7 @@ Ld0:
     *(void**)(&unk_578) = func_02073470(0x32, 0xc, 8, (void*)func_0203d384, (void*)_ZN7Vector3D1Ev);
     *(void**)(&unk_57c) = _ZN6Memory13operator_new2Ej(0x32);
     *(void**)(&mHeldObjQueue) = _ZN6Memory13operator_new2Ej(0x14);
-    q = *(u8**)(&mHeldObjQueue);
-    asm {
-      mov r1, #5
-      mov r0, #0
-    Lzero:
-      strb r0, [q], #1
-      strb r0, [q], #1
-      strb r0, [q], #1
-      strb r0, [q], #1
-      subs r1, r1, #1
-      bne Lzero
-    }
+    __builtin__clear((void*)mHeldObjQueue, 0x14);
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
