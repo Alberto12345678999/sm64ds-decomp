@@ -886,10 +886,11 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s32 unk_0a8;            /* 0x0a8 */
     s32 unk_0ac;            /* 0x0ac */
     u8  pad_0b0[0x4];
-    s32 mHudScore;          /* 0x0b4 -- zeroed by BeforeInitResources; the
-                                value func_ov004_020adb1c writes into the dMeter_c
-                                counter word. Leaves keep their own tallies and
-                                copy the result here */
+    s32 mHudScore;          /* 0x0b4 -- zeroed by BeforeInitResources. Leaves
+                                count into it or copy their own tally here, and
+                                the value leaves submit through
+                                func_ov004_020adb1c, which stores it at
+                                unk_464c */
     s32 unk_0b8;            /* 0x0b8 */
     u32 unk_0bc;            /* 0x0bc */
     u16 mPromptBlinkTimer;  /* 0x0c0 -- free-runs 0..0x2f; the prompt shows
