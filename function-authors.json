@@ -16065,6 +16065,10 @@
       "author": "ruspecial",
       "name": "_ZN6Player22St_SwingPlayer_CleanupEv"
     },
+    "ov002:0x020d9fec": {
+      "author": "andrewboudreau",
+      "name": "_ZN6Player19St_SwingPlayer_MainEv"
+    },
     "ov002:0x020da3b0": {
       "author": "ruspecial",
       "name": "_ZN6Player19St_SwingPlayer_InitEv"
