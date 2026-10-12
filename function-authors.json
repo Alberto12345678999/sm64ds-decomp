@@ -15725,6 +15725,10 @@
       "author": "andrewboudreau",
       "name": "_ZN6Player12St_Walk_MainEv"
     },
+    "ov002:0x020d3b9c": {
+      "author": "andrewboudreau",
+      "name": "func_ov002_020d3b9c"
+    },
     "ov002:0x020d413c": {
       "author": "tangosdev",
       "name": "func_ov002_020d413c"
