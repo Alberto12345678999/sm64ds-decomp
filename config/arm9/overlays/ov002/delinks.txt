@@ -192,6 +192,10 @@ src/actors/Player.cpp:
     complete
     .text start:0x020bccfc end:0x020d3b9c
 
+src/unnamed/ov002/func_ov002_020d3b9c.c:
+    complete
+    .text start:0x020d3b9c end:0x020d413c
+
 src/unnamed/ov002/func_ov002_020d413c.c:
     complete
     .text start:0x020d413c end:0x020d4270

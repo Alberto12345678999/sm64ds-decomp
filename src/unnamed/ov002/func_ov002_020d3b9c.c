@@ -1,14 +1,11 @@
 #include "PlayerInput.h"
 // @symbol func_ov002_020d3b9c
 /* recovered: Player walk state helper (between St_Walk_Main and St_Walk_Init): steering and turn approach. */
-// NONMATCHING: div 50 of 360 words. mwccarm 2004/b56, --module ov002,
-// @ 0x020d3b9c size 0x5a0. Residue class: colouring.
-// Draft from nearmiss/db.jsonl (stored divergence 50), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
-// drafts live on main with an honest banner so the port and readers have source. Logic is
-// verified only as far as the residue class implies: register names and instruction order
-// for the shape-exact rows, NOT an independent execution audit for the others. Counts as
-// decompiled, not matched; tools/enroll.py leaves it out of the ROM build, which keeps the
-// original bytes for this range. A byte-exact match replaces this file and drops the banner.
+// Matched 2004/b56. The analog-stick speed curve reads the stick and the controller
+// mode through small inline accessors, as the minimum/full-tilt thresholds elsewhere in
+// Player suggest; that inline structure is what gives the entry its register colouring.
+// The boost test is written with the decrement-and-scale arm first: the reverse arm
+// order compiles to the same instructions in a different schedule.
 
 typedef signed char s8;
 typedef unsigned char u8;
@@ -36,22 +33,27 @@ extern char data_0209f49c[];
 extern unsigned char data_0209f4ac[];
 extern unsigned char data_0209f4ae[];
 extern char data_ov002_02110184;
+static inline s16 StickMagnitude(void) { return *((s16 *) (((char *) data_0209f4a0) + gActivePlayerSlot * 0x18)); }
+static inline u8 ControllerMode(void) { return *((u8 *) (data_0209f4ae + gActivePlayerSlot * 0x18)); }
+static inline int StickDeadzone(void) { return (ControllerMode() != 2) ? 0x471 : 0x555; }
+static inline int StickFullTilt(void) { return (ControllerMode() != 2) ? 0x955 : 0xAAA; }
+static inline int StickSpeedScale(void) { return (ControllerMode() != 2) ? 0x24 : 0x30; }
+static inline int StickSpeedMin(void) { return (ControllerMode() != 2) ? 0xa : 0x10; }
+static inline int StickSpeedMax(void) { return (ControllerMode() != 2) ? 0x15 : 0x20; }
 int func_ov002_020d3b9c(char *c)
 {
-  int acc;
   int spd;
+  int acc;
   s16 stick;
-  int idx;
   s16 targ;
   int diff;
-  acc = 0;
-  idx = gActivePlayerSlot * 0x18;
-  stick = *((s16 *) (((char *) data_0209f4a0) + idx));
-  spd = acc;
+  spd = 0;
+  stick = *((s16 *) (((char *) data_0209f4a0) + (gActivePlayerSlot * 0x18)));
+  acc = spd;
   if ((stick != 0) && (((u16) ((*((u16 *) (c + 0x6ce))) & 0xc)) == 0))
   {
     *((u16 *) (c + 0x6ac)) = 4;
-    if ((*((u8 *) (data_0209f4ac + idx))) == 0)
+    if ((*((u8 *) (data_0209f4ac + (gActivePlayerSlot * 0x18)))) == 0)
     {
       spd = Player_ScaleByCharFactor(c, 0x14000);
       acc = 0x1000;
@@ -69,21 +71,16 @@ int func_ov002_020d3b9c(char *c)
     }
     else
     {
-      u8 mode = *((u8 *) (data_0209f4ae + idx));
-      s16 stick2 = *((s16 *) (((char *) data_0209f4a0) + idx));
-      if (stick2 <= ((mode != 2) ? (0x471) : (0x555)))
+      if (StickMagnitude() <= StickDeadzone())
       {
         spd = 0;
       }
       else
-        if (stick2 <= ((mode != 2) ? (0x955) : (0xAAA)))
+        if (StickMagnitude() <= StickFullTilt())
       {
-        int t = stick2 * ((mode != 2) ? (0x24) : (0x30));
-        int s = (mode != 2) ? (0xa) : (0x10);
-        t = (t >> 12) - s;
-        s = (mode != 2) ? (0xa) : (0x10);
-        spd = t << 15;
-        spd = spd / (((mode != 2) ? (0x15) : (0x20)) - s);
+        int t = (StickMagnitude() * StickSpeedScale()) >> 12;
+        spd = (t - StickSpeedMin()) << 15;
+        spd = spd / (StickSpeedMax() - StickSpeedMin());
       }
       else
       {
@@ -99,17 +96,17 @@ int func_ov002_020d3b9c(char *c)
     }
     if ((*((u8 *) (c + 0x6ed))) != 0)
     {
-      if (((*((u16 *) (data_0209f49c + (gActivePlayerSlot * 0x18)))) & 0x800) == 0)
-      {
-        *((u8 *) (c + 0x6ed)) = 0;
-      }
-      else
+      if (((*((u16 *) (data_0209f49c + (gActivePlayerSlot * 0x18)))) & 0x800) != 0)
       {
         u8 *p = (u8 *) (((char *) c) + 0x6ED);
         *p = (u8) ((*p) - 1);
         spd = (int) (((((long long) spd) * 0x1333LL) + 0x800) >> 12);
         acc = 0x1e000;
         _ZN6Player19func_ov002_020bf88cEv(c);
+      }
+      else
+      {
+        *((u8 *) (c + 0x6ed)) = 0;
       }
     }
     {
@@ -227,7 +224,7 @@ int func_ov002_020d3b9c(char *c)
     else
       if ((*((u16 *) (c + 0x6ac))) == 0)
     {
-      acc = ((*((u8 *) (c + 0x703))) == 0) ? (0x1000) : (0x4000);
+      if ((*((u8 *) (c + 0x703))) == 0) acc = 0x1000; else acc = 0x4000;
       if ((*((int *) (c + 0x98))) < (-0xa000))
       {
         *((int *) (c + 0x98)) = -0xa000;
