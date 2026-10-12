@@ -56,8 +56,9 @@ struct daKpa3Bg_c : dBgActor_c {
     virtual s32 Render();                  /* slot  9 */
 
     /* The mState handlers. Declared here so &daKpa3Bg_c::func_ov060_... is a
-       pointer-to-member constant for the data_ov060_0211b1ac table; the TU
-       defines them as free functions under these same mangled spellings. */
+       pointer-to-member constant for the data_ov060_0211b1ac table. The TU
+       defines func_ov060_021180e0 as a member and the other two as free
+       functions under the members' mangled spellings. */
     void func_ov060_021181b4();
     void func_ov060_021180e0();
     void func_ov060_02117db8();
