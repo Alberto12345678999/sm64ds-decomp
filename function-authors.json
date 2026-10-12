@@ -29921,6 +29921,10 @@
       "author": "tangosdev",
       "name": "_ZN9daSBird_c19func_ov009_02111234Ev"
     },
+    "ov009:0x0211145c": {
+      "author": "andrewboudreau",
+      "name": "func_ov009_0211145c"
+    },
     "ov009:0x021115d8": {
       "author": "lunavyqo",
       "name": "_ZN9daSBird_c19func_ov009_021115d8Ev"
