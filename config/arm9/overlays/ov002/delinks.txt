@@ -532,6 +532,10 @@ src/_ZN6Player22St_SwingPlayer_CleanupEv.cpp:
     complete
     .text start:0x020d9fc4 end:0x020d9fec
 
+src/_ZN6Player19St_SwingPlayer_MainEv.cpp:
+    complete
+    .text start:0x020d9fec end:0x020da3b0
+
 src/_ZN6Player19St_SwingPlayer_InitEv.cpp:
     complete
     .text start:0x020da3b0 end:0x020da41c
