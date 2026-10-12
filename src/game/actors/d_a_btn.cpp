@@ -32,8 +32,6 @@
  *   DropShadowScaleXYZ, ModelAnim::SetAnim, TextureSequence::SetFile,
  *   dBgW_KcMbg::SetFile and dBgCh_Actr::Init take Fix12<int> by value, so
  *   they stay mangled (notes/mwccarm-codegen.md 6az).
- *   Sound::LoadAndSetMusic_Layer3 and StopLoadedMusic_Layer3 stay mangled
- *   too: Sound.h does not declare them.
  * - func_ov079_02123804 reacts to a hit but nothing in the cartridge's
  *   relocations calls it.
  * - func_ov079_02123d4c is really a Vector3-by-value member of daBtn_c, but
@@ -54,6 +52,13 @@
 #include "dCamera_c.h"
 
 bool ApproachLinear(short &value, short target, short step);
+/* local extern: include/Sound.h does not declare the layer-3 pair yet. It
+   sits outside the extern "C" block below, where the names would come out
+   unmangled. */
+namespace Sound {
+void LoadAndSetMusic_Layer3(unsigned int);
+void StopLoadedMusic_Layer3(void);
+}
 
 struct CLPS_Block;
 
@@ -98,9 +103,10 @@ int Vec3_HorzDist(const void *a, const void *b);
 
 /* Every call below passes &mMovingMeshCollider. Named prototype parameters
    advance mwcc's @NNN counter, and the manifest pins the static
-   initializer's sixteen literals at @700..@715: these three names are what
-   keeps that count after the header-declared calls retired sixteen mangled
-   prototypes (-33) and Message.h + dCamera_c.h came in (+30). */
+   initializer's literals at @700..@715. Retiring nineteen mangled
+   prototypes for header-declared calls dropped their 33 named parameters
+   (-33); Message.h and dCamera_c.h came in (+30). These three names put
+   the count back. */
 void func_01ffb07c(void *, void *);
 void func_01ffb098(void *collider);
 void func_01ffb0a4(void *collider);
@@ -121,8 +127,6 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
-void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int);
-void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const void *v, int f);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
@@ -412,8 +416,10 @@ int daBtn_c::Behavior()
     if (mIsKing != 0 && mState != 9) {
         if (DistToCPlayer() < 0x1770000) {
             /* data_0209f318 is the camera (symbols/verified.tsv: CAMERA). The
-               word at 0x114 is still padding in dCamera_c.h;
-               daBombking_c::Behavior stores itself there the same way. */
+               word at 0x114 is still padding in dCamera_c.h; while the player
+               is within 0x1770000 the king writes itself there each frame, as
+               daBombking_c::Behavior does. What the camera reads it for is
+               not traced here. */
             *(dActor_c **)((dCamera_c *)data_0209f318)->pad_114 = this;
         }
     }
@@ -448,12 +454,13 @@ int daBtn_c::Behavior()
         {
             /* mStateTimer counts frames spent in the current state: it is
                incremented here and reset the moment the handler changed mState.
-               Spelled through a u16 pointer: `mStateTimer = (u16)mStateTimer + 1`
-               changes Behavior's code. */
+               Spelling both the increment and the reset through mStateTimer
+               changes Behavior's code (either one alone does not), and so
+               does `mStateTimer++`; the increment keeps the u16 pointer. */
             unsigned short* ctr = (unsigned short*)&mStateTimer;
             *ctr = *ctr + 1;
             if (idx != mState) {
-                *ctr = 0;
+                mStateTimer = 0;
                 mSubState = 0;
             }
         }
@@ -572,7 +579,7 @@ void daBtn_c::func_ov079_02125b44()
             break;
         case 4:
             if (data_0209d660 == 0) {
-                _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
+                Sound::LoadAndSetMusic_Layer3(0x2d);
                 func_02011d38();
                 Message::EndTalk();
                 mSubState++;
@@ -748,7 +755,7 @@ void daBtn_c::func_ov079_021256d4()
         void **tab;
         ModelAnim *ma;
 
-        _ZN5Sound22StopLoadedMusic_Layer3Ev();
+        Sound::StopLoadedMusic_Layer3();
         func_02011cfc();
         mState = 0;
         mPosX = mSpawnPosX;
@@ -954,8 +961,8 @@ extern "C" void func_ov079_0212522c(void *a, void *b, void *c)
 void daBtn_c::func_ov079_02125058(dActor_c *other)
 {
     /* v1/v2 are second copies of the player's position that the ROM stores
-       too. volatile is what keeps those stores: without it the function
-       shrinks 0x1d4 -> 0x1b0. */
+       too, and v2 is read back into w2. volatile is what keeps those stores
+       and v2's reloads: without it the function shrinks 0x1d4 -> 0x1b0. */
     volatile BtnVec v1, v2;
     BtnVec w1, w2;
     int eq = (int)(other->actorID == 0xbf);
@@ -1285,7 +1292,7 @@ void daBtn_c::func_ov079_021246dc()
             starPos.z = mPosZ;
             starPos.y += 0x64000;
             func_0201267c(0xc6, &mCamSpacePosX);
-            _ZN5Sound22StopLoadedMusic_Layer3Ev();
+            Sound::StopLoadedMusic_Layer3();
             func_02011cfc();
             func_ov079_02123d4c((int *)&v, this);
             v.y += 0x50000;
@@ -1754,9 +1761,10 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
             }
         }
         if (mState != 0xa) {
-            /* Both reads are measured: a plain mState read shrinks the
-               function 0x288 -> 0x280; `(u16)mStateTimer` or a plain timer
-               read also changes it. */
+            /* Both reads are measured. A plain mState read here or at the
+               second site below shrinks the function 0x288 -> 0x284; plain
+               reads at both sites give 0x280. `(u16)mStateTimer` or a plain
+               timer read also changes it. */
             mResumeState = *(volatile s32 *)&mState;
             mSavedStateTimer = *(u16 *)&mStateTimer;
             mSavedSubState = mSubState;

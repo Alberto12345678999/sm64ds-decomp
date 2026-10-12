@@ -120,7 +120,10 @@ struct daBtn_c : dEnemyBase_c {
     u8                           mCoinsLeft;            /* 0x406 */
     u8                           unk_407;               /* 0x407 -- zeroed by InitResources */
     /* The star-marker slot dActor_c::TrackStar(mStarID, 2) claimed (-1 when
-       none was free); the defeat hands it back to UntrackAndSpawnStar. */
+       none was claimed: no free slot, or -- type 2 only -- mStarID is not
+       the star this mission was entered for (data_0209f220, STAR_ID) and
+       SublevelToLevel of the current sublevel is <= 0xe); the defeat hands
+       it back to UntrackAndSpawnStar. */
     s8                           mTrackStarID;          /* 0x408 */
     /* param1 & 0xf, handed straight to dActor_c::TrackStar as the star number.
        King only -- the plain daBtn_c never touches it. */

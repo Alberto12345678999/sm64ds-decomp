@@ -11,10 +11,11 @@
  *
  * The main handler, func_ov002_020fec94, bursts the fireball in a puff when
  * mStateTimer reaches 0 or it touches ground or a wall. Otherwise, until a
- * metal player has turned it round, it calls func_ov002_020feb50: when the
+ * metal player has deflected it, it calls func_ov002_020feb50: when the
  * actor that touched the hit cylinder is the player (actor ID 0xbf) and not
- * vanished, the fireball bursts and hurts it -- unless the player is metal,
- * which turns the fireball round and throws it upward instead. Each burst
+ * vanished, the fireball bursts and hurts it -- unless the player is metal.
+ * Then the fireball flips its facing half a turn, stops its horizontal
+ * motion and launches upward (mVertSpeed 0x1e000, mVertAccel -0x4000). Each burst
  * plays sound 0x166 through func_02012694, which tail-calls
  * Sound::Play(3, id, pos).
  *
@@ -26,9 +27,10 @@
 // - func_ov002_020feb50, 020fec94, 020fed18, 020fed2c and 020fed7c stay
 //   free functions with C linkage: the symbol names are the ROM's.
 // - dCcAc_c::Init, dBgCh_Actr::Init and Player::Hurt stay mangled.
-//   dCcAc_c.h's Init takes Fix12<int> by value: called through it with a
-//   Fix12<int> local, InitResources grows 0xd8 -> 0xec and gains a .rodata
-//   word. dBgCh_Actr.h's Init spells Fix12i, which mangles as `i`, not as
+//   dCcAc_c.h's Init takes Fix12<int> by value, and every spelling tried
+//   grows InitResources: `Fix12<int> r = { 0xa000 };` passed twice gives
+//   0xd8 -> 0xec plus a .rodata word, `r.val = 0xa000;` gives 0xe4 and no
+//   .rodata. dBgCh_Actr.h's Init spells Fix12i, which mangles as `i`, not as
 //   the ROM's 5Fix12IiE. Player.h declares no Hurt.
 // - func_ov002_020fed7c copies the scratch matrix as twelve plain words.
 
@@ -110,7 +112,8 @@ extern "C" daPropeller_Heyho_Fire_c *_ZN24daPropeller_Heyho_Fire_cD0Ev(daPropell
 // @symbol func_ov002_020feb50
 /* The player-hit test. otherOwner is the ID of whatever touched the hit
    cylinder. The hurt is skipped when the cylinder's hitFlags has bit 0x10
-   (dCc_c.h's bit table reads it as "mega character"). */
+   (dCc_c.h's unverified best-effort bit table reads it as "mega
+   character"). */
 extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
     Player* player;
     int isPlayer;   /* `if (player->actorID != 0xbf)` without it: 0x144 -> 0x138 bytes */
@@ -132,9 +135,12 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
         return;
     }
     if (player->mIsMetal != 0) {
-        /* Turned round: mPrevAngleY (which Behavior copies into mAngleY)
-           swings half a turn, and the vertical speed becomes 0x1e000 up. */
-        self->mTurnedBack = 1;
+        /* Deflected: mPrevAngleY (which Behavior copies into mAngleY)
+           swings half a turn, so only the facing flips. unk_0a4 and unk_0ac
+           are the x and z of the velocity UpdatePosWithOnlySpeed adds, so
+           zeroing them stops the horizontal motion; the vertical speed
+           becomes 0x1e000 up with -0x4000 acceleration. */
+        self->mDeflected = 1;
         Sound::Play(0, 0xa5, *(Vector3 *)&self->mCamSpacePosX);
         self->mPrevAngleY -= 0x8000;
         self->unk_0a4 = 0;
@@ -169,7 +175,7 @@ extern "C" int func_ov002_020fec94(daPropeller_Heyho_Fire_c *self)
         self->MarkForDestruction();
         return 1;
     }
-    if (self->mTurnedBack == 0) func_ov002_020feb50(self);
+    if (self->mDeflected == 0) func_ov002_020feb50(self);
     return 1;
 }
 

@@ -49,7 +49,7 @@ struct daPropeller_Heyho_Fire_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
     Model                        mModel;                /* 0x300 */
     State                       *mCurrentState;         /* 0x350 */
-    s32                          mTurnedBack;           /* 0x354 -- set when a metal player turns it round */
+    s32                          mDeflected;            /* 0x354 -- set when a metal player deflected it; func_ov002_020fec94 then skips the player-hit test */
     s32                          unk_358;               /* 0x358 */
 
     /* --- vtable --- */
