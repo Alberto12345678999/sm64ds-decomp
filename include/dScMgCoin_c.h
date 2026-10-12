@@ -209,7 +209,7 @@ struct dScMgCoin_c : dScMgBase_c {
     dScMgCoin_Caption mCaption;              /* 0x5194 */
     dScMgCoin_Bouncer mBouncer;              /* 0x51a8 */
     s32 mSeed;                               /* 0x51c4 set to 1 at construction, never read here */
-    s32 unk_51c8;                            /* 0x51c8 phase; 5 is the result */
+    s32 mPhase;                              /* 0x51c8 5 is the result */
     s32 mCountdown;                          /* 0x51cc */
     u8 pad_51d0[0x4];                        /* 0x51d0 */
     s32 mPlayerScore;                        /* 0x51d4 this player's score */
