@@ -2704,7 +2704,7 @@ src/unnamed/arm9/0203/func_0203d740.c:
     complete
     .text start:0x0203d740 end:0x0203d744
 
-src/cstd2.cpp:
+src/_ZN4cstd4sqrtEy.cpp:
     complete
     .text start:0x0203d744 end:0x0203d7b8
 
