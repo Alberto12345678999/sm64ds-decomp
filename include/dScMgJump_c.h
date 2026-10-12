@@ -25,9 +25,9 @@
  * therefore cannot use a typed member at all. Same class, same member, two
  * different answers, decided by the ROM's own ordering.
  *
- * 0x5004 IS A PAIR OF s32, not padding: func_ov006_020ee2c4 assigns
- * `*(Pair*)(c + 0x5004) = data_ov006_0213cb7c` through an eight-byte pair
- * type. That write, and the s16 at 0x5014 in the same function, are what
+ * 0x5004 IS A PAIR OF s32, not padding -- the {fn, 0} state pair the ten
+ * state functions below assign the next data_ov006_0213cb* row into. That
+ * write, and the s16 countdown at 0x5014 in the same functions, are what
  * bound dScMgD3DBase_c at 0x5004 from above. Both live in
  * src/actors/dScMgJump_c.cpp now.
  *
@@ -84,11 +84,32 @@ struct dScMgJump_c : dScMgD3DBase_c {
     s32 Behavior();         /* slot  6 -- src/actors/dScMgJump_c.cpp */
     s32 Render();           /* slot  9 -- src/actors/dScMgJump_c.cpp */
 
-    s32   unk_5004;        /* 0x5004 -- written as an { int, int } pair */
-    s32   unk_5008;        /* 0x5008 */
+    /* The minigame's state functions. Unnamed in the cartridge; stored as
+       {fn, 0} pairs in the data_ov006_0213cb4c table rows, dispatched through
+       mState by Behavior. The mangled spellings are what the table relocs
+       resolve by. */
+    void func_ov006_020ee2c0();
+    void func_ov006_020ee2c4();
+    void func_ov006_020ee3bc();
+    void func_ov006_020ee3ec();
+    void func_ov006_020ee44c();
+    void func_ov006_020ee4e0();
+    void func_ov006_020ee508();
+    void func_ov006_020ee598();
+    void func_ov006_020ee5b8();
+    void func_ov006_020ee658();
+
+    /* 0x5004 IS A PAIR OF s32, not padding: func_ov006_020ee2c4 and the other
+       state functions assign the next table row into it whole, and that write
+       plus the s16 at 0x5014 are what bound dScMgD3DBase_c at 0x5004 from
+       above. The sole member must stay an ARRAY: with two named scalars
+       mwccarm scalarises the copy member-by-member and the assigners come
+       back 2 words short of the ROM's schedule. */
+    struct StatePmf { s32 w[2]; };
+    StatePmf mState;      /* 0x5004 -- current state pair */
     s32   mAccum;          /* 0x500c -- gains mAccumStep >> 12 a tick */
     s32   mAccumStep;      /* 0x5010 -- Fix12 */
-    s16   unk_5014;        /* 0x5014 */
+    s16   mStateTimer;     /* 0x5014 -- countdown to the state change */
     u8    pad_5016[0x6];   /* 0x5016 */
     Model mModel;          /* 0x501c -- 0x50, destroyed last, see banner */
     dMgJump3DMario_c mPlayers[3]; /* 0x506c -- RTTI-proven element type */

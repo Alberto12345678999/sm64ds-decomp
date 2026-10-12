@@ -16,7 +16,7 @@
  * from the highest retail address toward the destructor pair the
  * inline ~daObjCtKaitendai_c() emits. Keep that order.
  *
- * Leftover:
+ * leftovers:
  * - dBgW_KcMbg::SetFile and dActor_c::DropShadowRadHeight stay mangled
  *   scalar calls. Passing a Fix12<int> local to the real method
  *   size-DIFFs this TU: InitResources 0x14c against 0x140, and

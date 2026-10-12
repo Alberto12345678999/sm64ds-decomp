@@ -1,4 +1,14 @@
 //cpp
+/* leftovers:
+ * SetObjAndLine's marker stays above the definition: callers still declare
+ * the unconverted Vec3* spelling, so the definition does not bind over the
+ * plurality. GetClsnPos stays a free function writing through the hidden
+ * return pointer; a Vector3 method builds the temporary on the stack.
+ * func_02037608 upcasts through a reference so the multiple-inheritance
+ * adjustment is unconditional. func_ov002_020fea4c and func_ov002_020fea68
+ * are GetEnd and GetStart. D0 and the dBgPi thunks are emitted from the
+ * written destructor.
+ */
 /* Compiler-emitted below from the written bodies (D0, dBgPi thunks); also
  * SetObjAndLine -- its callers still declare unconverted Vec3* spellings,
  * so its mark stays up here and the definition does not bind over the
@@ -8,17 +18,10 @@
 // @symbol _ZThn16_N9dBgCh_LinD0Ev
 // @symbol _ZThn16_N9dBgCh_LinD1Ev
 */
-/* dBgCh_Lin -- the line-segment collision query: dBgCh plus a dBgPi hit
- * record at 0x10 plus a non-polymorphic dM3dGLin at 0x38 (the ROM's own
- * __vmi_class_type_info lists all three; _ZTS9dBgCh_Lin @ 0x02099290,
- * _ZTV9dBgCh_Lin @ 0x020992a4, dBgPi secondary VTable_dBgPi_dBgCh_LinThunk
- * @ 0x020992b4). lineEnd is seeded from the line end and overwritten with
- * the world-space collision point on a hit.
- *
- * Deferred codegen emits the plain members in reverse definition order
- * and the lifecycle groups in their fixed order, so the file defines
- * ctor and dtor first. The dBgPi-base destructor thunks (_ZThn16_) are
- * compiler-emitted after C1. */
+/* dBgCh_Lin: line-segment collision query. dBgCh, a dBgPi hit at 0x10,
+ * and a dM3dGLin at 0x38. Type name 0x02099290, vtable 0x020992a4, dBgPi
+ * secondary vtable 0x020992b4. lineEnd starts as the segment end and
+ * becomes the hit point. The constructor and destructor are defined first. */
 #include "dBgCh_Lin.h"
 
 extern "C" {
@@ -79,15 +82,8 @@ void dBgCh_Lin::SetClsnPos(const Vector3 &pos)
     lineEnd = pos;
 }
 
-/* Stays a mangled free definition: a real C++ method returning Vector3 by
-   value cannot reproduce this shape -- mwcc builds the temporary on the
-   stack instead of writing straight through the hidden return pointer, same
-   "wall 6az" class as a Fix12<int> by-value parameter. The declaration in
-   dBgCh_Lin.h is the real one and callers may use it.
-
-   Returns lineEnd by value. Named for its role AFTER a hit, when
-   SetObjAndLine's collision-point write has overwritten the field; see
-   dBgCh_Lin.h for why the storage keeps the name `lineEnd`. */
+/* Returns lineEnd through the hidden pointer. After a hit, SetObjAndLine
+   has overwritten that field with the collision point. */
 // @symbol _ZN9dBgCh_Lin10GetClsnPosEv
 extern "C" void _ZN9dBgCh_Lin10GetClsnPosEv(Vector3 *res, dBgCh_Lin *self)
 {

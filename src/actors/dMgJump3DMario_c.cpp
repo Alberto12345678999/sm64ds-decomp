@@ -26,11 +26,18 @@
  * this TU. They were one-function shards, one per function; func_ov006_020c7490 keeps its
  * `opt_common_subs off` as a push/pop bracket.
  *
- * Still raw:
+ * leftovers:
  * - ModelAnim::SetAnim takes Fix12<int> by value; its real spelling makes
  *   the compiler home the argument and the size changes. NewSimple takes
  *   Fix12<int> the same way and has no header. Both stay mangled.
  * - The helper functions and data_ov006_ tables have no header or name yet.
+ * - The five gTouch-lane and gActivePlayerSlot externs keep the file-local record
+ *   spellings (u8 [][4] lanes) because the ROM scales the slot in the
+ *   addressing mode, which conflicts with PlayerInput.h's declarations;
+ *   that header stays unincluded and the sites are marked `local extern`.
+ * - The *(volatile int *)&v[2] store in StateMove, the int* zeroing of
+ *   Mtx in func_ov006_020c7734, and the `int t` temp in func_ov006_020c87d0
+ *   are codegen-pinned; each site carries its measured note.
  */
 
 #pragma defer_codegen off

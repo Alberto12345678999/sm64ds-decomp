@@ -22,21 +22,20 @@
  *   is s16 and the ROM compares unsigned (blo, not blt); the cast is what
  *   reproduces it.
  *
- * Reconstruction notes -- the file stem follows the snake_case scheme in
- * notes/tu-naming-and-swallowers.md sec 1 (tools/tu_names.py). The TU is one
- * `complete` delinks span covering seven functions and claims .text only, so
- * the file-table handle data_ov027_021138f4 and g_profile_ICE_DONKETU stay
- * outside it. Two ov064 helpers it calls, func_ov064_02116110 (run) and
- * func_ov064_0211616c (death), are unmatched daOts_c workers with no name
- * evidence yet. ROM order of the seven, for reference:
- *
- *   [0] 0x021115c4  _ZN12daIDonketu_cD1Ev
- *   [1] 0x02111618  _ZN12daIDonketu_cD0Ev
- *   [2] 0x02111680  _ZN12daIDonketu_c14UpdateRunStateEv
- *   [3] 0x021116f0  _ZN12daIDonketu_c16UpdateDeathStateEv
- *   [4] 0x02111770  _ZN12daIDonketu_c8BehaviorEv
- *   [5] 0x0211181c  _ZN12daIDonketu_c13InitResourcesEv
- *   [6] 0x0211186c  daIDonketu_c_classInit
+ * leftovers:
+ * - The TU is one `complete` delinks span claiming .text only, so the
+ *   file-table handle data_ov027_021138f4 and g_profile_ICE_DONKETU stay
+ *   outside it.
+ * - func_ov064_02116110 (run) and func_ov064_0211616c (death) are
+ *   unmatched daOts_c workers with no name evidence; they keep linker
+ *   names.
+ * - D1/D0 are not written here: the inline destructor in the header
+ *   emits them in cartridge order with no homeless D2. Behavior, the
+ *   first declared virtual, keeps this TU the key-function TU, so it
+ *   still owns the _ZTV/_ZTI/_ZTS group.
+ * - The SharedFilePtr subclasses stay declared-only wrappers: they let
+ *   the sinit name the ROM's SharedFilePtr veneer entry points without
+ *   inventing a layout.
  */
 
 #include "daIDonketu_c.h"
@@ -133,7 +132,6 @@ int daIDonketu_c::Behavior()
     return BehaviorCommon();
 }
 
-/* size 0x80                                                                   */
 // @symbol _ZN12daIDonketu_c16UpdateDeathStateEv
 /* daIDonketu_c::UpdateDeathState -- vtable slot 32, daOts_c's state-4 hook. The
  * same star drop as Behavior's kill path without the invincible-character test: by
@@ -158,10 +156,9 @@ void daIDonketu_c::UpdateDeathState()
  * charge: hold still while the wind-up plays out over the first ten frames, then
  * run at 0x14000. The pointer returned from the first arm is the cartridge's own
  * shape, not a meaningful value -- r0 is simply left holding the timer address.
- *
- * MATCH wall: mStateTimer is s16 in dEnemyBase_c.h. A named halfword compare
- * is signed (blt); the ROM's first arm is unsigned (blo). Keep the u16*
- * addressing. */
+ * mStateTimer is s16 in dEnemyBase_c.h: a named halfword compare is signed
+ * (blt) where the ROM's first arm is unsigned (blo), so the u16* addressing
+ * stays. */
 int daIDonketu_c::UpdateRunState()
 {
     if (*(u16 *)&mStateTimer < 0xa) {
@@ -185,31 +182,11 @@ int daIDonketu_c::UpdateRunState()
 }
 // @symbol _ZN12daIDonketu_cD1Ev
 // @symbol _ZN12daIDonketu_cD0Ev
-/* -------------------------------------------------------------------------- */
-/* _ZN12daIDonketu_cD0Ev 0x02111618 size 0x68 -- are NOT written here.         */
-/*                                                                            */
-/* The destructor is defined INLINE in include/daIDonketu_c.h. Written         */
-/* out-of-line here the real destructor makes mwccarm emit D0 BEFORE D1, the   */
-/* reverse of the cartridge's order, which objisolate refuses for the whole    */
-/* translation unit, and it emits a third D2 body with no ROM home. This       */
-/* entry's own pre-promotion verification block recorded both, as `ordinal     */
-/* pair(s) not in ROM order: [(0, 1)]` and an unhandled _ZN12daIDonketu_cD2Ev  */
-/* in compilerOnlyOutput. The inline definition gives the retail D1/D0 pair in */
-/* ROM order and no D2, while Behavior -- declared out-of-line and first in    */
-/* the class body -- keeps this TU as the class's key-function TU, so it still */
-/* owns the complete _ZTV/_ZTI/_ZTS group declared in this entry's             */
-/* compiler_only_output.                                                      */
-/*                                                                            */
-/* TWO vptr stores and four member destructor calls come out of that one empty */
-/* body: its own vptr, then daOts_c's -- inlined, because that destructor is   */
-/* defined in its class body -- then dExtShadowModel_c 0x370, dCcAc_c 0x33c,         */
-/* dBgCh_Actr 0x174 and ModelAnim 0x110 in reverse declaration order, then     */
-/* dEnemyBase_c. daIDonketu_c adds no member with a destructor of its own,     */
-/* only two bytes. D0 is that plus the inherited inline `operator delete`;     */
-/* slot 17 is the deleting variant. Byte-for-byte the same shape as            */
-/* daDonketu_c's and daBDonketu_c's, which is what three siblings sharing a    */
-/* base look like.                                                             */
-/* -------------------------------------------------------------------------- */
+/* D1/D0 emit from the header's inline destructor: written out-of-line here
+ * it would produce D0 before D1 and a homeless D2. The empty body still
+ * chains two vptr stores and the member destructor calls
+ * (dExtShadowModel_c, dCcAc_c, dBgCh_Actr, ModelAnim, then dEnemyBase_c);
+ * D0 adds the inherited inline operator delete. */
 
 /* The Chill Bully's model and animation handles, in the sinit call order the
  * data_ov027_021138f4 file table repeats. */

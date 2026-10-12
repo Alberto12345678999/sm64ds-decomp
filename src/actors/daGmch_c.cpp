@@ -1,56 +1,36 @@
 //cpp
-/* The GAMAGUCHI hopping purse that pays out coins (ov081/daGmch_c),
- * 37 functions, enrolled and canonical. All 36 helpers are real class
- * methods; the factory is the one free function.
- *
- * Class name is ROM RTTI: "8daGmch_c" at 0x02128bc8, with its
- * __si_class_type_info at 0x02128bd4. The tree used to call it
- * Moneybag; that name is not in the cartridge.
- *
- * Source runs ROM-ascending under defer_codegen off. Do not reorder.
- * The ROM has D1 (0x02126504) below D0 (0x02126554) and no D2:
- * mwccarm emits D1, D0, D2 here and the D2 is deadstripped.
- * common.h comes before daGmch_c.h (flat Matrix4x3 block-move).
- * decl_common.h is deliberately NOT included (it contradicts this
- * TU's own helper spellings).
- *
- * Known limits:
- * - SetAnim / dCcAc Init / dBgCh Init / NewSimple / SpawnCoins /
- *   DropShadowRadHeight / Player::Bounce / Hurt keep computed spellings
- *   (Fix12<int> by value, wall 6az).
- * - GetFloorResult / GetWallResult / TouchesWater are the const methods
- *   on dBgCh_Actr. cstd::fdiv is the integer divide.
- * - dActor_c has no Pos(). PlayBank0 takes the camera-space triple at
- *   mCamSpacePosX through a Vector3 pun (CheckPlayerContact, EnterState8).
- * - unk_0a4 and unk_0ac stay those names. They are dActor_c's world-velocity
- *   X/Z beside mVertSpeed (this TU multiplies them by the floor normal). The
- *   base header still spells them unk_.
- * - ModelCache wants a shared home with da1up_c's copy.
- * - State numbers stay literal: what each state means is not proven (see
- *   daGmch_c.h). mFlags bit 0x80000 and the hit mask 0x66fe0 stay numeric.
- *
- * Leftover: TouchesWater, GetFloorResult and GetWallResult are the const
- * dBgCh_Actr methods. Those two results are still cast to dBgPi*, because
- * the methods return the raw result word and a dBgPi* return disagrees
- * with the definitions. cstd::fdiv is the divide. SpawnCoins written as
- * dActor_c::SpawnCoins was remeasured in SpawnCoinsAndDie and that
- * function stopped matching, so it and the other Fix12-by-value calls
- * stay scalar externs. The sine table is an s16 index, the BCA word is
- * data_ov081_02128edc[1], and the factory is `new daGmch_c()`.
- * CallStateEnter/Update go through mStatePmfPair as daGmch_c::*. mFlags
- * uses &= / |= and mPhase uses ++. Reverted, sizes measured against the
- * ROM: mSpinAngleY += 0xc00 in UpdateState0 is 4 words off at the same
- * 0x158; mPhase = (u8)(mPhase + 1) there is 0x144 against 0x158 (mPhase++
- * matches); holder->mPosX/Y/Z in place of the &mPosX word triple is
- * EnterState7 0x178 against 0x17c and UpdateState6 0x9c against 0xa0.
- * Still the scalar externs for SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- * SpawnCoins, DropShadowRadHeight, Player::Bounce, Player::Hurt and
- * Particle::NewSimple (Fix12<int> by value). ApproachLinear2 still sees
- * &mState as an int* because mState/mPhase/mTimer are one word.
- * Vec3_26e28 and the *(Vector3 *)&mPosX
- * / mCamSpacePosX puns stay: a real Vector3 runs ~Vector3, and dActor_c
- * has no Pos(). ModelCache stays file-local. GmchDrawReg is the
- * one-slot init sentinel the folded sinit needs; see its comment.
+/* daGmch_c: the hopping purse that pays out coins (GAMAGUCHI), ov081.
+ * Was coined Moneybag. _ZTS at 0x02128bc8, typeinfo at 0x02128bd4.
+ * D1 0x02126504, D0 0x02126554, deadstripped D2. ROM-ascending under
+ * defer_codegen off. The factory is the one free function.
+ */
+/* leftovers:
+ * - common.h stays before daGmch_c.h. InitResources assigns
+ *   IDENTITY_MATRIX4X3 into mMatrix; the .r/.t Matrix4x3 spelling is
+ *   0x1f0 against the ROM's 0x1d4. decl_common.h is not included.
+ * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ *   Particle::System::NewSimple, dActor_c::SpawnCoins,
+ *   DropShadowRadHeight, Player::Bounce and Player::Hurt stay mangled
+ *   (Fix12<int> by value). SpawnCoins as a member stopped
+ *   SpawnCoinsAndDie matching.
+ * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
+ *   disagrees with the definitions, so the callers still cast.
+ *   TouchesWater and cstd::fdiv are the const method and the divide.
+ * - *(Vector3 *)&mPosX and the mCamSpacePosX pun in CheckPlayerContact
+ *   and EnterState8: dActor_c has no Pos(), and a Vector3 emits ~Vector3.
+ *   holder->mPosX/Y/Z in place of the word triple changes EnterState7
+ *   and UpdateState6.
+ * - unk_0a4 / unk_0ac stay. They are the base's world-velocity X/Z beside
+ *   mVertSpeed; dActor_c.h still spells them unk_, and this TU multiplies
+ *   them by the floor normal.
+ * - UpdateState0 keeps mPhase++. mPhase = (u8)(mPhase + 1) is 0x144
+ *   against 0x158, and mSpinAngleY += 0xc00 is four words off.
+ * - ApproachLinear2 takes &mState as int* because mState, mPhase and
+ *   mTimer share one word. State numbers, mFlags bit 0x80000 and hit
+ *   mask 0x66fe0 stay numeric.
+ * - ModelCache stays file-local; da1up_c reads the same second word.
+ *   The loaded BCA is data_ov081_02128edc[1]. GmchDrawReg is the one-slot
+ *   init sentinel the folded sinit needs.
  */
 
 #pragma defer_codegen off

@@ -9,6 +9,8 @@
 extern "C" {
 extern int _Z14ApproachLinearRiii(int&, int, int);
 extern int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned, int);
+extern void func_ov002_020daa74(void*);
+extern int func_ov002_020c19d0(void*, int, int);
 extern void func_ov002_020da9d4(void*);
 extern int _ZN6Player12FinishedAnimEv(void*);
 extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);

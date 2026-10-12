@@ -4,28 +4,36 @@
  * Definitions follow ROM address order. Immediate code generation makes each
  * optimizer bracket local to its function under mwccarm 2004/b56.
  *
- * The virtual methods use the recovered class hierarchy. The remaining C ABI
- * helpers and local layout views retain the individually verified reconstruction;
- * consolidating this unit does not establish their original names or interfaces.
+ * _ZTS16dScMgSmartball_c 0x0213ec7c. _ZTI16dScMgSmartball_c 0x0213ec28.
+ * _ZTV16dScMgSmartball_c 0x0213eefc. The destructor is the key function:
+ * D1 at 0x0210d740, D0 at 0x0210d7e0.
  *
-comment leftovers:
- * - func_ov006_02112ad8 (the ball per-frame physics) stays a free extern "C"
- *   function. Compiled as C++ -- as a cMgSmartball_ball_c member or a plain
- *   free function -- mwccarm folds `angle / 0x20` into a `+= 0x800` induction
- *   accumulator in the two fan-response loops (53 words differ); the C front
- *   end keeps the divide sequence. Its callers call it by name.
- * - The twelve constructor-shaped helpers (func_ov006_0210e0d0,
- *   func_ov006_0210e480, func_ov006_0210f9f8, func_ov006_021101bc,
- *   func_ov006_02110874, func_ov006_02110bc0, func_ov006_02111220,
- *   func_ov006_0211157c, func_ov006_02111774, func_ov006_02111b40,
- *   func_ov006_02114548, func_ov006_0211474c) stay free: they placement-
- *   construct objects they do not own. func_ov006_0210d894 and
- *   func_ov006_02119900 are the manager array element destructor and the
- *   empty final hook.
- * - The shadow structs below (Obj, Mgr, State2, S, A, Owl, C, SBoard,
- *   SArrays, ...) remain the TU-local measured reconstructions; none has a
- *   proven field-to-member mapping against the class headers yet.
+ * The virtual methods use the class hierarchy from the shared headers. The
+ * remaining C ABI helpers and local layout views keep the individually
+ * verified reconstruction; consolidating this unit does not establish their
+ * original names or interfaces.
  */
+
+// leftovers:
+// - func_ov006_02112ad8 (the ball per-frame physics) stays a free extern "C"
+//   function. Compiled as C++ -- as a cMgSmartball_ball_c member or a plain
+//   free function -- mwccarm folds `angle / 0x20` into a `+= 0x800` induction
+//   accumulator in the two fan-response loops (53 words differ); the C front
+//   end keeps the divide sequence. Its callers call it by name.
+// - The twelve constructor-shaped helpers (func_ov006_0210e0d0,
+//   func_ov006_0210e480, func_ov006_0210f9f8, func_ov006_021101bc,
+//   func_ov006_02110874, func_ov006_02110bc0, func_ov006_02111220,
+//   func_ov006_0211157c, func_ov006_02111774, func_ov006_02111b40,
+//   func_ov006_02114548, func_ov006_0211474c) stay free: they placement-
+//   construct objects they do not own. func_ov006_0210d894 and
+//   func_ov006_02119900 are the manager array element destructor and the
+//   empty final hook.
+// - The shadow structs below (Obj, Mgr, State2, S, A, Owl, C, SBoard,
+//   SArrays, ...) remain TU-local reconstructions; none has a proven
+//   field-to-member mapping against the class headers yet.
+// - The meter/score display offsets (0x4660-0x4770 pointer arrays,
+//   0x5958-0x5998 score block) are re-spelled per helper in this file and
+//   its siblings; naming one shared struct for them is a separate pass.
 
 #include "dScMgSmartball_c.h"
 #include "cMgSmartball_wing_c.h"
@@ -279,7 +287,6 @@ typedef struct Obj {
     u8 soundPlayed;
 } Obj;
 
-
 extern "C" {
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void func_0203d388(V2* p, int angle);
@@ -442,8 +449,6 @@ extern OamAttr *data_ov006_02137994[];
    void * one adopted above; the two are reconciled, not in conflict. */
 }
 
-/* -------------------------------------------------------------------------- */
-
 extern int _ZTV25cMgSmartball_pushswitch_c[];
 extern int _ZTV20cMgSmartball_board_c[];
 extern int _ZTV21cMgSmartball_pakkun_c[];
@@ -475,8 +480,6 @@ void func_ov006_02112ad8(Obj *self);
 void* func_ov006_021101bc(char* c, int a1, int a2, int* src);
 }
 
-
-
 /* Declarations this TU still needs from the shared common header, which is
    deliberately not included here: three of its parameter views disagree with
    definitions in this file and pulling it in makes each an illegal overload.
@@ -492,7 +495,6 @@ extern void SetSubBg1Offset(int, int);
 extern void func_ov004_020ae20c(void);
 extern void func_ov004_020b0a54(int);
 }
-
 
 extern "C" {
 void GetObjectDelta(void* a, char* b);
@@ -517,28 +519,24 @@ void func_ov006_0211474c(char* c, int a1, int a2, int* a3);
 extern "C" {
 }
 
-/* ROM ordinal 1 -- _ZN16dScMgSmartball_cD0Ev, 0x0210d7e0, size 0xb4           */
-/* ROM ordinal 0 -- _ZN16dScMgSmartball_cD1Ev, 0x0210d740, size 0xa0           */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_cD1Ev
 // @symbol _ZN16dScMgSmartball_cD0Ev
-/* ONE definition, both variants. The legacy shard tree carried D0 and D1 as two
+/* One definition, both variants. The legacy shard tree carried D0 and D1 as two
    separate files with byte-identical bodies, which is an artefact of how those
    shards were cut, not of the ROM: mwccarm emits the complete-object destructor
    (D1) and the deleting destructor (D0) from this single out-of-line
    definition, so writing the body twice is an `object redefined` error.
 
    D1 is the body below -- the four explicit teardowns reproduce the ROM's own
-   recovered body (func_ov006_0210d740, pre-migration) exactly, destroying the
+   body (func_ov006_0210d740, pre-migration) exactly, destroying the
    arrays in reverse of the factory's construction order. The own-vtable store
    and the chain to ~dScMgBase_c() are compiler-generated; dScMgBase_c's
    destructor remains an out-of-line call under the pinned 2004/b56 build,
-   matching the ROM's bl to _ZN11dScMgBase_cD2Ev.
+   like the ROM's bl to _ZN11dScMgBase_cD2Ev.
 
    D0 is that same teardown followed by the heap return, through an inline
    `operator delete`, which is why nothing below mentions a heap. Nobody writes
-   D0; declaring the destructor is enough. It carries its own marker here, at
-   its ROM ordinal, because it has no source of its own to sit above. */
+   D0; declaring the destructor is enough. */
 dScMgSmartball_c::~dScMgSmartball_c()
 {
     __cxa_vec_cleanup(mArray4, 0x40, 0x24, (void *)func_ov006_0210d894);
@@ -546,8 +544,6 @@ dScMgSmartball_c::~dScMgSmartball_c()
     __cxa_vec_cleanup(mArray2, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray1, 5, 8, (void *)NullDestructor_0203d47c);
 }
-/* ROM ordinal 2 -- func_ov006_0210d894, 0x0210d894, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_0210d894
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_0210d894(void)
@@ -555,9 +551,6 @@ void func_ov006_0210d894(void)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN19cMgSmartball_wing_c9IsSettledEv, 0x0210d898, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c9IsSettledEv
 int cMgSmartball_wing_c::IsSettled() {
     char *c = (char *)this;
@@ -565,9 +558,6 @@ int cMgSmartball_wing_c::IsSettled() {
     return *(short*)(c+0x32) == 0x3000;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN19cMgSmartball_wing_c7TriggerEv, 0x0210d8bc, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c7TriggerEv
 void cMgSmartball_wing_c::Trigger()
 {
@@ -586,9 +576,6 @@ void cMgSmartball_wing_c::Trigger()
     _ZN5Sound12PlayBank2_2DEj(0x1a2);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN19cMgSmartball_wing_c12RebuildVertsEv, 0x0210d93c, size 0x274 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c12RebuildVertsEv
 void cMgSmartball_wing_c::RebuildVerts()
 {
@@ -637,9 +624,6 @@ void cMgSmartball_wing_c::RebuildVerts()
     *(int*)(((int)c + 0x84)) += c->dy + 0x28000;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN19cMgSmartball_wing_c7HitTestEPi, 0x0210dbb0, size 0x240 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c7HitTestEPi
 int cMgSmartball_wing_c::HitTest(int *p) {
     State *s = (State *)this;
@@ -683,9 +667,6 @@ int cMgSmartball_wing_c::HitTest(int *p) {
     return PointInTriangle(b5p,  b5q0,  b5q1,  b5q2);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN19cMgSmartball_wing_c6UpdateEv, 0x0210ddf0, size 0x224 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c6UpdateEv
 /* Slot 1. While mTriggerCount is 0 or 1, draws two extra base sprites under the
  * main pair; then four OAM::Render calls draw a mirrored quad using the
@@ -721,9 +702,6 @@ void cMgSmartball_wing_c::Update()
         (unsigned short)(short)(*(short *)((char *)this + 0x32) - 0x4000), -1);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN19cMgSmartball_wing_c12SaveSnapshotEv, 0x0210e014, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c12SaveSnapshotEv
 /* Slot 0. Opens with the base's own SaveSnapshot body written out inline
  * rather than called -- same pattern as every sibling in this family (the
@@ -749,9 +727,6 @@ void cMgSmartball_wing_c::SaveSnapshot()
     RebuildVerts();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN19cMgSmartball_wing_c14RestoreInitialEv, 0x0210e098, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_wing_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial), then
  * zeroes the pad-region angle at 0x32 (see the header) and every unk_
@@ -770,9 +745,6 @@ void cMgSmartball_wing_c::RestoreInitial()
     RebuildVerts();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov006_0210e0d0, 0x0210e0d0, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_0210e0d0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 char *func_ov006_0210e0d0(char *self, int x, int y, struct V2ab *src) {
@@ -787,14 +759,7 @@ char *func_ov006_0210e0d0(char *self, int x, int y, struct V2ab *src) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN25cMgSmartball_pushswitch_c10BallsClearEv, 0x0210e120, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN25cMgSmartball_pushswitch_c10BallsClearEv
-/* cMgSmartball_pushswitch_c::BallsClear at 0x0210e120
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
- */
 int cMgSmartball_pushswitch_c::BallsClear()
 {
     int *self = (int *)this;
@@ -815,9 +780,6 @@ int cMgSmartball_pushswitch_c::BallsClear()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN25cMgSmartball_pushswitch_c9CheckBallEPi, 0x0210e1fc, size 0x168 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN25cMgSmartball_pushswitch_c9CheckBallEPi
 int cMgSmartball_pushswitch_c::CheckBall(int *p) {
     char *self = (char *)this;
@@ -846,9 +808,6 @@ int cMgSmartball_pushswitch_c::CheckBall(int *p) {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN25cMgSmartball_pushswitch_c6UpdateEv, 0x0210e364, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN25cMgSmartball_pushswitch_c6UpdateEv
 /* Slot 1. Draws two OAM sprites: the switch itself, selected by the base's
  * unk_031 flag (0/1 used directly as the table index), and a fixed second
@@ -865,9 +824,6 @@ void cMgSmartball_pushswitch_c::Update()
                         -1, 2, 0);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- _ZN25cMgSmartball_pushswitch_c12SaveSnapshotEv, 0x0210e3e8, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN25cMgSmartball_pushswitch_c12SaveSnapshotEv
 /* Slot 0. Opens with the base's own SaveSnapshot body written out inline
  * rather than called -- same pattern as every sibling in this family. Then
@@ -891,9 +847,6 @@ void cMgSmartball_pushswitch_c::SaveSnapshot()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- _ZN25cMgSmartball_pushswitch_c14RestoreInitialEv, 0x0210e460, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN25cMgSmartball_pushswitch_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial), then
  * clears the base's unk_031 flag and this class's own countdown. */
@@ -904,9 +857,6 @@ void cMgSmartball_pushswitch_c::RestoreInitial()
     mReleaseDelay = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 16 -- func_ov006_0210e480, 0x0210e480, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_0210e480
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_0210e480(char* c, int b, int d, int* s){
@@ -920,9 +870,6 @@ int func_ov006_0210e480(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- _ZN20cMgSmartball_board_c13AnyLineActiveEv, 0x0210e4c8, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c13AnyLineActiveEv
 int cMgSmartball_board_c::AnyLineActive()
 {
@@ -935,9 +882,6 @@ int cMgSmartball_board_c::AnyLineActive()
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 18 -- _ZN20cMgSmartball_board_c6UpdateEv, 0x0210e4f4, size 0x7b0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c6UpdateEv
 /* Slot 1. Draws the board. Three passes:
  *
@@ -1073,9 +1017,6 @@ void cMgSmartball_board_c::Update()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 19 -- _ZN20cMgSmartball_board_c9PaintCellEiPi, 0x0210eca4, size 0x2a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c9PaintCellEiPi
 void cMgSmartball_board_c::PaintCell(int idx, int *pos)
 {
@@ -1181,9 +1122,6 @@ void cMgSmartball_board_c::PaintCell(int idx, int *pos)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- _ZN20cMgSmartball_board_c9ClaimCellEi, 0x0210ef48, size 0x61c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c9ClaimCellEi
 void cMgSmartball_board_c::ClaimCell(int i)
 {
@@ -1354,9 +1292,6 @@ void cMgSmartball_board_c::ClaimCell(int i)
     _ZN5Sound12PlayBank2_2DEj(0x174);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- _ZN20cMgSmartball_board_c12SaveSnapshotEv, 0x0210f564, size 0x3b0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c12SaveSnapshotEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -1386,8 +1321,8 @@ static inline void SetV2(V2 *p, int x, int y)
 }
 
 /* Load-bearing for this spelling: without it the function is 5 words too long.
- * Not a property of the function itself -- match/board-slot0-a reproduces the
- * same bytes with different statement order and no pragma at all. */
+ * Not a property of the function itself -- the same bytes come out with
+ * different statement order and no pragma at all. */
 void cMgSmartball_board_c::SaveSnapshot()
 {
     int i;
@@ -1483,11 +1418,8 @@ void cMgSmartball_board_c::SaveSnapshot()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 #pragma pop
 
-/* ROM ordinal 22 -- _ZN20cMgSmartball_board_c14RestoreInitialEv, 0x0210f914, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c14RestoreInitialEv
 /* Slot 2. Unlike most of this family's slot 2s this is a real body, not a
  * tail-call veneer -- but it still OPENS with the qualified call to the base,
@@ -1528,9 +1460,6 @@ void cMgSmartball_board_c::RestoreInitial()
     mLinesScored = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 23 -- _ZN20cMgSmartball_board_c12ShuffleCellsEv, 0x0210f998, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_board_c12ShuffleCellsEv
 void cMgSmartball_board_c::ShuffleCells(){
   struct W9 tmp;
@@ -1541,9 +1470,6 @@ void cMgSmartball_board_c::ShuffleCells(){
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 24 -- func_ov006_0210f9f8, 0x0210f9f8, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_0210f9f8
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_0210f9f8(char* c, int b, int d, int* s){
@@ -1557,9 +1483,6 @@ int func_ov006_0210f9f8(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- _ZN19cMgSmartball_slot_c12ReelsStoppedEv, 0x0210fa40, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c12ReelsStoppedEv
 int cMgSmartball_slot_c::ReelsStopped()
 {
@@ -1572,9 +1495,6 @@ int cMgSmartball_slot_c::ReelsStopped()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- _ZN19cMgSmartball_slot_c9BeginStopEv, 0x0210fa6c, size 0x98 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c9BeginStopEv
 void cMgSmartball_slot_c::BeginStop()
 {
@@ -1601,9 +1521,6 @@ void cMgSmartball_slot_c::BeginStop()
 
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 -- _ZN19cMgSmartball_slot_c9StartSpinEv, 0x0210fb04, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c9StartSpinEv
 void cMgSmartball_slot_c::StartSpin()
 {
@@ -1618,9 +1535,6 @@ void cMgSmartball_slot_c::StartSpin()
     _ZN5Sound12PlayBank2_2DEj(0x160);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- _ZN19cMgSmartball_slot_c10UpdateSpinEv, 0x0210fb58, size 0x3c4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c10UpdateSpinEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -1710,24 +1624,30 @@ void cMgSmartball_slot_c::UpdateSpin()
                 V2 a;
                 a.x = (int)self->param1;
                 a.y = *(int *)(c + 0xc);
-                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&a,  0x1388,  0,  1);
-                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(0);
+                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&a,  0x1388,  0,  1);
+
+                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(0);
+
                 break;
             }
             case 0x10000: {
                 V2 b;
                 b.x = (int)self->param1;
                 b.y = *(int *)(c + 0xc);
-                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&b,  0x1f40,  0,  1);
-                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(1);
+                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&b,  0x1f40,  0,  1);
+
+                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(1);
+
                 break;
             }
             case 0x20000: {
                 V2 d;
                 d.x = (int)self->param1;
                 d.y = *(int *)(c + 0xc);
-                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&d,  0x2710,  0,  1);
-                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(2);
+                ((dScMgSmartball_c *)((SArrays *)((int)self->uniqueID)))->EmitScore((int *)&d,  0x2710,  0,  1);
+
+                ((dScMgSmartball_c *)((char *)((int)self->uniqueID)))->CountAward(2);
+
                 break;
             }
             }
@@ -1737,19 +1657,14 @@ void cMgSmartball_slot_c::UpdateSpin()
     *(int *)(c + 0x7c) = 0x3c;
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 29 -- _ZN19cMgSmartball_slot_c6UpdateEv, 0x0210ff1c, size 0x18c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c6UpdateEv
 /* Slot 1. First loop draws three copies of one sprite in a row (index i is
  * computed but never read -- only the running x offset matters). Second
  * loop, over the same three mReelOffset[i] pairs, draws a stack of four more
- * sprites per element with descending y. Kept byte-for-byte identical to
- * the pre-migration matched source, including the `if (1) {}` no-op, the
+ * sprites per element with descending y. Kept identical to the pre-migration
+ * source, including the `if (1) {}` no-op, the
  * (x - 0x18) & 0xFFFFFFFFFFFFFFFF mask, and the goto-based second loop --
  * only the raw offset accesses became real member access. */
 inline int inline_fn(int arg0, int arg1)
@@ -1784,9 +1699,6 @@ second_loop:
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 30 -- _ZN19cMgSmartball_slot_c12SaveSnapshotEv, 0x021100a8, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c12SaveSnapshotEv
 /* Slot 0. Opens with the base's own SaveSnapshot body written out inline
  * rather than called -- same pattern as every sibling in this family (the
@@ -1815,9 +1727,6 @@ void cMgSmartball_slot_c::SaveSnapshot()
     UpdateSpin();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 31 -- _ZN19cMgSmartball_slot_c14RestoreInitialEv, 0x02110154, size 0x68 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_slot_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial), then
  * exhaustively zeroes every field this class adds, in the ROM's own
@@ -1845,9 +1754,6 @@ void cMgSmartball_slot_c::RestoreInitial()
     mSoundHandle = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 32 -- func_ov006_021101bc, 0x021101bc, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_021101bc
 extern "C" {
 void* func_ov006_021101bc(char* c, int a1, int a2, int* src){
@@ -1863,9 +1769,6 @@ void* func_ov006_021101bc(char* c, int a1, int a2, int* src){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 33 -- _ZN21cMgSmartball_pakkun_c9CheckBallEPi, 0x02110244, size 0x27c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_pakkun_c9CheckBallEPi
 /* Smartball object collision helper. Offsets 0x08 and 0x0c hold the
  * object's fixed-point 2D coordinates, used here for distance checks.
@@ -1949,9 +1852,6 @@ int cMgSmartball_pakkun_c::CheckBall(int *pos) {
     return func_0203d5bc(&d.a) < 0x190000;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 34 -- _ZN21cMgSmartball_pakkun_c6UpdateEv, 0x021104c0, size 0x1f4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_pakkun_c6UpdateEv
 /* Slot 1. While mActionTimer is counting down it renders a rotate/scale pair
  * of frames (the shift-by-12 fixed-point matrix built from data_02082214);
@@ -1993,9 +1893,6 @@ void cMgSmartball_pakkun_c::Update()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 35 -- _ZN21cMgSmartball_pakkun_c12SaveSnapshotEv, 0x021106b4, size 0x19c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_pakkun_c12SaveSnapshotEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -2047,11 +1944,8 @@ void cMgSmartball_pakkun_c::SaveSnapshot()
     else unk_031 = 0;
 }
 
-/* -------------------------------------------------------------------------- */
 #pragma pop
 
-/* ROM ordinal 36 -- _ZN21cMgSmartball_pakkun_c14RestoreInitialEv, 0x02110850, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_pakkun_c14RestoreInitialEv
 /* Slot 2. A real override, not a tail-call veneer: it calls the base's
  * RestoreInitial() (qualified -- unqualified would dispatch through the
@@ -2065,9 +1959,6 @@ void cMgSmartball_pakkun_c::RestoreInitial()
     mActionTimer = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 37 -- func_ov006_02110874, 0x02110874, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02110874
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_02110874(char* c, int b, int d, int* s){
@@ -2081,9 +1972,6 @@ int func_ov006_02110874(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 38 -- _ZN20cMgSmartball_dokan_c9CheckBallEPi, 0x021108bc, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_dokan_c9CheckBallEPi
 int cMgSmartball_dokan_c::CheckBall(int *b){
     int *a = (int *)this;
@@ -2100,9 +1988,6 @@ int cMgSmartball_dokan_c::CheckBall(int *b){
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 39 -- _ZN20cMgSmartball_dokan_c6UpdateEv, 0x02110928, size 0xf8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_dokan_c6UpdateEv
 /* Slot 1. Draws the pipe as five stacked sprites -- one cap, three body
  * segments, one base -- from a three-entry sprite table, all at the same x
@@ -2120,9 +2005,6 @@ void cMgSmartball_dokan_c::Update()
     func_ov004_020afdd0(data_ov006_0213ec04[2], mCurrent0 >> 12, (mCurrent1 >> 12) + 0x20, -1, flag);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 40 -- _ZN20cMgSmartball_dokan_c12SaveSnapshotEv, 0x02110a20, size 0x194 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_dokan_c12SaveSnapshotEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -2168,11 +2050,8 @@ void cMgSmartball_dokan_c::SaveSnapshot()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 #pragma pop
 
-/* ROM ordinal 41 -- _ZN20cMgSmartball_dokan_c14RestoreInitialEv, 0x02110bb4, size 0xc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN20cMgSmartball_dokan_c14RestoreInitialEv
 /* Slot 2. The ROM is three words -- ldr ip, [pc]; bx ip; .word target -- which
  * is mwcc's interworking-safe TAIL CALL, not a linker veneer and not a
@@ -2187,9 +2066,6 @@ void cMgSmartball_dokan_c::RestoreInitial()
     cMgSmartball_object_c::RestoreInitial();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 42 -- func_ov006_02110bc0, 0x02110bc0, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02110bc0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_02110bc0(char* c, int b, int d, int* s){
@@ -2203,9 +2079,6 @@ int func_ov006_02110bc0(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 43 -- _ZN24cMgSmartball_propeller_c7HitTestEPi, 0x02110c08, size 0x220 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24cMgSmartball_propeller_c7HitTestEPi
 int cMgSmartball_propeller_c::HitTest(int *pos) {
     char *self = (char *)this;
@@ -2247,9 +2120,6 @@ int cMgSmartball_propeller_c::HitTest(int *pos) {
     return PointInTriangle((int *)&v0,  (int *)&v1,  (int *)&v2,  (int *)&v3) != 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 44 -- _ZN24cMgSmartball_propeller_c12RebuildVertsEv, 0x02110e28, size 0x204 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24cMgSmartball_propeller_c12RebuildVertsEv
 void cMgSmartball_propeller_c::RebuildVerts()
 {
@@ -2298,9 +2168,6 @@ void cMgSmartball_propeller_c::RebuildVerts()
     *(int*)(((int)c + 0x74)) += c->dy;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 45 -- _ZN24cMgSmartball_propeller_c6UpdateEv, 0x0211102c, size 0x118 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24cMgSmartball_propeller_c6UpdateEv
 /* Slot 1. Looks up a rotation matrix from the base's angle field at 0x32,
  * reading it UNSIGNED (>> 4, lsr not asr) to index the sine table -- one of
@@ -2326,9 +2193,6 @@ void cMgSmartball_propeller_c::Update()
     RenderOamBothScreens(data_ov006_02138a08[1], mCurrent0 >> 12, (mCurrent1 >> 12) + 5, -1, 2, vec);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 46 -- _ZN24cMgSmartball_propeller_c12SaveSnapshotEv, 0x02111144, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24cMgSmartball_propeller_c12SaveSnapshotEv
 /* Slot 0. Opens with the base's own SaveSnapshot body written out inline
  * rather than called -- same idiom as every sibling. If the base's flag at
@@ -2341,11 +2205,11 @@ void cMgSmartball_propeller_c::Update()
  *
  * KEPT AS RAW OFFSET ACCESS ON PURPOSE, unlike Update/RestoreInitial in
  * this same class. Rewritten with named `mSpinSpeedTarget`/`mSpinSpeed` member access
- * this compiled to 0x98 bytes against a required 0xac: mwcc CSEs the
+ * this compiled to 0x98 bytes where the ROM has 0xac: mwcc CSEs the
  * repeated `this->mSpinSpeed` load into fewer reloads than the ROM's shape
  * (write through a locally-cast `short* p`, but re-read every comparison
  * through a fresh `*(short*)(c+0x36)` cast) allows. The local `p`/`q`
- * pointers and repeated casts are load-bearing for the byte match, not
+ * pointers and repeated casts are load-bearing for the emitted code, not
  * decoration -- see cMgSmartball_propeller_c.h. */
 void cMgSmartball_propeller_c::SaveSnapshot()
 {
@@ -2372,9 +2236,6 @@ void cMgSmartball_propeller_c::SaveSnapshot()
     ((cMgSmartball_propeller_c *)((C2 *)c))->RebuildVerts();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 47 -- _ZN24cMgSmartball_propeller_c14RestoreInitialEv, 0x021111f0, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN24cMgSmartball_propeller_c14RestoreInitialEv
 /* Slot 2. A real override, not a tail-call veneer: calls the base's
  * RestoreInitial() (qualified -- unqualified would dispatch through the
@@ -2392,9 +2253,6 @@ void cMgSmartball_propeller_c::RestoreInitial()
     RebuildVerts();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 48 -- func_ov006_02111220, 0x02111220, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02111220
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_02111220(char* c, int b, int d, int* s){
@@ -2408,9 +2266,6 @@ int func_ov006_02111220(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 49 -- _ZN21cMgSmartball_spring_c6UpdateEv, 0x02111268, size 0xe4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_spring_c6UpdateEv
 /* Slot 1. Draws one of two sprite pairs depending on a byte flag read
  * through the base's mpManager scene pointer (offset 8, low byte) -- unrelated
@@ -2426,9 +2281,6 @@ void cMgSmartball_spring_c::Update()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 50 -- _ZN21cMgSmartball_spring_c12SaveSnapshotEv, 0x0211134c, size 0x214 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_spring_c12SaveSnapshotEv
 #pragma push
 #pragma opt_propagation off
@@ -2444,7 +2296,7 @@ void cMgSmartball_spring_c::Update()
  * Three statements in the original read and wrote the SAME struct member
  * through a raw pointer cast twice, solely to keep a compound assignment
  * off it (`int *p = (int *)(c + off); *p = *p - k;`). All three are plain
- * compound assignments below and reproduce byte-exact. */
+ * compound assignments below and emit the same. */
 void cMgSmartball_spring_c::SaveSnapshot()
 {
     u8 slot;
@@ -2513,13 +2365,8 @@ void cMgSmartball_spring_c::SaveSnapshot()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 51 -- _ZN21cMgSmartball_spring_c14RestoreInitialEv, 0x02111560, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_spring_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial), then
  * zeroes mSoundHandle -- the ONLY offset this class's RestoreInitial reaches;
@@ -2531,9 +2378,6 @@ void cMgSmartball_spring_c::RestoreInitial()
     mSoundHandle = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 52 -- func_ov006_0211157c, 0x0211157c, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_0211157c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_0211157c(char* c, int b, int d, int* s){
@@ -2547,9 +2391,6 @@ int func_ov006_0211157c(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 53 -- _ZN18cMgSmartball_ana_c7HasBallEv, 0x021115c4, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN18cMgSmartball_ana_c7HasBallEv
 int cMgSmartball_ana_c::HasBall()
 {
@@ -2557,9 +2398,6 @@ int cMgSmartball_ana_c::HasBall()
     return p[49];
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 54 -- _ZN18cMgSmartball_ana_c7SwallowEv, 0x021115cc, size 0x88 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN18cMgSmartball_ana_c7SwallowEv
 void cMgSmartball_ana_c::Swallow(){
     char *c = (char *)this;
@@ -2577,9 +2415,6 @@ void cMgSmartball_ana_c::Swallow(){
     func_02012718(0xe0, *(int*)(c + 8));
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 55 -- _ZN18cMgSmartball_ana_c6UpdateEv, 0x02111654, size 0x9c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN18cMgSmartball_ana_c6UpdateEv
 /* Slot 1. While the BASE's unk_031 flag is set, picks a warning-sprite
  * index from this class's countdown (mRespawnTimer) and draws it under the main
@@ -2601,9 +2436,6 @@ void cMgSmartball_ana_c::Update()
     func_ov004_020afdd0(data_ov006_02138318[0], mCurrent0 >> 0xc, mCurrent1 >> 0xc, -1, 3);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 56 -- _ZN18cMgSmartball_ana_c12SaveSnapshotEv, 0x021116f0, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN18cMgSmartball_ana_c12SaveSnapshotEv
 /* Slot 0. Opens with the base's own SaveSnapshot body written out inline
  * rather than called -- same pattern as every sibling in this family (the
@@ -2626,9 +2458,6 @@ void cMgSmartball_ana_c::SaveSnapshot()
     unk_032 = 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 57 -- _ZN18cMgSmartball_ana_c14RestoreInitialEv, 0x02111750, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN18cMgSmartball_ana_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial), then clears
  * the base's unk_031 flag, the low byte of the base's unk_032, and this
@@ -2646,9 +2475,6 @@ void cMgSmartball_ana_c::RestoreInitial()
     mRespawnTimer = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 58 -- func_ov006_02111774, 0x02111774, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02111774
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_02111774(char* c, int b, int d, int* s){
@@ -2662,9 +2488,6 @@ int func_ov006_02111774(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 59 -- _ZN21cMgSmartball_kinoko_c6UpdateEv, 0x021117bc, size 0x170 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_kinoko_c6UpdateEv
 /* Slot 1. Switches on mVariant (see the header): state 0 draws two base
  * sprites via func_ov004_020afdd0; state 1 computes an ease vector from the
@@ -2698,9 +2521,6 @@ void cMgSmartball_kinoko_c::Update()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 60 -- _ZN21cMgSmartball_kinoko_c12SaveSnapshotEv, 0x0211192c, size 0x1f4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_kinoko_c12SaveSnapshotEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -2777,13 +2597,8 @@ done:
     }
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 61 -- _ZN21cMgSmartball_kinoko_c14RestoreInitialEv, 0x02111b20, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_kinoko_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial, qualified --
  * unqualified would dispatch virtually and recurse), then zeroes mWasHit and
@@ -2796,9 +2611,6 @@ void cMgSmartball_kinoko_c::RestoreInitial()
     mHitTimer = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 62 -- func_ov006_02111b40, 0x02111b40, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02111b40
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 char *func_ov006_02111b40(char *self, int x, int y, struct V2ab *src) {
@@ -2813,9 +2625,6 @@ char *func_ov006_02111b40(char *self, int x, int y, struct V2ab *src) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 63 -- _ZN19cMgSmartball_ball_c12PlayHitSoundEiPi, 0x02111b90, size 0x1bc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c12PlayHitSoundEiPi
 void cMgSmartball_ball_c::PlayHitSound(int a1, int *vel) {
     char *self = (char *)this;
@@ -2867,9 +2676,6 @@ void cMgSmartball_ball_c::PlayHitSound(int a1, int *vel) {
     *(int*)(self + 0x124) = 3;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 64 -- _ZN19cMgSmartball_ball_c6FreezeEv, 0x02111d4c, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c6FreezeEv
 void cMgSmartball_ball_c::Freeze()
 {
@@ -2880,9 +2686,6 @@ void cMgSmartball_ball_c::Freeze()
     *(unsigned char *)(p + 0x3b) = 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 65 -- _ZN19cMgSmartball_ball_c6HasHitEv, 0x02111d6c, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c6HasHitEv
 int cMgSmartball_ball_c::HasHit()
 {
@@ -2890,9 +2693,6 @@ int cMgSmartball_ball_c::HasHit()
     return p[204];
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 66 -- _ZN19cMgSmartball_ball_c5IsOutEv, 0x02111d74, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c5IsOutEv
 int cMgSmartball_ball_c::IsOut(){
     char *c = (char *)this;
@@ -2906,9 +2706,6 @@ int cMgSmartball_ball_c::IsOut(){
   return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 67 -- _ZN19cMgSmartball_ball_c9ArmExpireEi, 0x02111dcc, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c9ArmExpireEi
 int cMgSmartball_ball_c::ArmExpire(int val){
     char *p = (char *)this;
@@ -2918,9 +2715,6 @@ int cMgSmartball_ball_c::ArmExpire(int val){
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 68 -- _ZN19cMgSmartball_ball_c10IsFinishedEv, 0x02111df4, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c10IsFinishedEv
 int cMgSmartball_ball_c::IsFinished() {
     char *c = (char *)this;
@@ -2934,9 +2728,6 @@ int cMgSmartball_ball_c::IsFinished() {
     return *(unsigned char*)(c + 0x3b);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 69 -- _ZN19cMgSmartball_ball_c5BurstEv, 0x02111e48, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c5BurstEv
 void cMgSmartball_ball_c::Burst(){
     int *o = (int *)this;
@@ -2946,9 +2737,6 @@ void cMgSmartball_ball_c::Burst(){
   ((dScMgSmartball_c *)((char *)o[1]))->EmitSparks((int *)v,  0);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 70 -- _ZN19cMgSmartball_ball_c9PutInPlayEv, 0x02111e7c, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c9PutInPlayEv
 void cMgSmartball_ball_c::PutInPlay() {
     char *p = (char *)this;
@@ -2956,9 +2744,6 @@ void cMgSmartball_ball_c::PutInPlay() {
     ((cMgSmartball_ball_c *)((int *)p))->Burst();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN19cMgSmartball_ball_c7HitWingEPi, 0x02111e90, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c7HitWingEPi
 /* Both reads of +0x4780 use POINTER arithmetic on a `char*`, not integer arithmetic
  * cast to a pointer. Under 2004/b56 that choice decides the addressing mode: written
@@ -2979,9 +2764,6 @@ int cMgSmartball_ball_c::HitWing(int *src){
   return ((cMgSmartball_wing_c *)((State *)(*(int*)((char*)*(int*)(c+4)+0x4780))))->HitTest((int *)&v);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN19cMgSmartball_ball_c11HitSwitchesEPi, 0x02111ee8, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c11HitSwitchesEPi
 
 int cMgSmartball_ball_c::HitSwitches(int *arg){
@@ -3002,9 +2784,6 @@ int cMgSmartball_ball_c::HitSwitches(int *arg){
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 73 -- _ZN19cMgSmartball_ball_c10HitPakkunsEPi, 0x02111f8c, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c10HitPakkunsEPi
 extern "C" int cMgSmartball_ball_c::HitPakkuns(int *arg){
     char *c = (char *)this;
@@ -3024,9 +2803,6 @@ extern "C" int cMgSmartball_ball_c::HitPakkuns(int *arg){
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 74 -- _ZN19cMgSmartball_ball_c9HitDokansEPi, 0x02112030, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c9HitDokansEPi
 
 int cMgSmartball_ball_c::HitDokans(int *arg){
@@ -3047,9 +2823,6 @@ int cMgSmartball_ball_c::HitDokans(int *arg){
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 75 -- _ZN19cMgSmartball_ball_c13HitPropellersEPi, 0x021120d4, size 0xbc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c13HitPropellersEPi
 int cMgSmartball_ball_c::HitPropellers(int *pos)
 {
@@ -3077,9 +2850,6 @@ int cMgSmartball_ball_c::HitPropellers(int *pos)
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 76 -- _ZN19cMgSmartball_ball_c10HitKinokosEPi, 0x02112190, size 0x150 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c10HitKinokosEPi
 #pragma push
 #pragma opt_strength_reduction off
@@ -3125,18 +2895,9 @@ int cMgSmartball_ball_c::HitKinokos(int *pos)
   return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 77 -- _ZN19cMgSmartball_ball_c10CheckExitsEPi, 0x021122e0, size 0x1ac */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c10CheckExitsEPi
-/* CheckExits at 0x021122e0
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
- */
 int cMgSmartball_ball_c::CheckExits(int *pos) {
     char *self = (char *)this;
     struct S *arg = (struct S *)pos;
@@ -3171,9 +2932,6 @@ int cMgSmartball_ball_c::CheckExits(int *pos) {
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 78 -- _ZN19cMgSmartball_ball_c8AtSpringEPi, 0x0211248c, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c8AtSpringEPi
 
 int cMgSmartball_ball_c::AtSpring(int *b) {
@@ -3188,9 +2946,6 @@ int cMgSmartball_ball_c::AtSpring(int *b) {
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 79 -- _ZN19cMgSmartball_ball_c7OnSlopeEPi, 0x02112504, size 0x1b0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c7OnSlopeEPi
 int cMgSmartball_ball_c::OnSlope(int *p)
 {
@@ -3228,9 +2983,6 @@ int cMgSmartball_ball_c::OnSlope(int *p)
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 80 -- _ZN19cMgSmartball_ball_c12NeedsRespawnEPi, 0x021126b4, size 0x248 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c12NeedsRespawnEPi
 int cMgSmartball_ball_c::NeedsRespawn(int *pos) {
     char *self = (char *)this;
@@ -3291,9 +3043,6 @@ L238:
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 81 -- _ZN19cMgSmartball_ball_c11QueueBehindEv, 0x021128fc, size 0x1dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c11QueueBehindEv
 void cMgSmartball_ball_c::QueueBehind()
 {
@@ -3367,15 +3116,11 @@ block2:
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 82 -- func_ov006_02112ad8, 0x02112ad8, size 0x113c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02112ad8
 #pragma push
 #pragma opt_strength_reduction off
 /* The equal-arm owner selection below preserves mwccarm's address rematerialization. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-
 
 void func_ov006_02112ad8(Obj *self)
 {
@@ -3922,11 +3667,8 @@ final_checks:
 }
 }
 
-/* -------------------------------------------------------------------------- */
 #pragma pop
 
-/* ROM ordinal 83 -- _ZN19cMgSmartball_ball_c10DrawMarkerEv, 0x02113c14, size 0x240 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c10DrawMarkerEv
 void cMgSmartball_ball_c::DrawMarker()
 {
@@ -3968,9 +3710,6 @@ void cMgSmartball_ball_c::DrawMarker()
         RenderOamBothScreens(data_ov006_021382f8[1], (c->x + 0x800) >> 12, ((c->y + 0x800) >> 12) + 5, -1, 2, 0);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 84 -- _ZN19cMgSmartball_ball_c6UpdateEv, 0x02113e54, size 0xc8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c6UpdateEv
 /* Slot 1. Picks one of two sprites (based on which edge of the level the
  * scene reports) and draws it at the ball's rounded position, with a
@@ -3996,9 +3735,6 @@ void cMgSmartball_ball_c::Update()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 85 -- _ZN19cMgSmartball_ball_c12SaveSnapshotEv, 0x02113f1c, size 0x53c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c12SaveSnapshotEv
 /* Slot 0. Does NOT open with the base's SaveSnapshot body inline (unlike
  * every sibling so far) -- this is the one override in the family that
@@ -4168,9 +3904,6 @@ bounce:
     func_0203d630((V2 *)(V2xz *)&mVel0, dist);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 86 -- _ZN19cMgSmartball_ball_c14RestoreInitialEv, 0x02114458, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN19cMgSmartball_ball_c14RestoreInitialEv
 /* Slot 2. Calls the base's RestoreInitial (mCurrent = mInitial), latches
  * mCurrent into the mLastPos0/mLastPos1 position pair, zeroes the base's
@@ -4221,9 +3954,6 @@ void cMgSmartball_ball_c::RestoreInitial()
     mExitGateOpen = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 87 -- func_ov006_02114548, 0x02114548, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02114548
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov006_02114548(char* c, int b, int d, int* s){
@@ -4237,14 +3967,7 @@ int func_ov006_02114548(char* c, int b, int d, int* s){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 88 -- _ZN21cMgSmartball_object_c15PointInTriangleEPiS0_S0_S0_, 0x02114590, size 0x11c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_object_c15PointInTriangleEPiS0_S0_S0_
-/* PointInTriangle at 0x02114590
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
- */
 int cMgSmartball_object_c::PointInTriangle(int* p, int* q0, int* q1, int* q2){
   int v0[2], v1[2], v2[2];
   int t0[2], t1[2], t2[2];
@@ -4261,18 +3984,12 @@ int cMgSmartball_object_c::PointInTriangle(int* p, int* q0, int* q1, int* q2){
   return (d0 >= 0 && d1 >= 0 && d2 >= 0) || (d0 <= 0 && d1 <= 0 && d2 <= 0);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 89 -- _ZN21cMgSmartball_kinoko_c11HitRadiusSqEv, 0x021146ac, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_kinoko_c11HitRadiusSqEv
 int cMgSmartball_kinoko_c::HitRadiusSq() {
     struct S28 *p = (struct S28 *)this;
     return (int)(((long long)p->field_0x28 * p->field_0x28 + 0x800) >> 12);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 90 -- _ZN21cMgSmartball_object_c6SetVelEPi, 0x021146cc, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_object_c6SetVelEPi
 void cMgSmartball_object_c::SetVel(int *b)
 {
@@ -4280,9 +3997,6 @@ void cMgSmartball_object_c::SetVel(int *b)
     a[8] = b[0]; a[9] = b[1];
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 91 -- CopyObjectVel, 0x021146e0, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol CopyObjectVel
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void CopyObjectVel(int *a, int *b)
@@ -4291,9 +4005,6 @@ void CopyObjectVel(int *a, int *b)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 92 -- GetObjectDelta, 0x021146f4, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol GetObjectDelta
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void GetObjectDelta(void* a, char* b) {
@@ -4301,9 +4012,6 @@ void GetObjectDelta(void* a, char* b) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 93 -- CopyObjectPos, 0x0211470c, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol CopyObjectPos
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void CopyObjectPos(int *a, int *b)
@@ -4312,21 +4020,15 @@ void CopyObjectPos(int *a, int *b)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 94 -- _ZN21cMgSmartball_object_c6UpdateEv, 0x02114720, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_object_c6UpdateEv
-/* recovered: real C++ method, vtable slot 1. Empty in this class -- the
+/* vtable slot 1. Empty in this class -- the
    0x4-byte body is a bare `bx lr`. Every child overrides it. */
 void cMgSmartball_object_c::Update()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 95 -- _ZN21cMgSmartball_object_c12SaveSnapshotEv, 0x02114724, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_object_c12SaveSnapshotEv
-/* recovered: real C++ method, vtable slot 0. Name coined from the body --
+/* vtable slot 0. Name coined from the body --
    see include/cMgSmartball_object_c.h's own note on why this hierarchy has
    no names to recover. */
 void cMgSmartball_object_c::SaveSnapshot()
@@ -4335,19 +4037,16 @@ void cMgSmartball_object_c::SaveSnapshot()
     mSnapshot1 = mCurrent1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 96 -- _ZN21cMgSmartball_object_c14RestoreInitialEv, 0x02114738, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN21cMgSmartball_object_c14RestoreInitialEv
-/* recovered: real C++ method, vtable slot 2. Name coined from the body --
+/* Name coined from the body --
    see include/cMgSmartball_object_c.h's own note.
 
-   BOTH READS COME BEFORE BOTH WRITES, deliberately. The plain
+   Both reads come before both writes, deliberately. The plain
    `mCurrent0 = mInitial0; mCurrent1 = mInitial1;` spelling costs 4 words:
    the ROM loads the pair and then stores the pair, which is what the two
-   temporaries reproduce. SaveSnapshot below needs no such care -- its
+   temporaries reproduce. SaveSnapshot above needs no such care -- its
    source and destination do not overlap in the same way, and the naive
-   spelling matches there. */
+   spelling emits the same there. */
 void cMgSmartball_object_c::RestoreInitial()
 {
     s32 hi = mInitial1;
@@ -4356,9 +4055,6 @@ void cMgSmartball_object_c::RestoreInitial()
     mCurrent1 = hi;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 97 -- func_ov006_0211474c, 0x0211474c, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov006_0211474c
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_0211474c(char* c, int a1, int a2, int* a3){
@@ -4379,22 +4075,13 @@ void func_ov006_0211474c(char* c, int a1, int a2, int* a3){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 98 -- _ZN16dScMgSmartball_c8OnPushedEv, 0x021147ac, size 0x24 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c8OnPushedEv
-// recovered name: dScMgSmartball_c_OnPushed
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* recovered: renamed to Class_Method */
 /* dScMgSmartball_c::OnPushed - recovered from vtable slot identity */
 int dScMgSmartball_c::OnPushed()
 {
     void *t = (void *)this;
  return ((dScMgBase_c *)t)->dScMgBase_c::OnPushed() != 0; }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 99 -- _ZN16dScMgSmartball_c12SparksActiveEv, 0x021147d0, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c12SparksActiveEv
 int dScMgSmartball_c::SparksActive()
 {
@@ -4408,9 +4095,6 @@ int dScMgSmartball_c::SparksActive()
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 100 -- _ZN16dScMgSmartball_c10EmitSparksEPii, 0x02114800, size 0x310 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c10EmitSparksEPii
 /* ov006 minigame: seeds up to 0x18 particle rows (0x24 bytes each, at c+0x599c)
  * with random headings, first over the free rows in order and then at random
@@ -4508,9 +4192,6 @@ void dScMgSmartball_c::EmitSparks(int *pair, int a3)
     } while (count < 0x18);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 101 -- _ZN16dScMgSmartball_c12RenderSparksEv, 0x02114b10, size 0xf4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c12RenderSparksEv
 void dScMgSmartball_c::RenderSparks()
 {
@@ -4539,9 +4220,6 @@ void dScMgSmartball_c::RenderSparks()
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 102 -- _ZN16dScMgSmartball_c12UpdateSparksEv, 0x02114c04, size 0x1cc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c12UpdateSparksEv
 void dScMgSmartball_c::UpdateSparks()
 {
@@ -4589,9 +4267,6 @@ void dScMgSmartball_c::UpdateSparks()
     } while (i < 0x40);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 103 -- _ZN16dScMgSmartball_c11ResetSparksEv, 0x02114dd0, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c11ResetSparksEv
 void dScMgSmartball_c::ResetSparks()
 {
@@ -4605,9 +4280,6 @@ void dScMgSmartball_c::ResetSparks()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 104 -- _ZN16dScMgSmartball_c8EndRoundEv, 0x02114dfc, size 0xc4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c8EndRoundEv
 void dScMgSmartball_c::EndRound(){
     char *c = (char *)this;
@@ -4623,14 +4295,7 @@ void dScMgSmartball_c::EndRound(){
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 105 -- _ZN16dScMgSmartball_c13ServeNextBallEv, 0x02114ec0, size 0xd8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c13ServeNextBallEv
-/* ServeNextBall at 0x02114ec0
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
- */
 static inline int *get(char *self, int i){ return i >= 13 ? 0 : ((Arr*)(self + 0x4688))->p[i]; }
 void dScMgSmartball_c::ServeNextBall(){
     char *self = (char *)this;
@@ -4644,22 +4309,16 @@ void dScMgSmartball_c::ServeNextBall(){
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 106 -- _ZN16dScMgSmartball_c8CountOutEv, 0x02114f98, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c8CountOutEv
 // Increment the u32 counter at self+0x5994. The u64-mask launder forces the base to
-// materialize via a pool-loaded constant + add (ldr r1,[pc]; add r1,self,r1), matching
-// the ROM instead of splitting the large offset.
+// materialize via a pool-loaded constant + add (ldr r1,[pc]; add r1,self,r1),
+// rather than splitting the large offset.
 void dScMgSmartball_c::CountOut()
 {
     char *self = (char *)this;
     *(unsigned int *)(self + 0x5994) += 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 107 -- _ZN16dScMgSmartball_c10CountAwardEi, 0x02114fb4, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c10CountAwardEi
 void dScMgSmartball_c::CountAward(int i)
 {
@@ -4668,9 +4327,6 @@ void dScMgSmartball_c::CountAward(int i)
     a[i] = a[i] + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 108 -- _ZN16dScMgSmartball_c10CountDokanEv, 0x02114fd0, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c10CountDokanEv
 void dScMgSmartball_c::CountDokan()
 {
@@ -4679,9 +4335,6 @@ void dScMgSmartball_c::CountDokan()
     *a = *a + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 109 -- _ZN16dScMgSmartball_c8CountAnaEv, 0x02114fec, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c8CountAnaEv
 void dScMgSmartball_c::CountAna()
 {
@@ -4690,9 +4343,6 @@ void dScMgSmartball_c::CountAna()
     *a = *a + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 110 -- _ZN16dScMgSmartball_c11CountKinokoEv, 0x02115008, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c11CountKinokoEv
 void dScMgSmartball_c::CountKinoko()
 {
@@ -4701,9 +4351,6 @@ void dScMgSmartball_c::CountKinoko()
     *a = *a + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 111 -- _ZN16dScMgSmartball_c10CountBingoEv, 0x02115024, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c10CountBingoEv
 void dScMgSmartball_c::CountBingo()
 {
@@ -4712,9 +4359,6 @@ void dScMgSmartball_c::CountBingo()
     *a = *a + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 112 -- _ZN16dScMgSmartball_c9CountLineEi, 0x02115040, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c9CountLineEi
 int dScMgSmartball_c::CountLine(int i)
 {
@@ -4725,9 +4369,6 @@ int dScMgSmartball_c::CountLine(int i)
     return v;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 113 -- _ZN16dScMgSmartball_c9CountCellEv, 0x02115060, size 0x1c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c9CountCellEv
 void dScMgSmartball_c::CountCell()
 {
@@ -4736,9 +4377,6 @@ void dScMgSmartball_c::CountCell()
     *a = *a + 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 114 -- _ZN16dScMgSmartball_c7GetTileEPi, 0x0211507c, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c7GetTileEPi
 unsigned short dScMgSmartball_c::GetTile(int *pos)
 {
@@ -4761,9 +4399,6 @@ unsigned short dScMgSmartball_c::GetTile(int *pos)
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 115 -- _ZN16dScMgSmartball_c10UpdateDustEv, 0x02115150, size 0xf8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c10UpdateDustEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -4796,13 +4431,8 @@ void dScMgSmartball_c::UpdateDust()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 116 -- _ZN16dScMgSmartball_c9SpawnDustEPi, 0x02115248, size 0x238 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c9SpawnDustEPi
 /* SpawnDust -- dScMgSmartball_c, ov006 0x02115248, 0x238 bytes.
  *
@@ -4875,9 +4505,6 @@ extern "C" void dScMgSmartball_c::SpawnDust(int *origin)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 117 -- _ZN16dScMgSmartball_c12UpdateScoresEv, 0x02115480, size 0x118 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c12UpdateScoresEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -4918,13 +4545,8 @@ void dScMgSmartball_c::UpdateScores()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 118 -- _ZN16dScMgSmartball_c9EmitScoreEPiiii, 0x02115598, size 0xe8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c9EmitScoreEPiiii
 extern "C" void dScMgSmartball_c::EmitScore(int* src, int v2, int v3, int v5)
 {
@@ -4953,9 +4575,6 @@ extern "C" void dScMgSmartball_c::EmitScore(int* src, int v2, int v3, int v5)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 119 -- _ZN16dScMgSmartball_c8KickGateEi, 0x02115680, size 0x78 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c8KickGateEi
 void dScMgSmartball_c::KickGate(int idx)
 {
@@ -4982,9 +4601,6 @@ void dScMgSmartball_c::KickGate(int idx)
     *(int *)(p + idx * 4 + 0x4784) = 0x14;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 120 -- _ZN16dScMgSmartball_c13IsTableAtRestEv, 0x021156f8, size 0x138 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c13IsTableAtRestEv
 int dScMgSmartball_c::IsTableAtRest()
 {
@@ -5021,9 +4637,6 @@ int dScMgSmartball_c::IsTableAtRest()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 121 -- _ZN16dScMgSmartball_c15ResolveBallPairEiiPhS0_, 0x02115830, size 0x22c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c15ResolveBallPairEiiPhS0_
 #pragma push
 #pragma opt_common_subs off
@@ -5110,10 +4723,7 @@ void dScMgSmartball_c::ResolveBallPair(int b, int c, u8 *d, u8 *e)
     ((cMgSmartball_object_c *)((int *)e))->SetVel(&c2.x);
 }
 
-/* -------------------------------------------------------------------------- */
 #pragma pop
-/* ROM ordinal 122 -- _ZN16dScMgSmartball_c12CollideBallsEv, 0x02115a5c, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c12CollideBallsEv
 #pragma push
 #pragma opt_strength_reduction off
@@ -5133,36 +4743,25 @@ void dScMgSmartball_c::CollideBalls()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 123 -- _ZN16dScMgSmartball_c12SpawnObjectsEv, 0x02115b0c, size 0x18bc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c12SpawnObjectsEv
 #pragma push
 #pragma opt_strength_reduction off
-// MATCHING (abverify MATCH, mwccarm 1.2/sp2p3, canonical flags)
-/* SpawnObjects at 0x02115b0c (ov006), size 0x18bc (6,332 bytes, 1583 insns)
- * Compiler mwccarm 1.2/sp2p3, flags:
- * -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
+/* SpawnObjects: minigame-board teardown+rebuild. 7 inlined-destructor loops
+ * over object slot arrays (double vtable store + Memory::operator_delete2 +
+ * slot=0), 3 single-slot deletes, language-selected asset loads
+ * (func_02057d00 + DecompressLZ16 to VRAM/tilemaps), per-tile-type scan
+ * loops over the two 0x300-entry tilemaps at +0x4954/+0x5154 collecting
+ * spawn positions ((i%32)<<15, mapA: ((i/32)*8-0xf0)<<12 /
+ * mapB: (i/32)<<15), spawn loops (_Znwj + per-type init, V2 passed via
+ * pointer to a caller-local copy), a virtual-init pass (vtbl[2](this) on
+ * every spawned object), bulk zeroing.
  *
- * Minigame-board teardown+rebuild: 7 inlined-destructor loops over object
- * slot arrays (double vtable store + Memory::operator_delete2 + slot=0),
- * 3 single-slot deletes, language-selected asset loads (func_02057d00 +
- * DecompressLZ16 to VRAM/tilemaps), per-tile-type scan loops over the two
- * 0x300-entry tilemaps at +0x4954/+0x5154 collecting spawn positions
- * ((i%32)<<15, mapA: ((i/32)*8-0xf0)<<12 / mapB: (i/32)<<15), spawn loops
- * (_Znwj + per-type init, V2 passed via pointer to a caller-local copy),
- * a virtual-init pass (vtbl[2](this) on every spawned object), bulk zeroing.
+ * Two pool words the disasm text left ambiguous: the +0x59c scan mask is
+ * 0x3ff; the tile ID for the +0x74c object type is 0x3d2 (not 0x2d2/0x1d2).
  *
- * POOL-WORD RESOLUTION (was flagged ambiguous in the lossy disasm text):
- *   +0x59c scan mask = 0x3ff (confirmed byte-exact);
- *   +0x5ac tile ID for the +0x74c object type = 0x3d2 (NOT 0x2d2/0x1d2 -
- *   verified against ROM bytes via abverify; the published text was lossy).
- *
- * Match levers (in order of impact):
+ * Load-bearing spellings (in order of impact):
  *  - Spawn callees take V2* + explicit caller-local copy (V2 tmp = pos[j];
  *    f(p,c,j,&tmp)). By-value V2 in C mode splits across r3/[sp] with
  *    dynamic sp adjustment, which pins a frame pointer the ROM lacks.
@@ -5178,8 +4777,8 @@ void dScMgSmartball_c::CollideBalls()
  *    ((*(volatile int*)(c+0x4670))++): rematerializes the pooled counter
  *    address per loop instead of CSEing it across the loop pair.
  *  - In the 12 counted scan loops the pos[k] stores are volatile and the
- *    final shift is folded into the y-store (y kept un-shifted): gives the
- *    ROM texture str x / add rFresh / lsl into dead-k / str. The 6 k-local
+ *    final shift is folded into the y-store (y kept un-shifted): this emits
+ *    str x / add rFresh / lsl into dead-k / str. The 6 k-local
  *    (k++) scan loops keep plain stores with fully-shifted y locals.
  *  - Every loop counter is block-scoped (for (int i = ...)): stabilizes the
  *    per-loop register set (i=r4, const=r5, zero=r6, vtblB=r7, vtblA=sb,
@@ -5187,7 +4786,7 @@ void dScMgSmartball_c::CollideBalls()
  *  - Virtual init calls pass this: ((void(**)(void*))(*(int*)p))[2](p)
  *    keeps the object in r0 and the vptr chain in r1.
  *  - Second 0x46bc spawn loop copies the V2 via int temps loaded y-then-x
- *    (int ty = pos[n].y; int tx = pos[n].x;) to match its load order.
+ *    (int ty = pos[n].y; int tx = pos[n].x;) to keep its load order.
  *  - #pragma opt_strength_reduction off (as in the draft) keeps every loop
  *    un-strength-reduced; does not break the div/mod-by-32 shift idioms.
  */
@@ -5906,46 +5505,38 @@ void dScMgSmartball_c::SpawnObjects()
     __cxa_vec_cleanup(pos, 0x19, 8, NullDestructor_0203d47c);
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 124 -- _ZN16dScMgSmartball_c6RenderEv, 0x021173c8, size 0x10c0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c6RenderEv
 #pragma push
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
-// MATCH: dScMgSmartball_c::Render @ 0x021173c8 size 0x10c0 (ov006), mwccarm 2004/b56.
-// Levers from near-miss div=15:
-//  - plain (non-u64) pcnt for loop C -> pcnt@sp+0x10 (div 15->8)
-//  - block-scope pcnt2 for loop G -> val@sp+0x14 (div 8->5)
+// Spill-order levers (each pins temps to stack slots in order):
+//  - plain (non-u64) pcnt for loop C -> pcnt@sp+0x10
+//  - block-scope pcnt2 for loop G -> val@sp+0x14
 //  - int *slot[2] with early slot[0]=0, slot[1]=loopG pcnt, slot[0]=loop2 pmode
-//    forces spill order pmode@0x18 before pcnt2@0x1c (div 5->0)
+//    forces spill order pmode@0x18 before pcnt2@0x1c
 // Loop2 digit-count still uses inner u64 mask form for pooled ldr form.
 //
-// TODO: shared ov006 dMeter_c/score object layout - this file and siblings
+// TODO: shared ov006 meter/score object layout - this file and siblings
 // (func_ov006_020fd2d8, 02103ac0, 020fb7e0) re-spell the same base offsets:
 //   0x4660-0x4770  display-object pointer arrays (DispObj* at k*4 stride)
 //   0x5958-0x5998  score/coin block
-// Name the base struct once so later matches do not invent a fifth spelling.
+// Name the base struct once so later edits do not invent a fifth spelling.
 //
-/* dScMgSmartball_c::Render -- vtable slot 9. Attributed by the ROM's vtable: the
- * third of the three slots where this class's table differs from dScMgBase_c's.
- * The old file carried no `recovered name:` comment, only the address.
+/* dScMgSmartball_c::Render -- vtable slot 9: the third of the three slots
+ * where this class's table differs from dScMgBase_c's.
  *
  * The result screen's itemised score, one row per bonus category, gated on how far
  * the 0x5960 reveal counter has run; then the two flipper lamps, then every live
  * display object's slot-1 virtual, in the ROM's order.
  *
- * ONLY THE RECEIVER CHANGED. The body is byte-for-byte the one that already
- * matched, with `this` where the void* parameter was: everything else here --
- * the two pragmas, the spill-order levers recorded above, the `slot[2]` array
- * whose two entries are written in that particular order -- is load-bearing, and
- * the banner above is kept verbatim so the next reader does not undo it. */
-/* Both pragmas are load-bearing, not tidying: without them mwccarm 2004/b56
- * emits 0x1170 bytes with 999 words differing (target is 0x10c0). Do not remove. */
+ * Only the receiver changed: the body below has `this` where the void*
+ * parameter was; everything else here -- the two pragmas, the spill-order
+ * levers above, the `slot[2]` array whose two entries are written in that
+ * particular order -- is load-bearing. */
+/* Both pragmas are load-bearing, not tidying: without them the function
+ * emits 0x1170 bytes instead of 0x10c0. Do not remove. */
 s32 dScMgSmartball_c::Render()
 {
     char *g = (char *)this;
@@ -6274,20 +5865,15 @@ s32 dScMgSmartball_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 125 -- _ZN16dScMgSmartball_c8BehaviorEv, 0x02118488, size 0x604 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c8BehaviorEv
 #pragma push
 #pragma opt_strength_reduction off
 /* dScMgSmartball_c::Behavior -- vtable slot 6.
  *
  * Attributed by the ROM's vtable: one of the three slots where this class's table
- * differs from dScMgBase_c's. The old file's `recovered name:` comment agreed, and
+ * differs from dScMgBase_c's. The old file's naming comment agreed, and
  * here it is right.
  *
  * State 0 runs the table: every live object's slot-0 virtual is called through its
@@ -6478,19 +6064,13 @@ s32 dScMgSmartball_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 126 -- _ZN16dScMgSmartball_c13OnYoshiTryEatEi, 0x02118a8c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c13OnYoshiTryEatEi
 #include "G2x.h"
 #include "types.h"
 #include "dScMgSmartball_c.h"
-// recovered name: dScMgSmartball_c_OnYoshiTryEat_02118a8c
-/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+/* vtable slot 18 -- an override of
    dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
    declaration exactly, or mwcc appends a slot instead of overriding. */
 extern "C" {
@@ -6502,17 +6082,11 @@ void dScMgSmartball_c::OnYoshiTryEat(int /* arg */)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 127 -- _ZN16dScMgSmartball_c9Virtual7CEv, 0x02118ae4, size 0x8c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c9Virtual7CEv
-// recovered name: dScMgSmartball_c_Kill  -- WRONG, see below
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* recovered: renamed to Class_Method */
 /* dScMgSmartball_c::Virtual7C - slot 31, this class's own override.
 
-   Not a Kill: see the slot-31 block in include/dScMgBase_c.h.  Byte-for-byte
-   dScMgAmida_c's shape -- BG1CNT base bits 4 -- differing only in the language
+   Not a Kill: see the slot-31 block in include/dScMgBase_c.h. Same shape as
+   dScMgAmida_c's -- BG1CNT base bits 4 -- differing only in the language
    table it indexes. */
 int dScMgSmartball_c::Virtual7C()
 {
@@ -6527,35 +6101,31 @@ int dScMgSmartball_c::Virtual7C()
     LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 128 -- _ZN16dScMgSmartball_c13InitResourcesEv, 0x02118b70, size 0x8dc */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c13InitResourcesEv
 #pragma push
 #pragma opt_propagation off
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: dScMgSmartball_c::InitResources() -- vtable slot 0, the scene
+/* dScMgSmartball_c::InitResources() -- vtable slot 0, the scene
  * setup for the Smartball (Bounce and Pounce) minigame. Clamps the saved
  * high score, brings up the two screens' BG layers, decompresses one of two
  * tile/palette sets depending on the mode byte at +8, zeroes the seven
  * per-object state arrays, builds the scene's one heap object, and finishes
  * by forcing every listed OAM sprite to blend mode 1 with priority 0.
  *
- * Two shapes below are load-bearing for the byte match, not style:
+ * Two shapes below are load-bearing, not style:
  *   - the saved score is narrowed with `(u8)(param & 0xFF)`, and BOTH halves
  *     of that are needed: the ROM masks the byte twice (`ands r0,r0,#0xff`
  *     for the `if`, then `and r0,r0,#0xff` before the store), and the cast
  *     alone or the mask alone lets mwccarm fold the pair into one, costing
  *     four bytes. This replaces the u64 cast the first draft used for the
- *     same effect: measured against the ROM, the plain narrowing conversion
- *     reproduces it exactly, so no launder is needed here at all.
+ *     same effect: the plain narrowing conversion emits the same pair,
+ *     so no launder is needed here at all.
  *   - the last OAM block reads its old attr2 from data_ov006_02137630[2],
  *     NOT from [2]+1 that it then writes. The ROM does the same, so the
  *     original macro expansion there was fed the wrong pointer.
  *
  * The offsets still spelled raw off `c` all fall inside dScMgSmartball_c.h's
- * pad_4660, which that header's own banner records as real matched access it
- * has not modelled yet: the seven per-object slot arrays at 0x4688..0x4770,
+ * pad_4660, which that header records as real access it has not modelled
+ * yet: the seven per-object slot arrays at 0x4688..0x4770,
  * their three singletons at 0x4684/0x4778..0x4780, and the high score at 0xbc.
  * Reading their widths is a separate pass; nothing here shadows a type.
  */
@@ -6873,20 +6443,15 @@ s32 dScMgSmartball_c::InitResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
 
-/* ROM ordinal 129 -- _ZN16dScMgSmartball_c21AfterCleanupResourcesEj, 0x0211944c, size 0x3d8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN16dScMgSmartball_c21AfterCleanupResourcesEj
 #pragma push
 #pragma opt_strength_reduction off
 /* dScMgSmartball_c::AfterCleanupResources -- vtable slot 5.
  *
  * Attributed by the ROM's vtable: one of the three slots where this class's table
- * differs from dScMgBase_c's. The old file's `recovered name:` comment agreed, and
+ * differs from dScMgBase_c's. The old file's naming comment agreed, and
  * here it is right.
  *
  * Tears the pinball table down object by object -- balls, mushrooms, holes, the
@@ -6896,7 +6461,7 @@ s32 dScMgSmartball_c::InitResources()
  * include/dScMgBase_c.h describes for TouchIcon_c), and the slot nulled.
  *
  * THE PARAMETER IS u32, NOT int. The pre-migration spelling was `int mode` and it
- * matched, because the only use is a compare against 2 -- but the virtual being
+ * emitted the same, because the only use is a compare against 2 -- but the virtual being
  * overridden is dScMgBase_c's `void AfterCleanupResources(u32)`, so that is the
  * signature. The chain at the end is a QUALIFIED call, which compiles to the direct
  * `bl` the ROM has; unqualified it would become a virtual dispatch through this
@@ -7060,11 +6625,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-/* -------------------------------------------------------------------------- */
-
-
 #pragma pop
-
 
 /* The scene factory and its empty particle-element constructor share this unit. */
 extern int _ZTV16dScMgSmartball_c[];

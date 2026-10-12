@@ -75,70 +75,70 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov006_020ee2c0",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee2c0Ev",
       "address": "0x020ee2c0",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020ee2c0.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov006_020ee2c4",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee2c4Ev",
       "address": "0x020ee2c4",
       "size": "0x000000f8",
       "legacy_source": "src/func_ov006_020ee2c4.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov006_020ee3bc",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee3bcEv",
       "address": "0x020ee3bc",
       "size": "0x00000030",
       "legacy_source": "src/func_ov006_020ee3bc.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov006_020ee3ec",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee3ecEv",
       "address": "0x020ee3ec",
       "size": "0x00000060",
       "legacy_source": "src/func_ov006_020ee3ec.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov006_020ee44c",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee44cEv",
       "address": "0x020ee44c",
       "size": "0x00000094",
       "legacy_source": "src/func_ov006_020ee44c.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov006_020ee4e0",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee4e0Ev",
       "address": "0x020ee4e0",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020ee4e0.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov006_020ee508",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee508Ev",
       "address": "0x020ee508",
       "size": "0x00000090",
       "legacy_source": "src/func_ov006_020ee508.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov006_020ee598",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee598Ev",
       "address": "0x020ee598",
       "size": "0x00000020",
       "legacy_source": "src/func_ov006_020ee598.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov006_020ee5b8",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee5b8Ev",
       "address": "0x020ee5b8",
       "size": "0x000000a0",
       "legacy_source": "src/func_ov006_020ee5b8.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov006_020ee658",
+      "symbol": "_ZN11dScMgJump_c19func_ov006_020ee658Ev",
       "address": "0x020ee658",
       "size": "0x00000038",
       "legacy_source": "src/func_ov006_020ee658.c",
@@ -564,14 +564,14 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@614",
+      "from": "@605",
       "to": "@77",
       "evidence": "emitted destructor-registration node name collides with the configured @600 on ov081 on main; @77 is unused everywhere and shorter than the original"
     },
     {
-      "from": "@613",
+      "from": "@604",
       "to": "@599",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @613 now; licensed under the existing pin @599"
+      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @604 now; licensed under the existing pin @599"
     }
   ],
   "symbol_binding_rewrites": [

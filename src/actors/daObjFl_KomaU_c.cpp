@@ -1,22 +1,25 @@
 //cpp
-/* Production translation unit for ov064/daObjFl_KomaU_c.
- * 7 function(s), .text 0x02118138..0x021185c0. The rotating fire bar
- * (registry profile FL_KOMA_U).
- *
- * NAME: _ZTS15daObjFl_KomaU_c is "15daObjFl_KomaU_c" at ov064 0x0211bdd8;
- * _ZTI at 0x0211bdcc reads [__si_class_type_info, that string,
- * _ZTI10dBgActor_c]. The tree previously called the class RotatingFirebar
- * (coined).
- *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02118138), D0
- * (0x02118194), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is
- * ROM-ascending. The last function is the registry factory
- * daObjFl_KomaU_c_classInit (0x02118564), `new daObjFl_KomaU_c()`; the
- * dCcPos_c array's user-declared constructor and destructor are what make
- * the implicit constructor emit the ROM's __cxa_vec_ctor over mColliders.
+/* The rotating fire bar (registry profile FL_KOMA_U),
+ * .text 0x02118138..0x021185c0. The out-of-line destructor is the key
+ * function, so this TU emits _ZTV/_ZTI/_ZTS15daObjFl_KomaU_c: _ZTS is
+ * "15daObjFl_KomaU_c" at ov064 0x0211bdd8 and _ZTI at 0x0211bdcc reads
+ * [__si_class_type_info, that string, _ZTI10dBgActor_c]. The tree
+ * previously called the class RotatingFirebar (coined). #pragma
+ * defer_codegen off lays .text down in source order. The last function is
+ * the registry factory daObjFl_KomaU_c_classInit (0x02118564),
+ * `new daObjFl_KomaU_c()`; the dCcPos_c array's user-declared constructor
+ * and destructor are what make the implicit constructor emit the ROM's
+ * __cxa_vec_ctor over mColliders.
  */
+
+// leftovers:
+// - dBgActor_c::IsClsnInRange, dBgW_KcMbg::SetFile, dCcPos_c::Init and
+//   Particle::System::New take Fix12<int> by value, so they stay mangled.
+// - Behavior's collider slot writes keep their raw w offsets (see the note
+//   at the stores).
+// - This TU emits its own __sinit for the file handles below, which the
+//   manifest does not license. The handles stay: nothing else defines
+//   their BSS or .init range.
 
 #include "decl_common.h"
 #include "daObjFl_KomaU_c.h"
@@ -24,10 +27,10 @@
 #include "dBgW.h"
 #include "Player.h"
 
-/* The model handle constructs through func_02017acc and destroys through
- * func_02017ab4. The collision handle constructs through func_02017b4c and
- * destroys through SharedFilePtr_Destruct_Clsn. data_ov064_0211adbc stays
- * the file table. */
+/* The ctor/dtor pairs are the ROM's SharedFilePtr veneers (func_02017acc /
+ * func_02017ab4 for the model, func_02017b4c / SharedFilePtr_Destruct_Clsn
+ * for the collision); the subclasses exist to spell those entry points.
+ * data_ov064_0211adbc stays the file table. */
 struct KomaUModelFilePtr : SharedFilePtr {
     unsigned int words[2];
     KomaUModelFilePtr(unsigned int fileId);
@@ -51,8 +54,6 @@ struct FileTable {
     CLPS_Block *clps;
 };
 
-/* Leftover: dBgActor_c::IsClsnInRange, dBgW_KcMbg::SetFile, dCcPos_c::Init
- * and Particle::System::New take Fix12<int> by value, so they stay mangled. */
 extern "C" {
 extern FileTable data_ov064_0211adbc;
 extern Matrix4x3 data_020a0e68;
@@ -108,8 +109,8 @@ s32 daObjFl_KomaU_c::Behavior()
 
     b = ((mFlags & 8) != 0) ? 1 : 0;
     if (b) {
-        if (((dBgW *)&mMeshCollider)->IsEnabled() != 0)
-            ((dBgW *)&mMeshCollider)->Disable();
+        if (mMeshCollider.IsEnabled() != 0)
+            mMeshCollider.Disable();
         return 1;
     }
 
@@ -139,9 +140,11 @@ s32 daObjFl_KomaU_c::Behavior()
         MulVec3Mat4x3(&in, &data_020a0e68, &out);
         AddVec3(&out, (Vector3 *)&mPosX, &out);
 
-        /* Leftover: raw offsets from w, not cyl->pos / cyl->otherOwner. The
-         * member spelling makes mwccarm recompute the element address and
-         * Behavior stops matching. */
+        /* Raw offsets from w, not cyl->pos / cyl->otherOwner. The member
+         * spelling makes mwccarm recompute the element address and Behavior
+         * stops matching; cyl++ does the same. The (int)(long long)i round
+         * trip and the pointer-local mAngleY decrement are instruction
+         * selection: the plain forms stop matching. */
         *(int *)(w + 0x390) = out.x;
         *(int *)(w + 0x394) = out.y;
         *(int *)(w + 0x398) = out.z;
@@ -204,7 +207,6 @@ extern "C" daObjFl_KomaU_c *daObjFl_KomaU_c_classInit()
     return new daObjFl_KomaU_c();
 }
 
-/* Retail construction order: model 1527, then collision 1528.
- * mwcc emits __sinit_daObjFl_KomaU_c.cpp. */
+/* Retail construction order: model 1527, then collision 1528. */
 KomaUModelFilePtr data_ov064_0211c790(1527);
 KomaUClsnFileHandle data_ov064_0211c798(1528);

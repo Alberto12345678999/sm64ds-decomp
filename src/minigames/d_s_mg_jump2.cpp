@@ -9,7 +9,7 @@
  * `#pragma opt_propagation off`; it is not needed, and carried here it
  * would apply to every function in the file.
  *
- * comment leftovers:
+ * leftovers:
  *   - func_ov006_020ef0d4, ..ef05c, ..eeff0, ..eef90, ..eef58 and ..ef2b8
  *     stay free: none takes the object (they walk the element list globals
  *     or program the light registers), so a receiver exists only to be
@@ -155,10 +155,6 @@ extern int func_ov006_020c4684(void *ptr, int n);
 extern int func_ov006_020c7574(void *base, int count);
 extern u8 data_0209d45c;
 extern s16 data_02082614;
-/* TUBUILD CONFLICT -- alternate declaration of func_ov004_020adb1c, from the legacy file for func_ov006_020ef5ac, NOT applied: extern void func_ov004_020adb1c(int self); */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN12dScMgJump2_c13InitResourcesEv, NOT applied: extern s32 GetGameLanguage(void); */
-/* TUBUILD CONFLICT -- alternate declaration of Matrix4x3_FromTranslation, from the legacy file for _ZN12dScMgJump2_c13InitResourcesEv, NOT applied: extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_021421b8, from the legacy file for _ZN12dScMgJump2_c13InitResourcesEv, NOT applied: extern int *data_ov006_021421b8; */
 }
 
 namespace GX   { void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size); }

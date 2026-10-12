@@ -1,22 +1,16 @@
 //cpp
-/**
- * Tiny-Huge Island's pounded lid (TT_FUTA).
- *
- * Ground-pounding it bursts particles, plays the bank sound, sets the
- * drain event bit and destroys it. InitResources loads the model and
- * collision files; the lid stays shut until event bit 0xe opens it.
- *
- * Leftover: Particle::System::NewSimple keeps its mangled spelling
- *   (Fix12<int> by value in the mangled name, wall 6az).
- * Leftover: Event::GetBit / Event::SetBit stay mangled (no Event
- *   header in this tree).
- * Leftover: dBgW_KcMbg::SetFile keeps its mangled spelling (by-value
- *   Fix12<int> parameters, wall 6az).
- * Leftover: dBgActor_c::IsClsnInRange keeps its mangled spelling
- *   (Fix12<int> in the mangled name, wall 6az per the ukiyuka base).
- * Leftover: data_ov033_02111bfc is the unnamed CLPS home this TU
- *   feeds SetFile.
+/* Tiny-Huge Island's pounded lid (TT_FUTA). Ground-pounding it bursts
+ * particles, plays the bank sound, sets the drain event bit and destroys
+ * it. The lid stays shut until event bit 0xe opens it.
  */
+// leftovers:
+// - Particle::System::NewSimple stays mangled. This TU's pound passes
+//   Fix12<int> by value.
+// - Event::GetBit and Event::SetBit stay mangled. There is no Event header.
+//   InitResources and the pound call them for bit 0xe.
+// - dBgW_KcMbg::SetFile stays mangled. InitResources passes Fix12<int> by
+//   value, and data_ov033_02111bfc is the CLPS block it takes.
+// - dBgActor_c::IsClsnInRange stays mangled. Behavior passes Fix12<int>.
 
 #include "daObjTtFuta_c.h"
 #include "SharedFilePtr.h"
@@ -113,10 +107,7 @@ s32 daObjTtFuta_c::InitResources() {
   return _ZN5Event6GetBitEj(0xe) == 0;
 }
 
-/* Reconstructed source-style name: SM64DS proves daObjTtFuta_c through its
- * RTTI string, allocation size, vtable identity, and the TT_FUTA registry
- * profile; later EAD lineage supplies classInit. Exact original spelling is
- * not preserved. Historical alias: TinyCover_Spawn. */
+/* TT_FUTA factory. */
 // @symbol daObjTtFuta_c_classInit
 extern "C" daObjTtFuta_c *daObjTtFuta_c_classInit()
 {

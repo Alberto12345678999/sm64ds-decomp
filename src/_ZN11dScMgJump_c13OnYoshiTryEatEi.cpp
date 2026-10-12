@@ -16,7 +16,6 @@ extern "C" int data_0209e650;
 extern "C" int data_ov006_0213cb48;
 extern "C" int RandomIntInternal(int *seed);
 extern "C" void func_ov006_020c72c8(void);
-extern "C" void func_ov006_020ee658(char *c);
 
 void dScMgJump_c::OnYoshiTryEat(int arg)
 {
@@ -62,5 +61,5 @@ void dScMgJump_c::OnYoshiTryEat(int arg)
         data_ov006_02140328 = 6;
 
     func_ov006_020c44b4((void *)this->unk_0bc, v);
-    func_ov006_020ee658((char *)this);
+    func_ov006_020ee658();
 }

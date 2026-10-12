@@ -9,6 +9,14 @@
  * points at (the tables are filled with member-function pointers), the state
  * installer, and the per-frame pose update. Their ROM names are unrecovered,
  * so they keep their address names.
+ *
+ * leftovers:
+ * - TextureTransformer::SetFile and dCcAcPos_c::Init stay mangled local
+ *   externs: the header spellings take Fix12<int> by value, and Fix12 has
+ *   no int constructor, so a call through them cannot be written with
+ *   these literals.
+ * - The data_ov064_* tables and constants keep address names; the profile
+ *   rows and .data PMF constants are not owned by this TU.
  */
 
 #pragma defer_codegen off

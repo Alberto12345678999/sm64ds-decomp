@@ -6,6 +6,18 @@
  *
  * Ov004_Deallocate (ov004, 0x020adc5c) and Deallocate (arm9, 0x02018144)
  * are different functions; each call site keeps the one the ROM calls.
+ *
+ * leftovers:
+ * - The GX/GXS/G2S/CP15/G3X engine calls stay file-local namespace
+ *   declarations: no shared header declares them.
+ * - func_ov004_020adc68 keeps its local declaration: its own definition
+ *   is still declared without the argument and result.
+ * - The ov004 registry words stay raw: data_ov004_020beb6c and the
+ *   file-id table data_ov006_0213e42c name no struct this TU can see.
+ *   data_ov004_020beb74 keeps the int[] spelling: the typed
+ *   dScMgBase_c::graphCallback_c form matches (9/9 still MATCH) but trips
+ *   the decl ratchet against src/actors/dScMgD3DBase_c.cpp's banked int[],
+ *   and that file is outside this job's area.
  */
 
 #include "dScMgSingle3DBase_c.h"

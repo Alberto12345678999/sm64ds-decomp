@@ -1,31 +1,18 @@
 //cpp
-/**
- * daKpa_c in the Fire Sea rising platform.
+/* leftovers:
+ * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled.
+ *   Both take Fix12<int> by value.
+ * - func_020393d4 and func_020393c4 install dBgW's two callback words.
+ *   dBgW has no setter for them.
+ * - data_ov045_02113180 and 02113188 are this TU's KCL and BMD handles.
+ *   data_ov045_021125d0, the CLPS block, stays overlay data.
  *
- * Waits at its spawn height until the player stands on it, pauses 20
- * frames, rises 10.0 a frame to 1500.0 above that height, pauses 20
- * frames again, then sinks 10.0 a frame back down and waits for the
- * next rider. The mesh collider carries whoever stands on it through
- * dBgW::UpdatePosWithTransform; the second callback word is the
- * func_ov045_021114c8 / func_ov045_021114a8 pair below, which is how
- * Behavior learns the player is aboard.
- *
- * daObjKm2_Agaru_c_classInit is reconstructed (RTTI daObjKm2_Agaru_c,
- * KM2_AGARU registry). Retail does not store that spelling.
- * Historical alias: FireSeaElevator_Spawn.
- *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
- * section per function in the reverse of source order.
- *
- * Known limits:
- * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled:
- *   both take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
- * - func_020393d4 / func_020393c4 install dBgW's two callback words;
- *   dBgW carries no setter for them.
- * - data_ov045_02113180 / 02113188 are this TU's KCL / BMD file handles;
- *   data_ov045_021125d0 the CLPS block stays unowned overlay data.
+ * daObjKm2_Agaru_c, the Fire Sea rising platform. It waits, pauses 20
+ * frames, rises 10.0 a frame to 1500.0, pauses, then sinks back.
+ * The mesh carries the rider through dBgW::UpdatePosWithTransform.
+ * The aboard test is func_ov045_021114c8 / func_ov045_021114a8.
+ * classInit is reconstructed. Retail does not store that spelling.
  */
-
 #include "daObjKm2_Agaru_c.h"
 #include "SharedFilePtr.h"
 

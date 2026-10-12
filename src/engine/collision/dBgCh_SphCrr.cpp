@@ -4,7 +4,7 @@
 // hit and mClsnResult1/2/3 holding the floor / wall / underneath hits.
 // DetectClsn and the two registry scans live in dBgCh_SphCrr_query.cpp.
 //
-// comment leftovers:
+// leftovers:
 //   - SetObjAndSphere is defined by its mangled name: the real signature
 //     carries Fix12<int> by value and the member form changes codegen under
 //     2004/b56. The header declaration is the real one; callers use it.

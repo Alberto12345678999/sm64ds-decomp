@@ -1,41 +1,38 @@
 //cpp
-/* daKpa3Bg_c -- KOOPA3BG, a dBgActor_c in ov060. The class name is the ROM's
- * own RTTI spelling (evidence in include/daKpa3Bg_c.h). The tree used to call
- * it BowserSkyPlatform.
+/* daKpa3Bg_c -- Bowser's sky platform (KOOPA3BG, ov060).
  *
- * ROM span 0x02117d1c..0x02118438: D1, D0, three helpers, CleanupResources,
- * Render, Behavior, InitResources, the mesh-collider callback
- * func_ov060_021183cc and its veneer func_ov060_021183f4, then the registry
- * factory daKpa3Bg_c_classInit. Source order is the reverse of the ROM. The destructor is under `#pragma opt_propagation on`
- * and `#pragma defer_codegen off`, so it is emitted as it is parsed (D1, D0,
- * then a D2 the cartridge has no home for) before the deferred functions.
- * `#pragma opt_propagation off` is last in the file: deferred codegen uses that
- * setting, which is what func_ov060_02117db8 matched under. Do not move it.
+ * _ZTS10daKpa3Bg_c at ov060 0x0211a954, _ZTI at 0x0211a948 (base
+ * _ZTI10dBgActor_c), _ZTV at 0x0211a9b0. The tree used to call this
+ * class BowserSkyPlatform. Text is 0x02117d1c..0x02118438. The
+ * destructor is under opt_propagation on and defer_codegen off, so it
+ * emits D1, D0, then a D2 the cartridge does not keep, ahead of the
+ * deferred functions. opt_propagation off stays last: deferred codegen
+ * of func_ov060_02117db8 uses that setting. Do not move it.
  *
- * Behavior dispatches data_ov060_0211b1ac[mState] as pointer-to-member
- * records (a function address and a zero adjustment, copied by sinit from
- * ov060 0x0211a930/938/940). The helpers are declared members so &daKpa3Bg_c::
- * func_ov060_... is a real PMF constant, but defined as free functions under
- * their literal mangled spellings: func_ov060_02117db8's body only matches
- * under `#pragma cplusplus off`, which has no member syntax.
+ * Behavior runs data_ov060_0211b1ac[mState]. The helpers are members in
+ * the header so the table's pointer-to-member constants are real, and
+ * free functions under those mangled names in this file.
  *
- * Leftover:
- * - The three helpers keep their ROM-address names.
- * - func_ov060_021180e0 reads three bytes of the daKpa actor that daKpa_c.h
- *   does not name: the word at +0x410, the word at +0x418 (tested against
- *   0x10000) and the signed byte at +0x41e. mState at +0x40c is the real field.
- * - func_ov060_02117db8 still calls Earthquake and PoofDustAt through their
- *   mangled names. Earthquake is not declared on dActor_c.h. It also calls
- *   func_02012694(0xbc) at the saved camera-space position; that symbol has
- *   no recovered name here.
- * - dBgW_KcMbg::SetFile stays a mangled bridge (Fix12 by value).
- * - func_020393d4 / func_020393c4 stay address-taking calls. The first stores
- *   dBgW::UpdatePosWithTransform; the second stores func_ov060_021183f4.
- * - data_ov060_02119564 / 02119568 / 0211956c are one 0xc-stride table split
- *   into three symbols (x, z, angle). Each reference stays, so the
- *   relocations keep their destinations.
- * - What mState values 1 and 2 mean, beyond which helper the table calls, is
- *   not recovered. Neither is variant's model pair, nor daKpa mState 0xd / 3.
+ * leftovers:
+ * - The three helpers keep their address names.
+ * - func_ov060_021180e0 stays char* offsets. Naming this class's
+ *   mKoopaUniqueId / mTimer / mState in that body DIFFs. The Bowser
+ *   words are daKpa_c::mState (0x40c), mHoldState (0x410), mCondFlags
+ *   (0x418) and mHealth (0x41e). daKpa_c.h is not included: this file
+ *   includes common.h first so Matrix4x3 stays the flat s32[12] that
+ *   the SetFile bridge uses.
+ * - func_ov060_02117db8 parses as C. The same body as C++ DIFFs, and
+ *   C has no member syntax, so mPos, mCamSpacePos, mVertAccel,
+ *   mTerminalVelocity, mVertSpeed and mPhase stay offsets.
+ *   dActor_c::Earthquake and PoofDustAt stay mangled (Fix12 by value;
+ *   Earthquake is not on dActor_c.h). func_02012694(0xbc) plays the
+ *   rumble at the saved camera-space position.
+ * - dBgW_KcMbg::SetFile stays mangled (Fix12 by value).
+ * - func_020393d4 stores dBgW::UpdatePosWithTransform.
+ *   func_020393c4 stores the touch veneer func_ov060_021183f4.
+ * - data_ov060_02119564 / 02119568 / 0211956c are one 0xc-byte stride
+ *   (x, z, angle) split into three symbols so each relocation keeps
+ *   its destination.
  */
 
 #include "common.h"
@@ -108,26 +105,13 @@ struct Kpa3BgCollisionFilePtr : SharedFilePtr {
     ~Kpa3BgCollisionFilePtr();
 };
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- daKpa3Bg_c_classInit, 0x02118408, size 0x30 */
-/* -------------------------------------------------------------------------- */
 // @symbol daKpa3Bg_c_classInit
-/* Reconstructed source-style name: SM64DS proves daKpa3Bg_c through RTTI,
- * allocation size, vtable identity, and the KOOPA3BG registry profile;
- * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: BowserSkyPlatform_Spawn.
- *
- * `new daKpa3Bg_c` is the whole sequence the loose factory spelled by hand:
- * fBase_c::operator new(0x32c), dBgActor_c's base constructor and the vptr
- * store (the class adds no member with a constructor). */
+/* Historical alias BowserSkyPlatform_Spawn. */
 extern "C" daKpa3Bg_c *daKpa3Bg_c_classInit(void)
 {
     return new daKpa3Bg_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov060_021183f4, 0x021183f4, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021183f4
 /* dBgW callback veneer, armed by func_020393c4 in InitResources. Drops the
    collider and forwards the platform and the touching actor into
@@ -137,9 +121,6 @@ extern "C" void func_ov060_021183f4(void *collider, daKpa3Bg_c *self, dActor_c *
     func_ov060_021183cc(self, other);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov060_021183cc, 0x021183cc, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021183cc
 /* Flags the platform when the actor that touched it is Bowser
    (actor ID 0x117); Behavior clears the flag every frame. The comparison
@@ -151,9 +132,6 @@ extern "C" void func_ov060_021183cc(daKpa3Bg_c *self, dActor_c *other)
         self->mTouchedKoopa = 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN10daKpa3Bg_c13InitResourcesEv, 0x021182b0, size 0x11c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c13InitResourcesEv
 s32 daKpa3Bg_c::InitResources()
 {
@@ -184,9 +162,6 @@ s32 daKpa3Bg_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN10daKpa3Bg_c8BehaviorEv, 0x02118254, size 0x5c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c8BehaviorEv
 s32 daKpa3Bg_c::Behavior()
 {
@@ -197,9 +172,6 @@ s32 daKpa3Bg_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN10daKpa3Bg_c6RenderEv, 0x0211822c, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c6RenderEv
 s32 daKpa3Bg_c::Render()
 {
@@ -207,9 +179,6 @@ s32 daKpa3Bg_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN10daKpa3Bg_c16CleanupResourcesEv, 0x021181e8, size 0x44 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c16CleanupResourcesEv
 s32 daKpa3Bg_c::CleanupResources()
 {
@@ -219,9 +188,6 @@ s32 daKpa3Bg_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov060_021181b4, 0x021181b4, size 0x34 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021181b4Ev
 /* Finds the daKpa actor (id 0x117) and remembers its uniqueID. */
 extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
@@ -236,12 +202,9 @@ extern "C" int _ZN10daKpa3Bg_c19func_ov060_021181b4Ev(char *c)
     return (int)koopa;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov060_021180e0, 0x021180e0, size 0xd4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c19func_ov060_021180e0Ev
-/* Leftover: naming mKoopaUniqueId / mTimer / mState here changed 7 words
-   (measured). The body stays the offset form that matches. */
+/* Offset form. Naming this platform's tail members here DIFFs.
+ * a+0x40c/410/418/41e are daKpa_c mState, mHoldState, mCondFlags, mHealth. */
 extern "C" {
 void* _ZN8dActor_c10FindWithIDEj(unsigned int);
 void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char* c){
@@ -269,14 +232,10 @@ void _ZN10daKpa3Bg_c19func_ov060_021180e0Ev(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov060_02117db8, 0x02117db8, size 0x328 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daKpa3Bg_c19func_ov060_02117db8Ev
-/* Leftover: the same body compiled as C++ changed 89 words and two relocation
-   destinations (data_ov060_02119564 versus data_02082214). It parses as C.
-   int yimm is declared with the other locals: the C front end inside a C++
-   TU rejects a declaration after a statement. */
+/* Parsed as C: the C++ body DIFFs, including which sine-table symbol the
+ * pool names. yimm is declared with the other locals because a C block
+ * inside this TU rejects a declaration after a statement. */
 #pragma cplusplus off
 void _ZN10daKpa3Bg_c19func_ov060_02117db8Ev(char *self) {
     volatile int saved[3];

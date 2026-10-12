@@ -1,26 +1,16 @@
 //cpp
-/**
- * The flag at the end of Koopa the Quick's race.
- *
- * While armed (mHasTouchedFlag == 0), Mario touching the cylinder stops
- * the race timer and plays sound 0x1F/0x14. From then mVictoryTimer
- * counts frames; from frame 90 it retries sound 0x1F/0x7F each frame
- * until PlaySub accepts it. The model sits 60.0 above the actor.
- *
- * Source order is ROM-ascending: `#pragma defer_codegen off` makes mwcc
- * emit each definition where it stands, and the one destructor
- * definition emits retail D1 then D0 (no D2).
- *
- * The name daRFlag_c_classInit is coined from the RTTI class name; the
- * ROM has no symbol for the factory.
- *
- * Leftover: SetAnim and dCcAc_c::Init stay the mangled calls. Spelling
- *   them as methods changed this function's size (Fix12 by value).
- * Leftover: `b = (actorID == 0xBF)` has to be an int. A bool does not
- *   match.
- * Leftover: func_ov062_0211afbc keeps the linker name. The enrolled
- *   symbol is that spelling.
+/* The flag at the end of Koopa the Quick's race. While it is armed,
+ * Mario touching the cylinder stops the timer and plays sound 0x1f/0x14.
+ * From frame 90 it retries 0x1f/0x7f until PlaySub accepts it. The model
+ * sits 60 units above the actor. defer_codegen off: D1 then D0, no D2.
  */
+// leftovers:
+// - ModelAnim::SetAnim and dCcAc_c::Init stay mangled. Spelling them as
+//   methods changed InitResources (Fix12<int> by value).
+// - The player test stays `b = (actorID == 0xbf)` as an int. A bool does
+//   not match Behavior.
+// - func_ov062_0211afbc keeps the linker name. That is the enrolled symbol
+//   this TU calls.
 
 #include "daRFlag_c.h"
 #include "decl_common.h"

@@ -1,32 +1,21 @@
 //cpp
-/* ov072/daPgBby_c -- PENGUIN_BABY (256), the lost baby penguin.
+/* leftovers:
+ * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer,
+ *   dCcAc_c::Init, dBgCh_Actr::Init and dClipper::Func_02015560 stay
+ *   mangled. Each takes Fix12<int> by value.
+ * - The state table data_ov072_02122d6c, the carry offsets
+ *   data_ov072_02122d3c and the file handles are built by
+ *   __sinit_ov072_02122414. SharedFilePtr.h declares no fields, so
+ *   the handles are read as words.
+ * - func_ov072_021210c4 reads the carrier at Player +0xc8. dActor_c.h
+ *   still calls that word padding.
+ * - The state steps stay func_ov072_*. The cartridge has no names
+ *   for them.
  *
- * ov072 is mixed (SNOWMAN_BODY / SNOWMAN_HEAD / BIG_SNOWMAN / PENGUIN_BABY);
- * this TU is the last .text run of the overlay, 0x02120c58..0x02121ffc.
- * RTTI names the class daPgBby_c (the tree's earlier BabyPenguin was coined).
- * daPgBby_c_classInit is a reconstructed spelling; retail stores only the
- * PENGUIN_BABY profile's pointer to it. Historical alias: BabyPenguin_Spawn.
- *
- * The penguin runs a six-state machine (see include/daPgBby_c.h). The state
- * steps and helpers are daPgBby_c methods; they keep their configured
- * func_ov072_* names, the cartridge having no symbols for them.
- *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
- * section per function in the reverse of source order.
- *
- * Known limits:
- * - SetAnim, DropShadowRadHeight, IsTooFarAwayFromPlayer, dCcAc_c::Init,
- *   dBgCh_Actr::Init and dClipper::Func_02015560 stay mangled: each takes
- *   Fix12<int> by value (notes/mwccarm-codegen.md 6az).
- * - The state table (data_ov072_02122d6c), its member-pointer literals, the
- *   carry offsets (data_ov072_02122d3c) and the file handles are built by
- *   the overlay static initializer __sinit_ov072_02122414, which this TU
- *   does not own; the handles are read as raw words because SharedFilePtr.h
- *   declares no fields.
- * - func_ov072_021210c4 reads the carrier Player's word at +0xc8, which
- *   dActor_c.h still carries as padding.
+ * daPgBby_c, the lost baby penguin (PENGUIN_BABY 256). ov072 .text
+ * 0x02120c58..0x02121ffc. RTTI names daPgBby_c. classInit is
+ * reconstructed. Six states, declared on daPgBby_c.h.
  */
-
 #include "daPgBby_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"

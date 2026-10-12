@@ -27,7 +27,7 @@
  * written from the highest address down. Do not reorder them, and do not
  * write the destructor out of line.
  *
- * Known limits:
+ * leftovers:
  * - InitResources, StateWait, StateMoveDown: the actorID test has to be
  *   `(int)(actorID == id) != 0`. A plain `actorID == id`, and that compare
  *   without the `(int)` cast, both shrink the same three functions.
@@ -120,7 +120,7 @@ extern State data_ov095_02137584;
 extern State data_ov095_0213758c;
 extern State data_ov095_0213759c;
 
-/* Fix12<int> by value. The member call grows InitResources; see the leftovers. */
+/* Fix12<int> by value. The member call grows InitResources; see leftovers. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
     s16 angleY, CLPS_Block *clps);

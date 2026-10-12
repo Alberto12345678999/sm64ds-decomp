@@ -19,31 +19,18 @@
  *                        and a wrong push makes a SHOOT_BOOK fire at the
  *                        player from beside the bookshelf.
  * mKind picks the state machine (flying: mState 0..5, switch: 6..10).
- *
- * SOURCE ORDER IS ROM ORDER. `defer_codegen off` makes mwccarm emit each
- * function as it is parsed. Each empty out-of-line destructor emits D1 then
- * D0; its D2 has no ROM home and is deadstripped (policy rows in the TU
- * manifest). Defining the destructors here makes this file the key-function
- * home of both vtables and their RTTI. The four registry factories come last,
- * in ROM order, and abut each other with no gap.
- *
- * common.h comes first, and that is load-bearing: it and math/Matrix.h
- * define Matrix4x3 under one guard, and only common.h's flat s32 m[12]
- * spelling makes InitResources' mShadowMat = IDENTITY_MATRIX4X3 the ROM's
- * twelve-word block copy.
- *
- * The state and helper methods keep their ROM-address names
- * (func_ov020_0211xxxx): nothing recovers what EAD called them, and the
- * name is the address. Leftover:
- *  - calls that pass Fix12<int> by value (ModelAnim::SetAnim,
- *    dBgCh_Actr::Init, dCcAcPos_c::Init, Player::Hurt, Player::Bounce,
- *    DropShadowRadHeight, cstd::atan2) stay mangled extern "C" calls: the
- *    headers declare those parameters as Fix12i (a plain s32), so a member
- *    call would mangle to a symbol the ROM does not have;
- *  - GetWallResult has no dBgCh_Actr method, and the ROM calls
- *    dBgCh_Actr_UpdateContinuous_Veneer, not UpdateContinuous;
- *  - data_ov020_02114aa0/ab8 are model handles and aa8/ab0 are animation
- *    handles. words[1] is the loaded file pointer.
+ * defer_codegen off emits each function in source order. Each destructor
+ * emits D1 then D0; D2 has no ROM home. Both vtables are keyed here.
+ * common.h comes first so InitResources' mShadowMat copy stays twelve words.
+ */
+/* leftovers: ModelAnim::SetAnim, dBgCh_Actr::Init, dCcAcPos_c::Init,
+ * Player::Hurt, Player::Bounce, DropShadowRadHeight and cstd::atan2 stay
+ * mangled externs. This file calls them. The headers spell Fix12i, which
+ * does not mangle to the Fix12<int> symbols the ROM has. GetWallResult is
+ * not a dBgCh_Actr method; the call is dBgCh_Actr_UpdateContinuous_Veneer,
+ * not UpdateContinuous. data_ov020_02114aa0 and 02114ab8 are model handles,
+ * 02114aa8 and 02114ab0 animation handles; words[1] is the loaded file.
+ * State helpers keep address names. The ROM records no English name for them.
  */
 
 #include "common.h"

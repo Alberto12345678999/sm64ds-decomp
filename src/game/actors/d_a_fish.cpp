@@ -26,7 +26,7 @@
  * copies the handler pointer-to-members into data_ov100_02148a1c, which
  * Behavior calls through.
  *
- * Known limits:
+ * leftovers:
  * - ModelAnim::SetAnim stays mangled: it takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
  * - SharedFilePtr carries no fields yet, so the loaded file pointer in a
@@ -34,6 +34,10 @@
  * - (Vector3 *)&mPosX: dActor_c stores the position as three scalars.
  * - data_0209caa0 / data_0209f32c are the arm9 level-state words that
  *   carry the "has water" flag and the water height; neither is named yet.
+ * - RawMatrix4x3 / RawVector3_16 are POD views whose aggregate copies
+ *   keep the ROM's ldm/stm / halfword-move shapes.
+ * - func_0203b9b4, func_0201267c, RandomIntInternal, the Vec3_*
+ *   helpers and data_0209e650 keep linker names.
  */
 
 #include "daFish_c.h"

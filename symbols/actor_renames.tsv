@@ -5793,3 +5793,6 @@ ov002	0x0020d94cc	func_ov002_0020d94cc	_ZN6Player19func_ov002_020d94ccEv	Player 
 ov002	0x0020d98b4	func_ov002_0020d98b4	_ZN6Player19func_ov002_020d98b4Ev	Player method void(); hurt-particle helper; called on this; method-review 020d2f24-020db8d8
 ov002	0x0020daa74	func_ov002_0020daa74	_ZN6Player19func_ov002_020daa74Ev	Player method int(); grab-release helper; called on this; method-review 020d2f24-020db8d8
 ov002	0x0020db8d8	func_ov002_0020db8d8	_ZN6Player19func_ov002_020db8d8Ev	Player method void(); fail-path helper; called on this from 6998; method-review 020d2f24-020db8d8
+ov089	0x02130fb4	_ZN10daObjKey_c19func_ov089_02130fb4EPii	_ZN10daObjKey_c19func_ov089_02130fb4EP7Vector3i	daObjKey_c method; the pointer parameter is a Vector3 (92757d80cd types the helper params)
+ov089	0x02131dcc	_ZN10daObjKey_c19func_ov089_02131dccEPc	_ZN10daObjKey_c19func_ov089_02131dccER6Player	daObjKey_c method; the parameter is the Player, by reference (92757d80cd types the helper params)
+ov089	0x02131df4	_ZN10daObjKey_c19func_ov089_02131df4EPc	_ZN10daObjKey_c19func_ov089_02131df4ER6Player	daObjKey_c method; the parameter is the Player, by reference (92757d80cd types the helper params)
