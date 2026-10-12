@@ -11,19 +11,21 @@
  */
 
 // leftovers:
-// - Particle::System::New / SetSelfDestructFlag / FromUniqueID,
-//   ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
-//   dActor_c::ReflectAngle / DropShadowRadHeight / IsTooFarAwayFromPlayer,
+// - Particle::System::New / SetSelfDestructFlag, ModelAnim::SetAnim,
+//   dCcAc_c::Init, dBgCh_Actr::Init, dActor_c::ReflectAngle /
+//   DropShadowRadHeight / IsTooFarAwayFromPlayer,
 //   dEnemyBase_c::KillByInvincibleChar, Player::Bounce / Hurt and
 //   Particle::RunningSlidingDustAt stay mangled. Each passes Fix12<int>
 //   by value (notes/mwccarm-codegen.md 6az), or the header declaration
 //   does not mangle to the ROM symbol. func_0201267c is the bank-3
 //   Sound::Play wrapper.
-// - GetWallResult / GetFloorResult are not methods on dBgCh_Actr.h.
-// - Particle bytes at +0x50 are Particle::System::callbackScale
-//   (func_ov062_021175c0 / func_ov062_02117724).
-// - Some helpers below still read fields through raw offsets (unk_104,
-//   unk_108); naming them needs the Koopa header layout recovered first.
+// - GetFloorResult is still called through its local extern (the wall
+//   lookup uses the dBgCh_Actr method). Deleting that prototype shifts the
+//   static initializer's @NNN temps, which the intact-object manifest pins
+//   by name, by one (code bytes otherwise identical).
+// - Vec3 / V3 below are local three-int aggregates. inline_fn() returns
+//   MATRIX_SCRATCH_PAPER; deleting its definition shifts the same @NNN
+//   temps by three (code bytes otherwise identical).
 // Inline definitions in Koopa.h, emitted here by the two factories:
 #include "Koopa.h"
 #include "common.h"
@@ -42,12 +44,10 @@
 #include "decl_dCcAc_c.h"
 #include "decl_ShadowModel.h"
 #include "Particle__System.h"
+#include "dBgPi.h"
 
+int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
-
-/* Remaining legacy helper views are local to this translation unit. */
-/* shadow struct 'Entry' */
-struct Entry { char pad[4]; void *file; };
 
 /* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
  * veneer pairs (func_02017acc / func_02017ab4 for the two models,
@@ -66,9 +66,6 @@ struct NknkAnimationFileHandle : SharedFilePtr {
     ~NknkAnimationFileHandle();
 };
 
-/* shadow typedef 'Fix12i' */
-typedef int Fix12i;
-
 /* shadow typedef 'Vec3' */
 typedef struct { s32 x, y, z; } Vec3;
 
@@ -78,8 +75,8 @@ extern "C" {
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir, void *callback);
 extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
 extern void func_0201267c(unsigned int id, const Vector3 *pos);
-extern s16 data_02082214[];
-extern struct Entry *data_ov062_0211cee8[];
+extern s16 data_02082214[];         /* SINE_TABLE: sin, cos pairs */
+extern NknkAnimationFileHandle *data_ov062_0211cee8[];
 extern int data_ov062_0211cf0c[];
 /* The called scalar definition takes u16 startFrame. The unused ModelAnim
  * member declaration takes Fix12<int>/u32; its measured form grew this helper. */
@@ -90,7 +87,6 @@ extern int Vec3_Dist(void* a, void* b);
 extern void func_ov002_020aea30(void* self, void* attacker, dBgCh_Actr* collision);
 extern void _ZN6Player6BounceE5Fix12IiE(void* p, int f);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, void* v, u32 a, int f, u8 b, u8 c, u8 d);
-extern "C" int _Z14ApproachLinearRiii(int *r, int target, int speed);
 extern "C" void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
@@ -110,14 +106,14 @@ extern void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *m, short angY);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, struct Matrix4x3 *m, int radHeight, int a, u8 b);
-extern struct Matrix4x3 data_020a0e68;
+extern struct Matrix4x3 data_020a0e68; /* MATRIX_SCRATCH_PAPER */
 inline struct Matrix4x3 *inline_fn()
 {
   return &data_020a0e68;
 }
 
-extern struct dBgCh_Actr *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
-extern int SurfaceInfo_TestFlag0x20(int *p);
+extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
+extern int SurfaceInfo_TestFlag0x20(int *p); /* CLPS bit 0x20: water */
 }
 
 // @symbol daNknk_c_classInit_NOKONOKO
@@ -182,7 +178,7 @@ int daNknk_c::InitResources()
     mModelIndex = kind;
 
     for (i = 0; i < 9; i++)
-        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211cee8[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov062_0211cee8[i]);
 
     f = (BMD_File*)Model::LoadFile(*data_ov062_0211ced8[mModelIndex]);
     if (mModelAnim.SetFile(f, 1, -1) == 0)
@@ -191,7 +187,7 @@ int daNknk_c::InitResources()
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
-    isSpecial = actorID == 0xcc;
+    isSpecial = actorID == 0xcc; /* NOKONOKO_S */
     if (isSpecial)
     {
         mKoopaVariant = 2;
@@ -250,7 +246,7 @@ int daNknk_c::Behavior()
     MakeVanishLuigiWork(mdCc_c);
 
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
-        int *pb0 = (int *)((char *)&mFlags);
+        int *pb0 = (int *)&mFlags;
         *pb0 = *pb0 & ~0x10000000;
         if (SpawnParticlesIfHitOtherObj(mdCc_c) != 0) {
             PoofDust();
@@ -280,9 +276,9 @@ int daNknk_c::Behavior()
             return 1;
 
         {
-            int *pb0 = (int *)((char *)&mFlags);
+            int *pb0 = (int *)&mFlags;
             if (mLandingDustTimer != 0)
-                *(u8 *)((char *)&mLandingDustTimer) -= 1;
+                mLandingDustTimer -= 1;
             *pb0 = *pb0 | 0x10000000;
         }
         func_ov062_02118258(0x3e8000);
@@ -306,7 +302,7 @@ int daNknk_c::Behavior()
             int ang = mPrevAngleY;
             mAngleY = (s16)ang;
             {
-                u16 *p100 = (u16 *)((char *)&mStateTimer);
+                u16 *p100 = (u16 *)&mStateTimer;
                 *p100 = (u16)(*p100 + 1);
             }
         }
@@ -336,7 +332,7 @@ int daNknk_c::Behavior()
             if (mInvincibleTimer == 0) {
                 mdCc_c.Update();
             } else {
-                *(u16 *)((char *)&mInvincibleTimer) -= 1;
+                mInvincibleTimer -= 1;
             }
         }
     } else {
@@ -364,9 +360,9 @@ int daNknk_c::Render()
   saved.y = mScaleY;
   saved.z = mScaleZ;
   if (mDeathState == 1 && mKoopaVariant == 2) {
-    mScaleX = (int)(((long long)*(volatile int*)((char*)&mScaleX) * 0x800 + 0x800) >> 12);
-    mScaleY = (int)(((long long)*(volatile int*)((char*)&mScaleY) * 0x800 + 0x800) >> 12);
-    mScaleZ = (int)(((long long)*(volatile int*)((char*)&mScaleZ) * 0x800 + 0x800) >> 12);
+    mScaleX = (int)(((long long)*(volatile int *)&mScaleX * 0x800 + 0x800) >> 12);
+    mScaleY = (int)(((long long)*(volatile int *)&mScaleY * 0x800 + 0x800) >> 12);
+    mScaleZ = (int)(((long long)*(volatile int *)&mScaleZ * 0x800 + 0x800) >> 12);
   }
   mModelAnim.Render((const Vector3*)&mScaleX);
   mScaleX = saved.x;
@@ -383,12 +379,9 @@ void daNknk_c::OnPendingDestroy()
 }
 
 // @symbol _ZN8daNknk_c16CleanupResourcesEv
-extern struct SharedFilePtr *data_ov062_0211cee0[];
-extern struct SharedFilePtr *data_ov062_0211ced8[];
-
 int daNknk_c::CleanupResources()
 {
-  int b = actorID == 0xcc;
+  int b = actorID == 0xcc; /* NOKONOKO_S has no second model */
   if (b == 0)
   {
     data_ov062_0211cee0[mModelIndex]->Release();
@@ -396,7 +389,7 @@ int daNknk_c::CleanupResources()
   data_ov062_0211ced8[mModelIndex]->Release();
   for (int i = 0; i < 9; ++i)
   {
-    ((SharedFilePtr *)data_ov062_0211cee8[i])->Release();
+    data_ov062_0211cee8[i]->Release();
   }
   UnloadBlueCoinModel(this);
   return 1;
@@ -463,14 +456,14 @@ void daNknk_c::func_ov062_02118b4c() {
 
     if (mModelIndex != 0) {
         if ((u16)mStateTimer > 0x1e && func_ov062_02117b60() > 0x320000) {
-            if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x1000) == 0)
+            if (ApproachLinear(mHorzSpeed, 0, 0x1000) == 0)
                 return;
             mState = 1;
             func_ov062_02117994(2);
             return;
         }
         ApproachLinear(mPrevAngleY, mAimAngle, 0x400);
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x11000, 0x1000);
+        ApproachLinear(mHorzSpeed, 0x11000, 0x1000);
         return;
     }
 
@@ -480,14 +473,14 @@ void daNknk_c::func_ov062_02118b4c() {
         mPlayerDist = 0;
     }
     if ((u16)mStateTimer > 0x1e && mPlayerDist > 0x320000) {
-        if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x1000) == 0)
+        if (ApproachLinear(mHorzSpeed, 0, 0x1000) == 0)
             return;
         mState = 1;
         func_ov062_02117994(2);
         return;
     }
     ApproachLinear(mPrevAngleY, (s16)(mAimAngle + 0x8000), 0x400);
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0x11000, 0x1000);
+    ApproachLinear(mHorzSpeed, 0x11000, 0x1000);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02118a50Ev
@@ -498,8 +491,8 @@ void daNknk_c::func_ov062_02118a50()
 {
     if (mHorzSpeed != 0) {
         if (mWithMeshClsn.IsOnWall() != 0) {
-            void *sr = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
-            ((SurfaceInfo*)((char*)sr + 4))->CopyNormalTo(*(Vector3*)&mWallNormalX);
+            dBgPi *wall = (dBgPi *)mWithMeshClsn.GetWallResult();
+            wall->surface.CopyNormalTo(*(Vector3*)&mWallNormalX);
             mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
                 this, mWallNormalX, mWallNormalZ, mPrevAngleY);
         }
@@ -543,7 +536,7 @@ void daNknk_c::func_ov062_02118a00() {
 void daNknk_c::func_ov062_02118718()
 {
     int dist = 0x7fffffff;
-    char *other;
+    dActor_c *other;
 
     if (mAnimIndex == 3)
         func_ov062_02117724(2, 5, 8, 0xb);
@@ -555,10 +548,10 @@ void daNknk_c::func_ov062_02118718()
         if (mPlayerDist >= 0x61a8000)
             mTargetAngle = mAimAngle;
 
-        other = (char *)func_ov062_02117b9c();
+        other = func_ov062_02117b9c();
         if (other) {
-            dist = Vec3_Dist(&mPosX, &((dActor_c *)other)->mPosX);
-            mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&((dActor_c *)other)->mPosX);
+            dist = Vec3_Dist(&mPosX, &other->mPosX);
+            mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&other->mPosX);
         } else {
             mTurning =
                 AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
@@ -590,7 +583,7 @@ void daNknk_c::func_ov062_02118718()
         }
     }
 
-    if (_Z14ApproachLinearRiii(&mHorzSpeed, 0x14000, 0x1000) == 0)
+    if (ApproachLinear(mHorzSpeed, 0x14000, 0x1000) == 0)
         return;
     if (dist >= 0xc8000)
         return;
@@ -616,7 +609,7 @@ void daNknk_c::func_ov062_02118588()
             found = dActor_c::FindWithID(mdCc_c.otherOwner);
             if (found != 0) {
                 int t = found->actorID;
-                t = (t == 0x11d);
+                t = (t == 0x11d); /* SHELL */
                 if (t != 0)
                     match = 1;
             }
@@ -662,7 +655,7 @@ void daNknk_c::func_ov062_02118588()
 void daNknk_c::func_ov062_021183e0()
 {
     int dist = 0x7fffffff;
-    char *other;
+    dActor_c *other;
 
     if (mModelAnim.Finished())
         func_ov062_02117994(1);
@@ -672,11 +665,11 @@ void daNknk_c::func_ov062_021183e0()
     } else {
         if (mPlayerDist >= 0x61a8000)
             mTargetAngle = mAimAngle;
-        other = (char *)func_ov062_02117b9c();
+        other = func_ov062_02117b9c();
         if (other) {
-            dist = Vec3_Dist(&mPosX, &((dActor_c *)other)->mPosX);
+            dist = Vec3_Dist(&mPosX, &other->mPosX);
             if (dist < 0xc8000)
-                mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&((dActor_c *)other)->mPosX);
+                mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&other->mPosX);
         }
         mTurning = AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
         ApproachLinear(mPrevAngleY, mTargetAngle, 0x200);
@@ -693,9 +686,9 @@ void daNknk_c::func_ov062_021183e0()
     }
 
     if (mKoopaVariant == 2)
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x2000, 0x4cc);
+        ApproachLinear(mHorzSpeed, 0x2000, 0x4cc);
     else
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x3000, 0x4cc);
+        ApproachLinear(mHorzSpeed, 0x3000, 0x4cc);
 
     func_ov062_02118058();
 }
@@ -750,9 +743,9 @@ void daNknk_c::func_ov062_02118258(int lim)
 // @symbol _ZN8daNknk_c19func_ov062_021181a0Ev
 void daNknk_c::func_ov062_021181a0() {
     if (mKoopaVariant == 2) {
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x2000, 0x4cc);
+        ApproachLinear(mHorzSpeed, 0x2000, 0x4cc);
     } else {
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x3000, 0x4cc);
+        ApproachLinear(mHorzSpeed, 0x3000, 0x4cc);
     }
     if (mModelAnim.Finished() == 0) return;
     {
@@ -783,7 +776,7 @@ void daNknk_c::func_ov062_0211811c() {
 
 // @symbol _ZN8daNknk_c19func_ov062_021180d4Ev
 void daNknk_c::func_ov062_021180d4() {
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x1000);
+    ApproachLinear(mHorzSpeed, 0, 0x1000);
     int done = mModelAnim.Finished();
     if (!done) return;
     mState = 1;
@@ -811,7 +804,7 @@ void daNknk_c::func_ov062_02118058() {
 void daNknk_c::func_ov062_02118004(int a1) {
     int r = mWithMeshClsn.IsOnGround();
     if (r == 0) return;
-    _Z14ApproachLinearRiii(&mHorzSpeed, 0, a1);
+    ApproachLinear(mHorzSpeed, 0, a1);
     int x = mPosX;
     int y = mPosY;
     int z = mPosZ;
@@ -821,7 +814,7 @@ void daNknk_c::func_ov062_02118004(int a1) {
 // @symbol _ZN8daNknk_c19func_ov062_02117c98Ev
 void daNknk_c::func_ov062_02117c98()
 {
-    void* found;
+    dActor_c *found;
     int turnAround;
     s32 flags;
     u32 id;
@@ -863,7 +856,7 @@ void daNknk_c::func_ov062_02117c98()
         if (mKoopaVariant == 0) {
             func_ov062_02117bf4();
             if (flags & 0x3c0)
-                mPrevAngleY = ((dActor_c *)found)->mAngleY;
+                mPrevAngleY = found->mAngleY;
         } else {
             if (flags & 0x40040)
                 mDeathState = 2;
@@ -887,7 +880,7 @@ void daNknk_c::func_ov062_02117c98()
         Player *player = (Player *)found;
         struct { Vec3 sv; Vec3 hv; } L;
         int isPlayer;
-        isPlayer = (player->actorID == 0xbf) ? 1 : turnAround;
+        isPlayer = (player->actorID == 0xbf /* PLAYER */) ? 1 : turnAround;
         if (isPlayer == 0)
             goto tail;
         if (player->mIsMetal != 0) {
@@ -963,24 +956,24 @@ void daNknk_c::func_ov062_02117bf4(){
     func_ov062_02117994(7);
     {
         Vector3 v;
-        int yy = mPosZ;
-        int zz = mPosY + 0x3c000;
+        int z = mPosZ;
+        int y = mPosY + 0x3c000;
         v.x = mPosX;
-        v.y = zz;
-        v.z = yy;
-        dActor_c::Spawn(0x11d, mModelIndex, v, 0, mAreaId, -1);
+        v.y = y;
+        v.z = z;
+        dActor_c::Spawn(0x11d /* SHELL */, mModelIndex, v, 0, mAreaId, -1);
     }
     mInvincibleTimer = 0xa;
     func_0201267c(1, (const Vector3*)&mCamSpacePosX);
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02117b9cEv
-void *daNknk_c::func_ov062_02117b9c() {
+dActor_c *daNknk_c::func_ov062_02117b9c() {
     dActor_c *found = 0;
     dActor_c *best = 0;
     Fix12i bestDist = 0x7FFFFFFF;
     while (1) {
-        found = dActor_c::FindWithActorID(0x11d, found);
+        found = dActor_c::FindWithActorID(0x11d /* SHELL */, found);
         if (!found) break;
         Fix12i d = Vec3_Dist((Vector3*)&mPosX, (Vector3*)&found->mPosX);
         if (d < bestDist) {
@@ -1047,7 +1040,7 @@ void daNknk_c::func_ov062_021179e4() {
 void daNknk_c::func_ov062_02117994(int idx) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim,
-        (BCA_File*)data_ov062_0211cee8[idx]->file,
+        (BCA_File*)data_ov062_0211cee8[idx]->words[1],
         data_ov062_0211cf0c[idx],
         mAnimSpeed,
         0
@@ -1064,7 +1057,7 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
         Vector3 pos;
         int k, iscb, idx, uid, iscb2;
         short ang;
-        char *ps;
+        Particle::System *ps;
         if (mFootstep != 0) return;
         mFootstep = 1;
         func_0201267c(0xe4, (const Vector3*)&mCamSpacePosX);
@@ -1102,13 +1095,13 @@ void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned in
         uid = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(0, 0xf9, pos.x, pos.y, pos.z, 0, 0);
         _ZN8Particle19SetSelfDestructFlagEj(0xf9);
         if (uid == 0) return;
-        ps = (char *)Particle::System::FromUniqueID(uid);
+        ps = Particle::System::FromUniqueID(uid);
         if (ps == 0) return;
         iscb2 = actorID == 0xcb;
         if (iscb2)
-            *(int *)(ps + 0x50) = (short)(((long long)*(int *)(ps + 0x50) * 0x800 + 0x800) >> 12);
+            ps->callbackScale = (short)(((long long)ps->callbackScale * 0x800 + 0x800) >> 12);
         else
-            *(int *)(ps + 0x50) = (short)(((long long)*(int *)(ps + 0x50) * 0x500 + 0x800) >> 12);
+            ps->callbackScale = (short)(((long long)ps->callbackScale * 0x500 + 0x800) >> 12);
     } else {
         mFootstep = 0;
     }
@@ -1120,7 +1113,7 @@ void daNknk_c::func_ov062_021175c0()
     volatile Vector3 pos;
     int t;
     u32 spawned;
-    void *particle;
+    Particle::System *particle;
 
     if (mLandingDustTimer != 0) return;
 
@@ -1154,22 +1147,23 @@ void daNknk_c::func_ov062_021175c0()
         int t2 = actorID;
         t2 = t2 == 0xcb;
         if (t2 != 0) {
-            int v = *(int *)((char *)particle + 0x50);
+            int v = particle->callbackScale;
             int r = (int)((((s64)v) * 0x800 + 0x800) >> 12);
-            *(int *)((char *)particle + 0x50) = (short)r;
+            particle->callbackScale = (short)r;
         } else {
-            int v = *(int *)((char *)particle + 0x50);
+            int v = particle->callbackScale;
             int r = (int)((((s64)v) * 0x500 + 0x800) >> 12);
-            *(int *)((char *)particle + 0x50) = (short)r;
+            particle->callbackScale = (short)r;
         }
     }
 }
 
 // @symbol _ZN8daNknk_c19func_ov062_02117570Ev
+/* Standing on a water floor: drop a coin and die. */
 void daNknk_c::func_ov062_02117570() {
     if (!mWithMeshClsn.IsOnGround()) return;
-    struct dBgCh_Actr *floor = _ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
-    if (!SurfaceInfo_TestFlag0x20((int*)((char*)floor + 4))) return;
+    dBgPi *floor = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface)) return;
     SpawnCoin();
     KillAndTrackInDeathTable();
 }
