@@ -2,14 +2,11 @@
 #include "PlayerInput.h"
 // @symbol _ZN6Player19St_SwingPlayer_MainEv
 /* recovered: Player::St_SwingPlayer_Main, the per-frame body of the swing state (animation, particles, the approach helpers). */
-// NONMATCHING: div 8 of 241 words. mwccarm 2004/b56, --module ov002,
-// @ 0x020d9fec size 0x3c4. Residue class: build delta (colouring).
-// Draft from nearmiss/db.jsonl (stored divergence 8), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
-// drafts live on main with an honest banner so the port and readers have source. Logic is
-// verified only as far as the residue class implies: register names and instruction order
-// for the shape-exact rows, NOT an independent execution audit for the others. Counts as
-// decompiled, not matched; tools/enroll.py leaves it out of the ROM build, which keeps the
-// original bytes for this range. A byte-exact match replaces this file and drops the banner.
+// Provenance: first drafted from nearmiss/db.jsonl (divergence 8) and kept on main as a
+// decompiled-not-matched draft; matched 2026-10-12 under mwccarm 2004/b56. The swing step
+// is the s16 angle difference shifted IN PLACE (`diff >>= 6` / `diff >>= 7`), which keeps
+// the difference and the step in one register across both if-converted arms, and the
+// angular speed is declared before the difference, which gives it ip and the step r3.
 typedef int s32;
 typedef short s16;
 typedef unsigned int u32;
@@ -70,13 +67,12 @@ extern "C" int _ZN6Player19St_SwingPlayer_MainEv(char* c)
             return 1;
         }
         if (*(s16*)((char*)data_0209f4a0 + gActivePlayerSlot * 0x18) != 0) {
-            s16 diff = *(s16*)(c + 0x6d2) - *(s16*)(c + 0x6d4);
             s16 av = *(s16*)(c + 0x69c);
-            s32 step;
+            s16 diff = *(s16*)(c + 0x6d2) - *(s16*)(c + 0x6d4);
             if (av < 0) av = -av;
-            step = (av < 0x800) ? ((diff << 10) >> 16) : ((diff << 9) >> 16);
-            if (step != 0) {
-                *(s16*)(c + 0x69c) += step;
+            if (av < 0x800) diff >>= 6; else diff >>= 7;
+            if (diff != 0) {
+                *(s16*)(c + 0x69c) += diff;
                 if (*(s16*)(c + 0x69c) >= 0x1800)
                     *(s16*)(c + 0x69c) = 0x1800;
                 else if (*(s16*)(c + 0x69c) <= -0x1800)
