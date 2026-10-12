@@ -21,8 +21,8 @@
  * The five state tables (the coin handlers at data_ov006_021417b0, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
  * 02141810 and the blocks' at 02141840) are {pmf, delta} records on
- * dScMgCoin_c. __sinit_ov006_0213014c copies them into .bss from the
- * data_ov006_0213be** literals.
+ * dScMgCoin_c. They are defined here, and the TU's static initialiser
+ * fills them from the pointer-to-member constants at data_ov006_0213be**.
  *
  */
 
@@ -158,15 +158,69 @@ extern int data_0208ee44;
 extern void func_0203b9b4(int *p, int v);
 }
 
-/* The per-state handler tables for the coins, the blocks, the caption and
-   the moneybag: {pmf, delta} records indexed by the record's own state byte.
-   __sinit_ov006_0213014c copies them from data_ov006_0213be** literals. */
+/* The per-state handler tables: {pmf, delta} records indexed by the
+   record's own state byte. Static initialisation fills each one from the
+   pointer-to-member constants at 0x0213be44..0x0213bf0c in .data, which
+   stay outside this TU's claim, so they are reached by extern. The
+   definitions are in the order the initialiser fills them. */
 typedef void (dScMgCoin_c::*CoinPmf)(int);
 struct CoinPmfEntry { CoinPmf pmf; };
-extern "C" CoinPmfEntry data_ov006_021417b0[];
-extern "C" CoinPmfEntry data_ov006_021417c8[];
-extern "C" CoinPmfEntry data_ov006_021417e8[];
-extern "C" CoinPmfEntry data_ov006_02141840[];
+typedef void (dScMgCoin_c::*PMF_Behavior)();
+struct Entry_Behavior { PMF_Behavior pmf; };
+extern "C" {
+extern const Entry_Behavior data_ov006_0213bee4, data_ov006_0213be6c,
+    data_ov006_0213be7c, data_ov006_0213bea4, data_ov006_0213be54,
+    data_ov006_0213be5c;
+extern const CoinPmfEntry data_ov006_0213beec, data_ov006_0213be74,
+    data_ov006_0213be64, data_ov006_0213be84, data_ov006_0213beb4,
+    data_ov006_0213be9c;
+extern const CoinPmfEntry data_ov006_0213befc, data_ov006_0213bf04,
+    data_ov006_0213be94;
+extern const CoinPmfEntry data_ov006_0213bec4, data_ov006_0213bed4,
+    data_ov006_0213becc, data_ov006_0213beac, data_ov006_0213bebc;
+extern const CoinPmfEntry data_ov006_0213be44, data_ov006_0213be4c,
+    data_ov006_0213bef4, data_ov006_0213be8c;
+
+/* the phases (Behavior) */
+Entry_Behavior data_ov006_02141810[6] = {
+    { data_ov006_0213bee4 },
+    { data_ov006_0213be6c },
+    { data_ov006_0213be7c },
+    { data_ov006_0213bea4 },
+    { data_ov006_0213be54 },
+    { data_ov006_0213be5c }
+};
+/* the blocks */
+CoinPmfEntry data_ov006_02141840[6] = {
+    { data_ov006_0213beec },
+    { data_ov006_0213be74 },
+    { data_ov006_0213be64 },
+    { data_ov006_0213be84 },
+    { data_ov006_0213beb4 },
+    { data_ov006_0213be9c }
+};
+/* the coins */
+CoinPmfEntry data_ov006_021417b0[3] = {
+    { data_ov006_0213befc },
+    { data_ov006_0213bf04 },
+    { data_ov006_0213be94 }
+};
+/* the caption */
+CoinPmfEntry data_ov006_021417e8[5] = {
+    { data_ov006_0213bec4 },
+    { data_ov006_0213bed4 },
+    { data_ov006_0213becc },
+    { data_ov006_0213beac },
+    { data_ov006_0213bebc }
+};
+/* the moneybag */
+CoinPmfEntry data_ov006_021417c8[4] = {
+    { data_ov006_0213be44 },
+    { data_ov006_0213be4c },
+    { data_ov006_0213bef4 },
+    { data_ov006_0213be8c }
+};
+}
 
 // @symbol _ZN11dScMgCoin_cD1Ev
 // @symbol _ZN11dScMgCoin_cD0Ev
@@ -1613,9 +1667,6 @@ int dScMgCoin_c::Render()
 // @symbol _ZN11dScMgCoin_c8BehaviorEv
 /* Runs this phase's handler from data_ov006_02141810, then the caption,
    the moneybag, the popups and the score. */
-typedef void (dScMgCoin_c::*PMF_Behavior)();
-struct Entry_Behavior { PMF_Behavior pmf; };
-extern Entry_Behavior data_ov006_02141810[];
 
 int dScMgCoin_c::Behavior()
 {

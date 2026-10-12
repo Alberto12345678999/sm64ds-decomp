@@ -3478,9 +3478,9 @@
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104d44Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_cD0Ev": "andrewboudreau",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02105c1cEv": "alexsobolew7",
-    "src/actors/dScMgPanel_c.cpp#func_ov006_02104ac0": "tangosdev",
+    "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104ac0Ei": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_021068d8Ev": "tangosdev",
-    "src/actors/dScMgPanel_c.cpp#func_ov006_02104bac": "tangosdev",
+    "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104bacEv": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02106758Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104b24Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_021048b0Ev": "tangosdev",
@@ -3505,7 +3505,7 @@
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104e80Ev": "ruspecial",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104ea8Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02106910Ei": "ruspecial",
-    "src/actors/dScMgPanel_c.cpp#func_ov006_02104ec8": "tangosdev",
+    "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02104ec8Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02105730Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_02105134Ev": "tangosdev",
     "src/actors/dScMgPanel_c.cpp#_ZN12dScMgPanel_c19func_ov006_021057f0Ev": "tangosdev",
@@ -6773,6 +6773,7 @@
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c6RenderEv": "andrewboudreau",
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c8BehaviorEv": "andrewboudreau",
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/dScMgCoin_c.cpp#__sinit_dScMgCoin_c.cpp": "lunavyqo",
     "src/actors/dScMgHanachan_c.cpp#_ZN15dScMgHanachan_cD1Ev": "andrewboudreau",
     "src/actors/dScMgHanachan_c.cpp#_ZN15dScMgHanachan_cD0Ev": "andrewboudreau",
     "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea324": "tangosdev",
@@ -9619,6 +9620,8 @@
     "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEj": "ruspecial",
     "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEji": "ruspecial",
     "src/engine/heap/Heap.cpp#_ZN6Memory10DeallocateEPvP4Heap": "ruspecial",
-    "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev"
+    "src/engine/heap/Heap.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev",
+    "src/actors/dScMgPanel_c.cpp#__sinit_dScMgPanel_c.cpp": "tangosdev",
+    "src/actors/dScMgLuigi_c.cpp#__sinit_dScMgLuigi_c.cpp": "tangosdev"
   }
 }

@@ -827,3 +827,6 @@
 {"path": "src/engine/model/Model.cpp#_ZN9ModelAnimD2Ev", "reason": "MI-class cartridge D-variant bodies are free functions (member defs emit the coined-spelling vtable group); their base-subobject steps must name _ZN*D2Ev to keep the ROM's reloc destinations -- qualified-id emits D1 and shifts the link"}
 {"date": "2026-10-11", "path": "src/engine/collision/dBgCh_SphCrr_query.cpp#_ZN5dBgPi5ResetEv", "reason": "dBgPi::Reset keeps the offset arithmetic and the mangled call that reproduce the ROM. The middle collision fold moves it into dBgCh_SphCrr_query.cpp and those spellings stay."}
 {"path": "src/actors/dScMgCurling2_c.cpp#dScMgCurling2_c_classInit", "reason": "dScMgCurling2_c_classInit absorbs src/d_s_mg_curling2.cpp into ov006/dScMgCurling2_c: 'return new dScMgCurling2_c' must call the vague-linkage _Znwj by its mangled name or the range does not link -- byte-required mangled call (S43)"}
+{"path": "src/unnamed/ov006/__sinit_ov006_0213014c.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
+{"path": "src/unnamed/ov006/__sinit_ov006_02131fa4.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
+{"path": "src/unnamed/ov006/__sinit_ov006_02130f64.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
