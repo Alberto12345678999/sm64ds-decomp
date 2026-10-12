@@ -1,6 +1,7 @@
 //cpp
 /* Player -- ov002.  Reconstructed translation unit: ROM ordinals 0..611 of the
- * contiguous linker run 0x020bccfc..0x020e6a08, i.e. 0x020bccfc..0x020e67a8, 612 functions.
+ * contiguous linker run 0x020bccfc..0x020e6a08, i.e. 0x020bccfc..0x020e67a8,
+ * 612 functions.
  *
  * Assembled from the 612 one-function legacy sources listed at the foot of the
  * file.
@@ -34,7 +35,8 @@
  * Ownership evidence is in the manifest.
  *
  * Every member before this fold came from those first 344 shards, and the
- * remarks below that count members (301, 98, 198, ...) measure that set.  Each member keeps its OWN declarations, inside its own body: mwccarm
+ * remarks below that count members (301, 98, 198, ...) measure that set.
+ * Each member keeps its OWN declarations, inside its own body: mwccarm
  * 2004/b56 gives a block-scope declaration inside an `extern "C"` region C
  * linkage (measured), so 301 independently-recovered views of one ROM symbol
  * coexist without one having to be chosen over the others, and no call site
