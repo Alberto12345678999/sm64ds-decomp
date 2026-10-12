@@ -17,10 +17,6 @@
  * runs and are deliberately out of scope -- the linker places one object's
  * .text contiguously.
  *
- * Whole-function asm members are emitted in source order (the compiler's
- * reverse-emission applies to compiled bodies, not `asm void` blocks), so
- * the definitions below run ROM-ascending.
- *
  *   FlushDataCache() / FlushAndInvalidateDataCache() -- whole-cache clean and
  *   clean+invalidate by set and way (c7,c10,2 / c7,c14,2).
  *   InvalidateDataCache, FlushDataCache, FlushAndInvalidateDataCache,
@@ -28,6 +24,11 @@
  *   (c7,c6,1 / c7,c10,1 / c7,c14,1 / c7,c5,1).
  *   DrainWriteBuffer -- wait for the write buffer to empty (c7,c10,4).
  */
+// leftovers: the func_02058df4 band stays out (it reads the boot vectors
+// func_00000000/func_00000600, which no linked object defines, so folding it
+// in breaks the ROM link). The func_02058c84/58cd0/58d58/58d6c helpers keep
+// address names. func_02058d58/02058d6c write literal arena words
+// (0x27ffda0/0x27ffdc4); no symbol names those slots.
 
 namespace CP15 {
 
