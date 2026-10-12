@@ -9375,6 +9375,12 @@
       ],
       "src/unnamed/ov002/func_ov002_020d85fc.cpp": [
         "param:#2 void *"
+      ],
+      "src/actors/daKpa_c.cpp": [
+        "param:#2 dActor_c &"
+      ],
+      "src/game/actors/d_a_shl.cpp": [
+        "param:#2 dActor_c &"
       ]
     },
     "_ZN6Player8HasNoCapEv": {
@@ -15060,6 +15066,9 @@
       ],
       "src/unnamed/ov002/func_ov002_020e2664.c": [
         "return:int"
+      ],
+      "src/unnamed/ov002/func_ov002_020dde74.cpp": [
+        "return:State"
       ]
     },
     "data_ov002_0211004c": {
@@ -15068,6 +15077,9 @@
       ],
       "src/unnamed/ov002/func_ov002_020d6790.cpp": [
         "return:char"
+      ],
+      "src/unnamed/ov002/func_ov002_020e2664.c": [
+        "return:int"
       ]
     },
     "data_ov002_02110064": {
@@ -15310,6 +15322,9 @@
       ],
       "src/unnamed/ov002/func_ov002_020e0ccc.cpp": [
         "return:int []"
+      ],
+      "src/unnamed/ov002/func_ov002_020de33c.c": [
+        "return:char []"
       ]
     },
     "data_ov002_021104e4": {
@@ -15393,6 +15408,9 @@
     "data_ov002_021105d4": {
       "src/unnamed/ov002/func_ov002_020e2664.c": [
         "return:int"
+      ],
+      "src/unnamed/ov002/func_ov002_020dde74.cpp": [
+        "return:State"
       ]
     },
     "data_ov002_02110604": {

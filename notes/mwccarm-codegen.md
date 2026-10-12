@@ -6673,7 +6673,7 @@ reproduced in a 15-instruction toy, `_abwork/crkh/toyprobe.py`:
                                   (now in src/actors/dMg3DEspAnimSet_c.cpp)
   Both are the final `else` of an if / else-if / else chain, so the jumped-over arm is the
   else-if body and contains that arm's own test. The multi-predecessor precedents 6u names
-  (src/unnamed/ov007/func_ov007_020b1f2c.c, src/unnamed/ov002/func_ov002_020d85fc.cpp) are `&&` chains.
+  (src/unnamed/ov007/func_ov007_020b1f2c.c, func_ov002_020d85fc in src/actors/Player.cpp) are `&&` chains.
   Found by disassembling every matched src/ file's ROM range and looking for a forward
   conditional branch into a <=7-instruction block ending in a return whose only predecessor is
   that branch: 16 hits in the whole corpus.

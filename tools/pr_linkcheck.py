@@ -395,10 +395,10 @@ def main():
     #
     # NO-SYM is the fourth, and it was missing. A file that does not compile, or compiles
     # without emitting its symbol, is graded NO-SYM — and NO-SYM was not in this set, so
-    # the worst possible outcome scored as a pass. src/unnamed/ov002/func_ov002_020d6c60.cpp has been
-    # unbuildable since #866 (`illegal function overloading`, its local declaration
-    # disagreeing with decl_common.h), carries no NONMATCHING banner, and was edited by a
-    # merged PR while broken. A gate that cannot fail the file it could not even build is
+    # the worst possible outcome scored as a pass. The func_ov002_020d6c60 shard (since
+    # folded into src/actors/Player.cpp) was unbuildable from #866 (`illegal function
+    # overloading`, its local declaration disagreeing with decl_common.h), carried no
+    # NONMATCHING banner, and was edited by a merged PR while broken. A gate that cannot fail the file it could not even build is
     # not gating; a self-declared draft still gets the DRAFT pass below.
     FAIL = {"WRONG", "NO-REPRO", "RAW-ASM", "NO-SYM", "NO-BIN", "NO-SRC", "ERROR"}
     reports, bad = [], []
