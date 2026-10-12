@@ -101,7 +101,7 @@ geometry engine exactly this way — command word then packed params to the FIFO
 straight to it:
 
 ```c
-/* src/engine/gx/GXS.cpp:1186 */   *(volatile u32 *)0x4000400 = 0x1a;
+/* src/Geometry_MatrixMultiply3x3.c:5 */   *(volatile u32 *)0x4000400 = 0x1a;
                                            Copy36Bytes(m, (int *)0x4000400);
 /* src/func_0205a290.c:35 */               DMAStartTransfer(ch, base, 0x4000400, 0x84400000 | ...);
 ```

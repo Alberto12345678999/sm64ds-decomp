@@ -278,18 +278,21 @@
       ]
     },
     "Copy32Bytes": {
-      "src/engine/gx/GXS.cpp": [
+      "src/engine/gx/G3X.cpp": [
         "arity:2"
       ]
     },
     "Copy36Bytes": {
+      "src/Geometry_MatrixMultiply3x3.c": [
+        "arity:2"
+      ],
       "src/unnamed/arm9/0204/func_0204b460.c": [
         "arity:2"
       ],
       "src/unnamed/arm9/0204/func_0204b81c.c": [
         "arity:2"
       ],
-      "src/engine/gx/GXS.cpp": [
+      "src/unnamed/arm9/0205/func_0205532c.c": [
         "arity:2"
       ]
     },
@@ -299,7 +302,10 @@
       ]
     },
     "Copy48BytesFixed": {
-      "src/engine/gx/GXS.cpp": [
+      "src/unnamed/arm9/0205/func_02055388.c": [
+        "arity:2"
+      ],
+      "src/unnamed/arm9/0205/func_020553a4.c": [
         "arity:2"
       ]
     },
@@ -471,6 +477,11 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
+      "src/engine/gx/G3i.cpp": [
+        "param:#1 const Vector3 *",
+        "param:#2 const Vector3 *",
+        "param:#3 Vector3 *"
+      ],
       "src/unnamed/arm9/0203/func_0203cebc.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -495,11 +506,6 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
-      ],
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#3 Vector3 *"
       ]
     },
     "DMAStartTransfer": {
@@ -1905,6 +1911,10 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
+      "src/engine/gx/G3i.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
+      ],
       "src/func_020458a8.c": [
         "param:#1 const Vector3 *",
         "param:#2 Vector3 *"
@@ -1948,10 +1958,6 @@
       "src/unnamed/ov075/func_ov075_0211abb0.c": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
-      ],
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
       ],
       "src/engine/model/ModelComponents.cpp": [
         "param:#1 Vec3 *",
@@ -4316,6 +4322,42 @@
         "param:#2 const void *"
       ]
     },
+    "Vram__Map": {
+      "src/_ZN2GX12SetBankForBGEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX13SetBankForOBJEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX13SetBankForTexEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX15SetBankForSubBGEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX16SetBankForSubOBJEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX17SetBankForTexPlttEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX22SetBankForSubBGExtPlttEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/_ZN2GX23SetBankForSubOBJExtPlttEt.cpp": [
+        "param:#1 unsigned short"
+      ],
+      "src/unnamed/arm9/0205/func_020541b8.c": [
+        "param:#1 unsigned short"
+      ],
+      "src/unnamed/arm9/0205/func_02054430.c": [
+        "arity:2",
+        "return:int"
+      ],
+      "src/unnamed/arm9/0205/func_02054748.c": [
+        "param:#1 unsigned short"
+      ]
+    },
     "WM_CheckStateEx": {
       "src/unnamed/arm9/0206/func_02061674.c": [
         "param:#2 int"
@@ -6535,6 +6577,16 @@
     },
     "_ZN2GX17SetBankForTexPlttEt": {
       "src/engine/gx/GX.cpp": [
+        "param:#1 unsigned int"
+      ]
+    },
+    "_ZN2GX22SetBankForSubBGExtPlttEt": {
+      "src/engine/gx/GXS.cpp": [
+        "param:#1 unsigned int"
+      ]
+    },
+    "_ZN2GX23SetBankForSubOBJExtPlttEt": {
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -11916,7 +11968,10 @@
       ]
     },
     "data_02099fd0": {
-      "src/engine/gx/GXS.cpp": [
+      "src/func_02053c40.c": [
+        "return:int"
+      ],
+      "src/engine/gx/G3X.cpp": [
         "return:int"
       ]
     },
@@ -13831,6 +13886,32 @@
     "data_020a4c70": {
       "src/unnamed/arm9/0204/func_02049cd8.c": [
         "return:char []"
+      ]
+    },
+    "data_020a6088": {
+      "src/_ZN2GX12SetBankForBGEt.cpp": [
+        "return:GXState"
+      ],
+      "src/_ZN2GX13SetBankForOBJEt.cpp": [
+        "return:GXState"
+      ],
+      "src/_ZN2GX13SetBankForTexEt.cpp": [
+        "return:GXState"
+      ],
+      "src/unnamed/arm9/0205/func_02053e1c.c": [
+        "return:unsigned short"
+      ],
+      "src/unnamed/arm9/0205/func_02053e34.c": [
+        "return:unsigned short"
+      ],
+      "src/unnamed/arm9/0205/func_02053f58.c": [
+        "return:unsigned short"
+      ],
+      "src/unnamed/arm9/0205/func_020541b8.c": [
+        "return:unsigned short"
+      ],
+      "src/unnamed/arm9/0205/func_02054430.c": [
+        "return:unsigned short"
       ]
     },
     "data_020a60c4": {
@@ -24687,7 +24768,7 @@
       ]
     },
     "func_020553c0": {
-      "src/engine/gx/GXS.cpp": [
+      "src/func_02055780.c": [
         "arity:1"
       ]
     },
@@ -30135,16 +30216,6 @@
       "src/ShowCrashScreen.c": [
         "param:#2 const char *",
         "param:#3 unsigned int"
-      ]
-    },
-    "_ZN2GX22SetBankForSubBGExtPlttEt": {
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "_ZN2GX23SetBankForSubOBJExtPlttEt": {
-      "src/engine/gx/GXS.cpp": [
-        "param:#1 unsigned int"
       ]
     },
     "_ZN5dBgPi9RecordHitEsP11SurfaceInfo": {

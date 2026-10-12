@@ -3,7 +3,7 @@
 ## What landed
 
 `G2x` — the all-static 2D-engine blend/affine writer set. All three of its
-shards folded into `src/engine/gx/GXS.cpp`, licensing
+shards folded into `src/engine/gx/G2x.cpp`, licensing
 `0x02055238..0x0205532c`:
 
 - `_ZN3G2x18SetBlendBrightnessEPVtts` — brightness/fade registers; `amt`'s

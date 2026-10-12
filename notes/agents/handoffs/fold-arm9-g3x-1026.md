@@ -1,7 +1,7 @@
 # fold/arm9-g3x-1026 — arm9/G3X
 
 Folded G3X (the 3D engine's fog and clear-color register writer set) into
-`src/engine/gx/GXS.cpp`, claiming `0x02055574..0x02055624`.
+`src/engine/gx/G3X.cpp`, claiming `0x02055574..0x02055624`.
 
 - 4 functions: SetClearColor, func_020555a4, SetFogTable, SetFog.
   4/4 MATCH, objisolate clean, reloc-destinations clean, ROM-ascending
@@ -21,7 +21,7 @@ Folded G3X (the 3D engine's fog and clear-color register writer set) into
 - attribution.json: four path#symbol overrides carry each shard's original
   credit (SetFogTable stays ruspecial's).
 - converted-baseline: three member identities re-keyed to
-  src/engine/gx/GXS.cpp#symbol (func_020555a4 was a plain C function, not a
+  src/engine/gx/G3X.cpp#symbol (func_020555a4 was a plain C function, not a
   converted member).
 - decl-agreement baseline: two re-keys (Copy32Bytes, MultiCopyHalf — the
   TU's local externs moved paths) and eight newly-banked rows for callers
