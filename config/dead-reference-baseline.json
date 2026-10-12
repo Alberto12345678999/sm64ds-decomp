@@ -46,6 +46,10 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/draft-verdict-repair-0918.md",
+   "ref": "src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/five-cpp-cleanups-0919.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
@@ -996,6 +1000,10 @@
   {
    "file": "tools/check_decl_agreement.py",
    "ref": "src/func_ov065_021183c8.c"
+  },
+  {
+   "file": "tools/check_drafts_compile.py",
+   "ref": "src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp"
   },
   {
    "file": "tools/check_drafts_compile.py",

@@ -101,7 +101,7 @@ src/minigames/d_s_mg_hanachan.cpp:
 
 src/actors/dScMgJump_c.cpp:
     complete
-    .text start:0x020edec0 end:0x020ee994
+    .text start:0x020edec0 end:0x020eeafc
     .init start:0x02130e9c end:0x02130f00
     .ctor start:0x021335a4 end:0x021335a8
     .bss start:0x02142188 end:0x021421b0

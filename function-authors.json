@@ -23557,6 +23557,10 @@
       "author": "tangosdev",
       "name": "_ZN11dScMgJump_c13OnTurnIntoEggEi"
     },
+    "ov006:0x020ee994": {
+      "author": "andrewboudreau",
+      "name": "_ZN11dScMgJump_c13OnYoshiTryEatEi"
+    },
     "ov006:0x020eeafc": {
       "author": "aitddlabs",
       "name": "dScMgJump_c_classInit"
