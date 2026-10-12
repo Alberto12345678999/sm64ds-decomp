@@ -13,8 +13,8 @@
  * in an asm block a symbol, so the link has nothing to resolve those calls to.
  * It stays where the ROM build takes it today, and everything above it,
  * including Player's destructor variants and constructor, stays a one-function
- * source with it.  Three tail members, func_ov002_020d6dac, func_ov002_020d71ec
- * and func_ov002_020d9dcc, are compiled as C, like func_ov002_020bcdf0 (reasons
+ * source with it.  Two tail members, func_ov002_020d71ec and
+ * func_ov002_020d9dcc, are compiled as C, like func_ov002_020bcdf0 (reasons
  * at their definitions).
  *
  * Ordinals 0..16 (0x020bccfc..0x020bd828) are the Player half of the Kuppa-script
@@ -17580,15 +17580,15 @@ ret0b:
 /* ROM ordinal 402 -- func_ov002_020d6dac, 0x020d6dac, size 0x284 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020d6dac
-/* Parsed as C, as its shard was. Compiled as C++, the copy of the four
- * words at sp+0x80 into the 0x30 temporary is scheduled with its loads
- * and stores paired the other way round (10 words differ, measured). */
-#pragma cplusplus off
-#pragma c99 on
+/* The first two words of the SurfaceInfo at rl+0x14 are copied as one
+ * two-int struct. Spelled `{ int a, b; }`, C++ scalarizes that copy into
+ * load/store/load/store, 10 words off the ROM's load/load/store/store;
+ * the array-wrapper view restores it, as in func_ov002_020c14b8. */
+extern "C" {
 int func_ov002_020d6dac(char *self)
 {
     struct Vector3 { int x, y, z; };
-    typedef struct P2 { int a, b; } P2;
+    typedef struct P2 { int w[2]; } P2;
     typedef struct dBgPi { void *vtb; int s0, s1, s2, s3, s4; u16 f, g; int h, i, j; } dBgPi;
     typedef struct Vec3_16 { s16 x, y, z; } Vec3_16;
     typedef struct dBgCh_Lin { char pad[0x78]; } dBgCh_Lin;
@@ -17690,8 +17690,7 @@ int func_ov002_020d6dac(char *self)
     _ZN9dBgCh_LinD1Ev(rl);
     return 1;
 }
-#pragma c99 off
-#pragma cplusplus on
+}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 403 -- func_ov002_020d7030, 0x020d7030, size 0x5c */
