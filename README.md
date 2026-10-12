@@ -100,14 +100,14 @@ fair to use, but all source is written from scratch against your own ROM.
 
 <!-- progress:start -->
 ```
-Functions  ██████████████████████████████  99.9%   11,379 / 11,389
-Code size  ██████████████████████████████  99.5%   2,225,904 / 2,238,108 bytes
+Functions  ██████████████████████████████  99.9%   11,380 / 11,389
+Code size  ██████████████████████████████  99.5%   2,227,344 / 2,238,108 bytes
 ```
 <!-- progress:end -->
 
 <!-- tiers:start -->
 ```
-MATCHED    ██████████████████████████████  99.9%   11,379 / 11,389 functions
+MATCHED    ██████████████████████████████  99.9%   11,380 / 11,389 functions
            of which 115 are byte-exact assembly (hand-written in the original, not C)
 CONVERTED  █████████░░░░░░░░░░░░░░░░░░░░░  31.5%   3,588 / 11,386 functions
 LINKED     ████████████████████████████░░  93.5%   10,595 / 11,328 matched TUs
