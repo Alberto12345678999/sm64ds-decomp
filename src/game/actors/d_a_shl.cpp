@@ -33,8 +33,6 @@
  *   Particle::System::New stay mangled: each takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az). Particle::System::New is declared
  *   with the seven arguments its call sites pass.
- * - func_ov102_0214c84c's ground probe is ShlGroundProbe, a 0x50-byte
- *   stand-in for dBgCh_Gnd driven through its mangled entry points.
  * - data_ov102_0214d70c is this TU's .rodata pair of model-file handles
  *   and the state records are .bss; this text-only TU claims neither.
  *
@@ -42,16 +40,19 @@
  * - func_ov002_020ad660, func_ov002_020cc16c and func_020105cc are other
  *   TUs' helpers and stay free externs; the Fix12<int>-by-value callees
  *   listed above stay mangled (notes/mwccarm-codegen.md 6az).
- * - The manifest pins eight @NNN statics, so the count of named locals,
- *   named parameters, labels and unnamed struct types ahead of __sinit
- *   is load-bearing. Including a header moves it (measured: Player.h
- *   +92, Sound.h +15, dBgCh_Gnd.h +9), so Player, Sound and dBgCh_Gnd
- *   stay reached through local mangled externs, Player::mIsAirborne
- *   stays the raw 0x6de read, and the ground probe and positions stay
- *   POD stand-ins with *(Vector3 *) / mCamSpacePosX puns.
- * - Names that also hold that count: the `surface` local in
- *   func_ov102_0214c7fc and the unnamed struct types of `pos` and `dir`
- *   (an unnamed struct type takes one number, measured).
+ * - The manifest pins eight @NNN statics (@721..@735), so the count of
+ *   named locals, named parameters, labels and unnamed struct types
+ *   ahead of __sinit is load-bearing. Including a header moves it
+ *   (measured: Player.h +94, the first pin becomes @815; Sound.h +15), so
+ *   Player and Sound stay reached through local mangled externs and
+ *   Player::mIsAirborne stays the raw 0x6de read.
+ * - dBgCh_Gnd.h adds 9 to the count. Including it let five mangled
+ *   dBgCh_Gnd externs (7 named parameters), a `surface` local in
+ *   func_ov102_0214c7fc and an unnamed struct type for `dir` in
+ *   func_ov102_0214cbec go, which nets to 0 (measured: same bytes,
+ *   relocations and pins).
+ * - The unnamed struct type of `pos` in func_ov102_0214c84c also holds
+ *   the count (an unnamed struct type takes one number, measured).
  * - *(u16 *)&mStateTimer stays: the ROM loads ldrh (unsigned), the s16
  *   member spelling loads ldrsh.
  * - daShl_c_classInit stays a free factory and the destructor stays
@@ -61,6 +62,7 @@
 #include "common.h"
 #include "daShl_c.h"
 #include "SharedFilePtr.h"
+#include "dBgCh_Gnd.h"
 
 /* Two 8-byte pointers-to-member. The second word is the this-adjustment;
    retail stores 0 for every entry. */
@@ -99,24 +101,16 @@ int  func_02037e38(unsigned int *si);
 u32  func_02022d00(u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
                    void *dir);
 
-void *_ZN9dBgCh_GndC1Ev(void *self);
-void _ZN9dBgCh_GndD1Ev(void *self);
-void _ZN5dBgCh19StartDetectingWaterEv(void *self);
-void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(void *self,
-                                                      const Vector3 *pos,
-                                                      void *actor);
-int  _ZN9dBgCh_Gnd10DetectClsnEv(void *self);
-
-/* local extern: including Player.h renumbers the pinned @NNN statics
-   by 92. */
-int  _ZN6Player9IsOnShellEv(void *player);
-int  _ZN6Player7TryGrabER8dActor_c(void *player, dActor_c &actor);
+/* Including Player.h renumbers the pinned @NNN statics by 94. */
+int  _ZN6Player9IsOnShellEv(void *player);  /* local extern: Player.h is +94 */
+int  _ZN6Player7TryGrabER8dActor_c(void *player, dActor_c &actor);  /* local extern: Player.h is +94 */
 int  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, const Vector3 *v,
                                             u32 a, Fix12i f, u8 b, u8 c,
                                             u8 d);
 int  _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
          u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z, void *dir,
          void *cb);
+/* local extern: including Sound.h renumbers the pinned @NNN statics by 15. */
 int  _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 handle, u32 a, u32 soundID,
                                        const Vector3 &pos, s16 e);
 
@@ -133,19 +127,6 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
          int height, u8 flags);
 
 }
-
-/* Stack stand-in for a dBgCh_Gnd (0x50 bytes) driven through its mangled
-   entry points; only the two fields this file reads are named. */
-struct ShlGroundProbe {
-    u8  head[0x14];
-    int surface[2];  /* 0x14: CLPS entry of the hit triangle */
-    u8  mid[0x28];
-    int clsnY;       /* 0x44: floor height found */
-    u8  tail[0x8];
-};
-
-typedef char ShlGroundProbe_size_must_be_0x50[
-    sizeof(ShlGroundProbe) == 0x50 ? 1 : -1];
 
 /* Plain three-word position: Vector3 members here emit an extra
    destructor function into this TU (measured). */
@@ -387,6 +368,8 @@ int daShl_c::func_ov102_0214d0bc()
    is off, the shell breaks. */
 int daShl_c::func_ov102_0214d044()
 {
+    /* The riderPos/angle/x/ret locals below are needed: without them the
+       function is 4 bytes shorter. */
     if (mCarrier == 0 || _ZN6Player9IsOnShellEv(mCarrier) == 0) {
         PoofDust();
         MarkForDestruction();
@@ -507,11 +490,11 @@ void daShl_c::func_ov102_0214cbec()
 
     hit = mdCc_c.hitFlags;
     if (hit & 0x10) {
-        struct { s16 x, y, z; } dir;
+        Vector3_16 dir;
         dir.x = 0x2000;
         dir.y = 0;
         dir.z = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, *(Vector3_16 *)&dir, *(Player *)player, mdCc_c.height >> 1);
+        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, dir, *(Player *)player, mdCc_c.height >> 1);
         return;
     }
 
@@ -563,13 +546,14 @@ void daShl_c::func_ov102_0214cbec()
 // @symbol _ZN7daShl_c19func_ov102_0214c84cEv
 /* Model 0 only (Behavior gates it). While ridden, probe the ground from
    50.0 above the shell and pick the trail particles and the looping
-   surface sound from what it finds; otherwise just the idle trail. */
+   surface sound from what it finds; otherwise just the idle trail. Water
+   detection is on, so ground.clsnY is the hit height of a water surface
+   or a floor. */
 void daShl_c::func_ov102_0214c84c()
 {
     /* One object: as two separate locals the function is 64 bytes
        shorter (measured). */
     struct { ShlPos trail; ShlPos probe; } pos;
-    ShlGroundProbe ground;
 
     pos.trail.x = mPosX;
     pos.trail.y = mPosY;
@@ -579,8 +563,8 @@ void daShl_c::func_ov102_0214c84c()
         && mCarrier != 0
         && *((u8 *)mCarrier + 0x6de) == 0)  /* Player::mIsAirborne */
     {
-        _ZN9dBgCh_GndC1Ev(&ground);
-        _ZN5dBgCh19StartDetectingWaterEv(&ground);
+        dBgCh_Gnd ground;
+        ground.StartDetectingWater();
         {
             int vx = mPosX;
             int vz = mPosZ;
@@ -589,10 +573,10 @@ void daShl_c::func_ov102_0214c84c()
             pos.probe.y = vy;
             pos.probe.z = vz;
         }
-        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&ground, (Vector3 *)&pos.probe, this);
-        if (_ZN9dBgCh_Gnd10DetectClsnEv(&ground))
+        ground.SetObjAndPos(*(Vector3 *)&pos.probe, this);
+        if (ground.DetectClsn())
         {
-            if (SurfaceInfo_TestFlag0x20(ground.surface))
+            if (SurfaceInfo_TestFlag0x20((int *)&ground.surface))
             {
                 pos.trail.y = ground.clsnY + 0x3c000;
                 mParticleHandle_3d4 = 0;
@@ -600,17 +584,16 @@ void daShl_c::func_ov102_0214c84c()
                 mParticleHandle_3cc = func_02022d00(mParticleHandle_3cc, 0xe2, pos.trail.x, pos.trail.y, pos.trail.z, 0);
                 mParticleHandle_3d0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                     mParticleHandle_3d0, 0xe3, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
-                if (mSoundID != func_02037e84(ground.surface) + 0xf2)
+                if (mSoundID != func_02037e84((int *)&ground.surface) + 0xf2)
                     mSoundHandle = 0;
-                mSoundID = func_02037e84(ground.surface) + 0xf2;
+                mSoundID = func_02037e84((int *)&ground.surface) + 0xf2;
                 mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
                     mSoundHandle, 0, mSoundID, *(Vector3 *)&mCamSpacePosX, 0);
-                _ZN9dBgCh_GndD1Ev(&ground);
                 return;
             }
-            if (func_02037e38((unsigned int *)ground.surface) == 1)
+            if (func_02037e38((unsigned int *)&ground.surface) == 1)
             {
-                if (func_02037e84(ground.surface) == 7)
+                if (func_02037e84((int *)&ground.surface) == 7)
                 {
                     pos.trail.y = ground.clsnY + 0x3c000;
                     mParticleHandle_3d4 = 0;
@@ -618,9 +601,9 @@ void daShl_c::func_ov102_0214c84c()
                     mParticleHandle_3cc = func_02022d00(mParticleHandle_3cc, 0xe2, pos.trail.x, pos.trail.y, pos.trail.z, 0);
                     mParticleHandle_3d0 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
                         mParticleHandle_3d0, 0xe3, pos.trail.x, pos.trail.y, pos.trail.z, 0, 0);
-                    if (mSoundID != func_02037e84(ground.surface) + 0xf2)
+                    if (mSoundID != func_02037e84((int *)&ground.surface) + 0xf2)
                         mSoundHandle = 0;
-                    mSoundID = func_02037e84(ground.surface) + 0xf2;
+                    mSoundID = func_02037e84((int *)&ground.surface) + 0xf2;
                     mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
                         mSoundHandle, 0, mSoundID, *(Vector3 *)&mCamSpacePosX, 0);
                 }
@@ -638,12 +621,11 @@ void daShl_c::func_ov102_0214c84c()
                     mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
                         mSoundHandle, 0, mSoundID, *(Vector3 *)&mCamSpacePosX, 0);
                 }
-                _ZN9dBgCh_GndD1Ev(&ground);
                 return;
             }
-            if (mSoundID != func_02037e84(ground.surface) + 0xf2)
+            if (mSoundID != func_02037e84((int *)&ground.surface) + 0xf2)
                 mSoundHandle = 0;
-            mSoundID = func_02037e84(ground.surface) + 0xf2;
+            mSoundID = func_02037e84((int *)&ground.surface) + 0xf2;
             mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
                 mSoundHandle, 0, mSoundID, *(Vector3 *)&mCamSpacePosX, 0);
         }
@@ -652,7 +634,6 @@ void daShl_c::func_ov102_0214c84c()
             mSoundHandle = 0;
             mSoundID = 0;
         }
-        _ZN9dBgCh_GndD1Ev(&ground);
     }
 
     mParticleHandle_3d0 = 0;
@@ -664,16 +645,17 @@ void daShl_c::func_ov102_0214c84c()
 }
 
 // @symbol _ZN7daShl_c19func_ov102_0214c7fcEv
-/* Landed on a floor whose CLPS entry has bit 0x20 set (water, per
-   CLPS.h): poof and go. The floor result is a dBgPi; its SurfaceInfo
-   starts after the vptr. */
+/* Landed on a floor whose CLPS entry has bit 0x20 set: poof and go. Bit
+   0x20 is water per CLPS.h, and this file agrees: InitResources turns on
+   mMeshClsn.StartDetectingWater(), and func_ov102_0214c84c's probe calls
+   StartDetectingWater before it tests the same bit. The floor result is
+   a dBgPi. */
 void daShl_c::func_ov102_0214c7fc()
 {
     if (!mMeshClsn.IsOnGround())
         return;
-    char *floor = (char *)mMeshClsn.GetFloorResult();
-    int *surface = (int *)(floor + 4);
-    if (!SurfaceInfo_TestFlag0x20(surface))
+    dBgPi *floor = (dBgPi *)mMeshClsn.GetFloorResult();
+    if (!SurfaceInfo_TestFlag0x20((int *)&floor->surface))
         return;
     PoofDust();
     MarkForDestruction();

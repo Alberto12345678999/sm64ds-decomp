@@ -484,7 +484,9 @@ void daDossy_c::func_ov065_02118838()
     three = 3;
     tbl = data_ov065_0211c078;
     for (i = 0; i < 7; i++) {
-        /* Indexed by bytes: the stride here is 0x34, not sizeof(BMD_Bone). */
+        /* data.bones holds 0x34-byte runtime pose records filled by
+           UpdateBones, not BMD_Bone (0x40) as the header types it; the
+           rotation sits at +0x1a/+0x1c/+0x1e. */
         char *ent = (char *)mModelAnim.data.bones + *tbl * 0x34;
         {
             u16 tz = *(u16 *)(ent + 0x1e);
@@ -725,6 +727,8 @@ extern "C" int func_ov065_021180d4(char *self)
     Player *player;
     u32 id;
 
+    /* Single exit for the failure path: an early return per check is
+       56 bytes longer. */
     id = cap->mdCcAc_c.otherOwner;
     if (id != 0 && (cap->mdCcAc_c.hitFlags & 0x400000)) {
         player = (Player *)dActor_c::FindWithID(id);
@@ -732,6 +736,8 @@ extern "C" int func_ov065_021180d4(char *self)
             int isPlayer = (int)(player->actorID == 0xbf);
             if (isPlayer != 0 && player->mIsAirborne == 0
                 && player->Unk_020c9e5c(5) == 0) {
+                /* The inner block holds the @NNN count: without it the
+                   pins move up by 2. */
                 {
                     Vector3 pos;
                     Vector3 *playerPos;

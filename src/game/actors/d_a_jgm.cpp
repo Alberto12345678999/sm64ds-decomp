@@ -32,11 +32,14 @@
  * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
  *   no header decl, so they are declared locally;
  *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
- * - Sound::PlayLong stays a mangled extern: the Sound.h call emits the same
- *   bytes, but dropping the extern renumbers the pinned @NNN statics by 5.
+ * - Sound::PlayLong stays a mangled extern, kept as a count holder: its
+ *   five named parameters hold the @NNN count. Unnaming them gives -5;
+ *   the Sound.h call emits the same bytes.
  * - The manifest pins eight @NNN statics, so every named local, named
  *   parameter and goto label ahead of __sinit counts (each advances the
- *   counter by one, measured). Names that also hold that count: bodyFile /
+ *   counter by one, measured). Control-flow shape moves the counter too:
+ *   removing the UpdateFlight goto drops a label but measures +1. Names
+ *   that also hold that count: bodyFile /
  *   heldFile and the loop counters in InitResources / CleanupResources,
  *   `frame` in UpdateThrowState, the `offset` references in the hover and
  *   throw collision updates, and the parameter names on the cstd::fdiv and
@@ -207,8 +210,8 @@ extern void _ZN6Player6BounceE5Fix12IiE(Player *player, int vel);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, const DaJgmVector3Words *pos, unsigned int a, int vel,
     unsigned int b, unsigned int c, unsigned int d);
-/* Sound.h's PlayLong emits the same bytes; dropping this extern renumbers
- * the pinned @NNN statics by 5. */
+/* local extern: kept as a count holder: its five named parameters hold
+ * the @NNN count. Sound.h's PlayLong emits the same bytes. */
 extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(
     unsigned int handle, unsigned int a, unsigned int id,
     const Vector3 *pos, unsigned int e);
@@ -379,7 +382,7 @@ s32 daJgm_c::UpdateHoverState()
 {
     mHorzSpeed = 0xc000;
     if (DecIfAbove0_Byte(&mTimer) == 0) {
-        /* Nested on purpose: one flat && chain is 12 bytes off in size. */
+        /* Nested on purpose: one flat && chain is 12 bytes shorter. */
         Player *p = ClosestNonVanishPlayer();
         if (p != 0) {
             if (p->mPosY < mPosY
