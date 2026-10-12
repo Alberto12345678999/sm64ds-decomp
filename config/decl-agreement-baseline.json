@@ -11888,6 +11888,9 @@
       ]
     },
     "data_02092128": {
+      "src/StartFile.c": [
+        "return:unsigned char []"
+      ],
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "return:unsigned char"
       ],
@@ -11896,6 +11899,9 @@
       ],
       "src/actors/dScStarSel_c.cpp": [
         "return:unsigned char"
+      ],
+      "src/stage/LevelObjects.cpp": [
+        "return:unsigned char []"
       ]
     },
     "data_02092134": {
