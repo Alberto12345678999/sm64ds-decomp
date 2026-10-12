@@ -9,8 +9,8 @@
  * no layout. GX:: members that lie inside the stretch are defined here too,
  * in ROM order like everything else.
  *
- * At 0x020553c0..0x02055454 sits func_020553c0, a hand-written asm
- * primitive (32 identical no-writeback stmia to the address in r0, a FIFO
+ * At 0x020553c0..0x02055454 sits func_020553c0, a HAND-ASM PRIMITIVE
+ * (32 identical no-writeback stmia to the address in r0, a FIFO
  * port flush no C compiler emits; cf. CP15's in-TU asm primitives). It is
  * part of this run and owned here as a whole-function asm block under
  * `#pragma cplusplus off/on` (the shard's bytes verbatim, flat C symbol);

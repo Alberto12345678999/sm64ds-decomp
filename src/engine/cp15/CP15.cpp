@@ -4,9 +4,10 @@
  * compiled free functions that continue the run (func_02058c84,
  * func_02058cd0, func_02058d58, func_02058d6c), and OS_GetInitArenaLo, which
  * closes it at 0x02058df4.
- * Each cache primitive is a whole-function `asm` block: `mcr p15` coprocessor
- * writes are not reachable from C, so the asm is the faithful source rather
- * than a transcription of something lost. func_02058b9c bounds the run
+ * HAND-ASM PRIMITIVE. Each cache primitive is a whole-function `asm`
+ * block: `mcr p15` coprocessor writes are not reachable from C, so
+ * the asm is the faithful source rather than a transcription of
+ * something lost. func_02058b9c bounds the run
  * below. Above, func_02058df4 stops the run: it reads the boot vectors
  * func_00000000/func_00000600, which no linked object defines (its delinks
  * entry was never `complete`), so folding it in breaks the ROM link -- the

@@ -2,9 +2,9 @@
 /* IRQ CPSR primitives and the IRQ-state init helper (arm9
  * .text 0x02059cb4..0x02059d74).
  *
- * IRQ::RestoreAll/DisableAll/Restore/Disable/Enable are hand-asm
- * primitives: `mrs`/`msr` read and write the CPSR and no C construct
- * compiles to them. Bit 0x80 is IRQ, 0x40 is FIQ -- the whole
+ * HAND-ASM PRIMITIVE. IRQ::RestoreAll/DisableAll/Restore/Disable/Enable
+ * are hand-asm primitives: `mrs`/`msr` read and write the CPSR and
+ * no C construct compiles to them. Bit 0x80 is IRQ, 0x40 is FIQ -- the whole
  * difference between the plain and the `All` variants. Each returns
  * the OLD state of those bits so the caller can restore it. The name
  * is the tree class name plus the numeric suffix style already used
