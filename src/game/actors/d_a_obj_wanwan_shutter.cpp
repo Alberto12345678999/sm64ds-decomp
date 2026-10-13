@@ -1,17 +1,43 @@
 //cpp
-/* Bob-omb Battlefield Chain Chomp fence -- the barred gate the chomp is
- * tethered in front of. ov014/daObjWanwanShutter_c, profile WANWAN_SHUTTER
- * (CHAIN_CHOMP_FENCE 41). This is the fence, not the chomp (daWanwan_c).
+/* leftovers:
+ * - dBgW_KcMbg::SetFile, dBgActor_c::IsClsnInRange and
+ *   Particle::System::NewSimple stay mangled. Each takes Fix12<int>
+ *   by value.
+ * - The model and collision handles are local SharedFilePtr
+ *   subclasses. The manifest aliases them to the ROM symbols.
+ * - The destructor stays inline in the header.
+ * - dBgActor_c.h is included first so common.h wins over Model.h.
  *
- * Order is load-bearing: source runs REVERSE of ROM (highest address
- * first). Do not reorder. The destructor stays inline in the header.
+ * daObjWanwanShutter_c, the Bob-omb Battlefield Chain Chomp fence
+ * (WANWAN_SHUTTER). This is the fence, not the chomp.
  */
-
 /* daObjWanwanShutter_c.h FIRST: it pulls in dBgActor_c.h, which must reach
    common.h ahead of Model.h or the wrong Matrix4x3 spelling wins. */
 #include "daObjWanwanShutter_c.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
+
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct WanwanShutterModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    WanwanShutterModelFilePtr(unsigned int fileID);
+    ~WanwanShutterModelFilePtr();
+};
+
+struct WanwanShutterClsnFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    WanwanShutterClsnFilePtr(unsigned int fileID);
+    ~WanwanShutterClsnFilePtr();
+};
+
+typedef char WanwanShutterModelFilePtr_size_must_be_8[
+    sizeof(WanwanShutterModelFilePtr) == 8 ? 1 : -1];
+typedef char WanwanShutterClsnFilePtr_size_must_be_8[
+    sizeof(WanwanShutterClsnFilePtr) == 8 ? 1 : -1];
 
 extern "C" {
 /* dBgActor_c::IsClsnInRange(Fix12<int>, Fix12<int>) -- reached through the
@@ -31,10 +57,10 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
     unsigned int t, int x, int y, int z);
 
-/* This overlay's file handles and collision-parameter block. This TU claims
-   .text only and does not define them. */
-extern SharedFilePtr data_ov014_021149c0;   /* the BMD model */
-extern SharedFilePtr data_ov014_021149b8;   /* the KCL collision mesh */
+/* This overlay's file handles and collision-parameter block. The two handles
+   are constructed by this TU's static initializer. */
+extern WanwanShutterModelFilePtr data_ov014_021149c0;   /* the BMD model */
+extern WanwanShutterClsnFilePtr data_ov014_021149b8;   /* the KCL collision mesh */
 extern CLPS_Block    data_ov014_02114558;
 }
 
@@ -148,3 +174,8 @@ extern "C" void func_ov014_02112ea8(daObjWanwanShutter_c *a)
    dBgActor_c's -- inlined, because that destructor is defined in its class
    body -- then dBgActor_c's dBgW_KcMbg and Model, then dActor_c. This class
    adds no member with a destructor of its own. */
+
+/* Source order is construction order: model file 1447, then the collision
+ * file 1448. The compiler registers each destructor beside the object. */
+WanwanShutterModelFilePtr data_ov014_021149c0(1447);
+WanwanShutterClsnFilePtr data_ov014_021149b8(1448);

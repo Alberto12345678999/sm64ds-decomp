@@ -40,16 +40,17 @@
  * - data_0209f318 as dCamera_c * matches, but the plurality is void * so the
  *   cast stays.
  *
- * Leftover: 20/20 MATCH. func_ov089_02130fb4, func_ov089_0213115c,
- * func_ov089_02131dcc and func_ov089_02131df4 are members under those
- * addresses. Direct member reads matched, so nothing was reverted.
- *   - LoadKeyModels and UnloadKeyModels stay C. The first parameter is the
- *     kind, and daDoor_c, Player and the bosses call them by name.
- *   - func_ov002_020c3dbc stays a call into ov002.
- *   - The Fix12<int>-by-value calls, the UpdateContinuous veneer, both
- *     control arms in func_ov089_02131df4, the u16* state timer, the s32*
- *     position walks, v.y = v.y + Y_LOOK, and IsOnGround() == 0 stay as
- *     written. Each spelling was already measured; the other form moves bytes.
+ * leftovers:
+ * - func_ov089_02130fb4, func_ov089_0213115c, func_ov089_02131dcc and
+ *   func_ov089_02131df4 are members under those addresses; the cartridge
+ *   records no names for them.
+ * - LoadKeyModels and UnloadKeyModels stay C. The first parameter is the
+ *   kind, and daDoor_c, Player and the bosses call them by name.
+ * - func_ov002_020c3dbc stays a call into ov002.
+ * - The Fix12<int>-by-value calls, the UpdateContinuous veneer, both
+ *   control arms in func_ov089_02131df4, the u16* state timer, the s32*
+ *   position walks, v.y = v.y + Y_LOOK, and IsOnGround() == 0 stay as
+ *   written. Each spelling was already measured; the other form moves bytes.
  */
 
 #include "types.h"
@@ -76,6 +77,26 @@ void LoadAndSetMusic_Layer3(unsigned int musicId);
 struct ObjKeyFile {
     u32 id;
     void *ptr;
+};
+
+/* File-scope objects at the end of this file construct the eight resource
+ * handles and fill the eight-entry state table. mwcc emits
+ * __sinit_daObjKey_c.cpp from those definitions. */
+struct ObjKeyModelFile : ObjKeyFile {
+    ObjKeyModelFile(u32 fileID);
+    ~ObjKeyModelFile();
+};
+
+struct ObjKeyAnimationFilePtr : ObjKeyFile {
+    ObjKeyAnimationFilePtr(u32 fileID);
+    ~ObjKeyAnimationFilePtr();
+};
+
+/* Plain three-word offset (data_ov089_02132ca4). A Vector3 static would
+ * register a destructor and grow __sinit, which the retail initializer
+ * does not do; the zero-init here emits plain BSS. */
+struct ObjKeyVec3 {
+    int x, y, z;
 };
 
 enum {
@@ -132,9 +153,32 @@ enum {
     FX_TRAIL_C = 0xb6
 };
 
-/* Filled by __sinit_ov089_021328d4 and indexed by mState. */
+/* The eight state slots, filled by __sinit_daObjKey_c.cpp and indexed by
+ * mState: three StateDrop, then StateStarJump, three more StateDrop, then
+ * StateFlyToCenter. */
 typedef void (daObjKey_c::*StateFunc)();
-extern StateFunc data_ov089_02132cec[];
+
+struct ObjKeyStateTable {
+    StateFunc slots[8];
+    /* Section-alignment fill: retail BSS runs 0x14 bytes past the eighth
+     * slot, to the section end at 0x02132d40. The constructor never stores
+     * here. */
+    u8 tailFill[0x14];
+
+    ObjKeyStateTable()
+    {
+        slots[0] = &daObjKey_c::StateDrop;
+        slots[1] = &daObjKey_c::StateDrop;
+        slots[2] = &daObjKey_c::StateDrop;
+        slots[3] = &daObjKey_c::StateStarJump;
+        slots[4] = &daObjKey_c::StateDrop;
+        slots[5] = &daObjKey_c::StateDrop;
+        slots[6] = &daObjKey_c::StateDrop;
+        slots[7] = &daObjKey_c::StateFlyToCenter;
+    }
+};
+
+extern ObjKeyStateTable data_ov089_02132cec;
 
 /* local extern: dCamera_c.h has no SetFlag_3. Particle::System::New,
  * DropShadowRadHeight, ModelAnim::SetAnim and dCcAcPos_c::Init take
@@ -155,12 +199,16 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern void *data_ov089_021328b4[];
 extern ObjKeyFile data_ov002_02110964;
-extern ObjKeyFile data_ov089_02132c60;
-extern ObjKeyFile data_ov089_02132c40;
-extern ObjKeyFile data_ov089_02132c70;
-extern ObjKeyFile data_ov089_02132c48;
+extern ObjKeyAnimationFilePtr data_ov089_02132c60;
+extern ObjKeyAnimationFilePtr data_ov089_02132c40;
+extern ObjKeyAnimationFilePtr data_ov089_02132c70;
+extern ObjKeyAnimationFilePtr data_ov089_02132c48;
+extern ObjKeyModelFile data_ov089_02132c50;
+extern ObjKeyModelFile data_ov089_02132c78;
+extern ObjKeyModelFile data_ov089_02132c68;
+extern ObjKeyModelFile data_ov089_02132c58;
 extern Vector3 data_ov089_02132b40;
-extern Vector3 data_ov089_02132ca4;
+extern ObjKeyVec3 data_ov089_02132ca4;
 extern Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, int ang);
@@ -200,12 +248,11 @@ daObjKey_c::~daObjKey_c()
 {
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_02130fb4EPii
+// @symbol _ZN10daObjKey_c19func_ov089_02130fb4EP7Vector3i
 /* Aim a jump at target so it lands in 30 frames with its peak `height` above
  * the higher end. Sets gravity, the launch speed and the heading. */
-void daObjKey_c::func_ov089_02130fb4(int *p, int height)
+void daObjKey_c::func_ov089_02130fb4(Vector3 *target, int height)
 {
-    Vector3 *target = (Vector3 *)p;
     /* One register each: dy becomes the frames to the peak, height the frames after it. */
     int dy = target->y - mPosY;
     if (dy < 0)
@@ -387,7 +434,7 @@ void daObjKey_c::StateFlyToCenter()
                 break;
             if ((mdCcAcPos_c.hitFlags & HIT_PLAYER) == 0)
                 break;
-            func_ov089_02131dcc((char *)found);
+            func_ov089_02131dcc((Player &)*found);
             return;
         }
     }
@@ -483,7 +530,7 @@ void daObjKey_c::StateStarJump()
             target.x = mJumpTarget.x;
             target.y = mJumpTarget.y;
             target.z = mJumpTarget.z;
-            func_ov089_02130fb4((int *)&target, JUMP_HEIGHT);
+            func_ov089_02130fb4(&target, JUMP_HEIGHT);
             mStep++;
             return;
         }
@@ -544,7 +591,7 @@ void daObjKey_c::StateStarJump()
                 return;
             if ((mdCcAcPos_c.hitFlags & HIT_PLAYER) == 0)
                 return;
-            func_ov089_02131df4((char *)found);
+            func_ov089_02131df4((Player &)*found);
             mStep++;
             return;
         }
@@ -637,26 +684,26 @@ void daObjKey_c::StateDrop()
                 return;
             if ((mdCcAcPos_c.hitFlags & HIT_PLAYER) == 0)
                 return;
-            func_ov089_02131df4((char *)found);
+            func_ov089_02131df4((Player &)*found);
             mStep++;
             return;
         }
     }
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_02131dccEPc
+// @symbol _ZN10daObjKey_c19func_ov089_02131dccER6Player
 /* Last-star path. Hands the collector to ov002 and removes the star. */
-void daObjKey_c::func_ov089_02131dcc(char *player)
+void daObjKey_c::func_ov089_02131dcc(Player &player)
 {
-    func_ov002_020c3dbc(player);
+    func_ov002_020c3dbc(&player);
     Event::SetBit(EVENT_KEY);
     MarkForDestruction();
 }
 
-// @symbol _ZN10daObjKey_c19func_ov089_02131df4EPc
-void daObjKey_c::func_ov089_02131df4(char *p)
+// @symbol _ZN10daObjKey_c19func_ov089_02131df4ER6Player
+void daObjKey_c::func_ov089_02131df4(Player &p)
 {
-    Player *player = (Player *)p;
+    Player *player = &p;
 
     /* Word 1, bit (2 << kind): already collected. 1 asks dScStage_c/dMeter/Player
      * for the new-star fanfare; 0 suppresses it. Kind 7 takes neither arm.
@@ -695,8 +742,8 @@ void daObjKey_c::OnTurnIntoEgg(Player &player)
     /* The flag keeps the ROM's moveq and movne pair. */
     unsigned isKey = (actorID == ACTOR_OBJ_KEY);
     if (isKey)
-        return func_ov089_02131df4((char *)&player);
-    return func_ov089_02131dcc((char *)&player);
+        return func_ov089_02131df4(player);
+    return func_ov089_02131dcc(player);
 }
 
 // @symbol _ZN10daObjKey_c13OnYoshiTryEatEv
@@ -823,7 +870,7 @@ int daObjKey_c::Behavior()
         mSpinSpeed = SPIN_FAST;
     mAngleY += mSpinSpeed;
     UpdatePos(0);
-    (this->*data_ov089_02132cec[mState])();
+    (this->*data_ov089_02132cec.slots[mState])();
     UpdateModelTransform();
     mdCcAcPos_c.Clear();
     if (mState == KEY_KIND_STAR) {
@@ -926,3 +973,21 @@ extern "C" daObjKey_c *daObjKey_c_classInit_OBJ_KEY()
 {
     return new daObjKey_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov089_021328d4 shard).
+ * Definition order is the retail initializer's construction order: the four
+ * model handles, then the four animation handles, then the state table the
+ * descriptors are copied into. The offset vector between the nodes carries
+ * no initializer and emits plain BSS. */
+ObjKeyModelFile data_ov089_02132c50(0x44d);
+ObjKeyModelFile data_ov089_02132c78(0x49c);
+ObjKeyModelFile data_ov089_02132c68(0x49d);
+ObjKeyModelFile data_ov089_02132c58(0x49e);
+ObjKeyAnimationFilePtr data_ov089_02132c60(0x44e);
+ObjKeyAnimationFilePtr data_ov089_02132c40(0x44f);
+ObjKeyAnimationFilePtr data_ov089_02132c70(0x450);
+ObjKeyAnimationFilePtr data_ov089_02132c48(0x451);
+
+ObjKeyVec3 data_ov089_02132ca4;
+
+ObjKeyStateTable data_ov089_02132cec;

@@ -65,130 +65,43 @@
  * ..33d0 -> ..33f0 -> ..33b0 -> ..33e0 -> ..3410 -> ..3370, each hop being a
  * transition its update handler makes. There are two waypoint sets and a
  * ground-ray guard in Behavior.
- *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *
- *   `#pragma defer_codegen off` (file-global). Out-of-line D1, then D0, then a
- *   homeless D2 is the cartridge's order; with codegen deferred mwccarm emits
- *   D2, D0, D1 instead.
- *
- *   `#pragma opt_loop_invariants off` (file-global), for func_ov073_0211f61c.
- *
- *   common.h must be included first. Otherwise BlendModelAnim.h's nested
- *   Matrix4x3 wins and the twelve-word copies size-DIFF.
- *
- *   The struct C / V3 / Vec3 / Mtx43 / Base / Bool shadows, for PMF
- *   dispatch, the Render vcall and the POD triples. `struct C` is complete
- *   here on purpose: mwccarm 2004/b56 picks its pointer-to-member
- *   representation from completeness.
- *
- *   The sizeof wrap in the header (0x504).
- *
- * WHY SO MANY CALLS ARE SPELLED AS MANGLED SYMBOLS. Reasons (a) and (c) below
- * explain the calls they list. The other mangled externs (the UpdatePos family,
- * dCc_c, the constructors, the loaders, Sound::PlayLong, Message::PrepareTalk)
- * are spelled that way because the bytes or the available headers needed it;
- * (b) lists the calls that are real member calls:
- *
- *   (a) Fix12<int> passed by value -- wall 6az. A method call homes the
- *       argument and the bytes move. This is BlendModelAnim::SetAnim,
- *       Particle::System::New, Particle::System::NewSimple,
- *       Particle::RunningSlidingDustAt, Player::Hurt,
- *       Sound::ChangeMusicVolume, DropShadowRadHeight and cstd::atan2.
- *       Their callers are func_ov073_0211f144 / 0211f2c0 / 0211f494 /
- *       0211f61c / 0211fa74 / 0211fe8c / 0212000c / 021200e0 / 021203ac /
- *       02120610 / 02120ad8 / 02120c08 / 02120c7c / 02120ed0 / 0212122c /
- *       02121538 / 021215cc.
- *
- *   (b) The calls that are NOT mangled are real member calls now that the
- *       helpers take daKing_Donketu_c *: dActor_c::FindWithID /
- *       ClosestPlayer / HorzAngleToCPlayer / DistToCPlayer / Spawn /
- *       PoofDustAt / HugeLandingDustAt / JumpedOnByPlayer / FindWithActorID;
- *       dCamera_c::SetLookAt / SetPos; fBase_c::MarkForDestruction;
- *       dExtFrameCtrl_c::Finished / WillHitFrame (through mBlendModelAnim);
- *       dBgCh_Actr::IsOnGround (mWithMeshClsn); Player::StartTalk /
- *       ShowMessage / GetTalkState / GetHurtState / Unk_020c6a10;
- *       Message::EndTalk; SaveData::IsCharacterUnlocked.
- *
- *   (c) No declaration exists to call: Particle.h has no System::NewSimple;
- *       dCamera_c::SetFlag_3 is a real method but is not on dCamera_c.h; Sound.h has
- *       PlayLong but not Layer3 Load/Stop. Particle::System::FromUniqueID is
- *       on Particle__System.h, but this TU pokes sys+0x44 after the call
- *       (the word lies in Particle::System's unnamed pad_042 bytes).
- *       The Vec3_* / Matrix4x3_* / ApproachLinear family (HorzAngle,
- *       VertAngle, HorzLen, Sub, Lsl, Asr, FromRotationY, FromTranslation,
- *       ApplyInPlaceToRotationX, ApplyInPlaceToRotationXYZExt, MulVec3Mat4x3,
- *       MulMat4x3Mat4x3) has no shared header this TU can take without a
- *       campaign across its other consumers.
- *
- * NOT OWNED BY THIS TU. State records are still dispatched as PMFs through
- * the struct C shadow and data_ov073_021233*. Of the function and data
- * symbols only ChiefChilly_ChangeState is coined (an English gloss for the
- * dispatcher); the member names, the enums and the state labels in the
- * table are descriptions, not recovered names.
- * data_ov073_02123280..b8 stay BCA_File*[2] so that [1] is the BCA SetAnim
- * reads, and CleanupResources puns each to SharedFilePtr for Release; ov073's
- * sinit constructs them and this TU owns no .bss. data_ov073_02123330 / 350 /
- * 360 / 370 / 3b0 / 3c0 / 3f0, plus decl_common's 021233e0 / 02123410, are
- * sinit-owned state records. data_02082214 is the NitroSDK FX_SinCosTable_
- * (func_ov073_0211f494 indexes it) and naming it belongs with the SDK table;
- * data_0209f318 (camera), data_020a0e68 (scratch matrix) and data_0209e650
- * (RNG seed) are arm9 globals, as are func_02012694 (sound), func_0200d8c8
- * (camera shake), func_0200fa8c and func_02011cfc. data_ov002_0210da30 is
- * ov002's and Cleanup only Releases it; naming belongs in ov002.
- * g_profile_KING_DONKETU lives outside this TU (S14).
- *
- * SCOPE. All 47 of the class's functions, 0x0211f000..0x02121f90: the whole
- * tu_map unit (0x0211f000..0x02121ec8) plus the abutting registry factory
- * daKing_Donketu_c_classInit (0x02121ec8..0x02121f90), written last. Behavior
- * needs `opt_propagation off`, which at file scope recompiles eight other
- * members; here it is a push/pop bracket around Behavior alone (see the note
- * above Behavior for why the closing pop sits behind a declaration).
- * daKing_Donketu_c_classInit is a reconstructed name (RTTI daKing_Donketu_c,
- * KING_DONKETU registry); retail does not store that spelling, and the
- * historical alias was ChiefChilly_Spawn. It keeps the hand-built
- * construction rather than `return new` (see the note above it).
- *
- * Function order is ROM-ascending, not reversed.
- *
- * Leftover: 47/47 MATCH after the method batch. No spelling DIFFed, so
- * nothing was reverted.
- *   - func_ov073_0211fbec, func_ov073_0211fc70 and func_ov073_0211fe84 take
- *     void. The first parameter is not the actor, so they stay free functions.
- *   - ChiefChilly_ChangeState's first parameter is C* (the PMF shadow), not
- *     char* or void* cast to daKing_Donketu_c. It stays the coined dispatcher.
- *   - Actor fields the header already names are member reads. Left raw, and
- *     not a class field this header names: dCamera_c +0x114 (pad_114),
- *     Particle::System +0x44, and the data_020a0e68 translation words
- *     (`.m[9..11]` moves bytes).
- *   - The cartridge's names for the sixteen states and for the func_ov073_*
- *     handlers; the labels in the table are descriptions. The state records
- *     are dispatched through the `struct C` shadow, not a real PMF member.
- *   - dCamera_c +0x114 (Behavior publishes `this` there): dCamera_c.h has it inside
- *     pad_114. Particle::System +0x44 likewise. Both stay raw.
- *   - What the ground ray's miss means (mNoGroundAhead) and how that
- *     relates to the mHitsRemaining counter: see the notes in the
- *     header; the reading is from the handlers, not from retail strings.
- *   - unk_4a8..4b0, unk_4c5, unk_4ca, unk_4d0 and unk_4d4 keep their offset
- *     names; each has a comment saying what the code does with it.
- *   - The hit-flag masks in func_ov073_0211f61c are literals: dCc_c.h's bit
- *     table is itself a best-effort reading and bit 0x10000 is not in it.
- *   - The sound ids are named for the site that plays them; no sound table
- *     was consulted.
- *   - Spellings kept ONLY because the bytes need them (each measured: the
- *     alternative was compiled and the object compared): `void *cam` (not
- *     dCamera_c *) in func_ov073_0211fa74 / 0212128c / 02121388, where the
- *     typed pointer swaps two registers; the (unsigned short) reads of
- *     mStateTimer and of mAngleX/Y/Z in func_ov073_0211fa74 (the members are
- *     s16, the cartridge loads them with ldrh and a plain read gives ldrsh);
- *     the `s16 *py` pointer behind mPrevAngleY in func_ov073_0211f61c and
- *     func_ov073_02120d80; `const s32 *pv = &x->mPosX` walks (a direct member read
- *     emits different addressing); array-indexed unk_4d4[i] in the dust
- *     loops (a Vector3 pointer walk hoists the base); `*(void **)&c->mState`
- *     in func_ov073_0211f2c0 (a plain member read is shared with the later
- *     load, the cartridge reloads it); the data_020a0e68 translation words
- *     read through (char *) in the same function (`.m[9..11]` changes bytes).
  */
+
+/* leftovers:
+ * - defer_codegen off stays file-global: deferred codegen emits D2, D0, D1
+ *   and the cartridge has D1 then D0. opt_loop_invariants off stays
+ *   file-global for func_ov073_0211f61c. common.h stays first; BlendModelAnim's
+ *   Matrix4x3 makes the twelve-word copies change size.
+ * - struct C is a complete PMF shadow on purpose (mwccarm picks the
+ *   pointer-to-member shape from completeness). ChiefChilly_ChangeState
+ *   takes C*. The sixteen state labels are descriptions; the sinit owns
+ *   the records. The header's 0x504 size wrap stays.
+ * - BlendModelAnim::SetAnim, Particle::System::New / NewSimple,
+ *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
+ *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
+ *   NewSimple, dCamera_c::SetFlag_3 and the layer-3 sound calls have no
+ *   header declaration this file can use. FromUniqueID is followed by a
+ *   store at sys+0x44, which is still pad_042 on Particle::System.
+ * - Vec3_* / Matrix4x3_* / ApproachLinear have no shared header this TU
+ *   can include alone. data_02082214 is the sine table func_ov073_0211f494
+ *   indexes. data_0209f318, data_020a0e68 and data_0209e650 are arm9
+ *   globals. data_ov002_0210da30 is ov002's; Cleanup only Releases it.
+ *   g_profile_KING_DONKETU is outside this TU.
+ * - Behavior's opt_propagation off is a push/pop around that function.
+ *   The factory stays the hand-built construction, not return new.
+ * - void* cam in func_ov073_0211fa74 / 0212128c / 02121388: a dCamera_c*
+ *   swaps two registers. Those functions also ldrh mStateTimer and
+ *   mAngleX/Y/Z through unsigned short; a plain s16 read is ldrsh.
+ * - s16* behind mPrevAngleY in func_ov073_0211f61c and 02120d80, the
+ *   const s32* walk of mPosX, unk_4d4[i] in the dust loops, and
+ *   *(void**)&mState in func_ov073_0211f2c0 stay. The direct member forms
+ *   change addressing. data_020a0e68's translation words stay a char*
+ *   walk; .m[9..11] changes bytes. dCamera_c +0x114 is inside pad_114.
+ * - unk_4a8..4b0, unk_4c5, unk_4ca, unk_4d0 and unk_4d4 keep offset names.
+ *   The hit masks in func_ov073_0211f61c stay literals (0x10000 is not in
+ *   dCc_c.h's bit table). Sound ids are named for the site that plays them.
+ */
+
 
 #pragma defer_codegen off
 #pragma opt_loop_invariants off
@@ -248,26 +161,58 @@ typedef struct Mtx43 { Vec3 r0, r1, r2, t; } Mtx43;
 
 struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void M(void*); };
 
-extern "C" {
+/* The eight file handles __sinit_daKing_Donketu_c.cpp constructs below.
+ * SharedFilePtr.h declares no fields; this TU repeats the names it uses:
+ * SetAnim is handed the loaded file at +4, CleanupResources puns each to
+ * SharedFilePtr for Release. The model handle's ctor/dtor are the
+ * cartridge's func_02017acc / func_02017ab4 pair and the seven animation
+ * handles construct through SharedFilePtr::Construct and register
+ * SharedFilePtr_Destruct_Anim; the manifest aliases these. */
+struct KingDonketuModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    struct BCA_File *file;
+    KingDonketuModelFileHandle(u32 fileID);
+    ~KingDonketuModelFileHandle();
+};
+struct KingDonketuAnimResFileHandle : SharedFilePtr {
+    s32 fileId;
+    struct BCA_File *file;
+    KingDonketuAnimResFileHandle(u32 fileID);
+    ~KingDonketuAnimResFileHandle();
+};
 
-extern char data_ov073_02123330[];
-extern char data_ov073_02123350[];
-extern char data_ov073_02123360[];
-extern char data_ov073_02123370[];
-extern char data_ov073_021233b0[];
-extern char data_ov073_021233c0[];
-extern char data_ov073_021233f0[];
+extern KingDonketuAnimResFileHandle data_ov073_02123280; /* anim, file 0x355 */
+extern KingDonketuAnimResFileHandle data_ov073_02123288; /* anim, file 0x35b */
+extern KingDonketuAnimResFileHandle data_ov073_02123290; /* anim, file 0x357 */
+extern KingDonketuModelFileHandle data_ov073_02123298;   /* model, file 0x359 */
+extern KingDonketuAnimResFileHandle data_ov073_021232a0; /* anim, file 0x356 */
+extern KingDonketuAnimResFileHandle data_ov073_021232a8; /* anim, file 0x354 */
+extern KingDonketuAnimResFileHandle data_ov073_021232b0; /* anim, file 0x358 */
+extern KingDonketuAnimResFileHandle data_ov073_021232b8; /* anim, file 0x35a */
+
+/* The sixteen state records __sinit_daKing_Donketu_c.cpp fills from the PMF
+ * literals at 0x02122f40, dispatched through the struct C shadow. */
+extern daKing_Donketu_c::State data_ov073_02123320;
+extern daKing_Donketu_c::State data_ov073_02123330;
+extern daKing_Donketu_c::State data_ov073_02123340;
+extern daKing_Donketu_c::State data_ov073_02123350;
+extern daKing_Donketu_c::State data_ov073_02123360;
+extern daKing_Donketu_c::State data_ov073_02123370;
+extern daKing_Donketu_c::State data_ov073_02123380;
+extern daKing_Donketu_c::State data_ov073_02123390;
+extern daKing_Donketu_c::State data_ov073_021233a0;
+extern daKing_Donketu_c::State data_ov073_021233b0;
+extern daKing_Donketu_c::State data_ov073_021233c0;
+extern daKing_Donketu_c::State data_ov073_021233d0;
+extern daKing_Donketu_c::State data_ov073_021233e0;
+extern daKing_Donketu_c::State data_ov073_021233f0;
+extern daKing_Donketu_c::State data_ov073_02123400;
+extern daKing_Donketu_c::State data_ov073_02123410;
+
+extern "C" {
 
 int ChiefChilly_ChangeState(C *c, PMF *p);
 
-extern struct BCA_File *data_ov073_02123280[2];
-extern struct BCA_File *data_ov073_02123288[2];
-extern struct BCA_File *data_ov073_02123290[2];
-extern struct BCA_File *data_ov073_02123298[2];
-extern struct BCA_File *data_ov073_021232a0[2];
-extern struct BCA_File *data_ov073_021232a8[2];
-extern struct BCA_File *data_ov073_021232b0[2];
-extern struct BCA_File *data_ov073_021232b8[2];
 extern struct BCA_File *data_ov002_0210da30[2];
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern void Matrix4x3_FromRotationY(void* m, short ang);
@@ -663,7 +608,7 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
         {
             void* anim = c->mState;
             if (anim != &data_ov073_021233d0 && anim != &data_ov073_021233a0) {
-                ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_021233a0));
+                ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233a0);
             }
         }
         return 1;
@@ -690,8 +635,8 @@ s32 daKing_Donketu_c::func_ov073_0211f61c()
         *py = (s16)(*py + 0x8000);
     }
     func_02012694(SND_REVERSE_AFTER_HURT, &c->mCamSpacePosX);
-    ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a0[1], 4, 0x40000000, 0x1000, 0);
+    ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a0.file, 4, 0x40000000, 0x1000, 0);
     c->mBlendModelAnim.speed = 0x1000;
     c->mPhase = 2;
     c->unk_4d0 = 0x2000;
@@ -763,12 +708,10 @@ end:
 }
 
 /* ..3370 enter: nothing to do. */
-// @symbol func_ov073_0211fbec
-extern "C" {
-int func_ov073_0211fbec(void)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fbecEv
+int daKing_Donketu_c::func_ov073_0211fbec()
 {
     return 1;
-}
 }
 
 /* ..3410 update, cut scene part 3: keeps the looped sound, the camera and the
@@ -781,18 +724,16 @@ int daKing_Donketu_c::func_ov073_0211fbf4() {
   ((dCamera_c *)data_0209f318)->SetFlag_3();
   c->func_ov073_0211f144();
   if(pl->GetTalkState() == -1){
-    ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123370));
+    ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123370);
   }
   return 1;
 }
 
 /* ..3410 enter: nothing to do. */
-// @symbol func_ov073_0211fc70
-extern "C" {
-int func_ov073_0211fc70(void)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fc70Ev
+int daKing_Donketu_c::func_ov073_0211fc70()
 {
     return 1;
-}
 }
 
 /* ..33e0 update, cut scene part 2. Returns at once if there is no player. The
@@ -869,12 +810,10 @@ int daKing_Donketu_c::func_ov073_0211fc78() {
 }
 
 /* ..33e0 enter: nothing to do. */
-// @symbol func_ov073_0211fe84
-extern "C" {
-int func_ov073_0211fe84(void)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fe84Ev
+int daKing_Donketu_c::func_ov073_0211fe84()
 {
     return 1;
-}
 }
 
 /* ..33b0 update, cut scene part 1. The nearest player, when it is not
@@ -936,12 +875,12 @@ int daKing_Donketu_c::func_ov073_0211fe8c() {
     return 1;
 }
 
-/* ..33b0 enter: start the animation in data_ov073_02123280[1];
+/* ..33b0 enter: start the animation in data_ov073_02123280.file;
    mStateTimer = 0x32 (50 frames). */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212000cEv
 short daKing_Donketu_c::func_ov073_0212000c() {
     daKing_Donketu_c *c = this;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123280[1], 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123280.file, 4, 0, 0x1000, 0);
     c->mStateTimer=0x32;
     return 1;
 }
@@ -954,20 +893,20 @@ int daKing_Donketu_c::func_ov073_0212005c() {
     daKing_Donketu_c *c = this;
   if(c->mBlendModelAnim.Finished()){
     c->unk_4c5=0xff;
-    ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
+    ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
   }
   return 1;
 }
 
 
 /* ..3380 enter: clear unk_4ca and start the animation in
-   data_ov073_02123290[1]. */
+   data_ov073_02123290.file. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120098Ev
 struct BCA_File;
 int daKing_Donketu_c::func_ov073_02120098() {
     daKing_Donketu_c *c = this;
   c->unk_4ca = 0;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123290[1], 4, 0x40000000, 0x1000, 0);
+  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123290.file, 4, 0x40000000, 0x1000, 0);
   return 1;
 }
 
@@ -991,7 +930,7 @@ int daKing_Donketu_c::func_ov073_021200e0()
     u16 state = thiz->mStateTimer;
     if (state != 0) {
         if (state == 1) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, data_ov073_021232b0[1], 4, 0x40000000, 0x1000, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, data_ov073_021232b0.file, 4, 0x40000000, 0x1000, 0);
             thiz->mBlendModelAnim.speed = 0x1000;
             thiz->mVertSpeed = 0x46000;
             thiz->unk_4c5 = 0xff;
@@ -1054,14 +993,14 @@ int daKing_Donketu_c::func_ov073_021200e0()
         if (thiz->mHitsRemaining == 1 && thiz->unk_4ca == 0) {
             thiz->unk_4c5 = 0;
             if (thiz->mStateScratch == 0) {
-                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, data_ov073_02123290[1], 4, 0x40000000, 0x1000, 0);
+                _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&thiz->mBlendModelAnim, data_ov073_02123290.file, 4, 0x40000000, 0x1000, 0);
             }
             thiz->mStateScratch += 1;
             if (thiz->mStateScratch < 0x82) {
                 return 1;
             }
         }
-        ChiefChilly_ChangeState((C *)(thiz), (PMF *)(data_ov073_02123380));
+        ChiefChilly_ChangeState((C *)(thiz), (PMF *)&data_ov073_02123380);
     }
     thiz->mAngleY = thiz->mPrevAngleY;
     return 1;
@@ -1079,7 +1018,7 @@ int daKing_Donketu_c::func_ov073_02120390()
 
 /* ..3320 update, a waypoint hop. mStateTimer starts at 2. At 1 the hop
    launches: mVertSpeed 0x5a000 (90.0), mVertAccel -0x5000 (-5.0), mWaypointCursor
-   advances modulo 8 and the animation in data_ov073_021232a8[1] runs at speed
+   advances modulo 8 and the animation in data_ov073_021232a8.file runs at speed
    0x2000. At 0 the boss steers toward the current waypoint (set B while
    mHitsRemaining is 2, else set A): mPrevAngleY turns toward it by 0x800 and
    the x/z velocity words are set to 80.0 (0x50000) along the heading and
@@ -1107,7 +1046,7 @@ int daKing_Donketu_c::func_ov073_021203ac()
             *p = *p & 7;
         }
 
-        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a8[1], 4, 0, 0x1000, 0);
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a8.file, 4, 0, 0x1000, 0);
         c->mBlendModelAnim.speed = 0x2000;
     }
     return 1;
@@ -1152,9 +1091,9 @@ mainblock:
             *cnt = *cnt + 1;
         }
         if (c->mJumpCount > 7) {
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123340));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123340);
         } else {
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123320));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123320);
         }
     }
     c->mAngleY = c->mPrevAngleY;
@@ -1191,7 +1130,7 @@ int daKing_Donketu_c::func_ov073_02120610()
 
         if ((unsigned short)c->mStateTimer == 1) {
             c->mVertSpeed = 0x5a000;
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a8[1], 4, 0, 0x1000, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a8.file, 4, 0, 0x1000, 0);
             c->mBlendModelAnim.speed = 0x2000;
         }
         return 1;
@@ -1236,7 +1175,7 @@ int daKing_Donketu_c::func_ov073_02120610()
             c->func_ov073_0211f2c0(0x7d0000);
             func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
             c->mJumpCount = 1;
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123320));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123320);
         }
         c->mAngleY = c->mPrevAngleY;
         return 1;
@@ -1269,7 +1208,7 @@ int daKing_Donketu_c::func_ov073_02120844()
         t->func_ov073_0211f2c0(0x7d0000);
         func_02012694(SND_BIG_LANDING, &t->mCamSpacePosX);
         t->mHorzSpeed = 0;
-        ChiefChilly_ChangeState((C *)(t), (PMF *)(data_ov073_021233b0));
+        ChiefChilly_ChangeState((C *)(t), (PMF *)&data_ov073_021233b0);
     }
     return 1;
 }
@@ -1311,7 +1250,7 @@ int daKing_Donketu_c::func_ov073_02120910()
 
     if ((unsigned short)c->mStateTimer == 0) {
         *&c->mHitsRemaining = 1;
-        ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123340));
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123340);
         *&c->unk_4ca = 1;
         c->mPrevAngleY = c->mAngleY;
         return 1;
@@ -1339,12 +1278,12 @@ int daKing_Donketu_c::func_ov073_02120910()
         ((s64)c->unk_4d0 * data_02082214[((unsigned short)(short)c->mStateScratch >> 4) * 2] + 0x800) >> 12,
         0x400);
     if (c->func_ov073_0211f61c()) {
-        ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_021233f0));
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233f0);
     }
     return 1;
 }
 
-/* ..33d0 enter: animation data_ov073_02123288[1] at speed 0x4000; mAngleX,
+/* ..33d0 enter: animation data_ov073_02123288.file at speed 0x4000; mAngleX,
    mStateScratch and all the motion words cleared; unk_4d0 = -0x1000;
    mGroundMissPos copied into unk_4a8..4b0; sound handle cleared;
    mStateTimer = 0x5a (90 frames). */
@@ -1352,7 +1291,7 @@ int daKing_Donketu_c::func_ov073_02120910()
 int daKing_Donketu_c::func_ov073_02120ad8()
 {
     daKing_Donketu_c *t = this;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288.file, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x4000;
     t->mAngleX = 0;
     t->mStateScratch = 0;
@@ -1385,20 +1324,20 @@ int daKing_Donketu_c::func_ov073_02120b78() {
             c->mPrevAngleY = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX);
             c->mAngleY = c->mPrevAngleY;
             func_02012694(SND_BIG_LANDING, &c->mCamSpacePosX);
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123400));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123400);
         }
     }
     return 1;
 }
 
-/* ..33c0 enter: animation data_ov073_02123288[1] at speed 0x4000;
+/* ..33c0 enter: animation data_ov073_02123288.file at speed 0x4000;
    mHorzSpeed 0x14000 (20.0), mVertSpeed 0x1e000 (30.0), mVertAccel -0x3000
    (-3.0); mAngleX and mStateScratch cleared. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120c08Ev
 int daKing_Donketu_c::func_ov073_02120c08()
 {
     daKing_Donketu_c *t = this;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288.file, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x4000;
     t->mHorzSpeed = 0x14000;
     t->mVertSpeed = 0x1e000;
@@ -1429,9 +1368,9 @@ int daKing_Donketu_c::func_ov073_02120c7c()
     if (c->mNoGroundAhead == 1) {
         c->mHitsRemaining -= 1;
         if (c->mHitsRemaining != 0)
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_021233c0));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233c0);
         else
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_021233d0));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_021233d0);
         return 1;
     }
     _Z14ApproachLinearRiii((int *)&c->mHorzSpeed, 0, 0x1000);
@@ -1440,14 +1379,14 @@ int daKing_Donketu_c::func_ov073_02120c7c()
         if (b < 0xa) {
             c->mHorzSpeed = 0;
             c->mPrevAngleY = c->mAngleY;
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
         }
     }
     return 1;
 }
 
 
-/* ..33a0 enter: animation data_ov073_021232a8[1] at speed 0x1000; mPrevAngleY
+/* ..33a0 enter: animation data_ov073_021232a8.file at speed 0x1000; mPrevAngleY
    = the angle to the player + 0x8000. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120d80Ev
 int daKing_Donketu_c::func_ov073_02120d80()
@@ -1459,7 +1398,7 @@ int daKing_Donketu_c::func_ov073_02120d80()
 
     fix = 0x1000;
     t = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a8[1], 4, 0x40000000, fix, t);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232a8.file, 4, 0x40000000, fix, t);
     c->mBlendModelAnim.speed = fix;
     ang = c->HorzAngleToCPlayer();
     short *py = &c->mPrevAngleY;
@@ -1477,7 +1416,7 @@ int daKing_Donketu_c::func_ov073_02120dec() {
     daKing_Donketu_c *c = this;
     ApproachLinear(c->mPrevAngleY, c->mTargetAngle, 0x500);
     if (AngleDiff(c->mTargetAngle, c->mAngleY) < 0x100) {
-        ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
         c->mStateTimer = 0x1e;
     }
     c->mAngleX = c->mPrevAngleX;
@@ -1486,13 +1425,13 @@ int daKing_Donketu_c::func_ov073_02120dec() {
     return 1;
 }
 
-/* ..3390 enter: animation data_ov073_02123288[1] at speed 0x2000;
+/* ..3390 enter: animation data_ov073_02123288.file at speed 0x2000;
    mTargetAngle = the angle to mSpawnPos; mStateScratch = 0;
    mPrevAngleY = mAngleY. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02120e60Ev
 int daKing_Donketu_c::func_ov073_02120e60() {
     daKing_Donketu_c *c = this;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
+  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123288.file, 4, 0, 0x1000, 0);
   c->mBlendModelAnim.speed = 0x2000;
   c->mTargetAngle = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX);
   c->mStateScratch = 0;
@@ -1525,7 +1464,7 @@ int daKing_Donketu_c::func_ov073_02120ed0()
     daKing_Donketu_c *c = this;
 
     if (c->mNoGroundAhead == 1) {
-        ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123390));
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123390);
         return 1;
     }
 
@@ -1614,7 +1553,7 @@ hz:
         c->mPrevAngleY = c->mAngleY;
         c->mStateTimer = 0x1e;
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &c->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
+            &c->mBlendModelAnim, data_ov073_02123288.file, 4, 0, 0x1000, 0);
         c->mBlendModelAnim.speed = 0x2000;
         c->mStateScratch = 0;
         c->mPhase = 0;
@@ -1633,7 +1572,7 @@ hz:
 }
 
 /* ..3360 enter: mStateTimer = 0, mPhase = 0, unk_4d0 = 0x2000; animation
-   data_ov073_02123288[1] at speed 0x2000. */
+   data_ov073_02123288.file at speed 0x2000. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_0212122cEv
 int daKing_Donketu_c::func_ov073_0212122c()
 {
@@ -1641,7 +1580,7 @@ int daKing_Donketu_c::func_ov073_0212122c()
     t->mStateTimer = 0;
     t->mPhase = 0;
     t->unk_4d0 = 0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288.file, 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x2000;
     return 1;
 }
@@ -1684,7 +1623,7 @@ int daKing_Donketu_c::func_ov073_0212128c()
         ((dCamera_c *)cam)->mFlags &= ~8;
         _ZN5Sound22LoadAndSetMusic_Layer3Ej(0x2d);
         func_02011d08();
-        ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
+        ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123360);
     }
     return 1;
 }
@@ -1761,18 +1700,18 @@ int daKing_Donketu_c::func_ov073_02121388() {
 
         if (c->mTalkPlayer->ShowMessage(*c, msg, &vmsg, 0, 2)) {
             func_02012694(SND_TALK_DONE, &c->mCamSpacePosX);
-            ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123350));
+            ChiefChilly_ChangeState((C *)(c), (PMF *)&data_ov073_02123350);
         }
     }
     return 1;
 }
 
-/* ..3330 enter: mPhase = 0; animation data_ov073_021232b8[1]. */
+/* ..3330 enter: mPhase = 0; animation data_ov073_021232b8.file. */
 // @symbol _ZN16daKing_Donketu_c19func_ov073_02121538Ev
 int daKing_Donketu_c::func_ov073_02121538() {
     daKing_Donketu_c *c = this;
   c->mPhase=0;
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232b8[1], 4, 0, 0x1000, 0);
+  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232b8.file, 4, 0, 0x1000, 0);
   return 1;
 }
 
@@ -1824,11 +1763,11 @@ void daKing_Donketu_c::func_ov073_021215cc()
     }
 
     m = c->mState;
-    if (m == (void*)data_ov073_021233b0) return;
+    if (m == (void*)&data_ov073_021233b0) return;
     if (m == (void*)&data_ov073_021233e0) return;
     if (m == (void*)&data_ov073_02123410) return;
-    if (m == (void*)data_ov073_021233f0) return;
-    if (m == (void*)data_ov073_02123370) return;
+    if (m == (void*)&data_ov073_021233f0) return;
+    if (m == (void*)&data_ov073_02123370) return;
 
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     c->mShadowMtx = data_020a0e68;
@@ -1839,15 +1778,15 @@ void daKing_Donketu_c::func_ov073_021215cc()
 // @symbol _ZN16daKing_Donketu_c16CleanupResourcesEv
 int daKing_Donketu_c::CleanupResources(){
   UnloadKeyModels(4);
-  ((SharedFilePtr *)data_ov073_02123280)->Release();
-  ((SharedFilePtr *)data_ov073_021232a0)->Release();
-  ((SharedFilePtr *)data_ov073_02123288)->Release();
-  ((SharedFilePtr *)data_ov073_021232a8)->Release();
-  ((SharedFilePtr *)data_ov073_02123290)->Release();
-  ((SharedFilePtr *)data_ov073_021232b0)->Release();
-  ((SharedFilePtr *)data_ov073_021232b8)->Release();
+  ((SharedFilePtr *)&data_ov073_02123280)->Release();
+  ((SharedFilePtr *)&data_ov073_021232a0)->Release();
+  ((SharedFilePtr *)&data_ov073_02123288)->Release();
+  ((SharedFilePtr *)&data_ov073_021232a8)->Release();
+  ((SharedFilePtr *)&data_ov073_02123290)->Release();
+  ((SharedFilePtr *)&data_ov073_021232b0)->Release();
+  ((SharedFilePtr *)&data_ov073_021232b8)->Release();
   ((SharedFilePtr *)data_ov002_0210da30)->Release();
-  ((SharedFilePtr *)data_ov073_02123298)->Release();
+  ((SharedFilePtr *)&data_ov073_02123298)->Release();
   return 1;
 }
 
@@ -1924,9 +1863,9 @@ int daKing_Donketu_c::Behavior()
         (c->**p)();
     }
 
-    if ((char *)c->pp != data_ov073_02123400
-        && (char *)c->pp != data_ov073_02123320
-        && (char *)c->pp != data_ov073_02123340) {
+    if ((char *)c->pp != (char *)&data_ov073_02123400
+        && (char *)c->pp != (char *)&data_ov073_02123320
+        && (char *)c->pp != (char *)&data_ov073_02123340) {
         _ZN8dActor_c9UpdatePosEP5dCc_c(self, &mdCcAcPos_c);
     } else {
         int sum = mVertSpeed + mVertAccel;
@@ -1938,7 +1877,7 @@ int daKing_Donketu_c::Behavior()
         _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(self, &mdCcAcPos_c);
     }
 
-    if (((char *)c->pp == data_ov073_02123330 || (char *)c->pp == data_ov073_02123350)
+    if (((char *)c->pp == (char *)&data_ov073_02123330 || (char *)c->pp == (char *)&data_ov073_02123350)
         && mBlendModelAnim.WillHitFrame(7) != 0) {
         data_020a0e68 = mBlendModelAnim.mat4x3;
         MulMat4x3Mat4x3((char *)mBlendModelAnim.data.transforms + 0x60, &data_020a0e68, &data_020a0e68);
@@ -1952,13 +1891,13 @@ int daKing_Donketu_c::Behavior()
         HugeLandingDustAt(v48, 1);
     }
 
-    if ((char *)c->pp != data_ov073_021233c0
-        && (char *)c->pp != data_ov073_021233d0
-        && (char *)c->pp != data_ov073_021233f0
-        && (char *)c->pp != data_ov073_02123400
-        && (char *)c->pp != data_ov073_02123320
-        && (char *)c->pp != data_ov073_02123340
-        && (char *)c->pp != data_ov073_02123380) {
+    if ((char *)c->pp != (char *)&data_ov073_021233c0
+        && (char *)c->pp != (char *)&data_ov073_021233d0
+        && (char *)c->pp != (char *)&data_ov073_021233f0
+        && (char *)c->pp != (char *)&data_ov073_02123400
+        && (char *)c->pp != (char *)&data_ov073_02123320
+        && (char *)c->pp != (char *)&data_ov073_02123340
+        && (char *)c->pp != (char *)&data_ov073_02123380) {
         dBgCh_Lin line;
         rp.start.x = 0; rp.start.y = 0; rp.start.z = 0;
         rp.end.x = 0; rp.end.y = 0; rp.end.z = 0;
@@ -2003,7 +1942,7 @@ int daKing_Donketu_c::Behavior()
             mGroundMissPosX = mPosX;
             mGroundMissPosY = mPosY;
             mGroundMissPosZ = mPosZ;
-            if ((char *)c->pp != data_ov073_021233a0) {
+            if ((char *)c->pp != (char *)&data_ov073_021233a0) {
                 mPosX = mPrevPosX;
                 mPosY = mPrevPosY;
                 mPosZ = mPrevPosZ;
@@ -2019,8 +1958,8 @@ int daKing_Donketu_c::Behavior()
     v54 = data_ov073_02123040;
     _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(&mdCcAcPos_c, &v54);
 
-    if ((char *)c->pp == data_ov073_02123360
-        || (char *)c->pp == data_ov073_02123390) {
+    if ((char *)c->pp == (char *)&data_ov073_02123360
+        || (char *)c->pp == (char *)&data_ov073_02123390) {
         ((daKing_Donketu_c *)self)->func_ov073_0211f61c();
     }
     _ZN5dCc_c5ClearEv(&mdCcAcPos_c);
@@ -2049,15 +1988,15 @@ int daKing_Donketu_c::InitResources()
     Vector3 v;
     int i;
     LoadKeyModels(4);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123280);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a0);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123288);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a8);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123290);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b0);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123280);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232a0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123288);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232a8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123290);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232b0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232b8);
     _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov002_0210da30);
-    f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123298);
+    f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123298);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, f, 1, -1);
     mShadowModel.InitCylinder();
     mVertAccel = -0x3000;
@@ -2088,7 +2027,7 @@ int daKing_Donketu_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    ChiefChilly_ChangeState((C *)this, (PMF *)data_ov073_02123330);
+    ChiefChilly_ChangeState((C *)this, (PMF *)&data_ov073_02123330);
     return 1;
 }
 
@@ -2123,3 +2062,48 @@ extern "C" daKing_Donketu_c *daKing_Donketu_c_classInit()
     }
     return p;
 }
+
+/* Construction order is source order: the eight file handles first, then the
+ * sixteen State records in the order the initializer copies them. The
+ * registration nodes and the PMF literals are compiler temporaries. */
+KingDonketuModelFileHandle data_ov073_02123298(0x359);
+KingDonketuAnimResFileHandle data_ov073_02123280(0x355);
+KingDonketuAnimResFileHandle data_ov073_021232a0(0x356);
+KingDonketuAnimResFileHandle data_ov073_02123288(0x35b);
+KingDonketuAnimResFileHandle data_ov073_021232a8(0x354);
+KingDonketuAnimResFileHandle data_ov073_02123290(0x357);
+KingDonketuAnimResFileHandle data_ov073_021232b0(0x358);
+KingDonketuAnimResFileHandle data_ov073_021232b8(0x35a);
+
+daKing_Donketu_c::State data_ov073_02123330 = { &daKing_Donketu_c::func_ov073_02121538,
+                                                &daKing_Donketu_c::func_ov073_02121388 };
+daKing_Donketu_c::State data_ov073_02123350 = { &daKing_Donketu_c::func_ov073_02121378,
+                                                &daKing_Donketu_c::func_ov073_0212128c };
+daKing_Donketu_c::State data_ov073_02123360 = { &daKing_Donketu_c::func_ov073_0212122c,
+                                                &daKing_Donketu_c::func_ov073_02120ed0 };
+daKing_Donketu_c::State data_ov073_02123390 = { &daKing_Donketu_c::func_ov073_02120e60,
+                                                &daKing_Donketu_c::func_ov073_02120dec };
+daKing_Donketu_c::State data_ov073_021233a0 = { &daKing_Donketu_c::func_ov073_02120d80,
+                                                &daKing_Donketu_c::func_ov073_02120c7c };
+daKing_Donketu_c::State data_ov073_021233c0 = { &daKing_Donketu_c::func_ov073_02120c08,
+                                                &daKing_Donketu_c::func_ov073_02120b78 };
+daKing_Donketu_c::State data_ov073_021233d0 = { &daKing_Donketu_c::func_ov073_02120ad8,
+                                                &daKing_Donketu_c::func_ov073_02120910 };
+daKing_Donketu_c::State data_ov073_021233f0 = { &daKing_Donketu_c::func_ov073_021208e4,
+                                                &daKing_Donketu_c::func_ov073_02120844 };
+daKing_Donketu_c::State data_ov073_02123400 = { &daKing_Donketu_c::func_ov073_0212081c,
+                                                &daKing_Donketu_c::func_ov073_02120610 };
+daKing_Donketu_c::State data_ov073_02123320 = { &daKing_Donketu_c::func_ov073_021205f0,
+                                                &daKing_Donketu_c::func_ov073_021203ac };
+daKing_Donketu_c::State data_ov073_02123340 = { &daKing_Donketu_c::func_ov073_02120390,
+                                                &daKing_Donketu_c::func_ov073_021200e0 };
+daKing_Donketu_c::State data_ov073_02123380 = { &daKing_Donketu_c::func_ov073_02120098,
+                                                &daKing_Donketu_c::func_ov073_0212005c };
+daKing_Donketu_c::State data_ov073_021233b0 = { (int (daKing_Donketu_c::*)())&daKing_Donketu_c::func_ov073_0212000c,
+                                                &daKing_Donketu_c::func_ov073_0211fe8c };
+daKing_Donketu_c::State data_ov073_021233e0 = { &daKing_Donketu_c::func_ov073_0211fe84,
+                                                &daKing_Donketu_c::func_ov073_0211fc78 };
+daKing_Donketu_c::State data_ov073_02123410 = { &daKing_Donketu_c::func_ov073_0211fc70,
+                                                &daKing_Donketu_c::func_ov073_0211fbf4 };
+daKing_Donketu_c::State data_ov073_02123370 = { &daKing_Donketu_c::func_ov073_0211fbec,
+                                                &daKing_Donketu_c::func_ov073_0211fa74 };

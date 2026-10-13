@@ -46,12 +46,36 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/draft-verdict-repair-0918.md",
+   "ref": "src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/five-cpp-cleanups-0919.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
   {
    "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
    "ref": "src_tu/actors/Actor.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-clpsblockref-1020.md",
+   "ref": "src/engine/collision/CLPS_BlockRef.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-arm9-dbgpc-1020.md",
+   "ref": "src/engine/collision/dBgPc.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-ov006-curling2-1005.md",
+   "ref": "config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-ov006-curling2-1005.md",
+   "ref": "src/actors/dScMgCurling2_c_upper.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/fold-ov009-sbird-1008.md",
+   "ref": "src/unnamed/ov009/func_ov009_0211145c.c"
   },
   {
    "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
@@ -84,6 +108,10 @@
   {
    "file": "notes/agents/handoffs/issue-2413.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
+   "ref": "src/d_s_mg_curling2.cpp"
   },
   {
    "file": "notes/agents/handoffs/mg-cpp-rename-0926.md",
@@ -148,6 +176,10 @@
   {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "src/d_s_mg_teresa.c"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
+   "ref": "src/minigames/d_s_mg_slot1.cpp"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
@@ -226,10 +258,6 @@
    "ref": "include/BookShot.h"
   },
   {
-   "file": "notes/agents/handoffs/pr3199-subset-repair-0926.md",
-   "ref": "src/__sinit_ov002_021071f4.c"
-  },
-  {
    "file": "notes/agents/handoffs/prod-dossunbar-0907-daObjBk_Dossunbar_c.md",
    "ref": "tools/check_src_tu_compiles.py"
   },
@@ -252,6 +280,10 @@
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/unnamed/ov055/__sinit_ov055_021118d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
+   "ref": "src/unnamed/ov071/__sinit_ov071_02122a64.c"
   },
   {
    "file": "notes/agents/handoffs/promote-ov071-casket-0924.md",
@@ -292,6 +324,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
    "ref": "src/func_020393d4.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
+   "ref": "src/unnamed/ov025/__sinit_ov025_02112a44.c"
   },
   {
    "file": "notes/agents/handoffs/readable-ov025-dpbrock-0925.md",
@@ -351,6 +387,10 @@
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "src/dBgCh_Actr_UpdateContinuous_Veneer.c"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
    "ref": "src/d_a_onms.cpp"
   },
   {
@@ -364,6 +404,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov098-wbm-0925.md",
    "ref": "tools/check_src_tu_compiles.py"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/_Z14ApproachLinearRsss.cpp"
   },
   {
    "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
@@ -398,12 +442,24 @@
    "ref": "src/func_ov020_0211216c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/shadowback-kinopio-0920.md",
+   "ref": "src/_Z14ApproachLinearRsss.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-spiny-0920.md",
+   "ref": "src/_Z14ApproachLinearRsss.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/src-tu-inventory-test-repair-0926.md",
    "ref": "tools/check_src_tu.py"
   },
   {
    "file": "notes/agents/handoffs/src-tu-inventory-test-repair-0926.md",
    "ref": "tools/test_check_src_tu.py"
+  },
+  {
+   "file": "notes/agents/handoffs/tu-ov063-trs-0927.md",
+   "ref": "src/unnamed/ov063"
   },
   {
    "file": "notes/agents/handoffs/tu-ov063-trs-0927.md",
@@ -443,11 +499,19 @@
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/func_02037e38.c"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "src/game/mario.c"
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "src/game/mario_step.c"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/unnamed/arm9/0203/func_02037e58.c"
   },
   {
    "file": "notes/archive/plan-gen-header.md",
@@ -548,6 +612,10 @@
   {
    "file": "notes/ctor-migration.md",
    "ref": "src/_ZN5ModelC1Ev.cpp"
+  },
+  {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/engine/collision/dBgPi.cpp"
   },
   {
    "file": "notes/declaration-centralization.md",
@@ -690,6 +758,10 @@
    "ref": "src/func_ov006_02110a20.c"
   },
   {
+   "file": "notes/minigames/themes.md",
+   "ref": "src/d_s_mg_curling2.cpp"
+  },
+  {
    "file": "notes/mwccarm-codegen.md",
    "ref": "docs/_private/CodeWarrior/mwccarm.help.txt"
   },
@@ -774,6 +846,10 @@
    "ref": "src/unnamed/ov002/__sinit_ov002_02100938.c"
   },
   {
+   "file": "notes/sinit-ownership-wave-edges.md",
+   "ref": "src/unnamed/ov002/__sinit_ov002_02107304.c"
+  },
+  {
    "file": "notes/sinit-ownership-wave-resource-handles.md",
    "ref": "src/unnamed/ov009/__sinit_ov009_02112458.c"
   },
@@ -798,6 +874,10 @@
    "ref": "src/ui/messages"
   },
   {
+   "file": "notes/src-domain-buckets.md",
+   "ref": "src/unnamed/ov063"
+  },
+  {
    "file": "notes/tu-cpp-census-2026-08.md",
    "ref": "src/_ZN7dWipe_c15SetBackwardTimeEj.c"
   },
@@ -807,11 +887,11 @@
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
-   "ref": "src/__sinit_ov014_02113118.c"
+   "ref": "src/__sinit_ov020_02113674.c"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
-   "ref": "src/__sinit_ov020_02113674.c"
+   "ref": "src/d_s_mg_curling2.cpp"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
@@ -824,6 +904,10 @@
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/unnamed/ov002/__sinit_ov002_02101968.c"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/unnamed/ov006/__sinit_ov006_021304ac.c"
   },
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
@@ -920,6 +1004,10 @@
   {
    "file": "tools/check_decl_agreement.py",
    "ref": "src/func_ov065_021183c8.c"
+  },
+  {
+   "file": "tools/check_drafts_compile.py",
+   "ref": "src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp"
   },
   {
    "file": "tools/check_drafts_compile.py",

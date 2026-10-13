@@ -8,9 +8,11 @@
  * and it lands flat with an earthquake and a thud (mState 3). The cuboid
  * shadow is re-aimed every frame by func_ov015_021114f0.
  *
- * This TU owns text only: ov015 delinks no .data here, so the _ZTV / _ZTI /
- * _ZTS group the class names is compiler-only output, compared against the
- * cartridge's own copies at ov015 0x02114420 / 0x021143dc / 0x021143e8.
+ * The class's .text, its .init/.ctor pair and the two resource handles'
+ * .bss are owned here. ov015 delinks no .data for this class, so the
+ * _ZTV / _ZTI / _ZTS group it names is compiler-only output, compared
+ * against the cartridge's own copies at ov015 0x02114420 / 0x021143dc /
+ * 0x021143e8.
  *
  * SOURCE ORDER IS ROM ORDER. `#pragma defer_codegen off` makes mwccarm emit
  * each function as it is parsed, so this file is written ROM-ascending: the
@@ -38,10 +40,12 @@
  * Leftover: func_ov015_02111414 / func_ov015_021114f0 / func_ov015_0211166c
  *   keep their C-ABI cartridge names. They are this TU's own helpers, not
  *   vtable slots.
- * Leftover: data_ov015_02114974 / data_ov015_0211497c are this overlay's
- *   KCL and BMD handles. symbols.txt also coins PoleBillboard_ClsnFile /
- *   PoleBillboard_ModelFile on the same two addresses, so this TU uses the
- *   address-true spelling, the way daObjBk_Lift_c.cpp does for its pair.
+ * Leftover: data_ov015_02114974 / data_ov015_0211497c are this class's
+ *   KCL and BMD handles, defined at the file end so mwcc emits the .init.
+ *   symbols.txt used to coin PoleBillboard_ClsnFile / PoleBillboard_ModelFile
+ *   on the same two addresses -- a stale spelling of a discarded class name --
+ *   so this TU keeps the address-true spelling, the way daObjBk_Lift_c.cpp
+ *   does for its pair.
  * Leftover: data_ov015_02113574 is the CLPS block in overlay .data that
  *   this TU does not own; data_02082214 is arm9's sin/cos table,
  *   data_020a0e68 arm9's scratch matrix, and data_0209f220 / data_0209f2f8
@@ -58,9 +62,26 @@
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
 
+/* SharedFilePtr has no fields; the two words are the handle's 8 bytes. The
+ * constructors and destructors are the ROM resource-family veneers, aliased
+ * in the manifest. */
+struct BkBotaosiModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BkBotaosiModelFilePtr(u32 fileID);
+    ~BkBotaosiModelFilePtr();
+};
+
+struct BkBotaosiCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BkBotaosiCollisionFilePtr(u32 fileID);
+    ~BkBotaosiCollisionFilePtr();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov015_02114974;   /* collision KCL */
-extern SharedFilePtr data_ov015_0211497c;   /* plank BMD */
+extern BkBotaosiCollisionFilePtr data_ov015_02114974;   /* collision KCL */
+extern BkBotaosiModelFilePtr data_ov015_0211497c;       /* plank BMD */
 extern CLPS_Block    data_ov015_02113574;
 extern Matrix4x3     data_020a0e68;         /* arm9 scratch matrix */
 extern s16 data_02082214[];                 /* arm9 sin/cos table */
@@ -402,3 +423,9 @@ extern "C" daObjBk_Botaosi_c *daObjBk_Botaosi_c_classInit()
 {
     return new daObjBk_Botaosi_c();
 }
+
+/* The ROM's initializer constructs the model handle with file ID 1417 and
+ * the collision handle with file ID 1418, registering a destructor node for
+ * each. mwcc emits __sinit_daObjBk_Botaosi_c.cpp from these definitions. */
+BkBotaosiModelFilePtr data_ov015_0211497c(1417);
+BkBotaosiCollisionFilePtr data_ov015_02114974(1418);

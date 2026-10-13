@@ -19,7 +19,7 @@
  * descriptor records they are built from live at data_ov006_0213da*; the
  * runtime copies are made by __sinit_ov006_02131cd0.
  *
- * comment leftovers:
+ * leftovers:
  * - The helpers still address the scene through byte offsets and the local
  *   view structs below. mBalls[0x40] is the typed name for 0x4660..0x565f,
  *   but only balls 0..0x2f are live balls: the tail overlaps three 0x40-byte
@@ -233,6 +233,37 @@ extern int  data_ov006_0213dbbc[];
 extern Entry data_ov006_021426cc[];
 extern Entry data_ov006_021426f4[];
 extern PMF   data_ov006_02142734[];
+
+/* The ROM {code pointer, adjustment} records the three tables copy from
+   (unlicensed .data), grouped by destination table in retail copy order. */
+extern PMF data_ov006_0213da84;
+extern PMF data_ov006_0213daf4;
+extern PMF data_ov006_0213da74;
+extern PMF data_ov006_0213da94;
+extern PMF data_ov006_0213da9c;
+extern PMF data_ov006_0213da7c;
+extern PMF data_ov006_0213dadc;
+extern PMF data_ov006_0213dafc;
+extern PMF data_ov006_0213db04;
+extern PMF data_ov006_0213dae4;
+extern PMF data_ov006_0213db0c;
+extern PMF data_ov006_0213da8c;
+extern PMF data_ov006_0213da5c;
+extern PMF data_ov006_0213daec;
+extern PMF data_ov006_0213da6c;
+extern PMF data_ov006_0213dad4;
+extern PMF data_ov006_0213db14;
+extern PMF data_ov006_0213db44;
+extern PMF data_ov006_0213db3c;
+extern PMF data_ov006_0213db34;
+extern PMF data_ov006_0213db2c;
+extern PMF data_ov006_0213db24;
+extern PMF data_ov006_0213db1c;
+extern PMF data_ov006_0213dacc;
+extern PMF data_ov006_0213dac4;
+extern PMF data_ov006_0213dabc;
+extern PMF data_ov006_0213dab4;
+extern PMF data_ov006_0213daac;
 
 }  /* extern "C" */
 
@@ -2854,3 +2885,42 @@ extern "C" int *dScMgPachinko2_c_classInit(void)
     }
     return p;
 }
+
+/* The three state tables, defined in retail copy order: the 8-row ball
+   table, the 15-row paddle table, then the 5-row cup table. mwcc emits
+   __sinit_dScMgPachinko2_c.cpp from these definitions, copying the ROM
+   .data records. */
+Entry data_ov006_021426f4[8] = {
+    {data_ov006_0213da84},
+    {data_ov006_0213daf4},
+    {data_ov006_0213da74},
+    {data_ov006_0213da94},
+    {data_ov006_0213da9c},
+    {data_ov006_0213da7c},
+    {data_ov006_0213dadc},
+    {data_ov006_0213dafc},
+};
+PMF data_ov006_02142734[15] = {
+    data_ov006_0213db04,
+    data_ov006_0213dae4,
+    data_ov006_0213db0c,
+    data_ov006_0213da8c,
+    data_ov006_0213da5c,
+    data_ov006_0213daec,
+    data_ov006_0213da6c,
+    data_ov006_0213dad4,
+    data_ov006_0213db14,
+    data_ov006_0213db44,
+    data_ov006_0213db3c,
+    data_ov006_0213db34,
+    data_ov006_0213db2c,
+    data_ov006_0213db24,
+    data_ov006_0213db1c,
+};
+Entry data_ov006_021426cc[5] = {
+    {data_ov006_0213dacc},
+    {data_ov006_0213dac4},
+    {data_ov006_0213dabc},
+    {data_ov006_0213dab4},
+    {data_ov006_0213daac},
+};

@@ -217,6 +217,24 @@ struct BlockSStateEntry { BlockSStateFn fn[2]; };
 extern BlockSStateEntry data_ov098_0213c878[];
 struct BlockSStateHost { char pad[0x560]; int idx; };
 
+/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
+ * veneer pairs (func_02017acc / func_02017ab4 for the model, func_02017b4c /
+ * SharedFilePtr_Destruct_Clsn for the collision), spelled through
+ * declared-only subclasses so the static initializer names the real entry
+ * points. */
+struct BlockSModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    BlockSModelFilePtr(u32 fileID);
+    ~BlockSModelFilePtr();
+};
+struct BlockSCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+    BlockSCollisionFilePtr(u32 fileID);
+    ~BlockSCollisionFilePtr();
+};
+extern BlockSModelFilePtr data_ov098_0213c850;
+extern BlockSCollisionFilePtr data_ov098_0213c858;
+
 /* Four-word copy source for the thrown state's speed tables. */
 struct BlockSW4 { u32 w[4]; };
 extern "C" BlockSW4 data_ov098_0213c4e0;
@@ -1441,3 +1459,35 @@ extern "C" daObjBlockS_c *daObjBlockS_c_classInit()
 {
     return new daObjBlockS_c();
 }
+
+// @symbol __sinit_daObjBlockS_c.cpp
+BlockSModelFilePtr data_ov098_0213c850(0x458);       /* model */
+BlockSCollisionFilePtr data_ov098_0213c858(0x459);   /* collision */
+
+/* The fourteen state member-pointer records live in .data
+ * (0x0213c458..0x0213c4c8); the static initializer copies them into the
+ * .bss table below, an enter/update pair per state. */
+extern "C" BlockSStateFn data_ov098_0213c4a8;
+extern "C" BlockSStateFn data_ov098_0213c488;
+extern "C" BlockSStateFn data_ov098_0213c490;
+extern "C" BlockSStateFn data_ov098_0213c468;
+extern "C" BlockSStateFn data_ov098_0213c498;
+extern "C" BlockSStateFn data_ov098_0213c470;
+extern "C" BlockSStateFn data_ov098_0213c4b0;
+extern "C" BlockSStateFn data_ov098_0213c480;
+extern "C" BlockSStateFn data_ov098_0213c4a0;
+extern "C" BlockSStateFn data_ov098_0213c478;
+extern "C" BlockSStateFn data_ov098_0213c458;
+extern "C" BlockSStateFn data_ov098_0213c460;
+extern "C" BlockSStateFn data_ov098_0213c4c0;
+extern "C" BlockSStateFn data_ov098_0213c4b8;
+
+BlockSStateEntry data_ov098_0213c878[7] = {
+    { data_ov098_0213c4a8, data_ov098_0213c488 },   /* STATE_IDLE */
+    { data_ov098_0213c490, data_ov098_0213c468 },   /* STATE_CARRIED */
+    { data_ov098_0213c498, data_ov098_0213c470 },   /* STATE_THROWN */
+    { data_ov098_0213c4b0, data_ov098_0213c480 },   /* STATE_SPIT_OUT */
+    { data_ov098_0213c4a0, data_ov098_0213c478 },   /* STATE_BOUNCING */
+    { data_ov098_0213c458, data_ov098_0213c460 },   /* STATE_IN_MOUTH */
+    { data_ov098_0213c4c0, data_ov098_0213c4b8 },   /* STATE_BROKEN */
+};

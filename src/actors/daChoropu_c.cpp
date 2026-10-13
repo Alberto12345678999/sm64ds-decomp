@@ -1,82 +1,41 @@
 //cpp
-/* ov080/daChoro_Rock_c+daChoropu_c -- the Monty Mole (daChoropu_c) and the rock it throws
- * (daChoro_Rock_c). 26 functions, .text 0x02123740..0x02124a20: tu_map's
- * 24-function run 0x02123740..0x02124998 plus the two registry factories
- * that abut it, daChoro_Rock_c_classInit and daChoropu_c_classInit.
+/* Monty Mole (daChoropu_c) and the rock it throws (daChoro_Rock_c), ov080.
+ * The mole stays underground until the nearest Player is 250..1500 units
+ * away and it holds the turn, then emerges, throws, leaps, and dives,
+ * passing the turn on. A group's knock-backs (mTimesHit) spawn a 1-Up
+ * (actor 0x114) at 7. Behavior indexes data_ov080_02128438 by mState.
  *
- * Class identity comes from the ROM RTTI:
- *   daChoropu_c     _ZTI 0x02127fbc, _ZTS 0x02127fc8, _ZTV 0x021280b0
- *   daChoro_Rock_c  _ZTI 0x02127fb0, _ZTS 0x02127fd8, _ZTV 0x0212802c
- *                   (__si_class_type_info, parent dEnemyBase_c)
- *
- * SOURCE ORDER IS ROM ORDER. `defer_codegen off` makes mwccarm emit each
- * function as it is parsed, so the definitions below follow the ROM layout.
- * Each empty out-of-line destructor emits D1 then D0; its D2 has no ROM home
- * and is deadstripped (policy rows in the TU manifest). The two classes'
- * members are interleaved in the ROM, and so they are here.
- *
- * What the actors do, as far as these functions show. A daChoropu_c is a mole that
- * stays underground until the nearest Player is 250..1500 units away (horizontal
- * distance) and it holds the turn, then emerges, throws a daChoro_Rock_c (or waits),
- * leaps, and dives back, passing the turn to another mole of its group. Moles
- * gather into a group through param1 (see InitResources); the group's total of
- * knock-backs (mTimesHit) is tallied over the mole and up to four partners, and the
- * knock-back that finds the tally at 7 spawns a 1-Up mushroom (actor 0x114,
- * ONEUPKINOKO) and pins that mole's mTimesHit at 8. A hit that matches the
- * vulnerability mask, a stomp, or a Metal or Mega Player knocks the mole back
- * underground; other Player contact hurts the Player, except a Vanish Player, which has
- * no effect (func_ov080_02124208).
- *
- * daChoropu_c::Behavior dispatches through the six-row state table at
- * data_ov080_02128438 -- one pointer-to-member per state, indexed by mState. The
- * table is .bss, filled by __sinit_ov080_021278c0 from six records in .data
- * (the row-to-record order and each state's handler are in the table comment in
- * include/daChoropu_c.h). The state names there (SETUP, HIDDEN, EMERGE, THROW_ROCK,
- * WAIT, LEAP) say what each handler does; they are not labels from the cartridge.
- *
- * Helpers: func_ov080_02124088 knocks the mole underground, func_ov080_02124208
- * reacts to contact, func_ov080_02124360 passes the turn, func_ov080_021243d8 and
- * func_ov080_02124418 rebuild the model matrices. The ten mole helpers are members
- * and the ROM address is the method name. func_ov080_02124418 stays a free function.
- *
- * Leftover:
- *  - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c, so it
- *    is not a daChoropu_c method. No other translation unit calls the ten mole helpers.
- *  - calls that pass Fix12<int> by value (ModelAnim::SetAnim, dCcAc_c::Init,
- *    dBgCh_Actr::Init, Player::Hurt, Particle::System::New/NewSimple) are
- *    still spelled as mangled extern "C" calls: the headers declare those
- *    parameters as Fix12i (a plain s32), so a member call would mangle to a
- *    symbol the ROM does not have; dActor_c::Spawn from the Throw
- *    handler and from the 1-Up spawn in func_ov080_02124088 is also still the mangled
- *    call (the odd `py ? 0x137 : 0x137` id expression is Throw-only, and the match
- *    needs it);
- *  - LAUND() keeps three field addresses opaque in func_ov080_02124088 (the
- *    cylinder flags, mFlags and mTimesHit);
- *  - a few reads keep a cast the ROM's instruction choice needs: mAngleX/Y/Z are read
- *    as unsigned short in the Throw state, and mHasTurn as signed char in Hidden;
- *  - data_ov080_021283d0..021283e8 are still typed `int[]` (they are
- *    SharedFilePtr animation slots -- data_ov080_0212766c points at them); word 1
- *    of each is the loaded animation file that ModelAnim::SetAnim takes.
- *    Files: 021283c0 = 0x2d1 (mole model), 021283c8 = 0x2d6 (rock model),
- *    021283e8 = 0x2d2, 021283d0 = 0x2d3, 021283d8 = 0x2d4, 021283e0 = 0x2d5
- *    (the ids __sinit_ov080_021278c0 constructs them with);
- *  - the SetAnim flag word is 0 in InitResources but 0x40000000 in every state
- *    handler; what that bit does is not recovered;
- *  - the collision flag words (0x200000 for the mole, 0x200004 for the rock) and the
- *    Player::Hurt arguments (2, 0xc000, 1, 0, 1) and (1, 0xc000, 1, 0, 1) are not
- *    decoded;
- *  - the sound ids (0xd2 throw, 0xd5 knocked back, 0x116 emerge, 0x1d Mega kill) and
- *    particle effect ids (0x29, 0x2a, 0x2b) are only named by when they fire; which
- *    banks and effects they are is not recovered;
- *  - pad_0d0 (4 bytes at 0xd0 in daChoropu_c) is untouched by any function here;
- *  - the tables data_ov080_0212767c (Leap cylinder heights) and data_ov080_021276c4
- *    (Emerge cylinder heights) are read through int arrays and described in
- *    the handler comments; the hit-flag mask 0x66fe0 is spelled as a literal.
- *
- * The registry factories daChoro_Rock_c_classInit (0x02124998) and
- * daChoropu_c_classInit (0x021249e0) come last, in ROM order. Neither class
- * declares a constructor, so each is a plain `return new`.
+ * daChoropu_c _ZTI 0x02127fbc, _ZTS 0x02127fc8, _ZTV 0x021280b0.
+ * daChoro_Rock_c _ZTI 0x02127fb0, _ZTS 0x02127fd8, _ZTV 0x0212802c
+ * (base dEnemyBase_c). Key functions are the empty out-of-line destructors
+ * under defer_codegen off: each emits D1 then D0, D2 deadstripped.
+ * .text 0x02123740..0x02124a20. The two classes are interleaved in ROM
+ * order. Factories daChoro_Rock_c_classInit and daChoropu_c_classInit
+ * are `return new`.
  */
+// leftovers:
+// - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c,
+//   so it is not a daChoropu_c method.
+// - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, Player::Hurt,
+//   Particle::System::New/NewSimple and dActor_c::Spawn stay mangled. The
+//   headers spell Fix12i, which would not match 5Fix12IiE. Throw's spawn
+//   id stays `py ? 0x137 : 0x137`.
+// - LAUND() in func_ov080_02124088 keeps the cylinder flags, mFlags and
+//   mTimesHit addresses opaque.
+// - Throw reads mAngleX/Y/Z as unsigned short. Hidden reads mHasTurn as
+//   signed char.
+// - data_ov080_021283d0..021283e8 stay int[] (animation slots SetAnim
+//   reads at word 1). File ids: mole model 0x2d1, rock model 0x2d6,
+//   animations 0x2d2..0x2d5.
+// - SetAnim's flag word is 0 in InitResources and 0x40000000 in the state
+//   handlers. Collision words 0x200000 (mole) and 0x200004 (rock), and
+//   Player::Hurt's (2, 0xc000, 1, 0, 1) / (1, 0xc000, 1, 0, 1), are still
+//   literals. Sound ids 0xd2, 0xd5, 0x116, 0x1d and particles 0x29, 0x2a,
+//   0x2b are named only by when they fire.
+// - pad_0d0 is untouched. data_ov080_0212767c and data_ov080_021276c4
+//   (leap and emerge cylinder heights) are read as int arrays. The
+//   hit-flag mask 0x66fe0 stays a literal.
+
 
 #include "decl_common.h"
 #include "daChoropu_c.h"
@@ -91,6 +50,33 @@
  * the state number at +0x17c. */
 typedef void (daChoropu_c::*ChoropuStateFn)();
 struct ChoropuStateRow { ChoropuStateFn fn[1]; };
+
+/* Static-init ownership (was the handwritten __sinit_ov080_021278c0 shard).
+ * The file-scope objects at the end of this file construct the six
+ * resource handles (model files 0x2d1, 0x2d6, animation files 0x2d2, 0x2d3,
+ * 0x2d4, 0x2d5) and fill the six one-entry state rows. mwcc emits
+ * __sinit_daChoropu_c.cpp from those definitions. */
+struct ChoropuModelFile : SharedFilePtr {
+    u32 words[2];
+
+    ChoropuModelFile(u32 fileID);
+    ~ChoropuModelFile();
+};
+
+struct ChoropuAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    ChoropuAnimationFilePtr(u32 fileID);
+    ~ChoropuAnimationFilePtr();
+};
+
+extern ChoropuModelFile data_ov080_021283c0;
+extern ChoropuModelFile data_ov080_021283c8;
+extern ChoropuAnimationFilePtr data_ov080_021283e8;
+extern ChoropuAnimationFilePtr data_ov080_021283d0;
+extern ChoropuAnimationFilePtr data_ov080_021283d8;
+extern ChoropuAnimationFilePtr data_ov080_021283e0;
+extern ChoropuStateRow data_ov080_02128438[6];
 
 #define LAUND(p) ((void*)((((long long)(int)(p)))))
 
@@ -120,14 +106,8 @@ void  func_ov080_02124418(daChoro_Rock_c *t);
 extern int data_0209e650;
 extern s16 data_02082214[];
 extern int data_ov080_0212767c[];
-extern int data_ov080_021283d0[];
-extern int data_ov080_021283e0[];
-extern int data_ov080_021283e8[];
 extern SharedFilePtr data_ov002_0210d9d8;
-extern SharedFilePtr data_ov080_021283c0;
-extern SharedFilePtr data_ov080_021283c8;
 extern SharedFilePtr *data_ov080_0212766c[];
-extern ChoropuStateRow data_ov080_02128438[];
 
 #pragma defer_codegen off
 
@@ -201,7 +181,7 @@ void daChoropu_c::func_ov080_02123924()
     mModelAnim.Advance();
     if (mModelAnim.Finished()) {
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
         return;
     }
     {
@@ -216,7 +196,7 @@ void daChoropu_c::func_ov080_02123924()
         if ((short)AngleDiff(mAngleY, Vec3_HorzAngle((Vector3 *)&mPosX, &v)) >= 0x4000) return;
         if (Vec3_HorzDist((Vector3 *)&mPosX, &v) >= 0x1f4000) return;
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
     }
 }
 
@@ -293,10 +273,10 @@ void daChoropu_c::func_ov080_02123a34()
 
     if (DistToCPlayer() < 0x3e8000) {
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
     } else {
         mState = daChoropu_ST_WAIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d0[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
     }
 }
 
@@ -357,16 +337,16 @@ void daChoropu_c::func_ov080_02123c24()
         unsigned int rem = (rv % 3) & 0xff;
         if (rem == 0) {
             mState = daChoropu_ST_THROW_ROCK;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
             return;
         }
         if (rem == 1) {
             mState = daChoropu_ST_WAIT;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
             return;
         }
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
         return;
     }
 
@@ -374,7 +354,7 @@ void daChoropu_c::func_ov080_02123c24()
         Player *player = ClosestPlayer();
         if (player == 0) {
             mState = daChoropu_ST_THROW_ROCK;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
             return;
         }
         {
@@ -389,10 +369,10 @@ void daChoropu_c::func_ov080_02123c24()
             diff = (short)AngleDiff(mAngleY, horz);
             if (diff < 0x4000) {
                 mState = daChoropu_ST_THROW_ROCK;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283e0[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
             } else {
                 mState = daChoropu_ST_WAIT;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d0[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
             }
         }
     }
@@ -418,7 +398,7 @@ void daChoropu_c::func_ov080_02123ecc()
     if (*(signed char *)&mHasTurn != 1) return;   /* read signed, as the ROM does (ldrsb) */
     if (dist >= 0xfa000) {
         mState = daChoropu_ST_EMERGE;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d8[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0x40000000, 0x1000, 0);
         Player *p2 = ClosestPlayer();
         mAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&p2->mPosX);
         {
@@ -493,7 +473,7 @@ void daChoropu_c::func_ov080_02124088()
     daChoropu_c *a;
 
     mState = daChoropu_ST_HIDDEN;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d8[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0x40000000, 0x1000, 0);
 
     mModelAnim.currFrame = 0;
     {
@@ -819,7 +799,7 @@ s32 daChoropu_c::InitResources()
     Model::LoadFile(data_ov002_0210d9d8);
     Model::LoadFile(data_ov080_021283c8);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov080_021283c0), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov080_021283d8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0x200000, 0x66fe0);
     mGroupMode = param1 & 0xf;
     mState = daChoropu_ST_SETUP;
@@ -873,3 +853,23 @@ extern "C" daChoropu_c *daChoropu_c_classInit()
 {
     return new daChoropu_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov080_021278c0 shard).
+ * Definition order is the retail initializer's construction order: the two
+ * model handles, then the four animation handles, then the six state rows in
+ * Setup, Hidden, Emerge, ThrowRock, Wait, Leap order. */
+ChoropuModelFile data_ov080_021283c0(0x2d1);
+ChoropuModelFile data_ov080_021283c8(0x2d6);
+ChoropuAnimationFilePtr data_ov080_021283e8(0x2d2);
+ChoropuAnimationFilePtr data_ov080_021283d0(0x2d3);
+ChoropuAnimationFilePtr data_ov080_021283d8(0x2d4);
+ChoropuAnimationFilePtr data_ov080_021283e0(0x2d5);
+
+ChoropuStateRow data_ov080_02128438[6] = {
+    {{&daChoropu_c::func_ov080_02123fcc}},
+    {{&daChoropu_c::func_ov080_02123ecc}},
+    {{&daChoropu_c::func_ov080_02123c24}},
+    {{&daChoropu_c::func_ov080_02123a34}},
+    {{&daChoropu_c::func_ov080_02123924}},
+    {{&daChoropu_c::func_ov080_02123860}},
+};

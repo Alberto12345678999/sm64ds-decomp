@@ -27,9 +27,28 @@
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x610, collision file 0x611). mwcc emits
+ * __sinit_daObjFl_Seesaw_c.cpp from those definitions. The wrapper names
+ * are local; the handle constructors and destructors are the ROM
+ * resource-family functions, aliased in the manifest. */
+struct SeesawModelFile : SharedFilePtr {
+    u32 words[2];
+
+    SeesawModelFile(u32 fileID);
+    ~SeesawModelFile();
+};
+
+struct SeesawCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    SeesawCollisionFilePtr(u32 fileID);
+    ~SeesawCollisionFilePtr();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov022_021145a8;
-extern SharedFilePtr data_ov022_021145a0;
+extern SeesawModelFile data_ov022_021145a8;
+extern SeesawCollisionFilePtr data_ov022_021145a0;
 extern char data_ov064_0211bacc[];
 
 void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
@@ -125,3 +144,9 @@ extern "C" daObjFl_Seesaw_c *daObjFl_Seesaw_c_classInit()
 {
     return new daObjFl_Seesaw_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov022_02112e58 shard).
+ * Definition order is the retail initializer's construction order: the
+ * model handle (file 0x610), then the collision handle (file 0x611). */
+SeesawModelFile data_ov022_021145a8(0x610);
+SeesawCollisionFilePtr data_ov022_021145a0(0x611);

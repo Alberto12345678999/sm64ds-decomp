@@ -4,11 +4,46 @@
    plus 49 Heyho-minigame helper functions (see config/tu_manifest.d/ov006/dMg3DHeyhoObjAdapter_c.json).
    Function order is the reverse of the ROM: mwccarm 2004/b56 emits .text in reverse source order.
    Each former one-function C source sits in its own namespace so the per-file local types and
-   extern declarations, which disagree with one another, stay as they were. */
+   extern declarations, which disagree with one another, stay as they were.
+
+   leftovers:
+   - The 49 func_ov006_* helpers keep their per-function n<addr> namespaces and
+     raw-offset spellings. The object they operate on is an unnamed Heyho-adapter
+     record (0xf0 stride, position at +0x9c, velocity at +0xa8); no class header
+     names its layout, and the per-file typedef/extern universes disagree, so a
+     shared Obj struct would change decl surface across all 49 call sites.
+   - _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj keeps scalar parameter spellings:
+     it takes Fix12<int> by value and a natural typed declaration homes the
+     arguments differently under mwccarm (the Fix12 wall, notes/mwccarm-codegen.md 6az).
+   - _ZN9ModelAnimC1Ev/_ZN9ModelAnimD1Ev/_ZN7Vector3D1Ev and
+     __register_global_object are ctor/dtor/atexit ABI calls, spelled as free
+     functions because the bodies are the compiler's own sinit glue.
+   - Volatile and long-long launders (e.g. func_ov006_020c6378's const-view
+     re-reads, func_ov006_020c42bc's (long long)(int) cast) are codegen-pinned;
+     the inline comments at each site say what the ROM does. */
 #include "common.h"
 #include "decl_common.h"
 #include "types.h"
+#include "SharedFilePtr.h"
 #include "dMgJump3DMario_c.h"
+
+/* File 0x217 / 0x218 resource handles. The static initializer registers
+ * their destructors; the spellings are this TU's, mapped onto
+ * func_02017acc / func_02017ab4 and SharedFilePtr::Construct /
+ * SharedFilePtr_Destruct_Anim. */
+struct HeyhoAdapterModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    HeyhoAdapterModelFilePtr(u32 fileID);
+    ~HeyhoAdapterModelFilePtr();
+};
+
+struct HeyhoAdapterAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    HeyhoAdapterAnimationFileHandle(u32 fileID);
+    ~HeyhoAdapterAnimationFileHandle();
+};
 
 /* ---- func_ov006_020c6f70 ---- */
 namespace n020c6f70 {
@@ -29,17 +64,16 @@ namespace n020c6f3c {
 extern "C" {
 extern int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern int _ZN9ModelAnimD1Ev(void*);
-extern int data_ov006_02140330[]; extern int data_ov006_02140338[];
-int func_ov006_020c6f3c(int* c){ _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140330); _ZN13SharedFilePtr7ReleaseEv(data_ov006_02140338); _ZN9ModelAnimD1Ev((char*)c+0x38); return (int)c; }
+extern HeyhoAdapterModelFilePtr data_ov006_02140330; extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
+int func_ov006_020c6f3c(int* c){ _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140330); _ZN13SharedFilePtr7ReleaseEv(&data_ov006_02140338); _ZN9ModelAnimD1Ev((char*)c+0x38); return (int)c; }
 
 }
 }
 
 /* ---- func_ov006_020c6e4c ---- */
-struct SharedFilePtr;
 struct BMD_File; struct BCA_File;
-extern SharedFilePtr data_ov006_02140330;
-extern SharedFilePtr data_ov006_02140338;
+extern HeyhoAdapterModelFilePtr data_ov006_02140330;
+extern HeyhoAdapterAnimationFileHandle data_ov006_02140338;
 struct GObj { int w[8]; };
 extern GObj *data_0209f5c0;
 namespace n020c6e4c {
@@ -88,7 +122,7 @@ typedef struct { int w[3]; } Blk3;
 typedef struct { int w[4]; } Blk4;
 typedef struct { int x, y, z, w; } Vec4;
 
-extern void func_020731dc(void *object, void *destructor, void **node);
+extern void __register_global_object(void *object, void *destructor, void **node);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern void *_ZN7Vector3D1Ev(void *object);
 
@@ -107,14 +141,14 @@ void func_ov006_020c6ca4(char* dst, char* src)
         data_ov006_02140364.x = -0x100000;
         data_ov006_02140364.y = 0;
         data_ov006_02140364.z = 0;
-        func_020731dc(&data_ov006_02140364, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_02140358);
+        __register_global_object(&data_ov006_02140364, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_02140358);
         data_ov006_0214032c |= 1;
     }
     if (!(data_ov006_02140318 & 1)) {
         data_ov006_0214037c.x = 0x100000;
         data_ov006_0214037c.y = 0;
         data_ov006_0214037c.z = 0;
-        func_020731dc(&data_ov006_0214037c, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_02140370);
+        __register_global_object(&data_ov006_0214037c, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_02140370);
         data_ov006_02140318 |= 1;
     }
 
@@ -155,8 +189,6 @@ void func_ov006_020c6ca4(char* dst, char* src)
 namespace n020c6a9c {
 extern "C" {
 // @symbol func_ov006_020c6a9c
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z15ApproachLinear2Rsss(short *v, short target, short step);
 
@@ -210,7 +242,7 @@ typedef struct { int w[3]; } Blk3;
 typedef struct { int w[4]; } Blk4;
 typedef struct { int x, y, z, w; } Vec4;
 
-extern void func_020731dc(void *object, void *destructor, void **node);
+extern void __register_global_object(void *object, void *destructor, void **node);
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern void *_ZN7Vector3D1Ev(void *object);
 
@@ -229,14 +261,14 @@ void func_ov006_020c68f4(char* dst, char* src)
         data_ov006_02140394.x = -0x100000;
         data_ov006_02140394.y = 0;
         data_ov006_02140394.z = 0;
-        func_020731dc(&data_ov006_02140394, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_02140388);
+        __register_global_object(&data_ov006_02140394, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_02140388);
         data_ov006_02140310 |= 1;
     }
     if (!(data_ov006_02140320 & 1)) {
         data_ov006_021403ac.x = 0x100000;
         data_ov006_021403ac.y = 0;
         data_ov006_021403ac.z = 0;
-        func_020731dc(&data_ov006_021403ac, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_021403a0);
+        __register_global_object(&data_ov006_021403ac, (void *)&_ZN7Vector3D1Ev, (void**)&data_ov006_021403a0);
         data_ov006_02140320 |= 1;
     }
 
@@ -365,7 +397,7 @@ extern "C" {
 typedef struct { int x, y, z; } Vec3;
 typedef struct { int w[2]; } W2;
 
-extern void func_020731dc(void *object, void *destructor, void **node);
+extern void __register_global_object(void *object, void *destructor, void **node);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void *_ZN7Vector3D1Ev(void *object);
 
@@ -403,14 +435,14 @@ void func_ov006_020c64e4(char *c)
         data_ov006_021403d0.x = -0x100000;
         data_ov006_021403d0.y = 0;
         data_ov006_021403d0.z = 0;
-        func_020731dc(&data_ov006_021403d0, (void *)&_ZN7Vector3D1Ev, &data_ov006_021403c4);
+        __register_global_object(&data_ov006_021403d0, (void *)&_ZN7Vector3D1Ev, &data_ov006_021403c4);
         data_ov006_02140300 |= 1;
     }
     if ((data_ov006_0214030c & 1) == 0) {
         data_ov006_021403e8.x = 0x100000;
         data_ov006_021403e8.y = 0;
         data_ov006_021403e8.z = 0;
-        func_020731dc(&data_ov006_021403e8, (void *)&_ZN7Vector3D1Ev, &data_ov006_021403dc);
+        __register_global_object(&data_ov006_021403e8, (void *)&_ZN7Vector3D1Ev, &data_ov006_021403dc);
         data_ov006_0214030c |= 1;
     }
 
@@ -571,8 +603,6 @@ void func_ov006_020c6248(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xa
 namespace n020c61c4 {
 extern "C" {
 // @symbol func_ov006_020c61c4
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *out);
 void func_ov006_020c61c4(int this_) {
     int f24 = *(int*)(this_ + 0x24);
@@ -611,8 +641,6 @@ void func_ov006_020c6188(void *c){
 namespace n020c6088 {
 extern "C" {
 // @symbol func_ov006_020c6088
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -827,8 +855,6 @@ void func_ov006_020c5cf4(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(
 namespace n020c5bf8 {
 extern "C" {
 // @symbol func_ov006_020c5bf8
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -1137,8 +1163,6 @@ void func_ov006_020c561c(void *c){
 namespace n020c5530 {
 extern "C" {
 // @symbol func_ov006_020c5530
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -1191,8 +1215,6 @@ void func_ov006_020c54f4(void *c){
 namespace n020c53f8 {
 extern "C" {
 // @symbol func_ov006_020c53f8
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 
@@ -1536,8 +1558,6 @@ extern "C" void func_ov006_020c4cd8(struct Foo *c){
 /* ---- func_ov006_020c4c54 ---- */
 namespace n020c4c54 {
 // @symbol func_ov006_020c4c54
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 
 extern "C" void Vec3_MulScalar(Vector3 *res, Vector3 *v, int scalar);
 struct Sub {
@@ -1569,7 +1589,6 @@ extern "C" void func_ov006_020c4c54(int this_) {
 namespace n020c4c00 {
 extern "C" {
 // @symbol func_ov006_020c4c00
-/* recovered: shared common types */
 extern struct Matrix4x3 data_020a0e68;
 extern void Matrix4x3_FromTranslation(struct Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3* m, short angY);
@@ -1952,9 +1971,6 @@ void func_ov006_020c44b4(void *arg0, int arg1)
 /* ---- func_ov006_020c42bc ---- */
 namespace n020c42bc {
 extern "C" {
-/* func_ov006_020c42bc at 0x020c42bc (ov006)
- * Matched byte-for-byte with mwccarm 1.2/sp2p3.
- */
 typedef struct { int x, y, z; } Vec3;
 
 struct Obj {
@@ -2148,3 +2164,9 @@ int func_ov006_020c4060(void) {
 dMg3DHeyhoObjAdapter_c::dMg3DHeyhoObjAdapter_c() : mCommand(0)
 {
 }
+
+/* Definitions stay after the last .text function so they do not insert
+ * a function into the reverse-emitted .text run. Construction order is
+ * the model handle, then the animation handle. */
+HeyhoAdapterModelFilePtr data_ov006_02140330(0x217);
+HeyhoAdapterAnimationFileHandle data_ov006_02140338(0x218);

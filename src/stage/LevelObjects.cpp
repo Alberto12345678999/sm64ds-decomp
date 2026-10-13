@@ -1,19 +1,21 @@
 //cpp
-/* The level-object loader: seventeen category loaders plus LoadObjects'
- * dispatch and dScStage_c::LoadClsnAndObjects. ov002 .text 0x020fe190..0x020fea4c,
- * enrolled and canonical (delinks points here, not at per-function files).
+/* leftovers:
+ * - Source order stays highest address first. Reordering moves the run.
+ * - data_ov002_0210cbb8 and the small loader tables stay data. This TU
+ *   claims .text only.
+ * - DoorEntry and LVL_Overlay_Layout stay in this file. LVL_Overlay.h
+ *   still has no data members, and adding a record type there reaches
+ *   the other loaders.
+ * - dActor_c::Spawn stays the hand-spelled form. The header's s8/s16
+ *   tail truncates areaID and grows LoadStandardObjects by 4 bytes.
+ * - LoadMinimapChangeObject stays mangled. It takes Fix12<int> by value.
+ * - LoadTeleportSourceObjects stays a bottom-tested loop. A for
+ *   reorders the compare.
+ * - LoadExitObjects keeps the big-endian parameter assembly. A plain
+ *   load would reverse the bytes.
  *
- * Source runs REVERSE of ROM (highest address first). Do not reorder.
- * The fifteen category loaders come first, then LoadObjects dispatching
- * through the handler table, then dScStage_c::LoadClsnAndObjects -- define-
- * before-use top to bottom.
- *
- * Leftover: the handler table and the small loader tables stay data;
- *   this TU claims .text only (see the manifest).
- * Leftover: DoorEntry and LVL_Overlay_Layout stay TU-local; record
- *   types migrate to LVL_Overlay.h loader by loader.
- * Leftover: dActor_c::Spawn keeps its hand spelling (real s8/s16 tail
- *   truncates areaID; measured on LoadStandardObjects).
+ * Fifteen category loaders, then LoadObjects, then
+ * dScStage_c::LoadClsnAndObjects. ov002 .text 0x020fe190..0x020fea4c.
  */
 #include "decl_common.h"
 
@@ -22,29 +24,15 @@
 #include "dBgW.h"
 #include "PathPtr.h"
 
-/* ------------------------------------------------------------------------- *
- * Reconciled declarations.
- *
- * These are the seventeen files' `extern` blocks merged. Unlike pilot #1, where
- * every repeated declaration agreed, FOUR of these disagreed across files and
- * had to be decided; each decision is marked CONFLICT and argued at its site.
- * ------------------------------------------------------------------------- */
+/* The old per-loader files disagreed on four externs. One TU can keep
+ * one spelling of each. */
 extern "C" {
 
-/* CONFLICT 1 -- data_0209caa0's element type.
- * dScStage_c::LoadClsnAndObjects declared `extern int data_0209caa0[]` and reads
- * `data_0209caa0[2] & 0x80`; LoadEntranceObjects declared `extern u8
- * data_0209caa0[]` and reads `data_0209caa0[0x41]`. Both cannot be the array's
- * element type. The byte view wins because it is the finer one -- index 0x41 is
- * not expressible as an int index -- and dScStage_c's word read becomes an explicit
- * `((int *)data_0209caa0)[2]`, which is what the wider declaration was doing
- * implicitly. Measured byte-free on both functions. */
+/* data_0209caa0 is bytes. LoadEntranceObjects indexes [0x41].
+ * LoadClsnAndObjects reads word 2 through an int*. */
 extern u8 data_0209caa0[];
 
-/* CONFLICT 2 -- data_0209f5c0's type.
- * dScStage_c said `fBase_c *`, LoadEntranceObjects said `void *` and cast it back
- * to `fBase_c *` at the one place it used it. fBase_c * is the real type
- * (it is the parent handed to dBase_c::Spawn), so the cast disappears. */
+/* data_0209f5c0 is the parent passed to dBase_c::Spawn. */
 extern fBase_c *data_0209f5c0;
 
 extern u8   data_0209f21c;
@@ -63,19 +51,8 @@ extern u8   data_ov002_0210cb70[];
 extern u16  data_ov002_0210cb88[];
 extern u16  data_ov002_0210cbf4[];
 
-/* CONFLICT 3 -- dActor_c::Spawn's spelling.
- * Five of the seventeen call it. Four spelled the mangled symbol by hand as an
- * `extern "C"` free function, and LoadStandardObjects records why: calling the
- * real `dActor_c::Spawn` -- whose header gives the last two arguments as s8/s16 --
- * inserts truncates that make that function four bytes too long, because
- * `areaID` arrives as a full-word int. LoadEntranceObjects used the real method.
- * One TU can only have one, and the hand-spelled form is the one the bytes
- * require, so LoadEntranceObjects moves to it. The four hand-spelled copies also
- * disagreed among themselves -- `const Vector3 *` versus `const Vector3 &` for
- * the position, `Vector3s` versus `Vector3_16` for the rotation -- so all five
- * call sites now go through this one declaration. Measured byte-free on all
- * five, including LoadEntranceObjects' move off the real method.
- * local extern: the header's s8/s16 tail adds areaID truncates (+4 bytes). */
+/* local extern: the header's s8/s16 tail truncates areaID and adds 4
+ * bytes to LoadStandardObjects. All five call sites use this spelling. */
 void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
         u32 actorID, u32 spawnParam, const Vector3 *pos, const Vector3_16 *rot,
         s32 areaID, s32 deathTableID);
@@ -95,19 +72,14 @@ struct KCL_File;
 struct CLPS_Block;
 KCL_File *LoadFile(int handle);
 
-/* The handler table LoadObjects dispatches through. Believed to belong to this
- * TU (its fifteen entries are exactly the fifteen loaders below and nothing
- * else references them), but this round does not define it. */
+/* LoadObjects dispatches through this table. Its entries are the
+ * category loaders. This text-only TU does not define it. */
 extern void (*data_ov002_0210cbb8[])(void *, int, unsigned int);
 
 }   /* extern "C" */
 
-/* Per-category record types that include/LVL_Overlay.h does not carry yet.
- * The header's own banner says record types get added as their loader is
- * migrated; adding one is an include/ edit with its own blast radius over the
- * fifteen enrolled siblings, which this read-only pilot is not allowed to make.
- * So it stays here, and stays a TU-local declaration rather than a shadow of a
- * type that already exists elsewhere. */
+/* Door records. LVL_Overlay.h does not carry this type, and adding it
+ * there would recompile every loader that includes the header. */
 struct DoorEntry {                  /* 0xc bytes. LoadDoorObjects. */
     s16 x;                          /* 0x00 */
     s16 y;                          /* 0x02 */
@@ -117,10 +89,8 @@ struct DoorEntry {                  /* 0xc bytes. LoadDoorObjects. */
     u16 fielda;                     /* 0x0a */
 };
 
-/* The runtime layout of an LVL_Overlay. include/LVL_Overlay.h declares only the
- * class's NESTED table and record types -- it has no data members at all -- so
- * the outer object's own shape is still a shadow. Only
- * dScStage_c::LoadClsnAndObjects reads it. */
+/* The overlay object as LoadClsnAndObjects reads it. LVL_Overlay.h
+ * declares the nested tables and no data members. */
 struct LVL_Overlay_Layout {
     CLPS_Block           *clps;         /* 0x00 */
     LVL_Overlay::ObjTable *objTable;    /* 0x04 */
@@ -339,13 +309,7 @@ void LoadFogObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 /* One door actor per entry. The actor id and the high half of its parameter come
  * out of two small ov002 tables indexed by the low five bits of the record's
  * last halfword; the rotation is unpacked from two nibbles of field8 plus the
- * stored angle.
- *
- * This is the file that carried the most local shadow: its own `Vector3`,
- * `Vector3_16`, `DoorEntry` and -- uniquely among the seventeen -- its own
- * `class LVL_Overlay` with a THIRD spelling of ObjSubTable (`u8 b0; u8 count;
- * DoorEntry *entries;`). That spelling is layout-compatible with the header's,
- * so only the names change here. */
+ * stored angle. */
 // @symbol _Z15LoadDoorObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadDoorObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
@@ -465,16 +429,9 @@ void LoadObjects(LVL_Overlay::ObjTable& t, int areaID, u32 param)
     }
 }
 
-/* The public entry point, and LoadObjects' only caller anywhere in the ROM:
- * load the level's collision mesh, then run the object tables, then decide
- * whether the intro cutscene plays.
- *
- * In the one-function tree this called LoadObjects through the hand-spelled
- * `_Z11LoadObjectsRN11LVL_Overlay8ObjTableEij`, because that was the only way to
- * reach a symbol defined in a different file. Here LoadObjects is a real
- * function in the same TU, so it is called by name -- and the hand-spelled
- * extern had to go, since an `extern "C"` declaration of that literal name and
- * the C++ definition that mangles to it are the same linker symbol. */
+/* Loads the collision mesh, runs the object tables, then decides
+ * whether the intro cutscene plays. LoadObjects is in this TU, so the
+ * call is by name. */
 // @symbol _ZN10dScStage_c18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
 void dScStage_c::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
 {

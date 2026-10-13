@@ -1,10 +1,14 @@
 //cpp
 /* Bob-omb Squad. The player aims a Bob-omb with the stylus and fires it
  * up the board; a shot that reaches a target knocks the balls loose.
- * 75 functions (.text 0x020fa75c..0x020ff3ec), the class's whole linker
- * unit. Below it is the pair-match card game (d_s_mg_m_carlo2.cpp); above
- * it is dScMgPachinko_c_classInit, which stays in d_s_mg_pachinko.cpp, and
- * then the next class's destructor.
+ * 76 functions (.text 0x020fa75c..0x020ff420), the class's whole linker
+ * unit, closing with its factory dScMgPachinko_c_classInit. Below it is the
+ * pair-match card game (d_s_mg_m_carlo2.cpp); above it is the next class's
+ * destructor.
+ *
+ * _ZTS15dScMgPachinko_c 0x0213d960. _ZTI15dScMgPachinko_c 0x0213d948.
+ * _ZTV15dScMgPachinko_c 0x0213d9cc. The destructor is the key function:
+ * D1 at 0x020fa75c, D0 at 0x020fa780, no D2.
  *
  * The 30 functions from 0x020fc8c0 up were folded in from one-function
  * sources. The ball drawer at 0x020fc8c0 was the last to match: its
@@ -13,21 +17,20 @@
  * (declaration order, which of two locals is read first); each one is
  * noted at its function.
  *
- * The destructor is declared first in the header, so this TU owns the key
- * function and emits the vtable and RTTI; the ROM's own copies live
- * elsewhere and these are discarded at link time.
- *
  * Functions run in ROM order here, lowest address first, under `#pragma
  * defer_codegen off`. Do not reorder.
- *
- * Still raw: the func_ and data_ helpers are unnamed in symbols.txt. The
- * targets at 0x5bcc, the effects at 0x5958 and the scrolling background at
- * 0x5bfc are padding in the header, so they are reached by offset; so are
- * the pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset macros, which
- * take a pre-scaled offset rather than an index. Shot and ball fields go
- * through `p + i * 0x38`: indexing mShot[i]/mBall[i] is one word different,
- * so the multiply forms stay.
  */
+
+// leftovers:
+// - The func_ and data_ helpers are unnamed in symbols.txt.
+// - The targets at 0x5bcc, the effects at 0x5958 and the scrolling
+//   background at 0x5bfc are padding in the header, so they are reached by
+//   offset (callers: the target/effect updaters and the background scroller
+//   in this TU); so are the pipe fields behind the ST/CTA/FB/ACC/VEL
+//   byte-offset macros, which take a pre-scaled offset rather than an index.
+// - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
+//   is one word different, so the multiply forms stay; the r5 cursor locals
+//   in the two table walkers are named for the register they color.
 
 #pragma defer_codegen off
 
@@ -217,6 +220,34 @@ extern Ent7d0 data_ov006_02142624[];
 extern Ent7d0 data_ov006_02142644[];
 extern PMF2   data_ov006_0214266c[];
 extern Ent7d0 data_ov006_02142694[];
+
+/* The ROM {code pointer, adjustment} records the five tables copy from
+   (unlicensed .data), grouped by destination table in retail copy order. */
+extern Ent7d0 data_ov006_0213d8a8;
+extern Ent7d0 data_ov006_0213d8f0;
+extern Ent7d0 data_ov006_0213d8f8;
+extern Ent7d0 data_ov006_0213d8b8;
+extern Ent7d0 data_ov006_0213d908;
+extern Ent7d0 data_ov006_0213d8c0;
+extern Ent7d0 data_ov006_0213d8c8;
+extern Ent7d0 data_ov006_0213d898;
+extern Ent7d0 data_ov006_0213d920;
+extern Ent7d0 data_ov006_0213d8b0;
+extern Ent7d0 data_ov006_0213d880;
+extern Ent7d0 data_ov006_0213d8d8;
+extern Ent7d0 data_ov006_0213d930;
+extern Ent7d0 data_ov006_0213d940;
+extern Ent7d0 data_ov006_0213d938;
+extern Ent7d0 data_ov006_0213d8d0;
+extern PMF2   data_ov006_0213d878;
+extern PMF2   data_ov006_0213d8e8;
+extern PMF2   data_ov006_0213d8e0;
+extern PMF2   data_ov006_0213d890;
+extern PMF2   data_ov006_0213d888;
+extern PMF    data_ov006_0213d928;
+extern PMF    data_ov006_0213d918;
+extern PMF    data_ov006_0213d8a0;
+extern PMF    data_ov006_0213d900;
 
 /* This TU's own members, forward-declared for the callers below them. */
 extern void func_ov006_020fa7b8(char *thiz);
@@ -2821,3 +2852,53 @@ s32 dScMgPachinko_c::InitResources()
     unk_0a4 = 1;
     return 1;
 }
+
+/* Reconstructed source-style name: SM64DS proves dScMgPachinko_c through RTTI,
+ * allocation size, vtable identity, and the MG_PACHINKO registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MgBobOmbSquad_Spawn. */
+// @symbol dScMgPachinko_c_classInit
+extern "C" void *dScMgPachinko_c_classInit()
+{
+    return new dScMgPachinko_c;
+}
+
+/* The five state/record tables, defined in retail copy order: the 5-row
+   and 7-row Ent7d0 tables, the 4-row Ent7d0 table, the 5-row PMF2 table,
+   then the 4-row Entry table. mwcc emits __sinit_dScMgPachinko_c.cpp from
+   these definitions, copying the ROM .data records. */
+Ent7d0 data_ov006_02142644[5] = {
+    data_ov006_0213d8a8,
+    data_ov006_0213d8f0,
+    data_ov006_0213d8f8,
+    data_ov006_0213d8b8,
+    data_ov006_0213d908,
+};
+Ent7d0 data_ov006_02142694[7] = {
+    data_ov006_0213d8c0,
+    data_ov006_0213d8c8,
+    data_ov006_0213d898,
+    data_ov006_0213d920,
+    data_ov006_0213d8b0,
+    data_ov006_0213d880,
+    data_ov006_0213d8d8,
+};
+Ent7d0 data_ov006_02142624[4] = {
+    data_ov006_0213d930,
+    data_ov006_0213d940,
+    data_ov006_0213d938,
+    data_ov006_0213d8d0,
+};
+PMF2 data_ov006_0214266c[5] = {
+    data_ov006_0213d878,
+    data_ov006_0213d8e8,
+    data_ov006_0213d8e0,
+    data_ov006_0213d890,
+    data_ov006_0213d888,
+};
+Entry data_ov006_02142604[4] = {
+    {data_ov006_0213d928},
+    {data_ov006_0213d918},
+    {data_ov006_0213d8a0},
+    {data_ov006_0213d900},
+};

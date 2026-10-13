@@ -20,14 +20,14 @@
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
  * The registry factory daObjCtMecha11_c_classInit (0x02111b98) closes the
  * unit and ov035's .text.
- *
- * Leftover: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
- *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
- *   the method spelling homes that argument and changes the ROM ABI.
- * Leftover: func_020393a4 / func_02039394 / func_020393d4 / func_020396c0
- *   are small stores into dBgW's fields and callback slots; naming belongs
- *   with dBgW in arm9.
  */
+
+// leftovers: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
+// dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled
+// (the method spelling homes that argument and changes the ROM ABI -- this
+// TU's InitResources/Behavior/UpdateShadow calls). func_020393a4 /
+// func_02039394 / func_020393d4 / func_020396c0 are small stores into dBgW's
+// fields and callback slots; naming belongs with dBgW in arm9.
 
 #pragma defer_codegen off
 
@@ -40,12 +40,28 @@
  * does not call. */
 struct V3 { int x, y, z; };
 
+/* Resource handles constructed by this TU's static initializer. The
+ * constructor and destructor bodies stay out of line; mwcc registers them. */
+struct Mecha11ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha11ModelFilePtr(u32 fileID);
+    ~Mecha11ModelFilePtr();
+};
+
+struct Mecha11ClsnFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha11ClsnFilePtr(u32 fileID);
+    ~Mecha11ClsnFilePtr();
+};
+
 extern "C" {
 extern void Matrix4x3_FromRotationY(void *m, short ang);
 extern void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern short data_02082214[];
-extern SharedFilePtr RotatingClockHand_ClsnFile;
-extern SharedFilePtr RotatingClockHand_ModelFile;
+extern Mecha11ClsnFilePtr RotatingClockHand_ClsnFile;
+extern Mecha11ModelFilePtr RotatingClockHand_ModelFile;
 extern int DecIfAbove0_Short(char *p);
 extern int RandomIntInternal(char *p);
 extern void func_020393a4(int *p, int v);
@@ -59,8 +75,6 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_020393d4(void *p, void *v);
 extern void func_020396c0(void *p, int value);
 extern CLPS_Block data_ov035_02112238;
-extern SharedFilePtr data_ov035_02112cb0;
-extern SharedFilePtr data_ov035_02112cb8;
 extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
 }
@@ -77,11 +91,11 @@ int daObjCtMecha11_c::UpdateShadow()
     int d1 = mPosY - mFloorPosY;
     int ad = d1 < 0 ? -d1 : d1;
     if (ad > 0x7d0000) return ad;
-    int r2 = ad + 0x350000;
+    int clipD = ad + 0x350000;
     int half = ad / 2;
-    if (r2 < 0x350000) r2 = 0x350000;
+    if (clipD < 0x350000) clipD = 0x350000;
     mClipOffsetY = -half;
-    mClipRadius = (int)(r2 + ((unsigned)r2 >> 31)) >> 4;
+    mClipRadius = (int)(clipD + ((unsigned)clipD >> 31)) >> 4;
     Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mFloorPosY >> 3;
@@ -160,12 +174,12 @@ int daObjCtMecha11_c::Behavior()
 // @symbol _ZN16daObjCtMecha11_c13InitResourcesEv
 int daObjCtMecha11_c::InitResources()
 {
-    void *mf = Model::LoadFile(data_ov035_02112cb0);
+    void *mf = Model::LoadFile(RotatingClockHand_ModelFile);
     mModel.SetFile((BMD_File *)mf, 1, -1);
     mShadowModel.InitCuboid();
     UpdateModel();
     UpdateClsnPosAndRot();
-    KCL_File *kf = (KCL_File *)dBgW_Kc::LoadFile(data_ov035_02112cb8);
+    KCL_File *kf = (KCL_File *)dBgW_Kc::LoadFile(RotatingClockHand_ClsnFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, kf,
         mClsnMat, 0x1000, mAngleY, data_ov035_02112238);
@@ -194,3 +208,6 @@ extern "C" daObjCtMecha11_c *daObjCtMecha11_c_classInit()
 {
     return new daObjCtMecha11_c();
 }
+
+Mecha11ModelFilePtr RotatingClockHand_ModelFile(1488);
+Mecha11ClsnFilePtr RotatingClockHand_ClsnFile(1489);

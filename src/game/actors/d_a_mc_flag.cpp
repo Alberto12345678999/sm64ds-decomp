@@ -12,16 +12,31 @@
  *
  * deslop leftovers:
  * - ModelAnim::SetAnim stays mangled (Fix12<int> by value, wall 6az)
- * - data_ov009_02113eb8 / 02113eb0 SharedFilePtr handles: this TU consumes
- *   them; overlay .bss owns them. symbols.txt has no recovered names, so
- *   they are not coined.
  */
 
 #include "daMcFlag_c.h"
 #include "SharedFilePtr.h"
 
-extern "C" SharedFilePtr data_ov009_02113eb8;
-extern "C" SharedFilePtr data_ov009_02113eb0;
+/* The model handle constructs through func_02017acc and registers
+   func_02017ab4; the animation handle constructs through
+   SharedFilePtr::Construct and registers SharedFilePtr_Destruct_Anim.
+   The manifest aliases these. */
+struct McFlagModelFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    McFlagModelFileHandle(u32 fileID);
+    ~McFlagModelFileHandle();
+};
+
+struct McFlagAnimResFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    McFlagAnimResFileHandle(u32 fileID);
+    ~McFlagAnimResFileHandle();
+};
+
+extern "C" McFlagModelFileHandle data_ov009_02113eb8;
+extern "C" McFlagAnimResFileHandle data_ov009_02113eb0;
 
 extern "C" {
 void Matrix4x3_FromRotationY(void *, s16);
@@ -89,3 +104,6 @@ s32 daMcFlag_c::CleanupResources()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN10daMcFlag_cD0Ev
 // @symbol _ZN10daMcFlag_cD1Ev
+
+McFlagModelFileHandle data_ov009_02113eb8(0x68d);
+McFlagAnimResFileHandle data_ov009_02113eb0(0x68e);

@@ -11,32 +11,21 @@ port/unmatched/MeshCollider_DetectClsn_RaycastLine.cpp
 src/engine/collision/dBgW_Kc.cpp
 src/engine/collision/dBgW_Kc_itcm.cpp
 src/_ZN7dBgW_Kc8LoadFileER13SharedFilePtr.cpp
-src/engine/collision/dBgPc.cpp
-src/engine/collision/dBgPi.cpp
+# dBgPc, dBgPi, the CLPS block reference, the SurfaceInfo accessors and
+# the func_02037de8..func_02037e9c helpers this slice used to name
+# separately all live in the dBgCh_SphCrr_query translation unit now.
+src/engine/collision/dBgCh_SphCrr_query.cpp
 src/engine/collision/dBgCh_Lin.cpp
 # dBgW is one production translation unit; the constructor, the shared
 # func_02039624 init and the static ShouldPassThroughImpl this slice used
 # to name separately all live in it.
 src/engine/collision/dBgW.cpp
-src/engine/collision/CLPS_BlockRef.cpp
-src/func_020381cc.c
-src/func_02037eb0.c
 src/Vec3_Dist.c
-src/_ZNK11SurfaceInfo12CopyNormalToER7Vector3.cpp
-src/engine/collision/CLPS_BlockRef.cpp
-src/SurfaceInfo_TestFlag0x20.c
 src/func_020353d4.c
 src/func_02035408.c
 src/func_0203543c.c
-src/func_0203545c.c
-src/func_0203547c.c
-src/func_020354b0.c
-src/func_02037e14.c
-src/func_02037e20.c
-src/func_02037e2c.c
-src/func_02037e38.c
-src/func_02037de8.c
-src/func_02037e9c.c
+# func_0203545c, func_0203547c and func_020354b0 live in dBgCh.cpp now.
+src/engine/collision/dBgCh.cpp
 
 # Virtuals the host now needs as real methods: migrating a constructor to
 # real C++ makes its TU the vtable's key function on MSVC too, and MSVC

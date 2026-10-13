@@ -12,33 +12,28 @@
  * spellings are inferred; class ownership, bodies, calls and ordering are
  * proven.
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *   common.h FIRST: InitResources assigns IDENTITY_MATRIX4X3 onto mMatrix,
- *   and the ROM copies it as three 4-word ldm/stm pairs. common.h's flat
- *   s32 m[12] is that copy; math/Matrix.h's nested {Matrix3x3 r; Vector3 t;}
- *   splits it. UpdateShadow writes translation through m[9..11].
- *   Source is reverse ROM order: keep the ROM-high factory first and
- *   OnYoshiTryEat last. InitResources is the key function; with the inline
- *   destructor in the real header this emits retail D1 then D0 and the class
- *   RTTI/vtable, with no D2 and no forcing object.
- *   DaEyBmVector3Words, not Vector3: Vector3's empty D1 would instantiate in
- *   this TU.
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS:
- *   dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight and Player::Hurt
- *   pass Fix12<int> by value (notes/mwccarm-codegen.md 6az); the header method
- *   forms change the code size. dBgCh_Actr::Init also mangles Fix12i as `i`
- *   where the ROM has Fix12<int>.
- *   Particle::System::New / NewUnkCallback818: no shared header declares
- *   them.
- *   dBgCh_Actr_UpdateDiscreteNoLava_veneer (UpdateCollision): the named
- *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
- *
- * Known limits:
- *   data_ov071_021230b8 (the collider offset) is owned by overlay .data.
- *   UpdateCollision takes R10dBgCh_Actr; a pointer would generate identical
+ * leftovers:
+ * - common.h first is load-bearing: InitResources assigns
+ *   IDENTITY_MATRIX4X3 as three 4-word ldm/stm copies, which the flat
+ *   s32 m[12] spelling reproduces and math/Matrix.h's nested {r,t}
+ *   splits. UpdateShadow's m[9..11] writes come from the same layout.
+ * - ROM-descending source order: the factory stays first and
+ *   OnYoshiTryEat last. InitResources is the key function; the inline
+ *   destructor emits D1 then D0, the RTTI/vtable, and no D2.
+ * - DaEyBmVector3Words, not Vector3: a Vector3 stack local would
+ *   instantiate its vague-linkage D1 into this TU. EyBmVec3's
+ *   declared-not-defined destructor is that D1's alias.
+ * - dCcAcPos_c::Init, dBgCh_Actr::Init, DropShadowRadHeight and
+ *   Player::Hurt stay mangled: by-value Fix12<int> is wall 6az, and
+ *   dBgCh_Actr::Init's header also mangles Fix12i as `i` where the ROM
+ *   has 5Fix12IiE.
+ * - Particle::System::New / NewUnkCallback818 stay mangled: no shared
+ *   header declares them. The UpdateDiscreteNoLava veneer stays because
+ *   the named method is WRONG-DEST (ROM 0x02038420).
+ * - data_ov071_021230b8 is this TU's sinit-constructed bss;
+ *   g_profile_EYEKUN_BEAM is overlay data outside its .text.
+ * - UpdateCollision takes R10dBgCh_Actr: a pointer would emit identical
  *   ARM.
- *   g_profile_EYEKUN_BEAM is overlay data outside this TU's .text.
  */
 
 #include "common.h"
@@ -53,6 +48,20 @@ namespace Particle { struct Callback; }
  * these stack values are plain fixed-point words and must not instantiate its
  * otherwise unrelated vague-linkage D1 in this class TU. */
 struct DaEyBmVector3Words { Fix12i x, y, z; };
+
+/* Dynamic offset at 0x021230b8. A user constructor keeps the three stores in
+ * the sinit (bss, not .data). The undefined destructor is Vector3's D1. */
+struct EyBmVec3 {
+    int x, y, z;
+    EyBmVec3(int a, int b, int c) {
+        x = a;
+        y = b;
+        z = c;
+    }
+    ~EyBmVec3();
+};
+
+extern EyBmVec3 data_ov071_021230b8;
 
 /* Typed reconstruction of the actor-table descriptor at ov071:0x02122dc4. */
 struct DaEyBmSpawnInfo {
@@ -99,7 +108,6 @@ extern int _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *collision, dActor_c *actor, Fix12i radius, Fix12i height,
     void *a, void *b);
 extern Matrix4x3 IDENTITY_MATRIX4X3;
-extern DaEyBmVector3Words data_ov071_021230b8;
 }
 
 int daEyBm_c::InitResources()
@@ -147,7 +155,7 @@ int daEyBm_c::Behavior()
 
     beingEaten = (int)((flags & 0x20000) != 0);
     if (!beingEaten) {
-        offset = data_ov071_021230b8;
+        offset = *(DaEyBmVector3Words *)&data_ov071_021230b8;
         mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&offset);
 
         velocity.z = mHorzSpeed;
@@ -293,6 +301,8 @@ int daEyBm_c::OnYoshiTryEat()
 {
     return 4;
 }
+
+EyBmVec3 data_ov071_021230b8(0, -0x19000, 0);
 // @symbol _ZN8daEyBm_cD1Ev
 // @symbol _ZN8daEyBm_cD0Ev
 /* The inline class destructor and InitResources vtable instantiation emit both naturally. */

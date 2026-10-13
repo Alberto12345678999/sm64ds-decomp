@@ -69,8 +69,28 @@ unsigned int PlayLong(unsigned int, unsigned int, unsigned int,
 }
 
 extern SharedFilePtr data_ov002_0210d9f0;
-extern SharedFilePtr data_ov100_02148a54;
-extern SharedFilePtr data_ov100_02148a5c;
+
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x9c0d, collision file 0x9c0e). mwcc emits
+ * __sinit_daObjPathLift_c.cpp from those definitions. The wrapper names
+ * are local; the handle constructors and destructors are the ROM
+ * resource-family functions, aliased in the manifest. */
+struct PathLiftModelFile : SharedFilePtr {
+    u32 words[2];
+
+    PathLiftModelFile(u32 fileID);
+    ~PathLiftModelFile();
+};
+
+struct PathLiftCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PathLiftCollisionFilePtr(u32 fileID);
+    ~PathLiftCollisionFilePtr();
+};
+
+extern PathLiftModelFile data_ov100_02148a54;
+extern PathLiftCollisionFilePtr data_ov100_02148a5c;
 
 extern "C" {
 extern void *_ZN10dBgActor_cC2Ev(dBgActor_c *actor);
@@ -269,3 +289,9 @@ extern "C" void func_ov100_02146e70(daObjPathLift_c *self)
 /* TU's compiler_only_output rows, which check every one of them and then     */
 /* discard the copy dsd already delinks.                                     */
 /* -------------------------------------------------------------------------- */
+
+/* Static-init globals (was the handwritten __sinit_ov100_02147d7c shard).
+ * Definition order is the retail initializer's construction order: the
+ * model handle (file 0x9c0d), then the collision handle (file 0x9c0e). */
+PathLiftModelFile data_ov100_02148a54(0x9c0d);
+PathLiftCollisionFilePtr data_ov100_02148a5c(0x9c0e);

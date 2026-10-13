@@ -11,83 +11,51 @@
  * does not store that spelling. Historical aliases: Lakitu_Spawn and
  * Lakitu_SpawnInfo.
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *
- *   Ordinary .text is reverse source order: keep the ROM-high factory first
- *   and OnYoshiTryEat last. The inline dtor in the header emits retail D1
- *   then D0, and no D2. The factory stays `return new daJgm_c()` (MATCHES
- *   0x60); the leaf unsigned-long operator new forwards `_ZN7fBase_cnwEj`.
- *
- *   common.h must be first. The nested Matrix.h spelling scalarizes the
- *   12-word mat4x3 copies; UpdateModels writes the translation as m[9..11].
- *
- *   The sizeof wraps on DaJgmStateHandlers / daJgm_c / DaJgmSpawnInfo /
- *   DaJgmVector3Words.
- *
- *   DaJgmVector3Words: a local Vector3 emits a vague-linkage ~Vector3 into
- *   this text-only TU. UpdateHoverState / UpdateThrowState /
- *   UpdateWallAndWater / HandlePlayerCollision / DieAndDropCoins.
- *
- *   *(Vector3 *)&mPosX / mSpawnPosX: dActor_c has no Pos() accessor.
- *   UpdateHoverState / UpdateFlight / HandlePlayerCollision.
- *
- *   dBgCh_Actr_UpdateDiscreteNoLava_veneer is the retail call
- *   (UpdateFallState / UpdateWallAndWater). The named UpdateDiscreteNoLava
- *   is WRONG-DEST (ROM 0x02038420).
- *
- *   InitResources / UpdateThrowState keep `char *c = (char *)this` offset
- *   soup and the 64-bit launder on the spawn-pos stores (named fields CSE).
- *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS:
- *
- *   (a) Fix12<int> passed by value (notes/mwccarm-codegen.md 6az):
- *       dCcAcPos_c::Init / dBgCh_Actr::Init (InitResources; the dBgCh Init
- *       header's Fix12i mangles as i, the ROM's as 5Fix12IiE);
- *       ModelAnim::SetAnim / TextureSequence::SetFile (EnterHoverState /
- *       EnterThrowState / EnterFallState); dActor_c::DropShadowRadHeight /
- *       SpawnCoins (UpdateModels / DieAndDropCoins); Player::Bounce / Hurt
- *       (HandlePlayerCollision; Player.h has neither);
- *       Particle::System::NewSimple (EnterFallState; Particle__System.h has
- *       no NewSimple).
- *
- *   (b) No usable declaration: dActor_c::IsTooFarAwayFromPlayer is not on
- *       dActor_c.h (Behavior). dBgCh_Actr::GetWallResult is not on
- *       dBgCh_Actr.h (UpdateWallAndWater). Sound::PlayLong's header takes
- *       Vector3 & + s16 while this TU passes a pointer + unsigned
- *       (UpdateHoverState / UpdateThrowState). PlayBank0 puns mCamSpacePosX
- *       (dActor_c has no accessor), and a Vector3 local would emit a Vector3
- *       D1 destructor -- EnterFallState /
- *       HandlePlayerCollision.
- *
- *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss) in
- *   UpdateSpitState.
- *
- * Known limits:
- *   SharedFilePtr has no recovered fields; SetAnim / SetFile / Prepare read
- *   [1] as the loaded pointer (EnterHoverState / EnterThrowState /
- *   InitResources).
- *   OnTurnIntoEgg's R6Player and UpdateWallAndWater's R10dBgCh_Actr: a
- *   pointer generates identical ARM. SetState's `int`: the signedness is
- *   indistinguishable from other 32-bit forms.
- *   func_0201267c is the throw SFX 0xd2 at +0x74 (mCamSpacePosX) in
- *   UpdateThrowState; no named method in this TU.
- *
- * NOT OWNED BY THIS TU (this TU claims .text only):
- *   data_ov077_02127b50 / 7b48 / 7b38 / 7b28 / 7b40 / 7b20 / 7b30 -- the
- *     overlay BSS SharedFilePtr handles this TU loads, sets and releases.
- *     sinit 0x02127240 constructs them (file IDs 0x34c / 0x429 / 0x42a /
- *     0x34f / 0x34d / 0x350 / 0x34e); naming belongs with that sinit.
- *   data_ov077_02127238[] / 02127230[] -- the BCA/BTP pointer tables Init
- *     loads and Cleanup releases.
- *   data_ov077_02127bc4 -- the PMF state table SetState indexes; sinit
- *     copies ten ROM PMF constants into it.
- *   data_ov077_02127b88 -- the collision-offset Vector3 that InitResources /
- *     UpdateHoverState / UpdateThrowState feed dCcAcPos_c; sinit constructs
- *     it.
- *   data_02082214 -- the NitroSDK sin/cos table (EnterSpitState /
- *     UpdateHoverBob).
- *   data_020a0e68 -- the arm9 scratch Matrix4x3 UpdateModels writes.
- *   g_profile_JUGEM is overlay data outside this TU's .text.
+ * leftovers:
+ * - ROM-descending source order (factory first, OnYoshiTryEat last); the
+ *   inline destructor emits D1 then D0 with no D2. The factory stays
+ *   `return new daJgm_c()`; the leaf operator new forwards fBase_c's.
+ * - common.h first is load-bearing: the flat m[12] Matrix4x3 keeps the
+ *   12-word ldm/stm copies; UpdateModels writes translation as m[9..11].
+ * - DaJgmVector3Words (not Vector3): a Vector3 stack local emits a
+ *   vague-linkage ~Vector3 into this text-only TU. JgmVector3's
+ *   declared-not-defined destructor aliases the ROM's canonical D1.
+ * - *(Vector3 *)&mPosX / mSpawnPosX stay punned: dActor_c has no Pos()
+ *   accessor.
+ * - dBgCh_Actr_UpdateDiscreteNoLava_veneer stays: the named
+ *   UpdateDiscreteNoLava method is WRONG-DEST (ROM 0x02038420).
+ * - Fix12<int>-by-value callees stay mangled (6az): dCcAcPos_c::Init,
+ *   dBgCh_Actr::Init (whose header mangles Fix12i as `i`, not the ROM's
+ *   5Fix12IiE), ModelAnim::SetAnim, TextureSequence::SetFile,
+ *   DropShadowRadHeight, SpawnCoins, Player::Bounce / Hurt and
+ *   Particle::System::NewSimple (Particle__System.h lacks it).
+ * - dActor_c::IsTooFarAwayFromPlayer, ApproachLinear and cstd::fdiv have
+ *   no header decl, so they are declared locally;
+ *   ApproachLinear2 keeps C++ linkage (_Z15ApproachLinear2Rsss).
+ * - Sound::PlayLong stays a mangled extern, kept as a count holder: its
+ *   five named parameters hold the @NNN count. Unnaming them gives -5;
+ *   the Sound.h call emits the same bytes.
+ * - The manifest pins eight @NNN statics, so every named local, named
+ *   parameter and goto label ahead of __sinit counts (each advances the
+ *   counter by one, measured). Control-flow shape moves the counter too:
+ *   removing the UpdateFlight goto drops a label but measures +1. Names
+ *   that also hold that count: bodyFile /
+ *   heldFile and the loop counters in InitResources / CleanupResources,
+ *   `frame` in UpdateThrowState, the `offset` references in the hover and
+ *   throw collision updates, and the parameter names on the cstd::fdiv and
+ *   IsTooFarAwayFromPlayer prototypes.
+ * - The handle wrappers declare `id` / `file` locally; SharedFilePtr.h has
+ *   no fields.
+ * - OnTurnIntoEgg's R6Player and UpdateWallAndWater's R10dBgCh_Actr take
+ *   reference spelling; a pointer emits identical ARM. SetState's `int`
+ *   signedness is indistinguishable.
+ * - func_0201267c (throw SFX 0xd2 at +0x74, mCamSpacePosX),
+ *   data_02082214 (sin/cos pairs) and data_020a0e68 (arm9 scratch
+ *   matrix) keep linker names.
+ * - This TU claims .text only: the SharedFilePtr handles, the BCA/BTP
+ *   pointer tables, the PMF state table data_ov077_02127bc4 and the
+ *   collision-offset vector are defined at this file's tail (its sinit,
+ *   outside the claimed range); g_profile_JUGEM is overlay data.
  */
 
 #include "common.h"
@@ -99,9 +67,11 @@
 #include "Sound.h"
 #include "SurfaceInfo.h"
 
+/* local extern: no header declares ApproachLinear or cstd::fdiv. */
+int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
 
-namespace cstd { int fdiv(int, int); }
+namespace cstd { int fdiv(int numerator, int denominator); }
 
 /* Local three-word ABI value. Vector3 has a genuine non-trivial destructor;
  * these stack values are plain fixed-point words and must not instantiate its
@@ -129,18 +99,77 @@ struct DaJgmMatrixWords { int words[12]; };
 
 extern int _ZTV7daJgm_c[];
 
+/* File-scope objects at the end of this file construct the seven resource
+ * handles (model files 0x34c/0x429/0x42a, animation files 0x34f/0x34d,
+ * texture-sequence files 0x350/0x34e), fill the five-pair state table and
+ * set the collision-offset vector (0, -0x1e000, 0). mwcc emits
+ * __sinit_d_a_jgm.cpp from those definitions. The wrapper names are local;
+ * the handle constructors and destructors are the ROM resource-family
+ * functions, aliased in the manifest. The vector is a JgmVector3 (below),
+ * whose declared-not-defined destructor aliases the ROM's canonical
+ * Vector3 D1. */
+struct DaJgmModelFile : SharedFilePtr {
+    u32 id;
+    void *file;
+
+    DaJgmModelFile(u32 fileID);
+    ~DaJgmModelFile();
+};
+
+struct DaJgmAnimationFilePtr : SharedFilePtr {
+    u32 id;
+    void *file;
+
+    DaJgmAnimationFilePtr(u32 fileID);
+    ~DaJgmAnimationFilePtr();
+};
+
+struct DaJgmTexSequenceFilePtr : SharedFilePtr {
+    u32 id;
+    void *file;
+
+    DaJgmTexSequenceFilePtr(u32 fileID);
+    ~DaJgmTexSequenceFilePtr();
+};
+
+/* Collision-offset vector: three plain words built by an inline constructor
+ * (mwcc inlines the stores into __sinit) with a declared-not-defined
+ * destructor (never ~Vector3: a Vector3 here would instantiate its
+ * vague-linkage D1 into this TU, which deliberately avoids it); the
+ * destructor alias points at the ROM's canonical copy. */
+struct JgmVector3 {
+    int x, y, z;
+    JgmVector3(int a, int b, int c)
+    {
+        x = a;
+        y = b;
+        z = c;
+    }
+    ~JgmVector3();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov077_02127b50;
-extern SharedFilePtr data_ov077_02127b48;
-extern SharedFilePtr data_ov077_02127b38;
-extern SharedFilePtr data_ov077_02127b28;
-extern SharedFilePtr data_ov077_02127b40;
-extern SharedFilePtr data_ov077_02127b20;
-extern SharedFilePtr data_ov077_02127b30;
+extern DaJgmModelFile data_ov077_02127b50;
+extern DaJgmModelFile data_ov077_02127b48;
+extern DaJgmModelFile data_ov077_02127b38;
+extern DaJgmAnimationFilePtr data_ov077_02127b28;
+extern DaJgmAnimationFilePtr data_ov077_02127b40;
+extern DaJgmTexSequenceFilePtr data_ov077_02127b20;
+extern DaJgmTexSequenceFilePtr data_ov077_02127b30;
 extern SharedFilePtr *data_ov077_02127238[];
 extern SharedFilePtr *data_ov077_02127230[];
 extern DaJgmStateHandlers data_ov077_02127bc4[];
-extern Vector3 data_ov077_02127b88;
+extern JgmVector3 data_ov077_02127b88;
+extern DaJgmStateHandler data_ov077_021277e0;
+extern DaJgmStateHandler data_ov077_02127828;
+extern DaJgmStateHandler data_ov077_02127820;
+extern DaJgmStateHandler data_ov077_021277e8;
+extern DaJgmStateHandler data_ov077_02127818;
+extern DaJgmStateHandler data_ov077_02127800;
+extern DaJgmStateHandler data_ov077_021277f0;
+extern DaJgmStateHandler data_ov077_02127808;
+extern DaJgmStateHandler data_ov077_02127810;
+extern DaJgmStateHandler data_ov077_021277f8;
 extern s16 data_02082214[];
 extern Matrix4x3 data_020a0e68;
 extern Matrix4x3 IDENTITY_MATRIX4X3;
@@ -148,9 +177,7 @@ extern Matrix4x3 IDENTITY_MATRIX4X3;
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-extern void _Z14ApproachLinearRiii(int *a, int b, int c);
 extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *collision);
-extern void *_ZNK10dBgCh_Actr13GetWallResultEv(dBgCh_Actr *collision);
 extern void func_0201267c(int id, void *pos);
 
 extern void Matrix4x3_FromRotationY(void *m, int angle);
@@ -162,7 +189,7 @@ extern void MulMat4x3Mat4x3(void *a, void *b, void *out);
 extern void Vec3_LslInPlace(void *v, int sh);
 extern void Vec3_Asr(void *d, void *s, int sh);
 
-extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(dActor_c *, int);
+extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(dActor_c *actor, int distance);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     ModelAnim *model, void *file, int flags, int speed, unsigned int startFrame);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
@@ -183,10 +210,11 @@ extern void _ZN6Player6BounceE5Fix12IiE(Player *player, int vel);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, const DaJgmVector3Words *pos, unsigned int a, int vel,
     unsigned int b, unsigned int c, unsigned int d);
+/* local extern: kept as a count holder: its five named parameters hold
+ * the @NNN count. Sound.h's PlayLong emits the same bytes. */
 extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(
     unsigned int handle, unsigned int a, unsigned int id,
     const Vector3 *pos, unsigned int e);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int n, const Vector3 &v);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
     unsigned int n, int x, int y, int z);
 }
@@ -224,43 +252,40 @@ void daJgm_c::OnTurnIntoEgg(Player &player)
 // @symbol _ZN7daJgm_c13InitResourcesEv
 s32 daJgm_c::InitResources()
 {
-    char *c = (char *)this;
     Model::LoadFile(data_ov077_02127b38);
-    ((ModelBase *)(c + 0xd4))->SetFile(
-        (BMD_File *)Model::LoadFile(data_ov077_02127b50), 1, 1);
-    ((ModelBase *)(c + 0x138))->SetFile(
-        (BMD_File *)Model::LoadFile(data_ov077_02127b48), 1, 1);
+    BMD_File *bodyFile = (BMD_File *)Model::LoadFile(data_ov077_02127b50);
+    mModelAnim.SetFile(bodyFile, 1, 1);
+    BMD_File *heldFile = (BMD_File *)Model::LoadFile(data_ov077_02127b48);
+    mModel.SetFile(heldFile, 1, 1);
     for (int i = 0; i < 2; i++)
         dExtFrameCtrl_c::LoadFile(*data_ov077_02127238[i]);
     for (int i = 0; i < 2; i++) {
-        void *t = (void *)data_ov077_02127230[i];
-        TextureSequence::LoadFile(*(SharedFilePtr *)t);
+        DaJgmTexSequenceFilePtr *t =
+            (DaJgmTexSequenceFilePtr *)data_ov077_02127230[i];
+        TextureSequence::LoadFile(*t);
         TextureSequence::Prepare(
-            *(BMD_File *)((int *)&data_ov077_02127b50)[1],
-            *(BTP_File *)((int *)t)[1]);
+            *(BMD_File *)data_ov077_02127b50.file, *(BTP_File *)t->file);
     }
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        (dCcAcPos_c *)(c + 0x1c4), (dActor_c *)c, (Vector3 *)&data_ov077_02127b88,
+        &mdCcAcPos_c, this, (Vector3 *)&data_ov077_02127b88,
         0x41000, 0x78000, 0x200002, 0x6eff0);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-        (dBgCh_Actr *)(c + 0x204), (dActor_c *)c, 0x2d000, 0x2d000, 0, 0);
+        &mWithMeshClsn, this, 0x2d000, 0x2d000, 0, 0);
 
-    *(int *)(((int)(c + 0x9c)) & 0xFFFFFFFFFFFFFFFFLL) = 0;
-    *(int *)(((int)(c + 0xa0)) & 0xFFFFFFFFFFFFFFFFLL) = 0;
+    mVertAccel = 0;
+    mTerminalVelocity = 0;
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    *(int *)(((int)(c + 0x3f8)) & 0xFFFFFFFFFFFFFFFFLL) =
-        *(int *)(((int)(c + 0x5c)) & 0xFFFFFFFFFFFFFFFFLL);
-    *(int *)(((int)(c + 0x3fc)) & 0xFFFFFFFFFFFFFFFFLL) =
-        *(int *)(((int)(c + 0x60)) & 0xFFFFFFFFFFFFFFFFLL);
-    mSpawnPosZ = *(int *)(((int)(c + 0x64)) & 0xFFFFFFFFFFFFFFFFLL);
-    *(int *)(((int)(c + 0x410)) & 0xFFFFFFFFFFFFFFFFLL) = 0;
+    mSpawnPosX = mPosX;
+    mSpawnPosY = mPosY;
+    mSpawnPosZ = mPosZ;
+    mSoundHandle = 0;
 
     SetState(0);
-    *(Matrix4x3 *)((char *)&mMatrix) = IDENTITY_MATRIX4X3;
+    mMatrix = IDENTITY_MATRIX4X3;
     UpdateModels();
     return 1;
 }
@@ -305,11 +330,10 @@ s32 daJgm_c::CleanupResources()
     data_ov077_02127b48.Release();
     data_ov077_02127b38.Release();
 
-    int i;
-    for (i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
         data_ov077_02127238[i]->Release();
 
-    for (i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
         data_ov077_02127230[i]->Release();
 
     return 1;
@@ -341,11 +365,11 @@ s32 daJgm_c::EnterHoverState()
 {
     mHorzSpeed = 0xc000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, *(void **)((char *)&data_ov077_02127b28 + 4),
+        &mModelAnim, data_ov077_02127b28.file,
         0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, *(void **)((char *)&data_ov077_02127b20 + 4),
+        &mTextureSequence, data_ov077_02127b20.file,
         0, 0x1000, 0);
     mTextureSequence.speed = 0x1000;
     mTimer = 0x96;
@@ -358,34 +382,30 @@ s32 daJgm_c::UpdateHoverState()
 {
     mHorzSpeed = 0xc000;
     if (DecIfAbove0_Byte(&mTimer) == 0) {
+        /* Nested on purpose: one flat && chain is 12 bytes shorter. */
         Player *p = ClosestNonVanishPlayer();
-        if (p == 0)
-            goto store2;
-        if (p->mPosY >= mPosY)
-            goto store1;
-        if (Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&p->mPosX) >= 0x190000)
-            goto store1;
-        if (CountSpinies() >= 4)
-            goto store1;
-        SetState(1);
-        goto tail;
-    store1:
-        mTimer = 0x96;
-        goto tail;
-    store2:
-        mTimer = 0x96;
+        if (p != 0) {
+            if (p->mPosY < mPosY
+                && Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&p->mPosX) < 0x190000
+                && CountSpinies() < 4)
+                SetState(1);
+            else
+                mTimer = 0x96;
+        } else {
+            mTimer = 0x96;
+        }
     }
-tail:
     UpdateFlight();
     UpdateHoverBob();
     mModelAnim.Advance();
     mTextureSequence.Advance();
     HandlePlayerCollision();
     {
+        const JgmVector3 &offset = data_ov077_02127b88;
         DaJgmVector3Words pos;
-        pos.y = data_ov077_02127b88.y + mBobOffsetY;
-        pos.x = data_ov077_02127b88.x;
-        pos.z = data_ov077_02127b88.z;
+        pos.y = offset.y + mBobOffsetY;
+        pos.x = offset.x;
+        pos.z = offset.z;
         mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&pos);
     }
     mdCcAcPos_c.Clear();
@@ -399,13 +419,13 @@ tail:
 s32 daJgm_c::EnterThrowState()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, *(void **)((char *)&data_ov077_02127b40 + 4),
+        &mModelAnim, data_ov077_02127b40.file,
         0, 0x1000, 0);
     mModelAnim.SetFlags(0x40000000);
     mModelAnim.speed = 0x1000;
     mModelAnim.currFrame = 0;
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, *(void **)((char *)&data_ov077_02127b30 + 4),
+        &mTextureSequence, data_ov077_02127b30.file,
         0, 0x1000, 0);
     mTextureSequence.SetFlags(0x40000000);
     mTextureSequence.speed = 0x1000;
@@ -417,25 +437,26 @@ s32 daJgm_c::EnterThrowState()
 // @symbol _ZN7daJgm_c16UpdateThrowStateEv
 s32 daJgm_c::UpdateThrowState()
 {
-    char *c = (char *)this;
-    if ((((unsigned int)*(int *)(c + 0x12c) << 4) >> 16) == 0x3a) {
+    unsigned int frame = (unsigned int)(mModelAnim.currFrame << 4) >> 16;
+    if (frame == 0x3a) {
         dActor_c::Spawn(
-            0x104, 0, *(Vector3 *)(c + 0x404), (Vector3_16 *)(c + 0x8c),
-            *(signed char *)(c + 0xcc), -1);
-        func_0201267c(0xd2, c + 0x74);
+            0x104, 0, *(Vector3 *)&mThrowPosX, (Vector3_16 *)&mAngleX,
+            mAreaId, -1);
+        func_0201267c(0xd2, &mCamSpacePosX);
     }
-    if (((dExtFrameCtrl_c *)(c + 0x124))->Finished())
+    if (mModelAnim.Finished())
         SetState(0);
     UpdateFlight();
     UpdateHoverBob();
-    ((dExtFrameCtrl_c *)(c + 0x124))->Advance();
-    ((dExtFrameCtrl_c *)(c + 0x1b0))->Advance();
+    mModelAnim.Advance();
+    mTextureSequence.Advance();
     HandlePlayerCollision();
     {
+        const JgmVector3 &offset = data_ov077_02127b88;
         DaJgmVector3Words pos;
-        pos.y = data_ov077_02127b88.y + mBobOffsetY;
-        pos.x = data_ov077_02127b88.x;
-        pos.z = data_ov077_02127b88.z;
+        pos.y = offset.y + mBobOffsetY;
+        pos.x = offset.x;
+        pos.z = offset.z;
         mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&pos);
     }
     mdCcAcPos_c.Clear();
@@ -458,11 +479,11 @@ s32 daJgm_c::EnterYoshiMouthState()
 s32 daJgm_c::UpdateYoshiMouthState()
 {
     if (((mFlags & 0x40000) ? 1 : 0) != 0) {
-        char *p = (char *)mCarryActor;
-        int *src = (int *)(p + 0x5c);
-        mPosX = src[0];
-        mPosY = src[1];
-        mPosZ = src[2];
+        dActor_c *carrier = mCarryActor;
+        s32 *carrierPos = &carrier->mPosX;
+        mPosX = carrierPos[0];
+        mPosY = carrierPos[1];
+        mPosZ = carrierPos[2];
     }
     {
         int flags = mFlags;
@@ -538,14 +559,14 @@ s32 daJgm_c::UpdateSpitState()
 // @symbol _ZN7daJgm_c14EnterFallStateEv
 s32 daJgm_c::EnterFallState()
 {
-    _ZN5Sound9PlayBank0EjRK7Vector3(9, *(Vector3 *)&mCamSpacePosX);
+    Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, *(void **)((char *)&data_ov077_02127b28 + 4),
+        &mModelAnim, data_ov077_02127b28.file,
         0, 0x1000, 0);
     mModelAnim.speed = 0x4000;
     {
@@ -567,12 +588,8 @@ s32 daJgm_c::UpdateFallState()
     mModelAnim.Advance();
     UpdatePos(&mdCcAcPos_c);
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&mWithMeshClsn);
-    if (!mWithMeshClsn.JustHitGround()) {
-        if (DecIfAbove0_Byte(&mTimer))
-            goto end;
-    }
-    DieAndDropCoins();
-end:
+    if (mWithMeshClsn.JustHitGround() || !DecIfAbove0_Byte(&mTimer))
+        DieAndDropCoins();
     return 1;
 }
 
@@ -621,7 +638,7 @@ void daJgm_c::UpdateModels()
 
     data_020a0e68 = mModelAnim.mat4x3;
     MulMat4x3Mat4x3(
-        (char *)mModelAnim.data.transforms + 0x90, &data_020a0e68,
+        &mModelAnim.data.transforms[3], &data_020a0e68,
         &data_020a0e68);
 
     mThrowPosX = data_020a0e68.m[9];
@@ -646,8 +663,8 @@ void daJgm_c::UpdateWallAndWater(dBgCh_Actr &collision)
 
     dBgCh_Actr_UpdateDiscreteNoLava_veneer(&collision);
     if (collision.IsOnWall() != 0) {
-        SurfaceInfo *info = (SurfaceInfo *)(
-            (char *)_ZNK10dBgCh_Actr13GetWallResultEv(&collision) + 4);
+        SurfaceInfo *info =
+            (SurfaceInfo *)((char *)collision.GetWallResult() + 4);
         info->CopyNormalTo(*(Vector3 *)&nrm);
         mTurnDir ^= 1;
     }
@@ -671,11 +688,11 @@ void daJgm_c::UpdateWallAndWater(dBgCh_Actr &collision)
 // @symbol _ZN7daJgm_c21HandlePlayerCollisionEv
 void daJgm_c::HandlePlayerCollision()
 {
-    unsigned char *other;
+    dActor_c *other;
     int b;
 
     if (FindEgg(mdCcAcPos_c) != 0) {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, *(const Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, *(const Vector3 *)&mCamSpacePosX);
         DieAndDropCoins();
         return;
     }
@@ -684,12 +701,12 @@ void daJgm_c::HandlePlayerCollision()
         unsigned int id = mdCcAcPos_c.otherOwner;
         if (id == 0)
             return;
-        other = (unsigned char *)dActor_c::FindWithID(id);
+        other = dActor_c::FindWithID(id);
     }
     if (other == 0)
         return;
 
-    b = (int)(((dActor_c *)other)->actorID == 0xbf);
+    b = (int)(other->actorID == 0xbf);
     if (b == 0)
         return;
 
@@ -704,13 +721,13 @@ void daJgm_c::HandlePlayerCollision()
         || BumpedUnderneathByPlayer(*player) != 0
         || player->IsOnShell() != 0
         || player->mIsMetal != 0) {
-        _ZN5Sound9PlayBank0EjRK7Vector3(9, *(const Vector3 *)&mCamSpacePosX);
+        Sound::PlayBank0(9, *(const Vector3 *)&mCamSpacePosX);
         DieAndDropCoins();
         return;
     }
 
     if (mdCcAcPos_c.hitFlags & 0x10) {
-        mPrevAngleY = Vec3_HorzAngle((Vector3 *)(other + 0x5c), (Vector3 *)&mPosX);
+        mPrevAngleY = Vec3_HorzAngle((Vector3 *)&player->mPosX, (Vector3 *)&mPosX);
         mAngleY = (short)(mPrevAngleY + 0x8000);
         player->IncMegaKillCount();
         SetState(4);
@@ -751,8 +768,9 @@ void daJgm_c::DieAndDropCoins()
 // @symbol _ZN7daJgm_c12UpdateFlightEv
 void daJgm_c::UpdateFlight()
 {
+    /* The goto is kept: the goto-free if/else emits 4 more bytes. */
     Player *p = ClosestNonVanishPlayer();
-    char *tgt;
+    s32 *target;
     int chaseRange;
     if (p != 0) {
         chaseRange = (param1 != 0) ? 0x1068000 : 0x7d0000;
@@ -761,24 +779,24 @@ void daJgm_c::UpdateFlight()
             if (d < 0)
                 d = -d;
             if (d < 0x5dc000) {
-                tgt = (char *)&p->mPosX;
-                goto L64;
+                target = &p->mPosX;
+                goto haveTarget;
             }
         }
-        tgt = (char *)&mSpawnPosX;
+        target = &mSpawnPosX;
     } else {
-        tgt = (char *)&mSpawnPosX;
+        target = &mSpawnPosX;
     }
-L64:
+haveTarget:
     {
-        int hd = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)tgt);
-        short ha = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)tgt);
+        int hd = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)target);
+        short ha = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)target);
         ApproachLinear(mAngleY, ha, 0x5e8);
         if (mTurnDir != 0)
             mPrevAngleY = (short)(mAngleY - TurnOffsetFromDist(hd));
         else
             mPrevAngleY = (short)(mAngleY + TurnOffsetFromDist(hd));
-        _Z14ApproachLinearRiii(&mPosY, *(int *)(tgt + 4) + 0x12c000, 0x2000);
+        ApproachLinear(mPosY, target[1] + 0x12c000, 0x2000);
         UpdatePos(&mdCcAcPos_c);
         UpdateWallAndWater(mWithMeshClsn);
     }
@@ -814,7 +832,7 @@ int daJgm_c::CountSpinies()
 void daJgm_c::UpdateHoverBob()
 {
     unsigned short v = (unsigned short)mBobAngle;
-    short s = *(short *)((char *)data_02082214 + ((v >> 4) << 2));
+    short s = data_02082214[(v >> 4) * 2];
     long long prod = (long long)s * 0x27000;
     mBobOffsetY = (int)((prod + 0x800) >> 12);
     mBobAngle = (short)(mBobAngle + 0x700);
@@ -825,6 +843,28 @@ int daJgm_c::OnAimedAtWithEgg()
 {
     return 245760;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov077_02127240 shard).
+ * Definition order is the retail initializer's construction order: the three
+ * model handles (files 0x34c/0x429/0x42a), the two animation handles (files
+ * 0x34f/0x34d), the two texture-sequence handles (files 0x350/0x34e), then
+ * the five-pair state table copied from the ROM PMF constants, then the
+ * collision-offset vector. */
+DaJgmModelFile data_ov077_02127b50(0x34c);
+DaJgmModelFile data_ov077_02127b48(0x429);
+DaJgmModelFile data_ov077_02127b38(0x42a);
+DaJgmAnimationFilePtr data_ov077_02127b28(0x34f);
+DaJgmAnimationFilePtr data_ov077_02127b40(0x34d);
+DaJgmTexSequenceFilePtr data_ov077_02127b20(0x350);
+DaJgmTexSequenceFilePtr data_ov077_02127b30(0x34e);
+DaJgmStateHandlers data_ov077_02127bc4[5] = {
+    {data_ov077_021277e0, data_ov077_02127828},
+    {data_ov077_02127820, data_ov077_021277e8},
+    {data_ov077_02127818, data_ov077_02127800},
+    {data_ov077_021277f0, data_ov077_02127808},
+    {data_ov077_02127810, data_ov077_021277f8}
+};
+JgmVector3 data_ov077_02127b88(0, -0x1e000, 0);
 
 // @symbol _ZN7daJgm_c13OnYoshiTryEatEv
 int daJgm_c::OnYoshiTryEat()

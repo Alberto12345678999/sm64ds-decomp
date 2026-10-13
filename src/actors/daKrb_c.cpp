@@ -1,75 +1,55 @@
 //cpp
 /* daKrb_c -- Goomba (KURIBO 200 / KURIBO_S 201 / KURIBO_L 202), ov084.
  *
- * ov084 is mixed (BOB_OMB_BUDDY / GOOMBA / PIRANHA_PLANT). RTTI names this
- * class daKrb_c; the debug table names KURIBO / KURIBO_S / KURIBO_L. One
- * class, three C-linkage factories. Base is dCapEnemy_c. This TU is the
- * .text range 0x02129020..0x0212c10c: 35 functions: the two destructor
- * variants, 30 methods and helpers, and the three factories.
+ * RTTI ov084 0x021308d4 is 7daKrb_c; _ZTI7daKrb_c at 0x021308e0 names
+ * dCapEnemy_c as its base. The tree used to call this class Goomba.
+ * One class, three factories. Text is 0x02129020..0x0212c10c.
+ * defer_codegen off is load-bearing: the out-of-line destructor
+ * emits D1, then D0, then a D2 the cartridge does not keep.
  *
- * What the class does. mGoombaType (KURIBO_S 0, KURIBO 1, KURIBO_L 2, and 3
- * for the minions the Goomba King daKuriKing_c spawns) picks the per-type
- * tables. mState picks one of five handlers (STATE_*, in daKrb_c.h): walk
- * (wander / chase / follow the king), hop start, airborne, tumble after the
- * cap is knocked off, and pause. Behavior runs, in order: the Yoshi-eat
- * update (func_ov084_02129a00), the state handler, the hit reaction
- * (func_ov084_02129ed4), position update, ledge check, collision update and
- * the stuck check. Rewards (a silver star carried by the Goomba) are
- * handled by func_ov084_02129864 / func_ov084_021296cc.
+ * mGoombaType picks the per-type tables (small, normal, large, and
+ * the minions the Goomba King spawns). mState picks walk, hop,
+ * airborne, tumble, or pause. Behavior runs the Yoshi-eat update,
+ * the state handler, the hit reaction, the position update, the
+ * ledge check, collision, and the stuck check.
  *
- * Factories are `return new daKrb_c()`. `#pragma defer_codegen off` is
- * load-bearing: out-of-line D1 then D0 then homeless D2 matches the
- * cartridge (deferred codegen emits D2, D0, D1).
- *
- * Units used in the comments below: Fix12 values are shown as world units
- * (0x1000 = 1.0, so 0x6c000 = 108.0); angles are 16-bit (0x10000 = a full
- * turn, 0x4000 = a quarter turn, 0x800 = 11.25 degrees).
- *
- * Leftover, remeasured on this TU:
+ * leftovers:
  * - ModelAnim::SetAnim, MaterialChanger::SetFile, dCcAc_c::Init,
- *   DropShadowRadHeight and KillByInvincibleChar take Fix12<int> by value.
- *   The header call size-DIFFs (0212a6f8, 02129a00, 0212a580, 02129ed4,
- *   InitResources). The bridges below pass those bits as scalars and still
- *   name the 5Fix12IiE symbols.
- * - dBgCh_Actr::Init stays the mangled free call. types.h makes Fix12i a
- *   plain s32, so the header method mangles as int and the link fails.
- * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer are
- *   not declared on those classes. The scalar bridges stay in this file.
- * - dBgCh_Actr::GetFloorResult and dCapEnemy_c::UpdateCapPos have no header
- *   member. UpdateCapPos still needs the unsigned Vector3_16_local and the
- *   equal-arm ternary so r2 is set up before r1.
- * - dExtFrameCtrl_c::Advance is called on the subobject at +0x3c0. mModelAnim.Advance()
- *   this-adjusts.
- * - func_ov084_021290d4 recomputes the chase radius at each store. A named
- *   temporary size-DIFFs, and mUnstickTimer spelled the same way on both sides
- *   of the decrement CSEs the halfword.
- * - OnTurnIntoEgg and the reward helper load param1 through a raw word.
- *   Spelling both sides as the member CSEs +8.
- * - mInitAngleY is the spawn heading but func_ov084_02129cf4 overwrites it
- *   with the chase / home heading, so the name only fits InitResources.
- *   mWanderRerollTimer is s16 in the header and this TU loads it unsigned.
- * - Flags / Flag stay. The bitfield test is lsl/lsrs; `&= ~n` on the u8
- *   member compiles to and, and the ROM has bic.
- * - data_ov084_02130cf8 is the BMD. 02130278[7] is the BCA table.
+ *   DropShadowRadHeight and KillByInvincibleChar take Fix12<int> by
+ *   value. The header calls size-DIFF 0212a6f8, 02129a00, 0212a580,
+ *   02129ed4 and InitResources. The bridges pass those bits as
+ *   scalars and still name the 5Fix12IiE symbols.
+ * - dBgCh_Actr::Init stays mangled. Fix12i is a plain s32, so the
+ *   header method mangles as int.
+ * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer
+ *   are not declared on those classes.
+ * - dBgCh_Actr::GetFloorResult and dCapEnemy_c::UpdateCapPos have no
+ *   header member. UpdateCapPos still needs the unsigned
+ *   Vector3_16_local and the equal-arm ternary so r2 is set up
+ *   before r1.
+ * - dExtFrameCtrl_c::Advance is called on the subobject at +0x3c0.
+ *   mModelAnim.Advance() this-adjusts.
+ * - func_ov084_021290d4 recomputes the chase radius at each store.
+ *   A named temporary DIFFs, and spelling mUnstickTimer on both
+ *   sides of the decrement folds the halfword.
+ * - OnTurnIntoEgg and the reward helper load param1 through a raw
+ *   word. Spelling both sides as the member folds +8.
+ * - mInitAngleY is the spawn heading, but func_ov084_02129cf4
+ *   overwrites it with the chase heading. mWanderRerollTimer is s16
+ *   in the header and this TU loads it unsigned.
+ * - The flag test is lsl/lsrs. `&= ~n` on the u8 compiles to and;
+ *   the ROM has bic.
+ * - data_ov084_02130cf8 is the BMD. 02130278 is the BCA table.
  *   02130ce0/ce8/cf0/cc0/cc8/cd0 are BCA handles (SetAnim reads [1]).
- *   0213089c / 0213088c are BMA. 02130258 / 02130208 / 02130228 /
- *   02130238 / 02130248 / 02130268 / 02130204 / 02130218 are the per-type
- *   tables.
- * - Render keeps a volatile Vector3 backup of the scale (frame slot).
- * - func_ov002_020aea30 takes the receiver, the attacker, and a nullable
- *   collision pointer.
- * - Still unrecovered: what dCcAc_c flag bits 0x4 and 0x20000 mean (they are
- *   set and cleared around hops and knock-aways), what hit bit 0x20000 is,
- *   the king's mState 4 that unk_475 watches, the dEnemyBase_c field unk_104
- *   (values 0 and 5 only are tested here), what sounds 0xd0 / 0xe0 / 0xd6 / 0x110 /
- *   0x111 / 0x118 / 0x13a / 0x13b actually are, what mFlags bits 0x8 and
- *   0x10000000 are used for here, what data_0209f2f8 values 6 and 0x1b mean,
- *   the roles of unk_467 and unk_475, that nothing in this TU enters
- *   STATE_PAUSE (its handler 0212a6f8 is reachable only through the table),
- *   that dCapEnemy_c::GetCapState has no header member, and the names of the BCA / BMA
- *   handles, which are described by when they are selected.
+ *   0213089c / 0213088c are BMA. The 021302xx words are the per-type
+ *   tables. Render keeps a volatile Vector3 backup of the scale.
+ * - What dCcAc_c bits 0x4 and 0x20000 mean, the king's mState 4 that
+ *   unk_475 watches, dEnemyBase_c::unk_104, sounds 0xd0 / 0xe0 /
+ *   0xd6 / 0x110 / 0x111 / 0x118 / 0x13a / 0x13b, mFlags bits 0x8 and
+ *   0x10000000, and data_0209f2f8 values 6 and 0x1b are not named here.
+ *   Nothing in this TU enters STATE_PAUSE except through the table.
+ *   dCapEnemy_c::GetCapState has no header member.
  */
-
 #pragma defer_codegen off
 
 #include "daKrb_c.h"
@@ -98,8 +78,38 @@ typedef struct { unsigned char b0 : 1; } Flag;
 struct BMD_File;
 struct BMA_File;
 
-/* SharedFilePtr.h declares no fields; the loaded pointer is the second word. */
-#define SHARED_FILE(h) (((void **)&(h))[1])
+/* A resource handle as the ROM lays it out: {id, loaded file}. The files the
+   Goombas load are read through .ptr. Model handles construct through
+   func_02017acc and destroy through func_02017ab4. Animation handles
+   construct through SharedFilePtr::Construct and destroy through
+   SharedFilePtr_Destruct_Anim. The manifest aliases those undefined members
+   onto the ROM symbols. */
+struct KrbModelFilePtr : SharedFilePtr {
+    u32 id; void *ptr;
+
+    KrbModelFilePtr(u32 fileID);
+    ~KrbModelFilePtr();
+};
+
+struct KrbAnimationFileHandle : SharedFilePtr {
+    u32 id; void *ptr;
+
+    KrbAnimationFileHandle(u32 fileID);
+    ~KrbAnimationFileHandle();
+};
+
+/* A state handler: data_ov084_02130d74 holds one pointer-to-member per
+   daKrb_c::State. */
+typedef void (daKrb_c::*StateHandler)();
+
+/* Four of the five state slots target free stubs, not members, so those
+   descriptors materialize as function-pointer/PMF pairs. The first word
+   carries the code relocation; the second is zero, like every other
+   descriptor. */
+union KrbFreeHandler {
+    void (*fn)(daKrb_c *goomba);
+    StateHandler pmf;
+};
 
 /* Actor ids (symbols/actor_debug_names.tsv). */
 enum {
@@ -147,18 +157,24 @@ enum {
 
 extern "C" {
 /* data_ov084_02130cf8 is the BMD this TU LoadFile / Release. The other
-   three handles are never passed to a SharedFilePtr method; this TU
-   indexes [1] as the loaded BCA. Selected by role (see SetAnim calls):
+   six handles are never passed to a SharedFilePtr method; this TU reads
+   .ptr as the loaded BCA. Selected by role (see SetAnim calls):
    02130ce8 is the walk animation (target speed data_ov084_02130228[type],
    also what the Goomba returns to after a pause or tumble), 02130cf0 the
    faster one chosen when it speeds up to data_ov084_02130268[type],
    02130cc8 the standing one a king minion plays while its target speed is
    0, 02130cc0 the tumble animation, 02130ce0 the one played on deaths 2, 5
    and 7, and 02130cd0 the one played on deaths 3, 4 and 6. */
-extern void *data_ov084_02130ce0[];
-extern void *data_ov084_02130ce8[];
-extern void *data_ov084_02130cf0[];
-extern SharedFilePtr data_ov084_02130cf8;
+extern KrbAnimationFileHandle data_ov084_02130cc0;
+extern KrbAnimationFileHandle data_ov084_02130cc8;
+extern KrbAnimationFileHandle data_ov084_02130cd0;
+extern KrbAnimationFileHandle data_ov084_02130cd8;
+extern KrbAnimationFileHandle data_ov084_02130ce0;
+extern KrbAnimationFileHandle data_ov084_02130ce8;
+extern KrbAnimationFileHandle data_ov084_02130cf0;
+extern KrbModelFilePtr data_ov084_02130cf8;
+extern KrbModelFilePtr data_ov084_02130d00;
+extern StateHandler data_ov084_02130d74[];
 int func_02037e20(int* p);
 void func_ov084_02129498(daKrb_c *goomba);
 extern "C" void func_ov084_02129238(char *c);
@@ -187,7 +203,7 @@ extern short Vec3_HorzAngle(const struct Vector3 *a, const struct Vector3 *b);
 extern void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void* thiz, s16* v, void* r6, s32 flag);
 extern void _ZN6Player6BounceE5Fix12IiE(void* p, s32 f);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, s32 f, u8 b, u8 cc, u8 d);
-extern void* data_ov084_02130cd0[];
+
 extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
@@ -207,7 +223,7 @@ extern int Vec3_HorzDist(void *a, void *b);
 extern unsigned char DecIfAbove0_Byte(void *p);
 extern unsigned short DecIfAbove0_Short(void *p);
 extern int Math_Function_0203b14c(int *v, int target, int a, int b, int c);
-extern int data_ov084_02130cc8[];
+
 extern void func_ov084_0212af74(daKrb_c *goomba);
 extern void func_ov084_0212abd4(daKrb_c *goomba);
 extern void UnloadBlueCoinModel(void* p);
@@ -316,7 +332,7 @@ void func_ov084_02129168(daKrb_c* goomba, dActor_c* actor)
     goomba->mHorzSpeed = Vec3_HorzLen((char *)&goomba->unk_0a4) * -1;
     if (actor != 0)
         goomba->mPrevAngleY = Vec3_HorzAngle((Vector3 *)&goomba->mPosX, (Vector3 *)&actor->mPosX);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, *(void **)((char *)data_ov084_02130cc0 + 4), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cc0.ptr, 0, 0x1000, 0);
     goomba->mState = daKrb_c::STATE_TUMBLE;
     goomba->mEatenByYoshi = 0;
     goomba->mWithMeshClsn.SetLimMovFlag();
@@ -409,7 +425,7 @@ void func_ov084_0212934c(char* c)
     kind = (unsigned short)((unsigned)frame >> 12);
     type = (int)goomba->mModelAnim.file;
 
-    if (type == (int)data_ov084_02130ce8[1]) {
+    if (type == (int)data_ov084_02130ce8.ptr) {
         if (kind <= 4 || (kind >= 0xc && kind <= 0x10)) {
             if (((Flags *)&goomba->mMoveFlags)->flag)
                 return;
@@ -421,7 +437,7 @@ void func_ov084_0212934c(char* c)
         return;
     }
 
-    if (type == (int)data_ov084_02130cf0[1]) {
+    if (type == (int)data_ov084_02130cf0.ptr) {
         if (kind <= 3 || (kind >= 0x10 && kind <= 0x13)) {
             if (((Flags *)&goomba->mMoveFlags)->flag)
                 return;
@@ -714,7 +730,7 @@ int func_ov084_02129a00(char *c) {
             func_ov084_02129168(goomba, actor);
             goomba->mHorzSpeed = -0xf000;     /* -15.0 */
             goomba->mVertSpeed = 0x14000;     /* 20.0 */
-            MaterialChanger::Prepare(*(BMD_File *)(SHARED_FILE(data_ov084_02130cf8)), *(BMA_File *)&data_ov084_0213088c);
+            MaterialChanger::Prepare(*(BMD_File *)(data_ov084_02130cf8.ptr), *(BMA_File *)&data_ov084_0213088c);
             _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&goomba->mMaterialChanger, &data_ov084_0213088c, 0x40000000, 0x1000, 0);
             goomba->mMaterialChanger.currFrame = 0;
             ((dCc_c *)&goomba->mdCcAc_c)->Clear();
@@ -729,7 +745,7 @@ int func_ov084_02129a00(char *c) {
         void *actor = dActor_c::FindWithID(goomba->mdCcAc_c.otherOwner);
         goomba->mDeathState = daKrb_c::DEATH_HIT_20000;
         func_ov002_020aea30(goomba, actor, &goomba->mWithMeshClsn);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
         *(int *)(((int)&goomba->mdCcAc_c.flags)) |= 1;
         return 1;
     }
@@ -743,10 +759,10 @@ int func_ov084_02129a00(char *c) {
             if (s == 0) {
                 ((dCc_c *)&goomba->mdCcAc_c)->Update();
             } else if (s == 5) {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
                 *(s16 *)(((int)&goomba->mPrevAngleY)) += 0x8000;     /* half a turn */
                 goomba->mHorzSpeed = -goomba->mHorzSpeed;
-                MaterialChanger::Prepare(*(BMD_File *)(SHARED_FILE(data_ov084_02130cf8)), *(BMA_File *)&data_ov084_0213088c);
+                MaterialChanger::Prepare(*(BMD_File *)(data_ov084_02130cf8.ptr), *(BMA_File *)&data_ov084_0213088c);
                 _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&goomba->mMaterialChanger, &data_ov084_0213088c, 0x40000000, 0x1000, 0);
                 goomba->mMaterialChanger.currFrame = 0;
             }
@@ -963,7 +979,7 @@ void func_ov084_02129ed4(void *c)
 
     if (flags & HIT_FIRE) {
         turnAround = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cd0[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cd0.ptr, 0x40000000, 0x1000, 0);
         goomba->mDeathState = daKrb_c::DEATH_FIRE;
         goto block_68;
     }
@@ -972,28 +988,28 @@ void func_ov084_02129ed4(void *c)
     if (variantMatch == 0) {
         if (flags & HIT_UNLISTED_20000) {
             goomba->mDeathState = daKrb_c::DEATH_HIT_20000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
             *(s32*)(((int)&goomba->mdCcAc_c.flags) & 0xffffffffffffffffULL) |= 1;
             goto block_68;
         }
         if (flags & (HIT_EGG | HIT_DIVE)) {
             goomba->mDeathState = daKrb_c::DEATH_DIVE_OR_EGG;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
             goto block_68;
         }
         if (flags & HIT_EXPLOSION) {
             goomba->mDeathState = daKrb_c::DEATH_EXPLOSION;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cd0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cd0.ptr, 0x40000000, 0x1000, 0);
             goto block_68;
         }
         if (flags & (HIT_KICK | HIT_BREAKDANCE | HIT_SLIDE_KICK)) {
             turnAround = 1;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cd0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cd0.ptr, 0x40000000, 0x1000, 0);
             goomba->mDeathState = daKrb_c::DEATH_KICKED;
             goto block_68;
         }
         if (flags & HIT_PUNCH) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
             goomba->mDeathState = daKrb_c::DEATH_PUNCHED;
             turnAround = 1;
             goto block_68;
@@ -1012,7 +1028,7 @@ void func_ov084_02129ed4(void *c)
                 if (((Player *)other)->IsOnShell() != 0) {
                     goomba->mDeathState = daKrb_c::DEATH_DIVE_OR_EGG;
                     turnAround = 1;
-                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+                    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
                     goto block_68;
                 }
                 if (((dActor_c *)goomba)->JumpedOnByPlayer(*(dCc_c *)&goomba->mdCcAc_c, *(Player *)other) != 0) {
@@ -1151,7 +1167,7 @@ void func_ov084_0212a6f8(daKrb_c *goomba)
     if (*(unsigned short *)&goomba->mWanderRerollTimer)
         return;
     goomba->mState = daKrb_c::STATE_WALK;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
 }
 }
 
@@ -1189,7 +1205,7 @@ void func_ov084_0212a774(daKrb_c *goomba)
             return;
         goomba->mFlags = goomba->mSavedParam;
         goomba->mState = daKrb_c::STATE_WALK;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
         goomba->mTargetHorzSpeed = data_ov084_02130228[goomba->mGoombaType];
         goomba->mWithMeshClsn.ClearLimMovFlag();
         {
@@ -1197,7 +1213,7 @@ void func_ov084_0212a774(daKrb_c *goomba)
             goomba->mPrevAngleY = goomba->mAngleY;
             *f198 = *f198 & ~0x20000;
         }
-        MaterialChanger::Prepare(*(BMD_File *)(SHARED_FILE(data_ov084_02130cf8)), *(BMA_File *)&data_ov084_0213089c);
+        MaterialChanger::Prepare(*(BMD_File *)(data_ov084_02130cf8.ptr), *(BMA_File *)&data_ov084_0213089c);
         _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&goomba->mMaterialChanger, &data_ov084_0213089c, 0x40000000, 0x1000, 0);
         goomba->mMaterialChanger.currFrame = 0;
         return;
@@ -1268,7 +1284,7 @@ void func_ov084_0212a774(daKrb_c *goomba)
         void *a = dActor_c::FindWithID(goomba->mdCcAc_c.otherOwner);
         goomba->mDeathState = daKrb_c::DEATH_HIT_20000;
         func_ov002_020aea30(goomba, a, &goomba->mWithMeshClsn);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce0.ptr, 0x40000000, 0x1000, 0);
         {
             s32 *f198 = (s32 *)(((long long)(int)&goomba->mdCcAc_c.flags));
             *f198 |= 1;
@@ -1370,14 +1386,14 @@ void func_ov084_0212abd4(daKrb_c *goomba)
             if (goomba->mTargetHorzSpeed <= data_ov084_02130228[goomba->mGoombaType]) {
                 func_ov084_02129c9c((char *)goomba);
             } else {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cf0[1], 0, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cf0.ptr, 0, 0x1000, 0);
             }
             step = 0x800;
             goomba->mTargetHorzSpeed = data_ov084_02130268[goomba->mGoombaType];
             goomba->mTargetAngleY = goomba->mInitAngleY;
         } else {
             goomba->mTargetHorzSpeed = data_ov084_02130228[goomba->mGoombaType];
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
             goomba->mTargetAngleY = Vec3_HorzAngle((Vector3 *)&goomba->mPosX, (Vector3 *)&goomba->mHomePos);
             step = 0x400;
         }
@@ -1401,7 +1417,7 @@ void func_ov084_0212abd4(daKrb_c *goomba)
             if (goomba->mTargetHorzSpeed <= data_ov084_02130228[goomba->mGoombaType]) {
                 func_ov084_02129c9c((char *)goomba);
             } else {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cf0[1], 0, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cf0.ptr, 0, 0x1000, 0);
             }
             if (goomba->mCapId >= 6 || goomba->mUnstickTimer != 0) {
                 goomba->mTargetAngleY = goomba->mInitAngleY;
@@ -1412,7 +1428,7 @@ void func_ov084_0212abd4(daKrb_c *goomba)
             goomba->mTargetHorzSpeed = data_ov084_02130268[goomba->mGoombaType];
         } else {
             goomba->mTargetHorzSpeed = data_ov084_02130228[goomba->mGoombaType];
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
 
             if (*(u16 *)&goomba->mHeadingHoldTimer != 0) {
                 *(u16 *)(((int)&goomba->mHeadingHoldTimer)) =
@@ -1484,9 +1500,9 @@ void func_ov084_0212af74(daKrb_c *goomba)
     }
 
     if (goomba->mTargetHorzSpeed == 0) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, (void *)data_ov084_02130cc8[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, data_ov084_02130cc8.ptr, 0, 0x1000, 0);
     } else {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, (void *)data_ov084_02130ce8[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&goomba->mModelAnim, (void *)data_ov084_02130ce8.ptr, 0, 0x1000, 0);
     }
 
     func_ov074_0212087c(&targetPos, king, goomba->mMinionIndex);
@@ -1787,7 +1803,7 @@ int daKrb_c::Behavior()
         return 1;
 
     if (mState >= STATE_TUMBLE ||
-        (mGoombaType == GOOMBA_KING_MINION && (int)mModelAnim.file == data_ov084_02130cc8[1]))
+        (mGoombaType == GOOMBA_KING_MINION && (int)mModelAnim.file == (int)data_ov084_02130cc8.ptr))
     {
         mModelAnim.speed = 0x1000;
     } else {
@@ -1805,17 +1821,7 @@ int daKrb_c::Behavior()
     }
 
     st = mState;
-    {
-        int* q = &data_ov084_02130d74[st * 2];
-        int adj = q[1];
-        char* thiz = ((char*)this) + (adj >> 1);
-        void (*fn)(char*);
-        if (adj & 1)
-            fn = *(void(**)(char*))(*(char**)thiz + q[0]);
-        else
-            fn = (void(*)(char*))q[0];
-        fn(thiz);
-    }
+    (this->*data_ov084_02130d74[st])();
 
     {
         u16* hp = (u16*)((char*)&mStateTimer);
@@ -1951,13 +1957,13 @@ int daKrb_c::InitResources()
     if (((dCapEnemy_c *)c)->DestroyIfCapNotNeeded() == 0)
         return 0;
 
-    if (((ModelBase *)&mModelAnim)->SetFile((BMD_File *)(SHARED_FILE(data_ov084_02130cf8)), 1, -1) == 0)
+    if (((ModelBase *)&mModelAnim)->SetFile((BMD_File *)(data_ov084_02130cf8.ptr), 1, -1) == 0)
         return 0;
 
     if (mShadowModel.InitCylinder() == 0)
         return 0;
 
-    MaterialChanger::Prepare(*(BMD_File*)SHARED_FILE(data_ov084_02130cf8), *(BMA_File*)&data_ov084_0213089c);
+    MaterialChanger::Prepare(*(BMD_File*)data_ov084_02130cf8.ptr, *(BMA_File*)&data_ov084_0213089c);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov084_0213089c, 0x40000000, 0x1000, 0);
 
     unk_108 = COIN_PLAIN;
@@ -2030,7 +2036,7 @@ int daKrb_c::InitResources()
     mHomePos.z = mPosZ;
     mVertAccel = data_ov084_02130238[mGoombaType];
     mTerminalVelocity = -0x32000;     /* -50.0 */
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130ce8[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130ce8.ptr, 0, 0x1000, 0);
 
     unk_467 = 0;
     mSavedParam = *(int*)(c + 8);
@@ -2116,4 +2122,35 @@ extern "C" KrbSpawnInfo g_profile_KURIBO_L = {
     0x000c8000,
     0x01000000,
     0x01000000
+};
+
+/* The nine file-scope resource handles, in retail initializer order. Two
+   model files (func_02017acc / func_02017ab4), then seven animation files
+   (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim); the manifest
+   aliases each wrapper ctor/dtor onto those ROM symbols. */
+KrbModelFilePtr data_ov084_02130cf8(0x386);
+KrbModelFilePtr data_ov084_02130d00(0x38e);
+KrbAnimationFileHandle data_ov084_02130ce8(0x38d);
+KrbAnimationFileHandle data_ov084_02130ce0(0x388);
+KrbAnimationFileHandle data_ov084_02130cd0(0x38a);
+KrbAnimationFileHandle data_ov084_02130cc0(0x38b);
+KrbAnimationFileHandle data_ov084_02130cd8(0x387);
+KrbAnimationFileHandle data_ov084_02130cc8(0x38c);
+KrbAnimationFileHandle data_ov084_02130cf0(0x389);
+
+/* Descriptor records for the four state slots that target free functions;
+   the array initializer reads each .pmf member. */
+KrbFreeHandler krbStateDesc_Tumble = { func_ov084_0212a774 };
+KrbFreeHandler krbStateDesc_HopStart = { func_ov084_0212ab48 };
+KrbFreeHandler krbStateDesc_Walk = { func_ov084_0212b2dc };
+KrbFreeHandler krbStateDesc_Pause = { func_ov084_0212a6f8 };
+
+/* One pointer-to-member per State. mwcc cannot link-time-initialize them, so
+   the initializer copies five descriptor records in. */
+StateHandler data_ov084_02130d74[5] = {
+    krbStateDesc_Walk.pmf,            /* STATE_WALK */
+    krbStateDesc_HopStart.pmf,        /* STATE_HOP_START */
+    &daKrb_c::func_ov084_0212aab0,    /* STATE_AIRBORNE */
+    krbStateDesc_Tumble.pmf,          /* STATE_TUMBLE */
+    krbStateDesc_Pause.pmf,           /* STATE_PAUSE */
 };

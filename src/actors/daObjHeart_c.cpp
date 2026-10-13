@@ -10,6 +10,14 @@
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x020bc5e0), D0
  * (0x020bc618), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
+ *
+ * leftovers:
+ * - ModelAnim::SetAnim and dCcAc_c::Init take Fix12<int> by value, so their
+ *   calls stay mangled spellings inside InitResources.
+ * - `*(Vector3 *)&mCamSpacePosX` in Behavior puns three s32 fields on
+ *   dActor_c; the fix is a shared-header accessor, not a leaf helper.
+ * - func_ov002_020bc664 keeps its address name as a member; the cartridge
+ *   records no name for it.
  */
 
 #pragma defer_codegen off
@@ -59,14 +67,13 @@ daObjHeart_c::~daObjHeart_c()
 {
 }
 
-// @symbol func_ov002_020bc664
-extern "C" void func_ov002_020bc664(void *raw)
+// @symbol _ZN12daObjHeart_c19func_ov002_020bc664Ev
+void daObjHeart_c::func_ov002_020bc664()
 {
-    daObjHeart_c *heart = (daObjHeart_c *)raw;
-    Matrix4x3_FromRotationY(&heart->mModelAnim.mat4x3, heart->mAngleY);
-    heart->mModelAnim.mat4x3.m[9] = heart->mPosX >> 3;
-    heart->mModelAnim.mat4x3.m[10] = heart->mPosY >> 3;
-    heart->mModelAnim.mat4x3.m[11] = heart->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
+    mModelAnim.mat4x3.m[9] = mPosX >> 3;
+    mModelAnim.mat4x3.m[10] = mPosY >> 3;
+    mModelAnim.mat4x3.m[11] = mPosZ >> 3;
 }
 
 // @symbol _ZN12daObjHeart_c16CleanupResourcesEv
@@ -130,14 +137,13 @@ s32 daObjHeart_c::Behavior()
 s32 daObjHeart_c::InitResources()
 {
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov002_0210e104), 1, -1);
-    /* Leftover: ModelAnim::SetAnim and dCcAc_c::Init take Fix12<int> by value, so they stay mangled. */
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov002_0210e0fc),
         0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mdCcAc_c, this, 0x3c000, 0x78000, 0x100002, 0x8000);
     mAnimSpeed = 0x1000;
-    func_ov002_020bc664(this);
+    func_ov002_020bc664();
     return 1;
 }
 

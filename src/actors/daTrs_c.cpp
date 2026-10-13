@@ -6,9 +6,8 @@
  *
  * One object: its .data holds _ZTS7daTrs_c (0x0211e720) through
  * _ZTV11daTBasket_c (0x0211e930), all three classes' RTTI and vtables with the
- * four registry profiles between them, and __sinit_ov063_0211e29c constructs
- * the SharedFilePtrs this file loads and releases. That sinit keeps its own
- * source because a text-only promotion cannot own .init.
+ * four registry profiles between them, and __sinit_daTrs_c.cpp (0x0211e29c)
+ * constructs the file handles this file loads and releases.
  *
  * The three out-of-line destructors are the key functions, so this TU emits
  * the vtables. `#pragma defer_codegen off` lays .text down in source order
@@ -90,13 +89,32 @@ extern int data_ov063_0211e1ec[];
 extern Matrix4x3 data_020a0e68;
 }
 
-extern SharedFilePtr data_ov063_0211edc4;
-extern SharedFilePtr data_ov063_0211edcc;
-extern SharedFilePtr data_ov063_0211edd4;
-extern SharedFilePtr data_ov063_0211eddc;
-extern SharedFilePtr data_ov063_0211ede4;
-extern SharedFilePtr data_ov063_0211edec;
-extern SharedFilePtr data_ov063_0211edf4;
+/* The seven file handles __sinit_ov063_0211e29c constructs. SharedFilePtr
+ * declares no fields and no constructor of its own, so the model handles get
+ * the model-file pair func_02017acc/func_02017ab4 and the animation handles
+ * get SharedFilePtr::Construct plus the anim destructor through thin
+ * declaration-only wrappers; the manifest aliases those mangled spellings to
+ * the arm9 destinations the retail initializer calls. */
+struct TrsModelFileResHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    TrsModelFileResHandle(unsigned int fileID);
+    ~TrsModelFileResHandle();
+};
+struct TrsAnimationResFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    TrsAnimationResFileHandle(unsigned int fileID);
+    ~TrsAnimationResFileHandle();
+};
+
+extern TrsModelFileResHandle data_ov063_0211edc4;
+extern TrsAnimationResFileHandle data_ov063_0211edcc;
+extern TrsAnimationResFileHandle data_ov063_0211edd4;
+extern TrsAnimationResFileHandle data_ov063_0211eddc;
+extern TrsAnimationResFileHandle data_ov063_0211ede4;
+extern TrsModelFileResHandle data_ov063_0211edec;
+extern TrsModelFileResHandle data_ov063_0211edf4;
 extern SharedFilePtr data_ov002_0210d9c8;
 extern SharedFilePtr data_ov002_0210d9f8;
 extern SharedFilePtr data_ov002_0210d9b8;
@@ -152,11 +170,14 @@ extern int data_ov063_0211edc0;
 extern struct Vec3 data_ov063_0211ee74;
 extern struct Vec3 data_ov063_0211ee80;
 extern struct Vec3 data_ov063_0211ee8c;
-extern void* data_ov063_0211ee20;
-extern void* data_ov063_0211edfc;
-extern void* data_ov063_0211ee08;
+extern void* data_ov063_0211ee20[3];
+extern void* data_ov063_0211edfc[3];
+extern void* data_ov063_0211ee08[3];
 extern void *_ZN7Vector3D1Ev(void *object);
-extern void func_020731dc(void *object, void *destructor, void **node);
+/* __register_global_object is the compiler's own name for func_020731dc:
+   the initializer's registrations and the lazy ones below share the one
+   import, which the manifest aliases to the configured symbol. */
+extern void __register_global_object(void *object, void *destructor, void **node);
 extern void Vec3_Add(void * out, void * a, void * b);
 }
 
@@ -2753,19 +2774,19 @@ void daTrs_c::func_ov063_0211ab68() {
         data_ov063_0211ee74.x = 0;
         data_ov063_0211ee74.y = 0x32000;
         data_ov063_0211ee74.z = 0;
-        func_020731dc(&data_ov063_0211ee74, (void *)_ZN7Vector3D1Ev, &data_ov063_0211ee20);
+        __register_global_object(&data_ov063_0211ee74, (void *)_ZN7Vector3D1Ev, (void **)&data_ov063_0211ee20);
 
         p = (int *)&data_ov063_0211ee80;
         p[0] = 0xd2000;
         p[1] = 0x6e000;
         p[2] = 0xd2000;
-        func_020731dc(&data_ov063_0211ee80, (void *)_ZN7Vector3D1Ev, &data_ov063_0211edfc);
+        __register_global_object(&data_ov063_0211ee80, (void *)_ZN7Vector3D1Ev, (void **)&data_ov063_0211edfc);
 
         p = (int *)&data_ov063_0211ee8c;
         p[0] = -0xd2000;
         p[1] = 0x46000;
         p[2] = -0xd2000;
-        func_020731dc(&data_ov063_0211ee8c, (void *)_ZN7Vector3D1Ev, &data_ov063_0211ee08);
+        __register_global_object(&data_ov063_0211ee8c, (void *)_ZN7Vector3D1Ev, (void **)&data_ov063_0211ee08);
         data_ov063_0211edc0 |= 1;
     }
 
@@ -3565,3 +3586,25 @@ extern "C" daTrs_c *daTrs_c_classInit_TERESA()
 {
     return new daTrs_c();
 }
+
+/* File-scope objects in the order __sinit_ov063_0211e29c builds them: the
+ * three model-file handles first, then the four animation-file handles. Each
+ * definition emits one construct-and-register pair into .init plus a
+ * registration cell in .bss; the lazy-init flag, the three cells
+ * func_ov063_0211ab68 fills for the Vec3 globals, and the Vec3s themselves
+ * are plain zero-init storage. */
+TrsModelFileResHandle data_ov063_0211edc4(0x427);
+TrsModelFileResHandle data_ov063_0211edec(0x6c9);
+TrsModelFileResHandle data_ov063_0211edf4(0x2cc);
+TrsAnimationResFileHandle data_ov063_0211eddc(0x428);
+TrsAnimationResFileHandle data_ov063_0211ede4(0x2cf);
+TrsAnimationResFileHandle data_ov063_0211edd4(0x2cd);
+TrsAnimationResFileHandle data_ov063_0211edcc(0x2ce);
+
+int data_ov063_0211edc0;
+void *data_ov063_0211edfc[3];
+void *data_ov063_0211ee08[3];
+void *data_ov063_0211ee20[3];
+Vec3 data_ov063_0211ee74;
+Vec3 data_ov063_0211ee80;
+Vec3 data_ov063_0211ee8c;

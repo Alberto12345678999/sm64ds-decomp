@@ -104,7 +104,7 @@ array at [data_ov080_02128628](../config/arm9/overlays/ov080/symbols.txt).
 Overlay 80 has three initializers and three `.ctor` entries. The text units and
 initializer order agree exactly:
 
-1. `daChoropu_c+daChoro_Rock_c` / [__sinit_ov080_021278c0](../src/unnamed/ov080/__sinit_ov080_021278c0.c);
+1. `daChoropu_c+daChoro_Rock_c` / [daChoropu_c](../src/actors/daChoropu_c.cpp);
 2. `CrazedCrate` / [__sinit_ov080_02127a60](../src/actors/daBttBk_c.cpp);
 3. `daPicGate_c` / [__sinit_ov080_02127b2c](../src/actors/daPicGate_c.cpp).
 

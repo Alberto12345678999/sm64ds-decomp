@@ -5,16 +5,17 @@
  * emission. Earlier probes are in
  * notes/experiments/pr2875-source-repair-0920.json.
  *
- * Leftover: DrawCards, RoundWaitDeal, RoundReadyCards, RoundHideCards,
+ * leftovers:
+ * - DrawCards, RoundWaitDeal, RoundReadyCards, RoundHideCards,
  *   RoundShowCards, ResultFinish, ResetGame and InitPlayers step char* by
  *   0x18 or 0x14 from this. A card or player pointer changes those loops.
- * Leftover: CardFlyAway keeps the Ctx view. mCards[idx] misses.
- * Leftover: CheckFinished calls inline_fn(this+0xa8) and this+0xb4.
+ * - CardFlyAway keeps the Ctx view. mCards[idx] misses.
+ * - CheckFinished calls inline_fn(this+0xa8) and this+0xb4.
  *   unk_0a8 and mHudScore directly miss. unk_5407 is only cleared.
- * Leftover: ResultWait decrements mResultTimer as (int)this+0x53e4.
- * Leftover: func_ov006_020c0aa8 sets the camera at this+0x4660 and tail-calls
+ * - ResultWait decrements mResultTimer as (int)this+0x53e4.
+ * - func_ov006_020c0aa8 sets the camera at this+0x4660 and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
- * Leftover: func_ov004_020b1e34, func_ov004_020ad79c and func_ov006_020c1a88
+ * - func_ov004_020b1e34, func_ov004_020ad79c and func_ov006_020c1a88
  *   stay the linker names. Their bodies are not in this file.
  */
 
@@ -1282,3 +1283,104 @@ extern "C" void *dScMgMemory2_c_classInit()
 {
     return new dScMgMemory2_c;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov006_021314e4 shard).
+ * The sprite-pointer table plus the five PMF state tables plain-copied
+ * from the ROM constants, in retail copy order: the permuted sprite
+ * pointers, the five main states, the ten round states, the four result
+ * states, the seven card states, then the three player states. */
+extern "C" int data_ov006_02133810[];
+extern "C" dScMgMemory2_cState data_ov006_0213d268;
+extern "C" dScMgMemory2_cState data_ov006_0213d250;
+extern "C" dScMgMemory2_cState data_ov006_0213d2c0;
+extern "C" dScMgMemory2_cState data_ov006_0213d300;
+extern "C" dScMgMemory2_cState data_ov006_0213d278;
+extern "C" dScMgMemory2_cState data_ov006_0213d2c8;
+extern "C" dScMgMemory2_cState data_ov006_0213d2d0;
+extern "C" dScMgMemory2_cState data_ov006_0213d290;
+extern "C" dScMgMemory2_cState data_ov006_0213d260;
+extern "C" dScMgMemory2_cState data_ov006_0213d280;
+extern "C" dScMgMemory2_cState data_ov006_0213d298;
+extern "C" dScMgMemory2_cState data_ov006_0213d310;
+extern "C" dScMgMemory2_cState data_ov006_0213d2a0;
+extern "C" dScMgMemory2_cState data_ov006_0213d318;
+extern "C" dScMgMemory2_cState data_ov006_0213d2a8;
+extern "C" dScMgMemory2_cState data_ov006_0213d248;
+extern "C" dScMgMemory2_cState data_ov006_0213d320;
+extern "C" dScMgMemory2_cState data_ov006_0213d328;
+extern "C" dScMgMemory2_cState data_ov006_0213d2f8;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d308;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d270;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d2b0;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d2f0;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d2e8;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d2e0;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d2d8;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d258;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d330;
+extern "C" dScMgMemory2_cCardState data_ov006_0213d2b8;
+
+void *data_ov006_02142490[23] = {
+    (void *)data_ov006_02133810[0],
+    (void *)data_ov006_02133810[1],
+    (void *)data_ov006_02133810[2],
+    (void *)data_ov006_02133810[11],
+    (void *)data_ov006_02133810[12],
+    (void *)data_ov006_02133810[13],
+    (void *)data_ov006_02133810[14],
+    (void *)data_ov006_02133810[3],
+    (void *)data_ov006_02133810[4],
+    (void *)data_ov006_02133810[5],
+    (void *)data_ov006_02133810[6],
+    (void *)data_ov006_02133810[9],
+    (void *)data_ov006_02133810[10],
+    (void *)data_ov006_02133810[7],
+    (void *)data_ov006_02133810[8],
+    (void *)data_ov006_02133810[15],
+    (void *)data_ov006_02133810[16],
+    (void *)data_ov006_02133810[17],
+    (void *)data_ov006_02133810[18],
+    (void *)data_ov006_02133810[19],
+    (void *)data_ov006_02133810[20],
+    (void *)data_ov006_02133810[21],
+    (void *)data_ov006_02133810[22],
+};
+dScMgMemory2_cState data_ov006_021423e0[5] = {
+    data_ov006_0213d268,
+    data_ov006_0213d250,
+    data_ov006_0213d2c0,
+    data_ov006_0213d300,
+    data_ov006_0213d278,
+};
+dScMgMemory2_cState data_ov006_02142440[10] = {
+    data_ov006_0213d2c8,
+    data_ov006_0213d2d0,
+    data_ov006_0213d290,
+    data_ov006_0213d260,
+    data_ov006_0213d280,
+    data_ov006_0213d298,
+    data_ov006_0213d310,
+    data_ov006_0213d2a0,
+    data_ov006_0213d318,
+    data_ov006_0213d2a8,
+};
+dScMgMemory2_cState data_ov006_021423c0[4] = {
+    data_ov006_0213d248,
+    data_ov006_0213d320,
+    data_ov006_0213d328,
+    data_ov006_0213d2f8,
+};
+dScMgMemory2_cCardState data_ov006_02142408[7] = {
+    data_ov006_0213d308,
+    data_ov006_0213d270,
+    data_ov006_0213d2b0,
+    data_ov006_0213d2f0,
+    data_ov006_0213d2e8,
+    data_ov006_0213d2e0,
+    data_ov006_0213d2d8,
+};
+dScMgMemory2_cCardState data_ov006_021423a8[3] = {
+    data_ov006_0213d258,
+    data_ov006_0213d330,
+    data_ov006_0213d2b8,
+};

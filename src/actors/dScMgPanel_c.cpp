@@ -1,7 +1,8 @@
 //cpp
-/* Puzzle Panic, the whole run 0x0210428c..0x02107858, 71 functions. The
- * factory and the static initializer live in their own files. Touch a panel
- * to flip it and its neighbours until every mFace matches mGoal.
+/* Puzzle Panic, the whole run 0x0210428c..0x0210788c, 72 functions, closing
+ * with the factory dScMgPanel_c_classInit, then the state tables and the
+ * registry profile, from which mwcc emits __sinit_dScMgPanel_c.cpp. Touch a
+ * panel to flip it and its neighbours until every mFace matches mGoal.
  *
  * Functions run in ROM order under `#pragma defer_codegen off`; do not
  * reorder or drop the pragma. It also makes the bracketed optimizer pragmas
@@ -15,9 +16,10 @@
  * (the address is the method name; no ROM spelling survives), declared in
  * dScMgPanel_c.h. Each body opens by re-viewing `this` under the type it used
  * to take, so the local struct views and raw-offset accesses are unchanged.
- * func_ov006_02104ac0, func_ov006_02104bac and func_ov006_02104ec8 stay free:
- * they take no arguments and are empty. The `_ac4`-style suffixes on the
- * local struct tags only keep each helper's view apart.
+ * The three empty handlers func_ov006_02104ac0, func_ov006_02104bac and
+ * func_ov006_02104ec8 are members too: the state tables point at them. The
+ * `_ac4`-style suffixes on the local struct tags only keep each helper's
+ * view apart.
  *
  * Leftover, each measured against the matching build:
  * - func_ov006_021042e8, func_ov006_02104354, func_ov006_0210446c,
@@ -87,6 +89,11 @@ void func_ov004_020af868(void *a0, int a1, int a2, int a3, int a4, void *a5);
 int  __aeabi_idiv(int a, int b);
 void func_ov004_020b2444(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
 }
+
+/* The state tables are arrays of member-function pointers, defined at the end
+   of this file. Each dispatcher calls through one of them. */
+typedef void (dScMgPanel_c::*PanelStateFn)();
+typedef void (dScMgPanel_c::*PanelStateFnI)(int);
 
 // @symbol _ZN12dScMgPanel_cD1Ev
 /* The complete-object destructor (D1).  Nothing this class owns needs
@@ -388,18 +395,13 @@ void dScMgPanel_c::func_ov006_02104a10(int index)
     }
 }
 
-// @symbol func_ov006_02104ac0
-extern "C" {
-void func_ov006_02104ac0(void)
+// @symbol _ZN12dScMgPanel_c19func_ov006_02104ac0Ei
+void dScMgPanel_c::func_ov006_02104ac0(int index)
 {
-}
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02104ac4Ev
 extern "C" {
-struct PanelC_ac4;
-typedef void (PanelC_ac4::*PanelPmf_ac4)(int);
-struct PanelEntry_ac4 { PanelPmf_ac4 pmf[1]; };
 struct PanelC_ac4 {
     char pad[0x4692];
     u8 guard;
@@ -409,10 +411,10 @@ struct PanelC_ac4 {
 void dScMgPanel_c::func_ov006_02104ac4()
 {
     PanelC_ac4 *c = (PanelC_ac4 *)this;
-    extern PanelEntry_ac4 data_ov006_021427bc[];
+    extern PanelStateFnI data_ov006_021427bc[];
     if (c->guard == 0) return;
     int j = c->idx;
-    (c->*data_ov006_021427bc[j].pmf[0])(0);
+    (((dScMgPanel_c *)c)->*data_ov006_021427bc[j])(0);
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02104b24Ev
@@ -446,11 +448,9 @@ void dScMgPanel_c::func_ov006_02104b5c()
                         self->mBanner.y >> 12, 0);
 }
 
-// @symbol func_ov006_02104bac
-extern "C" {
-void func_ov006_02104bac(void)
+// @symbol _ZN12dScMgPanel_c19func_ov006_02104bacEv
+void dScMgPanel_c::func_ov006_02104bac()
 {
-}
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02104bb0Ev
@@ -486,14 +486,10 @@ void dScMgPanel_c::func_ov006_02104c08()
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02104c60Ev
-extern "C" {
-struct PanelC_c60;
-typedef void (PanelC_c60::*PanelPmf_c60)();
-}
 void dScMgPanel_c::func_ov006_02104c60()
 {
     char *scene = (char *)this;
-    extern PanelPmf_c60 data_ov006_021427ec[];
+    extern PanelStateFn data_ov006_021427ec[];
     u16 *ip;
     if (*(u8 *)(scene + 0x4000 + 0x684) == 0) return;
     ip = (u16 *)(scene + 0x4680);
@@ -505,7 +501,7 @@ void dScMgPanel_c::func_ov006_02104c60()
         return;
     }
     {
-        PanelC_c60 *cc = (PanelC_c60 *)scene;
+        dScMgPanel_c *cc = (dScMgPanel_c *)scene;
         (cc->*data_ov006_021427ec[*(u8 *)(scene + 0x4000 + 0x686)])();
     }
 }
@@ -596,11 +592,9 @@ void dScMgPanel_c::func_ov006_02104eb8()
     s->mSlideFlag = 1;
 }
 
-// @symbol func_ov006_02104ec8
-extern "C" {
-void func_ov006_02104ec8(void)
+// @symbol _ZN12dScMgPanel_c19func_ov006_02104ec8Ev
+void dScMgPanel_c::func_ov006_02104ec8()
 {
-}
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02104eccEv
@@ -670,17 +664,14 @@ void dScMgPanel_c::func_ov006_0210508c()
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_021050bcEv
 extern "C" {
-struct PanelC_0bc;
-typedef void (PanelC_0bc::*PanelPmf_0bc)();
-struct PanelEntry_0bc { PanelPmf_0bc pmf; };
 struct PanelC_0bc { char pad[0x4674]; u8 guard; u8 idx; };
 }
 void dScMgPanel_c::func_ov006_021050bc()
 {
     PanelC_0bc *c = (PanelC_0bc *)this;
-    extern PanelEntry_0bc data_ov006_02142860[];
+    extern PanelStateFn data_ov006_02142860[];
     if (!c->guard) return;
-    (c->*(data_ov006_02142860[c->idx].pmf))();
+    (((dScMgPanel_c *)c)->*data_ov006_02142860[c->idx])();
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02105118Ev
@@ -980,8 +971,6 @@ void dScMgPanel_c::func_ov006_02105730()
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_021057f0Ev
 extern "C" {
-struct PanelC_7f0;
-typedef void (PanelC_7f0::*PanelPmf_7f0)();
 struct PanelB_7f0 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
@@ -999,9 +988,9 @@ struct PanelC_7f0 : PanelB_7f0 { char pad[0x4fdc]; u8 idx; };
 void dScMgPanel_c::func_ov006_021057f0()
 {
     PanelC_7f0 *c = (PanelC_7f0 *)this;
-    extern PanelPmf_7f0 data_ov006_02142820[];
+    extern PanelStateFn data_ov006_02142820[];
     if (c->m() != 0) return;
-    (c->*data_ov006_02142820[c->idx])();
+    (((dScMgPanel_c *)c)->*data_ov006_02142820[c->idx])();
     func_ov006_02104c60();
 }
 
@@ -1797,11 +1786,11 @@ typedef void (*PanelPmfFn_bc0)(void *, int);
 void dScMgPanel_c::func_ov006_02106bc0()
 {
     char *scene = (char *)this;
-    extern struct PanelPmfRec_bc0 data_ov006_02142840[];
+    extern PanelStateFnI data_ov006_02142840[];
     int i;
     for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        struct PanelPmfRec_bc0 *e = &data_ov006_02142840[index];
+        struct PanelPmfRec_bc0 *e = (struct PanelPmfRec_bc0 *)&data_ov006_02142840[index];
         int adj = e->adj;
         char *thisp = scene + (adj >> 1);
         PanelPmfFn_bc0 fn;
@@ -1829,14 +1818,12 @@ extern "C" {
 /* This function reads data_ov004_020beb68 as a char *; dScMgBase_c.h
    declares it void *.  Reinterpret rather than redeclare. */
 #define PANEL_BEB68 (*(char **)&data_ov004_020beb68)
-struct PanelC_ca4;
-typedef void (PanelC_ca4::*PanelPmf_ca4)(int);
 
 }
 void dScMgPanel_c::func_ov006_02106ca4()
 {
     char *scene = (char *)this;
-    extern PanelPmf_ca4 data_ov006_02142840[];
+    extern PanelStateFnI data_ov006_02142840[];
 // local extern: see above.
     extern u8 gActivePlayerSlot;
 // local extern: see above.
@@ -1854,7 +1841,7 @@ void dScMgPanel_c::func_ov006_02106ca4()
     if (n > 0) {
         do {
             u8 *p = (u8 *)(scene + i + 0x4efa);
-            (((PanelC_ca4 *)scene)->*data_ov006_02142840[*p])(i);
+            (((dScMgPanel_c *)scene)->*data_ov006_02142840[*p])(i);
             i++;
             if (*p != 0)
                 found++;
@@ -1922,53 +1909,40 @@ void dScMgPanel_c::func_ov006_02106ca4()
 #pragma pop
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02106eb8Ev
-extern "C" {
-struct PanelC_eb8;
-typedef void (PanelC_eb8::*PanelPmf_eb8)(int);
-}
 void dScMgPanel_c::func_ov006_02106eb8()
 {
     char *scene = (char *)this;
-    extern PanelPmf_eb8 data_ov006_02142840[];
+    extern PanelStateFnI data_ov006_02142840[];
     int i;
     func_ov006_021050bc();
     func_ov006_021057f0();
     for (i = 0; i < *(int *)(scene + 0x4cb8); i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        (((PanelC_eb8 *)scene)->*data_ov006_02142840[index])(i);
+        (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
     }
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02106f44Ev
-extern "C" {
-struct PanelC_f44;
-typedef void (PanelC_f44::*PanelPmf_f44)(int);
-struct PanelC_f44 { char pad[0x8000]; };
-}
 void dScMgPanel_c::func_ov006_02106f44()
 {
     char *scene = (char *)this;
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
-    extern PanelPmf_f44 data_ov006_02142840[];
+    extern PanelStateFnI data_ov006_02142840[];
     int i;
     func_ov006_021050bc();
     self->mBusy = 1;
     func_ov006_02105854();
     for (i = 0; i < self->mCount; i++) {
         u8 index = *(u8 *)(scene + i + 0x4efa);
-        (((PanelC_f44 *)scene)->*data_ov006_02142840[index])(i);
+        (((dScMgPanel_c *)scene)->*data_ov006_02142840[index])(i);
     }
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_02106fdcEv
-extern "C" {
-typedef void (dScMgPanel_c::*PanelPmf_fdc)(int);
-
-}
 void dScMgPanel_c::func_ov006_02106fdc()
 {
     dScMgPanel_c *scene = this;
-    extern PanelPmf_fdc data_ov006_02142840[];
+    extern PanelStateFnI data_ov006_02142840[];
     u8 index;
     int found;
     int i;
@@ -1989,15 +1963,10 @@ void dScMgPanel_c::func_ov006_02106fdc()
 }
 
 // @symbol _ZN12dScMgPanel_c19func_ov006_0210709cEv
-extern "C" {
-struct PanelC_09c;
-typedef void (PanelC_09c::*PanelPmf_09c)(int);
-
-}
 void dScMgPanel_c::func_ov006_0210709c()
 {
-    PanelC_09c *scene = (PanelC_09c *)this;
-    extern PanelPmf_09c data_ov006_02142840[];
+    dScMgPanel_c *scene = this;
+    extern PanelStateFnI data_ov006_02142840[];
     int i;
     char *b = (char *)scene;
     func_ov006_02105de4();
@@ -2134,10 +2103,10 @@ s32 dScMgPanel_c::Render()
 struct Ent_358 { int a; int b; };
 s32 dScMgPanel_c::Behavior()
 {
-    extern Ent_358 data_ov006_02142888[];
+    extern PanelStateFn data_ov006_02142888[];
     char *c = (char *)this;
     int idx = mState;
-    Ent_358 *e = &data_ov006_02142888[idx];
+    Ent_358 *e = (Ent_358 *)&data_ov006_02142888[idx];
     int adj = e->b;
     char *obj = c + (adj >> 1);
     int fn;
@@ -2284,3 +2253,77 @@ s32 dScMgPanel_c::InitResources()
     mHudScore = 0;
     return 1;
 }
+
+/* Reconstructed source-style name: SM64DS proves dScMgPanel_c through RTTI,
+ * allocation size, vtable identity, and the MG_PANEL registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MgPuzzlePanelPuzzlePanic_Spawn. */
+// @symbol dScMgPanel_c_classInit
+extern "C" void *dScMgPanel_c_classInit()
+{
+    return new dScMgPanel_c;
+}
+
+/* The state tables, in the order the static initializer fills them. Each
+   entry's {function, 0} record is a compiler temporary in .data. The two
+   sprite-handle triples are copied whole from data_ov006_02136cf0 and
+   data_ov006_02136d1c. */
+extern "C" void *data_ov006_02136cf0[3];
+extern "C" void *data_ov006_02136d1c[3];
+
+void *data_ov006_021427d4[6] = {
+    data_ov006_02136cf0[0], data_ov006_02136cf0[1], data_ov006_02136cf0[2],
+    data_ov006_02136d1c[0], data_ov006_02136d1c[1], data_ov006_02136d1c[2],
+};
+PanelStateFn data_ov006_02142888[8] = {
+    &dScMgPanel_c::func_ov006_021071d4,
+    &dScMgPanel_c::func_ov006_0210713c,
+    &dScMgPanel_c::func_ov006_0210709c,
+    &dScMgPanel_c::func_ov006_02106fdc,
+    &dScMgPanel_c::func_ov006_02106f44,
+    &dScMgPanel_c::func_ov006_02106eb8,
+    &dScMgPanel_c::func_ov006_02106ca4,
+    &dScMgPanel_c::func_ov006_02106bc0,
+};
+PanelStateFnI data_ov006_02142840[4] = {
+    &dScMgPanel_c::func_ov006_02106bac,
+    &dScMgPanel_c::func_ov006_02106aa8,
+    &dScMgPanel_c::func_ov006_02106a08,
+    &dScMgPanel_c::func_ov006_02106910,
+};
+PanelStateFn data_ov006_02142820[4] = {
+    &dScMgPanel_c::func_ov006_02105730,
+    &dScMgPanel_c::func_ov006_02105670,
+    &dScMgPanel_c::func_ov006_021053a8,
+    &dScMgPanel_c::func_ov006_021051dc,
+};
+PanelStateFn data_ov006_02142860[5] = {
+    &dScMgPanel_c::func_ov006_0210508c,
+    &dScMgPanel_c::func_ov006_0210500c,
+    &dScMgPanel_c::func_ov006_02104fb4,
+    &dScMgPanel_c::func_ov006_02104ecc,
+    &dScMgPanel_c::func_ov006_02104ec8,
+};
+PanelStateFn data_ov006_021427ec[3] = {
+    &dScMgPanel_c::func_ov006_02104c08,
+    &dScMgPanel_c::func_ov006_02104bb0,
+    &dScMgPanel_c::func_ov006_02104bac,
+};
+PanelStateFnI data_ov006_021427bc[3] = {
+    &dScMgPanel_c::func_ov006_02104ac0,
+    &dScMgPanel_c::func_ov006_02104a10,
+    &dScMgPanel_c::func_ov006_02104920,
+};
+
+/* MG_PANEL's registry profile: the factory, then the same priority in both
+   halfwords. */
+struct MgPanelProfile {
+    void *(*spawn)();
+    s16 behaviorPriority;
+    s16 renderPriority;
+};
+MgPanelProfile g_profile_MG_PANEL = {
+    dScMgPanel_c_classInit, 0x17c, 0x17c
+};
+unsigned int data_ov006_0213dc94[2] = { 0x01fc00fc, 0xffff2099 };
+int data_ov006_02142804[7];

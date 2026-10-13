@@ -27,52 +27,45 @@
  * "Kill". Neither is a virtual function of either class: both run on this
  * class's fields.
  *
- * This file is the whole linker unit 0x021431c4..0x021442dc, 16 functions:
+ * This file is the whole linker unit 0x021431c4..0x021443f4, 17 functions:
  * D1 and D0 (daIbl_c_classInit, the last function of src/actors/daIbl_c.cpp,
  * ends exactly at 0x021431c4 below them), the eight helpers
  * func_ov100_02143370 through func_ov100_02143b68, CleanupResources,
- * OnPendingDestroy, Render, Behavior, InitResources and OnAimedAtWithEgg.
- * The registry factory daWanwan2_c_classInit (0x021442dc..0x021443f4) stays
- * in its own source: see the note at the end of this file. daDoor_c's D1
- * starts at 0x021443f4 above it. The out-of-line destructor is the key
+ * OnPendingDestroy, Render, Behavior, InitResources, OnAimedAtWithEgg and
+ * the registry factory daWanwan2_c_classInit (hand-spelled; see its note at
+ * the end of this file). daDoor_c's D1 starts at 0x021443f4 above it. The out-of-line destructor is the key
  * function, so this TU also emits the vtable and the RTTI.
- *
- * It replaces the one-function sources for _ZN11daWanwan2_cD1Ev,
- * _ZN11daWanwan2_cD0Ev, func_ov100_02143370 .. func_ov100_02143b68,
- * _ZN11daWanwan2_c16CleanupResourcesEv, _ZN11daWanwan2_c16OnPendingDestroyEv,
- * _ZN11daWanwan2_c6RenderEv, _ZN11daWanwan2_c8BehaviorEv,
- * _ZN11daWanwan2_c13InitResourcesEv and _ZN11daWanwan2_c16OnAimedAtWithEggEv.
- * Each member keeps the provenance notes its source carried.
  *
  * `#pragma defer_codegen off` keeps this file in ROM order.
  *
- * Leftover: the eight helpers keep their C-ABI cartridge names (their
- *   original method names are not recovered). Five take the chomp as a
+ * leftovers:
+ * - The eight helpers keep their C-ABI cartridge names (their original
+ *   method names are not recovered). Five take the chomp as a
  *   daWanwan2_c * and func_ov100_02143b18 takes the ChompPmfSelf stand-in;
  *   func_ov100_02143370 and func_ov100_02143b68 stay `char *` because
  *   include/decl_common.h declares them that way and check_decl_agreement
  *   compares the two. func_ov100_02143aa4 and func_ov100_02143ae0 are the
  *   state pair's members, called through ChompPmfSelf rather than as methods.
- * Leftover: the callees with Fix12<int> parameters (dActor_c's shadow drop,
+ * - The callees with Fix12<int> parameters (dActor_c's shadow drop,
  *   Player::Hurt, ModelAnim::SetAnim, dCcAcPos_c::Init, cstd::atan2) stay
  *   spelled as mangled extern-C free functions.
- * Leftover: func_ov100_02143b68 reaches the link positions and the link
- *   models' translations through two raw char pointers that start at the
- *   chomp, and InitResources' link seeding loop does the same. Written as
+ * - func_ov100_02143b68 reaches the link positions and the link models'
+ *   translations through two raw char pointers that start at the chomp,
+ *   and InitResources' link seeding loop does the same. Written as
  *   Vector3 * / Model * walking the member arrays, both forms measure
  *   different from the ROM here, so those reads keep their offsets,
  *   commented.
- * Leftover: data_0209f2d8 is the game-mode byte (CURRENT_GAMEMODE in
+ * - data_0209f2d8 is the game-mode byte (CURRENT_GAMEMODE in
  *   symbols/verified.tsv); this class tests it for 1 in two places
  *   (func_ov100_021435e8 and Behavior) and no name for that mode is
- *   recovered here. The sound IDs 0x39 and 0x3a are named by when they play,
- *   not by what they sound like.
- * Leftover: unk_6a8 is counted down and tested by Behavior but nothing in
- *   this class's source sets it; unk_6c9, unk_6cc and unk_6d4 are set by
+ *   recovered here. The sound IDs 0x39 and 0x3a are named by when they
+ *   play, not by what they sound like.
+ * - unk_6a8 is counted down and tested by Behavior but nothing in this
+ *   class's source sets it; unk_6c9, unk_6cc and unk_6d4 are set by
  *   InitResources and never read here; mUnk_768 is only constructed and
- *   destroyed. The only state in the state table is the walking one, and the
- *   word at +0x440 of the star func_ov100_021435e8 spawns is only known to be
- *   tested for 5.
+ *   destroyed. The only state in the state table is the walking one, and
+ *   the word at +0x440 of the star func_ov100_021435e8 spawns is only
+ *   known to be tested for 5.
  */
 
 #pragma defer_codegen off
@@ -136,6 +129,28 @@ struct ChompPmfSelf {
     ChompState *state;  /* 0x668, daWanwan2_c::mStatePair */
 };
 
+/* 8-byte resource handles. The wrapper names are local; the handle
+ * constructors and destructors are the ROM resource-family functions,
+ * aliased in the manifest. */
+struct Wanwan2ModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Wanwan2ModelFilePtr(u32 fileID);
+    ~Wanwan2ModelFilePtr();
+};
+
+struct Wanwan2AnimFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    Wanwan2AnimFileHandle(u32 fileID);
+    ~Wanwan2AnimFileHandle();
+};
+
+extern Wanwan2ModelFilePtr data_ov100_021486bc;
+extern Wanwan2ModelFilePtr data_ov100_021486a4;
+extern Wanwan2AnimFileHandle data_ov100_021486ac;
+extern Wanwan2AnimFileHandle data_ov100_021486b4;
+
 struct Vector3_16;
 struct dCc_c;
 
@@ -179,12 +194,11 @@ void LoadSilverStarAndNumber();
 void UnloadSilverStarAndNumber();
 
 extern SharedFilePtr data_ov002_0211092c;
-extern SharedFilePtr data_ov100_021486bc;
-extern SharedFilePtr data_ov100_021486a4;
-extern SharedFilePtr data_ov100_021486ac;
-extern SharedFilePtr data_ov100_021486b4;
 extern s32 data_ov100_02148008[3];
 extern ChompState data_ov100_021486f4;
+/* The ROM PMF constants the state record copies from (unlicensed .data). */
+extern ChompPmf data_ov100_02148000;
+extern ChompPmf data_ov100_02147ff8;
 extern unsigned char data_0209f2d8[];
 extern short data_02082214[];
 extern char data_020a0e68[];
@@ -193,12 +207,9 @@ extern char data_020a0e68[];
 extern Matrix4x3 IDENTITY_MATRIX4X3;
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinals 0 and 1 -- _ZN11daWanwan2_cD1Ev, 0x021431c4, size 0xcc;
- *                         _ZN11daWanwan2_cD0Ev, 0x02143290, size 0xe0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_cD1Ev
 // @symbol _ZN11daWanwan2_cD0Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body.
+/* The compiler emits the whole body.
  *
  * One vtable store and ten teardowns, every one a consequence of
  * `struct daWanwan2_c : dEnemyBase_c` and the members that declaration
@@ -225,8 +236,6 @@ extern "C" daWanwan2_c *_ZN11daWanwan2_cD0Ev(daWanwan2_c *thiz)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov100_02143370, 0x02143370, size 0xdc */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov100_02143370
 /* The floor probe: a vertical line from 10 units above the chomp (0xa000) to
@@ -258,8 +267,6 @@ extern "C" int func_ov100_02143370(char *self)
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov100_0214344c, 0x0214344c, size 0x19c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov100_0214344c
 /* Contact. Moves the collision body to the chomp (the offset in
@@ -329,8 +336,6 @@ extern "C" void func_ov100_0214344c(daWanwan2_c *self)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov100_021435e8, 0x021435e8, size 0x1ec */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov100_021435e8
 /* The actor kept at the chain's last link (mLinkPos[5]). While
    mChainEndActorID is 0 it is spawned (once Spawn succeeds): SILVER_STAR (0xb3) normally, or
@@ -392,8 +397,6 @@ extern "C" void func_ov100_021435e8(daWanwan2_c *c)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov100_021437d4, 0x021437d4, size 0x2d0 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov100_021437d4
 /* The chain. It is anchored 250 units (0xfa000) behind the chomp along its
@@ -494,8 +497,6 @@ extern "C" void func_ov100_021437d4(daWanwan2_c *thisx)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov100_02143aa4, 0x02143aa4, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov100_02143aa4
 /* The walking state's execute member (data_ov100_02147ff8, copied into
    data_ov100_021486f4.execute): advance the walk animation at full speed,
@@ -514,8 +515,6 @@ extern "C" int func_ov100_02143aa4(daWanwan2_c *c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov100_02143ae0, 0x02143ae0, size 0x38 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov100_02143ae0
 /* The walking state's enter member (data_ov100_02148000): start the walk
    animation from data_ov100_021486ac. Was a C source. */
@@ -526,8 +525,6 @@ extern "C" int func_ov100_02143ae0(daWanwan2_c *c)
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov100_02143b18, 0x02143b18, size 0x50 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov100_02143b18
 /* Enter a state: store the pair in mStatePair (+0x668) and call its enter
@@ -540,8 +537,6 @@ extern "C" int func_ov100_02143b18(ChompPmfSelf *c, ChompState *p)
     return (c->*(q->enter))();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov100_02143b68, 0x02143b68, size 0x148 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov100_02143b68
 /* The per-frame matrices: the body model's rotation (from mAngleX/Y/Z) and
@@ -586,8 +581,6 @@ extern "C" void func_ov100_02143b68(char *self)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN11daWanwan2_c16CleanupResourcesEv, 0x02143cb0, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c16CleanupResourcesEv
 /* Releases the five shared files InitResources loaded and unloads the silver
    star and number resources. */
@@ -603,20 +596,15 @@ int daWanwan2_c::CleanupResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN11daWanwan2_c16OnPendingDestroyEv, 0x02143d08, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c16OnPendingDestroyEv
 void daWanwan2_c::OnPendingDestroy()
 {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN11daWanwan2_c6RenderEv, 0x02143d0c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c6RenderEv
-/* recovered: real C++ method over the typed model members. The body is drawn
-   with the actor's own scale (mScaleX/Y/Z) and five of the six link models
-   are drawn. */
+/* The body is drawn with the actor's own scale (mScaleX/Y/Z) and five of
+   the six link models are drawn. */
 int daWanwan2_c::Render()
 {
     mModelAnim.Render((Vector3 *)&mScaleX);
@@ -625,8 +613,6 @@ int daWanwan2_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN11daWanwan2_c8BehaviorEv, 0x02143d64, size 0x324 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c8BehaviorEv
 /* While mHaltTimer is nonzero after its count-down (set to 90 by contact, so
@@ -756,8 +742,6 @@ int daWanwan2_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- _ZN11daWanwan2_c13InitResourcesEv, 0x02144088, size 0x24c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c13InitResourcesEv
 /* Loads the files (data_ov100_021486bc is the body model, loaded into
    mModelAnim; data_ov100_021486a4 the link model, set on each mModels[i];
@@ -868,8 +852,6 @@ int daWanwan2_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- _ZN11daWanwan2_c16OnAimedAtWithEggEv, 0x021442d4, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daWanwan2_c16OnAimedAtWithEggEv
 /* recovered from vtable slot identity (slot 29); historical alias
    UnchainedChomp_OnAimedAtWithEgg. Returns 0. */
@@ -878,11 +860,78 @@ s32 daWanwan2_c::OnAimedAtWithEgg()
     return 0;
 }
 
-/* daWanwan2_c_classInit (0x021442dc..0x021443f4) is not in this file. Written
- * as `return new daWanwan2_c;` it comes out 0xa4 bytes for the ROM's 0x118:
- * the ROM constructs mLinkPos and mLinkVel through
- * __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) and mUnk_768 through
- * __cxa_vec_ctor(..., func_0203d73c, _ZN8Vector3sD1Ev), with an empty
+/* -------------------------------------------------------------------------- */
+// @symbol daWanwan2_c_classInit
+/* local extern: the factory below spells the constructor chain by hand (see
+ * its comment), so it names each constructor, destructor and array callback
+ * by its mangled symbol rather than through the class headers. */
+extern "C" {
+void *_ZN7fBase_cnwEj(unsigned int size);
+dEnemyBase_c *_ZN12dEnemyBase_cC2Ev(dEnemyBase_c *object);
+dCcAcPos_c *_ZN10dCcAcPos_cC1Ev(dCcAcPos_c *object);
+dBgCh_Actr *_ZN10dBgCh_ActrC1Ev(dBgCh_Actr *object);
+ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
+dExtShadowModel_c *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *object);
+void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
+    void (*ctor)(void *), void (*dtor)(void *));
+extern void *_ZTV11daWanwan2_c[];
+Model *_ZN5ModelC1Ev(Model *object);
+Model *_ZN5ModelD1Ev(Model *object);
+dExtShadowModel_c *_ZN17dExtShadowModel_cD1Ev(dExtShadowModel_c *object);
+Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
+void func_0203d384(void);
+Vector3s *_ZN8Vector3sD1Ev(Vector3s *object);
+void func_0203d73c(void);
+}
+
+/* Reconstructed source-style name: SM64DS proves daWanwan2_c through RTTI,
+ * allocation size, vtable identity, and the WANWAN2 registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: UnchainedChomp_Spawn.
+ *
+ * Spelled by hand rather than `return new daWanwan2_c;`, which comes out
+ * 0xa4 bytes for the ROM's 0x118: the ROM constructs mLinkPos and mLinkVel
+ * through __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) and mUnk_768
+ * through __cxa_vec_ctor(..., func_0203d73c, _ZN8Vector3sD1Ev), with an empty
  * constructor function, and types.h's Vector3 and Vector3s declare no
- * constructor, so the implicit one never emits those three calls. The
- * hand-built factory in src/d_a_wanwan2.cpp still reproduces them. */
+ * constructor, so the implicit one never emits those three calls. The array
+ * callbacks receive the element address and discard lifecycle results; the
+ * empty func_0203d384/func_0203d73c callbacks ignore that address. This TU
+ * emits the vtable, whose symbol names the vtable object two words ahead of
+ * the slot array, so the vptr store reads &_ZTV11daWanwan2_c[2]. */
+extern "C" daWanwan2_c *daWanwan2_c_classInit()
+{
+    daWanwan2_c *actor =
+        (daWanwan2_c *)_ZN7fBase_cnwEj(sizeof(daWanwan2_c));
+    if (actor) {
+        _ZN12dEnemyBase_cC2Ev(actor);
+        *(void **)actor = &_ZTV11daWanwan2_c[2];
+        _ZN10dCcAcPos_cC1Ev(&actor->mdCcAcPos_c);
+        _ZN10dBgCh_ActrC1Ev(&actor->mWithMeshClsn);
+        _ZN9ModelAnimC1Ev(&actor->mModelAnim);
+        __cxa_vec_ctor(actor->mModels, 6, sizeof(Model),
+            (void (*)(void *))_ZN5ModelC1Ev, (void (*)(void *))_ZN5ModelD1Ev);
+        __cxa_vec_ctor(actor->mShadowModels, 6, sizeof(dExtShadowModel_c),
+            (void (*)(void *))_ZN17dExtShadowModel_cC1Ev, (void (*)(void *))_ZN17dExtShadowModel_cD1Ev);
+        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
+        __cxa_vec_ctor(actor->mLinkPos, 6, sizeof(Vector3),
+            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+        __cxa_vec_ctor(actor->mLinkVel, 6, sizeof(Vector3),
+            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+        __cxa_vec_ctor(actor->mUnk_768, 6, sizeof(Vector3s),
+            (void (*)(void *))func_0203d73c, (void (*)(void *))_ZN8Vector3sD1Ev);
+    }
+    return actor;
+}
+
+/* Static-init globals (was the handwritten __sinit_ov100_021475a4 shard).
+ * Handles first, in construction order, then the state record. That is
+ * what emits __sinit_daWanwan2_c.cpp. */
+Wanwan2ModelFilePtr data_ov100_021486bc(0x9c02);
+Wanwan2ModelFilePtr data_ov100_021486a4(0x9c01);
+Wanwan2AnimFileHandle data_ov100_021486ac(0x9c04);
+Wanwan2AnimFileHandle data_ov100_021486b4(0x9c03);
+ChompState data_ov100_021486f4 = {
+    data_ov100_02148000,
+    data_ov100_02147ff8,
+};

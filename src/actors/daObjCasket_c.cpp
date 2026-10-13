@@ -22,36 +22,39 @@
  * emits one .text section per function in the REVERSE of source order, so
  * the highest-address ROM function is written FIRST here. Do not reorder.
  *
- * Leftover: nothing here casts this to char *, and no named field is
- *   read through a raw numeric offset. Each cleaner spelling below was
- *   measured with mwccarm 2004/b56 and reverted.
- * Leftover: assigning mMeshCollider.beforeClsnCallback instead of calling
+ * leftovers: each cleaner spelling below was measured with mwccarm
+ * 2004/b56 and reverted.
+ * - assigning mMeshCollider.beforeClsnCallback instead of calling
  *   func_020393d4 sizes InitResources 0x110 against the ROM's 0x114.
  *   func_020393d4 is that store (p[6] = v), into dBgW::beforeClsnCallback
  *   at +0x18. The call stays.
- * Leftover: dBgW_KcMbg::SetFile as a member, with Fix12<int> scale.val
- *   set to 0x199, sizes InitResources 0x120 against 0x114. The scalar
- *   extern stays.
- * Leftover: dBgActor_c does not declare IsClsnInRange. Declaring
+ * - dBgW_KcMbg::SetFile as a member, with Fix12<int> scale.val set to
+ *   0x199, sizes InitResources 0x120 against 0x114. The scalar extern
+ *   stays.
+ * - dBgActor_c does not declare IsClsnInRange. Declaring
  *   IsClsnInRange(Fix12<int>, Fix12<int>) and calling it sizes Behavior
  *   0xac against 0x90. The scalar extern stays.
- * Leftover: dActor_c does not declare Earthquake. Declaring
+ * - dActor_c does not declare Earthquake. Declaring
  *   Earthquake(const Vector3 &, Fix12<int>) and calling it sizes
  *   St_Wait_Main 0x200 against 0x1f4. The scalar extern stays.
- * Leftover: copying closest->mPosX..mPosZ by name sizes St_Wait_Main
- *   0x1f0 against 0x1f4. The Vector3 pointer through mPosX is the match.
- * Leftover: a Vector3 built from mPosX..mPosZ sizes InitResources 0x12c
- *   against 0x114 at Vec3_Add, and St_Wait_Main 0x224 against 0x1f4 at
- *   the two AddVec3 calls. (Vector3 *)&mPosX stays. dActor_c has no
- *   Vector3 position member.
- * Leftover: a Vector3 built from mCamSpacePosX..Z for Sound::PlayBank3
- *   sizes St_Wait_Main 0x20c against 0x1f4, St_StandUp_Init 0x4c against
- *   0x28, and St_StandUp_Main 0xf8 against 0xcc. The in-place cast stays.
- * Leftover: mModel.mat4x3.t does not compile. common.h's flat Matrix4x3
+ * - copying closest->mPosX..mPosZ by name sizes St_Wait_Main 0x1f0
+ *   against 0x1f4. The Vector3 pointer through mPosX is the match.
+ * - a Vector3 built from mPosX..mPosZ sizes InitResources 0x12c against
+ *   0x114 at Vec3_Add, and St_Wait_Main 0x224 against 0x1f4 at the two
+ *   AddVec3 calls. (Vector3 *)&mPosX stays. dActor_c has no Vector3
+ *   position member.
+ * - a Vector3 built from mCamSpacePosX..Z for Sound::PlayBank3 sizes
+ *   St_Wait_Main 0x20c against 0x1f4, St_StandUp_Init 0x4c against 0x28,
+ *   and St_StandUp_Main 0xf8 against 0xcc. The in-place cast stays.
+ * - mModel.mat4x3.t does not compile: common.h's flat Matrix4x3
  *   (s32 m[12]) is the one this TU sees, so the translation row is
  *   m[9], m[10] and m[11].
- * Leftover: data_ov071_02122ecc, data_ov071_021230d0 and
- *   data_ov071_021230d8 are unnamed ov071 rows this TU does not own.
+ * - data_ov071_02122ecc, data_ov071_021230d0 and data_ov071_021230d8 are
+ *   defined at the end of this file so their dynamic init stays out of
+ *   .text.
+ * - Matrix4x3_FromRotationXYZExt, Matrix4x3_FromRotationY,
+ *   MulVec3Mat4x3, Vec3_Add, AddVec3, Vec3_HorzDist, DecIfAbove0_Short
+ *   and ApproachLinear stay local externs; no shared header owns them.
  */
 
 #include "daObjCasket_c.h"
@@ -69,12 +72,37 @@ struct CasketState {
 
 bool ApproachLinear(short &value, short target, short step);
 
+/* Resource handles this TU's static initializer constructs. File IDs and
+ * widths are the ROM's; constructor/destructor addresses are aliased in
+ * the manifest (Eyerok idiom). */
+struct CasketModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    CasketModelFilePtr(u32 fileID);
+    ~CasketModelFilePtr();
+};
+
+struct CasketCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    CasketCollisionFilePtr(u32 fileID);
+    ~CasketCollisionFilePtr();
+};
+
 extern "C" {
-/* The state table, indexed by mState. */
+/* Pointer-to-member descriptors the initializer copies into the state
+ * table, and the state names (all ROM .data, owned by no TU). */
+extern StateFunc data_ov071_02122e74;
+extern StateFunc data_ov071_02122e7c;
+extern StateFunc data_ov071_02122e84;
+extern StateFunc data_ov071_02122e8c;
+extern char data_ov071_02122e64[];
+extern char data_ov071_02122e6c[];
+/* The state table, indexed by mState. Defined at the end of this file. */
 extern CasketState data_ov071_02122ecc[];
-/* The casket's model and collision files. */
-extern SharedFilePtr data_ov071_021230d0;
-extern SharedFilePtr data_ov071_021230d8;
+/* The casket's model and collision files. Defined at the end of this file. */
+extern CasketModelFilePtr data_ov071_021230d0;
+extern CasketCollisionFilePtr data_ov071_021230d8;
 /* The CLPS block handed to dBgW_KcMbg::SetFile. */
 extern CLPS_Block data_ov063_0211ebd8;
 /* Scratch rotation matrix. */
@@ -309,3 +337,14 @@ void daObjCasket_c::UpdateModelTransform()
     mModel.mat4x3.m[10] = mPosY >> 3;
     mModel.mat4x3.m[11] = mPosZ >> 3;
 }
+
+/* Definition order is the retail initializer's construction order: the
+ * model handle, then the collision handle, then the state table whose
+ * pointer-to-member slots copy the ROM descriptors. */
+CasketModelFilePtr data_ov071_021230d0(0x5b4);
+CasketCollisionFilePtr data_ov071_021230d8(0x5b5);
+
+CasketState data_ov071_02122ecc[] = {
+    { data_ov071_02122e74, data_ov071_02122e8c, data_ov071_02122e64 },
+    { data_ov071_02122e84, data_ov071_02122e7c, data_ov071_02122e6c },
+};

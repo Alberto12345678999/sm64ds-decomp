@@ -1,30 +1,17 @@
 //cpp
-/* daBbl_c -- the Lava Bubble (Podoboo), BUBBLE, ov064
- * 0x021185c0..0x02118b50.
- *
- * The Lava Bubble of the lava levels. Two variants share the class, chosen
- * by the spawn parameter's low bit: a fixed flame that only hurts what walks
- * into it, and the jumping bubble that leaps out of the lava under gravity,
- * can be hit, and dies when its fuse runs out. Both run the same two-entry
- * pointer-to-member state table.
- *
- * Source order is the reverse of the ROM: mwccarm 2004/b56 emits one .text
- * section per function in reverse source order, so the highest-address
- * function is written first. Do not reorder. The inline destructor in
- * include/daBbl_c.h emits the retail D1/D0 pair first and no D2 body.
- *
- * Leftovers:
- * - Particle::System::New, dActor_c::IsTooFarAwayFromPlayer, dCcAc_c::Init
- *   and dBgCh_Actr::Init keep their C ABI spellings: their real declarations
- *   pass Fix12<int> by value, which mwccarm lowers differently at a C++ call
- *   site.
- * - The five state hooks keep their address labels as method names; the ROM
- *   records no English name for them.
- * - The two State tables at 0x0211c7b8/0x0211c7c8 are this overlay's .bss,
- *   filled by the module's static initializer -- consumed here, not owned.
- * - func_ov064_02118760's volatile spawn-position array is load-bearing:
- *   retail stores the words y, z, x; a plain Vector3 lets mwcc reorder the
- *   stores.
+/* daBbl_c -- Lava Bubble (Podoboo), BUBBLE, ov064 0x021185c0..0x02118b50.
+ * The spawn parameter's low bit picks a fixed flame or the jumping bubble.
+ * Both use the same two-entry state table. Source order is the reverse of
+ * the ROM. Do not reorder. The inline destructor in include/daBbl_c.h emits
+ * D1 then D0 and no D2.
+ */
+/* leftovers: Particle::System::New, dActor_c::IsTooFarAwayFromPlayer,
+ * dCcAc_c::Init and dBgCh_Actr::Init stay C-ABI externs. This file calls
+ * them, and each definition passes Fix12<int> by value. The five state
+ * hooks keep address names; the ROM records no English name. The State
+ * tables at 0x0211c7b8 and 0x0211c7c8 are filled from this file's static
+ * initializer. func_ov064_02118760 stores the spawn words y, z, x through
+ * a volatile array; a plain Vector3 lets the compiler reorder those stores.
  */
 
 #include "daBbl_c.h"
@@ -66,11 +53,15 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     dBgCh_Actr *self, int actor, int radius, int height, int rotA, int rotB);
 
-/* The two state tables, this overlay's .bss. include/decl_common.h declares
- * both as raw byte arrays for the whole tree, so they keep that spelling here
- * and the class's own view of them is applied where they are handed over. */
-extern char data_ov064_0211c7b8[];
-extern char data_ov064_0211c7c8[];
+/* Eight-byte pointer-to-member records. The cartridge stores the four
+ * constants in .data and copies them into the two .bss tables below. */
+struct BblPmfPair { int ptr; int adj; };
+extern BblPmfPair data_ov064_0211bea0;
+extern BblPmfPair data_ov064_0211be90;
+extern BblPmfPair data_ov064_0211bea8;
+extern BblPmfPair data_ov064_0211be98;
+extern BblPmfPair data_ov064_0211c7b8[2];
+extern BblPmfPair data_ov064_0211c7c8[2];
 }
 
 // @symbol daBbl_c_classInit
@@ -302,4 +293,11 @@ int daBbl_c::func_ov064_02118644()
     if ((u16)mStateTimer == 0)
         MarkForDestruction();
     return 1;
+}
+
+/* Declaration order is the retail __sinit order: the fountain table, then
+ * the jumping table. Each entry is one pointer-to-member pair. */
+extern "C" {
+BblPmfPair data_ov064_0211c7b8[2] = { data_ov064_0211bea0, data_ov064_0211be90 };
+BblPmfPair data_ov064_0211c7c8[2] = { data_ov064_0211bea8, data_ov064_0211be98 };
 }

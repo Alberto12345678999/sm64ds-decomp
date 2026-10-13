@@ -9,8 +9,8 @@
  * order is descriptor, type-name, profile, vtable.
  * func_ov002_020b6244 loads slot 0 with
  * Model::LoadFile, slot 1 with dBgW_Kc::LoadFile, slot 2 as CLPS
- * into SetFile. ov045 sinit constructs those SharedFilePtrs as
- * file IDs 1631 / 1632.
+ * into SetFile. This TU's static initializer constructs those
+ * SharedFilePtrs as file IDs 1631 / 1632.
  *
  * daObjKm2_Gura_c_classInit is reconstructed (RTTI daObjKm2_Gura_c,
  * KM2_GURA registry). Retail does not store that spelling.
@@ -26,6 +26,28 @@
 #include "daObjKm2_Gura_c.h"
 #include "SharedFilePtr.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct Km2GuraModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km2GuraModelFilePtr(unsigned int fileID);
+    ~Km2GuraModelFilePtr();
+};
+
+struct Km2GuraClsnFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km2GuraClsnFilePtr(unsigned int fileID);
+    ~Km2GuraClsnFilePtr();
+};
+
+typedef char Km2GuraModelFilePtr_size_must_be_8[
+    sizeof(Km2GuraModelFilePtr) == 8 ? 1 : -1];
+typedef char Km2GuraClsnFilePtr_size_must_be_8[
+    sizeof(Km2GuraClsnFilePtr) == 8 ? 1 : -1];
+
 struct CLPS_Block;
 
 struct ResourceDescriptor {
@@ -37,8 +59,8 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
     sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern "C" {
-extern SharedFilePtr data_ov045_02113220;
-extern SharedFilePtr data_ov045_02113228;
+extern Km2GuraModelFilePtr data_ov045_02113220;
+extern Km2GuraClsnFilePtr data_ov045_02113228;
 extern CLPS_Block data_ov045_021124f0;
 }
 
@@ -95,3 +117,8 @@ s32 daObjKm2_Gura_c::CleanupResources()
 {
     return func_ov002_020b60fc(this, &data_ov045_02112fdc);
 }
+
+/* Source order is construction order: model file 1631, then the collision
+ * file 1632. The compiler registers each destructor beside the object. */
+Km2GuraModelFilePtr data_ov045_02113220(1631);
+Km2GuraClsnFilePtr data_ov045_02113228(1632);

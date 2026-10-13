@@ -6,34 +6,31 @@
  * spellings below are recorded in
  * notes/agents/handoffs/daYurei_Mucho_c-ov065.md.
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *
- *   The integer-cast field forms, `(int)this + 0x3d8` in Behavior and
- *   `(int)this + 0x3c0` in func_ov065_0211696c. Writing `&mBobAngle`, or
- *   `mShotPosX <<= 3`, DIFFs.
- *
- *   mStateTimer comparisons stay unsigned short, because the ROM loads it
- *   with ldrh.
- *
- *   The Mtx43 / V3A overlays on mModelAnim.mat4x3, mShadowMat and the player
- *   position copies. Plain Matrix4x3 / Vector3 assignment scalarizes.
- *
- *   The SharedFilePtr +4 BCA loads stay raw -- that layout is unrecovered.
- *
- *   ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
- *   KillByInvincibleChar, SpawnCoins, Player::Hurt and Player::Bounce stay
- *   spelled as mangled symbols: Fix12 by value, wall 6az. dBgCh_Actr::Init is
- *   the same wall from the other side -- the header's Fix12i mangles as int,
- *   which is what InitResources calls here.
- *
  * func_ov065_02115f84..0211696c are this TU's own state and helper methods.
  * The address is kept as the method name. symbols.txt records the mangled
  * spelling, which is what the unowned PMF .data records resolve by name.
  *
- * NOT OWNED BY THIS TU. The data_ov065_* SharedFilePtr handles (Init
- * LoadFile, Cleanup Release) and the state records
- * (func_ov065_0211691c). g_profile_YUREI_MUCHO is defined outside (S14).
- * pad_3e2 is unobserved.
+ * leftovers: each one is load-bearing.
+ * - The integer-cast field forms, `(int)this + 0x3d8` in Behavior and
+ *   `(int)this + 0x3c0` in func_ov065_0211696c. Writing `&mBobAngle`, or
+ *   `mShotPosX <<= 3`, DIFFs.
+ * - mStateTimer comparisons stay unsigned short, because the ROM loads it
+ *   with ldrh.
+ * - The Mtx43 / V3A overlays on mModelAnim.mat4x3, mShadowMat and the
+ *   player position copies. Plain Matrix4x3 / Vector3 assignment
+ *   scalarizes.
+ * - The SharedFilePtr +4 BCA loads stay raw -- that layout is
+ *   unrecovered.
+ * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ *   DropShadowRadHeight, KillByInvincibleChar, SpawnCoins, Player::Hurt
+ *   and Player::Bounce stay spelled as mangled symbols: Fix12 by value,
+ *   wall 6az. dBgCh_Actr::Init is the same wall from the other side --
+ *   the header's Fix12i mangles as int, which is what InitResources
+ *   calls here.
+ * - The data_ov065_* SharedFilePtr handles (Init LoadFile, Cleanup
+ *   Release) and the state records (func_ov065_0211691c) are not owned
+ *   by this TU. g_profile_YUREI_MUCHO is defined outside. pad_3e2 is
+ *   unobserved.
  */
 
 #include "daYurei_Mucho_c.h"
@@ -69,7 +66,7 @@ struct V3Quint {
 extern "C" {
 
 /* arm9 -- 6az / unnamed helpers. Method forms of the Fix12-by-value
-   group size-DIFF; see the deslop leftover list. */
+   group size-DIFF; see leftovers. */
 extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos,
                                                           unsigned int n, int f, short s);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
@@ -463,7 +460,8 @@ int daYurei_Mucho_c::func_ov065_021165d8()
     short pitch = 0;
     Player *p = ClosestNonVanishPlayer();
     if (p != 0) {
-        Vector3 tmp = *(Vector3 *)&p->mPosX;
+        Vector3 tmp;
+        *(V3A *)&tmp = *(V3A *)&p->mPosX;
         Vector3 v;
         Vector3 a;
         a.x = tmp.x;

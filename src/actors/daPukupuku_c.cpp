@@ -65,6 +65,44 @@ struct PukuMainView {
 /* BCA handle. The sinit builds it as a SharedFilePtr; SetAnim reads +4. */
 struct AnimFilePtr { int a; struct BCA_File *file; };
 
+/* File-scope objects at the end of this file construct the two resource
+ * handles and fill the two state rows. mwcc emits
+ * __sinit_daPukupuku_c.cpp from those definitions. The wrapper names are
+ * local; the handle constructors and destructors are the ROM resource-family
+ * functions, aliased in the manifest. */
+struct PukupukuModelFile : SharedFilePtr {
+    u32 words[2];
+
+    PukupukuModelFile(u32 fileID);
+    ~PukupukuModelFile();
+};
+
+struct PukupukuAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PukupukuAnimationFilePtr(u32 fileID);
+    ~PukupukuAnimationFilePtr();
+};
+
+/* One 8-byte state word (a pointer-to-member: function address, this-delta).
+ * The four words live in .data; each state row copies two of them. */
+struct PukuDesc {
+    int w[2];
+};
+
+struct PukuStateRow {
+    PukuDesc x, y;
+};
+
+extern PukupukuModelFile data_ov090_02134564;
+extern PukupukuAnimationFilePtr data_ov090_0213455c;
+extern PukuDesc data_ov090_021342c0;
+extern PukuDesc data_ov090_021342b8;
+extern PukuDesc data_ov090_021342d0;
+extern PukuDesc data_ov090_021342c8;
+extern PukuStateRow data_ov090_02134594;
+extern PukuStateRow data_ov090_02134584;
+
 extern "C" {
 extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj( Player*, const Vector3&, unsigned int, Fix12i, unsigned int, unsigned int, unsigned int);
 extern Vector3 data_ov090_021342d8;
@@ -77,8 +115,6 @@ extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
 extern struct Matrix4x3 data_020a0e68;
-extern SharedFilePtr data_ov090_02134564;
-extern AnimFilePtr data_ov090_0213455c;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void *thisp, struct dActor_c *, struct Vector3 const &, int, int, unsigned int, unsigned int);
@@ -102,7 +138,7 @@ int daPukupuku_c::InitResources()
     struct BMD_File *bmd;
     struct Vector3 v;
 
-    bmd = (struct BMD_File *)Model::LoadFile(data_ov090_02134564);
+    bmd = (struct BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov090_02134564);
     mModelAnim.SetFile(bmd, 1, -1);
 
     dExtFrameCtrl_c::LoadFile(*(struct SharedFilePtr *)&data_ov090_0213455c);
@@ -119,7 +155,7 @@ int daPukupuku_c::InitResources()
         &mWithMeshClsn, this, 0x1e000, 0x1e000, 0, 0);
 
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, data_ov090_0213455c.file, 0, 0x1000, 0);
+        &mModelAnim, ((AnimFilePtr *)&data_ov090_0213455c)->file, 0, 0x1000, 0);
 
     func_ov090_021332e8((PukuStatePMF *)&data_ov090_02134594);
     return 1;
@@ -229,7 +265,7 @@ int daPukupuku_c::func_ov090_02133200()
     }
     ApproachAngle(&mPrevAngleY, *(s16 *)(pad_380 + 4), 1, 0x100, 0x200);
     if (*(unsigned short *)&mStateTimer == 0)
-        func_ov090_021332e8((PukuStatePMF *)data_ov090_02134584);
+        func_ov090_021332e8((PukuStatePMF *)&data_ov090_02134584);
     return 1;
 }
 
@@ -285,3 +321,13 @@ extern "C" void func_ov090_021330c8(char* thiz)
 
 // @symbol _ZN12daPukupuku_cD1Ev
 /* D1 is emitted from the same inline destructor. */
+
+/* Static-init globals (was the handwritten __sinit_ov090_02133f4c shard).
+ * Definition order is the retail initializer's construction order: the model
+ * handle (file 0x418), then the animation handle (file 0x419), then the swim
+ * row (enter 02133290, main 02133200) and the pause row (enter 021331c4,
+ * main 02133190). */
+PukupukuModelFile data_ov090_02134564(0x418);
+PukupukuAnimationFilePtr data_ov090_0213455c(0x419);
+PukuStateRow data_ov090_02134594 = {data_ov090_021342c0, data_ov090_021342b8};
+PukuStateRow data_ov090_02134584 = {data_ov090_021342d0, data_ov090_021342c8};

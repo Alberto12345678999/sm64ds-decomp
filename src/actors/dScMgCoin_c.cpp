@@ -6,11 +6,10 @@
  * hops down six stages and drops off the bottom. Phase 5 is the
  * result: a countdown, then this score against the other player's.
  *
- * This file is the whole ov006 unit 0x020dbe40..0x020de940: 62
- * functions in ROM order, from the destructor to InitResources. The
- * destructor is the key function, so the vtable and RTTI are emitted
- * here too. dScMgCoin_c_classInit, just above at 0x020de940, is still
- * its own file (src/d_s_mg_coin.cpp).
+ * This file is the whole ov006 unit 0x020dbe40..0x020de988: 63
+ * functions in ROM order, from the destructor through InitResources to
+ * the registry factory dScMgCoin_c_classInit. The destructor is the key
+ * function, so the vtable and RTTI are emitted here too.
  *
  * The functions from func_ov006_020dd0e0 up, and the three below
  * func_ov006_020dbf7c, came from one-function files. Their bodies are
@@ -22,28 +21,24 @@
  * The five state tables (the coin handlers at data_ov006_021417b0, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
  * 02141810 and the blocks' at 02141840) are {pmf, delta} records on
- * dScMgCoin_c. __sinit_ov006_0213014c copies them into .bss from the
- * data_ov006_0213be** literals.
+ * dScMgCoin_c. They are defined here, and the TU's static initialiser
+ * fills them from the pointer-to-member constants at data_ov006_0213be**.
  *
- * Leftover: func_ov006_020dd594 and func_ov006_020dde28 still use
- *   local layout structs instead of the class members.
- * Leftover: func_ov006_020ddeb0 (from func_ov006_020dc154 and
- *   func_ov006_020dc1c4) and func_ov006_020dd4b0 (from
- *   func_ov006_020dd000) are still unnamed.
- * Leftover: RenderOamMainScreen and func_ov004_020b0380 are redeclared
- *   extern "C" at the call — the ROM symbols are unmangled, and the
- *   sites disagree on the types.
- * Leftover: func_ov006_020dcd74 reads the other score at
- *   data_ov004_020beb68 + 0xac. That word is not a field of dScMgBase_c.
- * Leftover: func_ov006_020dc6d0 casts the scene through unsigned long
- *   long before clearing the caption frameTime. Five words without it.
- * Leftover: func_ov006_020dc900, func_ov006_020dc960 and
- *   func_ov006_020dcb1c stay on byte offsets. The popup and sparkle
- *   structs miss (timer address reused, 0x18 kept as both stride and
- *   timer, literal pool swapped).
- * Leftover: GetGameLanguage is called twice in func_ov006_020dccb8
- *   and again in func_ov006_020dcd74. Hoisting the second call misses.
  */
+
+// leftovers: func_ov006_020dd594 and func_ov006_020dde28 still use local
+// layout structs instead of the class members. The address-named helpers
+// keep ROM names (no symbol table: func_ov006_020ddeb0, func_ov006_020dd4b0
+// and the func_ov006_020dc* family). RenderOamMainScreen and
+// func_ov004_020b0380 are redeclared extern "C" at the call -- the ROM symbols
+// are unmangled and the sites disagree on the types. func_ov006_020dcd74
+// reads the other score at data_ov004_020beb68 + 0xac (not a dScMgBase_c
+// field). func_ov006_020dc6d0 casts the scene through unsigned long long
+// before clearing the caption frameTime (five words without it).
+// func_ov006_020dc900/_020dc960/_020dcb1c stay on byte offsets (popup and
+// sparkle structs miss: timer address reused, 0x18 kept as stride and timer,
+// literal pool swapped). GetGameLanguage is called twice in
+// func_ov006_020dccb8 and again in func_ov006_020dcd74 (hoisting misses).
 
 #include "types.h"
 #include "decl_common.h"
@@ -160,17 +155,72 @@ extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern int data_0208ee44;
+extern void func_0203b9b4(int *p, int v);
 }
 
-/* The per-state handler tables for the coins, the blocks, the caption and
-   the moneybag: {pmf, delta} records indexed by the record's own state byte.
-   __sinit_ov006_0213014c copies them from data_ov006_0213be** literals. */
+/* The per-state handler tables: {pmf, delta} records indexed by the
+   record's own state byte. Static initialisation fills each one from the
+   pointer-to-member constants at 0x0213be44..0x0213bf0c in .data, which
+   stay outside this TU's claim, so they are reached by extern. The
+   definitions are in the order the initialiser fills them. */
 typedef void (dScMgCoin_c::*CoinPmf)(int);
 struct CoinPmfEntry { CoinPmf pmf; };
-extern "C" CoinPmfEntry data_ov006_021417b0[];
-extern "C" CoinPmfEntry data_ov006_021417c8[];
-extern "C" CoinPmfEntry data_ov006_021417e8[];
-extern "C" CoinPmfEntry data_ov006_02141840[];
+typedef void (dScMgCoin_c::*PMF_Behavior)();
+struct Entry_Behavior { PMF_Behavior pmf; };
+extern "C" {
+extern const Entry_Behavior data_ov006_0213bee4, data_ov006_0213be6c,
+    data_ov006_0213be7c, data_ov006_0213bea4, data_ov006_0213be54,
+    data_ov006_0213be5c;
+extern const CoinPmfEntry data_ov006_0213beec, data_ov006_0213be74,
+    data_ov006_0213be64, data_ov006_0213be84, data_ov006_0213beb4,
+    data_ov006_0213be9c;
+extern const CoinPmfEntry data_ov006_0213befc, data_ov006_0213bf04,
+    data_ov006_0213be94;
+extern const CoinPmfEntry data_ov006_0213bec4, data_ov006_0213bed4,
+    data_ov006_0213becc, data_ov006_0213beac, data_ov006_0213bebc;
+extern const CoinPmfEntry data_ov006_0213be44, data_ov006_0213be4c,
+    data_ov006_0213bef4, data_ov006_0213be8c;
+
+/* the phases (Behavior) */
+Entry_Behavior data_ov006_02141810[6] = {
+    { data_ov006_0213bee4 },
+    { data_ov006_0213be6c },
+    { data_ov006_0213be7c },
+    { data_ov006_0213bea4 },
+    { data_ov006_0213be54 },
+    { data_ov006_0213be5c }
+};
+/* the blocks */
+CoinPmfEntry data_ov006_02141840[6] = {
+    { data_ov006_0213beec },
+    { data_ov006_0213be74 },
+    { data_ov006_0213be64 },
+    { data_ov006_0213be84 },
+    { data_ov006_0213beb4 },
+    { data_ov006_0213be9c }
+};
+/* the coins */
+CoinPmfEntry data_ov006_021417b0[3] = {
+    { data_ov006_0213befc },
+    { data_ov006_0213bf04 },
+    { data_ov006_0213be94 }
+};
+/* the caption */
+CoinPmfEntry data_ov006_021417e8[5] = {
+    { data_ov006_0213bec4 },
+    { data_ov006_0213bed4 },
+    { data_ov006_0213becc },
+    { data_ov006_0213beac },
+    { data_ov006_0213bebc }
+};
+/* the moneybag */
+CoinPmfEntry data_ov006_021417c8[4] = {
+    { data_ov006_0213be44 },
+    { data_ov006_0213be4c },
+    { data_ov006_0213bef4 },
+    { data_ov006_0213be8c }
+};
+}
 
 // @symbol _ZN11dScMgCoin_cD1Ev
 // @symbol _ZN11dScMgCoin_cD0Ev
@@ -428,7 +478,7 @@ void dScMgCoin_c::func_ov006_020dc4c8(int index)
         scene->cap[index].frame = scene->cap[index].frame & 1;
     }
     scene->cap[index].sprite = data_ov006_0212e30c[scene->cap[index].frame];
-    if (this->unk_51c8 == kResultPhase)
+    if (this->mPhase == kResultPhase)
         return;
     u16 delay = scene->cap[index].delay;
     if (delay != 0) {
@@ -462,7 +512,7 @@ void dScMgCoin_c::func_ov006_020dc5c4(int index)
         scene->cap[index].delay = kCountInDelay;
         scene->cap[index].state = 2;
         {
-            int *phase = &this->unk_51c8;
+            int *phase = &this->mPhase;
             *frame = 0;
             *frameTime = 0;
             *phase = *phase + 1;
@@ -526,7 +576,7 @@ void dScMgCoin_c::func_ov006_020dc7fc()
 void dScMgCoin_c::func_ov006_020dc814()
 {
     dScMgCoin_c *scene = this;
-    if (scene->unk_51c8 != kResultPhase)
+    if (scene->mPhase != kResultPhase)
         return;
 
     int left = scene->mCountdown;
@@ -543,7 +593,7 @@ void dScMgCoin_c::func_ov006_020dc870()
 {
     dScMgCoin_c *scene = this;
     int i;
-    if (scene->unk_51c8 == kResultPhase) {
+    if (scene->mPhase == kResultPhase) {
         if (scene->mCountdown == 0)
             return;
     }
@@ -676,7 +726,7 @@ void dScMgCoin_c::func_ov006_020dccb8()
     dScMgCoin_c *scene = this;
 
     int lang;
-    if (scene->unk_51c8 < 2)
+    if (scene->mPhase < 2)
         return;
 
     lang = GetGameLanguage();
@@ -684,7 +734,7 @@ void dScMgCoin_c::func_ov006_020dccb8()
     func_ov004_020b1de8(0x68, 0x28, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7a, 0x28, (void *)0);
-    func_ov004_020b2444(0x8c, 0x28, scene->unk_51d4, 1, -1, 2, 0);
+    func_ov004_020b2444(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dcd74Ev
@@ -694,7 +744,7 @@ void dScMgCoin_c::func_ov006_020dcd74()
 
     int lang;
     int count;
-    if (scene->unk_51c8 < 2)
+    if (scene->mPhase < 2)
         return;
 
     lang = GetGameLanguage();
@@ -736,7 +786,7 @@ void dScMgCoin_c::func_ov006_020dcea8()
     dScMgCoin_c *scene = this;
     int i;
     int v1, v2;
-    if (scene->unk_51c8 == kResultPhase && scene->mCountdown == 0)
+    if (scene->mPhase == kResultPhase && scene->mCountdown == 0)
         return;
 
     v1 = 0;
@@ -746,10 +796,10 @@ void dScMgCoin_c::func_ov006_020dcea8()
         int sprite = (st == kCoinSettled) ? 1 : v1;
         int x = scene->mCoins[i].x >> 12;
         int y = scene->mCoins[i].y >> 12;
-        int highlight = (scene->unk_51c8 == kResultPhase) ? 1 : v2;
+        int highlight = (scene->mPhase == kResultPhase) ? 1 : v2;
         if (st == kCoinSettled)
             highlight = 1;
-        if (scene->unk_51c8 != kResultPhase) {
+        if (scene->mPhase != kResultPhase) {
             if (scene->mCoins[i].visible != 0)
                 func_ov004_020afdd0(data_ov006_02133f10[sprite], x, y, -1, highlight);
         } else {
@@ -814,7 +864,7 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
     int stars;
     int need;
 
-    if (unk_51c8 != 2)
+    if (mPhase != 2)
         return;
 
     i = gActivePlayerSlot;
@@ -855,7 +905,7 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
 
     this->func_ov006_020dcb1c(idx);
     *(u8 *)(self + idx * 0x18 + 0x4000 + 0xad2) = 0;
-    unk_51c8 = 3;
+    mPhase = 3;
     mCountdown = 0x40;
 
     ang = (*p0 >> 12) - 0x80;
@@ -869,11 +919,11 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
     stars = (data_ov004_020beb68 != 0) ? *(int *)((char *)data_ov004_020beb68 + 0xa8) : 0;
-    need = unk_51d4;
+    need = mPlayerScore;
     if (stars > need)
-        unk_51db = 1;
+        mWonLast = 1;
     else
-        unk_51db = 0;
+        mWonLast = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dd2ccEv
@@ -896,10 +946,9 @@ void dScMgCoin_c::func_ov006_020dd334()
     int a[3];
     int b[3];
     int k;
-    int r3;
-    int r2;
+    int col;
+    int row;
     int i;
-    char *p;
 
     for (k = 0; k < 3; k++) {
         a[k] = (int)((((((unsigned int)RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff) << 3) >> 15);
@@ -910,17 +959,15 @@ void dScMgCoin_c::func_ov006_020dd334()
         b[k] = (a[k] + (int)(w >> 15) + 1) & 7;
     }
 
-    r2 = 0;
-    r3 = 0;
-    i = 0;
-    p = c;
-    for (; i < 0x18; i++, p += 0x18) {
-        *(int *)(p + 0x4ac0) = (((r3 << 5) + 0x10) << 12);
-        *(int *)(p + 0x4ac4) = data_ov006_0212e358[r2] << 12;
-        r3++;
-        *(unsigned char *)(p + 0x4ad1) = 1;
-        *(unsigned char *)(p + 0x4ad2) = 1;
-        if (r3 >= 8) { r3 = 0; r2++; }
+    row = 0;
+    col = 0;
+    for (i = 0; i < 0x18; i++) {
+        mCoins[i].x = (((col << 5) + 0x10) << 12);
+        mCoins[i].y = data_ov006_0212e358[row] << 12;
+        col++;
+        mCoins[i].pad11 = 1;
+        mCoins[i].visible = 1;
+        if (col >= 8) { col = 0; row++; }
     }
 
     *(unsigned char *)(c + a[0] * 0x18 + 0x4ad4) = 1;
@@ -1273,7 +1320,7 @@ void dScMgCoin_c::func_ov006_020ddd6c()
     }
     if (n != 0)
         return;
-    unk_51c8 = 2;
+    mPhase = 2;
     mScore.running = 1;
     Sound::PlayBank2_2D(0x151);
 }
@@ -1313,24 +1360,22 @@ void dScMgCoin_c::func_ov006_020dde28(int index)
 void dScMgCoin_c::func_ov006_020ddeb0()
 {
     int n;
-    unsigned int r8 = 0;
+    unsigned int row = 0;
     int i;
-    char *c = (char *)this;
     n = this->Virtual8C() != 0 ? 0x10 : 0x28;
     for (i = 0; i < n; i++) {
         unsigned int v = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-        *(int *)(c + 0x4660) = ((((v << 3) >> 0xf) << 5) + 0x10) << 0xc;
-        *(int *)(c + 0x4664) = -0xf0000;
-        *(unsigned char *)(c + 0x4677) = 1;
-        *(unsigned char *)(c + 0x4676) = 1;
+        mBlocks[i].x = ((((v << 3) >> 0xf) << 5) + 0x10) << 0xc;
+        mBlocks[i].y = -0xf0000;
+        mBlocks[i].unk17 = 1;
+        mBlocks[i].unk16 = 1;
         {
             unsigned int w = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-            *(short *)(c + 0x4670) = (short)(((i & 0xf) << 3) + (((w << 4) >> 0xf) << 4));
+            mBlocks[i].delay = (short)(((i & 0xf) << 3) + (((w << 4) >> 0xf) << 4));
         }
-        *(unsigned char *)(c + 0x4674) = (unsigned char)(r8 + 3);
-        r8 = (r8 + 1) & 0xff;
-        if (r8 >= 3) r8 = 0;
-        c += 0x1c;
+        mBlocks[i].row = (unsigned char)(row + 3);
+        row = (row + 1) & 0xff;
+        if (row >= 3) row = 0;
     }
 }
 
@@ -1458,7 +1503,7 @@ void dScMgCoin_c::func_ov006_020de1d4()
         }
     }
     mCountdown = 0xc0;
-    unk_51c8 = 5;
+    mPhase = 5;
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020de26cEv
@@ -1470,26 +1515,21 @@ void dScMgCoin_c::func_ov006_020de26c()
     char *self = (char *)this;
     int count;
     int i;
-    char *r5;
     int j;
-    char *r2;
     char *g;
 
     count = 0;
-    for (i = 0, r5 = self; i < 0x28; i++) {
-        if (*(unsigned char *)(r5 + 0x4677)) {
-            int idx = *(unsigned char *)(r5 + 0x4675);
+    for (i = 0; i < 0x28; i++) {
+        if (mBlocks[i].unk17) {
+            int idx = mBlocks[i].state;
             (this->*data_ov006_02141840[idx].pmf)(i);
-            if (*(unsigned char *)(r5 + 0x4675) != 4) count++;
-            if (*(unsigned char *)(r5 + 0x4676) != 0) this->func_ov006_020dde28(i);
+            if (mBlocks[i].state != 4) count++;
+            if (mBlocks[i].unk16 != 0) this->func_ov006_020dde28(i);
         }
-        r5 += 0x1c;
     }
-    r2 = self;
     for (j = 0; j < 0x18; j++) {
-        if (*(unsigned char *)(r2 + 0x4ad0) == 1 && *(unsigned char *)(r2 + 0x4ad1) != 0)
+        if (mCoins[j].state == 1 && mCoins[j].pad11 != 0)
             count++;
-        r2 += 0x18;
     }
     this->func_ov006_020dd2cc();
     this->func_ov006_020dca04();
@@ -1520,25 +1560,23 @@ void dScMgCoin_c::func_ov006_020de440()
 {
     char *c = (char *)this;
     int i;
-    char *p;
-    for (i = 0, p = c; i < 0x28; i++, p += 0x1c) {
-        if (*(u8 *)(p + 0x4677) != 0) {
-            (this->*data_ov006_02141840[*(u8 *)(p + 0x4675)].pmf)(i);
+    for (i = 0; i < 0x28; i++) {
+        if (mBlocks[i].unk17 != 0) {
+            (this->*data_ov006_02141840[mBlocks[i].state].pmf)(i);
             this->func_ov006_020dde28(i);
         }
     }
     this->func_ov006_020dd2cc();
     this->func_ov006_020dca04();
-    if (unk_51c8 == 3) {
+    if (mPhase == 3) {
         return;
     }
     {
         int found = 0;
         int j;
-        char *q;
-        for (j = 0, q = c; j < 0x18; j++, q += 0x18) {
-            if (*(u8 *)(q + 0x4ad3) != 0) {
-                if (*(u8 *)(q + 0x4ad5) == 0) {
+        for (j = 0; j < 0x18; j++) {
+            if (mCoins[j].value != 0) {
+                if (mCoins[j].collected == 0) {
                     found++;
                     break;
                 }
@@ -1548,7 +1586,7 @@ void dScMgCoin_c::func_ov006_020de440()
             return;
         }
     }
-    unk_51c8 = 3;
+    mPhase = 3;
     mCountdown = 0x40;
     *(u8 *)(c + 0x51df) = 1;
     {
@@ -1559,10 +1597,10 @@ void dScMgCoin_c::func_ov006_020de440()
         } else {
             t = 0;
         }
-        if (t > unk_51d4) {
-            unk_51db = 1;
+        if (t > mPlayerScore) {
+            mWonLast = 1;
         } else {
-            unk_51db = 0;
+            mWonLast = 0;
         }
     }
 }
@@ -1589,15 +1627,15 @@ void dScMgCoin_c::func_ov006_020de5ac()
 // @symbol _ZN11dScMgCoin_c13OnYoshiTryEatEi
 /* Slot 18. Starts the next round: counts a win if the last one was won,
    clears the scene, frees its graphics and lays the coins out again. It is
-   void; the mov r0,#0 at the end is the source of the unk_51c8 store. */
+   void; the mov r0,#0 at the end is the source of the mPhase store. */
 void dScMgCoin_c::OnYoshiTryEat(int arg)
 {
     dScMgCoin_c *self = this;
 
-    if (self->unk_51db != 0) {
-        *(unsigned char *)((int)self + 0x51da) += 1;
+    if (self->mWonLast != 0) {
+        self->mWins += 1;
     } else {
-        self->unk_51da = 0;
+        self->mWins = 0;
     }
     self->unk_0a8 = 0;
     *(s32 *)((char *)self + 0xac) = self->unk_0a8;
@@ -1606,8 +1644,8 @@ void dScMgCoin_c::OnYoshiTryEat(int arg)
     this->func_ov006_020dd334();
     this->func_ov006_020dc7b4();
     this->func_ov006_020dc2f8();
-    self->unk_51d4 = func_ov004_020adc1c();
-    self->unk_51c8 = 0;
+    self->mPlayerScore = func_ov004_020adc1c();
+    self->mPhase = 0;
 }
 
 // @symbol _ZN11dScMgCoin_c6RenderEv
@@ -1629,13 +1667,10 @@ int dScMgCoin_c::Render()
 // @symbol _ZN11dScMgCoin_c8BehaviorEv
 /* Runs this phase's handler from data_ov006_02141810, then the caption,
    the moneybag, the popups and the score. */
-typedef void (dScMgCoin_c::*PMF_Behavior)();
-struct Entry_Behavior { PMF_Behavior pmf; };
-extern Entry_Behavior data_ov006_02141810[];
 
 int dScMgCoin_c::Behavior()
 {
-    int idx = unk_51c8;
+    int idx = mPhase;
     (this->*data_ov006_02141810[idx].pmf)();
     this->func_ov006_020dc754();
     this->func_ov006_020dc298();
@@ -1702,10 +1737,27 @@ int dScMgCoin_c::InitResources()
     this->func_ov006_020dd334();
     this->func_ov006_020dc7b4();
     this->func_ov006_020dc2f8();
-    self->unk_51da = 0;
+    self->mWins = 0;
     self->unk_51dc = 2;
     func_ov004_020b04d0(0x20);
-    self->unk_51d4 = func_ov004_020adc1c();
+    self->mPlayerScore = func_ov004_020adc1c();
     self->unk_0a4 = 1;
     return 1;
+}
+
+/* The base constructor and the vptr store are the compiler's; the body is
+   the one member that needs construction. */
+inline dScMgCoin_c::dScMgCoin_c()
+{
+    func_0203b9b4(&mSeed, 1);
+}
+
+/* Reconstructed source-style name: SM64DS proves dScMgCoin_c through RTTI,
+ * allocation size, vtable identity, and the MG_COIN registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MgCoincentration_Spawn. */
+// @symbol dScMgCoin_c_classInit
+extern "C" void *dScMgCoin_c_classInit()
+{
+    return new dScMgCoin_c;
 }

@@ -1,69 +1,61 @@
 //cpp
-/**
- * Tick Tock Clock's up-and-down lift block (registry profiles CT_MECHA08A and
- * CT_MECHA08B).
+/* Tick Tock Clock's up-and-down lift block (CT_MECHA08A/CT_MECHA08B): one
+ * class behind two profiles. InitResources loads model and collision,
+ * remembers home, seeds speed/timer from per-clock-setting tables. Behavior
+ * runs the lift between mHomePosY and mHomePosY + 0x14a000; setting 3 parks
+ * it at the top, setting 2 re-rolls the timer.
  *
- * One class behind two profiles. InitResources loads the model and the
- * collision mesh, remembers where it was placed as its home, and seeds its
- * vertical speed and travel timer from two per-clock-setting tables.
- *
- * Behavior runs the lift between mHomePosY and mHomePosY + 0x14a000. Each time
- * mMoveTimer runs out it clamps itself back inside that span, flips mMoveDir
- * and reloads speed and timer for the new direction. Clock setting 2 -- the
- * random hand -- re-rolls the timer instead; setting 3 stops the clock, which
- * parks the lift at the top of its travel.
- *
- * This TU owns text only: ov065 delinks no .data here, so the _ZTV / _ZTI /
- * _ZTS group the class names is compiler-only output, compared against the
- * cartridge's own copies at ov065 0x0211d494 / 0x0211d434 / 0x0211d440.
- *
- * SOURCE ORDER IS REVERSE ROM ORDER. mwccarm 2004/b56 emits .text back to
- * front under this tree's flags, so the two classInit factories are written
- * first (CT_MECHA08A, then CT_MECHA08B), then InitResources, and
- * CleanupResources last; the destructor pair comes off the in-class
- * `~daObjCtMecha08_c() {}` in include/daObjCtMecha08_c.h and lands ahead of
- * everything, D1 then D0, which is the order the cartridge has (0x0211b7f0,
- * then 0x0211b834).
- *
- * Known limits:
- * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay spelled as
- *   mangled extern-C free functions. Each takes Fix12<int> by value, and a
- *   real method call homes the argument and size-DIFFs the caller
- *   (notes/mwccarm-codegen.md 6az); include/dBgW_KcMbg.h records the same.
- * - DecIfAbove0_Short and RandomIntInternal keep linker names -- no
- *   header home, the daObjCtMecha10_c precedent.
- * - Behavior's clamp keeps the ROM's goto shape, and its mMoveDir
- *   toggle goes through a laundered address; both are measured below.
- * - TtcRotatingGear_ModelFile / TtcRotatingGear_ClsnFile are this
- *   class's two shared-file handles in ov065 .bss (0x0211d98c / 0x0211d97c),
- *   still under the coined spelling symbols.txt gives them.
- *   data_ov065_0211c0d0 / 0211c0d4 are the per-setting speed and timer
- *   tables. None of them is owned by this TU.
- * - data_ov035_021121b8 is the CLPS block, in the Tick Tock Clock
- *   level overlay. ov065's own relocation lists ten overlays that hold
- *   0x021121b8; tools/overlay_residency.py settles them to ov035, the level
- *   overlay this object overlay is loaded beside.
- * - data_0209f2c0 is arm9's clock-setting byte and data_0209e650 the
- *   shared RNG state.
- * - g_profile_CT_MECHA08A / CT_MECHA08B live outside this TU.
- *
- * 8 functions, ov065 .text 0x0211b7f0..0x0211bbdc. The two registry
- * factories close the run: daObjCtMecha08_c_classInit_CT_MECHA08B
- * (0x0211bb7c, historical alias TtcMovingCubeB_Spawn) and
- * daObjCtMecha08_c_classInit_CT_MECHA08A (0x0211bbac, historical alias
- * TtcMovingCubeA_Spawn). Each is operator new(0x330), the dBgActor_c
- * constructor and the vtable store, which is exactly
- * `new daObjCtMecha08_c()`; their names are reconstructed from the profiles
- * and retail does not store them. The new-expression also emits
- * dBgActor_c's base-object destructor, which has no ROM home (manifest:
- * deadstrip).
+ * 8 functions, ov065 .text 0x0211b7f0..0x0211bbdc, closing with the two
+ * classInit factories. The destructor pair comes off the in-class
+ * `~daObjCtMecha08_c() {}` and lands D1 (0x0211b7f0) then D0 (0x0211b834),
+ * the cartridge's order. Source order is reverse ROM order (2004/b56 emits
+ * .text back to front); do not reorder. The four file-scope handles fold
+ * the __sinit_ov065_0211c9b8 shard (retail construction order); _ZTV/_ZTI/
+ * _ZTS stay compiler-only (cartridge copies at ov065 0x0211d494/0x0211d434/
+ * 0x0211d440).
  */
+
+// leftovers: dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled
+// (Fix12<int> by value -- a method call homes the argument and size-DIFFs,
+// 6az; this TU's InitResources/Behavior calls). DecIfAbove0_Short and
+// RandomIntInternal keep linker names (no header home). Behavior's clamp
+// keeps the goto shape and the mMoveDir toggle goes through a laundered
+// address (both measured). TtcRotatingGear_* handles keep their coined
+// spellings (only names in the tree); data_ov065_0211c0d0/0211c0d4 speed and
+// timer tables, data_0209f2c0 clock byte, data_0209e650 RNG, and the ov035
+// CLPS block stay linker-named. g_profile_CT_MECHA08A/B live outside this TU.
 
 #include "daObjCtMecha08_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
 struct CLPS_Block;
+
+/* File-scope objects at the end of this file construct the four resource
+ * handles (model files 0x5c8/0x5ca, collision files 0x5c9/0x5cb). mwcc
+ * emits __sinit_daObjCtMecha08_c.cpp from those definitions. The wrapper
+ * names are local; the handle constructors and destructors are the ROM
+ * resource-family functions, aliased in the manifest. The definitions
+ * carry the TU's TtcRotatingGear_* names the code already uses (mecha05 /
+ * wcmizu precedent); the retired shard's data_ov065_* labels for the same
+ * addresses are dropped from symbols.txt, and their stale decl_common.h
+ * lines with them (S42). */
+struct Mecha08ModelFile : SharedFilePtr {
+    u32 words[2];
+
+    Mecha08ModelFile(u32 fileID);
+    ~Mecha08ModelFile();
+};
+
+struct Mecha08CollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    Mecha08CollisionFilePtr(u32 fileID);
+    ~Mecha08CollisionFilePtr();
+};
+
+extern Mecha08ModelFile TtcRotatingGear_ModelFile;
+extern Mecha08CollisionFilePtr TtcRotatingGear_ClsnFile;
 
 enum {
     CLOCK_SETTING_RANDOM = 2,     /* Behavior re-rolls the timer at random */
@@ -72,8 +64,6 @@ enum {
 };
 
 extern "C" {
-extern SharedFilePtr TtcRotatingGear_ModelFile;
-extern SharedFilePtr TtcRotatingGear_ClsnFile;
 extern CLPS_Block    data_ov035_021121b8;
 extern s32 data_ov065_0211c0d0[][2][2];     /* vertical speed, by setting, by direction */
 extern u16 data_ov065_0211c0d4[][2][4];     /* travel timer, by setting, by direction */
@@ -226,3 +216,10 @@ int daObjCtMecha08_c::CleanupResources()
     TtcRotatingGear_ClsnFile.Release();
     return 1;
 }
+
+/* Static-init globals (was the handwritten __sinit_ov065_0211c9b8 shard).
+ * Definition order is the retail initializer's construction order. */
+Mecha08ModelFile TtcRotatingGear_ModelFile(0x5c8);
+Mecha08ModelFile data_ov065_0211d984(0x5ca);
+Mecha08CollisionFilePtr TtcRotatingGear_ClsnFile(0x5c9);
+Mecha08CollisionFilePtr data_ov065_0211d994(0x5cb);

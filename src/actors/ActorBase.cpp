@@ -1,17 +1,19 @@
 //cpp
-/* fBase_c, the root of the actor hierarchy (arm9). 25 functions,
- * .text 0x02043444..0x02043f4c, enrolled and canonical (delinks
- * points here, not at per-function files).
+/* leftovers:
+ * - Source order stays highest address first. Reordering moves the run.
+ * - The destructors stay extern "C". A real destructor stores the
+ *   vptr at addend 8. The ROM pools hold the slot array at addend 0.
+ * - InitResources stays a free function. As a method it emits
+ *   _ZTV7fBase_c a second time.
+ * - decl_common.h stays out. Its spellings of these list heads
+ *   disagree with the calls in this file.
+ * - Heap locals stay void*. Virtual34 and Virtual38 still read
+ *   the flags word at +4 and the heap top at +8.
+ * - func_0203* and data_020a4b* keep their linker names. They are
+ *   the list operations and the four global list heads.
  *
- * Source runs REVERSE of ROM (highest address first). Do not reorder.
- * The destructors stay extern "C" free functions: a real dtor stores
- * the vptr with addend 8 (vtable object), but the ROM's pools hold
- * the slot array (addend 0). InitResources stays a free function too:
- * defining it as a method would emit _ZTV7fBase_c a second time.
- * decl_common.h is deliberately NOT included (three signatures
- * contradict this TU's uses; see below).
- *
- * Leftover: the func_0203/data_ helpers and homes keep linker names.
+ * fBase_c, the root of the actor hierarchy. arm9 .text
+ * 0x020433b8..0x020440e8.
  */
 #include "fBase_c.h"
 #include "Heap.h"
@@ -40,7 +42,9 @@ extern int  func_0203b20c(void *list, void *node);
 extern int  func_0203b244(void *list, void *node);
 extern int  func_0204405c(void *list, void *node);
 extern int  func_0203b438(void *root, void *node, void *parent);
+extern int  func_0203b2ec(void *l, void *n, void *p);
 
+extern void *data_020a4b68;
 extern int  data_020a4b6c[];
 extern int  data_020a4b78[];
 extern int  data_020a4b88[];
@@ -55,17 +59,12 @@ extern void *data_020a4b64;
 extern fBaseActorInfo **data_020a4bb8;
 
 extern void func_02044334(void *p);
+extern int func_0204335c(void *self);
 extern int  func_0204424c(char *p);
 extern void *func_0206e2f8(void *p, int fill, unsigned int size);
 
-/* Defined LOWER DOWN in this file (ROM ordinal 4) but called from ordinal 6,
-   which the reverse-emission order puts above it. Declared here rather than
-   immediately before its caller so there is exactly one declaration of it. The
-   two legacy files disagreed -- the definition said `int func_02043810(int *)`
-   and its caller said `Obj *func_02043810(Obj *)` -- and nothing tested the
-   disagreement, because each file only ever saw its own half. Reconciled to the
-   pointer spelling, which is the more complete observation: it returns another
-   actor, not an integer. */
+/* Returns the parent actor. Declared once, up here, because the
+ * caller is emitted above the definition. */
 extern void *func_02043810(void *p);
 
 /* The class's own vtable, as DATA. Named, not defined: see the destructor note
@@ -85,6 +84,118 @@ extern void *_ZTV7fBase_c[];
    which needs them for its inline operator delete. */
 extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *heap);
 
+}
+
+/* Each list helper keeps its own namespace so the local node types
+ * do not collide. The functions stay extern "C" under their addresses. */
+
+// @symbol func_0204405c
+namespace Absorb0204405c {
+struct N {
+    struct N *prev;
+    struct N *next;
+    int pad8;
+    volatile unsigned short c;
+};
+struct L {
+    struct N *head;
+    struct N *tail;
+};
+
+extern "C" int func_0204405c(void *list, void *nodep)
+{
+    struct L *l = (struct L *)list;
+    struct N *n = (struct N *)nodep;
+    struct N *node;
+    struct N *next;
+    node = l->head;
+    if (n == 0)
+        return 0;
+    if (node == 0)
+        return func_0203b244(l, n);
+    if (node->c > n->c)
+        return func_0203b2ec(l, n, 0);
+    goto enter;
+advance:
+    node = next;
+enter:
+    next = node->next;
+    if (next == 0)
+        goto done;
+    if (next->c <= n->c)
+        goto advance;
+done:
+    return func_0203b2ec(l, n, node);
+}
+}
+
+// @symbol func_02043fdc
+namespace Absorb02043fdc {
+class Obj { public: int dummy; };
+typedef void (Obj::*PMF)();
+
+struct Node {
+    int pad;        // 0x0
+    Node *next;     // 0x4
+    Obj *obj;       // 0x8
+};
+
+struct Thing {
+    Node *head;     // 0x0
+    int pad;        // 0x4
+    PMF callback;   // 0x8
+};
+
+extern "C" void *func_02043fdc(Thing *thiz)
+{
+    Node *node;
+    if (thiz->callback == 0) return (void *)1;
+    node = thiz->head;
+    while (node != 0) {
+        Node *next;
+        data_020a4b68 = node;
+        next = node->next;
+        (node->obj->*thiz->callback)();
+        node = next;
+    }
+    data_020a4b68 = node;
+    return (void *)1;
+}
+}
+
+// @symbol func_02043f98
+namespace Absorb02043f98 {
+struct Node {
+    void* x0;
+    struct Node* next;  /* 0x4 */
+    int* x8;            /* 0x8 */
+};
+
+extern "C" struct Node* func_02043f98(struct Node** head, int key) {
+    struct Node* node = *head;
+    while (node != 0) {
+        int b = (int)(node->x8[1] != key);
+        if (b == 0) return node;
+        node = node->next;
+    }
+    return 0;
+}
+}
+
+// @symbol func_02043f4c
+namespace Absorb02043f4c {
+struct Inner { char pad[0xc]; unsigned short id; };
+struct Node { char pad[4]; struct Node* next; struct Inner* inner; };
+
+extern "C" struct Node* func_02043f4c(struct Node** pp, int key, struct Node* alt) {
+    struct Node* n = alt ? alt->next : *pp;
+    while (n != 0) {
+        int b = (int)(n->inner->id != key);
+        if (b == 0) return n;
+        n = n->next;
+    }
+    return 0;
+}
 }
 
 // @symbol _ZN7fBase_cC2Ev
@@ -111,21 +222,10 @@ fBase_c::fBase_c() : manager(this)
     }
 }
 
-/* ========================================================================= *
- * ROM ordinals 23, 22 and 21 -- the destructor variants.
- *   _ZN7fBase_cD2Ev  0x02043d48  size 0x30   (base-object)
- *   _ZN7fBase_cD0Ev  0x02043d78  size 0x44   (deleting)
- *   _ZN7fBase_cD1Ev  0x02043dbc  size 0x30   (complete-object)
- * Written D1, D0, D2 so the reversal emits them D2, D0, D1 -- the ROM's order.
- *
- * fBase_c is the root: there is no base destructor to chain to. Each variant
- * stores the vptr, then destroys the two ProcessingListNode members in REVERSE
- * declaration order (manager.renderNode at 0x38 before
- * manager.behaviorNode at 0x28), and returns
- * `this`. D0 additionally hands the object back to the actor heap, which is
- * what an inline `operator delete` compiles to -- see include/fBase_c.h.
- * D1 and D2 are byte-identical, which for a root class they must be.
- * ========================================================================= */
+/* Written D1, D0, D2 so reverse emission lands D2 at 0x02043d48,
+ * D0 at 0x02043d78, D1 at 0x02043dbc. Each stores the vptr, then
+ * destroys renderNode (0x38) before behaviorNode (0x28). D0 also
+ * returns the object to the actor heap. */
 // @symbol _ZN7fBase_cD1Ev
 extern "C" fBase_c *_ZN7fBase_cD1Ev(fBase_c *self)
 {
@@ -680,4 +780,31 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
         return 0;
     func_0206e2f8(p, 0, size);
     return p;
+}
+
+/* ROM ordinal 0 -- the run's backward neighbour, absorbed (reverse
+ * emission puts the lowest address last). Body as recovered. */
+
+// @symbol func_020433b8
+extern "C" {
+void func_020433b8(char* self)
+{
+    func_0204335c(self);
+    if (*(u8*)(self + 0xf) != 0) return;
+    if (*(u8*)(self + 0x10) != 0) return;
+    {
+        volatile u8* q = (u8*)(self + 0xe);
+        int b = q[0] == 0 ? 1 : 0;
+        if (b == 0) return;
+    }
+    {
+        volatile int* p = data_02099f24;
+        int c = p[0] == 2 ? 1 : 0;
+        if (c) {
+            *(u8*)(self + 0x11) = 1;
+            return;
+        }
+    }
+    func_0203b244(data_020a4b88, self + 0x28);
+}
 }

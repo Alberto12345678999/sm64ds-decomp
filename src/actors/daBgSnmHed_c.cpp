@@ -1,27 +1,15 @@
 //cpp
-/* Production translation unit for ov072/daBgSnmHed_c.
- * 20 function(s), .text 0x0211ff34..0x02120824. The snowman's head
- * (BIG_SNOWMAN_HEAD).
- *
- * NAME: _ZTS12daBgSnmHed_c is "12daBgSnmHed_c" at ov072 0x02122888; _ZTI at
- * 0x0212287c reads [__si_class_type_info, that string, _ZTI8dActor_c]. The
- * factory's historical alias was SnowmanHead_Spawn (coined).
- *
- * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
- * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x0211ff34), D0
- * (0x0211ff7c), then a D2 the cartridge has no home for (manifest: deadstrip);
- * the same pragma lays .text down in source order, so this file is
- * ROM-ascending, and the classInit factory appends after InitResources.
- *
- * daBgSnmHed_c_classInit (0x021207d4..0x02120824) hand-called
- * fBase_c::operator new(824) + the inherited dActor_c ctor + this class's
- * vtable store + four member subobjects in field order (Model,
- * TextureSequence, dCcAc_c, dBgCh_Actr). daBgSnmHed_c has no user-declared
- * constructor, so `new daBgSnmHed_c()` reproduces the identical sequence.
- *
- * Leftover: TextureSequence::SetFile, dActor_c::Earthquake,
- *   Particle::System::NewSimple, Sound::PlaySub, dCcAc_c::Init and
- *   dBgCh_Actr::Init take Fix12<int> by value, so they stay mangled.
+/* daBgSnmHed_c -- the snowman's head (BIG_SNOWMAN_HEAD), ov072
+ * 0x0211ff34..0x02120824. _ZTS12daBgSnmHed_c is at 0x02122888; _ZTI at
+ * 0x0212287c names dActor_c as the base. The destructor is the key function.
+ * defer_codegen off emits D1 at 0x0211ff34, D0 at 0x0211ff7c, then a D2
+ * with no ROM home. Source order is ROM order. The factory was
+ * SnowmanHead_Spawn; `new daBgSnmHed_c()` is the same sequence.
+ */
+/* leftovers: TextureSequence::SetFile, dActor_c::Earthquake,
+ * Particle::System::NewSimple, Sound::PlaySub, dCcAc_c::Init and
+ * dBgCh_Actr::Init stay mangled. This file calls each of them, and every
+ * one of those definitions takes Fix12<int> by value.
  */
 
 #pragma defer_codegen off

@@ -15,7 +15,10 @@ src/minigames/d_s_mg_base.cpp:
 src/actors/unit020b2c84.cpp:
     complete
     .text start:0x020b2c84 end:0x020b4aa4
+    .init start:0x020b955c end:0x020b9ad0
+    .ctor start:0x020b9de8 end:0x020b9dec
     .data start:0x020bc6e8 end:0x020bc7d0
+    .bss start:0x020bf41c end:0x020bf9e4
 
 src/actors/unit020b4aa4.cpp:
     complete
@@ -30,10 +33,6 @@ src/actors/dMgPsOpt_c.cpp:
     complete
     .text start:0x020b8c18 end:0x020b944c
     .data start:0x020bca68 end:0x020bcaa0
-
-src/unnamed/ov004/__sinit_ov004_020b955c.c:
-    complete
-    .init start:0x020b955c end:0x020b9ad0
 
 src/unnamed/ov004/__sinit_ov004_020b9ad0.c:
     complete

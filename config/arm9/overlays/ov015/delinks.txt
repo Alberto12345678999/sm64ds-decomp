@@ -14,6 +14,9 @@ src/game/actors/d_a_obj_bk_billboard.cpp:
 src/actors/daObjBk_Botaosi_c.cpp:
     complete
     .text start:0x02111314 end:0x02111ba0
+    .init start:0x02112fdc end:0x02113048
+    .ctor start:0x02113414 end:0x02113418
+    .bss start:0x02114974 end:0x0211499c
 
 src/game/actors/d_a_obj_bk_dossunbar.cpp:
     complete
@@ -22,39 +25,31 @@ src/game/actors/d_a_obj_bk_dossunbar.cpp:
 src/actors/daObjBk_Lift_c.cpp:
     complete
     .text start:0x02112290 end:0x02112944
+    .init start:0x02113264 end:0x021132d0
+    .ctor start:0x0211341c end:0x02113420
+    .bss start:0x02114a5c end:0x02114a84
 
 src/game/actors/d_a_obj_bk_rotebar.cpp:
     complete
     .text start:0x02112944 end:0x02112bd0
+    .init start:0x021132d0 end:0x0211333c
+    .ctor start:0x02113420 end:0x02113424
+    .bss start:0x02114a84 end:0x02114aac
 
 src/game/actors/d_a_obj_bk_ukisima.cpp:
     complete
     .text start:0x02112bd0 end:0x02112cf4
+    .init start:0x0211333c end:0x021133a8
+    .ctor start:0x02113424 end:0x02113428
+    .bss start:0x02114aac end:0x02114ad4
 
 src/game/actors/d_a_obj_bk_fall_block.cpp:
     complete
     .text start:0x02112cf4 end:0x02112e0c
-
-src/unnamed/ov015/__sinit_ov015_02112fdc.c:
-    complete
-    .init start:0x02112fdc end:0x02113048
+    .init start:0x021133a8 end:0x02113410
+    .ctor start:0x02113428 end:0x0211342c
+    .bss start:0x02114ad4 end:0x02114afc
 
 src/unnamed/ov015/__sinit_ov015_02113048.c:
     complete
     .init start:0x02113048 end:0x02113264
-
-src/unnamed/ov015/__sinit_ov015_02113264.c:
-    complete
-    .init start:0x02113264 end:0x021132d0
-
-src/unnamed/ov015/__sinit_ov015_021132d0.c:
-    complete
-    .init start:0x021132d0 end:0x0211333c
-
-src/unnamed/ov015/__sinit_ov015_0211333c.c:
-    complete
-    .init start:0x0211333c end:0x021133a8
-
-src/unnamed/ov015/__sinit_ov015_021133a8.c:
-    complete
-    .init start:0x021133a8 end:0x02113410

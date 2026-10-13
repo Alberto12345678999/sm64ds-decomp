@@ -7,15 +7,14 @@
 src/actors/daObjTtFuta_c.cpp:
     complete
     .text start:0x021111a0 end:0x021113d4
+    .init start:0x021119e8 end:0x02111a54
+    .ctor start:0x02111ac0 end:0x02111ac4
+    .bss start:0x021124c0 end:0x021124e8
 
 src/actors/daObjTtWater_c.cpp:
     complete
     .text start:0x021113d4 end:0x021116c8
-
-src/unnamed/ov033/__sinit_ov033_021119e8.c:
-    complete
-    .init start:0x021119e8 end:0x02111a54
-
-src/unnamed/ov033/__sinit_ov033_02111a54.c:
-    complete
     .init start:0x02111a54 end:0x02111ac0
+    .ctor start:0x02111ac4 end:0x02111ac8
+    .bss start:0x021124e8 end:0x02112510
+

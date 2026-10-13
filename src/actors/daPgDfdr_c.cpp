@@ -86,12 +86,60 @@ void func_ov027_02111b2c(daPgDfdr_c *self);
 int func_ov027_02111c48(daPgDfdr_c *self);
 int func_ov027_02111ca8(daPgDfdr_c *self);
 
-extern FileRef data_ov027_02113c6c;
-extern FileRef data_ov027_02113c7c;
-extern FileRef data_ov027_02113c94;
-extern FileRef data_ov027_02113c84;
-extern FileRef data_ov027_02113c74;
-extern FileRef data_ov027_02113c8c;
+/* File-scope objects at the end of this file construct the six resource
+ * handles and fill the four-slot state table. mwcc emits
+ * __sinit_daPgDfdr_c.cpp from those definitions. The wrapper names are
+ * local; the handle constructors and destructors are the ROM resource-family
+ * functions, aliased in the manifest. */
+struct PgDfdrModelFile : SharedFilePtr {
+    u32 words[2];
+
+    PgDfdrModelFile(u32 fileID);
+    ~PgDfdrModelFile();
+};
+
+struct PgDfdrAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PgDfdrAnimationFilePtr(u32 fileID);
+    ~PgDfdrAnimationFilePtr();
+};
+
+struct PgDfdrTexSequenceFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PgDfdrTexSequenceFilePtr(u32 fileID);
+    ~PgDfdrTexSequenceFilePtr();
+};
+
+struct PgDfdrCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PgDfdrCollisionFilePtr(u32 fileID);
+    ~PgDfdrCollisionFilePtr();
+};
+
+/* One 8-byte state word (a pointer-to-member: function address, this-delta).
+ * The four words live in .data; the state table copies each of them. */
+struct DfdrDesc {
+    int w[2];
+};
+
+struct DfdrStateTable {
+    DfdrDesc a, b, c, d;
+};
+
+extern PgDfdrCollisionFilePtr data_ov027_02113c6c;
+extern PgDfdrModelFile data_ov027_02113c7c;
+extern PgDfdrTexSequenceFilePtr data_ov027_02113c94;
+extern PgDfdrAnimationFilePtr data_ov027_02113c84;
+extern PgDfdrAnimationFilePtr data_ov027_02113c74;
+extern PgDfdrAnimationFilePtr data_ov027_02113c8c;
+extern DfdrDesc data_ov027_021139d4;
+extern DfdrDesc data_ov027_021139cc;
+extern DfdrDesc data_ov027_021139dc;
+extern DfdrDesc data_ov027_021139c4;
+extern DfdrStateTable data_ov027_02113ce4;
 struct PatrolStep {
     s32 distance;
     s32 speed;
@@ -99,7 +147,6 @@ struct PatrolStep {
     s16 endHeading;
 };
 extern PatrolStep data_ov027_02113a1c[];
-extern StatePair data_ov027_02113ce4[];
 }
 
 // @symbol daPgDfdr_c_classInit
@@ -122,10 +169,10 @@ s32 daPgDfdr_c::InitResources()
         dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov027_02112ca4[i]);
 
     TextureSequence::LoadFile(*(SharedFilePtr *)&data_ov027_02113c94);
-    TextureSequence::Prepare(*(BMD_File *)data_ov027_02113c7c.file,
-                             *(BTP_File *)data_ov027_02113c94.file);
+    TextureSequence::Prepare(*(BMD_File *)((FileRef *)&data_ov027_02113c7c)->file,
+                             *(BTP_File *)((FileRef *)&data_ov027_02113c94)->file);
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, data_ov027_02113c94.file, 0, 0x1000, 0);
+        &mTextureSequence, ((FileRef *)&data_ov027_02113c94)->file, 0, 0x1000, 0);
 
     mAngleY = (short)0xdd30;
     mPrevAngleY = mAngleY;
@@ -211,7 +258,7 @@ s32 daPgDfdr_c::CleanupResources()
 /* Select state idx and run its enter function. */
 void daPgDfdr_c::func_ov027_02111d70(int idx)
 {
-    mStateTable = &data_ov027_02113ce4[idx];
+    mStateTable = &((StatePair *)&data_ov027_02113ce4)[idx];
     func_ov027_02111d38();
 }
 
@@ -235,7 +282,7 @@ void daPgDfdr_c::func_ov027_02111cfc()
 /* State 0 enter: pause-and-turn clip, 20 frames, unk_3d0 = 0. */
 extern "C" int func_ov027_02111ca8(daPgDfdr_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c84.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, ((FileRef *)&data_ov027_02113c84)->file, 0, 0x1000, 0);
     self->mModelAnim.speed = 0x1000;
     self->mTimer = 20;
     self->unk_3d0 = 0;
@@ -265,10 +312,10 @@ extern "C" void func_ov027_02111b2c(daPgDfdr_c *self)
     self->mHorzSpeed = data_ov027_02113a1c[self->mStepIndex].speed;
     self->mPrevAngleY = data_ov027_02113a1c[self->mStepIndex].startHeading;
     if (data_ov027_02113a1c[self->mStepIndex].startHeading != data_ov027_02113a1c[self->mStepIndex].endHeading) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c8c.file, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, ((FileRef *)&data_ov027_02113c8c)->file, 0, 0x1000, 0);
         self->mModelAnim.speed = 0x1000;
     } else {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, data_ov027_02113c74.file, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, ((FileRef *)&data_ov027_02113c74)->file, 0, 0x1000, 0);
         self->mModelAnim.speed = (int)(((s64)data_ov027_02113a1c[self->mStepIndex].speed * 0x5000 + 0x800) >> 12);
     }
     self->unk_3d0 = 1;
@@ -304,14 +351,14 @@ int daPgDfdr_c::func_ov027_02111a28()
            6 words; the ternary keeps the straight-walk file in the compare. */
         char *c = (char *)this;
         int frameRaw = *(int *)(c + 0x378);
-        int walkAnim = (int)data_ov027_02113c74.file;
+        int walkAnim = (int)((FileRef *)&data_ov027_02113c74)->file;
         int curAnim = walkAnim ? *(int *)(c + 0x380) : *(int *)(c + 0x380);
         unsigned int frame = (unsigned int)(frameRaw << 4) >> 0x10;
         if (curAnim == walkAnim) {
             if (frame == 0xa || frame == 0x16) {
                 func_0201267c(0xf3, (char *)&mCamSpacePosX);
             }
-        } else if (curAnim == (int)data_ov027_02113c8c.file) {
+        } else if (curAnim == (int)((FileRef *)&data_ov027_02113c8c)->file) {
             if (frame == 9 || frame == 0x16) {
                 func_0201267c(0xf3, (char *)&mCamSpacePosX);
             }
@@ -351,3 +398,19 @@ extern "C" void func_ov027_02111994(daPgDfdr_c *self)
 /* delete` found by ordinary lookup on dActor_c two levels up; slot 17 is the  */
 /* deleting variant.                                                          */
 /* -------------------------------------------------------------------------- */
+
+/* Static-init globals (was the handwritten __sinit_ov027_02112df8 shard).
+ * Definition order is the retail initializer's construction order: the model
+ * handle (file 0x3fb), the three animation handles (files 0x406, 0x409,
+ * 0x3fe), the texture-sequence handle (file 0x407), the collision handle
+ * (file 0x3fc), then the four state words copied into the state table. */
+PgDfdrModelFile data_ov027_02113c7c(0x3fb);
+PgDfdrAnimationFilePtr data_ov027_02113c84(0x406);
+PgDfdrAnimationFilePtr data_ov027_02113c74(0x409);
+PgDfdrAnimationFilePtr data_ov027_02113c8c(0x3fe);
+PgDfdrTexSequenceFilePtr data_ov027_02113c94(0x407);
+PgDfdrCollisionFilePtr data_ov027_02113c6c(0x3fc);
+DfdrStateTable data_ov027_02113ce4 = {
+    data_ov027_021139d4, data_ov027_021139cc,
+    data_ov027_021139dc, data_ov027_021139c4
+};

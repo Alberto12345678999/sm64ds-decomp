@@ -2,13 +2,15 @@
 /* Hide and Boo Seek. The player watches the Boo cross the room, the lights
  * go out, and they rub the Touch Screen to uncover every hiding Boo. The
  * first 15 rounds give three seconds; after that the clock is two. This
- * file is all 81 functions of dScMgTeresa_c's ov006 unit (.text
- * 0x0211cbd0..0x021207a8): the big Boo's flight, the countdown and the
+ * file is all 82 functions of dScMgTeresa_c's ov006 unit (.text
+ * 0x0211cbd0..0x021207dc): the big Boo's flight, the countdown and the
  * reveal sprites, the 16 hiding Boos (spawn, flight, wall bounce, fade and
  * the touch test against the rubbed-out BG0 tiles), the scene states, and
- * the class's own overrides. Below it is dScMgSound_c; above it is
- * dScMgTeresa_c_classInit in src/d_s_mg_teresa.cpp, which stays its own
- * file.
+ * the class's own overrides, and last the factory dScMgTeresa_c_classInit.
+ * Below it is dScMgSound_c.
+ *
+ * _ZTS13dScMgTeresa_c 0x0213f9c0. _ZTI13dScMgTeresa_c 0x0213f9b4.
+ * _ZTV13dScMgTeresa_c 0x0213fa0c.
  *
  * Nothing in the ROM names the helpers, so the members keep their
  * func_ov006_ names. InitResources, Behavior, Render and OnYoshiTryEat were
@@ -32,17 +34,18 @@
  * from the .data descriptor records at data_ov006_0213f8xx.
  *
  * OAM::Render takes Fix12<int> by value, so that call stays mangled.
- *
- * comment leftovers:
- *  - dScMgTeresa_c.h leaves 0x4660..0x4be8 as padding, so the 16
- *    0x24-byte Boo rows at 0x4660, the 0x20-stride pair at 0x4bac, the HUD
- *    sprites at 0x4960, and the bytes at 0x4c1b and 0x4c1f are still reached
- *    through the local views below or raw offsets on `this`. Naming them in
- *    the header is what would unblock typed access -- but each function's
- *    base choice (fresh cast per access vs one saved pointer) is what
- *    mwccarm's addressing actually follows, so the conversion has to be
- *    measured one function at a time.
  */
+
+// leftovers:
+// - dScMgTeresa_c.h leaves 0x4660..0x4be8 as padding, so the 16 0x24-byte
+//   Boo rows at 0x4660, the 0x20-stride pair at 0x4bac, the HUD sprites at
+//   0x4960, and the bytes at 0x4c1b and 0x4c1f are still reached through the
+//   local views below or raw offsets on `this` (callers: the Boo flight,
+//   reveal and 16-Boo row handlers dispatching through the PMF tables).
+//   Naming them in the header would unblock typed access, but each
+//   function's base choice (fresh cast per access vs one saved pointer) is
+//   what the addressing follows, so the conversion has to be measured one
+//   function at a time.
 
 #pragma defer_codegen off
 
@@ -218,6 +221,35 @@ extern Pmf data_ov006_02142f18[];   /* big Boo flight states, by Boo::state */
 extern Pmf data_ov006_02142e88[];   /* reveal-pair states, by SlotElem::state */
 extern Pmf data_ov006_02142ed8[];   /* per-Boo states, one call per live row */
 extern PmfEntry data_ov006_02142eb0[]; /* scene states, by unk_4be8 */
+/* The ROM PMF constants the four state tables copy from (unlicensed .data),
+ * grouped by destination table in retail copy order. */
+extern Pmf0 data_ov006_0213f904;
+extern Pmf0 data_ov006_0213f92c;
+extern Pmf0 data_ov006_0213f954;
+extern Pmf0 data_ov006_0213f964;
+extern Pmf0 data_ov006_0213f914;
+extern Pmf data_ov006_0213f934;
+extern Pmf data_ov006_0213f8dc;
+extern Pmf data_ov006_0213f94c;
+extern Pmf data_ov006_0213f8ec;
+extern Pmf data_ov006_0213f8e4;
+extern Pmf data_ov006_0213f8d4;
+extern Pmf data_ov006_0213f93c;
+extern Pmf data_ov006_0213f96c;
+extern Pmf data_ov006_0213f99c;
+extern Pmf data_ov006_0213f994;
+extern Pmf data_ov006_0213f98c;
+extern Pmf data_ov006_0213f984;
+extern Pmf data_ov006_0213f97c;
+extern Pmf data_ov006_0213f90c;
+extern Pmf data_ov006_0213f95c;
+extern Pmf data_ov006_0213f91c;
+extern Pmf data_ov006_0213f8fc;
+extern Pmf data_ov006_0213f944;
+extern Pmf data_ov006_0213f8f4;
+extern Pmf data_ov006_0213f9ac;
+extern Pmf data_ov006_0213f9a4;
+extern Pmf data_ov006_0213f924;
 
 }  /* extern "C" */
 
@@ -2407,3 +2439,53 @@ s32 dScMgTeresa_c::InitResources()
     mHudScore = 0;
     return 1;
 }
+
+/* Reconstructed source-style name: SM64DS proves dScMgTeresa_c through RTTI,
+ * allocation size, vtable identity, and the MG_TERESA registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MgHideAndBooSeek_Spawn. */
+// @symbol dScMgTeresa_c_classInit
+extern "C" void *dScMgTeresa_c_classInit()
+{
+    return new dScMgTeresa_c;
+}
+
+/* Static-init globals (was the handwritten __sinit_ov006_02132f68 shard).
+ * The four PMF state tables plain-copied from the ROM PMF constants, in
+ * retail copy order: the scene table, the per-Boo table, the reveal-pair
+ * table, then the big-Boo flight table. */
+PmfEntry data_ov006_02142eb0[5] = {
+    {data_ov006_0213f904},
+    {data_ov006_0213f92c},
+    {data_ov006_0213f954},
+    {data_ov006_0213f964},
+    {data_ov006_0213f914},
+};
+Pmf data_ov006_02142ed8[8] = {
+    data_ov006_0213f934,
+    data_ov006_0213f8dc,
+    data_ov006_0213f94c,
+    data_ov006_0213f8ec,
+    data_ov006_0213f8e4,
+    data_ov006_0213f8d4,
+    data_ov006_0213f93c,
+    data_ov006_0213f96c,
+};
+Pmf data_ov006_02142e88[5] = {
+    data_ov006_0213f99c,
+    data_ov006_0213f994,
+    data_ov006_0213f98c,
+    data_ov006_0213f984,
+    data_ov006_0213f97c,
+};
+Pmf data_ov006_02142f18[9] = {
+    data_ov006_0213f90c,
+    data_ov006_0213f95c,
+    data_ov006_0213f91c,
+    data_ov006_0213f8fc,
+    data_ov006_0213f944,
+    data_ov006_0213f8f4,
+    data_ov006_0213f9ac,
+    data_ov006_0213f9a4,
+    data_ov006_0213f924,
+};

@@ -1,97 +1,47 @@
 //cpp
-/* daMoray_c — Jolly Roger Bay eel (MORAY).
+/* daMoray_c -- Jolly Roger Bay eel (MORAY).
  *
- * Five states, installed by func_ov016_02111bf0. The tables are filled by
- * __sinit_ov016_021136ec from the pointer-to-member words at 0x02114878:
- *   02114d8c  den wait     init 02111bac, execute 021119ec
- *   02114d9c  lunge        init 02111860, execute 02111758
- *   02114dac  swim out     init 02111994, execute 021118b4
- *   02114dbc  path swim    init 02111718, execute 021115c0
- *   02114d7c  retreat      init daMoray_c::BookSwitch_Spawn, execute daMoray_c::func_ov016_02111534
- * BookSwitch_Spawn sets mStateTimer to 100 and mHorzSpeed to 0x14000;
- * daMoray_c::func_ov016_02111534 restores the spawn angles when that timer hits 0 and
- * goes back to den wait.
+ * Five states, installed by func_ov016_02111bf0. The sinit copies the
+ * pointer-to-member words at 0x02114878 into the state records:
+ * den wait, lunge, swim out, path swim, retreat.
+ * Retreat's init is BookSwitch_Spawn. That name came from the spawn
+ * table pass; the body only writes mStateTimer and mHorzSpeed, and
+ * its only reference is the retreat init word. It keeps the name
+ * because renaming it is a symbols change of its own.
  *
- * BookSwitch_Spawn is the configured symbol name, not an identity. It came
- * from the automated spawn-table naming pass, and nothing ties the function
- * to a book switch: its only reference is the retreat state's init word at
- * 0x02114898, it writes daMoray_c's mStateTimer and mHorzSpeed, and it sits
- * inside this unit between two daMoray_c state functions. It keeps that name
- * here because renaming it is a symbols-and-ledger change of its own.
+ * Which variant InitResources keeps depends on data_0209f220 and
+ * whether stars 1 and 2 of sublevel 8 are collected. Variant 2 waits
+ * in the den. Variant 1 carries a STAR (178). Variant 0 swims the path.
  *
- * Which variant InitResources keeps depends on data_0209f220 (the entrance
- * filter) and whether stars 1 and 2 of sublevel 8 are collected. Variant 2
- * lowers its home and waits in the den. Variant 1 carries a held STAR
- * (actor 178, STAR). Variant 0 swims the path. Anything else returns 0.
+ * Text is 0x021111a0..0x0211260c. The out-of-line destructor is the
+ * key function (D1 and D0 at the start of ov016). The factory is not
+ * `return new`: that skips the ROM's __cxa_vec_ctor over mSegmentPos,
+ * because Vector3 has no user-declared constructor. defer_codegen off
+ * keeps ROM order and scopes the den-wait and Render pragmas.
+ * common.h stays first: the pose reads Matrix4x3 words m[9], m[10], m[11].
  *
- * This file is the whole linker unit 0x021111a0..0x0211260c, 21 functions:
- * D1 and D0 first (the start of ov016 .text, so nothing sits below them),
- * then func_ov016_02111284, which places the hit cylinders, the retreat pair,
- * the fifteen functions from the path-swim execute to InitResources, and
- * last the registry factory daMoray_c_classInit (0x02112588).
- * The out-of-line destructor is the key function, so this TU also emits the
- * vtable and the RTTI. The factory is not `return new daMoray_c()`: that
- * skips the ROM's __cxa_vec_ctor(..., func_0203d384, ...) over mSegmentPos,
- * because types.h's Vector3 has no user-declared constructor (see the
- * factory).
- * `#pragma defer_codegen off` keeps this file in ROM order. It also scopes
- * opt_propagation off on the den-wait execute and opt_strength_reduction
- * off on Render. common.h stays first: the pose reads the flat Matrix4x3
- * words m[9], m[10], m[11].
- *
- * Known limits (kept from the byte-matching recovery, not re-measured):
- * - BlendModelAnim::SetAnim with a Fix12<int> speed grows
- *   func_ov016_02111718 from 0x40 to 0x48 (+2 words). A named local and a
- *   compound literal cost the same. func_ov016_02111860, 02111994 and
- *   02111bac pass that same speed and keep the scalar extern.
- * - dCcAcPos_c::Init with two Fix12 locals grows InitResources from 0x3c8
- *   to 0x3d8 (+4 words) for the first cylinder alone. Both cylinders stay
- *   on the scalar extern.
- * - ApproachLinear(Vector3 &, Vector3 const &, Fix12<int>) grows
- *   func_ov016_02111758 from 0x108 to 0x110 (+2 words). 021118b4 and
- *   021119ec keep the scalar extern.
- * - dActor_c::SetRanges with four Fix12 arguments grows InitResources from
- *   0x3c8 to 0x410 (+0x48). Adding the method to dActor_c.h did not move
- *   the other fourteen functions here; the call still does not match, and
- *   the declaration is not left on the shared header.
- * - `currFrame >> 12` instead of `<< 4 >> 0x10` shrinks func_ov016_02111758
- *   from 0x108 to 0x104 and moves its pool (data_020a0e68 read as
- *   data_0209f220).
- * - GetNode into the stack vector the facing is taken against, instead of
- *   into mPos, is one word of InitResources: `add r1, r4, #0x5c` versus
- *   `add r1, sp, #0x24`. Node 0 is stored on the actor and then overwritten
- *   by node 1.
- * - Collapsing Behavior's star gotos shrinks Behavior from 0x1b0 to 0x1ac.
- * - Deleting `mVariant == 0xff` (the value was just masked to 4 bits)
- *   shrinks InitResources from 0x3c8 to 0x3b8. Deleting `mPathID < 0`
- *   does the same. mwcc still emits both tests.
- * - Deleting the second PathPtr::FromID, whose result is unused, shrinks
- *   InitResources from 0x3c8 to 0x3b4.
- * - Indexing mSegmentPos[i] and transforms[i] shrinks func_ov016_02111c40
- *   from 0x2f8 to 0x2e8. The walk through a daMoray_c* advanced one Vector3
- *   at a time is what the ROM does.
- * - ModelComponents::UpdateBones, passing mBlendModelAnim.file and the same
- *   frame shift, grows Render from 0x8c to 0x9c. Render keeps func_020167a4,
- *   which is that wrapper.
- * - Sound::Play(3, 0xfa, pos) grows func_ov016_02111860 from 0x54 to 0x58.
- *   func_02012694 is Play with bank 3. The other call sites use it too.
- * - The gotos in Behavior and InitResources, and the raw dActor_c+0xc8
- *   carrier cast, are kept from the byte-matching recovery.
- *
- * Leftover (not recovered):
- * - daMoray_c::func_ov016_02111284 keeps the byte-stepped mSegmentPos walk,
- *   the volatile stores of mPos into va and the c1/c2 locals; those are
- *   what the bytes need.
- * - unk_400 is zeroed by the two idle-animation inits and read nowhere in
- *   this file; what it counts is unknown.
- * - Sound id 0xfa (bank 3) has no name here; The held spawn passes
- *   mStarParam | 0x50 and the release spawn mStarParam | 0x40, so 0x10 is the
- *   only bit that differs; what 0x40 means is not decoded here.
- * - The MorayRenderStep table (data_ov016_02114908), the dActor_c+0xc8
- *   carrier word and the BookSwitch_Spawn name have no recovered meaning
- *   beyond what is said here and at their declarations.
+ * leftovers:
+ * - BlendModelAnim::SetAnim, dCcAcPos_c::Init, ApproachLinear and
+ *   dActor_c::SetRanges stay scalar Fix12 externs. The member forms
+ *   grow the callers (02111718, InitResources, 02111758).
+ * - currFrame >> 12 instead of the << 4 >> 16 shift shrinks 02111758
+ *   and moves its pool off data_020a0e68.
+ * - GetNode writes node 0 onto mPos, then node 1 over it. Filling a
+ *   stack vector for the facing DIFFs InitResources by one word.
+ * - Indexing mSegmentPos[i] shrinks 02111c40. The walk advances a
+ *   daMoray_c* one Vector3 at a time, which is what the ROM does.
+ *   The volatile stores into va, and the c1/c2 locals, stay.
+ * - ModelComponents::UpdateBones grows Render. Render keeps
+ *   func_020167a4, which is that wrapper.
+ * - Sound::Play(3, 0xfa, pos) grows 02111860. func_02012694 is Play
+ *   with bank 3.
+ * - Behavior's star gotos stay. Deleting the dead mVariant == 0xff
+ *   and mPathID < 0 tests, or the unused second PathPtr::FromID,
+ *   shrinks InitResources. mwcc still emits those tests.
+ * - The held actor's matrix is the word at dActor_c+0xc8, inside
+ *   pad_0c5. unk_400 is zeroed by the two idle inits and read nowhere
+ *   in this file. Sound 0xfa has no name here.
  */
-
 #include "common.h"
 #include "daMoray_c.h"
 #include "SharedFilePtr.h"
@@ -109,20 +59,37 @@ enum {
 
 /* decl_common.h types the four file handles as char[] and the state tables
  * as char / void *. This TU repeats the names it uses. SharedFilePtr.h
- * declares no fields; __sinit_ov016_021136ec constructs each handle with a
+ * declares no fields; __sinit_daMoray_c.cpp constructs each handle with a
  * file id, and SetAnim reads the loaded file at +4. */
 struct MorayFile {
     s32 fileId;                 /* 0x00 */
     void *file;                 /* 0x04 -- the pointer SetAnim is handed */
 };
 
-extern SharedFilePtr data_ov016_02114d38;   /* model, file 0x3b5 */
-extern SharedFilePtr data_ov016_02114d20;   /* lunge anim, file 0x3b6 */
-extern SharedFilePtr data_ov016_02114d30;   /* path-swim anim, file 0x3b7 */
-extern SharedFilePtr data_ov016_02114d28;   /* den / swim-out anim, file 0x3b8 */
+/* The model handle's ctor/dtor are the cartridge's func_02017acc /
+ * func_02017ab4 pair; the manifest aliases these. */
+struct MorayModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    MorayModelFileHandle(u32 fileID);
+    ~MorayModelFileHandle();
+};
 
-extern "C" {
-/* State tables filled by __sinit_ov016_021136ec from the PMFs at 0x02114878.
+/* The three animation handles construct through SharedFilePtr::Construct
+ * and register SharedFilePtr_Destruct_Anim; the manifest aliases these. */
+struct MorayAnimResFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    MorayAnimResFileHandle(u32 fileID);
+    ~MorayAnimResFileHandle();
+};
+
+extern MorayModelFileHandle data_ov016_02114d38;   /* model, file 0x3b5 */
+extern MorayAnimResFileHandle data_ov016_02114d20; /* lunge anim, file 0x3b6 */
+extern MorayAnimResFileHandle data_ov016_02114d30; /* path-swim anim, file 0x3b7 */
+extern MorayAnimResFileHandle data_ov016_02114d28; /* den / swim-out anim, file 0x3b8 */
+
+/* State tables filled by __sinit_daMoray_c.cpp from the PMFs at 0x02114878.
  * 02114d7c retreat (daMoray_c::BookSwitch_Spawn, then daMoray_c::func_ov016_02111534),
  * 02114d8c den wait, 02114d9c lunge, 02114dac swim out, 02114dbc path swim. */
 extern daMoray_c::State data_ov016_02114d7c;
@@ -130,6 +97,8 @@ extern daMoray_c::State data_ov016_02114d8c;
 extern daMoray_c::State data_ov016_02114d9c;
 extern daMoray_c::State data_ov016_02114dac;
 extern daMoray_c::State data_ov016_02114dbc;
+
+extern "C" {
 extern Vector3 data_ov016_02114d4c;         /* cylinder offset, bss */
 
 extern unsigned char data_0209f220; /* entrance filter */
@@ -896,7 +865,7 @@ check_param0:
         path.FromID(mPathID);
         /* Both nodes are written to mPos; the second sticks. The facing
            below is against `node`, which this block does not fill. Sending
-           node 0 there is the one-word DIFF listed under Known limits. */
+           node 0 there is a one-word DIFF. */
         path.GetNode(*(Vector3 *)&mPosX, 0);
         path.GetNode(*(Vector3 *)&mPosX, 1);
     }
@@ -967,3 +936,29 @@ extern "C" daMoray_c *daMoray_c_classInit()
     }
     return p;
 }
+
+/* Construction order is source order: the four file handles first, then the
+ * five State rows in the order the initializer copies them. The registration
+ * nodes and the PMF literals are compiler temporaries. */
+MorayModelFileHandle data_ov016_02114d38(0x3b5);
+MorayAnimResFileHandle data_ov016_02114d20(0x3b6);
+MorayAnimResFileHandle data_ov016_02114d30(0x3b7);
+MorayAnimResFileHandle data_ov016_02114d28(0x3b8);
+
+daMoray_c::State data_ov016_02114d8c = { &daMoray_c::func_ov016_02111bac,
+                                       &daMoray_c::func_ov016_021119ec };
+daMoray_c::State data_ov016_02114d9c = { &daMoray_c::func_ov016_02111860,
+                                       &daMoray_c::func_ov016_02111758 };
+daMoray_c::State data_ov016_02114dac = { &daMoray_c::func_ov016_02111994,
+                                       &daMoray_c::func_ov016_021118b4 };
+daMoray_c::State data_ov016_02114dbc = { &daMoray_c::func_ov016_02111718,
+                                       &daMoray_c::func_ov016_021115c0 };
+daMoray_c::State data_ov016_02114d7c = { &daMoray_c::BookSwitch_Spawn,
+                                       &daMoray_c::func_ov016_02111534 };
+
+/* The cylinder offset is a plain three-int scratch object: the retail image
+ * has no destructor registration for it, so it is defined in C mode, where
+ * Vector3 is POD and no .init entry is emitted. */
+#pragma cplusplus off
+Vector3 data_ov016_02114d4c;
+#pragma cplusplus on

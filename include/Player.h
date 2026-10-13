@@ -544,6 +544,7 @@ struct Player : dActor_c {
     int St_Climb_Main();
     int St_Crawl_Init();
     int St_Crawl_Main();
+    int St_CrazedCrate_Cleanup();
     int St_CrazedCrate_Init();
     int St_CrazedCrate_Main();
     int St_Crouch_Init();
@@ -752,14 +753,44 @@ struct Player : dActor_c {
     int func_ov002_020bd600(unsigned char *, int, int);
     int func_ov002_020bd664(unsigned char *, int, int);
 
+    void func_ov002_020bd8c0(unsigned int);
+    void func_ov002_020bd928(unsigned int);
+    void func_ov002_020bd984(unsigned int);
+    void func_ov002_020bd9ec(unsigned int);
+    /* Player state helpers in the 0x020d2f24..0x020db8d8 span (method review
+       020d2f24-020db8d8). Address-named Player methods, verified against the
+       ROM bodies; parameters stay unnamed so the 258 Player.h consumers keep
+       byte-identical objects (see the Kuppa note above). */
+    void func_ov002_020d4748();
+    int func_ov002_020d5ed0();
+    int func_ov002_020d5338();
+    int func_ov002_020d5f98(unsigned char *, unsigned char *);
+    int func_ov002_020d6048();
+    int func_ov002_020d6998();
+    char *func_ov002_020d708c();
+    void func_ov002_020d718c();
+    void func_ov002_020d71a0();
+    int func_ov002_020d93ac();
+    int func_ov002_020d94cc();
+    void func_ov002_020d98b4();
+    int func_ov002_020daa74();
+    void func_ov002_020db8d8();
+
     void func_ov002_020bda48();
+    void func_ov002_020bdb50(int);
+    void func_ov002_020bdc18();
+    void func_ov002_020bdd2c();
     void func_ov002_020bdd9c();
     void func_ov002_020bdef0();
     void func_ov002_020bdf8c();
     void func_ov002_020be3b0();
+    int func_ov002_020bea7c();
     void func_ov002_020beabc();
     int func_ov002_020beb38();
+    int func_ov002_020becf4(int, int);
     void func_ov002_020bf13c();
+    void func_ov002_020bf2d8(Fix12i);
+    void func_ov002_020bf36c(void *);
     int func_ov002_020bf40c();
     void func_ov002_020bf5e0();
     void func_ov002_020bf88c();
@@ -767,28 +798,53 @@ struct Player : dActor_c {
     void func_ov002_020bf9d4();
     int func_ov002_020bfa74();
     int func_ov002_020bfec0();
+    int func_ov002_020c0108(int);
+    int func_ov002_020c031c();
+    void func_ov002_020c0364(u32);
     int func_ov002_020c0434();
     int func_ov002_020c04ac();
     int func_ov002_020c04e0();
     int func_ov002_020c0688();
+    int func_ov002_020c06fc(int);
     int func_ov002_020c0cbc();
+    int func_ov002_020c0d90(int);
+    int func_ov002_020c0fb4();
 
     void func_ov002_020c1234();
     void func_ov002_020c133c();
+    void func_ov002_020c14b8();
+    int func_ov002_020c19d0(int, int);
+    int func_ov002_020c1ad8(int);
+    int func_ov002_020c1c84(int);
+    void func_ov002_020c1eb4(int);
+    int func_ov002_020c200c(int);
+    int func_ov002_020c2138();
     int func_ov002_020c231c();
+    int func_ov002_020c25a8(int);
     void func_ov002_020c29d4();
+    void func_ov002_020c2b08();
+    void func_ov002_020c2db8();
     void func_ov002_020c2e78();
+    void func_ov002_020c2f64();
+    int func_ov002_020c2fec(int *);
+    void func_ov002_020c3148();
+    void func_ov002_020c37a4(char *);
     void func_ov002_020c38a0();
     int func_ov002_020c3a48();
     void func_ov002_020c3bdc();
     void func_ov002_020c3cf0();
     int func_ov002_020c3ea0();
     int func_ov002_020c4188();
+    void func_ov002_020c43c4(unsigned int);
     int func_ov002_020c44c4();
     int func_ov002_020c47f4();
     void func_ov002_020c5444();
     int func_ov002_020c5d0c();
+    void func_ov002_020c5d60();
+    int func_ov002_020c5dec(int);
+    int func_ov002_020c607c(int, int, int *);
     int func_ov002_020c61ac();
+    int func_ov002_020c647c(int);
     int func_ov002_020c6538();
     int func_ov002_020c6908();
     int func_ov002_020c6adc();
@@ -800,8 +856,10 @@ struct Player : dActor_c {
     void func_ov002_020c7350();
     void func_ov002_020c75f0();
     int func_ov002_020c7cbc();
+    void func_ov002_020c7dd0(int);
     int func_ov002_020c7f10();
     void func_ov002_020c7ff8();
+    unsigned char func_ov002_020c84b0();
     int func_ov002_020c8540();
     int func_ov002_020c8714();
     int func_ov002_020c897c();
@@ -812,6 +870,7 @@ struct Player : dActor_c {
     int func_ov002_020c8d14();
     int func_ov002_020c8f0c();
     int func_ov002_020c8f80();
+    int func_ov002_020c904c();
     int func_ov002_020c9128();
     int func_ov002_020c91bc();
 
@@ -820,6 +879,7 @@ struct Player : dActor_c {
     int func_ov002_020c92fc();
     int func_ov002_020c94a4();
     int func_ov002_020c965c();
+    void func_ov002_020c9718();
     void func_ov002_020c97e0();
     void func_ov002_020c97f8();
     void func_ov002_020c9840();

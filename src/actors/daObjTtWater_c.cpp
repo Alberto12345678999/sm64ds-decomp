@@ -21,9 +21,27 @@
 #include "dMap_c.h"
 #include "Sound.h"
 
-/* BSS file homes; Init loads them, Cleanup releases them. */
-extern SharedFilePtr data_ov033_021124f0;
-extern SharedFilePtr data_ov033_021124e8;
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct TtWaterModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TtWaterModelFilePtr(u32 fileID);
+    ~TtWaterModelFilePtr();
+};
+
+struct TtWaterCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    TtWaterCollisionFilePtr(u32 fileID);
+    ~TtWaterCollisionFilePtr();
+};
+
+/* BSS file homes; Init loads them, Cleanup releases them. Defined at the
+   end of this file so the constructors do not enter .text. */
+extern TtWaterModelFilePtr data_ov033_021124f0;
+extern TtWaterCollisionFilePtr data_ov033_021124e8;
 
 extern "C" {
 int _ZN5Event6GetBitEj(u32 bit);
@@ -116,3 +134,10 @@ extern "C" daObjTtWater_c *daObjTtWater_c_classInit()
 {
     return new daObjTtWater_c();
 }
+
+/* Source order is construction order: model file 1735, collision file 1736.
+ * __sinit_daObjTtWater_c.cpp emits both constructions and registers the
+ * destructors; the registration nodes are compiler temporaries. */
+// @symbol __sinit_daObjTtWater_c.cpp
+TtWaterModelFilePtr data_ov033_021124f0(1735);
+TtWaterCollisionFilePtr data_ov033_021124e8(1736);

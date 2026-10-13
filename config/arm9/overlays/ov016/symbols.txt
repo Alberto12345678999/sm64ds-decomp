@@ -21,7 +21,7 @@ _ZN9daMoray_c13InitResourcesEv kind:function(arm,size=0x3c8) addr:0x021121c0
 daMoray_c_classInit kind:function(arm,size=0x84) addr:0x02112588
 _ZN14daObjKi_Fune_cD1Ev kind:function(arm,size=0x44) addr:0x0211260c
 _ZN14daObjKi_Fune_cD0Ev kind:function(arm,size=0x58) addr:0x02112650
-func_ov016_021126a8 kind:function(arm,size=0x48) addr:0x021126a8
+_ZN14daObjKi_Fune_c19func_ov016_021126a8Ev kind:function(arm,size=0x48) addr:0x021126a8
 _ZN14daObjKi_Fune_c16CleanupResourcesEv kind:function(arm,size=0x54) addr:0x021126f0
 _ZN14daObjKi_Fune_c6RenderEv kind:function(arm,size=0x28) addr:0x02112744
 _ZN14daObjKi_Fune_c8BehaviorEv kind:function(arm,size=0xd0) addr:0x0211276c
@@ -57,15 +57,15 @@ data_ov016_021135f4 kind:data(any) addr:0x021135f4 ambiguous
 data_ov016_021136d4 kind:data(any) addr:0x021136d4 ambiguous
 data_ov016_021136dc kind:data(any) addr:0x021136dc
 data_ov016_021136e4 kind:data(any) addr:0x021136e4
-__sinit_ov016_021136ec kind:function(arm,size=0x1d0) addr:0x021136ec
-__sinit_ov016_021138bc kind:function(arm,size=0xbc) addr:0x021138bc
-__sinit_ov016_02113978 kind:function(arm,size=0x6c) addr:0x02113978
-__sinit_ov016_021139e4 kind:function(arm,size=0x6c) addr:0x021139e4
+__sinit_daMoray_c.cpp kind:function(arm,size=0x1d0) addr:0x021136ec
+__sinit_d_a_obj_ki_fune.cpp kind:function(arm,size=0xbc) addr:0x021138bc
+__sinit_daObjKi_Hasira_c.cpp kind:function(arm,size=0x6c) addr:0x02113978
+__sinit_d_a_obj_ki_ita.cpp kind:function(arm,size=0x6c) addr:0x021139e4
 __sinit_daSlide_Box_c.cpp kind:function(arm,size=0x6c) addr:0x02113a50
-.p__sinit_ov016_021136ec kind:data(word) addr:0x02113abc
-.p__sinit_ov016_021138bc kind:data(word) addr:0x02113ac0
-.p__sinit_ov016_02113978 kind:data(word) addr:0x02113ac4
-.p__sinit_ov016_021139e4 kind:data(word) addr:0x02113ac8
+.p__sinit_daMoray_c.cpp kind:data(word) addr:0x02113abc
+.p__sinit_d_a_obj_ki_fune.cpp kind:data(word) addr:0x02113ac0
+.p__sinit_daObjKi_Hasira_c.cpp kind:data(word) addr:0x02113ac4
+.p__sinit_d_a_obj_ki_ita.cpp kind:data(word) addr:0x02113ac8
 .p__sinit_daSlide_Box_c.cpp kind:data(word) addr:0x02113acc
 data_ov016_02113ae0 kind:data(any) addr:0x02113ae0
 data_ov016_02113ae4 kind:data(any) addr:0x02113ae4
@@ -150,19 +150,16 @@ data_ov016_021147c4 kind:data(any) addr:0x021147c4 ambiguous
 data_ov016_02114824 kind:data(any) addr:0x02114824 ambiguous
 data_ov016_02114860 kind:data(any) addr:0x02114860 ambiguous
 data_ov016_02114874 kind:data(any) addr:0x02114874 ambiguous
-data_ov016_02114878 kind:data(any) addr:0x02114878
-data_ov016_0211487c kind:data(any) addr:0x0211487c ambiguous
-data_ov016_02114880 kind:data(any) addr:0x02114880
-data_ov016_02114888 kind:data(any) addr:0x02114888
-data_ov016_0211488c kind:data(any) addr:0x0211488c ambiguous
-data_ov016_02114890 kind:data(any) addr:0x02114890
-BookSwitch_SpawnInfo kind:data(any) addr:0x02114898
-data_ov016_021148a0 kind:data(any) addr:0x021148a0
-data_ov016_021148a8 kind:data(any) addr:0x021148a8
-data_ov016_021148b0 kind:data(any) addr:0x021148b0
-data_ov016_021148b4 kind:data(any) addr:0x021148b4 ambiguous
-data_ov016_021148b8 kind:data(any) addr:0x021148b8
-data_ov016_021148c0 kind:data(any) addr:0x021148c0
+@1113 kind:data(any) addr:0x02114878
+@1105 kind:data(any) addr:0x02114880
+@1103 kind:data(any) addr:0x02114888
+@1109 kind:data(any) addr:0x02114890
+@1111 kind:data(any) addr:0x02114898
+@1095 kind:data(any) addr:0x021148a0
+@1097 kind:data(any) addr:0x021148a8
+@1107 kind:data(any) addr:0x021148b0
+@1099 kind:data(any) addr:0x021148b8
+@1101 kind:data(any) addr:0x021148c0
 _ZTS9daMoray_c kind:data(any) addr:0x021148c8
 _ZTI9daMoray_c kind:data(any) addr:0x021148d4
 g_profile_MORAY kind:data(any) addr:0x021148e0 ambiguous
@@ -193,11 +190,11 @@ data_ov016_02114d20 kind:bss addr:0x02114d20
 data_ov016_02114d28 kind:bss addr:0x02114d28
 data_ov016_02114d30 kind:bss addr:0x02114d30
 data_ov016_02114d38 kind:bss addr:0x02114d38
-data_ov016_02114d40 kind:bss addr:0x02114d40
+@1093 kind:bss addr:0x02114d40
 data_ov016_02114d4c kind:bss addr:0x02114d4c
-data_ov016_02114d58 kind:bss addr:0x02114d58
-data_ov016_02114d64 kind:bss addr:0x02114d64
-data_ov016_02114d70 kind:bss addr:0x02114d70
+@1090 kind:bss addr:0x02114d58
+@1091 kind:bss addr:0x02114d64
+@1092 kind:bss addr:0x02114d70
 data_ov016_02114d7c kind:bss addr:0x02114d7c
 data_ov016_02114d8c kind:bss addr:0x02114d8c
 data_ov016_02114d9c kind:bss addr:0x02114d9c
@@ -207,20 +204,18 @@ data_ov016_02114dcc kind:bss addr:0x02114dcc
 data_ov016_02114dd4 kind:bss addr:0x02114dd4
 data_ov016_02114ddc kind:bss addr:0x02114ddc
 data_ov016_02114de4 kind:bss addr:0x02114de4
-data_ov016_02114dec kind:bss addr:0x02114dec
-data_ov016_02114df8 kind:bss addr:0x02114df8
-data_ov016_02114e04 kind:bss addr:0x02114e04
-data_ov016_02114e10 kind:bss addr:0x02114e10
-data_ov016_02114e1c kind:bss addr:0x02114e1c
+@820 kind:bss addr:0x02114dec
+@605 kind:bss addr:0x02114df8
+@604 kind:bss addr:0x02114e04
+@425 kind:bss addr:0x02114e10
 RockPillar_ClsnFile kind:bss addr:0x02114e1c
-data_ov016_02114e24 kind:bss addr:0x02114e24
 RockPillar_ModelFile kind:bss addr:0x02114e24
-data_ov016_02114e2c kind:bss addr:0x02114e2c
-data_ov016_02114e38 kind:bss addr:0x02114e38
+@161 kind:bss addr:0x02114e2c
+@160 kind:bss addr:0x02114e38
 data_ov016_02114e44 kind:bss addr:0x02114e44
 data_ov016_02114e4c kind:bss addr:0x02114e4c
-data_ov016_02114e54 kind:bss addr:0x02114e54
-data_ov016_02114e60 kind:bss addr:0x02114e60
+@356 kind:bss addr:0x02114e54
+@612 kind:bss addr:0x02114e60
 data_ov016_02114e6c kind:bss addr:0x02114e6c
 data_ov016_02114e74 kind:bss addr:0x02114e74
 @580 kind:bss addr:0x02114e7c

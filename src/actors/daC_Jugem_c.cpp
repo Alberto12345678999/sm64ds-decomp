@@ -22,11 +22,10 @@ comment leftovers:
  *     dActor_c::DropShadowRadHeight. mwccarm passes those differently at
  *     the call site than the loose scalar spelling; this file's externs
  *     are the spelling that matches.
- *   - The SharedFilePtr triple, the twelve state records, the two Vector3
- *     globals and the arm9 level globals keep linker names; their
- *     definitions live in the module sinit and data TUs. The records are
- *     declared here as StateFn[2]; the sinit file writes them as pairs of
- *     8-byte words, which is the same object.
+ *   - The SharedFilePtr triple, the eleven state records and the two
+ *     carry-offset vectors are file-scope objects at the end of this file
+ *     (folded sinit 0x0212fa40). The records stay StateFn[2]; the sinit
+ *     pairs they copy from are unlicensed .data descriptors.
  *   - Matrix copies go through local 12-word structs (M48 in UpdateShadow,
  *     M48e858 in UpdateShadowPlayer): types.h's Vector3 and math/Matrix.h's
  *     Matrix4x3 are non-POD here, so a typed copy scalarizes or destroys.
@@ -47,6 +46,57 @@ comment leftovers:
 #include "Sound.h"
 
 bool ApproachLinear(short &value, short target, short step);
+
+/* File-scope objects at the end of this file construct the three resource
+ * handles (model file 0x2d7, animation file 0x2d8, texture-sequence file
+ * 0x2d9), fill the eleven state pairs and build the two carry-offset
+ * vectors. mwcc emits __sinit_daC_Jugem_c.cpp from those definitions. The
+ * wrapper names are local; the handle constructors and destructors are the
+ * ROM resource-family functions, aliased in the manifest. JugemVec3's plain
+ * overload builds the first vector with ordinary stores; the (int, int,
+ * long) overload builds the second through a volatile lvalue, exactly as
+ * retail. Both share the one declared-not-defined destructor (never
+ * ~Vector3: a Vector3 here would instantiate its vague-linkage D1 into this
+ * TU, which deliberately avoids it); the destructor alias points at the
+ * ROM's canonical copy. */
+struct JugemModelFile : SharedFilePtr {
+    u32 words[2];
+
+    JugemModelFile(u32 fileID);
+    ~JugemModelFile();
+};
+
+struct JugemAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    JugemAnimationFilePtr(u32 fileID);
+    ~JugemAnimationFilePtr();
+};
+
+struct JugemTexSequenceFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    JugemTexSequenceFilePtr(u32 fileID);
+    ~JugemTexSequenceFilePtr();
+};
+
+struct JugemVec3 {
+    int x, y, z;
+    JugemVec3(int a, int b, int c)
+    {
+        x = a;
+        y = b;
+        z = c;
+    }
+    JugemVec3(int a, int b, long c)
+    {
+        volatile int *p = (volatile int *)&x;
+        p[0] = a;
+        p[1] = b;
+        p[2] = (int)c;
+    }
+    ~JugemVec3();
+};
 
 extern "C" {
 
@@ -98,11 +148,11 @@ extern s8             data_0209f2f8;
 extern short          data_02082214[];      /* the sine lookup table */
 extern Matrix4x3      data_020a0e68;        /* scratch matrix */
 
-extern SharedFilePtr  data_ov085_0213074c;  /* model file */
-extern SharedFilePtr  data_ov085_02130744;  /* animation file */
-extern SharedFilePtr  data_ov085_0213073c;  /* texture sequence file */
-extern Vector3        data_ov085_02130840;  /* home position */
-extern Vector3        data_ov085_0213084c;  /* approach target */
+extern JugemModelFile  data_ov085_0213074c;  /* model file */
+extern JugemAnimationFilePtr  data_ov085_02130744;  /* animation file */
+extern JugemTexSequenceFilePtr  data_ov085_0213073c;  /* texture sequence file */
+extern JugemVec3        data_ov085_02130840;  /* home position */
+extern JugemVec3        data_ov085_0213084c;  /* approach target */
 
 /* The twelve state records, {enter, run} pairs written by the module sinit. */
 extern daC_Jugem_c::StateFn data_ov085_02130790[2];
@@ -116,6 +166,30 @@ extern daC_Jugem_c::StateFn data_ov085_02130800[2];
 extern daC_Jugem_c::StateFn data_ov085_02130810[2];
 extern daC_Jugem_c::StateFn data_ov085_02130820[2];
 extern daC_Jugem_c::StateFn data_ov085_02130830[2];
+
+/* The ROM PMF constants the eleven state pairs copy from (unlicensed .data). */
+extern daC_Jugem_c::StateFn data_ov085_0213025c;
+extern daC_Jugem_c::StateFn data_ov085_021302d4;
+extern daC_Jugem_c::StateFn data_ov085_021302bc;
+extern daC_Jugem_c::StateFn data_ov085_0213026c;
+extern daC_Jugem_c::StateFn data_ov085_02130254;
+extern daC_Jugem_c::StateFn data_ov085_021302dc;
+extern daC_Jugem_c::StateFn data_ov085_021302a4;
+extern daC_Jugem_c::StateFn data_ov085_02130294;
+extern daC_Jugem_c::StateFn data_ov085_02130264;
+extern daC_Jugem_c::StateFn data_ov085_021302f4;
+extern daC_Jugem_c::StateFn data_ov085_021302cc;
+extern daC_Jugem_c::StateFn data_ov085_021302fc;
+extern daC_Jugem_c::StateFn data_ov085_021302ec;
+extern daC_Jugem_c::StateFn data_ov085_0213028c;
+extern daC_Jugem_c::StateFn data_ov085_021302e4;
+extern daC_Jugem_c::StateFn data_ov085_021302b4;
+extern daC_Jugem_c::StateFn data_ov085_021302c4;
+extern daC_Jugem_c::StateFn data_ov085_0213027c;
+extern daC_Jugem_c::StateFn data_ov085_021302ac;
+extern daC_Jugem_c::StateFn data_ov085_02130284;
+extern daC_Jugem_c::StateFn data_ov085_0213029c;
+extern daC_Jugem_c::StateFn data_ov085_02130274;
 
 }
 
@@ -192,6 +266,9 @@ int daC_Jugem_c::StateIntroInit()
    to start the intro sweep. */
 int daC_Jugem_c::StateApproachMain()
 {
+    /* Scratch triple is a local Vector3 shadow, not types.h Vector3:
+       the ROM emits no scope-exit cleanup here. */
+    typedef struct Vector3 { int x, y, z; } Vector3;
     Vector3 v[3];
     dCamera_c *cam;
     int spd;
@@ -199,7 +276,7 @@ int daC_Jugem_c::StateApproachMain()
 
     cam = (dCamera_c *)data_0209f318;
     cam->SetFlag_3();
-    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(Vector3 *)&mCamSpacePosX, 0);
+    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(::Vector3 *)&mCamSpacePosX, 0);
     ApproachLinear(mAngleY, Vec3_HorzAngle(&mPosX, &data_ov085_0213084c), 0x200);
     ApproachLinear(mAngleX, Vec3_VertAngle(&mPosX, &data_ov085_0213084c), 0x200);
     _Z14ApproachLinearRiii(&mHorzSpeed, 0x28000, 0x2000);
@@ -217,8 +294,8 @@ int daC_Jugem_c::StateApproachMain()
     spd = mHorzSpeed >> 1;
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamLookX, &mPosX, spd);
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&mCamPosX, &v[1], spd);
-    cam->SetLookAt(*(Vector3 *)&mCamLookX);
-    cam->SetPos(*(Vector3 *)&mCamPosX);
+    cam->SetLookAt(*(::Vector3 *)&mCamLookX);
+    cam->SetPos(*(::Vector3 *)&mCamPosX);
     Vec3_Sub(&v[2], &mPosX, &data_ov085_0213084c);
     len = LenVec3(&v[2]);
     if (len == 0 || len < 0x7d0000)
@@ -229,6 +306,7 @@ int daC_Jugem_c::StateApproachMain()
 // @symbol _ZN11daC_Jugem_c17StateApproachInitEv
 int daC_Jugem_c::StateApproachInit()
 {
+    typedef struct Vector3 { int x, y, z; } Vector3;
   volatile Vector3 look, pos; (void)&look; (void)&pos;
   dCamera_c *cam;
   mHorzSpeed = 0;
@@ -243,8 +321,8 @@ int daC_Jugem_c::StateApproachInit()
   mCamPosX = 0xffb65000;
   mCamPosY = 0x1d5000;
   mCamPosZ = 0x17fc000;
-  cam->SetLookAt(*(Vector3 *)&mCamLookX);
-  cam->SetPos(*(Vector3 *)&mCamPosX);
+  cam->SetLookAt(*(::Vector3 *)&mCamLookX);
+  cam->SetPos(*(::Vector3 *)&mCamPosX);
   mAuxCounter = 0xa0;
   mPosX = data_ov085_02130840.x;
   mPosY = data_ov085_02130840.y;
@@ -297,6 +375,7 @@ int daC_Jugem_c::StateBobMain()
 // @symbol _ZN11daC_Jugem_c12StateBobInitEv
 int daC_Jugem_c::StateBobInit()
 {
+    typedef struct Vector3 { int x, y, z; } Vector3;
   Vector3 look, pos;
   dCamera_c *cam;
   mTimer = 0;
@@ -315,8 +394,8 @@ int daC_Jugem_c::StateBobInit()
   pos.x = -0x540000;
   pos.y = 0xe1000;
   pos.z = 0x19e4000;
-  cam->SetLookAt(*(Vector3 *)&look);
-  cam->SetPos(*(Vector3 *)&pos);
+  cam->SetLookAt(*(::Vector3 *)&look);
+  cam->SetPos(*(::Vector3 *)&pos);
   mHorzSpeed = 0;
   return 1;
 }
@@ -403,6 +482,7 @@ int daC_Jugem_c::StateTurnMain()
 // @symbol _ZN11daC_Jugem_c13StateTurnInitEv
 int daC_Jugem_c::StateTurnInit()
 {
+    typedef struct Vector3 { int x, y, z; } Vector3;
   Vector3 look, pos;
   dCamera_c *cam;
   mTimer = 0;
@@ -416,8 +496,8 @@ int daC_Jugem_c::StateTurnInit()
   pos.x = 0xffa54000;
   pos.y = 0x1f4000;
   pos.z = 0x1ccf000;
-  cam->SetLookAt(*(Vector3 *)&look);
-  cam->SetPos(*(Vector3 *)&pos);
+  cam->SetLookAt(*(::Vector3 *)&look);
+  cam->SetPos(*(::Vector3 *)&pos);
   return 1;
 }
 
@@ -464,6 +544,9 @@ int daC_Jugem_c::StateArriveMain()
 // @symbol _ZN11daC_Jugem_c15StateArriveInitEv
 int daC_Jugem_c::StateArriveInit()
 {
+    /* Scratch triple is a local Vector3 shadow, not types.h Vector3:
+       the ROM emits no scope-exit cleanup here. */
+    typedef struct Vector3 { int x, y, z; } Vector3;
     Vector3 look, pos;
     dCamera_c *cam;
     Player* player;
@@ -483,8 +566,8 @@ int daC_Jugem_c::StateArriveInit()
     pos.x = 0xffb18000;
     pos.y = 0x18c000;
     pos.z = 0x1a89000;
-    cam->SetLookAt(*(Vector3 *)&look);
-    cam->SetPos(*(Vector3 *)&pos);
+    cam->SetLookAt(*(::Vector3 *)&look);
+    cam->SetPos(*(::Vector3 *)&pos);
     mStateTimer = 0x79;
     mPosX = mTargetX;
     mPosY = mTargetY;
@@ -576,6 +659,9 @@ int daC_Jugem_c::StateTalkInit()
    start the talk. */
 int daC_Jugem_c::StateFlyToPlayerMain()
 {
+    /* Scratch triple is a local Vector3 shadow, not types.h Vector3:
+       the ROM emits no scope-exit cleanup here. */
+    typedef struct Vector3 { int x, y, z; } Vector3;
     Vector3 in;
     Vector3 out;
     Player *p;
@@ -593,7 +679,7 @@ int daC_Jugem_c::StateFlyToPlayerMain()
         _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4a, 0x14, 0x7f, 0x15666, 0);
     }
 
-    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(Vector3 *)&mCamSpacePosX, 0);
+    mSfxHandle = Sound::PlayLong(mSfxHandle, 3, 0x182, *(::Vector3 *)&mCamSpacePosX, 0);
 
     in.x = 0;
     in.y = 0;
@@ -671,9 +757,12 @@ int daC_Jugem_c::StateHiddenInit()
    the player, one sound trigger behind it. */
 int daC_Jugem_c::StateHoverMain()
 {
+    /* Scratch triple is a local Vector3 shadow, not types.h Vector3:
+       the ROM emits no scope-exit cleanup here. */
+    typedef struct Vector3 { int x, y, z; } Vector3;
     Vector3 in, out, plpos;
     dCamera_c *cam;
-    Vector3* src;
+    ::Vector3 *src;
     Player *p;
 
     cam = (dCamera_c *)data_0209f318;
@@ -751,6 +840,7 @@ void daC_Jugem_c::UpdateShadow()
    moves through M48; the shared Matrix4x3 spelling scalarizes them. */
 void daC_Jugem_c::UpdateShadowPlayer()
 {
+    typedef struct Vector3 { int x, y, z; } Vector3;
     struct Vector3 p;
     struct Vector3 z1;
     struct Vector3 off;
@@ -913,3 +1003,26 @@ extern "C" daC_Jugem_c *daC_Jugem_c_classInit(void)
 {
     return new daC_Jugem_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov085_0212fa40 shard).
+ * Definition order is the retail initializer's construction order: the
+ * model handle (file 0x2d7), the animation handle (file 0x2d8), the
+ * texture-sequence handle (file 0x2d9), the eleven state pairs copied from
+ * the ROM PMF constants, then the two carry-offset vectors (first plain,
+ * the second volatile). */
+JugemModelFile data_ov085_0213074c(0x2d7);
+JugemAnimationFilePtr data_ov085_02130744(0x2d8);
+JugemTexSequenceFilePtr data_ov085_0213073c(0x2d9);
+daC_Jugem_c::StateFn data_ov085_021307d0[2] = {data_ov085_0213025c, data_ov085_021302d4};
+daC_Jugem_c::StateFn data_ov085_021307e0[2] = {data_ov085_021302bc, data_ov085_0213026c};
+daC_Jugem_c::StateFn data_ov085_02130800[2] = {data_ov085_02130254, data_ov085_021302dc};
+daC_Jugem_c::StateFn data_ov085_02130810[2] = {data_ov085_021302a4, data_ov085_02130294};
+daC_Jugem_c::StateFn data_ov085_02130830[2] = {data_ov085_02130264, data_ov085_021302f4};
+daC_Jugem_c::StateFn data_ov085_02130790[2] = {data_ov085_021302cc, data_ov085_021302fc};
+daC_Jugem_c::StateFn data_ov085_021307b0[2] = {data_ov085_021302ec, data_ov085_0213028c};
+daC_Jugem_c::StateFn data_ov085_021307c0[2] = {data_ov085_021302e4, data_ov085_021302b4};
+daC_Jugem_c::StateFn data_ov085_021307f0[2] = {data_ov085_021302c4, data_ov085_0213027c};
+daC_Jugem_c::StateFn data_ov085_02130820[2] = {data_ov085_021302ac, data_ov085_02130284};
+daC_Jugem_c::StateFn data_ov085_021307a0[2] = {data_ov085_0213029c, data_ov085_02130274};
+JugemVec3 data_ov085_02130840(-0x640000, 0x378000, 0x1670000);
+JugemVec3 data_ov085_0213084c(0, 0x4d8000, (long)-0x104000);

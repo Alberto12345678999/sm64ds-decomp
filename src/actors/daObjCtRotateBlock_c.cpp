@@ -12,14 +12,15 @@
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x021196d8), D0
  * (0x0211972c), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
- *
- * Leftover: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
- *   dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled;
- *   a member call homes the argument and changes the ROM ABI.
- * Leftover: func_020393d4 is a 4-byte store into dBgW's callback slot;
- *   naming belongs with dBgW in arm9.
- *
- * The two registry factories close the run in ROM order:
+ */
+
+// leftovers: dBgW_KcMbg::SetFile, dActor_c::DropShadowScaleXYZ and
+// dBgActor_c::IsClsnInRange take Fix12<int> by value, so they stay mangled
+// (a member call homes the argument and changes the ROM ABI -- this TU's
+// InitResources/Behavior/UpdateShadow calls). func_020393d4 is a 4-byte
+// store into dBgW's callback slot; naming belongs with dBgW in arm9.
+
+/* The two registry factories close the run in ROM order:
  * daObjCtRotateBlock_c_classInit_CT_MECHA02 (0x02119ebc, historical alias
  * TtcRotatingPrism_Spawn) and daObjCtRotateBlock_c_classInit_CT_MECHA01
  * (0x02119efc, historical alias TtcRotatingCube_Spawn). Each is operator
@@ -40,6 +41,27 @@
 /* Per-variant records are 0xc bytes. The first word is a SharedFilePtr. */
 extern char data_ov065_0211cfd0[];
 extern char data_ov065_0211cfd4[];
+
+/* File-scope objects at the end of this file construct the six resource
+ * handles (model files 0x5b6/0x5b9/0x5b8/0x5bb, collision files 0x5b7/
+ * 0x5ba). mwcc emits __sinit_daObjCtRotateBlock_c.cpp from those
+ * definitions. The wrapper names are local; the handle constructors and
+ * destructors are the ROM resource-family functions, aliased in the
+ * manifest. Nothing in this TU names the handles directly; the variant
+ * records above point at them. */
+struct RotateBlockModelFile : SharedFilePtr {
+    u32 words[2];
+
+    RotateBlockModelFile(u32 fileID);
+    ~RotateBlockModelFile();
+};
+
+struct RotateBlockCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    RotateBlockCollisionFilePtr(u32 fileID);
+    ~RotateBlockCollisionFilePtr();
+};
 
 extern "C" {
 extern void Matrix4x3_FromRotationY(void *m, short ang);
@@ -90,9 +112,9 @@ int daObjCtRotateBlock_c::UpdateShadow()
         int idx = (unsigned short)(short)(mAngleZ << 1) >> 4;
         int s = data_02082214[idx << 1];
         int sa = s < 0 ? -s : s;
-        int r3 = (int)(((long long)sa * 0x64000 + 0x800) >> 12);
+        int depthAdd = (int)(((long long)sa * 0x64000 + 0x800) >> 12);
         return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
-            this, &mShadowModel, &mShadowMat, d + r3, b, d, 0xf);
+            this, &mShadowModel, &mShadowMat, d + depthAdd, b, d, 0xf);
     }
 }
 
@@ -266,11 +288,11 @@ int daObjCtRotateBlock_c::InitResources()
         vb.y -= 0xd2000;
 
         ground.SetObjAndPos(vb, 0);
-        s32 r5 = vb.y;
+        s32 probeFloor = vb.y;
         if (ground.DetectClsn() != 0) {
-            r5 = ground.clsnY;
+            probeFloor = ground.clsnY;
         }
-        if (r5 != mFloorY) {
+        if (probeFloor != mFloorY) {
             mUnevenGround = 1;
         }
     }
@@ -289,3 +311,12 @@ extern "C" daObjCtRotateBlock_c *daObjCtRotateBlock_c_classInit_CT_MECHA01()
 {
     return new daObjCtRotateBlock_c();
 }
+
+/* Static-init globals (was the handwritten __sinit_ov065_0211c660 shard).
+ * Definition order is the retail initializer's construction order. */
+RotateBlockModelFile data_ov065_0211d814(0x5b6);
+RotateBlockModelFile data_ov065_0211d824(0x5b9);
+RotateBlockModelFile data_ov065_0211d83c(0x5b8);
+RotateBlockModelFile data_ov065_0211d81c(0x5bb);
+RotateBlockCollisionFilePtr data_ov065_0211d834(0x5b7);
+RotateBlockCollisionFilePtr data_ov065_0211d82c(0x5ba);

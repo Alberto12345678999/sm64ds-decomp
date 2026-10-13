@@ -1,41 +1,44 @@
 //cpp
-/**
- * daKpa_c in the Fire Sea rising platform.
+/* leftovers:
+ * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled.
+ *   Both take Fix12<int> by value.
+ * - func_020393d4 and func_020393c4 install dBgW's two callback words.
+ *   dBgW has no setter for them.
+ * - data_ov045_02113180 and 02113188 are this TU's KCL and BMD handles.
+ *   data_ov045_021125d0, the CLPS block, stays overlay data.
  *
- * Waits at its spawn height until the player stands on it, pauses 20
- * frames, rises 10.0 a frame to 1500.0 above that height, pauses 20
- * frames again, then sinks 10.0 a frame back down and waits for the
- * next rider. The mesh collider carries whoever stands on it through
- * dBgW::UpdatePosWithTransform; the second callback word is the
- * func_ov045_021114c8 / func_ov045_021114a8 pair below, which is how
- * Behavior learns the player is aboard.
- *
- * daObjKm2_Agaru_c_classInit is reconstructed (RTTI daObjKm2_Agaru_c,
- * KM2_AGARU registry). Retail does not store that spelling.
- * Historical alias: FireSeaElevator_Spawn.
- *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm emits one .text
- * section per function in the reverse of source order.
- *
- * Known limits:
- * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled:
- *   both take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
- * - func_020393d4 / func_020393c4 install dBgW's two callback words;
- *   dBgW carries no setter for them.
- * - data_ov045_02113180 / 02113188 are this overlay's KCL / BMD file
- *   handles and data_ov045_021125d0 the CLPS block, all in overlay data
- *   this TU does not own.
+ * daObjKm2_Agaru_c, the Fire Sea rising platform. It waits, pauses 20
+ * frames, rises 10.0 a frame to 1500.0, pauses, then sinks back.
+ * The mesh carries the rider through dBgW::UpdatePosWithTransform.
+ * The aboard test is func_ov045_021114c8 / func_ov045_021114a8.
+ * classInit is reconstructed. Retail does not store that spelling.
  */
-
 #include "daObjKm2_Agaru_c.h"
 #include "SharedFilePtr.h"
 
 struct KCL_File;
 struct CLPS_Block;
 
+/* Retail constructs these 8-byte handles in this order and registers
+ * their destructors. The wrapper names are local; the ctor/dtor
+ * addresses are the ROM resource-family functions. */
+struct AgaruModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    AgaruModelFilePtr(u32 fileID);
+    ~AgaruModelFilePtr();
+};
+
+struct AgaruCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    AgaruCollisionFilePtr(u32 fileID);
+    ~AgaruCollisionFilePtr();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov045_02113180; /* the KCL */
-extern SharedFilePtr data_ov045_02113188; /* the BMD */
+extern AgaruCollisionFilePtr data_ov045_02113180; /* the KCL */
+extern AgaruModelFilePtr data_ov045_02113188;     /* the BMD */
 extern CLPS_Block data_ov045_021125d0;
 
 void func_020393d4(int *collider, int callback);
@@ -162,3 +165,8 @@ s32 daObjKm2_Agaru_c::CleanupResources()
 // @symbol _ZN16daObjKm2_Agaru_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline destructor in the header
    emits D1 then D0 -- the cartridge's order -- and no D2. */
+
+/* The static-init globals -- mwcc emits __sinit_d_a_obj_km2_agaru.cpp
+   from these: one ctor veneer plus destructor registration per handle. */
+AgaruModelFilePtr data_ov045_02113188(1627);
+AgaruCollisionFilePtr data_ov045_02113180(1628);

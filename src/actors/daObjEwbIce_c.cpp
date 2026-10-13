@@ -7,7 +7,10 @@
  *
  * #pragma defer_codegen off is load-bearing. The out-of-line destructor is
  * the key function, so this TU emits D1, D0, then a D2 the cartridge does
- * not keep. The functions below stay in ROM order.
+ * not keep. The functions below stay in ROM order. The unit spans ov073
+ * .text 0x02121f90..0x02122874 and closes with the touch helper, the
+ * collision callback InitResources installs, and the three registry
+ * factories (EWB_ICE_C, EWB_ICE_B, EWB_ICE_A).
  *
  * deslop leftovers:
  * - func_ov073_02122034: one Vector3 store then pos.y -= kSplashDrop is
@@ -24,6 +27,7 @@
 #pragma defer_codegen off
 
 #include "daObjEwbIce_c.h"
+#include "daKing_Donketu_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
 
@@ -47,6 +51,47 @@ struct daObjEwbIce_State {
     int (daObjEwbIce_c::*update)();
 };
 typedef char daObjEwbIce_State_must_be_0x10[sizeof(daObjEwbIce_State) == 0x10 ? 1 : -1];
+
+/* The six file handles __sinit_daObjEwbIce_c.cpp constructs below, one model
+ * and one collision per EWB_ICE variant. SharedFilePtr.h declares no fields;
+ * this TU repeats the names used through the file-slot table. The models'
+ * ctor/dtor are the cartridge's func_02017acc / func_02017ab4 pair and the
+ * collisions' func_02017b4c / SharedFilePtr_Destruct_Clsn; the manifest
+ * aliases these. */
+struct EwbIceModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    struct BMD_File *file;
+    EwbIceModelFileHandle(u32 fileID);
+    ~EwbIceModelFileHandle();
+};
+struct EwbIceCollisionFileHandle : SharedFilePtr {
+    s32 fileId;
+    struct KCL_File *file;
+    EwbIceCollisionFileHandle(u32 fileID);
+    ~EwbIceCollisionFileHandle();
+};
+
+extern EwbIceModelFileHandle data_ov073_02123428;     /* model, file 0x5e7 */
+extern EwbIceModelFileHandle data_ov073_02123430;     /* model, file 0x5e9 */
+extern EwbIceModelFileHandle data_ov073_02123440;     /* model, file 0x5eb */
+extern EwbIceCollisionFileHandle data_ov073_02123448; /* clsn, file 0x5e8 */
+extern EwbIceCollisionFileHandle data_ov073_02123450; /* clsn, file 0x5ea */
+extern EwbIceCollisionFileHandle data_ov073_02123438; /* clsn, file 0x5ec */
+
+/* The four {enter, update} state records __sinit_daObjEwbIce_c.cpp fills
+ * from the PMF literals in .data. */
+typedef int (daObjEwbIce_c::*EwbIceStateFunc)();
+extern EwbIceStateFunc data_ov073_02123134;
+extern EwbIceStateFunc data_ov073_0212312c;
+extern EwbIceStateFunc data_ov073_0212311c;
+extern EwbIceStateFunc data_ov073_0212310c;
+extern EwbIceStateFunc data_ov073_02123114;
+extern EwbIceStateFunc data_ov073_02123124;
+extern EwbIceStateFunc data_ov073_02123144;
+extern EwbIceStateFunc data_ov073_0212313c;
+extern daObjEwbIce_State data_ov073_021234b0;
+extern daObjEwbIce_State data_ov073_021234c0;
+extern daObjEwbIce_State data_ov073_021234d0;
 
 enum {
     ACTOR_EWB_ICE_A = 0xaa,
@@ -89,9 +134,8 @@ extern char data_ov073_021231bc[];
 extern char data_ov073_021231c0[];
 extern char data_ov073_021231c4[];
 extern daObjEwbIce_State data_ov073_021234a0;
-extern void *data_ov073_021234b0;
 int func_ov073_021223a4(daObjEwbIce_c *ice, daObjEwbIce_State *state);
-int func_ov073_021227d0(void *a, void *b, void *c);
+void func_ov073_021227d0(void *collider, daObjEwbIce_c *ice, dActor_c *other);
 void Matrix4x3_FromRotationXYZExt(Matrix4x3 *mat, int x, int y, int z);
 }
 
@@ -366,3 +410,91 @@ int daObjEwbIce_c::InitResources()
     func_ov073_021223a4(this, (daObjEwbIce_State *)&data_ov073_021234b0);
     return 1;
 }
+
+// @symbol func_ov073_02122730
+/* Chief Chilly (actor 0xda) touched a piece that is still in its initial
+ * state: post the piece's spawn index to his waypoint cursor, and when it is
+ * the waypoint he is after, move the piece on -- the arena (variant 0) and
+ * the big/small pieces take different states. */
+extern "C" void func_ov073_02122730(daObjEwbIce_c *ice, dActor_c *other)
+{
+    daKing_Donketu_c *boss = static_cast<daKing_Donketu_c *>(other);
+    int isBoss = other->actorID == ACTOR_KING_DONKETU;
+    if (isBoss == 0)
+        return;
+    if (ice->mState != &data_ov073_021234b0)
+        return;
+    boss->mWaypointCursor = ice->mSpawnIndex;
+    if (ice->mSpawnIndex != boss->unk_4c5)
+        return;
+    if (ice->mVariant != 0)
+        func_ov073_021223a4(ice, &data_ov073_021234c0);
+    else
+        func_ov073_021223a4(ice, &data_ov073_021234d0);
+}
+
+/* The collision callback InitResources installs in mMeshCollider's slot. The
+ * slot passes three arguments; the touch helper wants the last two.
+ * long_calls keeps the pooled absolute tail call. */
+#pragma push
+#pragma long_calls on
+// @symbol func_ov073_021227d0
+extern "C" void func_ov073_021227d0(void *collider, daObjEwbIce_c *ice, dActor_c *other)
+{
+    func_ov073_02122730(ice, other);
+}
+#pragma pop
+
+// @symbol daObjEwbIce_c_classInit_EWB_ICE_C
+/* Reconstructed source-style name: SM64DS proves daObjEwbIce_c through RTTI,
+ * allocation size, vtable identity, and the EWB_ICE_C registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: CccSmallIce_Spawn.
+ *
+ * `new daObjEwbIce_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x33c), dBgActor_c's base constructor, then
+ * the vptr store. */
+extern "C" daObjEwbIce_c *daObjEwbIce_c_classInit_EWB_ICE_C(void)
+{
+    return new daObjEwbIce_c;
+}
+
+// @symbol daObjEwbIce_c_classInit_EWB_ICE_B
+/* Reconstructed source-style name: SM64DS proves daObjEwbIce_c through RTTI,
+ * allocation size, vtable identity, and the EWB_ICE_B registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: CccBigIce_Spawn. */
+extern "C" daObjEwbIce_c *daObjEwbIce_c_classInit_EWB_ICE_B(void)
+{
+    return new daObjEwbIce_c;
+}
+
+// @symbol daObjEwbIce_c_classInit_EWB_ICE_A
+/* Reconstructed source-style name: SM64DS proves daObjEwbIce_c through RTTI,
+ * allocation size, vtable identity, and the EWB_ICE_A registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: CccArena_Spawn. */
+extern "C" daObjEwbIce_c *daObjEwbIce_c_classInit_EWB_ICE_A(void)
+{
+    return new daObjEwbIce_c;
+}
+
+
+/* Static-init globals (was the handwritten __sinit_ov073_02122d48 shard).
+ * Definition order is the retail initializer's construction order: the
+ * three model handles (files 0x5e7, 0x5e9, 0x5eb), the three collision
+ * handles (files 0x5e8, 0x5ea, 0x5ec), then the four state records in
+ * 234b0, 234c0, 234d0, 234a0 order, each copied from two PMF literals in
+ * .data. */
+// @symbol __sinit_daObjEwbIce_c.cpp
+EwbIceModelFileHandle     data_ov073_02123428(0x5e7);
+EwbIceModelFileHandle     data_ov073_02123430(0x5e9);
+EwbIceModelFileHandle     data_ov073_02123440(0x5eb);
+EwbIceCollisionFileHandle data_ov073_02123448(0x5e8);
+EwbIceCollisionFileHandle data_ov073_02123450(0x5ea);
+EwbIceCollisionFileHandle data_ov073_02123438(0x5ec);
+
+daObjEwbIce_State data_ov073_021234b0 = { data_ov073_02123134, data_ov073_0212312c };
+daObjEwbIce_State data_ov073_021234c0 = { data_ov073_0212311c, data_ov073_0212310c };
+daObjEwbIce_State data_ov073_021234d0 = { data_ov073_02123114, data_ov073_02123124 };
+daObjEwbIce_State data_ov073_021234a0 = { data_ov073_02123144, data_ov073_0212313c };

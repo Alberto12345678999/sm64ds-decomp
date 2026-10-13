@@ -1,11 +1,15 @@
 //cpp
-/* dScMgSnowball_c -- the snowball-rolling minigame scene: 42 functions
- * (.text 0x0212568c..0x0212a520), the destructor, eight virtual overrides, the
+/* dScMgSnowball_c -- the snowball-rolling minigame scene: 43 functions
+ * (.text 0x0212568c..0x0212a554), the destructor, eight virtual overrides, the
  * constructor and the helpers they call, including the per-element helpers for
- * the 0x32-element array at this+0xbe94. dScMgSnowball_c_classInit, which
- * follows at 0x0212a520, is its own TU (src/d_s_mg_snowball.cpp).
+ * the 0x32-element array at this+0xbe94, and last the factory
+ * dScMgSnowball_c_classInit (0x0212a520).
  * The constructor (0x021295ac) and the 18 functions after it were separate
  * one-function files (func_ov006_021295ac through func_ov006_0212a3c0).
+ *
+ * _ZTS15dScMgSnowball_c 0x0213ffdc. _ZTI15dScMgSnowball_c 0x0213ffd0.
+ * _ZTV15dScMgSnowball_c 0x0214000c. The destructor is the key function:
+ * D1 at 0x0212568c, D0 at 0x0212573c.
  *
  * Functions run in ROM order under `#pragma defer_codegen off`; removing it
  * breaks five functions and the section order. The six bracketed optimizer
@@ -13,29 +17,33 @@
  *
  * The helpers whose first parameter was the scene are now members of
  * dScMgSnowball_c, including the 17 per-element helpers dispatched through
- * the PMF tables data_ov006_02143020/38/50/70 (8-byte {adjustor,pmf}
- * records built by __sinit_ov006_021333e0.c). Some calls stay mangled:
+ * the PMF tables data_ov006_02143020/38/50/70 (8-byte {function, 0}
+ * records). __sinit_dScMgSnowball_c.cpp copies them. Some calls stay mangled:
  * cstd::atan2 and Particle::System take Fix12 or reference
  * arguments, and decl_common.h declares a global named G2, so no
  * `namespace G2` can be opened here.
- *
- * comment leftovers:
- *  - func_ov006_02126948 stays a free function. Inside its
- *    `opt_lifetimes off` window the member spelling reserves six extra
- *    stack slots (frame 0x10 -> 0x28, v leaves sp+0) under every alias
- *    shape tried, so it keeps its char* parameter and C linkage.
- *  - func_ov006_02125800 (empty element destructor) and
- *    func_ov006_0212968c (empty element constructor) stay free: they are
- *    ctor/dtor slots in the __cxa_vec_ctor call for the mArray3/mArray4
- *    records, not dispatch targets on the scene.
- *  - func_ov006_021295ac stays free: it is the C2 construction body
- *    called by dScMgSnowball_c_classInit in src/d_s_mg_snowball.cpp after
- *    allocation; writing it as a real ctor changes codegen.
- *  - The raw-pointer and view-struct puns (C_0212a224, C_02129d94, Obj_02129690,
- *    the H()/I()/B()/AT() macros) are load-bearing: the 0xa000..0xc000
- *    field offsets exceed the +/-0xfff store immediate, so the compiler's
- *    own pointer arithmetic has to stand in for them.
  */
+
+// leftovers:
+// - func_ov006_02126948 stays a free function. Inside its `opt_lifetimes
+//   off` window the member spelling reserves six extra stack slots (frame
+//   0x10 -> 0x28, v leaves sp+0) under every alias shape tried, so it keeps
+//   its char* parameter and C linkage (caller: Behavior's per-element
+//   dispatch in this TU).
+// - func_ov006_02125800 (empty element destructor) and func_ov006_0212968c
+//   (empty element constructor) stay free: they are ctor/dtor slots in the
+//   __cxa_vec_ctor call for the mArray3/mArray4 records, not dispatch
+//   targets on the scene.
+// - func_ov006_021295ac stays free: it is the C2 construction body called by
+//   dScMgSnowball_c_classInit, below, after allocation;
+//   writing it as a real ctor changes codegen.
+// - The raw-pointer and view-struct puns (C_0212a224, C_02129d94,
+//   Obj_02129690, the H()/I()/B()/AT() macros) are load-bearing: the
+//   0xa000..0xc000 field offsets exceed the +/-0xfff store immediate, so the
+//   compiler's own pointer arithmetic has to stand in for them.
+// - The r4/r5/r7 locals in the render-setup helpers are named for the
+//   registers they color; renaming them needs the coloring comments updated
+//   in the same pass.
 #pragma defer_codegen off
 
 /* Include order is load-bearing. dScMgSnowball_c.h reaches math/Matrix.h,
@@ -2526,4 +2534,61 @@ void dScMgSnowball_c::func_ov006_0212a3c0()
         *(short *)(p + 0xbe00 + 0xa8) = 0;
         p += 0x24;
     }
+}
+
+/* The registry word between the PMF descriptors: classInit, then the
+ * actor id 0x179 stored in both halfwords. */
+extern "C" void *dScMgSnowball_c_classInit(void);
+struct SnowballProfile {
+    void *(*init)(void);
+    unsigned short actorId;
+    unsigned short actorId2;
+};
+SnowballProfile g_profile_MG_SNOWBALL = {
+    dScMgSnowball_c_classInit, 0x179, 0x179,
+};
+
+/* Source order is copy order. Each entry is a {function, 0} descriptor;
+ * __sinit_dScMgSnowball_c.cpp copies them into the tables. */
+extern "C" PMF_0212a2e0 data_ov006_02143038[3] = {
+    &dScMgSnowball_c::func_ov006_0212a274,
+    &dScMgSnowball_c::func_ov006_0212a224,
+    &dScMgSnowball_c::func_ov006_02129d94,
+};
+extern "C" PMF_0212a224 data_ov006_02143050[4] = {
+    &dScMgSnowball_c::func_ov006_0212a110,
+    &dScMgSnowball_c::func_ov006_0212a000,
+    &dScMgSnowball_c::func_ov006_02129eec,
+    &dScMgSnowball_c::func_ov006_02129e28,
+};
+/* Six slots so the symbol runs to the overlay bss end at 0x021430a0.
+ * Only the first four are copied from descriptors; the tail stays zero. */
+Entry_02129d94 data_ov006_02143070[6] = {
+    { &dScMgSnowball_c::func_ov006_02129cb0 },
+    { &dScMgSnowball_c::func_ov006_02129b74 },
+    { &dScMgSnowball_c::func_ov006_02129a34 },
+    { &dScMgSnowball_c::func_ov006_0212992c },
+};
+Entry_02129d94 data_ov006_02143020[3] = {
+    { &dScMgSnowball_c::func_ov006_02129894 },
+    { &dScMgSnowball_c::func_ov006_021297c0 },
+    { &dScMgSnowball_c::func_ov006_0212972c },
+};
+
+// @symbol dScMgSnowball_c_classInit
+/* Reconstructed source-style name: SM64DS proves dScMgSnowball_c through RTTI,
+ * allocation size, vtable identity, and the MG_SNOWBALL registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MgSnowballSlalom_Spawn.
+ * The allocation and the construction are two steps here, not `new`: the
+ * constructor body is the free func_ov006_021295ac above (see the banner),
+ * so the factory calls the class's operator new itself and hands the
+ * storage over. */
+extern "C" void *dScMgSnowball_c_classInit(void)
+{
+    void *p = dScMgSnowball_c::operator new(sizeof(dScMgSnowball_c));
+    if (p) {
+        return func_ov006_021295ac((char *)p);
+    }
+    return p;
 }

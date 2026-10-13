@@ -1,30 +1,20 @@
 //cpp
-/* daBasabasa_c (BASABASA, the swoop), ov065 0x02116f98..0x02117f40,
- * 22 functions.
- *
- * RTTI names daBasabasa_c. The vtable address point is 0x0211cca0; the word
- * at -4 is _ZTI12daBasabasa_c (0x0211cc60), whose string at 0x0211cc6c is
- * "12daBasabasa_c" and whose single base is dEnemyBase_c. The registry
- * factory daBasabasa_c_classInit (0x02117ee8..0x02117f40, historical alias
- * Swoop_Spawn) closes the run: operator new(0x440), the dEnemyBase_c
- * constructor, this class's vtable store and the five member constructors,
- * which is exactly `new daBasabasa_c()`. Its name is reconstructed from the
- * BASABASA profile; retail does not store it.
- *
- * The out-of-line destructor is the key function, so this TU emits the
- * vtable and RTTI. Under `#pragma defer_codegen off` it comes out D1, D0,
- * then a D2 the cartridge has no home for (manifest: deadstrip), and .text
- * is laid down in source order, so the file is ROM-ascending.
- *
- * Leftover:
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   dEnemyBase_c::KillByInvincibleChar, dActor_c::SpawnCoins,
- *   dActor_c::DropShadowRadHeight, Player::Hurt and Player::Bounce stay
- *   mangled. Each symbol carries a Fix12<int> by value.
- * - The shared files and the four state records keep their address names.
- *   The static initializer that owns that .bss is another source file.
- * - Testing actorID and mFlags through an int, ExecutePerch's base pointer,
- *   the reload of unk_0ac, and EnterDrop's PoofPos are the forms that matched.
+/* daBasabasa_c -- the swoop (BASABASA), ov065 0x02116f98..0x02117f40.
+ * _ZTI12daBasabasa_c is at 0x0211cc60; the vtable address point is 0x0211cca0.
+ * The base is dEnemyBase_c. The destructor is the key function. defer_codegen
+ * off emits D1, D0, then a D2 with no ROM home, in source order. The factory
+ * (was Swoop_Spawn) is `new daBasabasa_c()`.
+ */
+/* leftovers: ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ * dEnemyBase_c::KillByInvincibleChar, dActor_c::SpawnCoins,
+ * dActor_c::DropShadowRadHeight, Player::Hurt and Player::Bounce stay
+ * mangled. This file calls them, and each symbol takes Fix12<int> by value.
+ * The shared file handles and the four state records keep address names;
+ * their definitions at the bottom are this file's static initializer.
+ * actorID and mFlags are tested through an int. ExecutePerch keeps its base
+ * pointer. unk_0ac is reloaded because a named temporary moves a word.
+ * EnterDrop's PoofPos is a three-int constructor; a Vector3 assignment does
+ * not schedule the same stores.
  */
 
 #pragma defer_codegen off
@@ -39,6 +29,24 @@ struct PoofPos {
     int x, y, z;
     PoofPos(int a, int b, int c) : x(a), y(b), z(c) {}
     ~PoofPos() {}
+};
+
+/* The model handles construct through func_02017acc and destroy through
+ * func_02017ab4; the animation handles go through SharedFilePtr::Construct
+ * and SharedFilePtr_Destruct_Anim. The wrappers are declared, never defined:
+ * the manifest aliases their undefined members onto the ROM veneers. */
+struct BasabasaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BasabasaModelFilePtr(u32 fileID);
+    ~BasabasaModelFilePtr();
+};
+
+struct BasabasaAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    BasabasaAnimationFileHandle(u32 fileID);
+    ~BasabasaAnimationFileHandle();
 };
 
 extern "C" {
@@ -63,10 +71,10 @@ extern void Matrix4x3_FromTranslation(Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, Matrix4x3* m, int fx, int t, unsigned int u);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern SharedFilePtr data_ov065_0211d698;   /* flying model */
-extern SharedFilePtr data_ov065_0211d6a8;   /* hanging model */
-extern SharedFilePtr data_ov065_0211d690;   /* flying animation */
-extern SharedFilePtr data_ov065_0211d6a0;   /* hanging animation */
+extern BasabasaAnimationFileHandle data_ov065_0211d690;   /* flying animation */
+extern BasabasaModelFilePtr data_ov065_0211d698;   /* flying model */
+extern BasabasaAnimationFileHandle data_ov065_0211d6a0;   /* hanging animation */
+extern BasabasaModelFilePtr data_ov065_0211d6a8;   /* hanging model */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, int r, int h, Vector3_16* p, Vector3_16* q);
 }
@@ -519,3 +527,25 @@ extern "C" daBasabasa_c *daBasabasa_c_classInit()
 {
     return new daBasabasa_c();
 }
+
+/* Retail initializer order is flying model 0x298, hanging model 0x29b,
+ * flying anim 0x299, hanging anim 0x29a, then the perch/drop/chase/return
+ * State records. mwcc emits __sinit_daBasabasa_c.cpp from these definitions,
+ * including the destructor registrations and the PMF descriptor constants
+ * at 0x0211cc20..0x0211cc60. */
+BasabasaModelFilePtr data_ov065_0211d698(0x298);
+BasabasaModelFilePtr data_ov065_0211d6a8(0x29b);
+BasabasaAnimationFileHandle data_ov065_0211d690(0x299);
+BasabasaAnimationFileHandle data_ov065_0211d6a0(0x29a);
+daBasabasa_c::State data_ov065_0211d700 = {
+    &daBasabasa_c::EnterPerch, &daBasabasa_c::ExecutePerch
+};
+daBasabasa_c::State data_ov065_0211d710 = {
+    &daBasabasa_c::EnterDrop, &daBasabasa_c::ExecuteDrop
+};
+daBasabasa_c::State data_ov065_0211d6e0 = {
+    &daBasabasa_c::EnterChase, &daBasabasa_c::ExecuteChase
+};
+daBasabasa_c::State data_ov065_0211d6f0 = {
+    &daBasabasa_c::EnterReturn, &daBasabasa_c::ExecuteReturn
+};

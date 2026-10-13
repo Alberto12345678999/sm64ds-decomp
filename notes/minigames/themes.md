@@ -21,7 +21,8 @@ A pass must not change a single emitted byte or relocation target.
    - Before: `*(u8 *)(c + 0xc3) = 1`.
    - After: `mPromptEnabled = 1`.
    - Proven: `dScMgCard_c`'s prompt handling in `src/minigames/d_s_mg_card.cpp`, `dScMgPachinko2_c`'s `Behavior` and `InitResources`, and `dScMg3DEsp_c::InitResources`.
-   - Exception: when the singleton `data_ov004_020beb68` is declared `int`, mwcc loads a `+0x46xx` offset from the literal pool instead of splitting it as `add #0x4000` (see `func_ov004_020adafc`). So the accessor functions keep a `char *` base.
+   - Exception: when the singleton `data_ov004_020beb68` is declared `int`, mwcc loads a `+0x46xx` offset from the literal pool instead of splitting it as `add #0x4000`. A `char *` or `dScMgBase_c *` base splits like the cartridge.
+   - Proven through the singleton cast to `dScMgBase_c *`: the score and record helpers `func_ov004_020adafc`, `020adbc0`, `020adbe0`, `020ada40`, `020ad940` and `020b0b1c` in `src/minigames/d_s_mg_base.cpp`. Offsets that fall in the header's padding (for example `+0x4650` in `func_ov004_020adc00`/`020adc1c`) stay raw.
    - Access to the same block through `this` or a `dScMgBase_c *` matches: `dScMgBase_c::BeforeInitResources`, `BeforeBehavior` and `OnHitByMegaChar` all use the names.
 2. **`char *c = (char *)this` inside a real member.**
    - Readable form: plain member access.
@@ -31,12 +32,14 @@ A pass must not change a single emitted byte or relocation target.
    - Readable form: a normal call through the header.
    - Proven for plain arguments: `Sound::StopLoadedMusic_Layer1` in `dScMgBase_c::AfterCleanupResources`, and in `dScMg3DEsp_c` for `TextureTransformer::Prepare`, `Animation::Advance` and the qualified destructor calls in D0 and D1.
    - Measured negative for native `u16` SDK arguments (`dScMgD3DBase_c`).
-   - Measured negative for `Fix12<int>` by value: `TextureTransformer::SetFile` costs at least 12 bytes in `dScMg3DEsp_c::InitResources`.
+   - Measured negative for `Fix12<int>` by value: `TextureTransformer::SetFile` costs at least 12 bytes in `dScMg3DEsp_c::InitResources`. The Fix12-by-value `OAM::Render` overloads in `d_s_mg_base.cpp` stay mangled for the same reason.
+   - Proven in the ov004 runtime: `ApproachLinear` and `ApproachLinear2` (`func_ov004_020aeb24`, the Ent pool, `unit020b2c84`), `cstd::fdiv`, `Sound::LoadAndSetMusic_Layer1` (`func_ov004_020ae20c`), `OAM::Render` with a `Matrix2x2 *` and `OAM::RenderSub` (the sprite wrappers), and `Sound::PlayBank2_2D` in `dMgState_c` (through a local declaration; including `Sound.h` renumbers a pinned static, see theme 16).
+   - Measured negative: `Sound::PlaySub` stays mangled in `d_s_mg_base.cpp`.
    - Blocked, not measured, for `cstd::atan2`: it keeps its mangled name because no readable spelling links (`src/actors/dScMgHanachan_c.cpp`).
    - No header declares the SDK namespaces `GX`, `GXS` and `G2S`. A local namespace declaration compiles identically (the `InitResources` of `dScMgPachinko2_c` and `dScMg3DEsp_c`), but was not applied: a shared header is the readable form.
 4. **Hand-built factories** (`fBase_c::operator new`, the base `C2`, then vptr stores).
    - Readable form: `return new dScMgX_c;`.
-   - Proven: `dScMgMemory2_c`'s factory, and the one-function factories in `src/d_s_mg_bomroom.cpp`, `src/d_s_mg_curling.cpp`, `src/d_s_mg_curling2.cpp`, `src/d_s_mg_pachinko.cpp`, `src/d_s_mg_panel.cpp` and `src/d_s_mg_teresa.cpp`. The form is C++, so the file is a `.cpp` that starts with `//cpp`. rombuild picks the language from `//cpp`, so the rename from `.c` changed no byte.
+   - Proven: `dScMgMemory2_c`'s factory, and the factories of `dScMgBomroom_c`, `dScMgCurling_c`, `dScMgPachinko_c`, `dScMgPanel_c` and `dScMgTeresa_c`, once one-function `d_s_mg_*.cpp` files and now each folded into its class's TU under `src/actors/`, and the one-function factory in `src/d_s_mg_curling2.cpp`. The form is C++, so the file is a `.cpp` that starts with `//cpp`. rombuild picks the language from `//cpp`, so the rename from `.c` changed no byte.
    - Measured negative where the factory constructs a member that the header keeps as raw bytes, so the implicit constructor never calls it. Sizes are the `new` form against the ROM:
      - Coin: 0x34 against 0x48, without `func_0203b9b4(this + 0x51c4, 1)`. An inline class constructor making that call, tried in a scratch copy of the header, matches.
      - 3DEsp: 0x50 against 0x90, without the two `Model`, the `dMg3DEspModel_c` and the `TextureTransformer` constructors.
@@ -52,18 +55,21 @@ A pass must not change a single emitted byte or relocation target.
    - `dScMg3DEsp_c::Behavior` matches with either receiver.
    - Measured to need an incomplete receiver in Curling and Curling2. Teresa keeps its receiver incomplete too.
    - Jump needs a non-polymorphic receiver instead.
+   - Proven as typed member-pointer records assigned directly: `dMgState_c` (its 29 behavior/render records and the enter table) and `unit020b4aa4`'s `SpriteFn` records, including the `!=` compare in `func_ov004_020b5108`.
+   - Measured negative in `unit020b2c84`: a plain record copy in `func_ov004_020b3278` changes 12 words, so its `b ? a : a` copies stay. Typed copies in `func_ov004_020b37f0`, `020b39a4` and `020b422c` give identical text but move the name counter (theme 16), so the `W2` copies stay.
    - Test the receiver per file.
 6. **Shared ov004 functions called by address**, such as `func_ov004_020adb1c` (submit score) and `func_ov004_020b0a54` (enter a shared state).
    - Readable form: a coined name, renamed in place in ov004 `symbols.txt`.
    - A rename is byte-neutral by construction, but the declaration gate re-checks every caller.
-   - Status: untested.
+   - Status: untested. Batch 1 (2026-10-11) collected evidence-backed proposals for the ov004 helpers; they are applied as their own pass because every caller must be re-checked.
 7. **The scene singleton `data_ov004_020beb68`, retyped in each file** (`int`, `char *[]`, `struct Obj *`).
    - Readable form: the one `extern` in `dScMgBase_c.h`, plus member access. Theme 1's `char *` exception applies.
-   - Status: partly proven (`func_ov004_020b0a54`, and through `dScMgBase_c *` in `dScMg3DEsp_c::OnYoshiTryEat`).
+   - Status: partly proven (`func_ov004_020b0a54`, the `d_s_mg_base.cpp` helpers under theme 1, and through `dScMgBase_c *` in `dScMg3DEsp_c::OnYoshiTryEat`).
+   - Held by the declaration gate: `d_s_mg_base.cpp` keeps two local `char *` copies (`func_ov004_020adc00`, `020adc1c`). Without them, `char *` and the header's `void *` tie, the tie goes to the header, and `unit020b4aa4.cpp`'s `char *` becomes a new disagreement. A typed view in `unit020b4aa4` was refused for the same reason. Retyping the symbol is a cross-file sweep.
 8. **Local redeclarations that disagree with a header**, including the manifests' `CONFLICT` notes.
    - Readable form: one prototype in one header.
    - Every change here is matching work: rebuild and compare.
-   - Proven: deleting a local copy that agrees with `decl_common.h` (`dScMgSingle3DBase_c`, `dScMgPachinko2_c::Render`, `dScMg3DEsp_c::InitResources`).
+   - Proven: deleting a local copy that agrees with `decl_common.h` (`dScMgSingle3DBase_c`, `dScMgPachinko2_c::Render`, `dScMg3DEsp_c::InitResources`, and every agreeing copy in `d_s_mg_base.cpp`). The ten local declarations of `data_ov004_020bbfa8` there, in five types, are now one file-level `int *[]`.
    - Blocked where the copies disagree: including `decl_common.h` in `dScMgPachinko2_c::Behavior` fails with "illegal function overloading" (`void *` against `char *` or `int`). `LoadFile` returns `int` at its definition and `void *` in Card and Memory.
 9. **`add #0x4000` and `add #0x5000` split cursors.** A walk pointer is padded so that a field lands past 0x4000 or 0x5000.
    - Measured negative: `mCards[i]` did not match in `dScMgMemory_c`'s `DrawCards`, `RoundWaitDeal` and `ShuffleCards`. It does match in the class's other members.
@@ -76,6 +82,7 @@ A pass must not change a single emitted byte or relocation target.
 11. **Hand-rolled vtable views.**
     - Readable form: a real virtual call, such as `OnYoshiTryEat(-1)`.
     - Proven in `dScMgTrampoline2_c`, `dScMgCup_c` and `dScMg3DEsp_c` (`OnYoshiTryEat(-1)` in `InitResources`, `Model::Render(0)` in `Render`).
+    - Proven in the ov004 runtime: `GraphCallback0`-`3`, `OnKicked`, the menu functions, the OAM sprite wrappers, `func_ov004_020b0e84` and `func_ov004_020b29a0` in `d_s_mg_base.cpp` (the 27- and 29-slot stand-in views are gone, and so is the private header that held the 27-slot one), and `dMgState_c`'s scene slots 18-20 and `dFader_c` slots.
 12. **The sine table `data_02082214`.** It holds interleaved fx16 sine and cosine pairs [ROM].
     - Readable form: a named table or accessor. [GUESS] It is NitroSDK's `FX_SinCosTable_`.
     - Status: untested.
@@ -90,3 +97,6 @@ A pass must not change a single emitted byte or relocation target.
     - Readable form: the names in `nitro/hw/registers.h`.
     - Proven: `REG_DISPCNT` and `REG_DISPCNT_SUB` in `dScMgSingle3DBase_c::Virtual84`.
     - Registers the header does not name yet (the light and sub-BG3 registers there) stay raw.
+16. **The compiler's name counter.** mwccarm numbers generated names (`$N`, `@N`) from one counter per TU. Every named parameter (prototypes included), local, temporary and included declaration advances it, and several of these names are pinned in `symbols.txt` and the manifests.
+    - Measured: including `dScMgBase_c.h` in `dMgState_c` renumbers the pinned `sEnterTable$184` to `$208` (`Sound.h` gives `$199`). Including `dScMgD3DBase_c.h` in `d_s_mg_base.cpp` renumbers its `@329` temps to `@529`. In `unit020b2c84`, named prototype parameters balance the count that keeps `__arraydtor$954`.
+    - A pass that adds or removes a name must re-check the pins. A header that gains declarations shifts every consumer's temps (#3725's `types.h` constructors moved two minigame TUs' PMF records by 14).

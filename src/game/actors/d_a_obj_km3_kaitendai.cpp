@@ -7,8 +7,8 @@
  * helpers. Start angle is data_ov047_02112320, or
  * data_ov047_02112324 when param1's low byte is 1.
  * func_ov002_020b676c loads slot 0 with Model::LoadFile, slot 1 with
- * dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. ov047 sinit
- * constructs those SharedFilePtrs as file IDs 1661 / 1662.
+ * dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. This TU's static
+ * initializer constructs those SharedFilePtrs as file IDs 1661 / 1662.
  *
  * The three-word file table is defined in this TU. Retail .data
  * order is typeinfo, descriptor, type-name, profile, vtable.
@@ -28,6 +28,28 @@
 
 #include "SharedFilePtr.h"
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct Km3KaitendaiModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km3KaitendaiModelFilePtr(unsigned int fileID);
+    ~Km3KaitendaiModelFilePtr();
+};
+
+struct Km3KaitendaiClsnFilePtr : SharedFilePtr {
+    unsigned int words[2];
+
+    Km3KaitendaiClsnFilePtr(unsigned int fileID);
+    ~Km3KaitendaiClsnFilePtr();
+};
+
+typedef char Km3KaitendaiModelFilePtr_size_must_be_8[
+    sizeof(Km3KaitendaiModelFilePtr) == 8 ? 1 : -1];
+typedef char Km3KaitendaiClsnFilePtr_size_must_be_8[
+    sizeof(Km3KaitendaiClsnFilePtr) == 8 ? 1 : -1];
+
 struct CLPS_Block;
 
 struct ResourceDescriptor {
@@ -39,8 +61,8 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
     sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern "C" {
-extern SharedFilePtr data_ov047_02112610;
-extern SharedFilePtr data_ov047_02112608;
+extern Km3KaitendaiModelFilePtr data_ov047_02112610;
+extern Km3KaitendaiClsnFilePtr data_ov047_02112608;
 extern CLPS_Block data_ov047_02111bf4;
 }
 
@@ -106,3 +128,8 @@ s32 daObjKm3_Kaitendai_c::CleanupResources()
 {
     return func_ov002_020b66a8(this, &data_ov047_02112334);
 }
+
+/* Source order is construction order: model file 1661, then the collision
+ * file 1662. The compiler registers each destructor beside the object. */
+Km3KaitendaiModelFilePtr data_ov047_02112610(1661);
+Km3KaitendaiClsnFilePtr data_ov047_02112608(1662);

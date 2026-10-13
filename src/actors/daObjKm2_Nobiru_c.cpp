@@ -24,9 +24,27 @@
 
 #pragma defer_codegen off
 
+/* The model handle constructs through func_02017acc and registers
+   func_02017ab4; the collision handle constructs through
+   func_02017b4c and registers SharedFilePtr_Destruct_Clsn.
+   The manifest aliases these. */
+struct NobiruModelFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    NobiruModelFileHandle(u32 fileID);
+    ~NobiruModelFileHandle();
+};
+
+struct NobiruClsnFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    NobiruClsnFileHandle(u32 fileID);
+    ~NobiruClsnFileHandle();
+};
+
 extern "C" {
-extern SharedFilePtr PoleLift_ClsnFile;
-extern SharedFilePtr PoleLift_ModelFile;
+extern NobiruClsnFileHandle PoleLift_ClsnFile;
+extern NobiruModelFileHandle PoleLift_ModelFile;
 extern s32 func_0203aad0(dBgW_KcMbgSclY *);
 extern void Matrix4x3_FromRotationY(Matrix4x3 *, s32);
 extern void _ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE(dBgW_KcMbgSclY *, s32);
@@ -134,3 +152,6 @@ extern "C" daObjKm2_Nobiru_c *daObjKm2_Nobiru_c_classInit()
 {
     return new daObjKm2_Nobiru_c();
 }
+
+NobiruModelFileHandle PoleLift_ModelFile(0x663);
+NobiruClsnFileHandle PoleLift_ClsnFile(0x664);

@@ -5,5 +5,4 @@
 # the overlay story.
 
 src/engine/oam/OAM.cpp
-src/func_020566dc.c
-src/func_02056674.c
+src/engine/gx/GXS.cpp

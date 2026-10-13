@@ -6,15 +6,16 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x20f1f70..0x20f8808, 145 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "HISTORY: contiguous linker run: 0x20f1f70..0x20f8808, 145 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): CutsceneObject, daDemo_c",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "CLASSINIT TAIL FOLD (2026-10-09): daDemo_c_classInit (0x30, 0x020f8808), the one-function source right of this run, abuts its .text end with no gap and is now inside it (0x020f1f70..0x020f8838). The factory allocates sizeof(daDemo_c) (0x104), runs dActor_c's base ctor and stores _ZTV8daDemo_c; it is written last in the file because the TU sets #pragma defer_codegen off. The two _ZThn80_ anmModel_c thunks after it (0x020f8838..0x020f8858) stay with their own sources: this TU's copies remain deadstrip-duplicate, because _ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp is the source whose project-spelled nested vtables (_ZTVN8daDemo_c10anmModel_cE, _ZTVN8daDemo_c13simpleModel_cE) romdata_check verifies; retiring it loses those two exact symbols."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020f1f70",
-      "end": "0x020f8808"
+      "end": "0x020f8838"
     },
     {
       "name": ".data",
@@ -1037,6 +1038,13 @@
       "size": "0x00000464",
       "legacy_source": "src/_ZN14CutsceneObject13InitResourcesEv.cpp",
       "ordinal": 144
+    },
+    {
+      "symbol": "daDemo_c_classInit",
+      "address": "0x020f8808",
+      "size": "0x00000030",
+      "legacy_source": "src/d_a_demo.c",
+      "ordinal": 145
     }
   ],
   "data": [
@@ -1146,8 +1154,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daDemo_c/daDemo_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 145,
-    "functions_declared": 145,
+    "functions_matched": 146,
+    "functions_declared": 146,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN8daDemo_cD2Ev",
@@ -1173,10 +1181,8 @@
         198,
         205,
         206,
-        264,
-        265,
-        269,
-        270,
+        266,
+        267,
         271,
         272,
         273,
@@ -1188,10 +1194,12 @@
         279,
         280,
         281,
-        303,
-        304,
+        282,
+        283,
         305,
-        306
+        306,
+        307,
+        308
       ],
       "data": [
         "_ZTV8daDemo_c",
@@ -1238,7 +1246,7 @@
       },
       "tuRange": {
         "start": "0x020f1f70",
-        "end": "0x020f8808",
+        "end": "0x020f8838",
         "differingBytes": 0,
         "firstDiff": null
       },
@@ -1246,7 +1254,7 @@
         {
           "section": ".text",
           "start": "0x020f1f70",
-          "end": "0x020f8808",
+          "end": "0x020f8838",
           "differingBytes": 0,
           "firstDiff": null
         },
@@ -1260,7 +1268,7 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 147
+          "LICENSED": 148
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
@@ -1271,12 +1279,12 @@
           {
             "section": ".data",
             "original": [
-              266,
-              267
+              268,
+              269
             ],
             "desired": [
-              266,
-              267
+              268,
+              269
             ]
           }
         ],

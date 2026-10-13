@@ -13,6 +13,10 @@
  * One TU, 25 functions. It began as the old one-function files
  * concatenated in reverse ROM order.
  *
+ * _ZTS8daKrpa_c 0x02123334. _ZTI8daKrpa_c 0x02123340.
+ * _ZTV8daKrpa_c 0x02123370. The inline destructor in the header is the key
+ * function: D1 at 0x02121118, D0 at 0x02121160, no D2.
+ *
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *   mwcc emits one .text section per ordinary definition in reverse source
  *   order; the inline destructor group comes out retail D1 then D0, no D2.
@@ -27,12 +31,14 @@
  *   dCcAcPos_c::Init, dBgCh_Actr::Init (its header Fix12i also mangles as
  *   int), ModelAnim::SetAnim, DropShadowRadHeight and
  *   Particle::System::NewSimple.
- *
- * Known limits:
- *   The data_ov070_* SharedFilePtr / BCA / frame tables / state records are
- *   overlay .data, not this TU's data claim.
- *   func_0201267c is the sound call behind the spit (0x105).
  */
+
+// leftovers:
+// - The data_ov070_* SharedFilePtr / BCA / frame tables / state records are
+//   overlay .data, not this TU's data claim (consumers: the spit sequencer
+//   and the size-pulse reader in this TU).
+// - func_0201267c is the bank-3 Sound::Play wrapper behind the spit sound;
+//   no header declares it yet.
 #include "daKrpa_c.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
@@ -56,7 +62,7 @@ typedef char daKrpaSpawnInfo_size_must_be_0x1c[
     sizeof(daKrpaSpawnInfo) == 0x1c ? 1 : -1];
 
 // @symbol daKrpa_c_classInit
-/* `return new daKrpa_c()` MATCHES (size 0x50); the leaf unsigned-long
+/* `return new daKrpa_c()` emits 0x50; the leaf unsigned-long
  * operator new forwards `_ZN7fBase_cnwEj`. Historical aliases: daKrpa_c_Spawn
  * and FlameChomp_Spawn. */
 extern "C" daKrpa_c *daKrpa_c_classInit()
@@ -107,8 +113,14 @@ u32 daKrpaFrameController::func_ov070_02121a64()
 /* The Fix12-by-value Init methods are typed ABI seams: ordinary method calls
  * home their class-typed values and do not reproduce the retail callers. */
 struct M48 { int w[12]; };
+struct KrpaModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    KrpaModelFilePtr(u32 fileID);
+    ~KrpaModelFilePtr();
+};
 extern "C" {
-extern SharedFilePtr data_ov070_02123698;
+extern KrpaModelFilePtr data_ov070_02123698;
 extern int IDENTITY_MATRIX4X3[];
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset,
@@ -450,3 +462,18 @@ int daKrpa_c::OnYoshiTryEat()
 
 /* No separate body: the inline class destructor emits this complete variant
  * first, through the class vtable instantiated in this TU. */
+
+/* Retail initializer order is the model handle (file 0x351) with its
+ * destructor registration, then the eight {init,behavior} state-method
+ * records copied in ascending table slot. */
+KrpaModelFilePtr data_ov070_02123698(0x351);
+daKrpaState data_ov070_021236ac[4] = {
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_021217ac,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_02121710},
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_021216b8,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_0212156c},
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_02121548,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_021214f8},
+    {(daKrpaStateMethod)&daKrpa_c::func_ov070_02121438,
+     (daKrpaStateMethod)&daKrpa_c::func_ov070_021213cc},
+};

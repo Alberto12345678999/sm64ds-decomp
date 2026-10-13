@@ -1,49 +1,14 @@
 //cpp
-/* daBDonketu_c -- the Big Bully (BOSS_DONKETU), ov064 0x021174a0..0x02117978.
- *
- * One translation unit, eight functions, the way the cartridge's own build had
- * it. It replaces seven one-function shards whose bodies are unchanged; their
- * local declarations are collected into the single extern block below, and the
- * destructor is inline in include/daBDonketu_c.h.
- *
- * daBDonketu_c derives from daOts_c, the shared Bully base whose own promoted TU
- * sits immediately below this one in the same overlay (0x02115ee0..0x02117070).
- * It is daDonketu_c's SIBLING, not its subclass: both derive from daOts_c. The
- * small Bullies this class spawns in InitResources report their own deaths back
- * through mNumBulliesKilled, and that count is the only coupling between them.
- *
- * THIS TU OWNS THE CLASS VTABLE. The destructor is inline in the class body, so
- * the key function is UpdateRunState -- the first virtual this class declares
- * out of line -- and that anchors _ZTV12daBDonketu_c (ov064 public address point
- * 0x0211b978, storage 0x0211b970) here, together with the typeinfo and
- * type-name records it drags in for the whole ancestor chain. None of that data
- * lies inside this entry's licensed .text range, and it could not be licensed as
- * one interval even if it were: the cartridge puts g_profile_BOSS_DONKETU and
- * the file table between this class's typeinfo pair at 0x0211b904 and the vtable
- * storage at 0x0211b970. So dsd keeps supplying the cartridge's own bytes and
- * production isolation discards the emitted duplicates; the manifest's
- * compiler_only_output block licenses each one at its measured ROM home, exactly
- * as the already-promoted daOts_c does for its own vtable.
- *
- * Inlining the destructor is also what puts D1 and D0 in cartridge order.
- * Written out of line, mwcc emits the synthesized D0 ahead of the written D1 and
- * the licensed .text is no longer ROM-ascending; inlining additionally deletes
- * the homeless D2 that no module gives a symbol to.
- *
- * The registry factory daBDonketu_c_classInit (0x0211791c) is the last
- * function, `new daBDonketu_c()`; the unit is 0x021174a0..0x02117978, eight
- * functions.
- *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm 2004/b56 emits one
- * .text section per function in reverse source order, so the highest-address ROM
- * function is written first. Do not reorder.
- *
- * Known limits:
- * - UpdateRunState returns a pointer cast to int on one path; the source keeps
- *   the shape that reproduces the ROM.
- * - func_ov064_02116110, func_ov064_0211616c and func_ov064_02116bac are
- *   daOts_c workers that still carry ROM-address names.
- * - InitResources leaves spawnPos.y unset when the ground probe finds nothing.
+/* daBDonketu_c -- Big Bully (BOSS_DONKETU), ov064 0x021174a0..0x02117978.
+ * Sibling of daDonketu_c; both derive from daOts_c. The destructor is inline
+ * in include/daBDonketu_c.h, so UpdateRunState is the key function
+ * (_ZTV12daBDonketu_c at 0x0211b978). Source order is the reverse of the ROM.
+ * Do not reorder. The factory is `new daBDonketu_c()` (was BigBully_Spawn).
+ */
+/* leftovers: UpdateRunState returns a pointer cast to int on the timer path;
+ * that shape is what matches. func_ov064_02116110, func_ov064_0211616c and
+ * func_ov064_02116bac are daOts_c workers this file calls, still named by
+ * address. InitResources leaves spawnPos.y unset when DetectClsn misses.
  */
 
 #include "daBDonketu_c.h"
@@ -52,25 +17,39 @@
 #include "decl_common.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "SharedFilePtr.h"
+
+/* One model handle constructs through func_02017acc and destroys through
+ * func_02017ab4. Four animation handles construct through
+ * SharedFilePtr::Construct and destroy through SharedFilePtr_Destruct_Anim.
+ * The file table stays ROM data. */
+struct DonketuModelFilePtr : SharedFilePtr {
+    unsigned int words[2];
+    DonketuModelFilePtr(unsigned int fileId);
+    ~DonketuModelFilePtr();
+};
+struct DonketuAnimFileHandle : SharedFilePtr {
+    unsigned int words[2];
+    DonketuAnimFileHandle(unsigned int fileId);
+    ~DonketuAnimFileHandle();
+};
+typedef char DonketuModelFilePtr_size_must_be_8[
+    sizeof(DonketuModelFilePtr) == 8 ? 1 : -1];
+typedef char DonketuAnimFileHandle_size_must_be_8[
+    sizeof(DonketuAnimFileHandle) == 8 ? 1 : -1];
 
 extern "C" {
 extern s16 data_02082214[];
 }
 
-/* ROM ordinal 7 -- daBDonketu_c_classInit, 0x0211791c, size 0x5c. Written
- * first so reverse-order emission puts it last. Reconstructed source-style
- * name: SM64DS proves daBDonketu_c through RTTI, allocation size, vtable
- * identity, and the BOSS_DONKETU registry profile; later EAD lineage supplies
- * classInit. Exact original spelling is not preserved. Historical alias:
- * BigBully_Spawn. */
+/* Factory for the BOSS_DONKETU profile. Written first so it emits last. */
 // @symbol daBDonketu_c_classInit
 extern "C" daBDonketu_c *daBDonketu_c_classInit()
 {
     return new daBDonketu_c();
 }
 
-/* ROM ordinal 6, 0x02117784, size 0x198.
- * param1 bits 8..15 equal to 1 make this the boss with its three small
+/* param1 bits 8..15 equal to 1 make this the boss with its three small
  * Bullies: they are spawned here, each told this actor's uniqueID, and
  * mNumBulliesKilled starts at 0. Any other setting starts it at 0xff, which
  * skips the small-Bully phase in Behavior. */
@@ -135,8 +114,7 @@ int daBDonketu_c::InitResources()
     return result;
 }
 
-/* ROM ordinal 5, 0x02117684, size 0x100.
- * mNumBulliesKilled below 3: nothing to do. At 3 (all three small Bullies
+/* mNumBulliesKilled below 3: nothing to do. At 3 (all three small Bullies
  * dead) the boss drops in under gravity, and increments the count when it
  * lands. From 4 on, the shared daOts_c behavior runs. */
 // @symbol _ZN12daBDonketu_c8BehaviorEv
@@ -172,7 +150,7 @@ int daBDonketu_c::Behavior()
     return 1;
 }
 
-/* ROM ordinal 4, 0x0211764c, size 0x38. Drawn once the count reaches 3. */
+/* Drawn once the small Bullies are dead. */
 // @symbol _ZN12daBDonketu_c6RenderEv
 int daBDonketu_c::Render()
 {
@@ -181,8 +159,7 @@ int daBDonketu_c::Render()
     return 1;
 }
 
-/* ROM ordinal 3, 0x021175cc, size 0x80.
- * Once func_ov064_0211616c reports nonzero: poof dust, and spawn the star
+/* Once func_ov064_0211616c reports nonzero: poof dust, and spawn the star
  * (0x40 | mStarID) 100 units above the actor. */
 // @symbol _ZN12daBDonketu_c16UpdateDeathStateEv
 void daBDonketu_c::UpdateDeathState()
@@ -199,7 +176,7 @@ void daBDonketu_c::UpdateDeathState()
     UntrackAndSpawnStar(*(s8 *)&mTrackStarID, (mStarID | 0x40) & 0xff, pos, 4);
 }
 
-/* ROM ordinal 2, 0x0211755c, size 0x70. */
+/* Charge timer, then run. Key function: the inline destructor emits no vtable. */
 // @symbol _ZN12daBDonketu_c14UpdateRunStateEv
 int daBDonketu_c::UpdateRunState()
 {
@@ -222,3 +199,10 @@ int daBDonketu_c::UpdateRunState()
     }
     return value;
 }
+
+/* Retail construction order. mwcc emits __sinit_daBDonketu_c.cpp. */
+DonketuModelFilePtr data_ov064_0211c6cc(0x2de);
+DonketuAnimFileHandle data_ov064_0211c6d4(0x2e0);
+DonketuAnimFileHandle data_ov064_0211c6c4(0x2e1);
+DonketuAnimFileHandle data_ov064_0211c6dc(0x2e2);
+DonketuAnimFileHandle data_ov064_0211c6e4(0x2e3);

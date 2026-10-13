@@ -3,21 +3,37 @@
   "module": "ov006",
   "source": "src/actors/dScMgSlots.cpp",
   "promoted_source": "src/actors/dScMgSlots.cpp",
+  "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "PARTIAL TU, DISCLOSED. This promotion owns the 39-function contiguous prefix ov006:0x0210a8c0..0x0210c9e0. The enclosing Slot1/Slot3 unit continues through Slot1 Behavior, InitResources and its factory to 0x0210d740. Those three functions retain their existing source owners.",
+    "WHOLE RUN. This entry licenses .text 0x0210a8c0..0x0210d740, all 42 functions of the Slot1/Slot3 unit: the 39-function prefix promoted first, then Slot1 Behavior (0x0210c9e0, ordinal 39), InitResources (0x0210d1fc, ordinal 40) and the factory (0x0210d6b8, ordinal 41), folded in on 2026-10-12. The latter two came from the tail manifest ov006/dScMgSlot1_c_classInit (src/minigames/d_s_mg_slot1.cpp, retired here); Behavior came from its matched shard src/_ZN12dScMgSlot1_c8BehaviorEv.cpp (retired here). Above, 0x0210d740 starts _ZN16dScMgSmartball_cD1Ev, a different class, so the run cannot extend further. The earlier PARTIAL TU disclosure (39 of 42, Behavior's 19-word barrier) is superseded by this note.",
     "The lower bound meets the promoted Single3DBase unit at 0x0210a8c0. Slot1 destructors precede every Slot3 function, then Slot1 helpers, methods and its factory follow. This contiguous ownership supports the combined unit; original filename spelling is not recovered.",
     "Current production src/actors/dScMgSlot1_c.cpp supplies the existing 18-function c180..c6c0 subset. Its latest accepted bodies are reused; the combined promotion supersedes that subset manifest and retires all absorbed sources through tu_promote.",
-    "The complete 42-function probe gave 41 MATCH with clean isolation and relocation destinations. Slot1 InitResources (d1fc..d6b8) and the factory (d6b8..d740) matched; Behavior (c9e0..d1fc) retained its existing 19-word mismatch. The latter prevents one contiguous full-TU production claim.",
-    "The remaining Behavior barrier is concrete: retail materializes idx*4 inside the touch-hit block (+0x264..+0x2c4), while full-width source folds shift+add (size 0x818 instead of 0x81c) and the existing u16 source emits a redundant narrowing pair plus different register choices (19 words). notes/mwccarm-codegen.md section 6cm records the prior exhaustive compiler/source experiments; this continuation independently reproduced those outcomes with typed index/access, scope, pointer, helper, loop and pragma probes. The broader class task remains partial; a future owner must recover that block before extending production ownership past c9e0.",
+    "The complete 42-function probe had given 41 MATCH with clean isolation and relocation destinations, Behavior retaining its 19-word mismatch. That mismatch closed on 2026-10-12: it was never a compiler floor but a source artefact -- the draft named the object both as this-members and through a char* with literal offsets, and that mix is what makes 2004/b56 fold the hoisted touch-record address into one `add r0, r0, r2, lsl #2` (0x818). Spelled through members alone the preheader comes out `lsl r1, r2, #2` / `add r0, r0, r1` as retail has it, and the whole TU verifies 42/42.",
+    "HISTORY of the Behavior barrier: notes/mwccarm-codegen.md section 6cm recorded the exhaustive index-type/placement/pragma grid that could not reach the retail preheader; every cell there kept the draft's mixed object spelling, which is the one axis the grid never varied. Section 6cm's floor claim is superseded by the match recorded in this manifest.",
     "PRAGMA COLLISION RESOLVED BY #pragma defer_codegen off, MEASURED NOT ASSUMED. Three configurations of this same 39-function source were compiled and byte-compared. (a) file-global `opt_strength_reduction off`: 34/39, DIFF at ROM ordinals 12, 13, 19, 30, 35. (b) no optimisation pragma at all: 34/39, DIFF at ordinals 13, 15, 16, 19, 38. The two DIFF sets are disjoint apart from 13 and 19, which is the delete-outright positive control: the pragma demonstrably moves bytes at file scope, so a bracket test on it can carry signal. (c) `#pragma defer_codegen off` plus an ascending-ROM-order rewrite, with `opt_strength_reduction off` bracketed around ordinals 15, 16 and 38 and both it and `opt_loop_invariants off` around ordinal 13: 38/39, and the brackets bind per function -- ordinals 12, 30 and 35 stay matching outside them. Deferred codegen is why these pragmas are otherwise file-global last-wins; with it off they bind positionally, and mwccarm then emits .text in source order, which is why the source is written ascending."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x0210a8c0",
-      "end": "0x0210c9e0"
+      "end": "0x0210d740"
+    },
+    {
+      "name": ".init",
+      "start": "0x02132894",
+      "end": "0x02132970"
+    },
+    {
+      "name": ".ctor",
+      "start": "0x021335d0",
+      "end": "0x021335d4"
+    },
+    {
+      "name": ".bss",
+      "start": "0x02142bdc",
+      "end": "0x02142c1c"
     }
   ],
   "functions": [
@@ -293,10 +309,39 @@
       "size": "0x00000320",
       "legacy_source": "src/_ZN12dScMgSlot1_c6RenderEv.cpp",
       "ordinal": 38
+    },
+    {
+      "symbol": "_ZN12dScMgSlot1_c8BehaviorEv",
+      "address": "0x0210c9e0",
+      "size": "0x0000081c",
+      "legacy_source": "src/_ZN12dScMgSlot1_c8BehaviorEv.cpp",
+      "ordinal": 39
+    },
+    {
+      "symbol": "_ZN12dScMgSlot1_c13InitResourcesEv",
+      "address": "0x0210d1fc",
+      "size": "0x000004bc",
+      "legacy_source": "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp",
+      "ordinal": 40
+    },
+    {
+      "symbol": "dScMgSlot1_c_classInit",
+      "address": "0x0210d6b8",
+      "size": "0x00000088",
+      "legacy_source": "src/d_s_mg_slot1.cpp",
+      "ordinal": 41
     }
   ],
   "data": [],
-  "bss": [],
+  "bss": [
+    {
+      "symbol": "data_ov006_02142bdc",
+      "address": "0x02142bdc",
+      "size": "0x40",
+      "binding": "STB_GLOBAL",
+      "evidence": "Slot3 state table plain-copied from the eight ROM PMF constants in retail order"
+    }
+  ],
   "notes": [
     "RESOLVED generated Obj alternates: removed the shared shadow class entirely. Slot3 state dispatch uses void (dScMgSlot3_c::*)() and mState; self-dispatch uses the real OnYoshiTryEat override. The eighteen existing Slot1 helpers/methods reuse their production bodies and typed betIcon_c interface.",
     "RESOLVED Sound/G2/local-layout alternates: Sound.h and OAM.h provide existing public interfaces; unused T4fe4 removed. SlotReels retains only the established private reel layout used by the accepted Slot1 helper. No shared header changed.",
@@ -306,7 +351,10 @@
     "RETAINED measured LoadCompressedFileAt caller ABI: its definition uses u16, while this candidate preserves the existing int parameter declaration. Changing this declaration to u16 adds a narrowing operation in Slot3 Virtual80, changing its size and bytes. This declaration disagreement is not represented as fully reconstructed interface agreement; it needs a separate matching repair.",
     "RESOLVED non-text ownership: 21 compiler-emitted metadata symbols have explicit canonical homes outside this text-only unit. romdata_check reports 12 VERIFIED, 9 PARTIAL name strings, zero DIFFERS, zero UNNAMED and zero blind words. A direct LC.link_function comparison additionally proves all 552 emitted bytes including vtable preambles and string tails against their canonical ROM storage.",
     "RESOLVED emitted-vtable factory addresses: The Slot3 factory addresses its emitted class table at +8 bytes; the imported base table retains its configured address point.",
-    "Both D2 variants remain explicit compiler-only deadstrip outputs with no configured ROM home. All 39 licensed ROM functions are emitted in ascending ROM order. Unnamed helper identities, opaque embedded fields and explicit factory construction remain reconstruction work; promotion is a production ownership claim, not complete original-source recovery."
+    "Both D2 variants remain explicit compiler-only deadstrip outputs with no configured ROM home. All 39 licensed ROM functions are emitted in ascending ROM order. Unnamed helper identities, opaque embedded fields and explicit factory construction remain reconstruction work; promotion is a production ownership claim, not complete original-source recovery.",
+    "Static initializer folded: the Slot3 state table data_ov006_02142bdc[8] moves out of the handwritten src/unnamed shard into src/actors/dScMgSlots.cpp, defined through the existing SlotState typedef and plain-copied from the eight ROM PMF constants in retail copy order (curling precedent). The emitted .init, .ctor and .bss are byte-identical to retail __sinit_ov006_02132894; no handles, no compiler temporaries, no renames. The .bss claim 0x02142bdc..0x02142c1c ends exactly at the next symbol; no bound row is needed. The retired shard converted-baseline row is dropped per the c62c3266 precedent.",
+    "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares.",
+    "FOLD 2026-10-12: Slot1 Behavior, InitResources and dScMgSlot1_c_classInit joined the TU as ordinals 39-41, appended in ascending ROM order after Render, before the static-init table. The factory's vptr stores take the object-relative &_ZTV...[2] form for the two vtables this TU emits (_ZTV12dScMgSlot1_c, _ZTVN12dScMgSlot1_c9betIcon_cE) and the configured-address form for ov001's _ZTV9dThIcon_c, exactly as the Slot3 factory does for its own and dScMgSingle3DBase_c's tables. func_02012718 is called through include/decl_common.h's (int, int) spelling instead of the shard's local (void *, int); the bytes are the same."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -314,8 +362,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov006-dScMgSlot1_c+dScMgSlot3_c/dScMgSlots.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 39,
-    "functions_declared": 39,
+    "functions_matched": 42,
+    "functions_declared": 42,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN12dScMgSlot1_cD2Ev",
@@ -330,13 +378,6 @@
         10,
         15,
         16,
-        78,
-        79,
-        80,
-        81,
-        82,
-        83,
-        84,
         85,
         86,
         87,
@@ -362,7 +403,14 @@
         107,
         108,
         109,
-        110
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117
       ],
       "data": [
         "_ZTV12dScMgSlot1_c",
@@ -414,9 +462,130 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov006-dScMgSlot1_c+dScMgSlot3_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x0210a8c0",
+        "end": "0x0210d740",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x0210a8c0",
+          "end": "0x0210d740",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".init",
+          "start": "0x02132894",
+          "end": "0x02132970",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".ctor",
+          "start": "0x021335d0",
+          "end": "0x021335d4",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".bss",
+          "start": "0x02142bdc",
+          "end": "0x02142c1c",
+          "comparison": "NOBITS -- symbol/module gates"
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 45
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".init",
+            "original": [
+              120
+            ],
+            "desired": [
+              120
+            ]
+          },
+          {
+            "section": ".ctor",
+            "original": [
+              118
+            ],
+            "desired": [
+              118
+            ]
+          },
+          {
+            "section": ".bss",
+            "original": [
+              84
+            ],
+            "desired": [
+              84
+            ]
+          }
+        ],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   },
   "compiler_only_output": [
@@ -578,16 +747,139 @@
       "canonical_address": "0x02086e60"
     }
   ],
-  "remaining_work": [
+  "remaining_work": [],
+  "init": [
     {
-      "symbol": "_ZN12dScMgSlot1_c8BehaviorEv",
-      "module": "ov006",
-      "address": "0x0210c9e0",
-      "size": "0x81c",
-      "status": "nonmatching-existing",
-      "source": "src/_ZN12dScMgSlot1_c8BehaviorEv.cpp",
-      "evidence": "notes/mwccarm-codegen.md section 6cm; full combined probe 19 word differences at +0x264..+0x2c4",
-      "next_action": "Resolve the touch-index materialization and register-lifetime source shape, then extend this unit through InitResources and the factory at 0x0210d740."
+      "symbol": "__sinit_dScMgSlots.cpp",
+      "address": "0x02132894",
+      "size": "0xdc",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated static initializer is raw-byte-identical to retail __sinit_ov006_02132894 (0xdc, same instruction sequence and literal pool) and carries the same relocation sites: the Slot3 state table plain-copied from the eight ROM PMF constants"
+    }
+  ],
+  "ctor": [
+    {
+      "symbol": ".p__sinit_dScMgSlots.cpp",
+      "address": "0x021335d0",
+      "size": "0x4",
+      "binding": "STB_GLOBAL",
+      "evidence": "compiler-generated constructor-table word relocates to the owned initializer exactly as retail; the other .ctor words belong to the remaining shards"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "__sinit_dScMgSlots.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
+    },
+    {
+      "symbol": ".p__sinit_dScMgSlots.cpp",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".ctor",
+      "source": "0x021335d0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "__sinit_dScMgSlots.cpp",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02132894"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213294c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e520",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e520"
+    },
+    {
+      "section": ".init",
+      "source": "0x02132950",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e530",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e530"
+    },
+    {
+      "section": ".init",
+      "source": "0x02132954",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e4e0",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e4e0"
+    },
+    {
+      "section": ".init",
+      "source": "0x02132958",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e538",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e538"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213295c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e550",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e550"
+    },
+    {
+      "section": ".init",
+      "source": "0x02132960",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e548",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e548"
+    },
+    {
+      "section": ".init",
+      "source": "0x02132964",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e580",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e580"
+    },
+    {
+      "section": ".init",
+      "source": "0x02132968",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_0213e578",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x0213e578"
+    },
+    {
+      "section": ".init",
+      "source": "0x0213296c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "data_ov006_02142bdc",
+      "addend": 0,
+      "target_module": "ov006",
+      "target_address": "0x02142bdc"
     }
   ]
 }

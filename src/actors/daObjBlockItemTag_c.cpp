@@ -8,15 +8,14 @@
  * ov002 0x020b415c..0x020b46a0, fourteen functions; it ends with the
  * four per-profile registry factories, each `new daObjBlockItemTag_c()`.
  *
- * Leftover: LinkSilverStarAndStarMarker, LoadSilverStarAndNumber and
- *   UnloadSilverStarAndNumber keep linker names (ov002 helpers);
- *   naming belongs there.
- * Leftover: Vec3_Dist keeps its mangled spelling (no header home).
- * Leftover: data_ov002_020ff090 (spawn height offsets) and the
- *   data_ov002_0210dd30 PMF table keep linker names; the table is
- *   also referenced by the ov002 sinit.
- * Leftover: shell + 0x3c6 is an unnamed Koopa-shell byte this spawn
- *   writes.
+ * leftovers:
+ * - LoadSilverStarAndNumber and UnloadSilverStarAndNumber keep linker
+ *   names: they are ov002 helpers and naming belongs there.
+ * - Vec3_Dist keeps a local `const void *` spelling: its header copies
+ *   take Vector3 * and live in unrelated leaf headers.
+ * - data_ov002_020ff090 (spawn height offsets) and the
+ *   data_ov002_0210dd30 PMF table keep linker names; the table is also
+ *   referenced by the ov002 sinit.
  */
 
 #include "daObjBlockItemTag_c.h"
@@ -26,6 +25,9 @@
 #include "dActor_c.h"
 #include "daObjBlockL_c.h"
 #include "Model.h"
+#include "daShl_c.h"
+#include "daStar_c.h"
+#include "daStarBase_c.h"
 
 /* BSS file homes, one per item variant; Init loads them, Cleanup
  * releases them. */
@@ -39,8 +41,6 @@ extern s32 data_ov002_020ff090[];
 /* PMF action table, indexed by mActionIndex. */
 typedef void (daObjBlockItemTag_c::*ItemTagAction)();
 extern "C" {
-/* local extern: daStarBase_c::LinkSilverStarAndStarMarker. This TU does not include daStarBase_c.h. */
-extern void _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(void *starMarker, void *silverStar);
 extern s32 Vec3_Dist(const void *a, const void *b);
 extern void LoadSilverStarAndNumber();
 extern "C" ItemTagAction data_ov002_0210dd30[];
@@ -79,7 +79,7 @@ void daObjBlockItemTag_c::SpawnKoopaShell()
     GetSpawnPos(spawnPos, *this);
     dActor_c *shell = Spawn(0x11d, 0, spawnPos, 0, mAreaId, -1);
     if (shell)
-        *(u8 *)((char *)shell + 0x3c6) = 0xb4;
+        ((daShl_c *)shell)->mDespawnTimer = 0xb4;
 }
 
 // @symbol _ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv
@@ -114,9 +114,8 @@ void daObjBlockItemTag_c::SpawnSilverStar()
     if (silverStar == 0)
         return;
 
-    /* Silver Star's marker-owner unique ID is the word at 0x434. */
-    *(u32 *)((char *)silverStar + 0x434) = starMarker->uniqueID;
-    _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
+    ((daStar_c *)silverStar)->mMarkerID = starMarker->uniqueID;
+    ((daStarBase_c *)starMarker)->LinkSilverStarAndStarMarker((char *)silverStar);
 }
 
 // @symbol _ZN19daObjBlockItemTag_c16CleanupResourcesEv
@@ -236,3 +235,11 @@ extern "C" daObjBlockItemTag_c *daObjBlockItemTag_c_classInit_BLK_OKINOKO_TAG()
 {
     return new daObjBlockItemTag_c();
 }
+
+// @symbol data_ov002_0210dd30
+ItemTagAction data_ov002_0210dd30[4] = {
+    &daObjBlockItemTag_c::SpawnOneUpMushroom,
+    &daObjBlockItemTag_c::SpawnMegaMushroom,
+    &daObjBlockItemTag_c::SpawnKoopaShell,
+    &daObjBlockItemTag_c::SpawnSilverStar
+};

@@ -19,8 +19,6 @@
  *   SurfaceInfo slot; dEnemyBase_c spells it the same way.
  * - State1 copies the player position through a raw (char*)player + 0x5c
  *   pointer: named mPosX/Y/Z loads come out one instruction shorter.
- * - data_ov096_02137ba8/bb0 SharedFilePtrs are word-indexed because the
- *   layout is deliberately unrecovered (include/SharedFilePtr.h).
  * - unk_352 stays unnamed: zeroed by state 0 and read nowhere.
  */
 
@@ -57,6 +55,36 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int radius, int height, void *a, int b);
 }
+
+/* The tornado's file-scope SharedFilePtr objects, spelled through the same
+   wrapper idiom the landed folds use: the handles' code is the veneer pair
+   the cartridge already carries, so the wrappers get no bodies of their own.
+   The constructors alias func_02017acc (model) and SharedFilePtr::Construct
+   (animation) in this unit's manifest, and the destructors func_02017ab4
+   and SharedFilePtr_Destruct_Anim. */
+struct TorModelFilePtr : SharedFilePtr {
+    int unk0;
+    void *file;
+    TorModelFilePtr(unsigned int id);
+    ~TorModelFilePtr();
+};
+
+struct TorAnimationFileHandle : SharedFilePtr {
+    int unk0;
+    void *file;
+    TorAnimationFileHandle(unsigned int id);
+    ~TorAnimationFileHandle();
+};
+
+/* ------------------------------------------------------------------------
+ * The model handle and the animation handle, in static-initializer order:
+ * the initializer constructs each handle and registers its destructor.
+ * InitResources feeds the model to Model::LoadFile and the animation to
+ * dExtFrameCtrl_c::LoadFile.
+ * ------------------------------------------------------------------------ */
+// @symbol __sinit_daTor_c.cpp
+TorModelFilePtr   data_ov096_02137ba8(0x41d);   /* model */
+TorAnimationFileHandle data_ov096_02137bb0(0x41c);   /* anim  */
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -216,8 +244,8 @@ void daTor_c::State0()
 // @symbol _ZN7daTor_c16CleanupResourcesEv
 int daTor_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov096_02137ba8)->Release();
-    ((SharedFilePtr *)data_ov096_02137bb0)->Release();
+    data_ov096_02137ba8.Release();
+    data_ov096_02137bb0.Release();
     return 1;
 }
 
@@ -269,13 +297,13 @@ int daTor_c::InitResources()
 {
     /* The three Fix12-by-value calls below stay mangled (file header leftovers);
        member calls grow this function from 0x158 to 0x18c. */
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov096_02137ba8),
+    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov096_02137ba8),
                        1, 0x15);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov096_02137bb0);
+    dExtFrameCtrl_c::LoadFile(data_ov096_02137bb0);
     func_02016aac(&mModelAnim, 0x16, 1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (void *)data_ov096_02137bb0[1], 0, 0x1000, 0);
-    TextureTransformer::Prepare(*(BMD_File *)data_ov096_02137ba8[1], *(BTA_File *)data_ov024_02112968);
+        &mModelAnim, (void *)data_ov096_02137bb0.file, 0, 0x1000, 0);
+    TextureTransformer::Prepare(*(BMD_File *)data_ov096_02137ba8.file, *(BTA_File *)data_ov024_02112968);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, data_ov024_02112968, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 0x200002, 0);

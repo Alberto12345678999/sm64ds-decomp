@@ -1,10 +1,11 @@
 //cpp
 /* daObjTatefuda_c: the wooden signpost (TATEFUDA profile, ov002).
  *
- * The whole unit, ov002 .text 0x020badd0..0x020bc3c8, 28 functions: the
+ * The whole unit, ov002 .text 0x020badd0..0x020bc414, 29 functions: the
  * destructor pair, eight other methods (Kill, OnHitByMegaChar,
  * OnGroundPounded, OnAttacked1, Behavior, Render, CleanupResources,
- * InitResources), and eighteen helpers. Talking to it runs the
+ * InitResources), eighteen helpers, and last the registry factory
+ * daObjTatefuda_c_classInit. Talking to it runs the
  * 0x3dc-byte talk routine (approach, face the reading spot, show the
  * sign's message). Pounding sinks it into the ground (it comes back
  * later); a bob-omb hit or a mega character kills it (Kill resets and
@@ -78,6 +79,11 @@
  * each of these before compiling; a real header should usually win. */
 /* shadow struct 'Vec3' */
 struct Vec3 { int x, y, z; };
+
+/* POD spelling of Matrix4x3's 0x30 bytes: with a user-declared constructor on
+ * Vector3 the Matrix4x3 copies below scalarize even under `#pragma cplusplus
+ * off`; the ROM copies are block moves, so they go through this. */
+struct RawMatrix4x3 { int m[12]; };
 
 /* Bare Vec3 is used for the locals and casts below; the struct form above
  * feeds the elaborated-type uses. */
@@ -205,7 +211,26 @@ extern "C" CLPS_Block data_ov002_0210d714;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 -- _ZN15daObjTatefuda_c13InitResourcesEv, 0x020bc240, size 0x188 */
+/* ROM ordinal 28 -- daObjTatefuda_c_classInit, 0x020bc3c8, size 0x4c */
+/* -------------------------------------------------------------------------- */
+// @symbol daObjTatefuda_c_classInit
+/* recovered: vtable identified, globals resolved, declarations from a shared header */
+/* Reconstructed source-style name: SM64DS proves daObjTatefuda_c through RTTI,
+ * allocation size, vtable identity, and the TATEFUDA registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: SignPost_Spawn.
+ *
+ * `new daObjTatefuda_c` is the whole sequence the loose factory spelled by
+ * hand: fBase_c::operator new(0x5a4), dBgActor_c's base constructor, the
+ * vptr store, then the dCcAc_c, dExtShadowModel_c and dBgCh_Actr member
+ * constructors in declaration order. */
+extern "C" daObjTatefuda_c *daObjTatefuda_c_classInit(void)
+{
+    return new daObjTatefuda_c;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 27 --_ZN15daObjTatefuda_c13InitResourcesEv, 0x020bc240, size 0x188 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN15daObjTatefuda_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
@@ -1143,7 +1168,7 @@ void AttachToHolder(struct daObjTatefuda_c *self)
     ((int *)&v)[0] = 0;
     ((int *)&v)[1] = 0;
     ((int *)&v)[2] = 0;
-    data_020a0e68 = *(struct Matrix4x3 *)(result + 0x1c);
+    *(struct RawMatrix4x3 *)&data_020a0e68 = *(struct RawMatrix4x3 *)(result + 0x1c);
     MulMat4x3Mat4x3(m2 + 0x2a0, &data_020a0e68, &data_020a0e68);
     v.x = data_020a0e68.t.x;
     v.y = data_020a0e68.t.y;
@@ -1165,7 +1190,7 @@ void AttachToHolder(struct daObjTatefuda_c *self)
     self->mPosX = lo.x;
     self->mPosY = lo.y;
     self->mPosZ = lo.z;
-    self->mModel.mat4x3 = data_020a0e68;
+    *(struct RawMatrix4x3 *)&self->mModel.mat4x3 = *(struct RawMatrix4x3 *)&data_020a0e68;
 }
 #pragma cplusplus on
 
@@ -1188,7 +1213,7 @@ void RebuildModelMatrix(struct daObjTatefuda_c* self){
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68,
         self->mAngleX, self->mAngleY, self->mAngleZ);
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, -0x8c00, 0);
-    self->mModel.mat4x3 = data_020a0e68;
+    *(struct RawMatrix4x3 *)&self->mModel.mat4x3 = *(struct RawMatrix4x3 *)&data_020a0e68;
 }
 #pragma cplusplus on
 

@@ -6,10 +6,13 @@
  * reorder. There is no opt_propagation pragma: it applies to the whole
  * file, and turning it off breaks four other functions.
  *
- * Blocked: the ov004 helpers and the data_ov006 globals are unnamed in
- * symbols.txt; the ROM has no dScMgMCarlo2_c constructor, so the factory
- * builds the scene by hand; and the shared table at 0x4f38 is opaque in
- * dScMgMCarlo2_c.h, so its helpers take its address.
+ * leftovers:
+ *   - the ov004 helpers and the data_ov006 globals are unnamed in
+ *     symbols.txt.
+ *   - the ROM has no dScMgMCarlo2_c constructor, so the factory builds the
+ *     scene by hand.
+ *   - the shared table at 0x4f38 is opaque in dScMgMCarlo2_c.h, so its
+ *     helpers take its address.
  */
 
 
@@ -37,7 +40,13 @@ extern s16 data_ov006_02142558;     /* frames left before the pair resolves  */
 extern s16 data_ov006_0214255c;     /* pieces still animating                */
 extern s16 data_ov006_02142560;     /* difficulty row into data_ov006_0212e97c */
 extern int data_ov006_02142580[];   /* per-face weights the picker draws from  */
-extern int data_ov006_021425a8[];   /* sprite handles, indexed by 0213d770      */
+/* Twenty-three sprite words. The static initializer copies them out of
+ * data_ov006_02133810 in this order; an in-order copy does not. */
+struct Carlo2SpriteWords {
+    int a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22;
+};
+extern int data_ov006_02133810[];
+extern Carlo2SpriteWords data_ov006_021425a8;
 extern unsigned short data_ov006_0213d770[];
 extern int data_ov006_0212e954[];   /* the starting weights                     */
 extern int data_ov006_0212e97c[][10]; /* per-difficulty weight top-ups          */
@@ -532,7 +541,7 @@ void dMgMCarlo2CardObj_c::Render()
         int idx = (mFace + 1) * 5 + (mLift >> 12);
         unsigned short sprite = data_ov006_0213d770[idx];
         Hud_RenderSprite(
-            (void*)data_ov006_021425a8[sprite],
+            (void*)((int*)&data_ov006_021425a8)[sprite],
             (mX >> 12) + 0x18,
             (mY >> 12) + 0x18,
             -1,
@@ -828,3 +837,30 @@ dMgMCarlo2CardObj_c::~dMgMCarlo2CardObj_c()
 /* The scene's D1 and D0 are not written out: ~dScMgMCarlo2_c is inline in
  * the header, so InitResources is the key function, and the vtable emitted
  * here makes the compiler emit both out of line in cartridge order. */
+
+/* Retail copy order is not address order. mwcc emits __sinit_d_s_mg_m_carlo2.cpp. */
+Carlo2SpriteWords data_ov006_021425a8 = {
+    data_ov006_02133810[0],
+    data_ov006_02133810[1],
+    data_ov006_02133810[2],
+    data_ov006_02133810[11],
+    data_ov006_02133810[12],
+    data_ov006_02133810[13],
+    data_ov006_02133810[14],
+    data_ov006_02133810[3],
+    data_ov006_02133810[4],
+    data_ov006_02133810[5],
+    data_ov006_02133810[6],
+    data_ov006_02133810[9],
+    data_ov006_02133810[10],
+    data_ov006_02133810[7],
+    data_ov006_02133810[8],
+    data_ov006_02133810[15],
+    data_ov006_02133810[16],
+    data_ov006_02133810[17],
+    data_ov006_02133810[18],
+    data_ov006_02133810[19],
+    data_ov006_02133810[20],
+    data_ov006_02133810[21],
+    data_ov006_02133810[22],
+};

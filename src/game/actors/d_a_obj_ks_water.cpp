@@ -44,6 +44,24 @@ struct BTA_File;
 struct KCL_File;
 struct CLPS_Block;
 
+/* Model handles construct through func_02017acc and destroy through
+ * func_02017ab4; collision handles construct through func_02017b4c and
+ * destroy through SharedFilePtr_Destruct_Clsn. The manifest aliases those
+ * undefined members onto the ROM symbols. */
+struct KsWaterModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    KsWaterModelFilePtr(u32 fileID);
+    ~KsWaterModelFilePtr();
+};
+
+struct KsWaterClsnFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    KsWaterClsnFileHandle(u32 fileID);
+    ~KsWaterClsnFileHandle();
+};
+
 extern "C" {
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
     TextureTransformer *self, BTA_File *file, int flags, int speed, u32 startFrame);
@@ -51,8 +69,8 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
     CLPS_Block *clps);
 
-extern SharedFilePtr data_ov017_02111c80;
-extern SharedFilePtr data_ov017_02111c88;
+extern KsWaterClsnFileHandle data_ov017_02111c80;
+extern KsWaterModelFilePtr data_ov017_02111c88;
 extern BTA_File      data_ov017_02111a60;
 extern CLPS_Block    data_ov017_02111a94;
 }
@@ -164,3 +182,8 @@ int daObjKsWater_c::CleanupResources()
    body out of line here instead flips them to D0-before-D1 and the isolation
    step rejects the object.
  */
+
+/* File-scope objects, in __sinit_d_a_obj_ks_water.cpp construction order:
+ * the model's SharedFilePtr, then the collision file's. */
+KsWaterModelFilePtr data_ov017_02111c88(0x689);
+KsWaterClsnFileHandle data_ov017_02111c80(0x68a);

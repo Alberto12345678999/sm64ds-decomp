@@ -1,17 +1,15 @@
 //cpp
-/* dBgW_KcMbgSclY -- the vertically scaled mesh collider (the Snowman's body,
- * lift chains): a dBgW_KcMbg whose collision space stretches the mesh in y.
- * ROM's own RTTI names it (_ZTS14dBgW_KcMbgSclY @ 0x02099474, _ZTI @
- * 0x02099468, vtable address point 0x02099490).
- *
- * Deferred codegen emits the lifecycle groups in their fixed order -- D0,D1
- * for the destructor, then C1 -- and the plain members land in reverse
- * definition order, so the file defines ctor and dtor first. C2 and D2 have
- * no cartridge home (nothing derives from SclY) and are discarded by the
- * linker. The func_0203aa* trio keep their func_ names: they are the
- * collider-space transform workers the DetectClsn overrides and GetNormal
- * call by raw address, not vtable slots. func_0203aad0 is the scaleY read
- * daObjKm2_Nobiru_c reaches through its own extern.
+/* leftovers:
+ * The constructor and destructor come first (D0 then D1, then C1). C2
+ * and D2 have no cartridge home. func_0203aa10, func_0203aa74 and
+ * func_0203aad0 stay free functions; DetectClsn and GetNormal call them
+ * by address, and daObjKm2_Nobiru_c reads scaleY through func_0203aad0.
+ * SetFile and SetScaleY stay mangled: the scale arguments are Fix12 by
+ * value. func_0203aa74 divides y by invScaleY after the parent's inverse
+ * matrix; func_0203aa10 applies scaleY before the parent's scaled matrix.
+ */
+/* dBgW_KcMbgSclY: mesh collider stretched in y (Snowman's body, lift
+ * chains). Type name 0x02099474, typeinfo 0x02099468, vtable 0x02099490.
  */
 #include "types.h"
 #include "dBgW_KcMbgSclY.h"
@@ -35,9 +33,7 @@ int func_02053200(int v);
 /* Collision-query plumbing shared with the KcMbg checkers. */
 void func_02035394(void *dst, void *src);
 
-/* local extern: the radius travels by value inside the mangled name
-   (wall 6az), so the call spells the symbol rather than going through the
-   member. */
+/* local extern: the radius is Fix12 by value, so the call spells the symbol. */
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
     dBgCh_SphCrr *sphere, const Vector3 *pos, Fix12i radius, dActor_c *actor);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(

@@ -24,6 +24,8 @@
  * licensed deadstrip-data against their canonical homes. The four field
  * accessors were enrolled as anonymous func_ shards; they are real
  * members now, and symbols.txt names them accordingly.
+ *
+ * leftovers: none.
  */
 #include "dM3dGSph.h"
 

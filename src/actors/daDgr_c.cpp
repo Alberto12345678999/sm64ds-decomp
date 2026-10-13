@@ -39,6 +39,23 @@
 /* POD position. Vector3's destructor is not in Behavior's bytes. */
 typedef struct { s32 x, y, z; } Vec3;
 
+/* 8-byte file handles. The model uses func_02017acc / func_02017ab4 and the
+ * collision file func_02017b4c / SharedFilePtr_Destruct_Clsn. The spellings
+ * are local; the manifest aliases the generated names to those ROM symbols. */
+struct DgrModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    DgrModelFilePtr(u32 fileID);
+    ~DgrModelFilePtr();
+};
+
+struct DgrCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    DgrCollisionFilePtr(u32 fileID);
+    ~DgrCollisionFilePtr();
+};
+
 enum {
     kYoshiEggActorID = 9,
     kHoldFrames = 0x20,
@@ -57,8 +74,8 @@ enum {
 
 extern "C" {
 extern void Matrix4x3_FromRotationX(void *mat, int angleX);
-extern SharedFilePtr data_ov025_02113a68;
-extern SharedFilePtr data_ov025_02113a60;
+extern DgrModelFilePtr data_ov025_02113a68;
+extern DgrCollisionFilePtr data_ov025_02113a60;
 extern s16 data_02082214[];
 extern CLPS_Block data_ov025_02112c28;
 
@@ -289,3 +306,9 @@ int daDgr_c::func_ov025_0211123c()
 // @symbol _ZN7daDgr_cD1Ev
 // @symbol _ZN7daDgr_cD0Ev
 /* Defined by `virtual ~daDgr_c() {}` in daDgr_c.h. */
+
+/* Source order is construction order: model file 730, collision file 731.
+ * __sinit_daDgr_c.cpp emits both constructions and registers the
+ * destructors; the registration nodes are compiler temporaries. */
+DgrModelFilePtr data_ov025_02113a68(730);
+DgrCollisionFilePtr data_ov025_02113a60(731);

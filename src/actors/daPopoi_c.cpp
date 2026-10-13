@@ -53,6 +53,51 @@
 #include "Sound.h"
 #include "decl_common.h"
 
+/* Static-init ownership (was the handwritten __sinit_ov077_021275fc shard).
+ * The file-scope objects at the end of this file construct the four
+ * resource handles (model file 0x40d, animation files 0x40e, 0x40f, 0x410)
+ * and fill the five two-entry state records. mwcc emits
+ * __sinit_daPopoi_c.cpp from those definitions. */
+typedef int (daPopoi_c::*PopoiPMF)();
+
+struct PopoiModelFile : SharedFilePtr {
+    u32 words[2];
+
+    PopoiModelFile(u32 fileID);
+    ~PopoiModelFile();
+};
+
+struct PopoiAnimationFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    PopoiAnimationFilePtr(u32 fileID);
+    ~PopoiAnimationFilePtr();
+};
+
+struct PopoiTurnAwayRec {
+    PopoiPMF enter;
+    PopoiPMF update;
+    /* Section-alignment fill: retail BSS runs 0x18 bytes past the update slot,
+     * to the section end at 0x02127d40. The constructor never stores here. */
+    u8 tailFill[0x18];
+
+    PopoiTurnAwayRec()
+    {
+        enter = &daPopoi_c::func_ov077_02126a04;
+        update = &daPopoi_c::func_ov077_021269a8;
+    }
+};
+
+extern PopoiModelFile data_ov077_02127c88;
+extern PopoiAnimationFilePtr data_ov077_02127ca0;
+extern PopoiAnimationFilePtr data_ov077_02127c90;
+extern PopoiAnimationFilePtr data_ov077_02127c98;
+extern PopoiPMF data_ov077_02127ce8[2];
+extern PopoiPMF data_ov077_02127cf8[2];
+extern PopoiPMF data_ov077_02127d08[2];
+extern PopoiTurnAwayRec data_ov077_02127d18;
+extern PopoiPMF data_ov077_02127cd8[2];
+
 /* Member bodies have C++ linkage and mwccarm does not inherit C linkage into
  * their block-scope externs, so every external FUNCTION declaration lives in
  * this file-scope region (extern data names are unmangled either way; they are
@@ -63,7 +108,6 @@ extern int data_0209f32c;               /* WATER_HEIGHT */
 extern signed char data_0209f2f8;       /* LEVEL_ID */
 extern int data_0209e650[];             /* RandomIntInternal state */
 extern char data_020a0e68[];            /* scratch Matrix4x3 */
-extern char data_ov077_02127cf8[];      /* Pause record; decl_common has no row */
 extern Vector3 data_ov077_02127a5c;     /* sensor offset (0, 0, 44 units) */
 
 unsigned short DecIfAbove0_Short(unsigned short *p);
@@ -105,10 +149,10 @@ extern "C" int *daPopoi_c_classInit(void)
 int daPopoi_c::InitResources()
 {
   Vector3 v;
-  mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov077_02127c88), 1, -1);
-  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov077_02127ca0);
-  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov077_02127c90);
-  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov077_02127c98);
+  mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov077_02127c88), 1, -1);
+  dExtFrameCtrl_c::LoadFile(data_ov077_02127ca0);
+  dExtFrameCtrl_c::LoadFile(data_ov077_02127c90);
+  dExtFrameCtrl_c::LoadFile(data_ov077_02127c98);
   mVertAccel = -0x1000;
   mTerminalVelocity = -0x1e000;
   _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x52000, 0x52000, 0x800004, 0);
@@ -261,10 +305,10 @@ void daPopoi_c::OnPendingDestroy()
  */
 int daPopoi_c::CleanupResources()
 {
-    ((SharedFilePtr *)&data_ov077_02127c88)->Release();
-    ((SharedFilePtr *)&data_ov077_02127ca0)->Release();
-    ((SharedFilePtr *)&data_ov077_02127c90)->Release();
-    ((SharedFilePtr *)&data_ov077_02127c98)->Release();
+    data_ov077_02127c88.Release();
+    data_ov077_02127ca0.Release();
+    data_ov077_02127c90.Release();
+    data_ov077_02127c98.Release();
     return 1;
 }
 
@@ -347,7 +391,7 @@ int daPopoi_c::func_ov077_02126ad0()
     mSoundHandle = Sound::PlayLong(mSoundHandle, 3, daPopoi_SND_MOVE_LOOP, *(const Vector3 *)&mCamSpacePosX, 0);
 
     if (func_ov077_02126300() != 0) {
-        func_ov077_02126d5c((daPopoi_StateRecord *)data_ov077_02127d18);   /* TurnAway */
+        func_ov077_02126d5c((daPopoi_StateRecord *)&data_ov077_02127d18);   /* TurnAway */
         return 1;
     }
 
@@ -482,7 +526,7 @@ int daPopoi_c::func_ov077_0212679c()
     dist = Vec3_Dist((void *)&mPosX, (void *)&mHomePosX);
 
     if (func_ov077_02126300() != 0) {
-        func_ov077_02126d5c((daPopoi_StateRecord *)data_ov077_02127d18);   /* TurnAway */
+        func_ov077_02126d5c((daPopoi_StateRecord *)&data_ov077_02127d18);   /* TurnAway */
         return 1;
     }
 
@@ -736,4 +780,35 @@ int daPopoi_c::func_ov077_02126300()
  * (class-form skill); this marker at D1's ROM ordinal keeps the
  * accounting naming it. Members are destroyed in reverse declaration
  * order, then dEnemyBase_c::~dEnemyBase_c. */
+
+/* Static-init globals (was the handwritten __sinit_ov077_021275fc shard).
+ * Definition order is the retail initializer's construction order: the model
+ * handle, then the three animation handles, then the five state records in
+ * Wander, Pause, Chase, TurnAway, Grab order. */
+PopoiModelFile data_ov077_02127c88(0x40d);
+PopoiAnimationFilePtr data_ov077_02127ca0(0x40e);
+PopoiAnimationFilePtr data_ov077_02127c90(0x40f);
+PopoiAnimationFilePtr data_ov077_02127c98(0x410);
+
+PopoiPMF data_ov077_02127ce8[2] = {
+    &daPopoi_c::func_ov077_02126cd4,
+    &daPopoi_c::func_ov077_02126ad0,
+};
+
+PopoiPMF data_ov077_02127cf8[2] = {
+    &daPopoi_c::func_ov077_02126a84,
+    &daPopoi_c::func_ov077_02126a50,
+};
+
+PopoiPMF data_ov077_02127d08[2] = {
+    &daPopoi_c::func_ov077_02126930,
+    &daPopoi_c::func_ov077_0212679c,
+};
+
+PopoiTurnAwayRec data_ov077_02127d18;
+
+PopoiPMF data_ov077_02127cd8[2] = {
+    &daPopoi_c::func_ov077_02126758,
+    &daPopoi_c::func_ov077_02126640,
+};
 

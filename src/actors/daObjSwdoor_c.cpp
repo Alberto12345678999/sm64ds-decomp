@@ -11,7 +11,7 @@
  * The class declares no fields: 0x31e and 0x31f sit in dBgActor_c's tail
  * padding, and 0x320 and 0x321 are the leaves' mTimer and mEventBit.
  *
- * Known limits:
+ * leftovers:
  * - The three helpers keep their ROM-address names: slots 0, 3 and 6 are pure
  *   virtual, and the leaves call the helpers directly.
  * - func_ov002_020bad10 and func_ov002_020bac18 reach 0x31e..0x321 through
@@ -21,7 +21,6 @@
  * - dBgW_KcMbg::SetFile stays mangled (Fix12<int> by value).
  * - func_020393d4 is a 4-byte store into the dBgW at +0x18; naming it belongs
  *   with dBgW in arm9.
- * - Event::GetBit stays mangled: there is no Event.h.
  * - Abstract class: no factory and no g_profile row.
  */
 
@@ -31,6 +30,7 @@
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "Sound.h"
+#include "Event.h"
 
 struct CLPS_Block;
 
@@ -43,7 +43,6 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
     sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
 
 extern "C" {
-unsigned int _ZN5Event6GetBitEj(unsigned int bit);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void func_020393d4(dBgW_KcMbg *clsn, void *fn);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -140,7 +139,7 @@ int func_ov002_020bac18(daObjSwdoor_c *self)
 
     switch (state) {
     case 0:
-        if (_ZN5Event6GetBitEj(*(u8*)(c+0x321)) != 0) {
+        if (Event::GetBit(*(u8*)(c+0x321)) != 0) {
             if (DecIfAbove0_Byte((u8*)(c+0x320)) == 0) {
                 *(u8*)(c+0x320) = 0x40;
                 (*LM(c+0x31f))++;

@@ -1,21 +1,23 @@
 //cpp
-/* daKpa2Bg_c -- KOOPA2BG, a dBgActor_c in ov060 that adds mAngleX/Y/ZSpeed to its
- * angles every frame (InitResources zeroes the speeds). The model matrix
- * follows the X and Z angles; the moving mesh collider follows all three. The class name is the ROM's own RTTI
- * spelling (evidence in include/daKpa2Bg_c.h).
+/* daKpa2Bg_c: KOOPA2BG, ov060. Adds mAngleX/Y/ZSpeed to its angles each
+ * frame. The model matrix follows X and Z; the moving mesh follows all three.
  *
- * ROM span 0x02117980..0x02117cdc: D1 through InitResources, nine functions in
- * ROM order under `#pragma defer_codegen off`. daKpa2Bg_c_classInit at
- * 0x02117cdc stays out of this TU.
- *
- * Known limits:
- * - common.h must come first. Matrix4x3 has two 0x30-byte spellings behind
- *   one guard; the two matrix helpers whole-struct-assign the flat s32 m[12]
- *   form, and the class header alone reaches the .r/.t spelling, which
+ * Class name is the ROM RTTI string (include/daKpa2Bg_c.h). .text
+ * 0x02117980..0x02117d1c: D1 through InitResources, then
+ * daKpa2Bg_c_classInit, ROM-ascending under defer_codegen off.
+ */
+/* leftovers:
+ * - common.h stays first. Matrix4x3 has two 0x30 spellings; these helpers
+ *   whole-assign the flat s32 m[12] form. The class header's .r/.t spelling
  *   inflates func_ov060_02117a64 and func_ov060_02117ae0.
- * - The three helpers keep their ROM-address names as member names.
- * - Behavior keeps the rematerialised angle pointers, see the comment there.
- * - dBgW_KcMbg::SetFile stays a mangled bridge.
+ * - func_ov060_02117a3c / 02117a64 / 02117ae0 keep their address names.
+ * - Behavior rematerialises &mAngleX/Y/Z. Plain `mAngleX += mAngleXSpeed`
+ *   is 0x54 against the ROM's 0x68.
+ * - dBgW_KcMbg::SetFile stays mangled (Fix12<int> by value). func_020393d4
+ *   stores dBgW::UpdatePosAndAngs on the collider.
+ * - data_ov046_021115bc is the CLPS block SetFile takes. data_020a0e68 is
+ *   the scratch matrix both matrix helpers write.
+ * - Vec3_Asr writes int pos[4]. A Vector3 there would emit its destructor.
  */
 
 #pragma defer_codegen off
@@ -27,10 +29,26 @@
 
 struct CLPS_Block;
 
+/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
+ * veneer pairs (func_02017acc / func_02017ab4 for the model, func_02017b4c /
+ * SharedFilePtr_Destruct_Clsn for the collision), spelled through
+ * declared-only subclasses so the static initializer names the real entry
+ * points. */
+struct Kpa2BgModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    Kpa2BgModelFilePtr(u32 fileID);
+    ~Kpa2BgModelFilePtr();
+};
+struct Kpa2BgCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+    Kpa2BgCollisionFilePtr(u32 fileID);
+    ~Kpa2BgCollisionFilePtr();
+};
+
 extern "C" {
 
-extern SharedFilePtr daKpa2Bg_c_ModelFile;
-extern SharedFilePtr daKpa2Bg_c_ClsnFile;
+extern Kpa2BgModelFilePtr daKpa2Bg_c_ModelFile;
+extern Kpa2BgCollisionFilePtr daKpa2Bg_c_ClsnFile;
 extern Matrix4x3 data_020a0e68;
 extern CLPS_Block data_ov046_021115bc;
 
@@ -142,3 +160,17 @@ int daKpa2Bg_c::InitResources()
     mSoundHandle = 0;
     return 1;
 }
+
+/* `new daKpa2Bg_c` is the whole sequence the loose factory spelled by hand:
+ * fBase_c::operator new(0x570), dBgActor_c's base constructor, the vptr store,
+ * then the Model and dBgW_KcMbg member constructors. */
+// @symbol daKpa2Bg_c_classInit
+extern "C" daKpa2Bg_c *daKpa2Bg_c_classInit(void)
+{
+    return new daKpa2Bg_c;
+}
+
+/* The KOOPA2BG model and collision file handles; the extern block above
+ * declares them for CleanupResources / InitResources. */
+Kpa2BgModelFilePtr daKpa2Bg_c_ModelFile(1571);
+Kpa2BgCollisionFilePtr daKpa2Bg_c_ClsnFile(1572);

@@ -33,6 +33,11 @@ struct daObjKi_Fune_c : dBgActor_c {
     virtual int CleanupResources();
     virtual int Behavior();
     virtual int Render();
+
+    /* --- non-virtual --- */
+    /* Builds mModel.mat4x3 from mAngle* and mPos* >> 3; the ROM records no
+       name for it, so it keeps its address-derived one. */
+    void func_ov016_021126a8();
 };
 
 #ifndef SM64DS_PLATFORM_PC

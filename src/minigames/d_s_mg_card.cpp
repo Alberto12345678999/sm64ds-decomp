@@ -7,9 +7,11 @@
  * constructor and destructor callbacks keeps D1 ahead of D0 as in the
  * cartridge.
  *
- * Blocked: the ROM has no dScMgCard_c constructor, so the factory builds the
- * scene by hand and its base constructor, operator new and vtable stores stay
- * mangled; and the ov004 and ov006 helpers are unnamed in symbols.txt.
+ * leftovers:
+ *   - the ROM has no dScMgCard_c constructor, so the factory builds the
+ *     scene by hand and its base constructor, operator new and vtable
+ *     stores stay mangled.
+ *   - the ov004 and ov006 helpers are unnamed in symbols.txt.
  */
 
 #include "dScMgCard_c.h"
@@ -50,6 +52,7 @@ extern int data_ov006_0213aca8[2];
    these names are already mangled, so C linkage means "use literally". */
 extern unsigned short data_ov006_0213bd64[];
 extern void *data_ov006_02141774[];
+extern int data_ov006_02133810[];
 extern void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 extern void **data_ov006_0213bd30[];
 extern void *data_ov006_0213406c[];
@@ -107,16 +110,6 @@ extern int _ZTV12dMgCardObj_c[];
 extern int _ZTV17dMgDilarCardObj_c[];
 void _ZN12dMgCardObj_cC1Ev(void*);
 void _ZN17dMgDilarCardObj_cC1Ev(void*);
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da8e4, from the legacy file for func_ov006_020d9c5c, NOT applied: int func_ov006_020da8e4(void); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da8e4, from the legacy file for func_ov006_020da00c, NOT applied: extern "C" int func_ov006_020da8e4(void); */
-/* TUBUILD CONFLICT -- alternate declaration of Vec2_Sub, from the legacy file for func_ov006_020da0ac, NOT applied: extern "C" void Vec2_Sub(int *o, int *a, int *b); */
-/* TUBUILD CONFLICT -- alternate declaration of func_0203d680, from the legacy file for func_ov006_020da0ac, NOT applied: extern "C" void func_0203d680(int *out, int *in, int scale); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da8e4, from the legacy file for func_ov006_020da0ac, NOT applied: extern "C" int func_ov006_020da8e4(void); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da834, from the legacy file for func_ov006_020dac34, NOT applied: extern int func_ov006_020da834(void *p); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da860, from the legacy file for func_ov006_020dac34, NOT applied: extern int func_ov006_020da860(void *p, int v); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c1718, from the legacy file for _ZN11dScMgCard_c13OnTurnIntoEggEi, NOT applied: extern int func_ov006_020c1718(void* p); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02134028, from the legacy file for _ZN11dScMgCard_c13InitResourcesEv, NOT applied: extern u32 *data_ov006_02134028; */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c0aa8, from the legacy file for _ZN11dScMgCard_c13InitResourcesEv, NOT applied: extern void func_ov006_020c0aa8(char *); */
 }
 
 // @symbol _ZN12dMgCardObj_cC1Ev
@@ -1733,3 +1726,17 @@ extern "C" void _ZN12dMgCardObj_cD1Ev(void *elem)
  * 0xa8) from the vtable slots that name them, in cartridge order -- written
  * out of line here it emitted D0 ahead of D1 and rombuild's fail-closed
  * isolate refused the TU. The header's own banner carries the full reason. */
+
+/* The sprite-pointer table Render indexes by card kind: the elements are
+ * not constant, so the cartridge fills it at load time from
+ * data_ov006_02133810 in suit order. */
+void *data_ov006_02141774[15] = {
+    (void *)data_ov006_02133810[0], (void *)data_ov006_02133810[1],
+    (void *)data_ov006_02133810[2], (void *)data_ov006_02133810[5],
+    (void *)data_ov006_02133810[6], (void *)data_ov006_02133810[0xd],
+    (void *)data_ov006_02133810[0xe], (void *)data_ov006_02133810[0xb],
+    (void *)data_ov006_02133810[0xc], (void *)data_ov006_02133810[7],
+    (void *)data_ov006_02133810[8], (void *)data_ov006_02133810[9],
+    (void *)data_ov006_02133810[0xa], (void *)data_ov006_02133810[3],
+    (void *)data_ov006_02133810[4]
+};

@@ -1,19 +1,16 @@
 //cpp
-/* dBgW_KcMbg -- the KCL mesh collider under a Matrix4x3 transform: the moving
- * counterpart of dBgW_Kc's static mesh, carrying a uniform Fix12 scale. ROM's
- * own RTTI names it (_ZTS10dBgW_KcMbg @ 0x0209941c, _ZTI @ 0x02099410, vtable
- * address point 0x02099434).
- *
- * Deferred codegen emits each lifecycle group in its fixed order -- D2,D0,D1
- * for the destructor and C1,C2 for the constructor -- and the plain members
- * land in reverse definition order, so the file defines ctor and dtor first.
- * All five variants are cartridge-retained: derived dBgW_KcMbgSclY constructs
- * through C2/D2, and the vtable/RTTI ride along since the destructor is the
- * key function. The four func_0203* transform helpers and func_020398fc keep
- * their func_ names -- they are free workers the class's members call by raw
- * address (Eyerok reaches func_020398fc from its own TU), not vtable slots.
- * SetFile and func_02039db8 parse under #pragma cplusplus off because only
- * the C front end emits the 0x30-byte struct block move their copies need.
+/* leftovers:
+ * The constructor and destructor come first. SclY constructs through C2
+ * and D2, and the destructor is the key function, so all five variants
+ * stay. func_020398fc and the func_02039* transform helpers stay free
+ * functions; Eyerok calls func_020398fc by address. SetFile and
+ * func_02039db8 parse with cplusplus off: only the C front end emits the
+ * 0x30-byte block move. SetObjAndSphere stays the mangled call because
+ * the radius is Fix12 by value. Matrix copies go through RawMatrix4x3
+ * because a Matrix4x3 assignment emits the Vector3 destructor.
+ */
+/* dBgW_KcMbg: KCL mesh under a Matrix4x3, with a uniform scale.
+ * Type name 0x0209941c, typeinfo 0x02099410, vtable 0x02099434.
  */
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -48,9 +45,7 @@ void func_020396d0(int *p, int v);
 
 /* Collision-query plumbing shared with the SphCrr/Gnd/Lin checkers. */
 void func_02035394(void *dst, void *src);
-/* local extern: the radius travels by value inside the mangled name
-   (wall 6az), so the call spells the symbol rather than going through the
-   member. */
+/* local extern: the radius is Fix12 by value, so the call spells the symbol. */
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
     dBgCh_SphCrr *sphere, const Vector3 *pos, Fix12i radius, dActor_c *actor);
 
@@ -66,6 +61,7 @@ extern Matrix4x3 data_020a0e68;
 struct RawMatrix4x3 {
     s32 m[12];
 };
+typedef struct RawMatrix4x3 RawMatrix4x3;
 
 struct RawVector3 {
     s32 x, y, z;
@@ -102,8 +98,8 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void 
   _ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block(thiz, f, b);
   func_02039624(c);
   self->scale = fix;
-  self->mat = *m;
-  self->invMat = self->mat;
+  *(RawMatrix4x3 *) &self->mat = *(RawMatrix4x3 *) m;
+  *(RawMatrix4x3 *) &self->invMat = *(RawMatrix4x3 *) &self->mat;
   InvMat4x3(&self->invMat, &self->invMat);
   self->angY = s;
   self->angVelY = 0;
@@ -111,21 +107,21 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void 
   self->pos.y = m->t.y;
   self->pos.z = m->t.z;
   self->velocity.x = (self->velocity.y = (self->velocity.z = 0));
-  *((Matrix4x3 *) (stk + 0)) = *((Matrix4x3 *) (c + 0x54));
+  *((RawMatrix4x3 *) (stk + 0)) = *((RawMatrix4x3 *) (c + 0x54));
   ((Matrix4x3 *) (stk + 0))->t.x = 0;
   ((Matrix4x3 *) (stk + 0))->t.y = 0;
   ((Matrix4x3 *) (stk + 0))->t.z = 0;
-  self->invRotMat = *((Matrix4x3 *) (stk + 0));
+  *(RawMatrix4x3 *) &self->invRotMat = *((RawMatrix4x3 *) (stk + 0));
   InvMat4x3(&self->invRotMat, &self->invRotMat);
   self->invScale = (new_var = func_02053200(fix));
-  data_020a0e68 = *m;
+  *(RawMatrix4x3 *) &data_020a0e68 = *(RawMatrix4x3 *) m;
   Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, self->scale, self->scale, self->scale);
-  *((Matrix4x3 *) (stk + 0x30)) = data_020a0e68;
-  self->newScaledMat = data_020a0e68;
-  self->invScaledMat = *((Matrix4x3 *) (stk + 0x30));
+  *((RawMatrix4x3 *) (stk + 0x30)) = *(RawMatrix4x3 *) &data_020a0e68;
+  *(RawMatrix4x3 *) &self->newScaledMat = *(RawMatrix4x3 *) &data_020a0e68;
+  *(RawMatrix4x3 *) &self->invScaledMat = *((RawMatrix4x3 *) (stk + 0x30));
   InvMat4x3(&self->invScaledMat, &self->invScaledMat);
-  self->prevInvScaledMat = self->invScaledMat;
-  self->scaledMat = *((Matrix4x3 *) (stk + 0x30));
+  *(RawMatrix4x3 *) &self->prevInvScaledMat = *(RawMatrix4x3 *) &self->invScaledMat;
+  *(RawMatrix4x3 *) &self->scaledMat = *((RawMatrix4x3 *) (stk + 0x30));
   *((int *) (stk + 0x60)) = 0;
   *((int *) (stk + 0x64)) = 0x1000;
   *((int *) (stk + 0x68)) = 0;
@@ -251,7 +247,7 @@ extern "C" void func_02039e18(dBgW_KcMbg *self, Vector3 *v, Vector3 *res)
 void func_02039db8(struct dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res)
 {
     Matrix4x3 m;
-    m = thiz->mat;
+    *(RawMatrix4x3 *) &m = *(RawMatrix4x3 *) &thiz->mat;
     m.t.x = 0;
     m.t.y = 0;
     m.t.z = 0;

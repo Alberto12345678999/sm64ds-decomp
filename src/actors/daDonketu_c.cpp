@@ -1,67 +1,58 @@
 //cpp
-/* daDonketu_c -- the small Bully (DONKETU), ov064 0x02117070..0x021174a0.
+/* Small Bully (DONKETU), ov064 0x02117070..0x021174a0. Derives from daOts_c.
+ * The Big Bully is a sibling: InitResources clears mBigBullyID, the spawner
+ * writes that actor's id, and both death paths bump its kill count.
  *
- * One translation unit, eleven functions, the way the cartridge's own build had
- * it; the destructor is inline in include/daDonketu_c.h.
- *
- * daDonketu_c derives from daOts_c, the shared Bully base whose own promoted TU
- * sits immediately below this one in the same overlay (0x02115ee0..0x02117070).
- * daBDonketu_c, the Big Bully, is this class's SIBLING, not its parent: both
- * derive from daOts_c. The one thing that couples them is mBigBullyID --
- * InitResources zeroes it, the spawner writes the Big Bully's unique actor ID
- * into it, and both of the death paths below look that actor up and bump the
- * kill count it keeps.
- *
- * THIS TU OWNS THE CLASS VTABLE. Measured, not assumed: tools/tubuild.py verify
- * reports this one object emitting _ZTV11daDonketu_c, this class's own
- * _ZTI/_ZTS pair, and the typeinfo and type-name records for the whole
- * daOts_c/dEnemyBase_c/dActor_c/dBase_c/fBase_c ancestor chain. None of that
- * data lies inside this entry's licensed .text range, and it could not be
- * licensed as one interval even if it were: the cartridge puts g_profile_DONKETU
- * (0x0211b818) and the file table data_ov064_0211b834 between this class's
- * typeinfo pair (_ZTI 0x0211b7fc, _ZTS 0x0211b808) and the vtable storage at
- * 0x0211b868 -- public address point 0x0211b870, two words in. So this
- * promotion stays text-only: dsd keeps supplying the cartridge's own bytes and
- * production isolation discards the emitted duplicates, exactly as the
- * already-promoted sibling TUs ov064/daOts_c and ov064/daBDonketu_c do for
- * their own vtables. The manifest's compiler_only_output block licenses each one
- * at its measured ROM home.
- *
- * Inlining the destructor is what puts D1 and D0 in cartridge order. Written out
- * of line, mwcc emits the synthesized D0 ahead of the written D1 and the
- * licensed .text is no longer ROM-ascending; inlining restores D1 0x02117070,
- * D0 0x021170c4 and additionally deletes the homeless D2 that no module gives a
- * symbol to. All ten functions still byte-match either way.
- *
- * The registry factory daDonketu_c_classInit (0x02117444) is the last function,
- * `new daDonketu_c()`; the unit is 0x02117070..0x021174a0, eleven functions.
- *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm 2004/b56 emits one
- * .text section per function in reverse source order, so the highest-address ROM
- * function is written first. Do not reorder.
+ * _ZTI 0x0211b7fc, _ZTS 0x0211b808, _ZTV 0x0211b870. The destructor is inline
+ * in daDonketu_c.h: D1 0x02117070, D0 0x021170c4, no D2. g_profile_DONKETU
+ * and the file table sit between the typeinfo and the vtable, so this TU
+ * stays text-only. Highest address first.
  */
+// leftovers:
+// - Behavior and UpdateDeathState each build the coin position in separate
+//   locals. `pos.y = mPosY + 0x136000` costs 9 words of Behavior.
+// - mStateTimer is read and written through a u16 pointer. A plain member
+//   increment does not match UpdateRunState.
+// - PlayStepSound, PlayHitSound, PlayShellHitSound and PlayDeathSound call
+//   func_0201267c. That symbol has no header name.
+// - The coin's unk_0a4 and unk_0ac stay the base header's lateral-velocity
+//   names. The step sounds pass (Vector3 *)&mCamSpacePosX because dActor_c
+//   has no Pos().
+// - data_ov064_0211b834 stays the file table decl_common.h already declares.
+//   g_profile_DONKETU is not in this TU.
+
 
 #include "daDonketu_c.h"
 #include "common.h"
 #include "daBDonketu_c.h"
 #include "decl_common.h"
+#include "SharedFilePtr.h"
 
-/* ROM symbols with no header of their own. func_ov064_02116110,
- * func_ov064_0211616c and data_ov064_0211b834 are deliberately absent:
- * include/decl_common.h already declares all three, and the shards' own
- * re-declarations of the first two are dropped in favour of it. */
+/* func_ov064_02116110, func_ov064_0211616c and data_ov064_0211b834 come
+ * from decl_common.h. */
 extern "C" {
 extern void func_0201267c(u32 soundID, const Vector3 *pos);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 }
 
-/* ROM ordinal 10 -- daDonketu_c_classInit, 0x02117444, size 0x5c. Written
- * first so reverse-order emission puts it last. Reconstructed source-style
- * name: SM64DS proves daDonketu_c through RTTI, allocation size, vtable
- * identity, and the DONKETU registry profile; later EAD lineage supplies
- * classInit. Exact original spelling is not preserved. Historical alias:
- * Bully_Spawn. */
+/* File-scope resource handles: the ctor/dtor are the ROM's SharedFilePtr
+ * veneer pairs (func_02017acc / func_02017ab4 for the model,
+ * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim for the four
+ * animation handles), spelled through declared-only subclasses so the
+ * static initializer names the real entry points. */
+struct DonketuModelFilePtr : SharedFilePtr {
+    u32 words[2];
+    DonketuModelFilePtr(u32 fileID);
+    ~DonketuModelFilePtr();
+};
+struct DonketuAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+    DonketuAnimationFileHandle(u32 fileID);
+    ~DonketuAnimationFileHandle();
+};
+
+/* DONKETU factory. Written first so it emits last. */
 // @symbol daDonketu_c_classInit
 extern "C" daDonketu_c *daDonketu_c_classInit()
 {
@@ -77,30 +68,10 @@ int daDonketu_c::InitResources()
 }
 
 // @symbol _ZN11daDonketu_c8BehaviorEv
-/* The bully's whole update is delegated: dEnemyBase_c::UpdateKillByInvincibleChar
- * decides, from the mesh collision and the animation, whether anything happened
- * this frame. 0 means nothing did and the shared behaviour worker runs; 1 means
- * handled; 2 is the death case, and only that arm has a body. That arm is the
- * same coin drop UpdateDeathState performs, written out again rather than
- * shared -- the cartridge has both bodies whole, one at 0x02117310 and one at
- * 0x02117220, with no call between them.
- *
- * On death the bully drops a coin (actor 0x120, subtype 2) 0x136000 above
- * itself, facing its own heading turned 0x8000 (180 degrees) plus a random
- * 10-bit spread, then gives the coin an upward launch: 0xa000 of vertical speed
- * and 0x50000 of terminal velocity, with the two acceleration slots zeroed.
- * Finally it looks up the actor whose unique ID sits in mBigBullyID and bumps
- * that Big Bully's kill count.
- *
- * mAreaId is passed to Spawn as the area, which is what pins the s8 read;
- * mPrevAngleY (not mAngleY) is the heading the coin inherits.
- *
- * THE POSITION TEMPORARIES ARE LOAD-BEARING. Collapsing them into
- * `pos.y = mPosY + 0x136000` and friends costs 9 words of 69: the ROM reads y,
- * then z, then x, and materialises the offset into its own register before the
- * add. Measured, not assumed -- the sibling substitutions in the same sweep (the
- * angle temporary, and the `(long long)` round-trip on the tally) were both free
- * and are gone.
+/* 0 runs the shared worker, 1 is already handled, 2 drops a coin (actor
+ * 0x120, subtype 2) and bumps the Big Bully's kill count. The same drop is
+ * written again in UpdateDeathState. The coin faces mPrevAngleY + 0x8000
+ * plus a 10-bit roll, and launches upward.
  */
 int daDonketu_c::Behavior()
 {
@@ -232,3 +203,12 @@ void daDonketu_c::PlayDeathSound()
 {
     func_0201267c(0xc8, (const Vector3 *)&mCamSpacePosX);
 }
+
+// @symbol __sinit_daDonketu_c.cpp
+/* The small Bully's model and animation handles, in the sinit call order the
+ * data_ov064_0211b834 file table repeats. */
+DonketuModelFilePtr data_ov064_0211c668(0x2df);
+DonketuAnimationFileHandle data_ov064_0211c670(0x2e0);
+DonketuAnimationFileHandle data_ov064_0211c660(0x2e1);
+DonketuAnimationFileHandle data_ov064_0211c678(0x2e2);
+DonketuAnimationFileHandle data_ov064_0211c680(0x2e3);

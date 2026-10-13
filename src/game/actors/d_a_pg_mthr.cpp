@@ -1,47 +1,22 @@
 //cpp
-/**
- * daPgMthr_c -- Cool, Cool Mountain mother penguin (PENGUIN_MOTHER 257), ov018.
+/* leftovers:
+ * - SetAnim, SetFile, dCcAc_c::Init and DropShadowRadHeight stay
+ *   scalar externs. The Fix12<int> method form grows those bodies
+ *   and emits an unlicensed .data word.
+ * - dBgCh_Actr::Init's member call mangles with int. The ROM row is
+ *   Fix12<int>. GetFloorResult and GetWallResult are not on the header.
+ * - func_0201267c is Sound::Play(3, id, pos). The state helpers stay
+ *   func_ov018_* because the PMF literals relocate to those names.
+ * - data_ov018_* handles are constructed by the sinit. g_profile is
+ *   not this TU. common.h stays first so the matrix copy stays flat.
+ * - 02111b3c keeps the (int) actorID compare. 02111d28 keeps the
+ *   bone store. The follow state reloads mPlayer.
  *
- * She stands at her home (state 0 holds mHorzSpeed at 0) and talks when a
- * player touches her. The actor in his hand picks the message: 0xac with
- * nothing, 0xad with her own BABY_PENGUIN (actor 0x100, param1 0), 0xae
- * with the other baby (param1 1). Yoshi is player param1 3 and carries the
- * baby in mObjInMouth; the other characters use mHeldObj. The idle touch
- * path only looks at the hand. When the 0xad talk ends she spawns
- * POWER_STAR (actor 0xb2, param (param1 & 0xf) | 0x40) and sets mGaveStar.
- * After that, a player within 1500 of her home who holds her own baby --
- * mouth included -- sends her to state 2. She walks toward him and returns
- * to state 0 when he lets go or leaves that range.
- *
- * State pairs live in data_ov018_02113c4c, filled by __sinit_ov018_02112c80
- * from the PMF literals at 0211394c. Index << 4 selects {enter, update}:
- *   0  021122ec / 02112234   stand
- *   1  021121dc / 02111fac   talk
- *   2  02111f1c / 02111e28   follow
- * common.h stays first: Matrix4x3 is the flat 12-word copy this file assigns.
- *
- * Measured on this file, 2004/b56, and left as the call that matches:
- *   SetAnim(Fix12<int> speed = {0x1000}) is 021121dc 0x58->0x60 and
- *   021122ec 0x70->0x78. SetFile the same way is 02111f1c 0x90->0x9c.
- *   dCcAc_c::Init(Fix12<int> radius/height = {...}) is InitResources
- *   0x1ac->0x1bc; an int literal does not convert, so that call does not
- *   compile. Each aggregate also emitted an unlicensed local .data word.
- *   DropShadowRadHeight the same way is 02111d28 0x100->0x110.
- *   dBgCh_Actr::Init(this, 0x32000, 0x32000, 0, 0) keeps the 0x1ac body, but
- *   the reloc is _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which is
- *   not the ROM row (5Fix12IiE). The header parameter is Fix12i, a typedef
- *   of s32. 02111b3c without the (int) actorID compare is 0xa8, not 0xb4.
- *   Writing 02111d28's translation through mat4x3.m[] and passing that
- *   member into DropShadow, then storing the bone back through one pointer,
- *   is 0xfc, not 0x100. Hoisting the follow state's Player* is 0xf8, not
- *   0xf4; reloading mPlayer matches.
- *   func_0201267c is Sound::Play(3, id, pos) at 0x0201267c. PlayBank3 is the
- *   other wrapper, at 0x02012664. GetFloorResult and GetWallResult are not
- *   on dBgCh_Actr.h. The state helpers stay func_ov018_*: the PMF literals
- *   relocate to those names. The file symbols stay data_ov018_*; the sinit
- *   TU constructs them. g_profile_PENGUIN_MOTHER is not in this text TU.
+ * daPgMthr_c, the Cool Cool Mountain mother penguin (PENGUIN_MOTHER).
+ * She talks from the actor in the player's hand and, after giving
+ * the star, walks toward whoever still holds her own baby.
+ * State pairs are data_ov018_02113c4c: stand, talk, follow.
  */
-
 #include "common.h"
 #include "daPgMthr_c.h"
 #include "types.h"
@@ -86,7 +61,7 @@ struct PgLoadedFile {
     void *filePtr;
 };
 
-/* __sinit_ov018_02112c80 constructs these, and the relocs at 02112c04 /
+/* __sinit_d_a_pg_mthr.cpp constructs these, and the relocs at 02112c04 /
    02112c0c point the two tables at them:
      02113c00  file 0x3fb  BMD   model          (dtor 02017ab4)
      02113bf0  file 0x406  BCA   stand/talk
@@ -94,7 +69,38 @@ struct PgLoadedFile {
      02113bf8  file 0x3fd  BTP   walk
      02113be8  file 0x407  BTP   stand/talk
      02112c04 = { &02113bf8, &02113be8 }
-     02112c0c = { &02113bf0, &02113c08 }   (decl_common spells this int[]) */
+     02112c0c = { &02113bf0, &02113c08 }   (decl_common spells this int[])
+   SharedFilePtr declares no fields and no constructor of its own, so the
+   model handle gets the func_02017acc/func_02017ab4 pair, the animation
+   handles get SharedFilePtr::Construct/Destruct_Anim and the texture
+   sequences get SharedFilePtr_Construct_TexSeq/Destruct_TexSeq through
+   thin declaration-only wrappers; the manifest aliases those mangled
+   spellings to the arm9 destinations the retail initializer calls. */
+struct PgMthrModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    PgMthrModelFileHandle(unsigned int fileID);
+    ~PgMthrModelFileHandle();
+};
+struct PgMthrAnimFileResHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    PgMthrAnimFileResHandle(unsigned int fileID);
+    ~PgMthrAnimFileResHandle();
+};
+struct PgMthrTexSeqFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    PgMthrTexSeqFileHandle(unsigned int fileID);
+    ~PgMthrTexSeqFileHandle();
+};
+
+/* The three {enter, update} state pairs __sinit_d_a_pg_mthr.cpp copies
+   from the PMF literals at 0211394c (see the header comment). */
+struct PgMthrState {
+    int (daPgMthr_c::*enter)();
+    int (daPgMthr_c::*update)();
+};
 extern "C" {
 extern Fix12i Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
@@ -111,19 +117,19 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
 extern Matrix4x3 data_020a0e68;
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, int b, unsigned int c);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *, BTP_File &f, int a, int b, unsigned int c);
-extern SharedFilePtr data_ov018_02113c08;
-extern SharedFilePtr data_ov018_02113bf8;
+extern PgMthrAnimFileResHandle data_ov018_02113c08;
+extern PgMthrTexSeqFileHandle data_ov018_02113bf8;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern dActor_c *func_ov018_021118fc(char *c);
-extern SharedFilePtr data_ov018_02113be8;
-extern SharedFilePtr data_ov018_02113bf0;
-extern char data_ov018_02113c4c[];
+extern PgMthrTexSeqFileHandle data_ov018_02113be8;
+extern PgMthrAnimFileResHandle data_ov018_02113bf0;
+extern PgMthrState data_ov018_02113c4c[3];
 typedef void (daPgMthr_c::*PMF)();
 extern void func_ov018_02112398(daPgMthr_c *self);
 extern void func_ov018_0211235c(daPgMthr_c *self);
-extern SharedFilePtr data_ov018_02113c00;
+extern PgMthrModelFileHandle data_ov018_02113c00;
 extern SharedFilePtr *data_ov018_02112c04[2];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *c2, void *d);
@@ -221,7 +227,7 @@ int daPgMthr_c::CleanupResources()
 // @symbol _ZN10daPgMthr_c19func_ov018_021123d0Ei
 void daPgMthr_c::func_ov018_021123d0(int i)
 {
-    mState = data_ov018_02113c4c + (i << 4);
+    mState = &data_ov018_02113c4c[i];
     func_ov018_02112398(this);
 }
 
@@ -606,3 +612,18 @@ struct dActor_c *func_ov018_021118fc(char *c)
     return newToucher;
 }
 }
+
+/* File-scope objects __sinit_d_a_pg_mthr.cpp initializes: the five resource
+   handles in construction order, then the three {enter, update} state pairs
+   the dispatch helpers index by state. */
+PgMthrModelFileHandle data_ov018_02113c00(0x3fb);   /* model */
+PgMthrAnimFileResHandle data_ov018_02113bf0(0x406); /* stand/talk anim */
+PgMthrAnimFileResHandle data_ov018_02113c08(0x408); /* walk anim */
+PgMthrTexSeqFileHandle data_ov018_02113bf8(0x3fd);  /* walk texseq */
+PgMthrTexSeqFileHandle data_ov018_02113be8(0x407);  /* stand/talk texseq */
+
+PgMthrState data_ov018_02113c4c[3] = {
+    { &daPgMthr_c::func_ov018_021122ec, &daPgMthr_c::func_ov018_02112234 }, /* stand */
+    { &daPgMthr_c::func_ov018_021121dc, &daPgMthr_c::func_ov018_02111fac }, /* talk */
+    { &daPgMthr_c::func_ov018_02111f1c, &daPgMthr_c::func_ov018_02111e28 }, /* follow */
+};

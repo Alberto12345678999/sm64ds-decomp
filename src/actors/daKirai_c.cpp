@@ -8,7 +8,20 @@
  * data_ov060_0211b1d8, filled at static-init time from {fn, 0} records in
  * .data: armed (func_ov060_02118970), swelling (func_ov060_021188e8),
  * exploding (func_ov060_02118834), spent (func_ov060_02118728).
- * daKirai_c_classInit stays out of this TU.
+ * The registry factory daKirai_c_classInit closes the file.
+ */
+/* leftovers:
+ * - Particle::System::NewSimple, dActor_c::Earthquake, Player::Hurt and
+ *   dCcAcPos_c::Init stay mangled. Each takes Fix12<int> by value; the
+ *   Init member spelling grows InitResources by 0x10.
+ * - data_ov060_0211b1c4 is the model handle (LoadFile / Release).
+ *   data_ov060_0211b1d8 is the four-state member-pointer table Behavior
+ *   dispatches through.
+ * - The state helpers keep their func_ov060_* address names.
+ * - (Vector3 *)&mPosX / &mHomePosX: dActor_c has no Pos().
+ * - isPlayer stays an int. A bool local misses in the armed state.
+ * - The spent state keeps opt_strength_reduction and opt_common_subs off.
+ * - func_02012694 plays sound 0x2f at mCamSpacePosX.
  */
 
 #include "daKirai_c.h"
@@ -334,3 +347,12 @@ KiraiState data_ov060_0211b1d8[4] = {
     &daKirai_c::func_ov060_02118834,
     &daKirai_c::func_ov060_02118728,
 };
+
+/* `new daKirai_c` is the whole sequence the loose factory spelled by hand:
+ * fBase_c::operator new(0x1b0), dActor_c's base constructor, the vptr store,
+ * then the Model and dCcAcPos_c member constructors. */
+// @symbol daKirai_c_classInit
+extern "C" daKirai_c *daKirai_c_classInit(void)
+{
+    return new daKirai_c;
+}

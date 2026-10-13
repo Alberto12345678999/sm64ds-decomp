@@ -1,56 +1,36 @@
 //cpp
-/* The GAMAGUCHI hopping purse that pays out coins (ov081/daGmch_c),
- * 37 functions, enrolled and canonical. All 36 helpers are real class
- * methods; the factory is the one free function.
- *
- * Class name is ROM RTTI: "8daGmch_c" at 0x02128bc8, with its
- * __si_class_type_info at 0x02128bd4. The tree used to call it
- * Moneybag; that name is not in the cartridge.
- *
- * Source runs ROM-ascending under defer_codegen off. Do not reorder.
- * The ROM has D1 (0x02126504) below D0 (0x02126554) and no D2:
- * mwccarm emits D1, D0, D2 here and the D2 is deadstripped.
- * common.h comes before daGmch_c.h (flat Matrix4x3 block-move).
- * decl_common.h is deliberately NOT included (it contradicts this
- * TU's own helper spellings).
- *
- * Known limits:
- * - SetAnim / dCcAc Init / dBgCh Init / NewSimple / SpawnCoins /
- *   DropShadowRadHeight / Player::Bounce / Hurt keep computed spellings
- *   (Fix12<int> by value, wall 6az).
- * - GetFloorResult / GetWallResult / TouchesWater are the const methods
- *   on dBgCh_Actr. cstd::fdiv is the integer divide.
- * - dActor_c has no Pos(). PlayBank0 takes the camera-space triple at
- *   mCamSpacePosX through a Vector3 pun (CheckPlayerContact, EnterState8).
- * - unk_0a4 and unk_0ac stay those names. They are dActor_c's world-velocity
- *   X/Z beside mVertSpeed (this TU multiplies them by the floor normal). The
- *   base header still spells them unk_.
- * - ModelCache wants a shared home with da1up_c's copy.
- * - State numbers stay literal: what each state means is not proven (see
- *   daGmch_c.h). mFlags bit 0x80000 and the hit mask 0x66fe0 stay numeric.
- *
- * Leftover: TouchesWater, GetFloorResult and GetWallResult are the const
- * dBgCh_Actr methods. Those two results are still cast to dBgPi*, because
- * the methods return the raw result word and a dBgPi* return disagrees
- * with the definitions. cstd::fdiv is the divide. SpawnCoins written as
- * dActor_c::SpawnCoins was remeasured in SpawnCoinsAndDie and that
- * function stopped matching, so it and the other Fix12-by-value calls
- * stay scalar externs. The sine table is an s16 index, the BCA word is
- * data_ov081_02128edc[1], and the factory is `new daGmch_c()`.
- * CallStateEnter/Update go through mStatePmfPair as daGmch_c::*. mFlags
- * uses &= / |= and mPhase uses ++. Reverted, sizes measured against the
- * ROM: mSpinAngleY += 0xc00 in UpdateState0 is 4 words off at the same
- * 0x158; mPhase = (u8)(mPhase + 1) there is 0x144 against 0x158 (mPhase++
- * matches); holder->mPosX/Y/Z in place of the &mPosX word triple is
- * EnterState7 0x178 against 0x17c and UpdateState6 0x9c against 0xa0.
- * Still the scalar externs for SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- * SpawnCoins, DropShadowRadHeight, Player::Bounce, Player::Hurt and
- * Particle::NewSimple (Fix12<int> by value). ApproachLinear2 still sees
- * &mState as an int* because mState/mPhase/mTimer are one word.
- * Vec3_26e28 and the *(Vector3 *)&mPosX
- * / mCamSpacePosX puns stay: a real Vector3 runs ~Vector3, and dActor_c
- * has no Pos(). Bca2 and the pointer-array view of the same BCA rows
- * stay both spellings. ModelCache stays file-local.
+/* daGmch_c: the hopping purse that pays out coins (GAMAGUCHI), ov081.
+ * Was coined Moneybag. _ZTS at 0x02128bc8, typeinfo at 0x02128bd4.
+ * D1 0x02126504, D0 0x02126554, deadstripped D2. ROM-ascending under
+ * defer_codegen off. The factory is the one free function.
+ */
+/* leftovers:
+ * - common.h stays before daGmch_c.h. InitResources assigns
+ *   IDENTITY_MATRIX4X3 into mMatrix; the .r/.t Matrix4x3 spelling is
+ *   0x1f0 against the ROM's 0x1d4. decl_common.h is not included.
+ * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
+ *   Particle::System::NewSimple, dActor_c::SpawnCoins,
+ *   DropShadowRadHeight, Player::Bounce and Player::Hurt stay mangled
+ *   (Fix12<int> by value). SpawnCoins as a member stopped
+ *   SpawnCoinsAndDie matching.
+ * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
+ *   disagrees with the definitions, so the callers still cast.
+ *   TouchesWater and cstd::fdiv are the const method and the divide.
+ * - *(Vector3 *)&mPosX and the mCamSpacePosX pun in CheckPlayerContact
+ *   and EnterState8: dActor_c has no Pos(), and a Vector3 emits ~Vector3.
+ *   holder->mPosX/Y/Z in place of the word triple changes EnterState7
+ *   and UpdateState6.
+ * - unk_0a4 / unk_0ac stay. They are the base's world-velocity X/Z beside
+ *   mVertSpeed; dActor_c.h still spells them unk_, and this TU multiplies
+ *   them by the floor normal.
+ * - UpdateState0 keeps mPhase++. mPhase = (u8)(mPhase + 1) is 0x144
+ *   against 0x158, and mSpinAngleY += 0xc00 is four words off.
+ * - ApproachLinear2 takes &mState as int* because mState, mPhase and
+ *   mTimer share one word. State numbers, mFlags bit 0x80000 and hit
+ *   mask 0x66fe0 stay numeric.
+ * - ModelCache stays file-local; da1up_c reads the same second word.
+ *   The loaded BCA is data_ov081_02128edc[1]. GmchDrawReg is the one-slot
+ *   init sentinel the folded sinit needs.
  */
 
 #pragma defer_codegen off
@@ -107,11 +87,40 @@ typedef struct Vec3_26e28 { int x, y, z; } Vec3_26e28;
    pointer-to-member call through mStatePmfPair still matches. */
 typedef void (daGmch_c::*StateFn)();
 
-/* EnterState4 and EnterState2 -- the two-word BCA file-pointer records those members
-   recovered as a struct rather than as an array.  Hoisted to file scope only
-   because a block-scope tag cannot type an `extern` object once the member is a
-   class method; the field expressions are untouched. */
-struct Bca2 { int w[2]; };
+/* The model handle's ctor/dtor are the cartridge's func_02017acc /
+ * func_02017ab4 pair; the manifest aliases these. */
+struct GmchModelFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    GmchModelFileHandle(u32 fileID);
+    ~GmchModelFileHandle();
+};
+
+/* The four animation handles construct through SharedFilePtr::Construct
+ * and register SharedFilePtr_Destruct_Anim; the manifest aliases these. */
+struct GmchAnimationFileHandle : SharedFilePtr {
+    s32 fileId;
+    void *file;
+    GmchAnimationFileHandle(u32 fileID);
+    ~GmchAnimationFileHandle();
+};
+
+/* The state table's PMF type.  Sixteen of the eighteen halves return int;
+   EnterState1 is the lone void (its header decl stands), so it is cast in
+   below.  The invokers keep reading the pair through StateFn. */
+typedef int (daGmch_c::*StatePmf)();
+struct StatePair { StatePmf enter, update; };
+
+/* The draw offset is a plain Vector3, and `Vector3 v = {...}` cannot
+   produce its init: brace init is constant initialization, so nothing runs
+   in __sinit at all -- no stores, no destructor registration.  mwcc splits
+   the two retail actions the way it does because the cartridge object was
+   constructed: the stores come from a constructor body and the destructor
+   registers as _ZN7Vector3D1Ev.  This one-slot sentinel supplies the
+   stores from its ctor; the declared-ahead Vector3 then earns only the
+   registration.  The sentinel's own 1-byte bss has no cartridge counterpart
+   and is deadstripped in the manifest. */
+struct GmchDrawReg { GmchDrawReg(Vector3 &v) { v.x = 0; v.y = 0x2000; v.z = 0; } };
 
 /* External function bridges used by class methods, with C linkage.
  *
@@ -149,9 +158,11 @@ struct Bca2 { int w[2]; };
  *
  * Data is different -- mwccarm leaves a file-scope variable's name unmangled in
  * C++ -- so every `data_*` declaration stays at block scope in the member that
- * recovered it, and the members that disagree about a data object's TYPE
- * (data_ov081_02128ec4 is a two-word struct to EnterState4 and a pointer
- * array to EnterState0) keep both views. */
+ * recovered it.  The sinit's own five handles and the PMF state table moved
+ * here wholesale as file-scope definitions: GmchModelFileHandle /
+ * GmchAnimationFileHandle spell the model/animation ctors and dtors, and
+ * GmchDrawReg supplies the draw offset's .init stores so the plain Vector3
+ * earns its registered destructor instead of constant initialization. */
 extern "C" {
 extern Fix12i Vec3_Dist(const void *a, const void *b);
 extern s16    Vec3_HorzAngle(const void *a, const void *b);
@@ -415,14 +426,14 @@ int daGmch_c::UpdateState8()
 // @symbol _ZN8daGmch_c11EnterState8Ev
 int daGmch_c::EnterState8()
 {
-    extern int data_ov081_02128edc[];
+    extern GmchAnimationFileHandle data_ov081_02128edc;
 
     Sound::PlayBank0(9, *(Vector3 *)&mCamSpacePosX);
     mFlags &= ~1;
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov081_02128edc[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX, mPosY + yOffset1, mPosZ);
@@ -580,10 +591,10 @@ int daGmch_c::UpdateState5()
 // @symbol _ZN8daGmch_c11EnterState5Ev
 int daGmch_c::EnterState5()
 {
-    extern int data_ov081_02128edc[];
+    extern GmchAnimationFileHandle data_ov081_02128edc;
 
     mHorzSpeed = 0xa000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov081_02128edc[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mStateIndex = 5;
     return 1;
@@ -606,9 +617,9 @@ int daGmch_c::UpdateState4()
 // @symbol _ZN8daGmch_c11EnterState4Ev
 int daGmch_c::EnterState4()
 {
-    extern Bca2 data_ov081_02128ec4;
+    extern GmchAnimationFileHandle data_ov081_02128ec4;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov081_02128ec4.w[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ec4.file, 0x40000000, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 4;
@@ -646,11 +657,11 @@ int daGmch_c::UpdateState3()
 // @symbol _ZN8daGmch_c11EnterState3Ev
 int daGmch_c::EnterState3()
 {
-    extern int data_ov081_02128ecc[];
+    extern GmchAnimationFileHandle data_ov081_02128ecc;
     extern int data_0209e650[];
 
     mFlags &= ~1;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov081_02128ecc[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ecc.file, 0x40000000, 0x1000, 0);
     mModelAnim.currFrame = 0;
     mAngleY = (short)RandomIntInternal(data_0209e650);
     mPrevAngleY = mAngleY;
@@ -676,9 +687,9 @@ int daGmch_c::UpdateState2()
 // @symbol _ZN8daGmch_c11EnterState2Ev
 int daGmch_c::EnterState2()
 {
-    extern Bca2 data_ov081_02128ee4;
+    extern GmchAnimationFileHandle data_ov081_02128ee4;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov081_02128ee4.w[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ee4.file, 0x40000000, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 2;
@@ -705,10 +716,10 @@ int daGmch_c::UpdateState1()
 // @symbol _ZN8daGmch_c11EnterState1Ev
 void daGmch_c::EnterState1()
 {
-    extern int data_ov081_02128edc[];
+    extern GmchAnimationFileHandle data_ov081_02128edc;
     extern int data_0209e650[];
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)data_ov081_02128edc[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128edc.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0xa000;
     mTargetAngleY = (short)RandomIntInternal(data_0209e650);
@@ -757,9 +768,9 @@ int daGmch_c::UpdateState0()
 // @symbol _ZN8daGmch_c11EnterState0Ev
 int daGmch_c::EnterState0()
 {
-    extern void *data_ov081_02128ec4[];
+    extern GmchAnimationFileHandle data_ov081_02128ec4;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ec4[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ec4.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mModelAnim.currFrame = 0x6000;
     mPhase = 0;
@@ -790,7 +801,7 @@ void daGmch_c::CallStateEnter()
    mirror at 0x02128f40 and tail-calls the enter half. */
 void daGmch_c::SetState(int n)
 {
-    extern char data_ov081_02128f40;
+    extern StatePair data_ov081_02128f40[9];
 
     mStatePmfPair = (void *)((int)&data_ov081_02128f40 + (n << 4));
     CallStateEnter();
@@ -801,7 +812,7 @@ void daGmch_c::SetState(int n)
    touches `this`. */
 int daGmch_c::CleanupResources()
 {
-    extern void *data_ov081_02128ed4;
+    extern GmchModelFileHandle data_ov081_02128ed4;
     extern void *data_ov081_021280d8[];
 
     ((SharedFilePtr *)&data_ov081_02128ed4)->Release();
@@ -856,7 +867,7 @@ int daGmch_c::Behavior()
 /* Vtable slot 0. */
 int daGmch_c::InitResources()
 {
-    extern void *data_ov081_02128ed4;
+    extern GmchModelFileHandle data_ov081_02128ed4;
     extern void *data_ov081_021280d8[];
     extern ModelCache data_ov002_0210d9b8;
     extern Matrix4x3 IDENTITY_MATRIX4X3;
@@ -929,3 +940,29 @@ extern "C" daGmch_c *daGmch_c_classInit(void)
 {
     return new daGmch_c();
 }
+
+/* Construction order is source order: the five file handles first (model,
+ * then the four animations), then the nine {enter, update} state pairs,
+ * then the draw offset, whose destructor registers last. The
+ * registration nodes and the PMF literals are compiler temporaries. */
+GmchModelFileHandle data_ov081_02128ed4(0x2fd);
+GmchAnimationFileHandle data_ov081_02128edc(0x300);
+GmchAnimationFileHandle data_ov081_02128ee4(0x301);
+GmchAnimationFileHandle data_ov081_02128ecc(0x2fe);
+GmchAnimationFileHandle data_ov081_02128ec4(0x2ff);
+
+StatePair data_ov081_02128f40[9] = {
+    { &daGmch_c::EnterState0, &daGmch_c::UpdateState0 },
+    { (StatePmf)&daGmch_c::EnterState1, &daGmch_c::UpdateState1 },
+    { &daGmch_c::EnterState2, &daGmch_c::UpdateState2 },
+    { &daGmch_c::EnterState3, &daGmch_c::UpdateState3 },
+    { &daGmch_c::EnterState4, &daGmch_c::UpdateState4 },
+    { &daGmch_c::EnterState5, &daGmch_c::UpdateState5 },
+    { &daGmch_c::EnterState6, &daGmch_c::UpdateState6 },
+    { &daGmch_c::EnterState7, &daGmch_c::UpdateState7 },
+    { &daGmch_c::EnterState8, &daGmch_c::UpdateState8 },
+};
+
+extern Vector3 data_ov081_02128ef8;
+GmchDrawReg gmchDrawReg(data_ov081_02128ef8);
+Vector3 data_ov081_02128ef8;

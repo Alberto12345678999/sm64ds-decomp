@@ -21,10 +21,8 @@
  * - HikariVec3 POD locals; Vector3's empty destructor would add
  *   _ZN7Vector3D1Ev to this TU
  * - (Vector3 *)&mPosX; dActor_c has no Pos() on this branch (S18)
- * - data_ov010_02112d50 is the model SharedFilePtr this Init LoadFile's;
- *   ov010 sinit constructs it as file ID 1453. SharedFilePtr.h has no fields
- *   and decl_common's plurality is int[], so the LoadFile/Release/SetFile
- *   puns stay here
+ * - data_ov010_02112d50 is the model SharedFilePtr this Init LoadFile's,
+ *   defined at the end of this file (constructed as file ID 1453)
  * - data_0209caa0[1] & 0x80000000; this Init is the consumer, no recovered
  *   name for that save-flag bit
  * - Sound::PlaySmallSecretSound stays TU-local; Sound.h has no declaration
@@ -47,6 +45,18 @@ struct HikariVec3 {
 
 struct Vec3;
 
+/* The beam's file-scope SharedFilePtr object, spelled through the same
+   wrapper idiom the landed folds use: the handle's code is the veneer pair
+   the cartridge already carries, so the wrapper gets no bodies of its own.
+   The constructor aliases func_02017acc and the destructor func_02017ab4 in
+   this unit's manifest. */
+struct C1HikariModelFilePtr : SharedFilePtr {
+    int unk0;
+    void *file;
+    C1HikariModelFilePtr(unsigned int id);
+    ~C1HikariModelFilePtr();
+};
+
 extern "C" {
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, int angle);
 extern void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *res);
@@ -59,7 +69,8 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     int radius, int height, unsigned int flags, unsigned int vulnFlags);
 
 extern Matrix4x3 data_020a0e68;
-extern int data_ov010_02112d50[];
+/* Defined at the end of this file so its constructor does not enter .text. */
+extern C1HikariModelFilePtr data_ov010_02112d50;
 extern int data_0209caa0[];
 }
 
@@ -89,12 +100,12 @@ extern "C" daObjC1Hikari_c *daObjC1Hikari_c_classInit()
 // @symbol _ZN15daObjC1Hikari_c13InitResourcesEv
 int daObjC1Hikari_c::InitResources()
 {
-    Model::LoadFile(*(SharedFilePtr *)data_ov010_02112d50);
+    Model::LoadFile(data_ov010_02112d50);
     if (NumStars() < 0xe)
         return 0;
     if (data_0209caa0[1] & 0x80000000)
         return 0;
-    mModel.SetFile((BMD_File *)data_ov010_02112d50[1], 1, 0x13);
+    mModel.SetFile((BMD_File *)data_ov010_02112d50.file, 1, 0x13);
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
         &mCylinder, this, (const Vector3 *)&mPosX, 0xf0000, 0x8c000, 0x4800002, 0);
     UpdateModelTransform();
@@ -187,7 +198,7 @@ int daObjC1Hikari_c::Render()
 // @symbol _ZN15daObjC1Hikari_c16CleanupResourcesEv
 int daObjC1Hikari_c::CleanupResources()
 {
-    ((SharedFilePtr *)data_ov010_02112d50)->Release();
+    data_ov010_02112d50.Release();
     return 1;
 }
 
@@ -199,3 +210,9 @@ void daObjC1Hikari_c::UpdateModelTransform()
     mModel.mat4x3.t.y = mPosY >> 3;
     mModel.mat4x3.t.z = mPosZ >> 3;
 }
+
+/* The initializer constructs the model handle with file ID 1453 and
+ * registers its destructor; the registration node is a compiler
+ * temporary. */
+// @symbol __sinit_d_a_obj_c1_hikari.cpp
+C1HikariModelFilePtr data_ov010_02112d50(1453);

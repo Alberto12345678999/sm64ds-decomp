@@ -1,20 +1,17 @@
 //cpp
-/* The key dropped by Mip chases the player, then runs the save conversation.
- * The loose/carried states each have an entry and an update callback.
- *
- * Four callbacks are stored as PMFs in the ROM. Their address-derived entry
- * names remain pending reconstruction; the caller census does not establish
- * original file-static linkage. See notes/experiments/mip-key-2853-source-forms.md
- * for the boundary evidence and retained ABI bridges.
- *
- * Leftover: unk_0a4/0ac/190/19c are unrecovered header fields (0a4/0ac
- *   ride the loose-update approach; 19c selects the entry).
- * Leftover: data_020a0e68 is shared arm9 matrix scratch.
- * Leftover: func_02012790 / func_02013868 are arm9 stubs.
- * Leftover: the file home is sinit-constructed
- *   (src/unnamed/ov085/__sinit_ov085_0212f5ec.c); g_profile stays where the
- *   registry owns it (S14).
+/* The key Mip drops. It chases the player, then runs the save conversation.
+ * The loose and carried states each have an entry and an update.
  */
+// leftovers:
+// - unk_0a4, unk_0ac, unk_190 and unk_19c stay the header's names. The
+//   loose update approaches through 0a4/0ac, and 19c selects the entry.
+// - DropShadowRadHeight stays mangled. The scalar bridge is 16 bytes
+//   smaller than the Fix12 aggregate call in this helper.
+// - data_020a0e68 is the shared arm9 matrix scratch this TU copies.
+// - func_02012790 and func_02013868 stay arm9 stubs. This TU calls them
+//   from the conversation.
+// - The model handle data_ov085_021305d8 is constructed by daMip_c.
+//   g_profile stays with the registry.
 
 #include "daObj_Mip_Key_c.h"
 #include "common.h"
@@ -54,9 +51,24 @@ extern int   data_0209caa0[];
 extern u8    data_0209d660;
 extern u8    data_0209d684;
 extern Matrix4x3 data_020a0e68;
-extern SharedFilePtr data_ov085_021305d8;
+/* MIPS's model-file handle, owned and constructed by daMip_c.cpp's static
+ * init. Same TU-local wrapper spelling as the owning TU. */
+struct DaMipModelFile : SharedFilePtr {
+    u32 words[2];
+
+    DaMipModelFile(u32 fileID);
+    ~DaMipModelFile();
+};
+extern DaMipModelFile data_ov085_021305d8;
 extern MipKeyState data_ov085_0213071c;
 extern MipKeyState data_ov085_0213072c;
+
+/* PMF literals in unowned .data; the initializer copies them pairwise
+ * into the two state records below. */
+extern MipKeyPMF data_ov085_02130184;
+extern MipKeyPMF data_ov085_0213018c;
+extern MipKeyPMF data_ov085_0213017c;
+extern MipKeyPMF data_ov085_02130174;
 
 }
 
@@ -367,3 +379,11 @@ extern "C" daObj_Mip_Key_c *daObj_Mip_Key_c_classInit(void)
 {
     return new daObj_Mip_Key_c();
 }
+
+
+/* Static-init globals (was the handwritten __sinit_ov085_0212f9bc shard).
+ * Each 16-byte state record takes its enter/execute PMFs from the .data
+ * literals above. */
+// @symbol __sinit_daObj_Mip_Key_c.cpp
+MipKeyState data_ov085_0213071c = { data_ov085_02130184, data_ov085_0213018c };
+MipKeyState data_ov085_0213072c = { data_ov085_0213017c, data_ov085_02130174 };

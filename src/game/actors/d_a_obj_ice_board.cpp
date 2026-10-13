@@ -3,19 +3,55 @@
  * mesh collider you can stand on until a ground pound or a mega-Mario
  * hit breaks it -- one sound, three particle systems, then gone.
  *
+ * _ZTS15daObjIceBoard_c 0x02113afc. _ZTI15daObjIceBoard_c 0x02113af0.
+ * _ZTV15daObjIceBoard_c 0x02113b34. InitResources is the key function;
+ * the destructor stays inline in the header, declared last: D1 at
+ * 0x021127bc, D0 at 0x02112800, in cartridge order.
+ *
  * Order is load-bearing: source runs REVERSE of ROM (highest address
- * first). Do not reorder. The destructor stays inline in the header,
- * declared last.
+ * first). Do not reorder.
  */
+
+// leftovers:
+// - dBgW_KcMbg::SetFile takes Fix12<int> by value, so the call in this TU's
+//   InitResources keeps the mangled spelling (the member form emits
+//   different code there).
+// - The daObjIceBoard_c_* file-handle names are this TU's own; the retired
+//   shard's data_ov018_* labels for the same addresses are dropped from
+//   symbols.txt with their decl_common.h lines.
 
 #include "daObjIceBoard_c.h"
 #include "Player.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
 
+/* File-scope objects at the end of this file construct the two resource
+ * handles (model file 0x472, collision file 0x473). mwcc emits
+ * __sinit_d_a_obj_ice_board.cpp from those definitions. The wrapper names
+ * are local; the handle constructors and destructors are the ROM
+ * resource-family functions, aliased in the manifest. The definitions
+ * carry the TU's daObjIceBoard_c_* names the code already uses (mecha05 /
+ * wcmizu precedent); the retired shard's data_ov018_* labels for the same
+ * addresses are dropped from symbols.txt, and their stale decl_common.h
+ * lines with them (S42). */
+struct IceBoardModelFile : SharedFilePtr {
+    u32 words[2];
+
+    IceBoardModelFile(u32 fileID);
+    ~IceBoardModelFile();
+};
+
+struct IceBoardCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    IceBoardCollisionFilePtr(u32 fileID);
+    ~IceBoardCollisionFilePtr();
+};
+
+extern IceBoardModelFile daObjIceBoard_c_ModelFile;
+extern IceBoardCollisionFilePtr daObjIceBoard_c_ClsnFile;
+
 extern "C" {
-extern SharedFilePtr daObjIceBoard_c_ClsnFile;
-extern SharedFilePtr daObjIceBoard_c_ModelFile;
 extern CLPS_Block data_ov002_0210d754;
 
 /* Particle::System::NewSimple's true signature takes Fix12<int> by value.
@@ -25,7 +61,7 @@ extern CLPS_Block data_ov002_0210d754;
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
 
 /* dBgW_KcMbg::SetFile likewise takes Fix12<int> by value. A real member
- * call on this TU's InitResources is 9/10 MATCH -- InitResources DIFFs. */
+ * call on this TU's InitResources emits different code there. */
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale,
     s16 angY, CLPS_Block *clps);
@@ -157,3 +193,8 @@ void daObjIceBoard_c::OnHitByMegaChar(Player &player)
  * dBgW_KcMbg, then dActor_c. D0's trailing deallocation is the inherited
  * inline operator delete, which is why nothing here names a heap.
  */
+
+/* Static-init globals (was the handwritten __sinit_ov018_02112e00 shard).
+ * Definition order is the retail initializer construction order. */
+IceBoardModelFile daObjIceBoard_c_ModelFile(0x472);
+IceBoardCollisionFilePtr daObjIceBoard_c_ClsnFile(0x473);

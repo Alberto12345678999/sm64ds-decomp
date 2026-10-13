@@ -26,7 +26,7 @@
  * copies the handler pointer-to-members into data_ov100_02148a1c, which
  * Behavior calls through.
  *
- * Known limits:
+ * leftovers:
  * - ModelAnim::SetAnim stays mangled: it takes Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
  * - SharedFilePtr carries no fields yet, so the loaded file pointer in a
@@ -34,6 +34,10 @@
  * - (Vector3 *)&mPosX: dActor_c stores the position as three scalars.
  * - data_0209caa0 / data_0209f32c are the arm9 level-state words that
  *   carry the "has water" flag and the water height; neither is named yet.
+ * - RawMatrix4x3 / RawVector3_16 are POD views whose aggregate copies
+ *   keep the ROM's ldm/stm / halfword-move shapes.
+ * - func_0203b9b4, func_0201267c, RandomIntInternal, the Vec3_*
+ *   helpers and data_0209e650 keep linker names.
  */
 
 #include "daFish_c.h"
@@ -47,11 +51,44 @@ struct daFishState {
     void (daFish_c::*func)();
 };
 
+/* File-scope objects at the end of this file construct the six resource
+ * handles (model files 0x447/0x448/0x44a, animation files 0x44b/0x44c/0x449)
+ * and fill the seven-entry state table. mwcc emits __sinit_d_a_fish.cpp
+ * from those definitions. The wrapper names are local; the handle
+ * constructors and destructors are the ROM resource-family functions,
+ * aliased in the manifest. */
+struct FishModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    FishModelFilePtr(u32 fileID);
+    ~FishModelFilePtr();
+};
+
+struct FishAnimationFileHandle : SharedFilePtr {
+    u32 words[2];
+
+    FishAnimationFileHandle(u32 fileID);
+    ~FishAnimationFileHandle();
+};
+
 extern "C" {
-extern SharedFilePtr data_ov100_021489cc;    /* the shared fish animation */
+extern FishAnimationFileHandle data_ov100_021489cc;    /* the shared fish animation */
+extern FishModelFilePtr data_ov100_021489a4;
+extern FishModelFilePtr data_ov100_021489bc;
+extern FishModelFilePtr data_ov100_021489b4;
+extern FishAnimationFileHandle data_ov100_021489c4;
+extern FishAnimationFileHandle data_ov100_021489ac;
 extern SharedFilePtr *data_ov100_021473a4[]; /* BMD, by mModelIndex */
 extern SharedFilePtr *data_ov100_021473b0[]; /* BCA, by mModelIndex */
 extern daFishState data_ov100_02148a1c[];    /* by mState */
+/* The ROM PMF constants the state table copies from (unlicensed .data). */
+extern daFishState data_ov100_02148450;
+extern daFishState data_ov100_02148460;
+extern daFishState data_ov100_02148448;
+extern daFishState data_ov100_02148468;
+extern daFishState data_ov100_02148458;
+extern daFishState data_ov100_02148470;
+extern daFishState data_ov100_02148478;
 extern int data_0209e650;                    /* the shared random seed */
 extern int data_0209caa0[];
 extern int data_0209f32c;
@@ -428,3 +465,24 @@ void daFish_c::func_ov100_02146280()
 // @symbol _ZN8daFish_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline destructor in the header
    emits D1 then D0 -- the cartridge's order -- and no D2. */
+
+/* Static-init globals (was the handwritten __sinit_ov100_02147bc0 shard).
+ * Definition order is the retail initializer's construction order: the
+ * three model handles (files 0x447/0x448/0x44a), the three animation
+ * handles (files 0x44b/0x44c/0x449), then the seven state records copied
+ * from the ROM PMF constants. */
+FishModelFilePtr data_ov100_021489a4(0x447);
+FishModelFilePtr data_ov100_021489bc(0x448);
+FishModelFilePtr data_ov100_021489b4(0x44a);
+FishAnimationFileHandle data_ov100_021489c4(0x44b);
+FishAnimationFileHandle data_ov100_021489cc(0x44c);
+FishAnimationFileHandle data_ov100_021489ac(0x449);
+daFishState data_ov100_02148a1c[7] = {
+    data_ov100_02148450,
+    data_ov100_02148460,
+    data_ov100_02148448,
+    data_ov100_02148468,
+    data_ov100_02148458,
+    data_ov100_02148470,
+    data_ov100_02148478,
+};

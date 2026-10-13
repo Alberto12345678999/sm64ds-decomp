@@ -31,6 +31,15 @@ struct daKing_Donketu_c : dEnemyBase_c {
        base (0x35c) as the clock they wait on, and set its playback speed
        (speed, 0x368; 0x1000 is 1.0). */
     BlendModelAnim mBlendModelAnim;                        /* 0x30c */
+    /* One state is two member-function pointers: the enter member runs once
+       when the state is installed, the update member every frame. The sixteen
+       records at data_ov073_02123320 .. data_ov073_02123410 are filled in by
+       __sinit_ov073_02122874. */
+    struct State {
+        int (daKing_Donketu_c::*enter)();
+        int (daKing_Donketu_c::*update)();
+    };
+
     /* The current state: the address of one of the sixteen state records
        data_ov073_02123320 .. data_ov073_02123410, each a pair of
        pointers-to-member (enter, then update). ChiefChilly_ChangeState
@@ -172,8 +181,11 @@ struct daKing_Donketu_c : dEnemyBase_c {
     void func_ov073_0211f494(void *pb);
     s32 func_ov073_0211f61c();
     int func_ov073_0211fa74();
+    int func_ov073_0211fbec();
     int func_ov073_0211fbf4();
+    int func_ov073_0211fc70();
     int func_ov073_0211fc78();
+    int func_ov073_0211fe84();
     int func_ov073_0211fe8c();
     short func_ov073_0212000c();
     int func_ov073_0212005c();

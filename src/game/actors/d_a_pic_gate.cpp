@@ -33,10 +33,9 @@
  *   func_ov080_02125fd0  DrawFlat -- emit the flat quad.
  *   func_ov080_02126120 -- the empty state slot.
  *
- * The wave-mesh renderer at 0x021261f4 is the one hole in the run: it sits
- * a div=5 mwccarm 2004/b56 scheduling tie away from the ROM (notes/
- * mwccarm-codegen.md 6cf/6cz) and is parked as a nonmatch draft in
- * src/_ZN11daPicGate_c19func_ov080_021261f4Ev.cpp.
+ * The wave-mesh renderer at 0x021261f4 is matched and enrolled separately in
+ * src/_ZN11daPicGate_c19func_ov080_021261f4Ev.cpp, covering the interval
+ * through 0x021264ec between this file and the class TU.
  *
  * deslop leftovers:
  * - Vertex.texCoord/colour reach the GX ports through literal
@@ -462,12 +461,12 @@ struct Elem { struct Vector3 pos; int dist; int pad[2]; };  /* 0x18 */
 void func_ov080_02125d64(char *c)
 {
     int i;
-    struct Vector3 tmp;
+    struct Vec3 tmp;
     for (i = 0; i < *(unsigned short*)(c + 0x1b8); i++) {
         struct Elem *e = (struct Elem *)(*(char **)(c + 0x1a0) + i * 0x18);
-        tmp = e->pos;
+        tmp = *(struct Vec3 *)&e->pos;
         tmp.z = 0;
-        e->dist = Vec3_Dist((struct Vector3 *)(c + 0x134), &tmp);
+        e->dist = Vec3_Dist((struct Vector3 *)(c + 0x134), (struct Vector3 *)&tmp);
     }
 }
 #pragma cplusplus on

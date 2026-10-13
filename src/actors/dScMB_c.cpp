@@ -13,16 +13,15 @@
  * `#pragma defer_codegen off` it emits D1 (0x02034a78), D0 (0x02034ac0),
  * then a base-object D2 the cartridge does not carry. That pragma also
  * makes emission ROM-ascending, so this file is written in ROM order.
- *
- * Leftover: OAM::Render stays mangled (Fix12 by value). func_02034d34
- * calls the fader at +0x50 through a local vtable view -- dFdColor_c's
- * header does not declare those slots. func_02034b1c writes the global
- * graphCallback_c by offset; it is that object's initializer, not a
- * dScMB_c method, and a member form was not required to match.
- * func_02034fbc stays free (no receiver). classInit stays the literal
- * construction sequence: `return new dScMB_c` would inline a different
- * fader constructor than the cartridge's vtable chain.
  */
+
+// leftovers: OAM::Render stays mangled (Fix12 by value -- this TU's render
+// calls). func_02034d34 calls the fader at +0x50 through the ScMbFader view
+// because dFdColor_c's header does not declare slots m2/m5. func_02034b1c
+// writes the global graphCallback_c by offset (that object's initializer, not
+// a dScMB_c method). func_02034fbc stays free (no receiver). classInit stays
+// the literal construction sequence (`return new` inlines a different fader
+// constructor).
 #include "dScMB_c.h"
 #include "decl_common.h"
 
@@ -195,7 +194,7 @@ s32 dScMB_c::Render()
 // @symbol _ZN7dScMB_c8BehaviorEv
 s32 dScMB_c::Behavior()
 {
-    switch (unk_060) {
+    switch (mStep) {
     case 0:
         if (func_0203d8fc() == 0) break;
         DecompressLZ16((int)data_0208a0e4[func_0200f0bc()], (void *)0x6400000);
@@ -204,7 +203,7 @@ s32 dScMB_c::Behavior()
         data_0209d454 = 0x10;
         *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & ~0x1f00) | 0x1000;
         *(volatile u32 *)0x4001000 = (*(volatile u32 *)0x4001000 & ~0x1f00) | 0x1000;
-        unk_060++;
+        mStep++;
         break;
 
     case 1:
@@ -213,21 +212,21 @@ s32 dScMB_c::Behavior()
             *(int *)&data_020a0c64 = r;
             if (r == 0) break;
         }
-        unk_060++;
+        mStep++;
         /* fallthrough */
     case 2:
-        unk_060++;
+        mStep++;
         /* fallthrough */
     case 3:
-        unk_060++;
+        mStep++;
         /* fallthrough */
     case 4:
         func_0201a244((int)&func_02034fbc, 0, 0xf, 0, 0x1000);
-        unk_060++;
+        mStep++;
         /* fallthrough */
     case 5:
         if (func_0201a1bc() == 0) break;
-        unk_060++;
+        mStep++;
         /* fallthrough */
     case 6:
         if (func_0203d7b8() != 0) break;
@@ -235,19 +234,19 @@ s32 dScMB_c::Behavior()
         func_0200f13c();
         func_0203d930();
         func_020308b4();
-        unk_060++;
+        mStep++;
         /* fallthrough */
     case 7:
         if (func_020308a8() == 0) break;
         dScene_c::StartSceneFade(6, 0, 0x7fff);
         func_02012790(0x11f);
-        unk_060++;
+        mStep++;
         break;
     }
 
-    if (unk_060 < 8) {
-        unk_064++;
-        if (unk_064 >= 0x1518) {
+    if (mStep < 8) {
+        mTimeout++;
+        if (mTimeout >= 0x1518) {
             data_0209fc54 = 1;
         }
     }
@@ -280,8 +279,8 @@ void func_02034fbc(void)
 // @symbol _ZN7dScMB_c13InitResourcesEv
 s32 dScMB_c::InitResources()
 {
-    volatile u16 sp4;
-    volatile u16 sp6;
+    volatile u16 fillMain;
+    volatile u16 fillSub;
 
     func_02053b98();
     *(volatile u32 *)0x4001000 &= ~0x10000;
@@ -295,10 +294,10 @@ s32 dScMB_c::InitResources()
     *(volatile u16 *)0x400100a = (*(volatile u16 *)0x400100a & 0x43) | 0x408;
     *(volatile u16 *)0x400100a &= ~0x40;
 
-    sp4 = 0xffff;
-    MultiStore16(sp4, (char *)0x5000000, 2);
-    sp6 = 0xffff;
-    MultiStore16(sp6, (char *)0x5000400, 2);
+    fillMain = 0xffff;
+    MultiStore16(fillMain, (char *)0x5000000, 2);
+    fillSub = 0xffff;
+    MultiStore16(fillSub, (char *)0x5000400, 2);
 
     {
         char *vram = (char *)0x6400000;
@@ -324,8 +323,8 @@ s32 dScMB_c::InitResources()
     func_02034b1c((void *)&data_020a0c68, (int)this);
 
     *(void **)&data_0209d4a8 = (void *)&data_020a0c68;
-    unk_060 = 0;
-    unk_064 = 0;
+    mStep = 0;
+    mTimeout = 0;
     dScene_c::SetFaders(&fader);
 
     fader.color = 0x7fff;

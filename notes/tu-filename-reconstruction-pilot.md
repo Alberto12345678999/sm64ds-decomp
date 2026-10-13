@@ -67,11 +67,11 @@ assignments are:
 | under-segmented [arm9](../config/arm9/symbols.txt) / `BOOT`, `STAGE` | 16 initializers from `0x02073a24` through `0x02075154` | medium; cannot distinguish the two sampled classes |
 | [ov002](../config/arm9/overlays/ov002/symbols.txt) Cannon Shutter | [__sinit_ov002_02101968](../src/unnamed/ov002/__sinit_ov002_02101968.c) | high |
 | [ov010](../config/arm9/overlays/ov010/symbols.txt) C1 Trap | [d_a_obj_c1_trap.cpp](../src/game/actors/d_a_obj_c1_trap.cpp) | high |
-| [ov084](../config/arm9/overlays/ov084/symbols.txt) Kuribo | [__sinit_ov084_0213035c](../src/unnamed/ov084/__sinit_ov084_0213035c.c) | medium |
-| [ov063](../config/arm9/overlays/ov063/symbols.txt) Teresa / Boss Teresa | [__sinit_ov063_0211e29c](../src/unnamed/ov063/__sinit_ov063_0211e29c.c) | high; shared multi-profile TU |
+| [ov084](../config/arm9/overlays/ov084/symbols.txt) Kuribo | `__sinit_ov084_0213035c`, folded into [daKrb_c.cpp](../src/actors/daKrb_c.cpp) | medium |
+| [ov063](../config/arm9/overlays/ov063/symbols.txt) Teresa / Boss Teresa | `__sinit_ov063_0211e29c`, folded into [daTrs_c.cpp](../src/actors/daTrs_c.cpp) | high; shared multi-profile TU |
 | [ov014](../config/arm9/overlays/ov014/symbols.txt) Wanwan | `__sinit_ov014_02113118`, folded into [d_a_wanwan.cpp](../src/game/actors/d_a_wanwan.cpp) | high |
-| [ov085](../config/arm9/overlays/ov085/symbols.txt) Mip Key | [__sinit_ov085_0212f9bc](../src/unnamed/ov085/__sinit_ov085_0212f9bc.c) | high |
-| [ov070](../config/arm9/overlays/ov070/symbols.txt) Propeller Heyho | [__sinit_ov070_02122afc](../src/unnamed/ov070/__sinit_ov070_02122afc.c) | high |
+| [ov085](../config/arm9/overlays/ov085/symbols.txt) Mip Key | `__sinit_ov085_0212f9bc`, folded into [daObj_Mip_Key_c.cpp](../src/actors/daObj_Mip_Key_c.cpp) | high |
+| [ov070](../config/arm9/overlays/ov070/symbols.txt) Propeller Heyho | [__sinit_d_a_propeller_heyho.cpp](../src/game/actors/d_a_propeller_heyho.cpp) | high |
 | [ov020](../config/arm9/overlays/ov020/symbols.txt) Book / Book Generator | [__sinit_ov020_02113674](../src/__sinit_ov020_02113674.c) | high; shared multi-class TU |
 | [ov006](../config/arm9/overlays/ov006/symbols.txt) MG Curling | [__sinit_ov006_021304ac](../src/unnamed/ov006/__sinit_ov006_021304ac.c) | medium |
 
@@ -104,7 +104,7 @@ claim about the whole link.
 | `SHOOT_BOOK` | [src/actors/daBook_c.cpp](../src/actors/daBook_c.cpp) (`daBook_c_classInit_SHOOT_BOOK`) | [ov020](../config/arm9/overlays/ov020/symbols.txt) `0x021111a0..0x02112938` | `d_a_book.cpp` | — | class-family candidate | — | TU also yields `d_a_book_gen.cpp` |
 | `BOOK_GENERATOR` | [src/actors/daBook_c.cpp](../src/actors/daBook_c.cpp) (`daBookGen_c_classInit`) | same [ov020](../config/arm9/overlays/ov020/symbols.txt) TU | `d_a_book_gen.cpp` | — | class-family candidate | — | one TU cannot have both mechanical filenames |
 | `MG_CUP` | [src/func_ov006_020e0574.cpp](../src/func_ov006_020e0574.cpp) | [ov006](../config/arm9/overlays/ov006/symbols.txt) `0x020e0574..0x020e0638` | `d_s_mg_cup.cpp` | same | adjacent earlier class interval has `d_s_mg_cup` | B- | factory is split into its own tiny interval |
-| `MG_CURLING` | [src/d_s_mg_curling.cpp](../src/d_s_mg_curling.cpp) | [ov006](../config/arm9/overlays/ov006/symbols.txt) `0x020e0638..0x020e3854` | `d_s_mg_curling.cpp` | same | local `cup -> curling -> curling2` sequence is compatible with related-family order | B- | boundaries are medium/high, not source proof |
+| `MG_CURLING` | [src/actors/dScMgCurling_c.cpp](../src/actors/dScMgCurling_c.cpp) | [ov006](../config/arm9/overlays/ov006/symbols.txt) `0x020e0638..0x020e3854` | `d_s_mg_curling.cpp` | same | local `cup -> curling -> curling2` sequence is compatible with related-family order | B- | boundaries are medium/high, not source proof |
 | `MG_CURLING_J` | [src/d_s_mg_curling2.cpp](../src/d_s_mg_curling2.cpp) | [ov006](../config/arm9/overlays/ov006/symbols.txt) `0x020e6bf4..0x020e6c28` | `d_s_mg_curling2.cpp` | same | immediately follows the `d_s_mg_curling2` method interval | B- | factory-only interval; class and profile suffixes differ |
 
 ## WATERFALL ordering trace
