@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task_id": "renamecycles1013",
-  "base_commit": "08b118098ecb7ce86b85f1215886a4618e268a86",
+  "base_commit": "1d76f967993874f77af8de4d744e138eb3084cec",
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3790",
   "change": "Validate simultaneous renames against all original symbol indices. A source name may legitimately be another planned destination. All preflight guards and non-string-table bytes remain unchanged.",
   "completion": "complete for this verifier defect; actor adoption is separate",
@@ -41,7 +41,8 @@
     "functions_mismatching": 0,
     "data_claims_reproducing": 331,
     "bss_claims": 239,
-    "baseline_limits": "Baseline dsd symbol check reports pre-existing errors; zero new errors. Aggregate ROM-data inventory retains one differing unenrolled record. No unchanged-tree inventory cleanup is claimed."
+    "baseline_limits": "Baseline dsd symbol check reports pre-existing errors; zero new errors. Aggregate ROM-data inventory retains one differing unenrolled record. No unchanged-tree inventory cleanup is claimed.",
+    "binding": "Terminal full-ROM and scoped/static checks ran at production_checkpoint on current main. This descendant changes the report only; code, headers, production config, tools and port trees are identical."
   },
   "private_artifacts": [
     "build/renamecycles1013/regressions-before.log",
@@ -50,5 +51,33 @@
     "build/renamecycles1013/actual-actor-proof.json",
     "build/renamecycles1013/full-rom.log"
   ],
-  "publication": "Tools-only candidate; independent exact-commit review follows. No actor source or manifest is changed."
+  "publication": "Tools-only candidate; independent exact-commit review follows. No actor source or manifest is changed.",
+  "initial_control_base": "08b118098ecb7ce86b85f1215886a4618e268a86",
+  "production_checkpoint": "c12f9af5b458edd088ea4a08450486b668ebafc4",
+  "current_main_validation": {
+    "tested_commit": "c12f9af5b458edd088ea4a08450486b668ebafc4",
+    "tested_base": "1d76f967993874f77af8de4d744e138eb3084cec",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\renamecycles1013\\current-main-full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\renamecycles1013\\current-main-range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\renamecycles1013\\current-main-port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\renamecycles1013\\current-main-langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\renamecycles1013\\current-main-decl.log"
+      }
+    }
+  }
 }
