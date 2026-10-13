@@ -63,10 +63,11 @@ struct M12 { int w[12]; };
 
 struct Vec3 { int x, y, z; };
 
-/* Two remaining vector assignments retain the flat array-copy view. The snapshots
- * in func_ov078_021240a0 and func_ov078_02125448 initialize the existing POD Vec3
- * instead. The shared Vector3 has constructors and an empty destructor, and its
- * copy initialization emits a different sequence at these sites. */
+/* Whole-struct 3-word copies go through an array member: mwccarm block-moves
+ * (ldm/stm) a POD struct copy under -lang c99 but scalarises the same copy
+ * under -lang c++, and an array member forces the block move back. Two sites
+ * still need it; the snapshots in func_ov078_021240a0 and func_ov078_02125448
+ * initialize the POD Vec3 directly instead. */
 struct M3 { int w[3]; };
 struct BCA_File;
 typedef daBombking_c::StateFunction PMF;

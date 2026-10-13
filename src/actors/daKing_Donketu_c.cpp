@@ -251,7 +251,6 @@ extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *self, const 
 extern void _ZN5dCc_c5ClearEv(void *self);
 extern void _ZN5dCc_c6UpdateEv(void *self);
 extern void _ZN14BlendModelAnim7AdvanceEv(void *self);
-
 }
 
 // @symbol _ZN16daKing_Donketu_cD1Ev

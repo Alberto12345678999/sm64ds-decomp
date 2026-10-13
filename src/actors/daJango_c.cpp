@@ -143,7 +143,8 @@ typedef struct { int w[12]; } M48;
 
 /* Array-backed position snapshot: mwccarm 2004/b56 copies these three
    words with the retail ldm/stm sequence in C++. A three-scalar-member
-   assignment selects separate loads/stores here (codegen note 6ay). */
+   assignment selects separate loads/stores here (notes/mwccarm-codegen.md
+   6ay, the struct-copy lever). */
 struct SwoopPositionWords { int w[3]; };
 
 /* shadow struct 'Base' */

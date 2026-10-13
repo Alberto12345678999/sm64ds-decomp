@@ -111,7 +111,8 @@ void dCc_c::Unlink()
 // @symbol func_02014f5c
 /* Resolve a collider hit owner and notify it only when it is the player.
  * Keep the integer predicate: 2004/b56 folds a bool/direct test differently.
- * self remains a dCc_c; the Player notifier still takes its local Arg view. */
+ * self is a dCc_c; the Player notifier reads it through its local Arg view
+ * (the flags word at +0x18 and the m2() position). */
 #define PLAYER_ACTOR_ID 0xbf
 extern "C" void func_02014f5c(dCc_c *self, u32 id)
 {

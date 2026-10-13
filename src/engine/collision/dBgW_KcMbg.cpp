@@ -236,6 +236,7 @@ extern "C" void func_02039e18(dBgW_KcMbg *self, Vector3 *v, Vector3 *res)
 }
 
 // @symbol func_02039db8
+/* Transform v by `mat` with the translation dropped, into res. */
 extern "C" void func_02039db8(dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res)
 {
     Matrix4x3 m;
