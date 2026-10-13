@@ -8,12 +8,13 @@
 # secondary entry points 0x10 bytes inside func_0206d9cc and func_0206da18. With no
 # symbol there, dsd named them with local labels (.L_0206d9dc), which no other object can
 # import, so the whole run func_0206ce90..func_0206da18 used to stay in the gap.
-# config/arm9/symbols.txt now gives both addresses size-0 function rows, the same shape
-# as the ITCM runtime's alias entries (_dadd, _deq): _ZN3IRQ11SetFIQStateEb and
-# _ZN3IRQ11SetIRQStateEb, the names symbols/verified.tsv records. dsd delink emits a
-# global for such a row, and with the hand-asm owners enrolled, tools/lcf_interior.py
-# defines each name at its ROM address in the LCF, since mwccarm cannot export a second
-# symbol from one asm block. The twelve functions are enrolled `complete`.
+# config/arm9/symbols.txt now gives both addresses named label rows, the same shape as
+# the ITCM runtime's interior entries (_dadd_core, _dsub_core): _ZN3IRQ11SetFIQStateEb
+# and _ZN3IRQ11SetIRQStateEb, the names symbols/verified.tsv records. A label is not a
+# function, so neither moves the function count. With the hand-asm owners enrolled,
+# tools/lcf_interior.py defines each name at its ROM address in the LCF, since mwccarm
+# cannot export a second symbol from one asm block. The twelve functions are enrolled
+# `complete`.
 
 # --- rejected by mwldarm despite passing eligibility ---
 # _ZN17dExtShadowModel_c10InitCuboidEv / _ZN17dExtShadowModel_c12InitCylinderEv CAME OFF
