@@ -138,13 +138,10 @@
         "blind": 0
       }
     ],
-    "overrides": []
+    "overrides": [],
+    "strict_bytes": 12252
   },
   "remaining": "Split actor fields still require explicit source views; two other copy sites and scalar ABI/unknown handler boundaries remain. The current factory is already native new daBombking_c(); manual factory descriptions belong only to historical findings. This does not claim complete field/state reconstruction.",
-  "pending": [
-    "committed full-ROM and static checks",
-    "independent exact Source review"
-  ],
   "inherited_ids": [
     "BKG-01",
     "BKG-02",
@@ -163,5 +160,46 @@
     "SNM-05",
     "SNM-06"
   ],
-  "historical_supersession": "BKG-02/BKG-04 IDs remain recorded; current ordinary intact-object proof owns the entire188-byte data range and complete vtable storage. Prior text-only explanations are historical."
+  "historical_supersession": "BKG-02/BKG-04 IDs remain recorded; current ordinary intact-object proof owns the entire188-byte data range and complete vtable storage. Prior text-only explanations are historical.",
+  "full_ROM": {
+    "checkpoint": "82123ec0966d76fbe8743b30e0dcb1dfed02d3f5",
+    "modules_exact": 106,
+    "modules_total": 106,
+    "exit_code": 0,
+    "log": "build\\bombcopy-adopt1013\\full_rom.log",
+    "limits": "Full modules and owned storage exact. Pre-existing stock dsd missing ITCM symbols and one differing unenrolled ROM-data inventory entry remain distinct."
+  },
+  "committed_checks": {
+    "tested_commit": "82123ec0966d76fbe8743b30e0dcb1dfed02d3f5",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\bombcopy-adopt1013\\full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\bombcopy-adopt1013\\range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\bombcopy-adopt1013\\port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\bombcopy-adopt1013\\langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\bombcopy-adopt1013\\decl.log"
+      }
+    }
+  },
+  "stock_range": {
+    "checked": 52,
+    "verified": 52,
+    "warnings": [],
+    "blocking": 0
+  },
+  "binding": "This report-only descendant retains all src/include/config/tools/port trees from the tested full-ROM checkpoint. Independent final Source review is required separately."
 }
