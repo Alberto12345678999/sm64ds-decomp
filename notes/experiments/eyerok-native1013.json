@@ -4,16 +4,16 @@
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3817",
   "base_commit": "ffb2e5f15f4ebdabca35840976fd4e0c247e9e7c",
   "producer_session": "codex-eyerok-native-producer1013",
-  "scope": "Use native dActor_c::Spawn for both IWANTE hand creations, remove its duplicate raw declaration, and correct Eyerok/RTTI descriptions.",
+  "scope": "Use native dActor_c::Spawn for both IWANTE hands and return new Eyerok() for the factory; remove obsolete raw declarations and correct class/RTTI descriptions.",
   "completion": "partial",
   "source": "src/actors/Eyerok.cpp",
   "manifest": "config/tu_manifest.d/ov066/Eyerok.json",
-  "source_sha256": "ddcc140bca8d0e762165cab38b79079073646dfe3fb7f8d9cce9e27eb78c6086",
-  "manifest_sha256": "6a2def2596ce88765173c6502e3cdc45f61a4fdaeab1739e03926f126a6a5b43",
+  "source_sha256": "ccd727297d21b464a1c2cb64907dea0e79d82aa574ba183f8d01e3bf2409ea9a",
+  "manifest_sha256": "24ee8d238bac887c00708b17e7a67fe798c7c048d46a3d3be8169cf029d13ed6",
   "production_inputs": "Pinned current main and actual merged production tooling; no private override or shared-header/symbol-ledger edit.",
   "registration_mapping": [
     {
-      "from": "@2170",
+      "from": "@2179",
       "to": "@2176",
       "initializer_offset": "0x5cc",
       "initializer_address": "0x211a9e4",
@@ -33,8 +33,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 117,
-        "section_index": 119,
+        "symbol_index": 121,
+        "section_index": 123,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -46,7 +46,7 @@
       }
     },
     {
-      "from": "@2171",
+      "from": "@2180",
       "to": "@2177",
       "initializer_offset": "0x5d8",
       "initializer_address": "0x211a9f0",
@@ -66,8 +66,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 118,
-        "section_index": 121,
+        "symbol_index": 122,
+        "section_index": 125,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -79,7 +79,7 @@
       }
     },
     {
-      "from": "@2172",
+      "from": "@2181",
       "to": "@2178",
       "initializer_offset": "0x5e4",
       "initializer_address": "0x211a9fc",
@@ -99,8 +99,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 119,
-        "section_index": 123,
+        "symbol_index": 123,
+        "section_index": 127,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -112,7 +112,7 @@
       }
     },
     {
-      "from": "@2173",
+      "from": "@2182",
       "to": "@2179",
       "initializer_offset": "0x5f4",
       "initializer_address": "0x211aa0c",
@@ -132,8 +132,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 120,
-        "section_index": 125,
+        "symbol_index": 124,
+        "section_index": 129,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -145,7 +145,7 @@
       }
     },
     {
-      "from": "@2174",
+      "from": "@2183",
       "to": "@2180",
       "initializer_offset": "0x600",
       "initializer_address": "0x211aa18",
@@ -165,8 +165,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 121,
-        "section_index": 127,
+        "symbol_index": 125,
+        "section_index": 131,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -178,7 +178,7 @@
       }
     },
     {
-      "from": "@2175",
+      "from": "@2184",
       "to": "@2181",
       "initializer_offset": "0x60c",
       "initializer_address": "0x211aa24",
@@ -198,8 +198,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 122,
-        "section_index": 129,
+        "symbol_index": 126,
+        "section_index": 133,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -211,7 +211,7 @@
       }
     },
     {
-      "from": "@2176",
+      "from": "@2185",
       "to": "@2182",
       "initializer_offset": "0x614",
       "initializer_address": "0x211aa2c",
@@ -231,8 +231,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 123,
-        "section_index": 131,
+        "symbol_index": 127,
+        "section_index": 135,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -244,7 +244,7 @@
       }
     },
     {
-      "from": "@2177",
+      "from": "@2186",
       "to": "@2183",
       "initializer_offset": "0x61c",
       "initializer_address": "0x211aa34",
@@ -264,8 +264,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 124,
-        "section_index": 133,
+        "symbol_index": 128,
+        "section_index": 137,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -277,7 +277,7 @@
       }
     },
     {
-      "from": "@2178",
+      "from": "@2187",
       "to": "@2184",
       "initializer_offset": "0x628",
       "initializer_address": "0x211aa40",
@@ -297,8 +297,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 125,
-        "section_index": 135,
+        "symbol_index": 129,
+        "section_index": 139,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -310,7 +310,7 @@
       }
     },
     {
-      "from": "@2179",
+      "from": "@2188",
       "to": "@2185",
       "initializer_offset": "0x634",
       "initializer_address": "0x211aa4c",
@@ -330,8 +330,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 126,
-        "section_index": 137,
+        "symbol_index": 130,
+        "section_index": 141,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -343,7 +343,7 @@
       }
     },
     {
-      "from": "@2180",
+      "from": "@2189",
       "to": "@2186",
       "initializer_offset": "0x63c",
       "initializer_address": "0x211aa54",
@@ -363,8 +363,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 127,
-        "section_index": 139,
+        "symbol_index": 131,
+        "section_index": 143,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -376,7 +376,7 @@
       }
     },
     {
-      "from": "@2181",
+      "from": "@2190",
       "to": "@2187",
       "initializer_offset": "0x648",
       "initializer_address": "0x211aa60",
@@ -396,8 +396,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 128,
-        "section_index": 141,
+        "symbol_index": 132,
+        "section_index": 145,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -409,7 +409,7 @@
       }
     },
     {
-      "from": "@2182",
+      "from": "@2191",
       "to": "@2188",
       "initializer_offset": "0x654",
       "initializer_address": "0x211aa6c",
@@ -429,8 +429,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 129,
-        "section_index": 143,
+        "symbol_index": 133,
+        "section_index": 147,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -442,7 +442,7 @@
       }
     },
     {
-      "from": "@2183",
+      "from": "@2192",
       "to": "@2189",
       "initializer_offset": "0x664",
       "initializer_address": "0x211aa7c",
@@ -462,8 +462,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 130,
-        "section_index": 145,
+        "symbol_index": 134,
+        "section_index": 149,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -475,7 +475,7 @@
       }
     },
     {
-      "from": "@2184",
+      "from": "@2193",
       "to": "@2190",
       "initializer_offset": "0x66c",
       "initializer_address": "0x211aa84",
@@ -495,8 +495,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 131,
-        "section_index": 147,
+        "symbol_index": 135,
+        "section_index": 151,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -508,7 +508,7 @@
       }
     },
     {
-      "from": "@2185",
+      "from": "@2194",
       "to": "@2191",
       "initializer_offset": "0x678",
       "initializer_address": "0x211aa90",
@@ -528,8 +528,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 132,
-        "section_index": 149,
+        "symbol_index": 136,
+        "section_index": 153,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -541,7 +541,7 @@
       }
     },
     {
-      "from": "@2186",
+      "from": "@2195",
       "to": "@2192",
       "initializer_offset": "0x684",
       "initializer_address": "0x211aa9c",
@@ -561,8 +561,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 133,
-        "section_index": 151,
+        "symbol_index": 137,
+        "section_index": 155,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -574,7 +574,7 @@
       }
     },
     {
-      "from": "@2187",
+      "from": "@2196",
       "to": "@2193",
       "initializer_offset": "0x694",
       "initializer_address": "0x211aaac",
@@ -594,8 +594,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 134,
-        "section_index": 153,
+        "symbol_index": 138,
+        "section_index": 157,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -607,7 +607,7 @@
       }
     },
     {
-      "from": "@2188",
+      "from": "@2197",
       "to": "@2194",
       "initializer_offset": "0x6a0",
       "initializer_address": "0x211aab8",
@@ -627,8 +627,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 135,
-        "section_index": 155,
+        "symbol_index": 139,
+        "section_index": 159,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -640,7 +640,7 @@
       }
     },
     {
-      "from": "@2189",
+      "from": "@2198",
       "to": "@2195",
       "initializer_offset": "0x6a8",
       "initializer_address": "0x211aac0",
@@ -660,8 +660,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 136,
-        "section_index": 157,
+        "symbol_index": 140,
+        "section_index": 161,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -673,7 +673,7 @@
       }
     },
     {
-      "from": "@2190",
+      "from": "@2199",
       "to": "@2196",
       "initializer_offset": "0x6b4",
       "initializer_address": "0x211aacc",
@@ -693,8 +693,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 137,
-        "section_index": 159,
+        "symbol_index": 141,
+        "section_index": 163,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -706,7 +706,7 @@
       }
     },
     {
-      "from": "@2191",
+      "from": "@2200",
       "to": "@2197",
       "initializer_offset": "0x6c0",
       "initializer_address": "0x211aad8",
@@ -726,8 +726,8 @@
         "binding": "STB_LOCAL"
       },
       "candidate_storage": {
-        "symbol_index": 138,
-        "section_index": 161,
+        "symbol_index": 142,
+        "section_index": 165,
         "section_name": ".bss",
         "section_type": "SHT_NOBITS",
         "section_size": 12,
@@ -750,13 +750,13 @@
     "initializer_bytes": 1960,
     "initializer_typed_edges": 149,
     "initializer_all_bytes_identical": true,
-    "normalized_raw_equal": true,
-    "normal_prepared_equal": true,
+    "normalized_raw_equal": false,
+    "normal_prepared_equal": false,
     "raw_sha256": {
       "baseline": "b84732aba8c920a644bfee380e78b9fe18221cdc1341ba44c949c4186367746a",
-      "native": "5238b291f29a397efb049c8eb4f37fe1d5562b4af4b958662f95d63c8f1698f4"
+      "native": "949ddfb078be2078634e7a1ed5f826e2f650993e8d01ead09d3b76aa324d0761"
     },
-    "prepared_sha256": "c12abff67f91b9f4ddc62d5a0f0797f05fb2728bdba3b3115c3a9013417b1ddf",
+    "prepared_sha256": "febe3f85adceb3fb6342915a29de09ebe3565dae3afdce3b70ee184ef779eae8",
     "strict_rows": 66,
     "bss_records": 63,
     "bss_bytes": 744,
@@ -775,25 +775,126 @@
         "retail_prefix": "0000000024ad1102",
         "slots_equal": true
       }
-    ]
+    ],
+    "currentmain_refusals": {
+      "unmodified_manifest": "intact TU preparation refused: ov066/Eyerok compiler-only output: unlicensed function _ZN10dBgActor_cD2Ev has no compiler_only_output policy; unlicensed function _ZN7Vector3C1Ev has no compiler_only_output policy; unlicensed function _ZN9Matrix4x3D1Ev has no compiler_only_output policy",
+      "mapped_manifest_currentmain_tool": null
+    },
+    "source_sha256": "ccd727297d21b464a1c2cb64907dea0e79d82aa574ba183f8d01e3bf2409ea9a",
+    "manifest_sha256": "24ee8d238bac887c00708b17e7a67fe798c7c048d46a3d3be8169cf029d13ed6"
   },
   "graph_summary": {
-    "raw_entries": 801,
-    "prepared_entries": 756,
-    "raw_equal_after_measured_name_mapping": true,
-    "prepared_equal": true
+    "raw_baseline_edges": 801,
+    "raw_candidate_edges": 805,
+    "prepared_edges": 756,
+    "all_prepared_named_symbols_bytes_storage_graph_equal": true,
+    "all_relocations_accounted": true,
+    "raw_changed_existing_symbols": [
+      "daIwante_c_classInit"
+    ],
+    "raw_added_private_lifecycle_symbols": [
+      "_ZN10dBgActor_cD2Ev",
+      "_ZN7Vector3C1Ev",
+      "_ZN9Matrix4x3D1Ev"
+    ],
+    "bss_records_equal": 63,
+    "candidate_metadata_equal_to_baseline": true
   },
-  "manifest_pairing": "Unchanged main source plus unchanged manifest prepares normally. Native Spawn candidate with old manifest refuses missing @2192; measured 22 input-name mappings restore ordinary production with an entire prepared object identical to main. Canonical names, addresses, bindings and storage remain unchanged.",
+  "manifest_pairing": "Unchanged main source plus its unchanged manifest prepares normally. Combined native candidate with old manifest refuses three unlicensed lifecycle emissions. The measured 22 input-name mappings and exact compiler-output policies restore ordinary production. Complete ELF files differ structurally; every surviving named symbol, body, storage property and all 756 prepared edges equal baseline. Canonical names, addresses, bindings and storage remain unchanged.",
   "metadata_limit": "RTTI off emits no _ZTI/_ZTS for the coined Eyerok name. The vtable preamble typeinfo word is zero instead of retail daIwante_c typeinfo 0x0211ad24; this inherited unowned-table mismatch is unchanged. All 128 slot bytes (32 entries) reproduce with zero blind words. Existing externalization keeps the complete retail table; this report does not claim complete emitted metadata equality.",
   "native_factory_probe": {
-    "adopted": false,
-    "attempt": "Replace manual factory with return new Eyerok(); remove factory-only imports; use existing strict canonical-duplicate policy for emitted Vector3C1 after proving its complete four-byte body at arm9:0x0203d384.",
-    "result": "Factory remains 168 bytes and 12 typed edges with the expected native vtable address-point representation and constructor-callback spelling. Vector3C1 is VERIFIED with zero blind words. Ordinary full production refuses newly emitted _ZN10dBgActor_cD2Ev and _ZN9Matrix4x3D1Ev without compiler_only_output policies. Original factory retained; no new lifecycle removal policy adopted.",
-    "failure_log": "build/eyerok-native1013/prove.log",
-    "candidate_script": "build/eyerok-native1013/factory-combined-proof.py",
-    "factory_body_probe": "build/eyerok-native1013/factory-probe/proof.json",
-    "callback_proof": "build/eyerok-native1013/callback-proof.json",
-    "next_action": "A future owned native-factory continuation must establish complete lifecycle-output ownership and metadata before adding exact policies; no measured impossibility claim."
+    "adopted": true,
+    "factory_bytes": 168,
+    "typed_edges": 12,
+    "destructor_bytes": 164,
+    "callback": "Emitted Vector3C1 is independently VERIFIED against complete 4-byte arm9:0x0203d384 body; standard canonical-duplicate policy retargets the real Vector3[20] constructor callback. Native vtable +8 is ordinarily rebased to the retail slot address point.",
+    "lifecycle_ownership": {
+      "_ZN10dBgActor_cD2Ev": {
+        "configured_homes": null,
+        "section_index": 120,
+        "section_name": ".text",
+        "size": 56,
+        "binding": "STB_LOPROC",
+        "occupants": [
+          "$a",
+          "$d",
+          "_ZN10dBgActor_cD2Ev"
+        ],
+        "incoming": [],
+        "outgoing": [
+          {
+            "source_section": 120,
+            "source_name": ".text",
+            "offset": 20,
+            "target": "_ZN10dBgW_KcMbgD1Ev",
+            "target_section": "SHN_UNDEF",
+            "type": 1,
+            "addend": -8
+          },
+          {
+            "source_section": 120,
+            "source_name": ".text",
+            "offset": 28,
+            "target": "_ZN5ModelD1Ev",
+            "target_section": "SHN_UNDEF",
+            "type": 1,
+            "addend": -8
+          },
+          {
+            "source_section": 120,
+            "source_name": ".text",
+            "offset": 36,
+            "target": "_ZN8dActor_cD2Ev",
+            "target_section": "SHN_UNDEF",
+            "type": 1,
+            "addend": -8
+          },
+          {
+            "source_section": 120,
+            "source_name": ".text",
+            "offset": 52,
+            "target": "_ZTV10dBgActor_c",
+            "target_section": "SHN_UNDEF",
+            "type": 2,
+            "addend": 8
+          }
+        ]
+      },
+      "_ZN9Matrix4x3D1Ev": {
+        "configured_homes": null,
+        "section_index": 119,
+        "section_name": ".text",
+        "size": 4,
+        "binding": "STB_LOPROC",
+        "occupants": [
+          "$a",
+          "_ZN9Matrix4x3D1Ev"
+        ],
+        "incoming": [],
+        "outgoing": []
+      },
+      "standard_plan": {
+        "keep": null,
+        "drop": [
+          119,
+          120,
+          121
+        ],
+        "externalise": [],
+        "dead": [
+          "_ZN10dBgActor_cD2Ev",
+          "_ZN9Matrix4x3D1Ev"
+        ],
+        "referenced": [],
+        "rebase": [
+          5,
+          7,
+          9
+        ],
+        "error": null
+      }
+    },
+    "historical_first_refusal": "Initial private policy omitted dBgActorD2 and Matrix4x3D1 and failed closed. The subsequent complete ownership audit proved both unreferenced, private and without configured homes; ordinary exact deadstrip policies resolved that proof gap. This was not a codegen matching floor."
   },
   "lineage": {
     "original_private_source_candidate": {
@@ -811,7 +912,6 @@
     "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3817",
     "items": [
       "Coined Eyerok identity and RTTI-off metadata boundary remain.",
-      "Original manual factory retained after the bounded native-factory policy refusal.",
       "Raw actor/player/dust-position walks, EVec3/M48/Vec4 scaffolding, PMF/state representation, scalar Fix12 ABI declarations and unnamed helpers remain partial."
     ]
   },

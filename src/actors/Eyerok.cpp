@@ -2837,40 +2837,16 @@ extern "C" void func_ov066_0211a35c(void *a, void *b, void *c)
 }
 #pragma long_calls off
 
-extern "C" void *_ZN10dBgActor_cC2Ev(void *thiz);
-extern int _ZTV6Eyerok[];
-extern "C" void *_ZN14BlendModelAnimC1Ev(void *thiz);
-extern "C" void *_ZN5ModelC1Ev(void *thiz);
-extern "C" void *_ZN10dCcAcPos_cC1Ev(void *thiz);
-extern "C" void *_ZN10dBgW_KcMbgC1Ev(void *thiz);
-extern "C" void *_ZN17dExtShadowModel_cC1Ev(void *thiz);
-extern "C" void *_ZN15TextureSequenceC1Ev(void *thiz);
-extern "C" void __cxa_vec_ctor(void *p, int a, int b, void *f1, void *f2);
-extern "C" Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
-extern "C" void func_0203d384(void);
-
 // @symbol daIwante_c_classInit
 /* Reconstructed source-style name: SM64DS proves daIwante_c through RTTI,
  * allocation size, vtable identity, and the IWANTE registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Eyerok_Spawn. */
-extern "C" void *daIwante_c_classInit(void)
+extern "C" Eyerok *daIwante_c_classInit(void)
 {
-    unsigned char *c = (unsigned char *)_ZN7fBase_cnwEj(0x874);
-    if (c) {
-        _ZN10dBgActor_cC2Ev(c);
-        *(void **)c = _ZTV6Eyerok;
-        _ZN10dCcAcPos_cC1Ev(c + 0x320);
-        _ZN14BlendModelAnimC1Ev(c + 0x360);
-        _ZN5ModelC1Ev(c + 0x3d0);
-        _ZN17dExtShadowModel_cC1Ev(c + 0x420);
-        _ZN15TextureSequenceC1Ev(c + 0x448);
-        __cxa_vec_ctor(c + 0x4dc, 0x14, 0xc, (void *)func_0203d384,
-                       (void *)_ZN7Vector3D1Ev);
-        _ZN10dBgW_KcMbgC1Ev(c + 0x674);
-    }
-    return c;
+    return new Eyerok();
 }
+
 /* ---- the static initializer's objects. __sinit_Eyerok.cpp, emitted from
  * these definitions at the bottom of the file, constructs the 22 resource
  * handles (3 model, 10 animation, 4 texture-sequence, 5 collision) and
