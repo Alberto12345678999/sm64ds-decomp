@@ -68,6 +68,30 @@
 // therefore not copy-born the way any of those spellings is; the open question
 // is the def that is not a copy at that phase yet still emits a bare `mov`.
 //
+// 2026-10-13 (second pass, ~600 cells): that question is answered in part. The
+// rank test is per WEB, not per def: a non-copy def on the THEN arm (`fl = fp + 0`
+// does not count, it folds; `fl = fp | sb` does) de-ranks the limit exactly like
+// one on the else arm, so the classifier asks whether EVERY def of the web is a
+// copy. Everything that folds before that phase is inert: identity arithmetic
+// on either arm (`+0 -0 *1 /1 |0 ^0 <<0 >>0 &-1 -(-x) ~~x`), dead non-copy defs
+// of the limit above the if, a u16/s16 callee return (the caller does not
+// re-extend), an inline reference setter, an inline helper that returns the
+// limit, abs applied to the limit. The one HONEST lever found is the abs on the
+// f20 value spelled as a ternary -- `vf = (vf < 0) ? -vf : vf;` or the operand
+// `(vf < 0) ? -vf : vf`, or an inline Abs() written as a ternary; the same abs as
+// an if-statement does nothing. The select makes the limit land with bare movs
+// (`movne r8, fp` / `mov r8, r0`), but in the wrong slot: 246 words, self sb,
+// limit r8, umull-hi r8. Adding a dead `sb = 0` or `sba = 0` before the if, or
+// putting the flags into the f20 local, rotates it again to 112-129 (self r8,
+// f20 r7, limit r7 sharing with the just-dead f20, HorzLen/c66c swapped to
+// r6/r5). Both plateaus are flat: the limit's declaration rank, every other
+// local's rank (120 permutations of the five main-line locals), a late-declared
+// temp for the abs, dead zero stores of every local at five positions, abs
+// before the if, the limit as a `?:` over the whole if, and reusing the limit
+// local for the sp4c tz or the sp28 reload (size change) all stay inside
+// {112, 127, 246}. The ROM's order (self r8 first, f20 r5, limit sl last) is
+// reached only by the `+ sb` cell above, which is not honest source. 72 stands.
+//
 // L0() below was a u64-mask launder (`& 0xFFFFFFFFFFFFFFFFLL` through a long long
 // round trip) that lane BANK measured dead under 2004/b56; it is kept as a no-op
 // macro rather than inlined at every call site so the history stays reviewable.
