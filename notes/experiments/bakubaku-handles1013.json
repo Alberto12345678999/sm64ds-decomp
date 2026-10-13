@@ -138,13 +138,10 @@
         "blind": 0
       }
     ],
-    "overrides": []
+    "overrides": [],
+    "strict_bytes": 5596
   },
   "remaining": "SharedFilePtr remains globally layout-free and actual local resource subclasses retain their declared-only lifecycle aliases. Scalar Fix12 calls, local vectors and PMF forms remain partial reconstruction.",
-  "pending": [
-    "committed full-ROM and static checks",
-    "independent exact Source review"
-  ],
   "handle_layout": {
     "actual_ds_measurements": {
       "sizeof(BakubakuModelFilePtr)": 8,
@@ -292,5 +289,52 @@
         "blind": 0
       }
     }
-  ]
+  ],
+  "full_ROM": {
+    "checkpoint": "f172c5e629a2552cb304f05d9432178a22e7a925",
+    "modules_exact": 106,
+    "modules_total": 106,
+    "exit_code": 0,
+    "log": "build\\bakubaku-handles1013\\full_rom.log",
+    "limits": "Full modules and owned storage exact. Pre-existing stock dsd missing ITCM symbols and one differing unenrolled ROM-data inventory entry remain distinct."
+  },
+  "committed_checks": {
+    "tested_commit": "f172c5e629a2552cb304f05d9432178a22e7a925",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\bakubaku-handles1013\\full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\bakubaku-handles1013\\range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\bakubaku-handles1013\\port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\bakubaku-handles1013\\langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\bakubaku-handles1013\\decl.log"
+      }
+    }
+  },
+  "stock_range": {
+    "checked": 25,
+    "verified": 24,
+    "warnings": [
+      {
+        "name": "__sinit_daBakubaku_c.cpp",
+        "verdict": "BLIND-8",
+        "blind": 8
+      }
+    ],
+    "blocking": 0
+  },
+  "binding": "This report-only descendant retains all src/include/config/tools/port trees from the tested full-ROM checkpoint. Independent final Source review is required separately."
 }
