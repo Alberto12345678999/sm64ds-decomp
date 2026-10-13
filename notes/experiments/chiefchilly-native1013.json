@@ -43,7 +43,7 @@
           "diffs": []
         },
         {
-          "symbol": "_INIT_ov073_daKing_Donketu_c",
+          "symbol": "__sinit_daKing_Donketu_c.cpp",
           "verdict": "BLIND-18",
           "blind": 18,
           "diffs": []
