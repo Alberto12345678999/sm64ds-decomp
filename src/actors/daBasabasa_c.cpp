@@ -43,7 +43,10 @@ struct BasabasaModelFilePtr : SharedFilePtr {
 };
 
 struct BasabasaAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
+    /* SharedFilePtr::Load and func_02017e0c use this local eight-byte layout. */
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
 
     BasabasaAnimationFileHandle(u32 fileID);
     ~BasabasaAnimationFileHandle();
@@ -87,9 +90,6 @@ extern daBasabasa_c::State data_ov065_0211d6f0;   /* return */
 extern daBasabasa_c::State data_ov065_0211d700;   /* perch */
 extern daBasabasa_c::State data_ov065_0211d710;   /* drop */
 
-/* The loaded file behind a SharedFilePtr is its second word. */
-#define LOADED_FILE(ptr) ((void *)((int *)&(ptr))[1])
-
 // @symbol _ZN12daBasabasa_cD1Ev
 // @symbol _ZN12daBasabasa_cD0Ev
 /* The compiler writes the whole body: the vtable store, the dExtShadowModel_c, both
@@ -113,7 +113,7 @@ void daBasabasa_c::func_ov065_0211704c()
     flags = mdCcAc_c.hitFlags;
     if (flags & 0x2400) {
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, LOADED_FILE(data_ov065_0211d690), 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -131,14 +131,14 @@ void daBasabasa_c::func_ov065_0211704c()
     if (flags & 0x40000) {
         mDeathState = 4;
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, LOADED_FILE(data_ov065_0211d690), 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
         return;
     }
     if (flags & 0x4380) {
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, LOADED_FILE(data_ov065_0211d690), 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 3;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -146,7 +146,7 @@ void daBasabasa_c::func_ov065_0211704c()
     }
     if (flags & 0x40) {
         mIsFlying = 1;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, LOADED_FILE(data_ov065_0211d690), 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
         mDeathState = 2;
         func_ov002_020aea30(this, p, 0);
         func_02012694(0x112, &mCamSpacePosX);
@@ -280,7 +280,7 @@ int daBasabasa_c::EnterChase()
     mFlags = 0x10000003;
     mStateTimer = 0x64;
     mModelAnim1.speed = 0x2000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, LOADED_FILE(data_ov065_0211d690), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim1, data_ov065_0211d690.filePtr, 0, 0x1000, 0);
     mTargetAngleY = ((RandomIntInternal(&data_0209e650) >> 8) & 0xf) << 0xc;
     return 1;
 }
@@ -310,7 +310,7 @@ int daBasabasa_c::EnterDrop()
     mTerminalVelocity = -0xa000;
     mIsFlying = 0;
     mModelAnim2.speed = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, LOADED_FILE(data_ov065_0211d6a0), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
     PoofPos vec(mPosX, mPosY + 0x64000, mPosZ);
     mStateTimer = 0x19;
     if (mPosY == 0x898000)
@@ -344,7 +344,7 @@ int daBasabasa_c::EnterPerch()
     mFlags = 3;
     mIsFlying = 0;
     mModelAnim2.speed = 0x1000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, LOADED_FILE(data_ov065_0211d6a0), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim2, data_ov065_0211d6a0.filePtr, 0, 0x1000, 0);
     return 1;
 }
 
