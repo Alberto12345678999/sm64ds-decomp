@@ -76,8 +76,8 @@
  *   +0x200) has no proven class, so its helpers and the C/PMF/PMF0
  *   dispatch tables over it stay free.
  *   Shadow windows OamEnt, E, C, S and the per-function windows (E5cd0,
- *   Ent5b98, Obj2e30 and the rest) remain where a shared class is not yet proven; the ones over
- *   daDemo_c were moved onto real members.
+ *   Ent5b98, Obj2e30 and the rest) remain where a shared class is not yet
+ *   proven; the ones over daDemo_c were moved onto real members.
  *   common.h must precede daDemo_c.h: ModelAnim.h's nested Matrix4x3
  *   otherwise wins and scalarizes Behavior's 12-word matrix copy.
  */
@@ -446,8 +446,9 @@ extern OamAttr data_ov002_0210bddc;
 extern void SetSubBg0Offset(int a, int b);
 extern void SetSubBg1Offset(int a, int b);
 /* local extern dropped: decl_common.h already declares _ZN6Memory16operator_delete2EPv(void*) */
-/* The scene fader. Kept as the void * this file has always declared: the
-   tree's declarations of it disagree, and 23f0 casts at the one use. */
+/* The scene fader: dScene_c::SetFaders(dFdBrightness_c *) assigns it. Kept
+   as the void * this file has always declared (the tree's declarations
+   disagree); 23f0 casts at the one use. */
 extern void* data_0209f5bc;
 extern u8 data_ov002_02111144;
 extern u32 data_020a0db0;
@@ -579,7 +580,7 @@ extern int data_ov002_02110db8;
 extern int data_ov002_0210b958;
 /* local extern dropped: decl_common.h declares data_0209b41c */
 extern s16 Vec3_VertAngle(const struct Vector3* v1, const struct Vector3* v0);
-extern void ApproachAngle(s16* target, s16 cur, int a, int step, int flag);
+extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
 extern int _Z14ApproachLinearRiii(int* p, int a, int b);
 extern void func_02012790(int x);
 extern void func_0201f138(void);
@@ -812,13 +813,11 @@ void daDemo_c::func_ov002_020f20f4()
     {
       if ((data_020a0db0 & 1) == 0)
       {
-        /* q is &spriteX[i] and o + 0x1c is &spriteVelX[i]. Spelled as fields
-           the step builds 4 bytes long through q = &spriteX[i] and 4 bytes
-           short with plain field reads; these two byte-offset spellings are
-           what the ROM compiles. */
-        s16 *o = (s16 *) (d + ((i & 0xFFFFFFFFFFFFFFFF) * 2));
+        /* q is &spriteX[i] spelled as byte arithmetic: q = &spriteX[i]
+           builds 4 bytes long, and reading spriteX[i] directly builds 4
+           bytes short. */
         s16 *q = (s16 *) ((int) (((char *) ((s16 *) (d + (i * 2)))) + 0xc));
-        s16 vel = *((s16 *) (((char *) o) + 0x1c));
+        s16 vel = ((ScrollState *)d)->spriteVelX[i];
         s16 pos = *q;
         int *seed = &data_0209e650;
         *q = (s16) (pos + vel);
@@ -945,8 +944,9 @@ int daDemo_c::func_ov002_020f23d0()
  *   3  fade step and horizontal scroll; the fade step advances the state
  *      when fadeLevel reaches zero
  *   4  wait for unk_100 == 4, horizontal scroll
- *   5  as 2 until bg1Y 0xe0, then clear bits 0..1 of data_0209d454 into
- *      bits 8..12 of 0x4001000; horizontal scroll
+ *   5  on frames with FRAME_TIMER bit 0 clear, bg1Y++ and bg0Y--; at
+ *      bg1Y 0xe0, next state and bits 0..1 of data_0209d454 cleared into
+ *      bits 8..12 of 0x4001000. Also runs the horizontal scroll (237c)
  *   6  nothing
  * Every state then runs 2340, 2210 and 20f4. */
 
@@ -3918,9 +3918,8 @@ int daDemo_c::func_ov002_020f6b28(unsigned char *p)
 // @symbol _ZN8daDemo_c19func_ov002_020f6b4cEPh
 /* Script handler 15: turn to face the point whose whole-unit coordinates
  * are the unaligned shorts at p+0/+2/+4, and take the short at p+6 as the
- * horizontal speed. The legacy
- * per-function file recorded its match under mwccarm 1.2/sp2p3; this TU
- * builds under the 2004/b56 pin. */
+ * horizontal speed. The legacy per-function file recorded its match under
+ * mwccarm 1.2/sp2p3; this TU builds under the 2004/b56 pin. */
 
 int daDemo_c::func_ov002_020f6b4c(unsigned char *p)
 {
@@ -4094,9 +4093,10 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 /* ROM ordinal 128 -- func_ov002_020f6f48, 0x020f6f48, size 0xd8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6f48EP7Vector3i
-/* Turn mAngleX/mAngleY toward v by up to amt, then set unk_0a4, mVertSpeed
- * and unk_0ac to unk_0f4 times rotation elements 6..8 of the animated
- * model's matrix. */
+/* Turn mAngleX/mAngleY toward v by 1/amt of the remaining difference per
+ * call (step capped at 0x4000, 90 degrees), then set unk_0a4, mVertSpeed and
+ * unk_0ac to unk_0f4 times rotation elements 6..8 of the animated model's
+ * matrix. */
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
 {
@@ -4249,10 +4249,11 @@ int daDemo_c::func_ov002_020f7384(unsigned char *flag, int val)
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f7410EPhi
 /* Script handler 4. On the record's start frame, when in[0] is non-zero, it
- * stores a fixed vector at mModel + 0x50 (the param_c tail base) and fixed
- * angles. Every frame mPos = that vector times INV_VIEW_MATRIX_ASR_3, then
- * << 3; unk_0f4 approaches in[0] << 12 by in[1] << 8 and drives mOpacity and
- * the blend registers at 0x4000050. */
+ * stores a fixed vector at mModel + 0x50 (the param_c tail base), sets fixed
+ * angles and calls func_0201f138. Every frame mPos = that vector times
+ * INV_VIEW_MATRIX_ASR_3, then << 3; unk_0f4 approaches in[0] << 12 by
+ * in[1] << 8 (func_0201ef38 is called when it arrives at 0 with in[1]
+ * non-zero) and drives mOpacity and the blend registers at 0x4000050. */
 
 int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 {
@@ -4623,6 +4624,7 @@ int daDemo_c::CleanupResources()
   int r1 = param1;
   if (r1 == 0x2e) return func_ov002_020f63a0();
   if (r1 == 0x2f) return func_ov002_020f23d0();
+  /* The guards are compiled in: bare deletes build 0x70, not the ROM's 0x80. */
   if (mModel) delete mModel;
   if (mModelAnim) delete mModelAnim;
   return 1;
