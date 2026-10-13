@@ -17,16 +17,16 @@
 // - func_ov080_02124418 stays free. Its first argument is a daChoro_Rock_c,
 //   so it is not a daChoropu_c method.
 // - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init, Player::Hurt,
-//   Particle::System::New/NewSimple and dActor_c::Spawn stay mangled. The
-//   headers spell Fix12i, which would not match 5Fix12IiE. Throw's spawn
-//   id stays `py ? 0x137 : 0x137`.
+//   Particle::System::New/NewSimple retain scalar mangled declarations for
+//   their by-value Fix12 parameters. Throw's spawn id stays
+//   `py ? 0x137 : 0x137`.
 // - LAUND() in func_ov080_02124088 keeps the cylinder flags, mFlags and
 //   mTimesHit addresses opaque.
 // - Throw reads mAngleX/Y/Z as unsigned short. Hidden reads mHasTurn as
 //   signed char.
-// - data_ov080_021283d0..021283e8 stay int[] (animation slots SetAnim
-//   reads at word 1). File ids: mole model 0x2d1, rock model 0x2d6,
-//   animations 0x2d2..0x2d5.
+// - Model handle layout remains words[2]. The local animation handles use
+//   the measured fileID, numRefs and filePtr fields. File ids: mole model
+//   0x2d1, rock model 0x2d6, animations 0x2d2..0x2d5.
 // - SetAnim's flag word is 0 in InitResources and 0x40000000 in the state
 //   handlers. Collision words 0x200000 (mole) and 0x200004 (rock), and
 //   Player::Hurt's (2, 0xc000, 1, 0, 1) / (1, 0xc000, 1, 0, 1), are still
@@ -64,7 +64,10 @@ struct ChoropuModelFile : SharedFilePtr {
 };
 
 struct ChoropuAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
+    /* SharedFilePtr::Load and func_02017e0c use this local eight-byte layout. */
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
 
     ChoropuAnimationFilePtr(u32 fileID);
     ~ChoropuAnimationFilePtr();
@@ -85,8 +88,6 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int a,
 void  _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int x, int y, int z, void *vel, void *cb);
-void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int id, unsigned int param,
-    const Vector3 &pos, const Vector3_16 *ang, int area, int unk);
 void  _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int a, int b,
     unsigned int d, unsigned int e, unsigned int f);
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h,
@@ -181,7 +182,7 @@ void daChoropu_c::func_ov080_02123924()
     mModelAnim.Advance();
     if (mModelAnim.Finished()) {
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e8.filePtr, 0x40000000, 0x1000, 0);
         return;
     }
     {
@@ -196,7 +197,7 @@ void daChoropu_c::func_ov080_02123924()
         if ((short)AngleDiff(mAngleY, Vec3_HorzAngle((Vector3 *)&mPosX, &v)) >= 0x4000) return;
         if (Vec3_HorzDist((Vector3 *)&mPosX, &v) >= 0x1f4000) return;
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e8.filePtr, 0x40000000, 0x1000, 0);
     }
 }
 
@@ -256,7 +257,7 @@ void daChoropu_c::func_ov080_02123a34()
         s = data_02082214[(idx << 1) + 1];
         pos.z = s * (short)0x50 + pz;
 
-        a = (dActor_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
+        a = dActor_c::Spawn(
             py ? (unsigned)daChoro_Rock_ACTOR_ID : (unsigned)daChoro_Rock_ACTOR_ID, 0, pos, pAng, mAreaId, -1);
         d = DistToCPlayer();
         if (d >= 0x258000)
@@ -273,10 +274,10 @@ void daChoropu_c::func_ov080_02123a34()
 
     if (DistToCPlayer() < 0x3e8000) {
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e8.filePtr, 0x40000000, 0x1000, 0);
     } else {
         mState = daChoropu_ST_WAIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283d0.filePtr, 0x40000000, 0x1000, 0);
     }
 }
 
@@ -337,16 +338,16 @@ void daChoropu_c::func_ov080_02123c24()
         unsigned int rem = (rv % 3) & 0xff;
         if (rem == 0) {
             mState = daChoropu_ST_THROW_ROCK;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e0.filePtr, 0x40000000, 0x1000, 0);
             return;
         }
         if (rem == 1) {
             mState = daChoropu_ST_WAIT;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283d0.filePtr, 0x40000000, 0x1000, 0);
             return;
         }
         mState = daChoropu_ST_LEAP;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e8)[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e8.filePtr, 0x40000000, 0x1000, 0);
         return;
     }
 
@@ -354,7 +355,7 @@ void daChoropu_c::func_ov080_02123c24()
         Player *player = ClosestPlayer();
         if (player == 0) {
             mState = daChoropu_ST_THROW_ROCK;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e0.filePtr, 0x40000000, 0x1000, 0);
             return;
         }
         {
@@ -369,10 +370,10 @@ void daChoropu_c::func_ov080_02123c24()
             diff = (short)AngleDiff(mAngleY, horz);
             if (diff < 0x4000) {
                 mState = daChoropu_ST_THROW_ROCK;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283e0)[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283e0.filePtr, 0x40000000, 0x1000, 0);
             } else {
                 mState = daChoropu_ST_WAIT;
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d0)[1], 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283d0.filePtr, 0x40000000, 0x1000, 0);
             }
         }
     }
@@ -398,7 +399,7 @@ void daChoropu_c::func_ov080_02123ecc()
     if (*(signed char *)&mHasTurn != 1) return;   /* read signed, as the ROM does (ldrsb) */
     if (dist >= 0xfa000) {
         mState = daChoropu_ST_EMERGE;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283d8.filePtr, 0x40000000, 0x1000, 0);
         Player *p2 = ClosestPlayer();
         mAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&p2->mPosX);
         {
@@ -473,7 +474,7 @@ void daChoropu_c::func_ov080_02124088()
     daChoropu_c *a;
 
     mState = daChoropu_ST_HIDDEN;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283d8.filePtr, 0x40000000, 0x1000, 0);
 
     mModelAnim.currFrame = 0;
     {
@@ -521,7 +522,7 @@ void daChoropu_c::func_ov080_02124088()
         v3.z = mPosZ;
         v3.y = y3 + 0x64000;
     }
-    _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daChoropu_ACTOR_ONEUPKINOKO, 0, v3, 0, (int)mAreaId, -1);
+    dActor_c::Spawn(daChoropu_ACTOR_ONEUPKINOKO, 0, v3, 0, mAreaId, -1);
 
     mTimesHit = 8;
     return;
@@ -799,7 +800,7 @@ s32 daChoropu_c::InitResources()
     Model::LoadFile(data_ov002_0210d9d8);
     Model::LoadFile(data_ov080_021283c8);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov080_021283c0), 1, -1);
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void *)((int *)&data_ov080_021283d8)[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov080_021283d8.filePtr, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x50000, 0x64000, 0x200000, 0x66fe0);
     mGroupMode = param1 & 0xf;
     mState = daChoropu_ST_SETUP;
