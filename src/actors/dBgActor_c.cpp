@@ -37,6 +37,7 @@
 #include "dBgActor_c.h"
 #include "dBgW.h"
 #include "dBgCh_Lin.h"
+#include "dBgCh_Actr.h"
 #include "Sound.h"
 
 /* ROM symbols with no header of their own. Spelled to agree with their
@@ -346,25 +347,27 @@ extern "C" int func_ov002_020eeca8(void *c, int arg)
 
 /* Only for the player (actor ID 0xbf): a ceiling owned by actor ID 0x3a hurts
  * for 3, a wall owned by actor ID 0x139 hurts for 1 and plays sound 0xb5 at
- * that actor; both with knockback 0xc000. C: as C++ the two-word
- * head of the record copy is promoted out of its stack slot. */
-#pragma cplusplus off
-typedef struct { int a, b; } ClsnHitHead;
+ * that actor; both with knockback 0xc000. self is the mover's
+ * dBgCh_Actr (Player::mMeshClsn at +0x380), not a dBgActor_c. The
+ * array-backed two-word copy keeps the ceiling-hit snapshot on the stack
+ * under 2004/b56 C++. The explicit shadow snapshot and scalar Hurt ABI
+ * remain measured reconstruction boundaries. */
+extern "C" {
+typedef struct { int w[2]; } ClsnHitHead;
 
 // @symbol func_ov002_020eea84
 int func_ov002_020eea84(char *self, char *player)
 {
     extern char *func_0203564c(char *p);
-    extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id);
+    /* local extern: scalar Fix12 ABI preserves the retail call (6az). */
     extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
-    extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, void *v);
     struct ClsnHitCopy res;
     Vector3 v;
     Vector3 v2;
-    char *actor;
+    dActor_c *actor;
     int b;
 
-    b = (int)(*(unsigned short *)(player + 0xc) == 0xbf);
+    b = (int)(((dActor_c *)player)->actorID == 0xbf);
     if (b == 0)
         return 0;
 
@@ -382,9 +385,9 @@ int func_ov002_020eea84(char *self, char *player)
         res.f20 = *(int *)(r + 0x20);
         res.f24 = *(int *)(r + 0x24);
         if (_ZNK5dBgPi9GetClsnIDEv(&res) != -1) {
-            actor = (char *)_ZN8dActor_c10FindWithIDEj(_ZNK5dBgPi9GetClsnIDEv(&res));
-            if (actor != 0 && (b = (int)(*(unsigned short *)(actor + 0xc) == 0x3a)) != 0) {
-                { int *s = (int *)(((int)player + 0x5c)); v.x = s[0]; v.y = s[1]; v.z = s[2]; }
+            actor = dActor_c::FindWithID(_ZNK5dBgPi9GetClsnIDEv(&res));
+            if (actor != 0 && (b = (int)(actor->actorID == 0x3a)) != 0) {
+                { int *s = (int *)(&((dActor_c *)player)->mPosX); v.x = s[0]; v.y = s[1]; v.z = s[2]; }
                 _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 3, 0xc000, 1, 0, 1);
                 _ZN5dBgPiD1Ev(&res);
                 return 1;
@@ -393,21 +396,21 @@ int func_ov002_020eea84(char *self, char *player)
         _ZN5dBgPiD1Ev(&res);
     }
 
-    if (_ZNK10dBgCh_Actr8IsOnWallEv(self)) {
-        char *wr = (char *)_ZNK10dBgCh_Actr13GetWallResultEv(self);
-        if (_ZNK5dBgPi9GetClsnIDEv(wr) != -1) {
-            actor = (char *)_ZN8dActor_c10FindWithIDEj(_ZNK5dBgPi9GetClsnIDEv(wr));
-            if (actor != 0 && (b = (int)(*(unsigned short *)(actor + 0xc) == 0x139)) != 0) {
-                { int *s = (int *)(((int)actor + 0x5c)); v2.x = s[0]; v2.y = s[1]; v2.z = s[2]; }
+    if (((dBgCh_Actr *)self)->IsOnWall()) {
+        dBgPi *wr = (dBgPi *)((dBgCh_Actr *)self)->GetWallResult();
+        if (wr->GetClsnID() != -1) {
+            actor = dActor_c::FindWithID(wr->GetClsnID());
+            if (actor != 0 && (b = (int)(actor->actorID == 0x139)) != 0) {
+                { int *s = (int *)(&actor->mPosX); v2.x = s[0]; v2.y = s[1]; v2.z = s[2]; }
                 if (_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, 1, 0xc000, 1, 0, 1) != 0)
-                    _ZN5Sound9PlayBank0EjRK7Vector3(0xb5, actor + 0x74);
+                    Sound::PlayBank0(0xb5, *(Vector3 *)&actor->mCamSpacePosX);
                 return 1;
             }
         }
     }
     return 0;
 }
-#pragma cplusplus on
+}
 
 /* Base step, vptr store, then mModel and mMeshCollider in declaration order:
  * the compiler's own sequence, so the body is empty. */
