@@ -4393,6 +4393,7 @@ src/unnamed/arm9/0205/func_02058200.c:
     .text start:0x02058200 end:0x02058308
 
 src/unnamed/arm9/0205/func_02058308.c:
+    complete
     .text start:0x02058308 end:0x02058488
 
 src/unnamed/arm9/0205/func_02058488.c:
@@ -4479,6 +4480,7 @@ src/engine/cp15/CP15.cpp:
     .text start:0x02058bb0 end:0x02058df4
 
 src/unnamed/arm9/0205/func_02058df4.c:
+    complete
     .text start:0x02058df4 end:0x02058ea0
 
 src/unnamed/arm9/0205/func_02058ea0.c:
