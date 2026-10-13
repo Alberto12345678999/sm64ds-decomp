@@ -39,8 +39,8 @@
  *   (ldrh), and the signed member spelling emits ldrsh.
  * - Raw offsets through other actors stay where this file cannot name the
  *   class: +0x150/+0x153 on the MERRYGOROUND, +0x155 on a KAIDAN,
- *   +0x3a8/+0x3aa on the released carried actor, +0x36e on a SpawnFireball
- *   result.
+ *   +0x3a8/+0x3aa on the released carried actor, +0x364/+0x36e on a
+ *   SpawnFireball result (02118458).
  */
 
 #pragma defer_codegen off
@@ -198,6 +198,7 @@ enum TrsActorID {
     TRS_ID_BOSS_TERESA   = 0xd2,
     TRS_ID_ICON_TERESA   = 0xd3,
     TRS_ID_T_BASKET      = 0xd4,
+    TRS_ID_OBJ_KEY       = 0x11a,
     TRS_ID_COIN          = 0x120,
     TRS_ID_RED_COIN      = 0x121,
     TRS_ID_BLUE_COIN     = 0x122,
@@ -504,7 +505,9 @@ void daTBasket_c::func_ov063_021169c4() {
 }
 
 
-/* Behavior handler for variant 4. */
+/* Behavior handler for variant 4 (needs 15 stars): the scripted-path Boo.
+   Hidden until canAppear, then waits for the player within 0x3e8000, flies
+   a fixed path and fades. */
 // @symbol _ZN7daTrs_c19func_ov063_02116a1cEv
 void daTrs_c::func_ov063_02116a1c() {
     Vec3 v;
@@ -720,7 +723,9 @@ int daTrs_c::func_ov063_02116f48() {
    every @NNN in the TU by two (measured, each one alone). */
 #define L16(c, off) ((u16*)(((int)(c) + (off))))
 #define L8(c, off) ((u8*)(((int)(c) + (off))))
-/* Behavior handler for variant 0xb. */
+/* Behavior handler for variant 0xb: the scripted-path Boo. Hidden until
+   canAppear, then waits for the player within 0x258000, flies a fixed path
+   (hopping in state 4), then vanishes (opacity 0, hidden). */
 // @symbol _ZN7daTrs_c19func_ov063_02116facEv
 void daTrs_c::func_ov063_02116fac() {
 
@@ -1710,7 +1715,7 @@ void daTrs_c::func_ov063_02118ddc() {
   int s = this->mPosX;
   if(s < 0) s = -s;
   v.x = s;
-  dActor_c::Spawn(0x11a, 3, *(const Vector3 *)(&v), (const Vector3_16 *)(0), this->mAreaIdx, -1);
+  dActor_c::Spawn(TRS_ID_OBJ_KEY, 3, *(const Vector3 *)(&v), (const Vector3_16 *)(0), this->mAreaIdx, -1);
   func_02012694(0xbb, &this->mCamSpacePosX);
 }
 
@@ -3520,7 +3525,8 @@ int daTrs_c::InitResources()
             return 1;
         }
         /* data_0209f264 is LAST_ENTRANCE_ID. When it is 0 the cage (mCarriedID
-           is T_BASKET here) is placed at once, muted, and this Boo removed. */
+           is T_BASKET here) is spawned at once, muted; if that Spawn succeeds
+           this Boo is removed. */
         if (data_0209f264 == 0) {
             spawned = dActor_c::Spawn(mCarriedID, 0, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
             if (spawned != 0) {
