@@ -8114,15 +8114,17 @@ source comment. They partly overturn 6cw's "Why source cannot reach it":
 - Open question: a limit def that counts as a non-copy at register allocation yet still emits a
   bare `mov`.
 
-## 6dc. func_0202ffec matched: 64-bit operand locals, with declaration order setting the colours (2026-10-13)
+## 6dc. func_0202ffec matched: 64-bit operand locals, with their assignment order setting the colours (2026-10-13)
 
 The quaternion product's "terminal" 2-word floor (6ay, 6cl, 6db) was a source-shape error. The
 original declares its eight operands as `s64` locals, initialised from the s32 fields, and
 writes every product as the plain textbook `FX_MUL(a, b)` = `(s32)((a * b + 0x800) >> 12)`,
 q1 operand on the left:
 
-    s64 x2 = q2->x;  s64 x1 = q1->x;  s64 w2 = q2->w;  s64 w1 = q1->w;
-    s64 y1 = q1->y;  s64 z2 = q2->z;  s64 y2 = q2->y;  s64 z1 = q1->z;
+    s64 x2 = q2->x, x1 = q1->x;
+    s64 w2 = q2->w, w1 = q1->w;
+    s64 y2 = q2->y, y1 = q1->y;
+    s64 z2 = q2->z, z1 = q1->z;
     out->x = FX_MUL(w1, x2) + FX_MUL(x1, w2) + FX_MUL(y1, z2) - FX_MUL(z1, y2);
     ...
 
@@ -8131,17 +8133,24 @@ Why every earlier pass missed it:
 - With s32 operand locals the sign-extension to 64 bits happens at each product, so the colour
   order comes from the products' cast structure (6db) and declaration order is inert. That
   inertness was measured 300 times and was real.
-- With s64 locals the extension happens once, at the initialiser, and the colour order follows
-  DECLARATION order: the first-declared local takes r6, then r5, r4, lr, ip, r3. The left
+- With s64 locals the extension happens once, where each local is first assigned, and the
+  colour order follows that FIRST-ASSIGNMENT order. A natural `s64 x1, y1, ...;` declaration
+  followed by assignments in the matching order matches; the matching declarations followed
+  by assignments in natural order give 75. In first-assignment order: the first-declared local takes r6, then r5, r4, lr, ip, r3. The left
   operand of each product is still Rm, so the products can be written in natural order and the
   ROM's colouring set entirely by the declarations.
 - The 6db sweep of "all 256 subsets of 64-bit locals" (best 40) held the declaration order fixed.
   Neither lever reaches the ROM alone; only their product does.
 
-The declaration order is tight. Of 725 orders tried with the textbook body, exactly one matches.
+The order is tight. Of 725 orders tried with the textbook body (y2 and z1 held last), exactly
+one matches: x2, x1, w2, w1, y1, z2.
 Swapping any adjacent pair of the first six gives 9 to 46 words, and natural orders give 45 to
 75. In the matching order, y2 and z1 are free to move anywhere (56 positions match under the
-ROM-evaluation-order body). The association `a + (b + c) - d` and the textbook left-assoc
+ROM-evaluation-order body). The original is therefore a regular, human pattern: each
+component fetched from q2 and then q1, in x, w, y, z order (the block above). Natural
+alternatives score worse even when crossed with every term order inside the lines and both
+associations: q1 then q2 in xyzw, q2 then q1, interleaved pairs in xyzw, and w-first give
+34 to 75. The association `a + (b + c) - d` and the textbook left-assoc
 `a + b + c - d` both match, `0x800` and `0x800LL` both match, and a cross-term-first body
 changes the size.
 
