@@ -446,7 +446,9 @@ extern OamAttr data_ov002_0210bddc;
 extern void SetSubBg0Offset(int a, int b);
 extern void SetSubBg1Offset(int a, int b);
 /* local extern dropped: decl_common.h already declares _ZN6Memory16operator_delete2EPv(void*) */
-extern dFdBrightness_c *data_0209f5bc;
+/* The scene fader. Kept as the void * this file has always declared: the
+   tree's declarations of it disagree, and 23f0 casts at the one use. */
+extern void* data_0209f5bc;
 extern u8 data_ov002_02111144;
 extern u32 data_020a0db0;
 extern void* _Znwj(unsigned int);
@@ -952,7 +954,7 @@ int daDemo_c::func_ov002_020f23f0()
 {
     switch (mScroll->state) {
     case 0:
-        if (data_0209f5bc->IsAtStart() != 0) {
+        if (((dFdBrightness_c *)data_0209f5bc)->IsAtStart() != 0) {
             mScroll->centerSpriteY[0]++;
             mScroll->centerSpriteY[1]--;
             if (mScroll->centerSpriteY[0] == 8) {
