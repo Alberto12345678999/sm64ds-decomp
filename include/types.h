@@ -87,6 +87,8 @@ typedef struct Vector3s {
        __cxa_vec_cleanup(this + 0x444, 5, 6, func_02011508), a POD array needs no
        cleanup, and 0x02011508 is four bytes of `bx lr`. 6 is sizeof(Vector3s). */
     ~Vector3s() {}
+    /* Empty default construction is defined inline in Vector3s.h. */
+    inline Vector3s();
 #endif
 } Vector3s;
 
