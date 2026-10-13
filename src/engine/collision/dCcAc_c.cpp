@@ -1,4 +1,15 @@
 //cpp
+/* leftovers:
+ * func_02014a20 stays a free helper under its address name: the cartridge
+ * record carries the linker's tail-call veneer to dCcAc_c::GetOwnerID, not a
+ * member body (dCcAcPos_c.h slot-3 note).
+ * GetPos and SetPosRelativeToActor read the owner through (Vector3 *)&mPosX:
+ * the shared header has no dActor_c::Pos() yet, and adding it ripples beyond
+ * this TU.
+ * The three Init definitions stay mangled free functions: the real signatures
+ * carry Fix12<int> by value (wall 6az); dCcAc_c.h and dCcAcPos_c.h keep the
+ * real declarations for callers.
+ */
 /* dCcAc_c -- collision cylinder attached to an dActor_c. Cartridge class:
    _ZTV7dCcAc_c at 0x0208e6d4, _ZTS7dCcAc_c at 0x0208e668, _ZTI7dCcAc_c at
    0x0208e698 (si_class, base dCc_c). The derived position-bearing class
