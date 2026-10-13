@@ -21,8 +21,8 @@
  * Source runs REVERSE of ROM (highest address first). Do not reorder; the
  * classInit factory, now the highest address in the TU, is written first.
  * decl_common.h is deliberately NOT included; the three needed names
- * are declared locally. One helper is parsed as C (ldm/stm Vector3
- * copy); see its site.
+ * are declared locally. SWOOP uses an array-backed position copy to retain
+ * the ROM block move in C++; see its site.
  *
  * deslop leftovers:
  *   - the func_ov062_* members are named by address only; original names
@@ -30,9 +30,9 @@
  *   - the Data shadow stays file-local (unowned row); the file words of
  *     the SharedFilePtr globals are still read through a cast at +4.
  *   - NewSimple keeps its scalar-ABI spelling (wall 6az).
- *   - func_ov062_0211ba84 is compiled as C, so it stays a free function and
- *     keeps raw offsets (its comment lists them); the other raw offsets left
- *     are the +0xc8 word of the held actor (dActor_c leaves it unnamed) and
+ *   - func_ov062_0211ba84 retains its free-function state entry and C linkage;
+ *     its calls and fields now use the class interfaces. Remaining raw offsets
+ *     elsewhere include the +0xc8 word of the held actor (dActor_c leaves it unnamed) and
  *     the +0x403 byte of a held cap (daObjMarioCap_c::unk_403).
  *   - the two matrix members are 12-word arrays, not Matrix4x3; see the
  *     header.
@@ -83,8 +83,8 @@ struct JangoAnimationFilePtr : SharedFilePtr {
     ~JangoAnimationFilePtr();
 };
 
-/* SWOOP's update slot targets a free function, not a member (ba84 is
- * compiled as C), so its descriptor is a function-pointer/PMF pair. The
+/* SWOOP's update slot retains a free function with C linkage, so its
+ * descriptor is a function-pointer/PMF pair. The
  * first word carries the code relocation; the second is zero, like every
  * other descriptor. */
 union JangoFreeState {
@@ -141,11 +141,10 @@ struct Data { BCA_File* a; BCA_File* f; };
 /* shadow typedef 'M48' */
 typedef struct { int w[12]; } M48;
 
-/* POD spelling of Vector3's 0x0c bytes: with a user-declared constructor on
-   Vector3 the copy in func_ov062_0211ba84 scalarizes even under `#pragma
-   cplusplus off`; the ROM copy is the block move, so it goes through this. */
-struct RawVector3 { int x, y, z; };
-typedef struct RawVector3 RawVector3;
+/* Array-backed position snapshot: mwccarm 2004/b56 copies these three
+   words with the retail ldm/stm sequence in C++. A three-scalar-member
+   assignment selects separate loads/stores here (codegen note 6ay). */
+struct SwoopPositionWords { int w[3]; };
 
 /* shadow struct 'Base' */
 struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(int); };
@@ -995,11 +994,9 @@ int daJango_c::func_ov062_0211bc54()
 }
 
 // @symbol func_ov062_0211ba84
-/* SWOOP update: dive at the nearest player. In this function (C, so no members)
-   the fields are, by offset: 0x5c mPos, 0x8c mAngleX/Y, 0x92 mPrevAngleX,
-   0x94 mPrevAngleY, 0xa4 the velocity words, 0x100 mStateTimer, 0x178
-   mWithMeshClsn, 0x43c unk_43c (the turn rate bc54 picked), 0x444 mTimer, 0x44a
-   mTargetAngleY; on the player 0x5c is mPos, 0x644 mGroundY and 0x6fb mIsVanish.
+/* SWOOP update: dive at the nearest player. The position snapshot keeps
+   the retail three-word block copy; field access and calls use the actor and
+   player interfaces.
 
    If a player exists: a vanished player ends the swoop (mTimer = 30, back to
    CIRCLE). Otherwise the target is the player's position with Y = mGroundY + 40
@@ -1008,75 +1005,68 @@ int daJango_c::func_ov062_0211bc54()
    (0, 0, 30.0) turned by mAngleY then mAngleX. After func_ov062_0211b51c (the hit
    and cap-steal tests) the swoop ends (mTimer = 30, CIRCLE) when mStateTimer
    has run out or the wall collider reports a wall. */
-/* C function in this class TU. The ROM copy is the C front end's block
-   move (movs ip, r0; ldm/stm of 12 bytes). C++ scalarizes that assignment
-   on every installed mwccarm. func_ov062_0211b930 ends at this address, so
-   it was emitted in this object, not linked in from outside. */
-#pragma cplusplus off
-/* local extern: this function is compiled as C, which cannot call a member */
-extern char *_ZN8dActor_c13ClosestPlayerEv(char *self);
-/* local extern: this function is compiled as C, which cannot call a member */
-extern int _ZN9daJango_c19func_ov062_0211c658EPv(struct daJango_c *self, void *p);
-/* local extern: this function is compiled as C, which cannot call a member */
-extern int _ZN9daJango_c19func_ov062_0211b51cEv(struct daJango_c *self);
-/* local extern: this function is compiled as C, which cannot call a member */
-extern int _ZNK10dBgCh_Actr8IsOnWallEv(char *self);
+/* Retain the existing free-function state entry and descriptor. C linkage
+   fixes its public symbol; this body is compiled as C++. */
+extern "C" {
 int func_ov062_0211ba84(char *c)
 {
     Vector3 v;
-    RawVector3 t;
+    SwoopPositionWords t;
     Vector3 hv;
     Vector3 vv;
     s16 pitch;
-    char *ip;
+    Player *player;
+    daJango_c &actor = *(daJango_c *)c;
     int tx, ty, tz;
 
     pitch = 0;
     v.x = 0;
     v.y = 0;
     v.z = 0;
-    ip = _ZN8dActor_c13ClosestPlayerEv(c);
-    if (ip != 0) {
-        if (*(u8 *)(ip + 0x6fb) == 1) {
-            *(s16 *)(c + 0x444) = 0x1e;
-            _ZN9daJango_c19func_ov062_0211c658EPv((struct daJango_c *)c, JANGO_STATE_CIRCLE);
+    player = actor.ClosestPlayer();
+    if (player != 0) {
+        if (player->mIsVanish == 1) {
+            actor.mTimer = 0x1e;
+            actor.func_ov062_0211c658(JANGO_STATE_CIRCLE);
             return 1;
         }
 
-        t = *(RawVector3 *)(ip + 0x5c);
-        tx = t.x;
+        t = *(SwoopPositionWords *)&player->mPosX;
+        tx = t.w[0];
         {
-            int y = *(int *)(ip + 0x644);
-            t.y = y;
-            t.y = y + 0x28000;
+            int y = player->mGroundY;
+            t.w[1] = y;
+            t.w[1] = y + 0x28000;
         }
-        tz = t.z;
-        ty = t.y;
+        tz = t.w[2];
+        ty = t.w[1];
         hv.x = tx; hv.y = ty; hv.z = tz;
-        *(s16 *)(c + 0x44a) = Vec3_HorzAngle((Vector3 *)(c + 0x5c), &hv);
+        actor.mTargetAngleY = Vec3_HorzAngle((Vector3 *)&actor.mPosX, &hv);
         vv.x = tx; vv.y = ty; vv.z = tz;
-        pitch = Vec3_VertAngle((Vector3 *)(c + 0x5c), &vv);
+        pitch = Vec3_VertAngle((Vector3 *)&actor.mPosX, &vv);
 
     }
     if (data_0209f2f8 == 0x10) {
-        ApproachLinear(*(short *)(c + 0x94), *(s16 *)(c + 0x44a), (s16)*(int *)(c + 0x43c));
-        ApproachLinear(*(short *)(c + 0x92), pitch, (s16)*(int *)(c + 0x43c));
+        ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)actor.unk_43c);
+        ApproachLinear(actor.mPrevAngleX, pitch, (s16)actor.unk_43c);
     } else {
-        ApproachLinear(*(short *)(c + 0x94), *(s16 *)(c + 0x44a), (s16)(*(int *)(c + 0x43c) + 0x500));
-        ApproachLinear(*(short *)(c + 0x92), pitch, (s16)(*(int *)(c + 0x43c) + 0x500));
+        ApproachLinear(actor.mPrevAngleY, actor.mTargetAngleY, (s16)(actor.unk_43c + 0x500));
+        ApproachLinear(actor.mPrevAngleX, pitch, (s16)(actor.unk_43c + 0x500));
     }
     v.z = 0x1e000;
-    Matrix4x3_FromRotationY(data_020a0e68, *(s16 *)(c + 0x8e));
-    Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, *(s16 *)(c + 0x8c));
-    MulVec3Mat4x3(&v, data_020a0e68, (Vector3 *)(c + 0xa4));
-    _ZN9daJango_c19func_ov062_0211b51cEv((struct daJango_c *)c);
-    if (*(u16 *)(c + 0x100) == 0 || _ZNK10dBgCh_Actr8IsOnWallEv(c + 0x178) != 0) {
-        *(s16 *)(c + 0x444) = 0x1e;
-        _ZN9daJango_c19func_ov062_0211c658EPv((struct daJango_c *)c, JANGO_STATE_CIRCLE);
+    Matrix4x3_FromRotationY(data_020a0e68, actor.mAngleY);
+    Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, actor.mAngleX);
+    MulVec3Mat4x3(&v, data_020a0e68, (Vector3 *)&actor.unk_0a4);
+    actor.func_ov062_0211b51c();
+    /* Retail reads the timer as unsigned here; the inherited field is s16. */
+    if ((u16)actor.mStateTimer == 0 || actor.mWithMeshClsn.IsOnWall() != 0) {
+        actor.mTimer = 0x1e;
+        actor.func_ov062_0211c658(JANGO_STATE_CIRCLE);
     }
     return 1;
 }
-#pragma cplusplus on
+}
+
 
 // @symbol _ZN9daJango_c19func_ov062_0211b930Ev
 /* HURT enter. Starts jango_damage.bca (4 blend frames, flags 0x40000000, speed
