@@ -2183,6 +2183,10 @@ src/Quaternion_SLerp.c:
     complete
     .text start:0x0202fef8 end:0x0202ffec
 
+src/unnamed/arm9/0202/func_0202ffec.c:
+    complete
+    .text start:0x0202ffec end:0x020301c4
+
 src/Matrix4x3_FromQuaternion.c:
     complete
     .text start:0x020301c4 end:0x020301e8

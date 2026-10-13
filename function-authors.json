@@ -4569,6 +4569,10 @@
       "author": "tangosdev",
       "name": "Quaternion_SLerp"
     },
+    "arm9:0x0202ffec": {
+      "author": "andrewboudreau",
+      "name": "func_0202ffec"
+    },
     "arm9:0x020301c4": {
       "author": "tangosdev",
       "name": "Matrix4x3_FromQuaternion"

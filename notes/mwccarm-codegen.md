@@ -1752,6 +1752,8 @@ appeared; floor marks mean "do not spend model time by default", and the recorde
 angle (load emission order) is where a genuinely new construct class would attack. ~800 compiles incl. exhaustive
 operand-spelling space (which collapses to 4 points per slot, not 12: Q(a,b)==R(b,a),
 U==Q), pair-flip and annealing sweeps. Do not re-attempt.
+**MATCHED 2026-10-13 (6dc):** the floor was a source-shape error. The operands are 64-bit
+locals, and their declaration order sets the colours.
 (Re-attacked 2026-10-13, still 2 words. The mechanism above is restated more precisely in
 6db: Rm is always the textual LEFT operand, and the residue is a colour tie, not load
 emission order.)
@@ -6443,6 +6445,8 @@ that makes one of the other five long-lived values die before the call block.
 
 ## 6cl. Three floors re-measured with the wave-9 levers, and the two compiler rules underneath them (OAM::Render, func_0202ffec, func_02068398, run link100 lane CRK-N, 2026-09-13)
 
+(func_0202ffec matched 2026-10-13, see 6dc.)
+
 All three rows are floors of the same kind: a residue that every owned build reproduces
 identically and that no source spelling reaches. What is new is that the rule underneath each
 one is now measured rather than described, so the next lane can recognise the shape instead of
@@ -8041,7 +8045,7 @@ nine respellings (`hi/0x10000`, `(hi>>15)>>1`, u8/u16/int types ...; ~3,000 comp
 the size - so the ROM's `p++` is right. Nothing lowers hi's colouring priority below
 pal/i/p. Still NONMATCHING at div 20.
 
-## 6db. Two floors re-attacked, and the `-opt` vocabulary: an unknown `-opt` keyword is silently accepted (func_0202ffec and func_02009e70 both unchanged, 2026-10-13)
+## 6db. Two floors re-attacked, and the `-opt` vocabulary: an unknown `-opt` keyword is silently accepted (func_0202ffec then matched in 6dc; func_02009e70 unchanged, 2026-10-13)
 
 **The `-opt` vocabulary.** `mwccarm.exe -help opt=opt` lists every `-opt` keyword 2004/b56
 has: `off|none`, `on`, `all|full`, `[no]space`, `[no]speed`, `l[evel]=0..4`, `[no]cse` /
@@ -8090,7 +8094,7 @@ The precise mechanism, restating the 6ad-era note:
 
 Floor class: smull operand order at a colour tie, operand order only, functionally identical.
 Treat it as terminal unless a construct class appears that colours the right `(long long)`
-operand first while it stays Rs.
+operand first while it stays Rs. **That construct class turned up the same day: see 6dc.**
 
 **func_02009e70 (still 72 words).** Two passes, about 600 cells, recorded in detail in the
 source comment. They partly overturn 6cw's "Why source cannot reach it":
@@ -8109,3 +8113,39 @@ source comment. They partly overturn 6cw's "Why source cannot reach it":
   dead `sb = 0` before the if. Both plateaus are flat under every rank and position sweep tried.
 - Open question: a limit def that counts as a non-copy at register allocation yet still emits a
   bare `mov`.
+
+## 6dc. func_0202ffec matched: 64-bit operand locals, with declaration order setting the colours (2026-10-13)
+
+The quaternion product's "terminal" 2-word floor (6ay, 6cl, 6db) was a source-shape error. The
+original declares its eight operands as `s64` locals, initialised from the s32 fields, and
+writes every product as the plain textbook `FX_MUL(a, b)` = `(s32)((a * b + 0x800) >> 12)`,
+q1 operand on the left:
+
+    s64 x2 = q2->x;  s64 x1 = q1->x;  s64 w2 = q2->w;  s64 w1 = q1->w;
+    s64 y1 = q1->y;  s64 z2 = q2->z;  s64 y2 = q2->y;  s64 z1 = q1->z;
+    out->x = FX_MUL(w1, x2) + FX_MUL(x1, w2) + FX_MUL(y1, z2) - FX_MUL(z1, y2);
+    ...
+
+Why every earlier pass missed it:
+
+- With s32 operand locals the sign-extension to 64 bits happens at each product, so the colour
+  order comes from the products' cast structure (6db) and declaration order is inert. That
+  inertness was measured 300 times and was real.
+- With s64 locals the extension happens once, at the initialiser, and the colour order follows
+  DECLARATION order: the first-declared local takes r6, then r5, r4, lr, ip, r3. The left
+  operand of each product is still Rm, so the products can be written in natural order and the
+  ROM's colouring set entirely by the declarations.
+- The 6db sweep of "all 256 subsets of 64-bit locals" (best 40) held the declaration order fixed.
+  Neither lever reaches the ROM alone; only their product does.
+
+The declaration order is tight. Of 725 orders tried with the textbook body, exactly one matches.
+Swapping any adjacent pair of the first six gives 9 to 46 words, and natural orders give 45 to
+75. In the matching order, y2 and z1 are free to move anywhere (56 positions match under the
+ROM-evaluation-order body). The association `a + (b + c) - d` and the textbook left-assoc
+`a + b + c - d` both match, `0x800` and `0x800LL` both match, and a cross-term-first body
+changes the size.
+
+**General lever for colour-tie floors.** When a residue is two operands of a 64-bit product
+swapped between registers, try declaring the operands as 64-bit locals and permuting their
+declaration order. It turns an unreachable per-site tie into a free global order. Any floor
+whose operands are sign-extended per product may have the same shape.
