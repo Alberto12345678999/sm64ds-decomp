@@ -8096,8 +8096,9 @@ Floor class: smull operand order at a colour tie, operand order only, functional
 Treat it as terminal unless a construct class appears that colours the right `(long long)`
 operand first while it stays Rs. **That construct class turned up the same day: see 6dc.**
 
-**func_02009e70 (still 72 words).** Two passes, about 600 cells, recorded in detail in the
-source comment. They partly overturn 6cw's "Why source cannot reach it":
+**func_02009e70 (still 72 words; since improved to 62 by #3761's native collision-return
+types and s64 distance accumulation).** Two passes, about 600 cells. They were recorded in the
+source comment that #3761 then replaced; the findings are kept here. They partly overturn 6cw's "Why source cannot reach it":
 
 - The exchange moves from source. Give the mode-flags word a fresh local, keep the limit in `fl`
   or the f20 local, and make some def of the limit web a non-copy. The result is exactly the
