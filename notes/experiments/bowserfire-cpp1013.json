@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "task": "bowserfire-cpp1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3762",
+  "base_commit": "731efc06d5d5e84ac33ff5f97880e9f90476158e",
+  "source": "src/actors/daKpaFire_c.cpp",
+  "symbol": "func_ov060_02117624",
+  "module": "ov060",
+  "address": "0x02117624",
+  "size": 160,
+  "status": "Genuine C++ body with entire object equality; full gates and immutable independent acceptance pending.",
+  "change": "Remove cplusplus-off region and retain existing C linkage. The actual daKpaFire_c fields and POD matrix view compile identically in C++.",
+  "compiler": "2004/b56 production flags",
+  "whole_elf_identical": true,
+  "object_sha256": "9ae36b40b7054f94c15f774252fb8d624d40fcf82687a5685085c859144db38f",
+  "function_sha256": "ea33c306904c855faff096c24203b236b96bffabce7e4a0fae166313059a1b8d",
+  "function_relocation_count": 3,
+  "source_lf_sha256": "df0e399c1ef2002e5c076085e3cb392db81e45b903f0dddae411f6ccd43215cc",
+  "scope": "The promoted TU now uses C++ for all function bodies. No new class/member identity, path, header, module symbol, delink or manifest edits.",
+  "remaining_work": [
+    "The address-named helper retains existing C linkage.",
+    "Existing scalar Fix12 ABI bridges and raw matrix/field views remain; this is partial reconstruction."
+  ],
+  "gates": {}
+}

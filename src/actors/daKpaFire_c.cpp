@@ -60,9 +60,9 @@
  * data_ov060_0211af74[mVariant]. Both tables are pointer-to-member on
  * dActor_c, which is what the sinit records store. */
 struct dCc_c;
-/* POD spelling of Matrix4x3's 0x30 bytes: with a user-declared constructor on
- * Vector3 the copy in func_ov060_02117624 scalarizes even under `#pragma
- * cplusplus off`; the ROM copy is the block move, so it goes through this. */
+/* POD view of the 0x30-byte matrix. The single integer array preserves
+ * the shadow update's block copy in C++ with Vector3's user-declared
+ * constructor in scope. */
 struct RawMatrix4x3 { int m[12]; };
 typedef struct RawMatrix4x3 RawMatrix4x3;
 typedef void (dActor_c::*PMF)();
@@ -273,15 +273,13 @@ void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
 extern Matrix4x3 data_020a0e68;
 }
-#pragma cplusplus off
-void func_ov060_02117624(char *c) {
+extern "C" void func_ov060_02117624(char *c) {
     struct daKpaFire_c *self = (struct daKpaFire_c *)c;
     if (self->mDropsShadow == 0) return;
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX>>3, self->mGroundY>>3, self->mPosZ>>3);
     *(RawMatrix4x3*)self->pad_32c = *(RawMatrix4x3*)&data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, self->pad_32c, self->mShadowRadiusMul * self->mFireScale, 0x1e000, 0xf);
 }
-#pragma cplusplus on
 
 // @symbol func_ov060_0211747c
 /* Variant 0 Behavior: ride Bowser's mouth.
