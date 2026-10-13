@@ -101,7 +101,7 @@ struct daTrs_c : dCapEnemy_c {
     ModelAnim                  mModelAnim;                  /* 0x380 */
     /* Not "mModel": dCapEnemy_c's own Model at 0x114 is inherited, and calling
        this one mModel shadows it. This is the item the Boo carries, not its
-       body (that is mModelAnim): InitResources loads the T_BASKET model or a
+       body (that is mModelAnim): InitResources loads the Boo cage (T_BASKET) or a
        coin model chosen by mCarriedID. Render draws it at mCarriedScaleX
        while `carrying` is set. */
     Model                      mCarriedModel;               /* 0x3e4 */
@@ -141,7 +141,7 @@ struct daTrs_c : dCapEnemy_c {
     /* mShadowModel2's drop matrix, same 021166ac/DropShadowRadHeight pair. */
     Matrix4x3 mShadowMtx2;     /* 0x4d4 */
     /* Where the carried item sits: 02119ab0 copies the Boo's position here
-       (+0xa000 in y, +0x3c000 for the basket) while `carrying` is set, and
+       (+0xa000 in y, +0x3c000 for the cage) while `carrying` is set, and
        021166ac anchors mCarriedModel's matrix at it >> 3. The carried actor
        is spawned here when it is released. */
     s32 mCarriedPosX;          /* 0x504 */
@@ -234,7 +234,7 @@ struct daTrs_c : dCapEnemy_c {
     s16 mKnockbackAngleY;      /* 0x5b6 */
     u16 unk_5b8;               /* 0x5b8 -- read >> 4, no nonzero writer found */
     /* Carried-item yaw: 021166ac adds 0xc00 a frame unless mCarriedID is
-       T_BASKET, so a coin spins and the basket does not. */
+       T_BASKET, so a coin spins and the cage does not. */
     s16 mCarriedAngleY;        /* 0x5ba */
     /* Desired yaw: 02116fac and 02119cc0 set it and steer mPrevAngleY toward it. */
     s16 mTargetAngleY;         /* 0x5bc */
@@ -276,9 +276,9 @@ struct daTrs_c : dCapEnemy_c {
     u8  mSubState;             /* 0x5ce */
     /* Variant from param1's low nibble (+0xc for the 0xd2 boss): 0/1/2/6/9/10
        chase (021192d4), 3 spawner (02116bf4), 4/0xb watcher (02116a1c/02116fac),
-       5 star-gated basket carrier (02116d38), 7 trio spawner (0211ab68),
+       5 star-gated cage carrier (02116d38), 7 trio spawner (0211ab68),
        8 (02119274), 0xc/0xd/0xe Big Boo (021189f4), 0xf the Big Boo that
-       leaves the OBJ_KEY (021172a8). daTrs_c.cpp's TrsVariant names them. */
+       leaves the OBJ_KEY (021172a8). */
     u8  mVariant;              /* 0x5cf */
     /* Home area: the IsAreaShowing index and the spawn area. */
     s8  mAreaIdx;              /* 0x5d0 */

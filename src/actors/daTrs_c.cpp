@@ -1,8 +1,14 @@
 //cpp
 /* Production translation unit for ov063/daTrs_c.
- * 97 function(s), .text 0x02115ee0..0x0211c600: the Boo (TERESA), the Big Boo
- * (BOSS_TERESA), the Big Boo's balcony basket (T_BASKET) and the Boo radar
- * icon (ICON_TERESA).
+ * 97 functions, .text 0x02115ee0..0x0211c600: the Boo (TERESA, actor 0xd1) and
+ * Big Boo (BOSS_TERESA, 0xd2), both daTrs_c; the Boo cage (T_BASKET, 0xd4,
+ * daTBasket_c) that a variant-5 Boo carries; and ICON_TERESA (0xd3,
+ * daTrsIcon_c), the marker a Big Boo spawns, which tracks a star with
+ * dActor_c::TrackStar and spawns it when the Big Boo is beaten.
+ *
+ * One daTrs_c class serves every Boo: mVariant (param1's low nibble, +0xc
+ * for BOSS_TERESA) picks the Behavior handler, and each handler keeps its
+ * own mState numbering. Each handler has a one-line note above it.
  *
  * One object: its .data holds _ZTS7daTrs_c (0x0211e720) through
  * _ZTV11daTBasket_c (0x0211e930), all three classes' RTTI and vtables with the
@@ -16,8 +22,8 @@
  *
  * The func_ov063_* helpers are methods now (daTrs_c, one on daTBasket_c):
  * r0 is the object, and their @symbol comments carry the member mangle.
- * func_ov063_02118f24 stays free -- its receiver is a dActor_c, not a Boo --
- * and func_ov063_0211a0a8 is pure math.
+ * func_ov063_02118f24 stays free (C linkage): its receiver is the
+ * ICON_TERESA marker, not the Boo. func_ov063_0211a0a8 is pure math.
  *
  * deslop leftovers:
  * - DropShadowRadHeight, dCcAcPos_c::Init, dCcAc_c::Init, dBgCh_Actr::Init,
@@ -31,9 +37,10 @@
  * - `*(u16 *)&member` puns stay on mStateTimer and the angle fields: the
  *   header declares s16 but the retail code loads those sites unsigned
  *   (ldrh), and the signed member spelling emits ldrsh.
- * - Raw offsets through other actors stay (+0xa4..+0xac, +0x150, +0x155,
- *   +0x3a8/+0x3aa, +0x5d4): fields of spawned/found actors whose classes
- *   are not recovered here.
+ * - Raw offsets through other actors stay where this file cannot name the
+ *   class: +0x150/+0x153 on the MERRYGOROUND, +0x155 on a KAIDAN,
+ *   +0x3a8/+0x3aa on the released carried actor, +0x36e on a SpawnFireball
+ *   result.
  */
 
 #pragma defer_codegen off
@@ -181,6 +188,22 @@ extern void __register_global_object(void *object, void *destructor, void **node
 extern void Vec3_Add(void * out, void * a, void * b);
 }
 
+/* Actor ids this file spawns, finds or compares (the names are the ones in
+   symbols/actor_debug_names.tsv). */
+enum TrsActorID {
+    TRS_ID_KAIDAN        = 0x41,
+    TRS_ID_MERRYGOROUND  = 0x9f,
+    TRS_ID_PLAYER        = 0xbf,
+    TRS_ID_TERESA        = 0xd1,
+    TRS_ID_BOSS_TERESA   = 0xd2,
+    TRS_ID_ICON_TERESA   = 0xd3,
+    TRS_ID_T_BASKET      = 0xd4,
+    TRS_ID_COIN          = 0x120,
+    TRS_ID_RED_COIN      = 0x121,
+    TRS_ID_BLUE_COIN     = 0x122,
+    TRS_ID_END_OF        = 0x187
+};
+
 /* mBooFlags' bits as masks, for the sites that matched as a read-modify-write
    of the whole halfword (see BooFlags16 in daTrs_c.h for what each bit does). */
 enum TrsFlag {
@@ -275,7 +298,7 @@ void daTrs_c::func_ov063_02116244() {
 
     if (this->mBooDefeatCount < 5) return;
     if (this->mSpawnedActorID != 0) return;
-    this->mFoundActor = (dActor_c *)dActor_c::Spawn(0xd3, this->param1, *(const Vector3 *)(&this->mPosX), (const Vector3_16 *)(0), this->mAreaIdx, -1);
+    this->mFoundActor = (dActor_c *)dActor_c::Spawn(TRS_ID_ICON_TERESA, this->param1, *(const Vector3 *)(&this->mPosX), (const Vector3_16 *)(0), this->mAreaIdx, -1);
     if (this->mFoundActor != 0) this->mSpawnedActorID = this->mFoundActor->uniqueID;
     this->mFoundActor = 0;
 }
@@ -295,13 +318,13 @@ void daTrs_c::func_ov063_021162c8() {
         ((dCapEnemy_c*)this)->ReleaseCap(*(Vector3*)&v);
         if (this->mBooFlags.carrying) {
             unsigned int flags = 2;
-            if (this->mCarriedID == 0x121) flags |= 0x10;
+            if (this->mCarriedID == TRS_ID_RED_COIN) flags |= 0x10;
             dActor_c *a = dActor_c::Spawn(this->mCarriedID, flags,
                                     *(Vector3*)&this->mCarriedPosX, 0,
                                     this->mAreaIdx, -1);
             if (a != 0) {
                 *(unsigned char*)((char*)a + 0x3aa) = 0xa;
-                if (this->mCarriedID == 0x121)
+                if (this->mCarriedID == TRS_ID_RED_COIN)
                     *(unsigned short*)((char*)a + 0x3a8) = 0;
             }
             this->mBooFlags.carrying = 0;
@@ -410,7 +433,7 @@ void daTrs_c::func_ov063_021166ac() {
     if (!t->mBooFlags.visible)
         return;
     if (t->mBooFlags.carrying) {
-        if (this->mCarriedID != 0xd4) {
+        if (this->mCarriedID != TRS_ID_T_BASKET) {
             s16 *ap = (s16 *)&this->mCarriedAngleY;
             *ap += 0xc00;
         }
@@ -445,7 +468,7 @@ void daTrs_c::func_ov063_021166ac() {
     Matrix4x3_FromTranslation(&data_020a0e68, this->mPosX >> 3, this->mPosY >> 3, this->mPosZ >> 3);
     *(Matrix4x3 *)&this->mShadowMtx[0] = data_020a0e68;
     {
-        int big = (this->actorID == 0xd2);
+        int big = (this->actorID == TRS_ID_BOSS_TERESA);
         if (big)
             _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &this->mShadowModel1, &this->mShadowMtx[0], 0x12c000, 0xc8000, 0xf);
         else
@@ -481,6 +504,7 @@ void daTBasket_c::func_ov063_021169c4() {
 }
 
 
+/* Behavior handler for variant 4. */
 // @symbol _ZN7daTrs_c19func_ov063_02116a1cEv
 void daTrs_c::func_ov063_02116a1c() {
     Vec3 v;
@@ -549,6 +573,8 @@ void daTrs_c::func_ov063_02116bf0() {
 }
 
 
+/* Behavior handler for variant 3: spawns TERESA children (param 0xfff1)
+   while fewer than two are alive, five at most. */
 // @symbol _ZN7daTrs_c19func_ov063_02116bf4Ev
 void daTrs_c::func_ov063_02116bf4() {
 
@@ -558,7 +584,7 @@ void daTrs_c::func_ov063_02116bf4() {
     
         *ip = (unsigned short)(*ip & ~TRS_FLAG_VISIBLE);
         *r3 = *r3 | 1;
-        func_ov063_02119c18(0x9f);
+        func_ov063_02119c18(TRS_ID_MERRYGOROUND);
     
         st = this->mState;
         switch (st) {
@@ -568,10 +594,10 @@ void daTrs_c::func_ov063_02116bf4() {
             if (this->mChildDeaths < 5) {
                 unsigned char cb = this->mSpawnCount;
                 if (cb != 5 && (int)cb - this->mChildDeaths < 2) {
-                    char* p = (char *)dActor_c::Spawn(0xd1, 0xfff1, *(const Vector3 *)(&this->mPosX), (const Vector3_16 *)(&this->mPrevAngleX), this->mAreaIdx, -1);
+                    char* p = (char *)dActor_c::Spawn(TRS_ID_TERESA, 0xfff1, *(const Vector3 *)(&this->mPosX), (const Vector3_16 *)(&this->mPrevAngleX), this->mAreaIdx, -1);
                     if (p != 0) {
-                        *(int*)(p + 0x494) = this->uniqueID;
-                        *(int*)(p + 0x498) = this->mCachedActorID;
+                        ((daTrs_c *)p)->mSpawnerID = this->uniqueID;
+                        ((daTrs_c *)p)->mCachedActorID = this->mCachedActorID;
                     }
                     {
                         unsigned char *q = (unsigned char *)&this->mSpawnCount;
@@ -596,6 +622,7 @@ void daTrs_c::func_ov063_02116bf4() {
 }
 
 
+/* Behavior handler for variant 5: the Boo carrying the cage (T_BASKET). */
 // @symbol _ZN7daTrs_c19func_ov063_02116d38Ev
 void daTrs_c::func_ov063_02116d38() {
 
@@ -662,9 +689,9 @@ void daTrs_c::func_ov063_02116e14() {
     {
         char* r = (char*)dActor_c::Spawn(this->mCarriedID, 0, *(const Vector3 *)((struct Vector3*)&this->mCarriedPosX), (const Vector3_16 *)(0), this->mAreaIdx, -1);
         if (r != 0) {
-            *(int*)(r + 0xa4) = 0;
-            *(int*)(r + 0xa8) = 0x32000;
-            *(int*)(r + 0xac) = 0;
+            ((dActor_c *)r)->unk_0a4 = 0;
+            ((dActor_c *)r)->mVertSpeed = 0x32000;
+            ((dActor_c *)r)->unk_0ac = 0;
         }
     }
     this->mBooFlags.carrying = 0;
@@ -693,6 +720,7 @@ int daTrs_c::func_ov063_02116f48() {
    every @NNN in the TU by two (measured, each one alone). */
 #define L16(c, off) ((u16*)(((int)(c) + (off))))
 #define L8(c, off) ((u8*)(((int)(c) + (off))))
+/* Behavior handler for variant 0xb. */
 // @symbol _ZN7daTrs_c19func_ov063_02116facEv
 void daTrs_c::func_ov063_02116fac() {
 
@@ -791,6 +819,7 @@ void daTrs_c::func_ov063_02116fac() {
 #undef L16
 #undef L8
 
+/* Behavior handler for variant 0xf: the Big Boo that leaves the OBJ_KEY. */
 // @symbol _ZN7daTrs_c19func_ov063_021172a8Ev
 void daTrs_c::func_ov063_021172a8() {
     switch (this->mState) {
@@ -888,7 +917,7 @@ void daTrs_c::func_ov063_02117650() {
     }
 
     {
-        int *pp = (int *)(p + 0x5c);
+        int *pp = (int *)&((Player *)p)->mPosX;
         ppos.x = pp[0];
         ppos.y = pp[1];
         ppos.z = pp[2];
@@ -1071,7 +1100,7 @@ void daTrs_c::func_ov063_02117b0c() {
         }
         {
             void *pl = (void *)this->mTalkPlayer;
-            unsigned m = (unsigned)(int)data_ov063_0211e1c8[*(int *)((char *)pl + 8)];
+            unsigned m = (unsigned)(int)data_ov063_0211e1c8[((Player *)pl)->param1];
             if (!this->mClosestPlayer->ShowMessage(*(fBase_c *)(this), m, (const Vector3 *)(v), 0, 2))
                 return;
             func_0201277c(0x151);
@@ -1136,7 +1165,7 @@ void daTrs_c::func_ov063_02117cdc() {
         if (this->mTalkPlayer == 0) {
             return;
         }
-        src = (Vec3 *)((char *)this->mTalkPlayer + 0x5c);
+        src = (Vec3 *)&this->mTalkPlayer->mPosX;
         w[0] = src->x;
         w[1] = src->y;
         w[2] = src->z;
@@ -1172,33 +1201,33 @@ void daTrs_c::func_ov063_02117cdc() {
         int b;
         int *src;
         s16 *q;
-        src = (int *)((char *)this->mTalkPlayer + 0x5c);
+        src = (int *)&this->mTalkPlayer->mPosX;
         w[0] = src[0];
         w[1] = src[1];
         w[2] = src[2];
         w[0] = 0;
-        ang = Vec3_HorzAngle((int *)((char *)this->mTalkPlayer + 0x5c), w);
-        q = (s16 *)((char *)this->mTalkPlayer + 0x8c);
+        ang = Vec3_HorzAngle((int *)&this->mTalkPlayer->mPosX, w);
+        q = (s16 *)&this->mTalkPlayer->mAngleX;
         v[0] = q[0];
         v[1] = q[1];
         v[2] = q[2];
-        b = func_020092c4(cam, (char *)cam + 0x8c, &this->mTalkCamPosX);
-        b = b & func_020092c4(cam, (char *)cam + 0x80, &this->mTalkCamLookX);
+        b = func_020092c4(cam, &cam->pos, &this->mTalkCamPosX);
+        b = b & func_020092c4(cam, &cam->lookAt, &this->mTalkCamLookX);
         if (ApproachLinear(v[1], ang, 0x200) != 0 && b != 0) {
             this->mSubState += 1;
             this->mStateTimer = 0;
         }
         {
             char *d = (char *)this->mTalkPlayer;
-            *(s16 *)(d + 0x8c) = v[0];
-            *(s16 *)(d + 0x8e) = v[1];
-            *(s16 *)(d + 0x90) = v[2];
+            ((Player *)d)->mAngleX = v[0];
+            ((Player *)d)->mAngleY = v[1];
+            ((Player *)d)->mAngleZ = v[2];
         }
         {
             char *d = (char *)this->mTalkPlayer;
-            *(s16 *)(d + 0x92) = v[0];
-            *(s16 *)(d + 0x94) = v[1];
-            *(s16 *)(d + 0x96) = v[2];
+            ((Player *)d)->mPrevAngleX = v[0];
+            ((Player *)d)->mPrevAngleY = v[1];
+            ((Player *)d)->mPrevAngleZ = v[2];
         }
         return;
     }
@@ -1228,7 +1257,7 @@ void daTrs_c::func_ov063_02117cdc() {
                 return;
             }
         }
-        src = (int *)((char *)this->mTalkPlayer + 0x5c);
+        src = (int *)&this->mTalkPlayer->mPosX;
         d560 = (int *)&this->mTalkCamLookZ;
         w[0] = src[0];
         w[1] = src[1];
@@ -1266,7 +1295,7 @@ void daTrs_c::func_ov063_02117cdc() {
         this->mOpacity = 0;
         this->mSubState += 1;
         neg = -1;
-        src = (int *)((char *)this->mTalkPlayer + 0x5c);
+        src = (int *)&this->mTalkPlayer->mPosX;
         w[0] = src[0];
         w[1] = src[1];
         w[2] = src[2];
@@ -1358,10 +1387,10 @@ void daTrs_c::func_ov063_02118458() {
 
     if (this->mModelAnim.Finished()) {
         if (func_ov063_0211a8a4()) {
-            if (*(int*)&this->mModelAnim.file == *(int*)((char *)&data_ov063_0211edcc + 4)) {
+            if (*(int*)&this->mModelAnim.file == *(int*)&data_ov063_0211edcc.file) {
                 func_02012694(0x158, &this->mCamSpacePosX);
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                    *(void**)((char *)&data_ov063_0211edd4 + 4), 0x40000000, 0x1000, 0);
+                    data_ov063_0211edd4.file, 0x40000000, 0x1000, 0);
             } else if (this->mAttackRepeats != 0) {
                 this->mAttackRepeats -= 1;
                 this->mModelAnim.currFrame = 0;
@@ -1373,7 +1402,7 @@ void daTrs_c::func_ov063_02118458() {
                 rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
                 this->mAttackTimer = rnd + 0xb4;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                    *(void**)((char *)&data_ov063_0211ede4 + 4), 0, 0x1000, 0);
+                    data_ov063_0211ede4.file, 0, 0x1000, 0);
             }
         } else {
             int rnd;
@@ -1382,10 +1411,10 @@ void daTrs_c::func_ov063_02118458() {
             rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
             this->mAttackTimer = rnd + 0xb4;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                *(void**)((char *)&data_ov063_0211ede4 + 4), 0, 0x1000, 0);
+                data_ov063_0211ede4.file, 0, 0x1000, 0);
         }
     } else {
-        if (*(int*)&this->mModelAnim.file == *(int*)((char *)&data_ov063_0211edd4 + 4)
+        if (*(int*)&this->mModelAnim.file == *(int*)&data_ov063_0211edd4.file
             && this->mModelAnim.WillHitFrame(6)) {
             Vec3 v;
             s16 m = 0x78;
@@ -1473,7 +1502,7 @@ void daTrs_c::func_ov063_0211873c() {
     this->mVertSpeed = 0;
     this->mVertAccel = 0;
     func_02012694(0x159, &this->mCamSpacePosX);
-    ModelAnim_SetAnim(&this->mModelAnim, *(void**)((char *)&data_ov063_0211edcc + 4), 0x40000000, 0x1000, 0);
+    ModelAnim_SetAnim(&this->mModelAnim, data_ov063_0211edcc.file, 0x40000000, 0x1000, 0);
     {
         unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650);
         this->mAttackRepeats = (u8)((rnd >> 0x10) % 3);
@@ -1514,6 +1543,7 @@ void daTrs_c::func_ov063_02118914() {
 }
 
 
+/* Behavior handler for variants 0xc/0xd/0xe: the Big Boo. */
 // @symbol _ZN7daTrs_c19func_ov063_021189f4Ev
 void daTrs_c::func_ov063_021189f4() {
 
@@ -1619,7 +1649,7 @@ bigblock:
     {
         dActor_c *r1 = 0;
         for (;;) {
-            r1 = dActor_c::FindWithActorID(0x41, r1);
+            r1 = dActor_c::FindWithActorID(TRS_ID_KAIDAN, r1);
             if (r1 == 0) goto after_strb;
             if (((unsigned int)r1->param1 >> 8 & 3) == 0) break;
         }
@@ -1737,7 +1767,7 @@ void daTrs_c::func_ov063_02118eac() {
 extern "C" void func_ov063_02118f24(void *c, void *vec)
 {
     unsigned int val = 4;
-    ((dActor_c *)c)->UntrackAndSpawnStar(*(s8 *)((char*)c + 0xd4), *(unsigned char*)((char*)c + 0xd5), *(const Vector3 *)(vec), val);
+    ((daTrsIcon_c *)c)->UntrackAndSpawnStar(((daTrsIcon_c *)c)->mTrackStarID, ((daTrsIcon_c *)c)->mStarID, *(const Vector3 *)(vec), val);
 }
 
 // @symbol _ZN7daTrs_c19func_ov063_02118f50Ev
@@ -1807,7 +1837,7 @@ void daTrs_c::func_ov063_02119074() {
     }
 
     if (this->mVariant == 0xd)
-        func_ov063_02119c18(0x9f);
+        func_ov063_02119c18(TRS_ID_MERRYGOROUND);
 
     this->mBigBooID = 0;
     this->mOpacity = 0x28;
@@ -1840,12 +1870,12 @@ void daTrs_c::func_ov063_02119074() {
 
             this->mHorzSpeed = 0x800;
             this->mState = 5;
-            r = (char *)dActor_c::FindWithActorID(0x9f, (dActor_c *)(0));
+            r = (char *)dActor_c::FindWithActorID(TRS_ID_MERRYGOROUND, (dActor_c *)(0));
 
             if (r != 0)
                 this->mPrevAngleY =
                     Vec3_HorzAngle((Vec3 *)&this->mPosX,
-                                   (Vec3 *)(r + 0x5c));
+                                   (Vec3 *)&((dActor_c *)r)->mPosX);
         } else {
             if (this->mVariant == 0xe)
                 func_ov063_02116244();
@@ -1866,6 +1896,7 @@ void daTrs_c::func_ov063_02119074() {
 }
 
 
+/* Behavior handler for variant 8. */
 // @symbol _ZN7daTrs_c19func_ov063_02119274Ev
 void daTrs_c::func_ov063_02119274() {
 
@@ -1880,6 +1911,7 @@ void daTrs_c::func_ov063_02119274() {
 }
 
 
+/* Behavior handler for variants 0/1/2/6/9/10: the chasing Boo. */
 // @symbol _ZN7daTrs_c19func_ov063_021192d4Ev
 void daTrs_c::func_ov063_021192d4() {
 
@@ -1927,7 +1959,7 @@ void daTrs_c::func_ov063_0211934c() {
             if (cap == 0)
                 return;
             {
-                u16 *p = (u16 *)((int)cap + 0x5d4);
+                u16 *p = (u16 *)&((daTrs_c *)cap)->mBooFlags;
                 *p &= ~TRS_FLAG_CARRYING;
             }
         }
@@ -2017,7 +2049,7 @@ void daTrs_c::func_ov063_0211934c() {
             if (cap2 == 0)
                 return;
             {
-                u16 *p = (u16 *)((int)cap2 + 0x5d4);
+                u16 *p = (u16 *)&((daTrs_c *)cap2)->mBooFlags;
                 *p &= ~TRS_FLAG_CARRYING;
             }
         }
@@ -2043,7 +2075,7 @@ void daTrs_c::func_ov063_0211934c() {
             
             cap3 = RespawnIfHasCap();
             if (cap3 != 0) {
-                u16 *p = (u16 *)((int)cap3 + 0x5d4);
+                u16 *p = (u16 *)&((daTrs_c *)cap3)->mBooFlags;
                 *p &= ~TRS_FLAG_CARRYING;
             }
         }
@@ -2074,7 +2106,7 @@ void daTrs_c::func_ov063_0211975c() {
         char* r = (char*)RespawnIfHasCap();
         if (r == 0) return;
         {
-            u16* p = (u16*)(((int)r + 0x5d4));
+            u16* p = (u16*)&((daTrs_c *)r)->mBooFlags;
             *p &= ~TRS_FLAG_CARRYING;
         }
     } else {
@@ -2172,7 +2204,7 @@ void daTrs_c::func_ov063_02119ab0() {
     this->mCarriedPosY = this->mPosY;
     this->mCarriedPosZ = this->mPosZ;
 
-    if (this->mCarriedID == 0xd4) {
+    if (this->mCarriedID == TRS_ID_T_BASKET) {
         this->mCarriedPosY += 0x3c000;
         return;
     }
@@ -2228,7 +2260,7 @@ void daTrs_c::func_ov063_02119c18(unsigned int id) {
     this->mFoundActor = (dActor_c *)a;
     a = (void *)this->mFoundActor;
     if (a != 0) {
-        *(void**)&this->mCachedActorID = *(void**)((char*)a + 4);
+        this->mCachedActorID = ((dActor_c *)a)->uniqueID;
     }
 }
 
@@ -2239,16 +2271,16 @@ void daTrs_c::func_ov063_02119c58() {
     unsigned int id;
     dActor_c *a;
     if (this->mBigBooID != 0) return;
-    id = 0xd2;
+    id = TRS_ID_BOSS_TERESA;
     a = 0;
     for (;;) {
         a = (dActor_c *)dActor_c::FindWithActorID(id, (dActor_c *)(a));
         if (a == 0) return;
-        unsigned char t = *((unsigned char *)a + 0x5cf);
+        unsigned char t = ((daTrs_c *)a)->mVariant;
         if (t == 0xe) break;
         if (t == 0xd) break;
     }
-    this->mBigBooID = *(int *)((char *)a + 4);
+    this->mBigBooID = a->uniqueID;
 }
 
 
@@ -2405,7 +2437,7 @@ int daTrs_c::func_ov063_0211a0dc() {
             this->mTalkPlayer = (Player *)found;
 
             {
-                int isBf = (int)(((dActor_c *)found)->actorID == 0xbf);
+                int isBf = (int)(((dActor_c *)found)->actorID == TRS_ID_PLAYER);
                 if (isBf) {
                     if (((dActor_c *)found)->param1 == 3) {
                         u16* p = (u16*)&this->mBooFlags;
@@ -2422,10 +2454,10 @@ int daTrs_c::func_ov063_0211a0dc() {
         goto ret0;
     if (!(this->mdCcAcPos_c.hitFlags & 0x400000))
         goto ret0;
-    if (*(u8*)((char*)r4 + 0x6fb) != 0)
+    if (((Player *)r4)->mIsVanish != 0)
         return 0;
 
-    if (*(u8*)((char*)r4 + 0x6f9) != 0) {
+    if (((Player *)r4)->mIsMetal != 0) {
         this->mdCcAcPos_c.flags |= 1;
         this->mTalkPlayer = (Player *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
         return 1;
@@ -2438,9 +2470,9 @@ int daTrs_c::func_ov063_0211a0dc() {
     }
 
     {
-    int isKind_d2 = (int)(this->actorID == 0xd2);
-    if (isKind_d2) {
-        if (*(u8*)((char*)r4 + 0x6de) != 0) {
+    int isBigBoo = (int)(this->actorID == TRS_ID_BOSS_TERESA);
+    if (isBigBoo) {
+        if (((Player *)r4)->mIsAirborne != 0) {
             _ZN6Player6BounceE5Fix12IiE(r4, 0x28000);
             func_0201267c(0x149, &this->mCamSpacePosX);
             return -1;
@@ -2781,6 +2813,9 @@ void daTrs_c::func_ov063_0211aa34() {
 }
 
 
+/* Behavior handler for variant 7: spawns three TERESA (param 0xfff6, random
+   yaw) at fixed offsets and removes itself; below 15 stars it only removes
+   itself. */
 // @symbol _ZN7daTrs_c19func_ov063_0211ab68Ev
 void daTrs_c::func_ov063_0211ab68() {
 
@@ -2825,7 +2860,7 @@ void daTrs_c::func_ov063_0211ab68() {
         rot.y = this->mPrevAngleY;
         rot.z = this->mPrevAngleZ;
         rot.y = (u32)RandomIntInternal(&data_0209e650) >> 16;
-        dActor_c::Spawn(0xd1, 0xfff6, *(const Vector3 *)(&pos), (const Vector3_16 *)(&rot), this->mAreaIdx, -1);
+        dActor_c::Spawn(TRS_ID_TERESA, 0xfff6, *(const Vector3 *)(&pos), (const Vector3_16 *)(&rot), this->mAreaIdx, -1);
     }
     this->MarkForDestruction();
 }
@@ -2836,7 +2871,7 @@ int daTrs_c::func_ov063_0211ad00() {
 
     int r4;
     int v;
-    int b = (int)(this->actorID == 0xd2);
+    int b = (int)(this->actorID == TRS_ID_BOSS_TERESA);
     if (b != 0 && this->mVariant != 0xf) {
         r4 = 0x2e6000;
     } else {
@@ -2899,17 +2934,17 @@ int daTrs_c::CleanupResources()
     if (mSpawnerID != 0) {
         mFoundActor = dActor_c::FindWithID(mSpawnerID);
         if (mFoundActor != 0) {
-            cnt = (int *)(((int)mFoundActor + 0x5a0));
+            cnt = (int *)&((daTrs_c *)mFoundActor)->mChildDeaths;
             (*cnt)++;
         }
         mFoundActor = 0;
     }
-    if (mCarriedID == 0x122)
+    if (mCarriedID == TRS_ID_BLUE_COIN)
         UnloadBlueCoinModel(this);
-    else if (mCarriedID == 0xd4)
+    else if (mCarriedID == TRS_ID_T_BASKET)
         data_ov063_0211edec.Release();
 
-    b = (actorID == 0xd1);
+    b = (actorID == TRS_ID_TERESA);
     if (b != 0) {
         data_ov063_0211edc4.Release();
         data_ov063_0211eddc.Release();
@@ -3002,9 +3037,9 @@ int daTrs_c::Behavior()
         mFoundActor = dActor_c::FindWithID(mSpawnedActorID);
         q = (char *)mFoundActor;
         if (q != 0) {
-            *(s32 *)(q + 0x5c) = mPosX;
-            *(s32 *)(q + 0x60) = mPosY;
-            *(s32 *)(q + 0x64) = mPosZ;
+            ((dActor_c *)q)->mPosX = mPosX;
+            ((dActor_c *)q)->mPosY = mPosY;
+            ((dActor_c *)q)->mPosZ = mPosZ;
         }
         mFoundActor = 0;
     }
@@ -3034,7 +3069,7 @@ int daTrs_c::Behavior()
                     }
                     p = RespawnIfHasCap();
                     if (p != 0) {
-                        fp = (u16 *)((char *)p + 0x5d4);
+                        fp = (u16 *)&((daTrs_c *)p)->mBooFlags;
                         *fp = (*fp) & (~TRS_FLAG_CARRYING);
                     }
                 }
@@ -3052,7 +3087,8 @@ int daTrs_c::Behavior()
 
     mAreaId = -1;
     if (mSoundCount == 0) {
-        /* b7 clear: not hidden yet. */
+        /* Area-reset: when the home area is not showing or the leave test
+           (02116190) passes, an undefeated Boo goes back to its home. */
         if ((IsAreaShowing(mAreaIdx) == 0) || (func_ov063_02116190() != 0)) {
             if (mBooFlags.defeated == 0) {
                 r2 = (char *)&mPrevAngleX;
@@ -3131,7 +3167,7 @@ block_39:
         mClosestPlayer = ClosestPlayer();
         Player *plr = mClosestPlayer;
         if (plr != 0) {
-            s32 *pp = (s32 *)(((char *)plr) + 0x5c);
+            s32 *pp = &plr->mPosX;
             pv.x = pp[0];
             pv.y = pp[1];
             pv.z = pp[2];
@@ -3184,7 +3220,6 @@ block_39:
         func_ov063_02116fac();
     }
 
-    /* b2 set: copy the yaw through. */
     if (mBooFlags.followHeading != 0)
         mAngleY = mPrevAngleY;
     *(u16 *)&mStateTimer += 1;
@@ -3194,7 +3229,6 @@ block_39:
     if (mVariant != 3) {
         UpdatePos(&mdCcAcPos_c);
         func_ov063_02119ab0();
-        /* b0 set: clamp z. */
         if ((mBooFlags.limitZ != 0) && (mPosZ < -0x12c000))
             mPosZ = -0x12c000;
         dBgCh_Gnd rc1;
@@ -3221,10 +3255,9 @@ block_39:
             v2.y = w;
             v2.z = z;
             rc2.SetObjAndPos(v2, (dActor_c*)this);
-            d1 = (int)(actorID == 0xd1);
+            d1 = (int)(actorID == TRS_ID_TERESA);
             if (d1 != 0) {
                 if (mVariant < 8) {
-                    /* b5 set: ground already found. */
                     if (mBooFlags.groundSeen != 0) {
                         if ((rc2.DetectClsn() == 0) ||
                             ((mPosY - rc2.clsnY) > 0x12c000)) {
@@ -3324,7 +3357,7 @@ int daTrs_c::InitResources()
     *(u16 *)&mBooFlags = 0;
     mSpawnedActorID = 0;
     cond = 0;
-    if (actorID == 0xd2) cond = 1;
+    if (actorID == TRS_ID_BOSS_TERESA) cond = 1;
     if (cond) {
         mVariant = (param1 & 0xf) + 0xc;
         if (mVariant == 0xf) {
@@ -3332,7 +3365,7 @@ int daTrs_c::InitResources()
             dExtFrameCtrl_c::LoadFile(data_ov063_0211edd4);
             dExtFrameCtrl_c::LoadFile(data_ov063_0211edcc);
         } else if (mVariant == 0xc) {
-            mFoundActor = dActor_c::Spawn(0xd3, param1, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
+            mFoundActor = dActor_c::Spawn(TRS_ID_ICON_TERESA, param1, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
             if (mFoundActor != 0) {
                 mSpawnedActorID = mFoundActor->uniqueID;
             }
@@ -3340,7 +3373,7 @@ int daTrs_c::InitResources()
         }
         dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edf4), 1, 1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211ede4 + 4), 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov063_0211ede4.file, 0, 0x1000, 0);
         mHitPoints = 3;
         mClsnRadius = 0xc8;
         mClsnHeight = 0x104;
@@ -3359,7 +3392,7 @@ int daTrs_c::InitResources()
         mVariant = param1 & 0xf;
         dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edc4), 1, 0x16);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211eddc + 4), 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov063_0211eddc.file, 0, 0x1000, 0);
         mHitPoints = 1;
         if (mVariant == 5) {
             mClsnZBias = -0x24000;
@@ -3385,20 +3418,20 @@ int daTrs_c::InitResources()
         _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
     }
 
-    mCarriedID = 0x187;
+    mCarriedID = TRS_ID_END_OF;
     if (mVariant == 5) {
         mBooFlags.carrying = 1;
-        mCarriedID = 0xd4;
+        mCarriedID = TRS_ID_T_BASKET;
         Model::LoadFile(data_ov063_0211edec);
     } else if (mVariant == 0 || mVariant == 1 || mVariant == 2 || mVariant == 6 || (unsigned)(unsigned char)(mVariant + 0xf8) <= 3) {
         mdCcAcPos_c.vulnFlags |= 0x8000;
         mBooFlags.carrying = 1;
         if (mVariant == 6) {
-            mCarriedID = 0x120;
+            mCarriedID = TRS_ID_COIN;
         } else if ((unsigned)(unsigned char)(mVariant + 0xf6) <= 1) {
-            mCarriedID = 0x121;
+            mCarriedID = TRS_ID_RED_COIN;
         } else {
-            mCarriedID = 0x122;
+            mCarriedID = TRS_ID_BLUE_COIN;
             LoadBlueCoinModel(this);
         }
     }
@@ -3408,7 +3441,7 @@ int daTrs_c::InitResources()
     mCapPosY = 0x60000;
     mCapPosZ = 0;
     cond = 0;
-    if (actorID == 0xd1) cond = 1;
+    if (actorID == TRS_ID_TERESA) cond = 1;
     if (cond && mVariant != 8) {
         unsigned char capIdx;
         mHadBank1Cap = (param1 >> 0xc) & 0xf;
@@ -3436,7 +3469,7 @@ int daTrs_c::InitResources()
             return 0;
         }
         if (IsStarCollectedInCurLevel(1) != 0) {
-            mCarriedID = 0x120;
+            mCarriedID = TRS_ID_COIN;
         }
     }
 
@@ -3486,21 +3519,22 @@ int daTrs_c::InitResources()
             MarkForDestruction();
             return 1;
         }
+        /* data_0209f264 is LAST_ENTRANCE_ID. When it is 0 the cage (mCarriedID
+           is T_BASKET here) is placed at once, muted, and this Boo removed. */
         if (data_0209f264 == 0) {
             spawned = dActor_c::Spawn(mCarriedID, 0, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
             if (spawned != 0) {
-                /* A byte on the carried actor (0xd4). */
-                *(unsigned char *)((char *)spawned + 0x37e) = 1;
+                ((daTBasket_c *)spawned)->mMuteSecretSound = 1;
                 MarkForDestruction();
                 return 1;
             }
         }
-        mCarriedModel.SetFile((BMD_File *)*(void **)((char *)&data_ov063_0211edec + 4), 1, -1);
+        mCarriedModel.SetFile((BMD_File *)data_ov063_0211edec.file, 1, -1);
     } else if (mVariant == 0 || mVariant == 1 || mVariant == 2 || mVariant == 6 || (unsigned)(unsigned char)(mVariant + 0xf8) <= 3) {
         unsigned short t = mCarriedID;
-        if (t == 0x122) {
+        if (t == TRS_ID_BLUE_COIN) {
             mCarriedModel.SetFile((BMD_File *)*(void **)((char *)&data_ov002_0210d9c8 + 4), 1, -1);
-        } else if (t == 0x121) {
+        } else if (t == TRS_ID_RED_COIN) {
             mCarriedModel.SetFile((BMD_File *)*(void **)((char *)&data_ov002_0210d9f8 + 4), 1, -1);
         } else {
             mCarriedModel.SetFile((BMD_File *)*(void **)((char *)&data_ov002_0210d9b8 + 4), 1, -1);
@@ -3524,7 +3558,7 @@ int daTrs_c::InitResources()
             }
         } else if (mVariant == 7) {
             mBooFlags.carrying = 1;
-            mCarriedID = 0x120;
+            mCarriedID = TRS_ID_COIN;
         } else if (mVariant == 0xe) {
             mAreaId = -1;
         }
@@ -3579,7 +3613,7 @@ int daTrsIcon_c::InitResources()
 int daTrs_c::OnYoshiTryEat() {
     unsigned short v = actorID;
     int r;
-    if (v == 0xd1) r = 1; else r = 0;
+    if (v == TRS_ID_TERESA) r = 1; else r = 0;
     if (r != 0) r = 7; else r = 0;
     return r;
 }
