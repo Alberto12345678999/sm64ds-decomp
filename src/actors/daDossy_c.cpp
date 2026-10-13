@@ -44,6 +44,7 @@
 #include "dBgW.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "Vector3s.h"
 
 typedef enum { FALSE = 0, TRUE = 1 } BOOL;
 

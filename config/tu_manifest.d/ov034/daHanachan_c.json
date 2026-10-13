@@ -10,7 +10,7 @@
     "contiguous linker run: 0x21111a0..0x21136a4, 34 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daHanachan_c",
     "module sinit corroboration: 1 sinit(s) / 1 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "classInit fold: the daHanachan_c_classInit registry factory (profile HANACHAN, historical alias Wiggler_Spawn), 0x021136a4..0x02113820, abuts this TU's InitResources with no gap; tu_map leaves it unlabelled because it cuts on symbol name. Folded at the end of the file (defer_codegen off, source order) as the loose file's hand-built sequence: fBase_c operator new, dEnemyBase_c C2, vtable store &_ZTV12daHanachan_c[2], eight __cxa_vec_ctor calls, dBgCh_Actr C1. `return new daHanachan_c();` was measured first and does not reproduce it (999 words differ, first wrong relocation _ZN15TextureSequenceC1Ev): types.h's Vector3 and Vector3s have no user-declared constructor, so `new` skips the per-element func_0203d384/func_0203d73c construction the ROM performs. The unit is now 0x021111a0..0x02113820, 35 functions, bounded above by the end of ov034 .text at 0x02113820."
+    "Native registry factory: daHanachan_c_classInit at ov034:0x021136a4..0x02113820 uses return new daHanachan_c. Vector3s declares its default constructor in types.h and defines it inline in Vector3s.h, included by the native factory and the three existing constructor callers. This preserves the 0x8e8 allocation and member construction order. The two Vector3[5] arrays retain stride12 and original callback func_0203d384; Vector3s mSegmentRot[5] at0x444 retains stride6 and original callback func_0203d73c, with unchanged destructor callbacks. Both emitted constructors are individually verified exact canonical duplicates. Removing obsolete factory ABI declarations preserves all35 compiler temporary pins. Whole-consumer compile/object comparison finds no changes outside the three recorded constructor callers; the only additional temporary-pin changes are the14 Dossy source pins."
   ],
   "sections": [
     {
@@ -1521,6 +1521,22 @@
       "canonical_module": "ov034",
       "canonical_address": "0x021144bc",
       "reason": "vtable, anchored by the out-of-line destructor. The word at 0x021144b8 is _ZTI12daHanachan_c. Homes at ov034:0x021144bc."
+    },
+    {
+      "symbol": "_ZN7Vector3C1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_symbol": "func_0203d384",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d384",
+      "reason": "Vector3 mSegmentPos[5] and mSegmentScale[5], stride12, original constructor func_0203d384 and destructor _ZN7Vector3D1Ev"
+    },
+    {
+      "symbol": "_ZN8Vector3sC1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_symbol": "func_0203d73c",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0203d73c",
+      "reason": "Vector3s mSegmentRot[5] at0x444, stride6, original constructor func_0203d73c and destructor _ZN8Vector3sD1Ev"
     }
   ],
   "init": [

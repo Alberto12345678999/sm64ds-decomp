@@ -18,7 +18,6 @@
  * - func_ov002_020c51d0 is ov002's. ModelAnim::SetAnim, TextureSequence::SetFile,
  *   dCcAcPos_c::Init, dBgCh_Actr::Init, Player::Hurt and Particle::System::New
  *   stay mangled (Fix12<int> by value).
- * - The factory is still not `return new` (see its comment).
  */
 
 #pragma defer_codegen off
@@ -31,6 +30,7 @@
 #include "Player.h"
 #include "dBgCh_Gnd.h"
 #include "Message.h"
+#include "Vector3s.h"
 
 void ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
@@ -1196,59 +1196,15 @@ int daHanachan_c::InitResources()
 }
 
 
-/* The factory's hand-built construction sequence. */
-extern "C" {
-extern void *_ZN7fBase_cnwEj(unsigned int size);
-extern void *_ZN12dEnemyBase_cC2Ev(void *p);
-extern void __cxa_vec_ctor(void *arr, unsigned int count, unsigned int size, void (*ctor)(void *), void (*dtor)(void *));
-extern void *_ZN10dBgCh_ActrC1Ev(void *p);
-extern void *_ZN10dCcAcPos_cC1Ev(void *p);
-extern dCcAcPos_c *_ZN10dCcAcPos_cD1Ev(dCcAcPos_c *p);
-extern void func_0203d73c(void);
-extern void *_ZN8Vector3sD1Ev(void *p);
-extern void func_0203d384(void);
-extern void *_ZN7Vector3D1Ev(void *p);
-extern void *_ZN15TextureSequenceC1Ev(void *p);
-extern TextureSequence *_ZN15TextureSequenceD1Ev(TextureSequence *p);
-extern void *_ZN15MaterialChangerC1Ev(void *p);
-extern MaterialChanger *_ZN15MaterialChangerD1Ev(MaterialChanger *p);
-extern void *_ZN9ModelAnimC1Ev(void *p);
-extern ModelAnim *_ZN9ModelAnimD1Ev(ModelAnim *p);
-}
-extern int _ZTV12daHanachan_c[];
-
 /* Reconstructed source-style name: SM64DS proves daHanachan_c through RTTI,
  * allocation size, vtable identity, and the HANACHAN registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: Wiggler_Spawn.
- *
- * Not `new daHanachan_c()`: types.h's Vector3 and Vector3s have no
- * user-declared constructor, so an idiomatic `new` skips the ROM's
- * per-element __cxa_vec_ctor(..., func_0203d384 / func_0203d73c, ...) calls
- * over the two Vector3 arrays and the Vector3s array (measured: 999 words
- * differ, first wrong relocation _ZN15TextureSequenceC1Ev). Kept as the loose
- * file's explicit hand-built sequence, now addressed by the members. The one
- * change the fold required is the vtable store: this TU owns the key function
- * and so defines _ZTV12daHanachan_c at the start of the vtable object, two
- * words ahead of the address point. */
+ */
 // @symbol daHanachan_c_classInit
 extern "C" daHanachan_c *daHanachan_c_classInit()
 {
-    daHanachan_c *c = (daHanachan_c *)_ZN7fBase_cnwEj(sizeof(daHanachan_c));
-    if (c) {
-        _ZN12dEnemyBase_cC2Ev(c);
-        *(int **)c = &_ZTV12daHanachan_c[2];
-        __cxa_vec_ctor(c->mModelAnims, 5, sizeof(ModelAnim), (void (*)(void *))_ZN9ModelAnimC1Ev, (void (*)(void *))_ZN9ModelAnimD1Ev);
-        __cxa_vec_ctor(c->mMaterialChangers, 5, sizeof(MaterialChanger), (void (*)(void *))_ZN15MaterialChangerC1Ev, (void (*)(void *))_ZN15MaterialChangerD1Ev);
-        __cxa_vec_ctor(c->mTextureSequences, 5, sizeof(TextureSequence), (void (*)(void *))_ZN15TextureSequenceC1Ev, (void (*)(void *))_ZN15TextureSequenceD1Ev);
-        __cxa_vec_ctor(c->mSegmentPos, 5, sizeof(Vector3), (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-        __cxa_vec_ctor(c->mSegmentScale, 5, sizeof(Vector3), (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-        __cxa_vec_ctor(c->mSegmentRot, 5, sizeof(Vector3s), (void (*)(void *))func_0203d73c, (void (*)(void *))_ZN8Vector3sD1Ev);
-        __cxa_vec_ctor(c->mdCc_cs1, 5, sizeof(dCcAcPos_c), (void (*)(void *))_ZN10dCcAcPos_cC1Ev, (void (*)(void *))_ZN10dCcAcPos_cD1Ev);
-        __cxa_vec_ctor(c->mdCc_cs2, 5, sizeof(dCcAcPos_c), (void (*)(void *))_ZN10dCcAcPos_cC1Ev, (void (*)(void *))_ZN10dCcAcPos_cD1Ev);
-        _ZN10dBgCh_ActrC1Ev(&c->mWithMeshClsn);
-    }
-    return c;
+    return new daHanachan_c;
 }
 
 HanachanModelFilePtr data_ov034_02114660(0x31e);
