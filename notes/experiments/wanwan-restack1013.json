@@ -120,7 +120,7 @@
     "raw_container_equal": false,
     "prepared_container_equal": false,
     "base": "b2e984672798ab8512d500b1d790a0be968744b6",
-    "full_rom_run": false
+    "full_rom_run": true
   },
   "fresh_storage_callback_proof": {
     "baseline": {
@@ -788,6 +788,208 @@
     "wanwan-current1013"
   ],
   "historical_report": "notes/experiments/wanwan-current1013.json",
-  "gates": {},
-  "status": "Actual b2e Source checkpoint; final production gates pending."
+  "gates": {
+    "full-rom": {
+      "name": "full-rom",
+      "command": [
+        "python",
+        "tools/rombuild.py",
+        "-j16",
+        "--no-rom",
+        "--report-json",
+        "build/wanwan-restack1013/rom-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 295.1166603565216,
+      "log": "build/wanwan-restack1013/full-rom.log",
+      "log_sha256": "7a991e9e9dbb361204fdf534c7b4dea838356b95401d763e9469c73eb551229f",
+      "tested_commit": "83fed9900d90f29c193efe0b4864a538f3680e40"
+    },
+    "range": {
+      "name": "range",
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "b2e984672798ab8512d500b1d790a0be968744b6..83fed9900d90f29c193efe0b4864a538f3680e40",
+        "--json",
+        "build/wanwan-restack1013/range-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 23.033408403396606,
+      "log": "build/wanwan-restack1013/range.log",
+      "log_sha256": "0e61b39186c93a7d2ef556202f9d5352f5534a7183bb825182b0ead5552b7f5d",
+      "tested_commit": "83fed9900d90f29c193efe0b4864a538f3680e40"
+    },
+    "decl": {
+      "name": "decl",
+      "command": [
+        "python",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "b2e984672798ab8512d500b1d790a0be968744b6"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.481252193450928,
+      "log": "build/wanwan-restack1013/decl.log",
+      "log_sha256": "64471f07cea5749375b64932769de3bfee40789cdc10aa67c9b782547135e843",
+      "tested_commit": "83fed9900d90f29c193efe0b4864a538f3680e40"
+    },
+    "port": {
+      "name": "port",
+      "command": [
+        "python",
+        "tools/port_refcheck.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.7122118473052979,
+      "log": "build/wanwan-restack1013/port.log",
+      "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e",
+      "tested_commit": "83fed9900d90f29c193efe0b4864a538f3680e40"
+    },
+    "langmode": {
+      "name": "langmode",
+      "command": [
+        "python",
+        "tools/langmode_audit.py",
+        "--check",
+        "langmode-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.302570581436157,
+      "log": "build/wanwan-restack1013/langmode.log",
+      "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765",
+      "tested_commit": "83fed9900d90f29c193efe0b4864a538f3680e40"
+    }
+  },
+  "status": "All production gates terminal0; offered for independent Source and byte review. Reconstruction remains partial under issue3813.",
+  "canary": {
+    "tested_base": "b2e984672798ab8512d500b1d790a0be968744b6",
+    "recorded_from_initial_terminal_call": true,
+    "resolver": "srcpath.path_for(func_ov006_020cb030)",
+    "actual_source": "src/actors/dMgTrmpln2Mario_c.cpp",
+    "symbol": "func_ov006_020cb030",
+    "address": "0x020cb030",
+    "size": "0x104",
+    "module": "ov006",
+    "verified": true,
+    "compiler": "2004/b56"
+  },
+  "final_production_summary": {
+    "modules": {
+      "modulesChecked": 106,
+      "modulesExact": 106,
+      "modulesExpectedOnly": 106,
+      "comparedBytes": 3049600,
+      "differingBytes": 0,
+      "unexpectedDifferingBytes": 0,
+      "percent": 100.0,
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b"
+    },
+    "source_build": {
+      "totalCodeFunctions": 11397,
+      "totalCodeBytes": 2238108,
+      "compiledFunctions": 11334,
+      "compiledBytes": 2225480,
+      "sourceFunctions": 11334,
+      "sourceBytes": 2225480,
+      "modFunctions": 0,
+      "modBytes": 0,
+      "sourceBytesPercent": 99.43577343005789,
+      "reproducingFunctions": 11334,
+      "reproducingBytes": 2225480,
+      "mismatchingFunctions": 0,
+      "mismatchingFunctionBytes": 0,
+      "differingSourceBytes": 0,
+      "sourceDataClaims": 331,
+      "sourceBssClaims": 239,
+      "sourceBssBytes": 30164,
+      "reproducingDataClaims": 331,
+      "reproducingDataClaimBytes": 13020,
+      "mismatchingDataClaims": 0,
+      "mismatchingDataClaimBytes": 0
+    },
+    "intact_link_ok": true,
+    "origin": "Final production analysis, not baseline-control counts.",
+    "report_sha256": "36fa3c7f4084954afb351b136e8a59b9545c255fc2041b49f201f33668ba72f2"
+  },
+  "stock_range_summary": {
+    "checked": 30,
+    "verified": 28,
+    "warnings": 2,
+    "blocking": 0,
+    "warning_controls": {
+      "baseline": [
+        {
+          "name": "daWanwan_c_classInit",
+          "module": "ov014",
+          "addr": "0x02112d1c",
+          "verdict": "VERIFIED",
+          "diffs": [],
+          "blind": 0
+        },
+        {
+          "name": "__sinit_d_a_wanwan.cpp",
+          "module": "ov014",
+          "addr": "0x02113118",
+          "verdict": "BLIND-10",
+          "diffs": [],
+          "blind": 10
+        }
+      ],
+      "candidate": [
+        {
+          "name": "daWanwan_c_classInit",
+          "module": "ov014",
+          "addr": "0x02112d1c",
+          "verdict": "BLIND-1",
+          "diffs": [],
+          "blind": 1
+        },
+        {
+          "name": "__sinit_d_a_wanwan.cpp",
+          "module": "ov014",
+          "addr": "0x02113118",
+          "verdict": "BLIND-10",
+          "diffs": [],
+          "blind": 10
+        }
+      ],
+      "context": "Actual current headers; each object uses its immutable source revision manifest renames with unchanged stock per-function isolation. Ordinary whole preparation separately verifies every owned row with zero blind."
+    },
+    "interpretation": "Stock per-function isolation reports the native constructor BLIND-1 and the inherited initializer BLIND-10. Exact baseline/candidate initializer controls use each revision own manifest and both yield BLIND-10. Actual normal whole preparation verifies factory, initializer, ctor and owned state table with zero blind edges. No stock verdict is suppressed or rewritten."
+  },
+  "checkpoint": "83fed9900d90f29c193efe0b4864a538f3680e40",
+  "report_only_binding": {
+    "checkpoint": "83fed9900d90f29c193efe0b4864a538f3680e40",
+    "production_trees": {
+      "src": "91d30708952dea8c85a550f2c189185b89a1cd19",
+      "include": "fdc69ac1ff6db68eafda1d937a288f9cbe020b7a",
+      "config": "5d1f424e6c3b087274ad11f42d1814c9eb4e8e91",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "rule": "The final report-only descendant must retain all five production tree IDs exactly."
+  },
+  "artifacts": {
+    "canary.json": "b8c7845f96705689af3963e2cd0ef210c6e8b35fe1dee2640c89706e5d6d91f1",
+    "whole.py": "eec35abc63c9112d38189e4d2ba8dd3a3738376df4faa1cd17b356b2f8bd2b83",
+    "proof.json": "895a8698b8d0a005600e1d642e16237c751f99fe5141a4267890af627945a9fd",
+    "storage-callback-proof.json": "693af332ab074af5744f3bc7e9abe03e3da717fbace9903ab33cb1918e050b35",
+    "input-equivalence.json": "a7d3be410f1ff264d33122551e36bd3707a500f77bab3baf55d0d1215c7f6e23",
+    "registration-map.json": "3d0398b57a4598c33d90e897d379f0fc0b96ffb5862b2db8c1e1c998b8133833",
+    "stock-warning-controls.json": "bff9a3bf7f951a08f02c2e4169944c320a21848da120fe2702468a33fbc133ac",
+    "candidate/raw.o": "383d53006120bac7575924365837758dfadd45a0aee5f66c5965404c94d55918",
+    "candidate/prepared.o": "0f049b0953b7f30964072d51791e14e6a6c3116817c77d86f177f7a5229cc142",
+    "candidate/complete-graphs.json": "92e90e36f7f2148d44fabf7fe0a01b9f3ab548cc30099ed9dca6492d6a9ba107",
+    "candidate/metadata.json": "ea24715ae7f724369d6e90f6f223a8ff2f30378eb1f06e02c99d9394d5b7c1eb",
+    "candidate/strict.json": "273281d37d9d493058967eee3d747405caed847bef47d6109c09408bf1967945",
+    "baseline/raw.o": "6eebf72aa4fbaaf2b811b7afc854fbf9a66d4002e4f3e8105d169c309a0b7202",
+    "baseline/prepared.o": "0f2b087c23824b89a91a61840c5eee66eb7029ad4743e547440eeb4d3831119c",
+    "baseline/complete-graphs.json": "1c6622db6a0f698c47788953a29e950937cbfa19939238772f48ef32088ed3c1",
+    "baseline/metadata.json": "ea24715ae7f724369d6e90f6f223a8ff2f30378eb1f06e02c99d9394d5b7c1eb",
+    "baseline/strict.json": "273281d37d9d493058967eee3d747405caed847bef47d6109c09408bf1967945",
+    "inherited-findings.json": "eff15c6b3b480c997748fcf5ebba089bddf4b0b97b729d92880191919bb7c7c8",
+    "warning-controls.py": "dbd047c07fadfe077da585077e57fe846df61291873f25ade5df86295e050e0a"
+  }
 }
