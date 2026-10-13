@@ -1567,7 +1567,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov066",
       "canonical_address": "0x0211ad64",
-      "reason": "Key function is the out-of-line destructor, so this TU emits the vtable. symbols.txt names the address point 0x0211ad64; the licensed spans cover only .text/.init/.ctor/.bss. The class carries the ROM's daIwante_c spelling, so no _ZTI/_ZTS records accompany it: the TU compiles with #pragma RTTI off."
+      "reason": "The out-of-line destructor emits the vtable for the coined Eyerok class; retail RTTI names daIwante_c. RTTI off suppresses _ZTI/_ZTS and emits a zero typeinfo preamble word where retail holds 0x0211ad24. All 128 slot bytes (32 entries) match. This unchanged policy externalizes the unowned table to the retail address point ov066:0x0211ad64; licensed spans remain .text/.init/.ctor/.bss."
     }
   ],
   "production_mode": "intact-object",
@@ -3300,6 +3300,118 @@
       "addend": 0,
       "target_module": "ov066",
       "target_address": "0x0211a418"
+    }
+  ],
+  "defined_symbol_renames": [
+    {
+      "from": "@2170",
+      "to": "@2176",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211aec4: unchanged full initializer bytes and R_ARM_ABS32 site 0x211a9e4 (offset 0x5cc), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2171",
+      "to": "@2177",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211afb4: unchanged full initializer bytes and R_ARM_ABS32 site 0x211a9f0 (offset 0x5d8), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2172",
+      "to": "@2178",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211aed0: unchanged full initializer bytes and R_ARM_ABS32 site 0x211a9fc (offset 0x5e4), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2173",
+      "to": "@2179",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211aedc: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa0c (offset 0x5f4), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2174",
+      "to": "@2180",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211aee8: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa18 (offset 0x600), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2175",
+      "to": "@2181",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211aef4: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa24 (offset 0x60c), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2176",
+      "to": "@2182",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af00: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa2c (offset 0x614), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2177",
+      "to": "@2183",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af0c: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa34 (offset 0x61c), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2178",
+      "to": "@2184",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af18: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa40 (offset 0x628), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2179",
+      "to": "@2185",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af24: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa4c (offset 0x634), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2180",
+      "to": "@2186",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af30: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa54 (offset 0x63c), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2181",
+      "to": "@2187",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af3c: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa60 (offset 0x648), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2182",
+      "to": "@2188",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af48: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa6c (offset 0x654), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2183",
+      "to": "@2189",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af54: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa7c (offset 0x664), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2184",
+      "to": "@2190",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af60: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa84 (offset 0x66c), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2185",
+      "to": "@2191",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af6c: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa90 (offset 0x678), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2186",
+      "to": "@2192",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af78: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aa9c (offset 0x684), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2187",
+      "to": "@2193",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af84: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aaac (offset 0x694), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2188",
+      "to": "@2194",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af90: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aab8 (offset 0x6a0), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2189",
+      "to": "@2195",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211af9c: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aac0 (offset 0x6a8), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2190",
+      "to": "@2196",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211afa8: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aacc (offset 0x6b4), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
+    },
+    {
+      "from": "@2191",
+      "to": "@2197",
+      "evidence": "Same 12-byte NOBITS registration node at 0x211afc0: unchanged full initializer bytes and R_ARM_ABS32 site 0x211aad8 (offset 0x6c0), symbol index/value/size/alignment/binding unchanged after removing obsolete Spawn declaration."
     }
   ]
 }

@@ -5,9 +5,11 @@
  *
  * The unit's two destructors (D1 0x02115ee0, D0 0x02115f84) are defined at
  * the top of this file: ~Eyerok is the key function, so defining it here
- * also emits the vtable as _ZTV6Eyerok. The class carries the ROM's
- * daIwante_c spelling, so the TU compiles with #pragma RTTI off (no
- * homeless _ZTI/_ZTS records); the manifest deadstrips the vtable with D2. The
+ * also emits the vtable as _ZTV6Eyerok. The reconstructed class keeps
+ * the coined Eyerok name; #pragma RTTI off suppresses its _ZTI/_ZTS records.
+ * The emitted vtable has a zero typeinfo word instead of the retail
+ * daIwante_c typeinfo pointer. The unchanged policy externalizes that
+ * unowned table to retail data and discards the homeless D2 variant. The
  * tail folds the three zero-gap neighbours and the static initializer up to
  * the .ctor word at 0x0211abc0: the free helper func_ov066_0211a2e4, its
  * tail-call veneer func_ov066_0211a35c (this unit's dBgW callback), the
@@ -367,7 +369,6 @@ extern void *_ZN8dActor_c13ClosestPlayerEv(void *self);
 extern void _ZN8dActor_c15HugeLandingDustEb(void *self, int b);
 extern void _ZN8dActor_c16TriplePoofDustAtERK7Vector3(void *self, const void *v);
 extern int _ZN8dActor_c18HorzAngleToCPlayerEv(void *self);
-extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 b, Vector3 *pos, void *p, int e, int f);
 extern u8 _ZN8dActor_c9TrackStarEjj(void *actor, u32 a, u32 b);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
@@ -391,8 +392,10 @@ typedef struct { int w[12]; } M48;
 
 /* The cartridge spells this class daIwante_c, so the compiler-emitted
  * _ZTS6Eyerok / _ZTI6Eyerok records would be homeless under the project
- * spelling. Compiling with RTTI off emits no records at all; the vtable
- * preamble's typeinfo word deadstrips with the rest of the data sections. */
+ * spelling. RTTI off suppresses those records and emits a zero typeinfo
+ * word in the vtable preamble; retail has daIwante_c's 0x0211ad24 there.
+ * All 128 bytes of slots (32 entries) reproduce. The manifest externalizes
+ * this unowned vtable, so production retains the complete retail table. */
 #pragma RTTI off
 
 // @symbol _ZN6EyerokD1Ev
@@ -413,8 +416,9 @@ typedef struct { int w[12]; } M48;
  * as _ZTV6Eyerok (deadstrip-data in the manifest: the cartridge keeps the
  * record at ov066:0x0211ad64) and D2 next to the ROM's D1/D0 pair
  * (deadstripped: the cartridge has no Eyerok D2). No _ZTI/_ZTS records
- * accompany them: the class carries the ROM's daIwante_c spelling, so the
- * TU compiles with #pragma RTTI off. The
+ * accompany them: this reconstructed class keeps the coined Eyerok name
+ * and compiles with RTTI off. Its zero typeinfo preamble is not retail
+ * metadata; the unchanged externalization policy retains the retail table. The
  * deallocation in D0 is an inline operator delete, inherited from
  * dActor_c. */
 Eyerok::~Eyerok()
@@ -2734,12 +2738,12 @@ int Eyerok::InitResources()
         v.y = mPosY;
         v.z = mPosZ;
         v.x += 0x193000;
-        r = (dActor_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_IWANTE, 1, &v, 0, mAreaId, -1);
+        r = dActor_c::Spawn(ACTOR_IWANTE, 1, v, 0, mAreaId, -1);
         if (r != 0)
             mHandUniqueID1 = r->uniqueID;
         v.x = mPosX;
         v.x -= 0x18C000;
-        r = (dActor_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_IWANTE, 2, &v, 0, mAreaId, -1);
+        r = dActor_c::Spawn(ACTOR_IWANTE, 2, v, 0, mAreaId, -1);
         if (r != 0)
             mHandUniqueID2 = r->uniqueID;
         data_ov066_0211ae10 = 0;
