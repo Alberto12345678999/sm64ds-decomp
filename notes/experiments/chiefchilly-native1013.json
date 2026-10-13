@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "task": "chiefchilly-native1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3775",
+  "source": "src/actors/daKing_Donketu_c.cpp",
+  "manifest": "config/tu_manifest.d/ov073/daKing_Donketu_c.json",
+  "base_commit": "257ef7edb18afda407e1e6957478878ed5952ffa",
+  "upstream_main_context": "08b118098ecb7ce86b85f1215886a4618e268a86",
+  "tooling_pr": "https://github.com/tangosdev/sm64ds-decomp/pull/3766",
+  "symbol": "daKing_Donketu_c_classInit",
+  "module": "ov073",
+  "address": "0x02121ec8",
+  "size": 200,
+  "change": "Use return new daKing_Donketu_c; and remove obsolete factory-only ABI declarations/manual vtable store and stale constructor prose.",
+  "scope": "Source factory and existing production manifest; no header/module symbols/delinks/paths/temporary-pin changes.",
+  "anonymous_symbols_preserved": 40,
+  "status": "Private normal prepared-object parity established; full production gates and independent exact-head Source acceptance pending.",
+  "remaining_work": [
+    "Existing scalar ABI bridges, raw views and partial actor reconstruction remain unchanged."
+  ],
+  "gates": {}
+}
