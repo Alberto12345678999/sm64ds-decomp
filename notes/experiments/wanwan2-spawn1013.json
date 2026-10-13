@@ -5,7 +5,7 @@
   "source_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
   "compiler": "2004/b56",
   "production_source": "src/actors/daWanwan2_c.cpp",
-  "source_sha256": "7a74f8ef32013dcc6ece9d9c55474af36727c8a1519720cb7644ca644415684f",
+  "source_sha256": "d0f52805d54c21bf400051716d607721a4ee769936c68c7a07ccec42c0f4da15",
   "change": "Four calls use the existing dActor_c::Spawn interface, three with actual mLinkPos vectors; the coin call retains its inherited-position view. The duplicate raw prototype is removed. Four existing destructor-registration emitted names and evidence change naturally, with unchanged canonical targets/homes, bindings, storage and all other policy.",
   "raw_identity": {
     "equal": false,
@@ -347,5 +347,47 @@
   "pending": [
     "committed full-ROM and static checks",
     "independent exact Source review"
-  ]
+  ],
+  "factory_probe": {
+    "source_snapshot": "92a09548cb7ba81ab20d1b932774adeabd24d6df",
+    "headers_tools_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "scout_session": "codex-wanwan2-factory-scout1013",
+    "outcome": "No native factory winner with current headers/policies",
+    "cells": [
+      "new daWanwan2_c()",
+      "new daWanwan2_c"
+    ],
+    "baseline_factory": 280,
+    "native_factory": 236,
+    "ordinary_baseline": "VERIFIED 280B, diffs0,blind0; full ordinary intact preparation succeeds",
+    "ordinary_native": "both refuse unlicensed _ZN7Vector3C1Ev; full factory size mismatch",
+    "native_objects_identical": true,
+    "callback_boundary": "Native Vector3C1 bodybx lr is emitted, but no target mapping exists. Equal four-byte bodies alone do not prove canonical callback identity. No mapping/policy added.",
+    "missing_constructor": "Vector3s array at+0x768: retail uses func_0203d73c; current type has no user ctor",
+    "tracked_changes": false,
+    "public_writes": false,
+    "hashes": {
+      "baseline-raw.o": "586058cad1def2ed207cee6eaca071b755b35dfe13a4737d3d4206b4a3a74342",
+      "baseline-prepared.o": "9dc4cbdf5807ccd4518217d58b54a83378c0a86c209593520ae058597c7a1d4d",
+      "native-value-raw.o": "a885f6e154963ccf76f9eb4fd8564ca9926070ea68b3d70667b734247ce4f527",
+      "native-default-raw.o": "a885f6e154963ccf76f9eb4fd8564ca9926070ea68b3d70667b734247ce4f527",
+      "results.json": "3a4ec2468c01e18eb6f1c73778a33a85c8dd8c685fac38fd40cc527793e91cab",
+      "stale-comment-correction.json": "4098ad541084d7e3c0a16ba5bd52750bdeec2af56bd48f89256ea11407bd2198"
+    }
+  },
+  "factory_comment_correction": "Current Vector3 has an empty user ctor; the natural factory still omits the short-vector array constructor. Only measured current-header results are claimed. Historical no-constructor,0xa4 and text-only/factory-separate prose is superseded without changing ownership or compiler policy.",
+  "full_ROM": {
+    "checkpoint": "92a09548cb7ba81ab20d1b932774adeabd24d6df",
+    "modules_exact": 106,
+    "modules_total": 106,
+    "exit_code": 0,
+    "log": "build\\wanwan2-spawn1013\\full_rom.log",
+    "limits": "Pre-existing stock ITCM symbol-check errors and one differing unenrolled ROM-data inventory entry remain separate from exact owned proof."
+  },
+  "full_checkpoint_binding": {
+    "old_and_current_raw_sha256": "586058cad1def2ed207cee6eaca071b755b35dfe13a4737d3d4206b4a3a74342",
+    "old_and_current_prepared_sha256": "9dc4cbdf5807ccd4518217d58b54a83378c0a86c209593520ae058597c7a1d4d",
+    "Source_change": "factory comment only",
+    "manifest_change": "boundary/notes and stale vtable reason only; complete behavior policy projection identical"
+  }
 }

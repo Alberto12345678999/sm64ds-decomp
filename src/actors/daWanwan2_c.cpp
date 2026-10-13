@@ -886,12 +886,15 @@ void func_0203d73c(void);
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: UnchainedChomp_Spawn.
  *
- * Spelled by hand rather than `return new daWanwan2_c;`, which comes out
- * 0xa4 bytes for the ROM's 0x118: the ROM constructs mLinkPos and mLinkVel
- * through __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) and mUnk_768
- * through __cxa_vec_ctor(..., func_0203d73c, _ZN8Vector3sD1Ev), with an empty
- * constructor function, and types.h's Vector3 and Vector3s declare no
- * constructor, so the implicit one never emits those three calls. The array
+ * The explicit constructor chain is retained. With the current headers under
+ * 2004/b56, both `new daWanwan2_c()` and `new daWanwan2_c` emit 0xec bytes
+ * for the retail 0x118. Vector3 has an empty user constructor: its two array
+ * construction calls are emitted, but name the unbound _ZN7Vector3C1Ev
+ * callback instead of retail func_0203d384. Vector3s currently has no user
+ * constructor, so its mUnk_768 array construction call is omitted. Normal
+ * whole-object preparation rejects the extra Vector3 constructor symbol.
+ * These are the measured current-header differences, not a general C++
+ * limitation. The array
  * callbacks receive the element address and discard lifecycle results; the
  * empty func_0203d384/func_0203d73c callbacks ignore that address. This TU
  * emits the vtable, whose symbol names the vtable object two words ahead of
