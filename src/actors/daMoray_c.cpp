@@ -98,8 +98,13 @@ extern daMoray_c::State data_ov016_02114d9c;
 extern daMoray_c::State data_ov016_02114dac;
 extern daMoray_c::State data_ov016_02114dbc;
 
+/* The zero cylinder offset has three signed components and no registered
+ * lifetime work in the retail initializer. Keep its storage plain; copy the
+ * components into the collision API's Vector3 locals below. */
+struct MorayCylinderOffset { s32 x, y, z; };
+
 extern "C" {
-extern Vector3 data_ov016_02114d4c;         /* cylinder offset, bss */
+extern MorayCylinderOffset data_ov016_02114d4c;         /* cylinder offset, bss */
 
 extern unsigned char data_0209f220; /* entrance filter */
 extern Matrix4x3 data_020a0e68;             /* the shared scratch matrix */
@@ -801,9 +806,13 @@ s32 daMoray_c::InitResources()
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
     mTerminalVelocity = -0x1e000;
-    cylOffset1 = data_ov016_02114d4c;
+    cylOffset1.x = data_ov016_02114d4c.x;
+    cylOffset1.y = data_ov016_02114d4c.y;
+    cylOffset1.z = data_ov016_02114d4c.z;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c1, this, &cylOffset1, 0x32000, 0x50000, 0x200004, 0);
-    cylOffset2 = data_ov016_02114d4c;
+    cylOffset2.x = data_ov016_02114d4c.x;
+    cylOffset2.y = data_ov016_02114d4c.y;
+    cylOffset2.z = data_ov016_02114d4c.z;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c2, this, &cylOffset2, 0x32000, 0x50000, 0x200000, 0);
 
     /* Second bind is unused. Dropping the constructor and FromID shrinks
@@ -924,9 +933,4 @@ daMoray_c::State data_ov016_02114dbc = { &daMoray_c::func_ov016_02111718,
 daMoray_c::State data_ov016_02114d7c = { &daMoray_c::BookSwitch_Spawn,
                                        &daMoray_c::func_ov016_02111534 };
 
-/* The cylinder offset is a plain three-int scratch object: the retail image
- * has no destructor registration for it, so it is defined in C mode, where
- * Vector3 is POD and no .init entry is emitted. */
-#pragma cplusplus off
-Vector3 data_ov016_02114d4c;
-#pragma cplusplus on
+MorayCylinderOffset data_ov016_02114d4c;

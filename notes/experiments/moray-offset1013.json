@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "task_id": "moray-offset1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3797",
+  "base_commit": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+  "workflow_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
+  "source": "src/actors/daMoray_c.cpp",
+  "source_sha256": "fa565dda0aa022dd33cb909e429e25414ff0bb523725a826a101cf31886fdd5c",
+  "change": "Replace the last C-mode Vector3 global with the observed plain three-component cylinder-offset record and six explicit scalar copies into the existing Vector3 locals. The entire production object remains identical.",
+  "completion": "partial",
+  "identity": "Existing daMoray_c is the Jolly Roger Bay eel/MORAY; class identity, native factory, lifecycle and all state records remain unchanged.",
+  "layout": {
+    "type": "MorayCylinderOffset",
+    "fields": "s32 x,y,z at offsets0,4,8",
+    "size": 12,
+    "alignment": 4,
+    "storage": "SHT_NOBITS, global STT_OBJECT atov016:02114d4c, zero initialized; no registered constructor/destructor",
+    "names": "Descriptive reconstructed names, not recovered source names.",
+    "matched_idiom": "src/actors/daBakubaku_c.cpp uses BakuVec3 POD cylinder offset and component copies into collision Vector3 locals. Read-only evidence; no other actor changed."
+  },
+  "constructs": {
+    "count": 4,
+    "baseline": "Original C-mode global reproduces retail.",
+    "cpp_Vector3_control": "Actual C++ Vector3 adds a12B destructor node and grows initializer464to492; refused as unlicensed output.",
+    "winner": "Genuine local POD plus six named component assignments.",
+    "temporary_control": "Genuine three-argument Vector3 temporaries retain InitResources968B but change five instruction words."
+  },
+  "normal_production": {
+    "entire_prepared_ELF_equal": true,
+    "prepared_size": 22104,
+    "prepared_sha256": "af6bc97e57d6872dfe1c705c75bc3300187556779523d37f66852f31444d1f5c",
+    "strict_rom_rows": 33,
+    "functions_text": 21,
+    "initializer": {
+      "size": 464,
+      "strict": true,
+      "blind": 0
+    },
+    "ctor_array": {
+      "size": 4,
+      "strict": true,
+      "blind": 0
+    },
+    "owned_rom_data_bytes": 80,
+    "owned_data_rows": 10,
+    "bss_rows": 14,
+    "bss_bytes": 172,
+    "owned_nontext_typed_refs": 44,
+    "raw_typed_refs": 272,
+    "prepared_typed_refs": 218,
+    "metadata": [
+      {
+        "symbol": "_ZTV9daMoray_c",
+        "address": "0x2114950",
+        "size": 132,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTI9daMoray_c",
+        "address": "0x21148d4",
+        "size": 12,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTS9daMoray_c",
+        "address": "0x21148c8",
+        "size": 11,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTI12dEnemyBase_c",
+        "address": "0x21081c0",
+        "size": 12,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTS12dEnemyBase_c",
+        "address": "0x21081cc",
+        "size": 15,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTI8dActor_c",
+        "address": "0x208e390",
+        "size": 12,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTS8dActor_c",
+        "address": "0x208e384",
+        "size": 10,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTI7dBase_c",
+        "address": "0x2086e78",
+        "size": 12,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTS7dBase_c",
+        "address": "0x2086e54",
+        "size": 9,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTI7fBase_c",
+        "address": "0x2086d70",
+        "size": 8,
+        "exact": true,
+        "blind": 0
+      },
+      {
+        "symbol": "_ZTS7fBase_c",
+        "address": "0x2086e60",
+        "size": 9,
+        "exact": true,
+        "blind": 0
+      }
+    ],
+    "metadata_bytes": 242,
+    "metadata_count": 11,
+    "blind": 0,
+    "diffs": [],
+    "qualification": "Normal TP.prepare_intact_object with actual tracked Source/manifest; complete emitted metadata including vtable ABI preambles and short type-name tails linked directly. Existing advisory romdata PARTIAL labels remain; no Source address overrides or new policies."
+  },
+  "manifest": {
+    "from_keys": 14,
+    "delta": -39,
+    "provenance": "Full symbol-index/body/type/binding/size/section and every incoming typed offset/addend bijection; complete raw graph and canonical prepared ELF match controls.",
+    "canonical_targets_and_ownership": "Unchanged.",
+    "prose": "Cylinder storage evidence and static-fold note describe the current POD. Two inherited factory notes now correctly describe the merged native new expression and existing Vector3 constructor policy."
+  },
+  "remaining": [
+    {
+      "id": "MORAY-NATIVE-001",
+      "disposition": "deferred",
+      "owner": "andrewboudreau",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3764",
+      "description": "Prior scalar Fix12 ABI bridges, field/matrix views, state/helper names and documented source limitations remain; no compiler floor claimed."
+    },
+    {
+      "id": "MORAY-OFFSET-HANDLES-002",
+      "disposition": "deferred",
+      "owner": "moray-offset1013",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3797",
+      "description": "Existing local fileId32 handle records remain separate reconstruction work; this candidate changes only cylinder-offset storage/lifetime."
+    }
+  ],
+  "private_artifacts": [
+    "build/moray-offset1013/whole-proof.json",
+    "build/moray-offset1013/prepare.json",
+    "build/moray-offset1013/scout-proof/pod-proof.json"
+  ],
+  "pending": "Committed current-base fullROM,range,static and independent exact Source acceptance follow this checkpoint; no merge."
+}
