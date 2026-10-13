@@ -811,8 +811,9 @@ void daDemo_c::func_ov002_020f20f4()
       if ((data_020a0db0 & 1) == 0)
       {
         /* q is &spriteX[i] and o + 0x1c is &spriteVelX[i]. Spelled as fields
-           (with or without the int cast on q), the step builds 4 bytes long;
-           these two byte-offset spellings are what the ROM compiles. */
+           the step builds 4 bytes long through q = &spriteX[i] and 4 bytes
+           short with plain field reads; these two byte-offset spellings are
+           what the ROM compiles. */
         s16 *o = (s16 *) (d + ((i & 0xFFFFFFFFFFFFFFFF) * 2));
         s16 *q = (s16 *) ((int) (((char *) ((s16 *) (d + (i * 2)))) + 0xc));
         s16 vel = *((s16 *) (((char *) o) + 0x1c));
@@ -4046,10 +4047,13 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
 /* ROM ordinal 127 -- func_ov002_020f6e48, 0x020f6e48, size 0x100 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6e48EPh
+/* Script handler 10: position (p[0..5], whole units shifted into 20.12) and
+ * angles (p[6..11]) from the record, unk_0f4 = p[12] << 12, scale 0xb33, and
+ * the animation's currFrame set from a random draw scaled by
+ * numFramesAndFlags. */
 
 int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 {
-    char *self = (char *)this;
   int b;
   int c0;
   int d;
@@ -4078,9 +4082,9 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
   this->mScaleX = 0xb33;
   this->mScaleY = 0xb33;
   this->mScaleZ = 0xb33;
-  rv = *((int *) ((*((int *) (self - -0xe0))) + 0x54));
+  rv = mModelAnim->numFramesAndFlags;
   new_var2 = RandomIntInternal(&data_0209e650);
-  *((int *) ((*((int *) (&this->mModelAnim))) + 0x58)) = ((unsigned short) (((int) (((((long long) ((int) ((((unsigned int) new_var2) >> 20) & 0xfff))) * rv) + 0x800) >> 12)) >> 12)) << 12;
+  mModelAnim->currFrame = ((unsigned short) (((int) (((((long long) ((int) ((((unsigned int) new_var2) >> 20) & 0xfff))) * rv) + 0x800) >> 12)) >> 12)) << 12;
   return 1;
 }
 
@@ -4088,16 +4092,19 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 /* ROM ordinal 128 -- func_ov002_020f6f48, 0x020f6f48, size 0xd8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6f48EP7Vector3i
+/* Turn mAngleX/mAngleY toward v by up to amt, then set unk_0a4, mVertSpeed
+ * and unk_0ac to unk_0f4 times rotation elements 6..8 of the animated
+ * model's matrix. */
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
 {
-    int* p;
+    Matrix4x3 *m;
     ApproachAngle(&this->mAngleX, Vec3_VertAngle(((struct Vector3*)&this->mPosX), v), amt, 0x4000, 0);
     ApproachAngle(&this->mAngleY, Vec3_HorzAngle(((struct Vector3*)&this->mPosX), v), amt, 0x4000, 0);
-    p = (int*)(((char*)this->mModelAnim) + 0x1c);
-    this->unk_0a4 = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x18) + 0x800) >> 12);
-    this->mVertSpeed = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x1c) + 0x800) >> 12);
-    this->unk_0ac = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x20) + 0x800) >> 12);
+    m = &this->mModelAnim->mat4x3;
+    this->unk_0a4 = (int)(((s64)this->unk_0f4 * m->m[6] + 0x800) >> 12);
+    this->mVertSpeed = (int)(((s64)this->unk_0f4 * m->m[7] + 0x800) >> 12);
+    this->unk_0ac = (int)(((s64)this->unk_0f4 * m->m[8] + 0x800) >> 12);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -4239,6 +4246,11 @@ int daDemo_c::func_ov002_020f7384(unsigned char *flag, int val)
 /* ROM ordinal 134 -- func_ov002_020f7410, 0x020f7410, size 0x128 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f7410EPhi
+/* Script handler 4. On the record's start frame, when in[0] is non-zero, it
+ * stores a fixed vector at mModel + 0x50 (the param_c tail base) and fixed
+ * angles. Every frame mPos = that vector times INV_VIEW_MATRIX_ASR_3, then
+ * << 3; unk_0f4 approaches in[0] << 12 by in[1] << 8 and drives mOpacity and
+ * the blend registers at 0x4000050. */
 
 int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 {
@@ -4276,6 +4288,13 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 /* ROM ordinal 135 -- func_ov002_020f7538, 0x020f7538, size 0x248 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f7538EPhi
+/* Script handler 3. On the start frame, when arg1[0] is non-zero, it sets
+ * fixed angles and clears unk_0f8. Every frame Math_Function_0203b0fc moves
+ * unk_0f8 toward 1.0 (arg1[0] non-zero) or 0, and the vector at mModelAnim +
+ * 0x64 (the param_c tail base) becomes base + (data_ov002_02110e0c - base) *
+ * unk_0f8, with base data_ov002_02110df4 or data_ov002_02110e18 by the same
+ * test. mPos = that vector times INV_VIEW_MATRIX_ASR_3, then << 3; unk_0f4
+ * approaches arg1[0] << 12 by arg1[1] << 8 and drives mOpacity. */
 
 int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
 {
