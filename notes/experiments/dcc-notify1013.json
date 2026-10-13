@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task_id": "dcc-notify1013",
-  "base_commit": "08b118098ecb7ce86b85f1215886a4618e268a86",
+  "base_commit": "1d76f967993874f77af8de4d744e138eb3084cec",
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3791",
   "change": "Convert both collider notifier helpers to C++ with C linkage, use dActor_c::FindWithID and inherited actorID, and remove the local actor shadow and redundant declaration. Correct obsolete manifest prose without changing any production policy.",
   "completion": "partial",
@@ -74,7 +74,7 @@
     "functions_mismatching": 0,
     "data_claims_reproducing": 331,
     "bss_claims": 239,
-    "binding": "Full build ran on adopted source before prose-only manifest correction. Final-manifest fresh compilation and normal preparation reproduce the same entire ELF.",
+    "binding": "Terminal full-ROM and scoped/static checks ran at production_checkpoint on current main. This descendant changes the report only; code, headers, production config, tools and port trees are identical.",
     "baseline_limits": "Baseline dsd symbol check reports pre-existing errors; zero new errors. Aggregate ROM-data inventory retains one differing unenrolled record."
   },
   "private_artifacts": [
@@ -84,5 +84,33 @@
     "build/dcc-notify1013/full-rom.log",
     "build/final-static1013/results.json"
   ],
-  "publication": "Independent exact-commit Source review follows; no merge."
+  "publication": "Independent exact-commit Source review follows; no merge.",
+  "initial_control_base": "08b118098ecb7ce86b85f1215886a4618e268a86",
+  "production_checkpoint": "6d8316e239fdd29da5c13b3f5ef791b3fd0c71df",
+  "current_main_validation": {
+    "tested_commit": "6d8316e239fdd29da5c13b3f5ef791b3fd0c71df",
+    "tested_base": "1d76f967993874f77af8de4d744e138eb3084cec",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\dcc-notify1013\\current-main-full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\dcc-notify1013\\current-main-range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\dcc-notify1013\\current-main-port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\dcc-notify1013\\current-main-langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\dcc-notify1013\\current-main-decl.log"
+      }
+    }
+  }
 }
