@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "task": "kuriking-native1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3769",
+  "base_commit": "257ef7edb18afda407e1e6957478878ed5952ffa",
+  "upstream_main_commit": "739cbc53d237791752d1cc8c2c1f0b2c8cfe6b1c",
+  "tooling_pr": "https://github.com/tangosdev/sm64ds-decomp/pull/3766",
+  "source": "src/actors/daKuriKing_c.cpp",
+  "change": "Use return new daKuriKing_c; in both registry factories; remove the factory-only ABI extern block and stale Vector3 constructor claims.",
+  "factories": [
+    {
+      "symbol": "daKuriKing_c_classInit_KURIKING_VANISH",
+      "address": "0x02122764",
+      "size": 212
+    },
+    {
+      "symbol": "daKuriKing_c_classInit_KURIKING",
+      "address": "0x02122838",
+      "size": 212
+    }
+  ],
+  "canonical_callback": {
+    "emitted": "_ZN7Vector3C1Ev",
+    "canonical": "func_0203d384",
+    "module": "arm9",
+    "address": "0x0203d384",
+    "size": 4,
+    "array_count": 3,
+    "element_stride": 12
+  },
+  "temporary_pin_changes": 0,
+  "scope": "Source factories and existing production TU manifest; no header, module symbols, delinks, source paths or temporary-pin changes.",
+  "status": "Private prepared-object equality established; full production gates and independent Source acceptance pending.",
+  "remaining_work": [
+    "Existing scalar ABI bridges, offset arithmetic and other partial reconstruction remain unchanged."
+  ],
+  "gates": {}
+}
