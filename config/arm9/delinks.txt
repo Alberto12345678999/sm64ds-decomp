@@ -6456,11 +6456,11 @@ src/unnamed/arm9/0206/func_0206d940.c:
     complete
     .text start:0x0206d940 end:0x0206d9cc
 
-src/unnamed/arm9/0206/func_0206d9cc.c:
+src/unnamed/arm9/0206/func_0206d9cc.cpp:
     complete
     .text start:0x0206d9cc end:0x0206da18
 
-src/unnamed/arm9/0206/func_0206da18.c:
+src/unnamed/arm9/0206/func_0206da18.cpp:
     complete
     .text start:0x0206da18 end:0x0206da64
 

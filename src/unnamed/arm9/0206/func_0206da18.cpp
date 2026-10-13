@@ -1,3 +1,4 @@
+//cpp
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive:
 // IRQ/CPSR control -- IRQ-disable (I bit, 0x80) toggle with dual entry points
 // and an indirect literal-pool jump to the shared body). No C to decompile to.
@@ -6,7 +7,10 @@
 // operand ("illegal constant expression"), so the literal names it as an offset
 // from this function's own symbol; the word resolves to 0x0206da30 in the link.
 
-asm int func_0206da18(void) {
+// The C++ entry point IRQ::SetIRQState(bool) is the `ldr`/`bx` at +0x10; the
+// link defines it at its ROM address. The block itself keeps C linkage under its
+// address name.
+extern "C" asm int func_0206da18(void) {
     mov r0, #0
     b lbl
     mov r0, #1
