@@ -22,6 +22,9 @@ extern void func_01ffd9d4(void);
 
 namespace IRQ {
 
+// HAND-ASM PRIMITIVE: NitroSDK's OS_IrqHandler verbatim; `clz` and the
+// cross-function stack handoff to func_01ffd9d4 have no C expression under
+// mwccarm 2004/b56, so the asm block is the faithful source.
 asm void UserInterruptHandler(void)
 {
     stmdb sp!, {lr}

@@ -15,15 +15,15 @@
 #include "types.h"
 
 extern "C" {
+// HAND-ASM PRIMITIVE: `swp` atomic swap has no C equivalent under mwccarm, so asm is the source.
 // @symbol func_0206dab4
-/* Atomic swap (swp): no C equivalent under mwccarm, so asm is the source. */
 asm void func_0206dab4(void) { swp r0, r0, [r1]; bx lr }
 }
 
 #pragma push
 #pragma defer_codegen off
+// HAND-ASM PRIMITIVE: compiler trap builtin; the asm block is the source.
 // @symbol _ZN4cstd14__builtin_trapEv
-/* Compiler trap builtin; the asm block is the source. */
 namespace cstd {
 
 void __builtin_trap(void)
@@ -122,7 +122,7 @@ void func_0206dc4c(void) {
 typedef struct Pair { int x, y; } Pair;
 void func_0206de14(int a0, Pair p1, Pair p2, unsigned int flags);
 
-// Softfloat glue: double OP double -> float, forwarding to func_0206de14.
+// HAND-ASM PRIMITIVE: softfloat glue, double OP double -> float, forwarding to func_0206de14.
 // ADS-era library code (below-sp staging, no sp adjustment) no mwccarm build
 // reproduces from C.
 
@@ -152,7 +152,7 @@ asm float func_0206dc7c(double a, double b, int op) {
     bx lr
 }
 
-// Softfloat glue: double OP double -> double, forwarding to func_0206de14.
+// HAND-ASM PRIMITIVE: softfloat glue, double OP double -> double, forwarding to func_0206de14.
 // ADS-era library code (below-sp staging, no sp adjustment) no mwccarm build
 // reproduces from C.
 
@@ -183,7 +183,7 @@ asm double func_0206dcd4(double a, double b, int op) {
     bx lr
 }
 
-// Softfloat glue: float OP float -> float, forwarding to func_0206de14.
+// HAND-ASM PRIMITIVE: softfloat glue, float OP float -> float, forwarding to func_0206de14.
 // ADS-era library code (below-sp staging, no sp adjustment) no mwccarm build
 // reproduces from C.
 
@@ -210,7 +210,7 @@ asm float func_0206dd30(float a, float b, int op) {
     bx lr
 }
 
-// Softfloat glue: unary double -> double, forwarding to func_0206de14.
+// HAND-ASM PRIMITIVE: softfloat glue, unary double -> double, forwarding to func_0206de14.
 // ADS-era library code (below-sp staging, no sp adjustment) no mwccarm build
 // reproduces from C.
 
@@ -238,7 +238,7 @@ asm double func_0206dd7c(double a, int op) {
     bx lr
 }
 
-// Softfloat glue: unary float -> float, forwarding to func_0206de14.
+// HAND-ASM PRIMITIVE: softfloat glue, unary float -> float, forwarding to func_0206de14.
 // ADS-era library code (below-sp staging, no sp adjustment) no mwccarm build
 // reproduces from C.
 
