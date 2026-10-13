@@ -866,5 +866,11 @@
     "baseline/strict.json": "273281d37d9d493058967eee3d747405caed847bef47d6109c09408bf1967945",
     "scout-predecessor-tasks.json": "ab4e4d53aee22cdc331dbae6bd2843f88cdfc12ba453c928537906a27fde8aa5",
     "scout-predecessor-findings.json": "54f64cd45da769a5ee42288ca286796f944c07bf838b158459e0ee89813f95c1"
+  },
+  "historical_status": {
+    "classification": "Historical validation on pinned1c1b6279 base; not the current-main proof.",
+    "superseded_by": "notes/experiments/wanwan-current1013.json",
+    "current_base": "5cbff56df6b432c5b861198f968fc9f1c730aa4c",
+    "reason": "Upstream merged PR3793 and changed actual shared headers. Current continuation recompiles and validates the composed Source on that real base."
   }
 }
