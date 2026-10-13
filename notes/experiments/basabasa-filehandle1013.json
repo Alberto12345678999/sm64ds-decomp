@@ -266,8 +266,30 @@
   },
   "gates": {
     "whole_tu": "pass:32ROMrows0blind,12BSSrows144B,11externalizedmetadata246B,fullraw/preparedELFexact",
-    "full_rom": "running",
-    "prepush_range": "pending source checkpoint",
+    "full_rom": {
+      "command": "python -u tools/rombuild.py -j16 --no-rom",
+      "exit_code": 0,
+      "source_checkpoint": "7711045f467caf68b2acf20267e5c0b5764aaa09",
+      "functions": 11332,
+      "mismatches": 0,
+      "data_claims": 331,
+      "bss_claims": 239,
+      "modules_exact": 106,
+      "new_symbol_errors": 0,
+      "storage_aliases": "exact",
+      "baseline_control": "Nine inherited dsd interior-symbol errors; no new errors in final gate.",
+      "advisory_data_inventory": "969verified,1519partial,1inherited differ,21unnamed; unchanged, not full data reconstruction."
+    },
+    "prepush_range": {
+      "command": "python -u tools/prepush_linkcheck.py --range 08b118098ecb7ce86b85f1215886a4618e268a86..HEAD",
+      "exit_code": 0,
+      "checked": 23,
+      "verified": 22,
+      "warnings": 1,
+      "blocking": 0,
+      "qualified_warning": "__sinit_daBasabasa_c.cpp BLIND-10 in stock per-function rename/isolate check; identical original control and full normal prepared initializer strictly VERIFIED with0blind.",
+      "coverage_detail": "32ownedROMrows and11externalizedmetadata records all strict0blind;12BSS rows separately verified."
+    },
     "declaration_agreement": "pass:1source22inherited disagreements,0new disagreements or header redeclarations",
     "language_mode": "pass against current banked chaos-data baseline",
     "port_references": "pass:267resolve"
@@ -288,5 +310,8 @@
     "build/basabasa-readability1013/externalized-metadata.json",
     "build/basabasa-readability1013/full-rom.log",
     "build/basabasa-readability1013/decl.log"
-  ]
+  ],
+  "warning_api_limit": "A raw obj-input linkcheck skips manifest renames/isolation and mis-resolves TU-local @names globally. Warning control uses the actual reloc_audit._as_the_build_links_it routine that stock linkcheck uses; normal production prepare is verified separately.",
+  "source_git_blob_sha256": "11d41777495ee83ca87a0b1bb46a14f662ad4b3a2a4b0ea2347c5bb126bc61b2",
+  "binding": "Final report-only descendant preserves src/include/config/tools/port trees of the producer-tested checkpoint; independent review accepts final commit explicitly."
 }
