@@ -6,22 +6,14 @@
  * backlight (on, off, and its caption). The bottom button closes the panel.
  * mActive is 1 while it takes touches, 2 while the close delay runs, 0 when
  * shut. dScMgBase_c owns the one instance, mTouchOptions.
- *
- * Source order is the reverse of the ROM's. mwccarm emits .text backwards.
- * Do not reorder.
- *
- * Measured constraints (the alternative, and what it costs):
- * - func_ov004_020b8f78: Sound::Play2D(2, id) grows it 0x284 to 0x298 and
- *   retargets the calls to _ZN5Sound6Play2DEjj. The ROM calls func_02012790,
- *   whose body is that Play2D.
- * - func_ov004_020b8dc0: one GetGameLanguage() for both half extents shrinks
- *   it 0x120 to 0x108. Each caption calls it twice.
- * - TouchIcon_c::Render: a plain s16 xy[2] shrinks it 0x1a8 to 0x198, so the
- *   pair stays volatile. Dropping the mHalfW reload in the column loop
- *   shrinks it 0x1a8 to 0x1a4.
- * - dMgPsOpt_c(): dropping the store of 8 before the store of 0 shrinks it
- *   0x16c to 0x164.
  */
+// leftovers: func_020b8f78 calls the func_02012790 thunk, not Sound::Play2D
+// (the member call grows it 0x284 to 0x298 and retargets the callees).
+// func_020b8dc0 calls GetGameLanguage() twice per caption (one call shrinks
+// it 0x120 to 0x108). TouchIcon_c::Render keeps the volatile s16 xy pair
+// and the mHalfW reload (plain spellings shrink it 0x1a8 to 0x198/0x1a4).
+// The ctor keeps the store of 8 before the store of 0 (dropping it shrinks
+// it 0x16c to 0x164).
 
 #include "types.h"
 #include "dMgPsOpt_c.h"

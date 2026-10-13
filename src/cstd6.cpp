@@ -1,28 +1,16 @@
 //cpp
 /* cstd6 -- second cstd string/printf-band TU, arm9 0x02070348..0x020707a4,
  * 7 functions: cstd::strchr, cstd::strcmp, cstd::strncpy, cstd::strlen +
- * 3 C helpers (rand-LCG, idx-dispatcher, strcpy-like). The file takes the
- * tree's existing class name plus the numeric suffix style already used in
- * the tree (Name2.cpp, as in d_s_mg_jump2.cpp), per Juan 2026-10-11.
- *
- * SCOPE: this is the SUFFIX of the band after the last INCOMPLETE entry
- * func_0206f46c (0x0206f46c, not complete, out of scope). Below the run,
- * func_0206fd6c.c (parse_format, 0x0206fd6c..0x02070348) is complete as C
- * but is a C++-only stop point: mwccarm keeps its local print_format struct
- * in registers under -lang c++ (SROA) while the ROM bytes spill it to the
- * stack, so the body cannot live in a .cpp TU (candidate 0x52c vs target
- * 0x5dc, divergence from the prologue on). It stays a one-function source,
- * as do func_0206f820.c / func_0206fb08.c under it. TOP EDGE:
- * func_020707a4.c (0x020707a4) begins exactly where the run ends.
- *
- * mwccarm emits .text in reverse source order here, so definitions run from
- * the highest address (strlen) down to the lowest (func_02070348).
- * The string members are already real namespace members in their shards
- * (language-mode migrated); they stay namespace members. The three helpers
- * have no ROM method evidence, so they stay extern "C" under their existing
- * names. Callers of func_0207037c (func_0206dc4c, func_0206de14) sit in the
- * same 0x0206 band, so nothing here belongs to a neighbour's file.
+ * 3 C helpers (rand-LCG, idx-dispatcher, strcpy-like). Below the run,
+ * func_0206fd6c (parse_format) stays a one-function source: mwccarm keeps its
+ * local print_format struct in registers under -lang c++ while the ROM spills
+ * it to the stack. Above, func_020707a4 begins exactly where the run ends.
  */
+// leftovers: the three helpers keep address names (no ROM method evidence).
+// func_020706b0's alignment preamble and word-at-a-time copy stay as built
+// (even the no-op u64 mask colours two words). strcmp keeps its goto form
+// (compiler-shaped). Callers of func_0207037c sit in the same 0x0206 band,
+// so nothing here belongs to a neighbour's file.
 #include "types.h"
 
 extern "C" {
@@ -63,9 +51,9 @@ unsigned int strlen(const char *s)
 // @symbol func_020706b0
 extern "C" {
 char *func_020706b0(char *dst, const char *src) {
-    u8 *s = (u8*)src;
-    u8 *d = (u8*)dst;
-    u8 *d2 = (u8*)dst;
+    u8 *s = (u8 *)src;
+    u8 *d = (u8 *)dst;
+    u8 *d2 = (u8 *)dst;
     u32 a;
     if (((u32)dst & 3) == ((u32)src & 3)) {
         a = ((u32)src & 3) & 0xFFFFFFFFFFFFFFFFull;
@@ -83,14 +71,14 @@ char *func_020706b0(char *dst, const char *src) {
             s++;
         }
         {
-            u32 w = *(u32*)s;
+            u32 w = *(u32 *)s;
             if (((w + 0xfefefeffu) & 0x80808080u) == 0) {
                 d2 -= 4;
                 do {
                     d2 += 4;
-                    *(u32*)d2 = w;
+                    *(u32 *)d2 = w;
                     s += 4;
-                    w = *(u32*)s;
+                    w = *(u32 *)s;
                 } while (((w + 0xfefefeffu) & 0x80808080u) == 0);
                 d2 += 4;
             }
@@ -133,7 +121,7 @@ char *strncpy(char *dst, const char *src, unsigned int n)
 
 // @symbol _ZN4cstd6strcmpEPKcS1_
 namespace cstd {
-int strcmp(char const *a, char const *b) {
+int strcmp(const char *a, const char *b) {
     unsigned int wb, wa, t;
     unsigned int cnt;
     unsigned int align_a, align_b;
