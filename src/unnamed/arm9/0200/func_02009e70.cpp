@@ -48,6 +48,26 @@
 // were swept: 2004/b56 is the only one within reach (72); every other build
 // fails the function outright. Details in the lanes' attempts.txt.
 //
+// 2026-10-13: the exchange DOES move from source, but only through a def the
+// ROM does not have. Give the mode-flags word its own fresh local (not r5, not
+// fl), keep the limit in fl or in the f20 local (r5), and make the limit's
+// else-arm def anything but a plain copy of the call result: `+ 1`, `- 1`,
+// `^ 1`, `<< 1`, a negation, or `+ sb` (sb still holds the dead 0 stored
+// above, so the value is right, and b56 emits `add sl, r0, #0` where the ROM
+// has `mov sl, r0`). That reads 53 words and colours self r8, HorzLen r7, c66c
+// r6, f20 r5, fp-var fp, limit sl, flags r5, which is the ROM's colouring. The
+// residue is that add, R02, R03, +0xfd4, the sqrt-chain operands at +0xb38, an
+// sl/sb swap in the sp4c pair at +0xc90 and an sb/r7 swap on the ground height
+// at +0xd6c; it holds at 53 across all 82 single declaration moves. With the def
+// a plain copy the limit ranks as a call-result web (284-314, self leaves r8),
+// and every copy-preserving spelling measured keeps it ranked: a cast, s64/u64
+// round trips, `| sb`, `<< sb`, `>> sb`, a block-scoped temp at two depths,
+// routing the result through vf, t0, r4, t1 or sb, a self-select booster, a
+// struct-field or one-element-array home, a reference, an inline helper, a
+// ternary, a goto-split if and an `fl = fp` initialiser. The ROM's limit web is
+// therefore not copy-born the way any of those spellings is; the open question
+// is the def that is not a copy at that phase yet still emits a bare `mov`.
+//
 // L0() below was a u64-mask launder (`& 0xFFFFFFFFFFFFFFFFLL` through a long long
 // round trip) that lane BANK measured dead under 2004/b56; it is kept as a no-op
 // macro rather than inlined at every call site so the history stays reviewable.
