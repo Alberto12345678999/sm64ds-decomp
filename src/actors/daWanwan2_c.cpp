@@ -161,7 +161,6 @@ int __aeabi_idiv(int, int);
 void _ZN8dActor_c9UpdatePosEP5dCc_c(dActor_c *thiz, dCc_c *c);
 void _ZN8dActor_c15HugeLandingDustEb(dActor_c *thiz, bool b);
 dActor_c *_ZN8dActor_c13ClosestPlayerEv(dActor_c *thiz);
-void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 param, const Vector3 *pos, const Vector3_16 *rot, int area, int unk);
 void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
@@ -350,8 +349,8 @@ extern "C" void func_ov100_021435e8(daWanwan2_c *c)
     int flag = (data_0209f2d8[0] == 1);
     if (!flag) {
         if (c->mChainEndActorID == 0) {
-            dActor_c *a = (dActor_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daWanwan2_ACTOR_SILVER_STAR, 0,
-                (Vector3 *)&c->mLinkPos[5], 0, c->mAreaId, -1);
+            dActor_c *a = dActor_c::Spawn(daWanwan2_ACTOR_SILVER_STAR, 0,
+                c->mLinkPos[5], 0, c->mAreaId, -1);
             if (a != 0) c->mChainEndActorID = a->uniqueID;
         } else {
             dActor_c *a = dActor_c::FindWithID(c->mChainEndActorID);
@@ -371,11 +370,11 @@ extern "C" void func_ov100_021435e8(daWanwan2_c *c)
         }
     } else {
         if (c->mChainEndActorID == 0) {
-            dActor_c *a = (dActor_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daWanwan2_ACTOR_STAR, c->mSpawnParam | 0x30,
-                (Vector3 *)&c->mLinkPos[5], 0, c->mAreaId, -1);
+            dActor_c *a = dActor_c::Spawn(daWanwan2_ACTOR_STAR, c->mSpawnParam | 0x30,
+                c->mLinkPos[5], 0, c->mAreaId, -1);
             if (a != 0) c->mChainEndActorID = a->uniqueID;
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daWanwan2_ACTOR_STARBASE, c->mSpawnParam | 0x30,
-                (Vector3 *)&c->mLinkPos[5], 0, c->mAreaId, -1);
+            dActor_c::Spawn(daWanwan2_ACTOR_STARBASE, c->mSpawnParam | 0x30,
+                c->mLinkPos[5], 0, c->mAreaId, -1);
         } else {
             dActor_c *a = dActor_c::FindWithID(c->mChainEndActorID);
             if (a != 0) {
@@ -684,8 +683,8 @@ int daWanwan2_c::Behavior()
         v.y = 4;
         v.z = 0;
 
-        dActor_c *sp = (dActor_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-            daWanwan2_ACTOR_COIN, 2, (Vector3 *)&mPosX, (const Vector3_16 *)0,
+        dActor_c *sp = dActor_c::Spawn(
+            daWanwan2_ACTOR_COIN, 2, *(const Vector3 *)&mPosX, (const Vector3_16 *)0,
             mAreaId, -1);
         if (unk_6a8 == 0) {
             func_02012694(daWanwan2_SND_COIN_SPAWN, &mCamSpacePosX);
@@ -887,12 +886,15 @@ void func_0203d73c(void);
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: UnchainedChomp_Spawn.
  *
- * Spelled by hand rather than `return new daWanwan2_c;`, which comes out
- * 0xa4 bytes for the ROM's 0x118: the ROM constructs mLinkPos and mLinkVel
- * through __cxa_vec_ctor(..., func_0203d384, _ZN7Vector3D1Ev) and mUnk_768
- * through __cxa_vec_ctor(..., func_0203d73c, _ZN8Vector3sD1Ev), with an empty
- * constructor function, and types.h's Vector3 and Vector3s declare no
- * constructor, so the implicit one never emits those three calls. The array
+ * The explicit constructor chain is retained. With the current headers under
+ * 2004/b56, both `new daWanwan2_c()` and `new daWanwan2_c` emit 0xec bytes
+ * for the retail 0x118. Vector3 has an empty user constructor: its two array
+ * construction calls are emitted, but name the unbound _ZN7Vector3C1Ev
+ * callback instead of retail func_0203d384. Vector3s currently has no user
+ * constructor, so its mUnk_768 array construction call is omitted. Normal
+ * whole-object preparation rejects the extra Vector3 constructor symbol.
+ * These are the measured current-header differences, not a general C++
+ * limitation. The array
  * callbacks receive the element address and discard lifecycle results; the
  * empty func_0203d384/func_0203d73c callbacks ignore that address. This TU
  * emits the vtable, whose symbol names the vtable object two words ahead of
