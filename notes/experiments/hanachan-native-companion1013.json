@@ -197,11 +197,6 @@
     ],
     "overlaps": []
   },
-  "limitations": [
-    "Full current-main/native-PR composition and full ROM link remain for owned adoption",
-    "Five previously measured split-vtable stock-control prerequisites are unavailable in scout tree; their raw objects are unchanged",
-    "Remaining Wiggler char-pointer segment traversal, Fix12 ABI calls and foreign camera fields are unchanged"
-  ],
   "hostValidation": {
     "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
     "collisionCompile": 0,
@@ -219,6 +214,76 @@
   "base_commit": "257ef7edb18afda407e1e6957478878ed5952ffa",
   "upstream_main_context": "08b118098ecb7ce86b85f1215886a4618e268a86",
   "tooling_pr": "https://github.com/tangosdev/sm64ds-decomp/pull/3766",
-  "status": "Privately verified candidate adopted under live ownership; integrated header-consumer/fullROM/current-main composition and independent exact-head Source review pending.",
-  "integrated_gates": {}
+  "status": "Integrated production, complete expanded consumer checks and current-main/toolstack/native-PR composition pass; final independent immutable-head Source acceptance required before source-only stacked PR.",
+  "integrated_gates": {
+    "tested_source_commit": "01615fe367f5c03ad51bc25a1e85b7dc1ac4e919",
+    "tested_base": "257ef7edb18afda407e1e6957478878ed5952ffa",
+    "production_rom": {
+      "result": "PASS",
+      "functions_reproduced": 11331,
+      "mismatching_functions": 0,
+      "data_claims_reproduced": 331,
+      "bss_claims": 239,
+      "modules_exact": 106,
+      "new_symbol_errors": 0,
+      "storage_aliases": "exact",
+      "global_advisory": "969 verified,1519 partial,1 inherited differing,21 unnamed"
+    },
+    "declarations": {
+      "scoped_files": 1640,
+      "inherited_disagreements": 6483,
+      "new_disagreements": 0,
+      "new_header_redeclarations": 0
+    },
+    "port_references": {
+      "checked": 267,
+      "stale": 0
+    },
+    "composition": {
+      "scenario": "current main plus separately accepted canonical-duplicate tool257; not unmodified main",
+      "main": "08b118098ecb7ce86b85f1215886a4618e268a86",
+      "tool_stack": "257ef7edb18afda407e1e6957478878ed5952ffa",
+      "source_checkpoint": "01615fe367f5c03ad51bc25a1e85b7dc1ac4e919",
+      "verified_scenarios": 11,
+      "result": "PASS",
+      "qualification": "Complete prepared objects and typed reference graphs compared for four owned consumers, five exact pending native PR variants and both Source changes between toolbase and main; full ROM totals above apply to the actual toolbase branch."
+    },
+    "expanded_linkcheck": {
+      "selected_files": 1088,
+      "selected_symbols": 9629,
+      "checked": 9628,
+      "verified": 9401,
+      "warnings": 227,
+      "blocking": 0,
+      "inherited_nonmatching_skips": 1,
+      "implementation": "Exact stock changed-source selection, first-match symbol resolver and subprocess linkcheck/retry logic run in parallel; same stock warning/skip semantics.",
+      "serial_producer_run": "Started required CLI; superseded its partial duplicate run only after complete equivalent parallel coverage. No terminal success is claimed for the stopped serial process.",
+      "warning_closure": "224 whole raw objects match independently compiled original controls; Dossy initializer BLIND-25, Wiggler initializer BLIND-73 and factory BLIND-2 separately verify with normal prepared objects.",
+      "draft_qualification": "func_02009e70 remains an unchanged NONMATCHING draft; no match claimed."
+    },
+    "independent_preliminary": {
+      "strict_prepared_checks": 97,
+      "verified": 97,
+      "blind": 0,
+      "diffs": 0,
+      "prepared_defined_symbols": 204,
+      "raw_relocations_covered": 936,
+      "header_consumers_compiled": 1088,
+      "whole_raw_objects_identical": 1086,
+      "changed_objects": [
+        "Wiggler",
+        "Dossy"
+      ],
+      "qualification": "Owned bytes, complete symbol metadata and every typed relocation/addend/embedded word match controls; Wiggler whole ELF container equality is not claimed because new constructor helper bookkeeping changes it."
+    }
+  },
+  "initial_scout_limitations": [
+    "Full current-main/native-PR composition and full ROM link remain for owned adoption",
+    "Five previously measured split-vtable stock-control prerequisites are unavailable in scout tree; their raw objects are unchanged",
+    "Remaining Wiggler char-pointer segment traversal, Fix12 ABI calls and foreign camera fields are unchanged"
+  ],
+  "remaining_work": [
+    "Existing Wiggler segment walks, resource layout views, foreign camera casts and scalar Fix12 ABI bridges remain partial reconstruction under issue3780."
+  ],
+  "source_lf_sha256": "7a1cf5397e31455d90cdd9c898a8ddf41cf480193bd40d6af4f99a2d9c8c00bf"
 }
