@@ -13,7 +13,7 @@
     "production_entire_ELF_equal": true,
     "prepared_sha256": "60c5e233ec27684921a0b24b708064297627f2da0fd1bc7758c3110f544f28ed",
     "strict_rows": 41,
-    "strict_bytes": null,
+    "strict_bytes": 9308,
     "strict_functions": 39,
     "owned_init_and_ctor_records": 2,
     "blind": 0,
@@ -117,10 +117,6 @@
     "normal_preparation": "ordinary on-disk intact-object prepare; no override"
   },
   "remaining": "Existing scalar Fix12 boundaries, local vector views, floor-result declaration and scratch-matrix helper remain partial. Shared header and manifest are unchanged; no temporary renames are added.",
-  "pending": [
-    "committed full ROM and static checks",
-    "independent exact Source review"
-  ],
   "handle_evidence": {
     "priorReceipts": "C:\\tmp\\sm64ds-enemyfactory-scout1013\\build\\factory-scout\\moray-handles1013\\snapshot\\build\\proof\\layout\\layout-strict.json",
     "unchangedIncludeTrees": {
@@ -282,5 +278,52 @@
         }
       }
     ]
-  }
+  },
+  "full_ROM": {
+    "checkpoint": "66c15aecc2e72b30ef87a022fe510a6802f814e6",
+    "modules_exact": 106,
+    "modules_total": 106,
+    "exit_code": 0,
+    "log": "build\\nknk-handles1013\\full_rom.log",
+    "limits": "Full modules and owned storage exact. Pre-existing stock dsd missing ITCM symbols and one differing unenrolled ROM-data inventory entry remain distinct."
+  },
+  "committed_checks": {
+    "tested_commit": "66c15aecc2e72b30ef87a022fe510a6802f814e6",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\nknk-handles1013\\full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\nknk-handles1013\\range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\nknk-handles1013\\port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\nknk-handles1013\\langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\nknk-handles1013\\decl.log"
+      }
+    }
+  },
+  "stock_range": {
+    "checked": 40,
+    "verified": 39,
+    "warnings": [
+      {
+        "name": "__sinit_d_a_nknk.cpp",
+        "verdict": "BLIND-24",
+        "blind": 24
+      }
+    ],
+    "blocking": 0
+  },
+  "binding": "This report-only descendant retains all src/include/config/tools/port trees from the tested full-ROM checkpoint. Independent final Source review is required separately."
 }
