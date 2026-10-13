@@ -1,0 +1,192 @@
+{
+  "task": "kpafire-native1013",
+  "base_commit": "ffb2e5f15f4ebdabca35840976fd4e0c247e9e7c",
+  "workflow_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3762",
+  "coordinator": "codex-kpafire-native-coordinator1013",
+  "source_completion": "partial",
+  "summary": "Use existing native actor, collision and Player interfaces at 32 Bowser fire call sites and remove eight duplicate mangled declarations. Source-only continuation; no headers, manifest, ownership or policies change.",
+  "source": "src/actors/daKpaFire_c.cpp",
+  "source_sha256": "4bbbf132a13e94a00d32bd2128822f52c2528753e3067e8468e94e8b0397bd0e",
+  "producer_sessions": [
+    "codex-kpafire-native-producer1013",
+    "01a135f6-ffe2-7f12-a948-096399c6745c",
+    "codex-bowserfire-cpp-producer1013"
+  ],
+  "scout_provenance": {
+    "actual_thread": "01a135f6-ffe2-7f12-a948-096399c6745c",
+    "agent": "/root/camera_valueweb_pass",
+    "parent_session": "01a12e6f-7ee1-7162-9a64-81145ed6b260",
+    "handoff_sha256": "f7c0cb580d19a29cb7813b7a94ca32109b681686e0fa0fd6feea6ef5007d47dd"
+  },
+  "native_call_sites": {
+    "_ZN8dActor_c13ClosestPlayerEv": 2,
+    "_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as": 10,
+    "_ZN7fBase_c18MarkForDestructionEv": 10,
+    "_ZN8dActor_c9UpdatePosEP5dCc_c": 3,
+    "_ZNK10dBgCh_Actr10IsOnGroundEv": 3,
+    "_ZN8dActor_c15FindWithActorIDEjPS_": 1,
+    "_ZN8dActor_c10FindWithIDEj": 2,
+    "_ZN6Player4BurnEv": 1
+  },
+  "predecessor_tasks": [
+    "bowserfire-cpp1013"
+  ],
+  "inherited_findings": {
+    "BFCPP-001": {
+      "disposition": "fixed",
+      "id": "BFCPP-001",
+      "kind": "correctness",
+      "location": "src/actors/daKpaFire_c.cpp:23,60,255",
+      "reason": "Inspected final comments describing C++ bodies and the POD matrix view; no C-mode pragma remains.",
+      "summary": "Stale source comments described C parsing and a return to C++ after the helper."
+    },
+    "BFCPP-002": {
+      "disposition": "fixed",
+      "id": "BFCPP-002",
+      "kind": "correctness",
+      "location": "include/daKpaFire_c.h:52",
+      "reason": "Final header describes retained byte storage and a POD view under C++; comment-only change leaves both consumer objects identical.",
+      "summary": "The header justified byte storage by claiming this helper still parsed as C."
+    },
+    "BFCPP-003": {
+      "disposition": "deferred",
+      "id": "BFCPP-003",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3762",
+      "kind": "reconstruction",
+      "location": "src/actors/daKpaFire_c.cpp:23-43,275-282",
+      "owner": "andrewboudreau",
+      "reason": "Accepted narrow removal of an unnecessary C frontend region; existing unfinished interface/layout work is explicitly recorded rather than claimed complete.",
+      "summary": "Address-named C-linkage helpers, raw matrix/particle field views and scalar Fix12 ABI bridges remain."
+    }
+  },
+  "historical_scope_note": "BFCPP-001..003 are accepted predecessor findings retained verbatim, including their historical line numbers and reasons. The predecessor converted a C frontend island; this continuation replaces existing raw interface calls. Legacy BFCPP-003 follow-up owner andrewboudreau remains recorded; codex-kpafire-native-coordinator1013 owns current continuation follow-up under issue3762.",
+  "findings": [
+    {
+      "id": "KPFN-001",
+      "kind": "reconstruction",
+      "disposition": "fixed",
+      "location": "src/actors/daKpaFire_c.cpp",
+      "summary": "32 raw actor/player/collision calls now use existing native interfaces; eight duplicate declarations are removed.",
+      "reason": "The complete baseline and candidate raw and ordinary prepared ELF objects match; native return/argument declarations are reused directly."
+    },
+    {
+      "id": "KPFN-002",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "location": "src/actors/daKpaFire_c.cpp",
+      "summary": "Flat base position and angle fields still require measured vector views at Spawn; state and particle/matrix views remain partial.",
+      "reason": "This scoped interface pass preserves existing field storage and does not infer a new shared class layout.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3762",
+      "owner": "codex-kpafire-native-coordinator1013"
+    },
+    {
+      "id": "KPFN-003",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "location": "src/actors/daKpaFire_c.cpp",
+      "summary": "Address-named free C-linkage handlers and scalar fixed-point bridges remain.",
+      "reason": "No scalar ABI, shared declaration, policy or ownership changes are made; this is a partial reconstruction with native caller improvements.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3762",
+      "owner": "codex-kpafire-native-coordinator1013"
+    }
+  ],
+  "canary": {
+    "source": "C:\\tmp\\sm64ds-kpafire-native1013\\src\\actors\\dMgTrmpln2Mario_c.cpp",
+    "result": [
+      true,
+      "2004/b56"
+    ]
+  },
+  "gates": {},
+  "production_gates_status": "whole proof complete; full-ROM and scoped gates pending frozen checkpoint",
+  "whole_proof": {
+    "baseline": {
+      "strict": 29,
+      "bss_records": 2,
+      "bss_bytes": 128,
+      "metadata_records": 11,
+      "metadata_bytes": 245,
+      "raw_refs": 197,
+      "prepared_refs": 146,
+      "raw_sha256": "7a9699a50701c21e5481017c9008c0f9173e64affcdeb0262275424672145cf2",
+      "prepared_sha256": "1f681e1d382264a8e3e3dd4ae45d092bd4d6fb797f48d3fded9377287bdc10e6"
+    },
+    "candidate": {
+      "strict": 29,
+      "bss_records": 2,
+      "bss_bytes": 128,
+      "metadata_records": 11,
+      "metadata_bytes": 245,
+      "raw_refs": 197,
+      "prepared_refs": 146,
+      "raw_sha256": "7a9699a50701c21e5481017c9008c0f9173e64affcdeb0262275424672145cf2",
+      "prepared_sha256": "1f681e1d382264a8e3e3dd4ae45d092bd4d6fb797f48d3fded9377287bdc10e6"
+    },
+    "complete_owned_bodies_edges_equal": true,
+    "complete_metadata_equal": true,
+    "ordinary_preparation": true,
+    "raw_container_equal": true,
+    "prepared_container_equal": true,
+    "base": "ffb2e5f15f4ebdabca35840976fd4e0c247e9e7c",
+    "full_rom_run": false
+  },
+  "storage_proof": {
+    "baseline": [
+      {
+        "record": {
+          "symbol": "data_ov060_0211af74",
+          "address": "0x0211af74",
+          "size": "0x40",
+          "binding": "STB_GLOBAL",
+          "evidence": "InitResources ActorFn dispatch table: eight void(dActor_c::*)() slots copied from the .data descriptors at 0x0211a75c/754/73c/74c/734/7ac/7a4/79c"
+        },
+        "size": 64,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211afb4",
+          "address": "0x0211afb4",
+          "size": "0x40",
+          "binding": "STB_GLOBAL",
+          "evidence": "Behavior Entry{PMF} dispatch table: eight void(dActor_c::*)() slots copied from the .data descriptors at 0x0211a794/78c/76c/77c/764/774/744/784"
+        },
+        "size": 64,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      }
+    ],
+    "candidate": [
+      {
+        "record": {
+          "symbol": "data_ov060_0211af74",
+          "address": "0x0211af74",
+          "size": "0x40",
+          "binding": "STB_GLOBAL",
+          "evidence": "InitResources ActorFn dispatch table: eight void(dActor_c::*)() slots copied from the .data descriptors at 0x0211a75c/754/73c/74c/734/7ac/7a4/79c"
+        },
+        "size": 64,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211afb4",
+          "address": "0x0211afb4",
+          "size": "0x40",
+          "binding": "STB_GLOBAL",
+          "evidence": "Behavior Entry{PMF} dispatch table: eight void(dActor_c::*)() slots copied from the .data descriptors at 0x0211a794/78c/76c/77c/764/774/744/784"
+        },
+        "size": 64,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      }
+    ]
+  }
+}
