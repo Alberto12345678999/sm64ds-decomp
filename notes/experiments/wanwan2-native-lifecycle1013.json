@@ -151,14 +151,338 @@
       "summary": "Four real native Spawn calls and three actual link-vector expressions are complete for this scope; broader actor reconstruction remains partial."
     }
   },
-  "pending": [
-    "Exact on-disk production proof",
-    "Header consumer closure and full ROM",
-    "Independent final Source review"
-  ],
   "remaining_reconstruction": [
     "WANWAN2-SPAWN-1013-PARTIAL remains; actor helper/raw views outside factory unchanged.",
     "HANACHAN-RAW-01 remains; inherited Wiggler raw views outside factory unchanged."
   ],
-  "resolved_boundary": "WANWAN2-FACTORY-1013-BOUNDARY is proposed fixed by the native factory and its full current-composition proof, subject to independent final review."
+  "resolved_boundary": "WANWAN2-FACTORY-1013-BOUNDARY is fixed by native construction with the complete actual Vector3s lifecycle dependency, the strict production factory/callback proof, unchanged initializer/node storage, full header closure and full ROM. Independent Source review is recorded in the task handoff.",
+  "tested_checkpoint": "b579ae9b453615e339520aa908c751651ffb089e",
+  "gates": {
+    "tested_commit": "b579ae9b453615e339520aa908c751651ffb089e",
+    "tested_base": "358b39da3cbb37eff91f8609f45f2cfc33d26f0b",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-native-lifecycle1013\\full_rom.log",
+        "command": [
+          "python",
+          "tools/rombuild.py",
+          "-j16",
+          "--no-rom"
+        ]
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-native-lifecycle1013\\parallel-range.log",
+        "command": [
+          "python",
+          "build\\wanwan2-native-lifecycle1013\\parallel-stock.py"
+        ],
+        "stock_cli_commands": 9629,
+        "method": "Private parallel scheduling of stock discovery and every unchanged stock _run_linkcheck CLI, including stock ERROR retry. The original ordered registry and regex first-match resolver is expanded exactly once with hashed inputs and original-function probes; committed and working inputs are asserted clean before/after. Unchanged P.main/P.verify consume only complete exact-key results at immutable checkpoint; no verdict is dropped or rewritten. Incomplete serial run is superseded, not counted as successful.",
+        "selection_proof": "build\\wanwan2-native-lifecycle1013\\parallel-selection.json",
+        "resolver_equivalence": "build\\wanwan2-native-lifecycle1013\\resolver-equivalence.json",
+        "terminal_stock_main_proof": {
+          "tested_commit": "b579ae9b453615e339520aa908c751651ffb089e",
+          "tested_base": "358b39da3cbb37eff91f8609f45f2cfc33d26f0b",
+          "exit_code": 0,
+          "files": 1089,
+          "stock_calls": 9629,
+          "unique_unchanged_cli_commands": 9629,
+          "drafts": [
+            "src/unnamed/arm9/0200/func_02009e70.cpp"
+          ],
+          "same_final_trees": {
+            "src": "c75093f14b74aec6645115fb7b8ae7e40e2445bd",
+            "include": "d814d311a342346594c05ce845848e102623078e",
+            "config": "4f881b01452dd6f92685bba941caeb46b1844c02",
+            "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+            "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+          },
+          "method": "Private parallel scheduling of stock discovery and every unchanged stock _run_linkcheck CLI, including stock ERROR retry. The original ordered registry and regex first-match resolver is expanded exactly once with hashed inputs and original-function probes; committed and working inputs are asserted clean before/after. Unchanged P.main/P.verify consume only complete exact-key results at immutable checkpoint; no verdict is dropped or rewritten. Incomplete serial run is superseded, not counted as successful.",
+          "cli_results": "parallel-cli-results.json",
+          "terminal_stock_table": "range.json",
+          "terminal_stock_log": "parallel-range.log"
+        },
+        "scheduler_sha256": "683fd0bc7b913c11c1430f05aac359287f596cbe370d61cb4455d1689e4708af"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-native-lifecycle1013\\port.log",
+        "command": [
+          "python",
+          "tools/port_refcheck.py"
+        ]
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-native-lifecycle1013\\langmode.log",
+        "command": [
+          "python",
+          "tools/langmode_audit.py",
+          "--check",
+          "langmode-baseline.json"
+        ]
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-native-lifecycle1013\\decl.log",
+        "command": [
+          "python",
+          "tools/check_decl_agreement.py",
+          "--changed",
+          "358b39da3cbb37eff91f8609f45f2cfc33d26f0b"
+        ]
+      },
+      "affected": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-native-lifecycle1013\\affected.log",
+        "command": [
+          "python",
+          "tools/affected_src.py",
+          "include/types.h",
+          "include/Vector3s.h",
+          "--json"
+        ]
+      }
+    },
+    "superseded_runs": "Incomplete literal serial gate and earlier private discovery attempts retained; none is reported as terminal success. All actual compiler/linker verdicts in the final table come from unchanged stock CLI invocations."
+  },
+  "chain_chomp_proof": {
+    "strict_code_init_ctor": 19,
+    "bss_records": 9,
+    "bss_bytes": 96,
+    "metadata_records": 11,
+    "metadata_bytes": 245,
+    "raw_typed_relocations": 243,
+    "prepared_typed_relocations": 182,
+    "owned_nontext_relocations": 22,
+    "prepared_sha256": "ee86f2ed4348141fa44c709d54ccbbda7065cc9c8a636e13dad8dcf4fe6b81cd",
+    "ordinary_retarget_isolate_parity": true,
+    "complete_owned_bodies_and_typed_edges_equal": true,
+    "whole_raw_or_prepared_container_identity_claimed": false,
+    "address_overrides": []
+  },
+  "native_constructor_and_node_identity": {
+    "constructor_checks": [
+      {
+        "emitted": "_ZN7Vector3C1Ev",
+        "actual_callback": "func_0203d384",
+        "check": {
+          "name": "_ZN7Vector3C1Ev",
+          "module": "arm9",
+          "addr": "0x0203d384",
+          "verdict": "VERIFIED",
+          "diffs": [],
+          "blind": 0
+        }
+      },
+      {
+        "emitted": "_ZN8Vector3sC1Ev",
+        "actual_callback": "func_0203d73c",
+        "check": {
+          "name": "_ZN8Vector3sC1Ev",
+          "module": "arm9",
+          "addr": "0x0203d73c",
+          "verdict": "VERIFIED",
+          "diffs": [],
+          "blind": 0
+        }
+      }
+    ],
+    "all_280_raw_factory_bytes_equal": true,
+    "unchanged_factory_edges": 18,
+    "changed_factory_callback_slots": [
+      {
+        "before": {
+          "off": 264,
+          "type": 2,
+          "sym": "func_0203d384",
+          "addr": 33805188,
+          "add": 0
+        },
+        "after": {
+          "off": 264,
+          "type": 2,
+          "sym": "_ZN7Vector3C1Ev",
+          "addr": null,
+          "add": 0
+        }
+      },
+      {
+        "before": {
+          "off": 276,
+          "type": 2,
+          "sym": "func_0203d73c",
+          "addr": 33806140,
+          "add": 0
+        },
+        "after": {
+          "off": 276,
+          "type": 2,
+          "sym": "_ZN8Vector3sC1Ev",
+          "addr": null,
+          "add": 0
+        }
+      }
+    ],
+    "all_244_initializer_bytes_equal": true,
+    "measured_nodes": [
+      {
+        "old_input": "@1006",
+        "new_input": "@1007",
+        "canonical": "@169",
+        "offset": "0xbc",
+        "bytes": 12
+      },
+      {
+        "old_input": "@1007",
+        "new_input": "@1008",
+        "canonical": "@170",
+        "offset": "0xc8",
+        "bytes": 12
+      },
+      {
+        "old_input": "@1008",
+        "new_input": "@1009",
+        "canonical": "@171",
+        "offset": "0xd8",
+        "bytes": 12
+      },
+      {
+        "old_input": "@1009",
+        "new_input": "@1010",
+        "canonical": "@172",
+        "offset": "0xe4",
+        "bytes": 12
+      }
+    ],
+    "actual_member_evidence": "Vector3 mLinkPos[6]+0x6d8, mLinkVel[6]+0x720; Vector3s mUnk_768[6]+0x768; retail/native destructor agrees on arrays/count/stride/callback type. No semantic purpose invented for mUnk_768."
+  },
+  "independent_consumer_comparison": {
+    "consumers": 1089,
+    "whole_raw_identical": 1086,
+    "raw_changed": [
+      "src/actors/daDossy_c.cpp",
+      "src/actors/daHanachan_c.cpp",
+      "src/actors/daWanwan2_c.cpp"
+    ],
+    "owned_prepared": [
+      {
+        "source": "src/engine/collision/dBgW_Kc_itcm.cpp",
+        "defined_symbols": 16,
+        "differences": []
+      },
+      {
+        "source": "src/stage/LevelObjects.cpp",
+        "defined_symbols": 19,
+        "differences": []
+      },
+      {
+        "source": "src/actors/daHanachan_c.cpp",
+        "defined_symbols": 110,
+        "differences": []
+      },
+      {
+        "source": "src/actors/daDossy_c.cpp",
+        "defined_symbols": 59,
+        "differences": []
+      },
+      {
+        "source": "src/actors/daWanwan2_c.cpp",
+        "defined_symbols": 30,
+        "differences": []
+      }
+    ],
+    "owned_raw": [
+      {
+        "source": "src/engine/collision/dBgW_Kc_itcm.cpp",
+        "baseline_defined_symbols": 19,
+        "candidate_defined_symbols": 19,
+        "changed_existing": [],
+        "added": []
+      },
+      {
+        "source": "src/stage/LevelObjects.cpp",
+        "baseline_defined_symbols": 21,
+        "candidate_defined_symbols": 21,
+        "changed_existing": [],
+        "added": []
+      },
+      {
+        "source": "src/actors/daHanachan_c.cpp",
+        "baseline_defined_symbols": 124,
+        "candidate_defined_symbols": 126,
+        "changed_existing": [],
+        "added": [
+          "func_0203d384",
+          "func_0203d73c"
+        ]
+      },
+      {
+        "source": "src/actors/daDossy_c.cpp",
+        "baseline_defined_symbols": 75,
+        "candidate_defined_symbols": 75,
+        "changed_existing": [],
+        "added": []
+      },
+      {
+        "source": "src/actors/daWanwan2_c.cpp",
+        "baseline_defined_symbols": 44,
+        "candidate_defined_symbols": 46,
+        "changed_existing": [],
+        "added": [
+          "func_0203d384",
+          "func_0203d73c"
+        ]
+      }
+    ],
+    "strict_checks": 118,
+    "strict_verdicts": {
+      "VERIFIED": 118
+    }
+  },
+  "stock_expanded_range": {
+    "checked": 9629,
+    "verdict_counts": {
+      "VERIFIED": 9397,
+      "BLIND-48": 1,
+      "BLIND-6": 100,
+      "BLIND-47": 1,
+      "BLIND-23": 1,
+      "BLIND-2": 15,
+      "BLIND-16": 5,
+      "BLIND-5": 4,
+      "BLIND-12": 5,
+      "BLIND-8": 3,
+      "BLIND-10": 19,
+      "BLIND-3": 21,
+      "BLIND-14": 6,
+      "BLIND-1": 13,
+      "BLIND-26": 2,
+      "BLIND-25": 1,
+      "BLIND-9": 5,
+      "BLIND-13": 2,
+      "BLIND-73": 2,
+      "BLIND-18": 4,
+      "BLIND-42": 1,
+      "BLIND-20": 2,
+      "BLIND-31": 1,
+      "BLIND-21": 1,
+      "BLIND-32": 1,
+      "BLIND-19": 2,
+      "BLIND-27": 1,
+      "BLIND-30": 2,
+      "BLIND-39": 1,
+      "BENIGN": 4,
+      "BLIND-36": 1,
+      "BLIND-24": 1,
+      "BLIND-11": 1,
+      "BLIND-22": 3
+    },
+    "blocking": 0,
+    "report": "build/wanwan2-native-lifecycle1013/range.json",
+    "warning_qualification": "Raw singular-function symbol-coverage warnings are preserved. Complete production full-ROM proof, independently unchanged consumer objects, and strict prepared changed-TU rows provide separate evidence; warnings are not described as zero-blind passes."
+  },
+  "final_binding": "This report-only descendant retains exact src/include/config/tools/port tree IDs of the tested checkpoint. Independent final acceptance is bound to the final immutable offer."
 }
