@@ -12,6 +12,13 @@
  * unnamed mFlags plumbing, sub-object accessors, and step helpers; the ROM
  * gives them no member name, so they stay extern "C" free functions taking
  * the object by raw pointer. */
+// leftovers: Init stays a free definition spelling its own mangled name (the
+// Fix12i params travel by value in the mangling, wall 6az). dBgPiLoc is a
+// manually laid-out dBgCh image (UpdateExtraContinous copies a wall result
+// field by field, so it needs names without the constructor). GetClsnPos
+// keeps the free (res, self) spelling (the member returns Vector3 by value,
+// wall 6az). The local externs spell the ROM's direct-call sites. The
+// func_0203* workers keep address names (no member evidence names them).
 
 #include "types.h"
 #include "common.h"

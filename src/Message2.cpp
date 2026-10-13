@@ -1,19 +1,21 @@
 //cpp
-/* arm9/Message2 -- talk-window TU, the matched prefix of the
- * Message talk-window run (EndTalk through the byte before func_0201adfc).
- * 0x0201ab04..0x0201adfc, 5 functions. Definitions are descending so the
- * default reverse emission is ROM-ascending.
+/* Talk-window prefix: EndTalk, PrepareTalk, and the three control-code
+ * handlers below them. Definitions run high address first so default
+ * reverse emission is ROM order.
  *
- * Stop: src/unnamed/arm9/0201/func_0201adfc.c does not reproduce on
- * 2004/b56 (object 0x304 against ROM 0x104), including as its own C file.
- * func_0201b100 and everything above it stay out so the range stays contiguous.
+ * leftovers:
+ * - Sound::ChangeMusicVolume stays an extern "C" free function. Its second
+ *   parameter is Fix12<int> by value; a method with that parameter homes
+ *   r0-r3 to the stack.
+ * - data_0209d6f4 is u8 * here. Message.cpp spells the same word volatile int
+ *   because one store there must not be coalesced. This TU only reads bytes.
+ * - func_0201adfc is the next ROM function and is not in this file. It does
+ *   not reproduce on 2004/b56 (object 0x304 against ROM 0x104).
+ * - MsgTextChar is local. The bytes at data_0209d6f4 are the text cursor,
+ *   and no header describes them.
  */
 #include "types.h"
-
-struct Message {
-    static void EndTalk();
-    static void PrepareTalk();
-};
+#include "Message.h"
 
 extern "C" {
 extern u8 *data_0209d6f4;
@@ -137,17 +139,7 @@ void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, Fix12i speed);
 // @symbol _ZN7Message11PrepareTalkEv
 void Message::PrepareTalk()
 {
-    /* Message::PrepareTalk() at 0x0201ab38 -- static, no `this`.
-     *
-     * Ducks the music before dialogue: volume to 0x40 over 0xc999/4096 of a frame, and
-     * raises the "in talk" flag. EndTalk is the exact inverse.
-     *
-     * Sound::ChangeMusicVolume stays an `extern "C"` free function on purpose. Its
-     * second parameter is a by-value `Fix12<int>`, and declaring a method with a
-     * by-value class parameter is a measured dead end -- mwccarm homes r0-r3 to the
-     * stack for it, +0x14, on all 25 sweep versions at every optimisation level. See
-     * runbook-type-reconstruction.md section 7.
-     */
+    /* Duck the music to 0x40 before dialogue. EndTalk is the inverse. */
     _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0x0000c999);
     data_0209d664 = 1;
 }
@@ -159,15 +151,7 @@ void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, Fix12i speed);
 // @symbol _ZN7Message7EndTalkEv
 void Message::EndTalk()
 {
-    /* Message::EndTalk() at 0x0201ab04 -- static, no `this`.
-     *
-     * The inverse of PrepareTalk: restores music to full volume (0x7f) over
-     * 0x64cc/4096 of a frame -- a slower ramp back up than the duck down -- and clears
-     * the "in talk" flag.
-     *
-     * Sound::ChangeMusicVolume stays `extern "C"`: by-value `Fix12<int>` parameter,
-     * runbook-type-reconstruction.md section 7.
-     */
+    /* Restore music to 0x7f. Slower ramp than PrepareTalk. */
     _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x000064cc);
     data_0209d664 = 0;
 }

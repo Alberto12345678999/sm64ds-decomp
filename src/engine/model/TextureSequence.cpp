@@ -4,7 +4,19 @@
    pair); the cartridge RTTI names it dExtAnmTexPat_c. TU claims
    0x0201597c..0x02015a7c, the whole class run in delinks order. Written
    back-to-front: mwccarm emits .text in reverse source order under default
-   deferred codegen. */
+   deferred codegen.
+
+   leftovers:
+   - SetFile and its SetAnimation call keep mangled spellings (Fix12<int>
+     by value, wall 6az); the member declarations in the headers are real.
+   - func_02046d50 and func_02046bbc stay extern "C" helpers with no
+     declaring header; Prepare's ROM body is a 0xc long-call veneer, so it
+     calls func_02046d50 with that function's own two-argument signature.
+   - file->unk_00 is the frame count handed to SetAnimation (the sibling
+     BTA names it numFrames); BTP_File names only the words UpdateFileOffsets
+     touches.
+   - RTTI stays off: the cartridge names the class dExtAnmTexPat_c, so the
+     emitted _ZTS/_ZTI records would have no configured home. */
 #include "TextureSequence.h"
 
 /* The cartridge spells this class dExtAnmTexPat_c, so the compiler-emitted

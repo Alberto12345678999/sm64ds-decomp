@@ -1,21 +1,25 @@
 //cpp
-/* arm9/Message -- the message-window display TU. 0x0201ce10..0x0201fcd4, 30 functions.
+/* Message window. The display entry points and the helpers that draw one
+ * line into a background.
  *
- * `#pragma defer_codegen off` gives source-order emission, so the file runs
- * ROM-ascending and the emitted .text does too. The optimization pragmas are
- * positional brackets per function -- under deferred codegen they would read
- * last-wins at end of file instead of per-function.
- *
- * The named entry points are real Message members (include/Message.h; all
- * static except Display). The address-named helpers and the two named C
- * helpers (LoadControllerModeText, Message_DrawCenteredLine) keep their
- * extern "C" spellings and names.
- *
- * All of these functions share one file-scope render state around
- * 0x0209d660 plus the star-entry table at data_0209d708, so every shard's
- * local externs collapse into the block below. data_0209d6f4 stays volatile:
- * DisplayCourseNameForStarSelect stores it twice back-to-back and both stores
- * must emit. */
+ * leftovers:
+ * - defer_codegen is off so this file emits in source order. The per-function
+ *   optimization pragmas are brackets; under deferred codegen they would be
+ *   last-wins for the whole file.
+ * - Display is the only Message method here that takes this. The others are
+ *   static and drive the globals around data_0209d660.
+ * - data_0209d6f4 is volatile. DisplayCourseNameForStarSelect stores it twice
+ *   in a row and both stores have to emit.
+ * - IsStarCollected, G2x::SetBlendBrightness and Message::DisplayText stay
+ *   local externs. The header spellings take s8 / u16 and those parameters
+ *   emit a narrow the ROM does not have. DisplayText must see this untruncated.
+ * - Sound::ChangeMusicVolume stays mangled. The second parameter is
+ *   Fix12<int> by value.
+ * - G2S::GetBG0CharPtr and the other BG pointer getters stay mangled. No
+ *   header method matches the unsigned return these calls use.
+ * - Address-named helpers stay address-named. The ROM has no English name
+ *   for them.
+ */
 
 #pragma defer_codegen off
 #include "types.h"
