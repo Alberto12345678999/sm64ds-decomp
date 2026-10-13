@@ -7,9 +7,9 @@
  *
  * Out-of-line destructor first and `#pragma defer_codegen off`: that pair
  * emits D1 then D0 at the head of this TU, so source order is ROM order.
- * The same definition also emits D2 plus the Vector3 destructor; both are
- * homeless (the ROM has neither) and are licensed `deadstrip` in the
- * manifest, while the emitted RTTI/vtable sections are `deadstrip-data`
+ * The definition also emits an unused D2, licensed `deadstrip`. The
+ * Vector3 lifecycle helpers reuse the original ARM9 callbacks through
+ * duplicate policies. The emitted RTTI/vtable sections are `deadstrip-data`
  * rebound to the ROM's copy. The unit spans ov074 .text 0x0211f000..
  * 0x0212290c and ends with the two registry factories (KURIKING_VANISH,
  * then KURIKING).
