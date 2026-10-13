@@ -63,10 +63,10 @@ struct M12 { int w[12]; };
 
 struct Vec3 { int x, y, z; };
 
-/* Whole-struct 3-word copies MUST go through an array member. mwccarm block-moves
- * (ldm/stm) a POD struct copy under -lang c99 but scalarises the same copy under
- * -lang c++; an array member forces the block move back. Four members of this TU
- * turn on this one rule. */
+/* Two remaining vector assignments retain the flat array-copy view. The snapshots
+ * in func_ov078_021240a0 and func_ov078_02125448 initialize the existing POD Vec3
+ * instead. The shared Vector3 has constructors and an empty destructor, and its
+ * copy initialization emits a different sequence at these sites. */
 struct M3 { int w[3]; };
 struct BCA_File;
 typedef daBombking_c::StateFunction PMF;
@@ -469,7 +469,6 @@ extern "C" {
 int func_ov078_021240a0(char* c)
 {
     daBombking_c *k = (daBombking_c *)c;
-    struct Vector3 v;
     short msg;
     int lim;
 
@@ -544,7 +543,7 @@ int func_ov078_021240a0(char* c)
                 if (a != 0) {
                     int b = (int)(a->actorID == 0xbf);
                     if (b != 0) {
-                        *(struct M3 *)&v = *(struct M3 *)&a->mPosX;
+                        Vec3 v = *(const Vec3 *)&a->mPosX;
                         if (k->mPosY > v.y)
                             ((Player *)a)->Unk_020c6a10(1);
                     }
@@ -1125,7 +1124,6 @@ int daBombking_c::func_ov078_02125448()
 {
     Player *p;
     dActor_c *a;
-    struct Vector3 v;
     int isType;
     int index;
     int empty;
@@ -1145,7 +1143,7 @@ int daBombking_c::func_ov078_02125448()
 
     p = (Player *)this->ClosestPlayer();
     if (p != 0) {
-        *(struct M3 *)&v = *(struct M3 *)&p->mPosX;
+        Vec3 v = *(const Vec3 *)&p->mPosX;
         if (Vec3_Dist(&this->mArenaPosX, &v) > 0x640000
             || (this->mArenaPosY - 0xa000) > v.y) {
             this->mHorzSpeed = 0;
