@@ -646,24 +646,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1012",
+      "from": "@1006",
       "to": "@169",
-      "evidence": "Same 12-byte local BSS destructor-registration node as baseline @1006, identified by .init ABS32 relocation at +0xbc; typed calls renumber it @1012. Preserve established linker identity @169."
+      "evidence": "Deleting the redundant local Spawn prototype renumbers raw destructor node @1012 to @1006; complete raw ELF differs only by these four names. Same 12-byte BSS storage, initializer ABS32 edges, and canonical target @169 are preserved."
     },
     {
-      "from": "@1013",
+      "from": "@1007",
       "to": "@170",
-      "evidence": "Same 12-byte local BSS destructor-registration node as baseline @1007, identified by .init ABS32 relocation at +0xc8; typed calls renumber it @1013. Preserve established linker identity @170."
+      "evidence": "Deleting the redundant local Spawn prototype renumbers raw destructor node @1013 to @1007; complete raw ELF differs only by these four names. Same 12-byte BSS storage, initializer ABS32 edges, and canonical target @170 are preserved."
     },
     {
-      "from": "@1014",
+      "from": "@1008",
       "to": "@171",
-      "evidence": "Same 12-byte local BSS destructor-registration node as baseline @1008, identified by .init ABS32 relocation at +0xd8; typed calls renumber it @1014. Preserve established linker identity @171."
+      "evidence": "Deleting the redundant local Spawn prototype renumbers raw destructor node @1014 to @1008; complete raw ELF differs only by these four names. Same 12-byte BSS storage, initializer ABS32 edges, and canonical target @171 are preserved."
     },
     {
-      "from": "@1015",
+      "from": "@1009",
       "to": "@172",
-      "evidence": "Same 12-byte local BSS destructor-registration node as baseline @1009, identified by .init ABS32 relocation at +0xe4; typed calls renumber it @1015. Preserve established linker identity @172."
+      "evidence": "Deleting the redundant local Spawn prototype renumbers raw destructor node @1015 to @1009; complete raw ELF differs only by these four names. Same 12-byte BSS storage, initializer ABS32 edges, and canonical target @172 are preserved."
     }
   ],
   "symbol_binding_rewrites": [
