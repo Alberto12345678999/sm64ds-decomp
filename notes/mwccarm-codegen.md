@@ -4036,6 +4036,25 @@ keeps a variable's pre-shift and post-shift values in ONE web across an in-place
 or one that outranks a call-return-coalesced web against a loop-invariant one. No rule in
 6k / 6q / 6y / 6ab / 6bf spells either yet.
 
+### 6bo resolved (2026-10-13): MATCHED, and the lever was the field's spelling
+
+`func_ov075_02116128` is byte-exact at 2004/b56, with no pragma. The palette is a `u16`
+local (`u16 pal = func_02030958(slot) + 10; if (dim) pal -= 4;`) and every store spells
+the field as `(*e & 0xfff) | (u16)(pal << 12)`. mwccarm narrows `(u16)(pal << 12)` to
+`lsl #0x1c` IN PLACE on `pal`'s own register, with the `lsr #16` folded into each single
+store's `orr` and the loop's copy hoisted. That one web, pre-shift and post-shift, is
+exactly the ROM's r3. Every earlier draft wrote the shift out as explicit `<< 0x1c` /
+`>> 16` steps or as named temporaries, and each of those splits the value into a second
+web. The three attractors above are what that split does to the colouring. Keeping the
+`m`-style `int` offset is still needed for the `mla`, and an inline setter around the
+same expression matches too.
+
+Method point: this was found by trying the natural ways a 2004 programmer writes a
+4-bit field insert (`(pal & 0xf) << 12`, `(u16)(pal << 12)`, `(pal << 12) & 0xf000`).
+Only the u16-cast spelling emits the ROM's `lsl #0x1c`/`lsr #16` pair. The
+~160,000-compile search above never left the explicit-shift spelling, because it had
+been copied from the disassembly.
+
 ## 6bq. Three homing levers and a store-order rank lever (ov074 daKuriKing_c, two MATCHED, one at div 11, 2026-08-30)
 
 The Kuri King overlay's three unsourced bodies. Two fell on the first day; the third is
