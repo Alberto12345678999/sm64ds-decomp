@@ -746,11 +746,21 @@
   },
   "full_rom_summary": {
     "modules_exact": 106,
-    "source_functions": 5888,
+    "source_functions": 11334,
     "owned_data": 331,
     "bss_records": 239,
     "bss_bytes": 30164,
     "qualification": "Baseline dsd symbol-name diagnostics and global advisory preexisting data differences retained; actual module/source fidelity is exact."
   },
-  "final_binding": "Final report-only descendant retains exact src/include/config/tools/port trees of tested checkpoint; acceptance is bound to final immutable head."
+  "final_binding": "Final report-only descendant retains exact src/include/config/tools/port trees of tested checkpoint; acceptance is bound to final immutable head.",
+  "report_correction": {
+    "finding": "IBL-INTERFACE-1013-REPORT",
+    "kind": "provenance",
+    "disposition": "fixed",
+    "reason": "Earlier re.search selected the baseline-control count5888. The final production summary is the last source-built functions section and independently agrees at11334. Source/config/include/tools/port and all actual tests remain unchanged.",
+    "observed_control_and_final_counts": [
+      5888,
+      11334
+    ]
+  }
 }
