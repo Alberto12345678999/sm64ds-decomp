@@ -218,7 +218,8 @@ up - the logic is the same but the codegen differs:
   *less*-optimized one, which `-O4,p` never produces. Confirmed unreachable: swept 6 source
   idioms (deref/ptr-var/index/ref/volatile/split-RMW) x all 11 mwccarm versions x 7 opt
   levels - every optimized build folds, `-O0` adds a stack frame, nothing lands the 5-instr
-  shape. No `-opt nopeephole` knob changes it (it's instruction selection, not a peephole).
+  shape. No `-opt nopeephole` knob changes it (it's instruction selection, not a peephole;
+  2004/b56 has no `nopeephole` keyword anyway, see 6db).
   These are not asm-hatch material either (clean compiled-code shape, no hand-asm tell).
   Treat the whole flag-RMW-materialized cluster as shape-blocked; flag and move on
   (2026-06-27).
@@ -1751,6 +1752,9 @@ appeared; floor marks mean "do not spend model time by default", and the recorde
 angle (load emission order) is where a genuinely new construct class would attack. ~800 compiles incl. exhaustive
 operand-spelling space (which collapses to 4 points per slot, not 12: Q(a,b)==R(b,a),
 U==Q), pair-flip and annealing sweeps. Do not re-attempt.
+(Re-attacked 2026-10-13, still 2 words. The mechanism above is restated more precisely in
+6db: Rm is always the textual LEFT operand, and the residue is a colour tie, not load
+emission order.)
 
 ## 6ad. Opus batch 2 (2026-07-26, 7 arm9 matches incl. func_02048234): siblings beat grinding
 
@@ -2959,8 +2963,9 @@ Three corrections fell straight out of it, all of which had been recorded as evi
   `opt_generateconditionalassignments`.** The 150-variant `func_02068398` campaign recorded
   this lever as inert; it was never applied. (Re-run with the correct name: still 1 word, so
   the floor survives -- but the earlier evidence was void.)
-- **`scheduling` is not a pragma.** Scheduling is controlled by the `-opt schedule` /
-  `-opt noschedule` COMMAND-LINE flag. Any "`#pragma scheduling off` is inert" line is
+- **`scheduling` is not a pragma.** Nor is it a command-line knob: 2004/b56 has no
+  `-opt schedule` / `-opt noschedule` keyword at all, and it accepts any unknown `-opt`
+  keyword silently (see 6db). Any "`#pragma scheduling off` is inert" line is
   meaningless, including ones asserted this session on the grounds that the token appears in
   the binary -- appearing in the binary is not the same as being pragma-exposed.
 - **`long_calls` is not a pragma.** The source now at
@@ -3824,8 +3829,9 @@ Closed since addendum 2, all inert (byte-identical, div 4, our colouring):
 * **Function signature**: 2, 3 and 4 parameters (the 6ab dropped-argument lever)
   leave it unchanged; giving a callee an extra argument only adds code.
 * **Flags (diagnostic only, not admissible)**: `-opt noschedule`, `-opt schedule`
-  and plain `-O4` all reproduce the same four words, so the residue is purely
-  allocation, not scheduling. `-O4,s` breaks size.
+  and plain `-O4` all reproduce the same four words. (Corrected 2026-10-13: neither
+  `-opt` keyword exists in 2004/b56, so this was not a scheduling test; see 6db.)
+  `-O4,s` breaks size.
 * **6y-1 self-select boosters** (`v = v ? v : v;` as a statement) on the x, z and
   shift webs at every position: best div 10, and the flip never appears.
 * **Bitfield type variations**: `int : 16` and `long : 16` at bit offset 7 are
@@ -7550,6 +7556,10 @@ product over load order, FXMULC operand orders, the `sb = 0` slot, the abs form,
 variable, the rank order, the block-temp shape and the FXMUL operand order at the fp call (500
 cells) walks the limit through r5, r6, r7 and r8 and never sl.
 
+(Partly superseded 2026-10-13, see 6db: the exchange CAN be moved from source, by making some
+def of the limit web a non-copy. It reaches the ROM's colouring at 53 words, but only through a
+spelling that is not honest source, so 72 stands.)
+
 **Two smaller mechanisms on the same body.** R02 (+0x4ac, 6 words): the constant held in a local
 with the store spelled after the ty load makes +0x4a8..+0x4b0 exact, and then b56 issues the
 `ty + 0x3e8000` add at +0x4b4 ahead of the two ready loads (it frees ty's register) where the ROM
@@ -7937,7 +7947,8 @@ for the hit stone (0x564), the same on both stones (0x584), `(data_02082214 + 1)
 Of the 24 orders of the dy/dx/nex/ney statements only dy, dx, ney, nex keeps the size (38); of
 the 80 split forms of those statements (`v = a; v op= b;` or `v = -b; v += a;`) three are
 identical at 30, two give 39 and the rest change the size. s16 sP/cP and c/s declaration order
-are inert. `#pragma scheduling off` and `-opt noschedule` do nothing.
+are inert. `#pragma scheduling off` and `-opt noschedule` do nothing (neither name exists in
+2004/b56, so this measures nothing; see 6db).
 
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
@@ -8029,3 +8040,72 @@ nine respellings (`hi/0x10000`, `(hi>>15)>>1`, u8/u16/int types ...; ~3,000 comp
 29), and index-form loops (`p[i]`, `map[r][i]`), which do NOT strength-reduce and change
 the size - so the ROM's `p++` is right. Nothing lowers hi's colouring priority below
 pal/i/p. Still NONMATCHING at div 20.
+
+## 6db. Two floors re-attacked, and the `-opt` vocabulary: an unknown `-opt` keyword is silently accepted (func_0202ffec and func_02009e70 both unchanged, 2026-10-13)
+
+**The `-opt` vocabulary.** `mwccarm.exe -help opt=opt` lists every `-opt` keyword 2004/b56
+has: `off|none`, `on`, `all|full`, `[no]space`, `[no]speed`, `l[evel]=0..4`, `[no]cse` /
+`[no]commonsubs`, `[no]deadcode`, `[no]deadstore`, `[no]lifetimes`, `[no]loop[invariants]`,
+`[no]prop[agation]`, `[no]strength`, `[no]dead`, `display|dump`. There is no `schedule`,
+`noschedule` or `peephole` keyword, and the string `sched` does not occur in the binary. Any
+unknown keyword after `-O4,p` (`-opt noschedule`, `-opt nopeephole`, even `-opt garbagexyz`)
+compiles with no diagnostic and byte-identical output. Every "`-opt noschedule` is inert"
+result in this file therefore measured nothing; the lines that cited one are annotated. The
+`-opt` keywords are parsed after `-O4,p`: `-opt off` and `-opt level=1` change the output, so
+they are the positive controls. A real keyword can still be inert where the matching pragma is
+not: `-opt nocse` leaves func_0202ffec byte-identical, while `#pragma opt_common_subs off`
+moves it to a different regime. The rule is the same as for pragmas (6av): a flag result counts
+as evidence only when the flag is in the help listing AND the same harness shows a positive
+control.
+
+**func_0202ffec (quaternion product, still 2 words).** Three passes with about 2,500 compiles.
+The precise mechanism, restating the 6ad-era note:
+
+- The smull `Rm` is always the textual LEFT operand of the 64-bit product. That holds without
+  exception for every matched smull in arm9 and all 103 overlays (284 multiply sites mined,
+  smull/smlal/umull/mul). Which operand's load is scheduled first does not matter: CrossVec3 has
+  three "Rm loaded earlier" and three "Rm loaded later" sites in one function, with `Rm = a->...`
+  in all six.
+- Colours for the eight operand values are handed out r3, ip, lr, r4, r5, r6, temps, sl (v1 is
+  always r1). An operand with an explicit `(long long)` cast of an s32 local is coloured first,
+  in textual order. An operand promoted implicitly or through a nested cast is coloured after
+  all the explicit ones. At a shared tie the left operand takes the EARLIER colour. The ROM needs
+  left=m with the LATER colour at x-line sites 1 (`m1*v2`) and 3 (`m0*v3`) only.
+- Inert: declaration order (300), load/assignment order (200), field-access syntax, identity
+  decorations (they fold before the ordering decision), inline helpers in C and C++ (the
+  body's order wins and argument order is substituted away), references, comma and `(void)`
+  uses, `register`/`const`, local arrays, statement order. Exhaustive P/Q/R/nested-cast forms
+  across sites 1-3 reach a best of 26 words, all 256 subsets of 64-bit locals reach 40, and a
+  pair-move sweep from the current source reaches 10 (about 1,600 compiles). C++ `Fix12`-class
+  operators make the function 0x298-0x330 bytes instead of 0x1d8; b56 does not scalarise class
+  temporaries, so the original was plain scalar arithmetic.
+- The only corpus instance of the ROM's tie (right operand coloured earlier than the textual
+  left Rm) is CrossVec3. It gets there from direct reads with all stores at the end. The
+  quaternion cannot use that form: its only caller passes the same quaternion as `m` and `out`,
+  so direct reads with interleaved stores force reloads (size changes), and stores at the end
+  give a fixed colour order (56 words).
+- 1.2/base and 1.2/sp2 reproduce the same 2-word residue; later builds change size.
+  Quaternion_FromVector3, Quaternion_SLerp, Matrix3x3_FromQuaternion and Quaternion_Normalize,
+  its ROM neighbours and probably its TU-mates, all match under b56.
+
+Floor class: smull operand order at a colour tie, operand order only, functionally identical.
+Treat it as terminal unless a construct class appears that colours the right `(long long)`
+operand first while it stays Rs.
+
+**func_02009e70 (still 72 words).** Two passes, about 600 cells, recorded in detail in the
+source comment. They partly overturn 6cw's "Why source cannot reach it":
+
+- The exchange moves from source. Give the mode-flags word a fresh local, keep the limit in `fl`
+  or the f20 local, and make some def of the limit web a non-copy. The result is exactly the
+  ROM's callee-saved colouring at 53 words. The cells that do it use `+ sb` (sb still holds a
+  dead 0) or `+ 1`, and b56 then emits `add sl, r0, #0` where the ROM has `mov sl, r0`. None of
+  those spellings is honest source, so 72 stands.
+- The rank test is per WEB, not per def. A non-copy def on either arm de-ranks the limit; only
+  a web whose every def is a plain copy ranks as a call-result web. Anything that folds before
+  register allocation is inert (identity arithmetic, dead defs above the if, a u16/s16 callee
+  return, inline setters or getters, abs on the limit).
+- One honest lever: the abs of the f20 value written as a ternary (`vf = (vf < 0) ? -vf : vf;`).
+  It gives bare `mov`s at the limit site, but in the wrong colour: 246 words, or 112-127 with a
+  dead `sb = 0` before the if. Both plateaus are flat under every rank and position sweep tried.
+- Open question: a limit def that counts as a non-copy at register allocation yet still emits a
+  bare `mov`.

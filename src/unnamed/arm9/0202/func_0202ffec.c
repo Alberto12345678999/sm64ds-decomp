@@ -1,8 +1,10 @@
 // NONMATCHING (TERMINAL-FLOOR): functionally-verified C at the proven compiler floor.
 // func_0202ffec @ 0x0202ffec (arm9, size 0x1d8). Quaternion product. 2 words diverge:
-// two smull operand-slot swaps (+0x14, +0x50) -- mwccarm puts the second-emitted load in
-// Rm, the ROM pins the matrix operand. ~800 spellings, the real permuter (6512 candidates),
-// flags, versions, launders all closed (notes 6ay, DB row). Operand-order-only delta:
+// two smull operand-slot swaps (+0x14, +0x50). Rm is always the textual left operand, and
+// at a shared register-colour tie the left operand takes the earlier colour; the ROM has
+// the matrix operand (left) in the later colour at these two sites only. ~800 spellings,
+// the real permuter (6512 candidates), ~2,500 further compiles, versions 1.2/base and
+// 1.2/sp2, launders all closed (notes 6ay, 6db, DB row). Operand-order-only delta:
 // functionally identical (multiplication is commutative).
 typedef signed int s32;
 
