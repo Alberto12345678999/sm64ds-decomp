@@ -135,7 +135,7 @@
     },
     "production_rom": {
       "result": "PASS",
-      "functions_reproduced": 5886,
+      "functions_reproduced": 11332,
       "mismatching_functions": 0,
       "data_claims_reproduced": 331,
       "bss_claims": 239,
