@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "task": "moray-native-factory1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3764",
+  "base_commit": "d6f7cf11a9d03bd2c7adda0d137a0de81b35be43",
+  "source": "src/actors/daMoray_c.cpp",
+  "status": "Native factory adopted from the independently compiled private fixture; production gates and independent source review pending separately reviewed tooling #3763.",
+  "change": "Use return new daMoray_c; in the real class factory and remove redundant manually declared construction ABI calls. Retain all 21 text functions, initializer, data, BSS and ownership.",
+  "policy_dependency": "https://github.com/tangosdev/sm64ds-decomp/issues/3763",
+  "canonical_callback": {
+    "emitted": "_ZN7Vector3C1Ev",
+    "existing": "func_0203d384",
+    "module": "arm9",
+    "address": "0x0203d384",
+    "size": 4,
+    "bytes": "1eff2fe1"
+  },
+  "temporary_symbol_pins": 14,
+  "scope": "Source factory and its production TU manifest only; no shared header, module symbol, delink, or port path edits.",
+  "remaining_work": [
+    "Existing scalar Fix12 ABI bridges, raw field/matrix views, and source limitations remain explicitly partial."
+  ],
+  "gates": {}
+}
