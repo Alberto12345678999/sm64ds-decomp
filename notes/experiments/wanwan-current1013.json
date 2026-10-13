@@ -98,7 +98,7 @@
     "raw_container_equal": false,
     "prepared_container_equal": false,
     "base": "5cbff56df6b432c5b861198f968fc9f1c730aa4c",
-    "full_rom_run": false
+    "full_rom_run": true
   },
   "fresh_storage_callback_proof": {
     "baseline": {
@@ -750,6 +750,195 @@
     "wanwan-native1013"
   ],
   "historical_report": "notes/experiments/wanwan-native1013.json",
-  "gates": {},
-  "status": "Current-main Source checkpoint; final production gates pending."
+  "gates": {
+    "full-rom": {
+      "name": "full-rom",
+      "command": [
+        "python",
+        "tools/rombuild.py",
+        "-j16",
+        "--no-rom",
+        "--report-json",
+        "build/wanwan-current1013/rom-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 328.46624064445496,
+      "log": "build/wanwan-current1013/full-rom.log",
+      "log_sha256": "f413b8e3d382eadf989c0ed3038c281513394939c283f11e51bb9873acaf381a",
+      "tested_commit": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99"
+    },
+    "range": {
+      "name": "range",
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "5cbff56df6b432c5b861198f968fc9f1c730aa4c..070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99",
+        "--json",
+        "build/wanwan-current1013/range-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 22.00684142112732,
+      "log": "build/wanwan-current1013/range.log",
+      "log_sha256": "0e61b39186c93a7d2ef556202f9d5352f5534a7183bb825182b0ead5552b7f5d",
+      "tested_commit": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99"
+    },
+    "decl": {
+      "name": "decl",
+      "command": [
+        "python",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "5cbff56df6b432c5b861198f968fc9f1c730aa4c"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.661437749862671,
+      "log": "build/wanwan-current1013/decl.log",
+      "log_sha256": "2d79770debd3ca82a1cfa8c7de88a34bd4752cbcc5e7fe88d69a9250f4efccbe",
+      "tested_commit": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99"
+    },
+    "port": {
+      "name": "port",
+      "command": [
+        "python",
+        "tools/port_refcheck.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.737745761871338,
+      "log": "build/wanwan-current1013/port.log",
+      "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e",
+      "tested_commit": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99"
+    },
+    "langmode": {
+      "name": "langmode",
+      "command": [
+        "python",
+        "tools/langmode_audit.py",
+        "--check",
+        "langmode-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 11.856950044631958,
+      "log": "build/wanwan-current1013/langmode.log",
+      "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765",
+      "tested_commit": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99"
+    }
+  },
+  "status": "All production gates terminal0; offered for independent Source and byte review. Reconstruction remains partial under issue3813.",
+  "final_production_summary": {
+    "modules": {
+      "modulesChecked": 106,
+      "modulesExact": 106,
+      "modulesExpectedOnly": 106,
+      "comparedBytes": 3049600,
+      "differingBytes": 0,
+      "unexpectedDifferingBytes": 0,
+      "percent": 100.0,
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b"
+    },
+    "source_build": {
+      "totalCodeFunctions": 11397,
+      "totalCodeBytes": 2238108,
+      "compiledFunctions": 11334,
+      "compiledBytes": 2225480,
+      "sourceFunctions": 11334,
+      "sourceBytes": 2225480,
+      "modFunctions": 0,
+      "modBytes": 0,
+      "sourceBytesPercent": 99.43577343005789,
+      "reproducingFunctions": 11334,
+      "reproducingBytes": 2225480,
+      "mismatchingFunctions": 0,
+      "mismatchingFunctionBytes": 0,
+      "differingSourceBytes": 0,
+      "sourceDataClaims": 331,
+      "sourceBssClaims": 239,
+      "sourceBssBytes": 30164,
+      "reproducingDataClaims": 331,
+      "reproducingDataClaimBytes": 13020,
+      "mismatchingDataClaims": 0,
+      "mismatchingDataClaimBytes": 0
+    },
+    "intact_link_ok": true,
+    "origin": "Final production analysis, not baseline-control counts.",
+    "report_sha256": "78f1b550b5f4a60a0f7cab24bbf41cf448b3307ff1e0d90feed4ae4d075a89c1"
+  },
+  "stock_range_summary": {
+    "checked": 30,
+    "verified": 28,
+    "warnings": 2,
+    "blocking": 0,
+    "warning_controls": {
+      "baseline": [
+        {
+          "name": "daWanwan_c_classInit",
+          "module": "ov014",
+          "addr": "0x02112d1c",
+          "verdict": "VERIFIED",
+          "diffs": [],
+          "blind": 0
+        },
+        {
+          "name": "__sinit_d_a_wanwan.cpp",
+          "module": "ov014",
+          "addr": "0x02113118",
+          "verdict": "BLIND-10",
+          "diffs": [],
+          "blind": 10
+        }
+      ],
+      "candidate": [
+        {
+          "name": "daWanwan_c_classInit",
+          "module": "ov014",
+          "addr": "0x02112d1c",
+          "verdict": "BLIND-1",
+          "diffs": [],
+          "blind": 1
+        },
+        {
+          "name": "__sinit_d_a_wanwan.cpp",
+          "module": "ov014",
+          "addr": "0x02113118",
+          "verdict": "BLIND-10",
+          "diffs": [],
+          "blind": 10
+        }
+      ],
+      "context": "Actual current headers; each object uses its immutable source revision manifest renames with unchanged stock per-function isolation. Ordinary whole preparation separately verifies every owned row with zero blind."
+    },
+    "interpretation": "Stock per-function isolation reports the native constructor BLIND-1 and the inherited initializer BLIND-10. Exact baseline/candidate initializer controls use each revision own manifest and both yield BLIND-10. Actual normal whole preparation verifies factory, initializer, ctor and owned state table with zero blind edges. No stock verdict is suppressed or rewritten."
+  },
+  "checkpoint": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99",
+  "report_only_binding": {
+    "checkpoint": "070e3bff4cdc27d8aeedd78fd8e9c851fbc73f99",
+    "production_trees": {
+      "src": "0bf1642dbaca7ef907c7d2342e4c74018e0d6b0f",
+      "include": "fdc69ac1ff6db68eafda1d937a288f9cbe020b7a",
+      "config": "943cc281fd1c285344ea60f60e818f981a37b9fa",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "rule": "The final report-only descendant must retain all five production tree IDs exactly."
+  },
+  "artifacts": {
+    "whole.py": "9d8b77b0079c1bcb0fcbccab028082c33ca5155869abe649a10f0bd04403b07e",
+    "proof.json": "0b19654a78c2d0f5dc98efb97c7ff44e6e5e85de37705eb02c379fadb91176d5",
+    "storage-callback-proof.json": "693af332ab074af5744f3bc7e9abe03e3da717fbace9903ab33cb1918e050b35",
+    "input-changes.json": "7c401d72564f3ad2e7a1e37695c504a09ac1c43e8a14f8130e9b54d73a86db5a",
+    "registration-map.json": "3d0398b57a4598c33d90e897d379f0fc0b96ffb5862b2db8c1e1c998b8133833",
+    "stock-warning-controls.json": "bff9a3bf7f951a08f02c2e4169944c320a21848da120fe2702468a33fbc133ac",
+    "candidate/raw.o": "383d53006120bac7575924365837758dfadd45a0aee5f66c5965404c94d55918",
+    "candidate/prepared.o": "0f049b0953b7f30964072d51791e14e6a6c3116817c77d86f177f7a5229cc142",
+    "candidate/complete-graphs.json": "92e90e36f7f2148d44fabf7fe0a01b9f3ab548cc30099ed9dca6492d6a9ba107",
+    "candidate/metadata.json": "ea24715ae7f724369d6e90f6f223a8ff2f30378eb1f06e02c99d9394d5b7c1eb",
+    "candidate/strict.json": "273281d37d9d493058967eee3d747405caed847bef47d6109c09408bf1967945",
+    "baseline/raw.o": "6eebf72aa4fbaaf2b811b7afc854fbf9a66d4002e4f3e8105d169c309a0b7202",
+    "baseline/prepared.o": "0f2b087c23824b89a91a61840c5eee66eb7029ad4743e547440eeb4d3831119c",
+    "baseline/complete-graphs.json": "1c6622db6a0f698c47788953a29e950937cbfa19939238772f48ef32088ed3c1",
+    "baseline/metadata.json": "ea24715ae7f724369d6e90f6f223a8ff2f30378eb1f06e02c99d9394d5b7c1eb",
+    "baseline/strict.json": "273281d37d9d493058967eee3d747405caed847bef47d6109c09408bf1967945",
+    "inherited-findings.json": "f77626dde3714dc96d9b843944b94d5d651618f52ad957f73b1d797eef3e7757",
+    "warning-controls.py": "862bb83eeddec32bbd3abb76911e3322660438d38e236f7c1f6def1215541b7b"
+  }
 }
