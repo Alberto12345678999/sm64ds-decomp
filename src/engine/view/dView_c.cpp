@@ -14,15 +14,21 @@
  * zeroes the two kuppa-script words. Defined first because this file emits
  * .text in reverse source order, so the tail body lands at the run's right
  * edge.
+ *
+ * leftovers:
+ * - data_0209fc48/data_0209fc4c keep the shard's `int' spelling: no header
+ *   declares the kuppa-script words and the tree's other spellings disagree.
+ * - dView_c_EmitDestructor/dView_c_EmitDeletingDestructor are byte-required
+ *   pins for the header-inline destructor; the wrappers have no cartridge
+ *   home (manifest-licensed emit-forcers).
+ * - CopyToViewMat is declared TU-locally: no header declares the free
+ *   _Z13CopyToViewMatPK9Matrix4x3 shard, and the C++ spelling mangles to it.
  */
 #include "dView_c.h"
 
 void CopyToViewMat(const Matrix4x3 *mat);
 
 // @symbol func_0202fd2c
-/* Absorbed from the retired arm9 helper func_0202fd2c: clear the kuppa-script
- * running/script words. The data words keep the shard's own `int' spelling:
- * no header declares them and the tree's other spellings disagree. */
 extern "C" {
 extern int data_0209fc48, data_0209fc4c;
 void func_0202fd2c(void)
