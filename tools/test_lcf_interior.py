@@ -40,6 +40,7 @@ SYMBOLS = (
     "func_01ff98f4 kind:function(arm,size=0xb0) addr:0x01ff98f4\n"
     "func_01ff99a4 kind:function(arm,size=0x39c) addr:0x01ff99a4\n"
     "_deq kind:function(arm,size=0x0) addr:0x01ff9d40\n"
+    "_deq_core kind:label(arm) addr:0x01ff9d50\n"
     "func_01ffa344 kind:function(arm,size=0xfc) addr:0x01ffa344\n"
 )
 DELINKS = (
@@ -83,10 +84,17 @@ class LcfInteriorTests(unittest.TestCase):
         self.assertEqual(LI.complete_text_ranges(self.root / "config" / "itcm" / "delinks.txt"),
                          [(0x01ff97d8, 0x01ffa344)])
 
-    def test_interior_rows_skip_the_range_start_but_keep_zero_sized_aliases(self):
+    def test_interior_rows_skip_the_range_start_but_keep_aliases_and_labels(self):
         self.assertEqual(LI.interior_rows(self.root / "config"),
                          [("func_01ff98f4", 0x01ff98f4), ("func_01ff99a4", 0x01ff99a4),
-                          ("_deq", 0x01ff9d40)])
+                          ("_deq", 0x01ff9d40), ("_deq_core", 0x01ff9d50)])
+
+    def test_patch_defines_an_imported_interior_label(self):
+        lcf, objects_txt = self._link(_elf(defined=["func_01ff97d8"]),
+                                      _elf(defined=["func_0206cee0"], imported=["_deq_core"]))
+        self.assertEqual(LI.patch(lcf, objects_txt, self.root / "config"),
+                         [("_deq_core", 0x01ff9d50)])
+        self.assertIn("    _deq_core = 0x01ff9d50;", lcf.read_text())
 
     def test_patch_defines_an_imported_zero_sized_alias(self):
         # func_0206f46c's `double ==` imports the runtime alias _deq, a size-0 row

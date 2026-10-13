@@ -40,7 +40,7 @@ LINKER_CONSTANTS = {
 }
 
 _ROW = re.compile(
-    r"^(\S+)\s+kind:function\([^)]*,size=0x([0-9a-fA-F]+)\).*?addr:0x([0-9a-fA-F]+)")
+    r"^(\S+)\s+kind:(?:function|label)\([^)]*\).*?addr:0x([0-9a-fA-F]+)")
 _TEXT = re.compile(r"^\s+\.text\s+start:0x([0-9a-fA-F]+)\s+end:0x([0-9a-fA-F]+)")
 
 
@@ -72,13 +72,16 @@ def complete_text_ranges(delinks_path):
 
 
 def interior_rows(config_root):
-    """[(name, addr)] for function rows strictly inside a complete range.
+    """[(name, addr)] for function and label rows strictly inside a complete range.
 
     Zero-size rows count: `_deq` is a size-0 alias row at 0x01ff9d40, the same
     address as func_01ff9d40, and a compiled caller of a `double ==` imports it
     by that name (func_0206f46c, func_020708b4). Skipping it left those links
-    `Undefined : "_deq"`. A row at a range's own start is still skipped (strict
-    `<`): that address is the source's own symbol, defined by its object."""
+    `Undefined : "_deq"`. Label rows count too: a secondary entry point inside
+    a hand-asm function (_ZN3IRQ11SetIRQStateEb, 0x10 into func_0206da18) is a
+    label, not a function, but callers import it by name all the same. A row at
+    a range's own start is still skipped (strict `<`): that address is the
+    source's own symbol, defined by its object."""
     config_root = pathlib.Path(config_root)
     rows = []
     for module in FIXED:
@@ -91,7 +94,7 @@ def interior_rows(config_root):
             m = _ROW.match(ln)
             if not m:
                 continue
-            addr = int(m.group(3), 16)
+            addr = int(m.group(2), 16)
             if any(lo < addr < hi for lo, hi in ranges):
                 rows.append((m.group(1), addr))
     return rows
