@@ -98,8 +98,81 @@
       "2004/b56"
     ]
   },
-  "gates": {},
-  "production_gates_status": "whole proof complete; full-ROM and scoped gates pending frozen checkpoint",
+  "gates": {
+    "full-rom": {
+      "name": "full-rom",
+      "command": [
+        "python",
+        "tools/rombuild.py",
+        "-j16",
+        "--no-rom",
+        "--report-json",
+        "build/kpafire-native1013/rom-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 281.1241295337677,
+      "log": "build/kpafire-native1013/full-rom.log",
+      "log_sha256": "f9f9e162a30802dd9bd9f158de9d6b9b3ff33cd419bc478ef67e2f962937b8ef",
+      "tested_commit": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b"
+    },
+    "range": {
+      "name": "range",
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "ffb2e5f15f4ebdabca35840976fd4e0c247e9e7c..511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b",
+        "--json",
+        "build/kpafire-native1013/range-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 20.75738549232483,
+      "log": "build/kpafire-native1013/range.log",
+      "log_sha256": "fdc88a3b4a4d2f87b7df67e1f9f16223f5d0eeed82a7bce25dcbb1f3698e73af",
+      "tested_commit": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b"
+    },
+    "decl": {
+      "name": "decl",
+      "command": [
+        "python",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "ffb2e5f15f4ebdabca35840976fd4e0c247e9e7c"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 8.967855215072632,
+      "log": "build/kpafire-native1013/decl.log",
+      "log_sha256": "c958a5984241b2d7c28b221e4bf5b8ca8af31004ebd33617bf05cfe755be4b8b",
+      "tested_commit": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b"
+    },
+    "port": {
+      "name": "port",
+      "command": [
+        "python",
+        "tools/port_refcheck.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.6845219135284424,
+      "log": "build/kpafire-native1013/port.log",
+      "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e",
+      "tested_commit": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b"
+    },
+    "langmode": {
+      "name": "langmode",
+      "command": [
+        "python",
+        "tools/langmode_audit.py",
+        "--check",
+        "langmode-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.915746450424194,
+      "log": "build/kpafire-native1013/langmode.log",
+      "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765",
+      "tested_commit": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b"
+    }
+  },
+  "production_gates_status": "All five gates terminal0; exact report-only offer requires independent Source and byte acceptance.",
   "whole_proof": {
     "baseline": {
       "strict": 29,
@@ -129,7 +202,7 @@
     "raw_container_equal": true,
     "prepared_container_equal": true,
     "base": "ffb2e5f15f4ebdabca35840976fd4e0c247e9e7c",
-    "full_rom_run": false
+    "full_rom_run": true
   },
   "storage_proof": {
     "baseline": [
@@ -188,5 +261,80 @@
         "binding": "STB_GLOBAL"
       }
     ]
+  },
+  "final_production_summary": {
+    "modules": {
+      "modulesChecked": 106,
+      "modulesExact": 106,
+      "modulesExpectedOnly": 106,
+      "comparedBytes": 3049600,
+      "differingBytes": 0,
+      "unexpectedDifferingBytes": 0,
+      "percent": 100.0,
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b"
+    },
+    "source_build": {
+      "totalCodeFunctions": 11397,
+      "totalCodeBytes": 2238108,
+      "compiledFunctions": 11334,
+      "compiledBytes": 2225480,
+      "sourceFunctions": 11334,
+      "sourceBytes": 2225480,
+      "modFunctions": 0,
+      "modBytes": 0,
+      "sourceBytesPercent": 99.43577343005789,
+      "reproducingFunctions": 11334,
+      "reproducingBytes": 2225480,
+      "mismatchingFunctions": 0,
+      "mismatchingFunctionBytes": 0,
+      "differingSourceBytes": 0,
+      "sourceDataClaims": 331,
+      "sourceBssClaims": 239,
+      "sourceBssBytes": 30164,
+      "reproducingDataClaims": 331,
+      "reproducingDataClaimBytes": 13020,
+      "mismatchingDataClaims": 0,
+      "mismatchingDataClaimBytes": 0
+    },
+    "intact_link_ok": true,
+    "origin": "Final production analysis, not baseline-control counts.",
+    "report_sha256": "6888059fba90cbf2d3bde511f5022ae3cb5c81185ce6d896f6c6d8f7d127b76f"
+  },
+  "stock_range_summary": {
+    "checked": 28,
+    "verified": 28,
+    "warnings": 0,
+    "blocking": 0,
+    "scope": "27 functions and initializer; ordinary whole ownership additionally proves ctor and complete metadata/storage."
+  },
+  "checkpoint": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b",
+  "report_only_binding": {
+    "checkpoint": "511ac24e7b3770fd7ecf4a2b47dffa0a089c5b2b",
+    "production_trees": {
+      "src": "421bf0544c995822bd66d6b0330e2aa0891fc24e",
+      "include": "fdc69ac1ff6db68eafda1d937a288f9cbe020b7a",
+      "config": "1de3789f744de3982a2a6b4aceec2df003218f5f",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "rule": "Final report-only descendant must retain all five production tree IDs exactly."
+  },
+  "artifacts": {
+    "canary.json": "b4d4f12845d57aec4bc66321657341e6840bbc5fe216028ce0caa6603ded301a",
+    "whole.py": "2305d6ab1a2d2011e0bcd523371380e6bb801e389d22e785cc77fcb91548af22",
+    "proof.json": "a0455a796d992276b89cfa86ac62404a64f81fb025cb75dd4ef67e3e4da8e7fe",
+    "storage.json": "3e1632c8109d9bf48392640293a2f2aea4b7bd89d4fa712c0158c5de0150a30b",
+    "candidate/raw.o": "7a9699a50701c21e5481017c9008c0f9173e64affcdeb0262275424672145cf2",
+    "candidate/prepared.o": "1f681e1d382264a8e3e3dd4ae45d092bd4d6fb797f48d3fded9377287bdc10e6",
+    "candidate/complete-graphs.json": "aa01e3444a84fdc985c4d7b21685ed61787b868fa95294b650b3b974b2edc976",
+    "candidate/metadata.json": "a1e27f6301095325286cf1320bf36982a8643d89dd3b4ea8bd2e8bc5d97b572e",
+    "candidate/strict.json": "b52c144c55ca0f68b211a444bb37e3a65bb82cf9dd591adaad56d530a6358e96",
+    "baseline/raw.o": "7a9699a50701c21e5481017c9008c0f9173e64affcdeb0262275424672145cf2",
+    "baseline/prepared.o": "1f681e1d382264a8e3e3dd4ae45d092bd4d6fb797f48d3fded9377287bdc10e6",
+    "baseline/complete-graphs.json": "aa01e3444a84fdc985c4d7b21685ed61787b868fa95294b650b3b974b2edc976",
+    "baseline/metadata.json": "a1e27f6301095325286cf1320bf36982a8643d89dd3b4ea8bd2e8bc5d97b572e",
+    "baseline/strict.json": "b52c144c55ca0f68b211a444bb37e3a65bb82cf9dd591adaad56d530a6358e96",
+    "inherited-findings.json": "0b8ba318c64c7b3b8a7c7426c3d3d6237c9cb2d5f928add6f0a5977e35663860",
+    "scout-predecessor-tasks.json": "f38f1a521d427069fcc409974179f4061aca2b388b4c3161247bd2e1ef44fb46"
   }
 }
