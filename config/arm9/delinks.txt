@@ -860,6 +860,10 @@ src/engine/model/Model.cpp:
     complete
     .text start:0x02016b78 end:0x02016df8
 
+src/CleanCommonModelDataArr.c:
+    complete
+    .text start:0x02016df8 end:0x02016e70
+
 src/unnamed/arm9/0201/func_02016e70.c:
     complete
     .text start:0x02016e70 end:0x02016f08
@@ -2270,6 +2274,10 @@ src/unnamed/arm9/0203/func_02031154.c:
 src/unnamed/arm9/0203/func_0203128c.c:
     complete
     .text start:0x0203128c end:0x020313d8
+
+src/unnamed/arm9/0203/func_020313d8.c:
+    complete
+    .text start:0x020313d8 end:0x02031428
 
 src/unnamed/arm9/0203/func_02031428.c:
     complete
