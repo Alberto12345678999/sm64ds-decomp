@@ -240,5 +240,52 @@
     "build/choropu-native1013/whole-proof.json",
     "build/choropu-native1013/choropu-prepare.json"
   ],
-  "pending": "Terminal enrolled full-ROM, changed-range and static gates plus independent exact Source acceptance follow this source checkpoint. No merge."
+  "terminal_gates": {
+    "tested_commit": "500df8e1691d12bf5c68361714b57cf3acffe711",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\choropu-native1013\\full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\choropu-native1013\\range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\choropu-native1013\\port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\choropu-native1013\\langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\choropu-native1013\\decl.log"
+      }
+    }
+  },
+  "stock_changed_range": {
+    "checked": 27,
+    "verified": 26,
+    "warnings": [
+      {
+        "name": "__sinit_daChoropu_c.cpp",
+        "verdict": "BLIND-14",
+        "blind": 14
+      }
+    ],
+    "blocking": 0
+  },
+  "full_production": {
+    "modules_exact": 106,
+    "modules_total": 106,
+    "functions_reproducing": 11332,
+    "data_claims_reproducing": 331,
+    "bss_claims": 239,
+    "baseline_limits": "Pre-existing stock dsd symbol errors and one differing unenrolled ROM-data inventory record persist; zero new symbol errors and exact owned storage."
+  },
+  "binding": "Terminal full-ROM/range/static gates at production_checkpoint. Final descendant changes only this report; src/include/config/tools/port trees remain identical.",
+  "production_checkpoint": "500df8e1691d12bf5c68361714b57cf3acffe711"
 }
