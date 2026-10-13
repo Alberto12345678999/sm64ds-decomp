@@ -103,9 +103,12 @@ struct daDemo_c : dActor_c {
     void *unk_0d8;          /* 0x0d8 - heap block freed by func_ov002_020f63a0 */
     Model *mModel;          /* 0x0dc */
     ModelAnim *mModelAnim;  /* 0x0e0 */
-    u8 pad_0e4[0x10];       /* 0x0e4 */
+    u32 mSoundHandle;       /* 0x0e4 - Sound::PlayLong handle, passed back on every call */
+    u32 mParticleID[3];     /* 0x0e8 - Particle::System::New handles, passed back likewise */
     s32 unk_0f4;            /* 0x0f4 - fix12 height/amplitude the handlers scale by */
-    u8 pad_0f8[8];          /* 0x0f8 */
+    s32 unk_0f8;            /* 0x0f8 - fix12 speed/blend parameter; each handler uses it differently */
+    s16 unk_0fc;            /* 0x0fc - step counter/angle (func_02008b4c, 7780, 79c0) */
+    s16 unk_0fe;            /* 0x0fe - per-frame increment of unk_0fc (79c0) */
     u8 unk_100;             /* 0x100 - scroll-mode byte the PMF3 handlers write */
     u8 pad_101;             /* 0x101 */
     u8 mOpacity;            /* 0x102 */

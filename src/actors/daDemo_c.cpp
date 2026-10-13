@@ -61,6 +61,7 @@
 #include "SharedFilePtr.h"
 #include "decl_common.h"
 #include "dBgCh_Gnd.h"
+#include "Sound.h"
 #include "decl_Model.h"
 #include "decl_ModelAnim.h"
 
@@ -194,21 +195,6 @@ struct Obj2e30 {
 /* shadow struct 'ObjSeq' — TextureSequence window of func_ov002_020f65b8 */
 struct ObjSeq { char pad[0x7c]; void *seq; };
 
-/* shadow struct 'ObjV' — vtable window of daDemo_c::CleanupResources */
-struct ObjV { virtual void v00(); virtual void m04(); };
-
-/* shadow struct 'Obj6b' — receiver window of func_ov002_020f6b4c */
-struct Obj6b {
-    char pad5c[0x5c];
-    struct Vector3 v5c;
-    char pad8e[0x8e - (0x5c + 0xc)];
-    s16 f8e;
-    char pad94[0x94 - 0x90];
-    s16 f94;
-    char pad98[0x98 - 0x96];
-    int f98;
-};
-
 /* shadow struct 'Ent' */
 struct Ent
 {
@@ -274,13 +260,6 @@ typedef int Fix12i;
 
 /* shadow struct 'M48' */
 struct M48 { int w[12]; };
-
-/* shadow struct 'ModelBaseSh' — vtable window used by daDemo_c::Render;
-   slot 5 is the ROM's render-entry method */
-struct ModelBaseSh {
-  virtual void v0(); virtual void v1(); virtual void v2();
-  virtual void v3(); virtual void v4(); virtual void m(int arg);
-};
 
 /* shadow typedef 'Obj' */
 typedef struct Obj Obj;
@@ -574,10 +553,7 @@ extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File*, int, in
 extern void __cxa_vec_ctor(void* obj, int a, int b, void* cb1, void* cb2);
 extern void *_ZN7Vector3D1Ev(void *object);
 extern void func_0203d384(void);
-extern void _ZN7fBase_c18MarkForDestructionEv(void *);
 extern unsigned int ReadUnalignedInt(unsigned char *p);
-extern int _ZN5Sound4PlayEjjRK7Vector3(unsigned int a, unsigned int b, struct Vector3 *v);
-extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, void *v, unsigned int e);
 extern void func_02012694(unsigned int, void*);
 extern short ReadUnalignedShort(unsigned char *p);
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
@@ -654,9 +630,6 @@ extern PMF3 data_ov002_0210b8d0;
 extern PMF3 data_ov002_0210b8c8;
 extern int data_ov002_02110b00;
 extern PMF3 data_ov002_0211104c[24];
-void _ZN9ModelBase12ApplyOpacityEjj(void* m, unsigned int opacity, unsigned int unused); /* local extern: untyped model pointer. */
-extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *c, void *cyl); /* local extern: untyped this, null cylinder. */
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *c, void *cyl); /* local extern: untyped this, null cylinder. */
 extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3 *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, s32 x, s32 y, s32 z);
@@ -1077,8 +1050,7 @@ int func_ov002_020f2630(char* c){
 
 int daDemo_c::func_ov002_020f26c4(unsigned char *src)
 {
-    unsigned char *dst = (unsigned char *)this;
-    dst[0x100] = src[0];
+    this->unk_100 = src[0];
     return 1;
 }
 
@@ -3603,9 +3575,8 @@ int daDemo_c::func_ov002_020f63a0()
 
 int daDemo_c::func_ov002_020f63d4()
 {
-    char *c = (char *)this;
-    func_ov002_020f5fb8(*(void**)((char*)c+0xd8));
-    func_ov002_020f5f8c(*(void**)((char*)c+0xd8));
+    func_ov002_020f5fb8(this->unk_0d8);
+    func_ov002_020f5f8c(this->unk_0d8);
     return 1;
 }
 
@@ -3904,8 +3875,7 @@ void* daDemo_c::param_c::func_ov002_020f6a50()
 
 int daDemo_c::func_ov002_020f6a9c()
 {
-    void *t = this;
-    _ZN7fBase_c18MarkForDestructionEv(t);
+    MarkForDestruction();
     return 1;
 }
 
@@ -3916,9 +3886,8 @@ int daDemo_c::func_ov002_020f6a9c()
 
 int daDemo_c::func_ov002_020f6ab8(unsigned char *p)
 {
-    char *c = (char *)this;
     unsigned int id = ReadUnalignedInt(p);
-    _ZN5Sound4PlayEjjRK7Vector3(1, id, (struct Vector3*)(c + 0x74));
+    Sound::Play(1, id, *(Vector3 *)&mCamSpacePosX);
     return 1;
 }
 
@@ -3929,9 +3898,8 @@ int daDemo_c::func_ov002_020f6ab8(unsigned char *p)
 
 int daDemo_c::func_ov002_020f6ae4(unsigned char *p)
 {
-    unsigned int r = ReadUnalignedInt(p);
-    char *thiz = (char *)this;
-    *(unsigned int *)(thiz + 0xe4) = _ZN5Sound8PlayLongEjjjRK7Vector3s(*(unsigned int *)(thiz + 0xe4), 3, r, thiz + 0x74, 0);
+    unsigned int id = ReadUnalignedInt(p);
+    mSoundHandle = Sound::PlayLong(mSoundHandle, 3, id, *(Vector3 *)&mCamSpacePosX, 0);
     return 1;
 }
 
@@ -3942,9 +3910,8 @@ int daDemo_c::func_ov002_020f6ae4(unsigned char *p)
 
 int daDemo_c::func_ov002_020f6b28(unsigned char *p)
 {
-    unsigned char *c = (unsigned char *)this;
-    unsigned int v=ReadUnalignedInt(p);
-    func_02012694(v, c+0x74);
+    unsigned int v = ReadUnalignedInt(p);
+    func_02012694(v, &mCamSpacePosX);
     return 1;
 }
 
@@ -3952,24 +3919,24 @@ int daDemo_c::func_ov002_020f6b28(unsigned char *p)
 /* ROM ordinal 122 -- func_ov002_020f6b4c, 0x020f6b4c, size 0x74 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6b4cEPh
-/* func_ov002_020f6b4c at 0x020f6b4c
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov002).
- */
+/* Script handler 15: turn to face the point whose whole-unit coordinates
+ * are the unaligned shorts at p+0/+2/+4, and take the short at p+6 as the
+ * horizontal speed. The legacy
+ * per-function file recorded its match under mwccarm 1.2/sp2p3; this TU
+ * builds under the 2004/b56 pin. */
 
 int daDemo_c::func_ov002_020f6b4c(unsigned char *p)
 {
-    Obj6b *self = (Obj6b *)this;
-    struct { int z, y, x; } v;
-    int y, x;
-    x = ReadUnalignedShort(p + 4) << 12;
+    struct { int x, y, z; } target;
+    int y, z;
+    z = ReadUnalignedShort(p + 4) << 12;
     y = ReadUnalignedShort(p + 2) << 12;
-    v.z = ReadUnalignedShort(p) << 12;
-    v.y = y;
-    v.x = x;
-    self->f8e = Vec3_HorzAngle(&self->v5c, (const struct Vector3 *)&v);
-    self->f94 = self->f8e;
-    self->f98 = ReadUnalignedShort(p + 6);
+    target.x = ReadUnalignedShort(p) << 12;
+    target.y = y;
+    target.z = z;
+    this->mAngleY = Vec3_HorzAngle((const Vector3 *)&this->mPosX, (const Vector3 *)&target);
+    this->mPrevAngleY = this->mAngleY;
+    this->mHorzSpeed = ReadUnalignedShort(p + 6);
     return 1;
 }
 
@@ -3980,7 +3947,6 @@ int daDemo_c::func_ov002_020f6b4c(unsigned char *p)
 
 s32 daDemo_c::func_ov002_020f6bc0(unsigned char *data)
 {
-    char *self = (char *)this;
     s32 x, y, z;
     z = ReadUnalignedShort(data + 4) << 12;
     y = ReadUnalignedShort(data + 2) << 12;
@@ -3989,7 +3955,7 @@ s32 daDemo_c::func_ov002_020f6bc0(unsigned char *data)
     this->mPosY = y;
     this->mPosZ = z;
     this->mAngleY = ReadUnalignedShort(data + 6);
-    *(s16*)(&this->mPrevAngleY) = *(s16*)(self + 0x8e);
+    this->mPrevAngleY = this->mAngleY;
     return 1;
 }
 
@@ -4031,7 +3997,6 @@ inline unsigned int inline_fn(unsigned int arg0)
 
 int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
 {
-  char *c = (char *) this;
   u8 *flag = (u8 *) arg1;
   Vec3 v;
   if (arg2 == data_0209b274)
@@ -4045,11 +4010,11 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
     AddVec3((Vec3 *) (&this->mPosX), (Vec3 *) (data_0209f318 + 0x8c), (Vec3 *) (&this->mPosX));
     if (arg2 > 0x2bc)
     {
-      *((s32 *) ((&this->mPosY))) -= 0x96000;
+      this->mPosY -= 0x96000;
     }
     if (arg2 != data_ov002_0210b614)
     {
-      func_0201267c(0x6a, c + 0x74);
+      func_0201267c(0x6a, &this->mCamSpacePosX);
       data_ov002_0210b614 = arg2;
     }
   }
@@ -4079,7 +4044,7 @@ int daDemo_c::func_ov002_020f6c60(void *arg1, int arg2, int arg3)
   }
   this->mPrevAngleX = this->mAngleX;
   this->mPrevAngleY = this->mAngleY;
-  this->mPrevAngleZ = *((s16 *) (c + 0x90));
+  this->mPrevAngleZ = this->mAngleZ;
   return 1;
 }
 
@@ -4133,27 +4098,24 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
 {
-    char *c = (char *)this;
     int* p;
     ApproachAngle(&this->mAngleX, Vec3_VertAngle(((struct Vector3*)&this->mPosX), v), amt, 0x4000, 0);
     ApproachAngle(&this->mAngleY, Vec3_HorzAngle(((struct Vector3*)&this->mPosX), v), amt, 0x4000, 0);
     p = (int*)(((char*)this->mModelAnim) + 0x1c);
-    *(int*)(c+0xa4) = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x18) + 0x800) >> 12);
-    *(int*)(&this->mVertSpeed) = (int)(((s64)*(int*)(&this->unk_0f4) * *(int*)((char*)p + 0x1c) + 0x800) >> 12);
-    *(int*)(c+0xac) = (int)(((s64)*(int*)(&this->unk_0f4) * *(int*)((char*)p + 0x20) + 0x800) >> 12);
+    this->unk_0a4 = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x18) + 0x800) >> 12);
+    this->mVertSpeed = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x1c) + 0x800) >> 12);
+    this->unk_0ac = (int)(((s64)this->unk_0f4 * *(int*)((char*)p + 0x20) + 0x800) >> 12);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 129 -- func_ov002_020f7020, 0x020f7020, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f7020Ev
-// Clear flag bit 0x2 in the u32 at self+0xb0, return 1. u64-mask launder forces the
-// base to materialize (add r2,self,#0xb0) instead of folding the offset.
+/* Script handler 9: clear mFlags bit 0x2. */
 
 int daDemo_c::func_ov002_020f7020()
 {
-    char *self = (char *)this;
-    *(unsigned int *)(self + 0xb0) &= ~0x2;
+    this->mFlags &= ~0x2;
     return 1;
 }
 
@@ -4166,19 +4128,18 @@ int daDemo_c::func_ov002_020f7020()
 
 int daDemo_c::func_ov002_020f7038(int a, int arg)
 {
-    char *c = (char *)this;
     if (arg == data_0209b274) {
-        *(int*)(c + 0xe8) = 0;
-        *(int*)(c + 0xec) = 0;
-        *(int*)(c + 0xf0) = 0;
+        mParticleID[0] = 0;
+        mParticleID[1] = 0;
+        mParticleID[2] = 0;
     }
     if (this->mPosY >= 0x514000) {
-        if (*(int*)(c + 0xf8) < 0x3c000) {
-            *(int*)(c + 0xf8) += 0x5000;
+        if (unk_0f8 < 0x3c000) {
+            unk_0f8 += 0x5000;
         }
     } else {
-        if (*(int*)(c + 0xf8) > 0x1a000) {
-            *(int*)(c + 0xf8) -= 0x2000;
+        if (unk_0f8 > 0x1a000) {
+            unk_0f8 -= 0x2000;
         }
     }
     {
@@ -4188,7 +4149,7 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
         }
     }
     this->mPosY -=
-        (int)(((long long)*(int*)(c + 0xf8) * 0x199 + 0x800) >> 12);
+        (int)(((long long)unk_0f8 * 0x199 + 0x800) >> 12);
     {
         struct Vector3 pos;
         int z = this->mPosZ;
@@ -4197,12 +4158,12 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
         ((int*)&pos)[0] = x;
         ((int*)&pos)[1] = y;
         ((int*)&pos)[2] = z;
-        *(int*)(c + 0xe8) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int*)(c + 0xe8), 0x3b, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
-        *(int*)(c + 0xec) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int*)(c + 0xec), 0x3c, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
-        *(int*)(c + 0xf0) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int*)(c + 0xf0), 0x3d, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
+        mParticleID[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[0], 0x3b, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
+        mParticleID[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[1], 0x3c, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
+        mParticleID[2] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[2], 0x3d, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
     }
     return 1;
 }
@@ -4216,7 +4177,6 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
 
 int daDemo_c::func_ov002_020f71c4(int a, int arg)
 {
-    char *c = (char *)this;
     if (arg == 0) {
         if (arg == data_0209b274) {
             this->unk_0f4 = 0x10000;
@@ -4232,12 +4192,12 @@ int daDemo_c::func_ov002_020f71c4(int a, int arg)
         ((int*)&pos)[0] = x;
         ((int*)&pos)[1] = y;
         ((int*)&pos)[2] = z;
-        *(int*)(c + 0xe8) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int*)(c + 0xe8), 0x38, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
-        *(int*)(c + 0xec) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int*)(c + 0xec), 0x39, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
-        *(int*)(c + 0xf0) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int*)(c + 0xf0), 0x3a, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
+        mParticleID[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[0], 0x38, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
+        mParticleID[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[1], 0x39, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
+        mParticleID[2] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[2], 0x3a, ((int*)&pos)[0], ((int*)&pos)[1], ((int*)&pos)[2], 0, 0);
     }
     return 1;
 }
@@ -4249,7 +4209,6 @@ int daDemo_c::func_ov002_020f71c4(int a, int arg)
 
 int daDemo_c::func_ov002_020f72bc()
 {
-    char *c = (char *)this;
     *((u32*)&this->mScaleX) = 0x3000;
     *((u32*)&this->mScaleY) = 0x3000;
     *((u32*)&this->mScaleZ) = 0x3000;
@@ -4259,12 +4218,12 @@ int daDemo_c::func_ov002_020f72bc()
     }
     this->mOpacity = 0x1f;
 
-    *(u32*)(c + 0xe8) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(c + 0xe8), 0x31, *((Fix12i*)&this->mPosX), *((Fix12i*)&this->mPosY), *((Fix12i*)&this->mPosZ), 0, 0);
-    *(u32*)(c + 0xec) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(c + 0xec), 0x32, *(Fix12i*)(&this->mPosX), *(Fix12i*)(&this->mPosY), *(Fix12i*)(&this->mPosZ), 0, 0);
-    *(u32*)(c + 0xf0) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(c + 0xf0), 0x33, *(Fix12i*)(&this->mPosX), *(Fix12i*)(c + 0x60), *((Fix12i*)&this->mPosZ), 0, 0);
+    mParticleID[0] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[0], 0x31, *((Fix12i*)&this->mPosX), *((Fix12i*)&this->mPosY), *((Fix12i*)&this->mPosZ), 0, 0);
+    mParticleID[1] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[1], 0x32, *(Fix12i*)(&this->mPosX), *(Fix12i*)(&this->mPosY), *(Fix12i*)(&this->mPosZ), 0, 0);
+    mParticleID[2] = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[2], 0x33, *(Fix12i*)(&this->mPosX), *(Fix12i*)(&this->mPosY), *((Fix12i*)&this->mPosZ), 0, 0);
     return 1;
 }
 
@@ -4275,15 +4234,14 @@ int daDemo_c::func_ov002_020f72bc()
 
 int daDemo_c::func_ov002_020f7384(unsigned char *flag, int val)
 {
-    char *c = (char *)this;
     if (*flag != 0) {
         if (val == data_0209b274) func_02012790(0x17);
-        _Z14ApproachLinearRiii((int*)(&this->mPosY), 0xfa000, 0xa000);
-        c[0x102] = 0x1f;
+        _Z14ApproachLinearRiii(&this->mPosY, 0xfa000, 0xa000);
+        this->mOpacity = 0x1f;
     } else {
         if (val == data_0209b274) func_02012790(0x16);
-        if (_Z14ApproachLinearRiii((int*)(c + 0x60), 0x32000, 0x5000) != 0)
-            c[0x102] = 0;
+        if (_Z14ApproachLinearRiii(&this->mPosY, 0x32000, 0x5000) != 0)
+            this->mOpacity = 0;
     }
     return 1;
 }
@@ -4332,7 +4290,6 @@ int daDemo_c::func_ov002_020f7410(unsigned char *in, int sel)
 
 int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
 {
-    char *c = (char *)this;
   int a = arg1[0];
   int b = arg1[1];
   int f1 = a << 0xc;
@@ -4345,7 +4302,7 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     this->mAngleX = 0xd00;
     this->mAngleY = -0x7300;
     this->mAngleZ = 0x2f00;
-    *(int*)(c + 0xf8) = 0;
+    this->unk_0f8 = 0;
   }
 
   if (!(data_ov002_02110b04 & 1)) {
@@ -4378,12 +4335,12 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
     scale = 0;
   }
 
-  Math_Function_0203b0fc((int*)(c + 0xf8), scale, 0x40, 0x100);
+  Math_Function_0203b0fc(&this->unk_0f8, scale, 0x40, 0x100);
   Vec3_Sub(&diff, (Vec3*)data_ov002_02110e0c, (Vec3*)base);
   tmp.x = diff.x;
   tmp.y = diff.y;
   tmp.z = diff.z;
-  Vec3_MulScalar(&scaled, &tmp, *(int*)(c + 0xf8));
+  Vec3_MulScalar(&scaled, &tmp, this->unk_0f8);
   Vec3_Add(&sum, (Vec3*)base, &scaled);
 
   {
@@ -4394,7 +4351,7 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
   }
   MulVec3Mat4x3((Vector3*)(*(char**)(&this->mModelAnim) + 0x64), (Matrix4x3*)&data_0209b41c, (Vector3*)(&this->mPosX));
   Vec3_LslInPlace((int*)(&this->mPosX), 3);
-  _Z14ApproachLinearRiii((int*)(c + 0xf4), f1, f2);
+  _Z14ApproachLinearRiii(&this->unk_0f4, f1, f2);
   this->mOpacity = this->unk_0f4 >> 0xc;
   return 1;
 }
@@ -4406,8 +4363,6 @@ int daDemo_c::func_ov002_020f7538(unsigned char *arg1, int arg2)
 
 int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 {
-    char *self = (char *)this;
-    char *c = self;
     char *r4 = (char *)data_0209f318;
 
     if (mode == data_0209b274) {
@@ -4437,7 +4392,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
         this->mAngleY = this->mPrevAngleY;
         this->mOpacity = 0x1f;
     } else {
-        short state = *(short *)(c + 0xfc);
+        short state = *&this->unk_0fc;
         if (state <= 0x6a) {
             if (state > 0x3c) {
                 Math_Function_0203b0fc(&this->unk_0f4, -0xa000, 0xcc, 0x7fffffff);
@@ -4450,7 +4405,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
                 _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
             }
 
-            state = *(short *)(c + 0xfc);
+            state = *&this->unk_0fc;
             if (state > 0x69) {
                 this->mPrevAngleX = 0xe00;
             }
@@ -4460,7 +4415,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
             short h = Vec3_HorzAngle(((const Vector3 *)&this->mPosX), (const Vector3 *)(r4 + 0x8c));
             _Z15ApproachLinear2Rsss(&this->mAngleY, h, 0x200);
 
-            state = *(short *)(c + 0xfc);
+            state = *&this->unk_0fc;
             if (state < 0xa9) {
                 _Z11UpdateAngleRssis(((void *)&this->mPrevAngleY), 0x1800, 0x1e, 0x4000);
             }
@@ -4472,7 +4427,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
         unsigned short a = *((unsigned short *)&this->mPrevAngleX);
         int t = this->unk_0f4;
         short s0 = data_02082214[((a >> 4) << 1) + 1];
-        *(int *)(c + 0x98) = (int)(((long long)t * s0 + 0x800) >> 12);
+        this->mHorzSpeed = (int)(((long long)t * s0 + 0x800) >> 12);
     }
     {
         unsigned short a = *(unsigned short *)(&this->mPrevAngleX);
@@ -4482,7 +4437,7 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
     }
 
     {
-        short *pfc = (short *)(c + 0xfc);
+        short *pfc = &this->unk_0fc;
         *pfc = *pfc + 1;
     }
 
@@ -4496,14 +4451,12 @@ int daDemo_c::func_ov002_020f7780(void *unused, int mode)
 
 int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
 {
-    char *self = (char *)this;
-    char *c = self;
 
     if (mode == data_0209b274) {
         this->unk_0f4 = 0x578000;
-        *(short *)(c + 0xfc) = -0x1000;
-        *(short *)(c + 0xfe) = 0x800;
-        *(int *)(c + 0xf8) = -0xc8000;
+        *&this->unk_0fc = -0x1000;
+        *&this->unk_0fe = 0x800;
+        this->unk_0f8 = -0xc8000;
         this->mPrevAngleY = -0x8000;
         this->mAngleY = -0x4000;
         this->mPrevAngleX = 0x800;
@@ -4533,7 +4486,7 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
         w[2] = data_ov002_02110ddc[2];
         Vec3_RotateYAndTranslate(&this->mPosX, v, this->mPrevAngleY, w);
 
-        h = *(unsigned short *)(c + 0xfc);
+        h = (unsigned short)this->unk_0fc;
         t = data_02082214[(h >> 4) * 2 + 1];
         {
             int *p60 = (int *)(&this->mPosY);
@@ -4541,16 +4494,16 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
         }
 
         {
-            short *pfc = (short *)(c + 0xfc);
-            *pfc = *pfc + *(short *)(c + 0xfe);
+            short *pfc = &this->unk_0fc;
+            *pfc = *pfc + *&this->unk_0fe;
         }
-        ApproachAngle((short *)(c + 0xfe), 0x200, 0x14, 0x4000, 0);
+        ApproachAngle(&this->unk_0fe, 0x200, 0x14, 0x4000, 0);
 
         {
             int *p5c = &this->mPosX;
-            *p5c = *p5c + *(int *)(c + 0xf8);
+            *p5c = *p5c + this->unk_0f8;
         }
-        Math_Function_0203b0fc((int *)(c + 0xf8), 0, 0xcc, 0x7fffffff);
+        Math_Function_0203b0fc(&this->unk_0f8, 0, 0xcc, 0x7fffffff);
     }
     return 1;
 }
@@ -4562,7 +4515,6 @@ int daDemo_c::func_ov002_020f79c0(void *unused, int mode)
 
 int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
 {
-    char *c = (char *)this;
     Vector3 v0, v1;
     int src[3];
     Fix12i dist;
@@ -4574,16 +4526,16 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
     this->mOpacity = 0;
     if (id == data_0209b274) {
         this->unk_0f4 = 0;
-        *(u16 *)(c + 0xfc) = 0;
+        this->unk_0fc = 0;
     }
 
     tbl1 = ReadUnalignedInt(p);
     tbl2 = ReadUnalignedInt(p + 4);
 
-    if (func_02008b4c(&v1, (short *)(c + 0xfc), &this->unk_0f4, (char *)tbl1) != 0) {
+    if (func_02008b4c(&v1, &this->unk_0fc, &this->unk_0f4, (char *)tbl1) != 0) {
         return 0;
     }
-    if (func_02008b4c(&v0, (short *)(c + 0xfc), &this->unk_0f4, (char *)tbl2) != 0) {
+    if (func_02008b4c(&v0, &this->unk_0fc, &this->unk_0f4, (char *)tbl2) != 0) {
         return 0;
     }
 
@@ -4610,8 +4562,8 @@ int daDemo_c::func_ov002_020f7bb8(unsigned char *p, u16 id)
 
     Vec3_RotateYAndTranslate((int *)(&this->mPosX), (int *)(obj + 0x8c), heading, src);
 
-    *(s16 *)(&this->mAngleX) = _ZN4cstd5atan2E5Fix12IiES1_(v1.y, Vec3_HorzLen(&v1));
-    *(s16 *)(c + 0x8e) = _ZN4cstd5atan2E5Fix12IiES1_(v1.x, v1.z);
+    this->mAngleX = _ZN4cstd5atan2E5Fix12IiES1_(v1.y, Vec3_HorzLen(&v1));
+    this->mAngleY = _ZN4cstd5atan2E5Fix12IiES1_(v1.x, v1.z);
 
     return 1;
 }
@@ -4662,10 +4614,8 @@ int daDemo_c::CleanupResources()
   int r1 = param1;
   if (r1 == 0x2e) return func_ov002_020f63a0();
   if (r1 == 0x2f) return func_ov002_020f23d0();
-  ObjV* a = *(ObjV**)((char*)&mModel);
-  if (a) if (a) a->m04();
-  ObjV* b = *(ObjV**)((char*)&mModelAnim);
-  if (b) if (b) b->m04();
+  if (mModel) delete mModel;
+  if (mModelAnim) delete mModelAnim;
   return 1;
 }
 
@@ -4690,17 +4640,16 @@ int daDemo_c::Render()
   if (param1 == 0x19){
     struct { char* p; char* cur; M48* src; } s;
     s.src = (M48*)&data_0209b41c;
-    s.p = *(char**)((char*)&mModel) + 0x1c;
+    s.p = (char*)&mModel->mat4x3;
     s.cur = s.p;
     *(M48*)s.cur = *s.src;
     int* tbl = data_ov002_0210bb7c;
     int i = 0;
-    int zero = 0;
     do {
       *(int*)(s.p + 0x24) = tbl[0];
       *(int*)(s.p + 0x28) = tbl[1];
       *(int*)(s.p + 0x2c) = tbl[2];
-      ((ModelBaseSh*)*(void**)((char*)&mModel))->m(zero);
+      mModel->Render(0);
       tbl += 3;
       i++;
     } while ((unsigned)i < 3u);
@@ -4708,21 +4657,13 @@ int daDemo_c::Render()
   }
   unsigned char op = mOpacity;
   if (op == 0) return 1;
-  {
-    void* a = *(void**)((char*)&mModel);
-    if (a != 0){
-      a = (void*)((int)a);
-      _ZN9ModelBase12ApplyOpacityEjj(a, op, 0);
-      ((ModelBaseSh*)*(void**)((char*)&mModel))->m((int)((char*)&mScaleX));
-    } else {
-      void* b = *(void**)((char*)&mModelAnim);
-      if (b != 0){
-        b = (void*)((int)b);
-        ((anmModel_c*)b)->func_ov002_020f65b8();
-        _ZN9ModelBase12ApplyOpacityEjj(*(void**)((char*)&mModelAnim), mOpacity, 0);
-        ((ModelBaseSh*)*(void**)((char*)&mModelAnim))->m((int)((char*)&mScaleX));
-      }
-    }
+  if (mModel != 0){
+    mModel->ApplyOpacity(op, 0);
+    mModel->Render((const Vector3 *)&mScaleX);
+  } else if (mModelAnim != 0){
+    ((anmModel_c*)mModelAnim)->func_ov002_020f65b8();
+    mModelAnim->ApplyOpacity(mOpacity, 0);
+    mModelAnim->Render((const Vector3 *)&mScaleX);
   }
   return 1;
 }
@@ -4735,12 +4676,11 @@ int daDemo_c::Render()
 /* recovered: named members + shared header, real C++ method */
 int daDemo_c::Behavior()
 {
-  char *c = (char *) ((void *)this);
   Vector3 v;
   Vec3 asr;
   int new_var2;
   s32 t;
-  t = *((s32 *) (c + 8));
+  t = this->param1;
   if (t == 0x2e)
   {
     return func_ov002_020f63d4();
@@ -4751,14 +4691,14 @@ int daDemo_c::Behavior()
   }
   if ((((u32) t) >= 0x1a) && (((u32) t) <= 0x2d))
   {
-    _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(c, 0);
+    UpdatePosWithOnlySpeed(0);
   }
   else
   {
-    _ZN8dActor_c9UpdatePosEP5dCc_c(c, 0);
+    UpdatePos(0);
   }
   {
-    char *g = *((char **) (&this->mModelAnim));
+    char *g = (char *)this->mModelAnim;
     if ((g != 0) && ((*((u8 *) (g + 0x83))) != 0))
     {
       {
@@ -4778,14 +4718,14 @@ int daDemo_c::Behavior()
         if ((this->mPosY) < h)
         {
           this->mPosY = h;
-          *((u8 *) ((&this->unk_103))) |= 1;
+          this->unk_103 |= 1;
         }
       }
     }
   }
   Vec3_Asr(&asr, (Vec3 *) (&this->mPosX), 3);
   Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
-  t = *((s32 *) (c + 8));
+  t = this->param1;
   if ((((u32) t) >= 0x1a) && (((u32) t) <= 0x2d))
   {
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
@@ -4794,13 +4734,13 @@ int daDemo_c::Behavior()
   {
     Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, this->mAngleX, this->mAngleY, this->mAngleZ);
   }
-  if ((*((char **) (&this->mModel))) != 0)
+  if (this->mModel != 0)
   {
-    *((Matrix4x3 *) ((*((char **) (&this->mModel))) + 0x1c)) = data_020a0e68;
+    this->mModel->mat4x3 = data_020a0e68;
   }
-  if ((*((char **) (&this->mModelAnim))) != 0)
+  if (this->mModelAnim != 0)
   {
-    *((Matrix4x3 *) ((*((char **) (&this->mModelAnim))) + 0x1c)) = data_020a0e68;
+    this->mModelAnim->mat4x3 = data_020a0e68;
     (((anmModel_c*)this->mModelAnim))->func_ov002_020f64ac((char*)&data_ov002_0210bc88);
     (((anmModel_c*)this->mModelAnim))->func_ov002_020f65ec();
   }
