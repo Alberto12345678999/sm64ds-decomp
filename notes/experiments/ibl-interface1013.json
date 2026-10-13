@@ -680,8 +680,77 @@
   "remaining_reconstruction": [
     "Existing PMF dispatch views, scalar Fix12 ABI calls and other raw actor views remain partial."
   ],
-  "pending": [
-    "Full ROM and static checks",
-    "Independent exact-head Source review"
-  ]
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3812",
+  "remaining_owner": "codex-ibl-interface-producer1013 (root enemy-cleanup coordinator)",
+  "gates": {
+    "tested_commit": "808450c9737fba634da5f640779245b95e69875e",
+    "tested_base": "ee8618f8233ab228954057e3ebe079fd2936c1b8",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\ibl-interface1013\\full_rom.log",
+        "command": [
+          "python",
+          "tools/rombuild.py",
+          "-j16",
+          "--no-rom"
+        ]
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\ibl-interface1013\\range.log",
+        "command": [
+          "python",
+          "tools/prepush_linkcheck.py",
+          "--range",
+          "ee8618f8233ab228954057e3ebe079fd2936c1b8..HEAD",
+          "--json",
+          "build\\ibl-interface1013\\range.json"
+        ]
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\ibl-interface1013\\port.log",
+        "command": [
+          "python",
+          "tools/port_refcheck.py"
+        ]
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\ibl-interface1013\\langmode.log",
+        "command": [
+          "python",
+          "tools/langmode_audit.py",
+          "--check",
+          "langmode-baseline.json"
+        ]
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\ibl-interface1013\\decl.log",
+        "command": [
+          "python",
+          "tools/check_decl_agreement.py",
+          "--changed",
+          "ee8618f8233ab228954057e3ebe079fd2936c1b8"
+        ]
+      }
+    }
+  },
+  "stock_range": {
+    "checked": 16,
+    "verified": 16,
+    "blind": 0,
+    "blocking": 0
+  },
+  "full_rom_summary": {
+    "modules_exact": 106,
+    "source_functions": 5888,
+    "owned_data": 331,
+    "bss_records": 239,
+    "bss_bytes": 30164,
+    "qualification": "Baseline dsd symbol-name diagnostics and global advisory preexisting data differences retained; actual module/source fidelity is exact."
+  },
+  "final_binding": "Final report-only descendant retains exact src/include/config/tools/port trees of tested checkpoint; acceptance is bound to final immutable head."
 }
