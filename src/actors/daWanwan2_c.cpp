@@ -1,4 +1,5 @@
 //cpp
+#include "Vector3s.h"
 /* daWanwan2_c -- the unchained Chain Chomp (registry profile WANWAN2).
  *
  * The chomp walks a path (param1's low byte is the path ID, mPathID) and
@@ -32,7 +33,7 @@
  * ends exactly at 0x021431c4 below them), the eight helpers
  * func_ov100_02143370 through func_ov100_02143b68, CleanupResources,
  * OnPendingDestroy, Render, Behavior, InitResources, OnAimedAtWithEgg and
- * the registry factory daWanwan2_c_classInit (hand-spelled; see its note at
+ * the registry factory daWanwan2_c_classInit (native construction; see its note at
  * the end of this file). daDoor_c's D1 starts at 0x021443f4 above it. The out-of-line destructor is the key
  * function, so this TU also emits the vtable and the RTTI.
  *
@@ -859,69 +860,19 @@ s32 daWanwan2_c::OnAimedAtWithEgg()
 
 /* -------------------------------------------------------------------------- */
 // @symbol daWanwan2_c_classInit
-/* local extern: the factory below spells the constructor chain by hand (see
- * its comment), so it names each constructor, destructor and array callback
- * by its mangled symbol rather than through the class headers. */
-extern "C" {
-void *_ZN7fBase_cnwEj(unsigned int size);
-dEnemyBase_c *_ZN12dEnemyBase_cC2Ev(dEnemyBase_c *object);
-dCcAcPos_c *_ZN10dCcAcPos_cC1Ev(dCcAcPos_c *object);
-dBgCh_Actr *_ZN10dBgCh_ActrC1Ev(dBgCh_Actr *object);
-ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
-dExtShadowModel_c *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *object);
-void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
-    void (*ctor)(void *), void (*dtor)(void *));
-extern void *_ZTV11daWanwan2_c[];
-Model *_ZN5ModelC1Ev(Model *object);
-Model *_ZN5ModelD1Ev(Model *object);
-dExtShadowModel_c *_ZN17dExtShadowModel_cD1Ev(dExtShadowModel_c *object);
-Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
-void func_0203d384(void);
-Vector3s *_ZN8Vector3sD1Ev(Vector3s *object);
-void func_0203d73c(void);
-}
-
 /* Reconstructed source-style name: SM64DS proves daWanwan2_c through RTTI,
  * allocation size, vtable identity, and the WANWAN2 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: UnchainedChomp_Spawn.
  *
- * The explicit constructor chain is retained. With the current headers under
- * 2004/b56, both `new daWanwan2_c()` and `new daWanwan2_c` emit 0xec bytes
- * for the retail 0x118. Vector3 has an empty user constructor: its two array
- * construction calls are emitted, but name the unbound _ZN7Vector3C1Ev
- * callback instead of retail func_0203d384. Vector3s currently has no user
- * constructor, so its mUnk_768 array construction call is omitted. Normal
- * whole-object preparation rejects the extra Vector3 constructor symbol.
- * These are the measured current-header differences, not a general C++
- * limitation. The array
- * callbacks receive the element address and discard lifecycle results; the
- * empty func_0203d384/func_0203d73c callbacks ignore that address. This TU
- * emits the vtable, whose symbol names the vtable object two words ahead of
- * the slot array, so the vptr store reads &_ZTV11daWanwan2_c[2]. */
+ * Native construction follows the header's member order. The two Vector3[6]
+ * arrays at +0x6d8/+0x720 and the Vector3s[6] array at +0x768 retain their
+ * retail constructor and destructor callback pairs through the manifest's
+ * canonical constructor records. Vector3s.h supplies the real short-vector
+ * default constructor. The compiler emits the vptr store and array calls. */
 extern "C" daWanwan2_c *daWanwan2_c_classInit()
 {
-    daWanwan2_c *actor =
-        (daWanwan2_c *)_ZN7fBase_cnwEj(sizeof(daWanwan2_c));
-    if (actor) {
-        _ZN12dEnemyBase_cC2Ev(actor);
-        *(void **)actor = &_ZTV11daWanwan2_c[2];
-        _ZN10dCcAcPos_cC1Ev(&actor->mdCcAcPos_c);
-        _ZN10dBgCh_ActrC1Ev(&actor->mWithMeshClsn);
-        _ZN9ModelAnimC1Ev(&actor->mModelAnim);
-        __cxa_vec_ctor(actor->mModels, 6, sizeof(Model),
-            (void (*)(void *))_ZN5ModelC1Ev, (void (*)(void *))_ZN5ModelD1Ev);
-        __cxa_vec_ctor(actor->mShadowModels, 6, sizeof(dExtShadowModel_c),
-            (void (*)(void *))_ZN17dExtShadowModel_cC1Ev, (void (*)(void *))_ZN17dExtShadowModel_cD1Ev);
-        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
-        __cxa_vec_ctor(actor->mLinkPos, 6, sizeof(Vector3),
-            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-        __cxa_vec_ctor(actor->mLinkVel, 6, sizeof(Vector3),
-            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-        __cxa_vec_ctor(actor->mUnk_768, 6, sizeof(Vector3s),
-            (void (*)(void *))func_0203d73c, (void (*)(void *))_ZN8Vector3sD1Ev);
-    }
-    return actor;
+    return new daWanwan2_c();
 }
 
 /* Static-init globals (was the handwritten __sinit_ov100_021475a4 shard).
