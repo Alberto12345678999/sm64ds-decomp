@@ -1,6 +1,40 @@
 //cpp
-/* daDemo_c -- the cutscene object used by the intro/demo sequences (DEMO
- * profile, spawn id on the registry).
+/* daDemo_c -- the KuppaScript cutscene actor, registry profile 352 (0x160),
+ * debug name DEMO.
+ *
+ * How it is driven. ProcessKuppaScript walks the current script's records
+ * (s[0] record length, s[1] command, s[2..3] start frame, s[4..5] end frame,
+ * compared against data_0209b274). Commands 0x12 and up go to
+ * func_0200e494: the command byte is used as a param1. func_0200e55c looks
+ * for a live actor with that param1 among the 16 IDs at data_0209b2a4; if
+ * none, func_0200e4e4 spawns actor 0x160 with that param1 into a free slot.
+ * func_ov002_020f7d74 then calls entry s[6] of the 24-entry daDemo_c::*
+ * table data_ov002_0211104c with (s + 7, start, end). Handlers that compare
+ * a frame against data_0209b274 are acting on the record's first or last
+ * frame.
+ *
+ * Handler table, index -> member (func_ov002_020fXXXX):
+ *    0 7bb8   1 79c0   2 7780   3 7538   4 7410   5 7384   6 72bc   7 71c4
+ *    8 7038   9 7020  10 6e48  11 6c60  12 6c34  13 6c24  14 6bc0  15 6b4c
+ *   16 6b28  17 6ae4  18 6ab8  19 6a9c  20 6448  21 63f8  22 26d4  23 26c4
+ *
+ * param1 picks the variant (InitResources, Behavior, Render, Cleanup):
+ *   0x12        anmModel_c, model data_ov085_0213074c
+ *   0x13        anmModel_c; file set chosen by CURRENT_GAMEMODE == 2
+ *   0x14..0x16  simpleModel_c, data_ov002_02110b70
+ *   0x17, 0x18  simpleModel_c, data_ov002_02110b50 / data_ov002_0211094c
+ *   0x19        simpleModel_c, data_ov002_02110b78; Render draws it three
+ *               times at the positions in data_ov002_0210bb7c
+ *   0x1a..0x2d  anmModel_c from data_ov009_02113c20; moved with
+ *               UpdatePosWithOnlySpeed and rotated ZXY instead of XYZ
+ *   0x2e        the 0x518-byte block at unk_0d8 (handler 20 allocates it;
+ *               Behavior 63d4, Cleanup 63a0)
+ *   0x2f        the 0x36-byte ScrollState at mScroll (handler 22 allocates
+ *               it through the 26d4 veneer to 2630; Behavior 23f0, Cleanup
+ *               23d0): two scrolling sub-screen BG layers, a sub-screen
+ *               blend fade, two centre sprites and three sprites that cross
+ *               the screen.
+ * The model variants all start at scale 1.0 (0x1000).
  *
  * ROM evidence: _ZTS8daDemo_c at ov002:0x0210b940, _ZTI8daDemo_c at
  * 0x0210b94c (si_class over _ZTI8dActor_c at arm9:0x0208e390),
@@ -16,39 +50,34 @@
  * simpleModel_c emit the same D1/D0/D2 shape. Source order is
  * ROM-ascending so emission order stays ROM-ascending; the compiler
  * places simpleModel_c's D0/D1 pair out of order on its own. The
- * `_ZThn80_` Animation-base thunks live in their own sources at
+ * `_ZThn80_` frame-controller-base thunks live in their own sources at
  * ov002:0x020f8838/0x020f8848; this TU's copies are discarded.
  *
- * The vague-linkage typeinfo copies name the model family by the
- * project's own spellings (ModelAnim for dExtAnmModel_c, Model for
- * dExtSimpleModel_c, Animation for dExtFrameCtrl_c, ModelBase for
- * dExtModel_c), so they are deadstripped and the derived records'
- * base pointers are aliased onto the canonical _ZTI rows. See
- * notes/model-rtti-names.md.
+ * The model bases are declared in daDemo_c.h under the cartridge's RTTI
+ * spellings, so the vague-linkage typeinfo copies this object emits are
+ * _ZTI14dExtAnmModel_c, _ZTI17dExtSimpleModel_c, _ZTI11dExtModel_c and
+ * _ZTI15dExtFrameCtrl_c. See notes/model-rtti-names.md.
  *
  * deslop leftovers:
  *   func_ov002_020f20f4 compiles to the ROM's loop only as C++ (every
  *   C-flavored spelling walks a byte-offset induction variable).
  *   func_ov002_020f2aec/2bf4/335c/340c/39ec keep opt_common_subs off
- *   brackets; 23f0 and 20f4 keep opt_strength_reduction /
- *   opt_loop_invariants off. The brackets bind per-member only under
- *   defer_codegen off.
+ *   brackets; 20f4 keeps opt_strength_reduction / opt_loop_invariants
+ *   off. The brackets bind per-member only under defer_codegen off.
  *   func_ov002_020f27e8 and the OAM tail family return a callee's r0 by
  *   falling off the end; the callees are declared int so the passthrough
  *   is spelled.
- *   The 24-entry KuppaScript dispatch table data_ov002_0211104c is a
- *   daDemo_c::* member-pointer table; its handlers and the directly-called
- *   actor helpers are daDemo_c members. func_ov002_020f7d74, the dispatcher,
- *   stays extern "C" and free: its caller func_0200e494 is arm9 C.
+ *   func_ov002_020f7d74, the dispatcher, stays extern "C" and free: its
+ *   caller func_0200e494 is arm9 C.
  *   func_ov002_020f26d4 is a ldr/bx veneer that tail-calls
  *   func_ov002_020f2630 through a raw void(*)(void); a member pointer
  *   cannot spell that cast, so both stay free.
  *   The unk_0d8 heap block (0x518 bytes, edStarKiraCallback_c embedded at
  *   +0x200) has no proven class, so its helpers and the C/PMF/PMF0
  *   dispatch tables over it stay free.
- *   Shadow windows Obj, OamEnt, ScrollState, E, C and S remain where a shared
- *   class is not yet proven; the ones over daDemo_c were moved onto real
- *   members (mModel, mModelAnim, mScaleX/Y/Z, param1, mOpacity).
+ *   Shadow windows OamEnt, E, C, S and the per-function windows (E5cd0,
+ *   Ent5b98, Obj2e30 and the rest) remain where a shared class is not yet proven; the ones over
+ *   daDemo_c were moved onto real members.
  *   common.h must precede daDemo_c.h: ModelAnim.h's nested Matrix4x3
  *   otherwise wins and scalarizes Behavior's 12-word matrix copy.
  */
@@ -62,6 +91,7 @@
 #include "decl_common.h"
 #include "dBgCh_Gnd.h"
 #include "Sound.h"
+#include "dFdBrightness_c.h"
 #include "decl_Model.h"
 #include "decl_ModelAnim.h"
 
@@ -69,25 +99,11 @@ struct OamAttr;
 
 #pragma defer_codegen off
 
-/* shadow struct 'Obj' */
-struct Obj {
-    char pad[0xd4];
-    unsigned char *d4;
-};
-
 /* shadow struct 'OAM' */
 struct OAM { static void RenderSub(OamAttr *, int, int); };
 
 /* shadow typedef 's16' */
 typedef signed short s16;
-
-/* shadow struct 'ScrollState' */
-struct ScrollState {
-    s16 x0;  /* 0x0 */
-    s16 x1;  /* 0x2 */
-    s16 y0;  /* 0x4 */
-    s16 y1;  /* 0x6 */
-};
 
 /* shadow struct 'OamEnt' */
 struct OamEnt {
@@ -261,9 +277,6 @@ typedef int Fix12i;
 /* shadow struct 'M48' */
 struct M48 { int w[12]; };
 
-/* shadow typedef 'Obj' */
-typedef struct Obj Obj;
-
 /* TUBUILD CONFLICT -- alternate body of struct 'Obj', from the legacy file for func_ov002_020f237c, NOT applied:
 struct Obj {
     char _pad0[0xd4];
@@ -415,14 +428,6 @@ struct Obj {
 };
 */
 
-#define LP(x) ((void*)(int)(x))
-#define LI(x) ((int)((long long)(int)(x)))
-#define A24 ((u16 *)(thiz->d4 + 0x24))
-#define A30 ((u8 *)(thiz->d4 + 0x30))
-#define A0C ((s16 *)(thiz->d4 + 0xc))
-#define A1C ((s16 *)(thiz->d4 + 0x1c))
-#define A14 ((u16 *)(thiz->d4 + 0x14))
-
 /* Lakitu's model-file handle, owned and constructed by daC_Jugem_c.cpp's
  * static init. Same TU-local wrapper spelling as the owning TU. */
 struct JugemModelFile : SharedFilePtr {
@@ -441,11 +446,11 @@ extern OamAttr data_ov002_0210bddc;
 extern void SetSubBg0Offset(int a, int b);
 extern void SetSubBg1Offset(int a, int b);
 /* local extern dropped: decl_common.h already declares _ZN6Memory16operator_delete2EPv(void*) */
-extern void* data_0209f5bc;
+extern dFdBrightness_c *data_0209f5bc;
 extern u8 data_ov002_02111144;
 extern u32 data_020a0db0;
 extern void* _Znwj(unsigned int);
-extern int func_ov002_020f2630(char* c);
+extern int func_ov002_020f2630(daDemo_c *self);
 extern struct OamAttr *data_ov002_0210b6a8[];
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi( int a, struct OamAttr *b, int c, int d, int e, int f, int g, int h);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 unk, Fix12i x, Fix12i y, Fix12i z, void* rot, struct ParticleCallback* callback);
@@ -739,22 +744,24 @@ extern "C" daDemo_c *_ZN8daDemo_cD0Ev(daDemo_c *thiz)
 /* ROM ordinal 2 -- func_ov002_020f1fcc, 0x020f1fcc, size 0x128 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f1fccEv
+/* Sub-screen fade step (param1 0x2f, states 2 and 3). While fadeLevel is
+ * non-zero it counts fadeTimer to 0x18, then drops fadeLevel by one and calls
+ * G2x::SetBlendAlpha on 0x4001050 with (4, 0x28, fadeLevel, 0x10 - fadeLevel).
+ * When fadeLevel reaches zero it clears bit 2 of data_0209d454, writes that
+ * mask into bits 8..12 of 0x4001000, sets the blend to (0, 0x28, 0xc, 4),
+ * advances the state and gives the three sprite slots delays 0x10/0x20/0x30. */
 
 void daDemo_c::func_ov002_020f1fcc()
 {
-    unsigned char *s = ((unsigned char *)this->unk_0d4);
     int i, v;
-    if (*(unsigned short *)(s + 0x2e) == 0)
+    if (mScroll->fadeLevel == 0)
         return;
-    (*(unsigned short *)((int)(s + 0x2c)))++;
-    s = ((unsigned char *)this->unk_0d4);
-    if (*(unsigned short *)(s + 0x2c) != 0x18)
+    mScroll->fadeTimer++;
+    if (mScroll->fadeTimer != 0x18)
         return;
-    *(unsigned short *)(s + 0x2c) = 0;
-    s = ((unsigned char *)this->unk_0d4);
-    (*(unsigned short *)((int)(s + 0x2e)))--;
-    s = ((unsigned char *)this->unk_0d4);
-    v = *(unsigned short *)(s + 0x2e);
+    mScroll->fadeTimer = 0;
+    mScroll->fadeLevel--;
+    v = mScroll->fadeLevel;
     if (v != 0) {
         _ZN3G2x13SetBlendAlphaEPVttttj(
             (volatile void *)0x4001050, 4, 0x28, v, 0x10 - v);
@@ -765,11 +772,9 @@ void daDemo_c::func_ov002_020f1fcc()
         (*(volatile unsigned int *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
     _ZN3G2x13SetBlendAlphaEPVttttj(
         (volatile void *)0x4001050, 0, 0x28, 0xc, 4);
-    s = ((unsigned char *)this->unk_0d4);
-    (*(unsigned char *)((int)(s + 0x34)))++;
+    mScroll->state++;
     for (i = 0; i < 3; i++) {
-        s = ((unsigned char *)this->unk_0d4);
-        ((unsigned short *)(s + 0x24))[i] = (i + 1) << 4;
+        mScroll->spriteDelay[i] = (i + 1) << 4;
     }
 }
 
@@ -777,6 +782,10 @@ void daDemo_c::func_ov002_020f1fcc()
 /* ROM ordinal 3 -- func_ov002_020f20f4, 0x020f20f4, size 0x11c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f20f4Ev
+/* Moving-sprite step. For each active slot, on frames where FRAME_TIMER bit 0
+ * is clear, spriteX += spriteVelX and the RNG is stepped (result unused); a
+ * slot that reaches x 0x140 moving right or x -0x40 moving left goes idle with
+ * spriteDelay (slot + 1) << 5. Every active slot is drawn each frame. */
 /* This member is C++, not C: under every C-flavored path here (the legacy .c
    file, an extern "C" block, #pragma cplusplus off) the backend strength-
    reduces the shared `d + i*2` into an r8 byte-walk; the ROM recomputes it
@@ -789,7 +798,6 @@ extern "C" struct OamAttr *data_ov002_0210be1c[];
 
 void daDemo_c::func_ov002_020f20f4()
 {
-  char *self = (char *)this;
   int i = 0;
   int zpos = 0;
   int zneg = 0;
@@ -797,11 +805,14 @@ void daDemo_c::func_ov002_020f20f4()
   int m1 = -1;
   for (; i < 3; i++)
   {
-    char *d = *((char **) (&this->unk_0d4));
-    if ((*((u8 *) ((d + i) + 0x30))) != 0)
+    char *d = (char *)this->mScroll;
+    if ((((ScrollState *)d)->spriteActive[i]) != 0)
     {
       if ((data_020a0db0 & 1) == 0)
       {
+        /* q is &spriteX[i] and o + 0x1c is &spriteVelX[i]. Spelled as fields
+           (with or without the int cast on q), the step builds 4 bytes long;
+           these two byte-offset spellings are what the ROM compiles. */
         s16 *o = (s16 *) (d + ((i & 0xFFFFFFFFFFFFFFFF) * 2));
         s16 *q = (s16 *) ((int) (((char *) ((s16 *) (d + (i * 2)))) + 0xc));
         s16 vel = *((s16 *) (((char *) o) + 0x1c));
@@ -809,27 +820,26 @@ void daDemo_c::func_ov002_020f20f4()
         int *seed = &data_0209e650;
         *q = (s16) (pos + vel);
         RandomIntInternal(seed);
-        d = *((char **) (&this->unk_0d4));
-        int idx2 = ((unsigned long long) i) * 2;
-        if ((*((s16 *) ((d + idx2) + 0x1c))) >= 0)
+        d = (char *)this->mScroll;
+        if (((ScrollState *)d)->spriteVelX[i] >= 0)
         {
-          if ((*((s16 *) ((d + idx2) + 0xc))) >= 0x140)
+          if (((ScrollState *)d)->spriteX[i] >= 0x140)
           {
-            *((u8 *) ((d + i) + 0x30)) = (u8) zpos;
-            d = *((char **) (&this->unk_0d4));
-            *((s16 *) ((d + idx2) + 0x24)) = (s16) ((i + 1) << 5);
+            ((ScrollState *)d)->spriteActive[i] = (u8) zpos;
+            d = (char *)this->mScroll;
+            ((ScrollState *)d)->spriteDelay[i] = (s16) ((i + 1) << 5);
           }
         }
         else
-          if ((*((s16 *) ((d + idx2) + 0xc))) <= (-0x40))
+          if (((ScrollState *)d)->spriteX[i] <= (-0x40))
         {
-          *((u8 *) ((d + i) + 0x30)) = (u8) zneg;
-          d = *((char **) (&this->unk_0d4));
-          *((s16 *) ((d + idx2) + 0x24)) = (s16) ((i + 1) << 5);
+          ((ScrollState *)d)->spriteActive[i] = (u8) zneg;
+          d = (char *)this->mScroll;
+          ((ScrollState *)d)->spriteDelay[i] = (s16) ((i + 1) << 5);
         }
       }
-      d = *((char **) (&this->unk_0d4));
-      _ZN3OAM9RenderSubEP7OamAttriiii(data_ov002_0210be1c[i], *((s16 *) ((d + (i * 2)) + 0xc)), *((s16 *) ((d + (i * 2)) + 0x14)), m1, two);
+      d = (char *)this->mScroll;
+      _ZN3OAM9RenderSubEP7OamAttriiii(data_ov002_0210be1c[i], ((ScrollState *)d)->spriteX[i], ((ScrollState *)d)->spriteY[i], m1, two);
     }
   }
 }
@@ -840,33 +850,36 @@ void daDemo_c::func_ov002_020f20f4()
 /* ROM ordinal 4 -- func_ov002_020f2210, 0x020f2210, size 0x130 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f2210Ev
+/* Sprite respawn. Counts each slot's non-zero spriteDelay down; when it hits
+ * zero on an idle slot, RNG bit 0 picks x -0x40 moving right or x 0x140 moving
+ * left, and y is (rng >> 16) % 48 + 0x30 * slot. Does nothing in state 6. */
 
 void daDemo_c::func_ov002_020f2210()
 {
-    Obj *thiz = (Obj *)this;
     int i;
     int base;
     u8 state;
-    state = *(u8 *)(thiz->d4 + 0x34);
+    state = mScroll->state;
+    /* The redundant `state >= 3` is compiled into the ROM: `state > 5` alone
+       builds 8 bytes short. */
     if (state >= 3 && state > 5) return;
     i = 0;
     base = 0;
     for (; i < 3; i++) {
-        u16 *p = (u16 *)(LI(thiz->d4) + LI(i) * 2);
-        if (p[0x12] != 0) {
-            *(volatile u16 *)LP(p + 0x12) -= 1;
-            if (A24[i] == 0) {
-                if (A30[i] == 0) {
+        if (mScroll->spriteDelay[i] != 0) {
+            mScroll->spriteDelay[i] -= 1;
+            if (mScroll->spriteDelay[i] == 0) {
+                if (mScroll->spriteActive[i] == 0) {
                     unsigned int r = (unsigned int)RandomIntInternal(&data_0209e650);
                     if (r & 1) {
-                        A0C[i] = -0x40;
-                        A1C[i] = 1;
+                        mScroll->spriteX[i] = -0x40;
+                        mScroll->spriteVelX[i] = 1;
                     } else {
-                        A0C[i] = 0x140;
-                        A1C[i] = -1;
+                        mScroll->spriteX[i] = 0x140;
+                        mScroll->spriteVelX[i] = -1;
                     }
-                    A14[i] = (u16)((r >> 16) % 48 + base);
-                    A30[i] = 1;
+                    mScroll->spriteY[i] = (u16)((r >> 16) % 48 + base);
+                    mScroll->spriteActive[i] = 1;
                 }
             }
         }
@@ -878,39 +891,38 @@ void daDemo_c::func_ov002_020f2210()
 /* ROM ordinal 5 -- func_ov002_020f2340, 0x020f2340, size 0x3c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f2340Ev
+/* Draw the two centre sprites at x 0x80. */
 
 void daDemo_c::func_ov002_020f2340()
 {
-    OAM::RenderSub(&data_ov002_0210bddc, 0x80, *(unsigned short *)(*(char **)(&this->unk_0d4) + 8));
-    OAM::RenderSub(&data_ov002_0210bddc, 0x80, *(unsigned short *)(*(char **)(&this->unk_0d4) + 0xa));
+    OAM::RenderSub(&data_ov002_0210bddc, 0x80, mScroll->centerSpriteY[0]);
+    OAM::RenderSub(&data_ov002_0210bddc, 0x80, mScroll->centerSpriteY[1]);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 6 -- func_ov002_020f237c, 0x020f237c, size 0x54 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f237cEv
-/* func_ov002_020f237c — scroll sub-screen BG layers using a 4-short state
- * block pointed to by this+0xd4: y-- , x++ , then push offsets to HW.
- * Callees: SetSubBg0Offset, SetSubBg1Offset.
- */
+/* Scroll the two sub-screen BG layers in opposite directions (bg1 x down
+ * one, bg0 x up one) and write both offsets to the hardware. */
 
 void daDemo_c::func_ov002_020f237c()
 {
-    Obj *self = (Obj *)this;
-    *(s16*)((char*)self->d4 + 2) -= 1;
-    ((ScrollState *)self->d4)->x0 += 1;
-    SetSubBg0Offset(((ScrollState *)self->d4)->x0, ((ScrollState *)self->d4)->y0);
-    SetSubBg1Offset(((ScrollState *)self->d4)->x1, ((ScrollState *)self->d4)->y1);
+    mScroll->bg1X -= 1;
+    mScroll->bg0X += 1;
+    SetSubBg0Offset(mScroll->bg0X, mScroll->bg0Y);
+    SetSubBg1Offset(mScroll->bg1X, mScroll->bg1Y);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 7 -- func_ov002_020f23d0, 0x020f23d0, size 0x20 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f23d0Ev
+/* CleanupResources for param1 0x2f: free the scroll block. */
 
 int daDemo_c::func_ov002_020f23d0()
 {
-    _ZN6Memory16operator_delete2EPv(this->unk_0d4);
+    _ZN6Memory16operator_delete2EPv(this->mScroll);
     return 1;
 }
 
@@ -918,60 +930,53 @@ int daDemo_c::func_ov002_020f23d0()
 /* ROM ordinal 8 -- func_ov002_020f23f0, 0x020f23f0, size 0x240 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f23f0Ev
-#pragma opt_strength_reduction off
+/* Behavior for param1 0x2f: the scroll block's seven states.
+ *   0  each frame the scene fader (data_0209f5bc) reports IsAtStart,
+ *      centerSpriteY[0]++ and centerSpriteY[1]--; next state when
+ *      centerSpriteY[0] reaches 8 (it starts at -8)
+ *   1  wait for unk_100 == 3 (written by script handler 26c4), then set
+ *      data_ov002_02111144 to 1
+ *   2  on frames with FRAME_TIMER bit 0 clear, bg1Y++ and bg0Y--; at
+ *      bg1Y 0x80, next state and sprite delays 1/0x41/0x81. Also runs the
+ *      horizontal scroll (237c) and the fade step (1fcc)
+ *   3  fade step and horizontal scroll; the fade step advances the state
+ *      when fadeLevel reaches zero
+ *   4  wait for unk_100 == 4, horizontal scroll
+ *   5  as 2 until bg1Y 0xe0, then clear bits 0..1 of data_0209d454 into
+ *      bits 8..12 of 0x4001000; horizontal scroll
+ *   6  nothing
+ * Every state then runs 2340, 2210 and 20f4. */
 
 int daDemo_c::func_ov002_020f23f0()
 {
-    switch (*(u8*)(((u8*)this->unk_0d4) + 0x34)) {
+    switch (mScroll->state) {
     case 0:
-        {
-            void* o = data_0209f5bc;
-            if (((int (**)(void*))*(void**)o)[5](o) != 0) {
-                {
-                    u16* p = (u16*)(((int)((u8*)this->unk_0d4) + 8));
-                    *p = *p + 1;
-                }
-                {
-                    u16* p = (u16*)(((int)((u8*)this->unk_0d4) + 0xa));
-                    *p = *p - 1;
-                }
-                if (*(u16*)(((u8*)this->unk_0d4) + 8) == 8) {
-                    u8* p = (u8*)(((int)((u8*)this->unk_0d4) + 0x34));
-                    *p = *p + 1;
-                }
+        if (data_0209f5bc->IsAtStart() != 0) {
+            mScroll->centerSpriteY[0]++;
+            mScroll->centerSpriteY[1]--;
+            if (mScroll->centerSpriteY[0] == 8) {
+                mScroll->state++;
             }
         }
         break;
     case 1:
         if (this->unk_100 == 3) {
             data_ov002_02111144 = 1;
-            {
-                u8* p = (u8*)(((int)((u8*)this->unk_0d4) + 0x34));
-                *p = *p + 1;
-            }
+            mScroll->state++;
         }
         break;
     case 2:
         if ((data_020a0db0 & 1) == 0) {
-            {
-                s16* p = (s16*)(((int)((u8*)this->unk_0d4) + 6));
-                *p = *p + 1;
-            }
-            {
-                s16* p = (s16*)(((int)((u8*)this->unk_0d4) + 4));
-                *p = *p - 1;
-            }
-            if (*(s16*)(((u8*)this->unk_0d4) + 6) >= 0x80) {
+            mScroll->bg1Y++;
+            mScroll->bg0Y--;
+            if (mScroll->bg1Y >= 0x80) {
                 int i;
                 int v;
-                {
-                    u8* p = (u8*)(((int)((u8*)this->unk_0d4) + 0x34));
-                    *p = *p + 1;
-                }
+                mScroll->state++;
                 i = 0;
                 v = 1;
                 for (; i < 3; i++) {
-                    *(u16*)(((u8*)this->unk_0d4) + i * 2 + 0x24) = v;
+                    mScroll->spriteDelay[i] = v;
                     v += 0x40;
                 }
             }
@@ -985,26 +990,16 @@ int daDemo_c::func_ov002_020f23f0()
         break;
     case 4:
         if (this->unk_100 == 4) {
-            u8* p = (u8*)(((int)((u8*)this->unk_0d4) + 0x34));
-            *p = *p + 1;
+            mScroll->state++;
         }
         func_ov002_020f237c();
         break;
     case 5:
         if ((data_020a0db0 & 1) == 0) {
-            {
-                s16* p = (s16*)(((int)((u8*)this->unk_0d4) + 6));
-                *p = *p + 1;
-            }
-            {
-                s16* p = (s16*)(((int)((u8*)this->unk_0d4) + 4));
-                *p = *p - 1;
-            }
-            if (*(s16*)(((u8*)this->unk_0d4) + 6) >= 0xe0) {
-                {
-                    u8* p = (u8*)(((int)((u8*)this->unk_0d4) + 0x34));
-                    *p = *p + 1;
-                }
+            mScroll->bg1Y++;
+            mScroll->bg0Y--;
+            if (mScroll->bg1Y >= 0xe0) {
+                mScroll->state++;
                 data_0209d454 = data_0209d454 & ~3;
                 *(volatile u32*)0x4001000 = (*(volatile u32*)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
             }
@@ -1020,25 +1015,23 @@ int daDemo_c::func_ov002_020f23f0()
     func_ov002_020f20f4();
     return 1;
 }
-#pragma opt_strength_reduction on
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 9 -- func_ov002_020f2630, 0x020f2630, size 0x94 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f2630
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov002_020f2630(char* c){
-  short* p;
-  *(void**)(c+0xd4) = _Znwj(0x36);
-  (*(short**)(c+0xd4))[0] = 0x30;
-  (*(short**)(c+0xd4))[2] = 0x20;
-  (*(short**)(c+0xd4))[1] = 0;
-  (*(short**)(c+0xd4))[3] = 0;
-  (*(unsigned short**)(c+0xd4))[4] = 0xfff8;
-  (*(short**)(c+0xd4))[5] = 0xc8;
-  (*(short**)(c+0xd4))[0x17] = 0x10;
-  p = *(short**)(c+0xd4); SetSubBg0Offset(p[0], p[2]);
-  p = *(short**)(c+0xd4); SetSubBg1Offset(p[1], p[3]);
+int func_ov002_020f2630(daDemo_c *self){
+  self->mScroll = (daDemo_c::ScrollState *)_Znwj(0x36);
+  self->mScroll->bg0X = 0x30;
+  self->mScroll->bg0Y = 0x20;
+  self->mScroll->bg1X = 0;
+  self->mScroll->bg1Y = 0;
+  self->mScroll->centerSpriteY[0] = 0xfff8;
+  self->mScroll->centerSpriteY[1] = 0xc8;
+  self->mScroll->fadeLevel = 0x10;
+  SetSubBg0Offset(self->mScroll->bg0X, self->mScroll->bg0Y);
+  SetSubBg1Offset(self->mScroll->bg1X, self->mScroll->bg1Y);
   return 1;
 }
 }
@@ -1047,6 +1040,7 @@ int func_ov002_020f2630(char* c){
 /* ROM ordinal 10 -- func_ov002_020f26c4, 0x020f26c4, size 0x10 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f26c4EPh
+/* Script handler (table entry 23): unk_100 = p[0], the value 23f0 waits on. */
 
 int daDemo_c::func_ov002_020f26c4(unsigned char *src)
 {
@@ -4094,7 +4088,6 @@ int daDemo_c::func_ov002_020f6e48(unsigned char *p)
 /* ROM ordinal 128 -- func_ov002_020f6f48, 0x020f6f48, size 0xd8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f6f48EP7Vector3i
-/* recovered: shared common types */
 
 void daDemo_c::func_ov002_020f6f48(struct Vector3 *v, int amt)
 {
@@ -4123,8 +4116,6 @@ int daDemo_c::func_ov002_020f7020()
 /* ROM ordinal 130 -- func_ov002_020f7038, 0x020f7038, size 0x18c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f7038Eii
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 
 int daDemo_c::func_ov002_020f7038(int a, int arg)
 {
@@ -4172,8 +4163,6 @@ int daDemo_c::func_ov002_020f7038(int a, int arg)
 /* ROM ordinal 131 -- func_ov002_020f71c4, 0x020f71c4, size 0xf8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c19func_ov002_020f71c4Eii
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 
 int daDemo_c::func_ov002_020f71c4(int a, int arg)
 {
@@ -4608,7 +4597,6 @@ extern "C" void func_ov002_020f7d74(daDemo_c* self, unsigned char* p, int a2, in
 /* ROM ordinal 140 -- _ZN8daDemo_c16CleanupResourcesEv, 0x020f8028, size 0x80 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c16CleanupResourcesEv
-/* recovered: named members + shared header, real C++ method */
 int daDemo_c::CleanupResources()
 {
   int r1 = param1;
@@ -4633,11 +4621,14 @@ void daDemo_c::OnPendingDestroy()
 /* ROM ordinal 142 -- _ZN8daDemo_c6RenderEv, 0x020f80ac, size 0x118 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c6RenderEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 int daDemo_c::Render()
 {
   if (param1 == 0x19){
+    /* Draw the model three times: copy INV_VIEW_MATRIX_ASR_3 into its
+       mat4x3, then for each entry of data_ov002_0210bb7c overwrite the
+       translation column and render. The {p, cur, src} struct is the
+       allocation shape the ROM compiles; a plain Matrix4x3 pointer builds
+       the same size with different registers. */
     struct { char* p; char* cur; M48* src; } s;
     s.src = (M48*)&data_0209b41c;
     s.p = (char*)&mModel->mat4x3;
@@ -4672,8 +4663,6 @@ int daDemo_c::Render()
 /* ROM ordinal 143 -- _ZN8daDemo_c8BehaviorEv, 0x020f81c4, size 0x1e0 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c8BehaviorEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 int daDemo_c::Behavior()
 {
   Vector3 v;
@@ -4751,8 +4740,6 @@ int daDemo_c::Behavior()
 /* ROM ordinal 144 -- _ZN8daDemo_c13InitResourcesEv, 0x020f83a4, size 0x464 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daDemo_c13InitResourcesEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 int daDemo_c::InitResources()
 {
     void *p;
