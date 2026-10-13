@@ -1230,64 +1230,64 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1149",
+      "from": "@1146",
       "to": "@1128",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1150",
+      "from": "@1147",
       "to": "@1129",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1152",
+      "from": "@1149",
       "to": "@1131",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1154",
+      "from": "@1151",
       "to": "@1133",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1156",
+      "from": "@1153",
       "to": "@2760",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1158",
+      "from": "@1155",
       "to": "@2156",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1160",
+      "from": "@1157",
       "to": "@2155",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1162",
+      "from": "@1159",
       "to": "@2161",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1164",
+      "from": "@1161",
       "to": "@2158",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1166",
+      "from": "@1163",
       "to": "@2159",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1168",
+      "from": "@1165",
       "to": "@2160",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     },
     {
-      "from": "@1170",
+      "from": "@1167",
       "to": "@2157",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Compiler-local identity retained by section, offset, size, binding, bytes and relocation edges; native C++ helper calls shift the per-TU temporary names. Ordinary production preparation yields the same complete ELF as the prior source under 2004/b56."
     }
   ]
 }
