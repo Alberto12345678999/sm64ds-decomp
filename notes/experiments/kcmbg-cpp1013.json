@@ -323,7 +323,71 @@
     }
   ],
   "production_gates": {
-    "state": "pending source checkpoint; final report-only descendant will bind terminal results"
+    "state": "terminal pass",
+    "tested_commit": "3e67ddab3f9843884b75e200efb4dc0b355b9e99",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "command": "python tools/rombuild.py -j16 --no-rom",
+    "exit_code": 0,
+    "modules_exact": 106,
+    "modules_total": 106,
+    "source_build": {
+      "totalCodeFunctions": 11397,
+      "totalCodeBytes": 2238108,
+      "compiledFunctions": 11332,
+      "compiledBytes": 2220756,
+      "sourceFunctions": 11332,
+      "sourceBytes": 2220756,
+      "modFunctions": 0,
+      "modBytes": 0,
+      "sourceBytesPercent": 99.22470229318692,
+      "reproducingFunctions": 11332,
+      "reproducingBytes": 2220756,
+      "mismatchingFunctions": 0,
+      "mismatchingFunctionBytes": 0,
+      "differingSourceBytes": 0,
+      "sourceDataClaims": 331,
+      "sourceBssClaims": 239,
+      "sourceBssBytes": 30164,
+      "reproducingDataClaims": 331,
+      "reproducingDataClaimBytes": 13020,
+      "mismatchingDataClaims": 0,
+      "mismatchingDataClaimBytes": 0
+    },
+    "new_symbol_errors": 0,
+    "storage_alias_errors": 0,
+    "stock_range": {
+      "command": "python tools/prepush_linkcheck.py --range 1c1b6279ab77cd9ae0da481fccf5959cd30cfe19..3e67ddab3f9843884b75e200efb4dc0b355b9e99",
+      "exit_code": 0,
+      "checked": 21,
+      "verified": 21,
+      "warnings": 0,
+      "blocking": 0
+    },
+    "static_exit_codes": {
+      "langmode": 0,
+      "port": 0,
+      "decl": 0,
+      "diffcheck": 0
+    },
+    "declaration_scope": "110 files; 830 inherited disagreements; zero new disagreements or local header redeclarations.",
+    "port_references": 267,
+    "limits": [
+      "--no-rom compares linked modules; no newly produced final ROM image is claimed.",
+      "Fresh stock control retains inherited dsd symbol-check diagnostics; candidate adds none.",
+      "Advisory ROM-data inventory retains one differing unenrolled record; no complete data reconstruction claim."
+    ],
+    "report_binding": "This final report-only descendant preserves the tested source, include, config, tools and port trees. The immutable offer and independent review identify its exact final commit."
   },
-  "publication": "Independent exact-head/base Source acceptance required before Root publishes the authorized PR; no merge."
+  "publication": "Independent exact-head/base Source acceptance required before Root publishes the authorized PR; no merge.",
+  "production_checkpoint": "3e67ddab3f9843884b75e200efb4dc0b355b9e99",
+  "private_artifacts": [
+    "build/kcmbg-adopt1013/whole-proof.json",
+    "build/kcmbg-adopt1013/baseline-graphs.json",
+    "build/kcmbg-adopt1013/candidate-graphs.json",
+    "build/kcmbg-adopt1013/layout.json",
+    "build/kcmbg-adopt1013/rom-report.json",
+    "build/kcmbg-adopt1013/range.log",
+    "build/kcmbg-adopt1013/static-results.json",
+    "build/kcmbg-adopt1013/inherited-findings.json"
+  ]
 }
