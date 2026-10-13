@@ -15,11 +15,14 @@
   "object_sha256": "9ae36b40b7054f94c15f774252fb8d624d40fcf82687a5685085c859144db38f",
   "function_sha256": "ea33c306904c855faff096c24203b236b96bffabce7e4a0fae166313059a1b8d",
   "function_relocation_count": 3,
-  "source_lf_sha256": "df0e399c1ef2002e5c076085e3cb392db81e45b903f0dddae411f6ccd43215cc",
-  "scope": "The promoted TU now uses C++ for all function bodies. No new class/member identity, path, header, module symbol, delink or manifest edits.",
+  "source_lf_sha256": "06eda753f4ae98fe34d4d20411fe3452cb13bb7e528b341dcfa534d566e4c2e1",
+  "scope": "The promoted TU now uses C++ for all function bodies. Header changes update comments only; both daKpaFire_c and daKpa_c consumers must be verified. No layout, type, source path, module symbol, delink or manifest changes.",
   "remaining_work": [
     "The address-named helper retains existing C linkage.",
     "Existing scalar Fix12 ABI bridges and raw matrix/field views remain; this is partial reconstruction."
   ],
-  "gates": {}
+  "gates": {},
+  "review_repairs": [
+    "BFCPP-001: remove stale C-mode source and header explanations."
+  ]
 }

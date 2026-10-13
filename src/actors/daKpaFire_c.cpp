@@ -23,8 +23,8 @@
  *
  * leftovers:
  * - func_ov060_02116740, 02117624 and 021172c8 stay free functions with
- *   the char * / unsigned char * decl_common.h declares. 02117624
- *   parses as C: assigning a Matrix4x3 scalarizes under C++.
+ *   the char * / unsigned char * decl_common.h declares. Their bodies
+ *   compile as C++; 02117624 uses a POD matrix view for its block copy.
  * - dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight,
  *   Particle::System::New / NewSimple / NewUnkCallback818 and
  *   SaveData::IsCharacterUnlocked stay mangled. Those calls pass
@@ -255,8 +255,7 @@ int daKpaFire_c::CleanupResources()
 }
 
 // @symbol func_ov060_02117624
-/* C block store (same wall as Bullet 020fed7c and ov062 ba84): the Matrix4x3
- * copy scalarizes under C++. Parsed as C; the TU returns to C++ after it. */
+/* The POD matrix view keeps this block copy intact in C++. */
 /* Per-frame drop shadow. Does nothing when mDropsShadow is 0. Otherwise it
  * builds a translation matrix in the shared scratch matrix data_020a0e68 at
  * the fire's x, its mGroundY and its z (each >> 3), copies it into the
@@ -264,8 +263,8 @@ int daKpaFire_c::CleanupResources()
  * radius mShadowRadiusMul * mFireScale, the second Fix12 argument (dActor_c.h
  * calls it `depth`) 30 units (0x1e000), and the `opacity` argument 0xf (what
  * that value means is not decoded; every caller passes 0xf).
- * Parsed as C, so the class is named `struct daKpaFire_c`; the Matrix4x3 at
- * 0x32c is still the header's pad_32c bytes, reached through a cast. */
+ * The Matrix4x3 at 0x32c remains the header's pad_32c storage, reached
+ * through its existing POD view. */
 #include "common.h"
 extern "C" {
 
