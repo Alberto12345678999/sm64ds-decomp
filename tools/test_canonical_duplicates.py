@@ -84,7 +84,7 @@ class CanonicalDuplicates(unittest.TestCase):
 
     def refused(self, text, raw=None):
         out, _, errors = self.apply(raw)
-        self.assertIsNone(out)
+        self.assertTrue(out is None, "policy unexpectedly accepted the object")
         self.assertIn(text, "\n".join(errors))
 
     def mutate_symbol(self, offset, value, fmt="I", index=None):
@@ -183,6 +183,75 @@ class CanonicalDuplicates(unittest.TestCase):
         self.entry["module"] = "arm9"
         self.entry["functions"] = [{"symbol": "owner", "address": hex(ADDRESS - 4), "size": "0xc"}]
         self.refused("overlaps a manifest-owned function")
+
+    def own_nontext(self, field, row):
+        self.entry["module"] = "arm9"
+        self.entry["functions"] = [{"symbol": name, "address": hex(ADDRESS + 0x100 + i * 4),
+                                    "size": "0x4"} for i, name in enumerate(self.functions)]
+        self.entry[field] = [row]
+
+    def test_each_nontext_field_contains_canonical_without_sections(self):
+        for field in ("rodata", "init", "ctor", "data", "bss", "exception", "exceptix"):
+            with self.subTest(field=field):
+                self.own_nontext(field, {"symbol": "owned_data", "address": hex(ADDRESS - 4), "size": 12})
+                self.homes["owned_data"] = [("arm9", ADDRESS - 4)]
+                self.refused("overlaps owned")
+                with self.assertRaises(RB.BuildError):
+                    RB.compiler_only_policies(manifest={"entries": [self.entry]}, homes=self.homes)
+                del self.entry[field]
+
+    def test_nontext_half_open_boundaries(self):
+        for start, size, overlaps in ((ADDRESS - 4, 4, False), (ADDRESS + 4, 4, False),
+                                     (ADDRESS - 4, 5, True), (ADDRESS + 3, 4, True),
+                                     (ADDRESS, 4, True), (ADDRESS - 4, 12, True)):
+            with self.subTest(start=start, size=size):
+                self.own_nontext("data", {"symbol": "owned_data", "address": hex(start), "size": size})
+                if overlaps:
+                    self.refused("overlaps owned")
+                else:
+                    self.assertEqual(self.apply()[2], [])
+
+    def test_vtable_ownership_includes_emitted_preamble(self):
+        self.own_nontext("data", {"symbol": "_ZTV5Owned", "address": hex(ADDRESS + 4),
+            "emitted_storage_address": hex(ADDRESS - 4), "address_point_bias": 8, "size": 12})
+        self.homes["_ZTV5Owned"] = [("arm9", ADDRESS + 4)]
+        self.refused("overlaps owned .data object _ZTV5Owned storage")
+        self.entry["data"][0].update(address=hex(ADDRESS + 12),
+                                     emitted_storage_address=hex(ADDRESS + 4))
+        self.homes["_ZTV5Owned"] = [("arm9", ADDRESS + 12)]
+        self.assertEqual(self.apply()[2], [])
+
+    def test_rom_symbol_address_ownership_fallback(self):
+        self.own_nontext("data", {"symbol": "owned_data", "rom_symbol_address": hex(ADDRESS - 4), "size": 12})
+        self.refused("overlaps owned")
+
+    def test_malformed_nontext_extents_fail_closed(self):
+        cases = ({"size": 0}, {"size": -1}, {"size": "bad"}, {"size": None},
+                 {"address": "bad"}, {"address": None}, {"address": True},
+                 {"address": -1}, {"address": "0xffffffff", "size": 2},
+                 {"emitted_storage_address": hex(ADDRESS + 8)},
+                 {"address_point_bias": 8},
+                 {"emitted_storage_address": hex(ADDRESS + 8), "address_point_bias": 4},
+                 {"emitted_storage_address": hex(ADDRESS + 24), "address_point_bias": -8},
+                 {"emitted_storage_address": hex(ADDRESS), "address_point_bias": 16})
+        for changes in cases:
+            with self.subTest(changes=changes):
+                row = {"symbol": "owned_data", "address": hex(ADDRESS + 16), "size": 12}
+                row.update(changes)
+                self.own_nontext("data", row)
+                self.refused("owned .data object")
+        for missing in ("address", "size"):
+            row = {"symbol": "owned_data", "address": hex(ADDRESS + 16), "size": 12}
+            del row[missing]
+            self.own_nontext("data", row)
+            self.refused("owned .data object")
+
+    def test_malformed_nontext_containers_fail_closed(self):
+        self.own_nontext("data", {"symbol": "owned_data", "address": hex(ADDRESS + 16), "size": 12})
+        for rows in (None, {}, [None], [{}], [{"symbol": 1}], [{"symbol": ""}]):
+            with self.subTest(rows=rows):
+                self.entry["data"] = rows
+                self.refused("owned data must contain named object rows")
 
     def test_alias_overlap_cycle_and_destination_collision(self):
         self.entry["undefined_symbol_aliases"] = [{"symbol": TARGET, "canonical_symbol": NAME}]

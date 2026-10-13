@@ -9,9 +9,9 @@
   "focused_tests": {
     "command": "python -m pytest tools/test_canonical_duplicates.py tools/test_objisolate.py tools/test_rombuild.py tools/test_tu_production.py -q",
     "fixture_environment": "CANONICAL_DUPLICATE_FIXTURE=<private_artifact_root>/moray",
-    "passed": 122,
+    "passed": 128,
     "failed": 0,
-    "log": "focused-final.log"
+    "log": "focused-rework2.log"
   },
   "legacy_control": {
     "base_passed": 69,
@@ -30,7 +30,7 @@
     "candidate_passed": 69,
     "candidate_failed": 6,
     "candidate_skipped": 1,
-    "candidate_log": "legacy-final.log",
+    "candidate_log": "legacy-rework2.log",
     "scope": [
       "tools/test_tubuild.py"
     ],
@@ -237,7 +237,7 @@
   "full_rom_control": {
     "status": "PASS",
     "command": "python tools/rombuild.py -j16 --no-rom",
-    "log": "rombuild-final-frozen.log",
+    "log": "rombuild-rework2-frozen.log",
     "exit_code": 0,
     "modules_exact": 106,
     "modules_checked": 106,
@@ -248,6 +248,7 @@
     "new_intact_symbol_errors": 0,
     "storage_aliases": "exact",
     "report_sha256": "698832a601a4eb7feb01e6c3e306d074eb362265d27b5626ef2a390875176e97",
+    "report": "rombuild-report-rework2.json",
     "inherited_advisory_romdata": {
       "verified": 969,
       "partial": 1519,
@@ -255,5 +256,26 @@
       "unnamed": 21
     }
   },
-  "independent_acceptance": "pending fresh verifier against offered immutable commit"
+  "independent_acceptance": "pending fresh verifier against offered immutable commit",
+  "rework_input": "8ec10321f907b14f1281f004a3a483b560932b0d",
+  "prior_attempts": [
+    {
+      "commit": "8ec10321f907b14f1281f004a3a483b560932b0d",
+      "independent_verdict": "fail",
+      "finding": "CANDUP-002: canonical function contained by owned non-text storage without section rows was accepted",
+      "historical_validation_only": {
+        "focused_tests": 122,
+        "full_rom_control": "rombuild-final-frozen.log",
+        "rombuild_report": "rombuild-report-final.json",
+        "modules_exact": 106,
+        "functions_reproducing": 11331
+      },
+      "rework": "All declared non-text storage extents and vtable address-point metadata are now checked before removal."
+    }
+  ],
+  "verified_tool_sha256": {
+    "tools/tubuild.py": "25fb7bbbdd639cf4f26410cc6a3aa3780a67b6f32ec5f25bc997d620cc2f9c63",
+    "tools/rombuild.py": "e4f83caf2cd245e4a706a11bfb038059fc9de95537e11e5a25868c3504e6148a",
+    "tools/test_canonical_duplicates.py": "eb48529a08dfb0698e07bcd95aa231f1047131aa99e172096e0981409335c083"
+  }
 }

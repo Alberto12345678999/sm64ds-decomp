@@ -17,7 +17,9 @@ has a generic configured name. `compiler_only_output` may name that exact home:
 The optional module/address pair must agree with the canonical symbol's unique
 configured home. The canonical name must itself denote a sized function; a data
 alias at the same address cannot borrow that function's extent. Neither spelling
-nor the canonical range may belong to the TU. The emitted spelling must have no
+nor the canonical range may belong to the TU. Full function and non-text storage
+intervals are checked even when the manifest has no section rows. Non-text
+addresses, sizes, and address-point metadata must form a valid positive extent. The emitted spelling must have no
 configured home. Duplicate destinations, alias chains, overlapping policies and
 an already-emitted canonical destination are refused.
 
@@ -48,7 +50,7 @@ validation. Independent acceptance remains the verifier's responsibility.
 Run `python -m pytest tools/test_canonical_duplicates.py tools/test_objisolate.py
  tools/test_rombuild.py tools/test_tu_production.py -q` (one command). With
 `CANONICAL_DUPLICATE_FIXTURE` naming the private Moray directory containing
-`daMoray_c.o` and `proof.json`, all 122 tests pass. The optional real fixture test
+`daMoray_c.o` and `proof.json`, all 128 tests pass. The optional real fixture test
 uses normal intact preparation and strict checks for all 21 Moray functions,
 without address overrides, and rejects a corrupted constructor body. The
 producer recompiled that source with the pinned compiler and current headers.

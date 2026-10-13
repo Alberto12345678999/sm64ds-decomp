@@ -2359,6 +2359,40 @@ def canonical_duplicate_policies(entry, homes=None):
                     errors.append("owned function needs a positive extent")
                 elif address < start + extent and start < address + size:
                     errors.append("canonical function overlaps a manifest-owned function")
+            # Section rows are optional for ordinary manifests. Every declared
+            # non-text object also owns its full emitted storage, including a
+            # vtable's preamble before its public address point.
+            for field in _SECTION_SYMBOL_FIELDS.values():
+                rows = entry.get(field, [])
+                if not isinstance(rows, list) or any(
+                        not isinstance(row, dict) or not isinstance(row.get("symbol"), str)
+                        or not row["symbol"] for row in rows):
+                    errors.append(f"owned {field} must contain named object rows")
+            for section, row in manifest_owned_symbol_rows(entry):
+                label = f"owned {section} object {row['symbol']}"
+                address_fields = ("address", "rom_symbol_address",
+                                  "emitted_storage_address", "address_point_bias")
+                if any(not isinstance(row[key], (str, int)) or isinstance(row[key], bool)
+                       for key in address_fields if key in row):
+                    errors.append(f"{label} needs integer addresses and address-point bias")
+                    continue
+                start, storage_error = _manifest_emitted_addr(row)
+                try:
+                    extent = int(str(row["size"]), 0)
+                except (KeyError, TypeError, ValueError):
+                    errors.append(f"{label} needs a valid size")
+                    continue
+                if storage_error or start is None:
+                    errors.append(f"{label} needs a valid emitted storage address: "
+                                  f"{storage_error or 'missing or invalid address'}")
+                    continue
+                end = start + extent
+                public = _manifest_addr(row)
+                if (extent <= 0 or start < 0 or end > 0x100000000
+                        or not start <= public < end):
+                    errors.append(f"{label} needs a positive storage extent containing its public address")
+                elif address < end and start < address + size:
+                    errors.append(f"canonical function overlaps {label} storage")
             for section in entry.get("sections", []):
                 try:
                     start, end = int(str(section["start"]), 0), int(str(section["end"]), 0)
