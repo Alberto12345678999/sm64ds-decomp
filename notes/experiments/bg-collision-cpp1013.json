@@ -141,8 +141,29 @@
     "externalized_metadata_bytes": 221
   },
   "gates": {
-    "full_rom": "running",
-    "prepush_range": "pending final source checkpoint",
+    "full_rom": {
+      "command": "python -u tools/rombuild.py -j16 --no-rom",
+      "exit_code": 0,
+      "source_checkpoint": "6a07e548f2ae58476d88bab10c687d07a6ed5d36",
+      "functions": 11332,
+      "mismatches": 0,
+      "data_claims": 331,
+      "bss_claims": 239,
+      "exact_modules": 106,
+      "new_symbol_errors": 0,
+      "storage_aliases": "exact",
+      "baseline_control": "Nine inherited dsd interior-symbol errors; final intact gate introduces none.",
+      "romdata_inventory": "969 verified,1519 partial,1 inherited differ,21 unnamed; advisory inventory is not a complete data reconstruction claim."
+    },
+    "prepush_range": {
+      "command": "python -u tools/prepush_linkcheck.py --range 08b118098ecb7ce86b85f1215886a4618e268a86..HEAD",
+      "exit_code": 0,
+      "checked": 20,
+      "verified": 20,
+      "warnings": 0,
+      "blocking": 0,
+      "blind": 0
+    },
     "declaration_agreement": "pass:84 files scoped,641 inherited disagreements,0new disagreements or header redeclarations",
     "port_references": "pass:267 resolve",
     "language_mode": "pass against origin/chaos-data banked baseline"
@@ -166,5 +187,6 @@
     "build/bg-collision1013/full-rom.log",
     "build/bg-collision1013/decl.log",
     "build/bg-collision1013/langmode.log"
-  ]
+  ],
+  "binding": "Final report-only descendant retains the exact source/include/config/tools/port input trees of the tested source checkpoint; independent verification accepts this commit explicitly."
 }
