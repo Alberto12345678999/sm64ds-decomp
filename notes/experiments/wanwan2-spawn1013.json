@@ -344,10 +344,6 @@
     "chainchomp-typed-calls1012"
   ],
   "remaining": "Scalar Fix12 calls, PMF stand-ins, hand-built factory, char-pointer workers, inherited actor-position view and other raw/model/volatile forms remain partial reconstruction. Existing broad destructor/callback review findings retain their accepted historical IDs; no new full review of unrelated classes is claimed.",
-  "pending": [
-    "committed full-ROM and static checks",
-    "independent exact Source review"
-  ],
   "factory_probe": {
     "source_snapshot": "92a09548cb7ba81ab20d1b932774adeabd24d6df",
     "headers_tools_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
@@ -388,6 +384,49 @@
     "old_and_current_raw_sha256": "586058cad1def2ed207cee6eaca071b755b35dfe13a4737d3d4206b4a3a74342",
     "old_and_current_prepared_sha256": "9dc4cbdf5807ccd4518217d58b54a83378c0a86c209593520ae058597c7a1d4d",
     "Source_change": "factory comment only",
-    "manifest_change": "boundary/notes and stale vtable reason only; complete behavior policy projection identical"
-  }
+    "manifest_change": "boundary/notes and stale vtable reason only; complete behavior policy projection identical",
+    "comment_checkpoint": "2e0691a56a72f1b973e79c11db3d0c8716d41298",
+    "changed_files": [
+      "config/tu_manifest.d/ov100/daWanwan2_c.json",
+      "notes/experiments/wanwan2-spawn1013.json",
+      "src/actors/daWanwan2_c.cpp"
+    ],
+    "other_build_inputs_unchanged": true
+  },
+  "committed_static_gates": {
+    "tested_commit": "2e0691a56a72f1b973e79c11db3d0c8716d41298",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "results": {
+      "range": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-spawn1013\\corrected-range.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-spawn1013\\corrected-decl.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-spawn1013\\corrected-port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\wanwan2-spawn1013\\corrected-langmode.log"
+      }
+    }
+  },
+  "stock_range": {
+    "checked": 18,
+    "verified": 17,
+    "warnings": [
+      {
+        "name": "__sinit_daWanwan2_c.cpp",
+        "verdict": "BLIND-10",
+        "blind": 10
+      }
+    ],
+    "blocking": 0,
+    "qualification": "Raw per-function initializer warning is preserved. Actual ordinary intact initializer244B and ctor4B strictly link with0blind; all22 nontext references and full prepared ELF are verified."
+  },
+  "binding": "Final report-only descendant retains five tree IDs of the corrected Source checkpoint. Full-ROM checkpoint is separately bound by complete raw/prepared object equality and unchanged effective policy and other compilation inputs."
 }
