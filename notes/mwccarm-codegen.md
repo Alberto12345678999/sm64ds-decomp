@@ -7504,6 +7504,9 @@ writing it up, because the engine's path to a cell is not the lever.
 
 ## 6cw. The callee-saved colour list 2004/b56 hands to main-line call results is r8, r7, r6, r5, fp, sl, sb in declaration order, and the fourth slot is the whole of func_02009e70's exchange (div 72, floor with the mechanism measured; run link100 crack wave 12, lane W12-13, 2026-09-13)
 
+(func_02009e70 matched 2026-10-13, see 6dd. The fourth-slot rank described here is real, but the ROM gets around it by
+reusing locals, not with a fresh one.)
+
 `func_02009e70` (arm9 0x02009e70, 0x109c, the camera update) sits at 72 words, 52 of them one
 web exchange at birth: the func_020093f4 distance limit is born into r5 where the ROM takes sl,
 and the mode-flags word born one call later takes the other register (6ci and its addendum name
@@ -8045,7 +8048,7 @@ nine respellings (`hi/0x10000`, `(hi>>15)>>1`, u8/u16/int types ...; ~3,000 comp
 the size - so the ROM's `p++` is right. Nothing lowers hi's colouring priority below
 pal/i/p. Still NONMATCHING at div 20.
 
-## 6db. Two floors re-attacked, and the `-opt` vocabulary: an unknown `-opt` keyword is silently accepted (func_0202ffec then matched in 6dc; func_02009e70 unchanged, 2026-10-13)
+## 6db. Two floors re-attacked, and the `-opt` vocabulary: an unknown `-opt` keyword is silently accepted (func_0202ffec then matched in 6dc, func_02009e70 in 6dd, 2026-10-13)
 
 **The `-opt` vocabulary.** `mwccarm.exe -help opt=opt` lists every `-opt` keyword 2004/b56
 has: `off|none`, `on`, `all|full`, `[no]space`, `[no]speed`, `l[evel]=0..4`, `[no]cse` /
@@ -8159,3 +8162,45 @@ changes the size.
 swapped between registers, try declaring the operands as 64-bit locals and permuting their
 declaration order. It turns an unreachable per-site tie into a free global order. Any floor
 whose operands are sign-extended per product may have the same shape.
+
+## 6dd. func_02009e70 matched: the two distance limits are later live ranges of reused locals, ranked by each local's first assignment (2026-10-13)
+
+The camera update (0x109c) went 72 -> 62 with #3761, which used native collision-return types and
+s64 distance accumulation, and then 62 -> 0 with the fixes below. All of them are things a person
+would plausibly write, and most remove a hack from the draft.
+
+1. **Reused locals for the two limits (about 50 words: the +0x2d0 limit word and the whole r5/sl
+   exchange downstream).** The near limit is assigned into the mode-flags local, which is dead by
+   then (`fp = sp1c->flags; ... fp = func_020093f4(self, near + ...)`). The far limit is assigned
+   into the rate/near-distance local (`r4 = 0x1000` rate, then `r4 = sp1c->f1c`, then
+   `r4 = fp` or `r4 = func_020093f4(self, far)`). b56 gives a local's later live ranges a rank
+   from the order the local was FIRST assigned, the same rule as 6dc. So reusing a local puts a
+   new value in the rank slot of that local's first value. Measured: the far-limit host ranks
+   above the flags local, which ranks above the rate local. Any FRESH local for either limit
+   (any type, any declaration position, a u32 block temp) gives 224 to 267 words. Both limits
+   in their own reused locals but swapped gives 20. Making `rate` its own local gives 60. The
+   positions of the host declarations are inert (32 cells). 6cw's "no source reaches the
+   fourth slot" held only for fresh locals.
+2. **s16 wall-angle locals (62 -> 50 together with item 5):** `s16 sba, diff;`,
+   `sba = atan2(...) + 0x8000; diff = sba - self->angle; sba += (diff < 0) ? 0x4000 : -0x4000;`.
+3. **A fourth argument to `Sound_PlayIfNotActive` (2 words at +0xfd4).** The ROM materialises
+   `mov r3, #0` once for the `data_0209b000 = 0` store and reuses r3 as the zero argument. Every
+   other declaration of the symbol in `src/` already had four parameters.
+4. **An inline `SetVec(v, x, y + 0x100000, z)` for the sp4c block (4 words at +0xc90).** Plain
+   field stores give 14, a Vector3 constructor temporary gives 44.
+5. Kept from the hack base and natural in their own right: a dedicated input-flags local `kf`;
+   the ground height as `sb = ground.DetectClsn() ? ground.clsnY : y` with `y` preloaded; a fresh
+   `ceil` local for the ceiling (inert alone, but it frees the near-distance local for reuse). The
+   dead `sb = 0` store is gone.
+
+Inert: every respelling of the limit's else-def (casts, s16/u16/s64/bool/enum return types,
+identity operations, inline wrappers, pragmas, ternaries, arm swaps, copy chains). The `+ 1` /
+`+ sb` hack from 6db only stood in for "a web not coalesced with the call temporary", and reuse
+achieves that honestly. Also inert: the 2^7 product of fresh natural locals, the 2^8 product of
+mid-body declarations, local names, u32 types, and hosting the near limit in `t0` (that web dies
+in the call argument, so it is not a later live range; 265). About 1,030 cells.
+
+**General lever.** When a colouring residue needs a value in a callee-saved slot that no fresh
+local reaches, assign the value into a DEAD earlier local whose first assignment has the rank
+you need. With 6dc this makes one rule: in b56, colour rank comes from the order of FIRST
+assignment, and reused locals inherit it.
