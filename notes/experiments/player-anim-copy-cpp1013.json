@@ -74,8 +74,29 @@
   },
   "gates": {
     "whole_tu": "pass:612 strict functions,4974 typed edges and entire raw/prepared ELF identical",
-    "full_rom": "running",
-    "prepush_range": "pending source checkpoint",
+    "full_rom": {
+      "command": "python -u tools/rombuild.py -j16 --no-rom",
+      "exit_code": 0,
+      "source_checkpoint": "81f59c3228c6009b102d73a86f9f2409bedd47ce",
+      "functions": 11332,
+      "mismatches": 0,
+      "data_claims": 331,
+      "bss_claims": 239,
+      "exact_modules": 106,
+      "new_symbol_errors": 0,
+      "storage_aliases": "exact",
+      "baseline_control": "Nine inherited interior-symbol dsd diagnostics; final intact gate introduces none.",
+      "romdata_inventory": "969 verified,1519 partial,1 inherited differ,21 unnamed; advisory inventory is not full data reconstruction."
+    },
+    "prepush_range": {
+      "command": "python -u tools/prepush_linkcheck.py --range 08b118098ecb7ce86b85f1215886a4618e268a86..HEAD",
+      "exit_code": 0,
+      "checked": 612,
+      "verified": 612,
+      "warnings": 0,
+      "blocking": 0,
+      "blind": 0
+    },
     "declaration_agreement": "pass:1993files scoped,6952inherited disagreements,0new disagreements or header redeclarations",
     "port_references": "pass:267 resolve",
     "language_mode": "pass against current banked chaos-data baseline"
@@ -98,5 +119,8 @@
     "build/player-anim1013/full-rom.log",
     "build/player-anim1013/decl.log",
     "build/player-anim1013/langmode.log"
-  ]
+  ],
+  "source_git_blob_sha256": "b1048009b7f7e4c07992edb11f099295055bc1575c388317fbb969084643ba57",
+  "manifest_git_blob_sha256": "0209be6396cd8149c067a4893f5d1adcfb373fc181115ea96e999d09c7f6c66c",
+  "binding": "Final report-only descendant retains the exact src/include/config/tools/port trees of the tested source checkpoint; independent review accepts this commit explicitly."
 }
