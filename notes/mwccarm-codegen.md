@@ -7676,6 +7676,21 @@ callee's parameter type names, the byte loaded before the guard) leave the cmp a
 are the same ASAP-versus-ALAP policy delta, and neither is reachable through a receiver because
 the value in question is a constant (the first) or a flag (the second), not a register web.
 
+Closed for the first (func_ov009_0211145c MATCHED, 5 -> 0, 2026-10-12). The lever is the
+control-flow shape around the window, not a spelling inside it: with the two stores in the taken
+arm of `if (p2 != 0) { ... } else { return; }` and the sound call after the join, the pre-RA
+passes see a block boundary between the stores and the call, the argument setup is not hoisted,
+and the else-return is if-converted into the conditional epilogue the ROM already has. Written
+`if (p2 == 0) return;` ahead of the stores (every earlier cell) the stores and the call share one
+block and the hoist comes back; the arm order matters too (`if (p2 == 0) { return; } else { ...
+}` then the call scores 5 again). The corpus shows the same mechanism at dScStage_c::Behavior
++0x2fc and dScMgSmartball_c::SpawnObjects +0x300, and a second, non-transplanting one in
+dScMgTeresa_c::OnYoshiTryEat (>= 3 calls earlier in the same block plus a later stack-argument
+call suppress the hoist inside one block; any `if` boundary or loop re-enables it). Inert on this
+function, measured at 5 each: post-call loads (exact window but a word oversize), extra calls
+including 6-arg ones, labels, `asm` barriers, inline helpers, tail duplication, empty-dtor
+locals, argument precomputation and 59 flag cells.
+
 Positive control for the second (round 1002f, about 250 more cells). With the guard, flag and x
 loads all `volatile` (a 64-cell mask matrix; cells 110111, 111011 and 111111), b56 emits the ROM's
 exact tail: the four stack stores, then `mov ip,r4; cmp sl,#0; movne ip,sb` at +0x64..+0x6c, the
