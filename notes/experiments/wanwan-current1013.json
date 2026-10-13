@@ -940,5 +940,11 @@
     "baseline/strict.json": "273281d37d9d493058967eee3d747405caed847bef47d6109c09408bf1967945",
     "inherited-findings.json": "f77626dde3714dc96d9b843944b94d5d651618f52ad957f73b1d797eef3e7757",
     "warning-controls.py": "862bb83eeddec32bbd3abb76911e3322660438d38e236f7c1f6def1215541b7b"
+  },
+  "historical_status": {
+    "classification": "Exact5cbff56 validation; not the newer main-base proof.",
+    "superseded_by": "notes/experiments/wanwan-restack1013.json",
+    "current_tested_base": "b2e984672798ab8512d500b1d790a0be968744b6",
+    "reason": "Unrelated PR3810 advanced main during publication. Followup composes the accepted Source onto actualb2e and reruns ordinary whole and production gates."
   }
 }
