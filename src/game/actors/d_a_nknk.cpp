@@ -54,14 +54,20 @@ bool ApproachLinear(short &value, short target, short step);
  * SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim for the nine
  * animation handles), spelled through declared-only subclasses so the
  * static initializer names the real entry points. The code reaches them
- * through the data_ov062_0211ced8/cee0/cee8 pointer tables. */
+ * through the data_ov062_0211ced8/cee0/cee8 pointer tables. The model and
+ * animation initialization paths both store a u16 file ID at +0, a byte
+ * reference count at +2, and a loaded-file pointer at +4. */
 struct NknkModelFilePtr : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
     NknkModelFilePtr(u32 fileID);
     ~NknkModelFilePtr();
 };
 struct NknkAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
     NknkAnimationFileHandle(u32 fileID);
     ~NknkAnimationFileHandle();
 };
@@ -1040,7 +1046,7 @@ void daNknk_c::func_ov062_021179e4() {
 void daNknk_c::func_ov062_02117994(int idx) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim,
-        (BCA_File*)data_ov062_0211cee8[idx]->words[1],
+        (BCA_File*)data_ov062_0211cee8[idx]->filePtr,
         data_ov062_0211cf0c[idx],
         mAnimSpeed,
         0
