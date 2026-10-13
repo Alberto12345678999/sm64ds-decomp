@@ -1412,6 +1412,7 @@ src/unnamed/arm9/0201/func_0201a428.c:
     .text start:0x0201a428 end:0x0201a458
 
 src/unnamed/arm9/0201/func_0201a458.c:
+    complete
     .text start:0x0201a458 end:0x0201a490
 
 src/unnamed/arm9/0201/func_0201a490.c:
