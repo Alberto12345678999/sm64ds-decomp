@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "task": "flame-native1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3771",
+  "base_commit": "257ef7edb18afda407e1e6957478878ed5952ffa",
+  "upstream_main_context": "739cbc53d237791752d1cc8c2c1f0b2c8cfe6b1c",
+  "tooling_pr": "https://github.com/tangosdev/sm64ds-decomp/pull/3766",
+  "source": "src/actors/daObjFlamethrower_c.cpp",
+  "symbol": "daObjFlamethrower_c_classInit",
+  "module": "ov095",
+  "address": "0x02136ed4",
+  "size": 132,
+  "change": "Use return new daObjFlamethrower_c; for real member array construction; remove unused factory ABI declarations and stale no-Vector3-constructor prose.",
+  "scope": "Existing text-only TU: five functions; metadata externalization retained. No headers,delinks,module symbols,source paths,temporary pins or ownership claims change.",
+  "new_output_policy": [
+    "Vector3C1 proven duplicate of original stride12,count12 callback func0203d384 atarm9:0203d384",
+    "Unused Matrix4x3D1 has no configured home and no incoming references, guardeddeadstrip"
+  ],
+  "status": "Private ordinary-production5/5strict proof established; fullROM/independentSource acceptance pending.",
+  "remaining_work": [
+    "Existing scalar Fix12 ABI bridge and raw segment loops remain partial reconstruction."
+  ],
+  "gates": {}
+}
