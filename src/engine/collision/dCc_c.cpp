@@ -16,6 +16,7 @@
  * (_ZTS5dCc_c 0x0208e658, _ZTI5dCc_c 0x0208e660, _ZTV5dCc_c 0x0208e6ec).
  */
 #include "dCc_c.h"
+#include "dActor_c.h"
 
 struct Player;
 struct Arg;
@@ -57,9 +58,10 @@ dCc_c::~dCc_c()
 }
 
 // @symbol _ZN5dCc_c4InitE5Fix12IiES1_jj
-/* Stays a mangled free definition: the real signature carries Fix12<int> and
-   wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in dCc_c.h is the real one and callers may use it. */
+/* The header's scalar Init(Fix12i, Fix12i, u32, u32) reproduces these
+ * bytes as a method, but emits _ZN5dCc_c4InitEiijj. Production still names
+ * this entry _ZN5dCc_c4InitE5Fix12IiES1_jj; keep the C-linkage boundary
+ * until the symbol and its callers are reconciled. */
 extern "C" void _ZN5dCc_c4InitE5Fix12IiES1_jj(struct dCc_c *self, int a, int b, unsigned d, unsigned e) {
   *(int*)&self->radius=a;
   *(int*)&self->height=b;
@@ -107,42 +109,26 @@ void dCc_c::Unlink()
 }
 
 // @symbol func_02014f5c
-#pragma cplusplus off
-/* The two helpers are compiled by the C front end -- their shard files are
-   .c and the bodies below are byte-identical only under it. `self` is a
-   collider node the whole way through: Process passes a dCc_c, which the
-   player notifier reads as its Arg (the flags word at +0x18 and the m2()
-   position). */
-struct dActor_c {
-    void* vtable;
-    u32 uniqueID;
-    u32 param1;
-    u16 actorID;
-};
-
-extern struct dActor_c* _ZN8dActor_c10FindWithIDEj(u32 id);
-
+/* Resolve a collider hit owner and notify it only when it is the player.
+ * Keep the integer predicate: 2004/b56 folds a bool/direct test differently.
+ * self remains a dCc_c; the Player notifier still takes its local Arg view. */
 #define PLAYER_ACTOR_ID 0xbf
-
-/* find the hitting owner by actor ID and, when it is the player, notify him */
-void func_02014f5c(struct dCc_c* self, u32 id) {
-    struct dActor_c* player;
-    u32 isPlayer;
-
-    player = _ZN8dActor_c10FindWithIDEj(id);
+extern "C" void func_02014f5c(dCc_c *self, u32 id)
+{
+    dActor_c *player;
+    int isPlayer;
+    player = dActor_c::FindWithID(id);
     if (!player) return;
-
-    isPlayer = (player->actorID == PLAYER_ACTOR_ID) ? 1 : 0;
-    if (!isPlayer) return;
-
-    func_ov002_020caf98((struct Player*)player, (struct Arg*)self);
+    isPlayer = (int)(player->actorID == PLAYER_ACTOR_ID);
+    if (isPlayer == 0) return;
+    func_ov002_020caf98((Player*)player, (Arg*)self);
 }
 
 // @symbol func_02014f44
-void func_02014f44(unsigned int id, struct dCc_c* self) {
+extern "C" void func_02014f44(u32 id, dCc_c *self)
+{
     func_02014f5c(self, id);
 }
-#pragma cplusplus on
 
 // @symbol _ZN5dCc_c7ProcessEv
 void dCc_c::Process()
