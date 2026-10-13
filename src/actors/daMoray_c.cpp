@@ -57,20 +57,16 @@ enum {
     ACTOR_STAR = 178,
 };
 
-/* decl_common.h types the four file handles as char[] and the state tables
- * as char / void *. This TU repeats the names it uses. SharedFilePtr.h
- * declares no fields; __sinit_daMoray_c.cpp constructs each handle with a
- * file id, and SetAnim reads the loaded file at +4. */
-struct MorayFile {
-    s32 fileId;                 /* 0x00 */
-    void *file;                 /* 0x04 -- the pointer SetAnim is handed */
-};
-
+/* SharedFilePtr.h intentionally leaves its storage unspecified. These local
+ * handles follow their measured initialization/load/release operations:
+ * u16 fileID at +0, u8 numRefs at +2, and the loaded file pointer at +4.
+ * The compiler supplies the alignment byte before the pointer. */
 /* The model handle's ctor/dtor are the cartridge's func_02017acc /
  * func_02017ab4 pair; the manifest aliases these. */
 struct MorayModelFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
     MorayModelFileHandle(u32 fileID);
     ~MorayModelFileHandle();
 };
@@ -78,8 +74,9 @@ struct MorayModelFileHandle : SharedFilePtr {
 /* The three animation handles construct through SharedFilePtr::Construct
  * and register SharedFilePtr_Destruct_Anim; the manifest aliases these. */
 struct MorayAnimResFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
     MorayAnimResFileHandle(u32 fileID);
     ~MorayAnimResFileHandle();
 };
@@ -402,7 +399,7 @@ int daMoray_c::func_ov016_021115c0()
 // @symbol _ZN9daMoray_c19func_ov016_02111718Ev
 int daMoray_c::func_ov016_02111718()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, ((MorayFile *)&data_ov016_02114d30)->file, 8, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov016_02114d30.filePtr, 8, 0, 0x1000, 0);
     return 1;
 }
 
@@ -444,7 +441,7 @@ int daMoray_c::func_ov016_02111758()
 // @symbol _ZN9daMoray_c19func_ov016_02111860Ev
 int daMoray_c::func_ov016_02111860()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, ((MorayFile *)&data_ov016_02114d20)->file, 8, 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov016_02114d20.filePtr, 8, 0x40000000, 0x1000, 0);
     func_02012694(0xfa, (const Vector3 *)&this->mCamSpacePosX);
     return 1;
 }
@@ -480,7 +477,7 @@ int daMoray_c::func_ov016_02111994()
 {
     this->unk_400 = 0;
     func_02012694(0xfa, (const Vector3 *)&this->mCamSpacePosX);
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, ((MorayFile *)&data_ov016_02114d28)->file, 8, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov016_02114d28.filePtr, 8, 0, 0x1000, 0);
     return 1;
 }
 
@@ -573,7 +570,7 @@ int daMoray_c::func_ov016_021119ec()
 int daMoray_c::func_ov016_02111bac()
 {
     this->unk_400 = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, ((MorayFile *)&data_ov016_02114d28)->file, 8, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov016_02114d28.filePtr, 8, 0, 0x1000, 0);
     return 1;
 }
 
