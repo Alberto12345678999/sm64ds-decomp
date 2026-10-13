@@ -13,7 +13,7 @@
     "production_entire_ELF_equal": true,
     "prepared_sha256": "164f0f11d29facda243ac1a248748b8b7218d4b1eff8a89b3fdb079b4cba5627",
     "strict_rows": 17,
-    "strict_bytes": null,
+    "strict_bytes": 3568,
     "strict_functions": 17,
     "owned_init_and_ctor_records": 0,
     "blind": 0,
@@ -101,8 +101,45 @@
     "normal_preparation": "ordinary on-disk compiler_only policies and isolation; no override"
   },
   "remaining": "Existing raw-offset cell views and C-linkage free-function ABI remain; this does not claim a class/TU fold or full field reconstruction.",
-  "pending": [
-    "committed full ROM and static checks",
-    "independent exact Source review"
-  ]
+  "full_ROM": {
+    "checkpoint": "57dd1e9191cb5c1eb13b135f62cf48368f113662",
+    "modules_exact": 106,
+    "modules_total": 106,
+    "exit_code": 0,
+    "log": "build\\picgate-copy1013\\full_rom.log",
+    "limits": "Full modules and owned storage exact. Pre-existing stock dsd missing ITCM symbols and one differing unenrolled ROM-data inventory entry remain distinct."
+  },
+  "committed_checks": {
+    "tested_commit": "57dd1e9191cb5c1eb13b135f62cf48368f113662",
+    "tested_base": "1c1b6279ab77cd9ae0da481fccf5959cd30cfe19",
+    "results": {
+      "full_rom": {
+        "exit_code": 0,
+        "log": "build\\picgate-copy1013\\full_rom.log"
+      },
+      "range": {
+        "exit_code": 0,
+        "log": "build\\picgate-copy1013\\range.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build\\picgate-copy1013\\port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build\\picgate-copy1013\\langmode.log"
+      },
+      "decl": {
+        "exit_code": 0,
+        "log": "build\\picgate-copy1013\\decl.log"
+      }
+    }
+  },
+  "stock_range": {
+    "checked": 17,
+    "verified": 17,
+    "warnings": [],
+    "blocking": 0
+  },
+  "binding": "This report-only descendant retains all src/include/config/tools/port trees from the tested full-ROM checkpoint. Independent final Source review is required separately."
 }
