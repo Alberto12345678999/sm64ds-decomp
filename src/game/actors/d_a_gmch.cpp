@@ -85,9 +85,6 @@ enum {
  * ModelCache; kept file-local until then. */
 struct ModelCache { int pad0; BMD_File *file; };
 
-/* Shadow types, one set per member that recovered one.  The tag suffix is the
- * member's ROM address. */
-
 /* Non-virtual state handlers. daGmch_c is already complete here; the
    pointer-to-member call through mStatePmfPair still matches. */
 typedef void (daGmch_c::*StateFn)();

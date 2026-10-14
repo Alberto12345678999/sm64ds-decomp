@@ -965,7 +965,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov081",
       "canonical_address": "0x02128c04",
-      "reason": "this class vtable; the canonical cartridge copy remains ROM-gap owned -- all 113 delink blocks in config/arm9/overlays/ov081/delinks.txt are .text or .init only, so no file owns any of ov081's .data. Extent corroborated three ways: the cartridge words put mwcc's two-word preamble {0x00000000, 0x02128bd4} at 0x02128bfc and the last slot at 0x02128c7c, with _ZTI15daObjIceBlock_c next at 0x02128c80, so the OBJECT is 0x02128bfc..0x02128c80 = 0x84 bytes; tools/rtti_vtables.py --own daGmch_c reports 31 slots (0x7c) plus the 0x8 preamble = 0x84; the emitted _ZTV8daGmch_c is 0x84. symbols.txt names the address point 0x02128c04, which is the convention romdata_check re-derives the object start from."
+      "reason": "This class vtable's canonical cartridge storage 0x02128bfc..0x02128c80 remains ROM-gap owned, outside this TU's owned .data 0x02128b38..0x02128bc8. The earlier text/init-only ownership description is historical: this manifest now also owns .ctor, .data and .bss. Extent corroborated three ways: the cartridge words put mwcc's two-word preamble {0x00000000, 0x02128bd4} at 0x02128bfc and the last slot at 0x02128c7c, with _ZTI15daObjIceBlock_c next at 0x02128c80, so the OBJECT is 0x02128bfc..0x02128c80 = 0x84 bytes; tools/rtti_vtables.py --own daGmch_c reports 31 slots (0x7c) plus the 0x8 preamble = 0x84; the emitted _ZTV8daGmch_c is 0x84. symbols.txt names the address point 0x02128c04, which is the convention romdata_check re-derives the object start from."
     },
     {
       "symbol": "_ZTI8daGmch_c",
