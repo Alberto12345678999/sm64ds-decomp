@@ -17,31 +17,31 @@
  * ROM-ascending.
  *
  * leftovers:
- * - func_ov064_0211982c keeps its C-ABI cartridge name and TU-local C/PMF
- *   view: it reads the state-table slot at +0x350, while Behavior reads
- *   the handler at +0x08 through State::mMain. Same survivor as daPropeller_Heyho_Fire_c's
- *   func_ov002_020fed2c.
+ * - func_ov064_0211982c retains its current configured linker name and
+ *   TU-local C/PMF view: it stores the state pointer at +0x300, then invokes
+ *   its first callback as int-returning. Behavior invokes the callback at
+ *   +0x08 through the header's void-returning State::mMain. The original
+ *   callback contracts remain unresolved; this cleanup does not unify them.
  * - `#pragma opt_strength_reduction off` is required inside
  *   func_ov064_021193b4 and is turned back on right after it: the pragma is
  *   file-global and the later members matched without it.
  * - func_ov064_021193b4 keeps its M() launders, the volatile rot block and
  *   `m1 = -1` as found; they were needed to match.
- * - The player is read through raw offsets (0x5c..0x64 position, 0x6f9
- *   Player::mIsMetal); Player.h is not pulled into this TU.
- * - The spawned ring's fields at 0xa4, 0xac and 0x38c have no member yet.
  * - Particle::System::New and dCcAc_c::Init stay mangled extern "C" calls,
  *   with Fix12<int> spelled as int (see InitResources).
  */
 
 #include "daWater_Hakidasi_c.h"
 #include "SharedFilePtr.h"
+#include "Player.h"
+#include "daWater_Ring_c.h"
+#include "Model.h"
 
 #pragma defer_codegen off
 
 struct Vec3 { int x, y, z; };
 struct Vec3_16 { s16 x, y, z; };
 
-typedef int Fix12i;
 
 struct C;
 typedef int (C::*PMF)();
@@ -65,18 +65,19 @@ extern HakPmfSlot data_ov064_0211c2e4;
 extern HakPmfSlot data_ov064_0211c2dc;
 extern HakPmfTable data_ov064_0211c934;
 
-namespace Model { void LoadFile(SharedFilePtr& f); }
 
 extern "C" {
 extern void Matrix4x3_FromRotationY(void *m, s16 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void MulVec3Mat4x3(struct Vec3 *in, void *m, struct Vec3 *out);
+/* local extern: Fix12<int> by value changes caller lowering; retain the matched scalar ABI. */
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     int a, int b, int x, int y, int z, int f, int cb);
 extern void func_02012790(int a);
 extern int data_020a0e68;
 extern int SublevelToLevel(int);
 extern int IsStarCollected(int r0, int r1);
+/* local extern: Fix12<int> by value changes caller lowering; retain the matched scalar ABI. */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *, dActor_c *a, Fix12i b, int c, unsigned int d, unsigned int e);
 unsigned short DecIfAbove0_Short(unsigned short *p);
@@ -113,9 +114,9 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
     struct Vec3 rewardPos;
     struct Vec3 hitPos1;
     struct Vec3 hitPos2;
-    char *player;
+    Player *player;
     int dist;
-    dActor_c *ring;
+    daWater_Ring_c *ring;
     int i;
     dActor_c *hit;
     int uid;
@@ -130,8 +131,8 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
     s16 tx;
     int m1;
 
-    player = (char *)ClosestPlayer();
-    if (player != 0 && *(u8 *)(player + 0x6f9) == 0) {     /* Player::mIsMetal */
+    player = ClosestPlayer();
+    if (player != 0 && player->mIsMetal == 0) {     /* Player::mIsMetal */
         dist = DistToCPlayer();
         if (dist < 0x3e8000) {
             dist = (0x3e8000 - dist) / 30;
@@ -144,7 +145,7 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
             Matrix4x3_FromRotationY(&data_020a0e68, (s16)(HorzAngleToCPlayer() + 0x8000));
             Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, -0x4000);
             MulVec3Mat4x3(&vec, &data_020a0e68, &delta);
-            playerPos = (int *)(int)M(player + 0x5c);
+            playerPos = (int *)(int)M(&player->mPosX);
             px = playerPos[0];
             vec.x = px;
             py = playerPos[1];
@@ -156,9 +157,9 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
                 vec.y = py + delta.y;
                 vec.z = pz + delta.z;
                 vec.x = newX;
-                *(int *)(player + 0x5c) = newX;
-                *(int *)(player + 0x60) = vec.y;
-                *(int *)(player + 0x64) = vec.z;
+                player->mPosX = newX;
+                player->mPosY = vec.y;
+                player->mPosZ = vec.z;
             }
         }
         mdCcAc_c.Clear();
@@ -186,7 +187,8 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
                     tx = (s16)(tx + 0x4000);
                     vr->x = (u16)tx;
                 }
-                ring = dActor_c::Spawn(0xf4, 2, *(Vector3 *)&mPosX, (Vector3_16 *)&rot, mAreaId, -1);
+                /* Registry slot 0xf4 constructs daWater_Ring_c. */
+                ring = static_cast<daWater_Ring_c *>(dActor_c::Spawn(0xf4, 2, *(Vector3 *)&mPosX, (Vector3_16 *)&rot, mAreaId, -1));
                 if (ring != 0) {
                     mSpawnedIDs[mSpawnedHead] = ring->uniqueID;
                     headp = (int *)(int)M(&mSpawnedHead);
@@ -194,10 +196,10 @@ int daWater_Hakidasi_c::func_ov064_021193b4()
                     if (mSpawnedHead >= 0x14) {
                         mSpawnedHead = 0;
                     }
-                    *(daWater_Hakidasi_c **)((char *)ring + 0x38c) = this;
-                    *(int *)((char *)ring + 0xa4) = 0;
+                    ring->mSpawner = this;
+                    ring->unk_0a4 = 0;
                     ring->mVertSpeed = 0x5000;
-                    *(int *)((char *)ring + 0xac) = 0;
+                    ring->unk_0ac = 0;
                 }
                 mStateTimer = 0x50;
             }
