@@ -76,8 +76,8 @@ extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *he
 
 }
 
-/* Each list helper keeps its own namespace so the local node types
- * do not collide. The functions stay extern "C" under their addresses. */
+/* List helpers keep address-named C entries. The sorting and process-list
+ * descriptors retain local views; actor lookups use real actor-owned nodes. */
 
 // @symbol func_0204405c
 namespace Absorb0204405c {
@@ -119,33 +119,32 @@ done:
 }
 }
 
+/* Process lists hold real actor-owned nodes. Their descriptors contain the
+ * existing frame callback records; all four current wrappers return int,
+ * which this traversal discards. Those address-named free ABI wrappers are
+ * still viewed through a member pointer here, not recovered native methods.
+ * Save the next node before invoking a callback that may unlink its owner. */
 // @symbol func_02043fdc
 namespace Absorb02043fdc {
-class Obj { public: int dummy; };
-typedef void (Obj::*PMF)();
+typedef int (fBase_c::*ProcessCallback)();
 
-struct Node {
-    int pad;        // 0x0
-    Node *next;     // 0x4
-    Obj *obj;       // 0x8
+/* Local descriptor name is inferred from the list primitives and frame loop. */
+struct ProcessListDescriptor {
+    fLiNdBaPr_c *head;       // 0x0
+    fLiNdBaPr_c *tail;       // 0x4
+    ProcessCallback callback; // 0x8
 };
 
-struct Thing {
-    Node *head;     // 0x0
-    int pad;        // 0x4
-    PMF callback;   // 0x8
-};
-
-extern "C" void *func_02043fdc(Thing *thiz)
+extern "C" void *func_02043fdc(ProcessListDescriptor *list)
 {
-    Node *node;
-    if (thiz->callback == 0) return (void *)1;
-    node = thiz->head;
+    fLiNdBaPr_c *node;
+    if (list->callback == 0) return (void *)1;
+    node = list->head;
     while (node != 0) {
-        Node *next;
+        fLiNdBaPr_c *next;
         data_020a4b68 = node;
         next = node->next;
-        (node->obj->*thiz->callback)();
+        (node->owner->*list->callback)();
         node = next;
     }
     data_020a4b68 = node;
@@ -155,16 +154,11 @@ extern "C" void *func_02043fdc(Thing *thiz)
 
 // @symbol func_02043f98
 namespace Absorb02043f98 {
-struct Node {
-    void* x0;
-    struct Node* next;  /* 0x4 */
-    int* x8;            /* 0x8 */
-};
-
-extern "C" struct Node* func_02043f98(struct Node** head, int key) {
-    struct Node* node = *head;
+extern "C" fLiNdBa_c *func_02043f98(fLiNdBa_c **head, unsigned int key)
+{
+    fLiNdBa_c *node = *head;
     while (node != 0) {
-        int b = (int)(node->x8[1] != key);
+        int b = (int)(node->owner->uniqueID != key);
         if (b == 0) return node;
         node = node->next;
     }
@@ -174,15 +168,14 @@ extern "C" struct Node* func_02043f98(struct Node** head, int key) {
 
 // @symbol func_02043f4c
 namespace Absorb02043f4c {
-struct Inner { char pad[0xc]; unsigned short id; };
-struct Node { char pad[4]; struct Node* next; struct Inner* inner; };
-
-extern "C" struct Node* func_02043f4c(struct Node** pp, int key, struct Node* alt) {
-    struct Node* n = alt ? alt->next : *pp;
-    while (n != 0) {
-        int b = (int)(n->inner->id != key);
-        if (b == 0) return n;
-        n = n->next;
+extern "C" fLiNdBa_c *func_02043f4c(fLiNdBa_c **head, unsigned int key,
+                                    fLiNdBa_c *after)
+{
+    fLiNdBa_c *node = after ? after->next : *head;
+    while (node != 0) {
+        int b = (int)(node->owner->actorID != key);
+        if (b == 0) return node;
+        node = node->next;
     }
     return 0;
 }
@@ -382,162 +375,111 @@ void fBase_c::OnPendingDestroy()
 }
 
 // @symbol func_02043880
-/* The scene-graph list maintainer: reconciles one actor's list membership with
- * its state and its parent's flags. Unnamed in config, and it is not an
- * fBase_c member by any evidence -- but it is INSIDE the class's contiguous
- * run, between MarkForDestruction and OnPendingDestroy, and it reads the
- * fBase_c layout directly (state at 0x0e, flags at 0x13, the two list nodes
- * at 0x28 and 0x38), so nothing else can own it.
- *
- * The legacy file reached that layout through three local structs called
- * `Node`, `LNode` and `Obj`. All three names are far too generic to survive in
- * a TU that includes the project headers, so all three are PREFIXED here -- but
- * only renamed. The field accesses are left exactly as they were, offset for
- * offset, because raw-cast versus named-member is a per-FUNCTION codegen choice
- * (a named member folds into `[rN,#imm]`, a cast makes the compiler materialise
- * the address into a scratch register and reuse it) and these 0x240 bytes were
- * recovered against the casts.
- *
- * For the record, since restating a class by hand is exactly what a TU rebuild
- * is supposed to retire, here is what `Obj` maps onto in include/fBase_c.h --
- * so the next pass can try the real members one at a time and measure:
- *     0x0e state  = aliveState        0x12 pad12 = unk_012
- *     0x0f dirty  = shouldBeKilled    0x13 flags = pauseFlags
- *     0x10 f10    = unk_010           0x18 list  = manager.sceneNode.child
- *     0x11 f11    = unk_011
- * and `LNode` is SceneNode seen through its 0x0c next pointer and 0x10
- * owner fields -- so the loop below walks this actor's scene-graph children and
- * marks each one for destruction. */
-struct ActorBase_PListNode {
-    ActorBase_PListNode *prev;
-    ActorBase_PListNode *next;
-    void *owner;
-    u16 c;
-    u16 e;
-};
-
-struct ActorBase_ChildLink {
-    char pad[0xc];
-    ActorBase_ChildLink *next;
-    void *obj;
-};
-
-struct ActorBase_Raw {
-    char pad0[0xe];
-    u8 state;                   /* 0x0e */
-    u8 dirty;                   /* 0x0f */
-    u8 f10;                     /* 0x10 */
-    u8 f11;                     /* 0x11 */
-    u8 pad12;                   /* 0x12 */
-    u8 flags;                   /* 0x13 */
-    int pad14;                  /* 0x14 */
-    ActorBase_ChildLink *list;  /* 0x18 */
-    char pad1c[0xc];
-    ActorBase_PListNode n28;    /* 0x28 */
-    ActorBase_PListNode n38;    /* 0x38 */
-};
-
-#define ACTORBASE_FLAGP(o) ((u8 *)((char *)(o) + 0x13))
-#define ACTORBASE_NODEP(o, OFF) ((ActorBase_PListNode *)((char *)(o) + (OFF)))
-
-extern "C" int func_02043880(ActorBase_Raw *o)
+/* Reconcile list membership, inherited pause flags and pending destruction.
+ * This routine uses the existing fBase_c and intrusive-node fields: scene
+ * children link through SceneNode::next, and each node names its actor owner.
+ * Replacing the local layout copies and offset casts with these members keeps
+ * the complete raw and normally prepared objects identical under 2004/b56.
+ * The address-named free function is retained; its original name and whether
+ * it was a member are not established by the field accesses. */
+extern "C" int func_02043880(fBase_c *o)
 {
-    if (o->dirty != 0) {
-        ActorBase_ChildLink *it;
+    if (o->shouldBeKilled != 0) {
+        fBase_c::SceneNode *it;
         int b = 0;
-        o->dirty = b;
-        if (o->state == 1) b = 1;
+        o->shouldBeKilled = b;
+        if (o->aliveState == 1) b = 1;
         if (b != 0) {
-            func_0203b27c(data_020a4b78, &o->n28);
-            func_0203b27c(data_020a4b98, &o->n38);
+            func_0203b27c(data_020a4b78, &o->manager.behaviorNode);
+            func_0203b27c(data_020a4b98, &o->manager.renderNode);
         } else {
-            func_0203b27c(data_020a4b88, &o->n28);
+            func_0203b27c(data_020a4b88, &o->manager.behaviorNode);
         }
-        func_0203b20c(data_020a4ba8, &o->n28);
-        o->state = 2;
-        for (it = o->list; it != 0; it = it->next) {
-            ((fBase_c *)it->obj)->MarkForDestruction();
+        func_0203b20c(data_020a4ba8, &o->manager.behaviorNode);
+        o->aliveState = 2;
+        for (it = o->manager.sceneNode.child; it != 0; it = it->next) {
+            it->owner->MarkForDestruction();
         }
     } else {
         u32 state;
         int b;
-        ActorBase_Raw *other = (ActorBase_Raw *)func_02043810(o);
+        fBase_c *other = (fBase_c *)func_02043810(o);
         if (other != 0) {
             {
-                u8 f = other->flags;
+                u8 f = other->pauseFlags;
                 int t = f & 1;
                 if (t == 0) {
                     t = f & 2;
                     if (t == 0) goto Lelse1;
                 }
                 {
-                    u8 *q = ACTORBASE_FLAGP(o);
+                    u8 *q = (&o->pauseFlags);
                     *q |= 2;
                 }
                 goto Lafter1;
             Lelse1:
-                if (o->flags & 2) {
-                    u8 *q = ACTORBASE_FLAGP(o);
+                if (o->pauseFlags & 2) {
+                    u8 *q = (&o->pauseFlags);
                     *q &= ~2;
                 }
             Lafter1:;
             }
             {
-                u8 f = other->flags;
+                u8 f = other->pauseFlags;
                 int t = f & 4;
                 if (t == 0) {
                     t = f & 8;
                     if (t == 0) goto Lelse2;
                 }
                 {
-                    u8 *q = ACTORBASE_FLAGP(o);
+                    u8 *q = (&o->pauseFlags);
                     *q |= 8;
                 }
                 goto Lafter2;
             Lelse2:
-                if (o->flags & 8) {
-                    u8 *q = ACTORBASE_FLAGP(o);
+                if (o->pauseFlags & 8) {
+                    u8 *q = (&o->pauseFlags);
                     *q &= ~8;
                 }
             Lafter2:;
             }
         }
-        state = o->state;
-        b = (int)((state == 1) ? (char *)1 : (char *)0);
+        state = o->aliveState;
+        b = (state == 1);
         if (b != 0) {
             {
-                ActorBase_PListNode *n = ACTORBASE_NODEP(o, 0x28);
-                int c = (int)((n->e != n->c) ? (char *)1 : (char *)0);
+                fLiNdBaPr_c *n = (&o->manager.behaviorNode);
+                int c = (n->nextPriority != n->currentPriority);
                 if (c != 0) {
-                    ActorBase_PListNode *m;
-                    func_0203b27c(data_020a4b78, &o->n28);
-                    m = ACTORBASE_NODEP(o, 0x28);
-                    m->c = m->e;
+                    fLiNdBaPr_c *m;
+                    func_0203b27c(data_020a4b78, &o->manager.behaviorNode);
+                    m = (&o->manager.behaviorNode);
+                    m->currentPriority = m->nextPriority;
                     func_0204405c(data_020a4b78, m);
                 }
             }
             {
-                ActorBase_PListNode *n = ACTORBASE_NODEP(o, 0x38);
-                int c = (int)((n->e != n->c) ? (char *)1 : (char *)0);
+                fLiNdBaPr_c *n = (&o->manager.renderNode);
+                int c = (n->nextPriority != n->currentPriority);
                 if (c != 0) {
-                    ActorBase_PListNode *m;
-                    func_0203b27c(data_020a4b98, &o->n38);
-                    m = ACTORBASE_NODEP(o, 0x38);
-                    m->c = m->e;
+                    fLiNdBaPr_c *m;
+                    func_0203b27c(data_020a4b98, &o->manager.renderNode);
+                    m = (&o->manager.renderNode);
+                    m->currentPriority = m->nextPriority;
                     func_0204405c(data_020a4b98, m);
                 }
             }
         } else {
-            int b2 = (int)((state == 2) ? (char *)1 : (char *)0);
+            int b2 = (state == 2);
             if (b2 == 0) {
-                if (o->f11 != 0) {
-                    o->f11 = 0;
-                    func_0203b244(data_020a4b88, &o->n28);
-                } else if (o->f10 != 0) {
-                    o->f10 = 0;
-                    func_0204405c(data_020a4b78, &o->n28);
-                    func_0204405c(data_020a4b98, &o->n38);
-                    o->state = 1;
+                if (o->unk_011 != 0) {
+                    o->unk_011 = 0;
+                    func_0203b244(data_020a4b88, &o->manager.behaviorNode);
+                } else if (o->unk_010 != 0) {
+                    o->unk_010 = 0;
+                    func_0204405c(data_020a4b78, &o->manager.behaviorNode);
+                    func_0204405c(data_020a4b98, &o->manager.renderNode);
+                    o->aliveState = 1;
                 }
             }
         }
@@ -750,11 +692,12 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
 extern "C" {
 void func_020433b8(char* self)
 {
+    fBase_c *actor = (fBase_c *)self;
     func_0204335c(self);
-    if (*(u8*)(self + 0xf) != 0) return;
-    if (*(u8*)(self + 0x10) != 0) return;
+    if (actor->shouldBeKilled != 0) return;
+    if (actor->unk_010 != 0) return;
     {
-        volatile u8* q = (u8*)(self + 0xe);
+        volatile u8* q = &actor->aliveState;
         int b = q[0] == 0 ? 1 : 0;
         if (b == 0) return;
     }
@@ -762,10 +705,10 @@ void func_020433b8(char* self)
         volatile int* p = data_02099f24;
         int c = p[0] == 2 ? 1 : 0;
         if (c) {
-            *(u8*)(self + 0x11) = 1;
+            actor->unk_011 = 1;
             return;
         }
     }
-    func_0203b244(data_020a4b88, self + 0x28);
+    func_0203b244(data_020a4b88, &actor->manager.behaviorNode);
 }
 }
