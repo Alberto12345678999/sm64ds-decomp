@@ -2,7 +2,7 @@
 
 - tested_commit: 395312cb4 (cleanup-datrstrap at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_trs_trap.cpp:43-45` (code at 230-238)
+- claim: `src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp:43-45` (code at 230-238)
   spells mStateTimer twice on purpose (this+0x14c, then this+0x100 plus 0x4c)
   because unifying them shares one address computation and comes out one
   instruction short (0x88, not 0x8c).
@@ -24,7 +24,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_trs_trap.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp \
   --func _ZN11daTrsTrap_c8BehaviorEv --addr 0x0211ce74 --size 0x8c \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```
@@ -49,3 +49,6 @@ MATCHING VERSIONS: 2004/b56
 ```
 
 - verdict: DISPROVED -- and the disproved spelling is no longer in the source.
+
+Current source locations after PR #3840: [src/game/actors/d_a_trs_trap.cpp](../../src/game/actors/d_a_trs_trap.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

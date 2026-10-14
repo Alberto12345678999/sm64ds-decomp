@@ -2,7 +2,7 @@
 
 - tested_commit: 9d3c80dd2 (cleanup-leftover-overlay-batch-3 at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_obj_float_board.cpp:97-100` reads the rider position
+- claim: `src/actors/daObjFloatBoard_c.cpp:97-100` reads the rider position
   through one `Vector3 *` because member loads cost an instruction and
   DIFF.
 - attempted_change (scratch-applied, then reverted):
@@ -23,7 +23,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_obj_float_board.cpp \
+.venv/bin/python tools/match.py --c src/actors/daObjFloatBoard_c.cpp \
   --func _ZN17daObjFloatBoard_c8BehaviorEv --addr 0x020b5c4c --size 0x20c \
   --version 2004/b56 --module ov002 --strict-relocs --brief
 ```
@@ -44,3 +44,6 @@ MATCHING VERSIONS: none
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_obj_float_board.cpp](../../src/game/actors/d_a_obj_float_board.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

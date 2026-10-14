@@ -418,7 +418,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS -- every declared function is defined; the one extra STT_FUNC is __sinit_d_a_obj_pile.cpp, licensed under init",
+      "declared_function_set_equals_defined_function_set": "PASS -- every declared function is defined; the one extra STT_FUNC is __sinit_daObjPile_c.cpp, licensed under init",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS",
       "all_content_sections_licensed": "PASS -- .text 0x021333fc..0x02133968 (11 functions) + .init 0x021349c4..0x02134a30 + .ctor 0x02134b78..0x02134b7c + .bss 0x0213564c..0x02135674. The linkcheck block proves all four ranges.",

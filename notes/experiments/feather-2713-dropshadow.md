@@ -2,7 +2,7 @@
 
 - tested_commit: f9c1e4609a52783e8a611ba2608225d6e7419aac (cleanup-wingfeather at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_feather.cpp:277-278,305-306` keeps
+- claim: `src/game/actors/daFeather_c/daFeather_c.cpp:277-278,305-306` keeps
   dActor_c::DropShadowRadHeight mangled scalar because the header member
   form with Fix12<int> by value changes codegen (6az).
 - attempted_change (scratch-applied, then reverted):
@@ -24,7 +24,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_feather.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daFeather_c/daFeather_c.cpp \
   --func func_ov002_020b2c44 --addr 0x020b2c44 --size 0x1ec \
   --version 2004/b56 --module ov002 --strict-relocs --brief
 ```
@@ -45,3 +45,6 @@ MATCHING VERSIONS: none
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_feather.cpp](../../src/game/actors/d_a_feather.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

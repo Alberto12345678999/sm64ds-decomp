@@ -3,7 +3,7 @@
 - tested_commit: 395312cb4 (cleanup-datrstrap at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
 - claim: the remaining `deslop leftovers` in
-  `src/game/actors/d_a_trs_trap.cpp:30-47` that no cleaner
+  `src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp:30-47` that no cleaner
   spelling can test -- listed here with pointers instead of forced
   experiments.
 - disposition: deferred (`completion: partial`). These are reconstruction
@@ -42,3 +42,6 @@
     census for +0x154.
 - log: none (no compiler invocation).
 - verdict: NOT-EXPERIMENTABLE
+
+Current source locations after PR #3840: [src/game/actors/d_a_trs_trap.cpp](../../src/game/actors/d_a_trs_trap.cpp).
+The experiment and commands above retain the paths at `tested_commit`.
