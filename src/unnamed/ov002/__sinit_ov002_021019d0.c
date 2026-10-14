@@ -1,3 +1,7 @@
+/* SharedFilePtr is opaque to this C initializer. It only passes these objects
+ * by address; their storage and layout are not defined here. The method-bearing
+ * SharedFilePtr.h interface is C++ only. */
+struct SharedFilePtr;
 struct P2 { int a, b; };
 struct P4 { struct P2 lo, hi; };
 struct P6 { struct P2 lo, hi, tail; };
@@ -460,7 +464,7 @@ extern char data_ov002_0210e8b0[];
 extern char data_ov002_0210e8b8[];
 extern char data_ov002_0210e8c0[];
 extern char data_ov002_0210e8c8[];
-extern char data_ov002_0210e8d0[];
+extern struct SharedFilePtr data_ov002_0210e8d0;
 extern char data_ov002_0210e8d8[];
 extern char data_ov002_0210e8e0[];
 extern char data_ov002_0210e8e8[];
@@ -534,7 +538,7 @@ extern char data_ov002_0210eb00[];
 extern char data_ov002_0210eb08[];
 extern char data_ov002_0210eb10[];
 extern char data_ov002_0210eb18[];
-extern char data_ov002_0210eb20[];
+extern struct SharedFilePtr data_ov002_0210eb20;
 extern char data_ov002_0210eb28[];
 extern char data_ov002_0210eb30[];
 extern char data_ov002_0210eb38[];
@@ -553,11 +557,11 @@ extern char data_ov002_0210eb98[];
 extern char data_ov002_0210eba0[];
 extern char data_ov002_0210eba8[];
 extern char data_ov002_0210ebb0[];
-extern char data_ov002_0210ebb8[];
+extern struct SharedFilePtr data_ov002_0210ebb8;
 extern char data_ov002_0210ebc0[];
 extern char data_ov002_0210ebc8[];
 extern char data_ov002_0210ebd0[];
-extern char data_ov002_0210ebd8[];
+extern struct SharedFilePtr data_ov002_0210ebd8;
 extern char data_ov002_0210ebe0[];
 extern char data_ov002_0210ebe8[];
 extern char data_ov002_0210ebf0[];
@@ -1090,11 +1094,11 @@ void __sinit_ov002_021019d0(void)
     func_020731dc(&data_ov002_0210e648, (void *)&func_02017ab4, (void **)&data_ov002_0210f9d4);
     func_02017acc(data_ov002_0210eae8, 0x4c0);
     func_020731dc(&data_ov002_0210eae8, (void *)&func_02017ab4, (void **)&data_ov002_0210f9e0);
-    func_02017acc(data_ov002_0210eb20, 0x807e);
+    func_02017acc(&data_ov002_0210eb20, 0x807e);
     func_020731dc(&data_ov002_0210eb20, (void *)&func_02017ab4, (void **)&data_ov002_0210f9f8);
     func_02017acc(data_ov002_0210eb00, 0x807f);
     func_020731dc(&data_ov002_0210eb00, (void *)&func_02017ab4, (void **)&data_ov002_0210fa04);
-    func_02017acc(data_ov002_0210ebb8, 0x8080);
+    func_02017acc(&data_ov002_0210ebb8, 0x8080);
     func_020731dc(&data_ov002_0210ebb8, (void *)&func_02017ab4, (void **)&data_ov002_0210fa1c);
     func_02017acc(data_ov002_0210e690, 0x8081);
     func_020731dc(&data_ov002_0210e690, (void *)&func_02017ab4, (void **)&data_ov002_0210fa28);
