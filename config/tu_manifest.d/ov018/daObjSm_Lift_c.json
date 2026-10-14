@@ -116,14 +116,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov018_02113bc0",
+      "symbol": "gSmLiftCollisionFile",
       "address": "0x02113bc0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision resource handle constructed with file ID 1716; dBgW_Kc::LoadFile consumes it in InitResources"
     },
     {
-      "symbol": "data_ov018_02113bc8",
+      "symbol": "gSmLiftModelFile",
       "address": "0x02113bc8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -608,7 +608,7 @@
       "source": "0x02112c60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov018_02113bc8",
+      "symbol": "gSmLiftModelFile",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113bc8"
@@ -638,7 +638,7 @@
       "source": "0x02112c70",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov018_02113bc0",
+      "symbol": "gSmLiftCollisionFile",
       "addend": 0,
       "target_module": "ov018",
       "target_address": "0x02113bc0"

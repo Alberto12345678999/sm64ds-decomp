@@ -88,14 +88,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov056_02113400",
+      "symbol": "gEwmIceBrockModelFile",
       "address": "0x02113400",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x5ed"
     },
     {
-      "symbol": "data_ov056_02113408",
+      "symbol": "gEwmIceBrockCollisionFile",
       "address": "0x02113408",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -581,7 +581,7 @@
       "source": "0x02112b94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov056_02113400",
+      "symbol": "gEwmIceBrockModelFile",
       "addend": 0,
       "target_module": "ov056",
       "target_address": "0x02113400"
@@ -611,7 +611,7 @@
       "source": "0x02112ba4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov056_02113408",
+      "symbol": "gEwmIceBrockCollisionFile",
       "addend": 0,
       "target_module": "ov056",
       "target_address": "0x02113408"

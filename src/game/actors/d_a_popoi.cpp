@@ -41,6 +41,14 @@
  *   - pad_3cc (0x30 bytes at 0x3cc) is untouched by any function in this file.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daPopoi_c_AssetId {
+    ASSET_POPOI_BMD = 0x040d,
+    ASSET_POPOI_ATTACK_BCA = 0x040e,
+    ASSET_POPOI_MOVE1_BCA = 0x040f,
+    ASSET_POPOI_MOVE2_BCA = 0x0410
+};
+
 #include "common.h"
 #include "types.h"
 #include "daPopoi_c.h"
@@ -785,10 +793,10 @@ int daPopoi_c::func_ov077_02126300()
  * Definition order is the retail initializer's construction order: the model
  * handle, then the three animation handles, then the five state records in
  * Wander, Pause, Chase, TurnAway, Grab order. */
-PopoiModelFile data_ov077_02127c88(0x40d);
-PopoiAnimationFilePtr data_ov077_02127ca0(0x40e);
-PopoiAnimationFilePtr data_ov077_02127c90(0x40f);
-PopoiAnimationFilePtr data_ov077_02127c98(0x410);
+PopoiModelFile data_ov077_02127c88(ASSET_POPOI_BMD);
+PopoiAnimationFilePtr data_ov077_02127ca0(ASSET_POPOI_ATTACK_BCA);
+PopoiAnimationFilePtr data_ov077_02127c90(ASSET_POPOI_MOVE1_BCA);
+PopoiAnimationFilePtr data_ov077_02127c98(ASSET_POPOI_MOVE2_BCA);
 
 PopoiPMF data_ov077_02127ce8[2] = {
     &daPopoi_c::func_ov077_02126cd4,

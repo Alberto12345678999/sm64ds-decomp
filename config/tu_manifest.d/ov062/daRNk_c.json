@@ -218,7 +218,7 @@
       "evidence": "animation file handle constructed with file ID 0x3be"
     },
     {
-      "symbol": "data_ov062_0211e00c",
+      "symbol": "gdaRNkNokonokoModelFile",
       "address": "0x0211e00c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -232,7 +232,7 @@
       "evidence": "animation file handle constructed with file ID 0x3c6"
     },
     {
-      "symbol": "data_ov062_0211e01c",
+      "symbol": "gdaRNkNokonokoWalkEdAnimationFile",
       "address": "0x0211e01c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -253,14 +253,14 @@
       "evidence": "animation file handle constructed with file ID 0x3bf"
     },
     {
-      "symbol": "data_ov062_0211e034",
+      "symbol": "gdaRNkNokonokoWait1AnimationFile",
       "address": "0x0211e034",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation file handle constructed with file ID 0x3c2"
     },
     {
-      "symbol": "data_ov062_0211e03c",
+      "symbol": "gdaRNkNokonokoWait2AnimationFile",
       "address": "0x0211e03c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -278,7 +278,7 @@
       "address": "0x0211e050",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-local destructor-registration node for data_ov062_0211e00c"
+      "evidence": "compiler-local destructor-registration node for gdaRNkNokonokoModelFile"
     },
     {
       "symbol": "@124",
@@ -306,21 +306,21 @@
       "address": "0x0211e080",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-local destructor-registration node for data_ov062_0211e01c"
+      "evidence": "compiler-local destructor-registration node for gdaRNkNokonokoWalkEdAnimationFile"
     },
     {
       "symbol": "@912",
       "address": "0x0211e08c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-local destructor-registration node for data_ov062_0211e034"
+      "evidence": "compiler-local destructor-registration node for gdaRNkNokonokoWait1AnimationFile"
     },
     {
       "symbol": "@123",
       "address": "0x0211e098",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-local destructor-registration node for data_ov062_0211e03c"
+      "evidence": "compiler-local destructor-registration node for gdaRNkNokonokoWait2AnimationFile"
     },
     {
       "symbol": "data_ov062_0211e0a4",
@@ -1236,7 +1236,7 @@
       "source": "0x211d62c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov062_0211e00c",
+      "symbol": "gdaRNkNokonokoModelFile",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e00c"
@@ -1316,7 +1316,7 @@
       "source": "0x211d654",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov062_0211e01c",
+      "symbol": "gdaRNkNokonokoWalkEdAnimationFile",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e01c"
@@ -1336,7 +1336,7 @@
       "source": "0x211d660",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov062_0211e034",
+      "symbol": "gdaRNkNokonokoWait1AnimationFile",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e034"
@@ -1356,7 +1356,7 @@
       "source": "0x211d66c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov062_0211e03c",
+      "symbol": "gdaRNkNokonokoWait2AnimationFile",
       "addend": 0,
       "target_module": "ov062",
       "target_address": "0x0211e03c"

@@ -35,6 +35,12 @@
 //   re-reads mBobPhase as unsigned; plain member updates came out 8 bytes
 //   short.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Amilift_c_AssetId {
+    ASSET_FL_AMILIFT_BMD = 0x05ef,
+    ASSET_FL_AMILIFT_KCL = 0x05f0
+};
+
 #include "daObjFl_Amilift_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
@@ -317,8 +323,8 @@ s32 daObjFl_Amilift_c::InitResources() {
 
 /* The two file-scope resource handles, in retail initializer order: the
  * model file, then the collision file. */
-AmiliftModelFilePtr data_ov064_0211c730(0x5ef);
-AmiliftClsnFilePtr data_ov064_0211c728(0x5f0);
+AmiliftModelFilePtr data_ov064_0211c730(ASSET_FL_AMILIFT_BMD);
+AmiliftClsnFilePtr data_ov064_0211c728(ASSET_FL_AMILIFT_KCL);
 
 /* The three-entry state dispatch table: wait, forward, backward. mwcc cannot
  * link-time-initialize pointer-to-member records, so the initializer copies

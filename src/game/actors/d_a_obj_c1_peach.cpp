@@ -20,7 +20,7 @@
  *   _ZN14daObjC1Peach_c13InitResourcesEv       0x02111fc0
  *   daObjC1Peach_c_classInit                  0x02112004
  *
- * data_ov010_02112d64 is the model SharedFilePtr this Init LoadFile's,
+ * gC1PeachModelFile is the model SharedFilePtr this Init LoadFile's,
  * defined at the end of this file (constructed as file ID 1454).
  * g_profile_C1_PEACH stays outside this .text run.
  *
@@ -28,6 +28,11 @@
  * Leftover: cstd::fdiv is the shared coined fixed-point division used
  *   across TUs; naming belongs at a shared home, not this leaf.
  */
+
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjC1Peach_c_AssetId {
+    ASSET_C1_PEACH_BMD = 0x05ae
+};
 
 #include "daObjC1Peach_c.h"
 #include "SharedFilePtr.h"
@@ -46,7 +51,7 @@ struct C1PeachModelFilePtr : SharedFilePtr {
 extern "C" {
 extern void Matrix4x3_FromRotationY(Matrix4x3 *m, s32 angle);
 /* Defined at the end of this file so its constructor does not enter .text. */
-extern C1PeachModelFilePtr data_ov010_02112d64;
+extern C1PeachModelFilePtr gC1PeachModelFile;
 }
 
 /* Reconstructed source-style name. SM64DS proves daObjC1Peach_c through
@@ -64,7 +69,7 @@ extern "C" daObjC1Peach_c *daObjC1Peach_c_classInit()
 // @symbol _ZN14daObjC1Peach_c13InitResourcesEv
 int daObjC1Peach_c::InitResources()
 {
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov010_02112d64), 1, -1);
+    mModel.SetFile((BMD_File *)Model::LoadFile(gC1PeachModelFile), 1, -1);
     mOpacity = 0xff;
     UpdateModelTransform();
     return 1;
@@ -101,7 +106,7 @@ int daObjC1Peach_c::Render()
 // @symbol _ZN14daObjC1Peach_c16CleanupResourcesEv
 int daObjC1Peach_c::CleanupResources()
 {
-    data_ov010_02112d64.Release();
+    gC1PeachModelFile.Release();
     return 1;
 }
 
@@ -117,4 +122,4 @@ void daObjC1Peach_c::UpdateModelTransform()
 /* The ROM's initializer constructs the model handle with file ID 1454 and
  * registers a destructor node for it. mwcc emits
  * __sinit_d_a_obj_c1_peach.cpp from this definition. */
-C1PeachModelFilePtr data_ov010_02112d64(1454);
+C1PeachModelFilePtr gC1PeachModelFile(ASSET_C1_PEACH_BMD);

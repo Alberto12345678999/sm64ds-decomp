@@ -121,6 +121,16 @@
  */
 
 /* common.h first: see the header. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjHatenaBlock_c_AssetId {
+    ASSET_HATENA_BOX_BMD = 0x0463,
+    ASSET_HATENA_KARABOX_BCA = 0x0464,
+    ASSET_HATENA_KARABOX_BMD = 0x0465,
+    ASSET_OBJ_CAP_BOX_L_BMD = 0x0466,
+    ASSET_OBJ_CAP_BOX_M_BMD = 0x0467,
+    ASSET_OBJ_CAP_BOX_W_BMD = 0x0468
+};
+
 #include "common.h"
 #include "types.h"
 #include "daObjHatenaBlock_c.h"
@@ -259,12 +269,12 @@ struct HatenaBlockClsnFileHandle : SharedFilePtr {
 /* -------------------------------------------------------------------------- */
 // @symbol __sinit_d_a_obj_hatena_block.cpp
 HatenaBlockModelFilePtr   data_ov102_0214e800(0x800e); /* ITEM/VS BMD */
-HatenaBlockModelFilePtr   data_ov102_0214e7e8(0x463);  /* HATENA_BLOCK BMD */
-HatenaBlockModelFilePtr   data_ov102_0214e808(0x465);  /* HATENA anim BMD */
-HatenaBlockModelFilePtr   data_ov102_0214e7f0(0x467);  /* CAP_BLOCK_M BMD */
-HatenaBlockModelFilePtr   data_ov102_0214e7d8(0x466);  /* CAP_BLOCK_L BMD */
-HatenaBlockModelFilePtr   data_ov102_0214e7e0(0x468);  /* CAP_BLOCK_W BMD */
-HatenaBlockAnimFileHandle data_ov102_0214e7f8(0x464);  /* HATENA BCA */
+HatenaBlockModelFilePtr   data_ov102_0214e7e8(ASSET_HATENA_BOX_BMD);  /* HATENA_BLOCK BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e808(ASSET_HATENA_KARABOX_BMD);  /* HATENA anim BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7f0(ASSET_OBJ_CAP_BOX_M_BMD);  /* CAP_BLOCK_M BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7d8(ASSET_OBJ_CAP_BOX_L_BMD);  /* CAP_BLOCK_L BMD */
+HatenaBlockModelFilePtr   data_ov102_0214e7e0(ASSET_OBJ_CAP_BOX_W_BMD);  /* CAP_BLOCK_W BMD */
+HatenaBlockAnimFileHandle data_ov102_0214e7f8(ASSET_HATENA_KARABOX_BCA);  /* HATENA BCA */
 HatenaBlockClsnFileHandle data_ov102_0214e7d0(0x800d); /* KCL */
 
 /* The pointer-to-member constants the initializer copies into the tables

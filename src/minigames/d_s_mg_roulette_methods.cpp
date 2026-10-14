@@ -23,6 +23,16 @@
 // - The slider's PMF stays a local view; most func_ and data_ helpers are
 //   unnamed in symbols.txt.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgRoulette_c_AssetId {
+    ASSET_D_2D_MG_BG_ROULETTE_NCG_BIN = 0x006f,
+    ASSET_D_2D_MG_BG_ROULETTE_NCL_BIN = 0x0070,
+    ASSET_D_2D_MG_BG_ROULETTE_NSC_BIN = 0x0071,
+    ASSET_D_2D_MG_ROULETTE_NCG_BIN = 0x00e9,
+    ASSET_D_2D_MG_ROULETTE_NCL_BIN = 0x00ea,
+    ASSET_D_2D_YAKU_NSC_BIN = 0x01e4
+};
+
 #include "common.h"
 #include "types.h"
 #include "dScMgRoulette_c.h"
@@ -281,10 +291,10 @@ s32 dScMgRoulette_c::InitResources()
     *(volatile u16 *)0x0400100c = (*(volatile u16 *)0x0400100c & 0x43) | 0x404;
     *(volatile u16 *)0x04001008 = (*(volatile u16 *)0x04001008 & 0x43) | 0x504;
 
-    bgChars = LoadFile(0x6f);
-    bgMap = LoadFile(0x71);
-    f6 = LoadFile(0x1e4);
-    f5 = LoadFile(0x70);
+    bgChars = LoadFile(ASSET_D_2D_MG_BG_ROULETTE_NCG_BIN);
+    bgMap = LoadFile(ASSET_D_2D_MG_BG_ROULETTE_NSC_BIN);
+    f6 = LoadFile(ASSET_D_2D_YAKU_NSC_BIN);
+    f5 = LoadFile(ASSET_D_2D_MG_BG_ROULETTE_NCL_BIN);
     DecompressLZ16(bgChars, G2S::GetBG2CharPtr());
     DecompressLZ16(bgMap, G2S::GetBG2ScrPtr());
     DecompressLZ16(f6, G2S::GetBG0ScrPtr());
@@ -304,8 +314,8 @@ s32 dScMgRoulette_c::InitResources()
         *(volatile u16 *)0x0400100c = (*(volatile u16 *)0x0400100c & ~3) | 2;
     }
 
-    f6 = LoadFile(0xe9);
-    f5 = LoadFile(0xea);
+    f6 = LoadFile(ASSET_D_2D_MG_ROULETTE_NCG_BIN);
+    f5 = LoadFile(ASSET_D_2D_MG_ROULETTE_NCL_BIN);
     DecompressLZ16(f6, 0x6400000);
     DecompressLZ16(f6, 0x6600000);
     GX::LoadOBJPltt(f5, 0, 0x100);

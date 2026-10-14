@@ -40,6 +40,22 @@
  *   through a computed byte pointer. Not tried.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgPanel_c_AssetId {
+    ASSET_D_2D_MG_BG_PAZZLE_PANEL_DOWN_NSC_BIN = 0x0069,
+    ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN = 0x006a,
+    ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCL_BIN = 0x006b,
+    ASSET_D_2D_MG_BG_PAZZLE_PANEL_UP_NSC_BIN = 0x006c,
+    ASSET_D_2D_MG_PAZZLE_PANEL_F_NCG_BIN = 0x00e2,
+    ASSET_D_2D_MG_PAZZLE_PANEL_G_NCG_BIN = 0x00e3,
+    ASSET_D_2D_MG_PAZZLE_PANEL_I_NCG_BIN = 0x00e4,
+    ASSET_D_2D_MG_PAZZLE_PANEL_NCG_BIN = 0x00e5,
+    ASSET_D_2D_MG_PAZZLE_PANEL_NCL_BIN = 0x00e6,
+    ASSET_D_2D_MG_PAZZLE_PANEL_S_NCG_BIN = 0x00e7,
+    ASSET_D_2D_YOSIFINX_BIKKURI_NSC_BIN = 0x01e5,
+    ASSET_D_2D_YOSIFINX_NORMAL_NSC_BIN = 0x01e6
+};
+
 #pragma defer_codegen off /* per-function opt pragmas, and .text in source order */
 
 #include "types.h"
@@ -2143,15 +2159,15 @@ s32 dScMgPanel_c::InitResources()
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 1;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1210;
 
-    file = LoadFile(0x6a);
+    file = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN);
     DecompressLZ16(file, (void *)(func_02054d88() + 0x4000));
     Deallocate((void *)file);
 
-    file = LoadFile(0x6b);
+    file = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCL_BIN);
     GX::LoadBGPltt((const void *)file, 0x1a0, 0x60);
     Deallocate((void *)file);
 
-    file = LoadFile(0x6c);
+    file = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_UP_NSC_BIN);
     func_02056314((void *)file, 0, 0x800);
     Deallocate((void *)file);
 
@@ -2165,22 +2181,22 @@ s32 dScMgPanel_c::InitResources()
     mainFill = 0xf361;
     MultiStore16(mainFill, b, 0x1000);
 
-    file = LoadFile(0x1e6);
+    file = LoadFile(ASSET_D_2D_YOSIFINX_NORMAL_NSC_BIN);
     func_020563d4((const void *)file, 0x800, 0x800);
     Deallocate((void *)file);
 
-    msgFile = LoadFile(0xe5);
+    msgFile = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_NCG_BIN);
     if (GetOwnerLanguage() == 5) {
-        msgFile = LoadFile(0xe7);
+        msgFile = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_S_NCG_BIN);
     } else if (GetOwnerLanguage() == 4) {
-        msgFile = LoadFile(0xe4);
+        msgFile = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_I_NCG_BIN);
     } else if (GetOwnerLanguage() == 3) {
-        msgFile = LoadFile(0xe3);
+        msgFile = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_G_NCG_BIN);
     } else if (GetOwnerLanguage() == 2) {
-        msgFile = LoadFile(0xe2);
+        msgFile = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_F_NCG_BIN);
     }
 
-    file = LoadFile(0xe6);
+    file = LoadFile(ASSET_D_2D_MG_PAZZLE_PANEL_NCL_BIN);
     DecompressLZ16(msgFile, (void *)0x6400000);
     GX::LoadOBJPltt((const void *)file, 0, 0x100);
 
@@ -2192,15 +2208,15 @@ s32 dScMgPanel_c::InitResources()
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x210;
 
     {
-        int subFile = LoadFile(0x6a);
+        int subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCG_BIN);
         DecompressLZ16(subFile, (void *)(G2S::GetBG3CharPtr() + 0x4000));
         Deallocate((void *)subFile);
 
-        subFile = LoadFile(0x6b);
+        subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_NCL_BIN);
         GXS::LoadBGPltt((const void *)subFile, 0x1a0, 0x60);
         Deallocate((void *)subFile);
 
-        subFile = LoadFile(0x69);
+        subFile = LoadFile(ASSET_D_2D_MG_BG_PAZZLE_PANEL_DOWN_NSC_BIN);
         func_020562b4((const void *)subFile, 0, 0x800);
         Deallocate((void *)subFile);
 
@@ -2214,14 +2230,14 @@ s32 dScMgPanel_c::InitResources()
         subFill = 0xf361;
         MultiStore16(subFill, b, 0x1000);
 
-        subFile = LoadFile(0x1e6);
+        subFile = LoadFile(ASSET_D_2D_YOSIFINX_NORMAL_NSC_BIN);
         func_02056374((const void *)subFile, 0, 0x800);
         Deallocate((void *)subFile);
 
         *(volatile u16 *)0x4001008 &= ~3;
         *(volatile u16 *)0x4001008 = (*(volatile u16 *)0x4001008 & 0x43) | 0x610;
 
-        subFile = LoadFile(0x1e5);
+        subFile = LoadFile(ASSET_D_2D_YOSIFINX_BIKKURI_NSC_BIN);
         func_020564f4((const void *)subFile, 0, 0x800);
         Deallocate((void *)subFile);
     }

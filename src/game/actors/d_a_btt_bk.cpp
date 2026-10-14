@@ -25,6 +25,11 @@
 //   free calls defined outside this TU.
 
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daBttBk_c_AssetId {
+    ASSET_BATTA_BLOCK_BMD = 0x02ac
+};
+
 #include "decl_common.h"
 #include "daBttBk_c.h"
 #include "dBgCh_Gnd.h"
@@ -70,7 +75,7 @@ struct daBttBk_StateRow {
     daBttBk_StateFn update;
 };
 
-extern "C" BttBkModelFilePtr data_ov080_02128468;
+extern "C" BttBkModelFilePtr gBattaBlockModelFile;
 extern "C" daBttBk_StateRow data_ov080_0212847c[3];
 
 #pragma defer_codegen off
@@ -333,7 +338,7 @@ void daBttBk_c::func_ov080_0212513c(int i)
 // @symbol _ZN9daBttBk_c16CleanupResourcesEv
 s32 daBttBk_c::CleanupResources()
 {
-    ((SharedFilePtr *)&data_ov080_02128468)->Release();
+    ((SharedFilePtr *)&gBattaBlockModelFile)->Release();
     return 1;
 }
 
@@ -366,7 +371,7 @@ int daBttBk_c::Behavior()
 int daBttBk_c::InitResources()
 {
     Vector3 pos;
-    void *file = Model::LoadFile(*(SharedFilePtr *)&data_ov080_02128468);
+    void *file = Model::LoadFile(*(SharedFilePtr *)&gBattaBlockModelFile);
     mModel.SetFile((BMD_File *)file, 1, 1);
     mShadowModel.InitCuboid();
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x64000, 0x78000, 0x800004, 0x9010);
@@ -427,7 +432,7 @@ extern "C" daBttBk_c *daBttBk_c_classInit()
 
 /* __sinit_d_a_btt_bk.cpp constructs the model handle, then copies the six
  * anonymous pointer-to-member descriptors into this table. */
-BttBkModelFilePtr data_ov080_02128468(0x2ac);
+BttBkModelFilePtr gBattaBlockModelFile(ASSET_BATTA_BLOCK_BMD);
 daBttBk_StateRow data_ov080_0212847c[3] = {
     { &daBttBk_c::func_ov080_0212509c, &daBttBk_c::func_ov080_0212500c },
     { &daBttBk_c::func_ov080_02124fec, &daBttBk_c::func_ov080_02124edc },

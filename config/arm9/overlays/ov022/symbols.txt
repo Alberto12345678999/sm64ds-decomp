@@ -252,12 +252,12 @@ _ZTS21daObj_volcanoCannon_c kind:data(any) addr:0x02114440
 g_profile_OBJ_VOLCANO_CANNON kind:data(any) addr:0x02114458 ambiguous
 _ZTV21daObj_volcanoCannon_c kind:data(any) addr:0x0211447c
 data_ov022_02114498 kind:data(any) addr:0x02114498 ambiguous
-data_ov022_02114500 kind:bss addr:0x02114500
-data_ov022_02114508 kind:bss addr:0x02114508
+gFlRingModelFile kind:bss addr:0x02114500
+gFlRingCollisionFile kind:bss addr:0x02114508
 @602 kind:bss addr:0x02114510
 @442 kind:bss addr:0x0211451c
-data_ov022_02114528 kind:bss addr:0x02114528
-data_ov022_02114530 kind:bss addr:0x02114530
+gFlKomaDCollisionFile kind:bss addr:0x02114528
+gFlKomaDModelFile kind:bss addr:0x02114530
 @606 kind:bss addr:0x02114538
 @392 kind:bss addr:0x02114544
 data_ov022_02114550 kind:bss addr:0x02114550
@@ -272,10 +272,10 @@ data_ov022_021145a0 kind:bss addr:0x021145a0
 data_ov022_021145a8 kind:bss addr:0x021145a8
 @126 kind:bss addr:0x021145b0
 @125 kind:bss addr:0x021145bc
-data_ov022_021145c8 kind:bss addr:0x021145c8
-data_ov022_021145d0 kind:bss addr:0x021145d0
-data_ov022_021145d8 kind:bss addr:0x021145d8
-data_ov022_021145e0 kind:bss addr:0x021145e0
+gdaObjFl_UkiyukaFlShisoCollisionFile kind:bss addr:0x021145c8
+gFlUkiYukaCollisionFile kind:bss addr:0x021145d0
+gdaObjFl_UkiyukaFlShisoModelFile kind:bss addr:0x021145d8
+gFlUkiYukaModelFile kind:bss addr:0x021145e0
 @609 kind:bss addr:0x021145e8
 @608 kind:bss addr:0x021145f4
 @611 kind:bss addr:0x02114600
@@ -291,8 +291,8 @@ data_ov022_02114640 kind:bss addr:0x02114640
 data_ov022_02114648 kind:bss addr:0x02114648
 @357 kind:bss addr:0x02114650
 @358 kind:bss addr:0x0211465c
-data_ov022_02114668 kind:bss addr:0x02114668
-data_ov022_02114670 kind:bss addr:0x02114670
+gFlLogModelFile kind:bss addr:0x02114668
+gFlLogCollisionFile kind:bss addr:0x02114670
 data_ov022_02114678 kind:bss addr:0x02114678
 data_ov022_02114684 kind:bss addr:0x02114684
 data_ov022_02114690 kind:bss addr:0x02114690

@@ -28,6 +28,30 @@
 //   the vtable; the OAM SECONDSE symbol read at Render is a link artifact of
 //   the address, not a proven field.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgSlots_AssetId {
+    ASSET_D_2D_BADWIZER_NSC_BIN = 0x0001,
+    ASSET_D_2D_GRADE_NSC_BIN = 0x0004,
+    ASSET_D_2D_MG_BG_PAUSE_NSC_BIN = 0x0067,
+    ASSET_D_2D_MG_BG_SLOT_DOWN_NCG_BIN = 0x0072,
+    ASSET_D_2D_MG_BG_SLOT_DOWN_NCL_BIN = 0x0073,
+    ASSET_D_2D_MG_BG_SLOT_DOWN_NSC_BIN = 0x0074,
+    ASSET_D_2D_MG_BG_SLOT_FACE02_NSC_BIN = 0x0075,
+    ASSET_D_2D_MG_BG_SLOT_FACE_DOWN_NSC_BIN = 0x0076,
+    ASSET_D_2D_MG_BG_SLOT_FACE_NCG_BIN = 0x0077,
+    ASSET_D_2D_MG_BG_SLOT_FACE_NCL_BIN = 0x0078,
+    ASSET_D_2D_MG_BG_SLOT_FACE_NSC_BIN = 0x0079,
+    ASSET_D_2D_MG_BG_SLOT_FACE_NUKI_NSC_BIN = 0x007a,
+    ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN = 0x007b,
+    ASSET_D_2D_MG_BG_SLOT_SCORE_UP_NSC_BIN = 0x007c,
+    ASSET_D_2D_MG_BG_SLOT_UP_NCG_BIN = 0x007d,
+    ASSET_D_2D_MG_BG_SLOT_UP_NCL_BIN = 0x007e,
+    ASSET_D_2D_MG_BG_SLOT_UP_NSC_BIN = 0x007f,
+    ASSET_D_2D_MG_SLOT_FACE_NCG_BIN = 0x00eb,
+    ASSET_D_2D_MG_SLOT_FACE_NCL_BIN = 0x00ec,
+    ASSET_D_2D_MG_SLOT_NCL_BIN = 0x00f1
+};
+
 #include "dScMgSlot1_c.h"
 #include "dScMgSlot3_c.h"
 #include "Sound.h"
@@ -241,7 +265,7 @@ void dScMgSlot3_c::Virtual80()
 
     idx = GetGameLanguage();
     LoadCompressedFileAt(data_ov006_0213e614[idx], func_02054ea8());
-    LoadCompressedFileAt(0x67, G2::GetBG1ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_PAUSE_NSC_BIN, G2::GetBG1ScrPtr());
 
     *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1118;
 }
@@ -889,37 +913,37 @@ s32 dScMgSlot3_c::InitResources()
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 1;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 3;
 
-    LoadCompressedFileAt(0x77, (void *)func_02054d88());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NCG_BIN, (void *)func_02054d88());
 
     {
-        int h = LoadFile(0x78);
+        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NCL_BIN);
         _ZN2GX10LoadBGPlttEPKvjj((const void *)h, 0x60, 0x1a0);
         _ZN3GXS10LoadBGPlttEPKvjj((const void *)h, 0x60, 0x1a0);
         Deallocate((void *)h);
     }
 
-    LoadCompressedFileAt(0x75, _ZN2G212GetBG1ScrPtrEv());
-    LoadCompressedFileAt(0x7a, _ZN2G212GetBG2ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE02_NSC_BIN, _ZN2G212GetBG1ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NUKI_NSC_BIN, _ZN2G212GetBG2ScrPtrEv());
 
     {
-        int h = LoadFile(0x79);
+        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_FACE_NSC_BIN);
         func_02056314((void *)h, 0, 0x800);
         Deallocate((void *)h);
     }
 
-    LoadCompressedFileAt(0xeb, (void *)0x6400000);
+    LoadCompressedFileAt(ASSET_D_2D_MG_SLOT_FACE_NCG_BIN, (void *)0x6400000);
 
     data_0209d45c = 0x1f;
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & ~3) | 3;
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x1218;
     *(volatile u16 *)0x400100c = *(volatile u16 *)0x400100c & ~0x40;
 
-    LoadCompressedFileAt(0x77, _ZN3G2S13GetBG2CharPtrEv());
-    LoadCompressedFileAt(0x76, _ZN3G2S12GetBG2ScrPtrEv());
-    LoadCompressedFileAt(0xeb, (void *)0x6600000);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_NCG_BIN, _ZN3G2S13GetBG2CharPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_FACE_DOWN_NSC_BIN, _ZN3G2S12GetBG2ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_SLOT_FACE_NCG_BIN, (void *)0x6600000);
 
     {
-        int h = LoadFile(0xec);
+        int h = LoadFile(ASSET_D_2D_MG_SLOT_FACE_NCL_BIN);
         _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)h, 0xe0);
         _ZN2GX11LoadOBJPlttEPKvjj((const void *)h, 0, 0xe0);
         _ZN3GXS11LoadOBJPlttEPKvjj((const void *)h, 0, 0xe0);
@@ -1546,15 +1570,15 @@ s32 dScMgSlot1_c::InitResources()
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1310;
     *(volatile u16 *)0x400000e = *(volatile u16 *)0x400000e & ~0x40;
 
-    LoadCompressedFileAt(0x7d, (void *)func_02054d88());
-    LoadCompressedFileAt(0x7b, _ZN2G213GetBG2CharPtrEv() + 0x7800);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NCG_BIN, (void *)func_02054d88());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, _ZN2G213GetBG2CharPtrEv() + 0x7800);
     {
-        int h = LoadFile(0x7e);
+        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_UP_NCL_BIN);
         _ZN2GX10LoadBGPlttEPKvjj((const void *)h, 0x60, 0x1a0);
         Deallocate((void *)h);
     }
-    LoadCompressedFileAt(0x7c, _ZN2G212GetBG2ScrPtrEv());
-    LoadCompressedFileAt(0x7f, _ZN2G212GetBG3ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_SCORE_UP_NSC_BIN, _ZN2G212GetBG2ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_UP_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
 
     data_0209d45c = 0x1c;
 
@@ -1573,16 +1597,16 @@ s32 dScMgSlot1_c::InitResources()
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x1310;
     *(volatile u16 *)0x400100e = *(volatile u16 *)0x400100e & ~0x40;
 
-    LoadCompressedFileAt(0x72, _ZN3G2S13GetBG2CharPtrEv());
-    LoadCompressedFileAt(0x7b, _ZN3G2S13GetBG0CharPtrEv() + 0x7800);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_DOWN_NCG_BIN, _ZN3G2S13GetBG2CharPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_GRADE_NCG_BIN, _ZN3G2S13GetBG0CharPtrEv() + 0x7800);
     {
-        int h = LoadFile(0x73);
+        int h = LoadFile(ASSET_D_2D_MG_BG_SLOT_DOWN_NCL_BIN);
         _ZN3GXS10LoadBGPlttEPKvjj((const void *)h, 0x60, 0x1a0);
         Deallocate((void *)h);
     }
-    LoadCompressedFileAt(4, _ZN3G2S12GetBG0ScrPtrEv());
-    LoadCompressedFileAt(1, _ZN3G2S12GetBG1ScrPtrEv() + 0x800);
-    LoadCompressedFileAt(0x74, _ZN3G2S12GetBG2ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_GRADE_NSC_BIN, _ZN3G2S12GetBG0ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_BADWIZER_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv() + 0x800);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_SLOT_DOWN_NSC_BIN, _ZN3G2S12GetBG2ScrPtrEv());
 
     {
         char *d3 = _ZN3G2S12GetBG3ScrPtrEv();
@@ -1594,7 +1618,7 @@ s32 dScMgSlot1_c::InitResources()
     LoadCompressedFileAt(data_ov006_0213e628[GetGameLanguage()], (void *)0x6600000);
 
     {
-        int h = LoadFile(0xf1);
+        int h = LoadFile(ASSET_D_2D_MG_SLOT_NCL_BIN);
         _ZN2GX11LoadOBJPlttEPKvjj((const void *)h, 0, 0x40);
         _ZN3GXS11LoadOBJPlttEPKvjj((const void *)h, 0, 0x40);
         Deallocate((void *)h);

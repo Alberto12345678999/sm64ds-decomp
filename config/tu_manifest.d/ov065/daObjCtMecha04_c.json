@@ -116,28 +116,28 @@
   "production_mode": "intact-object",
   "bss": [
     {
-      "symbol": "data_ov065_0211d8b4",
+      "symbol": "gCtMechaObj04sCollisionFile",
       "address": "0x0211d8b4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision resource handle constructed with file ID 1473; the variant collision table data_ov065_0211d198 loads it for the large belt"
     },
     {
-      "symbol": "data_ov065_0211d8bc",
+      "symbol": "gCtMechaObj04lModelFile",
       "address": "0x0211d8bc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 1470; the variant model table data_ov065_0211d194 loads it for the small belt"
     },
     {
-      "symbol": "data_ov065_0211d8c4",
+      "symbol": "gCtMechaObj04lCollisionFile",
       "address": "0x0211d8c4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision resource handle constructed with file ID 1471; the variant collision table loads it for the small belt"
     },
     {
-      "symbol": "data_ov065_0211d8cc",
+      "symbol": "gCtMechaObj04sModelFile",
       "address": "0x0211d8cc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -373,7 +373,7 @@
       "source": "0x0211c85c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d8cc",
+      "symbol": "gCtMechaObj04sModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d8cc"
@@ -403,7 +403,7 @@
       "source": "0x0211c868",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d8bc",
+      "symbol": "gCtMechaObj04lModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d8bc"
@@ -423,7 +423,7 @@
       "source": "0x0211c874",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d8b4",
+      "symbol": "gCtMechaObj04sCollisionFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d8b4"
@@ -453,7 +453,7 @@
       "source": "0x0211c884",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d8c4",
+      "symbol": "gCtMechaObj04lCollisionFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d8c4"

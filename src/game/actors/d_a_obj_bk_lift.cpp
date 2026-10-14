@@ -62,6 +62,12 @@
    copies one flat, and with math/Matrix.h's structured spelling that copy
    compiles to 0xb4 against the ROM's 0x9c. Same rule, and the same reason, as
    the common.h include in include/dBgActor_c.h. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjBk_Lift_c_AssetId {
+    ASSET_BK_LIFT01_BMD = 0x0599,
+    ASSET_BK_LIFT01_KCL = 0x059a
+};
+
 #include "common.h"
 
 #include "daObjBk_Lift_c.h"
@@ -342,5 +348,5 @@ void daObjBk_Lift_c::Kill()
 /* The ROM's initializer constructs the model handle with file ID 1433 and
  * the collision handle with file ID 1434, registering a destructor node for
  * each. mwcc emits __sinit_d_a_obj_bk_lift.cpp from these definitions. */
-BkLiftModelFilePtr data_ov015_02114a64(1433);
-BkLiftCollisionFilePtr data_ov015_02114a5c(1434);
+BkLiftModelFilePtr data_ov015_02114a64(ASSET_BK_LIFT01_BMD);
+BkLiftCollisionFilePtr data_ov015_02114a5c(ASSET_BK_LIFT01_KCL);

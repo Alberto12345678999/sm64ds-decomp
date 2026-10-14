@@ -153,42 +153,42 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov095_02137898",
+      "symbol": "gThLiftModelFile",
       "address": "0x02137898",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x6bf"
     },
     {
-      "symbol": "data_ov095_021378a0",
+      "symbol": "gRcRift02CollisionFile",
       "address": "0x021378a0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x6ac"
     },
     {
-      "symbol": "data_ov095_021378a8",
+      "symbol": "gCvUdLiftModelFile",
       "address": "0x021378a8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x5db"
     },
     {
-      "symbol": "data_ov095_021378b0",
+      "symbol": "gThLiftCollisionFile",
       "address": "0x021378b0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x6c0"
     },
     {
-      "symbol": "data_ov095_021378b8",
+      "symbol": "gCvUdLiftCollisionFile",
       "address": "0x021378b8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x5dc"
     },
     {
-      "symbol": "data_ov095_021378c0",
+      "symbol": "gRcRift02ModelFile",
       "address": "0x021378c0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -892,7 +892,7 @@
       "source": "0x02137350",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov095_02137898",
+      "symbol": "gThLiftModelFile",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x02137898"
@@ -922,7 +922,7 @@
       "source": "0x02137360",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov095_021378a8",
+      "symbol": "gCvUdLiftModelFile",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x021378a8"
@@ -942,7 +942,7 @@
       "source": "0x0213736c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov095_021378c0",
+      "symbol": "gRcRift02ModelFile",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x021378c0"
@@ -962,7 +962,7 @@
       "source": "0x02137378",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov095_021378b0",
+      "symbol": "gThLiftCollisionFile",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x021378b0"
@@ -992,7 +992,7 @@
       "source": "0x02137384",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov095_021378b8",
+      "symbol": "gCvUdLiftCollisionFile",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x021378b8"
@@ -1012,7 +1012,7 @@
       "source": "0x02137390",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov095_021378a0",
+      "symbol": "gRcRift02CollisionFile",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x021378a0"

@@ -82,6 +82,26 @@
  *   otherwise wins and scalarizes Behavior's 12-word matrix copy.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDemo_c_AssetId {
+    ASSET_D_2D_ED_STAR_NCG_BIN = 0x022c,
+    ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCG_BIN = 0x024f,
+    ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCL_BIN = 0x0250,
+    ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCG_BIN = 0x0251,
+    ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCL_BIN = 0x0252,
+    ASSET_D_2D_STAFF_ROLL_CAKE_BRIGHT_NSC_BIN = 0x0253,
+    ASSET_D_2D_STAFF_ROLL_CAKE_DARK1_NSC_BIN = 0x0254,
+    ASSET_D_2D_STAFF_ROLL_CAKE_DARK2_NSC_BIN = 0x0255,
+    ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCG_BIN = 0x0256,
+    ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCL_BIN = 0x0257,
+    ASSET_D_2D_STAFF_ROLL_END_EUR_NCG_BIN = 0x0267,
+    ASSET_D_2D_STAFF_ROLL_END_EUR_NCL_BIN = 0x0268,
+    ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_F_NCG_BIN = 0x026b,
+    ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_G_NCG_BIN = 0x026d,
+    ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_I_NCG_BIN = 0x026f,
+    ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_S_NCG_BIN = 0x0271
+};
+
 #include "types.h"
 #include "common.h"
 #include "Model.h"
@@ -3461,11 +3481,11 @@ void func_ov002_020f5fe4(char* c)
 
     data_0209d454 &= ~0x1f;
 
-    f = LoadFile(0x267);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_END_EUR_NCG_BIN);
     DecompressLZ16(f, (void*)0x6400000);
     Deallocate((void*)f);
 
-    f = LoadFile(0x268);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_END_EUR_NCL_BIN);
     _ZN2GX11LoadOBJPlttEPKvjj((const void*)f, 0, 0x200);
     Deallocate((void*)f);
 
@@ -3476,16 +3496,16 @@ void func_ov002_020f5fe4(char* c)
     *(volatile u16*)0x400100a = (*(volatile u16*)0x400100a & ~3) | 2;
     *(volatile u16*)0x400100a = (*(volatile u16*)0x400100a & 0x43) | 0x800;
 
-    f = LoadFile(0x24f);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCG_BIN);
     DecompressLZ16(f, (void*)_ZN3G2S13GetBG1CharPtrEv());
     Deallocate((void*)f);
 
-    f = LoadFile(0x250);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_4BIT_NCL_BIN);
     _ZN2GX10LoadBGPlttEPKvjj((const void*)f, 0, 2);
     _ZN3GXS10LoadBGPlttEPKvjj((const void*)f, 0, 0x200);
     Deallocate((void*)f);
 
-    f = LoadFile(0x254);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DARK1_NSC_BIN);
     func_02056434((const void*)f, 0, 0x800);
     Deallocate((void*)f);
 
@@ -3493,21 +3513,21 @@ void func_ov002_020f5fe4(char* c)
     *(volatile u16*)0x400100e = (*(volatile u16*)0x400100e & 0x43) | 0xc90;
 
     if (GetOwnerLanguage() == 5) {
-        r5 = LoadFile(0x271);
+        r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_S_NCG_BIN);
     } else if (GetOwnerLanguage() == 4) {
-        r5 = LoadFile(0x26f);
+        r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_I_NCG_BIN);
     } else if (GetOwnerLanguage() == 3) {
-        r5 = LoadFile(0x26d);
+        r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_G_NCG_BIN);
     } else if (GetOwnerLanguage() == 2) {
-        r5 = LoadFile(0x26b);
+        r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_F_NCG_BIN);
     } else {
-        r5 = LoadFile(0x251);
+        r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCG_BIN);
     }
 
     DecompressLZ16(r5, (void*)_ZN3G2S13GetBG3CharPtrEv());
     Deallocate((void*)r5);
 
-    r5 = LoadFile(0x252);
+    r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_8BIT_NCL_BIN);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj((u32)r5, 0x200);
     _ZN2GX22SetBankForSubBGExtPlttEt(0x80);
     _ZN3GXS18BeginLoadBGExtPlttEv();
@@ -3516,22 +3536,22 @@ void func_ov002_020f5fe4(char* c)
     _ZN3GXS16EndLoadBGExtPlttEv();
     Deallocate((void*)r5);
 
-    f = LoadFile(0x253);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_BRIGHT_NSC_BIN);
     func_020562b4((const void*)f, 0, 0x800);
     Deallocate((void*)f);
 
     *(volatile u16*)0x400100c = (*(volatile u16*)0x400100c & ~3) | 2;
     *(volatile u16*)0x400100c = (*(volatile u16*)0x400100c & 0x43) | 0xa90;
 
-    f = LoadFile(0x255);
+    f = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DARK2_NSC_BIN);
     func_02056374((const void*)f, 0, 0x800);
     Deallocate((void*)f);
 
     data_0209d454 |= 0x10;
 
     {
-        int f6 = LoadFile(0x256);
-        r5 = LoadFile(0x257);
+        int f6 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCG_BIN);
+        r5 = LoadFile(ASSET_D_2D_STAFF_ROLL_CAKE_DOLL_NCL_BIN);
         DecompressLZ16(f6, (void*)0x6600000);
         _ZN3GXS11LoadOBJPlttEPKvjj((const void*)r5, 0, 0x200);
         Deallocate((void*)f6);
@@ -3542,7 +3562,7 @@ void func_ov002_020f5fe4(char* c)
     if (*(int*)(c + 0x510) == 0) {
         *(int*)(c + 0x510) = (int)_ZN6Memory13operator_new2Ej(0x4000);
     }
-    f = LoadFile(0x22c);
+    f = LoadFile(ASSET_D_2D_ED_STAR_NCG_BIN);
     DecompressLZ16(f, *(void**)(c + 0x510));
     Deallocate((void*)f);
 

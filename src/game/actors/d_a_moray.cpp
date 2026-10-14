@@ -42,6 +42,14 @@
  *   pad_0c5. unk_400 is zeroed by the two idle inits and read nowhere
  *   in this file. Sound 0xfa has no name here.
  */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daMoray_c_AssetId {
+    ASSET_MORAY_BMD = 0x03b5,
+    ASSET_MORAY_SEARCH_BCA = 0x03b6,
+    ASSET_MORAY_SWIM_BCA = 0x03b7,
+    ASSET_MORAY_SWIM_START_BCA = 0x03b8
+};
+
 #include "common.h"
 #include "daMoray_c.h"
 #include "SharedFilePtr.h"
@@ -914,10 +922,10 @@ extern "C" daMoray_c *daMoray_c_classInit()
 /* Construction order is source order: the four file handles first, then the
  * five State rows in the order the initializer copies them. The registration
  * nodes and the PMF literals are compiler temporaries. */
-MorayModelFileHandle data_ov016_02114d38(0x3b5);
-MorayAnimResFileHandle data_ov016_02114d20(0x3b6);
-MorayAnimResFileHandle data_ov016_02114d30(0x3b7);
-MorayAnimResFileHandle data_ov016_02114d28(0x3b8);
+MorayModelFileHandle data_ov016_02114d38(ASSET_MORAY_BMD);
+MorayAnimResFileHandle data_ov016_02114d20(ASSET_MORAY_SEARCH_BCA);
+MorayAnimResFileHandle data_ov016_02114d30(ASSET_MORAY_SWIM_BCA);
+MorayAnimResFileHandle data_ov016_02114d28(ASSET_MORAY_SWIM_START_BCA);
 
 daMoray_c::State data_ov016_02114d8c = { &daMoray_c::func_ov016_02111bac,
                                        &daMoray_c::func_ov016_021119ec };

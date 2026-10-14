@@ -177,12 +177,12 @@ _ZTV7daPkn_c kind:data(any) addr:0x02130c28
 data_ov084_02130cc0 kind:bss addr:0x02130cc0
 data_ov084_02130cc8 kind:bss addr:0x02130cc8
 data_ov084_02130cd0 kind:bss addr:0x02130cd0
-data_ov084_02130cd8 kind:bss addr:0x02130cd8
+gKuriboRecoverAnimationFile kind:bss addr:0x02130cd8
 data_ov084_02130ce0 kind:bss addr:0x02130ce0
 data_ov084_02130ce8 kind:bss addr:0x02130ce8
 data_ov084_02130cf0 kind:bss addr:0x02130cf0
 data_ov084_02130cf8 kind:bss addr:0x02130cf8
-data_ov084_02130d00 kind:bss addr:0x02130d00
+gKuriboLowModelModelFile kind:bss addr:0x02130d00
 @1952 kind:bss addr:0x02130d08
 @1944 kind:bss addr:0x02130d14
 @1945 kind:bss addr:0x02130d20

@@ -37,6 +37,16 @@
 //   hit-flag mask 0x66fe0 stays a literal.
 
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daChoropu_c_AssetId {
+    ASSET_CHOROPU_BMD = 0x02d1,
+    ASSET_CHOROPU_END_BCA = 0x02d2,
+    ASSET_CHOROPU_SEARCH_BCA = 0x02d3,
+    ASSET_CHOROPU_START_BCA = 0x02d4,
+    ASSET_CHOROPU_THROW_BCA = 0x02d5,
+    ASSET_ROCK_BMD = 0x02d6
+};
+
 #include "decl_common.h"
 #include "daChoropu_c.h"
 #include "daChoro_Rock_c.h"
@@ -859,12 +869,12 @@ extern "C" daChoropu_c *daChoropu_c_classInit()
  * Definition order is the retail initializer's construction order: the two
  * model handles, then the four animation handles, then the six state rows in
  * Setup, Hidden, Emerge, ThrowRock, Wait, Leap order. */
-ChoropuModelFile data_ov080_021283c0(0x2d1);
-ChoropuModelFile data_ov080_021283c8(0x2d6);
-ChoropuAnimationFilePtr data_ov080_021283e8(0x2d2);
-ChoropuAnimationFilePtr data_ov080_021283d0(0x2d3);
-ChoropuAnimationFilePtr data_ov080_021283d8(0x2d4);
-ChoropuAnimationFilePtr data_ov080_021283e0(0x2d5);
+ChoropuModelFile data_ov080_021283c0(ASSET_CHOROPU_BMD);
+ChoropuModelFile data_ov080_021283c8(ASSET_ROCK_BMD);
+ChoropuAnimationFilePtr data_ov080_021283e8(ASSET_CHOROPU_END_BCA);
+ChoropuAnimationFilePtr data_ov080_021283d0(ASSET_CHOROPU_SEARCH_BCA);
+ChoropuAnimationFilePtr data_ov080_021283d8(ASSET_CHOROPU_START_BCA);
+ChoropuAnimationFilePtr data_ov080_021283e0(ASSET_CHOROPU_THROW_BCA);
 
 ChoropuStateRow data_ov080_02128438[6] = {
     {{&daChoropu_c::func_ov080_02123fcc}},

@@ -25,8 +25,8 @@ struct BMD_File;
 struct BTP_File;
 
 extern "C" daBgSnmHed_c::StateFunc data_ov072_02122c00[];
-extern int data_ov072_02122bcc[];
-extern int data_ov072_02122bd4[];
+extern int gBigSnowmanSmileTextureSequenceFile[];
+extern int gBigSnowmanCryTextureSequenceFile[];
 
 extern "C" {
 void Matrix4x3_FromRotationY(void *matrix, int angle);
@@ -113,7 +113,7 @@ int daBgSnmHed_c::State3()
 int daBgSnmHed_c::InitState3()
 {
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, (void *)data_ov072_02122bcc[1], 0, 0x1000, 0);
+        &mTextureSequence, (void *)gBigSnowmanSmileTextureSequenceFile[1], 0, 0x1000, 0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mSubstate = 0;
@@ -236,7 +236,7 @@ int daBgSnmHed_c::State0()
 int daBgSnmHed_c::InitState0()
 {
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTextureSequence, (void *)data_ov072_02122bd4[1], 0, 0x1000, 0);
+        &mTextureSequence, (void *)gBigSnowmanCryTextureSequenceFile[1], 0, 0x1000, 0);
     mVertAccel = 0;
     mTerminalVelocity = 0;
     mStateValue = 0;

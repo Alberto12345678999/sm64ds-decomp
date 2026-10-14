@@ -95,35 +95,35 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov064_0211c6c4",
+      "symbol": "gdaBDonketuDonketuHitAnimationFile",
       "address": "0x0211c6c4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_b_donketu.cpp"
     },
     {
-      "symbol": "data_ov064_0211c6cc",
+      "symbol": "gBossDonketuModelFile",
       "address": "0x0211c6cc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_b_donketu.cpp"
     },
     {
-      "symbol": "data_ov064_0211c6d4",
+      "symbol": "gdaBDonketuDonketuDeadAnimationFile",
       "address": "0x0211c6d4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_b_donketu.cpp"
     },
     {
-      "symbol": "data_ov064_0211c6dc",
+      "symbol": "gdaBDonketuDonketuTurnAnimationFile",
       "address": "0x0211c6dc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_b_donketu.cpp"
     },
     {
-      "symbol": "data_ov064_0211c6e4",
+      "symbol": "gdaBDonketuDonketuWalkAnimationFile",
       "address": "0x0211c6e4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -776,7 +776,7 @@
       "source": "0x0211af80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c6cc",
+      "symbol": "gBossDonketuModelFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c6cc"
@@ -806,7 +806,7 @@
       "source": "0x0211af90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c6d4",
+      "symbol": "gdaBDonketuDonketuDeadAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c6d4"
@@ -836,7 +836,7 @@
       "source": "0x0211af9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c6c4",
+      "symbol": "gdaBDonketuDonketuHitAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c6c4"
@@ -856,7 +856,7 @@
       "source": "0x0211afa8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c6dc",
+      "symbol": "gdaBDonketuDonketuTurnAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c6dc"
@@ -876,7 +876,7 @@
       "source": "0x0211afb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c6e4",
+      "symbol": "gdaBDonketuDonketuWalkAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c6e4"

@@ -22,6 +22,12 @@
  *   data rows in their own modules.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Seesaw_c_AssetId {
+    ASSET_FL_SHISO_BMD = 0x0610,
+    ASSET_FL_SHISO_KCL = 0x0611
+};
+
 #include "math/Matrix.h"
 #include "daObjFl_Seesaw_c.h"
 #include "SharedFilePtr.h"
@@ -148,5 +154,5 @@ extern "C" daObjFl_Seesaw_c *daObjFl_Seesaw_c_classInit()
 /* Static-init globals (was the handwritten __sinit_ov022_02112e58 shard).
  * Definition order is the retail initializer's construction order: the
  * model handle (file 0x610), then the collision handle (file 0x611). */
-SeesawModelFile data_ov022_021145a8(0x610);
-SeesawCollisionFilePtr data_ov022_021145a0(0x611);
+SeesawModelFile data_ov022_021145a8(ASSET_FL_SHISO_BMD);
+SeesawCollisionFilePtr data_ov022_021145a0(ASSET_FL_SHISO_KCL);

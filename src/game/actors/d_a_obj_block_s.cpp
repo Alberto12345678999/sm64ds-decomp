@@ -78,6 +78,12 @@
  * Leftover: the slide step compares mClsnYOffsetTarget with 0xa0, which the values
  *   stored there never equal.
  */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjBlockS_c_AssetId {
+    ASSET_BROKEN_BLOCK_S_BMD = 0x0458,
+    ASSET_BROKEN_BLOCK_S_KCL = 0x0459
+};
+
 #include "decl_Actor.h"
 #include "decl_common.h"
 #include "daObjBlockS_c.h"
@@ -232,8 +238,8 @@ struct BlockSCollisionFilePtr : SharedFilePtr {
     BlockSCollisionFilePtr(u32 fileID);
     ~BlockSCollisionFilePtr();
 };
-extern BlockSModelFilePtr data_ov098_0213c850;
-extern BlockSCollisionFilePtr data_ov098_0213c858;
+extern BlockSModelFilePtr gBrokenBlockSModelFile;
+extern BlockSCollisionFilePtr gBrokenBlockSCollisionFile;
 
 /* Four-word copy source for the thrown state's speed tables. */
 struct BlockSW4 { u32 w[4]; };
@@ -1461,8 +1467,8 @@ extern "C" daObjBlockS_c *daObjBlockS_c_classInit()
 }
 
 // @symbol __sinit_d_a_obj_block_s.cpp
-BlockSModelFilePtr data_ov098_0213c850(0x458);       /* model */
-BlockSCollisionFilePtr data_ov098_0213c858(0x459);   /* collision */
+BlockSModelFilePtr gBrokenBlockSModelFile(ASSET_BROKEN_BLOCK_S_BMD);       /* model */
+BlockSCollisionFilePtr gBrokenBlockSCollisionFile(ASSET_BROKEN_BLOCK_S_KCL);   /* collision */
 
 /* The fourteen state member-pointer records live in .data
  * (0x0213c458..0x0213c4c8); the static initializer copies them into the

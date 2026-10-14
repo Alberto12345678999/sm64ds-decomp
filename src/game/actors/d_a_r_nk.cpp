@@ -18,6 +18,18 @@
 //   opened.
 // - dCcAc_c::Init and dBgCh_Actr::Init: only the radius and height are
 //   named. The trailing flag words stay the literals InitResources passes.
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daRNk_c_AssetId {
+    ASSET_NOKONOKO_BMD = 0x03ba,
+    ASSET_NOKONOKO_JUMP_ED_BCA = 0x03be,
+    ASSET_NOKONOKO_JUMP_ST_BCA = 0x03bf,
+    ASSET_NOKONOKO_WAIT1_BCA = 0x03c2,
+    ASSET_NOKONOKO_WAIT2_BCA = 0x03c3,
+    ASSET_NOKONOKO_WALK_BCA = 0x03c4,
+    ASSET_NOKONOKO_WALK_ED_BCA = 0x03c5,
+    ASSET_NOKONOKO_WALK_ST_BCA = 0x03c6
+};
+
 #include "daRNk_c.h"
 #include "daRFlag_c.h"
 #include "daIbl_c.h"
@@ -112,13 +124,13 @@ struct RNkAnimationFileHandle : SharedFilePtr {
 
 /* Each SharedFilePtr below is {?, loaded file} with the file at +4. Names are
    by when SetAnim plays them. */
-#define ANIM_IDLE      (data_ov062_0211e034.file)   /* after talking, after stopping, at spawn */
-#define ANIM_TALK      (data_ov062_0211e03c.file)   /* turned to face the player and talking */
+#define ANIM_IDLE      (gdaRNkNokonokoWait1AnimationFile.file)   /* after talking, after stopping, at spawn */
+#define ANIM_TALK      (gdaRNkNokonokoWait2AnimationFile.file)   /* turned to face the player and talking */
 #define ANIM_RUN_START (data_ov062_0211e014.file)   /* at the start of the race; then ANIM_RUN */
 #define ANIM_RUN       (data_ov062_0211e024.file)   /* the looping run; speed follows mHorzSpeed */
 #define ANIM_JUMP      (data_ov062_0211e02c.file)   /* in the air */
 #define ANIM_LAND      (data_ov062_0211e004.file)   /* on landing, or when the path ends; then ANIM_RUN */
-#define ANIM_BRAKE     (data_ov062_0211e01c.file)   /* STATE_PULL_UP's last frame to a stop */
+#define ANIM_BRAKE     (gdaRNkNokonokoWalkEdAnimationFile.file)   /* STATE_PULL_UP's last frame to a stop */
 
 /* Play a BCA on Koopa's ModelAnim at normal speed (0x1000 = 1.0), from frame 0. */
 #define SET_ANIM(this, bca, flags) \
@@ -182,12 +194,12 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, i
    evidenced actor view here; repairing the shared initializer is separate. */
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int r, int h, void *p, int q);
 /* The files InitResources loads and CleanupResources releases; see ANIM_*. */
-extern RNkModelFileHandle data_ov062_0211e00c;      /* the model (BMD) */
+extern RNkModelFileHandle gdaRNkNokonokoModelFile;      /* the model (BMD) */
 extern RNkAnimationFileHandle data_ov062_0211e014;  /* ANIM_RUN_START */
 extern RNkAnimationFileHandle data_ov062_0211e024;  /* ANIM_RUN */
-extern RNkAnimationFileHandle data_ov062_0211e01c;  /* ANIM_BRAKE */
-extern RNkAnimationFileHandle data_ov062_0211e034;  /* ANIM_IDLE */
-extern RNkAnimationFileHandle data_ov062_0211e03c;  /* ANIM_TALK */
+extern RNkAnimationFileHandle gdaRNkNokonokoWalkEdAnimationFile;  /* ANIM_BRAKE */
+extern RNkAnimationFileHandle gdaRNkNokonokoWait1AnimationFile;  /* ANIM_IDLE */
+extern RNkAnimationFileHandle gdaRNkNokonokoWait2AnimationFile;  /* ANIM_TALK */
 extern RNkAnimationFileHandle data_ov062_0211e02c;  /* ANIM_JUMP */
 extern RNkAnimationFileHandle data_ov062_0211e004;  /* ANIM_LAND */
 }
@@ -209,15 +221,15 @@ int daRNk_c::InitResources()
     unsigned char b;
     int zero;
 
-    Model::LoadFile(*(SharedFilePtr *)&data_ov062_0211e00c);
+    Model::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoModelFile);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e014);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e024);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e01c);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e034);
-    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e03c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoWalkEdAnimationFile);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoWait1AnimationFile);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&gdaRNkNokonokoWait2AnimationFile);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e02c);
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov062_0211e004);
-    if (mModelAnim.SetFile((BMD_File *)data_ov062_0211e00c.file, 1, -1) == 0)
+    if (mModelAnim.SetFile((BMD_File *)gdaRNkNokonokoModelFile.file, 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)
         return 0;
@@ -268,12 +280,12 @@ int daRNk_c::InitResources()
 /* Release the eight shared files, and stop the race music if it is playing. */
 int daRNk_c::CleanupResources()
 {
-    ((SharedFilePtr *)&data_ov062_0211e00c)->Release();
+    ((SharedFilePtr *)&gdaRNkNokonokoModelFile)->Release();
     ((SharedFilePtr *)&data_ov062_0211e014)->Release();
     ((SharedFilePtr *)&data_ov062_0211e024)->Release();
-    ((SharedFilePtr *)&data_ov062_0211e01c)->Release();
-    ((SharedFilePtr *)&data_ov062_0211e034)->Release();
-    ((SharedFilePtr *)&data_ov062_0211e03c)->Release();
+    ((SharedFilePtr *)&gdaRNkNokonokoWalkEdAnimationFile)->Release();
+    ((SharedFilePtr *)&gdaRNkNokonokoWait1AnimationFile)->Release();
+    ((SharedFilePtr *)&gdaRNkNokonokoWait2AnimationFile)->Release();
     ((SharedFilePtr *)&data_ov062_0211e02c)->Release();
     ((SharedFilePtr *)&data_ov062_0211e004)->Release();
     if (mIsRacing) _ZN5Sound22StopLoadedMusic_Layer2Ev();
@@ -1029,11 +1041,11 @@ StateFunc data_ov062_0211e0a4[6] = {
     &daRNk_c::func_ov062_0211a0f0,
     &daRNk_c::func_ov062_02119be0,
 };
-RNkModelFileHandle data_ov062_0211e00c(0x3ba);
-RNkAnimationFileHandle data_ov062_0211e014(0x3c6);
-RNkAnimationFileHandle data_ov062_0211e024(0x3c4);
-RNkAnimationFileHandle data_ov062_0211e01c(0x3c5);
-RNkAnimationFileHandle data_ov062_0211e034(0x3c2);
-RNkAnimationFileHandle data_ov062_0211e03c(0x3c3);
-RNkAnimationFileHandle data_ov062_0211e02c(0x3bf);
-RNkAnimationFileHandle data_ov062_0211e004(0x3be);
+RNkModelFileHandle gdaRNkNokonokoModelFile(ASSET_NOKONOKO_BMD);
+RNkAnimationFileHandle data_ov062_0211e014(ASSET_NOKONOKO_WALK_ST_BCA);
+RNkAnimationFileHandle data_ov062_0211e024(ASSET_NOKONOKO_WALK_BCA);
+RNkAnimationFileHandle gdaRNkNokonokoWalkEdAnimationFile(ASSET_NOKONOKO_WALK_ED_BCA);
+RNkAnimationFileHandle gdaRNkNokonokoWait1AnimationFile(ASSET_NOKONOKO_WAIT1_BCA);
+RNkAnimationFileHandle gdaRNkNokonokoWait2AnimationFile(ASSET_NOKONOKO_WAIT2_BCA);
+RNkAnimationFileHandle data_ov062_0211e02c(ASSET_NOKONOKO_JUMP_ST_BCA);
+RNkAnimationFileHandle data_ov062_0211e004(ASSET_NOKONOKO_JUMP_ED_BCA);

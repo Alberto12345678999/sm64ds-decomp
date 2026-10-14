@@ -50,6 +50,11 @@
  *   declared on Player. Those 5Fix12IiE externs stay.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daGrock_c_AssetId {
+    ASSET_CV_GORO_ROCK_BMD = 0x05d4
+};
+
 #pragma defer_codegen off
 
 #include "decl_common.h"
@@ -510,4 +515,4 @@ extern "C" daGrock_c *daGrock_c_classInit()
 /* File-scope model handle. __sinit_d_a_grock.cpp emits the construction
  * and registers the destructor; the registration node is a compiler
  * temporary. */
-GrockModelFilePtr data_ov021_02114a50(1492);
+GrockModelFilePtr data_ov021_02114a50(ASSET_CV_GORO_ROCK_BMD);

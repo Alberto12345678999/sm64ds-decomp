@@ -232,8 +232,8 @@ data_ov021_02114a38 kind:bss addr:0x02114a38
 data_ov021_02114a44 kind:bss addr:0x02114a44
 data_ov021_02114a50 kind:bss addr:0x02114a50
 @887 kind:bss addr:0x02114a58
-data_ov021_02114a64 kind:bss addr:0x02114a64
-data_ov021_02114a6c kind:bss addr:0x02114a6c
+gCvShutterCollisionFile kind:bss addr:0x02114a64
+gCvShutterModelFile kind:bss addr:0x02114a6c
 @373 kind:bss addr:0x02114a74
 @374 kind:bss addr:0x02114a80
 data_ov021_02114a8c kind:bss addr:0x02114a8c

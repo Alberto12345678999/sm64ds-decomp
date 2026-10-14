@@ -115,6 +115,21 @@
  *   this class does not own (CAP_OVERRIDE_MATRIX); this file never sets it.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjMarioCap_c_AssetId {
+    ASSET_MARIO_CAP_ED_L_CAP_OFF_BCA = 0x0476,
+    ASSET_MARIO_CAP_ED_L_CAP_OFF_WAIT_BCA = 0x0477,
+    ASSET_MARIO_CAP_ED_M_CAP_OFF_BCA = 0x0478,
+    ASSET_MARIO_CAP_ED_M_CAP_OFF_WAIT_BCA = 0x0479,
+    ASSET_MARIO_CAP_ED_M_KISS_TO_POSE_BCA = 0x047a,
+    ASSET_MARIO_CAP_ED_M_KISS_WAIT_BCA = 0x047b,
+    ASSET_MARIO_CAP_ED_W_CAP_OFF_BCA = 0x047c,
+    ASSET_MARIO_CAP_ED_W_CAP_OFF_WAIT_BCA = 0x047d,
+    ASSET_MARIO_CAP_L_FIRST_CHANGE_BCA = 0x047e,
+    ASSET_MARIO_CAP_M_FIRST_CHANGE_BCA = 0x047f,
+    ASSET_MARIO_CAP_W_FIRST_CHANGE_BCA = 0x0480
+};
+
 #include "common.h"
 #include "daObjMarioCap_c.h"
 #include "decl_common.h"
@@ -1451,17 +1466,17 @@ void daObjMarioCap_c::CheckTouch()
 /* The 13 file handles, in construct order. */
 daObjMarioCapFileHandle data_ov002_0210de30(0x8012);
 daObjMarioCapFileHandle data_ov002_0210de38(0x8013);
-daObjMarioCapFileHandle data_ov002_0210de50(0x480);
-daObjMarioCapFileHandle data_ov002_0210de60(0x47e);
-daObjMarioCapFileHandle data_ov002_0210de48(0x47f);
-daObjMarioCapFileHandle data_ov002_0210de28(0x478);
-daObjMarioCapFileHandle data_ov002_0210de08(0x476);
-daObjMarioCapFileHandle data_ov002_0210de20(0x47c);
-daObjMarioCapFileHandle data_ov002_0210de40(0x479);
-daObjMarioCapFileHandle data_ov002_0210de10(0x477);
-daObjMarioCapFileHandle data_ov002_0210de00(0x47d);
-daObjMarioCapFileHandle data_ov002_0210de58(0x47b);
-daObjMarioCapFileHandle data_ov002_0210de18(0x47a);
+daObjMarioCapFileHandle data_ov002_0210de50(ASSET_MARIO_CAP_W_FIRST_CHANGE_BCA);
+daObjMarioCapFileHandle data_ov002_0210de60(ASSET_MARIO_CAP_L_FIRST_CHANGE_BCA);
+daObjMarioCapFileHandle data_ov002_0210de48(ASSET_MARIO_CAP_M_FIRST_CHANGE_BCA);
+daObjMarioCapFileHandle data_ov002_0210de28(ASSET_MARIO_CAP_ED_M_CAP_OFF_BCA);
+daObjMarioCapFileHandle data_ov002_0210de08(ASSET_MARIO_CAP_ED_L_CAP_OFF_BCA);
+daObjMarioCapFileHandle data_ov002_0210de20(ASSET_MARIO_CAP_ED_W_CAP_OFF_BCA);
+daObjMarioCapFileHandle data_ov002_0210de40(ASSET_MARIO_CAP_ED_M_CAP_OFF_WAIT_BCA);
+daObjMarioCapFileHandle data_ov002_0210de10(ASSET_MARIO_CAP_ED_L_CAP_OFF_WAIT_BCA);
+daObjMarioCapFileHandle data_ov002_0210de00(ASSET_MARIO_CAP_ED_W_CAP_OFF_WAIT_BCA);
+daObjMarioCapFileHandle data_ov002_0210de58(ASSET_MARIO_CAP_ED_M_KISS_WAIT_BCA);
+daObjMarioCapFileHandle data_ov002_0210de18(ASSET_MARIO_CAP_ED_M_KISS_TO_POSE_BCA);
 
 /* The nine state records, in copy order: { enter, per-frame }. */
 McapStateRec data_ov002_0210df64 = { data_ov002_02109534, data_ov002_0210952c };

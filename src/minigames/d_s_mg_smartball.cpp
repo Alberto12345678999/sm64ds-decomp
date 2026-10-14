@@ -1,4 +1,9 @@
 //cpp
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgSmartball_c_AssetId {
+    ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b
+};
+
 #pragma defer_codegen off
 /* Smartball scene and its board objects, ov006:0x0210d740..0x02119904.
  * Definitions follow ROM address order. Immediate code generation makes each
@@ -6098,7 +6103,7 @@ int dScMgSmartball_c::Virtual7C()
     data_0209d454[0] &= ~2;
     f = GetGameLanguage();
     LoadCompressedFileAt(data_ov006_0213eccc[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
-    LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_OPTION_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
 // @symbol _ZN16dScMgSmartball_c13InitResourcesEv

@@ -42,6 +42,14 @@
  *   size); the char* stride multiply stays.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjRotateUpdownLift_c_AssetId {
+    ASSET_OBJ_UPDNLIFT_BMD = 0x0493,
+    ASSET_OBJ_UPDNLIFT_KCL = 0x0494,
+    ASSET_HS_UPDOWN_LIFT_BMD = 0x061f,
+    ASSET_HS_UPDOWN_LIFT_KCL = 0x0620
+};
+
 #pragma defer_codegen off
 
 #include "daObjRotateUpdownLift_c.h"
@@ -590,7 +598,7 @@ extern "C" daObjRotateUpdownLift_c *daObjRotateUpdownLift_c_classInit_UPDOWN_LIF
 
 /* Static-init globals (was the handwritten __sinit_ov091_02134524 shard).
  * Definition order is the retail initializer's construction order. */
-RotateUpdownLiftModelFile data_ov091_02135448(0x493);
-RotateUpdownLiftCollisionFilePtr data_ov091_02135450(0x494);
-RotateUpdownLiftModelFile data_ov091_02135440(0x61f);
-RotateUpdownLiftCollisionFilePtr data_ov091_02135458(0x620);
+RotateUpdownLiftModelFile gObjUpdnliftModelFile(ASSET_OBJ_UPDNLIFT_BMD);
+RotateUpdownLiftCollisionFilePtr gObjUpdnliftCollisionFile(ASSET_OBJ_UPDNLIFT_KCL);
+RotateUpdownLiftModelFile gHsUpdownLiftModelFile(ASSET_HS_UPDOWN_LIFT_BMD);
+RotateUpdownLiftCollisionFilePtr gHsUpdownLiftCollisionFile(ASSET_HS_UPDOWN_LIFT_KCL);

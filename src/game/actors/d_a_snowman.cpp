@@ -34,6 +34,17 @@
  * - Behavior: cap->SetRanges does not compile. dActor_c has no SetRanges.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daSnowman_c_AssetId {
+    ASSET_SNOWMAN_JUMP_ED_BCA = 0x041e,
+    ASSET_SNOWMAN_JUMP_ST_BCA = 0x041f,
+    ASSET_SNOWMAN_MODEL_BMD = 0x0420,
+    ASSET_SNOWMAN_SLEEP_BCA = 0x0421,
+    ASSET_SNOWMAN_THROW_BCA = 0x0422,
+    ASSET_SNOWMAN_WAIT_BCA = 0x0423,
+    ASSET_SNOW_BALL_BMD = 0x0424
+};
+
 #pragma defer_codegen off
 
 #include "common.h"
@@ -136,11 +147,11 @@ typedef char daSnowman_State_size_must_be_0x10[sizeof(daSnowman_c::State) == 0x1
 
 extern daSnowmanModelFilePtr data_ov081_02128d90; /* snowball model, file 0x424 */
 extern daSnowmanModelFilePtr data_ov081_02128db0; /* body model, file 0x420 */
-extern daSnowmanAnimationFilePtr data_ov081_02128d98; /* wait, file 0x423 */
+extern daSnowmanAnimationFilePtr gSnowmanWaitAnimationFile; /* wait, file 0x423 */
 extern daSnowmanAnimationFilePtr data_ov081_02128db8; /* throw, file 0x422 */
 extern daSnowmanAnimationFilePtr data_ov081_02128da8; /* sink, file 0x421 */
-extern daSnowmanAnimationFilePtr data_ov081_02128d88; /* hop start, file 0x41f */
-extern daSnowmanAnimationFilePtr data_ov081_02128da0; /* hop land, file 0x41e */
+extern daSnowmanAnimationFilePtr gSnowmanJumpStAnimationFile; /* hop start, file 0x41f */
+extern daSnowmanAnimationFilePtr gSnowmanJumpEdAnimationFile; /* hop land, file 0x41e */
 
 /* The ten states, by the address of their .bss record, with the handlers
    the static initializer pairs into each as (enter, execute). */
@@ -628,7 +639,7 @@ int daSnowman_c::func_ov081_02124e64()
 /* State "face the player", enter. */
 int daSnowman_c::func_ov081_02124ec0()
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(data_ov081_02128d98), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(gSnowmanWaitAnimationFile), 0, 0x1000, 0);
     if (this->mType == 2)
         this->mFlags = 0x18000002;
     else
@@ -696,7 +707,7 @@ int daSnowman_c::func_ov081_02125068()
     } else if (v == 2) {
         this->mFlags = 0x8000002;
     }
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(data_ov081_02128d98), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(gSnowmanWaitAnimationFile), 0, 0x1000, 0);
     return 1;
 }
 
@@ -712,7 +723,7 @@ int daSnowman_c::func_ov081_021250c8()
     if (this->mWithMeshClsn.IsOnGround()) {
         func_02012694(0xe5, &this->mCamSpacePosX);
         func_ov081_02125488(&data_ov081_02128e54);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(data_ov081_02128da0), 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(gSnowmanJumpEdAnimationFile), 0x40000000, 0x1000, 0);
         return 1;
     }
 
@@ -772,7 +783,7 @@ int daSnowman_c::func_ov081_02125208()
             this->mStep = 0;
             this->mVertSpeed = 0x3a000;
             this->mVertAccel = -0x4000;
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(data_ov081_02128d88), 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, LOADED_FILE(gSnowmanJumpStAnimationFile), 0x40000000, 0x1000, 0);
             func_02012694(0xdd, &this->mCamSpacePosX);
             func_ov081_02125488(&data_ov081_02128e74);
         }
@@ -807,7 +818,7 @@ int daSnowman_c::func_ov081_0212538c()
     }
     this->mStateTimer = 0xa;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &this->mModelAnim, LOADED_FILE(data_ov081_02128d98), 0, 0x1000, 0);
+        &this->mModelAnim, LOADED_FILE(gSnowmanWaitAnimationFile), 0, 0x1000, 0);
     return 1;
 }
 
@@ -900,11 +911,11 @@ int daSnowman_c::CleanupResources()
 {
     data_ov081_02128d90.Release();
     data_ov081_02128db0.Release();
-    data_ov081_02128d98.Release();
+    gSnowmanWaitAnimationFile.Release();
     data_ov081_02128db8.Release();
     data_ov081_02128da8.Release();
-    data_ov081_02128d88.Release();
-    data_ov081_02128da0.Release();
+    gSnowmanJumpStAnimationFile.Release();
+    gSnowmanJumpEdAnimationFile.Release();
     return 1;
 }
 
@@ -1013,11 +1024,11 @@ int daSnowman_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov081_02128db0), 1, -1);
     Model::LoadFile(data_ov081_02128d90);
     mShadowModel.InitCylinder();
-    dExtFrameCtrl_c::LoadFile(data_ov081_02128d98);
+    dExtFrameCtrl_c::LoadFile(gSnowmanWaitAnimationFile);
     dExtFrameCtrl_c::LoadFile(data_ov081_02128db8);
     dExtFrameCtrl_c::LoadFile(data_ov081_02128da8);
-    dExtFrameCtrl_c::LoadFile(data_ov081_02128d88);
-    dExtFrameCtrl_c::LoadFile(data_ov081_02128da0);
+    dExtFrameCtrl_c::LoadFile(gSnowmanJumpStAnimationFile);
+    dExtFrameCtrl_c::LoadFile(gSnowmanJumpEdAnimationFile);
 
     mPathId = (s32)param1 & 0xff;
     mType = ((s32)param1 & 0xff00) >> 8;
@@ -1107,13 +1118,13 @@ extern "C" daSnowman_c *daSnowman_c_classInit()
 
 /* Formerly the handwritten __sinit_ov081_02128154. Definition order is
  * the retail initializer's construction order. */
-daSnowmanModelFilePtr data_ov081_02128d90(0x424);
-daSnowmanModelFilePtr data_ov081_02128db0(0x420);
-daSnowmanAnimationFilePtr data_ov081_02128d98(0x423);
-daSnowmanAnimationFilePtr data_ov081_02128db8(0x422);
-daSnowmanAnimationFilePtr data_ov081_02128da8(0x421);
-daSnowmanAnimationFilePtr data_ov081_02128d88(0x41f);
-daSnowmanAnimationFilePtr data_ov081_02128da0(0x41e);
+daSnowmanModelFilePtr data_ov081_02128d90(ASSET_SNOW_BALL_BMD);
+daSnowmanModelFilePtr data_ov081_02128db0(ASSET_SNOWMAN_MODEL_BMD);
+daSnowmanAnimationFilePtr gSnowmanWaitAnimationFile(ASSET_SNOWMAN_WAIT_BCA);
+daSnowmanAnimationFilePtr data_ov081_02128db8(ASSET_SNOWMAN_THROW_BCA);
+daSnowmanAnimationFilePtr data_ov081_02128da8(ASSET_SNOWMAN_SLEEP_BCA);
+daSnowmanAnimationFilePtr gSnowmanJumpStAnimationFile(ASSET_SNOWMAN_JUMP_ST_BCA);
+daSnowmanAnimationFilePtr gSnowmanJumpEdAnimationFile(ASSET_SNOWMAN_JUMP_ED_BCA);
 
 daSnowman_c::State data_ov081_02128e54(&daSnowman_c::func_ov081_0212538c, &daSnowman_c::func_ov081_02125208);
 daSnowman_c::State data_ov081_02128e74(&daSnowman_c::func_ov081_02125200, &daSnowman_c::func_ov081_021250c8);

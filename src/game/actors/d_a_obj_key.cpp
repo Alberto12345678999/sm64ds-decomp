@@ -53,6 +53,18 @@
  *   written. Each spelling was already measured; the other form moves bytes.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjKey_c_AssetId {
+    ASSET_KOOPA_KEY_BMD = 0x044d,
+    ASSET_KOOPA_KEY_GET_BCA = 0x044e,
+    ASSET_KOOPA_KEY_GET_DEMO_BCA = 0x044f,
+    ASSET_KOOPA_KEY_OPEN_BCA = 0x0450,
+    ASSET_KOOPA_KEY_W_GET_BCA = 0x0451,
+    ASSET_LUIGI_KEY_BMD = 0x049c,
+    ASSET_MARIO_KEY_BMD = 0x049d,
+    ASSET_WARIO_KEY_BMD = 0x049e
+};
+
 #include "types.h"
 #include "common.h"
 #include "decl_common.h"
@@ -204,9 +216,9 @@ extern ObjKeyAnimationFilePtr data_ov089_02132c40;
 extern ObjKeyAnimationFilePtr data_ov089_02132c70;
 extern ObjKeyAnimationFilePtr data_ov089_02132c48;
 extern ObjKeyModelFile data_ov089_02132c50;
-extern ObjKeyModelFile data_ov089_02132c78;
-extern ObjKeyModelFile data_ov089_02132c68;
-extern ObjKeyModelFile data_ov089_02132c58;
+extern ObjKeyModelFile gLuigiKeyModelFile;
+extern ObjKeyModelFile gMarioKeyModelFile;
+extern ObjKeyModelFile gWarioKeyModelFile;
 extern Vector3 data_ov089_02132b40;
 extern ObjKeyVec3 data_ov089_02132ca4;
 extern Matrix4x3 data_020a0e68;
@@ -979,14 +991,14 @@ extern "C" daObjKey_c *daObjKey_c_classInit_OBJ_KEY()
  * model handles, then the four animation handles, then the state table the
  * descriptors are copied into. The offset vector between the nodes carries
  * no initializer and emits plain BSS. */
-ObjKeyModelFile data_ov089_02132c50(0x44d);
-ObjKeyModelFile data_ov089_02132c78(0x49c);
-ObjKeyModelFile data_ov089_02132c68(0x49d);
-ObjKeyModelFile data_ov089_02132c58(0x49e);
-ObjKeyAnimationFilePtr data_ov089_02132c60(0x44e);
-ObjKeyAnimationFilePtr data_ov089_02132c40(0x44f);
-ObjKeyAnimationFilePtr data_ov089_02132c70(0x450);
-ObjKeyAnimationFilePtr data_ov089_02132c48(0x451);
+ObjKeyModelFile data_ov089_02132c50(ASSET_KOOPA_KEY_BMD);
+ObjKeyModelFile gLuigiKeyModelFile(ASSET_LUIGI_KEY_BMD);
+ObjKeyModelFile gMarioKeyModelFile(ASSET_MARIO_KEY_BMD);
+ObjKeyModelFile gWarioKeyModelFile(ASSET_WARIO_KEY_BMD);
+ObjKeyAnimationFilePtr data_ov089_02132c60(ASSET_KOOPA_KEY_GET_BCA);
+ObjKeyAnimationFilePtr data_ov089_02132c40(ASSET_KOOPA_KEY_GET_DEMO_BCA);
+ObjKeyAnimationFilePtr data_ov089_02132c70(ASSET_KOOPA_KEY_OPEN_BCA);
+ObjKeyAnimationFilePtr data_ov089_02132c48(ASSET_KOOPA_KEY_W_GET_BCA);
 
 ObjKeyVec3 data_ov089_02132ca4;
 

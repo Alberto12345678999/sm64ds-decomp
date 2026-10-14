@@ -50,6 +50,14 @@
 // descriptors live outside this TU. func_ov035_0211168c is the historical
 // alias of classInit_CT_MECHA12L, not a function defined here.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha10_c_AssetId {
+    ASSET_CT_MECHA_OBJ10_BMD = 0x05ce,
+    ASSET_CT_MECHA_OBJ10_KCL = 0x05cf,
+    ASSET_CT_MECHA_OBJ12L_BMD = 0x05d2,
+    ASSET_CT_MECHA_OBJ12S_BMD = 0x05d3
+};
+
 #include "daObjCtMecha10_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -82,10 +90,10 @@ struct Mecha10ClsnFilePtr : SharedFilePtr {
 };
 
 extern "C" {
-extern Mecha10ModelFilePtr data_ov035_02112c60;   /* model of the fall-through profile (CT_MECHA12S) */
-extern Mecha10ClsnFilePtr data_ov035_02112c68;    /* collision KCL of the id 0x77 cog */
-extern Mecha10ModelFilePtr data_ov035_02112c70;   /* model of id 0x79 (CT_MECHA12L) */
-extern Mecha10ModelFilePtr data_ov035_02112c78;   /* model of id 0x77 (CT_MECHA10) */
+extern Mecha10ModelFilePtr gCtMechaObj12sModelFile;   /* model of the fall-through profile (CT_MECHA12S) */
+extern Mecha10ClsnFilePtr gCtMechaObj10CollisionFile;    /* collision KCL of the id 0x77 cog */
+extern Mecha10ModelFilePtr gCtMechaObj12lModelFile;   /* model of id 0x79 (CT_MECHA12L) */
+extern Mecha10ModelFilePtr gCtMechaObj10ModelFile;   /* model of id 0x77 (CT_MECHA10) */
 extern CLPS_Block    data_ov035_021121d8;
 extern s16 data_ov035_02111ef0[];           /* |angle step| by rotation state */
 extern s16 data_ov035_02111ef4[][4];        /* dwell by state, by clock setting */
@@ -137,12 +145,12 @@ int daObjCtMecha10_c::InitResources()
     int idMatch;
     idMatch = (actorID == ACTOR_CT_MECHA10);
     if (idMatch) {
-        mModel.SetFile((BMD_File *)Model::LoadFile(data_ov035_02112c78), 1, -1);
+        mModel.SetFile((BMD_File *)Model::LoadFile(gCtMechaObj10ModelFile), 1, -1);
         UpdateModelPosAndRotY();
         UpdateClsnPosAndRot();
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
             &mMeshCollider,
-            (KCL_File *)dBgW_Kc::LoadFile(data_ov035_02112c68),
+            (KCL_File *)dBgW_Kc::LoadFile(gCtMechaObj10CollisionFile),
             &mClsnMat, 0x1000, mAngleY, &data_ov035_021121d8);
         func_020396c0(&mMeshCollider, 0);
         func_020393d4(&mMeshCollider,
@@ -151,9 +159,9 @@ int daObjCtMecha10_c::InitResources()
     } else {
         idMatch = (actorID == ACTOR_CT_MECHA12L);
         if (idMatch)
-            mModel.SetFile((BMD_File *)Model::LoadFile(data_ov035_02112c70), 1, -1);
+            mModel.SetFile((BMD_File *)Model::LoadFile(gCtMechaObj12lModelFile), 1, -1);
         else
-            mModel.SetFile((BMD_File *)Model::LoadFile(data_ov035_02112c60), 1, -1);
+            mModel.SetFile((BMD_File *)Model::LoadFile(gCtMechaObj12sModelFile), 1, -1);
         UpdateModelPosAndRotY();
         mRotationState = 1;
     }
@@ -224,20 +232,20 @@ int daObjCtMecha10_c::CleanupResources()
     if (mRotationState == 0) {
         if (mMeshCollider.IsEnabled())
             mMeshCollider.Disable();
-        data_ov035_02112c78.Release();
-        data_ov035_02112c68.Release();
+        gCtMechaObj10ModelFile.Release();
+        gCtMechaObj10CollisionFile.Release();
     } else {
         int isMecha12L = (actorID == ACTOR_CT_MECHA12L);
         if (isMecha12L)
-            data_ov035_02112c70.Release();
+            gCtMechaObj12lModelFile.Release();
         else
-            data_ov035_02112c60.Release();
+            gCtMechaObj12sModelFile.Release();
     }
     return 1;
 }
 
 /* Construction order. The three model handles share one destructor literal. */
-Mecha10ModelFilePtr data_ov035_02112c78(1486);
-Mecha10ClsnFilePtr data_ov035_02112c68(1487);
-Mecha10ModelFilePtr data_ov035_02112c60(1491);
-Mecha10ModelFilePtr data_ov035_02112c70(1490);
+Mecha10ModelFilePtr gCtMechaObj10ModelFile(ASSET_CT_MECHA_OBJ10_BMD);
+Mecha10ClsnFilePtr gCtMechaObj10CollisionFile(ASSET_CT_MECHA_OBJ10_KCL);
+Mecha10ModelFilePtr gCtMechaObj12sModelFile(ASSET_CT_MECHA_OBJ12S_BMD);
+Mecha10ModelFilePtr gCtMechaObj12lModelFile(ASSET_CT_MECHA_OBJ12L_BMD);

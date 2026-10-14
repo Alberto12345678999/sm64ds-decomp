@@ -212,14 +212,14 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov100_02148600",
+      "symbol": "gButterflyFlyAnimationFile",
       "address": "0x02148600",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation file handle constructed with file ID 0x43b; dExtFrameCtrl_c::LoadFile consumes it in InitResources and CleanupResources releases it"
     },
     {
-      "symbol": "data_ov100_02148608",
+      "symbol": "gButterflyModelFile",
       "address": "0x02148608",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -269,9 +269,9 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold _ZN9daBtfly_c6State6Ev and the one that held _ZN9daBtfly_c6State0Ev; kept the first, the other is commented out for review -- RESOLVED: no extern of this symbol survives in the cleaned TU. State0, State4 and State6 call the static dActor_c::Spawn method from the header. Verified: rombuild 106/106 exact, linkcheck 15/15.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'RandomIntInternal' differs between the legacy file that used to hold _ZN9daBtfly_c6State5Ev and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, int RandomIntInternal(int *seed), shared by State0, State4, State5 and InitResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov002_0210d9d8' differs between the legacy file that used to hold _ZN9daBtfly_c16CleanupResourcesEv and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, extern SharedFilePtr, used by InitResources and CleanupResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov100_02148600' differs between the legacy file that used to hold _ZN9daBtfly_c16CleanupResourcesEv and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, extern SharedFilePtr, used by InitResources and CleanupResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'gButterflyFlyAnimationFile' differs between the legacy file that used to hold _ZN9daBtfly_c16CleanupResourcesEv and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, extern SharedFilePtr, used by InitResources and CleanupResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov100_02148668' differs between the legacy file that used to hold _ZN9daBtfly_c16CleanupResourcesEv and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, extern SharedFilePtr, used by InitResources and CleanupResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov100_02148608' differs between the legacy file that used to hold _ZN9daBtfly_c16CleanupResourcesEv and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, extern SharedFilePtr, used by InitResources and CleanupResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'gButterflyModelFile' differs between the legacy file that used to hold _ZN9daBtfly_c16CleanupResourcesEv and the one that held _ZN9daBtfly_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the TU keeps one file-scope spelling, extern SharedFilePtr, used by InitResources and CleanupResources. Verified: rombuild 106/106 exact, linkcheck 15/15.",
     "RTTI/vtable licensing: this TU is the key-function TU for the class. Its object emits _ZTV9daBtfly_c (0x84) plus the ancestor RTTI chain (_ZTI/_ZTS for daBtfly_c, dActor_c, dBase_c, fBase_c) into .data. The manifest sections list is .text ONLY, so a later promotion will fail isolate with 'unlicensed content in text-only multi-symbol object' until a .data range is licensed here. Text-verification is unaffected.",
     "ROM homes, from config/arm9/overlays/ov100/symbols.txt: _ZTV9daBtfly_c at 0x02147e9c, aliased at the same address by _ZTV9daBtfly_c; the class's ROM RTTI name is daBtfly_c (_ZTS at 0x02147e60, _ZTI at 0x02147e6c). All sit in the ov100 .data range 0x02147e20..0x02148600, outside this TU's .text span. g_profile_BUTTERFLY at 0x02147e78 is interleaved between the RTTI records and the vtable, so a .data license here is not one contiguous interval.",
     "Vtable length discrepancy, unresolved and NOT specific to this class: the compiled object emits _ZTV9daBtfly_c at 0x84 (33 words), but in ROM the gap from 0x02147e9c to the next named symbol (data_ov100_02147f18) is 0x7c -- 8 bytes / 2 slots shorter. ov072/daBgSnmHed_c shows exactly the same 0x84-vs-0x7c gap. 31 words is the documented dActor_c vtable length, so the tree's dActor_c-derived class headers appear to declare two virtuals more than the ROM's. Measured by symbol adjacency only, not disassembled. It does not affect text verification (15/15 MATCH) but should be settled before anyone licenses a .data range for these TUs.",
@@ -826,7 +826,7 @@
       "source": "0x021474a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov100_02148608",
+      "symbol": "gButterflyModelFile",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x02148608"
@@ -856,7 +856,7 @@
       "source": "0x021474b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov100_02148600",
+      "symbol": "gButterflyFlyAnimationFile",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x02148600"

@@ -59,6 +59,32 @@
  * _ZN6Eyerok8BehaviorEv bind to that member alone instead of leaking
  * file-wide, and it flips .text emission from reverse-source to source
  * order -- which is why this file is written ROM-ascending. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum Eyerok_AssetId {
+    ASSET_IWANTE_KCL = 0x0332,
+    ASSET_IWANTE_CLOSE_L_BTP = 0x0333,
+    ASSET_IWANTE_CLOSE_R_BTP = 0x0334,
+    ASSET_IWANTE_DAMAGE_L_BCA = 0x0335,
+    ASSET_IWANTE_DAMAGE_R_BCA = 0x0336,
+    ASSET_IWANTE_DEAD_L_BCA = 0x0337,
+    ASSET_IWANTE_DEAD_R_BCA = 0x0338,
+    ASSET_IWANTE_DUMMY_BMD = 0x0339,
+    ASSET_IWANTE_LHAND_BMD = 0x033a,
+    ASSET_IWANTE_MOVE_L_KCL = 0x033b,
+    ASSET_IWANTE_MOVE_R_KCL = 0x033c,
+    ASSET_IWANTE_OPEN_L_BTP = 0x033d,
+    ASSET_IWANTE_OPEN_R_BTP = 0x033e,
+    ASSET_IWANTE_RHAND_BMD = 0x033f,
+    ASSET_IWANTE_WAIT_END_L_BCA = 0x0340,
+    ASSET_IWANTE_WAIT_END_R_BCA = 0x0341,
+    ASSET_IWANTE_WAIT_L_BCA = 0x0342,
+    ASSET_IWANTE_WAIT_L_KCL = 0x0343,
+    ASSET_IWANTE_WAIT_R_BCA = 0x0344,
+    ASSET_IWANTE_WAIT_R_KCL = 0x0345,
+    ASSET_IWANTE_WAKE_UP_L_BCA = 0x0346,
+    ASSET_IWANTE_WAKE_UP_R_BCA = 0x0347
+};
+
 #pragma defer_codegen off
 /* Includes. decl_common.h is DELIBERATELY NOT included: every symbol it
  * would have supplied is declared below instead, with the spelling the
@@ -2876,28 +2902,28 @@ extern EyerokPMF data_ov066_0211ad08;
 extern EyerokPMF data_ov066_0211ad10;
 
 /* The 22 resource handles, in construct order. */
-EyerokModelFilePtr data_ov066_0211aeb4(0x33a);
-EyerokModelFilePtr data_ov066_0211ae4c(0x33f);
-EyerokModelFilePtr data_ov066_0211ae6c(0x339);
-EyerokAnimationFilePtr data_ov066_0211ae5c(0x335);
-EyerokAnimationFilePtr data_ov066_0211ae84(0x336);
-EyerokAnimationFilePtr data_ov066_0211aea4(0x337);
-EyerokAnimationFilePtr data_ov066_0211ae8c(0x338);
-EyerokAnimationFilePtr data_ov066_0211ae54(0x340);
-EyerokAnimationFilePtr data_ov066_0211ae94(0x341);
-EyerokAnimationFilePtr data_ov066_0211ae64(0x342);
-EyerokAnimationFilePtr data_ov066_0211ae44(0x344);
-EyerokAnimationFilePtr data_ov066_0211ae74(0x346);
-EyerokAnimationFilePtr data_ov066_0211ae7c(0x347);
-EyerokTextureSequencePtr data_ov066_0211ae3c(0x333);
-EyerokTextureSequencePtr data_ov066_0211aebc(0x334);
-EyerokTextureSequencePtr data_ov066_0211ae2c(0x33d);
-EyerokTextureSequencePtr data_ov066_0211ae9c(0x33e);
-EyerokCollisionFilePtr data_ov066_0211ae24(0x332);
-EyerokCollisionFilePtr data_ov066_0211aeac(0x33b);
-EyerokCollisionFilePtr data_ov066_0211ae14(0x33c);
-EyerokCollisionFilePtr data_ov066_0211ae1c(0x343);
-EyerokCollisionFilePtr data_ov066_0211ae34(0x345);
+EyerokModelFilePtr data_ov066_0211aeb4(ASSET_IWANTE_LHAND_BMD);
+EyerokModelFilePtr data_ov066_0211ae4c(ASSET_IWANTE_RHAND_BMD);
+EyerokModelFilePtr data_ov066_0211ae6c(ASSET_IWANTE_DUMMY_BMD);
+EyerokAnimationFilePtr data_ov066_0211ae5c(ASSET_IWANTE_DAMAGE_L_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae84(ASSET_IWANTE_DAMAGE_R_BCA);
+EyerokAnimationFilePtr data_ov066_0211aea4(ASSET_IWANTE_DEAD_L_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae8c(ASSET_IWANTE_DEAD_R_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae54(ASSET_IWANTE_WAIT_END_L_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae94(ASSET_IWANTE_WAIT_END_R_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae64(ASSET_IWANTE_WAIT_L_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae44(ASSET_IWANTE_WAIT_R_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae74(ASSET_IWANTE_WAKE_UP_L_BCA);
+EyerokAnimationFilePtr data_ov066_0211ae7c(ASSET_IWANTE_WAKE_UP_R_BCA);
+EyerokTextureSequencePtr data_ov066_0211ae3c(ASSET_IWANTE_CLOSE_L_BTP);
+EyerokTextureSequencePtr data_ov066_0211aebc(ASSET_IWANTE_CLOSE_R_BTP);
+EyerokTextureSequencePtr data_ov066_0211ae2c(ASSET_IWANTE_OPEN_L_BTP);
+EyerokTextureSequencePtr data_ov066_0211ae9c(ASSET_IWANTE_OPEN_R_BTP);
+EyerokCollisionFilePtr data_ov066_0211ae24(ASSET_IWANTE_KCL);
+EyerokCollisionFilePtr data_ov066_0211aeac(ASSET_IWANTE_MOVE_L_KCL);
+EyerokCollisionFilePtr data_ov066_0211ae14(ASSET_IWANTE_MOVE_R_KCL);
+EyerokCollisionFilePtr data_ov066_0211ae1c(ASSET_IWANTE_WAIT_L_KCL);
+EyerokCollisionFilePtr data_ov066_0211ae34(ASSET_IWANTE_WAIT_R_KCL);
 
 /* The 19 state descriptors, in copy order: { enter, run }. */
 EyerokState data_ov066_0211b09c = { data_ov066_0211ac50, data_ov066_0211ac48 };

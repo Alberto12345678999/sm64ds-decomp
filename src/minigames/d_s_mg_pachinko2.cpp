@@ -33,6 +33,19 @@
  *   others for the uniform call shape.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgPachinko2_c_AssetId {
+    ASSET_D_2D_HEI_TOP_DOWN_NSC_BIN = 0x0005,
+    ASSET_D_2D_MG_BG_PACHINKO_DOWN_NCG_BIN = 0x005c,
+    ASSET_D_2D_MG_BG_PACHINKO_DOWN_NCL_BIN = 0x005d,
+    ASSET_D_2D_MG_BG_PACHINKO_DOWN_NSC_BIN = 0x005e,
+    ASSET_D_2D_MG_BG_PACHINKO_UP_NCG_BIN = 0x005f,
+    ASSET_D_2D_MG_BG_PACHINKO_UP_NCL_BIN = 0x0060,
+    ASSET_D_2D_MG_BG_PACHINKO_UP_NSC_BIN = 0x0061,
+    ASSET_D_2D_MG_PACHINKO_NCG_BIN = 0x00e0,
+    ASSET_D_2D_MG_PACHINKO_NCL_BIN = 0x00e1
+};
+
 #pragma defer_codegen off
 
 #include "types.h"
@@ -2789,20 +2802,20 @@ s32 dScMgPachinko2_c::InitResources()
     *(volatile u32 *)0x400001c = 0;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1210;
 
-    f = LoadFile(0x5f);
+    f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_UP_NCG_BIN);
     DecompressLZ16(f, (void *)func_02054d88());
     Deallocate((void *)f);
 
-    f = LoadFile(0x60);
+    f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_UP_NCL_BIN);
     _ZN2GX10LoadBGPlttEPKvjj((const void *)f, 0x60, 0x1a0);
     Deallocate((void *)f);
 
-    f = LoadFile(0x61);
+    f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_UP_NSC_BIN);
     func_02056314((void *)f, 0, 0x800);
     Deallocate((void *)f);
 
-    sp4 = LoadFile(0xe0);
-    sp8 = LoadFile(0xe1);
+    sp4 = LoadFile(ASSET_D_2D_MG_PACHINKO_NCG_BIN);
+    sp8 = LoadFile(ASSET_D_2D_MG_PACHINKO_NCL_BIN);
     DecompressLZ16(sp4, (void *)0x6400000);
     _ZN2GX11LoadOBJPlttEPKvjj((const void *)sp8, 0, 0x100);
 
@@ -2833,15 +2846,15 @@ s32 dScMgPachinko2_c::InitResources()
     *(volatile u32 *)0x400101c = 0;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x208;
 
-    f = LoadFile(0x5c);
+    f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_DOWN_NCG_BIN);
     DecompressLZ16(f, (void *)_ZN3G2S13GetBG3CharPtrEv());
     Deallocate((void *)f);
 
-    f = LoadFile(0x5d);
+    f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_DOWN_NCL_BIN);
     _ZN3GXS10LoadBGPlttEPKvjj((const void *)f, 0x60, 0x1a0);
     Deallocate((void *)f);
 
-    f = LoadFile(0x5e);
+    f = LoadFile(ASSET_D_2D_MG_BG_PACHINKO_DOWN_NSC_BIN);
     func_020562b4((const void *)f, 0, 0x800);
     Deallocate((void *)f);
 
@@ -2850,7 +2863,7 @@ s32 dScMgPachinko2_c::InitResources()
     *(volatile u32 *)0x4001010 = 0;
     *(volatile u16 *)0x4001008 = (*(volatile u16 *)0x4001008 & 0x43) | 0x608;
 
-    f = LoadFile(5);
+    f = LoadFile(ASSET_D_2D_HEI_TOP_DOWN_NSC_BIN);
     func_020564f4((const void *)f, 0, 0x800);
     Deallocate((void *)f);
 

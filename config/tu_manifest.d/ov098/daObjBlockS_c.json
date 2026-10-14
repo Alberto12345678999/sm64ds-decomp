@@ -298,14 +298,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov098_0213c850",
+      "symbol": "gBrokenBlockSModelFile",
       "address": "0x0213c850",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x458"
     },
     {
-      "symbol": "data_ov098_0213c858",
+      "symbol": "gBrokenBlockSCollisionFile",
       "address": "0x0213c858",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -809,7 +809,7 @@
       "source": "0x213c1b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov098_0213c850",
+      "symbol": "gBrokenBlockSModelFile",
       "addend": 0,
       "target_module": "ov098",
       "target_address": "0x0213c850"
@@ -839,7 +839,7 @@
       "source": "0x213c1c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov098_0213c858",
+      "symbol": "gBrokenBlockSCollisionFile",
       "addend": 0,
       "target_module": "ov098",
       "target_address": "0x0213c858"

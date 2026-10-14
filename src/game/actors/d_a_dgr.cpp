@@ -32,6 +32,12 @@
  *   size-DIFF 0xbc->0xc8. The scalar extern stays.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDgr_c_AssetId {
+    ASSET_DONGURU_BMD = 0x02da,
+    ASSET_DONGURU_KCL = 0x02db
+};
+
 #include "common.h"
 #include "daDgr_c.h"
 #include "SharedFilePtr.h"
@@ -310,5 +316,5 @@ int daDgr_c::func_ov025_0211123c()
 /* Source order is construction order: model file 730, collision file 731.
  * __sinit_d_a_dgr.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-DgrModelFilePtr data_ov025_02113a68(730);
-DgrCollisionFilePtr data_ov025_02113a60(731);
+DgrModelFilePtr data_ov025_02113a68(ASSET_DONGURU_BMD);
+DgrCollisionFilePtr data_ov025_02113a60(ASSET_DONGURU_KCL);

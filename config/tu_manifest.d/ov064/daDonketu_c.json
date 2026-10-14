@@ -116,35 +116,35 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov064_0211c660",
+      "symbol": "gDonketuHitAnimationFile",
       "address": "0x0211c660",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x2e1; the data_ov064_0211b834 file table's pointers reach it"
     },
     {
-      "symbol": "data_ov064_0211c668",
+      "symbol": "gDonketuModelFile",
       "address": "0x0211c668",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 0x2df"
     },
     {
-      "symbol": "data_ov064_0211c670",
+      "symbol": "gDonketuDeadAnimationFile",
       "address": "0x0211c670",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x2e0"
     },
     {
-      "symbol": "data_ov064_0211c678",
+      "symbol": "gDonketuTurnAnimationFile",
       "address": "0x0211c678",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "animation resource handle constructed with file ID 0x2e2"
     },
     {
-      "symbol": "data_ov064_0211c680",
+      "symbol": "gDonketuWalkAnimationFile",
       "address": "0x0211c680",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -798,7 +798,7 @@
       "source": "0x211aea0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c668",
+      "symbol": "gDonketuModelFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c668"
@@ -828,7 +828,7 @@
       "source": "0x211aeb0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c670",
+      "symbol": "gDonketuDeadAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c670"
@@ -858,7 +858,7 @@
       "source": "0x211aebc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c660",
+      "symbol": "gDonketuHitAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c660"
@@ -878,7 +878,7 @@
       "source": "0x211aec8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c678",
+      "symbol": "gDonketuTurnAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c678"
@@ -898,7 +898,7 @@
       "source": "0x211aed4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c680",
+      "symbol": "gDonketuWalkAnimationFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c680"

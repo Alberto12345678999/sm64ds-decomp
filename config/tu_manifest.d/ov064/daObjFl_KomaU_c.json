@@ -88,14 +88,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov064_0211c790",
+      "symbol": "gFlKomaUModelFile",
       "address": "0x0211c790",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_obj_fl_koma_u.cpp"
     },
     {
-      "symbol": "data_ov064_0211c798",
+      "symbol": "gFlKomaUCollisionFile",
       "address": "0x0211c798",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -593,7 +593,7 @@
       "source": "0x0211b130",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c790",
+      "symbol": "gFlKomaUModelFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c790"
@@ -623,7 +623,7 @@
       "source": "0x0211b140",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov064_0211c798",
+      "symbol": "gFlKomaUCollisionFile",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211c798"

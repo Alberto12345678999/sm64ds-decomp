@@ -151,8 +151,8 @@ _ZTS18daObjEwmIceBlock_c kind:data(any) addr:0x0211332c
 g_profile_EWM_ICE_BLOCK kind:data(any) addr:0x02113344 ambiguous
 _ZTV18daObjEwmIceBlock_c kind:data(any) addr:0x02113368
 data_ov056_021133a8 kind:data(any) addr:0x021133a8 ambiguous
-data_ov056_02113400 kind:bss addr:0x02113400
-data_ov056_02113408 kind:bss addr:0x02113408
+gEwmIceBrockModelFile kind:bss addr:0x02113400
+gEwmIceBrockCollisionFile kind:bss addr:0x02113408
 @490 kind:bss addr:0x02113410
 @60 kind:bss addr:0x0211341c
 data_ov056_02113428 kind:bss addr:0x02113428

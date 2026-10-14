@@ -49,6 +49,25 @@
 //   which the manifest pins.
 // - The 0xe7 shake-end sound keeps its pointer-form local decl: including
 //   Sound.h (reference form) renumbers the same temporaries.
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Coin_c_AssetId {
+    ASSET_FL_14_00_BMD = 0x05ff,
+    ASSET_FL_14_00_KCL = 0x0600,
+    ASSET_FL_14_01_BMD = 0x0601,
+    ASSET_FL_14_02_BMD = 0x0602,
+    ASSET_FL_14_03_BMD = 0x0603,
+    ASSET_FL_14_04_BMD = 0x0604,
+    ASSET_FL_14_05_BMD = 0x0605,
+    ASSET_FL_14_06_BMD = 0x0606,
+    ASSET_FL_14_07_BMD = 0x0607,
+    ASSET_FL_14_08_BMD = 0x0608,
+    ASSET_FL_14_09_BMD = 0x0609,
+    ASSET_FL_14_10_BMD = 0x060a,
+    ASSET_FL_14_11_BMD = 0x060b,
+    ASSET_FL_14_12_BMD = 0x060c,
+    ASSET_FL_14_13_BMD = 0x060d
+};
+
 #include "daObjFl_Puzzle_c.h"
 #include "daObjFl_Coin_c.h"
 #include "common.h"
@@ -496,21 +515,21 @@ void daObjFl_Coin_c_EmitDestructor(daObjFl_Coin_c *coin)
 // @symbol __sinit_d_a_obj_fl_coin.cpp
 /* The retail initializer constructs the fourteen model handles in file ID
  * order, then the collision handle, then fills the six-entry state table. */
-FlCoinModelFilePtr data_ov064_0211c810(0x5ff);
-FlCoinModelFilePtr data_ov064_0211c818(0x601);
-FlCoinModelFilePtr data_ov064_0211c7e8(0x602);
-FlCoinModelFilePtr data_ov064_0211c840(0x603);
-FlCoinModelFilePtr data_ov064_0211c820(0x604);
-FlCoinModelFilePtr data_ov064_0211c830(0x605);
-FlCoinModelFilePtr data_ov064_0211c7e0(0x606);
-FlCoinModelFilePtr data_ov064_0211c808(0x607);
-FlCoinModelFilePtr data_ov064_0211c7d8(0x608);
-FlCoinModelFilePtr data_ov064_0211c7f0(0x609);
-FlCoinModelFilePtr data_ov064_0211c828(0x60a);
-FlCoinModelFilePtr data_ov064_0211c7f8(0x60b);
-FlCoinModelFilePtr data_ov064_0211c838(0x60c);
-FlCoinModelFilePtr data_ov064_0211c848(0x60d);
-FlCoinCollisionFilePtr data_ov064_0211c800(0x600);
+FlCoinModelFilePtr gFl1400ModelFile(ASSET_FL_14_00_BMD);
+FlCoinModelFilePtr gFl1401ModelFile(ASSET_FL_14_01_BMD);
+FlCoinModelFilePtr gFl1402ModelFile(ASSET_FL_14_02_BMD);
+FlCoinModelFilePtr gFl1403ModelFile(ASSET_FL_14_03_BMD);
+FlCoinModelFilePtr gFl1404ModelFile(ASSET_FL_14_04_BMD);
+FlCoinModelFilePtr gFl1405ModelFile(ASSET_FL_14_05_BMD);
+FlCoinModelFilePtr gFl1406ModelFile(ASSET_FL_14_06_BMD);
+FlCoinModelFilePtr gFl1407ModelFile(ASSET_FL_14_07_BMD);
+FlCoinModelFilePtr gFl1408ModelFile(ASSET_FL_14_08_BMD);
+FlCoinModelFilePtr gFl1409ModelFile(ASSET_FL_14_09_BMD);
+FlCoinModelFilePtr gFl1410ModelFile(ASSET_FL_14_10_BMD);
+FlCoinModelFilePtr gFl1411ModelFile(ASSET_FL_14_11_BMD);
+FlCoinModelFilePtr gFl1412ModelFile(ASSET_FL_14_12_BMD);
+FlCoinModelFilePtr gFl1413ModelFile(ASSET_FL_14_13_BMD);
+FlCoinCollisionFilePtr data_ov064_0211c800(ASSET_FL_14_00_KCL);
 
 extern "C" {
 extern Entry data_ov064_0211bf68;

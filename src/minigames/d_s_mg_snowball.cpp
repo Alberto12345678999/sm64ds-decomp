@@ -44,6 +44,12 @@
 // - The r4/r5/r7 locals in the render-setup helpers are named for the
 //   registers they color; renaming them needs the coloring comments updated
 //   in the same pass.
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgSnowball_c_AssetId {
+    ASSET_D_2D_MG_BG_YUKA_NSC_BIN = 0x00ac,
+    ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN = 0x00ad
+};
+
 #pragma defer_codegen off
 
 /* Include order is load-bearing. dScMgSnowball_c.h reaches math/Matrix.h,
@@ -1940,10 +1946,10 @@ s32 dScMgSnowball_c::InitResources()
     *(vu32 *)0x400101c = 0;
     *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | 3;
 
-    LoadCompressedFileAt(0xad, (u8 *)_ZN2G213GetBG2CharPtrEv() + 0x4000);
-    LoadCompressedFileAt(0xad, (void *)(G2S::GetBG2CharPtr() + 0x4000));
-    LoadCompressedFileAt(0xac, _ZN2G212GetBG3ScrPtrEv());
-    LoadCompressedFileAt(0xac, G2S::GetBG3ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN, (u8 *)_ZN2G213GetBG2CharPtrEv() + 0x4000);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKIDAMA_NCG_BIN, (void *)(G2S::GetBG2CharPtr() + 0x4000));
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKA_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_YUKA_NSC_BIN, G2S::GetBG3ScrPtr());
 
     data_0209d45c |= 0xc;
     data_0209d454 |= 0xc;

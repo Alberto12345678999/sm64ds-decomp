@@ -75,6 +75,45 @@
  * stands. The class headers reach Model.h, so including them ahead of common.h
  * hands the TU the `.r`/`.t` form and the helpers below stop compiling. Same
  * ordering constraint daKpa2Bg_c documents. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daKpa_c_AssetId {
+    ASSET_KOOPA_DAMAGE_BCA = 0x035f,
+    ASSET_KOOPA_DAMAGE2_ED_BCA = 0x0360,
+    ASSET_KOOPA_DAMAGE2_ED_BTP = 0x0361,
+    ASSET_KOOPA_DAMAGE2_ST_BCA = 0x0362,
+    ASSET_KOOPA_DAMAGE2_ST_BTP = 0x0363,
+    ASSET_KOOPA_DEAD_BCA = 0x0364,
+    ASSET_KOOPA_DEAD_BTP = 0x0365,
+    ASSET_KOOPA_DEAD_ED_BCA = 0x0366,
+    ASSET_KOOPA_DEAD_ST_BCA = 0x0367,
+    ASSET_KOOPA_DUSH_BCA = 0x0368,
+    ASSET_KOOPA_DUSH_ED_BCA = 0x0369,
+    ASSET_KOOPA_DUSH_ST_BCA = 0x036a,
+    ASSET_KOOPA_FIRE_BCA = 0x036b,
+    ASSET_KOOPA_FIRE2_BCA = 0x036c,
+    ASSET_KOOPA_FIRE3_BCA = 0x036d,
+    ASSET_KOOPA_FIRE3_ED_BCA = 0x036e,
+    ASSET_KOOPA_FIRE3_ST_BCA = 0x036f,
+    ASSET_KOOPA_FIRE_ED_BCA = 0x0370,
+    ASSET_KOOPA_FIRE_ST_BCA = 0x0371,
+    ASSET_KOOPA_HOLD_BCA = 0x0372,
+    ASSET_KOOPA_HOLD_BTP = 0x0373,
+    ASSET_KOOPA_HOLD_ST_BCA = 0x0374,
+    ASSET_KOOPA_JUMP1_BCA = 0x0375,
+    ASSET_KOOPA_JUMP2_BCA = 0x0376,
+    ASSET_KOOPA_MODEL_BMD = 0x0377,
+    ASSET_KOOPA_STAND_UP_BCA = 0x0378,
+    ASSET_KOOPA_STRETCH_BCA = 0x0379,
+    ASSET_KOOPA_THROW_BCA = 0x037a,
+    ASSET_KOOPA_THROW_BTP = 0x037b,
+    ASSET_KOOPA_VEXING_BCA = 0x037c,
+    ASSET_KOOPA_WAIT_BTP = 0x037d,
+    ASSET_KOOPA_WAIT1_BCA = 0x037e,
+    ASSET_KOOPA_WALK_BCA = 0x037f,
+    ASSET_KOOPA_WALK_ED_BCA = 0x0380,
+    ASSET_KOOPA_WALK_ST_BCA = 0x0381
+};
+
 #include "common.h"
 #include "daKpa_c.h"
 #include "daKpaTail_c.h"
@@ -3684,41 +3723,41 @@ void daKpa_c::func_ov060_02111a28(){
  * registration nodes and .data descriptor records are compiler temporaries),
  * then the three pointer-to-member state tables. Order matches the retail
  * initializer exactly. */
-KpaModelFilePtr data_ov060_0211ac78(0x377);
-KpaAnimationFileHandle data_ov060_0211ac88(0x35f);
-KpaAnimationFileHandle data_ov060_0211ac50(0x362);
-KpaAnimationFileHandle data_ov060_0211ac58(0x360);
-KpaAnimationFileHandle data_ov060_0211ac60(0x364);
-KpaAnimationFileHandle data_ov060_0211ac18(0x366);
-KpaAnimationFileHandle data_ov060_0211acd0(0x367);
-KpaAnimationFileHandle data_ov060_0211ac68(0x36b);
-KpaAnimationFileHandle data_ov060_0211ac70(0x370);
-KpaAnimationFileHandle data_ov060_0211ac20(0x371);
-KpaAnimationFileHandle data_ov060_0211ac80(0x372);
-KpaAnimationFileHandle data_ov060_0211abe8(0x374);
-KpaAnimationFileHandle data_ov060_0211ac48(0x375);
-KpaAnimationFileHandle data_ov060_0211ac38(0x376);
-KpaAnimationFileHandle data_ov060_0211ac90(0x378);
-KpaAnimationFileHandle data_ov060_0211ac98(0x37a);
-KpaAnimationFileHandle data_ov060_0211abf8(0x37c);
-KpaAnimationFileHandle data_ov060_0211aca8(0x37e);
-KpaAnimationFileHandle data_ov060_0211acb0(0x37f);
-KpaAnimationFileHandle data_ov060_0211ac00(0x380);
-KpaAnimationFileHandle data_ov060_0211ac08(0x381);
-KpaAnimationFileHandle data_ov060_0211abe0(0x36c);
-KpaAnimationFileHandle data_ov060_0211acd8(0x36d);
-KpaAnimationFileHandle data_ov060_0211acf0(0x36f);
-KpaAnimationFileHandle data_ov060_0211ace8(0x36e);
-KpaAnimationFileHandle data_ov060_0211ace0(0x36a);
-KpaAnimationFileHandle data_ov060_0211aca0(0x368);
-KpaAnimationFileHandle data_ov060_0211acc8(0x369);
-KpaAnimationFileHandle data_ov060_0211acc0(0x379);
-KpaTexSequenceFilePtr data_ov060_0211ac40(0x363);
-KpaTexSequenceFilePtr data_ov060_0211acb8(0x361);
-KpaTexSequenceFilePtr data_ov060_0211ac10(0x365);
-KpaTexSequenceFilePtr data_ov060_0211abf0(0x37b);
-KpaTexSequenceFilePtr data_ov060_0211ac28(0x37d);
-KpaTexSequenceFilePtr data_ov060_0211ac30(0x373);
+KpaModelFilePtr data_ov060_0211ac78(ASSET_KOOPA_MODEL_BMD);
+KpaAnimationFileHandle data_ov060_0211ac88(ASSET_KOOPA_DAMAGE_BCA);
+KpaAnimationFileHandle data_ov060_0211ac50(ASSET_KOOPA_DAMAGE2_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211ac58(ASSET_KOOPA_DAMAGE2_ED_BCA);
+KpaAnimationFileHandle data_ov060_0211ac60(ASSET_KOOPA_DEAD_BCA);
+KpaAnimationFileHandle data_ov060_0211ac18(ASSET_KOOPA_DEAD_ED_BCA);
+KpaAnimationFileHandle data_ov060_0211acd0(ASSET_KOOPA_DEAD_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211ac68(ASSET_KOOPA_FIRE_BCA);
+KpaAnimationFileHandle data_ov060_0211ac70(ASSET_KOOPA_FIRE_ED_BCA);
+KpaAnimationFileHandle data_ov060_0211ac20(ASSET_KOOPA_FIRE_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211ac80(ASSET_KOOPA_HOLD_BCA);
+KpaAnimationFileHandle data_ov060_0211abe8(ASSET_KOOPA_HOLD_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211ac48(ASSET_KOOPA_JUMP1_BCA);
+KpaAnimationFileHandle data_ov060_0211ac38(ASSET_KOOPA_JUMP2_BCA);
+KpaAnimationFileHandle data_ov060_0211ac90(ASSET_KOOPA_STAND_UP_BCA);
+KpaAnimationFileHandle data_ov060_0211ac98(ASSET_KOOPA_THROW_BCA);
+KpaAnimationFileHandle data_ov060_0211abf8(ASSET_KOOPA_VEXING_BCA);
+KpaAnimationFileHandle data_ov060_0211aca8(ASSET_KOOPA_WAIT1_BCA);
+KpaAnimationFileHandle data_ov060_0211acb0(ASSET_KOOPA_WALK_BCA);
+KpaAnimationFileHandle data_ov060_0211ac00(ASSET_KOOPA_WALK_ED_BCA);
+KpaAnimationFileHandle data_ov060_0211ac08(ASSET_KOOPA_WALK_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211abe0(ASSET_KOOPA_FIRE2_BCA);
+KpaAnimationFileHandle data_ov060_0211acd8(ASSET_KOOPA_FIRE3_BCA);
+KpaAnimationFileHandle data_ov060_0211acf0(ASSET_KOOPA_FIRE3_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211ace8(ASSET_KOOPA_FIRE3_ED_BCA);
+KpaAnimationFileHandle data_ov060_0211ace0(ASSET_KOOPA_DUSH_ST_BCA);
+KpaAnimationFileHandle data_ov060_0211aca0(ASSET_KOOPA_DUSH_BCA);
+KpaAnimationFileHandle data_ov060_0211acc8(ASSET_KOOPA_DUSH_ED_BCA);
+KpaAnimationFileHandle data_ov060_0211acc0(ASSET_KOOPA_STRETCH_BCA);
+KpaTexSequenceFilePtr data_ov060_0211ac40(ASSET_KOOPA_DAMAGE2_ST_BTP);
+KpaTexSequenceFilePtr data_ov060_0211acb8(ASSET_KOOPA_DAMAGE2_ED_BTP);
+KpaTexSequenceFilePtr data_ov060_0211ac10(ASSET_KOOPA_DEAD_BTP);
+KpaTexSequenceFilePtr data_ov060_0211abf0(ASSET_KOOPA_THROW_BTP);
+KpaTexSequenceFilePtr data_ov060_0211ac28(ASSET_KOOPA_WAIT_BTP);
+KpaTexSequenceFilePtr data_ov060_0211ac30(ASSET_KOOPA_HOLD_BTP);
 
 /* Indexed by mHoldState (Bowser_HoldState). */
 PmfEnt data_ov060_0211aeb4[4] = {

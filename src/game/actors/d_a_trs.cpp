@@ -44,6 +44,17 @@
  *   SpawnFireball result (02118458).
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daTrs_c_AssetId {
+    ASSET_BOSS_TERESA_BMD = 0x02cc,
+    ASSET_BOSS_TERESA_FIRE_BCA = 0x02cd,
+    ASSET_BOSS_TERESA_FIRE_ST_BCA = 0x02ce,
+    ASSET_BOSS_TERESA_WAIT_BCA = 0x02cf,
+    ASSET_TERESA_BMD = 0x0427,
+    ASSET_TERESA_WAIT_BCA = 0x0428,
+    ASSET_T_BASKET_BMD = 0x06c9
+};
+
 #pragma defer_codegen off
 
 #include "common.h"
@@ -3661,13 +3672,13 @@ extern "C" daTrs_c *daTrs_c_classInit_TERESA()
  * registration cell in .bss; the lazy-init flag, the three cells
  * func_ov063_0211ab68 fills for the Vec3 globals, and the Vec3s themselves
  * are plain zero-init storage. */
-TrsModelFileResHandle data_ov063_0211edc4(0x427);
-TrsModelFileResHandle data_ov063_0211edec(0x6c9);
-TrsModelFileResHandle data_ov063_0211edf4(0x2cc);
-TrsAnimationResFileHandle data_ov063_0211eddc(0x428);
-TrsAnimationResFileHandle data_ov063_0211ede4(0x2cf);
-TrsAnimationResFileHandle data_ov063_0211edd4(0x2cd);
-TrsAnimationResFileHandle data_ov063_0211edcc(0x2ce);
+TrsModelFileResHandle data_ov063_0211edc4(ASSET_TERESA_BMD);
+TrsModelFileResHandle data_ov063_0211edec(ASSET_T_BASKET_BMD);
+TrsModelFileResHandle data_ov063_0211edf4(ASSET_BOSS_TERESA_BMD);
+TrsAnimationResFileHandle data_ov063_0211eddc(ASSET_TERESA_WAIT_BCA);
+TrsAnimationResFileHandle data_ov063_0211ede4(ASSET_BOSS_TERESA_WAIT_BCA);
+TrsAnimationResFileHandle data_ov063_0211edd4(ASSET_BOSS_TERESA_FIRE_BCA);
+TrsAnimationResFileHandle data_ov063_0211edcc(ASSET_BOSS_TERESA_FIRE_ST_BCA);
 
 int data_ov063_0211edc0;
 void *data_ov063_0211edfc[3];

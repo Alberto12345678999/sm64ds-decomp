@@ -49,6 +49,11 @@
  *
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daStar_c_AssetId {
+    ASSET_STAR_BASE_BMD = 0x04a0
+};
+
 #include "daStar_c.h"
 #include "daStarBase_c.h"
 #include "daObjIceBlock_c.h"
@@ -3432,7 +3437,7 @@ void force_daStarBase_c_dtor_order() {
 StarModelFilePtr data_ov002_0211094c(0x8015);
 StarModelFilePtr data_ov002_0211095c(0x8017);
 StarModelFilePtr data_ov002_02110954(0x8019);
-StarModelFilePtr data_ov002_0211093c(0x4a0);
+StarModelFilePtr data_ov002_0211093c(ASSET_STAR_BASE_BMD);
 StarModelFilePtr data_ov002_0211092c(0x801c);
 StarAnimationFileHandle data_ov002_02110944(0x8016);
 StarAnimationFileHandle data_ov002_02110924(0x801a);

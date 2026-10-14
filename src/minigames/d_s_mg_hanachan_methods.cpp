@@ -57,6 +57,18 @@
    opt pragmas bind: 5x opt_strength_reduction off, one O3, Render
    opt_common_subs off. Without it the 49-function version matched 44/49
    and failed the order check. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgHanachan_c_AssetId {
+    ASSET_D_2D_MG_BG_HANA_SAGASE1_NCG_BIN = 0x003b,
+    ASSET_D_2D_MG_BG_HANA_SAGASE1_NCL_BIN = 0x003c,
+    ASSET_D_2D_MG_BG_HANA_SAGASE1_NSC_BIN = 0x003d,
+    ASSET_D_2D_MG_BG_HANA_SAGASE2_NCG_BIN = 0x003e,
+    ASSET_D_2D_MG_BG_HANA_SAGASE2_NCL_BIN = 0x003f,
+    ASSET_D_2D_MG_BG_HANA_SAGASE2_NSC_BIN = 0x0040,
+    ASSET_D_2D_MG_HANA_SAGASE_NCG_BIN = 0x00cb,
+    ASSET_D_2D_MG_HANA_SAGASE_NCL_BIN = 0x00cc
+};
+
 #pragma defer_codegen off
 
 #include "types.h"
@@ -2350,8 +2362,8 @@ s32 dScMgHanachan_c::InitResources()
     SelfV *obj = (SelfV *)this;
 
     func_ov006_020edcb0();
-    a = LoadFile(0xcb);
-    b = LoadFile(0xcc);
+    a = LoadFile(ASSET_D_2D_MG_HANA_SAGASE_NCG_BIN);
+    b = LoadFile(ASSET_D_2D_MG_HANA_SAGASE_NCL_BIN);
     DecompressLZ16(a, (void *)0x6400000);
     DecompressLZ16(a, (void *)0x6600000);
     GXS::LoadOBJPltt(b, 0, 0xc0);
@@ -2381,9 +2393,9 @@ s32 dScMgHanachan_c::InitResources()
 // @symbol func_ov006_020edcb0
 extern "C" {
 void func_ov006_020edcb0(void){
-  void *r6 = LoadFile(0x3b);
-  void *r5 = LoadFile(0x3d);
-  void *r4 = LoadFile(0x3c);
+  void *r6 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE1_NCG_BIN);
+  void *r5 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE1_NSC_BIN);
+  void *r4 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE1_NCL_BIN);
   {
     volatile unsigned short *m = (volatile unsigned short *)0x400000e;
     *m = (*m & ~3) | 1;
@@ -2397,9 +2409,9 @@ void func_ov006_020edcb0(void){
   Deallocate(r5);
   Deallocate(r4);
 
-  r6 = LoadFile(0x3e);
-  r5 = LoadFile(0x40);
-  r4 = LoadFile(0x3f);
+  r6 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE2_NCG_BIN);
+  r5 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE2_NSC_BIN);
+  r4 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE2_NCL_BIN);
   {
     volatile unsigned short *m = (volatile unsigned short *)0x400100e;
     *m = (*m & ~3) | 2;

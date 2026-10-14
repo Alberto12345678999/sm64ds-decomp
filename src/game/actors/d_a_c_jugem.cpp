@@ -37,6 +37,13 @@ comment leftovers:
  *     in StateHoverMain. No single name covers all three.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daC_Jugem_c_AssetId {
+    ASSET_C_JUGEM_BMD = 0x02d7,
+    ASSET_C_JUGEM_WAIT_BCA = 0x02d8,
+    ASSET_C_JUGEM_WAIT_C_BTP = 0x02d9
+};
+
 #include "daC_Jugem_c.h"
 #include "common.h"
 #include "dActor_c.h"
@@ -1010,9 +1017,9 @@ extern "C" daC_Jugem_c *daC_Jugem_c_classInit(void)
  * texture-sequence handle (file 0x2d9), the eleven state pairs copied from
  * the ROM PMF constants, then the two carry-offset vectors (first plain,
  * the second volatile). */
-JugemModelFile data_ov085_0213074c(0x2d7);
-JugemAnimationFilePtr data_ov085_02130744(0x2d8);
-JugemTexSequenceFilePtr data_ov085_0213073c(0x2d9);
+JugemModelFile data_ov085_0213074c(ASSET_C_JUGEM_BMD);
+JugemAnimationFilePtr data_ov085_02130744(ASSET_C_JUGEM_WAIT_BCA);
+JugemTexSequenceFilePtr data_ov085_0213073c(ASSET_C_JUGEM_WAIT_C_BTP);
 daC_Jugem_c::StateFn data_ov085_021307d0[2] = {data_ov085_0213025c, data_ov085_021302d4};
 daC_Jugem_c::StateFn data_ov085_021307e0[2] = {data_ov085_021302bc, data_ov085_0213026c};
 daC_Jugem_c::StateFn data_ov085_02130800[2] = {data_ov085_02130254, data_ov085_021302dc};

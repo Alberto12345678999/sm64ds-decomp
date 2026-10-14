@@ -19,6 +19,12 @@
  *   whose 0x204 bit vetoes the enable.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjWlSubmarine_c_AssetId {
+    ASSET_WL_SUBMARINE_BMD = 0x06dc,
+    ASSET_WL_SUBMARINE_KCL = 0x06dd
+};
+
 #include "daObjWlSubmarine_c.h"
 #include "SharedFilePtr.h"
 
@@ -104,5 +110,5 @@ extern "C" daObjWlSubmarine_c *daObjWlSubmarine_c_classInit()
 // @symbol __sinit_d_a_obj_wl_submarine.cpp
 /* The retail initializer constructs the model first, then the collision
  * file. */
-SubmarineModelFilePtr Submarine_ModelFile(0x6dc);      /* model */
-SubmarineCollisionFilePtr Submarine_ClsnFile(0x6dd);   /* collision */
+SubmarineModelFilePtr Submarine_ModelFile(ASSET_WL_SUBMARINE_BMD);      /* model */
+SubmarineCollisionFilePtr Submarine_ClsnFile(ASSET_WL_SUBMARINE_KCL);   /* collision */

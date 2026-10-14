@@ -15,6 +15,15 @@
  *   dScMgSingle3DBase_c.h still leaves as padding.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgSound_c_AssetId {
+    ASSET_D_2D_MG_BG_SOUND2_NCG_BIN = 0x0098,
+    ASSET_D_2D_MG_BG_SOUND2_NCL_BIN = 0x0099,
+    ASSET_D_2D_MG_BG_SOUND2_NSC_BIN = 0x009a,
+    ASSET_D_2D_MG_SOUND_NCG_BIN = 0x00ff,
+    ASSET_D_2D_MG_SOUND_NCL_BIN = 0x0100
+};
+
 #include "dScMgSound_c.h"
 #include "types.h"
 #include "decl_common.h"
@@ -174,22 +183,22 @@ s32 dScMgSound_c::InitResources()
     int objChars, objPltt, file;
 
     data_0209d45c |= 0x11;
-    objChars = LoadFile(0xff);
-    objPltt = LoadFile(0x100);
+    objChars = LoadFile(ASSET_D_2D_MG_SOUND_NCG_BIN);
+    objPltt = LoadFile(ASSET_D_2D_MG_SOUND_NCL_BIN);
     DecompressLZ16(objChars, (void *)0x6400000);
     GX::LoadOBJPltt((const void *)objPltt, 0, 0x100);
 
     data_0209d454 |= 4;
-    file = LoadFile(0x98);
+    file = LoadFile(ASSET_D_2D_MG_BG_SOUND2_NCG_BIN);
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x214;
     DecompressLZ16(file, (void *)G2S::GetBG2CharPtr());
     Deallocate((void *)file);
 
-    file = LoadFile(0x99);
+    file = LoadFile(ASSET_D_2D_MG_BG_SOUND2_NCL_BIN);
     GXS::LoadBGPltt((const void *)file, 0x60, 0x1a0);
     Deallocate((void *)file);
 
-    file = LoadFile(0x9a);
+    file = LoadFile(ASSET_D_2D_MG_BG_SOUND2_NSC_BIN);
     func_02056374((const void *)file, 0, 0x800);
     Deallocate((void *)file);
 

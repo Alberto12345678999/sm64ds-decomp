@@ -255,7 +255,7 @@
       "evidence": "model file handle constructed with file ID 0x204; InitResources loads it through the SharedFilePtr base"
     },
     {
-      "symbol": "data_ov006_021421cc",
+      "symbol": "gOV006JumpBack01ModelFile",
       "address": "0x021421cc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -736,7 +736,7 @@
       "source": "0x02130f4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_021421cc",
+      "symbol": "gOV006JumpBack01ModelFile",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021421cc"

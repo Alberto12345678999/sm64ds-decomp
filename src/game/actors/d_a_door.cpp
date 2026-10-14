@@ -85,6 +85,18 @@
  *   TU (data_ov100_021488b4) and only their addresses are used.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDoor_c_AssetId {
+    ASSET_OBJ_DOOR0_STAR_BMD = 0x043e,
+    ASSET_OBJ_DOOR0_STAR1_BMD = 0x043f,
+    ASSET_OBJ_DOOR0_STAR10_BMD = 0x0440,
+    ASSET_OBJ_DOOR0_STAR3_BMD = 0x0441,
+    ASSET_OBJ_DOOR1_BMD = 0x0443,
+    ASSET_OBJ_DOOR2_BORO_BMD = 0x0444,
+    ASSET_OBJ_DOOR4_YAMI_BMD = 0x0445,
+    ASSET_OBJ_DOOR5_HORROR_BMD = 0x0446
+};
+
 #pragma defer_codegen off
 
 #include "daDoor_c.h"
@@ -326,15 +338,15 @@ struct DoorAnimationFileHandle : SharedFilePtr {
 // @symbol __sinit_d_a_door.cpp
 DoorModelFilePtr    data_ov100_0214875c(0x9c09);
 DoorModelFilePtr    data_ov100_0214877c(0x9c0a);
-DoorModelFilePtr    data_ov100_0214873c(0x43e);
-DoorModelFilePtr    data_ov100_02148724(0x43f);
-DoorModelFilePtr    data_ov100_0214872c(0x441);
-DoorModelFilePtr    data_ov100_02148764(0x440);
-DoorModelFilePtr    data_ov100_02148774(0x443);
-DoorModelFilePtr    data_ov100_0214876c(0x444);
+DoorModelFilePtr    gObjDoor0StarModelFile(ASSET_OBJ_DOOR0_STAR_BMD);
+DoorModelFilePtr    gObjDoor0Star1ModelFile(ASSET_OBJ_DOOR0_STAR1_BMD);
+DoorModelFilePtr    gObjDoor0Star3ModelFile(ASSET_OBJ_DOOR0_STAR3_BMD);
+DoorModelFilePtr    gObjDoor0Star10ModelFile(ASSET_OBJ_DOOR0_STAR10_BMD);
+DoorModelFilePtr    gObjDoor1ModelFile(ASSET_OBJ_DOOR1_BMD);
+DoorModelFilePtr    gObjDoor2BoroModelFile(ASSET_OBJ_DOOR2_BORO_BMD);
 DoorModelFilePtr    data_ov100_0214874c(0x9c0b);
-DoorModelFilePtr    data_ov100_02148754(0x445);
-DoorModelFilePtr    data_ov100_02148734(0x446);
+DoorModelFilePtr    gObjDoor4YamiModelFile(ASSET_OBJ_DOOR4_YAMI_BMD);
+DoorModelFilePtr    gObjDoor5HorrorModelFile(ASSET_OBJ_DOOR5_HORROR_BMD);
 DoorAnimationFileHandle  data_ov100_02148744(0x9c08);
 
 /* The function-local statics of the helpers above, spelled out against the

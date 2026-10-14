@@ -116,42 +116,42 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov065_0211d814",
+      "symbol": "gCtMechaObj01ModelFile",
       "address": "0x0211d814",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x5b6"
     },
     {
-      "symbol": "data_ov065_0211d81c",
+      "symbol": "gCtMechaObj02aModelFile",
       "address": "0x0211d81c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x5bb"
     },
     {
-      "symbol": "data_ov065_0211d824",
+      "symbol": "gCtMechaObj02ModelFile",
       "address": "0x0211d824",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x5b9"
     },
     {
-      "symbol": "data_ov065_0211d82c",
+      "symbol": "gCtMechaObj02CollisionFile",
       "address": "0x0211d82c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x5ba"
     },
     {
-      "symbol": "data_ov065_0211d834",
+      "symbol": "gCtMechaObj01CollisionFile",
       "address": "0x0211d834",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x5b7"
     },
     {
-      "symbol": "data_ov065_0211d83c",
+      "symbol": "gCtMechaObj01aModelFile",
       "address": "0x0211d83c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -851,7 +851,7 @@
       "source": "0x0211c71c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d814",
+      "symbol": "gCtMechaObj01ModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d814"
@@ -881,7 +881,7 @@
       "source": "0x0211c72c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d824",
+      "symbol": "gCtMechaObj02ModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d824"
@@ -901,7 +901,7 @@
       "source": "0x0211c738",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d83c",
+      "symbol": "gCtMechaObj01aModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d83c"
@@ -921,7 +921,7 @@
       "source": "0x0211c744",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d81c",
+      "symbol": "gCtMechaObj02aModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d81c"
@@ -941,7 +941,7 @@
       "source": "0x0211c750",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d834",
+      "symbol": "gCtMechaObj01CollisionFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d834"
@@ -971,7 +971,7 @@
       "source": "0x0211c760",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d82c",
+      "symbol": "gCtMechaObj02CollisionFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d82c"

@@ -62,6 +62,16 @@
  *   forwards to.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daUdlift_c_AssetId {
+    ASSET_CV_UD_LIFT_BMD = 0x05db,
+    ASSET_CV_UD_LIFT_KCL = 0x05dc,
+    ASSET_RC_RIFT02_BMD = 0x06ab,
+    ASSET_RC_RIFT02_KCL = 0x06ac,
+    ASSET_TH_LIFT_BMD = 0x06bf,
+    ASSET_TH_LIFT_KCL = 0x06c0
+};
+
 #include "daUdlift_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -98,12 +108,12 @@ struct UdliftCollisionFilePtr : SharedFilePtr {
     ~UdliftCollisionFilePtr();
 };
 
-extern UdliftModelFile data_ov095_02137898;
-extern UdliftModelFile data_ov095_021378a8;
-extern UdliftModelFile data_ov095_021378c0;
-extern UdliftCollisionFilePtr data_ov095_021378b0;
-extern UdliftCollisionFilePtr data_ov095_021378b8;
-extern UdliftCollisionFilePtr data_ov095_021378a0;
+extern UdliftModelFile gThLiftModelFile;
+extern UdliftModelFile gCvUdLiftModelFile;
+extern UdliftModelFile gRcRift02ModelFile;
+extern UdliftCollisionFilePtr gThLiftCollisionFile;
+extern UdliftCollisionFilePtr gCvUdLiftCollisionFile;
+extern UdliftCollisionFilePtr gRcRift02CollisionFile;
 
 extern "C" {
 /* Per-variant model and collision files, and the CLPS block handed to
@@ -421,12 +431,12 @@ void daUdlift_c::StateStop()
  * three model handles (files 0x6bf/0x5db/0x6ab), the three collision
  * handles (files 0x6c0/0x5dc/0x6ac), then the five state records copied
  * from the ROM PMF constants. */
-UdliftModelFile data_ov095_02137898(0x6bf);
-UdliftModelFile data_ov095_021378a8(0x5db);
-UdliftModelFile data_ov095_021378c0(0x6ab);
-UdliftCollisionFilePtr data_ov095_021378b0(0x6c0);
-UdliftCollisionFilePtr data_ov095_021378b8(0x5dc);
-UdliftCollisionFilePtr data_ov095_021378a0(0x6ac);
+UdliftModelFile gThLiftModelFile(ASSET_TH_LIFT_BMD);
+UdliftModelFile gCvUdLiftModelFile(ASSET_CV_UD_LIFT_BMD);
+UdliftModelFile gRcRift02ModelFile(ASSET_RC_RIFT02_BMD);
+UdliftCollisionFilePtr gThLiftCollisionFile(ASSET_TH_LIFT_KCL);
+UdliftCollisionFilePtr gCvUdLiftCollisionFile(ASSET_CV_UD_LIFT_KCL);
+UdliftCollisionFilePtr gRcRift02CollisionFile(ASSET_RC_RIFT02_KCL);
 /* Six slots: the five states plus section-alignment fill. Retail BSS runs
  * 8 bytes past the fifth entry to the section end at 0x02137940. The
  * initializer never touches the sixth slot; it is zeros. The claim has to

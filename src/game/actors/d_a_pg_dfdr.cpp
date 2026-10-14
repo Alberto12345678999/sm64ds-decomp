@@ -34,6 +34,16 @@
  *   c+0x380 and the ternary stay.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daPgDfdr_c_AssetId {
+    ASSET_PENGUIN_BMD = 0x03fb,
+    ASSET_PENGUIN_KCL = 0x03fc,
+    ASSET_PENGUIN_BACK_BCA = 0x03fe,
+    ASSET_PENGUIN_WAIT1_BCA = 0x0406,
+    ASSET_PENGUIN_WAIT1_BTP = 0x0407,
+    ASSET_PENGUIN_WALK2_BCA = 0x0409
+};
+
 #include "common.h"
 #include "daPgDfdr_c.h"
 #include "Player.h"
@@ -404,12 +414,12 @@ extern "C" void func_ov027_02111994(daPgDfdr_c *self)
  * handle (file 0x3fb), the three animation handles (files 0x406, 0x409,
  * 0x3fe), the texture-sequence handle (file 0x407), the collision handle
  * (file 0x3fc), then the four state words copied into the state table. */
-PgDfdrModelFile data_ov027_02113c7c(0x3fb);
-PgDfdrAnimationFilePtr data_ov027_02113c84(0x406);
-PgDfdrAnimationFilePtr data_ov027_02113c74(0x409);
-PgDfdrAnimationFilePtr data_ov027_02113c8c(0x3fe);
-PgDfdrTexSequenceFilePtr data_ov027_02113c94(0x407);
-PgDfdrCollisionFilePtr data_ov027_02113c6c(0x3fc);
+PgDfdrModelFile data_ov027_02113c7c(ASSET_PENGUIN_BMD);
+PgDfdrAnimationFilePtr data_ov027_02113c84(ASSET_PENGUIN_WAIT1_BCA);
+PgDfdrAnimationFilePtr data_ov027_02113c74(ASSET_PENGUIN_WALK2_BCA);
+PgDfdrAnimationFilePtr data_ov027_02113c8c(ASSET_PENGUIN_BACK_BCA);
+PgDfdrTexSequenceFilePtr data_ov027_02113c94(ASSET_PENGUIN_WAIT1_BTP);
+PgDfdrCollisionFilePtr data_ov027_02113c6c(ASSET_PENGUIN_KCL);
 DfdrStateTable data_ov027_02113ce4 = {
     data_ov027_021139d4, data_ov027_021139cc,
     data_ov027_021139dc, data_ov027_021139c4

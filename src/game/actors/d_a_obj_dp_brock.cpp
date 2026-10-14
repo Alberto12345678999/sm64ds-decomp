@@ -35,6 +35,12 @@
 // mStateTimer++ and mStateTimer == kFramesPerState stay (the +1/+50 forms
 // move bytes).
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjDpBrock_c_AssetId {
+    ASSET_DP_BROCK_BMD = 0x05df,
+    ASSET_DP_BROCK_KCL = 0x05e0
+};
+
 #include "daObjDpBrock_c.h"
 #include "SharedFilePtr.h"
 
@@ -208,5 +214,5 @@ void daObjDpBrock_c::UpdateStepClsnPosAndRot()
 /* Source order is construction order: model file 1503, collision file 1504.
  * __sinit_d_a_obj_dp_brock.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-BrockModelFilePtr data_ov025_02113ab8(1503);
-BrockCollisionFilePtr data_ov025_02113ab0(1504);
+BrockModelFilePtr data_ov025_02113ab8(ASSET_DP_BROCK_BMD);
+BrockCollisionFilePtr data_ov025_02113ab0(ASSET_DP_BROCK_KCL);
