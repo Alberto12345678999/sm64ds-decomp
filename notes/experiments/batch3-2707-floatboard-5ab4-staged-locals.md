@@ -2,7 +2,7 @@
 
 - tested_commit: 9d3c80dd2 (cleanup-leftover-overlay-batch-3 at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_obj_float_board.cpp:202-208` stages the raycast
+- claim: `src/actors/daObjFloatBoard_c.cpp:202-208` stages the raycast
   origin through locals because direct member stores schedule
   differently.
 - attempted_change (scratch-applied, then reverted):
@@ -23,7 +23,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_obj_float_board.cpp \
+.venv/bin/python tools/match.py --c src/actors/daObjFloatBoard_c.cpp \
   --func func_ov002_020b5ab4 --addr 0x020b5ab4 --size 0xe4 \
   --version 2004/b56 --module ov002 --strict-relocs --brief
 ```
@@ -40,3 +40,6 @@ TARGET func_ov002_020b5ab4 @ 0x020b5ab4 size 0xe4  bytes: 10402de960d04de2cc109f
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_obj_float_board.cpp](../../src/game/actors/d_a_obj_float_board.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

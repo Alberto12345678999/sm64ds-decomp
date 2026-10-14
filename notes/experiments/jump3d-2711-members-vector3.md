@@ -17,7 +17,7 @@
 -    Jump3DVec mVel;         /* 0x20 ... */
 +    Vector3 mPos;         /* 0x14 ... */
 +    Vector3 mVel;         /* 0x20 ... */
---- src/minigames/dMgJump3DMario_c.cpp
+--- src/actors/dMgJump3DMario_c.cpp
 -void Vec3_Sub(Jump3DVec *out, Jump3DVec *a, Jump3DVec *b);
 -void AddVec3(Jump3DVec *a, Jump3DVec *b, Jump3DVec *c);
 -int  NormalizeVec3IfNonZero(Jump3DVec *v);
@@ -33,7 +33,7 @@
 - command (per-function, representative D1):
 
 ```text
-.venv/bin/python tools/match.py --c src/minigames/dMgJump3DMario_c.cpp \
+.venv/bin/python tools/match.py --c src/actors/dMgJump3DMario_c.cpp \
   --func _ZN16dMgJump3DMario_cD1Ev --addr 0x020c893c --size 0xc8 \
   --version 2004/b56 --module ov006 --strict-relocs --brief
 ```
@@ -117,3 +117,6 @@ error: unlicensed content in text-only multi-symbol object: section[23] .text si
   symbol is not licensed here.
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/minigames/dMgJump3DMario_c.cpp](../../src/minigames/dMgJump3DMario_c.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

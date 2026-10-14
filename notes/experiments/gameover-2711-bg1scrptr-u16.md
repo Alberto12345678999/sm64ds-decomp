@@ -2,7 +2,7 @@
 
 - tested_commit: 2546f0ae4 (cleanup-mgjump3-gameover at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/stages/dScGameOver_c.cpp:28-29,80-82` keeps the `unsigned short *`
+- claim: `src/actors/dScGameOver_c.cpp:28-29,80-82` keeps the `unsigned short *`
   spelling of `_ZN3G2S12GetBG1ScrPtrEv` over a `void *` one.
 - attempted_change (scratch-applied, then reverted):
 
@@ -19,7 +19,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/stages/dScGameOver_c.cpp \
+.venv/bin/python tools/match.py --c src/actors/dScGameOver_c.cpp \
   --func func_ov003_020b0730 --addr 0x020b0730 --size 0xe0 \
   --version 2004/b56 --module ov003 --strict-relocs --brief
 ```
@@ -39,3 +39,6 @@ MATCHING VERSIONS: 2004/b56
 ```
 
 - verdict: DISPROVED
+
+Current source locations after PR #3840: [src/game/stages/dScGameOver_c.cpp](../../src/game/stages/dScGameOver_c.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

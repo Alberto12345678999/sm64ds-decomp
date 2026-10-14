@@ -2,7 +2,7 @@
 
 - tested_commit: 2546f0ae4 (cleanup-mgjump3-gameover at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/minigames/dMgJump3DMario_c.cpp:251-259` zeroes the Mtx through
+- claim: `src/actors/dMgJump3DMario_c.cpp:251-259` zeroes the Mtx through
   `int *` because writing the named members instead costs 11 words.
 - attempted_change (scratch-applied, then reverted):
 
@@ -17,7 +17,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/minigames/dMgJump3DMario_c.cpp \
+.venv/bin/python tools/match.py --c src/actors/dMgJump3DMario_c.cpp \
   --func func_ov006_020c7734 --addr 0x020c7734 --size 0x12c \
   --version 2004/b56 --module ov006 --strict-relocs --brief
 ```
@@ -50,3 +50,6 @@ MATCHING VERSIONS: none
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/minigames/dMgJump3DMario_c.cpp](../../src/minigames/dMgJump3DMario_c.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

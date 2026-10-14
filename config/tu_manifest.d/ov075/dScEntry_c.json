@@ -112,7 +112,7 @@
     "functions_matched": 13,
     "functions_declared": 13,
     "emission_order": "all 13 in ROM-ascending section order",
-    "linkcheck": "SCRATCH-LINK-VERIFIED 0x02115bac..0x02116128 at the original promotion; module fidelity 106/106 exact; ROM sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 identical to stock control. The widen to 0x02115ab8..0x02116128 is not re-recorded here: tools/tubuild.py linkcheck refuses an already-enrolled text-only TU ('intact production requires one .text claim and at least one non-text claim'). Its link proof is the full `python tools/rombuild.py -j8`: 106/106 modules exact, 0 mismatching, ROM-build analysis PASS, with src/game/stages/dScEntry_c.cpp recompiled.",
+    "linkcheck": "SCRATCH-LINK-VERIFIED 0x02115bac..0x02116128 at the original promotion; module fidelity 106/106 exact; ROM sha256 d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 identical to stock control. The widen to 0x02115ab8..0x02116128 is not re-recorded here: tools/tubuild.py linkcheck refuses an already-enrolled text-only TU ('intact production requires one .text claim and at least one non-text claim'). Its link proof is the full `python tools/rombuild.py -j8`: 106/106 modules exact, 0 mismatching, ROM-build analysis PASS, with src/actors/dScEntry_c.cpp recompiled.",
     "dsd_check_symbols": "FAIL on 9 pre-existing error lines; baseline control has the same 9 (0 new, 0 resolved). NOT green.",
     "object": "build/tu/ov075-dScEntry_c/dScEntry_c.o (gitignored)",
     "compilerOnlyOutput": {

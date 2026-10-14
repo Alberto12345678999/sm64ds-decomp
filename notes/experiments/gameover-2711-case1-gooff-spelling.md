@@ -2,7 +2,7 @@
 
 - tested_commit: 2546f0ae4 (cleanup-mgjump3-gameover at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/stages/dScGameOver_c.cpp:455-457,505-510` keeps case1's
+- claim: `src/actors/dScGameOver_c.cpp:455-457,505-510` keeps case1's
   `(char *)o + GO_OFF` spelling because the member-index form perturbs the
   tail.
 - attempted_change (scratch-applied, then reverted):
@@ -21,7 +21,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/stages/dScGameOver_c.cpp \
+.venv/bin/python tools/match.py --c src/actors/dScGameOver_c.cpp \
   --func func_ov003_020b060c --addr 0x020b060c --size 0x124 \
   --version 2004/b56 --module ov003 --strict-relocs --brief
 ```
@@ -42,3 +42,6 @@ MATCHING VERSIONS: none
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/stages/dScGameOver_c.cpp](../../src/game/stages/dScGameOver_c.cpp).
+The experiment and commands above retain the paths at `tested_commit`.
