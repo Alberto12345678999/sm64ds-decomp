@@ -1057,8 +1057,77 @@
     },
     "disposition": "Not adopted; original inherited boundary remains. Measured local attempts do not establish a universal compiler floor."
   },
-  "gates": {},
-  "status": "Corrected Player guard Source checkpoint; fresh scoped gates pending. Historical full-ROM preserved with explicit component transfer.",
+  "gates": {
+    "range": {
+      "name": "range",
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "607576acc557a318d5f813f8a0813bc86f03d140..19d5ce86e2b623eb0147dcbdeb4226da6af44a81",
+        "--json",
+        "build/trs-guard1013/range-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 74.31845450401306,
+      "log": "build/trs-guard1013/range.log",
+      "log_sha256": "5e48e936408d91062fa0ad6e68e942c7ae9959cca02dd50844a7fdb7da1ef9ec",
+      "tested_commit": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81"
+    },
+    "decl": {
+      "name": "decl",
+      "command": [
+        "python",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "607576acc557a318d5f813f8a0813bc86f03d140"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.080808877944946,
+      "log": "build/trs-guard1013/decl.log",
+      "log_sha256": "9e0c2ae024baa9e6e7b3ec9fe8294fda57b4bdc17d38927353b685cfa619ef04",
+      "tested_commit": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81"
+    },
+    "port": {
+      "name": "port",
+      "command": [
+        "python",
+        "tools/port_refcheck.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.6039538383483887,
+      "log": "build/trs-guard1013/port.log",
+      "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e",
+      "tested_commit": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81"
+    },
+    "langmode": {
+      "name": "langmode",
+      "command": [
+        "python",
+        "tools/langmode_audit.py",
+        "--check",
+        "langmode-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.161060094833374,
+      "log": "build/trs-guard1013/langmode.log",
+      "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765",
+      "tested_commit": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81"
+    },
+    "conflicts": {
+      "name": "conflicts",
+      "command": [
+        "python",
+        "tools/check_tubuild_conflicts.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3081521987915039,
+      "log": "build/trs-guard1013/conflicts.log",
+      "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521",
+      "tested_commit": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81"
+    }
+  },
+  "status": "Corrected checkpoint scoped gates terminal0 and complete ordinary object proof pass. Original aaf current607 full-ROM retained with exact prepared-component transfer; no corrected-checkpoint global rerun claimed. Ready for independent exact-final review and Root publication.",
   "artifacts": {
     "proof.json": "8ed76513bbdbed1f6a056ae439785072faf02964004e5d60c00463005675ee3b",
     "storage.json": "a9a1bea1f185ce88f00f3ca5e81c2e7470c939e44791cf6acc626a62d368854c",
@@ -1087,7 +1156,18 @@
     "guard/proof.json": "7eb7be8c3da3ca9b7e4061ebb91518acaafe622baa8c7e6239b0fde1c50d4174",
     "guard/storage.json": "a9a1bea1f185ce88f00f3ca5e81c2e7470c939e44791cf6acc626a62d368854c",
     "guard/transfer-proof.json": "c2ac49b37f597fa6c10f37916130bca3812820b508f79ff0c05372c3c1768714",
-    "guard/guard-finding-original.json": "edbb0b1dcb6e46f5e031bf95908c9a59fa6c55df2b3090a8dc910e93f96267eb"
+    "guard/guard-finding-original.json": "edbb0b1dcb6e46f5e031bf95908c9a59fa6c55df2b3090a8dc910e93f96267eb",
+    "guard/warning-controls.py": "4299e1f3a533f179c1629a19b179ea177588d6d815b21112c8471bc7827c317a",
+    "guard/stock-warning-controls.json": "d138763a837760e957c002177507615d9f260fab8c39abb1cded3ab3764272e2",
+    "guard/whole.py": "b1b8a45467e1da3d227c008ff64af6988e27429e29a86d4144124bbe2662ccaa",
+    "guard/baseline/raw.o": "942dd78f754396119151eb97b7bed0b20d9c21a5519857cea15fa73fdce36f0d",
+    "guard/baseline/prepared.o": "881b53d61e008abb6674e23b79692b94919ec145967cd0fdf51fedc4653a1fd7",
+    "guard/baseline/complete-graphs.json": "d1e0e1757b0f87a1212995ecb19b5bc73c845dee8922451d3b968c4e5cd1db79",
+    "guard/candidate/raw.o": "887370be769d6fba8adc62c6b4aa944b85697936e700b12380dd515fc275cd57",
+    "guard/candidate/prepared.o": "881b53d61e008abb6674e23b79692b94919ec145967cd0fdf51fedc4653a1fd7",
+    "guard/candidate/complete-graphs.json": "98e004c183da7180ea49908b5aec772b889c1d1b4bdaca86e03c6d2102928098",
+    "guard/candidate/strict.json": "bd8d9b3d755c826267938b98174afdd9299208ff421ca1bf9b790a417f3463fc",
+    "guard/candidate/metadata.json": "3b42030000460fa52a31fb540c02f0597770d28c1ef2c2876b1d095ae765fbbe"
   },
   "final_production_summary": {
     "modules": {
@@ -1172,7 +1252,7 @@
       ],
       "context": "Actual current headers; each object uses its immutable source revision manifest renames with unchanged stock per-function isolation. Ordinary whole preparation separately verifies every owned row with zero blind."
     },
-    "qualification": "Stock per-function checks warn BLIND-3 for0211ab68 lazy Vector3 registrations and BLIND-16 for the initializer, for both baseline and candidate using their own immutable manifest input names; zero diffs. Ordinary full304Binit/4Bctor ownership and all typed edges separately pass with zero blind. No stock verdict is suppressed."
+    "qualification": "Baseline and corrected candidate each have BLIND-3 lazy registrations and BLIND-16 initializer, zero diffs under their own immutable manifest names. Ordinary complete99row typed proof is zero blind."
   },
   "full_rom_qualifications": {
     "baseline_control": {
@@ -1216,17 +1296,17 @@
     },
     "ownership_boundary": "Exact modules include retail gap bytes. Boo ownership is separately proved for99strict rows and21BSS216bytes;19complete metadata records582bytes are externalized and byte/typed-edge checked, not enrolled as owned data."
   },
-  "checkpoint": "aaf0378523db2ff9cfaf6367eb33aaf8c81149cf",
+  "checkpoint": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81",
   "report_only_binding": {
-    "checkpoint": "aaf0378523db2ff9cfaf6367eb33aaf8c81149cf",
+    "checkpoint": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81",
     "production_trees": {
-      "src": "504d9cea23ed57916898fe22e40e9665f1af0124",
+      "src": "c0cbfde2bc1b3bbe0df79095f02b9e6caf14d3e6",
       "include": "7bf524ade01d34c9ec400c1e156a1f1c4a305878",
-      "config": "10d296c72a36b20474cce05ec52ab88e17355275",
+      "config": "58ae8159b6687c5f1c9d2df42380b9a723b469a2",
       "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
       "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
     },
-    "rule": "Final report-only descendant must retain all five production trees exactly."
+    "rule": "Final report-only descendant retains these five corrected-checkpoint trees exactly. Original aaf global proof has its own historical binding; raw/config name changes are separately measured."
   },
   "historical_production": {
     "checkpoint": "aaf0378523db2ff9cfaf6367eb33aaf8c81149cf",
@@ -1651,7 +1731,8 @@
       "log_sha256": "f01e8767abe1d597770ad96d0269601be805618640d50439cd72c77e2ada7eeb",
       "tested_commit": "aaf0378523db2ff9cfaf6367eb33aaf8c81149cf"
     },
-    "full_rom_rerun": false
+    "full_rom_rerun": false,
+    "corrected_checkpoint": "19d5ce86e2b623eb0147dcbdeb4226da6af44a81"
   },
   "guard_finding_original": {
     "id": "TRS-AUDIT-TYPE-001",
