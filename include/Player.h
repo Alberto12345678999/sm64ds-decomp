@@ -664,6 +664,7 @@ struct Player : dActor_c {
     int St_Swim_Main();
     int St_SwingPlayer_Cleanup();
     int St_SwingPlayer_Init();
+    int St_SwingPlayer_Main();
     int St_Talk_Cleanup();
     int St_Talk_Init();
     int St_Talk_Main();
