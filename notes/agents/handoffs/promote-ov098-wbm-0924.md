@@ -224,7 +224,7 @@ gates ran.
 - `python tools/check_dead_references.py` exit 0, after the docstring fix
   above.
 - `python tools/tiers_ratchet.py --check` exit 1: FAILED, pre-existing. The
-  only backslide is `src/minigames/dScMgLuigi_c.cpp#_ZN12dScMgLuigi_c10ResetBoardEv`
+  only backslide is `src/minigames/d_s_mg_luigi.cpp#_ZN12dScMgLuigi_c10ResetBoardEv`
   (no_unk_field), a file this change does not touch; the same check at the
   input commit fails identically (current 3057 there, 3061 here). Nothing was
   banked; `--update` was not run.

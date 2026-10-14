@@ -18569,7 +18569,7 @@ matched: yes</title></rect><rect x="475.57" y="848.14" width="49.31" height="13.
 module: ov002
 addr: 0x02100560
 size: 984 bytes
-matched: yes</title></rect><rect x="524.87" y="848.14" width="21.05" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dEnemyBase_c.cpp
+matched: yes</title></rect><rect x="524.87" y="848.14" width="21.05" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_enemy_base.cpp
 module: ov002
 addr: 0x02100938
 size: 420 bytes
@@ -18641,11 +18641,11 @@ matched: yes</title></rect><rect x="494.40" y="970.93" width="10.62" height="13.
 module: ov002
 addr: 0x02107118
 size: 220 bytes
-matched: yes</title></rect><rect x="494.40" y="984.72" width="10.62" height="10.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dPathLiftActor_c.cpp
+matched: yes</title></rect><rect x="494.40" y="984.72" width="10.62" height="10.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_path_lift_actor.cpp
 module: ov002
 addr: 0x021071f4
 size: 164 bytes
-matched: yes</title></rect><rect x="505.01" y="970.93" width="5.97" height="12.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_a_obj1_up_logo.cpp
+matched: yes</title></rect><rect x="505.01" y="970.93" width="5.97" height="12.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_a_obj1up_logo.cpp
 module: ov002
 addr: 0x02107298
 size: 108 bytes
@@ -27417,11 +27417,11 @@ matched: yes</title></rect><rect x="941.09" y="684.72" width="3.24" height="0.83
 module: ov006
 addr: 0x0212b88c
 size: 4 bytes
-matched: yes</title></rect><rect x="941.09" y="685.54" width="3.24" height="21.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dMg3DHeyhoObjAdapter_c.cpp
+matched: yes</title></rect><rect x="941.09" y="685.54" width="3.24" height="21.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_mg3d_heyho_obj_adapter.cpp
 module: ov006
 addr: 0x0212f4c4
 size: 104 bytes
-matched: yes</title></rect><rect x="941.09" y="707.00" width="3.24" height="63.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dMgJump3DMario_c.cpp
+matched: yes</title></rect><rect x="941.09" y="707.00" width="3.24" height="63.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_mg_jump3d_mario.cpp
 module: ov006
 addr: 0x0212f52c
 size: 308 bytes
@@ -27445,31 +27445,31 @@ matched: yes</title></rect><rect x="944.33" y="781.97" width="17.57" height="5.9
 module: ov006
 addr: 0x021300b0
 size: 156 bytes
-matched: yes</title></rect><rect x="961.90" y="684.72" width="24.94" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgCoin_c.cpp
+matched: yes</title></rect><rect x="961.90" y="684.72" width="24.94" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_coin.cpp
 module: ov006
 addr: 0x0213014c
 size: 644 bytes
-matched: yes</title></rect><rect x="986.84" y="684.72" width="8.52" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgCup_c.cpp
+matched: yes</title></rect><rect x="986.84" y="684.72" width="8.52" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_cup.cpp
 module: ov006
 addr: 0x021303d0
 size: 220 bytes
-matched: yes</title></rect><rect x="995.36" y="684.72" width="26.49" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgCurling_c.cpp
+matched: yes</title></rect><rect x="995.36" y="684.72" width="26.49" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_curling.cpp
 module: ov006
 addr: 0x021304ac
 size: 684 bytes
-matched: yes</title></rect><rect x="1021.85" y="684.72" width="26.49" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgCurling2_c.cpp
+matched: yes</title></rect><rect x="1021.85" y="684.72" width="26.49" height="17.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_curling2.cpp
 module: ov006
 addr: 0x02130758
 size: 684 bytes
-matched: yes</title></rect><rect x="961.90" y="702.32" width="7.87" height="85.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dMg3DEspAnimSet_c.cpp
+matched: yes</title></rect><rect x="961.90" y="702.32" width="7.87" height="85.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_mg3d_esp_anim_set.cpp
 module: ov006
 addr: 0x02130a08
 size: 1008 bytes
-matched: yes</title></rect><rect x="969.77" y="701.98" width="7.27" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgHanachan_c.cpp
+matched: yes</title></rect><rect x="969.77" y="701.98" width="7.27" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_hanachan_methods.cpp
 module: ov006
 addr: 0x02130df8
 size: 164 bytes
-matched: yes</title></rect><rect x="977.05" y="701.98" width="4.43" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgJump_c.cpp
+matched: yes</title></rect><rect x="977.05" y="701.98" width="4.43" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_jump_methods.cpp
 module: ov006
 addr: 0x02130e9c
 size: 100 bytes
@@ -27477,7 +27477,7 @@ matched: yes</title></rect><rect x="981.48" y="701.98" width="4.43" height="15.0
 module: ov006
 addr: 0x02130f00
 size: 100 bytes
-matched: yes</title></rect><rect x="985.91" y="701.98" width="27.14" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgLuigi_c.cpp
+matched: yes</title></rect><rect x="985.91" y="701.98" width="27.14" height="15.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_luigi.cpp
 module: ov006
 addr: 0x02130f64
 size: 612 bytes
@@ -27485,7 +27485,7 @@ matched: yes</title></rect><rect x="1013.05" y="701.98" width="35.29" height="15
 module: ov006
 addr: 0x021311c8
 size: 796 bytes
-matched: yes</title></rect><rect x="969.77" y="717.05" width="19.13" height="33.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgMemory2_c.cpp
+matched: yes</title></rect><rect x="969.77" y="717.05" width="19.13" height="33.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_memory2.cpp
 module: ov006
 addr: 0x021314e4
 size: 956 bytes
@@ -27497,15 +27497,15 @@ matched: yes</title></rect><rect x="969.77" y="757.02" width="19.13" height="7.6
 module: ov006
 addr: 0x0213195c
 size: 220 bytes
-matched: yes</title></rect><rect x="969.77" y="764.71" width="19.13" height="23.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgPachinko_c.cpp
+matched: yes</title></rect><rect x="969.77" y="764.71" width="19.13" height="23.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_pachinko.cpp
 module: ov006
 addr: 0x02131a38
 size: 664 bytes
-matched: yes</title></rect><rect x="988.91" y="717.05" width="28.39" height="17.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgPachinko2_c.cpp
+matched: yes</title></rect><rect x="988.91" y="717.05" width="28.39" height="17.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_pachinko2.cpp
 module: ov006
 addr: 0x02131cd0
 size: 724 bytes
-matched: yes</title></rect><rect x="1017.29" y="717.05" width="31.05" height="17.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgPanel_c.cpp
+matched: yes</title></rect><rect x="1017.29" y="717.05" width="31.05" height="17.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_panel.cpp
 module: ov006
 addr: 0x02131fa4
 size: 792 bytes
@@ -27513,7 +27513,7 @@ matched: yes</title></rect><rect x="988.91" y="734.10" width="18.59" height="53.
 module: ov006
 addr: 0x021322bc
 size: 1496 bytes
-matched: yes</title></rect><rect x="1007.49" y="734.10" width="5.14" height="28.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgSlots.cpp
+matched: yes</title></rect><rect x="1007.49" y="734.10" width="5.14" height="28.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_slots.cpp
 module: ov006
 addr: 0x02132894
 size: 220 bytes
@@ -27521,7 +27521,7 @@ matched: yes</title></rect><rect x="1012.64" y="734.10" width="35.71" height="28
 module: ov006
 addr: 0x02132970
 size: 1528 bytes
-matched: yes</title></rect><rect x="1007.49" y="762.70" width="18.78" height="25.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgTeresa_c.cpp
+matched: yes</title></rect><rect x="1007.49" y="762.70" width="18.78" height="25.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_teresa.cpp
 module: ov006
 addr: 0x02132f68
 size: 708 bytes
@@ -27533,7 +27533,7 @@ matched: yes</title></rect><rect x="1029.52" y="762.70" width="18.83" height="13
 module: ov006
 addr: 0x0213326c
 size: 372 bytes
-matched: yes</title></rect><rect x="1026.28" y="775.91" width="22.07" height="11.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dScMgSnowball_c.cpp
+matched: yes</title></rect><rect x="1026.28" y="775.91" width="22.07" height="11.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_s_mg_snowball.cpp
 module: ov006
 addr: 0x021333e0
 size: 396 bytes
@@ -37753,7 +37753,7 @@ matched: yes</title></rect><rect x="1458.49" y="488.73" width="3.42" height="22.
 module: ov066
 addr: 0x0211a370
 size: 168 bytes
-matched: yes</title></rect><rect x="1461.92" y="488.73" width="39.93" height="22.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_Eyerok.cpp
+matched: yes</title></rect><rect x="1461.92" y="488.73" width="39.93" height="22.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_a_iwante.cpp
 module: ov066
 addr: 0x0211a418
 size: 1960 bytes
@@ -38493,7 +38493,7 @@ matched: yes</title></rect><rect x="1111.61" y="610.81" width="13.17" height="1.
 module: ov071
 addr: 0x02122670
 size: 48 bytes
-matched: yes</title></rect><rect x="1111.61" y="612.51" width="13.17" height="19.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_Scuttlebug.cpp
+matched: yes</title></rect><rect x="1111.61" y="612.51" width="13.17" height="19.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_a_spd.cpp
 module: ov071
 addr: 0x021226ac
 size: 540 bytes
@@ -39945,7 +39945,7 @@ matched: yes</title></rect><rect x="1304.85" y="589.47" width="24.81" height="4.
 module: ov075
 addr: 0x0211b458
 size: 204 bytes
-matched: yes</title></rect><rect x="1285.39" y="593.65" width="44.27" height="15.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_dEntObj_c.cpp
+matched: yes</title></rect><rect x="1285.39" y="593.65" width="44.27" height="15.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_d_ent_obj.cpp
 module: ov075
 addr: 0x0211b5e0
 size: 1312 bytes

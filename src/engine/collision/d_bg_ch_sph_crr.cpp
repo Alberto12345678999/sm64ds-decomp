@@ -2,7 +2,7 @@
 // Sphere collision query: a dM3dGSph probe sphere (secondary base) swept
 // against the KCL collider registry, with a dBgPi base record for the best
 // hit and mClsnResult1/2/3 holding the floor / wall / underneath hits.
-// DetectClsn and the two registry scans live in dBgCh_SphCrr_query.cpp.
+// DetectClsn and the two registry scans live in d_bg_ch_sph_crr_query.cpp.
 //
 // leftovers:
 //   - SetObjAndSphere is defined by its mangled name: the real signature

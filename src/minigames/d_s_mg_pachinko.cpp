@@ -2865,7 +2865,7 @@ extern "C" void *dScMgPachinko_c_classInit()
 
 /* The five state/record tables, defined in retail copy order: the 5-row
    and 7-row Ent7d0 tables, the 4-row Ent7d0 table, the 5-row PMF2 table,
-   then the 4-row Entry table. mwcc emits __sinit_dScMgPachinko_c.cpp from
+   then the 4-row Entry table. mwcc emits __sinit_d_s_mg_pachinko.cpp from
    these definitions, copying the ROM .data records. */
 Ent7d0 data_ov006_02142644[5] = {
     data_ov006_0213d8a8,

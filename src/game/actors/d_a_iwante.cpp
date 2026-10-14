@@ -14,7 +14,7 @@
  * the .ctor word at 0x0211abc0: the free helper func_ov066_0211a2e4, its
  * tail-call veneer func_ov066_0211a35c (this unit's dBgW callback), the
  * registry factory daIwante_c_classInit, which installs this unit's vtable,
- * and __sinit_Eyerok.cpp (0x0211a418..0x0211abc0, emitted from the resource
+ * and __sinit_d_a_iwante.cpp (0x0211a418..0x0211abc0, emitted from the resource
  * and state definitions at the bottom of this file; see the comment there).
  *
  * Source is ROM-ascending under defer_codegen off. Do not reorder.
@@ -221,7 +221,7 @@ struct EyerokCollisionFilePtr : SharedFilePtr {
 extern "C" {
 /* ---- ov066 .bss: 8-byte SharedFilePtr slots (0x0211ae14..0x0211aebc) ----
  * Word [1] of each is the loaded file, which the states pass to SetAnim /
- * SetFile. Roles, from InitResources and the order __sinit_Eyerok.cpp
+ * SetFile. Roles, from InitResources and the order __sinit_d_a_iwante.cpp
  * constructs them (the number in brackets is the id each is built with):
  *   models:           ae6c [0x339] body, ae4c [0x33f] hand 1, aeb4 [0x33a] hand 2
  *   texture patterns: ae3c [0x333], aebc [0x334], ae2c [0x33d], ae9c [0x33e]
@@ -286,7 +286,7 @@ extern int data_ov066_0211abe4;
 extern int data_ov066_0211ad18[];
 
 /* ---- ov066 .bss state descriptors, 0x10 bytes each ----
- * Each holds two pointer-to-member pairs, filled by __sinit_Eyerok.cpp
+ * Each holds two pointer-to-member pairs, filled by __sinit_d_a_iwante.cpp
  * (relocs.txt names the targets): the enter handler at +0, which
  * func_ov066_02119454 runs when it installs the state, and the run handler at
  * +8, which Behavior runs every frame. "Pattern n" means the state used while
@@ -2845,7 +2845,7 @@ extern "C" Eyerok *daIwante_c_classInit(void)
     return new Eyerok();
 }
 
-/* ---- the static initializer's objects. __sinit_Eyerok.cpp, emitted from
+/* ---- the static initializer's objects. __sinit_d_a_iwante.cpp, emitted from
  * these definitions at the bottom of the file, constructs the 22 resource
  * handles (3 model, 10 animation, 4 texture-sequence, 5 collision) and
  * registers each with its destructor through func_020731dc, then copies the

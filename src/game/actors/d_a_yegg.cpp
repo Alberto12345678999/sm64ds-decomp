@@ -22,7 +22,7 @@
  * below them), the twenty-six helpers func_ov002_020ec610 through
  * func_ov002_020eddc4, CleanupResources, Render, Behavior, InitResources,
  * and last the registry factory daYegg_c_classInit (0x020ee3d8);
- * src/runtime/actor/dBgActor_c.cpp starts exactly at 0x020ee42c above it. The
+ * src/runtime/actor/d_bg_actor.cpp starts exactly at 0x020ee42c above it. The
  * out-of-line destructor is the key function, so this TU also emits the
  * vtable and the RTTI.
  *

@@ -39,7 +39,7 @@
  *   call on slot 5; the tree's spellings disagree with each other and none
  *   has a ROM RTTI identity, so the TU-local shadow spells six virtuals and
  *   Behavior calls v5. Same slot as d_s_mg_base.cpp's SceneVCall6 and
- *   src/game/stages/dScGameOver_c.cpp's SceneGate.
+ *   src/game/stages/d_s_game_over.cpp's SceneGate.
  * - The GX/G2 shadow namespaces have no header in the tree yet; they are
  *   carried from the legacy InitResources source unchanged.
  * - unk_050: the one own field, a repeat-delay counter. See dScTitle_c.h.

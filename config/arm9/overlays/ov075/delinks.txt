@@ -4,7 +4,7 @@
     .ctor       start:0x0211c5a4 end:0x0211c5b0 kind:rodata align:4
     .data       start:0x0211c5c0 end:0x0211d380 kind:data align:32
     .bss        start:0x0211d380 end:0x0211d9c0 kind:bss align:32
-src/runtime/actor/dEntObj_c.cpp:
+src/game/stages/d_ent_obj.cpp:
     complete
     .text start:0x02113ee0 end:0x02115ab8
     .init start:0x0211b5e0 end:0x0211bb00
@@ -12,7 +12,7 @@ src/runtime/actor/dEntObj_c.cpp:
     .data start:0x0211c5c0 end:0x0211c648
     .bss start:0x0211d384 end:0x0211d5bc
 
-src/game/stages/dScEntry_c.cpp:
+src/game/stages/d_s_entry.cpp:
     complete
     .text start:0x02115ab8 end:0x02116128
 

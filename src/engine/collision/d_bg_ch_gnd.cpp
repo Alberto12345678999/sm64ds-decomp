@@ -7,9 +7,9 @@
 /* leftovers:
  * func_020353b0 stays a free extern: the shared dBgCh-side bind helper is
  * owned by its own shard and called by the Lin/SphCrr query code as well
- * (dBgCh_Lin.cpp, dBgCh_SphCrr.cpp, dBgCh_SphCrr_query.cpp).
+ * (d_bg_ch_lin.cpp, d_bg_ch_sph_crr.cpp, d_bg_ch_sph_crr_query.cpp).
  * func_02037464 stays a free function taking the query as char *: its two
- * dBgCh_SphCrr_query.cpp call sites pass it as an untyped free symbol, so a
+ * d_bg_ch_sph_crr_query.cpp call sites pass it as an untyped free symbol, so a
  * member spelling would rename linkage out from under that TU.
  */
 #include "dBgCh_Gnd.h"

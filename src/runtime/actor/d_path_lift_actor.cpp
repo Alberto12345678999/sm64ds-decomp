@@ -7,7 +7,7 @@
  * This contiguous range is packaging evidence, not proof of the original TU.
  *
  * The state table at 0x0210af2c is the file-scope PathLiftState array defined
- * at the bottom of this file; mwcc emits __sinit_dPathLiftActor_c.cpp to copy
+ * at the bottom of this file; mwcc emits __sinit_d_path_lift_actor.cpp to copy
  * its six pointer-to-member descriptors. The scale triple data_ov002_0210af00
  * and the class metadata emit with it.
  *
@@ -546,7 +546,7 @@ static char s_fallName[8] = "FALL";
 
 /* The state table SetState and BaseBehavior index by mState. Its six
  * pointer-to-member descriptors are anonymous compiler objects; this
- * definition is what makes mwcc emit __sinit_dPathLiftActor_c.cpp. */
+ * definition is what makes mwcc emit __sinit_d_path_lift_actor.cpp. */
 PathLiftState data_ov002_0210af2c[3] = {
     { &dPathLiftActor_c::StateWaitInit, &dPathLiftActor_c::StateWait, s_waitName },
     { &dPathLiftActor_c::StatePathInit, &dPathLiftActor_c::StatePath, s_pathName },

@@ -2,7 +2,7 @@
 /* Collision middle run, arm9 0x02037dc4..0x02039140.
  * func_02037dc4 opens it and dBgCh_Gnd::DetectClsn closes it.
  * dBgW::Disable at 0x02039140 starts the next file.
- * dBgCh_Lin.cpp and dBgCh_SphCrr.cpp stay separate: their this-adjustment
+ * d_bg_ch_lin.cpp and d_bg_ch_sph_crr.cpp stay separate: their this-adjustment
  * thunks are anchored at the end of those files, and this stretch has none.
  *
  * Deferred codegen emits .text in reverse source order, so the definitions

@@ -2429,7 +2429,7 @@ void func_ov006_020edcb0(void){
 /* The OamAttr* table OAM::Render indexes: the five scalar attributes, the
  * two data_ov006_021375dc entries, then every third pointer out of the
  * vu32* ring data_ov006_02137560. Non-constant initializers, so the
- * compiler emits __sinit_dScMgHanachan_c.cpp to copy them at load. */
+ * compiler emits __sinit_d_s_mg_hanachan_methods.cpp to copy them at load. */
 extern void* data_ov006_021374b8;
 extern void* data_ov006_021374c4;
 extern void* data_ov006_021374ac;
