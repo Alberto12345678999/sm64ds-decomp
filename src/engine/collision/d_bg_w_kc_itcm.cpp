@@ -16,7 +16,7 @@
  * in fast memory: six vtable slots (GetSurfaceInfo, GetNormal,
  * GetTriangleOrigin, the DetectClsn triple) and the TU's own helpers, all
  * enrolled under config/arm9/itcm/. The lifecycle and SetFile side of the same
- * class lives in src/engine/collision/dBgW_Kc.cpp.
+ * class lives in src/engine/collision/d_bg_w_kc.cpp.
  *
  * Plain members land in reverse definition order, so the file defines
  * GetSurfaceInfo first and the 0x01ffb07c Vector3 copy last. The six
@@ -44,7 +44,7 @@
 
 extern "C" {
 
-/* Shared collider helpers, defined in the arm9 TU (src/engine/collision/dBgW_Kc.cpp). */
+/* Shared collider helpers, defined in the arm9 TU (src/engine/collision/d_bg_w_kc.cpp). */
 s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri);   /* prism -> triangle index */
 int func_020397dc(int x);   /* near-zero divisor guard */
 int func_020397b8(int x);   /* wall-facing test */

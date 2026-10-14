@@ -1938,7 +1938,7 @@ extern void func_ov006_02107d80(char*);
 extern void func_ov006_02108524(char*);
 /* func_ov006_0210858c is deliberately NOT declared here. Its recorded return
    type was void; the cartridge's own bytes at 0x0210858c end `mov r0, #1`,
-   so it returns int. Nothing outside src/minigames/dScMgRoulette_c.cpp, which
+   so it returns int. Nothing outside src/minigames/d_s_mg_roulette_methods.cpp, which
    now defines it, references the symbol, so the wrong declaration is
    dropped rather than corrected. */
 extern void func_ov006_02108cc0(char*);

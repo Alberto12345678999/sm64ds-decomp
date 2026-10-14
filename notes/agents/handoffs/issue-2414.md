@@ -111,7 +111,7 @@ This document describes this commit. The queue records its immutable output SHA.
   `0x0203cbe4` in `config/arm9/symbols.txt`, and `src/_Znwj.cpp` defines it as a
   tail-call veneer to `func_0203cc0c`. The commit message cannot be edited, so
   the error stays in this branch's history; this paragraph is the correction.
-  The real, measured barrier is the one `src/game/actors/Scuttlebug.cpp` states for
+  The real, measured barrier is the one `src/game/actors/d_a_spd.cpp` states for
   its own factory: natural `new` selects the **wrong allocator**. The cartridge
   factory allocates through `fBase_c::operator new`, and mwccarm 2004/b56
   rejects an in-class `operator new` declaration — `include/fBase_c.h:150`

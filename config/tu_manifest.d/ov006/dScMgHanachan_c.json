@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgHanachan_c",
   "module": "ov006",
-  "source": "src/minigames/dScMgHanachan_c.cpp",
-  "promoted_source": "src/minigames/dScMgHanachan_c.cpp",
+  "source": "src/minigames/d_s_mg_hanachan_methods.cpp",
+  "promoted_source": "src/minigames/d_s_mg_hanachan_methods.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "high",
@@ -16,7 +16,7 @@
     "DESTRUCTOR ORDER. The cartridge has D1 at 0x020ea280 below D0 at 0x020ea2c8 and no D2 home. One out-of-line ~dScMgHanachan_c() under #pragma defer_codegen off emits D1 then D0 in that order; the D2 mwccarm also emits is a compiler_only_output deadstrip row.",
     "KEY FUNCTION. The out-of-line destructor is the class's first declared virtual, so this TU now emits _ZTV/_ZTI/_ZTS15dScMgHanachan_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c, dScMgBase_c). Each is a deadstrip-data row with its canonical symbols.txt home; ov006 .data stays ROM-owned, so the TU stays text-only. func_ov006_020ea914's point type Vec2_ea914 also emits a 4-byte vague-linkage D1 with no cartridge copy; it is a deadstrip row.",
     "SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off; tubuild verify reports all 61 in ROM-ascending emission order.",
-    "OUTPUT PATH: src/minigames/dScMgHanachan_c.cpp, unchanged.",
+    "OUTPUT PATH: src/minigames/d_s_mg_hanachan_methods.cpp, unchanged.",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
@@ -472,7 +472,7 @@
   ],
   "init": [
     {
-      "symbol": "__sinit_dScMgHanachan_c.cpp",
+      "symbol": "__sinit_d_s_mg_hanachan_methods.cpp",
       "address": "0x02130df8",
       "size": "0xa4",
       "binding": "STB_GLOBAL",
@@ -481,7 +481,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dScMgHanachan_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_hanachan_methods.cpp",
       "address": "0x021335a0",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -500,13 +500,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dScMgHanachan_c.cpp",
+      "symbol": "__sinit_d_s_mg_hanachan_methods.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_dScMgHanachan_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_hanachan_methods.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -598,7 +598,7 @@
       "source": "0x021335a0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dScMgHanachan_c.cpp",
+      "symbol": "__sinit_d_s_mg_hanachan_methods.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02130df8"
@@ -625,7 +625,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'C') differs between the legacy file that used to hold func_ov006_020eb018 and the one that held func_ov006_020ec2bc; kept the first, the other is commented out for review -- resolved by hand: the whole preamble was rewritten, one spelling chosen per name, and the odd call site cast; the commented-out alternate was deleted along with it. See the source file's declaration banner for the rule applied to each family.",
     "Widening: the popup arrays data_ov006_02141fe4 and data_ov006_02142044 were declared several ways across the folded shards (three and four respectively). Each is declared once; data_ov006_02142044 takes func_ov006_020ea81c's record type, because func_ov006_020ea81c DIFFs when it reaches the array through a cast, and the other functions cast to the record type their own shard used. Local tags are renamed per function (Ent_ea670, S_ea81c, E6_ea8e0, Vec2_ea914).",
     "Widening: func_ov006_020ea324 is the wiggler array's element destructor and takes the element in r0. include/dScMgHanachan_c.h and include/decl_common.h declared it (void); the header now declares (void *self) and the conflicting decl_common.h line was removed. Its only other use, src/minigames/d_s_mg_hanachan.cpp, takes its address.",
-    "The file-scope OamAttr* table data_ov006_02142018 is defined in this TU, so mwcc emits __sinit_dScMgHanachan_c.cpp byte-identical to retail __sinit_ov006_02130df8 (0xa4, eight literal-pool relocations: the five scalar globals, data_ov006_021375dc, the vu32* ring data_ov006_02137560 and the table itself), plus the .ctor word at 0x021335a0. The handwritten src/unnamed/ov006/__sinit_ov006_02130df8.c is retired; its delinks row is absorbed and symbols.txt renames the pair __sinit_dScMgHanachan_c.cpp / .p__sinit_dScMgHanachan_c.cpp.",
+    "The file-scope OamAttr* table data_ov006_02142018 is defined in this TU, so mwcc emits __sinit_d_s_mg_hanachan_methods.cpp byte-identical to retail __sinit_ov006_02130df8 (0xa4, eight literal-pool relocations: the five scalar globals, data_ov006_021375dc, the vu32* ring data_ov006_02137560 and the table itself), plus the .ctor word at 0x021335a0. The handwritten src/unnamed/ov006/__sinit_ov006_02130df8.c is retired; its delinks row is absorbed and symbols.txt renames the pair __sinit_d_s_mg_hanachan_methods.cpp / .p__sinit_d_s_mg_hanachan_methods.cpp.",
     "Local scratch ROM matched this machine's baseline control (ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40). Recorded rom.sha256 is the fleet SHA the other intact-object entries on this main share."
   ],
   "verification": {

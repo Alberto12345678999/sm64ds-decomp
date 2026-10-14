@@ -43,11 +43,11 @@ src/unnamed/arm9/0200/func_02005110.c:
     .text start:0x02005110 end:0x02005324
 
 
-src/game/stages/dScBoot_c.cpp:
+src/game/stages/d_s_boot_methods.cpp:
     complete
     .text start:0x02005324 end:0x02005d94
 
-src/runtime/actor/dCapEnemy_c_arm9.cpp:
+src/runtime/actor/d_cap_enemy_arm9.cpp:
     complete
     .text start:0x02005d94 end:0x0200651c
 
@@ -443,7 +443,7 @@ src/unnamed/arm9/0200/func_0200bb28.c:
     complete
     .text start:0x0200bb28 end:0x0200bec4
 
-src/engine/view/dCamera_c.cpp:
+src/engine/view/d_camera.cpp:
     complete
     .text start:0x0200bec4 end:0x0200e494
 
@@ -567,7 +567,7 @@ src/Initialise3dGraphics.cpp:
     complete
     .text start:0x0200f558 end:0x0200f658
 
-src/runtime/actor/dActor_c.cpp:
+src/runtime/actor/d_actor.cpp:
     complete
     .text start:0x0200f658 end:0x020112c8
 
@@ -672,11 +672,11 @@ src/nds_print.c:
     complete
     .text start:0x02014770 end:0x020147bc
 
-src/engine/collision/dCcPos_c.cpp:
+src/engine/collision/d_cc_pos.cpp:
     complete
     .text start:0x020147bc end:0x0201489c
 
-src/engine/collision/dCcAc_c.cpp:
+src/engine/collision/d_cc_ac.cpp:
     complete
     .text start:0x0201489c end:0x02014a34
 
@@ -692,11 +692,11 @@ src/_ZN10dCcAcPos_cC1Ev.cpp:
     complete
     .text start:0x02014a84 end:0x02014aa8
 
-src/engine/collision/dCc_c.cpp:
+src/engine/collision/d_cc.cpp:
     complete
     .text start:0x02014aa8 end:0x020150e8
 
-src/engine/collision/dClipper.cpp:
+src/engine/collision/d_clipper.cpp:
     complete
     .text start:0x020150e8 end:0x0201577c
 
@@ -712,7 +712,7 @@ src/engine/model/TextureSequence.cpp:
     complete
     .text start:0x0201597c end:0x02015a7c
 
-src/engine/animation/dExtFrameCtrl_c.cpp:
+src/engine/animation/d_ext_frame_ctrl.cpp:
     complete
     .text start:0x02015a7c end:0x02015cb4
 
@@ -736,11 +736,11 @@ src/_ZN15dExtFrameCtrl_cC2Ev.cpp:
     complete
     .text start:0x02015d18 end:0x02015d38
 
-src/engine/model/dExtShadowModel_c.cpp:
+src/engine/model/d_ext_shadow_model.cpp:
     complete
     .text start:0x02015d38 end:0x0201609c
 
-src/engine/model/dExtCommonModel_c.cpp:
+src/engine/model/d_ext_common_model.cpp:
     complete
     .text start:0x0201609c end:0x02016254
 
@@ -932,7 +932,7 @@ src/_ZThn80_N10ModelAnim2D1Ev.cpp:
     complete
     .text start:0x020171b8 end:0x020171c8
 
-src/engine/fader/dFader_c.cpp:
+src/runtime/graphics/fader/d_fader.cpp:
     complete
     .text start:0x020171c8 end:0x0201787c
     .data start:0x0208ea50 end:0x0208eb54
@@ -1229,7 +1229,7 @@ src/unnamed/arm9/0201/func_02018e68.c:
     complete
     .text start:0x02018e68 end:0x02018ea0
 
-src/engine/graph/dGraph_c_callback_c.cpp:
+src/engine/graph/d_graph_c_callback.cpp:
     complete
     .text start:0x02018ea0 end:0x02018ec0
 
@@ -1553,7 +1553,7 @@ src/_ZN7Message6UpdateEv.cpp:
     complete
     .text start:0x0201c0b8 end:0x0201cb2c
 
-src/engine/message/func_0201cb2c.c:
+src/ui/messages/func_0201cb2c.c:
     complete
     .text start:0x0201cb2c end:0x0201cb7c
 
@@ -1573,7 +1573,7 @@ src/LoadFont.cpp:
     complete
     .text start:0x0201fcd4 end:0x0201fe08
 
-src/engine/message/func_0201fe08.c:
+src/ui/messages/func_0201fe08.c:
     complete
     .text start:0x0201fe08 end:0x0201fec8
 
@@ -1693,7 +1693,7 @@ src/engine/particle/Particle_SysTracker_Contents.cpp:
     complete
     .text start:0x02021a04 end:0x02021e40
 
-src/engine/particle/dPa_c.cpp:
+src/engine/particle/d_pa.cpp:
     complete
     .text start:0x02021e40 end:0x020226d4
 
@@ -1737,7 +1737,7 @@ src/game/stages/d_s_boot.cpp:
     complete
     .text start:0x02023598 end:0x02023688
 
-src/game/stages/dScStage_c.cpp:
+src/game/stages/d_s_stage_methods.cpp:
     complete
     .text start:0x02023688 end:0x02029408
 
@@ -1769,7 +1769,7 @@ src/UpdateMinimap.c:
     complete
     .text start:0x02029854 end:0x020298a0
 
-src/engine/fader/StartEntranceFaderWipe.cpp:
+src/runtime/graphics/fader/StartEntranceFaderWipe.cpp:
     complete
     .text start:0x020298a0 end:0x020298d8
 
@@ -1777,7 +1777,7 @@ src/StartExitCharacterWipe.c:
     complete
     .text start:0x020298d8 end:0x020298fc
 
-src/engine/fader/StartExitFaderWipe.cpp:
+src/runtime/graphics/fader/StartExitFaderWipe.cpp:
     complete
     .text start:0x020298fc end:0x02029934
 
@@ -2165,16 +2165,16 @@ src/unnamed/arm9/0202/func_0202e118.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 
-src/game/stages/dScene_c.cpp:
+src/game/stages/d_scene.cpp:
     complete
     .text start:0x0202e140 end:0x0202ec9c
 
-src/engine/fader/dWipe_c.cpp:
+src/runtime/graphics/fader/d_wipe.cpp:
     complete
     .text start:0x0202ec9c end:0x0202fc98
     .data start:0x020926d0 end:0x02092718
 
-src/engine/view/dView_c.cpp:
+src/engine/view/d_view.cpp:
     complete
     .text start:0x0202fc98 end:0x0202fd4c
 
@@ -2315,7 +2315,7 @@ src/Message3.cpp:
     complete
     .text start:0x02031b84 end:0x02034a78
 
-src/game/stages/dScMB_c.cpp:
+src/game/stages/d_s_mb.cpp:
     complete
     .text start:0x02034a78 end:0x02035354
 
@@ -2359,52 +2359,52 @@ src/func_0203543c.c:
     complete
     .text start:0x0203543c end:0x02035448
 
-src/engine/collision/dBgCh.cpp:
+src/engine/collision/d_bg_ch.cpp:
     complete
     .text start:0x02035448 end:0x0203553c
 
-src/engine/collision/dBgCh_Actr.cpp:
+src/engine/collision/d_bg_ch_actr.cpp:
     complete
     .text start:0x0203553c end:0x02037464
 
 
-src/engine/collision/dBgCh_Gnd.cpp:
+src/engine/collision/d_bg_ch_gnd.cpp:
     complete
     .text start:0x02037464 end:0x020375d0
     .data start:0x02099224 end:0x0209927c
 
-src/engine/collision/dBgCh_Lin.cpp:
+src/engine/collision/d_bg_ch_lin.cpp:
     complete
     .text start:0x020375d0 end:0x0203782c
     .data start:0x02099290 end:0x020992e4
 
-src/engine/collision/dBgCh_SphCrr.cpp:
+src/engine/collision/d_bg_ch_sph_crr.cpp:
     complete
     .text start:0x0203782c end:0x02037dc4
     .data start:0x020992f8 end:0x02099360
 
-src/engine/collision/dBgCh_SphCrr_query.cpp:
+src/engine/collision/d_bg_ch_sph_crr_query.cpp:
     complete
     .text start:0x02037dc4 end:0x02039140
 
-src/engine/collision/dBgW.cpp:
+src/engine/collision/d_bg_w.cpp:
     complete
     .text start:0x02039140 end:0x020396d8
     .data start:0x02099370 end:0x020993bc
 
-src/engine/collision/dBgW_Kc.cpp:
+src/engine/collision/d_bg_w_kc.cpp:
     complete
     .text start:0x020396d8 end:0x020398fc
 
-src/engine/collision/dBgW_KcMbg.cpp:
+src/engine/collision/d_bg_w_kc_mbg.cpp:
     complete
     .text start:0x020398fc end:0x0203a4dc
 
-src/engine/collision/dBgW_KcMbgSclY.cpp:
+src/engine/collision/d_bg_w_kc_mbg_scl_y.cpp:
     complete
     .text start:0x0203a4dc end:0x0203abb0
 
-src/engine/collision/dM3dGSph.cpp:
+src/engine/collision/d_m3d_g_sph.cpp:
     complete
     .text start:0x0203abb0 end:0x0203ac80
 

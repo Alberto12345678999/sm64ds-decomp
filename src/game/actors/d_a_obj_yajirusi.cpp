@@ -203,7 +203,7 @@ int daObjYajirusi_c::OnAttacked1(dActor_c &other)
  * destructor (types.h), so a whole-object assignment compiles to an ldm/stm
  * pair, four instructions where the ROM has six. NewSimple keeps its mangled
  * name because its Fix12<int> parameters are by value and declaring the true
- * types changes how the caller passes them; dBgActor_c.cpp argues both. */
+ * types changes how the caller passes them; d_bg_actor.cpp argues both. */
 void daObjYajirusi_c::Kill()
 {
     Vector3 pos;

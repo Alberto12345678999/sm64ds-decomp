@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgPachinko_c",
   "module": "ov006",
-  "source": "src/minigames/dScMgPachinko_c.cpp",
-  "promoted_source": "src/minigames/dScMgPachinko_c.cpp",
+  "source": "src/minigames/d_s_mg_pachinko.cpp",
+  "promoted_source": "src/minigames/d_s_mg_pachinko.cpp",
   "status": "promoted",
   "production_mode": "intact-object",
   "boundary_confidence": "high",
@@ -13,7 +13,7 @@
     "DESTRUCTOR ORDER. The cartridge has D1 at 0x020fa75c below D0 at 0x020fa780 and no D2 home. One out-of-line ~dScMgPachinko_c() under #pragma defer_codegen off emits D1 then D0 in that order; the D2 mwccarm also emits is a compiler_only_output deadstrip row.",
     "KEY FUNCTION. The out-of-line destructor is the class's first declared virtual, so this TU emits _ZTV/_ZTI/_ZTS15dScMgPachinko_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c, dScMgBase_c). Each is a deadstrip-data row with its canonical symbols.txt home; ov006 .data stays ROM-owned, so the TU stays text-only.",
     "HISTORY: SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off; tubuild verify reports all 75 in ROM-ascending emission order.",
-    "OUTPUT PATH: src/minigames/dScMgPachinko_c.cpp, unchanged.",
+    "OUTPUT PATH: src/minigames/d_s_mg_pachinko.cpp, unchanged.",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
     "CLASSINIT TAIL FOLD (2026-10-10): dScMgPachinko_c_classInit (0x020ff3ec, size 0x34), formerly src/d_s_mg_pachinko.cpp, is folded in as the last function, so the TU is 76 functions over .text 0x020fa75c..0x020ff420, ROM ordinals 0..75, ROM-ascending under #pragma defer_codegen off. Membership: the factory calls fBase_c::operator new(0x5c38) == sizeof(dScMgPachinko_c), runs dScMgBase_c C2 and stores _ZTV15dScMgPachinko_c (0x0213d9cc), the vtable this TU owns through its key function. Above it, 0x020ff420, is dScMgPachinko2_c's destructor."
   ],
@@ -935,7 +935,7 @@
   "externalized_output": [],
   "init": [
     {
-      "symbol": "__sinit_dScMgPachinko_c.cpp",
+      "symbol": "__sinit_d_s_mg_pachinko.cpp",
       "address": "0x02131a38",
       "size": "0x298",
       "binding": "STB_GLOBAL",
@@ -944,7 +944,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dScMgPachinko_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_pachinko.cpp",
       "address": "0x021335c0",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -953,13 +953,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dScMgPachinko_c.cpp",
+      "symbol": "__sinit_d_s_mg_pachinko.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_dScMgPachinko_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_pachinko.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -971,7 +971,7 @@
       "source": "0x021335c0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dScMgPachinko_c.cpp",
+      "symbol": "__sinit_d_s_mg_pachinko.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02131a38"

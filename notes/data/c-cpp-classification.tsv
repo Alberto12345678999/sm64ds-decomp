@@ -1406,8 +1406,8 @@ src/engine/fader/_ZN8dFader_cD1Ev.c	DTOR-ONLY	arm9	dFader_c	dFader_c/dFader_c	_Z
 src/engine/fader/_ZN9dFdWipe_cC1Ev.c	P3-mangled-method-only	arm9		dFdWipe_c	_ZN9dFdWipe_cC1Ev	1		True	_ZTV9dFdWipe_c	-
 src/engine/fader/_ZN9dFdWipe_cD0Ev.c	DTOR-ONLY	arm9	dFdWipe_c	dFdWipe_c/dFdWipe_c	_ZN9dFdWipe_cD0Ev	1		True	_ZTV9dFdWipe_c	-
 src/engine/fader/_ZN9dFdWipe_cD1Ev.c	DTOR-ONLY	arm9	dFdWipe_c	dFdWipe_c/dFdWipe_c	_ZN9dFdWipe_cD1Ev	1		True	_ZTV9dFdWipe_c	-
-src/engine/message/func_0201cb2c.c	PURE-C	arm9				1		None		-
-src/engine/message/func_0201fe08.c	PURE-C	arm9				1		None		-
+src/ui/messages/func_0201cb2c.c	PURE-C	arm9				1		None		-
+src/ui/messages/func_0201fe08.c	PURE-C	arm9				1		None		-
 src/unnamed/arm9/01ff/func_01ff859c.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ff97d8.c	PURE-C					0		None		not-in-delinks
 src/unnamed/arm9/01ff/func_01ffa344.c	PURE-C					0		None		not-in-delinks

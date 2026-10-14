@@ -29,7 +29,7 @@
  * state functions below assign the next data_ov006_0213cb* row into. That
  * write, and the s16 countdown at 0x5014 in the same functions, are what
  * bound dScMgD3DBase_c at 0x5004 from above. Both live in
- * src/minigames/dScMgJump_c.cpp now.
+ * src/minigames/d_s_mg_jump_methods.cpp now.
  *
  * THE DESTRUCTOR IS DEFINED IN THE CLASS BODY, for the emission-order reason
  * spelled out at the definition below. No separate operator delete is needed:
@@ -65,7 +65,7 @@ struct dScMgJump_c : dScMgD3DBase_c {
        no descendant's own destructor is affected either way.
        It does give up the key function: with this inline, the first virtual
        DECLARED but not defined here is InitResources below, which lives in
-       src/minigames/dScMgJump_c.cpp, so _ZTV11dScMgJump_c is emitted by that one
+       src/minigames/d_s_mg_jump_methods.cpp, so _ZTV11dScMgJump_c is emitted by that one
        translation unit and by no other. */
     virtual ~dScMgJump_c() {
         __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))func_ov006_020c6f3c);
@@ -77,12 +77,12 @@ struct dScMgJump_c : dScMgD3DBase_c {
        theirs -- an override of a virtual an ancestor already declares is
        implicitly virtual either way, so each reuses an existing slot and adds no
        field, and the 0x5834 assert below still holds. */
-    s32 InitResources();    /* slot  0 -- src/minigames/dScMgJump_c.cpp, the key function */
+    s32 InitResources();    /* slot  0 -- src/minigames/d_s_mg_jump_methods.cpp, the key function */
     virtual void OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
-    s32 CleanupResources(); /* slot  3 -- src/minigames/dScMgJump_c.cpp */
-    s32 Behavior();         /* slot  6 -- src/minigames/dScMgJump_c.cpp */
-    s32 Render();           /* slot  9 -- src/minigames/dScMgJump_c.cpp */
+    s32 CleanupResources(); /* slot  3 -- src/minigames/d_s_mg_jump_methods.cpp */
+    s32 Behavior();         /* slot  6 -- src/minigames/d_s_mg_jump_methods.cpp */
+    s32 Render();           /* slot  9 -- src/minigames/d_s_mg_jump_methods.cpp */
 
     /* The minigame's state functions. Unnamed in the cartridge; stored as
        {fn, 0} pairs in the data_ov006_0213cb4c table rows, dispatched through

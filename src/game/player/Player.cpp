@@ -27465,7 +27465,7 @@ Ld0:
 /* ROM ordinal 606 -- func_ov002_020e5948, 0x020e5948, size 0x9e8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020e5948
-/* defined in src/game/actors/d_a_obj1_up_logo.cpp */
+/* defined in src/game/actors/d_a_obj1up_logo.cpp */
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off

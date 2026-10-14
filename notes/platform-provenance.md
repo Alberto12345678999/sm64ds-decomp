@@ -128,7 +128,7 @@ single-int-by-value fourth parameter, which is exactly what `math/Fix12.h`'s
 Contrast the two `IsClsnInRange*` symbols, whose names make the same `Fix12<int>`
 claim and whose bytes **refuse** it — see the note in `include/dActor_c.h` about
 CW homing class-typed by-value parameters to the stack, and the header comment in
-`src/runtime/actor/dBgActor_c.cpp`. `UpdateKillByMegaChar` is non-virtual, so the
+`src/runtime/actor/d_bg_actor.cpp`. `UpdateKillByMegaChar` is non-virtual, so the
 declaration adds no slot and no field; the 0x320 assertion is unaffected.
 
 ---

@@ -247,7 +247,7 @@ int *_ZN19daObjBlockItemTag_cD0Ev(int *t)
 
 `this` is an `int*`, members are array indices, the symbol name is spelled by hand.
 
-**Rung 3 -- migrated function** (`dFader_c::AdvanceInterp`, written as a one-function shard and since folded into `src/engine/fader/dFader_c.cpp`, done):
+**Rung 3 -- migrated function** (`dFader_c::AdvanceInterp`, written as a one-function shard and since folded into `src/runtime/graphics/fader/d_fader.cpp`, done):
 
 ```c
 //cpp

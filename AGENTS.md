@@ -92,17 +92,29 @@ Promoted C++ translation units are filed by what the class is
 | Directory | Holds | File name |
 |---|---|---|
 | `src/game/actors/` | actor classes (`daFoo_c` and friends), their factories | `d_a_foo.cpp` |
-| `src/game/player/` | `Player` | the class name |
-| `src/game/stages/` | scene classes (`dScBoot_c`, `dScStage_c`, ...) | the class name, or `d_s_*.cpp` |
-| `src/minigames/` | minigame scenes and helpers (`dScMg*_c`, `dMg*_c`, ov004 `unit<addr>`) | the class name, or `d_s_mg_*.cpp` |
-| `src/runtime/actor/` | actor base classes (`ActorBase`, `dActor_c`, `dEnemyBase_c`, ...) | the class name |
-| `src/ui/hud/` | HUD classes (`dMeter_c`, `dMap_c`, cap icons) | the class name |
+| `src/game/player/` | `Player` and the `daPly_c` factory | `Player.cpp`, `d_a_ply.cpp` |
+| `src/game/stages/` | scene classes (`dScBoot_c`, `dScStage_c`, `dEntObj_c`, ...) | `d_s_*.cpp`, `d_scene.cpp`, `d_ent_obj.cpp` |
+| `src/minigames/` | minigame scenes and helpers (`dScMg*_c`, `dMg*_c`, ov004 `unit<addr>`) | `d_s_mg_*.cpp` / `d_mg_*.cpp` |
+| `src/runtime/actor/` | actor base classes (`dActor_c`, `dEnemyBase_c`, ...) | `d_actor.cpp`, ...; coined `ActorBase*` keep the class name |
+| `src/ui/hud/` | HUD classes (`dMeter_c`, `dMap_c`, cap icons) | `d_meter.cpp`, ...; coined `CapIconMgr` keeps its name |
+| `src/engine/<subsystem>/` | collision, model, sound, heap, ... | `d_bg_ch.cpp`, ...; coined classes (`Model`, `Heap`) keep the class name |
 
-`d_a_foo.cpp` is the NSMBW-decomp spelling of the ROM RTTI name `daFoo_c`
-(`tools/tu_names.py`). It is a naming convention, not a recovered `__FILE__`
-(the ROM has none), but it is the one convention for actor files: use it for a new actor TU
-and do not file an actor as `daFoo_c.cpp`. Two files that split one class take
-distinct suffixes (`d_a_pic_gate.cpp`, `d_a_pic_gate_methods.cpp`).
+**One rule for file names:** a class that has a ROM RTTI name is filed under its
+NSMBW-decomp snake_case spelling (`daFoo_c` -> `d_a_foo.cpp`, `dScFoo_c` ->
+`d_s_foo.cpp`, `dBgW_c` -> `d_bg_w.cpp`; `tools/tu_names.py`, `candidate_stem`).
+A class whose name we coined ourselves keeps its class name until its ROM name is
+recovered. This is a naming convention, not a recovered `__FILE__` (the ROM has none).
+Use it for a new TU and do not file a ROM-named class as `daFoo_c.cpp`.
+
+Files that split one class take distinct suffixes: a one-symbol `<Class>_classInit`
+factory file takes the class stem (`tools/srcpath.py` ties it to that name), so the
+class's methods go in `<stem>_methods.cpp` (`d_s_boot.cpp` + `d_s_boot_methods.cpp`).
+`d_a_iwante.cpp` and `d_a_spd.cpp` carry ROM names although their `struct Eyerok` /
+`struct Scuttlebug` are still coined; renaming the classes is matching work.
+
+`include/` headers are named for the class (`daFoo_c.h`), not for a file: a header is
+a type, and a rename there touches every consumer, so it is deliberately not part of
+this convention.
 
 A file's name is also load-bearing: `__sinit_<file>.cpp` (and the `.p__sinit_` pointer)
 carry it, and so do compiler-numbered local-class symbols such as

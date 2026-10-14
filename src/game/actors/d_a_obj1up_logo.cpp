@@ -45,7 +45,7 @@ enum {
 
 /* File-scope objects at the end of this file construct the two resource
  * handles (model file 0x436, texture-sequence file 0x437). mwcc emits
- * __sinit_d_a_obj1_up_logo.cpp from those definitions. The wrapper names
+ * __sinit_d_a_obj1up_logo.cpp from those definitions. The wrapper names
  * are local; the handle constructors and destructors are the ROM
  * resource-family functions, aliased in the manifest. */
 struct OneUpLogoModelFile : SharedFilePtr {

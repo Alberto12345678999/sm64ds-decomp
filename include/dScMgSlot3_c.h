@@ -6,7 +6,7 @@
  * than to a neighbour.
  *
  * SIZE 0x5044, from the factory's own `_ZN7fBase_cnwEj(0x5044)`
- * (dScMgSlot3_c_classInit in src/minigames/dScMgSlots.cpp). The evidenced field span stops at 0x5043,
+ * (dScMgSlot3_c_classInit in src/minigames/d_s_mg_slots.cpp). The evidenced field span stops at 0x5043,
  * so the trailing byte is alignment, not unclaimed space.
  *
  * TABLE at 0x4f38, constructed by func_ov006_020c221c and destroyed by
@@ -31,7 +31,7 @@
  * all four are dScMgBase_c's own and are already declared there.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Its definition in src/minigames/dScMgSlots.cpp emits both
+ * its own. Its definition in src/minigames/d_s_mg_slots.cpp emits both
  * destructor variants. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one.
  *

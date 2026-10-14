@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgSingle3DBase_c",
   "module": "ov006",
-  "source": "src/minigames/d_s_mg_single3_d_base.cpp",
-  "promoted_source": "src/minigames/d_s_mg_single3_d_base.cpp",
+  "source": "src/minigames/d_s_mg_single3d_base.cpp",
+  "promoted_source": "src/minigames/d_s_mg_single3d_base.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
