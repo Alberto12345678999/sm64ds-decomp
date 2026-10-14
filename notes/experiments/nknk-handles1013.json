@@ -118,7 +118,6 @@
   },
   "remaining": "Existing scalar Fix12 boundaries, local vector views, floor-result declaration and scratch-matrix helper remain partial. Shared header and manifest are unchanged; no temporary renames are added.",
   "handle_evidence": {
-    "priorReceipts": "C:\\tmp\\sm64ds-enemyfactory-scout1013\\build\\factory-scout\\moray-handles1013\\snapshot\\build\\proof\\layout\\layout-strict.json",
     "unchangedIncludeTrees": {
       "1d76f967": "19020e3fe0fd85c5c003b8e7f8f40c63325f511f",
       "5b61ab3bb3": "19020e3fe0fd85c5c003b8e7f8f40c63325f511f"

@@ -26,7 +26,7 @@
  * called with no receiver: r0 is whatever the previous call left.
  * func_ov078_021240a0 stays a free function. It is method-shaped, but the
  * member spelling reschedules the clamp under opt_propagation off.
- * File handles stay BombkingFile, filled by __sinit_ov078_02126660.
+ * Borrowed file views are initialized by the separate __sinit_ov078_02126660.
  * State records stay data_ov078_021270*. A plain member read moved a word
  * for mPrevAngleY in func_ov078_02123d3c, mHealth in func_ov078_021243c0,
  * mVertSpeed in func_ov078_021247bc, and unk_50a in func_ov078_021259ec.
@@ -63,38 +63,49 @@ struct M12 { int w[12]; };
 
 struct Vec3 { int x, y, z; };
 
-/* Two remaining vector assignments retain the flat array-copy view. The snapshots
- * in func_ov078_021240a0 and func_ov078_02125448 initialize the existing POD Vec3
- * instead. The shared Vector3 has constructors and an empty destructor, and its
- * copy initialization emits a different sequence at these sites. */
+/* Whole-struct 3-word copies go through an array member: mwccarm block-moves
+ * (ldm/stm) a POD struct copy under -lang c99 but scalarises the same copy
+ * under -lang c++, and an array member forces the block move back. Two sites
+ * still need it; the snapshots in func_ov078_021240a0 and func_ov078_02125448
+ * initialize the POD Vec3 directly instead. */
 struct M3 { int w[3]; };
 struct BCA_File;
 typedef daBombking_c::StateFunction PMF;
 extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
 
-/* What __sinit_ov078_02126660 builds. Construct stores the file id; Load
- * writes the bytes at +4, which is the pointer SetAnim reads. 02126f38 is
- * the model (func_02017acc, id 0x2c7). The other twelve are animations
- * (SharedFilePtr::Construct, ids 0x2bb..0x2c6). */
-struct BombkingFile {
-    unsigned fileId;
-    void *file;
+/* Borrowed views of external shared-file handles, not storage owned by this TU.
+ * Construct/Load/Release use a u16 fileID at +0, a u8 reference count at +2,
+ * and a loaded pointer at +4. Byte +3 is padding, not a recovered field.
+ * __sinit_ov078_02126660 constructs the model (id 0x2c7) and twelve animations
+ * (ids 0x2bb..0x2c6), with their respective destructor registrations.
+ * The shared header intentionally retains an opaque layout. */
+struct BombkingAnimFile {
+    u16 fileID;
+    u8 numRefs;
+    u8 pad;
+    BCA_File *file;
+};
+struct BombkingModelFile {
+    u16 fileID;
+    u8 numRefs;
+    u8 pad;
+    BMD_File *file;
 };
 
 extern "C" {
-    extern BombkingFile data_ov078_02126ee0;
-    extern BombkingFile data_ov078_02126ee8;
-    extern BombkingFile data_ov078_02126ef0;
-    extern BombkingFile data_ov078_02126ef8;
-    extern BombkingFile data_ov078_02126f00;
-    extern BombkingFile data_ov078_02126f08;
-    extern BombkingFile data_ov078_02126f10;
-    extern BombkingFile data_ov078_02126f18;
-    extern BombkingFile data_ov078_02126f20;
-    extern BombkingFile data_ov078_02126f28;
-    extern BombkingFile data_ov078_02126f30;
-    extern BombkingFile data_ov078_02126f38;
-    extern BombkingFile data_ov078_02126f40;
+    extern BombkingAnimFile data_ov078_02126ee0;
+    extern BombkingAnimFile data_ov078_02126ee8;
+    extern BombkingAnimFile data_ov078_02126ef0;
+    extern BombkingAnimFile data_ov078_02126ef8;
+    extern BombkingAnimFile data_ov078_02126f00;
+    extern BombkingAnimFile data_ov078_02126f08;
+    extern BombkingAnimFile data_ov078_02126f10;
+    extern BombkingAnimFile data_ov078_02126f18;
+    extern BombkingAnimFile data_ov078_02126f20;
+    extern BombkingAnimFile data_ov078_02126f28;
+    extern BombkingAnimFile data_ov078_02126f30;
+    extern BombkingModelFile data_ov078_02126f38;
+    extern BombkingAnimFile data_ov078_02126f40;
     /* Canonical single declaration per ROM data symbol -- the generated
      * preamble carried up to three contradictory spellings of each. */
     extern unsigned char data_0209f220[];
@@ -396,7 +407,7 @@ int daBombking_c::func_ov078_02123d3c()
 int daBombking_c::func_ov078_02123eb8()
 {
     mVertAccel = -0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, (void*)(data_ov078_02126f28.file), 0, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, data_ov078_02126f28.file, 0, 0, 0x1000, 0);
     mStateTimer = 0x32;
     mHorzSpeed = 0xa000;
     return 1;
@@ -565,7 +576,7 @@ int func_ov078_021240a0(char* c)
 
 int daBombking_c::func_ov078_021243c0()
 {
-  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void*)data_ov078_02126f20.file, 0, 0, 0x1000, 0);
+  _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f20.file, 0, 0, 0x1000, 0);
   this->mStateTimer = 0xc8;
   this->mTargetAngY = Vec3_HorzAngle(&this->mPosX, &this->mArenaPosX);
   *(int*)(((long long)(int)((char *)this + 0x500))) =
@@ -598,7 +609,7 @@ int daBombking_c::func_ov078_02124470()
 
 int daBombking_c::func_ov078_021244d0()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void*)data_ov078_02126f20.file, 0, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f20.file, 0, 0, 0x1000, 0);
     this->mStateTimer = 0x32;
     return 1;
 }
@@ -762,7 +773,7 @@ int daBombking_c::func_ov078_021247bc()
         }
 
         if (this->mActionStep == 1) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, *(void **)((char *)&data_ov078_02126f08 + 4), 0, 0x40000000, 0x1000, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f08.file, 0, 0x40000000, 0x1000, 0);
             this->mVertAccel = -0x2000;
             this->mFlags = 0x10000002;
             func_02012694(0x12c, &this->mCamSpacePosX);
@@ -802,7 +813,7 @@ int daBombking_c::func_ov078_021247bc()
 
 int daBombking_c::func_ov078_02124b40()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void *)data_ov078_02126f10.file, 0, 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f10.file, 0, 0x40000000, 0x1000, 0);
     func_02012694(0x129, &this->mCamSpacePosX);
     this->mWithMeshClsn.ClearGroundFlag();
     this->mPrevAngleX = 0;
@@ -908,7 +919,7 @@ done:
 
 int daBombking_c::func_ov078_02124e9c()
 {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void *)data_ov078_02126f20.file, 0, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f20.file, 0, 0, 0x1000, 0);
     if (this->mHealth <= 0)
         this->mFlags = 0x10000000;
     this->mWithMeshClsn.ClearGroundFlag();
@@ -931,7 +942,7 @@ int daBombking_c::func_ov078_02124f28()
     if (this->mActionStep == 0) {
         int b = (this->mFlags & 0x4000) != 0;
         if (b != 0) {
-            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void *)data_ov078_02126ee0.file, 0, 0, 0x1000, 0);
+            _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126ee0.file, 0, 0, 0x1000, 0);
             this->mActionStep = 1;
         }
     }
@@ -1094,7 +1105,7 @@ int daBombking_c::func_ov078_02125350()
 
     this->mAnimSpeed = 1;
     this->mVertAccel = -0x2000;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void*)(data_ov078_02126ef0.file), 0, 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126ef0.file, 0, 0x40000000, 0x1000, 0);
 
     this->mHorzSpeed = 0;
 
@@ -1393,7 +1404,7 @@ int daBombking_c::func_ov078_02125bc8() {
     this->mAnimSpeed = 1;
     this->mVertAccel = -0x2000;
     this->unk_50a = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, (void*)data_ov078_02126f30.file, 8, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&this->mBlendModelAnim, data_ov078_02126f30.file, 8, 0, 0x1000, 0);
     return 1;
 }
 

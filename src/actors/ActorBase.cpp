@@ -1,10 +1,10 @@
 //cpp
 /* leftovers:
  * - Source order stays highest address first. Reordering moves the run.
- * - The destructors stay extern "C". A real destructor stores the
- *   vptr at addend 8. The ROM pools hold the slot array at addend 0.
- * - InitResources stays a free function. As a method it emits
- *   _ZTV7fBase_c a second time.
+ * - The native destructor owns both process-list node lifetimes. The
+ *   existing preparation path rebiases its vptr references to ROM slot arrays.
+ * - Native InitResources emits the class metadata. The manifest verifies
+ *   and externalizes it to the existing canonical ROM storage.
  * - decl_common.h stays out. Its spellings of these list heads
  *   disagree with the calls in this file.
  * - Heap locals stay void*. Virtual34 and Virtual38 still read
@@ -27,9 +27,6 @@ struct fBaseActorInfo {
 /* Keep the list-head and pointer signatures used here local: decl_common.h
  * gives incompatible integer declarations for some of these symbols. */
 extern "C" {
-
-/* The ABI destructor variants below destroy both process-list nodes. */
-extern "C" void _ZN11fLiNdBaPr_cD1Ev(void *node);
 
 /* Intrusive-list operations on the four global list heads below. All four take
    (list head, node); the legacy files spelled the heads `int`, `char` and
@@ -66,13 +63,6 @@ extern void *func_0206e2f8(void *p, int fill, unsigned int size);
 /* Returns the parent actor. Declared once, up here, because the
  * caller is emitted above the definition. */
 extern void *func_02043810(void *p);
-
-/* The class's own vtable, as DATA. Named, not defined: see the destructor note
-   in the file banner for why this reference has to be addend 0. config/arm9
-   carries two symbols at 0x02099edc -- `_ZTV7fBase_c` and the older
-   placeholder `data_02099edc` -- and the legacy files used both. This is the
-   one that says what it is. */
-extern void *_ZTV7fBase_c[];
 
 /* Heap's methods come from include/Heap.h. The heap locals stay `void *`
    (and are cast at each call), deliberately: Virtual34 and Virtual38 both
@@ -222,36 +212,12 @@ fBase_c::fBase_c() : manager(this)
     }
 }
 
-/* Written D1, D0, D2 so reverse emission lands D2 at 0x02043d48,
- * D0 at 0x02043d78, D1 at 0x02043dbc. Each stores the vptr, then
- * destroys renderNode (0x38) before behaviorNode (0x28). D0 also
- * returns the object to the actor heap. */
+/* Manager destruction tears down renderNode before behaviorNode. The compiler
+ * emits D2, D0, D1 in ROM order; the existing class operator delete returns
+ * the object to the actor heap for D0. */
 // @symbol _ZN7fBase_cD1Ev
-extern "C" fBase_c *_ZN7fBase_cD1Ev(fBase_c *self)
+fBase_c::~fBase_c()
 {
-    *(int *)self = (int)_ZTV7fBase_c;
-    _ZN11fLiNdBaPr_cD1Ev(&self->manager.renderNode);
-    _ZN11fLiNdBaPr_cD1Ev(&self->manager.behaviorNode);
-    return self;
-}
-
-// @symbol _ZN7fBase_cD0Ev
-extern "C" fBase_c *_ZN7fBase_cD0Ev(fBase_c *self)
-{
-    *(int *)self = (int)_ZTV7fBase_c;
-    _ZN11fLiNdBaPr_cD1Ev(&self->manager.renderNode);
-    _ZN11fLiNdBaPr_cD1Ev(&self->manager.behaviorNode);
-    _ZN6Memory10DeallocateEPvP4Heap(self, data_020a0eac);
-    return self;
-}
-
-// @symbol _ZN7fBase_cD2Ev
-extern "C" fBase_c *_ZN7fBase_cD2Ev(fBase_c *self)
-{
-    *(int *)self = (int)_ZTV7fBase_c;
-    _ZN11fLiNdBaPr_cD1Ev(&self->manager.renderNode);
-    _ZN11fLiNdBaPr_cD1Ev(&self->manager.behaviorNode);
-    return self;
 }
 
 /* Run the guard, then the action when allowed, and always notify the after hook. */
@@ -274,14 +240,9 @@ int fBase_c::Process(ProcessFunction action, BeforeProcessFunction before,
 }
 
 /* vtable slot 0. Default initialization succeeds without loading resources.
- *
- * THE KEY FUNCTION, AND THE REASON THIS ONE IS NOT A METHOD. See the file
- * banner: a real `s32 fBase_c::InitResources()` anywhere makes that TU emit
- * _ZTV7fBase_c and collide with the gap object's copy of the ROM's own
- * vtable. Its DECLARATION in the class is required and harmless -- removing it
- * would delete slot 0 and shift the other seventeen. */
+ * This key function emits metadata checked against canonical ROM storage. */
 // @symbol _ZN7fBase_c13InitResourcesEv
-extern "C" int _ZN7fBase_c13InitResourcesEv(void)
+int fBase_c::InitResources()
 {
     return 1;
 }

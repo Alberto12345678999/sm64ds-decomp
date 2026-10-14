@@ -15,11 +15,17 @@
  *   1  grows, then splits into variant 2
  *   2  flies, then lands as variant 7 or 3
  *   3  one frame: spawns three variant 4
- *   4  bounces, and vanishes when Bowser's hold state is idle
+ *   4  bounces; vanishes within 150 units of Bowser while his hold state is
+ *      idle, or after 150 frames
  *   5  sprays on a pitch and heading, then lands as variant 6
  *   6  falls, burns on the ground, ends in a burst
  *   7  same handler as 6, tossed straight up
  * FIRE_PARAM packs variant in bits 0..2 and the sub-variant in bits 4..5.
+ *
+ * Actor creation, lookup, movement and destruction use the existing native
+ * interfaces, as do the ground predicate and Player::Burn. Spawn still views
+ * the base actor's contiguous scalar position/angle fields as vectors; that
+ * inherited flat-field layout is not reconstructed here.
  *
  * leftovers:
  * - func_ov060_02116740, 02117624 and 021172c8 stay free functions with
@@ -40,8 +46,10 @@
  *   Matrix4x3 member there.
  * - Sound 0x180, player param1 == 3, and the particle kind pairs are
  *   named only by the use-site enums below.
- * - data_ov060_0211af74 / 0211afb4 / 0211934c / 02119358 / 02119364 and
- *   g_profile_KOOPAFIRE are not this TU's data.
+ * - data_ov060_0211af74 and data_ov060_0211afb4 are this TU's owned
+ *   eight-entry InitResources and Behavior PMF tables, respectively.
+ *   data_ov060_0211934c / 02119358 / 02119364 and g_profile_KOOPAFIRE
+ *   remain external to this TU.
  */
 
 #include "daKpaFire_c.h"
@@ -49,25 +57,23 @@
 #include "common.h"
 #include "decl_common.h"
 #include "dBgCh_Actr.h"
-#include "decl_dBgCh_Actr.h"
 #include "dBgCh_Gnd.h"
 #include "dActor_c.h"
 #include "daKpa_c.h"
 #include "Player.h"
 #include "Particle__System.h"
 
-/* Behavior calls data_ov060_0211afb4[mVariant].pmf. InitResources calls
- * data_ov060_0211af74[mVariant]. Both tables are pointer-to-member on
- * dActor_c, which is what the sinit records store. */
-struct dCc_c;
 /* POD view of the 0x30-byte matrix. The single integer array preserves
  * the shadow update's block copy in C++ with Vector3's user-declared
  * constructor in scope. */
 struct RawMatrix4x3 { int m[12]; };
 typedef struct RawMatrix4x3 RawMatrix4x3;
+
+/* The variant tables. Behavior calls data_ov060_0211afb4[mVariant].pmf and
+ * InitResources calls data_ov060_0211af74[mVariant]. Both hold
+ * pointer-to-member on dActor_c, which is what the sinit records store. */
 typedef void (dActor_c::*PMF)();
 struct Entry { PMF pmf; };
-typedef void (dActor_c::*ActorFn)();
 
 /* Actor ids, symbols/actor_debug_names.tsv. */
 enum {
@@ -107,38 +113,39 @@ enum {
 enum { SOUND_ID_MOUTH = 0x180 };
 
 extern "C" {
+/* This file's own helpers, defined further down. */
+extern void func_ov060_02116518(daKpaFire_c *self, u32 kind, int resize, int yOffset);
+extern void func_ov060_0211712c(daKpaFire_c *self);
+extern void func_ov060_021172e0(daKpaFire_c *self);
+extern Entry data_ov060_0211afb4[];
+extern PMF data_ov060_0211af74[];
+
+/* Fix12<int>-by-value and other mangled-name calls (see the banner). */
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
-extern void* _ZN8dActor_c13ClosestPlayerEv(void* self);
-extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
-extern char* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int a, int b, const void *pos, const void *rot, int e, int f);
-extern void _ZN7fBase_c18MarkForDestructionEv(void* a);
-extern "C" void func_ov060_02116518(daKpaFire_c *self, u32 kind, int a2, int a3);
-extern Fix12i Vec3_HorzDist(const Vector3* a, const Vector3* b);
-extern int RandomIntInternal(int* seed);
-extern int data_0209e650[];
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(char* self, void* c);
-extern void func_ov060_0211712c(daKpaFire_c *p);
-extern int func_ov060_021172c8(unsigned char *p, unsigned int n);
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *c);
-extern int data_ov060_02119358[];
-extern int data_ov060_0211934c[];
-extern short data_02082214[];
-extern void func_ov060_021172e0(daKpaFire_c *self);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
-void* _ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void* prev);
 int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
-extern char* _ZN8dActor_c10FindWithIDEj(unsigned int id);
 /* local extern: the header method is not this symbol's spelling here. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
-extern u16 data_ov060_02119364[];
-extern "C" Entry data_ov060_0211afb4[];
-extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
-extern ActorFn data_ov060_0211af74[];
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
+extern void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
+
+extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
+extern Fix12i Vec3_HorzDist(const Vector3* a, const Vector3* b);
+void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
+extern int RandomIntInternal(int* seed);
+extern int data_0209e650[];          /* RNG_STATE (symbols/verified.tsv) */
+extern short data_02082214[];        /* SINE_TABLE: a sin/cos pair per angle >> 4 */
+extern Matrix4x3 data_020a0e68;      /* MATRIX_SCRATCH_PAPER */
+
+/* ov060 tables indexed by mSubVariant (02119358, 0211934c) and the mouth-pose
+ * rows variant 0 reads (02119364); see the handlers below. */
+extern int data_ov060_02119358[];
+extern int data_ov060_0211934c[];
+extern u16 data_ov060_02119364[];
 }
 
 // @symbol daKpaFire_c_classInit
@@ -154,7 +161,8 @@ extern "C" daKpaFire_c *daKpaFire_c_classInit(void)
  * exit); the variant dispatch through data_ov060_0211af74 measured
  * byte-identical with the real dActor_c. The `|= 1` sets dCc_c::flags bit 0
  * inside mdCcAc_c when the variant is mouth. The doubled pos.y store is the
- * ROM's own shape. dCcAc_c/dBgCh_Actr Init stay mangled: Fix12-by-value (6az). */
+ * ROM's own shape. dCcAc_c/dBgCh_Actr Init stay mangled: they take
+ * Fix12<int> by value (notes/mwccarm-codegen.md, 6az). */
 int daKpaFire_c::InitResources()
 {
     Vector3 pos;
@@ -183,24 +191,24 @@ int daKpaFire_c::InitResources()
     if (this->mVariant == VARIANT_MOUTH)
         this->mdCcAc_c.flags |= 1;
     this->mFireScale = 0x2000;      /* 2.0 */
-    this->mParticleHandle_380 = 0;
-    this->mParticleHandle_37c = this->mParticleHandle_380;
+    this->mParticleHandle2 = 0;
+    this->mParticleHandle = this->mParticleHandle2;
     this->mKpaUniqueID = 0;
 
     /* constructed here (not at function top: the ROM constructs after the
        collider setup), destroyed at the single exit below -- both synthesized */
-    dBgCh_Gnd rc;
+    dBgCh_Gnd gnd;
     {
-        int p60;
+        int y;
         pos.x = this->mPosX;
-        p60 = this->mPosY;
-        pos.y = p60;
+        y = this->mPosY;
+        pos.y = y;
         pos.z = this->mPosZ;
-        pos.y = p60 + 0x32000;      /* search seed: 50 units above the fire */
+        pos.y = y + 0x32000;        /* search seed: 50 units above the fire */
     }
-    rc.SetObjAndPos(pos, 0);
-    if (rc.DetectClsn())
-        this->mGroundY = rc.clsnY;
+    gnd.SetObjAndPos(pos, 0);
+    if (gnd.DetectClsn())
+        this->mGroundY = gnd.clsnY;
     else
         this->mGroundY = this->mPosY;
 
@@ -255,7 +263,6 @@ int daKpaFire_c::CleanupResources()
 }
 
 // @symbol func_ov060_02117624
-/* The POD matrix view keeps this block copy intact in C++. */
 /* Per-frame drop shadow. Does nothing when mDropsShadow is 0. Otherwise it
  * builds a translation matrix in the shared scratch matrix data_020a0e68 at
  * the fire's x, its mGroundY and its z (each >> 3), copies it into the
@@ -263,15 +270,8 @@ int daKpaFire_c::CleanupResources()
  * radius mShadowRadiusMul * mFireScale, the second Fix12 argument (dActor_c.h
  * calls it `depth`) 30 units (0x1e000), and the `opacity` argument 0xf (what
  * that value means is not decoded; every caller passes 0xf).
- * The Matrix4x3 at 0x32c remains the header's pad_32c storage, reached
- * through its existing POD view. */
-#include "common.h"
-extern "C" {
-
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
-extern Matrix4x3 data_020a0e68;
-}
+ * The Matrix4x3 at 0x32c remains the header's pad_32c storage; copying it
+ * through the RawMatrix4x3 view keeps the block copy intact in C++. */
 extern "C" void func_ov060_02117624(char *c) {
     struct daKpaFire_c *self = (struct daKpaFire_c *)c;
     if (self->mDropsShadow == 0) return;
@@ -284,11 +284,12 @@ extern "C" void func_ov060_02117624(char *c) {
 /* Variant 0 Behavior: ride Bowser's mouth.
  *
  * Looks up the daKpa_c by mKpaUniqueID; if it is gone, destroys this fire.
- * Otherwise it does nothing unless Bowser's mState is 0xf and
- * func_ov060_02111c68 returns a row number n -- from the first of two known
- * animations only once its frame is 0x31 or later (n = frame - 0x31), from the
- * second always (n = frame + 0xb) -- or -1 when neither is playing. n wraps to 0 when it reaches the
- * frame count of the dExtFrameCtrl_c at Bowser +0x124.
+ * Otherwise it does nothing unless Bowser's mState is 0xf (daKpa_c.cpp's
+ * BOWSER_STATE_ANIM_CHAIN) and func_ov060_02111c68 returns a row number n --
+ * from his animation 8 only once its frame is 0x31 or later (n = frame - 0x31),
+ * from his animation 6 always (n = frame + 0xb) -- or -1 when neither is
+ * playing. n wraps to 0 when it reaches the frame count of the
+ * dExtFrameCtrl_c at Bowser +0x124.
  *
  * Row n of the u16 table data_ov060_02119364 (five halfwords per row, t[0..4])
  * gives the mouth pose. In whole units, turned by Bowser's yaw (mAngleY >> 4,
@@ -306,43 +307,43 @@ extern "C" void func_ov060_02117624(char *c) {
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_0211747c(daKpaFire_c *self)
 {
-    daKpa_c *o;
+    daKpa_c *koopa;
     int n;
-    int ang;
+    int yaw;
     int i;
     u16 *t;
     int s1;
     int s0;
     volatile int v[3];
-    int a;
-    int b;
-    int *p;
+    int side;
+    int fwd;
+    int *kpaPos;
 
-    o = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(self->mKpaUniqueID);
-    if (o == 0) {
-        _ZN7fBase_c18MarkForDestructionEv(self);
+    koopa = (daKpa_c *)dActor_c::FindWithID(self->mKpaUniqueID);
+    if (koopa == 0) {
+        self->MarkForDestruction();
         return;
     }
 
-    if (o->mState != 0xf)
+    if (koopa->mState != 0xf)
         return;
 
-    n = o->func_ov060_02111c68();
+    n = koopa->func_ov060_02111c68();
     if (n < 0)
         return;
 
-    ang = *(u16 *)&o->mAngleY;
-    i = (ang >> 4) * 2;
-    p = &o->mPosX;
-    v[0] = p[0];
-    v[1] = p[1];
+    yaw = *(u16 *)&koopa->mAngleY;
+    i = (yaw >> 4) * 2;
+    kpaPos = &koopa->mPosX;
+    v[0] = kpaPos[0];
+    v[1] = kpaPos[1];
     s1 = data_02082214[i + 1];
     s0 = data_02082214[i];
-    v[2] = p[2];
+    v[2] = kpaPos[2];
     t = data_ov060_02119364;
 
     if (n == _ZNK15dExtFrameCtrl_c13GetFrameCountEv(
-            static_cast<dExtFrameCtrl_c *>(&o->mModelAnim)))
+            static_cast<dExtFrameCtrl_c *>(&koopa->mModelAnim)))
         n = 0;
 
     t += n * 5;
@@ -353,19 +354,21 @@ void func_ov060_0211747c(daKpaFire_c *self)
     self->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
         self->mSoundHandle, 3, self->mSoundID, &self->mCamSpacePosX, 0);
 
-    a = t[0];
-    b = t[2] + 0x14;
-    self->mPosX = v[0] + (b * s0 + a * s1);
+    side = t[0];
+    fwd = t[2] + 0x14;
+    self->mPosX = v[0] + (fwd * s0 + side * s1);
     self->mPosY = v[1] + ((t[1] - 0x5a) << 12);
-    self->mPosZ = v[2] + (b * s1 - a * s0);
+    self->mPosZ = v[2] + (fwd * s1 - side * s0);
     self->mPrevAngleX = (short)(t[4] + 0x818);
-    self->mPrevAngleY = (short)(t[3] + ang - 0x4700);
+    self->mPrevAngleY = (short)(t[3] + yaw - 0x4700);
 
     if (n & 1)
         return;
 
-    _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(5, 0), &self->mPosX, &self->mPrevAngleX,
-                                                 self->mAreaId, -1);
+    dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(5, 0),
+        *reinterpret_cast<const Vector3*>(&self->mPosX),
+        reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
+        self->mAreaId, -1);
 }
 }
 
@@ -385,35 +388,36 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
 {
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         PARTICLE_END_PUFF, *(Fix12i*)&self->mPosX, *(Fix12i*)&self->mPosY, *(Fix12i*)&self->mPosZ);
-    _ZN7fBase_c18MarkForDestructionEv(self);
+    self->MarkForDestruction();
 
     if ((((u32)RandomIntInternal(&data_0209e650[0]) >> 0x10) % 10) >= 2) {
         return;
     }
 
     {
-        void* p = _ZN8dActor_c13ClosestPlayerEv(self);
-        daKpa_c* sb;
-        if (p != 0 && ((dActor_c*)p)->param1 == 3 &&
-            (sb = (daKpa_c*)_ZN8dActor_c15FindWithActorIDEjPS_(ACTOR_KOOPA, 0)) != 0 &&
-            sb->mCapActorAlive == 0) {
-            int c;
+        Player* player = self->ClosestPlayer();
+        daKpa_c* koopa;
+        if (player != 0 && player->param1 == 3 &&
+            (koopa = (daKpa_c*)dActor_c::FindWithActorID(ACTOR_KOOPA, 0)) != 0 &&
+            koopa->mCapActorAlive == 0) {
+            int chr;
             int idx;
             int mask = 0;
-            for (c = 0; c < 3; c++) {
-                if (_ZN8SaveData19IsCharacterUnlockedEj(c) != 0) {
-                    mask = (mask | (1 << c)) & 0xff;
+            for (chr = 0; chr < 3; chr++) {
+                if (_ZN8SaveData19IsCharacterUnlockedEj(chr) != 0) {
+                    mask = (mask | (1 << chr)) & 0xff;
                 }
             }
             do {
                 idx = ((u32)RandomIntInternal(&data_0209e650[0]) >> 0x10) % 3;
             } while ((mask & (1 << idx)) == 0);
             {
-                void* r = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-                    ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb, &self->mPosX,
-                    &self->mAngleX, self->mAreaId, -1);
-                if (r != 0) {
-                    sb->mCapActorAlive = 1;
+                dActor_c* spawned = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
+                    *reinterpret_cast<const Vector3*>(&self->mPosX),
+                    reinterpret_cast<const Vector3_16*>(&self->mAngleX),
+                    self->mAreaId, -1);
+                if (spawned != 0) {
+                    koopa->mCapActorAlive = 1;
                 }
             }
             return;
@@ -421,12 +425,13 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
     }
 
     {
-        dActor_c* r = (dActor_c*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-            ACTOR_COIN, 0, &self->mPosX, 0, self->mAreaId, -1);
-        if (r != 0) {
-            r->unk_0a4 = 0;
-            r->mVertSpeed = 0;
-            r->unk_0ac = 0;
+        dActor_c* spawned = dActor_c::Spawn(ACTOR_COIN, 0,
+            *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
+            self->mAreaId, -1);
+        if (spawned != 0) {
+            spawned->unk_0a4 = 0;
+            spawned->mVertSpeed = 0;
+            spawned->unk_0ac = 0;
         }
     }
 }
@@ -435,8 +440,9 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
 /* 1 if more than n Behavior frames have passed (mFrameCount > n), else 0.
  * Keeps the unsigned char * parameter decl_common.h declares. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_021172c8(unsigned char *p, unsigned int n){
-  return ((daKpaFire_c *)p)->mFrameCount > n;
+int func_ov060_021172c8(unsigned char *p, unsigned int n)
+{
+    return ((daKpaFire_c *)p)->mFrameCount > n;
 }
 }
 
@@ -446,19 +452,19 @@ int func_ov060_021172c8(unsigned char *p, unsigned int n){
  * -1.0 (-0x1000) per frame per frame; mFireScale 1.0 plus a random 0..0xfff
  * (so from 1.0 to just under 2.0); shadow multiplier 0x10. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_0211722c(daKpaFire_c *c)
+void func_ov060_0211722c(daKpaFire_c *self)
 {
     unsigned int r;
-    c->mPrevAngleY = (short)((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 0x10);
+    self->mPrevAngleY = (short)((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 0x10);
     r = (unsigned int)RandomIntInternal(&data_0209e650[0]) >> 0x10;
     if (r % 10 < 2)
-        c->mVertSpeed = 0x1e000;
+        self->mVertSpeed = 0x1e000;
     else
-        c->mVertSpeed = 0xa000;
-    c->mHorzSpeed = 0x5000;
-    c->mVertAccel = -0x1000;
-    c->mFireScale = (int)(((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 16) & 0xfff) + 0x1000;
-    c->mShadowRadiusMul = 0x10;
+        self->mVertSpeed = 0xa000;
+    self->mHorzSpeed = 0x5000;
+    self->mVertAccel = -0x1000;
+    self->mFireScale = (int)(((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 16) & 0xfff) + 0x1000;
+    self->mShadowRadiusMul = 0x10;
 }
 }
 
@@ -467,14 +473,14 @@ void func_ov060_0211722c(daKpaFire_c *c)
  * horizontal speed, mFireScale 6.0 (0x6000), shadow multiplier 0x10. Gravity
  * is left at the InitResources default. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021171e8(daKpaFire_c *c)
+void func_ov060_021171e8(daKpaFire_c *self)
 {
     unsigned int r = RandomIntInternal(data_0209e650);
-    c->mPrevAngleY = r >> 0x10;
-    c->mVertSpeed = 0xa000;
-    c->mHorzSpeed = 0;
-    c->mFireScale = 0x6000;
-    c->mShadowRadiusMul = 0x10;
+    self->mPrevAngleY = r >> 0x10;
+    self->mVertSpeed = 0xa000;
+    self->mHorzSpeed = 0;
+    self->mFireScale = 0x6000;
+    self->mShadowRadiusMul = 0x10;
 }
 }
 
@@ -487,17 +493,17 @@ void func_ov060_021171e8(daKpaFire_c *c)
  *   z += table[2h + 1] * table[2p + 1]
  * with h = mPrevAngleY >> 4 (the heading, read unsigned) and p = phase >> 4. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_0211712c(daKpaFire_c *p)
+void func_ov060_0211712c(daKpaFire_c *self)
 {
-    short ang = (short)(((p->mTickCount + p->mPhaseOffset) & 0x3f) << 10);
-    int bi = (unsigned short)ang >> 4;
-    int *px = &p->mPosX;
+    short phase = (short)(((self->mTickCount + self->mPhaseOffset) & 0x3f) << 10);
+    int p = (unsigned short)phase >> 4;
+    int *px = &self->mPosX;
     int *pz;
-    *px = *px + ((data_02082214[((int)*(unsigned short *)&p->mPrevAngleY >> 4) * 2]
-                  * data_02082214[bi * 2]) << 2) / 0x1000;
-    pz = &p->mPosZ;
-    *pz = *pz + ((data_02082214[((int)*(unsigned short *)&p->mPrevAngleY >> 4) * 2 + 1]
-                  * data_02082214[bi * 2 + 1]) << 2) / 0x1000;
+    *px = *px + ((data_02082214[((int)*(unsigned short *)&self->mPrevAngleY >> 4) * 2]
+                  * data_02082214[p * 2]) << 2) / 0x1000;
+    pz = &self->mPosZ;
+    *pz = *pz + ((data_02082214[((int)*(unsigned short *)&self->mPrevAngleY >> 4) * 2 + 1]
+                  * data_02082214[p * 2 + 1]) << 2) / 0x1000;
 }
 }
 
@@ -521,16 +527,16 @@ void func_ov060_0211712c(daKpaFire_c *p)
  * 0x266 (about 0.15) per frame; at 0 or below it ends in func_ov060_021172e0. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_02116f90(daKpaFire_c *self) {
-    _ZN8dActor_c9UpdatePosEP5dCc_c((char *)self, 0);
+    self->UpdatePos(0);
     if (self->mVertSpeed < -0x4000)
         self->mVertSpeed = -0x4000;
 
     if (self->mLanded == 0) {
-        self->mParticleHandle_37c = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            self->mParticleHandle_37c, PARTICLE_FALLING, self->mPosX, self->mPosY + 0x37000, self->mPosZ, 0);
+        self->mParticleHandle = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+            self->mParticleHandle, PARTICLE_FALLING, self->mPosX, self->mPosY + 0x37000, self->mPosZ, 0);
         self->mdCcAc_c.flags |= 1;
         func_ov060_0211712c(self);
-        if (_ZNK10dBgCh_Actr10IsOnGroundEv(&self->mWithMeshClsn)) {
+        if (self->mWithMeshClsn.IsOnGround()) {
             self->mLanded++;
             if (self->mVariant == 7) {
                 self->mFireScale = 0x6000;
@@ -540,8 +546,8 @@ void func_ov060_02116f90(daKpaFire_c *self) {
             self->mHorzSpeed = 0;
             self->mVertSpeed = 0;
             self->mVertAccel = 0;
-            self->mParticleHandle_380 = 0;
-            self->mParticleHandle_37c = self->mParticleHandle_380;
+            self->mParticleHandle2 = 0;
+            self->mParticleHandle = self->mParticleHandle2;
         }
     } else {
         func_ov060_02116518(self, PARTICLE_LANDED_BURN, 1, self->mFireScale * 0xc);
@@ -553,7 +559,7 @@ void func_ov060_02116f90(daKpaFire_c *self) {
         }
     }
     if (self->mPosY < 0)
-        _ZN7fBase_c18MarkForDestructionEv(self);
+        self->MarkForDestruction();
 }
 }
 
@@ -562,11 +568,11 @@ void func_ov060_02116f90(daKpaFire_c *self) {
  * 30.0 units; variant 5's handler multiplies it straight into the sine
  * table values), mFireScale 2.0 (8192 = 0x2000), shadow multiplier 16. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02116f74(daKpaFire_c *p)
+void func_ov060_02116f74(daKpaFire_c *self)
 {
-    p->mHorzSpeed = 30;
-    p->mFireScale = 8192;
-    p->mShadowRadiusMul = 16;
+    self->mHorzSpeed = 30;
+    self->mFireScale = 8192;
+    self->mShadowRadiusMul = 16;
 }
 }
 
@@ -587,47 +593,48 @@ void func_ov060_02116f74(daKpaFire_c *p)
  * (random >> 16, % 17 != 0) and destroys this one; after 60 frames
  * (mFrameCount >= 0x3c) it destroys itself as well. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02116d78(daKpaFire_c *c)
+void func_ov060_02116d78(daKpaFire_c *self)
 {
-
-    if (c->mFireScale < 0x5000) c->mFireScale += 0x255;
-    if (c->mPrevAngleX > 0x800) c->mPrevAngleX -= 0x200;
+    if (self->mFireScale < 0x5000) self->mFireScale += 0x255;
+    if (self->mPrevAngleX > 0x800) self->mPrevAngleX -= 0x200;
 
     {
-        int i0 = (*(unsigned short*)&c->mPrevAngleX) >> 4;
-        int i1 = (*(unsigned short*)&c->mPrevAngleY) >> 4;
+        int i0 = (*(unsigned short*)&self->mPrevAngleX) >> 4;
+        int i1 = (*(unsigned short*)&self->mPrevAngleY) >> 4;
         i0 = i0 * 2;
         i1 = i1 * 2 + 1;
         int s0 = data_02082214[i0];
-        int speed = c->mHorzSpeed;
+        int speed = self->mHorzSpeed;
         int s1 = data_02082214[i1];
-        c->unk_0a4 = (s1 * (speed * s0)) / 896;
+        self->unk_0a4 = (s1 * (speed * s0)) / 896;
     }
     {
-        int speed = c->mHorzSpeed;
-        int s0 = data_02082214[((*(unsigned short*)&c->mPrevAngleX)>>4)*2];
-        c->mVertSpeed = (-speed) * s0;
+        int speed = self->mHorzSpeed;
+        int s0 = data_02082214[((*(unsigned short*)&self->mPrevAngleX)>>4)*2];
+        self->mVertSpeed = (-speed) * s0;
     }
     {
-        int s0 = data_02082214[((*(unsigned short*)&c->mPrevAngleX)>>4)*2];
-        int s1 = data_02082214[((*(unsigned short*)&c->mPrevAngleY)>>4)*2];
-        int speed = c->mHorzSpeed;
-        c->unk_0ac = (s1 * ((-speed) * s0)) / 896;
+        int s0 = data_02082214[((*(unsigned short*)&self->mPrevAngleX)>>4)*2];
+        int s1 = data_02082214[((*(unsigned short*)&self->mPrevAngleY)>>4)*2];
+        int speed = self->mHorzSpeed;
+        self->unk_0ac = (s1 * ((-speed) * s0)) / 896;
     }
-    c->mPosX += c->unk_0a4;
-    c->mPosY += c->mVertSpeed;
-    c->mPosZ += c->unk_0ac;
+    self->mPosX += self->unk_0a4;
+    self->mPosY += self->mVertSpeed;
+    self->mPosZ += self->unk_0ac;
 
-    func_ov060_02116518(c, PARTICLE_SCALED_9A, 1, c->mFireScale * 0xc);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) != 0) {
-        int r = RandomIntInternal(&data_0209e650[0]);
-        unsigned int r3 = (unsigned int)r >> 16;
-        if (r3 % 17 != 0)
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(6, 0), &c->mPosX, 0, c->mAreaId, -1);
-        _ZN7fBase_c18MarkForDestructionEv(c);
+    func_ov060_02116518(self, PARTICLE_SCALED_9A, 1, self->mFireScale * 0xc);
+    if (self->mWithMeshClsn.IsOnGround() != 0) {
+        int rnd = RandomIntInternal(&data_0209e650[0]);
+        unsigned int roll = (unsigned int)rnd >> 16;
+        if (roll % 17 != 0)
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(6, 0),
+                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
+                self->mAreaId, -1);
+        self->MarkForDestruction();
     }
-    if (c->mFrameCount < 0x3c) return;
-    _ZN7fBase_c18MarkForDestructionEv(c);
+    if (self->mFrameCount < 0x3c) return;
+    self->MarkForDestruction();
 }
 }
 
@@ -639,29 +646,29 @@ void func_ov060_02116d78(daKpaFire_c *c)
  * data_ov060_0211934c[mSubVariant] (-8.0, -6.0, -6.0 for sub-variants 0..2);
  * mFireScale 2.0 (0x2000); shadow multiplier 0x10. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02116c68(daKpaFire_c *c)
+void func_ov060_02116c68(daKpaFire_c *self)
 {
-  unsigned int r;
-  c->mPrevAngleY = (short)(((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10);
-  if (c->mSubVariant != 0)
-  {
-    r = ((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10;
-    c->mHorzSpeed = (int)((r % 10) << 0xc) >> 1;
-  }
-  else
-  {
-    r = ((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10;
-    c->mHorzSpeed = (int)((r % 10) * 0x7000) >> 1;
-  }
+    unsigned int r;
+    self->mPrevAngleY = (short)(((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10);
+    if (self->mSubVariant != 0)
+    {
+        r = ((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10;
+        self->mHorzSpeed = (int)((r % 10) << 0xc) >> 1;
+    }
+    else
+    {
+        r = ((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10;
+        self->mHorzSpeed = (int)((r % 10) * 0x7000) >> 1;
+    }
 
-  r = ((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10;
-  c->mVertSpeed = (r % 10) << 0xc;
-  c->mVertAccel = -0x1000;
+    r = ((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10;
+    self->mVertSpeed = (r % 10) << 0xc;
+    self->mVertAccel = -0x1000;
 
-  c->mPhaseOffset = (short)(((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10);
-  c->mTerminalVelocity = data_ov060_0211934c[c->mSubVariant];
-  c->mFireScale = 0x2000;
-  c->mShadowRadiusMul = 0x10;
+    self->mPhaseOffset = (short)(((unsigned int)RandomIntInternal(&data_0209e650[0])) >> 0x10);
+    self->mTerminalVelocity = data_ov060_0211934c[self->mSubVariant];
+    self->mFireScale = 0x2000;
+    self->mShadowRadiusMul = 0x10;
 }
 }
 
@@ -674,22 +681,26 @@ void func_ov060_02116c68(daKpaFire_c *c)
  * (otherwise) at its position and destroys itself; while still airborne it
  * destroys itself once its y is below 0. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02116b68(daKpaFire_c *c)
+void func_ov060_02116b68(daKpaFire_c *self)
 {
-    func_ov060_02116518(c, data_ov060_02119358[c->mSubVariant], 0, 0x46000);
-    func_ov060_0211712c(c);
-    if (func_ov060_021172c8((unsigned char *)c, 0x1c2))
-        _ZN7fBase_c18MarkForDestructionEv(c);
-    _ZN8dActor_c9UpdatePosEP5dCc_c((char *)c, 0);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn)) {
-        if (c->mSubVariant == 0)
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(7, 0), &c->mPosX, 0, c->mAreaId, -1);
+    func_ov060_02116518(self, data_ov060_02119358[self->mSubVariant], 0, 0x46000);
+    func_ov060_0211712c(self);
+    if (func_ov060_021172c8((unsigned char *)self, 0x1c2))
+        self->MarkForDestruction();
+    self->UpdatePos(0);
+    if (self->mWithMeshClsn.IsOnGround()) {
+        if (self->mSubVariant == 0)
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(7, 0),
+                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
+                self->mAreaId, -1);
         else
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(3, 0), &c->mPosX, 0, c->mAreaId, -1);
-        _ZN7fBase_c18MarkForDestructionEv(c);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(3, 0),
+                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
+                self->mAreaId, -1);
+        self->MarkForDestruction();
     } else {
-        if (c->mPosY >= 0) return;
-        _ZN7fBase_c18MarkForDestructionEv(c);
+        if (self->mPosY >= 0) return;
+        self->MarkForDestruction();
     }
 }
 }
@@ -699,13 +710,14 @@ void func_ov060_02116b68(daKpaFire_c *c)
  * (0x11800), gravity +1.0 (0x1000, upward -- unlike the InitResources
  * default), mFireScale 2.0, random phase, shadow multiplier 0x10. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02116b18(daKpaFire_c* c){
-  c->mVertSpeed = 0x7000;
-  c->mHorzSpeed = 0x11800;
-  c->mFireScale = 0x2000;
-  c->mVertAccel = 0x1000;
-  c->mPhaseOffset = (unsigned int)RandomIntInternal(data_0209e650) >> 0x10;
-  c->mShadowRadiusMul = 0x10;
+void func_ov060_02116b18(daKpaFire_c* self)
+{
+    self->mVertSpeed = 0x7000;
+    self->mHorzSpeed = 0x11800;
+    self->mFireScale = 0x2000;
+    self->mVertAccel = 0x1000;
+    self->mPhaseOffset = (unsigned int)RandomIntInternal(data_0209e650) >> 0x10;
+    self->mShadowRadiusMul = 0x10;
 }
 }
 
@@ -720,29 +732,38 @@ void func_ov060_02116b18(daKpaFire_c* c){
  * their mFireScale is set after the spawn returns. Then it destroys itself.
  * Before frame 21 it only grows and moves. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021169f8(daKpaFire_c* sl)
+void func_ov060_021169f8(daKpaFire_c* self)
 {
     int i;
-    daKpaFire_c* a;
-    if (sl->mFireScale < 0x5000) {
-        sl->mFireScale += 0x200;
+    daKpaFire_c* child;
+    if (self->mFireScale < 0x5000) {
+        self->mFireScale += 0x200;
     }
-    _ZN8dActor_c9UpdatePosEP5dCc_c((char *)sl, 0);
-    func_ov060_02116518(sl, PARTICLE_SCALED_9A, 1, 0x78000);
-    if (sl->mFrameCount <= 0x14)
+    self->UpdatePos(0);
+    func_ov060_02116518(self, PARTICLE_SCALED_9A, 1, 0x78000);
+    if (self->mFrameCount <= 0x14)
         return;
-    if (sl->mSubVariant == 0) {
+    if (self->mSubVariant == 0) {
         for (i = 0; i < 3; i++) {
-            a = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 0), &sl->mPosX, &sl->mPrevAngleX, sl->mAreaId, -1);
-            a->mFireScale = 0x5000;
+            child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 0),
+                *reinterpret_cast<const Vector3*>(&self->mPosX),
+                reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
+                self->mAreaId, -1);
+            child->mFireScale = 0x5000;
         }
     } else {
-        a = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 1), &sl->mPosX, &sl->mPrevAngleX, sl->mAreaId, -1);
-        a->mFireScale = 0x8000;
-        a = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 2), &sl->mPosX, &sl->mPrevAngleX, sl->mAreaId, -1);
-        a->mFireScale = 0x8000;
+        child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 1),
+            *reinterpret_cast<const Vector3*>(&self->mPosX),
+            reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
+            self->mAreaId, -1);
+        child->mFireScale = 0x8000;
+        child = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 2),
+            *reinterpret_cast<const Vector3*>(&self->mPosX),
+            reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
+            self->mAreaId, -1);
+        child->mFireScale = 0x8000;
     }
-    _ZN7fBase_c18MarkForDestructionEv(sl);
+    self->MarkForDestruction();
 }
 }
 
@@ -750,12 +771,12 @@ void func_ov060_021169f8(daKpaFire_c* sl)
 /* Variant 4 init. Vertical speed 30.0, horizontal speed 15.0, random
  * phase, SetLimMovFlag on the mesh collision, shadow multiplier 0x10. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021169b0(daKpaFire_c* thiz) {
-    thiz->mVertSpeed = 0x1e000;
-    thiz->mHorzSpeed = 0xf000;
-    thiz->mPhaseOffset = (unsigned int)RandomIntInternal(&data_0209e650[0]) >> 16;
-    _ZN10dBgCh_Actr13SetLimMovFlagEv(&thiz->mWithMeshClsn);
-    thiz->mShadowRadiusMul = 0x10;
+void func_ov060_021169b0(daKpaFire_c* self) {
+    self->mVertSpeed = 0x1e000;
+    self->mHorzSpeed = 0xf000;
+    self->mPhaseOffset = (unsigned int)RandomIntInternal(&data_0209e650[0]) >> 16;
+    self->mWithMeshClsn.SetLimMovFlag();
+    self->mShadowRadiusMul = 0x10;
 }
 }
 
@@ -770,28 +791,28 @@ void func_ov060_021169b0(daKpaFire_c* thiz) {
  * mFrameCount exceeds 150 (0x96). It also destroys itself when Bowser is
  * still there, his hold state is idle, and he is within 150 units.
  */
-extern "C" void func_ov060_021168c4(daKpaFire_c* c)
+extern "C" void func_ov060_021168c4(daKpaFire_c* self)
 {
     daKpa_c* koopa;
-    if (c->mFrameCount == 0) {
-        dActor_c* a = dActor_c::FindWithActorID(ACTOR_KOOPA, 0);
-        koopa = (daKpa_c*)a;
-        c->mKpaUniqueID = koopa->uniqueID;
+    if (self->mFrameCount == 0) {
+        dActor_c* found = dActor_c::FindWithActorID(ACTOR_KOOPA, 0);
+        koopa = (daKpa_c*)found;
+        self->mKpaUniqueID = koopa->uniqueID;
     } else {
-        koopa = (daKpa_c*)dActor_c::FindWithID(c->mKpaUniqueID);
+        koopa = (daKpa_c*)dActor_c::FindWithID(self->mKpaUniqueID);
     }
-    if (c->mWithMeshClsn.JustHitGround() != 0) {
-        c->mVertSpeed = 0x1e000;
+    if (self->mWithMeshClsn.JustHitGround() != 0) {
+        self->mVertSpeed = 0x1e000;
     }
-    c->UpdatePos((dCc_c*)0);
-    func_ov060_02116518(c, PARTICLE_VARIANT_4, 0, 0x32000);
-    if (func_ov060_021172c8((unsigned char*)c, 0x96) != 0) {
-        c->MarkForDestruction();
+    self->UpdatePos(0);
+    func_ov060_02116518(self, PARTICLE_VARIANT_4, 0, 0x32000);
+    if (func_ov060_021172c8((unsigned char*)self, 0x96) != 0) {
+        self->MarkForDestruction();
     }
     if (koopa == 0) return;
     if (koopa->mHoldState != 0) return;
-    if (Vec3_HorzDist((Vector3*)&c->mPosX, (Vector3*)&koopa->mPosX) >= 0x96000) return;
-    c->MarkForDestruction();
+    if (Vec3_HorzDist((Vector3*)&self->mPosX, (Vector3*)&koopa->mPosX) >= 0x96000) return;
+    self->MarkForDestruction();
 }
 
 // @symbol func_ov060_021167ec
@@ -804,29 +825,31 @@ extern "C" void func_ov060_021168c4(daKpaFire_c* c)
  * The children are spawned with no rotation and have their pitch/heading words
  * written afterwards. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021167ec(daKpaFire_c* c)
+void func_ov060_021167ec(daKpaFire_c* self)
 {
-    dActor_c* p;
-    if (c->mFrameCount != 0) return;
-    p = (dActor_c*)_ZN8dActor_c13ClosestPlayerEv(c);
-    if (p == 0) return;
-    c->mPrevAngleY = Vec3_HorzAngle((struct Vector3*)&c->mPosX, (struct Vector3*)&p->mPosX);
-    c->mFireScale = 0x5000;
+    dActor_c* player;
+    if (self->mFrameCount != 0) return;
+    player = self->ClosestPlayer();
+    if (player == 0) return;
+    self->mPrevAngleY = Vec3_HorzAngle((struct Vector3*)&self->mPosX, (struct Vector3*)&player->mPosX);
+    self->mFireScale = 0x5000;
     {
         int i = 0;
         int ang = 0;
         do {
-            daKpaFire_c* a = (daKpaFire_c*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(4, 0), &c->mPosX, (const struct Vector3_16*)0, c->mAreaId, -1);
-            short v = c->mPrevAngleY + ang;
-            a->mPrevAngleX = 0;
-            a->mPrevAngleY = v;
-            a->mPrevAngleZ = 0;
-            a->mFireScale = c->mFireScale;
+            daKpaFire_c* child = (daKpaFire_c*)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(4, 0),
+                *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
+                self->mAreaId, -1);
+            short heading = self->mPrevAngleY + ang;
+            child->mPrevAngleX = 0;
+            child->mPrevAngleY = heading;
+            child->mPrevAngleZ = 0;
+            child->mFireScale = self->mFireScale;
             i++;
             ang += 0x5555;
         } while (i < 3);
     }
-    _ZN7fBase_c18MarkForDestructionEv(c);
+    self->MarkForDestruction();
 }
 }
 
@@ -834,11 +857,11 @@ void func_ov060_021167ec(daKpaFire_c* c)
 /* Init shared by variants 0 and 3: cylinder flags bit 0 set (cylinder
  * disabled), mFireScale 2.0 (0x2000), shadow multiplier 0x10. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021167c8(daKpaFire_c *c)
+void func_ov060_021167c8(daKpaFire_c *self)
 {
-    c->mdCcAc_c.flags |= 1;
-    c->mFireScale = 0x2000;
-    c->mShadowRadiusMul = 0x10;
+    self->mdCcAc_c.flags |= 1;
+    self->mFireScale = 0x2000;
+    self->mShadowRadiusMul = 0x10;
 }
 }
 
@@ -850,48 +873,50 @@ void func_ov060_021167c8(daKpaFire_c *c)
  * Player::Burn.
  * Keeps the char * parameter decl_common.h declares. */
 extern "C" {
-extern void _ZN6Player4BurnEv(void* p);
-void func_ov060_02116740(char* c){
-  unsigned int id = ((daKpaFire_c *)c)->mdCcAc_c.otherOwner;
-  if(id==0) return;
-  Player* p = (Player *)_ZN8dActor_c10FindWithIDEj(id);
-  if(p==0) return;
-  int b = (int)(p->actorID == ACTOR_PLAYER);
-  if(b==0) return;
-  if(p->mIsMetal!=0) return;
-  if(p->mIsVanish!=0) return;
-  _ZN6Player4BurnEv(p);
+void func_ov060_02116740(char* c)
+{
+    unsigned int id = ((daKpaFire_c *)c)->mdCcAc_c.otherOwner;
+    if (id == 0) return;
+    Player* player = (Player *)dActor_c::FindWithID(id);
+    if (player == 0) return;
+    /* Measured: folding this temp into `if (player->actorID != ACTOR_PLAYER)`
+       makes the function 12 bytes shorter than the ROM size, 0x88. */
+    int isPlayer = (int)(player->actorID == ACTOR_PLAYER);
+    if (isPlayer == 0) return;
+    if (player->mIsMetal != 0) return;
+    if (player->mIsVanish != 0) return;
+    player->Burn();
 }
 }
 
 // @symbol func_ov060_02116518
 /* Particle helper. Keeps two particles alive at the fire's position, y raised
- * by a3 (Fix12): `kind` in mParticleHandle_37c and `kind + 1` in
- * mParticleHandle_380 (each handle is passed back in, so a live particle is
- * presumably refreshed rather than duplicated). Kinds 0xa2 and 0xa4 start the first one
- * through the NewUnkCallback818 form of Particle::System::New; the rest use
+ * by yOffset (Fix12): `kind` in mParticleHandle and `kind + 1` in
+ * mParticleHandle2 (each handle is passed back in, so a live particle is
+ * presumably refreshed rather than duplicated). Kinds 0xa2 and 0xa4 start the
+ * first one through the NewUnkCallback818 form of Particle::System::New; the rest use
  * the plain New.
  *
- * With a2 non-zero each live particle is resized. callbackScale becomes
+ * With resize non-zero each live particle is resized. callbackScale becomes
  * mFireScale as a halfword (0x7fff once mFireScale reaches 0x8000). Kind
  * 0x9a also writes the unnamed word at +0x44 and callbackVelocity from
  * mFireScale * 0x2800 and mFireScale * 0xa66.
  */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02116518(daKpaFire_c* self, u32 kind, int a2, int a3)
+void func_ov060_02116518(daKpaFire_c* self, u32 kind, int resize, int yOffset)
 {
     Particle::System *sys;
 
     if (kind == 0xa2 || kind == 0xa4) {
-        self->mParticleHandle_37c = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-            self->mParticleHandle_37c, kind, self->mPosX, self->mPosY + a3, self->mPosZ, 0);
+        self->mParticleHandle = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+            self->mParticleHandle, kind, self->mPosX, self->mPosY + yOffset, self->mPosZ, 0);
     } else {
-        self->mParticleHandle_37c = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            self->mParticleHandle_37c, kind, self->mPosX, self->mPosY + a3, self->mPosZ, 0, 0);
+        self->mParticleHandle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            self->mParticleHandle, kind, self->mPosX, self->mPosY + yOffset, self->mPosZ, 0, 0);
     }
 
-    if (self->mParticleHandle_37c != 0 && a2 != 0) {
-        sys = Particle::System::FromUniqueID(self->mParticleHandle_37c);
+    if (self->mParticleHandle != 0 && resize != 0) {
+        sys = Particle::System::FromUniqueID(self->mParticleHandle);
         if (self->mFireScale >= 0x8000) { sys->callbackScale = 0x7fff; } else { sys->callbackScale = (short)self->mFireScale; }
 
         if (kind == PARTICLE_SCALED_9A) {
@@ -900,14 +925,14 @@ void func_ov060_02116518(daKpaFire_c* self, u32 kind, int a2, int a3)
         }
     }
 
-    self->mParticleHandle_380 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        self->mParticleHandle_380, kind + 1, self->mPosX, self->mPosY + a3, self->mPosZ, 0, 0);
-    if (self->mParticleHandle_380 == 0)
+    self->mParticleHandle2 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        self->mParticleHandle2, kind + 1, self->mPosX, self->mPosY + yOffset, self->mPosZ, 0, 0);
+    if (self->mParticleHandle2 == 0)
         return;
-    if (a2 == 0)
+    if (resize == 0)
         return;
 
-    sys = Particle::System::FromUniqueID(self->mParticleHandle_380);
+    sys = Particle::System::FromUniqueID(self->mParticleHandle2);
     if (self->mFireScale >= 0x8000) { sys->callbackScale = 0x7fff; } else { sys->callbackScale = (short)self->mFireScale; }
 
     if (kind != PARTICLE_SCALED_9A)
@@ -933,31 +958,32 @@ daKpaFire_c::~daKpaFire_c()
  * not static here, so mwccarm emits a runtime copy for each slot; the
  * descriptors keep their ROM bytes. First word is the handler, second the
  * pointer-adjustor (0). The descriptor order and the copy order are the ROM's
- * own. */
-extern PMF data_ov060_0211a734;
-extern PMF data_ov060_0211a73c;
-extern PMF data_ov060_0211a744;
-extern PMF data_ov060_0211a74c;
-extern PMF data_ov060_0211a754;
-extern PMF data_ov060_0211a75c;
-extern PMF data_ov060_0211a764;
-extern PMF data_ov060_0211a76c;
-extern PMF data_ov060_0211a774;
-extern PMF data_ov060_0211a77c;
-extern PMF data_ov060_0211a784;
-extern PMF data_ov060_0211a78c;
-extern PMF data_ov060_0211a794;
-extern PMF data_ov060_0211a79c;
-extern PMF data_ov060_0211a7a4;
-extern PMF data_ov060_0211a7ac;
+ * own. The handler named beside each descriptor is its ov060 relocs.txt
+ * entry. */
+extern PMF data_ov060_0211a734;   /* func_ov060_021169b0 (variant 4 init) */
+extern PMF data_ov060_0211a73c;   /* func_ov060_02116c68 (variant 2 init) */
+extern PMF data_ov060_0211a744;   /* func_ov060_02116f90 (variant 6 Behavior) */
+extern PMF data_ov060_0211a74c;   /* func_ov060_021167c8 (variant 3 init) */
+extern PMF data_ov060_0211a754;   /* func_ov060_02116b18 (variant 1 init) */
+extern PMF data_ov060_0211a75c;   /* func_ov060_021167c8 (variant 0 init) */
+extern PMF data_ov060_0211a764;   /* func_ov060_021168c4 (variant 4 Behavior) */
+extern PMF data_ov060_0211a76c;   /* func_ov060_02116b68 (variant 2 Behavior) */
+extern PMF data_ov060_0211a774;   /* func_ov060_02116d78 (variant 5 Behavior) */
+extern PMF data_ov060_0211a77c;   /* func_ov060_021167ec (variant 3 Behavior) */
+extern PMF data_ov060_0211a784;   /* func_ov060_02116f90 (variant 7 Behavior) */
+extern PMF data_ov060_0211a78c;   /* func_ov060_021169f8 (variant 1 Behavior) */
+extern PMF data_ov060_0211a794;   /* func_ov060_0211747c (variant 0 Behavior) */
+extern PMF data_ov060_0211a79c;   /* func_ov060_021171e8 (variant 7 init) */
+extern PMF data_ov060_0211a7a4;   /* func_ov060_0211722c (variant 6 init) */
+extern PMF data_ov060_0211a7ac;   /* func_ov060_02116f74 (variant 5 init) */
 
 /* Behavior handler table (mVariant 0..7); one Entry{PMF} per slot. */
 extern "C" Entry data_ov060_0211afb4[8] = {
     {data_ov060_0211a794}, {data_ov060_0211a78c}, {data_ov060_0211a76c}, {data_ov060_0211a77c},
     {data_ov060_0211a764}, {data_ov060_0211a774}, {data_ov060_0211a744}, {data_ov060_0211a784}
 };
-/* InitResources handler table (mVariant 0..7); one ActorFn per slot. */
-extern "C" ActorFn data_ov060_0211af74[8] = {
+/* InitResources handler table (mVariant 0..7); one PMF per slot. */
+extern "C" PMF data_ov060_0211af74[8] = {
     data_ov060_0211a75c, data_ov060_0211a754, data_ov060_0211a73c, data_ov060_0211a74c,
     data_ov060_0211a734, data_ov060_0211a7ac, data_ov060_0211a7a4, data_ov060_0211a79c
 };

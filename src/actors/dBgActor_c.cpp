@@ -359,7 +359,8 @@ typedef struct { int w[2]; } ClsnHitHead;
 int func_ov002_020eea84(char *self, char *player)
 {
     extern char *func_0203564c(char *p);
-    /* local extern: scalar Fix12 ABI preserves the retail call (6az). */
+    /* local extern: scalar Fix12 ABI preserves the retail call
+       (notes/mwccarm-codegen.md 6az). */
     extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
     struct ClsnHitCopy res;
     Vector3 v;

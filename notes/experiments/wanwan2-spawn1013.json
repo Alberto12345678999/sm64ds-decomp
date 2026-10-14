@@ -326,7 +326,7 @@
     ]
   },
   "spawn_callee": {
-    "source": "C:\\tmp\\sm64ds-wanwan2-spawn1013\\src\\actors\\dActor_c.cpp",
+    "source": "src/actors/dActor_c.cpp",
     "source_sha256": "d70273a5010b8a323742683c75b75acf4c9039f826a37efe9d9b5b3fcad83380",
     "receipt": {
       "name": "_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as",

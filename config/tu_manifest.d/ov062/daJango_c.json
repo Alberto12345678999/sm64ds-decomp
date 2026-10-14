@@ -792,21 +792,21 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov062",
       "canonical_address": "0x0211dd20",
-      "reason": "The TU emits the cartridge type-name string. Text-only: deadstripped, data: []."
+      "reason": "The TU emits the cartridge type-name string. Metadata remains externalized under this existing policy; the ten owned data rows are PMF descriptors."
     },
     {
       "symbol": "_ZTI9daJango_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov062",
       "canonical_address": "0x0211dd2c",
-      "reason": "The TU emits the class single-inheritance RTTI. Text-only: deadstripped, data: []."
+      "reason": "The TU emits the class single-inheritance RTTI. Metadata remains externalized under this existing policy; the ten owned data rows are PMF descriptors."
     },
     {
       "symbol": "_ZTV9daJango_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov062",
       "canonical_address": "0x0211dd5c",
-      "reason": "The TU emits the complete class vtable. Text-only: deadstripped, data: []. The symbols.txt address point 0x0211dd5c is unchanged."
+      "reason": "The TU emits the complete class vtable. Metadata remains externalized under this existing policy; the ten owned data rows are PMF descriptors. The symbols.txt address point 0x0211dd5c is unchanged."
     },
     {
       "symbol": "_ZTI7fBase_c",
@@ -1457,69 +1457,69 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1127",
+      "from": "@1154",
       "to": "@1115",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1128",
+      "from": "@1155",
       "to": "@1116",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1129",
+      "from": "@1156",
       "to": "@1117",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1130",
+      "from": "@1157",
       "to": "@1118",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1132",
+      "from": "@1159",
       "to": "@1120",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1134",
+      "from": "@1161",
       "to": "@1122",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1136",
+      "from": "@1163",
       "to": "@1124",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1138",
+      "from": "@1165",
       "to": "@1126",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@531",
+      "from": "@558",
       "to": "@692",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1140",
+      "from": "@1167",
       "to": "@690",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1142",
+      "from": "@1169",
       "to": "@189",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1144",
+      "from": "@1171",
       "to": "@197",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     },
     {
-      "from": "@1146",
+      "from": "@1173",
       "to": "@198",
-      "evidence": "Compiler-local descriptor/node identity is preserved by section, offset, size, binding, bytes and outgoing relocation edges after SWOOP C++ conversion; retain its existing configured destination."
+      "evidence": "Measured compiler-local input after adding the existing cap header: exact section index, offset, size, binding, bytes and complete incoming/outgoing typed graph preserve this canonical destination."
     }
   ]
 }
