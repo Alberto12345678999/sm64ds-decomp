@@ -50,6 +50,31 @@
       "reason": "This bounded actor-interface slice changes neither shared headers nor model/state layout, PMF ownership, allocation, scalar ABI helper implementations or original naming. Remaining reconstruction is tracked by issue3834 with the Snowball source producer and enemy reconstruction coordinator.",
       "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
       "owner": "Snowball source producer and enemy reconstruction coordinator"
+    },
+    {
+      "id": "SNOWBALL-AUDIT-PROV-001",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "config/tu_manifest.d/ov081/daSnowball_c.json: notes[3], Uniquifier resync",
+      "summary": "Current-tense manifest note names the pre-cleanup compiler inputs instead of the measured candidate inputs.",
+      "reason": "Replaced the false current-tense claim with explicit pre-cleanup @716/@718 history and current @714/@716 inputs to unchanged canonical @701/@703. Fresh compilation under actual1b928 Player.h emits exactly those names; Source and complete raw objects remain identical to rejected0c21. Full fresh production proof/gates are required before final offer.",
+      "evidence": {
+        "tested_commit": "0c21c71a05e0fca89554282e46d63220d19616bf",
+        "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+        "literal_old_clause": "the types.h Vector3 ctors advance the counter again and this tree now emits @716 and @718, renamed onto the @701/@703 pins.",
+        "proposed_replacement_clause": "the types.h Vector3 ctors advanced the counter again, so the pre-interface-cleanup tree emitted @716 and @718. The current actor-interface cleanup emits @714 and @716, respectively renamed onto the unchanged @701/@703 pins.",
+        "measured_base_to_candidate": {
+          "@716": "@714",
+          "@718": "@716"
+        },
+        "canonical_destinations": [
+          "@701",
+          "@703"
+        ],
+        "independent_packet": "build/snowball-independent1014/identity-contracts.json"
+      },
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+      "owner": "Snowball source producer and enemy reconstruction coordinator"
     }
   ],
   "historical_predecessors": [
@@ -1338,5 +1363,57 @@
     "result": "compile failed: undefined identifier Hurt",
     "qualification": "Player.h has no native Hurt declaration. Current whole include tree and actual owning Player.cpp are invariant from that probe. The local import uses the exact current scalar C ABI; no original-type or universal Fix12 impossibility claim.",
     "artifact": "C:/tmp/sm64ds-klepto-scout1014/build/snowball-native-scout1014/contract-probe.log"
+  },
+  "historical_original_85c_acceptance_scope": "All existing85c proof and checkpoint fields below remain historical; independent review rejected0c21 only for stale notes[3] compiler-name provenance. Current1b928 rework evidence is recorded separately after fresh gates.",
+  "rejected_independent_review": {
+    "finding": {
+      "id": "SNOWBALL-AUDIT-PROV-001",
+      "kind": "provenance",
+      "disposition": "needs_correction",
+      "location": "config/tu_manifest.d/ov081/daSnowball_c.json: notes[3], Uniquifier resync",
+      "summary": "Current-tense manifest note names the pre-cleanup compiler inputs instead of the measured candidate inputs.",
+      "reason": "At exact0c21 notes[3] says this tree now emits @716/@718, while both final defined_symbol_renames and fresh independently compiled raw graph prove @714/@716. Historical lineage should remain explicit and current input claims must agree. This is not a byte defect.",
+      "evidence": {
+        "tested_commit": "0c21c71a05e0fca89554282e46d63220d19616bf",
+        "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+        "literal_old_clause": "the types.h Vector3 ctors advance the counter again and this tree now emits @716 and @718, renamed onto the @701/@703 pins.",
+        "proposed_replacement_clause": "the types.h Vector3 ctors advanced the counter again, so the pre-interface-cleanup tree emitted @716 and @718. The current actor-interface cleanup emits @714 and @716, respectively renamed onto the unchanged @701/@703 pins.",
+        "measured_base_to_candidate": {
+          "@716": "@714",
+          "@718": "@716"
+        },
+        "canonical_destinations": [
+          "@701",
+          "@703"
+        ],
+        "independent_packet": "build/snowball-independent1014/identity-contracts.json"
+      },
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+      "owner": "Snowball source producer and enemy reconstruction coordinator"
+    },
+    "tested_commit": "0c21c71a05e0fca89554282e46d63220d19616bf",
+    "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "status": "failed provenance review; byte/source slice otherwise passed",
+    "artifact": "C:/tmp/sm64ds-snowball-review1014/build/snowball-independent1014/rework-evidence.json"
+  },
+  "current_rework": {
+    "base": "1b928ef30070f1d6ce9be77a9a8a3f7797de4196",
+    "state": "Source/manifest checkpoint; fresh gates pending",
+    "only_repair": "manifest notes[3] provenance plus this report; candidate Source unchanged",
+    "current_Player_header": "Merged existing native Swing declaration; no Hurt member added. Full current compiles show no Snowball compiler-name shift.",
+    "measured_names": {
+      "control": [
+        "@716",
+        "@718"
+      ],
+      "candidate": [
+        "@714",
+        "@716"
+      ],
+      "canonical": [
+        "@701",
+        "@703"
+      ]
+    }
   }
 }
