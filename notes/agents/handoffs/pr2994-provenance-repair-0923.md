@@ -102,7 +102,7 @@ Canonical seven historical fixed findings (unchanged dictionaries):
 
 The exact historical dictionaries, including their original locations and
 pre-repair dispositions, remain in the [immutable `9cc57923` handoff](
-https://github.com/tangosdev/sm64ds-decomp/blob/9cc5792303b6783f178e7851a4698fedb8df35a6/notes/agents/handoffs/pr2994-provenance-repair-0923.md#canonical-seven-historical-fixed-findings-unchanged-dictionaries).
+https://github.com/tangosdev/sm64ds-decomp/blob/9cc5792303b6783f178e7851a4698fedb8df35a6/notes/agents/handoffs/pr2994-provenance-repair-0923.md).
 Canonical queue evidence also retains those dictionaries without changing
 their historical paths.
 
@@ -110,7 +110,7 @@ New current findings, retained exactly as independently reported before repair:
 
 The exact historical dictionaries, including their original locations and
 pre-repair dispositions, remain in the [immutable `9cc57923` handoff](
-https://github.com/tangosdev/sm64ds-decomp/blob/9cc5792303b6783f178e7851a4698fedb8df35a6/notes/agents/handoffs/pr2994-provenance-repair-0923.md#new-current-findings-retained-exactly-as-independently-reported-before-repair).
+https://github.com/tangosdev/sm64ds-decomp/blob/9cc5792303b6783f178e7851a4698fedb8df35a6/notes/agents/handoffs/pr2994-provenance-repair-0923.md).
 Canonical queue evidence also retains those dictionaries without changing
 their historical paths.
 
