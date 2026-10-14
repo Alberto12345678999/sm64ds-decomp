@@ -13,6 +13,11 @@
  *     constructor declared yet.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_memory_AssetId {
+    ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb
+};
+
 #include "dScMgMemory_c.h"
 #include "common.h"
 #include "types.h"
@@ -1067,7 +1072,7 @@ s32 dScMgMemory_c::InitResources()
     data_0209d45c = 0x11;
     func_ov006_0210a534();
     tiles = LoadFile(data_ov006_0213d0c4[GetGameLanguage()]);
-    palette = LoadFile(0xbb);
+    palette = LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
     DecompressLZ16(tiles, (void *)0x6400000);
     GX::LoadOBJPltt(palette, 0, 0x100);
     DecompressLZ16(tiles, (void *)0x6600000);

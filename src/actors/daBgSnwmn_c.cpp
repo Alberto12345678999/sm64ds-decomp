@@ -10,9 +10,9 @@
  *   InitResources and func_ov072_021208d8 pass Fix12<int> by value
  *   (notes/mwccarm-codegen.md 6az).
  * - SharedFilePtr +4: InitResources' TextureSequence::Prepare / SetFile
- *   read the BMD/BTP at data_ov072_02122c48 / 02122c50 +4;
+ *   read the BMD/BTP at gdaBgSnwmnBigSnowmanHeadModelFile / 02122c50 +4;
  *   SharedFilePtr.h has no fields.
- * - data_ov072_02122c40 / 02122c48 / 02122c50 model/BTP handles and
+ * - gdaBgSnwmnBigSnowmanBodyModelFile / 02122c48 / 02122c50 model/BTP handles and
  *   data_ov072_02122c70 cylinder offset are defined at the end of this file.
  *   Their ctors are what emit __sinit_daBgSnwmn_c.cpp.
  * - InitResources ground probe stays a POD Position: a local Vector3
@@ -20,6 +20,13 @@
  * - func_ov072_021208d8 keeps its address label -- the ROM has no English
  *   name for it.
  */
+
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daBgSnwmn_c_AssetId {
+    ASSET_BIG_SNOWMAN_BODY_BMD = 0x02ad,
+    ASSET_BIG_SNOWMAN_HEAD_BMD = 0x02af,
+    ASSET_BIG_SNOWMAN_SMILE_BTP = 0x02b0
+};
 
 #include "daBgSnwmn_c.h"
 #include "SharedFilePtr.h"
@@ -65,9 +72,9 @@ struct SnwmnCylOffset : Vector3 {
     ~SnwmnCylOffset();
 };
 
-extern "C" SnwmnModelFilePtr data_ov072_02122c40;
-extern "C" SnwmnModelFilePtr data_ov072_02122c48;
-extern "C" SnwmnTexSequenceFilePtr data_ov072_02122c50;
+extern "C" SnwmnModelFilePtr gdaBgSnwmnBigSnowmanBodyModelFile;
+extern "C" SnwmnModelFilePtr gdaBgSnwmnBigSnowmanHeadModelFile;
+extern "C" SnwmnTexSequenceFilePtr gdaBgSnwmnBigSnowmanSmileTextureSequenceFile;
 extern "C" SnwmnCylOffset data_ov072_02122c70;
 
 /* The typed 0x1c actor profile: fBase_c reads the halfwords at +4/+6 as
@@ -125,16 +132,16 @@ s32 daBgSnwmn_c::InitResources()
         MarkForDestruction();
     }
 
-    model = Model::LoadFile(data_ov072_02122c48);
+    model = Model::LoadFile(gdaBgSnwmnBigSnowmanHeadModelFile);
     mModel1.SetFile((BMD_File *)model, 1, 1);
-    model = Model::LoadFile(data_ov072_02122c40);
+    model = Model::LoadFile(gdaBgSnwmnBigSnowmanBodyModelFile);
     mModel2.SetFile((BMD_File *)model, 1, 1);
 
-    TextureSequence::LoadFile(data_ov072_02122c50);
-    TextureSequence::Prepare(**(BMD_File **)((char *)&data_ov072_02122c48 + 4),
-                             **(BTP_File **)((char *)&data_ov072_02122c50 + 4));
+    TextureSequence::LoadFile(gdaBgSnwmnBigSnowmanSmileTextureSequenceFile);
+    TextureSequence::Prepare(**(BMD_File **)((char *)&gdaBgSnwmnBigSnowmanHeadModelFile + 4),
+                             **(BTP_File **)((char *)&gdaBgSnwmnBigSnowmanSmileTextureSequenceFile + 4));
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-        &mTexSeq, *(void **)((char *)&data_ov072_02122c50 + 4), 0, 0x1000, 0);
+        &mTexSeq, *(void **)((char *)&gdaBgSnwmnBigSnowmanSmileTextureSequenceFile + 4), 0, 0x1000, 0);
 
     if (mShadow.InitCylinder() == 0)
         return 0;
@@ -190,9 +197,9 @@ void daBgSnwmn_c::OnPendingDestroy()
 // @symbol _ZN11daBgSnwmn_c16CleanupResourcesEv
 s32 daBgSnwmn_c::CleanupResources()
 {
-    data_ov072_02122c48.Release();
-    data_ov072_02122c40.Release();
-    data_ov072_02122c50.Release();
+    gdaBgSnwmnBigSnowmanHeadModelFile.Release();
+    gdaBgSnwmnBigSnowmanBodyModelFile.Release();
+    gdaBgSnwmnBigSnowmanSmileTextureSequenceFile.Release();
     return 1;
 }
 
@@ -213,7 +220,7 @@ void daBgSnwmn_c::func_ov072_021208d8()
         this, &mShadow, &mModel2.mat4x3, 0xe6000, 0x12c000, 0xf);
 }
 
-SnwmnModelFilePtr data_ov072_02122c40(0x2ad);
-SnwmnModelFilePtr data_ov072_02122c48(0x2af);
-SnwmnTexSequenceFilePtr data_ov072_02122c50(0x2b0);
+SnwmnModelFilePtr gdaBgSnwmnBigSnowmanBodyModelFile(ASSET_BIG_SNOWMAN_BODY_BMD);
+SnwmnModelFilePtr gdaBgSnwmnBigSnowmanHeadModelFile(ASSET_BIG_SNOWMAN_HEAD_BMD);
+SnwmnTexSequenceFilePtr gdaBgSnwmnBigSnowmanSmileTextureSequenceFile(ASSET_BIG_SNOWMAN_SMILE_BTP);
 SnwmnCylOffset data_ov072_02122c70(0, -0x50000, 0);

@@ -123,84 +123,84 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov102_0214e6e0",
+      "symbol": "gBkTowerCollisionFile",
       "address": "0x0214e6e0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e6e8",
+      "symbol": "gKiHasiraDaiModelFile",
       "address": "0x0214e6e8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e6f0",
+      "symbol": "gKiHasiraDaiCollisionFile",
       "address": "0x0214e6f0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e6f8",
+      "symbol": "gObjDokanCollisionFile",
       "address": "0x0214e6f8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e700",
+      "symbol": "gBkTowerModelFile",
       "address": "0x0214e700",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e708",
+      "symbol": "gMcDodaiCollisionFile",
       "address": "0x0214e708",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e710",
+      "symbol": "gKiIwaModelFile",
       "address": "0x0214e710",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e718",
+      "symbol": "gdaObjSimpleBgObjDokanModelFile",
       "address": "0x0214e718",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e720",
+      "symbol": "gMcHazadModelFile",
       "address": "0x0214e720",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e728",
+      "symbol": "gMcHazadCollisionFile",
       "address": "0x0214e728",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e730",
+      "symbol": "gMcDodaiModelFile",
       "address": "0x0214e730",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_daObjSimpleBg_c.cpp"
     },
     {
-      "symbol": "data_ov102_0214e738",
+      "symbol": "gKiIwaCollisionFile",
       "address": "0x0214e738",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -1166,7 +1166,7 @@
       "source": "0x0214d878",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e710",
+      "symbol": "gKiIwaModelFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e710"
@@ -1196,7 +1196,7 @@
       "source": "0x0214d888",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e6e8",
+      "symbol": "gKiHasiraDaiModelFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e6e8"
@@ -1216,7 +1216,7 @@
       "source": "0x0214d894",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e700",
+      "symbol": "gBkTowerModelFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e700"
@@ -1236,7 +1236,7 @@
       "source": "0x0214d8a0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e718",
+      "symbol": "gdaObjSimpleBgObjDokanModelFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e718"
@@ -1256,7 +1256,7 @@
       "source": "0x0214d8ac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e730",
+      "symbol": "gMcDodaiModelFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e730"
@@ -1276,7 +1276,7 @@
       "source": "0x0214d8b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e720",
+      "symbol": "gMcHazadModelFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e720"
@@ -1296,7 +1296,7 @@
       "source": "0x0214d8c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e738",
+      "symbol": "gKiIwaCollisionFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e738"
@@ -1326,7 +1326,7 @@
       "source": "0x0214d8d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e6f0",
+      "symbol": "gKiHasiraDaiCollisionFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e6f0"
@@ -1346,7 +1346,7 @@
       "source": "0x0214d8dc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e6e0",
+      "symbol": "gBkTowerCollisionFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e6e0"
@@ -1366,7 +1366,7 @@
       "source": "0x0214d8e8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e6f8",
+      "symbol": "gObjDokanCollisionFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e6f8"
@@ -1386,7 +1386,7 @@
       "source": "0x0214d8f4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e708",
+      "symbol": "gMcDodaiCollisionFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e708"
@@ -1406,7 +1406,7 @@
       "source": "0x0214d900",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov102_0214e728",
+      "symbol": "gMcHazadCollisionFile",
       "addend": 0,
       "target_module": "ov102",
       "target_address": "0x0214e728"

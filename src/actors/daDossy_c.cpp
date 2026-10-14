@@ -36,6 +36,21 @@
 //   through its mangled name with the second and third arguments.
 
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDossy_c_AssetId {
+    ASSET_DOSSY_BMD = 0x02e9,
+    ASSET_DOSSY_ARM_L_KCL = 0x02ea,
+    ASSET_DOSSY_ARM_R_KCL = 0x02eb,
+    ASSET_DOSSY_BODY_KCL = 0x02ec,
+    ASSET_DOSSY_HEAD_KCL = 0x02ed,
+    ASSET_DOSSY_HEAD_DOWN_BCA = 0x02ee,
+    ASSET_DOSSY_HEAD_UP_BCA = 0x02ef,
+    ASSET_DOSSY_LEG_L_KCL = 0x02f0,
+    ASSET_DOSSY_LEG_R_KCL = 0x02f1,
+    ASSET_DOSSY_NECK_KCL = 0x02f2,
+    ASSET_DOSSY_SWIM_BCA = 0x02f3
+};
+
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 #include "common.h"
@@ -80,13 +95,13 @@ extern DossyModelFilePtr data_ov065_0211d720;
 extern DossyAnimationFileHandle data_ov065_0211d768;
 extern DossyAnimationFileHandle data_ov065_0211d748;
 extern DossyAnimationFileHandle data_ov065_0211d770;
-extern DossyCollisionFileHandle data_ov065_0211d738;
-extern DossyCollisionFileHandle data_ov065_0211d750;
-extern DossyCollisionFileHandle data_ov065_0211d728;
-extern DossyCollisionFileHandle data_ov065_0211d760;
-extern DossyCollisionFileHandle data_ov065_0211d758;
-extern DossyCollisionFileHandle data_ov065_0211d740;
-extern DossyCollisionFileHandle data_ov065_0211d730;
+extern DossyCollisionFileHandle gDossyArmLCollisionFile;
+extern DossyCollisionFileHandle gDossyArmRCollisionFile;
+extern DossyCollisionFileHandle gDossyLegLCollisionFile;
+extern DossyCollisionFileHandle gDossyLegRCollisionFile;
+extern DossyCollisionFileHandle gDossyNeckCollisionFile;
+extern DossyCollisionFileHandle gDossyBodyCollisionFile;
+extern DossyCollisionFileHandle gDossyHeadCollisionFile;
 
 extern "C" {
 extern s16 data_02082214[];
@@ -784,17 +799,17 @@ DorriePlatform::~DorriePlatform()
    (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim), then seven
    collision files (func_02017b4c / SharedFilePtr_Destruct_Clsn). The
    manifest aliases each wrapper ctor/dtor onto those ROM symbols. */
-DossyModelFilePtr data_ov065_0211d720(0x2e9);
-DossyAnimationFileHandle data_ov065_0211d768(0x2ee);
-DossyAnimationFileHandle data_ov065_0211d748(0x2ef);
-DossyAnimationFileHandle data_ov065_0211d770(0x2f3);
-DossyCollisionFileHandle data_ov065_0211d738(0x2ea);
-DossyCollisionFileHandle data_ov065_0211d750(0x2eb);
-DossyCollisionFileHandle data_ov065_0211d728(0x2f0);
-DossyCollisionFileHandle data_ov065_0211d760(0x2f1);
-DossyCollisionFileHandle data_ov065_0211d758(0x2f2);
-DossyCollisionFileHandle data_ov065_0211d740(0x2ec);
-DossyCollisionFileHandle data_ov065_0211d730(0x2ed);
+DossyModelFilePtr data_ov065_0211d720(ASSET_DOSSY_BMD);
+DossyAnimationFileHandle data_ov065_0211d768(ASSET_DOSSY_HEAD_DOWN_BCA);
+DossyAnimationFileHandle data_ov065_0211d748(ASSET_DOSSY_HEAD_UP_BCA);
+DossyAnimationFileHandle data_ov065_0211d770(ASSET_DOSSY_SWIM_BCA);
+DossyCollisionFileHandle gDossyArmLCollisionFile(ASSET_DOSSY_ARM_L_KCL);
+DossyCollisionFileHandle gDossyArmRCollisionFile(ASSET_DOSSY_ARM_R_KCL);
+DossyCollisionFileHandle gDossyLegLCollisionFile(ASSET_DOSSY_LEG_L_KCL);
+DossyCollisionFileHandle gDossyLegRCollisionFile(ASSET_DOSSY_LEG_R_KCL);
+DossyCollisionFileHandle gDossyNeckCollisionFile(ASSET_DOSSY_NECK_KCL);
+DossyCollisionFileHandle gDossyBodyCollisionFile(ASSET_DOSSY_BODY_KCL);
+DossyCollisionFileHandle gDossyHeadCollisionFile(ASSET_DOSSY_HEAD_KCL);
 
 /* The state table Behavior dispatches through: three pointer-to-member
    records. Retail stores the records as compiler temporaries in .data

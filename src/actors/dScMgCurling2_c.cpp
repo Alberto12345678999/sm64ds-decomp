@@ -35,6 +35,16 @@
 // the upper-half TU also includes.
 
 /* Required: ROM order, and the brackets on AgeMarks and DragUpdate. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgCurling2_c_AssetId {
+    ASSET_D_2D_MG_BG_JOKYU_CURLING1_MATO_NSC_BIN = 0x0041,
+    ASSET_D_2D_MG_BG_JOKYU_CURLING1_NSC_BIN = 0x0042,
+    ASSET_D_2D_MG_BG_JOKYU_CURLING2_NSC_BIN = 0x0043,
+    ASSET_D_2D_MG_BG_JOKYU_CURLING_NCL_BIN = 0x0045,
+    ASSET_D_2D_MG_CURLING_NCG_BIN = 0x00c7,
+    ASSET_D_2D_MG_CURLING_NCL_BIN = 0x00c8
+};
+
 #pragma defer_codegen off
 
 #include "types.h"
@@ -1777,11 +1787,11 @@ s32 dScMgCurling2_c::InitResources()
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1220;
     DecompressLZ16(r6, (void *)func_02054d88());
 
-    f = (void *)LoadFile(0x45);
+    f = (void *)LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING_NCL_BIN);
     _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Deallocate(f);
 
-    f = (void *)LoadFile(0x42);
+    f = (void *)LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING1_NSC_BIN);
     func_02056314(f, 0, 0x800);
     Deallocate(f);
 
@@ -1789,7 +1799,7 @@ s32 dScMgCurling2_c::InitResources()
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 2;
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x5420;
 
-    f = (void *)LoadFile(0x41);
+    f = (void *)LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING1_MATO_NSC_BIN);
     {
         char *b = (char *)_ZN2G212GetBG2ScrPtrEv();
         sp4 = 0x4300;
@@ -1807,8 +1817,8 @@ s32 dScMgCurling2_c::InitResources()
     func_02056554(f, 0, 0x800);
     Deallocate(f);
 
-    c7 = (void *)LoadFile(0xc7);
-    c8 = (void *)LoadFile(0xc8);
+    c7 = (void *)LoadFile(ASSET_D_2D_MG_CURLING_NCG_BIN);
+    c8 = (void *)LoadFile(ASSET_D_2D_MG_CURLING_NCL_BIN);
     DecompressLZ16(c7, (void *)0x6400000);
     _ZN2GX11LoadOBJPlttEPKvjj(c8, 0, 0x100);
 
@@ -1817,11 +1827,11 @@ s32 dScMgCurling2_c::InitResources()
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x814;
     DecompressLZ16(r6, (void *)_ZN3G2S13GetBG2CharPtrEv());
 
-    f = (void *)LoadFile(0x45);
+    f = (void *)LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING_NCL_BIN);
     _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Deallocate(f);
 
-    f = (void *)LoadFile(0x43);
+    f = (void *)LoadFile(ASSET_D_2D_MG_BG_JOKYU_CURLING2_NSC_BIN);
     func_02056374(f, 0, 0x800);
     Deallocate(f);
 

@@ -24,6 +24,16 @@
  *   +0x3e8 and +0x448. uniqueID is the word at boss+4.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjEwbIce_c_AssetId {
+    ASSET_EWB_ICE_A_BMD = 0x05e7,
+    ASSET_EWB_ICE_A_KCL = 0x05e8,
+    ASSET_EWB_ICE_B_BMD = 0x05e9,
+    ASSET_EWB_ICE_B_KCL = 0x05ea,
+    ASSET_EWB_ICE_C_BMD = 0x05eb,
+    ASSET_EWB_ICE_C_KCL = 0x05ec
+};
+
 #pragma defer_codegen off
 
 #include "daObjEwbIce_c.h"
@@ -71,12 +81,12 @@ struct EwbIceCollisionFileHandle : SharedFilePtr {
     ~EwbIceCollisionFileHandle();
 };
 
-extern EwbIceModelFileHandle data_ov073_02123428;     /* model, file 0x5e7 */
-extern EwbIceModelFileHandle data_ov073_02123430;     /* model, file 0x5e9 */
-extern EwbIceModelFileHandle data_ov073_02123440;     /* model, file 0x5eb */
-extern EwbIceCollisionFileHandle data_ov073_02123448; /* clsn, file 0x5e8 */
-extern EwbIceCollisionFileHandle data_ov073_02123450; /* clsn, file 0x5ea */
-extern EwbIceCollisionFileHandle data_ov073_02123438; /* clsn, file 0x5ec */
+extern EwbIceModelFileHandle gEwbIceAModelFile;     /* model, file 0x5e7 */
+extern EwbIceModelFileHandle gEwbIceBModelFile;     /* model, file 0x5e9 */
+extern EwbIceModelFileHandle gEwbIceCModelFile;     /* model, file 0x5eb */
+extern EwbIceCollisionFileHandle gEwbIceACollisionFile; /* clsn, file 0x5e8 */
+extern EwbIceCollisionFileHandle gEwbIceBCollisionFile; /* clsn, file 0x5ea */
+extern EwbIceCollisionFileHandle gEwbIceCCollisionFile; /* clsn, file 0x5ec */
 
 /* The four {enter, update} state records __sinit_daObjEwbIce_c.cpp fills
  * from the PMF literals in .data. */
@@ -487,12 +497,12 @@ extern "C" daObjEwbIce_c *daObjEwbIce_c_classInit_EWB_ICE_A(void)
  * 234b0, 234c0, 234d0, 234a0 order, each copied from two PMF literals in
  * .data. */
 // @symbol __sinit_daObjEwbIce_c.cpp
-EwbIceModelFileHandle     data_ov073_02123428(0x5e7);
-EwbIceModelFileHandle     data_ov073_02123430(0x5e9);
-EwbIceModelFileHandle     data_ov073_02123440(0x5eb);
-EwbIceCollisionFileHandle data_ov073_02123448(0x5e8);
-EwbIceCollisionFileHandle data_ov073_02123450(0x5ea);
-EwbIceCollisionFileHandle data_ov073_02123438(0x5ec);
+EwbIceModelFileHandle     gEwbIceAModelFile(ASSET_EWB_ICE_A_BMD);
+EwbIceModelFileHandle     gEwbIceBModelFile(ASSET_EWB_ICE_B_BMD);
+EwbIceModelFileHandle     gEwbIceCModelFile(ASSET_EWB_ICE_C_BMD);
+EwbIceCollisionFileHandle gEwbIceACollisionFile(ASSET_EWB_ICE_A_KCL);
+EwbIceCollisionFileHandle gEwbIceBCollisionFile(ASSET_EWB_ICE_B_KCL);
+EwbIceCollisionFileHandle gEwbIceCCollisionFile(ASSET_EWB_ICE_C_KCL);
 
 daObjEwbIce_State data_ov073_021234b0 = { data_ov073_02123134, data_ov073_0212312c };
 daObjEwbIce_State data_ov073_021234c0 = { data_ov073_0212311c, data_ov073_0212310c };

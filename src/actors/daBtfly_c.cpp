@@ -53,6 +53,12 @@
  * - daBtfly_c_classInit and g_profile_BUTTERFLY sit past this text run.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daBtfly_c_AssetId {
+    ASSET_BUTTERFLY_BMD = 0x043a,
+    ASSET_BUTTERFLY_FLY_BCA = 0x043b
+};
+
 #include "daBtfly_c.h"
 #include "types.h"
 #include "common.h"
@@ -120,9 +126,9 @@ extern Matrix4x3 data_020a0e68; /* scratch matrix */
 /* Init LoadFile: ov002 BMD shared with the other small fauna, this overlay's
  * BCA, the still-model BMD, and the animated-model BMD. Cleanup Release. */
 extern SharedFilePtr data_ov002_0210d9d8;
-extern BtflyAnimationFilePtr data_ov100_02148600;
+extern BtflyAnimationFilePtr gButterflyFlyAnimationFile;
 extern SharedFilePtr data_ov100_02148668;
-extern BtflyModelFilePtr data_ov100_02148608;
+extern BtflyModelFilePtr gButterflyModelFile;
 extern ButterflyState data_ov100_02148628[];
 
 /* Fix12<int> by value. The header method form homes those arguments on the
@@ -477,8 +483,8 @@ void daBtfly_c::State0()
 // @symbol _ZN9daBtfly_c16CleanupResourcesEv
 int daBtfly_c::CleanupResources()
 {
-    data_ov100_02148608.Release();
-    data_ov100_02148600.Release();
+    gButterflyModelFile.Release();
+    gButterflyFlyAnimationFile.Release();
     data_ov002_0210d9d8.Release();
     data_ov100_02148668.Release();
     return 1;
@@ -559,14 +565,14 @@ int daBtfly_c::Behavior()
 int daBtfly_c::InitResources()
 {
     Model::LoadFile(data_ov002_0210d9d8);
-    dExtFrameCtrl_c::LoadFile(data_ov100_02148600);
+    dExtFrameCtrl_c::LoadFile(gButterflyFlyAnimationFile);
     Model::LoadFile(data_ov100_02148668);
-    void *bmd = Model::LoadFile(data_ov100_02148608);
+    void *bmd = Model::LoadFile(gButterflyModelFile);
 
     if (mModelAnim.SetFile((BMD_File *)bmd, 1, 1) == 0)
         return 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, LOADED(data_ov100_02148600), 0, 0x1000, 0);
+        &mModelAnim, LOADED(gButterflyFlyAnimationFile), 0, 0x1000, 0);
     if (mShadowModel1.InitCylinder() == 0)
         return 0;
     if (mModel.SetFile((BMD_File *)LOADED(data_ov100_02148668), 1, 1) == 0)
@@ -624,8 +630,8 @@ extern "C" daBtfly_c *daBtfly_c_classInit()
 /* Static-init globals (was the handwritten __sinit_ov100_021473bc shard).
  * Definition order is the retail initializer's construction order: the model
  * handle, then the animation handle, then the state table. */
-BtflyModelFilePtr data_ov100_02148608(0x43a);
-BtflyAnimationFilePtr data_ov100_02148600(0x43b);
+BtflyModelFilePtr gButterflyModelFile(ASSET_BUTTERFLY_BMD);
+BtflyAnimationFilePtr gButterflyFlyAnimationFile(ASSET_BUTTERFLY_FLY_BCA);
 
 ButterflyState data_ov100_02148628[8] = {
     &daBtfly_c::State0,

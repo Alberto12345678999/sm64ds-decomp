@@ -1,4 +1,13 @@
 //cpp
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_trampoline2_AssetId {
+    ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCG_BIN = 0x00a2,
+    ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCL_BIN = 0x00a3,
+    ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NSC_BIN = 0x00a4,
+    ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN = 0x0108,
+    ASSET_MINI_STAR_BMD = 0x0219
+};
+
 #pragma opt_loop_invariants off
 /* dScMgTrampoline2_c -- Trampoline Terror. Draw lines on the touch screen
  * so Mario can bounce through the shapes that drop in.
@@ -368,10 +377,10 @@ void dScMgTrampoline2_c::InitDisplay()
     volatile u16 sp0;
 
     objChar = LoadFile(data_ov006_0213fc34[GetGameLanguage()]);
-    objPltt = LoadFile(0x108);
-    bgChar = LoadFile(0xa2);
-    bgScr = LoadFile(0xa4);
-    bgPltt = LoadFile(0xa3);
+    objPltt = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
+    bgChar = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCG_BIN);
+    bgScr = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NSC_BIN);
+    bgPltt = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_HARD_NCL_BIN);
 
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 2;
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x9110;
@@ -1421,4 +1430,4 @@ int func_ov006_021227c8(char* raw){
 /* data_ov006_02142f80 is the model SharedFilePtr this Init LoadFile's,
  * defined here at the end of the file (constructed as file ID 537) so its
  * constructor does not enter .text. */
-Trampoline2ModelFilePtr data_ov006_02142f80(537);
+Trampoline2ModelFilePtr data_ov006_02142f80(ASSET_MINI_STAR_BMD);

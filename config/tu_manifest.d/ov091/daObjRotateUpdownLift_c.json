@@ -130,28 +130,28 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov091_02135440",
+      "symbol": "gHsUpdownLiftModelFile",
       "address": "0x02135440",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x61f"
     },
     {
-      "symbol": "data_ov091_02135448",
+      "symbol": "gObjUpdnliftModelFile",
       "address": "0x02135448",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x493"
     },
     {
-      "symbol": "data_ov091_02135450",
+      "symbol": "gObjUpdnliftCollisionFile",
       "address": "0x02135450",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x494"
     },
     {
-      "symbol": "data_ov091_02135458",
+      "symbol": "gHsUpdownLiftCollisionFile",
       "address": "0x02135458",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -759,7 +759,7 @@
       "source": "0x021345a8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135448",
+      "symbol": "gObjUpdnliftModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135448"
@@ -789,7 +789,7 @@
       "source": "0x021345b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135450",
+      "symbol": "gObjUpdnliftCollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135450"
@@ -819,7 +819,7 @@
       "source": "0x021345c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135440",
+      "symbol": "gHsUpdownLiftModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135440"
@@ -839,7 +839,7 @@
       "source": "0x021345d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135458",
+      "symbol": "gHsUpdownLiftCollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135458"

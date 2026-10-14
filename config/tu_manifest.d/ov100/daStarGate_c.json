@@ -292,7 +292,7 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov100_02148934",
+      "symbol": "gObjStargateModelFile",
       "address": "0x02148934",
       "size": "0x8",
       "evidence": "model resource handle constructed with file ID 0x4a1"
@@ -920,7 +920,7 @@
       "source": "0x02147b78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov100_02148934",
+      "symbol": "gObjStargateModelFile",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x02148934"
@@ -2147,7 +2147,7 @@
           "_ZTV12daStarGate_c",
           "__sinit_daStarGate_c.cpp",
           "data_ov100_02148390",
-          "data_ov100_02148934",
+          "gObjStargateModelFile",
           "data_ov100_02148948",
           "g_profile_STAR_GATE"
         ],
@@ -3403,7 +3403,7 @@
           "_ZTV12daStarGate_c",
           "__sinit_daStarGate_c.cpp",
           "data_ov100_02148390",
-          "data_ov100_02148934",
+          "gObjStargateModelFile",
           "data_ov100_02148948",
           "g_profile_STAR_GATE"
         ],

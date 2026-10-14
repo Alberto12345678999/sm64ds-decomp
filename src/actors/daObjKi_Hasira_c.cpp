@@ -53,6 +53,12 @@
  *   unnamed ov016 .data row this TU does not own.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjKi_Hasira_c_AssetId {
+    ASSET_KI_HASIRA_BMD = 0x063d,
+    ASSET_KI_HASIRA_KCL = 0x063e
+};
+
 #include "daObjKi_Hasira_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -259,5 +265,5 @@ void daObjKi_Hasira_c::func_ov016_02112a9c()
 /* Static-init globals (was the handwritten __sinit_ov016_02113978 shard).
  * Definition order is the retail initializer's construction order: the
  * 1597 model handle, then the 1598 collision handle. */
-HasiraModelFile RockPillar_ModelFile(1597);
-HasiraCollisionFile RockPillar_ClsnFile(1598);
+HasiraModelFile RockPillar_ModelFile(ASSET_KI_HASIRA_BMD);
+HasiraCollisionFile RockPillar_ClsnFile(ASSET_KI_HASIRA_KCL);

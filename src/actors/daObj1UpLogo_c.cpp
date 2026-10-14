@@ -20,6 +20,12 @@
  *   declares. It is Player::IncMegaKillCount's attach helper.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObj1UpLogo_c_AssetId {
+    ASSET_BIG_1UP_NUMBER_BMD = 0x0436,
+    ASSET_BIG_1UP_NUMBER_BTP = 0x0437
+};
+
 #include "common.h"
 #include "decl_common.h"
 #include "daObj1UpLogo_c.h"
@@ -203,5 +209,5 @@ extern "C" daObj1UpLogo_c *daObj1UpLogo_c_classInit()
  * Definition order is the retail initializer's construction order: the
  * model handle (file 0x436), then the texture-sequence handle
  * (file 0x437). */
-OneUpLogoModelFile data_ov002_02110aa4(0x436);
-OneUpLogoTexSeqFilePtr data_ov002_02110a9c(0x437);
+OneUpLogoModelFile data_ov002_02110aa4(ASSET_BIG_1UP_NUMBER_BMD);
+OneUpLogoTexSeqFilePtr data_ov002_02110a9c(ASSET_BIG_1UP_NUMBER_BTP);

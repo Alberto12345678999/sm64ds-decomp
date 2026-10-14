@@ -41,6 +41,12 @@
  * - No Player.h / dCamera_c.h.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_a_obj_wakame_AssetId {
+    ASSET_OBJ_WAKAME_BMD = 0x0495,
+    ASSET_OBJ_WAKAME_WAIT_BCA = 0x0496
+};
+
 #include "daObjWakame_c.h"
 #include "SharedFilePtr.h"
 
@@ -184,5 +190,5 @@ extern "C" void func_ov002_020bc488(daObjWakame_c *t)
 /* Construction order is the retail initializer: model 1173, then animation
  * 1174. The constructors and destructors are the ROM veneers the manifest
  * aliases; mwcc emits __sinit_d_a_obj_wakame.cpp from these definitions. */
-WakameModelFilePtr data_ov002_0210e0dc(1173);
-WakameAnimationFileHandle data_ov002_0210e0d4(1174);
+WakameModelFilePtr data_ov002_0210e0dc(ASSET_OBJ_WAKAME_BMD);
+WakameAnimationFileHandle data_ov002_0210e0d4(ASSET_OBJ_WAKAME_WAIT_BCA);

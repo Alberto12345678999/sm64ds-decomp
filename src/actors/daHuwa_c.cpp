@@ -33,6 +33,12 @@
  *   not the ROM's 5Fix12IiE symbol.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daHuwa_c_AssetId {
+    ASSET_HUWAHUWA_MODEL_BMD = 0x032d,
+    ASSET_HUWAHUWA_MOVE_BCA = 0x032e
+};
+
 #pragma defer_codegen off
 
 #include "common.h"
@@ -61,8 +67,8 @@ struct HuwaAnimationFileHandle : SharedFilePtr {
 };
 
 /* Model file (sinit id 813) and animation (sinit id 814). */
-extern HuwaModelFilePtr data_ov081_02128d60;
-extern HuwaAnimationFileHandle data_ov081_02128d68;
+extern HuwaModelFilePtr gHuwahuwaModelModelFile;
+extern HuwaAnimationFileHandle gHuwahuwaMoveAnimationFile;
 
 extern "C" {
 extern struct Matrix4x3 data_020a0e68;
@@ -278,8 +284,8 @@ extern "C" void func_ov081_02123b20(daHuwa_c *self)
 // @symbol _ZN8daHuwa_c16CleanupResourcesEv
 int daHuwa_c::CleanupResources()
 {
-    data_ov081_02128d60.Release();
-    data_ov081_02128d68.Release();
+    gHuwahuwaModelModelFile.Release();
+    gHuwahuwaMoveAnimationFile.Release();
     return 1;
 }
 
@@ -363,11 +369,11 @@ int daHuwa_c::Behavior()
 // @symbol _ZN8daHuwa_c13InitResourcesEv
 int daHuwa_c::InitResources()
 {
-    void *modelFile = Model::LoadFile(data_ov081_02128d60);
+    void *modelFile = Model::LoadFile(gHuwahuwaModelModelFile);
     mModelAnim.ModelBase::SetFile((BMD_File *)modelFile, 1, -1);
-    dExtFrameCtrl_c::LoadFile(data_ov081_02128d68);
+    dExtFrameCtrl_c::LoadFile(gHuwahuwaMoveAnimationFile);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)data_ov081_02128d68.ptr, 0, 0x1000, 0);
+        &mModelAnim, (BCA_File *)gHuwahuwaMoveAnimationFile.ptr, 0, 0x1000, 0);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x3c000, 0x78000, 0x200000, 0xa6efe0);
@@ -408,5 +414,5 @@ extern "C" daHuwa_c *daHuwa_c_classInit()
    model file (func_02017acc / func_02017ab4), then the animation file
    (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim). The manifest
    aliases each wrapper ctor/dtor onto those ROM symbols. */
-HuwaModelFilePtr data_ov081_02128d60(813);
-HuwaAnimationFileHandle data_ov081_02128d68(814);
+HuwaModelFilePtr gHuwahuwaModelModelFile(ASSET_HUWAHUWA_MODEL_BMD);
+HuwaAnimationFileHandle gHuwahuwaMoveAnimationFile(ASSET_HUWAHUWA_MOVE_BCA);

@@ -53,6 +53,12 @@
  * Leftover: g_profile_BK_BOTAOSI lives outside this TU.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjBk_Botaosi_c_AssetId {
+    ASSET_BK_BOTAOSI_BMD = 0x0589,
+    ASSET_BK_BOTAOSI_KCL = 0x058a
+};
+
 #pragma defer_codegen off
 
 #include "daObjBk_Botaosi_c.h"
@@ -427,5 +433,5 @@ extern "C" daObjBk_Botaosi_c *daObjBk_Botaosi_c_classInit()
 /* The ROM's initializer constructs the model handle with file ID 1417 and
  * the collision handle with file ID 1418, registering a destructor node for
  * each. mwcc emits __sinit_daObjBk_Botaosi_c.cpp from these definitions. */
-BkBotaosiModelFilePtr data_ov015_0211497c(1417);
-BkBotaosiCollisionFilePtr data_ov015_02114974(1418);
+BkBotaosiModelFilePtr data_ov015_0211497c(ASSET_BK_BOTAOSI_BMD);
+BkBotaosiCollisionFilePtr data_ov015_02114974(ASSET_BK_BOTAOSI_KCL);

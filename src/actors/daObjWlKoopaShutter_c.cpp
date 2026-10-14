@@ -19,6 +19,12 @@
  *   whose 0x204 bit vetoes the enable.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjWlKoopaShutter_c_AssetId {
+    ASSET_WL_KUPA_SHUTTER_BMD = 0x06d9,
+    ASSET_WL_KUPA_SHUTTER_KCL = 0x06da
+};
+
 #include "daObjWlKoopaShutter_c.h"
 #include "SharedFilePtr.h"
 
@@ -109,5 +115,5 @@ extern "C" daObjWlKoopaShutter_c *daObjWlKoopaShutter_c_classInit()
 // @symbol __sinit_daObjWlKoopaShutter_c.cpp
 /* The retail initializer constructs the model first, then the collision
  * file. */
-KoopaShutterModelFilePtr BowserShutter_ModelFile(0x6d9);      /* model */
-KoopaShutterCollisionFilePtr BowserShutter_ClsnFile(0x6da);   /* collision */
+KoopaShutterModelFilePtr BowserShutter_ModelFile(ASSET_WL_KUPA_SHUTTER_BMD);      /* model */
+KoopaShutterCollisionFilePtr BowserShutter_ClsnFile(ASSET_WL_KUPA_SHUTTER_KCL);   /* collision */

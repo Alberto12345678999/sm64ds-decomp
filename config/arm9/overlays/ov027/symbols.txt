@@ -167,11 +167,11 @@ data_ov027_02113be0 kind:bss addr:0x02113be0
 data_ov027_02113be8 kind:bss addr:0x02113be8
 @672 kind:bss addr:0x02113bf0
 @671 kind:bss addr:0x02113bfc
-data_ov027_02113c08 kind:bss addr:0x02113c08
-data_ov027_02113c10 kind:bss addr:0x02113c10
-data_ov027_02113c18 kind:bss addr:0x02113c18
-data_ov027_02113c20 kind:bss addr:0x02113c20
-data_ov027_02113c28 kind:bss addr:0x02113c28
+gIceDonketuHitAnimationFile kind:bss addr:0x02113c08
+gIceDonketuModelFile kind:bss addr:0x02113c10
+gIceDonketuDeadAnimationFile kind:bss addr:0x02113c18
+gIceDonketuTurnAnimationFile kind:bss addr:0x02113c20
+gIceDonketuWalkAnimationFile kind:bss addr:0x02113c28
 @72 kind:bss addr:0x02113c30
 @601 kind:bss addr:0x02113c3c
 @73 kind:bss addr:0x02113c48

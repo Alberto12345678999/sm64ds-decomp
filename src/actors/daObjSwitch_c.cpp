@@ -24,6 +24,14 @@
 //     functions.
 //   - The daStar_c fields at +0x438/+0x440 and unk_49d are unnamed upstream;
 //     the int*/unk_ puns stay until daStar_c.h names them.
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjSwitch_c_AssetId {
+    ASSET_OBJ_BOX_SWITCH_BMD = 0x045c,
+    ASSET_OBJ_BOX_SWITCH_KCL = 0x045d,
+    ASSET_OBJ_STAR_SWITCH_BMD = 0x048f,
+    ASSET_OBJ_STAR_SWITCH_KCL = 0x0490
+};
+
 #include "common.h"
 #include "daObjSwitch_c.h"
 #include "Player.h"
@@ -504,10 +512,10 @@ int daObjSwitch_c::func_ov002_020b9f00()
  * Their constructors and the destructor registrations make mwcc emit this TU's
  * static initializer; the five-entry state table adds the ten
  * pointer-to-member copies it performs afterwards. */
-SwitchModelFilePtr data_ov002_0210dfd4(0x45c);
-SwitchClsnFileHandle  data_ov002_0210dfc4(0x45d);
-SwitchModelFilePtr data_ov002_0210dfcc(0x48f);
-SwitchClsnFileHandle  data_ov002_0210dfbc(0x490);
+SwitchModelFilePtr data_ov002_0210dfd4(ASSET_OBJ_BOX_SWITCH_BMD);
+SwitchClsnFileHandle  data_ov002_0210dfc4(ASSET_OBJ_BOX_SWITCH_KCL);
+SwitchModelFilePtr data_ov002_0210dfcc(ASSET_OBJ_STAR_SWITCH_BMD);
+SwitchClsnFileHandle  data_ov002_0210dfbc(ASSET_OBJ_STAR_SWITCH_KCL);
 
 daObjSwitch_c::StateEntry data_ov002_0210e00c[5] = {
     {&daObjSwitch_c::func_ov002_020ba3fc, &daObjSwitch_c::func_ov002_020ba3a8},

@@ -50,6 +50,19 @@
  *   Nothing in this TU enters STATE_PAUSE except through the table.
  *   dCapEnemy_c::GetCapState has no header member.
  */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daKrb_c_AssetId {
+    ASSET_KURIBO_MODEL_BMD = 0x0386,
+    ASSET_KURIBO_RECOVER_BCA = 0x0387,
+    ASSET_KURIBO_ROLLING_BCA = 0x0388,
+    ASSET_KURIBO_RUN_BCA = 0x0389,
+    ASSET_KURIBO_STRETCH_BCA = 0x038a,
+    ASSET_KURIBO_UNBALANCE_BCA = 0x038b,
+    ASSET_KURIBO_WAIT_BCA = 0x038c,
+    ASSET_KURIBO_WALK_BCA = 0x038d,
+    ASSET_KURIBO_LOW_MODEL_BMD = 0x038e
+};
+
 #pragma defer_codegen off
 
 #include "daKrb_c.h"
@@ -168,12 +181,12 @@ extern "C" {
 extern KrbAnimationFileHandle data_ov084_02130cc0;
 extern KrbAnimationFileHandle data_ov084_02130cc8;
 extern KrbAnimationFileHandle data_ov084_02130cd0;
-extern KrbAnimationFileHandle data_ov084_02130cd8;
+extern KrbAnimationFileHandle gKuriboRecoverAnimationFile;
 extern KrbAnimationFileHandle data_ov084_02130ce0;
 extern KrbAnimationFileHandle data_ov084_02130ce8;
 extern KrbAnimationFileHandle data_ov084_02130cf0;
 extern KrbModelFilePtr data_ov084_02130cf8;
-extern KrbModelFilePtr data_ov084_02130d00;
+extern KrbModelFilePtr gKuriboLowModelModelFile;
 extern StateHandler data_ov084_02130d74[];
 int func_02037e20(int* p);
 void func_ov084_02129498(daKrb_c *goomba);
@@ -2128,15 +2141,15 @@ extern "C" KrbSpawnInfo g_profile_KURIBO_L = {
    model files (func_02017acc / func_02017ab4), then seven animation files
    (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim); the manifest
    aliases each wrapper ctor/dtor onto those ROM symbols. */
-KrbModelFilePtr data_ov084_02130cf8(0x386);
-KrbModelFilePtr data_ov084_02130d00(0x38e);
-KrbAnimationFileHandle data_ov084_02130ce8(0x38d);
-KrbAnimationFileHandle data_ov084_02130ce0(0x388);
-KrbAnimationFileHandle data_ov084_02130cd0(0x38a);
-KrbAnimationFileHandle data_ov084_02130cc0(0x38b);
-KrbAnimationFileHandle data_ov084_02130cd8(0x387);
-KrbAnimationFileHandle data_ov084_02130cc8(0x38c);
-KrbAnimationFileHandle data_ov084_02130cf0(0x389);
+KrbModelFilePtr data_ov084_02130cf8(ASSET_KURIBO_MODEL_BMD);
+KrbModelFilePtr gKuriboLowModelModelFile(ASSET_KURIBO_LOW_MODEL_BMD);
+KrbAnimationFileHandle data_ov084_02130ce8(ASSET_KURIBO_WALK_BCA);
+KrbAnimationFileHandle data_ov084_02130ce0(ASSET_KURIBO_ROLLING_BCA);
+KrbAnimationFileHandle data_ov084_02130cd0(ASSET_KURIBO_STRETCH_BCA);
+KrbAnimationFileHandle data_ov084_02130cc0(ASSET_KURIBO_UNBALANCE_BCA);
+KrbAnimationFileHandle gKuriboRecoverAnimationFile(ASSET_KURIBO_RECOVER_BCA);
+KrbAnimationFileHandle data_ov084_02130cc8(ASSET_KURIBO_WAIT_BCA);
+KrbAnimationFileHandle data_ov084_02130cf0(ASSET_KURIBO_RUN_BCA);
 
 /* Descriptor records for the four state slots that target free functions;
    the array initializer reads each .pmf member. */

@@ -20,6 +20,45 @@
  *   stay mangled (Fix12<int> by value).
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daHanachan_c_AssetId {
+    ASSET_HANACHAN_BODY01_BMD = 0x0302,
+    ASSET_HANACHAN_BODY01_BTP = 0x0303,
+    ASSET_HANACHAN_BODY01_DAMAGE_BCA = 0x0304,
+    ASSET_HANACHAN_BODY01_WAIT_BCA = 0x0305,
+    ASSET_HANACHAN_BODY01_WALK_BCA = 0x0306,
+    ASSET_HANACHAN_BODY01_WALK_END_BCA = 0x0307,
+    ASSET_HANACHAN_BODY01_WALK_START_BCA = 0x0308,
+    ASSET_HANACHAN_BODY02_BMD = 0x0309,
+    ASSET_HANACHAN_BODY02_BTP = 0x030a,
+    ASSET_HANACHAN_BODY02_DAMAGE_BCA = 0x030b,
+    ASSET_HANACHAN_BODY02_WAIT_BCA = 0x030c,
+    ASSET_HANACHAN_BODY02_WALK_BCA = 0x030d,
+    ASSET_HANACHAN_BODY02_WALK_END_BCA = 0x030e,
+    ASSET_HANACHAN_BODY02_WALK_START_BCA = 0x030f,
+    ASSET_HANACHAN_BODY03_BMD = 0x0310,
+    ASSET_HANACHAN_BODY03_BTP = 0x0311,
+    ASSET_HANACHAN_BODY03_DAMAGE_BCA = 0x0312,
+    ASSET_HANACHAN_BODY03_WAIT_BCA = 0x0313,
+    ASSET_HANACHAN_BODY03_WALK_BCA = 0x0314,
+    ASSET_HANACHAN_BODY03_WALK_END_BCA = 0x0315,
+    ASSET_HANACHAN_BODY03_WALK_START_BCA = 0x0316,
+    ASSET_HANACHAN_BODY04_BMD = 0x0317,
+    ASSET_HANACHAN_BODY04_BTP = 0x0318,
+    ASSET_HANACHAN_BODY04_DAMAGE_BCA = 0x0319,
+    ASSET_HANACHAN_BODY04_WAIT_BCA = 0x031a,
+    ASSET_HANACHAN_BODY04_WALK_BCA = 0x031b,
+    ASSET_HANACHAN_BODY04_WALK_END_BCA = 0x031c,
+    ASSET_HANACHAN_BODY04_WALK_START_BCA = 0x031d,
+    ASSET_HANACHAN_HEAD_BMD = 0x031e,
+    ASSET_HANACHAN_HEAD_BTP = 0x031f,
+    ASSET_HANACHAN_HEAD_DAMAGE_BCA = 0x0320,
+    ASSET_HANACHAN_HEAD_WAIT_BCA = 0x0321,
+    ASSET_HANACHAN_HEAD_WALK_BCA = 0x0322,
+    ASSET_HANACHAN_HEAD_WALK_END_BCA = 0x0323,
+    ASSET_HANACHAN_HEAD_WALK_START_BCA = 0x0324
+};
+
 #pragma defer_codegen off
 
 #include "daHanachan_c.h"
@@ -1207,41 +1246,41 @@ extern "C" daHanachan_c *daHanachan_c_classInit()
     return new daHanachan_c;
 }
 
-HanachanModelFilePtr data_ov034_02114660(0x31e);
-HanachanModelFilePtr data_ov034_02114688(0x302);
-HanachanModelFilePtr data_ov034_02114670(0x309);
-HanachanModelFilePtr data_ov034_021146f0(0x310);
-HanachanModelFilePtr data_ov034_02114700(0x317);
-HanachanAnimationFileHandle data_ov034_021146b8(0x322);
-HanachanAnimationFileHandle data_ov034_02114728(0x306);
-HanachanAnimationFileHandle data_ov034_021146b0(0x30d);
-HanachanAnimationFileHandle data_ov034_021146c8(0x314);
-HanachanAnimationFileHandle data_ov034_021146a0(0x31b);
-HanachanAnimationFileHandle data_ov034_021146d0(0x324);
-HanachanAnimationFileHandle data_ov034_02114648(0x308);
-HanachanAnimationFileHandle data_ov034_021146d8(0x30f);
-HanachanAnimationFileHandle data_ov034_021146e0(0x316);
-HanachanAnimationFileHandle data_ov034_02114668(0x31d);
-HanachanAnimationFileHandle data_ov034_02114650(0x323);
-HanachanAnimationFileHandle data_ov034_02114678(0x307);
-HanachanAnimationFileHandle data_ov034_021146f8(0x30e);
-HanachanAnimationFileHandle data_ov034_02114680(0x315);
-HanachanAnimationFileHandle data_ov034_02114628(0x31c);
-HanachanAnimationFileHandle data_ov034_02114710(0x321);
-HanachanAnimationFileHandle data_ov034_02114630(0x305);
-HanachanAnimationFileHandle data_ov034_02114698(0x30c);
-HanachanAnimationFileHandle data_ov034_02114718(0x313);
-HanachanAnimationFileHandle data_ov034_02114638(0x31a);
-HanachanAnimationFileHandle data_ov034_02114620(0x320);
-HanachanAnimationFileHandle data_ov034_02114640(0x304);
-HanachanAnimationFileHandle data_ov034_021146a8(0x30b);
-HanachanAnimationFileHandle data_ov034_02114658(0x312);
-HanachanAnimationFileHandle data_ov034_021146e8(0x319);
-HanachanTextureSeqFileHandle data_ov034_02114730(0x31f);
-HanachanTextureSeqFileHandle data_ov034_02114708(0x303);
-HanachanTextureSeqFileHandle data_ov034_02114690(0x30a);
-HanachanTextureSeqFileHandle data_ov034_021146c0(0x311);
-HanachanTextureSeqFileHandle data_ov034_02114720(0x318);
+HanachanModelFilePtr gHanachanHeadModelFile(ASSET_HANACHAN_HEAD_BMD);
+HanachanModelFilePtr gHanachanBody01ModelFile(ASSET_HANACHAN_BODY01_BMD);
+HanachanModelFilePtr gHanachanBody02ModelFile(ASSET_HANACHAN_BODY02_BMD);
+HanachanModelFilePtr gHanachanBody03ModelFile(ASSET_HANACHAN_BODY03_BMD);
+HanachanModelFilePtr gHanachanBody04ModelFile(ASSET_HANACHAN_BODY04_BMD);
+HanachanAnimationFileHandle gHanachanHeadWalkAnimationFile(ASSET_HANACHAN_HEAD_WALK_BCA);
+HanachanAnimationFileHandle gHanachanBody01WalkAnimationFile(ASSET_HANACHAN_BODY01_WALK_BCA);
+HanachanAnimationFileHandle gHanachanBody02WalkAnimationFile(ASSET_HANACHAN_BODY02_WALK_BCA);
+HanachanAnimationFileHandle gHanachanBody03WalkAnimationFile(ASSET_HANACHAN_BODY03_WALK_BCA);
+HanachanAnimationFileHandle gHanachanBody04WalkAnimationFile(ASSET_HANACHAN_BODY04_WALK_BCA);
+HanachanAnimationFileHandle gHanachanHeadWalkStartAnimationFile(ASSET_HANACHAN_HEAD_WALK_START_BCA);
+HanachanAnimationFileHandle gHanachanBody01WalkStartAnimationFile(ASSET_HANACHAN_BODY01_WALK_START_BCA);
+HanachanAnimationFileHandle gHanachanBody02WalkStartAnimationFile(ASSET_HANACHAN_BODY02_WALK_START_BCA);
+HanachanAnimationFileHandle gHanachanBody03WalkStartAnimationFile(ASSET_HANACHAN_BODY03_WALK_START_BCA);
+HanachanAnimationFileHandle gHanachanBody04WalkStartAnimationFile(ASSET_HANACHAN_BODY04_WALK_START_BCA);
+HanachanAnimationFileHandle gHanachanHeadWalkEndAnimationFile(ASSET_HANACHAN_HEAD_WALK_END_BCA);
+HanachanAnimationFileHandle gHanachanBody01WalkEndAnimationFile(ASSET_HANACHAN_BODY01_WALK_END_BCA);
+HanachanAnimationFileHandle gHanachanBody02WalkEndAnimationFile(ASSET_HANACHAN_BODY02_WALK_END_BCA);
+HanachanAnimationFileHandle gHanachanBody03WalkEndAnimationFile(ASSET_HANACHAN_BODY03_WALK_END_BCA);
+HanachanAnimationFileHandle gHanachanBody04WalkEndAnimationFile(ASSET_HANACHAN_BODY04_WALK_END_BCA);
+HanachanAnimationFileHandle gHanachanHeadWaitAnimationFile(ASSET_HANACHAN_HEAD_WAIT_BCA);
+HanachanAnimationFileHandle gHanachanBody01WaitAnimationFile(ASSET_HANACHAN_BODY01_WAIT_BCA);
+HanachanAnimationFileHandle gHanachanBody02WaitAnimationFile(ASSET_HANACHAN_BODY02_WAIT_BCA);
+HanachanAnimationFileHandle gHanachanBody03WaitAnimationFile(ASSET_HANACHAN_BODY03_WAIT_BCA);
+HanachanAnimationFileHandle gHanachanBody04WaitAnimationFile(ASSET_HANACHAN_BODY04_WAIT_BCA);
+HanachanAnimationFileHandle gHanachanHeadDamageAnimationFile(ASSET_HANACHAN_HEAD_DAMAGE_BCA);
+HanachanAnimationFileHandle gHanachanBody01DamageAnimationFile(ASSET_HANACHAN_BODY01_DAMAGE_BCA);
+HanachanAnimationFileHandle gHanachanBody02DamageAnimationFile(ASSET_HANACHAN_BODY02_DAMAGE_BCA);
+HanachanAnimationFileHandle gHanachanBody03DamageAnimationFile(ASSET_HANACHAN_BODY03_DAMAGE_BCA);
+HanachanAnimationFileHandle gHanachanBody04DamageAnimationFile(ASSET_HANACHAN_BODY04_DAMAGE_BCA);
+HanachanTextureSeqFileHandle gHanachanHeadTextureSequenceFile(ASSET_HANACHAN_HEAD_BTP);
+HanachanTextureSeqFileHandle gHanachanBody01TextureSequenceFile(ASSET_HANACHAN_BODY01_BTP);
+HanachanTextureSeqFileHandle gHanachanBody02TextureSequenceFile(ASSET_HANACHAN_BODY02_BTP);
+HanachanTextureSeqFileHandle gHanachanBody03TextureSequenceFile(ASSET_HANACHAN_BODY03_BTP);
+HanachanTextureSeqFileHandle gHanachanBody04TextureSequenceFile(ASSET_HANACHAN_BODY04_BTP);
 
 typedef void (daHanachan_c::*HanachanStatePmf)();
 

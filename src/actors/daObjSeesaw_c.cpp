@@ -34,6 +34,24 @@
  *   the tilt body it forwards to.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjSeesaw_c_AssetId {
+    ASSET_OBJ_SEESAW_BMD = 0x048a,
+    ASSET_OBJ_SEESAW_KCL = 0x048b,
+    ASSET_B_SI_SO_BMD = 0x05a5,
+    ASSET_B_SI_SO_KCL = 0x05a6,
+    ASSET_KM1_SHISO_BMD = 0x0657,
+    ASSET_KM1_SHISO_KCL = 0x0658,
+    ASSET_KM2_YOKOSHISO_BMD = 0x066d,
+    ASSET_KM2_YOKOSHISO_KCL = 0x066e,
+    ASSET_KM3_SHISO_BMD = 0x0685,
+    ASSET_KM3_SHISO_KCL = 0x0686,
+    ASSET_KM3_YOKOSHISO_BMD = 0x0687,
+    ASSET_KM3_YOKOSHISO_KCL = 0x0688,
+    ASSET_RC_SHISO_BMD = 0x06ad,
+    ASSET_RC_SHISO_KCL = 0x06ae
+};
+
 #pragma defer_codegen off
 
 #include "decl_common.h"
@@ -379,17 +397,17 @@ extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_SEESAW()
 
 /* Seven variants, each a model/collision handle pair; the pointer table at
  * data_ov095_021374a0 indexes them through kFileStride. */
-SeesawModelFilePtr data_ov095_02137790(1162);
-SeesawModelFilePtr data_ov095_02137780(1445);
-SeesawModelFilePtr data_ov095_02137798(1623);
-SeesawModelFilePtr data_ov095_021377b0(1645);
-SeesawModelFilePtr data_ov095_02137788(1669);
-SeesawModelFilePtr data_ov095_021377d8(1671);
-SeesawModelFilePtr data_ov095_021377b8(1709);
-SeesawCollisionFilePtr data_ov095_021377c8(1163);
-SeesawCollisionFilePtr data_ov095_021377a0(1446);
-SeesawCollisionFilePtr data_ov095_021377e0(1624);
-SeesawCollisionFilePtr data_ov095_021377d0(1646);
-SeesawCollisionFilePtr data_ov095_021377e8(1670);
-SeesawCollisionFilePtr data_ov095_021377a8(1672);
-SeesawCollisionFilePtr data_ov095_021377c0(1710);
+SeesawModelFilePtr gObjSeesawModelFile(ASSET_OBJ_SEESAW_BMD);
+SeesawModelFilePtr gBSiSoModelFile(ASSET_B_SI_SO_BMD);
+SeesawModelFilePtr gKm1ShisoModelFile(ASSET_KM1_SHISO_BMD);
+SeesawModelFilePtr gKm2YokoshisoModelFile(ASSET_KM2_YOKOSHISO_BMD);
+SeesawModelFilePtr gKm3ShisoModelFile(ASSET_KM3_SHISO_BMD);
+SeesawModelFilePtr gKm3YokoshisoModelFile(ASSET_KM3_YOKOSHISO_BMD);
+SeesawModelFilePtr gRcShisoModelFile(ASSET_RC_SHISO_BMD);
+SeesawCollisionFilePtr gObjSeesawCollisionFile(ASSET_OBJ_SEESAW_KCL);
+SeesawCollisionFilePtr gBSiSoCollisionFile(ASSET_B_SI_SO_KCL);
+SeesawCollisionFilePtr gKm1ShisoCollisionFile(ASSET_KM1_SHISO_KCL);
+SeesawCollisionFilePtr gKm2YokoshisoCollisionFile(ASSET_KM2_YOKOSHISO_KCL);
+SeesawCollisionFilePtr gKm3ShisoCollisionFile(ASSET_KM3_SHISO_KCL);
+SeesawCollisionFilePtr gKm3YokoshisoCollisionFile(ASSET_KM3_YOKOSHISO_KCL);
+SeesawCollisionFilePtr gRcShisoCollisionFile(ASSET_RC_SHISO_KCL);

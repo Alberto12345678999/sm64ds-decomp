@@ -37,6 +37,12 @@
  * two per-stage tables keep data_ov030_* names.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjHmMaruta_c_AssetId {
+    ASSET_HM_MARUTA_BMD = 0x061a,
+    ASSET_HM_MARUTA_KCL = 0x061b
+};
+
 #include "daObjHmMaruta_c.h"
 #include "SharedFilePtr.h"
 
@@ -122,5 +128,5 @@ int daObjHmMaruta_c::CleanupResources()
 
 /* Retail construction order: model 1562, then collision 1563.
  * mwcc emits __sinit_daObjHmMaruta_c.cpp. */
-MarutaModelFilePtr data_ov030_02115ca8(1562);
-MarutaClsnFileHandle data_ov030_02115cb0(1563);
+MarutaModelFilePtr gHmMarutaModelFile(ASSET_HM_MARUTA_BMD);
+MarutaClsnFileHandle gHmMarutaCollisionFile(ASSET_HM_MARUTA_KCL);

@@ -66,6 +66,17 @@
  *   dMap_c draws its VS icons for.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dMeter_c_AssetId {
+    ASSET_D_2D_BTM_ICON_NCG_BIN = 0x0229,
+    ASSET_D_2D_BTM_ICON_NCL_BIN = 0x022a,
+    ASSET_D_2D_CMN_ICON_E_NCG_BIN = 0x0269,
+    ASSET_D_2D_CMN_ICON_F_NCG_BIN = 0x026a,
+    ASSET_D_2D_CMN_ICON_G_NCG_BIN = 0x026c,
+    ASSET_D_2D_CMN_ICON_I_NCG_BIN = 0x026e,
+    ASSET_D_2D_CMN_ICON_S_NCG_BIN = 0x0270
+};
+
 #include "dMeter_c.h"
 #include "Timer.h"
 #include "decl_common.h"
@@ -278,11 +289,11 @@ int dMeter_c::InitResources()
         Deallocate(h);
     } else {
         void* h;
-        if (GetOwnerLanguage() == 5) h = LoadFile(0x270);
-        else if (GetOwnerLanguage() == 4) h = LoadFile(0x26E);
-        else if (GetOwnerLanguage() == 3) h = LoadFile(0x26C);
-        else if (GetOwnerLanguage() == 2) h = LoadFile(0x26A);
-        else h = LoadFile(0x269);
+        if (GetOwnerLanguage() == 5) h = LoadFile(ASSET_D_2D_CMN_ICON_S_NCG_BIN);
+        else if (GetOwnerLanguage() == 4) h = LoadFile(ASSET_D_2D_CMN_ICON_I_NCG_BIN);
+        else if (GetOwnerLanguage() == 3) h = LoadFile(ASSET_D_2D_CMN_ICON_G_NCG_BIN);
+        else if (GetOwnerLanguage() == 2) h = LoadFile(ASSET_D_2D_CMN_ICON_F_NCG_BIN);
+        else h = LoadFile(ASSET_D_2D_CMN_ICON_E_NCG_BIN);
         DecompressLZ16(h, 0x6400000);
         DecompressLZ16(h, 0x6600000);
         Deallocate(h);
@@ -293,7 +304,7 @@ int dMeter_c::InitResources()
         else h = LoadFile(0xA00E);
         DecompressLZ16(h, (int)(objVramMain + 0x2000));
         Deallocate(h);
-        h = LoadFile(0x229);
+        h = LoadFile(ASSET_D_2D_BTM_ICON_NCG_BIN);
         DecompressLZ16(h, (int)(objVramSub + 0x2000));
         Deallocate(h);
         if (GetOwnerLanguage() == 5) h = LoadFile(0xB00A);
@@ -307,7 +318,7 @@ int dMeter_c::InitResources()
         h = LoadFile(0x980F);
         GX::LoadOBJPltt(h, 0x120, 0xE0);
         Deallocate(h);
-        h = LoadFile(0x22A);
+        h = LoadFile(ASSET_D_2D_BTM_ICON_NCL_BIN);
         GXS::LoadOBJPltt(h, 0x120, 0xE0);
         Deallocate(h);
     }

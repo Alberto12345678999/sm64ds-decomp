@@ -60,6 +60,14 @@
  *   the ROM emits.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daOwl_c_AssetId {
+    ASSET_OWL_BMD = 0x03cb,
+    ASSET_OWL_FLY_1_BCA = 0x03cc,
+    ASSET_OWL_FLY_2_BCA = 0x03cd,
+    ASSET_OWL_FLY_FREE_BCA = 0x03ce
+};
+
 #pragma defer_codegen off
 
 #include "decl_common.h"
@@ -716,10 +724,10 @@ extern "C" daOwl_c *daOwl_c_classInit()
  * Definition order is the retail initializer's construction order. The
  * registration nodes and the pointer-to-member descriptors are compiler
  * temporaries. */
-OwlModelFilePtr data_ov094_02136ae0(0x3cb);
-daOwlAnimationFilePtr data_ov094_02136af8(0x3cc);
-daOwlAnimationFilePtr data_ov094_02136ae8(0x3cd);
-daOwlAnimationFilePtr data_ov094_02136af0(0x3ce);
+OwlModelFilePtr data_ov094_02136ae0(ASSET_OWL_BMD);
+daOwlAnimationFilePtr data_ov094_02136af8(ASSET_OWL_FLY_1_BCA);
+daOwlAnimationFilePtr data_ov094_02136ae8(ASSET_OWL_FLY_2_BCA);
+daOwlAnimationFilePtr data_ov094_02136af0(ASSET_OWL_FLY_FREE_BCA);
 
 OwlState data_ov094_02136b40(&daOwl_c::func_ov094_02136150, &daOwl_c::func_ov094_02136024);
 OwlState data_ov094_02136b50(&daOwl_c::func_ov094_02135fe0, &daOwl_c::func_ov094_02135ee0);

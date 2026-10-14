@@ -43,6 +43,12 @@
  *   are not this TU's data.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha03_c_AssetId {
+    ASSET_CT_MECHA_OBJ03_BMD = 0x05bc,
+    ASSET_CT_MECHA_OBJ03_KCL = 0x05bd
+};
+
 #include "common.h"
 #include "daObjCtMecha03_c.h"
 #include "dBgCh_Gnd.h"
@@ -262,5 +268,5 @@ void daObjCtMecha03_c::func_ov065_02119fe8()
  * included class header makes mwccarm emit retail's D1 then D0 order without
  * the otherwise homeless D2 variant. */
 
-Mecha03ModelFilePtr data_ov065_0211d88c(1468);
-Mecha03ClsnFilePtr data_ov065_0211d894(1469);
+Mecha03ModelFilePtr data_ov065_0211d88c(ASSET_CT_MECHA_OBJ03_BMD);
+Mecha03ClsnFilePtr data_ov065_0211d894(ASSET_CT_MECHA_OBJ03_KCL);

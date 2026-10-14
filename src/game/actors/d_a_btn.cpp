@@ -44,6 +44,26 @@
  * section per function in the reverse of source order.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_a_btn_AssetId {
+    ASSET_BATTAN_BMD = 0x029c,
+    ASSET_BATTAN_KCL = 0x029d,
+    ASSET_BATTAN_ATTACK01_BCA = 0x029e,
+    ASSET_BATTAN_ATTACK02_BCA = 0x029f,
+    ASSET_BATTAN_RECOVER_BCA = 0x02a0,
+    ASSET_BATTAN_WALK_BCA = 0x02a1,
+    ASSET_BATTAN_WALKSTART_BCA = 0x02a2,
+    ASSET_BATTAN_KING_BMD = 0x02a3,
+    ASSET_BATTAN_KING_BTP = 0x02a4,
+    ASSET_BATTAN_KING_KCL = 0x02a5,
+    ASSET_BATTAN_KING_ATTACK01_BCA = 0x02a6,
+    ASSET_BATTAN_KING_ATTACK02_BCA = 0x02a7,
+    ASSET_BATTAN_KING_DAMAGE_BCA = 0x02a8,
+    ASSET_BATTAN_KING_RECOVER_BCA = 0x02a9,
+    ASSET_BATTAN_KING_WALK_BCA = 0x02aa,
+    ASSET_BATTAN_KING_WALKSTART_BCA = 0x02ab
+};
+
 #include "daBtn_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -188,22 +208,22 @@ struct BtnCollisionFilePtr : SharedFilePtr {
 };
 
 // @symbol __sinit_d_a_btn.cpp
-BtnModelFilePtr         data_ov079_02128170(0x29c);   /* the plain Whomp's BMD */
-BtnModelFilePtr         data_ov079_02128168(0x2a3);   /* the king's BMD */
-BtnTextureSeqFileHandle data_ov079_02128178(0x2a4);   /* the king's face BTP */
-BtnAnimationFileHandle  data_ov079_02128188(0x29e);   /* the plain Whomp's BCAs */
-BtnAnimationFileHandle  data_ov079_02128180(0x29f);
-BtnAnimationFileHandle  data_ov079_02128190(0x2a0);
-BtnAnimationFileHandle  data_ov079_02128158(0x2a1);
-BtnAnimationFileHandle  data_ov079_02128160(0x2a2);
-BtnAnimationFileHandle  data_ov079_021281a0(0x2a6);   /* the king's BCAs */
-BtnAnimationFileHandle  data_ov079_02128140(0x2a7);
-BtnAnimationFileHandle  data_ov079_02128148(0x2a9);
-BtnAnimationFileHandle  data_ov079_02128150(0x2aa);
-BtnAnimationFileHandle  data_ov079_021281b8(0x2ab);
-BtnAnimationFileHandle  data_ov079_021281b0(0x2a8);
-BtnCollisionFilePtr     data_ov079_021281a8(0x29d);   /* the plain Whomp's KCL */
-BtnCollisionFilePtr     data_ov079_02128198(0x2a5);   /* the king's KCL */
+BtnModelFilePtr         data_ov079_02128170(ASSET_BATTAN_BMD);   /* the plain Whomp's BMD */
+BtnModelFilePtr         data_ov079_02128168(ASSET_BATTAN_KING_BMD);   /* the king's BMD */
+BtnTextureSeqFileHandle data_ov079_02128178(ASSET_BATTAN_KING_BTP);   /* the king's face BTP */
+BtnAnimationFileHandle  gBattanAttack01AnimationFile(ASSET_BATTAN_ATTACK01_BCA);   /* the plain Whomp's BCAs */
+BtnAnimationFileHandle  gBattanAttack02AnimationFile(ASSET_BATTAN_ATTACK02_BCA);
+BtnAnimationFileHandle  gBattanRecoverAnimationFile(ASSET_BATTAN_RECOVER_BCA);
+BtnAnimationFileHandle  gBattanWalkAnimationFile(ASSET_BATTAN_WALK_BCA);
+BtnAnimationFileHandle  gBattanWalkstartAnimationFile(ASSET_BATTAN_WALKSTART_BCA);
+BtnAnimationFileHandle  gBattanKingAttack01AnimationFile(ASSET_BATTAN_KING_ATTACK01_BCA);   /* the king's BCAs */
+BtnAnimationFileHandle  gBattanKingAttack02AnimationFile(ASSET_BATTAN_KING_ATTACK02_BCA);
+BtnAnimationFileHandle  gBattanKingRecoverAnimationFile(ASSET_BATTAN_KING_RECOVER_BCA);
+BtnAnimationFileHandle  gBattanKingWalkAnimationFile(ASSET_BATTAN_KING_WALK_BCA);
+BtnAnimationFileHandle  gBattanKingWalkstartAnimationFile(ASSET_BATTAN_KING_WALKSTART_BCA);
+BtnAnimationFileHandle  data_ov079_021281b0(ASSET_BATTAN_KING_DAMAGE_BCA);
+BtnCollisionFilePtr     gBattanCollisionFile(ASSET_BATTAN_KCL);   /* the plain Whomp's KCL */
+BtnCollisionFilePtr     gBattanKingCollisionFile(ASSET_BATTAN_KING_KCL);   /* the king's KCL */
 
 /* The twelve state handler records live in .data (0x02127bc0..0x02127c28);
    the static initializer copies them into the table below, one member
