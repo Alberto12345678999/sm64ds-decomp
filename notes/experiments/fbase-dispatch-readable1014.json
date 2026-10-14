@@ -1,0 +1,184 @@
+{
+  "task": "fbase-dispatch-readable1014",
+  "base": "abda847a033878471ed46708503a59c08037f3f4",
+  "source_author_session": "codex-fbase-dispatch-producer1014",
+  "same_actual_agent_aliases": [
+    "codex-scene-report-recovery1014",
+    "codex-native-main-review1014",
+    "codex-fbase-dispatch-producer1014"
+  ],
+  "same_agent_disclosure": "Same actual agent previously ran the private int-PMF scout, finalized the separate scene report as codex-scene-report-recovery1014, and independently reviewed native-main composition as codex-native-main-review1014. This dispatcher candidate is this agent authored source and must be independently reviewed by another actual session.",
+  "prior_source_sessions": [
+    "01a13751-2d56-7901-a14d-9543eb0dbf2e",
+    "codex-delivery-integrator1014",
+    "codex-fbase-integrator-0923",
+    "codex-root-fbase-readable-0923",
+    "codex-root-fbase-scene-scout1014",
+    "codex-scene-current-integrator1014",
+    "codex-scene-report-recovery1014"
+  ],
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+  "predecessor_tasks": [
+    "fbase-scene-current-compose1014"
+  ],
+  "scope": [
+    "src/actors/ActorBase.cpp",
+    "notes/experiments/fbase-dispatch-readable1014.json"
+  ],
+  "source_completion": "partial",
+  "change": "Replace the fake Obj class and Node view in func_02043fdc with existing fBase_c owner and fLiNdBaPr_c nodes, use int-return ProcessCallback matching current four wrapper results, and name the local process-list descriptor/head/tail/callback and list parameter. Preserve iteration, free/C entrypoint, ignored callback result and every ordinary production input policy.",
+  "evidence_classification": {
+    "rom_facts": "Four eight-byte callback records hold actual direct callback addresses plus zero receiver adjustment; constructor owns behavior/render process nodes at actor+0x28/+0x38 with next+4 and owner+8. Each wrapper forwards Process result; cleanup also tests result==1.",
+    "inferred_names": "ProcessListDescriptor and ProcessCallback are descriptive local identifiers. Existing fLiNdBaPr_c spelling is lineage inferred, with ROM-proven layout; no original identifier claim.",
+    "remaining_abi_boundary": "The runtime records name address-named free ABI wrappers int(void*), viewed here through int(fBase_c::*)(). This is a retained ABI reconstruction view, not proof those wrappers were native members or proof of a unique original return type. No new member declaration, forged mangled name or additional wrapper is introduced."
+  },
+  "descriptor_callbacks": [
+    {
+      "family": "cleanup",
+      "list_descriptor": "0x20a4ba8",
+      "rom_constant": "0x2099f50",
+      "actual_words": [
+        "0x20432e4",
+        "0x0"
+      ],
+      "callback_address": "0x20432e4",
+      "actual_source_contract": "int func_20432e4(void*)"
+    },
+    {
+      "family": "init",
+      "list_descriptor": "0x20a4b88",
+      "rom_constant": "0x2099f70",
+      "actual_words": [
+        "0x204335c",
+        "0x0"
+      ],
+      "callback_address": "0x204335c",
+      "actual_source_contract": "int func_204335c(void*)"
+    },
+    {
+      "family": "behavior",
+      "list_descriptor": "0x20a4b78",
+      "rom_constant": "0x2099f48",
+      "actual_words": [
+        "0x2043288",
+        "0x0"
+      ],
+      "callback_address": "0x2043288",
+      "actual_source_contract": "int func_2043288(void*)"
+    },
+    {
+      "family": "render",
+      "list_descriptor": "0x20a4b98",
+      "rom_constant": "0x2099f68",
+      "actual_words": [
+        "0x204322c",
+        "0x0"
+      ],
+      "callback_address": "0x204322c",
+      "actual_source_contract": "int func_204322c(void*)"
+    }
+  ],
+  "owner_evidence": {
+    "type": "fLiNdBaPr_c",
+    "node_offsets_in_actor": [
+      "0x28",
+      "0x38"
+    ],
+    "prev_offset": 0,
+    "next_offset": 4,
+    "owner_offset": 8,
+    "priority_halfwords": [
+      "0x0c",
+      "0x0e"
+    ],
+    "owner_store_rom_addresses": [
+      "0x02043e20",
+      "0x02043e38"
+    ],
+    "scope": "Four process/lifecycle descriptors invoke func02043fdc on these behavior/render process nodes. Separate scene descriptor data020a4b6c invokes func020441cc; actor-lookup helpers02043f4c/02043f98 remain independently scoped."
+  },
+  "semantics": [
+    "Return existing pointer-shaped constant1 when callback is null or traversal completes.",
+    "Publish each current node to data_020a4b68, save next before callback, invoke owner callback and discard result, then advance using the saved successor. Callback may unlink or destroy its actor.",
+    "Frame caller invokes cleanup/init/behavior/render descriptors in that order; scene traversal uses a separate routine and node family."
+  ],
+  "historical_findings": [
+    {
+      "disposition": "deferred",
+      "id": "FBASE-CALLBACK-CONTRACT-01",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+      "kind": "reconstruction",
+      "location": "include/fBase_c.h:153; src/actors/ActorBase.cpp:165; four unchanged Process ABI wrappers",
+      "owner": "codex-root-fbase-readable-0923",
+      "reason": "Full source and wrapper/PMF-slot review confirms unchanged call order and machine ABI. Existing wrappers keep raw ABI records; the change neither exposes valid typed calls for the three int-return guard families nor hides them behind adapters. Header and handoff explicitly preserve this boundary.",
+      "summary": "Process now uses genuine fBase_c member-pointer types preserving its configured int/bool/u32 symbol, while cleanup/behavior/render guard families still declare int. This is a partial contract boundary, not recovered proof of an original bool return."
+    },
+    {
+      "disposition": "deferred",
+      "id": "FBASE-RECONSTRUCTION-01",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+      "kind": "reconstruction",
+      "location": "src/actors/ActorBase.cpp; config/tu_manifest.d/arm9/ActorBase.json; notes/agents/handoffs/fbase-process-readable-0923.md",
+      "owner": "codex-root-fbase-readable-0923",
+      "reason": "This bounded follow-up replaces a fake Process receiver and uses existing list/parent fields without changing ownership. Complete ELF includes 27 nonzero function entries across all bindings, including ManagerD1 STB_LOPROC; the licensed set is25. Metadata checker emits zero records for ActorBase, so no new RTTI/vtable ownership is claimed. Manager deadstrip remains issue2025; broader class work remains issue3012.",
+      "summary": "Lifecycle-list facade, heap bridges, explicit destructor variants, key-function/data ownership and the inherited ManagerD1 deadstrip question remain incompletely reconstructed."
+    }
+  ],
+  "historical_failed_composition": {
+    "task": "fbase-process-pr3144-composition-0925",
+    "phase": "cancelled",
+    "input_commit": "c50c07bac79b8b2b5c88604321d6f7cb60ff6f34",
+    "base": "7e7b4c84be0dd8fb9c9c949d40680ae64e46e17f",
+    "reported_finding_id": "FBASE-COMPOSITION-DAONMS-01",
+    "exact_queue_next_action": "Superseded by explicit producer continuation for PR3144. Independent verifier preserved failed c50c07bac79b8b2b5c88604321d6f7cb60ff6f34/base7e7b4c84be0dd8fb9c9c949d40680ae64e46e17f report SHA256 b46f80ec9c93ad85aecdccab387822cfff17d952a54b4db96b36033fe27b22a7 and released own lease. FBASE-COMPOSITION-DAONMS-01 requires exact measured Frame515-to518 manifest identity repair plus fresh independent all12-path/current-consumer/fullROM verification. Preserve original source authors, accepted historical52a proof, prior findings and PR3144; no main merge.",
+    "recorded_reviewer": "codex-fbase-composition-verifier-0925",
+    "artifact_status": "The recorded C:/tmp/sm64ds-fbasev0923/build worktree is absent. Exact finding dictionary is not present in this task outputs (empty); preserve the reported ID and failure facts without inventing a dictionary or acceptance.",
+    "current_scope": "The recorded3144 failure and missing artifact remain historical. Accepted predecessor reports retain their exact proof epochs. This scene continuation changes no header or manifest and claims no new header-fanout or whole-daOnms review; its own current ActorBase/metadata/declaration/ROM proof is recorded separately."
+  },
+  "historical_lineage": {
+    "historical_task": "fbase-process-readable-0923",
+    "historical_task_phase": "cancelled",
+    "historical_reviewed_commit": "52a60fd1cf62315fea3aea36a26dc871fc1dc3ae",
+    "historical_reviewed_base": "83dbedd19f176eb6e2e2e677689ac9fb73f7999e",
+    "producer_sessions": [
+      "codex-root-fbase-readable-0923"
+    ],
+    "reviewer_session": "codex-fbase-verifier-0923",
+    "findings": [
+      {
+        "disposition": "deferred",
+        "id": "FBASE-CALLBACK-CONTRACT-01",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+        "kind": "reconstruction",
+        "location": "include/fBase_c.h:153; src/actors/ActorBase.cpp:165; four unchanged Process ABI wrappers",
+        "owner": "codex-root-fbase-readable-0923",
+        "reason": "Full source and wrapper/PMF-slot review confirms unchanged call order and machine ABI. Existing wrappers keep raw ABI records; the change neither exposes valid typed calls for the three int-return guard families nor hides them behind adapters. Header and handoff explicitly preserve this boundary.",
+        "summary": "Process now uses genuine fBase_c member-pointer types preserving its configured int/bool/u32 symbol, while cleanup/behavior/render guard families still declare int. This is a partial contract boundary, not recovered proof of an original bool return."
+      },
+      {
+        "disposition": "deferred",
+        "id": "FBASE-RECONSTRUCTION-01",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+        "kind": "reconstruction",
+        "location": "src/actors/ActorBase.cpp; config/tu_manifest.d/arm9/ActorBase.json; notes/agents/handoffs/fbase-process-readable-0923.md",
+        "owner": "codex-root-fbase-readable-0923",
+        "reason": "This bounded follow-up replaces a fake Process receiver and uses existing list/parent fields without changing ownership. Complete ELF includes 27 nonzero function entries across all bindings, including ManagerD1 STB_LOPROC; the licensed set is25. Metadata checker emits zero records for ActorBase, so no new RTTI/vtable ownership is claimed. Manager deadstrip remains issue2025; broader class work remains issue3012.",
+        "summary": "Lifecycle-list facade, heap bridges, explicit destructor variants, key-function/data ownership and the inherited ManagerD1 deadstrip question remain incompletely reconstructed."
+      }
+    ],
+    "scope": "Exact dictionaries remain historical. Prior native-destructor and InitResources continuations supersede their narrow explicit-wrapper/key-function subclaims. This scene-only continuation removes one local shadow-layout boundary; unrelated dispatcher/heap/ABI reconstruction remains deferred."
+  },
+  "remaining_reconstruction": "Local descriptor/free-callback ABI view, unrelated dispatcher/lookup helpers, allocator bridge, int/bool guard mismatch, heap/list boundaries remain partial under issue3012; no compiler floor or complete-class claim.",
+  "source_sha256": "fa473776afa7ba61c2af904a21911e8722ecc889f471ec771a863c53edda5bb8",
+  "scout_provenance": {
+    "private_contract_probe": "C:\\tmp\\sm64ds-fbase-scene-current1014\\build\\fbase-dispatch-contract-scout1014\\proof.json",
+    "private_probe_sha256": "87f4b1406efe16bc0621e07073205fadba9a9d9f34972aba9b67d17e27f3f099",
+    "private_candidate_author": "Same actual agent as source_author_session; not independent review.",
+    "scope": "Earlier private probe had literal raw/prepared equality and30strict0blind; production naming candidate needs its own fresh proof."
+  },
+  "verification": {
+    "status": "Source checkpoint pending fresh exact production proof; no earlier scout result presented as independent acceptance."
+  },
+  "formal_acceptance": false,
+  "publication": "No public branch push, PR or main merge; producer offer only after actual proof and root queue serialization."
+}
