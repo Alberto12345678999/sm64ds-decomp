@@ -1163,12 +1163,12 @@
     {
       "from": "@1115",
       "to": "@1073",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1105 now; licensed under the existing pin @1089 Native local Vector3/Hurt-contract continuation: compiler input @1115 replaces @1105 at identical allocated symbol coordinates, width and binding; whole-object typed graph proof preserves canonical @1073."
+      "evidence": "Historical prior mapping note (retained verbatim; not a current input/canonical-name claim): compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1105 now; licensed under the existing pin @1089 Current measured mapping: @1115 -> @1073 at unchanged allocated coordinates and with complete typed edges preserved; see native Vector3 whole-object proof."
     },
     {
       "from": "@1113",
       "to": "@1071",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1103 now; licensed under the existing pin @1087 Native local Vector3/Hurt-contract continuation: compiler input @1113 replaces @1103 at identical allocated symbol coordinates, width and binding; whole-object typed graph proof preserves canonical @1071."
+      "evidence": "Historical prior mapping note (retained verbatim; not a current input/canonical-name claim): compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @1103 now; licensed under the existing pin @1087 Current measured mapping: @1113 -> @1071 at unchanged allocated coordinates and with complete typed edges preserved; see native Vector3 whole-object proof."
     },
     {
       "from": "@1111",
