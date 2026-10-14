@@ -20,6 +20,12 @@
 
 /* common.h first: its flat Matrix4x3 must win the guard; InitResources'
  * whole-matrix store at +0x350 only reproduces with that spelling. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum Scuttlebug_AssetId {
+    ASSET_SPIDER_BMD = 0x0425,
+    ASSET_SPIDER_WALK_BCA = 0x0426
+};
+
 #include "common.h"
 #include "Scuttlebug.h"
 #include "dBgCh_Gnd.h"
@@ -146,8 +152,8 @@ struct ScuttlebugAnimFileHandle : SharedFilePtr {
  * Model::LoadFile and the animation to dExtFrameCtrl_c::LoadFile.
  * ------------------------------------------------------------------------ */
 // @symbol __sinit_Scuttlebug.cpp
-ScuttlebugModelFilePtr   data_ov071_02122f80(0x425);   /* model */
-ScuttlebugAnimFileHandle data_ov071_02122f88(0x426);   /* anim  */
+ScuttlebugModelFilePtr   data_ov071_02122f80(ASSET_SPIDER_BMD);   /* model */
+ScuttlebugAnimFileHandle gSpiderWalkAnimationFile(ASSET_SPIDER_WALK_BCA);   /* anim  */
 
 /* The member pointers the initializer copies into the table
    (0x02122b60..0x02122bec in .data, an unclaimed run). Each record is one
@@ -229,7 +235,7 @@ int Scuttlebug::InitResources()
 {
     void *mf = Model::LoadFile(data_ov071_02122f80);
     ((ModelBase *)(&mModelAnim))->SetFile((BMD_File *)mf, 1, -1);
-    dExtFrameCtrl_c::LoadFile(data_ov071_02122f88);
+    dExtFrameCtrl_c::LoadFile(gSpiderWalkAnimationFile);
     if (((dExtShadowModel_c *)(&mShadowModel))->InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -303,7 +309,7 @@ void Scuttlebug::OnPendingDestroy()
 int Scuttlebug::CleanupResources()
 {
     data_ov071_02122f80.Release();
-    data_ov071_02122f88.Release();
+    gSpiderWalkAnimationFile.Release();
     return 1;
 }
 
@@ -371,7 +377,7 @@ int Scuttlebug::func_ov071_02120130()
     mTerminalVelocity = -0x3e000;
     mHorzSpeed = 0x16000;
     mVertSpeed = 0x4d000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gSpiderWalkAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mWithMeshClsn.SetLimMovFlag();
     func_0201267c(0xf1, &mCamSpacePosX);
@@ -424,7 +430,7 @@ int Scuttlebug::func_ov071_0211ff84()
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x4000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gSpiderWalkAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mState = 2;
     return 1;
@@ -460,7 +466,7 @@ int Scuttlebug::func_ov071_0211fe38()
     mAngleY = mLeapAngle;
     mPrevAngleY = mAngleY;
     *p3a0 += 0x12c000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gSpiderWalkAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x2c00;
     mModelAnim.currFrame = 0;
     func_0201267c(0xf1, &mCamSpacePosX);
@@ -499,7 +505,7 @@ int Scuttlebug::func_ov071_0211fcd4()
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = -0x4000;
     mVertSpeed = 0x12000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gSpiderWalkAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x2c00;
     func_0201267c(0xf1, &mCamSpacePosX);
     mState = 4;
@@ -528,7 +534,7 @@ int Scuttlebug::func_ov071_0211fbf4()
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mHorzSpeed = 0x4000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gSpiderWalkAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mState = 5;
     return 1;
@@ -711,7 +717,7 @@ int Scuttlebug::func_ov071_0211f6f8()
     mHorzSpeed = 0xa000;
     mVertSpeed = 0x28000;
     mTimer = 0x2d;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov071_02122f88.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gSpiderWalkAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x4000;
     int yOffset1 = OnAimedAtWithEgg();
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, mPosX, mPosY + yOffset1, mPosZ);

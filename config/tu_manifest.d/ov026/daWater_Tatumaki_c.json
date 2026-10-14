@@ -190,14 +190,14 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov026_02113f04",
+      "symbol": "gWaterTatumakiAnimationFile",
       "address": "0x02113f04",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "anim resource handle constructed with file ID 0x4a8"
     },
     {
-      "symbol": "data_ov026_02113f0c",
+      "symbol": "gWaterTatumakiModelFile",
       "address": "0x02113f0c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -365,7 +365,7 @@
       "source": "0x02112d30",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov026_02113f0c",
+      "symbol": "gWaterTatumakiModelFile",
       "addend": 0,
       "target_module": "ov026",
       "target_address": "0x02113f0c"
@@ -395,7 +395,7 @@
       "source": "0x02112d40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov026_02113f04",
+      "symbol": "gWaterTatumakiAnimationFile",
       "addend": 0,
       "target_module": "ov026",
       "target_address": "0x02113f04"

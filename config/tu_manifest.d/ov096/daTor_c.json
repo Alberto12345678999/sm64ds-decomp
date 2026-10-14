@@ -116,14 +116,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov096_02137ba8",
+      "symbol": "gSandTornadoModelFile",
       "address": "0x02137ba8",
       "size": "0x00000008",
       "binding": "STB_GLOBAL",
       "evidence": "the tornado model resource handle constructed with file ID 0x41d"
     },
     {
-      "symbol": "data_ov096_02137bb0",
+      "symbol": "gSandTornadoAnimationFile",
       "address": "0x02137bb0",
       "size": "0x00000008",
       "binding": "STB_GLOBAL",
@@ -517,7 +517,7 @@
       "source": "0x021378e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov096_02137ba8",
+      "symbol": "gSandTornadoModelFile",
       "addend": 0,
       "target_module": "ov096",
       "target_address": "0x02137ba8"
@@ -547,7 +547,7 @@
       "source": "0x021378f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov096_02137bb0",
+      "symbol": "gSandTornadoAnimationFile",
       "addend": 0,
       "target_module": "ov096",
       "target_address": "0x02137bb0"

@@ -18,6 +18,12 @@
  * function in the file, appended after InitResources.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjKm2_Nobiru_c_AssetId {
+    ASSET_KM2_NOBIRU_BMD = 0x0663,
+    ASSET_KM2_NOBIRU_KCL = 0x0664
+};
+
 #include "decl_common.h"
 #include "daObjKm2_Nobiru_c.h"
 #include "SharedFilePtr.h"
@@ -153,5 +159,5 @@ extern "C" daObjKm2_Nobiru_c *daObjKm2_Nobiru_c_classInit()
     return new daObjKm2_Nobiru_c();
 }
 
-NobiruModelFileHandle PoleLift_ModelFile(0x663);
-NobiruClsnFileHandle PoleLift_ClsnFile(0x664);
+NobiruModelFileHandle PoleLift_ModelFile(ASSET_KM2_NOBIRU_BMD);
+NobiruClsnFileHandle PoleLift_ClsnFile(ASSET_KM2_NOBIRU_KCL);

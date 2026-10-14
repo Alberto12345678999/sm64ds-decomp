@@ -48,6 +48,14 @@
  *   local is a size-DIFF, 0xe8 to 0xf4. The scalar extern stays.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjBk_Kabe_c_AssetId {
+    ASSET_BK_KABE00_BMD = 0x0593,
+    ASSET_BK_KABE00_KCL = 0x0594,
+    ASSET_BK_KABE01_BMD = 0x0595,
+    ASSET_BK_KABE01_KCL = 0x0596
+};
+
 #include "daObjBk_Kabe_c.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
@@ -216,7 +224,7 @@ extern "C" daObjBk_Kabe_c *daObjBk_Kabe_c_classInit_BK_KABE00()
 
 /* Static-init globals (was the handwritten __sinit_ov079_02127acc shard).
  * Definition order is the retail initializer's construction order. */
-BkKabeModelFile data_ov079_02128350(0x593);
-BkKabeCollisionFilePtr data_ov079_02128348(0x594);
-BkKabeModelFile data_ov079_02128340(0x595);
-BkKabeCollisionFilePtr data_ov079_02128358(0x596);
+BkKabeModelFile gBkKabe00ModelFile(ASSET_BK_KABE00_BMD);
+BkKabeCollisionFilePtr gBkKabe00CollisionFile(ASSET_BK_KABE00_KCL);
+BkKabeModelFile gBkKabe01ModelFile(ASSET_BK_KABE01_BMD);
+BkKabeCollisionFilePtr gBkKabe01CollisionFile(ASSET_BK_KABE01_KCL);

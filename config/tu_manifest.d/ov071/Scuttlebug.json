@@ -293,7 +293,7 @@
       "evidence": "the model resource handle constructed with file ID 0x425"
     },
     {
-      "symbol": "data_ov071_02122f88",
+      "symbol": "gSpiderWalkAnimationFile",
       "address": "0x02122f88",
       "size": "0x00000008",
       "binding": "STB_GLOBAL",
@@ -367,7 +367,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgCh_Actr13SetLimMovFlagEv' differs between the legacy file that used to hold func_ov071_0211f8d0 and the one that held func_ov071_02120130; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_0201267c' differs between the legacy file that used to hold func_ov071_0211fcd4 and the one that held func_ov071_02120130; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN5dCc_c5ClearEv' differs between the legacy file that used to hold func_ov071_0211f7d4 and the one that held func_ov071_02120200; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov071_02122f88' differs between the legacy file that used to hold func_ov071_0211fcd4 and the one that held _ZN10Scuttlebug13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'gSpiderWalkAnimationFile' differs between the legacy file that used to hold func_ov071_0211fcd4 and the one that held _ZN10Scuttlebug13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Scuttlebug_SetState' differs between the legacy file that used to hold func_ov071_0211f0b4 and the one that held _ZN10Scuttlebug13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov071_0211f524' differs between the legacy file that used to hold _ZN10Scuttlebug8BehaviorEv and the one that held _ZN10Scuttlebug13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Scuttlebug_SetState' differs between the legacy file that used to hold func_ov071_0211f0b4 and the one that held _ZN10Scuttlebug13OnTurnIntoEggER6Player; kept the first, the other is commented out for review -- RESOLVED: the generated preamble was discarded wholesale and this TU declares exactly one hand-curated spelling per symbol; no /* TUBUILD CONFLICT */ marker survives in the merged source.",
@@ -675,7 +675,7 @@
       "source": "0x0212286c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov071_02122f88",
+      "symbol": "gSpiderWalkAnimationFile",
       "addend": 0,
       "target_module": "ov071",
       "target_address": "0x02122f88"

@@ -22,6 +22,18 @@
  * instructions) are in notes/experiments/pr2876-source-repair-0920.json.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgLuigi_c_AssetId {
+    ASSET_D_2D_MG_BG_LUIGI1_NCL_BIN = 0x0048,
+    ASSET_D_2D_MG_BG_LUIGI1_NSC_BIN = 0x0049,
+    ASSET_D_2D_MG_BG_LUIGI2_BLACK_NSC_BIN = 0x004a,
+    ASSET_D_2D_MG_BG_LUIGI2_NCG_BIN = 0x004b,
+    ASSET_D_2D_MG_BG_LUIGI2_NCL_BIN = 0x004c,
+    ASSET_D_2D_MG_BG_LUIGI2_NSC_BIN = 0x004d,
+    ASSET_D_2D_MG_LUIGI_NCG_BIN = 0x00d3,
+    ASSET_D_2D_MG_LUIGI_NCL_BIN = 0x00d4
+};
+
 #pragma defer_codegen off
 
 #include "types.h"
@@ -1809,11 +1821,11 @@ s32 dScMgLuigi_c::InitResources()
 
     DecompressLZ16(arc, (void *)func_02054d88());
 
-    file = LoadFile(0x48);
+    file = LoadFile(ASSET_D_2D_MG_BG_LUIGI1_NCL_BIN);
     GX::LoadBGPltt((const void *)file, 0x60, 0x1a0);
     Deallocate((void *)file);
 
-    file = LoadFile(0x49);
+    file = LoadFile(ASSET_D_2D_MG_BG_LUIGI1_NSC_BIN);
     func_02056314((void *)file, 0, 0x800);
     Deallocate((void *)file);
 
@@ -1823,11 +1835,11 @@ s32 dScMgLuigi_c::InitResources()
     *(volatile u32 *)0x04000018 = 0;
     *(volatile u16 *)0x0400000c = (*(volatile u16 *)0x0400000c & 0x43) | 0x1410;
 
-    file = LoadFile(0x4b);
+    file = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NCG_BIN);
     DecompressLZ16((void *)file, (void *)(G2::GetBG2CharPtr() + 0x4000));
     Deallocate((void *)file);
 
-    file = LoadFile(0x4c);
+    file = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NCL_BIN);
     GX::LoadBGPltt((const void *)file, 0x40, 0x20);
     Deallocate((void *)file);
 
@@ -1835,8 +1847,8 @@ s32 dScMgLuigi_c::InitResources()
     fillMain = 0x23e1;
     MultiStore16(fillMain, scr, 0x800);
 
-    objChar = LoadFile(0xd3);
-    file = LoadFile(0xd4);
+    objChar = LoadFile(ASSET_D_2D_MG_LUIGI_NCG_BIN);
+    file = LoadFile(ASSET_D_2D_MG_LUIGI_NCL_BIN);
     DecompressLZ16((void *)objChar, (void *)0x6400000);
     GX::LoadOBJPltt((const void *)file, 0, 0x100);
 
@@ -1847,15 +1859,15 @@ s32 dScMgLuigi_c::InitResources()
 
     {
         int subFile;
-        subFile = LoadFile(0x4b);
+        subFile = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NCG_BIN);
         DecompressLZ16((void *)subFile, (void *)(G2S::GetBG2CharPtr() + 0x4000));
         Deallocate((void *)subFile);
 
-        subFile = LoadFile(0x4c);
+        subFile = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NCL_BIN);
         GXS::LoadBGPltt((const void *)subFile, 0x1e0, 0x20);
         Deallocate((void *)subFile);
 
-        subFile = LoadFile(0x4d);
+        subFile = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_NSC_BIN);
         func_02056374((const void *)subFile, 0, 0x800);
         Deallocate((void *)subFile);
 
@@ -1863,7 +1875,7 @@ s32 dScMgLuigi_c::InitResources()
         *(volatile u16 *)0x0400100e &= ~3;
         *(volatile u16 *)0x0400100e = (*(volatile u16 *)0x0400100e & 0x43) | 0x1410;
 
-        subFile = LoadFile(0x4a);
+        subFile = LoadFile(ASSET_D_2D_MG_BG_LUIGI2_BLACK_NSC_BIN);
         scr = G2S::GetBG3ScrPtr();
         fillSub = 0xf3e1;
         MultiStore16(fillSub, scr, 0x800);

@@ -21,6 +21,12 @@
 //   manifest does not license. The handles stay: nothing else defines
 //   their BSS or .init range.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_KomaU_c_AssetId {
+    ASSET_FL_KOMA_U_BMD = 0x05f7,
+    ASSET_FL_KOMA_U_KCL = 0x05f8
+};
+
 #include "decl_common.h"
 #include "daObjFl_KomaU_c.h"
 #include "SharedFilePtr.h"
@@ -208,5 +214,5 @@ extern "C" daObjFl_KomaU_c *daObjFl_KomaU_c_classInit()
 }
 
 /* Retail construction order: model 1527, then collision 1528. */
-KomaUModelFilePtr data_ov064_0211c790(1527);
-KomaUClsnFileHandle data_ov064_0211c798(1528);
+KomaUModelFilePtr gFlKomaUModelFile(ASSET_FL_KOMA_U_BMD);
+KomaUClsnFileHandle gFlKomaUCollisionFile(ASSET_FL_KOMA_U_KCL);

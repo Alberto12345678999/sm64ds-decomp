@@ -102,7 +102,7 @@
       "evidence": "collision file handle constructed with file ID 0x5c9"
     },
     {
-      "symbol": "data_ov065_0211d984",
+      "symbol": "gCtMechaObj08bModelFile",
       "address": "0x0211d984",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -116,7 +116,7 @@
       "evidence": "model file handle constructed with file ID 0x5c8"
     },
     {
-      "symbol": "data_ov065_0211d994",
+      "symbol": "gCtMechaObj08bCollisionFile",
       "address": "0x0211d994",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -712,7 +712,7 @@
       "source": "0x0211ca4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d984",
+      "symbol": "gCtMechaObj08bModelFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d984"
@@ -762,7 +762,7 @@
       "source": "0x0211ca68",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov065_0211d994",
+      "symbol": "gCtMechaObj08bCollisionFile",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211d994"

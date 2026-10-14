@@ -47,6 +47,13 @@
  *   the end of this file. Their constructors are not written out here.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjShell_c_AssetId {
+    ASSET_OBJ_SHELL_BMD = 0x048c,
+    ASSET_OBJ_SHELL_CLOSE_BCA = 0x048d,
+    ASSET_OBJ_SHELL_OPEN_BCA = 0x048e
+};
+
 #include "daObjShell_c.h"
 #include "SharedFilePtr.h"
 #include "dCc_c.h"
@@ -312,6 +319,6 @@ void daObjShell_c::func_ov064_0211a9b4()
 
 /* Source order is construction order: model 1164, lunge anim 1166, idle anim
  * 1165. Registration nodes are compiler temps. */
-ShellModelFilePtr data_ov064_0211c9c4(1164);
-ShellAnimationFilePtr data_ov064_0211c9cc(1166);
-ShellAnimationFilePtr data_ov064_0211c9bc(1165);
+ShellModelFilePtr data_ov064_0211c9c4(ASSET_OBJ_SHELL_BMD);
+ShellAnimationFilePtr data_ov064_0211c9cc(ASSET_OBJ_SHELL_OPEN_BCA);
+ShellAnimationFilePtr data_ov064_0211c9bc(ASSET_OBJ_SHELL_CLOSE_BCA);

@@ -31,6 +31,12 @@
 
 /* daDkk_c.h pulls common.h before Model.h, so Matrix4x3 is the flat
  * s32 m[12]. Keep dBgCh_Lin.h below that include. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDkk_c_AssetId {
+    ASSET_DONKAKU_BMD = 0x02dc,
+    ASSET_DONKAKU_KCL = 0x02dd
+};
+
 #include "daDkk_c.h"
 #include "common.h"
 #include "decl_common.h"
@@ -209,5 +215,5 @@ int daDkk_c::OnAimedAtWithEgg()
 
 /* Retail construction order: model 0x2dc, then collision 0x2dd.
  * mwcc emits __sinit_daDkk_c.cpp. */
-DkkModelFilePtr data_ov025_02113a88(0x2dc);
-DkkClsnFileHandler data_ov025_02113a90(0x2dd);
+DkkModelFilePtr gDonkakuModelFile(ASSET_DONKAKU_BMD);
+DkkClsnFileHandler gDonkakuCollisionFile(ASSET_DONKAKU_KCL);

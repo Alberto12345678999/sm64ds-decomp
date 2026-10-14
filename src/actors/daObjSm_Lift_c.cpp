@@ -27,6 +27,12 @@
  * factory daObjSm_Lift_c_classInit (0x02111818).
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjSm_Lift_c_AssetId {
+    ASSET_SM_LIFT_BMD = 0x06b3,
+    ASSET_SM_LIFT_KCL = 0x06b4
+};
+
 #include "daObjSm_Lift_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -84,8 +90,8 @@ struct SmLiftClsnFileHandle : SharedFilePtr {
     ~SmLiftClsnFileHandle();
 };
 
-extern SmLiftModelFilePtr data_ov018_02113bc8;
-extern SmLiftClsnFileHandle data_ov018_02113bc0;
+extern SmLiftModelFilePtr gSmLiftModelFile;
+extern SmLiftClsnFileHandle gSmLiftCollisionFile;
 
 struct PathBytes { char b[8]; };
 struct PathPtrObj { int a, b; };
@@ -125,8 +131,8 @@ s32 daObjSm_Lift_c::CleanupResources()
     if (mMeshCollider.IsEnabled()) {
         mMeshCollider.Disable();
     }
-    data_ov018_02113bc8.Release();
-    data_ov018_02113bc0.Release();
+    gSmLiftModelFile.Release();
+    gSmLiftCollisionFile.Release();
     return 1;
 }
 
@@ -254,11 +260,11 @@ s32 daObjSm_Lift_c::InitResources()
     mPathId = *(int *)(c + 8) & 0xff;
     if (mPathId == 0xff)
         return 0;
-    void *f = Model::LoadFile(data_ov018_02113bc8);
+    void *f = Model::LoadFile(gSmLiftModelFile);
     ((ModelBase *)(c + 0xd4))->SetFile((BMD_File *)f, 1, -1);
     func_ov018_02111278();
     UpdateClsnPosAndRot();
-    void *kf = dBgW_Kc::LoadFile(data_ov018_02113bc0);
+    void *kf = dBgW_Kc::LoadFile(gSmLiftCollisionFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         c + 0x124, kf, c + 0x2ec, 0x1000, mAngleY, data_ov018_02112f48);
     func_020393d4((int *)(c + 0x124), (int)dBgW::UpdatePosWithTransform);
@@ -321,5 +327,5 @@ extern "C" daObjSm_Lift_c *daObjSm_Lift_c_classInit(void)
 /* The ski lift's shared file handles: the model, then the collision map. Their
  * constructors and the destructor registrations make mwcc emit this TU's
  * __sinit. */
-SmLiftModelFilePtr data_ov018_02113bc8(1715);
-SmLiftClsnFileHandle data_ov018_02113bc0(1716);
+SmLiftModelFilePtr gSmLiftModelFile(ASSET_SM_LIFT_BMD);
+SmLiftClsnFileHandle gSmLiftCollisionFile(ASSET_SM_LIFT_KCL);

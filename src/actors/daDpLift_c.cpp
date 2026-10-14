@@ -43,6 +43,12 @@
  *   functions, recorded as aliases in the manifest.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDpLift_c_AssetId {
+    ASSET_DP_LIFT_BMD = 0x05e1,
+    ASSET_DP_LIFT_KCL = 0x05e2
+};
+
 #include "daDpLift_c.h"
 #include "SharedFilePtr.h"
 
@@ -218,8 +224,8 @@ s32 daDpLift_c::InitResources()
 /* Source order is construction order: model file 1505, collision file 1506.
  * __sinit_daDpLift_c.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-DpLiftModelFilePtr data_ov025_02113ae0(1505);
-DpLiftCollisionFilePtr data_ov025_02113ad8(1506);
+DpLiftModelFilePtr data_ov025_02113ae0(ASSET_DP_LIFT_BMD);
+DpLiftCollisionFilePtr data_ov025_02113ad8(ASSET_DP_LIFT_KCL);
 
 /* Mesh-collider touch callback: remembers that the player (actor 0xbf)
    touched the lift, for Behavior's idle state. */

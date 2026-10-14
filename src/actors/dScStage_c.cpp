@@ -28,6 +28,11 @@
 //   role is recovered. The touch
 //   and controller globals (gTouchHeld..gTouchY, gActivePlayerSlot, data_0209f498)
 //   have no header; data_ov001_ and data_ov002_ handles keep linker names.
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScStage_c_AssetId {
+    ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN = 0x025a
+};
+
 #include "types.h"
 #include "dScStage_c.h"
 #include "Timer.h"
@@ -375,7 +380,7 @@ void dScStage_c::LC_Render() {
         return;
 
     {
-        void* p = (void*)LoadFile(0x25a);
+        void* p = (void*)LoadFile(ASSET_D_2D_UPR_COURSE_CLEAR_MESSAGE_NCL_BIN);
         _ZN2GX11LoadOBJPlttEPKvjj((void*)((char*)p + (((unsigned int)data_0209f2a8 >> 2) << 5)), 0x1c0, 0x10);
         Deallocate(p);
     }

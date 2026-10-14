@@ -15,6 +15,11 @@
  * leaf. .text 0x02005324..0x02005d94 is the button redraw, Behavior
  * and InitResources.
  */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScBoot_c_AssetId {
+    ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN = 0x022d
+};
+
 #include "dScBoot_c.h"
 
 #include "dCamera_c.h"
@@ -211,7 +216,7 @@ s32 dScBoot_c::Behavior()
                     palette = LoadFile(0x9807);
                     _ZN3GXS10LoadBGPlttEPKvjj((const void *)palette, 0, 0x1c0);
                     Deallocate((void *)palette);
-                    LoadCompressedFileAt(0x22d, (void *)_ZN3G2S12GetBG1ScrPtrEv());
+                    LoadCompressedFileAt(ASSET_D_2D_FRAMEWORK_INITIALIZE_NSC_BIN, (void *)_ZN3G2S12GetBG1ScrPtrEv());
                     LoadCompressedFileAt(0x9803, (char *)_ZN3G2S12GetBG1ScrPtrEv() + 0x800);
                     func_0201cd08(0x29a);
                     mSelectedButton = 1;

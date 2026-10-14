@@ -29,6 +29,12 @@
 // func_02039394 / func_020393d4 / func_020396c0 are small stores into dBgW's
 // fields and callback slots; naming belongs with dBgW in arm9.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha11_c_AssetId {
+    ASSET_CT_MECHA_OBJ11_BMD = 0x05d0,
+    ASSET_CT_MECHA_OBJ11_KCL = 0x05d1
+};
+
 #pragma defer_codegen off
 
 #include "common.h"
@@ -209,5 +215,5 @@ extern "C" daObjCtMecha11_c *daObjCtMecha11_c_classInit()
     return new daObjCtMecha11_c();
 }
 
-Mecha11ModelFilePtr RotatingClockHand_ModelFile(1488);
-Mecha11ClsnFilePtr RotatingClockHand_ClsnFile(1489);
+Mecha11ModelFilePtr RotatingClockHand_ModelFile(ASSET_CT_MECHA_OBJ11_BMD);
+Mecha11ClsnFilePtr RotatingClockHand_ClsnFile(ASSET_CT_MECHA_OBJ11_KCL);

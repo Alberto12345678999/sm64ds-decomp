@@ -48,6 +48,14 @@
  *   deadstrips it.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtKaitendai_c_AssetId {
+    ASSET_CT_MECHA_OBJ06_BMD = 0x05c4,
+    ASSET_CT_MECHA_OBJ06_KCL = 0x05c5,
+    ASSET_CT_MECHA_OBJ07_BMD = 0x05c6,
+    ASSET_CT_MECHA_OBJ07_KCL = 0x05c7
+};
+
 #include "common.h"
 #include "daObjCtKaitendai_c.h"
 #include "dBgCh_Gnd.h"
@@ -238,7 +246,7 @@ void daObjCtKaitendai_c::func_ov065_0211b40c()
 
 /* Static-init globals (was the handwritten __sinit_ov065_0211c8fc shard).
  * Definition order is the retail initializer's construction order. */
-KaitendaiModelFile data_ov065_0211d944(0x5c4);
-KaitendaiModelFile data_ov065_0211d934(0x5c6);
-KaitendaiCollisionFilePtr data_ov065_0211d93c(0x5c5);
-KaitendaiCollisionFilePtr data_ov065_0211d92c(0x5c7);
+KaitendaiModelFile gCtMechaObj06ModelFile(ASSET_CT_MECHA_OBJ06_BMD);
+KaitendaiModelFile gCtMechaObj07ModelFile(ASSET_CT_MECHA_OBJ07_BMD);
+KaitendaiCollisionFilePtr gCtMechaObj06CollisionFile(ASSET_CT_MECHA_OBJ06_KCL);
+KaitendaiCollisionFilePtr gCtMechaObj07CollisionFile(ASSET_CT_MECHA_OBJ07_KCL);

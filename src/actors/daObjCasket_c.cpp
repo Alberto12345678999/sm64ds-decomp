@@ -57,6 +57,12 @@
  *   and ApproachLinear stay local externs; no shared header owns them.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCasket_c_AssetId {
+    ASSET_CASKET_BMD = 0x05b4,
+    ASSET_CASKET_KCL = 0x05b5
+};
+
 #include "daObjCasket_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
@@ -341,8 +347,8 @@ void daObjCasket_c::UpdateModelTransform()
 /* Definition order is the retail initializer's construction order: the
  * model handle, then the collision handle, then the state table whose
  * pointer-to-member slots copy the ROM descriptors. */
-CasketModelFilePtr data_ov071_021230d0(0x5b4);
-CasketCollisionFilePtr data_ov071_021230d8(0x5b5);
+CasketModelFilePtr data_ov071_021230d0(ASSET_CASKET_BMD);
+CasketCollisionFilePtr data_ov071_021230d8(ASSET_CASKET_KCL);
 
 CasketState data_ov071_02122ecc[] = {
     { data_ov071_02122e74, data_ov071_02122e8c, data_ov071_02122e64 },

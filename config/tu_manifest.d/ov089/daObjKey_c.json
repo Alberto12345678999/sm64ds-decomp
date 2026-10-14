@@ -259,7 +259,7 @@
       "evidence": "model file handle constructed with file ID 0x44d; the .rodata table at 0x02132894 reaches it by mState and InitResources loads it through there"
     },
     {
-      "symbol": "data_ov089_02132c58",
+      "symbol": "gWarioKeyModelFile",
       "address": "0x02132c58",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -273,7 +273,7 @@
       "evidence": "animation file handle constructed with file ID 0x44e; dExtFrameCtrl_c::LoadFile consumes it in InitResources and CleanupResources releases it"
     },
     {
-      "symbol": "data_ov089_02132c68",
+      "symbol": "gMarioKeyModelFile",
       "address": "0x02132c68",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -287,7 +287,7 @@
       "evidence": "animation file handle constructed with file ID 0x450; dExtFrameCtrl_c::LoadFile consumes it in InitResources and CleanupResources releases it"
     },
     {
-      "symbol": "data_ov089_02132c78",
+      "symbol": "gLuigiKeyModelFile",
       "address": "0x02132c78",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -1187,7 +1187,7 @@
       "source": "0x02132a7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov089_02132c78",
+      "symbol": "gLuigiKeyModelFile",
       "addend": 0,
       "target_module": "ov089",
       "target_address": "0x02132c78"
@@ -1207,7 +1207,7 @@
       "source": "0x02132a88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov089_02132c68",
+      "symbol": "gMarioKeyModelFile",
       "addend": 0,
       "target_module": "ov089",
       "target_address": "0x02132c68"
@@ -1227,7 +1227,7 @@
       "source": "0x02132a94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov089_02132c58",
+      "symbol": "gWarioKeyModelFile",
       "addend": 0,
       "target_module": "ov089",
       "target_address": "0x02132c58"

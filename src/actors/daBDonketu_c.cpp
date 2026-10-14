@@ -11,6 +11,15 @@
  * address. InitResources leaves spawnPos.y unset when DetectClsn misses.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daBDonketu_c_AssetId {
+    ASSET_BOSS_DONKETU_BMD = 0x02de,
+    ASSET_DONKETU_DEAD_BCA = 0x02e0,
+    ASSET_DONKETU_HIT_BCA = 0x02e1,
+    ASSET_DONKETU_TURN_BCA = 0x02e2,
+    ASSET_DONKETU_WALK_BCA = 0x02e3
+};
+
 #include "daBDonketu_c.h"
 #include "daDonketu_c.h"
 #include "types.h"
@@ -201,8 +210,8 @@ int daBDonketu_c::UpdateRunState()
 }
 
 /* Retail construction order. mwcc emits __sinit_daBDonketu_c.cpp. */
-DonketuModelFilePtr data_ov064_0211c6cc(0x2de);
-DonketuAnimFileHandle data_ov064_0211c6d4(0x2e0);
-DonketuAnimFileHandle data_ov064_0211c6c4(0x2e1);
-DonketuAnimFileHandle data_ov064_0211c6dc(0x2e2);
-DonketuAnimFileHandle data_ov064_0211c6e4(0x2e3);
+DonketuModelFilePtr gBossDonketuModelFile(ASSET_BOSS_DONKETU_BMD);
+DonketuAnimFileHandle gdaBDonketuDonketuDeadAnimationFile(ASSET_DONKETU_DEAD_BCA);
+DonketuAnimFileHandle gdaBDonketuDonketuHitAnimationFile(ASSET_DONKETU_HIT_BCA);
+DonketuAnimFileHandle gdaBDonketuDonketuTurnAnimationFile(ASSET_DONKETU_TURN_BCA);
+DonketuAnimFileHandle gdaBDonketuDonketuWalkAnimationFile(ASSET_DONKETU_WALK_BCA);

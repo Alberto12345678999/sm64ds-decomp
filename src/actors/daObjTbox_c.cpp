@@ -17,6 +17,12 @@
 //   borrows.
 // - g_profile_TREASURE_BOX stays at 0x0211c4e8, outside this text span.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjTbox_c_AssetId {
+    ASSET_T_BOX_BMD = 0x04a6,
+    ASSET_T_BOX_OPEN_BCA = 0x04a7
+};
+
 #include "daObjTbox_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -311,8 +317,8 @@ void daObjTbox_c::UpdateModelTransform()
    model file (func_02017acc / func_02017ab4), then the animation file
    (SharedFilePtr::Construct / SharedFilePtr_Destruct_Anim). The manifest
    aliases each wrapper ctor/dtor onto those ROM symbols. */
-TboxModelFilePtr data_ov064_0211c96c(0x4a6);
-TboxAnimationFileHandle data_ov064_0211c964(0x4a7);
+TboxModelFilePtr data_ov064_0211c96c(ASSET_T_BOX_BMD);
+TboxAnimationFileHandle data_ov064_0211c964(ASSET_T_BOX_OPEN_BCA);
 
 /* One {init, behavior} pointer-to-member pair per state. mwcc cannot
    link-time-initialize them, so the initializer copies six descriptor

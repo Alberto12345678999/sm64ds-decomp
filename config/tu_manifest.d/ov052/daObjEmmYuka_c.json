@@ -88,14 +88,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov052_021126a8",
+      "symbol": "gEmmYukaModelFile",
       "address": "0x021126a8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 1509; Model::LoadFile reaches it through data_ov052_021125a0.model"
     },
     {
-      "symbol": "data_ov052_021126b0",
+      "symbol": "gEmmYukaCollisionFile",
       "address": "0x021126b0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -569,7 +569,7 @@
       "source": "0x02111c1c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov052_021126a8",
+      "symbol": "gEmmYukaModelFile",
       "addend": 0,
       "target_module": "ov052",
       "target_address": "0x021126a8"
@@ -599,7 +599,7 @@
       "source": "0x02111c2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov052_021126b0",
+      "symbol": "gEmmYukaCollisionFile",
       "addend": 0,
       "target_module": "ov052",
       "target_address": "0x021126b0"

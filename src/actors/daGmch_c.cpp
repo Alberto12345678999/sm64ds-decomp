@@ -33,6 +33,15 @@
  *   init sentinel the folded sinit needs.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daGmch_c_AssetId {
+    ASSET_GAMAGUCHI_BMD = 0x02fd,
+    ASSET_GAMAGUCHI_JUMP_BCA = 0x02fe,
+    ASSET_GAMAGUCHI_JUMP_END_BCA = 0x02ff,
+    ASSET_GAMAGUCHI_WALK_BCA = 0x0300,
+    ASSET_GAMAGUCHI_WALK_END_BCA = 0x0301
+};
+
 #pragma defer_codegen off
 
 #include "types.h"
@@ -617,9 +626,9 @@ int daGmch_c::UpdateState4()
 // @symbol _ZN8daGmch_c11EnterState4Ev
 int daGmch_c::EnterState4()
 {
-    extern GmchAnimationFileHandle data_ov081_02128ec4;
+    extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ec4.file, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpEndAnimationFile.file, 0x40000000, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 4;
@@ -657,11 +666,11 @@ int daGmch_c::UpdateState3()
 // @symbol _ZN8daGmch_c11EnterState3Ev
 int daGmch_c::EnterState3()
 {
-    extern GmchAnimationFileHandle data_ov081_02128ecc;
+    extern GmchAnimationFileHandle gGamaguchiJumpAnimationFile;
     extern int data_0209e650[];
 
     mFlags &= ~1;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ecc.file, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpAnimationFile.file, 0x40000000, 0x1000, 0);
     mModelAnim.currFrame = 0;
     mAngleY = (short)RandomIntInternal(data_0209e650);
     mPrevAngleY = mAngleY;
@@ -687,9 +696,9 @@ int daGmch_c::UpdateState2()
 // @symbol _ZN8daGmch_c11EnterState2Ev
 int daGmch_c::EnterState2()
 {
-    extern GmchAnimationFileHandle data_ov081_02128ee4;
+    extern GmchAnimationFileHandle gGamaguchiWalkEndAnimationFile;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ee4.file, 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiWalkEndAnimationFile.file, 0x40000000, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mHorzSpeed = 0;
     mStateIndex = 2;
@@ -768,9 +777,9 @@ int daGmch_c::UpdateState0()
 // @symbol _ZN8daGmch_c11EnterState0Ev
 int daGmch_c::EnterState0()
 {
-    extern GmchAnimationFileHandle data_ov081_02128ec4;
+    extern GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile;
 
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov081_02128ec4.file, 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, gGamaguchiJumpEndAnimationFile.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
     mModelAnim.currFrame = 0x6000;
     mPhase = 0;
@@ -945,11 +954,11 @@ extern "C" daGmch_c *daGmch_c_classInit(void)
  * then the four animations), then the nine {enter, update} state pairs,
  * then the draw offset, whose destructor registers last. The
  * registration nodes and the PMF literals are compiler temporaries. */
-GmchModelFileHandle data_ov081_02128ed4(0x2fd);
-GmchAnimationFileHandle data_ov081_02128edc(0x300);
-GmchAnimationFileHandle data_ov081_02128ee4(0x301);
-GmchAnimationFileHandle data_ov081_02128ecc(0x2fe);
-GmchAnimationFileHandle data_ov081_02128ec4(0x2ff);
+GmchModelFileHandle data_ov081_02128ed4(ASSET_GAMAGUCHI_BMD);
+GmchAnimationFileHandle data_ov081_02128edc(ASSET_GAMAGUCHI_WALK_BCA);
+GmchAnimationFileHandle gGamaguchiWalkEndAnimationFile(ASSET_GAMAGUCHI_WALK_END_BCA);
+GmchAnimationFileHandle gGamaguchiJumpAnimationFile(ASSET_GAMAGUCHI_JUMP_BCA);
+GmchAnimationFileHandle gGamaguchiJumpEndAnimationFile(ASSET_GAMAGUCHI_JUMP_END_BCA);
 
 StatePair data_ov081_02128f40[9] = {
     { &daGmch_c::EnterState0, &daGmch_c::UpdateState0 },

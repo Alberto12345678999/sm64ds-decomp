@@ -15,6 +15,11 @@
  *     because the ROM has no dScMgMCarlo_c C1.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_m_carlo_AssetId {
+    ASSET_D_2D_MG_CARD_NCL_BIN = 0x00bb
+};
+
 #include "dScMgMCarlo_c.h"
 #include "types.h"
 #include "decl_common.h"
@@ -131,7 +136,7 @@ s32 dScMgMCarlo_c::InitResources()
     func_ov004_020b04d0(0x20);
     func_ov006_0210a534(this);
     chr = (void *)LoadFile(data_ov006_0213d5b4[GetGameLanguage()]);
-    pal = (void *)LoadFile(0xbb);
+    pal = (void *)LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
     DecompressLZ16(chr, (void *)0x6600000);
     GXS::LoadOBJPltt(pal, 0, 0x100);
     Deallocate(chr);

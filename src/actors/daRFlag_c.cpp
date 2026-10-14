@@ -12,6 +12,12 @@
 // - func_ov062_0211afbc keeps the linker name. That is the enrolled symbol
 //   this TU calls.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daRFlag_c_AssetId {
+    ASSET_OBJ_RACE_FLAG_BMD = 0x0488,
+    ASSET_OBJ_RACE_FLAG_WAIT_BCA = 0x0489
+};
+
 #include "daRFlag_c.h"
 #include "decl_common.h"
 #include "Timer.h"
@@ -152,5 +158,5 @@ extern "C" daRFlag_c *daRFlag_c_classInit(void)
     return new daRFlag_c();
 }
 
-RFlagModelFileHandle data_ov062_0211e0d4(0x488);
-RFlagAnimResFileHandle data_ov062_0211e0dc(0x489);
+RFlagModelFileHandle data_ov062_0211e0d4(ASSET_OBJ_RACE_FLAG_BMD);
+RFlagAnimResFileHandle data_ov062_0211e0dc(ASSET_OBJ_RACE_FLAG_WAIT_BCA);

@@ -14,6 +14,16 @@
 // the factory is still _ZN11dScMgBase_cC2Ev plus SysTracker C1. There is
 // no dScMgCup_c constructor.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgCup_c_AssetId {
+    ASSET_D_2D_MG_BG_CUP2_1_NSC_BIN = 0x0029,
+    ASSET_D_2D_MG_BG_CUP2_2_NSC_BIN = 0x002a,
+    ASSET_D_2D_MG_BG_CUP_NCG_BIN = 0x002b,
+    ASSET_D_2D_MG_BG_CUP_NCL_BIN = 0x002c,
+    ASSET_D_2D_MG_CUP_NCG_BIN = 0x00c5,
+    ASSET_D_2D_MG_CUP_NCL_BIN = 0x00c6
+};
+
 #include "dScMgCup_c.h"
 #include "types.h"
 #include "decl_common.h"
@@ -991,14 +1001,14 @@ s32 dScMgCup_c::InitResources()
 
     data_0209d454 |= 4;
 
-    LoadCompressedFileAt(0x2b, G2S::GetBG2CharPtr() + 0x4000);
-    file = LoadFile(0x2c);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP_NCG_BIN, G2S::GetBG2CharPtr() + 0x4000);
+    file = LoadFile(ASSET_D_2D_MG_BG_CUP_NCL_BIN);
     GXS::LoadBGPltt(file, 0x60, 0x1a0);
     Deallocate(file);
-    LoadCompressedFileAt(0x2a, G2S::GetBG0ScrPtr());
-    LoadCompressedFileAt(0x29, G2S::GetBG2ScrPtr());
-    LoadCompressedFileAt(0xc5, 0x6600000);
-    file = LoadFile(0xc6);
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP2_2_NSC_BIN, G2S::GetBG0ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_CUP2_1_NSC_BIN, G2S::GetBG2ScrPtr());
+    LoadCompressedFileAt(ASSET_D_2D_MG_CUP_NCG_BIN, 0x6600000);
+    file = LoadFile(ASSET_D_2D_MG_CUP_NCL_BIN);
     GXS::LoadOBJPltt(file, 0, 0xa0);
     Deallocate(file);
 

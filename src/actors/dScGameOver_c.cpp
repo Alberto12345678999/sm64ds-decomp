@@ -42,6 +42,16 @@
  * - unk_080[8]: zeroed by InitResources, never read back.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScGameOver_c_AssetId {
+    ASSET_D_2D_BTM_GAME_OVER_BG_NSC_BIN = 0x0228,
+    ASSET_D_2D_GAME_OVER_BG_NCL_BIN = 0x0231,
+    ASSET_D_2D_GAME_OVER_BG_NSC_BIN = 0x0232,
+    ASSET_D_2D_GAME_OVER_NCG_BIN = 0x0233,
+    ASSET_D_2D_GAME_OVER_NCL_BIN = 0x0234,
+    ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN = 0x025c
+};
+
 #include "dScGameOver_c.h"
 #include "dScStage_c.h"
 #include "OamAttr.h"
@@ -183,15 +193,15 @@ s32 dScGameOver_c::InitResources()
     DecompressLZ16(f, _ZN2G213GetBG2CharPtrEv());
     Deallocate((void *)f);
 
-    f = LoadFile(0x231);
+    f = LoadFile(ASSET_D_2D_GAME_OVER_BG_NCL_BIN);
     _ZN2GX10LoadBGPlttEPKvjj((const void *)f, 0, 0x1a0);
     Deallocate((void *)f);
 
-    f = LoadFile(0x232);
+    f = LoadFile(ASSET_D_2D_GAME_OVER_BG_NSC_BIN);
     DecompressLZ16(f, _ZN2G212GetBG2ScrPtrEv());
     Deallocate((void *)f);
 
-    f = LoadFile(0x25c);
+    f = LoadFile(ASSET_D_2D_UPR_TOUCH_TO_SELECT_NSC_BIN);
     DecompressLZ16(f, _ZN2G212GetBG0ScrPtrEv());
     Deallocate((void *)f);
 
@@ -200,11 +210,11 @@ s32 dScGameOver_c::InitResources()
     *(volatile u16 *)0x400000e &= ~0x40;
     LoadFont(0);
 
-    f = LoadFile(0x233);
+    f = LoadFile(ASSET_D_2D_GAME_OVER_NCG_BIN);
     DecompressLZ16(f, (void *)0x6400000);
     Deallocate((void *)f);
 
-    f = LoadFile(0x234);
+    f = LoadFile(ASSET_D_2D_GAME_OVER_NCL_BIN);
     _ZN2GX11LoadOBJPlttEPKvjj((const void *)f, 0, 0x200);
     Deallocate((void *)f);
 
@@ -247,7 +257,7 @@ s32 dScGameOver_c::InitResources()
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0xd00;
     SetSubBg2Offset(0, 0);
 
-    f = LoadFile(0x228);
+    f = LoadFile(ASSET_D_2D_BTM_GAME_OVER_BG_NSC_BIN);
     DecompressLZ16(f, _ZN3G2S12GetBG2ScrPtrEv());
     Deallocate((void *)f);
 

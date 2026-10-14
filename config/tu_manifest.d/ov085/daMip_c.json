@@ -314,7 +314,7 @@
       "evidence": "animation file handle constructed with file ID 0x3a8; InitResources sets it on the model animation and CleanupResources releases it"
     },
     {
-      "symbol": "data_ov085_021305d0",
+      "symbol": "gMipRunAnimationFile",
       "address": "0x021305d0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -963,7 +963,7 @@
       "source": "0x0212f908",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov085_021305d0",
+      "symbol": "gMipRunAnimationFile",
       "addend": 0,
       "target_module": "ov085",
       "target_address": "0x021305d0"

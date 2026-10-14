@@ -36,6 +36,12 @@
 //   wrapper names are local -- the constructors are the ROM
 //   resource-family functions, recorded as aliases in the manifest.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Block_c_AssetId {
+    ASSET_FL_BLOCK_BMD = 0x05f1,
+    ASSET_FL_BLOCK_KCL = 0x05f2
+};
+
 #include "daObjFl_Block_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -177,5 +183,5 @@ s32 daObjFl_Block_c::CleanupResources()
 /* Source order is construction order: model file 1521, collision file 1522.
  * __sinit_daObjFl_Block_c.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-FlBlockModelFilePtr data_ov022_02114558(1521);
-FlBlockCollisionFilePtr data_ov022_02114550(1522);
+FlBlockModelFilePtr data_ov022_02114558(ASSET_FL_BLOCK_BMD);
+FlBlockCollisionFilePtr data_ov022_02114550(ASSET_FL_BLOCK_KCL);

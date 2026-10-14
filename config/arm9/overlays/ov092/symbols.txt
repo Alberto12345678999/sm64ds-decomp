@@ -44,8 +44,8 @@ _ZTV8daOnms_c kind:data(any) addr:0x021322d0
 data_ov092_02132350 kind:data(any) addr:0x02132350
 data_ov092_021323dc kind:data(any) addr:0x021323dc
 data_ov092_0213246c kind:data(any) addr:0x0213246c
-data_ov092_02132540 kind:bss addr:0x02132540
-data_ov092_02132548 kind:bss addr:0x02132548
+gOnimasuModelFile kind:bss addr:0x02132540
+gOnimasuCollisionFile kind:bss addr:0x02132548
 @964 kind:bss addr:0x02132550
 @214 kind:bss addr:0x0213255c
 data_ov092_02132568 kind:bss addr:0x02132568

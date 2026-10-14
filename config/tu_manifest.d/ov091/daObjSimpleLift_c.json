@@ -130,98 +130,98 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov091_02135520",
+      "symbol": "gKm1DeruModelFile",
       "address": "0x02135520",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x647), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135538",
+      "symbol": "gKm1DeruCollisionFile",
       "address": "0x02135538",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift KCL SharedFilePtr (file 0x648), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135560",
+      "symbol": "gKm3Deru01ModelFile",
       "address": "0x02135560",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x679), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_021354f8",
+      "symbol": "gKm3Deru01CollisionFile",
       "address": "0x021354f8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift KCL SharedFilePtr (file 0x67a), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135528",
+      "symbol": "gKm3Deru02ModelFile",
       "address": "0x02135528",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x67b), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135518",
+      "symbol": "gKm3Deru02CollisionFile",
       "address": "0x02135518",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift KCL SharedFilePtr (file 0x67c), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135558",
+      "symbol": "gRcRift01ModelFile",
       "address": "0x02135558",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x6a9), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135550",
+      "symbol": "gRcRift01CollisionFile",
       "address": "0x02135550",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift KCL SharedFilePtr (file 0x6aa), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135510",
+      "symbol": "gKm2Rift01ModelFile",
       "address": "0x02135510",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x665), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135540",
+      "symbol": "gKm2Rift01CollisionFile",
       "address": "0x02135540",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift KCL SharedFilePtr (file 0x666), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135548",
+      "symbol": "gKm2Rift02ModelFile",
       "address": "0x02135548",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x667), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135500",
+      "symbol": "gKm2Rift02CollisionFile",
       "address": "0x02135500",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift KCL SharedFilePtr (file 0x668), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135508",
+      "symbol": "gBkTransbarModelFile",
       "address": "0x02135508",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SimpleLift model SharedFilePtr (file 0x59f), constructed by __sinit_daObjSimpleLift_c.cpp; reached through the variant asset table data_ov091_02135024"
     },
     {
-      "symbol": "data_ov091_02135530",
+      "symbol": "gBkTransbarCollisionFile",
       "address": "0x02135530",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -1197,7 +1197,7 @@
       "source": "0x02134884",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135520",
+      "symbol": "gKm1DeruModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135520"
@@ -1227,7 +1227,7 @@
       "source": "0x02134894",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135538",
+      "symbol": "gKm1DeruCollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135538"
@@ -1257,7 +1257,7 @@
       "source": "0x021348a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135560",
+      "symbol": "gKm3Deru01ModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135560"
@@ -1277,7 +1277,7 @@
       "source": "0x021348b0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_021354f8",
+      "symbol": "gKm3Deru01CollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x021354f8"
@@ -1297,7 +1297,7 @@
       "source": "0x021348bc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135528",
+      "symbol": "gKm3Deru02ModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135528"
@@ -1317,7 +1317,7 @@
       "source": "0x021348c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135518",
+      "symbol": "gKm3Deru02CollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135518"
@@ -1337,7 +1337,7 @@
       "source": "0x021348d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135558",
+      "symbol": "gRcRift01ModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135558"
@@ -1357,7 +1357,7 @@
       "source": "0x021348e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135550",
+      "symbol": "gRcRift01CollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135550"
@@ -1377,7 +1377,7 @@
       "source": "0x021348ec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135510",
+      "symbol": "gKm2Rift01ModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135510"
@@ -1397,7 +1397,7 @@
       "source": "0x021348f8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135540",
+      "symbol": "gKm2Rift01CollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135540"
@@ -1417,7 +1417,7 @@
       "source": "0x02134904",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135548",
+      "symbol": "gKm2Rift02ModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135548"
@@ -1437,7 +1437,7 @@
       "source": "0x02134910",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135500",
+      "symbol": "gKm2Rift02CollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135500"
@@ -1457,7 +1457,7 @@
       "source": "0x0213491c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135508",
+      "symbol": "gBkTransbarModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135508"
@@ -1477,7 +1477,7 @@
       "source": "0x02134928",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135530",
+      "symbol": "gBkTransbarCollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135530"

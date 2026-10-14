@@ -80,28 +80,28 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov022_021145c8",
+      "symbol": "gdaObjFl_UkiyukaFlShisoCollisionFile",
       "address": "0x021145c8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x611"
     },
     {
-      "symbol": "data_ov022_021145d0",
+      "symbol": "gFlUkiYukaCollisionFile",
       "address": "0x021145d0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x615"
     },
     {
-      "symbol": "data_ov022_021145d8",
+      "symbol": "gdaObjFl_UkiyukaFlShisoModelFile",
       "address": "0x021145d8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x610"
     },
     {
-      "symbol": "data_ov022_021145e0",
+      "symbol": "gFlUkiYukaModelFile",
       "address": "0x021145e0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -690,7 +690,7 @@
       "source": "0x02112f44",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov022_021145e0",
+      "symbol": "gFlUkiYukaModelFile",
       "addend": 0,
       "target_module": "ov022",
       "target_address": "0x021145e0"
@@ -720,7 +720,7 @@
       "source": "0x02112f54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov022_021145d0",
+      "symbol": "gFlUkiYukaCollisionFile",
       "addend": 0,
       "target_module": "ov022",
       "target_address": "0x021145d0"
@@ -750,7 +750,7 @@
       "source": "0x02112f64",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov022_021145d8",
+      "symbol": "gdaObjFl_UkiyukaFlShisoModelFile",
       "addend": 0,
       "target_module": "ov022",
       "target_address": "0x021145d8"
@@ -770,7 +770,7 @@
       "source": "0x02112f6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov022_021145c8",
+      "symbol": "gdaObjFl_UkiyukaFlShisoCollisionFile",
       "addend": 0,
       "target_module": "ov022",
       "target_address": "0x021145c8"
