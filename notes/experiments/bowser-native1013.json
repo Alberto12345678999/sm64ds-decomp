@@ -964,7 +964,7 @@
       "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
     }
   },
-  "status": "bowser-conflicts1013 repair checkpoint; original production gates historical and transferred by notes-only identity",
+  "status": "bowser-conflicts1013 repair complete; historical production gates transferred by measured notes-only identity",
   "final_source_binding": {
     "source_sha256": "b20d07dfb6f1108d7732624ce7d33de248cd375decd838303e1b4c3df0319fcf",
     "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
@@ -3345,15 +3345,15 @@
   },
   "checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
   "report_only_binding": {
-    "checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+    "checkpoint": "c58479844dd10c69c6ea2ff0c5d70302cf28574d",
     "production_trees": {
       "src": "d0c976bddbb926e4490671384658ab2c4f338ca0",
       "include": "036cd7f923a501f2a91d48446b035a599afae6cd",
-      "config": "d3177f6db9f3bd5168661de5ba3e9b222a3d62b2",
+      "config": "e99f41e00b5af53f9b3c50ed83ecb5b9cf1c71e5",
       "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
       "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
     },
-    "rule": "Final report-only descendant must retain all five production trees exactly."
+    "rule": "Final report-only descendant retains all five trees exactly relative to this repair checkpoint. Relative to accepted c855, config differs only in the 23 resolved note prefixes; use the explicit semantic comparator, not config-tree equality."
   },
   "artifacts": {
     "independent-baseline-AUDIT.json": "ced866d73d1e917608faf98c96425d4dfec0232c8d6208659f3ef3e89099d8e2",
@@ -3613,6 +3613,29 @@
       }
     ],
     "repair_plan": "build/bowser-conflicts1013/repair-plan.json",
-    "status": "repair checkpoint; final report-only binding pending"
+    "status": "repair complete; awaiting exact replacement review",
+    "repair_checkpoint": "c58479844dd10c69c6ea2ff0c5d70302cf28574d",
+    "report_only_binding": {
+      "checkpoint": "c58479844dd10c69c6ea2ff0c5d70302cf28574d",
+      "production_trees": {
+        "src": "d0c976bddbb926e4490671384658ab2c4f338ca0",
+        "include": "036cd7f923a501f2a91d48446b035a599afae6cd",
+        "config": "e99f41e00b5af53f9b3c50ed83ecb5b9cf1c71e5",
+        "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+        "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+      },
+      "rule": "Final report-only descendant retains all five trees exactly relative to this repair checkpoint. Relative to accepted c855, config differs only in the 23 resolved note prefixes; use the explicit semantic comparator, not config-tree equality."
+    }
+  },
+  "historical_report_only_binding": {
+    "checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+    "production_trees": {
+      "src": "d0c976bddbb926e4490671384658ab2c4f338ca0",
+      "include": "036cd7f923a501f2a91d48446b035a599afae6cd",
+      "config": "d3177f6db9f3bd5168661de5ba3e9b222a3d62b2",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "rule": "Final report-only descendant must retain all five production trees exactly."
   }
 }
