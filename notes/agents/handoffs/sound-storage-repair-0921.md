@@ -40,13 +40,13 @@ claimed complete by this narrow storage repair.
 ## Producer proof under 2004/b56
 
 - `affected_src.py include/dScMgSound_c.h`: one production consumer,
-  `src/minigames/dScMgSound_c.cpp`.
+  `src/minigames/d_s_mg_sound.cpp`.
 - Complete compiled TU object is identical to the pre-repair composition:
   36,680 bytes, SHA256 `daf34c005a640ca2e029e624704332961317ed1cf5049e1da9f64cbd6e271192`.
   This comparison includes emitted metadata and relocations.
-- `prepush_linkcheck.py --files src/minigames/dScMgSound_c.cpp`: all 82 functions
+- `prepush_linkcheck.py --files src/minigames/d_s_mg_sound.cpp`: all 82 functions
   VERIFIED, no differences, zero blind words, no warnings or blocking results.
-- `romdata_check.py --files src/minigames/dScMgSound_c.cpp`: 13 records,
+- `romdata_check.py --files src/minigames/d_s_mg_sound.cpp`: 13 records,
   7 VERIFIED / 212 bytes, 6 PARTIAL / 68 compared bytes, zero DIFFERS.
   Partial ancestor metadata is unchanged; it is not relabeled as full coverage.
 - `rombuild.py -j16 --no-rom`: 11,208/11,208 functions reproduce,

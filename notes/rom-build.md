@@ -451,8 +451,8 @@ compiling the same snippet under both compilers in isolation:
   two accesses with different expression shapes (`(char *)p + K` vs `(int)p + K`, or an
   index) stops it. Every sharing site has to be respelled together -- `func_02062428`
   has three, and respelling any one alone left the other two sharing. Fixed
-  [func_ov015_02111e80](../src/game/actors/d_a_obj_bk_dossunbar.cpp) (func 12 used to assemble the TU - `d_a_obj_bk_dossunbar`), [func_ov006_020ded00](../src/minigames/dScMgCup_c.cpp) (part of `dScMgCup_c.cpp`, element 11 used to assemble the TU), `func_02062428`,
-  [func_ov006_02111e90](../src/minigames/dScMgSmartball_c.cpp).
+  [func_ov015_02111e80](../src/game/actors/d_a_obj_bk_dossunbar.cpp) (func 12 used to assemble the TU - `d_a_obj_bk_dossunbar`), [func_ov006_020ded00](../src/minigames/d_s_mg_cup.cpp) (part of `d_s_mg_cup.cpp`, element 11 used to assemble the TU), `func_02062428`,
+  [func_ov006_02111e90](../src/minigames/d_s_mg_smartball.cpp).
 - **Prefer pointer arithmetic on a typed pointer over integer arithmetic then a cast.**
   `ldr` carries a 12-bit displacement and `ldrh`/`ldrsh`/`strh` only 8, so a large
   offset must be split. Given pointer arithmetic b56 splits it the ROM's way; given
@@ -522,7 +522,7 @@ individually with `match.py` before the link confirmed them:
 | `_ZN7daTor_c6RenderEv`, `_ZN14daWater_Ring_c6RenderEv` | `TextureSequence::Update` | `TextureTransformer::Update` |
 | `_ZN18daObjBkKillerdai_c4KillEv` (then `func_ov079_02126e58`) | `Actor::DisappearPoofDustAt` | `Actor::PoofDustAt` |
 | [func_ov085_0212e778](../src/game/actors/d_a_c_jugem.cpp) | `…ApplyInPlaceToRotationXYZExt` | `…ApplyInPlaceToRotationZXYExt` |
-| [func_ov006_0211a048](../src/minigames/dScMgSound_c.cpp)(func 17 used to assemble TU), [func_ov006_0211a5ec](../src/minigames/dScMgSound_c.cpp)(func 29 used to assemble TU) | wrong `data_ov006_*` base | the adjacent one |
+| [func_ov006_0211a048](../src/minigames/d_s_mg_sound.cpp)(func 17 used to assemble TU), [func_ov006_0211a5ec](../src/minigames/d_s_mg_sound.cpp)(func 29 used to assemble TU) | wrong `data_ov006_*` base | the adjacent one |
 | [func_ov006_02120c08](../src//minigames/d_s_mg_trampoline.cpp)(func 13 used to assemble TU) | [func_ov006_020eed68](../src\minigames\d_s_mg_jump2.cpp)(func 3 used to assemble TU) | [func_ov006_02120a64](../src\minigames\d_s_mg_trampoline.cpp)(func 8 used to assemble TU) |
 | [func_ov002_020f23d0](../src/game/actors/d_a_demo.cpp) | the veneer `func_0203cbc0` | `Memory::operator_delete2` |
 

@@ -2,7 +2,7 @@
 
 - tested_commit: f9c1e4609a52783e8a611ba2608225d6e7419aac (cleanup-wingfeather at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_feather.cpp:128` keeps
+- claim: `src/game/actors/daFeather_c/daFeather_c.cpp:128` keeps
   dBgCh_Actr::Init mangled scalar because the header method form takes
   Fix12i, which mangles as `i`, while the ROM is Fix12<int>; the method
   form links Undefined.
@@ -16,7 +16,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_feather.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daFeather_c/daFeather_c.cpp \
   --func _ZN11daFeather_c13InitResourcesEv --addr 0x020b311c --size 0x12c \
   --version 2004/b56 --module ov002 --strict-relocs --brief
 ```
@@ -41,7 +41,7 @@ MATCHING VERSIONS: 2004/b56
 - link command:
 
 ```text
-.venv/bin/python tools/linkcheck.py --c src/game/actors/d_a_feather.cpp \
+.venv/bin/python tools/linkcheck.py --c src/game/actors/daFeather_c/daFeather_c.cpp \
   --name _ZN11daFeather_c13InitResourcesEv --addr 0x020b311c --size 0x12c --module ov002
 ```
 
@@ -66,3 +66,6 @@ UNDEFINED symbols referencing dBgCh_Actr Init:
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_feather.cpp](../../src/game/actors/d_a_feather.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

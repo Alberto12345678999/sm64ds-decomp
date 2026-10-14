@@ -108,45 +108,45 @@ fBase_c > dBase_c > dScene_c
 
 | ID | Profile | Class | Base | Source |
 |---|---|---|---|---|
-| 0x169 | MG_CUP | dScMgCup_c | Single3D | `src/minigames/dScMgCup_c.cpp` |
+| 0x169 | MG_CUP | dScMgCup_c | Single3D | `src/minigames/d_s_mg_cup.cpp` |
 | 0x16a | MG_MEMORY | dScMgMemory_c | Single3D | `src/minigames/d_s_mg_memory.cpp` |
-| 0x16b | MG_MEMORY_J | dScMgMemory2_c | Single3D | `src/minigames/dScMgMemory2_c.cpp` |
-| 0x16c | MG_SLOT1 | dScMgSlot1_c | Base | `src/minigames/dScMgSlots.cpp` (shared with Slot3) + 1 shard |
-| 0x16d | MG_SLOT3 | dScMgSlot3_c | Single3D | `src/minigames/dScMgSlots.cpp` (shared with Slot1) |
-| 0x16e | MG_LUIGI | dScMgLuigi_c | Base | `src/minigames/dScMgLuigi_c.cpp` |
-| 0x16f | MG_SOUND | dScMgSound_c | Single3D | `src/minigames/dScMgSound_c.cpp` |
-| 0x170 | MG_PACHINKO | dScMgPachinko_c | Base | `src/minigames/dScMgPachinko_c.cpp` + 4 shards |
+| 0x16b | MG_MEMORY_J | dScMgMemory2_c | Single3D | `src/minigames/d_s_mg_memory2.cpp` |
+| 0x16c | MG_SLOT1 | dScMgSlot1_c | Base | `src/minigames/d_s_mg_slots.cpp` (shared with Slot3) + 1 shard |
+| 0x16d | MG_SLOT3 | dScMgSlot3_c | Single3D | `src/minigames/d_s_mg_slots.cpp` (shared with Slot1) |
+| 0x16e | MG_LUIGI | dScMgLuigi_c | Base | `src/minigames/d_s_mg_luigi.cpp` |
+| 0x16f | MG_SOUND | dScMgSound_c | Single3D | `src/minigames/d_s_mg_sound.cpp` |
+| 0x170 | MG_PACHINKO | dScMgPachinko_c | Base | `src/minigames/d_s_mg_pachinko.cpp` + 4 shards |
 | 0x171 | MG_TAMAIRE | dScMgPachinko2_c | Base | 6 shards |
-| 0x172 | MG_BOMROOM | dScMgBomroom_c | Base | `src/minigames/dScMgBomroom_c.cpp` + 6 shards |
-| 0x173 | MG_AMIDA | dScMgAmida_c | Base | `src/minigames/dScMgAmida_c.cpp` + 6 shards |
-| 0x174 | MG_JUMP | dScMgJump_c | D3D | `src/minigames/dScMgJump_c.cpp` + 1 shard |
+| 0x172 | MG_BOMROOM | dScMgBomroom_c | Base | `src/minigames/d_s_mg_bomroom.cpp` + 6 shards |
+| 0x173 | MG_AMIDA | dScMgAmida_c | Base | `src/minigames/d_s_mg_amida.cpp` + 6 shards |
+| 0x174 | MG_JUMP | dScMgJump_c | D3D | `src/minigames/d_s_mg_jump_methods.cpp` + 1 shard |
 | 0x175 | MG_JUMP2 | dScMgJump2_c | D3D | `src/minigames/d_s_mg_jump2.cpp` |
-| 0x176 | MG_CURLING | dScMgCurling_c | Base | `src/minigames/dScMgCurling_c.cpp` + 4 shards |
-| 0x177 | MG_CURLING_J | dScMgCurling2_c | Base | `src/minigames/dScMgCurling2_c.cpp` + 4 shards |
-| 0x178 | MG_SMARTBALL | dScMgSmartball_c | Base | `src/minigames/dScMgSmartball_c.cpp` |
-| 0x179 | MG_SNOWBALL | dScMgSnowball_c | Single3D | `src/minigames/dScMgSnowball_c.cpp` |
-| 0x17a | MG_COIN | dScMgCoin_c | Base | `src/minigames/dScMgCoin_c.cpp` + 6 shards |
+| 0x176 | MG_CURLING | dScMgCurling_c | Base | `src/minigames/d_s_mg_curling.cpp` + 4 shards |
+| 0x177 | MG_CURLING_J | dScMgCurling2_c | Base | `src/minigames/d_s_mg_curling2.cpp` + 4 shards |
+| 0x178 | MG_SMARTBALL | dScMgSmartball_c | Base | `src/minigames/d_s_mg_smartball.cpp` |
+| 0x179 | MG_SNOWBALL | dScMgSnowball_c | Single3D | `src/minigames/d_s_mg_snowball.cpp` |
+| 0x17a | MG_COIN | dScMgCoin_c | Base | `src/minigames/d_s_mg_coin.cpp` + 6 shards |
 | 0x17b | MG_CARD | dScMgCard_c | Single3D | `src/minigames/d_s_mg_card.cpp` |
-| 0x17c | MG_PANEL | dScMgPanel_c | Base | `src/minigames/dScMgPanel_c.cpp` |
+| 0x17c | MG_PANEL | dScMgPanel_c | Base | `src/minigames/d_s_mg_panel.cpp` |
 | 0x17d | MG_MCARLO | dScMgMCarlo_c | Single3D | `src/minigames/d_s_mg_m_carlo.cpp` |
 | 0x17e | MG_MCARLO2 | dScMgMCarlo2_c | Single3D | `src/minigames/d_s_mg_m_carlo2.cpp` |
-| 0x17f | MG_ROULETTE | dScMgRoulette_c | Single3D | `src/minigames/dScMgRoulette_c.cpp` |
+| 0x17f | MG_ROULETTE | dScMgRoulette_c | Single3D | `src/minigames/d_s_mg_roulette_methods.cpp` |
 | 0x180 | MG_TRAMPOLINE | dScMgTrampoline_c | D3D | `src/minigames/d_s_mg_trampoline.cpp` |
 | 0x181 | MG_TRAMPOLINE2 | dScMgTrampoline2_c | D3D | `src/minigames/d_s_mg_trampoline2.cpp` |
-| 0x182 | MG_HANACHAN | dScMgHanachan_c | Base | `src/minigames/dScMgHanachan_c.cpp` + 2 shards |
-| 0x183 | MG_TERESA | dScMgTeresa_c | Base | `src/minigames/dScMgTeresa_c.cpp` + 6 shards |
+| 0x182 | MG_HANACHAN | dScMgHanachan_c | Base | `src/minigames/d_s_mg_hanachan_methods.cpp` + 2 shards |
+| 0x183 | MG_TERESA | dScMgTeresa_c | Base | `src/minigames/d_s_mg_teresa.cpp` + 6 shards |
 | 0x184 | MG_BS_CARD | dScMgBSC_c | Single3D | `src/minigames/d_s_mg_bsc.cpp` |
 | 0x185 | MG_3DESP | dScMg3DEsp_c | Single3D | 8 shards |
-| 0x186 | MG_FLOWER | dScMgFlower_c | Single3D | `src/minigames/dScMgFlower_c.cpp` |
+| 0x186 | MG_FLOWER | dScMgFlower_c | Single3D | `src/minigames/d_s_mg_flower.cpp` |
 
 **The bases:**
 - `src/minigames/d_s_mg_base.cpp` (plus 26 `dScMgBase_c` shards)
-- `src/minigames/d_s_mg_single3_d_base.cpp`
-- `src/minigames/dScMgD3DBase_c.cpp`
+- `src/minigames/d_s_mg_single3d_base.cpp`
+- `src/minigames/d_s_mg_d3d_base.cpp`
 
 **The shared ov004 runtime:**
-- `src/minigames/dMgPsOpt_c.cpp`
-- `src/minigames/dMgState_c.cpp`
+- `src/minigames/d_mg_ps_opt.cpp`
+- `src/minigames/d_mg_state.cpp`
 - `src/minigames/d_s_mg_base.cpp` (dScMgBase_c and the helpers beside it, 0x020ad660..0x020b2c58)
 
 ## Names: what is known
@@ -171,5 +171,5 @@ fBase_c > dBase_c > dScene_c
 - **Scoring modes:** what separate modes 0, 1 and 3? Mode 5 is Snowball's lower-is-better time.
 - **Duplicate rows:** are the six duplicated menu rows one game offered in two variants?
 - **Pause gate:** why does `BeforeBehavior` stop a game while `unk_462c` is set, or while `unk_0a4` is 0 and the fader is not at its start?
-- **Local mislabels:** `d_s_mg_base.cpp` and `dScMiniGm_c.cpp` still call the fader the "stylus owner", and `dScMiniGm_c.cpp` names the touch bytes `{pressed, held}`. A later pass should fix these comments.
+- **Local mislabels:** `d_s_mg_base.cpp` and `d_s_mini_gm.cpp` still call the fader the "stylus owner", and `d_s_mini_gm.cpp` names the touch bytes `{pressed, held}`. A later pass should fix these comments.
 - **Slot 18:** what does it really do? Callers pass -1, 3, 4 and 5.

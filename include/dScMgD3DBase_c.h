@@ -35,7 +35,7 @@
  *
  * From above, the bound is dScMgJump_c's: a Jump helper (func_ov006_020ee2c4,
  * once a one-function source directly under src/ that no longer exists --
- * it is now a member of src/minigames/dScMgJump_c.cpp, whose manifest entry
+ * it is now a member of src/minigames/d_s_mg_jump_methods.cpp, whose manifest entry
  * config/tu_manifest.d/ov006/dScMgJump_c.json keeps the old full path in its
  * functions[].legacy_source row) writes 0x5004 and 0x5014, and no method of
  * THIS class touches either. Its three siblings begin at 0x500c instead, so

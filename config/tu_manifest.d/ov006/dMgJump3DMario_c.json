@@ -1,8 +1,8 @@
 {
   "id": "ov006/dMgJump3DMario_c",
   "module": "ov006",
-  "source": "src/minigames/dMgJump3DMario_c.cpp",
-  "promoted_source": "src/minigames/dMgJump3DMario_c.cpp",
+  "source": "src/minigames/d_mg_jump3d_mario.cpp",
+  "promoted_source": "src/minigames/d_mg_jump3d_mario.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
@@ -316,10 +316,10 @@
       "ordinal": 39
     },
     {
-      "symbol": "__sinit_dMgJump3DMario_c.cpp",
+      "symbol": "__sinit_d_mg_jump3d_mario.cpp",
       "address": "0x0212f52c",
       "size": "0x00000134",
-      "legacy_source": "src/minigames/dMgJump3DMario_c.cpp",
+      "legacy_source": "src/minigames/d_mg_jump3d_mario.cpp",
       "ordinal": 40
     }
   ],
@@ -808,7 +808,7 @@
   "production_mode": "intact-object",
   "init": [
     {
-      "symbol": "__sinit_dMgJump3DMario_c.cpp",
+      "symbol": "__sinit_d_mg_jump3d_mario.cpp",
       "address": "0x0212f52c",
       "size": "0x134",
       "binding": "STB_GLOBAL",
@@ -817,7 +817,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dMgJump3DMario_c.cpp",
+      "symbol": ".p__sinit_d_mg_jump3d_mario.cpp",
       "address": "0x02133570",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -863,13 +863,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dMgJump3DMario_c.cpp",
+      "symbol": "__sinit_d_mg_jump3d_mario.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
     },
     {
-      "symbol": ".p__sinit_dMgJump3DMario_c.cpp",
+      "symbol": ".p__sinit_d_mg_jump3d_mario.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits this local; DSD needs a global symbol at the retail address"
@@ -1223,7 +1223,7 @@
       "source": "0x02133570",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dMgJump3DMario_c.cpp",
+      "symbol": "__sinit_d_mg_jump3d_mario.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0212f52c"

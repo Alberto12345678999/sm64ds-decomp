@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgPachinko2_c",
   "module": "ov006",
-  "source": "src/minigames/dScMgPachinko2_c.cpp",
-  "promoted_source": "src/minigames/dScMgPachinko2_c.cpp",
+  "source": "src/minigames/d_s_mg_pachinko2.cpp",
+  "promoted_source": "src/minigames/d_s_mg_pachinko2.cpp",
   "status": "promoted",
   "production_mode": "intact-object",
   "boundary_confidence": "medium",
@@ -891,7 +891,7 @@
   "externalized_output": [],
   "init": [
     {
-      "symbol": "__sinit_dScMgPachinko2_c.cpp",
+      "symbol": "__sinit_d_s_mg_pachinko2.cpp",
       "address": "0x02131cd0",
       "size": "0x2d4",
       "binding": "STB_GLOBAL",
@@ -900,7 +900,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dScMgPachinko2_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_pachinko2.cpp",
       "address": "0x021335c4",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -909,13 +909,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dScMgPachinko2_c.cpp",
+      "symbol": "__sinit_d_s_mg_pachinko2.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_dScMgPachinko2_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_pachinko2.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -927,7 +927,7 @@
       "source": "0x021335c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dScMgPachinko2_c.cpp",
+      "symbol": "__sinit_d_s_mg_pachinko2.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02131cd0"

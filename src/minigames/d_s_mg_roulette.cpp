@@ -1,6 +1,6 @@
 //cpp
 /* Mushroom Roulette scene factory (MG_ROULETTE), plus the empty array
- * element constructor. The scene's methods live in dScMgRoulette_c.cpp.
+ * element constructor. The scene's methods live in d_s_mg_roulette_methods.cpp.
  *
  * ROM: .text 0x0210a400..0x0210a4b0 — dScMgRoulette_c_classInit (the
  * registry factory) and func_ov006_0210a4ac (the mArray element

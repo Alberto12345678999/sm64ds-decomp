@@ -39,7 +39,7 @@ void Vec3_Add(Vector3 *out, const Vector3 *a, const Vector3 *b);
 int func_ov002_020b6a80(char *self);
 int func_ov002_020b6ac8(void *actor, void *descriptor);
 
-/* Matches the scalar definition in dBgActor_c.cpp. Its encoded Fix12 name
+/* Matches the scalar definition in d_bg_actor.cpp. Its encoded Fix12 name
    does not establish a by-value class parameter; see dBgActor_c.h. */
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int radius, int yOffset);
 // local extern: the actual free definition accepts a scalar scale; the

@@ -183,12 +183,12 @@ static gates below were rerun on this commit.
   no broken markdown links. It exited 1 at the first checkpoint, before the
   prose fix.
 - `python tools/tiers_ratchet.py --check` exit 1: one backslide,
-  `src/minigames/dScMgLuigi_c.cpp#_ZN12dScMgLuigi_c10ResetBoardEv` (No unk_
+  `src/minigames/d_s_mg_luigi.cpp#_ZN12dScMgLuigi_c10ResetBoardEv` (No unk_
   fields). This is pre-existing: the same command at the input commit also
   exits 1 with the same single lost member (+64 gained there, +65 here). This
   TU's four banked identities are retained and not listed as lost. Not
   `--update`d. Base evidence: a scratch checkout of 787633e5e7 run with the
-  same command exits 1, and `src/minigames/dScMgLuigi_c.cpp` and its includes
+  same command exits 1, and `src/minigames/d_s_mg_luigi.cpp` and its includes
   are unchanged by this branch. The coordinator reports that #3077 fixes it on
   main.
 - `python tools/check_tubuild_conflicts.py` exit 0.

@@ -82,7 +82,7 @@ declared `virtual ~dScene_c();` cannot be inlined and emits `bl _ZN8dScene_cD2Ev
 the ROM has none (measured on a `dScStage_c` trial: 80 bytes with the call vs the ROM's 104
 with none).
 
-The production [Scene TU](../src/game/stages/dScene_c.cpp) defines the key function,
+The production [Scene TU](../src/game/stages/d_scene.cpp) defines the key function,
 `BeforeInitResources`. Its vtable references emit both out-of-line copies of the
 inline destructor in ROM order. The former per-function forcing calls are no
 longer needed. The emitted metadata is checked against its existing ROM homes
@@ -153,7 +153,7 @@ colliding with the copy the module's gap object supplies from ROM data. The dest
 is declared first, which is free for a derived class (an override takes its base's slot
 wherever it is written) and pins the role to `~dScStage_c`. `tools/objisolate.py` makes that
 TU eligible anyway, so `~dScStage_c` is a real method, defined identically —
-`dScStage_c::~dScStage_c() {}` — in both of its destructor variants in `src/game/stages/dScStage_c.cpp`.
+`dScStage_c::~dScStage_c() {}` — in both of its destructor variants in `src/game/stages/d_s_stage_methods.cpp`.
 Unlike `dScene_c`, `dScStage_c` does not need to define it inline in the class body: `dScStage_c`
 is a leaf, so nothing derives from it that would need to inline *its* destructor in
 turn.
@@ -237,7 +237,7 @@ the destructor pair at 16/17. Confirmed against [config/arm9/relocs.txt](../conf
 at 0x02091528 and 0x02091540.
 
 **Converted 2026-08-22.** Both overrides are now real `dScBoot_c::` methods
-(`src/game/stages/dScBoot_c.cpp`), both
+(`src/game/stages/d_s_boot_methods.cpp`), both
 byte-exact. A previous revision of
 the header said they were "NOT CONVERTED BY THIS PASS", which was later read as saying
 they *could not* be. The key function is the first non-inline virtual *declared*, which
@@ -365,7 +365,7 @@ same slot. Two of the ten (`SetToEnd`, `SetToStart`) are pure tail-call veneers 
 `dFdBrightness_c`/`dFdColor_c` bodies and otherwise run the hardware-capture path.
 
 **`SetBackwardTime` stays plain C — measured, do not "fix".** The full record:
-`src/engine/fader/dWipe_c.cpp` takes a third parameter that arrives in r2 and is
+`src/runtime/graphics/fader/d_wipe.cpp` takes a third parameter that arrives in r2 and is
 forwarded to the guard call with zero instructions, which keeps r2 live from entry to
 the call and forces the cached `type` into r3 as in the ROM. As a real method the
 mangled name fixes the arity at one (`Ej`), so the r2-holding parameter cannot exist,

@@ -18,7 +18,7 @@
  * The helpers whose first parameter was the scene are now members of
  * dScMgSnowball_c, including the 17 per-element helpers dispatched through
  * the PMF tables data_ov006_02143020/38/50/70 (8-byte {function, 0}
- * records). __sinit_dScMgSnowball_c.cpp copies them. Some calls stay mangled:
+ * records). __sinit_d_s_mg_snowball.cpp copies them. Some calls stay mangled:
  * cstd::atan2 and Particle::System take Fix12 or reference
  * arguments, and decl_common.h declares a global named G2, so no
  * `namespace G2` can be opened here.
@@ -2555,7 +2555,7 @@ SnowballProfile g_profile_MG_SNOWBALL = {
 };
 
 /* Source order is copy order. Each entry is a {function, 0} descriptor;
- * __sinit_dScMgSnowball_c.cpp copies them into the tables. */
+ * __sinit_d_s_mg_snowball.cpp copies them into the tables. */
 extern "C" PMF_0212a2e0 data_ov006_02143038[3] = {
     &dScMgSnowball_c::func_ov006_0212a274,
     &dScMgSnowball_c::func_ov006_0212a224,

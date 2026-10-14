@@ -110,12 +110,11 @@ extern "C" daOnms_cStateEntry data_ov092_02132568[9];
 extern "C" {
 int func_ov002_020de328(void *player);
 void dBgCh_Actr_UpdateContinuous_Veneer(void *self);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *v, int f);
 /* Sound::Play(3, id, pos). The overlay calls this wrapper, not Sound::Play. */
 void func_02012694(unsigned int id, const Vector3 *v);
-int func_02037e38(void *p);
-int func_02037e84(void *p);
+int func_02037e38(unsigned int *p);
+int func_02037e84(int *p);
 /* Stores mRadius: p[6] = value, the word at dBgCh_Actr + 0x18. */
 void func_0203568c(void *p, int v);
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int b, int cc, int d);
@@ -251,16 +250,17 @@ void daOnms_c::StateKnocked()
         return;
 
     mRestPos.y = mPosY;
-    /* GetFloorResult is the floor dBgPi. CLPS w0 sits at +4 (past the
-       vptr). Hoisting that address DIFF 13 words in this function. */
-    dBgPi *floor = (dBgPi *)_ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
+    /* The wrapper returns the sphere query's dBgPi. Its dBgPc base owns
+       the surface. Keep each CLPS address at its call site; the earlier
+       hoisted-address probe differed by 13 words. */
+    dBgPi *floor = (dBgPi *)mWithMeshClsn.GetFloorResult();
 
-    if (func_02037e38((char *)floor + 4) == 9) {
+    if (func_02037e38(&floor->surface.clps.w0) == 9) {
         mMoveDir = kDirSink;
         mHorzSpeed = 0;
         mVertSpeed = 0;
         func_02012694(0x178, CamPos(this));
-    } else if (func_02037e84((char *)floor + 4) == 8) {
+    } else if (func_02037e84((int *)&floor->surface.clps.w0) == 8) {
         /* The player's position is read through p: reading o->mPosX
            directly changes the code. */
         dActor_c *o;

@@ -230,7 +230,7 @@ note changed after the byte and link gates ran.
 ---
 - `python tools/tiers_ratchet.py --check`: exit 1, baseline 2994, current
   3058 (+65 gained, -1 lost). The one loss is
-  `src/minigames/dScMgLuigi_c.cpp#_ZN12dScMgLuigi_c10ResetBoardEv`, which this
+  `src/minigames/d_s_mg_luigi.cpp#_ZN12dScMgLuigi_c10ResetBoardEv`, which this
   change does not touch; the same check exits 1 with that same loss at the
   base (current 3057 there), so it is pre-existing; #3077 fixes it. The gain
   is not banked, for the integration lane. Re-run after the citation fix:

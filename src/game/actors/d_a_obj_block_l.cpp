@@ -265,7 +265,7 @@ void daObjBlockL_c::OnGroundPounded(dActor_c &other)
  * Particle::System::NewSimple and dActor_c::SpawnCoins stay spelled as their
  * mangled names -- both take Fix12<int> BY VALUE and declaring the true types
  * changes how the caller passes them. include/dActor_c.h says the same thing at the
- * bottom of the class, src/runtime/actor/dBgActor_c.cpp argues it in full, and
+ * bottom of the class, src/runtime/actor/d_bg_actor.cpp argues it in full, and
  * notes/mwccarm-codegen.md 6az is the rule. */
 void daObjBlockL_c::Kill()
 {

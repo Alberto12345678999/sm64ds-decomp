@@ -297,7 +297,7 @@ merge. So S1 legitimately harvests blocked-pool files; S6 does not.
 
 Why not the 4-byte `dThIcon_c::Render` (an empty `bx lr`), which had its own
 per-function source directly under `src/` when this was written and is now a
-member of `src/ui/hud/dThIcon_c.cpp`: a stub is
+member of `src/ui/hud/d_th_icon.cpp`: a stub is
 codegen-identical in both languages by construction and would validate nothing. This file
 is the smallest candidate that puts **real code** through the C→C++ front end while
 holding every other variable fixed:

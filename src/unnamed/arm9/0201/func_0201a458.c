@@ -1,5 +1,5 @@
 /* func_0201a458 -- create the root heap over 0x0211d9c0..0x02140d80 and store it in
- * data_0209d524. Both callers (func_02034fbc in dScMB_c.cpp and dScDSMT_c's result-6
+ * data_0209d524. Both callers (func_02034fbc in d_s_mb.cpp and dScDSMT_c's result-6
  * path) load overlays 100 and 102 right after, and 0x02140d80 is where ov100 is
  * loaded, so the heap ends at OV100_TEXT_START. 0x0211d9c0 is where ov075 ends
  * (OV075_BSS_END); ov062/063/065 run past it and so cannot be resident beside this

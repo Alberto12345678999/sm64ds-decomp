@@ -22,7 +22,7 @@
  * below them), the twenty-six helpers func_ov002_020ec610 through
  * func_ov002_020eddc4, CleanupResources, Render, Behavior, InitResources,
  * and last the registry factory daYegg_c_classInit (0x020ee3d8);
- * src/runtime/actor/dBgActor_c.cpp starts exactly at 0x020ee42c above it. The
+ * src/runtime/actor/d_bg_actor.cpp starts exactly at 0x020ee42c above it. The
  * out-of-line destructor is the key function, so this TU also emits the
  * vtable and the RTTI.
  *
@@ -43,16 +43,21 @@
  * func_ov002_020edca4 by Player.cpp) stay free. All keep their address-based
  * names; the comments say what each does, not what the original called it.
  *
+ * Actor targeting uses dActor_c's existing virtual interfaces: slot 30 returns
+ * the aim position, and slot 20 supplies the integer query used by the variant.
+ * The shadow ground probe is a real dBgCh_Gnd, constructed after the opacity
+ * guard and position setup, with its result read through clsnY. These interface
+ * names are reconstructed; this slice does not recover original method names.
+ *
  * deslop leftovers:
  * - the callees with Fix12<int> parameters (ModelAnim::SetAnim,
  *   dCcAc_c::Init, dBgCh_Actr::Init, the shadow drops, Particle::System::New)
  *   stay spelled as mangled extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
- * - still raw offsets: the words written into each spawned coin in
- *   func_ov002_020ec80c (+0x92..+0x98), the DOSUN byte at +0x3a2 in
- *   func_ov002_020ec670, the word at Player+0xc8 in func_ov002_020ed998 and
- *   the dBgCh_Gnd result at +0x44 in func_ov002_020ed7f8.
+ * - still raw offsets: the DOSUN byte at +0x3a2 in func_ov002_020ec670
+ *   and the word at Player+0xc8 in func_ov002_020ed998. Spawned coins use
+ *   dActor_c's existing previous-angle and horizontal-speed fields.
  * - mSpawnPos is named in daYegg_c.h but its purpose is not known
  *   (written once, never read here); unk_41e and the 4-byte gap at 0x3f8 are
  *   unnamed. dActor_c::unk_0a4/unk_0ac and Player::unk_37c are read through
@@ -78,6 +83,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
+#include "dBgCh_Gnd.h"
 
 struct dBgPi;
 
@@ -89,60 +95,6 @@ struct Vec3_16f { s16 x, y, z; };
 /* The scratch matrix at 0x020a0e68, as twelve words. */
 struct M48 { int w[12]; };
 struct Spawn { struct Vec3_16f rot; struct Vec3i pos; };
-
-/* func_ov002_020ecd18's vector, copied by hand: the by-value result of the
-   followed actor's slot 30 comes back through it. */
-struct Vec3 { s32 x, y, z; Vec3() {} Vec3(const Vec3 &o) { x = o.x; y = o.y; z = o.z; } };
-
-/* The followed actor seen through its vtable, as far as func_ov002_020ecd18
-   reaches: slot 30 returns a position by value. */
-struct VObj {
-    virtual void v00();
-    virtual void v01();
-    virtual void v02();
-    virtual void v03();
-    virtual void v04();
-    virtual void v05();
-    virtual void v06();
-    virtual void v07();
-    virtual void v08();
-    virtual void v09();
-    virtual void v10();
-    virtual void v11();
-    virtual void v12();
-    virtual void v13();
-    virtual void v14();
-    virtual void v15();
-    virtual void v16();
-    virtual void v17();
-    virtual void v18();
-    virtual void v19();
-    virtual void v20();
-    virtual void v21();
-    virtual void v22();
-    virtual void v23();
-    virtual void v24();
-    virtual void v25();
-    virtual void v26();
-    virtual void v27();
-    virtual void v28();
-    virtual void v29();
-    virtual struct Vec3 v30();
-};
-
-/* The same actor as func_ov002_020edb3c asks it: slot 20 is a yes/no. */
-struct VObjQuery {
-    virtual int s0(); virtual int s1(); virtual int s2(); virtual int s3();
-    virtual int s4(); virtual int s5(); virtual int s6(); virtual int s7();
-    virtual int s8(); virtual int s9(); virtual int s10(); virtual int s11();
-    virtual int s12(); virtual int s13(); virtual int s14(); virtual int s15();
-    virtual int s16(); virtual int s17(); virtual int s18(); virtual int s19();
-    virtual int s20();
-};
-
-/* A ground probe on the stack, opaque; its constructor and destructor are
-   called by name. */
-typedef struct dBgCh_Gnd { char buf[0x68 - 0x18]; } dBgCh_Gnd;
 
 /* Actor registry IDs this file tests or spawns (symbols/actor_debug_names.tsv). */
 enum {
@@ -241,10 +193,6 @@ extern void ApproachAngle(void *cur, short target, int divisor, int band, int ma
 extern void _Z11UpdateAngleRssis(short *a, int b, int c, short d);
 extern int func_02010844(void *unused, void *v, short angle);
 extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *self, void *out);
-extern void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
-extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd *self, const void *v, void *actor);
-extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
-extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_FromTranslation(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(M48 *m, int x, int y, int z);
@@ -443,7 +391,7 @@ void daYegg_c::func_ov002_020ec80c(void* b, int count, int sl, short arg5)
     {
         unsigned int r;
         int zero;
-        char* n;
+        dActor_c* coin;
         int rv;
         int prev;
         int i;
@@ -455,19 +403,19 @@ void daYegg_c::func_ov002_020ec80c(void* b, int count, int sl, short arg5)
         if (count <= 0) return;
         zero = i;
         do {
-            n = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_BLUE_COIN, 2, b, 0, mAreaId, -1);
-            if (n != 0) {
+            coin = (dActor_c*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_BLUE_COIN, 2, b, 0, mAreaId, -1);
+            if (coin != 0) {
                 do {
                     rv = (int)(((unsigned int)RandomIntInternal(&data_0209e650) >> 16) << 27) >> 16;
                 } while (rv == prev);
                 r = (unsigned int)RandomIntInternal(&data_0209e650);
                 r = r >> 16;
-                *(short*)(n + 0x92) = zero;
+                coin->mPrevAngleX = zero;
                 sl = sl * ((r % 50) + 100) / 100;
                 prev = rv;
-                *(short*)(n + 0x94) = arg5 + rv;
-                *(short*)(n + 0x96) = zero;
-                *(int*)(n + 0x98) = sl;
+                coin->mPrevAngleY = arg5 + rv;
+                coin->mPrevAngleZ = zero;
+                coin->mHorzSpeed = sl;
             }
             i++;
         } while (i < count);
@@ -705,7 +653,7 @@ void daYegg_c::func_ov002_020ecd18()
                     return;
                 }
                 if (o != 0) {
-                    struct Vec3 tmp = ((struct VObj *)o)->v30();
+                    Vector3 tmp = o->OnAimedAtWithEggReturnVec();
                     if (_Z14ApproachLinearR7Vector3RKS_5Fix12IiE(
                             &mPosX, &tmp, mHorzSpeed) != 0) {
                         switch (o->actorID) {
@@ -1104,8 +1052,7 @@ void daYegg_c::func_ov002_020ed738() {
  * func_ov002_020cf700 / func_ov002_020d0d2c says so for the Player. */
 void daYegg_c::func_ov002_020ed7f8()
 {
-    dBgCh_Gnd rg;
-    struct Vec3i v;
+    Vector3 v;
     int r5;
     int r4;
     int b;
@@ -1117,11 +1064,11 @@ void daYegg_c::func_ov002_020ed7f8()
     v.y = mPosY;
     v.z = mPosZ;
     v.y += 0x28000;
-    _ZN9dBgCh_GndC1Ev(&rg);
-    _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rg, &v, 0);
+    dBgCh_Gnd rg;
+    rg.SetObjAndPos(v, 0);
     r4 = v.y;
-    if (_ZN9dBgCh_Gnd10DetectClsnEv(&rg))
-        r4 = *(int*)((char*)&rg + 0x44);
+    if (rg.DetectClsn())
+        r4 = rg.clsnY;
     r5 = mPosY - r4;
     if (r5 <= 0x1000) r5 = 0x1000;
     r4 = 0x50000 - (int)(((long long)r5 * 0x180 + 0x800) >> 12);
@@ -1144,7 +1091,6 @@ void daYegg_c::func_ov002_020ed7f8()
                 this, &mShadowModel, mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
         }
     }
-    _ZN9dBgCh_GndD1Ev(&rg);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1242,7 +1188,7 @@ loop:
     }
     if (matched != 0) goto next;
     if (func_ov002_020ec654() != 0) {
-        if (((VObjQuery *)actor)->s20() == 0) goto next;
+        if (actor->Virtual50() == 0) goto next;
     }
     {
         int d = Vec3_Dist(&mPosX, &actor->mPosX);

@@ -2,7 +2,7 @@
 
 - tested_commit: b19392a93 (cleanup-dapiano at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_piano.cpp:35-38` keep
+- claim: `src/game/actors/daPiano_c/d_a_piano.cpp:35-38` keep
   `ModelAnim::SetAnim` (representative for the `SetAnim`/`Init`/`SetFile`
   group) a mangled free declaration because the ROM signature carries
   `Fix12<int>` by value while the header member form
@@ -24,14 +24,14 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_piano.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daPiano_c/d_a_piano.cpp \
   --func _ZN9daPiano_c13InitResourcesEv --addr 0x0211dfac --size 0x17c \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```
 
 - result: baseline MATCH; variant size 0x17c vs 0x184 (+8 bytes, the
   `Fix12<int>` local materialization), no match. Same shape as daBmb's
-  report ("the header method form size-DIFFs", `src/game/actors/d_a_bmb.cpp:14-17`).
+  report ("the header method form size-DIFFs", `src/actors/daBmb_c.cpp:14-17`).
 - log (variant):
 
 ```text
@@ -46,3 +46,6 @@ MATCHING VERSIONS: none
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_bmb.cpp](../../src/game/actors/d_a_bmb.cpp), [src/game/actors/d_a_piano.cpp](../../src/game/actors/d_a_piano.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

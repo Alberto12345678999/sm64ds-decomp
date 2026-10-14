@@ -2,7 +2,7 @@
 /* Collision middle run, arm9 0x02037dc4..0x02039140.
  * func_02037dc4 opens it and dBgCh_Gnd::DetectClsn closes it.
  * dBgW::Disable at 0x02039140 starts the next file.
- * dBgCh_Lin.cpp and dBgCh_SphCrr.cpp stay separate: their this-adjustment
+ * d_bg_ch_lin.cpp and d_bg_ch_sph_crr.cpp stay separate: their this-adjustment
  * thunks are anchored at the end of those files, and this stretch has none.
  *
  * Deferred codegen emits .text in reverse source order, so the definitions
@@ -55,53 +55,16 @@ extern dBgW *data_020a0c80[];
 extern char data_020a0c78;
 }
 
-/* File-local stand-ins for the query scans. class C is the collider side
-   (vtable slot 7 dispatches DetectClsn); Vec3/Info read the owner's clip
-   volume at +0x5c/+0xb0. ClsnObj/ClsnActor are the same shapes under the
-   Gnd scan's names. PcAB/PcObj are func_02037eb0's record spellings (named
-   apart: the scans' Obj stand-ins below are vtable views, not records).
-   UpdateObj dispatches func_02038324's m9 slot. PFN is the stored-callback
-   shape. */
+/* Ground and line scans use the real dBgW virtual interface and dActor_c
+   clip-volume fields, as the sphere scans do below. Vec3 remains the plain
+   three-word copy view. PcAB/PcObj describe func_02037eb0's records;
+   PFN retains its pending stored-callback reconstruction. Position reads
+   keep the measured three-word byte view of the actor: direct mPosX/Y/Z
+   accesses remove one address-setup instruction from each of three scans. */
 struct Vec3 { int x, y, z; };
 
-class C {
-public:
-    virtual int v0();
-    virtual int v1();
-    virtual int v2();
-    virtual int v3();
-    virtual int v4();
-    virtual int v5();
-    virtual int v6(void *arg);
-    virtual int v7(void *arg);
-};
-
-struct Info {
-    char pad0[0x5c];
-    Vector3 pos;
-    char pad1[0xb0 - 0x68];
-    int pB0;
-    int pB4;
-    int pB8;
-};
-
-struct ClsnObj { char pad[0x5c]; int vec[3]; char pad2[0x48]; int flags; int hb4; int hb8; };
-struct ClsnActor { virtual int v0(); virtual int v1(); virtual int v2(); virtual int v3(); virtual int v4(); virtual int v5(); virtual int v6(void*); };
 struct PcAB { int a; int b; };
 struct PcObj { int a; int b; struct Vector3 v; };
-
-struct UpdateObj {
-    virtual void m0();
-    virtual void m1();
-    virtual void m2();
-    virtual void m3();
-    virtual void m4();
-    virtual void m5();
-    virtual void m6();
-    virtual void m7();
-    virtual void m8();
-    virtual void m9(void *a, int v, int b, int c, int d);
-};
 
 typedef void (*PFN)(int self, int arg, int b);
 
@@ -112,38 +75,38 @@ int dBgCh_Gnd::DetectClsn()
 {
     int ret = 0;
     func_02037464(this);
-    ClsnActor* o = (ClsnActor *)data_020a0c80[0];
-    if (o != 0 && func_02035354(this, (void *)func_020393b4(o)) == 0 && o->v6(this) != 0) {
-        ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
+    dBgW* o = (dBgW *)data_020a0c80[0];
+    if (o != 0 && func_02035354(this, (void *)func_020393b4(o)) == 0 && o->DetectClsn(*this) != 0) {
+        dBgPi::SetCollider(0, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
         ret = 1;
     }
     int flag = 1;
     int one = 1;
     Vec3 pos;
     for (int i = 1; i < 24; i++) {
-        ClsnActor* obj = (ClsnActor *)data_020a0c80[i];
+        dBgW* obj = (dBgW *)data_020a0c80[i];
         if (obj == 0) continue;
-        ClsnObj* p = (ClsnObj *)func_020393b4(obj);
+        dActor_c* p = (dActor_c *)func_020393b4(obj);
         if (func_02035354(this, p) != 0) continue;
-        if (p != 0 && ((p->flags & 2) ? flag : 0) != 0) {
-            int* pv = (int*)(&p->vec[0]);
-            pos.x = pv[0];
-            pos.y = pv[1];
-            pos.z = pv[2];
+        if (p != 0 && ((p->mFlags & 2) ? flag : 0) != 0) {
+            const char *position = (const char *)p + 0x5c;
+            pos.x = *(const s32 *)(position + 0);
+            pos.y = *(const s32 *)(position + 4);
+            pos.z = *(const s32 *)(position + 8);
             int thr = func_0203939c(obj);
             if (thr == -0x1000) {
-                int h8 = p->hb8;
-                pos.y = pos.y + p->hb4;
+                int h8 = p->mClipRadius;
+                pos.y = pos.y + p->mClipOffsetY;
                 thr = h8 << 3;
             } else {
                 pos.y = pos.y + func_0203938c(obj);
             }
-            Vec3* selfpos = (Vec3*)((long long)(int)&this->pos);
+            Vector3* selfpos = (Vector3*)((long long)(int)&this->pos);
             if (selfpos->y < pos.y - thr) continue;
-            if (Vec3_HorzDist((const Vector3 *)selfpos, (const Vector3 *)&pos) > thr) continue;
+            if (Vec3_HorzDist(selfpos, (const Vector3 *)&pos) > thr) continue;
         }
-        if (obj->v6(this) != 0) {
-            ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(obj), (dActor_c *)func_020393b4(obj), (dBgW *)obj);
+        if (obj->DetectClsn(*this) != 0) {
+            dBgPi::SetCollider(i, func_020393ac(obj), (dActor_c *)func_020393b4(obj), (dBgW *)obj);
             ret = one;
         }
     }
@@ -157,15 +120,15 @@ int dBgCh_Gnd::DetectClsn()
 extern "C" int func_02038ea4(void *thiz)
 {
     int r = 0;
-    C *o;
+    dBgW *o;
     func_02037464(thiz);
-    o = (C *)data_020a0c80[0];
+    o = (dBgW *)data_020a0c80[0];
     if (o != 0) {
         if (func_02035354(thiz, (void *)func_020393b4(o)) == 0) {
-            if (o->v6(thiz) != 0) {
+            if (o->DetectClsn(*(dBgCh_Gnd *)thiz) != 0) {
                 int a = func_020393ac(o);
                 int b = func_020393b4(o);
-                ((dBgPi *)((char *)thiz + 0x10))->SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
+                static_cast<dBgCh_Gnd *>(thiz)->dBgPi::SetCollider(0, a, (dActor_c *)b, (dBgW *)o);
                 r = 1;
             }
         }
@@ -319,56 +282,56 @@ bool dBgCh_Lin::DetectClsn()
 {
     bool result = false;
     int i;
-    C *o;
-    Info *info;
+    dBgW *o;
+    dActor_c *info;
     int m;
     char *e;
-    char *base;
+    Vector3 *base;
     int threshold;
     e = (char *)data_020a0c80[0];
     if (e != 0) {
         if (func_02035354(this, (void *)func_020393b4(e)) == 0) {
-            int mask = ((C *)e)->v7(this);
+            int mask = ((dBgW *)e)->DetectClsn(*this);
             if (mask != 0) {
-                ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
+                dBgPi::SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 result = true;
             }
         }
     }
 
-    char *p64 = (char *)&mBoundSphere;
-    base = p64 + 4;
-    threshold = *(int *)(p64 + 0x10);
+    dM3dGSph &sphere = mBoundSphere;
+    base = &sphere.centre;
+    threshold = (int)sphere.radius;
     for (i = 1; i < 0x18; i++) {
-        o = (C *)data_020a0c80[i];
+        o = (dBgW *)data_020a0c80[i];
         if (o == 0) continue;
-        info = (Info *)func_020393b4(o);
+        info = (dActor_c *)func_020393b4(o);
         if (func_02035354(this, info) != 0) continue;
         if (info != 0) {
-            int active = (info->pB0 & 2) ? 1 : 0;
+            int active = (info->mFlags & 2) ? 1 : 0;
             if (active != 0) {
                 Vec3 v;
-                Vec3 *src = (Vec3 *)((char *)info + 0x5c);
-                v.x = src->x;
-                v.y = src->y;
-                v.z = src->z;
+                const char *position = (const char *)info + 0x5c;
+                v.x = *(const s32 *)(position + 0);
+                v.y = *(const s32 *)(position + 4);
+                v.z = *(const s32 *)(position + 8);
                 m = func_0203939c(o);
                 if (m == -0x1000) {
-                    int b4 = info->pB4;
-                    int b8 = info->pB8;
+                    int b4 = info->mClipOffsetY;
+                    int b8 = info->mClipRadius;
                     v.y += b4;
                     m = b8 << 3;
                 } else {
                     v.y += func_0203938c(o);
                 }
-                if (Vec3_Dist((const Vector3 *)base, (const Vector3 *)&v) > m + threshold)
+                if (Vec3_Dist(base, (const Vector3 *)&v) > m + threshold)
                     continue;
             }
         }
         {
-            int mask = o->v7(this);
+            int mask = o->DetectClsn(*this);
             if (mask != 0) {
-                ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
+                dBgPi::SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
                 result = true;
             }
         }
@@ -381,11 +344,11 @@ bool dBgCh_Lin::DetectClsn()
    address name. */
 extern "C" int func_0203859c(void *obj)
 {
-    C *e = (C *)data_020a0c80[0];
+    dBgW *e = (dBgW *)data_020a0c80[0];
     int result = 0;
     if (e != 0) {
         if (func_02035354(obj, (void *)func_020393b4(e)) == 0) {
-            if (e->v7(obj) != 0) {
+            if (e->DetectClsn(*(dBgCh_Lin *)obj) != 0) {
                 int a = func_020393ac(e);
                 int b = func_020393b4(e);
                 ((dBgPi *)((char *)obj + 0x10))->SetCollider(0, a, (dActor_c *)b, (dBgW *)e);
@@ -403,8 +366,8 @@ extern "C" int func_0203842c(char *self)
 {
     int result = 0;
     int i;
-    C *o;
-    Info *info;
+    dBgW *o;
+    dActor_c *info;
     int m;
     char *base;
     int threshold;
@@ -413,22 +376,22 @@ extern "C" int func_0203842c(char *self)
     base = p64 + 4;
     threshold = *(int *)(p64 + 0x10);
     for (i = 1; i < 0x18; i++) {
-        o = (C *)data_020a0c80[i];
+        o = (dBgW *)data_020a0c80[i];
         if (o == 0) continue;
-        info = (Info *)func_020393b4(o);
+        info = (dActor_c *)func_020393b4(o);
         if (func_02035354(self, info) != 0) continue;
         if (info != 0) {
-            int active = (info->pB0 & 2) ? 1 : 0;
+            int active = (info->mFlags & 2) ? 1 : 0;
             if (active != 0) {
                 Vector3 v;
-                Vector3 *src = (Vector3 *)((char *)info + 0x5c);
-                v.x = src->x;
-                v.y = src->y;
-                v.z = src->z;
+                const char *position = (const char *)info + 0x5c;
+                v.x = *(const s32 *)(position + 0);
+                v.y = *(const s32 *)(position + 4);
+                v.z = *(const s32 *)(position + 8);
                 m = func_0203939c(o);
                 if (m == -0x1000) {
-                    int b4 = info->pB4;
-                    int b8 = info->pB8;
+                    int b4 = info->mClipOffsetY;
+                    int b8 = info->mClipRadius;
                     v.y += b4;
                     m = b8 << 3;
                 } else {
@@ -439,7 +402,7 @@ extern "C" int func_0203842c(char *self)
             }
         }
         {
-            int mask = o->v7(self);
+            int mask = o->DetectClsn(*(dBgCh_Lin *)self);
             if (mask != 0) {
                 ((dBgPi *)(self + 0x10))->SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
                 result = 1;
@@ -489,18 +452,20 @@ extern "C" void func_020383e4(void) {
 
 // @symbol func_02038324
 /* Bound-to dispatch: gates on func_02038298, indexes the enabled-collider
-   table with dBgPi's collider index and calls the entry's stored m9 slot. */
+   table with dBgPi's collider index and calls its BeforeClsn virtual method. */
 extern "C" void func_02038324(void *arg, int b, int c, int d)
 {
     int idx;
-    UpdateObj *obj;
+    dBgW *obj;
     if (((dBgPi *)arg)->HasCollider() == 0) return;
     idx = ((dBgPi *)arg)->GetColliderIndex();
-    obj = (UpdateObj *)data_020a0c80[idx];
+    obj = (dBgW *)data_020a0c80[idx];
     if (obj == 0) return;
     if (func_020393cc(obj) == 0) return;
     if (func_02038298(arg) == 0) return;
-    obj->m9(arg, func_020393b4(data_020a0c80[idx]), b, c, d);
+    obj->BeforeClsn(*(dBgPi *)arg,
+        (dActor_c *)func_020393b4(data_020a0c80[idx]),
+        *(Vector3 *)b, (Vector3_16 *)c, (Vector3_16 *)d);
 }
 
 // @symbol func_02038298

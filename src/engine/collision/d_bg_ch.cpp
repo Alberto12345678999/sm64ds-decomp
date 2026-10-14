@@ -1,7 +1,7 @@
 //cpp
 /* dBgCh -- the collision-query root (ROM RTTI _ZTS5dBgCh). Owns the
  * contiguous .text run 0x02035448..0x0203553c, which ends where
- * dBgCh_Actr.cpp begins. The lifecycle group is defined first: D2, D0, D1,
+ * d_bg_ch_actr.cpp begins. The lifecycle group is defined first: D2, D0, D1,
  * then C2 at the tail (C1 has no ROM counterpart and is deadstripped).
  */
 // leftovers: the four func_020354xx flag helpers stay extern "C" free
