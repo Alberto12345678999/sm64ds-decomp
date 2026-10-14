@@ -79,8 +79,7 @@
  * - BlendModelAnim::SetAnim, Particle::System::New / NewSimple,
  *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
  *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
- *   NewSimple, dCamera_c::SetFlag_3 and the layer-3 sound calls have no
- *   header declaration this file can use. FromUniqueID is followed by a
+ *   NewSimple and the layer-3 sound calls retain their local declarations. FromUniqueID is followed by a
  *   store at sys+0x44, which is still pad_042 on Particle::System.
  * - Vec3_* / Matrix4x3_* / ApproachLinear have no shared header this TU
  *   can include alone. data_02082214 is the sine table func_ov073_0211f494
@@ -161,20 +160,26 @@ typedef struct Mtx43 { Vec3 r0, r1, r2, t; } Mtx43;
 struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void M(void*); };
 
 /* The eight file handles __sinit_daKing_Donketu_c.cpp constructs below.
- * SharedFilePtr.h declares no fields; this TU repeats the names it uses:
- * SetAnim is handed the loaded file at +4, CleanupResources puns each to
- * SharedFilePtr for Release. The model handle's ctor/dtor are the
+ * Construct writes the u16 file ID at +0, the u8 reference count at +2,
+ * and the loaded-file pointer at +4. Byte +3 is alignment padding.
+ * The model payload is BMD_File; animation payloads are BCA_File.
+ * CleanupResources releases the actor's references; the registered
+ * handle destructors only publish the file ID through func_02017e34. The model handle's ctor/dtor are the
  * cartridge's func_02017acc / func_02017ab4 pair and the seven animation
  * handles construct through SharedFilePtr::Construct and register
  * SharedFilePtr_Destruct_Anim; the manifest aliases these. */
 struct KingDonketuModelFileHandle : SharedFilePtr {
-    s32 fileId;
-    struct BCA_File *file;
+    u16 fileID;
+    u8 numRefs;
+    u8 pad_003;
+    BMD_File *file;
     KingDonketuModelFileHandle(u32 fileID);
     ~KingDonketuModelFileHandle();
 };
 struct KingDonketuAnimResFileHandle : SharedFilePtr {
-    s32 fileId;
+    u16 fileID;
+    u8 numRefs;
+    u8 pad_003;
     struct BCA_File *file;
     KingDonketuAnimResFileHandle(u32 fileID);
     ~KingDonketuAnimResFileHandle();
@@ -244,13 +249,6 @@ extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void UnloadKeyModels(int i);
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
-extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *self, void *clsn);
-extern void _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(void *self, void *wmc, unsigned int flags);
-extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
-extern void _ZN5dCc_c5ClearEv(void *self);
-extern void _ZN5dCc_c6UpdateEv(void *self);
-extern void _ZN14BlendModelAnim7AdvanceEv(void *self);
 }
 
 // @symbol _ZN16daKing_Donketu_cD1Ev
@@ -1850,7 +1848,7 @@ int daKing_Donketu_c::Behavior()
     if ((char *)c->pp != (char *)&data_ov073_02123400
         && (char *)c->pp != (char *)&data_ov073_02123320
         && (char *)c->pp != (char *)&data_ov073_02123340) {
-        _ZN8dActor_c9UpdatePosEP5dCc_c(self, &mdCcAcPos_c);
+        UpdatePos(&mdCcAcPos_c);
     } else {
         int sum = mVertSpeed + mVertAccel;
         int m = mTerminalVelocity;
@@ -1858,7 +1856,7 @@ int daKing_Donketu_c::Behavior()
         if (sum >= m) m = sum;
         mVertSpeed = m;
         unk_0ac = ac;
-        _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(self, &mdCcAcPos_c);
+        UpdatePosWithOnlySpeed(&mdCcAcPos_c);
     }
 
     if (((char *)c->pp == (char *)&data_ov073_02123330 || (char *)c->pp == (char *)&data_ov073_02123350)
@@ -1937,28 +1935,24 @@ int daKing_Donketu_c::Behavior()
         }
     }
 
-    _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(self, &mWithMeshClsn, 0);
+    UpdateWMClsn(mWithMeshClsn, 0);
 
     v54 = data_ov073_02123040;
-    _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(&mdCcAcPos_c, &v54);
+    mdCcAcPos_c.SetPosRelativeToActor(v54);
 
     if ((char *)c->pp == (char *)&data_ov073_02123360
         || (char *)c->pp == (char *)&data_ov073_02123390) {
         ((daKing_Donketu_c *)self)->func_ov073_0211f61c();
     }
-    _ZN5dCc_c5ClearEv(&mdCcAcPos_c);
-    _ZN5dCc_c6UpdateEv(&mdCcAcPos_c);
+    mdCcAcPos_c.Clear();
+    mdCcAcPos_c.Update();
     ((daKing_Donketu_c *)self)->func_ov073_021215cc();
-    _ZN14BlendModelAnim7AdvanceEv(&mBlendModelAnim);
+    mBlendModelAnim.Advance();
     return 1;
 }
 
 extern "C" {
 extern void LoadKeyModels(int idx);
-extern struct BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, struct BMD_File* f, int a, int b);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
 }
@@ -1972,16 +1966,16 @@ int daKing_Donketu_c::InitResources()
     Vector3 v;
     int i;
     LoadKeyModels(4);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123280);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232a0);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123288);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232a8);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123290);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232b0);
-    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_021232b8);
-    _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov002_0210da30);
-    f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov073_02123298);
-    _ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, f, 1, -1);
+    dExtFrameCtrl_c::LoadFile(data_ov073_02123280);
+    dExtFrameCtrl_c::LoadFile(data_ov073_021232a0);
+    dExtFrameCtrl_c::LoadFile(data_ov073_02123288);
+    dExtFrameCtrl_c::LoadFile(data_ov073_021232a8);
+    dExtFrameCtrl_c::LoadFile(data_ov073_02123290);
+    dExtFrameCtrl_c::LoadFile(data_ov073_021232b0);
+    dExtFrameCtrl_c::LoadFile(data_ov073_021232b8);
+    Model::LoadFile(*(SharedFilePtr *)data_ov002_0210da30);
+    f = (BMD_File *)Model::LoadFile(data_ov073_02123298);
+    mBlendModelAnim.SetFile(f, 1, -1);
     mShadowModel.InitCylinder();
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x3c000;
