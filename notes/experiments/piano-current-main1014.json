@@ -4,7 +4,7 @@
   "source_author": {
     "native_Source_manifest_and_original_report": "codex-piano-native-astra-producer1014",
     "current_composition_and_this_report": "codex-piano-current-main-root-producer1014",
-    "disclosure": "Astra authored the native Piano reconstruction. Root normally merged the separately accepted current main and wrote only this new report. Matcher credit and all canonical addresses remain unchanged."
+    "disclosure": "Astra authored the native Piano reconstruction. Root normally merged separately accepted current main, wrote this report, and corrected one factual header comment after independent review. Matcher credit and canonical addresses remain unchanged."
   },
   "base": "2968908e6773f24bdcf5b8da48304d9d02619fe4",
   "source_checkpoint": "d8c9c7bc2cbe9bd28eb0b8d92f8ae2e50b9fc8aa",
@@ -18,7 +18,7 @@
     "source_review_result": "pass",
     "qualification": "This was independent acceptance of the prior base only. It does not accept the new composition."
   },
-  "change": "Normal merge of current main426de into the accepted Piano candidate. Relative to current main the native factory, local Vector3 objects, actorID load and exact two-helper/seven-temporary manifest policy are unchanged from the accepted input. Both collision reports and the accepted collision Source are imported literally from current main.",
+  "change": "Normal merge of current main426de into the accepted Piano candidate. Relative to current main the native factory, local Vector3 objects, actorID load and exact two-helper/seven-temporary manifest policy are unchanged from the accepted input. Both collision reports and the accepted collision Source are imported literally from current main. Independent current-base review found inherited nearest-player header prose inconsistent with the immediate first-qualifying return; that comment is now corrected without changing code or declarations.",
   "completion": "partial",
   "inherited_findings": [
     {
@@ -453,7 +453,7 @@
     "attribution.log": "64552b71691faa062b3ca6924acfc5a0ef0b0b7366df89bf1f5bf9b01d974d83",
     "ledger.log": "f8e4f26409a6cf7c024cdbc0f4b9afd5e99b2934b2ab390306fe8d8b29f3315e"
   },
-  "next_action": "Independent reviewer must judge this exact report, composed Source and actual current base with own formal lease. Final report-only commit must bind unchanged production trees to the actual combined build. Then authorized focused PR publication; private validation and merging are not claimed.",
+  "next_action": "Independent reviewer must judge the repaired exact immutable candidate and current base using a new own formal claim. Header now differs from the actual combined-build include tree only in this verified comment: all other production inputs and complete sole-consumer compiled objects are unchanged. Preserve all22 findings, previous failed review, full-build/cache/warning qualifications. Then authorized focused PR publication; no merge.",
   "build_checked_main": "426de36be0d6edf9dcc44f6cb2ddd555cc14c75f",
   "progress_only_composition": {
     "commit": "c58f743d8a7443188bcc9a8dce5978accb64b8cf",
@@ -469,5 +469,133 @@
   "post_report_checks": {
     "dead_references_exit_code": 0,
     "log": "build/piano-current-main1014/dead-references.log"
+  },
+  "rework_findings": [
+    {
+      "id": "PIANO-NEAREST-PROVENANCE-1014",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "include/daPiano_c.h:37",
+      "summary": "Contradicted nearest-target header prose is corrected to first qualifying target.",
+      "reason": "Header now says first qualifying moving player slot, matching the loop immediate return. Only comment text changed. The sole affected consumer was freshly compiled before and after; entire RAW and ordinary objects are literal to each other and the actual combined full build. No behavior, layout, declaration, helper, ABI, destination or matcher-credit change.",
+      "source_evidence": {
+        "file": "src/game/actors/d_a_piano.cpp",
+        "lines": "258-267",
+        "statement": "bestDist=0x7fffffff; first qualifying condition stores mTarget; func_ov063_0211ddac(...kStateAttack); return;"
+      },
+      "header_quote": "Chase target: func_ov063_0211dbb8 stores the nearest moving player slot",
+      "header_consumer_closure": [
+        "src/game/actors/d_a_piano.cpp"
+      ],
+      "inherited_unchanged_header": true
+    }
+  ],
+  "finding_accounting": {
+    "literal_accepted_predecessor_findings": 21,
+    "new_independent_provenance_finding_fixed": 1,
+    "total": 22,
+    "completion": "partial:16 fixed,6 deferred"
+  },
+  "header_repair": {
+    "checkpoint": "c9997a2e1e9c210a0f1a014d42b877709d7c1a06",
+    "rejected_input": "06c72ca44cc524aa4e9fb78170247944e7b48f93",
+    "independent_rework_result": "fail for factual header prose only; all positive byte/proof evidence preserved",
+    "proof": {
+      "kind": "producer comment-only header repair and fresh whole-consumer proof, not independent acceptance",
+      "input_commit": "06c72ca44cc524aa4e9fb78170247944e7b48f93",
+      "actual_combined_full_build": "d8c9c7bc2cbe9bd28eb0b8d92f8ae2e50b9fc8aa",
+      "finding": "PIANO-NEAREST-PROVENANCE-1014",
+      "change": "nearest moving player slot -> first qualifying moving player slot; no behavior, declaration, layout, ABI or policy change",
+      "affected_header_consumers": [
+        "src/game/actors/d_a_piano.cpp"
+      ],
+      "comment_removed_header_bytes_literal": true,
+      "pre_repair_five_production_trees_literal_full_build": {
+        "src": true,
+        "include": true,
+        "config": true,
+        "tools": true,
+        "port": true
+      },
+      "all_other_tracked_working_files_unchanged": true,
+      "raw_before_after_and_actual_full_build_input_literal": true,
+      "ordinary_before_after_and_actual_full_build_object_literal": true,
+      "raw_bytes": 16672,
+      "ordinary_bytes": 16672,
+      "raw_sha256": "101d64ca16833f03be02c6400ba6d053fbd8826b41ed840a2e08432726a5e390",
+      "ordinary_sha256": "1a7c7e9a51fed23455f61920e6b7c59a84d781a15607e82aa8c930297fc951fd",
+      "owned_before_after_freshly_reverified": true,
+      "header_before_sha256": "60d201b37be9811b697285825b7e9388f4d74ba1518798928e20e7b0f04473aa",
+      "header_after_sha256": "b84621934624256e3fbfc08cb58e54d138cf20262303d6501dfb3b57144777b1",
+      "qualification": "Fresh complete consumer objects positively transfer the existing actual combined full106/11334,18normalstrict0blind,11fullmetadata244B47refs and retained helper graph proof. This is not a new global build or newly repeated per-function/per-metadata loop; original masked initializer BLIND9 warning and nonliteral original/native ELF containers remain explicit."
+    },
+    "fresh_scoped_gates": [
+      {
+        "name": "prepush",
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/prepush_linkcheck.py",
+          "--range",
+          "2968908e6773f24bdcf5b8da48304d9d02619fe4..HEAD",
+          "--json",
+          "build\\piano-nearest-repair1014\\prepush.json"
+        ],
+        "executed_commit": "c9997a2e1e9c210a0f1a014d42b877709d7c1a06",
+        "exit_code": 0,
+        "seconds": 14.966478824615479,
+        "log": "build\\piano-nearest-repair1014\\prepush.log",
+        "log_sha256": "aa949a4eb26d2879ed612b50ee0ecb2d72cf3b6c2d003b0024969252ce086297"
+      },
+      {
+        "name": "decl-scoped",
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/check_decl_agreement.py",
+          "--changed",
+          "2968908e6773f24bdcf5b8da48304d9d02619fe4"
+        ],
+        "executed_commit": "c9997a2e1e9c210a0f1a014d42b877709d7c1a06",
+        "exit_code": 0,
+        "seconds": 10.296042919158936,
+        "log": "build\\piano-nearest-repair1014\\decl-scoped.log",
+        "log_sha256": "f37b0e2d5c72bfa26823afc85029a10453980678eefb17bbe00963272af7068f"
+      },
+      {
+        "name": "port",
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/port_refcheck.py"
+        ],
+        "executed_commit": "c9997a2e1e9c210a0f1a014d42b877709d7c1a06",
+        "exit_code": 0,
+        "seconds": 1.622218370437622,
+        "log": "build\\piano-nearest-repair1014\\port.log",
+        "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
+      },
+      {
+        "name": "whitespace",
+        "command": [
+          "git",
+          "diff",
+          "--check",
+          "2968908e6773f24bdcf5b8da48304d9d02619fe4..HEAD"
+        ],
+        "executed_commit": "c9997a2e1e9c210a0f1a014d42b877709d7c1a06",
+        "exit_code": 0,
+        "seconds": 0.08773612976074219,
+        "log": "build\\piano-nearest-repair1014\\whitespace.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "evidence": {
+      "build/piano-nearest-repair1014/repair-proof.json": "ba7ecd332f6e12f96a96a948a43240dbdf61e8f99af9d66d2858d6c2a95cde6e",
+      "build/piano-nearest-repair1014/before.raw.o": "101d64ca16833f03be02c6400ba6d053fbd8826b41ed840a2e08432726a5e390",
+      "build/piano-nearest-repair1014/after.raw.o": "101d64ca16833f03be02c6400ba6d053fbd8826b41ed840a2e08432726a5e390",
+      "build/piano-nearest-repair1014/before.ordinary.o": "1a7c7e9a51fed23455f61920e6b7c59a84d781a15607e82aa8c930297fc951fd",
+      "build/piano-nearest-repair1014/after.ordinary.o": "1a7c7e9a51fed23455f61920e6b7c59a84d781a15607e82aa8c930297fc951fd",
+      "build/piano-nearest-repair1014/before-preparation.json": "7a5d91b2415d7099bcd3d2cfbeba93fd368c6199a2de3f685c4cbf189a209650",
+      "build/piano-nearest-repair1014/after-preparation.json": "7a5d91b2415d7099bcd3d2cfbeba93fd368c6199a2de3f685c4cbf189a209650",
+      "build/piano-nearest-repair1014/gates.json": "bb43e23d2c3da97c8dc9be2a94041d4dc6892acbf6b5d1649b46fcd5ac55f3a1"
+    }
   }
 }
