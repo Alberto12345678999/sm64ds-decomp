@@ -1,8 +1,8 @@
 {
   "id": "ov002/dPathLiftActor_c",
   "module": "ov002",
-  "source": "src/actors/dPathLiftActor_c.cpp",
-  "promoted_source": "src/actors/dPathLiftActor_c.cpp",
+  "source": "src/runtime/actor/dPathLiftActor_c.cpp",
+  "promoted_source": "src/runtime/actor/dPathLiftActor_c.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "medium",
@@ -10,7 +10,7 @@
     "Contiguous production run ov002:0x020ef320..0x020effb8: the dPathLiftActor_c destructor pair D0 (0x020ef320) and D1 (0x020ef390), 19 dPathLiftActor_c methods and the existing func_ov002_020eff90 C bridge.",
     "HISTORY, SUPERSEDED BY THE DESTRUCTOR FOLD (last boundary_evidence entry): Original 22-function promotion fails production ownership: emitted inline destructor order differs from the retail D0/D1 order. Both legacy destructor owners remain enrolled.",
     "dPathLiftActor_c identity is ROM RTTI evidence; original whole-TU boundary and complete lifecycle/state-data ownership remain unresolved.",
-    "DESTRUCTOR FOLD. The licensed run is now 0x020ef320..0x020effb8 (22 functions), with _ZN16dPathLiftActor_cD0Ev at 0x020ef320 (size 0x70) and _ZN16dPathLiftActor_cD1Ev at 0x020ef390 (size 0x5c) as its first two members; their per-function shard sources and delinks entries are retired and merged into this TU's. The lever is the one src/actors/daObjDorifu_c.cpp records: `#pragma defer_codegen off` before the includes, the file written in ROM-ascending order, and two uncalled forcing functions at the top -- `delete p` (the deleting destructor, D0) then `p->~X()` (the complete-object destructor, D1) -- which make mwccarm emit the inline destructor's two variants at parse time in the cartridge's D0-then-D1 order, with no D2. The forcers are compiler_only_output deadstrip rows. Measured by tubuild.py verify: 22/22 MATCH, objisolate clean, reloc destinations clean, emission order ROM-ascending."
+    "DESTRUCTOR FOLD. The licensed run is now 0x020ef320..0x020effb8 (22 functions), with _ZN16dPathLiftActor_cD0Ev at 0x020ef320 (size 0x70) and _ZN16dPathLiftActor_cD1Ev at 0x020ef390 (size 0x5c) as its first two members; their per-function shard sources and delinks entries are retired and merged into this TU's. The lever is the one src/game/actors/d_a_obj_dorifu.cpp records: `#pragma defer_codegen off` before the includes, the file written in ROM-ascending order, and two uncalled forcing functions at the top -- `delete p` (the deleting destructor, D0) then `p->~X()` (the complete-object destructor, D1) -- which make mwccarm emit the inline destructor's two variants at parse time in the cartridge's D0-then-D1 order, with no D2. The forcers are compiler_only_output deadstrip rows. Measured by tubuild.py verify: 22/22 MATCH, objisolate clean, reloc destinations clean, emission order ROM-ascending."
   ],
   "sections": [
     {

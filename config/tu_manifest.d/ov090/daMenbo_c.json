@@ -1,8 +1,8 @@
 {
   "id": "ov090/daMenbo_c",
   "module": "ov090",
-  "source": "src/actors/daMenbo_c.cpp",
-  "promoted_source": "src/actors/daMenbo_c.cpp",
+  "source": "src/game/actors/d_a_menbo.cpp",
+  "promoted_source": "src/game/actors/d_a_menbo.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "medium",
@@ -10,8 +10,8 @@
     "HISTORY: contiguous linker run: 0x2130f00..0x2132654, 24 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daMenbo_c",
     "module sinit corroboration: 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "the compiler-generated __sinit_daMenbo_c.cpp is byte-identical to retail __sinit_ov090_02133ce8 (0x1c0): it constructs the model handle at 0x021344a0 (file 0x39f), the four anim handles at 0x02134488/0x02134480/0x02134490/0x02134498 (files 0x3a0..0x3a3), registers each destructor, then copies the eight pointer-to-member descriptors at 0x021340e0..0x02134118 into the four state nodes at 0x021344e4..0x02134514. The ctor word at 0x021340c4 points at that initializer.",
-    "CLASSINIT TAIL FOLD (2026-10-09): daMenbo_c_classInit (0x02132654..0x0213269c) abuts this TU's .text end with no gap and is now inside it, appended last under the file-level #pragma defer_codegen off and spelled `return new daMenbo_c;` (operator new 0x3b0, dEnemyBase_c base ctor, _ZTV9daMenbo_c vptr store, dCcAcPos_c/dBgCh_Actr/ModelAnim member ctors -- the retired shard's hand-spelled sequence). It builds only this class, for the MENBO profile; the unit is 0x02130f00..0x0213269c, bounded above by src/actors/daManta_c.cpp, which starts exactly at 0x0213269c. The earlier note's appeal to the daBDonketu_c/daBtfly_c boundary was a conservative choice, not evidence the factory belongs elsewhere."
+    "the compiler-generated __sinit_d_a_menbo.cpp is byte-identical to retail __sinit_ov090_02133ce8 (0x1c0): it constructs the model handle at 0x021344a0 (file 0x39f), the four anim handles at 0x02134488/0x02134480/0x02134490/0x02134498 (files 0x3a0..0x3a3), registers each destructor, then copies the eight pointer-to-member descriptors at 0x021340e0..0x02134118 into the four state nodes at 0x021344e4..0x02134514. The ctor word at 0x021340c4 points at that initializer.",
+    "CLASSINIT TAIL FOLD (2026-10-09): daMenbo_c_classInit (0x02132654..0x0213269c) abuts this TU's .text end with no gap and is now inside it, appended last under the file-level #pragma defer_codegen off and spelled `return new daMenbo_c;` (operator new 0x3b0, dEnemyBase_c base ctor, _ZTV9daMenbo_c vptr store, dCcAcPos_c/dBgCh_Actr/ModelAnim member ctors -- the retired shard's hand-spelled sequence). It builds only this class, for the MENBO profile; the unit is 0x02130f00..0x0213269c, bounded above by src/game/actors/d_a_manta.cpp, which starts exactly at 0x0213269c. The earlier note's appeal to the daBDonketu_c/daBtfly_c boundary was a conservative choice, not evidence the factory belongs elsewhere."
   ],
   "sections": [
     {
@@ -219,7 +219,7 @@
   ],
   "init": [
     {
-      "symbol": "__sinit_daMenbo_c.cpp",
+      "symbol": "__sinit_d_a_menbo.cpp",
       "address": "0x02133ce8",
       "size": "0x1c0",
       "binding": "STB_GLOBAL",
@@ -228,7 +228,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_daMenbo_c.cpp",
+      "symbol": ".p__sinit_d_a_menbo.cpp",
       "address": "0x021340c4",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -427,13 +427,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_daMenbo_c.cpp",
+      "symbol": "__sinit_d_a_menbo.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_daMenbo_c.cpp",
+      "symbol": ".p__sinit_d_a_menbo.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -863,7 +863,7 @@
       "source": "0x021340c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_daMenbo_c.cpp",
+      "symbol": "__sinit_d_a_menbo.cpp",
       "addend": 0,
       "target_module": "ov090",
       "target_address": "0x02133ce8"
@@ -957,7 +957,7 @@
     "HISTORY (initial text-only promotion): Key-function TU: the destructor is the first virtual daMenbo_c declares and is written out of line here, so this compiler input emits _ZTV9daMenbo_c, _ZTI9daMenbo_c, _ZTS9daMenbo_c and the inherited RTTI chain. This promotion is text-only; .data licensing is not attempted and the ROM keeps supplying those bytes, exactly as the landed ov064/daOts_c and ov064/daBDonketu_c do. g_profile_MENBO at 0x02134144 sits between _ZTI9daMenbo_c and _ZTV9daMenbo_c, so licensing the vtable would need two disjoint .data intervals. Current intact-object ownership includes the initializer, ctor word, PMF descriptors and BSS in the declared .init/.ctor/.data/.bss sections, in addition to .text. The canonical RTTI and vtable remain externally supplied; the historical text-only description does not describe the current owned storage.",
     "HISTORY: daMenbo_c_classInit at 0x02132654 is NOT part of this TU. The evidenced run ends at 0x02132654 and the factory stays in src/d_a_menbo.c, the same boundary the landed ov064/daBDonketu_c and ov100/daBtfly_c took for their own factories.",
     "ROM RTTI evidence for the class name: _ZTS9daMenbo_c at ov090 0x02134120 holds twelve bytes, the encoded string 9daMenbo_c followed by two zero bytes (terminator and padding), so the receipt dates to this exact spelling and the name is the cartridge's own rather than a coined one. _ZTI9daMenbo_c at 0x02134138 is a three-word abi __si_class_type_info record whose third word is _ZTI12dEnemyBase_c at ov002 0x021081c0. _ZTV9daMenbo_c at 0x02134168 carries a zero offset-to-top at -8 and _ZTI9daMenbo_c at -4, then 31 slots; ten target this run, at indices 0, 3, 6, 9, 12, 16, 17, 18, 19 and 29.",
-    "The file-scope model handle, four anim handles, and four PMF state nodes are defined in this TU. mwcc emits __sinit_daMenbo_c.cpp, the ctor word, the eight anonymous pointer-to-member descriptors, and the five destructor-registration nodes. The eight state handlers were promoted to real daMenbo_c members -- the .data records at 0x021340e0..0x02134118 are pointer-to-member descriptors, so symbols.txt and attribution.json moved to the _ZN9daMenbo_c spellings. Class RTTI and the vtable stay externalized. The handwritten src/__sinit_ov090_02133ce8.c is retired.",
+    "The file-scope model handle, four anim handles, and four PMF state nodes are defined in this TU. mwcc emits __sinit_d_a_menbo.cpp, the ctor word, the eight anonymous pointer-to-member descriptors, and the five destructor-registration nodes. The eight state handlers were promoted to real daMenbo_c members -- the .data records at 0x021340e0..0x02134118 are pointer-to-member descriptors, so symbols.txt and attribution.json moved to the _ZN9daMenbo_c spellings. Class RTTI and the vtable stay externalized. The handwritten src/__sinit_ov090_02133ce8.c is retired.",
     "Local scratch ROM matched this machine's baseline control (ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40). Recorded rom.sha256 is the fleet SHA the other intact-object entries on this main share."
   ],
   "verification": {

@@ -111,12 +111,12 @@ _ZN7daShl_c13InitResourcesEv kind:function(arm,size=0x154) addr:0x0214d54c
 _ZN7daShl_c13OnYoshiTryEatEv kind:function(arm,size=0x14) addr:0x0214d6a0
 daShl_c_classInit kind:function(arm,size=0x58) addr:0x0214d6b4
 data_ov102_0214d70c kind:data(any) addr:0x0214d70c
-__sinit_daObjSimpleBg_c.cpp kind:function(arm,size=0x1f4) addr:0x0214d714
-__sinit_daObjHatenaBlock_c.cpp kind:function(arm,size=0x568) addr:0x0214d908
+__sinit_d_a_obj_simple_bg.cpp kind:function(arm,size=0x1f4) addr:0x0214d714
+__sinit_d_a_obj_hatena_block.cpp kind:function(arm,size=0x568) addr:0x0214d908
 __sinit_ov102_0214de70 kind:function(arm,size=0x13c) addr:0x0214de70
 __sinit_d_a_shl.cpp kind:function(arm,size=0xf4) addr:0x0214dfac
-.p__sinit_daObjSimpleBg_c.cpp kind:data(word) addr:0x0214e0a0
-.p__sinit_daObjHatenaBlock_c.cpp kind:data(word) addr:0x0214e0a4
+.p__sinit_d_a_obj_simple_bg.cpp kind:data(word) addr:0x0214e0a0
+.p__sinit_d_a_obj_hatena_block.cpp kind:data(word) addr:0x0214e0a4
 .p__sinit_ov102_0214de70 kind:data(word) addr:0x0214e0a8
 .p__sinit_d_a_shl.cpp kind:data(word) addr:0x0214e0ac
 _ZTI15daObjSimpleBg_c kind:data(any) addr:0x0214e0c0

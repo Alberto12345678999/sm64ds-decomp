@@ -1,8 +1,8 @@
 {
   "id": "ov100/daDoor_c",
   "module": "ov100",
-  "source": "src/actors/daDoor_c.cpp",
-  "promoted_source": "src/actors/daDoor_c.cpp",
+  "source": "src/game/actors/d_a_door.cpp",
+  "promoted_source": "src/game/actors/d_a_door.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
@@ -1083,7 +1083,7 @@
   },
   "init": [
     {
-      "symbol": "__sinit_daDoor_c.cpp",
+      "symbol": "__sinit_d_a_door.cpp",
       "address": "0x02147698",
       "size": "0x3d8",
       "binding": "STB_GLOBAL",
@@ -1092,7 +1092,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_daDoor_c.cpp",
+      "symbol": ".p__sinit_d_a_door.cpp",
       "address": "0x02147df4",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -1138,13 +1138,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_daDoor_c.cpp",
+      "symbol": "__sinit_d_a_door.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_daDoor_c.cpp",
+      "symbol": ".p__sinit_d_a_door.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -1978,7 +1978,7 @@
       "source": "0x2147df4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_daDoor_c.cpp",
+      "symbol": "__sinit_d_a_door.cpp",
       "addend": 0,
       "target_module": "ov100",
       "target_address": "0x02147698"

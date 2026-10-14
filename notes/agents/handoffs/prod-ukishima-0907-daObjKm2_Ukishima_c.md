@@ -49,7 +49,7 @@ exactly. Each entry's `end` is the next entry's `start`, so the run is contiguou
 
 **Both bounds are a different class:**
 
-- **below** — `src/actors/daObjKm2_Nobiru_c.cpp`, whose `.text` ends at
+- **below** — `src/game/actors/d_a_obj_km2_nobiru.cpp`, whose `.text` ends at
   `0x02111b14` (the `daObjKm2_Nobiru_c` factory; at the time this note was
   written it was still a loose one-function source, since folded into the
   promoted TU by fold-lane-c-0929);
@@ -113,8 +113,8 @@ pools, **not** from `relocs.txt` — `match.py` wildcards every relocated word.
 |---|---|---|
 | class name | `0x02112f14` = NUL-terminated `19daObjKm2_Ukishima_c` | `_ZTI` middle word `0x02112f00` points at it |
 | base class | `_ZTI+8` at `0x02112f04` = `0x02109104` | `_ZTI14daObjUkiyuka_c` ([ov002](../../../config/arm9/overlays/ov002/symbols.txt)) |
-| `CleanupResources` tail call | literal at `0x02111bd4` | `0x020b6424` = [func_ov002_020b6424](../../../src/actors/daObjUkiyuka_c.cpp)(ROM Ordinal 0 used to assemble `daObjUkiyuka_c.cpp`) |
-| `InitResources` tail call | literal at `0x02111bec` | `0x020b6584` = [func_ov002_020b6584](../../../src/actors/daObjUkiyuka_c.cpp)(ROM Ordinal 3 used to assemble `daObjUkiyuka_c.cpp`) |
+| `CleanupResources` tail call | literal at `0x02111bd4` | `0x020b6424` = [func_ov002_020b6424](../../../src/game/actors/d_a_obj_ukiyuka.cpp)(ROM Ordinal 0 used to assemble `daObjUkiyuka_c.cpp`) |
+| `InitResources` tail call | literal at `0x02111bec` | `0x020b6584` = [func_ov002_020b6584](../../../src/game/actors/d_a_obj_ukiyuka.cpp)(ROM Ordinal 3 used to assemble `daObjUkiyuka_c.cpp`) |
 | both resource methods, arg 1 | literals `0x02111bd8` / `0x02111bf0` | `0x02112f08` = [data_ov045_02112f08](../../../config/arm9/overlays/ov045/symbols.txt) |
 | `InitResources` arg 2 | `0x02111be4` = `mov r2, #0xf50` | actor id `0xf50` |
 | `classInit` allocation | `0x02111bf8` = `mov r0, #0x32c` | 812, the RTTI-proven class size |

@@ -57,13 +57,13 @@ data_ov045_02112178 kind:data(any) addr:0x02112178 ambiguous
 data_ov045_02112198 kind:data(any) addr:0x02112198 ambiguous
 __sinit_d_a_obj_km2_agaru.cpp kind:function(arm,size=0x6c) addr:0x021121a8
 __sinit_d_a_obj_km2_ami_bou.cpp kind:function(arm,size=0x6c) addr:0x02112214
-__sinit_daObjKm2_Nobiru_c.cpp kind:function(arm,size=0x6c) addr:0x02112280
+__sinit_d_a_obj_km2_nobiru.cpp kind:function(arm,size=0x6c) addr:0x02112280
 __sinit_d_a_obj_km2_ukishima.cpp kind:function(arm,size=0x6c) addr:0x021122ec
 __sinit_d_a_obj_km2_gura.cpp kind:function(arm,size=0x68) addr:0x02112358
 __sinit_d_a_obj_km2_fall_block.cpp kind:function(arm,size=0x6c) addr:0x021123c0
 .p__sinit_d_a_obj_km2_agaru.cpp kind:data(word) addr:0x0211242c
 .p__sinit_d_a_obj_km2_ami_bou.cpp kind:data(word) addr:0x02112430
-.p__sinit_daObjKm2_Nobiru_c.cpp kind:data(word) addr:0x02112434
+.p__sinit_d_a_obj_km2_nobiru.cpp kind:data(word) addr:0x02112434
 .p__sinit_d_a_obj_km2_ukishima.cpp kind:data(word) addr:0x02112438
 .p__sinit_d_a_obj_km2_gura.cpp kind:data(word) addr:0x0211243c
 .p__sinit_d_a_obj_km2_fall_block.cpp kind:data(word) addr:0x02112440

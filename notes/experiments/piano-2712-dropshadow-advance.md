@@ -3,7 +3,7 @@
 - tested_commit: 747142e33 (cleanup-dapiano at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
 - claim: the deslop bullet that used to sit at
-  `src/game/actors/daPiano_c/d_a_piano.cpp:39-41` made two separate
+  `src/game/actors/d_a_piano.cpp:39-41` made two separate
   assertions in one sentence -- that `dActor_c::DropShadowRadHeight` and
   `dActor_c::DropShadowScaleXYZ` must stay mangled free declarations
   (wall 6az), and that `Animation::Advance` must keep the free form with an
@@ -58,7 +58,7 @@ src\game\actors\daPiano_c\d_a_piano.cpp:580: function call '[daPiano_c].DropShad
 - command:
 
 ```text
-python tools/match.py --c src/game/actors/daPiano_c/d_a_piano.cpp \
+python tools/match.py --c src/game/actors/d_a_piano.cpp \
   --func func_ov063_0211d5f4 --addr 0x0211d5f4 --size 0x234 \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```
@@ -102,7 +102,7 @@ upcast the old spelling performed by hand.
 - command (per-function, link, emission):
 
 ```text
-python tools/match.py --c src/game/actors/daPiano_c/d_a_piano.cpp \
+python tools/match.py --c src/game/actors/d_a_piano.cpp \
   --func func_ov063_0211d8cc --addr 0x0211d8cc --size 0x2d8 \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 python tools/linkcheck.py --name func_ov063_0211d8cc \

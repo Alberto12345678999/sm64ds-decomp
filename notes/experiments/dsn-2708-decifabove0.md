@@ -2,7 +2,7 @@
 
 - tested_commit: 7027888ce (cleanup-dadsnbase at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/actors/daDsnBase_c.cpp:94` spells
+- claim: `src/game/actors/d_a_dsn_base.cpp:94` spells
   DecIfAbove0_Byte from its definition (`u8 DecIfAbove0_Byte(u8 *)` at
   src/DecIfAbove0_Byte.c), not its call sites; fixed on this branch by
   3fab96894. No attempted_change; baseline verification only.
@@ -11,13 +11,13 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/actors/daDsnBase_c.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_dsn_base.cpp \
   --func func_ov091_02132ff4 --addr 0x02132ff4 --size 0x2c \
   --version 2004/b56 --module ov091 --strict-relocs --brief
-.venv/bin/python tools/match.py --c src/actors/daDsnBase_c.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_dsn_base.cpp \
   --func func_ov091_02132e98 --addr 0x02132e98 --size 0x6c \
   --version 2004/b56 --module ov091 --strict-relocs --brief
-.venv/bin/python tools/match.py --c src/actors/daDsnBase_c.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_dsn_base.cpp \
   --func func_ov091_02132e64 --addr 0x02132e64 --size 0x34 \
   --version 2004/b56 --module ov091 --strict-relocs --brief
 ```

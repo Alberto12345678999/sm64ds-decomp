@@ -1,7 +1,7 @@
 //cpp
 /* Which Wiggler (MG_HANACHAN): the scene factory and the constructor for
  * the five 8-byte entries inside each of its fifteen 0x98-byte elements.
- * The scene's own methods are in src/actors/dScMgHanachan_c.cpp.
+ * The scene's own methods are in src/minigames/dScMgHanachan_c.cpp.
  *
  * leftovers:
  *   - dScMgHanachan_c has no constructor declared, so the factory builds

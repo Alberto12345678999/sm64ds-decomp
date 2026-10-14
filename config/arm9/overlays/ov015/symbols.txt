@@ -81,16 +81,16 @@ data_ov015_02112f2c kind:data(any) addr:0x02112f2c ambiguous
 data_ov015_02112f58 kind:data(any) addr:0x02112f58 ambiguous
 data_ov015_02112f7c kind:data(any) addr:0x02112f7c ambiguous
 __sinit_d_a_obj_bk_billboard.cpp kind:function(arm,size=0x40) addr:0x02112f9c
-__sinit_daObjBk_Botaosi_c.cpp kind:function(arm,size=0x6c) addr:0x02112fdc
+__sinit_d_a_obj_bk_botaosi.cpp kind:function(arm,size=0x6c) addr:0x02112fdc
 __sinit_ov015_02113048 kind:function(arm,size=0x21c) addr:0x02113048
-__sinit_daObjBk_Lift_c.cpp kind:function(arm,size=0x6c) addr:0x02113264
+__sinit_d_a_obj_bk_lift.cpp kind:function(arm,size=0x6c) addr:0x02113264
 __sinit_d_a_obj_bk_rotebar.cpp kind:function(arm,size=0x6c) addr:0x021132d0
 __sinit_d_a_obj_bk_ukisima.cpp kind:function(arm,size=0x6c) addr:0x0211333c
 __sinit_d_a_obj_bk_fall_block.cpp kind:function(arm,size=0x68) addr:0x021133a8
 .p__sinit_d_a_obj_bk_billboard.cpp kind:data(word) addr:0x02113410
-.p__sinit_daObjBk_Botaosi_c.cpp kind:data(word) addr:0x02113414
+.p__sinit_d_a_obj_bk_botaosi.cpp kind:data(word) addr:0x02113414
 .p__sinit_ov015_02113048 kind:data(word) addr:0x02113418
-.p__sinit_daObjBk_Lift_c.cpp kind:data(word) addr:0x0211341c
+.p__sinit_d_a_obj_bk_lift.cpp kind:data(word) addr:0x0211341c
 .p__sinit_d_a_obj_bk_rotebar.cpp kind:data(word) addr:0x02113420
 .p__sinit_d_a_obj_bk_ukisima.cpp kind:data(word) addr:0x02113424
 .p__sinit_d_a_obj_bk_fall_block.cpp kind:data(word) addr:0x02113428

@@ -131,7 +131,7 @@ typedef char dScMgCoin_Bouncer_size_must_be_0x1c[sizeof(dScMgCoin_Bouncer) == 0x
 /* dScMgCoin_c : dScMgBase_c leaf. Slot 18 is OnYoshiTryEat; the old
    mislabel sat on D0. See dScMgBase_c.h. */
 struct dScMgCoin_c : dScMgBase_c {
-    /* Defined inline in src/actors/dScMgCoin_c.cpp, above the factory: its
+    /* Defined inline in src/minigames/dScMgCoin_c.cpp, above the factory: its
        only body is seeding mSeed with 1 through func_0203b9b4. */
     dScMgCoin_c();
     virtual ~dScMgCoin_c();

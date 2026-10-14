@@ -93,12 +93,12 @@ data_ov080_0212775c kind:data(any) addr:0x0212775c
 data_ov080_021277a8 kind:data(any) addr:0x021277a8
 data_ov080_02127834 kind:data(any) addr:0x02127834
 data_ov080_02127848 kind:data(any) addr:0x02127848 ambiguous
-__sinit_daChoropu_c.cpp kind:function(arm,size=0x1a0) addr:0x021278c0
-__sinit_daBttBk_c.cpp kind:function(arm,size=0xcc) addr:0x02127a60
-__sinit_daPicGate_c.cpp kind:function(arm,size=0x434) addr:0x02127b2c
-.p__sinit_daChoropu_c.cpp kind:data(word) addr:0x02127f60
-.p__sinit_daBttBk_c.cpp kind:data(word) addr:0x02127f64
-.p__sinit_daPicGate_c.cpp kind:data(word) addr:0x02127f68
+__sinit_d_a_choropu.cpp kind:function(arm,size=0x1a0) addr:0x021278c0
+__sinit_d_a_btt_bk.cpp kind:function(arm,size=0xcc) addr:0x02127a60
+__sinit_d_a_pic_gate_methods.cpp kind:function(arm,size=0x434) addr:0x02127b2c
+.p__sinit_d_a_choropu.cpp kind:data(word) addr:0x02127f60
+.p__sinit_d_a_btt_bk.cpp kind:data(word) addr:0x02127f64
+.p__sinit_d_a_pic_gate_methods.cpp kind:data(word) addr:0x02127f68
 @1023 kind:data(any) addr:0x02127f80
 @1019 kind:data(any) addr:0x02127f88
 @1027 kind:data(any) addr:0x02127f90

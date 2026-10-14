@@ -62,10 +62,10 @@ data_ov018_02112bec kind:data(any) addr:0x02112bec ambiguous
 data_ov018_02112c04 kind:data(any) addr:0x02112c04
 data_ov018_02112c08 kind:data(any) addr:0x02112c08 ambiguous
 data_ov018_02112c0c kind:data(any) addr:0x02112c0c
-__sinit_daObjSm_Lift_c.cpp kind:function(arm,size=0x6c) addr:0x02112c14
+__sinit_d_a_obj_sm_lift.cpp kind:function(arm,size=0x6c) addr:0x02112c14
 __sinit_d_a_pg_mthr.cpp kind:function(arm,size=0x180) addr:0x02112c80
 __sinit_d_a_obj_ice_board.cpp kind:function(arm,size=0x6c) addr:0x02112e00
-.p__sinit_daObjSm_Lift_c.cpp kind:data(word) addr:0x02112e6c
+.p__sinit_d_a_obj_sm_lift.cpp kind:data(word) addr:0x02112e6c
 .p__sinit_d_a_pg_mthr.cpp kind:data(word) addr:0x02112e70
 .p__sinit_d_a_obj_ice_board.cpp kind:data(word) addr:0x02112e74
 data_ov018_02112e80 kind:data(any) addr:0x02112e80

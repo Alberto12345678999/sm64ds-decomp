@@ -1,7 +1,7 @@
 /* class Eyerok : dBgActor_c. Real C++ form.
  *
  * Base and size from the factory (reconstructed name daIwante_c_classInit,
- * now `new Eyerok()` at the bottom of src/actors/Eyerok.cpp):
+ * now `new Eyerok()` at the bottom of src/game/actors/Eyerok.cpp):
  * fBase_c::operator new(0x874), then
  * dBgActor_c::dBgActor_c(), then the _ZTV6Eyerok store. Two
  * vtable stores in the destructor -- own, then dBgActor_c's -- confirming a

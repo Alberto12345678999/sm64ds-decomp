@@ -863,7 +863,7 @@ extern int data_ov022_0211427c[];
 extern int data_ov024_021129f0[];
 extern int data_ov025_02112654(void*);
 extern int data_ov025_02113814[];
-/* data_ov026_02113f2c is defined by daWater_Tatumaki_c.cpp. */
+/* data_ov026_02113f2c is defined by d_a_water_tatumaki.cpp. */
 extern int data_ov027_021138f4[];
 extern int data_ov029_02112b2c[];
 extern struct daObjFloatBoard_c_Resources data_ov029_02113be8;
@@ -927,7 +927,7 @@ extern int data_ov084_02130228[];
 extern int data_ov084_02130238[];
 extern int data_ov084_02130258[];
 /* data_ov084_02130cc0, data_ov084_02130cc8 and data_ov084_02130d74 are defined
-   by daKrb_c.cpp as typed handles and its pointer-to-member state table; the
+   by d_a_krb.cpp as typed handles and its pointer-to-member state table; the
    TU's own declarations carry the real types. */
 extern int data_ov085_0212f280[];
 extern int data_ov085_02130488[];
@@ -1127,7 +1127,7 @@ extern int func_ov007_020c3df4(int, int);
 extern int func_ov010_02111984[];
 extern int func_ov018_02111804[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
-   r0 set. Definition in src/actors/d_a_pg_mthr.cpp. */
+   r0 set. Definition in src/game/actors/d_a_pg_mthr.cpp. */
 extern void func_ov018_02111bf0(void*, void*);
 extern int func_ov021_02112128, func_ov021_02111fe4, func_ov021_02111f8c, func_ov021_02111f34, func_ov021_02111edc;
 extern int func_ov021_021122fc(char*);
@@ -1938,7 +1938,7 @@ extern void func_ov006_02107d80(char*);
 extern void func_ov006_02108524(char*);
 /* func_ov006_0210858c is deliberately NOT declared here. Its recorded return
    type was void; the cartridge's own bytes at 0x0210858c end `mov r0, #1`,
-   so it returns int. Nothing outside src/actors/dScMgRoulette_c.cpp, which
+   so it returns int. Nothing outside src/minigames/dScMgRoulette_c.cpp, which
    now defines it, references the symbol, so the wrong declaration is
    dropped rather than corrected. */
 extern void func_ov006_02108cc0(char*);
@@ -2126,7 +2126,7 @@ extern void func_ov100_021435e8(void*);
 extern void func_ov100_021437d4(void*);
 extern void func_ov100_02143b68(char*);
 extern void func_ov100_02145070(int);
-/* Returns int -- the tree's own definition (in src/actors/daDoor_c.cpp)
+/* Returns int -- the tree's own definition (in src/game/actors/d_a_door.cpp)
    defines it `extern "C" int`, and its early-out is `return 1`. */
 extern void func_ov100_02146e70(void*);
 extern void func_ov102_0214ad14(void*);
@@ -2217,7 +2217,7 @@ extern void*data_ov019_0211277c[];
 extern void*data_ov019_02112788[];
 extern void*data_ov019_02113498;
 extern void*data_ov023_02112088;
-/* data_ov026_02113f3c is defined by daWater_Tatumaki_c.cpp. */
+/* data_ov026_02113f3c is defined by d_a_water_tatumaki.cpp. */
 extern void*data_ov027_02112ca4[3];
 extern void*data_ov029_02112fb8;
 extern void*data_ov029_02112fec;

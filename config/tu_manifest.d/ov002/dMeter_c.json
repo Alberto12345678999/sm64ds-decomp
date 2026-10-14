@@ -1,8 +1,8 @@
 {
   "id": "ov002/dMeter_c",
   "module": "ov002",
-  "source": "src/actors/dMeter_c.cpp",
-  "promoted_source": "src/actors/dMeter_c.cpp",
+  "source": "src/ui/hud/dMeter_c.cpp",
+  "promoted_source": "src/ui/hud/dMeter_c.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
