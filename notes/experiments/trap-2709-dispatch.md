@@ -2,7 +2,7 @@
 
 - tested_commit: 395312cb4 (cleanup-datrstrap at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_trs_trap.cpp:38-42` -- the dispatch
+- claim: `src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp:38-42` -- the dispatch
   table is a pointer-to-member of daTrsTrap_c itself
   (`typedef void (daTrsTrap_c::*PMF)();`, line 64), not an opaque
   forward-declared class; under 2004/b56 the real class gives byte-identical
@@ -20,7 +20,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_trs_trap.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp \
   --func _ZN11daTrsTrap_c8BehaviorEv --addr 0x0211ce74 --size 0x8c \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```
@@ -38,3 +38,6 @@ MATCHING VERSIONS: 2004/b56
 ```
 
 - verdict: VERIFIED-CURRENT
+
+Current source locations after PR #3840: [src/game/actors/d_a_trs_trap.cpp](../../src/game/actors/d_a_trs_trap.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

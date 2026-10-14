@@ -302,7 +302,7 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS -- every declared function is defined; the one extra STT_FUNC is __sinit_d_a_obj_kanban.cpp, licensed under init",
+      "declared_function_set_equals_defined_function_set": "PASS -- every declared function is defined; the one extra STT_FUNC is __sinit_daObjKanban_c.cpp, licensed under init",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS",
       "all_content_sections_licensed": "PASS -- .text 0x0212edac..0x0212f27c (7 functions) + .init 0x0212fdb0..0x0212fdf0 + .ctor 0x0212fe04..0x0212fe08 + .bss 0x02130858..0x0213086c. The linkcheck block proves all four ranges.",
