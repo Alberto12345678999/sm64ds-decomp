@@ -323,8 +323,8 @@ struct daTrs_c : dCapEnemy_c {
     void OnPendingDestroy();
     int  Render();
 
-    /* Leaf adapter until fBase_c::operator new(unsigned long) lands (#2570).
-       `return new daTrs_c()` then routes through the retail allocator. */
+    /* Existing leaf forwarding adapter: `return new daTrs_c()` routes
+       through the retail allocator. fBase_c also declares an adapter. */
     static void *operator new(unsigned long size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
