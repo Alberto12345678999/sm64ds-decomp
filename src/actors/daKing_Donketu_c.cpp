@@ -79,8 +79,9 @@
  * - BlendModelAnim::SetAnim, Particle::System::New / NewSimple,
  *   RunningSlidingDustAt, Player::Hurt, Sound::ChangeMusicVolume,
  *   DropShadowRadHeight and cstd::atan2 stay mangled (Fix12<int> by value).
- *   NewSimple and the layer-3 sound calls retain their local declarations. FromUniqueID is followed by a
- *   store at sys+0x44, which is still pad_042 on Particle::System.
+ *   NewSimple and the layer-3 sound calls retain their local declarations.
+ *   FromUniqueID is followed by a store at sys+0x44, which is still pad_042
+ *   on Particle::System.
  * - Vec3_* / Matrix4x3_* / ApproachLinear have no shared header this TU
  *   can include alone. data_02082214 is the sine table func_ov073_0211f494
  *   indexes. data_0209f318, data_020a0e68 and data_0209e650 are arm9
@@ -164,9 +165,10 @@ struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual v
  * and the loaded-file pointer at +4. Byte +3 is alignment padding.
  * The model payload is BMD_File; animation payloads are BCA_File.
  * CleanupResources releases the actor's references; the registered
- * handle destructors only publish the file ID through func_02017e34. The model handle's ctor/dtor are the
- * cartridge's func_02017acc / func_02017ab4 pair and the seven animation
- * handles construct through SharedFilePtr::Construct and register
+ * handle destructors only publish the file ID through func_02017e34. The
+ * model handle's ctor/dtor are the cartridge's func_02017acc / func_02017ab4
+ * pair and the seven animation handles construct through
+ * SharedFilePtr::Construct and register
  * SharedFilePtr_Destruct_Anim; the manifest aliases these. */
 struct KingDonketuModelFileHandle : SharedFilePtr {
     u16 fileID;
