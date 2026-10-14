@@ -227,14 +227,6 @@
     }
   ],
   "inherited_findings": {
-    "COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01": {
-      "disposition": "unresolved",
-      "id": "COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01",
-      "kind": "provenance",
-      "location": "notes/experiments/collision-query-current9893-1014.json:actual_composition_report_producer",
-      "reason": "Actual current producer is Root under codex-collision-current9893-root-producer1014, confirmed by current task specification and coordinator. Correct only this report field to the truthful current Root role/session; retain original collision Source authorship as Astra. Do not replace either actual author or reuse the other agent identity. Report-only fix must preserve all five tested production trees and all six inherited finding dictionaries.",
-      "summary": "Current composition report incorrectly attributes the current Root report production to the prior actual Astra session codex-collision-current0d26-astra-producer1014."
-    },
     "COLLISION-QUERY-PARTIAL-01": {
       "disposition": "deferred",
       "id": "COLLISION-QUERY-PARTIAL-01",
@@ -294,9 +286,31 @@
       "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
       "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
       "summary": "Existing Vec3/Vector3 views and actor scalar-position to Vector3 storage boundary remain partial. This patch does not assert those three separate actor fields form an independently live Vector3 object or resolve the inherited alias/lifetime interface. New position reads use the complete actor byte representation to address the existing s32 subobjects."
+    },
+    "COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01": {
+      "disposition": "fixed",
+      "id": "COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01",
+      "kind": "provenance",
+      "location": "notes/experiments/collision-query-current9893-1014.json:actual_composition_report_producer",
+      "reason": "Independent verifier identified selection of an inherited producer session for the actual Root report writer. This report now names the actual current Root producer session directly; historical Source authors and rejected epoch remain preserved. Source and production policy are unchanged by this correction.",
+      "summary": "Current composition report incorrectly attributes the current Root report production to the prior actual Astra session codex-collision-current0d26-astra-producer1014."
+    },
+    "COLLISION-NATIVE-BASES-INHERITANCE-PROVENANCE-01": {
+      "disposition": "fixed",
+      "id": "COLLISION-NATIVE-BASES-INHERITANCE-PROVENANCE-01",
+      "kind": "provenance",
+      "location": "notes/experiments/collision-query-native-bases1014.json:inherited_findings.COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01",
+      "reason": "Independent verification caught an older rejected finding state overwriting its later accepted fixed disposition during inherited-state selection. This report now copies all seven prior findings from the exact accepted predecessor verification of35dd, preserves the rejected epoch in queue history, and records this new repair separately. Source, compiler outputs and all five tested production trees are unchanged.",
+      "summary": "New report regresses an already-fixed predecessor provenance finding to unresolved by selecting an older rejected attempt."
     }
   },
   "remaining_reconstruction": "All six inherited deferred findings remain. The ground-position integer round trip, plain-copy math seams, actor scalar grouping, record views, stored callbacks, scalar bridges and address-named helpers are not declared complete by this cleanup.",
   "final_report_binding": "Final report-only commit must retain the five production trees recorded above. A distinct verifier reviews the exact immutable final commit and tested base; producer proof and private preflights are not formal acceptance.",
-  "publication": "After exact independent acceptance, update the existing open collision PR or publish the native cleanup as a follow-up if the prior PR has already landed. No merge."
+  "publication": "After exact independent acceptance, update the existing open collision PR or publish the native cleanup as a follow-up if the prior PR has already landed. No merge.",
+  "finding_state_selection": {
+    "accepted_predecessor_task": "collision-query-current9893-composition1014",
+    "accepted_predecessor_commit": "35dd7e828e294d33d5ff533895b58cddd2e4d0a0",
+    "accepted_record_stage": "verify",
+    "qualification": "The accepted verification output supplies current dispositions. Older rejected attempts remain historical; source_review.previous_findings currently visits attempts after outputs and returned the stale unresolved state for the prior provenance finding. No protocol/tool policy is modified by this report repair."
+  }
 }
