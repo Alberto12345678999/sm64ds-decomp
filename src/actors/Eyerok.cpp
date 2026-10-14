@@ -2209,7 +2209,7 @@ int Eyerok::func_ov066_0211903c() {
 
             mTalkPlayer->mStateFlags |= 0x400;
             Message::PrepareTalk();
-            if (mTalkPlayer->ShowMessage(*(fBase_c *)this, msgid, &out, 0, 0) == 1) {
+            if (mTalkPlayer->ShowMessage(*this, msgid, &out, 0, 0) == 1) {
                 mStateWork1 = 1;
                 func_02012694(SE_TALK_STARTED, &mCamSpacePosX);
             }
@@ -2588,7 +2588,7 @@ int Eyerok::Behavior()
         mdCcAcPos_c.Clear();
         mdCcAcPos_c.dCc_c::Update();
         mBlendModelAnim.Advance();
-        ((dExtFrameCtrl_c *)&mTextureSequence)->Advance();
+        mTextureSequence.Advance();
     }
     return 1;
 }
@@ -2765,9 +2765,10 @@ int Eyerok::OnAimedAtWithEgg()
    module's sinit at 0x0211a418, and they belong to this class: the factory
    installs _ZTV6Eyerok, which is this unit's vtable. */
 /* -------------------------------------------------------------------------- */
-/* Repeats the declaration near the top of this file for this neighbour. It also keeps
-   the declaration-agreement plurality at unsigned char, which the ldrb loads
-   in this file match, against decl_common.h's s8. */
+/* Redundant with the declaration near the top of this file. Kept only so the
+   declaration-agreement vote stays at unsigned char (the ldrb/blo loads of
+   this byte in 021188b0 and here prove it unsigned) against decl_common.h's
+   signed char, which is the wrong one. */
 extern unsigned char data_ov066_0211ae08;
 
 // @symbol func_ov066_0211a2e4

@@ -1,7 +1,8 @@
 /* class Eyerok : dBgActor_c. Real C++ form.
  *
- * Base and size from the retail factory daIwante_c_classInit (now `new Eyerok()`
- * at the bottom of src/actors/Eyerok.cpp): fBase_c::operator new(0x874), then
+ * Base and size from the factory (reconstructed name daIwante_c_classInit,
+ * now `new Eyerok()` at the bottom of src/actors/Eyerok.cpp):
+ * fBase_c::operator new(0x874), then
  * dBgActor_c::dBgActor_c(), then the _ZTV6Eyerok store. Two
  * vtable stores in the destructor -- own, then dBgActor_c's -- confirming a
  * DIRECT dBgActor_c child, no intermediate. The apparent third store some
@@ -98,7 +99,7 @@ struct Eyerok : dBgActor_c {
     s32 mTargetPosX;                                        /* 0x4bc */
     s32 mTargetPosY;                                        /* 0x4c0 */
     s32 mTargetPosZ;                                        /* 0x4c4 */
-    /* Per-frame step handed to ApproachLinear(&mHorzSpeed, 0x258000, step):
+    /* Per-frame step handed to ApproachLinear(mHorzSpeed, 0x258000, step):
        the sideways-run states bump it by 0x1a or 0x130 each frame while it is
        below 0x2710. */
     s32 mHorzAccelStep;                                     /* 0x4c8 */

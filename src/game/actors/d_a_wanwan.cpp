@@ -582,8 +582,9 @@ void func_ov014_02112114(daWanwan_c *c)
     if (other == 0)
         return;
 
-    /* Each of the three actor-ID tests spelled as a plain `==` fails the
-       byte match; the Bob-omb one comes out 4 bytes shorter. */
+    /* Each actor-ID test turns the comparison into 0/1 and tests that
+       against 0 (moveq/movne/cmp). A plain `==` drops those three
+       instructions, 12 bytes shorter per test. */
     if ((int)(other->actorID == kYoshiEggId) != 0) {
         if (c->mdCcAcPos_c.hitFlags & 0x2000) {
             c->mScaleX = 0x2000;
