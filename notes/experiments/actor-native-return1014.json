@@ -465,12 +465,12 @@
     "formal_acceptance": false
   },
   "latest_main_composition": {
-    "task": "actor-native-return-main1014",
-    "base": "371652f165dc1fc362566ed96beb335dbdb2d802",
-    "accepted_source_parent": "1414085f886aab3fa23141102fa138713c161f4b",
-    "source_checkpoint": "fda6b04683b9fbf026b8406fb72ecd2981922f2d",
+    "task": "actor-native-return-final1014",
+    "base": "1ea12ec7432b56ee8ebd8a783b68602781df59d7",
+    "preserved_source_parent": "f4724f3ea61f083ad75b7a92444a66115e333bfe",
+    "source_checkpoint": "329e3d29ec5e59c4af80edc1072bb7e80ae8905f",
     "source_author": "Original accepted producer unchanged; Root composed upstream and wrote this report only.",
-    "predecessor": "actor-native-return-current1014",
+    "predecessor": "actor-native-return-main1014",
     "four_dependency_trees_equal": {
       "include": "9a7fe3dd2d6c10927c6604d70dc4bfaca9c614ae",
       "config": "90bf84d569cd549c53ca5d06180145c10e78d62e",
@@ -478,15 +478,14 @@
       "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
     },
     "complete_src_delta": [
-      "src/actors/ActorBase.cpp",
-      "src/actors/dEnemyBase_c.cpp"
+      "src/actors/ActorBase.cpp"
     ],
     "all_other_src_blobs_unchanged": true,
     "upstream_source_output_proof": [
       {
         "source": "src/actors/ActorBase.cpp",
-        "old_source_blob": "9f32df5aa60dfbd87d5ba8f366e75546c6d2c8e3",
-        "current_source_blob": "da804163ba53e9d530c49c037ea1547d7c41a1f7",
+        "old_source_blob": "da804163ba53e9d530c49c037ea1547d7c41a1f7",
+        "current_source_blob": "0cb3174fa8f4e4e127a9b3ee025fdacfd229723e",
         "raw_equal": true,
         "prepared_equal": true,
         "whole_graphs_equal": true,
@@ -737,280 +736,9 @@
         ],
         "raw_refs": 132,
         "prepared_refs": 98
-      },
-      {
-        "source": "src/actors/dEnemyBase_c.cpp",
-        "old_source_blob": "0c684493be5ff2ca32c8163477498a45d5392bc3",
-        "current_source_blob": "33b49f19825c575c2adb53bb02795ed7a5d1d254",
-        "raw_equal": true,
-        "prepared_equal": true,
-        "whole_graphs_equal": true,
-        "raw_sha256": "6733fe33aa4c0cc411f31e753ed293c571d789f5bbaed22d43c69adc9c3b33a4",
-        "prepared_sha256": "7797744f2008de03ecb3e01878793cff7c28505b4fb5f3e7b2c4d5f6e7047d4b",
-        "unique_strict": 32,
-        "checks": [
-          {
-            "name": "func_ov002_020ad660",
-            "module": "ov002",
-            "addr": "0x020ad660",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj",
-            "module": "ov002",
-            "addr": "0x020ad838",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE",
-            "module": "ov002",
-            "addr": "0x020ada40",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc",
-            "module": "ov002",
-            "addr": "0x020adb40",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER5dCc_c",
-            "module": "ov002",
-            "addr": "0x020addc0",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ade78",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER10dBgCh_ActrRs",
-            "module": "ov002",
-            "addr": "0x020ae244",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c15IsGoingOffCliffER10dBgCh_Actrisbbi",
-            "module": "ov002",
-            "addr": "0x020ae2b8",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae454",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae4cc",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "func_ov002_020ae5c8",
-            "module": "ov002",
-            "addr": "0x020ae5c8",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae608",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN11EnemyDeathC19func_ov002_020ae64cER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae64c",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c11UpdateDeathER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae6a8",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae73cEP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae73c",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae80cEP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae80c",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae844",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae87cEP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae87c",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae890EP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae890",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "func_ov002_020ae8b8",
-            "module": "ov002",
-            "addr": "0x020ae8b8",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae954EP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae954",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "func_ov002_020ae968",
-            "module": "ov002",
-            "addr": "0x020ae968",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020ae9f8EP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020ae9f8",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020aea24",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN6Aea30C19func_ov002_020aea2cEP8dActor_cP10dBgCh_Actr",
-            "module": "ov002",
-            "addr": "0x020aea2c",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "func_ov002_020aea30",
-            "module": "ov002",
-            "addr": "0x020aea30",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c9SpawnCoinEv",
-            "module": "ov002",
-            "addr": "0x020aeabc",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj",
-            "module": "ov002",
-            "addr": "0x020aebf8",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_cD2Ev",
-            "module": "ov002",
-            "addr": "0x020aed18",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_cD0Ev",
-            "module": "ov002",
-            "addr": "0x020aed3c",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_cD1Ev",
-            "module": "ov002",
-            "addr": "0x020aed74",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          },
-          {
-            "name": "_ZN12dEnemyBase_cC2Ev",
-            "module": "ov002",
-            "addr": "0x020aed98",
-            "verdict": "VERIFIED",
-            "diffs": [],
-            "blind": 0
-          }
-        ],
-        "raw_refs": 214,
-        "prepared_refs": 169
       }
     ],
-    "full_module_proof_binding": "The two changed upstream Source files produce literal identical complete raw and ordinarily prepared objects, symbols, sections and references. All other Source blobs and four dependency trees are unchanged. This positively binds the accepted parent module proof to this composition; it is not described as a new full-ROM execution.",
+    "full_module_proof_binding": "The one changed upstream Source file produce literal identical complete raw and ordinarily prepared objects, symbols, sections and references. For Actor, f472 was a prepared but not accepted composition; the accepted Source/module checkpoint remains1414085, bound through the already recorded two-upstream object proof. All other Source blobs and four dependency trees are unchanged. This positively binds the accepted parent module proof to this composition; it is not described as a new full-ROM execution.",
     "formal_acceptance": false
   }
 }
