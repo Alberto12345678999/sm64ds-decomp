@@ -24,18 +24,16 @@
  * PATTERN_4..PATTERN_9); parts 1 and 2 are the hands it spawns. Each part
  * keeps a State (two pointer-to-member pairs, enter and run) in mState and
  * switches by func_ov066_02119454; the descriptors are the data_ov066_0211xxxx
- * tables (listed in the table comment above) and every handler's comment names
- * its state. The
- * parts talk through the shared byte globals declared below the includes.
+ * tables (listed in the .bss state descriptor comment below the includes) and
+ * every handler's comment names its state. The parts talk through the shared
+ * byte globals declared below the includes.
  *
  * deslop leftovers:
- *  - Raw offsets remain in about thirty places: func_ov066_021175bc
- *    ((char *)self + 0x400 and a short at +0xd0 of the pointer it yields),
- *    func_ov066_02119398 (the char *p / player-position reads, +4 and +8 are
- *    the player's Y and Z), the dust-slot walks in Behavior (+0x4dc..0x4e4
- *    and the u16 at +0xd4 of the +0x400 block) and the dust clear loop in
- *    InitResources (typed access there costs size, measured). The dust slots
- *    are mDustPos in the header but these loops keep the walking-pointer shape.
+ *  - Raw offsets remain in the dust-slot walks: Behavior's particle loop and
+ *    clear loop step a char pointer from this and read +0x4dc..0x4e4 (mDustPos),
+ *    and InitResources clears the same slots the same way. A Vector3 pointer
+ *    over mDustPos measures longer in each of the three loops (see the
+ *    comments there), so they keep the walking-pointer shape.
  *  - Names inferred from behaviour only, not from a symbol or RTTI: mHitPoints,
  *    mTargetPos*, mHorzAccelStep, mTexTimer/mTexPhase, mDustCounter; patterns
  *    4..9 are numbered, not named; the SE_* ids are named by the situation
@@ -349,44 +347,23 @@ extern void func_020398fc(void *p);
 
 /* ---- arm9 / ov002 methods, mangled ROM spelling ---- */
 extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int step);
-extern void _Z14ApproachLinearRiii(int *r, int target, int step);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, Vector3 *v, s32 f1, s32 f2, u32 a, u32 b);
 extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
-extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *sfp);
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned int a);
 extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
-extern void _ZN6Player16IncMegaKillCountEv(void *p);
-extern void _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(void *sfp);
-extern void _ZN7fBase_c18MarkForDestructionEv(void *self);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int a, int x, int y, int z);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
-extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id);
-extern void *_ZN8dActor_c13ClosestPlayerEv(void *self);
-extern void _ZN8dActor_c15HugeLandingDustEb(void *self, int b);
-extern void _ZN8dActor_c16TriplePoofDustAtERK7Vector3(void *self, const void *v);
-extern int _ZN8dActor_c18HorzAngleToCPlayerEv(void *self);
-extern u8 _ZN8dActor_c9TrackStarEjj(void *actor, u32 a, u32 b);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *sfp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
-/* local extern: the call passes an untyped this, so it cannot use the header method. */
-extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *self);
 
-/* ---- the dBgW callback veneer just past this unit (0x0211a35c, its own
- *      src/ file) ---- */
+/* ---- the dBgW callback veneer (0x0211a35c), defined at the bottom of this
+ *      file; seven call sites pass its address to func_020393c4 ---- */
 extern void func_ov066_0211a35c(void *a, void *b, void *c);
-
-/* ---- this TU's own members, forward-declared: the file is written
- *      ROM-ascending, so a member that calls one defined further down
- *      needs a declaration first ---- */
 }
+
+int ApproachLinear(int &value, int target, int step);
 
 typedef struct { int w[12]; } M48;
 
@@ -714,19 +691,19 @@ int Eyerok::func_ov066_021168ec()
     if (mVertAccel != 0) return 0;
     m = data_ov066_0211ae04;
     if (m == PHASE_REST) {
-        if (mState != (void *)&data_ov066_0211b06c) {
-            func_ov066_02119454((void *)&data_ov066_0211b06c);
+        if (mState != &data_ov066_0211b06c) {
+            func_ov066_02119454(&data_ov066_0211b06c);
             return 3;
         }
     }
     if ((unsigned char)(m + 0xfc) <= 5
-        && mState == (void *)&data_ov066_0211b06c) {
-        if (m == PATTERN_4) { func_ov066_02119454((void *)&data_ov066_0211b08c); return data_ov066_0211ae04; }
-        if (m == PATTERN_5) { func_ov066_02119454((void *)&data_ov066_0211b0bc); return data_ov066_0211ae04; }
-        if (m == PATTERN_6) { func_ov066_02119454((void *)&data_ov066_0211b0ec); return data_ov066_0211ae04; }
-        if (m == PATTERN_7) { func_ov066_02119454((void *)&data_ov066_0211afec); return data_ov066_0211ae04; }
-        if (m == PATTERN_8) { func_ov066_02119454((void *)&data_ov066_0211b01c); return data_ov066_0211ae04; }
-        if (m == PATTERN_9) { func_ov066_02119454((void *)&data_ov066_0211b04c); return data_ov066_0211ae04; }
+        && mState == &data_ov066_0211b06c) {
+        if (m == PATTERN_4) { func_ov066_02119454(&data_ov066_0211b08c); return data_ov066_0211ae04; }
+        if (m == PATTERN_5) { func_ov066_02119454(&data_ov066_0211b0bc); return data_ov066_0211ae04; }
+        if (m == PATTERN_6) { func_ov066_02119454(&data_ov066_0211b0ec); return data_ov066_0211ae04; }
+        if (m == PATTERN_7) { func_ov066_02119454(&data_ov066_0211afec); return data_ov066_0211ae04; }
+        if (m == PATTERN_8) { func_ov066_02119454(&data_ov066_0211b01c); return data_ov066_0211ae04; }
+        if (m == PATTERN_9) { func_ov066_02119454(&data_ov066_0211b04c); return data_ov066_0211ae04; }
     }
     return 0;
 }
@@ -738,6 +715,7 @@ int Eyerok::func_ov066_021168ec()
  * else -0xa68000. The decision state tests for the first two values. */
 int Eyerok::func_ov066_02116a68()
 {
+    /* Unused; sizes the frame to the ROM's 12 bytes (sub sp,#0xc). */
     volatile int dummy[3];
     (void)dummy;
     Player *p = ClosestPlayer();
@@ -760,6 +738,8 @@ int Eyerok::func_ov066_02116a68()
  * (mCamSpacePosX, which the shift does not change), and restores the position. */
 void Eyerok::func_ov066_02116ac4(int strength)
 {
+    /* Saved through stack slots; non-volatile locals make this 24 bytes
+       shorter. */
     volatile int s0, s1, s2;
     func_0200d8c8(data_0209f318, &mPosX, strength);
     s0 = mPosX;
@@ -770,7 +750,7 @@ void Eyerok::func_ov066_02116ac4(int strength)
     else
         mPosX += 0x80000;
     mPosZ += 0x80000;
-    _ZN8dActor_c15HugeLandingDustEb(this, 1);
+    HugeLandingDust(true);
     func_02012694(SE_LANDING, &mCamSpacePosX);
     mPosX = s0;
     mPosY = s1;
@@ -789,10 +769,10 @@ int Eyerok::func_ov066_02116b78()
     int b1 = 0x320;
     int lo = -0x320;
     int ip = mPartIdx;
-    if (ip == 2) { b1 = 0x384; lo = -0x384; }
+    if (ip == PART_HAND_2) { b1 = 0x384; lo = -0x384; }
     unsigned char flag = data_ov066_0211abe0;
     int v = mPosX;
-    if (flag != 3) lo -= 0x50;
+    if (flag != HANDS_BOTH) lo -= 0x50;
     lo = lo << 0xc;
     if (v < lo) {
         mPosX = lo;
@@ -800,8 +780,8 @@ int Eyerok::func_ov066_02116b78()
         return 1;
     }
     b1 = 0x320;
-    if (ip == 1) b1 = 0x384;
-    if (flag != 3) b1 += 0x50;
+    if (ip == PART_HAND_1) b1 = 0x384;
+    if (flag != HANDS_BOTH) b1 += 0x50;
     b1 = b1 << 0xc;
     if (v > b1) {
         mPosX = b1;
@@ -816,7 +796,7 @@ int Eyerok::func_ov066_02116b78()
         return 1;
     }
     n = 0xff8c6000;
-    if (flag != 3) n += 0x8c000;
+    if (flag != HANDS_BOTH) n += 0x8c000;
     if (z > n) {
         mPosZ = n;
         mHorzSpeed = 0;
@@ -843,10 +823,10 @@ int Eyerok::func_ov066_02116c6c()
             v.x = mPosX;
             v.y = mPosY;
             v.z = mPosZ;
-            _ZN8dActor_c16TriplePoofDustAtERK7Vector3(this, &v);
+            TriplePoofDustAt(*(Vector3 *)&v);
         }
         func_02012694(SE_DEFEAT_POOF, &mCamSpacePosX);
-        _ZN7fBase_c18MarkForDestructionEv(this);
+        MarkForDestruction();
     }
     return 1;
 }
@@ -1164,19 +1144,15 @@ int Eyerok::func_ov066_021171b0()
 }
 
 // @symbol _ZN6Eyerok19func_ov066_021175bcEv
-/* Pattern 8, hand enter handler: clears the work words and sub-state, mTimer1
- * (written as the halfword at r1 + 0xd0 from a +0x400 base, the shape that
- * matched) and data_ov066_0211ae00. */
+/* Pattern 8, hand enter handler: clears the work words, mTimer1,
+ * data_ov066_0211ae00 and the sub-state. */
 int Eyerok::func_ov066_021175bc()
 {
-    int r3 = 0;
-    mStateWork0 = r3;
-    mStateWork1 = r3;
-    char *r1 = (char *)this + 0x400;
-    char *r2 = (char *)&data_ov066_0211ae00;
-    *(short *)(r1 + 0xd0) = r3;
-    *r2 = r3;
-    mSubState = r3;
+    mStateWork0 = 0;
+    mStateWork1 = 0;
+    mTimer1 = 0;
+    data_ov066_0211ae00 = 0;
+    mSubState = 0;
     return 1;
 }
 
@@ -1292,7 +1268,7 @@ int Eyerok::func_ov066_021175e8()
             else
                 mHorzAccelStep += 0x130;
         }
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x258000, mHorzAccelStep);
+        ApproachLinear(mHorzSpeed, 0x258000, mHorzAccelStep);
         if (func_ov066_02116b78() == 1) {
             mHorzSpeed = 0;
             mPrevAngleY = 0;
@@ -1474,7 +1450,7 @@ int Eyerok::func_ov066_02117bf0()
             else
                 mHorzAccelStep += 0x130;
         }
-        _Z14ApproachLinearRiii(&mHorzSpeed, 0x258000, mHorzAccelStep);
+        ApproachLinear(mHorzSpeed, 0x258000, mHorzAccelStep);
         if (func_ov066_02116b78() == 1) {
             mHorzSpeed = 0;
             mPrevAngleY = 0;
@@ -1835,18 +1811,19 @@ int Eyerok::func_ov066_02118678()
 /* Rise state, hand enter handler: starts the animation in data_ov066_0211ae74
  * (hand 2) / ae7c with the texture pattern from ae3c / aebc, freezes it
  * (speed 0) and clears the work words. */
-int Eyerok::func_ov066_021187c8(){
-  if(mPartIdx == PART_HAND_2){
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, (void*)data_ov066_0211ae74.words[1], 4, 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, (void*)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
-  } else {
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, (void*)data_ov066_0211ae7c.words[1], 4, 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, (void*)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
-  }
-  mBlendModelAnim.speed = 0;
-  mStateWork0 = 0;
-  mStateWork1 = 0;
-  return 1;
+int Eyerok::func_ov066_021187c8()
+{
+    if (mPartIdx == PART_HAND_2) {
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, (void *)data_ov066_0211ae74.words[1], 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, (void *)data_ov066_0211ae3c.words[1], 0x40000000, 0x1000, 0);
+    } else {
+        _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, (void *)data_ov066_0211ae7c.words[1], 4, 0x40000000, 0x1000, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, (void *)data_ov066_0211aebc.words[1], 0x40000000, 0x1000, 0);
+    }
+    mBlendModelAnim.speed = 0;
+    mStateWork0 = 0;
+    mStateWork1 = 0;
+    return 1;
 }
 
 // @symbol _ZN6Eyerok19func_ov066_021188b0Ev
@@ -1855,17 +1832,18 @@ int Eyerok::func_ov066_021187c8(){
  * talk state (data_ov066_0211b0ac). Otherwise, once the completion count
  * data_ov066_0211ae08 is 2 or more it sets PHASE_REST and returns to the decision
  * state (data_ov066_0211b0cc). */
-int Eyerok::func_ov066_021188b0(){
-  if(data_ov066_0211abe0==0){
-    mTimer2=0x64;
-    func_ov066_02119454(&data_ov066_0211b0ac);
+int Eyerok::func_ov066_021188b0()
+{
+    if (data_ov066_0211abe0 == 0) {
+        mTimer2 = 0x64;
+        func_ov066_02119454(&data_ov066_0211b0ac);
+        return 1;
+    }
+    if (data_ov066_0211ae08 >= 2) {
+        data_ov066_0211ae04 = PHASE_REST;
+        func_ov066_02119454(&data_ov066_0211b0cc);
+    }
     return 1;
-  }
-  if(data_ov066_0211ae08>=2){
-    data_ov066_0211ae04 = PHASE_REST;
-    func_ov066_02119454(&data_ov066_0211b0cc);
-  }
-  return 1;
 }
 
 // @symbol _ZN6Eyerok19func_ov066_02118934Ev
@@ -1911,16 +1889,16 @@ int Eyerok::func_ov066_021189a0()
  * in, picks data_ov066_0211ae0c from the top bit of a random number (0: hand 2,
  * 1: hand 1), resets mPickCount and enters the pattern-running state
  * (data_ov066_0211b03c). */
-int RandomIntInternal(int* seed);
-int Eyerok::func_ov066_021189c0(){
-  if(func_ov066_021168b0() == 0) return 1;
-  if((((unsigned int)RandomIntInternal(&data_0209e650) >> 0x1f) & 1) == 0)
-    data_ov066_0211ae0c = PART_HAND_2;
-  else
-    data_ov066_0211ae0c = PART_HAND_1;
-  mPickCount = 0;
-  func_ov066_02119454(&data_ov066_0211b03c);
-  return 1;
+int Eyerok::func_ov066_021189c0()
+{
+    if (func_ov066_021168b0() == 0) return 1;
+    if ((((unsigned int)RandomIntInternal(&data_0209e650) >> 0x1f) & 1) == 0)
+        data_ov066_0211ae0c = PART_HAND_2;
+    else
+        data_ov066_0211ae0c = PART_HAND_1;
+    mPickCount = 0;
+    func_ov066_02119454(&data_ov066_0211b03c);
+    return 1;
 }
 
 // @symbol _ZN6Eyerok19func_ov066_02118a30Ev
@@ -1950,10 +1928,7 @@ s32 Eyerok::func_ov066_02118a50() {
     } else {
         data_ov066_0211ae0c = data_ov066_0211abe0;
     }
-    {
-        unsigned char* p = (unsigned char*)((int)&mPickCount);
-        *p += 1;
-    }
+    mPickCount += 1;
     data_ov066_0211ae10 += 1;
     data_ov066_0211ae10 &= 1;
     func_ov066_02119454(&data_ov066_0211b03c);
@@ -1982,10 +1957,7 @@ s32 Eyerok::func_ov066_02118b28() {
     } else {
         data_ov066_0211ae0c = data_ov066_0211abe0;
     }
-    {
-        unsigned char* p = (unsigned char*)((int)&mPickCount);
-        *p += 1;
-    }
+    mPickCount += 1;
     data_ov066_0211ae10 += 1;
     data_ov066_0211ae10 &= 1;
     func_ov066_02119454(&data_ov066_0211b03c);
@@ -2014,10 +1986,7 @@ s32 Eyerok::func_ov066_02118c00() {
     } else {
         data_ov066_0211ae0c = data_ov066_0211abe0;
     }
-    {
-        unsigned char* p = (unsigned char*)((int)&mPickCount);
-        *p += 1;
-    }
+    mPickCount += 1;
     data_ov066_0211ae10 += 1;
     data_ov066_0211ae10 &= 1;
     func_ov066_02119454(&data_ov066_0211b03c);
@@ -2066,9 +2035,8 @@ int Eyerok::func_ov066_02118cdc() {
         } else {
             data_ov066_0211ae0c = data_ov066_0211abe0;
         }
-        volatile int* tmp = (volatile int*)((int)&mStateWork0);
-        *tmp = *tmp + 1;
-        *tmp = *tmp & 1;
+        mStateWork0 += 1;
+        mStateWork0 &= 1;
     }
     return 1;
 }
@@ -2198,7 +2166,7 @@ int Eyerok::func_ov066_0211903c() {
         cam->SetFlag_3();
         mTalkPlayer = ClosestPlayer();
         if (mTalkPlayer != 0)
-            ((Player *)(mTalkPlayer))->SetNoControlState(5, -1, 0);
+            mTalkPlayer->SetNoControlState(5, -1, 0);
         mSubState = 1;
     } else {
         v1.x = mPosX;
@@ -2241,14 +2209,14 @@ int Eyerok::func_ov066_0211903c() {
 
             mTalkPlayer->mStateFlags |= 0x400;
             Message::PrepareTalk();
-            if (((Player *)(mTalkPlayer))->ShowMessage(*(fBase_c *)this, msgid, &out, 0, 0) == 1) {
+            if (mTalkPlayer->ShowMessage(*(fBase_c *)this, msgid, &out, 0, 0) == 1) {
                 mStateWork1 = 1;
                 func_02012694(SE_TALK_STARTED, &mCamSpacePosX);
             }
         }
     } else {
         if (mTalkPlayer != 0) {
-            if (((Player *)(mTalkPlayer))->GetTalkState() < 0) {
+            if (mTalkPlayer->GetTalkState() < 0) {
                 cam->mFlags &= ~8;
                 Message::EndTalk();
                 if (data_ov066_0211abe0 == HANDS_BOTH) {
@@ -2262,8 +2230,8 @@ int Eyerok::func_ov066_0211903c() {
                     star.x = 0;
                     star.y = (int)0xffa24000;
                     star.z = (int)0xff1b4000;
-                    UntrackAndSpawnStar(*(signed char*)(&mStarTracked), mStarId, star, 4);
-                    ((fBase_c *)this)->MarkForDestruction();
+                    UntrackAndSpawnStar(mStarTracked, mStarId, star, 4);
+                    MarkForDestruction();
                 }
             }
         }
@@ -2298,13 +2266,13 @@ struct Vec4 { int a, b, self, d; ~Vec4(){} };
 int Eyerok::func_ov066_02119398()
 {
     Vec4 sp;
-    /* Member loads of the player's position come out a different size.
-       The base pointer is what matches. */
-    char *p = (char *)ClosestPlayer();
+    /* Reading p->mPosY and p->mPosZ directly makes this 4 bytes shorter;
+       the pointer to the position triple is what matches. */
+    Player *p = ClosestPlayer();
     if (p != 0) {
-        char* playerPos = p + 0x5c;
-        int v1 = *(int*)(playerPos + 4);
-        int v2 = *(int*)(playerPos + 8);
+        s32 *playerPos = &p->mPosX;
+        int v1 = playerPos[1];
+        int v2 = playerPos[2];
         if (v1 < -0x300000) {
             int f = (int)((mFlags & 8) != 0);
             if (f == 0) {
@@ -2334,17 +2302,24 @@ int Eyerok::func_ov066_0211944c()
  * pairs (8 bytes each: enter handler at +0, run handler at +8, filled in by
  * __sinit_ov066_0211a418). It is stored in mState (+0x48c) and the enter handler
  * is called on the object unless that first word is null. */
-int Eyerok::func_ov066_02119454(void *pv) { EyerokState *p = (EyerokState *)pv; mState = p; EyerokState *q = (EyerokState *)mState; if (*(int *)q == 0) return 1; return (this->*q->enter)(); }
+int Eyerok::func_ov066_02119454(void *pv)
+{
+    mState = (EyerokState *)pv;
+    if (*(int *)&mState->enter == 0)
+        return 1;
+    return (this->*mState->enter)();
+}
 
 // @symbol _ZN6Eyerok19func_ov066_021194a4Ev
 /* Refresh the collision matrix mClsnMat2 from the object (rotation about Y by
  * mAngleY, translation = position) and hand it to dBgW_KcMbg::Transform. */
-void Eyerok::func_ov066_021194a4() {
-  Matrix4x3_FromRotationY(&mClsnMat2, mAngleY);
-  mClsnMat2.t.x = mPosX;
-  mClsnMat2.t.y = mPosY;
-  mClsnMat2.t.z = mPosZ;
-  ((dBgW_KcMbg *)(&mMeshCollider2))->Transform(mClsnMat2, mAngleY);
+void Eyerok::func_ov066_021194a4()
+{
+    Matrix4x3_FromRotationY(&mClsnMat2, mAngleY);
+    mClsnMat2.t.x = mPosX;
+    mClsnMat2.t.y = mPosY;
+    mClsnMat2.t.z = mPosZ;
+    mMeshCollider2.Transform(mClsnMat2, mAngleY);
 }
 
 // @symbol _ZN6Eyerok19func_ov066_021194fcEv
@@ -2390,33 +2365,33 @@ void Eyerok::func_ov066_021194fc()
  * patterns, 10 animations and 5 collision files. */
 int Eyerok::CleanupResources()
 {
-  if(((dBgW *)&mMeshCollider2)->IsEnabled())
-    ((dBgW *)&mMeshCollider2)->Disable();
-  if(mPartIdx==0){
-    data_ov066_0211ae6c.Release();
-    data_ov066_0211ae4c.Release();
-    data_ov066_0211aeb4.Release();
-    data_ov066_0211aebc.Release();
-    data_ov066_0211ae9c.Release();
-    data_ov066_0211ae3c.Release();
-    data_ov066_0211ae2c.Release();
-    data_ov066_0211ae5c.Release();
-    data_ov066_0211ae84.Release();
-    data_ov066_0211aea4.Release();
-    data_ov066_0211ae8c.Release();
-    data_ov066_0211ae54.Release();
-    data_ov066_0211ae94.Release();
-    data_ov066_0211ae64.Release();
-    data_ov066_0211ae44.Release();
-    data_ov066_0211ae74.Release();
-    data_ov066_0211ae7c.Release();
-    data_ov066_0211ae24.Release();
-    data_ov066_0211aeac.Release();
-    data_ov066_0211ae14.Release();
-    data_ov066_0211ae1c.Release();
-    data_ov066_0211ae34.Release();
-  }
-  return 1;
+    if (mMeshCollider2.IsEnabled())
+        mMeshCollider2.Disable();
+    if (mPartIdx == PART_MAIN) {
+        data_ov066_0211ae6c.Release();
+        data_ov066_0211ae4c.Release();
+        data_ov066_0211aeb4.Release();
+        data_ov066_0211aebc.Release();
+        data_ov066_0211ae9c.Release();
+        data_ov066_0211ae3c.Release();
+        data_ov066_0211ae2c.Release();
+        data_ov066_0211ae5c.Release();
+        data_ov066_0211ae84.Release();
+        data_ov066_0211aea4.Release();
+        data_ov066_0211ae8c.Release();
+        data_ov066_0211ae54.Release();
+        data_ov066_0211ae94.Release();
+        data_ov066_0211ae64.Release();
+        data_ov066_0211ae44.Release();
+        data_ov066_0211ae74.Release();
+        data_ov066_0211ae7c.Release();
+        data_ov066_0211ae24.Release();
+        data_ov066_0211aeac.Release();
+        data_ov066_0211ae14.Release();
+        data_ov066_0211ae1c.Release();
+        data_ov066_0211ae34.Release();
+    }
+    return 1;
 }
 
 // @symbol _ZN6Eyerok16OnPendingDestroyEv
@@ -2432,16 +2407,16 @@ void Eyerok::OnPendingDestroy()
  * and mBlendModelAnim is drawn. */
 int Eyerok::Render()
 {
-  if (mPartIdx == PART_MAIN) {
-    if (data_ov066_0211ae04 == PHASE_DORMANT) {
-      mModel2.Render(0);
+    if (mPartIdx == PART_MAIN) {
+        if (data_ov066_0211ae04 == PHASE_DORMANT) {
+            mModel2.Render(0);
+        }
+        return 1;
     }
+    if (data_ov066_0211ae04 == PHASE_DORMANT) return 1;
+    mTextureSequence.TextureSequence::Update(mBlendModelAnim.data);
+    mBlendModelAnim.Render(0);
     return 1;
-  }
-  if (data_ov066_0211ae04 == PHASE_DORMANT) return 1;
-  ((TextureSequence *)&mTextureSequence)->TextureSequence::Update(mBlendModelAnim.data);
-  mBlendModelAnim.Render(0);
-  return 1;
 }
 
 
@@ -2472,10 +2447,9 @@ int Eyerok::Render()
  * (mdCcAcPos_c) to its position plus data_ov066_0211ad18, refreshes matrices and
  * collision, clears its hit results, re-registers it (Update links it into the
  * collision list) and advances both animations. */
-/* Eyerok::Behavior -- vtable slot 6. Real C++ method over the shared header.
- * EVec3 is a local plain-int triple (stack temps); callees whose ROM symbols
- * carry by-value/ref class parameters keep their literal mangled extern "C"
- * spellings. */
+/* Vtable slot 6. EVec3 is a local plain-int triple (stack temps); callees whose
+ * ROM symbols carry by-value/ref class parameters keep their literal mangled
+ * extern "C" spellings. */
 int Eyerok::Behavior()
 {
     char *c = (char *)this;
@@ -2484,7 +2458,7 @@ int Eyerok::Behavior()
     DecIfAbove0_Short(&mTimer2);
 
     {
-        EyerokState *st = (EyerokState *)mState;
+        EyerokState *st = mState;
         if (*(int *)&st->run != 0)
             (this->*st->run)();
     }
@@ -2493,11 +2467,9 @@ int Eyerok::Behavior()
         if ((mDustCounter & 1) == 0) {
             int rnd = RandomIntInternal(&data_0209e650);
             int off = (mDustCounter >> 1) * 0xc;
-            int base_dc = 0x4dc;
-            int base_e4 = 0x4e4;
-            char *bx = c + base_dc;
-            char *bz = c + base_e4;
-            char *by = c + 0x4e0;
+            char *bx = (char *)&mDustPos[0].x;
+            char *bz = (char *)&mDustPos[0].z;
+            char *by = (char *)&mDustPos[0].y;
             int *px;
             int *pz;
             int *py;
@@ -2517,7 +2489,7 @@ int Eyerok::Behavior()
             vout.x = zero;
             vout.y = zero;
             vout.z = zero;
-            if (mState != (void *)&data_ov066_0211b07c) {
+            if (mState != &data_ov066_0211b07c) {
                 if (mAngleY != 0) {
                     vin.z = (0x7e - (((rnd >> 8) & 0x3f) << 2)) << 12;
                     Matrix4x3_FromRotationY(data_020a0e68, (s16)(mAngleY - 0x4000));
@@ -2551,6 +2523,8 @@ int Eyerok::Behavior()
         }
 
         {
+            /* cur walks mDustPos as actor-relative offsets; a Vector3 *cur
+               over mDustPos makes Behavior 4 bytes longer. */
             int i = 0;
             char *cur = c;
             u32 id0 = 0x13a;
@@ -2574,18 +2548,12 @@ int Eyerok::Behavior()
         }
 
         {
-            /* c400 + 0xd4 is mDustCounter reached the long way round -- the
-               ROM materialises c + 0x400 first and offsets from it, and
-               spelling that step away is not free. */
-            int o4d4 = 0x4d4;
-            u16 *p = &mDustCounter;
-            u16 v = *p;
-            char *c400 = c + 0x400;
-            *p = (u16)(v + 1);
-            if (*(u16 *)(c400 + 0xd4) > 0x26) {
+            mDustCounter++;
+            if (mDustCounter > 0x26) {
+                /* A Vector3 *q over mDustPos makes Behavior 4 bytes longer. */
                 int j = 0;
                 char *q = c;
-                *(u16 *)(c400 + 0xd4) = (u16)j;
+                mDustCounter = (u16)j;
                 for (; j < 0x14; j++) {
                     *(int *)(q + 0x4dc) = 0;
                     *(int *)(q + 0x4e0) = 0;
@@ -2598,7 +2566,7 @@ int Eyerok::Behavior()
 
     if (mPartIdx == PART_MAIN) {
         func_ov066_021194fc();
-        if (((dBgW *)&mMeshCollider2)->IsEnabled() != 0)
+        if (mMeshCollider2.IsEnabled() != 0)
             func_ov066_021194a4();
         return 1;
     }
@@ -2606,20 +2574,20 @@ int Eyerok::Behavior()
     {
         EVec3 vrel;
         mRestPosY = mSpawnPosY + 0x8000;
-        ((dActor_c *)c)->UpdatePos(0);
+        UpdatePos(0);
         mdCcAcPos_c.pos.x = mPosX;
         mdCcAcPos_c.pos.y = mPosY;
         mdCcAcPos_c.pos.z = mPosZ;
         vrel.x = data_ov066_0211ad18[0];
         vrel.y = data_ov066_0211ad18[1];
         vrel.z = data_ov066_0211ad18[2];
-        ((dCcAcPos_c *)&mdCcAcPos_c)->SetPosRelativeToActor(*(Vector3 *)&vrel);
+        mdCcAcPos_c.SetPosRelativeToActor(*(Vector3 *)&vrel);
         func_ov066_021194fc();
-        if (((dBgW *)&mMeshCollider2)->IsEnabled() != 0)
+        if (mMeshCollider2.IsEnabled() != 0)
             func_ov066_021194a4();
-        ((dCc_c *)&mdCcAcPos_c)->Clear();
-        ((dCc_c *)&mdCcAcPos_c)->dCc_c::Update();
-        ((BlendModelAnim *)&mBlendModelAnim)->Advance();
+        mdCcAcPos_c.Clear();
+        mdCcAcPos_c.dCc_c::Update();
+        mBlendModelAnim.Advance();
         ((dExtFrameCtrl_c *)&mTextureSequence)->Advance();
     }
     return 1;
@@ -2658,43 +2626,43 @@ int Eyerok::InitResources()
     if (mPartIdx == 0xFF)
         mPartIdx = 0;
     mStarId = (param1 >> 0xC) & 0xF;
-    mStarTracked = _ZN8dActor_c9TrackStarEjj(c, mStarId, 2);
+    mStarTracked = TrackStar(mStarId, 2);
     if (mPartIdx > 2)
         mPartIdx = 0;
 
     switch (mPartIdx) {
     case 0:
-        _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel2, _ZN5Model8LoadFileER13SharedFilePtr(&data_ov066_0211ae6c), 1, -1);
-        _ZN5Model8LoadFileER13SharedFilePtr(&data_ov066_0211ae4c);
-        _ZN5Model8LoadFileER13SharedFilePtr(&data_ov066_0211aeb4);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211aebc);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211ae9c);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211ae3c);
-        _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov066_0211ae2c);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae5c);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae84);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211aea4);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae8c);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae54);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae94);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae64);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae44);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae74);
-        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov066_0211ae7c);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae24);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211aeac);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae14);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae1c);
-        _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(&data_ov066_0211ae34);
+        mModel2.SetFile((BMD_File *)Model::LoadFile(data_ov066_0211ae6c), 1, -1);
+        Model::LoadFile(data_ov066_0211ae4c);
+        Model::LoadFile(data_ov066_0211aeb4);
+        TextureSequence::LoadFile(data_ov066_0211aebc);
+        TextureSequence::LoadFile(data_ov066_0211ae9c);
+        TextureSequence::LoadFile(data_ov066_0211ae3c);
+        TextureSequence::LoadFile(data_ov066_0211ae2c);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae5c);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae84);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211aea4);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae8c);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae54);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae94);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae64);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae44);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae74);
+        dExtFrameCtrl_c::LoadFile(data_ov066_0211ae7c);
+        dBgW_Kc::LoadFile(data_ov066_0211ae24);
+        dBgW_Kc::LoadFile(data_ov066_0211aeac);
+        dBgW_Kc::LoadFile(data_ov066_0211ae14);
+        dBgW_Kc::LoadFile(data_ov066_0211ae1c);
+        dBgW_Kc::LoadFile(data_ov066_0211ae34);
         break;
     case 1:
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, (void *)data_ov066_0211ae4c.words[1], 1, -1) == 0)
+        if (mBlendModelAnim.SetFile((BMD_File *)data_ov066_0211ae4c.words[1], 1, -1) == 0)
             return 0;
         TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.words[1], *(BTP_File *)data_ov066_0211aebc.words[1]);
         TextureSequence::Prepare(*(BMD_File *)data_ov066_0211ae4c.words[1], *(BTP_File *)data_ov066_0211ae9c.words[1]);
         break;
     case 2:
-        if (_ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, (void *)data_ov066_0211aeb4.words[1], 1, -1) == 0)
+        if (mBlendModelAnim.SetFile((BMD_File *)data_ov066_0211aeb4.words[1], 1, -1) == 0)
             return 0;
         TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.words[1], *(BTP_File *)data_ov066_0211ae3c.words[1]);
         TextureSequence::Prepare(*(BMD_File *)data_ov066_0211aeb4.words[1], *(BTP_File *)data_ov066_0211ae2c.words[1]);
@@ -2712,7 +2680,7 @@ int Eyerok::InitResources()
     {
         /* NOT mDustPos[i]: the ROM walks a running char* and re-derives the
            three stores from it. Spelling this as `Vector3 *p = mDustPos; p->x
-           = 0; ... p += 1;` costs the function its size -- measured. */
+           = 0; ... p++;` makes InitResources 8 bytes longer. */
         int i = 0;
         char *p = c;
         do {
@@ -2755,7 +2723,7 @@ int Eyerok::InitResources()
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, (void *)data_ov066_0211ae24.words[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112ca8);
         func_020393d4(&mMeshCollider2, (void *)&dBgW::UpdatePosWithTransform);
         func_020393c4(&mMeshCollider2, (void *)func_ov066_0211a35c);
-        ((dBgW *)&mMeshCollider2)->Enable(this);
+        mMeshCollider2.Enable(this);
         mTimer2 = 0x64;
         func_ov066_02119454(&data_ov066_0211b09c);
     } else {
@@ -2797,20 +2765,23 @@ int Eyerok::OnAimedAtWithEgg()
    module's sinit at 0x0211a418, and they belong to this class: the factory
    installs _ZTV6Eyerok, which is this unit's vtable. */
 /* -------------------------------------------------------------------------- */
-extern unsigned char data_ov066_0211ae04;
+/* Repeats the declaration near the top of this file for this neighbour. It also keeps
+   the declaration-agreement plurality at unsigned char, which the ldrb loads
+   in this file match, against decl_common.h's s8. */
 extern unsigned char data_ov066_0211ae08;
 
 // @symbol func_ov066_0211a2e4
 extern "C" void func_ov066_0211a2e4(void *a, int b)
 {
+    /* Unused; sizes the frame to the ROM's 12 bytes (sub sp,#0xc). */
     volatile int dummy[3];
     (void)dummy;
-    void *p;
-    if (data_ov066_0211ae04 != 1) return;
+    Player *p;
+    if (data_ov066_0211ae04 != PHASE_DORMANT) return;
     if (b == 0) return;
-    p = _ZN8dActor_c13ClosestPlayerEv(a);
+    p = ((dActor_c *)a)->ClosestPlayer();
     if (p == 0) return;
-    if (*(int *)((char *)p + 0x64) < (int)0xff387000) {
+    if (p->mPosZ < (int)0xff387000) {
         data_ov066_0211ae08++;
     }
 }
