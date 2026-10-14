@@ -1,0 +1,326 @@
+{
+  "task": "bmb-native1013",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2413",
+  "base": "607576acc557a318d5f813f8a0813bc86f03d140",
+  "producer": "codex-bmb-native-producer1013",
+  "candidate_author": {
+    "agent": "/root/ibl_interface_independent",
+    "thread": "01a13751-2d56-7901-a14d-9543eb0dbf2e"
+  },
+  "status": "checkpoint; verification in progress",
+  "scope": [
+    "src/actors/daBmb_c.cpp",
+    "include/daBmb_c.h (comments only)",
+    "notes/experiments/bmb-native1013.json"
+  ],
+  "changes": [
+    "Replace the state-zero shadow with actual daBmb_c fields and typed Player access.",
+    "Use native ClosestPlayer and explicitly qualified frame-controller Advance calls in states 0, 1 and 3.",
+    "Repair the three inaccurate identity/factory/allocator comments without changing header declarations."
+  ],
+  "historical_lineage": {
+    "actual_bobomb_task": "issue-2413",
+    "actual_producer": "prod-2413-0907",
+    "producer_output": "123ea08645d12a52f43a5cdc70b6c019ac1301dd",
+    "stable_inherited_finding_ids": [
+      "onturnintoegg-src-tu-redeclaration",
+      "handoff-matching-headers-claim-false",
+      "da1up-reconstruction-debt-disclosed",
+      "dead-references-koopa-plus-truncation",
+      "queue-rows-stale-from-branch-edits",
+      "queue-audit-residue-miscited-as-preexisting"
+    ],
+    "historical_review_preserved": [
+      {
+        "abi_bridges_not_counted_by_handoff": "mangled-name extern declarations (ABI bridges): 17 distinct at file scope, 29 distinct at block scope (6 inside daBmb_c_classInit alone), and 285 byte-offset accesses. The handoff counts free functions but not these bridges; carry as remaining work on the issue.",
+        "attribution": "reviewed: the 32-row table is correct and complete against validate_merge and prepush_attribution",
+        "methods": "13 of 35 are daBmb_c:: methods (11 out-of-line + D1/D0 from the inline dtor); daBmb_c_classInit keeps C linkage; 21 func_ov102_* free functions (counted from definitions). 3 shadow types (Bmb_Vec3, Bmb_Bf64Obj, Bmb_VBase). SCOPE block verified in source: func_0200fc44 declared with 4 params at line 689 (bd90) and 3 at line 1645 (aa18). Cross-module callers verified from src and ledgers: 0x0214ad14 <- ov002 (EnemySpawner::Behavior)/ov078; 0x0214ae1c <- ov014 (d_a_wanwan)/ov098; 0x0214b384 <- ov078.",
+        "remaining_work": [
+          "19 NAMING-blocked free functions (3 cross-module)",
+          "2 SCOPE-blocked state arms (func_ov102_0214bf64, func_ov102_0214bd90)",
+          "3 shadow types; ~285 raw byte-offset accesses in the free-function half",
+          "46 distinct mangled-name ABI bridge declarations across file and block scope",
+          "attribution.json path#symbol overrides for 32 symbols (integration lane)",
+          "the original-source-base record 2ab05bae is not mentioned in the handoff (only b2bd6a32); documentation only"
+        ],
+        "result": "pass"
+      }
+    ],
+    "qualification": "Correction to the initial artifact-only audit: issue-2411-humanizer-2 contains actual Bob-omb OnTurnIntoEgg int-to-void changes in its history, not merely a reservation. The final revise artifact list records only that revision, not the full task. Preserve all six findings with their original scope: five fixed historical findings and deferred da1up reconstruction debt, which remains OneUp debt and is not a Bob-omb defect. issue2413 remains the Bob-omb reconstruction producer. Historical source counts are not current counts; reviewers are not credited as source authors.",
+    "proposed_predecessor_tasks": [
+      "issue-2413",
+      "issue-2411-humanizer-2"
+    ],
+    "broader_contract_findings": [
+      {
+        "disposition": "fixed",
+        "id": "onturnintoegg-src-tu-redeclaration",
+        "kind": "correctness",
+        "location": "src_tu/actors/Actor.cpp:1140, src_tu/actors/Koopa+KoopaSmall.cpp:347, src_tu/actors/Lakitu.cpp:88, src_tu/actors/Spiny.cpp:88",
+        "reason": "Re-checked at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c rather than carried on the verifier's word. All four definitions read void <Class>::OnTurnIntoEgg(Player &player) at exactly the cited lines, and the base declaration in include/dActor_c.h:144 reads virtual void OnTurnIntoEgg(Player &player); slot 19. A tree-wide grep for 'int OnTurnIntoEgg' returns exactly one hit, include/dScMgMemory_c.h:76 virtual int OnTurnIntoEgg(int mode);, which is the separate minigame (int) hierarchy the handoff explicitly keeps as int on the strength of 14 observed ov004 calls that consume the result -- a different overload, not a survivor of this repair. The objective test is compilation, since a redeclaration cannot compile: premerge_check ran the src-tu-refs gate on the merge tree and it passes on both sides, and check_src_tu_compiles is reported by the verifier at 170/170. Disposition unchanged: fixed.",
+        "summary": "Four byte-verified promoted translation units still defined OnTurnIntoEgg(Player&) as int after the header contract moved to void, so the whole-tree compile rejected them as redeclarations."
+      },
+      {
+        "disposition": "fixed",
+        "id": "handoff-matching-headers-claim-false",
+        "kind": "provenance",
+        "location": "notes/agents/handoffs/issue-2411-humanizer-2.md:58-69",
+        "reason": "Re-read the section in the tree at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c. The phrase survives only inside an explicit retraction: the text names the earlier claim as wrong, says a whole-tree compile falsified it, and gives the measured readings (exit 1 at 156/160 on candidate 848da2bb8, exit 0 at 159/159 on task base 26f54f8fc), then names the four src_tu definitions that were still int. No unretracted assertion of matching headers exists anywhere in the file. Disposition unchanged: fixed.",
+        "summary": "An earlier revision claimed the overrides returned void with matching headers; a whole-tree compile falsified it."
+      },
+      {
+        "disposition": "deferred",
+        "id": "da1up-reconstruction-debt-disclosed",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2505",
+        "kind": "reconstruction",
+        "location": "src/actors/da1up_c.cpp, include/da1up_c.h",
+        "owner": "fleet-0907-prod-oneup-0908",
+        "reason": "Re-read both files at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c and the disclosure is intact and specific, not a blanket disclaimer. include/da1up_c.h opens by separating what the cartridge proves from what the project invented: the type-name string 7da1up_c at 0x02108370 and _ZTI7da1up_c at 0x0210837c are ROM-attested, ONEUPKINOKO and SCALEUP_KINOKO are ROM ASCII in arm9's actor debug-name table, while the member names and signatures, the classInit and g_profile_ affixes and EVERY field name are marked as reconstructed, with mStateTimer carrying an inline coined-name marker and the tail fields and base extent named as inferences. src/actors/da1up_c.cpp restates the same split, and the handoff's closing paragraph enumerates the remaining debt (eight native definitions emitting nine method symbols, 27 free-function bodies, the opaque PMF holder, the local ModelCache view, raw offsets, destructor/vtable/RTTI and initializer ownership unchanged) and refuses to count the live timer and Model call as method conversions. Deferral is legitimate for kind reconstruction, the review completion is partial as that requires, and the debt has a named owner and its own repository issue. Disposition unchanged: deferred.",
+        "summary": "da1up_c retains substantial unrecovered reconstruction: coined field names, an opaque PMF holder, a local ModelCache view, raw offsets and other ABI parameter views."
+      },
+      {
+        "disposition": "fixed",
+        "id": "dead-references-koopa-plus-truncation",
+        "kind": "correctness",
+        "location": "config/dead-reference-baseline.json, notes/agents/handoffs/issue-2411-humanizer-2.md:68",
+        "reason": "Every element reproduced independently on the MERGE TREE at 0befb1b8f5d4c832f7ab23ff9478c12f7e4f54b0. (1) python tools/check_dead_references.py exits 0 on the merge tree and 0 on the base control, exit codes captured directly to files and never through a pipe. (2) The branch-level diff of config/dead-reference-baseline.json adds exactly ONE entry -- file notes/agents/handoffs/issue-2411-humanizer-2.md, ref src_tu/actors/Koopa -- and removes none. (3) The tool was not weakened: the branch-level git diff over tools/ is entirely EMPTY, so check_dead_references.py is byte-identical to main's. (4) The regex really cannot express the path: PATH_RE's character class is [A-Za-z0-9_.-] with no plus sign, and git ls-files shows exactly 8 tracked files carrying a plus, three of them under src_tu/. (5) The precedent is real: the baseline already carries (notes/actor-leaf-provenance.md, src_tu/actors/EnemySpawner), the identical truncation of src_tu/actors/EnemySpawner+EnemySwitchTag.cpp. RESIDUAL IMPRECISION, disclosed rather than raised as a separate finding: the handoff and the verifier's own reason call that precedent one entry above the new pair; the file sorts by (file, ref) and the precedent is at index 1 while the new entry is at index 12, so it is eleven entries above, not one. The substantive claim (a direct precedent of the identical shape exists in this same file) is true and was verified; only the positional adjective is wrong, it moves no number and changes no verdict, and a provenance finding cannot be deferred under source_review, so raising it would demand a commit this verify-mode stage is forbidden to make. Recorded here so a later writer can correct the word. Disposition unchanged: fixed.",
+        "summary": "check_dead_references PATH_RE cannot express + in a filename, so the handoff's citation of src_tu/actors/Koopa+KoopaSmall.cpp truncated to a path not in the tree and the gate went red."
+      },
+      {
+        "disposition": "fixed",
+        "id": "queue-rows-stale-from-branch-edits",
+        "kind": "correctness",
+        "location": "notes/data/tu-promotion-queue.tsv, rows Crate / Coin / daGmch_c (plus da1up_c)",
+        "reason": "Measured on both trees rather than inferred. On the merge tree at 0befb1b8f5d4c832f7ab23ff9478c12f7e4f54b0, python tools/queue_audit.py --check exits 0 and prints 'queue agrees with the tree' -- 0 rows disagreeing. On the base control at bdcb1df7d3d071ab46d79e6538fec176efa78780 the same command exits 1 with 'total_lines: 2 row(s) disagree with the tree'. The --check form was used deliberately: the bare invocation exits 0 while printing the same disagreement line, and it was run here on the red base to confirm that trap still bites (bare exit 0 on a red base). The two base rows were named by running --write on the base control and reading the diff: ChiefChilly 1992 to 1993 and Player 26798 to 26799, then restored with git checkout -- and git status --porcelain confirmed empty. So the merge tree is green exactly where main alone is red, which is the fixed outcome, confirmed and not assumed. Disposition unchanged: fixed.",
+        "summary": "The branch's own edits to src/ files left queue total_lines cells stale, and an earlier revision wrote them off as pre-existing on main."
+      },
+      {
+        "disposition": "fixed",
+        "id": "queue-audit-residue-miscited-as-preexisting",
+        "kind": "provenance",
+        "location": "notes/agents/handoffs/issue-2411-humanizer-2.md, the queue-rows bullet",
+        "reason": "Re-read the bullet at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c. It now retracts the earlier claim in terms, says plainly that it was wrong for three of the five, gives the per-row table (Crate 1431 to 1427, Coin 1148 to 1147, daGmch_c 1119 to 1120) with each row delta matched to its source-file line delta, and keeps only ChiefChilly and Player as pre-existing -- which the base control independently confirms are exactly the two rows main is red on. ONE RESIDUAL IMPRECISION, settled here as clearing without a new finding. The bullet attributes the ChiefChilly/Player staleness to main's 9b8cb8add editing include/ChiefChilly.h and include/Player.h. That is the wrong half of the commit: queue_audit derives total_lines by summing lines over the delinks-resolved source paths of the row's range, which are src/ paths only, and no include/ path appears in config/arm9/delinks.txt, so a header edit cannot move the cell. The same commit 9b8cb8add also edited src/_ZN11ChiefChillyD1Ev.cpp and src/_ZN6PlayerD1Ev.cpp, and those are what moved the numbers: measured with git show 9b8cb8add^:<path> piped to wc -l against git show 9b8cb8add:<path>, 22 to 23 and 35 to 36, which are exactly the +1 deltas the two rows need. The commit attribution and the direction of responsibility are therefore both correct and independently verified; 9b8cb8add is an ancestor of both bdcb1df7d and the branch's merge-base c52f63ca5, so it is genuinely main's. Only the named mechanism is wrong. It moves no number, changes no gate verdict and does not affect this branch's attribution, and under source_review a provenance finding may not be deferred, so raising it would require a corrective commit that mode verify forbids -- converting a wrong noun into a hard publish refusal. It clears as-is and is recorded here so the next writer touching this bullet fixes the sentence. Disposition unchanged: fixed.",
+        "summary": "The handoff attributed all five stale queue rows to main; three were the branch's own."
+      }
+    ],
+    "broader_contract_actual_source_commit": "b9339491fc6c4153715f6e26b596cd5478be5ffa",
+    "broader_contract_git_authorship": "commit b9339491fc6c4153715f6e26b596cd5478be5ffa\nAuthor:     andrewboudreau <andrewboudreau@gmail.com>\nAuthorDate: Mon Sep 7 15:18:33 2026 -0500\nCommit:     andrewboudreau <andrewboudreau@gmail.com>\nCommitDate: Mon Sep 7 15:18:33 2026 -0500\n\n    Correct actor egg-turn hooks and forwarding helpers to void\n",
+    "broader_contract_source_diff": "diff --git a/include/daBmb_c.h b/include/daBmb_c.h\nindex 421802fe26..0ba99d33e3 100644\n--- a/include/daBmb_c.h\n+++ b/include/daBmb_c.h\n@@ -114,7 +114,7 @@ struct daBmb_c : dEnemyBase_c {\n     virtual ~daBmb_c() {}\n \n     virtual s32   OnYoshiTryEat();         /* slot 18 -- key function */\n-    virtual int   OnTurnIntoEgg(Player &player); /* slot 19 */\n+    virtual void  OnTurnIntoEgg(Player &player); /* slot 19 */\n     virtual s32   OnAimedAtWithEgg();      /* slot 29 */\n \n     int Behavior();\ndiff --git a/src/actors/daBmb_c.cpp b/src/actors/daBmb_c.cpp\nindex 8b1153765c..2c181f139b 100644\n--- a/src/actors/daBmb_c.cpp\n+++ b/src/actors/daBmb_c.cpp\n@@ -1470,7 +1470,7 @@ void func_ov102_0214ae1c(void *cv) {\n  * ======================================================================== */\n \n // @symbol _ZN7daBmb_c13OnTurnIntoEggER6Player\n-int daBmb_c::OnTurnIntoEgg(Player &player)\n+void daBmb_c::OnTurnIntoEgg(Player &player)\n {\n     if (unk_108 == 1) {\n         Sound::PlayBank3(0x11, *(Vector3 *)&mCamSpacePosX);\n",
+    "earlier_incorrect_inference_preserved": "Initial scout note excluded issue2411-humanizer2 based only on latest produced-artifact paths; actual base-to-output Source/header diff and b9339491 disprove that inference. This corrected terminal handoff supersedes it."
+  },
+  "historical_findings": [
+    {
+      "disposition": "fixed",
+      "id": "onturnintoegg-src-tu-redeclaration",
+      "kind": "correctness",
+      "location": "src_tu/actors/Actor.cpp:1140, src_tu/actors/Koopa+KoopaSmall.cpp:347, src_tu/actors/Lakitu.cpp:88, src_tu/actors/Spiny.cpp:88",
+      "reason": "Re-checked at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c rather than carried on the verifier's word. All four definitions read void <Class>::OnTurnIntoEgg(Player &player) at exactly the cited lines, and the base declaration in include/dActor_c.h:144 reads virtual void OnTurnIntoEgg(Player &player); slot 19. A tree-wide grep for 'int OnTurnIntoEgg' returns exactly one hit, include/dScMgMemory_c.h:76 virtual int OnTurnIntoEgg(int mode);, which is the separate minigame (int) hierarchy the handoff explicitly keeps as int on the strength of 14 observed ov004 calls that consume the result -- a different overload, not a survivor of this repair. The objective test is compilation, since a redeclaration cannot compile: premerge_check ran the src-tu-refs gate on the merge tree and it passes on both sides, and check_src_tu_compiles is reported by the verifier at 170/170. Disposition unchanged: fixed.",
+      "summary": "Four byte-verified promoted translation units still defined OnTurnIntoEgg(Player&) as int after the header contract moved to void, so the whole-tree compile rejected them as redeclarations."
+    },
+    {
+      "disposition": "fixed",
+      "id": "handoff-matching-headers-claim-false",
+      "kind": "provenance",
+      "location": "notes/agents/handoffs/issue-2411-humanizer-2.md:58-69",
+      "reason": "Re-read the section in the tree at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c. The phrase survives only inside an explicit retraction: the text names the earlier claim as wrong, says a whole-tree compile falsified it, and gives the measured readings (exit 1 at 156/160 on candidate 848da2bb8, exit 0 at 159/159 on task base 26f54f8fc), then names the four src_tu definitions that were still int. No unretracted assertion of matching headers exists anywhere in the file. Disposition unchanged: fixed.",
+      "summary": "An earlier revision claimed the overrides returned void with matching headers; a whole-tree compile falsified it."
+    },
+    {
+      "disposition": "deferred",
+      "id": "da1up-reconstruction-debt-disclosed",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2505",
+      "kind": "reconstruction",
+      "location": "src/actors/da1up_c.cpp, include/da1up_c.h",
+      "owner": "fleet-0907-prod-oneup-0908",
+      "reason": "Re-read both files at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c and the disclosure is intact and specific, not a blanket disclaimer. include/da1up_c.h opens by separating what the cartridge proves from what the project invented: the type-name string 7da1up_c at 0x02108370 and _ZTI7da1up_c at 0x0210837c are ROM-attested, ONEUPKINOKO and SCALEUP_KINOKO are ROM ASCII in arm9's actor debug-name table, while the member names and signatures, the classInit and g_profile_ affixes and EVERY field name are marked as reconstructed, with mStateTimer carrying an inline coined-name marker and the tail fields and base extent named as inferences. src/actors/da1up_c.cpp restates the same split, and the handoff's closing paragraph enumerates the remaining debt (eight native definitions emitting nine method symbols, 27 free-function bodies, the opaque PMF holder, the local ModelCache view, raw offsets, destructor/vtable/RTTI and initializer ownership unchanged) and refuses to count the live timer and Model call as method conversions. Deferral is legitimate for kind reconstruction, the review completion is partial as that requires, and the debt has a named owner and its own repository issue. Disposition unchanged: deferred.",
+      "summary": "da1up_c retains substantial unrecovered reconstruction: coined field names, an opaque PMF holder, a local ModelCache view, raw offsets and other ABI parameter views."
+    },
+    {
+      "disposition": "fixed",
+      "id": "dead-references-koopa-plus-truncation",
+      "kind": "correctness",
+      "location": "config/dead-reference-baseline.json, notes/agents/handoffs/issue-2411-humanizer-2.md:68",
+      "reason": "Every element reproduced independently on the MERGE TREE at 0befb1b8f5d4c832f7ab23ff9478c12f7e4f54b0. (1) python tools/check_dead_references.py exits 0 on the merge tree and 0 on the base control, exit codes captured directly to files and never through a pipe. (2) The branch-level diff of config/dead-reference-baseline.json adds exactly ONE entry -- file notes/agents/handoffs/issue-2411-humanizer-2.md, ref src_tu/actors/Koopa -- and removes none. (3) The tool was not weakened: the branch-level git diff over tools/ is entirely EMPTY, so check_dead_references.py is byte-identical to main's. (4) The regex really cannot express the path: PATH_RE's character class is [A-Za-z0-9_.-] with no plus sign, and git ls-files shows exactly 8 tracked files carrying a plus, three of them under src_tu/. (5) The precedent is real: the baseline already carries (notes/actor-leaf-provenance.md, src_tu/actors/EnemySpawner), the identical truncation of src_tu/actors/EnemySpawner+EnemySwitchTag.cpp. RESIDUAL IMPRECISION, disclosed rather than raised as a separate finding: the handoff and the verifier's own reason call that precedent one entry above the new pair; the file sorts by (file, ref) and the precedent is at index 1 while the new entry is at index 12, so it is eleven entries above, not one. The substantive claim (a direct precedent of the identical shape exists in this same file) is true and was verified; only the positional adjective is wrong, it moves no number and changes no verdict, and a provenance finding cannot be deferred under source_review, so raising it would demand a commit this verify-mode stage is forbidden to make. Recorded here so a later writer can correct the word. Disposition unchanged: fixed.",
+      "summary": "check_dead_references PATH_RE cannot express + in a filename, so the handoff's citation of src_tu/actors/Koopa+KoopaSmall.cpp truncated to a path not in the tree and the gate went red."
+    },
+    {
+      "disposition": "fixed",
+      "id": "queue-rows-stale-from-branch-edits",
+      "kind": "correctness",
+      "location": "notes/data/tu-promotion-queue.tsv, rows Crate / Coin / daGmch_c (plus da1up_c)",
+      "reason": "Measured on both trees rather than inferred. On the merge tree at 0befb1b8f5d4c832f7ab23ff9478c12f7e4f54b0, python tools/queue_audit.py --check exits 0 and prints 'queue agrees with the tree' -- 0 rows disagreeing. On the base control at bdcb1df7d3d071ab46d79e6538fec176efa78780 the same command exits 1 with 'total_lines: 2 row(s) disagree with the tree'. The --check form was used deliberately: the bare invocation exits 0 while printing the same disagreement line, and it was run here on the red base to confirm that trap still bites (bare exit 0 on a red base). The two base rows were named by running --write on the base control and reading the diff: ChiefChilly 1992 to 1993 and Player 26798 to 26799, then restored with git checkout -- and git status --porcelain confirmed empty. So the merge tree is green exactly where main alone is red, which is the fixed outcome, confirmed and not assumed. Disposition unchanged: fixed.",
+      "summary": "The branch's own edits to src/ files left queue total_lines cells stale, and an earlier revision wrote them off as pre-existing on main."
+    },
+    {
+      "disposition": "fixed",
+      "id": "queue-audit-residue-miscited-as-preexisting",
+      "kind": "provenance",
+      "location": "notes/agents/handoffs/issue-2411-humanizer-2.md, the queue-rows bullet",
+      "reason": "Re-read the bullet at 9c03a19a7480548cac5aad7fa9fa53405cb2fe2c. It now retracts the earlier claim in terms, says plainly that it was wrong for three of the five, gives the per-row table (Crate 1431 to 1427, Coin 1148 to 1147, daGmch_c 1119 to 1120) with each row delta matched to its source-file line delta, and keeps only ChiefChilly and Player as pre-existing -- which the base control independently confirms are exactly the two rows main is red on. ONE RESIDUAL IMPRECISION, settled here as clearing without a new finding. The bullet attributes the ChiefChilly/Player staleness to main's 9b8cb8add editing include/ChiefChilly.h and include/Player.h. That is the wrong half of the commit: queue_audit derives total_lines by summing lines over the delinks-resolved source paths of the row's range, which are src/ paths only, and no include/ path appears in config/arm9/delinks.txt, so a header edit cannot move the cell. The same commit 9b8cb8add also edited src/_ZN11ChiefChillyD1Ev.cpp and src/_ZN6PlayerD1Ev.cpp, and those are what moved the numbers: measured with git show 9b8cb8add^:<path> piped to wc -l against git show 9b8cb8add:<path>, 22 to 23 and 35 to 36, which are exactly the +1 deltas the two rows need. The commit attribution and the direction of responsibility are therefore both correct and independently verified; 9b8cb8add is an ancestor of both bdcb1df7d and the branch's merge-base c52f63ca5, so it is genuinely main's. Only the named mechanism is wrong. It moves no number, changes no gate verdict and does not affect this branch's attribution, and under source_review a provenance finding may not be deferred, so raising it would require a corrective commit that mode verify forbids -- converting a wrong noun into a hard publish refusal. It clears as-is and is recorded here so the next writer touching this bullet fixes the sentence. Disposition unchanged: fixed.",
+      "summary": "The handoff attributed all five stale queue rows to main; three were the branch's own."
+    }
+  ],
+  "historical_scope_qualification": "The six inherited findings retain their historical dispositions. The deferred da1up reconstruction finding belongs to OneUp issue2505, not Bob-omb. The broader egg-turn task changed Bob-omb Source/header int to void; historical counts and experiments are not current acceptance.",
+  "findings": [
+    {
+      "id": "BMB-AUDIT-PROV-001",
+      "kind": "provenance",
+      "location": "src/actors/daBmb_c.cpp:21-22; include/daBmb_c.h:133-134",
+      "summary": "State-zero shadow is falsely described as a different object.",
+      "evidence": "daBmb_c::func_ov102_0214b03c passes this directly to func_ov102_0214bf64 in case0 (Source1217). Every Bmb_Bf64Obj field aligns to inherited dActor or daBmb members, including mChasePlayer0x38c,mState0x3dc and ModelAnim frame base0x350. A distinct C++ shadow spelling does not establish distinct runtime identity.",
+      "disposition": "fixed",
+      "required_action": "Repair in claimed producer scope with independent actual-source proof; reviewer has not authored a patch.",
+      "owner": "codex-bmb-native-producer1013",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2413",
+      "reason": "Source and header now identify the state-zero receiver as the actual Bob-omb; the shadow was removed and fields use daBmb_c."
+    },
+    {
+      "id": "BMB-AUDIT-PROV-002",
+      "kind": "provenance",
+      "location": "src/actors/daBmb_c.cpp:145-153",
+      "summary": "Factory comment contradicts its correct reconstructed-name qualification.",
+      "evidence": "C LINKAGE IS LOAD-BEARING -- the ROM symbol is the bare name claims original spelling. Same block correctly says classInit comes from later EAD lineage and exact original spelling is not preserved. Describe required current binding separately from cartridge RTTI identity.",
+      "disposition": "fixed",
+      "required_action": "Repair in claimed producer scope with independent actual-source proof; reviewer has not authored a patch.",
+      "owner": "codex-bmb-native-producer1013",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2413",
+      "reason": "Factory prose distinguishes the current C-linkage registry binding from the unrecovered original spelling."
+    },
+    {
+      "id": "BMB-AUDIT-PROV-003",
+      "kind": "provenance",
+      "location": "include/daBmb_c.h allocator comment; src/actors/daBmb_c.cpp:148",
+      "summary": "Allocator adapter prose awaits an adapter that is already present.",
+      "evidence": "include/fBase_c.h167 defines the size_t forwarding operator new. Existing local adapter may be retained, but its stated pending dependency is stale; no code deletion is required merely to repair prose.",
+      "disposition": "fixed",
+      "required_action": "Repair in claimed producer scope with independent actual-source proof; reviewer has not authored a patch.",
+      "owner": "codex-bmb-native-producer1013",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2413",
+      "reason": "Source and header acknowledge the existing fBase_c allocator adapter while retaining the leaf adapter."
+    },
+    {
+      "id": "BMB-AUDIT-PARTIAL-001",
+      "kind": "reconstruction",
+      "location": "src/actors/daBmb_c.cpp",
+      "summary": "State-zero shadow and other raw/free helper reconstruction remains partial.",
+      "evidence": "Actual baseline has15native member symbols and20free symbols among35functions, not the older historical21free count. Bmb_Bf64Obj/Bmb_Vec3, raw offsets and matrix/scalar vector views, carrier-specific fields, block-local ABI declarations and scalar Fix12 seams remain. State0 source-scope/link-failure prose records an old experiment; it is not a proof native fields or a future reconciled member form cannot work.",
+      "disposition": "deferred",
+      "required_action": "Retain as partial with explicit issue2413 and an assigned continuation owner; do not assert new universal compiler constraints.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2413",
+      "owner": "codex-bmb-native-producer1013",
+      "reason": "State-zero shadow and duplicate ClosestPlayer declaration are removed. Native symbol counts remain 15 members/20 free among 35 functions. Scalar borrowed Vector3 views, position snapshot, raw carrier/PMF/ABI interfaces, Fix12 seams and other unnamed helpers remain. Historical memberization/linkage probes do not establish a universal compiler constraint."
+    },
+    {
+      "id": "BMB-AUDIT-PARTIAL-002",
+      "kind": "reconstruction",
+      "location": "src/actors/daBmb_c.cpp:func_ov102_0214bc20 and codegen-sensitive state helpers",
+      "summary": "Table-domain and retained codegen-sensitive forms remain distinct unfinished scope.",
+      "evidence": "Two owned16Blaunch tables are copied to stack before an index-four path; historical issue2413 records that runtime reachability was not established. Do not enlarge/clamp them speculatively. Volatile pins, raw second-base views and inherited measured pragmas/forms remain outside the baseline proof of byte identity.",
+      "disposition": "deferred",
+      "required_action": "Retain as partial with explicit issue2413 and an assigned continuation owner; do not assert new universal compiler constraints.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2413",
+      "owner": "codex-bmb-native-producer1013",
+      "reason": "The two 16-byte launch tables, index-four path and unestablished runtime reachability remain unchanged. Volatile pins, carrier views and measured pragmas remain; no speculative clamp or table enlargement."
+    }
+  ],
+  "verification": {},
+  "limitations": [
+    "Partial reconstruction remains under issue2413.",
+    "No queue publication, push, PR, merge or independent Source acceptance is claimed."
+  ],
+  "source_evidence": {
+    "field_offset_mapping": [
+      {
+        "old_shadow": "pos",
+        "actual_owner_field": "dActor_c::mPosX/mPosY/mPosZ",
+        "offset": "0x5c/0x60/0x64"
+      },
+      {
+        "old_shadow": "angY",
+        "actual_owner_field": "dActor_c::mAngleY",
+        "offset": "0x8e"
+      },
+      {
+        "old_shadow": "prevAngY",
+        "actual_owner_field": "dActor_c::mPrevAngleY",
+        "offset": "0x94"
+      },
+      {
+        "old_shadow": "horzSpeed",
+        "actual_owner_field": "dActor_c::mHorzSpeed",
+        "offset": "0x98"
+      },
+      {
+        "old_shadow": "vertSpeed",
+        "actual_owner_field": "dActor_c::mVertSpeed",
+        "offset": "0xa8"
+      },
+      {
+        "old_shadow": "anim",
+        "actual_owner_field": "daBmb_c::mModelAnim dExtFrameCtrl_c base",
+        "offset": "0x300+0x50=0x350"
+      },
+      {
+        "old_shadow": "animSpeed",
+        "actual_owner_field": "mModelAnim.speed",
+        "offset": "0x35c"
+      },
+      {
+        "old_shadow": "chase",
+        "actual_owner_field": "daBmb_c::mChasePlayer",
+        "offset": "0x38c"
+      },
+      {
+        "old_shadow": "home",
+        "actual_owner_field": "daBmb_c::mHomePosX/mHomePosY/mHomePosZ",
+        "offset": "0x3c4/0x3c8/0x3cc"
+      },
+      {
+        "old_shadow": "state",
+        "actual_owner_field": "daBmb_c::mState",
+        "offset": "0x3dc"
+      },
+      {
+        "old_shadow": "turnTimer",
+        "actual_owner_field": "daBmb_c::mTurnTimer",
+        "offset": "0x3e8"
+      },
+      {
+        "old_shadow": "variant",
+        "actual_owner_field": "daBmb_c::mVariant",
+        "offset": "0x3f5"
+      },
+      {
+        "old_shadow": "chase+0x35c",
+        "actual_owner_field": "Player::mGrabbedByActor",
+        "offset": "0x35c"
+      },
+      {
+        "old_shadow": "chase+0x5c",
+        "actual_owner_field": "Player inherited mPosX/mPosY/mPosZ",
+        "offset": "0x5c/0x60/0x64"
+      }
+    ],
+    "real_dispatch_call": [
+      {
+        "off": 136,
+        "type": 1,
+        "sym": "func_ov102_0214bf64",
+        "addr": 34914148,
+        "add": -8,
+        "callsite": "0x214b0c4"
+      }
+    ],
+    "retained_helper_contracts": [
+      "func_ov102_0214bf64(void*) keeps C linkage and existing configured name; daBmb_c* is a local actual-receiver view.",
+      "DecIfAbove0_Short(u16*) and _Z14ApproachLinearRiii(int&,int,int) unchanged.",
+      "Vec3_HorzAngle(const Vector3*,const Vector3*) and Vec3_Dist(const Vector3*,const Vector3*) retain exact C symbols/targets; local shadow argument types are replaced by the existing real type, with borrowed scalar-triplet views.",
+      "ApproachLinear(short&,short,short), func_ov102_0214b988(void*) and func_ov102_0214beb4(void*) unchanged.",
+      "ClosestPlayer actual dActor_c member returns Player*. ModelAnim frame-controller Advance explicitly selects dExtFrameCtrl_c::Advance at its existing base subobject.",
+      "All other source helper interfaces, scalar Fix12 seams, global declarations, configuration policies and shared headers unchanged; complete raw/prepared277/266-edge equality checks all destinations."
+    ],
+    "receiver_evidence": "daBmb_c::func_ov102_0214b03c dispatches case0 as func_ov102_0214bf64(this); every replaced field agrees with include/daBmb_c.h, inherited dActor fields, and Player::mGrabbedByActor. Complete unchanged raw/normal objects prove all emitted offsets and destinations remain identical.",
+    "failed_optional_probe": "build/enemy-leaf-scout1013/rejected-position-copy.json",
+    "owned_storage_qualification": "Six owned data records total213 bytes inside the complete216-byte .data claim; ordinary preparation verifies the full claim including padding. No owned init/ctor/BSS. Raw/normal container and full277/266-edge identity cover all emitted storage; all11metadata records240bytes including vtable preambles independently match retail with zero blind words."
+  }
+}
