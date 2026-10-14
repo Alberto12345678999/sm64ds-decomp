@@ -856,9 +856,9 @@ int daMenbo_c::Behavior()
 
 // @symbol _ZN9daMenbo_c13InitResourcesEv
 /* Model, four anims, both collision volumes, then the water line.
- * Mode 2 on course 0x12 skips the raycast and starts at water rest with
+ * Mode 2 on course 0x12 skips the raycast and starts at water chase with
  * the line equal to the spawn height. A surface whose 0x20 flag is set
- * records the hit as the line only and also starts at water rest. Anything
+ * records the hit as the line only and also starts at water chase. Anything
  * else snaps Y to the line, randomises the heading and starts idle. */
 int daMenbo_c::InitResources()
 {
