@@ -1,8 +1,8 @@
 {
   "id": "arm9/ActorBase",
   "module": "arm9",
-  "source": "src/actors/ActorBase.cpp",
-  "promoted_source": "src/actors/ActorBase.cpp",
+  "source": "src/runtime/actor/ActorBase.cpp",
+  "promoted_source": "src/runtime/actor/ActorBase.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

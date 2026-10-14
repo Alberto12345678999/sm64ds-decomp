@@ -86,6 +86,29 @@ and follow the same rule — one function per file, filename is the symbol,
 
 ### Which directory under `src/`
 
+Promoted C++ translation units are filed by what the class is
+([`notes/src-domain-buckets.md`](notes/src-domain-buckets.md) has the reasoning):
+
+| Directory | Holds | File name |
+|---|---|---|
+| `src/game/actors/` | actor classes (`daFoo_c` and friends), their factories | `d_a_foo.cpp` |
+| `src/game/player/` | `Player` | the class name |
+| `src/game/stages/` | scene classes (`dScBoot_c`, `dScStage_c`, ...) | the class name, or `d_s_*.cpp` |
+| `src/minigames/` | minigame scenes and helpers (`dScMg*_c`, `dMg*_c`, ov004 `unit<addr>`) | the class name, or `d_s_mg_*.cpp` |
+| `src/runtime/actor/` | actor base classes (`ActorBase`, `dActor_c`, `dEnemyBase_c`, ...) | the class name |
+| `src/ui/hud/` | HUD classes (`dMeter_c`, `dMap_c`, cap icons) | the class name |
+
+`d_a_foo.cpp` is the NSMBW-decomp spelling of the ROM RTTI name `daFoo_c`
+(`tools/tu_names.py`). It is a naming convention, not a recovered `__FILE__`
+(the ROM has none), but it is the one convention for actor files: use it for a new actor TU
+and do not file an actor as `daFoo_c.cpp`. Two files that split one class take
+distinct suffixes (`d_a_pic_gate.cpp`, `d_a_pic_gate_methods.cpp`).
+
+A file's name is also load-bearing: `__sinit_<file>.cpp` (and the `.p__sinit_` pointer)
+carry it, and so do compiler-numbered local-class symbols such as
+`Bundle$902d_a_mky_cpp` (with their mangled length prefix). Renaming a file
+means renaming those in `config/**/symbols.txt` and `config/tu_manifest.d/`.
+
 Don't compose the path yourself — ask:
 
 ```sh

@@ -66,10 +66,10 @@ func_ov073_021227d0 kind:function(arm,size=0x14) addr:0x021227d0
 daObjEwbIce_c_classInit_EWB_ICE_C kind:function(arm,size=0x30) addr:0x021227e4
 daObjEwbIce_c_classInit_EWB_ICE_B kind:function(arm,size=0x30) addr:0x02122814
 daObjEwbIce_c_classInit_EWB_ICE_A kind:function(arm,size=0x30) addr:0x02122844
-__sinit_daKing_Donketu_c.cpp kind:function(arm,size=0x4d4) addr:0x02122874
-__sinit_daObjEwbIce_c.cpp kind:function(arm,size=0x1ec) addr:0x02122d48
-.p__sinit_daKing_Donketu_c.cpp kind:data(word) addr:0x02122f34
-.p__sinit_daObjEwbIce_c.cpp kind:data(word) addr:0x02122f38
+__sinit_d_a_king_donketu.cpp kind:function(arm,size=0x4d4) addr:0x02122874
+__sinit_d_a_obj_ewb_ice.cpp kind:function(arm,size=0x1ec) addr:0x02122d48
+.p__sinit_d_a_king_donketu.cpp kind:data(word) addr:0x02122f34
+.p__sinit_d_a_obj_ewb_ice.cpp kind:data(word) addr:0x02122f38
 @1850 kind:data(any) addr:0x02122f40
 @1852 kind:data(any) addr:0x02122f48
 @192 kind:data(any) addr:0x02122f50

@@ -1,8 +1,8 @@
 {
   "id": "ov064/daObjFl_Coin_c+daObjFl_Puzzle_c",
   "module": "ov064",
-  "source": "src/actors/daObjFl_Coin_c.cpp",
-  "promoted_source": "src/actors/daObjFl_Coin_c.cpp",
+  "source": "src/game/actors/d_a_obj_fl_coin.cpp",
+  "promoted_source": "src/game/actors/d_a_obj_fl_coin.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "medium",
@@ -10,7 +10,7 @@
     "HISTORY: contiguous linker run: 0x2118b50..0x211929c, 21 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjFl_Coin_c, daObjFl_Puzzle_c",
     "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "CLASSINIT TAIL FOLD (2026-10-09): the four one-function sources right of this run -- func_ov064_0211929c (0x20), func_ov064_021192bc (0x14), daObjFl_Coin_c_classInit (0x30) and daObjFl_Puzzle_c_classInit (0x30), 0x0211929c..0x02119330 -- abut its .text end with no gap and are now inside it. All four belong to this two-class TU: func_ov064_0211929c stores 1 to byte 0x338 of its first argument (daObjFl_Puzzle_c::mHadClsn, which the piece's Behavior reads) when the second argument's actor ID is 0xbf; func_ov064_021192bc is the collision callback this TU's daObjFl_Puzzle_c::InitResources installs in mMeshCollider and only forwards its last two arguments to func_ov064_0211929c (pooled long-call tail call); daObjFl_Coin_c_classInit allocates sizeof(daObjFl_Coin_c) (0xd8), runs dActor_c's base ctor and stores _ZTV14daObjFl_Coin_c; daObjFl_Puzzle_c_classInit allocates sizeof(daObjFl_Puzzle_c) (0x33c), runs dBgActor_c's base ctor and stores _ZTV16daObjFl_Puzzle_c. The next .text entry in ov064 delinks (src/actors/daWater_Hakidasi_c.cpp) starts exactly at 0x02119330. Written at the top of the file, Puzzle factory first, because the TU emits .text in reverse source order. The TU no longer includes decl_common.h: its only uses were the `int func_ov064_021192bc()` prototype, which C++ cannot overload with the three-argument definition, and data_ov064_0211c198, now declared locally with the header's exact type."
+    "CLASSINIT TAIL FOLD (2026-10-09): the four one-function sources right of this run -- func_ov064_0211929c (0x20), func_ov064_021192bc (0x14), daObjFl_Coin_c_classInit (0x30) and daObjFl_Puzzle_c_classInit (0x30), 0x0211929c..0x02119330 -- abut its .text end with no gap and are now inside it. All four belong to this two-class TU: func_ov064_0211929c stores 1 to byte 0x338 of its first argument (daObjFl_Puzzle_c::mHadClsn, which the piece's Behavior reads) when the second argument's actor ID is 0xbf; func_ov064_021192bc is the collision callback this TU's daObjFl_Puzzle_c::InitResources installs in mMeshCollider and only forwards its last two arguments to func_ov064_0211929c (pooled long-call tail call); daObjFl_Coin_c_classInit allocates sizeof(daObjFl_Coin_c) (0xd8), runs dActor_c's base ctor and stores _ZTV14daObjFl_Coin_c; daObjFl_Puzzle_c_classInit allocates sizeof(daObjFl_Puzzle_c) (0x33c), runs dBgActor_c's base ctor and stores _ZTV16daObjFl_Puzzle_c. The next .text entry in ov064 delinks (src/game/actors/d_a_water_hakidasi.cpp) starts exactly at 0x02119330. Written at the top of the file, Puzzle factory first, because the TU emits .text in reverse source order. The TU no longer includes decl_common.h: its only uses were the `int func_ov064_021192bc()` prototype, which C++ cannot overload with the three-argument definition, and data_ov064_0211c198, now declared locally with the header's exact type."
   ],
   "sections": [
     {
@@ -948,7 +948,7 @@
   ],
   "init": [
     {
-      "symbol": "__sinit_daObjFl_Coin_c.cpp",
+      "symbol": "__sinit_d_a_obj_fl_coin.cpp",
       "address": "0x0211b1d4",
       "size": "0x00000308",
       "binding": "STB_GLOBAL",
@@ -957,7 +957,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_daObjFl_Coin_c.cpp",
+      "symbol": ".p__sinit_d_a_obj_fl_coin.cpp",
       "address": "0x0211b744",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -1080,13 +1080,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_daObjFl_Coin_c.cpp",
+      "symbol": "__sinit_d_a_obj_fl_coin.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_daObjFl_Coin_c.cpp",
+      "symbol": ".p__sinit_d_a_obj_fl_coin.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -1878,7 +1878,7 @@
       "source": "0x0211b744",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_daObjFl_Coin_c.cpp",
+      "symbol": "__sinit_d_a_obj_fl_coin.cpp",
       "addend": 0,
       "target_module": "ov064",
       "target_address": "0x0211b1d4"

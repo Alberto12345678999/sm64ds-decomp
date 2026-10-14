@@ -45,10 +45,10 @@ _ZN7daTor_c6RenderEv kind:function(arm,size=0x34) addr:0x02137414
 _ZN7daTor_c8BehaviorEv kind:function(arm,size=0x11c) addr:0x02137448
 _ZN7daTor_c13InitResourcesEv kind:function(arm,size=0x158) addr:0x02137564
 daTor_c_classInit kind:function(arm,size=0x50) addr:0x021376bc
-__sinit_daSanbo_c.cpp kind:function(arm,size=0x188) addr:0x0213770c
-__sinit_daTor_c.cpp kind:function(arm,size=0x6c) addr:0x02137894
-.p__sinit_daSanbo_c.cpp kind:data(word) addr:0x02137900
-.p__sinit_daTor_c.cpp kind:data(word) addr:0x02137904
+__sinit_d_a_sanbo.cpp kind:function(arm,size=0x188) addr:0x0213770c
+__sinit_d_a_tor.cpp kind:function(arm,size=0x6c) addr:0x02137894
+.p__sinit_d_a_sanbo.cpp kind:data(word) addr:0x02137900
+.p__sinit_d_a_tor.cpp kind:data(word) addr:0x02137904
 data_ov096_02137920 kind:data(any) addr:0x02137920
 data_ov096_02137928 kind:data(any) addr:0x02137928
 data_ov096_02137930 kind:data(any) addr:0x02137930

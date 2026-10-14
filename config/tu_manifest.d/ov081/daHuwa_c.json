@@ -117,7 +117,7 @@
   "data": [],
   "init": [
     {
-      "symbol": "__sinit_daHuwa_c.cpp",
+      "symbol": "__sinit_d_a_huwa.cpp",
       "address": "0x021280e8",
       "size": "0x6c",
       "binding": "STB_GLOBAL",
@@ -126,7 +126,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_daHuwa_c.cpp",
+      "symbol": ".p__sinit_d_a_huwa.cpp",
       "address": "0x02128824",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -361,7 +361,7 @@
       "source": "0x02128824",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_daHuwa_c.cpp",
+      "symbol": "__sinit_d_a_huwa.cpp",
       "addend": 0,
       "target_module": "ov081",
       "target_address": "0x021280e8"
@@ -406,13 +406,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_daHuwa_c.cpp",
+      "symbol": "__sinit_d_a_huwa.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated static initializer is emitted local by mwcc but must be exposed as the configured .init destination at 0x021280e8"
     },
     {
-      "symbol": ".p__sinit_daHuwa_c.cpp",
+      "symbol": ".p__sinit_d_a_huwa.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated ctor-table object is emitted local by mwcc but must be exposed as the configured .ctor destination at 0x02128824"
@@ -662,14 +662,14 @@
   },
   "id": "ov081/daHuwa_c",
   "module": "ov081",
-  "source": "src/actors/daHuwa_c.cpp",
-  "promoted_source": "src/actors/daHuwa_c.cpp",
+  "source": "src/game/actors/d_a_huwa.cpp",
+  "promoted_source": "src/game/actors/d_a_huwa.cpp",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2123740..0x2124040, 12 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daHuwa_c",
     "module sinit corroboration: 5 sinit(s) / 5 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "classInit fold (0930c): the HUWAHUWA registry factory daHuwa_c_classInit (0x02124040, 0x50) abuts the run's end 0x02124040 with no gap and no other symbol between; tu_map left it in its own unlabelled unit because it cuts on symbol name. The widened range 0x02123740..0x02124090 (13 functions) ends where the daSnowman_c TU (src/actors/daSnowman_c.cpp) begins."
+    "classInit fold (0930c): the HUWAHUWA registry factory daHuwa_c_classInit (0x02124040, 0x50) abuts the run's end 0x02124040 with no gap and no other symbol between; tu_map left it in its own unlabelled unit because it cuts on symbol name. The widened range 0x02123740..0x02124090 (13 functions) ends where the daSnowman_c TU (src/game/actors/d_a_snowman.cpp) begins."
   ],
   "notes": [
     "Whole class, text only. The abutting registry factory daHuwa_c_classInit (0x02124040) was folded in by the 0930c classInit fold (below).",

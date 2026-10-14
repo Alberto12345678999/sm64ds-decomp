@@ -2,7 +2,7 @@
 
 - tested_commit: 019a7cc06 (cleanup-leftover-overlay-batch-2 at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/actors/daMip_c.cpp:75-78` keeps
+- claim: `src/game/actors/d_a_mip.cpp:75-78` keeps
   common.h first because of the shadow matrix copy.
 - attempted_change (scratch-applied, then reverted):
 
@@ -16,7 +16,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/actors/daMip_c.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_mip.cpp \
   --func _ZN7daMip_c21UpdateMatrixAndShadowEv --addr 0x0212bcc8 --size 0xf4 \
   --version 2004/b56 --module ov085 --strict-relocs --brief
 ```

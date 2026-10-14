@@ -1,6 +1,6 @@
 # sinit fold blocker: ov002/daObjKurumajiku_c (0x02100f84)
 
-`__sinit_ov002_02100f84` cannot be folded into `src/actors/daObjKurumajiku_c.cpp`
+`__sinit_ov002_02100f84` cannot be folded into `src/game/actors/d_a_obj_kurumajiku.cpp`
 under the current intact-object/delink machinery. Documented so the next attempt
 starts from the mechanism wall, not from scratch.
 
@@ -68,7 +68,7 @@ The fold is otherwise ready and byte-verified. Needed:
 
 Then: define `KurumajikuMountOffset KurumajikuMountOffsets[4]` (inline 3-arg
 ctor storing to `Vector3` base + declared-undefined dtor aliased to
-`_ZN7Vector3D1Ev`) at the end of `daObjKurumajiku_c.cpp`, keep the POD-local
+`_ZN7Vector3D1Ev`) at the end of `d_a_obj_kurumajiku.cpp`, keep the POD-local
 trick in `Behavior` (declare `struct { int x,y,z; }` locals instead of
 `Vector3` so `_ZN7Vector3D1Ev` stays importable), claim
 `.text/.init/.ctor/.bss`, and delete the handwritten anchor.
