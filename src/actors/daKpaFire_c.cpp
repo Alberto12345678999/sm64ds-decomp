@@ -45,8 +45,10 @@
  *   Matrix4x3 member there.
  * - Sound 0x180, player param1 == 3, and the particle kind pairs are
  *   named only by the use-site enums below.
- * - data_ov060_0211af74 / 0211afb4 / 0211934c / 02119358 / 02119364 and
- *   g_profile_KOOPAFIRE are not this TU's data.
+ * - data_ov060_0211af74 and data_ov060_0211afb4 are this TU's owned
+ *   eight-entry InitResources and Behavior PMF tables, respectively.
+ *   data_ov060_0211934c / 02119358 / 02119364 and g_profile_KOOPAFIRE
+ *   remain external to this TU.
  */
 
 #include "daKpaFire_c.h"
