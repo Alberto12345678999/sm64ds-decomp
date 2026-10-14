@@ -10153,6 +10153,12 @@
       "src/game/actors/d_a_kpa_fire.cpp": [
         "return:char *"
       ],
+      "src/game/actors/d_a_obj_block_s.cpp": [
+        "return:void *"
+      ],
+      "src/game/actors/d_a_obj_tatefuda.cpp": [
+        "return:void *"
+      ],
       "src/game/actors/d_a_propeller_heyho_fire.cpp": [
         "return:char *"
       ],
@@ -10161,6 +10167,9 @@
       ],
       "src/game/actors/d_a_yegg.cpp": [
         "return:char *"
+      ],
+      "src/runtime/actor/dActor_c.cpp": [
+        "return:void *"
       ],
       "src/unnamed/arm9/0200/func_0200e55c.c": [
         "return:dActor_c *"
