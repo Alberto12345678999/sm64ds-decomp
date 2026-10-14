@@ -12,14 +12,14 @@
  *   calls the 3-arg method.
  * - GetFloorResult is not on dBgCh_Actr. Behavior skips 4 bytes to the
  *   SurfaceInfo and tests CLPS bit 0x20 (water).
- * - State1 and State3 advance the dExtFrameCtrl_c at this+0x350. Building that
- *   pointer as &mModelAnim+0x50 changed State1's size. mModelAnim.Advance()
- *   would go through the second-base thunk.
+ * - States 0, 1 and 3 advance the dExtFrameCtrl_c base of mModelAnim
+ *   explicitly. The qualified base call preserves the ROM entry point
+ *   without a byte-offset pointer or a ModelAnim forwarding call.
  * - The word after mClipResult (dActor_c pad, 0xc8) is a Matrix4x3* while
  *   mVariant is 2. Naming it would be a field on dActor_c. Player+0xc8 is
  *   that same pad on the carrier, tested as a nonzero int.
- * - func_ov102_0214bf64 stays a free function. Its body casts to Bmb_Bf64Obj,
- *   a different object. func_ov102_0214bd90 and func_ov102_0214b03c are methods:
+ * - func_ov102_0214bf64 keeps its existing free-function label over daBmb_c.
+ *   func_ov102_0214bd90 and func_ov102_0214b03c are methods:
  *   the first argument is this Bob-omb. Both methods call func_0200fc44 and
  *   func_0201267c through the file-scope extern "C" prototypes: a block-scope
  *   extern inside a member gets C++ linkage and the module stops linking.
@@ -42,36 +42,6 @@
 #include "dBgCh_Gnd.h"
 
 bool ApproachLinear(short &value, short target, short step);
-
-/* Arm 0 reads the actor through this shadow. Bmb_Vec3 is not Vector3: the
-   file already has that name, and this body's Vec3_HorzAngle declaration
-   uses Bmb_Vec3. */
-struct Bmb_Vec3 { int x, y, z; };
-struct Bmb_Bf64Obj {
-    char p0[0x5c];
-    Bmb_Vec3 pos;             /* 0x5c mPos */
-    char g68[0x8e - 0x68];
-    short angY;               /* 0x8e mAngleY */
-    char g90[0x94 - 0x90];
-    short prevAngY;           /* 0x94 mPrevAngleY */
-    char g96[0x98 - 0x96];
-    int horzSpeed;            /* 0x98 mHorzSpeed */
-    char ga0[0xa8 - 0x9c];
-    int vertSpeed;            /* 0xa8 mVertSpeed */
-    char gac[0x350 - 0xac];
-    char anim[0x35c - 0x350]; /* 0x350 dExtFrameCtrl_c */
-    int animSpeed;            /* 0x35c mModelAnim.speed */
-    char g360[0x38c - 0x360];
-    void* chase;              /* 0x38c mChasePlayer */
-    char g390[0x3c4 - 0x390];
-    Bmb_Vec3 home;            /* 0x3c4 mHomePos */
-    char g3d0[0x3dc - 0x3d0];
-    int state;                /* 0x3dc mState */
-    char g3e0[0x3e8 - 0x3e0];
-    unsigned short turnTimer; /* 0x3e8 mTurnTimer */
-    char g3ea[0x3f5 - 0x3ea];
-    unsigned char variant;    /* 0x3f5 mVariant */
-};
 
 /* The three shared files this actor claims.  InitResources loads them and
    CleanupResources releases them, so both C++-named members need one agreed
@@ -142,10 +112,11 @@ extern unsigned char data_0209f2d8;
  * (0x0214c748 is where daShl_c starts), so it is written FIRST here: mwccarm
  * lays .text down in reverse source order.
  *
- * C LINKAGE IS LOAD-BEARING -- the ROM symbol is the bare name.
+ * C linkage preserves the project's existing bare registry-factory label.
+ * The address is ROM-proven; the original SM64DS spelling is not preserved.
  * `return new daBmb_c()` MATCHES (size 0x50); the synthesized ctor stores
- * `_ZTV7daBmb_c + 2` because this TU defines the vtable. Leaf operator new
- * forwards `_ZN7fBase_cnwEj` until #2570.
+ * `_ZTV7daBmb_c + 2` because this TU defines the vtable. The retained leaf operator new
+ * forwards to the retail `_ZN7fBase_cnwEj` allocator, as does fBase_c's adapter.
  *
  * Reconstructed source-style name: SM64DS proves daBmb_c through RTTI,
  * allocation size, vtable identity, and the BOMBHEI registry profile; later EAD
@@ -433,19 +404,10 @@ void func_ov102_0214c0b8(void *cv)
 
 }
 
-/* ==========================================================================
- *
- * mState arm 0, and it STAYS A FREE FUNCTION.  The conversion itself is byte-clean
- * -- compiled as daBmb_c::State0() it emits exactly 0x154 -- but the TU then will
- * not LINK, and the wall is SCOPE, not codegen and not naming.  A member function
- * may not sit inside a block-scope linkage specification, so this body would lose
- * the extern "C" declarations it carries, and the file-scope region cannot take
- * them: it already owes func_ov102_0214b988 a Vec3_HorzAngle and a Vec3_Dist that
- * take const Vector3 *, where this body recovered them over its own Bmb_Vec3
- * shadow.  Measured, not assumed: mwldarm reported them Undefined and named
- * daBmb_c::State0() as the referrer, on a build that tubuild verify had just
- * called 35/35 MATCH with reloc destinations clean.
- * ======================================================================== */
+/* State 0: the dispatch passes this Bob-omb. Use its actual fields and
+ * the ModelAnim frame-controller base. Scalar position members remain
+ * borrowed Vector3 views; no owning Vector3 temporaries are introduced.
+ * The existing external free-function label is retained. */
 
 extern "C" {
 
@@ -454,48 +416,48 @@ void func_ov102_0214bf64(void *ov)
 {
     extern unsigned short DecIfAbove0_Short(unsigned short* p);
     extern void _Z14ApproachLinearRiii(int& v, int target, int step);
-    extern short Vec3_HorzAngle(const Bmb_Vec3* v0, const Bmb_Vec3* v1);
-    extern int Vec3_Dist(const Bmb_Vec3* a, const Bmb_Vec3* b);
+    extern short Vec3_HorzAngle(const Vector3* v0, const Vector3* v1);
+    extern int Vec3_Dist(const Vector3* a, const Vector3* b);
     extern void func_ov102_0214b988(void* c);
 
-    Bmb_Bf64Obj *o = (Bmb_Bf64Obj *)ov;
+    daBmb_c *o = (daBmb_c *)ov;
 
-    DecIfAbove0_Short(&o->turnTimer);
-    if (o->variant != 1) {
-        if (o->chase == 0) {
-            _Z14ApproachLinearRiii(o->horzSpeed, 0x5000, 0x2aa);
+    DecIfAbove0_Short(&o->mTurnTimer);
+    if (o->mVariant != 1) {
+        if (o->mChasePlayer == 0) {
+            _Z14ApproachLinearRiii(o->mHorzSpeed, 0x5000, 0x2aa);
             func_ov102_0214b988(o);
-            if (o->chase != 0) {
-                o->horzSpeed = 0;
-                o->vertSpeed = 0x14000;
-                o->state = 2;
+            if (o->mChasePlayer != 0) {
+                o->mHorzSpeed = 0;
+                o->mVertSpeed = 0x14000;
+                o->mState = 2;
             } else {
-                if (o->variant == 5) {
-                    s16 ang = Vec3_HorzAngle(&o->pos, &o->home);
-                    ApproachLinear(o->prevAngY, ang, 0x200);
-                    o->angY = o->prevAngY;
+                if (o->mVariant == 5) {
+                    s16 ang = Vec3_HorzAngle((const Vector3 *)&o->mPosX, (const Vector3 *)&o->mHomePosX);
+                    ApproachLinear(o->mPrevAngleY, ang, 0x200);
+                    o->mAngleY = o->mPrevAngleY;
                 } else {
-                    if (o->turnTimer == 0 || Vec3_Dist(&o->pos, &o->home) >= 0x500000) {
-                        o->horzSpeed = 0x5000;
+                    if (o->mTurnTimer == 0 || Vec3_Dist((const Vector3 *)&o->mPosX, (const Vector3 *)&o->mHomePosX) >= 0x500000) {
+                        o->mHorzSpeed = 0x5000;
                         func_ov102_0214beb4(o);
                     }
                 }
             }
         } else {
-            _Z14ApproachLinearRiii(o->horzSpeed, 0x10000, 0x1000);
-            s16 target = Vec3_HorzAngle(&o->pos, (Bmb_Vec3*)((char*)o->chase + 0x5c));
-            if (o->variant == 3) {
+            _Z14ApproachLinearRiii(o->mHorzSpeed, 0x10000, 0x1000);
+            s16 target = Vec3_HorzAngle((const Vector3 *)&o->mPosX, (const Vector3 *)&o->mChasePlayer->mPosX);
+            if (o->mVariant == 3) {
                 /* Player::mGrabbedByActor: stop turning toward a held player. */
-                int b = (*(int*)((char*)o->chase + 0x35c) != 0);
+                int b = (o->mChasePlayer->mGrabbedByActor != 0);
                 if (b)
-                    target = o->prevAngY;
+                    target = o->mPrevAngleY;
             }
-            ApproachLinear(o->prevAngY, target, 0x800);
-            o->angY = o->prevAngY;
+            ApproachLinear(o->mPrevAngleY, target, 0x800);
+            o->mAngleY = o->mPrevAngleY;
         }
-        o->animSpeed = o->horzSpeed >> 3;
+        o->mModelAnim.speed = o->mHorzSpeed >> 3;
     }
-    ((dExtFrameCtrl_c *)o->anim)->Advance();
+    o->mModelAnim.dExtFrameCtrl_c::Advance();
 }
 
 }
@@ -549,7 +511,7 @@ void daBmb_c::State1() {
         ApproachLinear(mPrevAngleY, *(short *)&mTargetAngY, 0x800);
     }
     mAngleY = mPrevAngleY;
-    ((dExtFrameCtrl_c *)((char *)this + 0x350))->Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
     if (mState == 2) return;
     if (mPrevAngleY != *(short *)&mTargetAngY) return;
     func_ov102_0214c0b8(this);
@@ -638,7 +600,7 @@ void daBmb_c::State3()
             func_ov102_0214c0b8(this);
         }
     }
-    ((dExtFrameCtrl_c *)((char *)this + 0x350))->Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
 }
 
 /* ==========================================================================
@@ -791,7 +753,6 @@ extern "C" {
 // @symbol func_ov102_0214b988
 void func_ov102_0214b988(void *thiz)
 {
-    extern void *_ZN8dActor_c13ClosestPlayerEv(void *thiz);
     extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
     extern short Vec3_HorzAngle(const struct Vector3 *a, const struct Vector3 *b);
     extern int AngleDiff(int, int);
@@ -801,7 +762,7 @@ void func_ov102_0214b988(void *thiz)
     struct Vector3 v;
 
     self->mChasePlayer = 0;
-    pl = (Player *)_ZN8dActor_c13ClosestPlayerEv(self);
+    pl = self->ClosestPlayer();
     if (!pl) return;
     if (Vec3_Dist((struct Vector3 *)&self->mPosX, (struct Vector3 *)&pl->mPosX) > 0x190000) return;
     {
