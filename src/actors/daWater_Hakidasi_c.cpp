@@ -70,14 +70,14 @@ extern "C" {
 extern void Matrix4x3_FromRotationY(void *m, s16 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, s16 angX);
 extern void MulVec3Mat4x3(struct Vec3 *in, void *m, struct Vec3 *out);
-/* local extern: Fix12<int> by value changes caller lowering; retain the matched scalar ABI. */
+/* local extern: retain the matched scalar ABI; native Fix12<int> call reconstruction remains pending. */
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     int a, int b, int x, int y, int z, int f, int cb);
 extern void func_02012790(int a);
 extern int data_020a0e68;
 extern int SublevelToLevel(int);
 extern int IsStarCollected(int r0, int r1);
-/* local extern: Fix12<int> by value changes caller lowering; retain the matched scalar ABI. */
+/* local extern: retain the matched scalar ABI; native Fix12<int> call reconstruction remains pending. */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *, dActor_c *a, Fix12i b, int c, unsigned int d, unsigned int e);
 unsigned short DecIfAbove0_Short(unsigned short *p);
