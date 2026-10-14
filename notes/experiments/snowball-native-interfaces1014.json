@@ -170,7 +170,7 @@
       "prepared_sha256": "25a5a3dca96c1db765050d65d18538017c138264020b32cd3a457085f61c2c36",
       "global_full_rom_run": false
     },
-    "qualification": "Private efd proof is historical; actual current85c control freshly compiles and complete raw/prepared objects equal that control. Actual tracked candidate checks and global build follow the frozen Source checkpoint."
+    "qualification": "Private efd result remains historical; actual85c control and frozen production checkpoint were freshly compiled with ordinary policies. Complete objects/metadata/storage/typed graphs bind to the private candidate, and the global ROM run is actual current-base evidence."
   },
   "current_input_binding": {
     "scout_base": "efd33df972c9475494a18548d0248454c0e2668f",
@@ -357,5 +357,986 @@
     "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
     "owner": "Snowball source producer and enemy reconstruction coordinator"
   },
-  "production_gates": "Pending at Source checkpoint; no current full-ROM claim."
+  "tested_checkpoint": "037c27c2ada5b638d3420af0ae2680c24ceada20",
+  "production_component_proof": {
+    "strict": 17,
+    "functions": 13,
+    "data": 2,
+    "bss_records": 1,
+    "bss_bytes": 16,
+    "metadata_records": 11,
+    "metadata_bytes": 246,
+    "raw_refs": 114,
+    "prepared_refs": 62,
+    "raw_sha256": "355bc5c571e8295188698522d480e7304a5016d4efa62487be2a5eafb8f8b1ff",
+    "prepared_sha256": "25a5a3dca96c1db765050d65d18538017c138264020b32cd3a457085f61c2c36",
+    "global_full_rom_run": false,
+    "tested_checkpoint": "037c27c2ada5b638d3420af0ae2680c24ceada20"
+  },
+  "production_binding": {
+    "tested_checkpoint": "037c27c2ada5b638d3420af0ae2680c24ceada20",
+    "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "fresh_control_prepared_equal": true,
+    "actual_production_raw_prepared_and_all_proof_records_equal_private_final_candidate": true,
+    "private_graph_normalization": {
+      "complete_normalized_raw_symbols_bodies_sections_edges_equal": true,
+      "normalization": {
+        "@716": "@714",
+        "@718": "@716"
+      },
+      "typed_edges": 114,
+      "qualification": "Private bounded feasibility probe. Normal ordinary preparation, strict ROM targets and production gates are future claimed-scope work."
+    },
+    "ownership": {
+      "existing_D2_policy_unchanged": true,
+      "D2_complete_size": 72,
+      "D2_incoming_edges": [],
+      "Vector3_D1_complete_body": "1eff2fe1",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "Vector3_D1_canonical_complete_equal": true,
+      "all_other_ownership_policies_and_aliases_unchanged": true,
+      "state_init_size": 60,
+      "state_init_typed_edges": 3,
+      "ctor_size": 4,
+      "ctor_typed_edges": 1
+    },
+    "source_sha256": "b43bf35b8bf9d37f9dfb9f32c04af609cc333e3ee9e94925cf634cbe9d4e0c93",
+    "manifest_sha256": "00557ff6390cca53a9d1e9362ac92bffea69b46ee2040bb57a0726b71c54a136"
+  },
+  "actual_current_control_proof": {
+    "base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "strict": 17,
+    "functions": 13,
+    "data": 2,
+    "bss_records": 1,
+    "bss_bytes": 16,
+    "metadata_records": 11,
+    "metadata_bytes": 246,
+    "raw_refs": 114,
+    "prepared_refs": 62,
+    "raw_sha256": "f9ec9b692f89f8e158fd15fab7f89d41795590afd1ec5f8596d633892f61d5bb",
+    "prepared_sha256": "25a5a3dca96c1db765050d65d18538017c138264020b32cd3a457085f61c2c36",
+    "global_full_rom_run": false
+  },
+  "current_declaration_delta": {
+    "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "before": 7495,
+    "after": 7491,
+    "new": [],
+    "removed": [
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "return",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "void",
+        "want": "int",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#5 unsigned int",
+        "want": "#5 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#6 unsigned int",
+        "want": "#6 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#7 unsigned int",
+        "want": "#7 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      }
+    ],
+    "positive_candidate_declaration": {
+      "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+      "file": "src/actors/daSnowball_c.cpp",
+      "line": 72,
+      "ret": "int",
+      "params": [
+        "Player *",
+        "void *",
+        "unsigned int",
+        "int",
+        "unsigned char",
+        "unsigned char",
+        "unsigned char"
+      ],
+      "is_function": true,
+      "linkage": "C"
+    },
+    "positive_owner_definition": {
+      "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+      "file": "src/actors/Player.cpp",
+      "line": 18941,
+      "ret": "int",
+      "params": [
+        "Player *",
+        "void *",
+        "unsigned int",
+        "int",
+        "unsigned char",
+        "unsigned char",
+        "unsigned char"
+      ],
+      "is_function": true,
+      "linkage": "C"
+    },
+    "scope": "Actual current complete collector; reconstruct unchanged85c control population by replacing only its Snowball Source declarations/definitions from git blob. No header edit or baseline banking.",
+    "positive_return_and_all_parameter_types_equal": true
+  },
+  "canary_observation": {
+    "result": [
+      true,
+      "2004/b56"
+    ],
+    "source": "src/actors/daSnowball_c.cpp",
+    "symbol": "func_ov081_02125fb8",
+    "module": "ov081",
+    "address": "0x02125fb8",
+    "size": 324,
+    "input_commit": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "prior_attempt": "Historical skill path src/func_ov006_020cb030.cpp absent after TU migration; first call failed before compilation. This actual current Source canary passes."
+  },
+  "gates": {
+    "full_current_rom": {
+      "command": [
+        "python",
+        "-u",
+        "tools/rombuild.py",
+        "-j16",
+        "--no-rom"
+      ],
+      "exit": 0,
+      "tested_checkpoint": "037c27c2ada5b638d3420af0ae2680c24ceada20",
+      "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+      "module_fidelity": {
+        "modulesChecked": 106,
+        "modulesExact": 106,
+        "modulesExpectedOnly": 106,
+        "comparedBytes": 3049600,
+        "differingBytes": 0,
+        "unexpectedDifferingBytes": 0,
+        "percent": 100.0,
+        "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b"
+      },
+      "source_build": {
+        "totalCodeFunctions": 11397,
+        "totalCodeBytes": 2238108,
+        "compiledFunctions": 11334,
+        "compiledBytes": 2225480,
+        "sourceFunctions": 11334,
+        "sourceBytes": 2225480,
+        "modFunctions": 0,
+        "modBytes": 0,
+        "sourceBytesPercent": 99.43577343005789,
+        "reproducingFunctions": 11334,
+        "reproducingBytes": 2225480,
+        "mismatchingFunctions": 0,
+        "mismatchingFunctionBytes": 0,
+        "differingSourceBytes": 0,
+        "sourceDataClaims": 331,
+        "sourceBssClaims": 239,
+        "sourceBssBytes": 30164,
+        "reproducingDataClaims": 331,
+        "reproducingDataClaimBytes": 13020,
+        "mismatchingDataClaims": 0,
+        "mismatchingDataClaimBytes": 0
+      },
+      "report_sha256": "2400e60d63af3d2374936344af79ce171d55137d740e21fd1a607519ea44bdd8",
+      "log_sha256": "b54d70eea6139301dd4125e5d7931bbcffbdfb9b37ade18c39c8f6075bc56833"
+    },
+    "literal_stock_range": {
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "85c0c53d72e4a15537f1162272383752f63a2fd1..HEAD",
+        "--json",
+        "build\\snowball-native-interfaces1014\\stock.json"
+      ],
+      "exit": 0,
+      "checked": 14,
+      "verified": 14,
+      "warnings": 0,
+      "blocking": 0,
+      "scope": "Literal changed-source gate includes13 functions and60B initializer. Complete ordinary proof additionally verifies4B ctor, two8B PMF descriptors,16B BSS state and complete emitted metadata."
+    },
+    "static_checks": {
+      "declarations-scoped": {
+        "command": [
+          "python",
+          "tools/check_decl_agreement.py",
+          "--changed",
+          "85c0c53d72e4a15537f1162272383752f63a2fd1"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 12.8,
+        "log": "build\\snowball-native-interfaces1014\\declarations-scoped.log"
+      },
+      "declarations-global": {
+        "command": [
+          "python",
+          "tools/check_decl_agreement.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 11.55,
+        "log": "build\\snowball-native-interfaces1014\\declarations-global.log"
+      },
+      "port": {
+        "command": [
+          "python",
+          "tools/port_refcheck.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.75,
+        "log": "build\\snowball-native-interfaces1014\\port.log"
+      },
+      "language": {
+        "command": [
+          "python",
+          "tools/langmode_audit.py",
+          "--check",
+          "build\\snowball-native-interfaces1014\\langmode-baseline.json"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 13.24,
+        "log": "build\\snowball-native-interfaces1014\\language.log"
+      },
+      "conflicts": {
+        "command": [
+          "python",
+          "tools/check_tubuild_conflicts.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.34,
+        "log": "build\\snowball-native-interfaces1014\\conflicts.log"
+      },
+      "diff": {
+        "command": [
+          "git",
+          "diff",
+          "--check",
+          "85c0c53d72e4a15537f1162272383752f63a2fd1..HEAD"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.05,
+        "log": "build\\snowball-native-interfaces1014\\diff.log"
+      }
+    }
+  },
+  "rom_diagnostics": {
+    "intact_tu_link": {
+      "ok": true,
+      "modulesOk": true,
+      "moduleChecksumReplay": [],
+      "symbolsCommandOk": true,
+      "symbolErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "baselineSymbolErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "newSymbolErrors": [],
+      "storageAliases": [
+        {
+          "vtable": "_ZTV9dBgCh_Gnd",
+          "vtableMetadata": {
+            "address": 34181732,
+            "size": 16,
+            "binding": "STB_GLOBAL",
+            "type": "STT_OBJECT",
+            "visibility": "STV_DEFAULT",
+            "sectionIndex": 4,
+            "section": "ARM9"
+          },
+          "splitSymbols": {
+            "VTable_dBgPi_dBgCh_GndThunk": {
+              "address": 34181748,
+              "size": 8,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 4,
+              "section": "ARM9"
+            }
+          },
+          "baselineElfSha256": "785386a6011f3c06f4af34c5af486fc57cea54240dbe12324b7a2c0db2890103",
+          "exact": true
+        },
+        {
+          "vtable": "_ZTV9dBgCh_Lin",
+          "vtableMetadata": {
+            "address": 34181796,
+            "size": 16,
+            "binding": "STB_GLOBAL",
+            "type": "STT_OBJECT",
+            "visibility": "STV_DEFAULT",
+            "sectionIndex": 4,
+            "section": "ARM9"
+          },
+          "splitSymbols": {
+            "VTable_dBgPi_dBgCh_LinThunk": {
+              "address": 34181812,
+              "size": 8,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 4,
+              "section": "ARM9"
+            }
+          },
+          "baselineElfSha256": "785386a6011f3c06f4af34c5af486fc57cea54240dbe12324b7a2c0db2890103",
+          "exact": true
+        },
+        {
+          "vtable": "_ZTV12dBgCh_SphCrr",
+          "vtableMetadata": {
+            "address": 34181944,
+            "size": 16,
+            "binding": "STB_GLOBAL",
+            "type": "STT_OBJECT",
+            "visibility": "STV_DEFAULT",
+            "sectionIndex": 4,
+            "section": "ARM9"
+          },
+          "splitSymbols": {
+            "VTable_dBgPi_dBgCh_SphCrrThunk": {
+              "address": 34181960,
+              "size": 16,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 4,
+              "section": "ARM9"
+            },
+            "VTable_dM3dGSph_dBgCh_SphCrrThunk": {
+              "address": 34181976,
+              "size": 8,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 4,
+              "section": "ARM9"
+            }
+          },
+          "baselineElfSha256": "785386a6011f3c06f4af34c5af486fc57cea54240dbe12324b7a2c0db2890103",
+          "exact": true
+        },
+        {
+          "vtable": "_ZTV15daObjRcCarpet_c",
+          "vtableMetadata": {
+            "address": 34684828,
+            "size": 88,
+            "binding": "STB_GLOBAL",
+            "type": "STT_OBJECT",
+            "visibility": "STV_DEFAULT",
+            "sectionIndex": 77,
+            "section": "OV036"
+          },
+          "splitSymbols": {
+            "data_ov036_02113ff4": {
+              "address": 34684916,
+              "size": 28,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 77,
+              "section": "OV036"
+            },
+            "data_ov036_02114010": {
+              "address": 34684944,
+              "size": 16,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 77,
+              "section": "OV036"
+            }
+          },
+          "baselineElfSha256": "785386a6011f3c06f4af34c5af486fc57cea54240dbe12324b7a2c0db2890103",
+          "exact": true
+        },
+        {
+          "vtable": "_ZTV19daPropeller_Heyho_c",
+          "vtableMetadata": {
+            "address": 34746728,
+            "size": 28,
+            "binding": "STB_GLOBAL",
+            "type": "STT_OBJECT",
+            "visibility": "STV_DEFAULT",
+            "sectionIndex": 147,
+            "section": "OV070"
+          },
+          "splitSymbols": {
+            "data_ov070_02123184": {
+              "address": 34746756,
+              "size": 28,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 147,
+              "section": "OV070"
+            },
+            "data_ov070_021231a0": {
+              "address": 34746784,
+              "size": 68,
+              "binding": "STB_GLOBAL",
+              "type": "STT_OBJECT",
+              "visibility": "STV_DEFAULT",
+              "sectionIndex": 147,
+              "section": "OV070"
+            }
+          },
+          "baselineElfSha256": "785386a6011f3c06f4af34c5af486fc57cea54240dbe12324b7a2c0db2890103",
+          "exact": true
+        }
+      ],
+      "storageAliasErrors": []
+    },
+    "advisory_rom_data": {
+      "symbols": 2510,
+      "verified": 969,
+      "partial": 1519,
+      "differs": 1,
+      "unnamed": 21,
+      "verifiedBytes": 48968,
+      "partialBytes": 8144,
+      "verifiedRecords": 2325,
+      "partialRecords": 2818,
+      "differsRecords": 2,
+      "unnamedRecords": 137,
+      "totalRecords": 5282
+    },
+    "advisory_differing": [
+      {
+        "src": "src/_ZN10dCcAcPos_cD0Ev.cpp",
+        "symbol": "_ZTV10dCcAcPos_c",
+        "module": "arm9",
+        "addr": 34137860,
+        "differingBytes": 4
+      },
+      {
+        "src": "src/_ZN10dCcAcPos_cD1Ev.cpp",
+        "symbol": "_ZTV10dCcAcPos_c",
+        "module": "arm9",
+        "addr": 34137860,
+        "differingBytes": 4
+      }
+    ],
+    "qualification": "Full-ROM module/source fidelity passes. Fresh baseline-control DSD --fail diagnostic and advisory emitted-data coverage remain independently reported; do not call every diagnostic PASS. The production comparison has zero new symbol errors."
+  },
+  "old_foreign_declaration_failure_scope": "The historical efd Klepto/Dust extra global diagnostic had four foreign initializer/Luigi mismatches. Those were repaired by merged prerequisitePR3829 in this actual85c base. Both fresh Snowball global and scoped declaration gates pass; no old failure signature is transferred and no baseline banking is performed.",
+  "full_metadata_proof": [
+    {
+      "symbol": "_ZTV12daSnowball_c",
+      "module": "ov081",
+      "address": "0x2128ab4",
+      "size": 132,
+      "body": "000000007c8a1202b86312026812010244120102986212022012010214120102ec621202d40f0102c80f0102c0621202780f01026c0f0102bc6212027c3504029c34040294340402145f12025c5f120260010102540101024c0101024801010244010102400101023c0101023801010234010102300101022c01010224010102dc000102",
+      "target": "000000007c8a1202b86312026812010244120102986212022012010214120102ec621202d40f0102c80f0102c0621202780f01026c0f0102bc6212027c3504029c34040294340402145f12025c5f120260010102540101024c0101024801010244010102400101023c0101023801010234010102300101022c01010224010102dc000102",
+      "edges": [
+        {
+          "off": 4,
+          "type": 2,
+          "sym": "_ZTI12daSnowball_c",
+          "addr": 34769532,
+          "add": 0
+        },
+        {
+          "off": 68,
+          "type": 2,
+          "sym": "_ZN7fBase_c13OnHeapCreatedEv",
+          "addr": 33830036,
+          "add": 0
+        },
+        {
+          "off": 64,
+          "type": 2,
+          "sym": "_ZN7fBase_c9Virtual38Ejj",
+          "addr": 33830044,
+          "add": 0
+        },
+        {
+          "off": 60,
+          "type": 2,
+          "sym": "_ZN7fBase_c9Virtual34Ejj",
+          "addr": 33830268,
+          "add": 0
+        },
+        {
+          "off": 128,
+          "type": 2,
+          "sym": "_ZN8dActor_c25OnAimedAtWithEggReturnVecEv",
+          "addr": 33620188,
+          "add": 0
+        },
+        {
+          "off": 124,
+          "type": 2,
+          "sym": "_ZN8dActor_c16OnAimedAtWithEggEv",
+          "addr": 33620260,
+          "add": 0
+        },
+        {
+          "off": 120,
+          "type": 2,
+          "sym": "_ZN8dActor_c19OnHitFromUnderneathERS_",
+          "addr": 33620268,
+          "add": 0
+        },
+        {
+          "off": 116,
+          "type": 2,
+          "sym": "_ZN8dActor_c15OnHitByMegaCharER6Player",
+          "addr": 33620272,
+          "add": 0
+        },
+        {
+          "off": 112,
+          "type": 2,
+          "sym": "_ZN8dActor_c24OnHitByCannonBlastedCharERS_",
+          "addr": 33620276,
+          "add": 0
+        },
+        {
+          "off": 108,
+          "type": 2,
+          "sym": "_ZN8dActor_c8OnPushedERS_",
+          "addr": 33620280,
+          "add": 0
+        },
+        {
+          "off": 104,
+          "type": 2,
+          "sym": "_ZN8dActor_c8OnKickedERS_",
+          "addr": 33620284,
+          "add": 0
+        },
+        {
+          "off": 100,
+          "type": 2,
+          "sym": "_ZN8dActor_c11OnAttacked2ERS_",
+          "addr": 33620288,
+          "add": 0
+        },
+        {
+          "off": 96,
+          "type": 2,
+          "sym": "_ZN8dActor_c11OnAttacked1ERS_",
+          "addr": 33620292,
+          "add": 0
+        },
+        {
+          "off": 92,
+          "type": 2,
+          "sym": "_ZN8dActor_c15OnGroundPoundedERS_",
+          "addr": 33620296,
+          "add": 0
+        },
+        {
+          "off": 88,
+          "type": 2,
+          "sym": "_ZN8dActor_c9Virtual50Ev",
+          "addr": 33620300,
+          "add": 0
+        },
+        {
+          "off": 84,
+          "type": 2,
+          "sym": "_ZN8dActor_c13OnTurnIntoEggER6Player",
+          "addr": 33620308,
+          "add": 0
+        },
+        {
+          "off": 80,
+          "type": 2,
+          "sym": "_ZN8dActor_c13OnYoshiTryEatEv",
+          "addr": 33620320,
+          "add": 0
+        },
+        {
+          "off": 52,
+          "type": 2,
+          "sym": "_ZN8dActor_c11AfterRenderEj",
+          "addr": 33623916,
+          "add": 0
+        },
+        {
+          "off": 48,
+          "type": 2,
+          "sym": "_ZN8dActor_c12BeforeRenderEv",
+          "addr": 33623928,
+          "add": 0
+        },
+        {
+          "off": 40,
+          "type": 2,
+          "sym": "_ZN8dActor_c13AfterBehaviorEj",
+          "addr": 33624008,
+          "add": 0
+        },
+        {
+          "off": 36,
+          "type": 2,
+          "sym": "_ZN8dActor_c14BeforeBehaviorEv",
+          "addr": 33624020,
+          "add": 0
+        },
+        {
+          "off": 28,
+          "type": 2,
+          "sym": "_ZN8dActor_c21AfterCleanupResourcesEj",
+          "addr": 33624596,
+          "add": 0
+        },
+        {
+          "off": 24,
+          "type": 2,
+          "sym": "_ZN8dActor_c22BeforeCleanupResourcesEv",
+          "addr": 33624608,
+          "add": 0
+        },
+        {
+          "off": 16,
+          "type": 2,
+          "sym": "_ZN8dActor_c18AfterInitResourcesEj",
+          "addr": 33624644,
+          "add": 0
+        },
+        {
+          "off": 12,
+          "type": 2,
+          "sym": "_ZN8dActor_c19BeforeInitResourcesEv",
+          "addr": 33624680,
+          "add": 0
+        },
+        {
+          "off": 76,
+          "type": 2,
+          "sym": "_ZN12daSnowball_cD0Ev",
+          "addr": 34758492,
+          "add": 0
+        },
+        {
+          "off": 56,
+          "type": 2,
+          "sym": "_ZN12daSnowball_c16OnPendingDestroyEv",
+          "addr": 34759356,
+          "add": 0
+        },
+        {
+          "off": 20,
+          "type": 2,
+          "sym": "_ZN12daSnowball_c16CleanupResourcesEv",
+          "addr": 34759320,
+          "add": 0
+        },
+        {
+          "off": 44,
+          "type": 2,
+          "sym": "_ZN12daSnowball_c6RenderEv",
+          "addr": 34759360,
+          "add": 0
+        },
+        {
+          "off": 8,
+          "type": 2,
+          "sym": "_ZN12daSnowball_c13InitResourcesEv",
+          "addr": 34759608,
+          "add": 0
+        },
+        {
+          "off": 32,
+          "type": 2,
+          "sym": "_ZN12daSnowball_c8BehaviorEv",
+          "addr": 34759404,
+          "add": 0
+        },
+        {
+          "off": 72,
+          "type": 2,
+          "sym": "_ZN12daSnowball_cD1Ev",
+          "addr": 34758420,
+          "add": 0
+        }
+      ],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTI12daSnowball_c",
+      "module": "ov081",
+      "address": "0x2128a7c",
+      "size": 12,
+      "body": "64a70902888a1202c0811002",
+      "target": "64a70902888a1202c0811002",
+      "edges": [
+        {
+          "off": 4,
+          "type": 2,
+          "sym": "_ZTS12daSnowball_c",
+          "addr": 34769544,
+          "add": 0
+        },
+        {
+          "off": 8,
+          "type": 2,
+          "sym": "_ZTI12dEnemyBase_c",
+          "addr": 34636224,
+          "add": 0
+        },
+        {
+          "off": 0,
+          "type": 2,
+          "sym": "_ZTVN3abi20__si_class_type_infoE",
+          "addr": 34187108,
+          "add": 0
+        }
+      ],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTS12daSnowball_c",
+      "module": "ov081",
+      "address": "0x2128a88",
+      "size": 15,
+      "body": "31326461536e6f7762616c6c5f6300",
+      "target": "31326461536e6f7762616c6c5f6300",
+      "edges": [],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTI12dEnemyBase_c",
+      "module": "ov002",
+      "address": "0x21081c0",
+      "size": 12,
+      "body": "64a70902cc81100290e30802",
+      "target": "64a70902cc81100290e30802",
+      "edges": [
+        {
+          "off": 4,
+          "type": 2,
+          "sym": "_ZTS12dEnemyBase_c",
+          "addr": 34636236,
+          "add": 0
+        },
+        {
+          "off": 8,
+          "type": 2,
+          "sym": "_ZTI8dActor_c",
+          "addr": 34136976,
+          "add": 0
+        },
+        {
+          "off": 0,
+          "type": 2,
+          "sym": "_ZTVN3abi20__si_class_type_infoE",
+          "addr": 34187108,
+          "add": 0
+        }
+      ],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTS12dEnemyBase_c",
+      "module": "ov002",
+      "address": "0x21081cc",
+      "size": 15,
+      "body": "313264456e656d79426173655f6300",
+      "target": "313264456e656d79426173655f6300",
+      "edges": [],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "module": "arm9",
+      "address": "0x208e390",
+      "size": 12,
+      "body": "64a7090284e30802786e0802",
+      "target": "64a7090284e30802786e0802",
+      "edges": [
+        {
+          "off": 4,
+          "type": 2,
+          "sym": "_ZTS8dActor_c",
+          "addr": 34136964,
+          "add": 0
+        },
+        {
+          "off": 8,
+          "type": 2,
+          "sym": "_ZTI7dBase_c",
+          "addr": 34107000,
+          "add": 0
+        },
+        {
+          "off": 0,
+          "type": 2,
+          "sym": "_ZTVN3abi20__si_class_type_infoE",
+          "addr": 34187108,
+          "add": 0
+        }
+      ],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "module": "arm9",
+      "address": "0x208e384",
+      "size": 10,
+      "body": "38644163746f725f6300",
+      "target": "38644163746f725f6300",
+      "edges": [],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "module": "arm9",
+      "address": "0x2086e78",
+      "size": 12,
+      "body": "64a70902546e0802706d0802",
+      "target": "64a70902546e0802706d0802",
+      "edges": [
+        {
+          "off": 4,
+          "type": 2,
+          "sym": "_ZTS7dBase_c",
+          "addr": 34106964,
+          "add": 0
+        },
+        {
+          "off": 8,
+          "type": 2,
+          "sym": "_ZTI7fBase_c",
+          "addr": 34106736,
+          "add": 0
+        },
+        {
+          "off": 0,
+          "type": 2,
+          "sym": "_ZTVN3abi20__si_class_type_infoE",
+          "addr": 34187108,
+          "add": 0
+        }
+      ],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "module": "arm9",
+      "address": "0x2086e54",
+      "size": 9,
+      "body": "3764426173655f6300",
+      "target": "3764426173655f6300",
+      "edges": [],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "module": "arm9",
+      "address": "0x2086d70",
+      "size": 8,
+      "body": "74a70902606e0802",
+      "target": "74a70902606e0802",
+      "edges": [
+        {
+          "off": 4,
+          "type": 2,
+          "sym": "_ZTS7fBase_c",
+          "addr": 34106976,
+          "add": 0
+        },
+        {
+          "off": 0,
+          "type": 2,
+          "sym": "_ZTVN3abi17__class_type_infoE",
+          "addr": 34187124,
+          "add": 0
+        }
+      ],
+      "blind": {},
+      "complete_equal": true
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "module": "arm9",
+      "address": "0x2086e60",
+      "size": 9,
+      "body": "3766426173655f6300",
+      "target": "3766426173655f6300",
+      "edges": [],
+      "blind": {},
+      "complete_equal": true
+    }
+  ],
+  "proof_artifact_hashes": {
+    "raw.o": "355bc5c571e8295188698522d480e7304a5016d4efa62487be2a5eafb8f8b1ff",
+    "prepared.o": "25a5a3dca96c1db765050d65d18538017c138264020b32cd3a457085f61c2c36",
+    "strict.json": "587c5e9214d4e520b15d728d065c57940b96fd62f52a7aeff334e31ae5fd1bd0",
+    "bss.json": "9f0603a1f2105756c60c4558e8c7c49702bfd2345a980a49bad93760ff473700",
+    "owned.json": "6ffd7285c6007936c49e99374cc637335640d9aaeee5486a475b34f9f2b612a3",
+    "metadata.json": "2d4ccddbd9863462d943669bf3be3348804023bbb454d429082cc8b28d2de43c",
+    "graphs.json": "34b82361e9a2809d34572fa9a6d82f056d488f8a465244dce12216d9fe0ad771"
+  },
+  "direct_member_probe": {
+    "historical_base": "efd33df972c9475494a18548d0248454c0e2668f",
+    "result": "compile failed: undefined identifier Hurt",
+    "qualification": "Player.h has no native Hurt declaration. Current whole include tree and actual owning Player.cpp are invariant from that probe. The local import uses the exact current scalar C ABI; no original-type or universal Fix12 impossibility claim.",
+    "artifact": "C:/tmp/sm64ds-klepto-scout1014/build/snowball-native-scout1014/contract-probe.log"
+  }
 }
