@@ -1,8 +1,8 @@
 {
   "id": "ov091/daDsnBase_c",
   "module": "ov091",
-  "source": "src/actors/daDsnBase_c.cpp",
-  "promoted_source": "src/actors/daDsnBase_c.cpp",
+  "source": "src/game/actors/d_a_dsn_base.cpp",
+  "promoted_source": "src/game/actors/d_a_dsn_base.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
@@ -13,7 +13,7 @@
     "HISTORY, SUPERSEDED BY THE DESTRUCTOR FOLD (last boundary_evidence entry): Why the order cannot be reproduced: the cartridge puts D0 (0x02132d04) BELOW D1 (0x02132d6c). The mwccarm 2004/b56 lever set for destructor variant order is closed and measured: a destructor defined inline in the class body emits D1 then D0, always; an out-of-line definition emits D2, D0, D1 and adds a homeless D2. Scaffolds (an explicit p->~X() call, a delete p) and moving the declaration below the overrides change nothing. No admissible source form emits D0 below D1 without a D2 the ROM does not carry, so the pair cannot sit in this TU's licensed run (linkcheck [4b/8] refuses a licensed .text that is not ROM-ascending).",
     "The inline form is also required independently: include/daDsnBase_c.h defines the destructor in the class body so that both descendants (daDsn_c in ov091, daDkk_c in ov025) INLINE the body. An out-of-line declaration would make each descendant emit a bl the ROM does not have, and would move the key function off CleanupResources.",
     "Reachability: the only two references to either address anywhere in config/ are vtable words -- relocs.txt 0x0213523c -> 0x02132d6c and 0x02135240 -> 0x02132d04, both inside _ZTV11daDsnBase_c (0x021351fc). No instruction in the image calls either address directly, so nothing outside the vtable depends on their order.",
-    "DESTRUCTOR FOLD. The licensed run is now 0x02132d04..0x021333fc (12 functions), with _ZN11daDsnBase_cD0Ev at 0x02132d04 (size 0x68) and _ZN11daDsnBase_cD1Ev at 0x02132d6c (size 0x54) as its first two members; their per-function shard sources and delinks entries are retired and merged into this TU's. The lever is the one src/actors/daObjDorifu_c.cpp records: `#pragma defer_codegen off` before the includes, the file written in ROM-ascending order, and two uncalled forcing functions at the top -- `delete p` (the deleting destructor, D0) then `p->~X()` (the complete-object destructor, D1) -- which make mwccarm emit the inline destructor's two variants at parse time in the cartridge's D0-then-D1 order, with no D2. The forcers are compiler_only_output deadstrip rows. Measured by tubuild.py verify: 12/12 MATCH, objisolate clean, reloc destinations clean, emission order ROM-ascending."
+    "DESTRUCTOR FOLD. The licensed run is now 0x02132d04..0x021333fc (12 functions), with _ZN11daDsnBase_cD0Ev at 0x02132d04 (size 0x68) and _ZN11daDsnBase_cD1Ev at 0x02132d6c (size 0x54) as its first two members; their per-function shard sources and delinks entries are retired and merged into this TU's. The lever is the one src/game/actors/d_a_obj_dorifu.cpp records: `#pragma defer_codegen off` before the includes, the file written in ROM-ascending order, and two uncalled forcing functions at the top -- `delete p` (the deleting destructor, D0) then `p->~X()` (the complete-object destructor, D1) -- which make mwccarm emit the inline destructor's two variants at parse time in the cartridge's D0-then-D1 order, with no D2. The forcers are compiler_only_output deadstrip rows. Measured by tubuild.py verify: 12/12 MATCH, objisolate clean, reloc destinations clean, emission order ROM-ascending."
   ],
   "sections": [
     {
@@ -122,7 +122,7 @@
     "RECONCILED: the two destructor shards' forcing scaffolds were DROPPED, not carried. This TU defines the key function, and that alone emits the vtable and both destructor variants; both come out byte-identical without any scaffold. [Superseded in part by the destructor fold: the pair is now licensed here and two uncalled forcing functions under defer_codegen off place it D0 then D1.]",
     "INCLUDE ORDER IS LOAD-BEARING: daDsnBase_c.h reaches dBgActor_c.h, which includes common.h BEFORE Model.h. Matrix4x3 is guarded on MATRIX4X3_DEFINED and has two spellings, so this fixes it to common.h's flat s32 m[12] -- the spelling every shard compiled against. func_ov091_02133098 assigns a whole Matrix4x3; hoisting math/Matrix.h above this include would change its codegen.",
     "Init (_ZN11daDsnBase_c4InitEv at 0x02133254) is a coined member name. Class ownership, inbound calls (daDsn_c::InitResources, daDkk_c::InitResources both pass this), body and layout are proven; the exact original English name is not.",
-    "DESLOP: func_ov091_02132f04 now holds its two Vector3 locals directly instead of inside a file-local anonymous struct, so the _ZN25@class$488daDsnBase_c_cppD1Ev compiler_only row is deleted (no emitted symbol shares its shape; resync reports MANUAL). Bytes unchanged: 10/10 MATCH.",
+    "DESLOP: func_ov091_02132f04 now holds its two Vector3 locals directly instead of inside a file-local anonymous struct, so the _ZN26@class$488d_a_dsn_base_cppD1Ev compiler_only row is deleted (no emitted symbol shares its shape; resync reports MANUAL). Bytes unchanged: 10/10 MATCH.",
     "FORCING FUNCTIONS AND PRAGMA. This TU compiles under `#pragma defer_codegen off` and carries two uncalled functions, daDsnBase_c_EmitDeletingDestructor and daDsnBase_c_EmitDestructor, recorded as compiler_only_output deadstrip rows. They are the parse-time trigger that places D0 then D1 ahead of the real members and are not in the ROM. The destructor itself stays inline in include/daDsnBase_c.h because the class's descendants inline its vptr store."
   ],
   "verification": {

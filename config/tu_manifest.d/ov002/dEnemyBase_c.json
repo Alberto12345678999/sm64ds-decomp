@@ -1,8 +1,8 @@
 {
   "id": "ov002/dEnemyBase_c",
   "module": "ov002",
-  "source": "src/actors/dEnemyBase_c.cpp",
-  "promoted_source": "src/actors/dEnemyBase_c.cpp",
+  "source": "src/runtime/actor/dEnemyBase_c.cpp",
+  "promoted_source": "src/runtime/actor/dEnemyBase_c.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "medium",

@@ -1,8 +1,8 @@
 {
   "id": "ov006/unit020c8a30",
   "module": "ov006",
-  "source": "src/actors/unit020c8a30.cpp",
-  "promoted_source": "src/actors/unit020c8a30.cpp",
+  "source": "src/minigames/unit020c8a30.cpp",
+  "promoted_source": "src/minigames/unit020c8a30.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [

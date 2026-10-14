@@ -334,7 +334,7 @@ src/d_a_obj_km2_ami_bou.c	WEAK-refs-only	ov045				1		None		-
 src/d_a_obj_lava.c	S1-stores-rom-vptr	ov002			stores _ZTV11daObjLava_c	1		None	_ZTV11daObjLava_c	-
 src/d_a_obj_power_up_item.c	WEAK-refs-only	ov002				1		None		-
 src/daSCre_c_Spawn.c	S1-stores-rom-vptr	ov018			stores _ZTV8daSCre_c	1		None	_ZTV8daSCre_c	-
-src/d_a_star_star.c	WEAK-refs-only	ov002				1		None		-
+src/game/actors/d_a_star_star.c	WEAK-refs-only	ov002				1		None		-
 src/PrepareVsMode.c	WEAK-refs-only	arm9				1		None		-
 src/d_a_peach.c	WEAK-refs-only	ov085				1		None		-
 src/d_a_obj_pushblock.cpp	S1-stores-rom-vptr	ov002			stores _ZTV16daObjPushblock_c	1		None	_ZTV16daObjPushblock_c	-
@@ -418,7 +418,7 @@ src/ShowCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/daObjBSwdoor_c_classInit.c	S1-stores-rom-vptr	ov014			stores _ZTV10ShutterBob	1		None	_ZTV10ShutterBob/_ZTV13daObjSwdoor_c	-
 src/d_a_obj_tatefuda.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_obj_block_item_tag_blk_slvstar_tag.c	WEAK-refs-only	ov002				1		None		-
-src/d_a_star_silver_star.c	WEAK-refs-only	ov002				1		None		-
+src/game/actors/d_a_star_silver_star.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_menbo.c	S1-stores-rom-vptr	ov090			stores _ZTV9daMenbo_c	1		None	_ZTV9daMenbo_c	-
 src/d_a_obj_sm_lift.c	S1-stores-rom-vptr	ov018			stores _ZTV7SkiLift	1		None	_ZTV7SkiLift	-
 src/d_a_obj_hs_billboard_hs_b_star.c	WEAK-refs-only	ov031				1		None		-
@@ -453,7 +453,7 @@ src/d_a_linelift2_km2_susumu.c	WEAK-refs-only	ov091				1		None		-
 src/d_a_obj_emm_yuka.c	WEAK-refs-only	ov052				1		None		-
 src/Squasher_Spawn.c	WEAK-refs-only	ov023				1		None		-
 src/d_a_star_gate.c	WEAK-refs-only	ov100				1		None		-
-src/d_a_star_base.c	WEAK-refs-only	ov002				1		None		-
+src/game/actors/d_a_star_base.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_obj_switch_star_switch.c	WEAK-refs-only	ov002				1		None		-
 src/StartExitCharacterWipe.c	PURE-C	arm9				1		None		-
 src/StartFile.c	WEAK-refs-only	arm9				1		None		-

@@ -1,8 +1,8 @@
 {
   "id": "ov004/unit020b2c84",
   "module": "ov004",
-  "source": "src/actors/unit020b2c84.cpp",
-  "promoted_source": "src/actors/unit020b2c84.cpp",
+  "source": "src/minigames/unit020b2c84.cpp",
+  "promoted_source": "src/minigames/unit020b2c84.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [

@@ -43,11 +43,11 @@ src/unnamed/arm9/0200/func_02005110.c:
     .text start:0x02005110 end:0x02005324
 
 
-src/actors/dScBoot_c.cpp:
+src/game/stages/dScBoot_c.cpp:
     complete
     .text start:0x02005324 end:0x02005d94
 
-src/actors/dCapEnemy_c_arm9.cpp:
+src/runtime/actor/dCapEnemy_c_arm9.cpp:
     complete
     .text start:0x02005d94 end:0x0200651c
 
@@ -567,7 +567,7 @@ src/Initialise3dGraphics.cpp:
     complete
     .text start:0x0200f558 end:0x0200f658
 
-src/actors/dActor_c.cpp:
+src/runtime/actor/dActor_c.cpp:
     complete
     .text start:0x0200f658 end:0x020112c8
 
@@ -635,7 +635,7 @@ src/engine/save/SaveData.cpp:
     complete
     .text start:0x02013650 end:0x02013e80
 
-src/actors/ActorDerived.cpp:
+src/runtime/actor/ActorDerived.cpp:
     complete
     .text start:0x02013e80 end:0x02013f4c
 
@@ -1733,11 +1733,11 @@ src/unnamed/arm9/0202/func_02023544.c:
     complete
     .text start:0x02023544 end:0x02023598
 
-src/d_s_boot.cpp:
+src/game/stages/d_s_boot.cpp:
     complete
     .text start:0x02023598 end:0x02023688
 
-src/actors/dScStage_c.cpp:
+src/game/stages/dScStage_c.cpp:
     complete
     .text start:0x02023688 end:0x02029408
 
@@ -2157,7 +2157,7 @@ src/_Z26LoadOrUnloadObjectOverlaysPFviEi.cpp:
     complete
     .text start:0x0202df70 end:0x0202e088
 
-src/d_s_stage.cpp:
+src/game/stages/d_s_stage.cpp:
     complete
     .text start:0x0202e088 end:0x0202e118
 
@@ -2165,7 +2165,7 @@ src/unnamed/arm9/0202/func_0202e118.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 
-src/actors/dScene_c.cpp:
+src/game/stages/dScene_c.cpp:
     complete
     .text start:0x0202e140 end:0x0202ec9c
 
@@ -2315,7 +2315,7 @@ src/Message3.cpp:
     complete
     .text start:0x02031b84 end:0x02034a78
 
-src/actors/dScMB_c.cpp:
+src/game/stages/dScMB_c.cpp:
     complete
     .text start:0x02034a78 end:0x02035354
 
@@ -2460,7 +2460,7 @@ src/unnamed/arm9/0203/func_0203b394.c:
     complete
     .text start:0x0203b394 end:0x0203b3c0
 
-src/actors/ActorBase_SceneNode.cpp:
+src/runtime/actor/ActorBase_SceneNode.cpp:
     complete
     .text start:0x0203b3c0 end:0x0203b4dc
 
@@ -3368,7 +3368,7 @@ src/unnamed/arm9/0204/func_0204335c.c:
     complete
     .text start:0x0204335c end:0x020433b8
 
-src/actors/ActorBase.cpp:
+src/runtime/actor/ActorBase.cpp:
     complete
     .text start:0x020433b8 end:0x020440e8
 

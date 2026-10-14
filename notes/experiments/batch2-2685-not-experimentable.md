@@ -82,24 +82,24 @@
 
 ### Fields/names belong elsewhere, cross-TU callers (10, incl. partials)
 
-- `src/actors/daBombking_c.cpp:37` (Player/dCamera_c/data part) — Player+8/+0x6ce/+0xc8 on Player, dCamera_c+0x114/154 on dCamera_c, data_ov078_*/func_02035550 ownership.
-- `src/actors/daMip_c.cpp:75` (Player/data/S14 part) — Player+8/+0x6d9/+0x6ce on Player, data_ov085_* handles, S14 (matrix part DISPROVED via Extra11).
-- `src/actors/daMky_c.cpp:22` (Player/data/factory part) — Player+8/cap+0xc8 on those classes, data_ov030_* handles, factories in other files (matrix part DISPROVED via Extra10).
-- `src/actors/daSanbo_c.cpp:65` (Player/data/S14/veneer part) — Player+8 on Player, data_ov096_*/state records, S14, func_02038414 veneer naming.
+- `src/game/actors/d_a_bombking.cpp:37` (Player/dCamera_c/data part) — Player+8/+0x6ce/+0xc8 on Player, dCamera_c+0x114/154 on dCamera_c, data_ov078_*/func_02035550 ownership.
+- `src/game/actors/d_a_mip.cpp:75` (Player/data/S14 part) — Player+8/+0x6d9/+0x6ce on Player, data_ov085_* handles, S14 (matrix part DISPROVED via Extra11).
+- `src/game/actors/d_a_mky.cpp:22` (Player/data/factory part) — Player+8/cap+0xc8 on those classes, data_ov030_* handles, factories in other files (matrix part DISPROVED via Extra10).
+- `src/game/actors/d_a_sanbo.cpp:65` (Player/data/S14/veneer part) — Player+8 on Player, data_ov096_*/state records, S14, func_02038414 veneer naming.
 - `src/game/actors/d_a_obj_bk_dossunbar.cpp:19` — unk_0a4 is dActor_c X speed, not this class's field.
 - `src/game/actors/d_a_pg_mthr.cpp:37` — talk/message/func_0201267c names with callees, held-actor slots on Player.
 - `src/game/actors/d_a_wanwan.cpp:31` (Player part) — +0x6fb byte name belongs on Player (Stump part DISPROVED via Extra13).
 - `src/game/actors/d_a_wanwan.cpp:34` — Pos() not on this branch's dActor_c, needs shared-header decl (issue #2566).
 - `src/game/actors/d_a_s_cre.cpp:13` — Pos() leaf overlay, the shared dActor_c::Pos() boundary is issue #2566, not this branch.
-- `src/actors/daBakubaku_c.cpp:37` — water height + particle/sound helper names belong with callees.
+- `src/game/actors/d_a_bakubaku.cpp:37` — water height + particle/sound helper names belong with callees.
 - `src/game/actors/d_a_obj_bk_dossunbar.cpp:26` — ITCM flag/vec + callback/store names belong with those callees.
 
 ### Symbol-label ownership func_ov/extern-C + sinit-filled tables (5)
 
-- `src/actors/daMky_c.cpp:12` — func_ov030_* are address-derived repository labels, not preserved
+- `src/game/actors/d_a_mky.cpp:12` — func_ov030_* are address-derived repository labels, not preserved
   original names; a migration would rename source and config together, so this is
   reconstruction scope, not a compiler barrier. 0211124c is owned by another TU.
-- `src/actors/daBakubaku_c.cpp:9` — func_ov032_* are address-derived repository labels,
+- `src/game/actors/d_a_bakubaku.cpp:9` — func_ov032_* are address-derived repository labels,
   not preserved original names. 15 defined here, 14 take `daBakubaku_c *self`; 02111ff4's
   `(void *, void *)` shape leaves its owner open. Migration scope: this file + ov032 symbols.txt.
 - `src/game/actors/d_a_obj_bk_dossunbar.cpp:12` — extern-C state bodies + unowned PMF records, tables filled by sinit not this TU.
@@ -113,22 +113,22 @@
 
 ### Needs shared-header decl / sinit / layout recovery (4, incl. partials)
 
-- `src/actors/daBakubaku_c.cpp:32` — decl_common.h extern-int handles require shared-header change to type cleanly.
+- `src/game/actors/d_a_bakubaku.cpp:32` — decl_common.h extern-int handles require shared-header change to type cleanly.
 - `src/game/actors/d_a_wanwan.cpp:27` — SharedFilePtr has no recovered layout, decl_common char view required.
-- `src/actors/daObjLava_c.cpp:13` — wrapper plants default callback; direct New requires callback wiring, not a spelling.
+- `src/game/actors/d_a_obj_lava.cpp:13` — wrapper plants default callback; direct New requires callback wiring, not a spelling.
 - `src/game/actors/d_a_pg_mthr.cpp:34` — data_ov018_* handles + decl_common int[] + S14 text-only (packaging + shared-header).
 
 ### Generic wall 6az / S8/S15, no per-TU size predicted (5 partials + 2 full)
 
-- `src/actors/daBombking_c.cpp:37` (wall part) — BlendModelAnim/SetAnim/Spawn wall ref, no sizes; wall pinned by Exp1/2/5.
-- `src/actors/daMip_c.cpp:75` (wall part) — SetAnim wall ref, no sizes (see also Player/data/S14 above).
-- `src/actors/daMky_c.cpp:19` — SetAnim wall ref, no sizes.
-- `src/actors/daSanbo_c.cpp:65` (wall part) — Init/DropShadow/Spawn wall ref, no sizes.
-- `src/actors/daBakubaku_c.cpp:24` — SetAnim wall ref + dBgCh Undefined link claim (link needs full link, not match.py bytes).
+- `src/game/actors/d_a_bombking.cpp:37` (wall part) — BlendModelAnim/SetAnim/Spawn wall ref, no sizes; wall pinned by Exp1/2/5.
+- `src/game/actors/d_a_mip.cpp:75` (wall part) — SetAnim wall ref, no sizes (see also Player/data/S14 above).
+- `src/game/actors/d_a_mky.cpp:19` — SetAnim wall ref, no sizes.
+- `src/game/actors/d_a_sanbo.cpp:65` (wall part) — Init/DropShadow/Spawn wall ref, no sizes.
+- `src/game/actors/d_a_bakubaku.cpp:24` — SetAnim wall ref + dBgCh Undefined link claim (link needs full link, not match.py bytes).
 - `src/game/actors/d_a_wanwan.cpp:25` — Init/DropShadow wall ref, no sizes.
 - `src/game/actors/d_a_obj_bk_dossunbar.cpp:16` (IsClsn/NewSimple part) — wall ref, no sizes (SetFile pinned via Exp5).
 - `src/game/actors/d_a_pg_mthr.cpp:23` (TextureSequence/dBgCh part) — no sizes for TextureSequence; dBgCh Undefined needs full link (SetAnim/Init/DropShadow pinned).
-- `src/actors/daBakubaku_c.cpp:39` (gotos/register part) — no func/size predicted; dead-store representative pinned via Extra12.
+- `src/game/actors/d_a_bakubaku.cpp:39` (gotos/register part) — no func/size predicted; dead-store representative pinned via Extra12.
 - `src/game/actors/d_a_obj_bk_dossunbar.cpp:21` (sinit/S14 part) — sinit IDs + g_profile S14 packaging (ResourceDescriptor pinned via Exp4).
-- `src/actors/daBakubaku_c.cpp:35` — data_ov032_* handles + sinit IDs + state-table symbols packaging/sinit.
+- `src/game/actors/d_a_bakubaku.cpp:35` — data_ov032_* handles + sinit IDs + state-table symbols packaging/sinit.
 - `src/game/actors/d_a_wanwan.cpp:36` — data_ov014_* handles + sinit IDs + S14 packaging.

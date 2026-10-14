@@ -10201,7 +10201,7 @@
    "c_members": 2,
    "tier": 1,
    "tier_rank": 84,
-   "historical_snapshot_note": "Discovery snapshot before PR3200 promotion: the five-file list preserves historical paths and is not the current production owner list. Four methods at ov022:0x021115a8..0x02111688 are now owned by src/actors/daObjFl_Koma_D_c.cpp; the adjacent factory remains src/d_a_obj_fl_koma_d.c. Current enrollment is config/arm9/overlays/ov022/delinks.txt; factory/data continuation is issue3202."
+   "historical_snapshot_note": "Discovery snapshot before PR3200 promotion: the five-file list preserves historical paths and is not the current production owner list. Four methods at ov022:0x021115a8..0x02111688 are now owned by src/game/actors/d_a_obj_fl_koma_d.cpp; the adjacent factory remains src/d_a_obj_fl_koma_d.c. Current enrollment is config/arm9/overlays/ov022/delinks.txt; factory/data continuation is issue3202."
   },
   {
    "module": "ov036",
@@ -16770,9 +16770,9 @@
     "src/_ZN12daStarBase_c13InitResourcesEv.cpp",
     "src/_ZN8daStar_c13InitResourcesEv.cpp",
     "src/StarCamera_Spawn.cpp",
-    "src/d_a_star_base.c",
-    "src/d_a_star_silver_star.c",
-    "src/d_a_star_star.c"
+    "src/game/actors/d_a_star_base.c",
+    "src/game/actors/d_a_star_silver_star.c",
+    "src/game/actors/d_a_star_star.c"
    ],
    "ext_mix": {
     ".cpp": 35,
@@ -33257,7 +33257,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/d_s_star_sel.cpp"
+    "src/game/stages/d_s_star_sel.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
@@ -34266,7 +34266,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/d_s_mg_jump.cpp"
+    "src/minigames/d_s_mg_jump.cpp"
    ],
    "ext_mix": {
     ".cpp": 1

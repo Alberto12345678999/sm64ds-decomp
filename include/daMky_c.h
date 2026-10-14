@@ -30,7 +30,7 @@
  * daMky_c_classInit_MONKEY_THIEF/_MONKEY_STAR call _ZN10dBgCh_ActrC1Ev at that
  * offset, so it is the real 0x1bc-byte member (0x194..0x350); the 0x30
  * bytes from 0x350..0x380 hold the matrix copied by func_ov030_02112094
- * in src/actors/daMky_c.cpp. Its original member name is unknown.
+ * in src/game/actors/d_a_mky.cpp. Its original member name is unknown.
  *
  * THE VTABLE was diffed slot by slot against _ZTV8dActor_c. daMky_c overrides
  * slot 0 (InitResources), slot 3 (CleanupResources), slot 6 (Behavior),
@@ -38,7 +38,7 @@
  * is one `bx lr` -- the override exists only to occupy the slot), 18
  * (OnYoshiTryEat) and 19 (OnTurnIntoEgg). Every other slot holds the base's
  * own word and is inherited, so it is deliberately not redeclared here.
- * All seven are defined in src/actors/daMky_c.cpp.
+ * All seven are defined in src/game/actors/d_a_mky.cpp.
  */
 struct daMky_c : dActor_c {
     u8  pad_0d0[0x4];
@@ -47,15 +47,15 @@ struct daMky_c : dActor_c {
     ModelAnim mModelAnim;            /* 0x0d4 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x138.
-       [src/actors/daMky_c.cpp: daMky_c::~daMky_c] */
+       [src/game/actors/d_a_mky.cpp: daMky_c::~daMky_c] */
     dExtShadowModel_c mShadowModel;            /* 0x138 */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x160.
-       [src/actors/daMky_c.cpp: daMky_c::~daMky_c] */
+       [src/game/actors/d_a_mky.cpp: daMky_c::~daMky_c] */
     dCcAc_c mdCcAc_c;            /* 0x160 */
     /* dBgCh_Actr member, named by daMky_c_classInit_MONKEY_THIEF/_MONKEY_STAR's own
        C1 call and the class's own destructor's D1 call at +0x194.
-       [src/actors/daMky_c.cpp: daMky_c_classInit_MONKEY_THIEF,
+       [src/game/actors/d_a_mky.cpp: daMky_c_classInit_MONKEY_THIEF,
         daMky_c_classInit_MONKEY_STAR, daMky_c::~daMky_c] */
     dBgCh_Actr mWithMeshClsn;            /* 0x194 */
     /* 02112094 copies IDENTITY-rotated model matrix here and stores
@@ -67,7 +67,7 @@ struct daMky_c : dActor_c {
     s32 mPerchPosZ;         /* 0x388 */
     /* Copy of mPosX/Y/Z seeded in InitResources. func_ov030_02111dd0 updates
        it after a ground check; func_ov030_02111734 also resets it.
-       [src/actors/daMky_c.cpp: InitResources, func_ov030_02111dd0,
+       [src/game/actors/d_a_mky.cpp: InitResources, func_ov030_02111dd0,
         func_ov030_02111734] */
     s32 mSpawnPosX;            /* 0x38c */
     s32 mSpawnPosY;            /* 0x390 */
@@ -86,7 +86,7 @@ struct daMky_c : dActor_c {
        (mCapPlayerNo << 8) | 2 as its spawn parameter, keeps the spawned actor's
        fBase_c::uniqueID in mCapUniqueID, and latches mHasSpawnedCap so it never
        spawns a second one. Behavior runs the same block again from raw offsets.
-       [src/actors/daMky_c.cpp: InitResources, Behavior] */
+       [src/game/actors/d_a_mky.cpp: InitResources, Behavior] */
     s32 mCapUniqueID;            /* 0x3ac */
     u32 mCapPlayerNo;            /* 0x3b0 */
     s32 mState;             /* 0x3b4 -- EnterState0..10 each write 0..10 */
@@ -104,7 +104,7 @@ struct daMky_c : dActor_c {
        which installs descriptor N at +0x3a4 and calls its first
        pointer-to-member; each of these writes its own N to mState.  The
        class name and the numbers are the cartridge's; the word
-       "EnterState" is coined.  See src/actors/daMky_c.cpp. */
+       "EnterState" is coined.  See src/game/actors/d_a_mky.cpp. */
     s32  EnterState0();        /* 0x02114124 -- PMF record 20 of 22 */
     s32  EnterState1();        /* 0x02113fd8 -- PMF record 5 of 22 */
     s32  EnterState2();        /* 0x02113be8 -- PMF record 7 of 22 */

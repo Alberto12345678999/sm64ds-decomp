@@ -333,7 +333,7 @@ the median slot touches six classes. **Slot 22 has no descendant overrides at al
 base declaration and base rename only, the smallest commit in the campaign.
 
 Four classes are intact TUs, so at every slot their override is renamed *inside*
-`src/actors/<class>.cpp` rather than through a standalone source file:
+`src/game/<dir>/<file>.cpp` rather than through a standalone source file:
 `dScMgBSC_c`, `dScMgCard_c`, `dScMgMCarlo_c`, `dScMgMCarlo2_c`.
 
 ## What it unlocks

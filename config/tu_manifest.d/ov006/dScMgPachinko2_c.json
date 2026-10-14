@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgPachinko2_c",
   "module": "ov006",
-  "source": "src/actors/dScMgPachinko2_c.cpp",
-  "promoted_source": "src/actors/dScMgPachinko2_c.cpp",
+  "source": "src/minigames/dScMgPachinko2_c.cpp",
+  "promoted_source": "src/minigames/dScMgPachinko2_c.cpp",
   "status": "promoted",
   "production_mode": "intact-object",
   "boundary_confidence": "medium",

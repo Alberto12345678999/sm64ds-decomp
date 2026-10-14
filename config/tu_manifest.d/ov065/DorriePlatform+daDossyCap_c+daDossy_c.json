@@ -256,7 +256,7 @@
   ],
   "init": [
     {
-      "symbol": "__sinit_daDossy_c.cpp",
+      "symbol": "__sinit_d_a_dossy.cpp",
       "address": "0x0211c440",
       "size": "0x220",
       "binding": "STB_GLOBAL",
@@ -265,7 +265,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_daDossy_c.cpp",
+      "symbol": ".p__sinit_d_a_dossy.cpp",
       "address": "0x0211cae8",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -1062,7 +1062,7 @@
       "source": "0x0211cae8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_daDossy_c.cpp",
+      "symbol": "__sinit_d_a_dossy.cpp",
       "addend": 0,
       "target_module": "ov065",
       "target_address": "0x0211c440"
@@ -1151,13 +1151,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_daDossy_c.cpp",
+      "symbol": "__sinit_d_a_dossy.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated static initializer is emitted local by mwcc but must be exposed as the configured .init destination at 0x0211c440"
     },
     {
-      "symbol": ".p__sinit_daDossy_c.cpp",
+      "symbol": ".p__sinit_d_a_dossy.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "compiler-generated ctor-table object is emitted local by mwcc but must be exposed as the configured .ctor destination at 0x0211cae8"
@@ -1628,8 +1628,8 @@
   },
   "id": "ov065/DorriePlatform+daDossyCap_c+daDossy_c",
   "module": "ov065",
-  "source": "src/actors/daDossy_c.cpp",
-  "promoted_source": "src/actors/daDossy_c.cpp",
+  "source": "src/game/actors/d_a_dossy.cpp",
+  "promoted_source": "src/game/actors/d_a_dossy.cpp",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2117f40..0x21196d8, 29 function(s), from build/tu_map.json (tools/tu_map.py)",

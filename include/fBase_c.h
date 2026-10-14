@@ -12,7 +12,7 @@
  * destructor is at 16/17, NOT 0/1, and vtable+0x40 (which AfterCleanupResources
  * dispatches through) is that D1 destructor, not OnPendingDestroy at slot 12.
  *
- * InitResources is the key function defined in src/actors/ActorBase.cpp.
+ * InitResources is the key function defined in src/runtime/actor/ActorBase.cpp.
  * Its native definition emits the class RTTI, name and complete vtable.
  * The ActorBase manifest verifies that metadata before externalizing it to
  * the existing canonical ROM storage. Keep this declaration in slot 0:
@@ -46,7 +46,7 @@ extern "C" void _ZN6Memory10DeallocateEPvP4Heap(void *, void *);
 extern "C" void *data_020a0eac;
 /* ROM body of fBase_c::operator new(unsigned) — mangled _ZN7fBase_cnwEj.
    CW will not accept that signature as an in-class operator new (first
-   parameter is not size_t). Defined in src/actors/ActorBase.cpp. */
+   parameter is not size_t). Defined in src/runtime/actor/ActorBase.cpp. */
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct fBase_c {

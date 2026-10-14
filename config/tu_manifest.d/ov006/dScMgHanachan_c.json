@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgHanachan_c",
   "module": "ov006",
-  "source": "src/actors/dScMgHanachan_c.cpp",
-  "promoted_source": "src/actors/dScMgHanachan_c.cpp",
+  "source": "src/minigames/dScMgHanachan_c.cpp",
+  "promoted_source": "src/minigames/dScMgHanachan_c.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "high",
@@ -16,7 +16,7 @@
     "DESTRUCTOR ORDER. The cartridge has D1 at 0x020ea280 below D0 at 0x020ea2c8 and no D2 home. One out-of-line ~dScMgHanachan_c() under #pragma defer_codegen off emits D1 then D0 in that order; the D2 mwccarm also emits is a compiler_only_output deadstrip row.",
     "KEY FUNCTION. The out-of-line destructor is the class's first declared virtual, so this TU now emits _ZTV/_ZTI/_ZTS15dScMgHanachan_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c, dScMgBase_c). Each is a deadstrip-data row with its canonical symbols.txt home; ov006 .data stays ROM-owned, so the TU stays text-only. func_ov006_020ea914's point type Vec2_ea914 also emits a 4-byte vague-linkage D1 with no cartridge copy; it is a deadstrip row.",
     "SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off; tubuild verify reports all 61 in ROM-ascending emission order.",
-    "OUTPUT PATH: src/actors/dScMgHanachan_c.cpp, unchanged.",
+    "OUTPUT PATH: src/minigames/dScMgHanachan_c.cpp, unchanged.",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
