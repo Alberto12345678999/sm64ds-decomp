@@ -861,7 +861,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov006",
       "canonical_address": "0x0213bc64",
-      "reason": "The direct base's type_info, dragged in as the __si_class_type_info base pointer of _ZTI15dScMgSnowball_c. ROM home ov006:0x0213bc64; dScMgSingle3DBase_c's own TU (src/minigames/d_s_mg_single3_d_base.cpp) owns it."
+      "reason": "The direct base's type_info, dragged in as the __si_class_type_info base pointer of _ZTI15dScMgSnowball_c. ROM home ov006:0x0213bc64; dScMgSingle3DBase_c's own TU (src/minigames/d_s_mg_single3d_base.cpp) owns it."
     },
     {
       "symbol": "_ZTS19dScMgSingle3DBase_c",

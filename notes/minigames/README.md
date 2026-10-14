@@ -141,8 +141,8 @@ fBase_c > dBase_c > dScene_c
 
 **The bases:**
 - `src/minigames/d_s_mg_base.cpp` (plus 26 `dScMgBase_c` shards)
-- `src/minigames/d_s_mg_single3_d_base.cpp`
-- `src/minigames/d_s_mg_d3_d_base.cpp`
+- `src/minigames/d_s_mg_single3d_base.cpp`
+- `src/minigames/d_s_mg_d3d_base.cpp`
 
 **The shared ov004 runtime:**
 - `src/minigames/d_mg_ps_opt.cpp`

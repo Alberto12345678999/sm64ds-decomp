@@ -16,7 +16,7 @@
  *   file-id table data_ov006_0213e42c name no struct this TU can see.
  *   data_ov004_020beb74 keeps the int[] spelling: the typed
  *   dScMgBase_c::graphCallback_c form matches (9/9 still MATCH) but trips
- *   the decl ratchet against src/minigames/d_s_mg_d3_d_base.cpp's banked int[],
+ *   the decl ratchet against src/minigames/d_s_mg_d3d_base.cpp's banked int[],
  *   and that file is outside this job's area.
  */
 

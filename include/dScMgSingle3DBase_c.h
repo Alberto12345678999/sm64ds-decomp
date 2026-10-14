@@ -20,7 +20,7 @@ struct dScMgSingle3DBase_c : dScMgBase_c {
        _ZN19dScMgSingle3DBase_cD2Ev, so an out-of-line body leaves each child
        an undefined external (measured on dScMgMemory_c). Being inline, it is
        not the key function; AfterInitResources is, which places the vtable
-       and typeinfo in src/minigames/d_s_mg_single3_d_base.cpp. */
+       and typeinfo in src/minigames/d_s_mg_single3d_base.cpp. */
     virtual ~dScMgSingle3DBase_c() {}
 
     /* Overrides of dScMgBase_c virtuals, in vtable order; dScMgBase_c has

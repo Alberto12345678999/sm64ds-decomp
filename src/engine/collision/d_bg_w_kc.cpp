@@ -6,7 +6,7 @@
  * func_02039794 classifies the slope band, func_020397b8 tests wall facing,
  * func_020397dc guards a near-zero divisor. The destructor is defined
  * first (D2, then D0, then D1) and the constructor after it. The
- * DetectClsn triple and the geometry slots live in dBgW_Kc_itcm.cpp.
+ * DetectClsn triple and the geometry slots live in d_bg_w_kc_itcm.cpp.
  */
 /* dBgW_Kc: static-mesh collider, the base KcMbg and KcMbgSclY share.
  * Type name 0x020993bc, typeinfo 0x020993c8, vtable 0x020993dc.
@@ -15,7 +15,7 @@
 #include "dBgW.h"
 
 extern "C" {
-/* Shared base init, defined in its own TU (src/engine/collision/dBgW.cpp). */
+/* Shared base init, defined in its own TU (src/engine/collision/d_bg_w.cpp). */
 void func_02039624(dBgW *self);
 }
 

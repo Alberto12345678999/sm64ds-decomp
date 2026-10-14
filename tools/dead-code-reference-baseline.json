@@ -1512,7 +1512,7 @@
   "src/minigames/d_s_mg_cup.cpp": [
    "src/_ZN15daObjMarioCap_c8BehaviorEv.cpp"
   ],
-  "src/minigames/d_s_mg_d3_d_base.cpp": [
+  "src/minigames/d_s_mg_d3d_base.cpp": [
    "src/Sound_PlayBank1Panned.cpp",
    "src/_ZN14dScMgD3DBase_c11AfterRenderEj.cpp",
    "src/_ZN14dScMgD3DBase_c12BeforeRenderEv.cpp",
@@ -1782,7 +1782,7 @@
    "src/func_ov006_021095ac.c",
    "src/func_ov006_02109aa0.c"
   ],
-  "src/minigames/d_s_mg_single3_d_base.cpp": [
+  "src/minigames/d_s_mg_single3d_base.cpp": [
    "src/_ZN19dScMgSingle3DBase_c12BeforeRenderEv.cpp",
    "src/_ZN19dScMgSingle3DBase_c14BeforeBehaviorEv.cpp",
    "src/_ZN19dScMgSingle3DBase_c18AfterInitResourcesEj.cpp",
@@ -1971,7 +1971,7 @@
    "src/func_ov006_02124228.c",
    "src/func_ov006_021245a8.c"
   ],
-  "src/runtime/actor/dBgActor_c.cpp": [
+  "src/runtime/actor/d_bg_actor.cpp": [
    "src/_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_.cpp",
    "src/_ZN10dBgActor_c14KillByMegaCharER6Player.cpp",
    "src/_ZN10dBgActor_c19UpdateClsnPosAndRotEv.cpp",

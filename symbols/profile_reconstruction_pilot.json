@@ -1261,7 +1261,7 @@
         }
       ],
       "current_factory_name": "daPly_c_classInit",
-      "current_factory_file": "src/game/actors/d_a_ply.cpp",
+      "current_factory_file": "src/game/player/d_a_ply.cpp",
       "proposed_factory_name": "daPly_c_classInit",
       "factory_shape": "new_plus_ctor_call",
       "factory_shape_evidence": "operator new size is exact; final vptr recovered through ov002:_ZN6PlayerC1Ev",

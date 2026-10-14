@@ -2,7 +2,7 @@
 
 - tested_commit: 2546f0ae4 (cleanup-mgjump3-gameover at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/minigames/d_mg_jump3_d_mario.cpp:776-778` keeps the `int t` temp
+- claim: `src/minigames/d_mg_jump3d_mario.cpp:776-778` keeps the `int t` temp
   because folding the comparison into the `if` rewrites the whole
   0x16c-byte function.
 - attempted_change (scratch-applied, then reverted):
@@ -26,7 +26,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/minigames/d_mg_jump3_d_mario.cpp \
+.venv/bin/python tools/match.py --c src/minigames/d_mg_jump3d_mario.cpp \
   --func func_ov006_020c87d0 --addr 0x020c87d0 --size 0x16c \
   --version 2004/b56 --module ov006 --strict-relocs --brief
 ```

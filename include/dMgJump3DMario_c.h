@@ -10,7 +10,7 @@
  * dMgJump3DMario_c : dMg3DHeyhoObjAdapter_c. The base is abstract (all three
  * vtable slots null) and this class is its only derived class. The destructor
  * is not virtual, so the key function is the first declared virtual,
- * Unk_020c76d8, and src/minigames/d_mg_jump3_d_mario.cpp emits the vtable.
+ * Unk_020c76d8, and src/minigames/d_mg_jump3d_mario.cpp emits the vtable.
  *
  * There is no factory: the owning scenes hold `dMgJump3DMario_c mPlayers[3]`
  * (dScMgJump_c +0x506c, dScMgJump2_c +0x500c) and array-construct it. The base

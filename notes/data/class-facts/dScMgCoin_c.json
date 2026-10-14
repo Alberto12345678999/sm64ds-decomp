@@ -1667,7 +1667,7 @@
       },
       {
         "class": "dScMgD3DBase_c",
-        "output": "src/minigames/d_s_mg_d3_d_base.cpp"
+        "output": "src/minigames/d_s_mg_d3d_base.cpp"
       },
       {
         "class": "dScMgHanachan_c",
@@ -1700,7 +1700,7 @@
       "dScMgMCarlo2_c+MgPairAGoneAndOn -> src/minigames/d_s_mg_m_carlo2.cpp",
       "dScMgMCarlo_c -> src/minigames/d_s_mg_m_carlo.cpp",
       "dScMgMemory_c -> src/minigames/d_s_mg_memory.cpp",
-      "dScMgSingle3DBase_c -> src/minigames/d_s_mg_single3_d_base.cpp",
+      "dScMgSingle3DBase_c -> src/minigames/d_s_mg_single3d_base.cpp",
       "dScMgTrampoline2_c -> src/minigames/d_s_mg_trampoline2.cpp",
       "dScMgTrampoline_c+MgTrampolineTime -> src/minigames/d_s_mg_trampoline.cpp"
     ],

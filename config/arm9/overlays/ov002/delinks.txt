@@ -4,7 +4,7 @@
     .ctor       start:0x021080d0 end:0x02108138 kind:rodata align:4
     .data       start:0x02108140 end:0x0210d9a0 kind:data align:32
     .bss        start:0x0210d9a0 end:0x021111a0 kind:bss align:32
-src/runtime/actor/dEnemyBase_c.cpp:
+src/runtime/actor/d_enemy_base.cpp:
     complete
     .text start:0x020ad660 end:0x020aedbc
     .init start:0x02100938 end:0x02100adc
@@ -12,7 +12,7 @@ src/runtime/actor/dEnemyBase_c.cpp:
     .data start:0x02108140 end:0x021081c0
     .bss start:0x0210db80 end:0x0210dc00
 
-src/runtime/actor/dCapEnemy_c.cpp:
+src/runtime/actor/d_cap_enemy.cpp:
     complete
     .text start:0x020aedbc end:0x020aee40
 
@@ -236,7 +236,7 @@ src/unnamed/ov002/func_ov002_020e6bb0.c:
     complete
     .text start:0x020e6bb0 end:0x020e6c0c
 
-src/game/actors/d_a_ply.cpp:
+src/game/player/d_a_ply.cpp:
     complete
     .text start:0x020e6c0c end:0x020e6c40
 
@@ -280,11 +280,11 @@ src/game/actors/d_a_yegg.cpp:
     .data start:0x0210ad38 end:0x0210ad78
     .bss start:0x02110a5c end:0x02110a9c
 
-src/runtime/actor/dBgActor_c.cpp:
+src/runtime/actor/d_bg_actor.cpp:
     complete
     .text start:0x020ee42c end:0x020ef320
 
-src/runtime/actor/dPathLiftActor_c.cpp:
+src/runtime/actor/d_path_lift_actor.cpp:
     complete
     .text start:0x020ef320 end:0x020effb8
     .init start:0x021071f4 end:0x02107298
@@ -316,7 +316,7 @@ src/game/actors/d_a_obj_number.cpp:
     complete
     .text start:0x020f0894 end:0x020f0dd0
 
-src/game/actors/d_a_obj1_up_logo.cpp:
+src/game/actors/d_a_obj1up_logo.cpp:
     complete
     .text start:0x020f0dd0 end:0x020f11b0
     .init start:0x02107298 end:0x02107304
@@ -363,19 +363,19 @@ src/game/actors/d_a_sound_obj.cpp:
     complete
     .text start:0x020f934c end:0x020f975c
 
-src/ui/hud/dMap_c.cpp:
+src/ui/hud/d_map.cpp:
     complete
     .text start:0x020f975c end:0x020fb8f8
 
-src/ui/hud/dMeter_c.cpp:
+src/ui/hud/d_meter.cpp:
     complete
     .text start:0x020fb8f8 end:0x020fe190
 
-src/stage/LevelObjects.cpp:
+src/game/stages/LevelObjects.cpp:
     complete
     .text start:0x020fe190 end:0x020fea4c
 
-src/runtime/graphics/dM3dGLin.cpp:
+src/engine/collision/d_m3d_g_lin.cpp:
     complete
     .text start:0x020fea4c end:0x020feabc
 

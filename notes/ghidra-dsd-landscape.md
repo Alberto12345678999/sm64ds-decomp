@@ -492,7 +492,7 @@ All fifteen call sites live in overlays whose unambiguous calls go **exclusively
 [ov002](../config/arm9/overlays/ov002/symbols.txt) — [ov062](../config/arm9/overlays/ov062/symbols.txt) 66/0, [ov063](../config/arm9/overlays/ov063/symbols.txt) 42/0, [ov064](../config/arm9/overlays/ov064/symbols.txt) 69/0, [ov065](../config/arm9/overlays/ov065/symbols.txt) 93/0, [ov081](../config/arm9/overlays/ov081/symbols.txt) 42/0, [ov084](../config/arm9/overlays/ov084/symbols.txt) 65/0, [ov090](../config/arm9/overlays/ov090/symbols.txt) 29/0, [ov100](../config/arm9/overlays/ov100/symbols.txt) 53/0, [ov102](../config/arm9/overlays/ov102/symbols.txt) 86/0. Twelve callers write the phantom `func_020ada40`. One does not: **[func_ov081_02123910](../config/arm9/overlays/ov081/symbols.txt)** names `_ZN5Enemy20KillByInvincibleCharERK10Vector3_16R6Player`, which is the **[ov004](../config/arm9/overlays/ov004/symbols.txt) symbol** — while [ov081](../config/arm9/overlays/ov081/symbols.txt)'s own evidence is 42 calls to [ov002](../config/arm9/overlays/ov002/symbols.txt) and zero to [ov004](../config/arm9/overlays/ov004/symbols.txt). The file byte-matches, because both candidates sit at the same address.
 
 Two readings, and choosing between them is a human call:
-- the *reference* is wrong and should point at [ov002](../config/arm9/overlays/ov002/symbols.txt)'s [func_ov002_020ada40](../config/arm9/overlays/ov002/symbols.txt) (size 0x100, part of [Enemy](../src/runtime/actor/dEnemyBase_c.cpp), ROM ordinal 1); or
+- the *reference* is wrong and should point at [ov002](../config/arm9/overlays/ov002/symbols.txt)'s [func_ov002_020ada40](../config/arm9/overlays/ov002/symbols.txt) (size 0x100, part of [Enemy](../src/runtime/actor/d_enemy_base.cpp), ROM ordinal 1); or
 - [ov002](../config/arm9/overlays/ov002/symbols.txt) and [ov004](../config/arm9/overlays/ov004/symbols.txt) are two variants of the same enemy-base code, the *name* is right but
   attached to the [ov004](../config/arm9/overlays/ov004/symbols.txt) copy, and [ov002](../config/arm9/overlays/ov002/symbols.txt)'s copy should carry the name too.
 
@@ -531,7 +531,7 @@ analyzeHeadless C:\tools\ghidra_proj sm64ds -process sm64.nds -noanalysis `
 **G9.1 — The sync is essentially complete.** [high] `ListBlocks` reports **486 memory
 blocks** and **11,382 functions** against the 11,394 `kind:function` symbols in the dsd
 config — a 99.9% import. Overlays land in their own address spaces, and the ambiguity of
-§5 is directly visible in the memory map: `arm9_ov002::`[020ad660](../src/runtime/actor/dEnemyBase_c.cpp) and
+§5 is directly visible in the memory map: `arm9_ov002::`[020ad660](../src/runtime/actor/d_enemy_base.cpp) and
 `arm9_ov003::`[020ad660](../config/arm9/overlays/ov003/symbols.txt) both exist.
 
 **G9.2 — Names: transformed. Zero `FUN_xxxxxxxx` in any of the three drafts.** [high]

@@ -356,7 +356,7 @@
 
   "sibling_oracles": {
     "queue_row": "dScMgSingle3DBase_c",
-    "why_that_row_is_a_weak_oracle": "dScMgSingle3DBase_c (config/tu_manifest.d/ov006/dScMgSingle3DBase_c.json, src/minigames/d_s_mg_single3_d_base.cpp) is an OLD-convention promotion under src/minigames/, does not use `#pragma defer_codegen off`, has a 5-class chain and 11 compiler_only_output rows, and its class hangs off dScMgBase_c. This class shares none of that.",
+    "why_that_row_is_a_weak_oracle": "dScMgSingle3DBase_c (config/tu_manifest.d/ov006/dScMgSingle3DBase_c.json, src/minigames/d_s_mg_single3d_base.cpp) is an OLD-convention promotion under src/minigames/, does not use `#pragma defer_codegen off`, has a 5-class chain and 11 compiler_only_output rows, and its class hangs off dScMgBase_c. This class shares none of that.",
     "better_oracles": [
       "config/tu_manifest.d/ov006/dScMgCurling2_c.json + src/minigames/d_s_mg_curling2.cpp (#2362) -- the closest structural match: unowned-.data PMF constants that dictate an in-commit rename, an out-of-line destructor with a homeless D2, `#pragma defer_codegen off`, and a manifest that spells out the extent argument for a vtable.",
       "config/tu_manifest.d/ov006/dScMgMemory2_c.json + src/minigames/d_s_mg_memory2.cpp -- the 51-of-52 conversion, the proof stage 3b works end to end.",

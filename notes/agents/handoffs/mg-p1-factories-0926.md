@@ -28,7 +28,7 @@ Each `new` form was compiled with `tools/match.py`'s pinned `2004/b56` flags (C+
 
 | File | Result | Size | First differing word | What differs |
 |---|---|---|---|---|
-| `src/minigames/d_mg3_d_esp_anim_set.cpp` (formerly `d_s_mg3_d_esp`) | kept | 0x50 against 0x90 | `+0x04` `ldr r0, [pc, #0x64]` against `#0x34` | stops after the `_ZTV12dScMg3DEsp_c` store: no `Model` constructors at 0x4f38 and 0x4f88, none for `dMg3DEspModel_c` at 0x4fd8 or `TextureTransformer` at 0x51f4 |
+| `src/minigames/d_mg3d_esp_anim_set.cpp` (formerly `d_s_mg3_d_esp`) | kept | 0x50 against 0x90 | `+0x04` `ldr r0, [pc, #0x64]` against `#0x34` | stops after the `_ZTV12dScMg3DEsp_c` store: no `Model` constructors at 0x4f38 and 0x4f88, none for `dMg3DEspModel_c` at 0x4fd8 or `TextureTransformer` at 0x51f4 |
 | `src/minigames/d_s_mg_bomroom.cpp` | applied | 0x30, identical | none | linked vptr word `0x0213bbb4`, as before |
 | `d_s_mg_coin.cpp`, since folded into `src/minigames/d_s_mg_coin.cpp` | kept | 0x34 against 0x48 | `+0x04` `ldr r0, [pc, #0x30]` against `#0x20` | stops after the vptr store, without `func_0203b9b4(this + 0x51c4, 1)` |
 | `src/minigames/d_s_mg_curling.cpp` | applied | 0x34, identical | none | linked vptr word `0x0213c304`, as before |

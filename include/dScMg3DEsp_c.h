@@ -13,7 +13,7 @@
  * raw storage until the factory and the destructor change together.
  *
  * The destructor is the key function, defined out of line in
- * src/minigames/d_mg3_d_esp_anim_set.cpp, which emits both D1 and D0.
+ * src/minigames/d_mg3d_esp_anim_set.cpp, which emits both D1 and D0.
  * dScMgBase_c's operator delete serves D0.
  */
 #ifndef DSCMG3DESP_C_H

@@ -6713,7 +6713,7 @@ reproduced in a 15-instruction toy, `_abwork/crkh/toyprobe.py`:
   five-instruction return block that keeps its branch:
       src/unnamed/arm9/0206/func_02062d10.cpp       `bne` over an arm containing `cmp r0,#0 / beq`
       func_ov006_020e83bc         `bge` over an arm containing `cmp r0,#0 / movgt / strgt`
-                                  (now in src/minigames/d_mg3_d_esp_anim_set.cpp)
+                                  (now in src/minigames/d_mg3d_esp_anim_set.cpp)
   Both are the final `else` of an if / else-if / else chain, so the jumped-over arm is the
   else-if body and contains that arm's own test. The multi-predecessor precedents 6u names
   (src/unnamed/ov007/func_ov007_020b1f2c.c, func_ov002_020d85fc in src/game/player/Player.cpp) are `&&` chains.
