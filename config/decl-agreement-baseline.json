@@ -12660,6 +12660,9 @@
     "data_0209f2a0": {
       "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:unsigned char"
+      ],
+      "src/game/stages/d_s_stage_methods.cpp": [
+        "return:unsigned char []"
       ]
     },
     "data_0209f2bc": {
