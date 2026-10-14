@@ -21,6 +21,11 @@
  *   7  same handler as 6, tossed straight up
  * FIRE_PARAM packs variant in bits 0..2 and the sub-variant in bits 4..5.
  *
+ * Actor creation, lookup, movement and destruction use the existing native
+ * interfaces, as do the ground predicate and Player::Burn. Spawn still views
+ * the base actor's contiguous scalar position/angle fields as vectors; that
+ * inherited flat-field layout is not reconstructed here.
+ *
  * leftovers:
  * - func_ov060_02116740, 02117624 and 021172c8 stay free functions with
  *   the char * / unsigned char * decl_common.h declares. Their bodies
@@ -40,8 +45,10 @@
  *   Matrix4x3 member there.
  * - Sound 0x180, player param1 == 3, and the particle kind pairs are
  *   named only by the use-site enums below.
- * - data_ov060_0211af74 / 0211afb4 / 0211934c / 02119358 / 02119364 and
- *   g_profile_KOOPAFIRE are not this TU's data.
+ * - data_ov060_0211af74 and data_ov060_0211afb4 are this TU's owned
+ *   eight-entry InitResources and Behavior PMF tables, respectively.
+ *   data_ov060_0211934c / 02119358 / 02119364 and g_profile_KOOPAFIRE
+ *   remain external to this TU.
  */
 
 #include "daKpaFire_c.h"
@@ -109,26 +116,19 @@ enum { SOUND_ID_MOUTH = 0x180 };
 extern "C" {
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
-extern void* _ZN8dActor_c13ClosestPlayerEv(void* self);
 extern short Vec3_HorzAngle(const struct Vector3* a, const struct Vector3* b);
-extern char* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int a, int b, const void *pos, const void *rot, int e, int f);
-extern void _ZN7fBase_c18MarkForDestructionEv(void* a);
 extern "C" void func_ov060_02116518(daKpaFire_c *self, u32 kind, int a2, int a3);
 extern Fix12i Vec3_HorzDist(const Vector3* a, const Vector3* b);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650[];
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(char* self, void* c);
 extern void func_ov060_0211712c(daKpaFire_c *p);
 extern int func_ov060_021172c8(unsigned char *p, unsigned int n);
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *c);
 extern int data_ov060_02119358[];
 extern int data_ov060_0211934c[];
 extern short data_02082214[];
 extern void func_ov060_021172e0(daKpaFire_c *self);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
-void* _ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void* prev);
 int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
-extern char* _ZN8dActor_c10FindWithIDEj(unsigned int id);
 /* local extern: the header method is not this symbol's spelling here. */
 extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *anim);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32 d);
@@ -318,9 +318,9 @@ void func_ov060_0211747c(daKpaFire_c *self)
     int b;
     int *p;
 
-    o = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(self->mKpaUniqueID);
+    o = (daKpa_c *)dActor_c::FindWithID(self->mKpaUniqueID);
     if (o == 0) {
-        _ZN7fBase_c18MarkForDestructionEv(self);
+        self->MarkForDestruction();
         return;
     }
 
@@ -364,8 +364,10 @@ void func_ov060_0211747c(daKpaFire_c *self)
     if (n & 1)
         return;
 
-    _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(5, 0), &self->mPosX, &self->mPrevAngleX,
-                                                 self->mAreaId, -1);
+    dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(5, 0),
+        *reinterpret_cast<const Vector3*>(&self->mPosX),
+        reinterpret_cast<const Vector3_16*>(&self->mPrevAngleX),
+        self->mAreaId, -1);
 }
 }
 
@@ -385,17 +387,17 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
 {
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
         PARTICLE_END_PUFF, *(Fix12i*)&self->mPosX, *(Fix12i*)&self->mPosY, *(Fix12i*)&self->mPosZ);
-    _ZN7fBase_c18MarkForDestructionEv(self);
+    self->MarkForDestruction();
 
     if ((((u32)RandomIntInternal(&data_0209e650[0]) >> 0x10) % 10) >= 2) {
         return;
     }
 
     {
-        void* p = _ZN8dActor_c13ClosestPlayerEv(self);
+        Player* p = self->ClosestPlayer();
         daKpa_c* sb;
-        if (p != 0 && ((dActor_c*)p)->param1 == 3 &&
-            (sb = (daKpa_c*)_ZN8dActor_c15FindWithActorIDEjPS_(ACTOR_KOOPA, 0)) != 0 &&
+        if (p != 0 && p->param1 == 3 &&
+            (sb = (daKpa_c*)dActor_c::FindWithActorID(ACTOR_KOOPA, 0)) != 0 &&
             sb->mCapActorAlive == 0) {
             int c;
             int idx;
@@ -409,9 +411,10 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
                 idx = ((u32)RandomIntInternal(&data_0209e650[0]) >> 0x10) % 3;
             } while ((mask & (1 << idx)) == 0);
             {
-                void* r = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-                    ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb, &self->mPosX,
-                    &self->mAngleX, self->mAreaId, -1);
+                dActor_c* r = dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
+                    *reinterpret_cast<const Vector3*>(&self->mPosX),
+                    reinterpret_cast<const Vector3_16*>(&self->mAngleX),
+                    self->mAreaId, -1);
                 if (r != 0) {
                     sb->mCapActorAlive = 1;
                 }
@@ -421,8 +424,9 @@ extern "C" void func_ov060_021172e0(daKpaFire_c* self)
     }
 
     {
-        dActor_c* r = (dActor_c*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-            ACTOR_COIN, 0, &self->mPosX, 0, self->mAreaId, -1);
+        dActor_c* r = dActor_c::Spawn(ACTOR_COIN, 0,
+            *reinterpret_cast<const Vector3*>(&self->mPosX), 0,
+            self->mAreaId, -1);
         if (r != 0) {
             r->unk_0a4 = 0;
             r->mVertSpeed = 0;
@@ -521,7 +525,7 @@ void func_ov060_0211712c(daKpaFire_c *p)
  * 0x266 (about 0.15) per frame; at 0 or below it ends in func_ov060_021172e0. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_02116f90(daKpaFire_c *self) {
-    _ZN8dActor_c9UpdatePosEP5dCc_c((char *)self, 0);
+    self->UpdatePos(0);
     if (self->mVertSpeed < -0x4000)
         self->mVertSpeed = -0x4000;
 
@@ -530,7 +534,7 @@ void func_ov060_02116f90(daKpaFire_c *self) {
             self->mParticleHandle_37c, PARTICLE_FALLING, self->mPosX, self->mPosY + 0x37000, self->mPosZ, 0);
         self->mdCcAc_c.flags |= 1;
         func_ov060_0211712c(self);
-        if (_ZNK10dBgCh_Actr10IsOnGroundEv(&self->mWithMeshClsn)) {
+        if (self->mWithMeshClsn.IsOnGround()) {
             self->mLanded++;
             if (self->mVariant == 7) {
                 self->mFireScale = 0x6000;
@@ -553,7 +557,7 @@ void func_ov060_02116f90(daKpaFire_c *self) {
         }
     }
     if (self->mPosY < 0)
-        _ZN7fBase_c18MarkForDestructionEv(self);
+        self->MarkForDestruction();
 }
 }
 
@@ -619,15 +623,17 @@ void func_ov060_02116d78(daKpaFire_c *c)
     c->mPosZ += c->unk_0ac;
 
     func_ov060_02116518(c, PARTICLE_SCALED_9A, 1, c->mFireScale * 0xc);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn) != 0) {
+    if (c->mWithMeshClsn.IsOnGround() != 0) {
         int r = RandomIntInternal(&data_0209e650[0]);
         unsigned int r3 = (unsigned int)r >> 16;
         if (r3 % 17 != 0)
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(6, 0), &c->mPosX, 0, c->mAreaId, -1);
-        _ZN7fBase_c18MarkForDestructionEv(c);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(6, 0),
+                *reinterpret_cast<const Vector3*>(&c->mPosX), 0,
+                c->mAreaId, -1);
+        c->MarkForDestruction();
     }
     if (c->mFrameCount < 0x3c) return;
-    _ZN7fBase_c18MarkForDestructionEv(c);
+    c->MarkForDestruction();
 }
 }
 
@@ -679,17 +685,21 @@ void func_ov060_02116b68(daKpaFire_c *c)
     func_ov060_02116518(c, data_ov060_02119358[c->mSubVariant], 0, 0x46000);
     func_ov060_0211712c(c);
     if (func_ov060_021172c8((unsigned char *)c, 0x1c2))
-        _ZN7fBase_c18MarkForDestructionEv(c);
-    _ZN8dActor_c9UpdatePosEP5dCc_c((char *)c, 0);
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&c->mWithMeshClsn)) {
+        c->MarkForDestruction();
+    c->UpdatePos(0);
+    if (c->mWithMeshClsn.IsOnGround()) {
         if (c->mSubVariant == 0)
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(7, 0), &c->mPosX, 0, c->mAreaId, -1);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(7, 0),
+                *reinterpret_cast<const Vector3*>(&c->mPosX), 0,
+                c->mAreaId, -1);
         else
-            _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(3, 0), &c->mPosX, 0, c->mAreaId, -1);
-        _ZN7fBase_c18MarkForDestructionEv(c);
+            dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(3, 0),
+                *reinterpret_cast<const Vector3*>(&c->mPosX), 0,
+                c->mAreaId, -1);
+        c->MarkForDestruction();
     } else {
         if (c->mPosY >= 0) return;
-        _ZN7fBase_c18MarkForDestructionEv(c);
+        c->MarkForDestruction();
     }
 }
 }
@@ -727,22 +737,31 @@ void func_ov060_021169f8(daKpaFire_c* sl)
     if (sl->mFireScale < 0x5000) {
         sl->mFireScale += 0x200;
     }
-    _ZN8dActor_c9UpdatePosEP5dCc_c((char *)sl, 0);
+    sl->UpdatePos(0);
     func_ov060_02116518(sl, PARTICLE_SCALED_9A, 1, 0x78000);
     if (sl->mFrameCount <= 0x14)
         return;
     if (sl->mSubVariant == 0) {
         for (i = 0; i < 3; i++) {
-            a = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 0), &sl->mPosX, &sl->mPrevAngleX, sl->mAreaId, -1);
+            a = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 0),
+                *reinterpret_cast<const Vector3*>(&sl->mPosX),
+                reinterpret_cast<const Vector3_16*>(&sl->mPrevAngleX),
+                sl->mAreaId, -1);
             a->mFireScale = 0x5000;
         }
     } else {
-        a = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 1), &sl->mPosX, &sl->mPrevAngleX, sl->mAreaId, -1);
+        a = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 1),
+            *reinterpret_cast<const Vector3*>(&sl->mPosX),
+            reinterpret_cast<const Vector3_16*>(&sl->mPrevAngleX),
+            sl->mAreaId, -1);
         a->mFireScale = 0x8000;
-        a = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 2), &sl->mPosX, &sl->mPrevAngleX, sl->mAreaId, -1);
+        a = (daKpaFire_c *)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(2, 2),
+            *reinterpret_cast<const Vector3*>(&sl->mPosX),
+            reinterpret_cast<const Vector3_16*>(&sl->mPrevAngleX),
+            sl->mAreaId, -1);
         a->mFireScale = 0x8000;
     }
-    _ZN7fBase_c18MarkForDestructionEv(sl);
+    sl->MarkForDestruction();
 }
 }
 
@@ -808,7 +827,7 @@ void func_ov060_021167ec(daKpaFire_c* c)
 {
     dActor_c* p;
     if (c->mFrameCount != 0) return;
-    p = (dActor_c*)_ZN8dActor_c13ClosestPlayerEv(c);
+    p = c->ClosestPlayer();
     if (p == 0) return;
     c->mPrevAngleY = Vec3_HorzAngle((struct Vector3*)&c->mPosX, (struct Vector3*)&p->mPosX);
     c->mFireScale = 0x5000;
@@ -816,7 +835,9 @@ void func_ov060_021167ec(daKpaFire_c* c)
         int i = 0;
         int ang = 0;
         do {
-            daKpaFire_c* a = (daKpaFire_c*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_KOOPAFIRE, FIRE_PARAM(4, 0), &c->mPosX, (const struct Vector3_16*)0, c->mAreaId, -1);
+            daKpaFire_c* a = (daKpaFire_c*)dActor_c::Spawn(ACTOR_KOOPAFIRE, FIRE_PARAM(4, 0),
+                *reinterpret_cast<const Vector3*>(&c->mPosX), 0,
+                c->mAreaId, -1);
             short v = c->mPrevAngleY + ang;
             a->mPrevAngleX = 0;
             a->mPrevAngleY = v;
@@ -826,7 +847,7 @@ void func_ov060_021167ec(daKpaFire_c* c)
             ang += 0x5555;
         } while (i < 3);
     }
-    _ZN7fBase_c18MarkForDestructionEv(c);
+    c->MarkForDestruction();
 }
 }
 
@@ -850,17 +871,16 @@ void func_ov060_021167c8(daKpaFire_c *c)
  * Player::Burn.
  * Keeps the char * parameter decl_common.h declares. */
 extern "C" {
-extern void _ZN6Player4BurnEv(void* p);
 void func_ov060_02116740(char* c){
   unsigned int id = ((daKpaFire_c *)c)->mdCcAc_c.otherOwner;
   if(id==0) return;
-  Player* p = (Player *)_ZN8dActor_c10FindWithIDEj(id);
+  Player* p = (Player *)dActor_c::FindWithID(id);
   if(p==0) return;
   int b = (int)(p->actorID == ACTOR_PLAYER);
   if(b==0) return;
   if(p->mIsMetal!=0) return;
   if(p->mIsVanish!=0) return;
-  _ZN6Player4BurnEv(p);
+  p->Burn();
 }
 }
 
