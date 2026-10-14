@@ -1,0 +1,361 @@
+{
+  "task_id": "snowball-native-interfaces1014",
+  "tested_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+  "scope": "Six native call sites across three existing interfaces; actor identity established before Player downcast; exact owning scalar Hurt declaration corrects return and byte flags. No shared header edit.",
+  "source_completion": "partial",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+  "next_owner": "Snowball source producer and enemy reconstruction coordinator",
+  "author": {
+    "canonical_agent": "/root/chained_native_independent",
+    "producer_session": "codex-snowball-native-author1014",
+    "qualification": "Actual new author label; no inferred thread UUID or historical author reassignment."
+  },
+  "source_findings": [
+    {
+      "id": "SNOWBALL-NATIVE-001",
+      "kind": "reconstruction",
+      "disposition": "fixed",
+      "location": "src/actors/daSnowball_c.cpp: contact handler and state update",
+      "summary": "Six actor/collision call sites retain raw mangled imports despite existing native declarations.",
+      "reason": "Use dActor_c::FindWithID once, fBase_c::MarkForDestruction four times and dBgCh_Actr::IsOnGround once; remove three obsolete imports. Complete object, ownership and typed targets are unchanged after two measured compiler-name mappings.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+      "owner": "Snowball source producer and enemy reconstruction coordinator"
+    },
+    {
+      "id": "SNOWBALL-TYPE-001",
+      "kind": "correctness",
+      "disposition": "fixed",
+      "location": "src/actors/daSnowball_c.cpp: func_ov081_02125fb8",
+      "summary": "The old contact path casts the lookup result to Player before checking its actor identity.",
+      "reason": "Keep a dActor_c receiver through lookup/null and actorID191 check, then create the Player pointer only inside the identified-player branch. ActorID enum comparison shape and all retail bytes are preserved.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+      "owner": "Snowball source producer and enemy reconstruction coordinator"
+    },
+    {
+      "id": "SNOWBALL-CONTRACT-001",
+      "kind": "correctness",
+      "disposition": "fixed",
+      "location": "src/actors/daSnowball_c.cpp: local Hurt import",
+      "summary": "The local Hurt import incorrectly declares void return and three u32 flags against its owning int/u8/u8/u8 definition.",
+      "reason": "Use exactly int(Player*,void*,u32,int,u8,u8,u8) from Player.cpp. The existing Player.h lacks a Hurt member; a direct member-call probe fails with undefined identifier Hurt. Explicit local reason retains the scalar C ABI without speculative header recovery. All four measured baseline disagreements disappear; no new disagreements and literal raw object unchanged.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+      "owner": "Snowball source producer and enemy reconstruction coordinator"
+    },
+    {
+      "id": "SNOWBALL-PARTIAL-001",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "location": "src/actors/daSnowball_c.cpp",
+      "summary": "Class reconstruction remains partial at three address-named free helpers, scalar Init/Hurt/particle boundaries and local matrix/position views.",
+      "reason": "This bounded actor-interface slice changes neither shared headers nor model/state layout, PMF ownership, allocation, scalar ABI helper implementations or original naming. Remaining reconstruction is tracked by issue3834 with the Snowball source producer and enemy reconstruction coordinator.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+      "owner": "Snowball source producer and enemy reconstruction coordinator"
+    }
+  ],
+  "historical_predecessors": [
+    {
+      "task": "widen-ov081-ov026-0928",
+      "phase": "cancelled",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3305",
+      "base": "befa58a1422687d173f8137f27f44df3adb953e0",
+      "inherited_findings": {},
+      "outputs": [
+        {
+          "commit": "188dbba4ec5c3e44801f30edd49cdcb15e05d359",
+          "stage": "produce",
+          "session": "claude-laneC-producer-0928",
+          "at": "2026-09-28T17:09:21.569531+00:00",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task": "fold-tails-ov065-ov091-0930c",
+      "phase": "done",
+      "issue": null,
+      "base": "b886c013ef933679d0b22ae0644aeeb0b4c2e5a0",
+      "inherited_findings": {},
+      "outputs": [
+        {
+          "commit": "7a36ef5cfe762a5cd163fd725b4523cee9d7af3e",
+          "stage": "produce",
+          "session": "claude-prod-Z-0930c",
+          "at": "2026-10-01T01:59:14.927834+00:00",
+          "findings": []
+        },
+        {
+          "commit": "7a36ef5cfe762a5cd163fd725b4523cee9d7af3e",
+          "stage": "verify",
+          "session": "claude-verify-0930c",
+          "at": "2026-10-01T02:25:26.005630+00:00",
+          "findings": []
+        },
+        {
+          "commit": "7a36ef5cfe762a5cd163fd725b4523cee9d7af3e",
+          "stage": "integrate",
+          "session": "claude-coord-0930c",
+          "at": "2026-10-01T03:56:34.167419+00:00",
+          "findings": []
+        }
+      ]
+    }
+  ],
+  "actual_git_lineage": [
+    {
+      "commit": "452dcf62ae0934f456abbe04382afaabb3505dde",
+      "author": "lunavyqo",
+      "date": "2026-10-11T12:48:24+03:00",
+      "subject": "cleanup CL133: comment/marker cleanup on six actor TUs"
+    },
+    {
+      "commit": "65418e54d222918274e8c4a2a8a9bbadb8650f39",
+      "author": "lunavyqo",
+      "date": "2026-10-07T11:02:51+03:00",
+      "subject": "Fold the ov081 snowball static initializer into daSnowball_c.cpp."
+    },
+    {
+      "commit": "63264f02ba221552c728ff8d03a8a9d009d62983",
+      "author": "andrewboudreau",
+      "date": "2026-10-02T12:36:15-05:00",
+      "subject": "Readability pass on daSnowball_c: typed helpers, named fields, state record"
+    },
+    {
+      "commit": "1777f38dadf71f7917ef9cacd4c739d4c42bb5f4",
+      "author": "andrewboudreau",
+      "date": "2026-09-30T20:06:48-05:00",
+      "subject": "Fold daSnowball_c's classInit factory into its TU (ov081)"
+    },
+    {
+      "commit": "7c813f084ff5881822a4b9e9a35e23817e9e0374",
+      "author": "andrewboudreau",
+      "date": "2026-09-28T11:13:54-05:00",
+      "subject": "Widen ov081/daSnowball_c to its full unit"
+    },
+    {
+      "commit": "8354373baaacb489eda69138c42acd9b10e1f11c",
+      "author": "Lunavyqo",
+      "date": "2026-09-24T21:38:43+03:00",
+      "subject": "Promote ov081/daSnowball_c (#3114)"
+    }
+  ],
+  "observed_original_promotion_coauthor": "PR3114/8354373baaacb489eda69138c42acd9b10e1f11c records Claude session_01RZ8eAjeRDezK1NqEXptemK and andrewboudreau; Git author Lunavyqo. Function-authors.json unchanged.",
+  "excluded_false_predecessors": [
+    {
+      "task": "native-destructor-repair-0922",
+      "reason": "Its broad base/output interval contains only intervening external promotion8354373 for this Source; output40f4 itself makes no Snowball edit. Do not assign that queue producer Snowball authorship or import its13 broad findings from interval presence."
+    },
+    {
+      "task": "mg-p1-factories-0926",
+      "reason": "Minigame Snowball scope; no actual daSnowball_c Source change."
+    },
+    {
+      "task": "pr2445-composition-0910",
+      "reason": "Giant snowman body daBgSnmBdy_c/issue2476 is a different class; no actual daSnowball_c Source change."
+    }
+  ],
+  "historical_private_scout": {
+    "base": "efd33df972c9475494a18548d0248454c0e2668f",
+    "proof": {
+      "base": "efd33df972c9475494a18548d0248454c0e2668f",
+      "strict": 17,
+      "functions": 13,
+      "data": 2,
+      "bss_records": 1,
+      "bss_bytes": 16,
+      "metadata_records": 11,
+      "metadata_bytes": 246,
+      "raw_refs": 114,
+      "prepared_refs": 62,
+      "raw_sha256": "355bc5c571e8295188698522d480e7304a5016d4efa62487be2a5eafb8f8b1ff",
+      "prepared_sha256": "25a5a3dca96c1db765050d65d18538017c138264020b32cd3a457085f61c2c36",
+      "global_full_rom_run": false
+    },
+    "qualification": "Private efd proof is historical; actual current85c control freshly compiles and complete raw/prepared objects equal that control. Actual tracked candidate checks and global build follow the frozen Source checkpoint."
+  },
+  "current_input_binding": {
+    "scout_base": "efd33df972c9475494a18548d0248454c0e2668f",
+    "actual_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "identical_target_inputs": {
+      "src/actors/daSnowball_c.cpp": {
+        "scout_base": "bbf3e7a337cc6f1ac1120eac48ff1352733abcbd",
+        "current_base": "bbf3e7a337cc6f1ac1120eac48ff1352733abcbd"
+      },
+      "src/actors/Player.cpp": {
+        "scout_base": "7a23d28e06330f60ea1ef9ec47b1ce1d75ed38e9",
+        "current_base": "7a23d28e06330f60ea1ef9ec47b1ce1d75ed38e9"
+      },
+      "config/tu_manifest.d/ov081/daSnowball_c.json": {
+        "scout_base": "ca31433b59f88eed02ec12cee068380104a09081",
+        "current_base": "ca31433b59f88eed02ec12cee068380104a09081"
+      },
+      "include": {
+        "scout_base": "c79a00fb061e7ba1710053ccfe5ee542cdc6914c",
+        "current_base": "c79a00fb061e7ba1710053ccfe5ee542cdc6914c"
+      },
+      "config": {
+        "scout_base": "df77857bea28beb682e2150b64dc0fce2f18450b",
+        "current_base": "df77857bea28beb682e2150b64dc0fce2f18450b"
+      },
+      "tools": {
+        "scout_base": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+        "current_base": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec"
+      },
+      "port": {
+        "scout_base": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33",
+        "current_base": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+      }
+    },
+    "main_delta_paths": [
+      "notes/experiments/player-file-handles1014.json",
+      "src/unnamed/ov002/__sinit_ov002_021019d0.c"
+    ]
+  },
+  "manifest_scope": "Exactly two measured compiler input names and their evidence prose change. Canonical destinations, all isolation/metadata/lifecycle policies and other fields are unchanged.",
+  "hurt_contract": {
+    "final_source_sha256": "b43bf35b8bf9d37f9dfb9f32c04af609cc333e3ee9e94925cf634cbe9d4e0c93",
+    "raw_sha256": "355bc5c571e8295188698522d480e7304a5016d4efa62487be2a5eafb8f8b1ff",
+    "actual_owner_signature": "int(Player*,void*,u32,int,u8,u8,u8)",
+    "raw_equal_already_proved_candidate": true,
+    "payload_original_type_not_claimed": true
+  },
+  "historical_private_declaration_delta": {
+    "before": 7499,
+    "after": 7495,
+    "new": [],
+    "removed": [
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "return",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "void",
+        "want": "int",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#5 unsigned int",
+        "want": "#5 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#6 unsigned int",
+        "want": "#6 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#7 unsigned int",
+        "want": "#7 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      }
+    ],
+    "baseline_Hurt_findings": [
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "return",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "void",
+        "want": "int",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#5 unsigned int",
+        "want": "#5 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#6 unsigned int",
+        "want": "#6 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      },
+      {
+        "symbol": "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj",
+        "kind": "param",
+        "file": "src/actors/daSnowball_c.cpp",
+        "line": 72,
+        "decl": "void (void *, const Vector3 *, unsigned int, int, unsigned int, unsigned int, unsigned int)",
+        "got": "#7 unsigned int",
+        "want": "#7 unsigned char",
+        "basis": "definition",
+        "ref_file": "src/actors/Player.cpp",
+        "ref_line": 18941,
+        "ref": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+      }
+    ],
+    "candidate_Hurt_findings": [],
+    "scope": "Private candidateSource substitution against current full collector. No header edit or baseline banking; production changed-scope gate remains future claimed work."
+  },
+  "ownership": {
+    "existing_D2_policy_unchanged": true,
+    "D2_complete_size": 72,
+    "D2_incoming_edges": [],
+    "Vector3_D1_complete_body": "1eff2fe1",
+    "canonical_module": "arm9",
+    "canonical_address": "0x020072c0",
+    "Vector3_D1_canonical_complete_equal": true,
+    "all_other_ownership_policies_and_aliases_unchanged": true,
+    "state_init_size": 60,
+    "state_init_typed_edges": 3,
+    "ctor_size": 4,
+    "ctor_typed_edges": 1
+  },
+  "remaining_partial_boundaries": {
+    "id": "SNOWBALL-PARTIAL-001",
+    "kind": "reconstruction",
+    "disposition": "deferred",
+    "location": "src/actors/daSnowball_c.cpp",
+    "summary": "Class reconstruction remains partial at three address-named free helpers, scalar Init/Hurt/particle boundaries and local matrix/position views.",
+    "reason": "This bounded actor-interface slice changes neither shared headers nor model/state layout, PMF ownership, allocation, scalar ABI helper implementations or original naming. Remaining reconstruction is tracked by issue3834 with the Snowball source producer and enemy reconstruction coordinator.",
+    "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3834",
+    "owner": "Snowball source producer and enemy reconstruction coordinator"
+  },
+  "production_gates": "Pending at Source checkpoint; no current full-ROM claim."
+}

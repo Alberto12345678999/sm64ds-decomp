@@ -577,14 +577,14 @@
   },
   "defined_symbol_renames": [
     {
-      "from": "@716",
+      "from": "@714",
       "to": "@701",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured compiler input after removing the obsolete native actor-call declarations; exact section index, offset, size, binding, body and complete incoming/outgoing typed graph preserve this canonical descriptor identity."
     },
     {
-      "from": "@718",
+      "from": "@716",
       "to": "@703",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured compiler input after removing the obsolete native actor-call declarations; exact section index, offset, size, binding, body and complete incoming/outgoing typed graph preserve this canonical descriptor identity."
     }
   ]
 }
