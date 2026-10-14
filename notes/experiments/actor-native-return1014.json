@@ -463,5 +463,554 @@
     },
     "inheritance": "The queue continuation explicitly inherits the original Root producer task and dactor-dust-main-compose1014 authors and all eight findings; historical dictionaries above retain their original epochs.",
     "formal_acceptance": false
+  },
+  "latest_main_composition": {
+    "task": "actor-native-return-main1014",
+    "base": "371652f165dc1fc362566ed96beb335dbdb2d802",
+    "accepted_source_parent": "1414085f886aab3fa23141102fa138713c161f4b",
+    "source_checkpoint": "fda6b04683b9fbf026b8406fb72ecd2981922f2d",
+    "source_author": "Original accepted producer unchanged; Root composed upstream and wrote this report only.",
+    "predecessor": "actor-native-return-current1014",
+    "four_dependency_trees_equal": {
+      "include": "9a7fe3dd2d6c10927c6604d70dc4bfaca9c614ae",
+      "config": "90bf84d569cd549c53ca5d06180145c10e78d62e",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "complete_src_delta": [
+      "src/actors/ActorBase.cpp",
+      "src/actors/dEnemyBase_c.cpp"
+    ],
+    "all_other_src_blobs_unchanged": true,
+    "upstream_source_output_proof": [
+      {
+        "source": "src/actors/ActorBase.cpp",
+        "old_source_blob": "9f32df5aa60dfbd87d5ba8f366e75546c6d2c8e3",
+        "current_source_blob": "da804163ba53e9d530c49c037ea1547d7c41a1f7",
+        "raw_equal": true,
+        "prepared_equal": true,
+        "whole_graphs_equal": true,
+        "raw_sha256": "9b73570275d39aef46c4b94b4d6c85963e47ba51e55fdf09a4d37d1bd92f88b1",
+        "prepared_sha256": "137165db1189a5fa603d7e179f94eeea5c937828fdd5dc10692b392b2c65c704",
+        "unique_strict": 30,
+        "checks": [
+          {
+            "name": "func_020433b8",
+            "module": "arm9",
+            "addr": "0x020433b8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_cnwEj",
+            "module": "arm9",
+            "addr": "0x02043444",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c13OnHeapCreatedEv",
+            "module": "arm9",
+            "addr": "0x02043494",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c9Virtual38Ejj",
+            "module": "arm9",
+            "addr": "0x0204349c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c9Virtual34Ejj",
+            "module": "arm9",
+            "addr": "0x0204357c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_02043810",
+            "module": "arm9",
+            "addr": "0x02043810",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c18MarkForDestructionEv",
+            "module": "arm9",
+            "addr": "0x02043824",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_02043880",
+            "module": "arm9",
+            "addr": "0x02043880",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c16OnPendingDestroyEv",
+            "module": "arm9",
+            "addr": "0x02043ac0",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c11AfterRenderEj",
+            "module": "arm9",
+            "addr": "0x02043ac4",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c12BeforeRenderEv",
+            "module": "arm9",
+            "addr": "0x02043ac8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c6RenderEv",
+            "module": "arm9",
+            "addr": "0x02043af0",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c13AfterBehaviorEj",
+            "module": "arm9",
+            "addr": "0x02043af8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c14BeforeBehaviorEv",
+            "module": "arm9",
+            "addr": "0x02043afc",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c8BehaviorEv",
+            "module": "arm9",
+            "addr": "0x02043b24",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c21AfterCleanupResourcesEj",
+            "module": "arm9",
+            "addr": "0x02043b2c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c22BeforeCleanupResourcesEv",
+            "module": "arm9",
+            "addr": "0x02043bac",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c16CleanupResourcesEv",
+            "module": "arm9",
+            "addr": "0x02043bf0",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c18AfterInitResourcesEj",
+            "module": "arm9",
+            "addr": "0x02043bf8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c19BeforeInitResourcesEv",
+            "module": "arm9",
+            "addr": "0x02043c78",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c13InitResourcesEv",
+            "module": "arm9",
+            "addr": "0x02043c80",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_c7ProcessEMS_FivEMS_FbvEMS_FvjE",
+            "module": "arm9",
+            "addr": "0x02043c88",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_cD2Ev",
+            "module": "arm9",
+            "addr": "0x02043d48",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_cD0Ev",
+            "module": "arm9",
+            "addr": "0x02043d78",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_cD1Ev",
+            "module": "arm9",
+            "addr": "0x02043dbc",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN7fBase_cC2Ev",
+            "module": "arm9",
+            "addr": "0x02043dec",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_02043f4c",
+            "module": "arm9",
+            "addr": "0x02043f4c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_02043f98",
+            "module": "arm9",
+            "addr": "0x02043f98",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_02043fdc",
+            "module": "arm9",
+            "addr": "0x02043fdc",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_0204405c",
+            "module": "arm9",
+            "addr": "0x0204405c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          }
+        ],
+        "raw_refs": 132,
+        "prepared_refs": 98
+      },
+      {
+        "source": "src/actors/dEnemyBase_c.cpp",
+        "old_source_blob": "0c684493be5ff2ca32c8163477498a45d5392bc3",
+        "current_source_blob": "33b49f19825c575c2adb53bb02795ed7a5d1d254",
+        "raw_equal": true,
+        "prepared_equal": true,
+        "whole_graphs_equal": true,
+        "raw_sha256": "6733fe33aa4c0cc411f31e753ed293c571d789f5bbaed22d43c69adc9c3b33a4",
+        "prepared_sha256": "7797744f2008de03ecb3e01878793cff7c28505b4fb5f3e7b2c4d5f6e7047d4b",
+        "unique_strict": 32,
+        "checks": [
+          {
+            "name": "func_ov002_020ad660",
+            "module": "ov002",
+            "addr": "0x020ad660",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj",
+            "module": "ov002",
+            "addr": "0x020ad838",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE",
+            "module": "ov002",
+            "addr": "0x020ada40",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc",
+            "module": "ov002",
+            "addr": "0x020adb40",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER5dCc_c",
+            "module": "ov002",
+            "addr": "0x020addc0",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ade78",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER10dBgCh_ActrRs",
+            "module": "ov002",
+            "addr": "0x020ae244",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c15IsGoingOffCliffER10dBgCh_Actrisbbi",
+            "module": "ov002",
+            "addr": "0x020ae2b8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN11EnemyDeathC19func_ov002_020ae454ER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae454",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN11EnemyDeathC19func_ov002_020ae4ccER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae4cc",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_ov002_020ae5c8",
+            "module": "ov002",
+            "addr": "0x020ae5c8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN11EnemyDeathC19func_ov002_020ae608ER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae608",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN11EnemyDeathC19func_ov002_020ae64cER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae64c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c11UpdateDeathER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae6a8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae73cEP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae73c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae80cEP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae80c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae844EP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae844",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae87cEP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae87c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae890EP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae890",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_ov002_020ae8b8",
+            "module": "ov002",
+            "addr": "0x020ae8b8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae954EP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae954",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_ov002_020ae968",
+            "module": "ov002",
+            "addr": "0x020ae968",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020ae9f8EP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020ae9f8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN11EnemyDeathC19func_ov002_020aea24ER10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020aea24",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN6Aea30C19func_ov002_020aea2cEP8dActor_cP10dBgCh_Actr",
+            "module": "ov002",
+            "addr": "0x020aea2c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "func_ov002_020aea30",
+            "module": "ov002",
+            "addr": "0x020aea30",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c9SpawnCoinEv",
+            "module": "ov002",
+            "addr": "0x020aeabc",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj",
+            "module": "ov002",
+            "addr": "0x020aebf8",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_cD2Ev",
+            "module": "ov002",
+            "addr": "0x020aed18",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_cD0Ev",
+            "module": "ov002",
+            "addr": "0x020aed3c",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_cD1Ev",
+            "module": "ov002",
+            "addr": "0x020aed74",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          },
+          {
+            "name": "_ZN12dEnemyBase_cC2Ev",
+            "module": "ov002",
+            "addr": "0x020aed98",
+            "verdict": "VERIFIED",
+            "diffs": [],
+            "blind": 0
+          }
+        ],
+        "raw_refs": 214,
+        "prepared_refs": 169
+      }
+    ],
+    "full_module_proof_binding": "The two changed upstream Source files produce literal identical complete raw and ordinarily prepared objects, symbols, sections and references. All other Source blobs and four dependency trees are unchanged. This positively binds the accepted parent module proof to this composition; it is not described as a new full-ROM execution.",
+    "formal_acceptance": false
   }
 }
