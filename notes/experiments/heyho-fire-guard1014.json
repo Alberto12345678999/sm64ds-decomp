@@ -1,16 +1,16 @@
 {
-  "task": "heyho-fire-guard1014",
+  "task": "heyho-fire-main1014",
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
-  "base": "a159039b892ca45ca794d5e612ce15a971496768",
-  "source_checkpoint": "d025bd0bd896d15514a53c657406d5741547ef70",
-  "full_rom_tested_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
+  "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1",
+  "source_checkpoint": "c109dca72aeba0b4242fa523ac1f273f515c2c2c",
+  "full_rom_tested_checkpoint": "c109dca72aeba0b4242fa523ac1f273f515c2c2c",
   "workflow_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
   "source_author": {
     "model": "GPT-6 Astra",
     "session": "codex-enemy-frontier-astra1014",
     "actual_agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
     "harness_session_uuid": "01a12e6f-7ee1-7162-9a64-81145ed6b260",
-    "disclosure": "This actual agent authored the private candidate and both production source commits. The root coordinated and an independent preflight identified the prose correction; neither is represented as this source author. Independent acceptance remains pending."
+    "disclosure": "This actual agent authored the private guard/bridge candidate, both prior Source commits, and this current-main composition. The root coordinated; independent Source acceptance of the older base does not accept this composition. Upstream ActorBase/header/manifest authorship is preserved by the merge history and is not attributed to this producer."
   },
   "scope": [
     "src/actors/daPropeller_Heyho_Fire_c.cpp",
@@ -88,7 +88,7 @@
     ],
     "prior_authorship": "Recorded commit author andrewboudreau; coauthor Claude Opus 5.5. Existing field reconstruction and historical measurements are inherited work.",
     "retained_review_facts": "Metal contact flips facing, stops horizontal motion and launches upward; mDeflected is retained. The hitFlags interpretation remains qualified. The widened isPlayer temporary and unsigned timer read remain.",
-    "queue_predecessor": "No predecessor task was declared in this task specification; inherited source/history findings are explicitly carried here rather than silently treated as accepted."
+    "queue_predecessor": "Explicit predecessor heyho-fire-guard1014; the continuation inherits all six stable deferred findings and contributing sessions. No finding was dropped or silently reclassified."
   },
   "byte_proof": {
     "source_sha256": "7bb3c6695748fa08538f5208256b04ffc9bb22180b3cfdfa47ef7e6c0e9604a9",
@@ -202,46 +202,48 @@
       "verified": 14,
       "blind": 0,
       "diffs": [],
-      "log": "build/heyho-gates/prepush.log"
+      "log": "build/heyho-main-gates/prepush.log"
     },
     "static": {
       "decl": {
         "exit_code": 0,
-        "log": "build/heyho-gates/decl.log"
+        "log": "build/heyho-main-gates/decl.log"
       },
       "decl-global": {
         "exit_code": 0,
-        "log": "build/heyho-gates/decl-global.log"
+        "log": "build/heyho-main-gates/decl-global.log"
       },
       "port": {
         "exit_code": 0,
-        "log": "build/heyho-gates/port.log"
+        "log": "build/heyho-main-gates/port.log"
       },
       "langmode": {
         "exit_code": 0,
-        "log": "build/heyho-gates/langmode.log"
+        "log": "build/heyho-main-gates/langmode.log"
       },
       "conflicts": {
         "exit_code": 0,
-        "log": "build/heyho-gates/conflicts.log"
+        "log": "build/heyho-main-gates/conflicts.log"
       },
       "duplicates": {
         "exit_code": 0,
-        "log": "build/heyho-gates/duplicates.log"
+        "log": "build/heyho-main-gates/duplicates.log"
       },
       "drafts": {
         "exit_code": 0,
-        "log": "build/heyho-gates/drafts.log"
+        "log": "build/heyho-main-gates/drafts.log"
       }
     },
     "dead_references": {
       "exit_code": 0,
-      "log": "build/heyho-gates/dead-references.log"
+      "log": "build/heyho-main-gates/dead-references.log"
     },
     "rombuild": {
-      "command": "python tools/rombuild.py -j16 --profile stock --report-json build/heyho-gates/rombuild.json --data-json build/heyho-gates/romdata-full.json",
+      "command": "python -u tools/rombuild.py -j16 --profile stock --report-json build/heyho-main-gates/rombuild.json --data-json build/heyho-main-gates/romdata-full.json",
       "exit_code": 0,
-      "tested_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
+      "tested_checkpoint": "c109dca72aeba0b4242fa523ac1f273f515c2c2c",
+      "tested_base": "58927e7d8e76b13899e7cf4931d756a47ad438f1",
+      "fresh_current_base_build": true,
       "modules_exact": 106,
       "modules_checked": 106,
       "source_functions": 11334,
@@ -251,46 +253,8 @@
       "bss_claims": 239,
       "rom_sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
       "intact_tu_gate": "PASS; zero new symbol errors and storage alias errors",
-      "log": "build/heyho-gates/rombuild.log"
+      "log": "build/heyho-main-gates/rombuild.log"
     }
-  },
-  "comment_only_full_rom_transfer": {
-    "full_rom_tested_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
-    "final_source_checkpoint": "d025bd0bd896d15514a53c657406d5741547ef70",
-    "changed_path": "src/actors/daPropeller_Heyho_Fire_c.cpp",
-    "change": "One line-comment correction: configured linker names, not names recovered from ROM.",
-    "full_rom_tested_source_blob_sha256": "c3fb37e5b6f8c611066d19e13272f91fad1adec2e44d244c23252e5671f4baa4",
-    "final_source_blob_sha256": "7941479e8ee89cf6e6ce5868338b156d2875745535667b7e0e00d001eade8401",
-    "comment_stripped_text_equal": true,
-    "comment_stripping_preserves_string_and_character_literals": true,
-    "unchanged_trees": {
-      "include": {
-        "old": "a9184da7cc0cf8295937df2c3257cf9435e3a0e1",
-        "new": "a9184da7cc0cf8295937df2c3257cf9435e3a0e1"
-      },
-      "tools": {
-        "old": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
-        "new": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec"
-      },
-      "config": {
-        "old": "373fb4048f2c91c356bfdaca566e80be0ed85f9b",
-        "new": "373fb4048f2c91c356bfdaca566e80be0ed85f9b"
-      },
-      "port": {
-        "old": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33",
-        "new": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
-      }
-    },
-    "all_other_source_blobs_equal": true,
-    "other_source_blob_count": 2803,
-    "full_src_tree_equal": false,
-    "proof_transfer_limit": "Only the completed full-ROM result is transferred across this exact comment-only delta. Final-source raw/prepared/graph/strict and static checks are freshly rerun; this is not a blanket inheritance from base.",
-    "full_rom_tested_source_worktree_sha256": "8c1608318ccaca03813139cdfab30c483dd10090bab558659f64930624d249e3",
-    "final_source_worktree_sha256": "7bb3c6695748fa08538f5208256b04ffc9bb22180b3cfdfa47ef7e6c0e9604a9",
-    "fresh_raw_object_literal_equal_to_full_rom_checkpoint": true,
-    "fresh_prepared_object_literal_equal_to_full_rom_checkpoint": true,
-    "raw_sha256": "a1a47cf51200ed83e5b657db401ba1497319b96b1df339d292836fe382f380d4",
-    "prepared_sha256": "f070b9edd50d3b85f803ab10f1f5cadb3591cb8552f105e3947bb80ebe619b86"
   },
   "declaration_population": {
     "method": "Current committed production files, unmodified full checker collect/disagreements APIs; positive signature comparison supplements completed scoped/global ratchets.",
@@ -337,37 +301,82 @@
     "scope": "Pre-existing control diagnostics; intact production gate accepts zero NEW symbol errors, not a claim of zero baseline diagnostics."
   },
   "global_data_advisory": {
-    "verified_unique": 969,
+    "verified_unique": 970,
     "partial_unique": 1519,
     "differing_unique": 1,
     "unnamed": 21,
-    "records": 5282,
+    "records": 5285,
     "known_difference": "Unchanged _ZTV10dCcAcPos_c advisory,4 bytes. All11 metadata records emitted by this TU were separately checked in full."
   },
   "other_pending_objectives": "The preserved native13 dEnemyBase callback candidate still requires coordinated config/header/51-consumer integration. Camera continuation also remains pending. This source boundary slice does not complete or replace either objective.",
   "finalization": {
-    "rule": "Final commit may add only this report after the tested Source checkpoint; src/include/config/tools/port trees must remain exactly equal to that checkpoint.",
+    "rule": "Final continuation commit may update only this report after the freshly tested composition checkpoint; src/include/config/tools/port trees must remain exactly equal to that checkpoint.",
     "expected_trees": {
-      "src": "7e13c7e6bbf6c88c8c0dd2d91a358810c82b8a51",
-      "include": "a9184da7cc0cf8295937df2c3257cf9435e3a0e1",
-      "config": "373fb4048f2c91c356bfdaca566e80be0ed85f9b",
+      "src": "ddfed059efb668c3bfc6c422fcf655ccd9080fbd",
+      "include": "9a7fe3dd2d6c10927c6604d70dc4bfaca9c614ae",
+      "config": "90bf84d569cd549c53ca5d06180145c10e78d62e",
       "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
       "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
     },
-    "scope_note": "This five-tree equality applies from the final Source checkpoint to its report-only descendant. It does not claim src-tree equality between the earlier full-ROM checkpoint and the comment correction."
+    "scope_note": "Current-base full-ROM and all Source gates ran on the same composition checkpoint. No comment-only transfer is used for this continuation."
   },
-  "formal_acceptance": "Producer verified; independent Source review and acceptance pending. No public source push, PR or merge by this producer.",
+  "formal_acceptance": "Producer verified against current base; independent reacceptance of this exact composition pending. No public source push, PR or merge by this producer.",
   "artifacts": {
-    "build/heyho-gates/whole-proof.json": "bb16c1826b7df4417827d76427b4497e2437dca6aedecdd74309751664e96edb",
-    "build/heyho-gates/graphs.json": "146f51ab6596b8bc6c4eb44063e17942225c2ffa80107df5ecc2f8adf1a05a07",
-    "build/heyho-gates/candidate-production.json": "2f3fc2f5a0046962cba6cb1a0ace1eaddd076f134c39870a3bcf1035302fdcc6",
-    "build/heyho-gates/prepush.json": "846ba6990add0fa3cf075d268a425516b3d79689fe17646eb06812da6f0558de",
-    "build/heyho-gates/static-summary.json": "463cc99651483238defff98755be9122e9b35e606ac90065ed3fa052a451bc4c",
-    "build/heyho-gates/hurt-population.json": "6d7cde6503fff3c2b8586a14dcc732106dc2a5424e5c13f134445bc3dabd4acb",
-    "build/heyho-gates/player-registry.json": "6a48a79725b50645dd59f515e216f60b0913981214d9b0d78e70558d876510a1",
-    "build/heyho-gates/comment-transfer.json": "d2fda514c6bdf81a962186d86fa46bc2898b9717fd02687f7a1fcded1b2fdfb7",
-    "build/heyho-gates/rombuild.json": "92913c44e914791982c00312138ee05c74df03a1a952e0c55a8d257811d9ebac",
-    "build/heyho-gates/rombuild.log": "dadd61ffaba7a8f2757bf5eaab0816e4aae8fd41faa9aa450b2fba69d392fe65",
-    "build/heyho-gates/romdata-full.json": "388f3ee8c630325c5ed95e1ebe7290421313f19152172fdd0aaeefed6cff0f4c"
+    "build/heyho-main-gates/whole-proof.json": "c2743618a50faf860dab88d1a0106f5821c6e1a9f632542455b030b3dd34b750",
+    "build/heyho-main-gates/graphs.json": "146f51ab6596b8bc6c4eb44063e17942225c2ffa80107df5ecc2f8adf1a05a07",
+    "build/heyho-main-gates/candidate-production.json": "2f3fc2f5a0046962cba6cb1a0ace1eaddd076f134c39870a3bcf1035302fdcc6",
+    "build/heyho-main-gates/prepush.json": "846ba6990add0fa3cf075d268a425516b3d79689fe17646eb06812da6f0558de",
+    "build/heyho-main-gates/static-summary.json": "260c964eff618d5afa039b6ef9addaefd58e67d20e79e615d7c7812a97747b39",
+    "build/heyho-main-gates/hurt-population.json": "6d7cde6503fff3c2b8586a14dcc732106dc2a5424e5c13f134445bc3dabd4acb",
+    "build/heyho-main-gates/fbase-fanout.json": "dae394906e8835398a8ea6979bb5e176c2f8b5bbe74e675afebf2965988d9cfd",
+    "build/heyho-main-gates/rombuild.json": "03e3e5b9e6d5809cb2157c41405d39cb67df8fc5ae6999ba64ff4873ff230f43",
+    "build/heyho-main-gates/rombuild.log": "5dfa7bb2b7daaee5e894734a750a5e78aa0da5d4126bcc3fbb3650df3558e8ce",
+    "build/heyho-main-gates/romdata-full.json": "e2c11a1603bdcc8d5a1f3c6f23829176237bbff4e6b1b9e56258c3095efde437"
+  },
+  "predecessor_tasks": [
+    "heyho-fire-guard1014"
+  ],
+  "prior_acceptance": {
+    "task": "heyho-fire-guard1014",
+    "accepted_head": "4840afe8ff0bd39fda1d7430b91dd9f23d70d94c",
+    "accepted_base": "a159039b892ca45ca794d5e612ce15a971496768",
+    "accepted_report_git_blob_sha256": "13ce7dcd670088b6ba2773fb3af2ff0b778ee5f9e7ef9cb7c7952adf1be57861",
+    "queue_done_snapshot": "7b2a63c5a9d95169d8daf698e0a5eb2477ce26ab",
+    "old_full_rom_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
+    "old_final_source_checkpoint": "d025bd0bd896d15514a53c657406d5741547ef70",
+    "old_comment_transfer": "The earlier full-ROM result was explicitly transferred only over a proved line-comment correction, with fresh raw/prepared/strict/static checks. That old result is historical and is NOT transferred to the new base.",
+    "coverage_correction": "Both predecessor and continuation cover14 unique symbols:13 .text functions and1 initializer; earlier experimental15 wording counted the initializer twice."
+  },
+  "composition": {
+    "current_main": "58927e7d8e76b13899e7cf4931d756a47ad438f1",
+    "accepted_predecessor": "4840afe8ff0bd39fda1d7430b91dd9f23d70d94c",
+    "merge_checkpoint": "c109dca72aeba0b4242fa523ac1f273f515c2c2c",
+    "both_histories_preserved": true,
+    "changed_paths_vs_current_main": [
+      "src/actors/daPropeller_Heyho_Fire_c.cpp",
+      "notes/experiments/heyho-fire-guard1014.json"
+    ],
+    "source_bytes_equal_to_accepted_predecessor": true,
+    "no_header_config_policy_or_enrollment_delta_vs_current_main": true
+  },
+  "fbase_header_fanout": {
+    "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1",
+    "composed_checkpoint": "c109dca72aeba0b4242fa523ac1f273f515c2c2c",
+    "changed_header_from_previous_base": "include/fBase_c.h",
+    "affected_source_count": 397,
+    "candidate_in_affected_sources": true,
+    "other_affected_source_blobs_identical_to_current_base": 396,
+    "source_changes_vs_current_base": [
+      "src/actors/daPropeller_Heyho_Fire_c.cpp"
+    ],
+    "proof_scope": "397 consumers inventoried;396 other consumer blobs and include/config/tools/port trees exactly equal to current main. Upstream fBase header tokens are unchanged apart from comments. Fresh current-base full-ROM validation and current-header entire Heyho object/metadata proof completed; no reuse of old-base acceptance.",
+    "upstream_header_delta": {
+      "old_base": "a159039b892ca45ca794d5e612ce15a971496768",
+      "current_base": "58927e7d8e76b13899e7cf4931d756a47ad438f1",
+      "old_header_sha256": "27bc11771bdf2a7f8f883d1314299a89dec60bda6563c8a017730379ecb568b2",
+      "current_header_sha256": "3334f3634914b9efbda0d54003b816b898425ed90cbd133fb74cab5630e78d0d",
+      "comment_only_tokens_equal": true,
+      "description": "fBase_c.h changes only the key-function/metadata explanatory comment; its declarations and layout tokens are identical. ActorBase.cpp and its manifest changed in upstream main and remain covered by the fresh full-ROM composition build."
+    }
   }
 }
