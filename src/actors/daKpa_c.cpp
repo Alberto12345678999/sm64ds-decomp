@@ -34,8 +34,8 @@
  *    array; the mOpacity += / -= 0x14 form; the angle-copy pointer in
  *    func_ov060_02115d68; the overwritten first pos[] stores in
  *    func_ov060_02115518; the (unsigned short) and *(u16 *)& angle reads; the
- *    new_var / new_var2 temps and the `dp != 0 && kpa != 0` barrier in func_ov060_021140c0 and
- *    func_ov060_02114858; the volatile locals in func_ov060_021135fc,
+ *    new_var temp and the `dp != 0 && this != 0` barrier in
+ *    func_ov060_021140c0; the new_var2 temp in func_ov060_02114858; the volatile locals in func_ov060_021135fc,
  *    func_ov060_021132a4, func_ov060_02112ee0 and func_ov060_02112bfc; the gotos
  *    in func_ov060_02115c1c; the data_ov060_02119294/6/8 + offset reads; and the
  *    opaque Obj view in Bowser_IsAnimAtLastFrame.
@@ -50,8 +50,9 @@
  *    Bowser_Anim lists where each one is used.
  *  - unk_420 and unk_422 of daKpa_c and the dActor_c words at 0xa4 / 0xac are
  *    unnamed: the first two are written here and never read.
- *  - Remaining TUBUILD CONFLICT blocks record unresolved legacy declarations;
- *    resolved native actor, Player and collision declarations are removed. */
+ *  - Remaining TUBUILD CONFLICT blocks are the legacy alternates tubuild
+ *    create commented out; the ones whose kept side has since been deleted
+ *    are noted RESOLVED in the manifest and their blocks removed. */
 
 /* TUBUILD NOTE -- codegen is deferred, so .text emits in reverse source
  * order and the function bodies below are ROM-descending. The exception is
@@ -281,14 +282,6 @@ typedef struct
 } Vector3;
 */
 
-/* TUBUILD CONFLICT -- alternate body of struct 'TabEnt', from the legacy file for func_ov060_02114858, NOT applied:
-struct TabEnt
-{
-  int a;
-  int b;
-};
-*/
-
 /* TUBUILD CONFLICT -- alternate body of typedef 'dBgCh_Gnd', from the legacy file for func_ov060_0211577c, NOT applied:
 typedef struct dBgCh_Gnd { char filler[0x44]; int clsnY; char rest[0x8]; } dBgCh_Gnd;
 */
@@ -304,7 +297,6 @@ bool ApproachLinear(short &value, short target, short step);
 /* 0x0203ae58 (ApproachAngle.cpp); steps mHorzSpeed and the cutscene camera
  * points toward their targets. */
 int ApproachLinear(int &value, int target, int step);
-/* TUBUILD CONFLICT -- alternate #define of LAUND, from the legacy file for func_ov060_021130c0, NOT applied: #define LAUND(p) ((void*)(p)) */
 
 extern "C" {
 /* dCamera_c base pointer; Bowser publishes itself into the target slot at +0x114,
@@ -673,6 +665,7 @@ int daKpa_c::InitResources()
     this->mHomePosX = this->mPosX;
     this->mHomePosY = this->mPosY;
     this->mHomePosZ = this->mPosZ;
+    /* Fix12 gravity and terminal velocity. */
     this->mVertAccel = -0x2000;
     this->mTerminalVelocity = -0x3c000;
     this->mTargetPlayer = 0;
@@ -3332,8 +3325,8 @@ void daKpa_c::func_ov060_02112434(){
     if (this->mState == BOWSER_STATE_DEFEATED) return;
 
     /* The steps are written `mOpacity += 0x14` / `-= 0x14` rather than storing
-     * v: replacing the `+= 0x14` with `= v` builds 28 bytes shorter (measured;
-     * the `-=` arm was not measured separately). */
+     * v: replacing the `+= 0x14` with `= v` builds 28 bytes shorter, and the
+     * `-= 0x14` with `= v` 16 bytes shorter (both measured). */
     unsigned char cur = this->mOpacity;
     unsigned char target = this->mTargetOpacity;
     if (target == cur) return;
