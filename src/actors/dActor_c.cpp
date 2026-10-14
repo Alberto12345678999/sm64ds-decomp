@@ -1372,6 +1372,7 @@ void dActor_c::LandingDust(bool doRaycast)
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN8dActor_c17HugeLandingDustAtER7Vector3b
 /* ROM ordinal 16 -- _ZN8dActor_c17HugeLandingDustAtER7Vector3b
  * 0x0200fb84  size 0x88 */
 namespace Particle { struct System {
@@ -1383,7 +1384,6 @@ namespace Particle { struct System {
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
  }
-// @symbol _ZN8dActor_c17HugeLandingDustAtER7Vector3b
 void dActor_c::HugeLandingDustAt(Vector3 &pos, bool b)
 {
     if (b) {
