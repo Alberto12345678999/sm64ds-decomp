@@ -166,7 +166,7 @@ struct daKpa_c : dActor_c {
     void func_ov060_02111cc0(int idx, int animFlags);
     int func_ov060_02111f08();
     void func_ov060_02112350();
-    void func_ov060_021123a0(int f);
+    void func_ov060_021123a0(int enable);
     void func_ov060_021123c8();
     void func_ov060_021123dc();
     void func_ov060_02112434();
@@ -175,7 +175,7 @@ struct daKpa_c : dActor_c {
     void func_ov060_021128c0();
     int func_ov060_02112ba8();
     void func_ov060_02112bfc();
-    void func_ov060_02112d48(int arg);
+    void func_ov060_02112d48(int tiltSpeed);
     void func_ov060_02112ddc();
     int func_ov060_02112ee0();
     int func_ov060_021130c0();
@@ -192,7 +192,7 @@ struct daKpa_c : dActor_c {
     int func_ov060_02113d20();
     void func_ov060_02113d8c();
     void func_ov060_02113fcc();
-    int func_ov060_02113ff4(unsigned short arg1, int arg2);
+    int func_ov060_02113ff4(unsigned short minFrames, int turnStep);
     void func_ov060_021140c0();
     void func_ov060_021142b4();
     void func_ov060_02114300();
@@ -221,7 +221,7 @@ struct daKpa_c : dActor_c {
     int func_ov060_02115744();
     void func_ov060_0211577c();
     bool Bowser_IsAnimAtLastFrame();
-    void func_ov060_02115a84(char* arg);
+    void func_ov060_02115a84(char* counter);
     void func_ov060_02115b0c();
 };
 

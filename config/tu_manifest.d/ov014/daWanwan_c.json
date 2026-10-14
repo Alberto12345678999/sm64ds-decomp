@@ -1152,24 +1152,24 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@1166",
+      "from": "@1120",
       "to": "@1165",
-      "evidence": "Native factory and removal of obsolete factory declarations change raw @1179 to @1166; the complete identical initializer and ABS32 edge at +0x184 identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1165 and its retail address are unchanged."
+      "evidence": "The readability pass (typed daWanwan_c parameters replacing char*/void* aliases, removed block-scope declarations and index locals, the WanwanState stand-in replaced by daWanwan_c) changes raw @1166 to @1120; the complete identical initializer and ABS32 edge at +0x184 identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1165 and its retail address are unchanged."
     },
     {
-      "from": "@1167",
+      "from": "@1121",
       "to": "@1166",
-      "evidence": "Native factory and removal of obsolete factory declarations change raw @1180 to @1167; the complete identical initializer and ABS32 edge at +0x190 identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1166 and its retail address are unchanged."
+      "evidence": "The readability pass (typed daWanwan_c parameters replacing char*/void* aliases, removed block-scope declarations and index locals, the WanwanState stand-in replaced by daWanwan_c) changes raw @1167 to @1121; the complete identical initializer and ABS32 edge at +0x190 identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1166 and its retail address are unchanged."
     },
     {
-      "from": "@1168",
+      "from": "@1122",
       "to": "@1167",
-      "evidence": "Native factory and removal of obsolete factory declarations change raw @1181 to @1168; the complete identical initializer and ABS32 edge at +0x1a0 identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1167 and its retail address are unchanged."
+      "evidence": "The readability pass (typed daWanwan_c parameters replacing char*/void* aliases, removed block-scope declarations and index locals, the WanwanState stand-in replaced by daWanwan_c) changes raw @1168 to @1122; the complete identical initializer and ABS32 edge at +0x1a0 identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1167 and its retail address are unchanged."
     },
     {
-      "from": "@1169",
+      "from": "@1123",
       "to": "@1168",
-      "evidence": "Native factory and removal of obsolete factory declarations change raw @1182 to @1169; the complete identical initializer and ABS32 edge at +0x1ac identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1168 and its retail address are unchanged."
+      "evidence": "The readability pass (typed daWanwan_c parameters replacing char*/void* aliases, removed block-scope declarations and index locals, the WanwanState stand-in replaced by daWanwan_c) changes raw @1169 to @1123; the complete identical initializer and ABS32 edge at +0x1ac identify the same 12-byte, alignment-4 NOBITS registration node. Canonical @1168 and its retail address are unchanged."
     }
   ]
 }
