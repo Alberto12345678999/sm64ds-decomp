@@ -66,13 +66,12 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 }
 
 extern "C" {
-void *_ZN8dActor_c10FindWithIDEj(unsigned int id);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-void _ZN7fBase_c18MarkForDestructionEv(void *thiz);
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    void *player, const Vector3 *pos, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
+/* local extern: Player.h has no Hurt member; the owning symbol remains a
+ * scalar C ABI entry. Keep its exact return, receiver, payload and byte flags. */
+int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
+    Player *player, void *pos, u32 a, int b, u8 c, u8 d, u8 e);
 void func_02012694(int a0, void *a1);
-int _ZNK10dBgCh_Actr10IsOnGroundEv(void *c);
 void Vec3_Asr(void *dst, void *src, int n);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
@@ -140,25 +139,26 @@ enum {
  * the Player::Hurt path also plays the sound. */
 extern "C" void func_ov081_02125fb8(daSnowball_c *self)
 {
-    void *other;
+    dActor_c *other;
     int flags;
     unsigned int id = self->mdCcAc_c.otherOwner;
     if (id == 0) return;
-    other = _ZN8dActor_c10FindWithIDEj(id);
+    other = dActor_c::FindWithID(id);
     if (other == 0) return;
     flags = self->mdCcAc_c.hitFlags;
     if ((flags & SNOWBALL_HIT_BIT_0x10) || (flags & SNOWBALL_HIT_BIT_0x40000)) {
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY, self->mPosZ);
-        _ZN7fBase_c18MarkForDestructionEv(self);
+        self->MarkForDestruction();
         return;
     }
     {
-        SnowballBool eq = (SnowballBool)(((Player *)other)->actorID == ACTOR_ID_PLAYER);
+        SnowballBool eq = (SnowballBool)(other->actorID == ACTOR_ID_PLAYER);
         if (eq != SNOWBALL_FALSE) {
-            if (((Player *)other)->mIsVanish != 0) return;
-            if (((Player *)other)->mIsMetal == 1) {
+            Player *player = static_cast<Player *>(other);
+            if (player->mIsVanish != 0) return;
+            if (player->mIsMetal == 1) {
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY, self->mPosZ);
-                _ZN7fBase_c18MarkForDestructionEv(self);
+                self->MarkForDestruction();
                 return;
             }
             {
@@ -169,10 +169,10 @@ extern "C" void func_ov081_02125fb8(daSnowball_c *self)
                 pos.x = self->mPosX;
                 pos.y = self->mPosY;
                 pos.z = self->mPosZ;
-                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(other, &pos, 1, 0xc000, 1, 0, 1);
+                _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &pos, 1, 0xc000, 1, 0, 1);
                 func_02012694(SND3_SNOWBALL_BURST, &self->mCamSpacePosX);
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(PTCL_SNOWBALL_BURST, self->mPosX, self->mPosY, self->mPosZ);
-                _ZN7fBase_c18MarkForDestructionEv(self);
+                self->MarkForDestruction();
                 return;
             }
         }
@@ -203,11 +203,11 @@ int daSnowball_c::func_ov081_021260fc()
         }
     }
     if ((unsigned short)this->mStateTimer == 0 ||
-        _ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn) != 0) {
+        mWithMeshClsn.IsOnGround() != 0) {
         func_02012694(SND3_SNOWBALL_BURST, &this->mCamSpacePosX);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
             PTCL_SNOWBALL_BURST, this->mPosX, this->mPosY, this->mPosZ);
-        _ZN7fBase_c18MarkForDestructionEv(this);
+        MarkForDestruction();
     }
     if (this->unk_0a4 != 0 || this->unk_0ac != 0) {
         func_ov081_02125fb8(this);
