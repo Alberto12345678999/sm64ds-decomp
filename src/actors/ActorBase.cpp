@@ -3,8 +3,8 @@
  * - Source order stays highest address first. Reordering moves the run.
  * - The native destructor owns both process-list node lifetimes. The
  *   existing preparation path rebiases its vptr references to ROM slot arrays.
- * - InitResources stays a free function. As a method it emits
- *   _ZTV7fBase_c a second time.
+ * - Native InitResources emits the class metadata. The manifest verifies
+ *   and externalizes it to the existing canonical ROM storage.
  * - decl_common.h stays out. Its spellings of these list heads
  *   disagree with the calls in this file.
  * - Heap locals stay void*. Virtual34 and Virtual38 still read
@@ -240,14 +240,9 @@ int fBase_c::Process(ProcessFunction action, BeforeProcessFunction before,
 }
 
 /* vtable slot 0. Default initialization succeeds without loading resources.
- *
- * THE KEY FUNCTION, AND THE REASON THIS ONE IS NOT A METHOD. See the file
- * banner: a real `s32 fBase_c::InitResources()` anywhere makes that TU emit
- * _ZTV7fBase_c and collide with the gap object's copy of the ROM's own
- * vtable. Its DECLARATION in the class is required and harmless -- removing it
- * would delete slot 0 and shift the other seventeen. */
+ * This key function emits metadata checked against canonical ROM storage. */
 // @symbol _ZN7fBase_c13InitResourcesEv
-extern "C" int _ZN7fBase_c13InitResourcesEv(void)
+int fBase_c::InitResources()
 {
     return 1;
 }
