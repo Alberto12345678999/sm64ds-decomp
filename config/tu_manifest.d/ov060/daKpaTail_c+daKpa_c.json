@@ -4748,314 +4748,314 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@2289",
+      "from": "@2247",
       "to": "@3094",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2289 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211add0 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2289 -> @2247; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3094 is retained."
     },
     {
-      "from": "@2290",
+      "from": "@2248",
       "to": "@3095",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2290 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211addc is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2290 -> @2248; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3095 is retained."
     },
     {
-      "from": "@2291",
+      "from": "@2249",
       "to": "@3096",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2291 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ade8 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2291 -> @2249; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3096 is retained."
     },
     {
-      "from": "@2292",
+      "from": "@2250",
       "to": "@3097",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2292 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211adf4 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2292 -> @2250; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3097 is retained."
     },
     {
-      "from": "@2293",
+      "from": "@2251",
       "to": "@3098",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2293 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae00 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2293 -> @2251; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3098 is retained."
     },
     {
-      "from": "@2294",
+      "from": "@2252",
       "to": "@3099",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2294 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae18 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2294 -> @2252; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3099 is retained."
     },
     {
-      "from": "@2295",
+      "from": "@2253",
       "to": "@3100",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2295 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae24 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2295 -> @2253; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3100 is retained."
     },
     {
-      "from": "@2296",
+      "from": "@2254",
       "to": "@3101",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2296 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae30 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2296 -> @2254; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3101 is retained."
     },
     {
-      "from": "@2297",
+      "from": "@2255",
       "to": "@3102",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2297 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae48 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2297 -> @2255; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3102 is retained."
     },
     {
-      "from": "@2298",
+      "from": "@2256",
       "to": "@3103",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2298 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae54 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2298 -> @2256; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3103 is retained."
     },
     {
-      "from": "@2299",
+      "from": "@2257",
       "to": "@3104",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2299 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae60 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2299 -> @2257; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3104 is retained."
     },
     {
-      "from": "@2300",
+      "from": "@2258",
       "to": "@3105",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2300 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae78 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2300 -> @2258; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3105 is retained."
     },
     {
-      "from": "@2301",
+      "from": "@2259",
       "to": "@3106",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2301 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae84 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2301 -> @2259; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3106 is retained."
     },
     {
-      "from": "@2302",
+      "from": "@2260",
       "to": "@3107",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2302 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ae90 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2302 -> @2260; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3107 is retained."
     },
     {
-      "from": "@2303",
+      "from": "@2261",
       "to": "@3108",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2303 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211acf8 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2303 -> @2261; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3108 is retained."
     },
     {
-      "from": "@2304",
+      "from": "@2262",
       "to": "@3109",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2304 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ad40 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2304 -> @2262; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3109 is retained."
     },
     {
-      "from": "@2305",
+      "from": "@2263",
       "to": "@3110",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2305 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ad28 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2305 -> @2263; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3110 is retained."
     },
     {
-      "from": "@2306",
+      "from": "@2264",
       "to": "@3111",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2306 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ad4c is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2306 -> @2264; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3111 is retained."
     },
     {
-      "from": "@2307",
+      "from": "@2265",
       "to": "@3112",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2307 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ad64 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2307 -> @2265; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3112 is retained."
     },
     {
-      "from": "@2308",
+      "from": "@2266",
       "to": "@3113",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2308 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ad7c is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2308 -> @2266; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3113 is retained."
     },
     {
-      "from": "@2309",
+      "from": "@2267",
       "to": "@3114",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2309 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211ada0 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2309 -> @2267; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3114 is retained."
     },
     {
-      "from": "@2311",
+      "from": "@2269",
       "to": "@3115",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2311 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a578 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2311 -> @2269; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3115 is retained."
     },
     {
-      "from": "@2313",
+      "from": "@2271",
       "to": "@3116",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2313 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a510 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2313 -> @2271; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3116 is retained."
     },
     {
-      "from": "@2315",
+      "from": "@2273",
       "to": "@3117",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2315 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a518 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2317",
-      "to": "@3118",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2317 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a520 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2319",
-      "to": "@3119",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2319 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a568 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2321",
-      "to": "@3120",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2321 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a560 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2323",
-      "to": "@3121",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2323 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a538 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2325",
-      "to": "@3122",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2325 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a4e8 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2327",
-      "to": "@3123",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2327 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a4f0 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2329",
-      "to": "@3124",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2329 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a500 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2331",
-      "to": "@3125",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2331 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a540 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2333",
-      "to": "@3126",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2333 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a5b8 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2335",
-      "to": "@3127",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2335 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a5b0 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2337",
-      "to": "@3128",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2337 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a5a0 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2339",
-      "to": "@3129",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2339 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a5a8 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2341",
-      "to": "@3130",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2341 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a530 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2343",
-      "to": "@3131",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2343 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a508 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2345",
-      "to": "@3132",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2345 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a528 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2347",
-      "to": "@3133",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2347 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a598 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2349",
-      "to": "@3134",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2349 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a590 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2351",
-      "to": "@3135",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2351 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a588 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2353",
-      "to": "@3136",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2353 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a580 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2355",
-      "to": "@3137",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2355 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a4f8 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2357",
-      "to": "@3138",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2357 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a570 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2359",
-      "to": "@3139",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2359 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a558 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2361",
-      "to": "@3140",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2361 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a550 is bound to this fresh globally-unique pin"
-    },
-    {
-      "from": "@2363",
-      "to": "@3141",
-      "evidence": "compiler-local object; mwccarm numbers this per-TU temp @2363 and the classInit folds plus the types.h Vector3 ctors shift the counter, so the row's original pin is one of this object's own temps and cannot be a rename destination; the slot at 0x0211a548 is bound to this fresh globally-unique pin"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2315 -> @2273; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3117 is retained."
     },
     {
       "from": "@2275",
-      "to": "@2261",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2275 now; licensed under the existing pin @2261"
-    },
-    {
-      "from": "@2276",
-      "to": "@2262",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2276 now; licensed under the existing pin @2262"
+      "to": "@3118",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2317 -> @2275; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3118 is retained."
     },
     {
       "from": "@2277",
-      "to": "@2263",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2277 now; licensed under the existing pin @2263"
-    },
-    {
-      "from": "@2278",
-      "to": "@2264",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2278 now; licensed under the existing pin @2264"
-    },
-    {
-      "from": "@2280",
-      "to": "@2266",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2280 now; licensed under the existing pin @2266"
-    },
-    {
-      "from": "@2282",
-      "to": "@2268",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2282 now; licensed under the existing pin @2268"
-    },
-    {
-      "from": "@2284",
-      "to": "@2270",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2284 now; licensed under the existing pin @2270"
-    },
-    {
-      "from": "@2285",
-      "to": "@2271",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2285 now; licensed under the existing pin @2271"
-    },
-    {
-      "from": "@2286",
-      "to": "@2272",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2286 now; licensed under the existing pin @2272"
-    },
-    {
-      "from": "@2287",
-      "to": "@2273",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2287 now; licensed under the existing pin @2273"
-    },
-    {
-      "from": "@2288",
-      "to": "@2274",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2288 now; licensed under the existing pin @2274"
-    },
-    {
-      "from": "@2283",
-      "to": "@2269",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2283 now; licensed under the existing pin @2269"
-    },
-    {
-      "from": "@2281",
-      "to": "@2267",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2281 now; licensed under the existing pin @2267"
+      "to": "@3119",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2319 -> @2277; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3119 is retained."
     },
     {
       "from": "@2279",
+      "to": "@3120",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2321 -> @2279; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3120 is retained."
+    },
+    {
+      "from": "@2281",
+      "to": "@3121",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2323 -> @2281; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3121 is retained."
+    },
+    {
+      "from": "@2283",
+      "to": "@3122",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2325 -> @2283; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3122 is retained."
+    },
+    {
+      "from": "@2285",
+      "to": "@3123",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2327 -> @2285; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3123 is retained."
+    },
+    {
+      "from": "@2287",
+      "to": "@3124",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2329 -> @2287; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3124 is retained."
+    },
+    {
+      "from": "@2289",
+      "to": "@3125",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2331 -> @2289; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3125 is retained."
+    },
+    {
+      "from": "@2291",
+      "to": "@3126",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2333 -> @2291; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3126 is retained."
+    },
+    {
+      "from": "@2293",
+      "to": "@3127",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2335 -> @2293; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3127 is retained."
+    },
+    {
+      "from": "@2295",
+      "to": "@3128",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2337 -> @2295; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3128 is retained."
+    },
+    {
+      "from": "@2297",
+      "to": "@3129",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2339 -> @2297; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3129 is retained."
+    },
+    {
+      "from": "@2299",
+      "to": "@3130",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2341 -> @2299; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3130 is retained."
+    },
+    {
+      "from": "@2301",
+      "to": "@3131",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2343 -> @2301; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3131 is retained."
+    },
+    {
+      "from": "@2303",
+      "to": "@3132",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2345 -> @2303; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3132 is retained."
+    },
+    {
+      "from": "@2305",
+      "to": "@3133",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2347 -> @2305; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3133 is retained."
+    },
+    {
+      "from": "@2307",
+      "to": "@3134",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2349 -> @2307; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3134 is retained."
+    },
+    {
+      "from": "@2309",
+      "to": "@3135",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2351 -> @2309; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3135 is retained."
+    },
+    {
+      "from": "@2311",
+      "to": "@3136",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2353 -> @2311; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3136 is retained."
+    },
+    {
+      "from": "@2313",
+      "to": "@3137",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2355 -> @2313; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3137 is retained."
+    },
+    {
+      "from": "@2315",
+      "to": "@3138",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2357 -> @2315; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3138 is retained."
+    },
+    {
+      "from": "@2317",
+      "to": "@3139",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2359 -> @2317; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3139 is retained."
+    },
+    {
+      "from": "@2319",
+      "to": "@3140",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2361 -> @2319; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3140 is retained."
+    },
+    {
+      "from": "@2321",
+      "to": "@3141",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2363 -> @2321; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @3141 is retained."
+    },
+    {
+      "from": "@2233",
+      "to": "@2261",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2275 -> @2233; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2261 is retained."
+    },
+    {
+      "from": "@2234",
+      "to": "@2262",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2276 -> @2234; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2262 is retained."
+    },
+    {
+      "from": "@2235",
+      "to": "@2263",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2277 -> @2235; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2263 is retained."
+    },
+    {
+      "from": "@2236",
+      "to": "@2264",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2278 -> @2236; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2264 is retained."
+    },
+    {
+      "from": "@2238",
+      "to": "@2266",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2280 -> @2238; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2266 is retained."
+    },
+    {
+      "from": "@2240",
+      "to": "@2268",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2282 -> @2240; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2268 is retained."
+    },
+    {
+      "from": "@2242",
+      "to": "@2270",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2284 -> @2242; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2270 is retained."
+    },
+    {
+      "from": "@2243",
+      "to": "@2271",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2285 -> @2243; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2271 is retained."
+    },
+    {
+      "from": "@2244",
+      "to": "@2272",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2286 -> @2244; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2272 is retained."
+    },
+    {
+      "from": "@2245",
+      "to": "@2273",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2287 -> @2245; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2273 is retained."
+    },
+    {
+      "from": "@2246",
+      "to": "@2274",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2288 -> @2246; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2274 is retained."
+    },
+    {
+      "from": "@2241",
+      "to": "@2269",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2283 -> @2241; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2269 is retained."
+    },
+    {
+      "from": "@2239",
+      "to": "@2267",
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2281 -> @2239; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2267 is retained."
+    },
+    {
+      "from": "@2237",
       "to": "@2265",
-      "evidence": "compiler temp; the types.h Vector3 ctors and main's sinit folds shift this TU's per-TU @NNN uniquifier, so mwcc emits it as @2279 now; licensed under the existing pin @2265"
+      "evidence": "Native actor/Player/collision interface cleanup removes redundant declarations. Complete initializer bytes and paired ABS32 offsets identify @2279 -> @2237; raw object size/alignment/body/typed edges are unchanged. Existing canonical destination @2265 is retained."
     }
   ]
 }

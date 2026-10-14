@@ -1,0 +1,2779 @@
+{
+  "task": "bowser-native1013",
+  "base_commit": "607576acc557a318d5f813f8a0813bc86f03d140",
+  "workflow_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+  "coordinator": "codex-bowser-native-coordinator1013",
+  "source_completion": "partial",
+  "summary": "Bowser and tail use existing native Player, actor and collision interfaces at61 call sites across21 APIs; redundant raw declarations and resolved conflict comments are removed. Anonymous input names are remeasured with canonical destinations unchanged.",
+  "sources": [
+    "src/actors/daKpa_c.cpp",
+    "include/daKpaTail_c.h"
+  ],
+  "manifest": "config/tu_manifest.d/ov060/daKpaTail_c+daKpa_c.json",
+  "producer_sessions": [
+    "codex-bowser-native-producer1013",
+    "01a135f6-ffe2-7f12-a948-096399c6745c"
+  ],
+  "scout_provenance": {
+    "actual_thread": "01a135f6-ffe2-7f12-a948-096399c6745c",
+    "agent": "/root/camera_valueweb_pass",
+    "parent_session": "01a12e6f-7ee1-7162-9a64-81145ed6b260",
+    "handoff_sha256": "5ff373bac4c0ea5f369710fc9ef17b5cafb9d51dc68e47e873508e659cc145f3"
+  },
+  "native_call_sites": {
+    "_ZN6Player7IsInAirEv": 2,
+    "_ZN6Player9GetHealthEv": 1,
+    "_ZN6Player9DropActorEv": 1,
+    "_ZN6Player15IsCollectingCapEv": 1,
+    "_ZN6Player7TryGrabER8dActor_c": 1,
+    "_ZN6Player9StartTalkER7fBase_cb": 3,
+    "_ZN6Player12GetTalkStateEv": 6,
+    "_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh": 3,
+    "_ZN8dActor_c14GetSubtractionEss": 5,
+    "_ZN8dActor_c13DistToCPlayerEv": 1,
+    "_ZN8dActor_c13ClosestPlayerEv": 1,
+    "_ZN8dActor_c9UpdatePosEP5dCc_c": 1,
+    "_ZNK10dBgCh_Actr10IsOnGroundEv": 8,
+    "_ZNK10dBgCh_Actr13JustHitGroundEv": 5,
+    "_ZN10dBgCh_Actr15ClearGroundFlagEv": 1,
+    "_ZN10dBgCh_Actr13SetLimMovFlagEv": 1,
+    "_ZN8dActor_c13LandingDustAtER7Vector3b": 1,
+    "_ZN8dActor_c17HugeLandingDustAtER7Vector3b": 2,
+    "_ZN8dActor_c10FindWithIDEj": 8,
+    "_ZN8dActor_c15FindWithActorIDEjPS_": 2,
+    "_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as": 7
+  },
+  "predecessor_tasks": [],
+  "inherited_findings": {},
+  "actual_git_lineage": [
+    "bec62bfc6867c6c7abc4a8c58a163eed91154bfe|andrewboudreau|Merge origin/main into fold/classinit-tails-a-1009",
+    "c0d92262a278338c218334c3850eaf37bd442a0a|lunavyqo|Fold __sinit_ov060_0211a428 into ov060/daFRing_c",
+    "fb58780e44e8c3a5f5e92c951019e544419e2395|andrewboudreau|WIP kpa",
+    "f6425870c04967bad0adea4e493fdb78221537ff|lunavyqo|Fold the ov060 Bowser static initializer into daKpa_c.cpp",
+    "fe53da9993e94757407032ea26354f415642f15d|Lunavyqo|ov060/daKpa2Bg_c: methodize the 3 object-first helpers (#3633)",
+    "d24f8fddcc5192fe790057c0a7e47c8d351a33c1|lunavyqo|Merge remote-tracking branch 'origin/main' into fold/arm9-sound",
+    "5d2e6df649facd788f6931860cdc45a8d18f1851|lunavyqo|Deslop ov060/daKpaTail_c+daKpa_c: member-ify 66 object-first helpers",
+    "511c785582aa4234ef73c9504677c1be723c41c9|lunavyqo|arm9: fold Sound module shards into one engine/sound TU",
+    "f000cb01adc7e22ac1c048f26c8d75daa1b93f1b|lunavyqo|Merge remote-tracking branch 'origin/main' into fold/arm9-camera",
+    "11620833900dfc00614c26c5934c9c96bfd69ac5|lunavyqo|Merge remote-tracking branch 'origin/main' into fold/arm9-camera"
+  ],
+  "lineage_qualification": "Current queue contains no exact predecessor task for this coherent class/Source/header scope. Git commits and actual author names are recorded without inventing historical harness sessions. Existing per-function attribution is unchanged.",
+  "findings": [
+    {
+      "id": "KPA-AUDIT-PROV001",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "src/actors/daKpa_c.cpp: banner",
+      "summary": "Factory identifiers were wrongly described as ROM-spelled.",
+      "reason": "Source now calls classInit identifiers reconstructed; ROM RTTI evidence remains separately described."
+    },
+    {
+      "id": "KPA-AUDIT-PROV002",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "src/actors/daKpa_c.cpp: PMF table explanation",
+      "summary": "Tail state table0211ae9c was incorrectly described as a Bowser member-pointer table.",
+      "reason": "Source identifies0211ae9c as KpaTailState/daKpaTail_c and Bowser tables as0211aeb4/0211aed4, matching actual definitions and manifest storage."
+    },
+    {
+      "id": "KPA-AUDIT-PROV003",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "include/daKpaTail_c.h:5-7",
+      "summary": "Header claimed four real methods and extern-C state workers despite actual member declarations.",
+      "reason": "Comment now correctly describes resource, behavior and state-worker methods defined in daKpa_c.cpp. Non-comment header text is identical; the only affected production consumer is this TU."
+    },
+    {
+      "id": "KPA-NATIVE-001",
+      "kind": "reconstruction",
+      "disposition": "fixed",
+      "location": "src/actors/daKpa_c.cpp",
+      "summary": "61 native interface calls replace raw mangled boundaries.",
+      "reason": "Existing native bool, byte, reference and return contracts are used. Ignored DropActor int result remains ignored; shared target/held fields stay dActor_c pointers, with local Player identity casts."
+    },
+    {
+      "id": "KPA-NATIVE-002",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "location": "src/actors/daKpa_c.cpp",
+      "summary": "Scalar Fix12 bridges, flat vector views and raw borrowed floor-result/particle/camera fields remain.",
+      "reason": "This caller-interface pass preserves measured storage and ABI boundaries without claiming complete class reconstruction.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+      "owner": "codex-bowser-native-coordinator1013"
+    },
+    {
+      "id": "KPA-NATIVE-003",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "location": "src/actors/daKpa_c.cpp",
+      "summary": "Existing explicit volatile, pointer-walk and scheduling-sensitive local forms remain.",
+      "reason": "These inherited forms are outside this verified interface pass; no new compiler-floor or original-intent claim is made.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+      "owner": "codex-bowser-native-coordinator1013"
+    }
+  ],
+  "canary": {
+    "source": "C:\\tmp\\sm64ds-bowser-native1013\\src\\actors\\dMgTrmpln2Mario_c.cpp",
+    "result": [
+      true,
+      "2004/b56"
+    ]
+  },
+  "header_token_proof": {
+    "path": "include\\daKpaTail_c.h",
+    "comment_only": true,
+    "noncomment_text_identical": true,
+    "before_sha256": "e9158145f664c666c48324c40781180b8e4d50ec52ca97952dea41461d30009c",
+    "after_sha256": "b5bc7ce3bab2896494303c44aefca835b036bb9d153ca796f7a4f3b83efdab3a"
+  },
+  "affected_header_consumers": [
+    "src/actors/daKpa_c.cpp"
+  ],
+  "anonymous_input_proof": {
+    "count": 62,
+    "nobits_records": 35,
+    "data_records": 27,
+    "canonical_destinations_unchanged": true,
+    "entire_raw_graph_equal_after_name_normalization": true
+  },
+  "registration_map": [
+    {
+      "initializer_offset": 1564,
+      "old_input": "@2275",
+      "new_input": "@2233",
+      "canonical_destination": "@2261",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1580,
+      "old_input": "@2276",
+      "new_input": "@2234",
+      "canonical_destination": "@2262",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1592,
+      "old_input": "@2277",
+      "new_input": "@2235",
+      "canonical_destination": "@2263",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1600,
+      "old_input": "@2278",
+      "new_input": "@2236",
+      "canonical_destination": "@2264",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1608,
+      "old_input": "@2279",
+      "new_input": "@2237",
+      "canonical_destination": "@2265",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1620,
+      "old_input": "@2280",
+      "new_input": "@2238",
+      "canonical_destination": "@2266",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1632,
+      "old_input": "@2281",
+      "new_input": "@2239",
+      "canonical_destination": "@2267",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1644,
+      "old_input": "@2282",
+      "new_input": "@2240",
+      "canonical_destination": "@2268",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1652,
+      "old_input": "@2283",
+      "new_input": "@2241",
+      "canonical_destination": "@2269",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1664,
+      "old_input": "@2284",
+      "new_input": "@2242",
+      "canonical_destination": "@2270",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1676,
+      "old_input": "@2285",
+      "new_input": "@2243",
+      "canonical_destination": "@2271",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1684,
+      "old_input": "@2286",
+      "new_input": "@2244",
+      "canonical_destination": "@2272",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1696,
+      "old_input": "@2287",
+      "new_input": "@2245",
+      "canonical_destination": "@2273",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1708,
+      "old_input": "@2288",
+      "new_input": "@2246",
+      "canonical_destination": "@2274",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1716,
+      "old_input": "@2289",
+      "new_input": "@2247",
+      "canonical_destination": "@3094",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1728,
+      "old_input": "@2290",
+      "new_input": "@2248",
+      "canonical_destination": "@3095",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1736,
+      "old_input": "@2291",
+      "new_input": "@2249",
+      "canonical_destination": "@3096",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1748,
+      "old_input": "@2292",
+      "new_input": "@2250",
+      "canonical_destination": "@3097",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1760,
+      "old_input": "@2293",
+      "new_input": "@2251",
+      "canonical_destination": "@3098",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1768,
+      "old_input": "@2294",
+      "new_input": "@2252",
+      "canonical_destination": "@3099",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1780,
+      "old_input": "@2295",
+      "new_input": "@2253",
+      "canonical_destination": "@3100",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1788,
+      "old_input": "@2296",
+      "new_input": "@2254",
+      "canonical_destination": "@3101",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1800,
+      "old_input": "@2297",
+      "new_input": "@2255",
+      "canonical_destination": "@3102",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1812,
+      "old_input": "@2298",
+      "new_input": "@2256",
+      "canonical_destination": "@3103",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1824,
+      "old_input": "@2299",
+      "new_input": "@2257",
+      "canonical_destination": "@3104",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1836,
+      "old_input": "@2300",
+      "new_input": "@2258",
+      "canonical_destination": "@3105",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1844,
+      "old_input": "@2301",
+      "new_input": "@2259",
+      "canonical_destination": "@3106",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1856,
+      "old_input": "@2302",
+      "new_input": "@2260",
+      "canonical_destination": "@3107",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1868,
+      "old_input": "@2303",
+      "new_input": "@2261",
+      "canonical_destination": "@3108",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1884,
+      "old_input": "@2304",
+      "new_input": "@2262",
+      "canonical_destination": "@3109",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1896,
+      "old_input": "@2305",
+      "new_input": "@2263",
+      "canonical_destination": "@3110",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1908,
+      "old_input": "@2306",
+      "new_input": "@2264",
+      "canonical_destination": "@3111",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1920,
+      "old_input": "@2307",
+      "new_input": "@2265",
+      "canonical_destination": "@3112",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1932,
+      "old_input": "@2308",
+      "new_input": "@2266",
+      "canonical_destination": "@3113",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1944,
+      "old_input": "@2309",
+      "new_input": "@2267",
+      "canonical_destination": "@3114",
+      "size": 12,
+      "section_type": "SHT_NOBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1952,
+      "old_input": "@2311",
+      "new_input": "@2269",
+      "canonical_destination": "@3115",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1956,
+      "old_input": "@2313",
+      "new_input": "@2271",
+      "canonical_destination": "@3116",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1960,
+      "old_input": "@2315",
+      "new_input": "@2273",
+      "canonical_destination": "@3117",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1964,
+      "old_input": "@2317",
+      "new_input": "@2275",
+      "canonical_destination": "@3118",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1972,
+      "old_input": "@2319",
+      "new_input": "@2277",
+      "canonical_destination": "@3119",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1976,
+      "old_input": "@2321",
+      "new_input": "@2279",
+      "canonical_destination": "@3120",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1980,
+      "old_input": "@2323",
+      "new_input": "@2281",
+      "canonical_destination": "@3121",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1984,
+      "old_input": "@2325",
+      "new_input": "@2283",
+      "canonical_destination": "@3122",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1988,
+      "old_input": "@2327",
+      "new_input": "@2285",
+      "canonical_destination": "@3123",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1992,
+      "old_input": "@2329",
+      "new_input": "@2287",
+      "canonical_destination": "@3124",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 1996,
+      "old_input": "@2331",
+      "new_input": "@2289",
+      "canonical_destination": "@3125",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2000,
+      "old_input": "@2333",
+      "new_input": "@2291",
+      "canonical_destination": "@3126",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2004,
+      "old_input": "@2335",
+      "new_input": "@2293",
+      "canonical_destination": "@3127",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2008,
+      "old_input": "@2337",
+      "new_input": "@2295",
+      "canonical_destination": "@3128",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2012,
+      "old_input": "@2339",
+      "new_input": "@2297",
+      "canonical_destination": "@3129",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2016,
+      "old_input": "@2341",
+      "new_input": "@2299",
+      "canonical_destination": "@3130",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2020,
+      "old_input": "@2343",
+      "new_input": "@2301",
+      "canonical_destination": "@3131",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2024,
+      "old_input": "@2345",
+      "new_input": "@2303",
+      "canonical_destination": "@3132",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2028,
+      "old_input": "@2347",
+      "new_input": "@2305",
+      "canonical_destination": "@3133",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2032,
+      "old_input": "@2349",
+      "new_input": "@2307",
+      "canonical_destination": "@3134",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2036,
+      "old_input": "@2351",
+      "new_input": "@2309",
+      "canonical_destination": "@3135",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2040,
+      "old_input": "@2353",
+      "new_input": "@2311",
+      "canonical_destination": "@3136",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2044,
+      "old_input": "@2355",
+      "new_input": "@2313",
+      "canonical_destination": "@3137",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2048,
+      "old_input": "@2357",
+      "new_input": "@2315",
+      "canonical_destination": "@3138",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2056,
+      "old_input": "@2359",
+      "new_input": "@2317",
+      "canonical_destination": "@3139",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2060,
+      "old_input": "@2361",
+      "new_input": "@2319",
+      "canonical_destination": "@3140",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    },
+    {
+      "initializer_offset": 2064,
+      "old_input": "@2363",
+      "new_input": "@2321",
+      "canonical_destination": "@3141",
+      "size": 8,
+      "section_type": "SHT_PROGBITS",
+      "alignment": 4,
+      "offset": 0,
+      "body_and_typed_edges_equal": true
+    }
+  ],
+  "whole_proof": {
+    "baseline": {
+      "strict": 110,
+      "bss_records": 73,
+      "bss_bytes": 916,
+      "metadata_records": 12,
+      "metadata_bytes": 371,
+      "raw_refs": 741,
+      "prepared_refs": 653,
+      "raw_sha256": "f017b65db9eac1996099012af88fa7a37ef3d2a35d33cc9b57e4c5a8bcc71f12",
+      "prepared_sha256": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3"
+    },
+    "candidate": {
+      "strict": 110,
+      "bss_records": 73,
+      "bss_bytes": 916,
+      "metadata_records": 12,
+      "metadata_bytes": 371,
+      "raw_refs": 741,
+      "prepared_refs": 653,
+      "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
+      "prepared_sha256": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3"
+    },
+    "complete_owned_bodies_edges_equal": true,
+    "complete_metadata_equal": true,
+    "ordinary_preparation": true,
+    "raw_container_equal": false,
+    "prepared_container_equal": true,
+    "base": "607576acc557a318d5f813f8a0813bc86f03d140",
+    "full_rom_run": false
+  },
+  "proof_scope": "Fresh current607 whole objects and gates. Manifest embedded prior verification notes and private scout measurements are historical context; terminal current production results will be recorded separately. No foreign PR3815 composition is claimed.",
+  "gates": {},
+  "status": "Final Source object binding and whole proof complete; frozen-checkpoint production gates pending.",
+  "final_source_binding": {
+    "source_sha256": "b20d07dfb6f1108d7732624ce7d33de248cd375decd838303e1b4c3df0319fcf",
+    "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
+    "prepared_sha256": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3",
+    "final_raw_equal_to_whole_proven_candidate": true,
+    "final_normal_prepared_equal_to_whole_proven_candidate_and_baseline": true,
+    "proof_transfer": "Complete binary equality binds all fresh 110 strict rows and all graphs/metadata to this final Source after the requested readability repairs."
+  },
+  "storage_proof": {
+    "baseline": [
+      {
+        "record": {
+          "symbol": "data_ov060_0211abe0",
+          "address": "0x211abe0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36c"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211abe8",
+          "address": "0x211abe8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x374"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211abf0",
+          "address": "0x211abf0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x37b"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211abf8",
+          "address": "0x211abf8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37c"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac00",
+          "address": "0x211ac00",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x380"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac08",
+          "address": "0x211ac08",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x381"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac10",
+          "address": "0x211ac10",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x365"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac18",
+          "address": "0x211ac18",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x366"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac20",
+          "address": "0x211ac20",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x371"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac28",
+          "address": "0x211ac28",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x37d"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac30",
+          "address": "0x211ac30",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x373"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac38",
+          "address": "0x211ac38",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x376"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac40",
+          "address": "0x211ac40",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x363"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac48",
+          "address": "0x211ac48",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x375"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac50",
+          "address": "0x211ac50",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x362"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac58",
+          "address": "0x211ac58",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x360"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac60",
+          "address": "0x211ac60",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x364"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac68",
+          "address": "0x211ac68",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36b"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac70",
+          "address": "0x211ac70",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x370"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac78",
+          "address": "0x211ac78",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "model resource handle constructed with file ID 0x377"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac80",
+          "address": "0x211ac80",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x372"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac88",
+          "address": "0x211ac88",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x35f"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac90",
+          "address": "0x211ac90",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x378"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac98",
+          "address": "0x211ac98",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37a"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aca0",
+          "address": "0x211aca0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x368"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aca8",
+          "address": "0x211aca8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37e"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acb0",
+          "address": "0x211acb0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37f"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acb8",
+          "address": "0x211acb8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x361"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acc0",
+          "address": "0x211acc0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x379"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acc8",
+          "address": "0x211acc8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x369"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acd0",
+          "address": "0x211acd0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x367"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acd8",
+          "address": "0x211acd8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36d"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ace0",
+          "address": "0x211ace0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36a"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ace8",
+          "address": "0x211ace8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36e"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acf0",
+          "address": "0x211acf0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36f"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3108",
+          "address": "0x211acf8",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2261",
+          "address": "0x211ad04",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2262",
+          "address": "0x211ad10",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2263",
+          "address": "0x211ad1c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3110",
+          "address": "0x211ad28",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2264",
+          "address": "0x211ad34",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3109",
+          "address": "0x211ad40",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3111",
+          "address": "0x211ad4c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2266",
+          "address": "0x211ad58",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3112",
+          "address": "0x211ad64",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2268",
+          "address": "0x211ad70",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3113",
+          "address": "0x211ad7c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2270",
+          "address": "0x211ad88",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2271",
+          "address": "0x211ad94",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3114",
+          "address": "0x211ada0",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2272",
+          "address": "0x211adac",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2273",
+          "address": "0x211adb8",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2274",
+          "address": "0x211adc4",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3094",
+          "address": "0x211add0",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3095",
+          "address": "0x211addc",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3096",
+          "address": "0x211ade8",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3097",
+          "address": "0x211adf4",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3098",
+          "address": "0x211ae00",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2269",
+          "address": "0x211ae0c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3099",
+          "address": "0x211ae18",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3100",
+          "address": "0x211ae24",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3101",
+          "address": "0x211ae30",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2267",
+          "address": "0x211ae3c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3102",
+          "address": "0x211ae48",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3103",
+          "address": "0x211ae54",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3104",
+          "address": "0x211ae60",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2265",
+          "address": "0x211ae6c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3105",
+          "address": "0x211ae78",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3106",
+          "address": "0x211ae84",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3107",
+          "address": "0x211ae90",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ae9c",
+          "address": "0x211ae9c",
+          "size": "0x18",
+          "binding": "STB_GLOBAL",
+          "evidence": "the three-entry daKpaTail_c pointer-to-member state table; the initializer copies the three descriptors into it"
+        },
+        "size": 24,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aeb4",
+          "address": "0x211aeb4",
+          "size": "0x20",
+          "binding": "STB_GLOBAL",
+          "evidence": "the four-entry daKpa_c pointer-to-member hold-state table; the initializer copies the four descriptors into it"
+        },
+        "size": 32,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aed4",
+          "address": "0x211aed4",
+          "size": "0xa0",
+          "binding": "STB_GLOBAL",
+          "evidence": "the twenty-entry daKpa_c pointer-to-member state table Behavior dispatches on mStateIndex; the initializer copies the twenty descriptors into it"
+        },
+        "size": 160,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      }
+    ],
+    "candidate": [
+      {
+        "record": {
+          "symbol": "data_ov060_0211abe0",
+          "address": "0x211abe0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36c"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211abe8",
+          "address": "0x211abe8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x374"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211abf0",
+          "address": "0x211abf0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x37b"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211abf8",
+          "address": "0x211abf8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37c"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac00",
+          "address": "0x211ac00",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x380"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac08",
+          "address": "0x211ac08",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x381"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac10",
+          "address": "0x211ac10",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x365"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac18",
+          "address": "0x211ac18",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x366"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac20",
+          "address": "0x211ac20",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x371"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac28",
+          "address": "0x211ac28",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x37d"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac30",
+          "address": "0x211ac30",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x373"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac38",
+          "address": "0x211ac38",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x376"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac40",
+          "address": "0x211ac40",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x363"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac48",
+          "address": "0x211ac48",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x375"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac50",
+          "address": "0x211ac50",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x362"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac58",
+          "address": "0x211ac58",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x360"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac60",
+          "address": "0x211ac60",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x364"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac68",
+          "address": "0x211ac68",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36b"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac70",
+          "address": "0x211ac70",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x370"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac78",
+          "address": "0x211ac78",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "model resource handle constructed with file ID 0x377"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac80",
+          "address": "0x211ac80",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x372"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac88",
+          "address": "0x211ac88",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x35f"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac90",
+          "address": "0x211ac90",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x378"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ac98",
+          "address": "0x211ac98",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37a"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aca0",
+          "address": "0x211aca0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x368"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aca8",
+          "address": "0x211aca8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37e"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acb0",
+          "address": "0x211acb0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x37f"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acb8",
+          "address": "0x211acb8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "texture-sequence resource handle constructed with file ID 0x361"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acc0",
+          "address": "0x211acc0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x379"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acc8",
+          "address": "0x211acc8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x369"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acd0",
+          "address": "0x211acd0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x367"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acd8",
+          "address": "0x211acd8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36d"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ace0",
+          "address": "0x211ace0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36a"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ace8",
+          "address": "0x211ace8",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36e"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211acf0",
+          "address": "0x211acf0",
+          "size": "0x8",
+          "binding": "STB_GLOBAL",
+          "evidence": "animation resource handle constructed with file ID 0x36f"
+        },
+        "size": 8,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3108",
+          "address": "0x211acf8",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2261",
+          "address": "0x211ad04",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2262",
+          "address": "0x211ad10",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2263",
+          "address": "0x211ad1c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3110",
+          "address": "0x211ad28",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2264",
+          "address": "0x211ad34",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3109",
+          "address": "0x211ad40",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3111",
+          "address": "0x211ad4c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2266",
+          "address": "0x211ad58",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3112",
+          "address": "0x211ad64",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2268",
+          "address": "0x211ad70",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3113",
+          "address": "0x211ad7c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2270",
+          "address": "0x211ad88",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2271",
+          "address": "0x211ad94",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3114",
+          "address": "0x211ada0",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2272",
+          "address": "0x211adac",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2273",
+          "address": "0x211adb8",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2274",
+          "address": "0x211adc4",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3094",
+          "address": "0x211add0",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3095",
+          "address": "0x211addc",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3096",
+          "address": "0x211ade8",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3097",
+          "address": "0x211adf4",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3098",
+          "address": "0x211ae00",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2269",
+          "address": "0x211ae0c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3099",
+          "address": "0x211ae18",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3100",
+          "address": "0x211ae24",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3101",
+          "address": "0x211ae30",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2267",
+          "address": "0x211ae3c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3102",
+          "address": "0x211ae48",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3103",
+          "address": "0x211ae54",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3104",
+          "address": "0x211ae60",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@2265",
+          "address": "0x211ae6c",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3105",
+          "address": "0x211ae78",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3106",
+          "address": "0x211ae84",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "@3107",
+          "address": "0x211ae90",
+          "size": "0xc",
+          "binding": "STB_GLOBAL",
+          "evidence": "compiler-generated destructor-registration node"
+        },
+        "size": 12,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211ae9c",
+          "address": "0x211ae9c",
+          "size": "0x18",
+          "binding": "STB_GLOBAL",
+          "evidence": "the three-entry daKpaTail_c pointer-to-member state table; the initializer copies the three descriptors into it"
+        },
+        "size": 24,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aeb4",
+          "address": "0x211aeb4",
+          "size": "0x20",
+          "binding": "STB_GLOBAL",
+          "evidence": "the four-entry daKpa_c pointer-to-member hold-state table; the initializer copies the four descriptors into it"
+        },
+        "size": 32,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      },
+      {
+        "record": {
+          "symbol": "data_ov060_0211aed4",
+          "address": "0x211aed4",
+          "size": "0xa0",
+          "binding": "STB_GLOBAL",
+          "evidence": "the twenty-entry daKpa_c pointer-to-member state table Behavior dispatches on mStateIndex; the initializer copies the twenty descriptors into it"
+        },
+        "size": 160,
+        "alignment": 4,
+        "offset": 0,
+        "binding": "STB_GLOBAL"
+      }
+    ]
+  },
+  "readability_repairs": {
+    "empty_extern_blocks_removed": 2,
+    "other_changes": [
+      "collapse multiple blank lines",
+      "LandingDustAt(v, 0) instead of LandingDustAt(*(&v), 0)",
+      "Two HugeLandingDustAt(dust, 0) references replace *(&dust)"
+    ],
+    "type_layout_changes": false
+  }
+}
