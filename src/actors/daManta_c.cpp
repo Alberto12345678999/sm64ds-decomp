@@ -45,28 +45,29 @@ struct MantaState {
     int (daManta_c::*execute)();
 };
 
-/* 8-byte file handles. The model destructor is func_02017ab4 (file 0x39d);
- * the anim destructor is SharedFilePtr_Destruct_Anim (file 0x39e). */
+/* Local 8-byte resource handles: Construct stores the file ID and clears
+ * numRefs/filePtr; the loaders populate the BMD/BCA payload at +4.
+ * The registered destructors record file IDs; actor cleanup releases files. */
 struct MantaModelFilePtr : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    u8 pad;
+    BMD_File* filePtr;
 
     MantaModelFilePtr(u32 fileID);
     ~MantaModelFilePtr();
 };
 
 struct MantaAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    u8 pad;
+    BCA_File* filePtr;
 
     MantaAnimationFilePtr(u32 fileID);
     ~MantaAnimationFilePtr();
 };
 
-/* SharedFilePtr.h has no fields. The BCA pointer SetAnim reads is the
- * word at +4, which is where Construct leaves the loaded file. */
-struct MantaFileWord {
-    int head;
-    void *file;
-};
 
 enum {
     MANTA_STAR = 0xb2,
@@ -240,9 +241,8 @@ int daManta_c::func_ov090_021327e4()
 // @symbol _ZN9daManta_c19func_ov090_02132a58Ev
 int daManta_c::func_ov090_02132a58()
 {
-    MantaFileWord *anim = (MantaFileWord *)&data_ov090_0213452c;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, anim->file, 0, 0x1000, 0);
+        &mModelAnim, data_ov090_0213452c.filePtr, 0, 0x1000, 0);
     mHitRing = 0;
     mRingWrite = 0;
     mRingRead = 0;
