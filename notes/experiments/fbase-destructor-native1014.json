@@ -1,0 +1,103 @@
+{
+  "task_id": "fbase-destructor-native1014",
+  "base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+  "state": "Source checkpoint; fresh production gates pending.",
+  "author": "01a13751-2d56-7901-a14d-9543eb0dbf2e",
+  "source_quality": "partial",
+  "issue_url": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+  "source_sha256": "ced8474f887b23ca7cb71fa860979050c2f8b3ac3731de65d14383dbebee0710",
+  "source_delta": "Replace three handwritten D1/D0/D2 wrappers with the genuine empty destructor. Remove unused raw node-destructor and vtable externs. Correct the Source banner/group comments. Compiler owns Manager/process-node teardown and actor-heap delete. Other27 function bodies unchanged.",
+  "restoration_provenance": {
+    "classification": "Restoration of previously native sharded destructor forms into the promoted ActorBase TU, not first recovery.",
+    "prepromotion_source": "a7193a0ec75a46c652ca629c8223fdbd59acef6a^:src/_ZN7fBase_cD1Ev.cpp",
+    "actual_source": "#include fBase_c.h; fBase_c::~fBase_c() {}",
+    "recovery_main_ancestor": "67ea7a470aa430070c7d259269a819c7ce470ee7",
+    "recovery_author": "Andrew <andrewboudreau@gmail.com>",
+    "earlier_node_lifetime_commit": "19f4cbf16d653c8c2313722bb874aafe7e6c84e3",
+    "earlier_manager_commit": "c7ba004d5daf25d89074eb51f0b630ad466677cb",
+    "earlier_recorded_author": "= <andrewboudreau@gmail.com>",
+    "earlier_commit_scope": "Historical recovered-branch records, not ancestors of current main. Main recovery is67ea7a47; duplicate1c3cbdac and earlier19f/c7ba ancestry checks return1.",
+    "process_adoption_commit": "b88dbbebdfcb4f61f41480e0302283c4ca0b7486",
+    "process_adoption_pr": 3144
+  },
+  "historical_findings": [
+    {
+      "disposition": "deferred",
+      "id": "FBASE-CALLBACK-CONTRACT-01",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+      "kind": "reconstruction",
+      "location": "include/fBase_c.h:153; src/actors/ActorBase.cpp:165; four unchanged Process ABI wrappers",
+      "owner": "codex-root-fbase-readable-0923",
+      "reason": "Full source and wrapper/PMF-slot review confirms unchanged call order and machine ABI. Existing wrappers keep raw ABI records; the change neither exposes valid typed calls for the three int-return guard families nor hides them behind adapters. Header and handoff explicitly preserve this boundary.",
+      "summary": "Process now uses genuine fBase_c member-pointer types preserving its configured int/bool/u32 symbol, while cleanup/behavior/render guard families still declare int. This is a partial contract boundary, not recovered proof of an original bool return."
+    },
+    {
+      "disposition": "deferred",
+      "id": "FBASE-RECONSTRUCTION-01",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3012",
+      "kind": "reconstruction",
+      "location": "src/actors/ActorBase.cpp; config/tu_manifest.d/arm9/ActorBase.json; notes/agents/handoffs/fbase-process-readable-0923.md",
+      "owner": "codex-root-fbase-readable-0923",
+      "reason": "This bounded follow-up replaces a fake Process receiver and uses existing list/parent fields without changing ownership. Complete ELF includes 27 nonzero function entries across all bindings, including ManagerD1 STB_LOPROC; the licensed set is25. Metadata checker emits zero records for ActorBase, so no new RTTI/vtable ownership is claimed. Manager deadstrip remains issue2025; broader class work remains issue3012.",
+      "summary": "Lifecycle-list facade, heap bridges, explicit destructor variants, key-function/data ownership and the inherited ManagerD1 deadstrip question remain incompletely reconstructed."
+    }
+  ],
+  "historical_failed_composition": {
+    "task": "fbase-process-pr3144-composition-0925",
+    "phase": "cancelled",
+    "input_commit": "c50c07bac79b8b2b5c88604321d6f7cb60ff6f34",
+    "base": "7e7b4c84be0dd8fb9c9c949d40680ae64e46e17f",
+    "reported_finding_id": "FBASE-COMPOSITION-DAONMS-01",
+    "exact_queue_next_action": "Superseded by explicit producer continuation for PR3144. Independent verifier preserved failed c50c07bac79b8b2b5c88604321d6f7cb60ff6f34/base7e7b4c84be0dd8fb9c9c949d40680ae64e46e17f report SHA256 b46f80ec9c93ad85aecdccab387822cfff17d952a54b4db96b36033fe27b22a7 and released own lease. FBASE-COMPOSITION-DAONMS-01 requires exact measured Frame515-to518 manifest identity repair plus fresh independent all12-path/current-consumer/fullROM verification. Preserve original source authors, accepted historical52a proof, prior findings and PR3144; no main merge.",
+    "recorded_reviewer": "codex-fbase-composition-verifier-0925",
+    "artifact_status": "The recorded C:/tmp/sm64ds-fbasev0923/build worktree is absent. Exact finding dictionary is not present in this task outputs (empty); preserve the reported ID and failure facts without inventing a dictionary or acceptance.",
+    "current_scope": "Historical header-fanout/Frame515-to518 composition failure. Main PR3144 commitb88dbbeb explicitly includes that manifest identity repair; current destructor-only winner changes no header. No new whole-daOnms review is claimed."
+  },
+  "retained_partial_boundaries": [
+    "Native InitResources/key-function metadata ownership remains outside the recommended destructor-only winner.",
+    "Unsigned operator-new ABI bridge remains; actual header declares size_t forwarding overload and metadata names distinguish Ej from Em.",
+    "Callback int/bool disagreement, list/heap raw views, shareddata ownership and broader root reconstruction remain under the two original deferred finding dictionaries.",
+    "Current winner emits zero metadata; it does not newly validate or own the retail vtable/typeinfo data as Source storage. It preserves their actual destinations through the complete graph/strict proof.",
+    "No full-ROM, literal stock range or producer/independent acceptance claimed by this private scout. Those are production gates."
+  ],
+  "manifest_delta": "Only boundary_evidence entries5/6 wording: retain existing free InitResources ownership and document measured raw+8 to prepared slot-array rebiasing. No policies, names, aliases, storage, enrollment or ranges change.",
+  "scout_proof_scope": "Historical privateefd proof, not fresh production acceptance.",
+  "base_inputs": {
+    "scout_base": "efd33df972c9475494a18548d0248454c0e2668f",
+    "production_base": "85c0c53d72e4a15537f1162272383752f63a2fd1",
+    "blobs": {
+      "src/actors/ActorBase.cpp": {
+        "scout": "d183c6cade102e05711e48f29a3c4ba5c60a362b",
+        "production": "d183c6cade102e05711e48f29a3c4ba5c60a362b"
+      },
+      "config/tu_manifest.d/arm9/ActorBase.json": {
+        "scout": "58871db14b8a0fdbc9aaa49bf30f9e32303ef4df",
+        "production": "58871db14b8a0fdbc9aaa49bf30f9e32303ef4df"
+      },
+      "include": {
+        "scout": "c79a00fb061e7ba1710053ccfe5ee542cdc6914c",
+        "production": "c79a00fb061e7ba1710053ccfe5ee542cdc6914c"
+      },
+      "tools": {
+        "scout": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+        "production": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec"
+      },
+      "config": {
+        "scout": "df77857bea28beb682e2150b64dc0fce2f18450b",
+        "production": "df77857bea28beb682e2150b64dc0fce2f18450b"
+      },
+      "port": {
+        "scout": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33",
+        "production": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+      }
+    },
+    "delta": [
+      "notes/experiments/player-file-handles1014.json",
+      "src/unnamed/ov002/__sinit_ov002_021019d0.c"
+    ],
+    "canary": [
+      true,
+      "2004/b56"
+    ]
+  }
+}
