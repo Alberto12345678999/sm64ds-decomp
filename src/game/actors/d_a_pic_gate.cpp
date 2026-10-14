@@ -467,7 +467,6 @@ extern "C" void func_ov080_02125d64(char *c)
     }
 }
 
-
 // @symbol _ZN11daPicGate_c19func_ov080_02125de0Eiii
 /* BeginWave: the origin in cell space goes to unk_134, every cell's dist
  * is refreshed, then a WaveParams row is picked for this param1 shape

@@ -158,7 +158,7 @@
   "lifecycle_evidence": "Actual model and animation constructor paths reach02017e48 then02017e0c, writing fileID halfword+0, byte+2 and pointer+4. Their destructors reach02017e34 and record the ID; CleanupResources separately releases all three handles.",
   "helper_source_receipts": [
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\unnamed\\arm9\\0201\\func_02017acc.c",
+      "source": "src/unnamed/arm9/0201/func_02017acc.c",
       "receipt": {
         "name": "func_02017acc",
         "module": "arm9",
@@ -169,7 +169,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\unnamed\\arm9\\0201\\func_02017ab4.c",
+      "source": "src/unnamed/arm9/0201/func_02017ab4.c",
       "receipt": {
         "name": "func_02017ab4",
         "module": "arm9",
@@ -180,7 +180,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\unnamed\\arm9\\0201\\func_02017e48.c",
+      "source": "src/unnamed/arm9/0201/func_02017e48.c",
       "receipt": {
         "name": "func_02017e48",
         "module": "arm9",
@@ -191,7 +191,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\func_02017e0c.c",
+      "source": "src/func_02017e0c.c",
       "receipt": {
         "name": "func_02017e0c",
         "module": "arm9",
@@ -202,7 +202,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\unnamed\\arm9\\0201\\func_02017e34.c",
+      "source": "src/unnamed/arm9/0201/func_02017e34.c",
       "receipt": {
         "name": "func_02017e34",
         "module": "arm9",
@@ -213,7 +213,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\func_02017c24.c",
+      "source": "src/func_02017c24.c",
       "receipt": {
         "name": "func_02017c24",
         "module": "arm9",
@@ -224,7 +224,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\_ZN13SharedFilePtr9ConstructEj.cpp",
+      "source": "src/_ZN13SharedFilePtr9ConstructEj.cpp",
       "receipt": {
         "name": "_ZN13SharedFilePtr9ConstructEj",
         "module": "arm9",
@@ -235,7 +235,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\SharedFilePtr_Destruct_Anim.c",
+      "source": "src/SharedFilePtr_Destruct_Anim.c",
       "receipt": {
         "name": "SharedFilePtr_Destruct_Anim",
         "module": "arm9",
@@ -246,7 +246,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\_ZN13SharedFilePtr7ReleaseEv.cpp",
+      "source": "src/_ZN13SharedFilePtr7ReleaseEv.cpp",
       "receipt": {
         "name": "_ZN13SharedFilePtr7ReleaseEv",
         "module": "arm9",
@@ -257,7 +257,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\_ZN13SharedFilePtr8LoadFileEv.cpp",
+      "source": "src/_ZN13SharedFilePtr8LoadFileEv.cpp",
       "receipt": {
         "name": "_ZN13SharedFilePtr8LoadFileEv",
         "module": "arm9",
@@ -268,7 +268,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\_ZN5Model8LoadFileER13SharedFilePtr.cpp",
+      "source": "src/_ZN5Model8LoadFileER13SharedFilePtr.cpp",
       "receipt": {
         "name": "_ZN5Model8LoadFileER13SharedFilePtr",
         "module": "arm9",
@@ -279,7 +279,7 @@
       }
     },
     {
-      "source": "C:\\tmp\\sm64ds-morayoffsetverify1013\\src\\_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp",
+      "source": "src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp",
       "receipt": {
         "name": "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr",
         "module": "arm9",
