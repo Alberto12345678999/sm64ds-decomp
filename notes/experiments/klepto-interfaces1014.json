@@ -1,0 +1,490 @@
+{
+  "task_id": "klepto-resources1014",
+  "tested_base": "efd33df972c9475494a18548d0248454c0e2668f",
+  "scope": "Four measured local resource handles, seven direct animation payload reads and one guarded native cap-field read; partial daJango_c reconstruction.",
+  "author": {
+    "canonical_agent": "/root/chained_native_independent",
+    "model_provenance": "Astra high as assigned by coordinator",
+    "future_producer_session_label": "codex-klepto-interfaces-author1014",
+    "session_label_scope": "New label for this actual author; not a historical session or a claimed task. No thread UUID inferred."
+  },
+  "source_quality_completion": "partial",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3777",
+  "next_owner": "Klepto source producer and enemy reconstruction coordinator",
+  "private_scout_proof": {
+    "base": "efd33df972c9475494a18548d0248454c0e2668f",
+    "strict": 36,
+    "functions": 24,
+    "data": 10,
+    "bss_records": 13,
+    "bss_bytes": 164,
+    "metadata_records": 11,
+    "metadata_bytes": 242,
+    "raw_refs": 339,
+    "prepared_refs": 293,
+    "raw_sha256": "6b27377018affd044f04c0cd1a5229181eb722fcb63d9360a21a77426c12af01",
+    "prepared_sha256": "3f3dd072461b42c420543ce16395ef23914adcbd91979dce81c4a44e485b7bc2",
+    "global_full_rom_run": false
+  },
+  "private_scout_qualification": "Private proof establishes a candidate. Actual production checkpoint gates are running and final report will record terminal results.",
+  "manifest_scope": {
+    "measured_from_names": 13,
+    "canonical_to_names_unchanged": true,
+    "mapping_evidence_prose_updates": 13,
+    "metadata_reason_prose_updates": 3,
+    "all_other_manifest_fields_identical": true
+  },
+  "remaining_partial_boundaries": [
+    "Two synthetic local resource wrappers, four lifecycle aliases and registrar alias remain; shared SharedFilePtr interface stays fieldless.",
+    "C-linkage SWOOP entry and PMF union/state pointer boundary remain.",
+    "Scalar Fix12 bridges, raw matrix/+0xc8 borrowed actor word access, two twelve-word matrix arrays and SwoopPositionWords view remain.",
+    "Unsigned timer narrowing, unnamed fields/methods and other raw accesses remain. No unique original source or complete class/host/shared layout recovery claimed."
+  ],
+  "source_findings": [
+    {
+      "disposition": "fixed",
+      "id": "NDT0922-01",
+      "kind": "correctness",
+      "location": "Original fifteen direct native D1 declaration sites",
+      "original_legacy_kind": "verification_dependency",
+      "reason": "All fifteen direct sites retain one receiver and pointer result; exact raw source matches the reviewed packet and all 1162 affected complete object pairs match.",
+      "summary": "The original missing-receiver dependency is corrected in the actual candidate."
+    },
+    {
+      "disposition": "fixed",
+      "id": "NDT0922-02",
+      "kind": "correctness",
+      "location": "tools/check_decl_agreement.py native receiver compatibility",
+      "original_legacy_kind": "prior_proposal_objection",
+      "reason": "The reviewed checker is already on base and unchanged in this candidate; opaque storage compatibility remains bounded without asserting a false concrete receiver type.",
+      "summary": "The rejected concrete receiver-type override remains absent."
+    },
+    {
+      "disposition": "fixed",
+      "id": "NDT0922-03",
+      "kind": "provenance",
+      "location": "Historical native-destructor scratch replay encoding",
+      "original_legacy_kind": "review_harness",
+      "reason": "All source/checker bindings use exact Git bytes and explicit UTF-8 decoding; the historical failure is retained as harness evidence, not a candidate defect.",
+      "summary": "The prior BOM/default-decoding harness failure remains resolved."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV2908-01",
+      "kind": "correctness",
+      "location": "Direct non-deleting destructor declarations in the reviewed source set",
+      "reason": "The independent raw declaration review accounts for all fifteen original D1 sites in this exact source commit.",
+      "summary": "Direct destructor receiver/result contracts are truthful."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV2908-02",
+      "kind": "correctness",
+      "location": "src/actors/player.cpp and static-destructor registration callers",
+      "reason": "The actual candidate preserves repaired pointer/pointer/node contracts, including both block-local Player declarations and calls.",
+      "summary": "Registration carries object and callback addresses as pointers."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV2908-03",
+      "kind": "correctness",
+      "location": "Constructor imports and array callback boundaries",
+      "reason": "The exact candidate contains 392 truthful constructor/Vector imports; repaired array counts/strides and callback conversions retain their measured ABI behavior. Native supersessions preserve current method batches.",
+      "summary": "Adjacent lifecycle declarations and selected runtime interfaces are reconciled."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV2908-04",
+      "kind": "provenance",
+      "location": "src/minigames/d_s_mg_roulette.cpp and owned lifecycle handoff",
+      "reason": "Roulette explicitly supplies its receiver and no longer claims a missing native-constructor symbol proves new cannot link. The handoff states the bounded interface scope, current source-only publication and retained native-reconstruction/address-view limits.",
+      "summary": "Source completion and ABI comments are accurate."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV-PACKET-01",
+      "kind": "correctness",
+      "location": "src/actors/player.cpp block-local registrar sites",
+      "reason": "Both declarations and calls retain pointer-valued object/destructor arguments and the existing registration-node pointer.",
+      "summary": "Both previously omitted registrar sites are corrected."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV-PACKET-02",
+      "kind": "correctness",
+      "location": "Complete lifecycle-family source census and declaration ledger",
+      "reason": "The checker is already merged. This candidate repairs the actual contracts and removes exactly 340 newly banked healed keys, preserving unrelated keys and the twelve Vector address-only rows.",
+      "summary": "The scoped checker dependencies are repaired in source."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV-PACKET-03",
+      "kind": "correctness",
+      "location": "Clipper C1/D1 entry views and static registration boundary",
+      "reason": "Typed pointer results and one receiver remain intact; the registration boundary carries the callback address without inventing a callable function prototype.",
+      "summary": "Clipper signatures and opaque callback transport remain truthful."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV-PACKET-04",
+      "kind": "correctness",
+      "location": "src/actors/player.cpp Vector destructor imports",
+      "reason": "All five are present in the independent raw census; all 22 original parser-omitted declarations remain accounted for without broadening the checker into block-local parsing.",
+      "summary": "The five omitted Player Vector imports are covered."
+    },
+    {
+      "disposition": "fixed",
+      "id": "STALE-ARRAY-RUNTIME-TEST",
+      "kind": "correctness",
+      "location": "tools/test_check_decl_agreement.py historical runtime fixtures",
+      "reason": "The already merged checker/tests retain isolated historical bad and corrected fixtures. The exact 40f4 successor ran all 226 tests with zero failures or skips.",
+      "summary": "The stale live-source assertion is replaced by honest isolated controls."
+    },
+    {
+      "disposition": "fixed",
+      "id": "RCV-SHADOW-01",
+      "kind": "correctness",
+      "location": "src_tu/actors/dScMgSlot1_c+dScMgSlot3_c.cpp:843; include/decl_common.h",
+      "reason": "The successor deletes only the stale local void-result import. The existing header supplies the truthful pointer result and receiver; its sole call ignores the result. Base and repaired Slot objects are completely identical. All eight affected shadow objects compile, with seven raw-identical and one limited to six measured local symbol-name bytes.",
+      "summary": "The corrected shared constructor interface exposed a contradictory duplicate in the Slot shadow TU."
+    },
+    {
+      "disposition": "fixed",
+      "id": "KLEPTO-SWOOP-001",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3777",
+      "kind": "provenance",
+      "location": "notes/experiments/swoop-cpp1013.json:gates.production_rom.functions_reproduced",
+      "owner": "Klepto source producer",
+      "reason": "Producer corrected the tracked report in a descendant; independent review checks the11332 total against terminal full-ROM output and the literal final report.",
+      "summary": "Previously offered report recorded intermediate5886 rather than terminal11332 source functions."
+    },
+    {
+      "disposition": "deferred",
+      "id": "KLEPTO-SWOOP-002",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3777",
+      "kind": "reconstruction",
+      "location": "src/actors/daJango_c.cpp",
+      "owner": "Klepto source producer and enemy reconstruction coordinator",
+      "reason": "This scoped change removes the C-language island and replaces its raw field/member-call access with existing typed interfaces. The measured array-backed position snapshot and unsigned timer narrowing preserve retail code under2004/b56; they do not establish unique original source or complete class reconstruction.",
+      "summary": "Existing C-linkage state entry/PMF union boundary, local layout views, scalar Fix12 ABI bridges and other raw source remain partial."
+    },
+    {
+      "id": "KLEPTO-RESOURCE-001",
+      "kind": "reconstruction",
+      "disposition": "fixed",
+      "location": "src/actors/daJango_c.cpp: local file-handle wrappers and seven animation reads",
+      "summary": "Opaque handle words and the false two-BCA-pointer view obscure the actual resource payload contract.",
+      "reason": "Private candidate uses measured u16 fileID at0, u8 numRefs at2, explicit padding at3, and the model BMD/animation BCA pointer at4. Seven reads use the animation pointer member. Canonical constructor/destructor bodies, registration edges and cleanup ownership are verified; synthetic local wrappers remain a disclosed boundary.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3777",
+      "owner": "Klepto source producer and enemy reconstruction coordinator"
+    },
+    {
+      "id": "KLEPTO-CAP-001",
+      "kind": "reconstruction",
+      "disposition": "fixed",
+      "location": "src/actors/daJango_c.cpp: daJango_c::Behavior held-cap byte read",
+      "summary": "The guarded held-cap path uses a raw +0x403 byte access despite the existing cap class field.",
+      "reason": "Private candidate includes the existing cap header and reads unk_403 only after held-ID lookup, nonnull check and the non-star branch. All non-star nonzero held-ID stores follow cap creation; the star-to-nonstar transition clears that ID. Full function bytes and typed targets remain equal after measured compiler-name normalization.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3777",
+      "owner": "Klepto source producer and enemy reconstruction coordinator"
+    },
+    {
+      "id": "KLEPTO-PROV-001",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "src/actors/daJango_c.cpp and config/tu_manifest.d/ov062/daJango_c.json: resource/cap and metadata comments",
+      "summary": "Existing prose describes removed Data/cap views and incorrectly labels a manifest with ten owned PMF rows as data: [].",
+      "reason": "Private candidate describes the actual remaining local resource boundary, guarded cap member and existing metadata externalization. Model::LoadFile returns void* and dExtFrameCtrl::LoadFile returns char*; their BMD/BCA payloads do not alter those API signatures. No metadata policy or owned-data row changed.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3777",
+      "owner": "Klepto source producer and enemy reconstruction coordinator"
+    }
+  ],
+  "historical_finding_scope": [
+    {
+      "id": "NDT0922-01",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "NDT0922-02",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "NDT0922-03",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV2908-01",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV2908-02",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV2908-03",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV2908-04",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV-PACKET-01",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV-PACKET-02",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV-PACKET-03",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV-PACKET-04",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "STALE-ARRAY-RUNTIME-TEST",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "RCV-SHADOW-01",
+      "historical_task": "native-destructor-repair-0922",
+      "historical_phase": "done",
+      "historical_commit": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "scope": "Historical dictionary retained verbatim. Shared lifecycle/Player/tooling findings retain their original broad scope; none is asserted as a fresh Klepto fix."
+    },
+    {
+      "id": "KLEPTO-SWOOP-001",
+      "historical_task": "klepto-swoop-cpp1013",
+      "historical_phase": "done",
+      "historical_commit": "e7a7692e1f1112d09d63db6626ab994361e2a305",
+      "scope": "Prior Klepto SWOOP slice; fixed report count remains historical and remaining reconstruction boundary still applies."
+    },
+    {
+      "id": "KLEPTO-SWOOP-002",
+      "historical_task": "klepto-swoop-cpp1013",
+      "historical_phase": "done",
+      "historical_commit": "e7a7692e1f1112d09d63db6626ab994361e2a305",
+      "scope": "Prior Klepto SWOOP slice; fixed report count remains historical and remaining reconstruction boundary still applies."
+    }
+  ],
+  "prior_writer_lineage": [
+    {
+      "task": "native-destructor-repair-0922",
+      "phase": "done",
+      "base": "27ca0e1f322b9cdc538c6954c36ddba44066c683",
+      "head": "40f4c0d473e8f3a9a8b57b85532bd18b3edc0f1a",
+      "actual_paths": [
+        "config/tu_manifest.d/ov062/daJango_c.json",
+        "src/actors/daJango_c.cpp"
+      ],
+      "producer_sessions": [
+        "codex-receiver-publication-0925"
+      ]
+    },
+    {
+      "task": "fold-lane-d-0929",
+      "phase": "cancelled",
+      "base": "f2957e08dec8afcf21e0e44637e6311bffb7833d",
+      "head": "3ec206ec534b554ad0e5385f4005a456c64d46e0",
+      "actual_paths": [
+        "config/tu_manifest.d/ov062/daJango_c.json",
+        "include/daJango_c.h",
+        "src/actors/daJango_c.cpp"
+      ],
+      "producer_sessions": [
+        "claude-prod-fold-D-0929"
+      ]
+    },
+    {
+      "task": "klepto-swoop-cpp1013",
+      "phase": "done",
+      "base": "08b118098ecb7ce86b85f1215886a4618e268a86",
+      "head": "e7a7692e1f1112d09d63db6626ab994361e2a305",
+      "actual_paths": [
+        "config/tu_manifest.d/ov062/daJango_c.json",
+        "src/actors/daJango_c.cpp"
+      ],
+      "producer_sessions": [
+        "codex-klepto-producer1013"
+      ]
+    }
+  ],
+  "actual_git_source_lineage_newest_first": [
+    {
+      "commit": "6b82f537900e1bdeaa3c9fa3077eaa2f04426cf4",
+      "author": "andrewboudreau",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-10-13T17:44:27-05:00",
+      "subject": "Apply review follow-ups to the 1013 batch (comments, notes, whitespace)"
+    },
+    {
+      "commit": "f7df5714c08c498aea3936d798b8a99db9b9eb92",
+      "author": "andrewboudreau",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-10-13T09:53:16-05:00",
+      "subject": "Compile Klepto SWOOP update as typed C++"
+    },
+    {
+      "commit": "3f575cea63ca141257b9f7256249a7fc95271601",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-10T01:31:50+03:00",
+      "subject": "Merge remote-tracking branch 'origin/main' into types/vector3-fix12i-ctor"
+    },
+    {
+      "commit": "16dd3cc91e888aaf1fb9a9d0664669f65bbfd6ba",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-09T23:14:40+03:00",
+      "subject": "types.h: add Vector3() and Vector3(Fix12i, Fix12i, Fix12i)"
+    },
+    {
+      "commit": "27e0cacb595c1c6f0a9f9351b6d2fe5b4fccbfd0",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-09T12:05:57+03:00",
+      "subject": "Fold the ov062 jango static initializer into daJango_c.cpp"
+    },
+    {
+      "commit": "2e08358ed1eaddbec5524e5b5603a80e8528f912",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-07T20:33:22+03:00",
+      "subject": "ov062/daJango_c: member-ify the 14 receiver helpers"
+    },
+    {
+      "commit": "bc9298bc7d942788b28b9335051164d04538c11f",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-06T23:53:08+03:00",
+      "subject": "deslop daObjMarioCap_c: methodize the state machine, name the handlers"
+    },
+    {
+      "commit": "ec46de5cff3229ad39036e63b5359e593aa203bc",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-06T17:34:58+03:00",
+      "subject": "Merge origin/main into fold/arm9-animation"
+    },
+    {
+      "commit": "1ba8c17b27cbe0b104ef1ff2c39561aeef2d75f5",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-05T21:00:45+03:00",
+      "subject": "Rename ShadowModel to the ROM type name dExtShadowModel_c."
+    },
+    {
+      "commit": "ea7efda84ad8c066ffc184caffc59e2e22d6ec30",
+      "author": "lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-10-05T21:00:30+03:00",
+      "subject": "Rename Animation to the ROM type name dExtFrameCtrl_c."
+    },
+    {
+      "commit": "59cb75360778cc965786c5725a3cb9849193e04c",
+      "author": "andrewboudreau",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-10-02T01:21:02-05:00",
+      "subject": "Readability pass on daJango_c (Klepto the condor), byte-neutral"
+    },
+    {
+      "commit": "6cf2ffb7a4b0a9df353eb1ddf26016515f0f9acb",
+      "author": "andrewboudreau",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-09-29T00:45:15-05:00",
+      "subject": "Fold daJango_c's classInit factory into its TU (ov062)"
+    },
+    {
+      "commit": "a47511fd362d2e4774e1834207aa19c8582ba441",
+      "author": "Andrew",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-09-28T07:50:33-05:00",
+      "subject": "Give ApproachLinear its real bool(short&, short, short) signature tree-wide (#3292)"
+    },
+    {
+      "commit": "d9618286491554909fbe8289d8ce918d375a176a",
+      "author": "Andrew",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-09-25T22:22:44-05:00",
+      "subject": "Correct lifecycle receiver and callback contracts (#3172)"
+    },
+    {
+      "commit": "f46aeb095eee6d100747cbbf323f0d57bd91491b",
+      "author": "Andrew",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-09-25T14:46:13-05:00",
+      "subject": "Call header-declared methods by name in promoted TUs (batch 1) (#3153)"
+    },
+    {
+      "commit": "8cb7cc81487fda9d48596d9f3f64402cc6346574",
+      "author": "Andrew",
+      "email": "andrewboudreau@gmail.com",
+      "date": "2026-09-23T08:55:26-05:00",
+      "subject": "Make 25 enemy actors read like source (two readability passes, byte-identical) (#3022)"
+    },
+    {
+      "commit": "6045581c3bbd2ad8d802b673fd502eb9e3e01c74",
+      "author": "Lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-09-23T04:06:49+03:00",
+      "subject": "ov062/daJango_c: klepto comments (#2981)"
+    },
+    {
+      "commit": "58061875505edc0e7f8f6b37084a5bcdce173b20",
+      "author": "Lunavyqo",
+      "email": "60808132+lunavyqo@users.noreply.github.com",
+      "date": "2026-09-22T06:42:09+03:00",
+      "subject": "Promote ov062/daJango_c and delete its 23 shard TUs (#2886)"
+    }
+  ],
+  "lifecycle": {
+    "canonical_functions": 7,
+    "canonical_strict_blind": 0,
+    "initializer_edges": 33,
+    "full_detail": "C:\\tmp\\sm64ds-klepto-scout1014\\build\\klepto-scout\\resource-cap\\lifecycle-proof.json",
+    "ownership": "Constructors initialize ID/refcount/file pointer; both destructors publish file ID without releasing. CleanupResources retains all four Release calls. No new lifecycle alias or ownership disposition."
+  },
+  "cap_identity": "Behavior cast occurs after lookup/null and non-star guard. Only cap creation stores nonzero held IDs outside star branch; silver-star transition clears ID. Existing cap class is actor269 and InitTaken writes existing u8 unk_403. No field renaming or guessed semantic type.",
+  "metadata_scope": "11 complete records242B, including full132B own vtable preamble and inherited RTTI chain. Existing externalization policies remain unchanged.",
+  "ownership_history": "Earlier idle klepto-interfaces1014 registration was cancelled as misrouted issue3169, without Source edits or lease. Current klepto-resources1014 correctly continues open3777. Historical task statuses remain unchanged.",
+  "production_gates": "Pending at Source checkpoint; no current full-ROM claim."
+}
