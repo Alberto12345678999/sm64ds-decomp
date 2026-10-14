@@ -2430,6 +2430,7 @@ extern "C" int func_ov063_0211a0a8(int a0, int a1, int a2, int a3, int a4) {
 // @symbol _ZN7daTrs_c19func_ov063_0211a0dcEv
 int daTrs_c::func_ov063_0211a0dc() {
 
+    dActor_c *actor;
     Player *player;
     u32 id;
     Vec3 v1, v2;
@@ -2459,11 +2460,12 @@ int daTrs_c::func_ov063_0211a0dc() {
         return 1;
     }
 
-    player = static_cast<Player *>(dActor_c::FindWithID(id));
-    if (!player)
+    actor = dActor_c::FindWithID(id);
+    if (!actor)
         goto ret0;
     if (!(this->mdCcAcPos_c.hitFlags & 0x400000))
         goto ret0;
+    player = static_cast<Player *>(actor);
     if (player->mIsVanish != 0)
         return 0;
 
