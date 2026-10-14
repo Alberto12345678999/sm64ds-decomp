@@ -1,0 +1,730 @@
+{
+  "task_id": "bombking-resources1014",
+  "state": "Source checkpoint; production gates pending",
+  "base": "efd33df972c9475494a18548d0248454c0e2668f",
+  "candidate_author": {
+    "agent": "/root/ibl_interface_independent",
+    "session": "01a13751-2d56-7901-a14d-9543eb0dbf2e"
+  },
+  "issue_url": "https://github.com/tangosdev/sm64ds-decomp/issues/2479",
+  "source": "src/actors/daBombking_c.cpp",
+  "source_sha256": "3668ff880f4017777a78b4bc910e969c19e998da145cd95df9598cce6934f76b",
+  "manifest": "config/tu_manifest.d/ov078/daBombking_c.json",
+  "manifest_git_blob": "73041436d56e2e2d8a91936d105cc86786f6d961",
+  "manifest_unchanged": true,
+  "scope": "Source and report only; no header, initializer, shared layout, symbol ledger, policy or enrollment changes.",
+  "source_quality": "partial",
+  "source_benefit": [
+    "Two measured local borrowed views distinguish model BMD payload from twelve BCA animation payloads.",
+    "u16 fileID, u8 numRefs, one padding byte and typed pointer replace unsigned+void*.",
+    "All17 animation payload reads are named typed member accesses; the last raw handle+4 read and redundant void* casts are removed.",
+    "Existing native load/release interfaces and the scalar SetAnim ABI bridge remain unchanged."
+  ],
+  "inherited": {
+    "predecessor": "bombcopy-adopt1013",
+    "accepted": "569c875d9dd1b18b42fedc266a6cfd1418f443a0",
+    "producer_sessions": [
+      "codex-bombcopy-adopt1013-producer",
+      "codex-bombcopy-scout1013",
+      "codex-humanizer-bombking-20260908",
+      "codex-humanizer-snmbdy-20260908-01",
+      "codex-humanizer-snmbdy-20260908-02",
+      "codex-integrator-pr2445-0910",
+      "codex-integrator-pr2446-0910",
+      "codex-integrator-pr2446-final-0910",
+      "codex-r2445-0910",
+      "int-kbo-0907-b303",
+      "int-snmbdy-0907b-b303",
+      "prod-kbo-0907",
+      "prod-snmbdy-0907",
+      "review-2446-0910-bkg07"
+    ],
+    "findings": [
+      {
+        "disposition": "fixed",
+        "id": "BKG-01",
+        "kind": "correctness",
+        "location": "src/actors/daBombking_c.cpp:func_ov078_02125c98; include/daBombking_c.h:152",
+        "reason": "Current promoted helper is a genuine void daBombking_c::func_ov078_02125c98() declared void in include/daBombking_c.h:152; both current callers discard its result. Read complete helper and callers; fresh52-function whole-TU proof covers them. Historical free declaration locations are superseded by the real member interface.",
+        "summary": "Coherent void shadow-update return contract."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-02",
+        "kind": "provenance",
+        "location": "config/tu_manifest.d/ov078/daBombking_c.json; notes/experiments/bombcopy-adopt1013.json",
+        "reason": "Fixed by the current promotion_note correction and independently checked production enrollment. Actual production_mode is intact-object:52 functions plus four data records across188bytes. Normal _isolate agrees with TP.prepare_intact_object, and ownedBefore/ownedAfter byte/typed-reference checks pass. Earlier text-only counts and ownership reasons remain historical, not claims about this candidate.",
+        "summary": "Candidate accurately records text-only production and historical proof identity."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-03",
+        "kind": "provenance",
+        "location": "src/actors/daBombking_c.cpp:9; src/actors/daBombking_c.cpp:35; src/actors/daBombking_c.cpp:457; include/daBombking_c.h:89",
+        "reason": "Read current Source/header: native class lifetime and actual interfaces remain; the changed copy comment now states two measured POD initializations and two remaining array views rather than a universal C++ copy prohibition. Current native factory uses new daBombking_c(). Earlier prose findings remain fixed but old manual-factory/source-census descriptions are historical. No universal compiler constraint is accepted.",
+        "summary": "Named stale source and lifecycle explanations are corrected."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-04",
+        "kind": "provenance",
+        "location": "config/tu_manifest.d/ov078/daBombking_c.json; notes/experiments/bombcopy-adopt1013.json",
+        "reason": "Independently verified complete132-byte vtable storage atov078:02126e44 including both ABI preamble words, with public address point02126e4c and31slots/124-byte payload. Also verified class RTTI/name completely. These records are now retained owned data in the188-byte range; historical PARTIAL/text-only descriptions do not describe current ownership. No trailing24-byte padding beyond02126ec8 is newly claimed.",
+        "summary": "Vtable address-point payload and complete storage are distinct."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-05",
+        "kind": "reconstruction",
+        "location": "src/actors/daBombking_c.cpp:1848; src/actors/daBombking_c.cpp:1889",
+        "reason": "Current Render calls mBlendModelAnim.Model::Render(0) directly; Behavior invokes real virtual UpdateVerts and real Advance. Read actual Model/BlendModelAnim declarations and complete caller bodies. Fresh whole-TU functions and complete relocation graphs preserve dispatch, receivers and destinations.",
+        "summary": "Use the actual model interfaces with the correct dispatch semantics."
+      },
+      {
+        "disposition": "deferred",
+        "id": "BKG-06",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2479",
+        "kind": "reconstruction",
+        "location": "include/daBombking_c.h:45; src/actors/daBombking_c.cpp:148; src/actors/daBombking_c.cpp:1680; src/actors/daBombking_c.cpp:1698; src/actors/daBombking_c.cpp:2057",
+        "owner": "Humanizer/integrator support through @andrewboudreau",
+        "reason": "Accept only bounded partial progress: the two local snapshots now use ordinary initialization of preexisting Vec3 at their actual conditional lifetime. Source casts over three existing s32 position fields remain, as do other raw vector/matrix views, scalar Fix12 ABI boundaries and uncertain original handler signatures. PMF receiver remains the actual class. Current factory is already native new daBombking_c(), so historical manual-factory wording is explicitly superseded. Partial ownership remains under issue2479.",
+        "summary": "Accept the PMF receiver improvement as partial reconstruction; keep remaining fields, interfaces and factory work owned."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-07",
+        "kind": "provenance",
+        "location": "src/actors/daBombking_c.cpp:428; src/actors/daBombking_c.cpp:476",
+        "reason": "Current Source names local ov078 func_ov078_02123804 at the state call sites, not an unrelated ov080 destructor. Fresh strict whole-TU checks and all482raw/463prepared typed-reference graph identities verify actual destination preservation for every function; the historical spelling repair remains fixed.",
+        "summary": "Two BombKing state calls now name their local ov078 helper instead of the unrelated ov080 MontyMoleRock destructor."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-08",
+        "kind": "provenance",
+        "location": "notes/enemy-provenance.md:47; notes/agents/handoffs/pr2446-composition-0910.md:39",
+        "reason": "Read current typed StateFunction pointer, SetState and Behavior against notes/enemy-provenance.md: first null PMF returns1, nonnull first entry result is returned, second entry is invoked and its result discarded. Actual int member-pointer interface remains a reconstruction; no assertion about every original handler signature.",
+        "summary": "The current provenance row describes the actual typed state pointer and complete dispatch return flow."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-09",
+        "kind": "provenance",
+        "location": "notes/enemy-provenance.md:61-69",
+        "reason": "Prior false absence-of-use claims remain removed. Current Source still writes/reads action phase and spawned IDs/flags as described, with additional genuine named-member recovery since the historical review. No old prose about all such accesses remaining raw is treated as a current completion claim. This two-copy diff does not alter their behavior; all functions freshly pass.",
+        "summary": "Current field provenance falsely denies live writes and reads in the promoted TU."
+      },
+      {
+        "disposition": "fixed",
+        "id": "BKG-10",
+        "kind": "provenance",
+        "location": "src/actors/daBombking_c.cpp:18-25,2040-2043",
+        "reason": "Current source banner and factory contain no obsolete51-shard current-count claim. The manifest and report distinguish52 text functions from four owned data records, and the factory is native new. The historical class-facts provenance remains historical rather than the current production census.",
+        "summary": "Source banner and factory note describe obsolete queue shard count as current."
+      },
+      {
+        "accepted_predecessor_reason": "Accepted source/header/manifest are blob-identical to independently reviewed 8e4b35b6. Fresh composition audit verifies both ov072:0x0211fcb0 ledger records retain the inference disclosure and the complete 3608-row ledger is the exact three-way multiset union, with no dropped/extra records.",
+        "disposition": "fixed",
+        "id": "SNM-01",
+        "kind": "provenance",
+        "location": "include/daBgSnmBdy_c.h:110; config/tu_manifest.d/ov072/daBgSnmBdy_c.json:800; symbols/actor_renames.tsv:3122,3582",
+        "prior_review": "pr2445.humanizer-20260908.json finding 1",
+        "reason": "Unaffected historical finding retained with its prior disposition and issue ownership. This Bomb King-only three-file change does not edit Snowman Source, headers, ledgers or enrollment. No fresh whole-Snowman review is claimed. Accepted historical reason: Retained prior independent finding disposition at8f95 by exact source/header/manifest/full-diff invariance. Current-head class and reference proof pass. Live-main advance requires composition rework before final acceptance. Prior reason: Retain accepted predecessor pr2445-composition-0910 at3b71825d: exact source/header/manifest/handoff and ov072 symbol/enrollment blobs, plus every ov072 ledger record, are unchanged in8f95. Own composition audit and pinned producer shared-consumer proof show no new interaction. This carries its accepted source judgment and partial issue2476; it does not claim a new whole-Snowman source review.",
+        "summary": "SetState and Ei/int-versus-enum inference is disclosed consistently."
+      },
+      {
+        "accepted_predecessor_reason": "Accepted handoffs and manifest remain blob-identical and historical proofs retain their original pins. New composition handoff identifies accepted source 8e4b35b6 and actual target base 666df563. Fresh 29-function/188-byte proof and root production module report are identified separately from old acceptance; current generated note and630-line queue row were independently verified.",
+        "disposition": "fixed",
+        "id": "SNM-02",
+        "kind": "provenance",
+        "location": "notes/agents/handoffs/pr-2445-source-review-fixes.md:41; config/tu_manifest.d/ov072/daBgSnmBdy_c.json:802; notes/agents/handoffs/prod-snmbdy-0907.md:1",
+        "prior_review": "pr2445.humanizer-20260908.json finding 2",
+        "reason": "Unaffected historical finding retained with its prior disposition and issue ownership. This Bomb King-only three-file change does not edit Snowman Source, headers, ledgers or enrollment. No fresh whole-Snowman review is claimed. Accepted historical reason: Retained prior independent finding disposition at8f95 by exact source/header/manifest/full-diff invariance. Current-head class and reference proof pass. Live-main advance requires composition rework before final acceptance. Prior reason: Retain accepted predecessor pr2445-composition-0910 at3b71825d: exact source/header/manifest/handoff and ov072 symbol/enrollment blobs, plus every ov072 ledger record, are unchanged in8f95. Own composition audit and pinned producer shared-consumer proof show no new interaction. This carries its accepted source judgment and partial issue2476; it does not claim a new whole-Snowman source review.",
+        "summary": "Current handoff separates historical proof and corrects the function census."
+      },
+      {
+        "accepted_predecessor_reason": "Full profile source and consumer judgment from the independent 8e4b review is preserved by exact accepted-source invariance. Fresh composed-tree proof verifies188/188 owned-data bytes and36 relocation targets with current inherited headers. No profile fields, constants, layout or production ownership changed in composition.",
+        "disposition": "fixed",
+        "id": "SNM-03",
+        "kind": "provenance",
+        "location": "src/actors/daBgSnmBdy_c.cpp:105-117; config/tu_manifest.d/ov072/daBgSnmBdy_c.json:797",
+        "prior_review": "pr2445.review.md first finding, previously unnumbered; stable ID assigned here",
+        "reason": "Unaffected historical finding retained with its prior disposition and issue ownership. This Bomb King-only three-file change does not edit Snowman Source, headers, ledgers or enrollment. No fresh whole-Snowman review is claimed. Accepted historical reason: Retained prior independent finding disposition at8f95 by exact source/header/manifest/full-diff invariance. Current-head class and reference proof pass. Live-main advance requires composition rework before final acceptance. Prior reason: Retain accepted predecessor pr2445-composition-0910 at3b71825d: exact source/header/manifest/handoff and ov072 symbol/enrollment blobs, plus every ov072 ledger record, are unchanged in8f95. Own composition audit and pinned producer shared-consumer proof show no new interaction. This carries its accepted source judgment and partial issue2476; it does not claim a new whole-Snowman source review.",
+        "summary": "Profile field names now agree with their actual consumers."
+      },
+      {
+        "accepted_predecessor_reason": "All accepted typed InitState1/2/3/4/5 writes and direct collider calls are unchanged. Fresh2004/b56 production-flag compilation at composition verifies all29 exact-size symbols and3892 bytes without blind/diff results. Larger raw state bodies remain SNM-06 partial scope.",
+        "disposition": "fixed",
+        "id": "SNM-04",
+        "kind": "reconstruction",
+        "location": "src/actors/daBgSnmBdy_c.cpp:284-291,394-400; include/daBgSnmBdy_c.h:69-72",
+        "prior_review": "pr2445.review.md second finding, previously unnumbered; stable ID assigned here",
+        "reason": "Unaffected historical finding retained with its prior disposition and issue ownership. This Bomb King-only three-file change does not edit Snowman Source, headers, ledgers or enrollment. No fresh whole-Snowman review is claimed. Accepted historical reason: Retained prior independent finding disposition at8f95 by exact source/header/manifest/full-diff invariance. Current-head class and reference proof pass. Live-main advance requires composition rework before final acceptance. Prior reason: Retain accepted predecessor pr2445-composition-0910 at3b71825d: exact source/header/manifest/handoff and ov072 symbol/enrollment blobs, plus every ov072 ledger record, are unchanged in8f95. Own composition audit and pinned producer shared-consumer proof show no new interaction. This carries its accepted source judgment and partial issue2476; it does not claim a new whole-Snowman source review.",
+        "summary": "Small state initializers use already-declared scalar members."
+      },
+      {
+        "accepted_predecessor_reason": "The TU still includes Player.h and defines no counterfeit Player class. Main only changes a destructor helper comment in Player.h and changes inherited dActor_c::OnTurnIntoEgg from int to void; SnmBdy does not override that method. This fresh composed class and owned metadata compile and reproduce with those headers.",
+        "disposition": "fixed",
+        "id": "SNM-05",
+        "kind": "reconstruction",
+        "location": "src/actors/daBgSnmBdy_c.cpp:28-34; include/Player.h:43,698",
+        "prior_review": "pr2445.review.md third finding, previously unnumbered; stable ID assigned here",
+        "reason": "Unaffected historical finding retained with its prior disposition and issue ownership. This Bomb King-only three-file change does not edit Snowman Source, headers, ledgers or enrollment. No fresh whole-Snowman review is claimed. Accepted historical reason: Retained prior independent finding disposition at8f95 by exact source/header/manifest/full-diff invariance. Current-head class and reference proof pass. Live-main advance requires composition rework before final acceptance. Prior reason: Retain accepted predecessor pr2445-composition-0910 at3b71825d: exact source/header/manifest/handoff and ov072 symbol/enrollment blobs, plus every ov072 ledger record, are unchanged in8f95. Own composition audit and pinned producer shared-consumer proof show no new interaction. This carries its accepted source judgment and partial issue2476; it does not claim a new whole-Snowman source review.",
+        "summary": "The TU uses the real Player declaration."
+      },
+      {
+        "accepted_predecessor_reason": "The larger raw state bodies, ABI calls and matrix adapter remain explicit unfinished reconstruction under issue2476. Complete source reading from independent accepted8e4b review is retained only after proving exact source/header/manifest invariance; fresh current-base proof passes. This review accepts bounded progress, not whole-class completion or a universal compiler barrier.",
+        "disposition": "deferred",
+        "id": "SNM-06",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2476",
+        "kind": "reconstruction",
+        "location": "src/actors/daBgSnmBdy_c.cpp:33-82,146-186,244-279,294-630",
+        "owner": "humanizer/integrator support through @andrewboudreau",
+        "reason": "Unaffected historical finding retained with its prior disposition and issue ownership. This Bomb King-only three-file change does not edit Snowman Source, headers, ledgers or enrollment. No fresh whole-Snowman review is claimed. Accepted historical reason: Retained prior independent finding disposition at8f95 by exact source/header/manifest/full-diff invariance. Current-head class and reference proof pass. Live-main advance requires composition rework before final acceptance. Prior reason: Retain accepted predecessor pr2445-composition-0910 at3b71825d: exact source/header/manifest/handoff and ov072 symbol/enrollment blobs, plus every ov072 ledger record, are unchanged in8f95. Own composition audit and pinned producer shared-consumer proof show no new interaction. This carries its accepted source judgment and partial issue2476; it does not claim a new whole-Snowman source review.",
+        "summary": "Larger state bodies retain raw field access, external mangled helper calls and a matrix-copy adapter."
+      }
+    ],
+    "scope": "BKG findings retain King Bob-omb scope; SNM findings are inherited composition history for Snowman and are not current King Bob-omb authorship or newly repaired defects. Bob-omb/OneUp dependency-only header tasks are not relabelled as King Bob-omb findings."
+  },
+  "declaration_boundary": {
+    "coverage": "Both the old BombkingFile declarations and the candidate BombkingAnimFile/BombkingModelFile declarations are positively collected.",
+    "inherited_disagreements": [
+      {
+        "symbol": "data_ov078_02126ee0",
+        "before": {
+          "symbol": "data_ov078_02126ee0",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 20,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 86,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126ee0",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 20,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 96,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126ee8",
+        "before": {
+          "symbol": "data_ov078_02126ee8",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 28,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 87,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126ee8",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 28,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 97,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126ef0",
+        "before": {
+          "symbol": "data_ov078_02126ef0",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 22,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 88,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126ef0",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 22,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 98,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126ef8",
+        "before": {
+          "symbol": "data_ov078_02126ef8",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 32,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 89,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126ef8",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 32,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 99,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f00",
+        "before": {
+          "symbol": "data_ov078_02126f00",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 10,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 90,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f00",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 10,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 100,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f08",
+        "before": {
+          "symbol": "data_ov078_02126f08",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 16,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 91,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f08",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 16,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 101,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f10",
+        "before": {
+          "symbol": "data_ov078_02126f10",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 14,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 92,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f10",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 14,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 102,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f18",
+        "before": {
+          "symbol": "data_ov078_02126f18",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 18,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 93,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f18",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 18,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 103,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f20",
+        "before": {
+          "symbol": "data_ov078_02126f20",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 12,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 94,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f20",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 12,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 104,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f28",
+        "before": {
+          "symbol": "data_ov078_02126f28",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 30,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 95,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f28",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 30,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 105,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f30",
+        "before": {
+          "symbol": "data_ov078_02126f30",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 26,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 96,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f30",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 26,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 106,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f38",
+        "before": {
+          "symbol": "data_ov078_02126f38",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 8,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 97,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f38",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 8,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingModelFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 107,
+          "ref": "BombkingModelFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      },
+      {
+        "symbol": "data_ov078_02126f40",
+        "before": {
+          "symbol": "data_ov078_02126f40",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 24,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 98,
+          "ref": "BombkingFile"
+        },
+        "after": {
+          "symbol": "data_ov078_02126f40",
+          "kind": "return",
+          "file": "src/unnamed/ov078/__sinit_ov078_02126660.c",
+          "line": 24,
+          "decl": "void *",
+          "got": "void *",
+          "want": "BombkingAnimFile",
+          "basis": "plurality",
+          "ref_file": "src/actors/daBombking_c.cpp",
+          "ref_line": 108,
+          "ref": "BombkingAnimFile"
+        },
+        "key_unchanged": true,
+        "already_banked": true,
+        "definition_found": false
+      }
+    ],
+    "qualification": "Thirteen separate-initializer void* object declarations remain contradictory. The candidate changes the reference spelling (want), while key_of remembers got=void*, so the existing banked keys stay unchanged. Zero new keys does not mean these interfaces now agree. No baseline edit or initializer change is made.",
+    "scalar_SetAnim_bridge_unchanged": true,
+    "scalar_bridge": "extern \"C\" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);"
+  },
+  "private_scout_proof": {
+    "base": "efd33df972c9475494a18548d0248454c0e2668f",
+    "source": "src/actors/daBombking_c.cpp",
+    "compiled_source": "build/bombking-handles-scout1014/winner/daBombking_c.cpp",
+    "manifest": "config/tu_manifest.d/ov078/daBombking_c.json",
+    "headers_unchanged": true,
+    "manifest_and_policies_unchanged": true,
+    "complete_raw_elf_identical": true,
+    "complete_ordinary_prepared_elf_identical": true,
+    "raw_sha256": "be15a9a33cda8283d958fa9513b3d40708cac4eca3f3824930a9ab89b60b5d9e",
+    "prepared_sha256": "05c372a8d67f19f1cecbcd8824d831fe1ce3912489ef6fa7dba1a96ce65c6022",
+    "strict_rows": 56,
+    "functions": 52,
+    "data_records": 4,
+    "owned_data_bytes": 187,
+    "bss_records": 0,
+    "raw_edges": 482,
+    "prepared_edges": 463,
+    "metadata": [
+      {
+        "symbol": "_ZTV12daBombking_c",
+        "module": "ov078",
+        "address": "0x2126e44",
+        "bytes": 132,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTI12daBombking_c",
+        "module": "ov078",
+        "address": "0x2126e0c",
+        "bytes": 12,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTS12daBombking_c",
+        "module": "ov078",
+        "address": "0x2126e18",
+        "bytes": 15,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTI12dEnemyBase_c",
+        "module": "ov002",
+        "address": "0x21081c0",
+        "bytes": 12,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTS12dEnemyBase_c",
+        "module": "ov002",
+        "address": "0x21081cc",
+        "bytes": 15,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTI8dActor_c",
+        "module": "arm9",
+        "address": "0x208e390",
+        "bytes": 12,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTS8dActor_c",
+        "module": "arm9",
+        "address": "0x208e384",
+        "bytes": 10,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTI7dBase_c",
+        "module": "arm9",
+        "address": "0x2086e78",
+        "bytes": 12,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTS7dBase_c",
+        "module": "arm9",
+        "address": "0x2086e54",
+        "bytes": 9,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTI7fBase_c",
+        "module": "arm9",
+        "address": "0x2086d70",
+        "bytes": 8,
+        "blind": 0,
+        "diff_offsets": []
+      },
+      {
+        "symbol": "_ZTS7fBase_c",
+        "module": "arm9",
+        "address": "0x2086e60",
+        "bytes": 9,
+        "blind": 0,
+        "diff_offsets": []
+      }
+    ],
+    "metadata_bytes": 246,
+    "actual_production_functions": [
+      "rombuild._retarget",
+      "rombuild._isolate",
+      "tu_production.prepare_intact_object"
+    ],
+    "private_tool_override": false
+  },
+  "production_proof": "Pending; private scout proof is not production gate acceptance."
+}
