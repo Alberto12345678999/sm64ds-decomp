@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "task_id": "collision-query-current9893-composition1014",
+  "candidate": "this commit",
+  "completion": "partial",
+  "formal_acceptance": false,
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+  "pull_request": "https://github.com/tangosdev/sm64ds-decomp/pull/3856",
+  "accepted_input": "4c713ad9bfd4063b0d57ffe9ee33b49ff88a957a",
+  "protocol_ancestral_base": "0d26d45d7d579f3db3a6d554f73589737149349b",
+  "tested_current_base": "9893f84287e75f5dd6305bfeaab3b4bfd6228d52",
+  "actual_full_build_tested_commit": "e6f7a568501197b5b787b8157e7583c0011a32a4",
+  "actual_composition_report_producer": "Codex /root, codex-collision-current0d26-astra-producer1014",
+  "source": "src/engine/collision/d_bg_ch_sph_crr_query.cpp",
+  "manifest": "config/tu_manifest.d/arm9/dBgCh_SphCrr_query.json",
+  "source_sha256": "a396943ad3871fef1e1e597de10f8a803036b52a983a036fcbf62d7dd5f7a848",
+  "production_trees_at_actual_tested_commit": {
+    "src": "d01e4fcef7a77f797967f22462c5b3b98e4e5329",
+    "include": "90e59154c130c09dd74cc0d773fe0770769c301e",
+    "config": "0d0028ffea63b8a79233eab7be06196711fe8c59",
+    "tools": "55122625b2b352a5f15ea21d3d9baf1fdd6859b4",
+    "port": "c6bd95e7eb59d61c892c4eb233e85115eb4bc28c"
+  },
+  "change": "Adopt current main file-name sweep by normal composition; preserve the accepted implementation and record fresh current-candidate proof. This commit adds only this report after the actual tested checkpoint.",
+  "fresh_byte_proof": {
+    "path": "build/collision-current9893-root1014/objects/proof.json",
+    "sha256": "c7ad00e03de6e7b2aeb26bad4a9fecde1a5f48092dbb80e0461d4ec5ce95184f",
+    "strict_functions": 57,
+    "different_words": 0,
+    "blind_relocations": 0,
+    "whole_raw_literal_equal": true,
+    "whole_prepared_literal_equal": true,
+    "raw_sha256": "51d330c4e51706448fc5cc0439a2cd01e4b3d282ef2686eda6743c2b66cea1a8",
+    "ordinary_sha256": "1f9fa2683d250b87419aae4af259053f275fb98c8e2c400797a3c067562a974e",
+    "raw_typed_refs": 167,
+    "ordinary_typed_refs": 159,
+    "nontext_sections": 5,
+    "nontext_bytes": 50,
+    "metadata_qualification": "Legacy text-only partition preparation externalizes unchanged nontext. Whole incidental storage and symbol/reference graphs are literal; no intact metadata ownership claim."
+  },
+  "actual_full_build": {
+    "command": [
+      "python",
+      "tools/rombuild.py",
+      "-j16",
+      "--no-rom"
+    ],
+    "terminal": 0,
+    "tested_commit": "e6f7a568501197b5b787b8157e7583c0011a32a4",
+    "modules_exact": 106,
+    "reproducing_source_functions": 11334,
+    "mismatching_source_functions": 0,
+    "source_data_claims_exact": 331,
+    "source_bss_claims": 239,
+    "baseline_symbol_errors": 9,
+    "new_symbol_errors": 0,
+    "intact_tu_gate": "PASS; storage aliases exact",
+    "global_data_advisories": {
+      "verified": 970,
+      "partial": 1519,
+      "differ": 1,
+      "unnamed": 21
+    },
+    "qualification": "Fresh invocation on this candidate, separate from the main-only control. Existing global advisories remain. --no-rom does not request a new candidate NDS image.",
+    "artifacts": {
+      "rombuild-report.json": {
+        "path": "build/collision-current9893-root1014/rombuild-report.json",
+        "sha256": "dfd153ada4310542f46a8578b7af79b929e47088b695c4d91384f37775b78bd9"
+      },
+      "baseline-linkcheck.json": {
+        "path": "build/collision-current9893-root1014/baseline-linkcheck.json",
+        "sha256": "2d699af0d70330cb6f6ddc08158840a50cf8a4869f18ebfb0cac397010d7b8f3"
+      },
+      "full-stock-ROM.log": {
+        "path": "build/collision-current9893-root1014/full-stock-ROM.log",
+        "sha256": "55082c741c20d641c97e911e2b58e36b1cd324dfa19c0a0cada913d2fbe9b33c"
+      },
+      "full-stock-ROM.exit.txt": {
+        "path": "build/collision-current9893-root1014/full-stock-ROM.exit.txt",
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+      }
+    }
+  },
+  "fresh_static_checks": [
+    {
+      "name": "declarations",
+      "command": [
+        "python",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "9893f84287e75f5dd6305bfeaab3b4bfd6228d52"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "port",
+      "command": [
+        "python",
+        "tools/port_refcheck.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "duplicates",
+      "command": [
+        "python",
+        "tools/check_duplicate_sources.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "deadrefs",
+      "command": [
+        "python",
+        "tools/check_dead_references.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "9893f84287e75f5dd6305bfeaab3b4bfd6228d52..HEAD"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "prepush",
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "9893f84287e75f5dd6305bfeaab3b4bfd6228d52..HEAD"
+      ],
+      "exit": 0
+    }
+  ],
+  "inherited_findings": {
+    "COLLISION-QUERY-PARTIAL-01": {
+      "disposition": "deferred",
+      "id": "COLLISION-QUERY-PARTIAL-01",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+      "kind": "reconstruction",
+      "location": "src/engine/collision/dBgCh_SphCrr_query.cpp:position grouping in ground/line scans",
+      "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
+      "reason": "Existing reconstruction gap retained with unchanged complete output; future scope is tracked on issue3854. Bounded direct-field failure is evidence for that attempted form only, not a universal compiler impossibility.",
+      "summary": "Position reads retain measured byte-offset grouping; Vec3 POD copy view and existing self-position integer-laundering remain."
+    },
+    "COLLISION-QUERY-PARTIAL-02": {
+      "disposition": "deferred",
+      "id": "COLLISION-QUERY-PARTIAL-02",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+      "kind": "reconstruction",
+      "location": "src/engine/collision/dBgCh_SphCrr_query.cpp:PcAB/PcObj record views",
+      "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
+      "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
+      "summary": "PcAB/PcObj record reconstruction remains."
+    },
+    "COLLISION-QUERY-PARTIAL-03": {
+      "disposition": "deferred",
+      "id": "COLLISION-QUERY-PARTIAL-03",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+      "kind": "reconstruction",
+      "location": "src/engine/collision/dBgCh_SphCrr_query.cpp:PFN / func_02038234",
+      "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
+      "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
+      "summary": "PFN and func_02038234 stored callback/extra-register contract remain unrecovered."
+    },
+    "COLLISION-QUERY-PARTIAL-04": {
+      "disposition": "deferred",
+      "id": "COLLISION-QUERY-PARTIAL-04",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+      "kind": "reconstruction",
+      "location": "src/engine/collision/dBgCh_SphCrr_query.cpp:dBgPi::RecordHit calls",
+      "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
+      "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
+      "summary": "RecordHit raw int versus native s16 bridge remains."
+    },
+    "COLLISION-QUERY-PARTIAL-05": {
+      "disposition": "deferred",
+      "id": "COLLISION-QUERY-PARTIAL-05",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+      "kind": "reconstruction",
+      "location": "src/engine/collision/dBgCh_SphCrr_query.cpp:address-named helpers",
+      "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
+      "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
+      "summary": "Address-named free helpers retain current public signatures; no complete class lifecycle reconstruction claimed."
+    },
+    "COLLISION-QUERY-PARTIAL-06": {
+      "disposition": "deferred",
+      "id": "COLLISION-QUERY-PARTIAL-06",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3854",
+      "kind": "reconstruction",
+      "location": "src/engine/collision/dBgCh_SphCrr_query.cpp:Vec3_HorzDist / inherited actor-position views",
+      "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
+      "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
+      "summary": "Existing Vec3/Vector3 views and actor scalar-position to Vector3 storage boundary remain partial. This patch does not assert those three separate actor fields form an independently live Vector3 object or resolve the inherited alias/lifetime interface. New position reads use the complete actor byte representation to address the existing s32 subobjects."
+    }
+  },
+  "final_binding": "Final report-only commit must retain these exact five production trees. The queue binds the final immutable candidate and a distinct verifier reviews that exact candidate against the stated current base.",
+  "publication": "After independent exact-current acceptance, normally update the existing PR and rerun its live Source guard. No merge.",
+  "source_author": {
+    "model": "GPT-6 Astra",
+    "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
+    "producer_session": "codex-collision-query-astra-producer1014",
+    "private_research_session": "codex-cpp-frontier-astra1014",
+    "disclosure": "Same actual agent authored private candidate, production Source and report. Root coordinated; Recovery independently preflighted the Source. Neither authored this Source change."
+  },
+  "rename_binding": {
+    "old": "src/engine/collision/dBgCh_SphCrr_query.cpp",
+    "new": "src/engine/collision/d_bg_ch_sph_crr_query.cpp",
+    "old_review_input": "4c713ad9bfd4063b0d57ffe9ee33b49ff88a957a",
+    "policy": "Cover both literal names in independent review; inherited findings retain historical locations."
+  }
+}
