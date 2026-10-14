@@ -1,0 +1,141 @@
+{
+  "task": "player-swing-native1013",
+  "base": "da2ee4ed5574f03eeb805fdb4de647740dfa2561",
+  "producer": "01a13751-2d56-7901-a14d-9543eb0dbf2e",
+  "candidate_author": {
+    "agent": "/root/ibl_interface_independent",
+    "thread": "01a13751-2d56-7901-a14d-9543eb0dbf2e"
+  },
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+  "status": "Source checkpoint; production verification in progress.",
+  "change": "Define the existing swing-state body as int Player::St_SwingPlayer_Main() with a real nonvirtual Player.h declaration and an adjacent @symbol annotation recognized by the declaration collector. The local char* view binds to this; no forwarding wrapper or symbol alias is added.",
+  "source": "src/actors/Player.cpp",
+  "header": "include/Player.h",
+  "manifest": "config/tu_manifest.d/ov002/Player.json",
+  "symbol": "_ZN6Player19St_SwingPlayer_MainEv",
+  "address": "ov002:0x020d9fec",
+  "size_bytes": 964,
+  "inherited_findings": [
+    {
+      "disposition": "deferred",
+      "id": "PLAYERANIM-ABI-001",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+      "kind": "reconstruction",
+      "location": "src/actors/Player.cpp:328",
+      "owner": "codex-player-anim-coordinator1013",
+      "reason": "Accept the narrowly scoped C++ language/API improvement as partial. The three pre-existing scalar bridges preserve the external raw fixed-point ABI; native signatures and their codegen remain future matching work.",
+      "summary": "Scalar mangled SetAnim and particle Fix12 ABI bridges remain."
+    },
+    {
+      "disposition": "deferred",
+      "id": "PLAYERANIM-RAWVIEWS-002",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+      "kind": "reconstruction",
+      "location": "src/actors/Player.cpp:376",
+      "owner": "codex-player-anim-coordinator1013",
+      "reason": "The new real ModelAnim-to-dExtFrameCtrl_c base adjustment is supported by the existing +0x50 layout. The inherited frame read/cast chain and prop pointer at +0x72c are not presented as reconstructed interfaces; retain their cleanup under the class continuation.",
+      "summary": "Selected frame-controller, camera-space vector and spawned-prop accesses retain raw views and casts."
+    },
+    {
+      "disposition": "deferred",
+      "id": "PLAYERANIM-VOLATILE-003",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+      "kind": "reconstruction",
+      "location": "src/actors/Player.cpp:391",
+      "owner": "codex-player-anim-coordinator1013",
+      "reason": "Independent ROM inspection confirms the store at020bcf98 and reload fromsp+20 at020bcfb8 before the particle call. Independently removing only this expression emits604rather than636bytes. Accept its retention as deferred reconstruction; neither the producer report nor this review claims the original source used volatile.",
+      "summary": "Inherited volatile X load is a retained reconstruction device, not established original intent."
+    },
+    {
+      "disposition": "deferred",
+      "id": "PLAYERANIM-BOUNDARY-004",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+      "kind": "reconstruction",
+      "location": "src/actors/Player.cpp:321",
+      "owner": "codex-player-anim-coordinator1013",
+      "reason": "The Player receiver is supported by St_Wait_Main and existing layout. An actual two-int entry models the snapshot naturally and restores C++ codegen; only equality tests and the unsigned SetAnim conversion use its ID, so changing local storage from unsigned field to int bits introduces no different comparison. No original array representation or original helper name is claimed. Genuine member signature/table naming remain deferred.",
+      "summary": "Free C-linkage char-pointer entry and array-backed AnimEntry27 table remain partial."
+    }
+  ],
+  "historical_scope": "The four inherited findings and notes/experiments/player-anim-copy-cpp1013.json retain their original script-animation scope. This state-member change does not complete Player reconstruction or resolve unrelated raw/Fix12/lifecycle work.",
+  "historical_predecessor": {
+    "task": "player-anim-copy-cpp1013",
+    "accepted_commit": "06045911b387715e1432aac071d0ebceb19705ec",
+    "source_review": {
+      "completion": "partial",
+      "files": [
+        "src/actors/Player.cpp",
+        "config/tu_manifest.d/ov002/Player.json",
+        "notes/experiments/player-anim-copy-cpp1013.json",
+        "include/Player.h",
+        "include/ModelAnim.h",
+        "include/dExtFrameCtrl_c.h",
+        "include/dActor_c.h",
+        "include/Sound.h",
+        "config/arm9/overlays/ov002/delinks.txt",
+        "config/arm9/overlays/ov002/symbols.txt"
+      ],
+      "findings": [
+        {
+          "disposition": "deferred",
+          "id": "PLAYERANIM-ABI-001",
+          "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+          "kind": "reconstruction",
+          "location": "src/actors/Player.cpp:328",
+          "owner": "codex-player-anim-coordinator1013",
+          "reason": "Accept the narrowly scoped C++ language/API improvement as partial. The three pre-existing scalar bridges preserve the external raw fixed-point ABI; native signatures and their codegen remain future matching work.",
+          "summary": "Scalar mangled SetAnim and particle Fix12 ABI bridges remain."
+        },
+        {
+          "disposition": "deferred",
+          "id": "PLAYERANIM-RAWVIEWS-002",
+          "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+          "kind": "reconstruction",
+          "location": "src/actors/Player.cpp:376",
+          "owner": "codex-player-anim-coordinator1013",
+          "reason": "The new real ModelAnim-to-dExtFrameCtrl_c base adjustment is supported by the existing +0x50 layout. The inherited frame read/cast chain and prop pointer at +0x72c are not presented as reconstructed interfaces; retain their cleanup under the class continuation.",
+          "summary": "Selected frame-controller, camera-space vector and spawned-prop accesses retain raw views and casts."
+        },
+        {
+          "disposition": "deferred",
+          "id": "PLAYERANIM-VOLATILE-003",
+          "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+          "kind": "reconstruction",
+          "location": "src/actors/Player.cpp:391",
+          "owner": "codex-player-anim-coordinator1013",
+          "reason": "Independent ROM inspection confirms the store at020bcf98 and reload fromsp+20 at020bcfb8 before the particle call. Independently removing only this expression emits604rather than636bytes. Accept its retention as deferred reconstruction; neither the producer report nor this review claims the original source used volatile.",
+          "summary": "Inherited volatile X load is a retained reconstruction device, not established original intent."
+        },
+        {
+          "disposition": "deferred",
+          "id": "PLAYERANIM-BOUNDARY-004",
+          "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3785",
+          "kind": "reconstruction",
+          "location": "src/actors/Player.cpp:321",
+          "owner": "codex-player-anim-coordinator1013",
+          "reason": "The Player receiver is supported by St_Wait_Main and existing layout. An actual two-int entry models the snapshot naturally and restores C++ codegen; only equality tests and the unsigned SetAnim conversion use its ID, so changing local storage from unsigned field to int bits introduces no different comparison. No original array representation or original helper name is claimed. Genuine member signature/table naming remain deferred.",
+          "summary": "Free C-linkage char-pointer entry and array-backed AnimEntry27 table remain partial."
+        }
+      ],
+      "result": "pass",
+      "reviewed_base": "08b118098ecb7ce86b85f1215886a4618e268a86",
+      "reviewed_commit": "06045911b387715e1432aac071d0ebceb19705ec",
+      "reviewer_session": "codex-playeranim-verifier1013-camerapass",
+      "schema": 1,
+      "summary": "Accept this narrowly scoped period-C++ reconstruction as partial. The real two-int array aggregate preserves a whole-entry snapshot without new assembly, volatile, dummy operations or compiler overrides. Existing Player, Sound and frame-controller interfaces replace local mangled declarations; the real second-base conversion supplies the evidenced+0x50adjustment. Signed local ID storage is only tested for equality or converted to the existing unsigned animation argument. Field widths/layouts agree with current headers and complete bytes/typed destinations remain identical. The free ABI entry, raw views, scalar Fix12 bridges and inherited volatile are explicitly retained below. Manifest changes are prose only; no source ownership, lifecycle, initializer, metadata, shared-header, naming or attribution claim is broadened. No unresolved correctness or provenance finding."
+    },
+    "producer_outputs": [
+      {
+        "stage": "produce",
+        "session": "codex-player-anim-producer1013",
+        "commit": "06045911b387715e1432aac071d0ebceb19705ec"
+      }
+    ]
+  },
+  "remaining_boundaries": [
+    "The state body retains raw scalar/offset and helper ABI views, including Fix12 extern seams; native receiver binding is the scoped improvement.",
+    "The existing promoted TU owns612 text functions; constructor/destructor tails, metadata and unrelated state reconstruction remain outside this change."
+  ],
+  "verification": {},
+  "publication": "No queue publication, push, PR or merge to main by this author."
+}
