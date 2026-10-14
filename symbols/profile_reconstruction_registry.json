@@ -8607,7 +8607,7 @@
       "factory_module": "ov002",
       "factory_address": "0x020ebe5c",
       "current_factory_name": "StarCamera_Spawn",
-      "current_factory_file": "src/game/actors/d_a_star_camera.cpp",
+      "current_factory_file": "src/game/actors/StarCamera_Spawn.cpp",
       "proposed_factory_name": "",
       "factory_shape": "uncertain",
       "alloc_size": "0x000000d4",

@@ -1,8 +1,8 @@
 {
   "id": "ov002/StarCamera",
   "module": "ov002",
-  "source": "src/game/actors/d_a_star_camera.cpp",
-  "promoted_source": "src/game/actors/d_a_star_camera.cpp",
+  "source": "src/game/actors/StarCamera_Spawn.cpp",
+  "promoted_source": "src/game/actors/StarCamera_Spawn.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
@@ -22,7 +22,7 @@
       "symbol": "StarCamera_Spawn",
       "address": "0x020ebe5c",
       "size": "0x00000030",
-      "legacy_source": "src/d_a_star_camera.cpp",
+      "legacy_source": "src/StarCamera_Spawn.cpp",
       "ordinal": 0
     }
   ],

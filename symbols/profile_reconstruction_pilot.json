@@ -1172,7 +1172,7 @@
         }
       ],
       "current_factory_name": "StarCamera_Spawn",
-      "current_factory_file": "src/game/actors/d_a_star_camera.cpp",
+      "current_factory_file": "src/game/actors/StarCamera_Spawn.cpp",
       "proposed_factory_name": "",
       "factory_shape": "uncertain",
       "factory_shape_evidence": "allocation is exact, but the called base constructor leaves the dActor_c vtable installed; no most-derived RTTI identity survives",
