@@ -152,19 +152,19 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov072_02122c40",
+      "symbol": "gdaBgSnwmnBigSnowmanBodyModelFile",
       "address": "0x02122c40",
       "size": "0x8",
       "evidence": "model resource handle constructed with file ID 0x2ad"
     },
     {
-      "symbol": "data_ov072_02122c48",
+      "symbol": "gdaBgSnwmnBigSnowmanHeadModelFile",
       "address": "0x02122c48",
       "size": "0x8",
       "evidence": "model resource handle constructed with file ID 0x2af"
     },
     {
-      "symbol": "data_ov072_02122c50",
+      "symbol": "gdaBgSnwmnBigSnowmanSmileTextureSequenceFile",
       "address": "0x02122c50",
       "size": "0x8",
       "evidence": "texseq resource handle constructed with file ID 0x2b0"
@@ -374,7 +374,7 @@
       "source": "0x021223e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov072_02122c40",
+      "symbol": "gdaBgSnwmnBigSnowmanBodyModelFile",
       "addend": 0,
       "target_module": "ov072",
       "target_address": "0x02122c40"
@@ -404,7 +404,7 @@
       "source": "0x021223f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov072_02122c48",
+      "symbol": "gdaBgSnwmnBigSnowmanHeadModelFile",
       "addend": 0,
       "target_module": "ov072",
       "target_address": "0x02122c48"
@@ -424,7 +424,7 @@
       "source": "0x021223fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov072_02122c50",
+      "symbol": "gdaBgSnwmnBigSnowmanSmileTextureSequenceFile",
       "addend": 0,
       "target_module": "ov072",
       "target_address": "0x02122c50"

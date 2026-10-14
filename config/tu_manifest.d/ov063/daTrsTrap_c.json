@@ -7,56 +7,56 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov063_0211ee98",
+      "symbol": "gThMeryGoModelFile",
       "address": "0x0211ee98",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x6c1"
     },
     {
-      "symbol": "data_ov063_0211eea0",
+      "symbol": "gThKaidanCollisionFile",
       "address": "0x0211eea0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x6be"
     },
     {
-      "symbol": "data_ov063_0211eea8",
+      "symbol": "gThTrapModelFile",
       "address": "0x0211eea8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x6c3"
     },
     {
-      "symbol": "data_ov063_0211eeb0",
+      "symbol": "gThKaidanModelFile",
       "address": "0x0211eeb0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x6bd"
     },
     {
-      "symbol": "data_ov063_0211eeb8",
+      "symbol": "gThHondanaModelFile",
       "address": "0x0211eeb8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model file handle constructed with file ID 0x6bb"
     },
     {
-      "symbol": "data_ov063_0211eec0",
+      "symbol": "gThHondanaCollisionFile",
       "address": "0x0211eec0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x6bc"
     },
     {
-      "symbol": "data_ov063_0211eec8",
+      "symbol": "gThMeryGoCollisionFile",
       "address": "0x0211eec8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision file handle constructed with file ID 0x6c2"
     },
     {
-      "symbol": "data_ov063_0211eed0",
+      "symbol": "gThTrapCollisionFile",
       "address": "0x0211eed0",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -901,7 +901,7 @@
       "source": "0x211e514",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eeb8",
+      "symbol": "gThHondanaModelFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eeb8"
@@ -931,7 +931,7 @@
       "source": "0x211e524",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eeb0",
+      "symbol": "gThKaidanModelFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eeb0"
@@ -951,7 +951,7 @@
       "source": "0x211e530",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211ee98",
+      "symbol": "gThMeryGoModelFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211ee98"
@@ -971,7 +971,7 @@
       "source": "0x211e53c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eea8",
+      "symbol": "gThTrapModelFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eea8"
@@ -991,7 +991,7 @@
       "source": "0x211e548",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eec0",
+      "symbol": "gThHondanaCollisionFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eec0"
@@ -1021,7 +1021,7 @@
       "source": "0x211e558",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eea0",
+      "symbol": "gThKaidanCollisionFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eea0"
@@ -1041,7 +1041,7 @@
       "source": "0x211e564",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eec8",
+      "symbol": "gThMeryGoCollisionFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eec8"
@@ -1061,7 +1061,7 @@
       "source": "0x211e570",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov063_0211eed0",
+      "symbol": "gThTrapCollisionFile",
       "addend": 0,
       "target_module": "ov063",
       "target_address": "0x0211eed0"

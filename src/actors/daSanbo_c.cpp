@@ -34,7 +34,7 @@
  *   func_ov096_021365d4).
  *   - func_ov096_02135e2c copies the floor and wall collision normals;
  *   the wall normal is unused.
- *   - data_ov096_02137b20 and data_ov096_02137b28 are the head
+ *   - gSanboHeadModelFile and gSanboBodyModelFile are the head
  *   and segment file handles (InitResources LoadFile, CleanupResources
  *   Release). g_profile_SANBO stays in its own file.
  *   - unk_3a8 is the head byte func_ov096_0213670c reads to
@@ -53,6 +53,12 @@
  *   the segment away from.
  */
 /* common.h first: Matrix4x3 must stay the flat s32[12] spelling. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daSanbo_c_AssetId {
+    ASSET_SANBO_BODY_BMD = 0x041a,
+    ASSET_SANBO_HEAD_BMD = 0x041b
+};
+
 #include "common.h"
 #include "daSanbo_c.h"
 #include "dBgPi.h"
@@ -99,8 +105,8 @@ struct SanboModelFilePtr : SharedFilePtr {
     SanboModelFilePtr(u32 fileID);
     ~SanboModelFilePtr();
 };
-extern SanboModelFilePtr data_ov096_02137b20;
-extern SanboModelFilePtr data_ov096_02137b28;
+extern SanboModelFilePtr gSanboHeadModelFile;
+extern SanboModelFilePtr gSanboBodyModelFile;
 extern daSanbo_c::StateFunc data_ov096_02137b48[];
 
 /* Both profiles construct this class. The synthesized ctor stores
@@ -136,15 +142,15 @@ int daSanbo_c::InitResources()
 
     t = (actorID == SANBO_HEAD);
     if (t != false) {
-        void* m = Model::LoadFile(data_ov096_02137b20);
+        void* m = Model::LoadFile(gSanboHeadModelFile);
         mModel.SetFile((BMD_File *)m, 1, 1);
-        Model::LoadFile(data_ov096_02137b28);
+        Model::LoadFile(gSanboBodyModelFile);
         LoadBlueCoinModel(this);
         unk_3a8 = 1;
     } else {
         t = (actorID == SANBO_BODY);
         if (t != false) {
-            void* m = Model::LoadFile(data_ov096_02137b28);
+            void* m = Model::LoadFile(gSanboBodyModelFile);
             if (mModel.SetFile((BMD_File *)m, 1, 1) == 0)
                 return 0;
         }
@@ -238,12 +244,12 @@ int daSanbo_c::CleanupResources()
   int a = (id == SANBO_HEAD);
   if (a) {
     UnloadBlueCoinModel(this);
-    data_ov096_02137b20.Release();
-    data_ov096_02137b28.Release();
+    gSanboHeadModelFile.Release();
+    gSanboBodyModelFile.Release();
   } else {
     a = (id == SANBO_BODY);
     if (a) {
-      data_ov096_02137b28.Release();
+      gSanboBodyModelFile.Release();
     }
   }
   return 1;
@@ -919,8 +925,8 @@ int daSanbo_c::OnYoshiTryEat()
  * An out-of-line body here would emit D2 and put D0 below D1. */
 
 // @symbol __sinit_daSanbo_c.cpp
-SanboModelFilePtr data_ov096_02137b20(0x41b);   /* head model */
-SanboModelFilePtr data_ov096_02137b28(0x41a);   /* segment model */
+SanboModelFilePtr gSanboHeadModelFile(ASSET_SANBO_HEAD_BMD);   /* head model */
+SanboModelFilePtr gSanboBodyModelFile(ASSET_SANBO_BODY_BMD);   /* segment model */
 
 /* The twelve state PMF records live in .data (0x02137920..0x02137980); the
  * static initializer copies them into the .bss table below, an init/update

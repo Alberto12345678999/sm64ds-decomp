@@ -24,6 +24,11 @@
  * - func_02012694 plays sound 0x2f at mCamSpacePosX.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daKirai_c_AssetId {
+    ASSET_KOOPA_BOMB_BMD = 0x0382
+};
+
 #include "daKirai_c.h"
 #include "common.h"
 #include "SharedFilePtr.h"
@@ -339,7 +344,7 @@ int daKirai_c::InitResources()
 /* The model handle and the state table are this TU's static-init globals:
  * mwcc emits the initializer that constructs the handle (file 0x382),
  * registers its destructor, and copies the four pointer-to-member records. */
-KiraiModelFilePtr data_ov060_0211b1c4(0x382);
+KiraiModelFilePtr data_ov060_0211b1c4(ASSET_KOOPA_BOMB_BMD);
 
 KiraiState data_ov060_0211b1d8[4] = {
     &daKirai_c::func_ov060_02118970,

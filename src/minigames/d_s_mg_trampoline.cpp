@@ -21,6 +21,14 @@
  * - ov004 helpers and most data symbols are unnamed.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_trampoline_AssetId {
+    ASSET_D_2D_MG_BG_TRAMPOLINE_NCG_BIN = 0x00a5,
+    ASSET_D_2D_MG_BG_TRAMPOLINE_NCL_BIN = 0x00a6,
+    ASSET_D_2D_MG_BG_TRAMPOLINE_NSC_BIN = 0x00a7,
+    ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN = 0x0108
+};
+
 #include "dScMgTrampoline_c.h"
 #include "types.h"
 #include "G2x.h"
@@ -356,11 +364,11 @@ void dScMgTrampoline_c::InitDisplay()
     int r8, r7, r6, r5, r4;
     volatile u16 sp0;
 
-    r8 = LoadFile(0xa5);
-    r7 = LoadFile(0xa7);
-    r6 = LoadFile(0xa6);
+    r8 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCG_BIN);
+    r7 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NSC_BIN);
+    r6 = LoadFile(ASSET_D_2D_MG_BG_TRAMPOLINE_NCL_BIN);
     r5 = LoadFile(data_ov006_0213fadc[GetGameLanguage()]);
-    r4 = LoadFile(0x108);
+    r4 = LoadFile(ASSET_D_2D_MG_TRAMPOLINE_NCL_BIN);
 
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & ~3) | 2;
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x9110;

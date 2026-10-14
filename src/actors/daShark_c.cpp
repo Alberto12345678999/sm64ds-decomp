@@ -42,6 +42,12 @@
  *   compare-into-terminal and the copy stay.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daShark_c_AssetId {
+    ASSET_HOJIRO_BMD = 0x0325,
+    ASSET_HOJIRO_SWIM_BCA = 0x0326
+};
+
 #pragma defer_codegen off
 
 #include "common.h"
@@ -351,8 +357,8 @@ extern "C" daShark_c *daShark_c_classInit()
  * Definition order is the retail initializer's construction order: the model
  * handle, then the animation handle, then the free-function descriptors and
  * the state table they are copied into. */
-SharkModelFilePtr data_ov090_021345a4(0x325);
-SharkAnimationFilePtr data_ov090_021345ac(0x326);
+SharkModelFilePtr data_ov090_021345a4(ASSET_HOJIRO_BMD);
+SharkAnimationFilePtr data_ov090_021345ac(ASSET_HOJIRO_SWIM_BCA);
 
 SharkFreeState data_ov090_021343a0 = { func_ov090_0213387c };
 SharkFreeState data_ov090_021343a8 = { func_ov090_02133830 };

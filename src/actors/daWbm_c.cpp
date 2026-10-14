@@ -48,6 +48,11 @@
 /* common.h first, so its flat Matrix4x3 is the spelling this TU sees: with
    math/Matrix.h's {Matrix3x3, Vector3} form, the matrix copies in
    func_ov098_0213b584 are memberwise, 0x34 bytes longer. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daWbm_c_AssetId {
+    ASSET_WATER_BOMB_BMD = 0x042c
+};
+
 #include "common.h"
 #include "daWbm_c.h"
 #include "SharedFilePtr.h"
@@ -117,7 +122,7 @@ struct WbmModelFilePtr : SharedFilePtr {
  * the same bomb model for the bombs it fires.
  * ------------------------------------------------------------------------ */
 // @symbol __sinit_daWbm_c.cpp
-WbmModelFilePtr data_ov098_0213c91c(0x42c);
+WbmModelFilePtr data_ov098_0213c91c(ASSET_WATER_BOMB_BMD);
 
 /* The member pointers the initializer copies into the table
    (0x0213c71c..0x0213c734 in .data, an unclaimed run). Each record is one

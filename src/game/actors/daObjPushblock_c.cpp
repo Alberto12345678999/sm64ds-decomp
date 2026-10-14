@@ -36,6 +36,12 @@
  *   and DIFFs (measured 2026-08-22).
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjPushblock_c_AssetId {
+    ASSET_OBJ_PUSHBLOCK_BMD = 0x0486,
+    ASSET_OBJ_PUSHBLOCK_KCL = 0x0487
+};
+
 #include "daObjPushblock_c.h"
 #include "Sound.h"
 #include "Player.h"
@@ -356,5 +362,5 @@ void daObjPushblock_c::Kill()
 
 /* Order is the retail initializer: model 0x486, mesh-collision 0x487. mwcc
  * emits __sinit_daObjPushblock_c.cpp from these two definitions. */
-PushblockModelFilePtr data_ov002_0210df9c(0x486);
-PushblockClsnFilePtr data_ov002_0210df94(0x487);
+PushblockModelFilePtr data_ov002_0210df9c(ASSET_OBJ_PUSHBLOCK_BMD);
+PushblockClsnFilePtr data_ov002_0210df94(ASSET_OBJ_PUSHBLOCK_KCL);

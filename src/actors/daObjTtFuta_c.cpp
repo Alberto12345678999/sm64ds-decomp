@@ -12,6 +12,12 @@
 //   value, and data_ov033_02111bfc is the CLPS block it takes.
 // - dBgActor_c::IsClsnInRange stays mangled. Behavior passes Fix12<int>.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjTtFuta_c_AssetId {
+    ASSET_TT_OBJ_FUTA_BMD = 0x06c5,
+    ASSET_TT_OBJ_FUTA_KCL = 0x06c6
+};
+
 #include "daObjTtFuta_c.h"
 #include "SharedFilePtr.h"
 #include "Sound.h"
@@ -118,5 +124,5 @@ extern "C" daObjTtFuta_c *daObjTtFuta_c_classInit()
  * __sinit_daObjTtFuta_c.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
 // @symbol __sinit_daObjTtFuta_c.cpp
-TtFutaModelFilePtr data_ov033_021124c8(1733);
-TtFutaCollisionFilePtr data_ov033_021124c0(1734);
+TtFutaModelFilePtr data_ov033_021124c8(ASSET_TT_OBJ_FUTA_BMD);
+TtFutaCollisionFilePtr data_ov033_021124c0(ASSET_TT_OBJ_FUTA_KCL);

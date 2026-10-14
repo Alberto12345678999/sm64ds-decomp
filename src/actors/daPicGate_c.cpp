@@ -39,6 +39,29 @@
  *   do/while.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daPicGate_c_AssetId {
+    ASSET_FOR_BH_BMD = 0x04ab,
+    ASSET_FOR_BK_BMD = 0x04ac,
+    ASSET_FOR_CT_BMD = 0x04ad,
+    ASSET_FOR_CV_EX5_BMD = 0x04ae,
+    ASSET_FOR_DL_BMD = 0x04af,
+    ASSET_FOR_EX_LUIGI_BMD = 0x04b0,
+    ASSET_FOR_EX_MARIO_BMD = 0x04b1,
+    ASSET_FOR_EX_WARIO_BMD = 0x04b2,
+    ASSET_FOR_FL_BMD = 0x04b3,
+    ASSET_FOR_HM_BMD = 0x04b4,
+    ASSET_FOR_HS_BMD = 0x04b5,
+    ASSET_FOR_KI_BMD = 0x04b6,
+    ASSET_FOR_SL_BMD = 0x04b7,
+    ASSET_FOR_SM_BMD = 0x04b8,
+    ASSET_FOR_TD_TT_BMD = 0x04b9,
+    ASSET_FOR_VS_CROSS_BMD = 0x04ba,
+    ASSET_FOR_VS_ISLAND_BMD = 0x04bb,
+    ASSET_FOR_WC_BMD = 0x04bc,
+    ASSET_FOR_WL_BMD = 0x04bd
+};
+
 #pragma defer_codegen off
 
 #include "daPicGate_c.h"
@@ -463,25 +486,25 @@ extern "C" daPicGate_c *daPicGate_c_classInit()
  * state rows. __sinit_daPicGate_c.cpp emits the constructions, the
  * destructor registrations and the record copies; the registration nodes
  * are compiler temporaries. */
-PicGateFilePtr data_ov080_0212851c(0x4ab);
-PicGateFilePtr data_ov080_02128524(0x4ac);
-PicGateFilePtr data_ov080_021284ac(0x4b6);
-PicGateFilePtr data_ov080_021284fc(0x4b8);
-PicGateFilePtr data_ov080_0212850c(0x4ae);
-PicGateFilePtr data_ov080_021284cc(0x4b3);
-PicGateFilePtr data_ov080_021284b4(0x4af);
-PicGateFilePtr data_ov080_02128514(0x4bd);
-PicGateFilePtr data_ov080_021284f4(0x4b7);
-PicGateFilePtr data_ov080_0212852c(0x4bc);
-PicGateFilePtr data_ov080_021284dc(0x4b4);
-PicGateFilePtr data_ov080_021284e4(0x4b5);
-PicGateFilePtr data_ov080_021284ec(0x4b9);
-PicGateFilePtr data_ov080_021284bc(0x4ad);
-PicGateFilePtr data_ov080_02128504(0x4b1);
-PicGateFilePtr data_ov080_0212853c(0x4b0);
-PicGateFilePtr data_ov080_021284d4(0x4b2);
-PicGateFilePtr data_ov080_02128534(0x4ba);
-PicGateFilePtr data_ov080_021284c4(0x4bb);
+PicGateFilePtr gForBhModelFile(ASSET_FOR_BH_BMD);
+PicGateFilePtr gForBkModelFile(ASSET_FOR_BK_BMD);
+PicGateFilePtr gForKiModelFile(ASSET_FOR_KI_BMD);
+PicGateFilePtr gForSmModelFile(ASSET_FOR_SM_BMD);
+PicGateFilePtr gForCvEx5ModelFile(ASSET_FOR_CV_EX5_BMD);
+PicGateFilePtr gForFlModelFile(ASSET_FOR_FL_BMD);
+PicGateFilePtr gForDlModelFile(ASSET_FOR_DL_BMD);
+PicGateFilePtr gForWlModelFile(ASSET_FOR_WL_BMD);
+PicGateFilePtr gForSlModelFile(ASSET_FOR_SL_BMD);
+PicGateFilePtr gForWcModelFile(ASSET_FOR_WC_BMD);
+PicGateFilePtr gForHmModelFile(ASSET_FOR_HM_BMD);
+PicGateFilePtr gForHsModelFile(ASSET_FOR_HS_BMD);
+PicGateFilePtr gForTdTtModelFile(ASSET_FOR_TD_TT_BMD);
+PicGateFilePtr gForCtModelFile(ASSET_FOR_CT_BMD);
+PicGateFilePtr gForExMarioModelFile(ASSET_FOR_EX_MARIO_BMD);
+PicGateFilePtr gForExLuigiModelFile(ASSET_FOR_EX_LUIGI_BMD);
+PicGateFilePtr gForExWarioModelFile(ASSET_FOR_EX_WARIO_BMD);
+PicGateFilePtr gForVsCrossModelFile(ASSET_FOR_VS_CROSS_BMD);
+PicGateFilePtr gForVsIslandModelFile(ASSET_FOR_VS_ISLAND_BMD);
 
 daPicGate_c::State data_ov080_02128628[4] = {
     { &daPicGate_c::func_ov080_02126a54, &daPicGate_c::func_ov080_021269b8,

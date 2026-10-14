@@ -25,6 +25,12 @@
  * The factory is `return new` in this file.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha05_c_AssetId {
+    ASSET_CT_MECHA_OBJ05_BMD = 0x05c2,
+    ASSET_CT_MECHA_OBJ05_KCL = 0x05c3
+};
+
 #include "common.h"
 #include "daObjCtMecha05_c.h"
 #include "dBgCh_Gnd.h"
@@ -360,5 +366,5 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
  * Definition order is the retail initializer construction order. These
  * carry the TU's TTC_MovingBar_* names the code already uses; the retired
  * shard's data_ov065_* labels for the same addresses are dropped. */
-Mecha05ModelFile TTC_MovingBar_ModelFile(0x5c2);
-Mecha05CollisionFilePtr TTC_MovingBar_ClsnFile(0x5c3);
+Mecha05ModelFile TTC_MovingBar_ModelFile(ASSET_CT_MECHA_OBJ05_BMD);
+Mecha05CollisionFilePtr TTC_MovingBar_ClsnFile(ASSET_CT_MECHA_OBJ05_KCL);

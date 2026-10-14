@@ -25,6 +25,18 @@
  * - func_ov006_020e13a4's second init walk keeps `char *bit`; the
  *   indexed form costs four words.
  */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgCurling_c_AssetId {
+    ASSET_D_2D_MG_BG_CURLING1_LEFT_NSC_BIN = 0x002d,
+    ASSET_D_2D_MG_BG_CURLING1_NCL_BIN = 0x002f,
+    ASSET_D_2D_MG_BG_CURLING1_NSC_BIN = 0x0030,
+    ASSET_D_2D_MG_BG_CURLING1_RIGHT_NSC_BIN = 0x0031,
+    ASSET_D_2D_MG_BG_CURLING2_NCL_BIN = 0x0033,
+    ASSET_D_2D_MG_BG_CURLING2_NSC_BIN = 0x0034,
+    ASSET_D_2D_MG_CURLING_NCG_BIN = 0x00c7,
+    ASSET_D_2D_MG_CURLING_NCL_BIN = 0x00c8
+};
+
 #pragma defer_codegen off
 
 #include "types.h"
@@ -1508,11 +1520,11 @@ void dScMgCurling_c::func_ov006_020e3250()
     mHouseX = data_ov006_0212e4dc[mHouse * 2] << 12;
     mHouseY = (data_ov006_0212e4dc[mHouse * 2 + 1] - 0xe0) << 12;
     if (mHouse == 0) {
-        file = LoadFile(0x30);
+        file = LoadFile(ASSET_D_2D_MG_BG_CURLING1_NSC_BIN);
     } else if (mHouse == 1) {
-        file = LoadFile(0x2d);
+        file = LoadFile(ASSET_D_2D_MG_BG_CURLING1_LEFT_NSC_BIN);
     } else if (mHouse == 2) {
-        file = LoadFile(0x31);
+        file = LoadFile(ASSET_D_2D_MG_BG_CURLING1_RIGHT_NSC_BIN);
     }
     func_020563d4(file, 0, 0x800);
     Deallocate(file);
@@ -1633,17 +1645,17 @@ s32 dScMgCurling_c::InitResources()
     *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x1220;
     DecompressLZ16(a, _ZN2G213GetBG2CharPtrEv());
 
-    f = LoadFile(0x2f);
+    f = LoadFile(ASSET_D_2D_MG_BG_CURLING1_NCL_BIN);
     _ZN2GX10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
     Deallocate(f);
 
-    f = LoadFile(0x30);
+    f = LoadFile(ASSET_D_2D_MG_BG_CURLING1_NSC_BIN);
     func_020563d4(f, 0, 0x800);
     Deallocate(f);
 
     {
-        void *c7 = LoadFile(0xc7);
-        void *c8 = LoadFile(0xc8);
+        void *c7 = LoadFile(ASSET_D_2D_MG_CURLING_NCG_BIN);
+        void *c8 = LoadFile(ASSET_D_2D_MG_CURLING_NCL_BIN);
         DecompressLZ16(c7, (void *)0x6400000);
         _ZN2GX11LoadOBJPlttEPKvjj(c8, 0, 0x100);
 
@@ -1652,11 +1664,11 @@ s32 dScMgCurling_c::InitResources()
         *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x814;
         DecompressLZ16(b, (void *)_ZN3G2S13GetBG2CharPtrEv());
 
-        f = LoadFile(0x33);
+        f = LoadFile(ASSET_D_2D_MG_BG_CURLING2_NCL_BIN);
         _ZN3GXS10LoadBGPlttEPKvjj(f, 0x60, 0x1a0);
         Deallocate(f);
 
-        f = LoadFile(0x34);
+        f = LoadFile(ASSET_D_2D_MG_BG_CURLING2_NSC_BIN);
         func_02056374(f, 0, 0x800);
         Deallocate(f);
 

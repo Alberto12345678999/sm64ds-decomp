@@ -25,6 +25,14 @@
 // timer tables, data_0209f2c0 clock byte, data_0209e650 RNG, and the ov035
 // CLPS block stay linker-named. g_profile_CT_MECHA08A/B live outside this TU.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha08_c_AssetId {
+    ASSET_CT_MECHA_OBJ08A_BMD = 0x05c8,
+    ASSET_CT_MECHA_OBJ08A_KCL = 0x05c9,
+    ASSET_CT_MECHA_OBJ08B_BMD = 0x05ca,
+    ASSET_CT_MECHA_OBJ08B_KCL = 0x05cb
+};
+
 #include "daObjCtMecha08_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -219,7 +227,7 @@ int daObjCtMecha08_c::CleanupResources()
 
 /* Static-init globals (was the handwritten __sinit_ov065_0211c9b8 shard).
  * Definition order is the retail initializer's construction order. */
-Mecha08ModelFile TtcRotatingGear_ModelFile(0x5c8);
-Mecha08ModelFile data_ov065_0211d984(0x5ca);
-Mecha08CollisionFilePtr TtcRotatingGear_ClsnFile(0x5c9);
-Mecha08CollisionFilePtr data_ov065_0211d994(0x5cb);
+Mecha08ModelFile TtcRotatingGear_ModelFile(ASSET_CT_MECHA_OBJ08A_BMD);
+Mecha08ModelFile gCtMechaObj08bModelFile(ASSET_CT_MECHA_OBJ08B_BMD);
+Mecha08CollisionFilePtr TtcRotatingGear_ClsnFile(ASSET_CT_MECHA_OBJ08A_KCL);
+Mecha08CollisionFilePtr gCtMechaObj08bCollisionFile(ASSET_CT_MECHA_OBJ08B_KCL);

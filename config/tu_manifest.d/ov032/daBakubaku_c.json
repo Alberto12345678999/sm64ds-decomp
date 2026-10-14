@@ -341,7 +341,7 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov032_02113a40",
+      "symbol": "gBakubakuModelFile",
       "address": "0x02113a40",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -625,7 +625,7 @@
       "source": "0x02112d54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov032_02113a40",
+      "symbol": "gBakubakuModelFile",
       "addend": 0,
       "target_module": "ov032",
       "target_address": "0x02113a40"

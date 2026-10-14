@@ -20,6 +20,12 @@
  * - Vec3_Asr writes int pos[4]. A Vector3 there would emit its destructor.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daKpa2Bg_c_AssetId {
+    ASSET_KB2_STAGE_BMD = 0x0623,
+    ASSET_KB2_STAGE_KCL = 0x0624
+};
+
 #pragma defer_codegen off
 
 #include "common.h"
@@ -172,5 +178,5 @@ extern "C" daKpa2Bg_c *daKpa2Bg_c_classInit(void)
 
 /* The KOOPA2BG model and collision file handles; the extern block above
  * declares them for CleanupResources / InitResources. */
-Kpa2BgModelFilePtr daKpa2Bg_c_ModelFile(1571);
-Kpa2BgCollisionFilePtr daKpa2Bg_c_ClsnFile(1572);
+Kpa2BgModelFilePtr daKpa2Bg_c_ModelFile(ASSET_KB2_STAGE_BMD);
+Kpa2BgCollisionFilePtr daKpa2Bg_c_ClsnFile(ASSET_KB2_STAGE_KCL);

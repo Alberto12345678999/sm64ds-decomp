@@ -36,6 +36,11 @@
 //   handle.
 
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daChair_c_AssetId {
+    ASSET_CHAIR_BMD = 0x02d0
+};
+
 #include "common.h"
 #include "daChair_c.h"
 #include "SharedFilePtr.h"
@@ -453,4 +458,4 @@ place:
     }
 }
 
-ChairModelFilePtr data_ov020_02114af0(0x2d0);
+ChairModelFilePtr data_ov020_02114af0(ASSET_CHAIR_BMD);

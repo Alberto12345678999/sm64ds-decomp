@@ -17,6 +17,14 @@
  * not schedule the same stores.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daBasabasa_c_AssetId {
+    ASSET_BASABASA_BMD = 0x0298,
+    ASSET_BASABASA_FLY_BCA = 0x0299,
+    ASSET_BASABASA_WAIT_BCA = 0x029a,
+    ASSET_BASABASA_WAIT_BMD = 0x029b
+};
+
 #pragma defer_codegen off
 #include "common.h"
 #include "daBasabasa_c.h"
@@ -533,10 +541,10 @@ extern "C" daBasabasa_c *daBasabasa_c_classInit()
  * State records. mwcc emits __sinit_daBasabasa_c.cpp from these definitions,
  * including the destructor registrations and the PMF descriptor constants
  * at 0x0211cc20..0x0211cc60. */
-BasabasaModelFilePtr data_ov065_0211d698(0x298);
-BasabasaModelFilePtr data_ov065_0211d6a8(0x29b);
-BasabasaAnimationFileHandle data_ov065_0211d690(0x299);
-BasabasaAnimationFileHandle data_ov065_0211d6a0(0x29a);
+BasabasaModelFilePtr data_ov065_0211d698(ASSET_BASABASA_BMD);
+BasabasaModelFilePtr data_ov065_0211d6a8(ASSET_BASABASA_WAIT_BMD);
+BasabasaAnimationFileHandle data_ov065_0211d690(ASSET_BASABASA_FLY_BCA);
+BasabasaAnimationFileHandle data_ov065_0211d6a0(ASSET_BASABASA_WAIT_BCA);
 daBasabasa_c::State data_ov065_0211d700 = {
     &daBasabasa_c::EnterPerch, &daBasabasa_c::ExecutePerch
 };

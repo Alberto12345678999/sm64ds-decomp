@@ -21,6 +21,13 @@
  * - func_02016b24 is the unnamed model-mask call in InitResources.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daFRing_c_AssetId {
+    ASSET_KPA_SHWAVE_BCA = 0x0383,
+    ASSET_KPA_SHWAVE_BMD = 0x0384,
+    ASSET_KPA_SHWAVE_BTP = 0x0385
+};
+
 #pragma defer_codegen off
 
 #include "decl_common.h"
@@ -169,9 +176,9 @@ s32 daFRing_c::InitResources()
 
 /* Definition order is the retail initializer's construction order: the model
  * handle, then the animation handle, then the texture-sequence handle. */
-FRingModelFilePtr data_ov060_0211b208(0x384);
-FRingAnimationFileHandle data_ov060_0211b1f8(0x383);
-FRingTexSequenceFilePtr data_ov060_0211b200(0x385);
+FRingModelFilePtr data_ov060_0211b208(ASSET_KPA_SHWAVE_BMD);
+FRingAnimationFileHandle data_ov060_0211b1f8(ASSET_KPA_SHWAVE_BCA);
+FRingTexSequenceFilePtr data_ov060_0211b200(ASSET_KPA_SHWAVE_BTP);
 
 /* return new builds the ring and its eight animators. */
 // @symbol daFRing_c_classInit

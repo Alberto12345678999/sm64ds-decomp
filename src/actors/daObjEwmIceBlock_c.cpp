@@ -22,6 +22,12 @@
 // - q stays branch-scoped: hoisting it renumbers the static-init
 //   temporaries (@490/@491), which the manifest pins.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjEwmIceBlock_c_AssetId {
+    ASSET_EWM_ICE_BROCK_BMD = 0x05ed,
+    ASSET_EWM_ICE_BROCK_KCL = 0x05ee
+};
+
 #include "decl_common.h"
 #include "daObjEwmIceBlock_c.h"
 #include "SharedFilePtr.h"
@@ -182,5 +188,5 @@ struct EwmIceBlockCollisionFilePtr : SharedFilePtr {
 };
 
 // @symbol __sinit_daObjEwmIceBlock_c.cpp
-EwmIceBlockModelFilePtr data_ov056_02113400(0x5ed);      /* model */
-EwmIceBlockCollisionFilePtr data_ov056_02113408(0x5ee);  /* collision */
+EwmIceBlockModelFilePtr gEwmIceBrockModelFile(ASSET_EWM_ICE_BROCK_BMD);      /* model */
+EwmIceBlockCollisionFilePtr gEwmIceBrockCollisionFile(ASSET_EWM_ICE_BROCK_KCL);  /* collision */

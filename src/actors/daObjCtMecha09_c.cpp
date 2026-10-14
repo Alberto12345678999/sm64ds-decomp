@@ -26,6 +26,12 @@
 // recovered name). The two file-scope handles keep data_ov065_* spellings
 // (only names in the tree).
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha09_c_AssetId {
+    ASSET_CT_MECHA_OBJ09_BMD = 0x05cc,
+    ASSET_CT_MECHA_OBJ09_KCL = 0x05cd
+};
+
 #pragma defer_codegen off
 
 #include "daObjCtMecha09_c.h"
@@ -211,5 +217,5 @@ extern "C" daObjCtMecha09_c *daObjCtMecha09_c_classInit()
     return new daObjCtMecha09_c();
 }
 
-Mecha09ModelFilePtr data_ov065_0211d9d4(1484);
-Mecha09ClsnFilePtr data_ov065_0211d9cc(1485);
+Mecha09ModelFilePtr data_ov065_0211d9d4(ASSET_CT_MECHA_OBJ09_BMD);
+Mecha09ClsnFilePtr data_ov065_0211d9cc(ASSET_CT_MECHA_OBJ09_KCL);

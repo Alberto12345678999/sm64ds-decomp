@@ -180,8 +180,8 @@ done:
 // @symbol _ZN7daMky_c19func_ov030_02111890Ev
 void daMky_c::func_ov030_02111890()
 {
-    extern int data_ov030_02115d18[];
-    int b = (int)((int)this->mModelAnim.file == data_ov030_02115d18[1]);
+    extern int gMonkeyRunAnimationFile[];
+    int b = (int)((int)this->mModelAnim.file == gMonkeyRunAnimationFile[1]);
     if (b == 0)
         return;
     int v = (short)((unsigned int)this->mModelAnim.currFrame << 4 >> 16);
@@ -192,8 +192,8 @@ void daMky_c::func_ov030_02111890()
 void daMky_c::func_ov030_02111908()
 {
     extern int data_ov030_02115cf0[];
-    extern int data_ov030_02115cd0[];
-    extern int data_ov030_02115cf8[];
+    extern int gMonkeyWait2AnimationFile[];
+    extern int gMonkeyWait3AnimationFile[];
 
     enum Bool { FALSE, TRUE };
     int frame = (short)(((unsigned)(this->mModelAnim.currFrame << 4)) >> 16);
@@ -208,14 +208,14 @@ void daMky_c::func_ov030_02111908()
         func_0201267c(0xeb, (const Vector3 *)&this->mCamSpacePosX);
         return;
     }
-    b = (enum Bool)(v == data_ov030_02115cd0[1]);
+    b = (enum Bool)(v == gMonkeyWait2AnimationFile[1]);
     if (b) {
         if (frame != 1) return;
         func_0201267c(0xf1, (const Vector3 *)&this->mCamSpacePosX);
         func_0201267c(0xe8, (const Vector3 *)&this->mCamSpacePosX);
         return;
     }
-    b = (enum Bool)(v == data_ov030_02115cf8[1]);
+    b = (enum Bool)(v == gMonkeyWait3AnimationFile[1]);
     if (b) {
         if (frame != 8) return;
         func_0201267c(0xe9, (const Vector3 *)&this->mCamSpacePosX);
@@ -225,18 +225,18 @@ void daMky_c::func_ov030_02111908()
 int daMky_c::func_ov030_02111a00()
 {
     extern int data_ov030_02115cf0[];
-    extern int data_ov030_02115cd0[];
-    extern int data_ov030_02115cf8[];
-    extern int data_ov030_02115cd8[];
+    extern int gMonkeyWait2AnimationFile[];
+    extern int gMonkeyWait3AnimationFile[];
+    extern int gMonkeyWait4AnimationFile[];
     extern void** data_ov030_02115bc8[];
     func_ov030_02111908();
     if (static_cast<dExtFrameCtrl_c &>(this->mModelAnim).WillHitFrame( 0) == 0) {
         int v = (int)this->mModelAnim.file;
         int b;
         b = (int)(v == data_ov030_02115cf0[1]); if (b != 0) goto fail;
-        b = (int)(v == data_ov030_02115cd0[1]); if (b != 0) goto fail;
-        b = (int)(v == data_ov030_02115cf8[1]); if (b != 0) goto fail;
-        b = (int)(v == data_ov030_02115cd8[1]); if (b != 0) goto fail;
+        b = (int)(v == gMonkeyWait2AnimationFile[1]); if (b != 0) goto fail;
+        b = (int)(v == gMonkeyWait3AnimationFile[1]); if (b != 0) goto fail;
+        b = (int)(v == gMonkeyWait4AnimationFile[1]); if (b != 0) goto fail;
     }
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &this->mModelAnim, data_ov030_02115bc8[this->mAnimIdx][1], 0, 0x1000, 0);
@@ -518,8 +518,8 @@ int daMky_c::func_ov030_021122b0()
 // @symbol _ZN7daMky_c12EnterState10Ev
 int daMky_c::EnterState10(){
     struct S { int w[2]; };
-    extern struct S data_ov030_02115d18;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)data_ov030_02115d18.w[1], 0, 0x1000, 0);
+    extern struct S gMonkeyRunAnimationFile;
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (void*)gMonkeyRunAnimationFile.w[1], 0, 0x1000, 0);
   this->mModelAnim.speed = 0x1000;
   mHorzSpeed = 0x13000;
   mActionTimer = 0x1e;
@@ -595,11 +595,11 @@ int daMky_c::EnterState9()
 int daMky_c::func_ov030_02112578()
 {
 
-    extern void *data_ov030_02115cd0[];
-    extern void *data_ov030_02115cf8[];
-    extern void *data_ov030_02115d08[];
-    extern void *data_ov030_02115d10[];
-    extern void *data_ov030_02115d18[];
+    extern void *gMonkeyWait2AnimationFile[];
+    extern void *gMonkeyWait3AnimationFile[];
+    extern void *gMonkeyJumpStAnimationFile[];
+    extern void *gMonkeyJumpEdAnimationFile[];
+    extern void *gMonkeyRunAnimationFile[];
     dActor_c *cage = dActor_c::FindWithActorID(0x67, 0);
     Player *player = this->ClosestPlayer();
     s32 v[3];
@@ -610,7 +610,7 @@ int daMky_c::func_ov030_02112578()
     switch (this->unk_3c7) {
     case 0:
         if (func_ov030_02111b20() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115cd0[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyWait2AnimationFile[1], 0, 0x1000, 0);
             this->mModelAnim.speed = 0x1000;
             this->mHorzSpeed = 0;
             { u8 *p = &this->unk_3c7; *p = *p + 1; }
@@ -633,7 +633,7 @@ int daMky_c::func_ov030_02112578()
         sp[2] = this->mPosZ;
         sp[1] += 0x50000;
         if (player->ShowMessage(*this, 0xbd, (const Vector3 *)sp, 1, 0) != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115cf8[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyWait3AnimationFile[1], 0, 0x1000, 0);
             static_cast<dExtFrameCtrl_c &>(this->mModelAnim).SetFlags( 0);
             func_0201267c(0xd1, (const Vector3 *)&this->mCamSpacePosX);
             { u8 *p = &this->unk_3c7; *p = *p + 1; }
@@ -643,13 +643,13 @@ int daMky_c::func_ov030_02112578()
     case 3:
         if (player->GetTalkState() == 2) {
             player->HasFinishedTalking();
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115d18[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyRunAnimationFile[1], 0, 0x1000, 0);
             { u8 *p = &this->unk_3c7; *p = *p + 1; }
         }
         break;
     case 4:
         if (ApproachLinear(this->mAngleY, (s16)0xffffe04e, 0x400) != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115d08[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
             this->mPrevAngleY = this->mAngleY;
             this->mHorzSpeed = 0xf000;
             this->mVertSpeed = 0x2f000;
@@ -659,14 +659,14 @@ int daMky_c::func_ov030_02112578()
         break;
     case 5:
         if (this->mWithMeshClsn.JustHitGround() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115d10[1], 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyJumpEdAnimationFile[1], 0x40000000, 0x1000, 0);
             this->mHorzSpeed = 0;
             { u8 *p = &this->unk_3c7; *p = *p + 1; }
         }
         break;
     case 6:
         if (static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Finished() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115cd0[1], 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyWait2AnimationFile[1], 0, 0x1000, 0);
             this->mModelAnim.speed = 0x1000;
             cage->mHorzSpeed = 0x400;
             _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x20, 0x14, 0x7f, 0x15666, 0);
@@ -689,7 +689,7 @@ int daMky_c::func_ov030_02112578()
         }
         break;
     case 9:
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115d08[1], 0x40000000, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
         cage->mVertAccel = -0x2000;
         cage->mTerminalVelocity = -0x3c000;
         { u8 *p = &this->unk_3c7; *p = *p + 1; }
@@ -712,8 +712,8 @@ int daMky_c::func_ov030_02112578()
 // @symbol _ZN7daMky_c11EnterState8Ev
 int daMky_c::EnterState8() {
     struct G { void *a; void *b; };
-    extern struct G data_ov030_02115d18;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115d18.b, 0, 0x1000, 0);
+    extern struct G gMonkeyRunAnimationFile;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyRunAnimationFile.b, 0, 0x1000, 0);
     this->mModelAnim.speed = 0x1000;
     this->mPathPtr.FromID(this->param1 & 0xff);
     mPathNode = 1;
@@ -799,7 +799,7 @@ int daMky_c::EnterState7()
       int z;
     };
     extern short data_02082214[];
-    extern void *data_ov030_02115d08[];
+    extern void *gMonkeyJumpStAnimationFile[];
   u8 *new_var;
   int *pos;
   int *py;
@@ -811,7 +811,7 @@ int daMky_c::EnterState7()
   int mul = 0x4b000;
   int rnd = 0x800;
   mFlags &= ~0x80000;
-  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, data_ov030_02115d08[1], 0x40000000, 0x1000, 0);
+  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, gMonkeyJumpStAnimationFile[1], 0x40000000, 0x1000, 0);
   this->mHorzSpeed = 0xa000;
   this->mVertSpeed = 0;
   other = (Player *)this->unk_3a8;
@@ -1147,8 +1147,8 @@ skip_raycast:
 }
 // @symbol _ZN7daMky_c11EnterState4Ev
 int daMky_c::EnterState4(){
-    extern int data_ov030_02115ce0[];
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void *)data_ov030_02115ce0[1], 0, 0x1000, 0);
+    extern int gMonkeyHoldAnimationFile[];
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void *)gMonkeyHoldAnimationFile[1], 0, 0x1000, 0);
     this->mModelAnim.speed = 0x1000;
     if (Vec3_Dist((Vector3 *)&this->mPerchPosX, (Vector3 *)&this->mPosX) < 0x514000
         && this->mPosY > mPerchPosY - 0x12c000) {
@@ -1347,8 +1347,8 @@ int daMky_c::EnterState3()
        mwccarm passes differently at the call site, so declaring the true
        types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 
-    extern char data_ov030_02115ce0[];
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, *(void **)(data_ov030_02115ce0 + 4), 0, 0x1000, 0);
+    extern char gMonkeyHoldAnimationFile[];
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, *(void **)(gMonkeyHoldAnimationFile + 4), 0, 0x1000, 0);
     this->mModelAnim.speed = 0x1000;
     if (mHasSpawnedCap == 0 && SaveData::HasPlayerLostCap()) {
         unk_3c7 = 5;
@@ -1372,13 +1372,13 @@ int daMky_c::EnterState3()
 int daMky_c::func_ov030_02113b38()
 {
     typedef int Fix12i;
-    extern int data_ov030_02115d18[];
+    extern int gMonkeyRunAnimationFile[];
   static_cast<dExtFrameCtrl_c &>(this->mModelAnim).Advance();
   this->UpdatePos(&this->mdCcAc_c);
   func_ov030_02111f6c(&this->mWithMeshClsn);
   if (this->mWithMeshClsn.JustHitGround() != 0) {
     this->mWithMeshClsn.ClearLimMovFlag();
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void*)data_ov030_02115d18[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void*)gMonkeyRunAnimationFile[1], 0, 0x1000, 0);
     this->mModelAnim.speed = 0x1000;
     this->mSpawnPosX = this->mPosX;
     this->mSpawnPosY = this->mPosY;
@@ -1394,7 +1394,7 @@ int daMky_c::EnterState2() {
     typedef int Fix12i;
     typedef short s16;
 
-    extern void *data_ov030_02115d08;
+    extern void *gMonkeyJumpStAnimationFile;
     Player *p;
     int b;
 
@@ -1419,7 +1419,7 @@ int daMky_c::EnterState2() {
 
     this->mWithMeshClsn.SetLimMovFlag();
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-        ((void **)&data_ov030_02115d08)[1], 0x40000000, 0x1000, 0);
+        ((void **)&gMonkeyJumpStAnimationFile)[1], 0x40000000, 0x1000, 0);
     func_0201267c(0xd1, (const ::Vector3 *)&this->mCamSpacePosX);
     func_0201267c(0xf1, (const ::Vector3 *)&this->mCamSpacePosX);
     this->mState = 2;
@@ -1432,7 +1432,7 @@ int daMky_c::func_ov030_02113d20()
     typedef int Fix12i;
     typedef short s16;
 
-    extern void *data_ov030_02115d18;
+    extern void *gMonkeyRunAnimationFile;
     Player *p;
     Fix12i dist;
     s16 angle;
@@ -1480,7 +1480,7 @@ int daMky_c::func_ov030_02113d20()
     this->mPrevAngleY = this->mAngleY;
     if (this->mHorzSpeed != 0)
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-            ((void **)&data_ov030_02115d18)[1], 0, 0x1000, 0);
+            ((void **)&gMonkeyRunAnimationFile)[1], 0, 0x1000, 0);
     else
         func_ov030_02111a00();
 
@@ -1524,12 +1524,12 @@ int daMky_c::func_ov030_02113ff0()
 {
     typedef int Fix12i;
     typedef short s16;
-    extern int data_ov030_02115d18[];
+    extern int gMonkeyRunAnimationFile[];
   int dist = this->DistToCPlayer();
   int b;
   if (dist > 0x15e000) {
     this->mHorzSpeed = 0xc000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void*)data_ov030_02115d18[1], 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim, (void*)gMonkeyRunAnimationFile[1], 0, 0x1000, 0);
   } else if (dist <= 0xfa000) {
     this->mHorzSpeed = 0;
     func_ov030_02111a00();
