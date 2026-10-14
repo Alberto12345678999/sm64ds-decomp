@@ -9,7 +9,7 @@
     "contiguous linker run: 0x2115ee0..0x211c4a0, 93 function(s), from build/tu_map.json (tools/tu_map.py), extended by the unit's four registry factories 0x211c4a0..0x211c600 (tu_map leaves them unattributed; every ov063 TU ends with its own classInits, and these four sit directly after daTrs_c::OnYoshiTryEat)",
     "class label(s): daTrs_c, daTBasket_c, daTrsIcon_c (interleaved: daTBasket_c/daTrsIcon_c destructors and methods sit between daTrs_c members)",
     ".data corroboration: one object's .data holds all three classes' RTTI and vtables in one run, _ZTS7daTrs_c 0x0211e720 .. _ZTV11daTBasket_c 0x0211e930, with the TERESA / BOSS_TERESA / T_BASKET / ICON_TERESA profiles at 0x0211e770..0x0211e7c4 between them",
-    "module sinit corroboration: ov063 has 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok; __sinit_ov063_0211e29c constructs the SharedFilePtrs at bss 0x0211edc4..0x0211edf4 that this unit's InitResources/CleanupResources load and release, so it is this TU's static initializer (kept as its own source: text-only production cannot own .init)",
+    "module sinit corroboration: ov063 has 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok; __sinit_ov063_0211e29c constructs the SharedFilePtrs at bss 0x0211edc4..0x0211edf4 that this unit's InitResources/CleanupResources load and release, so it is this TU's static initializer (owned with its ctor entry by this intact-object production TU)",
     "sinit fold: __sinit_ov063_0211e29c (0x130) constructs seven file handles (models 0x427/0x6c9/0x2cc via func_02017acc + func_02017ab4 dtor; animations 0x428/0x2cf/0x2cd/0x2ce via SharedFilePtr::Construct + SharedFilePtr_Destruct_Anim) and registers their destructors into cells at 0x0211ee14..0x0211ee68. Emitted .init is byte-identical to retail modulo relocations (0 diffs over 0x130)."
   ],
   "sections": [
@@ -1808,39 +1808,39 @@
   "production_mode": "intact-object",
   "defined_symbol_renames": [
     {
-      "from": "@3115",
-      "to": "@3087",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@3116",
-      "to": "@3088",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@3117",
-      "to": "@3089",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
       "from": "@3118",
-      "to": "@3090",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@3087",
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
       "from": "@3119",
-      "to": "@3091",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@3088",
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
       "from": "@3120",
-      "to": "@3092",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "to": "@3089",
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     },
     {
       "from": "@3121",
+      "to": "@3090",
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
+    },
+    {
+      "from": "@3122",
+      "to": "@3091",
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
+    },
+    {
+      "from": "@3123",
+      "to": "@3092",
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
+    },
+    {
+      "from": "@3124",
       "to": "@3093",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input compiler temporary remeasured after native cap/icon interfaces and typed resource handles: full initializer instruction bytes and typed ABS32 edges identify the same 12-byte aligned NOBITS registration record; canonical destination and owned storage unchanged."
     }
   ]
 }

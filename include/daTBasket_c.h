@@ -36,13 +36,14 @@
  *   converts), so only the scalar spelling reproduces the ROM's raw-word
  *   passing; dBgCh_Actr::Init's header additionally takes Fix12i, which
  *   mangles as i while the ROM is Fix12<int>.
- * - Sound::PlaySecretSound / Particle::System::New stay TU-local mangled: no
- *   shared header declares them yet (d_a_wanwan / da1up precedent).
+ * - Sound::PlaySecretSound uses the shared declaration in Sound.h.
+ *   Particle::System::New retains its TU-local scalar ABI declaration.
  * - func_ov063_021169c4 is this class's own shadow helper (writes
  *   mModel.mat4x3, drops mShadowModel; Render is its only caller). It is a
  *   real member now; its ROM symbol carries the daTBasket_c mangle.
  * - data_ov063_0211edec is the shared model file both this class and daTrs_c
- *   load and release; the sinit owns it, this TU only externs it.
+ *   load and release. This TU defines the handle and owns its initializer
+ *   and BSS storage through the intact-object manifest.
  * - The factory is `return new daTBasket_c()`: this TU emits the vtable, so
  *   the vptr store is the emitting-TU spelling and verifies as-is.
  */
@@ -77,8 +78,8 @@ struct daTBasket_c : dEnemyBase_c {
     virtual s32 Behavior();          /* slot  6 -- ov063:0x0211b888 */
     virtual s32 Render();            /* slot  9 -- ov063:0x0211b078 */
 
-    /* Leaf adapter until fBase_c::operator new(size_t) lands (#2570).
-       `return new daTBasket_c()` then routes through the retail allocator. */
+    /* Existing leaf forwarding adapter: `return new daTBasket_c()` routes
+       through the retail allocator. fBase_c also declares an adapter. */
     static void *operator new(size_t size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
