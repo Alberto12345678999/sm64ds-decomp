@@ -8,16 +8,16 @@
   "pull_request": "https://github.com/tangosdev/sm64ds-decomp/pull/3856",
   "accepted_input": "4c713ad9bfd4063b0d57ffe9ee33b49ff88a957a",
   "protocol_ancestral_base": "0d26d45d7d579f3db3a6d554f73589737149349b",
-  "tested_current_base": "9893f84287e75f5dd6305bfeaab3b4bfd6228d52",
-  "actual_full_build_tested_commit": "e6f7a568501197b5b787b8157e7583c0011a32a4",
-  "actual_composition_report_producer": "Codex /root, codex-collision-current0d26-astra-producer1014",
+  "tested_current_base": "25ebe8a058933f6a37ea4d130e43f566a3c10f95",
+  "actual_full_build_tested_commit": "127ad223d1deb4eb5d063e35749fc21af212a266",
+  "actual_composition_report_producer": "Codex /root, codex-collision-current9893-root-producer1014",
   "source": "src/engine/collision/d_bg_ch_sph_crr_query.cpp",
   "manifest": "config/tu_manifest.d/arm9/dBgCh_SphCrr_query.json",
   "source_sha256": "a396943ad3871fef1e1e597de10f8a803036b52a983a036fcbf62d7dd5f7a848",
   "production_trees_at_actual_tested_commit": {
-    "src": "d01e4fcef7a77f797967f22462c5b3b98e4e5329",
+    "src": "0aa4a456ab7f57f49eff824994e094d8be9ae987",
     "include": "90e59154c130c09dd74cc0d773fe0770769c301e",
-    "config": "0d0028ffea63b8a79233eab7be06196711fe8c59",
+    "config": "f282119e8d2942c4def64fb28bd94a49e3ee0e50",
     "tools": "55122625b2b352a5f15ea21d3d9baf1fdd6859b4",
     "port": "c6bd95e7eb59d61c892c4eb233e85115eb4bc28c"
   },
@@ -36,7 +36,9 @@
     "ordinary_typed_refs": 159,
     "nontext_sections": 5,
     "nontext_bytes": 50,
-    "metadata_qualification": "Legacy text-only partition preparation externalizes unchanged nontext. Whole incidental storage and symbol/reference graphs are literal; no intact metadata ownership claim."
+    "metadata_qualification": "Legacy text-only partition preparation externalizes unchanged nontext. Whole incidental storage and symbol/reference graphs are literal; no intact metadata ownership claim.",
+    "whole_object_control_base": "9893f84287e75f5dd6305bfeaab3b4bfd6228d52",
+    "current25_fresh_strict_functions": 57
   },
   "actual_full_build": {
     "command": [
@@ -46,7 +48,7 @@
       "--no-rom"
     ],
     "terminal": 0,
-    "tested_commit": "e6f7a568501197b5b787b8157e7583c0011a32a4",
+    "tested_commit": "127ad223d1deb4eb5d063e35749fc21af212a266",
     "modules_exact": 106,
     "reproducing_source_functions": 11334,
     "mismatching_source_functions": 0,
@@ -64,19 +66,19 @@
     "qualification": "Fresh invocation on this candidate, separate from the main-only control. Existing global advisories remain. --no-rom does not request a new candidate NDS image.",
     "artifacts": {
       "rombuild-report.json": {
-        "path": "build/collision-current9893-root1014/rombuild-report.json",
-        "sha256": "dfd153ada4310542f46a8578b7af79b929e47088b695c4d91384f37775b78bd9"
+        "path": "build/collision-current9893-root1014/current25/rombuild-report.json",
+        "sha256": "452b1523cfbd3c496e38e8e2eae345125c96eca6d2ce283e48ad7288dad06bbe"
       },
       "baseline-linkcheck.json": {
-        "path": "build/collision-current9893-root1014/baseline-linkcheck.json",
+        "path": "build/collision-current9893-root1014/current25/baseline-linkcheck.json",
         "sha256": "2d699af0d70330cb6f6ddc08158840a50cf8a4869f18ebfb0cac397010d7b8f3"
       },
       "full-stock-ROM.log": {
-        "path": "build/collision-current9893-root1014/full-stock-ROM.log",
-        "sha256": "55082c741c20d641c97e911e2b58e36b1cd324dfa19c0a0cada913d2fbe9b33c"
+        "path": "build/collision-current9893-root1014/current25/full-stock-ROM.log",
+        "sha256": "ce616186959eace30518f614c13a1a13306af54d5d0106aa224545bbff7a218c"
       },
       "full-stock-ROM.exit.txt": {
-        "path": "build/collision-current9893-root1014/full-stock-ROM.exit.txt",
+        "path": "build/collision-current9893-root1014/current25/full-stock-ROM.exit.txt",
         "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
       }
     }
@@ -88,7 +90,7 @@
         "python",
         "tools/check_decl_agreement.py",
         "--changed",
-        "9893f84287e75f5dd6305bfeaab3b4bfd6228d52"
+        "25ebe8a058933f6a37ea4d130e43f566a3c10f95"
       ],
       "exit": 0
     },
@@ -122,7 +124,7 @@
         "git",
         "diff",
         "--check",
-        "9893f84287e75f5dd6305bfeaab3b4bfd6228d52..HEAD"
+        "25ebe8a058933f6a37ea4d130e43f566a3c10f95..HEAD"
       ],
       "exit": 0
     },
@@ -132,7 +134,7 @@
         "python",
         "tools/prepush_linkcheck.py",
         "--range",
-        "9893f84287e75f5dd6305bfeaab3b4bfd6228d52..HEAD"
+        "25ebe8a058933f6a37ea4d130e43f566a3c10f95..HEAD"
       ],
       "exit": 0
     }
@@ -197,6 +199,14 @@
       "owner": "codex-collision-query-astra-coordinator1014; next explicitly claimed producer",
       "reason": "Inherited interface reconstruction remains outside the six changed query bodies; no completion or original-type claim is made.",
       "summary": "Existing Vec3/Vector3 views and actor scalar-position to Vector3 storage boundary remain partial. This patch does not assert those three separate actor fields form an independently live Vector3 object or resolve the inherited alias/lifetime interface. New position reads use the complete actor byte representation to address the existing s32 subobjects."
+    },
+    "COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01": {
+      "disposition": "fixed",
+      "id": "COLLISION-CURRENT9893-PRODUCER-PROVENANCE-01",
+      "kind": "provenance",
+      "location": "notes/experiments/collision-query-current9893-1014.json:actual_composition_report_producer",
+      "reason": "Independent verifier identified selection of an inherited producer session for the actual Root report writer. This report now names the actual current Root producer session directly; historical Source authors and rejected epoch remain preserved. Source and production policy are unchanged by this correction.",
+      "summary": "Current composition report incorrectly attributes the current Root report production to the prior actual Astra session codex-collision-current0d26-astra-producer1014."
     }
   },
   "final_binding": "Final report-only commit must retain these exact five production trees. The queue binds the final immutable candidate and a distinct verifier reviews that exact candidate against the stated current base.",
@@ -213,5 +223,49 @@
     "new": "src/engine/collision/d_bg_ch_sph_crr_query.cpp",
     "old_review_input": "4c713ad9bfd4063b0d57ffe9ee33b49ff88a957a",
     "policy": "Cover both literal names in independent review; inherited findings retain historical locations."
-  }
+  },
+  "prior9893_full_build": {
+    "command": [
+      "python",
+      "tools/rombuild.py",
+      "-j16",
+      "--no-rom"
+    ],
+    "terminal": 0,
+    "tested_commit": "e6f7a568501197b5b787b8157e7583c0011a32a4",
+    "modules_exact": 106,
+    "reproducing_source_functions": 11334,
+    "mismatching_source_functions": 0,
+    "source_data_claims_exact": 331,
+    "source_bss_claims": 239,
+    "baseline_symbol_errors": 9,
+    "new_symbol_errors": 0,
+    "intact_tu_gate": "PASS; storage aliases exact",
+    "global_data_advisories": {
+      "verified": 970,
+      "partial": 1519,
+      "differ": 1,
+      "unnamed": 21
+    },
+    "qualification": "Fresh invocation on this candidate, separate from the main-only control. Existing global advisories remain. --no-rom does not request a new candidate NDS image.",
+    "artifacts": {
+      "rombuild-report.json": {
+        "path": "build/collision-current9893-root1014/rombuild-report.json",
+        "sha256": "dfd153ada4310542f46a8578b7af79b929e47088b695c4d91384f37775b78bd9"
+      },
+      "baseline-linkcheck.json": {
+        "path": "build/collision-current9893-root1014/baseline-linkcheck.json",
+        "sha256": "2d699af0d70330cb6f6ddc08158840a50cf8a4869f18ebfb0cac397010d7b8f3"
+      },
+      "full-stock-ROM.log": {
+        "path": "build/collision-current9893-root1014/full-stock-ROM.log",
+        "sha256": "55082c741c20d641c97e911e2b58e36b1cd324dfa19c0a0cada913d2fbe9b33c"
+      },
+      "full-stock-ROM.exit.txt": {
+        "path": "build/collision-current9893-root1014/full-stock-ROM.exit.txt",
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+      }
+    }
+  },
+  "current25_composition": "Normally merge externally landed Yegg PR3851 and progress-only upstream change. Fresh actual full candidate build includes both collision and Yegg; current headers/tools/port equal9893. Prior57 whole-object proof remains explicitly at9893; fresh current57 prepush strict proof uses current25 config."
 }
