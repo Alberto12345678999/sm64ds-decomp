@@ -53,11 +53,10 @@
  *    the result cannot both be wrong about it while six that discard it are
  *    right. dActor_c::ClosestPlayer is DEFINED here, so the three disagreeing
  *    extern "C" guesses at its prototype are simply gone.
- *  - 12/18's dBgCh_Gnd is renamed RaycastGroundPod. It and 14/16's describe
- *    the same 0x50 bytes of stack, but one is a POD constructed by explicit
- *    mangled call and the other a class whose ctor/dtor the compiler calls;
- *    one C++ type cannot be both. Nothing spells it by an unmangled symbol, so
- *    the rename cannot reach the linker. Ordinal 0 takes the real dBgCh_Lin
+ *  - Ordinals 12/18 retain the RaycastGroundPod workspace and explicit
+ *    construction/destruction calls. Ordinals 14/16 use the real dBgCh_Gnd
+ *    header and its collision-height field; their automatic query objects
+ *    own the normal C++ lifetime. Ordinal 0 takes the real dBgCh_Lin
  *    instead: its ctor/dtor are out-of-line declarations, so the member
  *    spelling emits the same calls the retired shard proved.
  *
@@ -77,6 +76,7 @@
 #include "common.h"
 #include "dCc_c.h"
 #include "dBgCh_Lin.h"
+#include "dBgCh_Gnd.h"
 #include "Sound.h"
 
 /* -------------------------------------------------------------------------- */
@@ -1336,7 +1336,6 @@ return func_0200fc44((int)s,(Vector3 *)&t,r1);
 /* ROM ordinal 18 -- func_0200fc44
  * 0x0200fc44  size 0x88 */
 typedef struct RaycastGroundPod { int filler[17]; int resultY; int pad[2]; } RaycastGroundPod;
-struct dBgCh_Gnd;
 extern "C" {
 extern void _ZN9dBgCh_GndC1Ev(dBgCh_Gnd* c);
 extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd* c, const Vector3* pos, void* actor);
@@ -1373,16 +1372,8 @@ void dActor_c::LandingDust(bool doRaycast)
 }
 
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_c17HugeLandingDustAtER7Vector3b
 /* ROM ordinal 16 -- _ZN8dActor_c17HugeLandingDustAtER7Vector3b
  * 0x0200fb84  size 0x88 */
-struct dBgCh_Gnd {
-    char buf[0x50];
-    dBgCh_Gnd();
-    ~dBgCh_Gnd();
-    void SetObjAndPos(const Vector3 &pos, dActor_c *actor);
-    int DetectClsn();
-};
 namespace Particle { struct System {
     static void NewSimple(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
 };
@@ -1392,17 +1383,18 @@ namespace Particle { struct System {
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" int _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i c);
  }
-extern "C" void _ZN8dActor_c17HugeLandingDustAtER7Vector3b(dActor_c *self, Vector3 *pos, bool b)
+// @symbol _ZN8dActor_c17HugeLandingDustAtER7Vector3b
+void dActor_c::HugeLandingDustAt(Vector3 &pos, bool b)
 {
     if (b) {
         dBgCh_Gnd rc;
-        *(Fix12i*)((int)pos + 4) += 0x32000;
-        rc.SetObjAndPos(*pos, 0);
+        pos.y += 0x32000;
+        rc.SetObjAndPos(pos, 0);
         if (rc.DetectClsn())
-            pos->y = *(Fix12i*)((char*)&rc + 0x44);
+            pos.y = rc.clsnY;
     }
-    *(Fix12i*)((int)pos + 4) += 0x28000;
-    Particle::_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, pos->x, pos->y, pos->z);
+    pos.y += 0x28000;
+    Particle::_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb2, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1422,17 +1414,17 @@ void dActor_c::HugeLandingDust(bool doRaycast)
 // @symbol _ZN8dActor_c13LandingDustAtER7Vector3b
 /* ROM ordinal 14 -- _ZN8dActor_c13LandingDustAtER7Vector3b
  * 0x0200fac4  size 0x88 */
-extern "C" void _ZN8dActor_c13LandingDustAtER7Vector3b(dActor_c *self, Vector3 *pos, bool b)
+void dActor_c::LandingDustAt(Vector3 &pos, bool b)
 {
     if (b) {
         dBgCh_Gnd rc;
-        *(Fix12i*)((int)pos + 4) += 0x32000;
-        rc.SetObjAndPos(*pos, 0);
+        pos.y += 0x32000;
+        rc.SetObjAndPos(pos, 0);
         if (rc.DetectClsn())
-            pos->y = *(Fix12i*)((char*)&rc + 0x44);
+            pos.y = rc.clsnY;
     }
-    *(Fix12i*)((int)pos + 4) += 0x5a000;
-    Particle::_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, pos->x, pos->y, pos->z);
+    pos.y += 0x5a000;
+    Particle::_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xb1, pos.x, pos.y, pos.z);
 }
 
 /* -------------------------------------------------------------------------- */
