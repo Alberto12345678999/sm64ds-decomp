@@ -40,6 +40,7 @@
 #include "dBgPi.h"
 #include "dBgPc.h"
 #include "SurfaceInfo.h"
+#include "Vector3s.h"
 
 extern "C" {
 

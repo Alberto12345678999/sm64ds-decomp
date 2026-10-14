@@ -34,10 +34,9 @@
  * ROM carries no names for them.
  *
  * deslop leftovers:
- * - RebuildModelMatrix and AttachToHolder stay free functions parsed as C:
- *   their Matrix4x3 block copies scalarize under C++ (same wall as Bullet
- *   020fed7c and ov062 ba84). `#pragma cplusplus off/on` wraps their
- *   definitions only.
+ * - RebuildModelMatrix and AttachToHolder retain free C-linkage entry points.
+ *   Both compile as C++; their array-backed matrix copies preserve the ROM
+ *   block moves under 2004/b56.
  * - Behavior's `enum Bool` casts are a measured codegen view: plain `int`
  *   spellings size-DIFF under 2004/b56.
  * - Still raw: the holder's word at +0xc8 (Behavior, Render; inside
@@ -80,9 +79,8 @@
 /* shadow struct 'Vec3' */
 struct Vec3 { int x, y, z; };
 
-/* POD spelling of Matrix4x3's 0x30 bytes: with a user-declared constructor on
- * Vector3 the Matrix4x3 copies below scalarize even under `#pragma cplusplus
- * off`; the ROM copies are block moves, so they go through this. */
+/* Array-backed view of Matrix4x3's 0x30 bytes. Copying this aggregate retains
+ * the ROM block moves in C++ under 2004/b56. */
 struct RawMatrix4x3 { int m[12]; };
 
 /* Bare Vec3 is used for the locals and casts below; the struct form above
@@ -155,9 +153,6 @@ extern void Matrix4x3_ApplyInPlaceToTranslation(struct Matrix4x3* m, Fix12i x, F
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(struct Matrix4x3* m, int x, int y, int z);
 extern struct Matrix4x3 data_020a0e68;
 extern char *func_ov002_020e496c(void *p);
-extern int _ZN6Player14IsFrontSlidingEv(void *p);
-extern int _ZN6Player17LostGrabbedObjectEv(void *p);
-extern int _Z14ApproachLinearRsss(short *value, short target, short step);
 extern void MulMat4x3Mat4x3(void *a, void *b, void *c);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void Vec3_Lsl(struct Vec3 *d, struct Vec3 *s, int sh);
@@ -848,8 +843,8 @@ void daObjTatefuda_c::Talk()
             if (Vec3_HorzDist(&plPos, &tgt) < 0x32000) {
                 talkStep = &mTalkStep;
                 *talkStep = (u8)(*talkStep + 1);
-            } else if (_Z14ApproachLinearRsss(
-                           &player->mAngleY,
+            } else if (ApproachLinear(
+                           player->mAngleY,
                            Vec3_HorzAngle(&plPos, &tgt),
                            0x800)
                        != 0) {
@@ -865,8 +860,8 @@ void daObjTatefuda_c::Talk()
             }
             break;
         case 2:
-            if (_Z14ApproachLinearRsss(
-                    &player->mAngleY,
+            if (ApproachLinear(
+                    player->mAngleY,
                     (s16)(mAngleY + 0x8000),
                     0x800)
                 != 0) {
@@ -1147,7 +1142,6 @@ int daObjTatefuda_c::OnAttacked1(dActor_c &other)
  * data_ov002_020ff0d4/d8/dc (12 bytes per pose). The position is that
  * matrix's translation shifted left 3 (matrix units are position >> 3) and
  * the matrix itself is stored into mModel at 0xf0. */
-#pragma cplusplus off
 void AttachToHolder(struct daObjTatefuda_c *self)
 {
     struct Vec3 v;
@@ -1156,14 +1150,14 @@ void AttachToHolder(struct daObjTatefuda_c *self)
     char *m2 = *(char **)(result + 0x14);
     int r4 = 0;
 
-    if (_ZN6Player14IsFrontSlidingEv(self->mHoldingPlayer))
+    if (self->mHoldingPlayer->IsFrontSliding())
         r4 = 1;
-    if (_ZN6Player17LostGrabbedObjectEv(self->mHoldingPlayer)) {
+    if (self->mHoldingPlayer->LostGrabbedObject()) {
         if ((unsigned int)(*(int *)(result + 0x58) << 4) >> 0x10 < 0xe)
             r4 = 1;
     }
 
-    _Z14ApproachLinearRsss(&self->mAngleX, data_ov002_020ff0d0[r4], 0x1000);
+    ApproachLinear(self->mAngleX, data_ov002_020ff0d0[r4], 0x1000);
 
     ((int *)&v)[0] = 0;
     ((int *)&v)[1] = 0;
@@ -1192,7 +1186,6 @@ void AttachToHolder(struct daObjTatefuda_c *self)
     self->mPosZ = lo.z;
     *(struct RawMatrix4x3 *)&self->mModel.mat4x3 = *(struct RawMatrix4x3 *)&data_020a0e68;
 }
-#pragma cplusplus on
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- RebuildModelMatrix, 0x020bafc0, size 0xa0 */
@@ -1204,7 +1197,6 @@ void AttachToHolder(struct daObjTatefuda_c *self)
  * offset of 0x8c00 up, the rotation (Matrix4x3_ApplyInPlaceToRotationZXYExt), the pivot offset back
  * down, stored into mModel at 0xf0 through the scratch matrix data_020a0e68.
  * Called by DROPPED's update, and by Behavior while the state is THROWN. */
-#pragma cplusplus off
 void RebuildModelMatrix(struct daObjTatefuda_c* self){
     struct Vector3 v;
     Vec3_Asr(&v, (struct Vector3*)&self->mPosX, 3);
@@ -1215,7 +1207,6 @@ void RebuildModelMatrix(struct daObjTatefuda_c* self){
     Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, -0x8c00, 0);
     *(struct RawMatrix4x3 *)&self->mModel.mat4x3 = *(struct RawMatrix4x3 *)&data_020a0e68;
 }
-#pragma cplusplus on
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- _ZN15daObjTatefuda_c18UpdateShadowMatrixEv, 0x020baf80, size 0x40 */

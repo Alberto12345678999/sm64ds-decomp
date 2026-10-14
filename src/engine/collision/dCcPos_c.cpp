@@ -1,4 +1,13 @@
 //cpp
+/* leftovers:
+ * Init stays a mangled free definition: the real signature carries Fix12<int>
+ * by value (wall 6az); dCcPos_c.h keeps the real declaration for callers.
+ * func_020147bc keeps its address name: a print helper shared with
+ * nds_print.c and nds_printt.c, which keep their own declarations and call
+ * sites.
+ * data_0208e500 keeps its address name: ROM data resolved from
+ * config/arm9/symbols.txt, defined by no TU.
+ */
 /* Positional collision cylinders (arm9 .text 0x020147bc..0x0201489c):
  * dCcPos_c, the dCc_c leaf that carries its own position -- a fixed
  * cylinder, not bound to an actor, which is why GetOwnerID is a constant
@@ -75,6 +84,7 @@ extern "C" void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(dCcPos_c *self, const
  * sites; only the definition moves. Body as recovered. */
 
 // @symbol func_020147bc
-extern "C" void func_020147bc(unsigned short* r0, int r1){
-  *r0 = (unsigned short)(data_0208e500 + r1);
+extern "C" void func_020147bc(unsigned short *dst, int glyph)
+{
+    *dst = (unsigned short)(data_0208e500 + glyph);
 }

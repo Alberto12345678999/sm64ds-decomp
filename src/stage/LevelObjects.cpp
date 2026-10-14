@@ -23,6 +23,7 @@
 #include "dScStage_c.h"
 #include "dBgW.h"
 #include "PathPtr.h"
+#include "Vector3s.h"
 
 /* The old per-loader files disagreed on four externs. One TU can keep
  * one spelling of each. */

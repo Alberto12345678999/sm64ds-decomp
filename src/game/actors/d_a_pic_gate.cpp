@@ -448,28 +448,25 @@ s32 daPicGate_c::func_ov080_02125d08(s32 frames)
     return (s16)(result - cur);
 }
 
-/* func_ov080_02125d64 stays a C free function: the Vector3 copy it does is
- * the C front end's ldm/stm block move, and C++ scalarizes it on every
- * installed mwccarm (the ov062 wall). #pragma cplusplus off parses it as C.
- * Do not redeclare its callees. */
-#pragma cplusplus off
+/* Initialize the plain vector inside the loop: b56 emits the retail block
+ * copy in C++ mode. This helper retains its existing C-linkage boundary. */
 struct Elem { struct Vector3 pos; int dist; int pad[2]; };  /* 0x18 */
 
 // @symbol func_ov080_02125d64
 /* Refresh every cell's planar distance from the wave origin (unk_134);
  * Elem::dist feeds RippleHeight. */
-void func_ov080_02125d64(char *c)
+extern "C" void func_ov080_02125d64(char *c)
 {
     int i;
-    struct Vec3 tmp;
+
     for (i = 0; i < *(unsigned short*)(c + 0x1b8); i++) {
         struct Elem *e = (struct Elem *)(*(char **)(c + 0x1a0) + i * 0x18);
-        tmp = *(struct Vec3 *)&e->pos;
+        Vec3 tmp = *(struct Vec3 *)&e->pos;
         tmp.z = 0;
         e->dist = Vec3_Dist((struct Vector3 *)(c + 0x134), (struct Vector3 *)&tmp);
     }
 }
-#pragma cplusplus on
+
 
 // @symbol _ZN11daPicGate_c19func_ov080_02125de0Eiii
 /* BeginWave: the origin in cell space goes to unk_134, every cell's dist

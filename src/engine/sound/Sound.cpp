@@ -1,19 +1,27 @@
 //cpp
 /* Sound -- the game's public sound API and the state block behind it.
- * include/Sound.h models the namespace; the ROM linker run
- * 0x02011654..0x02013548 carries the whole module: the 16-bucket sound-object
- * registry at data_0209b53c (find/alloc/free/sweep helpers), the voice-group
- * loaders, the banked Play wrappers, the music-layer state machine, and the
+ *
+ * Run 0x02011654..0x02013548: the 16-bucket sound-object registry at
+ * data_0209b53c (find/alloc/link/unlink/sweep), the voice-group loaders,
+ * the banked Play wrappers, the music-layer state machine, and the boot
  * init and per-frame update entry points func_020133bc/func_020132d8.
+ * include/Sound.h models the namespace.
  *
- * Deferred codegen emits definitions in reverse source order, so the file
- * opens with the tail helpers and closes on the registry internals.
- *
- * Sound::Play and Sound::Play2D are declared void by their definitions but
- * some callers harvest r0 -- call sites that consume a result keep the
- * extern "C" mangled spelling, which is not type-checked across the seam.
- * PlaySub and ChangeMusicVolume carry `5Fix12IiE' in their mangled names,
- * which no type in this tree produces; they keep their literal symbol names.
+ * leftovers:
+ * - Sound::Play and Sound::Play2D are defined void; callers that harvest r0
+ *   keep the mangled spelling (the same return-split the shards carried).
+ * - PlaySub and ChangeMusicVolume keep their literal mangled names:
+ *   `5Fix12IiE' is unproducible (the Fix12 wall, see include/Sound.h).
+ * - Sound_PlayIfNotActive calls func_0201186c through an int-arity pointer:
+ *   the def takes short #4 and the site passes d untruncated.
+ * - PlaySub's goto chain mirrors the ROM branch structure.
+ * - `int dd = (int)(((long long)d))' in func_02012468 is a no-op tower of
+ *   unknown load-bearing status.
+ * - The registry alloc/link/unlink helpers address the table raw
+ *   (`*(int *)', `*(u8 *)(thiz + 4)'); only the sweep/init sites use the
+ *   typed SndRegTable view below.
+ * - func_02013078 reads the player object raw (+0x706 flag byte, +0x60 word);
+ *   Player.h is out of scope for this TU.
  */
 #include "types.h"
 #include "Sound.h"
@@ -169,15 +177,15 @@ extern "C" SoundPlayerDefault data_0208e448[10]; /* 0x0208e448 */
  * of 0x14-byte nodes at +0x8, and 16 hash-bucket heads at +0x508 chaining the
  * live entries by id&0xf. */
 typedef struct SndRegEntry {
-    int field_0;                 /* unique id; 0 marks a free slot */
+    int id;                        /* unique id; 0 marks a free slot */
     unsigned char pad4[2];
-    unsigned char field_6;       /* in-use flag checked by the sweeps */
+    unsigned char inUse;           /* in-use flag checked by the sweeps */
     unsigned char pad7[0xd];
 } SndRegEntry;
 
 typedef struct SndRegTable {
     int counter;                 /* 0x00 - handed out as the unique id */
-    unsigned char field_4;       /* 0x04 - round-robin cursor into entries */
+    unsigned char cursor;        /* 0x04 - round-robin cursor into entries */
     unsigned char pad5[3];
     SndRegEntry entries[0x40];   /* 0x08 */
     void *buckets[16];           /* 0x508 - chain heads by id&0xf */
@@ -284,11 +292,11 @@ void UnpauseMusic(void)
 {
     signed char s = data_0209f2f8;
     if (s == 2 || s == 5 || s == 4 || s == 0x32) {
-        signed char lr = data_0208e420;
-        if (lr < 0) return;
-        data_0208e42c = lr;
-        signed char ip = data_0208e424;
-        data_0209b470 = ip;
+        signed char saved = data_0208e420;
+        if (saved < 0) return;
+        data_0208e42c = saved;
+        signed char saved2 = data_0208e424;
+        data_0209b470 = saved2;
         data_0208e420 = -1;
         return;
     }
@@ -1010,11 +1018,11 @@ extern "C" void func_02011a5c(void *vc)
     int i;
     SndRegEntry *p = c->entries;
     do {
-        p->field_0 = 0;
+        p->id = 0;
         p++;
     } while (p != c->entries + 0x40);
     c->counter = 0;
-    c->field_4 = 0;
+    c->cursor = 0;
     for (i = 0; i < 16; i++) c->buckets[i] = 0;
 }
 
@@ -1036,12 +1044,12 @@ extern "C" void func_020119c8(void *vbase)
     SndRegEntry *e = base->entries;
     int i;
     for (i = 0; i < 0x40; i++) {
-        if (e->field_0) {
-            if (e->field_6 == 1) {
-                e->field_6 = 0;
+        if (e->id) {
+            if (e->inUse == 1) {
+                e->inUse = 0;
             } else {
                 func_02011654((char *)base, (char *)e);
-                base->field_4 = (unsigned char)i;
+                base->cursor = (unsigned char)i;
             }
         }
         e++;
@@ -1055,10 +1063,10 @@ extern "C" void func_02011974(void *vbase)
     SndRegEntry *e = base->entries;
     int i;
     for (i = 0; i < 0x40; i++) {
-        if (e->field_0) {
-            e->field_6 = 0;
+        if (e->id) {
+            e->inUse = 0;
             func_02011654((char *)base, (char *)e);
-            base->field_4 = (unsigned char)i;
+            base->cursor = (unsigned char)i;
         }
         e++;
     }

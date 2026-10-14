@@ -13,7 +13,7 @@
  *   02113a7c surface  enter 02111814  main 02111620   (vert angle > 0)
  *   02113abc dive     enter 02111b50  main 02111830   (vert angle <= 0)
  *
- * The same sinit loads the files used here: 02113a40 model 0x295,
+ * The same sinit constructs the resource handles: 02113a40 model 0x295,
  * 02113a48 bite anim 0x296, 02113a50 swim anim 0x297 (the word at +4
  * is the loaded BCA/BMD). data_0209f32c is the stage water height
  * (daObjC0Water_c publishes it); data_ov032_021137cc / 021137d8 are
@@ -51,11 +51,6 @@ enum {
 
 enum { kPlayerActorId = 0xbf };
 
-struct BcaHandle {
-    s32 fileId;
-    BCA_File *file;
-};
-
 struct BakubakuSpawnInfo {
     daBakubaku_c *(*classInit)();
     s16 executePriority; /* +4: also BAKUBAKU registry id 0x00e4 = 228 */
@@ -72,16 +67,22 @@ typedef char BakubakuSpawnInfo_size_must_be_0x1c[
 /* The model handle constructs through func_02017acc and destroys through
  * func_02017ab4; the animation handles go through SharedFilePtr::Construct
  * and SharedFilePtr_Destruct_Anim. The wrappers are declared, never defined:
- * the manifest aliases their undefined members onto the ROM veneers. */
+ * the manifest aliases their undefined members onto the ROM veneers. Both
+ * paths store a u16 file ID at +0, a byte reference count at +2 and a loaded
+ * file pointer at +4. */
 struct BakubakuModelFilePtr : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
 
     BakubakuModelFilePtr(u32 fileID);
     ~BakubakuModelFilePtr();
 };
 
 struct BakubakuAnimationFileHandle : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    void *filePtr;
 
     BakubakuAnimationFileHandle(u32 fileID);
     ~BakubakuAnimationFileHandle();
@@ -206,7 +207,7 @@ s32 daBakubaku_c::InitResources()
 
     mTerminalVelocity = -0x1e000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file, 0, 0x1000, 0);
+        &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
 
     func_ov032_02111ff4((State *)&data_ov032_02113a8c);
@@ -414,7 +415,7 @@ int daBakubaku_c::func_ov032_02111b9c()
 give_up:
     {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file, 0, 0x1000, 0);
+            &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr, 0, 0x1000, 0);
         mChaseCooldown = 0x64;
         func_ov032_02111ff4((State *)&data_ov032_02113a8c);
         return 1;
@@ -441,7 +442,7 @@ aim:
                 mHorzSpeed = 0x14000;
                 unk_429 = 0;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim, ((BcaHandle *)&data_ov032_02113a48)->file,
+                    &mModelAnim, (BCA_File *)data_ov032_02113a48.filePtr,
                     0x40000000, 0x1000, 0);
                 if (mAngTarget > 0)
                     func_ov032_02111ff4(&data_ov032_02113a7c);
@@ -552,7 +553,7 @@ pitched: ;
                 mBodyClsn.flags &= ~kCcCharMove;
                 mHeadClsn.flags &= ~kCcCharMove;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file,
+                    &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr,
                     0, 0x1000, 0);
                 func_ov032_02111ff4((State *)&data_ov032_02113a8c);
                 return 1;
@@ -629,7 +630,7 @@ pitched: ;
         mAngTarget = mAngleY;
         mFlags = 3;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file,
+            &mModelAnim, (BCA_File *)data_ov032_02113a50.filePtr,
             0, 0x1000, 0);
         func_ov032_02111ff4((State *)&data_ov032_02113a8c);
     }

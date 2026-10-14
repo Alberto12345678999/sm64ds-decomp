@@ -99,8 +99,6 @@ struct EmbeddedClass {
 extern "C" {
 /* Defined below. */
 
-void *_ZN8dActor_c13ClosestPlayerEv(void *c);
-void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 a, u32 b, const void *p, const void *q, int e, int f);
 void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *c, Vector3_16 *s, void *a, int z);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
 void _ZN8dActor_c8PoofDustEv(void *a);
@@ -704,7 +702,7 @@ void daIbl_c::func_ov100_02142b90()
 {
     struct Vec3i pos;
     u16 *timer = (u16 *)&mStateTimer;
-    void *pl;
+    Player *pl;
     int r1;
 
     if (*timer != 0) {
@@ -715,11 +713,11 @@ void daIbl_c::func_ov100_02142b90()
     if (data_0209f2f8 == 6) r1 = 3; else r1 = 6;
     if (mLiveBalls >= (u32)r1) return;
 
-    pl = _ZN8dActor_c13ClosestPlayerEv(this);
+    pl = ClosestPlayer();
     if (pl == 0) return;
 
     {
-        struct Vec3i *pp = (struct Vec3i *)&((Player *)pl)->mPosX;
+        struct Vec3i *pp = (struct Vec3i *)&pl->mPosX;
         pos.x = pp->x;
         pos.y = pp->y;
         pos.z = pp->z;
@@ -743,16 +741,16 @@ void daIbl_c::func_ov100_02142b90()
     }
 
     {
-        void *a;
+        daIbl_c *a;
         int cc = mAreaId;
-        a = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(daIbl_ACTOR_IRONBALL, param1,
-            (struct Vec3i *)&mPosX, (const void *)&mPrevAngleX, cc, -1);
+        a = (daIbl_c *)dActor_c::Spawn(daIbl_ACTOR_IRONBALL, param1,
+            *(const Vector3 *)&mPosX, (const Vector3_16 *)&mPrevAngleX, cc, -1);
         if (a == 0) return;
         {
             u8 *cnt = &mLiveBalls;
             *cnt = *cnt + 1;
         }
-        ((daIbl_c *)a)->mDispenser = this;
+        a->mDispenser = this;
     }
 }
 

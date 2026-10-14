@@ -1,13 +1,9 @@
 //cpp
-/* leftovers:
- * The constructor and destructor come first. SclY constructs through C2
- * and D2, and the destructor is the key function, so all five variants
- * stay. func_020398fc and the func_02039* transform helpers stay free
- * functions; Eyerok calls func_020398fc by address. SetFile and
- * func_02039db8 parse with cplusplus off: only the C front end emits the
- * 0x30-byte block move. SetObjAndSphere stays the mangled call because
- * the radius is Fix12 by value. Matrix copies go through RawMatrix4x3
- * because a Matrix4x3 assignment emits the Vector3 destructor.
+/* The constructor/destructor order retains all five lifecycle variants used
+ * by dBgW_KcMbgSclY. The func_02039* transform workers retain C linkage.
+ * SetFile and SetObjAndSphere retain scalar ABI boundaries for the shared
+ * Fix12<int>-by-value signatures. Flat matrix copies use RawMatrix4x3;
+ * the shared Matrix4x3 copy changes the retail instruction sequence.
  */
 /* dBgW_KcMbg: KCL mesh under a Matrix4x3, with a uniform scale.
  * Type name 0x0209941c, typeinfo 0x02099410, vtable 0x02099434.
@@ -55,9 +51,10 @@ extern dBgPi data_020a0d1c;
 extern Matrix4x3 data_020a0e68;
 }
 
-/* Matrix4x3 and Vector3 carry the shared, ROM-proven Vector3 destructor.
- * Transform predates those cleanup calls and copies both as flat words, so
- * keep that period codegen local without obscuring the collider's real type. */
+/* Flat storage for matrix/vector copies in SetFile and Transform. The shared
+ * Matrix4x3 contains a Vector3 with a destructor; copying its words through
+ * this local view preserves the retail block copies without changing it.
+ */
 struct RawMatrix4x3 {
     s32 m[12];
 };
@@ -81,54 +78,52 @@ dBgW_KcMbg::~dBgW_KcMbg()
 }
 
 // @symbol _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
-#pragma cplusplus off
-/* The Fix12-by-value signature and its block-move copies keep this on the C
- * front end, exactly as the separate .c shard did. `struct dBgW_KcMbg` in a C
- * region is the class's C spelling; members resolve to their real offsets. */
-struct KCL_File;
-struct CLPS_Block;
-extern void _ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block(void *thiz, void *f, void *b);
-
-void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *f, const Matrix4x3 *m, int fix, short s, void *b)
+/* Scalar ABI boundary: the shared SetFile declaration takes Fix12<int> by
+ * value. This C++ body retains its existing scalar entry and C symbol.
+ * The scratch aggregate holds two complete matrices and the local up axis.
+ */
+extern "C" void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *f, const Matrix4x3 *m, int fix, short s, void *b)
 {
-  char *c = (char *) thiz;
-  struct dBgW_KcMbg *self = (struct dBgW_KcMbg *) thiz;
-  int new_var;
-  char stk[0x6c];
-  _ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block(thiz, f, b);
-  func_02039624(c);
-  self->scale = fix;
-  *(RawMatrix4x3 *) &self->mat = *(RawMatrix4x3 *) m;
-  *(RawMatrix4x3 *) &self->invMat = *(RawMatrix4x3 *) &self->mat;
-  InvMat4x3(&self->invMat, &self->invMat);
-  self->angY = s;
-  self->angVelY = 0;
-  self->pos.x = m->t.x;
-  self->pos.y = m->t.y;
-  self->pos.z = m->t.z;
-  self->velocity.x = (self->velocity.y = (self->velocity.z = 0));
-  *((RawMatrix4x3 *) (stk + 0)) = *((RawMatrix4x3 *) (c + 0x54));
-  ((Matrix4x3 *) (stk + 0))->t.x = 0;
-  ((Matrix4x3 *) (stk + 0))->t.y = 0;
-  ((Matrix4x3 *) (stk + 0))->t.z = 0;
-  *(RawMatrix4x3 *) &self->invRotMat = *((RawMatrix4x3 *) (stk + 0));
-  InvMat4x3(&self->invRotMat, &self->invRotMat);
-  self->invScale = (new_var = func_02053200(fix));
-  *(RawMatrix4x3 *) &data_020a0e68 = *(RawMatrix4x3 *) m;
-  Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, self->scale, self->scale, self->scale);
-  *((RawMatrix4x3 *) (stk + 0x30)) = *(RawMatrix4x3 *) &data_020a0e68;
-  *(RawMatrix4x3 *) &self->newScaledMat = *(RawMatrix4x3 *) &data_020a0e68;
-  *(RawMatrix4x3 *) &self->invScaledMat = *((RawMatrix4x3 *) (stk + 0x30));
-  InvMat4x3(&self->invScaledMat, &self->invScaledMat);
-  *(RawMatrix4x3 *) &self->prevInvScaledMat = *(RawMatrix4x3 *) &self->invScaledMat;
-  *(RawMatrix4x3 *) &self->scaledMat = *((RawMatrix4x3 *) (stk + 0x30));
-  *((int *) (stk + 0x60)) = 0;
-  *((int *) (stk + 0x64)) = 0x1000;
-  *((int *) (stk + 0x68)) = 0;
-  func_02039e18(thiz, (Vector3 *) (stk + 0x60), (Vector3 *) (c + 0x28));
-  *((unsigned char *) (c + 0x130)) = 0;
+    char *c = (char *) thiz;
+    dBgW_KcMbg *self = (dBgW_KcMbg *)thiz;
+    struct Scratch {
+        RawMatrix4x3 rotation;
+        RawMatrix4x3 scaled;
+        RawVector3 up;
+    } scratch;
+    self->dBgW_Kc::SetFile((KCL_File *)f, *(CLPS_Block *)b);
+    func_02039624(c);
+    self->scale = fix;
+    *(RawMatrix4x3 *) &self->mat = *(RawMatrix4x3 *) m;
+    *(RawMatrix4x3 *) &self->invMat = *(RawMatrix4x3 *) &self->mat;
+    InvMat4x3(&self->invMat, &self->invMat);
+    self->angY = s;
+    self->angVelY = 0;
+    self->pos.x = m->t.x;
+    self->pos.y = m->t.y;
+    self->pos.z = m->t.z;
+    self->velocity.x = (self->velocity.y = (self->velocity.z = 0));
+    scratch.rotation = *(RawMatrix4x3 *)&self->mat;
+    scratch.rotation.m[9] = 0;
+    scratch.rotation.m[10] = 0;
+    scratch.rotation.m[11] = 0;
+    *(RawMatrix4x3 *) &self->invRotMat = scratch.rotation;
+    InvMat4x3(&self->invRotMat, &self->invRotMat);
+    self->invScale = func_02053200(fix);
+    *(RawMatrix4x3 *) &data_020a0e68 = *(RawMatrix4x3 *) m;
+    Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, self->scale, self->scale, self->scale);
+    scratch.scaled = *(RawMatrix4x3 *) &data_020a0e68;
+    *(RawMatrix4x3 *) &self->newScaledMat = *(RawMatrix4x3 *) &data_020a0e68;
+    *(RawMatrix4x3 *) &self->invScaledMat = scratch.scaled;
+    InvMat4x3(&self->invScaledMat, &self->invScaledMat);
+    *(RawMatrix4x3 *) &self->prevInvScaledMat = *(RawMatrix4x3 *) &self->invScaledMat;
+    *(RawMatrix4x3 *) &self->scaledMat = scratch.scaled;
+    scratch.up.x = 0;
+    scratch.up.y = 0x1000;
+    scratch.up.z = 0;
+    func_02039e18(self, (Vector3 *)&scratch.up, (Vector3 *)&self->unk_28);
+    *(u8 *)&self->unk_130 = 0;
 }
-#pragma cplusplus on
 
 // @symbol _ZN10dBgW_KcMbg9Virtual08Ev
 void dBgW_KcMbg::Virtual08()
@@ -241,19 +236,15 @@ extern "C" void func_02039e18(dBgW_KcMbg *self, Vector3 *v, Vector3 *res)
 }
 
 // @symbol func_02039db8
-#pragma cplusplus off
-/* World-to-local transform by `mat` with the translation dropped -- the same
- * block-move copy constraint as SetFile keeps it on the C front end. */
-void func_02039db8(struct dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res)
+extern "C" void func_02039db8(dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res)
 {
     Matrix4x3 m;
-    *(RawMatrix4x3 *) &m = *(RawMatrix4x3 *) &thiz->mat;
+    *(RawMatrix4x3 *)&m = *(RawMatrix4x3 *)&thiz->mat;
     m.t.x = 0;
     m.t.y = 0;
     m.t.z = 0;
     MulVec3Mat4x3(v, &m, res);
 }
-#pragma cplusplus on
 
 // @symbol _ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd
 int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray)

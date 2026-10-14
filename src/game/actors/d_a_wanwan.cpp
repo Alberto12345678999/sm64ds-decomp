@@ -11,11 +11,9 @@
  * g_profile_WANWAN is not this file's data. ModelAnim::SetAnim,
  * dCcAcPos_c::Init, DropShadowRadHeight, Player::Hurt and cstd::atan2
  * stay mangled: this file calls them, and each takes Fix12<int> by
- * value. The factory stays hand-rolled. return new daWanwan_c() changes
- * the size and relocates dExtShadowModel_c's D1 where the ROM still has
- * 0x020733a8. func_0203d384 constructs the two Vector3[7] arrays. The
- * four resource handles keep address names; their definitions are this
- * file's static initializer.
+ * value. The factory constructs the real class, including its two
+ * Vector3[7] arrays. The four resource handles keep address names;
+ * their definitions drive this file's static initializer.
  */
 
 #include "common.h"
@@ -121,22 +119,6 @@ int Math_Function_0203b14c(void *p, int a, int b, int c, int d);
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
 
-extern "C" {
-
-dEnemyBase_c *_ZN12dEnemyBase_cC2Ev(dEnemyBase_c *object);
-dCcAcPos_c *_ZN10dCcAcPos_cC1Ev(dCcAcPos_c *object);
-ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
-dExtShadowModel_c *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *object);
-void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
-    void (*ctor)(void *), void (*dtor)(void *));
-extern int _ZTV10daWanwan_c[];
-extern Model *_ZN5ModelD1Ev(Model *object);
-extern Model *_ZN5ModelC1Ev(Model *object);
-extern dExtShadowModel_c *_ZN17dExtShadowModel_cD1Ev(dExtShadowModel_c *object);
-extern Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
-extern void func_0203d384(void);
-}
-
 namespace cstd {
 int fdiv(int a, int b);
 }
@@ -151,29 +133,9 @@ extern "C" int func_0201267c(int id, void *pos, int unused);
         &(self)->mModelAnim, (BCA_File *)(bca).words[1], 0, 0x1000, 0)
 
 // @symbol daWanwan_c_classInit
-/* Hand-rolled. return new daWanwan_c() changes the size and relocates
- * dExtShadowModel_c's D1 where the ROM still has 0x020733a8.
- * func_0203d384 constructs the two Vector3[7] arrays. */
 extern "C" daWanwan_c *daWanwan_c_classInit()
 {
-    daWanwan_c *c = (daWanwan_c *)fBase_c::operator new(0x620);
-    if (c) {
-        _ZN12dEnemyBase_cC2Ev(c);
-        *(int **)c = &_ZTV10daWanwan_c[2];
-        _ZN10dCcAcPos_cC1Ev(&c->mdCcAcPos_c);
-        _ZN9ModelAnimC1Ev(&c->mModelAnim);
-        _ZN17dExtShadowModel_cC1Ev(&c->mShadowModel);
-        __cxa_vec_ctor(c->mLinkModels, 7, 0x50,
-            (void (*)(void *))_ZN5ModelC1Ev, (void (*)(void *))_ZN5ModelD1Ev);
-        __cxa_vec_ctor(c->mLinkShadows, 7, 0x28,
-            (void (*)(void *))_ZN17dExtShadowModel_cC1Ev,
-            (void (*)(void *))_ZN17dExtShadowModel_cD1Ev);
-        __cxa_vec_ctor(c->mLinkPos, 7, 0xc,
-            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-        __cxa_vec_ctor(c->mLinkDelta, 7, 0xc,
-            (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
-    }
-    return c;
+    return new daWanwan_c();
 }
 
 // @symbol _ZN10daWanwan_c13InitResourcesEv

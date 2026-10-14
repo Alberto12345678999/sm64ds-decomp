@@ -20,16 +20,16 @@
  * and the calls resolve to those definitions.  Where a shard had declared its
  * own stand-in `struct Player` or `struct State`, the stand-in is gone and the
  * code names the real class; the remaining local shadow structs keep unique
- * tags.  Every tail member is compiled as C++; the one C body in the file is
- * func_ov002_020bcdf0 (reason at its definition).
+ * tags.  All bodies compile as C++; func_ov002_020bcdf0 retains its
+ * free C-linkage entry and an array-backed animation entry snapshot.
  *
  * Ordinals 0..16 (0x020bccfc..0x020bd828) are the Player half of the Kuppa-script
  * interpreter, folded after the first 344: func_ov002_020bd664 dispatches a
  * script command record through a table of fourteen pointers to members, and
  * the other members here are those fourteen commands plus the step change one
  * of them makes.  They are Player members named by address, declared in
- * Player.h with unnamed parameters.  The exception is func_ov002_020bcdf0, a C
- * function under `#pragma cplusplus off` (reason at its definition).  The
+ * Player.h with unnamed parameters. func_ov002_020bcdf0 retains its free
+ * C-linkage entry, compiled as C++ (see its definition). The
  * dispatcher's function-local static table is spelled the way this file spells
  * every static, as externs of its guard and table, so the TU emits no .bss.
  * Ownership evidence is in the manifest.
@@ -312,25 +312,20 @@ int Player::func_ov002_020bcd38(unsigned char *params, int beginFrame, int endFr
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- func_ov002_020bcdf0, 0x020bcdf0, size 0x27c */
 /* -------------------------------------------------------------------------- */
-/* Parsed as C, and so a free function taking the object rather than a
- * member: `cur = base[...]` is a struct copy the C front end keeps in a
- * stack slot and reloads, and C++ promotes it to registers whatever its
- * spelling (an array of one, a user destructor, copy constructor or
- * assignment were each measured, and each scalarizes). */
-#pragma cplusplus off
-typedef struct { unsigned int id; int val; } AnimEntry27;
+/* Free C-linkage script-animation update on a Player. The array-backed
+ * entry retains the retail two-word stack snapshot under 2004/b56 C++.
+ * w[0] is the animation ID; w[1] is the signed animation parameter.
+ * Scalar SetAnim/particle ABI calls and the raw spawned-prop view remain. */
+extern "C" {
+typedef struct { int w[2]; } AnimEntry27;
 
 // @symbol func_ov002_020bcdf0
 void func_ov002_020bcdf0(char *self)
 {
     extern AnimEntry27 *data_ov002_0210a7a0[];
     extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *self, unsigned int id, int val, int fix, unsigned int flags);
-    extern int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
-    extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *anim, int frame);
     extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-    extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *v);
     extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int handle, unsigned int type, int x, int y, int z, void *vec, void *cb);
-    extern int _ZN6Player12FinishedAnimEv(void *self);
     AnimEntry27 *base;
     AnimEntry27 cur;
     int id;
@@ -339,59 +334,61 @@ void func_ov002_020bcdf0(char *self)
     struct { int x, y, z; } vv[2];
     int x0, y0, z0;
 
-    if (*(u8 *)(self + 0x727) == 0)
+    if (((Player *)self)->unk_727 == 0)
         return;
 
-    base = data_ov002_0210a7a0[*(u8 *)(self + 0x727) - 1];
-    cur = base[*(u8 *)(self + 0x728)];
+    base = data_ov002_0210a7a0[((Player *)self)->unk_727 - 1];
+    cur = base[((Player *)self)->unk_728];
 
-    _ZN6Player7SetAnimEji5Fix12IiEj(self, cur.id, cur.val, 0x1000, 0);
+    _ZN6Player7SetAnimEji5Fix12IiEj(self, cur.w[0], cur.w[1], 0x1000, 0);
 
-    if (cur.id == 0xbd) {
-        id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
-        anim = (char *)((int *)(self + 0xdc))[id] + 0x50;
-        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0xc)) {
-            *(u8 *)(self + 0x71a) = 1;
+    if (cur.w[0] == 0xbd) {
+        id = ((Player *)self)->GetBodyModelID(((Player *)self)->param1 & 0xff, 0);
+        anim = (char *)&(dExtFrameCtrl_c &)*((Player *)self)->mBodyModels[id];
+        if (((dExtFrameCtrl_c *)anim)->WillHitFrame(0xc)) {
+            ((Player *)self)->mHasNoCap = 1;
         }
-    } else if (cur.id == 1) {
-        id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
-        anim = (char *)((int *)(self + 0xdc))[id] + 0x50;
-        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0x5d)) {
-            *(u8 *)(self + 0x71a) = 0;
+    } else if (cur.w[0] == 1) {
+        id = ((Player *)self)->GetBodyModelID(((Player *)self)->param1 & 0xff, 0);
+        anim = (char *)&(dExtFrameCtrl_c &)*((Player *)self)->mBodyModels[id];
+        if (((dExtFrameCtrl_c *)anim)->WillHitFrame(0x5d)) {
+            ((Player *)self)->mHasNoCap = 0;
         } else {
-            id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
-            anim = (char *)((int *)(self + 0xdc))[id] + 0x50;
-            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0x45)) {
-                x0 = *(int *)(self + 0x5c);
-                y0 = *(int *)(self + 0x60) + 0x50000;
-                z0 = *(int *)(self + 0x64);
+            id = ((Player *)self)->GetBodyModelID(((Player *)self)->param1 & 0xff, 0);
+            anim = (char *)&(dExtFrameCtrl_c &)*((Player *)self)->mBodyModels[id];
+            if (((dExtFrameCtrl_c *)anim)->WillHitFrame(0x45)) {
+                x0 = ((Player *)self)->mPosX;
+                y0 = ((Player *)self)->mPosY + 0x50000;
+                z0 = ((Player *)self)->mPosZ;
                 vv[0].x = x0;
                 vv[0].y = y0;
                 vv[0].z = z0;
                 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x37, vv[0].x, vv[0].y, vv[0].z);
 
-                _ZN5Sound13PlayCharVoiceEjjRK7Vector3(*(u8 *)(self + 0x6d9), 0x33, self + 0x74);
+                Sound::PlayCharVoice(((Player *)self)->mCharacter, 0x33, *(Vector3 *)&((Player *)self)->mCamSpacePosX);
             }
         }
     }
 
-    if (*(int *)(self + 8) == 0) {
-        if (cur.id == 0xbb) {
-            id = _ZNK6Player14GetBodyModelIDEjb(self, *(int *)(self + 8) & 0xff, 0);
-            anim = (char *)((long long)(int)((char *)((int *)(self + 0xdc))[id] + 0x50));
+    if (((Player *)self)->param1 == 0) {
+        if (cur.w[0] == 0xbb) {
+            id = ((Player *)self)->GetBodyModelID(((Player *)self)->param1 & 0xff, 0);
+            anim = (char *)((long long)(int)((char *)&(dExtFrameCtrl_c &)*((Player *)self)->mBodyModels[id]));
             frame = (unsigned int)(*(int *)(anim + 8) << 4) >> 0x10;
             if (frame >= 0x1e)
                 goto particle;
         }
-        if (cur.id == 0xbc) {
+        if (cur.w[0] == 0xbc) {
 particle:
-            z0 = *(int *)(self + 0x64);
-            y0 = *(int *)(self + 0x60) + 0x4b000;
-            x0 = *(int *)(self + 0x5c);
+            z0 = ((Player *)self)->mPosZ;
+            y0 = ((Player *)self)->mPosY + 0x4b000;
+            x0 = ((Player *)self)->mPosX;
             vv[1].x = x0;
             vv[1].y = y0;
             vv[1].z = z0;
-            *(int *)(self + 0x628) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(*(int *)(self + 0x628), 0x36, *(volatile int *)&vv[1].x, vv[1].y, vv[1].z, 0, 0);
+            /* Inherited volatile read preserves the retail stack reload of X
+             * into r2 at 0x020bcfb8 before the particle call. */
+            ((Player *)self)->mParticle1 = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(((Player *)self)->mParticle1, 0x36, *(volatile int *)&vv[1].x, vv[1].y, vv[1].z, 0, 0);
         }
     }
 
@@ -401,21 +398,21 @@ particle:
         *(short *)(p2 + 0x8e) = *(short *)(self + 0x8e);
         *(short *)(p2 + 0x90) = *(short *)(self + 0x90);
         p2 = *(char **)(self + 0x72c);
-        *(int *)(p2 + 0x5c) = *(int *)(self + 0x5c);
-        *(int *)(p2 + 0x60) = *(int *)(self + 0x60);
-        *(int *)(p2 + 0x64) = *(int *)(self + 0x64);
+        *(int *)(p2 + 0x5c) = ((Player *)self)->mPosX;
+        *(int *)(p2 + 0x60) = ((Player *)self)->mPosY;
+        *(int *)(p2 + 0x64) = ((Player *)self)->mPosZ;
     }
 
-    if (!_ZN6Player12FinishedAnimEv(self))
+    if (!((Player *)self)->FinishedAnim())
         return;
 
-    cur.id = base[*(u8 *)(self + 0x728) + 1].id;
-    cur.val = base[*(u8 *)(self + 0x728) + 1].val;
-    if (cur.id != 0) {
-        *(u8 *)(self + 0x728) += 1;
+    cur.w[0] = base[((Player *)self)->unk_728 + 1].w[0];
+    cur.w[1] = base[((Player *)self)->unk_728 + 1].w[1];
+    if (cur.w[0] != 0) {
+        ((Player *)self)->unk_728 += 1;
     }
 }
-#pragma cplusplus on
+}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- _ZN6Player19func_ov002_020bd06cEj, 0x020bd06c, size 0x1a0 */

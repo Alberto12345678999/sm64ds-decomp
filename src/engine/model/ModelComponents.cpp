@@ -25,8 +25,8 @@
  * names. func_0204531c's UpdateVertsUsingBones call is spelled as the member
  * it is (ModelBase.h); the mangled extern the shard used would be a new
  * local redeclaration of a header member.
- *
- * Leftovers, all measured byte-neutral by tubuild verify:
+ */
+/* leftovers:
  * - Render is the member ModelBase.h declares; info/modules reach modelFile/
  *   materials through casts (the header models the BMD half, and Info/
  *   ModuleEntry are its render-half views at the same offsets). RenderNode is
@@ -44,6 +44,8 @@
  * - Render calls func_02044b30 through a one-word function-pointer cast: the
  *   definition takes (obj, idx) while this site passes only the object and the
  *   extra register rides along.
+ * - func_02044534's z-prefixed zero temps and the two/three constants keep the
+ *   ROM's register schedule; the compact human form does not emit them.
  */
 #include "ModelBase.h"
 #include "types.h"
@@ -169,26 +171,26 @@ void func_0204488c(char *self, int index, int *color);
 /* Bone-tree walk at 0x020453c0. UpdateBones forwards here. Recurses on the
  * node's child and sibling slots and calls func_0204547c, which stays out. */
 extern "C" {
-void func_020453c0(int *a, short *node, int *p2, int p3)
+void func_020453c0(int *self, short *node, int *p2, int p3)
 {
     int idx = node[0];
-    char *elem = (char*)a[2] + idx * 0x34;
+    char *elem = (char*)self[2] + idx * 0x34;
     int f2c = *(int*)(elem + 0x2c);
-    int *r6 = p2;
-    int r5 = p3;
+    int *anim = p2;
+    int frame = p3;
     if (f2c != 0) {
-        r6 = (int*)f2c;
-        r5 = *(unsigned short*)(elem + 0x30);
+        anim = (int*)f2c;
+        frame = *(unsigned short*)(elem + 0x30);
     }
-    int mla = idx * 0x24 + r6[5];
+    int mla = idx * 0x24 + anim[5];
     unsigned short *dst;
-    func_0204547c(r6, mla, r5, elem);
+    func_0204547c(anim, mla, frame, elem);
     dst = (unsigned short*)(int)(elem + 0x18);
     *dst = (unsigned short)(*dst | *(unsigned short*)(elem + node[4] * 0x34 + 0x18));
     if (node[5] != 0)
-        func_020453c0(a, (short*)((char*)node + (node[5] << 6)), r6, r5);
+        func_020453c0(self, (short*)((char*)node + (node[5] << 6)), anim, frame);
     if (node[6] != 0)
-        func_020453c0(a, (short*)((char*)node + (node[6] << 6)), r6, r5);
+        func_020453c0(self, (short*)((char*)node + (node[6] << 6)), anim, frame);
 }
 }
 
@@ -367,14 +369,14 @@ void func_02044e50(struct Self *self, int count, int base, int *out)
 extern "C" {
 void func_02044dc4(struct Self *self) {
     unsigned int i;
-    int r7;
-    char *r6;
-    r6 = *(char **)self;
-    r7 = *(int *)(r6 + 4) * 0x30 + *(int *)((char *)self + 0xc);
-    for (i = 0; i < *(unsigned int *)(r6 + 0x30); i++) {
-        unsigned short *arr = *(unsigned short **)(*(char **)(r6 + 0x34) + 8);
-        func_02044e50(self, arr[2 * i], arr[2 * i + 1], (int *)r7);
-        r7 += 0x30;
+    int dst;
+    char *tbl;
+    tbl = *(char **)self;
+    dst = *(int *)(tbl + 4) * 0x30 + *(int *)((char *)self + 0xc);
+    for (i = 0; i < *(unsigned int *)(tbl + 0x30); i++) {
+        unsigned short *arr = *(unsigned short **)(*(char **)(tbl + 0x34) + 8);
+        func_02044e50(self, arr[2 * i], arr[2 * i + 1], (int *)dst);
+        dst += 0x30;
     }
 }
 }
@@ -384,7 +386,7 @@ extern "C" {
 void func_02044b30(char *obj, int idx)
 {
   char *m = (*((char **) (obj + 4))) + (idx * 0x30);
-  int new_var;
+  int mtx3;
   int texParam;
   *((int *) 0x40004a4) = *((int *) (m + 0x24));
   *((int *) 0x40004c0) = *((int *) (m + 0x28));
@@ -428,11 +430,11 @@ void func_02044b30(char *obj, int idx)
       elemFieldE = *((u16 *) (elem + 0xe));
       elemFieldC = *((u16 *) (elem + 0xc));
       D0 = (A * (-((int) elemFieldE))) / elemFieldC;
-      new_var = (C * elemFieldC) / elemFieldE;
+      mtx3 = (C * elemFieldC) / elemFieldE;
       mtx[0] = B;
       mtx[1] = D0;
       mtx[2] = 0;
-      D1 = new_var;
+      D1 = mtx3;
       mtx[3] = D1;
       mtx[4] = D;
       mtx[5] = 0;
@@ -457,14 +459,14 @@ void func_02044b30(char *obj, int idx)
       int idx1;
       int idx2;
       s16 sa;
-      s16 sb_;
+      s16 sb;
       idx1 = (((u32) texParam) >> 0x17) & 7;
       idx2 = (((u32) texParam) >> 0x14) & 7;
       data_020a4bc0 = ((s16 *) buf)[idx2];
       data_020a4bc4 = (s16) (-((s16 *) buf)[idx1]);
       sa = (s16) ((*((int *) (m + 0x14))) >> 8);
-      sb_ = (s16) ((*((int *) (m + 0x18))) >> 8);
-      *((int *) 0x4000488) = ((u16) sa) | (((u16) sb_) << 16);
+      sb = (s16) ((*((int *) (m + 0x18))) >> 8);
+      *((int *) 0x4000488) = ((u16) sa) | (((u16) sb) << 16);
     }
       break;
 

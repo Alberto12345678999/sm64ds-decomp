@@ -27,7 +27,7 @@
  * _ZTS12dEnemyBase_c at 0x021081c0/0x021081cc, and da1up_c's
  * __si_class_type_info reaches them through its +8 word.
  *
- * comment leftovers:
+ * leftovers:
  *   - Aea30C is a file-local shadow receiver for the first state table and
  *     its dispatcher func_ov002_020aea30: the PMF representation was formed
  *     on it, and retyping to the polymorphic dEnemyBase_c changes the

@@ -172,8 +172,8 @@ struct daObjTatefuda_c : dBgActor_c {
        are the five enter/update pairs plus the two helpers IDLE's update
        calls, the respawn reset and the shadow-matrix rebuild.
        AttachToHolder and RebuildModelMatrix are declared in the .cpp and
-       stay free: their Matrix4x3 block copies scalarize under C++, so they
-       parse as C there. */
+       retain free C-linkage entry points. Both compile as C++ and use an
+       array-backed matrix view for their block copies. */
     void SetState(int state);
     void UpdateState();
     void InitIdle();  void Idle();
