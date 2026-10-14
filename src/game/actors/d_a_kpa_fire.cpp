@@ -446,26 +446,24 @@ int func_ov060_021172c8(unsigned char *p, unsigned int n)
 }
 }
 
-// @symbol func_ov060_0211722c
+// @symbol _ZN11daKpaFire_c19func_ov060_0211722cEv
 /* Variant 6 init: random heading (16 random bits); vertical speed 30.0 units
  * with a 2 in 10 chance, else 10.0; horizontal speed 5.0 (0x5000); gravity
  * -1.0 (-0x1000) per frame per frame; mFireScale 1.0 plus a random 0..0xfff
  * (so from 1.0 to just under 2.0); shadow multiplier 0x10. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_0211722c(daKpaFire_c *self)
+void daKpaFire_c::func_ov060_0211722c()
 {
     unsigned int r;
-    self->mPrevAngleY = (short)((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 0x10);
+    this->mPrevAngleY = (short)((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 0x10);
     r = (unsigned int)RandomIntInternal(&data_0209e650[0]) >> 0x10;
     if (r % 10 < 2)
-        self->mVertSpeed = 0x1e000;
+        this->mVertSpeed = 0x1e000;
     else
-        self->mVertSpeed = 0xa000;
-    self->mHorzSpeed = 0x5000;
-    self->mVertAccel = -0x1000;
-    self->mFireScale = (int)(((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 16) & 0xfff) + 0x1000;
-    self->mShadowRadiusMul = 0x10;
-}
+        this->mVertSpeed = 0xa000;
+    this->mHorzSpeed = 0x5000;
+    this->mVertAccel = -0x1000;
+    this->mFireScale = (int)(((unsigned int)RandomIntInternal(&data_0209e650[0]) >> 16) & 0xfff) + 0x1000;
+    this->mShadowRadiusMul = 0x10;
 }
 
 // @symbol func_ov060_021171e8

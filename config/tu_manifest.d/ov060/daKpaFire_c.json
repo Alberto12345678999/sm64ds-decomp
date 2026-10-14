@@ -154,7 +154,7 @@
       "ordinal": 16
     },
     {
-      "symbol": "func_ov060_0211722c",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_0211722cEv",
       "address": "0x0211722c",
       "size": "0x0000009c",
       "legacy_source": "src/func_ov060_0211722c.c",

@@ -107,6 +107,8 @@ struct daKpaFire_c : dEnemyBase_c {
     int CleanupResources();
     int Render();
     int Behavior();
+
+    void func_ov060_0211722c();
 };
 
 #ifndef SM64DS_PLATFORM_PC
