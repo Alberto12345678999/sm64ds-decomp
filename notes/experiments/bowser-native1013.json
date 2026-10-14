@@ -13,7 +13,8 @@
   "manifest": "config/tu_manifest.d/ov060/daKpaTail_c+daKpa_c.json",
   "producer_sessions": [
     "codex-bowser-native-producer1013",
-    "01a135f6-ffe2-7f12-a948-096399c6745c"
+    "01a135f6-ffe2-7f12-a948-096399c6745c",
+    "codex-bowser-conflicts-producer1013"
   ],
   "scout_provenance": {
     "actual_thread": "01a135f6-ffe2-7f12-a948-096399c6745c",
@@ -136,6 +137,17 @@
       "reason": "These inherited forms are outside this verified interface pass; no new compiler-floor or original-intent claim is made.",
       "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
       "owner": "codex-bowser-native-coordinator1013"
+    },
+    {
+      "id": "KPA-CONFLICT-001",
+      "kind": "manifest provenance",
+      "location": "config/tu_manifest.d/ov060/daKpaTail_c+daKpa_c.json#notes",
+      "summary": "Twenty-three reconciled native-API declaration conflicts remained recorded as open in the manifest.",
+      "evidence": "Actual checker found 114 open notes versus 91 Source markers; all 23 absent tuples occurred in the original base607 Source and were removed by the proven native-API migration.",
+      "disposition": "fixed",
+      "reason": "Exactly 23 note prefixes marked RESOLVED; full checker now matches 91 open notes to 91 markers across 429 entries. All non-note manifest values and raw/prepared objects remain identical.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+      "owner": "codex-bowser-conflicts-coordinator1013"
     }
   ],
   "canary": {
@@ -952,7 +964,7 @@
       "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
     }
   },
-  "status": "All actual-current607 production gates terminal0. Partial reconstruction ready for independent exact-head Source/byte review; Root serializes producer publication.",
+  "status": "bowser-conflicts1013 repair checkpoint; original production gates historical and transferred by notes-only identity",
   "final_source_binding": {
     "source_sha256": "b20d07dfb6f1108d7732624ce7d33de248cd375decd838303e1b4c3df0319fcf",
     "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
@@ -3412,5 +3424,195 @@
       "dataBytesOfModulePercent": 26.609784889821615
     },
     "ownership_boundary": "The 106 exact modules include retail gap bytes. Bowser/tail ordinary ownership is proved separately for 110 strict rows and 73 BSS records (916 bytes); its 12 complete metadata records (371 bytes) are externalized and separately verified for bytes and typed destinations. Neither module exactness nor externalized metadata verification enrolls all ROM data or metadata as Source-owned storage."
+  },
+  "continuation": {
+    "task": "bowser-conflicts1013",
+    "input_commit": "c85533ced4c7763a1fd9d39f56e9ff015aa82d9d",
+    "tested_base": "607576acc557a318d5f813f8a0813bc86f03d140",
+    "predecessor_task": "bowser-native1013",
+    "producer_session": "codex-bowser-conflicts-producer1013",
+    "coordinator": "codex-bowser-conflicts-coordinator1013",
+    "cause": "PR #3821 initial check_tubuild_conflicts CI failed: 23 native-API alternate declaration markers were reconciled in Source but their historical manifest notes still claimed open conflicts (114 open notes versus 91 markers).",
+    "repair": "Only those exact 23 historical note prefixes now say RESOLVED. All wording, note order and remaining 91 open notes are preserved. No Source, header, alias, policy, storage or runtime manifest field changes.",
+    "semantic_identity": {
+      "input_commit": "c85533ced4c7763a1fd9d39f56e9ff015aa82d9d",
+      "manifest": "config/tu_manifest.d/ov060/daKpaTail_c+daKpa_c.json",
+      "changed_note_indices": [
+        12,
+        13,
+        15,
+        16,
+        17,
+        24,
+        25,
+        27,
+        56,
+        58,
+        61,
+        68,
+        73,
+        74,
+        75,
+        89,
+        90,
+        91,
+        100,
+        101,
+        102,
+        103,
+        108
+      ],
+      "all_non_notes_keys_identical": true,
+      "all_original_note_text_and_order_preserved": true,
+      "source_header_tools_port_equal": {
+        "src": "d0c976bddbb926e4490671384658ab2c4f338ca0",
+        "include": "036cd7f923a501f2a91d48446b035a599afae6cd",
+        "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+        "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+      },
+      "only_config_change": "config/tu_manifest.d/ov060/daKpaTail_c+daKpa_c.json",
+      "semantic_manifest_sha256": "81666e0f02cee27412c184ccf0ab378f7dc2ec179a718093a02811268b68ebd7",
+      "conflict_gate": {
+        "command": [
+          "python",
+          "tools/check_tubuild_conflicts.py"
+        ],
+        "exit_code": 0,
+        "log": "build/bowser-conflicts1013/conflict-gate.log",
+        "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521",
+        "open_notes": 91,
+        "markers": 91,
+        "entries_checked": 429
+      }
+    },
+    "fresh_ordinary_proof": {
+      "baseline": {
+        "strict": 110,
+        "bss_records": 73,
+        "bss_bytes": 916,
+        "metadata_records": 12,
+        "metadata_bytes": 371,
+        "raw_refs": 741,
+        "prepared_refs": 653,
+        "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
+        "prepared_sha256": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3"
+      },
+      "candidate": {
+        "strict": 110,
+        "bss_records": 73,
+        "bss_bytes": 916,
+        "metadata_records": 12,
+        "metadata_bytes": 371,
+        "raw_refs": 741,
+        "prepared_refs": 653,
+        "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
+        "prepared_sha256": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3"
+      },
+      "complete_owned_bodies_edges_equal": true,
+      "complete_metadata_equal": true,
+      "ordinary_preparation": true,
+      "raw_container_equal": true,
+      "prepared_container_equal": true,
+      "base": "c85533ced4c7763a1fd9d39f56e9ff015aa82d9d",
+      "full_rom_run": false
+    },
+    "fresh_complete_raw_and_prepared_objects_equal_to_accepted_input": true,
+    "storage_records": 73,
+    "storage_bytes": 916,
+    "full_rom_rerun": false,
+    "proof_transfer": "The full current-607 ROM run remains historical evidence bound to checkpoint 5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca. Source/include/tools/port trees are unchanged; config differs only in manifest notes, with every other JSON value identical. Fresh ordinary preparation yields exactly the accepted raw/prepared objects and complete graphs/storage/metadata. This notes-only dependency proof transfers the prior runtime result; no new full-ROM run is claimed.",
+    "historical_full_rom_checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+    "historical_report_only_binding": {
+      "checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+      "production_trees": {
+        "src": "d0c976bddbb926e4490671384658ab2c4f338ca0",
+        "include": "036cd7f923a501f2a91d48446b035a599afae6cd",
+        "config": "d3177f6db9f3bd5168661de5ba3e9b222a3d62b2",
+        "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+        "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+      },
+      "rule": "Final report-only descendant must retain all five production trees exactly."
+    },
+    "inherited_findings_verbatim": [
+      {
+        "id": "KPA-AUDIT-PROV-001",
+        "kind": "provenance",
+        "location": "src/actors/daKpa_c.cpp:6-8",
+        "summary": "Banner calls classInit factory spelling ROM-proven.",
+        "evidence": "Actual factory comments correctly state class identity is ROM-proven but classInit spelling is reconstructed from later EAD lineage. The RTTI spellings prove daKpa_c and daKpaTail_c, not original factory spelling.",
+        "disposition": "fixed",
+        "reason": "Source now calls classInit identifiers reconstructed; ROM RTTI evidence remains separately described."
+      },
+      {
+        "id": "KPA-AUDIT-PROV-002",
+        "kind": "provenance",
+        "location": "src/actors/daKpa_c.cpp:214-217",
+        "summary": "PMF comment assigns tail table 0x0211ae9c to daKpa_c.",
+        "evidence": "Actual KpaTailState data_ov060_0211ae9c[3] stores daKpaTail_c members. daKpa_c PMF tables are data_ov060_0211aeb4[4] and data_ov060_0211aed4[20].",
+        "disposition": "fixed",
+        "reason": "Source identifies0211ae9c as KpaTailState/daKpaTail_c and Bowser tables as0211aeb4/0211aed4, matching actual definitions and manifest storage."
+      },
+      {
+        "id": "KPA-AUDIT-PROV-003",
+        "kind": "provenance",
+        "location": "include/daKpaTail_c.h:5-7",
+        "summary": "Tail header says only four real methods and C-linkage state helpers remain.",
+        "evidence": "Four state workers are declared as daKpaTail_c members at lines82-85 and defined as real members in Source. Existing source-writer commit5d2e6df6 memberized66 helpers. Header change requires explicit claimed scope and consumer proof; reviewer made none.",
+        "disposition": "fixed",
+        "reason": "Comment now correctly describes resource, behavior and state-worker methods defined in daKpa_c.cpp. Non-comment header text is identical; the only affected production consumer is this TU."
+      },
+      {
+        "id": "KPA-AUDIT-PARTIAL-001",
+        "kind": "reconstruction",
+        "location": "src/actors/daKpa_c.cpp",
+        "summary": "Raw/vector/matrix/player/camera views and codegen-sensitive forms remain.",
+        "evidence": "Flat scalar vectors, shadow matrix bytes, opaque animation Obj, raw camera+0x114, packed PMF dispatch/read views, address-named native methods, volatile locals and pointer increments remain. Existing notes state byte dependence but this audit did not re-prove alternative source forms impossible.",
+        "disposition": "deferred",
+        "reason": "Accepted as explicit partial reconstruction outside this native caller-interface pass; original audit evidence retained without claiming unique original source or a compiler floor.",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+        "owner": "codex-bowser-native-coordinator1013"
+      },
+      {
+        "id": "KPA-AUDIT-PARTIAL-002",
+        "kind": "reconstruction",
+        "location": "src/actors/daKpa_c.cpp:240-261; manifest undefined_symbol_aliases",
+        "summary": "Resource wrappers and scalar ABI interfaces remain partial.",
+        "evidence": "Three synthetic SharedFilePtr-derived two-word wrappers;35 instantiated handles. Seven aliases include six lifecycle veneer mappings and global registration. Scalar Fix12 by-value mangled veneers remain distinct from native scalar declarations. Strict bytes do not establish full source reconstruction.",
+        "disposition": "deferred",
+        "reason": "Accepted as explicit partial reconstruction outside this native caller-interface pass; original audit evidence retained without claiming unique original source or a compiler floor.",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+        "owner": "codex-bowser-native-coordinator1013"
+      },
+      {
+        "id": "KPA-NATIVE-001",
+        "kind": "reconstruction",
+        "disposition": "fixed",
+        "location": "src/actors/daKpa_c.cpp",
+        "summary": "61 native interface calls replace raw mangled boundaries.",
+        "reason": "Existing native bool, byte, reference and return contracts are used. Ignored DropActor int result remains ignored; shared target/held fields stay dActor_c pointers, with local Player identity casts."
+      },
+      {
+        "id": "KPA-NATIVE-002",
+        "kind": "reconstruction",
+        "disposition": "deferred",
+        "location": "src/actors/daKpa_c.cpp",
+        "summary": "Scalar Fix12 bridges, flat vector views and raw borrowed floor-result/particle/camera fields remain.",
+        "reason": "This caller-interface pass preserves measured storage and ABI boundaries without claiming complete class reconstruction.",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+        "owner": "codex-bowser-native-coordinator1013"
+      },
+      {
+        "id": "KPA-NATIVE-003",
+        "kind": "reconstruction",
+        "disposition": "deferred",
+        "location": "src/actors/daKpa_c.cpp",
+        "summary": "Existing explicit volatile, pointer-walk and scheduling-sensitive local forms remain.",
+        "reason": "These inherited forms are outside this verified interface pass; no new compiler-floor or original-intent claim is made.",
+        "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+        "owner": "codex-bowser-native-coordinator1013"
+      }
+    ],
+    "repair_plan": "build/bowser-conflicts1013/repair-plan.json",
+    "status": "repair checkpoint; final report-only binding pending"
   }
 }
