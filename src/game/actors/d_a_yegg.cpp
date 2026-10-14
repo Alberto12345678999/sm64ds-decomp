@@ -55,9 +55,9 @@
  *   stay spelled as mangled extern-C free functions. A real method call homes
  *   a class-typed by-value argument and size-DIFFs the caller
  *   (notes/mwccarm-codegen.md 6az).
- * - still raw offsets: the words written into each spawned coin in
- *   func_ov002_020ec80c (+0x92..+0x98), the DOSUN byte at +0x3a2 in
- *   func_ov002_020ec670, and the word at Player+0xc8 in func_ov002_020ed998.
+ * - still raw offsets: the DOSUN byte at +0x3a2 in func_ov002_020ec670
+ *   and the word at Player+0xc8 in func_ov002_020ed998. Spawned coins use
+ *   dActor_c's existing previous-angle and horizontal-speed fields.
  * - mSpawnPos is named in daYegg_c.h but its purpose is not known
  *   (written once, never read here); unk_41e and the 4-byte gap at 0x3f8 are
  *   unnamed. dActor_c::unk_0a4/unk_0ac and Player::unk_37c are read through
@@ -391,7 +391,7 @@ void daYegg_c::func_ov002_020ec80c(void* b, int count, int sl, short arg5)
     {
         unsigned int r;
         int zero;
-        char* n;
+        dActor_c* coin;
         int rv;
         int prev;
         int i;
@@ -403,19 +403,19 @@ void daYegg_c::func_ov002_020ec80c(void* b, int count, int sl, short arg5)
         if (count <= 0) return;
         zero = i;
         do {
-            n = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_BLUE_COIN, 2, b, 0, mAreaId, -1);
-            if (n != 0) {
+            coin = (dActor_c*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_BLUE_COIN, 2, b, 0, mAreaId, -1);
+            if (coin != 0) {
                 do {
                     rv = (int)(((unsigned int)RandomIntInternal(&data_0209e650) >> 16) << 27) >> 16;
                 } while (rv == prev);
                 r = (unsigned int)RandomIntInternal(&data_0209e650);
                 r = r >> 16;
-                *(short*)(n + 0x92) = zero;
+                coin->mPrevAngleX = zero;
                 sl = sl * ((r % 50) + 100) / 100;
                 prev = rv;
-                *(short*)(n + 0x94) = arg5 + rv;
-                *(short*)(n + 0x96) = zero;
-                *(int*)(n + 0x98) = sl;
+                coin->mPrevAngleY = arg5 + rv;
+                coin->mPrevAngleZ = zero;
+                coin->mHorzSpeed = sl;
             }
             i++;
         } while (i < count);
