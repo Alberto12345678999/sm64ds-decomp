@@ -1,6 +1,6 @@
 /* class dScMgCurling_c : dScMgBase_c. Confirmed leaf -- no RTTI record
  * names it as a base (tools/rtti_extract.py). Its D1 (in
- * src/minigames/dScMgCurling_c.cpp) writes only its own vtable then calls
+ * src/minigames/d_s_mg_curling.cpp) writes only its own vtable then calls
  * dScMgBase_c's D2 directly; no members here need explicit destruction.
  *
  * Fields below 0x4660 (dScMgBase_c's own asserted size) are INHERITED, not
@@ -75,7 +75,7 @@ typedef char dScMgCurling_bit_size_must_be_0x24[sizeof(struct dScMgCurling_bit) 
 
 struct dScMgCurling_c : dScMgBase_c {
     /* Declared, not defined inline -- a leaf, so nothing needs to inline
-       it; real body in src/minigames/dScMgCurling_c.cpp, which is the whole
+       it; real body in src/minigames/d_s_mg_curling.cpp, which is the whole
        class. */
     virtual ~dScMgCurling_c();
 
@@ -128,7 +128,7 @@ struct dScMgCurling_c : dScMgBase_c {
     /* Slot 18 (one of dScMgBase_c's own undeclared new slots 18-35) is
        left unnamed here too, same reasoning as dScMgBase_c.h's own -- its
        target (_ZN14dScMgCurling_c13OnYoshiTryEatEi, in
-       src/minigames/dScMgCurling_c.cpp) had a "recovered name" of
+       src/minigames/d_s_mg_curling.cpp) had a "recovered name" of
        OnYoshiTryEat_020e3470, which is wrong (same tree-wide mislabel
        documented in notes/dscene-c-siblings-census.md section 3): its
        body sets fields and calls helpers, nothing like a destructor. */

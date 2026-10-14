@@ -43,7 +43,7 @@ src/unnamed/arm9/0200/func_02005110.c:
     .text start:0x02005110 end:0x02005324
 
 
-src/game/stages/dScBoot_c.cpp:
+src/game/stages/d_s_boot_methods.cpp:
     complete
     .text start:0x02005324 end:0x02005d94
 
@@ -1737,7 +1737,7 @@ src/game/stages/d_s_boot.cpp:
     complete
     .text start:0x02023598 end:0x02023688
 
-src/game/stages/dScStage_c.cpp:
+src/game/stages/d_s_stage_methods.cpp:
     complete
     .text start:0x02023688 end:0x02029408
 
@@ -2165,7 +2165,7 @@ src/unnamed/arm9/0202/func_0202e118.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 
-src/game/stages/dScene_c.cpp:
+src/game/stages/d_scene.cpp:
     complete
     .text start:0x0202e140 end:0x0202ec9c
 
@@ -2315,7 +2315,7 @@ src/Message3.cpp:
     complete
     .text start:0x02031b84 end:0x02034a78
 
-src/game/stages/dScMB_c.cpp:
+src/game/stages/d_s_mb.cpp:
     complete
     .text start:0x02034a78 end:0x02035354
 

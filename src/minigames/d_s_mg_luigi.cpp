@@ -4,7 +4,7 @@
  * a reward, a miss drops a mark and costs ten seconds, and curtains plus an
  * iris close the round. The timer running out fails it. dScMgLuigi_c is the
  * scene. Its state tables and registry profile close the file, and mwcc
- * builds the tables in __sinit_dScMgLuigi_c.cpp.
+ * builds the tables in __sinit_d_s_mg_luigi.cpp.
  *
  * Keep source order. The local optimization pragmas stay with the functions
  * that need them.

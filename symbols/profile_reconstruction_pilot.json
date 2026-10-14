@@ -889,7 +889,7 @@
         }
       ],
       "current_factory_name": "dScMiniGm_c_classInit",
-      "current_factory_file": "src/minigames/dScMiniGm_c.cpp",
+      "current_factory_file": "src/minigames/d_s_mini_gm.cpp",
       "proposed_factory_name": "dScMiniGm_c_classInit",
       "factory_shape": "new_plus_inlined_ctor",
       "factory_shape_evidence": "operator new size is exact and the most-derived RTTI vtable is stored in the factory",
@@ -1172,7 +1172,7 @@
         }
       ],
       "current_factory_name": "StarCamera_Spawn",
-      "current_factory_file": "src/game/actors/StarCamera_Spawn.cpp",
+      "current_factory_file": "src/game/actors/d_a_star_camera.cpp",
       "proposed_factory_name": "",
       "factory_shape": "uncertain",
       "factory_shape_evidence": "allocation is exact, but the called base constructor leaves the dActor_c vtable installed; no most-derived RTTI identity survives",
@@ -2244,7 +2244,7 @@
         }
       ],
       "current_factory_name": "dScMgCup_c_classInit",
-      "current_factory_file": "src/minigames/dScMgCup_c.cpp",
+      "current_factory_file": "src/minigames/d_s_mg_cup.cpp",
       "proposed_factory_name": "dScMgCup_c_classInit",
       "factory_shape": "new_plus_inlined_ctor",
       "factory_shape_evidence": "operator new size is exact and the most-derived RTTI vtable is stored in the factory",

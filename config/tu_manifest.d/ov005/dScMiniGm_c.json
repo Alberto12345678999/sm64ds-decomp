@@ -1,8 +1,8 @@
 {
   "id": "ov005/dScMiniGm_c",
   "module": "ov005",
-  "source": "src/minigames/dScMiniGm_c.cpp",
-  "promoted_source": "src/minigames/dScMiniGm_c.cpp",
+  "source": "src/minigames/d_s_mini_gm.cpp",
+  "promoted_source": "src/minigames/d_s_mini_gm.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [

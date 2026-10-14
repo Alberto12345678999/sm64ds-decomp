@@ -1,8 +1,8 @@
 {
   "id": "ov006/dMgTrmpln2Mario_c+dMgTrmpln3DMario_c",
   "module": "ov006",
-  "source": "src/minigames/dMgTrmpln2Mario_c.cpp",
-  "promoted_source": "src/minigames/dMgTrmpln2Mario_c.cpp",
+  "source": "src/minigames/d_mg_trmpln2_mario.cpp",
+  "promoted_source": "src/minigames/d_mg_trmpln2_mario.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [

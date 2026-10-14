@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgPanel_c",
   "module": "ov006",
-  "source": "src/minigames/dScMgPanel_c.cpp",
-  "promoted_source": "src/minigames/dScMgPanel_c.cpp",
+  "source": "src/minigames/d_s_mg_panel.cpp",
+  "promoted_source": "src/minigames/d_s_mg_panel.cpp",
   "status": "promoted",
   "production_mode": "intact-object",
   "boundary_confidence": "medium",
@@ -812,7 +812,7 @@
     }
   ],
   "notes": [
-    "SINIT FOLDED (fold/mg-sinits-b-1011): the retail static initializer __sinit_ov006_02131fa4 (.init 0x02131fa4-0x021322bc, ctor word 0x021335c8) is this TU's own __sinit_dScMgPanel_c.cpp. In .init link order it sits between __sinit_dScMgPachinko2_c.cpp and __sinit_ov006_021322bc, exactly where this TU's .text sits between dScMgPachinko2_c and dScMgRoulette_c, and every global it writes (the six sprite handles at data_ov006_021427d4 and the seven pointer-to-member state tables at data_ov006_021427bc..02142888) is read only by members of this file. The tables are now file-scope arrays of PanelStateFn / PanelStateFnI, so mwcc emits the initializer with the same 0x318 bytes and 36 relocations, and the 27 PMF records it copies from become this TU's .data at 0x0213dc4c-0x0213dd34, together with g_profile_MG_PANEL and data_ov006_0213dc94. The three empty state handlers 02104ac0, 02104bac and 02104ec8 became dScMgPanel_c members, because a pointer-to-member constant needs a member; include/dScMgPanel_c.h has no other consumer. Ten compiled @NNN records collide with arm9 names and are renamed to the free @8801-@8810 through defined_symbol_renames. Guided by lunavyqo's unmerged fold (sinit/ov006-panel, 44d9c4d4b6), re-derived on the methodized TU.",
+    "SINIT FOLDED (fold/mg-sinits-b-1011): the retail static initializer __sinit_ov006_02131fa4 (.init 0x02131fa4-0x021322bc, ctor word 0x021335c8) is this TU's own __sinit_d_s_mg_panel.cpp. In .init link order it sits between __sinit_d_s_mg_pachinko2.cpp and __sinit_ov006_021322bc, exactly where this TU's .text sits between dScMgPachinko2_c and dScMgRoulette_c, and every global it writes (the six sprite handles at data_ov006_021427d4 and the seven pointer-to-member state tables at data_ov006_021427bc..02142888) is read only by members of this file. The tables are now file-scope arrays of PanelStateFn / PanelStateFnI, so mwcc emits the initializer with the same 0x318 bytes and 36 relocations, and the 27 PMF records it copies from become this TU's .data at 0x0213dc4c-0x0213dd34, together with g_profile_MG_PANEL and data_ov006_0213dc94. The three empty state handlers 02104ac0, 02104bac and 02104ec8 became dScMgPanel_c members, because a pointer-to-member constant needs a member; include/dScMgPanel_c.h has no other consumer. Ten compiled @NNN records collide with arm9 names and are renamed to the free @8801-@8810 through defined_symbol_renames. Guided by lunavyqo's unmerged fold (sinit/ov006-panel, 44d9c4d4b6), re-derived on the methodized TU.",
     "LINK DEFECT FOUND AND FIXED AT STAGE 4, and it is the reason ordinals 67-70 do not follow the block-scope rule the other 67 members do. As written by stages 2 and 3 this TU compiled, byte-matched 71/71, passed objisolate, passed reloc-destinations and passed the [4b] object audit -- and did not link. Every `func_ov006_*` member sits inside its own file-scope `extern \"C\" { }` region, so its block-scope `extern` declarations have C linkage and name the ROM symbol. A class member function cannot sit inside such a region, so the identical block-scope declarations in the four C++-named members had C++ LINKAGE: the object carried 41 mangled undefined symbols that do not exist in the image (`_Z8LoadFilei`, `_Z10DeallocatePv`, `_Z19func_ov006_021063a0Pv`, ...) and mwldarm aborted with 22 `Undefined`, all `Referenced from \"dScMgPanel_c::InitResources()\"`. mwccarm 2004/b56 rejects a block-scope `extern \"C\"` (measured: `Error: declarator expected`), so the repair is the shape dScMgTeresa_c and dScMgRoulette_c already use -- ONE file-scope `extern \"C\"` region carrying the 24 genuinely external ROM symbols those four members call, placed after ordinal 66 so the 67 members above it keep their own recovered spellings unchanged. The 13 declarations that named members OF THIS TU were deleted outright rather than moved: those symbols are now defined earlier in the same file, so the call binds to the definition, and three call sites took the definition's own pointer type (`func_ov006_02106168(this)` in ordinals 67 and 70, `(PanelObj_ab4 *)` in 68, `(PanelC_ac4 *)` in 69). One declaration, `func_02073244` in ordinal 69, was dead -- nothing in the body referenced it -- and was dropped. Data symbols were NOT touched and did not need to be: mwccarm leaves a file-scope variable's name unmangled in C++, which is why `data_0209d454`, `data_0209d45c` and `data_ov006_02142888` still sit at block scope. AFTER the repair: 71/71 MATCH unchanged, object audit order_ok true with {'LICENSED': 71} and zero refusals, 0 mangled undefined symbols left in the object, and `tools/rombuild.py -j 6` reaches `module fidelity: 106/106 exact, 100.000000%` with `ROM-build analysis: PASS`. NOTE FOR THE READER OF THE `linkcheck` BLOCK BELOW: its recorded `scratch-link-verified` was NOT reproducible on the source as shipped by stage 2 -- the same scratch pipeline, reached through rombuild's own BASELINE CONTROL, failed to link it. It is reproducible now.",
     "Hand-assembled from the 71 legacy shards; tools/tubuild.py create ran, and its generated preamble was DISCARDED WHOLE rather than repaired. At 71 members it carried the failure modes writer.md documents: two contradictory PMF typedefs, three incompatible `struct C` bodies (0x4692 pad / 0x4674 pad / derived from a 36-virtual base), two incompatible `Obj` typedefs, and data_0209d454 declared both as a scalar and as an array. The shipped file follows ov002/Player for the 67 `extern \"C\"` members: each keeps its own declarations inside its own body and nothing is canonicalised. The four C++-NAMED members (ordinals 67-70) cannot, because a class member function cannot sit inside an `extern \"C\"` region -- see the link note below.",
     "decl_common.h is deliberately NOT included, and this is a departure from the daDsnBase_c / daObjCtMecha03_c / dScMgTeresa_c precedent. It declares ten of this TU's own members and seven of the ten contradict the shard that defines them: func_ov006_02104354 and func_ov006_02104ac4 on the RETURN TYPE (`int` against the shards' `void`), and func_ov006_021042e8, 02104b5c, 02104d44, 02104d94 and 02105ab4 on the parameter type (`void*` against `char*` or a shadow struct). Including it makes each of those an `illegal function overloading` error against a body that already matches byte-for-byte. ov002/Player, the largest promoted TU in the tree, excludes it for the same reason. The four class-method members that used to lean on it -- ordinals 67-70 -- carry the declarations they actually used, copied from decl_common.h, in one FILE-SCOPE `extern \"C\"` region placed after ordinal 66 so that none of the 67 members above can see it; their block-scope spelling did not link (see the link note below).",
@@ -1386,7 +1386,7 @@
   "language": "c++",
   "init": [
     {
-      "symbol": "__sinit_dScMgPanel_c.cpp",
+      "symbol": "__sinit_d_s_mg_panel.cpp",
       "address": "0x02131fa4",
       "size": "0x318",
       "binding": "STB_GLOBAL",
@@ -1395,7 +1395,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dScMgPanel_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_panel.cpp",
       "address": "0x021335c8",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -1441,13 +1441,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dScMgPanel_c.cpp",
+      "symbol": "__sinit_d_s_mg_panel.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_dScMgPanel_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_panel.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -1621,7 +1621,7 @@
       "source": "0x021335c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dScMgPanel_c.cpp",
+      "symbol": "__sinit_d_s_mg_panel.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02131fa4"

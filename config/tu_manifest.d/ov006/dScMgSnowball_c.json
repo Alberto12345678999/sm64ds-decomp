@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgSnowball_c",
   "module": "ov006",
-  "source": "src/minigames/dScMgSnowball_c.cpp",
-  "promoted_source": "src/minigames/dScMgSnowball_c.cpp",
+  "source": "src/minigames/d_s_mg_snowball.cpp",
+  "promoted_source": "src/minigames/d_s_mg_snowball.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
@@ -493,8 +493,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov006_02126a98' differs between the legacy file that used to hold _ZN15dScMgSnowball_c6RenderEv and the one that held _ZN15dScMgSnowball_c13OnYoshiTryEatEi; kept the first, the other is commented out for review -- RESOLVED: kept `void func_ov006_02126a98(char *)`, the typed view; the call sites in OnYoshiTryEat and InitResources, which had declared it `void *`, take an explicit (char *) cast. Verified: 23/23 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Ov004_Deallocate' differs between the legacy file that used to hold _ZN15dScMgSnowball_c16CleanupResourcesEv and the one that held _ZN15dScMgSnowball_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: kept `void Ov004_Deallocate(void *)`, the spelling both call sites in this TU need; it contradicts the one-function definition in Ov004_Deallocate in src/minigames/d_s_mg_base.cpp, which spells it `void (void)`, and that disagreement is banked in config/decl-agreement-baseline.json rather than papered over. Verified: 23/23 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov006_02126a98' differs between the legacy file that used to hold _ZN15dScMgSnowball_c6RenderEv and the one that held _ZN15dScMgSnowball_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: kept `void func_ov006_02126a98(char *)`, the typed view; the call sites in OnYoshiTryEat and InitResources, which had declared it `void *`, take an explicit (char *) cast. Verified: 23/23 MATCH.",
-    "WIDENED to 0x0212a520: the 19 shards func_ov006_021295ac through func_ov006_0212a3c0 are appended to src/minigames/dScMgSnowball_c.cpp in ROM order, each under its `// @symbol` marker. Their file-local struct and pointer-to-member typedefs carry the shard's address as a suffix so they cannot collide. func_ov006_02129690 takes `void*` (include/decl_common.h declares it so) and casts to its local object type. The constructor keeps its C name: the ROM does not distinguish C1 from C2, so a rename to _ZN15dScMgSnowball_cC1Ev would be unsupported. Its own-vtable store is spelled `&_ZTV15dScMgSnowball_c[2]`, because this TU defines that symbol and objisolate requires the vptr-store addend to be at least the 8-byte vtable preamble.",
-    "Folded __sinit_ov006_021333e0 into this TU. The four PMF tables are file-scope arrays, so mwcc emits __sinit_dScMgSnowball_c.cpp, the same 0x18c-byte initializer and the same eighteen relocations, plus fourteen {function, 0} descriptors and the eight-byte g_profile_MG_SNOWBALL word that sits between them. @2720, @2722, @2724, @2726, @2728, @2730, @2732, @2734 and @2736 are free and kept. @2710, @2712 and @2714 are already ov060's, and @2716 and @2718 are already ov002's, so defined_symbol_renames maps them to the unused same-length @2719, @2721, @2723, @2725 and @2727.",
+    "WIDENED to 0x0212a520: the 19 shards func_ov006_021295ac through func_ov006_0212a3c0 are appended to src/minigames/d_s_mg_snowball.cpp in ROM order, each under its `// @symbol` marker. Their file-local struct and pointer-to-member typedefs carry the shard's address as a suffix so they cannot collide. func_ov006_02129690 takes `void*` (include/decl_common.h declares it so) and casts to its local object type. The constructor keeps its C name: the ROM does not distinguish C1 from C2, so a rename to _ZN15dScMgSnowball_cC1Ev would be unsupported. Its own-vtable store is spelled `&_ZTV15dScMgSnowball_c[2]`, because this TU defines that symbol and objisolate requires the vptr-store addend to be at least the 8-byte vtable preamble.",
+    "Folded __sinit_ov006_021333e0 into this TU. The four PMF tables are file-scope arrays, so mwcc emits __sinit_d_s_mg_snowball.cpp, the same 0x18c-byte initializer and the same eighteen relocations, plus fourteen {function, 0} descriptors and the eight-byte g_profile_MG_SNOWBALL word that sits between them. @2720, @2722, @2724, @2726, @2728, @2730, @2732, @2734 and @2736 are free and kept. @2710, @2712 and @2714 are already ov060's, and @2716 and @2718 are already ov002's, so defined_symbol_renames maps them to the unused same-length @2719, @2721, @2723, @2725 and @2727.",
     "LOCAL WORKER NOTE: this machine's EU stock dump builds sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 (per #3691); the recorded rom.sha256 is the fleet-canonical d1506e90...c478e8 that every intact entry shares."
   ],
   "verification": {
@@ -945,7 +945,7 @@
   "production_mode": "intact-object",
   "init": [
     {
-      "symbol": "__sinit_dScMgSnowball_c.cpp",
+      "symbol": "__sinit_d_s_mg_snowball.cpp",
       "address": "0x021333e0",
       "size": "0x18c",
       "binding": "STB_GLOBAL",
@@ -954,7 +954,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dScMgSnowball_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_snowball.cpp",
       "address": "0x021335e4",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -1026,13 +1026,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dScMgSnowball_c.cpp",
+      "symbol": "__sinit_d_s_mg_snowball.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_dScMgSnowball_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_snowball.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -1308,7 +1308,7 @@
       "source": "0x021335e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dScMgSnowball_c.cpp",
+      "symbol": "__sinit_d_s_mg_snowball.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021333e0"

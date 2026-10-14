@@ -246,7 +246,7 @@ and the class now closes on 0x874 by field span instead of only by the factory's
 Bodies read: `src/_ZN6Eyerok13InitResourcesEv.cpp`,
 `src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp`, `src/Eyerok_Spawn.cpp`, and `Behavior`,
 `Render` and `CleanupResources`, which used to be one file each and are now
-members of the promoted `src/game/actors/Eyerok.cpp`.
+members of the promoted `src/game/actors/d_a_iwante.cpp`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |

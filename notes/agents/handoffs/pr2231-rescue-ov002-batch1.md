@@ -77,7 +77,7 @@ This document describes this commit. The queue records its immutable output SHA.
   citation repointed), [config/tu_manifest.d/ov002/daObjHatenaSwitch_c.json](../../../config/tu_manifest.d/ov002/daObjHatenaSwitch_c.json)
   (prose neighbour name only). Legacy one-function shards and the two coined
   headers are removed. The cherry-picked commit turned the C shard of
-  [func_ov002_020f051c](../../../src/minigames/dScMgCoin_c.cpp) into a C++ one (its first source build); the scoin
+  [func_ov002_020f051c](../../../src/minigames/d_s_mg_coin.cpp) into a C++ one (its first source build); the scoin
   promotion then folded that shard into the TU, so no shard file remains.
 - ROM observations: `_ZTS11daObjLava_c` at [ov002](../../../config/arm9/overlays/ov002/symbols.txt):0x021093ac and
   `_ZTS11daObjFire_c` at [ov002](../../../config/arm9/overlays/ov002/symbols.txt):0x02108ee8 are the ROM's own class names, so the

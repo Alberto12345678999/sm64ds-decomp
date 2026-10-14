@@ -93,8 +93,8 @@ Promoted C++ translation units are filed by what the class is
 |---|---|---|
 | `src/game/actors/` | actor classes (`daFoo_c` and friends), their factories | `d_a_foo.cpp` |
 | `src/game/player/` | `Player` | the class name |
-| `src/game/stages/` | scene classes (`dScBoot_c`, `dScStage_c`, ...) | the class name, or `d_s_*.cpp` |
-| `src/minigames/` | minigame scenes and helpers (`dScMg*_c`, `dMg*_c`, ov004 `unit<addr>`) | the class name, or `d_s_mg_*.cpp` |
+| `src/game/stages/` | scene classes (`dScBoot_c`, `dScStage_c`, ...) | `d_s_*.cpp` (`d_scene.cpp` for the base) |
+| `src/minigames/` | minigame scenes and helpers (`dScMg*_c`, `dMg*_c`, ov004 `unit<addr>`) | `d_s_mg_*.cpp` / `d_mg_*.cpp` |
 | `src/runtime/actor/` | actor base classes (`ActorBase`, `dActor_c`, `dEnemyBase_c`, ...) | the class name |
 | `src/ui/hud/` | HUD classes (`dMeter_c`, `dMap_c`, cap icons) | the class name |
 

@@ -1,8 +1,8 @@
 {
   "id": "ov003/dScStarSel_c",
   "module": "ov003",
-  "source": "src/game/stages/dScStarSel_c.cpp",
-  "promoted_source": "src/game/stages/dScStarSel_c.cpp",
+  "source": "src/game/stages/d_s_star_sel_methods.cpp",
+  "promoted_source": "src/game/stages/d_s_star_sel_methods.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

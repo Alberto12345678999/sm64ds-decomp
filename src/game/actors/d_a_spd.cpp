@@ -145,7 +145,7 @@ struct ScuttlebugAnimFileHandle : SharedFilePtr {
  * copies the pointers from .data. InitResources feeds the model to
  * Model::LoadFile and the animation to dExtFrameCtrl_c::LoadFile.
  * ------------------------------------------------------------------------ */
-// @symbol __sinit_Scuttlebug.cpp
+// @symbol __sinit_d_a_spd.cpp
 ScuttlebugModelFilePtr   data_ov071_02122f80(0x425);   /* model */
 ScuttlebugAnimFileHandle data_ov071_02122f88(0x426);   /* anim  */
 

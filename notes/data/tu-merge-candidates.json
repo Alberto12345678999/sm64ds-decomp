@@ -16769,7 +16769,7 @@
     "src/_ZN8daStar_c8BehaviorEv.cpp",
     "src/_ZN12daStarBase_c13InitResourcesEv.cpp",
     "src/_ZN8daStar_c13InitResourcesEv.cpp",
-    "src/StarCamera_Spawn.cpp",
+    "src/d_a_star_camera.cpp",
     "src/game/actors/d_a_star_base.c",
     "src/game/actors/d_a_star_silver_star.c",
     "src/game/actors/d_a_star_star.c"

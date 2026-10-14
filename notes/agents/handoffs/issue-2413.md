@@ -337,7 +337,7 @@ its edits to this class's own rows and reformats nothing:
 
 | file | this branch's change |
 |---|---|
-| `attribution.json` | +32 lines, 0 removed, one hunk, inserted beside this class's existing retired-shard rows — the same placement the tree already uses for `src/game/actors/d_a_dgr.cpp#…` and `src/game/stages/dScGameOver_c.cpp#…` |
+| `attribution.json` | +32 lines, 0 removed, one hunk, inserted beside this class's existing retired-shard rows — the same placement the tree already uses for `src/game/actors/d_a_dgr.cpp#…` and `src/game/stages/d_s_game_over.cpp#…` |
 | `config/converted-baseline.json` | 6 whole-file identities out, 6 `path#symbol` identities in; `count` stays 2696 and the list stays sorted and duplicate-free |
 | `config/converted-backslide-exceptions.jsonl` | +6 rows appended, one per retired one-function shard of this class |
 | `symbols/actor_renames.tsv` | 7 [ov102](../../../config/arm9/overlays/ov102/symbols.txt) rows re-spelled in place, +14 appended |

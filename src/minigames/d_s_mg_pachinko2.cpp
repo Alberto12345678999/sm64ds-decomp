@@ -2888,7 +2888,7 @@ extern "C" int *dScMgPachinko2_c_classInit(void)
 
 /* The three state tables, defined in retail copy order: the 8-row ball
    table, the 15-row paddle table, then the 5-row cup table. mwcc emits
-   __sinit_dScMgPachinko2_c.cpp from these definitions, copying the ROM
+   __sinit_d_s_mg_pachinko2.cpp from these definitions, copying the ROM
    .data records. */
 Entry data_ov006_021426f4[8] = {
     {data_ov006_0213da84},

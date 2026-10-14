@@ -1,7 +1,7 @@
 //cpp
 /* d_s_boot.cpp -- dScBoot_c's registration unit: the destructor pair and
  * the dScBoot_c_classInit factory, .text 0x02023598..0x02023688. The class's
- * scene methods live in the separate TU src/game/stages/dScBoot_c.cpp.
+ * scene methods live in the separate TU src/game/stages/d_s_boot_methods.cpp.
  *
  * THE DESTRUCTOR. The cartridge places D1 (0x02023598) BELOW D0
  * (0x020235d4); under deferred codegen an out-of-line destructor emits D2,

@@ -95,17 +95,17 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "param:#1 Jump3DVec *",
         "param:#2 Jump3DVec *",
         "param:#3 Jump3DVec *"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -155,7 +155,7 @@
       "src/_ZN6Player15St_Balloon_MainEv.cpp": [
         "param:#2 short"
       ],
-      "src/game/actors/Scuttlebug.cpp": [
+      "src/game/actors/d_a_spd.cpp": [
         "param:#1 short",
         "param:#2 short",
         "return:short"
@@ -178,9 +178,6 @@
       "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
         "return:void"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "param:#2 int"
-      ],
       "src/game/actors/d_a_basabasa.cpp": [
         "param:#2 int",
         "return:void"
@@ -193,6 +190,9 @@
         "return:void"
       ],
       "src/game/actors/d_a_holhei.cpp": [
+        "param:#2 int"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 int"
       ],
       "src/game/actors/d_a_kuri_king.cpp": [
@@ -265,7 +265,7 @@
       ]
     },
     "Camera_UpdateMatrices": {
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 char *"
       ]
     },
@@ -603,9 +603,6 @@
       ]
     },
     "DecIfAbove0_Short": {
-      "src/game/actors/Scuttlebug.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_door.cpp": [
         "return:int"
       ],
@@ -625,6 +622,9 @@
       "src/game/actors/d_a_owl.cpp": [
         "return:void"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "return:void"
+      ],
       "src/runtime/actor/dEnemyBase_c.cpp": [
         "return:void"
       ],
@@ -639,28 +639,16 @@
       "src/game/actors/d_a_demo.cpp": [
         "param:#1 int"
       ],
-      "src/game/stages/dScGameOver_c.cpp": [
+      "src/game/stages/d_s_game_over.cpp": [
         "param:#1 int"
       ],
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "param:#1 int"
       ],
-      "src/minigames/dScMgCoin_c.cpp": [
+      "src/minigames/d_s_mg_coin.cpp": [
         "param:#1 int"
       ],
-      "src/minigames/dScMgFlower_c.cpp": [
-        "param:#1 int"
-      ],
-      "src/minigames/dScMgPachinko2_c.cpp": [
-        "param:#1 int"
-      ],
-      "src/minigames/dScMgPanel_c.cpp": [
-        "param:#1 int"
-      ],
-      "src/minigames/dScMgRoulette_c.cpp": [
-        "param:#2 int"
-      ],
-      "src/minigames/dScMgSound_c.cpp": [
+      "src/minigames/d_s_mg_flower.cpp": [
         "param:#1 int"
       ],
       "src/minigames/d_s_mg_jump2.cpp": [
@@ -670,6 +658,18 @@
       "src/minigames/d_s_mg_m_carlo2.cpp": [
         "param:#1 int",
         "param:#2 int"
+      ],
+      "src/minigames/d_s_mg_pachinko2.cpp": [
+        "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_panel.cpp": [
+        "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
+        "param:#2 int"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "param:#1 int"
       ],
       "src/minigames/d_s_mg_trampoline.cpp": [
         "param:#1 int"
@@ -695,7 +695,7 @@
       "src/engine/collision/dBgW_Kc_itcm.cpp": [
         "param:#1 const signed int *"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Vec3 *",
         "param:#1 const Vec3 *",
         "param:#2 Vec3 *",
@@ -718,34 +718,34 @@
       ]
     },
     "DrawOamSprite": {
-      "src/minigames/dScMgCurling2_c.cpp": [
+      "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#4 int"
       ],
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#4 int"
       ],
-      "src/minigames/dScMgHanachan_c.cpp": [
-        "param:#2 int",
-        "param:#4 int"
-      ],
-      "src/minigames/dScMgLuigi_c.cpp": [
+      "src/minigames/d_s_mg_curling2.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#4 int"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
+        "param:#2 int",
+        "param:#4 int"
+      ],
+      "src/minigames/d_s_mg_luigi.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "param:#4 int"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
         "param:#2 int"
       ],
-      "src/minigames/dScMgTeresa_c.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "param:#4 int"
-      ],
-      "src/minigames/d_s_mg_base.cpp": [
+      "src/minigames/d_s_mg_teresa.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#4 int"
@@ -872,12 +872,12 @@
       ]
     },
     "Hud_RenderSprite": {
-      "src/minigames/dScMgSound_c.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "param:#1 int",
+        "return:int"
       ]
     },
     "IDENTITY_MATRIX4X3": {
@@ -1025,10 +1025,10 @@
       "src/ui/hud/dMap_c.cpp": [
         "param:#1 int"
       ],
-      "src/game/stages/dScDSMT_c.cpp": [
+      "src/game/stages/d_s_dsmt.cpp": [
         "param:#1 int"
       ],
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_moray.cpp": [
@@ -1171,27 +1171,27 @@
       ]
     },
     "LoadCompressedFileAt": {
-      "src/minigames/dScMgAmida_c.cpp": [
-        "param:#1 int"
-      ],
-      "src/minigames/dScMgCup_c.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:void"
-      ],
-      "src/minigames/dScMgD3DBase_c.cpp": [
-        "param:#1 unsigned int"
-      ],
-      "src/minigames/dScMgSlots.cpp": [
-        "param:#1 int"
-      ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "param:#1 int"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int"
       ],
       "src/minigames/d_s_mg_bsc.cpp": [
+        "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_cup.cpp": [
+        "param:#1 int",
+        "param:#2 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
+        "param:#1 unsigned int"
+      ],
+      "src/minigames/d_s_mg_slots.cpp": [
+        "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 int"
       ],
       "src/unnamed/arm9/0200/func_0200f13c.cpp": [
@@ -1218,27 +1218,6 @@
       "src/engine/message/func_0201fe08.c": [
         "return:void *"
       ],
-      "src/minigames/dScMgCup_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgCurling_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgHanachan_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgMemory2_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgRoulette_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgTeresa_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMiniGm_c.cpp": [
-        "return:char *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "arity:0",
         "return:void"
@@ -1246,8 +1225,29 @@
       "src/minigames/d_s_mg_card.cpp": [
         "return:void *"
       ],
+      "src/minigames/d_s_mg_cup.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_curling.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
+        "return:void *"
+      ],
       "src/minigames/d_s_mg_memory.cpp": [
         "return:void *"
+      ],
+      "src/minigames/d_s_mg_memory2.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_teresa.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "return:char *"
       ],
       "src/stage/LevelObjects.cpp": [
         "return:KCL_File *"
@@ -1464,9 +1464,6 @@
       "src/Matrix4x3_ApplyInPlaceToRotationY.c": [
         "param:#2 short"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "param:#2 short"
-      ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#2 short"
       ],
@@ -1477,6 +1474,9 @@
         "param:#2 short"
       ],
       "src/game/actors/d_a_holhei.cpp": [
+        "param:#2 short"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 short"
       ],
       "src/game/actors/d_a_king_donketu.cpp": [
@@ -1849,12 +1849,12 @@
       "src/ResetCrashScreen.c": [
         "param:#2 volatile void *"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
-        "param:#1 int"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int",
         "param:#2 int"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "param:#1 int"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
         "param:#1 int",
@@ -1965,10 +1965,10 @@
       "src/Quaternion_FromVector3.c": [
         "param:#1 Vec3 *"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Vec3 *"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "param:#1 Jump3DVec *"
       ]
     },
@@ -2162,23 +2162,23 @@
       ]
     },
     "RenderOamBothScreens": {
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_snowball.cpp": [
         "param:#1 int",
         "param:#6 int"
       ]
     },
     "RenderOamMainScreen": {
-      "src/minigames/dScMgSlots.cpp": [
-        "param:#1 void *"
-      ],
-      "src/minigames/dScMgTeresa_c.cpp": [
-        "param:#1 void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ],
       "src/minigames/d_s_mg_m_carlo2.cpp": [
         "return:int"
+      ],
+      "src/minigames/d_s_mg_slots.cpp": [
+        "param:#1 void *"
+      ],
+      "src/minigames/d_s_mg_teresa.cpp": [
+        "param:#1 void *"
       ],
       "src/minigames/d_s_mg_trampoline.cpp": [
         "return:int"
@@ -3051,11 +3051,11 @@
       ]
     },
     "Sound_PlayBank1Panned": {
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#2 int",
         "param:#3 int"
       ]
@@ -3118,7 +3118,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -3238,16 +3238,16 @@
       ]
     },
     "Vec2_Len": {
-      "src/minigames/dScMgAmida_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "param:#1 int *"
       ],
-      "src/minigames/dScMgFlower_c.cpp": [
+      "src/minigames/d_s_mg_flower.cpp": [
         "param:#1 V2 *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 Vec2 *"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_snowball.cpp": [
         "param:#1 int *"
       ],
       "src/minigames/unit020cd744.cpp": [
@@ -3258,12 +3258,12 @@
       ]
     },
     "Vec2_Sub": {
-      "src/minigames/dScMgFlower_c.cpp": [
+      "src/minigames/d_s_mg_flower.cpp": [
         "param:#1 V2 *",
         "param:#2 V2 *",
         "param:#3 V2 *"
       ],
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "param:#1 V2 *",
         "param:#2 V2 *",
         "param:#3 V2 *"
@@ -3515,7 +3515,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -3523,7 +3523,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
@@ -3633,7 +3633,7 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -3778,10 +3778,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_bg_snm_bdy.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -3799,6 +3795,10 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_ibl.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -3942,14 +3942,14 @@
       ]
     },
     "Vec3_MulScalar": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Vec3 *",
         "param:#1 Vector3 *",
         "param:#2 Vec3 *",
         "param:#2 Vector3 *",
         "param:#2 const Vec3 *"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *"
       ],
@@ -4196,7 +4196,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "param:#1 Jump3DVec *",
         "param:#2 Jump3DVec *",
         "param:#3 Jump3DVec *"
@@ -4538,7 +4538,7 @@
         "param:#1 short *",
         "param:#2 int"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 short *"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -4546,14 +4546,14 @@
       ]
     },
     "_Z14ApproachLinearR7Vector3RKS_5Fix12IiE": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 void *",
-        "param:#2 void *",
-        "return:void"
-      ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#1 void *",
         "param:#2 const void *",
+        "return:void"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#1 void *",
+        "param:#2 void *",
         "return:void"
       ],
       "src/game/actors/d_a_owl.cpp": [
@@ -4620,10 +4620,6 @@
         "param:#1 int *",
         "return:void"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 int *",
-        "return:void"
-      ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#1 int *",
         "return:void"
@@ -4645,6 +4641,10 @@
         "return:void"
       ],
       "src/game/actors/d_a_ibl.cpp": [
+        "param:#1 int *",
+        "return:void"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#1 int *",
         "return:void"
       ],
@@ -4732,12 +4732,12 @@
         "param:#1 int *",
         "return:void"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 int *",
         "return:int",
         "return:void"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int &",
         "param:#1 int *",
         "return:int",
@@ -4830,11 +4830,11 @@
         "param:#1 short *",
         "return:int"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 short *",
         "return:int"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 short *",
         "return:int"
       ],
@@ -4897,17 +4897,17 @@
         "param:#1 short *",
         "return:void"
       ],
-      "src/game/stages/dScEntry_c.cpp": [
+      "src/game/stages/d_s_entry.cpp": [
         "param:#1 short *"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 short *"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 short *",
         "return:void"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 short &",
         "param:#1 short *",
         "return:void"
@@ -5051,11 +5051,6 @@
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
-      ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *",
-        "param:#6 Vector3_16 *"
       ],
       "src/game/actors/d_a_1up.cpp": [
         "param:#2 dActor_c *",
@@ -5347,6 +5342,11 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#2 dActor_c *",
+        "param:#5 Vector3_16 *",
+        "param:#6 Vector3_16 *"
+      ],
       "src/game/actors/d_a_star.cpp": [
         "param:#2 void *",
         "param:#5 void *",
@@ -5536,9 +5536,6 @@
       ]
     },
     "_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#3 Vector3 *"
-      ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#3 const Vector3 &"
       ],
@@ -5556,6 +5553,9 @@
       ],
       "src/game/actors/d_a_hanachan.cpp": [
         "param:#5 unsigned int"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#3 Vector3 *"
       ],
       "src/game/actors/d_a_jgm.cpp": [
         "return:int"
@@ -5722,7 +5722,7 @@
       ]
     },
     "_ZN13SharedFilePtr7ReleaseEv": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:int"
       ],
       "src/runtime/actor/dCapEnemy_c_arm9.cpp": [
@@ -5963,12 +5963,12 @@
       ]
     },
     "_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#2 void *"
-      ],
       "src/game/actors/d_a_bombking.cpp": [
         "param:#2 void *",
         "return:int"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#2 void *"
       ],
       "src/game/actors/d_a_jango.cpp": [
         "return:int"
@@ -6015,7 +6015,7 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 int",
         "param:#2 void *"
       ]
@@ -6033,7 +6033,7 @@
       "src/game/actors/d_a_kuri_king.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 char *",
         "param:#5 unsigned int"
       ]
@@ -6073,9 +6073,6 @@
       ]
     },
     "_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#5 unsigned int"
-      ],
       "src/game/actors/d_a_bg_snm_hed.cpp": [
         "param:#5 unsigned int"
       ],
@@ -6107,6 +6104,9 @@
         "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_hanachan.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_jgm.cpp": [
@@ -6142,18 +6142,18 @@
       ]
     },
     "_ZN15TextureSequence8LoadFileER13SharedFilePtr": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#1 void *",
+        "return:void"
       ],
       "src/game/actors/d_a_kpa.cpp": [
         "param:#1 void *",
         "return:void"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 void *",
         "return:void"
       ],
@@ -6190,10 +6190,6 @@
       ]
     },
     "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -6204,6 +6200,10 @@
       "src/game/actors/d_a_door.cpp": [
         "param:#1 void *",
         "return:void *"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#1 void *",
+        "return:void"
       ],
       "src/game/actors/d_a_king_donketu.cpp": [
         "param:#1 SharedFilePtr *",
@@ -6217,11 +6217,11 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 void *",
         "return:int"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 SharedFilePtr *",
         "return:void *"
       ],
@@ -6495,17 +6495,17 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/minigames/dScMgFlower_c.cpp": [
-        "return:char *"
-      ],
-      "src/minigames/dScMgSmartball_c.cpp": [
-        "return:unsigned short *"
-      ],
-      "src/minigames/dScMgSnowball_c.cpp": [
-        "return:char *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
+      ],
+      "src/minigames/d_s_mg_flower.cpp": [
+        "return:char *"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:unsigned short *"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "return:char *"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:char *"
@@ -6518,7 +6518,7 @@
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
@@ -6529,14 +6529,14 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/minigames/dScMgFlower_c.cpp": [
+      "src/minigames/d_s_mg_flower.cpp": [
         "return:char *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:int *"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
@@ -6560,12 +6560,12 @@
       ]
     },
     "_ZN2GX15SetBankForSubBGEt": {
-      "src/minigames/dScMgD3DBase_c.cpp": [
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
         "param:#1 unsigned int"
       ]
     },
     "_ZN2GX16SetBankForSubOBJEt": {
-      "src/minigames/dScMgD3DBase_c.cpp": [
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -6593,16 +6593,16 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "return:void *"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
@@ -6622,20 +6622,20 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/game/stages/dScGameOver_c.cpp": [
+      "src/game/stages/d_s_game_over.cpp": [
         "return:unsigned short *"
       ],
-      "src/minigames/dScMgAmida_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "return:void *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "return:void *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:void *"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
       "src/unnamed/arm9/0203/func_02030500.c": [
@@ -6646,20 +6646,20 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/game/stages/dScGameOver_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgSlots.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgSmartball_c.cpp": [
-        "return:unsigned short *"
-      ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/game/stages/d_s_game_over.cpp": [
         "return:void *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
+      ],
+      "src/minigames/d_s_mg_slots.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:unsigned short *"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "return:void *"
       ],
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
@@ -6678,16 +6678,16 @@
       "src/ui/hud/dMap_c.cpp": [
         "return:void *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "return:char *"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
       "src/unnamed/arm9/0200/func_0200f220.c": [
@@ -6710,17 +6710,17 @@
       "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "return:void *"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:void *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:int *"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:char *"
       ],
       "src/unnamed/arm9/0201/func_0201cd08.cpp": [
@@ -6749,18 +6749,18 @@
       ]
     },
     "_ZN3G2S13GetBG2CharPtrEv": {
-      "src/minigames/dScMgSlots.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgSmartball_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMiniGm_c.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:int *"
+      ],
+      "src/minigames/d_s_mg_slots.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "return:void *"
       ]
     },
     "_ZN3G2S13GetBG3CharPtrEv": {
@@ -6770,12 +6770,12 @@
       "src/game/actors/d_a_demo.cpp": [
         "return:char *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
-        "return:char *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:int *"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "return:char *"
       ],
       "src/unnamed/arm9/0200/func_0200f220.c": [
         "return:char *"
@@ -6787,26 +6787,26 @@
         "param:#4 int",
         "param:#5 int"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 int",
         "param:#5 int"
       ],
-      "src/minigames/dScMgAmida_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "param:#5 unsigned short"
       ],
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "param:#5 unsigned short"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "param:#5 unsigned short"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 volatile void *",
         "param:#5 unsigned short"
       ],
-      "src/minigames/dScMgTeresa_c.cpp": [
+      "src/minigames/d_s_mg_teresa.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 int",
@@ -6839,7 +6839,7 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#2 int"
       ],
       "src/engine/fader/dFader_c.cpp": [
@@ -6895,7 +6895,7 @@
       "src/_ZN10dScStage_c9RenderFogEv.cpp": [
         "param:#1 int"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 int"
       ]
     },
@@ -6919,7 +6919,7 @@
       ]
     },
     "_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#1 const void *",
         "param:#2 const void *",
         "param:#3 const void *",
@@ -7357,7 +7357,7 @@
       ]
     },
     "_ZN3OAM10LIFE_ICONSE": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ]
     },
@@ -7367,7 +7367,7 @@
       ]
     },
     "_ZN3OAM12EnableSubOAMEv": {
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "arity:1",
         "return:void"
       ]
@@ -7383,12 +7383,12 @@
       ]
     },
     "_ZN3OAM4COINE": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ]
     },
     "_ZN3OAM5TIMESE": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void *"
       ]
     },
@@ -7402,11 +7402,11 @@
       "src/engine/view/dCamera_c.cpp": [
         "param:#1 bool"
       ],
-      "src/minigames/dScMgPachinko_c.cpp": [
-        "param:#8 void *",
+      "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
+      "src/minigames/d_s_mg_pachinko.cpp": [
+        "param:#8 void *",
         "return:int"
       ],
       "src/unnamed/arm9/0202/func_0202048c.cpp": [
@@ -7429,20 +7429,20 @@
       "src/game/actors/d_a_demo.cpp": [
         "return:void"
       ],
-      "src/game/stages/dScMB_c.cpp": [
-        "return:void"
-      ],
-      "src/minigames/dScMgCup_c.cpp": [
-        "return:int"
-      ],
-      "src/minigames/dScMgHanachan_c.cpp": [
-        "return:void"
-      ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "return:void"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
+      ],
+      "src/minigames/d_s_mg_cup.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
+        "return:void"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "return:void"
       ],
       "src/ui/hud/dMap_c.cpp": [
         "return:void"
@@ -7485,7 +7485,7 @@
       ]
     },
     "_ZN3OAM7NUMBERSE": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ]
     },
@@ -7515,10 +7515,10 @@
       ]
     },
     "_ZN4CP1527FlushAndInvalidateDataCacheEjj": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_base.cpp": [
         "param:#1 void *"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 void *"
       ],
       "src/unnamed/arm9/0204/func_02040c34.c": [
@@ -7543,7 +7543,7 @@
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "return:void *"
       ],
       "src/unnamed/ov075/func_ov075_02118bf8.c": [
@@ -7631,13 +7631,13 @@
       "src/game/actors/d_a_wanwan2.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgCurling2_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling2.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_snowball.cpp": [
         "return:int"
       ],
       "src/unnamed/arm9/0200/func_02008cb4.c": [
@@ -7727,9 +7727,6 @@
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 void *"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *"
       ],
@@ -7740,6 +7737,9 @@
         "param:#1 void *"
       ],
       "src/game/actors/d_a_ibl.cpp": [
+        "param:#1 void *"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#1 void *"
       ],
       "src/game/actors/d_a_king_donketu.cpp": [
@@ -7759,11 +7759,11 @@
       "src/game/actors/d_a_star.cpp": [
         "param:#1 void *"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 void *",
         "return:int"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 SharedFilePtr *",
         "return:struct BMD_File *"
       ],
@@ -7818,13 +7818,13 @@
       "include/decl_common.h": [
         "return:void"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:void"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "return:void"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "return:void"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -7967,13 +7967,13 @@
       "src/_ZN7Message12UpdateWindowEv.cpp": [
         "return:void"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_bombking.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_door.cpp": [
+        "return:void"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_king_donketu.cpp": [
@@ -8216,11 +8216,11 @@
         "param:#2 void *",
         "return:int"
       ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_ibl.cpp": [
         "param:#2 void *"
+      ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#2 const void *"
       ],
       "src/runtime/actor/dActor_c.cpp": [
         "param:#2 const Vector3 *"
@@ -8683,11 +8683,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int"
-      ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -8893,6 +8888,11 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int",
         "return:void"
+      ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#5 unsigned int",
+        "param:#6 unsigned int",
+        "param:#7 unsigned int"
       ],
       "src/game/actors/d_a_trs.cpp": [
         "param:#5 unsigned int",
@@ -9404,7 +9404,7 @@
       ]
     },
     "_ZN7Message11DisplayTextEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ],
       "src/Message.cpp": [
@@ -9412,48 +9412,48 @@
       ]
     },
     "_ZN7Message16DisplayPauseTextEth": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message18DisplayPauseTextVSEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message19DisplayDontSaveTextEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message19DisplaySaveMenuTextEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message21DisplayLevelClearTextEta": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int",
         "param:#2 unsigned char"
       ]
     },
     "_ZN7Message21DisplaySaveStatusTextEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message22DisplayOptionsMenuTextEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message25DisplayControllerModeTextEt": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message7DisplayEj": {
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "arity:1"
       ]
     },
@@ -9489,13 +9489,13 @@
       ]
     },
     "_ZN7dBgW_Kc8LoadFileER13SharedFilePtr": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *",
         "return:void *"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#1 void *",
+        "return:void"
       ],
       "src/game/actors/d_a_obj_fl_amilift.cpp": [
         "return:KCL_File *"
@@ -9591,7 +9591,7 @@
       "src/_ZN6Player19St_Electrocute_MainEv.cpp": [
         "return:unsigned int"
       ],
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#6 const void *",
         "return:unsigned int"
       ],
@@ -9606,17 +9606,17 @@
       "src/runtime/actor/dEntObj_c.cpp": [
         "param:#6 const Vector3_16 *"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#6 const void *",
         "return:void *"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#6 const Vector3_16f *",
         "param:#6 const void *",
         "return:System *",
         "return:void *"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_snowball.cpp": [
         "param:#6 const void *",
         "return:unsigned int"
       ],
@@ -9844,12 +9844,6 @@
       "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
         "return:void"
       ],
-      "src/game/actors/Eyerok.cpp": [
-        "return:void"
-      ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "return:void"
-      ],
       "src/game/actors/d_a_1up.cpp": [
         "return:void"
       ],
@@ -9893,6 +9887,9 @@
         "return:void"
       ],
       "src/game/actors/d_a_ibl.cpp": [
+        "return:void"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "return:void"
       ],
       "src/game/actors/d_a_jango.cpp": [
@@ -9997,6 +9994,9 @@
       "src/game/actors/d_a_snowball.cpp": [
         "return:void"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "return:void"
+      ],
       "src/game/actors/d_a_star.cpp": [
         "return:void"
       ],
@@ -10006,12 +10006,12 @@
       "src/game/actors/d_a_yegg.cpp": [
         "return:void"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#2 Fix12",
         "param:#3 Fix12",
         "param:#4 Fix12"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "return:void"
       ],
       "src/runtime/actor/dActor_c.cpp": [
@@ -10075,7 +10075,7 @@
       "src/game/actors/d_a_star.cpp": [
         "param:#1 int"
       ],
-      "src/game/stages/dScStage_c.cpp": [
+      "src/game/stages/d_s_stage_methods.cpp": [
         "param:#1 int",
         "param:#2 int"
       ]
@@ -10191,10 +10191,6 @@
         "param:#2 const Vector3 &",
         "param:#3 unsigned int"
       ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
       "src/game/actors/d_a_basabasa.cpp": [
         "param:#2 Vector3 *",
         "param:#3 unsigned int"
@@ -10252,6 +10248,10 @@
         "param:#2 Vector3 *",
         "param:#3 unsigned int",
         "return:int"
+      ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#2 const void *",
+        "param:#3 unsigned int"
       ],
       "src/game/actors/d_a_tgz.cpp": [
         "param:#3 unsigned int"
@@ -10368,7 +10368,7 @@
       ]
     },
     "_ZN8dActor_c15HugeLandingDustEb": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 int"
       ]
     },
@@ -10384,10 +10384,10 @@
       ]
     },
     "_ZN8dActor_c16TriplePoofDustAtERK7Vector3": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_btn.cpp": [
         "param:#2 const void *"
       ],
-      "src/game/actors/d_a_btn.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 const void *"
       ]
     },
@@ -10474,12 +10474,6 @@
       ]
     },
     "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#6 unsigned int"
-      ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#6 unsigned int"
-      ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#6 unsigned int"
       ],
@@ -10534,6 +10528,9 @@
         "param:#6 unsigned int"
       ],
       "src/game/actors/d_a_ibl.cpp": [
+        "param:#6 unsigned int"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#6 unsigned int"
       ],
       "src/game/actors/d_a_jango.cpp": [
@@ -10616,6 +10613,9 @@
       "src/game/actors/d_a_snowman.cpp": [
         "param:#6 unsigned int"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#6 unsigned int"
+      ],
       "src/game/actors/d_a_star.cpp": [
         "param:#1 char *",
         "param:#6 unsigned int",
@@ -10669,7 +10669,7 @@
       ]
     },
     "_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#3 Vector3 *"
       ],
       "src/runtime/actor/dCapEnemy_c_arm9.cpp": [
@@ -10791,9 +10791,6 @@
         "return:int"
       ],
       "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/game/actors/Scuttlebug.cpp": [
         "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_bakubaku.cpp": [
@@ -10964,6 +10961,9 @@
       "src/game/actors/d_a_snowman.cpp": [
         "param:#5 unsigned int"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#5 unsigned int"
+      ],
       "src/game/actors/d_a_tor.cpp": [
         "param:#5 unsigned int"
       ],
@@ -10988,14 +10988,14 @@
       "src/game/actors/d_a_yurei_mucho.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#5 unsigned int",
         "return:int"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 char *",
         "param:#4 unsigned int",
         "param:#5 int",
@@ -11021,7 +11021,7 @@
       "include/decl_ModelAnim.h": [
         "return:void"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:int"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -11044,11 +11044,11 @@
       "src/game/actors/d_a_obj_fl_coin.cpp": [
         "return:void"
       ],
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#2 int",
         "return:void"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#2 struct BMD_File *"
       ],
       "src/unnamed/ov002/func_ov002_020b6c54.c": [
@@ -11353,19 +11353,10 @@
       ]
     },
     "_ZTV19dScMgSingle3DBase_c": {
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "return:int []"
       ],
-      "src/minigames/dScMgCup_c.cpp": [
-        "return:void * []"
-      ],
-      "src/minigames/dScMgSlots.cpp": [
-        "return:int []"
-      ],
-      "src/minigames/dScMgSnowball_c.cpp": [
-        "return:void *"
-      ],
-      "src/minigames/dScMgSound_c.cpp": [
+      "src/minigames/d_s_mg_cup.cpp": [
         "return:void * []"
       ],
       "src/minigames/d_s_mg_memory.cpp": [
@@ -11373,6 +11364,15 @@
       ],
       "src/minigames/d_s_mg_roulette.cpp": [
         "return:int []"
+      ],
+      "src/minigames/d_s_mg_slots.cpp": [
+        "return:int []"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "return:void * []"
       ]
     },
     "_ZTV7dBase_c": {
@@ -11461,7 +11461,7 @@
         "param:#3 int",
         "param:#4 void *"
       ],
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *"
@@ -11518,13 +11518,13 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_demo.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
         "param:#5 void *"
       ],
-      "src/game/actors/d_a_demo.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
@@ -11546,31 +11546,19 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/minigames/dScMgAmida_c.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
-      "src/minigames/dScMgCup_c.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
-      "src/minigames/dScMgSmartball_c.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
         "param:#5 void *"
       ],
       "src/minigames/d_s_mg_bsc.cpp": [
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 void *",
+        "param:#5 void *"
+      ],
+      "src/minigames/d_s_mg_cup.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
@@ -11595,6 +11583,18 @@
         "param:#5 void *"
       ],
       "src/minigames/d_s_mg_roulette.cpp": [
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 void *",
+        "param:#5 void *"
+      ],
+      "src/minigames/d_s_mg_smartball.cpp": [
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 void *",
+        "param:#5 void *"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
@@ -11651,9 +11651,6 @@
       ]
     },
     "dBgCh_Actr_UpdateDiscreteNoLava_veneer": {
-      "src/game/actors/Scuttlebug.cpp": [
-        "arity:1"
-      ],
       "src/game/actors/d_a_brq.cpp": [
         "arity:1"
       ],
@@ -11677,6 +11674,9 @@
         "return:int"
       ],
       "src/game/actors/d_a_pg_mthr.cpp": [
+        "arity:1"
+      ],
+      "src/game/actors/d_a_spd.cpp": [
         "arity:1"
       ],
       "src/game/actors/d_a_tgz.cpp": [
@@ -11724,7 +11724,7 @@
       "src/game/actors/d_a_door.cpp": [
         "return:daDoor_StatePmf"
       ],
-      "src/minigames/dMgState_c.cpp": [
+      "src/minigames/d_mg_state.cpp": [
         "return:W2"
       ],
       "src/minigames/unit020b2c84.cpp": [
@@ -11789,10 +11789,10 @@
       "src/runtime/actor/dEntObj_c.cpp": [
         "return:void *"
       ],
-      "src/game/stages/dScDSMT_c.cpp": [
+      "src/game/stages/d_s_dsmt.cpp": [
         "return:int []"
       ],
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "return:int []"
       ],
       "src/game/stages/d_s_star_sel.cpp": [
@@ -11825,12 +11825,12 @@
       "src/unnamed/arm9/0207/__sinit_02074fb8.c": [
         "return:int"
       ],
-      "src/game/stages/dScDSMT_c.cpp": [
+      "src/game/stages/d_s_dsmt.cpp": [
         "return:int []"
       ]
     },
     "data_0208ee3c": {
-      "src/game/stages/dScDSMT_c.cpp": [
+      "src/game/stages/d_s_dsmt.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/arm9/0201/func_020196cc.c": [
@@ -11838,7 +11838,7 @@
       ]
     },
     "data_0208ee44": {
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "return:unsigned char []"
       ],
       "src/minigames/d_s_mg_bsc.cpp": [
@@ -11894,7 +11894,7 @@
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char"
       ],
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned char"
       ],
       "src/stage/LevelObjects.cpp": [
@@ -12031,14 +12031,14 @@
       ]
     },
     "data_0209b308": {
-      "src/minigames/dScMiniGm_c.cpp": [
-        "return:MgEntry"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:char",
         "return:char []",
         "return:int",
         "return:unsigned short"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "return:MgEntry"
       ]
     },
     "data_0209b3ec": {
@@ -12158,10 +12158,10 @@
       "src/game/actors/d_a_obj_wl_submarine.cpp": [
         "return:char []"
       ],
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned char []"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:unsigned int []"
       ],
       "src/stage/LevelObjects.cpp": [
@@ -12184,7 +12184,7 @@
       ]
     },
     "data_0209cae4": {
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:MinigameSaveData"
       ]
     },
@@ -12235,10 +12235,10 @@
       ]
     },
     "data_0209d454": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_base.cpp": [
         "return:unsigned char []"
       ],
-      "src/minigames/d_s_mg_base.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/ov075/func_ov075_02117918.c": [
@@ -12257,7 +12257,7 @@
       "src/ProcessKuppaScript.cpp": [
         "return:signed char"
       ],
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "return:unsigned char []"
       ],
       "src/minigames/d_s_mg_base.cpp": [
@@ -12552,10 +12552,10 @@
       "src/game/actors/d_a_yurei_mucho.cpp": [
         "return:int []"
       ],
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_m_carlo2.cpp": [
         "return:int []"
       ],
-      "src/minigames/d_s_mg_m_carlo2.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "return:int []"
       ],
       "src/runtime/actor/dActor_c.cpp": [
@@ -12563,7 +12563,7 @@
       ]
     },
     "data_0209e674": {
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "return:char []"
       ]
     },
@@ -12585,7 +12585,7 @@
       "src/engine/view/dCamera_c.cpp": [
         "return:int []"
       ],
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "return:unsigned char []"
       ],
       "src/unnamed/arm9/0201/func_020197b8.c": [
@@ -13175,20 +13175,17 @@
       "src/game/actors/d_a_demo.cpp": [
         "return:void *"
       ],
-      "src/game/stages/dScBoot_c.cpp": [
+      "src/game/stages/d_s_boot_methods.cpp": [
         "return:dFdBrightness_c *"
       ],
-      "src/game/stages/dScGameOver_c.cpp": [
+      "src/game/stages/d_s_game_over.cpp": [
         "return:SceneGate *"
       ],
-      "src/game/stages/dScene_c.cpp": [
+      "src/game/stages/d_scene.cpp": [
         "return:dFdBrightness_c *"
       ],
-      "src/minigames/dMgState_c.cpp": [
+      "src/minigames/d_mg_state.cpp": [
         "return:Obj *"
-      ],
-      "src/minigames/dScMiniGm_c.cpp": [
-        "return:TouchOwner *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:SceneVCall6 *"
@@ -13198,6 +13195,9 @@
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:char *"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "return:TouchOwner *"
       ],
       "src/minigames/unit020bfec0.cpp": [
         "return:void *"
@@ -13216,7 +13216,7 @@
       ]
     },
     "data_0209f5c0": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:GObj *"
       ],
       "src/unnamed/ov075/func_ov075_02116818.c": [
@@ -13238,7 +13238,7 @@
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned short []"
       ],
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "return:unsigned short []"
       ],
       "src/unnamed/arm9/0207/__sinit_02074edc.c": [
@@ -13393,7 +13393,7 @@
       ]
     },
     "data_020a0d90": {
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "return:int []"
       ]
     },
@@ -13401,7 +13401,7 @@
       "src/game/actors/d_a_demo.cpp": [
         "return:unsigned int"
       ],
-      "src/minigames/dScMgD3DBase_c.cpp": [
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
         "return:unsigned int"
       ],
       "src/minigames/d_s_mg_single3_d_base.cpp": [
@@ -13442,19 +13442,13 @@
       "src/_ZN7Message6UpdateEv.cpp": [
         "return:unsigned char"
       ],
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned short [][]"
       ]
     },
     "data_020a0e68": {
       "src/_ZN6Player6RenderEv.cpp": [
         "return:int"
-      ],
-      "src/game/actors/Eyerok.cpp": [
-        "return:int []"
-      ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "return:Mtx43"
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:MatrixWords"
@@ -13470,6 +13464,9 @@
       ],
       "src/game/actors/d_a_hanachan.cpp": [
         "return:char []"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "return:int []"
       ],
       "src/game/actors/d_a_jango.cpp": [
         "return:int []"
@@ -13501,6 +13498,9 @@
       "src/game/actors/d_a_shark.cpp": [
         "return:char []"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "return:Mtx43"
+      ],
       "src/game/actors/d_a_wanwan2.cpp": [
         "return:char []"
       ],
@@ -13513,10 +13513,10 @@
       "src/game/actors/d_a_yurei_mucho.cpp": [
         "return:int []"
       ],
-      "src/minigames/dScMgJump_c.cpp": [
+      "src/minigames/d_s_mg_jump2.cpp": [
         "return:int"
       ],
-      "src/minigames/d_s_mg_jump2.cpp": [
+      "src/minigames/d_s_mg_jump_methods.cpp": [
         "return:int"
       ],
       "src/runtime/actor/dCapEnemy_c_arm9.cpp": [
@@ -13561,7 +13561,7 @@
       "src/game/actors/d_a_star_gate.cpp": [
         "return:char []"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:Triple"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -15644,7 +15644,7 @@
       ]
     },
     "data_ov004_020b9488": {
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "return:int"
       ]
     },
@@ -15665,7 +15665,7 @@
       "include/dScMgBase_c.h": [
         "return:void *"
       ],
-      "src/minigames/dMgState_c.cpp": [
+      "src/minigames/d_mg_state.cpp": [
         "return:Base *"
       ],
       "src/minigames/d_s_mg_base.cpp": [
@@ -15719,10 +15719,10 @@
       ]
     },
     "data_ov004_020bf9e4": {
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_m_carlo.cpp": [
         "return:unsigned short"
       ],
-      "src/minigames/d_s_mg_m_carlo.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "return:unsigned short"
       ]
     },
@@ -15747,7 +15747,7 @@
       ]
     },
     "data_ov006_02137cd8": {
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "return:char []"
       ]
     },
@@ -15787,32 +15787,32 @@
       ]
     },
     "data_ov006_0213b0ec": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_0213b0f0": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_0213b2c4": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_0213b2e0": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_0213b3c4": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_0213b3e0": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
@@ -15822,18 +15822,18 @@
       ]
     },
     "data_ov006_02140304": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_02140324": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:Ent *",
         "return:int"
       ]
     },
     "data_ov006_02140330": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:SharedFilePtr"
       ],
       "src/unnamed/ov006/__sinit_ov006_0212f4c4.c": [
@@ -15841,7 +15841,7 @@
       ]
     },
     "data_ov006_02140338": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:SharedFilePtr"
       ],
       "src/unnamed/ov006/__sinit_ov006_0212f4c4.c": [
@@ -15849,7 +15849,7 @@
       ]
     },
     "data_ov006_021403f4": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:VB * []",
         "return:struct Obj * []"
       ]
@@ -15890,18 +15890,18 @@
       ]
     },
     "data_ov006_02140540": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:int []"
       ]
     },
     "data_ov006_02140544": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_02140548": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ],
       "src/unnamed/ov006/__sinit_ov006_0212f6b4.c": [
@@ -15909,65 +15909,65 @@
       ]
     },
     "data_ov006_0214054c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_02140550": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char * []",
         "return:unsigned char *"
       ]
     },
     "data_ov006_02140554": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:Ent *",
         "return:int"
       ]
     },
     "data_ov006_0214055c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_02140560": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_02140564": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:int []"
       ]
     },
     "data_ov006_02140568": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_0214056c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_0214057c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_02140580": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_02140590": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_02140594": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
@@ -15975,13 +15975,13 @@
       "include/decl_common.h": [
         "return:void *"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:BCA_File *",
         "return:void *"
       ]
     },
     "data_ov006_021405a0": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
@@ -15994,23 +15994,23 @@
       "include/decl_common.h": [
         "return:int []"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []"
       ]
     },
     "data_ov006_021405c0": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int *",
         "return:void *"
       ]
     },
     "data_ov006_021405c4": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "data_ov006_021405c8": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int",
         "return:void *",
         "return:void * []"
@@ -16118,7 +16118,7 @@
       ]
     },
     "data_ov006_0214097c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int []",
         "return:unsigned char * []"
       ]
@@ -16158,17 +16158,17 @@
       ]
     },
     "data_ov006_02141a40": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char *"
       ]
     },
     "data_ov006_02141a44": {
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "return:void *"
       ]
     },
     "data_ov006_02141a50": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:char *"
       ]
     },
@@ -18354,7 +18354,7 @@
       ]
     },
     "data_ov066_0211ae00": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "return:unsigned char"
       ]
     },
@@ -18364,7 +18364,7 @@
       ]
     },
     "data_ov066_0211ae10": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "return:unsigned char"
       ]
     },
@@ -18559,7 +18559,7 @@
       ]
     },
     "data_ov066_0211b0cc": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "return:char"
       ],
       "src/unnamed/ov066/__sinit_ov066_0211a418.c": [
@@ -20276,11 +20276,11 @@
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
       ],
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_hanachan.cpp": [
         "param:#1 void *",
         "return:void"
       ],
-      "src/game/actors/d_a_hanachan.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#1 void *",
         "return:void"
       ],
@@ -20474,7 +20474,7 @@
       ]
     },
     "func_02012174": {
-      "src/minigames/dScMgSound_c.cpp": [
+      "src/minigames/d_s_mg_sound.cpp": [
         "return:void"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -20496,7 +20496,7 @@
       ]
     },
     "func_02012468": {
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "param:#8 int"
       ]
     },
@@ -20507,9 +20507,6 @@
       ]
     },
     "func_0201267c": {
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#1 int"
-      ],
       "src/game/actors/d_a_bg_snm_hed.cpp": [
         "param:#1 int",
         "return:int"
@@ -20562,6 +20559,9 @@
       "src/game/actors/d_a_s_bird.cpp": [
         "return:int"
       ],
+      "src/game/actors/d_a_spd.cpp": [
+        "param:#1 int"
+      ],
       "src/game/actors/d_a_trs.cpp": [
         "param:#2 const void *",
         "return:int"
@@ -20582,12 +20582,6 @@
     "func_02012694": {
       "src/_ZN6Player16St_BurnFire_MainEv.cpp": [
         "param:#2 const void *"
-      ],
-      "src/game/actors/Eyerok.cpp": [
-        "param:#1 int"
-      ],
-      "src/game/actors/Scuttlebug.cpp": [
-        "param:#1 int"
       ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#1 int"
@@ -20623,6 +20617,9 @@
       "src/game/actors/d_a_ibl.cpp": [
         "param:#1 int",
         "return:int"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
+        "param:#1 int"
       ],
       "src/game/actors/d_a_king_donketu.cpp": [
         "param:#1 int"
@@ -20677,6 +20674,9 @@
         "param:#1 int"
       ],
       "src/game/actors/d_a_snowman.cpp": [
+        "param:#1 int"
+      ],
+      "src/game/actors/d_a_spd.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_star.cpp": [
@@ -20785,65 +20785,65 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/game/stages/dScGameOver_c.cpp": [
+      "src/game/stages/d_s_game_over.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/game/stages/dScTitle_c.cpp": [
+      "src/game/stages/d_s_title.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/minigames/dMgPsOpt_c.cpp": [
+      "src/minigames/d_mg_ps_opt.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/minigames/dScMgAmida_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "param:#1 int",
         "return:void"
-      ],
-      "src/minigames/dScMgCup_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/dScMgHanachan_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/dScMgJump_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/dScMgRoulette_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/dScMgSnowball_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/dScMgSound_c.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/minigames/dScMiniGm_c.cpp": [
-        "param:#1 int",
-        "return:int"
       ],
       "src/minigames/d_s_mg_base.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mg_cup.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mg_jump_methods.cpp": [
         "param:#1 int",
         "return:void"
       ],
       "src/minigames/d_s_mg_memory.cpp": [
         "param:#1 int",
         "return:void"
+      ],
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mg_snowball.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mg_sound.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/minigames/d_s_mini_gm.cpp": [
+        "param:#1 int",
+        "return:int"
       ],
       "src/ui/hud/dMeter_c.cpp": [
         "param:#1 int",
@@ -20948,7 +20948,7 @@
       ]
     },
     "func_02013edc": {
-      "src/game/stages/dScene_c.cpp": [
+      "src/game/stages/d_scene.cpp": [
         "param:#1 unsigned int",
         "param:#2 unsigned int",
         "return:int"
@@ -20968,13 +20968,13 @@
       "include/decl_common.h": [
         "arity:2"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "arity:2"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "arity:2"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:2"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -20985,13 +20985,13 @@
       "include/decl_common.h": [
         "arity:2"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "arity:2"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "arity:2"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:3"
       ],
       "src/minigames/unit020bfec0.cpp": [
@@ -21010,7 +21010,7 @@
       "src/game/actors/d_a_mip.cpp": [
         "param:#2 int"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#2 int"
       ]
     },
@@ -21022,7 +21022,7 @@
       "src/game/actors/d_a_mip.cpp": [
         "param:#2 int"
       ],
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 char *",
         "param:#2 int"
       ]
@@ -22895,7 +22895,7 @@
       ]
     },
     "func_0201a2f8": {
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "kind:data"
       ]
     },
@@ -22905,7 +22905,7 @@
       ]
     },
     "func_0201a5f8": {
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "param:#1 int"
       ]
     },
@@ -23166,7 +23166,7 @@
       "src/_ZN10dScEntry_c16CleanupResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/game/stages/dScMB_c.cpp": [
+      "src/game/stages/d_s_mb.cpp": [
         "arity:0"
       ],
       "src/unnamed/ov075/func_ov075_02118a78.c": [
@@ -23376,10 +23376,10 @@
       ]
     },
     "func_020393c4": {
-      "src/game/actors/Eyerok.cpp": [
+      "src/game/actors/d_a_dossy.cpp": [
         "param:#2 void *"
       ],
-      "src/game/actors/d_a_dossy.cpp": [
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 void *"
       ],
       "src/game/actors/d_a_kpa3_bg.cpp": [
@@ -23439,13 +23439,13 @@
       ]
     },
     "func_020393d4": {
-      "src/game/actors/Eyerok.cpp": [
-        "param:#2 void *"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#2 void *"
       ],
       "src/game/actors/d_a_dossy.cpp": [
+        "param:#2 void *"
+      ],
+      "src/game/actors/d_a_iwante.cpp": [
         "param:#2 void *"
       ],
       "src/game/actors/d_a_kpa2_bg.cpp": [
@@ -23646,13 +23646,13 @@
       "include/decl_common.h": [
         "param:#1 Vector3 *"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 Vec3 *",
         "param:#2 int"
       ]
     },
     "func_0203cd80": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 Vec3 *",
         "param:#2 int"
       ],
@@ -23664,7 +23664,7 @@
       ]
     },
     "func_0203ce80": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
@@ -23713,17 +23713,17 @@
       ]
     },
     "func_0203d388": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 V2 *"
       ]
     },
     "func_0203d434": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 V2 *"
       ]
     },
     "func_0203d480": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 V2 *",
         "param:#2 V2 *"
       ]
@@ -23735,38 +23735,38 @@
       ]
     },
     "func_0203d5dc": {
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "param:#1 const V2 *",
         "param:#2 const V2 *"
       ]
     },
     "func_0203d630": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#1 V2 *"
       ]
     },
     "func_0203d680": {
-      "src/minigames/dScMgHanachan_c.cpp": [
-        "param:#1 Vec2 *",
-        "param:#2 const Vec2 *"
-      ],
       "src/minigames/d_s_mg_card.cpp": [
         "param:#1 int *",
         "param:#2 int *"
+      ],
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
+        "param:#1 Vec2 *",
+        "param:#2 const Vec2 *"
       ]
     },
     "func_0203d704": {
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "param:#1 V2 *",
         "param:#2 V2 *",
         "param:#3 V2 *"
       ]
     },
     "func_0203d738": {
-      "src/minigames/dScMgAmida_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "arity:1"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_snowball.cpp": [
         "arity:1"
       ]
     },
@@ -24150,7 +24150,7 @@
       ]
     },
     "func_02046208": {
-      "src/minigames/dMg3DEspAnimSet_c.cpp": [
+      "src/minigames/d_mg3_d_esp_anim_set.cpp": [
         "param:#1 char *",
         "param:#2 int"
       ]
@@ -24751,7 +24751,7 @@
       ]
     },
     "func_02054140": {
-      "src/minigames/dScMgD3DBase_c.cpp": [
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
         "return:void"
       ],
       "src/unnamed/ov007/func_ov007_020bd960.c": [
@@ -24759,7 +24759,7 @@
       ]
     },
     "func_02054154": {
-      "src/minigames/dScMgD3DBase_c.cpp": [
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
         "return:void"
       ],
       "src/unnamed/ov007/func_ov007_020bd960.c": [
@@ -24790,7 +24790,7 @@
       ]
     },
     "func_02054430": {
-      "src/minigames/dScMgD3DBase_c.cpp": [
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
         "return:void"
       ],
       "src/unnamed/arm9/0201/func_02019440.c": [
@@ -24977,7 +24977,7 @@
       ]
     },
     "func_02057d00": {
-      "src/minigames/dScMgSmartball_c.cpp": [
+      "src/minigames/d_s_mg_smartball.cpp": [
         "param:#2 void *",
         "param:#3 int"
       ]
@@ -27372,7 +27372,7 @@
       ]
     },
     "func_ov004_020ad90c": {
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "arity:1"
       ],
       "src/minigames/d_s_mg_m_carlo2.cpp": [
@@ -27395,15 +27395,15 @@
       ]
     },
     "func_ov004_020adc68": {
-      "src/minigames/dScMgD3DBase_c.cpp": [
-        "arity:1",
-        "return:void *"
-      ],
-      "src/minigames/dScMgRoulette_c.cpp": [
-        "arity:1",
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
+        "arity:1",
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_d3_d_base.cpp": [
+        "arity:1",
+        "return:void *"
+      ],
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "arity:1",
         "return:void *"
       ],
@@ -27413,7 +27413,7 @@
       ]
     },
     "func_ov004_020adc74": {
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "return:char *"
       ]
     },
@@ -27429,7 +27429,7 @@
       ]
     },
     "func_ov004_020adfc4": {
-      "src/minigames/dScMgCoin_c.cpp": [
+      "src/minigames/d_s_mg_coin.cpp": [
         "arity:5"
       ],
       "src/minigames/unit020b2c84.cpp": [
@@ -27437,10 +27437,10 @@
       ]
     },
     "func_ov004_020ae5c4": {
-      "src/minigames/dScMgAmida_c.cpp": [
+      "src/minigames/d_s_mg_amida.cpp": [
         "return:int"
       ],
-      "src/minigames/dScMgTeresa_c.cpp": [
+      "src/minigames/d_s_mg_teresa.cpp": [
         "return:int"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
@@ -27478,21 +27478,21 @@
       ]
     },
     "func_ov004_020af770": {
-      "src/minigames/dScMgFlower_c.cpp": [
+      "src/minigames/d_s_mg_flower.cpp": [
         "param:#1 void *",
         "return:void"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "param:#1 void *",
         "return:void"
       ]
     },
     "func_ov004_020af948": {
-      "src/minigames/dScMgCurling2_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int",
         "param:#4 int"
       ],
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling2.cpp": [
         "param:#1 int",
         "param:#4 int"
       ]
@@ -27501,25 +27501,25 @@
       "include/decl_common.h": [
         "param:#1 void *"
       ],
-      "src/minigames/dScMgLuigi_c.cpp": [
+      "src/minigames/d_s_mg_luigi.cpp": [
         "return:char *"
       ]
     },
     "func_ov004_020afdd0": {
-      "src/minigames/dScMgCurling2_c.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/minigames/dScMgCurling_c.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_curling.cpp": [
+        "param:#1 int",
+        "return:int"
+      ],
+      "src/minigames/d_s_mg_curling2.cpp": [
+        "param:#1 int",
+        "return:int"
       ]
     },
     "func_ov004_020aff38": {
-      "src/minigames/dScMgPachinko2_c.cpp": [
+      "src/minigames/d_s_mg_pachinko2.cpp": [
         "param:#1 int",
         "return:void"
       ]
@@ -27535,32 +27535,32 @@
       ]
     },
     "func_ov004_020b19f0": {
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int"
       ],
-      "src/minigames/dScMgPachinko2_c.cpp": [
+      "src/minigames/d_s_mg_pachinko.cpp": [
+        "param:#1 int"
+      ],
+      "src/minigames/d_s_mg_pachinko2.cpp": [
         "arity:0",
         "return:void"
-      ],
-      "src/minigames/dScMgPachinko_c.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov004_020b1a5c": {
-      "src/minigames/dScMgPachinko_c.cpp": [
+      "src/minigames/d_s_mg_pachinko.cpp": [
         "return:int"
       ]
     },
     "func_ov004_020b1b08": {
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ]
     },
     "func_ov004_020b1b40": {
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ],
-      "src/minigames/dScMgSlots.cpp": [
+      "src/minigames/d_s_mg_slots.cpp": [
         "param:#1 int"
       ]
     },
@@ -27588,23 +27588,23 @@
       ]
     },
     "func_ov004_020b2220": {
-      "src/minigames/dScMgCurling_c.cpp": [
+      "src/minigames/d_s_mg_curling.cpp": [
         "param:#7 int"
       ],
-      "src/minigames/dScMgHanachan_c.cpp": [
+      "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "param:#3 void *",
         "param:#7 int"
       ],
-      "src/minigames/dScMgLuigi_c.cpp": [
+      "src/minigames/d_s_mg_luigi.cpp": [
         "param:#7 int"
       ],
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#7 int"
       ],
-      "src/minigames/dScMgSnowball_c.cpp": [
+      "src/minigames/d_s_mg_snowball.cpp": [
         "param:#7 int"
       ],
-      "src/minigames/dScMgTeresa_c.cpp": [
+      "src/minigames/d_s_mg_teresa.cpp": [
         "param:#7 int"
       ]
     },
@@ -27651,9 +27651,6 @@
       ]
     },
     "func_ov004_020b56c8": {
-      "src/minigames/dScMgRoulette_c.cpp": [
-        "arity:0"
-      ],
       "src/minigames/d_s_mg_bsc.cpp": [
         "param:#1 int"
       ],
@@ -27663,6 +27660,9 @@
       "src/minigames/d_s_mg_memory.cpp": [
         "param:#1 int",
         "return:int"
+      ],
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
+        "arity:0"
       ]
     },
     "func_ov004_020b66d4": {
@@ -27681,13 +27681,13 @@
       ]
     },
     "func_ov006_020c0aa8": {
-      "src/minigames/dScMgMemory2_c.cpp": [
-        "param:#1 char *"
-      ],
-      "src/minigames/dScMgRoulette_c.cpp": [
-        "param:#1 char *"
-      ],
       "src/minigames/d_s_mg_memory.cpp": [
+        "param:#1 char *"
+      ],
+      "src/minigames/d_s_mg_memory2.cpp": [
+        "param:#1 char *"
+      ],
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 char *"
       ]
     },
@@ -27707,7 +27707,7 @@
       ]
     },
     "func_ov006_020c1718": {
-      "src/minigames/dScMgRoulette_c.cpp": [
+      "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 char *"
       ]
     },
@@ -27735,7 +27735,7 @@
       ]
     },
     "func_ov006_020c225c": {
-      "src/minigames/dScMgCup_c.cpp": [
+      "src/minigames/d_s_mg_cup.cpp": [
         "param:#1 char *"
       ]
     },
@@ -27745,10 +27745,10 @@
       ]
     },
     "func_ov006_020c33dc": {
-      "src/minigames/dScMgCup_c.cpp": [
+      "src/minigames/d_s_mg_cup.cpp": [
         "return:void"
       ],
-      "src/minigames/dScMgSound_c.cpp": [
+      "src/minigames/d_s_mg_sound.cpp": [
         "return:void"
       ]
     },
@@ -27769,22 +27769,22 @@
       ]
     },
     "func_ov006_020c4710": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 struct Obj *"
       ]
     },
     "func_ov006_020c49d8": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 char *"
       ]
     },
     "func_ov006_020c4cd8": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 struct Obj *"
       ]
     },
     "func_ov006_020c4f68": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 Self *"
       ]
     },
@@ -27814,7 +27814,7 @@
       ]
     },
     "func_ov006_020c64e4": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "param:#1 int"
       ]
     },
@@ -27831,12 +27831,12 @@
       ]
     },
     "func_ov006_020c9c8c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:2"
       ]
     },
     "func_ov006_020ca430": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int"
       ]
     },
@@ -27866,17 +27866,17 @@
       ]
     },
     "func_ov006_020cc198": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int *"
       ]
     },
     "func_ov006_020ccd78": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
     "func_ov006_020cce0c": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 unsigned char *"
       ]
     },
@@ -27902,7 +27902,7 @@
       ]
     },
     "func_ov006_020cd510": {
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
@@ -28021,13 +28021,13 @@
       ]
     },
     "func_ov006_020e6e3c": {
-      "src/minigames/dMg3DHeyhoObjAdapter_c.cpp": [
+      "src/minigames/d_mg3_d_heyho_obj_adapter.cpp": [
         "return:void"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "return:void"
       ],
-      "src/minigames/dMgTrmpln2Mario_c.cpp": [
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:void"
       ],
       "src/minigames/unit020cd744.cpp": [
@@ -28260,7 +28260,7 @@
       ]
     },
     "func_ov007_020b6eb4": {
-      "src/game/stages/dScDSMT_c.cpp": [
+      "src/game/stages/d_s_dsmt.cpp": [
         "arity:1",
         "return:void"
       ]
@@ -30205,30 +30205,30 @@
       ]
     },
     "gTouchEdge": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/minigames/dScMgPachinko_c.cpp": [
+      "src/minigames/d_s_mg_pachinko.cpp": [
         "return:unsigned char [][]"
       ]
     },
     "gTouchHeld": {
-      "src/game/stages/dScStarSel_c.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/minigames/dMgJump3DMario_c.cpp": [
+      "src/minigames/d_mg_jump3_d_mario.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/minigames/dScMgBomroom_c.cpp": [
+      "src/minigames/d_s_mg_bomroom.cpp": [
         "return:Tab []"
       ],
-      "src/minigames/dScMgPachinko_c.cpp": [
+      "src/minigames/d_s_mg_pachinko.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:TouchRec []"
       ]
     },
@@ -30236,10 +30236,10 @@
       "include/PlayerInput.h": [
         "return:unsigned char []"
       ],
-      "src/minigames/dScMgBomroom_c.cpp": [
+      "src/minigames/d_s_mg_bomroom.cpp": [
         "return:unsigned char []"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -30247,10 +30247,10 @@
       "include/PlayerInput.h": [
         "return:unsigned char []"
       ],
-      "src/minigames/dScMgBomroom_c.cpp": [
+      "src/minigames/d_s_mg_bomroom.cpp": [
         "return:unsigned char []"
       ],
-      "src/minigames/dScMiniGm_c.cpp": [
+      "src/minigames/d_s_mini_gm.cpp": [
         "return:unsigned char []"
       ]
     },

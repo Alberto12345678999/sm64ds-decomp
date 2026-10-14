@@ -1,7 +1,7 @@
 //cpp
 /* Puzzle Panic, the whole run 0x0210428c..0x0210788c, 72 functions, closing
  * with the factory dScMgPanel_c_classInit, then the state tables and the
- * registry profile, from which mwcc emits __sinit_dScMgPanel_c.cpp. Touch a
+ * registry profile, from which mwcc emits __sinit_d_s_mg_panel.cpp. Touch a
  * panel to flip it and its neighbours until every mFace matches mGoal.
  *
  * Functions run in ROM order under `#pragma defer_codegen off`; do not

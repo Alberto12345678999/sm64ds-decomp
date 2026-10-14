@@ -88,7 +88,7 @@ An adversarial audit found all four with concrete cases:
   the promoted daObjCasket_c TU) matched a bare `MeshCollider::LoadFile`
   forward declaration that ends in `;` and is defined in another file entirely.
 - **Override of a correct failure.** Four files whose own symbol is a genuinely
-  unidentified `func_ov*` placeholder (`func_ov006_020c8f20` and `func_ov006_020cb030`, now inside `src/minigames/dMgTrmpln2Mario_c.cpp`,
+  unidentified `func_ov*` placeholder (`func_ov006_020c8f20` and `func_ov006_020cb030`, now inside `src/minigames/d_mg_trmpln2_mario.cpp`,
   `func_ov064_02117220`, `func_ov079_02126f8c`) had their verdict flipped to pass
   by an unrelated declaration elsewhere in the file.
 - **Dropped qualifiers.** `Sound::Player::SetPlayableSeqCount` came out as
@@ -170,7 +170,7 @@ registers is a `volatile`-qualified pointer, so the criterion failed the code th
 had no alternative:
 
 ```sh
-src/game/stages/dScene_c.cpp (ResetHardwareRegisters)  74 volatile hits, all 0x0400xxxx
+src/game/stages/d_scene.cpp (ResetHardwareRegisters)  74 volatile hits, all 0x0400xxxx
 src/_ZN2GX13SetBankForTexEt.cpp                  25 volatile hits, all VRAM banks
 src/engine/gx/G2x.cpp (SetBGyAffine)              the register block is a PARAMETER
 ```
