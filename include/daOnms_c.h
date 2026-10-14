@@ -29,7 +29,7 @@
  * base, followed by dBgCh_Actr, dCcAcPos_c and PathPtr members at the
  * offsets daOnms_c_classInit constructs. */
 struct daOnms_c : dBgActor_c {
-    dActor_c *mPlayerActor;         /* 0x320 - player that knocked the box away */
+    dActor_c *mPlayerActor;         /* 0x320 - last player that hit the box */
     dBgCh_Actr mWithMeshClsn;       /* 0x324 */
     s16 mTumbleVelX;                /* 0x4e0 - added to mAngleX each frame */ /* coined */
     s16 mTumbleVelY;                /* 0x4e2 */ /* coined */
