@@ -25,7 +25,7 @@
  */
 // leftovers:
 // - func_ov002_020feb50, 020fec94, 020fed18, 020fed2c and 020fed7c stay
-//   free functions with C linkage: the symbol names are the ROM's.
+//   free functions with C linkage and retain current configured linker names.
 // - dCcAc_c::Init, dBgCh_Actr::Init and Player::Hurt stay mangled.
 //   dCcAc_c.h's Init takes Fix12<int> by value, and every spelling tried
 //   grows InitResources: `Fix12<int> r = { 0xa000 };` passed twice gives
