@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgSmartball_c",
   "module": "ov006",
-  "source": "src/actors/dScMgSmartball_c.cpp",
-  "promoted_source": "src/actors/dScMgSmartball_c.cpp",
+  "source": "src/minigames/dScMgSmartball_c.cpp",
+  "promoted_source": "src/minigames/dScMgSmartball_c.cpp",
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [

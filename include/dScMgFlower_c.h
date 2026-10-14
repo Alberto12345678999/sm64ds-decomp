@@ -5,7 +5,7 @@
  * that table to this class rather than to a neighbour.
  *
  * SIZE 0x5ff8, from the factory's own `_ZN7fBase_cnwEj(0x5ff8)`
- * (dScMgFlower_c_classInit, at the end of src/actors/dScMgFlower_c.cpp).
+ * (dScMgFlower_c_classInit, at the end of src/minigames/dScMgFlower_c.cpp).
  *
  * FACTORY AND DESTRUCTOR AGREE MEMBER FOR MEMBER. The factory builds
  * mArray at 0x4f38 (0x16 elements of 0x20, element ctor
@@ -41,7 +41,7 @@
  * deferred code generation, which is the regime every one of those siblings
  * compiles in. This file's translation unit does not: it needs
  * `#pragma defer_codegen off` for an optimisation bracket to bind to a single
- * member (see src/actors/dScMgFlower_c.cpp), and with deferral off the variant
+ * member (see src/minigames/dScMgFlower_c.cpp), and with deferral off the variant
  * group emits D1, D0, D2 instead. Four verify rounds, each the whole TU:
  *   (a) inline destructor, deferred, members in descending ROM order
  *                          -> 8/9, section order correct, Behavior cannot match
@@ -56,7 +56,7 @@
  *                          -> the bracketed member regresses, so the bracket,
  *                             and therefore `defer_codegen off`, is load-bearing
  * (c) is what ships. The two legacy shards each carried an out-of-line copy of
- * the same body; both are absorbed into src/actors/dScMgFlower_c.cpp and the
+ * the same body; both are absorbed into src/minigames/dScMgFlower_c.cpp and the
  * single definition lives there.
  *
  * THE D2 THE ROM DOES NOT HAVE IS NOT A CONTRADICTION -- IT IS THE REASON.
@@ -70,7 +70,7 @@
  *
  * Declared first and out of line, the destructor is this class's KEY FUNCTION,
  * so the TU that DEFINES it emits _ZTV/_ZTI/_ZTS plus the whole ancestor chain's
- * typeinfo. That is src/actors/dScMgFlower_c.cpp, which licenses all thirteen
+ * typeinfo. That is src/minigames/dScMgFlower_c.cpp, which licenses all thirteen
  * records in the same block; each has a cartridge home outside this TU's
  * licensed .text range, so dsd delinks them independently.
  *
@@ -104,7 +104,7 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
         ~Vec2() {}
     };
 
-    /* Declared first and defined out of line, in src/actors/dScMgFlower_c.cpp:
+    /* Declared first and defined out of line, in src/minigames/dScMgFlower_c.cpp:
        see the file banner for the four rounds that settled the form. Its body's
        two explicit calls are the ROM's own order -- the 0x51f8 object, then
        mArray -- the reverse of the factory's construction order. Everything
@@ -113,7 +113,7 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
        of dScMgSingle3DBase_c's already-inline destructor. */
     virtual ~dScMgFlower_c();
 
-    /* Defined inline at the end of src/actors/dScMgFlower_c.cpp, where the
+    /* Defined inline at the end of src/minigames/dScMgFlower_c.cpp, where the
        factory's `new` expands it: mArray through __cxa_vec_ctor, then the
        0x51f8 object. */
     dScMgFlower_c();

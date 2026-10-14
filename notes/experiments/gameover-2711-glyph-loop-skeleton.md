@@ -2,7 +2,7 @@
 
 - tested_commit: 2546f0ae4 (cleanup-mgjump3-gameover at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/actors/dScGameOver_c.cpp:449-457` keeps the `e = base + (i << 1)`
+- claim: `src/game/stages/dScGameOver_c.cpp:449-457` keeps the `e = base + (i << 1)`
   loop skeleton because the member-index form (o->mGlyphX[i] /
   o->mGlyphDelay[i]) changes codegen.
 - attempted_change (scratch-applied, then reverted):
@@ -48,7 +48,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/actors/dScGameOver_c.cpp \
+.venv/bin/python tools/match.py --c src/game/stages/dScGameOver_c.cpp \
   --func func_ov003_020b060c --addr 0x020b060c --size 0x124 \
   --version 2004/b56 --module ov003 --strict-relocs --brief
 ```

@@ -24,6 +24,13 @@
  *     (the board objects' TUs and the minigame base), not this TU's own.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_jump2_AssetId {
+    ASSET_D_2D_MG_JUMP_NCL_BIN = 0x00d1,
+    ASSET_JUMP_BACK01_BMD = 0x0203,
+    ASSET_JUMP_BACK02_BMD = 0x0204
+};
+
 #include "dScMgJump2_c.h"
 #include "Model.h"
 #include "SharedFilePtr.h"
@@ -109,7 +116,7 @@ struct Jump2ModelFile : SharedFilePtr {
     ~Jump2ModelFile();
 };
 
-extern Jump2ModelFile data_ov006_021421cc; /* model file 0x203 */
+extern Jump2ModelFile gOV006JumpBack01ModelFile; /* model file 0x203 */
 extern Jump2ModelFile data_ov006_021421c4; /* model file 0x204 */
 
 extern "C" {
@@ -248,7 +255,7 @@ s32 dScMgJump2_c::InitResources()
     void *bmdFile;
 
     tiles = LoadFile(data_ov006_0213cce0[GetGameLanguage()]);
-    palette = LoadFile(0xd1);
+    palette = LoadFile(ASSET_D_2D_MG_JUMP_NCL_BIN);
     DecompressLZ16(tiles, 0x6400000);
     GX::LoadOBJPltt((const void *)palette, 0, 0x80);
     Deallocate((void *)tiles);
@@ -721,5 +728,5 @@ void func_ov006_020eed64(void *object)
 /* Static-init globals (was the handwritten __sinit_ov006_02130f00 shard).
  * Definition order is the retail initializer's construction order: the
  * 0x203 model handle, then the 0x204 model handle. */
-Jump2ModelFile data_ov006_021421cc(0x203);
-Jump2ModelFile data_ov006_021421c4(0x204);
+Jump2ModelFile gOV006JumpBack01ModelFile(ASSET_JUMP_BACK01_BMD);
+Jump2ModelFile data_ov006_021421c4(ASSET_JUMP_BACK02_BMD);

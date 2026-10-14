@@ -31,7 +31,7 @@
  * data, data_ov006_0213eb40, is never compiler-emitted either -- only
  * aliased -- so the real ROM vtable word for slot 6 is untouched". That
  * stopped being true once the destructor became this class's key function:
- * _ZTV12dScMgSlot1_c IS emitted, from src/actors/dScMgSlots.cpp, and
+ * _ZTV12dScMgSlot1_c IS emitted, from src/minigames/dScMgSlots.cpp, and
  * tools/romdata_check.py byte-compares it against the cartridge. With
  * Behavior undeclared mwcc wrote dScMgBase_c's own body (0x020b0618) into
  * slot 6 where the cartridge holds 0x0210c9e0, and the whole table scored

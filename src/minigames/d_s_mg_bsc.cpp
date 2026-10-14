@@ -13,6 +13,11 @@
  *   - the factory builds the object by hand because the class has no
  *     constructor declared yet.
  */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_bsc_AssetId {
+    ASSET_D_2D_MG_BIG_SMALL_NCL_BIN = 0x00b3
+};
+
 #pragma opt_strength_reduction off
 
 #include "dScMgBSC_c.h"
@@ -128,7 +133,7 @@ s32 dScMgBSC_c::InitResources()
     data_0209d45c[0] = 0x11;
     func_ov006_0210a534();
     LoadCompressedFileAt(data_ov006_0213fe78[GetGameLanguage()], (void *)0x6600000);
-    fh = LoadFile(0xb3);
+    fh = LoadFile(ASSET_D_2D_MG_BIG_SMALL_NCL_BIN);
     GXS::LoadOBJPltt((void *)fh, 0, 0x100);
     Deallocate((void *)fh);
     func_ov006_020c0aa8(pad_4660);

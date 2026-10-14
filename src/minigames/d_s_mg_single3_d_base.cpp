@@ -16,9 +16,16 @@
  *   file-id table data_ov006_0213e42c name no struct this TU can see.
  *   data_ov004_020beb74 keeps the int[] spelling: the typed
  *   dScMgBase_c::graphCallback_c form matches (9/9 still MATCH) but trips
- *   the decl ratchet against src/actors/dScMgD3DBase_c.cpp's banked int[],
+ *   the decl ratchet against src/minigames/dScMgD3DBase_c.cpp's banked int[],
  *   and that file is outside this job's area.
  */
+
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_s_mg_single3_d_base_AssetId {
+    ASSET_D_2D_MG_BG_CARD2_NCG_BIN = 0x0026,
+    ASSET_D_2D_MG_BG_CARD2_NCL_BIN = 0x0027,
+    ASSET_D_2D_MG_BG_CARD2_NSC_BIN = 0x0028
+};
 
 #include "dScMgSingle3DBase_c.h"
 #include "types.h"
@@ -174,15 +181,15 @@ int dScMgSingle3DBase_c::OnHitByCannonBlastedChar()
  * buffer. */
 extern "C" void func_ov006_0210a534(void)
 {
-    void *fileData = (void *)LoadFile(0x26);
+    void *fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NCG_BIN);
     data_0209d454 |= 8;
     *(vu16 *)0x400100eu = (*(vu16 *)0x400100eu & 0x43) | 0x214;
     DecompressLZ16(fileData, (void *)G2S::GetBG3CharPtr());
     Ov004_Deallocate(fileData);
-    fileData = (void *)LoadFile(0x27);
+    fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NCL_BIN);
     GXS::LoadBGPltt(fileData, 0xa0, 0x160);
     Deallocate(fileData);
-    fileData = (void *)LoadFile(0x28);
+    fileData = (void *)LoadFile(ASSET_D_2D_MG_BG_CARD2_NSC_BIN);
     func_020562b4(fileData, 0, 0x800);
     Deallocate(fileData);
     *(vu16 *)0x400100eu &= ~0x40;

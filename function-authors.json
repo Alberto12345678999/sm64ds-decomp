@@ -18707,7 +18707,7 @@
     },
     "ov002:0x021014e4": {
       "author": "tangosdev",
-      "name": "__sinit_daObjPowerUpItem_c.cpp"
+      "name": "__sinit_d_a_obj_power_up_item.cpp"
     },
     "ov002:0x02101588": {
       "author": "tangosdev",
@@ -18723,7 +18723,7 @@
     },
     "ov002:0x02101900": {
       "author": "tangosdev",
-      "name": "__sinit_daObjHeart_c.cpp"
+      "name": "__sinit_d_a_obj_heart.cpp"
     },
     "ov002:0x02101968": {
       "author": "tangosdev",
@@ -30223,7 +30223,7 @@
     },
     "ov010:0x0211215c": {
       "author": "tangosdev",
-      "name": "__sinit_daObjC1Peach_c.cpp"
+      "name": "__sinit_d_a_obj_c1_peach.cpp"
     },
     "ov012:0x021111a0": {
       "author": "github-actions[bot]",
@@ -30855,7 +30855,7 @@
     },
     "ov015:0x02112fdc": {
       "author": "tangosdev",
-      "name": "__sinit_daObjBk_Botaosi_c.cpp"
+      "name": "__sinit_d_a_obj_bk_botaosi.cpp"
     },
     "ov015:0x02113048": {
       "author": "tangosdev",
@@ -30863,7 +30863,7 @@
     },
     "ov015:0x02113264": {
       "author": "tangosdev",
-      "name": "__sinit_daObjBk_Lift_c.cpp"
+      "name": "__sinit_d_a_obj_bk_lift.cpp"
     },
     "ov015:0x021132d0": {
       "author": "tangosdev",
@@ -31663,7 +31663,7 @@
     },
     "ov020:0x02113674": {
       "author": "tangosdev",
-      "name": "__sinit_daBook_c.cpp"
+      "name": "__sinit_d_a_book.cpp"
     },
     "ov020:0x0211372c": {
       "author": "tangosdev",
@@ -32647,7 +32647,7 @@
     },
     "ov026:0x02112c94": {
       "author": "tangosdev",
-      "name": "__sinit_daWater_Tatumaki_c.cpp"
+      "name": "__sinit_d_a_water_tatumaki.cpp"
     },
     "ov026:0x02112d68": {
       "author": "tangosdev",
@@ -33879,7 +33879,7 @@
     },
     "ov035:0x02111f04": {
       "author": "tangosdev",
-      "name": "__sinit_daObjCtMecha10_c.cpp"
+      "name": "__sinit_d_a_obj_ct_mecha10.cpp"
     },
     "ov035:0x02111fc0": {
       "author": "tangosdev",
@@ -35375,11 +35375,11 @@
     },
     "ov060:0x0211a000": {
       "author": "tangosdev",
-      "name": "__sinit_daKpa3Bg_c.cpp"
+      "name": "__sinit_d_a_kpa3_bg.cpp"
     },
     "ov060:0x0211a388": {
       "author": "lunavyqo",
-      "name": "__sinit_daKirai_c.cpp"
+      "name": "__sinit_d_a_kirai.cpp"
     },
     "ov060:0x0211a428": {
       "author": "tangosdev",
@@ -37743,7 +37743,7 @@
     },
     "ov065:0x0211c7d8": {
       "author": "tangosdev",
-      "name": "__sinit_daObjCtMecha04_c.cpp"
+      "name": "__sinit_d_a_obj_ct_mecha04.cpp"
     },
     "ov065:0x0211c890": {
       "author": "tangosdev",
@@ -39147,7 +39147,7 @@
     },
     "ov072:0x02122350": {
       "author": "tangosdev",
-      "name": "__sinit_daBgSnwmn_c.cpp"
+      "name": "__sinit_d_a_bg_snwmn.cpp"
     },
     "ov072:0x02122414": {
       "author": "lunavyqo",
@@ -41451,11 +41451,11 @@
     },
     "ov080:0x02127a60": {
       "author": "tangosdev",
-      "name": "__sinit_daBttBk_c.cpp"
+      "name": "__sinit_d_a_btt_bk.cpp"
     },
     "ov080:0x02127b2c": {
       "author": "tangosdev",
-      "name": "__sinit_daPicGate_c.cpp"
+      "name": "__sinit_d_a_pic_gate_methods.cpp"
     },
     "ov081:0x02123740": {
       "author": "tangosdev",
@@ -41899,7 +41899,7 @@
     },
     "ov081:0x021284b4": {
       "author": "lunavyqo",
-      "name": "__sinit_daSnowball_c.cpp"
+      "name": "__sinit_d_a_snowball.cpp"
     },
     "ov081:0x021284f0": {
       "author": "tangosdev",
@@ -43219,7 +43219,7 @@
     },
     "ov090:0x02133ea8": {
       "author": "tangosdev",
-      "name": "__sinit_daManta_c.cpp"
+      "name": "__sinit_d_a_manta.cpp"
     },
     "ov090:0x02133f4c": {
       "author": "tangosdev",
@@ -43711,7 +43711,7 @@
     },
     "ov092:0x021320cc": {
       "author": "tangosdev",
-      "name": "__sinit_daOnms_c.cpp"
+      "name": "__sinit_d_a_onms.cpp"
     },
     "ov094:0x02135700": {
       "author": "tangosdev",

@@ -2,7 +2,7 @@
 
 - tested_commit: b19392a93 (cleanup-dapiano at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/daPiano_c/d_a_piano.cpp:99-116` (factory comment) and
+- claim: `src/game/actors/d_a_piano.cpp:99-116` (factory comment) and
   deslop bullet `:21-28` keep the hand-rolled factory because `return new
   daPiano_c()` matches the factory's own bytes but makes mwccarm emit
   unlicensed `_ZN10dBgActor_cD2Ev` (0x38) and `_ZN7Vector3D1Ev` (0x4) copies
@@ -35,7 +35,7 @@
 - command (per-function):
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/daPiano_c/d_a_piano.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_piano.cpp \
   --func daPiano_c_classInit --addr 0x0211e128 --size 0x98 \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```

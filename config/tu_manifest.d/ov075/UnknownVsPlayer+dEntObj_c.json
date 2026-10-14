@@ -1,8 +1,8 @@
 {
   "id": "ov075/UnknownVsPlayer+dEntObj_c",
   "module": "ov075",
-  "source": "src/actors/dEntObj_c.cpp",
-  "promoted_source": "src/actors/dEntObj_c.cpp",
+  "source": "src/runtime/actor/dEntObj_c.cpp",
+  "promoted_source": "src/runtime/actor/dEntObj_c.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

@@ -38,7 +38,7 @@
  * not a claim that nothing reads it.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Its definition in src/actors/dScMgSmartball_c.cpp emits both
+ * its own. Its definition in src/minigames/dScMgSmartball_c.cpp emits both
  * destructor variants. No separate operator delete is needed --
  * dScMgBase_c, the immediate base, already provides one.
  *
@@ -75,7 +75,7 @@ struct dScMgSmartball_c : dScMgBase_c {
        default, _ZN7fBase_c13InitResourcesEv (0x02043c80), into slot 0 while the
        cartridge holds 0x02118b70 -- romdata_check scored _ZTV16dScMgSmartball_c
        DIFFERS on that one word. Its 0x8dc bytes are now decompiled and enrolled
-       (src/actors/dScMgSmartball_c.cpp); the slot is unchanged. */
+       (src/minigames/dScMgSmartball_c.cpp); the slot is unchanged. */
     virtual void OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnPushed();                           /* slot 25 */
     virtual int  Virtual7C();                          /* slot 31 */
