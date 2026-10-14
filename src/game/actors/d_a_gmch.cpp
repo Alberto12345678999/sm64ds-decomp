@@ -16,10 +16,10 @@
  * - GetFloorResult / GetWallResult return the raw word; a dBgPi* return
  *   disagrees with the definitions, so the callers still cast.
  *   TouchesWater and cstd::fdiv are the const method and the divide.
- * - *(Vector3 *)&mPosX and the mCamSpacePosX pun in CheckPlayerContact
- *   and EnterState8: dActor_c has no Pos(), and a Vector3 emits ~Vector3.
- *   holder->mPosX/Y/Z in place of the word triple changes EnterState7
- *   and UpdateState6.
+ * - *(Vector3 *)&mPosX and the mCamSpacePosX pun still view actor scalar
+ *   fields; the real local vectors below do not establish Vector3 subobject
+ *   lifetimes for those fields. holder->mPosX/Y/Z in place of the word triple
+ *   changes EnterState7 and UpdateState6.
  * - unk_0a4 / unk_0ac stay. They are the base's world-velocity X/Z beside
  *   mVertSpeed; dActor_c.h still spells them unk_, and this TU multiplies
  *   them by the floor normal.
@@ -87,10 +87,6 @@ struct ModelCache { int pad0; BMD_File *file; };
 
 /* Shadow types, one set per member that recovered one.  The tag suffix is the
  * member's ROM address. */
-
-/* EnterState7 -- a flat three-int vector, NOT types.h's
-   Vector3: that one has a declared destructor and is not an aggregate. */
-typedef struct Vec3_26e28 { int x, y, z; } Vec3_26e28;
 
 /* Non-virtual state handlers. daGmch_c is already complete here; the
    pointer-to-member call through mStatePmfPair still matches. */
@@ -178,7 +174,7 @@ extern s16    Vec3_HorzAngle(const void *a, const void *b);
 extern unsigned int RandomIntInternal(int *seed);
 extern void   _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 const &pos, unsigned int n, int fix, short s);
 extern void   _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
-extern void   _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, void *pos, unsigned int a, int fix, unsigned int b, unsigned int cc, unsigned int d);
+extern int    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *pos, u32 a, int fix, u8 b, u8 cc, u8 d);
 extern int    func_02038414(void *clsn);
 extern void   Matrix4x3_FromRotationY(void *m, int angle);
 extern void   Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
@@ -338,11 +334,11 @@ void daGmch_c::CheckPlayerContact()
         return;
 
     {
-        int hurtPos[3];
-        hurtPos[0] = mPosX;
-        hurtPos[1] = mPosY;
-        hurtPos[2] = mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, hurtPos, 2, 0xc000, 1, 0, 1);
+        Vector3 hurtPos;
+        hurtPos.x = mPosX;
+        hurtPos.y = mPosY;
+        hurtPos.z = mPosZ;
+        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &hurtPos, 2, 0xc000, 1, 0, 1);
     }
 }
 
@@ -351,24 +347,24 @@ void daGmch_c::CheckPlayerContact()
    the last call left there and every caller discards the result. */
 int daGmch_c::ApplySlopeToVertSpeed(void *clsn)
 {
-    int floorNormal[3];
-    int wallNormal[3];
+    Vector3 floorNormal;
+    Vector3 wallNormal;
     func_02038414(clsn);
     if (((dBgCh_Actr *)clsn)->IsOnGround()) {
-        ((dBgPi *)((dBgCh_Actr *)clsn)->GetFloorResult())->surface.CopyNormalTo(*(Vector3 *)floorNormal);
-        if (floorNormal[1] != 0) {
+        ((dBgPi *)((dBgCh_Actr *)clsn)->GetFloorResult())->surface.CopyNormalTo(floorNormal);
+        if (floorNormal.y != 0) {
             /* unk_0a4 / unk_0ac: world velocity X/Z next to mVertSpeed. */
             s32 velX = unk_0a4;
             s32 velZ = unk_0ac;
-            long long prodX = (long long)floorNormal[0] * (long long)velX;
-            long long prodZ = (long long)floorNormal[2] * (long long)velZ;
+            long long prodX = (long long)floorNormal.x * (long long)velX;
+            long long prodZ = (long long)floorNormal.z * (long long)velZ;
             int termX = (int)((prodX + 0x800) >> 12);
             int termZ = (int)((prodZ + 0x800) >> 12);
-            mVertSpeed = -(cstd::fdiv(termX + termZ, floorNormal[1]) + 0x8000);
+            mVertSpeed = -(cstd::fdiv(termX + termZ, floorNormal.y) + 0x8000);
         }
     }
     if (((dBgCh_Actr *)clsn)->IsOnWall()) {
-        ((dBgPi *)((dBgCh_Actr *)clsn)->GetWallResult())->surface.CopyNormalTo(*(Vector3 *)wallNormal);
+        ((dBgPi *)((dBgCh_Actr *)clsn)->GetWallResult())->surface.CopyNormalTo(wallNormal);
     }
 }
 
@@ -486,7 +482,7 @@ int daGmch_c::EnterState7()
 {
     extern s16 data_02082214[];
 
-    Vec3_26e28 rayStart;
+    Vector3 rayStart;
     dActor_c *holder;
     s32 *holderPos;
     int zero;
@@ -530,7 +526,7 @@ int daGmch_c::EnterState7()
         rayStart.z = z;
     }
 
-    DetectRaycastClsn(*(Vector3 *)&rayStart, *(Vector3 *)&mPosX, 1);
+    DetectRaycastClsn(rayStart, *(Vector3 *)&mPosX, 1);
     mHolder = (dActor_c *)zero;
     mWithMeshClsn.SetLimMovFlag();
     mStateIndex = 7;
