@@ -1,0 +1,373 @@
+{
+  "task": "heyho-fire-guard1014",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+  "base": "a159039b892ca45ca794d5e612ce15a971496768",
+  "source_checkpoint": "d025bd0bd896d15514a53c657406d5741547ef70",
+  "full_rom_tested_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
+  "workflow_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
+  "source_author": {
+    "model": "GPT-6 Astra",
+    "session": "codex-enemy-frontier-astra1014",
+    "actual_agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
+    "harness_session_uuid": "01a12e6f-7ee1-7162-9a64-81145ed6b260",
+    "disclosure": "This actual agent authored the private candidate and both production source commits. The root coordinated and an independent preflight identified the prose correction; neither is represented as this source author. Independent acceptance remains pending."
+  },
+  "scope": [
+    "src/actors/daPropeller_Heyho_Fire_c.cpp",
+    "notes/experiments/heyho-fire-guard1014.json"
+  ],
+  "change": "Keep FindWithID result as dActor_c until actorID 0xbf establishes the Player boundary, then use Player. Match the local Hurt scalar bridge to its current reconstructed int/Player*/void*/u32/int/u8/u8/u8 definition and document the Fix12 exception. Correct inherited prose to call address-derived helpers current configured linker names.",
+  "source_completion": "partial",
+  "evidence_classification": {
+    "guard": "Retail arm9 spawn table 0x02090864 slot191 points to ov002 profile0x0210a704 (factory0x020e6c0c, packed0x001200bf); registry name at0x0208f858 is PLAYER. Player is the existing source view, not a recovered original class-name claim.",
+    "arity": "Helper remains void with one receiver parameter; Hurt retains seven ABI arguments and its result remains discarded. int and trailing u8 spellings follow the actual reconstructed definition, not a unique deduction from mangling.",
+    "fields": "Existing fields were already named; no shadow-field cleanup or new class layout is claimed.",
+    "boundaries": "No header, config, manifest, name, enrollment or production-policy changes."
+  },
+  "remaining_reconstruction": [
+    {
+      "id": "HEYHO-STATE-HELPERS",
+      "location": "src/actors/daPropeller_Heyho_Fire_c.cpp:27 and free state helpers",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "summary": "The five address-named helpers remain C-linkage free functions under current configured linker names. State uses real class PMFs, but this scope does not recover genuine member definitions or original helper names.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+      "owner": "class coordinator; future explicitly claimed producer"
+    },
+    {
+      "id": "HEYHO-COLLISION-FIX12",
+      "location": "src/actors/daPropeller_Heyho_Fire_c.cpp:29 and InitResources",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "summary": "dCcAc_c::Init and dBgCh_Actr::Init retain scalar mangled bridges. Prior measured dCcAc Fix12 spellings grew InitResources from 0xd8 to 0xec with rodata or to 0xe4 without it; these historical constraints were retained, not re-probed here. dBgCh header Fix12i spelling differs from the configured retail symbol.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+      "owner": "class coordinator; future explicitly claimed producer"
+    },
+    {
+      "id": "HEYHO-HURT-FIX12",
+      "location": "src/actors/daPropeller_Heyho_Fire_c.cpp:82",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "summary": "Hurt retains an explicitly justified scalar bridge because Player.h supplies no corresponding member and the retail symbol contains a by-value Fix12 type. The bridge now agrees with the current reconstructed definition; the jjj mangling does not uniquely prove u8 source parameters.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+      "owner": "class coordinator; future explicitly claimed producer"
+    },
+    {
+      "id": "HEYHO-MATRIX-COPY",
+      "location": "src/actors/daPropeller_Heyho_Fire_c.cpp:M48 and func_ov002_020fed7c",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "summary": "The twelve-word M48 scratch-matrix copy remains, and the helper retains the char* boundary declared by decl_common.h. Historical Matrix4x3-copy constraints are not claimed as newly re-probed.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+      "owner": "class coordinator; future explicitly claimed producer"
+    },
+    {
+      "id": "HEYHO-HITFLAGS-NAMING",
+      "location": "src/actors/daPropeller_Heyho_Fire_c.cpp:player-hit comment",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "summary": "The hitFlags 0x10 interpretation remains an explicitly unverified best-effort collision-header label. Existing unk_0a4/unk_0ac names are not replaced with guessed fields.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+      "owner": "class coordinator; future explicitly claimed producer"
+    },
+    {
+      "id": "HEYHO-DECL-POPULATION",
+      "location": "src/actors/daPropeller_Heyho_Fire_c.cpp and current Hurt declaration population",
+      "kind": "reconstruction",
+      "disposition": "deferred",
+      "summary": "The changed Hurt declaration matches its actual definition. There remain 151 banked Hurt findings elsewhere and 11 source-involving findings (nine on this TU declarations, two on other declarations referring to this TU). Ratchet PASS is not whole-tree agreement.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3844",
+      "owner": "class coordinator; future explicitly claimed producer"
+    }
+  ],
+  "historical_findings": {
+    "issue3305": "Promotion issue closed after all eight TUs were promoted; packaging completion does not establish full source reconstruction.",
+    "prior_source_commits": [
+      "49baccd66f7fdcc478204c795c9231d3dde36539",
+      "a17912a7c6826c763ad734886d777c41d434ea16"
+    ],
+    "prior_authorship": "Recorded commit author andrewboudreau; coauthor Claude Opus 5.5. Existing field reconstruction and historical measurements are inherited work.",
+    "retained_review_facts": "Metal contact flips facing, stops horizontal motion and launches upward; mDeflected is retained. The hitFlags interpretation remains qualified. The widened isPlayer temporary and unsigned timer read remain.",
+    "queue_predecessor": "No predecessor task was declared in this task specification; inherited source/history findings are explicitly carried here rather than silently treated as accepted."
+  },
+  "byte_proof": {
+    "source_sha256": "7bb3c6695748fa08538f5208256b04ffc9bb22180b3cfdfa47ef7e6c0e9604a9",
+    "manifest_sha256": "fd660f3c63affe0eacc61722bcead957d8f506e08c73e28e9342b9254ccd2d68",
+    "compiler": "2004/b56",
+    "raw_equal": true,
+    "raw_sha256": "a1a47cf51200ed83e5b657db401ba1497319b96b1df339d292836fe382f380d4",
+    "prepared_equal": true,
+    "prepared_sha256": "f070b9edd50d3b85f803ab10f1f5cadb3591cb8552f105e3947bb80ebe619b86",
+    "complete_graphs_equal": true,
+    "raw_relocations": 104,
+    "prepared_relocations": 53,
+    "metadata_bytes": 258,
+    "metadata_relocations": 46
+  },
+  "complete_ownership": {
+    "unique_strict_symbols": 14,
+    "text_functions": 13,
+    "initializer_functions": 1,
+    "count_correction": "The manifest functions list already includes sinit. Earlier private 15-check wording counted that initializer twice; the deduplicated proof and normal prepush both cover14 unique symbols.",
+    "raw_allocated_sections": 29,
+    "retained_nonempty_allocated_sections": 16,
+    "generated_initializer_bytes": 60,
+    "ctor_bytes": 4,
+    "bss_bytes": 16,
+    "owned_nontext_edges": 4,
+    "owned_nontext_before_after": "PASS; all bytes, target identities and storage claims verified by normal rombuild _retarget/_isolate and tu_production.prepare_intact_object.",
+    "metadata": [
+      {
+        "symbol": "_ZTV24daPropeller_Heyho_Fire_c",
+        "bytes": 132,
+        "storage_address": "0x210d64c",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTI24daPropeller_Heyho_Fire_c",
+        "bytes": 12,
+        "storage_address": "0x210d608",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTS24daPropeller_Heyho_Fire_c",
+        "bytes": 27,
+        "storage_address": "0x210d614",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTI12dEnemyBase_c",
+        "bytes": 12,
+        "storage_address": "0x21081c0",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTS12dEnemyBase_c",
+        "bytes": 15,
+        "storage_address": "0x21081cc",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTI8dActor_c",
+        "bytes": 12,
+        "storage_address": "0x208e390",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTS8dActor_c",
+        "bytes": 10,
+        "storage_address": "0x208e384",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTI7dBase_c",
+        "bytes": 12,
+        "storage_address": "0x2086e78",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTS7dBase_c",
+        "bytes": 9,
+        "storage_address": "0x2086e54",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTI7fBase_c",
+        "bytes": 8,
+        "storage_address": "0x2086d70",
+        "blind": 0,
+        "diffs": []
+      },
+      {
+        "symbol": "_ZTS7fBase_c",
+        "bytes": 9,
+        "storage_address": "0x2086e60",
+        "blind": 0,
+        "diffs": []
+      }
+    ]
+  },
+  "checks": {
+    "prepush": {
+      "exit_code": 0,
+      "verified": 14,
+      "blind": 0,
+      "diffs": [],
+      "log": "build/heyho-gates/prepush.log"
+    },
+    "static": {
+      "decl": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/decl.log"
+      },
+      "decl-global": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/decl-global.log"
+      },
+      "port": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/port.log"
+      },
+      "langmode": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/langmode.log"
+      },
+      "conflicts": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/conflicts.log"
+      },
+      "duplicates": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/duplicates.log"
+      },
+      "drafts": {
+        "exit_code": 0,
+        "log": "build/heyho-gates/drafts.log"
+      }
+    },
+    "dead_references": {
+      "exit_code": 0,
+      "log": "build/heyho-gates/dead-references.log"
+    },
+    "rombuild": {
+      "command": "python tools/rombuild.py -j16 --profile stock --report-json build/heyho-gates/rombuild.json --data-json build/heyho-gates/romdata-full.json",
+      "exit_code": 0,
+      "tested_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
+      "modules_exact": 106,
+      "modules_checked": 106,
+      "source_functions": 11334,
+      "reproducing_functions": 11334,
+      "source_data_claims": 331,
+      "reproducing_data_claims": 331,
+      "bss_claims": 239,
+      "rom_sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
+      "intact_tu_gate": "PASS; zero new symbol errors and storage alias errors",
+      "log": "build/heyho-gates/rombuild.log"
+    }
+  },
+  "comment_only_full_rom_transfer": {
+    "full_rom_tested_checkpoint": "a591feb006fb05eb92ef042c3c3792cfaac79f83",
+    "final_source_checkpoint": "d025bd0bd896d15514a53c657406d5741547ef70",
+    "changed_path": "src/actors/daPropeller_Heyho_Fire_c.cpp",
+    "change": "One line-comment correction: configured linker names, not names recovered from ROM.",
+    "full_rom_tested_source_blob_sha256": "c3fb37e5b6f8c611066d19e13272f91fad1adec2e44d244c23252e5671f4baa4",
+    "final_source_blob_sha256": "7941479e8ee89cf6e6ce5868338b156d2875745535667b7e0e00d001eade8401",
+    "comment_stripped_text_equal": true,
+    "comment_stripping_preserves_string_and_character_literals": true,
+    "unchanged_trees": {
+      "include": {
+        "old": "a9184da7cc0cf8295937df2c3257cf9435e3a0e1",
+        "new": "a9184da7cc0cf8295937df2c3257cf9435e3a0e1"
+      },
+      "tools": {
+        "old": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+        "new": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec"
+      },
+      "config": {
+        "old": "373fb4048f2c91c356bfdaca566e80be0ed85f9b",
+        "new": "373fb4048f2c91c356bfdaca566e80be0ed85f9b"
+      },
+      "port": {
+        "old": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33",
+        "new": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+      }
+    },
+    "all_other_source_blobs_equal": true,
+    "other_source_blob_count": 2803,
+    "full_src_tree_equal": false,
+    "proof_transfer_limit": "Only the completed full-ROM result is transferred across this exact comment-only delta. Final-source raw/prepared/graph/strict and static checks are freshly rerun; this is not a blanket inheritance from base.",
+    "full_rom_tested_source_worktree_sha256": "8c1608318ccaca03813139cdfab30c483dd10090bab558659f64930624d249e3",
+    "final_source_worktree_sha256": "7bb3c6695748fa08538f5208256b04ffc9bb22180b3cfdfa47ef7e6c0e9604a9",
+    "fresh_raw_object_literal_equal_to_full_rom_checkpoint": true,
+    "fresh_prepared_object_literal_equal_to_full_rom_checkpoint": true,
+    "raw_sha256": "a1a47cf51200ed83e5b657db401ba1497319b96b1df339d292836fe382f380d4",
+    "prepared_sha256": "f070b9edd50d3b85f803ab10f1f5cadb3591cb8552f105e3947bb80ebe619b86"
+  },
+  "declaration_population": {
+    "method": "Current committed production files, unmodified full checker collect/disagreements APIs; positive signature comparison supplements completed scoped/global ratchets.",
+    "files": 3298,
+    "hurt_declarations": 49,
+    "definition": {
+      "file": "src/actors/Player.cpp",
+      "line": 18941,
+      "signature": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+    },
+    "candidate": {
+      "file": "src/actors/daPropeller_Heyho_Fire_c.cpp",
+      "line": 84,
+      "signature": "int (Player *, void *, unsigned int, int, unsigned char, unsigned char, unsigned char)"
+    },
+    "candidate_agrees": true,
+    "remaining_hurt_findings_elsewhere": 151,
+    "remaining_source_findings": 11,
+    "findings_on_this_source_declarations": 9,
+    "findings_on_other_declarations_referring_to_this_source": 2,
+    "source_findings_by_symbol": {
+      "Matrix4x3_ApplyInPlaceToRotationXYZExt": 3,
+      "_ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_": 3,
+      "_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj": 1,
+      "data_020a0e68": 1,
+      "data_ov065_0211d610": 1,
+      "func_02012694": 1,
+      "func_ov002_020fed2c": 1
+    },
+    "qualification": "Current reconstructed scalar ABI definition is the evidence; jjj mangling does not uniquely establish u8 source parameters."
+  },
+  "stock_control_advisory": {
+    "missing_symbol_diagnostics": [
+      "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+      "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+      "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+      "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+      "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+      "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+      "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+      "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+      "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+    ],
+    "scope": "Pre-existing control diagnostics; intact production gate accepts zero NEW symbol errors, not a claim of zero baseline diagnostics."
+  },
+  "global_data_advisory": {
+    "verified_unique": 969,
+    "partial_unique": 1519,
+    "differing_unique": 1,
+    "unnamed": 21,
+    "records": 5282,
+    "known_difference": "Unchanged _ZTV10dCcAcPos_c advisory,4 bytes. All11 metadata records emitted by this TU were separately checked in full."
+  },
+  "other_pending_objectives": "The preserved native13 dEnemyBase callback candidate still requires coordinated config/header/51-consumer integration. Camera continuation also remains pending. This source boundary slice does not complete or replace either objective.",
+  "finalization": {
+    "rule": "Final commit may add only this report after the tested Source checkpoint; src/include/config/tools/port trees must remain exactly equal to that checkpoint.",
+    "expected_trees": {
+      "src": "7e13c7e6bbf6c88c8c0dd2d91a358810c82b8a51",
+      "include": "a9184da7cc0cf8295937df2c3257cf9435e3a0e1",
+      "config": "373fb4048f2c91c356bfdaca566e80be0ed85f9b",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "scope_note": "This five-tree equality applies from the final Source checkpoint to its report-only descendant. It does not claim src-tree equality between the earlier full-ROM checkpoint and the comment correction."
+  },
+  "formal_acceptance": "Producer verified; independent Source review and acceptance pending. No public source push, PR or merge by this producer.",
+  "artifacts": {
+    "build/heyho-gates/whole-proof.json": "bb16c1826b7df4417827d76427b4497e2437dca6aedecdd74309751664e96edb",
+    "build/heyho-gates/graphs.json": "146f51ab6596b8bc6c4eb44063e17942225c2ffa80107df5ecc2f8adf1a05a07",
+    "build/heyho-gates/candidate-production.json": "2f3fc2f5a0046962cba6cb1a0ace1eaddd076f134c39870a3bcf1035302fdcc6",
+    "build/heyho-gates/prepush.json": "846ba6990add0fa3cf075d268a425516b3d79689fe17646eb06812da6f0558de",
+    "build/heyho-gates/static-summary.json": "463cc99651483238defff98755be9122e9b35e606ac90065ed3fa052a451bc4c",
+    "build/heyho-gates/hurt-population.json": "6d7cde6503fff3c2b8586a14dcc732106dc2a5424e5c13f134445bc3dabd4acb",
+    "build/heyho-gates/player-registry.json": "6a48a79725b50645dd59f515e216f60b0913981214d9b0d78e70558d876510a1",
+    "build/heyho-gates/comment-transfer.json": "d2fda514c6bdf81a962186d86fa46bc2898b9717fd02687f7a1fcded1b2fdfb7",
+    "build/heyho-gates/rombuild.json": "92913c44e914791982c00312138ee05c74df03a1a952e0c55a8d257811d9ebac",
+    "build/heyho-gates/rombuild.log": "dadd61ffaba7a8f2757bf5eaab0816e4aae8fd41faa9aa450b2fba69d392fe65",
+    "build/heyho-gates/romdata-full.json": "388f3ee8c630325c5ed95e1ebe7290421313f19152172fdd0aaeefed6cff0f4c"
+  }
+}
