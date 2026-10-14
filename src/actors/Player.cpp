@@ -19753,7 +19753,7 @@ int Player::St_SwingPlayer_Cleanup()
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 447 -- _ZN6Player19St_SwingPlayer_MainEv, 0x020d9fec, size 0x3c4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN6Player19St_SwingPlayer_MainEv
+
 /* recovered: Player::St_SwingPlayer_Main, the per-frame body of the swing state (animation, particles, the approach helpers). */
 // Provenance: first drafted from nearmiss/db.jsonl (divergence 8) and kept on main as a
 // decompiled-not-matched draft; matched 2026-10-12 under mwccarm 2004/b56. The swing step
@@ -19761,8 +19761,10 @@ int Player::St_SwingPlayer_Cleanup()
 // the difference and the step in one register across both if-converted arms, and the
 // angular speed is declared before the difference, which gives it ip and the step r3.
 extern "C" {
-extern "C" int _ZN6Player19St_SwingPlayer_MainEv(char* c)
+// @symbol _ZN6Player19St_SwingPlayer_MainEv
+int Player::St_SwingPlayer_Main()
 {
+    char* c = (char*)this;
     typedef s32 Fix12;
     struct Vec3 { int x, y, z; };
     extern int _ZN6Player12FinishedAnimEv(char* c);
