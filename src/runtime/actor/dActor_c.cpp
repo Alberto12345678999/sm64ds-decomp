@@ -1104,12 +1104,14 @@ int dActor_c::OnAimedAtWithEgg()
 // @symbol _ZN8dActor_c25OnAimedAtWithEggReturnVecEv
 /* ROM ordinal 33 -- _ZN8dActor_c25OnAimedAtWithEggReturnVecEv
  * 0x020100dc  size 0x48 */
-extern "C" void _ZN8dActor_c25OnAimedAtWithEggReturnVecEv(Vector3 *ret, dActor_c *self)
+Vector3 dActor_c::OnAimedAtWithEggReturnVec()
 {
-    ret->x = self->mPosX;
-    ret->y = self->mPosY;
-    ret->z = self->mPosZ;
-    ret->y += self->OnAimedAtWithEgg();
+    Vector3 result;
+    result.x = mPosX;
+    result.y = mPosY;
+    result.z = mPosZ;
+    result.y += OnAimedAtWithEgg();
+    return result;
 }
 
 /* -------------------------------------------------------------------------- */

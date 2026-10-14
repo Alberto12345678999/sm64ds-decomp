@@ -157,31 +157,31 @@ extern int data_0209e650;
 // @symbol _ZN12dEnemyBase_c9SpawnCoinEv
 void dEnemyBase_c::SpawnCoin()
 {
-    char *t = (char *)this;
+    dEnemyBase_c *t = this;
     int i;
     Vector3 v;
-    if (*(u8 *)(t + 0x108) != 0) {
-        int tz = *(int *)(t + 0x64);
-        int ty = *(int *)(t + 0x60) + 0x78000;
-        int tx = *(int *)(t + 0x5c);
+    if (t->unk_108 != 0) {
+        int tz = t->mPosZ;
+        int ty = t->mPosY + 0x78000;
+        int tx = t->mPosX;
         v.x = tx;
         v.y = ty;
         v.z = tz;
-        if (*(u8 *)(t + 0x108) >= 4)
-            *(u8 *)(t + 0x108) = 1;
-        for (i = 0; i < *(u8 *)(t + 0x10a) + 1; i++) {
+        if (t->unk_108 >= 4)
+            t->unk_108 = 1;
+        for (i = 0; i < t->unk_10a + 1; i++) {
             dActor_c *coin = dActor_c::Spawn(
-                (&data_ov002_020ff014)[*(u8 *)(t + 0x108) - 1],
-                0xf2, v, 0, *(s8 *)(t + 0xcc), -1);
+                (&data_ov002_020ff014)[t->unk_108 - 1],
+                0xf2, v, 0, t->mAreaId, -1);
             if (coin != 0) {
                 int rnd1 = RandomIntInternal(&data_0209e650);
                 int rnd2 = RandomIntInternal(&data_0209e650);
                 int a = (int)((u32)rnd1 >> 16 << 27) >> 16;
                 u32 b = (u32)rnd2 >> 16;
-                *(s16 *)((char *)coin + 0x92) = 0;
-                *(s16 *)((char *)coin + 0x94) = (s16)(a * i);
-                *(s16 *)((char *)coin + 0x96) = 0;
-                *(int *)((char *)coin + 0x98) = (((b % 50) + 100) << 15) / 100;
+                coin->mPrevAngleX = 0;
+                coin->mPrevAngleY = (s16)(a * i);
+                coin->mPrevAngleZ = 0;
+                coin->mHorzSpeed = (((b % 50) + 100) << 15) / 100;
             }
         }
     }

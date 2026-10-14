@@ -12,12 +12,11 @@
  * destructor is at 16/17, NOT 0/1, and vtable+0x40 (which AfterCleanupResources
  * dispatches through) is that D1 destructor, not OnPendingDestroy at slot 12.
  *
- * InitResources is declared here but src/runtime/actor/ActorBase.cpp
- * deliberately defines it as an extern "C" free function, because a class's
- * first non-inline virtual is its key function and CW emits the vtable into
- * whichever TU defines it -- colliding with the copy the module's gap object
- * supplies from ROM. Do not "fix" that file into a real method, and do not
- * remove this declaration: removing it deletes slot 0 and shifts all 18.
+ * InitResources is the key function defined in src/runtime/actor/ActorBase.cpp.
+ * Its native definition emits the class RTTI, name and complete vtable.
+ * The ActorBase manifest verifies that metadata before externalizing it to
+ * the existing canonical ROM storage. Keep this declaration in slot 0:
+ * removing it would shift the other seventeen slots.
  *   0x02043444  is the real start: _ZN7fBase_cnwEj, this class's own
  *               operator new (size 0x50, discussed further down this file).
  *               The old 0x02043494 began at OnHeapCreated and excluded it.
