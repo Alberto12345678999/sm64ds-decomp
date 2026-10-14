@@ -76,8 +76,8 @@ extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *he
 
 }
 
-/* Each list helper keeps its own namespace so the local node types
- * do not collide. The functions stay extern "C" under their addresses. */
+/* List helpers keep address-named C entries. The sorting and process-list
+ * descriptors retain local views; actor lookups use real actor-owned nodes. */
 
 // @symbol func_0204405c
 namespace Absorb0204405c {
@@ -154,16 +154,11 @@ extern "C" void *func_02043fdc(ProcessListDescriptor *list)
 
 // @symbol func_02043f98
 namespace Absorb02043f98 {
-struct Node {
-    void* x0;
-    struct Node* next;  /* 0x4 */
-    int* x8;            /* 0x8 */
-};
-
-extern "C" struct Node* func_02043f98(struct Node** head, int key) {
-    struct Node* node = *head;
+extern "C" fLiNdBa_c *func_02043f98(fLiNdBa_c **head, unsigned int key)
+{
+    fLiNdBa_c *node = *head;
     while (node != 0) {
-        int b = (int)(node->x8[1] != key);
+        int b = (int)(node->owner->uniqueID != key);
         if (b == 0) return node;
         node = node->next;
     }
@@ -173,15 +168,14 @@ extern "C" struct Node* func_02043f98(struct Node** head, int key) {
 
 // @symbol func_02043f4c
 namespace Absorb02043f4c {
-struct Inner { char pad[0xc]; unsigned short id; };
-struct Node { char pad[4]; struct Node* next; struct Inner* inner; };
-
-extern "C" struct Node* func_02043f4c(struct Node** pp, int key, struct Node* alt) {
-    struct Node* n = alt ? alt->next : *pp;
-    while (n != 0) {
-        int b = (int)(n->inner->id != key);
-        if (b == 0) return n;
-        n = n->next;
+extern "C" fLiNdBa_c *func_02043f4c(fLiNdBa_c **head, unsigned int key,
+                                    fLiNdBa_c *after)
+{
+    fLiNdBa_c *node = after ? after->next : *head;
+    while (node != 0) {
+        int b = (int)(node->owner->actorID != key);
+        if (b == 0) return node;
+        node = node->next;
     }
     return 0;
 }
@@ -698,11 +692,12 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
 extern "C" {
 void func_020433b8(char* self)
 {
+    fBase_c *actor = (fBase_c *)self;
     func_0204335c(self);
-    if (*(u8*)(self + 0xf) != 0) return;
-    if (*(u8*)(self + 0x10) != 0) return;
+    if (actor->shouldBeKilled != 0) return;
+    if (actor->unk_010 != 0) return;
     {
-        volatile u8* q = (u8*)(self + 0xe);
+        volatile u8* q = &actor->aliveState;
         int b = q[0] == 0 ? 1 : 0;
         if (b == 0) return;
     }
@@ -710,10 +705,10 @@ void func_020433b8(char* self)
         volatile int* p = data_02099f24;
         int c = p[0] == 2 ? 1 : 0;
         if (c) {
-            *(u8*)(self + 0x11) = 1;
+            actor->unk_011 = 1;
             return;
         }
     }
-    func_0203b244(data_020a4b88, self + 0x28);
+    func_0203b244(data_020a4b88, &actor->manager.behaviorNode);
 }
 }
