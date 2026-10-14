@@ -340,9 +340,8 @@ void daGmch_c::CheckPlayerContact()
 }
 
 // @symbol _ZN8daGmch_c21ApplySlopeToVertSpeedEPv
-/* Declared `int` and it falls off the end: the ROM leaves r0 holding whatever
-   the last call left there and every caller discards the result. */
-int daGmch_c::ApplySlopeToVertSpeed(void *clsn)
+/* Adjust vertical speed from the floor normal; callers need no result. */
+void daGmch_c::ApplySlopeToVertSpeed(void *clsn)
 {
     Vector3 floorNormal;
     Vector3 wallNormal;
