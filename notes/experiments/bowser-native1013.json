@@ -61,28 +61,53 @@
   "lineage_qualification": "Current queue contains no exact predecessor task for this coherent class/Source/header scope. Git commits and actual author names are recorded without inventing historical harness sessions. Existing per-function attribution is unchanged.",
   "findings": [
     {
-      "id": "KPA-AUDIT-PROV001",
+      "id": "KPA-AUDIT-PROV-001",
       "kind": "provenance",
+      "location": "src/actors/daKpa_c.cpp:6-8",
+      "summary": "Banner calls classInit factory spelling ROM-proven.",
+      "evidence": "Actual factory comments correctly state class identity is ROM-proven but classInit spelling is reconstructed from later EAD lineage. The RTTI spellings prove daKpa_c and daKpaTail_c, not original factory spelling.",
       "disposition": "fixed",
-      "location": "src/actors/daKpa_c.cpp: banner",
-      "summary": "Factory identifiers were wrongly described as ROM-spelled.",
       "reason": "Source now calls classInit identifiers reconstructed; ROM RTTI evidence remains separately described."
     },
     {
-      "id": "KPA-AUDIT-PROV002",
+      "id": "KPA-AUDIT-PROV-002",
       "kind": "provenance",
+      "location": "src/actors/daKpa_c.cpp:214-217",
+      "summary": "PMF comment assigns tail table 0x0211ae9c to daKpa_c.",
+      "evidence": "Actual KpaTailState data_ov060_0211ae9c[3] stores daKpaTail_c members. daKpa_c PMF tables are data_ov060_0211aeb4[4] and data_ov060_0211aed4[20].",
       "disposition": "fixed",
-      "location": "src/actors/daKpa_c.cpp: PMF table explanation",
-      "summary": "Tail state table0211ae9c was incorrectly described as a Bowser member-pointer table.",
       "reason": "Source identifies0211ae9c as KpaTailState/daKpaTail_c and Bowser tables as0211aeb4/0211aed4, matching actual definitions and manifest storage."
     },
     {
-      "id": "KPA-AUDIT-PROV003",
+      "id": "KPA-AUDIT-PROV-003",
       "kind": "provenance",
-      "disposition": "fixed",
       "location": "include/daKpaTail_c.h:5-7",
-      "summary": "Header claimed four real methods and extern-C state workers despite actual member declarations.",
+      "summary": "Tail header says only four real methods and C-linkage state helpers remain.",
+      "evidence": "Four state workers are declared as daKpaTail_c members at lines82-85 and defined as real members in Source. Existing source-writer commit5d2e6df6 memberized66 helpers. Header change requires explicit claimed scope and consumer proof; reviewer made none.",
+      "disposition": "fixed",
       "reason": "Comment now correctly describes resource, behavior and state-worker methods defined in daKpa_c.cpp. Non-comment header text is identical; the only affected production consumer is this TU."
+    },
+    {
+      "id": "KPA-AUDIT-PARTIAL-001",
+      "kind": "reconstruction",
+      "location": "src/actors/daKpa_c.cpp",
+      "summary": "Raw/vector/matrix/player/camera views and codegen-sensitive forms remain.",
+      "evidence": "Flat scalar vectors, shadow matrix bytes, opaque animation Obj, raw camera+0x114, packed PMF dispatch/read views, address-named native methods, volatile locals and pointer increments remain. Existing notes state byte dependence but this audit did not re-prove alternative source forms impossible.",
+      "disposition": "deferred",
+      "reason": "Accepted as explicit partial reconstruction outside this native caller-interface pass; original audit evidence retained without claiming unique original source or a compiler floor.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+      "owner": "codex-bowser-native-coordinator1013"
+    },
+    {
+      "id": "KPA-AUDIT-PARTIAL-002",
+      "kind": "reconstruction",
+      "location": "src/actors/daKpa_c.cpp:240-261; manifest undefined_symbol_aliases",
+      "summary": "Resource wrappers and scalar ABI interfaces remain partial.",
+      "evidence": "Three synthetic SharedFilePtr-derived two-word wrappers;35 instantiated handles. Seven aliases include six lifecycle veneer mappings and global registration. Scalar Fix12 by-value mangled veneers remain distinct from native scalar declarations. Strict bytes do not establish full source reconstruction.",
+      "disposition": "deferred",
+      "reason": "Accepted as explicit partial reconstruction outside this native caller-interface pass; original audit evidence retained without claiming unique original source or a compiler floor.",
+      "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3820",
+      "owner": "codex-bowser-native-coordinator1013"
     },
     {
       "id": "KPA-NATIVE-001",
@@ -114,7 +139,7 @@
     }
   ],
   "canary": {
-    "source": "C:\\tmp\\sm64ds-bowser-native1013\\src\\actors\\dMgTrmpln2Mario_c.cpp",
+    "source": "src/actors/dMgTrmpln2Mario_c.cpp",
     "result": [
       true,
       "2004/b56"
@@ -850,11 +875,84 @@
     "raw_container_equal": false,
     "prepared_container_equal": true,
     "base": "607576acc557a318d5f813f8a0813bc86f03d140",
-    "full_rom_run": false
+    "full_rom_run": true
   },
   "proof_scope": "Fresh current607 whole objects and gates. Manifest embedded prior verification notes and private scout measurements are historical context; terminal current production results will be recorded separately. No foreign PR3815 composition is claimed.",
-  "gates": {},
-  "status": "Final Source object binding and whole proof complete; frozen-checkpoint production gates pending.",
+  "gates": {
+    "full-rom": {
+      "name": "full-rom",
+      "command": [
+        "python",
+        "tools/rombuild.py",
+        "-j16",
+        "--no-rom",
+        "--report-json",
+        "build/bowser-native1013/rom-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 324.1239857673645,
+      "log": "build/bowser-native1013/full-rom.log",
+      "log_sha256": "282760083b484153cf7f5369085d2931600c503f88ce79a48d50104e68fe1695",
+      "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
+    },
+    "range": {
+      "name": "range",
+      "command": [
+        "python",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "607576acc557a318d5f813f8a0813bc86f03d140..5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+        "--json",
+        "build/bowser-native1013/range-report.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 64.22558665275574,
+      "log": "build/bowser-native1013/range.log",
+      "log_sha256": "281ed19b8fa623f060ba1028f7281b405f359f9535402d442062dfae9f2151a4",
+      "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
+    },
+    "decl": {
+      "name": "decl",
+      "command": [
+        "python",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "607576acc557a318d5f813f8a0813bc86f03d140"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 11.673336029052734,
+      "log": "build/bowser-native1013/decl.log",
+      "log_sha256": "249957615ccfbb02c4ea251fe7739dbc68a33b6e1b427b293c5467befc80ec22",
+      "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
+    },
+    "port": {
+      "name": "port",
+      "command": [
+        "python",
+        "tools/port_refcheck.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.755744457244873,
+      "log": "build/bowser-native1013/port.log",
+      "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e",
+      "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
+    },
+    "langmode": {
+      "name": "langmode",
+      "command": [
+        "python",
+        "tools/langmode_audit.py",
+        "--check",
+        "langmode-baseline.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 11.4878671169281,
+      "log": "build/bowser-native1013/langmode.log",
+      "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765",
+      "tested_commit": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca"
+    }
+  },
+  "status": "All actual-current607 production gates terminal0. Partial reconstruction ready for independent exact-head Source/byte review; Root serializes producer publication.",
   "final_source_binding": {
     "source_sha256": "b20d07dfb6f1108d7732624ce7d33de248cd375decd838303e1b4c3df0319fcf",
     "raw_sha256": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
@@ -2775,5 +2873,502 @@
       "Two HugeLandingDustAt(dust, 0) references replace *(&dust)"
     ],
     "type_layout_changes": false
+  },
+  "audit_findings_original": [
+    {
+      "id": "KPA-AUDIT-PROV-001",
+      "kind": "provenance",
+      "status": "needs_correction_before_adoption",
+      "location": "src/actors/daKpa_c.cpp:6-8",
+      "summary": "Banner calls classInit factory spelling ROM-proven.",
+      "evidence": "Actual factory comments correctly state class identity is ROM-proven but classInit spelling is reconstructed from later EAD lineage. The RTTI spellings prove daKpa_c and daKpaTail_c, not original factory spelling."
+    },
+    {
+      "id": "KPA-AUDIT-PROV-002",
+      "kind": "provenance",
+      "status": "needs_correction_before_adoption",
+      "location": "src/actors/daKpa_c.cpp:214-217",
+      "summary": "PMF comment assigns tail table 0x0211ae9c to daKpa_c.",
+      "evidence": "Actual KpaTailState data_ov060_0211ae9c[3] stores daKpaTail_c members. daKpa_c PMF tables are data_ov060_0211aeb4[4] and data_ov060_0211aed4[20]."
+    },
+    {
+      "id": "KPA-AUDIT-PROV-003",
+      "kind": "provenance",
+      "status": "needs_correction_before_adoption",
+      "location": "include/daKpaTail_c.h:5-7",
+      "summary": "Tail header says only four real methods and C-linkage state helpers remain.",
+      "evidence": "Four state workers are declared as daKpaTail_c members at lines82-85 and defined as real members in Source. Existing source-writer commit5d2e6df6 memberized66 helpers. Header change requires explicit claimed scope and consumer proof; reviewer made none."
+    },
+    {
+      "id": "KPA-AUDIT-PARTIAL-001",
+      "kind": "reconstruction",
+      "status": "partial_needs_owned_followup",
+      "location": "src/actors/daKpa_c.cpp",
+      "summary": "Raw/vector/matrix/player/camera views and codegen-sensitive forms remain.",
+      "evidence": "Flat scalar vectors, shadow matrix bytes, opaque animation Obj, raw camera+0x114, packed PMF dispatch/read views, address-named native methods, volatile locals and pointer increments remain. Existing notes state byte dependence but this audit did not re-prove alternative source forms impossible."
+    },
+    {
+      "id": "KPA-AUDIT-PARTIAL-002",
+      "kind": "reconstruction",
+      "status": "partial_needs_owned_followup",
+      "location": "src/actors/daKpa_c.cpp:240-261; manifest undefined_symbol_aliases",
+      "summary": "Resource wrappers and scalar ABI interfaces remain partial.",
+      "evidence": "Three synthetic SharedFilePtr-derived two-word wrappers;35 instantiated handles. Seven aliases include six lifecycle veneer mappings and global registration. Scalar Fix12 by-value mangled veneers remain distinct from native scalar declarations. Strict bytes do not establish full source reconstruction."
+    }
+  ],
+  "independent_baseline_lineage": {
+    "recent_git_source_writers": [
+      "lunavyqo",
+      "andrewboudreau"
+    ],
+    "key_commits": {
+      "memberize66": "5d2e6df649facd788f6931860cdc45a8d18f1851",
+      "readability": "97369e46477411eee82172d727ce1a5a9f4ca928",
+      "rtti_identity": "4703266a844d4443d301151186667aaab8a34311",
+      "initializer": "f6425870c04967bad0adea4e493fdb78221537ff",
+      "factory_composition": "bec62bfc6867c6c7abc4a8c58a163eed91154bfe",
+      "manifest_collision_refresh": "2915eef093ac06fb31919367602a49308a21922b"
+    },
+    "function_authors_found": 81,
+    "function_author_counts": {
+      "tangosdev": 15,
+      "lunavyqo": 66
+    },
+    "per_function_authors": {
+      "_ZN7daKpa_cD1Ev": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_cD1Ev"
+      },
+      "_ZN7daKpa_cD0Ev": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_cD0Ev"
+      },
+      "_ZN11daKpaTail_cD1Ev": {
+        "author": "tangosdev",
+        "name": "_ZN11daKpaTail_cD1Ev"
+      },
+      "_ZN11daKpaTail_cD0Ev": {
+        "author": "tangosdev",
+        "name": "_ZN11daKpaTail_cD0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02111a28Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02111a28Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02111c68Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02111c68Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02111cc0Eii": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02111cc0Eii"
+      },
+      "_ZN7daKpa_c19func_ov060_02111f08Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02111f08Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02112350Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112350Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021123a0Ei": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021123a0Ei"
+      },
+      "_ZN7daKpa_c19func_ov060_021123c8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021123c8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021123dcEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021123dcEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02112434Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112434Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021125f0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021125f0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02112724Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112724Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021128c0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021128c0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02112ba8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112ba8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02112bfcEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112bfcEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02112d48Ei": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112d48Ei"
+      },
+      "_ZN7daKpa_c19func_ov060_02112ddcEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112ddcEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02112ee0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02112ee0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021130c0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021130c0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02113260Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113260Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021132a4Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021132a4Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02113404Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113404Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021134acEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021134acEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02113564Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113564Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021135fcEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021135fcEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02113710Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113710Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02113740Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113740Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02113a94Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113a94Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02113b5cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113b5cEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02113d20Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113d20Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02113d8cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113d8cEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02113fccEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113fccEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02113ff4Eti": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02113ff4Eti"
+      },
+      "_ZN7daKpa_c19func_ov060_021140c0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021140c0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021142b4Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021142b4Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02114300Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114300Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021143b8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021143b8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021145a8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021145a8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021145d4Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021145d4Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_0211469cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_0211469cEv"
+      },
+      "_ZN7daKpa_c19func_ov060_021146d0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021146d0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02114858Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114858Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02114b60Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114b60Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02114d08Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114d08Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02114e9cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114e9cEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02114f88Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114f88Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02114ff8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02114ff8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02115018Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115018Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02115060Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115060Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021150c4Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021150c4Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021150d0Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021150d0Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021151d4Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021151d4Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02115314Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115314Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021153f8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021153f8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021154e8Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021154e8Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02115518Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115518Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_021156ecEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_021156ecEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02115718Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115718Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_02115744Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115744Ev"
+      },
+      "_ZN7daKpa_c19func_ov060_0211577cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_0211577cEv"
+      },
+      "_ZN7daKpa_c24Bowser_IsAnimAtLastFrameEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c24Bowser_IsAnimAtLastFrameEv"
+      },
+      "_ZN7daKpa_c19func_ov060_02115a84EPc": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115a84EPc"
+      },
+      "_ZN7daKpa_c19func_ov060_02115b0cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN7daKpa_c19func_ov060_02115b0cEv"
+      },
+      "_ZN11daKpaTail_c19func_ov060_02115b84Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN11daKpaTail_c19func_ov060_02115b84Ev"
+      },
+      "_ZN11daKpaTail_c19func_ov060_02115c1cEv": {
+        "author": "lunavyqo",
+        "name": "_ZN11daKpaTail_c19func_ov060_02115c1cEv"
+      },
+      "_ZN11daKpaTail_c19func_ov060_02115d50Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN11daKpaTail_c19func_ov060_02115d50Ev"
+      },
+      "_ZN11daKpaTail_c19func_ov060_02115d68Ev": {
+        "author": "lunavyqo",
+        "name": "_ZN11daKpaTail_c19func_ov060_02115d68Ev"
+      },
+      "_ZN7daKpa_c16CleanupResourcesEv": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_c16CleanupResourcesEv"
+      },
+      "_ZN11daKpaTail_c16CleanupResourcesEv": {
+        "author": "tangosdev",
+        "name": "_ZN11daKpaTail_c16CleanupResourcesEv"
+      },
+      "_ZN7daKpa_c16OnPendingDestroyEv": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_c16OnPendingDestroyEv"
+      },
+      "_ZN7daKpa_c6RenderEv": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_c6RenderEv"
+      },
+      "_ZN11daKpaTail_c6RenderEv": {
+        "author": "tangosdev",
+        "name": "_ZN11daKpaTail_c6RenderEv"
+      },
+      "_ZN7daKpa_c8BehaviorEv": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_c8BehaviorEv"
+      },
+      "_ZN11daKpaTail_c8BehaviorEv": {
+        "author": "tangosdev",
+        "name": "_ZN11daKpaTail_c8BehaviorEv"
+      },
+      "_ZN7daKpa_c13InitResourcesEv": {
+        "author": "tangosdev",
+        "name": "_ZN7daKpa_c13InitResourcesEv"
+      },
+      "_ZN11daKpaTail_c13InitResourcesEv": {
+        "author": "tangosdev",
+        "name": "_ZN11daKpaTail_c13InitResourcesEv"
+      },
+      "daKpaTail_c_classInit": {
+        "author": "tangosdev",
+        "name": "daKpaTail_c_classInit"
+      },
+      "daKpa_c_classInit": {
+        "author": "tangosdev",
+        "name": "daKpa_c_classInit"
+      }
+    },
+    "new_private_candidate_author": "/root/camera_valueweb_pass",
+    "qualification": "Function attribution, git source writers and new candidate authorship are separate. No invented historical producer session."
+  },
+  "final_production_summary": {
+    "modules": {
+      "modulesChecked": 106,
+      "modulesExact": 106,
+      "modulesExpectedOnly": 106,
+      "comparedBytes": 3049600,
+      "differingBytes": 0,
+      "unexpectedDifferingBytes": 0,
+      "percent": 100.0,
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b"
+    },
+    "source_build": {
+      "totalCodeFunctions": 11397,
+      "totalCodeBytes": 2238108,
+      "compiledFunctions": 11334,
+      "compiledBytes": 2225480,
+      "sourceFunctions": 11334,
+      "sourceBytes": 2225480,
+      "modFunctions": 0,
+      "modBytes": 0,
+      "sourceBytesPercent": 99.43577343005789,
+      "reproducingFunctions": 11334,
+      "reproducingBytes": 2225480,
+      "mismatchingFunctions": 0,
+      "mismatchingFunctionBytes": 0,
+      "differingSourceBytes": 0,
+      "sourceDataClaims": 331,
+      "sourceBssClaims": 239,
+      "sourceBssBytes": 30164,
+      "reproducingDataClaims": 331,
+      "reproducingDataClaimBytes": 13020,
+      "mismatchingDataClaims": 0,
+      "mismatchingDataClaimBytes": 0
+    },
+    "intact_link_ok": true,
+    "origin": "Final actual-current607 production analysis, not baseline-control counts.",
+    "report_sha256": "14cee29df6b605b0c7c06fad614914cd04b511f21c7e9d428566bc1074fbaf2c"
+  },
+  "stock_range_summary": {
+    "checked": 82,
+    "verified": 81,
+    "warnings": 1,
+    "blocking": 0,
+    "warning_controls": {
+      "baseline": [
+        {
+          "name": "__sinit_daKpa_c.cpp",
+          "module": "ov060",
+          "addr": "0x021195dc",
+          "verdict": "BLIND-73",
+          "diffs": [],
+          "blind": 73
+        }
+      ],
+      "candidate": [
+        {
+          "name": "__sinit_daKpa_c.cpp",
+          "module": "ov060",
+          "addr": "0x021195dc",
+          "verdict": "BLIND-73",
+          "diffs": [],
+          "blind": 73
+        }
+      ],
+      "context": "Actual current headers; each object uses its immutable source revision manifest renames with unchanged stock per-function isolation. Ordinary whole preparation separately verifies every owned row with zero blind."
+    },
+    "qualification": "The stock initializer warns BLIND-73 for both baseline and candidate using their own manifest input names. Ordinary whole preparation verifies its complete2068bytes and all typed edges with zero blind, plus all27data/73BSS/metadata records. No stock verdict is suppressed."
+  },
+  "checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+  "report_only_binding": {
+    "checkpoint": "5d4d4dbe9de302270e1eeb68e82bb7bbb747ecca",
+    "production_trees": {
+      "src": "d0c976bddbb926e4490671384658ab2c4f338ca0",
+      "include": "036cd7f923a501f2a91d48446b035a599afae6cd",
+      "config": "d3177f6db9f3bd5168661de5ba3e9b222a3d62b2",
+      "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+      "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+    },
+    "rule": "Final report-only descendant must retain all five production trees exactly."
+  },
+  "artifacts": {
+    "independent-baseline-AUDIT.json": "ced866d73d1e917608faf98c96425d4dfec0232c8d6208659f3ef3e89099d8e2",
+    "warning-controls.py": "8e55441fc9e3c42359c21b888ca322fe45c8c1ab10bfb93bc0e6434b3d9cada0",
+    "stock-warning-controls.json": "57be51751c7192f4525404b43486ba798e19091d0969740bd99dc8f285a1f14f",
+    "canary.json": "21cb3417f147b3fad988e7421a100aca3a9e85770b88af12f72a6016690a9dac",
+    "whole.py": "e50c8914d73c16b5f45a10ce28bf2984856190781b9051379dc301f827d338ae",
+    "proof.json": "481ecc8d6a5e0f5cda62fed886ffb5f5d4ad07790bf940f8aac0dba495412789",
+    "storage.json": "ffa4a61e4562c68d6af8b353dd12a5f08c0ee1c0e838b70cb8fa40fc25e987c5",
+    "final-source-binding.json": "0df7cd1405c1b1bd78a1d594617488ee93660bf249f2c6a5f7c45eabc4662118",
+    "final-identity.py": "c81f88738da9b8e1dae6c0cf11fd6d2d21e38641cb40355bddeca78aa1080e80",
+    "final-raw.o": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
+    "final-prepared.o": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3",
+    "header-token-proof.json": "413db627adc40bd5a296d48368b9a9370e686101d52d3ba69f9d1a2333622338",
+    "affected-header.txt": "fc6faaf2956cd147adeb5ad1bb57820cefc7b813d763128058022408ccad5547",
+    "scout-registration-map.json": "ede17e7593d48387f4a24a8a377e6a5fc74caad45f8f24baa8e97d32d7af0231",
+    "scout-raw-graph-normalization.json": "7d7826490ecae7241d3072c966ccd7ea913b942fcf5b1d5878fd38df781c0687",
+    "scout-source-lineage.txt": "b594f48783f0a9dd51265e4e811b9b981440f82673ca639aba966c8454e8e64e",
+    "baseline/raw.o": "f017b65db9eac1996099012af88fa7a37ef3d2a35d33cc9b57e4c5a8bcc71f12",
+    "baseline/prepared.o": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3",
+    "baseline/strict.json": "771705f8334af4945da807786e2519fafc80b70daeca037fd76cd57f5d6168ca",
+    "baseline/metadata.json": "8a13f352922d351fc8195d3ee743571c6577e6e43146fd89682a996cf5ac8638",
+    "baseline/complete-graphs.json": "e28188147ccf0ca19ccd3a0121a46e84723016c4ede77b59d3f524367b6755d6",
+    "candidate/raw.o": "8b073b09223c77ce743602668e8c3086a64e807f84026ded83119b1e30fda6fd",
+    "candidate/prepared.o": "b655dd1672da82fc764893502938952bed17de6d8b9fc4822d8491e76c8288b3",
+    "candidate/strict.json": "771705f8334af4945da807786e2519fafc80b70daeca037fd76cd57f5d6168ca",
+    "candidate/metadata.json": "8a13f352922d351fc8195d3ee743571c6577e6e43146fd89682a996cf5ac8638",
+    "candidate/complete-graphs.json": "af457ff3e83396d141601dad060da699ca01fe15b4c5803e7c03724ed8b2bda4"
   }
 }
