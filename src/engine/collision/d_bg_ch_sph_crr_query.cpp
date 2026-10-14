@@ -101,9 +101,9 @@ int dBgCh_Gnd::DetectClsn()
             } else {
                 pos.y = pos.y + func_0203938c(obj);
             }
-            Vec3* selfpos = (Vec3*)((long long)(int)&this->pos);
+            Vector3* selfpos = (Vector3*)((long long)(int)&this->pos);
             if (selfpos->y < pos.y - thr) continue;
-            if (Vec3_HorzDist((const Vector3 *)selfpos, (const Vector3 *)&pos) > thr) continue;
+            if (Vec3_HorzDist(selfpos, (const Vector3 *)&pos) > thr) continue;
         }
         if (obj->DetectClsn(*this) != 0) {
             dBgPi::SetCollider(i, func_020393ac(obj), (dActor_c *)func_020393b4(obj), (dBgW *)obj);
@@ -286,7 +286,7 @@ bool dBgCh_Lin::DetectClsn()
     dActor_c *info;
     int m;
     char *e;
-    char *base;
+    Vector3 *base;
     int threshold;
     e = (char *)data_020a0c80[0];
     if (e != 0) {
@@ -299,9 +299,9 @@ bool dBgCh_Lin::DetectClsn()
         }
     }
 
-    char *p64 = (char *)&mBoundSphere;
-    base = p64 + 4;
-    threshold = *(int *)(p64 + 0x10);
+    dM3dGSph &sphere = mBoundSphere;
+    base = &sphere.centre;
+    threshold = (int)sphere.radius;
     for (i = 1; i < 0x18; i++) {
         o = (dBgW *)data_020a0c80[i];
         if (o == 0) continue;
@@ -324,7 +324,7 @@ bool dBgCh_Lin::DetectClsn()
                 } else {
                     v.y += func_0203938c(o);
                 }
-                if (Vec3_Dist((const Vector3 *)base, (const Vector3 *)&v) > m + threshold)
+                if (Vec3_Dist(base, (const Vector3 *)&v) > m + threshold)
                     continue;
             }
         }
