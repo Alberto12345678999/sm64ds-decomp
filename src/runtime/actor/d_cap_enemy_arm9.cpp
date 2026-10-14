@@ -1,6 +1,6 @@
 //cpp
 /* dCapEnemy_c, the arm9 half (0x02005d94..0x0200651c): the cap attach,
- * release, respawn and state helpers. src/runtime/actor/dCapEnemy_c.cpp is the
+ * release, respawn and state helpers. src/runtime/actor/d_cap_enemy.cpp is the
  * ov002 half and already owns that path, so this file is the other module.
  * rombuild refuses one complete path in two modules; D2 and D0 stay in the
  * ov002 TU.

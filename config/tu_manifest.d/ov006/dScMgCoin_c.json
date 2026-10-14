@@ -1,8 +1,8 @@
 {
   "id": "ov006/dScMgCoin_c",
   "module": "ov006",
-  "source": "src/minigames/dScMgCoin_c.cpp",
-  "promoted_source": "src/minigames/dScMgCoin_c.cpp",
+  "source": "src/minigames/d_s_mg_coin.cpp",
+  "promoted_source": "src/minigames/d_s_mg_coin.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
@@ -12,9 +12,9 @@
     "DESTRUCTOR ORDER. The cartridge has D1 at 0x020dbe40 below D0 at 0x020dbe64 and no D2 home. One out-of-line ~dScMgCoin_c() under #pragma defer_codegen off emits D1 then D0 in that order; the D2 mwccarm also emits is a compiler_only_output deadstrip row.",
     "KEY FUNCTION. The out-of-line destructor is the class's first declared virtual, so this TU now emits _ZTV/_ZTI/_ZTS11dScMgCoin_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c, dScMgBase_c). Each is a deadstrip-data row with its canonical symbols.txt home; ov006 .data stays ROM-owned, so the TU stays text-only.",
     "SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off; tubuild verify reports all 62 in ROM-ascending emission order.",
-    "OUTPUT PATH: src/minigames/dScMgCoin_c.cpp, unchanged.",
+    "OUTPUT PATH: src/minigames/d_s_mg_coin.cpp, unchanged.",
     "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "CLASSINIT TAIL FOLD (2026-10-10): the one-function source right of this unit, dScMgCoin_c_classInit (0x020de940, size 0x48, formerly src/d_s_mg_coin.cpp), abuts its .text end with no gap and is now inside it; the next ov006 delinks entry, src/minigames/dScMgCup_c.cpp, starts exactly at its end 0x020de988. It is this class's factory: it calls fBase_c::operator new(0x51e0) -- sizeof(dScMgCoin_c), asserted in include/dScMgCoin_c.h -- runs dScMgBase_c's C2, stores _ZTV11dScMgCoin_c (0x0213bf50), the vtable this TU emits as its key-function owner, and seeds the word at +0x51c4 with func_0203b9b4(p, 1). It is the MG_COIN registry profile's factory. Written last as \return new dScMgCoin_c;: the header now declares a constructor (defined inline in this TU, above the factory) whose body is that one seed call, and the 0x51c4 pad is named mSeed, the same shape as daFish_c's constructor. defer_codegen off emits .text in source order."
+    "CLASSINIT TAIL FOLD (2026-10-10): the one-function source right of this unit, dScMgCoin_c_classInit (0x020de940, size 0x48, formerly src/d_s_mg_coin.cpp), abuts its .text end with no gap and is now inside it; the next ov006 delinks entry, src/minigames/d_s_mg_cup.cpp, starts exactly at its end 0x020de988. It is this class's factory: it calls fBase_c::operator new(0x51e0) -- sizeof(dScMgCoin_c), asserted in include/dScMgCoin_c.h -- runs dScMgBase_c's C2, stores _ZTV11dScMgCoin_c (0x0213bf50), the vtable this TU emits as its key-function owner, and seeds the word at +0x51c4 with func_0203b9b4(p, 1). It is the MG_COIN registry profile's factory. Written last as \return new dScMgCoin_c;: the header now declares a constructor (defined inline in this TU, above the factory) whose body is that one seed call, and the 0x51c4 pad is named mSeed, the same shape as daFish_c's constructor. defer_codegen off emits .text in source order."
   ],
   "sections": [
     {
@@ -814,7 +814,7 @@
   "externalized_output": [],
   "init": [
     {
-      "symbol": "__sinit_dScMgCoin_c.cpp",
+      "symbol": "__sinit_d_s_mg_coin.cpp",
       "address": "0x0213014c",
       "size": "0x284",
       "binding": "STB_GLOBAL",
@@ -823,7 +823,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_dScMgCoin_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_coin.cpp",
       "address": "0x02133588",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -832,13 +832,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_dScMgCoin_c.cpp",
+      "symbol": "__sinit_d_s_mg_coin.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_dScMgCoin_c.cpp",
+      "symbol": ".p__sinit_d_s_mg_coin.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -850,7 +850,7 @@
       "source": "0x02133588",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_dScMgCoin_c.cpp",
+      "symbol": "__sinit_d_s_mg_coin.cpp",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213014c"

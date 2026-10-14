@@ -81,5 +81,5 @@ MATCHING VERSIONS: none
 
 - verdict: CONSTRAINT SUPPORTED
 
-Current source locations after PR #3840: [src/game/stages/dScGameOver_c.cpp](../../src/game/stages/dScGameOver_c.cpp).
+Current source locations after PRs #3840 and #3853: [src/game/stages/d_s_game_over.cpp](../../src/game/stages/d_s_game_over.cpp).
 The experiment and commands above retain the paths at `tested_commit`.

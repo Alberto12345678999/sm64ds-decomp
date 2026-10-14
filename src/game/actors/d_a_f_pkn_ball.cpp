@@ -241,7 +241,7 @@ int daFPknBall_c::Render()
  * The file-local POD Vec3F stands in for types.h's Vector3, which is not a
  * POD: a struct copy of it scalarises differently, and this function needs the
  * POD's. The choice is per function and has to be measured (see the note in
- * dEnemyBase_c.cpp, where the real Vector3 costs nothing).
+ * d_enemy_base.cpp, where the real Vector3 costs nothing).
  */
 int daFPknBall_c::Behavior() {
     struct Vec3F dustPos1;

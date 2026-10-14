@@ -175,7 +175,7 @@ def norm_type(t):
 # carrying a return type of its own:
 #
 #     include/decl_common.h    extern void func_0200c66c(void*, void*, int*, int*, int*);
-#     src/engine/view/dCamera_c.cpp   int func_0200c66c(char *self, ...) { ... return res; }
+#     src/engine/view/d_camera.cpp   int func_0200c66c(char *self, ...) { ... return res; }
 #
 # DECL_ROW above requires `_Z\w+`, so the join in check() cannot see a single
 # one of them: a row that says `void` over a body that returns a value has been
@@ -536,7 +536,7 @@ def check_plain_c(root=REPO):
                              f"{hpath}:{hline}"))
         hit = index.get(sym)
         if hit is None:
-            # Either the row is stale -- src/engine/message/func_0201fe08.c is
+            # Either the row is stale -- src/ui/messages/func_0201fe08.c is
             # the body, under the recovered name LoadMessageBankForLanguage --
             # or the function has no recovered source at all. Counted, not
             # guessed at, and split by whether the config still knows the name.

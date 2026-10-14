@@ -1,8 +1,8 @@
 {
  "id": "ov006/dScMgCurling2_c",
  "module": "ov006",
- "source": "src/minigames/dScMgCurling2_c.cpp",
- "promoted_source": "src/minigames/dScMgCurling2_c.cpp",
+ "source": "src/minigames/d_s_mg_curling2.cpp",
+ "promoted_source": "src/minigames/d_s_mg_curling2.cpp",
  "status": "promoted",
  "production_mode": "intact-object",
  "boundary_confidence": "medium",
@@ -13,7 +13,7 @@
   "WHY THE LOWER SIDE. This TU is the larger side by member count: 31 below the hole against 21 above it. It is also the side that holds the class's key function -- the destructor, which include/dScMgCurling2_c.h declares out of line and declares FIRST -- so it is the side that can emit and license the class's _ZTV/_ZTI/_ZTS. It is the larger side in bytes too: 0x1bfc against the upper side's 0x1278. The upper side holds four of the six own vtable overrides (InitResources, Behavior, Render, OnYoshiTryEat) and the classInit factory, but not the key function, so a promotion there would carry compiler_only_output: 0 -- the dScMgCoin_c outcome -- and would leave the destructor pair enrolled as shards.",
   "module sinit corroboration: 31 sinit(s) / 31 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
   "CLASSINIT TAIL FOLD (2026-10-10): the one-function source right of this TU, func_ov006_020e5450 (0x020e5450, size 0x560, formerly src/unnamed/ov006/func_ov006_020e5450.cpp), abuts its .text end with no gap and is now inside it; the TU now ends at 0x020e59b0, exactly where src/actors/dScMgCurling2_c_upper.cpp (StoneSpin) begins, so the sourceless hole EDGE 1 describes is closed and this class's run 0x020e3854..0x020e6bf4 is now two abutting promoted TUs, with the factory dScMgCurling2_c_classInit still its own file above them (merging the halves is a separate step, and the one that lets the factory fold: see the upper manifest). Membership: it is the stone-collision step of this class -- its only parameter types are dScMgCurling2_c * and the stone index, it walks mStone[0..10] and ends in this->SpawnValue(idx, i), and its only two references in the image are both in this class's upper half (0x020e5b78, the literal of StoneRest's veneer, and 0x020e5d8c, StoneSlide's direct call). It byte-matched as its own file first and folds in unchanged except that the TU's declarations are used (cstd::sqrt, the int-returning _ZN4cstd5atan2E5Fix12IiES1_, func_02012718(int, int)); written after SeparateStones, ahead of the static-init tables, because defer_codegen off emits .text in source order. It keeps C linkage because the upper TU calls it by its address-derived name. No @NNN or compiler-only change.",
-  "FULL-RUN FOLD (U01): the run 0x020e3854..0x020e6c28 is now ONE file. The upper half (formerly src/actors/dScMgCurling2_c_upper.cpp, ordinals 32..51) and the registry factory dScMgCurling2_c_classInit (formerly src/d_s_mg_curling2.cpp, ordinal 52) folded into this TU; their delinks.txt entries merged into the single 0x020e3854..0x020e6c28 .text claim above. The fold is the step the upper manifest already described: inside one TU, classInit's _ZTV15dScMgCurling2_c reference resolves against this object's own emitted vtable (deadstrip-data; canonical copy at ov006 .data) instead of an undefined cross-object reference. TOP EDGE: src/minigames/dScMgCurling_c.cpp ends at 0x020e3854 exactly. BOTTOM EDGE: src/minigames/dScMgD3DBase_c.cpp begins at 0x020e6c28 exactly."
+  "FULL-RUN FOLD (U01): the run 0x020e3854..0x020e6c28 is now ONE file. The upper half (formerly src/actors/dScMgCurling2_c_upper.cpp, ordinals 32..51) and the registry factory dScMgCurling2_c_classInit (formerly src/d_s_mg_curling2.cpp, ordinal 52) folded into this TU; their delinks.txt entries merged into the single 0x020e3854..0x020e6c28 .text claim above. The fold is the step the upper manifest already described: inside one TU, classInit's _ZTV15dScMgCurling2_c reference resolves against this object's own emitted vtable (deadstrip-data; canonical copy at ov006 .data) instead of an undefined cross-object reference. TOP EDGE: src/minigames/d_s_mg_curling.cpp ends at 0x020e3854 exactly. BOTTOM EDGE: src/minigames/d_s_mg_d3d_base.cpp begins at 0x020e6c28 exactly."
  ],
  "sections": [
   {
@@ -570,7 +570,7 @@
   "TWELVE MEMBERS REFUSED CONVERSION, AND THE REASON IS MEASURED AND IS NOT BYTES. With all 29 converted the TU still reports 31/31 MATCH / objisolate clean / ROM-ascending, but `python tools/rombuild.py -j 6 --no-rom` fails with exactly twelve `mwldarm.exe: Undefined` lines: func_ov006_020e38b0, _020e3948, _020e3bc4, _020e4a84, _020e4b78, _020e4fe8, _020e507c (referenced from dScMgCurling2_c::Render()), _020e4800 and _020e3948 (Behavior()), _020e48d4 (InitResources()), _020e3b9c (func_ov006_020e668c), _020e4b00 (func_ov006_020e628c) and _020e513c (func_ov006_020e5e3c). Those callers are still one-function shards above the sourceless hole, and they -- and include/decl_common.h -- spell the target by its C name. The twelve convert byte-neutrally the day segment B is promoted; nothing else blocks them.",
   "THE SEVENTEEN NAMES ARE COINED. The ROM proves member-ness (a zero-adjustment pointer-to-member record) and each handler's index in its own table, both read out of __sinit_ov006_02130758 and quoted in include/dScMgCurling2_c.h. It does not carry the original identifiers, and the gameplay semantics of the 0x48c0 and 0x4fe0 record arrays remain on the scout's `unproven` list; no name asserts them.",
   "UPPER SIDE PROMOTED (segment B, fold/ov006-curling2-1005). The 20-member run above the func_ov006_020e5450 hole is src/actors/dScMgCurling2_c_upper.cpp under config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json -- the second half of this same linker run, licensed as its own TU because no manifest shape expresses a .text claim with a hole in it. With every C-name caller folded, the twelve members this manifest's earlier notes marked byte-neutrally convertible all took their real dScMgCurling2_c:: names in the same edit (DrawValues, AgeValues, ClearValues, DrawPieces, StepPieces, SeedPieces, DrawMarks, AgeMarks, DrawCursor, DrawCounter, DrawStones, SeparateStones), 31/31 MATCH unchanged. The decl_common.h decls note 101 enumerates are gone with them; note 105's migration is complete. The eight new names are coined the same way note 106 records for the first seventeen: .data pointer-to-member records prove member-ness, the ROM preserves no identifiers.",
-  "Static initializer folded: all seven PMF state tables (0x02141978..0x02141a40) move out of the handwritten src/unnamed shard into src/minigames/dScMgCurling2_c.cpp, defined through the existing PMF typedef (plus a TU-local PMF0 for the two no-arg tables) and plain-copied from the ROM PMF constants at data_ov006_0213c3d4..0x0213c4b4. The block is one contiguous .bss run shared with the upper half of this class, so every table is defined here and the upper TU externs resolve to these definitions. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order.",
+  "Static initializer folded: all seven PMF state tables (0x02141978..0x02141a40) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_curling2.cpp, defined through the existing PMF typedef (plus a TU-local PMF0 for the two no-arg tables) and plain-copied from the ROM PMF constants at data_ov006_0213c3d4..0x0213c4b4. The block is one contiguous .bss run shared with the upper half of this class, so every table is defined here and the upper TU externs resolve to these definitions. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order.",
   "FULL-RUN FOLD (U01, 2026-10-11): src/actors/dScMgCurling2_c_upper.cpp (the 20-member upper half) and src/d_s_mg_curling2.cpp (the registry factory) merged into this file -- one contiguous .text block 0x020e3854..0x020e6c28, 53 functions. Their delinks entries merged into this TU's single entry; the upper manifest was retired. The fold is the step the upper manifest already prescribed: classInit's _ZTV15dScMgCurling2_c reference now resolves against this object's own emitted (deadstrip-data) vtable. verify: 53/53 MATCH, emission order clean; linkcheck SCRATCH-DATA-VERIFIED, all four licensed ranges IDENTICAL.",
   "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
  ],
@@ -817,7 +817,7 @@
  },
  "init": [
   {
-   "symbol": "__sinit_dScMgCurling2_c.cpp",
+   "symbol": "__sinit_d_s_mg_curling2.cpp",
    "address": "0x02130758",
    "size": "0x2ac",
    "binding": "STB_GLOBAL",
@@ -826,7 +826,7 @@
  ],
  "ctor": [
   {
-   "symbol": ".p__sinit_dScMgCurling2_c.cpp",
+   "symbol": ".p__sinit_d_s_mg_curling2.cpp",
    "address": "0x02133594",
    "size": "0x4",
    "binding": "STB_GLOBAL",
@@ -835,13 +835,13 @@
  ],
  "symbol_binding_rewrites": [
   {
-   "symbol": "__sinit_dScMgCurling2_c.cpp",
+   "symbol": "__sinit_d_s_mg_curling2.cpp",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
   },
   {
-   "symbol": ".p__sinit_dScMgCurling2_c.cpp",
+   "symbol": ".p__sinit_d_s_mg_curling2.cpp",
    "from": "STB_LOCAL",
    "to": "STB_GLOBAL",
    "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -853,7 +853,7 @@
    "source": "0x02133594",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "__sinit_dScMgCurling2_c.cpp",
+   "symbol": "__sinit_d_s_mg_curling2.cpp",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x02130758"

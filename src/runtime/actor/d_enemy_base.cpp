@@ -19,7 +19,7 @@
  *
  * This TU also owns the module's second static initializer: the two
  * non-const PMF tables at the end of the file make mwcc emit
- * __sinit_dEnemyBase_c.cpp, byte-identical to retail __sinit_ov002_02100938
+ * __sinit_d_enemy_base.cpp, byte-identical to retail __sinit_ov002_02100938
  * (0x1a4, eighteen relocations), plus the .ctor word and the sixteen
  * pointer-to-member descriptors. See notes/sinit-ownership-pilot-ov002.md.
  *

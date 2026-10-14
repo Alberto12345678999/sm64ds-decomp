@@ -24,12 +24,12 @@ src/minigames/unit020b4aa4.cpp:
     complete
     .text start:0x020b4aa4 end:0x020b67e8
 
-src/minigames/dMgState_c.cpp:
+src/minigames/d_mg_state.cpp:
     complete
     .text start:0x020b67e8 end:0x020b8c18
     .bss start:0x020bfd04 end:0x020bfda8
 
-src/minigames/dMgPsOpt_c.cpp:
+src/minigames/d_mg_ps_opt.cpp:
     complete
     .text start:0x020b8c18 end:0x020b944c
     .data start:0x020bca68 end:0x020bcaa0

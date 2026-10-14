@@ -32,7 +32,7 @@ struct dScEntry_c : dScene_c {
     u8  pad_286;                   /* 0x286 */
     u8  unk_287;                   /* 0x287 */
 
-    /* Out of line: the key function, defined first in src/game/stages/dScEntry_c.cpp. */
+    /* Out of line: the key function, defined first in src/game/stages/d_s_entry.cpp. */
     virtual ~dScEntry_c();                              /* slots 16 (D1), 17 (D0) */
 
     virtual s32  InitResources();                       /* slot  0 */

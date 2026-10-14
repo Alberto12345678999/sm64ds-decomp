@@ -342,7 +342,7 @@ void daObjPushblock_c::OnHitByMegaChar(Player &player)
  * spelled as its mangled name because its coordinates are Fix12<int> BY VALUE;
  * declaring the true types changes how the caller passes them and breaks the
  * bytes (notes/mwccarm-codegen.md 6az, and
- * src/runtime/actor/dActor_c.cpp (dActor_c::PoofDustAt)). */
+ * src/runtime/actor/d_actor.cpp (dActor_c::PoofDustAt)). */
 void daObjPushblock_c::Kill()
 {
     Vector3 vec;

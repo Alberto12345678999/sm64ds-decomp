@@ -148,7 +148,7 @@
       "compared_against": ["config/tu_manifest.d/ov006/dScMgTeresa_c.json", "config/tu_manifest.d/ov006/dScMgBomroom_c.json"],
       "differences": [
         {"field": "status", "cup": "shadow", "siblings": "promoted"},
-        {"field": "source", "cup": "src_tu/minigames/d_s_mg_cup.cpp", "siblings": "src/minigames/dScMgTeresa_c.cpp and src/minigames/dScMgBomroom_c.cpp", "note": "OUTPUT CONVENTION. Both fresh siblings have source == promoted_source == src/actors/<Class>.cpp. dScMgCup_c still carries the OLD convention in BOTH fields: source in src_tu/, promoted_source pointing at src/minigames/d_s_mg_cup.cpp. Twelve older ov006 promotions use src/minigames/d_s_mg_*.cpp, so the old spelling is not wrong-and-unprecedented, it is simply stale. The writer must retarget promoted_source to src/minigames/dScMgCup_c.cpp to match the live convention."},
+        {"field": "source", "cup": "src_tu/minigames/d_s_mg_cup.cpp", "siblings": "src/minigames/d_s_mg_teresa.cpp and src/minigames/d_s_mg_bomroom.cpp", "note": "OUTPUT CONVENTION. Both fresh siblings have source == promoted_source == src/actors/<Class>.cpp. dScMgCup_c still carries the OLD convention in BOTH fields: source in src_tu/, promoted_source pointing at src/minigames/d_s_mg_cup.cpp. Twelve older ov006 promotions use src/minigames/d_s_mg_*.cpp, so the old spelling is not wrong-and-unprecedented, it is simply stale. The writer must retarget promoted_source to src/minigames/d_s_mg_cup.cpp to match the live convention."},
         {"field": "verification.criteria.every_declared_function_bytes_match", "cup": "FAIL", "siblings": "PASS", "note": "THIS is the promotion blocker. Every other criterion is PASS on all three."},
         {"field": "verification.linkcheck", "cup": "absent", "siblings": "present", "note": "Teresa reads result 'scratch-link-verified', Bomroom reads 'link-verified'. linkcheck is stage 4's output and cannot exist before the bytes match, so its absence is a CONSEQUENCE of the byte failure, not a second independent blocker."},
         {"field": "externalized_output", "cup": "key absent", "siblings": "dScMgTeresa_c has `externalized_output: []`; dScMgBomroom_c does not have the key either", "note": "An EMPTY externalized_output is the promotable state. Cup has no key rather than an empty list, which is equivalent-by-absence, and its 13 RTTI/vtable rows sit in `compiler_only_output` with disposition 'deadstrip-data' - the licensed route - not in an externalized_output list. So this class is NOT on the non-promotable externalized route."},
@@ -334,14 +334,14 @@
   "output_convention": {
     "live": "src/actors/<Class>.cpp",
     "evidence": "The two freshest ov006 promotions, dScMgTeresa_c and dScMgBomroom_c, both have source == promoted_source == src/actors/<Class>.cpp. Twelve older ov006 promotions use src/minigames/d_s_mg_*.cpp.",
-    "instruction": "The writer should target src/minigames/dScMgCup_c.cpp and update BOTH `source` and `promoted_source` in the manifest. The current manifest's `promoted_source: src/minigames/d_s_mg_cup.cpp` is the stale convention.",
+    "instruction": "The writer should target src/minigames/d_s_mg_cup.cpp and update BOTH `source` and `promoted_source` in the manifest. The current manifest's `promoted_source: src/minigames/d_s_mg_cup.cpp` is the stale convention.",
     "derived_on": "773526f43"
   },
 
   "what_the_writer_should_do": [
     "This is NOT a gathering job. The gathering is done - 32 functions are already merged into src_tu/minigames/d_s_mg_cup.cpp and 31 byte-match. This is a one-function matching job.",
     "Work the StateShuffle diff at the source level, starting from the `char *state = c + 0x5400;` local at line 788 and the already-proven `(long long)(int)` launder idiom at line 730. Do not spend another round on opt_common_subs - it is already on and already ineffective here.",
-    "Retarget the output to src/minigames/dScMgCup_c.cpp in both manifest fields.",
+    "Retarget the output to src/minigames/d_s_mg_cup.cpp in both manifest fields.",
     "Keep `data: []` / `bss: []`. Do not try to own the vtable.",
     "Do not touch notes/data/c-cpp-classification.tsv line 4460 by hand, even though it is wrong."
   ],

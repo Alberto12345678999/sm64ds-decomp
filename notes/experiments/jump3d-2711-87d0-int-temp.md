@@ -48,5 +48,5 @@ MATCHING VERSIONS: none
 
 - verdict: CONSTRAINT SUPPORTED
 
-Current source locations after PR #3840: [src/minigames/dMgJump3DMario_c.cpp](../../src/minigames/dMgJump3DMario_c.cpp).
+Current source locations after PRs #3840 and #3853: [src/minigames/d_mg_jump3d_mario.cpp](../../src/minigames/d_mg_jump3d_mario.cpp).
 The experiment and commands above retain the paths at `tested_commit`.

@@ -37,7 +37,7 @@
  *
  * The registry factory dMeter_c_classInit (0x020fe154..0x020fe190) closes the
  * unit, written as `return new dMeter_c();`. dMap_c's translation unit ends
- * immediately below, at 0x020fb8f8; src/stage/LevelObjects.cpp starts
+ * immediately below, at 0x020fb8f8; src/game/stages/LevelObjects.cpp starts
  * immediately above, at 0x020fe190.
  *
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm 2004/b56 emits one

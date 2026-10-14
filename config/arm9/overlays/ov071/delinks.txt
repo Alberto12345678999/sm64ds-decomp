@@ -12,7 +12,7 @@ src/_ZN10ScuttlebugD0Ev.cpp:
     complete
     .text start:0x0211f048 end:0x0211f0a4
 
-src/game/actors/Scuttlebug.cpp:
+src/game/actors/d_a_spd.cpp:
     complete
     .text start:0x0211f0a4 end:0x02120668
     .init start:0x021226ac end:0x021228c8
