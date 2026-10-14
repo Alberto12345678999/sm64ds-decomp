@@ -9,7 +9,7 @@
   "boundary_evidence": [
     "contiguous linker run: 0x0213269c..0x02132fe8, 12 function(s), all complete delinks with no hole. build/tu_map.json names the same run ov090/daManta_c+daMenbo_c because rtti_vtables.py reads the words at 0x021341e4 and 0x021341ec as extra daMenbo_c vtable slots. Those words are not slots: daMenbo_c's table is 31 slots and ends at 0x021341e4, and both words relocate to _ZN9daManta_c19func_ov090_021327e4Ev and _ZN9daManta_c19func_ov090_02132a58Ev in this run. No daMenbo_c function is in the span.",
     "class label: daManta_c. Cartridge type name at ov090:0x021341f4 is the bytes 9daManta_c.",
-    "daManta_c_classInit at 0x02132fe8..0x02133034 abuts this run and is left in src/d_a_manta.c.",
+    "daManta_c_classInit at 0x02132fe8..0x02133034 abuts the twelve-method run and is owned by this promoted TU, for thirteen functions total. The former standalone src/d_a_manta.c factory has been absorbed.",
     "module sinit corroboration: 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, not narrowed to this TU).",
     "fold-lane-D-0929: the daManta_c_classInit registry factory abuts this TU's own range with no gap (src/d_a_manta.c ended exactly at 0x02133034, the start of src/actors/daPukupuku_c.cpp, a different class) and no hole; tu_map never attributed it because it cuts on symbol name",
     "the compiler-generated __sinit_daManta_c.cpp is byte-identical to retail __sinit_ov090_02133ea8 (0xa4). It constructs the model handle at 0x02134524 (file 0x39d) and the anim handle at 0x0213452c (file 0x39e), then copies the pointer-to-member descriptors at 0x021341ec and 0x021341e4 into the state record at 0x0213454c. The ctor word at 0x021340c8 points at that initializer."
@@ -787,43 +787,43 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov090",
       "canonical_address": "0x0213420c",
-      "reason": "this class's __si_class_type_info, emitted because the out-of-line destructor is the key function. Homes at ov090:0x0213420c, outside the licensed .text."
+      "reason": "Compiler-emitted class typeinfo is externalized to its canonical ov090:0x0213420c bytes outside the TU-owned code, PMF data, initializer and BSS ranges."
     },
     {
       "symbol": "_ZTS9daManta_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov090",
       "canonical_address": "0x021341f4",
-      "reason": "type-name string. The overlay bytes at 0x021341f4 are 9daManta_c. Text-only; the ROM keeps the string."
+      "reason": "Compiler-emitted type-name string is externalized to its canonical ov090:0x021341f4 bytes. Intact-object ownership includes the initializer and its storage, while metadata remains canonical externalized output."
     },
     {
       "symbol": "_ZTV9daManta_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov090",
       "canonical_address": "0x0213423c",
-      "reason": "compiler-emitted vtable anchored by the out-of-line destructor. Public address point ov090:0x0213423c. g_profile_MANTA sits between the typeinfo and the vtable, so this promotion stays text-only and the ROM keeps the table."
+      "reason": "Compiler-emitted vtable is externalized to the canonical table with public address point ov090:0x0213423c. The intact-object TU owns its code, initializer, ctor, PMF data and BSS; g_profile_MANTA remains separate."
     }
   ],
   "defined_symbol_renames": [
     {
-      "from": "@790",
+      "from": "@789",
       "to": "@766",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured local resource-field reconstruction changes compiler input @790 to @789; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     },
     {
-      "from": "@791",
+      "from": "@790",
       "to": "@767",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured local resource-field reconstruction changes compiler input @791 to @790; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     },
     {
-      "from": "@793",
+      "from": "@792",
       "to": "@769",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured local resource-field reconstruction changes compiler input @793 to @792; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     },
     {
-      "from": "@795",
+      "from": "@794",
       "to": "@771",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Measured local resource-field reconstruction changes compiler input @795 to @794; section, offset, size, binding, bytes and typed relocation destinations preserved. Canonical destination unchanged."
     }
   ]
 }
