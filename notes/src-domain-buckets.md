@@ -82,7 +82,7 @@ a rendering primitive, not gameplay logic and not UI text/menus. That's
 - `runtime/` — engine primitives independent of any one actor or scene.
   - `memory/`, `math/` — no dedicated `notes/*.md` yet; placeholders only.
   - `graphics/` — `fader/` is the one populated example (see above). `dFader_c` was
-    was `src/engine/fader/` and now lives here.
+    moved here from the engine layer.
   - `audio/` — `_ZN5Sound6Player...` classes exist (`srcpath.py`'s `class_of` docstring
     cites `Sound::Player` as a real symbol, grouped under outer component `Sound`). No
     dedicated `notes/*.md` yet.
@@ -100,7 +100,7 @@ a rendering primitive, not gameplay logic and not UI text/menus. That's
   - `stages/` — `notes/scene-provenance.md`, `notes/dscene-c-siblings-census.md`.
 - `ui/` — no gameplay logic, on-screen presentation only.
   - `hud/`, `menus/` — no dedicated note yet; placeholders.
-  - `messages/` — was `src/engine/message/`; now lives here.
+  - `messages/` — moved here from the engine layer.
 - `minigames/` — top-level, not nested under `game/`, per `notes/minigame-provenance.md`.
 
 **Adding a bucket this doc doesn't already list** needs the same bar: point at existing
