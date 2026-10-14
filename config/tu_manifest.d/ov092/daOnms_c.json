@@ -1153,59 +1153,59 @@
   ],
   "defined_symbol_renames": [
     {
-      "from": "@989",
+      "from": "@988",
       "to": "@214",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@990",
+      "from": "@989",
       "to": "@964",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@992",
+      "from": "@991",
       "to": "@966",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@994",
+      "from": "@993",
       "to": "@968",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@996",
+      "from": "@995",
       "to": "@970",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@998",
+      "from": "@997",
       "to": "@972",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@1000",
+      "from": "@999",
       "to": "@974",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@1002",
+      "from": "@1001",
       "to": "@976",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
+    },
+    {
+      "from": "@1003",
+      "to": "@978",
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
       "from": "@1004",
-      "to": "@978",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
-    },
-    {
-      "from": "@1005",
       "to": "@979",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     },
     {
-      "from": "@1007",
+      "from": "@1006",
       "to": "@981",
-      "evidence": "compiler temp; the types.h Vector3 ctors shift this TU's per-TU @NNN uniquifier, so mwcc emits it under this name now; licensed under the existing pin"
+      "evidence": "Input-only compiler temporary shift after native floor-result and CLPS member access. Exact full allocated bytes, symbol attributes and typed edges match the pinned control under the eleven-name bijection; canonical destinations and storage are unchanged."
     }
   ]
 }
