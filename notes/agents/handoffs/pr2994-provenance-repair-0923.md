@@ -1,3 +1,29 @@
+## Current path and independent review status
+
+The production Source now lives at
+[src/game/actors/d_a_menbo.cpp](../../../src/game/actors/d_a_menbo.cpp).
+The actor-layout move was composed mechanically with the accepted repair in
+`c782779d2e797b7b008e26ce5cfb88c4fd2335b2`, based on current main
+`92ad0fdcf0639c56181648c022a8a1d2659ade74`.
+
+All nine provenance findings are now **fixed**. The distinct Root reviewer
+accepted that exact current composition in
+`menbo-current92-composition-independent1014`, after fresh current-path
+26-function strict and complete metadata checks and all six current gates,
+including a full 106-module stock build. This documentation-only follow-up
+repairs references to the moved Source; all production trees remain identical
+to that independently reviewed composition. PR #3852 remains open, with its
+private validation tracked separately. No merge is performed.
+
+The sections below describe earlier tested epochs. Their old paths, hashes,
+pre-repair finding dispositions and publication status are historical, not
+current claims. The complete finding dictionaries are preserved verbatim in
+Git at the immutable `9cc57923` links below and in canonical queue evidence.
+They are linked rather than rewritten to pretend the current path existed in
+those historical reviews.
+
+---
+
 ## Current-main provenance continuation, 2026-10-14
 
 Producer: `codex-menbo-current-provenance-producer1014`, the same actual agent as
@@ -74,89 +100,19 @@ themselves. Another actual agent must review the exact repaired head/base.
 
 Canonical seven historical fixed findings (unchanged dictionaries):
 
-```json
-[
-  {
-    "disposition": "fixed",
-    "id": "MENBO-RTTI-01",
-    "kind": "provenance",
-    "location": "src/actors/daMenbo_c.cpp:14",
-    "reason": "Independent ROM and relocation reads give first word arm9:0x0209a764, second the name record, third ov002:0x021081c0. Revised wording matches all three.",
-    "summary": "Identify the runtime RTTI vtable correctly."
-  },
-  {
-    "disposition": "fixed",
-    "id": "MENBO-VTABLE-01",
-    "kind": "provenance",
-    "location": "src/actors/daMenbo_c.cpp:20; config/tu_manifest.d/ov090/daMenbo_c.json:199",
-    "reason": "Independent ROM read finds exactly slots0,3,6,9,12,16,17,18,19,29; both corrected descriptions list ten.",
-    "summary": "Count every vtable slot targeting the TU."
-  },
-  {
-    "disposition": "fixed",
-    "id": "MENBO-MATRIX-01",
-    "kind": "provenance",
-    "location": "src/actors/daMenbo_c.cpp:193; src/actors/daMenbo_c.cpp:332",
-    "reason": "Read complete src/MulMat4x3Mat4x3.c: its third argument receives the product. Source argument order and types are unchanged; only labels and explanation are repaired.",
-    "summary": "Match declaration labels and scratch description to actual matrix helper."
-  },
-  {
-    "disposition": "fixed",
-    "id": "MENBO-RAYCAST-01",
-    "kind": "provenance",
-    "location": "src/actors/daMenbo_c.cpp:1084",
-    "reason": "Complete InitResources review confirms only the level/mode branch bypasses DetectClsn; the revised comment now states this distinction.",
-    "summary": "Separate the pre-raycast return from the surface-flag return."
-  },
-  {
-    "disposition": "fixed",
-    "id": "MENBO-STATE-01",
-    "kind": "provenance",
-    "location": "src/actors/daMenbo_c.cpp:578; src/actors/daMenbo_c.cpp:850",
-    "reason": "Independent sinit and ROM PMF relocation review pairs entry02131608 with updater02131584 and entry02131db0 with updater02131c48. Animation handles match the unchanged calls.",
-    "summary": "Use evidenced entry/updater pairings without unsupported state names."
-  },
-  {
-    "disposition": "fixed",
-    "id": "MENBO-RTTI-PADDING-01",
-    "kind": "provenance",
-    "location": "config/tu_manifest.d/ov090/daMenbo_c.json:199",
-    "reason": "Fresh twelve-byte ROM name read contains ten encoded-name characters and exactly two trailing zeros total. The final manifest says terminator and padding; handoff preserves the finding as fixed.",
-    "summary": "Count the RTTI name terminator and padding accurately."
-  },
-  {
-    "disposition": "fixed",
-    "id": "MENBO-CURRENT-BASE-01",
-    "kind": "correctness",
-    "location": "src/actors/daMenbo_c.cpp:309",
-    "reason": "This is a base-validity finding, not a new runtime defect. The candidate contains tested base5e1b as an ancestor and preserves its D0 marker. Fresh independent current-base complete-object/TU/strict/static/full-ROM proof passes; the unchanged converted ratchet now passes at3016 versus baseline2993. Original blocked reason: Pinned main adds // @symbol _ZN9daMenbo_cD0Ev beside the D1 marker. The exact tested candidate lacks it. No defect is asserted in the six repaired provenance descriptions; current-base preservation and proof remain required.",
-    "summary": "Preserve the landed D0 marker and validate the current source base."
-  }
-]
-```
+The exact historical dictionaries, including their original locations and
+pre-repair dispositions, remain in the [immutable `9cc57923` handoff](
+https://github.com/tangosdev/sm64ds-decomp/blob/9cc5792303b6783f178e7851a4698fedb8df35a6/notes/agents/handoffs/pr2994-provenance-repair-0923.md#canonical-seven-historical-fixed-findings-unchanged-dictionaries).
+Canonical queue evidence also retains those dictionaries without changing
+their historical paths.
 
 New current findings, retained exactly as independently reported before repair:
 
-```json
-[
-  {
-    "id": "MENBO-CURRENT-INIT-STATE-02",
-    "kind": "provenance",
-    "disposition": "unresolved",
-    "location": "src/actors/daMenbo_c.cpp:859",
-    "summary": "InitResources comment calls the selected state water rest, while both branches install the water-chase node.",
-    "reason": "Both the mode2/course0x12 and surface0x20 branches install data_ov090_021344f4. Sinit and current state map pair this with entry02131db0/update02131c48; the water-rest node is02134504 with entry02131b94/update02131ac4. Runtime code is unchanged; correct only the descriptive text."
-  },
-  {
-    "id": "MENBO-CURRENT-OWNERSHIP-PROSE-02",
-    "kind": "provenance",
-    "disposition": "unresolved",
-    "location": "config/tu_manifest.d/ov090/daMenbo_c.json:1393",
-    "summary": "Active externalized-vtable reason says the promotion stays text-only despite current owned initializer, ctor, data and BSS.",
-    "reason": "Current intact-object policy retains .init/.ctor/.data/.bss. Vtable metadata remains externally licensed. Qualify the historical text-only boundary note and update the active reason without changing ownership, addresses, sections or any policy."
-  }
-]
-```
+The exact historical dictionaries, including their original locations and
+pre-repair dispositions, remain in the [immutable `9cc57923` handoff](
+https://github.com/tangosdev/sm64ds-decomp/blob/9cc5792303b6783f178e7851a4698fedb8df35a6/notes/agents/handoffs/pr2994-provenance-repair-0923.md#new-current-findings-retained-exactly-as-independently-reported-before-repair).
+Canonical queue evidence also retains those dictionaries without changing
+their historical paths.
 
 Private current evidence: `build/menbo-retire1014/repair/` contains the actual
 focused whole-object proof, prose-only input proof, per-gate terminal records
