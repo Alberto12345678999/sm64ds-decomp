@@ -27,10 +27,11 @@
  *
  * deslop leftovers:
  * - DropShadowRadHeight, dCcAcPos_c::Init, dCcAc_c::Init, dBgCh_Actr::Init,
- *   GetCapState, UpdateCapPos, ModelAnim::SetAnim, SpawnFireball, Player::
+ *   UpdateCapPos, ModelAnim::SetAnim, SpawnFireball, Player::
  *   Bounce/Hurt, KillByInvincibleChar and the Sound/Particle/dCamera_c calls
- *   stay mangled: the header member forms take Fix12<int> by value (the
- *   Fix12 wall) or have no shared declaration.
+ *   retain scalar or opaque boundaries. UpdateCapPos has a shared reference
+ *   declaration, but the direct call currently changes two argument-address
+ *   setup instructions in 021166ac; that source-shape reconstruction remains open.
  * - func_02012694's `((char *)this + 0x500)` argument is an opaque state
  *   pointer into mShadowMtx2's tail word, not a field.
  * - `(Vector3 *)&mPosX` puns stay: no shared Pos() accessor exists (S18).
@@ -83,7 +84,6 @@ int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int a, i
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int r, int h, unsigned int e, unsigned int g);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, Fix12i radius, Fix12i height, unsigned int flags, unsigned int vulnFlags);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b);
-int _ZN11dCapEnemy_c11GetCapStateEv(dCapEnemy_c *c);
 unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int uniqueID, unsigned int effectID,
     int x, int y, int z, const void *dir, void *callback);
@@ -101,16 +101,21 @@ extern Matrix4x3 data_020a0e68;
  * the model-file pair func_02017acc/func_02017ab4 and the animation handles
  * get SharedFilePtr::Construct plus the anim destructor through thin
  * declaration-only wrappers; the manifest aliases those mangled spellings to
- * the arm9 destinations the retail initializer calls. */
+ * the arm9 destinations the retail initializer calls. The measured layout is
+ * u16 fileID at +0, u8 numRefs at +2, and the loaded file pointer at +4.
+ * The destructor chain records the file ID; actor cleanup releases handles
+ * separately. These local wrappers retain the existing lifecycle aliases. */
 struct TrsModelFileResHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
+    u16 fileID;
+    u8 numRefs;
+    BMD_File *filePtr;
     TrsModelFileResHandle(unsigned int fileID);
     ~TrsModelFileResHandle();
 };
 struct TrsAnimationResFileHandle : SharedFilePtr {
-    s32 fileId;
-    void *file;
+    u16 fileID;
+    u8 numRefs;
+    BCA_File *filePtr;
     TrsAnimationResFileHandle(unsigned int fileID);
     ~TrsAnimationResFileHandle();
 };
@@ -142,7 +147,7 @@ int func_02012694(int a, void *p, ...);
 u16 func_0201277c(int a);
 extern s16 data_02082214[];
 extern void *data_0209f318;
-void func_ov063_02118f24(void *c, void *vec);
+void func_ov063_02118f24(daTrsIcon_c *icon, const Vector3 &pos);
 int func_ov063_0211a0a8(int a0, int a1, int a2, int a3, int a4);
 extern void Vec3_MulScalarInPlace(void *v, int s);
 extern void func_020167a4(void *p);
@@ -1392,10 +1397,10 @@ void daTrs_c::func_ov063_02118458() {
 
     if (this->mModelAnim.Finished()) {
         if (func_ov063_0211a8a4()) {
-            if (*(int*)&this->mModelAnim.file == *(int*)&data_ov063_0211edcc.file) {
+            if (this->mModelAnim.file == data_ov063_0211edcc.filePtr) {
                 func_02012694(0x158, &this->mCamSpacePosX);
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                    data_ov063_0211edd4.file, 0x40000000, 0x1000, 0);
+                    data_ov063_0211edd4.filePtr, 0x40000000, 0x1000, 0);
             } else if (this->mAttackRepeats != 0) {
                 this->mAttackRepeats -= 1;
                 this->mModelAnim.currFrame = 0;
@@ -1407,7 +1412,7 @@ void daTrs_c::func_ov063_02118458() {
                 rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
                 this->mAttackTimer = rnd + 0xb4;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                    data_ov063_0211ede4.file, 0, 0x1000, 0);
+                    data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
             }
         } else {
             int rnd;
@@ -1416,10 +1421,10 @@ void daTrs_c::func_ov063_02118458() {
             rnd = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x3f;
             this->mAttackTimer = rnd + 0xb4;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&this->mModelAnim,
-                data_ov063_0211ede4.file, 0, 0x1000, 0);
+                data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         }
     } else {
-        if (*(int*)&this->mModelAnim.file == *(int*)&data_ov063_0211edd4.file
+        if (this->mModelAnim.file == data_ov063_0211edd4.filePtr
             && this->mModelAnim.WillHitFrame(6)) {
             Vec3 v;
             s16 m = 0x78;
@@ -1507,7 +1512,7 @@ void daTrs_c::func_ov063_0211873c() {
     this->mVertSpeed = 0;
     this->mVertAccel = 0;
     func_02012694(0x159, &this->mCamSpacePosX);
-    ModelAnim_SetAnim(&this->mModelAnim, data_ov063_0211edcc.file, 0x40000000, 0x1000, 0);
+    ModelAnim_SetAnim(&this->mModelAnim, data_ov063_0211edcc.filePtr, 0x40000000, 0x1000, 0);
     {
         unsigned int rnd = (unsigned int)RandomIntInternal(&data_0209e650);
         this->mAttackRepeats = (u8)((rnd >> 0x10) % 3);
@@ -1746,7 +1751,7 @@ void daTrs_c::func_ov063_02118ea0() {
 // @symbol _ZN7daTrs_c19func_ov063_02118eacEv
 void daTrs_c::func_ov063_02118eac() {
 
-    Vec3 v;
+    Vector3 v;
     void *p;
     unsigned int id;
 
@@ -1762,17 +1767,17 @@ void daTrs_c::func_ov063_02118eac() {
     p = (void *)dActor_c::FindWithID(id);
     this->mFoundActor = (dActor_c *)p;
     if (this->mFoundActor != 0) {
-        func_ov063_02118f24(this->mFoundActor, &v);
+        func_ov063_02118f24(static_cast<daTrsIcon_c *>(this->mFoundActor), v);
     }
     this->mFoundActor = 0;
 }
 
 
 // @symbol func_ov063_02118f24
-extern "C" void func_ov063_02118f24(void *c, void *vec)
+extern "C" void func_ov063_02118f24(daTrsIcon_c *icon, const Vector3 &pos)
 {
     unsigned int val = 4;
-    ((daTrsIcon_c *)c)->UntrackAndSpawnStar(((daTrsIcon_c *)c)->mTrackStarID, ((daTrsIcon_c *)c)->mStarID, *(const Vector3 *)(vec), val);
+    icon->UntrackAndSpawnStar(icon->mTrackStarID, icon->mStarID, pos, val);
 }
 
 // @symbol _ZN7daTrs_c19func_ov063_02118f50Ev
@@ -2425,7 +2430,7 @@ extern "C" int func_ov063_0211a0a8(int a0, int a1, int a2, int a3, int a4) {
 // @symbol _ZN7daTrs_c19func_ov063_0211a0dcEv
 int daTrs_c::func_ov063_0211a0dc() {
 
-    void* r4;
+    Player *player;
     u32 id;
     Vec3 v1, v2;
 
@@ -2454,22 +2459,22 @@ int daTrs_c::func_ov063_0211a0dc() {
         return 1;
     }
 
-    r4 = (void *)dActor_c::FindWithID(id);
-    if (!r4)
+    player = static_cast<Player *>(dActor_c::FindWithID(id));
+    if (!player)
         goto ret0;
     if (!(this->mdCcAcPos_c.hitFlags & 0x400000))
         goto ret0;
-    if (((Player *)r4)->mIsVanish != 0)
+    if (player->mIsVanish != 0)
         return 0;
 
-    if (((Player *)r4)->mIsMetal != 0) {
+    if (player->mIsMetal != 0) {
         this->mdCcAcPos_c.flags |= 1;
         this->mTalkPlayer = (Player *)dActor_c::FindWithID(this->mdCcAcPos_c.otherOwner);
         return 1;
     }
 
-    if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *(Player *)(r4)) != 0) {
-        _ZN6Player6BounceE5Fix12IiE(r4, 0x28000);
+    if (this->JumpedOnByPlayer(*(dCc_c *)(&this->mdCcAcPos_c), *player) != 0) {
+        _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
         func_0201267c(0x149, &this->mCamSpacePosX);
         return -1;
     }
@@ -2477,8 +2482,8 @@ int daTrs_c::func_ov063_0211a0dc() {
     {
     int isBigBoo = (int)(this->actorID == TRS_ID_BOSS_TERESA);
     if (isBigBoo) {
-        if (((Player *)r4)->mIsAirborne != 0) {
-            _ZN6Player6BounceE5Fix12IiE(r4, 0x28000);
+        if (player->mIsAirborne != 0) {
+            _ZN6Player6BounceE5Fix12IiE(player, 0x28000);
             func_0201267c(0x149, &this->mCamSpacePosX);
             return -1;
         }
@@ -2486,7 +2491,7 @@ int daTrs_c::func_ov063_0211a0dc() {
         v1.x = this->mPosX;
         v1.y = this->mPosY;
         v1.z = this->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(r4, &v1, this->mHurtDamage, 0xc000, 1, 0, 1);
+        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v1, this->mHurtDamage, 0xc000, 1, 0, 1);
         func_0201267c(0x149, &this->mCamSpacePosX);
         return -1;
     }
@@ -2530,7 +2535,7 @@ no_kind:
     v2.x = this->mPosX;
     v2.y = this->mPosY;
     v2.z = this->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(r4, &v2, this->mHurtDamage, 0xc000, 1, 0, 1);
+    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v2, this->mHurtDamage, 0xc000, 1, 0, 1);
     func_0201267c(0x149, &this->mCamSpacePosX);
     return -1;
 
@@ -3048,7 +3053,7 @@ int daTrs_c::Behavior()
         }
         mFoundActor = 0;
     }
-    if (_ZN11dCapEnemy_c11GetCapStateEv(this) == 0)
+    if (GetCapState() == 0)
         return 1;
 
     t = UpdateKillByInvincibleChar(mWithMeshClsn, mModelAnim, 0);
@@ -3378,7 +3383,7 @@ int daTrs_c::InitResources()
         }
         dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edf4), 1, 1);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov063_0211ede4.file, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov063_0211ede4.filePtr, 0, 0x1000, 0);
         mHitPoints = 3;
         mClsnRadius = 0xc8;
         mClsnHeight = 0x104;
@@ -3397,7 +3402,7 @@ int daTrs_c::InitResources()
         mVariant = param1 & 0xf;
         dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edc4), 1, 0x16);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov063_0211eddc.file, 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov063_0211eddc.filePtr, 0, 0x1000, 0);
         mHitPoints = 1;
         if (mVariant == 5) {
             mClsnZBias = -0x24000;
@@ -3535,7 +3540,7 @@ int daTrs_c::InitResources()
                 return 1;
             }
         }
-        mCarriedModel.SetFile((BMD_File *)data_ov063_0211edec.file, 1, -1);
+        mCarriedModel.SetFile(data_ov063_0211edec.filePtr, 1, -1);
     } else if (mVariant == 0 || mVariant == 1 || mVariant == 2 || mVariant == 6 || (unsigned)(unsigned char)(mVariant + 0xf8) <= 3) {
         unsigned short t = mCarriedID;
         if (t == TRS_ID_BLUE_COIN) {
