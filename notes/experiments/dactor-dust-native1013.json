@@ -7,7 +7,7 @@
     "thread": "01a13751-2d56-7901-a14d-9543eb0dbf2e"
   },
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3169",
-  "status": "Source checkpoint; fresh production gates in progress.",
+  "status": "Byte/object and remaining static gates passed. Literal scoped declaration gate exits1 on four independently reproduced base disagreements; it is not claimed passed. Independent Source acceptance required.",
   "scope": "Restore the two native landing-dust methods and real ground-query header/member access into the enrolled91-function Actor TU. No header, ABI, manifest, policy, symbol or enrollment change.",
   "source": "src/actors/dActor_c.cpp",
   "manifest": "config/tu_manifest.d/arm9/Actor.json",
@@ -129,6 +129,321 @@
     "path": "C:/tmp/sm64ds-dust-current-probe1013/build/dust-current-probe1013/HANDOFF.json",
     "private_proof_not_production_gate": true
   },
-  "verification": {},
-  "publication": "No queue publication, push, public PR or main merge by this producer."
+  "verification": {
+    "whole_actor_object": {
+      "base": "004286a4182211efc61873cb0cbdf4bc8311b096",
+      "checkpoint": "d1ad30cb20cd9597b08e4442d4a90425f16d5c1c",
+      "source": "src/actors/dActor_c.cpp",
+      "manifest": "config/tu_manifest.d/arm9/Actor.json",
+      "compiler": "2004/b56",
+      "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+      "strict_functions": 91,
+      "blind": 0,
+      "diffs": [],
+      "targets": [
+        {
+          "name": "_ZN8dActor_c13LandingDustAtER7Vector3b",
+          "module": "arm9",
+          "addr": "0x0200fac4",
+          "verdict": "VERIFIED",
+          "diffs": [],
+          "blind": 0
+        },
+        {
+          "name": "_ZN8dActor_c17HugeLandingDustAtER7Vector3b",
+          "module": "arm9",
+          "addr": "0x0200fb84",
+          "verdict": "VERIFIED",
+          "diffs": [],
+          "blind": 0
+        }
+      ],
+      "raw_sha256": "76b805b8458a6aeb58a48b31a47d1cff1b833ff271cea0afa9a353bcc9130b81",
+      "prepared_sha256": "19edbeb864623c1a1f22eedf2237a6c8131e0674276fc35ba615a78abc16a4ed",
+      "whole_raw_identical": true,
+      "whole_ordinary_prepared_identical": true,
+      "raw_edges": 191,
+      "prepared_edges": 191,
+      "metadata_records": 0,
+      "owned_data": 0,
+      "owned_bss": 0,
+      "owned_init": 0,
+      "nontext": [
+        {
+          "container": "raw",
+          "allocated_nontext": []
+        },
+        {
+          "container": "prepared",
+          "allocated_nontext": []
+        }
+      ],
+      "ordinary_path": [
+        "rombuild._retarget",
+        "rombuild._isolate"
+      ],
+      "private_tool_override": false,
+      "compiler_only_policies": {
+        "deadstrip": [
+          "_ZN7Vector3D1Ev"
+        ],
+        "expect": {
+          "_ZN7Vector3D1Ev": "1eff2fe1"
+        },
+        "data": [],
+        "homes": {
+          "_ZN7Vector3D1Ev": [
+            "arm9",
+            33583808
+          ]
+        }
+      },
+      "other89_body_tokens_unchanged": true,
+      "body_comparison_qualification": "Comment/whitespace-insensitive ordinal blocks; only redundant dBgCh_Gnd forward declaration removed from ordinal18 before comparison. No other89 body code changes.",
+      "held_sound_ordinals_unchanged": [
+        5,
+        6
+      ],
+      "native_definitions": [
+        {
+          "symbol": "_ZN8dActor_c17HugeLandingDustAtER7Vector3b",
+          "signature": "void (<this>, Vector3 &, bool)",
+          "is_member": true,
+          "line": 1387
+        },
+        {
+          "symbol": "_ZN8dActor_c13LandingDustAtER7Vector3b",
+          "signature": "void (<this>, Vector3 &, bool)",
+          "is_member": true,
+          "line": 1417
+        }
+      ],
+      "header_config_tools_port_unchanged": true
+    },
+    "rombuild": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/rombuild.py",
+        "-j16",
+        "--no-rom"
+      ],
+      "log": "build/dactor-dust-native1013/rombuild.log",
+      "log_sha256": "54c2e9fa75bf6476bc720fb9d8c987bf999bc6061d5da03a5cfc5b358f8d3d78",
+      "tested_head": "d1ad30cb20cd9597b08e4442d4a90425f16d5c1c",
+      "modules_exact": 106,
+      "source_functions": 11334,
+      "source_function_counts_observed": [
+        5888,
+        11334
+      ],
+      "function_count_scope": "Final production section; earlier baseline control count is not production coverage.",
+      "owned_data_claims": 331,
+      "owned_bss_claims": 239,
+      "baseline_dsd_symbol_errors": 9,
+      "final_production_summary": [
+        "[6/6] analyze module and source fidelity",
+        "source-built functions: 11,334  (2,225,480 / 2,238,108 code bytes, 99.44%)",
+        "  reproducing: 11,334",
+        "  mismatching: 0",
+        "source-owned data claims: 331  (reproducing 331, mismatching 0)",
+        "source-owned BSS claims: 239  (30,164 NOBITS bytes; object/symbol gates)",
+        "module fidelity: 106/106 exact, 100.000000% of compared bytes",
+        "  of 3,049,600 module bytes: 2,225,480 (73.0%) source-built code, 13,020 source-owned data, 798,472 data bytes no complete source entry reaches; 48,968 compiler-emitted data bytes verified overall",
+        "  retail-gap contribution: 811,100 module bytes (12,628 function-code, 798,472 data/non-function)",
+        "ROM-build analysis: PASS",
+        "ROM data from source: 969 symbol(s) verified, 1,519 partial, 1 differ, 21 unnamed by config (from 5,282 object records)"
+      ]
+    },
+    "whole-proof": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "build/dactor-dust-native1013/whole-proof.py"
+      ],
+      "log": "build/dactor-dust-native1013/whole-proof.log",
+      "log_sha256": "13c1d3bb71f70a50ea553c583715e6b795c8539048a3a46d0203e7d3ed9aa264"
+    },
+    "stock": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/prepush_linkcheck.py",
+        "--range",
+        "004286a4182211efc61873cb0cbdf4bc8311b096..d1ad30cb20cd9597b08e4442d4a90425f16d5c1c",
+        "--json",
+        "build\\dactor-dust-native1013\\stock.json"
+      ],
+      "log": "build/dactor-dust-native1013/stock.log",
+      "log_sha256": "8ea3a85396b4f7e1e0416dc022aef04654b224322d01375e9fe40bcda2aafeb5",
+      "mode": "Literal --range 004286a4182211efc61873cb0cbdf4bc8311b096..d1ad30cb20cd9597b08e4442d4a90425f16d5c1c",
+      "source_files": 1,
+      "checked": 91,
+      "verified": 91,
+      "warnings": 0,
+      "blocking": 0,
+      "blind": 0,
+      "results_sha256": "58df5646e5b746323404709270a4ef24dd7d1cfefb4f38443240e5ff566df760"
+    },
+    "decl": {
+      "exit_code": 1,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/check_decl_agreement.py",
+        "--changed",
+        "004286a4182211efc61873cb0cbdf4bc8311b096"
+      ],
+      "log": "build/dactor-dust-native1013/decl.log",
+      "log_sha256": "c3ff871a31641dcd164b3e6c55590f3533f9a86154a4800580ae268ac3d701ab",
+      "result": "FAIL on unchanged exact-base disagreements; no new declaration or local header-redeclaration finding.",
+      "scope": "1640 files, including984 reached through13 changed type names; conservative type reach exposes existing foreign records.",
+      "base_global_command": "python tools/check_decl_agreement.py --check",
+      "base_global_exit_code": 1,
+      "base_global_log": "build/dactor-dust-native1013/base-decl-global.log",
+      "base_global_log_sha256": "73c276b743005f1e53e6b4ce036db73f8993a695001cfa123e76e9779d9caf6f",
+      "exact_base_comparison": {
+        "base": "004286a4182211efc61873cb0cbdf4bc8311b096",
+        "checkpoint": "d1ad30cb20cd9597b08e4442d4a90425f16d5c1c",
+        "literal_changed_exit": 1,
+        "whole_collection_before_after_keysets_identical": true,
+        "whole_collection_disagreements_before": 7533,
+        "whole_collection_disagreements_after": 7533,
+        "new_disagreements": [],
+        "removed_disagreements": [],
+        "foreign_input_blobs": {
+          "src/unnamed/ov002/__sinit_ov002_021019d0.c": {
+            "base": "cc92619b9486550068a038624a738d88ac58452f",
+            "checkpoint": "cc92619b9486550068a038624a738d88ac58452f"
+          },
+          "src/actors/daLuigi_c.cpp": {
+            "base": "7cdb421d80fccd7b6c51b186a4b8d37fd41ba0c8",
+            "checkpoint": "7cdb421d80fccd7b6c51b186a4b8d37fd41ba0c8"
+          },
+          "include/SharedFilePtr.h": {
+            "base": "4cf9477fa21821a8c400546d4be6a4ebebe7c2be",
+            "checkpoint": "4cf9477fa21821a8c400546d4be6a4ebebe7c2be"
+          },
+          "config/decl-agreement-baseline.json": {
+            "base": "15bc3797f5966bef13ba9e4ffddcf8ac0538a736",
+            "checkpoint": "15bc3797f5966bef13ba9e4ffddcf8ac0538a736"
+          }
+        },
+        "reported_foreign_disagreements": [
+          {
+            "symbol": "data_ov002_0210e8d0",
+            "kind": "return",
+            "file": "src/unnamed/ov002/__sinit_ov002_021019d0.c",
+            "line": 463,
+            "decl": "char []",
+            "got": "char []",
+            "want": "SharedFilePtr",
+            "basis": "plurality",
+            "ref_file": "src/actors/daLuigi_c.cpp",
+            "ref_line": 105,
+            "ref": "SharedFilePtr"
+          },
+          {
+            "symbol": "data_ov002_0210eb20",
+            "kind": "return",
+            "file": "src/unnamed/ov002/__sinit_ov002_021019d0.c",
+            "line": 537,
+            "decl": "char []",
+            "got": "char []",
+            "want": "SharedFilePtr",
+            "basis": "plurality",
+            "ref_file": "src/actors/daLuigi_c.cpp",
+            "ref_line": 103,
+            "ref": "SharedFilePtr"
+          },
+          {
+            "symbol": "data_ov002_0210ebb8",
+            "kind": "return",
+            "file": "src/unnamed/ov002/__sinit_ov002_021019d0.c",
+            "line": 556,
+            "decl": "char []",
+            "got": "char []",
+            "want": "SharedFilePtr",
+            "basis": "plurality",
+            "ref_file": "src/actors/daLuigi_c.cpp",
+            "ref_line": 102,
+            "ref": "SharedFilePtr"
+          },
+          {
+            "symbol": "data_ov002_0210ebd8",
+            "kind": "return",
+            "file": "src/unnamed/ov002/__sinit_ov002_021019d0.c",
+            "line": 560,
+            "decl": "char []",
+            "got": "char []",
+            "want": "SharedFilePtr",
+            "basis": "plurality",
+            "ref_file": "src/actors/daLuigi_c.cpp",
+            "ref_line": 106,
+            "ref": "SharedFilePtr"
+          }
+        ],
+        "no_baseline_or_foreign_source_edit": true
+      },
+      "integration_requirement": "Resolve or explicitly account for these unrelated base disagreements in the owning integration workflow. This producer does not edit the foreign files, bank a new baseline, weaken the checker, or claim this literal gate is green."
+    },
+    "port": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/port_refcheck.py"
+      ],
+      "log": "build/dactor-dust-native1013/port.log",
+      "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e",
+      "checked": 267
+    },
+    "langmode": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/langmode_audit.py",
+        "--check",
+        "langmode-baseline.json"
+      ],
+      "log": "build/dactor-dust-native1013/langmode.log",
+      "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
+    },
+    "conflict": {
+      "exit_code": 0,
+      "command": [
+        "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/check_tubuild_conflicts.py"
+      ],
+      "log": "build/dactor-dust-native1013/conflict.log",
+      "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521",
+      "manifest_entries": 429,
+      "sources_read": 429,
+      "recorded_conflict_markers": 6
+    }
+  },
+  "publication": "No queue publication, push, public PR or main merge by this producer.",
+  "checkpoint": "d1ad30cb20cd9597b08e4442d4a90425f16d5c1c",
+  "source_completion": "partial: two native dust members and real query type/member access restored; surrounding raw/POD/scalar and lifecycle-shard boundaries remain.",
+  "tested_build_trees": {
+    "src": "1f271113235db5eb9211a8d811632ae6235a0988",
+    "include": "4afb8d76b1f5b3ad055a3f2827c8fee95e0849b6",
+    "config": "ec75a4cbd2b4d2d5f62ae4181a420bbc36474f1a",
+    "tools": "b77c42f89088e6e8d63449ee846cb3e0a84ee2ec",
+    "port": "7f94d11db1302e785eb3cdff9d5f7d8416f4ee33"
+  },
+  "input_git_blobs": {
+    "src/actors/dActor_c.cpp": "028c4c1aad670df3ade279165445cfac591a14bd",
+    "include/dActor_c.h": "ca66dfd1fb439603bd6a0616ff3365cc32e21bac",
+    "include/dBgCh_Gnd.h": "434174b167fb040a56aaf0a21652b6d61924f9bf",
+    "config/tu_manifest.d/arm9/Actor.json": "584c424e38743e6127b0b807daeb32623ba78cba"
+  },
+  "report_only_finalization": "Only this report changes after the tested checkpoint. Private final-binding.json verifies all five build trees and exact final changed paths.",
+  "limitations": [
+    "Four pre-existing unbanked declaration disagreements remain a literal failing gate; exact unchanged-base controls and complete comparison are included above.",
+    "Six historical findings keep their original task scope and dispositions; two current dust audit IDs remain separate.",
+    "No full Actor class reconstruction or migration of the retained RaycastGroundPod/Particle scalar ABI bodies is claimed.",
+    "The unchanged current Actor manifest owns only91 text entries; no data/BSS/init/metadata is emitted by this object, and lifecycle/RTTI/vtable shards remain outside its ownership.",
+    "Nine baseline DSD symbol errors and the global data advisory inventory are retained; zero new production symbol errors is the actual gate.",
+    "--no-rom does not claim a newly assembled final candidate cartridge image.",
+    "Independent Source acceptance and public publication are not performed by this producer."
+  ]
 }
