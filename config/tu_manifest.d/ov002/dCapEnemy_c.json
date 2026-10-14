@@ -1,8 +1,8 @@
 {
   "id": "ov002/dCapEnemy_c",
   "module": "ov002",
-  "source": "src/actors/dCapEnemy_c.cpp",
-  "promoted_source": "src/actors/dCapEnemy_c.cpp",
+  "source": "src/runtime/actor/dCapEnemy_c.cpp",
+  "promoted_source": "src/runtime/actor/dCapEnemy_c.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [

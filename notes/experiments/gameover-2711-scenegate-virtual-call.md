@@ -2,7 +2,7 @@
 
 - tested_commit: 2546f0ae4 (cleanup-mgjump3-gameover at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/actors/dScGameOver_c.cpp:30-32,57-58,273-276` reaches
+- claim: `src/game/stages/dScGameOver_c.cpp:30-32,57-58,273-276` reaches
   data_0209f5bc through a TU-local shadow vtable spelt out to slot 5.
 - attempted_change (scratch-applied, then reverted):
 
@@ -23,7 +23,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/actors/dScGameOver_c.cpp \
+.venv/bin/python tools/match.py --c src/game/stages/dScGameOver_c.cpp \
   --func _ZN13dScGameOver_c8BehaviorEv --addr 0x020b0894 --size 0x2a0 \
   --version 2004/b56 --module ov003 --strict-relocs --brief
 ```

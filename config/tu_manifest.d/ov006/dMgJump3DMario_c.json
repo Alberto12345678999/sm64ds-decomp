@@ -1,8 +1,8 @@
 {
   "id": "ov006/dMgJump3DMario_c",
   "module": "ov006",
-  "source": "src/actors/dMgJump3DMario_c.cpp",
-  "promoted_source": "src/actors/dMgJump3DMario_c.cpp",
+  "source": "src/minigames/dMgJump3DMario_c.cpp",
+  "promoted_source": "src/minigames/dMgJump3DMario_c.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
@@ -319,7 +319,7 @@
       "symbol": "__sinit_dMgJump3DMario_c.cpp",
       "address": "0x0212f52c",
       "size": "0x00000134",
-      "legacy_source": "src/actors/dMgJump3DMario_c.cpp",
+      "legacy_source": "src/minigames/dMgJump3DMario_c.cpp",
       "ordinal": 40
     }
   ],

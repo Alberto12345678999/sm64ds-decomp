@@ -32,9 +32,9 @@ data_ov052_02111b14 kind:data(any) addr:0x02111b14 ambiguous
 data_ov052_02111b34 kind:data(any) addr:0x02111b34 ambiguous
 data_ov052_02111b44 kind:data(any) addr:0x02111b44 ambiguous
 __sinit_d_a_obj_emm_log.cpp kind:function(arm,size=0x6c) addr:0x02111b64
-__sinit_daObjEmmYuka_c.cpp kind:function(arm,size=0x6c) addr:0x02111bd0
+__sinit_d_a_obj_emm_yuka.cpp kind:function(arm,size=0x6c) addr:0x02111bd0
 .p__sinit_d_a_obj_emm_log.cpp kind:data(word) addr:0x02111c3c
-.p__sinit_daObjEmmYuka_c.cpp kind:data(word) addr:0x02111c40
+.p__sinit_d_a_obj_emm_yuka.cpp kind:data(word) addr:0x02111c40
 data_ov052_02111c60 kind:data(any) addr:0x02111c60
 data_ov052_02111c64 kind:data(any) addr:0x02111c64
 data_ov052_02111c6c kind:data(any) addr:0x02111c6c

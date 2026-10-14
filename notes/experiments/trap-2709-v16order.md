@@ -2,7 +2,7 @@
 
 - tested_commit: 395312cb4 (cleanup-datrstrap at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp:98-99` writes v16's
+- claim: `src/game/actors/d_a_trs_trap.cpp:98-99` writes v16's
   three fields x, y, z in that order because any other order swaps the two
   strh (notes/mwccarm-codegen.md 6v).
 - disposition: compiler_constraint. The cleaner alternative (any other field
@@ -21,7 +21,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_trs_trap.cpp \
   --func _ZN11daTrsTrap_c13InitResourcesEv --addr 0x0211cf00 --size 0x370 \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```

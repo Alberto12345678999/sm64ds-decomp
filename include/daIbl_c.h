@@ -25,7 +25,7 @@
  * the destructor leaves the class eight bytes short.
  *
  * Every function of the class reproduces, in one translation unit:
- * src/actors/daIbl_c.cpp is the whole linker unit 0x02141f04..0x021431c4,
+ * src/game/actors/d_a_ibl.cpp is the whole linker unit 0x02141f04..0x021431c4,
  * factory included.
  *
  * SIZE IS THE ROM'S OWN: `daIbl_c_classInit` calls

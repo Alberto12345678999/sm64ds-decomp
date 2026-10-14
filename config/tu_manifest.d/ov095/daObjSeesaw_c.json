@@ -1,8 +1,8 @@
 {
   "id": "ov095/daObjSeesaw_c",
   "module": "ov095",
-  "source": "src/actors/daObjSeesaw_c.cpp",
-  "promoted_source": "src/actors/daObjSeesaw_c.cpp",
+  "source": "src/game/actors/d_a_obj_seesaw.cpp",
+  "promoted_source": "src/game/actors/d_a_obj_seesaw.cpp",
   "production_mode": "intact-object",
   "status": "promoted",
   "boundary_confidence": "high",
@@ -815,7 +815,7 @@
   },
   "init": [
     {
-      "symbol": "__sinit_daObjSeesaw_c.cpp",
+      "symbol": "__sinit_d_a_obj_seesaw.cpp",
       "address": "0x02136fe0",
       "size": "0x24c",
       "binding": "STB_GLOBAL",
@@ -824,7 +824,7 @@
   ],
   "ctor": [
     {
-      "symbol": ".p__sinit_daObjSeesaw_c.cpp",
+      "symbol": ".p__sinit_d_a_obj_seesaw.cpp",
       "address": "0x021373b4",
       "size": "0x4",
       "binding": "STB_GLOBAL",
@@ -870,13 +870,13 @@
   ],
   "symbol_binding_rewrites": [
     {
-      "symbol": "__sinit_daObjSeesaw_c.cpp",
+      "symbol": "__sinit_d_a_obj_seesaw.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the TU initializer local; DSD requires a configured global relocation destination at the same exact address"
     },
     {
-      "symbol": ".p__sinit_daObjSeesaw_c.cpp",
+      "symbol": ".p__sinit_d_a_obj_seesaw.cpp",
       "from": "STB_LOCAL",
       "to": "STB_GLOBAL",
       "evidence": "mwcc emits the ctor-table object local; DSD exposes owned symbols globally and cannot encode a local symbols.txt entry"
@@ -1624,7 +1624,7 @@
       "source": "0x021373b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "__sinit_daObjSeesaw_c.cpp",
+      "symbol": "__sinit_d_a_obj_seesaw.cpp",
       "addend": 0,
       "target_module": "ov095",
       "target_address": "0x02136fe0"

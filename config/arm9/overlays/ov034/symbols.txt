@@ -47,8 +47,8 @@ data_ov034_021138b0 kind:data(any) addr:0x021138b0
 data_ov034_021138bc kind:data(any) addr:0x021138bc ambiguous
 data_ov034_021138c4 kind:data(any) addr:0x021138c4
 data_ov034_021138d8 kind:data(any) addr:0x021138d8
-__sinit_daHanachan_c.cpp kind:function(arm,size=0x78c) addr:0x021138ec
-.p__sinit_daHanachan_c.cpp kind:data(word) addr:0x02114078
+__sinit_d_a_hanachan.cpp kind:function(arm,size=0x78c) addr:0x021138ec
+.p__sinit_d_a_hanachan.cpp kind:data(word) addr:0x02114078
 data_ov034_02114080 kind:data(any) addr:0x02114080
 data_ov034_02114084 kind:data(any) addr:0x02114084
 data_ov034_02114088 kind:data(any) addr:0x02114088

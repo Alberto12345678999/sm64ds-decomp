@@ -1663,31 +1663,31 @@
     "promoted_to_src_actors": [
       {
         "class": "dScMgBomroom_c",
-        "output": "src/actors/dScMgBomroom_c.cpp"
+        "output": "src/minigames/dScMgBomroom_c.cpp"
       },
       {
         "class": "dScMgD3DBase_c",
-        "output": "src/actors/dScMgD3DBase_c.cpp"
+        "output": "src/minigames/dScMgD3DBase_c.cpp"
       },
       {
         "class": "dScMgHanachan_c",
-        "output": "src/actors/dScMgHanachan_c.cpp"
+        "output": "src/minigames/dScMgHanachan_c.cpp"
       },
       {
         "class": "dScMgMemory2_c",
-        "output": "src/actors/dScMgMemory2_c.cpp"
+        "output": "src/minigames/dScMgMemory2_c.cpp"
       },
       {
         "class": "dScMgRoulette_c",
-        "output": "src/actors/dScMgRoulette_c.cpp"
+        "output": "src/minigames/dScMgRoulette_c.cpp"
       },
       {
         "class": "dScMgSound_c",
-        "output": "src/actors/dScMgSound_c.cpp"
+        "output": "src/minigames/dScMgSound_c.cpp"
       },
       {
         "class": "dScMgTeresa_c",
-        "output": "src/actors/dScMgTeresa_c.cpp"
+        "output": "src/minigames/dScMgTeresa_c.cpp"
       }
     ],
     "promoted_to_src_minigames": [

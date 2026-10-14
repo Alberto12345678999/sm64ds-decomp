@@ -5,23 +5,23 @@
 # daObjYajirusi_c is one production translation unit; the factory,
 # InitResources, CleanupResources, Behavior and Render this slice
 # used to name separately all live in it.
-src/actors/daObjYajirusi_c.cpp
+src/game/actors/d_a_obj_yajirusi.cpp
 # dBgActor_c is one production translation unit; the constructor,
 # UpdateClsnPosAndRot, UpdateModelPosAndRotY and IsClsnInRangeOnScreen
 # this slice used to name separately all live in it.
-src/actors/dBgActor_c.cpp
+src/runtime/actor/dBgActor_c.cpp
 # dActor_c is one production translation unit; SetRanges and ClosestPlayer
 # this slice used to name separately all live in it. The constructor keeps
 # its own files: the ROM's C1/C2 variant pair brackets Vector3s' vague-linkage
 # D1, so one member definition cannot tile the run.
-src/actors/dActor_c.cpp
+src/runtime/actor/dActor_c.cpp
 src/_ZN8dActor_cC2Ev.cpp
 # SceneNode's constructor and Reset now share their production translation unit.
-src/actors/ActorBase_SceneNode.cpp
+src/runtime/actor/ActorBase_SceneNode.cpp
 # fBase_c is one production translation unit; operator new, the framework
 # hook virtuals and the helper at 0x02043810 this slice used to name
 # separately all live in it.
-src/actors/ActorBase.cpp
+src/runtime/actor/ActorBase.cpp
 # dExtShadowModel_c is one production translation unit; the constructor this slice
 # used to name separately lives in it with the rest of the class.
 src/engine/model/dExtShadowModel_c.cpp
@@ -48,7 +48,7 @@ src/Matrix4x3_FromRotationY.c
 # dBgW_Kc production TU.
 src/engine/collision/dBgW_Kc_itcm.cpp
 # The fBase_c framework hook virtuals are already covered above by
-# src/actors/ActorBase.cpp, the single translation unit that defines them.
+# src/runtime/actor/ActorBase.cpp, the single translation unit that defines them.
 src/func_0203b27c.c
 src/func_02044334.cpp
 src/func_0204424c.c

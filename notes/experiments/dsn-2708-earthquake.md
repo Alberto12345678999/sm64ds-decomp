@@ -2,9 +2,9 @@
 
 - tested_commit: 7027888ce (cleanup-dadsnbase at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/actors/daDsnBase_c.cpp:261` (decl `:107`) keeps
+- claim: `src/game/actors/d_a_dsn_base.cpp:261` (decl `:107`) keeps
   the scalar-int tail because Fix12<int> by value changes codegen.
-  Leftover `src/actors/daDsnBase_c.cpp:36-39`. No header declares
+  Leftover `src/game/actors/d_a_dsn_base.cpp:36-39`. No header declares
   dActor_c::Earthquake (verified); the (void *, const Vector3 &, int)
   spelling is daDkk_c.cpp's, so the member form is reconstructed as
   `dActor_c::Earthquake(const Vector3 &, Fix12<int>)` per the mangled name.
@@ -22,7 +22,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/actors/daDsnBase_c.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_dsn_base.cpp \
   --func func_ov091_02132f04 --addr 0x02132f04 --size 0xf0 \
   --version 2004/b56 --module ov091 --strict-relocs --brief
 ```

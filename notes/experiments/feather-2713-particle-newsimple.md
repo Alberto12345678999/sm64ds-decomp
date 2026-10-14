@@ -2,7 +2,7 @@
 
 - tested_commit: f9c1e4609a52783e8a611ba2608225d6e7419aac (cleanup-wingfeather at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/daFeather_c/daFeather_c.cpp:171,208` keeps
+- claim: `src/game/actors/d_a_feather.cpp:171,208` keeps
   Particle::System::NewSimple mangled scalar because the member form
   with Fix12<int> by value changes codegen (6az).
 - attempted_change (scratch-applied, then reverted):
@@ -27,7 +27,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/daFeather_c/daFeather_c.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/d_a_feather.cpp \
   --func _ZN11daFeather_c8BehaviorEv --addr 0x020b2e9c --size 0x280 \
   --version 2004/b56 --module ov002 --strict-relocs --brief
 ```

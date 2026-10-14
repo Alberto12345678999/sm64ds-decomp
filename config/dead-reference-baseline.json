@@ -71,7 +71,7 @@
   },
   {
    "file": "notes/agents/handoffs/fold-ov006-curling2-1005.md",
-   "ref": "src/actors/dScMgCurling2_c_upper.cpp"
+   "ref": "src/game/actors/dScMgCurling2_c_upper.cpp"
   },
   {
    "file": "notes/agents/handoffs/fold-ov009-sbird-1008.md",
