@@ -328,5 +328,140 @@
     }
   },
   "formal_acceptance": false,
-  "publication": "Independent acceptance and current-base composition still required before public PR."
+  "publication": "Current-base independent acceptance pending; no public PR yet.",
+  "current_base_composition": {
+    "task": "actor-native-return-current1014",
+    "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1",
+    "tested_source_checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+    "original_source_and_report_output": "964b9ac13750de704b6c29081eabf6bd562dd927",
+    "predecessor_tasks": [
+      "actor-native-return1014",
+      "dactor-dust-main-compose1014"
+    ],
+    "source_author_session": "codex-root-actor-native-return1014",
+    "actual_root_thread": "01a12e6f-7ee1-7162-9a64-81145ed6b260",
+    "change": "Merge current native fBase initialization and scene fields into preserved Actor member candidate; Actor Source, header, manifest and existing production policy unchanged.",
+    "source_disk_sha256": "c1d3c991c0124a4d981f63a6831f85eae135d575f5c6408a32105be6a87b7056",
+    "source_git_blob_sha256": "03f4b2b1a4b3f4975fd86cf816bbe6a201492430bc291d97926658a8bda70638",
+    "raw_sha256": "76b805b8458a6aeb58a48b31a47d1cff1b833ff271cea0afa9a353bcc9130b81",
+    "prepared_sha256": "19edbeb864623c1a1f22eedf2237a6c8131e0674276fc35ba615a78abc16a4ed",
+    "complete_raw_and_prepared_equal_under_current_headers": true,
+    "strict_unique_functions": 91,
+    "raw_relocations": 191,
+    "prepared_relocations": 191,
+    "blind": 0,
+    "prepared_nontext": [],
+    "vector3_duplicate": {
+      "name": "_ZN7Vector3D1Ev",
+      "module": "arm9",
+      "addr": "0x020072c0",
+      "verdict": "VERIFIED",
+      "diffs": [],
+      "blind": 0
+    },
+    "declaration_before": 7491,
+    "declaration_after": 7491,
+    "new_disagreements": 0,
+    "removed_disagreements": 0,
+    "terminal_gates": {
+      "rombuild": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/rombuild.py",
+          "-j16",
+          "--no-rom"
+        ],
+        "exit_code": 0,
+        "seconds": 272.65600000001723,
+        "log": "build\\actor-native-return-current1014\\rombuild.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      },
+      "stock": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/prepush_linkcheck.py",
+          "--range",
+          "58927e7d8e76b13899e7cf4931d756a47ad438f1..862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+          "--json",
+          "build\\actor-native-return-current1014\\stock.json"
+        ],
+        "exit_code": 0,
+        "seconds": 63.09399999998277,
+        "log": "build\\actor-native-return-current1014\\stock.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      },
+      "decl": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/check_decl_agreement.py",
+          "--changed",
+          "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+        ],
+        "exit_code": 0,
+        "seconds": 12.125,
+        "log": "build\\actor-native-return-current1014\\decl.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      },
+      "decl-global": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/check_decl_agreement.py",
+          "--check"
+        ],
+        "exit_code": 0,
+        "seconds": 10.96899999998277,
+        "log": "build\\actor-native-return-current1014\\decl-global.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      },
+      "port": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/port_refcheck.py"
+        ],
+        "exit_code": 0,
+        "seconds": 1.8589999999967404,
+        "log": "build\\actor-native-return-current1014\\port.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      },
+      "langmode": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/langmode_audit.py",
+          "--check",
+          "build\\actor-native-return-current1014\\langmode-baseline.json"
+        ],
+        "exit_code": 0,
+        "seconds": 14.76600000000326,
+        "log": "build\\actor-native-return-current1014\\langmode.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      },
+      "conflict": {
+        "command": [
+          "C:\\Users\\andre\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+          "tools/check_tubuild_conflicts.py"
+        ],
+        "exit_code": 0,
+        "seconds": 0.5160000000032596,
+        "log": "build\\actor-native-return-current1014\\conflict.log",
+        "checkpoint": "862e02d94b7e9a9a796ff5c57abcb295c6a7bd89",
+        "base": "58927e7d8e76b13899e7cf4931d756a47ad438f1"
+      }
+    },
+    "production": {
+      "modules_exact": 106,
+      "functions_exact": 11334,
+      "data_claims_exact": 331,
+      "bss_claims": 239,
+      "packaged_candidate_rom": false,
+      "qualification": "Current full module/ownership checks pass under --no-rom; baseline symbol errors and broad data advisory debt remain."
+    },
+    "inheritance": "The queue continuation explicitly inherits the original Root producer task and dactor-dust-main-compose1014 authors and all eight findings; historical dictionaries above retain their original epochs.",
+    "formal_acceptance": false
+  }
 }
