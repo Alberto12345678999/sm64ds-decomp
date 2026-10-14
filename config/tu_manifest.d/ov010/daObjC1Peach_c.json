@@ -112,7 +112,7 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov010_02112d64",
+      "symbol": "gC1PeachModelFile",
       "address": "0x02112d64",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -195,7 +195,7 @@
       "source": "0x0211218c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov010_02112d64",
+      "symbol": "gC1PeachModelFile",
       "addend": 0,
       "target_module": "ov010",
       "target_address": "0x02112d64"

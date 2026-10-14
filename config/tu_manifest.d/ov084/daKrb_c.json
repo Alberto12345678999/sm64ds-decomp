@@ -387,7 +387,7 @@
       "evidence": "animation resource handle constructed with file ID 0x38a"
     },
     {
-      "symbol": "data_ov084_02130cd8",
+      "symbol": "gKuriboRecoverAnimationFile",
       "address": "0x02130cd8",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -422,7 +422,7 @@
       "evidence": "model resource handle constructed with file ID 0x386"
     },
     {
-      "symbol": "data_ov084_02130d00",
+      "symbol": "gKuriboLowModelModelFile",
       "address": "0x02130d00",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -447,7 +447,7 @@
       "address": "0x02130d20",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-generated destructor-registration node for data_ov084_02130d00"
+      "evidence": "compiler-generated destructor-registration node for gKuriboLowModelModelFile"
     },
     {
       "symbol": "@1946",
@@ -482,7 +482,7 @@
       "address": "0x02130d5c",
       "size": "0xc",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler-generated destructor-registration node for data_ov084_02130cd8"
+      "evidence": "compiler-generated destructor-registration node for gKuriboRecoverAnimationFile"
     },
     {
       "symbol": "@1951",
@@ -1831,7 +1831,7 @@
       "source": "0x021304e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov084_02130d00",
+      "symbol": "gKuriboLowModelModelFile",
       "addend": 0,
       "target_module": "ov084",
       "target_address": "0x02130d00"
@@ -1941,7 +1941,7 @@
       "source": "0x02130520",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov084_02130cd8",
+      "symbol": "gKuriboRecoverAnimationFile",
       "addend": 0,
       "target_module": "ov084",
       "target_address": "0x02130cd8"

@@ -23,6 +23,12 @@
  *   dBgW::UpdatePosWithVelocity, stored as a callback -- kept verbatim.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjSlIceBlock_c_AssetId {
+    ASSET_SL_ICE_BROCK_BMD = 0x06b1,
+    ASSET_SL_ICE_BROCK_KCL = 0x06b2
+};
+
 #include "daObjSlIceBlock_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -197,5 +203,5 @@ extern "C" daObjSlIceBlock_c *daObjSlIceBlock_c_classInit_SL_ICEBLOCK()
 /* The ice block's shared file handles: the model, then the collision map.
  * Their constructors and the destructor registrations make mwcc emit this
  * TU's __sinit. */
-SlIceBlockModelFilePtr data_ov027_02113be8(1713);
-SlIceBlockClsnFileHandle data_ov027_02113be0(1714);
+SlIceBlockModelFilePtr data_ov027_02113be8(ASSET_SL_ICE_BROCK_BMD);
+SlIceBlockClsnFileHandle data_ov027_02113be0(ASSET_SL_ICE_BROCK_KCL);

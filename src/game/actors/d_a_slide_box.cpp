@@ -43,6 +43,12 @@
  *   function 0xdc to 0xd8. The ROM calls func_020393d4, the store.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daSlide_Box_c_AssetId {
+    ASSET_KI_SLIDE_BOX_BMD = 0x0645,
+    ASSET_KI_SLIDE_BOX_KCL = 0x0646
+};
+
 #include "daSlide_Box_c.h"
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
@@ -69,8 +75,8 @@ struct SlideBoxClsnFilePtr : SharedFilePtr {
     ~SlideBoxClsnFilePtr();
 };
 
-extern "C" SlideBoxModelFilePtr data_ov016_02114e74;
-extern "C" SlideBoxClsnFilePtr data_ov016_02114e6c;
+extern "C" SlideBoxModelFilePtr gKiSlideBoxModelFile;
+extern "C" SlideBoxClsnFilePtr gKiSlideBoxCollisionFile;
 
 extern "C" {
 /* dBgCh_Actr::Init's header takes Fix12i (= s32), so the method form
@@ -139,8 +145,8 @@ enum {
 #define Cosine(angle) (data_02082214[((u16)(angle) >> 4) * 2 + 1])
 #define FixMul(a, b) ((int)(((long long)(a) * (b) + kFixRound) >> 12))
 
-#define ModelFile data_ov016_02114e74
-#define ClsnFile data_ov016_02114e6c
+#define ModelFile gKiSlideBoxModelFile
+#define ClsnFile gKiSlideBoxCollisionFile
 
 #pragma defer_codegen off
 
@@ -287,5 +293,5 @@ extern "C" daSlide_Box_c *daSlide_Box_c_classInit()
 /* Definitions stay after the last .text function so they do not insert
  * a function into the ROM-ascending run. Construction order is the model
  * handle, then the collision handle. */
-SlideBoxModelFilePtr data_ov016_02114e74(1605);
-SlideBoxClsnFilePtr data_ov016_02114e6c(1606);
+SlideBoxModelFilePtr gKiSlideBoxModelFile(ASSET_KI_SLIDE_BOX_BMD);
+SlideBoxClsnFilePtr gKiSlideBoxCollisionFile(ASSET_KI_SLIDE_BOX_KCL);

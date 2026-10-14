@@ -292,14 +292,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov096_02137b20",
+      "symbol": "gSanboHeadModelFile",
       "address": "0x02137b20",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "head model resource handle constructed with file ID 0x41b"
     },
     {
-      "symbol": "data_ov096_02137b28",
+      "symbol": "gSanboBodyModelFile",
       "address": "0x02137b28",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -782,7 +782,7 @@
       "source": "0x2137844",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov096_02137b20",
+      "symbol": "gSanboHeadModelFile",
       "addend": 0,
       "target_module": "ov096",
       "target_address": "0x02137b20"
@@ -812,7 +812,7 @@
       "source": "0x2137854",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov096_02137b28",
+      "symbol": "gSanboBodyModelFile",
       "addend": 0,
       "target_module": "ov096",
       "target_address": "0x02137b28"

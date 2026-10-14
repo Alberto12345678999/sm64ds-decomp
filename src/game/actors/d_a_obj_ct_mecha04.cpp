@@ -25,6 +25,14 @@
 // emits a homeless _ZN10dBgActor_cD2Ev (compiler-only deadstrip); the header's
 // inline dtor gives the D1/D0 pair, no D2.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtMecha04_c_AssetId {
+    ASSET_CT_MECHA_OBJ04L_BMD = 0x05be,
+    ASSET_CT_MECHA_OBJ04L_KCL = 0x05bf,
+    ASSET_CT_MECHA_OBJ04S_BMD = 0x05c0,
+    ASSET_CT_MECHA_OBJ04S_KCL = 0x05c1
+};
+
 #include "common.h"
 #include "daObjCtMecha04_c.h"
 #include "SharedFilePtr.h"
@@ -310,7 +318,7 @@ void daObjCtMecha04_c::UpdateShadow()
  * 1470) then both collision handles (1473 and 1471), registering a
  * destructor node for each. mwcc emits __sinit_d_a_obj_ct_mecha04.cpp from
  * these definitions. */
-Mecha04ModelFilePtr data_ov065_0211d8cc(1472);
-Mecha04ModelFilePtr data_ov065_0211d8bc(1470);
-Mecha04ClsnFilePtr data_ov065_0211d8b4(1473);
-Mecha04ClsnFilePtr data_ov065_0211d8c4(1471);
+Mecha04ModelFilePtr gCtMechaObj04sModelFile(ASSET_CT_MECHA_OBJ04S_BMD);
+Mecha04ModelFilePtr gCtMechaObj04lModelFile(ASSET_CT_MECHA_OBJ04L_BMD);
+Mecha04ClsnFilePtr gCtMechaObj04sCollisionFile(ASSET_CT_MECHA_OBJ04S_KCL);
+Mecha04ClsnFilePtr gCtMechaObj04lCollisionFile(ASSET_CT_MECHA_OBJ04L_KCL);

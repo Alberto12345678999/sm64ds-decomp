@@ -57,16 +57,16 @@ extern SharedFilePtr *data_ov019_0211277c[3];      /* the three BTP handles */
 extern daPgRcerState data_ov019_0211356c[];
 extern Vector3 data_ov019_021134e8;                /* finish volume */
 extern Vector3 data_ov019_0211353c;                /* cheat volume */
-extern SharedFilePtr data_ov019_02113460;          /* BCA land, file 0x401 */
-extern SharedFilePtr data_ov019_02113468;          /* BTP neutral, file 0x407 */
-extern SharedFilePtr data_ov019_02113470;          /* BCA idle, file 0x406 */
-extern SharedFilePtr data_ov019_02113478;          /* BCA jump, file 0x402 */
-extern SharedFilePtr data_ov019_02113480;          /* BCA race start, file 0x400 */
-extern SharedFilePtr data_ov019_02113488;          /* BCA race, file 0x403 */
-extern SharedFilePtr data_ov019_02113490;          /* BCA near finish, file 0x405 */
-extern SharedFilePtr data_ov019_021134a0;          /* BCA walk, file 0x408 */
-extern SharedFilePtr data_ov019_021134a8;          /* BTP lost, file 0x3fd */
-extern SharedFilePtr data_ov019_021134b0;          /* BTP race, file 0x404 */
+extern SharedFilePtr gPenguinJumpEdAnimationFile;          /* BCA land, file 0x401 */
+extern SharedFilePtr gOV019PenguinWait1TextureSequenceFile;          /* BTP neutral, file 0x407 */
+extern SharedFilePtr gOV019PenguinWait1AnimationFile;          /* BCA idle, file 0x406 */
+extern SharedFilePtr gPenguinJumpStAnimationFile;          /* BCA jump, file 0x402 */
+extern SharedFilePtr gPenguinDiveAnimationFile;          /* BCA race start, file 0x400 */
+extern SharedFilePtr gPenguinSliderAnimationFile;          /* BCA race, file 0x403 */
+extern SharedFilePtr gPenguinStandUpAnimationFile;          /* BCA near finish, file 0x405 */
+extern SharedFilePtr gOV019PenguinWalkAnimationFile;          /* BCA walk, file 0x408 */
+extern SharedFilePtr gOV019PenguinAngryTextureSequenceFile;          /* BTP lost, file 0x3fd */
+extern SharedFilePtr gPenguinSliderTextureSequenceFile;          /* BTP race, file 0x404 */
 extern unsigned char data_0209d684;                /* talk-script choice */
 
 extern unsigned char NumStars(void);
@@ -220,9 +220,9 @@ int func_ov019_021121f8(daPgRcer_c *self)
 {
     self->mVertAccel = 0;
     self->mTerminalVelocity = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113470), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gOV019PenguinWait1AnimationFile), 0, 0x1000, 0);
     self->mModelAnim.speed = 0x1000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(data_ov019_02113468), 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(gOV019PenguinWait1TextureSequenceFile), 0, 0x1000, 0);
     self->mAction = 0;
     return 1;
 }
@@ -310,7 +310,7 @@ int func_ov019_02111fec(daPgRcer_c *self)
 // @symbol func_ov019_02111f54
 int func_ov019_02111f54(daPgRcer_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113478), 0x40000000, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gPenguinJumpStAnimationFile), 0x40000000, 0x1000, 0);
     self->mVertAccel = -0x2000;
     self->mTerminalVelocity = -0x3c000;
     self->mVertSpeed = 0x16000;
@@ -336,13 +336,13 @@ int func_ov019_02111dec(daPgRcer_c *self)
         self->UpdatePos(&self->mdCcAc_c);
         func_ov019_0211140c(self, &self->mWithMeshClsn);
         if (self->mWithMeshClsn.JustHitGround() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113460), 0x40000000, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gPenguinJumpEdAnimationFile), 0x40000000, 0x1000, 0);
             BUMP_ACTION_STEP(self);
         }
         break;
     case 2:
         if (self->mModelAnim.dExtFrameCtrl_c::Finished() != 0) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113470), 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gOV019PenguinWait1AnimationFile), 0, 0x1000, 0);
         }
         if (self->mTalkPlayer->GetTalkState() == -1) {
             _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x1f, 0x7f, 0, 0x15666, 0);
@@ -360,8 +360,8 @@ int func_ov019_02111d58(daPgRcer_c *self)
 {
     self->mVertAccel = -0x2000;
     self->mTerminalVelocity = -0x3c000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113480), 0x40000000, 0x1000, 0);
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(data_ov019_021134b0), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gPenguinDiveAnimationFile), 0x40000000, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(gPenguinSliderTextureSequenceFile), 0, 0x1000, 0);
     self->mHorzSpeed = 0x30000;
     self->mActionStep = 0;
     self->mPlayerFinished = 0;
@@ -378,7 +378,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
             self->func_ov019_021113b0();
         }
         if (self->mModelAnim.dExtFrameCtrl_c::Finished()) {
-            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113488), 0, 0x1000, 0);
+            _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gPenguinSliderAnimationFile), 0, 0x1000, 0);
             self->mModelAnim.speed = 0x1000;
             self->mActionStep++;
         }
@@ -411,7 +411,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
     case 1:
         if (self->func_ov019_0211131c()) {
             if (self->mPathNodeIndex >= (int)self->mPath.NumNodes() - 2) {
-                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113490), 0x40000000, 0x1000, 0);
+                _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gPenguinStandUpAnimationFile), 0x40000000, 0x1000, 0);
                 self->mActionStep++;
             } else {
                 self->func_ov019_021113b0();
@@ -483,9 +483,9 @@ int func_ov019_0211197c(daPgRcer_c *self)
 // @symbol func_ov019_02111904
 int func_ov019_02111904(daPgRcer_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_021134a0), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gOV019PenguinWalkAnimationFile), 0, 0x1000, 0);
     self->mModelAnim.speed = 0x1000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(data_ov019_02113468), 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(gOV019PenguinWait1TextureSequenceFile), 0, 0x1000, 0);
     self->mActionStep = 0;
     self->mHorzSpeed = 0x5000;
     self->mAction = 4;
@@ -539,7 +539,7 @@ int func_ov019_021117a8(daPgRcer_c *self)
 // @symbol func_ov019_02111754
 int func_ov019_02111754(daPgRcer_c *self)
 {
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113470), 0, 0x1000, 0);
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(gOV019PenguinWait1AnimationFile), 0, 0x1000, 0);
     self->mModelAnim.speed = 0x1000;
     self->mActionStep = 0;
     self->mAction = 5;
@@ -573,7 +573,7 @@ int func_ov019_02111558(daPgRcer_c *self)
             v.z = z;
             if (self->mPlayerCheated != 0) {
                 id = 0xa9;
-                _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(data_ov019_021134a8), 0, 0x1000, 0);
+                _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(gOV019PenguinAngryTextureSequenceFile), 0, 0x1000, 0);
                 self->mPenguinWon = 1;
             } else {
                 if (self->mPenguinWon != 0)
@@ -597,7 +597,7 @@ int func_ov019_02111558(daPgRcer_c *self)
                     *(Vector3 *)&self->mPosX, 4);
             }
             self->mTalkPlayer->HasFinishedTalking();
-            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(data_ov019_02113468), 0, 0x1000, 0);
+            _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, LOADED(gOV019PenguinWait1TextureSequenceFile), 0, 0x1000, 0);
             BUMP_ACTION_STEP(self);
         }
         break;

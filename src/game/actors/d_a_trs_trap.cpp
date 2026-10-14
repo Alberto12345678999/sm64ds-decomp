@@ -65,6 +65,18 @@
    refreshes copy data_020a0e68 into the object with one ldm/stm block move,
    which the structured Matrix3x3 + Vector3 spelling scalarizes (0x90 and
    0x8c bytes against the ROM's 0x74 and 0x78). */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum d_a_trs_trap_AssetId {
+    ASSET_TH_HONDANA_BMD = 0x06bb,
+    ASSET_TH_HONDANA_KCL = 0x06bc,
+    ASSET_TH_KAIDAN_BMD = 0x06bd,
+    ASSET_TH_KAIDAN_KCL = 0x06be,
+    ASSET_TH_MERY_GO_BMD = 0x06c1,
+    ASSET_TH_MERY_GO_KCL = 0x06c2,
+    ASSET_TH_TRAP_BMD = 0x06c3,
+    ASSET_TH_TRAP_KCL = 0x06c4
+};
+
 #include "common.h"
 #include "daTrsTrap_c.h"
 #include "SharedFilePtr.h"
@@ -591,14 +603,14 @@ int daTrsTrap_c::InitResources()
  * dispatch records. __sinit_d_a_trs_trap.cpp emits the constructions, the
  * destructor registrations and the record copies; the registration nodes are
  * compiler temporaries. */
-TrsTrapModelFilePtr data_ov063_0211eeb8(0x6bb);
-TrsTrapModelFilePtr data_ov063_0211eeb0(0x6bd);
-TrsTrapModelFilePtr data_ov063_0211ee98(0x6c1);
-TrsTrapModelFilePtr data_ov063_0211eea8(0x6c3);
-TrsTrapCollisionFilePtr data_ov063_0211eec0(0x6bc);
-TrsTrapCollisionFilePtr data_ov063_0211eea0(0x6be);
-TrsTrapCollisionFilePtr data_ov063_0211eec8(0x6c2);
-TrsTrapCollisionFilePtr data_ov063_0211eed0(0x6c4);
+TrsTrapModelFilePtr gThHondanaModelFile(ASSET_TH_HONDANA_BMD);
+TrsTrapModelFilePtr gThKaidanModelFile(ASSET_TH_KAIDAN_BMD);
+TrsTrapModelFilePtr gThMeryGoModelFile(ASSET_TH_MERY_GO_BMD);
+TrsTrapModelFilePtr gThTrapModelFile(ASSET_TH_TRAP_BMD);
+TrsTrapCollisionFilePtr gThHondanaCollisionFile(ASSET_TH_HONDANA_KCL);
+TrsTrapCollisionFilePtr gThKaidanCollisionFile(ASSET_TH_KAIDAN_KCL);
+TrsTrapCollisionFilePtr gThMeryGoCollisionFile(ASSET_TH_MERY_GO_KCL);
+TrsTrapCollisionFilePtr gThTrapCollisionFile(ASSET_TH_TRAP_KCL);
 
 PMF data_ov063_0211ef38[] = {
     &daTrsTrap_c::func_ov063_0211cc18,

@@ -45,6 +45,24 @@
  *   0x210 against 0x214 (-4). The ROM calls func_020393d4.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjSimpleLift_c_AssetId {
+    ASSET_BK_TRANSBAR_BMD = 0x059f,
+    ASSET_BK_TRANSBAR_KCL = 0x05a0,
+    ASSET_KM1_DERU_BMD = 0x0647,
+    ASSET_KM1_DERU_KCL = 0x0648,
+    ASSET_KM2_RIFT01_BMD = 0x0665,
+    ASSET_KM2_RIFT01_KCL = 0x0666,
+    ASSET_KM2_RIFT02_BMD = 0x0667,
+    ASSET_KM2_RIFT02_KCL = 0x0668,
+    ASSET_KM3_DERU01_BMD = 0x0679,
+    ASSET_KM3_DERU01_KCL = 0x067a,
+    ASSET_KM3_DERU02_BMD = 0x067b,
+    ASSET_KM3_DERU02_KCL = 0x067c,
+    ASSET_RC_RIFT01_BMD = 0x06a9,
+    ASSET_RC_RIFT01_KCL = 0x06aa
+};
+
 #include "daObjSimpleLift_c.h"
 #include "decl_common.h"
 #include "SharedFilePtr.h"
@@ -79,20 +97,20 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
 void func_020393d4(void *collider, void *callback);
 extern char data_ov091_0213502c[];
 
-extern SimpleLiftModelFilePtr  data_ov091_02135520;
-extern SimpleLiftClsnFileHandle data_ov091_02135538;
-extern SimpleLiftModelFilePtr  data_ov091_02135560;
-extern SimpleLiftClsnFileHandle data_ov091_021354f8;
-extern SimpleLiftModelFilePtr  data_ov091_02135528;
-extern SimpleLiftClsnFileHandle data_ov091_02135518;
-extern SimpleLiftModelFilePtr  data_ov091_02135558;
-extern SimpleLiftClsnFileHandle data_ov091_02135550;
-extern SimpleLiftModelFilePtr  data_ov091_02135510;
-extern SimpleLiftClsnFileHandle data_ov091_02135540;
-extern SimpleLiftModelFilePtr  data_ov091_02135548;
-extern SimpleLiftClsnFileHandle data_ov091_02135500;
-extern SimpleLiftModelFilePtr  data_ov091_02135508;
-extern SimpleLiftClsnFileHandle data_ov091_02135530;
+extern SimpleLiftModelFilePtr  gKm1DeruModelFile;
+extern SimpleLiftClsnFileHandle gKm1DeruCollisionFile;
+extern SimpleLiftModelFilePtr  gKm3Deru01ModelFile;
+extern SimpleLiftClsnFileHandle gKm3Deru01CollisionFile;
+extern SimpleLiftModelFilePtr  gKm3Deru02ModelFile;
+extern SimpleLiftClsnFileHandle gKm3Deru02CollisionFile;
+extern SimpleLiftModelFilePtr  gRcRift01ModelFile;
+extern SimpleLiftClsnFileHandle gRcRift01CollisionFile;
+extern SimpleLiftModelFilePtr  gKm2Rift01ModelFile;
+extern SimpleLiftClsnFileHandle gKm2Rift01CollisionFile;
+extern SimpleLiftModelFilePtr  gKm2Rift02ModelFile;
+extern SimpleLiftClsnFileHandle gKm2Rift02CollisionFile;
+extern SimpleLiftModelFilePtr  gBkTransbarModelFile;
+extern SimpleLiftClsnFileHandle gBkTransbarCollisionFile;
 }
 
 /* Emission order is ROM order. Do not reorder. */
@@ -236,17 +254,17 @@ extern "C" daObjSimpleLift_c *daObjSimpleLift_c_classInit_KM1_DERU()
 
 /* One model+KCL SharedFilePtr pair per variant, constructed in the retail
  * sinit's interleaved order (variant's model first, then its collision). */
-SimpleLiftModelFilePtr data_ov091_02135520(0x647);
-SimpleLiftClsnFileHandle data_ov091_02135538(0x648);
-SimpleLiftModelFilePtr data_ov091_02135560(0x679);
-SimpleLiftClsnFileHandle data_ov091_021354f8(0x67a);
-SimpleLiftModelFilePtr data_ov091_02135528(0x67b);
-SimpleLiftClsnFileHandle data_ov091_02135518(0x67c);
-SimpleLiftModelFilePtr data_ov091_02135558(0x6a9);
-SimpleLiftClsnFileHandle data_ov091_02135550(0x6aa);
-SimpleLiftModelFilePtr data_ov091_02135510(0x665);
-SimpleLiftClsnFileHandle data_ov091_02135540(0x666);
-SimpleLiftModelFilePtr data_ov091_02135548(0x667);
-SimpleLiftClsnFileHandle data_ov091_02135500(0x668);
-SimpleLiftModelFilePtr data_ov091_02135508(0x59f);
-SimpleLiftClsnFileHandle data_ov091_02135530(0x5a0);
+SimpleLiftModelFilePtr gKm1DeruModelFile(ASSET_KM1_DERU_BMD);
+SimpleLiftClsnFileHandle gKm1DeruCollisionFile(ASSET_KM1_DERU_KCL);
+SimpleLiftModelFilePtr gKm3Deru01ModelFile(ASSET_KM3_DERU01_BMD);
+SimpleLiftClsnFileHandle gKm3Deru01CollisionFile(ASSET_KM3_DERU01_KCL);
+SimpleLiftModelFilePtr gKm3Deru02ModelFile(ASSET_KM3_DERU02_BMD);
+SimpleLiftClsnFileHandle gKm3Deru02CollisionFile(ASSET_KM3_DERU02_KCL);
+SimpleLiftModelFilePtr gRcRift01ModelFile(ASSET_RC_RIFT01_BMD);
+SimpleLiftClsnFileHandle gRcRift01CollisionFile(ASSET_RC_RIFT01_KCL);
+SimpleLiftModelFilePtr gKm2Rift01ModelFile(ASSET_KM2_RIFT01_BMD);
+SimpleLiftClsnFileHandle gKm2Rift01CollisionFile(ASSET_KM2_RIFT01_KCL);
+SimpleLiftModelFilePtr gKm2Rift02ModelFile(ASSET_KM2_RIFT02_BMD);
+SimpleLiftClsnFileHandle gKm2Rift02CollisionFile(ASSET_KM2_RIFT02_KCL);
+SimpleLiftModelFilePtr gBkTransbarModelFile(ASSET_BK_TRANSBAR_BMD);
+SimpleLiftClsnFileHandle gBkTransbarCollisionFile(ASSET_BK_TRANSBAR_KCL);

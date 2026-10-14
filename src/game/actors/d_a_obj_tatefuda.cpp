@@ -61,6 +61,12 @@
 /* Includes: union of the legacy files', first-seen in ROM-ascending
  * processing order. NOT verified for header ordering constraints (e.g. a
  * common.h-before-X rule) -- watch for new compile errors after this. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjTatefuda_c_AssetId {
+    ASSET_OBJ_TATEFUDA_BMD = 0x0491,
+    ASSET_OBJ_TATEFUDA_KCL = 0x0492
+};
+
 #include "daObjTatefuda_c.h"
 #include "common.h"
 #include "dActor_c.h"
@@ -1279,8 +1285,8 @@ void daObjTatefuda_c::Reset()
 /* __sinit_d_a_obj_tatefuda.cpp constructs the two file handles in retail
  * order, then copies the ten anonymous pointer-to-member descriptors into
  * the {enter, update} state table SetState and UpdateState index by mState. */
-SignPostModelFilePtr SignPost_ModelFile(0x491);
-SignPostCollisionFilePtr SignPost_ClsnFile(0x492);
+SignPostModelFilePtr SignPost_ModelFile(ASSET_OBJ_TATEFUDA_BMD);
+SignPostCollisionFilePtr SignPost_ClsnFile(ASSET_OBJ_TATEFUDA_KCL);
 Entry data_ov002_0210e084[5] = {
     { &daObjTatefuda_c::InitIdle,    &daObjTatefuda_c::Idle    },
     { &daObjTatefuda_c::InitTalk,    &daObjTatefuda_c::Talk    },

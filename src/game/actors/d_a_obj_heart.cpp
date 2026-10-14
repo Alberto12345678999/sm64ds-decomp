@@ -20,6 +20,12 @@
  *   records no name for it.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjHeart_c_AssetId {
+    ASSET_OBJ_HEART_BMD = 0x0470,
+    ASSET_OBJ_HEART_WAIT_BCA = 0x0471
+};
+
 #pragma defer_codegen off
 
 #include "decl_common.h"
@@ -156,5 +162,5 @@ extern "C" daObjHeart_c *daObjHeart_c_classInit(void)
 
 /* Retail initializer order: model 0x470, then animation 0x471. mwcc emits
  * __sinit_d_a_obj_heart.cpp from these two definitions. */
-HeartModelFilePtr data_ov002_0210e104(0x470);
-HeartAnimationFilePtr data_ov002_0210e0fc(0x471);
+HeartModelFilePtr data_ov002_0210e104(ASSET_OBJ_HEART_BMD);
+HeartAnimationFilePtr data_ov002_0210e0fc(ASSET_OBJ_HEART_WAIT_BCA);

@@ -22,6 +22,15 @@
 //   g_profile_DONKETU is not in this TU.
 
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDonketu_c_AssetId {
+    ASSET_DONKETU_BMD = 0x02df,
+    ASSET_DONKETU_DEAD_BCA = 0x02e0,
+    ASSET_DONKETU_HIT_BCA = 0x02e1,
+    ASSET_DONKETU_TURN_BCA = 0x02e2,
+    ASSET_DONKETU_WALK_BCA = 0x02e3
+};
+
 #include "daDonketu_c.h"
 #include "common.h"
 #include "daBDonketu_c.h"
@@ -207,8 +216,8 @@ void daDonketu_c::PlayDeathSound()
 // @symbol __sinit_d_a_donketu.cpp
 /* The small Bully's model and animation handles, in the sinit call order the
  * data_ov064_0211b834 file table repeats. */
-DonketuModelFilePtr data_ov064_0211c668(0x2df);
-DonketuAnimationFileHandle data_ov064_0211c670(0x2e0);
-DonketuAnimationFileHandle data_ov064_0211c660(0x2e1);
-DonketuAnimationFileHandle data_ov064_0211c678(0x2e2);
-DonketuAnimationFileHandle data_ov064_0211c680(0x2e3);
+DonketuModelFilePtr gDonketuModelFile(ASSET_DONKETU_BMD);
+DonketuAnimationFileHandle gDonketuDeadAnimationFile(ASSET_DONKETU_DEAD_BCA);
+DonketuAnimationFileHandle gDonketuHitAnimationFile(ASSET_DONKETU_HIT_BCA);
+DonketuAnimationFileHandle gDonketuTurnAnimationFile(ASSET_DONKETU_TURN_BCA);
+DonketuAnimationFileHandle gDonketuWalkAnimationFile(ASSET_DONKETU_WALK_BCA);

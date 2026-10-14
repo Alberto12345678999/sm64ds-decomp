@@ -103,14 +103,14 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov025_02113a88",
+      "symbol": "gDonkakuModelFile",
       "address": "0x02113a88",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_dkk.cpp"
     },
     {
-      "symbol": "data_ov025_02113a90",
+      "symbol": "gDonkakuCollisionFile",
       "address": "0x02113a90",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -606,7 +606,7 @@
       "source": "0x02112a28",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov025_02113a88",
+      "symbol": "gDonkakuModelFile",
       "addend": 0,
       "target_module": "ov025",
       "target_address": "0x02113a88"
@@ -636,7 +636,7 @@
       "source": "0x02112a34",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov025_02113a90",
+      "symbol": "gDonkakuCollisionFile",
       "addend": 0,
       "target_module": "ov025",
       "target_address": "0x02113a90"

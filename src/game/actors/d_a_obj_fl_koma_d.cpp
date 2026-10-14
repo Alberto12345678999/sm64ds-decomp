@@ -1,4 +1,10 @@
 //cpp
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Koma_D_c_AssetId {
+    ASSET_FL_KOMA_D_BMD = 0x05f5,
+    ASSET_FL_KOMA_D_KCL = 0x05f6
+};
+
 #pragma defer_codegen off
 /**
  * Lethal Lava Land's spinning disc (profile FL_KOMA_D).
@@ -104,8 +110,8 @@ struct KomaDCollisionFilePtr : SharedFilePtr {
 /* Source order is construction order: model file 1525, collision file 1526.
  * __sinit_d_a_obj_fl_koma_d.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-KomaDModelFilePtr data_ov022_02114530(1525);
-KomaDCollisionFilePtr data_ov022_02114528(1526);
+KomaDModelFilePtr gFlKomaDModelFile(ASSET_FL_KOMA_D_BMD);
+KomaDCollisionFilePtr gFlKomaDCollisionFile(ASSET_FL_KOMA_D_KCL);
 
 #ifdef _MSC_VER
 /* Host flat names. Not compiled into the cartridge object. */

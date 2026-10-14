@@ -68,6 +68,24 @@
 
 /* common.h BEFORE daKuriKing_c.h: with the structured Matrix4x3,
  * func_ov074_02121270/02121300 go long on whole-matrix assignment. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daKuriKing_c_AssetId {
+    ASSET_KURIKING_ANGER_BCA = 0x038f,
+    ASSET_KURIKING_ANGER_BTP = 0x0390,
+    ASSET_KURIKING_DAMAGE_B_BCA = 0x0391,
+    ASSET_KURIKING_DAMAGE_F_BCA = 0x0392,
+    ASSET_KURIKING_DOWN_BCA = 0x0393,
+    ASSET_KURIKING_DOWN_START_BCA = 0x0394,
+    ASSET_KURIKING_MODEL_BMD = 0x0395,
+    ASSET_KURIKING_SERCH_WAIT_BCA = 0x0396,
+    ASSET_KURIKING_SPAWN_BCA = 0x0397,
+    ASSET_KURIKING_TURN_BCA = 0x0398,
+    ASSET_KURIKING_WAIT_BCA = 0x0399,
+    ASSET_KURIKING_WALK_BCA = 0x039a,
+    ASSET_KURIKING_WALK_END_BCA = 0x039b,
+    ASSET_KURIKING_WALK_START_BCA = 0x039c
+};
+
 #include "common.h"
 #include "daKuriKing_c.h"
 #include "types.h"
@@ -205,8 +223,8 @@ extern SharedFilePtr data_ov002_0210da30;
 extern SharedFilePtr data_ov084_02130cf8;
 extern SharedFilePtr data_ov084_0213089c;
 extern SharedFilePtr data_ov084_02130cc8;
-extern KuriKingModelFilePtr data_ov074_02123000;
-extern KuriKingTexSeqFilePtr data_ov074_02123040;
+extern KuriKingModelFilePtr gKurikingModelModelFile;
+extern KuriKingTexSeqFilePtr gKurikingAngerTextureSequenceFile;
 extern KuriKingAnimationFilePtr data_ov074_02123030;
 extern SharedFilePtr *data_ov074_0212292c[];
 extern SharedFilePtr *data_ov074_02122948[];
@@ -1577,10 +1595,10 @@ int daKuriKing_c::CleanupResources()
     data_ov084_02130cf8.Release();
     for (i = 0; i < 7; i++)
         data_ov074_0212292c[i]->Release();
-    data_ov074_02123000.Release();
+    gKurikingModelModelFile.Release();
     for (i = 0; i < 0xc; i++)
         data_ov074_02122948[i]->Release();
-    data_ov074_02123040.Release();
+    gKurikingAngerTextureSequenceFile.Release();
     return 1;
 }
 
@@ -1722,8 +1740,8 @@ int daKuriKing_c::InitResources()
         i++;
     } while (i < 0xc);
 
-    TextureSequence::LoadFile(data_ov074_02123040);
-    p = Model::LoadFile(data_ov074_02123000);
+    TextureSequence::LoadFile(gKurikingAngerTextureSequenceFile);
+    p = Model::LoadFile(gKurikingModelModelFile);
     mModelAnim.SetFile((BMD_File *)p, 1, -1);
 
     j = 0;
@@ -1752,19 +1770,19 @@ int daKuriKing_c::InitResources()
     } while (k < 4);
 
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, FileOf(data_ov074_02123030), 0, 0x1000, 0);
-    TextureSequence::Prepare(*(BMD_File *)FileOf(data_ov074_02123000),
-                             *(BTP_File *)FileOf(data_ov074_02123040));
-    MaterialChanger::Prepare(*(BMD_File *)FileOf(data_ov074_02123000),
+    TextureSequence::Prepare(*(BMD_File *)FileOf(gKurikingModelModelFile),
+                             *(BTP_File *)FileOf(gKurikingAngerTextureSequenceFile));
+    MaterialChanger::Prepare(*(BMD_File *)FileOf(gKurikingModelModelFile),
                              *(BMA_File *)&data_ov010_021123f4);
 
     i = 0;
     do {
-        TextureTransformer::Prepare(*(BMD_File *)FileOf(data_ov074_02123000),
+        TextureTransformer::Prepare(*(BMD_File *)FileOf(gKurikingModelModelFile),
                                     *(BTA_File *)data_ov074_02122e5c[i]);
         i++;
     } while (i < 7);
 
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, FileOf(data_ov074_02123040), 0, 0x1000, 0);
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, FileOf(gKurikingAngerTextureSequenceFile), 0, 0x1000, 0);
     _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(&mMaterialChanger, &data_ov010_021123f4, 0x40000000, 0x1000, 0);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(&mTextureTransformer, &data_ov010_021124ac, 0, 0x1000, 0);
 
@@ -1979,20 +1997,20 @@ int daKuriKing_c::func_ov074_02122634()
  * then the twelve animation handles. Their registration nodes are compiler
  * temporaries, like the PMF descriptors the table initializer below
  * materializes. */
-KuriKingModelFilePtr data_ov074_02123000(0x395);
-KuriKingTexSeqFilePtr data_ov074_02123040(0x390);
-KuriKingAnimationFilePtr data_ov074_02123038(0x38f);
-KuriKingAnimationFilePtr data_ov074_02123008(0x391);
-KuriKingAnimationFilePtr data_ov074_02123018(0x392);
-KuriKingAnimationFilePtr data_ov074_02122ff0(0x394);
-KuriKingAnimationFilePtr data_ov074_02123048(0x393);
-KuriKingAnimationFilePtr data_ov074_02122ff8(0x396);
-KuriKingAnimationFilePtr data_ov074_02123028(0x398);
-KuriKingAnimationFilePtr data_ov074_02123030(0x399);
-KuriKingAnimationFilePtr data_ov074_02123020(0x39a);
-KuriKingAnimationFilePtr data_ov074_02122fe0(0x39b);
-KuriKingAnimationFilePtr data_ov074_02122fe8(0x39c);
-KuriKingAnimationFilePtr data_ov074_02123010(0x397);
+KuriKingModelFilePtr gKurikingModelModelFile(ASSET_KURIKING_MODEL_BMD);
+KuriKingTexSeqFilePtr gKurikingAngerTextureSequenceFile(ASSET_KURIKING_ANGER_BTP);
+KuriKingAnimationFilePtr gKurikingAngerAnimationFile(ASSET_KURIKING_ANGER_BCA);
+KuriKingAnimationFilePtr gKurikingDamageBAnimationFile(ASSET_KURIKING_DAMAGE_B_BCA);
+KuriKingAnimationFilePtr gKurikingDamageFAnimationFile(ASSET_KURIKING_DAMAGE_F_BCA);
+KuriKingAnimationFilePtr gKurikingDownStartAnimationFile(ASSET_KURIKING_DOWN_START_BCA);
+KuriKingAnimationFilePtr gKurikingDownAnimationFile(ASSET_KURIKING_DOWN_BCA);
+KuriKingAnimationFilePtr gKurikingSerchWaitAnimationFile(ASSET_KURIKING_SERCH_WAIT_BCA);
+KuriKingAnimationFilePtr gKurikingTurnAnimationFile(ASSET_KURIKING_TURN_BCA);
+KuriKingAnimationFilePtr data_ov074_02123030(ASSET_KURIKING_WAIT_BCA);
+KuriKingAnimationFilePtr gKurikingWalkAnimationFile(ASSET_KURIKING_WALK_BCA);
+KuriKingAnimationFilePtr gKurikingWalkEndAnimationFile(ASSET_KURIKING_WALK_END_BCA);
+KuriKingAnimationFilePtr gKurikingWalkStartAnimationFile(ASSET_KURIKING_WALK_START_BCA);
+KuriKingAnimationFilePtr gKurikingSpawnAnimationFile(ASSET_KURIKING_SPAWN_BCA);
 
 /* The three descriptors that target free stubs, not members, stay named
  * here in ROM address order. The fifteen member descriptors are named

@@ -40,6 +40,16 @@
 // literal pool swapped). GetGameLanguage is called twice in
 // func_ov006_020dccb8 and again in func_ov006_020dcd74 (hoisting misses).
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgCoin_c_AssetId {
+    ASSET_D_2D_MG_BG_WRECKING_CREW_DOWN_NSC_BIN = 0x00a8,
+    ASSET_D_2D_MG_BG_WRECKING_CREW_NCG_BIN = 0x00a9,
+    ASSET_D_2D_MG_BG_WRECKING_CREW_NCL_BIN = 0x00aa,
+    ASSET_D_2D_MG_BG_WRECKING_CREW_UP_NSC_BIN = 0x00ab,
+    ASSET_D_2D_MG_WRECKING_CREW_NCG_BIN = 0x010a,
+    ASSET_D_2D_MG_WRECKING_CREW_NCL_BIN = 0x010b
+};
+
 #include "types.h"
 #include "decl_common.h"
 #include "Sound.h"
@@ -1692,20 +1702,20 @@ int dScMgCoin_c::InitResources()
     *(volatile u16 *)0x400000e &= ~3;
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1210;
 
-    a = LoadFile(0xa9);
+    a = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCG_BIN);
     DecompressLZ16(a, (void *)(func_02054d88() + 0x4000));
     Deallocate((void *)a);
 
-    a = LoadFile(0xaa);
+    a = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCL_BIN);
     _ZN2GX10LoadBGPlttEPKvjj((const void *)a, 0x1e0, 0x20);
     Deallocate((void *)a);
 
-    a = LoadFile(0xab);
+    a = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_UP_NSC_BIN);
     func_02056314((void *)a, 0, 0x800);
     Deallocate((void *)a);
 
-    b = LoadFile(0x10a);
-    a = LoadFile(0x10b);
+    b = LoadFile(ASSET_D_2D_MG_WRECKING_CREW_NCG_BIN);
+    a = LoadFile(ASSET_D_2D_MG_WRECKING_CREW_NCL_BIN);
     DecompressLZ16(b, (void *)0x6400000);
     _ZN2GX11LoadOBJPlttEPKvjj((const void *)a, 0, 0x100);
 
@@ -1713,15 +1723,15 @@ int dScMgCoin_c::InitResources()
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x1210;
 
-    d = LoadFile(0xa9);
+    d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCG_BIN);
     DecompressLZ16(d, (void *)(_ZN3G2S13GetBG3CharPtrEv() + 0x4000));
     Deallocate((void *)d);
 
-    d = LoadFile(0xaa);
+    d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_NCL_BIN);
     _ZN3GXS10LoadBGPlttEPKvjj((const void *)d, 0x1e0, 0x20);
     Deallocate((void *)d);
 
-    d = LoadFile(0xa8);
+    d = LoadFile(ASSET_D_2D_MG_BG_WRECKING_CREW_DOWN_NSC_BIN);
     func_020562b4((const void *)d, 0, 0x800);
     Deallocate((void *)d);
 

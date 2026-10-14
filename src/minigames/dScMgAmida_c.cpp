@@ -47,6 +47,32 @@
  *   sixth argument of the line-draw helper.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum dScMgAmida_c_AssetId {
+    ASSET_D_2D_MG_AMIDA_FACE_F_NCG_BIN = 0x000a,
+    ASSET_D_2D_MG_AMIDA_FACE_G_NCG_BIN = 0x000b,
+    ASSET_D_2D_MG_AMIDA_FACE_I_NCG_BIN = 0x000c,
+    ASSET_D_2D_MG_AMIDA_FACE_NCG_BIN = 0x000d,
+    ASSET_D_2D_MG_AMIDA_FACE_NCL_BIN = 0x000e,
+    ASSET_D_2D_MG_AMIDA_FACE_S_NCG_BIN = 0x000f,
+    ASSET_D_2D_MG_AMIDA_NCG_BIN = 0x0010,
+    ASSET_D_2D_MG_AMIDA_NCL_BIN = 0x0011,
+    ASSET_D_2D_MG_BG_AMIDA1_NCG_BIN = 0x0015,
+    ASSET_D_2D_MG_BG_AMIDA1_NCL_BIN = 0x0016,
+    ASSET_D_2D_MG_BG_AMIDA1_NSC_BIN = 0x0017,
+    ASSET_D_2D_MG_BG_AMIDA2_1_NSC_BIN = 0x0018,
+    ASSET_D_2D_MG_BG_AMIDA2_2_NSC_BIN = 0x0019,
+    ASSET_D_2D_MG_BG_AMIDA2_NCG_BIN = 0x001a,
+    ASSET_D_2D_MG_BG_AMIDA2_NCL_BIN = 0x001b,
+    ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NCG_BIN = 0x001c,
+    ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NCL_BIN = 0x001d,
+    ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NSC_BIN = 0x001e,
+    ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCG_BIN = 0x001f,
+    ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCL_BIN = 0x0020,
+    ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NSC_BIN = 0x0021,
+    ASSET_D_2D_MG_BG_OPTION_NSC_BIN = 0x005b
+};
+
 #include "types.h"
 #include "decl_common.h"
 #include "dScMgAmida_c.h"
@@ -237,7 +263,7 @@ int dScMgAmida_c::Virtual7C()
     id = GetGameLanguage();
     t = (void*)_ZN3G2S13GetBG1CharPtrEv();
     LoadCompressedFileAt(data_ov006_0213b838[id], t);
-    LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
+    LoadCompressedFileAt(ASSET_D_2D_MG_BG_OPTION_NSC_BIN, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
 // @symbol _ZN12dScMgAmida_c12ShuffleGoalsEi
@@ -2163,19 +2189,19 @@ s32 dScMgAmida_c::InitResources()
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 3;
 
     if (Unk36() != 0) {
-        LoadCompressedFileAt(0x1f, (void *)func_02054d88());
-        file = (void *)LoadFile(0x20);
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCG_BIN, (void *)func_02054d88());
+        file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NCL_BIN);
         CP15::FlushAndInvalidateDataCache((u32)file, 0x1a0);
         GX::LoadBGPltt(file, 0x60, 0x1a0);
         Deallocate(file);
-        LoadCompressedFileAt(0x21, _ZN2G212GetBG3ScrPtrEv());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_UP_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
     } else {
-        LoadCompressedFileAt(0x15, (void *)func_02054d88());
-        file = (void *)LoadFile(0x16);
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA1_NCG_BIN, (void *)func_02054d88());
+        file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA1_NCL_BIN);
         CP15::FlushAndInvalidateDataCache((u32)file, 0x1a0);
         GX::LoadBGPltt(file, 0x60, 0x1a0);
         Deallocate(file);
-        LoadCompressedFileAt(0x17, _ZN2G212GetBG3ScrPtrEv());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA1_NSC_BIN, _ZN2G212GetBG3ScrPtrEv());
     }
 
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x40c;
@@ -2188,20 +2214,20 @@ s32 dScMgAmida_c::InitResources()
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
 
     if (Unk36() != 0) {
-        LoadCompressedFileAt(0x1c, G2S::GetBG3CharPtr());
-        file = (void *)LoadFile(0x1d);
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NCG_BIN, G2S::GetBG3CharPtr());
+        file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NCL_BIN);
         GXS::LoadBGPltt(file, 0x60, 0x1a0);
         Deallocate(file);
-        LoadCompressedFileAt(0x1e, G2S::GetBG3ScrPtr());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA_FACE_DOWN_NSC_BIN, G2S::GetBG3ScrPtr());
         data_0209d45c |= 9;
         data_0209d454 |= 9;
     } else {
-        LoadCompressedFileAt(0x1a, G2S::GetBG3CharPtr());
-        file = (void *)LoadFile(0x1b);
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_NCG_BIN, G2S::GetBG3CharPtr());
+        file = (void *)LoadFile(ASSET_D_2D_MG_BG_AMIDA2_NCL_BIN);
         GXS::LoadBGPltt(file, 0x60, 0x1a0);
         Deallocate(file);
-        LoadCompressedFileAt(0x19, G2S::GetBG2ScrPtr());
-        LoadCompressedFileAt(0x18, G2S::GetBG3ScrPtr());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_2_NSC_BIN, G2S::GetBG2ScrPtr());
+        LoadCompressedFileAt(ASSET_D_2D_MG_BG_AMIDA2_1_NSC_BIN, G2S::GetBG3ScrPtr());
         *(volatile s16 *)0x4000050 = 0;
         _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x4001050, 4, 8, 6, 0x10);
         data_0209d45c |= 9;
@@ -2210,29 +2236,29 @@ s32 dScMgAmida_c::InitResources()
 
     if (Unk36() != 0) {
         if (GetOwnerLanguage() == 5) {
-            LoadCompressedFileAt(0xf, (void *)0x6400000);
-            LoadCompressedFileAt(0xf, (void *)0x6600000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_S_NCG_BIN, (void *)0x6400000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_S_NCG_BIN, (void *)0x6600000);
         } else if (GetOwnerLanguage() == 4) {
-            LoadCompressedFileAt(0xc, (void *)0x6400000);
-            LoadCompressedFileAt(0xc, (void *)0x6600000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_I_NCG_BIN, (void *)0x6400000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_I_NCG_BIN, (void *)0x6600000);
         } else if (GetOwnerLanguage() == 3) {
-            LoadCompressedFileAt(0xb, (void *)0x6400000);
-            LoadCompressedFileAt(0xb, (void *)0x6600000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_G_NCG_BIN, (void *)0x6400000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_G_NCG_BIN, (void *)0x6600000);
         } else if (GetOwnerLanguage() == 2) {
-            LoadCompressedFileAt(0xa, (void *)0x6400000);
-            LoadCompressedFileAt(0xa, (void *)0x6600000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_F_NCG_BIN, (void *)0x6400000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_F_NCG_BIN, (void *)0x6600000);
         } else {
-            LoadCompressedFileAt(0xd, (void *)0x6400000);
-            LoadCompressedFileAt(0xd, (void *)0x6600000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_NCG_BIN, (void *)0x6400000);
+            LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_FACE_NCG_BIN, (void *)0x6600000);
         }
-        file = (void *)LoadFile(0xe);
+        file = (void *)LoadFile(ASSET_D_2D_MG_AMIDA_FACE_NCL_BIN);
         GX::LoadOBJPltt(file, 0, 0x100);
         GXS::LoadOBJPltt(file, 0, 0x100);
         Deallocate(file);
     } else {
-        LoadCompressedFileAt(0x10, (void *)0x6400000);
-        LoadCompressedFileAt(0x10, (void *)0x6600000);
-        file = (void *)LoadFile(0x11);
+        LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_NCG_BIN, (void *)0x6400000);
+        LoadCompressedFileAt(ASSET_D_2D_MG_AMIDA_NCG_BIN, (void *)0x6600000);
+        file = (void *)LoadFile(ASSET_D_2D_MG_AMIDA_NCL_BIN);
         GX::LoadOBJPltt(file, 0, 0x100);
         GXS::LoadOBJPltt(file, 0, 0x100);
         Deallocate(file);

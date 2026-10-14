@@ -34,6 +34,13 @@
  * them reschedules the matched bodies.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daBakubaku_c_AssetId {
+    ASSET_BAKUBAKU_BMD = 0x0295,
+    ASSET_BAKUBAKU_ATTACK_BCA = 0x0296,
+    ASSET_BAKUBAKU_SWIM_BCA = 0x0297
+};
+
 #include "common.h"
 #include "daBakubaku_c.h"
 #include "Player.h"
@@ -94,7 +101,7 @@ struct BakubakuAnimationFileHandle : SharedFilePtr {
 struct BakuVec3 { s32 x, y, z; };
 
 extern "C" {
-extern BakubakuModelFilePtr data_ov032_02113a40;    /* model 0x295 */
+extern BakubakuModelFilePtr gBakubakuModelFile;    /* model 0x295 */
 extern BakubakuAnimationFileHandle data_ov032_02113a50; /* swim anim 0x297 */
 extern BakubakuAnimationFileHandle data_ov032_02113a48; /* bite anim 0x296 */
 extern daBakubaku_c::State data_ov032_02113a8c; /* wander */
@@ -178,7 +185,7 @@ s32 daBakubaku_c::InitResources()
     Vector3 headOffset;
     void *f;
 
-    f = Model::LoadFile(*(SharedFilePtr *)&data_ov032_02113a40);
+    f = Model::LoadFile(*(SharedFilePtr *)&gBakubakuModelFile);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
     dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
@@ -272,7 +279,7 @@ void daBakubaku_c::OnPendingDestroy()
 // @symbol _ZN12daBakubaku_c16CleanupResourcesEv
 s32 daBakubaku_c::CleanupResources()
 {
-    ((SharedFilePtr *)&data_ov032_02113a40)->Release();
+    ((SharedFilePtr *)&gBakubakuModelFile)->Release();
     ((SharedFilePtr *)&data_ov032_02113a50)->Release();
     ((SharedFilePtr *)&data_ov032_02113a48)->Release();
     return 1;
@@ -781,9 +788,9 @@ int daBakubaku_c::func_ov032_02111254()
  * emits __sinit_d_a_bakubaku.cpp from these definitions, including the
  * destructor registrations and the PMF descriptor constants at
  * 0x0211377c..0x021137c4. */
-BakubakuModelFilePtr data_ov032_02113a40(0x295);
-BakubakuAnimationFileHandle data_ov032_02113a50(0x297);
-BakubakuAnimationFileHandle data_ov032_02113a48(0x296);
+BakubakuModelFilePtr gBakubakuModelFile(ASSET_BAKUBAKU_BMD);
+BakubakuAnimationFileHandle data_ov032_02113a50(ASSET_BAKUBAKU_SWIM_BCA);
+BakubakuAnimationFileHandle data_ov032_02113a48(ASSET_BAKUBAKU_ATTACK_BCA);
 daBakubaku_c::State data_ov032_02113a8c = {
     &daBakubaku_c::func_ov032_02111f9c, &daBakubaku_c::func_ov032_02111e24
 };

@@ -31,6 +31,16 @@
  * which has no ROM home (manifest: deadstrip).
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjCtRotateBlock_c_AssetId {
+    ASSET_CT_MECHA_OBJ01_BMD = 0x05b6,
+    ASSET_CT_MECHA_OBJ01_KCL = 0x05b7,
+    ASSET_CT_MECHA_OBJ01A_BMD = 0x05b8,
+    ASSET_CT_MECHA_OBJ02_BMD = 0x05b9,
+    ASSET_CT_MECHA_OBJ02_KCL = 0x05ba,
+    ASSET_CT_MECHA_OBJ02A_BMD = 0x05bb
+};
+
 #include "decl_common.h"
 #include "daObjCtRotateBlock_c.h"
 #include "dBgCh_Gnd.h"
@@ -314,9 +324,9 @@ extern "C" daObjCtRotateBlock_c *daObjCtRotateBlock_c_classInit_CT_MECHA01()
 
 /* Static-init globals (was the handwritten __sinit_ov065_0211c660 shard).
  * Definition order is the retail initializer's construction order. */
-RotateBlockModelFile data_ov065_0211d814(0x5b6);
-RotateBlockModelFile data_ov065_0211d824(0x5b9);
-RotateBlockModelFile data_ov065_0211d83c(0x5b8);
-RotateBlockModelFile data_ov065_0211d81c(0x5bb);
-RotateBlockCollisionFilePtr data_ov065_0211d834(0x5b7);
-RotateBlockCollisionFilePtr data_ov065_0211d82c(0x5ba);
+RotateBlockModelFile gCtMechaObj01ModelFile(ASSET_CT_MECHA_OBJ01_BMD);
+RotateBlockModelFile gCtMechaObj02ModelFile(ASSET_CT_MECHA_OBJ02_BMD);
+RotateBlockModelFile gCtMechaObj01aModelFile(ASSET_CT_MECHA_OBJ01A_BMD);
+RotateBlockModelFile gCtMechaObj02aModelFile(ASSET_CT_MECHA_OBJ02A_BMD);
+RotateBlockCollisionFilePtr gCtMechaObj01CollisionFile(ASSET_CT_MECHA_OBJ01_KCL);
+RotateBlockCollisionFilePtr gCtMechaObj02CollisionFile(ASSET_CT_MECHA_OBJ02_KCL);

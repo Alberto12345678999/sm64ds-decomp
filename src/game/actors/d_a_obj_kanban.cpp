@@ -19,6 +19,11 @@
  *   load-bearing (sign-extends / zero-extends the halfword load).
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjKanban_c_AssetId {
+    ASSET_OBJ_KANBAN_BMD = 0x0474
+};
+
 #include "daObjKanban_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -202,4 +207,4 @@ extern "C" daObjKanban_c *daObjKanban_c_classInit(void)
     return new daObjKanban_c();
 }
 
-KanbanModelFilePtr data_ov085_02130858(1140);
+KanbanModelFilePtr data_ov085_02130858(ASSET_OBJ_KANBAN_BMD);

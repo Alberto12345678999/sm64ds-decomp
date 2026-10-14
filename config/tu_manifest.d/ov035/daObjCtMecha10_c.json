@@ -120,28 +120,28 @@
   ],
   "bss": [
     {
-      "symbol": "data_ov035_02112c60",
+      "symbol": "gCtMechaObj12sModelFile",
       "address": "0x02112c60",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 1491"
     },
     {
-      "symbol": "data_ov035_02112c68",
+      "symbol": "gCtMechaObj10CollisionFile",
       "address": "0x02112c68",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "collision resource handle constructed with file ID 1487"
     },
     {
-      "symbol": "data_ov035_02112c70",
+      "symbol": "gCtMechaObj12lModelFile",
       "address": "0x02112c70",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "model resource handle constructed with file ID 1490"
     },
     {
-      "symbol": "data_ov035_02112c78",
+      "symbol": "gCtMechaObj10ModelFile",
       "address": "0x02112c78",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -337,7 +337,7 @@
       "source": "0x02111f88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov035_02112c78",
+      "symbol": "gCtMechaObj10ModelFile",
       "addend": 0,
       "target_module": "ov035",
       "target_address": "0x02112c78"
@@ -367,7 +367,7 @@
       "source": "0x02111f98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov035_02112c68",
+      "symbol": "gCtMechaObj10CollisionFile",
       "addend": 0,
       "target_module": "ov035",
       "target_address": "0x02112c68"
@@ -397,7 +397,7 @@
       "source": "0x02111fa8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov035_02112c60",
+      "symbol": "gCtMechaObj12sModelFile",
       "addend": 0,
       "target_module": "ov035",
       "target_address": "0x02112c60"
@@ -417,7 +417,7 @@
       "source": "0x02111fb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov035_02112c70",
+      "symbol": "gCtMechaObj12lModelFile",
       "addend": 0,
       "target_module": "ov035",
       "target_address": "0x02112c70"

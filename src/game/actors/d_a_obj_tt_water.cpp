@@ -16,6 +16,12 @@
  *   (CLPS) are unnamed homes this TU feeds Prepare/SetFile.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjTtWater_c_AssetId {
+    ASSET_TT_OBJ_WATER_BMD = 0x06c7,
+    ASSET_TT_OBJ_WATER_KCL = 0x06c8
+};
+
 #include "daObjTtWater_c.h"
 #include "SharedFilePtr.h"
 #include "dMap_c.h"
@@ -139,5 +145,5 @@ extern "C" daObjTtWater_c *daObjTtWater_c_classInit()
  * __sinit_d_a_obj_tt_water.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
 // @symbol __sinit_d_a_obj_tt_water.cpp
-TtWaterModelFilePtr data_ov033_021124f0(1735);
-TtWaterCollisionFilePtr data_ov033_021124e8(1736);
+TtWaterModelFilePtr data_ov033_021124f0(ASSET_TT_OBJ_WATER_BMD);
+TtWaterCollisionFilePtr data_ov033_021124e8(ASSET_TT_OBJ_WATER_KCL);

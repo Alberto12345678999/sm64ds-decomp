@@ -88,21 +88,21 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov091_02135620",
+      "symbol": "gDosuneModelFile",
       "address": "0x02135620",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "Thwomp model SharedFilePtr (file 0x2f4), constructed by __sinit_d_a_dsn.cpp; reached through the file table data_ov091_02135138"
     },
     {
-      "symbol": "data_ov091_02135618",
+      "symbol": "gDosuneCollisionFile",
       "address": "0x02135618",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "Thwomp KCL SharedFilePtr (file 0x2f6), constructed by __sinit_d_a_dsn.cpp; reached through the file table data_ov091_02135138"
     },
     {
-      "symbol": "data_ov091_02135610",
+      "symbol": "gDosuneTextureSequenceFile",
       "address": "0x02135610",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -681,7 +681,7 @@
       "source": "0x02134998",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135620",
+      "symbol": "gDosuneModelFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135620"
@@ -711,7 +711,7 @@
       "source": "0x021349a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135618",
+      "symbol": "gDosuneCollisionFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135618"
@@ -741,7 +741,7 @@
       "source": "0x021349b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov091_02135610",
+      "symbol": "gDosuneTextureSequenceFile",
       "addend": 0,
       "target_module": "ov091",
       "target_address": "0x02135610"

@@ -36,6 +36,13 @@
  *   are daDsnBase_c methods now. Three stay C-linkage.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daDsn_c_AssetId {
+    ASSET_DOSUNE_BMD = 0x02f4,
+    ASSET_DOSUNE_BTP = 0x02f5,
+    ASSET_DOSUNE_KCL = 0x02f6
+};
+
 #include "daDsn_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -68,9 +75,9 @@ struct DsnTextureSeqFileHandle : SharedFilePtr {
 };
 
 extern "C" {
-extern DsnModelFilePtr data_ov091_02135620;
-extern DsnCollisionFileHandle data_ov091_02135618;
-extern DsnTextureSeqFileHandle data_ov091_02135610;
+extern DsnModelFilePtr gDosuneModelFile;
+extern DsnCollisionFileHandle gDosuneCollisionFile;
+extern DsnTextureSeqFileHandle gDosuneTextureSequenceFile;
 }
 
 /* data_ov091_02135138 is the six-word table daDsnBase_c::Init reads out of
@@ -240,6 +247,6 @@ int daDsn_c::OnAimedAtWithEgg()
  * texture-sequence file 0x2f5. __sinit_d_a_dsn.cpp emits the three
  * constructions and registers the destructors; the registration nodes are
  * compiler temporaries. */
-DsnModelFilePtr data_ov091_02135620(0x2f4);
-DsnCollisionFileHandle data_ov091_02135618(0x2f6);
-DsnTextureSeqFileHandle data_ov091_02135610(0x2f5);
+DsnModelFilePtr gDosuneModelFile(ASSET_DOSUNE_BMD);
+DsnCollisionFileHandle gDosuneCollisionFile(ASSET_DOSUNE_KCL);
+DsnTextureSeqFileHandle gDosuneTextureSequenceFile(ASSET_DOSUNE_BTP);

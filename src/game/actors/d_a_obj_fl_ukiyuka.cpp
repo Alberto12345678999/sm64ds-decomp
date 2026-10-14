@@ -28,6 +28,14 @@
  *   name them stay in this overlay's .data, outside this TU.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Ukiyuka_c_AssetId {
+    ASSET_FL_SHISO_BMD = 0x0610,
+    ASSET_FL_SHISO_KCL = 0x0611,
+    ASSET_FL_UKI_YUKA_BMD = 0x0614,
+    ASSET_FL_UKI_YUKA_KCL = 0x0615
+};
+
 #include "daObjFl_Ukiyuka_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
@@ -114,10 +122,10 @@ struct UkiyukaCollisionFilePtr : SharedFilePtr {
 /* Source order is construction order. __sinit_d_a_obj_fl_ukiyuka.cpp emits
  * all four constructions and registers the destructors; the registration
  * nodes are compiler temporaries. */
-UkiyukaModelFilePtr data_ov022_021145e0(0x614);
-UkiyukaCollisionFilePtr data_ov022_021145d0(0x615);
-UkiyukaModelFilePtr data_ov022_021145d8(0x610);
-UkiyukaCollisionFilePtr data_ov022_021145c8(0x611);
+UkiyukaModelFilePtr gFlUkiYukaModelFile(ASSET_FL_UKI_YUKA_BMD);
+UkiyukaCollisionFilePtr gFlUkiYukaCollisionFile(ASSET_FL_UKI_YUKA_KCL);
+UkiyukaModelFilePtr gdaObjFl_UkiyukaFlShisoModelFile(ASSET_FL_SHISO_BMD);
+UkiyukaCollisionFilePtr gdaObjFl_UkiyukaFlShisoCollisionFile(ASSET_FL_SHISO_KCL);
 
 // @symbol daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA_L
 /* Reconstructed source-style name: SM64DS proves daObjFl_Ukiyuka_c through RTTI,

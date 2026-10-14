@@ -22,6 +22,12 @@
  * - unk_352 stays unnamed: zeroed by state 0 and read nowhere.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daTor_c_AssetId {
+    ASSET_SAND_TORNADO_BCA = 0x041c,
+    ASSET_SAND_TORNADO_BMD = 0x041d
+};
+
 #pragma defer_codegen off
 
 #include "decl_common.h"
@@ -83,8 +89,8 @@ struct TorAnimationFileHandle : SharedFilePtr {
  * dExtFrameCtrl_c::LoadFile.
  * ------------------------------------------------------------------------ */
 // @symbol __sinit_d_a_tor.cpp
-TorModelFilePtr   data_ov096_02137ba8(0x41d);   /* model */
-TorAnimationFileHandle data_ov096_02137bb0(0x41c);   /* anim  */
+TorModelFilePtr   gSandTornadoModelFile(ASSET_SAND_TORNADO_BMD);   /* model */
+TorAnimationFileHandle gSandTornadoAnimationFile(ASSET_SAND_TORNADO_BCA);   /* anim  */
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -244,8 +250,8 @@ void daTor_c::State0()
 // @symbol _ZN7daTor_c16CleanupResourcesEv
 int daTor_c::CleanupResources()
 {
-    data_ov096_02137ba8.Release();
-    data_ov096_02137bb0.Release();
+    gSandTornadoModelFile.Release();
+    gSandTornadoAnimationFile.Release();
     return 1;
 }
 
@@ -297,13 +303,13 @@ int daTor_c::InitResources()
 {
     /* The three Fix12-by-value calls below stay mangled (file header leftovers);
        member calls grow this function from 0x158 to 0x18c. */
-    mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov096_02137ba8),
+    mModelAnim.SetFile((BMD_File *)Model::LoadFile(gSandTornadoModelFile),
                        1, 0x15);
-    dExtFrameCtrl_c::LoadFile(data_ov096_02137bb0);
+    dExtFrameCtrl_c::LoadFile(gSandTornadoAnimationFile);
     func_02016aac(&mModelAnim, 0x16, 1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (void *)data_ov096_02137bb0.file, 0, 0x1000, 0);
-    TextureTransformer::Prepare(*(BMD_File *)data_ov096_02137ba8.file, *(BTA_File *)data_ov024_02112968);
+        &mModelAnim, (void *)gSandTornadoAnimationFile.file, 0, 0x1000, 0);
+    TextureTransformer::Prepare(*(BMD_File *)gSandTornadoModelFile.file, *(BTA_File *)data_ov024_02112968);
     _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(
         &mTextureTransformer, data_ov024_02112968, 0, 0x1000, 0);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0, 0, 0x200002, 0);

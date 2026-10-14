@@ -44,6 +44,12 @@
  *   this TU in ROM order. D2 still has no cartridge home.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daWater_Tatumaki_c_AssetId {
+    ASSET_WATER_TATUMAKI_BCA = 0x04a8,
+    ASSET_WATER_TATUMAKI_BMD = 0x04a9
+};
+
 #pragma defer_codegen off
 
 #include "daWater_Tatumaki_c.h"
@@ -100,14 +106,14 @@ struct TatumakiAnimFileHandle : SharedFilePtr {
     ~TatumakiAnimFileHandle();
 };
 
-extern "C" TatumakiModelFilePtr data_ov026_02113f0c; /* water_tatumaki.bmd, 0x4a9 */
-extern "C" TatumakiAnimFileHandle data_ov026_02113f04;  /* water_tatumaki.bca, 0x4a8 */
+extern "C" TatumakiModelFilePtr gWaterTatumakiModelFile; /* water_tatumaki.bmd, 0x4a9 */
+extern "C" TatumakiAnimFileHandle gWaterTatumakiAnimationFile;  /* water_tatumaki.bca, 0x4a8 */
 extern daWater_Tatumaki_c::State data_ov026_02113f2c; /* spin, waiting to catch */
 extern daWater_Tatumaki_c::State data_ov026_02113f3c; /* drag the player down */
 extern BTA_File data_ov026_02112f40;
 
-#define MODEL_FILE (*(SharedFileBytes *)&data_ov026_02113f0c)
-#define ANIM_FILE  (*(SharedFileBytes *)&data_ov026_02113f04)
+#define MODEL_FILE (*(SharedFileBytes *)&gWaterTatumakiModelFile)
+#define ANIM_FILE  (*(SharedFileBytes *)&gWaterTatumakiAnimationFile)
 #define AS_SHARED(file) (*(SharedFilePtr *)&(file))
 #define WHIRLPOOL_BTA data_ov026_02112f40
 #define STATE_SPIN (&data_ov026_02113f2c)
@@ -416,8 +422,8 @@ extern "C" daWater_Tatumaki_c *daWater_Tatumaki_c_classInit()
 
 /* Static initializer: model handle, anim handle, then the two state records.
    The pointer-to-member descriptors stay anonymous compiler objects. */
-TatumakiModelFilePtr data_ov026_02113f0c(0x4a9);
-TatumakiAnimFileHandle data_ov026_02113f04(0x4a8);
+TatumakiModelFilePtr gWaterTatumakiModelFile(ASSET_WATER_TATUMAKI_BMD);
+TatumakiAnimFileHandle gWaterTatumakiAnimationFile(ASSET_WATER_TATUMAKI_BCA);
 
 daWater_Tatumaki_c::State data_ov026_02113f2c = {
     &daWater_Tatumaki_c::func_ov026_02111ed8,

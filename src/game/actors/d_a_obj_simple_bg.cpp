@@ -37,6 +37,22 @@
  * - The 0xc-stride file rows are local: only this TU indexes those tables.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjSimpleBg_c_AssetId {
+    ASSET_OBJ_DOKAN_BMD = 0x0461,
+    ASSET_OBJ_DOKAN_KCL = 0x0462,
+    ASSET_BK_TOWER_BMD = 0x059d,
+    ASSET_BK_TOWER_KCL = 0x059e,
+    ASSET_KI_HASIRA_DAI_BMD = 0x063f,
+    ASSET_KI_HASIRA_DAI_KCL = 0x0640,
+    ASSET_KI_IWA_BMD = 0x0643,
+    ASSET_KI_IWA_KCL = 0x0644,
+    ASSET_MC_DODAI_BMD = 0x068b,
+    ASSET_MC_DODAI_KCL = 0x068c,
+    ASSET_MC_HAZAD_BMD = 0x068f,
+    ASSET_MC_HAZAD_KCL = 0x0690
+};
+
 #include "decl_common.h"
 #include "daObjSimpleBg_c.h"
 #include "SharedFilePtr.h"
@@ -218,15 +234,15 @@ extern "C" daObjSimpleBg_c *daObjSimpleBg_c_classInit_KI_IWA()
 }
 
 /* Retail construction order. mwcc emits __sinit_d_a_obj_simple_bg.cpp from these. */
-SimpleBgModelFilePtr data_ov102_0214e710(0x643);
-SimpleBgModelFilePtr data_ov102_0214e6e8(0x63f);
-SimpleBgModelFilePtr data_ov102_0214e700(0x59d);
-SimpleBgModelFilePtr data_ov102_0214e718(0x461);
-SimpleBgModelFilePtr data_ov102_0214e730(0x68b);
-SimpleBgModelFilePtr data_ov102_0214e720(0x68f);
-SimpleBgClsnFilePtr data_ov102_0214e738(0x644);
-SimpleBgClsnFilePtr data_ov102_0214e6f0(0x640);
-SimpleBgClsnFilePtr data_ov102_0214e6e0(0x59e);
-SimpleBgClsnFilePtr data_ov102_0214e6f8(0x462);
-SimpleBgClsnFilePtr data_ov102_0214e708(0x68c);
-SimpleBgClsnFilePtr data_ov102_0214e728(0x690);
+SimpleBgModelFilePtr gKiIwaModelFile(ASSET_KI_IWA_BMD);
+SimpleBgModelFilePtr gKiHasiraDaiModelFile(ASSET_KI_HASIRA_DAI_BMD);
+SimpleBgModelFilePtr gBkTowerModelFile(ASSET_BK_TOWER_BMD);
+SimpleBgModelFilePtr gdaObjSimpleBgObjDokanModelFile(ASSET_OBJ_DOKAN_BMD);
+SimpleBgModelFilePtr gMcDodaiModelFile(ASSET_MC_DODAI_BMD);
+SimpleBgModelFilePtr gMcHazadModelFile(ASSET_MC_HAZAD_BMD);
+SimpleBgClsnFilePtr gKiIwaCollisionFile(ASSET_KI_IWA_KCL);
+SimpleBgClsnFilePtr gKiHasiraDaiCollisionFile(ASSET_KI_HASIRA_DAI_KCL);
+SimpleBgClsnFilePtr gBkTowerCollisionFile(ASSET_BK_TOWER_KCL);
+SimpleBgClsnFilePtr gObjDokanCollisionFile(ASSET_OBJ_DOKAN_KCL);
+SimpleBgClsnFilePtr gMcDodaiCollisionFile(ASSET_MC_DODAI_KCL);
+SimpleBgClsnFilePtr gMcHazadCollisionFile(ASSET_MC_HAZAD_KCL);

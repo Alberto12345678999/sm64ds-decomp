@@ -70,6 +70,9 @@ struct MantaAnimationFilePtr : SharedFilePtr {
 
 
 enum {
+    /* Runtime asset handles: data/enemy/manta/manta.bmd and manta_swim.bca. */
+    MANTA_MODEL_FILE = 0x39d,
+    MANTA_SWIM_ANIMATION_FILE = 0x39e,
     MANTA_STAR = 0xb2,
     MANTA_PLAYER = 0xbf,
     MANTA_WATER_RING = 0xf4,
@@ -430,8 +433,8 @@ extern "C" daManta_c *daManta_c_classInit()
 
 /* Model, anim, then the state record. The record's pointer-to-member
  * descriptors stay anonymous. This is what emits __sinit_d_a_manta.cpp. */
-MantaModelFilePtr data_ov090_02134524(0x39d);
-MantaAnimationFilePtr data_ov090_0213452c(0x39e);
+MantaModelFilePtr data_ov090_02134524(MANTA_MODEL_FILE);
+MantaAnimationFilePtr data_ov090_0213452c(MANTA_SWIM_ANIMATION_FILE);
 MantaState data_ov090_0213454c = {
     &daManta_c::func_ov090_02132a58,
     &daManta_c::func_ov090_021327e4,

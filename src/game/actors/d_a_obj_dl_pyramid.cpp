@@ -24,11 +24,17 @@
  * Leftover: dBgW_KcMbg::SetFile, Model::LoadFile and dCcAc_c::Init keep
  *   their mangled extern-C spellings. SetFile takes Fix12<int> by value
  *   (Fix12 wall, notes/mwccarm-codegen.md 6az).
- * The two resource handles below (model data_ov024_02113968, collision
- * data_ov024_02113960) are defined by this TU; mwcc builds
+ * The two resource handles below (model gDlPyramidModelFile, collision
+ * gDlPyramidCollisionFile) are defined by this TU; mwcc builds
  * __sinit_d_a_obj_dl_pyramid.cpp from them. data_ov024_021129f0 is the
  * collision CLPS block, overlay .data this TU does not own.
  */
+
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjDlPyramid_c_AssetId {
+    ASSET_DL_PYRAMID_BMD = 0x05dd,
+    ASSET_DL_PYRAMID_KCL = 0x05de
+};
 
 #include "daObjDlPyramid_c.h"
 #include "daObjDlPyramidDummy_c.h"
@@ -91,8 +97,8 @@ struct DlPyramidCollisionFilePtr : SharedFilePtr {
     ~DlPyramidCollisionFilePtr();
 };
 
-extern "C" DlPyramidModelFilePtr data_ov024_02113968;
-extern "C" DlPyramidCollisionFilePtr data_ov024_02113960;
+extern "C" DlPyramidModelFilePtr gDlPyramidModelFile;
+extern "C" DlPyramidCollisionFilePtr gDlPyramidCollisionFile;
 
 #pragma defer_codegen off
 
@@ -195,8 +201,8 @@ extern "C" void func_ov024_021114c4(daObjDlPyramid_c *self)
 int daObjDlPyramid_c::CleanupResources()
 {
     mMeshCollider.Disable();
-    data_ov024_02113968.Release();
-    data_ov024_02113960.Release();
+    gDlPyramidModelFile.Release();
+    gDlPyramidCollisionFile.Release();
     return 1;
 }
 
@@ -267,11 +273,11 @@ s32 daObjDlPyramidDummy_c::Behavior()
 // @symbol _ZN16daObjDlPyramid_c13InitResourcesEv
 int daObjDlPyramid_c::InitResources()
 {
-    BMD_File *bmd = (BMD_File *)Model::LoadFile(data_ov024_02113968);
+    BMD_File *bmd = (BMD_File *)Model::LoadFile(gDlPyramidModelFile);
     mTopModel.SetFile(bmd, 1, -1);
     func_ov024_021114c4(this);
     func_ov024_02111480(this);
-    void *kcl = dBgW_Kc::LoadFile(data_ov024_02113960);
+    void *kcl = dBgW_Kc::LoadFile(gDlPyramidCollisionFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, kcl, &mClsnMat2, 0x199, mAngleY, data_ov024_021129f0);
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
@@ -325,5 +331,5 @@ extern "C" daObjDlPyramid_c *daObjDlPyramid_c_classInit()
 
 /* Retail construction order: model 1501, then collision 1502. mwcc emits
  * __sinit_d_a_obj_dl_pyramid.cpp from these two definitions. */
-DlPyramidModelFilePtr data_ov024_02113968(1501);
-DlPyramidCollisionFilePtr data_ov024_02113960(1502);
+DlPyramidModelFilePtr gDlPyramidModelFile(ASSET_DL_PYRAMID_BMD);
+DlPyramidCollisionFilePtr gDlPyramidCollisionFile(ASSET_DL_PYRAMID_KCL);

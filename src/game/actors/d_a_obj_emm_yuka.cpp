@@ -18,6 +18,12 @@
 //   manifest does not license. The handles stay: nothing else defines
 //   their BSS or .init range.
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjEmmYuka_c_AssetId {
+    ASSET_EMM_YUKA_BMD = 0x05e5,
+    ASSET_EMM_YUKA_KCL = 0x05e6
+};
+
 #include "decl_common.h"
 #include "daObjEmmYuka_c.h"
 #include "SharedFilePtr.h"
@@ -177,5 +183,5 @@ extern "C" daObjEmmYuka_c *daObjEmmYuka_c_classInit()
 
 /* The lift's model and collision file handles; data_ov052_021125a0.model
  * and .collision point at them. */
-EmmYukaModelFilePtr data_ov052_021126a8(1509);
-EmmYukaCollisionFilePtr data_ov052_021126b0(1510);
+EmmYukaModelFilePtr gEmmYukaModelFile(ASSET_EMM_YUKA_BMD);
+EmmYukaCollisionFilePtr gEmmYukaCollisionFile(ASSET_EMM_YUKA_KCL);

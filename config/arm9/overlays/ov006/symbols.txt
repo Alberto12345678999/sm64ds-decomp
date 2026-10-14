@@ -4685,7 +4685,7 @@ data_ov006_021421b8 kind:bss addr:0x021421b8
 data_ov006_021421bc kind:bss addr:0x021421bc
 data_ov006_021421c0 kind:bss addr:0x021421c0
 data_ov006_021421c4 kind:bss addr:0x021421c4
-data_ov006_021421cc kind:bss addr:0x021421cc
+gOV006JumpBack01ModelFile kind:bss addr:0x021421cc
 @158 kind:bss addr:0x021421d4
 @159 kind:bss addr:0x021421e0
 data_ov006_021421ec kind:bss addr:0x021421ec

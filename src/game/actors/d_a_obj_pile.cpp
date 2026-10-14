@@ -44,6 +44,12 @@
  *   functions, recorded as aliases in the manifest.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjPile_c_AssetId {
+    ASSET_PILE_BMD = 0x0481,
+    ASSET_PILE_KCL = 0x0482
+};
+
 #include "decl_common.h"
 #include "daObjPile_c.h"
 #include "Player.h"
@@ -88,8 +94,8 @@ extern int func_02012694(int a, void *b);
 /* This TU's two file handles: the pile model and its collision file.
  * InitResources loads both, CleanupResources releases them. Defined at the
  * end of this file so the constructors do not enter .text. */
-extern PileModelFilePtr data_ov091_02135654;
-extern PileCollisionFilePtr data_ov091_0213564c;
+extern PileModelFilePtr gPileModelFile;
+extern PileCollisionFilePtr gPileCollisionFile;
 }
 
 /* ROM order. The out-of-line destructor is the key function, so it stays
@@ -200,8 +206,8 @@ s32 daObjPile_c::CleanupResources()
 {
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
-    data_ov091_02135654.Release();
-    data_ov091_0213564c.Release();
+    gPileModelFile.Release();
+    gPileCollisionFile.Release();
     return 1;
 }
 
@@ -262,11 +268,11 @@ s32 daObjPile_c::Behavior()
 // @symbol _ZN11daObjPile_c13InitResourcesEv
 s32 daObjPile_c::InitResources()
 {
-    void *m = Model::LoadFile(data_ov091_02135654);
+    void *m = Model::LoadFile(gPileModelFile);
     mModel.SetFile((BMD_File *)m, 1, -1);
     UpdateModelPosAndRotY();
     UpdateClsnPosAndRot();
-    void *k = dBgW_Kc::LoadFile(data_ov091_0213564c);
+    void *k = dBgW_Kc::LoadFile(gPileCollisionFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov002_0210d874);
     mStepsLeft = 3;
@@ -282,5 +288,5 @@ extern "C" daObjPile_c *daObjPile_c_classInit()
 /* Source order is construction order: model file 1153, collision file 1154.
  * __sinit_d_a_obj_pile.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-PileModelFilePtr data_ov091_02135654(1153);
-PileCollisionFilePtr data_ov091_0213564c(1154);
+PileModelFilePtr gPileModelFile(ASSET_PILE_BMD);
+PileCollisionFilePtr gPileCollisionFile(ASSET_PILE_KCL);

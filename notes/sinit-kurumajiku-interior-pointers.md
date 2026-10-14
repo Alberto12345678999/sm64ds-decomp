@@ -13,7 +13,7 @@ mount-offset vectors and registers each with `func_020731dc`, using
 - nodes: 0x0210dda0, 0x0210ddac, 0x0210ddb8, 0x0210ddc4 (0xc each)
 - array: 0x0210ddd0..0x0210de00 (0x30), elements at +0x00/+0x0c/+0x18/+0x24
 
-The generated `__sinit_daObjKurumajiku_c.cpp` from a four-element wrapper
+The generated `__sinit_d_a_obj_kurumajiku.cpp` from a four-element wrapper
 array matches retail byte-for-byte, including the literal pool, which contains
 pointers at all four element addresses (0x0210ddd0/…dddc/…dde8/…ddf4).
 

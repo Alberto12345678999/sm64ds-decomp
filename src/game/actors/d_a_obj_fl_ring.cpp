@@ -45,6 +45,12 @@
  *   .data at 0x02113cf4 and lives outside this TU.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daObjFl_Ring_c_AssetId {
+    ASSET_FL_RING_BMD = 0x060e,
+    ASSET_FL_RING_KCL = 0x060f
+};
+
 #include "daObjFl_Ring_c.h"
 #include "SharedFilePtr.h"
 #include "daObj_volcanoCannon_c.h"
@@ -79,8 +85,8 @@ struct RingCollisionFilePtr : SharedFilePtr {
 
 extern "C" {
 extern daObjFl_Ring_c_Files data_ov022_02113cc8;
-extern RingModelFilePtr data_ov022_02114500;
-extern RingCollisionFilePtr data_ov022_02114508;
+extern RingModelFilePtr gFlRingModelFile;
+extern RingCollisionFilePtr gFlRingCollisionFile;
 
 u16 DecIfAbove0_Short(u16 *p);
 u8  DecIfAbove0_Byte(u8 *p);
@@ -254,5 +260,5 @@ s32 daObjFl_Ring_c::CleanupResources()
 /* Source order is construction order: model file 1550, collision file 1551.
  * __sinit_d_a_obj_fl_ring.cpp emits both constructions and registers the
  * destructors; the registration nodes are compiler temporaries. */
-RingModelFilePtr data_ov022_02114500(1550);
-RingCollisionFilePtr data_ov022_02114508(1551);
+RingModelFilePtr gFlRingModelFile(ASSET_FL_RING_BMD);
+RingCollisionFilePtr gFlRingCollisionFile(ASSET_FL_RING_KCL);

@@ -49,6 +49,14 @@
 /* Includes: union of the legacy files', first-seen in ROM-ascending
  * processing order. NOT verified for header ordering constraints (e.g. a
  * common.h-before-X rule) -- watch for new compile errors after this. */
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daJango_c_AssetId {
+    ASSET_JANGO_BMD = 0x0348,
+    ASSET_JANGO_ATTACK_BCA = 0x0349,
+    ASSET_JANGO_DAMAGE_BCA = 0x034a,
+    ASSET_JANGO_FLY_BCA = 0x034b
+};
+
 #include "daJango_c.h"
 #include "types.h"
 #include "common.h"
@@ -1441,10 +1449,10 @@ void daJango_c::func_ov062_0211b2fc(){
  * Definition order is the retail initializer's construction order: the model
  * handle, then the three animation handles, then the five state records in
  * FLY_PATH, CIRCLE, SWOOP, HURT, RISE order. */
-JangoModelFile data_ov062_0211e0fc(0x348);
-JangoAnimationFilePtr data_ov062_0211e114(0x349);
-JangoAnimationFilePtr data_ov062_0211e10c(0x34a);
-JangoAnimationFilePtr data_ov062_0211e104(0x34b);
+JangoModelFile data_ov062_0211e0fc(ASSET_JANGO_BMD);
+JangoAnimationFilePtr data_ov062_0211e114(ASSET_JANGO_ATTACK_BCA);
+JangoAnimationFilePtr data_ov062_0211e10c(ASSET_JANGO_DAMAGE_BCA);
+JangoAnimationFilePtr data_ov062_0211e104(ASSET_JANGO_FLY_BCA);
 
 JangoFreeState data_ov062_0211dcd0 = { func_ov062_0211ba84 };
 

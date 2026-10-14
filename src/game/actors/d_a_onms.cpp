@@ -40,6 +40,12 @@
  *   the header method mangles with int, the ROM symbol with Fix12<int>.
  */
 
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum daOnms_c_AssetId {
+    ASSET_ONIMASU_BMD = 0x03c9,
+    ASSET_ONIMASU_KCL = 0x03ca
+};
+
 #pragma defer_codegen off
 
 #include "daOnms_c.h"
@@ -97,8 +103,8 @@ struct OnmsCollisionFilePtr : SharedFilePtr {
 };
 
 /* BMD (Model::LoadFile) and KCL (dBgW_Kc::LoadFile). Cleanup releases both. */
-extern "C" OnmsModelFilePtr data_ov092_02132540;
-extern "C" OnmsCollisionFilePtr data_ov092_02132548;
+extern "C" OnmsModelFilePtr gOnimasuModelFile;
+extern "C" OnmsCollisionFilePtr gOnimasuCollisionFile;
 extern "C" daOnms_cStateEntry data_ov092_02132568[9];
 
 extern "C" {
@@ -531,8 +537,8 @@ void daOnms_c::UpdateModelMtx()
 // @symbol _ZN8daOnms_c16CleanupResourcesEv
 int daOnms_c::CleanupResources()
 {
-    data_ov092_02132540.Release();
-    data_ov092_02132548.Release();
+    gOnimasuModelFile.Release();
+    gOnimasuCollisionFile.Release();
     if (mMeshCollider.IsEnabled())
         mMeshCollider.Disable();
     return 1;
@@ -586,7 +592,7 @@ int daOnms_c::InitResources()
     void *f;
     Vec3 tmp;
 
-    f = Model::LoadFile(data_ov092_02132540);
+    f = Model::LoadFile(gOnimasuModelFile);
     mModel.SetFile((BMD_File *)f, 1, -1);
 
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -618,7 +624,7 @@ int daOnms_c::InitResources()
 
     func_ov092_02131a88((char *)this);
 
-    f = dBgW_Kc::LoadFile(data_ov092_02132548);
+    f = dBgW_Kc::LoadFile(gOnimasuCollisionFile);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, (KCL_File *)f, &mClsnMat,
         0x1000, mAngleY, &data_ov092_02132220);
@@ -651,8 +657,8 @@ extern "C" daOnms_c *daOnms_c_classInit()
  * then copies the nine anonymous pointer-to-member descriptors into the
  * state table Behavior indexes by mMoveDir. StateBounce returns int, so
  * its descriptor needs the cast; the emitted pair is still {addr, 0}. */
-OnmsModelFilePtr data_ov092_02132540(0x3c9);
-OnmsCollisionFilePtr data_ov092_02132548(0x3ca);
+OnmsModelFilePtr gOnimasuModelFile(ASSET_ONIMASU_BMD);
+OnmsCollisionFilePtr gOnimasuCollisionFile(ASSET_ONIMASU_KCL);
 daOnms_cStateEntry data_ov092_02132568[9] = {
     &daOnms_c::StateLand,
     &daOnms_c::func_ov092_02131578,

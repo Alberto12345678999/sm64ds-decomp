@@ -102,28 +102,28 @@
   "data": [],
   "bss": [
     {
-      "symbol": "data_ov016_02114dcc",
+      "symbol": "gKiFuneDownACollisionFile",
       "address": "0x02114dcc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_obj_ki_fune.cpp"
     },
     {
-      "symbol": "data_ov016_02114dd4",
+      "symbol": "gKiFuneUpModelFile",
       "address": "0x02114dd4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_obj_ki_fune.cpp"
     },
     {
-      "symbol": "data_ov016_02114ddc",
+      "symbol": "gKiFuneUpCollisionFile",
       "address": "0x02114ddc",
       "size": "0x8",
       "binding": "STB_GLOBAL",
       "evidence": "SharedFilePtr constructed by __sinit_d_a_obj_ki_fune.cpp"
     },
     {
-      "symbol": "data_ov016_02114de4",
+      "symbol": "gKiFuneDownAModelFile",
       "address": "0x02114de4",
       "size": "0x8",
       "binding": "STB_GLOBAL",
@@ -699,7 +699,7 @@
       "source": "0x02113940",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov016_02114dd4",
+      "symbol": "gKiFuneUpModelFile",
       "addend": 0,
       "target_module": "ov016",
       "target_address": "0x02114dd4"
@@ -729,7 +729,7 @@
       "source": "0x02113950",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov016_02114de4",
+      "symbol": "gKiFuneDownAModelFile",
       "addend": 0,
       "target_module": "ov016",
       "target_address": "0x02114de4"
@@ -749,7 +749,7 @@
       "source": "0x0211395c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov016_02114ddc",
+      "symbol": "gKiFuneUpCollisionFile",
       "addend": 0,
       "target_module": "ov016",
       "target_address": "0x02114ddc"
@@ -779,7 +779,7 @@
       "source": "0x0211396c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov016_02114dcc",
+      "symbol": "gKiFuneDownACollisionFile",
       "addend": 0,
       "target_module": "ov016",
       "target_address": "0x02114dcc"

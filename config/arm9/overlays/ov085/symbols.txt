@@ -234,9 +234,9 @@ data_ov085_021304a4 kind:bss addr:0x021304a4
 data_ov085_021304b0 kind:bss addr:0x021304b0
 data_ov085_021304bc kind:bss addr:0x021304bc
 data_ov085_021304c4 kind:bss addr:0x021304c4
-data_ov085_021304cc kind:bss addr:0x021304cc
+gPeachJumpEndAnimationFile kind:bss addr:0x021304cc
 data_ov085_021304d4 kind:bss addr:0x021304d4
-data_ov085_021304dc kind:bss addr:0x021304dc
+gPeachJumpLoopAnimationFile kind:bss addr:0x021304dc
 data_ov085_021304e4 kind:bss addr:0x021304e4
 data_ov085_021304ec kind:bss addr:0x021304ec
 data_ov085_021304f4 kind:bss addr:0x021304f4
@@ -254,7 +254,7 @@ data_ov085_021305b0 kind:bss addr:0x021305b0
 data_ov085_021305b8 kind:bss addr:0x021305b8
 data_ov085_021305c0 kind:bss addr:0x021305c0
 data_ov085_021305c8 kind:bss addr:0x021305c8
-data_ov085_021305d0 kind:bss addr:0x021305d0
+gMipRunAnimationFile kind:bss addr:0x021305d0
 data_ov085_021305d8 kind:bss addr:0x021305d8
 data_ov085_021305e0 kind:bss addr:0x021305e0
 @1500 kind:bss addr:0x021305e8
