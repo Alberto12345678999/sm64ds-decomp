@@ -119,33 +119,32 @@ done:
 }
 }
 
+/* Process lists hold real actor-owned nodes. Their descriptors contain the
+ * existing frame callback records; all four current wrappers return int,
+ * which this traversal discards. Those address-named free ABI wrappers are
+ * still viewed through a member pointer here, not recovered native methods.
+ * Save the next node before invoking a callback that may unlink its owner. */
 // @symbol func_02043fdc
 namespace Absorb02043fdc {
-class Obj { public: int dummy; };
-typedef void (Obj::*PMF)();
+typedef int (fBase_c::*ProcessCallback)();
 
-struct Node {
-    int pad;        // 0x0
-    Node *next;     // 0x4
-    Obj *obj;       // 0x8
+/* Local descriptor name is inferred from the list primitives and frame loop. */
+struct ProcessListDescriptor {
+    fLiNdBaPr_c *head;       // 0x0
+    fLiNdBaPr_c *tail;       // 0x4
+    ProcessCallback callback; // 0x8
 };
 
-struct Thing {
-    Node *head;     // 0x0
-    int pad;        // 0x4
-    PMF callback;   // 0x8
-};
-
-extern "C" void *func_02043fdc(Thing *thiz)
+extern "C" void *func_02043fdc(ProcessListDescriptor *list)
 {
-    Node *node;
-    if (thiz->callback == 0) return (void *)1;
-    node = thiz->head;
+    fLiNdBaPr_c *node;
+    if (list->callback == 0) return (void *)1;
+    node = list->head;
     while (node != 0) {
-        Node *next;
+        fLiNdBaPr_c *next;
         data_020a4b68 = node;
         next = node->next;
-        (node->obj->*thiz->callback)();
+        (node->owner->*list->callback)();
         node = next;
     }
     data_020a4b68 = node;
