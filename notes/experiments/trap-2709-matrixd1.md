@@ -2,7 +2,7 @@
 
 - tested_commit: 395312cb4 (cleanup-datrstrap at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_trs_trap_classinits.cpp:16-18` -- the
+- claim: `src/game/actors/daTrsTrap_c/d_a_trs_trap_classinits.cpp:16-18` -- the
   synthesized ctor from `return new daTrsTrap_c()` emits a vague-linkage
   _ZN9Matrix4x3D1Ev over mClsnMat, licensed as deadstrip in this TU's manifest
   entry. No compile experiment applies (packaging disposition, not codegen),
@@ -40,3 +40,6 @@
 ```
 
 - verdict: PACKAGING-LICENSED
+
+Current source locations after PR #3840: [src/game/actors/d_a_trs_trap_classinits.cpp](../../src/game/actors/d_a_trs_trap_classinits.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

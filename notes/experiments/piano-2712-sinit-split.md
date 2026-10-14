@@ -2,7 +2,7 @@
 
 - tested_commit: b19392a93 (cleanup-dapiano at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_piano.cpp:33-34` keep
+- claim: `src/game/actors/daPiano_c/d_a_piano.cpp:33-34` keep
   `__sinit_ov063_0211e5fc` split in
   `src/game/actors/daPiano_c/__sinit_ov063_0211e5fc.c` because delinks
   places one range per file and nothing owns `.text` plus `.init`.
@@ -15,7 +15,7 @@
 - command (naive):
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_piano.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daPiano_c/d_a_piano.cpp \
   --func __sinit_ov063_0211e5fc --addr 0x0211e5fc --size 0x100 \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```
@@ -110,3 +110,6 @@ unlicensed content in text-only multi-symbol object: section[5] .text size 0x100
   walls for the move itself. The file's comment names only the packaging
   wall; the experiment shows two more in front of it.
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_piano.cpp](../../src/game/actors/d_a_piano.cpp).
+The experiment and commands above retain the paths at `tested_commit`.

@@ -2,7 +2,7 @@
 
 - tested_commit: 395312cb4 (cleanup-datrstrap at experiment time)
 - compiler: mwccarm 2004/b56 (tools/mwccarm/2004/b56/mwccarm.exe)
-- claim: `src/game/actors/d_a_trs_trap.cpp:30-32` keeps the mangled
+- claim: `src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp:30-32` keeps the mangled
   TU-local spelling of dBgW_KcMbg::SetFile because its signature carries
   Fix12<int> by value (wall 6az; `include/dBgW_KcMbg.h:68-69`), so the method
   form size-DIFFs.
@@ -38,7 +38,7 @@
 - command:
 
 ```text
-.venv/bin/python tools/match.py --c src/game/actors/d_a_trs_trap.cpp \
+.venv/bin/python tools/match.py --c src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp \
   --func _ZN11daTrsTrap_c13InitResourcesEv --addr 0x0211cf00 --size 0x370 \
   --version 2004/b56 --module ov063 --strict-relocs --brief
 ```
@@ -60,3 +60,6 @@ MATCHING VERSIONS: none
 ```
 
 - verdict: CONSTRAINT SUPPORTED
+
+Current source locations after PR #3840: [src/game/actors/d_a_trs_trap.cpp](../../src/game/actors/d_a_trs_trap.cpp).
+The experiment and commands above retain the paths at `tested_commit`.
