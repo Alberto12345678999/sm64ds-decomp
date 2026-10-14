@@ -27,13 +27,14 @@
  * deslop leftovers:
  *   - the func_ov062_* members are named by address only; original names
  *     unknown.
- *   - the Data shadow stays file-local (unowned row); the file words of
- *     the SharedFilePtr globals are still read through a cast at +4.
+ *   - Local resource wrappers retain their existing lifecycle aliases.
+ *     The four handles use file ID/reference bytes and typed loaded-file
+ *     pointers; animation reads use those pointer members directly.
  *   - NewSimple keeps its scalar-ABI spelling (wall 6az).
  *   - func_ov062_0211ba84 retains its free-function state entry and C linkage;
  *     its calls and fields now use the class interfaces. Remaining raw offsets
- *     elsewhere include the +0xc8 word of the held actor (dActor_c leaves it unnamed) and
- *     the +0x403 byte of a held cap (daObjMarioCap_c::unk_403).
+ *     elsewhere include the +0xc8 word of the held actor (dActor_c leaves it unnamed).
+ *     The held-cap byte uses daObjMarioCap_c::unk_403 after the star branch.
  *   - the two matrix members are 12-word arrays, not Matrix4x3; see the
  *     header.
  *   - unk_43c, unk_440, unk_446 and unk_460 stay unk_ names (behaviour
@@ -69,6 +70,7 @@ extern "C" int AngleDiff(int a, int b);
 #include "Player.h"
 #include "BlendModelAnim.h"
 #include "dExtFrameCtrl_c.h"
+#include "daObjMarioCap_c.h"
 
 /* Static-init ownership (was the handwritten __sinit_ov062_0211d6fc shard).
  * The file-scope objects at the end of this file construct the four
@@ -77,15 +79,24 @@ extern "C" int AngleDiff(int a, int b);
  * __sinit_daJango_c.cpp from those definitions. */
 typedef int (daJango_c::*JangoPMF)();
 
+/* Local handle payloads: construction writes fileID at +0, numRefs at +2
+ * and the loaded-file pointer at +4. CleanupResources releases references;
+ * the registered wrapper destructors only publish the file ID. */
 struct JangoModelFile : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    u8 pad_03;
+    BMD_File *filePtr;
 
     JangoModelFile(u32 fileID);
     ~JangoModelFile();
 };
 
 struct JangoAnimationFilePtr : SharedFilePtr {
-    u32 words[2];
+    u16 fileID;
+    u8 numRefs;
+    u8 pad_03;
+    BCA_File *filePtr;
 
     JangoAnimationFilePtr(u32 fileID);
     ~JangoAnimationFilePtr();
@@ -142,9 +153,6 @@ struct BCA_File;
    passes differently at the call site, so declaring the true types
    breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-
-/* shadow struct 'Data' */
-struct Data { BCA_File* a; BCA_File* f; };
 
 /* shadow typedef 'M48' */
 typedef struct { int w[12]; } M48;
@@ -336,8 +344,9 @@ s32 daJango_c::OnAimedAtWithEgg() {
    path (JANGO_STATE_FLY_PATH). Without one it circles (JANGO_STATE_CIRCLE), and
    if the player has already lost the cap it starts out holding it.
 
-   SharedFilePtr stays incomplete: Model.h forward-declares it and its layout is
-   deliberately not recovered (include/SharedFilePtr.h). Used only by address here. */
+   The shared SharedFilePtr interface remains fieldless. These four local
+   wrappers describe their model/animation payloads; native loading APIs
+   receive the existing base by reference. */
 int daJango_c::InitResources()
 {
     void *bmd;
@@ -495,7 +504,7 @@ int daJango_c::Behavior()
                 p->mPosY = mHeldPosY;
                 p->mPosZ = mHeldPosZ;
                 goto skip_destroy;
-            } else if (*(unsigned char *)((char *)p + 0x403) == 0) {
+            } else if (static_cast<daObjMarioCap_c *>(p)->unk_403 == 0) {
                 /* daObjMarioCap_c::unk_403: the cap sets it to 1 in
                    InitTaken, the same function that clears the +0xc8
                    matrix pointer stored below. */
@@ -674,7 +683,7 @@ int daJango_c::func_ov062_0211c594() {
         mStateTimer = 0x3c;
     }
 
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 }
@@ -788,7 +797,7 @@ int daJango_c::func_ov062_0211c218()
         mHitPlayer = 0;
     }
     unk_440 = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     if (mSilverStarFlag == 2 ||
         (unsigned char)(signed char)((signed char)data_0209f2f8 - 0x18) <= 1) {
         unk_440 = 2;
@@ -926,7 +935,7 @@ int daJango_c::func_ov062_0211bd10()
     if (angD < 0x300) {
         if (unk_43c == 1) {
             _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-                &mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+                &mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
             if (mSilverStarFlag == 2 ||
                 (unsigned)(u8)(s8)((s8)data_0209f2f8 - 0x18) <= 1u) {
                 p43c = &unk_440;
@@ -939,7 +948,7 @@ int daJango_c::func_ov062_0211bd10()
         }
     } else if (unk_43c == 0) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
-            &mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e114)[1]), 4, 0, 0x1000, 0);
+            &mBlendModelAnim, *data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
         p43c = &unk_43c;
         *p43c = *p43c + 1;
     }
@@ -998,7 +1007,7 @@ int daJango_c::func_ov062_0211bc54()
     func_02012694(SND_AT_SWOOP_ENTER, &mCamSpacePosX);
     unk_43c =
         ((((unsigned)RandomIntInternal(&data_0209e650) >> 8) & 3) << 8) + 0x300;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(BCA_File*)((void**)&data_ov062_0211e114)[1], 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e114.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 
@@ -1097,7 +1106,7 @@ int func_ov062_0211ba84(char *c)
 int daJango_c::func_ov062_0211b930()
 {
     dActor_c* found;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&(mBlendModelAnim), *(((Data *)&data_ov062_0211e10c)->f), 4, 0x40000000, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&(mBlendModelAnim), *data_ov062_0211e10c.filePtr, 4, 0x40000000, 0x1000, 0);
     unk_43c = 1;
     if (mHeldActorID != 0 && (found = dActor_c::FindWithID(mHeldActorID)) != 0) {
         found->mVertAccel = -0x2000;
@@ -1156,7 +1165,7 @@ int daJango_c::func_ov062_0211b880() {
     mVertSpeed = 0;
     unk_0ac = 0;
     mVertAccel = 0;
-    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *(((BCA_File **)&data_ov062_0211e104)[1]), 4, 0, 0x1000, 0);
+    _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&mBlendModelAnim, *data_ov062_0211e104.filePtr, 4, 0, 0x1000, 0);
     return 1;
 }
 

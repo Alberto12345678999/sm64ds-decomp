@@ -25,7 +25,7 @@
  */
 // leftovers:
 // - func_ov002_020feb50, 020fec94, 020fed18, 020fed2c and 020fed7c stay
-//   free functions with C linkage: the symbol names are the ROM's.
+//   free functions with C linkage and retain current configured linker names.
 // - dCcAc_c::Init, dBgCh_Actr::Init and Player::Hurt stay mangled.
 //   dCcAc_c.h's Init takes Fix12<int> by value, and every spelling tried
 //   grows InitResources: `Fix12<int> r = { 0xa000 };` passed twice gives
@@ -79,7 +79,9 @@ struct HeyhoStateTable {
 extern HeyhoStateTable data_ov002_02111190;
 
 extern void func_02012694(unsigned int a, Vector3 const &v);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char *self, Vector3 const &v, unsigned int a, int b, unsigned int c, unsigned int d, unsigned int e);
+/* local extern: the retail Hurt symbol takes Fix12<int> by value. This
+   scalar bridge follows Player.cpp: int result, Player receiver and u8 flags. */
+extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *self, void *position, u32 kind, int damage, u8 arg4, u8 arg5, u8 arg6);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short rx, short ry, short rz);
@@ -115,22 +117,24 @@ extern "C" daPropeller_Heyho_Fire_c *_ZN24daPropeller_Heyho_Fire_cD0Ev(daPropell
    (dCc_c.h's unverified best-effort bit table reads it as "mega
    character"). */
 extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
+    dActor_c* otherActor;
     Player* player;
-    int isPlayer;   /* `if (player->actorID != 0xbf)` without it: 0x144 -> 0x138 bytes */
+    int isPlayer;   /* Preserve the observed widened comparison before the Player cast. */
     int flags;
     Vector3 v;
 
     if (self->mdCcAc_c.otherOwner == 0) {
         return;
     }
-    player = (Player *)dActor_c::FindWithID(self->mdCcAc_c.otherOwner);
-    if (player == 0) {
+    otherActor = dActor_c::FindWithID(self->mdCcAc_c.otherOwner);
+    if (otherActor == 0) {
         return;
     }
-    isPlayer = (player->actorID == 0xbf);
+    isPlayer = (otherActor->actorID == 0xbf);
     if (isPlayer == 0) {
         return;
     }
+    player = static_cast<Player *>(otherActor);
     if (player->mIsVanish != 0) {
         return;
     }
@@ -159,7 +163,7 @@ extern "C" void func_ov002_020feb50(daPropeller_Heyho_Fire_c *self) {
     v.x = self->mPosX;
     v.y = self->mPosY;
     v.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj((char *)player, v, 1, 0xc000, 1, 0, 1);
+    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &v, 1, 0xc000, 1, 0, 1);
 }
 
 // @symbol func_ov002_020fec94
