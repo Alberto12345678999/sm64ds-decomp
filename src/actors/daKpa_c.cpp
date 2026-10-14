@@ -6,7 +6,7 @@
  * daKpaTail_c_classInit and daKpa_c_classInit. The class names are the cartridge's
  * own RTTI spellings: ex-coined Bowser/BowserTail, renamed with the
  * aliased-vtable evidence (shared _ZTV addresses, typeinfo slots and
- * ROM-spelled classInit factories), the same S35 shape as daKpaFire_c.
+ * reconstructed classInit factory names), the same S35 shape as daKpaFire_c.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
  * emits one .text section per function, in the REVERSE of source order, so
@@ -50,8 +50,8 @@
  *    Bowser_Anim lists where each one is used.
  *  - unk_420 and unk_422 of daKpa_c and the dActor_c words at 0xa4 / 0xac are
  *    unnamed: the first two are written here and never read.
- *  - The legacy TUBUILD CONFLICT blocks and shard declarations are left as the
- *    fold wrote them. */
+ *  - Remaining TUBUILD CONFLICT blocks record unresolved legacy declarations;
+ *    resolved native actor, Player and collision declarations are removed. */
 
 /* TUBUILD NOTE -- codegen is deferred, so .text emits in reverse source
  * order and the function bodies below are ROM-descending. The exception is
@@ -208,12 +208,11 @@ struct Obj {
     dExtFrameCtrl_c anim;
 };
 
-/* Local shadow declarations carried from the legacy files verbatim.
- * NOT reconciled against real project headers -- check include/*.h for
- * each of these before compiling; a real header should usually win. */
-/* The state table at data_ov060_0211ae9c holds pointers-to-member of the actor
- * itself, so PMF is a member pointer of daKpa_c, not of the opaque 4-byte `C`
- * this shard invented. The real class is what the ROM dispatches through. */
+/* Remaining local views and scalar ABI bridges from the legacy shards.
+ * Native actor, Player and collision interfaces use the existing headers. */
+/* Bowser's hold/state tables at data_ov060_0211aeb4 / 0211aed4 use
+ * daKpa_c member pointers. The separate tail state table at
+ * data_ov060_0211ae9c uses KpaTailState / daKpaTail_c member pointers. */
 typedef void (daKpa_c::*PMF)();
 
 /* shadow struct 'PmfEnt' */
@@ -330,11 +329,9 @@ extern "C" {
  * so the offset is a byte offset from this base, not a field of a known class. */
 extern char *data_0209f318;
 extern short data_02082214[];
-extern void* _ZN8dActor_c13ClosestPlayerEv(void *thiz);
 extern int Vec3_HorzDist(const struct Vector3*, const struct Vector3*);
 extern short Vec3_HorzAngle(const struct Vector3*, const struct Vector3*);
 extern int func_020092c4(void*, void*, void*);
-extern int _ZN6Player7IsInAirEv(void*);
 extern int _Z14ApproachLinearRiii(int*, int, int);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZN15dExtFrameCtrl_c8FinishedEv(void*);
@@ -349,32 +346,22 @@ extern int _ZN15dExtFrameCtrl_c8FinishedEv(void*);
 extern KpaAnimationFileHandle data_ov060_0211acd0;
 extern unsigned char data_ov060_02119264[];
 extern PmfEnt data_ov060_0211aeb4[];
-int _ZN8dActor_c14GetSubtractionEss(void* self, short a, short b);
-extern dActor_c *_ZN8dActor_c10FindWithIDEj(unsigned int id);
-extern int _ZN10dBgCh_Actr15ClearGroundFlagEv(char *c);
 /* func_02012694 takes (soundId, position) -- see src/engine/sound/Sound.cpp, whose
  * body is a single Sound::Play(3, id, pos) forward. Two shards here passed a
  * third argument the callee does not take (a counter byte, and a value stored
  * on the line above); dropped here rather than widening the signature. */
 extern void func_02012694(unsigned int id, const Vector3 *v);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* self, const Vector3& v, u32 a, Fix12i b, u32 c, u32 d, u32 e);
-void _ZN8dActor_c9UpdatePosEP5dCc_c(void* self, void* cc);
 void func_02038408(void* p);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
-int _ZNK10dBgCh_Actr10IsOnGroundEv(void* self);
 void* _ZNK10dBgCh_Actr14GetFloorResultEv(void* self);
 void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vector3* out);
-int _ZNK10dBgCh_Actr13JustHitGroundEv(void* self);
 int _ZN4cstd4fdivEii(int a, int b);
 
 extern PmfEnt data_ov060_0211aed4[];
 extern s16 data_02082214[];
 
-extern int _ZN6Player9StartTalkER7fBase_cb(void *pl, void *a, int b);
-extern int _ZN6Player12GetTalkStateEv(void *pl);
 extern unsigned char NumStars(void);
-extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(
-void *pl, void *a, unsigned m, void *v, unsigned d, unsigned e);
 extern void _ZN7Message11PrepareTalkEv(void);
 extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned a);
 extern void func_ov060_021135fc(daKpa_c *kpa);
@@ -393,10 +380,6 @@ extern void func_ov060_02115a84(daKpa_c *kpa, char* p);
 extern void func_ov060_02112350(daKpa_c *kpa);
 extern KpaAnimationFileHandle data_ov060_0211ac88;
 extern KpaAnimationFileHandle data_ov060_0211ac60;
-/* The mangled name encodes the real signature: (u32, u32, Vector3*,
- * const Vector3_16*, int, int). Spelled to match so the two call sites that pass
- * a real Vector3_16* at c+0x92 bind without a cast. */
-extern void* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int kind, unsigned int b, Vector3 *pos, const Vector3_16 *rot, int e, int f);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int kind, int x, int y, int z);
 extern void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
 extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd *self, Vec3 *pos, void *actor);
@@ -410,7 +393,6 @@ extern int func_ov060_021145d4(daKpa_c *kpa);
 extern void func_ov060_02115b84(daKpaTail_c *c);
 extern void func_ov060_0211577c(daKpa_c *kpa);
 extern void func_ov060_02115b0c(daKpa_c *kpa);
-extern void *_ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void *p);
 extern void func_ov060_02115018(daKpa_c *kpa);
 extern int Vec3_HorzLen(const Vector3* v);
 extern int func_ov060_02113d20(dActor_c *self);
@@ -420,7 +402,6 @@ extern int func_ov060_02113ff4(daKpa_c *kpa, unsigned short a, int b);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
-extern int _ZN6Player9GetHealthEv(void* player);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern KpaAnimationFileHandle data_ov060_0211abe0;
@@ -439,7 +420,6 @@ extern KpaAnimationFileHandle data_ov060_0211ac70;
 /* Both take this same actor. */
 extern void func_ov060_021150d0(daKpa_c *kpa);
 extern void func_ov060_021150c4(daKpa_c *kpa);
-extern int _ZN8dActor_c13DistToCPlayerEv(void *self);
 extern int func_ov060_02111f08(daKpa_c *kpa);
 extern void func_ov060_02115518(daKpa_c *kpa);
 extern s16 data_ov060_0211a4e0[];
@@ -457,9 +437,6 @@ extern Matrix4x3 data_020a0e68;
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* self, struct Vector3* v, int f);
 extern void func_ov060_021123a0(daKpa_c *kpa, int b);
 extern void func_ov060_021123c8(daKpa_c *kpa);
-extern void _ZN6Player9DropActorEv(void *p);
-extern "C" int _ZN6Player15IsCollectingCapEv(Player *p);
-extern "C" int _ZN6Player7TryGrabER8dActor_c(Player *p, dActor_c &a);
 extern "C" void func_02011cfc(void);
 /* One declaration per resource handle, typed from how this TU actually uses it.
  * The shards disagreed: the resource-loader shard passed them straight to
@@ -498,7 +475,6 @@ extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void 
 extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(void *self, int flags);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
-extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void *self);
 extern void func_ov060_021123dc(void *c);
 extern void func_02011d50(void *a);
 int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, int t, unsigned int e, unsigned int f);
@@ -507,22 +483,18 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021125f0, NOT applied: extern int func_ov060_02111cc0(char *c, int a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02112724, NOT applied: extern void func_ov060_02111cc0(char *c, int idx, int a); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02112724, NOT applied: extern int Bowser_IsAnimAtLastFrame(char *o); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov060_021128c0, NOT applied: void* _ZN8dActor_c10FindWithIDEj(u32 id); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov060_02112d48, NOT applied: extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02112ee0, NOT applied: extern void func_ov060_02111cc0(void *c, int a, int b, int d); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player9StartTalkER7fBase_cb, from the legacy file for func_ov060_021130c0, NOT applied: extern int _ZN6Player9StartTalkER7fBase_cb(void* player, void* actorBase, int isTalk); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player12GetTalkStateEv, from the legacy file for func_ov060_021130c0, NOT applied: extern int _ZN6Player12GetTalkStateEv(void* player); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh, from the legacy file for func_ov060_021130c0, NOT applied: extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void* player, void* actorBase, unsigned int msgId, const void* pos, unsigned int a, unsigned int b); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021130c0, NOT applied: extern void func_ov060_02111cc0(void* c, int a, int b, int d); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound22StopLoadedMusic_Layer1Ej, from the legacy file for func_ov060_021130c0, NOT applied: extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02113260, from the legacy file for func_ov060_021130c0, NOT applied: extern void func_ov060_02113260(void* c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_021135fc, from the legacy file for func_ov060_021130c0, NOT applied: extern void func_ov060_021135fc(void* c); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov060_021132a4, NOT applied: extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a, unsigned int b, int fix, int t1, int t2, void *v, void *cb); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for func_ov060_02113404, NOT applied: extern int Vec3_HorzDist(const struct Vector3* a, const struct Vector3* b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c14GetSubtractionEss, from the legacy file for func_ov060_02113404, NOT applied: extern int _ZN8dActor_c14GetSubtractionEss(void* self, short a, short b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK10dBgCh_Actr13JustHitGroundEv, from the legacy file for func_ov060_021134ac, NOT applied: extern int _ZNK10dBgCh_Actr13JustHitGroundEv(void* clsn); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021134ac, NOT applied: extern void func_ov060_02111cc0(void* c, int a, int b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK10dBgCh_Actr10IsOnGroundEv, from the legacy file for func_ov060_021134ac, NOT applied: extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void* clsn); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02113564, NOT applied: extern void func_ov060_02111cc0(char *c, int a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02113564, NOT applied: extern void func_02012694(int a, void *p, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02113710, NOT applied: extern void func_ov060_02111cc0(void *c, int a, int b); */
@@ -551,26 +523,24 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_021145d4, from the legacy file for func_ov060_021143b8, NOT applied: extern int func_ov060_021145d4(void* c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021143b8, NOT applied: extern void func_ov060_02111cc0(char* c, int idx, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02115b0c, from the legacy file for func_ov060_021143b8, NOT applied: extern void func_ov060_02115b0c(char* c); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c15FindWithActorIDEjPS_, from the legacy file for func_ov060_021143b8, NOT applied: extern void* _ZN8dActor_c15FindWithActorIDEjPS_(unsigned int id, void* p); */
+
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_021143b8, NOT applied: extern int Bowser_IsAnimAtLastFrame(void* o); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK10dBgCh_Actr10IsOnGroundEv, from the legacy file for func_ov060_021145d4, NOT applied: extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *c); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_0200fa04, from the legacy file for func_ov060_021145d4, NOT applied: extern void func_0200fa04(void *c, void *v, int flag); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_021145d4, NOT applied: extern void func_02012694(int a, void *b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player7IsInAirEv, from the legacy file for func_ov060_021145d4, NOT applied: extern int _ZN6Player7IsInAirEv(void *p); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_0211469c, NOT applied: extern "C" void func_ov060_02111cc0(void *c, int a1, int a2); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_021146d0, NOT applied: extern void func_02012694(int a, void *b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021146d0, NOT applied: extern void func_ov060_02111cc0(char *c, int idx, int m); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02115a84, from the legacy file for func_ov060_021146d0, NOT applied: extern void func_ov060_02115a84(char *c, char *arg); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound8PlayLongEjjjRK7Vector3s, from the legacy file for func_ov060_02114858, NOT applied: extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 cc, const Vector3 *v, u32 e); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov060_02114858, NOT applied: extern int RandomIntInternal(int *seed); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for func_ov060_02114858, NOT applied: extern void _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 f, const Vector3 *v, const Vector3_16 *r, int a, int b); */
+
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114858, NOT applied: extern int Bowser_IsAnimAtLastFrame(void *o); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02114858, NOT applied: extern void func_ov060_02111cc0(char *c, int idx, int a); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02114858, NOT applied: extern void func_02012694(int a, void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02114b60, NOT applied: extern void func_02012694(int a, void *b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c14GetSubtractionEss, from the legacy file for func_ov060_02114b60, NOT applied: extern int _ZN8dActor_c14GetSubtractionEss(char *self, s16 a, s16 b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK10dBgCh_Actr10IsOnGroundEv, from the legacy file for func_ov060_02114b60, NOT applied: extern int _ZNK10dBgCh_Actr10IsOnGroundEv(char *self); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c14GetSubtractionEss, from the legacy file for func_ov060_02114d08, NOT applied: extern int _ZN8dActor_c14GetSubtractionEss(void* actor, s16 a, s16 b); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int func_02012694(int a, int* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int Bowser_IsAnimAtLastFrame(void* o); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" void func_ov060_02111cc0(void* o, int a, int b); */
@@ -584,9 +554,7 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111f08, from the legacy file for func_ov060_021154e8, NOT applied: extern int func_ov060_02111f08(void *c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021154e8, NOT applied: extern int func_ov060_02111cc0(void *c, int a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02115518, from the legacy file for func_ov060_021154e8, NOT applied: extern int func_ov060_02115518(void *c); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player9StartTalkER7fBase_cb, from the legacy file for func_ov060_02115518, NOT applied: extern int _ZN6Player9StartTalkER7fBase_cb(void *player, void *actor, int flag); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player12GetTalkStateEv, from the legacy file for func_ov060_02115518, NOT applied: extern int _ZN6Player12GetTalkStateEv(void *player); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh, from the legacy file for func_ov060_02115518, NOT applied: extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void *player, void *actor, unsigned int msg, void *pos, unsigned int a, unsigned int b); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02115518, NOT applied: extern void func_02012694(int a, void *v); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111f08, from the legacy file for func_ov060_02115518, NOT applied: extern int func_ov060_02111f08(void *self); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_021156ec, NOT applied: extern void func_ov060_02111cc0(void *c, int a, int b); */
@@ -595,15 +563,12 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02115718, NOT applied: extern int Bowser_IsAnimAtLastFrame(void *c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02115744, NOT applied: extern void func_ov060_02111cc0(void *c, int a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02115744, NOT applied: extern int Bowser_IsAnimAtLastFrame(void *c); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK10dBgCh_Actr10IsOnGroundEv, from the legacy file for func_ov060_0211577c, NOT applied: extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *self); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for func_ov060_02115b0c, NOT applied: extern void* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, struct Vector3* pos, void* rot, int e, int f); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov060_02115c1c, NOT applied: extern void *_ZN8dActor_c10FindWithIDEj(unsigned int id); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov060_02115d68, NOT applied: extern "C" dActor_c *_ZN8dActor_c10FindWithIDEj(u32 id); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_021123a0, from the legacy file for func_ov060_02115d68, NOT applied: extern "C" void func_ov060_021123a0(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzAngle, from the legacy file for _ZN7daKpa_c8BehaviorEv, NOT applied: extern s16 Vec3_HorzAngle(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_HorzDist, from the legacy file for _ZN7daKpa_c8BehaviorEv, NOT applied: extern Fix12i Vec3_HorzDist(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f318, from the legacy file for _ZN7daKpa_c8BehaviorEv, NOT applied: extern char* data_0209f318; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as, from the legacy file for _ZN7daKpa_c13InitResourcesEv, NOT applied: extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, void *pos, void *dir, int e, int f); */
+
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for _ZN7daKpa_c13InitResourcesEv, NOT applied: extern void func_ov060_02111cc0(void *c, int a, int b); */
 }
 
@@ -809,7 +774,7 @@ int daKpa_c::InitResources()
     this->mTargetPlayer = 0;
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
         &this->mWithMeshClsn, this, 0x50000, 0x50000, 0, 0);
-    _ZN10dBgCh_Actr13SetLimMovFlagEv(&this->mWithMeshClsn);
+    this->mWithMeshClsn.SetLimMovFlag();
 
     this->mState = BOWSER_STATE_IDLE;
     this->mVariantID = (char)(this->param1 & 3);
@@ -832,10 +797,10 @@ int daKpa_c::InitResources()
      * mPosX/Y/Z at 0x5c, so the argument is the vector, not a pointer to the first
      * scalar. (dActor_c::Pos() would say this directly, but that accessor is not on
      * this branch yet.) */
-    a1 = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPAFIRE, 0, (Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
+    a1 = (daKpaFire_c *)dActor_c::Spawn(BOWSER_ACTOR_KOOPAFIRE, 0, *((Vector3 *)&this->mPosX), 0, this->mAreaId, -1);
     a1->mKpaUniqueID = this->uniqueID;
 
-    a2 = (daKpaTail_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPATAIL, 0, (Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
+    a2 = (daKpaTail_c *)dActor_c::Spawn(BOWSER_ACTOR_KOOPATAIL, 0, *((Vector3 *)&this->mPosX), 0, this->mAreaId, -1);
     this->mTailUniqueID = a2->uniqueID;
     a2->mBowserUniqueID = this->uniqueID;
     this->mVanishChance = 5;
@@ -1082,7 +1047,7 @@ BOWSER_HOLD_HELD with the Player in mGrabbedPlayer, and the hold countdown start
 at 0x96 (150 frames). */
 void daKpaTail_c::func_ov060_02115d68(){
     u32 *p = &this->mdCcAc_c.flags;
-    daKpa_c *bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(this->mBowserUniqueID);
+    daKpa_c *bowser = (daKpa_c *)dActor_c::FindWithID(this->mBowserUniqueID);
     *p &= ~BOWSER_CC_DISABLED;
     if (bowser->mState != BOWSER_STATE_ARENA_TILT) goto skip_13;
     bowser->func_ov060_021123a0(1);
@@ -1092,10 +1057,10 @@ skip_13:
     bowser->func_ov060_021123a0(1);
     if (this->mdCcAc_c.otherOwner == 0) return;
     if (!(this->mdCcAc_c.hitFlags & 0x1000)) return;
-    dActor_c *player = _ZN8dActor_c10FindWithIDEj(this->mdCcAc_c.otherOwner);
+    dActor_c *player = dActor_c::FindWithID(this->mdCcAc_c.otherOwner);
     if (!player) return;
-    if (_ZN6Player15IsCollectingCapEv((Player *)player)) return;
-    if (!_ZN6Player7TryGrabER8dActor_c((Player *)player, *this)) return;
+    if (static_cast<Player*>(player)->IsCollectingCap()) return;
+    if (!static_cast<Player*>(player)->TryGrab(*this)) return;
     s16 *ip = &bowser->mAngleX;
     player->mAngleX = ip[0];
     player->mAngleY = ip[1];
@@ -1144,7 +1109,7 @@ void daKpaTail_c::func_ov060_02115c1c(){
     dActor_c *held;
     int cond;
 
-    bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(this->mBowserUniqueID);
+    bowser = (daKpa_c *)dActor_c::FindWithID(this->mBowserUniqueID);
     if (bowser->mState == BOWSER_STATE_ARENA_TILT) {
         bowser->func_ov060_021123a0(1);
         this->mState = BOWSER_TAIL_FREE;
@@ -1172,7 +1137,7 @@ void daKpaTail_c::func_ov060_02115c1c(){
 
 do_drop:
     this->mState = BOWSER_TAIL_COOLDOWN;
-    _ZN6Player9DropActorEv(this->mHeldPlayer);
+    static_cast<Player*>(this->mHeldPlayer)->DropActor();
     this->mHeldPlayer = 0;
     bowser->func_ov060_021123c8();
     bowser->mHoldState = BOWSER_HOLD_RELEASE_AFTER_ANIM;
@@ -1208,7 +1173,7 @@ extern void _ZN5dCc_c6UpdateEv(void* cc);
 }
 struct C_func15b84 { char pad[0x800]; };
 void daKpaTail_c::func_ov060_02115b84(){
-  daKpa_c *bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(this->mBowserUniqueID);
+  daKpa_c *bowser = (daKpa_c *)dActor_c::FindWithID(this->mBowserUniqueID);
   int idx = this->mState;
   (this->*data_ov060_0211ae9c[idx])();
   if (bowser->mState == BOWSER_STATE_DEFEATED) {
@@ -1242,7 +1207,7 @@ void daKpa_c::func_ov060_02115b0c(){
     v.y = this->mPosY;
     v.z = this->mPosZ;
     _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
-    _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_FIRERING, 0, (struct Vector3*)(&this->mPosX), 0, this->mAreaId, -1);
+    dActor_c::Spawn(BOWSER_ACTOR_FIRERING, 0, *((struct Vector3*)(&this->mPosX)), 0, this->mAreaId, -1);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1258,19 +1223,16 @@ below 4, spawn landing dust at his position and play sound 0xbd at his
 camera-space position. */
 /* recovered: shared common types */
 #include "common.h"
-extern "C" {
-extern int _ZNK10dBgCh_Actr13JustHitGroundEv(void* p);
-extern void _ZN8dActor_c13LandingDustAtER7Vector3b(void* a, struct Vector3* v, int b);
-}
+
 void daKpa_c::func_ov060_02115a84(char* arg){
-  if(_ZNK10dBgCh_Actr13JustHitGroundEv(&this->mWithMeshClsn)==0) return;
+  if(this->mWithMeshClsn.JustHitGround()==0) return;
   *(unsigned short*)arg = *(unsigned short*)arg + 1;
   if(*(unsigned short*)arg >= 4) return;
   struct Vector3 v;
   v.x = this->mPosX;
   v.y = this->mPosY;
   v.z = this->mPosZ;
-  _ZN8dActor_c13LandingDustAtER7Vector3b(this, &v, 0);
+  this->LandingDustAt(v, 0);
   func_02012694(BOWSER_SND_LAND_SOFT, (const Vector3 *)(&this->mCamSpacePosX));
 }
 
@@ -1315,7 +1277,7 @@ void daKpa_c::func_ov060_0211577c(){
     Vec3 v2;
     int zero;
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn) == 0)
+    if (this->mWithMeshClsn.IsOnGround() == 0)
         goto skip_angles;
     if (this->mHoldState != BOWSER_HOLD_NONE)
         goto skip_angles;
@@ -1441,7 +1403,7 @@ void daKpa_c::func_ov060_02115518(){
   switch (this->mTalkStep)
   {
     case 0:
-      if (_ZN6Player9StartTalkER7fBase_cb(player, this, 1) == 0)
+      if (static_cast<Player*>(player)->StartTalk(*this, 1) == 0)
     {
       return;
     }
@@ -1453,7 +1415,7 @@ void daKpa_c::func_ov060_02115518(){
       return;
 
     case 1:
-      if (_ZN6Player12GetTalkStateEv(player) != 0)
+      if (static_cast<Player*>(player)->GetTalkState() != 0)
     {
       return;
     }
@@ -1492,7 +1454,7 @@ void daKpa_c::func_ov060_02115518(){
       pos[1] = y2;
       pos[2] = (((s16) sz) * ((s16) scale)) + z;
       msg = (s16) msgs[this->mVariantID];
-      if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(this->mTargetPlayer, this, msg, pos, zero, zero) == 0)
+      if (static_cast<Player*>(this->mTargetPlayer)->ShowMessage(*this, msg, reinterpret_cast<const Vector3*>(pos), zero, zero) == 0)
       {
         return;
       }
@@ -1505,7 +1467,7 @@ void daKpa_c::func_ov060_02115518(){
       return;
 
     case 2:
-      if (_ZN6Player12GetTalkStateEv(player) != (-1))
+      if (static_cast<Player*>(player)->GetTalkState() != (-1))
     {
       return;
     }
@@ -1654,7 +1616,7 @@ void daKpa_c::func_ov060_021151d4(){
     if ((this->mCondFlags & BOWSER_COND_FACING_TARGET) == 0)
         goto setE;
 
-    if (_ZN8dActor_c13DistToCPlayerEv(this) < 0x514000) {
+    if (this->DistToCPlayer() < 0x514000) {
         m = ((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10;
         if (m < this->mVanishChance) {
             this->mState = BOWSER_STATE_VANISH_DASH;
@@ -1879,7 +1841,7 @@ void daKpa_c::func_ov060_02114d08(){
     int r4;
     short step;
 
-    r4 = _ZN8dActor_c14GetSubtractionEss(this, this->mAngleY, this->mAngleToTarget);
+    r4 = this->GetSubtraction(this->mAngleY, this->mAngleToTarget);
 
     if (this->mVariantID == 1) {
         step = 0x400;
@@ -1974,7 +1936,7 @@ void daKpa_c::func_ov060_02114b60(){
       {
         r4 = 1;
       }
-      sub = _ZN8dActor_c14GetSubtractionEss(this, this->mAngleY, this->mAngleToTarget);
+      sub = this->GetSubtraction(this->mAngleY, this->mAngleToTarget);
       if (sub > 0x4000)
       {
         if ((this->mDistToTarget) > 0x1f4000)
@@ -1982,7 +1944,7 @@ void daKpa_c::func_ov060_02114b60(){
           r4 = 1;
         }
       }
-      if (_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn) == 0)
+      if (this->mWithMeshClsn.IsOnGround() == 0)
       {
         this->mPosX = this->mLastGroundPosX;
         this->mPosY = this->mLastGroundPosY;
@@ -2069,14 +2031,14 @@ void daKpa_c::func_ov060_02114858(){
         s32 rnd = RandomIntInternal(&data_0209e650);
         u32 hi = ((u32) rnd) >> 16;
         u32 m = hi % 10u;
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPAFIRE, (m << 10) | 0x11, (Vector3 *) pos, (const Vector3_16 *) (&this->mPrevAngleX), (int)this->mAreaId, -1);
+        dActor_c::Spawn(BOWSER_ACTOR_KOOPAFIRE, (m << 10) | 0x11, *((Vector3 *) pos), (const Vector3_16 *) (&this->mPrevAngleX), (int)this->mAreaId, -1);
       }
       else
       {
         s32 rnd = RandomIntInternal(&data_0209e650);
         u32 hi = ((u32) rnd) >> 16;
         u32 m = hi % 10u;
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPAFIRE, (m << 10) | 1, (Vector3 *) pos, (const Vector3_16 *) (&this->mPrevAngleX), (int)this->mAreaId, -1);
+        dActor_c::Spawn(BOWSER_ACTOR_KOOPAFIRE, (m << 10) | 1, *((Vector3 *) pos), (const Vector3_16 *) (&this->mPrevAngleX), (int)this->mAreaId, -1);
       }
     }
     {
@@ -2229,7 +2191,7 @@ speeds, call func_0200fa04 with his position, play animation 0xc once, play soun
 int daKpa_c::func_ov060_021145d4(){
   struct Vector3 v;
   int b;
-  if(_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn)){
+  if(this->mWithMeshClsn.IsOnGround()){
     this->mHorzSpeed = 0;
     this->mVertSpeed = 0;
     v.x = this->mPosX;
@@ -2240,7 +2202,7 @@ int daKpa_c::func_ov060_021145d4(){
     func_02012694(BOWSER_SND_LAND, (const Vector3 *)(&this->mCamSpacePosX));
     if(this->mVariantID == 0){
       b = (this->mDistToTarget >= 0x352000);
-      if(!_ZN6Player7IsInAirEv(this->mTargetPlayer))
+      if(!static_cast<Player*>(this->mTargetPlayer)->IsInAir())
         func_ov002_020c56f0((unsigned char *)this->mTargetPlayer, b);
     }
     return 1;
@@ -2326,7 +2288,7 @@ void daKpa_c::func_ov060_021143b8(){
         if (this->mVariantID == 1) {
             void* a;
             this->mState = BOWSER_STATE_ARENA_TILT;
-            a = _ZN8dActor_c15FindWithActorIDEjPS_(BOWSER_ACTOR_KOOPA2BG, 0);
+            a = dActor_c::FindWithActorID(BOWSER_ACTOR_KOOPA2BG, 0);
             if (a != 0) {
                 this->mArenaBgUniqueID = ((dActor_c *)a)->uniqueID;
             }
@@ -2410,7 +2372,7 @@ void daKpa_c::func_ov060_021140c0(){
     int new_var;
     if (this->mTimer == 0) {
         void* player = this->mTargetPlayer;
-        if (player == 0 || _ZN6Player9GetHealthEv(player) > 4) {
+        if (player == 0 || static_cast<Player*>(player)->GetHealth() > 4) {
             s32 rnd = RandomIntInternal(&data_0209e650);
             u32 hi = ((u32)rnd) >> 16;
             u32 m = hi % 10u;
@@ -2703,8 +2665,8 @@ void daKpa_c::func_ov060_02113b5c(){
 
         func_ov060_02115a84((char *)&this->mStepCounter);
 
-        if (_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn) != 0) {
-            if (_ZNK10dBgCh_Actr13JustHitGroundEv(&this->mWithMeshClsn) == 0) {
+        if (this->mWithMeshClsn.IsOnGround() != 0) {
+            if (this->mWithMeshClsn.JustHitGround() == 0) {
                 this->mHorzSpeed = 0;
                 this->mBounceOnLand = 0;
                 u8* p = &this->mStep;
@@ -2875,7 +2837,7 @@ void daKpa_c::func_ov060_02113740(){
             if (this->mVariantID == 1) {
                 dActor_c *r;
                 this->mState = BOWSER_STATE_ARENA_TILT;
-                r = (dActor_c *)_ZN8dActor_c15FindWithActorIDEjPS_(BOWSER_ACTOR_KOOPA2BG, 0);
+                r = (dActor_c *)dActor_c::FindWithActorID(BOWSER_ACTOR_KOOPA2BG, 0);
                 if (r) this->mArenaBgUniqueID = r->uniqueID;
                 this->mVertAccel = -0x2000;
             }
@@ -2937,11 +2899,11 @@ void daKpa_c::func_ov060_021135fc(){
         pos.y = this->mPosY;
         pos.z = this->mPosZ;
         pos.y = pos.y + 0xa0000;
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_LAST_STAR, 7, &pos, 0, this->mAreaId, -1);
+        dActor_c::Spawn(BOWSER_ACTOR_LAST_STAR, 7, pos, 0, this->mAreaId, -1);
     } else {
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xad, base.x, base.y, base.z);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xae, base.x, base.y, base.z);
-        void *spawned = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_OBJ_KEY, this->mVariantID, (Vector3*)(&this->mPosX), 0, this->mAreaId, -1);
+        void *spawned = dActor_c::Spawn(BOWSER_ACTOR_OBJ_KEY, this->mVariantID, *((Vector3*)(&this->mPosX)), 0, this->mAreaId, -1);
         ((daObjKey_c *)spawned)->mSpinSpeed = this->mSpinSpeed;
         func_02012694(BOWSER_SND_DEFEATED, (Vector3*)(&this->mCamSpacePosX));
     }
@@ -2986,7 +2948,7 @@ it zeroes the speed and advances. func_ov060_02112350 runs every call. */
 void daKpa_c::func_ov060_021134ac(){
     this->unk_422 = 1;
     func_ov060_02115a84((char *)&this->mStepCounter);
-    if (_ZNK10dBgCh_Actr13JustHitGroundEv(&this->mWithMeshClsn)) {
+    if (this->mWithMeshClsn.JustHitGround()) {
         if ((int)this->mModelAnim.file == (int)data_ov060_0211ac88.words[1]) {
             func_ov060_02111cc0(5, 0x40000000);
         }
@@ -2994,8 +2956,8 @@ void daKpa_c::func_ov060_021134ac(){
             this->mHorzSpeed = this->mHorzSpeed >> 1;
         }
     }
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn)) {
-        if (!_ZNK10dBgCh_Actr13JustHitGroundEv(&this->mWithMeshClsn)) {
+    if (this->mWithMeshClsn.IsOnGround()) {
+        if (!this->mWithMeshClsn.JustHitGround()) {
             this->mHorzSpeed = 0;
             {
                 unsigned char* p = &this->mStep;
@@ -3033,7 +2995,7 @@ int daKpa_c::func_ov060_02113404(){
       v.z = o[2];
       ang = this->mTargetPlayer->mAngleY;
       if (Vec3_HorzDist((struct Vector3*)(&this->mPosX), &v) < 0x258000) {
-        if (_ZN8dActor_c14GetSubtractionEss(this, ang, this->mAngleToTarget) > 0x6000) r = 1;
+        if (this->GetSubtraction(ang, this->mAngleToTarget) > 0x6000) r = 1;
       }
     }
   }
@@ -3163,7 +3125,7 @@ int daKpa_c::func_ov060_021130c0(){
         inner = this->mTalkStep;
         switch (inner) {
         case 0:
-            if (_ZN6Player9StartTalkER7fBase_cb(this->mTargetPlayer, this, 1)) {
+            if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1)) {
                 _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
                 {
                     u8* p = (u8*)LAUND(&this->mTalkStep);
@@ -3173,10 +3135,9 @@ int daKpa_c::func_ov060_021130c0(){
             break;
 
         case 1:
-            if (_ZN6Player12GetTalkStateEv(this->mTargetPlayer) == 0) {
+            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == 0) {
                 int msg = (this->mVariantID == 0) ? 0xcd : 0xcf;
-                if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(
-                        this->mTargetPlayer, this, msg, &this->mPosX, 0, 2)) {
+                if (static_cast<Player*>(this->mTargetPlayer)->ShowMessage(*this, msg, reinterpret_cast<const Vector3*>(&this->mPosX), 0, 2)) {
                     u8* p = (u8*)LAUND(&this->mTalkStep);
                     *p = *p + 1;
                 }
@@ -3184,7 +3145,7 @@ int daKpa_c::func_ov060_021130c0(){
             break;
 
         case 2:
-            if (_ZN6Player12GetTalkStateEv(this->mTargetPlayer) == -1) {
+            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == -1) {
                 u16* op = (u16*)LAUND(&this->mStepCounter);
                 u8* ip = (u8*)LAUND(&this->mTalkStep);
                 int v;
@@ -3236,8 +3197,7 @@ int daKpa_c::func_ov060_02112ee0(){
 
         switch (this->mTalkStep) {
         case 0:
-            if (_ZN6Player9StartTalkER7fBase_cb(
-                    this->mTargetPlayer, this, 1)) {
+            if (static_cast<Player*>(this->mTargetPlayer)->StartTalk(*this, 1)) {
                 unsigned char *p =
                     (unsigned char *)LAUND(&this->mTalkStep);
                 *p = *p + 1;
@@ -3245,10 +3205,9 @@ int daKpa_c::func_ov060_02112ee0(){
             break;
 
         case 1:
-            if (_ZN6Player12GetTalkStateEv(this->mTargetPlayer) == 0) {
+            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == 0) {
                 unsigned m = (NumStars() != 0x96) ? 0xd1 : 0xd2;
-                if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(
-                        this->mTargetPlayer, this, m, &this->mPosX, 0, 2)) {
+                if (static_cast<Player*>(this->mTargetPlayer)->ShowMessage(*this, m, reinterpret_cast<const Vector3*>(&this->mPosX), 0, 2)) {
                     unsigned char *p =
                         (unsigned char *)LAUND(&this->mTalkStep);
                     *p = *p + 1;
@@ -3258,7 +3217,7 @@ int daKpa_c::func_ov060_02112ee0(){
             break;
 
         case 2:
-            if (_ZN6Player12GetTalkStateEv(this->mTargetPlayer) == -1) {
+            if (static_cast<Player*>(this->mTargetPlayer)->GetTalkState() == -1) {
                 _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
                 func_ov060_021135fc();
 
@@ -3339,7 +3298,7 @@ gone) and set its mAngleXSpeed to arg * cos and its mAngleZSpeed to -(arg * sin)
 of the angle mAngleToCenter + 0x8000 (the opposite of the direction to the
 centre), both Fix12 products shifted back down by 12. */
 void daKpa_c::func_ov060_02112d48(int arg){
-    daKpa2Bg_c *o = (daKpa2Bg_c *)_ZN8dActor_c10FindWithIDEj(this->mArenaBgUniqueID);
+    daKpa2Bg_c *o = (daKpa2Bg_c *)dActor_c::FindWithID(this->mArenaBgUniqueID);
     if (o == 0)
         return;
     short angle = this->mAngleToCenter;
@@ -3375,7 +3334,7 @@ extern short data_ov060_02119298[];
 void daKpa_c::func_ov060_02112bfc(){
     daKpa2Bg_c* found; int i; int flag; volatile short* p;
     this->mVertSpeed = this->mTerminalVelocity;
-    found = (daKpa2Bg_c*)_ZN8dActor_c10FindWithIDEj(this->mArenaBgUniqueID);
+    found = (daKpa2Bg_c*)dActor_c::FindWithID(this->mArenaBgUniqueID);
     if (found == 0) { this->mState = BOWSER_STATE_IDLE; return; }
     p = data_ov060_02119294;
     i = 0;
@@ -3419,14 +3378,12 @@ void daKpa_c::func_ov060_02112bfc(){
 True when he has fallen 0x3e8000 (1000 units) below mHomePosY while not already
 in BOWSER_STATE_RECOVER or BOWSER_STATE_ARENA_TILT. (The result of the
 IsOnGround call is discarded.) */
-extern "C" {
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void*);
-}
+
 int daKpa_c::func_ov060_02112ba8(){
   int s = this->mState;
   if(s != BOWSER_STATE_RECOVER && s != BOWSER_STATE_ARENA_TILT){
     if(this->mPosY < this->mHomePosY - 0x3e8000) return 1;
-    _ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn);
+    this->mWithMeshClsn.IsOnGround();
   }
   return 0;
 }
@@ -3460,7 +3417,7 @@ void daKpa_c::func_ov060_021128c0(){
     this->mHoldStep = 0;
     u32 id;
     if (this->mState != BOWSER_STATE_DEFEATED && (id = this->mdCcAcPos_c.otherOwner) != 0) {
-        void* f = (void *)_ZN8dActor_c10FindWithIDEj(id);
+        void* f = (void *)dActor_c::FindWithID(id);
         if (f != 0) {
             int b = (((dActor_c *)f)->actorID == BOWSER_ACTOR_PLAYER);
             if (b) {
@@ -3485,20 +3442,20 @@ void daKpa_c::func_ov060_021128c0(){
         this->mTimer = 0;
     }
 
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &this->mdCcAcPos_c);
+    this->UpdatePos(&this->mdCcAcPos_c);
 
     if (this->mVariantID == 1)
         func_02038408(&this->mWithMeshClsn);
     else
         dBgCh_Actr_UpdateContinuous_Veneer(&this->mWithMeshClsn);
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn)) {
+    if (this->mWithMeshClsn.IsOnGround()) {
         void* fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&this->mWithMeshClsn);
         _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char*)fr + 4, (Vector3*)(&this->mGroundNormalX));
         this->mLastGroundPosX = this->mPosX;
         this->mLastGroundPosY = this->mPosY;
         this->mLastGroundPosZ = this->mPosZ;
-        if (this->mBounceOnLand != 0 && _ZNK10dBgCh_Actr13JustHitGroundEv(&this->mWithMeshClsn)) {
+        if (this->mBounceOnLand != 0 && this->mWithMeshClsn.JustHitGround()) {
             this->mVertSpeed = (this->mVertSpeed * -60) / 100;
             if (this->mVertSpeed >= 0x14000)
                 this->mVertSpeed = 0x14000;
@@ -3511,7 +3468,7 @@ void daKpa_c::func_ov060_021128c0(){
     }
 
     if (data_ov060_02119268[idx] != 0) {
-        if (!_ZNK10dBgCh_Actr10IsOnGroundEv(&this->mWithMeshClsn)) {
+        if (!this->mWithMeshClsn.IsOnGround()) {
             s32* px = &this->mPosX;
             s32* pz = &this->mPosZ;
             s16* tab = data_02082214;
@@ -3639,7 +3596,7 @@ void daKpa_c::func_ov060_021125f0(){
     nv = -v;
     this->mHorzSpeed = v * data_02082214[((unsigned short)this->mAngleX >> 4 << 1) + 1];
     this->mVertSpeed = nv * data_02082214[(unsigned short)this->mAngleX >> 4 << 1];
-    a = (daKpaTail_c *)_ZN8dActor_c10FindWithIDEj(this->mTailUniqueID);
+    a = (daKpaTail_c *)dActor_c::FindWithID(this->mTailUniqueID);
     if (a != 0) {
         a->mState = BOWSER_TAIL_COOLDOWN;
         a->mTimer = 0;
@@ -3648,7 +3605,7 @@ void daKpa_c::func_ov060_021125f0(){
     this->mTimer = 0;
     {
         this->mStep = 0;
-        _ZN10dBgCh_Actr15ClearGroundFlagEv((char *)&this->mWithMeshClsn);
+        this->mWithMeshClsn.ClearGroundFlag();
     }
 }
 
@@ -3673,8 +3630,8 @@ void daKpa_c::func_ov060_02112434(){
     this->mDistToCenter = Vec3_HorzDist((Vector3*)&this->mPosX, &zero);
     this->mAngleToCenter = Vec3_HorzAngle((Vector3*)&this->mPosX, &zero);
 
-    int s0 = _ZN8dActor_c14GetSubtractionEss(this, this->mAngleY, this->mAngleToTarget);
-    int s1 = _ZN8dActor_c14GetSubtractionEss(this, this->mAngleY, this->mAngleToCenter);
+    int s0 = this->GetSubtraction(this->mAngleY, this->mAngleToTarget);
+    int s1 = this->GetSubtraction(this->mAngleY, this->mAngleToCenter);
 
     this->mCondFlags &= ~0xff;
     if (s0 < 0x2000)
@@ -3797,7 +3754,7 @@ Camera::mFlags. */
 /* recovered: shared common types */
 int daKpa_c::func_ov060_02111f08(){
     dCamera_c* cam = (dCamera_c *)data_0209f318;
-    char* player = (char*)_ZN8dActor_c13ClosestPlayerEv(this);
+    Player* player = this->ClosestPlayer();
     struct Vector3 sp;
     struct Vector3* pv;
     unsigned char* p;
@@ -3833,7 +3790,7 @@ int daKpa_c::func_ov060_02111f08(){
         break;
     case 1:
         func_020092c4(cam, &cam->lookAt, &this->mCamLookAtX);
-        if (_ZN6Player7IsInAirEv(player) != 0)
+        if (player->IsInAir() != 0)
             this->mCutsceneTimer = 0;
         else {
             p = (unsigned char*)(&this->mCutsceneTimer);
@@ -4020,7 +3977,6 @@ extern KpaAnimationFileHandle data_ov060_0211ace0;
 extern KpaAnimationFileHandle data_ov060_0211aca0;
 extern KpaAnimationFileHandle data_ov060_0211abf8;
 extern KpaAnimationFileHandle data_ov060_0211ac90;
-extern void _ZN8dActor_c17HugeLandingDustAtER7Vector3b(void *a, void *v, int b);
 extern void _ZN5Sound4PlayEjjRK7Vector3(unsigned a, unsigned b, void *v);
 }
 void daKpa_c::func_ov060_02111a28(){
@@ -4073,13 +4029,13 @@ void daKpa_c::func_ov060_02111a28(){
         dust.x = this->mFootPosAX;
         dust.y = this->mFootPosAY;
         dust.z = this->mFootPosAZ;
-        _ZN8dActor_c17HugeLandingDustAtER7Vector3b(this, &dust, 0);
+        this->HugeLandingDustAt(dust, 0);
     } else {
         Vector3 dust;
         dust.x = this->mFootPosBX;
         dust.y = this->mFootPosBY;
         dust.z = this->mFootPosBZ;
-        _ZN8dActor_c17HugeLandingDustAtER7Vector3b(this, &dust, 0);
+        this->HugeLandingDustAt(dust, 0);
     }
     _ZN5Sound4PlayEjjRK7Vector3(3, BOWSER_SND_FOOTFALL, &this->mCamSpacePosX);
     {

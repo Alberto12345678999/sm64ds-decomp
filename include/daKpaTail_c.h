@@ -3,8 +3,8 @@
  *
  * class daKpaTail_c: Bowser's tail (actor ID 278, spawned by daKpa_c::InitResources).
  * A Player who grabs it is held by it while Bowser's own hold handler runs (see
- * daKpa_c.cpp). Four of its functions are real methods; its state workers live in
- * daKpa_c.cpp as extern "C" helpers.
+ * daKpa_c.cpp). Its resource, behavior and state-worker functions are real
+ * methods defined in daKpa_c.cpp.
  *
  * Readability pass: the members are named from how those workers use them and
  * BowserTail_State (daKpa_c.cpp) names the three mState values. Leftover: bit
