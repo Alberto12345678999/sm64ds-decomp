@@ -39,9 +39,12 @@
 // - The 16 small Boos at 0x4660 are typed (dScMgTeresa_c::SmallBoo mBoos[16]).
 //   Their handlers use mBoos[i] where that measured identical; StepBoo,
 //   CountRubbedTiles, Boo_State7 and ResetRound's first loop keep their tuned
-//   offset forms (the typed forms change code). 0x48a0..0x4be8 (the 0x20-stride pair at
-//   0x4bac, the HUD sprites at 0x4960) and the bytes at 0x4c1b and 0x4c1f
-//   are still padding reached by offset; convert one function at a time.
+//   offset forms (the typed forms change code).
+// - mExclaims (0x48a0), mFoundMarks (0x4960) and mRisingIcons (0x4a60) are
+//   typed; their Spawn/UpdateAll/DrawAll handlers read them by field.
+//   ResetRound still clears them by offset. 0x4ba0..0x4be8 (the 0x20-stride
+//   pair at 0x4bac) and the bytes at 0x4c1b and 0x4c1f are still padding
+//   reached by offset.
 
 #pragma defer_codegen off
 
@@ -122,23 +125,6 @@ typedef struct S {
     SlotElem arr[2];
 } S;
 
-/* FoundMark_DrawAll's view of the 0x10-stride dMeter_c sprite array at +0x4960. */
-struct HudElem {
-    int x;
-    int y;
-    int unk8;
-    unsigned char idx;
-    unsigned char unkd;
-    unsigned char flag;
-    unsigned char unkf;
-};
-struct HudArray {
-    char pad[0x4960];
-    struct HudElem arr[16];
-};
-
-/* FoundMark_Spawn's 0x10-stride step over the same array. */
-struct E29 { unsigned char b[0x10]; };
 
 /* CheckRevealDone's two windows onto the same object. */
 typedef struct {
@@ -903,18 +889,15 @@ void dScMgTeresa_c::Reveal_Hide()
    Mg_RenderSubSpriteMtx as `(void *, int, int, void *)`. */
 void dScMgTeresa_c::RisingIcon_DrawAll()
 {
-    void *c_ = this;
-    char *c = (char *)c_;
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (*(unsigned char*)(c + 0x4a71)) {
-            int b = (*(int*)(c + 0x4a64)) >> 12;
-            int a = (*(int*)(c + 0x4a60)) >> 12;
+        if (mRisingIcons[i].visible) {
+            int b = mRisingIcons[i].y >> 12;
+            int a = mRisingIcons[i].x >> 12;
             if (b <= 8) b = 8;
             if (b >= 0xb8) b = 0xb8;
-            Mg_RenderSubSpriteMtx((void*)data_ov006_02137cd8[*(unsigned char*)(c + 0x4a72) + 1], a, b, (void*)0);
+            Mg_RenderSubSpriteMtx((void*)data_ov006_02137cd8[mRisingIcons[i].sprite + 1], a, b, (void*)0);
         }
-        c += 0x14;
     }
 }
 
@@ -922,12 +905,10 @@ void dScMgTeresa_c::RisingIcon_DrawAll()
 // @symbol _ZN13dScMgTeresa_c19RisingIcon_ClearAllEv
 void dScMgTeresa_c::RisingIcon_ClearAll()
 {
-    char *p = (char *)this;
     int i;
     for (i = 0; i < 0x10; i++) {
-        *(unsigned char *)(p + 0x4a70) = 0;
-        *(unsigned char *)(p + 0x4a71) = 0;
-        p += 0x14;
+        mRisingIcons[i].active = 0;
+        mRisingIcons[i].visible = 0;
     }
 }
 
@@ -935,14 +916,12 @@ void dScMgTeresa_c::RisingIcon_ClearAll()
 // @symbol _ZN13dScMgTeresa_c20RisingIcon_CountBusyEv
 int dScMgTeresa_c::RisingIcon_CountBusy()
 {
-    char *c = (char *)this;
     int cnt = 0;
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (*(unsigned char*)(c + 0x4a70) != 0 && *(unsigned char*)(c + 0x4a73) != 2) {
+        if (mRisingIcons[i].active != 0 && mRisingIcons[i].state != 2) {
             cnt++;
         }
-        c += 0x14;
     }
     return cnt != 0;
 }
@@ -1038,45 +1017,32 @@ void dScMgTeresa_c::RisingIcon_SpawnForFound()
 /* decl_common.h declares this one with a `void *` parameter. */
 void dScMgTeresa_c::FoundMark_DrawAll()
 {
-    void *a0_ = this;
-    struct HudArray* a0 = (struct HudArray*)a0_;
     int i;
     for (i = 0; i < 16; i++) {
-        if (a0->arr[i].flag) {
-            Hud_RenderSprite(data_ov006_02134210[a0->arr[i].idx], a0->arr[i].x >> 12, a0->arr[i].y >> 12, -1, -1);
+        if (mFoundMarks[i].visible) {
+            Hud_RenderSprite(data_ov006_02134210[mFoundMarks[i].frame], mFoundMarks[i].x >> 12, mFoundMarks[i].y >> 12, -1, -1);
         }
     }
 }
 
 
-#define LI(i) ((int)((long long)(i)) * 0x10)
-#define A(p) ((int)(p))
 // @symbol _ZN13dScMgTeresa_c19FoundMark_UpdateAllEv
 void dScMgTeresa_c::FoundMark_UpdateAll()
 {
-    char *raw = (char *)this;
     int i;
-
     for (i = 0; i < 0x10; i++) {
-        unsigned char *fp = (unsigned char *)A(raw + LI(i) + 0x496d);
-        unsigned short *c16;
-        unsigned char *c8;
-        if (*fp == 0) continue;
-        c16 = (unsigned short *)A(raw + LI(i) + 0x4968);
-        *c16 += 1;
-        if (*c16 < 4) continue;
-        *c16 = 0;
-        c8 = (unsigned char *)A(raw + LI(i) + 0x496c);
-        *c8 += 1;
-        if (*c8 >= 5) {
-            *c8 = 0;
-            *(unsigned char *)(raw + LI(i) + 0x496e) = 0;
-            *fp = 0;
+        if (mFoundMarks[i].active == 0) continue;
+        mFoundMarks[i].timer += 1;
+        if (mFoundMarks[i].timer < 4) continue;
+        mFoundMarks[i].timer = 0;
+        mFoundMarks[i].frame += 1;
+        if (mFoundMarks[i].frame >= 5) {
+            mFoundMarks[i].frame = 0;
+            mFoundMarks[i].visible = 0;
+            mFoundMarks[i].active = 0;
         }
     }
 }
-#undef LI
-#undef A
 
 
 #pragma push
@@ -1084,25 +1050,15 @@ void dScMgTeresa_c::FoundMark_UpdateAll()
 // @symbol _ZN13dScMgTeresa_c15FoundMark_SpawnEi
 void dScMgTeresa_c::FoundMark_Spawn(int param)
 {
-    unsigned char *raw = (unsigned char *)this;
-  struct E29* a=(struct E29*)raw;
   int i;
   for(i=0;i<16;i++){
-    unsigned char* s=(unsigned char*)&a[i];
-    unsigned char* base = s + 0x4000;
-    if(base[0x96d]==0){
-      unsigned char* src = raw + param*0x24;
-      src += 0x4000;
-      int v1 = *(int*)(src + 0x660);
-      unsigned char* base2 = s + 0x4900;
-      *(int*)(base + 0x960) = v1;
-      int v2 = *(int*)(src + 0x664);
-      int zero = 0;
-      *(int*)(base + 0x964) = v2;
-      *(short*)(base2 + 0x68) = zero;
-      base[0x96c] = zero;
-      base[0x96d] = 1;
-      base[0x96e] = 1;
+    if(mFoundMarks[i].active==0){
+      mFoundMarks[i].x = mBoos[param].mX;
+      mFoundMarks[i].y = mBoos[param].mY;
+      mFoundMarks[i].timer = 0;
+      mFoundMarks[i].frame = 0;
+      mFoundMarks[i].active = 1;
+      mFoundMarks[i].visible = 1;
       return;
     }
   }
@@ -1166,65 +1122,55 @@ void dScMgTeresa_c::StartCountdown()
 /* decl_common.h declares this one with a `void *` parameter. */
 void dScMgTeresa_c::Exclaim_DrawAll()
 {
-    void *c_ = this;
-    char *c = (char *)c_;
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (*(unsigned char *)(c + 0x48aa) != 0) {
-            int v0 = *(int *)(c + 0x48a0) >> 12;
-            int v4 = *(int *)(c + 0x48a4) >> 12;
+        if (mExclaims[i].visible != 0) {
+            int v0 = mExclaims[i].x >> 12;
+            int v4 = mExclaims[i].y >> 12;
             if (v4 <= 8) v4 = 8;
             if (v4 >= 0xb8) v4 = 0xb8;
             Hud_RenderSprite(data_ov006_02133a5c, v0, v4, -1, -1);
         }
-        c += 0xc;
     }
 }
 
 
-#define A(p) ((unsigned char *)(int)(p))
 // @symbol _ZN13dScMgTeresa_c17Exclaim_UpdateAllEv
 void dScMgTeresa_c::Exclaim_UpdateAll()
 {
-    char *base = (char *)this;
     int i;
 
     for (i = 0; i < 0x10; i++) {
-        if (*(unsigned char *)(base + 0x48a9) != 0) {
-            if (*(unsigned char *)(base + 0x48a8) != 0) {
-                unsigned char *p = A(base + 0x48a8);
+        if (mExclaims[i].active != 0) {
+            if (mExclaims[i].timer != 0) {
+                u8 *p = &mExclaims[i].timer;
                 int v;
                 *p -= 1;
-                v = *(unsigned char *)(base + 0x48a8);
+                v = mExclaims[i].timer;
                 if (v < 0)
-                    *(unsigned char *)(base + 0x48a8) = 0;
+                    mExclaims[i].timer = 0;
             } else {
-                *(unsigned char *)(base + 0x48a9) = 0;
-                *(unsigned char *)(base + 0x48aa) = 0;
+                mExclaims[i].active = 0;
+                mExclaims[i].visible = 0;
             }
         }
-        base += 0xc;
     }
 }
-#undef A
 
 
 // @symbol _ZN13dScMgTeresa_c13Exclaim_SpawnEi
 void dScMgTeresa_c::Exclaim_Spawn(int idx)
 {
-    char *raw = (char *)this;
     int i;
-    char* slot = raw;
     for (i = 0; i < 0x10; i++) {
-        if (*(unsigned char*)(slot + 0x48a9) == 0) {
-            *(unsigned char*)(raw + i * 0xc + 0x48a9) = 1;
-            *(unsigned char*)(raw + i * 0xc + 0x48aa) = 1;
-            *(int*)(raw + i * 0xc + 0x48a0) = *(int*)(raw + idx * 0x24 + 0x4660);
-            *(int*)(raw + i * 0xc + 0x48a4) = *(int*)(raw + idx * 0x24 + 0x4664) - 0x18000;
-            *(unsigned char*)(raw + i * 0xc + 0x48a8) = 0x60;
+        if (mExclaims[i].active == 0) {
+            mExclaims[i].active = 1;
+            mExclaims[i].visible = 1;
+            mExclaims[i].x = mBoos[idx].mX;
+            mExclaims[i].y = mBoos[idx].mY - 0x18000;
+            mExclaims[i].timer = 0x60;
             return;
         }
-        slot += 0xc;
     }
 }
 

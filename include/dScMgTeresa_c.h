@@ -57,6 +57,40 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  pad_22[0x2];
     };
 
+    /* The "!" over a Boo the touch test just found (Exclaim_Spawn). */
+    struct Exclaim {
+        s32 x;           /* 0x00 -- 20.12 */
+        s32 y;           /* 0x04 -- 20.12; spawned 0x18 px above the Boo */
+        u8  timer;       /* 0x08 -- counts down from 0x60 */
+        u8  active;      /* 0x09 */
+        u8  visible;     /* 0x0a */
+        u8  pad0b;
+    };
+
+    /* The five-frame mark left where a Boo was caught (FoundMark_Spawn). */
+    struct FoundMark {
+        s32 x;           /* 0x00 -- 20.12 */
+        s32 y;           /* 0x04 -- 20.12 */
+        u16 timer;       /* 0x08 -- the frame steps every 4 */
+        u16 pad0a;
+        u8  frame;       /* 0x0c -- 0..4, then the mark ends */
+        u8  active;      /* 0x0d */
+        u8  visible;     /* 0x0e */
+        u8  pad0f;
+    };
+
+    /* The score icon that rises off a found Boo (RisingIcon_Spawn). */
+    struct RisingIcon {
+        s32 x;           /* 0x00 -- 20.12 */
+        s32 y;           /* 0x04 -- 20.12 */
+        s32 vy;          /* 0x08 */
+        s32 timer;       /* 0x0c -- seeded from the Boo's mFoundOrder */
+        u8  active;      /* 0x10 */
+        u8  visible;     /* 0x11 */
+        u8  sprite;      /* 0x12 -- the Boo's mFoundOrder */
+        u8  state;       /* 0x13 */
+    };
+
     virtual ~dScMgTeresa_c();
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
@@ -140,8 +174,13 @@ struct dScMgTeresa_c : dScMgBase_c {
     void Scene_State1();
     void Scene_State0();
 
-    SmallBoo mBoos[16];          /* 0x4660 */
-    u8  pad_48a0[0x348];
+    SmallBoo   mBoos[16];        /* 0x4660 */
+    Exclaim    mExclaims[16];    /* 0x48a0 */
+    FoundMark  mFoundMarks[16];  /* 0x4960 */
+    RisingIcon mRisingIcons[16]; /* 0x4a60 */
+    /* 0x4ba0..0x4be8: a 0x20-stride pair at 0x4bac whose views overlap the
+       big Boo record at 0x4bcc; kept as padding until they are reconciled. */
+    u8  pad_4ba0[0x48];
     s32 unk_4be8;            /* 0x4be8 -- state index for Behavior's pmf dispatch */
     u8  pad_4bec[0x2a];
     s16 unk_4c16;            /* 0x4c16 */
@@ -158,6 +197,9 @@ struct dScMgTeresa_c : dScMgBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char dScMgTeresa_c_Exclaim_size_must_be_0xc[sizeof(dScMgTeresa_c::Exclaim) == 0xc ? 1 : -1];
+typedef char dScMgTeresa_c_FoundMark_size_must_be_0x10[sizeof(dScMgTeresa_c::FoundMark) == 0x10 ? 1 : -1];
+typedef char dScMgTeresa_c_RisingIcon_size_must_be_0x14[sizeof(dScMgTeresa_c::RisingIcon) == 0x14 ? 1 : -1];
 typedef char dScMgTeresa_c_SmallBoo_size_must_be_0x24[sizeof(dScMgTeresa_c::SmallBoo) == 0x24 ? 1 : -1];
 typedef char dScMgTeresa_c_size_must_be_0x4c28[sizeof(struct dScMgTeresa_c) == 0x4c28 ? 1 : -1];
 #endif
