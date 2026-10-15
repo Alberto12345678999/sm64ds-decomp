@@ -554,7 +554,7 @@
       "ordinal": 75
     },
     {
-      "symbol": "_ZN14dScMgBomroom_c13OnYoshiTryEatEi",
+      "symbol": "_ZN14dScMgBomroom_c10StartRoundEi",
       "address": "0x020d9104",
       "size": "0x0000005c",
       "legacy_source": "src/_ZN14dScMgBomroom_c13OnYoshiTryEatEi.cpp",

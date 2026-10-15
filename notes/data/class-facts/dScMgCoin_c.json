@@ -208,126 +208,126 @@
         "slot_address": "0x0213bf98",
         "target": "0x020de5b0",
         "module": "ov006",
-        "name": "_ZN11dScMgCoin_c13OnYoshiTryEatEi"
+        "name": "_ZN11dScMgCoin_c10StartRoundEi"
       },
       {
         "slot": 19,
         "slot_address": "0x0213bf9c",
         "target": "0x020b2994",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c13OnTurnIntoEggEi"
+        "name": "_ZN11dScMgBase_c11CanEndStateEi"
       },
       {
         "slot": 20,
         "slot_address": "0x0213bfa0",
         "target": "0x020b2990",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual50Ev"
+        "name": "_ZN11dScMgBase_c11OnNewRecordEv"
       },
       {
         "slot": 21,
         "slot_address": "0x0213bfa4",
         "target": "0x020b298c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c15OnGroundPoundedEv"
+        "name": "_ZN11dScMgBase_c13OnHostAnimCueEv"
       },
       {
         "slot": 22,
         "slot_address": "0x0213bfa8",
         "target": "0x020ae198",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c11OnAttacked1Ev"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback1Ev"
       },
       {
         "slot": 23,
         "slot_address": "0x0213bfac",
         "target": "0x020ae1a0",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c11OnAttacked2Ev"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback0Ev"
       },
       {
         "slot": 24,
         "slot_address": "0x0213bfb0",
         "target": "0x020ae140",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c8OnKickedEv"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback2Ev"
       },
       {
         "slot": 25,
         "slot_address": "0x0213bfb4",
         "target": "0x020ae128",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c8OnPushedEv"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback3Ev"
       },
       {
         "slot": 26,
         "slot_address": "0x0213bfb8",
         "target": "0x020b04e0",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv"
+        "name": "_ZN11dScMgBase_c14GetDisplayModeEv"
       },
       {
         "slot": 27,
         "slot_address": "0x0213bfbc",
         "target": "0x020af27c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c15OnHitByMegaCharEv"
+        "name": "_ZN11dScMgBase_c8OpenMenuEv"
       },
       {
         "slot": 28,
         "slot_address": "0x0213bfc0",
         "target": "0x020af04c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c19OnHitFromUnderneathEv"
+        "name": "_ZN11dScMgBase_c9CloseMenuEv"
       },
       {
         "slot": 29,
         "slot_address": "0x0213bfc4",
         "target": "0x020af094",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c16OnAimedAtWithEggEv"
+        "name": "_ZN11dScMgBase_c17SaveScreenForMenuEv"
       },
       {
         "slot": 30,
         "slot_address": "0x0213bfc8",
         "target": "0x020aeed8",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv"
+        "name": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv"
       },
       {
         "slot": 31,
         "slot_address": "0x0213bfcc",
         "target": "0x020b2880",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual7CEv"
+        "name": "_ZN11dScMgBase_c15InitSubScreenBgEv"
       },
       {
         "slot": 32,
         "slot_address": "0x0213bfd0",
         "target": "0x020b27f4",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual80Ev"
+        "name": "_ZN11dScMgBase_c16InitMainScreenBgEv"
       },
       {
         "slot": 33,
         "slot_address": "0x0213bfd4",
         "target": "0x020b265c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual84Ev"
+        "name": "_ZN11dScMgBase_c11InitEnginesEv"
       },
       {
         "slot": 34,
         "slot_address": "0x0213bfd8",
         "target": "0x020ae3b4",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual88Eiiii"
+        "name": "_ZN11dScMgBase_c11PaintSquareEiiii"
       },
       {
         "slot": 35,
         "slot_address": "0x0213bfdc",
         "target": "0x020ad660",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual8CEv",
+        "name": "_ZN11dScMgBase_c12IsAltVariantEv",
         "note": "The address collides with entries in ov000/ov002/ov003/ov007; the ov006 relocation explicitly permits the ov004 implementation, and the direct-base table has the same slot target."
       }
     ]
@@ -366,7 +366,7 @@
     },
     {
       "slot": 18,
-      "symbol": "_ZN11dScMgCoin_c13OnYoshiTryEatEi",
+      "symbol": "_ZN11dScMgCoin_c10StartRoundEi",
       "address": "0x020de5b0",
       "size": "0x8c"
     }
@@ -1527,7 +1527,7 @@
       {
         "address": "0x020de5b0",
         "size": "0x8c",
-        "symbol": "_ZN11dScMgCoin_c13OnYoshiTryEatEi",
+        "symbol": "_ZN11dScMgCoin_c10StartRoundEi",
         "file": "src/_ZN11dScMgCoin_c13OnYoshiTryEatEi.cpp",
         "lang": "cpp"
       },
@@ -1619,7 +1619,7 @@
         "unk_51dc"
       ],
       "gap": "It names 5 of the 32 tail offsets proved below. The other 27 -- 0x5194 through 0x51c4, plus 0x51cc/0x51d0/0x51dd/0x51de/0x51df -- sit inside pad_4660 or pad_51cc today and are reached through raw char* casts in the shards.",
-      "one_claim_in_it_is_wrong": "Its comment says the tree-wide OnYoshiTryEat mislabel landed on slot 17/D0 instead of slot 18. The cartridge does not support that framing: slot 18 (0x020de5b0) IS _ZN11dScMgCoin_c13OnYoshiTryEatEi in ov006 symbols.txt, and slot 17 (0x020dbe64) is the D0 body. src/_ZN11dScMgCoin_cD0Ev.cpp repeats the same sentence. It describes an old mislabel that has since been corrected on both files, but now reads as if the vtable itself were mislabelled, which it is not. Harmless to bytes; do not carry the sentence forward."
+      "one_claim_in_it_is_wrong": "Its comment says the tree-wide OnYoshiTryEat mislabel landed on slot 17/D0 instead of slot 18. The cartridge does not support that framing: slot 18 (0x020de5b0) IS _ZN11dScMgCoin_c10StartRoundEi in ov006 symbols.txt, and slot 17 (0x020dbe64) is the D0 body. src/_ZN11dScMgCoin_cD0Ev.cpp repeats the same sentence. It describes an old mislabel that has since been corrected on both files, but now reads as if the vtable itself were mislabelled, which it is not. Harmless to bytes; do not carry the sentence forward."
     },
     "factory_file": {
       "path": "src/d_s_mg_coin.cpp",

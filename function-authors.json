@@ -18915,7 +18915,7 @@
     },
     "ov004:0x020ad660": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c9Virtual8CEv"
+      "name": "_ZN11dScMgBase_c12IsAltVariantEv"
     },
     "ov004:0x020ad674": {
       "author": "tangosdev",
@@ -19055,19 +19055,19 @@
     },
     "ov004:0x020ae128": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c8OnPushedEv"
+      "name": "_ZN11dScMgBase_c16OnGraphCallback3Ev"
     },
     "ov004:0x020ae140": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c8OnKickedEv"
+      "name": "_ZN11dScMgBase_c16OnGraphCallback2Ev"
     },
     "ov004:0x020ae198": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c11OnAttacked1Ev"
+      "name": "_ZN11dScMgBase_c16OnGraphCallback1Ev"
     },
     "ov004:0x020ae1a0": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c11OnAttacked2Ev"
+      "name": "_ZN11dScMgBase_c16OnGraphCallback0Ev"
     },
     "ov004:0x020ae1a8": {
       "author": "tangosdev",
@@ -19099,7 +19099,7 @@
     },
     "ov004:0x020ae3b4": {
       "author": "ruspecial",
-      "name": "_ZN11dScMgBase_c9Virtual88Eiiii"
+      "name": "_ZN11dScMgBase_c11PaintSquareEiiii"
     },
     "ov004:0x020ae5c4": {
       "author": "tangosdev",
@@ -19123,19 +19123,19 @@
     },
     "ov004:0x020aeed8": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv"
+      "name": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv"
     },
     "ov004:0x020af04c": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c19OnHitFromUnderneathEv"
+      "name": "_ZN11dScMgBase_c9CloseMenuEv"
     },
     "ov004:0x020af094": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c16OnAimedAtWithEggEv"
+      "name": "_ZN11dScMgBase_c17SaveScreenForMenuEv"
     },
     "ov004:0x020af27c": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c15OnHitByMegaCharEv"
+      "name": "_ZN11dScMgBase_c8OpenMenuEv"
     },
     "ov004:0x020af2f8": {
       "author": "lunavyqo",
@@ -19207,7 +19207,7 @@
     },
     "ov004:0x020b04e0": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv"
+      "name": "_ZN11dScMgBase_c14GetDisplayModeEv"
     },
     "ov004:0x020b04e8": {
       "author": "github-actions[bot]",
@@ -19359,15 +19359,15 @@
     },
     "ov004:0x020b265c": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c9Virtual84Ev"
+      "name": "_ZN11dScMgBase_c11InitEnginesEv"
     },
     "ov004:0x020b27f4": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c9Virtual80Ev"
+      "name": "_ZN11dScMgBase_c16InitMainScreenBgEv"
     },
     "ov004:0x020b2880": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c9Virtual7CEv"
+      "name": "_ZN11dScMgBase_c15InitSubScreenBgEv"
     },
     "ov004:0x020b290c": {
       "author": "tangosdev",
@@ -19379,19 +19379,19 @@
     },
     "ov004:0x020b298c": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c15OnGroundPoundedEv"
+      "name": "_ZN11dScMgBase_c13OnHostAnimCueEv"
     },
     "ov004:0x020b2990": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c9Virtual50Ev"
+      "name": "_ZN11dScMgBase_c11OnNewRecordEv"
     },
     "ov004:0x020b2994": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c13OnTurnIntoEggEi"
+      "name": "_ZN11dScMgBase_c11CanEndStateEi"
     },
     "ov004:0x020b299c": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgBase_c13OnYoshiTryEatEi"
+      "name": "_ZN11dScMgBase_c10StartRoundEi"
     },
     "ov004:0x020b29a0": {
       "author": "tangosdev",
@@ -21519,7 +21519,7 @@
     },
     "ov006:0x020d1170": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgAmida_c9Virtual8CEv"
+      "name": "_ZN12dScMgAmida_c12IsAltVariantEv"
     },
     "ov006:0x020d1188": {
       "author": "andrewboudreau",
@@ -21527,7 +21527,7 @@
     },
     "ov006:0x020d11a0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgAmida_c9Virtual7CEv"
+      "name": "_ZN12dScMgAmida_c15InitSubScreenBgEv"
     },
     "ov006:0x020d122c": {
       "author": "ruspecial",
@@ -21539,7 +21539,7 @@
     },
     "ov006:0x020d14c0": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgAmida_c9Virtual88Eiiii"
+      "name": "_ZN12dScMgAmida_c11PaintSquareEiiii"
     },
     "ov006:0x020d1958": {
       "author": "aitddlabs",
@@ -21599,7 +21599,7 @@
     },
     "ov006:0x020d52f0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgAmida_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgAmida_c10StartRoundEi"
     },
     "ov006:0x020d5384": {
       "author": "tangosdev",
@@ -21923,7 +21923,7 @@
     },
     "ov006:0x020d9104": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgBomroom_c13OnYoshiTryEatEi"
+      "name": "_ZN14dScMgBomroom_c10StartRoundEi"
     },
     "ov006:0x020d9160": {
       "author": "andrewboudreau",
@@ -22063,15 +22063,15 @@
     },
     "ov006:0x020db6ec": {
       "author": "github-actions[bot]",
-      "name": "_ZN11dScMgCard_c15OnGroundPoundedEv"
+      "name": "_ZN11dScMgCard_c13OnHostAnimCueEv"
     },
     "ov006:0x020db720": {
       "author": "github-actions[bot]",
-      "name": "_ZN11dScMgCard_c13OnTurnIntoEggEi"
+      "name": "_ZN11dScMgCard_c11CanEndStateEi"
     },
     "ov006:0x020db9dc": {
       "author": "github-actions[bot]",
-      "name": "_ZN11dScMgCard_c13OnYoshiTryEatEi"
+      "name": "_ZN11dScMgCard_c10StartRoundEi"
     },
     "ov006:0x020dbaf0": {
       "author": "andrewboudreau",
@@ -22323,7 +22323,7 @@
     },
     "ov006:0x020de5b0": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgCoin_c13OnYoshiTryEatEi"
+      "name": "_ZN11dScMgCoin_c10StartRoundEi"
     },
     "ov006:0x020de63c": {
       "author": "andrewboudreau",
@@ -22443,11 +22443,11 @@
     },
     "ov006:0x020dfed4": {
       "author": "ruspecial",
-      "name": "_ZN10dScMgCup_c9Virtual50Ev"
+      "name": "_ZN10dScMgCup_c11OnNewRecordEv"
     },
     "ov006:0x020dfeec": {
       "author": "andrewboudreau",
-      "name": "_ZN10dScMgCup_c13OnYoshiTryEatEi"
+      "name": "_ZN10dScMgCup_c10StartRoundEi"
     },
     "ov006:0x020e0068": {
       "author": "andrewboudreau",
@@ -22639,7 +22639,7 @@
     },
     "ov006:0x020e3470": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c13OnYoshiTryEatEi"
+      "name": "_ZN14dScMgCurling_c10StartRoundEi"
     },
     "ov006:0x020e34ec": {
       "author": "andrewboudreau",
@@ -22847,7 +22847,7 @@
     },
     "ov006:0x020e6774": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgCurling2_c13OnYoshiTryEatEi"
+      "name": "_ZN15dScMgCurling2_c10StartRoundEi"
     },
     "ov006:0x020e67f0": {
       "author": "tangosdev",
@@ -22875,19 +22875,19 @@
     },
     "ov006:0x020e6cac": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c25OnAimedAtWithEggReturnVecEv"
+      "name": "_ZN14dScMgD3DBase_c21RestoreScreenFromMenuEv"
     },
     "ov006:0x020e6d24": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c16OnAimedAtWithEggEv"
+      "name": "_ZN14dScMgD3DBase_c17SaveScreenForMenuEv"
     },
     "ov006:0x020e6d8c": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c19OnHitFromUnderneathEv"
+      "name": "_ZN14dScMgD3DBase_c9CloseMenuEv"
     },
     "ov006:0x020e6d98": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c15OnHitByMegaCharEv"
+      "name": "_ZN14dScMgD3DBase_c8OpenMenuEv"
     },
     "ov006:0x020e6da4": {
       "author": "andrewboudreau",
@@ -22907,15 +22907,15 @@
     },
     "ov006:0x020e6e4c": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c24OnHitByCannonBlastedCharEv"
+      "name": "_ZN14dScMgD3DBase_c14GetDisplayModeEv"
     },
     "ov006:0x020e6e54": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c8OnPushedEv"
+      "name": "_ZN14dScMgD3DBase_c16OnGraphCallback3Ev"
     },
     "ov006:0x020e6e78": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c8OnKickedEv"
+      "name": "_ZN14dScMgD3DBase_c16OnGraphCallback2Ev"
     },
     "ov006:0x020e6f60": {
       "author": "andrewboudreau",
@@ -22947,11 +22947,11 @@
     },
     "ov006:0x020e7124": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c9Virtual84Ev"
+      "name": "_ZN14dScMgD3DBase_c11InitEnginesEv"
     },
     "ov006:0x020e72c0": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgD3DBase_c9Virtual7CEv"
+      "name": "_ZN14dScMgD3DBase_c15InitSubScreenBgEv"
     },
     "ov006:0x020e73c4": {
       "author": "andrewboudreau",
@@ -23219,11 +23219,11 @@
     },
     "ov006:0x020e9c10": {
       "author": "ruspecial",
-      "name": "_ZN12dScMg3DEsp_c9Virtual50Ev"
+      "name": "_ZN12dScMg3DEsp_c11OnNewRecordEv"
     },
     "ov006:0x020e9c20": {
       "author": "tangosdev",
-      "name": "_ZN12dScMg3DEsp_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMg3DEsp_c10StartRoundEi"
     },
     "ov006:0x020e9cec": {
       "author": "andrewboudreau",
@@ -23479,7 +23479,7 @@
     },
     "ov006:0x020eda48": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgHanachan_c13OnYoshiTryEatEi"
+      "name": "_ZN15dScMgHanachan_c10StartRoundEi"
     },
     "ov006:0x020edb04": {
       "author": "tangosdev",
@@ -23563,11 +23563,11 @@
     },
     "ov006:0x020ee8dc": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgJump_c13OnTurnIntoEggEi"
+      "name": "_ZN11dScMgJump_c11CanEndStateEi"
     },
     "ov006:0x020ee994": {
       "author": "andrewboudreau",
-      "name": "_ZN11dScMgJump_c13OnYoshiTryEatEi"
+      "name": "_ZN11dScMgJump_c10StartRoundEi"
     },
     "ov006:0x020eeafc": {
       "author": "aitddlabs",
@@ -23679,11 +23679,11 @@
     },
     "ov006:0x020efa84": {
       "author": "github-actions[bot]",
-      "name": "_ZN12dScMgJump2_c13OnTurnIntoEggEi"
+      "name": "_ZN12dScMgJump2_c11CanEndStateEi"
     },
     "ov006:0x020efaa8": {
       "author": "github-actions[bot]",
-      "name": "_ZN12dScMgJump2_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgJump2_c10StartRoundEi"
     },
     "ov006:0x020efaf0": {
       "author": "andrewboudreau",
@@ -23907,7 +23907,7 @@
     },
     "ov006:0x020f3294": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgLuigi_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgLuigi_c10StartRoundEi"
     },
     "ov006:0x020f33c0": {
       "author": "andrewboudreau",
@@ -24087,15 +24087,15 @@
     },
     "ov006:0x020f523c": {
       "author": "github-actions[bot]",
-      "name": "_ZN13dScMgMemory_c15OnGroundPoundedEv"
+      "name": "_ZN13dScMgMemory_c13OnHostAnimCueEv"
     },
     "ov006:0x020f5250": {
       "author": "github-actions[bot]",
-      "name": "_ZN13dScMgMemory_c13OnTurnIntoEggEi"
+      "name": "_ZN13dScMgMemory_c11CanEndStateEi"
     },
     "ov006:0x020f52c4": {
       "author": "github-actions[bot]",
-      "name": "_ZN13dScMgMemory_c13OnYoshiTryEatEi"
+      "name": "_ZN13dScMgMemory_c10StartRoundEi"
     },
     "ov006:0x020f5324": {
       "author": "github-actions[bot]",
@@ -24295,15 +24295,15 @@
     },
     "ov006:0x020f730c": {
       "author": "ruspecial",
-      "name": "_ZN14dScMgMemory2_c15OnGroundPoundedEv"
+      "name": "_ZN14dScMgMemory2_c13OnHostAnimCueEv"
     },
     "ov006:0x020f7320": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgMemory2_c13OnTurnIntoEggEi"
+      "name": "_ZN14dScMgMemory2_c11CanEndStateEi"
     },
     "ov006:0x020f7394": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgMemory2_c13OnYoshiTryEatEi"
+      "name": "_ZN14dScMgMemory2_c10StartRoundEi"
     },
     "ov006:0x020f73f4": {
       "author": "andrewboudreau",
@@ -24403,11 +24403,11 @@
     },
     "ov006:0x020f8a3c": {
       "author": "github-actions[bot]",
-      "name": "_ZN13dScMgMCarlo_c13OnTurnIntoEggEi"
+      "name": "_ZN13dScMgMCarlo_c11CanEndStateEi"
     },
     "ov006:0x020f8c68": {
       "author": "github-actions[bot]",
-      "name": "_ZN13dScMgMCarlo_c13OnYoshiTryEatEi"
+      "name": "_ZN13dScMgMCarlo_c10StartRoundEi"
     },
     "ov006:0x020f8d08": {
       "author": "github-actions[bot]",
@@ -24503,11 +24503,11 @@
     },
     "ov006:0x020fa3d0": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgMCarlo2_c13OnTurnIntoEggEi"
+      "name": "_ZN14dScMgMCarlo2_c11CanEndStateEi"
     },
     "ov006:0x020fa4d4": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgMCarlo2_c13OnYoshiTryEatEi"
+      "name": "_ZN14dScMgMCarlo2_c10StartRoundEi"
     },
     "ov006:0x020fa56c": {
       "author": "andrewboudreau",
@@ -24807,7 +24807,7 @@
     },
     "ov006:0x020fed58": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgPachinko_c13OnYoshiTryEatEi"
+      "name": "_ZN15dScMgPachinko_c10StartRoundEi"
     },
     "ov006:0x020fedc4": {
       "author": "tangosdev",
@@ -25103,7 +25103,7 @@
     },
     "ov006:0x02103cbc": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c13OnYoshiTryEatEi"
+      "name": "_ZN16dScMgPachinko2_c10StartRoundEi"
     },
     "ov006:0x02103d28": {
       "author": "andrewboudreau",
@@ -25391,7 +25391,7 @@
     },
     "ov006:0x021071fc": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgPanel_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgPanel_c10StartRoundEi"
     },
     "ov006:0x0210730c": {
       "author": "andrewboudreau",
@@ -25543,11 +25543,11 @@
     },
     "ov006:0x021095cc": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgRoulette_c13OnYoshiTryEatEi"
+      "name": "_ZN15dScMgRoulette_c10StartRoundEi"
     },
     "ov006:0x021096c8": {
       "author": "andrewboudreau",
-      "name": "_ZN15dScMgRoulette_c13OnTurnIntoEggEi"
+      "name": "_ZN15dScMgRoulette_c11CanEndStateEi"
     },
     "ov006:0x0210980c": {
       "author": "andrewboudreau",
@@ -25591,7 +25591,7 @@
     },
     "ov006:0x0210a600": {
       "author": "andrewboudreau",
-      "name": "_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv"
+      "name": "_ZN19dScMgSingle3DBase_c14GetDisplayModeEv"
     },
     "ov006:0x0210a608": {
       "author": "github-actions[bot]",
@@ -25611,7 +25611,7 @@
     },
     "ov006:0x0210a708": {
       "author": "andrewboudreau",
-      "name": "_ZN19dScMgSingle3DBase_c9Virtual84Ev"
+      "name": "_ZN19dScMgSingle3DBase_c11InitEnginesEv"
     },
     "ov006:0x0210a8c0": {
       "author": "andrewboudreau",
@@ -25631,15 +25631,15 @@
     },
     "ov006:0x0210aa10": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSlot3_c25OnAimedAtWithEggReturnVecEv"
+      "name": "_ZN12dScMgSlot3_c21RestoreScreenFromMenuEv"
     },
     "ov006:0x0210aa3c": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSlot3_c16OnAimedAtWithEggEv"
+      "name": "_ZN12dScMgSlot3_c17SaveScreenForMenuEv"
     },
     "ov006:0x0210aa60": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSlot3_c9Virtual80Ev"
+      "name": "_ZN12dScMgSlot3_c16InitMainScreenBgEv"
     },
     "ov006:0x0210ab08": {
       "author": "tangosdev",
@@ -25675,7 +25675,7 @@
     },
     "ov006:0x0210b314": {
       "author": "ruspecial",
-      "name": "_ZN12dScMgSlot3_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgSlot3_c10StartRoundEi"
     },
     "ov006:0x0210b648": {
       "author": "andrewboudreau",
@@ -25747,11 +25747,11 @@
     },
     "ov006:0x0210c4b8": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSlot1_c19OnHitFromUnderneathEv"
+      "name": "_ZN12dScMgSlot1_c9CloseMenuEv"
     },
     "ov006:0x0210c4dc": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSlot1_c15OnHitByMegaCharEv"
+      "name": "_ZN12dScMgSlot1_c8OpenMenuEv"
     },
     "ov006:0x0210c500": {
       "author": "andrewboudreau",
@@ -25763,7 +25763,7 @@
     },
     "ov006:0x0210c674": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSlot1_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgSlot1_c10StartRoundEi"
     },
     "ov006:0x0210c6c0": {
       "author": "tangosdev",
@@ -26175,7 +26175,7 @@
     },
     "ov006:0x021147ac": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgSmartball_c8OnPushedEv"
+      "name": "_ZN16dScMgSmartball_c16OnGraphCallback3Ev"
     },
     "ov006:0x021147d0": {
       "author": "tangosdev",
@@ -26287,11 +26287,11 @@
     },
     "ov006:0x02118a8c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgSmartball_c13OnYoshiTryEatEi"
+      "name": "_ZN16dScMgSmartball_c10StartRoundEi"
     },
     "ov006:0x02118ae4": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgSmartball_c9Virtual7CEv"
+      "name": "_ZN16dScMgSmartball_c15InitSubScreenBgEv"
     },
     "ov006:0x02118b70": {
       "author": "tangosdev",
@@ -26615,11 +26615,11 @@
     },
     "ov006:0x0211c5b8": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c9Virtual50Ev"
+      "name": "_ZN12dScMgSound_c11OnNewRecordEv"
     },
     "ov006:0x0211c5d0": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c13OnYoshiTryEatEi"
+      "name": "_ZN12dScMgSound_c10StartRoundEi"
     },
     "ov006:0x0211c6c4": {
       "author": "andrewboudreau",
@@ -26939,15 +26939,15 @@
     },
     "ov006:0x021200dc": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c9Virtual88Eiiii"
+      "name": "_ZN13dScMgTeresa_c11PaintSquareEiiii"
     },
     "ov006:0x02120238": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c9Virtual50Ev"
+      "name": "_ZN13dScMgTeresa_c11OnNewRecordEv"
     },
     "ov006:0x02120248": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c13OnYoshiTryEatEi"
+      "name": "_ZN13dScMgTeresa_c10StartRoundEi"
     },
     "ov006:0x02120348": {
       "author": "andrewboudreau",
@@ -27039,7 +27039,7 @@
     },
     "ov006:0x02120da8": {
       "author": "github-actions[bot]",
-      "name": "_ZN17dScMgTrampoline_c9Virtual88Eiiii"
+      "name": "_ZN17dScMgTrampoline_c11PaintSquareEiiii"
     },
     "ov006:0x02120f18": {
       "author": "github-actions[bot]",
@@ -27047,15 +27047,15 @@
     },
     "ov006:0x0212101c": {
       "author": "github-actions[bot]",
-      "name": "_ZN17dScMgTrampoline_c11OnAttacked2Ev"
+      "name": "_ZN17dScMgTrampoline_c16OnGraphCallback0Ev"
     },
     "ov006:0x021211bc": {
       "author": "github-actions[bot]",
-      "name": "_ZN17dScMgTrampoline_c8OnPushedEv"
+      "name": "_ZN17dScMgTrampoline_c16OnGraphCallback3Ev"
     },
     "ov006:0x021211e0": {
       "author": "github-actions[bot]",
-      "name": "_ZN17dScMgTrampoline_c8OnKickedEv"
+      "name": "_ZN17dScMgTrampoline_c16OnGraphCallback2Ev"
     },
     "ov006:0x021212e0": {
       "author": "github-actions[bot]",
@@ -27119,11 +27119,11 @@
     },
     "ov006:0x02121f70": {
       "author": "github-actions[bot]",
-      "name": "_ZN17dScMgTrampoline_c13OnTurnIntoEggEi"
+      "name": "_ZN17dScMgTrampoline_c11CanEndStateEi"
     },
     "ov006:0x02121fa4": {
       "author": "github-actions[bot]",
-      "name": "_ZN17dScMgTrampoline_c13OnYoshiTryEatEi"
+      "name": "_ZN17dScMgTrampoline_c10StartRoundEi"
     },
     "ov006:0x02122198": {
       "author": "github-actions[bot]",
@@ -27199,7 +27199,7 @@
     },
     "ov006:0x02122cb0": {
       "author": "github-actions[bot]",
-      "name": "_ZN18dScMgTrampoline2_c9Virtual88Eiiii"
+      "name": "_ZN18dScMgTrampoline2_c11PaintSquareEiiii"
     },
     "ov006:0x02122e20": {
       "author": "github-actions[bot]",
@@ -27207,15 +27207,15 @@
     },
     "ov006:0x02122f24": {
       "author": "github-actions[bot]",
-      "name": "_ZN18dScMgTrampoline2_c11OnAttacked2Ev"
+      "name": "_ZN18dScMgTrampoline2_c16OnGraphCallback0Ev"
     },
     "ov006:0x021230c4": {
       "author": "github-actions[bot]",
-      "name": "_ZN18dScMgTrampoline2_c8OnPushedEv"
+      "name": "_ZN18dScMgTrampoline2_c16OnGraphCallback3Ev"
     },
     "ov006:0x021230e8": {
       "author": "github-actions[bot]",
-      "name": "_ZN18dScMgTrampoline2_c8OnKickedEv"
+      "name": "_ZN18dScMgTrampoline2_c16OnGraphCallback2Ev"
     },
     "ov006:0x0212318c": {
       "author": "github-actions[bot]",
@@ -27287,11 +27287,11 @@
     },
     "ov006:0x02124298": {
       "author": "github-actions[bot]",
-      "name": "_ZN18dScMgTrampoline2_c13OnTurnIntoEggEi"
+      "name": "_ZN18dScMgTrampoline2_c11CanEndStateEi"
     },
     "ov006:0x021242cc": {
       "author": "github-actions[bot]",
-      "name": "_ZN18dScMgTrampoline2_c13OnYoshiTryEatEi"
+      "name": "_ZN18dScMgTrampoline2_c10StartRoundEi"
     },
     "ov006:0x021243ec": {
       "author": "github-actions[bot]",
@@ -27363,15 +27363,15 @@
     },
     "ov006:0x02125248": {
       "author": "github-actions[bot]",
-      "name": "_ZN10dScMgBSC_c15OnGroundPoundedEv"
+      "name": "_ZN10dScMgBSC_c13OnHostAnimCueEv"
     },
     "ov006:0x0212527c": {
       "author": "github-actions[bot]",
-      "name": "_ZN10dScMgBSC_c13OnTurnIntoEggEi"
+      "name": "_ZN10dScMgBSC_c11CanEndStateEi"
     },
     "ov006:0x02125364": {
       "author": "github-actions[bot]",
-      "name": "_ZN10dScMgBSC_c13OnYoshiTryEatEi"
+      "name": "_ZN10dScMgBSC_c10StartRoundEi"
     },
     "ov006:0x021253bc": {
       "author": "github-actions[bot]",
@@ -27459,15 +27459,15 @@
     },
     "ov006:0x02128fb8": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c8OnKickedEv"
+      "name": "_ZN15dScMgSnowball_c16OnGraphCallback2Ev"
     },
     "ov006:0x021291b0": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c8OnPushedEv"
+      "name": "_ZN15dScMgSnowball_c16OnGraphCallback3Ev"
     },
     "ov006:0x021291d4": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c11OnAttacked2Ev"
+      "name": "_ZN15dScMgSnowball_c16OnGraphCallback0Ev"
     },
     "ov006:0x021291f8": {
       "author": "andrewboudreau",
@@ -27475,7 +27475,7 @@
     },
     "ov006:0x0212921c": {
       "author": "tangosdev",
-      "name": "_ZN15dScMgSnowball_c13OnYoshiTryEatEi"
+      "name": "_ZN15dScMgSnowball_c10StartRoundEi"
     },
     "ov006:0x02129268": {
       "author": "andrewboudreau",
@@ -27583,7 +27583,7 @@
     },
     "ov006:0x0212aa74": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgFlower_c13OnYoshiTryEatEi"
+      "name": "_ZN13dScMgFlower_c10StartRoundEi"
     },
     "ov006:0x0212aacc": {
       "author": "ruspecial",

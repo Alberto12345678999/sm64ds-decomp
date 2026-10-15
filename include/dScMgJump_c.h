@@ -78,8 +78,8 @@ struct dScMgJump_c : dScMgD3DBase_c {
        implicitly virtual either way, so each reuses an existing slot and adds no
        field, and the 0x5834 assert below still holds. */
     s32 InitResources();    /* slot  0 -- src/minigames/d_s_mg_jump_methods.cpp, the key function */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
     s32 CleanupResources(); /* slot  3 -- src/minigames/d_s_mg_jump_methods.cpp */
     s32 Behavior();         /* slot  6 -- src/minigames/d_s_mg_jump_methods.cpp */
     s32 Render();           /* slot  9 -- src/minigames/d_s_mg_jump_methods.cpp */

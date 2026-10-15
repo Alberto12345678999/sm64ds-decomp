@@ -1589,12 +1589,12 @@ void dScMgCurling_c::func_ov006_020e3388()
 }
 #pragma pop
 
-// @symbol _ZN14dScMgCurling_c13OnYoshiTryEatEi
+// @symbol _ZN14dScMgCurling_c10StartRoundEi
 /* Slot 18, one of dScMgBase_c's own undeclared slots; the inherited label
  * is the tree-wide mislabel and this is not a destructor. Restarts the
  * scene: state 0, the stones cleared, a house picked, the blend set up
  * again and the base's handle refreshed. */
-void dScMgCurling_c::OnYoshiTryEat(int /* arg */)
+void dScMgCurling_c::StartRound(int /* arg */)
 {
     mState = 0;
     func_ov006_020e3388();

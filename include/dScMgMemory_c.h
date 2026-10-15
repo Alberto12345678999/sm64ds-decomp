@@ -85,9 +85,9 @@ struct dScMgMemory_c : dScMgSingle3DBase_c {
     s32 InitResources();
     s32 Behavior();
     s32 Render();
-    virtual void OnYoshiTryEat(int arg);    /* slot 18 */
-    virtual int OnTurnIntoEgg(int mode);    /* slot 19 */
-    virtual void OnGroundPounded();         /* slot 21 */
+    virtual void StartRound(int arg);    /* slot 18 */
+    virtual int CanEndState(int mode);    /* slot 19 */
+    virtual void OnHostAnimCue();         /* slot 21 */
 
     void DrawMessage();
     void DrawCursor();

@@ -4,17 +4,16 @@
 
 /* dScMgTeresa_c : dScMgBase_c, confirmed leaf via tools/rtti_extract.py (no
    RTTI record names it as a base). Own vtable slots: 0 (InitResources),
-   6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18 (OnYoshiTryEat),
-   20 (Virtual50) and 34 (Virtual88). These overrides are declared members.
+   6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18 (StartRound),
+   20 (OnNewRecord) and 34 (PaintSquare). These overrides are declared members.
    Slot 20 is declared here because dScMgBase_c
    declares it, so leaving it out here would put the BASE's body in this
    class's slot 20 where the cartridge holds its own.  The body is a bare
    FreeGfxSlotsById(8) thunk that never reads `this`, which costs nothing --
    `this` arrives in r0 and is immediately overwritten with 8 either way, so
    the bytes are the same whether it is spelled as a member or not.
-   "Virtual50" is a placeholder, not a recovered name; see
-   include/dScMgBase_c.h.  Slot 34 IS that multi-argument virtual, and it is
-   declared and reconstructed tree-wide now -- `Virtual88(int, int, int, int)`,
+   "OnNewRecord" is a coined name; see include/dScMgBase_c.h.  Slot 34 IS that multi-argument virtual, and it is
+   declared and reconstructed tree-wide now -- `PaintSquare(int, int, int, int)`,
    the family's pixel brush.  The guess recorded here, "draws a dMeter_c
    digit/glyph", was right: this class's override stamps a shape by testing
    data_ov006_0213f9e4[row] one bit per column, so it paints a stipple pattern
@@ -34,9 +33,9 @@ struct dScMgTeresa_c : dScMgBase_c {
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
     virtual s32 Render();         /* slot 9 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual void Virtual50();                          /* slot 20 */
-    virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual void OnNewRecord();                          /* slot 20 */
+    virtual void PaintSquare(int cx, int cy, int colour, int size); /* slot 34 */
 
     /* scene helpers, in ROM order */
     void func_ov006_0211cc2c();

@@ -144,7 +144,7 @@ s32 dScMgBSC_c::InitResources()
     data_0208ee44[0] = 1;
     unk_0a8 = func_ov004_020ad8b8();
     unk_0ac = unk_0a8;
-    this->OnYoshiTryEat(3);
+    this->StartRound(3);
     return 1;
 }
 
@@ -187,11 +187,11 @@ s32 dScMgBSC_c::Render()
     return 1;
 }
 
-// @symbol _ZN10dScMgBSC_c13OnYoshiTryEatEi
+// @symbol _ZN10dScMgBSC_c10StartRoundEi
 /* Slot 18. Mode 3 reads the meter score into mHudScore and posts it; every
    mode then restarts the state machine. The redundant `!= 4 && != 5`
    compares are in the ROM and must stay. */
-void dScMgBSC_c::OnYoshiTryEat(int mode)
+void dScMgBSC_c::StartRound(int mode)
 {
     if (mode != 4 && mode != 5 && mode == 3) {
         mHudScore = func_ov004_020ad878();
@@ -202,12 +202,12 @@ void dScMgBSC_c::OnYoshiTryEat(int mode)
     mState = 0;
 }
 
-// @symbol _ZN10dScMgBSC_c13OnTurnIntoEggEi
+// @symbol _ZN10dScMgBSC_c11CanEndStateEi
 /* Slot 19. In state 13, once the table's reaction has finished, mode 4
    moves to state 9 and mode 5 to state 10. When the round has settled
    (state 12, with data_ov004_020bf9e4 set) the final scores go to the
    meter. */
-s32 dScMgBSC_c::OnTurnIntoEgg(int mode)
+s32 dScMgBSC_c::CanEndState(int mode)
 {
     int state;
     short gate;
@@ -237,10 +237,10 @@ settle:
     return 1;
 }
 
-// @symbol _ZN10dScMgBSC_c15OnGroundPoundedEv
+// @symbol _ZN10dScMgBSC_c13OnHostAnimCueEv
 /* Slot 21: picks one of four reactions from the score, mHudScore / 5
    capped at 3. */
-void dScMgBSC_c::OnGroundPounded()
+void dScMgBSC_c::OnHostAnimCue()
 {
     int score = mHudScore;
     int tier = score / 5;

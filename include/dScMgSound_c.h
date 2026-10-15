@@ -83,8 +83,8 @@ typedef char dMgSoundComponentStorage_size_must_be_0x1ac[
 
 struct dScMgSound_c : dScMgSingle3DBase_c {
     virtual ~dScMgSound_c() { func_ov006_020c3288((char *)&mTable); }
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual void Virtual50();                          /* slot 20 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual void OnNewRecord();                          /* slot 20 */
 
     dMgSoundComponentStorage mTable; /* 0x4f38; mSuppressSound at 0x50e0 */
     u8  pad_50e4[4];

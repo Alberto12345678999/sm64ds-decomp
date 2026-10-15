@@ -43,9 +43,20 @@ struct dScMgBase_c : dScene_c {
 
        These are NOT dActor_c's slots. dActor_c hangs off dBase_c directly;
        this class reaches dBase_c through dScene_c. The two are parallel
-       extensions that happen to share indices, and thirteen of the names
-       agree, so include/dActor_c.h is a useful NAMING hint -- never a
-       signature authority. Where the two disagree, the ROM wins.
+       extensions that happen to share indices and nothing else.
+
+       NAMES (2026-10-14). The cartridge names no method of this class, so
+       every name below is coined from the slot's bodies and callers;
+       notes/minigames/names.md gives each one's evidence and confidence.
+       Until then slots 18-30 carried dActor_c's method names, copied across
+       by slot index (OnYoshiTryEat, OnTurnIntoEgg, OnGroundPounded,
+       OnAttacked1/2, OnKicked, OnPushed, OnHitByCannonBlastedChar,
+       OnHitByMegaChar, OnHitFromUnderneath, OnAimedAtWithEgg,
+       OnAimedAtWithEggReturnVec), and slots 20 and 31-35 were named after
+       their vtable offsets (Virtual50, Virtual7C..Virtual8C). The
+       `recovered name:` comments the older prose below cites were that same
+       index copy, not independent recoveries; they are quoted below under
+       the new names.
 
 ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        its descendants emit their full 36-slot vtables from source; none of
@@ -70,7 +81,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            read -- so only an override that reads a parameter is evidence, and
            that evidence is a LOWER bound on the arity.
          return type: void, MEASURED -- and it corrects the `int` this block
-           used to carry, which rested entirely on dScMgCoin_c::OnYoshiTryEat
+           used to carry, which rested entirely on dScMgCoin_c::StartRound
            ending `return 0;`.  That reasoning does not survive the bytes.
            Coin's tail is
 
@@ -103,15 +114,11 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            declarations move together.  The return type is not part of the
            Itanium mangled name, so no symbol, vtable or config entry moves.
            The base's own ROM body is a lone `bx lr` and sets nothing.
-         name: from dActor_c.h:131, corroborated by
-           config/arm9/overlays/ov006/symbols.txt, which already named
-           dScMgCoin_c's slot-18 override `_ZN11dScMgCoin_c13OnYoshiTryEat*`
-           -- recovered before the vtable walk that placed it at 18. Unlike
-           slots 19-30, this slot carries NO `recovered name:` comment on
-           either side; the name is inherited, not independently proven here.
-           These observations support the minigame signature; they do not
-           disprove a declaration in the separate dActor_c hierarchy. */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
+         name: StartRound. dMgState_c calls it with the finished shared
+           state's number once a banner has run (state 0 continues the game,
+           3 and 0x12 restart it), and games call it with -1 themselves to
+           retry after a lost life. Each override resets its round there. */
+    virtual void StartRound(int arg);               /* slot 18 */
 
     /* Slot 19 -- minigame body observations:
          arity: two of the eleven descendant overrides read r1, and both
@@ -125,12 +132,13 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            alone cannot separate `Ei` from `ER6Player`.
          return type: int, and this one needs no argument -- the ov004 base
            body ends `return 1;` and all eleven overrides return a value.
-         name: OnTurnIntoEgg is an existing reconstruction label. The
-           dScMgJump_c and dScMgBSC_c legacy comments use it, but those
-           comments do not establish an original source spelling. */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
-    /* Slot 20. Virtual50 is a placeholder named for the vtable byte offset,
-       not an original source name. The minigame return contract is
+         name: CanEndState. Every dMgState_c behaviour handler polls it
+           with mState and holds the banner until it returns nonzero; the
+           overrides return 0 while their own reaction is still playing. */
+    virtual int  CanEndState(int mode);              /* slot 19 */
+    /* Slot 20 -- OnNewRecord. Its one caller, dMgState_c state 17 (the
+       results screen taken when the new-record flag is set), calls it once,
+       120 frames in, as the record banner goes up. The minigame return contract is
        reconstructed as void: the base does nothing, Cup and Sound forward
        to a void component helper, and 3DEsp and Teresa call the void
        FreeGfxSlotsById function. The recorded caller in
@@ -138,18 +146,21 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        the coherent void declarations with 2004/b56; this does not recover
        the original return-type spelling. The separate dActor_c slot 20
        remains int. See issue #2492 for caller coverage and proof limits. */
-    virtual void Virtual50();                          /* slot 20 */
-    /* Slot 21. OnGroundPounded is an existing reconstruction name.
-       The base is empty; BSC/Card branch on mHudScore, and the two Memory
+    virtual void OnNewRecord();                          /* slot 20 */
+    /* Slot 21 -- OnHostAnimCue, a low-confidence name. Its one caller is
+       func_ov006_020c14bc in unit020bfec0.cpp, the presenter model's
+       reaction animation, which calls it on the last repeat of that
+       animation. The base is empty; BSC/Card branch on mHudScore, and the two Memory
        overrides forward a component of this scene. These bodies alone do
        not settle the return contract. Keep the existing void declaration;
        the slot-20 caller audit does not establish this slot's signature.
        Prior int/void experiments and separate slot-27/28 observations are
        retained in the original source history cited by issue #2492's handoff. */
-    virtual void OnGroundPounded();                    /* slot 21 */
-/* Slot 22 -- OnAttacked1.  Name from the ov004 body's own
-   `recovered name: dScMgBase_c_OnAttacked1` comment, agreeing with
-   include/dActor_c.h:139 on the parallel branch.
+    virtual void OnHostAnimCue();                    /* slot 21 */
+/* Slot 22 -- OnGraphCallback1: graphCallback_c::GraphCallback1 forwards
+   to it (slot 23 is GraphCallback0's, 24 GraphCallback2's, 25
+   GraphCallback3's). What dGraph_c's four callbacks are for is not named
+   yet; see include/dGraph_c.h.
      overrides: NONE.  Every one of the 32 descendants inherits this slot, so
        this declaration widens 30 emitted tables by a word and adds no other
        file.  A slot with no overrides is the one case where the widened-table
@@ -163,10 +174,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
      return type: int, MEASURED.  The body is `return 1;` -- it sets r0, which
        a `void` function would not, so this one is not a coin-flip the way slot
        21's tail calls were. */
-    virtual int  OnAttacked1();                        /* slot 22 */
-    /* Slot 23 -- OnAttacked2.  Name from the ov004 body and from all
-       three overrides' own `recovered name: <class>_OnAttacked2` comments,
-       agreeing with include/dActor_c.h:140.
+    virtual int  OnGraphCallback1();                        /* slot 22 */
+    /* Slot 23 -- OnGraphCallback0, reached from graphCallback_c::GraphCallback0.
          arity: no explicit parameters, MEASURED.  The base body reads no
            argument register at all, and none of the three overrides touches
            a second one. This supports the current scene declaration; the
@@ -180,10 +189,10 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            and dScMgTrampoline2_c's override has four early `return 0;`
            paths and a final `return 1;`. These scene bodies support int;
            no actor declaration is needed for that conclusion. */
-    virtual int  OnAttacked2();                        /* slot 23 */
-    /* Slot 24 -- OnKicked.  Name from all five bodies' own
-       `recovered name: <class>_OnKicked` comments; include/dActor_c.h:141
-       spells the same name at the same index on the parallel branch.
+    virtual int  OnGraphCallback0();                        /* slot 23 */
+    /* Slot 24 -- OnGraphCallback2, reached from graphCallback_c::GraphCallback2.
+       The base body is where the menu's screen is saved and restored on an
+       edge of mMenuOpen.
          arity: no explicit parameters, MEASURED.  The base body reads only
            `this`, and so does every override.  No body touches a second
            argument register and every call in the chain passes one pointer
@@ -206,14 +215,12 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            spell the chain out themselves -- Trampoline and Trampoline2 both
            call 0x020e6e78, which calls the base's 0x020ae140.
          NAME CORRECTION: 0x020e6e78 carried `recovered name:
-           dScMgJump2_c_OnKicked`.  It is dScMgD3DBase_c's.  A body that
+           dScMgJump2_c_OnGraphCallback2`.  It is dScMgD3DBase_c's.  A body that
            appears in a class's table AND in both its children's is supplied
            by that class; the recovered name was assigned from one child's
            table without looking at the other two. */
-    virtual int  OnKicked();                           /* slot 24 */
-    /* Slot 25 -- OnPushed.  Name from all six bodies' own
-       `recovered name: <class>_OnPushed` comments; include/dActor_c.h:142
-       spells the same name at the same index on the parallel branch.
+    virtual int  OnGraphCallback2();                           /* slot 24 */
+    /* Slot 25 -- OnGraphCallback3, reached from graphCallback_c::GraphCallback3.
          arity: no explicit parameters, MEASURED.  The base body reads one
            field of `this` and nothing else, and all five overrides are a
            single call passing that same one pointer through.  No body
@@ -233,17 +240,17 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            overrides 25 -- which is why the override set is read off the ROM
            for every slot rather than carried forward from the last one.
          NAME CORRECTION, the second on this class: 0x020e6e54 carried
-           `recovered name: dScMgJump2_c_OnPushed`.  It is
+           `recovered name: dScMgJump2_c_OnGraphCallback3`.  It is
            dScMgD3DBase_c's, on the same argument that settled 0x020e6e78 at
            slot 24 -- word 25 of _ZTV14dScMgD3DBase_c, _ZTV11dScMgJump_c and
            _ZTV12dScMgJump2_c all point here, and a body in a class's table
            AND in both its children's is supplied by that class.  Both
            misattributions name dScMgJump2_c, which is what a recovery pass
            reading tables in name order would produce. */
-    virtual int  OnPushed();                           /* slot 25 */
-    /* Slot 26 -- OnHitByCannonBlastedChar.  Name from the ov004 body's own
-       `recovered name: dScMgBase_c_OnHitByCannonBlastedChar` comment, agreeing
-       with include/dActor_c.h:143 on the parallel branch.
+    virtual int  OnGraphCallback3();                           /* slot 25 */
+    /* Slot 26 -- GetDisplayMode: 0 for this base, 1 for dScMgSingle3DBase_c,
+       2 for dScMgD3DBase_c. BeforeInitResources picks the display engines
+       from it and the sprite wrappers pick a screen.
          return type: int, MEASURED THREE TIMES, and this is the strongest
            return-type evidence the campaign has had.  The three bodies are
            three DIFFERENT constants -- ov004:0x020b04e0 is `mov r0,#0; bx lr`,
@@ -265,7 +272,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            declare nothing themselves.  Declaring the slot on any of the
            seventeen would invent an override the cartridge does not have.
          NAME CORRECTION, the third on dScMgD3DBase_c: 0x020e6e4c carried
-           `recovered name: dScMgTrampoline2_c_OnHitByCannonBlastedChar`.
+           `recovered name: dScMgTrampoline2_c_GetDisplayMode`.
            Five tables reference it -- dScMgD3DBase_c's and all four of its
            children's -- so it is dScMgD3DBase_c's.  This one also disposes of
            a guess made when reviewing slot 25: that the two earlier
@@ -278,11 +285,9 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            what a per-table name assignment produces whenever a body is shared,
            and it is why every slot in this campaign reconciles DISTINCT
            ADDRESSES against declarations and the table count separately. */
-    virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
-    /* Slot 27 -- OnHitByMegaChar.  Name from the ov004 body's own
-       `recovered name: dScMgBase_c_OnHitByMegaChar` comment, agreeing with
-       include/dActor_c.h:144 on the parallel branch and with dScMgSlot1_c's
-       independently recovered override.
+    virtual int  GetDisplayMode();           /* slot 26 */
+    /* Slot 27 -- OpenMenu: opens the three-item pause menu (BeforeBehavior
+       calls it on A, B, Select or Start with the stylus up).
          return type: void, supported by the scene bodies described here.
            ov004:0x020af27c takes an early exit at 0x020af290 --
            `popne {r4,lr}; bxne lr` -- with r0 still holding the field it has
@@ -304,24 +309,22 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            landing on index 27 by arithmetic because the base stopped at 26.
            Declaring it here without touching that header would have made the
            two DIFFERENT functions: this one would take 27, dScMgSlot1_c's
-           would become a new slot at 28, OnHitFromUnderneath would be pushed
+           would become a new slot at 28, CloseMenu would be pushed
            to 29, and _ZTV12dScMgSlot1_c would go straight back to DIFFERS --
            with rombuild green throughout.  Both declarations change in this
            one commit, and romdata_check is what says they were reconciled.
          NAME CORRECTION, the fourth on dScMgD3DBase_c and the fifth in this
            campaign: 0x020e6d98 carried
-           `recovered name: dScMgTrampoline2_c_OnHitByMegaChar`.  Five tables
+           `recovered name: dScMgTrampoline2_c_OpenMenu`.  Five tables
            reference it -- dScMgD3DBase_c's and all four of its children's --
            so it is dScMgD3DBase_c's.  Its twelve bytes are a long-branch
            veneer into this class's own body, which is what a forwarding
            override compiles to from ov006; the vtable word is NOT a linker
            artifact, because the twenty-six tables that do not override this
            slot hold 0x020af27c directly. */
-    virtual void OnHitByMegaChar();                    /* slot 27 */
-    /* Slot 28 -- OnHitFromUnderneath.  Name from the ov004 body's own
-       `recovered name: dScMgBase_c_OnHitFromUnderneath` comment, agreeing with
-       include/dActor_c.h:145 on the parallel branch and with dScMgSlot1_c's
-       independently recovered override.
+    virtual void OpenMenu();                    /* slot 27 */
+    /* Slot 28 -- CloseMenu: closes the pause menu (its resume item, or a
+       button press with nothing highlighted).
          return type: int is the current reconstruction; these bodies do
            not establish an original return type. ov004:0x020af04c leaves
            r0 holding whatever it last tested or
@@ -367,7 +370,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            early, which is the one thing to check before each of slots 29-35.
          NAME CORRECTION, the fifth on dScMgD3DBase_c and the sixth in this
            campaign: 0x020e6d8c carried
-           `recovered name: dScMgTrampoline2_c_OnHitFromUnderneath`.  Five
+           `recovered name: dScMgTrampoline2_c_CloseMenu`.  Five
            tables reference it -- dScMgD3DBase_c's and all four of its
            children's -- so it is dScMgD3DBase_c's.  Its twelve bytes are a
            long-branch veneer into this class's own body, `ldr ip, [pc];
@@ -375,11 +378,10 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            compiles to from ov006; the vtable word is NOT a linker artifact,
            because the twenty-six tables that do not override this slot hold
            0x020af04c directly. */
-    virtual int  OnHitFromUnderneath();                /* slot 28 */
-    /* Slot 29 -- OnAimedAtWithEgg.  Name from the ov004 body's own
-       `recovered name: dScMgBase_c_OnAimedAtWithEgg` comment and from
-       include/dActor_c.h:146 at the same index -- and this is the slot where
-       that pairing stops being two witnesses.  See the caution below.
+    virtual int  CloseMenu();                /* slot 28 */
+    /* Slot 29 -- SaveScreenForMenu (formerly OnAimedAtWithEgg, dActor_c.h:146
+       at the same index). This is the slot that disproved the borrowed
+       names; see the caution below.
          return type: int remains an unproved reconstruction, as at slot 28.
            ov004:0x020af094 has
            two exits and neither sets a result: the early one is
@@ -392,10 +394,10 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            not any load at +0x74, which also matches an ordinary field read --
            finds 35 sites, of which exactly ONE lies in ov004 or ov006, the
            two modules this class and all thirty-two of its descendants live
-           in.  That one is ov004:0x020ae178, inside dScMgBase_c::OnKicked
+           in.  That one is ov004:0x020ae178, inside dScMgBase_c::OnGraphCallback2
            (slot 24), and the instruction after the `blx` is
            `add r0,r4,#0x4000`: the result is dead before anything can read
-           it, and OnKicked goes on to return a literal 1.  The other
+           it, and OnGraphCallback2 goes on to return a literal 1.  The other
            thirty-four sites are in ov025, ov071, ov077, ov079, ov081, ov091,
            ov096 and ov100 -- enemy overlays, dActor_c's branch -- which is
            the sharpest measurement yet of how little the shared index means.
@@ -421,7 +423,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            ov006:0x0210aa3c.  dScMgSingle3DBase_c itself does not override.
          NAME CORRECTION, the sixth on dScMgD3DBase_c and the seventh in this
            campaign: 0x020e6d24 carried
-           `recovered name: dScMgTrampoline2_c_OnAimedAtWithEgg`.  Five tables
+           `recovered name: dScMgTrampoline2_c_SaveScreenForMenu`.  Five tables
            reference it, so it is dScMgD3DBase_c's.  Unlike slots 26, 27 and
            28 this one is not a twelve-byte veneer -- it is a real 0x68-byte
            body that loads a sub-screen OBJ palette and claims two VRAM banks
@@ -435,7 +437,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            independent recoveries.  There was never a second witness, only the
            same witness reached twice.  Until now that cost nothing.  Here the
            ROM contradicts the transplant outright.  The sole ov004 dispatch
-           site is guarded on an EDGE of mMenuOpen (+0x4628): OnKicked compares
+           site is guarded on an EDGE of mMenuOpen (+0x4628): OnGraphCallback2 compares
            mMenuOpen against unk_462c and, only when they differ, calls slot 30
            if mMenuOpen is zero and THIS slot if it is not, then copies one
            into the other.  And this body does exactly what that guard implies.
@@ -447,10 +449,9 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            OBJ VRAM at 0x06606000 into +0x2228 before decompressing a
            per-language image over that.  Save the screen, then draw over it:
            that is the three-item overlay menu going UP.  It is not a Yoshi
-           egg.  The name is kept because it is the only one in evidence and
-           because coining a replacement would put an unverifiable identifier
-           on a byte-exact symbol -- but it is kept as a LABEL, not as a claim,
-           and slots 18-30 should be read in that light.
+           egg.  The borrowed name was kept as a label at first; on
+           2026-10-14 slots 18-35 were renamed from their bodies (see NAMES
+           above).
          AND A WARNING FOR SLOT 30, measured here because it is cheaper to
            record now than to rediscover: include/dActor_c.h:151 declares slot
            30 returning a Vector3 BY VALUE.  That cannot be transplanted.  At
@@ -458,13 +459,10 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            and r1 holding the loaded function pointer; a 12-byte return would
            put a hidden result pointer in r0 and `this` in r1 under AAPCS.
            Whatever slot 30 returns here, it is not a Vector3. */
-    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
-    /* Slot 30 -- OnAimedAtWithEggReturnVec.  Name transplanted from
-       include/dActor_c.h:151 at the same index, by way of the ov004 body's own
-       `recovered name:` comment, which is the same transplant reached a second
-       time rather than a second witness.  Both halves of it are wrong here and
-       both are MEASURED wrong; it is kept as a label, for the reasons under
-       slot 29.
+    virtual int  SaveScreenForMenu();                   /* slot 29 */
+    /* Slot 30 -- RestoreScreenFromMenu (formerly OnAimedAtWithEggReturnVec,
+       dActor_c.h:151 at the same index). Both halves of the old name were
+       MEASURED wrong here: it is slot 29's mirror, and it returns nothing.
          return type: void, and this is the one slot in the whole 18-35 range
            whose return type the BYTES settle rather than merely permit.  It
            was declared `int` here as a hint until the base body became a real
@@ -485,7 +483,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            NOT the same as confirmed.  decl_common.h:2321 and both overrides
            already said void.
            Neither dispatch site reads a result
-           either, and that is measured, not assumed: dScMgBase_c::OnKicked
+           either, and that is measured, not assumed: dScMgBase_c::OnGraphCallback2
            (slot 24) is the only caller of this slot anywhere in ov004 or ov006
            -- see the whole-image `ldr rN,[rM,#0x78]` + `blx rN` scan under slot
            29 for the method -- and at ov004:0x020ae16c the very next
@@ -499,7 +497,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            THIS one it cannot hold.  A 12-byte return is returned in memory
            under AAPCS: r0 would carry a hidden result pointer and `this` would
            move to r1.  At the dispatch, ov004:0x020ae168, r0 still holds
-           `this` -- OnKicked's entry does `mov r4,r0` and never rewrites r0 --
+           `this` -- OnGraphCallback2's entry does `mov r4,r0` and never rewrites r0 --
            and r1 holds the loaded function pointer.  And the base's own body
            opens `ldr r1,[r0]`, reading its vptr out of r0.  Whatever this slot
            returns, it is not a Vector3, and it is not returned in memory.
@@ -524,7 +522,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            hangs off dScMgSingle3DBase_c, has its own at ov006:0x0210aa10.
          NAME CORRECTION, the seventh on dScMgD3DBase_c and the eighth in this
            campaign: 0x020e6cac carried
-           `recovered name: dScMgTrampoline2_c_OnAimedAtWithEggReturnVec` and
+           `recovered name: dScMgTrampoline2_c_RestoreScreenFromMenu` and
            included dScMgTrampoline2_c.h.  Five tables reference it, so it is
            dScMgD3DBase_c's.  Like 29's it is a real body, not a veneer, so the
            include and the type it casts `this` to had to change with the name.
@@ -541,17 +539,17 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            sub screen), the 0x2000-byte VRAM block back to 0x06606000, and the
            two BG-enable bytes back out of mSavedMainBgBits / mSavedSubBgBits
            and into both DISPCNTs' 0x1f00 fields.  Save-then-draw at 29,
-           restore at 30.  OnKicked picks between them on an EDGE: it compares
+           restore at 30.  OnGraphCallback2 picks between them on an EDGE: it compares
            mMenuOpen (+0x4628) against unk_462c (+0x462c), does nothing when
            they agree, calls THIS slot when mMenuOpen has fallen to zero and
            slot 29 when it has risen, then latches mMenuOpen into unk_462c.
            unk_462c is that edge latch and nothing else.  Slot 29 is the
            three-item overlay menu going up and slot 30 is it coming back down;
            neither has anything to do with a Yoshi egg or with a vector. */
-    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
-    /* Slot 31 -- Virtual7C, and the name is a deliberate NON-name.  This is the
-       first slot above dActor_c's table, and reaching it settles what the
-       thirteen slots below it only hinted at.
+    virtual void RestoreScreenFromMenu();          /* slot 30 */
+    /* Slot 31 -- InitSubScreenBg (formerly Virtual7C, and before that the
+       borrowed `Kill`). This is the first slot above dActor_c's table, and
+       reaching it settled what the thirteen slots below it only hinted at.
          WHY THE NAME CHANGES HERE.  Slots 18-30 carry dActor_c's names because
            they sit at dActor_c's indices.  That is the whole of the argument,
            and at this slot it runs out: include/dActor_c.h stops at 30.  What
@@ -573,10 +571,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            dBgActor_c derives from dActor_c: it is a NEPHEW of this branch, and
            Kill is the one new virtual IT appends at ITS slot 31.  The name was
            carried across a fork, not down a chain.  Nothing in the cartridge
-           names this function.  Virtual7C is the spelling fBase_c already uses
-           for the same situation (Virtual34, Virtual38) and the one slots 33,
-           34 and 35 are recorded under in
-           notes/dScMgBase_c-slots-18-35.md, so it costs no new convention.
+           names this function.  It took the offset spelling Virtual7C first;
+           InitSubScreenBg is coined from what the body does.
          return type: int, A HINT, the third consecutive slot no body pins.
            ov004:0x020b2880 sets r0 to #0 on its second instruction -- as
            SetSubBg1Offset's first argument, before anything reads it -- and
@@ -619,8 +615,9 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            `recovered name: dScMgTrampoline2_c_Kill` and included
            dScMgTrampoline2_c.h.  Five tables reference that address, so it is
            dScMgD3DBase_c's.  Fixed here along with the type it casts `this` to. */
-    virtual int  Virtual7C();                          /* slot 31 */
-    /* Slot 32 -- Virtual80, and it is slot 31 again with the other display
+    virtual int  InitSubScreenBg();                          /* slot 31 */
+    /* Slot 32 -- InitMainScreenBg (formerly Virtual80, and before that the
+       borrowed `AfterClsn`), and it is slot 31 again with the other display
        engine.  Reading the two bodies side by side is the fastest way to see
        that neither name the recovery pass gave them was ever a measurement.
          WHY THE NAME CHANGES, and it is a WORSE case than 31.  `AfterClsn` is a
@@ -634,7 +631,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            only thing the two indices have in common is fBase_c's 18-slot base.
            dPathLiftActor_c's AfterClsn also takes an `int`; this slot takes
            nothing.  Same borrowed-label defect settled at slot 31, one fork
-           further out.  Virtual80 is the offset spelling, as at 31 and as
+           further out.  InitMainScreenBg is the offset spelling, as at 31 and as
            slots 33-35 are recorded in notes/dScMgBase_c-slots-18-35.md.
          WHAT IT DOES -- the MAIN screen, where 31 did the sub.  Line for line
            the same body against the other engine: three read-modify-writes on
@@ -688,18 +685,16 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            same layer, this minigame's own character and screen base blocks.
            No reconciliation, no misattribution: the smallest slot in the
            campaign after 22's zero. */
-    virtual void Virtual80();                          /* slot 32 */
-    /* Slot 33 -- Virtual84, the display bring-up, and the quietest slot in this
-       campaign: it is the first one with nothing to correct.
+    virtual void InitMainScreenBg();                          /* slot 32 */
+    /* Slot 33 -- InitEngines (formerly Virtual84), the display bring-up.
          WHY THE NAME.  Neither override body carries a `recovered name:` line
            and neither does the base, so unlike slots 26, 29, 30, 31 and 32 there
            is no borrowed dActor_c label here to retire -- there was never one to
            borrow, because dActor_c's table ends at slot 30 and dScMgBase_c is on
            the sibling branch anyway (fBase_c -> dBase_c -> dScene_c ->
            dScMgBase_c; see the slot-31 block above).  Nothing in the cartridge
-           names this method -- RTTI carries class names only -- so it takes the
-           offset spelling fBase_c already uses for Virtual34/Virtual38, which is
-           also how notes/dScMgBase_c-slots-18-35.md has recorded it all along.
+           names this method -- RTTI carries class names only -- so it first took
+           the offset spelling Virtual84; InitEngines is coined from the body.
          return type: void, and here that is the reading of the bodies rather
            than a default.  All three fall off the end without setting a result,
            the one call site discards whatever is in r0, and -- unlike slots
@@ -755,8 +750,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            as a mangled free function (0x0210a534, the only other one left, is in
            no vtable at all), so this turns it into a real member definition and
            takes the class from a byte-exact 33-slot vtable prefix to 34. */
-    virtual void Virtual84();                          /* slot 33 */
-    /* Slot 34 -- Virtual88, the first slot in this family that takes arguments,
+    virtual void InitEngines();                          /* slot 33 */
+    /* Slot 34 -- PaintSquare, the first slot in this family that takes arguments,
        and the first whose job is legible from the body without any naming help.
        IT IS THE BRUSH.  ov004:0x020ae3b4 walks a size x size square centred on
          (cx, cy), and for each cell inside it computes the address of one
@@ -765,7 +760,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          `colour` into the nibble at `(x&7)*4`, and writes it back.  Sixteen
          colours, one palette index per pixel.  It clips on all four sides.
        THE TWO FIELDS SLOT 33 INITIALISES ARE THE ONES IT READS.  Slot 33
-         (Virtual84, engine bring-up) sets `obj+0x68` to 0 and `obj+0x6c` to -1.
+         (InitEngines, engine bring-up) sets `obj+0x68` to 0 and `obj+0x6c` to -1.
          Here `obj+0x6c` selects WHICH background layer to draw into -- 0..3
          index G2S::GetBG0CharPtr through GetBG3CharPtr, anything else returns
          without drawing, which is what -1 buys -- and `obj+0x68` gates the
@@ -793,8 +788,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          result.
        NOTHING TO CORRECT, as at slot 33: no `recovered name:` line exists on
          the base body or on any of the four overrides, so no borrowed label is
-         being retired.  Virtual88 is this tree's own no-name spelling after the
-         +0x88 vtable offset.
+         being retired.  PaintSquare (formerly Virtual88) is coined from the
+         body: it paints a size x size square of one palette index.
        overrides: FOUR tables, FOUR declarations, nothing inherited and nothing
          shared -- dScMgAmida_c (ov006:0x020d14c0), dScMgTeresa_c (0x021200dc),
          dScMgTrampoline_c (0x02120da8) and dScMgTrampoline2_c (0x02122cb0) each
@@ -806,8 +801,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          never reads it, so the reconstruction had nothing to name.  The slot's
          signature is fixed by the call sites, which are unanimous, and an
          ignored stack argument costs the callee nothing. */
-    virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
-    /* Slot 35 -- Virtual8C, the LAST slot of dScMgBase_c's own eighteen and the
+    virtual void PaintSquare(int cx, int cy, int colour, int size); /* slot 34 */
+    /* Slot 35 -- IsAltVariant, the LAST slot of dScMgBase_c's own eighteen and the
        end of the 18-35 range.  With this declared the class emits its full
        36-slot vtable from source, and dScMgAmida_c's Unk36 finally lands on 36
        where the ROM puts it.
@@ -837,8 +832,9 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          is 0 or 1; `int` is the spelling slots 29-32 already use for the same
          shape.
        NOTHING TO CORRECT, as at slots 33 and 34: no `recovered name:` line on
-         the base body or on the one override.  Virtual8C is this tree's own
-         no-name spelling after the +0x8c vtable offset.
+         the base body or on the one override.  IsAltVariant (formerly
+         Virtual8C) is coined from its callers: it says the scene runs the
+         second variant of a menu row (param1's low byte).
        the rename is SCOPED.  0x020ad660 is an overlay load base, so ov000,
          ov002, ov003, ov004 and ov007 each have a different, unrelated symbol
          at that address -- ov003's was dScTitle_c's D1.  Only
@@ -846,20 +842,19 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          module-qualified symbol; keying it on the address would have hit
          five files in four unrelated overlays and every byte gate would
          still have passed. */
-    virtual int  Virtual8C();                          /* slot 35 */
+    virtual int  IsAltVariant();                          /* slot 35 */
 
     /* THAT IS ALL EIGHTEEN.  Slots 18-35 are declared, each in its own
        commit together with every descendant override of that slot, and this
        class emits its full 36-slot vtable from source.  Nothing in the family
        is a prefix any more.
 
-       Slots 18-30 carry names borrowed from dActor_c by INDEX, which is a
-       coincidence and not evidence: dScMgBase_c is a scene
+       Slots 18-30 used to carry names borrowed from dActor_c by INDEX, which
+       was a coincidence and not evidence: dScMgBase_c is a scene
        (fBase_c -> dBase_c -> dScene_c -> dScMgBase_c), a sibling branch that
        happens to start appending its own virtuals at the same index dActor_c
-       does.  Slot 31 is the first one above dActor_c's table and is what
-       proved it.  Retiring those thirteen borrowed names is a separate
-       question from this range being declared, and is deliberately left open.
+       does.  They were retired on 2026-10-14 (see NAMES at the top of this
+       range).
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --
@@ -903,8 +898,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s32 unk_0c8;            /* 0x0c8 */
     dMgState_c mStateController; /* 0x0cc -- minigame UI state controller */
     dMgPsOpt_c mTouchOptions; /* 0x0f4 -- eight polymorphic touch icons */
-    u32 mSavedMainBgBits;   /* 0x21c -- OnAimedAtWithEgg saves data_0209d45c
-                                here and OnAimedAtWithEggReturnVec restores it */
+    u32 mSavedMainBgBits;   /* 0x21c -- SaveScreenForMenu saves data_0209d45c
+                                here and RestoreScreenFromMenu restores it */
     u32 mSavedSubBgBits;    /* 0x220 -- the same pair for data_0209d454 */
     u32 mSavedScreenSwap;   /* 0x224 -- bit 15 of POWCNT1 (0x4000304), saved and
                                 restored by the same two functions */

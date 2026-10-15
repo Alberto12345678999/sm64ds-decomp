@@ -323,21 +323,21 @@
       "ordinal": 39
     },
     {
-      "symbol": "_ZN13dScMgMemory_c15OnGroundPoundedEv",
+      "symbol": "_ZN13dScMgMemory_c13OnHostAnimCueEv",
       "address": "0x020f523c",
       "size": "0x00000014",
       "legacy_source": "src/_ZN13dScMgMemory_c15OnGroundPoundedEv.cpp",
       "ordinal": 40
     },
     {
-      "symbol": "_ZN13dScMgMemory_c13OnTurnIntoEggEi",
+      "symbol": "_ZN13dScMgMemory_c11CanEndStateEi",
       "address": "0x020f5250",
       "size": "0x00000074",
       "legacy_source": "src/_ZN13dScMgMemory_c13OnTurnIntoEggEi.cpp",
       "ordinal": 41
     },
     {
-      "symbol": "_ZN13dScMgMemory_c13OnYoshiTryEatEi",
+      "symbol": "_ZN13dScMgMemory_c10StartRoundEi",
       "address": "0x020f52c4",
       "size": "0x00000060",
       "legacy_source": "src/_ZN13dScMgMemory_c13OnYoshiTryEatEi.cpp",

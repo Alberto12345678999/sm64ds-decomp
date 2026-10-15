@@ -1667,7 +1667,7 @@ void dScMgLuigi_c::StateCatch()
         while (v >= 5)
             v -= 5;
         if (v != 4)
-            OnYoshiTryEat(-1);
+            StartRound(-1);
         else
             func_ov004_020b0a54(1);
     } else {
@@ -1713,7 +1713,7 @@ void dScMgLuigi_c::StateSetup()
 /* Engine calls used by scene setup and rendering. */
 
 extern "C" {
-/* dScMgLuigi_c::OnYoshiTryEat */
+/* dScMgLuigi_c::StartRound */
 extern void FreeGfxSlotsById(int arg);
 extern void func_ov004_020adb1c(int);
 extern void func_ov004_020b0cac(int, int, int, int, int, short);
@@ -1739,10 +1739,10 @@ extern int data_ov004_020bc888;
 extern int data_ov004_020bc864;
 }
 
-// @symbol _ZN12dScMgLuigi_c13OnYoshiTryEatEi
-/* Same signature as dScMgBase_c::OnYoshiTryEat, or this stops overriding it.
+// @symbol _ZN12dScMgLuigi_c10StartRoundEi
+/* Same signature as dScMgBase_c::StartRound, or this stops overriding it.
    unk_0bc is re-read through an int* so the compare is not folded away. */
-void dScMgLuigi_c::OnYoshiTryEat(int arg1)
+void dScMgLuigi_c::StartRound(int arg1)
 {
     char *p;
     int *q;

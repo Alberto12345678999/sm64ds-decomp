@@ -8,7 +8,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x020edec0..0x020eeafc, 18 function(s), from build/tu_map.json (tools/tu_map.py).",
-    "WHOLE RUN. This entry licenses .text 0x020edec0-0x020eeafc, all 18 functions. Ordinal 17, _ZN11dScMgJump_c13OnYoshiTryEatEi at 0x020ee994 size 0x168, was the last shard: it carried a NONMATCHING marker (draft 0x164 against 0x168, the loop's three invariants hoisted into r6-r8) until 2026-10-12, when the `if (unk_0bc < 15) idx = unk_0bc; else { redraw }` arrangement reproduced it byte-exact inside this TU; the shard src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp is retired and the delinks .text end moved from 0x020ee994 to 0x020eeafc. The earlier partial-promotion note (17 of 18, cut at the top) is superseded by this one.",
+    "WHOLE RUN. This entry licenses .text 0x020edec0-0x020eeafc, all 18 functions. Ordinal 17, _ZN11dScMgJump_c10StartRoundEi at 0x020ee994 size 0x168, was the last shard: it carried a NONMATCHING marker (draft 0x164 against 0x168, the loop's three invariants hoisted into r6-r8) until 2026-10-12, when the `if (unk_0bc < 15) idx = unk_0bc; else { redraw }` arrangement reproduced it byte-exact inside this TU; the shard src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp is retired and the delinks .text end moved from 0x020ee994 to 0x020eeafc. The earlier partial-promotion note (17 of 18, cut at the top) is superseded by this one.",
     "dScMgJump_c_classInit at 0x020eeafc is NOT part of this unit and is not a candidate to be: tools/tu_map.py cuts it into a separate unit, and delinks.txt homes it in src/minigames/d_s_mg_jump.cpp, which is the factory translation unit. The ov006 convention keeps the class TU in src/actors/ and the factory elsewhere (cf. src/minigames/d_s_mg_hanachan_methods.cpp against src/minigames/d_s_mg_hanachan.cpp), so the promoted path here is src/minigames/d_s_mg_jump_methods.cpp. That also avoids a basename collision with the existing src/minigames/d_s_mg_jump.cpp.",
     "class label(s): dScMgJump_c. The cartridge's own _ZTI11dScMgJump_c at 0x0213cb98 holds {0x0209a764, 0x0213cba4, 0x0213c5c8} -- __si_class_type_info, &_ZTS11dScMgJump_c, &_ZTI14dScMgD3DBase_c -- so the single public base at offset 0 is read off the ROM, and 0x0213cba4 spells the name 11dScMgJump_c, so the class name is transcribed and not coined.",
     "DESTRUCTOR EMISSION ORDER decided the header shape. config/arm9/overlays/ov006/symbols.txt puts _ZN11dScMgJump_cD1Ev at 0x020edec0 and _ZN11dScMgJump_cD0Ev at 0x020edf54, D1 BELOW D0. An out-of-line member definition makes mwccarm 2004/b56 emit the group D0-then-D1 plus a homeless D2, which cannot be linked as one ROM-ascending range; defining the destructor in the class body emits D1 then D0 and no D2, and no _ZN11dScMgJump_cD2Ev exists anywhere in config/, src/ or include/, which is the cartridge agreeing. tools/rtti_extract.py reports no class deriving from dScMgJump_c (dScMgJump2_c derives from dScMgD3DBase_c, not from this class), so moving the body into the header cannot perturb a descendant that inlines the vptr store, and no already-promoted descendant needed re-verification.",
@@ -152,14 +152,14 @@
       "ordinal": 15
     },
     {
-      "symbol": "_ZN11dScMgJump_c13OnTurnIntoEggEi",
+      "symbol": "_ZN11dScMgJump_c11CanEndStateEi",
       "address": "0x020ee8dc",
       "size": "0x000000b8",
       "legacy_source": "src/_ZN11dScMgJump_c13OnTurnIntoEggEi.cpp",
       "ordinal": 16
     },
     {
-      "symbol": "_ZN11dScMgJump_c13OnYoshiTryEatEi",
+      "symbol": "_ZN11dScMgJump_c10StartRoundEi",
       "address": "0x020ee994",
       "size": "0x00000168",
       "legacy_source": "src/_ZN11dScMgJump_c13OnYoshiTryEatEi.cpp",

@@ -4,7 +4,7 @@
  * end the round.
  *
  * Functions are written in reverse of ROM order; do not reorder.
- * `opt_loop_invariants off` above Virtual88 has no matching `on`, so it
+ * `opt_loop_invariants off` above PaintSquare has no matching `on`, so it
  * applies to the whole file. TUBUILD CONFLICT comments are paired with
  * the manifest; leave them.
  *
@@ -73,7 +73,7 @@ struct Desc {
 };
 
 /* Shadow of the scene's +0x68/+0x6c, which sit in dScMgBase_c padding.
-   Virtual88 reads the layer; InitBrush writes both. */
+   PaintSquare reads the layer; InitBrush writes both. */
 struct Obj {
     unsigned char pad0[0x68];
     unsigned char brushOn;
@@ -289,8 +289,8 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02120f18, NOT applied: extern char *func_02054efc(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054ea8, from the legacy file for func_ov006_02120f18, NOT applied: extern char *func_02054ea8(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for func_ov006_02120f18, NOT applied: extern char *func_02054d88(void); */
-/* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for _ZN17dScMgTrampoline_c11OnAttacked2Ev, NOT applied: int func_02054d88(void); */
-/* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN17dScMgTrampoline_c11OnAttacked2Ev, NOT applied: void MultiStore16(u16 val, void* dst, int nbytes); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for _ZN17dScMgTrampoline_c16OnGraphCallback0Ev, NOT applied: int func_02054d88(void); */
+/* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN17dScMgTrampoline_c16OnGraphCallback0Ev, NOT applied: void MultiStore16(u16 val, void* dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov004_020afdd0, from the legacy file for _ZN17dScMgTrampoline_c6RenderEv, NOT applied: void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02121778, NOT applied: extern void MultiStore16(unsigned short a, int b, int c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_020cd39c, from the legacy file for func_ov006_021218fc, NOT applied: extern void func_ov006_020cd39c(...); */
@@ -310,7 +310,7 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02121d64, NOT applied: int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e044, from the legacy file for func_ov006_02121f04, NOT applied: extern short data_ov006_0212e044; */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e048, from the legacy file for func_ov006_02121f04, NOT applied: extern short data_ov006_0212e048; */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN17dScMgTrampoline_c13OnTurnIntoEggEi, NOT applied: extern int GetGameLanguage(void); */
+/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN17dScMgTrampoline_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN4cstd4fdivEii, from the legacy file for _ZN17dScMgTrampoline_c13InitResourcesEv, NOT applied: extern s32 _ZN4cstd4fdivEii(s32 a, s32 b); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209d45c, from the legacy file for _ZN17dScMgTrampoline_c13InitResourcesEv, NOT applied: extern u8 data_0209d45c; */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov006_0212231c, NOT applied: extern s32 GetGameLanguage(void); */
@@ -401,7 +401,7 @@ void dScMgTrampoline_c::InitDisplay()
 
 // @symbol _ZN17dScMgTrampoline_c13InitResourcesEv
 /* Slot 0. Sets up the two cameras and the fog, then ends with a virtual
- * call to OnYoshiTryEat(-1), the scene's reset hook. */
+ * call to StartRound(-1), the scene's reset hook. */
 s32 dScMgTrampoline_c::InitResources()
 {
     char *base = (char *)this;
@@ -437,15 +437,15 @@ s32 dScMgTrampoline_c::InitResources()
     func_ov006_02120d8c(base + 0x5cd0, 5);
     func_ov006_020d0b2c();
     func_ov004_020b04d0(0x10);
-    OnYoshiTryEat(-1);
+    StartRound(-1);
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c13OnYoshiTryEatEi
+// @symbol _ZN17dScMgTrampoline_c10StartRoundEi
 extern "C" void func_ov006_020d0b04(int);
 extern volatile s16 data_020a0dbc[];
 
-void dScMgTrampoline_c::OnYoshiTryEat(int /* arg */)
+void dScMgTrampoline_c::StartRound(int /* arg */)
 {
     char *o = (char *)this;
 
@@ -503,9 +503,9 @@ void dScMgTrampoline_c::OnYoshiTryEat(int /* arg */)
     BeginIntro();
 }
 
-// @symbol _ZN17dScMgTrampoline_c13OnTurnIntoEggEi
-/* dScMgTrampoline_c::OnTurnIntoEgg, from its vtable slot. */
-int dScMgTrampoline_c::OnTurnIntoEgg(int /* mode */)
+// @symbol _ZN17dScMgTrampoline_c11CanEndStateEi
+/* dScMgTrampoline_c::CanEndState, from its vtable slot. */
+int dScMgTrampoline_c::CanEndState(int /* mode */)
 {
     func_ov006_020c8a9c(0, data_ov006_0213fb18[GetGameLanguage()]);
     return 1;
@@ -894,11 +894,11 @@ s32 dScMgTrampoline_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c8OnKickedEv
-/* dScMgTrampoline_c::OnKicked, from its vtable slot. */
-int dScMgTrampoline_c::OnKicked()
+// @symbol _ZN17dScMgTrampoline_c16OnGraphCallback2Ev
+/* dScMgTrampoline_c::OnGraphCallback2, from its vtable slot. */
+int dScMgTrampoline_c::OnGraphCallback2()
 {
-    if (!dScMgD3DBase_c::OnKicked())
+    if (!dScMgD3DBase_c::OnGraphCallback2())
         return 0;
     if (mMenuOpen == 0) {
         if (unk_4664 == 0) {
@@ -914,16 +914,16 @@ int dScMgTrampoline_c::OnKicked()
     return 1;
 }
 
-// @symbol _ZN17dScMgTrampoline_c8OnPushedEv
-/* dScMgTrampoline_c::OnPushed, from its vtable slot. */
-int dScMgTrampoline_c::OnPushed()
+// @symbol _ZN17dScMgTrampoline_c16OnGraphCallback3Ev
+/* dScMgTrampoline_c::OnGraphCallback3, from its vtable slot. */
+int dScMgTrampoline_c::OnGraphCallback3()
 {
-    return dScMgD3DBase_c::OnPushed() != 0;
+    return dScMgD3DBase_c::OnGraphCallback3() != 0;
 }
 
-// @symbol _ZN17dScMgTrampoline_c11OnAttacked2Ev
-/* dScMgTrampoline_c::OnAttacked2, from its vtable slot. */
-int dScMgTrampoline_c::OnAttacked2()
+// @symbol _ZN17dScMgTrampoline_c16OnGraphCallback0Ev
+/* dScMgTrampoline_c::OnGraphCallback0, from its vtable slot. */
+int dScMgTrampoline_c::OnGraphCallback0()
 {
     volatile u16 z;
     Vec2s v1;
@@ -931,7 +931,7 @@ int dScMgTrampoline_c::OnAttacked2()
     s16 a;
     int dst;
 
-    if (!dScMgBase_c::OnAttacked2())
+    if (!dScMgBase_c::OnGraphCallback0())
         return 0;
 
     if (data_0209f5bc->vt[5](data_0209f5bc)) {
@@ -1020,13 +1020,13 @@ void dScMgTrampoline_c::InitBrush(int layer)
 
 #pragma opt_loop_invariants off
 
-// @symbol _ZN17dScMgTrampoline_c9Virtual88Eiiii
+// @symbol _ZN17dScMgTrampoline_c11PaintSquareEiiii
 /* Slot 34, the brush stamp. dScMgD3DBase_c does not override this slot,
    so each trampoline class has its own; they differ only in the shape
    table (data_ov006_02142f6c here, _02142f78 in dScMgTrampoline2_c).
    bgLayer (+0x6c, in the base padding) picks the character base. No
    wrapped-region branch: a 3D minigame owns the top screen. */
-void dScMgTrampoline_c::Virtual88(int x_base, int y, int val, int n)
+void dScMgTrampoline_c::PaintSquare(int x_base, int y, int val, int n)
 {
     char *raw = (char *)this;
 

@@ -40,7 +40,7 @@
  * func_ov004_020b6808 and func_ov004_020b682c) and installs a
  * behavior. data_ov004_020bc8a0 replaces the next such file index once;
  * 0x1d there means no override. The behavior waits for mTimer to run out
- * and for the scene's OnTurnIntoEgg(mState) to return nonzero, in several
+ * and for the scene's CanEndState(mState) to return nonzero, in several
  * states around a screen fade (SetForwardTime out, then SetBackwardTime
  * once the fader IsAtEnd). It then frees every graphics slot
  * (FreeGfxSlotsById(0x1d)), passes mState to func_ov004_020b29a0 and
@@ -54,8 +54,8 @@
  *     why it is not the shared header's class. Their names, and the W2 type
  *     of data_02086b58, are the spellings config/decl-agreement-baseline.json
  *     records for those externs.
- *   - mState doubles as the id passed to the scene's OnTurnIntoEgg and,
- *     through func_ov004_020b29a0, to its OnYoshiTryEat. The `(void *)mState`
+ *   - mState doubles as the id passed to the scene's CanEndState and,
+ *     through func_ov004_020b29a0, to its StartRound. The `(void *)mState`
  *     spelling follows that helper's declaration.
  *
  * Retired one-function sources (ROM address order):
@@ -130,9 +130,9 @@ struct Base {
     virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
     virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
     virtual void v16(); virtual void v17();
-    virtual void OnYoshiTryEat(int);      /* slot 18, reached via func_ov004_020b29a0 */
-    virtual int OnTurnIntoEgg(int mode);  /* slot 19 */
-    virtual void Virtual50();             /* slot 20 */
+    virtual void StartRound(int);      /* slot 18, reached via func_ov004_020b29a0 */
+    virtual int CanEndState(int mode);  /* slot 19 */
+    virtual void OnNewRecord();             /* slot 20 */
     char pad[0xa4];
     s32 unk_0a8;                          /* 0x0a8 */
 };
@@ -391,7 +391,7 @@ void dMgState_c::func_ov004_020b8560() {
       return;
     if (scene == 0)
       return;
-    if (scene->OnTurnIntoEgg(mState) == 0)
+    if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetForwardTime(0x1e, 0);
   }
@@ -405,7 +405,7 @@ void dMgState_c::func_ov004_020b841c() {
   if (data_0209f5bc->IsAtEnd() != 0) {
     Base* scene = data_ov004_020beb68;
     if (scene == 0) return;
-    if (scene->OnTurnIntoEgg(mState) == 0) return;
+    if (scene->CanEndState(mState) == 0) return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
     func_ov004_020b29a0(scene, (void *)mState);
@@ -434,7 +434,7 @@ void dMgState_c::func_ov004_020b8284() {
     Base* scene = data_ov004_020beb68;
     if (scene == 0)
       return;
-    if (scene->OnTurnIntoEgg(mState) == 0)
+    if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
@@ -529,7 +529,7 @@ void dMgState_c::func_ov004_020b7eac() {
   Base* scene = data_ov004_020beb68;
   if (scene == 0)
     return;
-  if (scene->OnTurnIntoEgg(mState) == 0)
+  if (scene->CanEndState(mState) == 0)
     return;
   FreeGfxSlotsById(0x1d);
   func_ov004_020ae20c();
@@ -562,7 +562,7 @@ void dMgState_c::func_ov004_020b7cd0() {
     Base* q = data_ov004_020beb68;
     if (q == 0)
       return;
-    if (q->OnTurnIntoEgg(mState) == 0)
+    if (q->CanEndState(mState) == 0)
       return;
     data_ov004_020bc7d4 = 0;
     data_ov004_020bfa24 = 0;
@@ -576,7 +576,7 @@ void dMgState_c::func_ov004_020b7cd0() {
     Base* scene = data_ov004_020beb68;
     if (scene == 0)
       return;
-    if (scene->OnTurnIntoEgg(mState) == 0)
+    if (scene->CanEndState(mState) == 0)
       return;
     FreeGfxSlotsById(0x1d);
     func_ov004_020ae20c();
@@ -634,7 +634,7 @@ void dMgState_c::func_ov004_020b7a18() {
     if (cond == 0) {
         g = data_ov004_020beb68;
         if (!g) return;
-        if (!g->OnTurnIntoEgg(mState)) return;
+        if (!g->CanEndState(mState)) return;
         func_ov004_020ae20c();
         mTimer = 0xb4;
         mBehavior = data_ov004_020bc98c;
@@ -642,7 +642,7 @@ void dMgState_c::func_ov004_020b7a18() {
     }
     g = data_ov004_020beb68;
     if (!g) return;
-    if (!g->OnTurnIntoEgg(mState)) return;
+    if (!g->CanEndState(mState)) return;
     func_ov004_020ae20c();
     func_ov004_020ae2c8();
     func_ov004_020b29a0(g, (void *)mState);
@@ -668,7 +668,7 @@ void dMgState_c::func_ov004_020b78f4() {
   if (mTimer != 0) return;
   scene = data_ov004_020beb68;
   if (scene == 0) return;
-  if (scene->OnTurnIntoEgg(mState) == 0) return;
+  if (scene->CanEndState(mState) == 0) return;
   FreeGfxSlotsById(0x1d);
   func_ov004_020b29a0(scene, (void *)mState);
   mTimer = 0;
@@ -695,7 +695,7 @@ void dMgState_c::func_ov004_020b77b4() {
   Base* scene = data_ov004_020beb68;
   if (scene == 0)
     return;
-  if (scene->OnTurnIntoEgg(mState) == 0)
+  if (scene->CanEndState(mState) == 0)
     return;
   FreeGfxSlotsById(0x1d);
   func_ov004_020ae20c();
@@ -754,7 +754,7 @@ void dMgState_c::func_ov004_020b746c() {
     Base* scene = data_ov004_020beb68;
     if (scene == 0)
       return;
-    if (scene->OnTurnIntoEgg(mState) == 0)
+    if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
@@ -821,7 +821,7 @@ void dMgState_c::func_ov004_020b7124() {
     Base* scene = data_ov004_020beb68;
     if (scene == 0)
       return;
-    if (scene->OnTurnIntoEgg(mState) == 0)
+    if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     func_ov004_020ae20c();
@@ -918,7 +918,7 @@ void dMgState_c::func_ov004_020b6ddc() {
 
     scene = data_ov004_020beb68;
     if (scene) {
-        scene->Virtual50();
+        scene->OnNewRecord();
     }
 
     id = 5;
@@ -958,7 +958,7 @@ void dMgState_c::func_ov004_020b6c9c() {
         if (ok == 0)
             return;
     }
-    if (g->OnTurnIntoEgg(mState) == 0)
+    if (g->CanEndState(mState) == 0)
         return;
     *(W2 *)&mRender = data_02086b58;
     FreeGfxSlotsById(0x1d);
@@ -995,7 +995,7 @@ void dMgState_c::func_ov004_020b6b40() {
         if (ok == 0)
             return;
     }
-    if (g->OnTurnIntoEgg(mState) == 0)
+    if (g->CanEndState(mState) == 0)
         return;
     *(W2 *)&mRender = data_02086b58;
     FreeGfxSlotsById(0x1d);

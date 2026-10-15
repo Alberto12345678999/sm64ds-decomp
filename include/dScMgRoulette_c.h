@@ -43,8 +43,8 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
     virtual s32 CleanupResources();  /* slot 3 -- ov006 0x0210980c */
     virtual s32 Behavior();          /* slot 6 -- ov006 0x02109aac */
     virtual s32 Render();            /* slot 9 -- ov006 0x02109834 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
 
     u8    mTable[0x270];   /* 0x4f38 -- the spinning board */
     u8    mArray[0x104];   /* 0x51a8 -- 5 racers, 0x34 each */

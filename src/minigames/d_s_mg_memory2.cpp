@@ -1185,14 +1185,14 @@ void dScMgMemory2_c::SetupDifficulty() {
     }
 }
 
-// @symbol _ZN14dScMgMemory2_c15OnGroundPoundedEv
-void dScMgMemory2_c::OnGroundPounded()
+// @symbol _ZN14dScMgMemory2_c13OnHostAnimCueEv
+void dScMgMemory2_c::OnHostAnimCue()
 {
     func_ov004_020b63a0(mMaxMisses);
 }
 
-// @symbol _ZN14dScMgMemory2_c13OnTurnIntoEggEi
-int dScMgMemory2_c::OnTurnIntoEgg(int /* mode */)
+// @symbol _ZN14dScMgMemory2_c11CanEndStateEi
+int dScMgMemory2_c::CanEndState(int /* mode */)
 {
     if (mState == 3 && mSubstate == 0) {
         if (func_ov006_020c1718((int *)&mShared) == 0) return 0;
@@ -1202,9 +1202,9 @@ int dScMgMemory2_c::OnTurnIntoEgg(int /* mode */)
     return mState == 4;
 }
 
-// @symbol _ZN14dScMgMemory2_c13OnYoshiTryEatEi
+// @symbol _ZN14dScMgMemory2_c10StartRoundEi
 /* Clear the board, go back to StateSetup and reload the miss limit. */
-void dScMgMemory2_c::OnYoshiTryEat(int /* arg */)
+void dScMgMemory2_c::StartRound(int /* arg */)
 {
     char *o;
     int v;

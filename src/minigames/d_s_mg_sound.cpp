@@ -331,12 +331,12 @@ s32 dScMgSound_c::Render()
     return 1;
 }
 
-// @symbol _ZN12dScMgSound_c13OnYoshiTryEatEi
+// @symbol _ZN12dScMgSound_c10StartRoundEi
 /* Starts a round. With mode 0 the streak at 0xbc goes up (capped at 9998);
    otherwise it and the scene's total are cleared.
    `raw` must stay a `char *`: laundering `this` through an int puts the large
    offsets in the literal pool and the function grows by 0x10. */
-void dScMgSound_c::OnYoshiTryEat(int mode)
+void dScMgSound_c::StartRound(int mode)
 {
     char *raw = (char *)this;
 
@@ -378,10 +378,9 @@ void dScMgSound_c::OnYoshiTryEat(int mode)
     Sound::LoadAndSetMusic_Layer1(6);
 }
 
-// @symbol _ZN12dScMgSound_c9Virtual50Ev
-/* Virtual50 is dScMgBase_c.h's placeholder name; what the slot does is not
-   known yet. */
-void dScMgSound_c::Virtual50()
+// @symbol _ZN12dScMgSound_c11OnNewRecordEv
+/* Slot 20, OnNewRecord: plays the table model's win animation. */
+void dScMgSound_c::OnNewRecord()
 {
     func_ov006_020c2594((char *)&mTable);
 }
@@ -616,7 +615,7 @@ void dScMgSound_c::func_ov006_0211bf44(int slot)
 
 // @symbol _ZN12dScMgSound_c19func_ov006_0211bc8cEi
 /* Advances one note slot's animation. When the slot's last frame is
-   reached its note goes on mQueue and is played; mPattern and Virtual8C
+   reached its note goes on mQueue and is played; mPattern and IsAltVariant
    choose between func_02012790, the bank handle mBank and
    Sound::PlayBank2_2D.
    func_ov006_0211b654 is passed `idx` even though it is already in r1:
@@ -642,7 +641,7 @@ void dScMgSound_c::func_ov006_0211bc8c(int idx)
     func_ov006_0211b654(idx);
     note = this->mNotes[idx].note;
 
-    if (this->Virtual8C()) {
+    if (this->IsAltVariant()) {
         instrument = this->mPattern;
         if (instrument == 0 || instrument == 2) {
             if (data_ov006_0213f794[note] == 2) {
@@ -708,7 +707,7 @@ void dScMgSound_c::func_ov006_0211ba88(int slot)
 
     this->mNotes[slot].x -= 0x10000;
 
-    if (this->Virtual8C() != 0) {
+    if (this->IsAltVariant() != 0) {
         limit = data_ov006_0212ef5c[this->mPattern];
     } else {
         limit = data_ov006_0212ef6c[this->mPattern];
@@ -748,7 +747,7 @@ void dScMgSound_c::func_ov006_0211b9c8() {
     int ip;
     int found;
     int off;
-    if (this->Virtual8C()) {
+    if (this->IsAltVariant()) {
         lr = data_ov006_0212ef7c[this->mPattern];
     } else {
         lr = data_ov006_0212ef8c[this->mPattern];

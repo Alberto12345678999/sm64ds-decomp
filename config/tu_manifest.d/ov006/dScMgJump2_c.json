@@ -217,14 +217,14 @@
       "ordinal": 25
     },
     {
-      "symbol": "_ZN12dScMgJump2_c13OnTurnIntoEggEi",
+      "symbol": "_ZN12dScMgJump2_c11CanEndStateEi",
       "address": "0x020efa84",
       "size": "0x00000024",
       "legacy_source": "src/_ZN12dScMgJump2_c13OnTurnIntoEggEi.cpp",
       "ordinal": 26
     },
     {
-      "symbol": "_ZN12dScMgJump2_c13OnYoshiTryEatEi",
+      "symbol": "_ZN12dScMgJump2_c10StartRoundEi",
       "address": "0x020efaa8",
       "size": "0x00000048",
       "legacy_source": "src/_ZN12dScMgJump2_c13OnYoshiTryEatEi.cpp",

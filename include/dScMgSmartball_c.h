@@ -76,9 +76,9 @@ struct dScMgSmartball_c : dScMgBase_c {
        cartridge holds 0x02118b70 -- romdata_check scored _ZTV16dScMgSmartball_c
        DIFFERS on that one word. Its 0x8dc bytes are now decompiled and enrolled
        (src/minigames/d_s_mg_smartball.cpp); the slot is unchanged. */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnPushed();                           /* slot 25 */
-    virtual int  Virtual7C();                          /* slot 31 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  OnGraphCallback3();                           /* slot 25 */
+    virtual int  InitSubScreenBg();                          /* slot 31 */
     s32  InitResources();  /* slot  0 */
     void AfterCleanupResources(u32 vfSuccess);
                            /* slot  5 */

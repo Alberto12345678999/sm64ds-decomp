@@ -184,126 +184,126 @@
         "slot_address": "0x0213bbfc",
         "target": "0x020d9104",
         "module": "ov006",
-        "name": "_ZN14dScMgBomroom_c13OnYoshiTryEatEi"
+        "name": "_ZN14dScMgBomroom_c10StartRoundEi"
       },
       {
         "slot": 19,
         "slot_address": "0x0213bc00",
         "target": "0x020b2994",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c13OnTurnIntoEggEi"
+        "name": "_ZN11dScMgBase_c11CanEndStateEi"
       },
       {
         "slot": 20,
         "slot_address": "0x0213bc04",
         "target": "0x020b2990",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual50Ev"
+        "name": "_ZN11dScMgBase_c11OnNewRecordEv"
       },
       {
         "slot": 21,
         "slot_address": "0x0213bc08",
         "target": "0x020b298c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c15OnGroundPoundedEv"
+        "name": "_ZN11dScMgBase_c13OnHostAnimCueEv"
       },
       {
         "slot": 22,
         "slot_address": "0x0213bc0c",
         "target": "0x020ae198",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c11OnAttacked1Ev"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback1Ev"
       },
       {
         "slot": 23,
         "slot_address": "0x0213bc10",
         "target": "0x020ae1a0",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c11OnAttacked2Ev"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback0Ev"
       },
       {
         "slot": 24,
         "slot_address": "0x0213bc14",
         "target": "0x020ae140",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c8OnKickedEv"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback2Ev"
       },
       {
         "slot": 25,
         "slot_address": "0x0213bc18",
         "target": "0x020ae128",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c8OnPushedEv"
+        "name": "_ZN11dScMgBase_c16OnGraphCallback3Ev"
       },
       {
         "slot": 26,
         "slot_address": "0x0213bc1c",
         "target": "0x020b04e0",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv"
+        "name": "_ZN11dScMgBase_c14GetDisplayModeEv"
       },
       {
         "slot": 27,
         "slot_address": "0x0213bc20",
         "target": "0x020af27c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c15OnHitByMegaCharEv"
+        "name": "_ZN11dScMgBase_c8OpenMenuEv"
       },
       {
         "slot": 28,
         "slot_address": "0x0213bc24",
         "target": "0x020af04c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c19OnHitFromUnderneathEv"
+        "name": "_ZN11dScMgBase_c9CloseMenuEv"
       },
       {
         "slot": 29,
         "slot_address": "0x0213bc28",
         "target": "0x020af094",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c16OnAimedAtWithEggEv"
+        "name": "_ZN11dScMgBase_c17SaveScreenForMenuEv"
       },
       {
         "slot": 30,
         "slot_address": "0x0213bc2c",
         "target": "0x020aeed8",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv"
+        "name": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv"
       },
       {
         "slot": 31,
         "slot_address": "0x0213bc30",
         "target": "0x020b2880",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual7CEv"
+        "name": "_ZN11dScMgBase_c15InitSubScreenBgEv"
       },
       {
         "slot": 32,
         "slot_address": "0x0213bc34",
         "target": "0x020b27f4",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual80Ev"
+        "name": "_ZN11dScMgBase_c16InitMainScreenBgEv"
       },
       {
         "slot": 33,
         "slot_address": "0x0213bc38",
         "target": "0x020b265c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual84Ev"
+        "name": "_ZN11dScMgBase_c11InitEnginesEv"
       },
       {
         "slot": 34,
         "slot_address": "0x0213bc3c",
         "target": "0x020ae3b4",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual88Eiiii"
+        "name": "_ZN11dScMgBase_c11PaintSquareEiiii"
       },
       {
         "slot": 35,
         "slot_address": "0x0213bc40",
         "target": "0x020ad660",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c9Virtual8CEv",
+        "name": "_ZN11dScMgBase_c12IsAltVariantEv",
         "note": "cross-overlay phantom hazard: 0x020ad660 also resolves to func_ov002_020ad660, _ZN10dScTitle_cD1Ev in ov003, func_ov007_020ad660 and data_ov000_020ad660. dScMgBase_c is this class's direct base and lives in ov004, so ov004's row applies."
       }
     ]
@@ -342,7 +342,7 @@
     },
     {
       "slot": 18,
-      "symbol": "_ZN14dScMgBomroom_c13OnYoshiTryEatEi",
+      "symbol": "_ZN14dScMgBomroom_c10StartRoundEi",
       "address": "0x020d9104",
       "size": "0x5c"
     }

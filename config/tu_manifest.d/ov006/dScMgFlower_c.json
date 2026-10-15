@@ -60,7 +60,7 @@
       "ordinal": 4
     },
     {
-      "symbol": "_ZN13dScMgFlower_c13OnYoshiTryEatEi",
+      "symbol": "_ZN13dScMgFlower_c10StartRoundEi",
       "address": "0x0212aa74",
       "size": "0x00000058",
       "legacy_source": "src/_ZN13dScMgFlower_c13OnYoshiTryEatEi.cpp",

@@ -41,7 +41,7 @@ struct Mtx43 { int m[12]; };
 struct V3 { int w[3]; };
 
 /* Vtable shim for InitResources' last call, a virtual dispatch through slot
- * 18 of this class's own table. Calling OnYoshiTryEat by name would compile
+ * 18 of this class's own table. Calling StartRound by name would compile
  * to a direct branch instead. */
 struct Base {
     virtual void m00();
@@ -128,7 +128,7 @@ namespace G3X  { void SetFog(bool enable, int mode, int slope, int offset); }
 namespace cstd { s32 fdiv(s32 a, s32 b); }
 short ApproachLinear2(short &value, short target, short step);
 
-// @symbol _ZN11dScMgJump_c13OnYoshiTryEatEi
+// @symbol _ZN11dScMgJump_c10StartRoundEi
 /* Slot 18. 0 is an eat (one more egg, capped like the HUD score), 0x12 a
  * miss that clears the count and the shared scene's copy of it; anything
  * else just publishes the count. From the fifteenth egg on the next egg is
@@ -141,7 +141,7 @@ short ApproachLinear2(short &value, short target, short step);
  * previous-draw address and the 10 into r6-r8 and the function comes out a
  * word short. The if-converted then-arm sits between the guard and the loop
  * header, which keeps the three in the loop body, as the cartridge has them. */
-void dScMgJump_c::OnYoshiTryEat(int arg)
+void dScMgJump_c::StartRound(int arg)
 {
     u32 idx;
 
@@ -189,9 +189,9 @@ void dScMgJump_c::OnYoshiTryEat(int arg)
     func_ov006_020ee658();
 }
 
-// @symbol _ZN11dScMgJump_c13OnTurnIntoEggEi
+// @symbol _ZN11dScMgJump_c11CanEndStateEi
 /* Slot 19. mStateTimer is the same countdown the state functions below use. */
-int dScMgJump_c::OnTurnIntoEgg(int sel)
+int dScMgJump_c::CanEndState(int sel)
 {
     if (sel == 0) {
         if (unk_0bc % 5 == 4) {
@@ -283,7 +283,7 @@ s32 dScMgJump_c::InitResources()
  * state (see Behavior), mAccum gains mAccumStep >> 12 each tick and
  * mStateTimer counts down to the change.
  *
- * This one arms the countdown; its only caller is OnYoshiTryEat. */
+ * This one arms the countdown; its only caller is StartRound. */
 void dScMgJump_c::func_ov006_020ee658()
 {
     mStateTimer = 0x78;

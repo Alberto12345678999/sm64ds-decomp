@@ -42,7 +42,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv",
+      "symbol": "_ZN19dScMgSingle3DBase_c14GetDisplayModeEv",
       "address": "0x0210a600",
       "size": "0x00000008",
       "legacy_source": "src/func_ov006_0210a600.c",
@@ -77,7 +77,7 @@
       "ordinal": 7
     },
     {
-      "symbol": "_ZN19dScMgSingle3DBase_c9Virtual84Ev",
+      "symbol": "_ZN19dScMgSingle3DBase_c11InitEnginesEv",
       "address": "0x0210a708",
       "size": "0x000001b8",
       "legacy_source": "src/func_ov006_0210a708.c",

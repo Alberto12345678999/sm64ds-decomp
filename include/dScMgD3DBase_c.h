@@ -93,15 +93,15 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual int  BeforeBehavior();                     /* slot  7 */
     virtual int  BeforeRender();                       /* slot 10 */
     virtual void AfterRender(u32 vfSuccess);           /* slot 11 */
-    virtual int  OnKicked();                           /* slot 24 */
-    virtual int  OnPushed();                           /* slot 25 */
-    virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
-    virtual void OnHitByMegaChar();                    /* slot 27 */
-    virtual int  OnHitFromUnderneath();                /* slot 28 */
-    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
-    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
-    virtual int  Virtual7C();                          /* slot 31 */
-    virtual void Virtual84();                          /* slot 33 */
+    virtual int  OnGraphCallback2();                           /* slot 24 */
+    virtual int  OnGraphCallback3();                           /* slot 25 */
+    virtual int  GetDisplayMode();           /* slot 26 */
+    virtual void OpenMenu();                    /* slot 27 */
+    virtual int  CloseMenu();                /* slot 28 */
+    virtual int  SaveScreenForMenu();                   /* slot 29 */
+    virtual void RestoreScreenFromMenu();          /* slot 30 */
+    virtual int  InitSubScreenBg();                          /* slot 31 */
+    virtual void InitEngines();                          /* slot 33 */
 
     /* THAT LIST IS EMPTY NOW.  This class overrides nine of dScMgBase_c's own
        18 new slots (18-35) -- 24 through 31, and 33 -- per

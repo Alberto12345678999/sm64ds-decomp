@@ -36,7 +36,7 @@ struct dScMgTrampoline_DoorMark {
     s32 shown;          /* 0x08 -- toggles with timer / 10 */
 
     void Init();               /* ov006 0x02120a54 -- the factory's clear */
-    void Hide();               /* ov006 0x02120a44 -- OnYoshiTryEat's reset */
+    void Hide();               /* ov006 0x02120a44 -- StartRound's reset */
     void Show(int side);       /* ov006 0x02120a18 -- starts the blink */
     void Update();             /* ov006 0x021209ac -- ticks it */
     void Render(int scrollY);  /* ov006 0x0212093c -- draws it when shown */
@@ -59,12 +59,12 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
     virtual s32 CleanupResources();  /* slot 3 -- ov006 0x021212e0 */
     virtual s32 Behavior();          /* slot 6 -- ov006 0x021214f8 */
     virtual s32 Render();            /* slot 9 -- ov006 0x021212fc */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
-    virtual int  OnAttacked2();                        /* slot 23 */
-    virtual int  OnKicked();                           /* slot 24 */
-    virtual int  OnPushed();                           /* slot 25 */
-    virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
+    virtual int  OnGraphCallback0();                        /* slot 23 */
+    virtual int  OnGraphCallback2();                           /* slot 24 */
+    virtual int  OnGraphCallback3();                           /* slot 25 */
+    virtual void PaintSquare(int cx, int cy, int colour, int size); /* slot 34 */
 
     /* State callbacks stored in mState. The PMF descriptors at
        ov006:0x0213faa0..0x0213fad0 show these are no-argument members of
@@ -122,7 +122,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
     s16 mRoundOver;         /* 0x5dc2 -- set once results clear the screen;
                                Render then skips the playfield */
     u8  mTouching;          /* 0x5dc4 -- a drag is in progress */
-    u8  mTouchReleased;     /* 0x5dc5 -- set on the release edge; OnAttacked2
+    u8  mTouchReleased;     /* 0x5dc5 -- set on the release edge; OnGraphCallback0
                                consumes and clears it after the swipe test */
     u8  pad_5dc6[0x2];      /* 0x5dc6 -- rounds up to the 0x5dc8 boundary */
 };

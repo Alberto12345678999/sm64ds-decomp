@@ -1003,14 +1003,14 @@ void dScMgMemory_c::SetupDifficulty() {
     }
 }
 
-// @symbol _ZN13dScMgMemory_c15OnGroundPoundedEv
-void dScMgMemory_c::OnGroundPounded()
+// @symbol _ZN13dScMgMemory_c13OnHostAnimCueEv
+void dScMgMemory_c::OnHostAnimCue()
 {
     func_ov004_020b63a0(mMaxMisses);
 }
 
-// @symbol _ZN13dScMgMemory_c13OnTurnIntoEggEi
-int dScMgMemory_c::OnTurnIntoEgg(int /* mode */)
+// @symbol _ZN13dScMgMemory_c11CanEndStateEi
+int dScMgMemory_c::CanEndState(int /* mode */)
 {
     if (mState == 3 && mSubstate == 0) {
         if (func_ov006_020c1718((int*)&mShared) == 0) return 0;
@@ -1020,10 +1020,10 @@ int dScMgMemory_c::OnTurnIntoEgg(int /* mode */)
     return mState == 4;
 }
 
-// @symbol _ZN13dScMgMemory_c13OnYoshiTryEatEi
+// @symbol _ZN13dScMgMemory_c10StartRoundEi
 /* Slot 18: restarts the game, with up to three misses allowed from the meter. */
 
-void dScMgMemory_c::OnYoshiTryEat(int /* arg */)
+void dScMgMemory_c::StartRound(int /* arg */)
 {
     char *meter;
     int lives;

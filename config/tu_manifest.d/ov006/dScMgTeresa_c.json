@@ -566,21 +566,21 @@
       "ordinal": 74
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c9Virtual88Eiiii",
+      "symbol": "_ZN13dScMgTeresa_c11PaintSquareEiiii",
       "address": "0x021200dc",
       "size": "0x0000015c",
       "legacy_source": "src/_ZN13dScMgTeresa_c9Virtual88Eiiii.cpp",
       "ordinal": 75
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c9Virtual50Ev",
+      "symbol": "_ZN13dScMgTeresa_c11OnNewRecordEv",
       "address": "0x02120238",
       "size": "0x00000010",
       "legacy_source": "src/_ZN13dScMgTeresa_c9Virtual50Ev.cpp",
       "ordinal": 76
     },
     {
-      "symbol": "_ZN13dScMgTeresa_c13OnYoshiTryEatEi",
+      "symbol": "_ZN13dScMgTeresa_c10StartRoundEi",
       "address": "0x02120248",
       "size": "0x00000100",
       "legacy_source": "src/_ZN13dScMgTeresa_c13OnYoshiTryEatEi.cpp",

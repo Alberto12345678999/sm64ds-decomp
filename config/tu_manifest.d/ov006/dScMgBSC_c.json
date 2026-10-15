@@ -134,21 +134,21 @@
       "ordinal": 12
     },
     {
-      "symbol": "_ZN10dScMgBSC_c15OnGroundPoundedEv",
+      "symbol": "_ZN10dScMgBSC_c13OnHostAnimCueEv",
       "address": "0x02125248",
       "size": "0x00000034",
       "legacy_source": "src/func_ov006_02125248.c",
       "ordinal": 13
     },
     {
-      "symbol": "_ZN10dScMgBSC_c13OnTurnIntoEggEi",
+      "symbol": "_ZN10dScMgBSC_c11CanEndStateEi",
       "address": "0x0212527c",
       "size": "0x000000e8",
       "legacy_source": "src/func_ov006_0212527c.cpp",
       "ordinal": 14
     },
     {
-      "symbol": "_ZN10dScMgBSC_c13OnYoshiTryEatEi",
+      "symbol": "_ZN10dScMgBSC_c10StartRoundEi",
       "address": "0x02125364",
       "size": "0x00000058",
       "legacy_source": "src/func_ov006_02125364.cpp",

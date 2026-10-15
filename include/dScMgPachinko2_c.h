@@ -5,7 +5,7 @@
 /* The Tamaire minigame scene: scene 0x171, profile MG_TAMAIRE. RTTI derives
  * dScMgPachinko2_c directly from dScMgBase_c, and no RTTI record names it as
  * a base. It overrides vtable slots 0 (InitResources), 6 (Behavior),
- * 9 (Render), 16 and 17 (the destructors) and 18 (OnYoshiTryEat). Offsets
+ * 9 (Render), 16 and 17 (the destructors) and 18 (StartRound). Offsets
  * below 0x4660 belong to dScMgBase_c. Own offsets that only the unnamed
  * helper functions touch are still padding.
  *
@@ -141,7 +141,7 @@ struct dScMgPachinko2_c : dScMgBase_c {
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
     virtual s32 Render();         /* slot 9 */
-    virtual void OnYoshiTryEat(int arg); /* slot 18 */
+    virtual void StartRound(int arg); /* slot 18 */
 
     /* cups: the two 0x20-byte drop targets at 0x5620 (the mBalls[63] slot) */
     void func_ov006_020ff47c();            /* render both cups */

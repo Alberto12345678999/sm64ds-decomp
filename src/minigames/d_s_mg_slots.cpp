@@ -24,7 +24,7 @@
 //   state-table handlers dispatching through data_ov006_02142bdc).
 // - The ROM PMF constants the Slot3 state table copies (data_ov006_0213e5xx)
 //   come from unlicensed .data, in retail copy order.
-// - OnAimedAtWithEgg/OnAimedAtWithEggReturnVec keep slot-identity names from
+// - SaveScreenForMenu/RestoreScreenFromMenu keep slot-identity names from
 //   the vtable; the OAM SECONDSE symbol read at Render is a link artifact of
 //   the address, not a proven field.
 
@@ -95,7 +95,7 @@ extern int data_ov004_020bc8b4;
 void SetBg1Offset(int a, int b);
 int GetGameLanguage(void);
 void* func_02054ea8(void);
-// Retained caller ABI: narrowing to the definition's u16 adds a mask in Virtual80.
+// Retained caller ABI: narrowing to the definition's u16 adds a mask in InitMainScreenBg.
 unsigned int LoadCompressedFileAt(int fileID, void* target);
 extern unsigned char data_0209d45c;
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
@@ -208,39 +208,38 @@ dScMgSlot3_c::~dScMgSlot3_c()
 // @symbol _ZN12dScMgSlot3_cD0Ev
 /* The compiler emits D0 from the complete-object destructor above. */
 
-// @symbol _ZN12dScMgSlot3_c25OnAimedAtWithEggReturnVecEv
-/* dScMgSlot3_c::OnAimedAtWithEggReturnVec - recovered from vtable slot identity.
-   The name is dScMgBase_c's, transplanted down the hierarchy; the `ReturnVec`
-   half of it is refuted in include/dScMgBase_c.h's slot-30 block, and this
-   body is the arity witness cited there.  The read-modify-write below clobbers
+// @symbol _ZN12dScMgSlot3_c21RestoreScreenFromMenuEv
+/* dScMgSlot3_c::RestoreScreenFromMenu - slot 30 override: puts BG1CNT
+   back, then runs the base restore. This body is the arity witness cited
+   in include/dScMgBase_c.h's slot-30 block.  The read-modify-write below clobbers
    r1 before the tail call, so the base cannot be taking a second argument. */
-void dScMgSlot3_c::OnAimedAtWithEggReturnVec()
+void dScMgSlot3_c::RestoreScreenFromMenu()
 {
     void *a = (void *)this;
 
     *(volatile unsigned short*)0x400000A = (*(volatile unsigned short*)0x400000A & 0x43) | 0x1118;
-    ((dScMgBase_c *)a)->dScMgBase_c::OnAimedAtWithEggReturnVec();
+    ((dScMgBase_c *)a)->dScMgBase_c::RestoreScreenFromMenu();
 }
 
-// @symbol _ZN12dScMgSlot3_c16OnAimedAtWithEggEv
-/* dScMgSlot3_c::OnAimedAtWithEgg - recovered from vtable slot identity.
+// @symbol _ZN12dScMgSlot3_c17SaveScreenForMenuEv
+/* dScMgSlot3_c::SaveScreenForMenu - slot 29 override.
 
    This body is the third and strongest witness that slot 29 takes no
    explicit parameter.  It CLOBBERS r1 -- the masked read-modify-write of the
    sub display-control register below compiles to `ldrh r1,[r2]; and; orr;
    strh` -- and only then tail-branches into the base with `bx ip`.  A second
-   argument passed in r1 would reach dScMgBase_c::OnAimedAtWithEgg as a
+   argument passed in r1 would reach dScMgBase_c::SaveScreenForMenu as a
    display-control word, so the base cannot be reading one. */
-int dScMgSlot3_c::OnAimedAtWithEgg()
+int dScMgSlot3_c::SaveScreenForMenu()
 {
     void *a = (void *)this;
 
     *(volatile unsigned short*)0x400000A = (*(volatile unsigned short*)0x400000A & 0x43) | 0x1000;
-    return ((dScMgBase_c *)a)->dScMgBase_c::OnAimedAtWithEgg();
+    return ((dScMgBase_c *)a)->dScMgBase_c::SaveScreenForMenu();
 }
 
-// @symbol _ZN12dScMgSlot3_c9Virtual80Ev
-/* dScMgSlot3_c::Virtual80 - slot 32, the only override of it in the family.
+// @symbol _ZN12dScMgSlot3_c16InitMainScreenBgEv
+/* dScMgSlot3_c::InitMainScreenBg - slot 32, the only override of it in the family.
 
    Not an AfterClsn: the base slot has no ROM name at all, and the one the
    recovery pass borrowed belongs to dPathLiftActor_c, two forks away.  See the
@@ -251,7 +250,7 @@ int dScMgSlot3_c::OnAimedAtWithEgg()
    the shared screen map -- and then one more write, leaving BG1CNT at 0x1118
    instead of 0x1000: the same layer, pointed at this minigame's own character
    and screen base blocks. */
-void dScMgSlot3_c::Virtual80()
+void dScMgSlot3_c::InitMainScreenBg()
 {
     int idx;
 
@@ -331,13 +330,13 @@ extern "C" void func_ov006_0210ac3c(char* c)
                 *(int*)(((int)c + 0xb4)) += 1;
             if (*(int*)(c + 0xb4) > *(int*)(c + 0xb8))
                 *(int*)(c + 0xb8) = *(int*)(c + 0xb4);
-            ((dScMgSlot3_c*)c)->OnYoshiTryEat(4);
+            ((dScMgSlot3_c*)c)->StartRound(4);
         } else {
             if (*(int*)(c + 0xa8) <= 0) {
                 *(unsigned char*)(c + 0x503e) = 0x78;
                 *(int*)(c + 0x5000) = 6;
             } else {
-                ((dScMgSlot3_c*)c)->OnYoshiTryEat(5);
+                ((dScMgSlot3_c*)c)->StartRound(5);
             }
         }
     }
@@ -595,8 +594,8 @@ void func_ov006_0210b1fc(char *p)
 // the functions between them. Measured -- this member DIFFs without them and
 // the members outside them DIFF with them applied file-wide.
 #pragma opt_strength_reduction off
-// @symbol _ZN12dScMgSlot3_c13OnYoshiTryEatEi
-void dScMgSlot3_c::OnYoshiTryEat(int mode)
+// @symbol _ZN12dScMgSlot3_c10StartRoundEi
+void dScMgSlot3_c::StartRound(int mode)
 {
     char *c = (char *)this;
 
@@ -958,7 +957,7 @@ s32 dScMgSlot3_c::InitResources()
 
     unk_5004 = (int)unk_0bc;
 
-    ((dScMgSlot3_c *)c)->OnYoshiTryEat(3);
+    ((dScMgSlot3_c *)c)->StartRound(3);
 
     mWinSymbol = unk_503c;
     mReelDrawY = 0;
@@ -1186,21 +1185,21 @@ void func_ov006_0210c478(char *icon) {
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c19OnHitFromUnderneathEv
+// @symbol _ZN12dScMgSlot1_c9CloseMenuEv
 
-int dScMgSlot1_c::OnHitFromUnderneath()
+int dScMgSlot1_c::CloseMenu()
 {
-    dScMgBase_c::OnHitFromUnderneath();
+    dScMgBase_c::CloseMenu();
     SetSubBg1Offset(0x100, 0);
 }
 
-// @symbol _ZN12dScMgSlot1_c15OnHitByMegaCharEv
+// @symbol _ZN12dScMgSlot1_c8OpenMenuEv
 /* Slot 27. Takes no argument: the ROM body never reads r1. The qualified
  * base call is the ROM's direct branch. */
-void dScMgSlot1_c::OnHitByMegaChar()
+void dScMgSlot1_c::OpenMenu()
 {
     SetSubBg1Offset(0, 0);
-    dScMgBase_c::OnHitByMegaChar();
+    dScMgBase_c::OpenMenu();
 }
 
 // @symbol func_ov006_0210c500
@@ -1259,9 +1258,9 @@ void func_ov006_0210c638(void *self)
 }
 }
 
-// @symbol _ZN12dScMgSlot1_c13OnYoshiTryEatEi
+// @symbol _ZN12dScMgSlot1_c10StartRoundEi
 /* Slot 18. 0x4706 is padding in the header, so it is written by offset. */
-void dScMgSlot1_c::OnYoshiTryEat(int i)
+void dScMgSlot1_c::StartRound(int i)
 {
     char *raw = (char *)this;
 
@@ -1485,7 +1484,7 @@ s32 dScMgSlot1_c::Behavior()
         if (done != 0) {
             func_ov004_020adb1c(unk_0a8);
             if (DecIfAbove0_Byte(&unk_470c) == 0) {
-                OnYoshiTryEat(4);
+                StartRound(4);
             }
         }
         break;
@@ -1493,7 +1492,7 @@ s32 dScMgSlot1_c::Behavior()
     case 7:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
             if (unk_0a8 > 0) {
-                OnYoshiTryEat(5);
+                StartRound(5);
             } else {
                 int j;
                 char *p = (char *)this;
@@ -1668,7 +1667,7 @@ s32 dScMgSlot1_c::InitResources()
     unk_46bc = 0xa;
     func_ov004_020adb1c(unk_46bc);
     func_ov006_0210c478((char *)&mBetIcon);
-    OnYoshiTryEat(3);
+    StartRound(3);
     func_ov004_020b04d0(0x20);
     data_0208ee44 = 1;
     return 1;

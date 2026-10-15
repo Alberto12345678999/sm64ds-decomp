@@ -139,17 +139,17 @@ s32 dScMgMCarlo2_c::InitResources()
     func_ov006_020c0aa8((void *)(raw + 0x4660));
     if (func_ov006_020c1a88((void *)(raw + 0x4f38)) == 0) return 0;
     func_ov004_020b682c();
-    OnYoshiTryEat(-1);
+    StartRound(-1);
     this->unk_592a = 0;
     this->unk_0a8 = 0xa;
     this->unk_0ac = this->unk_0a8;
     return 1;
 }
 
-// @symbol _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi
+// @symbol _ZN14dScMgMCarlo2_c10StartRoundEi
 /* Resets the whole board: rebuild the 40 pieces, clear the match latch,
  * re-arm the shared table, then hand the score display a zero. */
-void dScMgMCarlo2_c::OnYoshiTryEat(int /* arg */)
+void dScMgMCarlo2_c::StartRound(int /* arg */)
 {
     char *raw = (char *)this;
 
@@ -164,8 +164,8 @@ void dScMgMCarlo2_c::OnYoshiTryEat(int /* arg */)
     unk_5928 = 1;
 }
 
-// @symbol _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi
-int dScMgMCarlo2_c::OnTurnIntoEgg(int /* mode */)
+// @symbol _ZN14dScMgMCarlo2_c11CanEndStateEi
+int dScMgMCarlo2_c::CanEndState(int /* mode */)
 {
     char *raw = (char *)this;
 

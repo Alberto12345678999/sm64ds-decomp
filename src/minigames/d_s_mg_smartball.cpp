@@ -4080,12 +4080,12 @@ void func_ov006_0211474c(char* c, int a1, int a2, int* a3){
 }
 }
 
-// @symbol _ZN16dScMgSmartball_c8OnPushedEv
-/* dScMgSmartball_c::OnPushed - recovered from vtable slot identity */
-int dScMgSmartball_c::OnPushed()
+// @symbol _ZN16dScMgSmartball_c16OnGraphCallback3Ev
+/* dScMgSmartball_c::OnGraphCallback3 - slot 25 override */
+int dScMgSmartball_c::OnGraphCallback3()
 {
     void *t = (void *)this;
- return ((dScMgBase_c *)t)->dScMgBase_c::OnPushed() != 0; }
+ return ((dScMgBase_c *)t)->dScMgBase_c::OnGraphCallback3() != 0; }
 
 // @symbol _ZN16dScMgSmartball_c12SparksActiveEv
 int dScMgSmartball_c::SparksActive()
@@ -6071,15 +6071,15 @@ s32 dScMgSmartball_c::Behavior()
 
 #pragma pop
 
-// @symbol _ZN16dScMgSmartball_c13OnYoshiTryEatEi
+// @symbol _ZN16dScMgSmartball_c10StartRoundEi
 #include "G2x.h"
 #include "types.h"
 #include "dScMgSmartball_c.h"
 /* vtable slot 18 -- an override of
-   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   dScMgBase_c::StartRound(int). The signature must repeat the base
    declaration exactly, or mwcc appends a slot instead of overriding. */
 extern "C" {
-void dScMgSmartball_c::OnYoshiTryEat(int /* arg */)
+void dScMgSmartball_c::StartRound(int /* arg */)
 {
   SpawnObjects();
   G2x::SetBlendAlpha((volatile unsigned short *)0x4000050, 0, 0x18, 4, 0xa);
@@ -6087,13 +6087,13 @@ void dScMgSmartball_c::OnYoshiTryEat(int /* arg */)
 }
 }
 
-// @symbol _ZN16dScMgSmartball_c9Virtual7CEv
-/* dScMgSmartball_c::Virtual7C - slot 31, this class's own override.
+// @symbol _ZN16dScMgSmartball_c15InitSubScreenBgEv
+/* dScMgSmartball_c::InitSubScreenBg - slot 31, this class's own override.
 
    Not a Kill: see the slot-31 block in include/dScMgBase_c.h. Same shape as
    dScMgAmida_c's -- BG1CNT base bits 4 -- differing only in the language
    table it indexes. */
-int dScMgSmartball_c::Virtual7C()
+int dScMgSmartball_c::InitSubScreenBg()
 {
     int f;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 4;

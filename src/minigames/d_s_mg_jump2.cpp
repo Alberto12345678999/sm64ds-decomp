@@ -80,7 +80,7 @@ typedef void (dScMgJump2_c::*dScMgJump2_cState)();
 struct G2 { int w[2]; };
 
 /* Vtable shim for InitResources' last call, a virtual dispatch through slot
- * 18 of this class's own table. Calling OnYoshiTryEat by name would compile
+ * 18 of this class's own table. Calling StartRound by name would compile
  * to a direct branch instead. */
 struct Base {
     virtual void m00();
@@ -224,9 +224,9 @@ void *dScMgJump2_c_classInit()
 }
 }
 
-// @symbol _ZN12dScMgJump2_c13OnYoshiTryEatEi
+// @symbol _ZN12dScMgJump2_c10StartRoundEi
 /* Slot 18: resets the round and arms the start countdown. */
-void dScMgJump2_c::OnYoshiTryEat(int /* arg */)
+void dScMgJump2_c::StartRound(int /* arg */)
 {
   func_ov006_020c72b4();
   func_ov006_020c719c(0, 0);
@@ -236,9 +236,9 @@ void dScMgJump2_c::OnYoshiTryEat(int /* arg */)
   func_ov006_020ef7f8();
 }
 
-// @symbol _ZN12dScMgJump2_c13OnTurnIntoEggEi
+// @symbol _ZN12dScMgJump2_c11CanEndStateEi
 /* Slot 19. */
-int dScMgJump2_c::OnTurnIntoEgg(int /* mode */)
+int dScMgJump2_c::CanEndState(int /* mode */)
 {
     func_ov006_020c8a9c(0, 0);
     return 1;

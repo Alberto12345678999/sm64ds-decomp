@@ -60,7 +60,7 @@ void  func_ov004_020b290c(void);
 void  func_ov004_020b2980(void);
 int   GetGameLanguage(void);
 void  DecompressLZ16(void *src, void *dst);
-/* The file ID is really u16, but passing it narrowed grows Virtual7C by
+/* The file ID is really u16, but passing it narrowed grows InitSubScreenBg by
  * 16 bytes. Keep it wide. */
 u32   LoadCompressedFileAt(unsigned int fileID, void *target);
 void  Ov004_Deallocate(void *x);
@@ -68,8 +68,8 @@ struct dCamera_c;
 void  Camera_UpdateMatrices(dCamera_c *camera);
 
 /* The same for the saved-bank restores: GX takes u16, and passing the saved
- * s32 through the real declaration adds 16 bytes each to Virtual7C and
- * OnAimedAtWithEggReturnVec. Constant banks use the GX namespace below. */
+ * s32 through the real declaration adds 16 bytes each to InitSubScreenBg and
+ * RestoreScreenFromMenu. Constant banks use the GX namespace below. */
 void  _ZN2GX15SetBankForSubBGEt(unsigned int x);
 void  _ZN2GX16SetBankForSubOBJEt(unsigned int x);
 
@@ -187,11 +187,11 @@ extern "C" void func_ov006_020e73c4(void)
     *(unsigned int *)0x4001000 &= ~0x300010;
 }
 
-// @symbol _ZN14dScMgD3DBase_c9Virtual7CEv
+// @symbol _ZN14dScMgD3DBase_c15InitSubScreenBgEv
 /* Slot 31: loads the sub-screen BG and OBJ graphics, then restores the
  * banks it borrowed. Keep the destinations as base plus offset; one folded
  * constant changes the code. */
-int dScMgD3DBase_c::Virtual7C()
+int dScMgD3DBase_c::InitSubScreenBg()
 {
     unk_4660 = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
@@ -219,12 +219,12 @@ int dScMgD3DBase_c::Virtual7C()
     _ZN2GX15SetBankForSubBGEt(unk_0a0);
 }
 
-// @symbol _ZN14dScMgD3DBase_c9Virtual84Ev
+// @symbol _ZN14dScMgD3DBase_c11InitEnginesEv
 /* Slot 33: sets up the 3D display and VRAM banks, keeps the loaded
  * buffers for later palette and menu work, and publishes the two camera
  * blocks at 0x466c and 0x4728 (untyped padding in the header, so still by
  * offset). */
-void dScMgD3DBase_c::Virtual84()
+void dScMgD3DBase_c::InitEngines()
 {
     char *raw = (char *)this;
     void *file;
@@ -341,15 +341,15 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-// @symbol _ZN14dScMgD3DBase_c8OnKickedEv
+// @symbol _ZN14dScMgD3DBase_c16OnGraphCallback2Ev
 /* Slot 24, inherited by Jump and Jump2: switches between the two
  * 0xbc-byte cameras. Keep the if/else toggle; `unk_4664 = unk_4664 == 0`
  * compiles differently. */
-int dScMgD3DBase_c::OnKicked()
+int dScMgD3DBase_c::OnGraphCallback2()
 {
     char *raw = (char *)this;
 
-    if (dScMgBase_c::OnKicked() == 0) return 0;
+    if (dScMgBase_c::OnGraphCallback2() == 0) return 0;
     if (mMenuOpen == 0) {
         if (data_0209d464 == 0) return 0;
         if (unk_4664 == 0)
@@ -372,16 +372,16 @@ int dScMgD3DBase_c::OnKicked()
     return 1;
 }
 
-// @symbol _ZN14dScMgD3DBase_c8OnPushedEv
+// @symbol _ZN14dScMgD3DBase_c16OnGraphCallback3Ev
 /* Slot 25. */
-int dScMgD3DBase_c::OnPushed()
+int dScMgD3DBase_c::OnGraphCallback3()
 {
-    return dScMgBase_c::OnPushed() != 0;
+    return dScMgBase_c::OnGraphCallback3() != 0;
 }
 
-// @symbol _ZN14dScMgD3DBase_c24OnHitByCannonBlastedCharEv
+// @symbol _ZN14dScMgD3DBase_c14GetDisplayModeEv
 /* Slot 26: marks the 3D scenes with 2. */
-int dScMgD3DBase_c::OnHitByCannonBlastedChar()
+int dScMgD3DBase_c::GetDisplayMode()
 {
     return 2;
 }
@@ -414,23 +414,23 @@ extern "C" int func_ov006_020e6da4(int a)
     return func_020126e8(a + 0x80000);
 }
 
-// @symbol _ZN14dScMgD3DBase_c15OnHitByMegaCharEv
+// @symbol _ZN14dScMgD3DBase_c8OpenMenuEv
 /* Slot 27: a long-branch veneer to the base. */
-void dScMgD3DBase_c::OnHitByMegaChar()
+void dScMgD3DBase_c::OpenMenu()
 {
-    dScMgBase_c::OnHitByMegaChar();
+    dScMgBase_c::OpenMenu();
 }
 
-// @symbol _ZN14dScMgD3DBase_c19OnHitFromUnderneathEv
+// @symbol _ZN14dScMgD3DBase_c9CloseMenuEv
 /* Slot 28. */
-int dScMgD3DBase_c::OnHitFromUnderneath()
+int dScMgD3DBase_c::CloseMenu()
 {
-    return dScMgBase_c::OnHitFromUnderneath();
+    return dScMgBase_c::CloseMenu();
 }
 
-// @symbol _ZN14dScMgD3DBase_c16OnAimedAtWithEggEv
+// @symbol _ZN14dScMgD3DBase_c17SaveScreenForMenuEv
 /* Slot 29: claims the sub-screen banks before the base opens the menu. */
-int dScMgD3DBase_c::OnAimedAtWithEgg()
+int dScMgD3DBase_c::SaveScreenForMenu()
 {
     func_ov006_020e73c4();
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100, 0x100);
@@ -439,18 +439,18 @@ int dScMgD3DBase_c::OnAimedAtWithEgg()
     GX::SetBankForSubBG(0x80);
     unk_4660 = func_02053ea0();
     GX::SetBankForSubOBJ(0x100);
-    return dScMgBase_c::OnAimedAtWithEgg();
+    return dScMgBase_c::SaveScreenForMenu();
 }
 
-// @symbol _ZN14dScMgD3DBase_c25OnAimedAtWithEggReturnVecEv
+// @symbol _ZN14dScMgD3DBase_c21RestoreScreenFromMenuEv
 /* Slot 30: gives the banks back around the base's menu teardown. */
-void dScMgD3DBase_c::OnAimedAtWithEggReturnVec()
+void dScMgD3DBase_c::RestoreScreenFromMenu()
 {
     _ZN2GX15SetBankForSubBGEt(unk_0a0);
     _ZN2GX16SetBankForSubOBJEt(unk_4660);
     data_0209e660 = 1;
     func_ov006_020e740c();
-    dScMgBase_c::OnAimedAtWithEggReturnVec();
+    dScMgBase_c::RestoreScreenFromMenu();
     if (unk_4664 == 1) {
         func_ov006_020e7508();
     } else {

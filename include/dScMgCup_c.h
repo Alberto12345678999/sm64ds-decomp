@@ -76,8 +76,8 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     void StateFinish();
     void StateIdle();
     s32 InitResources();
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual void Virtual50();                          /* slot 20 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual void OnNewRecord();                          /* slot 20 */
     s32 Behavior();
     s32 Render();
 

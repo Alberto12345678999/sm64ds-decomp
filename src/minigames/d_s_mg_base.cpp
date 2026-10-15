@@ -3,7 +3,7 @@
  * sprite, OAM and graphics helpers that sit with it
  * (.text 0x020ad660..0x020b2c58, 125 functions).
  *
- * This is the whole ov004 linker unit, from dScMgBase_c::Virtual8C at the
+ * This is the whole ov004 linker unit, from dScMgBase_c::IsAltVariant at the
  * first byte of ov004's .text up to the constructor, which ends where
  * func_ov004_020b2c58 begins. It holds the eight scene overrides at
  * 0x020b04e8..0x020b0a38 plus 117 former one-function sources folded in
@@ -123,8 +123,8 @@ extern int *data_ov004_020bbfa8[];
 
 namespace s20ad660 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c9Virtual8CEv
-/* dScMgBase_c::Virtual8C - slot 35, the LAST slot of dScMgBase_c's own
+// @symbol _ZN11dScMgBase_c12IsAltVariantEv
+/* dScMgBase_c::IsAltVariant - slot 35, the LAST slot of dScMgBase_c's own
    eighteen.  Twenty bytes, and the end of the 18-35 keystone range: with this
    declared the class emits its full 36-slot vtable from source and no table in
    the minigame family is a prefix any more.
@@ -146,8 +146,8 @@ extern "C" {
    slot in the campaign whose return value is not merely permitted by the ROM
    but seen to be consumed by it.
 
-   `Virtual8C` is a placeholder after the +0x8c vtable offset, not a ROM name;
-   as at slots 33 and 34 there was no `recovered name:` line here to correct.
+   `IsAltVariant` is coined here (it was `Virtual8C`, after the +0x8c vtable
+   offset): the low byte of param1 picks the second menu-row variant.
 
    The rename had to be scoped: 0x020ad660 is an overlay load base, so ov000,
    ov002, ov003, ov004 and ov007 all have unrelated symbols at that address
@@ -155,7 +155,7 @@ extern "C" {
 }
 }
 
-int dScMgBase_c::Virtual8C()
+int dScMgBase_c::IsAltVariant()
 {
     return (param1 & 0xff) != 0;
 }
@@ -719,7 +719,7 @@ namespace s20ae03c {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback3Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback3 -- slot 3: calls the
-   registered scene's OnPushed (slot 25, +0x64) and reports handled. */
+   registered scene's OnGraphCallback3 (slot 25, +0x64) and reports handled. */
 }
 }
 
@@ -728,7 +728,7 @@ int dScMgBase_c::graphCallback_c::GraphCallback3()
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
-        p->OnPushed();
+        p->OnGraphCallback3();
     }
 
     return 1;
@@ -739,7 +739,7 @@ extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback2Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback2 -- slot 2.
  *
- * Unlike slots 0, 1 and 3, this one RETURNS the scene's OnKicked (slot 24,
+ * Unlike slots 0, 1 and 3, this one RETURNS the scene's OnGraphCallback2 (slot 24,
  * +0x60) result rather than discarding it and reporting handled; it only
  * reports handled when no scene is registered.
  */
@@ -754,14 +754,14 @@ int dScMgBase_c::graphCallback_c::GraphCallback2()
         return 1;
     }
 
-    return p->OnKicked();
+    return p->OnGraphCallback2();
 }
 
 namespace s20ae0a4 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback1Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback1 -- slot 1: calls the
-   registered scene's OnAttacked1 (slot 22, +0x58) and reports handled. */
+   registered scene's OnGraphCallback1 (slot 22, +0x58) and reports handled. */
 }
 }
 
@@ -770,7 +770,7 @@ int dScMgBase_c::graphCallback_c::GraphCallback1()
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
-        p->OnAttacked1();
+        p->OnGraphCallback1();
     }
 
     return 1;
@@ -780,7 +780,7 @@ namespace s20ae0d4 {
 extern "C" {
 // @symbol _ZN11dScMgBase_c15graphCallback_c14GraphCallback0Ev
 /* dScMgBase_c::graphCallback_c::GraphCallback0 -- slot 0: calls the
-   registered scene's OnAttacked2 (slot 23, +0x5c) and reports handled. */
+   registered scene's OnGraphCallback0 (slot 23, +0x5c) and reports handled. */
 }
 }
 
@@ -789,7 +789,7 @@ int dScMgBase_c::graphCallback_c::GraphCallback0()
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
-        p->OnAttacked2();
+        p->OnGraphCallback0();
     }
 
     return 1;
@@ -802,36 +802,34 @@ dScMgBase_c::graphCallback_c::graphCallback_c() : mScene(0) {}
 
 namespace s20ae128 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c8OnPushedEv
-// recovered name: dScMgBase_c_OnPushed
-/* dScMgBase_c::OnPushed - slot 25: nonzero while the menu is closed. */
+// @symbol _ZN11dScMgBase_c16OnGraphCallback3Ev
+/* dScMgBase_c::OnGraphCallback3 - slot 25: nonzero while the menu is closed. */
 }
 }
 
-int dScMgBase_c::OnPushed()
+int dScMgBase_c::OnGraphCallback3()
 {
     return mMenuOpen == 0;
 }
 
 namespace s20ae140 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c8OnKickedEv
-// recovered name: dScMgBase_c_OnKicked
-/* dScMgBase_c::OnKicked - slot 24. When mMenuOpen differs from its latch
-   unk_462c, calls OnAimedAtWithEgg (slot 29) if the menu has opened or
-   OnAimedAtWithEggReturnVec (slot 30) if it has closed, then latches it. */
+// @symbol _ZN11dScMgBase_c16OnGraphCallback2Ev
+/* dScMgBase_c::OnGraphCallback2 - slot 24. When mMenuOpen differs from its latch
+   unk_462c, calls SaveScreenForMenu (slot 29) if the menu has opened or
+   RestoreScreenFromMenu (slot 30) if it has closed, then latches it. */
 }
 }
 
-int dScMgBase_c::OnKicked()
+int dScMgBase_c::OnGraphCallback2()
 {
     int v2 = mMenuOpen;
     int v1 = unk_462c;
     if (v1 == v2) goto done;
     if (v2 == 0) {
-        OnAimedAtWithEggReturnVec();
+        RestoreScreenFromMenu();
     } else {
-        OnAimedAtWithEgg();
+        SaveScreenForMenu();
     }
     unk_462c = mMenuOpen;
 done:
@@ -840,26 +838,24 @@ done:
 
 namespace s20ae198 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c11OnAttacked1Ev
-// recovered name: dScMgBase_c_OnAttacked1
-/* dScMgBase_c::OnAttacked1 - slot 22 */
+// @symbol _ZN11dScMgBase_c16OnGraphCallback1Ev
+/* dScMgBase_c::OnGraphCallback1 - slot 22 */
 }
 }
 
-int dScMgBase_c::OnAttacked1()
+int dScMgBase_c::OnGraphCallback1()
 {
     return 1;
 }
 
 namespace s20ae1a0 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c11OnAttacked2Ev
-// recovered name: dScMgBase_c_OnAttacked2
-/* dScMgBase_c::OnAttacked2 - slot 23 */
+// @symbol _ZN11dScMgBase_c16OnGraphCallback0Ev
+/* dScMgBase_c::OnGraphCallback0 - slot 23 */
 }
 }
 
-int dScMgBase_c::OnAttacked2()
+int dScMgBase_c::OnGraphCallback0()
 {
     return 1;
 }
@@ -992,8 +988,8 @@ void func_ov004_020ae330(void){
 
 namespace s20ae3b4 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c9Virtual88Eiiii
-/* dScMgBase_c::Virtual88 - slot 34.  THE BRUSH.
+// @symbol _ZN11dScMgBase_c11PaintSquareEiiii
+/* dScMgBase_c::PaintSquare - slot 34.  THE BRUSH.
 
    Walks a `size` x `size` square centred on (cx, cy) and paints every cell
    inside it with palette index `colour`.  The address arithmetic is the DS
@@ -1003,7 +999,7 @@ extern "C" {
    rather than a plain load/store.  Sixteen colours, one nibble per pixel.  All
    four sides clip.
 
-   It reads exactly the two object fields slot 33 (Virtual84) initialises.
+   It reads exactly the two object fields slot 33 (InitEngines) initialises.
    `obj+0x6c` is the layer index: 0..3 select G2S::GetBG0CharPtr through
    GetBG3CharPtr, and anything else returns without drawing -- which is what
    slot 33's -1 buys.  `obj+0x68` gates the wrapped region above the touch
@@ -1016,9 +1012,9 @@ extern "C" {
    separate sites as it walks a segment.  See the slot-34 block in
    include/dScMgBase_c.h for the arity and return-type measurements.
 
-   `Virtual88` is a placeholder after the +0x88 vtable offset, not a ROM name --
-   but unlike slots 29-32 there is no wrong name being retired here, because
-   the recovery pass never guessed one for this address. */
+   `PaintSquare` is coined here from what the body does; it was `Virtual88`,
+   after the +0x88 vtable offset. The cartridge names no method of this
+   class. */
 extern "C" {
 extern int* func_02054efc(void);
 extern int* func_02054ea8(void);
@@ -1038,7 +1034,7 @@ extern int data_ov004_020beb6c;
 }
 }
 
-void dScMgBase_c::Virtual88(int cx, int cy, int colour, int size)
+void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
 { using s20ae3b4::MultiCopy_Int; using s20ae3b4::_ZN2G213GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv; using s20ae3b4::data_ov004_020beb64; using s20ae3b4::data_ov004_020beb6c; using s20ae3b4::func_02054d88; using s20ae3b4::func_02054ea8; using s20ae3b4::func_02054efc;
     char *obj = (char *)this;
 
@@ -1120,7 +1116,7 @@ namespace s20ae5c4 {
 extern "C" {
 /* Minigame canvas line rasteriser (ov004 0x020ae5c4, 0x294 bytes). Walks a
  * Bresenham line from (x0, y0) to (x1, y1) and plots every point through the
- * canvas's virtual dScMgBase_c::Virtual88(x, y, colour, size) (vtable slot 34),
+ * canvas's virtual dScMgBase_c::PaintSquare(x, y, colour, size) (vtable slot 34),
  * stepping along the major axis with the error term seeded at half the major
  * span; a zero-length line plots once. Callers: the trampoline minigame's
  * trajectory trace (src/minigames/d_s_mg_trampoline.cpp).
@@ -1144,11 +1140,11 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
     int dx, dy, adx, ady, err;
     int yy1;
     if (x0 == x1 && y0 == y1) {
-        thiz->Virtual88(x0, y0, colour, size);
+        thiz->PaintSquare(x0, y0, colour, size);
         return;
     }
     yy1 = y1;
-    thiz->Virtual88(x0, y0, colour, size);
+    thiz->PaintSquare(x0, y0, colour, size);
     dy = y1 - y0;
     dx = x1 - x0;
     adx = dx;
@@ -1159,7 +1155,7 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
         err = adx / 2;
         for (;;) {
             if (dx == 0) {
-                thiz->Virtual88(x0, y0, colour, size);
+                thiz->PaintSquare(x0, y0, colour, size);
                 return;
             }
             if (dx > 0) {
@@ -1169,7 +1165,7 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
                     if (dy >= 0) y0++; else y0--;
                     err -= adx;
                 }
-                thiz->Virtual88(x0, y0, colour, size);
+                thiz->PaintSquare(x0, y0, colour, size);
                 if (x0 == x1) return;
             } else {
                 err += ady;
@@ -1178,7 +1174,7 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
                     if (dy >= 0) y0++; else y0--;
                     err -= adx;
                 }
-                thiz->Virtual88(x0, y0, colour, size);
+                thiz->PaintSquare(x0, y0, colour, size);
                 if (x0 == x1) return;
             }
         }
@@ -1186,7 +1182,7 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
         err = ady / 2;
         for (;;) {
             if (dy == 0) {
-                thiz->Virtual88(x0, y0, colour, size);
+                thiz->PaintSquare(x0, y0, colour, size);
                 return;
             }
             if (dy > 0) {
@@ -1196,7 +1192,7 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
                     if (dx >= 0) x0++; else x0--;
                     err -= ady;
                 }
-                thiz->Virtual88(x0, y0, colour, size);
+                thiz->PaintSquare(x0, y0, colour, size);
                 if (y0 == yy1) return;
             } else {
                 err += adx;
@@ -1205,7 +1201,7 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
                     if (dx >= 0) x0++; else x0--;
                     err -= ady;
                 }
-                thiz->Virtual88(x0, y0, colour, size);
+                thiz->PaintSquare(x0, y0, colour, size);
                 if (y0 == yy1) return;
             }
         }
@@ -1344,12 +1340,12 @@ struct BF { unsigned int lo:10; unsigned int hi:22; };
 struct S { int x; BF y; };
 
 /* Draws one sprite-list entry at (a1, a2) through func_ov004_020b1c68.
-   When the scene's OnHitByCannonBlastedChar (slot 26) returns 2, the copy
+   When the scene's GetDisplayMode (slot 26) returns 2, the copy
    drawn has 0x200 subtracted from its tile number (attr2 bits 0..9). */
 extern "C" void func_ov004_020aea78(S* self, int a1, int a2, struct M* a3)
 {
     S v = *self;
-    if (((dScMgBase_c *)data_ov004_020beb68)->OnHitByCannonBlastedChar() == 2) {
+    if (((dScMgBase_c *)data_ov004_020beb68)->GetDisplayMode() == 2) {
         v.y.lo = (self->y.lo - 0x200) & 0x3ff;
     }
     func_ov004_020b1c68(&v, a1, a2, 0, -1, a3);
@@ -1375,7 +1371,7 @@ extern dWipe_c data_0209f61c;
    mMenuCursor (within 0x60 x 0x18 of item 0, 0x40 x 0x13 of the others, by
    func_0203b958's offsets) and sets the s16 timer at +0x4644 (0x10 for
    item 0, else 0). Once mMenuCursorPhase reaches 0x10000 and that timer
-   reaches 0, item 0 (and any other value) calls OnHitFromUnderneath
+   reaches 0, item 0 (and any other value) calls CloseMenu
    (slot 28), item 1 starts a scene fade, and item 2 calls
    func_ov004_020b9220 on the touch options and clears the highlight. */
 void func_ov004_020aeb24(char* c)
@@ -1448,7 +1444,7 @@ after:
 
     switch (self->mMenuCursor) {
     case 0:
-        self->OnHitFromUnderneath();
+        self->CloseMenu();
         return;
     case 1:
         dScene_c::SetFaders(&data_0209f61c);
@@ -1464,7 +1460,7 @@ after:
         self->mMenuCursorPhase = 0;
         return;
     default:
-        self->OnHitFromUnderneath();
+        self->CloseMenu();
         return;
     }
 }
@@ -1474,9 +1470,8 @@ after:
 
 namespace s20aeed8 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv
-// recovered name: dScMgBase_c_OnAimedAtWithEggReturnVec
-/* dScMgBase_c::OnAimedAtWithEggReturnVec - slot 30.
+// @symbol _ZN11dScMgBase_c21RestoreScreenFromMenuEv
+/* dScMgBase_c::RestoreScreenFromMenu - slot 30.
 
    WHAT IT DOES, because the name says the opposite of both halves.  This is
    the exact mirror of slot 29: 29 saves the screen and draws the three-item
@@ -1486,7 +1481,7 @@ extern "C" {
    BG-enable fields back from mSavedMainBgBits / mSavedSubBgBits; 0x400 bytes
    of BG palette come back out of the buffer at +0x4228, the second 0x200 of it
    to the sub screen; and 0x2000 bytes of sub-screen OBJ VRAM go back to
-   0x06606000 from +0x2228.  dScMgBase_c::OnKicked calls this one when
+   0x06606000 from +0x2228.  dScMgBase_c::OnGraphCallback2 calls this one when
    mMenuOpen falls to zero and slot 29 when it rises.  It is the menu coming
    down.  It is not a Yoshi egg, and it does not return a vector -- see the
    slot-30 block in include/dScMgBase_c.h for the AAPCS measurement that
@@ -1515,7 +1510,7 @@ extern "C" int _ZN3GXS10LoadBGPlttEPKvjj(const void* p, u32 a, u32 b);
 }
 }
 
-void dScMgBase_c::OnAimedAtWithEggReturnVec()
+void dScMgBase_c::RestoreScreenFromMenu()
 { using s20aeed8::_ZN2GX10LoadBGPlttEPKvjj; using s20aeed8::_ZN3GXS10LoadBGPlttEPKvjj; using s20aeed8::data_0209d454; using s20aeed8::data_0209d458; using s20aeed8::data_0209d45c; using s20aeed8::data_0209d460;
     char *c = (char *)this;
 
@@ -1534,7 +1529,7 @@ void dScMgBase_c::OnAimedAtWithEggReturnVec()
         _ZN3GXS10LoadBGPlttEPKvjj(p, 0, 0x80);
     }
 
-    if (OnHitByCannonBlastedChar() != 2)
+    if (GetDisplayMode() != 2)
     {
         char *src = (char*)0x6600000; src += 0x6000;
         MultiCopy_Int((int*)(c + 0x2228), (int*)src, 0x2000);
@@ -1543,7 +1538,7 @@ void dScMgBase_c::OnAimedAtWithEggReturnVec()
     data_0209d45c = (u8)mSavedMainBgBits;
     data_0209d454 = (u8)mSavedSubBgBits;
 
-    if (OnHitByCannonBlastedChar() == 2)
+    if (GetDisplayMode() == 2)
         return;
 
     *(u32*)0x4000000 = (*(u32*)0x4000000 & ~0x1f00) | ((u32)data_0209d45c << 8);
@@ -1552,13 +1547,12 @@ void dScMgBase_c::OnAimedAtWithEggReturnVec()
 
 namespace s20af04c {
 extern "C" {
-// @symbol _ZN11dScMgBase_c19OnHitFromUnderneathEv
-// recovered name: dScMgBase_c_OnHitFromUnderneath
-/* dScMgBase_c::OnHitFromUnderneath - slot 28.
+// @symbol _ZN11dScMgBase_c9CloseMenuEv
+/* dScMgBase_c::CloseMenu - slot 28.
 
    A hit from underneath closes the three-item overlay menu
-   that OnHitByMegaChar opens, resets the polymorphic touch-icon set, and
-   re-enables the 3D engines only if the class's own OnHitByCannonBlastedChar
+   that OpenMenu opens, resets the polymorphic touch-icon set, and
+   re-enables the 3D engines only if the class's own GetDisplayMode
    says so. */
 
 extern "C" void func_02012e1c(char *c);
@@ -1575,34 +1569,33 @@ extern "C" void Enable3dEngines();
 }
 }
 
-int dScMgBase_c::OnHitFromUnderneath()
+int dScMgBase_c::CloseMenu()
 { using s20af04c::Enable3dEngines; using s20af04c::func_02012e1c;
     func_02012e1c((char *)this);
     mMenuOpen = 0;
     func_ov004_020b91fc((char *)&mTouchOptions);
-    int r = OnHitByCannonBlastedChar();
+    int r = GetDisplayMode();
     if (r != 0) Enable3dEngines();
 }
 
 namespace s20af094 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c16OnAimedAtWithEggEv
-// recovered name: dScMgBase_c_OnAimedAtWithEgg
-/* dScMgBase_c::OnAimedAtWithEgg - slot 29.
+// @symbol _ZN11dScMgBase_c17SaveScreenForMenuEv
+/* dScMgBase_c::SaveScreenForMenu - slot 29.
 
    The two buffers at +0x2228 and +0x4228 stay as raw offsets: they are
    inside pad_228, and this body is the only evidence for their extent.
 
-   WHAT IT DOES, worth writing down because the NAME DOES NOT SAY IT.
-   `OnAimedAtWithEgg` is transplanted from include/dActor_c.h at the same slot
-   index; nothing in the cartridge carries a method name for this class.  The
-   body saves the screen and then draws over it.  It stashes POWCNT1's
+   WHAT IT DOES.  The name is coined from this body; until 2026-10-14 the
+   slot carried `OnAimedAtWithEgg`, transplanted from include/dActor_c.h at
+   the same slot index.  Nothing in the cartridge carries a method name for
+   this class.  The body saves the screen and then draws over it.  It stashes POWCNT1's
    screen-swap bit and the two BG-enable bytes into the object, clears every
    layer- and window-enable bit in both DISPCNTs, saves 0x400 bytes of BG
    palette out of palette RAM into +0x4228 and loads the menu's palettes over
    the top, then saves 0x2000 bytes of sub-screen OBJ VRAM at 0x06606000 into
    +0x2228 and decompresses a per-language image over that.  Its one caller in
-   this module is dScMgBase_c::OnKicked, which reaches it only on a rising edge
+   this module is dScMgBase_c::OnGraphCallback2, which reaches it only on a rising edge
    of mMenuOpen.  That is the three-item overlay menu going up, not a Yoshi egg.
    See the slot 29 block in include/dScMgBase_c.h for why the name is kept. */
 extern "C" void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *addr, unsigned int size);
@@ -1627,11 +1620,11 @@ extern "C" unsigned char data_0209d454;
 }
 }
 
-int dScMgBase_c::OnAimedAtWithEgg()
+int dScMgBase_c::SaveScreenForMenu()
 { using s20af094::DecompressLZ16; using s20af094::GetGameLanguage; using s20af094::MultiStore16; using s20af094::_ZN2GX10LoadBGPlttEPKvjj; using s20af094::_ZN3GXS10LoadBGPlttEPKvjj; using s20af094::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20af094::data_0209d454; using s20af094::data_0209d45c; using s20af094::func_0201f32c;
     char *c = (char *)this;
 
-    if (OnHitByCannonBlastedChar() != 0)
+    if (GetDisplayMode() != 0)
         func_02019028();
 
     mSavedScreenSwap = (*(volatile u16 *)0x4000304 & 0x8000) >> 15;
@@ -1672,7 +1665,7 @@ int dScMgBase_c::OnAimedAtWithEgg()
     data_0209d45c = 0x12;
     data_0209d454 = 0x10;
 
-    if (OnHitByCannonBlastedChar() != 2) {
+    if (GetDisplayMode() != 2) {
         int *vbase = (int *)0x6600000;
         int *vram = vbase + 0x1800;
         MultiCopy_Int(vram, (int *)(c + 0x2228), 0x2000);
@@ -1684,15 +1677,14 @@ int dScMgBase_c::OnAimedAtWithEgg()
 
 namespace s20af27c {
 extern "C" {
-// @symbol _ZN11dScMgBase_c15OnHitByMegaCharEv
-// recovered name: dScMgBase_c_OnHitByMegaChar
-/* dScMgBase_c::OnHitByMegaChar - slot 27. Unless unk_4630 is set, opens
+// @symbol _ZN11dScMgBase_c8OpenMenuEv
+/* dScMgBase_c::OpenMenu - slot 27. Unless unk_4630 is set, opens
    the three-item overlay menu: items start at their slide-in positions,
    the prompt is disabled and nothing is highlighted. */
 }
 }
 
-void dScMgBase_c::OnHitByMegaChar()
+void dScMgBase_c::OpenMenu()
 {
     if (unk_4630 != 0) return;
     func_02012e78();
@@ -1733,7 +1725,7 @@ extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned in
 
 extern char data_ov004_020b9468;
 
-/* Sets up the brush that Virtual88 paints with. Stores `en` at +0x68 and
+/* Sets up the brush that PaintSquare paints with. Stores `en` at +0x68 and
    the layer `mode` (0..3) at +0x6c, fills the first 0x300 screen entries of
    that sub-screen BG layer (and of the main-screen one when `en` is set)
    with tile numbers 0..0x2ff under palette `base`, zeroes 0x6000 bytes of
@@ -1910,7 +1902,7 @@ void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
 
 /* The sprite wrappers from here to func_ov004_020b0380 share one gate.
  * With no scene they draw nothing. With the menu closed and the scene's
- * OnHitByCannonBlastedChar (slot 26) returning 2 -- the value
+ * GetDisplayMode (slot 26) returning 2 -- the value
  * dScMgD3DBase_c's body returns -- they read the u16 at +0x4664
  * (dScMgD3DBase_c::unk_4664) and draw once, or not at all. Otherwise they
  * take their normal path. +0x4664 is past dScMgBase_c, so it is read
@@ -1928,7 +1920,7 @@ void Hud_RenderSprite(void* attr, int x, int y, int palette, int priority){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
       _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr*)attr, x, y, palette, priority, 0x1000, 0x1000, 0, -1);
       return;
@@ -1955,7 +1947,7 @@ extern "C" int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0) {
-        if (scene->OnHitByCannonBlastedChar() == 2) {
+        if (scene->GetDisplayMode() == 2) {
             if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr*)a0, a1, a2, a3, a4, a5, a6);
         }
@@ -1972,7 +1964,7 @@ void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
       OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
       return;
@@ -1991,7 +1983,7 @@ void func_ov004_020af948(void* a, int b, int c, void* m)
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0) {
-        if (scene->OnHitByCannonBlastedChar() == 2) {
+        if (scene->GetDisplayMode() == 2) {
             if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
             OAM::Render(false, (OamAttr*)a, b, c, -1, -1, (Matrix2x2*)m);
             return;
@@ -2013,7 +2005,7 @@ extern "C" void RenderOamMainScreen(int oam, int x, int y, int palette, int prio
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0) {
-        if (scene->OnHitByCannonBlastedChar() == 2) {
+        if (scene->GetDisplayMode() == 2) {
             if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr*)oam, x, y, palette, priority, 0x1000, 0x1000, 0, -1);
             return;
@@ -2040,7 +2032,7 @@ extern "C" int func_ov004_020afb20(int a0, int a1, int a2, int a3, int a4, int a
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0) {
-        if (scene->OnHitByCannonBlastedChar() == 2) {
+        if (scene->GetDisplayMode() == 2) {
             if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr*)a0, a1, a2, a3, a4, a5, a6);
         }
@@ -2057,7 +2049,7 @@ void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
       OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
       return;
@@ -2075,7 +2067,7 @@ extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
 {
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
     if (scene == 0) return;
-    if (scene->mMenuOpen == 0 && scene->OnHitByCannonBlastedChar() == 2) {
+    if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
         if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
         OAM::Render(false, (OamAttr*)arg0, (int)arg1, arg2, -1, -1, (Matrix2x2*)arg3);
         return;
@@ -2095,7 +2087,7 @@ void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, a4, 0x1000, 0x1000, 0, -1);
         return;
@@ -2126,7 +2118,7 @@ extern "C" int func_ov004_020aff38(struct OamAttr* a0, int a1, int a2, int a3, i
 {
     dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
     if (scene == 0) return 0;
-    if (scene->mMenuOpen == 0 && scene->OnHitByCannonBlastedChar() == 2) {
+    if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
         if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1) {
             int hp = data_ov004_020beb6c;
             if (a2 >= -0x100 - hp && a2 < -hp) {
@@ -2159,7 +2151,7 @@ void RenderOamBothScreens(void* attr, int x, int y, int palette, int priority, v
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
         OAM::Render(false, (OamAttr*)attr, x, y + 0xc0 + data_ov004_020beb6c, palette, priority, (Matrix2x2*)mtx);
         return;
@@ -2184,7 +2176,7 @@ void func_ov004_020b023c(void* a0, int a1, int a2, int a3, void* a4){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
         OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, (Matrix2x2*)a4);
         return;
@@ -2209,7 +2201,7 @@ void func_ov004_020b0380(void* a0, int a1, int a2, void* a3){
   dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
-    if(scene->OnHitByCannonBlastedChar() == 2){
+    if(scene->GetDisplayMode() == 2){
       if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
         OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, (Matrix2x2*)a3);
         return;
@@ -2229,7 +2221,7 @@ void func_ov004_020b0380(void* a0, int a1, int a2, void* a3){
 namespace s20b04c0 {
 extern "C" {
 extern int data_ov004_020beb6c[];
-/* Get and set data_ov004_020beb6c: the offset Virtual88 and the sprite
+/* Get and set data_ov004_020beb6c: the offset PaintSquare and the sprite
    wrappers above add, with 0xc0, to y on their upper-screen path. */
 int func_ov004_020b04c0(void) { return data_ov004_020beb6c[0]; }
 }
@@ -2245,11 +2237,9 @@ void func_ov004_020b04d0(int v) { data_ov004_020beb6c[0] = v; }
 
 namespace s20b04e0 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c24OnHitByCannonBlastedCharEv
-// recovered name: dScMgBase_c_OnHitByCannonBlastedChar
-/* dScMgBase_c::OnHitByCannonBlastedChar - slot 26.  The recovered name above is
- * this one's own and is correct; the two overrides' were not, and both are
- * corrected where they live.
+// @symbol _ZN11dScMgBase_c14GetDisplayModeEv
+/* dScMgBase_c::GetDisplayMode - slot 26: which display layout the scene
+ * uses. BeforeInitResources turns the 3D engines on for any nonzero answer.
  *
  * `return 0;` here, `return 1;` in dScMgSingle3DBase_c's override and
  * `return 2;` in dScMgD3DBase_c's.  Three distinct constants out of three
@@ -2258,7 +2248,7 @@ extern "C" {
 }
 }
 
-int dScMgBase_c::OnHitByCannonBlastedChar()
+int dScMgBase_c::GetDisplayMode()
 {
     return 0;
 }
@@ -2340,11 +2330,11 @@ int dScMgBase_c::BeforeBehavior()
             if (mMenuOpen != 0) {
                 if (mMenuCursor < 0) {
                     if (func_ov004_020b8ee0((char *)&mTouchOptions))
-                        OnHitFromUnderneath();
+                        CloseMenu();
                 }
             } else {
                 if (gTouchHeld[mode * 4] == 0)
-                    OnHitByMegaChar();
+                    OpenMenu();
             }
         }
     }
@@ -2419,7 +2409,7 @@ void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
 /* Finishes the display and font setup, then reports to dScene_c. */
 void dScMgBase_c::AfterInitResources(u32 vfSuccess)
 {
-    Virtual80();
+    InitMainScreenBg();
     LoadFont(2);
     func_ov004_020ae330();
     dScene_c::AfterInitResources(vfSuccess);
@@ -2432,7 +2422,7 @@ void dScMgBase_c::AfterInitResources(u32 vfSuccess)
 bool dScMgBase_c::BeforeInitResources()
 {
     if (dScene_c::BeforeInitResources() == 0) return 0;
-    if (OnHitByCannonBlastedChar() == 0)
+    if (GetDisplayMode() == 0)
         func_02019028();
     else
         Enable3dEngines();
@@ -2445,13 +2435,13 @@ bool dScMgBase_c::BeforeInitResources()
     unk_0b8 = 0;
     unk_465c = 0;
     func_ov004_020b8a8c((char *)this + 0x4000);
-    Virtual84();
+    InitEngines();
     func_ov004_020b2cb8();
     dScene_c::SetFaders(&data_0209f61c);
     data_0209f61c.func_0202ec9c(0);
     data_0209d460[0] = 0;
     data_0209d458[0] = 0;
-    Virtual7C();
+    InitSubScreenBg();
     return 1;
 }
 
@@ -2750,7 +2740,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
             sl->unk_054 = 0;
             sl->unk_050 = sb;
         } else if (sl->unk_054 > 0) {
-            if (sl->OnHitByCannonBlastedChar() == 2) {
+            if (sl->GetDisplayMode() == 2) {
                 sl->unk_054 += 2;
             } else {
                 sl->unk_054 += 1;
@@ -2809,7 +2799,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
                 i += 1;
             } while (i < 5);
         }
-        if (sl->OnHitByCannonBlastedChar() == 2) {
+        if (sl->GetDisplayMode() == 2) {
             int b = sl->mTimeLimit;
             int c = sl->unk_054;
             if (c == b || c == b + 1) {
@@ -2858,7 +2848,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
                     i += 1;
                 } while (i < 5);
             }
-            if (sl->OnHitByCannonBlastedChar() == 2) {
+            if (sl->GetDisplayMode() == 2) {
                 int b = sl->mTimeLimit;
                 int c = sl->unk_054;
                 if (c == b || c == b + 1) {
@@ -3517,8 +3507,8 @@ void func_ov004_020b2574(int arg0, int arg1)
 
 namespace s20b265c {
 extern "C" {
-// @symbol _ZN11dScMgBase_c9Virtual84Ev
-/* dScMgBase_c::Virtual84 - slot 33.  The ROM names nothing here: Virtual84
+// @symbol _ZN11dScMgBase_c11InitEnginesEv
+/* dScMgBase_c::InitEngines - slot 33.  The ROM names nothing here: InitEngines
    is the repo's no-name spelling after the +0x84 vtable offset, as fBase_c
    uses for Virtual34 and Virtual38.  See the slot-33 block in
    include/dScMgBase_c.h.
@@ -3574,7 +3564,7 @@ extern int data_0208ee44;
 }
 }
 
-void dScMgBase_c::Virtual84()
+void dScMgBase_c::InitEngines()
 { using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
     char *obj = (char *)this;
 
@@ -3622,9 +3612,9 @@ void dScMgBase_c::Virtual84()
 
 namespace s20b27f4 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c9Virtual80Ev
+// @symbol _ZN11dScMgBase_c16InitMainScreenBgEv
 // recovered name: dScMgBase_c_AfterClsn  -- WRONG, see below
-/* dScMgBase_c::Virtual80 - slot 32.
+/* dScMgBase_c::InitMainScreenBg - slot 32.
 
    The `recovered name:` line above is kept visible because it is wrong.  This
    time the borrowed name is a REAL ROM name -- _ZN16dPathLiftActor_c9AfterClsnEi,
@@ -3648,7 +3638,7 @@ extern unsigned char data_0209d45c[];
 }
 }
 
-void dScMgBase_c::Virtual80()
+void dScMgBase_c::InitMainScreenBg()
 { using s20b27f4::GetGameLanguage; using s20b27f4::LoadCompressedFileAt; using s20b27f4::data_0209d45c;
     int f;
     *(volatile unsigned short *)0x400000a = *(volatile unsigned short *)0x400000a & ~3;
@@ -3663,9 +3653,9 @@ void dScMgBase_c::Virtual80()
 
 namespace s20b2880 {
 extern "C" {
-// @symbol _ZN11dScMgBase_c9Virtual7CEv
+// @symbol _ZN11dScMgBase_c15InitSubScreenBgEv
 // recovered name: dScMgBase_c_Kill  -- WRONG, see below
-/* dScMgBase_c::Virtual7C - slot 31.
+/* dScMgBase_c::InitSubScreenBg - slot 31.
 
    The `recovered name:` line above is kept visible because it is wrong.  The
    ROM names nothing here: dScMgBase_c is a SCENE (fBase_c -> dBase_c ->
@@ -3689,7 +3679,7 @@ extern unsigned char data_0209d454[];
 }
 }
 
-int dScMgBase_c::Virtual7C()
+int dScMgBase_c::InitSubScreenBg()
 { using s20b2880::GetGameLanguage; using s20b2880::LoadCompressedFileAt; using s20b2880::_ZN3G2S12GetBG1ScrPtrEv; using s20b2880::_ZN3G2S13GetBG1CharPtrEv; using s20b2880::data_0209d454;
     int f;
     *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x10;
@@ -3726,51 +3716,49 @@ void func_ov004_020b2980(void) { _ZN2GX15DisableAllBanksEv(); }
 }
 }
 
-// @symbol _ZN11dScMgBase_c15OnGroundPoundedEv
-// recovered name: dScMgBase_c_OnGroundPounded
-/* dScMgBase_c::OnGroundPounded - slot 21. */
-void dScMgBase_c::OnGroundPounded()
+// @symbol _ZN11dScMgBase_c13OnHostAnimCueEv
+/* dScMgBase_c::OnHostAnimCue - slot 21. */
+void dScMgBase_c::OnHostAnimCue()
 {
 }
 
-// @symbol _ZN11dScMgBase_c9Virtual50Ev
-/* Minigame slot 20; Virtual50 is a placeholder, not an original name.
-   The reconstructed void contract is documented in dScMgBase_c.h. */
+// @symbol _ZN11dScMgBase_c11OnNewRecordEv
+/* Slot 20: the shared results state calls it once while it shows a new
+   record (dMgState_c, state 17). See dScMgBase_c.h. */
 /* The base does nothing: the ROM body is a single `bx lr`. */
-void dScMgBase_c::Virtual50()
+void dScMgBase_c::OnNewRecord()
 {
 }
 
-// @symbol _ZN11dScMgBase_c13OnTurnIntoEggEi
-// recovered name: dScMgBase_c_OnTurnIntoEgg
-/* dScMgBase_c::OnTurnIntoEgg - vtable slot 19. Both the name and the signature are evidenced here: this
+// @symbol _ZN11dScMgBase_c11CanEndStateEi
+/* dScMgBase_c::CanEndState - vtable slot 19. Both the name and the signature are evidenced here: this
    body carries its own `recovered name:` above, and dScMgJump_c and
    dScMgBSC_c carry theirs. The parameter is an int, not dActor_c.h:132's
    `Player &` -- see include/dScMgBase_c.h. The base ignores the mode. */
-int dScMgBase_c::OnTurnIntoEgg(int /* mode */)
+int dScMgBase_c::CanEndState(int /* mode */)
 {
     return 1;
 }
 
-// @symbol _ZN11dScMgBase_c13OnYoshiTryEatEi
+// @symbol _ZN11dScMgBase_c10StartRoundEi
 /* vtable slot 18. The name is NOT a `recovered name:` -- this body carried
    none. It comes from include/dActor_c.h:131 and from ov006/symbols.txt,
    which already named dScMgCoin_c's override of this slot. The signature,
    unlike the name, is measured; see include/dScMgBase_c.h.
    The base ignores both arguments -- every descendant that cares reads
    them. */
-void dScMgBase_c::OnYoshiTryEat(int arg)
+void dScMgBase_c::StartRound(int arg)
 {
 }
 
 // @symbol func_ov004_020b29a0
 namespace s20b29a0 {
-/* Calls the scene's OnYoshiTryEat (slot 18). Its callers, all in dMgState_c,
+/* Calls the scene's StartRound (slot 18). Its callers, all in dMgState_c,
    pass the scene singleton and its mState, declaring the state as a
    void *, so the parameter stays one here. */
 extern "C" void func_ov004_020b29a0(dScMgBase_c *scene, void *state)
 {
-    scene->OnYoshiTryEat((int)state);
+    scene->StartRound((int)state);
 }
 }
 

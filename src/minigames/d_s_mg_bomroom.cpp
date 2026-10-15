@@ -12,7 +12,7 @@
  * 0x020d5a54..0x020d95a4. It opens with the destructor, which the header
  * declares first and out of line, so this file is the key function and
  * emits the vtable and the RTTI chain. Then come the unnamed helpers and
- * round states, OnYoshiTryEat, Render, Behavior and InitResources, and it
+ * round states, StartRound, Render, Behavior and InitResources, and it
  * closes with the registry factory dScMgBomroom_c_classInit. Functions run
  * in ROM order under
  * `#pragma defer_codegen off`; do not reorder. cstd::atan2 takes Fix12 by
@@ -2284,11 +2284,11 @@ void dScMgBomroom_c::func_ov006_020d907c() {
 }
 
 
-/* Slot 18 override of dScMgBase_c::OnYoshiTryEat(int); the signature
+/* Slot 18 override of dScMgBase_c::StartRound(int); the signature
  * repeats the base declaration exactly, or mwcc appends a slot instead of
  * overriding. */
-// @symbol _ZN14dScMgBomroom_c13OnYoshiTryEatEi
-void dScMgBomroom_c::OnYoshiTryEat(int /* arg */)
+// @symbol _ZN14dScMgBomroom_c10StartRoundEi
+void dScMgBomroom_c::StartRound(int /* arg */)
 {
     unsigned char *c = (unsigned char *)this;
 

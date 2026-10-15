@@ -190,10 +190,10 @@ struct dScMgCard_c : dScMgSingle3DBase_c {
     virtual s32 CleanupResources();  /* slot 3 -- ov006 0x020da994 */
     virtual s32 Behavior();          /* slot 6 -- ov006 0x020dabec */
     virtual s32 Render();             /* slot 9 -- ov006 0x020da9c4 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
 
-    virtual void OnGroundPounded();   /* slot 21 -- ov006 0x020db6ec */
+    virtual void OnHostAnimCue();   /* slot 21 -- ov006 0x020db6ec */
 
     /* --- the round state machine and the dMeter_c column ---
        UpdateState is the one long switch on mState that Behavior drives

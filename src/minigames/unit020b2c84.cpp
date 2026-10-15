@@ -105,7 +105,7 @@ struct Entry { int id; int ptr; };
 struct EntryTable { Entry e[29]; };
 
 /* The minigame scene at data_ov004_020beb68, seen through the one virtual
-   used here. Slot 26 is dScMgBase_c.h's OnHitByCannonBlastedChar; its scene
+   used here. Slot 26 is dScMgBase_c.h's GetDisplayMode; its scene
    bodies return 0 (dScMgBase_c), 1 (dScMgSingle3DBase_c) or 2
    (dScMgD3DBase_c), and this file only compares the result with 2. The
    view keeps the name Obj, the spelling config/decl-agreement-baseline.json
@@ -118,7 +118,7 @@ struct Obj {
     virtual int v16(); virtual int v17(); virtual int v18(); virtual int v19();
     virtual int v20(); virtual int v21(); virtual int v22(); virtual int v23();
     virtual int v24(); virtual int v25();
-    virtual int OnHitByCannonBlastedChar();  /* slot 26 */
+    virtual int GetDisplayMode();  /* slot 26 */
 };
 
 /* One of the three 0x134-byte records at data_ov004_020bf648: a graphic
@@ -388,7 +388,7 @@ extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int scr
 {
     int a, b;
 
-    if (data_ov004_020beb68->OnHitByCannonBlastedChar() == 2) {
+    if (data_ov004_020beb68->GetDisplayMode() == 2) {
         a = 0x6400000;
         b = 0;
     } else {

@@ -1368,7 +1368,7 @@ void dScMgPanel_c::func_ov006_02106080(int index)
 // @symbol _ZN12dScMgPanel_c19func_ov006_02106168Ev
 extern "C" {
 /* Layout pass: reads the panel layout (x and y from the layout tables,
-   face from the face table picked by Virtual8C), draws mFlips random picks
+   face from the face table picked by IsAltVariant), draws mFlips random picks
    through func_ov006_02106080, and retries the whole thing until
    func_ov006_02106664 accepts it, at least one panel face differs from its
    copy, and no two picks are the same panel.
@@ -1406,7 +1406,7 @@ void dScMgPanel_c::func_ov006_02106168()
             mY[i] = data_ov006_0213dd58[m][i] << 12;
             pe = data_ov006_0213e070;
             pd = data_ov006_0213ded0;
-            if (Virtual8C()) {
+            if (IsAltVariant()) {
                 mFace[i] = pd[idx4][i];
                 mGoal[i] = pd[idx4][i];
             } else {
@@ -2054,12 +2054,12 @@ extern void  func_ov004_020b1e34(void *a, int b, int c, int d);
 
 }  /* extern "C" */
 
-// @symbol _ZN12dScMgPanel_c13OnYoshiTryEatEi
-/* Vtable slot 18, an override of dScMgBase_c::OnYoshiTryEat(int).  The
+// @symbol _ZN12dScMgPanel_c10StartRoundEi
+/* Vtable slot 18, an override of dScMgBase_c::StartRound(int).  The
    signature has to repeat the base declaration exactly or mwcc appends a new
    slot instead of overriding it. */
 
-void dScMgPanel_c::OnYoshiTryEat(int flag)
+void dScMgPanel_c::StartRound(int flag)
 {
     extern u8 data_0209d454;
     char *self = (char *)this;

@@ -2326,8 +2326,8 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
 }
 
 
-// @symbol _ZN15dScMgHanachan_c13OnYoshiTryEatEi
-void dScMgHanachan_c::OnYoshiTryEat(int state)
+// @symbol _ZN15dScMgHanachan_c10StartRoundEi
+void dScMgHanachan_c::StartRound(int state)
 {
     char *raw = (char *)this;
 

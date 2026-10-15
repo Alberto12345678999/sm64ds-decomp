@@ -242,8 +242,8 @@ extern int func_ov006_02122c90(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054efc(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054ea8, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054ea8(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054d88(void); */
-/* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for _ZN18dScMgTrampoline2_c11OnAttacked2Ev, NOT applied: int func_02054d88(void); */
-/* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN18dScMgTrampoline2_c11OnAttacked2Ev, NOT applied: void MultiStore16(u16 val, char* dst, int nbytes); */
+/* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev, NOT applied: int func_02054d88(void); */
+/* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev, NOT applied: void MultiStore16(u16 val, char* dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov006_021237c8, NOT applied: extern int RandomIntInternal(void* seed); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02123b24, NOT applied: extern void MultiStore16(unsigned short a, int b, int c); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_02123bf4, NOT applied: extern int _Z14ApproachLinearRiii(int &v, int a, int b); */
@@ -257,9 +257,9 @@ extern int func_ov006_02122c90(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02124088, NOT applied: extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov004_020ae5c4, from the legacy file for func_ov006_02124088, NOT applied: extern int func_ov004_020ae5c4(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e048, from the legacy file for func_ov006_02124228, NOT applied: extern short data_ov006_0212e048; */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c13OnTurnIntoEggEi, NOT applied: extern int GetGameLanguage(void); */
-/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c13OnYoshiTryEatEi, NOT applied: extern "C" s32 GetGameLanguage(void); */
-/* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN18dScMgTrampoline2_c13OnYoshiTryEatEi, NOT applied: extern "C" void MultiStore16(u16 val, char *dst, int nbytes); */
+/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
+/* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" s32 GetGameLanguage(void); */
+/* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN4cstd4fdivEii, from the legacy file for _ZN18dScMgTrampoline2_c13InitResourcesEv, NOT applied: extern s32 _ZN4cstd4fdivEii(s32 a, s32 b); */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov006_021245a8, NOT applied: extern s32 GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_021245a8, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
@@ -413,7 +413,7 @@ void dScMgTrampoline2_c::InitDisplay()
 
 // @symbol _ZN18dScMgTrampoline2_c13InitResourcesEv
 /* Vtable slot 0 (the name is inferred): load the screens, set up both
- * cameras and the object pools, then start a round through OnYoshiTryEat. */
+ * cameras and the object pools, then start a round through StartRound. */
 s32 dScMgTrampoline2_c::InitResources()
 {
     char *raw = (char *)this;
@@ -451,13 +451,13 @@ s32 dScMgTrampoline2_c::InitResources()
     data_ov006_021421b4 = 0;
     func_ov006_02122c04((int)(raw + 0x7164), 0x14);
     func_ov004_020b04d0(0x10);
-    OnYoshiTryEat(-1);
+    StartRound(-1);
     return 1;
 }
 
-// @symbol _ZN18dScMgTrampoline2_c13OnYoshiTryEatEi
+// @symbol _ZN18dScMgTrampoline2_c10StartRoundEi
 /* Vtable slot 18: reset the round. */
-void dScMgTrampoline2_c::OnYoshiTryEat(int /* arg */)
+void dScMgTrampoline2_c::StartRound(int /* arg */)
 {
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4000050, 1, 0x2e, 0x10, 0x10);
 
@@ -497,9 +497,9 @@ void dScMgTrampoline2_c::OnYoshiTryEat(int /* arg */)
     BeginIntro();
 }
 
-// @symbol _ZN18dScMgTrampoline2_c13OnTurnIntoEggEi
-/* OnTurnIntoEgg: the vtable slot is this class's own; the name is inferred. */
-int dScMgTrampoline2_c::OnTurnIntoEgg(int /* mode */)
+// @symbol _ZN18dScMgTrampoline2_c11CanEndStateEi
+/* CanEndState: the vtable slot is this class's own; the name is inferred. */
+int dScMgTrampoline2_c::CanEndState(int /* mode */)
 {
     func_ov006_020c8a9c(0, data_ov006_0213fc20[GetGameLanguage()]);
     return 1;
@@ -1027,11 +1027,11 @@ s32 dScMgTrampoline2_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN18dScMgTrampoline2_c8OnKickedEv
-/* OnKicked: the vtable slot is this class's own; the name is inferred. */
-int dScMgTrampoline2_c::OnKicked()
+// @symbol _ZN18dScMgTrampoline2_c16OnGraphCallback2Ev
+/* OnGraphCallback2: the vtable slot is this class's own; the name is inferred. */
+int dScMgTrampoline2_c::OnGraphCallback2()
 {
-    if (!dScMgD3DBase_c::OnKicked()) return 0;
+    if (!dScMgD3DBase_c::OnGraphCallback2()) return 0;
     if (mMenuOpen == 0) {
         if (unk_4664 == 0) {
             data_0209d45c = data_0209d45c & ~8;
@@ -1046,21 +1046,21 @@ int dScMgTrampoline2_c::OnKicked()
     return 1;
 }
 
-// @symbol _ZN18dScMgTrampoline2_c8OnPushedEv
-/* OnPushed: the vtable slot is this class's own; the name is inferred. */
-int dScMgTrampoline2_c::OnPushed()
+// @symbol _ZN18dScMgTrampoline2_c16OnGraphCallback3Ev
+/* OnGraphCallback3: the vtable slot is this class's own; the name is inferred. */
+int dScMgTrampoline2_c::OnGraphCallback3()
 {
-    return dScMgD3DBase_c::OnPushed() != 0;
+    return dScMgD3DBase_c::OnGraphCallback3() != 0;
 }
 
-// @symbol _ZN18dScMgTrampoline2_c11OnAttacked2Ev
-/* OnAttacked2: the vtable slot is this class's own; the name is inferred. */
-int dScMgTrampoline2_c::OnAttacked2()
+// @symbol _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev
+/* OnGraphCallback0: the vtable slot is this class's own; the name is inferred. */
+int dScMgTrampoline2_c::OnGraphCallback0()
 {
 
     u16 buf[5];
 
-    if (!dScMgBase_c::OnAttacked2())
+    if (!dScMgBase_c::OnGraphCallback0())
         return 0;
 
     {
@@ -1156,11 +1156,11 @@ void dScMgTrampoline2_c::InitBrush(int layer)
     GX::LoadBGPltt(data_ov006_0212f1ac, 0xe0, 0x20);
 }
 
-// @symbol _ZN18dScMgTrampoline2_c9Virtual88Eiiii
+// @symbol _ZN18dScMgTrampoline2_c11PaintSquareEiiii
 /* Vtable slot 34 (name not evidenced): plot an n by n square of 4-bit pixels
  * into the current touch-screen layer. The same body as dScMgTrampoline_c's,
  * with its own scratch buffer. */
-void dScMgTrampoline2_c::Virtual88(int x_base, int y, int val, int n)
+void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n)
 {
     void *obj = (void *)this;
 

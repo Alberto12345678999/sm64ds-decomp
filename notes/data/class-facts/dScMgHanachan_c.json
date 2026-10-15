@@ -36,7 +36,7 @@
       { "slot": 9,  "target": "0x020ecee4", "symbol": "_ZN15dScMgHanachan_c6RenderEv" },
       { "slot": 16, "target": "0x020ea280", "symbol": "_ZN15dScMgHanachan_cD1Ev" },
       { "slot": 17, "target": "0x020ea2c8", "symbol": "_ZN15dScMgHanachan_cD0Ev" },
-      { "slot": 18, "target": "0x020eda48", "symbol": "_ZN15dScMgHanachan_c13OnYoshiTryEatEi" }
+      { "slot": 18, "target": "0x020eda48", "symbol": "_ZN15dScMgHanachan_c10StartRoundEi" }
     ]
   },
   "destructors": {

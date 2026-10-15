@@ -337,7 +337,7 @@ s32 dScMgRoulette_c::InitResources()
     unk_0ac = unk_0a8;
     func_ov004_020b682c();
     func_ov006_02107b70((char *)mMeter);
-    OnYoshiTryEat(-1);
+    StartRound(-1);
     return 1;
 }
 
@@ -661,9 +661,9 @@ s32 dScMgRoulette_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN15dScMgRoulette_c13OnTurnIntoEggEi
+// @symbol _ZN15dScMgRoulette_c11CanEndStateEi
 /* Runs the end of the round, phases 5 to 9. Returns 1 when it is done. */
-int dScMgRoulette_c::OnTurnIntoEgg(int /* mode */)
+int dScMgRoulette_c::CanEndState(int /* mode */)
 {
 
     switch (mPhase) {
@@ -699,11 +699,11 @@ int dScMgRoulette_c::OnTurnIntoEgg(int /* mode */)
     return 0;
 }
 
-// @symbol _ZN15dScMgRoulette_c13OnYoshiTryEatEi
+// @symbol _ZN15dScMgRoulette_c10StartRoundEi
 /* Resets the round: the table, the racers, the score and the slider, with
    one racer per bonus the scene holds, up to five. InitResources calls it
    with -1. */
-void dScMgRoulette_c::OnYoshiTryEat(int /* arg */)
+void dScMgRoulette_c::StartRound(int /* arg */)
 {
 
     int i;

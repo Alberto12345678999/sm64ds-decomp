@@ -66,21 +66,21 @@
       "ordinal": 3
     },
     {
-      "symbol": "_ZN12dScMgSlot3_c25OnAimedAtWithEggReturnVecEv",
+      "symbol": "_ZN12dScMgSlot3_c21RestoreScreenFromMenuEv",
       "address": "0x0210aa10",
       "size": "0x0000002c",
       "legacy_source": "src/_ZN12dScMgSlot3_c25OnAimedAtWithEggReturnVecEv.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN12dScMgSlot3_c16OnAimedAtWithEggEv",
+      "symbol": "_ZN12dScMgSlot3_c17SaveScreenForMenuEv",
       "address": "0x0210aa3c",
       "size": "0x00000024",
       "legacy_source": "src/_ZN12dScMgSlot3_c16OnAimedAtWithEggEv.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN12dScMgSlot3_c9Virtual80Ev",
+      "symbol": "_ZN12dScMgSlot3_c16InitMainScreenBgEv",
       "address": "0x0210aa60",
       "size": "0x000000a8",
       "legacy_source": "src/_ZN12dScMgSlot3_c9Virtual80Ev.cpp",
@@ -143,7 +143,7 @@
       "ordinal": 14
     },
     {
-      "symbol": "_ZN12dScMgSlot3_c13OnYoshiTryEatEi",
+      "symbol": "_ZN12dScMgSlot3_c10StartRoundEi",
       "address": "0x0210b314",
       "size": "0x00000334",
       "legacy_source": "src/_ZN12dScMgSlot3_c13OnYoshiTryEatEi.cpp",
@@ -269,14 +269,14 @@
       "ordinal": 32
     },
     {
-      "symbol": "_ZN12dScMgSlot1_c19OnHitFromUnderneathEv",
+      "symbol": "_ZN12dScMgSlot1_c9CloseMenuEv",
       "address": "0x0210c4b8",
       "size": "0x00000024",
       "legacy_source": "src/actors/dScMgSlot1_c.cpp",
       "ordinal": 33
     },
     {
-      "symbol": "_ZN12dScMgSlot1_c15OnHitByMegaCharEv",
+      "symbol": "_ZN12dScMgSlot1_c8OpenMenuEv",
       "address": "0x0210c4dc",
       "size": "0x00000024",
       "legacy_source": "src/actors/dScMgSlot1_c.cpp",
@@ -297,7 +297,7 @@
       "ordinal": 36
     },
     {
-      "symbol": "_ZN12dScMgSlot1_c13OnYoshiTryEatEi",
+      "symbol": "_ZN12dScMgSlot1_c10StartRoundEi",
       "address": "0x0210c674",
       "size": "0x0000004c",
       "legacy_source": "src/actors/dScMgSlot1_c.cpp",

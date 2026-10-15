@@ -68,7 +68,7 @@ fBase_c > dBase_c > dScene_c
 
 **What each game implements.** Every game overrides the same core set [ROM: vtable walk]:
 - `InitResources`, `Behavior`, `Render` and its destructors
-- slot 18, which games call with -1, 3, 4 or 5, for example `OnYoshiTryEat(-1)`
+- slot 18, which games call with -1, 3, 4 or 5, for example `StartRound(-1)`
   - [GUESS] It resets or starts a round.
   - The name is a placeholder; see Names below. The base's slot-18 body is empty.
 
@@ -156,8 +156,7 @@ fBase_c > dBase_c > dScene_c
   - profile strings, scene IDs and class sizes
   - which vtable slots each class overrides
 - **Placeholders:**
-  - `dScMgBase_c` slots 18, 19 and 21-30 borrow `dActor_c` method names by slot index only, so `OnYoshiTryEat` does not mean Yoshi. See [notes/dScMgBase_c-slots-18-35.md](../dScMgBase_c-slots-18-35.md).
-  - Slots 20 and 31-35 are named after their vtable offset, for example `Virtual7C`.
+  - `dScMgBase_c` slots 18-35 carry names coined from their bodies and callers (2026-10-14). Slots 18-30 used to carry `dActor_c` method names borrowed by slot index only (`OnYoshiTryEat`, `OnAimedAtWithEgg`, ...), and slots 20 and 31-35 were named after their vtable offset (`Virtual50`, `Virtual7C`, ...). The old-to-new table and each name's confidence are in [names.md](names.md).
 - **Coined or inferred in this tree [CODE]:**
   - `dMgState_c`, the three shared-state block types, and many method and field names.
   - The markers are not uniform yet: some say "coined", some "inferred" or "reconstructed", and the `dScMgBase_c.h` field names carry none.

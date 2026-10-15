@@ -128,7 +128,7 @@ struct dScMgCoin_Bouncer {
 typedef char dScMgCoin_Bouncer_size_must_be_0x1c[sizeof(dScMgCoin_Bouncer) == 0x1c ? 1 : -1];
 #endif
 
-/* dScMgCoin_c : dScMgBase_c leaf. Slot 18 is OnYoshiTryEat; the old
+/* dScMgCoin_c : dScMgBase_c leaf. Slot 18 is StartRound; the old
    mislabel sat on D0. See dScMgBase_c.h. */
 struct dScMgCoin_c : dScMgBase_c {
     /* Defined inline in src/minigames/d_s_mg_coin.cpp, above the factory: its
@@ -138,7 +138,7 @@ struct dScMgCoin_c : dScMgBase_c {
     virtual s32 InitResources();             /* slot 0 */
     virtual s32 Behavior();                  /* slot 6 */
     virtual s32 Render();                    /* slot 9 */
-    virtual void OnYoshiTryEat(int arg);     /* slot 18 */
+    virtual void StartRound(int arg);     /* slot 18 */
 
     /* The scene's helpers and the per-state handlers reached through the
        .bss PMF tables (data_ov006_021417b0 / 021417c8 / 021417e8 /

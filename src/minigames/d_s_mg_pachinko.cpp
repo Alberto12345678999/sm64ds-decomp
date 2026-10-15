@@ -2631,17 +2631,17 @@ void func_ov006_020feba8(char *self)
 
 }  /* extern "C" */
 
-// @symbol _ZN15dScMgPachinko_c13OnYoshiTryEatEi
+// @symbol _ZN15dScMgPachinko_c10StartRoundEi
 /* Vtable slot 18, an override of
-   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   dScMgBase_c::StartRound(int). The signature must repeat the base
    declaration exactly, or mwcc appends a slot instead of overriding. */
-void dScMgPachinko_c::OnYoshiTryEat(int n)
+void dScMgPachinko_c::StartRound(int n)
 {
     /* The score increment reads unk_0bc through a const view of `this`.
        Without it mwcc CSEs the +0xbc field address into its own register
        (add r2,r4,#0xbc / ldr [r2] / str [r2]) and the function grows a
        word; the cartridge re-issues ldr r1,[r4,#0xbc] / str r1,[r4,#0xbc].
-       Same lever as dScMgPachinko2_c::OnYoshiTryEat. */
+       Same lever as dScMgPachinko2_c::StartRound. */
     const dScMgPachinko_c *ro = this;
 
     unk_5c10 = 0;

@@ -61,10 +61,10 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
        class's key function; the production TU owns the compiler-emitted
        _ZTV12dScMgSlot3_c. */
     s32 InitResources();   /* slot  0 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
-    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
-    virtual void Virtual80();                          /* slot 32 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  SaveScreenForMenu();                   /* slot 29 */
+    virtual void RestoreScreenFromMenu();          /* slot 30 */
+    virtual void InitMainScreenBg();                          /* slot 32 */
     s32 Behavior();        /* slot  6 */
     s32 Render();          /* slot  9 */
 

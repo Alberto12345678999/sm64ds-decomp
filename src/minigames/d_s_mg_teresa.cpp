@@ -13,9 +13,8 @@
  * _ZTV13dScMgTeresa_c 0x0213fa0c.
  *
  * Nothing in the ROM names the helpers, so the members keep their
- * func_ov006_ names. InitResources, Behavior, Render and OnYoshiTryEat were
- * named from their vtable slots; Virtual50 and Virtual88 are placeholders
- * (see dScMgBase_c.h).
+ * func_ov006_ names. InitResources, Behavior, Render and StartRound were
+ * named from their vtable slots (see dScMgBase_c.h).
  *
  * Functions run in ROM order, lowest address first, because of
  * `#pragma defer_codegen off` below. Do not reorder, and do not drop that
@@ -2223,8 +2222,8 @@ void dScMgTeresa_c::func_ov006_021200cc()
 
 #pragma push
 #pragma opt_loop_invariants off
-// @symbol _ZN13dScMgTeresa_c9Virtual88Eiiii
-/* dScMgTeresa_c::Virtual88 - slot 34, a STIPPLED brush.
+// @symbol _ZN13dScMgTeresa_c11PaintSquareEiiii
+/* dScMgTeresa_c::PaintSquare - slot 34, a STIPPLED brush.
 
    Same square walk and the same 4bpp nibble arithmetic as dScMgBase_c's, with
    one difference that changes what it is for: each cell is painted only if
@@ -2235,7 +2234,7 @@ void dScMgTeresa_c::func_ov006_021200cc()
    BG0 -- which is why `this` arrives and is never read.  The comment in
    include/dScMgTeresa_c.h predicted both of these before the slot was
    declared. */
-void dScMgTeresa_c::Virtual88(int cx, int cy, int val, int n)
+void dScMgTeresa_c::PaintSquare(int cx, int cy, int val, int n)
 {
     int half;
     int x0;
@@ -2273,21 +2272,20 @@ void dScMgTeresa_c::Virtual88(int cx, int cy, int val, int n)
 #pragma pop
 
 
-// @symbol _ZN13dScMgTeresa_c9Virtual50Ev
-/* Minigame slot 20; Virtual50 is a placeholder, not an original name. The
-   reconstructed void contract is documented in dScMgBase_c.h. A thunk:
+// @symbol _ZN13dScMgTeresa_c11OnNewRecordEv
+/* Slot 20, OnNewRecord (see dScMgBase_c.h). A thunk:
    FreeGfxSlotsById(8). */
-void dScMgTeresa_c::Virtual50()
+void dScMgTeresa_c::OnNewRecord()
 {
     FreeGfxSlotsById(8);
 }
 
 
-// @symbol _ZN13dScMgTeresa_c13OnYoshiTryEatEi
-/* Vtable slot 18, an override of dScMgBase_c::OnYoshiTryEat(int). The
+// @symbol _ZN13dScMgTeresa_c10StartRoundEi
+/* Vtable slot 18, an override of dScMgBase_c::StartRound(int). The
    signature must repeat the base declaration exactly, or mwcc appends a slot
    instead of overriding. */
-void dScMgTeresa_c::OnYoshiTryEat(int reset)
+void dScMgTeresa_c::StartRound(int reset)
 {
     char *self = (char *)this;
 
@@ -2296,7 +2294,7 @@ void dScMgTeresa_c::OnYoshiTryEat(int reset)
         /* `const` on the read is load-bearing: without it mwcc CSEs the +0xbc
            field address into its own register (add r2,r4,#0xbc / ldr [r2] /
            str [r2]) and the function grows a word; the cartridge re-issues
-           ldr r1,[r4,#0xbc]. Same lever as dScMgHanachan_c::OnYoshiTryEat. */
+           ldr r1,[r4,#0xbc]. Same lever as dScMgHanachan_c::StartRound. */
         *(unsigned int*)(self + 0xbc) = *(const unsigned int*)(self + 0xbc) + 1;
         if (*(unsigned int*)(self + 0xbc) > 0x270e)
             *(unsigned int*)(self + 0xbc) = 0x270e;

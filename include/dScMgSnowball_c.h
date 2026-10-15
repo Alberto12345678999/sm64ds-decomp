@@ -53,7 +53,7 @@
  *
  * mMenuOpen, which the old auto-generated header declared, is dScMgBase_c's
  * own and is already declared there; it is dropped from this file, not
- * lost. OnKicked, in src/minigames/d_s_mg_snowball.cpp, reads it through this class
+ * lost. OnGraphCallback2, in src/minigames/d_s_mg_snowball.cpp, reads it through this class
  * and keeps working because it inherits it.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
@@ -101,10 +101,10 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     virtual s32 CleanupResources();  /* slot 3 -- ov006 0x021291f8 */
     virtual s32 Behavior();          /* slot 6 -- ov006 0x021283a4 */
     virtual s32 Render();            /* slot 9 -- ov006 0x02127d10 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnAttacked2();                        /* slot 23 */
-    virtual int  OnKicked();                           /* slot 24 */
-    virtual int  OnPushed();                           /* slot 25 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  OnGraphCallback0();                        /* slot 23 */
+    virtual int  OnGraphCallback2();                           /* slot 24 */
+    virtual int  OnGraphCallback3();                           /* slot 25 */
 
     /* scene helpers */
     void func_ov006_02125804();           /* render live mArray3 chunks */

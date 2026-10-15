@@ -56,7 +56,7 @@ struct dScMgJump2_c : dScMgD3DBase_c {
        the same body, and it is still not inlined into callers because a
        virtual destructor is always reached through the vtable.
        It does give up the key function: with this inline, the first virtual
-       DECLARED but not defined here is OnYoshiTryEat below, which lives in
+       DECLARED but not defined here is StartRound below, which lives in
        src/minigames/d_s_mg_jump2.cpp, so _ZTV12dScMgJump2_c is still emitted
        by that one translation unit and by no other. */
     virtual ~dScMgJump2_c() {
@@ -64,8 +64,8 @@ struct dScMgJump2_c : dScMgD3DBase_c {
         __cxa_vec_cleanup(mArray3, 0x10, 0x24, func_ov006_020eed64);
         __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))func_ov006_020c6f3c);
     }
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
 
     /* 0x5004 -- the state callback, a pointer-to-member of this class, which
        is mwccarm's eight bytes exactly. Behavior calls through it every frame:

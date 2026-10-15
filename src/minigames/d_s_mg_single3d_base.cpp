@@ -73,12 +73,12 @@ extern int data_0208ee44;
 extern void **data_0209d4a8;
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c9Virtual84Ev
+// @symbol _ZN19dScMgSingle3DBase_c11InitEnginesEv
 /* Slot 33 brings up both graphics engines, assigns VRAM banks and loads
  * the language's OBJ characters and the OBJ palettes into both engines
  * before publishing this scene, then sets lights 0 and 1 to white. All
  * thirteen children inherit this override. */
-void dScMgSingle3DBase_c::Virtual84()
+void dScMgSingle3DBase_c::InitEngines()
 {
     void *fileData;
 
@@ -169,9 +169,9 @@ void dScMgSingle3DBase_c::AfterCleanupResources(u32 vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-// @symbol _ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv
+// @symbol _ZN19dScMgSingle3DBase_c14GetDisplayModeEv
 /* Slot 26 identifies this branch of minigame scenes with the value 1. */
-int dScMgSingle3DBase_c::OnHitByCannonBlastedChar()
+int dScMgSingle3DBase_c::GetDisplayMode()
 {
     return 1;
 }

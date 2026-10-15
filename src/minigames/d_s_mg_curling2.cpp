@@ -1724,10 +1724,10 @@ void dScMgCurling2_c::ResetGame()
 }
 
 
-// @symbol _ZN15dScMgCurling2_c13OnYoshiTryEatEi
+// @symbol _ZN15dScMgCurling2_c10StartRoundEi
 /* Slot 18. Yoshi ate the puck: restart the round and re-arm the screen
  * blend and the frame counter. */
-void dScMgCurling2_c::OnYoshiTryEat(int /* arg */)
+void dScMgCurling2_c::StartRound(int /* arg */)
 {
     mState = 0;
     ResetGame();

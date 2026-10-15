@@ -48,7 +48,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "_ZN12dScMgAmida_c9Virtual8CEv",
+      "symbol": "_ZN12dScMgAmida_c12IsAltVariantEv",
       "address": "0x020d1170",
       "size": "0x00000018",
       "legacy_source": "src/_ZN12dScMgAmida_c9Virtual8CEv.cpp",
@@ -62,7 +62,7 @@
       "ordinal": 4
     },
     {
-      "symbol": "_ZN12dScMgAmida_c9Virtual7CEv",
+      "symbol": "_ZN12dScMgAmida_c15InitSubScreenBgEv",
       "address": "0x020d11a0",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN12dScMgAmida_c9Virtual7CEv.cpp",
@@ -83,7 +83,7 @@
       "ordinal": 7
     },
     {
-      "symbol": "_ZN12dScMgAmida_c9Virtual88Eiiii",
+      "symbol": "_ZN12dScMgAmida_c11PaintSquareEiiii",
       "address": "0x020d14c0",
       "size": "0x00000498",
       "legacy_source": "src/_ZN12dScMgAmida_c9Virtual88Eiiii.cpp",
@@ -188,7 +188,7 @@
       "ordinal": 22
     },
     {
-      "symbol": "_ZN12dScMgAmida_c13OnYoshiTryEatEi",
+      "symbol": "_ZN12dScMgAmida_c10StartRoundEi",
       "address": "0x020d52f0",
       "size": "0x00000094",
       "legacy_source": "src/_ZN12dScMgAmida_c13OnYoshiTryEatEi.cpp",

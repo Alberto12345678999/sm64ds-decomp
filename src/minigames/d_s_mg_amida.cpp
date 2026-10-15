@@ -227,12 +227,12 @@ extern "C" void func_ov006_020d116c(void)
 {
 }
 
-// @symbol _ZN12dScMgAmida_c9Virtual8CEv
+// @symbol _ZN12dScMgAmida_c12IsAltVariantEv
 /* Slot 35, the family's only override of it. The base asks whether the low
    byte of fBase_c::param1 is nonzero; this asks whether it is exactly 1.
    Nothing in this class calls it; the callers are in dScMgCoin_c,
    dScMgPanel_c, dScMgSound_c and dScMgSnowball_c. */
-int dScMgAmida_c::Virtual8C()
+int dScMgAmida_c::IsAltVariant()
 {
     return (param1 & 0xff) == 1;
 }
@@ -246,11 +246,11 @@ int dScMgAmida_c::Unk36()
     return (((int)param1) & 0xff) == 2;
 }
 
-// @symbol _ZN12dScMgAmida_c9Virtual7CEv
+// @symbol _ZN12dScMgAmida_c15InitSubScreenBgEv
 /* Slot 31: the sub screen's BG1 set up for this game. Same shape as the
    base's, with 4 for the BG1CNT base bits and this class's own language
    table. Not a Kill; see the slot-31 block in include/dScMgBase_c.h. */
-int dScMgAmida_c::Virtual7C()
+int dScMgAmida_c::InitSubScreenBg()
 {
     volatile unsigned short *reg = (volatile unsigned short*)0x400100a;
     int id;
@@ -383,7 +383,7 @@ void dScMgAmida_c::ClearStroke()
     mLineStartSet = 0;
 }
 
-// @symbol _ZN12dScMgAmida_c9Virtual88Eiiii
+// @symbol _ZN12dScMgAmida_c11PaintSquareEiiii
 /* Slot 34, and the only override in the family that
    CALLS the base rather than replacing it.
 
@@ -399,7 +399,7 @@ void dScMgAmida_c::ClearStroke()
 
    mPrev is the previous point, which is how it knows a step is diagonal at
    all. */
-void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
+void dScMgAmida_c::PaintSquare(int y, int x, int arg3, int /* size */)
 {
 
     u8 f705;
@@ -455,7 +455,7 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
     }
 
     if (mLineCommit == 1) {
-        dScMgBase_c::Virtual88(y, x, arg3, 4);
+        dScMgBase_c::PaintSquare(y, x, arg3, 4);
         if (y < 0) return;
         if (y >= 0x100) return;
         if (x < -0xc0) return;
@@ -466,21 +466,21 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
 
     f705 = mLineEndSet;
     if (f705 == 1) {
-        dScMgBase_c::Virtual88(y, x, arg3, 2);
+        dScMgBase_c::PaintSquare(y, x, arg3, 2);
         return;
     }
 
     f707 = mSetupInk;
     x2 = x + 0xc0;
     if (f707 != 0) {
-        dScMgBase_c::Virtual88(y, x, arg3, 4);
+        dScMgBase_c::PaintSquare(y, x, arg3, 4);
         if (y >= 0 && y < 0x100 && x2 >= 0 && x2 < 0x158) {
             (mInkGrid + y * 0x158)[x2] = mLineCount;
         }
     } else {
         u8 b;
         if (y < 0 || y >= 0x100 || x2 < 0 || x2 >= 0x158) {
-            dScMgBase_c::Virtual88(y, x, arg3, 4);
+            dScMgBase_c::PaintSquare(y, x, arg3, 4);
             return;
         }
         if (y == 0x20 || y == 0x60 || y == 0xa0 || y == 0xe0) {
@@ -503,7 +503,7 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
             return;
         }
         if (mLineStartSet == 0) {
-            dScMgBase_c::Virtual88(y, x, arg3, 2);
+            dScMgBase_c::PaintSquare(y, x, arg3, 2);
             return;
         }
         b = (mStrokeGrid + y * 0x158)[x2];
@@ -517,7 +517,7 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
         }
     }
 
-    dScMgBase_c::Virtual88(y, x, arg3, 2);
+    dScMgBase_c::PaintSquare(y, x, arg3, 2);
     (mStrokeGrid + y * 0x158)[x2] = mLineCount;
 }
 
@@ -2122,9 +2122,9 @@ s32 dScMgAmida_c::Behavior()
 }
 #pragma pop
 
-// @symbol _ZN12dScMgAmida_c13OnYoshiTryEatEi
+// @symbol _ZN12dScMgAmida_c10StartRoundEi
 /* Slot 18: counts a win (arg 0) or resets the score, then sets up the next board. */
-void dScMgAmida_c::OnYoshiTryEat(int arg)
+void dScMgAmida_c::StartRound(int arg)
 {
     if (arg == 0) {
         if (unk_0bc >= 0x7cf)

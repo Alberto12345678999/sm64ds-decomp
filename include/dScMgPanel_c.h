@@ -83,7 +83,7 @@ struct dScMgPanel_c : dScMgBase_c {
     virtual s32 InitResources();         /* slot 0 */
     virtual s32 Behavior();              /* slot 6 */
     virtual s32 Render();                /* slot 9 */
-    virtual void OnYoshiTryEat(int arg); /* slot 18 */
+    virtual void StartRound(int arg); /* slot 18 */
 
     /* Intro card slides in on mSlide, then holds. */
     s32 mSlide;              /* 0x4660 Fix12 */

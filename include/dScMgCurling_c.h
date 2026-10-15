@@ -82,7 +82,7 @@ struct dScMgCurling_c : dScMgBase_c {
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
     virtual s32 Render();         /* slot 9 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual void StartRound(int arg);               /* slot 18 */
 
     void func_ov006_020e0694();   /* renders the falling bits */
     void func_ov006_020e071c(int index);
@@ -127,7 +127,7 @@ struct dScMgCurling_c : dScMgBase_c {
 
     /* Slot 18 (one of dScMgBase_c's own undeclared new slots 18-35) is
        left unnamed here too, same reasoning as dScMgBase_c.h's own -- its
-       target (_ZN14dScMgCurling_c13OnYoshiTryEatEi, in
+       target (_ZN14dScMgCurling_c10StartRoundEi, in
        src/minigames/d_s_mg_curling.cpp) had a "recovered name" of
        OnYoshiTryEat_020e3470, which is wrong (same tree-wide mislabel
        documented in notes/dscene-c-siblings-census.md section 3): its

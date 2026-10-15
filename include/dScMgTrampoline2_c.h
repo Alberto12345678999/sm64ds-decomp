@@ -36,12 +36,12 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
         __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)func_ov006_020d1008);
         __cxa_vec_cleanup(mArray1, 5, 0xdc, (void *)func_ov006_020ca604);
     }
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
-    virtual int  OnAttacked2();                        /* slot 23 */
-    virtual int  OnKicked();                           /* slot 24 */
-    virtual int  OnPushed();                           /* slot 25 */
-    virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
+    virtual int  OnGraphCallback0();                        /* slot 23 */
+    virtual int  OnGraphCallback2();                           /* slot 24 */
+    virtual int  OnGraphCallback3();                           /* slot 25 */
+    virtual void PaintSquare(int cx, int cy, int colour, int size); /* slot 34 */
 
     /* State callbacks stored in mState, the same scheme dScMgTrampoline_c
        uses: eight-byte PMF records in .data, dispatched by Behavior every
@@ -91,7 +91,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     u8  pad_7ba6[2];          /* 0x7ba6 */
     s16 mRoundOver;           /* 0x7ba8 -- Render skips the playfield once set */
     u8  mTouching;            /* 0x7baa */
-    u8  mTouchReleased;       /* 0x7bab -- OnAttacked2 consumes it */
+    u8  mTouchReleased;       /* 0x7bab -- OnGraphCallback0 consumes it */
 
     /* These definitions override existing base slots without adding fields.
        The production TU defines the non-inline virtuals and emits the vtable;

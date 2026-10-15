@@ -98,9 +98,9 @@ struct dScMgMemory2_c : dScMgSingle3DBase_c {
        licenses the cartridge copies at 0x0213d4d4, 0x0213d350 and 0x0213d35c
        as deadstrip data. */
     s32 InitResources();   /* slot  0 -- 0x020f74b4 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
-    virtual void OnGroundPounded();                    /* slot 21 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual int  CanEndState(int mode);              /* slot 19 */
+    virtual void OnHostAnimCue();                    /* slot 21 */
     s32 Behavior();        /* slot  6 -- 0x020f7458 */
     s32 Render();          /* slot  9 -- 0x020f73f4 */
 

@@ -255,14 +255,14 @@
       "ordinal": 32
     },
     {
-      "symbol": "_ZN15dScMgRoulette_c13OnYoshiTryEatEi",
+      "symbol": "_ZN15dScMgRoulette_c10StartRoundEi",
       "address": "0x021095cc",
       "size": "0x000000fc",
       "legacy_source": "src/_ZN15dScMgRoulette_c13OnYoshiTryEatEi.cpp",
       "ordinal": 33
     },
     {
-      "symbol": "_ZN15dScMgRoulette_c13OnTurnIntoEggEi",
+      "symbol": "_ZN15dScMgRoulette_c11CanEndStateEi",
       "address": "0x021096c8",
       "size": "0x00000144",
       "legacy_source": "src/_ZN15dScMgRoulette_c13OnTurnIntoEggEi.cpp",

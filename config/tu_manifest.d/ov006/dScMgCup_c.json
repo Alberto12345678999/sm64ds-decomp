@@ -210,14 +210,14 @@
       "ordinal": 24
     },
     {
-      "symbol": "_ZN10dScMgCup_c9Virtual50Ev",
+      "symbol": "_ZN10dScMgCup_c11OnNewRecordEv",
       "address": "0x020dfed4",
       "size": "0x00000018",
       "legacy_source": "src/_ZN10dScMgCup_c9Virtual50Ev.cpp",
       "ordinal": 25
     },
     {
-      "symbol": "_ZN10dScMgCup_c13OnYoshiTryEatEi",
+      "symbol": "_ZN10dScMgCup_c10StartRoundEi",
       "address": "0x020dfeec",
       "size": "0x0000017c",
       "legacy_source": "src/_ZN10dScMgCup_c13OnYoshiTryEatEi.cpp",
@@ -484,7 +484,7 @@
       "sourceBuiltFunctions": "11,142 reproducing / 0 mismatching (2,108,236 of 2,211,124 code bytes, 95.35%)",
       "intactTuGates": "dsd modules PASS, zero new symbol errors, storage aliases exact",
       "checkSymbols": "the 9 pre-existing baseline error lines only (overlay_100, overlay_102, data_020ad524, data_020ad560 and five ITCM symbols); the promotion adds none",
-      "symbolRename": "config/arm9/overlays/ov006/symbols.txt renames eight addresses from func_ov006_* to the class-anchored mangled member names this TU defines: 0x020df1bc _ZN10dScMgCup_c9StateIdleEv, 0x020df1c0 StateFinish, 0x020df28c StateResult, 0x020df3bc StateSelect, 0x020df540 StateWaitForInput, 0x020df5b8 StateShuffle, 0x020dfcd8 StatePrepareShuffle, 0x020dfd48 StateSetup. THE RENAME IS LOAD-BEARING, NOT COSMETIC: the eight 8-byte pointer-to-member records in ov006 .data at 0x0213bfe8..0x0213c040 relocate to these addresses, and dsd resolves those relocations BY SYMBOL NAME. Without the rename the delinked .data gap object cannot resolve them and all eight code words link as 0x00000000 -- measured, 32 differing bytes in ov006, the only module fidelity failure of the whole promotion. The names themselves are class-anchored inferences from PMF order and behaviour, not cartridge-proved spellings; the tree already carried the same kind of coined member symbol for this class (_ZN10dScMgCup_c9Virtual50Ev, and Virtual50 is coined) before this change. dsd check symbols reports zero new errors after the rename."
+      "symbolRename": "config/arm9/overlays/ov006/symbols.txt renames eight addresses from func_ov006_* to the class-anchored mangled member names this TU defines: 0x020df1bc _ZN10dScMgCup_c9StateIdleEv, 0x020df1c0 StateFinish, 0x020df28c StateResult, 0x020df3bc StateSelect, 0x020df540 StateWaitForInput, 0x020df5b8 StateShuffle, 0x020dfcd8 StatePrepareShuffle, 0x020dfd48 StateSetup. THE RENAME IS LOAD-BEARING, NOT COSMETIC: the eight 8-byte pointer-to-member records in ov006 .data at 0x0213bfe8..0x0213c040 relocate to these addresses, and dsd resolves those relocations BY SYMBOL NAME. Without the rename the delinked .data gap object cannot resolve them and all eight code words link as 0x00000000 -- measured, 32 differing bytes in ov006, the only module fidelity failure of the whole promotion. The names themselves are class-anchored inferences from PMF order and behaviour, not cartridge-proved spellings; the tree already carried the same kind of coined member symbol for this class (_ZN10dScMgCup_c11OnNewRecordEv, and Virtual50 is coined) before this change. dsd check symbols reports zero new errors after the rename."
     }
   },
   "compiler_only_output": [

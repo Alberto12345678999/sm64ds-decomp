@@ -1,7 +1,7 @@
 //cpp
 /* Tamaire (scene 0x171, profile MG_TAMAIRE): dScMgPachinko2_c, the whole
  * class in one translation unit. 74 functions, .text 0x020ff420..0x0210428c:
- * the destructor pair, 67 members, OnYoshiTryEat, Render, Behavior,
+ * the destructor pair, 67 members, StartRound, Render, Behavior,
  * InitResources and the factory.
  *
  * The destructor is declared first in the class header, so this TU owns the
@@ -2690,10 +2690,10 @@ void dScMgPachinko2_c::func_ov006_02103bfc()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c13OnYoshiTryEatEi
-/* Slot 18, overriding dScMgBase_c::OnYoshiTryEat(int). That name is a
+// @symbol _ZN16dScMgPachinko2_c10StartRoundEi
+/* Slot 18, overriding dScMgBase_c::StartRound(int). That name is a
    placeholder borrowed from dActor_c by slot index. */
-void dScMgPachinko2_c::OnYoshiTryEat(int n)
+void dScMgPachinko2_c::StartRound(int n)
 {
     /* Reading through `ro` keeps mwcc from holding &unk_0bc in a register,
        which costs a word. */

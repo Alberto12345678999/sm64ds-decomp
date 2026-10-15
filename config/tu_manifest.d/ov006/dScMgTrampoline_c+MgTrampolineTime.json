@@ -152,7 +152,7 @@
       "ordinal": 17
     },
     {
-      "symbol": "_ZN17dScMgTrampoline_c9Virtual88Eiiii",
+      "symbol": "_ZN17dScMgTrampoline_c11PaintSquareEiiii",
       "address": "0x02120da8",
       "size": "0x00000170",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
@@ -166,21 +166,21 @@
       "ordinal": 19
     },
     {
-      "symbol": "_ZN17dScMgTrampoline_c11OnAttacked2Ev",
+      "symbol": "_ZN17dScMgTrampoline_c16OnGraphCallback0Ev",
       "address": "0x0212101c",
       "size": "0x000001a0",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
       "ordinal": 20
     },
     {
-      "symbol": "_ZN17dScMgTrampoline_c8OnPushedEv",
+      "symbol": "_ZN17dScMgTrampoline_c16OnGraphCallback3Ev",
       "address": "0x021211bc",
       "size": "0x00000024",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
       "ordinal": 21
     },
     {
-      "symbol": "_ZN17dScMgTrampoline_c8OnKickedEv",
+      "symbol": "_ZN17dScMgTrampoline_c16OnGraphCallback2Ev",
       "address": "0x021211e0",
       "size": "0x00000100",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
@@ -292,14 +292,14 @@
       "ordinal": 37
     },
     {
-      "symbol": "_ZN17dScMgTrampoline_c13OnTurnIntoEggEi",
+      "symbol": "_ZN17dScMgTrampoline_c11CanEndStateEi",
       "address": "0x02121f70",
       "size": "0x00000034",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
       "ordinal": 38
     },
     {
-      "symbol": "_ZN17dScMgTrampoline_c13OnYoshiTryEatEi",
+      "symbol": "_ZN17dScMgTrampoline_c10StartRoundEi",
       "address": "0x02121fa4",
       "size": "0x000001f4",
       "legacy_source": "src/actors/d_sc_mg_trampoline.cpp",
@@ -796,7 +796,7 @@
       "source": "0x0213fb7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN17dScMgTrampoline_c13OnYoshiTryEatEi",
+      "symbol": "_ZN17dScMgTrampoline_c10StartRoundEi",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02121fa4"
@@ -806,7 +806,7 @@
       "source": "0x0213fb80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN17dScMgTrampoline_c13OnTurnIntoEggEi",
+      "symbol": "_ZN17dScMgTrampoline_c11CanEndStateEi",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02121f70"
@@ -816,7 +816,7 @@
       "source": "0x0213fb84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN11dScMgBase_c9Virtual50Ev",
+      "symbol": "_ZN11dScMgBase_c11OnNewRecordEv",
       "addend": 0,
       "target_module": "overlays(0,4)",
       "target_address": "0x020b2990"
@@ -826,7 +826,7 @@
       "source": "0x0213fb88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN11dScMgBase_c15OnGroundPoundedEv",
+      "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
       "addend": 0,
       "target_module": "overlays(0,4)",
       "target_address": "0x020b298c"
@@ -836,7 +836,7 @@
       "source": "0x0213fb8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN11dScMgBase_c11OnAttacked1Ev",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback1Ev",
       "addend": 0,
       "target_module": "overlays(0,4)",
       "target_address": "0x020ae198"
@@ -846,7 +846,7 @@
       "source": "0x0213fb90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN17dScMgTrampoline_c11OnAttacked2Ev",
+      "symbol": "_ZN17dScMgTrampoline_c16OnGraphCallback0Ev",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0212101c"
@@ -856,7 +856,7 @@
       "source": "0x0213fb94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN17dScMgTrampoline_c8OnKickedEv",
+      "symbol": "_ZN17dScMgTrampoline_c16OnGraphCallback2Ev",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021211e0"
@@ -866,7 +866,7 @@
       "source": "0x0213fb98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN17dScMgTrampoline_c8OnPushedEv",
+      "symbol": "_ZN17dScMgTrampoline_c16OnGraphCallback3Ev",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x021211bc"
@@ -876,7 +876,7 @@
       "source": "0x0213fb9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c24OnHitByCannonBlastedCharEv",
+      "symbol": "_ZN14dScMgD3DBase_c14GetDisplayModeEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e6e4c"
@@ -886,7 +886,7 @@
       "source": "0x0213fba0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c15OnHitByMegaCharEv",
+      "symbol": "_ZN14dScMgD3DBase_c8OpenMenuEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e6d98"
@@ -896,7 +896,7 @@
       "source": "0x0213fba4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c19OnHitFromUnderneathEv",
+      "symbol": "_ZN14dScMgD3DBase_c9CloseMenuEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e6d8c"
@@ -906,7 +906,7 @@
       "source": "0x0213fba8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c16OnAimedAtWithEggEv",
+      "symbol": "_ZN14dScMgD3DBase_c17SaveScreenForMenuEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e6d24"
@@ -916,7 +916,7 @@
       "source": "0x0213fbac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c25OnAimedAtWithEggReturnVecEv",
+      "symbol": "_ZN14dScMgD3DBase_c21RestoreScreenFromMenuEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e6cac"
@@ -926,7 +926,7 @@
       "source": "0x0213fbb0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c9Virtual7CEv",
+      "symbol": "_ZN14dScMgD3DBase_c15InitSubScreenBgEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e72c0"
@@ -936,7 +936,7 @@
       "source": "0x0213fbb4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN11dScMgBase_c9Virtual80Ev",
+      "symbol": "_ZN11dScMgBase_c16InitMainScreenBgEv",
       "addend": 0,
       "target_module": "overlays(0,4)",
       "target_address": "0x020b27f4"
@@ -946,7 +946,7 @@
       "source": "0x0213fbb8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN14dScMgD3DBase_c9Virtual84Ev",
+      "symbol": "_ZN14dScMgD3DBase_c11InitEnginesEv",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x020e7124"
@@ -956,7 +956,7 @@
       "source": "0x0213fbbc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN17dScMgTrampoline_c9Virtual88Eiiii",
+      "symbol": "_ZN17dScMgTrampoline_c11PaintSquareEiiii",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x02120da8"
@@ -966,7 +966,7 @@
       "source": "0x0213fbc0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN11dScMgBase_c9Virtual8CEv",
+      "symbol": "_ZN11dScMgBase_c12IsAltVariantEv",
       "addend": 0,
       "target_module": "overlays(0,2,3,4,7)",
       "target_address": "0x020ad660"
@@ -986,17 +986,17 @@
     "PER-FRAME HELPER PROOF: Behavior's sole call to 0x0212157c samples and tracks the stylus drag and records its release edge, while StatePlay's sole call to 0x02121bc8 derives the BG scroll target from score progress and approaches it. Both now compile as genuine dScMgTrampoline_c members named UpdateTouchInput and UpdateScroll; the spellings are behavioral coinage disclosed in the header, provenance note and rename ledger.",
     "PMF STATIC-INITIALIZER WALL: spelling the five namespace-scope descriptors directly as dScMgTrampoline_c::State initializers makes mwccarm 2004/b56 emit a new __sinit, .ctor entry and five anonymous data temporaries absent from the cartridge. The class declares the State type and Behavior uses it at dispatch; the runtime field and ROM descriptors retain raw two-word storage, with literal aliases used only to give the descriptors relocations to the compiler-spelled member symbols.",
     "Generated by tools/tubuild.py create. See the file's own header comment for what was and was not reconciled, and notes/translation-unit-reconstruction-plan.md section 7.3 for what this generator does and does not attempt to resolve automatically.",
-    "tubuild create warning: RAW: src/_ZN17dScMgTrampoline_c13OnYoshiTryEatEi.cpp (_ZN17dScMgTrampoline_c13OnYoshiTryEatEi) did not split (the definition is inside the extern \"C\" block opened on line 8, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
+    "tubuild create warning: RAW: src/_ZN17dScMgTrampoline_c13OnYoshiTryEatEi.cpp (_ZN17dScMgTrampoline_c10StartRoundEi) did not split (the definition is inside the extern \"C\" block opened on line 8, so it was consumed as a declaration -- tubuild cannot place a block-scoped member in a TU); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov006_02142f64' differs between the legacy file that used to hold func_ov006_02120b7c and the one that held func_ov006_02120bc8; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov006_02142f64' differs between the legacy file that used to hold func_ov006_02120b7c and the one that held func_ov006_02120c08; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov006_02142f68' differs between the legacy file that used to hold func_ov006_02120c40 and the one that held func_ov006_02120ca0; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov006_02142f64' differs between the legacy file that used to hold func_ov006_02120b7c and the one that held func_ov006_02120ca0; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN2G213GetBG2CharPtrEv' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'func_02054efc' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'func_02054ea8' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'func_02054d88' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'func_02054d88' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held _ZN17dScMgTrampoline_c11OnAttacked2Ev; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02120f18 and the one that held _ZN17dScMgTrampoline_c11OnAttacked2Ev; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration '_ZN2G213GetBG2CharPtrEv' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'func_02054efc' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'func_02054ea8' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'func_02054d88' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held func_ov006_02120f18; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'func_02054d88' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held _ZN17dScMgTrampoline_c16OnGraphCallback0Ev; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02120f18 and the one that held _ZN17dScMgTrampoline_c16OnGraphCallback0Ev; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov004_020afdd0' differs between the legacy file that used to hold func_ov006_0212093c and the one that held _ZN17dScMgTrampoline_c6RenderEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02120f18 and the one that held func_ov006_02121778; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov006_020cd39c' differs between the legacy file that used to hold func_ov006_02121848 and the one that held func_ov006_021218fc; kept the first, the other is commented out for review",
@@ -1007,20 +1007,20 @@
     "tubuild create warning: CONFLICT: extern declaration 'func_ov006_02120a18' differs between the legacy file that used to hold func_ov006_021218fc and the one that held func_ov006_02121cf4; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN5Sound12PlayBank2_2DEj' differs between the legacy file that used to hold func_ov006_02120a18 and the one that held func_ov006_02121cf4; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov006_020d0ac0' differs between the legacy file that used to hold func_ov006_021218fc and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'func_02054d88' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'func_02054d88' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02120f18 and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'func_02012718' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11OnAttacked2Ev and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'func_02012718' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c16OnGraphCallback0Ev and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'RandomIntInternal' differs between the legacy file that used to hold func_ov006_021218fc and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_ov004_020ae5c4' differs between the legacy file that used to hold func_ov006_0212157c and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_020126e8' differs between the legacy file that used to hold func_ov006_0212157c and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'func_02012468' differs between the legacy file that used to hold func_ov006_0212157c and the one that held func_ov006_02121d64; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov006_0212e044' differs between the legacy file that used to hold func_ov006_02121d64 and the one that held func_ov006_02121f04; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov006_0212e048' differs between the legacy file that used to hold func_ov006_02121d64 and the one that held func_ov006_02121f04; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'GetGameLanguage' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c6RenderEv and the one that held _ZN17dScMgTrampoline_c13OnTurnIntoEggEi; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'GetGameLanguage' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c6RenderEv and the one that held _ZN17dScMgTrampoline_c11CanEndStateEi; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN4cstd4fdivEii' differs between the legacy file that used to hold func_ov006_02121d64 and the one that held _ZN17dScMgTrampoline_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'data_0209d45c' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c8OnKickedEv and the one that held _ZN17dScMgTrampoline_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'data_0209d45c' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c16OnGraphCallback2Ev and the one that held _ZN17dScMgTrampoline_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'GetGameLanguage' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c6RenderEv and the one that held func_ov006_0212231c; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN2G213GetBG2CharPtrEv' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c9Virtual88Eiiii and the one that held func_ov006_0212231c; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration '_ZN2G213GetBG2CharPtrEv' differs between the legacy file that used to hold _ZN17dScMgTrampoline_c11PaintSquareEiiii and the one that held func_ov006_0212231c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'MultiStore16' differs between the legacy file that used to hold func_ov006_02120f18 and the one that held func_ov006_0212231c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration '_ZN2GX10LoadBGPlttEPKvjj' differs between the legacy file that used to hold func_ov006_02120f18 and the one that held func_ov006_0212231c; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'P2') differs between the legacy file that used to hold func_ov006_02121848 and the one that held func_ov006_021218c4; kept the first, the other is commented out for review",

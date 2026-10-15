@@ -350,21 +350,21 @@
       "ordinal": 44
     },
     {
-      "symbol": "_ZN14dScMgMemory2_c15OnGroundPoundedEv",
+      "symbol": "_ZN14dScMgMemory2_c13OnHostAnimCueEv",
       "address": "0x020f730c",
       "size": "0x00000014",
       "legacy_source": "src/_ZN14dScMgMemory2_c15OnGroundPoundedEv.cpp",
       "ordinal": 45
     },
     {
-      "symbol": "_ZN14dScMgMemory2_c13OnTurnIntoEggEi",
+      "symbol": "_ZN14dScMgMemory2_c11CanEndStateEi",
       "address": "0x020f7320",
       "size": "0x00000074",
       "legacy_source": "src/_ZN14dScMgMemory2_c13OnTurnIntoEggEi.cpp",
       "ordinal": 46
     },
     {
-      "symbol": "_ZN14dScMgMemory2_c13OnYoshiTryEatEi",
+      "symbol": "_ZN14dScMgMemory2_c10StartRoundEi",
       "address": "0x020f7394",
       "size": "0x00000060",
       "legacy_source": "src/_ZN14dScMgMemory2_c13OnYoshiTryEatEi.cpp",

@@ -9,7 +9,7 @@
  * dMg3DEspAnimSet_c (three animated models), dMg3DEspModel_c (an animated
  * model that dispatches through a member-function state), the scene's
  * slot, row and card state handlers and its round phases, and it closes
- * with dScMg3DEsp_c's own members, Virtual50 through InitResources.
+ * with dScMg3DEsp_c's own members, OnNewRecord through InitResources.
  * dScMg3DEsp_c_classInit, the scene factory, follows at 0x020ea1f0..0x020ea280
  * and ends the unit. Functions run in ROM order under
  * `#pragma defer_codegen off`; do not reorder.
@@ -1498,7 +1498,7 @@ void dScMg3DEsp_c::Results()
                 (*(int *)(int)(((long long)(int)(c + 0xbc))))++;
                 if (*(u32 *)(c + 0xbc) > 0x270e)
                     *(u32 *)(c + 0xbc) = 0x270e;
-                OnYoshiTryEat(-1);
+                StartRound(-1);
             }
         } else {
             *(u16 *)(c + 0x554c) = 0;
@@ -1555,10 +1555,10 @@ void dScMg3DEsp_c::Wait()
 
 /* ---- dScMg3DEsp_c ------------------------------------------------------ */
 
-/* Vtable slot 20. Virtual50 is a placeholder named for the slot's byte
-   offset; dScMgBase_c.h documents the void contract. */
-// @symbol _ZN12dScMg3DEsp_c9Virtual50Ev
-void dScMg3DEsp_c::Virtual50()
+/* Vtable slot 20, OnNewRecord: frees the banner graphic in slot 8 when the
+   shared results state shows a new record. See dScMgBase_c.h. */
+// @symbol _ZN12dScMg3DEsp_c11OnNewRecordEv
+void dScMg3DEsp_c::OnNewRecord()
 {
     FreeGfxSlotsById(8);
 }
@@ -1566,8 +1566,8 @@ void dScMg3DEsp_c::Virtual50()
 /* Vtable slot 18. The name is a placeholder borrowed from dActor_c by slot
    index; see dScMgBase_c.h. The signature repeats the base declaration, or
    mwcc appends a slot instead of overriding. */
-// @symbol _ZN12dScMg3DEsp_c13OnYoshiTryEatEi
-void dScMg3DEsp_c::OnYoshiTryEat(int a)
+// @symbol _ZN12dScMg3DEsp_c10StartRoundEi
+void dScMg3DEsp_c::StartRound(int a)
 {
     ResetRound();
     mRoundState = 0;
@@ -1634,7 +1634,7 @@ s32 dScMg3DEsp_c::Behavior()
 
 /* Vtable slot 0. Sets up the camera and both display engines, loads the two
    models, the texture animation and the dMg3DEspModel_c block, then calls
-   OnYoshiTryEat(-1). */
+   StartRound(-1). */
 // @symbol _ZN12dScMg3DEsp_c13InitResourcesEv
 s32 dScMg3DEsp_c::InitResources()
 {
@@ -1702,7 +1702,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     func_ov004_020b04d0(0x20);
 
-    OnYoshiTryEat(-1);
+    StartRound(-1);
 
     mTimer = 0x40;
 

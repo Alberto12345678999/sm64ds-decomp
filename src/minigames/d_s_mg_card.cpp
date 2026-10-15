@@ -158,7 +158,7 @@ int  ApproachLinear2(s16 &value, s16 target, s16 step);
 /* Slot 0. Loads and decompresses the OBJ tiles and palettes for both
  * engines, sets blending, patches the OAM template list, spawns the two rows
  * of five card sprites and resets the shared counters. It ends with a
- * virtual call to OnYoshiTryEat(-1), which resets the round. */
+ * virtual call to StartRound(-1), which resets the round. */
 /* One OAM attribute-template entry: the list is a u32 attr word, then the two
  * 16-bit attrs, then an 8-byte stride. Spelled as a struct rather than as casts
  * off a u32* because the ROM addresses all three off ONE base register at
@@ -237,16 +237,16 @@ s32 dScMgCard_c::InitResources()
     }
     self->mScore = 0;
     func_ov004_020b682c();
-    OnYoshiTryEat(-1);
+    StartRound(-1);
     return 1;
 }
 
-// @symbol _ZN11dScMgCard_c13OnYoshiTryEatEi
+// @symbol _ZN11dScMgCard_c10StartRoundEi
 /* Slot 18 resets the round: clear the selected-card counter and highlights,
  * restore the face weights, redeal both hands, and restart at state 1.
  * The inherited actor-style name is retained for the existing interface;
  * it does not establish this scene callback's original name or event. */
-void dScMgCard_c::OnYoshiTryEat(int mode)
+void dScMgCard_c::StartRound(int mode)
 {
     int i;
     char *p1, *p2;
@@ -282,12 +282,12 @@ void dScMgCard_c::OnYoshiTryEat(int mode)
     mState = 1;
 }
 
-// @symbol _ZN11dScMgCard_c13OnTurnIntoEggEi
+// @symbol _ZN11dScMgCard_c11CanEndStateEi
 /* Slot 19 advances the round-end sequence: show the comparison result,
  * settle the score, fly both hands off, and wait for the final timer.
  * Returns 1 when complete. The inherited actor-style name does not imply
  * that a Picture Poker player has been swallowed. */
-int dScMgCard_c::OnTurnIntoEgg(int mode)
+int dScMgCard_c::CanEndState(int mode)
 {
     switch (mState) {
     case 0xe: {
@@ -358,11 +358,11 @@ int dScMgCard_c::OnTurnIntoEgg(int mode)
     return 0;
 }
 
-// @symbol _ZN11dScMgCard_c15OnGroundPoundedEv
+// @symbol _ZN11dScMgCard_c13OnHostAnimCueEv
 /* Slot 21 selects a tier from 1 to 4 according to mHudScore and passes it
  * to func_ov004_020b6324. The inherited name does not establish an actor
  * ground-pound event or the original name of this scene callback. */
-void dScMgCard_c::OnGroundPounded() {
+void dScMgCard_c::OnHostAnimCue() {
     int x = mHudScore;
     int v;
     if (x < 5) {

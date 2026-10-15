@@ -132,7 +132,7 @@ struct dScMgPachinko_c : dScMgBase_c {
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
     virtual s32 Render();         /* slot 9 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual void StartRound(int arg);               /* slot 18 */
 
     dScMgPachinko_ball mBall[30];    /* 0x4660, stride 0x38, ends 0x4cf0 */
     dScMgPachinko_popup mPopup[30];  /* 0x4cf0 */

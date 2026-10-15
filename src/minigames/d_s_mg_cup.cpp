@@ -466,7 +466,7 @@ void dScMgCup_c::StateFinish()
         mState = 7;
     } else {
         if (unk_0a8 > 0) {
-            OnYoshiTryEat(-1);
+            StartRound(-1);
         } else {
             func_ov004_020b0a54(0x12);
             mState = 7;
@@ -826,9 +826,9 @@ void dScMgCup_c::StateSetup()
     }
 }
 
-// @symbol _ZN10dScMgCup_c9Virtual50Ev
+// @symbol _ZN10dScMgCup_c11OnNewRecordEv
 /* Slot 20: the win animation on mModel. */
-void dScMgCup_c::Virtual50()
+void dScMgCup_c::OnNewRecord()
 {
     func_ov006_020c2594(&mModel);
 }
@@ -836,7 +836,7 @@ void dScMgCup_c::Virtual50()
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-void dScMgCup_c::OnYoshiTryEat(int msg)
+void dScMgCup_c::StartRound(int msg)
 {
     int i;
 
@@ -972,7 +972,7 @@ s32 dScMgCup_c::Behavior()
 
 // @symbol _ZN10dScMgCup_c13InitResourcesEv
 /* Slot 0: sets up the sub-screen backgrounds, loads the board graphics,
-   places the three cups and starts a game through OnYoshiTryEat(3). */
+   places the three cups and starts a game through StartRound(3). */
 s32 dScMgCup_c::InitResources()
 {
     void *file;
@@ -1032,7 +1032,7 @@ s32 dScMgCup_c::InitResources()
         }
     }
 
-    OnYoshiTryEat(3);
+    StartRound(3);
     func_ov006_020dec3c((char *)mFx);
     return 1;
 }

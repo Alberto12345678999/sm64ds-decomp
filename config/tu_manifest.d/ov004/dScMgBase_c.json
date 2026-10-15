@@ -7,7 +7,7 @@
   "boundary_confidence": "high",
   "boundary_evidence": [
     "WHOLE UNIT. tu_map calls 0x020ad660..0x020b2c58 one contiguous ov004 linker run labelled dScMgBase_c (build/tu_map.json, tools/tu_map.py). This TU licenses all 125 functions, ROM ordinals 0..124, as one complete .text claim.",
-    "LOWER EDGE: 0x020ad660 is the first byte of ov004's .text (config/arm9/overlays/ov004/delinks.txt), so nothing sits below it. The class evidence reaches that edge: dScMgBase_c::Virtual8C is the first function.",
+    "LOWER EDGE: 0x020ad660 is the first byte of ov004's .text (config/arm9/overlays/ov004/delinks.txt), so nothing sits below it. The class evidence reaches that edge: dScMgBase_c::IsAltVariant is the first function.",
     "UPPER EDGE: the unit ends with _ZN11dScMgBase_cC2Ev (0x020b2adc, size 0x17c) plus its static-init tail __arraydtor$328/_ZN3EntD1Ev/_ZN3EntC1Ev, closing at 0x020b2c84. tu_map starts its next ov004 unit there (0x020b2c58..0x020b8714, 137 functions, no class label); the first three of that run were this unit's generated support functions, absorbed by the sinit fold.",
     "WIDENED from the earlier 108-function claim 0x020ad660..0x020b2220. func_ov004_020b2220 (size 0x224), the one unmatched function that bounded it, byte-matched, and with it the run is one piece. 17 sources were folded: func_ov004_020b2220 and the 16 above it, func_ov004_020b2444 through the constructor, including slots 31 to 33 (Virtual7C, Virtual80, Virtual84), the four empty or trivial slots 18 to 21, the destructor and the constructor.",
     "DESTRUCTOR ORDER. The cartridge has D2 at 0x020b29c0, D0 at 0x020b2a18 and D1 at 0x020b2a84, then C2. 64 ov006 relocations name D2 (descendants' base-subobject teardown) and the _ZTV11dScMgBase_c slots at 0x020bc100/0x020bc104 name D1 and D0, so the symbols.txt names are the right way round. Under defer_codegen off one out-of-line ~dScMgBase_c() emits D1, D0, D2; inside a defer_codegen on bracket, with the constructor written before it, mwccarm emits D2, D0, D1, C2 in cartridge order.",
@@ -45,7 +45,7 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN11dScMgBase_c9Virtual8CEv",
+      "symbol": "_ZN11dScMgBase_c12IsAltVariantEv",
       "address": "0x020ad660",
       "size": "0x00000014",
       "legacy_source": "src/_ZN11dScMgBase_c9Virtual8CEv.cpp",
@@ -290,28 +290,28 @@
       "ordinal": 34
     },
     {
-      "symbol": "_ZN11dScMgBase_c8OnPushedEv",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback3Ev",
       "address": "0x020ae128",
       "size": "0x00000018",
       "legacy_source": "src/_ZN11dScMgBase_c8OnPushedEv.cpp",
       "ordinal": 35
     },
     {
-      "symbol": "_ZN11dScMgBase_c8OnKickedEv",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback2Ev",
       "address": "0x020ae140",
       "size": "0x00000058",
       "legacy_source": "src/_ZN11dScMgBase_c8OnKickedEv.cpp",
       "ordinal": 36
     },
     {
-      "symbol": "_ZN11dScMgBase_c11OnAttacked1Ev",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback1Ev",
       "address": "0x020ae198",
       "size": "0x00000008",
       "legacy_source": "src/_ZN11dScMgBase_c11OnAttacked1Ev.cpp",
       "ordinal": 37
     },
     {
-      "symbol": "_ZN11dScMgBase_c11OnAttacked2Ev",
+      "symbol": "_ZN11dScMgBase_c16OnGraphCallback0Ev",
       "address": "0x020ae1a0",
       "size": "0x00000008",
       "legacy_source": "src/_ZN11dScMgBase_c11OnAttacked2Ev.cpp",
@@ -367,7 +367,7 @@
       "ordinal": 45
     },
     {
-      "symbol": "_ZN11dScMgBase_c9Virtual88Eiiii",
+      "symbol": "_ZN11dScMgBase_c11PaintSquareEiiii",
       "address": "0x020ae3b4",
       "size": "0x00000210",
       "legacy_source": "src/_ZN11dScMgBase_c9Virtual88Eiiii.cpp",
@@ -409,28 +409,28 @@
       "ordinal": 51
     },
     {
-      "symbol": "_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv",
+      "symbol": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv",
       "address": "0x020aeed8",
       "size": "0x00000174",
       "legacy_source": "src/_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv.cpp",
       "ordinal": 52
     },
     {
-      "symbol": "_ZN11dScMgBase_c19OnHitFromUnderneathEv",
+      "symbol": "_ZN11dScMgBase_c9CloseMenuEv",
       "address": "0x020af04c",
       "size": "0x00000048",
       "legacy_source": "src/_ZN11dScMgBase_c19OnHitFromUnderneathEv.cpp",
       "ordinal": 53
     },
     {
-      "symbol": "_ZN11dScMgBase_c16OnAimedAtWithEggEv",
+      "symbol": "_ZN11dScMgBase_c17SaveScreenForMenuEv",
       "address": "0x020af094",
       "size": "0x000001e8",
       "legacy_source": "src/_ZN11dScMgBase_c16OnAimedAtWithEggEv.cpp",
       "ordinal": 54
     },
     {
-      "symbol": "_ZN11dScMgBase_c15OnHitByMegaCharEv",
+      "symbol": "_ZN11dScMgBase_c8OpenMenuEv",
       "address": "0x020af27c",
       "size": "0x0000007c",
       "legacy_source": "src/_ZN11dScMgBase_c15OnHitByMegaCharEv.cpp",
@@ -556,7 +556,7 @@
       "ordinal": 72
     },
     {
-      "symbol": "_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv",
+      "symbol": "_ZN11dScMgBase_c14GetDisplayModeEv",
       "address": "0x020b04e0",
       "size": "0x00000008",
       "legacy_source": "src/_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv.cpp",
@@ -822,21 +822,21 @@
       "ordinal": 110
     },
     {
-      "symbol": "_ZN11dScMgBase_c9Virtual84Ev",
+      "symbol": "_ZN11dScMgBase_c11InitEnginesEv",
       "address": "0x020b265c",
       "size": "0x00000198",
       "legacy_source": "src/_ZN11dScMgBase_c9Virtual84Ev.cpp",
       "ordinal": 111
     },
     {
-      "symbol": "_ZN11dScMgBase_c9Virtual80Ev",
+      "symbol": "_ZN11dScMgBase_c16InitMainScreenBgEv",
       "address": "0x020b27f4",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN11dScMgBase_c9Virtual80Ev.cpp",
       "ordinal": 112
     },
     {
-      "symbol": "_ZN11dScMgBase_c9Virtual7CEv",
+      "symbol": "_ZN11dScMgBase_c15InitSubScreenBgEv",
       "address": "0x020b2880",
       "size": "0x0000008c",
       "legacy_source": "src/_ZN11dScMgBase_c9Virtual7CEv.cpp",
@@ -857,28 +857,28 @@
       "ordinal": 115
     },
     {
-      "symbol": "_ZN11dScMgBase_c15OnGroundPoundedEv",
+      "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
       "address": "0x020b298c",
       "size": "0x00000004",
       "legacy_source": "src/_ZN11dScMgBase_c15OnGroundPoundedEv.cpp",
       "ordinal": 116
     },
     {
-      "symbol": "_ZN11dScMgBase_c9Virtual50Ev",
+      "symbol": "_ZN11dScMgBase_c11OnNewRecordEv",
       "address": "0x020b2990",
       "size": "0x00000004",
       "legacy_source": "src/_ZN11dScMgBase_c9Virtual50Ev.cpp",
       "ordinal": 117
     },
     {
-      "symbol": "_ZN11dScMgBase_c13OnTurnIntoEggEi",
+      "symbol": "_ZN11dScMgBase_c11CanEndStateEi",
       "address": "0x020b2994",
       "size": "0x00000008",
       "legacy_source": "src/_ZN11dScMgBase_c13OnTurnIntoEggEi.cpp",
       "ordinal": 118
     },
     {
-      "symbol": "_ZN11dScMgBase_c13OnYoshiTryEatEi",
+      "symbol": "_ZN11dScMgBase_c10StartRoundEi",
       "address": "0x020b299c",
       "size": "0x00000004",
       "legacy_source": "src/_ZN11dScMgBase_c13OnYoshiTryEatEi.cpp",

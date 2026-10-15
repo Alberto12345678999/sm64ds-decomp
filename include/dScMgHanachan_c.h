@@ -27,7 +27,7 @@ struct dScMgHanachan_c : dScMgBase_c {
     virtual s32 CleanupResources();      /* slot 3 */
     virtual s32 Behavior();              /* slot 6 */
     virtual s32 Render();                /* slot 9 */
-    virtual void OnYoshiTryEat(int arg); /* slot 18 */
+    virtual void StartRound(int arg); /* slot 18 */
 
     /* Scene phase, an Itanium member pointer: Behavior calls it, Render
        compares the pair with the phase tables. */
@@ -47,7 +47,7 @@ struct dScMgHanachan_c : dScMgBase_c {
        ROM spelling survives. Four are the PMF targets of the phase records
        (func_ov006_020ed274, func_ov006_020ed34c, func_ov006_020ed494,
        func_ov006_020ed844); the rest are called on `this` from them and from
-       OnYoshiTryEat. */
+       StartRound. */
     void func_ov006_020ed274();
     void func_ov006_020ed300();
     void func_ov006_020ed32c();

@@ -87,23 +87,22 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
     virtual s32 Render();     /* slot 9 -- ov006 0x021253bc */
 
     /* --- event handlers, this class's vtable slots 18/19/21 ---
-       Named from the table (tools/rtti_vtables.py --own dScMgBSC_c); the
-       legacy recovered names OnYoshiTryEat / OnTurnIntoEgg /
-       OnGroundPounded stand uncontradicted. Slots 18 and 19 became
+       Named from the table (tools/rtti_vtables.py --own dScMgBSC_c), under
+       dScMgBase_c.h's slot names. Slots 18 and 19 became
        overrides when upstream dScMgBase_c.h declared them virtual
        (2026-08-31). Both are re-overrides of base-owned slots, adding
        no table entry, spelled like the base-owned re-overrides above.
-       OnYoshiTryEat is void -- this class's own bytes measured it (an
+       StartRound is void -- this class's own bytes measured it (an
        int return reserves r0 and shifts the tail registers; retail uses
        r0 as scratch), and the base slot's int was amended to void on
        the same evidence, Coin's `return 0;` proving to be a
-       transcription artifact. OnTurnIntoEgg is s32, matching the
+       transcription artifact. CanEndState is s32, matching the
        base's measured int (its ov004 base body ends `return 1;`).
-       Slot 21 is also declared by dScMgBase_c, so OnGroundPounded is a
+       Slot 21 is also declared by dScMgBase_c, so OnHostAnimCue is a
        void override. */
-    virtual void OnYoshiTryEat(int mode);  /* slot 18 -- ov006 0x02125364 */
-    virtual s32 OnTurnIntoEgg(int mode);  /* slot 19 -- ov006 0x0212527c */
-    virtual void OnGroundPounded(); /* slot 21 -- ov006 0x02125248 */
+    virtual void StartRound(int mode);  /* slot 18 -- ov006 0x02125364 */
+    virtual s32 CanEndState(int mode);  /* slot 19 -- ov006 0x0212527c */
+    virtual void OnHostAnimCue(); /* slot 21 -- ov006 0x02125248 */
 
     /* --- the state machine ---
        Fourteen entries of the member-pointer table data_ov006_02142f94,

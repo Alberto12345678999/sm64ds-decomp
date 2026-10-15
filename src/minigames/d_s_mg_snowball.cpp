@@ -1004,7 +1004,7 @@ void dScMgSnowball_c::func_ov006_02126ee4()
     }
     self->unk_ab5c = 0;
 
-    if (self->Virtual8C()) {
+    if (self->IsAltVariant()) {
         narrow = 0xb;
         wide = 0xe;
         margin = 6;
@@ -1166,7 +1166,7 @@ void dScMgSnowball_c::func_ov006_02126ee4()
         if (row > self->mGoalY / 16 + 0x11) {
             if (cooldown > 0) {
                 cooldown--;
-            } else if (self->Virtual8C() && row < self->mScrollLimit / 2) {
+            } else if (self->IsAltVariant() && row < self->mScrollLimit / 2) {
                 if (right - left >= 0xd) {
                     if (((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 8 >> 15) == 0) {
                         if (((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15) == 0) {
@@ -1224,7 +1224,7 @@ void dScMgSnowball_c::func_ov006_02126ee4()
         }
     }
 
-    if (self->Virtual8C()) {
+    if (self->IsAltVariant()) {
         for (i = 0; i < 0x80; i++) {
             if (self->mArray1Active[i] == 1) {
                 if (((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15) == 0) {
@@ -1836,13 +1836,13 @@ s32 dScMgSnowball_c::Behavior()
     return 1;
 }
 
-// @symbol _ZN15dScMgSnowball_c8OnKickedEv
-/* dScMgSnowball_c::OnKicked, from its vtable slot. The one-letter `V`
+// @symbol _ZN15dScMgSnowball_c16OnGraphCallback2Ev
+/* dScMgSnowball_c::OnGraphCallback2, from its vtable slot. The one-letter `V`
    scroll macro is #undef'd at the end of the function. */
 
 #define V (self->mScrollY >> 12)
 
-int dScMgSnowball_c::OnKicked()
+int dScMgSnowball_c::OnGraphCallback2()
 {
     char *c = (char *)this;
 
@@ -1870,23 +1870,23 @@ int dScMgSnowball_c::OnKicked()
             *(volatile int *)0x400101c = (V << 16) & 0x1ff0000;
         }
     }
-    return ((dScMgBase_c *)c)->dScMgBase_c::OnKicked() != 0;
+    return ((dScMgBase_c *)c)->dScMgBase_c::OnGraphCallback2() != 0;
 }
 #undef V
 
-// @symbol _ZN15dScMgSnowball_c8OnPushedEv
-/* dScMgSnowball_c::OnPushed, from its vtable slot. */
-int dScMgSnowball_c::OnPushed()
+// @symbol _ZN15dScMgSnowball_c16OnGraphCallback3Ev
+/* dScMgSnowball_c::OnGraphCallback3, from its vtable slot. */
+int dScMgSnowball_c::OnGraphCallback3()
 {
     void *t = (void *)this;
- return ((dScMgBase_c *)t)->dScMgBase_c::OnPushed() != 0; }
+ return ((dScMgBase_c *)t)->dScMgBase_c::OnGraphCallback3() != 0; }
 
-// @symbol _ZN15dScMgSnowball_c11OnAttacked2Ev
-/* dScMgSnowball_c::OnAttacked2, from its vtable slot. */
-int dScMgSnowball_c::OnAttacked2()
+// @symbol _ZN15dScMgSnowball_c16OnGraphCallback0Ev
+/* dScMgSnowball_c::OnGraphCallback0, from its vtable slot. */
+int dScMgSnowball_c::OnGraphCallback0()
 {
     void *t = (void *)this;
- return ((dScMgBase_c *)t)->dScMgBase_c::OnAttacked2() != 0; }
+ return ((dScMgBase_c *)t)->dScMgBase_c::OnGraphCallback0() != 0; }
 
 // @symbol _ZN15dScMgSnowball_c16CleanupResourcesEv
 /* Slot 3. Frees the BMD that InitResources parked in unk_abf4. The field is
@@ -1897,10 +1897,10 @@ s32 dScMgSnowball_c::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN15dScMgSnowball_c13OnYoshiTryEatEi
-/* Slot 18, an override of dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+// @symbol _ZN15dScMgSnowball_c10StartRoundEi
+/* Slot 18, an override of dScMgBase_c::StartRound(int). The signature must repeat the base
    declaration exactly, or mwcc appends a slot instead of overriding. */
-void dScMgSnowball_c::OnYoshiTryEat(int i)
+void dScMgSnowball_c::StartRound(int i)
 {
     void *c = (void *)this;
 

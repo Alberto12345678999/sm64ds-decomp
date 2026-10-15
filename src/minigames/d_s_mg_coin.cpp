@@ -16,7 +16,7 @@
  * kept as they matched there. Where two of them spelled a type or a
  * declaration differently, the tag is renamed per function and the
  * call casts. func_ov006_020dd880 and func_ov006_020ddeb0 called
- * slot 35 through a stand-in vtable; they now call Virtual8C.
+ * slot 35 through a stand-in vtable; they now call IsAltVariant.
  *
  * The five state tables (the coin handlers at data_ov006_021417b0, the
  * moneybag's at 021417c8, the caption's at 021417e8, the phases' at
@@ -1149,7 +1149,7 @@ void dScMgCoin_c::func_ov006_020dd7c0(int index)
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dd880Ei
 /* A block wandering along its row. When it reaches the row it picks a
    random direction, and over a coin of that row still worth at most two
-   (five when Virtual8C says so) it claims the coin, adds one to its value
+   (five when IsAltVariant says so) it claims the coin, adds one to its value
    and starts to rise (state 3). */
 #define LB(a) (*(unsigned char *)(((long long)(int)(a))))
 
@@ -1196,7 +1196,7 @@ void dScMgCoin_c::func_ov006_020dd880(int i)
         int d = (*(int *)((c + idx * 0x18) + 0x4ac0) >> 12) - fp;
         int limit = 2;
         char *e = c + idx * 0x18;
-        int res = this->Virtual8C();
+        int res = this->IsAltVariant();
         if (res != 0) limit = 5;
         if (d <= -6 || d >= 6) continue;
         if (*(u8 *)(e + 0x4ad4) != 0) continue;
@@ -1365,14 +1365,14 @@ void dScMgCoin_c::func_ov006_020dde28(int index)
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020ddeb0Ev
 /* Parks the blocks above the top of the screen at random x with staggered
-   delays, cycling their rows 3, 4, 5. Sixteen when Virtual8C says so,
+   delays, cycling their rows 3, 4, 5. Sixteen when IsAltVariant says so,
    otherwise forty. */
 void dScMgCoin_c::func_ov006_020ddeb0()
 {
     int n;
     unsigned int row = 0;
     int i;
-    n = this->Virtual8C() != 0 ? 0x10 : 0x28;
+    n = this->IsAltVariant() != 0 ? 0x10 : 0x28;
     for (i = 0; i < n; i++) {
         unsigned int v = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         mBlocks[i].x = ((((v << 3) >> 0xf) << 5) + 0x10) << 0xc;
@@ -1634,11 +1634,11 @@ void dScMgCoin_c::func_ov006_020de5ac()
 {
 }
 
-// @symbol _ZN11dScMgCoin_c13OnYoshiTryEatEi
+// @symbol _ZN11dScMgCoin_c10StartRoundEi
 /* Slot 18. Starts the next round: counts a win if the last one was won,
    clears the scene, frees its graphics and lays the coins out again. It is
    void; the mov r0,#0 at the end is the source of the mPhase store. */
-void dScMgCoin_c::OnYoshiTryEat(int arg)
+void dScMgCoin_c::StartRound(int arg)
 {
     dScMgCoin_c *self = this;
 

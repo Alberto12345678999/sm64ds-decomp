@@ -133,7 +133,7 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
        this class's KEY FUNCTION and the TU that DEFINES it -- and only that one
        -- emits _ZTV13dScMgFlower_c. See the banner. */
     s32 InitResources();   /* slot  0 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual void StartRound(int arg);               /* slot 18 */
     s32 Behavior();        /* slot  6 */
     s32 Render();          /* slot  9 */
 
@@ -172,7 +172,7 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
     s32 mWinStreak;        /* 0x5fdc -- consecutive "loves me" petals; at 3 the
                               payout is 3 points instead of 1 */
     s32 mLoseStreak;       /* 0x5fe0 -- the mirror count, pays nothing */
-    s32 mHoldTimer;        /* 0x5fe4 -- OnYoshiTryEat counts it up to
+    s32 mHoldTimer;        /* 0x5fe4 -- StartRound counts it up to
                               0x15 and resets; above 0x14 means "held" */
     s32 mState;            /* 0x5fe8 -- 0 playing, 1 over */
     s32 mFaceSprite;       /* 0x5fec -- index into data_ov006_0213ab94, the

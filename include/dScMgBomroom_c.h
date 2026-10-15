@@ -68,7 +68,7 @@ struct dScMgBomroom_c : dScMgBase_c {
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
     virtual s32 Render();         /* slot 9 */
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual void StartRound(int arg);               /* slot 18 */
 
     /* scene helpers -- the PMF targets of the seven sinit state tables
        (data_ov006_02141660/680/6c0/6e0/708/730 and the raw {fptr,adj} pairs at

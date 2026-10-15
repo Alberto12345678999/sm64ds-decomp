@@ -463,14 +463,14 @@
       "ordinal": 60
     },
     {
-      "symbol": "_ZN12dScMg3DEsp_c9Virtual50Ev",
+      "symbol": "_ZN12dScMg3DEsp_c11OnNewRecordEv",
       "address": "0x020e9c10",
       "size": "0x00000010",
       "legacy_source": "src/_ZN12dScMg3DEsp_c9Virtual50Ev.cpp",
       "ordinal": 61
     },
     {
-      "symbol": "_ZN12dScMg3DEsp_c13OnYoshiTryEatEi",
+      "symbol": "_ZN12dScMg3DEsp_c10StartRoundEi",
       "address": "0x020e9c20",
       "size": "0x000000cc",
       "legacy_source": "src/_ZN12dScMg3DEsp_c13OnYoshiTryEatEi.cpp",

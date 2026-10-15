@@ -617,7 +617,7 @@ happened is that comment lines were traded for ledger rows.
   Nothing backslides — neither it nor its neighbour was CONVERTED before — but the
   omission still costs, and it costs the *other* member: with no marker after it, the
   preceding slot-26 fragment -- [func_ov006_0210a600](../src/minigames/d_s_mg_single3d_base.cpp) (ROM Ordinal 3 used to assemble TU) at the time, since renamed to
-  `_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv` and written as a real member
+  `_ZN19dScMgSingle3DBase_c14GetDisplayModeEv` and written as a real member
   definition -- runs from its own marker to end of file and swallows a534's `volatile`
   body and raw addresses. That member is an eight-byte `return 1;` that can never score
   readable while that is true. This is the

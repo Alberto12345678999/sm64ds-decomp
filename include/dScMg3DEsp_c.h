@@ -22,8 +22,8 @@
 
 struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     virtual ~dScMg3DEsp_c();
-    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
-    virtual void Virtual50();                          /* slot 20 */
+    virtual void StartRound(int arg);               /* slot 18 */
+    virtual void OnNewRecord();                          /* slot 20 */
 
     u8  mModel1[0x50];             /* 0x4f38, a Model */
     u8  mModel2[0x50];             /* 0x4f88, a Model */

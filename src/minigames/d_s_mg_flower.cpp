@@ -149,7 +149,7 @@ void dScMgFlower_c::func_ov006_0212a654()
 }
 
 // @symbol _ZN13dScMgFlower_c19func_ov006_0212a764Ev
-/* Round setup, called by InitResources and by OnYoshiTryEat when a round
+/* Round setup, called by InitResources and by StartRound when a round
  * restarts. Clears the cursor, wipes all 0x16 petal records and rolls the
  * petal count (1-2 when the hold counter reads exactly 0x14, else a 1-in-10
  * chance of 20-21, otherwise 8-15). The petals are laid out on a circle
@@ -265,11 +265,11 @@ void dScMgFlower_c::func_ov006_0212a764()
     G2x::SetBlendAlpha((volatile u16 *)0x4001050, 4, 8, 6, 0xa);
 }
 
-// @symbol _ZN13dScMgFlower_c13OnYoshiTryEatEi
+// @symbol _ZN13dScMgFlower_c10StartRoundEi
 /* Slot 18: bump the hold counter at 0x5fe4 (reset once it passes 0x14),
  * update the 0x51f8 object and restart the round. The counter goes through a
  * volatile pointer so the ROM's separate reload and branch come out. */
-void dScMgFlower_c::OnYoshiTryEat(int /* arg */)
+void dScMgFlower_c::StartRound(int /* arg */)
 {
     char *raw = (char *)this;
 

@@ -518,7 +518,7 @@
       "ordinal": 68
     },
     {
-      "symbol": "_ZN16dScMgPachinko2_c13OnYoshiTryEatEi",
+      "symbol": "_ZN16dScMgPachinko2_c10StartRoundEi",
       "address": "0x02103cbc",
       "size": "0x0000006c",
       "legacy_source": "src/_ZN16dScMgPachinko2_c13OnYoshiTryEatEi.cpp",

@@ -141,7 +141,7 @@ dScMgBSC_c, dScMgSnowball_c, dScMgFlower_c). Its own fields start at ROM offset
 **Own vtable slots** (`tools/rtti_vtables.py --own dScMgSingle3DBase_c`): 2, 5,
 7, 10, 26 and 33 re-override slots dScMgBase_c already gave a body
 (AfterInitResources, AfterCleanupResources, BeforeBehavior, BeforeRender,
-OnHitByCannonBlastedChar, Virtual84); 16/17 are its own D1/D0. It adds no
+GetDisplayMode, InitEngines); 16/17 are its own D1/D0. It adds no
 virtual, so its table is dScMgBase_c's 36 slots (ov006:0x0213e448, 0x90 bytes).
 
 **mSysTracker at 0x471c is hand-verified**, four independent witnesses agreeing
@@ -240,19 +240,19 @@ declared the base override as returning void*, which is WRONG; the real
 dScMgBase_c.h override returns void, so this now calls the base method as
 a plain statement instead of returning it, same fix `dScMgLuigi_c`'s own
 slot 5 needed), 6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18
-(dScMgBase_c::OnYoshiTryEat, declared on the base and overridden here;
-the body is `OnYoshiTryEat` (src/minigames/d_s_mg_amida.cpp), still a raw
+(dScMgBase_c::StartRound, declared on the base and overridden here;
+the body is `StartRound` (src/minigames/d_s_mg_amida.cpp), still a raw
 extern "C" helper rather than a member definition, same precedent as
 every other dScMgBase_c leaf's slot 18; it no longer includes this
 header at all -- its one
 inherited-field access at 0xbc is dScMgBase_c's own pad_0bc, not a named
 field there either, so it now reaches it via a raw char* offset, the same
 idiom dScMgPachinko_c's own slot 18 helper already uses), 31 (now
-`Virtual7C`, _ZN12dScMgAmida_c9Virtual7CEv in src/minigames/d_s_mg_amida.cpp -- takes no parameters
+`InitSubScreenBg`, _ZN12dScMgAmida_c15InitSubScreenBgEv in src/minigames/d_s_mg_amida.cpp -- takes no parameters
 and never touches `this` at all, pure hardware-register/global reset; it
 was left as a raw helper by THIS migration and picked up later, when the
-slot-31 keystone commit named the base slot), 34 (now `Virtual88`,
-_ZN12dScMgAmida_c9Virtual88Eiiii in src/minigames/d_s_mg_amida.cpp -- the slot's signature is
+slot-31 keystone commit named the base slot), 34 (now `PaintSquare`,
+_ZN12dScMgAmida_c11PaintSquareEiiii in src/minigames/d_s_mg_amida.cpp -- the slot's signature is
 `void(int, int, int, int)`, measured from the seven call sites in
 [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae5c4, and this body reads only three of the four because the
 fourth arrives on the stack and it supplies its own size instead; it is
@@ -266,8 +266,8 @@ reconstructed tree-wide now.  Left as a raw helper by THIS migration and
 picked up later, when the slot-34 keystone commit named the base slot --
 it never includes this header either).
 
-rtti_vtables.py --own ALSO reports slot 35, now `Virtual8C`
-(_ZN12dScMgAmida_c9Virtual8CEv in src/minigames/d_s_mg_amida.cpp, a one-line
+rtti_vtables.py --own ALSO reports slot 35, now `IsAltVariant`
+(_ZN12dScMgAmida_c12IsAltVariantEv in src/minigames/d_s_mg_amida.cpp, a one-line
 `((*(int*)((char*)c+8))&0xff)==1` check, same shape as slot 36 below but
 for a different constant).  The observation recorded here -- that nothing
 in InitResources/AfterCleanupResources/Behavior/Render/D1/D0 calls it, and
@@ -296,7 +296,7 @@ mwcc's own compiled slot for Unk36 (appended after dScMgBase_c's
 compiler-visible virtuals, which stop at dScene_c/fBase_c's own count --
 dScMgBase_c.h leaves slots 18-35 undeclared) does NOT land on true ROM
 slot 36 the way it accidentally does for a class's first-and-only new
-slot when that slot is 18 (dScMgCoin_c's OnYoshiTryEat, etc.) -- Amida's
+slot when that slot is 18 (dScMgCoin_c's StartRound, etc.) -- Amida's
 slot 36 is 18 slots further out, past all of dScMgBase_c's undeclared
 ones, so the coincidence that makes slot 18 "just work" does not extend
 here. That single size delta cascaded through the rest of the module
@@ -305,7 +305,7 @@ unrelated-looking functions afterward all mismatched) -- caught by
 rombuild, traced via final_link.o.xMAP. So all three call sites keep the
 pre-migration source's exact vtable-shim dispatch (see each method's own
 file), even though Unk36 is declared as a real virtual method here --
-unlike dScMgSlot1_c's OnHitByMegaChar/OnHitFromUnderneath, whose
+unlike dScMgSlot1_c's OpenMenu/CloseMenu, whose
 compiler-computed slot also doesn't match their true ROM position 27/28
 but is harmless there because neither is called from within Slot1's own
 migrated methods.
@@ -321,8 +321,8 @@ then the three NullDestructor_0203d47c-based 4x8-byte arrays at 0x4744,
 no-op). The base-D2 call and own-vtable-write are compiler generated;
 D0's extra Memory::Deallocate comes for free from dScMgBase_c's own
 operator delete (its immediate base), no per-class copy needed. The
-tree-wide OnYoshiTryEat mislabel lands on THIS class's D0 too (its source
-comment said "recovered name: dScMgAmida_c_OnYoshiTryEat") -- same
+tree-wide slot-18 mislabel (then `OnYoshiTryEat`) landed on THIS class's D0
+too (its source comment said "recovered name: dScMgAmida_c_OnYoshiTryEat") -- same
 textbook D0 shape (vtable write, four array destroys, base D2,
 Deallocate) as every other mislabeled D0 in the family, not gameplay
 logic.
@@ -444,7 +444,7 @@ the previous header held as four pads, and a run/dMeter_c block at 0xb9d8.
 | 0xab50 | `mSoundPosX` / `mSoundPosY` (0xab54) | Behavior fires a rolling sound whenever the position has moved 0x30000 from these two, then copies the position in. |
 | 0xab60 | `mVelX` / `mVelY` (0xab64) | `Vec2_Len` of the pair is the speed, `atan2` of it is the heading, and it is added into `mPos` each tick. Capped at 0x8000. |
 | 0xab68 | `mScrollX` | Subtracted from every world X before drawing; [func_ov006_021279b0](../src/minigames/d_s_mg_snowball.cpp) zeroes it. |
-| 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in [_ZN15dScMgSnowball_c8OnKickedEv](../src/minigames/d_s_mg_snowball.cpp). |
+| 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in [_ZN15dScMgSnowball_c16OnGraphCallback2Ev](../src/minigames/d_s_mg_snowball.cpp). |
 | 0xab70 | `mTouchX` / `mTouchY` (0xab74) | Behavior stores the raw touch sample ([gTouchX](../config/arm9/symbols.txt) / [gTouchY](../config/arm9/symbols.txt)) here and steers off the difference from the previous one. |
 | 0xab78 | `mRollAngle` | u16. `+= speed * 0x2710 / mBallSize` -- an angle that advances faster the smaller the ball. |
 | 0xab7c | `mHeadingAngle` | u16. `atan2(mVelX, mVelY)`, approached linearly while rolling and set outright while crashing. |
@@ -461,7 +461,7 @@ the previous header held as four pads, and a run/dMeter_c block at 0xb9d8.
 | 0xb9dc | `mTimeLeft` | Frames. Seeded 0x960 or 0x4b0 by variant; Behavior counts it down and plays a tick sound at 60/30/15-frame intervals as it shortens; Render formats it as seconds and centiseconds; 0 ends the run. |
 | 0xb9e0 | `mScore` | Zeroed by the reset, +1 a tick while rolling, handed to the dMeter_c counter [func_ov004_020adb1c](../src/minigames/d_s_mg_base.cpp) at the crash -- the same sink dScMgAmida_c's score uses. |
 | 0xb9f4 | `mState` | Behavior's `switch`: 0 count-in, 1 rolling, 2/3 crash, 4 melt, 5 over. |
-| 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; [_ZN15dScMgSnowball_c8OnKickedEv](../src/minigames/d_s_mg_snowball.cpp) uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
+| 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; [_ZN15dScMgSnowball_c16OnGraphCallback2Ev](../src/minigames/d_s_mg_snowball.cpp) uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
 | 0xb9fc | `mCountdownTimer` | Seeded 0xf1; state 0 counts it down, plays a beep at 0xf0/0xb4/0x78 and starts the run at 0x3c; Render draws the 3-2-1 banner from `n / 60`. |
 | 0xba00 | `mStartY` | 0x2dc0 or 0x1740 by variant; `mPosY` starts at `mStartY << 12` and the progress bar uses it as one end. |
 | 0xba04 | `mGoalY` | The other end of that bar, and the line `mPosY - mBallSize` must cross to end the run. |
@@ -513,7 +513,7 @@ into it by raw offset).
 | 0x5fd8 | `mPetalsLeft` | Decremented once per pull, gates every "still playing" branch on `>= 1`, and is the bound of the loop that finishes off the remaining petals when the round times out. |
 | 0x5fdc | `mWinStreak` | Incremented on the `mPetalToggle == 1` outcome and zeroed by the other; at 3 it swaps in banner 0x12 and adds 3 to `mScore` instead of 1. |
 | 0x5fe0 | `mLoseStreak` | The mirror counter on the other outcome; at 3 it swaps in banner 0x11. It never touches the score. |
-| 0x5fe4 | `mHoldTimer` | `dScMgFlower_c::OnYoshiTryEat` (src/minigames/d_s_mg_flower.cpp) increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
+| 0x5fe4 | `mHoldTimer` | `dScMgFlower_c::StartRound` (src/minigames/d_s_mg_flower.cpp) increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
 | 0x5fe8 | `mState` | Behavior's `switch`: 0 plays, 1 is over (it stops the prompt and only ticks the 0x51f8 object). |
 | 0x5fec | `mFaceSprite` | Render's only use is [data_ov006_0213ab94](../config/arm9/overlays/ov006/symbols.txt)`[n]` drawn at the screen centre; Behavior sets it to 0..4 on each outcome. |
 | 0x5ff0 | `mScore` | Incremented by 1 or 3 per winning pull and clamped to 0x270f -- the same 9999 cap dScMgAmida_c and dScMgSnowball_c use. |
@@ -538,17 +538,17 @@ address-only, so the exact original source names remain unknown.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x5d94 | `mScrollY` | `dScMgTrampoline_c::UpdateScroll` approaches it toward `mScrollTargetY` by 2 a tick; `OnKicked` and Render both use `mScrollY + mScrollOffsetY` as the BG2 offset and as the hardware scroll register value. InitResources seeds it to 0x20. |
+| 0x5d94 | `mScrollY` | `dScMgTrampoline_c::UpdateScroll` approaches it toward `mScrollTargetY` by 2 a tick; `OnGraphCallback2` and Render both use `mScrollY + mScrollOffsetY` as the BG2 offset and as the hardware scroll register value. InitResources seeds it to 0x20. |
 | 0x5d98 | `mScrollTargetY` | The other argument of that `ApproachLinear`; recomputed as `(q << 3) + 0x20` once the scroll has caught up. InitResources seeds it from `mScrollY`. |
 | 0x5d9c | `mScrollHoldTimer` | Loaded with 0x78 and run down to 0 by `ApproachLinear(..., 0, 1)`; the target may not move again until it reaches 0. |
 | 0x5da0 | `mScrollOffsetY` | Added to `mScrollY` at every one of its uses, and zeroed once the scroll settles. |
 | 0x5da4 | `mArrow1X` / `mArrow2X` (0x5da8) | `dScMgTrampoline_c::StatePlay` drives the pair in opposition (`ApproachLinear` one toward 0 while the other goes toward 0x20); Render draws sprite [data_ov006_02134f08](../config/arm9/overlays/ov006/symbols.txt) at `n + 0xf0` for each. |
 | 0x5dac | `mDragSoundHandle` | `UpdateTouchInput` passes the previous word to `func_02012468`, stores its returned handle, and zeroes it when a new drag begins; the intro interpolation uses the same positional-sound update path. |
 | 0x5db0 | `mTouchX` / `mTouchY` (0x5db2) | `dScMgTrampoline_c::UpdateTouchInput` refreshes them from the touch sample [gTouchX](../config/arm9/symbols.txt) / [gTouchY](../config/arm9/symbols.txt) every tick a drag is live, and draws the drag segment from them. |
-| 0x5db4 | `mTouchStartX` / `mTouchStartY` (0x5db6) | Copied from the pair above on the press edge and then left alone; `OnAttacked2` measures the swipe as start-to-current and only accepts it if the two ends sit on opposite sides of the screen. |
+| 0x5db4 | `mTouchStartX` / `mTouchStartY` (0x5db6) | Copied from the pair above on the press edge and then left alone; `OnGraphCallback0` measures the swipe as start-to-current and only accepts it if the two ends sit on opposite sides of the screen. |
 | 0x5db8 | `mInputEnabled` | s16. `UpdateTouchInput` clears `mTouching` and returns immediately while it is 0. |
 | 0x5dc4 | `mTouching` | u8, set on the press edge and cleared when input is disabled; the drag body runs only while it is 1. |
-| 0x5dc5 | `mTouchReleased` | u8, set on the release edge by the same file; `OnAttacked2` is the only reader and clears it after scoring the swipe. |
+| 0x5dc5 | `mTouchReleased` | u8, set on the release edge by the same file; `OnGraphCallback0` is the only reader and clears it after scoring the swipe. |
 
 Left `unk_`: 0x5dba (an s16 with its own getter/setter pair,
 [func_ov006_02121750](../config/arm9/overlays/ov006/symbols.txt) and [func_ov006_02121768](../config/arm9/overlays/ov006/symbols.txt), but no reader that says what it
@@ -625,7 +625,7 @@ kind, but nothing in scope increments it), 0x0b8, 0x0c8, 0x0f0, 0x05c,
 | --- | --- | --- |
 | 0x53d6 | `mSelectedTile` | Render draws the cursor sprite at [data_ov006_02142ab4](../config/arm9/overlays/ov006/symbols.txt)`[n]` / [_02142ab8](../config/arm9/overlays/ov006/symbols.txt)`[n]` (the tile coordinate tables, stride 8); Behavior hands the same value to `func_ov006_02108b90` (part of:[d_s_mg_roulette_methods.cpp](../src/minigames/d_s_mg_roulette_methods.cpp), func 21 used to assemble TU) once per racer to score the board. |
 | 0x53e4 | `mCameraPreset` | Render copies row `n` of [data_ov006_0213e34c](../config/arm9/overlays/ov006/symbols.txt) and [_0213e370](../config/arm9/overlays/ov006/symbols.txt) (stride 0xc) into the base's `mCameraTarget` and `mCameraEye`, takes the angle from [data_ov006_0213e2e0](../config/arm9/overlays/ov006/symbols.txt) + n*2, and then calls `Camera_UpdateMatrices`. 0 leaves the camera alone. Behavior sets it to 1 as the deal starts and clears it at the end. |
-| 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. _ZN15dScMgRoulette_c13OnYoshiTryEatEi (in src/minigames/d_s_mg_roulette_methods.cpp) starts it at 1. |
+| 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. _ZN15dScMgRoulette_c10StartRoundEi (in src/minigames/d_s_mg_roulette_methods.cpp) starts it at 1. |
 | 0x53e8 | `mPhaseTimer` | Counted down in every phase and reloaded on each transition (8, 0x258, 1, 0x5a); Render also renders the countdown digits from it while `mPhase == 2`. |
 | 0x53f2 | `mScore` | Phase 3 sums each racer's payout into it and phase 4 compares it against `mTargetScore` to pick the win, lose or draw banner. Zeroed by the reset. |
 | 0x53f6 | `mTargetScore` | One per racer that did NOT land on the winning tile; the bar `mScore` has to beat. |

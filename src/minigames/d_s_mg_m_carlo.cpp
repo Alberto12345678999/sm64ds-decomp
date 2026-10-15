@@ -127,7 +127,7 @@ extern "C" void* dScMgMCarlo_c_classInit()
 /* Slot 0. Loads the language's board graphics and the shared palette
  * (0xbb), sets the engine mode bytes, parks the 3D matrix at the family
  * camera and arms mShared. The round starts with the virtual
- * OnYoshiTryEat(-1), which deals the first board. */
+ * StartRound(-1), which deals the first board. */
 s32 dScMgMCarlo_c::InitResources()
 {
     void *chr;
@@ -156,19 +156,19 @@ s32 dScMgMCarlo_c::InitResources()
         int score = func_ov004_020ad878();
         if (data_ov004_020beb68 != 0) ((dScMgBase_c *)data_ov004_020beb68)->mHudScore = score;
     }
-    OnYoshiTryEat(-1);
+    StartRound(-1);
     this->unk_60aa = 0;
     return 1;
 }
 
-// @symbol _ZN13dScMgMCarlo_c13OnYoshiTryEatEi
+// @symbol _ZN13dScMgMCarlo_c10StartRoundEi
 /* Slot 18: restart the round from a fresh board. SetupBoard deals a new
  * layout, the round state re-arms (unk_60a8 = 1), and the shared prompt
  * window re-opens watching unk_60ae.
  *
  * func_ov004_020b66d4 never reads its argument, but the ROM still computes
  * this + 0x6000 for it, which is mArray[76].mTargetY. */
-void dScMgMCarlo_c::OnYoshiTryEat(int arg)
+void dScMgMCarlo_c::StartRound(int arg)
 {
     SetupBoard(mArray);
     data_ov006_0213d564 = 0;
@@ -182,14 +182,14 @@ void dScMgMCarlo_c::OnYoshiTryEat(int arg)
     data_ov004_020bc7d4 = 1;
 }
 
-// @symbol _ZN13dScMgMCarlo_c13OnTurnIntoEggEi
+// @symbol _ZN13dScMgMCarlo_c11CanEndStateEi
 /* Slot 19: the egg-exit sequence, run on the same round state (unk_60a8)
  * as Behavior. 4 frees the Gfx slots. 5 waits for the shared window, then
  * hands the dealt total on (or plays the wrap-up cue). 6 hides the board
  * one card at a time from the tail. 7 waits for the active scene, then
  * flips every dealt card away. 8 runs the 0x1e timer out. Returns 1 while
  * frames remain. */
-int dScMgMCarlo_c::OnTurnIntoEgg(int mode)
+int dScMgMCarlo_c::CanEndState(int mode)
 {
     switch (unk_60a8) {
     case 4:

@@ -158,7 +158,7 @@
       {
         "slot": 18,
         "target": "0x021071fc",
-        "symbol": "_ZN12dScMgPanel_c13OnYoshiTryEatEi"
+        "symbol": "_ZN12dScMgPanel_c10StartRoundEi"
       }
     ],
     "complete_slots": [
@@ -292,126 +292,126 @@
         "slot": 18,
         "target": "0x021071fc",
         "module": "ov006",
-        "symbol": "_ZN12dScMgPanel_c13OnYoshiTryEatEi",
+        "symbol": "_ZN12dScMgPanel_c10StartRoundEi",
         "ownership": "own override"
       },
       {
         "slot": 19,
         "target": "0x020b2994",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c13OnTurnIntoEggEi",
+        "symbol": "_ZN11dScMgBase_c11CanEndStateEi",
         "ownership": "inherited"
       },
       {
         "slot": 20,
         "target": "0x020b2990",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c9Virtual50Ev",
+        "symbol": "_ZN11dScMgBase_c11OnNewRecordEv",
         "ownership": "inherited"
       },
       {
         "slot": 21,
         "target": "0x020b298c",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c15OnGroundPoundedEv",
+        "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
         "ownership": "inherited"
       },
       {
         "slot": 22,
         "target": "0x020ae198",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c11OnAttacked1Ev",
+        "symbol": "_ZN11dScMgBase_c16OnGraphCallback1Ev",
         "ownership": "inherited"
       },
       {
         "slot": 23,
         "target": "0x020ae1a0",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c11OnAttacked2Ev",
+        "symbol": "_ZN11dScMgBase_c16OnGraphCallback0Ev",
         "ownership": "inherited"
       },
       {
         "slot": 24,
         "target": "0x020ae140",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c8OnKickedEv",
+        "symbol": "_ZN11dScMgBase_c16OnGraphCallback2Ev",
         "ownership": "inherited"
       },
       {
         "slot": 25,
         "target": "0x020ae128",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c8OnPushedEv",
+        "symbol": "_ZN11dScMgBase_c16OnGraphCallback3Ev",
         "ownership": "inherited"
       },
       {
         "slot": 26,
         "target": "0x020b04e0",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv",
+        "symbol": "_ZN11dScMgBase_c14GetDisplayModeEv",
         "ownership": "inherited"
       },
       {
         "slot": 27,
         "target": "0x020af27c",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c15OnHitByMegaCharEv",
+        "symbol": "_ZN11dScMgBase_c8OpenMenuEv",
         "ownership": "inherited"
       },
       {
         "slot": 28,
         "target": "0x020af04c",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c19OnHitFromUnderneathEv",
+        "symbol": "_ZN11dScMgBase_c9CloseMenuEv",
         "ownership": "inherited"
       },
       {
         "slot": 29,
         "target": "0x020af094",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c16OnAimedAtWithEggEv",
+        "symbol": "_ZN11dScMgBase_c17SaveScreenForMenuEv",
         "ownership": "inherited"
       },
       {
         "slot": 30,
         "target": "0x020aeed8",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv",
+        "symbol": "_ZN11dScMgBase_c21RestoreScreenFromMenuEv",
         "ownership": "inherited"
       },
       {
         "slot": 31,
         "target": "0x020b2880",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c9Virtual7CEv",
+        "symbol": "_ZN11dScMgBase_c15InitSubScreenBgEv",
         "ownership": "inherited"
       },
       {
         "slot": 32,
         "target": "0x020b27f4",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c9Virtual80Ev",
+        "symbol": "_ZN11dScMgBase_c16InitMainScreenBgEv",
         "ownership": "inherited"
       },
       {
         "slot": 33,
         "target": "0x020b265c",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c9Virtual84Ev",
+        "symbol": "_ZN11dScMgBase_c11InitEnginesEv",
         "ownership": "inherited"
       },
       {
         "slot": 34,
         "target": "0x020ae3b4",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c9Virtual88Eiiii",
+        "symbol": "_ZN11dScMgBase_c11PaintSquareEiiii",
         "ownership": "inherited"
       },
       {
         "slot": 35,
         "target": "0x020ad660",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c9Virtual8CEv",
+        "symbol": "_ZN11dScMgBase_c12IsAltVariantEv",
         "ownership": "inherited"
       }
     ],
@@ -927,7 +927,7 @@
         "ordinal": 67,
         "address": "0x021071fc",
         "size": "0x0110",
-        "symbol": "_ZN12dScMgPanel_c13OnYoshiTryEatEi",
+        "symbol": "_ZN12dScMgPanel_c10StartRoundEi",
         "legacy_source": "src/_ZN12dScMgPanel_c13OnYoshiTryEatEi.cpp"
       },
       {
@@ -1037,7 +1037,7 @@
         "address": "0x02104b24",
         "size": "0x28",
         "callers": [
-          "0x021072a4 _ZN12dScMgPanel_c13OnYoshiTryEatEi",
+          "0x021072a4 _ZN12dScMgPanel_c10StartRoundEi",
           "0x021077b4 _ZN12dScMgPanel_c13InitResourcesEv"
         ]
       },
@@ -1232,7 +1232,7 @@
         "address": "0x02106168",
         "size": "0x238",
         "callers": [
-          "0x0210729c _ZN12dScMgPanel_c13OnYoshiTryEatEi",
+          "0x0210729c _ZN12dScMgPanel_c10StartRoundEi",
           "0x021077a4 _ZN12dScMgPanel_c13InitResourcesEv"
         ]
       },
@@ -1241,7 +1241,7 @@
         "address": "0x021063a0",
         "size": "0x2c4",
         "callers": [
-          "0x02107294 _ZN12dScMgPanel_c13OnYoshiTryEatEi",
+          "0x02107294 _ZN12dScMgPanel_c10StartRoundEi",
           "0x0210779c _ZN12dScMgPanel_c13InitResourcesEv"
         ]
       },
@@ -1266,7 +1266,7 @@
         "address": "0x021067a4",
         "size": "0x134",
         "callers": [
-          "0x0210728c _ZN12dScMgPanel_c13OnYoshiTryEatEi",
+          "0x0210728c _ZN12dScMgPanel_c10StartRoundEi",
           "0x02107774 _ZN12dScMgPanel_c13InitResourcesEv"
         ]
       },
@@ -2005,7 +2005,7 @@
     ],
     "provenance": "Measured by this file's FIRST pass from the 71-function span. This pass did not re-derive every displacement; it checked the arithmetic, which closes exactly (0x46a8 + 64*0x18 = 0x4ca8; 0x4cc4 + 36*4 = 0x4d54; 0x4d54 + 36*4 = 0x4de4; each 36-halfword and 36-byte run lands on the next one's base; 0x4fae + 32 = 0x4fce, + 16 = 0x4fde), and checked it against include/dScMgPanel_c.h, which agrees. One presentational difference: the header spells 0x4fae..0x4fde as a single u8[0x30] where this file splits it 32 + 16 at 0x4fce. Both cover the same bytes; the split is what the reset loops in func_ov006_021067a4 actually do."
   },
-  "header_note": "include/dScMgPanel_c.h already exists and already declares all four named virtuals plus the destructor, with a 0x4fec size assert, so this promotion should touch no header. Its prose comment is STALE in one place: it says slot 18 'stays a raw extern \"C\" helper, not a declared method' while the struct below it declares `virtual void OnYoshiTryEat(int arg); /* slot 18 */`. The declaration is what compiles; the comment should be corrected when the class is promoted. Note also that the header gives OnYoshiTryEat a void return while the mangled cartridge name _ZN12dScMgPanel_c13OnYoshiTryEatEi encodes parameters only - the return type is not ROM-proved either way.",
+  "header_note": "include/dScMgPanel_c.h already exists and already declares all four named virtuals plus the destructor, with a 0x4fec size assert, so this promotion should touch no header. Its prose comment is STALE in one place: it says slot 18 'stays a raw extern \"C\" helper, not a declared method' while the struct below it declares `virtual void OnYoshiTryEat(int arg); /* slot 18 */`. The declaration is what compiles; the comment should be corrected when the class is promoted. Note also that the header gives OnYoshiTryEat a void return while the mangled cartridge name _ZN12dScMgPanel_c10StartRoundEi encodes parameters only - the return type is not ROM-proved either way.",
   "shard_hygiene": {
     "missing_at_symbol": {
       "count": 63,

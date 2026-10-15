@@ -179,7 +179,7 @@ extern "C" void func_ov004_020b9220(char *raw)
 
 // @symbol func_ov004_020b91fc
 /* Shut. Clears sub BG value 2. The close delay calls this, and so does
-   dScMgBase_c::OnHitFromUnderneath. */
+   dScMgBase_c::CloseMenu. */
 extern "C" void func_ov004_020b91fc(char *raw)
 {
     dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
@@ -315,7 +315,7 @@ extern "C" int func_ov004_020b8f18(void *raw)
 
 // @symbol func_ov004_020b8ee0
 /* 1 when no live icon is still counting down a press. BeforeBehavior uses
-   that as the gate before OnHitFromUnderneath closes the panel. */
+   that as the gate before CloseMenu closes the panel. */
 extern "C" int func_ov004_020b8ee0(char *raw)
 {
     dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
