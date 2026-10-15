@@ -58,9 +58,9 @@
  * only the codegen-sensitive construction sequence remains explicit.
  *
  * 0x4684 and 0x4690 are two more embedded objects (0xc bytes each,
- * constructed via func_ov006_0210c2b0 in the constructor, ticked via
- * func_ov006_0210c234 in Render), and 0x469c is a further one (constructed
- * via func_ov006_0210c208, size unknown). None of InitResources/Render/D1/
+ * constructed via SlotBlink_Clear in the constructor, ticked via
+ * SlotBlink_Draw in Render), and 0x469c is a further one (constructed
+ * via SlotLamp_Clear, size unknown). None of InitResources/Render/D1/
  * D0 read or write inside any of the three directly -- only pass their
  * address to a helper -- so all three stay raw padding.
  *

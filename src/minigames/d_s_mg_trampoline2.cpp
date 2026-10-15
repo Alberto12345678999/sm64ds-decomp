@@ -36,8 +36,8 @@ enum d_s_mg_trampoline2_AssetId {
 #include "dScMgTrampoline2_c.h"
 #include "SharedFilePtr.h"
 #include "Particle__System.h"
-#define func_ov006_021227c8 func_ov006_021227c8_decl_common_shadow
-#define func_ov006_02122c68 func_ov006_02122c68_decl_common_shadow
+#define Trmp2_DestructJumperModels func_ov006_021227c8_decl_common_shadow
+#define Trmp2Spinner_Destruct func_ov006_02122c68_decl_common_shadow
 #define _ZTV18dScMgTrampoline2_c _ZTV18dScMgTrampoline2_c_decl_common_shadow
 #include "decl_common.h"
 #include "PlayerInput.h"
@@ -45,8 +45,8 @@ enum d_s_mg_trampoline2_AssetId {
 #define ACTIVE_SLOT (*(volatile unsigned char *)&gActivePlayerSlot)
 /* local: these readers only reproduce through a 4-byte-record view of the lane. */
 #define TOUCH_REC(lane) ((unsigned char (*)[4])(lane))
-#undef func_ov006_021227c8
-#undef func_ov006_02122c68
+#undef Trmp2_DestructJumperModels
+#undef Trmp2Spinner_Destruct
 #undef _ZTV18dScMgTrampoline2_c
 
 extern int _ZTV18dScMgTrampoline2_c[];
@@ -122,7 +122,7 @@ typedef struct {
 
 struct S2 { int words[2]; };
 
-/* TUBUILD CONFLICT -- alternate body of struct 'Model', from the legacy file for func_ov006_02122c68, NOT applied:
+/* TUBUILD CONFLICT -- alternate body of struct 'Model', from the legacy file for Trmp2Spinner_Destruct, NOT applied:
 struct Model { ~Model(); };
 */
 
@@ -130,14 +130,14 @@ extern "C" {
 extern "C" void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern "C" void Matrix4x3_ApplyInPlaceToRotationZ(void *m, short angZ);
 extern Matrix4x3 data_020a0e68;
-extern "C" void func_ov006_02122814(char *c);
+extern "C" void Trmp2Spinner_UpdateMatrix(char *c);
 extern void AddVec3(struct Vector3* a, struct Vector3* b, struct Vector3* c);
 extern "C" Trampoline2ModelFilePtr data_ov006_02142f80;
 extern int data_ov006_02142f74;
 extern unsigned char *data_ov006_02142f7c;
-extern void func_ov006_0212287c(char *obj);
-extern void func_ov006_021228bc(void *obj, void *kind);
-extern void func_ov006_02122a1c(void* self);
+extern void Trmp2Spinner_Update(char *obj);
+extern void Trmp2Spinner_Init(void *obj, void *kind);
+extern void Trmp2Spinner_SetModel(void* self);
 extern void *_ZN5ModelC1Ev(void *model);
 extern void _ZN5ModelD1Ev(void *model);
 extern int data_ov006_02142f78[];
@@ -162,14 +162,14 @@ void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
 unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
-void func_ov006_020eef90(void);
+void Jump2Popup_UpdateAll(void);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern int data_ov006_0212f328;
-extern int func_ov006_021238d0(int kind);
-extern unsigned short func_ov006_0212382c(int column, int side);
-extern int func_ov006_021237c8(int kind);
-extern int func_ov006_0212373c(int kind);
+extern int Trmp2_ColumnForKind(int kind);
+extern unsigned short Trmp2_OccupancyBits(int column, int side);
+extern int Trmp2_PickFaceA(int kind);
+extern int Trmp2_PickFaceB(int kind);
 extern void func_0203cc28(int *vector, int angle);
 extern char *TrmpItem_Spawn(int resource, int *up, int variant, int face);
 extern int Mg_DrawLine(int a, int b, int c, int d, int e, int f, int g);
@@ -225,26 +225,26 @@ extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *
 extern int _ZTV14dScMgD3DBase_c[];
 extern void _ZN6Player29TryExitCharacterDoorWithIntroEv(void);
 extern void TrmpLine_Reset(void);
-extern void func_ov006_020efc08(void *object);
+extern void Jump2Popup_ElemCtor(void *object);
 extern void func_ov006_021225a8(void);
 extern void *_ZN18TextureTransformerC1Ev(void *transformer);
 /* local extern: only sibling minigame headers (dScMgAmida_c.h and four
    others) declare it; this TU includes none of them */
 extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
-extern int func_ov006_02122c90(char *object);
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_02122814, from the legacy file for func_ov006_02122a4c, NOT applied: extern void func_ov006_02122814(char *obj); */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for func_ov006_02122b24, NOT applied: extern int data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for func_ov006_02122b88, NOT applied: extern unsigned char *data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for func_ov006_02122c04, NOT applied: extern int data_ov006_02142f7c; */
-/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f80, from the legacy file for func_ov006_02122c68, NOT applied: extern SharedFilePtr data_ov006_02142f80; */
+extern int Trmp2Spinner_Construct(char *object);
+/* TUBUILD CONFLICT -- alternate declaration of Trmp2Spinner_UpdateMatrix, from the legacy file for Trmp2Spinner_UpdateMatricesAll, NOT applied: extern void Trmp2Spinner_UpdateMatrix(char *obj); */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_HideAll, NOT applied: extern int data_ov006_02142f7c; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_InitAll, NOT applied: extern unsigned char *data_ov006_02142f7c; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f7c, from the legacy file for Trmp2Spinner_LoadAll, NOT applied: extern int data_ov006_02142f7c; */
+/* TUBUILD CONFLICT -- alternate declaration of data_ov006_02142f80, from the legacy file for Trmp2Spinner_Destruct, NOT applied: extern SharedFilePtr data_ov006_02142f80; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN2G213GetBG2CharPtrEv, from the legacy file for func_ov006_02122e20, NOT applied: extern char *_ZN2G213GetBG2CharPtrEv(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054efc, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054efc(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054ea8, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054ea8(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for func_ov006_02122e20, NOT applied: extern char *func_02054d88(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev, NOT applied: int func_02054d88(void); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN18dScMgTrampoline2_c16OnGraphCallback0Ev, NOT applied: void MultiStore16(u16 val, char* dst, int nbytes); */
-/* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov006_021237c8, NOT applied: extern int RandomIntInternal(void* seed); */
+/* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for Trmp2_PickFaceA, NOT applied: extern int RandomIntInternal(void* seed); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02123b24, NOT applied: extern void MultiStore16(unsigned short a, int b, int c); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_02123bf4, NOT applied: extern int _Z14ApproachLinearRiii(int &v, int a, int b); */
 /* Both callers use the existing ov006 helpers' void(void) contracts. The
@@ -317,8 +317,8 @@ void LoadBGPltt(const void *src, unsigned int offset, unsigned int size);
 void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size);
 }
 
-// @symbol func_ov006_021248a8
-extern "C" void *func_ov006_021248a8(char *raw)
+// @symbol TrmpItem_Construct
+extern "C" void *TrmpItem_Construct(char *raw)
 {
     _ZN5ModelC1Ev(raw + 0xa0);
     _ZN5ModelC1Ev(raw + 0xf0);
@@ -355,14 +355,14 @@ extern "C" void *dScMgTrampoline2_c_classInit(void)
                       (void *)TrmpLine_Reset,
                       (void *)TrmpLine_Destroy);
         __cxa_vec_ctor(scene + 0x5ddc, 0xa, 0x1d0,
-                      (void *)func_ov006_021248a8,
-                      (void *)func_ov006_021227c8);
+                      (void *)TrmpItem_Construct,
+                      (void *)Trmp2_DestructJumperModels);
         __cxa_vec_ctor(scene + 0x6ffc, 0xa, 0x24,
-                      (void *)func_ov006_020efc08,
-                      (void *)func_ov006_020eed64);
+                      (void *)Jump2Popup_ElemCtor,
+                      (void *)Jump2Popup_ElemDtor);
         __cxa_vec_ctor(scene + 0x7164, 0x14, 0x78,
-                      (void *)func_ov006_02122c90,
-                      (void *)func_ov006_02122c68);
+                      (void *)Trmp2Spinner_Construct,
+                      (void *)Trmp2Spinner_Destruct);
         __cxa_vec_ctor(scene + 0x7ad0, 5, 0x24,
                       (void *)func_ov006_021225a8,
                       (void *)func_ov006_02120938);
@@ -447,9 +447,9 @@ s32 dScMgTrampoline2_c::InitResources()
     func_ov006_02120d8c(raw + 0x7ad0, 5);
     TrmpLine_LoadTextures();
     TrmpItem_LoadAll((char *)(raw + 0x5ddc), 10);
-    func_ov006_020ef0d4((int)(raw + 0x6ffc), 10);
+    Jump2Popup_InitPool((int)(raw + 0x6ffc), 10);
     data_ov006_021421b4 = 0;
-    func_ov006_02122c04((int)(raw + 0x7164), 0x14);
+    Trmp2Spinner_LoadAll((int)(raw + 0x7164), 0x14);
     Mg_SetTopScreenYOffset(0x10);
     StartRound(-1);
     return 1;
@@ -475,8 +475,8 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
     data_ov006_021405bc = 1;
     TrmpLine_ClearAll(mLevel);
     TrmpItem_HideAll(mLevel);
-    func_ov006_020eeff0();
-    func_ov006_02122b24();
+    Jump2Popup_ClearAll();
+    Trmp2Spinner_HideAll();
     func_ov006_02120ca0();
     func_ov006_020c8a9c(0, data_ov006_0213fc20[GetGameLanguage()]);
 
@@ -756,9 +756,9 @@ void dScMgTrampoline2_c::UpdateTouchInput()
     }
 }
 
-// @symbol func_ov006_021238d0
+// @symbol Trmp2_ColumnForKind
 extern "C" {
-int func_ov006_021238d0(int x) {
+int Trmp2_ColumnForKind(int x) {
     switch (x) {
     case 0:
     case 1:
@@ -781,9 +781,9 @@ int func_ov006_021238d0(int x) {
 }
 }
 
-// @symbol func_ov006_0212382c
+// @symbol Trmp2_OccupancyBits
 extern "C" {
-unsigned short func_ov006_0212382c(int sel, int b)
+unsigned short Trmp2_OccupancyBits(int sel, int b)
 {
     unsigned short r = 0;
     switch (sel) {
@@ -809,9 +809,9 @@ unsigned short func_ov006_0212382c(int sel, int b)
 }
 }
 
-// @symbol func_ov006_021237c8
+// @symbol Trmp2_PickFaceA
 extern "C" {
-int func_ov006_021237c8(int x) {
+int Trmp2_PickFaceA(int x) {
     int r;
     if (x < 5) {
         r = (int)(((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13);
@@ -822,9 +822,9 @@ int func_ov006_021237c8(int x) {
 }
 }
 
-// @symbol func_ov006_0212373c
+// @symbol Trmp2_PickFaceB
 extern "C" {
-int func_ov006_0212373c(int a)
+int Trmp2_PickFaceB(int a)
 {
     int r;
     if (a < 5) {
@@ -875,7 +875,7 @@ void dScMgTrampoline2_c::SpawnWave()
                 }
             }
 
-            column = func_ov006_021238d0(kind);
+            column = Trmp2_ColumnForKind(kind);
             {
                 int shift = column * 2;
                 int rightBit = 2 << shift;
@@ -897,23 +897,23 @@ void dScMgTrampoline2_c::SpawnWave()
                      (savedOccupancy & rightBit) != 0)) {
                     kinds[i] = kind;
                     faces[i] = 8;
-                    occupancy |= func_ov006_0212382c(column, 1);
+                    occupancy |= Trmp2_OccupancyBits(column, 1);
                 } else if ((savedOccupancy & leftBit) != 0) {
                     kinds[i] = kind;
-                    faces[i] = (short)func_ov006_021237c8(kind);
-                    occupancy |= func_ov006_0212382c(column, 0);
+                    faces[i] = (short)Trmp2_PickFaceA(kind);
+                    occupancy |= Trmp2_OccupancyBits(column, 0);
                 } else {
                     kinds[i] = kind;
-                    faces[i] = (short)func_ov006_0212373c(kind);
+                    faces[i] = (short)Trmp2_PickFaceB(kind);
                     switch (faces[i]) {
                     case 4:
                     case 5:
                     case 6:
                     case 7:
-                        occupancy |= func_ov006_0212382c(column, 0);
+                        occupancy |= Trmp2_OccupancyBits(column, 0);
                         break;
                     default:
-                        occupancy |= func_ov006_0212382c(column, 1);
+                        occupancy |= Trmp2_OccupancyBits(column, 1);
                         break;
                     }
                 }
@@ -945,8 +945,8 @@ s32 dScMgTrampoline2_c::Behavior()
     int saved = data_ov006_02140830;
 
     func_ov006_02120c40();
-    func_ov006_020eef90();
-    func_ov006_02122ab8();
+    Jump2Popup_UpdateAll();
+    Trmp2Spinner_UpdateAll();
     mParticleID =
         _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
             mParticleID, 0xf0, 0x280000, 0x700000, -0x580000, 0);
@@ -989,7 +989,7 @@ s32 dScMgTrampoline2_c::Render()
     *(volatile int *)0x40004cc = 0x40007fff;
 
     func_ov006_02120c08();
-    func_ov006_020eef58();
+    Jump2Popup_DrawAll();
 
     if (unk_4664 == 1) {
         count = data_ov006_0213b0f0;
@@ -1014,7 +1014,7 @@ s32 dScMgTrampoline2_c::Render()
         TrmpLine_DrawAll();
         TrmpItem_UpdateMatricesAll();
     }
-    func_ov006_02122a4c();
+    Trmp2Spinner_UpdateMatricesAll();
     return 1;
 }
 
@@ -1228,9 +1228,9 @@ void dScMgTrampoline2_c::PaintSquare(int x_base, int y, int val, int n)
     }
 }
 
-// @symbol func_ov006_02122c90
+// @symbol Trmp2Spinner_Construct
 extern "C" {
-int func_ov006_02122c90(char *raw)
+int Trmp2Spinner_Construct(char *raw)
 {
     _ZN5ModelC1Ev(raw);
     *(short *)(raw + 0x76) = 0;
@@ -1238,28 +1238,28 @@ int func_ov006_02122c90(char *raw)
 }
 }
 
-// @symbol func_ov006_02122c68
-extern "C" Model* func_ov006_02122c68(Model* m){
+// @symbol Trmp2Spinner_Destruct
+extern "C" Model* Trmp2Spinner_Destruct(Model* m){
   data_ov006_02142f80.Release();
   _ZN5ModelD1Ev(m);
   return m;
 }
 
-// @symbol func_ov006_02122c04
+// @symbol Trmp2Spinner_LoadAll
 extern "C" {
-void func_ov006_02122c04(int x, int count) {
+void Trmp2Spinner_LoadAll(int x, int count) {
     int i;
     data_ov006_02142f7c = (unsigned char *)x;
     data_ov006_02142f74 = count;
     for (i = 0; i < data_ov006_02142f74; i++) {
-        func_ov006_02122a1c((void*)(data_ov006_02142f7c + i * 0x78));
+        Trmp2Spinner_SetModel((void*)(data_ov006_02142f7c + i * 0x78));
     }
 }
 }
 
-// @symbol func_ov006_02122b88
+// @symbol Trmp2Spinner_InitAll
 extern "C" {
-void func_ov006_02122b88(unsigned char *c)
+void Trmp2Spinner_InitAll(unsigned char *c)
 {
   int i = 0;
   int n = data_ov006_02142f74;
@@ -1275,7 +1275,7 @@ void func_ov006_02122b88(unsigned char *c)
   {
     if ((*((short *) (p + 0x76))) == 0)
     {
-      func_ov006_021228bc(base + (i * 0x78), c);
+      Trmp2Spinner_Init(base + (i * 0x78), c);
       return;
     }
     i++;
@@ -1285,9 +1285,9 @@ void func_ov006_02122b88(unsigned char *c)
 }
 }
 
-// @symbol func_ov006_02122b24
+// @symbol Trmp2Spinner_HideAll
 extern "C" {
-void func_ov006_02122b24(void){
+void Trmp2Spinner_HideAll(void){
   int i = 0;
   if(data_ov006_02142f74 > 0){
     int off = 0;
@@ -1300,36 +1300,36 @@ void func_ov006_02122b24(void){
 }
 }
 
-// @symbol func_ov006_02122ab8
+// @symbol Trmp2Spinner_UpdateAll
 extern "C" {
-void func_ov006_02122ab8(void)
+void Trmp2Spinner_UpdateAll(void)
 {
     int i;
     for (i = 0; i < data_ov006_02142f74; i++) {
         char *obj = (char *)data_ov006_02142f7c + i * 0x78;
         if (*(short *)(obj + 0x76) != 0) {
-            func_ov006_0212287c(obj);
+            Trmp2Spinner_Update(obj);
         }
     }
 }
 }
 
-// @symbol func_ov006_02122a4c
+// @symbol Trmp2Spinner_UpdateMatricesAll
 extern "C" {
-void func_ov006_02122a4c(void)
+void Trmp2Spinner_UpdateMatricesAll(void)
 {
     int i;
     for (i = 0; i < data_ov006_02142f74; i++) {
         char *obj = (char *)data_ov006_02142f7c + i * 0x78;
         if (*(short *)(obj + 0x76) != 0) {
-            func_ov006_02122814(obj);
+            Trmp2Spinner_UpdateMatrix(obj);
         }
     }
 }
 }
 
-// @symbol func_ov006_02122a1c
-extern "C" void func_ov006_02122a1c(void* raw)
+// @symbol Trmp2Spinner_SetModel
+extern "C" void Trmp2Spinner_SetModel(void* raw)
 {
     BMD_File *file = (BMD_File *)Model::LoadFile(data_ov006_02142f80);
     ((ModelBase *)raw)->SetFile(file, 1, -1);
@@ -1341,8 +1341,8 @@ extern unsigned short data_ov006_0212f144[];
 extern int RandomIntInternal(int* seed);
 extern void func_020169f4(char* self, int kind);
 
-// @symbol func_ov006_021228bc
-void func_ov006_021228bc(void *r0, void *r1) {
+// @symbol Trmp2Spinner_Init
+void Trmp2Spinner_Init(void *r0, void *r1) {
     char* raw = (char *)r0;
     int value = (int)r1;
     struct Tbl t = data_ov006_0213fbf8;
@@ -1391,9 +1391,9 @@ void func_ov006_021228bc(void *r0, void *r1) {
 }
 }
 
-// @symbol func_ov006_0212287c
+// @symbol Trmp2Spinner_Update
 extern "C" {
-void func_ov006_0212287c(char* raw){
+void Trmp2Spinner_Update(char* raw){
   ApproachLinear2(*(short *)(raw + 0x76), 0, 1);
   short* p = (short*)((int)raw + 0x74);
   *p = *p + 0x400;
@@ -1401,8 +1401,8 @@ void func_ov006_0212287c(char* raw){
 }
 }
 
-// @symbol func_ov006_02122814
-extern "C" void func_ov006_02122814(char *raw) {
+// @symbol Trmp2Spinner_UpdateMatrix
+extern "C" void Trmp2Spinner_UpdateMatrix(char *raw) {
     Matrix4x3_FromTranslation(&data_020a0e68, *(int *)(raw + 0x5c), *(int *)(raw + 0x60), *(int *)(raw + 0x64));
     Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, *(short *)(raw + 0x74));
     *(Matrix4x3 *)(raw + 0x1c) = data_020a0e68;
@@ -1414,8 +1414,8 @@ extern "C" {
 extern void __cxa_vec_cleanup(void* a, int b, int c, void* d);
 extern void _ZN18TextureTransformerD1Ev(void*);
 extern void _ZN5ModelD1Ev(void*);
-// @symbol func_ov006_021227c8
-int func_ov006_021227c8(char* raw){
+// @symbol Trmp2_DestructJumperModels
+int Trmp2_DestructJumperModels(char* raw){
   __cxa_vec_cleanup(raw+0x1a8, 5, 8, (void*)NullDestructor_0203d47c);
   _ZN18TextureTransformerD1Ev(raw+0x194);
   _ZN5ModelD1Ev(raw+0x140);

@@ -19,10 +19,10 @@
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void *func_ov006_020ca604(void);
 extern "C" void TrmpLine_Destroy(void);
-extern "C" void func_ov006_020eed64(void *object);
+extern "C" void Jump2Popup_ElemDtor(void *object);
 struct Model;
-extern "C" int func_ov006_021227c8(char *object);
-extern "C" Model *func_ov006_02122c68(Model *model);
+extern "C" int Trmp2_DestructJumperModels(char *object);
+extern "C" Model *Trmp2Spinner_Destruct(Model *model);
 extern "C" void func_ov006_02120938(void);
 
 struct dScMgTrampoline2_c : dScMgD3DBase_c {
@@ -30,9 +30,9 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
 
     virtual ~dScMgTrampoline2_c() {
         __cxa_vec_cleanup(mArray6, 5, 0x24, (void *)func_ov006_02120938);
-        __cxa_vec_cleanup(mArray5, 0x14, 0x78, (void *)func_ov006_02122c68);
-        __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)func_ov006_020eed64);
-        __cxa_vec_cleanup(mArray3, 0xa, 0x1d0, (void *)func_ov006_021227c8);
+        __cxa_vec_cleanup(mArray5, 0x14, 0x78, (void *)Trmp2Spinner_Destruct);
+        __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)Jump2Popup_ElemDtor);
+        __cxa_vec_cleanup(mArray3, 0xa, 0x1d0, (void *)Trmp2_DestructJumperModels);
         __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)TrmpLine_Destroy);
         __cxa_vec_cleanup(mArray1, 5, 0xdc, (void *)func_ov006_020ca604);
     }
@@ -67,9 +67,9 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     u32 mState[2];            /* 0x5004 */
     u8  mArray1[0x44c];       /* 0x500c -- 5 * 0xdc,    elem dtor func_ov006_020ca604 */
     u8  mArray2[0x984];       /* 0x5458 -- 3 * 0x32c,   elem dtor TrmpLine_Destroy */
-    u8  mArray3[0x1220];      /* 0x5ddc -- 0xa * 0x1d0, elem dtor func_ov006_021227c8 */
-    u8  mArray4[0x168];       /* 0x6ffc -- 0xa * 0x24,  elem dtor func_ov006_020eed64 */
-    u8  mArray5[0x960];       /* 0x7164 -- 0x14 * 0x78, elem dtor func_ov006_02122c68 */
+    u8  mArray3[0x1220];      /* 0x5ddc -- 0xa * 0x1d0, elem dtor Trmp2_DestructJumperModels */
+    u8  mArray4[0x168];       /* 0x6ffc -- 0xa * 0x24,  elem dtor Jump2Popup_ElemDtor */
+    u8  mArray5[0x960];       /* 0x7164 -- 0x14 * 0x78, elem dtor Trmp2Spinner_Destruct */
     u32 mParticleID;          /* 0x7ac4 -- Particle::System unique ID */
     int mRamp;                /* 0x7ac8 -- fixed point; rests at 0x14000, eased
                                  toward 0x7000 as misses come in */

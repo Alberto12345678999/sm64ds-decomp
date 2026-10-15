@@ -49,105 +49,105 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov006_020deac4",
+      "symbol": "CupFx_ElemDtor",
       "address": "0x020deac4",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020deac4.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov006_020deac8",
+      "symbol": "CupFx_FindFree",
       "address": "0x020deac8",
       "size": "0x00000028",
       "legacy_source": "src/func_ov006_020deac8.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov006_020deaf0",
+      "symbol": "CupFx_MoveForCup",
       "address": "0x020deaf0",
       "size": "0x00000058",
       "legacy_source": "src/func_ov006_020deaf0.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov006_020deb48",
+      "symbol": "CupFx_Spawn",
       "address": "0x020deb48",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov006_020deb48.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov006_020debb4",
+      "symbol": "CupFx_DrawForCup",
       "address": "0x020debb4",
       "size": "0x00000048",
       "legacy_source": "src/func_ov006_020debb4.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov006_020debfc",
+      "symbol": "CupFx_UpdateAll",
       "address": "0x020debfc",
       "size": "0x00000040",
       "legacy_source": "src/func_ov006_020debfc.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov006_020dec3c",
+      "symbol": "CupFx_ClearAll",
       "address": "0x020dec3c",
       "size": "0x00000020",
       "legacy_source": "src/func_ov006_020dec3c.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov006_020dec5c",
+      "symbol": "CupFx_Move",
       "address": "0x020dec5c",
       "size": "0x0000002c",
       "legacy_source": "src/func_ov006_020dec5c.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov006_020dec88",
+      "symbol": "CupFx_Draw",
       "address": "0x020dec88",
       "size": "0x00000078",
       "legacy_source": "src/func_ov006_020dec88.cpp",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov006_020ded00",
+      "symbol": "CupFx_Update",
       "address": "0x020ded00",
       "size": "0x00000084",
       "legacy_source": "src/func_ov006_020ded00.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov006_020ded84",
+      "symbol": "CupFx_Init",
       "address": "0x020ded84",
       "size": "0x00000078",
       "legacy_source": "src/func_ov006_020ded84.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov006_020dedfc",
+      "symbol": "Cup_PlayAnimSound",
       "address": "0x020dedfc",
       "size": "0x000000dc",
       "legacy_source": "src/func_ov006_020dedfc.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov006_020deed8",
+      "symbol": "Cup_DrawOamList",
       "address": "0x020deed8",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov006_020deed8.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov006_020def80",
+      "symbol": "Cup_UpdateAnim",
       "address": "0x020def80",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov006_020def80.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov006_020df024",
+      "symbol": "Cup_PickShuffleSpeed",
       "address": "0x020df024",
       "size": "0x00000198",
       "legacy_source": "src/func_ov006_020df024.c",
@@ -252,7 +252,7 @@
       "ordinal": 30
     },
     {
-      "symbol": "func_ov006_020e0634",
+      "symbol": "Cup_Nothing",
       "address": "0x020e0634",
       "size": "0x00000004",
       "legacy_source": "src/func_ov006_020e0634.c",

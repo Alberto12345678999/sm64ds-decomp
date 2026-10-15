@@ -408,3 +408,18 @@ High confidence:
 Medium confidence:
 - `SnowSpray_*`: the 32 moving records at +0xba14.
 - The falling-bit machine, which has the same shape as Curling's and the same names (`Bit_*`, `BitA/B_State*`).
+
+**Cup, Jump2, Slots, Trampoline2 (one batch).**
+
+- **Cup.** High confidence: `CupFx_*` (the 32-sprite effect pool), `Cup_DrawOamList`, `Cup_UpdateAnim`, `Cup_PlayAnimSound`. Medium confidence: `Cup_PickShuffleSpeed`, which reads the round row's speed nibbles.
+- **Jump2.**
+  - A linked list of score popups: `Jump2Popup_*`, plus the members `Elem::Spawn/Tick/DrawNumber` and `Node::Link/Unlink`.
+  - Phases: `BeginIntro`, `State_Intro`, `BeginPlay`, `State_Play`, `BeginEnd`, `State_End`, `State_Result`, `State_Idle`. These are medium confidence, from the PMF records the transitions store.
+- **Slots.**
+  - `Slot3_State0..7`: Slot3's state table by index. States 3 and 4 share a handler, hence `Slot3_State3and4`.
+  - `SlotLamp_*` and `SlotBlink_*`: the blink helpers the file's own comments describe.
+  - Medium confidence: `SlotBet_*`, `SlotReel_SetSpeed`, `SlotReels_CheckStopped`, `Slot1_InitHud`.
+- **Trampoline2.** All medium confidence:
+  - `Trmp2_ColumnForKind`, `Trmp2_OccupancyBits` and `Trmp2_PickFaceA/B`: the face-row dealer.
+  - `Trmp2Spinner_*`: a spinning decoration pool.
+  - `TrmpItem_Construct`, `Trmp2_DestructJumperModels`.

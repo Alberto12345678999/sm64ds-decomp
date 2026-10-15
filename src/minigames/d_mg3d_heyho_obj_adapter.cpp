@@ -1472,7 +1472,7 @@ extern void* _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix
 extern void _Z14ApproachLinearRiii(int* p, int a, int b);
 extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
 extern int Mg_GetTopScreenYOffset(void);
-extern void func_ov006_020ef05c(int a, int b, int c);
+extern void Jump2Popup_Spawn(int a, int b, int c);
 extern void func_ov006_020c4d20(char* p);
 
 extern int data_ov006_02140304[];
@@ -1507,7 +1507,7 @@ void func_ov006_020c4d3c(char* c)
             Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 0x9c), &v0, &v1);
         }
         v1 = v1 - 0x20;
-        func_ov006_020ef05c(v0 << 0xc, v1 << 0xc, (short)data_ov006_02140308);
+        Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)data_ov006_02140308);
     }
 
     func_ov006_020c4d20(c);

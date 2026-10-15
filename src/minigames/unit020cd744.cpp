@@ -49,7 +49,7 @@ extern "C" void TrmpItem_GrowScale(char* c) {
 namespace s020cd7b8 {
 extern "C" extern void Camera_ProjectToScreen(void* a, void* b, int* c, int* d);
 extern "C" extern int Mg_GetTopScreenYOffset(void);
-extern "C" extern void func_ov006_020ef05c(int a, int b, int c);
+extern "C" extern void Jump2Popup_Spawn(int a, int b, int c);
 extern "C" {extern void* data_ov006_02141a50;}
 extern "C" {extern void* data_ov006_02141a40;}
 struct P2 { int w[2]; };
@@ -64,7 +64,7 @@ extern "C" void TrmpItem_ProjectToScreen(char* c, int arg1)
     } else {
         Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 8), &v0, &v1);
     }
-    func_ov006_020ef05c(v0 << 0xc, v1 << 0xc, (short)arg1);
+    Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)arg1);
     *(struct P2*)c = data_ov006_0213b32c;
 }
 }
@@ -564,7 +564,7 @@ extern "C" extern void TrmpItem_ReflectOffLine(char *a, void *o);
 extern "C" extern int TrmpItem_HitTest2D(char *a, void *o, int arg1);
 extern "C" extern void _Z14ApproachLinearRiii(int *p, int target, int step);
 extern "C" extern void func_ov006_020e6e3c(int a, int b);
-extern "C" extern void func_ov006_02122b88(int c);
+extern "C" extern void Trmp2Spinner_InitAll(int c);
 extern "C" extern void TrmpItem_ProjectToScreen(char *c, unsigned short arg1);
 
 #define ELEM ((char *)data_ov006_0214082c + i * 0x1d0)
@@ -613,7 +613,7 @@ extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
             break;
         }
         _Z14ApproachLinearRiii(&data_ov006_02140830, 0xf423f, step);
-        func_ov006_02122b88(*(unsigned short *)(sb + 0x20));
+        Trmp2Spinner_InitAll(*(unsigned short *)(sb + 0x20));
         TrmpItem_ProjectToScreen(ELEM, (short)step);
         (*(unsigned short *)(sb + 0x20))++;
     }

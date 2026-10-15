@@ -11,7 +11,7 @@
 
 extern "C" int  Presenter_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
-extern "C" void func_ov006_020deac4(void);
+extern "C" void CupFx_ElemDtor(void);
 extern "C" void NullDestructor_0203d47c(void);
 
 /* Presenter_Construct's own offsets. Byte arrays, not the real classes:
@@ -32,8 +32,8 @@ struct CupModelParts {
 typedef char CupModelParts_size_must_be_0x19c[sizeof(CupModelParts) == 0x19c ? 1 : -1];
 #endif
 
-/* One effect slot. func_ov006_020ded84 fills it, func_ov006_020ded00 steps
- * it, func_ov006_020dec88 draws x>>12, y>>12. */
+/* One effect slot. CupFx_Init fills it, CupFx_Update steps
+ * it, CupFx_Draw draws x>>12, y>>12. */
 struct CupFx {
     s32 x;            /* +0x00 */
     s32 y;            /* +0x04 */
@@ -44,7 +44,7 @@ struct CupFx {
     u8  row;          /* +0x13 -- 1 for kind 2; while set, y drops by 6 */
     u8  delay;        /* +0x14 -- DecIfAbove0_Byte, reloaded to 3 */
     u8  active;       /* +0x15 */
-    u8  kind;         /* +0x16 -- 1 lets func_ov006_020dec5c follow the cup */
+    u8  kind;         /* +0x16 -- 1 lets CupFx_Move follow the cup */
     s8  cup;          /* +0x17 */
 };
 
@@ -90,12 +90,12 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     /* Presenter_PlayAnim7 and Presenter_PlayAnim4 play a sound only when this is 0. */
     s32 mSuppressSound;   /* 0x50e0 -- component +0x1a8 */
     u8  pad_50e4[4];      /* 0x50e4 */
-    CupFx mFx[0x20];      /* 0x50e8 -- elem dtor func_ov006_020deac4 */
+    CupFx mFx[0x20];      /* 0x50e8 -- elem dtor CupFx_ElemDtor */
     CupPos mCup[3];       /* 0x53e8 -- elem dtor NullDestructor_0203d47c */
     s32 mMidX;            /* 0x5400 -- average of the two cups' rest x */
     s32 mMidY;            /* 0x5404 -- average of the two rest y */
     s32 mHalfX;           /* 0x5408 -- mMidX minus the first cup's rest x */
-    s32 mOnes[3];         /* 0x540c -- Fix12 passed to func_ov006_020deed8; it reciprocates it */
+    s32 mOnes[3];         /* 0x540c -- Fix12 passed to Cup_DrawOamList; it reciprocates it */
     s32 mState;           /* 0x5418 */
     s32 mTimer;           /* 0x541c */
     s32 mIds[3];          /* 0x5420 -- which cup sits in each slot */

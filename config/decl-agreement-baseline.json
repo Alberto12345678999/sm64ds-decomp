@@ -28057,12 +28057,12 @@
         "arity:1"
       ]
     },
-    "func_ov006_02122b88": {
+    "Trmp2Spinner_InitAll": {
       "src/minigames/unit020cd744.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov006_02122c68": {
+    "Trmp2Spinner_Destruct": {
       "include/decl_common.h": [
         "return:void"
       ]

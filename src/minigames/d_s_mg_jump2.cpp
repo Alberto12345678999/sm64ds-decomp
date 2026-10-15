@@ -1,19 +1,19 @@
 //cpp
 /* ov006/dScMgJump2_c -- the second jump minigame, 30 functions
  * (.text 0x020eebe8..0x020efc0c), ending with the factory
- * dScMgJump2_c_classInit and the element constructor func_ov006_020efc08
+ * dScMgJump2_c_classInit and the element constructor Jump2Popup_ElemCtor
  * it registers.
  *
  * Functions run in REVERSE of ROM order (highest address first); do not
- * reorder. The legacy file for func_ov006_020ef5ac had
+ * reorder. The legacy file for State_Play had
  * `#pragma opt_propagation off`; it is not needed, and carried here it
  * would apply to every function in the file.
  *
  * leftovers:
- *   - func_ov006_020ef0d4, ..ef05c, ..eeff0, ..eef90, ..eef58 and ..ef2b8
+ *   - Jump2Popup_InitPool, ..ef05c, ..eeff0, ..eef90, ..eef58 and ..ef2b8
  *     stay free: none takes the object (they walk the element list globals
  *     or program the light registers), so a receiver exists only to be
- *     passed, not used. func_ov006_020eed64 and func_ov006_020efc08 are
+ *     passed, not used. Jump2Popup_ElemDtor and Jump2Popup_ElemCtor are
  *     the shared empty element destructor and constructor --
  *     dScMgTrampoline2_c's factory and array cleanup use them too -- and
  *     are registered through the C __cxa_vec_ctor boundary.
@@ -42,8 +42,8 @@ enum d_s_mg_jump2_AssetId {
  * and back out of the live list at data_ov006_021421c0. */
 struct Node {
     struct Node* next;
-    void func_ov006_020eef40();   /* push */
-    void func_ov006_020eeef4();   /* remove */
+    void Link();   /* push */
+    void Unlink();   /* remove */
 };
 
 /* The 0x24-byte entries of mArray3, read back from what the functions below
@@ -58,9 +58,9 @@ struct Elem {
     short active;           /* 0x20 */
     short _22;
 
-    void func_ov006_020eee3c(int startX, int startY, int spriteId);  /* spawn */
-    void func_ov006_020eedc8();                                      /* update */
-    void func_ov006_020eed68();                                      /* draw   */
+    void Spawn(int startX, int startY, int spriteId);  /* spawn */
+    void Tick();                                      /* update */
+    void DrawNumber();                                      /* draw   */
 };
 
 /* Whole-matrix copies go through this so they stay one block move. */
@@ -133,7 +133,7 @@ void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern int data_020a0e68;
 unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
 unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
-void func_ov006_020eef90(void);
+void Jump2Popup_UpdateAll(void);
 extern void* func_ov006_020c7300(void*);
 extern void* func_ov006_020c4060(void*);
 extern void Mg_SubmitScore(int);
@@ -181,13 +181,13 @@ dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
 dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
 int func_ov006_020c6f70(char *object);
 
-// @symbol func_ov006_020efc08
+// @symbol Jump2Popup_ElemCtor
 /* The empty constructor of mArray3's 0x24-byte elements, the partner of
- * the shared empty destructor func_ov006_020eed64. The factory below hands
+ * the shared empty destructor Jump2Popup_ElemDtor. The factory below hands
  * the pair to __cxa_vec_ctor; dScMgTrampoline2_c's factory reuses both.
  * Written above the factory because this TU emits .text in reverse source
  * order, and the ROM has it directly after the factory. */
-void func_ov006_020efc08(void *object)
+void Jump2Popup_ElemCtor(void *object)
 {
 }
 
@@ -217,7 +217,7 @@ void *dScMgJump2_c_classInit()
         *(char **)raw = (char *)&_ZTV12dScMgJump2_c[2];
         __cxa_vec_ctor(raw + 0x500c, 3, 0xb8, (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev, (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
         __cxa_vec_ctor(raw + 0x5234, 6, 0xf0, (void (*)(void *))func_ov006_020c6f70, (void (*)(void *))func_ov006_020c6f3c);
-        __cxa_vec_ctor(raw + 0x57d4, 0x10, 0x24, func_ov006_020efc08, func_ov006_020eed64);
+        __cxa_vec_ctor(raw + 0x57d4, 0x10, 0x24, Jump2Popup_ElemCtor, Jump2Popup_ElemDtor);
         _ZN5ModelC1Ev(raw + 0x5a14);
     }
     return raw;
@@ -232,8 +232,8 @@ void dScMgJump2_c::StartRound(int /* arg */)
   func_ov006_020c719c(0, 0);
   data_ov006_02140328 = 3;
   func_ov006_020c44b4(0, 0);
-  func_ov006_020eeff0();
-  func_ov006_020ef7f8();
+  Jump2Popup_ClearAll();
+  BeginIntro();
 }
 
 // @symbol _ZN12dScMgJump2_c11CanEndStateEi
@@ -288,7 +288,7 @@ s32 dScMgJump2_c::InitResources()
     if (func_ov006_020c4684(mArray2, 6) == 0)
         return 0;
 
-    func_ov006_020ef0d4((int)mArray3, 0x10);
+    Jump2Popup_InitPool((int)mArray3, 0x10);
 
     data_ov006_02140314 = 1;
     if (func_ov006_020c7574(mPlayers, 3) == 0)
@@ -315,16 +315,16 @@ s32 dScMgJump2_c::InitResources()
  * 0x1000.
  *
  * This one arms the countdown and installs the next state. */
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef7f8Ev
-void dScMgJump2_c::func_ov006_020ef7f8(){
+// @symbol _ZN12dScMgJump2_c10BeginIntroEv
+void dScMgJump2_c::BeginIntro(){
   unk_5a74 = 0x78;
   unk_5a64 = 0;
   unk_5a68 = 0x4000;
   *(struct G2*)pad_5004 = data_ov006_0213cc94;
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef794Ev
-void dScMgJump2_c::func_ov006_020ef794()
+// @symbol _ZN12dScMgJump2_c11State_IntroEv
+void dScMgJump2_c::State_Intro()
 {
     s16 *countdown = &unk_5a74;
     *countdown = *countdown - 1;
@@ -335,20 +335,20 @@ void dScMgJump2_c::func_ov006_020ef794()
             mPromptBlinkTimer = 0;
         }
         func_ov006_020c7490();
-        func_ov006_020ef768();
+        BeginPlay();
     }
     func_ov006_020c42bc();
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef768Ev
-void dScMgJump2_c::func_ov006_020ef768()
+// @symbol _ZN12dScMgJump2_c9BeginPlayEv
+void dScMgJump2_c::BeginPlay()
 {
     unk_5a74 = 0xf0;
     *(struct G2 *)pad_5004 = data_ov006_0213cc84;
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef5acEv
-void dScMgJump2_c::func_ov006_020ef5ac()
+// @symbol _ZN12dScMgJump2_c10State_PlayEv
+void dScMgJump2_c::State_Play()
 {
     s16 done;
     int prevScore = data_ov006_02140308;
@@ -417,18 +417,18 @@ void dScMgJump2_c::func_ov006_020ef5ac()
 
     if (data_ov006_02140428 != 0)
         return;
-    func_ov006_020ef580();
+    BeginEnd();
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef580Ev
-void dScMgJump2_c::func_ov006_020ef580()
+// @symbol _ZN12dScMgJump2_c8BeginEndEv
+void dScMgJump2_c::BeginEnd()
 {
     unk_5a74 = 0x20;
     *(struct G2 *)pad_5004 = data_ov006_0213cc9c;
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef4ecEv
-void dScMgJump2_c::func_ov006_020ef4ec()
+// @symbol _ZN12dScMgJump2_c9State_EndEv
+void dScMgJump2_c::State_End()
 {
   int *acc = &unk_5a64;
   *acc += unk_5a68 >> 12;
@@ -447,8 +447,8 @@ void dScMgJump2_c::func_ov006_020ef4ec()
   *(struct G2 *)pad_5004 = data_ov006_0213cc8c;
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef480Ev
-void dScMgJump2_c::func_ov006_020ef480(){
+// @symbol _ZN12dScMgJump2_c12State_ResultEv
+void dScMgJump2_c::State_Result(){
     void *obj = func_ov006_020c7300(this);
     if(obj){
         obj = func_ov006_020c4060(obj);
@@ -463,8 +463,8 @@ void dScMgJump2_c::func_ov006_020ef480(){
     func_ov006_020c712c();
 }
 
-// @symbol _ZN12dScMgJump2_c19func_ov006_020ef47cEv
-void dScMgJump2_c::func_ov006_020ef47c()
+// @symbol _ZN12dScMgJump2_c10State_IdleEv
+void dScMgJump2_c::State_Idle()
 {
 }
 
@@ -483,7 +483,7 @@ s32 dScMgJump2_c::Behavior()
         *(int *)((char *)system + 0x50) = 0x4000;
         *(unsigned char *)((char *)system + 0x58) = 0x2c;
     }
-    func_ov006_020eef90();
+    Jump2Popup_UpdateAll();
     {
         dScMgJump2_cState *pp = (dScMgJump2_cState *)pad_5004;
         (this->**pp)();
@@ -494,7 +494,7 @@ s32 dScMgJump2_c::Behavior()
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_0203cd80(int* m, int x);
 
-void func_ov006_020ef2b8(void) {
+void Jump2_SetLights(void) {
     int light0[3];
     int light1[3];
     *(volatile int*)0x40004cc = 0x7fff;
@@ -536,8 +536,8 @@ s32 dScMgJump2_c::Render()
     int i;
 
     Mg_DrawTopRightCounter(data_ov006_02140308, 4);
-    func_ov006_020eef58();
-    func_ov006_020ef2b8();
+    Jump2Popup_DrawAll();
+    Jump2_SetLights();
     Matrix4x3_FromTranslation(&data_020a0e68, 0, 0xffead000, -0xa0000);
     *(struct M48 *)&((Model *)mModel)->mat4x3 = *(struct M48 *)&data_020a0e68;
 
@@ -586,7 +586,7 @@ s32 dScMgJump2_c::CleanupResources()
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020ef0d4(int table, int count){
+void Jump2Popup_InitPool(int table, int count){
   data_ov006_021421b0 = (struct Elem *)table;
   data_ov006_021421bc = count;
   data_ov006_021421b4 = 0;
@@ -594,12 +594,12 @@ void func_ov006_020ef0d4(int table, int count){
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020ef05c(int x, int y, int sprite)
+void Jump2Popup_Spawn(int x, int y, int sprite)
 {
     int i;
     for (i = data_ov006_021421bc - 1; i >= 0; i--) {
         if (data_ov006_021421b0[i].active == 0) {
-            data_ov006_021421b0[i].func_ov006_020eee3c(x, y, sprite);
+            data_ov006_021421b0[i].Spawn(x, y, sprite);
             return;
         }
     }
@@ -607,7 +607,7 @@ void func_ov006_020ef05c(int x, int y, int sprite)
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020eeff0(void){
+void Jump2Popup_ClearAll(void){
     int i;
     for(i=0;i<data_ov006_021421bc;i++){
         data_ov006_021421b0[i].active = 0;
@@ -617,13 +617,13 @@ void func_ov006_020eeff0(void){
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020eef90(void)
+void Jump2Popup_UpdateAll(void)
 {
     int i = 0;
     if (i < data_ov006_021421bc) {
         int offset = 0;
         do {
-            ((Elem *)((char *)data_ov006_021421b0 + offset))->func_ov006_020eedc8();
+            ((Elem *)((char *)data_ov006_021421b0 + offset))->Tick();
             i++;
             offset += 0x24;
         } while (i < data_ov006_021421bc);
@@ -632,24 +632,24 @@ void func_ov006_020eef90(void)
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020eef58(void) {
+void Jump2Popup_DrawAll(void) {
     void *node = data_ov006_021421c0;
     if (node == 0) return;
     do {
-        ((Elem *)node)->func_ov006_020eed68();
+        ((Elem *)node)->DrawNumber();
         node = *(void **)node;
     } while (node != 0);
 }
 }
 
-// @symbol _ZN4Node19func_ov006_020eef40Ev
-void Node::func_ov006_020eef40(){
+// @symbol _ZN4Node4LinkEv
+void Node::Link(){
   *(void**)this = data_ov006_021421c0;
   data_ov006_021421c0 = this;
 }
 
-// @symbol _ZN4Node19func_ov006_020eeef4Ev
-void Node::func_ov006_020eeef4() {
+// @symbol _ZN4Node6UnlinkEv
+void Node::Unlink() {
     struct Node* prev = data_ov006_021421c0;
     if (prev == this) {
         data_ov006_021421c0 = this->next;
@@ -666,8 +666,8 @@ void Node::func_ov006_020eeef4() {
     }
 }
 
-// @symbol _ZN4Elem19func_ov006_020eee3cEiii
-void Elem::func_ov006_020eee3c(int startX, int startY, int spriteId)
+// @symbol _ZN4Elem5SpawnEiii
+void Elem::Spawn(int startX, int startY, int spriteId)
 {
     x = startX;
     y = startY;
@@ -689,14 +689,14 @@ done:
     life = 0x80;
     active = 1;
     sprite = (short)spriteId;
-    ((Node *)this)->func_ov006_020eef40();
+    ((Node *)this)->Link();
 }
 
-// @symbol _ZN4Elem19func_ov006_020eedc8Ev
-void Elem::func_ov006_020eedc8() {
+// @symbol _ZN4Elem4TickEv
+void Elem::Tick() {
     if (active == 0) return;
     if (ApproachLinear2(life, 0, 1) != 0) {
-        ((Node *)this)->func_ov006_020eeef4();
+        ((Node *)this)->Unlink();
         active = 0;
     }
     ApproachLinear(x, targetX, speedX);
@@ -704,8 +704,8 @@ void Elem::func_ov006_020eedc8() {
     func_0203d630(&speedX, 0xf00);
 }
 
-// @symbol _ZN4Elem19func_ov006_020eed68Ev
-void Elem::func_ov006_020eed68()
+// @symbol _ZN4Elem10DrawNumberEv
+void Elem::DrawNumber()
 {
     if (active == 0) return;
     Mg_DrawBigNumber(x >> 12, y >> 12,
@@ -713,7 +713,7 @@ void Elem::func_ov006_020eed68()
 }
 
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020eed64(void *object)
+void Jump2Popup_ElemDtor(void *object)
 {
 }
 }

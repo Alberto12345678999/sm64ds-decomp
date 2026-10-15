@@ -104,7 +104,7 @@ void Mg_SubCredits(void* c, int val);
 extern unsigned int func_02012790(unsigned int arg);
 extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
-extern void func_ov006_0210ab08(char *c, int i);
+extern void Slot3_ReelDigits(char *c, int i);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern int Sound_PlayIfNotActive(int, int, int, int);
 extern int RandomIntInternal(int *seed);
@@ -149,7 +149,7 @@ extern void func_ov001_020ab3f0(void *c);
 void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 extern void* data_ov006_0213e528[];
 int TouchArea_Update(void *c, int x);
-void func_ov006_0210c2d4(void *c);
+void SlotBet_OnTouch(void *c);
 void Mg_GainCredits(int x);
 extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
 extern int Mg_GetSavedRecord0(void);
@@ -158,15 +158,15 @@ extern void* data_ov006_0213e96c[];
 extern unsigned char data_ov006_0213e4d8[];
 extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void func_ov006_0210c234(unsigned char* o);
+extern void SlotBlink_Draw(unsigned char* o);
 extern void Mg_SaveRecordPair(int a, int b);
 extern void Mg_PlayJingle(void *c);
-extern void func_ov006_0210c180(void *o);
-extern void func_ov006_0210c1a8(void *o);
-extern void func_ov006_0210c218(void *o, s16 x, s16 y);
-extern void func_ov006_0210c278(void *o);
-extern void func_ov006_0210c2c0(void *o, int v);
-extern int func_ov006_0210c500(void *self);
+extern void SlotLamp_Start(void *o);
+extern void SlotLamp_Tick(void *o);
+extern void SlotBlink_Start(void *o, s16 x, s16 y);
+extern void SlotBlink_Tick(void *o);
+extern void SlotReel_SetSpeed(void *o, int v);
+extern int SlotReels_CheckStopped(void *self);
 extern int data_ov006_0213e600[];
 extern u8 data_ov006_0213e4d8[];
 extern s16 data_ov006_0213e654[][2];
@@ -269,10 +269,10 @@ void dScMgSlot3_c::InitMainScreenBg()
     *(volatile unsigned short*)0x400000a = (*(volatile unsigned short*)0x400000a & 0x43) | 0x1118;
 }
 
-// @symbol func_ov006_0210ab08
+// @symbol Slot3_ReelDigits
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210ab08(char *c, int idx);
-void func_ov006_0210ab08(char *c, int idx){
+void Slot3_ReelDigits(char *c, int idx);
+void Slot3_ReelDigits(char *c, int idx){
     int d = (*(int*)(c + idx*4 + 0x4fe4) >> 12) / 80;
     int i;
     char *dst = c + idx*3;
@@ -285,17 +285,17 @@ void func_ov006_0210ab08(char *c, int idx){
 }
 }
 
-// @symbol func_ov006_0210ab90
+// @symbol Slot3_State7
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210ab90(void)
+void Slot3_State7(void)
 {
 }
 }
 
-// @symbol func_ov006_0210ab94
+// @symbol Slot3_State6
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
-void func_ov006_0210ab94(char* c){
+void Slot3_State6(char* c){
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         self->mState = 7;
@@ -314,15 +314,15 @@ void func_ov006_0210ab94(char* c){
 }
 }
 
-// @symbol func_ov006_0210ac38
+// @symbol Slot3_State5
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210ac38(void)
+void Slot3_State5(void)
 {
 }
 }
 
-// @symbol func_ov006_0210ac3c
-extern "C" void func_ov006_0210ac3c(char* c)
+// @symbol Slot3_State3and4
+extern "C" void Slot3_State3and4(char* c)
 {
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         if (*(int*)(c + 0x5000) == 3) {
@@ -366,9 +366,9 @@ extern "C" void func_ov006_0210ac3c(char* c)
     Sound::PlayBank2_2D(0x14a);
 }
 
-// @symbol func_ov006_0210adac
+// @symbol Slot3_State2
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210adac(char *c)
+void Slot3_State2(char *c)
 {
     unsigned char buf[3];
     int i;
@@ -435,9 +435,9 @@ void func_ov006_0210adac(char *c)
 // the members outside them DIFF with them applied file-wide.
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
-// @symbol func_ov006_0210af64
+// @symbol Slot3_State1
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210af64(char *c)
+void Slot3_State1(char *c)
 {
   u8 idx;
   int ok;
@@ -527,7 +527,7 @@ void func_ov006_0210af64(char *c)
           {
             *p = (q2 * 0x50) << 12;
           }
-          func_ov006_0210ab08(c, i);
+          Slot3_ReelDigits(c, i);
           *((u8 *) ((int) (((long long) ((int) ((c + i) + 0x502e)))))) = 1;
           *((u8 *) ((int) (((long long) ((int) (c + 0x503d)))))) += new_var;
           *((u8 *) (c + 0x503f)) = 0;
@@ -549,14 +549,14 @@ void func_ov006_0210af64(char *c)
 #pragma opt_loop_invariants on
 #pragma opt_strength_reduction on
 
-// @symbol func_ov006_0210b1fc
+// @symbol Slot3_State0
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void Mascot_LookAt(char *c, int *src);
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 void Mascot_StopLooking(int *p);
 void FreeGfxSlotsById(int arg);
 
-void func_ov006_0210b1fc(char *p)
+void Slot3_State0(char *p)
 {
     if (*(int *)(p + 0x500c) == 0x50) {
         Mascot_LookAt(p + 0x4f38, 0);
@@ -1015,9 +1015,9 @@ int *dScMgSlot3_c_classInit(void)
 }
 }
 
-// @symbol func_ov006_0210c180
+// @symbol SlotLamp_Start
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c180(void *raw){
+void SlotLamp_Start(void *raw){
     char *blink = (char *)raw;
     *(int *)blink = 0x48;
     *(u8 *)(blink + 4) = 1;
@@ -1025,9 +1025,9 @@ void func_ov006_0210c180(void *raw){
 }
 }
 
-// @symbol func_ov006_0210c1a8
+// @symbol SlotLamp_Tick
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c1a8(void *o_)
+void SlotLamp_Tick(void *o_)
 {
     int *timer = (int *)o_;
     if (*timer <= 0)
@@ -1043,20 +1043,20 @@ void func_ov006_0210c1a8(void *o_)
 }
 }
 
-// @symbol func_ov006_0210c208
+// @symbol SlotLamp_Clear
 /* 0x469c blinks bit 1 of data_0209d454 the same way: a timer and an on
  * flag. This clears it, 0210c180 starts it and 0210c1a8 ticks it. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c208(char *blink)
+void SlotLamp_Clear(char *blink)
 {
     *(int *)(blink + 0x0) = 0;
     *(char *)(blink + 0x4) = 0;
 }
 }
 
-// @symbol func_ov006_0210c218
+// @symbol SlotBlink_Start
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c218(void *raw, s16 x, s16 y)
+void SlotBlink_Start(void *raw, s16 x, s16 y)
 {
     u8 *sprite = (u8 *)raw;
     *(u16 *)(sprite + 0) = x;
@@ -1066,17 +1066,17 @@ void func_ov006_0210c218(void *raw, s16 x, s16 y)
 }
 }
 
-// @symbol func_ov006_0210c234
+// @symbol SlotBlink_Draw
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c234(unsigned char* raw){
+void SlotBlink_Draw(unsigned char* raw){
     if (*(u8 *)(raw + 8) == 0) return;
     RenderOamMainScreen(&data_ov006_0213e6a8, *(short *)raw, *(short *)(raw + 2), -1, -1);
 }
 }
 
-// @symbol func_ov006_0210c278
+// @symbol SlotBlink_Tick
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c278(void *o_)
+void SlotBlink_Tick(void *o_)
 {
     u8 *raw = (u8 *)o_;
     if (*(int *)(raw + 4) <= 0) return;
@@ -1088,29 +1088,29 @@ void func_ov006_0210c278(void *o_)
 }
 }
 
-// @symbol func_ov006_0210c2b0
+// @symbol SlotBlink_Clear
 /* 0x4684 and 0x4690 each hold a blinking sprite: s16 x and y, a timer at
  * +4 and a visible flag at +8. This clears one, 0210c218 starts one, 0210c278
  * ticks it and 0210c234 draws it. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c2b0(char *sprite)
+void SlotBlink_Clear(char *sprite)
 {
     *(int *)(sprite + 0x4) = 0;
     *(char *)(sprite + 0x8) = 0;
 }
 }
 
-// @symbol func_ov006_0210c2c0
+// @symbol SlotReel_SetSpeed
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c2c0(void *raw, int value) {
+void SlotReel_SetSpeed(void *raw, int value) {
     int *words = (int *)raw;
     words[8] = (words[7] * value) << 2;
 }
 }
 
-// @symbol func_ov006_0210c2d4
+// @symbol SlotBet_OnTouch
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c2d4(void *c_)
+void SlotBet_OnTouch(void *c_)
 {
     dThIcon_c *icon = (dThIcon_c *)c_;
     void *scene;
@@ -1136,9 +1136,9 @@ void func_ov006_0210c2d4(void *c_)
 }
 }
 
-// @symbol func_ov006_0210c354
+// @symbol SlotBet_Reset
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c354(void *raw)
+void SlotBet_Reset(void *raw)
 {
     dThIcon_c *icon = (dThIcon_c *)raw;
     icon->unk_01c = 0;
@@ -1165,7 +1165,7 @@ void dScMgSlot1_c::betIcon_c::Behavior()
 {
     int val;
     if (TouchArea_Update(this, -1))
-        func_ov006_0210c2d4(this);
+        SlotBet_OnTouch(this);
     val = unk_020;
     if (val != 0) {
         if ((val & 3) == 0) {
@@ -1177,9 +1177,9 @@ void dScMgSlot1_c::betIcon_c::Behavior()
     dThIcon_c::Behavior();
 }
 
-// @symbol func_ov006_0210c478
+// @symbol SlotBet_Place
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c478(char *icon) {
+void SlotBet_Place(char *icon) {
     func_ov001_020ab5b0(icon, 1, 0x90, 0xb0, 0x10, 8);
     *(int *)(icon + 0x18) = 6;
 }
@@ -1202,9 +1202,9 @@ void dScMgSlot1_c::OpenMenu()
     dScMgBase_c::OpenMenu();
 }
 
-// @symbol func_ov006_0210c500
+// @symbol SlotReels_CheckStopped
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210c500(void *self)
+int SlotReels_CheckStopped(void *self)
 {
     struct SlotReels *p = (struct SlotReels *)self;
     int ok;
@@ -1244,9 +1244,9 @@ int func_ov006_0210c500(void *self)
 }
 }
 
-// @symbol func_ov006_0210c638
+// @symbol Slot1_InitHud
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210c638(void *self)
+void Slot1_InitHud(void *self)
 {
     char *raw = (char *)self;
     *(s8 *)(raw + 0x4706) = -1;
@@ -1267,9 +1267,9 @@ void dScMgSlot1_c::StartRound(int i)
     if (i == 4) {
         *(u8 *)(raw + 0x4706) = unk_4709;
     } else if (i == 3) {
-        func_ov006_0210c638(raw);
+        Slot1_InitHud(raw);
     }
-    func_ov006_0210c354(&mBetIcon);
+    SlotBet_Reset(&mBetIcon);
     unk_46b4 = 0;
 }
 
@@ -1329,8 +1329,8 @@ s32 dScMgSlot1_c::Render()
             Mg_DrawBigNumber(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
         }
     }
-    func_ov006_0210c234(t + 0x4684);
-    func_ov006_0210c234(t + 0x4690);
+    SlotBlink_Draw(t + 0x4684);
+    SlotBlink_Draw(t + 0x4690);
     return 1;
 }
 
@@ -1361,7 +1361,7 @@ s32 dScMgSlot1_c::Behavior()
         unk_470a = 0;
         unk_470b = 0;
         unk_46b4 = 1;
-        func_ov006_0210c2d4(&mBetIcon);
+        SlotBet_OnTouch(&mBetIcon);
         if (mPromptBlinkCount == 0) {
             mPromptEnabled = 1;
             mPromptBlinkCount = 1;
@@ -1436,7 +1436,7 @@ s32 dScMgSlot1_c::Behavior()
                 }
             }
             if (stopped == 1) {
-                unk_470a = func_ov006_0210c500(this);
+                unk_470a = SlotReels_CheckStopped(this);
                 unk_46b8 = 0;
                 if (unk_470a != 0) {
                     unk_46b8 += data_ov006_0213e4d8[unk_4709];
@@ -1454,15 +1454,15 @@ s32 dScMgSlot1_c::Behavior()
     case 4:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
             if (unk_470a != 0) {
-                func_ov006_0210c218(pad_4684, data_ov006_0213e654[unk_4709][0], data_ov006_0213e656[unk_4709][0]);
+                SlotBlink_Start(pad_4684, data_ov006_0213e654[unk_4709][0], data_ov006_0213e656[unk_4709][0]);
             }
             if (unk_470b != 0 && unk_470b < 3) {
-                func_ov006_0210c218(pad_4690, data_ov006_0213e4f8[unk_470b - 1][0], data_ov006_0213e4fa[unk_470b - 1][0]);
+                SlotBlink_Start(pad_4690, data_ov006_0213e4f8[unk_470b - 1][0], data_ov006_0213e4fa[unk_470b - 1][0]);
             }
             if (unk_46b8 != 0) {
                 unk_46b4 = 5;
                 unk_470c = 0x64;
-                func_ov006_0210c180(pad_469c);
+                SlotLamp_Start(pad_469c);
                 func_02012790(0x26);
             } else {
                 unk_46b4 = 7;
@@ -1474,7 +1474,7 @@ s32 dScMgSlot1_c::Behavior()
         break;
     case 5:
         if (DecIfAbove0_Byte(&unk_470c) == 0) {
-            func_ov006_0210c2c0(&mBetIcon, unk_46b8);
+            SlotReel_SetSpeed(&mBetIcon, unk_46b8);
             unk_470c = 0x3c;
             unk_46b4 = 6;
         }
@@ -1546,9 +1546,9 @@ s32 dScMgSlot1_c::Behavior()
         break;
     }
     mBetIcon.Behavior();
-    func_ov006_0210c278(pad_4684);
-    func_ov006_0210c278(pad_4690);
-    func_ov006_0210c1a8(pad_469c);
+    SlotBlink_Tick(pad_4684);
+    SlotBlink_Tick(pad_4690);
+    SlotLamp_Tick(pad_469c);
     return 1;
 }
 
@@ -1666,7 +1666,7 @@ s32 dScMgSlot1_c::InitResources()
     unk_4709 = 5;
     unk_46bc = 0xa;
     Mg_SubmitScore(unk_46bc);
-    func_ov006_0210c478((char *)&mBetIcon);
+    SlotBet_Place((char *)&mBetIcon);
     StartRound(3);
     Mg_SetTopScreenYOffset(0x20);
     data_0208ee44 = 1;
@@ -1691,9 +1691,9 @@ void *dScMgSlot1_c_classInit(void)
         dScMgSlot1_c::betIcon_c *icon = &scene->mBetIcon;
         *(int *)icon = (int)_ZTV9dThIcon_c;
         *(int *)icon = (int)&_ZTVN12dScMgSlot1_c9betIcon_cE[2];
-        func_ov006_0210c2b0((char *)scene->pad_4684);
-        func_ov006_0210c2b0((char *)scene->pad_4690);
-        func_ov006_0210c208((char *)scene->pad_469c);
+        SlotBlink_Clear((char *)scene->pad_4684);
+        SlotBlink_Clear((char *)scene->pad_4690);
+        SlotLamp_Clear((char *)scene->pad_469c);
     }
     return scene;
 }
