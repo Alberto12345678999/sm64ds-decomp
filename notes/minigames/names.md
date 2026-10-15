@@ -171,6 +171,23 @@ and a guess (unconfirmed):
 | 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 |
 | 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
 
+**Banner ids seen on screen** (`Mg_ShowBanner` r0, melonDS 2026-10-15):
+
+| Id | Graphic | Seen in |
+|---|---|---|
+| 0, 2 | PLAY AGAIN, QUIT buttons | retry prompts |
+| 3 | "CLEAR" | Sound, state 0 |
+| 5 | rainbow "HIGH SCORE" | new record (state 17), Pachinko |
+| 6 | rainbow "PERFECT" | Sound, a round with no miss (`Mg_SetNextBanner(6)`) |
+| 7 | "HIGH SCORE" header over the record table | state 16 |
+| 8 | "GAME OVER" | state 18 |
+| 9, 0xa, 0xb | win, lose and draw banners | states 4, 5 and 7. Memory places them at y −0x3c, off screen, so they were not seen |
+| 0xc | red "START" | Snowball |
+| 0xd | "LEVEL n" | every game with levels |
+| 0xe | "TIME IS UP" | Snowball, before state 3 |
+| 0x10, 0x13 | "LOVES ME", "LOVES ME NOT" | Flower |
+| 0x18..0x1a | the poker hand names | Card (Picture Poker) |
+
 **The `MgSharedState` enum** (`include/dMgState_c.h`, 2026-10-15). Every
 `Mg_SetSharedState(n)` call now passes a name. Each name describes the state's
 mechanics from the table above, and the enum marks the confidence of its

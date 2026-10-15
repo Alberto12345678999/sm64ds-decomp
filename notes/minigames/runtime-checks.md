@@ -30,17 +30,17 @@ one is meaningless while the other is loaded.
 
 | Question | Breakpoint (symbol, address) | Log | Play |
 |---|---|---|---|
-| What each shared state (0..19) shows | `Mg_SetSharedState` 0x020b0a54 | r0 = state | Win and lose a round each in Cup, Memory, Card, Roulette, Snowball, and one timed game (Bomroom or Coin). Note the banner and the jingle. |
+| What each shared state (0..19) shows | `Mg_SetSharedState` 0x020b0a54 | r0 = state | **Done:** seen 0, 1, 3, 4, 5, 7, 8, 12, 16, 17 and 18; still open are 2, 6, 9-11, 13-15 and 19 (Snowball has 19). |
 | Which graphic each banner id is | `Mg_ShowBanner` 0x020b0cac | r0 = file id, r1/r2 = x/y | The same plays. Fill in the "Guess" column of names.md's state table. |
-| One-shot banner override (e.g. "Perfect") | `Mg_SetNextBanner` 0x020b67e8 | r0 = id | Memory with no misses (expect 6); Snowball (4, 0xe). |
-| What jingle ids 1, 3 and 4 sound like | `Mg_PlayJingle` 0x020ae274 | r0 = id | Any game; listen at the hit. |
-| `StartRound(state)` is really "start or restart a round" | `Mg_CallStartRound` (see symbols.txt) | r1 = finished state | Cup: lose a life (the game calls slot 18 with -1 itself) versus clear a round. |
+| One-shot banner override (e.g. "Perfect") | `Mg_SetNextBanner` 0x020b67e8 | r0 = id | **Done:** Sound with no miss sets 6, which is "PERFECT". |
+| What jingle ids 1, 3 and 4 sound like | `Mg_PlayJingle` 0x020ae274 | r0 = id | **Done:** they play with the new record (1), GAME OVER (3) and CLEAR (4). They were placed by the moment they play, not by ear. |
+| `StartRound(state)` is really "start or restart a round" | `Mg_CallStartRound` (see symbols.txt) | r1 = finished state | **Done:** seen with 0, 1, 4, 5, 7, 8 and 0x12. |
 | `OnNewRecord` fires as the record banner goes up | `dScMgBase_c::OnNewRecord` 0x020b2990, plus the Cup/Sound/Teresa/3DEsp overrides | hit or not | Beat a saved record in Cup or Sound. |
-| `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | Memory or Card: watch the dealer deal. |
+| `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | **Done:** it fires once Luigi finishes dealing, in Memory and in Card. |
 | What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayMiss` / `PlayMatch` / `PlayLose` / `PlayCheer` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | **Done:** seen in Sound and renamed (names.md). |
-| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | Cup (lives), Card (coins). Coins confirmed in Slot3; see below. |
-| Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | Card, BSC and MCarlo: tap the top-left box. Memory: start of round. |
-| The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | Open a never-played game's page, play it once, and come back. |
+| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | **Done:** coins in Slot3, Memory, Card and Roulette. |
+| Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | **Done:** yes. Memory stakes 3 coins, and Card's BET! button runs `AddBetCoin`. |
+| The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | **Done:** `ClearNew(row)` fires on opening a game. Rows map as tab + 4 × position. |
 | `IsAltVariant` = the second menu row of a game | `dScMgBase_c::IsAltVariant` 0x020ad660 (Amida overrides) | r0 on return | Play both menu entries of a duplicated game (Coin, Panel, Sound, Snowball). |
 | Wiggler draw passes A and B | `Wiggler_DrawPassA` 0x020ea914, `Wiggler_DrawPassB` 0x020eac38 | which runs for which part | Hanachan; freeze a frame after each pass. |
 | Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | Trampoline2; note which item moves which way. |
