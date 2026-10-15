@@ -82,7 +82,7 @@ struct dScMgD3DBase_c : dScMgBase_c {
 
     /* Own copy, same reason dScMgBase_c has one -- unlocks D0 for the four
        descendants. */
-    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvP4Heap(ptr, data_020a0eac); }
+    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(ptr, data_020a0eac); }
 
     /* --- overrides. 1, 2, 5, 7, 10 re-override slots dScMgBase_c already
            gave a body; 11 (AfterRender) is the first override below dScene_c's

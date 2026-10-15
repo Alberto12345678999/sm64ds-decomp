@@ -34,7 +34,7 @@ int func_0201a244(int a0, int a1, int a2, int a3, int a4);
 void func_020308b4(void);
 void func_02012790(int x);
 
-void *_ZN4Heap10SetDefaultEv(void *h);
+void *_ZN5mHeap6Heap_t10SetDefaultEv(void *h);
 void func_0201a5f8(int t);
 void *func_0201a3e4(void);
 extern u32 data_020a0c60;
@@ -262,18 +262,18 @@ void func_02034fbc(void)
     LoadArchive(0);
     h = (void *)func_0201a458();
     if (!(data_020a0c60 & 1)) {
-        data_020a0c5c = _ZN4Heap10SetDefaultEv(h);
+        data_020a0c5c = _ZN5mHeap6Heap_t10SetDefaultEv(h);
         data_020a0c60 |= 1;
     }
     LoadTextNarcs();
     LoadArchive(1);
-    _ZN4Heap10SetDefaultEv(data_020a0c5c);
+    _ZN5mHeap6Heap_t10SetDefaultEv(data_020a0c5c);
     func_0201a5f8(6);
     LoadOverlay((int)&OVERLAY_100_ID);
     LoadOverlay((int)&OVERLAY_102_ID);
-    data_020a0c5c = _ZN4Heap10SetDefaultEv(func_0201a3e4());
+    data_020a0c5c = _ZN5mHeap6Heap_t10SetDefaultEv(func_0201a3e4());
     LoadArchive(7);
-    _ZN4Heap10SetDefaultEv(data_020a0c5c);
+    _ZN5mHeap6Heap_t10SetDefaultEv(data_020a0c5c);
 }
 
 // @symbol _ZN7dScMB_c13InitResourcesEv

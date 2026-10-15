@@ -240,7 +240,7 @@ int *_ZN19daObjBlockItemTag_cD0Ev(int *t)
 {
     t[0] = (int)_ZTV19daObjBlockItemTag_c;
     _ZN5ActorD2Ev(t);
-    _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);
+    _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(t, data_020a0eac);
     return t;
 }
 ```
@@ -519,8 +519,8 @@ reaching a sibling function. Every one of them was written the same way:
 
 ```cpp
 extern "C" {
-extern void _ZN4Heap10DeallocateEPv(void);
-void _ZN4Heap11_DeallocateEPv(void) { _ZN4Heap10DeallocateEPv(); }
+extern void _ZN5mHeap6Heap_t10DeallocateEPv(void);
+void _ZN5mHeap6Heap_t11_DeallocateEPv(void) { _ZN5mHeap6Heap_t10DeallocateEPv(); }
 }
 ```
 

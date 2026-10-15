@@ -72,7 +72,7 @@ extern void *func_02043810(void *p);
    include/Heap.h itself declares InitializeSolidHeapAsDefault as returning
    `void *`. Memory::Deallocate and data_020a0eac come from include/fBase_c.h,
    which needs them for its inline operator delete. */
-extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *heap);
+extern void *_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(unsigned int size, int align, void *heap);
 
 }
 
@@ -307,7 +307,7 @@ void fBase_c::AfterCleanupResources(u32 vfSuccess)
     if (lifecycleState)
         func_02044334(lifecycleState);
     this->~fBase_c();   /* vtable+0x40 = slot 16 = D1 */
-    _ZN6Memory10DeallocateEPvP4Heap(this, data_020a0eac);
+    _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(this, data_020a0eac);
 }
 
 /* vtable slot 6. The default update succeeds without doing any work. */
@@ -534,13 +534,13 @@ int fBase_c::Virtual34(u32 a, u32 b)
         if (h != 0) {
             u32 flagA = (*(u32 *)((char *)h + 4)) & 0x10;
             if (flagA != 0)
-                _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
+                _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(0x10, 4, 0);
             int res = OnHeapCreated();
             u32 okA;
             if (flagA != 0) {
                 okA = (u32)res;
             } else {
-                void *allocRes = _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
+                void *allocRes = _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(0x10, 4, 0);
                 okA = (allocRes != 0) ? (u32)res : 0;
             }
             Heap::RestoreFromTemporary();
@@ -564,10 +564,10 @@ int fBase_c::Virtual34(u32 a, u32 b)
         h = Heap::InitializeSolidHeapAsDefault((u32)-1, (Heap *)b, 0x20);
         u32 flagB = (*(u32 *)((char *)h + 4)) & 0x10;
         if (flagB != 0)
-            _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
+            _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(0x10, 4, 0);
         a = (u32)OnHeapCreated();
         if (flagB == 0) {
-            void *allocRes2 = _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
+            void *allocRes2 = _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(0x10, 4, 0);
             if (allocRes2 == 0)
                 a = 0;
         }
@@ -644,10 +644,10 @@ int fBase_c::Virtual38(u32 a, u32 b)
             int ok;
             int flag = (*(int *)((char *)h + 4)) & 0x10;
             if (flag != 0)
-                _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
+                _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(0x10, 4, 0);
             ok = OnHeapCreated();
             if (flag == 0) {
-                if (_ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0) == 0)
+                if (_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(0x10, 4, 0) == 0)
                     ok = 0;
             }
             ((Heap *)h)->MaxAllocationUnitSize();
@@ -678,7 +678,7 @@ bool fBase_c::OnHeapCreated()
 // @symbol _ZN7fBase_cnwEj
 extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
 {
-    void *p = _ZN6Memory8AllocateEjiP4Heap(size, -4, data_020a0eac);
+    void *p = _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE(size, -4, data_020a0eac);
     if (!p)
         return 0;
     func_0206e2f8(p, 0, size);
