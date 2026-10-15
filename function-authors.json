@@ -26319,299 +26319,299 @@
     },
     "ov006:0x021199c0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_021199c0Ev"
+      "name": "_ZN12dScMgSound_c14DrawWinSpriteBEv"
     },
     "ov006:0x02119a18": {
       "author": "ruspecial",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119a18Ev"
+      "name": "_ZN12dScMgSound_c16UpdateWinSpriteBEv"
     },
     "ov006:0x02119a88": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119a88Ev"
+      "name": "_ZN12dScMgSound_c15StartWinSpriteBEv"
     },
     "ov006:0x02119aa8": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119aa8Ev"
+      "name": "_ZN12dScMgSound_c14DrawWinSpriteAEv"
     },
     "ov006:0x02119b00": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119b00Ev"
+      "name": "_ZN12dScMgSound_c16UpdateWinSpriteAEv"
     },
     "ov006:0x02119ba4": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119ba4Ev"
+      "name": "_ZN12dScMgSound_c15StartWinSpriteAEv"
     },
     "ov006:0x02119bc4": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119bc4Ev"
+      "name": "_ZN12dScMgSound_c9DrawTriesEv"
     },
     "ov006:0x02119bdc": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119bdcEv"
+      "name": "_ZN12dScMgSound_c9DrawNotesEv"
     },
     "ov006:0x02119c74": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119c74Ev"
+      "name": "_ZN12dScMgSound_c8DrawPopsEv"
     },
     "ov006:0x02119d50": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119d50Ei"
+      "name": "_ZN12dScMgSound_c12Pop12_FinishEi"
     },
     "ov006:0x02119dc4": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119dc4Ei"
+      "name": "_ZN12dScMgSound_c9Pop12_FlyEi"
     },
     "ov006:0x02119e5c": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119e5cEi"
+      "name": "_ZN12dScMgSound_c11Pop12_StartEi"
     },
     "ov006:0x02119eec": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119eecEi"
+      "name": "_ZN12dScMgSound_c12Pop12_UpdateEi"
     },
     "ov006:0x02119f3c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119f3cEi"
+      "name": "_ZN12dScMgSound_c12Pop11_FinishEi"
     },
     "ov006:0x02119fb0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_02119fb0Ei"
+      "name": "_ZN12dScMgSound_c9Pop11_FlyEi"
     },
     "ov006:0x0211a048": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a048Ei"
+      "name": "_ZN12dScMgSound_c11Pop11_StartEi"
     },
     "ov006:0x0211a0d8": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a0d8Ei"
+      "name": "_ZN12dScMgSound_c12Pop11_UpdateEi"
     },
     "ov006:0x0211a128": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a128Ei"
+      "name": "_ZN12dScMgSound_c12Pop10_FinishEi"
     },
     "ov006:0x0211a19c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a19cEi"
+      "name": "_ZN12dScMgSound_c9Pop10_FlyEi"
     },
     "ov006:0x0211a234": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a234Ei"
+      "name": "_ZN12dScMgSound_c11Pop10_StartEi"
     },
     "ov006:0x0211a2c4": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a2c4Ei"
+      "name": "_ZN12dScMgSound_c12Pop10_UpdateEi"
     },
     "ov006:0x0211a314": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a314Ei"
+      "name": "_ZN12dScMgSound_c12Pop09_FinishEi"
     },
     "ov006:0x0211a388": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a388Ei"
+      "name": "_ZN12dScMgSound_c9Pop09_FlyEi"
     },
     "ov006:0x0211a420": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a420Ei"
+      "name": "_ZN12dScMgSound_c11Pop09_StartEi"
     },
     "ov006:0x0211a4b0": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a4b0Ei"
+      "name": "_ZN12dScMgSound_c12Pop09_UpdateEi"
     },
     "ov006:0x0211a500": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a500Ei"
+      "name": "_ZN12dScMgSound_c12Pop08_FinishEi"
     },
     "ov006:0x0211a578": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a578Ei"
+      "name": "_ZN12dScMgSound_c9Pop08_FlyEi"
     },
     "ov006:0x0211a5ec": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a5ecEi"
+      "name": "_ZN12dScMgSound_c11Pop08_StartEi"
     },
     "ov006:0x0211a648": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a648Ei"
+      "name": "_ZN12dScMgSound_c12Pop08_UpdateEi"
     },
     "ov006:0x0211a698": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a698Ev"
+      "name": "_ZN12dScMgSound_c12Pop07_FinishEv"
     },
     "ov006:0x0211a69c": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a69cEi"
+      "name": "_ZN12dScMgSound_c9Pop07_FlyEi"
     },
     "ov006:0x0211a714": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a714Ei"
+      "name": "_ZN12dScMgSound_c11Pop07_StartEi"
     },
     "ov006:0x0211a7ac": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a7acEi"
+      "name": "_ZN12dScMgSound_c12Pop07_UpdateEi"
     },
     "ov006:0x0211a7fc": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a7fcEi"
+      "name": "_ZN12dScMgSound_c12Pop06_FinishEi"
     },
     "ov006:0x0211a910": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a910Ei"
+      "name": "_ZN12dScMgSound_c9Pop06_FlyEi"
     },
     "ov006:0x0211a9fc": {
       "author": "ruspecial",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211a9fcEi"
+      "name": "_ZN12dScMgSound_c11Pop06_StartEi"
     },
     "ov006:0x0211aa44": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211aa44Ei"
+      "name": "_ZN12dScMgSound_c12Pop06_UpdateEi"
     },
     "ov006:0x0211aa94": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211aa94Ei"
+      "name": "_ZN12dScMgSound_c12Pop05_FinishEi"
     },
     "ov006:0x0211ab0c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ab0cEi"
+      "name": "_ZN12dScMgSound_c9Pop05_FlyEi"
     },
     "ov006:0x0211ab80": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ab80Ei"
+      "name": "_ZN12dScMgSound_c11Pop05_StartEi"
     },
     "ov006:0x0211abdc": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211abdcEi"
+      "name": "_ZN12dScMgSound_c12Pop05_UpdateEi"
     },
     "ov006:0x0211ac2c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ac2cEv"
+      "name": "_ZN12dScMgSound_c12Pop04_FinishEv"
     },
     "ov006:0x0211ac30": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ac30Ei"
+      "name": "_ZN12dScMgSound_c9Pop04_FlyEi"
     },
     "ov006:0x0211ad00": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ad00Ei"
+      "name": "_ZN12dScMgSound_c11Pop04_StartEi"
     },
     "ov006:0x0211ad44": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ad44Ei"
+      "name": "_ZN12dScMgSound_c12Pop04_UpdateEi"
     },
     "ov006:0x0211ad94": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ad94Ei"
+      "name": "_ZN12dScMgSound_c12Pop03_FinishEi"
     },
     "ov006:0x0211ae40": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ae40Ei"
+      "name": "_ZN12dScMgSound_c9Pop03_FlyEi"
     },
     "ov006:0x0211aed0": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211aed0Ei"
+      "name": "_ZN12dScMgSound_c11Pop03_StartEi"
     },
     "ov006:0x0211af60": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211af60Ei"
+      "name": "_ZN12dScMgSound_c12Pop03_UpdateEi"
     },
     "ov006:0x0211afb0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211afb0Ei"
+      "name": "_ZN12dScMgSound_c12Pop02_FinishEi"
     },
     "ov006:0x0211b05c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b05cEi"
+      "name": "_ZN12dScMgSound_c9Pop02_FlyEi"
     },
     "ov006:0x0211b0ec": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b0ecEi"
+      "name": "_ZN12dScMgSound_c11Pop02_StartEi"
     },
     "ov006:0x0211b17c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b17cEi"
+      "name": "_ZN12dScMgSound_c12Pop02_UpdateEi"
     },
     "ov006:0x0211b1cc": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b1ccEi"
+      "name": "_ZN12dScMgSound_c12Pop01_FinishEi"
     },
     "ov006:0x0211b278": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b278Ei"
+      "name": "_ZN12dScMgSound_c9Pop01_FlyEi"
     },
     "ov006:0x0211b308": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b308Ei"
+      "name": "_ZN12dScMgSound_c11Pop01_StartEi"
     },
     "ov006:0x0211b398": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b398Ei"
+      "name": "_ZN12dScMgSound_c12Pop01_UpdateEi"
     },
     "ov006:0x0211b3e8": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b3e8Ev"
+      "name": "_ZN12dScMgSound_c12Pop00_FinishEv"
     },
     "ov006:0x0211b3ec": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b3ecEi"
+      "name": "_ZN12dScMgSound_c9Pop00_FlyEi"
     },
     "ov006:0x0211b4fc": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b4fcEi"
+      "name": "_ZN12dScMgSound_c11Pop00_StartEi"
     },
     "ov006:0x0211b590": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b590Ei"
+      "name": "_ZN12dScMgSound_c12Pop00_UpdateEi"
     },
     "ov006:0x0211b5e0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b5e0Ev"
+      "name": "_ZN12dScMgSound_c10UpdatePopsEv"
     },
     "ov006:0x0211b654": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b654Ei"
+      "name": "_ZN12dScMgSound_c9SpawnPopsEi"
     },
     "ov006:0x0211b790": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b790Ev"
+      "name": "_ZN12dScMgSound_c14CheckRoundOverEv"
     },
     "ov006:0x0211b80c": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b80cEv"
+      "name": "_ZN12dScMgSound_c9CheckPairEv"
     },
     "ov006:0x0211b954": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b954Ev"
+      "name": "_ZN12dScMgSound_c11UpdateNotesEv"
     },
     "ov006:0x0211b9c8": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211b9c8Ev"
+      "name": "_ZN12dScMgSound_c15RevealUnmatchedEv"
     },
     "ov006:0x0211ba88": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211ba88Ei"
+      "name": "_ZN12dScMgSound_c16Note_StateScrollEi"
     },
     "ov006:0x0211bbe0": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211bbe0Ei"
+      "name": "_ZN12dScMgSound_c17Note_StateClosingEi"
     },
     "ov006:0x0211bc68": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211bc68Ei"
+      "name": "_ZN12dScMgSound_c14Note_StateOpenEi"
     },
     "ov006:0x0211bc8c": {
       "author": "tangosdev",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211bc8cEi"
+      "name": "_ZN12dScMgSound_c17Note_StateOpeningEi"
     },
     "ov006:0x0211bf44": {
       "author": "aitddlabs",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211bf44Ei"
+      "name": "_ZN12dScMgSound_c14Note_StateWaitEi"
     },
     "ov006:0x0211c080": {
       "author": "ruspecial",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211c080Ev"
+      "name": "_ZN12dScMgSound_c9DealNotesEv"
     },
     "ov006:0x0211c478": {
       "author": "andrewboudreau",
-      "name": "_ZN12dScMgSound_c19func_ov006_0211c478Ev"
+      "name": "_ZN12dScMgSound_c10ResetRoundEv"
     },
     "ov006:0x0211c5b8": {
       "author": "tangosdev",

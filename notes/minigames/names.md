@@ -241,3 +241,17 @@ observed yet:
 
 The dealer's deal, collect, reveal and swap names follow the animation order
 and the sounds (0x139-0x142) and are medium confidence.
+
+## Per-game helpers (ov006)
+
+Each game's helpers are named from their bodies and their pointer-to-member state
+tables. The tables are resolved through the relocations of the records each
+`__sinit` copies, which makes a state handler's index certain. A name is high
+confidence unless listed below the game.
+
+**Sound (`dScMgSound_c`).** This is the note-pair memory game. A touched note plays its
+pitch, two matching notes clear, and a mismatch closes them again.
+- **Notes:** `DealNotes`, `ResetRound`, `UpdateNotes`, `CheckPair`, `CheckRoundOver`, and `RevealUnmatched` on a loss.
+- **Note states 0-4:** `Note_StateWait`, `Note_StateOpening`, `Note_StateOpen`, `Note_StateClosing`, `Note_StateScroll`.
+- **Pops:** `SpawnPops` launches the burst sprites, and each of the 13 pop kinds has `PopNN_Update`, `PopNN_Start`, `PopNN_Fly` and `PopNN_Finish`. The kind number is the index in the dispatch table; the look of each kind is not observed.
+- **Win and loss:** the win plays `Presenter_PlayAnim7` (a cheer, medium) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayAnim4` (disappointment, medium).
