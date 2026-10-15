@@ -47,6 +47,7 @@ one is meaningless while the other is loaded.
 | Pachinko's flyer, background scroller and hit bursts | `PachinkoFlyer_State0`, `PachinkoBg_Start`, `PachinkoFx_Spawn` (see ov006 symbols.txt) | hit timing | **Done:** the background is the airship that drops the Para-Bombs. |
 | Teresa's exclaim, found mark, rising icon and reveal sprites | `dScMgTeresa_c::Exclaim_Spawn`, `FoundMark_Spawn`, `RisingIcon_Spawn`, `Reveal_State0` (see ov006 symbols.txt) | hit timing | **Seen, by timing:** the exclaim is a red "!" over the Boo and the rising icon a yellow "1". The found mark is not the star that counts finds; its look is still unidentified (see below). |
 | The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | **Done:** 0, the scene update, 1, then 2 and 3 in the VBlank IRQ (see below). |
+| Ten more medium names, bottom-up from names.md (Trampoline Marios, Heyho, Jump3D, Puff, Luigi's scanlines, the three unnamed functions, Trampoline2's spinner and dealer, Slot, the Jump phases, Cup) | `mgwatch.py --set next10` (91 symbols) | hit, args, lr | **Done**, except the Trampoline2 dealer, which never ran (see "Ten more" below). |
 
 ## Observed so far (melonDS 1.1, EU ROM, 2026-10-15)
 
@@ -163,6 +164,48 @@ through the watcher's command queue.
   - **The NEW! badge:** the card had it before this one play and not after.
 - **MCarlo2** (`dScMgMCarlo2_c`, Luigi's page 2, left card, row 0x19) keeps the base `OnDealDone` and stakes nothing; its card shows no coin count. Luigi deals a 5 × 4 grid face up. Tapping two adjacent matching faces removes them, and the deck refills the gaps; the counter at the top right counts the cards taken (2 after one pair).
   - **The end:** a brute-force tap sweep played it to 110. Then came `Mg_SetSharedState(0x12)` (lr 0x020fa364), banner 8 "GAME OVER" and jingle 3. After it, banner 7, the base `dScMgBase_c::OnNewRecord` (no override), banner 5 and jingle 1 over the record table, and PLAY AGAIN / QUIT. The card then showed 110.
+
+### Ten more (2026-10-15, the same second watcher)
+
+The next ten open items from the bottom of names.md's per-game section, each
+played once or more with the watcher's `next10` set. Candidate names are in
+names.md; nothing was renamed.
+
+1. **Trampoline Marios** (Trampoline, row 12; Trampoline2, row 32).
+   - **`BounceOffLineA/B`:** `Trmp3DMario_State7` dispatches on the u16 at +0x18; the logged r1 was that value, not an argument. The value comes from the line: as it settles, `TrmpLine` picks the jumper under it and stores 2 if |offset| × half-length < 0x400000 (sound 0x1b1), else 1 (sound 0x1ae).
+     - 2 → A → State4 (particles 0xf3-0xf5, sound 0x1b5); 1 → B → State5. So A is a catch near the line's centre and B one further out.
+     - B ran 22 times to A's 2, with slanted and flat lines alike (`trmp_slant.py`), so slope is not the split.
+   - **Polled every frame:** `CountFinished` (scene lr 0x02121878) and `SetSpawnHeight` (r0 0x20, lr 0x02121bfc). Game over is state 0x12 from lr 0x0212188c, right after.
+   - **`EnterByKind`** ran once for each of the four Marios at game end (lr 0x020cd234).
+   - **`func_ov006_020ca840`** ran once, at Trampoline2's game over (lr 0x02123c84), then `Trmp2Mario_EnterByKind` for the one Mario and state 0x12.
+2. **Heyho** (Jump2, row 20; Jump, row 4). Each landing was `Motion11` → `Settle` (a white puff, score +1). In Jump2 that is followed by `Jump2Popup_Spawn` and `SettleAll` → `Motion8` (the next Shy Guy flies in from above).
+   - A 24-shot burst showed the popup as a yellow "1", then "2", rising from the hit spot.
+   - `AllIdle` gates GAME OVER from `State_Result`.
+   - Jump called `Settle` without a popup and never called `SettleAll`.
+3. **Jump3D.**
+   - The `EnableInput` flag draws the blue arrows over Jump's Marios. Jump sets it and has the arrows; Jump2 clears it and has none.
+   - `SetLowGravity` ran at `State_End` → `State_Result` in both games. `StopGravity` (only `BeginFinal`) was not reached.
+4. **Puff** is the cyan "MISSED n" label. Its three spawns line up with the three misses in a 24-shot Jump2 burst and a 16-shot Jump burst ("MISSED 1", "MISSED 2", then "MISSED 3", which stays). The earlier reading of a smoke column in Trampoline, made from one screenshot, was wrong and was not recorded.
+5. **Luigi's scanlines** (Wanted!, row 3). Nothing ran until the clock hit 0. Then `PrepareScanlines` fired from the IRQ dispatcher (lr 0x01ffd9d4), and `PushScanlineRecord` from it on lines 0xcb-0xdb, as the iris opened from the centre circle to the full poster wall.
+6. **The three unnamed functions.**
+   - Teresa's fired once as the clock ran out (lr 0x0211e69c).
+   - Bomroom's fired once (lr 0x020d8b50), 3 s before state 16. Four bombs were dragged to the black pen. The next shot showed the board empty apart from one bomb in the top door, and the round ended at score 0.
+   - Pachinko's runs every frame of play (lr 0x020feef8), and the slingshot's cradle at (0x80, 0x28) is where it places the next ball.
+7. **Trampoline2's spinner and dealer.**
+   - **Spinner:** twelve `Trmp2Spinner_SetModel` calls at load (r1 0x8000, lr 0x02122c40), and `HideAll` at setup.
+     - Stubbing `Trmp2Spinner_UpdateAll` (0x02122ab8, `bx lr`; original word `f0402de9` restored and read back) did not stop the background shooting stars.
+     - Three slots written live (+0x50: scale 0x6000, position (x, 0x100000, 0x18000), velocity (−0x1c00, −0x1c00, 0), life 0xf0) showed large white stars spinning off the top screen to the lower left.
+     - In play, a spinner is spawned per ring taken (`TrmpItem_UpdateWithJumper` → `Trmp2Spinner_InitAll`).
+   - **Dealer:** `Trmp2_PickFaceA/B`, `OccupancyBits` and `ColumnForKind` never ran. `SpawnWave` was not reached in this play, so the dealer reading in names.md is from code.
+8. **Slot1** (row 17).
+   - **Setup:** `SlotBet_Place`, `Slot1_InitHud`, then `SlotBet_Reset`.
+   - **Betting:** three `SlotBet_OnTouch` (one from the card tap, two from BET; 10 → 7 coins).
+   - **The spin:** tapping the three reels stopped them on three feathers. `SlotReels_CheckStopped` ran as the third stopped (lr 0x0210cd4c). 2.7 s later `SlotReel_SetSpeed(icon, 5)` ran (lr 0x0210ceec), and the credits counted up to 22.
+9. **The Jump phases** (`dScMgJump_c`, `dScMgJump2_c`). In both games:
+   - **Timeline:** `BeginIntro` at setup, `BeginPlay` 2.8 s later, `BeginEnd` after the third miss, `State_End` for 0.5 s, then `State_Result` for 2-3 s. Then state 0x12 (Jump lr 0x020ee414, Jump2 0x020ef4b4) and `State_Idle`.
+   - **Jump's intro** shows banner 0xd (lr 0x020ee644).
+   - `BeginFinal`/`State_Final` were not reached.
+10. **Cup** (row 23, "WHERE'S YOSHI?": three crates). `Cup_PickShuffleSpeed` ran 8 times per round (16 over two lost rounds), all from `StatePrepareShuffle` (lr 0x020dfd0c), once per swap.
 
 ## Recording the answer
 
