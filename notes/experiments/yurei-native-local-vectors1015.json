@@ -3,11 +3,11 @@
   "task": "yurei-native-local-vectors1015",
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2478",
   "candidate": "This commit; immutable output is recorded by the coordination queue.",
-  "status": "Producer proof complete; independent exact Source and byte acceptance remains the next stage.",
+  "status": "Current-base producer proof complete; independent exact Source and byte reacceptance remains the next stage.",
   "completion": "partial",
-  "source_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+  "source_checkpoint": "044aa9a973ec0c668ce2a0c9d0ca73aee5e755ea",
   "registered_input_commit": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
-  "base_commit": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
+  "base_commit": "132347a5a8d617de18c0de31b0b598788fa08329",
   "tooling_workflow_commit": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
   "source_review_policy_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
   "producer_session": "codex-yurei-native-local-vectors-astra-producer1015",
@@ -248,12 +248,21 @@
     "metadata_records": 11,
     "metadata_bytes": 249,
     "metadata_reference_count": 46,
-    "ownership_limit": "Text-only production owner; data/BSS claims empty, separately enrolled initializer and external PMF/State/resource storage retained."
+    "ownership_limit": "Text-only production owner; data/BSS claims empty, separately enrolled initializer and external PMF/State/resource storage retained.",
+    "current_complete_comparison": {
+      "tested_checkpoint": "044aa9a973ec0c668ce2a0c9d0ca73aee5e755ea",
+      "old_accepted_input": "3b5d6bd7e447aee1e808c651068d263b11864930",
+      "proof_keys_equal_except_head": true,
+      "complete_raw_and_prepared_literal_equal": true,
+      "all_strict_metadata_helpers_sections_symbols_typed_edges_equal": true,
+      "old_proof_sha256": "dbc4936b89a2437f1c0ef0964292d28ebb350a3d5bfd2f6ce32c21cd7153fc51",
+      "fresh_proof_sha256": "85a365ceea0cb4475c4fcf9cf95ecdaf7ff9636a1951d97e6ff50eff7fa5f43d"
+    }
   },
   "gates": {
     "rom": {
-      "base": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
-      "source_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+      "base": "132347a5a8d617de18c0de31b0b598788fa08329",
+      "source_checkpoint": "044aa9a973ec0c668ce2a0c9d0ca73aee5e755ea",
       "gates": [
         {
           "name": "rombuild",
@@ -263,20 +272,20 @@
             "-j16",
             "--no-rom",
             "--report-json",
-            "build\\yurei-native-local-vectors1015\\rombuild.json",
+            "build\\yurei-native-local-vectors1015\\current132347\\rombuild.json",
             "--data-json",
-            "build\\yurei-native-local-vectors1015\\romdata-full.json"
+            "build\\yurei-native-local-vectors1015\\current132347\\romdata-full.json"
           ],
           "exit_code": 0,
-          "seconds": 332.56,
-          "log": "build\\yurei-native-local-vectors1015\\rombuild.log",
-          "log_sha256": "df368414c2769d50b144233ad3f1608aceaa4d4a571073c51137e9afcb53a735"
+          "seconds": 288.34,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\rombuild.log",
+          "log_sha256": "a5e05a9aa5ade0544111947c9b2e724167e7fe7b2d6a1fb1cb3aa7e4a7b960cb"
         }
       ]
     },
     "static": {
-      "base": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
-      "source_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+      "base": "132347a5a8d617de18c0de31b0b598788fa08329",
+      "source_checkpoint": "044aa9a973ec0c668ce2a0c9d0ca73aee5e755ea",
       "gates": [
         {
           "name": "prepush",
@@ -284,13 +293,13 @@
             "python",
             "tools/prepush_linkcheck.py",
             "--range",
-            "bbdf1582a3d75e377672d7e5262890064d4a9b7d..HEAD",
+            "132347a5a8d617de18c0de31b0b598788fa08329..HEAD",
             "--json",
-            "build\\yurei-native-local-vectors1015\\prepush.json"
+            "build\\yurei-native-local-vectors1015\\current132347\\prepush.json"
           ],
           "exit_code": 0,
-          "seconds": 19.18,
-          "log": "build\\yurei-native-local-vectors1015\\prepush.log",
+          "seconds": 17.4,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\prepush.log",
           "log_sha256": "7c3cfe711285939505f6d88fdc903714a48b17ee1584c65a1de5a6720a370215"
         },
         {
@@ -299,12 +308,12 @@
             "python",
             "tools/check_decl_agreement.py",
             "--changed",
-            "bbdf1582a3d75e377672d7e5262890064d4a9b7d"
+            "132347a5a8d617de18c0de31b0b598788fa08329"
           ],
           "exit_code": 0,
-          "seconds": 9.56,
-          "log": "build\\yurei-native-local-vectors1015\\decl-scoped.log",
-          "log_sha256": "e0a6d67f9cda6dc8a24eda12898ef9e748c248f54ddac350a426980f0271044b"
+          "seconds": 10.7,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\decl-scoped.log",
+          "log_sha256": "54ef666f53aa2e311bd27c80443ef46a6d1fc635e0ebf900064b65a2fdfeac8e"
         },
         {
           "name": "decl-global",
@@ -314,9 +323,9 @@
             "--check"
           ],
           "exit_code": 0,
-          "seconds": 9.09,
-          "log": "build\\yurei-native-local-vectors1015\\decl-global.log",
-          "log_sha256": "6bd7e5e9f83a1fa5aceac78fdf5fe9820e5766b1b9a00db9cd9baf4aabf0b173"
+          "seconds": 8.4,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\decl-global.log",
+          "log_sha256": "1d5662a98665af4b5ab86365ae80de63ee7a8ef195828d06e99042a9a10fe7ad"
         },
         {
           "name": "port",
@@ -325,8 +334,8 @@
             "tools/port_refcheck.py"
           ],
           "exit_code": 0,
-          "seconds": 1.79,
-          "log": "build\\yurei-native-local-vectors1015\\port.log",
+          "seconds": 1.61,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\port.log",
           "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
         },
         {
@@ -335,11 +344,11 @@
             "python",
             "tools/langmode_audit.py",
             "--check",
-            "build\\yurei-native-local-vectors1015\\langmode-baseline.json"
+            "build\\yurei-native-local-vectors1015\\current132347\\langmode-baseline.json"
           ],
           "exit_code": 0,
-          "seconds": 12.74,
-          "log": "build\\yurei-native-local-vectors1015\\langmode.log",
+          "seconds": 11.19,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\langmode.log",
           "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
         },
         {
@@ -349,8 +358,8 @@
             "tools/check_tubuild_conflicts.py"
           ],
           "exit_code": 0,
-          "seconds": 0.31,
-          "log": "build\\yurei-native-local-vectors1015\\tu-conflicts.log",
+          "seconds": 0.37,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\tu-conflicts.log",
           "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521"
         },
         {
@@ -360,8 +369,8 @@
             "tools/check_duplicate_sources.py"
           ],
           "exit_code": 0,
-          "seconds": 0.36,
-          "log": "build\\yurei-native-local-vectors1015\\duplicates.log",
+          "seconds": 0.37,
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\duplicates.log",
           "log_sha256": "3c7d30e74da563c3759d899256bc6d497413d6fac97b5d50dde941fb71d9727d"
         },
         {
@@ -373,7 +382,7 @@
           ],
           "exit_code": 0,
           "seconds": 0.97,
-          "log": "build\\yurei-native-local-vectors1015\\drafts.log",
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\drafts.log",
           "log_sha256": "4eaa535d055ed5087222e0edd0bd5b993d5867d936e408203180cd0e578d5f99"
         },
         {
@@ -382,11 +391,11 @@
             "git",
             "diff",
             "--check",
-            "bbdf1582a3d75e377672d7e5262890064d4a9b7d..HEAD"
+            "132347a5a8d617de18c0de31b0b598788fa08329..HEAD"
           ],
           "exit_code": 0,
           "seconds": 0.05,
-          "log": "build\\yurei-native-local-vectors1015\\diff-check.log",
+          "log": "build\\yurei-native-local-vectors1015\\current132347\\diff-check.log",
           "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
       ]
@@ -430,15 +439,7 @@
       "Baseline dsd symbols control reports9 inherited symbol errors; module comparison/zero-new errors are the operative gates. Stock control ROM hashd1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 is not a claim that the --no-rom candidate produced a new ROM file.",
       "Global data advisory partial/differ/unnamed entries remain; this is not zero-global-data-debt acceptance.",
       "Prepush ran only after actual Source commit terminal0 and checked23functions; declaration gates report no new disagreements, not universal agreement."
-    ],
-    "baseline_control_summary": [
-      "source-built functions: 5,888  (1,190,448 / 2,238,108 code bytes, 53.19%)",
-      "reproducing: 5,888",
-      "mismatching: 0",
-      "module fidelity: 106/106 exact, 100.000000% of compared bytes",
-      "ROM-build analysis: PASS"
-    ],
-    "baseline_control_summary_qualification": "Independent scratch baseline with NO TU substitutions; its5888 source-built count is not the final candidate count. Final normal candidate analysis below is11334."
+    ]
   },
   "historical_provenance": {
     "accepted_findings_preserved_exact": 22,
@@ -854,17 +855,294 @@
     },
     "build/yurei-native-local-vectors1015/romdata-full.json": {
       "sha256": "bd3e35d50952efdb5613e5c67e5c807cb8a0460198b5f7fed3edf7285990665f"
+    },
+    "build/yurei-native-local-vectors1015/current132347/precomposition.json": {
+      "sha256": "f2aaf8f4c7170dcda74b774f93a9253fef9cb1dd9c5a2364001368acd07904af"
+    },
+    "build/yurei-native-local-vectors1015/current132347/composition-binding.json": {
+      "sha256": "69618f4e498c6f0bb590dae42b9475f89e808244f7126ee8f9a90ae840b5e401"
+    },
+    "build/yurei-native-local-vectors1015/current132347/complete-comparison.json": {
+      "sha256": "713ded0388096cf7ec7f0a561b7d3d1edc6adef5e5018ddadc28ea2ff74f7214"
+    },
+    "build/yurei-native-local-vectors1015/current132347/native/proof.json": {
+      "sha256": "85a365ceea0cb4475c4fcf9cf95ecdaf7ff9636a1951d97e6ff50eff7fa5f43d"
+    },
+    "build/yurei-native-local-vectors1015/current132347/gate-results-rom.json": {
+      "sha256": "e88b2bc9fdba293781b333948994f040d97e324694a74a839d90dcf6f7e5a78b"
+    },
+    "build/yurei-native-local-vectors1015/current132347/gate-results-static.json": {
+      "sha256": "c422ea9a7a02f06382ec44412c9800f4d94dd0be799ff434dbcf8554f98053ba"
+    },
+    "build/yurei-native-local-vectors1015/current132347/rombuild.json": {
+      "sha256": "1cafaddcf77c0a11ed7e9a91b00773d66d5f38ee2f6e1c5033d8849b7c7b02cb"
+    },
+    "build/yurei-native-local-vectors1015/current132347/live-main-binding.json": {
+      "sha256": "abf774b633fc792810c3aeef70c007143cdb9bab399e96954d0e0a4591263e35"
+    },
+    "build/yurei-native-local-vectors1015/lineage-aggregate-delta.json": {
+      "sha256": "5343a41ac92bfa3f690ddece88e1c992807cae9449702a0a52fb09320b43104c"
     }
   },
   "current_main_check": {
-    "head": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
-    "checked_at_utc": "2026-10-15T03:54:32.194404+00:00",
-    "registered_input_is_current": true
+    "tested_source_base": "132347a5a8d617de18c0de31b0b598788fa08329",
+    "live_main": "8312a7819ae2687e0a1173aad18fd5c11f72f415",
+    "changed_paths": [
+      "contributions.json"
+    ],
+    "five_production_trees": {
+      "src": {
+        "tested_base": "c8cf8de93bf2953914df8e6c73ace8122cc7d70a",
+        "live_main": "c8cf8de93bf2953914df8e6c73ace8122cc7d70a"
+      },
+      "include": {
+        "tested_base": "bbf6e0ac629c5caa508e068e86cc18dbafadbb59",
+        "live_main": "bbf6e0ac629c5caa508e068e86cc18dbafadbb59"
+      },
+      "config": {
+        "tested_base": "e0c82885336ffffaed69c9a01dc5053e94bd5f95",
+        "live_main": "e0c82885336ffffaed69c9a01dc5053e94bd5f95"
+      },
+      "tools": {
+        "tested_base": "55122625b2b352a5f15ea21d3d9baf1fdd6859b4",
+        "live_main": "55122625b2b352a5f15ea21d3d9baf1fdd6859b4"
+      },
+      "port": {
+        "tested_base": "c6bd95e7eb59d61c892c4eb233e85115eb4bc28c",
+        "live_main": "c6bd95e7eb59d61c892c4eb233e85115eb4bc28c"
+      }
+    },
+    "checked_at_utc": "2026-10-15T04:18:06.000909+00:00",
+    "qualification": "Live main advances only progress bookkeeping; this does not claim identical entire repository trees."
   },
   "not_claimed": [
     "Formal independent acceptance",
     "Complete class/ABI/field/storage reconstruction",
     "Public push/PR/private validation/merge",
     "Completion of retained Chomp20, Player lifecycle, full144, nativeYegg3/308, Heap or remainingARM7 work"
-  ]
+  ],
+  "historical_original_epoch": {
+    "output_commit": "3b5d6bd7e447aee1e808c651068d263b11864930",
+    "source_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+    "base_commit": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
+    "gates": {
+      "rom": {
+        "base": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
+        "source_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+        "gates": [
+          {
+            "name": "rombuild",
+            "command": [
+              "python",
+              "tools/rombuild.py",
+              "-j16",
+              "--no-rom",
+              "--report-json",
+              "build\\yurei-native-local-vectors1015\\rombuild.json",
+              "--data-json",
+              "build\\yurei-native-local-vectors1015\\romdata-full.json"
+            ],
+            "exit_code": 0,
+            "seconds": 332.56,
+            "log": "build\\yurei-native-local-vectors1015\\rombuild.log",
+            "log_sha256": "df368414c2769d50b144233ad3f1608aceaa4d4a571073c51137e9afcb53a735"
+          }
+        ]
+      },
+      "static": {
+        "base": "bbdf1582a3d75e377672d7e5262890064d4a9b7d",
+        "source_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+        "gates": [
+          {
+            "name": "prepush",
+            "command": [
+              "python",
+              "tools/prepush_linkcheck.py",
+              "--range",
+              "bbdf1582a3d75e377672d7e5262890064d4a9b7d..HEAD",
+              "--json",
+              "build\\yurei-native-local-vectors1015\\prepush.json"
+            ],
+            "exit_code": 0,
+            "seconds": 19.18,
+            "log": "build\\yurei-native-local-vectors1015\\prepush.log",
+            "log_sha256": "7c3cfe711285939505f6d88fdc903714a48b17ee1584c65a1de5a6720a370215"
+          },
+          {
+            "name": "decl-scoped",
+            "command": [
+              "python",
+              "tools/check_decl_agreement.py",
+              "--changed",
+              "bbdf1582a3d75e377672d7e5262890064d4a9b7d"
+            ],
+            "exit_code": 0,
+            "seconds": 9.56,
+            "log": "build\\yurei-native-local-vectors1015\\decl-scoped.log",
+            "log_sha256": "e0a6d67f9cda6dc8a24eda12898ef9e748c248f54ddac350a426980f0271044b"
+          },
+          {
+            "name": "decl-global",
+            "command": [
+              "python",
+              "tools/check_decl_agreement.py",
+              "--check"
+            ],
+            "exit_code": 0,
+            "seconds": 9.09,
+            "log": "build\\yurei-native-local-vectors1015\\decl-global.log",
+            "log_sha256": "6bd7e5e9f83a1fa5aceac78fdf5fe9820e5766b1b9a00db9cd9baf4aabf0b173"
+          },
+          {
+            "name": "port",
+            "command": [
+              "python",
+              "tools/port_refcheck.py"
+            ],
+            "exit_code": 0,
+            "seconds": 1.79,
+            "log": "build\\yurei-native-local-vectors1015\\port.log",
+            "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
+          },
+          {
+            "name": "langmode",
+            "command": [
+              "python",
+              "tools/langmode_audit.py",
+              "--check",
+              "build\\yurei-native-local-vectors1015\\langmode-baseline.json"
+            ],
+            "exit_code": 0,
+            "seconds": 12.74,
+            "log": "build\\yurei-native-local-vectors1015\\langmode.log",
+            "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
+          },
+          {
+            "name": "tu-conflicts",
+            "command": [
+              "python",
+              "tools/check_tubuild_conflicts.py"
+            ],
+            "exit_code": 0,
+            "seconds": 0.31,
+            "log": "build\\yurei-native-local-vectors1015\\tu-conflicts.log",
+            "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521"
+          },
+          {
+            "name": "duplicates",
+            "command": [
+              "python",
+              "tools/check_duplicate_sources.py"
+            ],
+            "exit_code": 0,
+            "seconds": 0.36,
+            "log": "build\\yurei-native-local-vectors1015\\duplicates.log",
+            "log_sha256": "3c7d30e74da563c3759d899256bc6d497413d6fac97b5d50dde941fb71d9727d"
+          },
+          {
+            "name": "drafts",
+            "command": [
+              "python",
+              "tools/check_drafts_compile.py",
+              "--quiet"
+            ],
+            "exit_code": 0,
+            "seconds": 0.97,
+            "log": "build\\yurei-native-local-vectors1015\\drafts.log",
+            "log_sha256": "4eaa535d055ed5087222e0edd0bd5b993d5867d936e408203180cd0e578d5f99"
+          },
+          {
+            "name": "diff-check",
+            "command": [
+              "git",
+              "diff",
+              "--check",
+              "bbdf1582a3d75e377672d7e5262890064d4a9b7d..HEAD"
+            ],
+            "exit_code": 0,
+            "seconds": 0.05,
+            "log": "build\\yurei-native-local-vectors1015\\diff-check.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "full_build_summary": [
+        "intact TU gates: dsd modules PASS, zero new symbol errors, storage aliases exact",
+        "source-built functions: 11,334  (2,225,480 / 2,238,108 code bytes, 99.44%)",
+        "reproducing: 11,334",
+        "mismatching: 0",
+        "source-owned data claims: 331  (reproducing 331, mismatching 0)",
+        "source-owned BSS claims: 239  (30,164 NOBITS bytes; object/symbol gates)",
+        "module fidelity: 106/106 exact, 100.000000% of compared bytes",
+        "ROM-build analysis: PASS",
+        "ROM data from source: 970 symbol(s) verified, 1,519 partial, 1 differ, 21 unnamed by config (from 5,285 object records)"
+      ],
+      "rom_data_advisory": {
+        "symbols": 2511,
+        "verified": 970,
+        "partial": 1519,
+        "differs": 1,
+        "unnamed": 21,
+        "verifiedBytes": 49040,
+        "partialBytes": 8144,
+        "verifiedRecords": 2327,
+        "partialRecords": 2819,
+        "differsRecords": 2,
+        "unnamedRecords": 137,
+        "totalRecords": 5285,
+        "differingSymbols": [
+          {
+            "module": "arm9",
+            "symbol": "_ZTV10dCcAcPos_c",
+            "addr": 34137860,
+            "bytes": 16
+          }
+        ],
+        "qualification": "Summary counts retained here; full per-record advisory remains bound by the actual full-build report artifact."
+      },
+      "qualifications": [
+        "Actual normal full-ROM analysis ran at the committed Source checkpoint, not a historical transfer.",
+        "Baseline dsd symbols control reports9 inherited symbol errors; module comparison/zero-new errors are the operative gates. Stock control ROM hashd1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 is not a claim that the --no-rom candidate produced a new ROM file.",
+        "Global data advisory partial/differ/unnamed entries remain; this is not zero-global-data-debt acceptance.",
+        "Prepush ran only after actual Source commit terminal0 and checked23functions; declaration gates report no new disagreements, not universal agreement."
+      ],
+      "baseline_control_summary": [
+        "source-built functions: 5,888  (1,190,448 / 2,238,108 code bytes, 53.19%)",
+        "reproducing: 5,888",
+        "mismatching: 0",
+        "module fidelity: 106/106 exact, 100.000000% of compared bytes",
+        "ROM-build analysis: PASS"
+      ],
+      "baseline_control_summary_qualification": "Independent scratch baseline with NO TU substitutions; its5888 source-built count is not the final candidate count. Final normal candidate analysis below is11334."
+    },
+    "report_physical_sha256": "46555eed9440d2ba6ada992cd302cea5e2ca7126b1be2e2dda2ca51af7229cc0",
+    "report_git_lf_sha256": "20c0b9874333123d7cfc51ea66c0d7d0aa47379184bec6556281fa744a1be45b",
+    "qualification": "Original full build and static proof are preserved historical evidence; the current composition has its own fresh runs."
+  },
+  "source_author_checkpoint": "0d53a3937e4f7d05a0edace892b3ac749f05d863",
+  "accepted_rework_input_commit": "3b5d6bd7e447aee1e808c651068d263b11864930",
+  "current_composition": {
+    "parents": [
+      "3b5d6bd7e447aee1e808c651068d263b11864930",
+      "132347a5a8d617de18c0de31b0b598788fa08329"
+    ],
+    "incoming_main_changes": [
+      "config/tu_manifest.d/ov030/daMky_c.json",
+      "notes/experiments/mky-native-normals1015.json",
+      "src/game/actors/d_a_mky.cpp"
+    ],
+    "required_incoming_inputs_literal": 58,
+    "required_candidate_inputs_literal": 58,
+    "Source_and_manifest_unchanged_since_rework_input": true,
+    "report_only_final_binding": "Final immutable output is recorded by the queue and ignored final-binding artifact; all five production trees must equal this tested checkpoint.",
+    "qualification": "Normal two-parent merge preserves both original Source history and accepted Monkey/main ancestry; original registered bbdf input/tooling provenance remains recorded."
+  },
+  "accepted_history_resolution": {
+    "effective_findings_preserved_exact": 27,
+    "accepted_predecessor_dicts": 22,
+    "current_findings": 5,
+    "raw_aggregate_difference_count": 3,
+    "evidence_sha256": "5343a41ac92bfa3f690ddece88e1c992807cae9449702a0a52fb09320b43104c",
+    "qualification": "Preserve actual later accepted VERIFY dictionaries, including KP2864-10 FIXED, separately from stale raw aggregate dispositions. Independent review must validate this history resolution; producer does not self-accept it."
+  }
 }
