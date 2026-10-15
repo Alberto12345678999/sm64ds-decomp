@@ -68,8 +68,8 @@ extern int data_ov006_0213bd18[];
 extern int data_0209e650;
 extern "C" void func_ov006_020c0aa8(void *c);
 extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern "C" void func_ov004_020b1bc8(char *a0, int a1, int a2, int a3);
-extern "C" void func_ov004_020b1e34(void *a0, int a1, int a2, int a3);
+extern "C" void Mg_DrawLives(char *a0, int a1, int a2, int a3);
+extern "C" void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
 extern "C" void func_ov006_020c1804(void *c);
 extern int data_ov006_02134028;
 void func_ov006_020c19d0(void *table);
@@ -79,10 +79,10 @@ extern int func_ov006_020c1718(void *p);
 extern void func_ov006_020c1420(void *c, s16 arg1, void *arg2);
 extern void func_ov006_020c0d68(void *c);
 extern void func_ov006_020c0c80(void *c);
-extern void func_ov004_020ad79c(int a0, int a1);
-extern void func_ov004_020b0cac(int a0, int a1, int a2, int a3, int a4, s16 a5);
-extern void func_ov004_020adb1c(int v);
-extern void func_ov004_020b0a54(int v);
+extern void Mg_SaveRecordPair(int a0, int a1);
+extern void Mg_ShowBanner(int a0, int a1, int a2, int a3, int a4, s16 a5);
+extern void Mg_SubmitScore(int v);
+extern void Mg_SetSharedState(int v);
 extern int data_ov004_020bf9ec;
 extern int data_ov006_0213bc44;
 extern int data_ov004_020bfa18;
@@ -171,7 +171,7 @@ s32 dScMgCard_c::InitResources()
     void *mainTiles, *mainPalette, *subTiles, *subPalette;
     int pos[2];
 
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov006_0210a534(c);
     data_0209d45c = 0x11;
     data_0209d454 = 0x18;
@@ -228,12 +228,12 @@ s32 dScMgCard_c::InitResources()
 
     self->mState = 0;
     self->mStateTimer = 0;
-    unk_0a8 = func_ov004_020ad8b8();
+    unk_0a8 = Mg_GetSavedRecord0();
     unk_0ac = unk_0a8;
     {
-        int r = func_ov004_020ad878();
-        if (data_ov004_020beb68 != 0)
-            ((dScMgBase_c *)data_ov004_020beb68)->mHudScore = r;
+        int r = Mg_GetSavedRecord1();
+        if (gMgScene != 0)
+            ((dScMgBase_c *)gMgScene)->mHudScore = r;
     }
     self->mScore = 0;
     func_ov004_020b682c();
@@ -335,7 +335,7 @@ int dScMgCard_c::CanEndState(int mode)
         int i;
         char* a;
         char* b;
-        void* p = data_ov004_020beb68;
+        void* p = gMgScene;
         if ((p != 0 ? ((dScMgBase_c *)p)->unk_0a8 : 0) != 0)
             return 1;
         a = (char *)mArray1;
@@ -388,7 +388,7 @@ void dScMgCard_c::OnHostAnimCue() {
  * win out or take the loss's chip. mState mostly just `++`s and
  * mStateTimer carries each step's countdown; the two highlight pairs
  * and the card states carry the rest. The singleton
- * data_ov004_020beb68 is the active dScMgBase_c (see its own note in
+ * gMgScene is the active dScMgBase_c (see its own note in
  * notes/minigame-provenance.md): unk_0a8 is the coin counter,
  * mHudScore the chip tally, unk_0b8 its high-water mark. Coined name;
  * the ROM's symbol is address-only. */
@@ -472,10 +472,10 @@ void dScMgCard_c::UpdateState()
                         mState++;
                         data_ov004_020bf9ec = 1;
                         Sound::PlayBank2_2D(0x151);
-                        g = data_ov004_020beb68;
+                        g = gMgScene;
                         a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
                         a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
-                        func_ov004_020ad79c(a0, a1);
+                        Mg_SaveRecordPair(a0, a1);
                     }
                 }
             } else {
@@ -492,10 +492,10 @@ void dScMgCard_c::UpdateState()
                         mState++;
                         data_ov004_020bf9ec = 1;
                         Sound::PlayBank2_2D(0x151);
-                        g = data_ov004_020beb68;
+                        g = gMgScene;
                         a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
                         a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
-                        func_ov004_020ad79c(a0, a1);
+                        Mg_SaveRecordPair(a0, a1);
                         cnt3 = 0;
                         i = cnt3;
                         do {
@@ -608,8 +608,8 @@ void dScMgCard_c::UpdateState()
             t5 = dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, &unk_538e);
             if (data_ov006_02141768 != 0 && data_ov006_02141768 != 0) {
                 /* the hand-value fanfares sit at sound bank 22 up */
-                func_ov004_020b0cac(t4 + 22, 0x80, 0x48, 0, -1, 1);
-                func_ov004_020b0cac(t5 + 22, 0x80, 0x78, 0, -1, 2);
+                Mg_ShowBanner(t4 + 22, 0x80, 0x48, 0, -1, 1);
+                Mg_ShowBanner(t5 + 22, 0x80, 0x78, 0, -1, 2);
                 if (t4 != t5) {
                     unk_5392 = 6;
                     unk_5394 = 6;
@@ -622,13 +622,13 @@ void dScMgCard_c::UpdateState()
             }
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
-                g = data_ov004_020beb68;
+                g = gMgScene;
                 a0 = g ? ((dScMgBase_c *)g)->unk_0a8 : 0;
                 a1 = g ? ((dScMgBase_c *)g)->mHudScore : 0;
-                func_ov004_020ad79c(a0, a1 - 1);
+                Mg_SaveRecordPair(a0, a1 - 1);
                 mStateTimer = 0x5a;
             } else if (r == 1) {
-                g = data_ov004_020beb68;
+                g = gMgScene;
                 {
                     int *tbl = data_ov006_0213bd48;
                     int scale;
@@ -638,7 +638,7 @@ void dScMgCard_c::UpdateState()
                     scale = data_ov004_020bfa18;
                     prod = r * scale + a0;
                     r = g ? ((dScMgBase_c *)g)->mHudScore : 0;
-                    func_ov004_020ad79c(prod, r + 1);
+                    Mg_SaveRecordPair(prod, r + 1);
                 }
                 mStateTimer = 0x1e;
             } else {
@@ -653,16 +653,16 @@ void dScMgCard_c::UpdateState()
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
                 func_ov006_020c0d68(&mShared);
-                g = data_ov004_020beb68;
+                g = gMgScene;
                 if (g != 0) {
                     if (((dScMgBase_c *)g)->mHudScore > 0) {
                         ((dScMgBase_c *)g)->mHudScore = ((dScMgBase_c *)g)->mHudScore - 1;
                     }
                 }
-                func_ov004_020b0a54(5);
+                Mg_SetSharedState(5);
             } else if (r == 1) {
                 func_ov006_020c0c80(&mShared);
-                g = data_ov004_020beb68;
+                g = gMgScene;
                 if (g != 0) {
                     if (((dScMgBase_c *)g)->mHudScore < 0x270f) {
                         int *fld = &((dScMgBase_c *)g)->mHudScore;
@@ -672,10 +672,10 @@ void dScMgCard_c::UpdateState()
                     if (a1 > ((dScMgBase_c *)g)->unk_0b8)
                         ((dScMgBase_c *)g)->unk_0b8 = a1;
                 }
-                func_ov004_020adb1c(mHudScore);
-                func_ov004_020b0a54(4);
+                Mg_SubmitScore(mHudScore);
+                Mg_SetSharedState(4);
             } else {
-                func_ov004_020b0a54(7);
+                Mg_SetSharedState(7);
                 Sound::PlayBank2_2D(0x140);
                 Sound::PlayBank2_2D(0x138);
             }
@@ -748,12 +748,12 @@ s32 dScMgCard_c::Render()
         RenderOamMainScreen(data_ov006_02134028, 0x28, 0x38, -1, -1);
     }
 
-    func_ov004_020b1bc8(c, 0xc, 0xc, 0);
-    func_ov004_020b1e34(c, 0xe0, 0x14, 1);
+    Mg_DrawLives(c, 0xc, 0xc, 0);
+    Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 
     if (this->mScore < this->mHudScore)
         this->mScore = this->mHudScore;
-    func_ov004_020adb1c(this->mScore);
+    Mg_SubmitScore(this->mScore);
 
     func_ov004_020b6430();
 

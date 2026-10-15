@@ -18923,71 +18923,71 @@
     },
     "ov004:0x020ad6f4": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad6f4"
+      "name": "Mg_GetLastRecordRank"
     },
     "ov004:0x020ad6fc": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad6fc"
+      "name": "Mg_FindRecordRank"
     },
     "ov004:0x020ad79c": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad79c"
+      "name": "Mg_SaveRecordPair"
     },
     "ov004:0x020ad878": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad878"
+      "name": "Mg_GetSavedRecord1"
     },
     "ov004:0x020ad8b8": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad8b8"
+      "name": "Mg_GetSavedRecord0"
     },
     "ov004:0x020ad90c": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad90c"
+      "name": "Mg_CommitRecords"
     },
     "ov004:0x020ad940": {
       "author": "tangosdev",
-      "name": "func_ov004_020ad940"
+      "name": "Mg_RankSessionBest"
     },
     "ov004:0x020ada20": {
       "author": "tangosdev",
-      "name": "func_ov004_020ada20"
+      "name": "Mg_ClearNewRecordFlag"
     },
     "ov004:0x020ada40": {
       "author": "tangosdev",
-      "name": "func_ov004_020ada40"
+      "name": "Mg_SetSessionBest"
     },
     "ov004:0x020adafc": {
       "author": "tangosdev",
-      "name": "func_ov004_020adafc"
+      "name": "Mg_GetSessionBest"
     },
     "ov004:0x020adb1c": {
       "author": "tangosdev",
-      "name": "func_ov004_020adb1c"
+      "name": "Mg_SubmitScore"
     },
     "ov004:0x020adbc0": {
       "author": "tangosdev",
-      "name": "func_ov004_020adbc0"
+      "name": "Mg_GetSubmittedScore"
     },
     "ov004:0x020adbe0": {
       "author": "tangosdev",
-      "name": "func_ov004_020adbe0"
+      "name": "Mg_IsNewRecord"
     },
     "ov004:0x020adc00": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc00"
+      "name": "Mg_SetTopRecord"
     },
     "ov004:0x020adc1c": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc1c"
+      "name": "Mg_GetTopRecord"
     },
     "ov004:0x020adc3c": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc3c"
+      "name": "Mg_GetSaveTable"
     },
     "ov004:0x020adc4c": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc4c"
+      "name": "Mg_GetWorkBuffer"
     },
     "ov004:0x020adc5c": {
       "author": "tangosdev",
@@ -18995,11 +18995,11 @@
     },
     "ov004:0x020adc68": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc68"
+      "name": "Ov004_LoadFile"
     },
     "ov004:0x020adc74": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc74"
+      "name": "Ov004_LoadFileByPath"
     },
     "ov004:0x020adc80": {
       "author": "tangosdev",
@@ -19011,7 +19011,7 @@
     },
     "ov004:0x020add88": {
       "author": "tangosdev",
-      "name": "func_ov004_020add88"
+      "name": "Mg_DrawFx"
     },
     "ov004:0x020addcc": {
       "author": "tangosdev",
@@ -19023,15 +19023,15 @@
     },
     "ov004:0x020adf2c": {
       "author": "tangosdev",
-      "name": "func_ov004_020adf2c"
+      "name": "Mg_UpdateFx"
     },
     "ov004:0x020adf70": {
       "author": "tangosdev",
-      "name": "func_ov004_020adf70"
+      "name": "Mg_InitFx"
     },
     "ov004:0x020adfc4": {
       "author": "tangosdev",
-      "name": "func_ov004_020adfc4"
+      "name": "Mg_SpawnFx"
     },
     "ov004:0x020ae03c": {
       "author": "tangosdev",
@@ -19071,31 +19071,31 @@
     },
     "ov004:0x020ae1a8": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae1a8"
+      "name": "Mg_GetScoringMode"
     },
     "ov004:0x020ae1cc": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae1cc"
+      "name": "Mg_GetMusicMode"
     },
     "ov004:0x020ae1f0": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae1f0"
+      "name": "Mg_GetMusicTrack"
     },
     "ov004:0x020ae20c": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae20c"
+      "name": "Mg_RestoreMusic"
     },
     "ov004:0x020ae274": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae274"
+      "name": "Mg_PlayJingle"
     },
     "ov004:0x020ae2c8": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae2c8"
+      "name": "Mg_StartMusic"
     },
     "ov004:0x020ae330": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae330"
+      "name": "Mg_InitMusic"
     },
     "ov004:0x020ae3b4": {
       "author": "ruspecial",
@@ -19103,23 +19103,23 @@
     },
     "ov004:0x020ae5c4": {
       "author": "tangosdev",
-      "name": "func_ov004_020ae5c4"
+      "name": "Mg_DrawLine"
     },
     "ov004:0x020ae858": {
       "author": "lunavyqo",
-      "name": "func_ov004_020ae858"
+      "name": "Mg_DrawMenu"
     },
     "ov004:0x020aea30": {
       "author": "tangosdev",
-      "name": "func_ov004_020aea30"
+      "name": "Mg_DrawSpriteList"
     },
     "ov004:0x020aea78": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020aea78"
+      "name": "Mg_DrawSpriteListEntry"
     },
     "ov004:0x020aeb24": {
       "author": "tangosdev",
-      "name": "func_ov004_020aeb24"
+      "name": "Mg_UpdateMenu"
     },
     "ov004:0x020aeed8": {
       "author": "andrewboudreau",
@@ -19139,11 +19139,11 @@
     },
     "ov004:0x020af2f8": {
       "author": "lunavyqo",
-      "name": "func_ov004_020af2f8"
+      "name": "Mg_InitBrush"
     },
     "ov004:0x020af5e0": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020af5e0"
+      "name": "Mg_CopySpriteList"
     },
     "ov004:0x020af68c": {
       "author": "tangosdev",
@@ -19151,15 +19151,15 @@
     },
     "ov004:0x020af770": {
       "author": "tangosdev",
-      "name": "func_ov004_020af770"
+      "name": "Mg_RenderSubSpriteScaled"
     },
     "ov004:0x020af868": {
       "author": "tangosdev",
-      "name": "func_ov004_020af868"
+      "name": "Mg_RenderSubSpritePalMtx"
     },
     "ov004:0x020af948": {
       "author": "tangosdev",
-      "name": "func_ov004_020af948"
+      "name": "Mg_RenderSubSpriteMtx"
     },
     "ov004:0x020afa20": {
       "author": "tangosdev",
@@ -19167,11 +19167,11 @@
     },
     "ov004:0x020afb20": {
       "author": "tangosdev",
-      "name": "func_ov004_020afb20"
+      "name": "Mg_RenderMainSpriteScaled"
     },
     "ov004:0x020afc18": {
       "author": "tangosdev",
-      "name": "func_ov004_020afc18"
+      "name": "Mg_RenderMainSpritePalMtx"
     },
     "ov004:0x020afcf8": {
       "author": "tangosdev",
@@ -19179,11 +19179,11 @@
     },
     "ov004:0x020afdd0": {
       "author": "tangosdev",
-      "name": "func_ov004_020afdd0"
+      "name": "Mg_RenderSpriteBoth"
     },
     "ov004:0x020aff38": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020aff38"
+      "name": "Mg_RenderSpriteBothScaled"
     },
     "ov004:0x020b0104": {
       "author": "andrewboudreau",
@@ -19191,19 +19191,19 @@
     },
     "ov004:0x020b023c": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b023c"
+      "name": "Mg_RenderSpriteBothPalMtx"
     },
     "ov004:0x020b0380": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b0380"
+      "name": "Mg_RenderSpriteBothMtx"
     },
     "ov004:0x020b04c0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b04c0"
+      "name": "Mg_GetTopScreenYOffset"
     },
     "ov004:0x020b04d0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b04d0"
+      "name": "Mg_SetTopScreenYOffset"
     },
     "ov004:0x020b04e0": {
       "author": "andrewboudreau",
@@ -19243,11 +19243,11 @@
     },
     "ov004:0x020b0a38": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0a38"
+      "name": "Mg_ResumeSharedState"
     },
     "ov004:0x020b0a54": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0a54"
+      "name": "Mg_SetSharedState"
     },
     "ov004:0x020b0aa0": {
       "author": "tangosdev",
@@ -19255,107 +19255,107 @@
     },
     "ov004:0x020b0b1c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0b1c"
+      "name": "Mg_CheckBannerButton"
     },
     "ov004:0x020b0cac": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0cac"
+      "name": "Mg_ShowBanner"
     },
     "ov004:0x020b0d30": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0d30"
+      "name": "Mg_ResetOverlays"
     },
     "ov004:0x020b0d8c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0d8c"
+      "name": "Mg_DrawBlinkSprite"
     },
     "ov004:0x020b0de0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b0de0"
+      "name": "Mg_DrawPrompt"
     },
     "ov004:0x020b0e84": {
       "author": "lunavyqo",
-      "name": "func_ov004_020b0e84"
+      "name": "Mg_DrawTally"
     },
     "ov004:0x020b14f0": {
       "author": "ruspecial",
-      "name": "func_ov004_020b14f0"
+      "name": "Mg_DrawRecordTable"
     },
     "ov004:0x020b1710": {
       "author": "lunavyqo",
-      "name": "func_ov004_020b1710"
+      "name": "Mg_DrawRecordRow"
     },
     "ov004:0x020b19f0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b19f0"
+      "name": "Mg_DrawTopLeftCounter"
     },
     "ov004:0x020b1a5c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1a5c"
+      "name": "Mg_DrawTopRightCounter"
     },
     "ov004:0x020b1aec": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1aec"
+      "name": "Mg_GetRowWord12"
     },
     "ov004:0x020b1b08": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1b08"
+      "name": "Mg_LoseLives"
     },
     "ov004:0x020b1b40": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1b40"
+      "name": "Mg_GainLives"
     },
     "ov004:0x020b1b78": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1b78"
+      "name": "Mg_SubLives"
     },
     "ov004:0x020b1ba0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1ba0"
+      "name": "Mg_AddLives"
     },
     "ov004:0x020b1bc8": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1bc8"
+      "name": "Mg_DrawLives"
     },
     "ov004:0x020b1c68": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1c68"
+      "name": "Mg_RenderSpriteOnMtx"
     },
     "ov004:0x020b1cf0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1cf0"
+      "name": "Mg_RenderSpriteOn"
     },
     "ov004:0x020b1d60": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1d60"
+      "name": "Mg_RenderSpriteOnNoMtx"
     },
     "ov004:0x020b1de8": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1de8"
+      "name": "Mg_DrawLivesIcon"
     },
     "ov004:0x020b1e34": {
       "author": "ruspecial",
-      "name": "func_ov004_020b1e34"
+      "name": "Mg_DrawScoreTally"
     },
     "ov004:0x020b1e44": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1e44"
+      "name": "Mg_DrawTopCenterCounter"
     },
     "ov004:0x020b1ea4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b1ea4"
+      "name": "Mg_DrawNumber"
     },
     "ov004:0x020b2220": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b2220"
+      "name": "Mg_DrawNumberRotated"
     },
     "ov004:0x020b2444": {
       "author": "tangosdev",
-      "name": "func_ov004_020b2444"
+      "name": "Mg_DrawBigNumber"
     },
     "ov004:0x020b2574": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b2574"
+      "name": "Mg_DrawStockCounter"
     },
     "ov004:0x020b265c": {
       "author": "andrewboudreau",
@@ -19371,11 +19371,11 @@
     },
     "ov004:0x020b290c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b290c"
+      "name": "Mg_ResetBgOffsets"
     },
     "ov004:0x020b2980": {
       "author": "tangosdev",
-      "name": "func_ov004_020b2980"
+      "name": "Mg_DisableAllBanks"
     },
     "ov004:0x020b298c": {
       "author": "tangosdev",
@@ -19395,7 +19395,7 @@
     },
     "ov004:0x020b29a0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b29a0"
+      "name": "Mg_CallStartRound"
     },
     "ov004:0x020b29c0": {
       "author": "tangosdev",

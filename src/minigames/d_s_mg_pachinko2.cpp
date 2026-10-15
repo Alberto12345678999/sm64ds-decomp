@@ -174,19 +174,19 @@ struct Objd6c {
 extern "C" {
 
 /* --- shared ov004, main and library helpers --- */
-extern void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
-extern void func_ov004_020aff38(int a, int b, int c, int d, int e, int f, int g);
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
-extern int  func_ov004_020adbc0(void);
-extern int  func_ov004_020adbe0(void);
-extern int  func_ov004_020adc1c(void);
-extern void func_ov004_020b19f0(void);
-extern void func_ov004_020b1a5c(int, int);
-extern void func_ov004_020b1e44(int a0);
-extern void func_ov004_020adb1c(int self);
-extern void func_ov004_020af2f8(char *, char, int, int);
-extern void func_ov004_020b04d0(int);
-extern void func_ov004_020b0a54(int);
+extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
+extern void Mg_RenderSpriteBothScaled(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
+extern int  Mg_GetSubmittedScore(void);
+extern int  Mg_IsNewRecord(void);
+extern int  Mg_GetTopRecord(void);
+extern void Mg_DrawTopLeftCounter(void);
+extern void Mg_DrawTopRightCounter(int, int);
+extern void Mg_DrawTopCenterCounter(int a0);
+extern void Mg_SubmitScore(int self);
+extern void Mg_InitBrush(char *, char, int, int);
+extern void Mg_SetTopScreenYOffset(int);
+extern void Mg_SetSharedState(int);
 extern void FreeGfxSlotsById(int n);
 extern int  RandomIntInternal(int *seed);
 extern int  Sound_PlayIfNotActive(int a, int b, int c, int d);
@@ -295,7 +295,7 @@ void dScMgPachinko2_c::func_ov006_020ff47c()
     int i;
     for (i = 0; i < 2; i++) {
         if (o->arr[i].flag) {
-            func_ov004_020afdd0((void *)data_ov006_02136b80[o->arr[i].idx],
+            Mg_RenderSpriteBoth((void *)data_ov006_02136b80[o->arr[i].idx],
                                 o->arr[i].x >> 12, o->arr[i].y >> 12, -1, 2);
         }
     }
@@ -709,7 +709,7 @@ void dScMgPachinko2_c::func_ov006_02100140()
     int i;
     for(i=0;i<0x10;i++){
         if(*(unsigned char*)(c+0x5000+0x4b5) != 0){
-            func_ov004_020b2444(
+            Mg_DrawBigNumber(
                 *(int*)(c+0x5000+0x4a0) >> 12,
                 *(int*)(c+0x5000+0x4a4) >> 12,
                 *(unsigned char*)(c+0x5000+0x4b6),
@@ -780,7 +780,7 @@ void dScMgPachinko2_c::func_ov006_02100314()
     int i;
     for(i=0;i<0x10;i++){
         if(*(unsigned char*)(c+0x5000+0x334) != 0){
-            func_ov004_020afdd0(
+            Mg_RenderSpriteBoth(
                 (void *)data_ov006_02136bd4[*(unsigned char*)(c+0x5000+0x335)],
                 *(int*)(c+0x5000+0x320) >> 12,
                 *(int*)(c+0x5000+0x324) >> 12,
@@ -840,7 +840,7 @@ void dScMgPachinko2_c::func_ov006_02100408(int a2, int a3)
 void dScMgPachinko2_c::func_ov006_02100488()
 {
   if (unk_5660 < 2) return;
-  func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
+  Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 6);
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_021004c0Ev
@@ -849,8 +849,8 @@ void dScMgPachinko2_c::func_ov006_021004c0()
     struct Obj4c0 *o = (struct Obj4c0 *)this;
     if (o->f < 2)
         return;
-    func_ov004_020adc1c();
-    func_ov004_020b19f0();
+    Mg_GetTopRecord();
+    Mg_DrawTopLeftCounter();
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_021004f4Ei
@@ -890,7 +890,7 @@ void dScMgPachinko2_c::func_ov006_02100554()
     }
     if (count) return;
 
-    if (func_ov004_020adbe0())
+    if (Mg_IsNewRecord())
         func_ov006_021004f4(1);
     else
         func_ov006_021004f4(0);
@@ -904,7 +904,7 @@ void dScMgPachinko2_c::func_ov006_0210068c()
     int i;
     for(i=0;i<3;i++){
         if(o->arr[i].flag){
-            func_ov004_020afdd0(
+            Mg_RenderSpriteBoth(
                 (void *)data_ov006_0213386c,
                 o->arr[i].x >> 12,
                 o->arr[i].y >> 12,
@@ -1891,7 +1891,7 @@ void dScMgPachinko2_c::func_ov006_0210258c()
 void dScMgPachinko2_c::func_ov006_02102624()
 {
     if (mCountdownShown == 0) return;
-    func_ov004_020b1e44(mCountdown);
+    Mg_DrawTopCenterCounter(mCountdown);
 }
 
 // @symbol _ZN16dScMgPachinko2_c19func_ov006_0210265cEv
@@ -2183,9 +2183,9 @@ void dScMgPachinko2_c::func_ov006_02102de4()
             unsigned char t = mBalls[i].unk_3c;
             int y = mBalls[i].y >> 12;
             if (t != 0) {
-                func_ov004_020afdd0((void *)data_ov006_02138d08[t - 1], x, y, -1, -1);
+                Mg_RenderSpriteBoth((void *)data_ov006_02138d08[t - 1], x, y, -1, -1);
             } else {
-                func_ov004_020aff38(data_ov006_021389ec, x, y, -1, -1, 0x1000,
+                Mg_RenderSpriteBothScaled(data_ov006_021389ec, x, y, -1, -1, 0x1000,
                                     *(unsigned short *)(p + i * 64 + 0x4690));
             }
         }
@@ -2586,11 +2586,11 @@ void dScMgPachinko2_c::func_ov006_02103994(int i)
 
         if (*(unsigned short*)(c + i * 0x40 + 0x4600 + 0x96) == 0x20)
         {
-            int r3 = func_ov004_020adbc0();
+            int r3 = Mg_GetSubmittedScore();
             int f660 = mBalls[i].x;
             int f664 = mBalls[i].y;
             func_ov006_02100278(f660, f664, r3 + 1);
-            func_ov004_020adb1c(func_ov004_020adbc0() + 1);
+            Mg_SubmitScore(Mg_GetSubmittedScore() + 1);
         }
     }
 
@@ -2684,7 +2684,7 @@ void dScMgPachinko2_c::func_ov006_02103bfc()
     mCountdownTick = 0;
     mCountdownShown = 0;
     unk_5670 = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
     func_ov006_02102564();
     func_ov006_02100058();
 }
@@ -2770,7 +2770,7 @@ s32 dScMgPachinko2_c::Behavior()
         if (unk_566e != 0) {
             unk_566e--;
             if ((s16)unk_566e <= 0) {
-                func_ov004_020b0a54(0x10);
+                Mg_SetSharedState(0x10);
                 mPromptEnabled = 0;
             }
         }
@@ -2839,7 +2839,7 @@ s32 dScMgPachinko2_c::InitResources()
         }
     }
 
-    func_ov004_020af2f8((char *)this, 0, 2, 0);
+    Mg_InitBrush((char *)this, 0, 2, 0);
 
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 2;
     *(volatile u16 *)0x400100e &= ~0x40;
@@ -2876,7 +2876,7 @@ s32 dScMgPachinko2_c::InitResources()
     func_ov006_02100084();
     func_ov006_021024e0();
     func_ov006_020fffec();
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     unk_0a4 = 1;
     unk_566c = 0x10;

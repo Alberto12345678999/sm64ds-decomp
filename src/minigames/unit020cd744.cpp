@@ -48,7 +48,7 @@ extern "C" void func_ov006_020cd744(char* c) {
 
 namespace s020cd7b8 {
 extern "C" extern void func_ov006_020bfff8(void* a, void* b, int* c, int* d);
-extern "C" extern int func_ov004_020b04c0(void);
+extern "C" extern int Mg_GetTopScreenYOffset(void);
 extern "C" extern void func_ov006_020ef05c(int a, int b, int c);
 extern "C" {extern void* data_ov006_02141a50;}
 extern "C" {extern void* data_ov006_02141a40;}
@@ -60,7 +60,7 @@ extern "C" void func_ov006_020cd7b8(char* c, int arg1)
     int v0, v1;
     if (*(int*)(c + 0xc) > 0) {
         func_ov006_020bfff8(data_ov006_02141a50, (void*)(c + 8), &v0, &v1);
-        v1 = v1 - (func_ov004_020b04c0() + 0xc0);
+        v1 = v1 - (Mg_GetTopScreenYOffset() + 0xc0);
     } else {
         func_ov006_020bfff8(data_ov006_02141a40, (void*)(c + 8), &v0, &v1);
     }

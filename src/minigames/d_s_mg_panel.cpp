@@ -97,13 +97,13 @@ unsigned int func_02012790(unsigned int a);
 void FreeGfxSlotsById(int arg);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void Hud_RenderSprite(void *a, int b, int c, int d, int e);
-void func_ov004_020adb1c(int a);
-void func_ov004_020af948(void *a, int b, int c, void *d);
-void func_ov004_020afdd0(void *a, int b, int c, int d, int e);
-void func_ov004_020b0a54(int a);
-void func_ov004_020af868(void *a0, int a1, int a2, int a3, int a4, void *a5);
+void Mg_SubmitScore(int a);
+void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *d);
+void Mg_RenderSpriteBoth(void *a, int b, int c, int d, int e);
+void Mg_SetSharedState(int a);
+void Mg_RenderSubSpritePalMtx(void *a0, int a1, int a2, int a3, int a4, void *a5);
 int  __aeabi_idiv(int a, int b);
-void func_ov004_020b2444(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
+void Mg_DrawBigNumber(int a0, int a1, int a2, int a3, int a4, int a5, int a6);
 }
 
 /* The state tables are arrays of member-function pointers, defined at the end
@@ -137,7 +137,7 @@ void dScMgPanel_c::func_ov006_021042e8()
     int i;
     for (i = 0; i < 0x40; i++) {
         if (self->mParticles[i].visible != 0) {
-            func_ov004_020afdd0(
+            Mg_RenderSpriteBoth(
                 (void *)data_ov006_0213def0[self->mParticles[i].kind],
                 self->mParticles[i].x >> 12,
                 self->mParticles[i].y >> 12,
@@ -459,7 +459,7 @@ void dScMgPanel_c::func_ov006_02104b5c()
     dScMgPanel_c *self = (dScMgPanel_c *)scene;
     extern void *data_ov006_02136e2c[];
     if (self->mBanner.visible == 0) return;
-    func_ov004_020af948(data_ov006_02136e2c[0],
+    Mg_RenderSubSpriteMtx(data_ov006_02136e2c[0],
                         self->mBanner.x >> 12,
                         self->mBanner.y >> 12, 0);
 }
@@ -559,10 +559,10 @@ void dScMgPanel_c::func_ov006_02104d94()
         int a = self->mSlide >> 12;
         int b = self->mSlideY >> 12;
         int index;
-        func_ov004_020b2444(a, b, self->mFlipCount, -1, -1, 0, 0);
+        Mg_DrawBigNumber(a, b, self->mFlipCount, -1, -1, 0, 0);
         index = 1;
         if (self->mFlipCount >= 2) index = 0;
-        func_ov004_020afdd0(data_ov006_02135054[index], a + 0x2c, b, -1, -1);
+        Mg_RenderSpriteBoth(data_ov006_02135054[index], a + 0x2c, b, -1, -1);
     } else {
         int x = self->mSlideLeft;
         Hud_RenderSprite(data_ov006_02136de8[x],
@@ -1140,7 +1140,7 @@ void dScMgPanel_c::func_ov006_02105ab4()
                 index = data_ov006_0213dd34[k * 5 + h];
             }
 
-            func_ov004_020af868(data_ov006_021427d4[index], x, y, -1, v, 0);
+            Mg_RenderSubSpritePalMtx(data_ov006_021427d4[index], x, y, -1, v, 0);
 
             if (scene->mode == 1) {
                 int p = scene->parr[i];
@@ -1821,7 +1821,7 @@ void dScMgPanel_c::func_ov006_02106bc0()
     *(u16 *)(scene + 0x4ec0) -= 1;
     if (*(s16 *)(scene + 0x4ec0) > 0) return;
     *(u16 *)(scene + 0x4ec0) = 0;
-    func_ov004_020b0a54(0x12);
+    Mg_SetSharedState(0x12);
     *(u8 *)(scene + 0xc3) = 0;
     *(u8 *)(scene + 0x4fe3) = 0;
     func_ov006_02104ea8();
@@ -1831,9 +1831,9 @@ void dScMgPanel_c::func_ov006_02106bc0()
 #pragma push
 #pragma opt_propagation off
 extern "C" {
-/* This function reads data_ov004_020beb68 as a char *; dScMgBase_c.h
+/* This function reads gMgScene as a char *; dScMgBase_c.h
    declares it void *.  Reinterpret rather than redeclare. */
-#define PANEL_BEB68 (*(char **)&data_ov004_020beb68)
+#define PANEL_BEB68 (*(char **)&gMgScene)
 
 }
 void dScMgPanel_c::func_ov006_02106ca4()
@@ -1893,7 +1893,7 @@ void dScMgPanel_c::func_ov006_02106ca4()
         if (*(u8 *)(scene + 0x4000 + 0xfe6) != 0) {
             char *g;
             func_ov006_02104870();
-            func_ov004_020b0a54(0);
+            Mg_SetSharedState(0);
             func_ov006_02104ea8();
             *(u8 *)(scene + 0x4000 + 0xfe3) = 0;
             *(u8 *)(scene + 0xc3) = 0;
@@ -1904,7 +1904,7 @@ void dScMgPanel_c::func_ov006_02106ca4()
                 if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
                     *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
             }
-            func_ov004_020adb1c(PANEL_BEB68 != 0 ? *(int *)(PANEL_BEB68 + 0xb4) : 0);
+            Mg_SubmitScore(PANEL_BEB68 != 0 ? *(int *)(PANEL_BEB68 + 0xb4) : 0);
             return;
         }
         *(u16 *)(scene + 0x4e00 + 0xc0) = 0x10;
@@ -2047,10 +2047,10 @@ extern void  func_02056314(void *, u32, u32);
 extern void  func_02056374(const void *, u32, u32);
 extern void  func_020563d4(const void *, u32, u32);
 extern void  func_020564f4(const void *, int, int);
-extern void  func_ov004_020adb1c(int);
-extern void  func_ov004_020b04d0(int);
-extern void  func_ov004_020b0cac(int, int, int, int, int, s16);
-extern void  func_ov004_020b1e34(void *a, int b, int c, int d);
+extern void  Mg_SubmitScore(int);
+extern void  Mg_SetTopScreenYOffset(int);
+extern void  Mg_ShowBanner(int, int, int, int, int, s16);
+extern void  Mg_DrawScoreTally(void *a, int b, int c, int d);
 
 }  /* extern "C" */
 
@@ -2077,11 +2077,11 @@ void dScMgPanel_c::StartRound(int flag)
         if (unk_0bc > 0x270e)
             unk_0bc = 0x270e;
 
-        if (data_ov004_020beb68 != 0)
-            *(int *)((char *)data_ov004_020beb68 + 0xb4) = 0;
+        if (gMgScene != 0)
+            *(int *)((char *)gMgScene + 0xb4) = 0;
 
-        p = (char *)data_ov004_020beb68;
-        func_ov004_020adb1c(p != 0 ? *(int *)(p + 0xb4) : 0);
+        p = (char *)gMgScene;
+        Mg_SubmitScore(p != 0 ? *(int *)(p + 0xb4) : 0);
     }
 
     FreeGfxSlotsById(0x1d);
@@ -2092,7 +2092,7 @@ void dScMgPanel_c::StartRound(int flag)
 
     mLives = 3;
     mState = 0;
-    func_ov004_020b0cac(0xd, 0x80, 0x40, 0, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0x40, 0, -1, 0xd);
     SetSubBg0Offset(0, 0);
 
     data_0209d454 &= ~1;
@@ -2102,7 +2102,7 @@ void dScMgPanel_c::StartRound(int flag)
 /* Vtable slot 9. */
 s32 dScMgPanel_c::Render()
 {
-    func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
     func_ov006_02104d44();
     func_ov006_02104d94();
     func_ov006_021042e8();
@@ -2264,8 +2264,8 @@ s32 dScMgPanel_c::InitResources()
     mIntro = 0;
     mLives = 3;
 
-    func_ov004_020b04d0(0x20);
-    func_ov004_020b0cac(0xd, 0x80, 0x40, 0, -1, 0xd);
+    Mg_SetTopScreenYOffset(0x20);
+    Mg_ShowBanner(0xd, 0x80, 0x40, 0, -1, 0xd);
     mHudScore = 0;
     return 1;
 }

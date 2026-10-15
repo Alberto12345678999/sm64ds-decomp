@@ -284,11 +284,11 @@ extern Vec2i data_ov006_0213ca24;
 extern struct Words2 data_ov006_0213ca14;
 extern int data_ov006_0213ca0c[];
 extern V2 data_ov006_0213c9dc;
-extern void func_ov004_020ad90c(void *);
-extern void func_ov004_020b1e34(void *a, int b, int c, int d);
+extern void Mg_CommitRecords(void *);
+extern void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(void *a, int b, int c, int d);
-extern void func_ov004_020b2220(int a, int b, void *c, int d, int e, int f, int g);
+extern void Mg_DrawNumberRotated(int a, int b, void *c, int d, int e, int f, int g);
 extern Pair data_ov006_0213c9ac;
 extern Pair data_ov006_0213c994;
 extern Pair data_ov006_0213ca3c;
@@ -412,14 +412,14 @@ extern "C" void func_ov006_020ea350(void)
     x = ((int *)data_ov006_02141fe4)[0] >> 12;
     y = new_var[1] >> 12;
     r = GetGameLanguage();
-    func_ov004_020af948(*((void **)(((char *)data_ov006_0213ca9c[r]) + 0x34)), x - 8, y, 0);
-    func_ov004_020af948(*((void **)(data_ov006_02137cd8 + 0x64)), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(*((void **)(((char *)data_ov006_0213ca9c[r]) + 0x34)), x - 8, y, 0);
+    Mg_RenderSubSpriteMtx(*((void **)(data_ov006_02137cd8 + 0x64)), x + 8, y, 0);
 }
 
 // @symbol func_ov006_020ea3d0
 /* Steps the single popup through three phases. Phase 0 moves it by its
    velocity until its timer runs out, phase 1 holds for 0x40 frames and then
-   adds one to the counter at +0xb4 of data_ov004_020beb68 (capped at 9999,
+   adds one to the counter at +0xb4 of gMgScene (capped at 9999,
    raising +0xb8 to match), and phase 2 counts the +0xf field down every
    eighth frame, stepping the int behind arg toward 0x32 each time. */
 typedef struct {
@@ -464,7 +464,7 @@ extern "C" void func_ov006_020ea3d0(char *arg)
             *(u8 *)(f + 0x10) = 0;
             *(u8 *)(((int)f + 0xe)) += 1;
             {
-                char *g = (char *)data_ov004_020beb68;
+                char *g = (char *)gMgScene;
                 if (g != 0) {
                     if (*(int *)(g + 0xb4) < 0x270f)
                         *(int *)(((int)g + 0xb4)) += 1;
@@ -472,7 +472,7 @@ extern "C" void func_ov006_020ea3d0(char *arg)
                         *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
                 }
             }
-            func_ov004_020adb1c(data_ov004_020beb68 != 0 ? *(int *)((char *)data_ov004_020beb68 + 0xb4) : 0);
+            Mg_SubmitScore(gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0);
         } else {
             if (*(u8 *)(f + 0xf) != 0) {
                 *(u8 *)(((int)f + 0xc)) += 1;
@@ -539,9 +539,9 @@ extern "C" void func_ov006_020ea670(void)
             int r8 = e->y >> 12;
             int idx = GetGameLanguage();
             void *obj = data_ov006_0213ca9c[idx];
-            func_ov004_020af948(*(void **)((char *)obj + 0x38), sb - 0x10, r8, a);
-            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa4), sb, r8, b);
-            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa0), sb + 0x10, r8, c);
+            Mg_RenderSubSpriteMtx(*(void **)((char *)obj + 0x38), sb - 0x10, r8, a);
+            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa4), sb, r8, b);
+            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa0), sb + 0x10, r8, c);
         }
     }
 }
@@ -1867,7 +1867,7 @@ void func_ov006_020ecdb8(char *raw, int arg1, int arg2)
 // @symbol _ZN15dScMgHanachan_c16CleanupResourcesEv
 s32 dScMgHanachan_c::CleanupResources()
 {
-    func_ov004_020ad90c(this);
+    Mg_CommitRecords(this);
     return 1;
 }
 
@@ -1881,7 +1881,7 @@ s32 dScMgHanachan_c::Render()
     int i;
     char *arr;
 
-    func_ov004_020b1e34(raw, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
     func_ov006_020ea670();
     func_ov006_020ea350();
 
@@ -1954,7 +1954,7 @@ tail:
             void *e = data_ov006_0213ca9c[idx];
             void *f = *(void **)((char *)e + 0xc);
             DrawOamSprite(f, 0x80, 0x10, 0);
-            func_ov004_020b2220(0x80, 0x28, (void *)mTimeLeft, 1, -1, 0x800, 0);
+            Mg_DrawNumberRotated(0x80, 0x28, (void *)mTimeLeft, 1, -1, 0x800, 0);
         }
     }
 
@@ -2063,13 +2063,13 @@ void dScMgHanachan_c::func_ov006_020ed34c()
     {
         if (s->mHit != 0)
         {
-            func_ov004_020b0a54(1);
+            Mg_SetSharedState(1);
             func_ov006_020ed32c();
         }
         else
         {
             ((C *)s->mTarget)->decoy = 1;
-            func_ov004_020b0a54(0x12);
+            Mg_SetSharedState(0x12);
             func_ov006_020ed300();
         }
         s->mPromptEnabled = 0;
@@ -2318,7 +2318,7 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
         s->mTarget = (char *)((Thing *)s->mWiggler + k);
         ((C *)s->mTarget)->decoy = 0;
         s->mDelay = 0x3c;
-        func_ov004_020b0cac(0xd, 0x80, 0x50, 1, -1, 0xd);
+        Mg_ShowBanner(0xd, 0x80, 0x50, 1, -1, 0xd);
         s->mTimeTick = 0x3c;
         s->mHit = 0;
         *(Pair *)&s->mPhaseFn = data_ov006_0213c964;
@@ -2340,12 +2340,12 @@ void dScMgHanachan_c::StartRound(int state)
     } else if (state == 0x12) {
         unk_0bc = 0;
         if (unk_0bc > 0x270e) unk_0bc = 0x270e;
-        if (data_ov004_020beb68 != 0) *(int*)((char *)data_ov004_020beb68 + 0xb4) = 0;
-        func_ov004_020adb1c(mHudScore);
+        if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = 0;
+        Mg_SubmitScore(mHudScore);
         mTimeLeft = 0x14;
     } else {
         int v = unk_0bc;
-        if (data_ov004_020beb68 != 0) *(int*)((char *)data_ov004_020beb68 + 0xb4) = v;
+        if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = v;
         mTimeLeft = 0x14;
     }
     func_ov006_020ea8e0();
@@ -2372,7 +2372,7 @@ s32 dScMgHanachan_c::InitResources()
     Deallocate(b);
     obj->unkA8 = data_ov006_0213c954;
     obj->unkAC = obj->unkA8;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     obj->v18(-1);
     *data_ov006_02137560[0] = (*data_ov006_02137560[0] & 0xc1fffcff) | 0x100;
     *data_ov006_02137560[1] = (*data_ov006_02137560[1] & 0xc1fffcff) | 0x100;

@@ -41,7 +41,7 @@ extern unsigned char data_0209f5f8;
 extern void *data_0209d4a8;
 extern unsigned int data_020a0db0;
 extern int data_0208ee44;
-extern int data_ov004_020beb74[];
+extern int sMgGraphCallback[];
 
 /* arm9 / ov004 helpers with no project header. */
 int   func_02053ea0(void);
@@ -54,10 +54,10 @@ void  func_02056674(const void *src, unsigned int offset, unsigned int count);
 int   func_020126e8(int a);
 void  func_020126ac(int a0, int a1, int a2, int a3, int s0);
 void  func_020127ec(int a0, int a1, int a2, int a3, int a4, int a5);
-void *func_ov004_020adc68(int id);
-void  func_ov004_020b0d30(void);
-void  func_ov004_020b290c(void);
-void  func_ov004_020b2980(void);
+void *Ov004_LoadFile(int id);
+void  Mg_ResetOverlays(void);
+void  Mg_ResetBgOffsets(void);
+void  Mg_DisableAllBanks(void);
 int   GetGameLanguage(void);
 void  DecompressLZ16(void *src, void *dst);
 /* The file ID is really u16, but passing it narrowed grows InitSubScreenBg by
@@ -232,8 +232,8 @@ void dScMgD3DBase_c::InitEngines()
     *(vu32 *)0x4001000u |= 0x10000u;
     data_0209d45c = 0x10;
     data_0209d454 = 0x10;
-    func_ov004_020b290c();
-    func_ov004_020b2980();
+    Mg_ResetBgOffsets();
+    Mg_DisableAllBanks();
     data_0209e660 = 1;
     GX::DisableAllBanks();
     GX::SetBankForTex(1);
@@ -243,19 +243,19 @@ void dScMgD3DBase_c::InitEngines()
     func_02054748(0);
     GX::SetBankForOBJ(0x10);
     GX::SetBankForBG(2);
-    file = func_ov004_020adc68(data_ov006_0213c5fc[GetGameLanguage()]);
+    file = Ov004_LoadFile(data_ov006_0213c5fc[GetGameLanguage()]);
     data_ov006_02141a4c = file;
     {
         char *dst = (char *)0x6400000;
         dst += 0x4000;
         DecompressLZ16(file, dst);
     }
-    file = func_ov004_020adc68(0xc3);
+    file = Ov004_LoadFile(0xc3);
     data_ov006_02141a48 = file;
     GX::LoadOBJPltt(file, 0x100u, 0x100u);
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100u, 0x100u);
     InitialiseVramGlobals();
-    func_ov004_020b0d30();
+    Mg_ResetOverlays();
     func_ov006_020e7428();
     data_0208ee44 = 1;
     GX::SetGraphicsMode(1, 0, 1);
@@ -264,8 +264,8 @@ void dScMgD3DBase_c::InitEngines()
     data_ov006_02141a44 = (int)(raw + 0x466c);
     data_ov006_02141a40 = raw + 0x466c;
     data_ov006_02141a50 = raw + 0x4728;
-    data_ov004_020beb74[1] = (int)raw;
-    data_0209d4a8 = (void *)data_ov004_020beb74;
+    sMgGraphCallback[1] = (int)raw;
+    data_0209d4a8 = (void *)sMgGraphCallback;
 }
 
 // @symbol func_ov006_020e7110

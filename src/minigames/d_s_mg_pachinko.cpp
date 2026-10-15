@@ -71,7 +71,7 @@ struct Ent7d0 { int a; int b; };
 /* func_ov006_020fb4e0's stride-only view of the same 0x1c-byte rows. */
 struct E { char pad[0x1c]; };
 
-/* The sprite record func_ov004_020aff38 draws; only handled by pointer here. */
+/* The sprite record Mg_RenderSpriteBothScaled draws; only handled by pointer here. */
 struct OamAttr;
 
 /* The 2x2 rotate-and-scale matrix func_ov006_020fc8c0 hands the sprite
@@ -135,24 +135,24 @@ namespace Sound {
 extern "C" {
 
 /* --- shared ov004, main and library helpers --- */
-extern void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
-extern void func_ov004_020b2444(int x, int y, int h, int a, int b, int c, int d);
-extern int  func_ov004_020adbc0(void);
-extern int  func_ov004_020b1a5c(int a, int b);
-extern int  func_ov004_020adc1c(void);
-extern int  func_ov004_020b19f0(int score);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
+extern void Mg_DrawBigNumber(int x, int y, int h, int a, int b, int c, int d);
+extern int  Mg_GetSubmittedScore(void);
+extern int  Mg_DrawTopRightCounter(int a, int b);
+extern int  Mg_GetTopRecord(void);
+extern int  Mg_DrawTopLeftCounter(int score);
+extern void Mg_SubmitScore(int self);
 extern int  func_020126e8(int a);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void SetBg2Offset(int a, int b);
 extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern int  RandomIntInternal(int *seed);
 extern int  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, void*, int, int);
-extern void func_ov004_020b023c(void *sprite, int x, int y, int a3, void *m);
-extern int  func_ov004_020aff38(OamAttr *a, int b, int c, int d, int e, int f, int g);
-extern void func_ov004_020b0a54(int a);
-extern void func_ov004_020b04d0(int a);
-extern void func_ov004_020af2f8(char *a, char b, int c, int d);
+extern void Mg_RenderSpriteBothPalMtx(void *sprite, int x, int y, int a3, void *m);
+extern int  Mg_RenderSpriteBothScaled(OamAttr *a, int b, int c, int d, int e, int f, int g);
+extern void Mg_SetSharedState(int a);
+extern void Mg_SetTopScreenYOffset(int a);
+extern void Mg_InitBrush(char *a, char b, int c, int d);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern void func_02012718(int a, int b);
 extern int  Sound_PlayIfNotActive(int handle, int player, int id, int unused);
@@ -555,7 +555,7 @@ void func_ov006_020fae20(char *raw)
     char *row = raw;
     for (i = 0; i < 4; i++) {
         if (*(unsigned char *)(row + 0x5000 + 0xbd5) != 0) {
-            func_ov004_020afdd0(
+            Mg_RenderSpriteBoth(
                 (void *)data_ov006_02136e0c[*(unsigned char *)(row + 0x5000 + 0xbd6)],
                 *(int *)(row + 0x5000 + 0xbcc) >> 0xc,
                 *(int *)(row + 0x5000 + 0xbd0) >> 0xc,
@@ -594,7 +594,7 @@ void func_ov006_020faf14(char* raw){
   if(*(unsigned char*)(raw+0x5000+0xbc7)==0) return;
   int x=*(int*)(raw+0x5000+0xbb0);
   int y=*(int*)(raw+0x5000+0xbb4);
-  func_ov004_020afdd0((void *)data_ov006_021375f4[*(unsigned char*)(raw+0x5000+0xbc9)],
+  Mg_RenderSpriteBoth((void *)data_ov006_021375f4[*(unsigned char*)(raw+0x5000+0xbc9)],
     x>>0xc, y>>0xc, -1, -1);
 }
 
@@ -839,9 +839,9 @@ void func_ov006_020fb74c(void* raw) {
             int y = *(int*)(fx + 0x595c) >> 12;
             int idx = *(unsigned char*)(fx + 0x5965);
             if (type != 2) {
-                func_ov004_020afdd0((void*)data_ov006_02133e10[idx], x, y, -1, -1);
+                Mg_RenderSpriteBoth((void*)data_ov006_02133e10[idx], x, y, -1, -1);
             } else {
-                func_ov004_020afdd0((void*)data_ov006_02133e7c[idx], x, y, -1, -1);
+                Mg_RenderSpriteBoth((void*)data_ov006_02133e7c[idx], x, y, -1, -1);
             }
         }
     }
@@ -942,16 +942,16 @@ void func_ov006_020fb97c(char* raw){
 // @symbol func_ov006_020fba28
 /* Render hands it the scene, which it does not read. */
 void func_ov006_020fba28(void *){
-  func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
+  Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 6);
 }
 
 // @symbol func_ov006_020fba48
-/* Draws the high score: the stored best comes back from func_ov004_020adc1c
+/* Draws the high score: the stored best comes back from Mg_GetTopRecord
    as a full word and goes straight to the HUD's number drawer. Render hands
    every drawer the scene; this one does not read it. */
 void func_ov006_020fba48(void *)
 {
-    func_ov004_020b19f0(func_ov004_020adc1c());
+    Mg_DrawTopLeftCounter(Mg_GetTopRecord());
 }
 
 // @symbol func_ov006_020fba64
@@ -961,7 +961,7 @@ void func_ov006_020fba64(char *raw)
     char *popup = raw;
     for (i = 0; i < 0x1e; i++) {
         if (*(unsigned short *)(popup + 0x4c00 + 0xfa) != 0) {
-            func_ov004_020b2444(
+            Mg_DrawBigNumber(
                 *(int *)(popup + 0x4000 + 0xcf0) >> 0xc,
                 *(int *)(popup + 0x4000 + 0xcf4) >> 0xc,
                 *(unsigned short *)(popup + 0x4c00 + 0xf8),
@@ -1005,8 +1005,8 @@ void func_ov006_020fbb2c(char *raw, int idx, unsigned short points)
         self->mPopup[i].y = *(int *)(raw + idx * 0x14 + 0x595c);
         self->mPopup[i].value = 0x30;
         self->mPopup[i].timer = points;
-        func_ov004_020adb1c(self->mPopup[i].timer + func_ov004_020adbc0());
-        if ((unsigned int)func_ov004_020adbc0() < 0xbb8) return;
+        Mg_SubmitScore(self->mPopup[i].timer + Mg_GetSubmittedScore());
+        if ((unsigned int)Mg_GetSubmittedScore() < 0xbb8) return;
         if (PACHINKO(raw)->mPromptEnabled != 0)
             PACHINKO(raw)->mPromptEnabled = 0;
         return;
@@ -1208,7 +1208,7 @@ void func_ov006_020fc144(char *raw)
     char *row = raw;
     for (i = 0; i < 2; i++) {
         if (*(unsigned char *)(row + 0x4000 + 0xeb8) != 0) {
-            func_ov004_020afdd0(
+            Mg_RenderSpriteBoth(
                 (void *)data_ov006_02136b80[*(unsigned char *)(row + 0x4000 + 0xeb5)],
                 *(int *)(row + 0x4000 + 0xea0) >> 0xc,
                 *(int *)(row + 0x4000 + 0xea4) >> 0xc,
@@ -1487,7 +1487,7 @@ void func_ov006_020fc8c0(char *scene)
             m._01 = sinv;
             m._10 = -sinv;
             m._11 = cosv;
-            func_ov004_020b023c((void *)data_ov006_02136cd4[sprite], x, y, -1, &m);
+            Mg_RenderSpriteBothPalMtx((void *)data_ov006_02136cd4[sprite], x, y, -1, &m);
         }
     }
 }
@@ -2228,7 +2228,7 @@ void func_ov006_020fe1d0(char *thiz) {
     int i;
     for (i = 0; i < 0x30; i++, thiz += 0x38) {
         if (*(unsigned char*)(thiz + 0x4f0e) == 0) continue;
-        func_ov004_020aff38((OamAttr *)data_ov006_02137614,
+        Mg_RenderSpriteBothScaled((OamAttr *)data_ov006_02137614,
                             *(int*)(thiz + 0x4ed8) >> 0xc,
                             *(int*)(thiz + 0x4edc) >> 0xc,
                             -1, -1, 0x1000, 0);
@@ -2623,7 +2623,7 @@ void func_ov006_020feba8(char *self)
     scene->unk_5c2a = 0;
     *(short *)(self + 0x5c20) = 0;
 
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
     func_ov006_020faeec(self);
     func_ov006_020fadfc(self);
     func_ov006_020fad90(self);
@@ -2716,7 +2716,7 @@ s32 dScMgPachinko_c::Behavior()
         if (unk_5c18 != 0) {
             unk_5c18--;
             if ((s16)unk_5c18 <= 0) {
-                func_ov004_020b0a54(0x10);
+                Mg_SetSharedState(0x10);
                 mPromptEnabled = 0;
             }
         }
@@ -2793,7 +2793,7 @@ s32 dScMgPachinko_c::InitResources()
     *(volatile u32 *)0x4001018 = 0;
     *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x418;
 
-    func_ov004_020af2f8(c, 0, 2, 0);
+    Mg_InitBrush(c, 0, 2, 0);
 
     b = (char *)G2S::GetBG2CharPtr();
     fillZero = 0;
@@ -2843,7 +2843,7 @@ s32 dScMgPachinko_c::InitResources()
     func_ov006_020feba8(c);
     func_ov006_020fc844((u8 *)c);
     func_ov006_020fae90((u8 *)c);
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     unk_0a4 = 1;
     unk_5c1c = 0x10;

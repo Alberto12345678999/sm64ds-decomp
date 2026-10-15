@@ -57,7 +57,7 @@ extern unsigned char *data_ov006_0213bb08[];
 extern unsigned char data_ov006_0213b9bc[];
 extern s16 data_02082214[];
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-extern void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4);
+extern void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
 extern unsigned char* data_ov006_0213bb18[];
 extern unsigned char* data_ov006_0213bb28[];
 extern void* data_ov006_0213bb4c[];
@@ -66,7 +66,7 @@ extern void *data_ov006_02134f30;
 extern void *data_ov006_02133ae0[];
 extern void *data_ov006_02133a70[];
 extern int data_ov006_0212e2c0[];
-extern int func_ov004_020adbc0(void);
+extern int Mg_GetSubmittedScore(void);
 extern int RandomIntInternal(int *seed);
 // local extern: this file needs a record-view spelling of one of the touch lanes (the ROM scales the slot in the addressing mode), which conflicts with PlayerInput.h; the header is not included and all five symbols are declared here.
 extern u8 gTouchX[];
@@ -269,7 +269,7 @@ void dScMgBomroom_c::func_ov006_020d5dd4() {
 extern "C" {
 void func_ov006_020d5dfc(void)
 {
-    func_ov004_020b1a5c(func_ov004_020adbc0(), 4);
+    Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 4);
 }
 }
 
@@ -694,7 +694,7 @@ void dScMgBomroom_c::func_ov006_020d66c4(int index) {
 
 void dScMgBomroom_c::func_ov006_020d672c() {
   if(unk_62f9==0) return;
-  func_ov004_020b2444(0x80,0xc,unk_62ee,1,-1,0,0);
+  Mg_DrawBigNumber(0x80,0xc,unk_62ee,1,-1,0,0);
 }
 
 
@@ -1139,7 +1139,7 @@ void dScMgBomroom_c::func_ov006_020d7524() {
             if (b697 == 6) {
                 if (mBombs[i].substate == 4) { y = (f664 - mBg2Y) >> 12; }
             }
-            func_ov004_020afdd0(data_ov006_0213bb4c[sprite], x, y, -1, palette);
+            Mg_RenderSpriteBoth(data_ov006_0213bb4c[sprite], x, y, -1, palette);
         }
     }
 }
@@ -2006,9 +2006,9 @@ void dScMgBomroom_c::func_ov006_020d89c4() {
         mStateTimer = 0x60;
         mSceneState = 4;
         mSubState = 0;
-        func_ov004_020adb1c(unk_62ee + func_ov004_020adbc0());
+        Mg_SubmitScore(unk_62ee + Mg_GetSubmittedScore());
     } else {
-        func_ov004_020adb1c(unk_62ee + func_ov004_020adbc0());
+        Mg_SubmitScore(unk_62ee + Mg_GetSubmittedScore());
         mSceneState = 2;
         mSubState = 0;
         mBlastPen = 0;
@@ -2195,7 +2195,7 @@ void dScMgBomroom_c::func_ov006_020d8f34() {
     if ((s16)mStateTimer > 0)
         return;
     mStateTimer = 0;
-    func_ov004_020b0a54(0x10);
+    Mg_SetSharedState(0x10);
     *(u8 *)(c + 0xc3) = 0;
 }
 
@@ -2274,7 +2274,7 @@ void dScMgBomroom_c::func_ov006_020d907c() {
     unk_62f9 = 0;
     unk_62fb = 0;
     *(unsigned char *)(c + 0x62fc) = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
     func_ov006_020d669c();
     func_ov006_020d63ac();
     func_ov006_020d6084();
@@ -2423,8 +2423,8 @@ s32 dScMgBomroom_c::InitResources()
     func_ov006_020d604c();
     *(int *)(c + 0x6000 + 0x2d0) = 1;
     *(u16 *)(c + 0x6200 + 0xee) = 0;
-    func_ov004_020b04d0(0x20);
-    func_ov004_020adb1c(0);
+    Mg_SetTopScreenYOffset(0x20);
+    Mg_SubmitScore(0);
     return 1;
 }
 

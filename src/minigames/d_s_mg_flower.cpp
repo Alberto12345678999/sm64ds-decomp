@@ -75,11 +75,11 @@ struct SpriteAttr { int a, b; };
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern void func_0203d388(int *p, int angle);
-extern void func_ov004_020b04d0(int n);
+extern void Mg_SetTopScreenYOffset(int n);
 extern int data_0209d4b8;
 extern s16 data_02082214[];
-void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
-void func_ov004_020af770(void *a0, int a1, int a2, int a3, int a4, int a5, u16 a6);
+void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
+void Mg_RenderSubSpriteScaled(void *a0, int a1, int a2, int a3, int a4, int a5, u16 a6);
 typedef struct V2 {
 int x;
 int z;
@@ -92,7 +92,7 @@ char pad[0x18];
 void Vec2_Sub(V2 *out, V2 *a, V2 *b);
 int Vec2_Len(V2 *p);
 void FreeGfxSlotsById(int a);
-void *func_ov004_020adc74(void *arg);
+void *Ov004_LoadFileByPath(void *arg);
 void DecompressLZ16(int src, void *dst);
 void Ov004_Deallocate(void *ptr);
 /* G2's calls stay mangled: decl_common.h declares a global named G2. */
@@ -179,7 +179,7 @@ void dScMgFlower_c::func_ov006_0212a764()
     self->mCursorY = 0;
     self->mPrevCursorX = self->mCursorX;
     self->mPrevCursorY = self->mCursorY;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     for (i = 0; i < 0x16; i++) {
         *(u8 *)(c + i * 0x20 + 0x4f38) = 0;
         *(u8 *)(c + i * 0x20 + 0x4f3a) = 0;
@@ -308,7 +308,7 @@ s32 dScMgFlower_c::Render()
         int off = (t + (int)((unsigned)(t >> 7) >> 24)) >> 8;
         SetSubBg3Offset(off, off);
     }
-    func_ov004_020afdd0(data_ov006_0213ab94[mFaceSprite], 0x80, 0x60, -1, 1);
+    Mg_RenderSpriteBoth(data_ov006_0213ab94[mFaceSprite], 0x80, 0x60, -1, 1);
 
     for (i = 0; i < 0x16; i++) {
         if (barr[i][0x4f38] != 0) {
@@ -317,7 +317,7 @@ s32 dScMgFlower_c::Render()
             attr.a = (attr.a & 0xc1fffcff) | 0x100;
             if (mHeldPetal == i)
                 palette = 0;
-            func_ov004_020af770(
+            Mg_RenderSubSpriteScaled(
                 &attr,
                 iarr[i][0x13cf] >> 12,
                 iarr[i][0x13d0] >> 12,
@@ -469,7 +469,7 @@ s32 dScMgFlower_c::Behavior()
                     self->mPetalToggle = 0;
                     if (self->mPetalsLeft >= 1) {
                         FreeGfxSlotsById(0x1d);
-                        func_ov004_020b0cac(0x13, 0x80, 0x18, 0, -1, 0xd);
+                        Mg_ShowBanner(0x13, 0x80, 0x18, 0, -1, 0xd);
                         self->mFaceSprite = 3;
                         Sound::PlayBank2_2D(0x104);
                     }
@@ -477,7 +477,7 @@ s32 dScMgFlower_c::Behavior()
                     self->mPetalToggle = 1;
                     if (self->mPetalsLeft >= 1) {
                         FreeGfxSlotsById(0x1d);
-                        func_ov004_020b0cac(0x10, 0x80, 0x18, 0, -1, 0xd);
+                        Mg_ShowBanner(0x10, 0x80, 0x18, 0, -1, 0xd);
                         self->mFaceSprite = 1;
                         Sound::PlayBank2_2D(0x103);
                     }
@@ -490,7 +490,7 @@ s32 dScMgFlower_c::Behavior()
                 *(int *)LA(c + 0x5fd4) -= 1;
                 if (self->mResultTimer <= 0) {
                     self->mState = 1;
-                    func_ov004_020b0a54(0xc);
+                    Mg_SetSharedState(0xc);
                 }
                 if (func_ov006_020c3b80(c + 0x51f8) != 0) {
                     if (self->mPetalToggle == 1)
@@ -512,13 +512,13 @@ s32 dScMgFlower_c::Behavior()
                     *(int *)LA(c + 0x5fdc) += 1;
                     self->mLoseStreak = 0;
                     if (self->mWinStreak >= 3) {
-                        func_ov004_020b0cac(0x12, 0x80, 0x18, 0, -1, 0xd);
+                        Mg_ShowBanner(0x12, 0x80, 0x18, 0, -1, 0xd);
                         Sound::PlayBank2_2D(0x107);
                         *(int *)LA(c + 0x5ff0) += 3;
                         if (self->mScore > 0x270f)
                             self->mScore = 0x270f;
                     } else {
-                        func_ov004_020b0cac(0x10, 0x80, 0x18, 0, -1, 0xd);
+                        Mg_ShowBanner(0x10, 0x80, 0x18, 0, -1, 0xd);
                         Sound::PlayBank2_2D(0x108);
                         *(int *)LA(c + 0x5ff0) += 1;
                         if (self->mScore > 0x270f)
@@ -529,10 +529,10 @@ s32 dScMgFlower_c::Behavior()
                     *(int *)LA(c + 0x5fe0) += 1;
                     self->mWinStreak = 0;
                     if (self->mLoseStreak >= 3) {
-                        func_ov004_020b0cac(0x11, 0x80, 0x18, 0, -1, 0xd);
+                        Mg_ShowBanner(0x11, 0x80, 0x18, 0, -1, 0xd);
                         Sound::PlayBank2_2D(0x105);
                     } else {
-                        func_ov004_020b0cac(0x13, 0x80, 0x18, 0, -1, 0xd);
+                        Mg_ShowBanner(0x13, 0x80, 0x18, 0, -1, 0xd);
                         Sound::PlayBank2_2D(0x106);
                     }
                 }
@@ -570,7 +570,7 @@ s32 dScMgFlower_c::InitResources()
     char *raw = (char *)this;
     int h;
 
-    mScore = func_ov004_020ad8b8();
+    mScore = Mg_GetSavedRecord0();
 
     data_0208ee44 = 1;
 
@@ -589,29 +589,29 @@ s32 dScMgFlower_c::InitResources()
     *(volatile u32 *)0x400101c = 0;
     *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & ~3) | 3;
 
-    h = (int)func_ov004_020adc74(&data_ov006_021401d0);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_021401d0);
     DecompressLZ16(h, _ZN2G213GetBG2CharPtrEv());
     Ov004_Deallocate((void *)h);
 
-    h = (int)func_ov004_020adc74(&data_ov006_021401f4);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_021401f4);
     DecompressLZ16(h, G2S::GetBG2CharPtr());
     Ov004_Deallocate((void *)h);
 
-    h = (int)func_ov004_020adc74(&data_ov006_02140218);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_02140218);
     DecompressLZ16(h, _ZN2G212GetBG2ScrPtrEv());
     Ov004_Deallocate((void *)h);
 
-    h = (int)func_ov004_020adc74(&data_ov006_0214023c);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_0214023c);
     DecompressLZ16(h, G2S::GetBG2ScrPtr());
     DecompressLZ16(h, G2S::GetBG3ScrPtr());
     Ov004_Deallocate((void *)h);
 
-    h = (int)func_ov004_020adc74(&data_ov006_02140260);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_02140260);
     CP15::FlushAndInvalidateDataCache(h, 0x1a0);
     GX::LoadBGPltt((const void *)h, 0x60, 0x1a0);
     Ov004_Deallocate((void *)h);
 
-    h = (int)func_ov004_020adc74(&data_ov006_02140284);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_02140284);
     CP15::FlushAndInvalidateDataCache(h, 0x1a0);
     GXS::LoadBGPltt((const void *)h, 0x60, 0x1a0);
     Ov004_Deallocate((void *)h);
@@ -622,12 +622,12 @@ s32 dScMgFlower_c::InitResources()
     data_0209d45c |= 4;
     data_0209d454 |= 0xc;
 
-    h = (int)func_ov004_020adc74(&data_ov006_021402a8);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_021402a8);
     DecompressLZ16(h, (void *)0x6400000);
     DecompressLZ16(h, (void *)0x6600000);
     Ov004_Deallocate((void *)h);
 
-    h = (int)func_ov004_020adc74(&data_ov006_021402c4);
+    h = (int)Ov004_LoadFileByPath(&data_ov006_021402c4);
     CP15::FlushAndInvalidateDataCache(h, 0x100);
     GX::LoadOBJPltt((const void *)h, 0, 0x100);
     GXS::LoadOBJPltt((const void *)h, 0, 0x100);

@@ -63,19 +63,19 @@ typedef void (C::*PMF1)(int);
  * Keep it above the first function. */
 extern "C" {
 
-extern int  func_ov004_020adbc0(void);
-extern void func_ov004_020adb1c(int self);
-extern int  func_ov004_020adbe0(void);
-extern int  func_ov004_020adc1c(void);
-extern void *func_ov004_020adc74(const char *p);
-extern void func_ov004_020af948(int a, int b, int c, int d);
-extern void func_ov004_020b04d0(int a);
-extern void func_ov004_020b0a54(s32 state);
-extern int  func_ov004_020b19f0(void *self);
-extern void func_ov004_020b1a5c(int a, int b);
-extern void func_ov004_020b1ea4(int a, int b, int c, int d, int e, int f, int g);
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
-extern int  func_ov004_020afdd0(int a, int b, int c, int d, int e);
+extern int  Mg_GetSubmittedScore(void);
+extern void Mg_SubmitScore(int self);
+extern int  Mg_IsNewRecord(void);
+extern int  Mg_GetTopRecord(void);
+extern void *Ov004_LoadFileByPath(const char *p);
+extern void Mg_RenderSubSpriteMtx(int a, int b, int c, int d);
+extern void Mg_SetTopScreenYOffset(int a);
+extern void Mg_SetSharedState(s32 state);
+extern int  Mg_DrawTopLeftCounter(void *self);
+extern void Mg_DrawTopRightCounter(int a, int b);
+extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
+extern int  Mg_RenderSpriteBoth(int a, int b, int c, int d, int e);
 extern void func_02012718(int id, int v);
 extern int  func_020126e8(int a);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, s16 h);
@@ -193,9 +193,9 @@ void dScMgCurling2_c::DrawValues()
             int y = mValue[i].y >> 0xc;
             int value = mValue[i].value;
             if (mode == 1) {
-                func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0);
+                Mg_DrawNumber(x, y, value, -1, -1, 0, 0);
             } else {
-                func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0x32);
+                Mg_DrawNumber(x, y, value, -1, -1, 0, 0x32);
             }
         }
     }
@@ -274,7 +274,7 @@ void dScMgCurling2_c::SpawnValue(int stone, int other)
         count = (unsigned char *)(raw + 0x55bf);
         *count = *count + 1;
         if (combo >= 0x17) combo = 0x17;
-        func_ov004_020adb1c(mValue[i].value + func_ov004_020adbc0());
+        Mg_SubmitScore(mValue[i].value + Mg_GetSubmittedScore());
         return;
     }
 }
@@ -302,7 +302,7 @@ void dScMgCurling2_c::DrawPieces()
         if (mPiece[i].drawEnable) {
             int x = mPiece[i].x >> 0xc;
             int y = mPiece[i].y >> 0xc;
-            func_ov004_020af948(data_ov006_0213a5e0[mPiece[i].sprite0], x, y, 0);
+            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mPiece[i].sprite0], x, y, 0);
             DrawOamSprite(data_ov006_0213a5e0[mPiece[i].sprite1], x, y, 0);
         }
     }
@@ -745,12 +745,12 @@ void dScMgCurling2_c::DrawMarks()
     int i;
     unsigned char *raw = (unsigned char *)this;
 
-    func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
+    Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 6);
     for (i = 0; i < 5; i++) {
         unsigned char *rec = raw + (i & 0xFFFFFFFF) * 0x10;
         if (*(unsigned char *)(rec + 0x487d)) {
             x = *(int *)(rec + 0x4870) >> 12;
-            func_ov004_020b2444(x, *(int *)(rec + 0x4874) >> 12,
+            Mg_DrawBigNumber(x, *(int *)(rec + 0x4874) >> 12,
                                 *(unsigned short *)(rec + 0x4878), -1, -1, 0, 0);
         }
     }
@@ -794,7 +794,7 @@ void dScMgCurling2_c::DrawCursor()
 
     int x = unk_5584;
     int y = unk_5588;
-    func_ov004_020afdd0((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
+    Mg_RenderSpriteBoth((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
 
 
@@ -971,9 +971,9 @@ void dScMgCurling2_c::DrawCounter()
     left = 5 - thrown;
     if (left < 0)
         left = 0;
-    func_ov004_020af948((int)&data_ov006_0213c3fc, 0xd0, 0xb4, 0);
-    func_ov004_020af948(data_ov006_0213c4dc[GetGameLanguage()][1], 0xe8, 0xb4, 0);
-    func_ov004_020b2444(0xf8, 0xb4, left, 0, 0, 0, 0);
+    Mg_RenderSubSpriteMtx((int)&data_ov006_0213c3fc, 0xd0, 0xb4, 0);
+    Mg_RenderSubSpriteMtx(data_ov006_0213c4dc[GetGameLanguage()][1], 0xe8, 0xb4, 0);
+    Mg_DrawBigNumber(0xf8, 0xb4, left, 0, 0, 0, 0);
 }
 
 
@@ -1498,7 +1498,7 @@ void dScMgCurling2_c::Idle()
 // @symbol _ZN15dScMgCurling2_c8EndRoundEv
 /* Behavior state 3: the last stone has settled. Wait out the state timer,
  * clear the round flags, hide the stones, drop the prompt, hand the scene
- * to func_ov004_020b0a54 and park in state 4. */
+ * to Mg_SetSharedState and park in state 4. */
 void dScMgCurling2_c::EndRound()
 {
     int i;
@@ -1509,13 +1509,13 @@ void dScMgCurling2_c::EndRound()
         return;
     }
 
-    if (func_ov004_020adbe0() != 0) {
+    if (Mg_IsNewRecord() != 0) {
         gameOver = 0;
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(0x10);
     } else {
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(0x10);
     }
     mPromptEnabled = 0;
     unk_55b9 = 0;
@@ -1719,7 +1719,7 @@ void dScMgCurling2_c::ResetGame()
     *((short *) (c + 0x55b6)) = 0;
     *((short *) (c + 0x55b0)) = 0;
     *((unsigned char *) (c + 0x55bd)) = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
     ClearValues();
 }
 
@@ -1734,7 +1734,7 @@ void dScMgCurling2_c::StartRound(int /* arg */)
     Scroll();
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_55ac = func_ov004_020adc1c();
+    unk_55ac = Mg_GetTopRecord();
 }
 
 
@@ -1743,7 +1743,7 @@ void dScMgCurling2_c::StartRound(int /* arg */)
  * collision values, pieces and the drag cursor. */
 s32 dScMgCurling2_c::Render()
 {
-    func_ov004_020b19f0((void *)func_ov004_020adc1c());
+    Mg_DrawTopLeftCounter((void *)Mg_GetTopRecord());
     DrawMarks();
     DrawCounter();
     DrawStones();
@@ -1773,7 +1773,7 @@ s32 dScMgCurling2_c::Behavior()
  * with a 0x40 state delay. */
 s32 dScMgCurling2_c::InitResources()
 {
-    char *r6 = (char *)func_ov004_020adc74(&data_ov006_0213c5a0);
+    char *r6 = (char *)Ov004_LoadFileByPath(&data_ov006_0213c5a0);
     void *f;
     void *c7;
     void *c8;
@@ -1851,12 +1851,12 @@ s32 dScMgCurling2_c::InitResources()
     NextStone();
     SeedPieces();
     mState = 1;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     mStateTimer = 0x40;
     unk_0a4 = 1;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_55ac = func_ov004_020adc1c();
+    unk_55ac = Mg_GetTopRecord();
     return 1;
 }
 

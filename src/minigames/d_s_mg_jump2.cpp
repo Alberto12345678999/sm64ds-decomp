@@ -125,7 +125,7 @@ extern struct Node* data_ov006_021421c0;
 extern int data_ov006_021421bc;
 extern struct Elem *data_ov006_021421b0;
 extern void *data_ov006_021421b8;
-void func_ov004_020ad90c(void);
+void Mg_CommitRecords(void);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 int GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
@@ -136,8 +136,8 @@ unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
 void func_ov006_020eef90(void);
 extern void* func_ov006_020c7300(void*);
 extern void* func_ov006_020c4060(void*);
-extern void func_ov004_020adb1c(int);
-extern void func_ov004_020b0a54(int);
+extern void Mg_SubmitScore(int);
+extern void Mg_SetSharedState(int);
 extern void func_ov006_020c42bc(void);
 extern void func_ov006_020c712c(void);
 extern int data_ov006_02140308;
@@ -157,7 +157,7 @@ extern void DecompressLZ16(int src, int dst);
 extern void Camera_UpdateMatrices(void *cam);
 extern void func_ov006_020c7388(void);
 extern void func_ov006_020c40e8(void);
-extern int func_ov004_020b04c0(void);
+extern int Mg_GetTopScreenYOffset(void);
 extern int func_ov006_020c4684(void *ptr, int n);
 extern int func_ov006_020c7574(void *base, int count);
 extern u8 data_0209d45c;
@@ -303,7 +303,7 @@ s32 dScMgJump2_c::InitResources()
         return 0;
     }
 
-    func_ov004_020b04d0(0x10);
+    Mg_SetTopScreenYOffset(0x10);
     ((Base *)this)->m48(-1);
     return 1;
 }
@@ -412,7 +412,7 @@ void dScMgJump2_c::func_ov006_020ef5ac()
             data_ov006_02140328 = 6;
             break;
         }
-        func_ov004_020adb1c(data_ov006_02140308);
+        Mg_SubmitScore(data_ov006_02140308);
     }
 
     if (data_ov006_02140428 != 0)
@@ -453,8 +453,8 @@ void dScMgJump2_c::func_ov006_020ef480(){
     if(obj){
         obj = func_ov006_020c4060(obj);
         if(obj){
-            func_ov004_020adb1c(data_ov006_02140308);
-            func_ov004_020b0a54(0x12);
+            Mg_SubmitScore(data_ov006_02140308);
+            Mg_SetSharedState(0x12);
             mPromptEnabled = 0;
             *(struct G2 *)pad_5004 = data_ov006_0213cc74;
         }
@@ -535,7 +535,7 @@ s32 dScMgJump2_c::Render()
     int x;
     int i;
 
-    func_ov004_020b1a5c(data_ov006_02140308, 4);
+    Mg_DrawTopRightCounter(data_ov006_02140308, 4);
     func_ov006_020eef58();
     func_ov006_020ef2b8();
     Matrix4x3_FromTranslation(&data_020a0e68, 0, 0xffead000, -0xa0000);
@@ -581,7 +581,7 @@ s32 dScMgJump2_c::CleanupResources()
 {
     ((SharedFilePtr *)data_ov006_021421b8)->Release();
     data_ov006_021421b8 = 0;
-    func_ov004_020ad90c();
+    Mg_CommitRecords();
     return 1;
 }
 
@@ -676,15 +676,15 @@ void Elem::func_ov006_020eee3c(int startX, int startY, int spriteId)
     targetX = startX;
     targetY = startY - 0x40000;
     if (targetY < 0x8000) {
-        int limit = func_ov004_020b04c0() << 12;
+        int limit = Mg_GetTopScreenYOffset() << 12;
         if (targetY > -limit) {
             targetY = 0x8000;
             goto done;
         }
     }
-    if (targetY >= -0xb8000 - (func_ov004_020b04c0() << 12))
+    if (targetY >= -0xb8000 - (Mg_GetTopScreenYOffset() << 12))
         goto done;
-    targetY = -0xb8000 - (func_ov004_020b04c0() << 12);
+    targetY = -0xb8000 - (Mg_GetTopScreenYOffset() << 12);
 done:
     life = 0x80;
     active = 1;
@@ -708,7 +708,7 @@ void Elem::func_ov006_020eedc8() {
 void Elem::func_ov006_020eed68()
 {
     if (active == 0) return;
-    func_ov004_020b2444(x >> 12, y >> 12,
+    Mg_DrawBigNumber(x >> 12, y >> 12,
                         sprite, -1, -1, 0, data_ov006_021421b4);
 }
 

@@ -18,7 +18,7 @@
  *   0x5004: mwccarm lays out a pointer-to-member of a polymorphic class
  *   differently, so Behavior cannot dispatch through dScMgJump_c itself.
  * - data_ov006_0213cb4c..0213cb84 are ROM-owned {fn, 0} table rows kept as
- *   address-named StatePmf externs; data_ov004_020beb68 is the ov004 shared
+ *   address-named StatePmf externs; gMgScene is the ov004 shared
  *   scene data, read raw at +0xb4/+0xb8 because its type is not recovered.
  * - the func_ov006_020c and func_ov004 externs are other TUs' workers; they
  *   keep address names until their owners name them.
@@ -80,8 +80,8 @@ extern MgJumpModelFilePtr data_ov006_02142190;
  * first function: tools/tiers.py charges text between two functions to the
  * earlier one. */
 extern "C" {
-void func_ov004_020ad90c(void);
-void func_ov004_020b1e34(void *a, int b, int c, int d);
+void Mg_CommitRecords(void);
+void Mg_DrawScoreTally(void *a, int b, int c, int d);
 int  GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
@@ -151,13 +151,13 @@ void dScMgJump_c::StartRound(int arg)
     } else if (arg == 0x12) {
         unk_0bc = 0;
         if (unk_0bc > 0x270e) unk_0bc = 0x270e;
-        if (data_ov004_020beb68 != 0)
-            *(int *)((char *)data_ov004_020beb68 + 0xb4) = 0;
-        func_ov004_020adb1c(mHudScore);
+        if (gMgScene != 0)
+            *(int *)((char *)gMgScene + 0xb4) = 0;
+        Mg_SubmitScore(mHudScore);
     } else {
         u32 count = unk_0bc;
-        if (data_ov004_020beb68 != 0)
-            *(int *)((char *)data_ov004_020beb68 + 0xb4) = count;
+        if (gMgScene != 0)
+            *(int *)((char *)gMgScene + 0xb4) = count;
     }
 
     if (unk_0bc != 0)
@@ -273,7 +273,7 @@ s32 dScMgJump_c::InitResources()
         *(struct Mtx43 *)&mModel.mat4x3 = *(struct Mtx43 *)&data_020a0e68;
         return 0;
     }
-    func_ov004_020b04d0(0x10);
+    Mg_SetTopScreenYOffset(0x10);
     ((Base *)this)->m48(-1);
     return 1;
 }
@@ -312,7 +312,7 @@ void dScMgJump_c::func_ov006_020ee5b8()
         func_ov006_020c7490();
         func_ov006_020ee598();
     } else if (left == 0x77) {
-        func_ov004_020b0cac(0xd, 0x80, 0x60, 1, -1, 0xd);
+        Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
     }
     func_ov006_020c42bc();
 }
@@ -376,7 +376,7 @@ void dScMgJump_c::func_ov006_020ee3ec()
     if (ready) {
         ready = func_ov006_020c4060();
         if (ready) {
-            func_ov004_020b0a54(0x12);
+            Mg_SetSharedState(0x12);
             mPromptEnabled = 0;
             mStateTimer = 0;
             mState = data_ov006_0213cb74;
@@ -403,7 +403,7 @@ void dScMgJump_c::func_ov006_020ee2c4()
   func_ov006_020c712c();
   int same = (int)(data_ov006_02140434 == data_ov006_02140418);
   if(same == 0) return;
-  char* shared = (char *)data_ov004_020beb68;
+  char* shared = (char *)gMgScene;
   if(shared != 0){
     if(*(int*)(shared+0xb4) < 0x270f){
       *(int *)(shared + 0xb4) += 1;
@@ -412,8 +412,8 @@ void dScMgJump_c::func_ov006_020ee2c4()
       *(int*)(shared+0xb8) = *(int*)(shared+0xb4);
     }
   }
-  func_ov004_020adb1c(mHudScore);
-  func_ov004_020b0a54(0);
+  Mg_SubmitScore(mHudScore);
+  Mg_SetSharedState(0);
   mPromptEnabled = 0;
   mStateTimer = 0;
   mState = data_ov006_0213cb7c;
@@ -447,7 +447,7 @@ s32 dScMgJump_c::Render()
         int y;
         int i;
 
-        func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+        Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
 
         count = data_ov006_02140428;
         y = 0x6e;
@@ -520,7 +520,7 @@ s32 dScMgJump_c::CleanupResources()
 {
     ((SharedFilePtr *)data_ov006_02142184)->Release();
     data_ov006_02142184 = 0;
-    func_ov004_020ad90c();
+    Mg_CommitRecords();
     return 1;
 }
 

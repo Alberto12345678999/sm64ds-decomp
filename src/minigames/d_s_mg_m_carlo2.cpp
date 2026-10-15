@@ -64,8 +64,8 @@ void DecompressLZ16(int src, int dst);
 void Vec2_Sub(int* out, int* a, int* b);
 unsigned int func_02012790(unsigned int id);
 int  func_0203d5dc(void* a, void* b);
-void func_ov004_020ad90c(void* t);
-void func_ov004_020adb1c(int score);
+void Mg_CommitRecords(void* t);
+void Mg_SubmitScore(int score);
 void func_ov006_0210a534(void* c);
 void func_ov006_020c0aa8(void* c);
 void func_ov006_020c1604(char* t, int unused, short a2, void* a3);
@@ -121,7 +121,7 @@ s32 dScMgMCarlo2_c::InitResources()
     char *raw = (char *)this;
     int lang;
     int tiles, palette;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov006_0210a534(raw);
     lang = GetGameLanguage();
     tiles = LoadFile(data_ov006_0213d744[lang]);
@@ -160,7 +160,7 @@ void dScMgMCarlo2_c::StartRound(int /* arg */)
     func_ov006_020c1604(raw + 0x4f38, 4, 4, raw + 0x592e);
     mShared.unk_01a = 1;
     unk_592a = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
     unk_5928 = 1;
 }
 
@@ -268,7 +268,7 @@ s32 dScMgMCarlo2_c::Behavior()
                             mShared.unk_01a = 0;
                         } else if (func_ov006_020c16b4(raw + 0x4f38) != 0) {
                             func_ov006_020c0d68(raw + 0x4f38);
-                            func_ov004_020b0a54(0x12);
+                            Mg_SetSharedState(0x12);
                             mPromptEnabled = 0;
                             {
                                 s16 *p = &unk_5928;
@@ -305,12 +305,12 @@ s32 dScMgMCarlo2_c::Render()
     score = data_ov006_02142564;
     if (score > 0x270f)
         score = 0x270f;
-    func_ov004_020b1ea4(0xe8, 0x28, score, 1, -1, 0, 0);
+    Mg_DrawNumber(0xe8, 0x28, score, 1, -1, 0, 0);
 
     RenderOamMainScreen(data_ov006_02133f18, 0xe8, 0x18, -1, -1);
 
     if (this->unk_5928 == 5)
-        func_ov004_020b0d8c(raw, 0xe0, 0xa0);
+        Mg_DrawBlinkSprite(raw, 0xe0, 0xa0);
 
     lifted = data_ov006_02142578;
     for (i = 0; i < 0x14; i++) {
@@ -335,11 +335,11 @@ s32 dScMgMCarlo2_c::Render()
 }
 
 // @symbol _ZN14dScMgMCarlo2_c16CleanupResourcesEv
-/* Slot 3. Sibling scenes call func_ov004_020ad90c with no argument; `this`
+/* Slot 3. Sibling scenes call Mg_CommitRecords with no argument; `this`
  * is already in r0 here, so either spelling compiles the same. */
 s32 dScMgMCarlo2_c::CleanupResources()
 {
-    func_ov004_020ad90c(this);
+    Mg_CommitRecords(this);
     return 1;
 }
 
@@ -755,7 +755,7 @@ void dScMgMCarlo2_c::UpdateBoard()
             data_ov006_02142570 = 0;
             ApproachLinear2(data_ov006_02142564, 0x270f, 2);
             ApproachLinear2(data_ov006_0213d6f8, 0, 2);
-            func_ov004_020adb1c(data_ov006_02142564);
+            Mg_SubmitScore(data_ov006_02142564);
 
             if (data_ov006_0213d6f8 <= 0x14) {
                 {

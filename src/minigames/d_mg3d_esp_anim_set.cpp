@@ -124,15 +124,15 @@ int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
 void FreeGfxSlotsById(int a);
 void Camera_UpdateMatrices(void* self);
-int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a5, u16 a6);
-void func_ov004_020af948(void* a, int b, int c, void* m);
-void func_ov004_020b1e34(void *c, int a, int b, int d);
+int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, u16 a6);
+void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
+void Mg_DrawScoreTally(void *c, int a, int b, int d);
 unsigned int func_02012790(unsigned int);
-void func_ov004_020adb1c(int);
+void Mg_SubmitScore(int);
 void func_ov004_020b67e8(int);
-void func_ov004_020b0a54(int);
-void func_ov004_020b0cac(int, int, int, int, int, short);
-void func_ov004_020b04d0(int);
+void Mg_SetSharedState(int);
+void Mg_ShowBanner(int, int, int, int, int, short);
+void Mg_SetTopScreenYOffset(int);
 void _ZN3G3X6SetFogEbiii(int, int, int, int);
 void InitialiseVramGlobals(void);
 void Deallocate(void*);
@@ -569,7 +569,7 @@ void dScMg3DEsp_c::DrawBanner()
 {
     char *c = (char*)this;
     if (*(unsigned char *)(c + 0x5555) != 0)
-        func_ov004_020b1e34(c, 0xe0, 0x14, 1);
+        Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 }
 
 /* Early-out if the byte flag at mFlashStep is set; otherwise set
@@ -662,7 +662,7 @@ void dScMg3DEsp_c::RenderSlots()
     int i;
     for (i = 0; i < 20; i++) {
         if (a->slots[i].enable) {
-            func_ov004_020af948(data_ov006_02133a3c[a->slots[i].type],
+            Mg_RenderSubSpriteMtx(data_ov006_02133a3c[a->slots[i].type],
                                 a->slots[i].x >> 12, a->slots[i].y >> 12, 0);
         }
     }
@@ -923,7 +923,7 @@ void dScMg3DEsp_c::RenderRows()
   {
     if ((*((unsigned char *) ((thiz + 0x5000) + 0x292))) != 0)
     {
-      int *o = (int *) func_ov004_020af770(*(&data_ov006_02136e38), (*((int *) ((thiz + 0x5000) + 0x280))) >> 12, (*((int *) ((thiz + 0x5000) + 0x284))) >> 12, -1, *((unsigned char *) ((thiz + 0x5000) + 0x293)), *((int *) ((thiz + 0x5000) + 0x288)), 0);
+      int *o = (int *) Mg_RenderSubSpriteScaled(*(&data_ov006_02136e38), (*((int *) ((thiz + 0x5000) + 0x280))) >> 12, (*((int *) ((thiz + 0x5000) + 0x284))) >> 12, -1, *((unsigned char *) ((thiz + 0x5000) + 0x293)), *((int *) ((thiz + 0x5000) + 0x288)), 0);
       if ((*((unsigned char *) ((thiz + 0x5000) + 0x291))) == 2)
       {
         int w0 = o[0];
@@ -1066,7 +1066,7 @@ void dScMg3DEsp_c::RenderCards()
       c = PP(c2)->b21c;
       r7 = data_ov006_02133f24[b];
       for (;;) {
-        int *r0 = (int *)func_ov004_020af770(
+        int *r0 = (int *)Mg_RenderSubSpriteScaled(
             (int)r7, x, y, -1, c, 0x1000, 0);
         if (PP(c0)->b54e && !PP(c2)->b219) {
           int v = r0[0];
@@ -1458,15 +1458,15 @@ void dScMg3DEsp_c::Results()
         (*(u16 *)(int)(((long long)(int)(c + 0x5548))))--;
         if (*(u16 *)(c + 0x5548) == 0x40) {
             if (*(u8 *)(c + 0x5550) != 0) {
-                int idx = data_ov004_020beb68 != 0 ? *(int *)((char *)data_ov004_020beb68 + 0xb4) : 0;
+                int idx = gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0;
                 while (idx >= 5)
                     idx -= 5;
-                if (data_ov004_020beb68 != 0) {
+                if (gMgScene != 0) {
                     /* The ROM loads the pointer again here. The retired
                        file declared it char * and got that load for free;
                        dScMgBase_c.h declares it void *, and every non-
                        volatile spelling of that reuses the earlier load. */
-                    char *g = *(char * volatile *)&data_ov004_020beb68;
+                    char *g = *(char * volatile *)&gMgScene;
                     if (*(int *)(g + 0xb4) < 9999)
                         (*(int *)(int)(((long long)(int)(g + 0xb4))))++;
                     if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
@@ -1481,8 +1481,8 @@ void dScMg3DEsp_c::Results()
             return;
         if (*(u8 *)(c + 0x5550) != 0) {
             int rem, quot;
-            func_ov004_020adb1c(data_ov004_020beb68 != 0 ? *(int *)((char *)data_ov004_020beb68 + 0xb4) : 0);
-            rem = data_ov004_020beb68 != 0 ? *(int *)((char *)data_ov004_020beb68 + 0xb4) : 0;
+            Mg_SubmitScore(gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0);
+            rem = gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0;
             quot = 0;
             while (rem >= 5) {
                 rem -= 5;
@@ -1493,7 +1493,7 @@ void dScMg3DEsp_c::Results()
                     func_ov004_020b67e8(0x14);
                 else
                     func_ov004_020b67e8(0x15);
-                func_ov004_020b0a54(0);
+                Mg_SetSharedState(0);
             } else {
                 (*(int *)(int)(((long long)(int)(c + 0xbc))))++;
                 if (*(u32 *)(c + 0xbc) > 0x270e)
@@ -1503,8 +1503,8 @@ void dScMg3DEsp_c::Results()
         } else {
             *(u16 *)(c + 0x554c) = 0;
             *(u8 *)(c + 0x5555) = 0;
-            func_ov004_020b0cac(8, 0x80, 0xa0, 1, -1, 0xd);
-            func_ov004_020b0a54(0x12);
+            Mg_ShowBanner(8, 0x80, 0xa0, 1, -1, 0xd);
+            Mg_SetSharedState(0x12);
             *(int *)(c + 0x51e4) = 1;
         }
         *(u8 *)(c + 0xc3) = 0;
@@ -1575,13 +1575,13 @@ void dScMg3DEsp_c::StartRound(int a)
         unk_0bc++;
         if (unk_0bc > 9998) unk_0bc = 9998;
     } else if (a == 0x12) {
-        if (data_ov004_020beb68 != 0) ((dScMgBase_c*)data_ov004_020beb68)->mHudScore = 0;
+        if (gMgScene != 0) ((dScMgBase_c*)gMgScene)->mHudScore = 0;
         unk_0bc = 0;
         if (unk_0bc > 9998) unk_0bc = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
     unk_51e4 = 0;
     ((dMg3DEspModel_c*)pad_4fd8)->Reset();
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 }
 
 /* Vtable slot 3. Releases the files of the two models; InitResources loads
@@ -1650,7 +1650,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     /* main BG0CNT: priority 1 */
     *(volatile unsigned short*)0x4000008 = (*(volatile unsigned short*)0x4000008 & ~3) | 1;
-    func_ov004_020b04d0(0x10);
+    Mg_SetTopScreenYOffset(0x10);
 
     mCameraEyeX = 0;
     mCameraEyeY = 0xd0000;
@@ -1700,7 +1700,7 @@ s32 dScMg3DEsp_c::InitResources()
     Deallocate((void*)r5v);
     Deallocate((void*)r4v);
 
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     StartRound(-1);
 
@@ -1714,7 +1714,7 @@ s32 dScMg3DEsp_c::InitResources()
 
     unk_0a4 = 1;
 
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 
     data_ov004_020bc880 = 0x80;
     data_ov004_020bc884 = ~0x3f;

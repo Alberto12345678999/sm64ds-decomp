@@ -45,7 +45,7 @@ fBase_c > dBase_c > dScene_c
 
 1. **Open the menu.** `StartMinigameMenu(flag)` stores `flag` and fades to scene 5, the menu.
    - [GUESS] The flag means "came from the castle rec room": the rec-room objects pass 1, and the title menu passes 0.
-2. **Pick a game.** `dScMiniGm_c` copies the chosen 0x34-byte row of its table into `data_0209b308`, then fades to that row's scene ID.
+2. **Pick a game.** `dScMiniGm_c` copies the chosen 0x34-byte row of its table into `gMgMenuRow`, then fades to that row's scene ID.
    - The table has 36 rows for 30 scene IDs [ROM]. Six games appear twice, with different parameters.
 3. **Load the game.** An ID in 0x169..0x186 loads ov006 (and with it ov004), and the profile's factory builds the scene.
 4. **Play.** The scene runs until a quit from the pause menu, or an end-of-game state, fades back to scene 5.
@@ -76,17 +76,17 @@ fBase_c > dBase_c > dScene_c
 
 - **Shared state machine.**
   - `mStateController` sits at `dScMgBase_c+0xcc`. Its type has no RTTI, so the name `dMgState_c` is the tree's own.
-  - It owns 20 states, entered through `func_ov004_020b0a54(n)`.
+  - It owns 20 states, entered through `Mg_SetSharedState(n)`.
   - [GUESS] The states run the common banners and jingles: ready, go, time up, results.
   - A game's own rules are a separate, game-local state table.
-- **Score.** `func_ov004_020adb1c(score)` submits a score:
+- **Score.** `Mg_SubmitScore(score)` submits a score:
   - It writes the live score to `+0x464c`.
   - The menu row's scoring mode decides the direction: mode 5 is lower-is-better, and every other mode is capped and higher-is-better.
   - A new session best is stored at `+0x4654`. If it also beats the record copy at `+0x4650`, that copy is updated and the new-record flag at `+0x465c` is set.
 - **Saved records.**
   - The scene's constructor loads the record copy from the save.
-  - At cleanup, `func_ov004_020ad940` writes it back into the save table, but only when the menu row's word `+0x10` is 0.
-  - Seven games (BSC, Card, Memory, Memory2, MCarlo, Roulette, Slot1) have that word set to 1. They save two values each through `func_ov004_020ad79c` instead. All but Roulette still submit through `func_ov004_020adb1c`.
+  - At cleanup, `Mg_RankSessionBest` writes it back into the save table, but only when the menu row's word `+0x10` is 0.
+  - Seven games (BSC, Card, Memory, Memory2, MCarlo, Roulette, Slot1) have that word set to 1. They save two values each through `Mg_SaveRecordPair` instead. All but Roulette still submit through `Mg_SubmitScore`.
 - **Input.**
   - `data_0209f5bc` is the installed screen fader.
   - Each of the four input slots (index `gActivePlayerSlot`) has a four-byte touch sample `{down, changed, x, y}` in `gTouchHeld`. A new touch is `down && changed`.

@@ -166,7 +166,7 @@ extern void MultiStore16(int val, char *dst, int n);
 extern u16 data_ov006_0212f3bc[];
 extern int RandomIntInternal(int *seed);
 extern int data_0209d4b8;
-extern void func_ov004_020b04d0(int);
+extern void Mg_SetTopScreenYOffset(int);
 extern void SetBg2Offset(int, int);
 extern void SetBg3Offset(int, int);
 extern void SetSubBg2Offset(int, int);
@@ -178,9 +178,9 @@ extern u32 data_ov006_02143004;
 extern void *data_ov006_02143008;
 extern s32 data_ov006_02143014[3];
 extern s32 data_02092768[4];
-void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4);
+void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4);
 void func_0203cd80(int *m, short angle);
-void func_ov004_020b2220(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+void Mg_DrawNumberRotated(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
 s32  GetGameLanguage(void);
 void func_02012790(int a);
 void FreeGfxSlotsById(int arg);
@@ -189,7 +189,7 @@ extern "C" void Ov004_Deallocate(void *p);
 void *_ZN2G213GetBG2CharPtrEv(void);
 void *_ZN2G212GetBG3ScrPtrEv(void);
 u32 LoadCompressedFileAt(u16 fileID, void *target);
-void *func_ov004_020adc74(void *p);
+void *Ov004_LoadFileByPath(void *p);
 void DecompressLZ16(void *src, void *dst);
 extern int data_0208ee44;
 extern u8 data_0209d45c;
@@ -1294,7 +1294,7 @@ void dScMgSnowball_c::func_ov006_021279b0()
     display = *(volatile u16 *)0x04000304;
     *(volatile u16 *)0x04000304 = display & ~0x8000;
     B(0xb9f8) = 1;
-    func_ov004_020b04d0(0x50);
+    Mg_SetTopScreenYOffset(0x50);
 
     y = I(0xba00);
     I(0xab38) = 0x80000;
@@ -1399,9 +1399,9 @@ s32 dScMgSnowball_c::Render()
     {
         int base = self->mGoalY;
         int t = (((self->mPosY >> 0xc) - base) * 0x7c) / (self->mStartY - base);
-        func_ov004_020afdd0(data_ov006_02139d24[0], 0xf0, t + 0x22, -1, 0);
+        Mg_RenderSpriteBoth(data_ov006_02139d24[0], 0xf0, t + 0x22, -1, 0);
     }
-    func_ov004_020afdd0(data_ov006_02139d24[1], 0xf0, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(data_ov006_02139d24[1], 0xf0, 0x60, -1, 0);
 
     m[2] = 0xfffff008;
     m[1] = 0;
@@ -1433,18 +1433,18 @@ s32 dScMgSnowball_c::Render()
         if (*(u8*)(p + 0xac58) == 1) {
             int t6 = self->mScrollY;
             int t5 = *(int*)((long long)(int)(c + i1 * 8 + 0xacdc));
-            if (t5 >= t6 - 0x20000 && t5 < t6 + 0x1a0000 + (func_ov004_020b04c0() << 0xc)) {
+            if (t5 >= t6 - 0x20000 && t5 < t6 + 0x1a0000 + (Mg_GetTopScreenYOffset() << 0xc)) {
                 if (mArray1Kind[i1] == 1) {
                     int cnt = self->mAnimCounter;
                     int idx = (cnt / 4) & 7;
                     if (*(u8*)(p + 0xb2d8) == 1) idx += 8;
                     int a1 = (*(int*)(c + i1 * 8 + 0xacd8) - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
-                    func_ov004_020afdd0(data_ov006_02138d64[idx], a1, a2, -1, -1);
+                    Mg_RenderSpriteBoth(data_ov006_02138d64[idx], a1, a2, -1, -1);
                 } else {
                     int a1 = (*(int*)(c + i1 * 8 + 0xacd8) - self->mScrollX) >> 0xc;
                     int a2 = ((t5 - t6) >> 0xc) - 0x110;
-                    func_ov004_020afdd0(data_ov006_02139c24, a1, a2, -1, 2);
+                    Mg_RenderSpriteBoth(data_ov006_02139c24, a1, a2, -1, 2);
                 }
             }
         }
@@ -1454,14 +1454,14 @@ s32 dScMgSnowball_c::Render()
         if (*(u8*)(c + i2 + 0xb358) == 1) {
             int t7 = self->mScrollY;
             int t6 = *(int*)((long long)(int)(c + i2 * 8 + 0xb5dc));
-            if (t6 >= t7 - 0x40000 && t6 < t7 + 0x1c0000 + (func_ov004_020b04c0() << 0xc)) {
+            if (t6 >= t7 - 0x40000 && t6 < t7 + 0x1c0000 + (Mg_GetTopScreenYOffset() << 0xc)) {
                 switch (mArray2Kind[i2]) {
                 case 0:
                 case 1:
                 case 2: {
                     int a1 = (*(int*)(c + i2 * 8 + 0xb5d8) - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
-                    func_ov004_020afdd0(data_ov006_02139d18, a1, a2, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02139d18, a1, a2, -1, 1);
                     break;
                 }
                 case 3: {
@@ -1469,7 +1469,7 @@ s32 dScMgSnowball_c::Render()
                     int sel = (v < 0x80000) ? 1 : 0;
                     int a1 = (v - self->mScrollX) >> 0xc;
                     int a2 = ((t6 - t7) >> 0xc) - 0x110;
-                    func_ov004_020afdd0(data_ov006_02139c80[sel], a1, a2, -1, 1);
+                    Mg_RenderSpriteBoth(data_ov006_02139c80[sel], a1, a2, -1, 1);
                     break;
                 }
                 }
@@ -1480,7 +1480,7 @@ s32 dScMgSnowball_c::Render()
     {
         int a1 = (self->mDrawPosX - self->mScrollX) >> 0xc;
         int a2 = ((self->mDrawPosY - self->mScrollY) >> 0xc) - 0x110;
-        func_ov004_020afdd0(data_ov006_02139c38, a1, a2, -1, 2);
+        Mg_RenderSpriteBoth(data_ov006_02139c38, a1, a2, -1, 2);
     }
 
     {
@@ -1488,7 +1488,7 @@ s32 dScMgSnowball_c::Render()
         if (t4 <= 0xf0 && t4 > 0x3c) {
             int q = t4 / 60;
             if (q >= 4) q = 3;
-            func_ov004_020b2220(0x80, 0x60, q, -1, -1, 0x800, 0);
+            Mg_DrawNumberRotated(0x80, 0x60, q, -1, -1, 0x800, 0);
         } else {
             int mode = self->mState;
             if (mode == 1 || mode == 2
@@ -1509,22 +1509,22 @@ s32 dScMgSnowball_c::Render()
                 } else {
                     r4 = ((0x258 - v) * 0x110) / 30 + 0xc;
                 }
-                func_ov004_020b2444(0x84, r4, q60, -1, -1, 1, 0);
+                Mg_DrawBigNumber(0x84, r4, q60, -1, -1, 1, 0);
                 tens = centis / 10;
-                func_ov004_020b2444(0x9c, r4, tens, -1, -1, 1, 0);
+                Mg_DrawBigNumber(0x9c, r4, tens, -1, -1, 1, 0);
                 ones = centis % 10;
                 if (ones == 5 || ones == 0) {
-                    func_ov004_020b2444(0xac, r4, ones, -1, -1, 1, 0);
+                    Mg_DrawBigNumber(0xac, r4, ones, -1, -1, 1, 0);
                 } else {
-                    func_ov004_020b2444(0xac, r4, ones + 1, -1, -1, 1, 0);
+                    Mg_DrawBigNumber(0xac, r4, ones + 1, -1, -1, 1, 0);
                 }
                 {
                     int idx = GetGameLanguage();
-                    func_ov004_020b0380(*(void**)((char*)data_ov006_0213fff0[idx] + 0xc), 0x5c, r4, 0);
+                    Mg_RenderSpriteBothMtx(*(void**)((char*)data_ov006_0213fff0[idx] + 0xc), 0x5c, r4, 0);
                 }
                 {
                     int idx = GetGameLanguage();
-                    func_ov004_020b0380(*(void**)((char*)data_ov006_0213fff0[idx] + 0x1c), 0x90, r4, 0);
+                    Mg_RenderSpriteBothMtx(*(void**)((char*)data_ov006_0213fff0[idx] + 0x1c), 0x90, r4, 0);
                 }
             }
         }
@@ -1577,7 +1577,7 @@ s32 dScMgSnowball_c::Behavior()
         v = I(0xb9fc);
         if (v == 0x3c) {
             I(0xb9f4) = 1;
-            func_ov004_020b0cac(0xc, 0x80, 0x60, 0, -1, 0xd);
+            Mg_ShowBanner(0xc, 0x80, 0x60, 0, -1, 0xd);
             func_02012790(0x2a);
         } else if (v == 0x78 || v == 0xb4 || v == 0xf0) {
             func_02012790(0x2b);
@@ -1700,7 +1700,7 @@ s32 dScMgSnowball_c::Behavior()
                 func_02012790(0x2b);
         }
         if (I(0xab3c) - I(0xaba0) < (I(0xba04) << 12) + 0x10000) {
-            func_ov004_020adb1c(I(0xb9e0));
+            Mg_SubmitScore(I(0xb9e0));
             I(0xb9f4) = 2;
             Sound::PlayBank2_2D(0x10e);
         }
@@ -1710,7 +1710,7 @@ s32 dScMgSnowball_c::Behavior()
         IA(0xba0c) += 1;
         if (I(0xba0c) >= 0x3c) {
             func_ov004_020b67e8(4);
-            func_ov004_020b0a54(0x13);
+            Mg_SetSharedState(0x13);
             I(0xba10) = 0xb4;
             I(0xb9f4) = 3;
         }
@@ -1810,7 +1810,7 @@ s32 dScMgSnowball_c::Behavior()
             IA(0xba0c) += 1;
             if (I(0xba0c) >= 0x5a) {
                 func_ov004_020b67e8(0xe);
-                func_ov004_020b0a54(3);
+                Mg_SetSharedState(3);
                 I(0xb9f4) = 5;
             }
         }
@@ -1904,7 +1904,7 @@ void dScMgSnowball_c::StartRound(int i)
 {
     void *c = (void *)this;
 
-  func_ov004_020adb1c(0);
+  Mg_SubmitScore(0);
   func_ov006_021279b0();
   if(i != 0x13) return;
   func_ov006_02126ee4();
@@ -1954,18 +1954,18 @@ s32 dScMgSnowball_c::InitResources()
     data_0209d45c |= 0xc;
     data_0209d454 |= 0xc;
 
-    buf = func_ov004_020adc74(&data_ov006_0214009c);
+    buf = Ov004_LoadFileByPath(&data_ov006_0214009c);
     CP15::FlushAndInvalidateDataCache((u32)buf, 0x100);
     GX::LoadBGPltt(buf, 0x100, 0x100);
     GXS::LoadBGPltt(buf, 0x100, 0x100);
     Ov004_Deallocate(buf);
 
-    buf = func_ov004_020adc74(&data_ov006_021400bc);
+    buf = Ov004_LoadFileByPath(&data_ov006_021400bc);
     DecompressLZ16(buf, (void *)0x6400000);
     DecompressLZ16(buf, (void *)0x6600000);
     Ov004_Deallocate(buf);
 
-    buf = func_ov004_020adc74(&data_ov006_021400dc);
+    buf = Ov004_LoadFileByPath(&data_ov006_021400dc);
     CP15::FlushAndInvalidateDataCache((u32)buf, 0x100);
     GX::LoadOBJPltt(buf, 0, 0x100);
     GXS::LoadOBJPltt(buf, 0, 0x100);
@@ -1976,7 +1976,7 @@ s32 dScMgSnowball_c::InitResources()
     *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 8;
     InitialiseVramGlobals();
 
-    *(void **)(r4 + 0xabf4) = func_ov004_020adc74(&data_ov006_021400fc);
+    *(void **)(r4 + 0xabf4) = Ov004_LoadFileByPath(&data_ov006_021400fc);
     Model::UpdateFileOffsets(**(BMD_File **)(r4 + 0xabf4));
 
     if (((ModelBase *)(r4 + 0xaba4))->SetFile(*(BMD_File **)(r4 + 0xabf4), 1, -1) == 0)
@@ -2031,7 +2031,7 @@ void func_ov006_0212968c(void)
 
 // @symbol _ZN15dScMgSnowball_c19func_ov006_02129690Ev
 extern "C" {
-extern void func_ov004_020af948(void* a, int b, int c, void* m);
+extern void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 extern void DrawOamSprite(void* a, int b, int c, void* m);
 
 typedef struct {
@@ -2061,7 +2061,7 @@ void dScMgSnowball_c::func_ov006_02129690()
         if (a->arr[i].f1e != 0) {
             int bb = a->arr[i].a >> 12;
             int cc = (a->arr[i].b - a->fixed) >> 12;
-            func_ov004_020af948((void*)data_ov006_02139c6c[a->arr[i].f1f], bb, cc, 0);
+            Mg_RenderSubSpriteMtx((void*)data_ov006_02139c6c[a->arr[i].f1f], bb, cc, 0);
             DrawOamSprite((void*)data_ov006_02139c6c[a->arr[i].f20], bb, cc, 0);
         }
     }

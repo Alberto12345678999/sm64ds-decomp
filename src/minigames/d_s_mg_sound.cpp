@@ -73,7 +73,7 @@ extern int data_ov006_02137ae8[];
 extern unsigned short data_ov006_0212ee38[];
 extern int data_ov006_02138d28[];
 extern u16 data_ov006_0212ee28[];
-extern void func_ov004_020b2574(int a, int b);
+extern void Mg_DrawStockCounter(int a, int b);
 extern const short data_02082214[];
 extern void* data_ov006_0213f6f0[];
 extern int data_ov006_0212ef30[];
@@ -137,7 +137,7 @@ extern int data_ov006_0212efb0[];
 extern u16 *data_ov006_0213f6fc[];
 extern void func_ov006_020c2924(char *c);
 extern void func_ov006_020c2594(void *c);
-extern "C" void func_ov004_020b1e34(void *c, int a, int b, int d);
+extern "C" void Mg_DrawScoreTally(void *c, int a, int b, int d);
 void FreeGfxSlotsById(int id);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
@@ -221,7 +221,7 @@ s32 dScMgSound_c::InitResources()
     mState = 1;
     mIntroTimer = 0x20;
     func_ov004_020b6808();
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     mHudScore = 0;
     return 1;
 }
@@ -269,9 +269,9 @@ s32 dScMgSound_c::Behavior()
                     func_ov006_020c2594((char *)&mTable);
                     if (mTries == 3)
                         func_ov004_020b67f8();
-                    func_ov004_020b0a54(0);
+                    Mg_SetSharedState(0);
                     {
-                        char *active = (char *)data_ov004_020beb68;
+                        char *active = (char *)gMgScene;
                         if (active != 0) {
                             if (*(int *)(active + 0xb4) < 9999)
                                 (*(int *)(int)(active + 0xb4))++;
@@ -279,8 +279,8 @@ s32 dScMgSound_c::Behavior()
                                 *(int *)(active + 0xb8) = *(int *)(active + 0xb4);
                         }
                     }
-                    func_ov004_020adb1c(data_ov004_020beb68 != 0
-                                            ? *(int *)((char *)data_ov004_020beb68 + 0xb4) : 0);
+                    Mg_SubmitScore(gMgScene != 0
+                                            ? *(int *)((char *)gMgScene + 0xb4) : 0);
                     func_ov006_02119ba4();
                     func_ov006_02119a88();
                     mPromptEnabled = 0;
@@ -303,7 +303,7 @@ s32 dScMgSound_c::Behavior()
             if (*(s16 *)&mResultTimer <= 0) {
                 mTable.mSuppressSound = 0;
                 func_ov006_020c2440((char *)&mTable);
-                func_ov004_020b0a54(0x12);
+                Mg_SetSharedState(0x12);
                 mPromptEnabled = 0;
                 mResultTimer = 0;
             }
@@ -321,7 +321,7 @@ s32 dScMgSound_c::Render()
 {
     char *raw = (char *)this;
 
-    func_ov004_020b1e34(raw, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
     func_ov006_02119c74();
     func_ov006_02119bdc();
     func_ov006_02119bc4();
@@ -354,16 +354,16 @@ void dScMgSound_c::StartRound(int mode)
         if (unk_0bc > 0x270e)
             unk_0bc = 0x270e;
 
-        active = (int *)data_ov004_020beb68;
+        active = (int *)gMgScene;
         if (active)
             *(int *)((char *)active + 0xb4) = 0;
 
-        active = (int *)data_ov004_020beb68;
+        active = (int *)gMgScene;
         if (active)
             total = *(int *)((char *)active + 0xb4);
         else
             total = 0;
-        func_ov004_020adb1c(total);
+        Mg_SubmitScore(total);
     }
 
     mTable.mSuppressSound = 1;
@@ -373,7 +373,7 @@ void dScMgSound_c::StartRound(int mode)
     func_ov006_0211c080();
 
     mIntroTimer = 0x20;
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 
     Sound::LoadAndSetMusic_Layer1(6);
 }
@@ -1468,7 +1468,7 @@ void dScMgSound_c::func_ov006_02119d50(int slot)
 }
 
 // @symbol _ZN12dScMgSound_c19func_ov006_02119c74Ev
-extern "C" void func_ov004_020b023c(void* a0, int a1, int a2, int a3, void* a4);
+extern "C" void Mg_RenderSpriteBothPalMtx(void* a0, int a1, int a2, int a3, void* a4);
 
 void dScMgSound_c::func_ov006_02119c74()
 {
@@ -1490,7 +1490,7 @@ void dScMgSound_c::func_ov006_02119c74()
             m[3] = a;
             m[1] = b;
             m[2] = -b;
-            func_ov004_020b023c(data_ov006_0213f6f0[pop->pop.sprite],
+            Mg_RenderSpriteBothPalMtx(data_ov006_0213f6f0[pop->pop.sprite],
                                 (x >> 12) - 8, (y >> 12) - 0x10, -1, m);
         }
         tb = data_02082214[0];
@@ -1521,7 +1521,7 @@ void dScMgSound_c::func_ov006_02119bdc() {
 // @symbol _ZN12dScMgSound_c19func_ov006_02119bc4Ev
 void dScMgSound_c::func_ov006_02119bc4()
 {
-    func_ov004_020b2574(this->mTries, 1);
+    Mg_DrawStockCounter(this->mTries, 1);
 }
 
 // @symbol _ZN12dScMgSound_c19func_ov006_02119ba4Ev

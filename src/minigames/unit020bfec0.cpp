@@ -1826,7 +1826,8 @@ struct V {
 };
 
 
-extern "C" { extern V* data_ov004_020beb68; }
+/* local extern: only slot 21 is called, through the view V above. */
+extern "C" { extern V* gMgScene; }
 
 extern "C" void func_ov006_020c14bc(char* c)
 {
@@ -1857,7 +1858,7 @@ extern "C" void func_ov006_020c14bc(char* c)
 
     _ZN5Sound12PlayBank2_2DEj(0x141);
     if (*(short*)(c + 0x1d8) == *(short*)(c + 0x1da)) {
-        V* o = data_ov004_020beb68;
+        V* o = gMgScene;
         if (o)
             o->v21();
     }

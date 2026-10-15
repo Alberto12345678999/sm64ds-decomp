@@ -50,7 +50,7 @@ extern StateHandler data_ov006_0213fd2c;
 extern "C" {
 extern short data_ov004_020bf9e4;
 extern int Math_Function_0203b14c(int *ptr, int target, int rate, int limit, int step);
-extern void func_ov004_020b0a38(void);
+extern void Mg_ResumeSharedState(void);
 extern int func_ov006_020c1718(int* r0);
 extern void func_ov004_020b56c8(int x);
 extern void func_ov004_020b5ed0(void);
@@ -59,9 +59,9 @@ extern void func_ov006_020c0c80(void* c);
 /* decl_common.h already declares this with a void pointer, so the
  * definition's char pointer cannot be repeated here. */
 extern void func_ov006_020c0d68(void* c);
-extern void func_ov004_020adb1c(int self);
-extern void func_ov004_020b0a54(int v);
-extern void func_ov004_020ad79c(int a, int b);
+extern void Mg_SubmitScore(int self);
+extern void Mg_SetSharedState(int v);
+extern void Mg_SaveRecordPair(int a, int b);
 extern int data_ov006_0213fd44[];
 extern int data_ov004_020bf9ec;
 extern int RandomIntInternal(int* seed);
@@ -71,8 +71,8 @@ extern "C" void FreeGfxSlotsById(int arg);
 extern "C" void func_ov004_020b66d4(void);
 void func_ov006_020c0aa8(void *camera);
 void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
-void func_ov004_020b1bc8(void *scene, int a1, int a2, int a3);
-void func_ov004_020b1e34(void *scene, int a1, int a2, int a3);
+void Mg_DrawLives(void *scene, int a1, int a2, int a3);
+void Mg_DrawScoreTally(void *scene, int a1, int a2, int a3);
 void func_ov006_020c1804(void *table);
 void func_ov004_020b65e4(void);
 void func_ov006_020c19d0(char *c);
@@ -139,10 +139,10 @@ s32 dScMgBSC_c::InitResources()
     func_ov006_020c0aa8(pad_4660);
     if (func_ov006_020c1a88((char *)&mShared) == 0)
         return 0;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov004_020b682c();
     data_0208ee44[0] = 1;
-    unk_0a8 = func_ov004_020ad8b8();
+    unk_0a8 = Mg_GetSavedRecord0();
     unk_0ac = unk_0a8;
     this->StartRound(3);
     return 1;
@@ -181,8 +181,8 @@ s32 dScMgBSC_c::Render()
         }
     }
     func_ov004_020b6430();
-    func_ov004_020b1bc8(this, 0xc, 0xc, 0);
-    func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+    Mg_DrawLives(this, 0xc, 0xc, 0);
+    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
     func_ov006_020c1804(&mShared);
     return 1;
 }
@@ -194,8 +194,8 @@ s32 dScMgBSC_c::Render()
 void dScMgBSC_c::StartRound(int mode)
 {
     if (mode != 4 && mode != 5 && mode == 3) {
-        mHudScore = func_ov004_020ad878();
-        func_ov004_020adb1c(mHudScore);
+        mHudScore = Mg_GetSavedRecord1();
+        Mg_SubmitScore(mHudScore);
     }
     func_ov004_020b66d4();
     data_ov004_020bc7d4 = 1;
@@ -232,7 +232,7 @@ s32 dScMgBSC_c::CanEndState(int mode)
     return 0;
 settle:
     if (state == 0xc && gate == 1) {
-        func_ov004_020ad79c(unk_0a8, mHudScore);
+        Mg_SaveRecordPair(unk_0a8, mHudScore);
     }
     return 1;
 }
@@ -427,7 +427,7 @@ void dScMgBSC_c::StateRevealCards()
         } else {
             score = score - 1;
         }
-        func_ov004_020ad79c(base, score);
+        Mg_SaveRecordPair(base, score);
     }
 }
 
@@ -453,8 +453,8 @@ void dScMgBSC_c::StateJudgeCards()
         }
         if (mHudScore > unk_0b8)
             unk_0b8 = mHudScore;
-        func_ov004_020adb1c(mHudScore);
-        func_ov004_020b0a54(4);
+        Mg_SubmitScore(mHudScore);
+        Mg_SetSharedState(4);
         func_ov006_020c0c80(&mShared);
         mState = 0xd;
     }
@@ -465,7 +465,7 @@ void dScMgBSC_c::StateJudgeCards()
             score = &mHudScore;
             *score = *score - 1;
         }
-        func_ov004_020b0a54(5);
+        Mg_SetSharedState(5);
         func_ov006_020c0d68(&mShared);
         mState = 0xd;
     }
@@ -537,7 +537,7 @@ void dScMgBSC_c::StateReturnCards()
             return;
         }
     }
-    func_ov004_020b0a38();
+    Mg_ResumeSharedState();
     mState = 0xc;
 }
 

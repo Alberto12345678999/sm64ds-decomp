@@ -155,7 +155,7 @@ extern char* data_0209f5bc;
 extern int data_ov006_0213fbc4;
 unsigned int func_02012790(unsigned int a);
 int func_ov006_020d0c38(u16* a, u16* b);
-extern "C" void func_ov004_020ad90c(void);
+extern "C" void Mg_CommitRecords(void);
 void func_0203cd80(int *m, short angle);
 int GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
@@ -172,7 +172,7 @@ extern int func_ov006_021237c8(int kind);
 extern int func_ov006_0212373c(int kind);
 extern void func_0203cc28(int *vector, int angle);
 extern char *func_ov006_020cefa4(int resource, int *up, int variant, int face);
-extern int func_ov004_020ae5c4(int a, int b, int c, int d, int e, int f, int g);
+extern int Mg_DrawLine(int a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern int data_ov006_0213fbd0[];
@@ -255,7 +255,7 @@ extern int func_ov006_02122c90(char *object);
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02124088, NOT applied: extern void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02124088, NOT applied: extern void func_02012718(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02124088, NOT applied: extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov004_020ae5c4, from the legacy file for func_ov006_02124088, NOT applied: extern int func_ov004_020ae5c4(void *a, int b, int c, int d, int e, int f, int g); */
+/* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02124088, NOT applied: extern int Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e048, from the legacy file for func_ov006_02124228, NOT applied: extern short data_ov006_0212e048; */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c11CanEndStateEi, NOT applied: extern int GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for _ZN18dScMgTrampoline2_c10StartRoundEi, NOT applied: extern "C" s32 GetGameLanguage(void); */
@@ -450,7 +450,7 @@ s32 dScMgTrampoline2_c::InitResources()
     func_ov006_020ef0d4((int)(raw + 0x6ffc), 10);
     data_ov006_021421b4 = 0;
     func_ov006_02122c04((int)(raw + 0x7164), 0x14);
-    func_ov004_020b04d0(0x10);
+    Mg_SetTopScreenYOffset(0x10);
     StartRound(-1);
     return 1;
 }
@@ -559,7 +559,7 @@ void dScMgTrampoline2_c::StateIntro()
         mTouchY +=
             ((((int)((unsigned int)(RandomIntInternal(&data_0209e650) & ~0x80000000) >> 19) - 0x800) << 2) >> 12);
 
-        func_ov004_020ae5c4((int)this, old9c, old9e, mTouchX, mTouchY, 2, 0xc);
+        Mg_DrawLine((int)this, old9c, old9e, mTouchX, mTouchY, 2, 0xc);
 
         mDragSoundHandle = func_02012468(mDragSoundHandle, 2, 0x1b0, 2, 0,
                                               func_020126e8(mixRaw), 0, 0);
@@ -672,7 +672,7 @@ void dScMgTrampoline2_c::StateResults()
         return;
     if (func_ov006_020ca7b8() == 0)
         return;
-    func_ov004_020b0a54(0x12);
+    Mg_SetSharedState(0x12);
     mPromptEnabled = 0;
     mTimer = 0xb4;
     *(double *)mState = data_ov006_0213fbe0.asDouble;
@@ -741,7 +741,7 @@ void dScMgTrampoline2_c::UpdateTouchInput()
 
     i = ACTIVE_SLOT;
     if (TOUCH_REC(gTouchHeld)[i][0] != 0) {
-        func_ov004_020ae5c4((int)this, mTouchX, mTouchY,
+        Mg_DrawLine((int)this, mTouchX, mTouchY,
                             TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2, 4);
         i = ACTIVE_SLOT;
         mTouchX = TOUCH_REC(gTouchX)[i][0];
@@ -961,7 +961,7 @@ s32 dScMgTrampoline2_c::Behavior()
     }
     UpdateTouchInput();
     if (saved != data_ov006_02140830) {
-        func_ov004_020adb1c(data_ov006_02140830);
+        Mg_SubmitScore(data_ov006_02140830);
     }
     return 1;
 }
@@ -1007,7 +1007,7 @@ s32 dScMgTrampoline2_c::Render()
         }
     }
 
-    func_ov004_020b1a5c(data_ov006_02140830, 6);
+    Mg_DrawTopRightCounter(data_ov006_02140830, 6);
 
     if (mRoundOver == 0) {
         func_ov006_020caadc();
@@ -1023,7 +1023,7 @@ s32 dScMgTrampoline2_c::Render()
 s32 dScMgTrampoline2_c::CleanupResources()
 {
     func_ov006_020ceedc();
-    func_ov004_020ad90c();
+    Mg_CommitRecords();
     return 1;
 }
 

@@ -7,7 +7,7 @@
  * first byte of ov004's .text up to the constructor, which ends where
  * func_ov004_020b2c58 begins. It holds the eight scene overrides at
  * 0x020b04e8..0x020b0a38 plus 117 former one-function sources folded in
- * around them, among them the score-number drawer func_ov004_020b2220, the
+ * around them, among them the score-number drawer Mg_DrawNumberRotated, the
  * engine and background set-up slots 31 to 33, the destructor and the
  * constructor. Each former source keeps its own namespace block. Copies
  * that repeated decl_common.h or dScMgBase_c.h are gone; the local struct
@@ -40,7 +40,7 @@
 
 #pragma defer_codegen off
 
-/* The 0x40 records at data_ov004_020bebe8 are 0x20 bytes each. func_ov004_020adf70
+/* The 0x40 records at sMgFxPool are 0x20 bytes each. Mg_InitFx
    fills one: a Fix12 position, two optional vectors, a frame timer and a state.
    State 0 (func_ov004_020adeb0 / func_ov004_020adcc8) adds mVecB into mVecA and
    mVecA into mPos each frame; state 1 (func_ov004_020addcc /
@@ -68,10 +68,10 @@ extern "C" {
 /* Static minigame base state: the graphCallback_c registry instance, the
    Ent record pool, and the two PMF state tables the dispatchers call
    through. Declaration order is the ROM's __sinit order. */
-dScMgBase_c::graphCallback_c data_ov004_020beb74;
-Ent data_ov004_020bebe8[0x40];
-EntPMF data_ov004_020beb88[2] = { &Ent::func_ov004_020adeb0, &Ent::func_ov004_020addcc };
-EntPMF data_ov004_020beb98[2] = { &Ent::func_ov004_020adcc8, &Ent::func_ov004_020adc80 };
+dScMgBase_c::graphCallback_c sMgGraphCallback;
+Ent sMgFxPool[0x40];
+EntPMF sMgFxUpdateTable[2] = { &Ent::func_ov004_020adeb0, &Ent::func_ov004_020addcc };
+EntPMF sMgFxDrawTable[2] = { &Ent::func_ov004_020adcc8, &Ent::func_ov004_020adc80 };
 int data_ov004_020beba8[16];
 }
 
@@ -88,37 +88,37 @@ int ApproachLinear2(short &value, short target, short step);
 namespace cstd { int fdiv(int num, int den); }
 
 extern "C" {
-extern void *data_ov004_020beb60;
+extern void *sMgWorkBuffer;
 extern void **data_0209d4a8;
 int func_ov004_020b8ee0(char *p);
-void func_ov004_020aeb24(char *c);
+void Mg_UpdateMenu(char *c);
 void func_ov004_020b321c(char *c);
-void func_ov004_020adf2c(char *c);
+void Mg_UpdateFx(char *c);
 extern SceneVCall6 *data_0209f5bc;
 extern unsigned short data_020a0e5a[];
 extern int data_0208ee44;
-extern void func_ov004_020ad90c(void);
+extern void Mg_CommitRecords(void);
 extern void FreeGfxSlotsById(int arg);
 extern void func_0203cbc0(void *ptr);
 extern void func_02012e1c(void);
-void func_ov004_020ae330();
+void Mg_InitMusic();
 extern void Enable3dEngines(void);
-extern char data_0209b308[];
+extern char gMgMenuRow[];
 extern dWipe_c data_0209f61c;
 extern unsigned char data_0209d460[];
 extern unsigned char data_0209d458[];
 
 /* The scene's five saved records: func_02013580(table, i) reads record i of
    save table `table`, func_02013568(table, i, v) writes it, and
-   func_ov004_020adc3c(scene) picks the table from byte 1 of param1. */
+   Mg_GetSaveTable(scene) picks the table from byte 1 of param1. */
 int func_02013580(int table, int index);
 void func_02013568(int table, int index, int value);
-int func_ov004_020adc3c(void *scene);
+int Mg_GetSaveTable(void *scene);
 
 /* One table of sprite-list words per language, indexed by
    GetGameLanguage(); the helpers below hand its words to the OAM
    wrappers. */
-extern int *data_ov004_020bbfa8[];
+extern int *sMgSpriteTables[];
 }
 
 namespace s20ad660 {
@@ -182,38 +182,38 @@ s32 GetGameLanguage(void)
 }
 }
 
-// @symbol func_ov004_020ad6f4
+// @symbol Mg_GetLastRecordRank
 namespace s20ad6f4 {
 extern "C" {
-/* Returns unk_064: the index (0..4) at which func_ov004_020ad940 last
+/* Returns unk_064: the index (0..4) at which Mg_RankSessionBest last
    inserted a score into the five saved records, or -1 if it placed nowhere
    (the constructor also seeds -1). */
-int func_ov004_020ad6f4(dScMgBase_c *scene)
+int Mg_GetLastRecordRank(dScMgBase_c *scene)
 {
     return scene->unk_064;
 }
 }
 }
 
-// @symbol func_ov004_020ad6fc
+// @symbol Mg_FindRecordRank
 namespace s20ad6fc {
 extern "C" {
-extern int data_0209b308[];
+extern int gMgMenuRow[];
 /* Returns the index (0..4) at which `value` would enter the scene's five
    saved records, or -1. Scoring mode 5 (word 2 of the menu row) is
    lower-is-better and never places a value <= 0; every other mode is
    higher-is-better. The `(unsigned)` casts make the compares unsigned. */
-int func_ov004_020ad6fc(void *scene, int value)
+int Mg_FindRecordRank(void *scene, int value)
 {
     int i;
-    if (data_0209b308[2] == 5) {
+    if (gMgMenuRow[2] == 5) {
         if (value <= 0) return -1;
         for (i = 0; i < 5; i++) {
-            if (func_02013580(func_ov004_020adc3c(scene), i) > (unsigned)value) return i;
+            if (func_02013580(Mg_GetSaveTable(scene), i) > (unsigned)value) return i;
         }
     } else {
         for (i = 0; i < 5; i++) {
-            if (func_02013580(func_ov004_020adc3c(scene), i) < (unsigned)value) return i;
+            if (func_02013580(Mg_GetSaveTable(scene), i) < (unsigned)value) return i;
         }
     }
     return -1;
@@ -221,10 +221,10 @@ int func_ov004_020ad6fc(void *scene, int value)
 }
 }
 
-// @symbol func_ov004_020ad79c
+// @symbol Mg_SaveRecordPair
 namespace s20ad79c {
 extern "C" {
-extern int data_0209b308[];
+extern int gMgMenuRow[];
 extern int data_0209b300[];
 
 /* Saves a two-value result into saved records 0 and 1 of the current scene.
@@ -232,52 +232,52 @@ extern int data_0209b300[];
    and 6); a second value <= 0 alone falls back to word 6. A positive value
    is capped at 9999. Nothing is written when both already match;
    otherwise data_0209b300 is set to 1. */
-void func_ov004_020ad79c(int first, int second) {
+void Mg_SaveRecordPair(int first, int second) {
     int v0 = first, v1 = second;
-    if (data_ov004_020beb68 == 0) return;
+    if (gMgScene == 0) return;
     if (v0 <= 0) {
-        v0 = data_0209b308[5];
-        v1 = data_0209b308[6];
+        v0 = gMgMenuRow[5];
+        v1 = gMgMenuRow[6];
     } else {
         if (v0 > 9999) v0 = 9999;
     }
     if (v1 <= 0) {
-        v1 = data_0209b308[6];
+        v1 = gMgMenuRow[6];
     } else {
         if (v1 > 9999) v1 = 9999;
     }
-    if (v0 == func_ov004_020ad8b8()) {
-        if (v1 == func_ov004_020ad878()) return;
+    if (v0 == Mg_GetSavedRecord0()) {
+        if (v1 == Mg_GetSavedRecord1()) return;
     }
-    func_02013568(func_ov004_020adc3c(data_ov004_020beb68), 0, v0);
-    func_02013568(func_ov004_020adc3c(data_ov004_020beb68), 1, v1);
+    func_02013568(Mg_GetSaveTable(gMgScene), 0, v0);
+    func_02013568(Mg_GetSaveTable(gMgScene), 1, v1);
     *(unsigned char*)data_0209b300 = 1;
 }
 }
 }
 
-// @symbol func_ov004_020ad878
+// @symbol Mg_GetSavedRecord1
 namespace s20ad878 {
 extern "C" {
 /* Saved record 1 of the current scene, or 0 with no scene. */
-int func_ov004_020ad878(void) {
-    void *scene = data_ov004_020beb68;
+int Mg_GetSavedRecord1(void) {
+    void *scene = gMgScene;
     if (scene == 0) return 0;
-    return func_02013580(func_ov004_020adc3c(scene), 1);
+    return func_02013580(Mg_GetSaveTable(scene), 1);
 }
 }
 }
 
-// @symbol func_ov004_020ad8b8
+// @symbol Mg_GetSavedRecord0
 namespace s20ad8b8 {
 extern "C" {
-extern int data_0209b308[];
+extern int gMgMenuRow[];
 /* Saved record 0 of the current scene; an empty record reads as the menu
    row's word 5. 0 with no scene. */
-int func_ov004_020ad8b8(void) {
-    if (data_ov004_020beb68 != 0) {
-        int r = func_02013580(func_ov004_020adc3c(data_ov004_020beb68), 0);
-        if (r == 0) return data_0209b308[5];
+int Mg_GetSavedRecord0(void) {
+    if (gMgScene != 0) {
+        int r = func_02013580(Mg_GetSaveTable(gMgScene), 0);
+        if (r == 0) return gMgMenuRow[5];
         return r;
     }
     return 0;
@@ -285,70 +285,70 @@ int func_ov004_020ad8b8(void) {
 }
 }
 
-// @symbol func_ov004_020ad90c
+// @symbol Mg_CommitRecords
 namespace s20ad90c {
 extern "C" {
-extern void func_ov004_020ad940(dScMgBase_c *scene);
+extern void Mg_RankSessionBest(dScMgBase_c *scene);
 
-void func_ov004_020ad90c(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+void Mg_CommitRecords(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
-    func_ov004_020ad940(scene);
+    Mg_RankSessionBest(scene);
 }
 }
 }
 
-// @symbol func_ov004_020ad940
+// @symbol Mg_RankSessionBest
 namespace s20ad940 {
 extern "C" {
-int func_ov004_020adafc(void);
-int func_ov004_020ad6fc(void *scene, int value);
-void func_ov004_020ada20(void);
-void func_ov004_020ada40(int score);
-int func_ov004_020adbc0(void);
+int Mg_GetSessionBest(void);
+int Mg_FindRecordRank(void *scene, int value);
+void Mg_ClearNewRecordFlag(void);
+void Mg_SetSessionBest(int score);
+int Mg_GetSubmittedScore(void);
 extern unsigned char data_0209b300[];
 
-/* Ranks the session best (unk_4654, from func_ov004_020adafc) among the
-   five saved records with func_ov004_020ad6fc and keeps that rank in
+/* Ranks the session best (unk_4654, from Mg_GetSessionBest) among the
+   five saved records with Mg_FindRecordRank and keeps that rank in
    unk_064 (-1 when it placed nowhere). If it placed, the lower rows shift
-   down and the submitted score unk_464c (func_ov004_020adbc0) -- not the
+   down and the submitted score unk_464c (Mg_GetSubmittedScore) -- not the
    ranked value -- is written into that row, and data_0209b300 is set to 1.
    Either way the new-record flag is cleared, the session best moves to
    unk_4658 and is then reset to 0. */
-void func_ov004_020ad940(dScMgBase_c *scene)
+void Mg_RankSessionBest(dScMgBase_c *scene)
 {
-    int n = func_ov004_020ad6fc(scene, func_ov004_020adafc());
+    int n = Mg_FindRecordRank(scene, Mg_GetSessionBest());
     scene->unk_064 = n;
     if (scene->unk_064 < 0) {
-        func_ov004_020ada20();
-        scene->unk_4658 = func_ov004_020adafc();
-        func_ov004_020ada40(0);
+        Mg_ClearNewRecordFlag();
+        scene->unk_4658 = Mg_GetSessionBest();
+        Mg_SetSessionBest(0);
         return;
     }
     int i;
     for (i = 4; i > scene->unk_064; i--) {
-        int a = func_ov004_020adc3c(scene);
-        int b = func_ov004_020adc3c(scene);
+        int a = Mg_GetSaveTable(scene);
+        int b = Mg_GetSaveTable(scene);
         int v = func_02013580(b, i-1);
         func_02013568(a, i, v);
     }
-    int a = func_ov004_020adc3c(scene);
-    int v = func_ov004_020adbc0();
+    int a = Mg_GetSaveTable(scene);
+    int v = Mg_GetSubmittedScore();
     func_02013568(a, scene->unk_064, v);
     data_0209b300[0] = 1;
-    func_ov004_020ada20();
-    scene->unk_4658 = func_ov004_020adafc();
-    func_ov004_020ada40(0);
+    Mg_ClearNewRecordFlag();
+    scene->unk_4658 = Mg_GetSessionBest();
+    Mg_SetSessionBest(0);
 }
 }
 }
 
-// @symbol func_ov004_020ada20
+// @symbol Mg_ClearNewRecordFlag
 namespace s20ada20 {
 extern "C" {
 /* Clears the new-record flag unk_465c. */
-void func_ov004_020ada20(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+void Mg_ClearNewRecordFlag(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
         scene->unk_465c = 0;
     }
@@ -356,43 +356,43 @@ void func_ov004_020ada20(void) {
 }
 }
 
-// @symbol func_ov004_020ada40
+// @symbol Mg_SetSessionBest
 namespace s20ada40 {
 extern "C" {
-extern int data_0209b308[];
-extern int func_ov004_020adc1c(void);
+extern int gMgMenuRow[];
+extern int Mg_GetTopRecord(void);
 
 /* Stores `score` as the session best (unk_4654). If it beats the record
    copy at +0x4650, it becomes the new copy and unk_465c is set. Beating
    it means, compared unsigned: in scoring mode 5, nonzero and either lower
    or the copy is 0; otherwise higher. */
-void func_ov004_020ada40(int score)
+void Mg_SetSessionBest(int score)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
     scene->unk_4654 = score;
-    if (data_0209b308[2] == 5) {
+    if (gMgMenuRow[2] == 5) {
         if (score == 0) return;
-        if (func_ov004_020adc1c() != 0) {
-            if ((unsigned)score >= (unsigned)func_ov004_020adc1c()) return;
+        if (Mg_GetTopRecord() != 0) {
+            if ((unsigned)score >= (unsigned)Mg_GetTopRecord()) return;
         }
-        func_ov004_020adc00(score);
-        ((dScMgBase_c *)data_ov004_020beb68)->unk_465c = 1;
+        Mg_SetTopRecord(score);
+        ((dScMgBase_c *)gMgScene)->unk_465c = 1;
         return;
     }
-    if ((unsigned)score <= (unsigned)func_ov004_020adc1c()) return;
-    func_ov004_020adc00(score);
-    ((dScMgBase_c *)data_ov004_020beb68)->unk_465c = 1;
+    if ((unsigned)score <= (unsigned)Mg_GetTopRecord()) return;
+    Mg_SetTopRecord(score);
+    ((dScMgBase_c *)gMgScene)->unk_465c = 1;
 }
 }
 }
 
-// @symbol func_ov004_020adafc
+// @symbol Mg_GetSessionBest
 namespace s20adafc {
 extern "C" {
 /* The session best, unk_4654; 0 with no scene. */
-int func_ov004_020adafc(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+int Mg_GetSessionBest(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
         return scene->unk_4654;
     }
@@ -401,43 +401,43 @@ int func_ov004_020adafc(void) {
 }
 }
 
-// @symbol func_ov004_020adb1c
+// @symbol Mg_SubmitScore
 namespace s20adb1c {
 extern "C" {
-extern int func_ov004_020adafc(void);
-extern int func_ov004_020ada40(int);
-extern int data_0209b308[];
+extern int Mg_GetSessionBest(void);
+extern int Mg_SetSessionBest(int);
+extern int gMgMenuRow[];
 /* Submits a score: stores it in unk_464c (outside scoring mode 5, capped
    at the menu row's word 3 when that is nonzero) and passes it to
-   func_ov004_020ada40 when it beats the session best. */
-void func_ov004_020adb1c(int score) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+   Mg_SetSessionBest when it beats the session best. */
+void Mg_SubmitScore(int score) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
-    if (data_0209b308[2] == 5) {
+    if (gMgMenuRow[2] == 5) {
         scene->unk_464c = score;
-        if (func_ov004_020adafc() != 0) {
-            if ((unsigned)score >= (unsigned)func_ov004_020adafc()) return;
+        if (Mg_GetSessionBest() != 0) {
+            if ((unsigned)score >= (unsigned)Mg_GetSessionBest()) return;
         }
-        func_ov004_020ada40(score);
+        Mg_SetSessionBest(score);
     } else {
-        int cap = data_0209b308[3];
+        int cap = gMgMenuRow[3];
         if (cap != 0) {
             if ((unsigned)score > (unsigned)cap) score = cap;
         }
         scene->unk_464c = score;
-        if ((unsigned)score <= (unsigned)func_ov004_020adafc()) return;
-        func_ov004_020ada40(score);
+        if ((unsigned)score <= (unsigned)Mg_GetSessionBest()) return;
+        Mg_SetSessionBest(score);
     }
 }
 }
 }
 
-// @symbol func_ov004_020adbc0
+// @symbol Mg_GetSubmittedScore
 namespace s20adbc0 {
 extern "C" {
 /* The submitted score, unk_464c; 0 with no scene. */
-int func_ov004_020adbc0(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+int Mg_GetSubmittedScore(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
         return scene->unk_464c;
     }
@@ -446,12 +446,12 @@ int func_ov004_020adbc0(void) {
 }
 }
 
-// @symbol func_ov004_020adbe0
+// @symbol Mg_IsNewRecord
 namespace s20adbe0 {
 extern "C" {
 /* The new-record flag, unk_465c; 0 with no scene. */
-int func_ov004_020adbe0(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+int Mg_IsNewRecord(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) {
         return scene->unk_465c;
     }
@@ -460,21 +460,21 @@ int func_ov004_020adbe0(void) {
 }
 }
 
-// @symbol func_ov004_020adc00
+// @symbol Mg_SetTopRecord
 namespace s20adc00 {
 extern "C" {
-/* Spelled char * here and in func_ov004_020adc1c, as unit020b4aa4.cpp
+/* Spelled char * here and in Mg_GetTopRecord, as unit020b4aa4.cpp
    spells it: with no char * copy in this file the declaration-agreement
    count ties 1-1 with the header's void *, the tie goes to the header and
-   unit020b4aa4.cpp goes red. */
-extern char *data_ov004_020beb68;
+   unit020b4aa4.cpp goes red. local extern: see above. */
+extern char *gMgScene;
 /* Sets the record copy at +0x4650 (unnamed padding in the header). Here
-   and in func_ov004_020adc1c the base is a char *: with an int-typed base
+   and in Mg_GetTopRecord the base is a char *: with an int-typed base
    mwcc materializes the +0x46xx offset from the literal pool instead of
    splitting it as add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the
    cartridge does. */
-void func_ov004_020adc00(int v) {
-    char *scene = data_ov004_020beb68;
+void Mg_SetTopRecord(int v) {
+    char *scene = gMgScene;
     if (scene != 0) {
         *(int*)(scene + 0x4650) = v;
     }
@@ -482,13 +482,13 @@ void func_ov004_020adc00(int v) {
 }
 }
 
-// @symbol func_ov004_020adc1c
+// @symbol Mg_GetTopRecord
 namespace s20adc1c {
 extern "C" {
-extern char *data_ov004_020beb68;
+extern char *gMgScene;  /* local extern: as in Mg_SetTopRecord */
 /* The record copy at +0x4650; 0 with no scene. */
-int func_ov004_020adc1c(void) {
-    char *scene = data_ov004_020beb68;
+int Mg_GetTopRecord(void) {
+    char *scene = gMgScene;
     if (scene != 0) {
         return *(int*)(scene + 0x4650);
     }
@@ -497,21 +497,21 @@ int func_ov004_020adc1c(void) {
 }
 }
 
-// @symbol func_ov004_020adc3c
+// @symbol Mg_GetSaveTable
 namespace s20adc3c {
 extern "C" {
 /* The scene's save-table id: byte 1 of param1. */
-int func_ov004_020adc3c(void *scene) {
+int Mg_GetSaveTable(void *scene) {
     return (((dScMgBase_c *)scene)->param1 & 0xff00) >> 8;
 }
 }
 }
 
-// @symbol func_ov004_020adc4c
+// @symbol Mg_GetWorkBuffer
 namespace s20adc4c {
 extern "C" {
-extern int data_ov004_020beb60[];
-int func_ov004_020adc4c(void) { return data_ov004_020beb60[0]; }
+extern int sMgWorkBuffer[];
+int Mg_GetWorkBuffer(void) { return sMgWorkBuffer[0]; }
 }
 }
 
@@ -525,20 +525,20 @@ void Ov004_Deallocate(void *ptr)
 }
 }
 
-// @symbol func_ov004_020adc68
+// @symbol Ov004_LoadFile
 namespace s20adc68 {
 extern "C" {
 extern void LoadFile(void);
-void func_ov004_020adc68(void) { LoadFile(); }
+void Ov004_LoadFile(void) { LoadFile(); }
 }
 }
 
-// @symbol func_ov004_020adc74
+// @symbol Ov004_LoadFileByPath
 namespace s20adc74 {
 extern "C" {
 extern void *func_020182bc(const char *path);
 
-void *func_ov004_020adc74(const char *path)
+void *Ov004_LoadFileByPath(const char *path)
 {
     return func_020182bc(path);
 }
@@ -549,21 +549,21 @@ void *func_ov004_020adc74(const char *path)
 namespace s20adc80 {
 extern "C" {
 extern int GetGameLanguage(void);
-extern int func_ov004_020b1d60(int,int,int,long long);
+extern int Mg_RenderSpriteOnNoMtx(int,int,int,long long);
 }
 }
 /* State 1's draw: word 2 of the current language's entry in
-   data_ov004_020bbfa8, at mPos >> 12. */
+   sMgSpriteTables, at mPos >> 12. */
 void Ent::func_ov004_020adc80(){
     int idx=s20adc80::GetGameLanguage();
-    int *t=data_ov004_020bbfa8[idx];
-    s20adc80::func_ov004_020b1d60(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
+    int *t=sMgSpriteTables[idx];
+    s20adc80::Mg_RenderSpriteOnNoMtx(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
 }
 
 // @symbol _ZN3Ent19func_ov004_020adcc8Ev
 namespace s20adcc8 {
 extern "C" {
-extern void func_ov004_020b1d60(int a0,int a1,int a2,int a3,int a4);
+extern void Mg_RenderSpriteOnNoMtx(int a0,int a1,int a2,int a3,int a4);
 extern int data_ov004_020beb70;
 extern int data_ov004_020bea14[];
 extern int data_ov004_020beba8[];
@@ -585,17 +585,17 @@ void Ent::func_ov004_020adcc8(){
   {
     int idx=((int)mTimer)&0xf;
     int x=*(int*)this>>0xc; int y=*(int*)((char*)this+4)>>0xc;
-    s20adcc8::func_ov004_020b1d60(s20adcc8::data_ov004_020beba8[idx],x,y,-1,-1);
+    s20adcc8::Mg_RenderSpriteOnNoMtx(s20adcc8::data_ov004_020beba8[idx],x,y,-1,-1);
   }
 }
 
-// @symbol func_ov004_020add88
+// @symbol Mg_DrawFx
 namespace s20add88 {
 extern "C" {
-extern EntPMF data_ov004_020beb98[];
+extern EntPMF sMgFxDrawTable[];
 /* Draws one record through its state's handler. */
-extern "C" void func_ov004_020add88(Ent *c) {
-  (c->*data_ov004_020beb98[c->mState])();
+extern "C" void Mg_DrawFx(Ent *c) {
+  (c->*sMgFxDrawTable[c->mState])();
 }
 }
 }
@@ -603,14 +603,14 @@ extern "C" void func_ov004_020add88(Ent *c) {
 // @symbol _ZN3Ent19func_ov004_020addccEv
 namespace s20addcc {
 extern "C" {
-void func_ov004_020b1b40(void *c);
+void Mg_GainLives(void *c);
 inline long long inline_fn(int arg0)
 {
   return (long long) arg0;
 }
 }
 }
-/* State 1's update. Counts mTimer down, calling func_ov004_020b1b40(1) on
+/* State 1's update. Counts mTimer down, calling Mg_GainLives(1) on
    the frame it reaches 0, then places mPos between the two vectors by the
    remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
    y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
@@ -621,7 +621,7 @@ void Ent::func_ov004_020addcc()
   {
   if (ApproachLinear2(mTimer, 0, 1))
   {
-    func_ov004_020b1b40((void *) 1);
+    Mg_GainLives((void *) 1);
   }
   int a = mTimer;
   int b = mDuration;
@@ -657,23 +657,23 @@ void Ent::func_ov004_020adeb0()
     *p += *(int*)(c + 0xc);
 }
 
-// @symbol func_ov004_020adf2c
+// @symbol Mg_UpdateFx
 namespace s20adf2c {
 extern "C" {
-extern EntPMF data_ov004_020beb88[];
+extern EntPMF sMgFxUpdateTable[];
 /* Updates one record through its state's handler. */
-extern "C" void func_ov004_020adf2c(Ent *c) {
-  (c->*data_ov004_020beb88[c->mState])();
+extern "C" void Mg_UpdateFx(Ent *c) {
+  (c->*sMgFxUpdateTable[c->mState])();
 }
 }
 }
 
-// @symbol func_ov004_020adf70
+// @symbol Mg_InitFx
 namespace s20adf70 {
 extern "C" {
 /* Fills record `c`. mDuration starts equal to mTimer; either vector may
    be omitted with a null pointer. */
-void func_ov004_020adf70(char *c, short state, short timer, int *pos, int *vecA, int *vecB){
+void Mg_InitFx(char *c, short state, short timer, int *pos, int *vecA, int *vecB){
   Ent *e=(Ent*)c;
   e->mState=state;
   e->mTimer=timer;
@@ -692,22 +692,22 @@ void func_ov004_020adf70(char *c, short state, short timer, int *pos, int *vecA,
 }
 }
 
-// @symbol func_ov004_020adfc4
+// @symbol Mg_SpawnFx
 namespace s20adfc4 {
 extern "C" {
-extern void func_ov004_020adf70(void *rec, char *state, short timer, short pos, int *vecA, int *vecB);
-/* Fills the first free record of the 0x40 at data_ov004_020bebe8 (see
-   func_ov004_020adf70); does nothing without a position or a free record.
+extern void Mg_InitFx(void *rec, char *state, short timer, short pos, int *vecA, int *vecB);
+/* Fills the first free record of the 0x40 at sMgFxPool (see
+   Mg_InitFx); does nothing without a position or a free record.
    The parameter types are not the callers': `state` arrives as an int and
    `pos` is the position pointer, tested whole (movs r4, r2). They are left
    as they are because retyping them adds new disagreements with the
    callers' differing declarations in the declaration-agreement gate. */
-void func_ov004_020adfc4(char *state, short timer, short pos, int *vecA, int *vecB, int *unused){
+void Mg_SpawnFx(char *state, short timer, short pos, int *vecA, int *vecB, int *unused){
   if(pos==0) return;
   int i;
   for(i=0;i<0x40;i++){
-    if(data_ov004_020bebe8[i].mTimer == 0){
-      func_ov004_020adf70(&data_ov004_020bebe8[i], state, timer, pos, vecA, vecB);
+    if(sMgFxPool[i].mTimer == 0){
+      Mg_InitFx(&sMgFxPool[i], state, timer, pos, vecA, vecB);
       return;
     }
   }
@@ -860,55 +860,55 @@ int dScMgBase_c::OnGraphCallback0()
     return 1;
 }
 
-// @symbol func_ov004_020ae1a8
+// @symbol Mg_GetScoringMode
 namespace s20ae1a8 {
 extern "C" {
-extern int data_0209b308[];
+extern int gMgMenuRow[];
 /* The menu row's scoring mode (word 2), or -1 with no scene. */
-int func_ov004_020ae1a8(void) {
-    if (data_ov004_020beb68 != 0) {
-        return data_0209b308[2];
+int Mg_GetScoringMode(void) {
+    if (gMgScene != 0) {
+        return gMgMenuRow[2];
     }
     return -1;
 }
 }
 }
 
-// @symbol func_ov004_020ae1cc
+// @symbol Mg_GetMusicMode
 namespace s20ae1cc {
 extern "C" {
-extern int data_0209b308[];
+extern int gMgMenuRow[];
 
 /* The menu row's music mode (word 11, +0x2c), or 0 with no scene. The
    music helpers below treat 0 as "stop the music" and 1 as "play
-   func_ov004_020ae1f0's track". */
-int func_ov004_020ae1cc(void) {
-    if (data_ov004_020beb68 != 0) {
-        return data_0209b308[11];
+   Mg_GetMusicTrack's track". */
+int Mg_GetMusicMode(void) {
+    if (gMgScene != 0) {
+        return gMgMenuRow[11];
     }
     return 0;
 }
 }
 }
 
-// @symbol func_ov004_020ae1f0
+// @symbol Mg_GetMusicTrack
 namespace s20ae1f0 {
 extern "C" {
 /* The scene's music track, unk_0c8; 5 with no scene. */
-int func_ov004_020ae1f0(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+int Mg_GetMusicTrack(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) return scene->unk_0c8;
     return 5;
 }
 }
 }
 
-// @symbol func_ov004_020ae20c
+// @symbol Mg_RestoreMusic
 namespace s20ae20c {
 extern "C" {
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
-extern int func_ov004_020ae1cc(void);
-extern int func_ov004_020ae1f0(void);
+extern int Mg_GetMusicMode(void);
+extern int Mg_GetMusicTrack(void);
 /* Sound::PlaySub with third argument 0 and its flag set starts nothing:
    it only sets the music volume target (data_0208e42c, which
    ChangeMusicVolume and PauseMusic also write) back to 0x7f, with step
@@ -916,72 +916,72 @@ extern int func_ov004_020ae1f0(void);
    music mode 1, this loads the scene's track. PlaySub stays mangled:
    nothing in the tree mangles to its Fix12<int> parameter (see
    include/Sound.h). */
-void func_ov004_020ae20c(void)
+void Mg_RestoreMusic(void)
 {
     _ZN5Sound7PlaySubEjjj5Fix12IiEb(0, 0x7f, 0, 0x7f000, 1);
-    if (data_ov004_020beb68 == 0) return;
-    if (func_ov004_020ae1cc() != 1) return;
-    Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
+    if (gMgScene == 0) return;
+    if (Mg_GetMusicMode() != 1) return;
+    Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
 }
 }
 }
 
-// @symbol func_ov004_020ae274
+// @symbol Mg_PlayJingle
 namespace s20ae274 {
 extern "C" {
-extern int func_ov004_020ae1cc(void);
+extern int Mg_GetMusicMode(void);
 extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 
 /* While a scene exists, starts sequence `id` on Sound::PlaySub's own
    player (data_0209b4b0) unless it is already the current one, and sets
    the music volume target to 0x40 [GUESS: ducks the music; PauseMusic uses
-   0x40 too]. The func_ov004_020ae1cc result is not used. */
-void func_ov004_020ae274(void* id) {
-    if (data_ov004_020beb68 == 0) return;
-    func_ov004_020ae1cc();
+   0x40 too]. The Mg_GetMusicMode result is not used. */
+void Mg_PlayJingle(void* id) {
+    if (gMgScene == 0) return;
+    Mg_GetMusicMode();
     _ZN5Sound7PlaySubEjjj5Fix12IiEb((unsigned int)id, 0x40, 0x7f, 0x7f000, 1);
 }
 }
 }
 
-// @symbol func_ov004_020ae2c8
+// @symbol Mg_StartMusic
 namespace s20ae2c8 {
 extern "C" {
-int func_ov004_020ae1cc(void);
-int func_ov004_020ae1f0(void);
+int Mg_GetMusicMode(void);
+int Mg_GetMusicTrack(void);
 /* Music mode 0 stops the music; mode 1 plays the scene's track. */
-void func_ov004_020ae2c8(void) {
-    if (data_ov004_020beb68 == 0) return;
-    int r = func_ov004_020ae1cc();
+void Mg_StartMusic(void) {
+    if (gMgScene == 0) return;
+    int r = Mg_GetMusicMode();
     if (r == 0) {
         Sound::StopLoadedMusic_Layer1(1);
         return;
     }
     if (r != 1) return;
-    Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
+    Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
 }
 }
 }
 
-// @symbol func_ov004_020ae330
+// @symbol Mg_InitMusic
 namespace s20ae330 {
 extern "C" {
-extern int func_ov004_020ae1cc(void);
-extern int func_ov004_020ae1f0(void);
-extern unsigned short data_0209b308;
+extern int Mg_GetMusicMode(void);
+extern int Mg_GetMusicTrack(void);
+extern unsigned short gMgMenuRow;
 
 /* Music mode 0 stops the music, and replays the scene's track only when
    the menu row's first halfword is 0x16f; any nonzero mode plays the
    track. */
-void func_ov004_020ae330(void){
-    if(data_ov004_020beb68==0) return;
-    if(func_ov004_020ae1cc()==0){
+void Mg_InitMusic(void){
+    if(gMgScene==0) return;
+    if(Mg_GetMusicMode()==0){
         Sound::StopLoadedMusic_Layer1(1);
-        if(data_0209b308 != 0x16f) return;
-        Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
+        if(gMgMenuRow != 0x16f) return;
+        Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
         return;
     }
-    Sound::LoadAndSetMusic_Layer1(func_ov004_020ae1f0());
+    Sound::LoadAndSetMusic_Layer1(Mg_GetMusicTrack());
 }
 }
 }
@@ -1004,7 +1004,7 @@ extern "C" {
    GetBG3CharPtr, and anything else returns without drawing -- which is what
    slot 33's -1 buys.  `obj+0x68` gates the wrapped region above the touch
    screen, where the MAIN engine's G2::GetBG*CharPtr are used instead and y is
-   folded by `+ data_ov004_020beb6c + 0xc0`.  So slot 33 leaves the brush
+   folded by `+ sMgTopScreenYOffset + 0xc0`.  So slot 33 leaves the brush
    disabled and a minigame arms it by choosing a layer.
 
    Its only in-family caller is ov004:0x020ae5c4, the line rasteriser sitting
@@ -1029,13 +1029,13 @@ extern void MultiCopy_Int(void* a, void* b, int n);
 
 extern "C" {
 extern int data_ov004_020beb64;
-extern int data_ov004_020beb6c;
+extern int sMgTopScreenYOffset;
 }
 }
 }
 
 void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
-{ using s20ae3b4::MultiCopy_Int; using s20ae3b4::_ZN2G213GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv; using s20ae3b4::data_ov004_020beb64; using s20ae3b4::data_ov004_020beb6c; using s20ae3b4::func_02054d88; using s20ae3b4::func_02054ea8; using s20ae3b4::func_02054efc;
+{ using s20ae3b4::MultiCopy_Int; using s20ae3b4::_ZN2G213GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG0CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG1CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG2CharPtrEv; using s20ae3b4::_ZN3G2S13GetBG3CharPtrEv; using s20ae3b4::data_ov004_020beb64; using s20ae3b4::sMgTopScreenYOffset; using s20ae3b4::func_02054d88; using s20ae3b4::func_02054ea8; using s20ae3b4::func_02054efc;
     char *obj = (char *)this;
 
     int oi;
@@ -1072,9 +1072,9 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
                     goto inc;
                 if (xx >= 0x100)
                     goto inc;
-                if (yrow < -0xc0 - data_ov004_020beb6c)
+                if (yrow < -0xc0 - sMgTopScreenYOffset)
                     goto inc;
-                if (yrow < -data_ov004_020beb6c) {
+                if (yrow < -sMgTopScreenYOffset) {
                     if (*(u8*)(obj + 0x68) == 0)
                         goto inc;
                     switch (*(int*)(obj + 0x6c)) {
@@ -1084,7 +1084,7 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
                     case 3: base = func_02054d88(); break;
                     default: return;
                     }
-                    yy += data_ov004_020beb6c + 0xc0;
+                    yy += sMgTopScreenYOffset + 0xc0;
                 } else {
                     if (yrow < 0)
                         goto inc;
@@ -1111,7 +1111,7 @@ void dScMgBase_c::PaintSquare(int cx, int cy, int colour, int size)
     } while (oi < size);
 }
 
-// @symbol func_ov004_020ae5c4
+// @symbol Mg_DrawLine
 namespace s20ae5c4 {
 extern "C" {
 /* Minigame canvas line rasteriser (ov004 0x020ae5c4, 0x294 bytes). Walks a
@@ -1135,7 +1135,7 @@ extern "C" {
  * cmp; testing them in the other order, or each right after its copy, swaps
  * the pair or the flag reuse. */
 
-extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, int y1, int colour, int size)
+extern "C" void Mg_DrawLine(dScMgBase_c *thiz, int x0, int y0, int x1, int y1, int colour, int size)
 {
     int dx, dy, adx, ady, err;
     int yy1;
@@ -1212,13 +1212,13 @@ extern "C" void func_ov004_020ae5c4(dScMgBase_c *thiz, int x0, int y0, int x1, i
 
 #pragma push
 #pragma opt_common_subs off
-// @symbol func_ov004_020ae858
+// @symbol Mg_DrawMenu
 namespace s20ae858 {
 extern "C" {
 extern "C" {
 int func_ov004_020b8f18(void *c);
 int GetGameLanguage(void);
-void func_ov004_020aea30(void *self, int a1, int a2, int a3);
+void Mg_DrawSpriteList(void *self, int a1, int a2, int a3);
 }
 
 extern int *data_ov004_020bc020[];
@@ -1233,7 +1233,7 @@ extern int data_ov006_021346bc;
    is func_02053200 of a pulse that mMenuCursorPhase drives through the
    sin/cos table data_02082214. Nothing is drawn while
    func_ov004_020b8f18 returns nonzero for mTouchOptions. */
-extern "C" void func_ov004_020ae858(dScMgBase_c *scene)
+extern "C" void Mg_DrawMenu(dScMgBase_c *scene)
 {
     int extra[3];
     s16 *tbl[3];
@@ -1287,18 +1287,18 @@ extern "C" void func_ov004_020ae858(dScMgBase_c *scene)
 
             pos = tbl[i];
             do {
-                func_ov004_020aea78((void *)cursor, (void *)(int)pos[0], (void *)(int)pos[1], (void *)pbuf);
+                Mg_DrawSpriteListEntry((void *)cursor, (void *)(int)pos[0], (void *)(int)pos[1], (void *)pbuf);
                 v = *(u16 *)(cursor + 6);
                 cursor += 8;
             } while (v != 0xffff);
 
             pos = tbl[i];
-            func_ov004_020aea30((void *)data_ov006_021346bc, pos[0], pos[1], zero0);
+            Mg_DrawSpriteList((void *)data_ov006_021346bc, pos[0], pos[1], zero0);
         } else {
             s16 *pos = tbl[i];
             char *ep = (char *)extra[i];
-            func_ov004_020aea30((void *)ep, pos[0], pos[1], zero1);
-            func_ov004_020aea30((void *)data_ov006_021346bc, pos[0], pos[1], zero2);
+            Mg_DrawSpriteList((void *)ep, pos[0], pos[1], zero1);
+            Mg_DrawSpriteList((void *)data_ov006_021346bc, pos[0], pos[1], zero2);
         }
     }
 }
@@ -1306,12 +1306,12 @@ extern "C" void func_ov004_020ae858(dScMgBase_c *scene)
 }
 #pragma pop
 
-// @symbol func_ov004_020aea30
+// @symbol Mg_DrawSpriteList
 namespace s20aea30 {
 extern "C" {
-/* Draws an OAM sprite list: calls func_ov004_020aea78 on each 8-byte
+/* Draws an OAM sprite list: calls Mg_DrawSpriteListEntry on each 8-byte
    entry from `self`, up to and including the one whose attr3 is 0xffff. */
-extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
+extern "C" void Mg_DrawSpriteList(void *self, void *actor, void *c2, void *c3)
 {
     void *r8 = self;
     void *r7 = actor;
@@ -1319,7 +1319,7 @@ extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
     void *r5 = c3;
     u16 sentinel = 0xffff;
     do {
-        func_ov004_020aea78(r8, r7, r6, r5);
+        Mg_DrawSpriteListEntry(r8, r7, r6, r5);
         u16 v = *(u16*)((char*)r8 + 6);
         r8 = (char*)r8 + 8;
         if (v == sentinel) break;
@@ -1328,32 +1328,32 @@ extern "C" void func_ov004_020aea30(void *self, void *actor, void *c2, void *c3)
 }
 }
 
-// @symbol func_ov004_020aea78
+// @symbol Mg_DrawSpriteListEntry
 namespace s20aea78 {
 extern "C" {
 struct M { int _00, _01, _10, _11; };
 extern "C" {
-extern void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
+extern void Mg_RenderSpriteOnMtx(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
 }
 
 struct BF { unsigned int lo:10; unsigned int hi:22; };
 struct S { int x; BF y; };
 
-/* Draws one sprite-list entry at (a1, a2) through func_ov004_020b1c68.
+/* Draws one sprite-list entry at (a1, a2) through Mg_RenderSpriteOnMtx.
    When the scene's GetDisplayMode (slot 26) returns 2, the copy
    drawn has 0x200 subtracted from its tile number (attr2 bits 0..9). */
-extern "C" void func_ov004_020aea78(S* self, int a1, int a2, struct M* a3)
+extern "C" void Mg_DrawSpriteListEntry(S* self, int a1, int a2, struct M* a3)
 {
     S v = *self;
-    if (((dScMgBase_c *)data_ov004_020beb68)->GetDisplayMode() == 2) {
+    if (((dScMgBase_c *)gMgScene)->GetDisplayMode() == 2) {
         v.y.lo = (self->y.lo - 0x200) & 0x3ff;
     }
-    func_ov004_020b1c68(&v, a1, a2, 0, -1, a3);
+    Mg_RenderSpriteOnMtx(&v, a1, a2, 0, -1, a3);
 }
 }
 }
 
-// @symbol func_ov004_020aeb24
+// @symbol Mg_UpdateMenu
 namespace s20aeb24 {
 extern "C" {
 extern "C" {
@@ -1374,7 +1374,7 @@ extern dWipe_c data_0209f61c;
    reaches 0, item 0 (and any other value) calls CloseMenu
    (slot 28), item 1 starts a scene fade, and item 2 calls
    func_ov004_020b9220 on the touch options and clears the highlight. */
-void func_ov004_020aeb24(char* c)
+void Mg_UpdateMenu(char* c)
 {
     dScMgBase_c *self = (dScMgBase_c *)c;
     unsigned char idx = gActivePlayerSlot;
@@ -1700,7 +1700,7 @@ void dScMgBase_c::OpenMenu()
     mMenuCursorPhase = 0;
 }
 
-// @symbol func_ov004_020af2f8
+// @symbol Mg_InitBrush
 namespace s20af2f8 {
 extern "C" {
 extern "C" {
@@ -1732,7 +1732,7 @@ extern char data_ov004_020b9468;
    the layer's character data, and loads the 0x20-byte palette
    data_ov004_020b9468 into palette slot `base` on both screens. Any other
    mode returns at once. */
-void func_ov004_020af2f8(char* sb, char en, int mode, int base)
+void Mg_InitBrush(char* sb, char en, int mode, int base)
 {
     volatile unsigned short v0, v1, v2, v3, v4, v5, v6, v7;
     volatile unsigned short w0, w1, w2, w3, w4, w5, w6, w7;
@@ -1849,7 +1849,7 @@ void func_ov004_020af2f8(char* sb, char en, int mode, int base)
 
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol func_ov004_020af5e0
+// @symbol Mg_CopySpriteList
 namespace s20af5e0 {
 extern "C" {
 typedef struct Item {
@@ -1862,7 +1862,7 @@ typedef struct Item {
    attr3 is 0xffff) from `src` to `dst`, adding `add` to each tile number
    (the low ten bits of attr2). At most 0x20 entries: the 32nd is given the
    0xffff terminator. Returns the number of entries written. */
-int func_ov004_020af5e0(Item* src, Item* dst, int add)
+int Mg_CopySpriteList(Item* src, Item* dst, int add)
 {
     int n = 1;
     int i = 0;
@@ -1900,7 +1900,7 @@ void Render(bool draw, OamAttr *obj, int px, int py, int pal, int prio, Matrix2x
 void RenderSub(OamAttr *data, s32 x, s32 y, s32 palette, s32 priority);
 }
 
-/* The sprite wrappers from here to func_ov004_020b0380 share one gate.
+/* The sprite wrappers from here to Mg_RenderSpriteBothMtx share one gate.
  * With no scene they draw nothing. With the menu closed and the scene's
  * GetDisplayMode (slot 26) returning 2 -- the value
  * dScMgD3DBase_c's body returns -- they read the u16 at +0x4664
@@ -1917,11 +1917,11 @@ extern "C" {
 extern "C" {
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, s32, s32, int, int, int, int, int, int);
 void Hud_RenderSprite(void* attr, int x, int y, int palette, int priority){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) != 0) return;
       _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr*)attr, x, y, palette, priority, 0x1000, 0x1000, 0, -1);
       return;
     }
@@ -1932,7 +1932,7 @@ void Hud_RenderSprite(void* attr, int x, int y, int palette, int priority){
 }
 }
 
-// @symbol func_ov004_020af770
+// @symbol Mg_RenderSubSpriteScaled
 namespace s20af770 {
 extern "C" {
 extern "C" {
@@ -1942,13 +1942,13 @@ typedef int Fix12i;
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
     int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
 
-extern "C" int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
+extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return 0;
+            if (*(unsigned short*)((char*)gMgScene + 0x4664) != 0) return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr*)a0, a1, a2, a3, a4, a5, a6);
         }
     }
@@ -1957,15 +1957,15 @@ extern "C" int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a
 }
 }
 
-// @symbol func_ov004_020af868
+// @symbol Mg_RenderSubSpritePalMtx
 namespace s20af868 {
 extern "C" {
-void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5){
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) != 0) return;
       OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
       return;
     }
@@ -1975,16 +1975,16 @@ void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5){
 }
 }
 
-// @symbol func_ov004_020af948
+// @symbol Mg_RenderSubSpriteMtx
 namespace s20af948 {
 extern "C" {
-void func_ov004_020af948(void* a, int b, int c, void* m)
+void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 0) return;
+            if (*(unsigned short*)((char*)gMgScene + 0x4664) != 0) return;
             OAM::Render(false, (OamAttr*)a, b, c, -1, -1, (Matrix2x2*)m);
             return;
         }
@@ -2002,11 +2002,11 @@ void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, s32, s32, int, i
 
 extern "C" void RenderOamMainScreen(int oam, int x, int y, int palette, int priority)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
+            if (*(unsigned short*)((char*)gMgScene + 0x4664) != 1) return;
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (OamAttr*)oam, x, y, palette, priority, 0x1000, 0x1000, 0, -1);
             return;
         }
@@ -2017,7 +2017,7 @@ extern "C" void RenderOamMainScreen(int oam, int x, int y, int palette, int prio
 }
 }
 
-// @symbol func_ov004_020afb20
+// @symbol Mg_RenderMainSpriteScaled
 namespace s20afb20 {
 extern "C" {
 extern "C" {
@@ -2027,13 +2027,13 @@ typedef int Fix12i;
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
     int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
 
-extern "C" int func_ov004_020afb20(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
+extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
-            if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return 0;
+            if (*(unsigned short*)((char*)gMgScene + 0x4664) != 1) return 0;
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, (struct OamAttr*)a0, a1, a2, a3, a4, a5, a6);
         }
     }
@@ -2042,15 +2042,15 @@ extern "C" int func_ov004_020afb20(int a0, int a1, int a2, int a3, int a4, int a
 }
 }
 
-// @symbol func_ov004_020afc18
+// @symbol Mg_RenderMainSpritePalMtx
 namespace s20afc18 {
 extern "C" {
-void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+void Mg_RenderMainSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5){
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) != 1) return;
       OAM::Render(0, (OamAttr*)a0, a1, a2, a3, a4, (Matrix2x2*)a5);
       return;
     }
@@ -2065,10 +2065,10 @@ namespace s20afcf8 {
 extern "C" {
 extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
-        if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) != 1) return;
+        if (*(unsigned short*)((char*)gMgScene + 0x4664) != 1) return;
         OAM::Render(false, (OamAttr*)arg0, (int)arg1, arg2, -1, -1, (Matrix2x2*)arg3);
         return;
     }
@@ -2077,50 +2077,50 @@ extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
 }
 }
 
-// @symbol func_ov004_020afdd0
+// @symbol Mg_RenderSpriteBoth
 namespace s20afdd0 {
 extern "C" {
 extern "C" {
-extern int data_ov004_020beb6c;
+extern int sMgTopScreenYOffset;
 int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
-void func_ov004_020afdd0(void* a0, int a1, int a2, int a3, int a4){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4){
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
-        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, a4, 0x1000, 0x1000, 0, -1);
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) == 1){
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, a3, a4, 0x1000, 0x1000, 0, -1);
         return;
       }
       _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2, a3, a4, 0x1000, 0x1000, 0, -1);
       return;
     }
   }
-  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, a4, 0x1000, 0x1000, 0, -1);
+  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, a3, a4, 0x1000, 0x1000, 0, -1);
   OAM::RenderSub((OamAttr*)a0, a1, a2, a3, a4);
 }
 }
 }
 }
 
-// @symbol func_ov004_020aff38
+// @symbol Mg_RenderSpriteBothScaled
 namespace s20aff38 {
 extern "C" {
 extern "C" {
 struct OamAttr;
-extern int data_ov004_020beb6c;
+extern int sMgTopScreenYOffset;
 }
 typedef int Fix12i;
 extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
     int show, struct OamAttr* attr, int a, int b, int c, int d, Fix12i e, int f);
 
-extern "C" int func_ov004_020aff38(struct OamAttr* a0, int a1, int a2, int a3, int a4, Fix12i a5, int a6)
+extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr* a0, int a1, int a2, int a3, int a4, Fix12i a5, int a6)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
-        if (*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1) {
-            int hp = data_ov004_020beb6c;
+        if (*(unsigned short*)((char*)gMgScene + 0x4664) == 1) {
+            int hp = sMgTopScreenYOffset;
             if (a2 >= -0x100 - hp && a2 < -hp) {
                 return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4, a5, a6);
             }
@@ -2129,7 +2129,7 @@ extern "C" int func_ov004_020aff38(struct OamAttr* a0, int a1, int a2, int a3, i
             }
         }
     } else {
-        int hp = data_ov004_020beb6c;
+        int hp = sMgTopScreenYOffset;
         if (a2 >= -0x100 - hp && a2 < -hp) {
             return _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, a0, a1, a2 + 0xc0 + hp, a3, a4, a5, a6);
         }
@@ -2146,92 +2146,92 @@ extern "C" int func_ov004_020aff38(struct OamAttr* a0, int a1, int a2, int a3, i
 namespace s20b0104 {
 extern "C" {
 extern "C" {
-extern int data_ov004_020beb6c;
+extern int sMgTopScreenYOffset;
 void RenderOamBothScreens(void* attr, int x, int y, int palette, int priority, void* mtx){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
-        OAM::Render(false, (OamAttr*)attr, x, y + 0xc0 + data_ov004_020beb6c, palette, priority, (Matrix2x2*)mtx);
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) == 1){
+        OAM::Render(false, (OamAttr*)attr, x, y + 0xc0 + sMgTopScreenYOffset, palette, priority, (Matrix2x2*)mtx);
         return;
       }
       OAM::Render(false, (OamAttr*)attr, x, y, palette, priority, (Matrix2x2*)mtx);
       return;
     }
   }
-  OAM::Render(false, (OamAttr*)attr, x, y + 0xc0 + data_ov004_020beb6c, palette, priority, (Matrix2x2*)mtx);
+  OAM::Render(false, (OamAttr*)attr, x, y + 0xc0 + sMgTopScreenYOffset, palette, priority, (Matrix2x2*)mtx);
   OAM::Render(true, (OamAttr*)attr, x, y, palette, priority, (Matrix2x2*)mtx);
 }
 }
 }
 }
 
-// @symbol func_ov004_020b023c
+// @symbol Mg_RenderSpriteBothPalMtx
 namespace s20b023c {
 extern "C" {
 extern "C" {
-extern int data_ov004_020beb6c;
-void func_ov004_020b023c(void* a0, int a1, int a2, int a3, void* a4){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+extern int sMgTopScreenYOffset;
+void Mg_RenderSpriteBothPalMtx(void* a0, int a1, int a2, int a3, void* a4){
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
-        OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, (Matrix2x2*)a4);
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) == 1){
+        OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, a3, -1, (Matrix2x2*)a4);
         return;
       }
       OAM::Render(0, (OamAttr*)a0, a1, a2, a3, -1, (Matrix2x2*)a4);
       return;
     }
   }
-  OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, a3, -1, (Matrix2x2*)a4);
+  OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, a3, -1, (Matrix2x2*)a4);
   OAM::Render(1, (OamAttr*)a0, a1, a2, a3, -1, (Matrix2x2*)a4);
 }
 }
 }
 }
 
-// @symbol func_ov004_020b0380
+// @symbol Mg_RenderSpriteBothMtx
 namespace s20b0380 {
 extern "C" {
 extern "C" {
-extern int data_ov004_020beb6c;
-void func_ov004_020b0380(void* a0, int a1, int a2, void* a3){
-  dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+extern int sMgTopScreenYOffset;
+void Mg_RenderSpriteBothMtx(void* a0, int a1, int a2, void* a3){
+  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
-      if(*(unsigned short*)((char*)data_ov004_020beb68 + 0x4664) == 1){
-        OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, (Matrix2x2*)a3);
+      if(*(unsigned short*)((char*)gMgScene + 0x4664) == 1){
+        OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, -1, -1, (Matrix2x2*)a3);
         return;
       }
       OAM::Render(0, (OamAttr*)a0, a1, a2, -1, -1, (Matrix2x2*)a3);
       return;
     }
   }
-  OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + data_ov004_020beb6c, -1, -1, (Matrix2x2*)a3);
+  OAM::Render(0, (OamAttr*)a0, a1, a2 + 0xc0 + sMgTopScreenYOffset, -1, -1, (Matrix2x2*)a3);
   OAM::Render(1, (OamAttr*)a0, a1, a2, -1, -1, (Matrix2x2*)a3);
 }
 }
 }
 }
 
-// @symbol func_ov004_020b04c0
+// @symbol Mg_GetTopScreenYOffset
 namespace s20b04c0 {
 extern "C" {
-extern int data_ov004_020beb6c[];
-/* Get and set data_ov004_020beb6c: the offset PaintSquare and the sprite
+extern int sMgTopScreenYOffset[];
+/* Get and set sMgTopScreenYOffset: the offset PaintSquare and the sprite
    wrappers above add, with 0xc0, to y on their upper-screen path. */
-int func_ov004_020b04c0(void) { return data_ov004_020beb6c[0]; }
+int Mg_GetTopScreenYOffset(void) { return sMgTopScreenYOffset[0]; }
 }
 }
 
-// @symbol func_ov004_020b04d0
+// @symbol Mg_SetTopScreenYOffset
 namespace s20b04d0 {
 extern "C" {
-extern int data_ov004_020beb6c[];
-void func_ov004_020b04d0(int v) { data_ov004_020beb6c[0] = v; }
+extern int sMgTopScreenYOffset[];
+void Mg_SetTopScreenYOffset(int v) { sMgTopScreenYOffset[0] = v; }
 }
 }
 
@@ -2275,18 +2275,18 @@ int dScMgBase_c::BeforeRender()
         return 0;
 
     if (mMenuOpen != 0) {
-        func_ov004_020ae858(this);
+        Mg_DrawMenu(this);
         return 0;
     }
 
     if (mStateController.unk_024 == 0) {
-        p = data_ov004_020bf648;
+        p = gMgBanners;
         for (i = 0; i < 3; i++, p += 0x134) {
             if (*(int *)(p + 0x20) == 0x1d) continue;
             if (*(s16 *)(p + 0x30) != 0) continue;
             func_ov004_020b31b4(p);
         }
-        p2 = data_ov004_020bf648;
+        p2 = gMgBanners;
         for (i2 = 0; i2 < 3; i2++, p2 += 0x134) {
             if (*(int *)(p2 + 0x20) == 0x1d) continue;
             if (*(s16 *)(p2 + 0x30) == 0) continue;
@@ -2295,13 +2295,13 @@ int dScMgBase_c::BeforeRender()
         mStateController.Render();
     }
 
-    p = (char *)data_ov004_020bebe8;
+    p = (char *)sMgFxPool;
     for (j = 0; j < 0x40; j++, p += 0x20) {
-        if (data_ov004_020bebe8[j].mTimer != 0)
-            func_ov004_020add88(p);
+        if (sMgFxPool[j].mTimer != 0)
+            Mg_DrawFx(p);
     }
 
-    func_ov004_020b0de0(this);
+    Mg_DrawPrompt(this);
     return 1;
 }
 
@@ -2340,7 +2340,7 @@ int dScMgBase_c::BeforeBehavior()
     }
 
     if (mMenuOpen != 0) {
-        func_ov004_020aeb24((char *)this);
+        Mg_UpdateMenu((char *)this);
         return 0;
     }
     if (unk_462c != 0)
@@ -2350,7 +2350,7 @@ int dScMgBase_c::BeforeBehavior()
         int i;
         char *g;
         mStateController.Behavior();
-        g = data_ov004_020bf648;
+        g = gMgBanners;
         for (i = 0; i < 3; i++) {
             if (*(int *)(g + 0x20) != 0x1d)
                 func_ov004_020b321c(g);
@@ -2360,11 +2360,11 @@ int dScMgBase_c::BeforeBehavior()
 
     {
         int j;
-        char *p = (char *)data_ov004_020bebe8;
-        Ent *base = data_ov004_020bebe8;
+        char *p = (char *)sMgFxPool;
+        Ent *base = sMgFxPool;
         for (j = 0; j < 0x40; j++) {
             if (base[j].mTimer != 0)
-                func_ov004_020adf2c(p);
+                Mg_UpdateFx(p);
             p += 0x20;
         }
     }
@@ -2387,14 +2387,14 @@ int dScMgBase_c::BeforeBehavior()
 void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
 {
     if (vfSuccess == 2) {
-        if (((int *)data_0209b308)[4] == 0)
-            func_ov004_020ad90c();
+        if (((int *)gMgMenuRow)[4] == 0)
+            Mg_CommitRecords();
         data_0209d4a8 = 0;
-        data_ov004_020beb74.mScene = 0;
+        sMgGraphCallback.mScene = 0;
         FreeGfxSlotsById(0x1d);
-        if (data_ov004_020beb60 != 0) {
-            func_0203cbc0(data_ov004_020beb60);
-            data_ov004_020beb60 = 0;
+        if (sMgWorkBuffer != 0) {
+            func_0203cbc0(sMgWorkBuffer);
+            sMgWorkBuffer = 0;
         }
         if (mMenuOpen != 0) {
             func_02012e1c();
@@ -2411,7 +2411,7 @@ void dScMgBase_c::AfterInitResources(u32 vfSuccess)
 {
     InitMainScreenBg();
     LoadFont(2);
-    func_ov004_020ae330();
+    Mg_InitMusic();
     dScene_c::AfterInitResources(vfSuccess);
 }
 
@@ -2426,11 +2426,11 @@ bool dScMgBase_c::BeforeInitResources()
         func_02019028();
     else
         Enable3dEngines();
-    unk_0c8 = *(int*)(data_0209b308 + 0x28);
-    if (data_ov004_020beb60 == 0)
-        data_ov004_020beb60 = _ZN6Memory13operator_new2Ej(0x4000);
-    if (data_ov004_020beb68 != 0)
-        *(int*)((char*)data_ov004_020beb68 + 0xb0) = 0;
+    unk_0c8 = *(int*)(gMgMenuRow + 0x28);
+    if (sMgWorkBuffer == 0)
+        sMgWorkBuffer = _ZN6Memory13operator_new2Ej(0x4000);
+    if (gMgScene != 0)
+        *(int*)((char*)gMgScene + 0xb0) = 0;
     mHudScore = 0;
     unk_0b8 = 0;
     unk_465c = 0;
@@ -2445,32 +2445,32 @@ bool dScMgBase_c::BeforeInitResources()
     return 1;
 }
 
-// @symbol func_ov004_020b0a38
+// @symbol Mg_ResumeSharedState
 namespace s20b0a38 {
 extern "C" {
 /* Clears mStateController.unk_024, so BeforeBehavior and BeforeRender
    step and draw the UI state controller again. */
-void func_ov004_020b0a38(void)
+void Mg_ResumeSharedState(void)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene == 0) return;
     scene->mStateController.unk_024 = 0;
 }
 }
 }
 
-// @symbol func_ov004_020b0a54
+// @symbol Mg_SetSharedState
 namespace s20b0a54 {
 extern "C" {
 /* Sets the UI state controller's state and clears unk_060. The singleton
    is read again after SetState, as the ROM does. */
-extern "C" void func_ov004_020b0a54(s32 state)
+extern "C" void Mg_SetSharedState(s32 state)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (!scene)
         return;
     scene->mStateController.SetState(state);
-    ((dScMgBase_c *)data_ov004_020beb68)->unk_060 = 0;
+    ((dScMgBase_c *)gMgScene)->unk_060 = 0;
 }
 }
 }
@@ -2485,9 +2485,9 @@ struct E
   int f20;
   char pad2[0x134 - 0x24];
 };
-extern struct E data_ov004_020bf648[];
+extern struct E gMgBanners[];
 /* Calls func_ov004_020b3194 on each of the three 0x134-byte records at
-   data_ov004_020bf648 whose word at +0x20 equals `arg` -- or, for 0x1d,
+   gMgBanners whose word at +0x20 equals `arg` -- or, for 0x1d,
    on each whose word is not 0x1d. */
 void FreeGfxSlotsById(int arg)
 {
@@ -2496,7 +2496,7 @@ void FreeGfxSlotsById(int arg)
   i = arg;
   if (i == 0x1d)
   {
-    p = data_ov004_020bf648;
+    p = gMgBanners;
     for (i = 0; i < 3; i++)
     {
       if (p->f20 != 0x1d)
@@ -2509,7 +2509,7 @@ void FreeGfxSlotsById(int arg)
   }
   else
   {
-    p = data_ov004_020bf648;
+    p = gMgBanners;
     for (i = 0; i < 3; i++)
     {
       if (arg == p->f20)
@@ -2524,7 +2524,7 @@ void FreeGfxSlotsById(int arg)
 }
 }
 
-// @symbol func_ov004_020b0b1c
+// @symbol Mg_CheckBannerButton
 namespace s20b0b1c {
 extern "C" {
 
@@ -2543,7 +2543,7 @@ struct Obj004 {
     char pad34[0x100];
 };
 
-extern struct Obj004 data_ov004_020bf648[3];
+extern struct Obj004 gMgBanners[3];
 extern int data_ov004_020bc150;
 
 extern void func_ov004_020b422c(struct Obj004 *o);
@@ -2551,7 +2551,7 @@ extern int func_ov004_020b40c0(struct Obj004 *o);
 
 // The ROM scales idx into the addressing mode here, which only the 4-byte-record view of the lane reproduces.
 #define TOUCH_REC(lane) ((unsigned char (*)[4])(lane))
-int func_ov004_020b0b1c(int arg) {
+int Mg_CheckBannerButton(int arg) {
     int idx = gActivePlayerSlot;
     int flag = 0;
     int i;
@@ -2561,7 +2561,7 @@ int func_ov004_020b0b1c(int arg) {
     }
 
     if (flag) {
-        struct Obj004 *o = data_ov004_020bf648;
+        struct Obj004 *o = gMgBanners;
         int cx = TOUCH_REC(gTouchX)[idx][0];
         int cy = TOUCH_REC(gTouchY)[idx][0];
         for (i = 0; i < 3; i++, o++) {
@@ -2578,7 +2578,7 @@ int func_ov004_020b0b1c(int arg) {
                     if (data_ov004_020bc150 != 0) {
                         func_ov004_020b422c(o);
                         if ((unsigned int)(arg - 1) <= 1) {
-                            ((dScMgBase_c *)data_ov004_020beb68)->unk_4630 = 1;
+                            ((dScMgBase_c *)gMgScene)->unk_4630 = 1;
                         }
                     }
                 }
@@ -2586,7 +2586,7 @@ int func_ov004_020b0b1c(int arg) {
         }
     } else {
         int j;
-        struct Obj004 *o = data_ov004_020bf648;
+        struct Obj004 *o = gMgBanners;
         for (j = 0; j < 3; j++, o++) {
             if (arg == o->f20) {
                 if (func_ov004_020b40c0(o) != 0) {
@@ -2605,20 +2605,20 @@ int func_ov004_020b0b1c(int arg) {
 }
 }
 
-// @symbol func_ov004_020b0cac
+// @symbol Mg_ShowBanner
 namespace s20b0cac {
 extern "C" {
 struct Elem { char pad[0x134]; };
-extern struct Elem data_ov004_020bf648[];
+extern struct Elem gMgBanners[];
 extern void func_ov004_020b3278(struct Elem *e, int c, int a1, int a2, int a3, int s1, short s2);
 /* Hands its arguments to func_ov004_020b3278 for the first of the three
-   records at data_ov004_020bf648 whose word at +0x20 is 0x1d; does nothing
+   records at gMgBanners whose word at +0x20 is 0x1d; does nothing
    when none is. */
-void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6) {
+void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6) {
     int i;
     for (i = 0; i < 3; i++) {
-        if (*(int*)((char*)&data_ov004_020bf648[i] + 0x20) == 0x1d) {
-            func_ov004_020b3278(&data_ov004_020bf648[i], c, a1, a2, a3, arg5, arg6);
+        if (*(int*)((char*)&gMgBanners[i] + 0x20) == 0x1d) {
+            func_ov004_020b3278(&gMgBanners[i], c, a1, a2, a3, arg5, arg6);
             return;
         }
     }
@@ -2626,16 +2626,16 @@ void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6) {
 }
 }
 
-// @symbol func_ov004_020b0d30
+// @symbol Mg_ResetOverlays
 namespace s20b0d30 {
 extern "C" {
 extern char data_ov004_020bf3e8[];
 
-void func_ov004_020b0d30(void) {
+void Mg_ResetOverlays(void) {
     FreeGfxSlotsById(0x1d);
     int i = 0;
     do {
-        data_ov004_020bebe8[i].mTimer = 0;
+        sMgFxPool[i].mTimer = 0;
         i++;
     } while (i < 0x40);
     int j = 0;
@@ -2648,7 +2648,7 @@ void func_ov004_020b0d30(void) {
 }
 }
 
-// @symbol func_ov004_020b0d8c
+// @symbol Mg_DrawBlinkSprite
 namespace s20b0d8c {
 extern "C" {
 extern s32 GetGameLanguage(void);
@@ -2656,18 +2656,18 @@ extern void Hud_RenderSprite(void *fn, s32 a, s32 b, s32 r3arg, s32 stack_arg);
 /* Draws per-language sprite word 0x11 or 0x12 at (arg1, arg2): word 0x11
    for the first 20 frames of the scene's 40-frame mFrameCounter cycle,
    word 0x12 for the rest. */
-void func_ov004_020b0d8c(void *c, s32 arg1, s32 arg2)
+void Mg_DrawBlinkSprite(void *c, s32 arg1, s32 arg2)
 {
     s32 idx1 = ((dScMgBase_c *)c)->mFrameCounter;
     s32 r4 = (idx1 < 0x14) ? 0x11 : 0x12;
     s32 idx2 = GetGameLanguage();
-    int *table = data_ov004_020bbfa8[idx2];
+    int *table = sMgSpriteTables[idx2];
     Hud_RenderSprite((void *)table[r4], arg1, arg2, -1, -1);
 }
 }
 }
 
-// @symbol func_ov004_020b0de0
+// @symbol Mg_DrawPrompt
 namespace s20b0de0 {
 extern "C" {
 s32 GetGameLanguage(void);
@@ -2676,7 +2676,7 @@ void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 /* Draws the per-language prompt sprite at (0xc0, 0xb0) while mPromptEnabled
    is set: blinking (shown for the first 0x18 frames of each 0x30-frame
    mPromptBlinkTimer cycle) for four cycles, then every frame. */
-void func_ov004_020b0de0(char* c)
+void Mg_DrawPrompt(char* c)
 {
     dScMgBase_c *self = (dScMgBase_c *)c;
     if (self->mPromptEnabled == 0)
@@ -2692,13 +2692,13 @@ void func_ov004_020b0de0(char* c)
     }
     {
         int i = GetGameLanguage();
-        RenderOamMainScreen(data_ov004_020bbfa8[i][10], 0xc0, 0xb0, -1, -1);
+        RenderOamMainScreen(sMgSpriteTables[i][10], 0xc0, 0xb0, -1, -1);
     }
 }
 }
 }
 
-// @symbol func_ov004_020b0e84
+// @symbol Mg_DrawTally
 namespace s20b0e84 {
 extern "C" {
 extern "C" void func_02012790(int);
@@ -2716,7 +2716,7 @@ static inline int sdiv2(int e) {
 
 /* Draws a tally of `sb` in a column at x 0xf0, upward from y 0xa8: one
    icon (per-language sprite word 9) per unit, and from five upward the
-   whole fives as a number (func_ov004_020b1ea4) beside sprite word 11 with
+   whole fives as a number (Mg_DrawNumber) beside sprite word 11 with
    only the remainder as icons. unk_050 holds the last tally. A rise plays
    sound 0x1bb (func_02012790) and starts the unk_054 counter -- one step a
    frame, two when slot 26 returns 2 -- while the newest icon blinks with a
@@ -2724,7 +2724,7 @@ static inline int sdiv2(int e) {
    stops it. When the tally reaches a multiple of
    five, the icons close up as unk_054 runs from mTimeLimit to
    mTimeLimit + 0x20, with sound 0x1ba as they start. */
-extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
+extern "C" void Mg_DrawTally(dScMgBase_c *sl, int sb) {
     int *r8;
     int r7;
     int i;
@@ -2748,7 +2748,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
         }
     }
 
-    r8 = data_ov004_020bbfa8[GetGameLanguage()];
+    r8 = sMgSpriteTables[GetGameLanguage()];
     r7 = 0xa8;
 
     if (sb < 5) {
@@ -2773,7 +2773,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
     if (sb == 5) {
         int u = sl->unk_054;
         if (u == 0) {
-            func_ov004_020b1ea4(0xf0, r7, 5, 1, 0, 0, 0x14);
+            Mg_DrawNumber(0xf0, r7, 5, 1, 0, 0, 0x14);
             RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
         } else if (u < sl->mTimeLimit) {
             r7 -= 8;
@@ -2819,10 +2819,10 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
         if (rem == 0) {
             int u = sl->unk_054;
             if (u == 0) {
-                func_ov004_020b1ea4(0xf0, r7, sb, 1, 0, 0, 0x14);
+                Mg_DrawNumber(0xf0, r7, sb, 1, 0, 0, 0x14);
                 RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
             } else if (u < sl->mTimeLimit) {
-                func_ov004_020b1ea4(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
+                Mg_DrawNumber(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
                 RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
                 r7 -= 0x18;
                 i = 0;
@@ -2836,7 +2836,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
                 } while (i < 5);
             } else {
                 int d;
-                func_ov004_020b1ea4(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
+                Mg_DrawNumber(0xf0, r7, sb - 5, 1, 0, 0, 0x14);
                 RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
                 d = (sl->mTimeLimit + 0x20) - sl->unk_054;
                 r7 -= sdiv4(d);
@@ -2865,7 +2865,7 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
 
         {
             int base5 = (sb / 5) * 5;
-            func_ov004_020b1ea4(0xf0, r7, base5, 1, 0, 0, 0x14);
+            Mg_DrawNumber(0xf0, r7, base5, 1, 0, 0, 0x14);
         }
         RenderOamMainScreen(r8[11], 0xf0, r7, -1, -1);
         r7 -= 0x18;
@@ -2889,22 +2889,22 @@ extern "C" void func_ov004_020b0e84(dScMgBase_c *sl, int sb) {
 }
 }
 
-// @symbol func_ov004_020b14f0
+// @symbol Mg_DrawRecordTable
 namespace s20b14f0 {
 extern "C" {
-extern int func_ov004_020ad6f4(void* self, int a);
-extern int func_ov004_020adc3c(void* self);
+extern int Mg_GetLastRecordRank(void* self, int a);
+extern int Mg_GetSaveTable(void* self);
 extern int func_02013580(int a, int b);
-extern void func_ov004_020b1710(void* self, int a1, int a2, int a3);
+extern void Mg_DrawRecordRow(void* self, int a1, int a2, int a3);
 
 /* Draws the five saved records in rows 0x18 apart from (0xa8, 0x28),
    revealing one more row every 0x14 frames as unk_060 counts up. unk_060
    then loops over 0x64..0x8b, and the session best (unk_4658) blinks on
    that 40-frame loop: in the row of the rank it took (unk_064, read
-   through func_ov004_020ad6f4), or in a row below the five when it placed
-   nowhere. func_ov004_020ad6f4 takes only the scene; the second argument
+   through Mg_GetLastRecordRank), or in a row below the five when it placed
+   nowhere. Mg_GetLastRecordRank takes only the scene; the second argument
    passed here is unused. */
-void func_ov004_020b14f0(char* self)
+void Mg_DrawRecordTable(char* self)
 {
     dScMgBase_c *scene = (dScMgBase_c *)self;
     int a2 = 0x28;
@@ -2917,7 +2917,7 @@ void func_ov004_020b14f0(char* self)
     if (scene->unk_060 >= 0x8c)
         scene->unk_060 = 0x64;
 
-    n = func_ov004_020ad6f4(self, scene->unk_4658);
+    n = Mg_GetLastRecordRank(self, scene->unk_4658);
     if (n < 0)
         goto neg;
 
@@ -2927,7 +2927,7 @@ void func_ov004_020b14f0(char* self)
         do
         {
             if (scene->unk_060 >= i * 0x14)
-                func_ov004_020b1710(self, 0xa8, a2, func_02013580(func_ov004_020adc3c(self), i));
+                Mg_DrawRecordRow(self, 0xa8, a2, func_02013580(Mg_GetSaveTable(self), i));
             a2 += 0x18;
             i++;
         } while (i < n);
@@ -2936,9 +2936,9 @@ void func_ov004_020b14f0(char* self)
     if (scene->unk_060 >= n * 0x14)
     {
         if (scene->unk_060 < 0x64 || scene->unk_060 - 0x64 < 0x14)
-            func_ov004_020b1710(self, 0xa8, a2, scene->unk_4658);
+            Mg_DrawRecordRow(self, 0xa8, a2, scene->unk_4658);
         else
-            func_ov004_020b1710(self, 0xa8, a2, -1);
+            Mg_DrawRecordRow(self, 0xa8, a2, -1);
     }
 
     a2 += 0x18;
@@ -2948,7 +2948,7 @@ void func_ov004_020b14f0(char* self)
     do
     {
         if (scene->unk_060 >= j * 0x14)
-            func_ov004_020b1710(self, 0xa8, a2, func_02013580(func_ov004_020adc3c(self), j));
+            Mg_DrawRecordRow(self, 0xa8, a2, func_02013580(Mg_GetSaveTable(self), j));
         a2 += 0x18;
         j++;
     } while (j < 5);
@@ -2959,7 +2959,7 @@ neg:
     do
     {
         if (scene->unk_060 >= k * 0x14)
-            func_ov004_020b1710(self, 0xa8, a2, func_02013580(func_ov004_020adc3c(self), k));
+            Mg_DrawRecordRow(self, 0xa8, a2, func_02013580(Mg_GetSaveTable(self), k));
         a2 += 0x18;
         k++;
     } while (k < 5);
@@ -2968,32 +2968,32 @@ neg:
         return;
 
     if (scene->unk_060 - 0x64 < 0x14)
-        func_ov004_020b1710(self, 0xa8, a2 + 0x10, scene->unk_4658);
+        Mg_DrawRecordRow(self, 0xa8, a2 + 0x10, scene->unk_4658);
     else
-        func_ov004_020b1710(self, 0xa8, a2 + 0x10, -1);
+        Mg_DrawRecordRow(self, 0xa8, a2 + 0x10, -1);
 }
 }
 }
 
-// @symbol func_ov004_020b1710
+// @symbol Mg_DrawRecordRow
 namespace s20b1710 {
 extern "C" {
 extern int GetGameLanguage(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 
-extern int data_0209b308[];
+extern int gMgMenuRow[];
 
 /* Draws one record row at y. In scoring mode 5 (word 2 of the menu row)
    `val` is a time in frames, drawn as seconds, sprite word 7, tenths and
    hundredths ending at x, and a negative val draws nothing. Otherwise
    modes 1, 2 and 4 draw two label sprites at x 0x58 and 0x68 first; mode
-   3 then draws val 4 px left through func_ov004_020b1ea4, every other mode
-   through func_ov004_020b2444. A negative val draws no number. */
-void func_ov004_020b1710(int a0, int x, int y, int val)
+   3 then draws val 4 px left through Mg_DrawNumber, every other mode
+   through Mg_DrawBigNumber. A negative val draws no number. */
+void Mg_DrawRecordRow(int a0, int x, int y, int val)
 {
     int idx = GetGameLanguage();
-    int mode = data_0209b308[2];
-    int *tbl = data_ov004_020bbfa8[idx];
+    int mode = gMgMenuRow[2];
+    int *tbl = sMgSpriteTables[idx];
     int flag = 0;
 
     if (mode == 5) {
@@ -3003,16 +3003,16 @@ void func_ov004_020b1710(int a0, int x, int y, int val)
         if (val < 0)
             return;
         major = val / 60;
-        func_ov004_020b1ea4(x - 0x18, y, major, flag, -1, 1, 0xa);
+        Mg_DrawNumber(x - 0x18, y, major, flag, -1, 1, 0xa);
         Hud_RenderSprite((void *)tbl[7], x - 0x10, y, -1, -1);
 
         rem = val % 60;
         pct = rem * 100;
-        func_ov004_020b1ea4(x - 8, y, pct / 600, 0, -1, 1, 0xa);
+        Mg_DrawNumber(x - 8, y, pct / 600, 0, -1, 1, 0xa);
 
         rem = val % 60;
         pct = rem * 100 / 60;
-        func_ov004_020b1ea4(x, y, pct % 10, 0, -1, 1, 0xa);
+        Mg_DrawNumber(x, y, pct % 10, 0, -1, 1, 0xa);
         return;
     }
 
@@ -3043,96 +3043,96 @@ void func_ov004_020b1710(int a0, int x, int y, int val)
     if (val < 0)
         return;
     if (flag == 1)
-        func_ov004_020b1ea4(x, y, val, 0, -1, 1, 0xa);
+        Mg_DrawNumber(x, y, val, 0, -1, 1, 0xa);
     else
-        func_ov004_020b2444(x, y, val, 0, -1, 1, 0);
+        Mg_DrawBigNumber(x, y, val, 0, -1, 1, 0);
 }
 }
 }
 
-// @symbol func_ov004_020b19f0
+// @symbol Mg_DrawTopLeftCounter
 namespace s20b19f0 {
 extern "C" {
 s32 GetGameLanguage(void);
 int RenderOamMainScreen(int a, int b, int c, int d, int e);
-int func_ov004_020b1ea4(int a, int b, void* c, int d, int e, int f, int g);
+int Mg_DrawNumber(int a, int b, void* c, int d, int e, int f, int g);
 /* Draws sprite word 8 at (0x20, 0xc) and `value`, starting at x
-   0x48, through func_ov004_020b1ea4. */
-int func_ov004_020b19f0(void* value){
+   0x48, through Mg_DrawNumber. */
+int Mg_DrawTopLeftCounter(void* value){
   int i = GetGameLanguage();
-  RenderOamMainScreen(data_ov004_020bbfa8[i][8], 0x20, 0xc, -1, -1);
-  return func_ov004_020b1ea4(0x48, 0xc, value, 1, -1, 2, 0xa);
+  RenderOamMainScreen(sMgSpriteTables[i][8], 0x20, 0xc, -1, -1);
+  return Mg_DrawNumber(0x48, 0xc, value, 1, -1, 2, 0xa);
 }
 }
 }
 
-// @symbol func_ov004_020b1a5c
+// @symbol Mg_DrawTopRightCounter
 namespace s20b1a5c {
 extern "C" {
 s32 GetGameLanguage(void);
 int RenderOamMainScreen(int a, int b, int c, int d, int e);
-int func_ov004_020b1ea4(int a, int b, int c, int d, int e, int f, int g);
+int Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
 extern int data_ov004_020b944c[];
 /* Draws a0, capped at data_ov004_020b944c[a1], right-aligned at (0xf4,
    0xc), and sprite word 4 to its left at an x that a1 sets. */
-void func_ov004_020b1a5c(int a0, int a1){
+void Mg_DrawTopRightCounter(int a0, int a1){
   int lim = data_ov004_020b944c[a1];
   int c = a0;
   int r4 = 0xf4;
   int i;
   if (c >= lim) c = lim;
-  func_ov004_020b1ea4(0xf4, 0xc, c, 1, -1, 1, 0xa);
+  Mg_DrawNumber(0xf4, 0xc, c, 1, -1, 1, 0xa);
   r4 = r4 - (0x44 - (6 - a1) * 8);
   i = GetGameLanguage();
-  RenderOamMainScreen(data_ov004_020bbfa8[i][4], r4, 0xc, -1, -1);
+  RenderOamMainScreen(sMgSpriteTables[i][4], r4, 0xc, -1, -1);
 }
 }
 }
 
-// @symbol func_ov004_020b1aec
+// @symbol Mg_GetRowWord12
 namespace s20b1aec {
 extern "C" {
 /* The scene's unk_0bc; 0 with no scene. */
-int func_ov004_020b1aec(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)data_ov004_020beb68;
+int Mg_GetRowWord12(void) {
+    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
     if (scene != 0) return scene->unk_0bc;
     return 0;
 }
 }
 }
 
-// @symbol func_ov004_020b1b08
+// @symbol Mg_LoseLives
 namespace s20b1b08 {
 extern "C" {
-extern void func_ov004_020b1b78(void *c, int val);
-/* Subtracts `amount` from the scene's unk_0a8 (func_ov004_020b1b78). Most
+extern void Mg_SubLives(void *c, int val);
+/* Subtracts `amount` from the scene's unk_0a8 (Mg_SubLives). Most
    callers declare the amount as a void *, so it stays one here. */
-void func_ov004_020b1b08(void *amount) {
-    void *v = data_ov004_020beb68;
+void Mg_LoseLives(void *amount) {
+    void *v = gMgScene;
     if (v == 0) return;
-    func_ov004_020b1b78(v, (int)amount);
+    Mg_SubLives(v, (int)amount);
 }
 }
 }
 
-// @symbol func_ov004_020b1b40
+// @symbol Mg_GainLives
 namespace s20b1b40 {
 extern "C" {
-extern void func_ov004_020b1ba0(void *c, s32 delta);
-/* Adds `amount` to the scene's unk_0a8 (func_ov004_020b1ba0). */
-void func_ov004_020b1b40(void *amount) {
-    void *v = data_ov004_020beb68;
+extern void Mg_AddLives(void *c, s32 delta);
+/* Adds `amount` to the scene's unk_0a8 (Mg_AddLives). */
+void Mg_GainLives(void *amount) {
+    void *v = gMgScene;
     if (v == 0) return;
-    func_ov004_020b1ba0(v, (s32)amount);
+    Mg_AddLives(v, (s32)amount);
 }
 }
 }
 
-// @symbol func_ov004_020b1b78
+// @symbol Mg_SubLives
 namespace s20b1b78 {
 extern "C" {
 /* unk_0a8 -= val, clamped to 0..9999. */
-void func_ov004_020b1b78(void* c, int val) {
+void Mg_SubLives(void* c, int val) {
     dScMgBase_c *scene = (dScMgBase_c *)c;
     int r2 = scene->unk_0a8;
     r2 -= val;
@@ -3143,11 +3143,11 @@ void func_ov004_020b1b78(void* c, int val) {
 }
 }
 
-// @symbol func_ov004_020b1ba0
+// @symbol Mg_AddLives
 namespace s20b1ba0 {
 extern "C" {
 /* unk_0a8 += delta, clamped to 0..9999. */
-void func_ov004_020b1ba0(void *c, s32 delta)
+void Mg_AddLives(void *c, s32 delta)
 {
     dScMgBase_c *scene = (dScMgBase_c *)c;
     s32 v = scene->unk_0a8 + delta;
@@ -3158,137 +3158,137 @@ void func_ov004_020b1ba0(void *c, s32 delta)
 }
 }
 
-// @symbol func_ov004_020b1bc8
+// @symbol Mg_DrawLives
 namespace s20b1bc8 {
 extern "C" {
-extern void func_ov004_020b1de8(int r0, int r1, int r2, int r3);
-/* Draws sprite word 2 at (a1, a2) on wrapper a3 (func_ov004_020b1de8),
+extern void Mg_DrawLivesIcon(int r0, int r1, int r2, int r3);
+/* Draws sprite word 2 at (a1, a2) on wrapper a3 (Mg_DrawLivesIcon),
    then the scene's unk_0ac beside it: below 100 through
-   func_ov004_020b2444, otherwise through func_ov004_020b1ea4. */
-void func_ov004_020b1bc8(char *a0, int a1, int a2, int a3)
+   Mg_DrawBigNumber, otherwise through Mg_DrawNumber. */
+void Mg_DrawLives(char *a0, int a1, int a2, int a3)
 {
-    func_ov004_020b1de8(a1, a2, a3, -1);
+    Mg_DrawLivesIcon(a1, a2, a3, -1);
     int v = ((dScMgBase_c *)a0)->unk_0ac;
     if (v < 0x64) {
-        func_ov004_020b2444(a1+0x12, a2, v, a3, -1, 2, 0);
+        Mg_DrawBigNumber(a1+0x12, a2, v, a3, -1, 2, 0);
     } else {
-        func_ov004_020b1ea4(a1+0xc, a2, v, a3, -1, 2, 0x32);
+        Mg_DrawNumber(a1+0xc, a2, v, a3, -1, 2, 0x32);
     }
 }
 }
 }
 
-// @symbol func_ov004_020b1c68
+// @symbol Mg_RenderSpriteOnMtx
 namespace s20b1c68 {
 extern "C" {
 struct M { int _00, _01, _10, _11; };
 extern void RenderOamBothScreens(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5);
-/* a3 picks the wrapper: -1 RenderOamBothScreens, 0 func_ov004_020af868,
-   anything else func_ov004_020afc18; each is passed -1 in its place. */
-void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5){
+extern void Mg_RenderMainSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
+/* a3 picks the wrapper: -1 RenderOamBothScreens, 0 Mg_RenderSubSpritePalMtx,
+   anything else Mg_RenderMainSpritePalMtx; each is passed -1 in its place. */
+void Mg_RenderSpriteOnMtx(void* a0, int a1, int a2, int a3, int a4, struct M* a5){
   if(a3==-1){
     RenderOamBothScreens(a0, a1, a2, -1, a4, a5);
     return;
   }
   if(a3==0){
-    func_ov004_020af868(a0, a1, a2, -1, a4, a5);
+    Mg_RenderSubSpritePalMtx(a0, a1, a2, -1, a4, a5);
     return;
   }
-  func_ov004_020afc18(a0, a1, a2, -1, a4, a5);
+  Mg_RenderMainSpritePalMtx(a0, a1, a2, -1, a4, a5);
 }
 }
 }
 
-// @symbol func_ov004_020b1cf0
+// @symbol Mg_RenderSpriteOn
 namespace s20b1cf0 {
 extern "C" {
-void func_ov004_020afdd0(int a, int b, int c, int d, int e);
+void Mg_RenderSpriteBoth(int a, int b, int c, int d, int e);
 void Hud_RenderSprite(int a, int b, int c, int d, int e);
 void RenderOamMainScreen(int a, int b, int c, int d, int e);
-/* `sel` picks the wrapper: -1 func_ov004_020afdd0, 0 Hud_RenderSprite,
+/* `sel` picks the wrapper: -1 Mg_RenderSpriteBoth, 0 Hud_RenderSprite,
    anything else RenderOamMainScreen; each is passed -1 in its place. */
-void func_ov004_020b1cf0(int a, int b, int c, int sel, int e){
-  if(sel == -1){ func_ov004_020afdd0(a,b,c,-1,e); return; }
+void Mg_RenderSpriteOn(int a, int b, int c, int sel, int e){
+  if(sel == -1){ Mg_RenderSpriteBoth(a,b,c,-1,e); return; }
   if(sel == 0){ Hud_RenderSprite(a,b,c,-1,e); return; }
   RenderOamMainScreen(a,b,c,-1,e);
 }
 }
 }
 
-// @symbol func_ov004_020b1d60
+// @symbol Mg_RenderSpriteOnNoMtx
 namespace s20b1d60 {
 extern "C" {
 extern void RenderOamBothScreens(void* a0, int a1, int a2, int a3, int a4, void* a5);
-extern void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5);
-/* func_ov004_020b1c68 without a matrix: the wrappers get 0. */
-void func_ov004_020b1d60(void* a0, int a1, int a2, int a3, int a4){
+extern void Mg_RenderMainSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
+/* Mg_RenderSpriteOnMtx without a matrix: the wrappers get 0. */
+void Mg_RenderSpriteOnNoMtx(void* a0, int a1, int a2, int a3, int a4){
   if(a3==-1){
     RenderOamBothScreens(a0, a1, a2, -1, a4, 0);
     return;
   }
   if(a3==0){
-    func_ov004_020af868(a0, a1, a2, -1, a4, 0);
+    Mg_RenderSubSpritePalMtx(a0, a1, a2, -1, a4, 0);
     return;
   }
-  func_ov004_020afc18(a0, a1, a2, -1, a4, 0);
+  Mg_RenderMainSpritePalMtx(a0, a1, a2, -1, a4, 0);
 }
 }
 }
 
-// @symbol func_ov004_020b1de8
+// @symbol Mg_DrawLivesIcon
 namespace s20b1de8 {
 extern "C" {
 extern int GetGameLanguage(void);
-extern int func_ov004_020b1d60(int, int, int, int, int);
+extern int Mg_RenderSpriteOnNoMtx(int, int, int, int, int);
 
-/* Draws sprite word 2 at (r0, r1) through func_ov004_020b1d60. */
-void func_ov004_020b1de8(int r0, int r1, int r2, int r3) {
+/* Draws sprite word 2 at (r0, r1) through Mg_RenderSpriteOnNoMtx. */
+void Mg_DrawLivesIcon(int r0, int r1, int r2, int r3) {
     int idx = GetGameLanguage();
-    int *t = data_ov004_020bbfa8[idx];
-    func_ov004_020b1d60(t[2], r0, r1, r2, r3);
+    int *t = sMgSpriteTables[idx];
+    Mg_RenderSpriteOnNoMtx(t[2], r0, r1, r2, r3);
 }
 }
 }
 
-// @symbol func_ov004_020b1e34
+// @symbol Mg_DrawScoreTally
 namespace s20b1e34 {
 extern "C" {
-extern void func_ov004_020b0e84(dScMgBase_c *sl, int sb);
+extern void Mg_DrawTally(dScMgBase_c *sl, int sb);
 
-/* Draws the mHudScore tally through func_ov004_020b0e84 (a tail call). */
-void func_ov004_020b1e34(void* a, int unused1, int unused2, int unused3) {
-    func_ov004_020b0e84((dScMgBase_c *)a, ((dScMgBase_c *)a)->mHudScore);
+/* Draws the mHudScore tally through Mg_DrawTally (a tail call). */
+void Mg_DrawScoreTally(void* a, int unused1, int unused2, int unused3) {
+    Mg_DrawTally((dScMgBase_c *)a, ((dScMgBase_c *)a)->mHudScore);
 }
 }
 }
 
-// @symbol func_ov004_020b1e44
+// @symbol Mg_DrawTopCenterCounter
 namespace s20b1e44 {
 extern "C" {
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(int a, int b, int c, int d);
 /* Draws `arg` centred at (0x80, 0xc) and sprite word 3 at (0x60, 0xc). */
-void func_ov004_020b1e44(int arg) {
+void Mg_DrawTopCenterCounter(int arg) {
     int r;
-    func_ov004_020b2444(0x80, 0xc, arg, 1, -1, 0, 0);
+    Mg_DrawBigNumber(0x80, 0xc, arg, 1, -1, 0, 0);
     r = GetGameLanguage();
-    DrawOamSprite(data_ov004_020bbfa8[r][3], 0x60, 0xc, 0);
+    DrawOamSprite(sMgSpriteTables[r][3], 0x60, 0xc, 0);
 }
 }
 }
 
-// @symbol func_ov004_020b1ea4
+// @symbol Mg_DrawNumber
 namespace s20b1ea4 {
 extern "C" {
 extern int data_ov006_02137cd8[];
-extern void func_ov004_020b1d60(void *glyph, int x, int a2, int a3, int a4);
+extern void Mg_RenderSpriteOnNoMtx(void *glyph, int x, int a2, int a3, int a4);
 
 /* Draws `val`, capped at 999999, in digits 8 px apart: glyph
    data_ov006_02137cd8[fb + digit], where fb 0 means 0xa and 0x14 means
    0x1e. Mode 0 centres the number on x, mode 1 ends it at x, any other
    mode starts it at x. */
-void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int fb) {
+void Mg_DrawNumber(int x, int a1, int val, int a3, int a4, int mode, int fb) {
     int d[6];
     int i;
     if (val >= 0xf423f) val = 0xf423f;
@@ -3311,7 +3311,7 @@ void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int f
         else if (mode == 1) x -= 0x28;
         r5 = 5;
         for (k = 0; k < 5; k++) {
-            func_ov004_020b1d60((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
+            Mg_RenderSpriteOnNoMtx((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
             x += 8;
             r5--;
         }
@@ -3322,7 +3322,7 @@ void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int f
         else if (mode == 1) x -= 0x20;
         r5 = 4;
         for (k = 0; k < 4; k++) {
-            func_ov004_020b1d60((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
+            Mg_RenderSpriteOnNoMtx((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
             x += 8;
             r5--;
         }
@@ -3333,7 +3333,7 @@ void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int f
         else if (mode == 1) x -= 0x18;
         r5 = 3;
         for (k = 0; k < 3; k++) {
-            func_ov004_020b1d60((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
+            Mg_RenderSpriteOnNoMtx((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
             x += 8;
             r5--;
         }
@@ -3344,22 +3344,22 @@ void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int f
         else if (mode == 1) x -= 0x10;
         r5 = 2;
         for (k = 0; k < 2; k++) {
-            func_ov004_020b1d60((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
+            Mg_RenderSpriteOnNoMtx((void*)data_ov006_02137cd8[fb + d[r5]], x, a1, a3, a4);
             x += 8;
             r5--;
         }
     } else if (d[1] != 0) {
         if (mode == 0) x -= 4;
         else if (mode == 1) x -= 8;
-        func_ov004_020b1d60((void*)data_ov006_02137cd8[fb + d[1]], x, a1, a3, a4);
+        Mg_RenderSpriteOnNoMtx((void*)data_ov006_02137cd8[fb + d[1]], x, a1, a3, a4);
         x += 8;
     }
-    func_ov004_020b1d60((void*)data_ov006_02137cd8[d[0] + fb], x, a1, a3, a4);
+    Mg_RenderSpriteOnNoMtx((void*)data_ov006_02137cd8[d[0] + fb], x, a1, a3, a4);
 }
 }
 }
 
-// @symbol func_ov004_020b2220
+// @symbol Mg_DrawNumberRotated
 #pragma push
 #pragma opt_propagation off
 namespace s20b2220 {
@@ -3373,7 +3373,7 @@ extern "C" {
    allocator keeps the thousands counter in r0 as the cartridge does; with
    the products written out in the body it lands in ip or r3. */
 struct M { int _00, _01, _10, _11; };
-extern void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
+extern void Mg_RenderSpriteOnMtx(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
 extern s16 data_02082214[];
 extern int data_ov006_02137cd8[];
 
@@ -3394,7 +3394,7 @@ static inline void MTX_Rot22(struct M *p, int sinVal, int cosVal)
 static inline s16 FX_SinIdx(int idx) { return data_02082214[idx << 1]; }
 static inline s16 FX_CosIdx(int idx) { return data_02082214[(idx << 1) + 1]; }
 
-void func_ov004_020b2220(int x, int y, int value, int a3, int a4, int scale, u16 angle)
+void Mg_DrawNumberRotated(int x, int y, int value, int a3, int a4, int scale, u16 angle)
 {
     struct M m;
     int idx;
@@ -3410,36 +3410,36 @@ void func_ov004_020b2220(int x, int y, int value, int a3, int a4, int scale, u16
     MTX_Rot22(&m, FX_Mul(FX_SinIdx(idx), scale), FX_Mul(FX_CosIdx(idx), scale));
 
     if (th != 0) {
-        func_ov004_020b1c68((void *)data_ov006_02137cd8[th], x - 0x30, y, a3, a4, &m);
-        func_ov004_020b1c68((void *)data_ov006_02137cd8[hu], x - 0x10, y, a3, a4, &m);
-        func_ov004_020b1c68((void *)data_ov006_02137cd8[te], x + 0x10, y, a3, a4, &m);
+        Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[th], x - 0x30, y, a3, a4, &m);
+        Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[hu], x - 0x10, y, a3, a4, &m);
+        Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[te], x + 0x10, y, a3, a4, &m);
         x += 0x30;
     } else if (hu != 0) {
-        func_ov004_020b1c68((void *)data_ov006_02137cd8[hu], x - 0x20, y, a3, a4, &m);
-        func_ov004_020b1c68((void *)data_ov006_02137cd8[te], x, y, a3, a4, &m);
+        Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[hu], x - 0x20, y, a3, a4, &m);
+        Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[te], x, y, a3, a4, &m);
         x += 0x20;
     } else if (te != 0) {
-        func_ov004_020b1c68((void *)data_ov006_02137cd8[te], x - 0x10, y, a3, a4, &m);
+        Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[te], x - 0x10, y, a3, a4, &m);
         x += 0x10;
     }
-    func_ov004_020b1c68((void *)data_ov006_02137cd8[value], x, y, a3, a4, &m);
+    Mg_RenderSpriteOnMtx((void *)data_ov006_02137cd8[value], x, y, a3, a4, &m);
 }
 }
 }
 #pragma pop
 
-// @symbol func_ov004_020b2444
+// @symbol Mg_DrawBigNumber
 namespace s20b2444 {
 extern "C" {
 extern int data_ov006_02137cd8[];
-extern void func_ov004_020b1d60(int a0, int a1, int a2, int a3, int a4);
+extern void Mg_RenderSpriteOnNoMtx(int a0, int a1, int a2, int a3, int a4);
 
 /* Draws `num` in digits 16 px apart, glyph data_ov006_02137cd8[idx +
    digit]. The units digit sits at a1 for sel 1 (or any value but 0 and
    2), at a1 + 8 per extra digit for sel 0, and at a1 + 16 per extra digit
    for sel 2, so the number ends at, centres on, or starts at a1. 0 draws
    one glyph; a negative num draws nothing. */
-void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx)
+void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx)
 {
     unsigned t = num;
     int digits = 0;
@@ -3462,13 +3462,13 @@ void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int i
         break;
     }
     if (num == 0) {
-        func_ov004_020b1d60(data_ov006_02137cd8[idx], a1, a2, a4, a5);
+        Mg_RenderSpriteOnNoMtx(data_ov006_02137cd8[idx], a1, a2, a4, a5);
         return;
     }
     if (num <= 0)
         return;
     do {
-        func_ov004_020b1d60(data_ov006_02137cd8[num % 10 + idx], a1 + off, a2, a4, a5);
+        Mg_RenderSpriteOnNoMtx(data_ov006_02137cd8[num % 10 + idx], a1 + off, a2, a4, a5);
         num /= 10;
         off -= 0x10;
     } while (num > 0);
@@ -3476,7 +3476,7 @@ void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int i
 }
 }
 
-// @symbol func_ov004_020b2574
+// @symbol Mg_DrawStockCounter
 namespace s20b2574 {
 extern "C" {
 extern int GetGameLanguage(void);
@@ -3485,19 +3485,19 @@ extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
 /* Unless arg1 is 1, draws sprite words 0 and 1 at (12, 12) and (30, 12)
    and arg0 from x 0x30. With arg1 1, draws sprite word 0 arg0 times,
    16 px apart from (12, 12). */
-void func_ov004_020b2574(int arg0, int arg1)
+void Mg_DrawStockCounter(int arg0, int arg1)
 {
-    int *table = data_ov004_020bbfa8[GetGameLanguage()];
+    int *table = sMgSpriteTables[GetGameLanguage()];
     void *sb = (void *)table[0];
     int b = 12;
     if (arg1 != 1) {
         DrawOamSprite(sb, (void *)b, b, 0);
-        DrawOamSprite((void *)data_ov004_020bbfa8[GetGameLanguage()][1], (void *)30, b, 0);
-        func_ov004_020b2444(0x30, b, arg0, 1, -1, 2, 0);
+        DrawOamSprite((void *)sMgSpriteTables[GetGameLanguage()][1], (void *)30, b, 0);
+        Mg_DrawBigNumber(0x30, b, arg0, 1, -1, 2, 0);
     } else {
         int i;
         for (i = 0; i < arg0; i++) {
-            func_ov004_020af948(sb, b, 12, 0);
+            Mg_RenderSubSpriteMtx(sb, b, 12, 0);
             b += 16;
         }
     }
@@ -3521,7 +3521,7 @@ extern "C" {
    GetGameLanguage into data_ov004_020bbfe4) is decompressed into BOTH engines'
    BG char VRAM at 0x06404000 and 0x06604000, OBJ palette file 0xc3 is loaded
    into both, and the scene object is published into the global registry --
-   data_ov004_020beb74[1] = this, then data_0209d4a8 points at that registry.
+   sMgGraphCallback[1] = this, then data_0209d4a8 points at that registry.
    The object fields it touches are its own: +0x68 cleared and +0x6c set to -1.
 
    WHEN IT RUNS.  First out of dScMgBase_c::BeforeInitResources
@@ -3540,22 +3540,22 @@ extern "C" {
    re-running it at +0x80 and reproducing slot 32's known call site.
    return type: void, which is what all three bodies do -- none assigns a
    result and the one caller ignores whatever falls out. */
-extern void func_ov004_020b2980(void);
-extern void func_ov004_020b290c(void);
+extern void Mg_DisableAllBanks(void);
+extern void Mg_ResetBgOffsets(void);
 extern void _ZN2GX12SetBankForBGEt(u16 a);
 extern void _ZN2GX13SetBankForOBJEt(u16 a);
 extern void _ZN2GX15SetBankForSubBGEt(u16 a);
 extern void _ZN2GX16SetBankForSubOBJEt(u16 a);
 extern s32 GetGameLanguage(void);
-extern void *func_ov004_020adc68(int id);
+extern void *Ov004_LoadFile(int id);
 extern void DecompressLZ16(void *src, void *dst);
 extern void Ov004_Deallocate(void *p);
 extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *p, u32 len);
 extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
 extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void func_ov004_020b0d30(void);
+extern void Mg_ResetOverlays(void);
 extern void FreeGfxSlotsById(int arg);
-extern int data_ov004_020beb6c;
+extern int sMgTopScreenYOffset;
 extern u8 data_0209d45c;
 extern int data_ov004_020bbfe4[];
 extern u8 data_0209d454;
@@ -3565,12 +3565,12 @@ extern int data_0208ee44;
 }
 
 void dScMgBase_c::InitEngines()
-{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
+{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::sMgTopScreenYOffset; using s20b265c::Ov004_LoadFile; using s20b265c::Mg_ResetOverlays; using s20b265c::Mg_ResetBgOffsets; using s20b265c::Mg_DisableAllBanks;
     char *obj = (char *)this;
 
     void *p;
 
-    data_ov004_020beb6c = 0;
+    sMgTopScreenYOffset = 0;
     obj[0x68] = 0;
     *(int *)(obj + 0x6c) = -1;
     *(vu32 *)0x4001000u |= 0x10000u;
@@ -3578,8 +3578,8 @@ void dScMgBase_c::InitEngines()
     _ZN3GXS15SetGraphicsModeEi(0);
     *(vu32 *)0x4001000u &= 0xffcfffefu;
     *(vu16 *)0x4000304u |= 0x8000u;
-    func_ov004_020b2980();
-    func_ov004_020b290c();
+    Mg_DisableAllBanks();
+    Mg_ResetBgOffsets();
     *(vu32 *)0x4000000u &= ~0x7000000u;
     *(vu32 *)0x4000000u &= ~0x38000000u;
     _ZN2GX12SetBankForBGEt(3);
@@ -3587,7 +3587,7 @@ void dScMgBase_c::InitEngines()
     data_0209d45c = 0x10;
     _ZN2GX15SetBankForSubBGEt(4);
     _ZN2GX16SetBankForSubOBJEt(8);
-    p = func_ov004_020adc68(data_ov004_020bbfe4[GetGameLanguage()]);
+    p = Ov004_LoadFile(data_ov004_020bbfe4[GetGameLanguage()]);
     {
         char *dst = (char *)0x6400000; dst += 0x4000;
         DecompressLZ16(p, dst);
@@ -3597,15 +3597,15 @@ void dScMgBase_c::InitEngines()
         DecompressLZ16(p, dst);
     }
     Ov004_Deallocate(p);
-    p = func_ov004_020adc68(0xc3);
+    p = Ov004_LoadFile(0xc3);
     _ZN4CP1527FlushAndInvalidateDataCacheEjj(p, 0x100u);
     _ZN2GX11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
     _ZN3GXS11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
     Ov004_Deallocate(p);
     data_0209d454 = 0x10;
-    data_ov004_020beb74.mScene = this;
-    data_0209d4a8 = (void **)&data_ov004_020beb74;
-    func_ov004_020b0d30();
+    sMgGraphCallback.mScene = this;
+    data_0209d4a8 = (void **)&sMgGraphCallback;
+    Mg_ResetOverlays();
     FreeGfxSlotsById(0x1d);
     data_0208ee44 = 1;
 }
@@ -3692,11 +3692,11 @@ int dScMgBase_c::InitSubScreenBg()
     LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
 }
 
-// @symbol func_ov004_020b290c
+// @symbol Mg_ResetBgOffsets
 namespace s20b290c {
 extern "C" {
 /* Resets the scroll of all eight BG layers, main and sub, to (0, 0). */
-void func_ov004_020b290c(void) {
+void Mg_ResetBgOffsets(void) {
     SetBg0Offset(0, 0);
     SetBg1Offset(0, 0);
     SetBg2Offset(0, 0);
@@ -3709,10 +3709,10 @@ void func_ov004_020b290c(void) {
 }
 }
 
-// @symbol func_ov004_020b2980
+// @symbol Mg_DisableAllBanks
 namespace s20b2980 {
 extern "C" {
-void func_ov004_020b2980(void) { _ZN2GX15DisableAllBanksEv(); }
+void Mg_DisableAllBanks(void) { _ZN2GX15DisableAllBanksEv(); }
 }
 }
 
@@ -3751,12 +3751,12 @@ void dScMgBase_c::StartRound(int arg)
 {
 }
 
-// @symbol func_ov004_020b29a0
+// @symbol Mg_CallStartRound
 namespace s20b29a0 {
 /* Calls the scene's StartRound (slot 18). Its callers, all in dMgState_c,
    pass the scene singleton and its mState, declaring the state as a
    void *, so the parameter stays one here. */
-extern "C" void func_ov004_020b29a0(dScMgBase_c *scene, void *state)
+extern "C" void Mg_CallStartRound(dScMgBase_c *scene, void *state)
 {
     scene->StartRound((int)state);
 }
@@ -3786,8 +3786,8 @@ dScMgBase_c::dScMgBase_c()
     unk_4630 = 0;
     unk_4648 = 0;
 
-    data_ov004_020beb68 = this;
-    unk_0bc = *(u32 *)(data_0209b308 + 0x30);
+    gMgScene = this;
+    unk_0bc = *(u32 *)(gMgMenuRow + 0x30);
 
     mSceneKind = data_ov004_020bc070[(param1 >> 16) & 0xff];
     /* param1 &= 0xffff, through a char *: spelled with the member, either
@@ -3811,7 +3811,7 @@ dScMgBase_c::dScMgBase_c()
     unk_4658 = 0;
     unk_064 = -1;
 
-    func_ov004_020adc00(func_02013580(func_ov004_020adc3c(this), 0));
+    Mg_SetTopRecord(func_02013580(Mg_GetSaveTable(this), 0));
 }
 
 // @symbol _ZN11dScMgBase_cD2Ev
@@ -3825,7 +3825,7 @@ dScMgBase_c::dScMgBase_c()
    dScMgBase_c vtable and RTTI. */
 dScMgBase_c::~dScMgBase_c()
 {
-    data_ov004_020beb68 = 0;
+    gMgScene = 0;
 }
 
 #ifdef _MSC_VER

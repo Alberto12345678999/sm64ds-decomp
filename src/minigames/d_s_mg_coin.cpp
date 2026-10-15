@@ -30,9 +30,9 @@
 // layout structs instead of the class members. The address-named helpers
 // keep ROM names (no symbol table: func_ov006_020ddeb0, func_ov006_020dd4b0
 // and the func_ov006_020dc* family). RenderOamMainScreen and
-// func_ov004_020b0380 are redeclared extern "C" at the call -- the ROM symbols
+// Mg_RenderSpriteBothMtx are redeclared extern "C" at the call -- the ROM symbols
 // are unmangled and the sites disagree on the types. func_ov006_020dcd74
-// reads the other score at data_ov004_020beb68 + 0xac (not a dScMgBase_c
+// reads the other score at gMgScene + 0xac (not a dScMgBase_c
 // field). func_ov006_020dc6d0 casts the scene through unsigned long long
 // before clearing the caption frameTime (five words without it).
 // func_ov006_020dc900/_020dc960/_020dcb1c stay on byte offsets (popup and
@@ -123,8 +123,8 @@ extern unsigned char data_ov006_0212e308[];
 extern unsigned char data_ov006_0212e30c[];
 extern u16 data_ov006_0212e33c[];
 extern u8 data_ov006_0212e310[];
-extern void func_ov004_020b0d8c(void *c, int arg1, int arg2);
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
+extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern int data_ov006_0212e430[];
 extern u16 data_ov006_0212e334[];
 extern s16 data_02082214[];
@@ -132,13 +132,13 @@ extern int data_ov006_021341ec;
 extern int data_ov006_0212e364[];
 extern int *data_ov006_0213bf34[];
 extern int GetGameLanguage(void);
-extern void func_ov004_020b1de8(int r0, int r1, int r2, int r3);
+extern void Mg_DrawLivesIcon(int r0, int r1, int r2, int r3);
 extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
-extern void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
+extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
 extern void *data_ov006_02133f10[];
 extern void *data_ov006_02136e24[];
 extern void *data_ov006_02134b4c[];
-extern void func_ov004_020b023c(void *obj, int x, int y, int w, int *vec);
+extern void Mg_RenderSpriteBothPalMtx(void *obj, int x, int y, int w, int *vec);
 extern void func_020127a4(int a, int b, int c, int d);
 extern int data_ov006_0212e358[];
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
@@ -154,8 +154,8 @@ extern int data_ov006_0212e3b8[];
 extern int data_ov006_0212e34c[];
 extern u16 data_ov006_0212e32c[];
 extern void FreeGfxSlotsById(int n);
-extern void func_ov004_020ae274(void *c);
-extern int func_ov004_020adc1c(void);
+extern void Mg_PlayJingle(void *c);
+extern int Mg_GetTopRecord(void);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -284,7 +284,7 @@ void dScMgCoin_c::func_ov006_020dbe9c()
         vec[1] = FX_MUL(data_02082214[i], 0x1000);
         vec[2] = -FX_MUL(data_02082214[i], 0x1000);
         vec[3] = FX_MUL(data_02082214[i + 1], 0x1000);
-        func_ov004_020b023c(data_ov006_02134b4c[idx_l], xr >> 12, yr >> 12, -1, vec);
+        Mg_RenderSpriteBothPalMtx(data_ov006_02134b4c[idx_l], xr >> 12, yr >> 12, -1, vec);
     }
 }
 #pragma pop
@@ -595,7 +595,7 @@ void dScMgCoin_c::func_ov006_020dc814()
     if (left == 0)
         return;
 
-    func_ov004_020b0d8c(scene, 0xe0, 0xa0);
+    Mg_DrawBlinkSprite(scene, 0xe0, 0xa0);
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dc870Ev
@@ -609,7 +609,7 @@ void dScMgCoin_c::func_ov006_020dc870()
     }
     for (i = 0; i < kPopupCount; i++) {
         if (scene->mPopups[i].flag != 0) {
-            func_ov004_020b2444(scene->mPopups[i].x >> 12, scene->mPopups[i].y >> 12,
+            Mg_DrawBigNumber(scene->mPopups[i].x >> 12, scene->mPopups[i].y >> 12,
                 scene->mPopups[i].value, 0, -1, 0, 0);
         }
     }
@@ -657,7 +657,7 @@ void dScMgCoin_c::func_ov006_020dc99c()
             int sprite = scene->spark[i].sprite;
             int x = scene->spark[i].x;
             int y = scene->spark[i].y;
-            func_ov004_020b0380(data_ov006_02136e24[sprite], x >> 12, y >> 12, 0);
+            Mg_RenderSpriteBothMtx(data_ov006_02136e24[sprite], x >> 12, y >> 12, 0);
         }
     }
 }
@@ -724,7 +724,7 @@ void dScMgCoin_c::func_ov006_020dcc48()
         y = data_ov006_0212e364[i];
         x = 0x10;
         for (j = 0; j < kTileCols; j++) {
-            func_ov004_020b0380((void *)data_ov006_021341ec, x, y, (void *)0);
+            Mg_RenderSpriteBothMtx((void *)data_ov006_021341ec, x, y, (void *)0);
             x += kTileStep;
         }
     }
@@ -741,10 +741,10 @@ void dScMgCoin_c::func_ov006_020dccb8()
 
     lang = GetGameLanguage();
     RenderOamMainScreen(data_ov006_0213bf34[lang][8], 0x80, 0x18, -1, -1);
-    func_ov004_020b1de8(0x68, 0x28, 1, -1);
+    Mg_DrawLivesIcon(0x68, 0x28, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7a, 0x28, (void *)0);
-    func_ov004_020b2444(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
+    Mg_DrawBigNumber(0x8c, 0x28, scene->mPlayerScore, 1, -1, 2, 0);
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dcd74Ev
@@ -759,14 +759,14 @@ void dScMgCoin_c::func_ov006_020dcd74()
 
     lang = GetGameLanguage();
     RenderOamMainScreen(data_ov006_0213bf34[lang][4], 0x80, 0x50, -1, -1);
-    func_ov004_020b1de8(0x6c, 0x60, 1, -1);
+    Mg_DrawLivesIcon(0x6c, 0x60, 1, -1);
     lang = GetGameLanguage();
     DrawOamSprite((void *)data_ov006_0213bf34[lang][1], (void *)0x7e, 0x60, (void *)0);
-    if (data_ov004_020beb68 != 0)
-        count = *(int *)((char *)data_ov004_020beb68 + 0xac);
+    if (gMgScene != 0)
+        count = *(int *)((char *)gMgScene + 0xac);
     else
         count = 0;
-    func_ov004_020b2444(0x90, 0x60, count, 1, -1, 2, 0);
+    Mg_DrawBigNumber(0x90, 0x60, count, 1, -1, 2, 0);
 }
 
 // @symbol _ZN11dScMgCoin_c19func_ov006_020dce3cEv
@@ -811,12 +811,12 @@ void dScMgCoin_c::func_ov006_020dcea8()
             highlight = 1;
         if (scene->mPhase != kResultPhase) {
             if (scene->mCoins[i].visible != 0)
-                func_ov004_020afdd0(data_ov006_02133f10[sprite], x, y, -1, highlight);
+                Mg_RenderSpriteBoth(data_ov006_02133f10[sprite], x, y, -1, highlight);
         } else {
             if (sprite != 0 && scene->mCoins[i].value != 0)
-                func_ov004_020afdd0(data_ov006_02133f10[sprite], x, y, -1, highlight);
+                Mg_RenderSpriteBoth(data_ov006_02133f10[sprite], x, y, -1, highlight);
             if (scene->mCoins[i].collected == 0 && scene->mCoins[i].value != 0)
-                func_ov004_020b2444(x, y, scene->mCoins[i].value, 0, -1, 0, 0);
+                Mg_DrawBigNumber(x, y, scene->mCoins[i].value, 0, -1, 0, 0);
         }
     }
 }
@@ -928,7 +928,7 @@ void dScMgCoin_c::func_ov006_020dd0e0(int idx)
     Sound::PlayBank2_2D(0xf2);
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
-    stars = (data_ov004_020beb68 != 0) ? *(int *)((char *)data_ov004_020beb68 + 0xa8) : 0;
+    stars = (gMgScene != 0) ? *(int *)((char *)gMgScene + 0xa8) : 0;
     need = mPlayerScore;
     if (stars > need)
         mWonLast = 1;
@@ -1065,7 +1065,7 @@ void dScMgCoin_c::func_ov006_020dd594()
    vy turns from rising to falling; once it passes its row it rests (state
    4), bumps the running total and bursts an effect. */
 struct Pair_dd658 { int a; int b; };
-extern "C" void func_ov004_020adfc4(int a, int b, struct Pair_dd658 *p2, struct Pair_dd658 *p3,
+extern "C" void Mg_SpawnFx(int a, int b, struct Pair_dd658 *p2, struct Pair_dd658 *p3,
                                     struct Pair_dd658 *p4);
 
 void dScMgCoin_c::func_ov006_020dd658(int i)
@@ -1109,7 +1109,7 @@ void dScMgCoin_c::func_ov006_020dd658(int i)
             pa.a = v0;
             pa.b = v1;
         }
-        func_ov004_020adfc4(1, 0x20, &pa, &pa, &pb);
+        Mg_SpawnFx(1, 0x20, &pa, &pa, &pb);
     }
 }
 
@@ -1485,9 +1485,9 @@ void dScMgCoin_c::func_ov006_020de0e0()
     mCountdown = 0;
     if (*(unsigned char *)(self + 0x51df) != 0) {
         FreeGfxSlotsById(6);
-        func_ov004_020ae20c();
+        Mg_RestoreMusic();
     }
-    func_ov004_020b0a54(0x10);
+    Mg_SetSharedState(0x10);
     mPromptEnabled = 0;
 }
 
@@ -1505,7 +1505,7 @@ void dScMgCoin_c::func_ov006_020de1d4()
         return;
     }
     {
-        char *o = (char *)data_ov004_020beb68;
+        char *o = (char *)gMgScene;
         int v = o != 0 ? *(int *)(o + 0xa8) : 0;
         if (v != 0) {
             mCaptionLatch = 0;
@@ -1550,14 +1550,14 @@ void dScMgCoin_c::func_ov006_020de26c()
         if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] == 0)
             this->func_ov006_020dc348();
         if ((&mSparkles[31].y)[0x73] == 0x20 && ((unsigned char *)(self + 0x5000))[0x1df] != 0) {
-            func_ov004_020b0cac(6, 0x80, -0x80, -1, -1, 0xd);
-            func_ov004_020ae274(0);
+            Mg_ShowBanner(6, 0x80, -0x80, -1, -1, 0xd);
+            Mg_PlayJingle(0);
         }
         if ((&mSparkles[31].y)[0x73] <= 0) (&mSparkles[31].y)[0x73] = 0;
         return;
     }
-    g = (char *)data_ov004_020beb68;
-    func_ov004_020adb1c(g != 0 ? *(int *)(g + 0xa8) : 0);
+    g = (char *)gMgScene;
+    Mg_SubmitScore(g != 0 ? *(int *)(g + 0xa8) : 0);
     (&mSparkles[31].y)[0x73] = 0x70;
     (&mSparkles[31].y)[0x72] = 4;
 }
@@ -1601,7 +1601,7 @@ void dScMgCoin_c::func_ov006_020de440()
     *(u8 *)(c + 0x51df) = 1;
     {
         int t;
-        void *g = data_ov004_020beb68;
+        void *g = gMgScene;
         if (g != 0) {
             t = *(s32 *)((char *)g + 0xa8);
         } else {
@@ -1654,7 +1654,7 @@ void dScMgCoin_c::StartRound(int arg)
     this->func_ov006_020dd334();
     this->func_ov006_020dc7b4();
     this->func_ov006_020dc2f8();
-    self->mPlayerScore = func_ov004_020adc1c();
+    self->mPlayerScore = Mg_GetTopRecord();
     self->mPhase = 0;
 }
 
@@ -1749,8 +1749,8 @@ int dScMgCoin_c::InitResources()
     this->func_ov006_020dc2f8();
     self->mWins = 0;
     self->unk_51dc = 2;
-    func_ov004_020b04d0(0x20);
-    self->mPlayerScore = func_ov004_020adc1c();
+    Mg_SetTopScreenYOffset(0x20);
+    self->mPlayerScore = Mg_GetTopRecord();
     self->unk_0a4 = 1;
     return 1;
 }

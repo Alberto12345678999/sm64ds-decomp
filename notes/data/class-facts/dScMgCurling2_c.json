@@ -785,7 +785,7 @@
       "size": "0x4",
       "type": "32-bit handle/value",
       "name": null,
-      "evidence": "InitResources stores the word returned by ov004 func_ov004_020adc1c at 0x020e6bac; OnYoshiTryEat repeats the word store at 0x020e67d8. The return type and original member name are unproven."
+      "evidence": "InitResources stores the word returned by ov004 Mg_GetTopRecord at 0x020e6bac; OnYoshiTryEat repeats the word store at 0x020e67d8. The return type and original member name are unproven."
     },
     {
       "offset": "0x55b4",

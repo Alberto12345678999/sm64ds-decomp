@@ -117,14 +117,14 @@ extern unsigned int func_02012790(unsigned int a);
 extern int GetGameLanguage(void);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 
-extern void func_ov004_020b1b40(void* c);
-extern void func_ov004_020b1b08(void* x);
-extern void func_ov004_020b1de8(int a, int b, int c, int d);
-extern int func_ov004_020b04c0(void);
-extern int func_ov004_020ae1a8(void);
-extern void func_ov004_020adb1c(int self);
-extern void func_ov004_020af948(void *a, int b, int c, void *d);
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_GainLives(void* c);
+extern void Mg_LoseLives(void* x);
+extern void Mg_DrawLivesIcon(int a, int b, int c, int d);
+extern int Mg_GetTopScreenYOffset(void);
+extern int Mg_GetScoringMode(void);
+extern void Mg_SubmitScore(int self);
+extern void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *d);
+extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
 
 extern void func_ov004_020b4b84(Sprite* s, int* in);
 extern void func_ov004_020b4cc4(Sprite* s);
@@ -188,7 +188,7 @@ extern struct Sprite data_ov004_020bfa34[];
 /* The address of data_ov004_020bfa34[0].mVisible; the ROM indexes the
    array's visible bytes from it. */
 extern unsigned char data_ov004_020bfa56[];
-extern char* data_ov004_020beb68;  /* the minigame scene; +0xa8 is dScMgBase_c::unk_0a8 */
+extern char* gMgScene;  /* local extern: a char * base keeps the ROM's add #0x4000 splits; +0xa8 is dScMgBase_c::unk_0a8 */
 extern int data_020a0db0;
 }
 
@@ -262,7 +262,7 @@ extern "C" void func_ov004_020b65e4(void) {
 }
 
 // @symbol func_ov004_020b653c
-/* Draw the signed count on row 0x60: the sprite icon (func_ov004_020b1de8)
+/* Draw the signed count on row 0x60: the sprite icon (Mg_DrawLivesIcon)
    at x 0x6e, the per-language +0x34 graphic for arg >= 0 or +0x38 for
    arg < 0 at x 0x80, then |arg| at x 0x92. */
 extern "C" void func_ov004_020b653c(int arg)
@@ -283,9 +283,9 @@ extern "C" void func_ov004_020b653c(int arg)
         gfx = *(int *)(data_ov004_020bc83c[idx] + 0x38);
     }
 
-    func_ov004_020b1de8(0x6e, 0x60, 0, -1);
-    func_ov004_020af948((void *)gfx, 0x80, 0x60, 0);
-    func_ov004_020b2444(0x92, 0x60, absv, 0, -1, 2, r4);
+    Mg_DrawLivesIcon(0x6e, 0x60, 0, -1);
+    Mg_RenderSubSpriteMtx((void *)gfx, 0x80, 0x60, 0);
+    Mg_DrawBigNumber(0x92, 0x60, absv, 0, -1, 2, r4);
 }
 
 // @symbol func_ov004_020b6430
@@ -319,7 +319,7 @@ extern "C" void func_ov004_020b63a0(int n){
   char* p;
   int v;
   if (data_ov004_020bf9ec != 0) return;
-  p = data_ov004_020beb68;
+  p = gMgScene;
   v = p ? *(int*)(p + 0xa8) : 0;
   if (n <= v) v = n;
   data_ov004_020bfa18 += v;
@@ -346,8 +346,8 @@ extern "C" void func_ov004_020b6324(int c) {
    nothing while a launch is pending (data_ov004_020bfa10). */
 extern "C" void func_ov004_020b6234(void) {
     int x;
-    if (data_ov004_020beb68 != 0) {
-        x = *(int *)(data_ov004_020beb68 + 0xa8);
+    if (gMgScene != 0) {
+        x = *(int *)(gMgScene + 0xa8);
     } else {
         x = 0;
     }
@@ -371,7 +371,7 @@ extern "C" void func_ov004_020b6234(void) {
 
 // @symbol func_ov004_020b612c
 /* Step: every 0x18 frames send the next sprite to
-   (index * 16 + 8, -func_ov004_020b04c0() - 16) until all sprites in play
+   (index * 16 + 8, -Mg_GetTopScreenYOffset() - 16) until all sprites in play
    are out. */
 extern "C" void func_ov004_020b612c(void)
 {
@@ -380,7 +380,7 @@ extern "C" void func_ov004_020b612c(void)
     int idx;
     if (data_ov004_020bfa18 <= data_ov004_020bfa00) return;
     if (ApproachLinear(data_ov004_020bfa04, 0, 1) == 0) return;
-    n = -func_ov004_020b04c0();
+    n = -Mg_GetTopScreenYOffset();
     idx = data_ov004_020bfa00;
     n = (n - 0x10) << 12;
     in[0] = (idx * 16 + 8) << 12;
@@ -413,7 +413,7 @@ extern "C" void func_ov004_020b5f6c(void)
         if (ApproachLinear(data_ov004_020bfa04, 0, 1) == 0)
             return;
         {
-            int v1 = (-func_ov004_020b04c0() - 0x10) << 12;
+            int v1 = (-Mg_GetTopScreenYOffset() - 0x10) << 12;
             int v0 = (data_ov004_020bfa00 * 16 + 8) << 12;
             inA[0] = v0;
             inA[1] = v1;
@@ -431,7 +431,7 @@ extern "C" void func_ov004_020b5f6c(void)
         return;
     }
     {
-        int v1 = (-func_ov004_020b04c0() - 0x10) << 12;
+        int v1 = (-Mg_GetTopScreenYOffset() - 0x10) << 12;
         int v0 = (data_ov004_020bfa00 * 16 + 8) << 12;
         inB[0] = v0;
         inB[1] = v1;
@@ -506,7 +506,7 @@ extern "C" void func_ov004_020b5c18(void)
             return;
         func_ov004_020b506c(&data_ov004_020bfa34[data_ov004_020bfa00]);
         if (data_ov004_020bf9f0 != 0) {
-            int t = data_ov004_020beb68 ? *(int*)(data_ov004_020beb68 + 0xa8) : 0;
+            int t = gMgScene ? *(int*)(gMgScene + 0xa8) : 0;
             if (t != 0)
                 Sound::PlayBank2_2D(0x14b);
             else
@@ -534,7 +534,7 @@ extern "C" void func_ov004_020b5aac(void)
             return;
         func_ov004_020b506c(&data_ov004_020bfa34[data_ov004_020bfa00]);
         if (data_ov004_020bf9f0 != 0) {
-            int t = data_ov004_020beb68 ? *(int*)(data_ov004_020beb68 + 0xa8) : 0;
+            int t = gMgScene ? *(int*)(gMgScene + 0xa8) : 0;
             if (t == 0 && data_ov004_020bfa00 == 0)
                 Sound::PlayBank2_2D(0x14c);
             else
@@ -569,11 +569,11 @@ extern "C" void func_ov004_020b5a54(void) {
    0x3c frames (func_ov004_020b586c). */
 extern "C" void func_ov004_020b58c4(void)
 {
-    if (data_ov004_020bf9fc > 0 && (data_ov004_020beb68 ? *(int*)(data_ov004_020beb68 + 0xa8) : 0) != 0) {
+    if (data_ov004_020bf9fc > 0 && (gMgScene ? *(int*)(gMgScene + 0xa8) : 0) != 0) {
         if (ApproachLinear(data_ov004_020bfa04, 0, 1) == 0)
             return;
         if (data_ov004_020bf9f0 != 0) {
-            int t = data_ov004_020beb68 ? *(int*)(data_ov004_020beb68 + 0xa8) : 0;
+            int t = gMgScene ? *(int*)(gMgScene + 0xa8) : 0;
             if (t <= data_ov004_020bf9fc)
                 Sound::PlayBank2_2D(0x14c);
             else
@@ -676,7 +676,7 @@ extern "C" void func_ov004_020b556c(void)
             cx = col << 0x10;
             rx = -(row << 0x10);
             {
-                int ret = -func_ov004_020b04c0();
+                int ret = -Mg_GetTopScreenYOffset();
                 sp[1] = (ret - 0x10) << 0xc;
             }
             sp[0] = 0x60000;
@@ -734,7 +734,7 @@ extern "C" void func_ov004_020b53f0(void)
                 int col = idx % 5;
                 int cx = col << 0x10;
                 int rx = -(row << 0x10);
-                int ret = -func_ov004_020b04c0();
+                int ret = -Mg_GetTopScreenYOffset();
                 sp[1] = (ret - 0x10) << 0xc;
                 sp[0] = 0x60000;
                 {
@@ -761,13 +761,13 @@ extern "C" void func_ov004_020b53f0(void)
 
 // @symbol func_ov004_020b5368
 /* Step: after data_ov004_020bfa04 frames, report the scene's unk_0a8
-   through func_ov004_020adb1c when func_ov004_020ae1a8 returns 2, then
+   through Mg_SubmitScore when Mg_GetScoringMode returns 2, then
    finish. */
 extern "C" void func_ov004_020b5368(void){
   if(ApproachLinear(data_ov004_020bfa04, 0, 1)==0) return;
-  if(func_ov004_020ae1a8()==2){
-    char* p = data_ov004_020beb68;
-    func_ov004_020adb1c(p ? *(int*)(p+0xa8) : 0);
+  if(Mg_GetScoringMode()==2){
+    char* p = gMgScene;
+    Mg_SubmitScore(p ? *(int*)(p+0xa8) : 0);
   }
   data_ov004_020bfa04 = 0;
   data_ov004_020bf9e4 = 1;
@@ -792,7 +792,7 @@ extern "C" void func_ov004_020b52b8(Sprite *s)
 {
     if (s->mVisible == 0)
         return;
-    func_ov004_020b1de8(s->mPos.x >> 12, s->mPos.y >> 12, -1, -1);
+    Mg_DrawLivesIcon(s->mPos.x >> 12, s->mPos.y >> 12, -1, -1);
 }
 
 // @symbol func_ov004_020b5288
@@ -804,7 +804,7 @@ extern "C" void func_ov004_020b5288(Sprite *s)
 }
 
 // @symbol func_ov004_020b51f0
-/* State: move; on arrival call func_ov004_020b1b40(1), hide, and stop. */
+/* State: move; on arrival call Mg_GainLives(1), hide, and stop. */
 extern "C" void func_ov004_020b51f0(Sprite* s) {
   int out[2];
   ApproachLinear(s->mPos.x, s->mTarget.x, s->mStep.x);
@@ -812,7 +812,7 @@ extern "C" void func_ov004_020b51f0(Sprite* s) {
   Vec2_Sub(out, &s->mTarget, &s->mPos);
   if (out[0] != 0) return;
   if (out[1] != 0) return;
-  func_ov004_020b1b40((void*)1);
+  Mg_GainLives((void*)1);
   func_ov004_020b51e4(s);
   s->mState = data_ov004_020bc7f0;
 }
@@ -826,7 +826,7 @@ extern "C" void func_ov004_020b51e4(Sprite *s)
 // @symbol func_ov004_020b5108
 /* Launch from the corner (12, 12) to `in`, at 1/16 of the distance per
    frame. Unless the sprite is already in func_ov004_020b51f0, call
-   func_ov004_020b1b08(1). */
+   Mg_LoseLives(1). */
 extern "C" void func_ov004_020b5108(Sprite* s, int* in)
 {
     int loc0[2];
@@ -851,7 +851,7 @@ extern "C" void func_ov004_020b5108(Sprite* s, int* in)
         s->mStep.y = v;
     }
     if (s->mState != data_ov004_020bc800)
-        func_ov004_020b1b08((void*)1);
+        Mg_LoseLives((void*)1);
     s->mState = data_ov004_020bc820;
 }
 
@@ -916,18 +916,18 @@ extern "C" void func_ov004_020b4f44(Sprite* s){
 
 // @symbol func_ov004_020b4e78
 /* Bring a sprite from the corner (12, 12) to
-   (128, -func_ov004_020b04c0() - 16) (move state func_ov004_020b4dfc,
+   (128, -Mg_GetTopScreenYOffset() - 16) (move state func_ov004_020b4dfc,
    then the rise in func_ov004_020b4d50). */
 extern "C" void func_ov004_020b4e78(Sprite *s)
 {
     Vec2i a;
     Vec2i b;
-    func_ov004_020b1b08((void*)1);
+    Mg_LoseLives((void*)1);
     s->mVisible = 1;
     s->mPos.x = 0xc000;
     s->mPos.y = 0xc000;
     s->mTarget.x = 0x80000;
-    s->mTarget.y = ((-func_ov004_020b04c0()) - 0x10) << 12;
+    s->mTarget.y = ((-Mg_GetTopScreenYOffset()) - 0x10) << 12;
     Vec2_Sub(&a, &s->mTarget, &s->mPos);
     func_0203d680(&b, &a, 0xc0);
     s->mStep.x = b.x;
@@ -996,7 +996,7 @@ extern "C" void func_ov004_020b4cc4(Sprite* s){
 }
 
 // @symbol func_ov004_020b4c30
-/* State: move; on arrival leave play, call func_ov004_020b1b40(1), reset. */
+/* State: move; on arrival leave play, call Mg_GainLives(1), reset. */
 extern "C" void func_ov004_020b4c30(Sprite* s){
   int v[2];
   ApproachLinear(s->mPos.x, s->mTarget.x, s->mStep.x);
@@ -1005,7 +1005,7 @@ extern "C" void func_ov004_020b4c30(Sprite* s){
   if (v[0] != 0) return;
   if (v[1] != 0) return;
   ApproachLinear(data_ov004_020bfa18, 0, 1);
-  func_ov004_020b1b40((void*)1);
+  Mg_GainLives((void*)1);
   func_ov004_020b5334(s);
 }
 
@@ -1040,7 +1040,7 @@ extern "C" void func_ov004_020b4b84(Sprite* s, int* in){
 
 // @symbol func_ov004_020b4aa4
 /* State: wait out mDelay, then move; on arrival play sound 0x149, call
-   func_ov004_020b1b40(1), take one from the layout count, and reset. */
+   Mg_GainLives(1), take one from the layout count, and reset. */
 extern "C" void func_ov004_020b4aa4(Sprite* s) {
     Vec2i t;
     if (ApproachLinear2(s->mDelay, 0, 1) == 0) return;
@@ -1051,7 +1051,7 @@ extern "C" void func_ov004_020b4aa4(Sprite* s) {
     if (t.y != 0) return;
     if (ApproachLinear2(s->mDelay, 0, 1) == 0) return;
     Sound::PlayBank2_2D(0x149);
-    func_ov004_020b1b40((void*)1);
+    Mg_GainLives((void*)1);
     ApproachLinear(data_ov004_020bf9f8, 0, 1);
     func_ov004_020b5334(s);
 }

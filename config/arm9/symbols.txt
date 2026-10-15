@@ -4534,7 +4534,7 @@ data_0209b2f8 kind:bss addr:0x0209b2f8
 data_0209b2fc kind:bss addr:0x0209b2fc
 data_0209b300 kind:bss addr:0x0209b300
 data_0209b304 kind:bss addr:0x0209b304
-data_0209b308 kind:bss addr:0x0209b308
+gMgMenuRow kind:bss addr:0x0209b308
 data_0209b31c kind:bss addr:0x0209b31c
 data_0209b33c kind:bss addr:0x0209b33c
 data_0209b340 kind:bss addr:0x0209b340

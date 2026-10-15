@@ -151,9 +151,9 @@ typedef struct Obj9 {
 #define H(o) (*(short*)(c + (o)))
 #define HA(o) (*(short*)AT(c,(o)))
 /* The active minigame scene's bonus count, or 0 with no scene.
-   data_ov004_020beb68 is declared `void *` by dScMgBase_c.h. */
-#define SCENE_BONUS ((data_ov004_020beb68 != 0) \
-                        ? *(int *)((char *)data_ov004_020beb68 + 0xa8) : 0)
+   gMgScene is declared `void *` by dScMgBase_c.h. */
+#define SCENE_BONUS ((gMgScene != 0) \
+                        ? *(int *)((char *)gMgScene + 0xa8) : 0)
 
 namespace Sound {
     void PlayBank2_2D(unsigned int id);
@@ -203,11 +203,11 @@ void Camera_UpdateMatrices(char *cam);
 void func_02012790(int a);
 void func_020731dc(void *object, void *destructor, void **node);
 void func_0203d680(Vec2_Fix12 *out, const Vec2_Fix12 *in, int scale);
-void *func_ov004_020adc68(int id);
-void func_ov004_020b1b08(int c);
-void func_ov004_020b1b40(int c);
-void func_ov004_020b1bc8(char *, int, int, int);
-void func_ov004_020b2220(int, int, int, int, int, int, int);
+void *Ov004_LoadFile(int id);
+void Mg_LoseLives(int c);
+void Mg_GainLives(int c);
+void Mg_DrawLives(char *, int, int, int);
+void Mg_DrawNumberRotated(int, int, int, int, int, int, int);
 void func_ov004_020b56c8(void);
 void func_ov004_020b65e4(void);
 void func_ov004_020b66d4(void);
@@ -286,7 +286,7 @@ s32 dScMgRoulette_c::InitResources()
     char *raw = (char *)this;
     void *bgChars, *bgMap, *f6, *f5;
 
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     *(volatile u16 *)0x0400100c = (*(volatile u16 *)0x0400100c & 0x43) | 0x404;
     *(volatile u16 *)0x04001008 = (*(volatile u16 *)0x04001008 & 0x43) | 0x504;
@@ -333,7 +333,7 @@ s32 dScMgRoulette_c::InitResources()
     if (func_ov006_021085c0((char *)mSlider) == 0)
         return 0;
 
-    unk_0a8 = func_ov004_020ad8b8();
+    unk_0a8 = Mg_GetSavedRecord0();
     unk_0ac = unk_0a8;
     func_ov004_020b682c();
     func_ov006_02107b70((char *)mMeter);
@@ -376,7 +376,7 @@ s32 dScMgRoulette_c::Behavior()
                     func_ov006_021095ac((int *)(mArray + I(0x53f8) * 0x34), dealPos);
                     mDealIndex += 1;
                     H(0x53e8) = 8;
-                    func_ov004_020b1b08(1);
+                    Mg_LoseLives(1);
                     Sound::PlayBank2_2D(0x14d);
                 } else {
                     int i = 0;
@@ -465,7 +465,7 @@ s32 dScMgRoulette_c::Behavior()
                         row += 0x34;
                     } while (j < mRacerCount);
                 }
-                func_ov004_020ad79c(mRacerCount - mTargetScore + SCENE_BONUS, 0);
+                Mg_SaveRecordPair(mRacerCount - mTargetScore + SCENE_BONUS, 0);
             }
         }
         break;
@@ -506,7 +506,7 @@ s32 dScMgRoulette_c::Behavior()
                         p += 0x34;
                     } while (j < mRacerCount);
                 }
-                func_ov004_020ad79c(mScore + SCENE_BONUS, 0);
+                Mg_SaveRecordPair(mScore + SCENE_BONUS, 0);
                 H(0x53f4) = 0;
                 I(0x53f8) = 0;
                 H(0x53e8) = 0x5a;
@@ -522,12 +522,12 @@ s32 dScMgRoulette_c::Behavior()
             short score = mScore;
             if (score > target) {
                 func_ov006_020c0c80(mTable);
-                func_ov004_020b0a54(4);
+                Mg_SetSharedState(4);
             } else if (score < target) {
                 func_ov006_020c0d68(mTable);
-                func_ov004_020b0a54(5);
+                Mg_SetSharedState(5);
             } else {
-                func_ov004_020b0a54(8);
+                Mg_SetSharedState(8);
             }
             mCameraPreset = 0;
             HA(0x53e6) += 1;
@@ -579,7 +579,7 @@ void func_ov006_02109aa0(char *) {
 s32 dScMgRoulette_c::Render()
 {
     char *raw = (char *)this;
-    func_ov004_020b1bc8(raw, 0xc, 0xc, 0);
+    Mg_DrawLives(raw, 0xc, 0xc, 0);
     func_ov004_020b6430();
 
     {
@@ -614,7 +614,7 @@ s32 dScMgRoulette_c::Render()
             int vol = rem * 0x88 + 0x1000;
             if (vol > 0x2000)
                 vol = 0x2000;
-            func_ov004_020b2220(0x80, 0x60, seconds, 1, -1, func_02053200(vol), 0);
+            Mg_DrawNumberRotated(0x80, 0x60, seconds, 1, -1, func_02053200(vol), 0);
         }
     }
 
@@ -725,7 +725,7 @@ void dScMgRoulette_c::StartRound(int /* arg */)
     mDealIndex = 0;
     mTargetScore = 0;
     count = 0;
-    if (data_ov004_020beb68 != 0) count = ((int *)data_ov004_020beb68)[0xa8 / 4];
+    if (gMgScene != 0) count = ((int *)gMgScene)[0xa8 / 4];
     if (count >= 5) count = 5;
     mRacerCount = count;
 
@@ -929,7 +929,7 @@ void func_ov006_02108f2c(Thing* racer)
         if (out[1] != 0)
             return;
         racer->state = 6;
-        func_ov004_020b1b40(1);
+        Mg_GainLives(1);
     } else if (state == 4) {
         s32 out[2];
         ApproachLinear(racer->x, racer->targetX, racer->stepX);
@@ -1236,8 +1236,8 @@ short func_ov006_02108650(int x, int y)
 // @symbol func_ov006_021085c0
 extern "C" {
 int func_ov006_021085c0(char *slider){
-    *(void**)(slider + 8) = func_ov004_020adc68(0x21d);
-    *(void**)(slider + 0xc) = func_ov004_020adc68(0x21e);
+    *(void**)(slider + 8) = Ov004_LoadFile(0x21d);
+    *(void**)(slider + 0xc) = Ov004_LoadFile(0x21e);
     Model::UpdateFileOffsets(**(BMD_File **)(slider + 8));
     Model::UpdateFileOffsets(**(BMD_File **)(slider + 0xc));
     if(((ModelBase *)(slider + 0x10))->SetFile(*(BMD_File **)(slider + 8), 1, -1) == 0)
@@ -1507,12 +1507,12 @@ void func_ov006_02107c50(short* strip, int y)
     void* p = *(void**)((char*)data_ov006_0213e320[idx] + 0x50);
     Hud_RenderSprite(p, 0xc, y, -1, -1);
 
-    func_ov004_020b2444(0x1e, y, data_ov006_0212ed14[*(short*)((char*)strip + 0x14)], 0, -1, 2, 0);
+    Mg_DrawBigNumber(0x1e, y, data_ov006_0212ed14[*(short*)((char*)strip + 0x14)], 0, -1, 2, 0);
 
     {
         int b = y + 0x10;
         RenderOamBothScreens(data_ov006_02138c3c, 0x20, b, -1, 1, (void*)0);
-        func_ov004_020b2444(0x2e, b, *(short*)((char*)strip + 0x16), 0, -1, 1, 0);
+        Mg_DrawBigNumber(0x2e, b, *(short*)((char*)strip + 0x16), 0, -1, 1, 0);
     }
 }
 }

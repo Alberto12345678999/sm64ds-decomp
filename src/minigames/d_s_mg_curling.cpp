@@ -85,11 +85,11 @@ struct B4 { unsigned char v; unsigned char pad[3]; };
  * `extern "C"` block, so the C-linkage names are collected here in one. */
 extern "C" {
 
-extern int  func_ov004_020adbc0(void);
-extern void func_ov004_020af948(int a, int b, int c, int d);
-extern int  func_ov004_020afdd0(int a, int b, int c, int d, int e);
-extern void func_ov004_020b2220(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern int  Mg_GetSubmittedScore(void);
+extern void Mg_RenderSubSpriteMtx(int a, int b, int c, int d);
+extern int  Mg_RenderSpriteBoth(int a, int b, int c, int d, int e);
+extern void Mg_DrawNumberRotated(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
+extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
 extern void func_02012718(int a, int b);
 extern void DrawOamSprite(int a, int b, int c, int d);
 extern void RenderOamBothScreens(void* a0, int a1, int a2, int a3, int a4, void* a5);
@@ -98,13 +98,13 @@ extern int  _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern int  func_020126e8(int a);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern int  func_ov004_020adbe0(void);
-extern void func_ov004_020b0a54(int state);
-extern void func_ov004_020adb1c(int score);
-extern int  func_ov004_020adc1c(void);
-extern int  func_ov004_020b19f0(int self);
-extern char *func_ov004_020adc74(void *p);
-extern void func_ov004_020b04d0(int a);
+extern int  Mg_IsNewRecord(void);
+extern void Mg_SetSharedState(int state);
+extern void Mg_SubmitScore(int score);
+extern int  Mg_GetTopRecord(void);
+extern int  Mg_DrawTopLeftCounter(int self);
+extern char *Ov004_LoadFileByPath(void *p);
+extern void Mg_SetTopScreenYOffset(int a);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern unsigned _ZN3G2S13GetBG2CharPtrEv(void);
 extern void DecompressLZ16(const void *src, void *dst);
@@ -197,7 +197,7 @@ void dScMgCurling_c::func_ov006_020e0694()
         if (mBit[i].shown) {
             int x = mBit[i].x >> 0xc;
             int y = mBit[i].y >> 0xc;
-            func_ov004_020af948(data_ov006_0213a5e0[mBit[i].texA], x, y, 0);
+            Mg_RenderSubSpriteMtx(data_ov006_0213a5e0[mBit[i].texA], x, y, 0);
             DrawOamSprite(data_ov006_0213a5e0[mBit[i].texB], x, y, 0);
         }
     }
@@ -602,12 +602,12 @@ void dScMgCurling_c::func_ov006_020e1554()
     int i;
     for (i = 0; i < 5; i++) {
         if (mPopup[i].shown != 0) {
-            func_ov004_020b2444(mPopup[i].x >> 12, mPopup[i].y >> 12, mPopup[i].points, -1, -1, 0, 0);
+            Mg_DrawBigNumber(mPopup[i].x >> 12, mPopup[i].y >> 12, mPopup[i].points, -1, -1, 0, 0);
         }
     }
     if (mRoundOver != 0) {
-        int r = func_ov004_020adbc0();
-        func_ov004_020b2220(0x80, 0x60, r, 1, 0, 0x800, 0);
+        int r = Mg_GetSubmittedScore();
+        Mg_DrawNumberRotated(0x80, 0x60, r, 1, 0, 0x800, 0);
     }
 }
 
@@ -699,7 +699,7 @@ void dScMgCurling_c::func_ov006_020e17f8()
   if(mAimShown==0) return;
   int x=mAimX;
   int y=mAimY;
-  func_ov004_020afdd0((int)data_ov006_0213c2e4,(x>>12)-0x20,(y>>12)-8,-1,0);
+  Mg_RenderSpriteBoth((int)data_ov006_0213c2e4,(x>>12)-0x20,(y>>12)-8,-1,0);
 }
 
 #pragma push
@@ -1377,13 +1377,13 @@ void dScMgCurling_c::func_ov006_020e2ebc()
             mStateDelay = 0;
         return;
     }
-    if (func_ov004_020adbe0() != 0) {
+    if (Mg_IsNewRecord() != 0) {
         mRoundOver = 0;
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(0x10);
     } else {
         mState = 4;
-        func_ov004_020b0a54(0x10);
+        Mg_SetSharedState(0x10);
     }
     mPromptEnabled = 0;
     mAimShown = 0;
@@ -1422,7 +1422,7 @@ void dScMgCurling_c::func_ov006_020e2f78()
         Sound::PlayBank2_2D(0x1bc);
         for (i = 0; i < 5; i++)
             sum += mPopup[i].points;
-        func_ov004_020adb1c(sum);
+        Mg_SubmitScore(sum);
     }
 
     for (i = 0; i < 5; i++)
@@ -1585,7 +1585,7 @@ void dScMgCurling_c::func_ov006_020e3388()
     (s16&)mStateDelay = 0;
     (s16&)unk_4edc = 0;
     mSwingTimer = 0;
-    func_ov004_020adb1c(0);
+    Mg_SubmitScore(0);
 }
 #pragma pop
 
@@ -1601,7 +1601,7 @@ void dScMgCurling_c::StartRound(int /* arg */)
     func_ov006_020e3250();
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_4ed8 = func_ov004_020adc1c();
+    unk_4ed8 = Mg_GetTopRecord();
 }
 
 // @symbol _ZN14dScMgCurling_c6RenderEv
@@ -1609,7 +1609,7 @@ void dScMgCurling_c::StartRound(int /* arg */)
  * and the falling bits. */
 s32 dScMgCurling_c::Render()
 {
-    func_ov004_020b19f0(func_ov004_020adc1c());
+    Mg_DrawTopLeftCounter(Mg_GetTopRecord());
     func_ov006_020e1554();
     func_ov006_020e1c68();
     func_ov006_020e17f8();
@@ -1634,8 +1634,8 @@ s32 dScMgCurling_c::Behavior()
  * palettes and the house, then starts the first round with a 0x40 delay. */
 s32 dScMgCurling_c::InitResources()
 {
-    char *a = func_ov004_020adc74(&data_ov006_0213c394);
-    char *b = func_ov004_020adc74(&data_ov006_0213c3b4);
+    char *a = Ov004_LoadFileByPath(&data_ov006_0213c394);
+    char *b = Ov004_LoadFileByPath(&data_ov006_0213c3b4);
     void *f;
 
     if (a == 0 || b == 0) return 0;
@@ -1689,12 +1689,12 @@ s32 dScMgCurling_c::InitResources()
     func_ov006_020e2dbc();
     func_ov006_020e13a4();
     mState = 1;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     mStateDelay = 0x40;
     unk_0a4 = 1;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xd, 2, 0x10);
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4001050, 0, 4, 2, 0x10);
-    unk_4ed8 = func_ov004_020adc1c();
+    unk_4ed8 = Mg_GetTopRecord();
     return 1;
 }
 

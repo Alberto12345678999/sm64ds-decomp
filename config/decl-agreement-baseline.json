@@ -12039,7 +12039,7 @@
         "return:unsigned char []"
       ]
     },
-    "data_0209b308": {
+    "gMgMenuRow": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:char",
         "return:char []",
@@ -15660,7 +15660,7 @@
         "return:int"
       ]
     },
-    "data_ov004_020bbfa8": {
+    "sMgSpriteTables": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:char * []",
         "return:int *",
@@ -15668,12 +15668,12 @@
         "return:void * []"
       ]
     },
-    "data_ov004_020beb60": {
+    "sMgWorkBuffer": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []"
       ]
     },
-    "data_ov004_020beb68": {
+    "gMgScene": {
       "include/dScMgBase_c.h": [
         "return:void *"
       ],
@@ -15696,17 +15696,17 @@
         "return:V *"
       ]
     },
-    "data_ov004_020beb6c": {
+    "sMgTopScreenYOffset": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []"
       ]
     },
-    "data_ov004_020beb74": {
+    "sMgGraphCallback": {
       "src/unnamed/ov004/__sinit_ov004_020b948c.c": [
         "return:char []"
       ]
     },
-    "data_ov004_020bebe8": {
+    "sMgFxPool": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:Elem []"
       ],
@@ -15722,7 +15722,7 @@
         "return:unsigned char []"
       ]
     },
-    "data_ov004_020bf648": {
+    "gMgBanners": {
       "include/decl_common.h": [
         "return:char []"
       ],
@@ -27378,12 +27378,12 @@
         "param:#1 char *"
       ]
     },
-    "func_ov004_020ad6f4": {
+    "Mg_GetLastRecordRank": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:2"
       ]
     },
-    "func_ov004_020ad90c": {
+    "Mg_CommitRecords": {
       "src/minigames/d_s_mg_hanachan_methods.cpp": [
         "arity:1"
       ],
@@ -27394,19 +27394,19 @@
         "arity:1"
       ]
     },
-    "func_ov004_020ada40": {
+    "Mg_SetSessionBest": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:1",
         "return:int"
       ]
     },
-    "func_ov004_020adc3c": {
+    "Mg_GetSaveTable": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:0",
         "return:unsigned int"
       ]
     },
-    "func_ov004_020adc68": {
+    "Ov004_LoadFile": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:1",
         "return:void *"
@@ -27424,23 +27424,23 @@
         "return:void *"
       ]
     },
-    "func_ov004_020adc74": {
+    "Ov004_LoadFileByPath": {
       "src/minigames/d_s_mg_curling.cpp": [
         "return:char *"
       ]
     },
-    "func_ov004_020adf2c": {
+    "Mg_UpdateFx": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov004_020adf70": {
+    "Mg_InitFx": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 char *",
         "param:#4 short"
       ]
     },
-    "func_ov004_020adfc4": {
+    "Mg_SpawnFx": {
       "src/minigames/d_s_mg_coin.cpp": [
         "arity:5"
       ],
@@ -27448,7 +27448,7 @@
         "arity:5"
       ]
     },
-    "func_ov004_020ae5c4": {
+    "Mg_DrawLine": {
       "src/minigames/d_s_mg_amida.cpp": [
         "return:int"
       ],
@@ -27460,14 +27460,14 @@
         "return:int"
       ]
     },
-    "func_ov004_020aea30": {
+    "Mg_DrawSpriteList": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 int"
       ]
     },
-    "func_ov004_020aea78": {
+    "Mg_DrawSpriteListEntry": {
       "include/decl_common.h": [
         "param:#2 void *",
         "param:#3 void *",
@@ -27479,17 +27479,17 @@
         "return:int"
       ]
     },
-    "func_ov004_020af2f8": {
+    "Mg_InitBrush": {
       "include/decl_common.h": [
         "param:#2 int"
       ]
     },
-    "func_ov004_020af5e0": {
+    "Mg_CopySpriteList": {
       "src/minigames/unit020b2c84.cpp": [
         "arity:4"
       ]
     },
-    "func_ov004_020af770": {
+    "Mg_RenderSubSpriteScaled": {
       "src/minigames/d_s_mg_flower.cpp": [
         "param:#1 void *",
         "return:void"
@@ -27499,7 +27499,7 @@
         "return:void"
       ]
     },
-    "func_ov004_020af948": {
+    "Mg_RenderSubSpriteMtx": {
       "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int",
         "param:#4 int"
@@ -27509,7 +27509,7 @@
         "param:#4 int"
       ]
     },
-    "func_ov004_020afb20": {
+    "Mg_RenderMainSpriteScaled": {
       "include/decl_common.h": [
         "param:#1 void *"
       ],
@@ -27517,7 +27517,7 @@
         "return:char *"
       ]
     },
-    "func_ov004_020afdd0": {
+    "Mg_RenderSpriteBoth": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 int"
       ],
@@ -27530,23 +27530,23 @@
         "return:int"
       ]
     },
-    "func_ov004_020aff38": {
+    "Mg_RenderSpriteBothScaled": {
       "src/minigames/d_s_mg_pachinko2.cpp": [
         "param:#1 int",
         "return:void"
       ]
     },
-    "func_ov004_020b0e84": {
+    "Mg_DrawTally": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 unsigned int"
       ]
     },
-    "func_ov004_020b1710": {
+    "Mg_DrawRecordRow": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#1 void *"
       ]
     },
-    "func_ov004_020b19f0": {
+    "Mg_DrawTopLeftCounter": {
       "src/minigames/d_s_mg_curling.cpp": [
         "param:#1 int"
       ],
@@ -27558,17 +27558,17 @@
         "return:void"
       ]
     },
-    "func_ov004_020b1a5c": {
+    "Mg_DrawTopRightCounter": {
       "src/minigames/d_s_mg_pachinko.cpp": [
         "return:int"
       ]
     },
-    "func_ov004_020b1b08": {
+    "Mg_LoseLives": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov004_020b1b40": {
+    "Mg_GainLives": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 int"
       ],
@@ -27576,30 +27576,30 @@
         "param:#1 int"
       ]
     },
-    "func_ov004_020b1b78": {
+    "Mg_SubLives": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *"
       ]
     },
-    "func_ov004_020b1ba0": {
+    "Mg_AddLives": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 void *"
       ]
     },
-    "func_ov004_020b1d60": {
+    "Mg_RenderSpriteOnNoMtx": {
       "src/minigames/d_s_mg_base.cpp": [
         "arity:4",
         "param:#1 int",
         "return:int"
       ]
     },
-    "func_ov004_020b1ea4": {
+    "Mg_DrawNumber": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#3 void *",
         "return:int"
       ]
     },
-    "func_ov004_020b2220": {
+    "Mg_DrawNumberRotated": {
       "src/minigames/d_s_mg_curling.cpp": [
         "param:#7 int"
       ],

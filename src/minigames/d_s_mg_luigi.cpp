@@ -56,7 +56,7 @@ struct Px_efdf0 {
     u8 a, b, c2, d2;
 };
 
-#define BEB68_f0274 ((char *)data_ov004_020beb68)
+#define BEB68_f0274 ((char *)gMgScene)
 
 /* C-linkage engine calls and the remaining local helpers. */
 extern "C" {
@@ -65,17 +65,17 @@ extern int func_02053c10(int);
    not mangle, so the data_* declarations stay next to their users. */
 extern int RandomIntInternal(int *seed);
 extern s32 GetGameLanguage(void);
-extern void func_ov004_020af948(void *a, int b, int c, void *matrix);
-extern char *func_ov004_020afb20(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
+extern void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *matrix);
+extern char *Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern void DrawOamSprite(int p, int a, int b, int c);
-extern void func_ov004_020b2220(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_DrawNumberRotated(int a, int b, int c, int d, int e, int f, int g);
 extern unsigned int func_02012790(unsigned int x);
 extern void func_020127a4(int a0, int a1, int a2, int a3);
 extern void Hud_RenderSprite(void *sprite, int b, int c, int d, int e);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
 extern void FreeGfxSlotsById(int arg);
-extern void func_ov004_020b0a54(int c);
+extern void Mg_SetSharedState(int c);
 
 extern void func_ov006_020efcf8(void);
 extern void func_ov006_020efdac(void);
@@ -312,13 +312,13 @@ void dScMgLuigi_c::DrawReward()
     if (y <= 8) y = 8;
     if (y >= 0xb8) y = 0xb8;
     s32 r = GetGameLanguage();
-    func_ov004_020af948(*(void **)((char *)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
-    func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0x64), x + 8, y, 0);
+    Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
+    Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0x64), x + 8, y, 0);
 }
 
 // @symbol _ZN12dScMgLuigi_c12UpdateRewardEv
 extern "C" {
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SubmitScore(int self);
 }
 
 void dScMgLuigi_c::UpdateReward()
@@ -362,7 +362,7 @@ void dScMgLuigi_c::UpdateReward()
                     *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
             }
         }
-        func_ov004_020adb1c(BEB68_f0274 != 0 ? *(int *)(BEB68_f0274 + 0xb4) : 0);
+        Mg_SubmitScore(BEB68_f0274 != 0 ? *(int *)(BEB68_f0274 + 0xb4) : 0);
         return;
     }
 
@@ -407,7 +407,7 @@ void dScMgLuigi_c::DrawCurtains()
             int y = mCurtain[j].y >> 0xc;
             char *e = data_ov006_021350d8;
             for (;;) {
-                char *r = func_ov004_020afb20((int)e, x, y, -1, 1, 0x1000, 0);
+                char *r = Mg_RenderMainSpriteScaled((int)e, x, y, -1, 1, 0x1000, 0);
                 if (r != 0) {
                     int v = (int)((unsigned int)(*(int *)(r + 4) << 0x10) >> 0x1c);
                     *(int *)r = (*(int *)r & ~0xc00) | 0x800;
@@ -668,7 +668,7 @@ void dScMgLuigi_c::DrawTimer() {
         return;
     idx = GetGameLanguage();
     DrawOamSprite(*(int *)((char *)data_ov006_0213ce70[idx] + 0xc), 0x80, 0x10, 0);
-    func_ov004_020b2220(0x80, 0x28, static_cast<u16>(mTime), 1, -1, 0x800, 0);
+    Mg_DrawNumberRotated(0x80, 0x28, static_cast<u16>(mTime), 1, -1, 0x800, 0);
 }
 
 // @symbol _ZN12dScMgLuigi_c9TickTimerEv
@@ -734,9 +734,9 @@ void dScMgLuigi_c::DrawPenalties()
             if (y <= 8) y = 8;
             if (y >= 0xb8) y = 0xb8;
             r = GetGameLanguage();
-            func_ov004_020af948(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, 0);
-            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa4), x, y, 0);
-            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa0), x + 0x10, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa4), x, y, 0);
+            Mg_RenderSubSpriteMtx(*(void **)(data_ov006_02137cd8 + 0xa0), x + 0x10, y, 0);
         }
     }
 }
@@ -804,7 +804,7 @@ void dScMgLuigi_c::AddPenalty(int idx)
 void dScMgLuigi_c::DrawWantedIcon() {
     extern void *data_ov006_0213abc8[];
     if (mIconOn == 0) return;
-    func_ov004_020af948(data_ov006_0213abc8[mWanted],
+    Mg_RenderSubSpriteMtx(data_ov006_0213abc8[mWanted],
                         (unsigned short)mIconX,
                         (unsigned short)mIconY, 0);
 }
@@ -1669,9 +1669,9 @@ void dScMgLuigi_c::StateCatch()
         if (v != 4)
             StartRound(-1);
         else
-            func_ov004_020b0a54(1);
+            Mg_SetSharedState(1);
     } else {
-        func_ov004_020b0a54(0x12);
+        Mg_SetSharedState(0x12);
     }
     mPromptEnabled = 0;
 }
@@ -1715,17 +1715,17 @@ void dScMgLuigi_c::StateSetup()
 extern "C" {
 /* dScMgLuigi_c::StartRound */
 extern void FreeGfxSlotsById(int arg);
-extern void func_ov004_020adb1c(int);
-extern void func_ov004_020b0cac(int, int, int, int, int, short);
+extern void Mg_SubmitScore(int);
+extern void Mg_ShowBanner(int, int, int, int, int, short);
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
 /* dScMgLuigi_c::Render */
-extern void func_ov004_020b1e34(void *c, int a, int b, int d);
+extern void Mg_DrawScoreTally(void *c, int a, int b, int d);
 /* dScMgLuigi_c::Behavior */
 extern LuigiStateHandler data_ov006_02142234[];
 /* dScMgLuigi_c::InitResources */
 extern void *data_ov006_0213cfa0;
-extern void *func_ov004_020adc74(const char *path);
+extern void *Ov004_LoadFileByPath(const char *path);
 extern void DecompressLZ16(void *src, void *dst);
 extern int LoadFile(int handle);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
@@ -1734,7 +1734,7 @@ extern int func_02054d88(void);
 extern void func_02056314(void *, u32, u32);
 extern void func_02056374(const void *, u32, u32);
 extern void Deallocate(void *);
-extern void func_ov004_020b04d0(int);
+extern void Mg_SetTopScreenYOffset(int);
 extern int data_ov004_020bc888;
 extern int data_ov004_020bc864;
 }
@@ -1761,11 +1761,11 @@ void dScMgLuigi_c::StartRound(int arg1)
         if ((unsigned int)*(int *)&unk_0bc > 0x270e)
             *(int *)&unk_0bc = 0x270e;
 
-        if (data_ov004_020beb68 != 0)
-            *(int *)((char *)data_ov004_020beb68 + 0xb4) = 0;
+        if (gMgScene != 0)
+            *(int *)((char *)gMgScene + 0xb4) = 0;
 
-        p = (char *)data_ov004_020beb68;
-        func_ov004_020adb1c(p != 0 ? *(int *)(p + 0xb4) : 0);
+        p = (char *)gMgScene;
+        Mg_SubmitScore(p != 0 ? *(int *)(p + 0xb4) : 0);
     }
 
     FreeGfxSlotsById(0x1d);
@@ -1776,13 +1776,13 @@ void dScMgLuigi_c::StartRound(int arg1)
     data_0209d45c |= 4;
     data_0209d454 &= ~4;
 
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
 }
 
 // @symbol _ZN12dScMgLuigi_c6RenderEv
 s32 dScMgLuigi_c::Render()
 {
-    func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
     DrawCurtains();
     DrawReward();
     DrawPenalties();
@@ -1812,7 +1812,7 @@ s32 dScMgLuigi_c::InitResources()
     int file;
     int objChar;
 
-    arc = func_ov004_020adc74((const char *)&data_ov006_0213cfa0);
+    arc = Ov004_LoadFileByPath((const char *)&data_ov006_0213cfa0);
     if (arc == 0) return 0;
 
     data_0209d45c |= 8;
@@ -1894,9 +1894,9 @@ s32 dScMgLuigi_c::InitResources()
 
     mState = 0;
     Ov004_Deallocate(arc);
-    func_ov004_020b04d0(0x30);
+    Mg_SetTopScreenYOffset(0x30);
     mTime = 0xa;
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     data_ov004_020bc888 = 0x80;
     data_ov004_020bc864 = ~0x1b;
     mHudScore = 0;

@@ -81,7 +81,7 @@ extern int data_ov006_0213c074[];
 extern int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int show, struct OamAttr* attr, int a, int b, int c, int d, int e, int f);
 extern unsigned char DecIfAbove0_Byte(unsigned char *counter);
 extern int func_02053200(int x);
-extern int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
+extern int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern int data_0209e650;
 extern RoundRow data_ov006_0213c094[];
 extern s16 data_ov006_0213c0f4[];
@@ -90,14 +90,14 @@ extern IdxPair data_ov006_0213c0c4[];
 extern RestPos data_ov006_0213c0a8[];
 extern RestPos data_ov006_0213c0ac[];
 extern int RandomIntInternal(int *seed);
-extern void func_ov004_020b0a54(int c);
+extern void Mg_SetSharedState(int c);
 extern void func_ov006_020def80(char *self, int i);
 extern void func_ov006_020c2594(void *c);
-extern void func_ov004_020b1b78(void *c, int val);
+extern void Mg_SubLives(void *c, int val);
 extern void func_ov006_020c2664(char *c);
 extern void func_ov006_020c2440(char *c);
 extern void func_02012790(int x);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void func_ov006_020deaf0(char* p, int key, int a, int b);
@@ -112,8 +112,8 @@ struct P8 { int a; int b; };
 void func_ov006_020debb4(char *a, int b);
 void func_ov006_020deed8(int a0, void *a1, int a2, int a3, int a4, int a5);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-void func_ov004_020b2574(int arg0, int arg1);
-void func_ov004_020b1e34(void *a, int b, int c, int d);
+void Mg_DrawStockCounter(int arg0, int arg1);
+void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
 extern PMF data_ov006_02141870[];
 /* The ROM PMF constants the table copies from (unlicensed .data). */
@@ -324,7 +324,7 @@ extern "C" void func_ov006_020deed8(int scene, void *list, int x, int y, int sca
     scale = func_02053200(scale);
 
     for (;;) {
-        int oam = func_ov004_020af770((int)entry, sx, sy, -1, -1, scale, 0);
+        int oam = Mg_RenderSubSpriteScaled((int)entry, sx, sy, -1, -1, scale, 0);
         if (oam != 0) {
             if (mode == 2) {
                 /* Loaded as one word; the shifts keep attr2 bits 12..15, the palette. */
@@ -462,13 +462,13 @@ void dScMgCup_c::StateFinish()
     if (mCorrect != 0) {
         if (mHudScore < 0x270f) mHudScore += 1;
         if (mHudScore > unk_0b8) unk_0b8 = mHudScore;
-        func_ov004_020b0a54(0);
+        Mg_SetSharedState(0);
         mState = 7;
     } else {
         if (unk_0a8 > 0) {
             StartRound(-1);
         } else {
-            func_ov004_020b0a54(0x12);
+            Mg_SetSharedState(0x12);
             mState = 7;
         }
     }
@@ -496,7 +496,7 @@ void dScMgCup_c::StateResult()
         func_ov006_020c2594(&mModel);
         score++;
     } else {
-        func_ov004_020b1b78(this, 1);
+        Mg_SubLives(this, 1);
         if (unk_0a8 > 0) {
             mTimer = 0x96;
             func_ov006_020c2664((char *)&mModel);
@@ -506,7 +506,7 @@ void dScMgCup_c::StateResult()
         }
         func_02012790(0x12f);
     }
-    func_ov004_020adb1c(score);
+    Mg_SubmitScore(score);
     mState = 6;
     mPromptEnabled = 0;
 }
@@ -573,7 +573,7 @@ void dScMgCup_c::StateWaitForInput()
     mTimer -= 1;
     if (mTimer > 0)
         return;
-    func_ov004_020b0cac(0xf, 0x80, 0x38, 0, -1, 0xd);
+    Mg_ShowBanner(0xf, 0x80, 0x38, 0, -1, 0xd);
     mState = 4;
 }
 
@@ -845,7 +845,7 @@ void dScMgCup_c::StartRound(int msg)
             mHudScore = 0;
         } else {
             mHudScore = 0;
-            func_ov004_020adb1c(mHudScore);
+            Mg_SubmitScore(mHudScore);
         }
         unk_0a8 = 2;
         unk_0ac = unk_0a8;
@@ -886,7 +886,7 @@ void dScMgCup_c::StartRound(int msg)
     if (unk_0bc > 0x270e) {
         unk_0bc = 0x270e;
     }
-    func_ov004_020b0cac(0xd, 0x80, 0xa0, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa0, 1, -1, 0xd);
 }
 #pragma pop
 
@@ -935,8 +935,8 @@ s32 dScMgCup_c::Render()
             (mTargetContent == 2) ? 4 : -1, -1);
     }
 
-    func_ov004_020b2574(unk_0a8, 1);
-    func_ov004_020b1e34(raw, 0xe0, 0x14, 1);
+    Mg_DrawStockCounter(unk_0a8, 1);
+    Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
     func_ov006_020c29dc((char *)&mModel);
     return 1;
 }

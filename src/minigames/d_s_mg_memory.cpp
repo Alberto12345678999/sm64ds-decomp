@@ -61,8 +61,8 @@ namespace GX { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 namespace GXS { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 
 extern "C" {
-extern void func_ov004_020b1e34(void* c, int a, int b, int d);
-extern void func_ov004_020b0d8c(void *c, int arg1, int arg2);
+extern void Mg_DrawScoreTally(void* c, int a, int b, int d);
+extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 /* cstd::atan2 takes Fix12<int> by value, which mwccarm passes differently
  * from these plain ints, so it keeps its mangled name. */
 extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
@@ -73,21 +73,21 @@ extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 data_ov006_0213d168[];
 extern void *data_ov006_0214236c[];
 extern unsigned short data_ov006_0213d0a8[];
-extern void func_ov004_020ad79c(int a, int b);
+extern void Mg_SaveRecordPair(int a, int b);
 extern s16 data_02082214[];
 extern u16* data_ov006_0213d09c[];
 extern int func_ov004_020b56c8(int);
 extern short data_ov004_020bf9e4;
 extern void func_ov004_020b67f8(void);
-extern void func_ov004_020b0a54(int c);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SetSharedState(int c);
+extern void Mg_SubmitScore(int self);
 extern void func_ov006_020c0c80(void *c);
 extern void func_ov006_020c1604(char *c, int unused, short count, int ready);
 extern int data_0209d4b8;
 extern int RandomIntInternal(int *seed);
 extern void FreeGfxSlotsById(int x);
 void func_ov006_020c0aa8(char *p);
-void func_ov004_020b1bc8(char *c, int a, int b, int d);
+void Mg_DrawLives(char *c, int a, int b, int d);
 void func_ov006_020c1804(char *p);
 void func_ov004_020b65e4(void);
 int func_ov006_020c19d0(void *p);
@@ -97,11 +97,11 @@ void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *ptr);
 int func_ov006_020c1a88(void *c);
-int func_ov004_020ad8b8(void);
-int func_ov004_020ad878(void);
+int Mg_GetSavedRecord0(void);
+int Mg_GetSavedRecord1(void);
 void func_ov004_020b66d4(void);
 int func_ov006_020c1718(int *p);
-void func_ov004_020b04d0(int v);
+void Mg_SetTopScreenYOffset(int v);
 void func_ov004_020b682c(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
@@ -128,12 +128,12 @@ dScMgMemory_c::~dScMgMemory_c()
 
 void dScMgMemory_c::DrawMessage(){
   if (mMessageVisible == 0) return;
-  func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+  Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
 }
 
 void dScMgMemory_c::DrawCursor() {
     if (mCursor.enabled == 0) return;
-    func_ov004_020b0d8c(this, 0xe0, 0xa0);
+    Mg_DrawBlinkSprite(this, 0xe0, 0xa0);
 }
 
 void dScMgMemory_c::UpdateCursor()
@@ -234,8 +234,8 @@ void dScMgMemory_c::InitPlayers()
     int i;
     int stagger;
 
-    if (data_ov004_020beb68 != 0)
-        count = *(int *)((char *)data_ov004_020beb68 + 0xa8);
+    if (gMgScene != 0)
+        count = *(int *)((char *)gMgScene + 0xa8);
     else
         count = 0;
     if (count >= 3)
@@ -270,14 +270,14 @@ void dScMgMemory_c::CheckFinished()
     mSubstate = 0;
     /* Read unk_0a8 through WordAt: as a plain member the multiply-add takes
        its registers the other way round. */
-    func_ov004_020ad79c(*WordAt((char *)&unk_0a8) + (3 - mMisses) * 6, mHudScore + 1);
+    Mg_SaveRecordPair(*WordAt((char *)&unk_0a8) + (3 - mMisses) * 6, mHudScore + 1);
   }
   if (mMisses >= mMaxMisses)
   {
     mResultTimer = 0x40;
     mState = 3;
     mSubstate = 0;
-    func_ov004_020ad79c(unk_0a8, mHudScore - 1);
+    Mg_SaveRecordPair(unk_0a8, mHudScore - 1);
   }
 }
 
@@ -498,7 +498,7 @@ void dScMgMemory_c::CardSelect(int card)
         return;
     }
     ++mInputSeen;
-    func_ov004_020ad79c(unk_0a8, mHudScore);
+    Mg_SaveRecordPair(unk_0a8, mHudScore);
 }
 
 void dScMgMemory_c::CardIdle(int /* card */)
@@ -671,17 +671,17 @@ void dScMgMemory_c::ResultWait()
             if (mPairsFound >= mTargetPairs) {
                 if (mMisses == 0)
                     func_ov004_020b67f8();
-                func_ov004_020b0a54(4);
+                Mg_SetSharedState(4);
                 if (mHudScore < 0x270f) {
                     int *score = &mHudScore;
                     *score += 1;
                 }
                 if (mHudScore > unk_0b8)
                     unk_0b8 = mHudScore;
-                func_ov004_020adb1c(data_ov004_020beb68 ? *(int *)((char *)data_ov004_020beb68 + 0xb4) : 0);
+                Mg_SubmitScore(gMgScene ? *(int *)((char *)gMgScene + 0xb4) : 0);
                 func_ov006_020c0c80(&mShared);
             } else {
-                func_ov004_020b0a54(5);
+                Mg_SetSharedState(5);
                 if (mHudScore > 0) {
                     int *score = &mHudScore;
                     *score -= 1;
@@ -1029,7 +1029,7 @@ void dScMgMemory_c::StartRound(int /* arg */)
     int lives;
     ResetGame();
     mState = 0;
-    meter = (char *)data_ov004_020beb68;
+    meter = (char *)gMgScene;
     lives = 0;
     if (meter != 0) lives = *(int *)(meter + 0xa8);
     if (lives >= 3) lives = 3;
@@ -1043,7 +1043,7 @@ void dScMgMemory_c::StartRound(int /* arg */)
 s32 dScMgMemory_c::Render()
 {
     func_ov006_020c0aa8((char *)pad_4660);
-    func_ov004_020b1bc8((char *)this, 0xc, 0xc, 0);
+    Mg_DrawLives((char *)this, 0xc, 0xc, 0);
     func_ov004_020b6430();
     DrawMessage();
     DrawCursor();
@@ -1084,13 +1084,13 @@ s32 dScMgMemory_c::InitResources()
     func_ov006_020c0aa8((char *)pad_4660);
     if (func_ov006_020c1a88(&mShared) == 0)
         return 0;
-    unk_0a8 = func_ov004_020ad8b8();
+    unk_0a8 = Mg_GetSavedRecord0();
     unk_0ac = unk_0a8;
-    mHudScore = func_ov004_020ad878();
+    mHudScore = Mg_GetSavedRecord1();
     func_ov004_020b66d4();
     data_ov004_020bc7d4 = 1;
     mMaxMisses = 3;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov004_020b682c();
     return 1;
 }

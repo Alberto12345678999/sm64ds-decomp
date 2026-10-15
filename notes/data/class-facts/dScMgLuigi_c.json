@@ -1481,7 +1481,7 @@
       {
         "module": "ov004",
         "address": "0x020af948",
-        "symbol": "func_ov004_020af948",
+        "symbol": "Mg_RenderSubSpriteMtx",
         "sites": 6
       }
     ]

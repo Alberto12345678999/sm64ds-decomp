@@ -70,12 +70,12 @@ extern int data_ov004_020bf9ec;
 extern unsigned int func_02012790(unsigned int a);
 extern int func_0203d5dc(void *a, void *b);
 extern int data_ov006_02133f18;
-extern void func_ov004_020b1ea4(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 void func_ov006_020c0aa8(void* p);
-void func_ov004_020b1bc8(char* a0, int a1, int a2, int a3);
+void Mg_DrawLives(char* a0, int a1, int a2, int a3);
 void func_ov004_020b6430(void);
-void func_ov004_020b1e34(char* a0, int a1, int a2, int a3);
+void Mg_DrawScoreTally(char* a0, int a1, int a2, int a3);
 void func_ov006_020c1804(void* p);
 int func_ov006_020c1718(void* p);
 void func_ov004_020b65e4(void);
@@ -133,7 +133,7 @@ s32 dScMgMCarlo_c::InitResources()
     void *chr;
     void *pal;
 
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov006_0210a534(this);
     chr = (void *)LoadFile(data_ov006_0213d5b4[GetGameLanguage()]);
     pal = (void *)LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
@@ -150,11 +150,11 @@ s32 dScMgMCarlo_c::InitResources()
     if (func_ov006_020c1a88((char *)&mShared) == 0) return 0;
 
     func_ov004_020b682c();
-    unk_0a8 = func_ov004_020ad8b8();
+    unk_0a8 = Mg_GetSavedRecord0();
     unk_0ac = unk_0a8;
     {
-        int score = func_ov004_020ad878();
-        if (data_ov004_020beb68 != 0) ((dScMgBase_c *)data_ov004_020beb68)->mHudScore = score;
+        int score = Mg_GetSavedRecord1();
+        if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = score;
     }
     StartRound(-1);
     this->unk_60aa = 0;
@@ -233,7 +233,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
         break;
     }
     case 7: {
-        dScMgBase_c *active = (dScMgBase_c *)data_ov004_020beb68;
+        dScMgBase_c *active = (dScMgBase_c *)gMgScene;
         if ((active != 0 ? active->unk_0a8 : 0) != 0)
             return 1;
         dScMgMCarlo_c::FlipDealtCards();
@@ -251,7 +251,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
 
 // @symbol _ZN13dScMgMCarlo_c8BehaviorEv
 /* Slot 6: the round, on the s16 state at unk_60a8. Case 1 arms the prompt
- * blink and falls through into case 2 on purpose. data_ov004_020beb68 is
+ * blink and falls through into case 2 on purpose. gMgScene is
  * the active scene (dScMgBase_c.h declares it void *), so it is cast at
  * each use. */
 s32 dScMgMCarlo_c::Behavior()
@@ -305,27 +305,27 @@ s32 dScMgMCarlo_c::Behavior()
                             mShared.unk_01a = 0;
                         } else if (func_ov006_020c16b4(&mShared) != 0) {
                             {
-                                dScMgBase_c *active = (dScMgBase_c *)data_ov004_020beb68;
+                                dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                                 if (active != 0) {
                                     if (active->mHudScore > 0)
                                         active->mHudScore = active->mHudScore - 1;
                                 }
                             }
                             func_ov006_020c0d68(&mShared);
-                            func_ov004_020b0a54(5);
+                            Mg_SetSharedState(5);
                             {
                                 int dealt = data_ov006_0213d570;
-                                dScMgBase_c *active = (dScMgBase_c *)data_ov004_020beb68;
+                                dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                                 int left = ((active != 0) ? active->unk_0a8 : 0) - dealt;
                                 int score = (active != 0) ? active->mHudScore : 0;
-                                func_ov004_020ad79c(left, score);
+                                Mg_SaveRecordPair(left, score);
                             }
                             mPromptEnabled = 0;
                             unk_60a8++;
                         }
                     } else {
                         {
-                            dScMgBase_c *active = (dScMgBase_c *)data_ov004_020beb68;
+                            dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                             if (active != 0) {
                                 if (active->mHudScore < 0x270f)
                                     active->mHudScore = active->mHudScore + 1;
@@ -333,13 +333,13 @@ s32 dScMgMCarlo_c::Behavior()
                                     active->unk_0b8 = active->mHudScore;
                             }
                         }
-                        func_ov004_020adb1c(mHudScore);
+                        Mg_SubmitScore(mHudScore);
                         func_ov006_020c0c80(&mShared);
-                        func_ov004_020b0a54(4);
+                        Mg_SetSharedState(4);
                         {
-                            dScMgBase_c *active = (dScMgBase_c *)data_ov004_020beb68;
+                            dScMgBase_c *active = (dScMgBase_c *)gMgScene;
                             int base = (active != 0) ? active->unk_0a8 : 0;
-                            func_ov004_020ad79c(data_ov006_0213d568 + base,
+                            Mg_SaveRecordPair(data_ov006_0213d568 + base,
                                                 (active != 0) ? active->mHudScore : 0);
                         }
                         mPromptEnabled = 0;
@@ -364,9 +364,9 @@ s32 dScMgMCarlo_c::Behavior()
 s32 dScMgMCarlo_c::Render()
 {
     func_ov006_020c0aa8(pad_4660);
-    func_ov004_020b1bc8((char *)this, 0xc, 0xc, 0);
+    Mg_DrawLives((char *)this, 0xc, 0xc, 0);
     func_ov004_020b6430();
-    func_ov004_020b1e34((char *)this, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally((char *)this, 0xe0, 0x14, 1);
 
     {
         dMgMCarloCardObj_c *n = data_ov006_02142504;
@@ -405,7 +405,7 @@ void dScMgMCarlo_c::RenderHud(void)
 {
     int deck = data_ov006_0213d56c;
     if (deck == 0) return;
-    func_ov004_020b1ea4(0xe8, 0x28, deck, -1, -1, 0, 0);
+    Mg_DrawNumber(0xe8, 0x28, deck, -1, -1, 0, 0);
     Hud_RenderSprite((void*)data_ov006_02133f18, 0xe8, 0x18, -1, -1);
 }
 
@@ -682,7 +682,7 @@ void dScMgMCarlo_c::SetupBoard(dMgMCarloCardObj_c *cards)
     dMgMCarloCardObj_c *linkTail;
     dMgMCarloCardObj_c *savedNext;
 
-    active = (dScMgBase_c *)data_ov004_020beb68;
+    active = (dScMgBase_c *)gMgScene;
     stars = (active != 0) ? active->mHudScore : 0;
 
     if (stars < 5) {

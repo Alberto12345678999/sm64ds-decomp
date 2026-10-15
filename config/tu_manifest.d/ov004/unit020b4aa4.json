@@ -326,7 +326,7 @@
   "bss": [],
   "notes": [
     "Text only: this unit's .data (0x020bc7d0..0x020bc83c) and .bss (0x020bf9e4..0x020bfa56) stay ROM-owned and are reached by extern, as the one-function sources did; __sinit_ov004_020b9ad0 stays its own enrolled source.",
-    "Folded from 43 one-function sources. The per-source extern declarations disagreed on type for a handful of symbols (data_ov004_020bfa20, data_ov004_020bfa34, data_ov004_020beb68, the ApproachLinear / Vec2_Sub spellings); the single declaration set in the unit source picks one type each and the bodies cast to match. ApproachLinear and ApproachLinear2 are declared as the C++ overloads (int&, int, int) and (short&, short, short), which mangle to the ROM's _Z14ApproachLinearRiii and _Z15ApproachLinear2Rsss.",
+    "Folded from 43 one-function sources. The per-source extern declarations disagreed on type for a handful of symbols (data_ov004_020bfa20, data_ov004_020bfa34, gMgScene, the ApproachLinear / Vec2_Sub spellings); the single declaration set in the unit source picks one type each and the bodies cast to match. ApproachLinear and ApproachLinear2 are declared as the C++ overloads (int&, int, int) and (short&, short, short), which mangle to the ROM's _Z14ApproachLinearRiii and _Z15ApproachLinear2Rsss.",
     "Struct copies of the entry templates go through structs whose only member is an int[2]; plain {int a, b} structs scalarize under C++ and miss the ROM's block move by two words in eight functions."
   ],
   "verification": {

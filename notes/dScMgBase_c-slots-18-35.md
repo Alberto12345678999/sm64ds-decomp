@@ -327,7 +327,7 @@ base declaration and the [ov004](../config/arm9/overlays/ov004/symbols.txt) base
 **Where the base bodies for slots 31, 32 and 33 live.** They (0x020b2880, 0x020b27f4, 0x020b265c) are
 members of the promoted dScMgBase_c TU, `src/minigames/d_s_mg_base.cpp`
 ([config/tu_manifest.d/ov004/dScMgBase_c.json](../config/tu_manifest.d/ov004/dScMgBase_c.json)).
-They were folded in with the rest of the unit above func_ov004_020b2220 once that function
+They were folded in with the rest of the unit above Mg_DrawNumberRotated once that function
 byte-matched, so the TU now covers the whole ov004 unit 0x020ad660..0x020b2c58. The
 `src_tu/` candidate unit `unit020b0a38` that used to span the hole was retired earlier, so
 there is no stale shadow to regenerate.

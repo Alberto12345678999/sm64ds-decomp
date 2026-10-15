@@ -15,7 +15,7 @@
  * - ResultWait decrements mResultTimer as (int)this+0x53e4.
  * - func_ov006_020c0aa8 sets the camera at this+0x4660 and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
- * - func_ov004_020b1e34, func_ov004_020ad79c and func_ov006_020c1a88
+ * - Mg_DrawScoreTally, Mg_SaveRecordPair and func_ov006_020c1a88
  *   stay the linker names. Their bodies are not in this file.
  */
 
@@ -91,8 +91,8 @@ namespace GX { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 namespace GXS { void LoadOBJPltt(void const *, unsigned int, unsigned int); }
 
 extern "C" {
-extern void func_ov004_020b1e34(void *thiz, int a, int b, int c);
-extern void func_ov004_020b0d8c(void *c, int arg1, int arg2);
+extern void Mg_DrawScoreTally(void *thiz, int a, int b, int c);
+extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern s16 data_02082214[];
 extern "C" unsigned int func_02012790(unsigned int x);
@@ -102,15 +102,15 @@ extern u16 data_ov006_0213d45c[];
 extern void *data_ov006_02142490[];
 extern s32 data_ov006_0212e930[];
 extern unsigned short data_ov006_0213d344[];
-extern void func_ov004_020ad79c(int a, int b);
+extern void Mg_SaveRecordPair(int a, int b);
 extern u16* data_ov006_0213d338[];
 extern int data_ov006_0212e8e8[];
 extern int data_ov006_0212e8f4[];
 extern void func_ov004_020b56c8(char* p);
 extern short data_ov004_020bf9e4;
 extern void func_ov004_020b67f8(void);
-extern void func_ov004_020b0a54(int);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SetSharedState(int);
+extern void Mg_SubmitScore(int self);
 extern void func_ov006_020c0c80(void *c);
 extern void func_ov006_020c0d68(void *c);
 extern void func_ov006_020c1604(char *c, int unused, short count, int ready);
@@ -127,7 +127,7 @@ extern void func_ov006_020c1764(char *p);
 extern int func_ov006_020c1718(int* p);
 extern void func_ov004_020b66d4(void);
 void func_ov006_020c0aa8(char *);
-void func_ov004_020b1bc8(char *, int, int, int);
+void Mg_DrawLives(char *, int, int, int);
 void func_ov006_020c1804(char *);
 extern "C" void func_ov004_020b65e4(void);
 extern "C" void func_ov006_020c19d0(char *p);
@@ -137,9 +137,9 @@ void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *ptr);
 int func_ov006_020c1a88(void *c);
-int func_ov004_020ad8b8(void);
-int func_ov004_020ad878(void);
-void func_ov004_020b04d0(int v);
+int Mg_GetSavedRecord0(void);
+int Mg_GetSavedRecord1(void);
+void Mg_SetTopScreenYOffset(int v);
 void func_ov004_020b682c(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
@@ -159,12 +159,12 @@ dScMgMemory2_c::~dScMgMemory2_c()
 void dScMgMemory2_c::DrawMessage()
 {
     if (mMessageVisible == 0) return;
-    func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
 }
 
 void dScMgMemory2_c::DrawCursor() {
     if (mCursor.enabled == 0) return;
-    func_ov004_020b0d8c(this, 0xe0, 0xa0);
+    Mg_DrawBlinkSprite(this, 0xe0, 0xa0);
 }
 
 void dScMgMemory2_c::UpdateCursor() {
@@ -253,8 +253,8 @@ void dScMgMemory2_c::InitPlayers()
     int delay;
     char *entry;
 
-    if (data_ov004_020beb68 != 0)
-        count = *(int *)((char *)data_ov004_020beb68 + 0xa8);
+    if (gMgScene != 0)
+        count = *(int *)((char *)gMgScene + 0xa8);
     else
         count = 0;
     if (count >= 5)
@@ -278,7 +278,7 @@ void dScMgMemory2_c::InitPlayers()
 }
 
 /* inline_fn stays: reading unk_0a8 and mHudScore directly changes the code. */
-void func_ov004_020ad79c(int r0arg, int r1arg);
+void Mg_SaveRecordPair(int r0arg, int r1arg);
 inline int *inline_fn(char *arg0)
 {
   return (int *) arg0;
@@ -292,14 +292,14 @@ void dScMgMemory2_c::CheckFinished()
     mResultTimer = 0x40;
     mState = 3;
     mSubstate = 0;
-    func_ov004_020ad79c(((5 - mMisses) * 5) + (*inline_fn(raw + 0xa8)), (*inline_fn(raw + 0xb4)) + 1);
+    Mg_SaveRecordPair(((5 - mMisses) * 5) + (*inline_fn(raw + 0xa8)), (*inline_fn(raw + 0xb4)) + 1);
   }
   if (mMisses >= mMaxMisses)
   {
     mResultTimer = 0x40;
     mState = 3;
     mSubstate = 0;
-    func_ov004_020ad79c(*inline_fn(raw + 0xa8), (*inline_fn(raw + 0xb4)) - 1);
+    Mg_SaveRecordPair(*inline_fn(raw + 0xa8), (*inline_fn(raw + 0xb4)) - 1);
   }
 }
 
@@ -492,7 +492,7 @@ void dScMgMemory2_c::CardSelect(int idx)
         u8 *pd = &mInputSeen;
         *pd = *pd + 1;
     }
-    func_ov004_020ad79c(unk_0a8, mHudScore);
+    Mg_SaveRecordPair(unk_0a8, mHudScore);
 }
 
 void dScMgMemory2_c::CardIdle(int /* card */)
@@ -663,22 +663,22 @@ void dScMgMemory2_c::ResultWait()
     if (mPairsFound >= mTargetPairs) {
         if (mMisses == 0)
             func_ov004_020b67f8();
-        func_ov004_020b0a54(4);
-        p = (struct B *)data_ov004_020beb68;
+        Mg_SetSharedState(4);
+        p = (struct B *)gMgScene;
         if (p != 0) {
             if (p->b4 < 0x270f)
                 p->b4 += 1;
             if (p->b4 > p->b8)
                 p->b8 = p->b4;
         }
-        func_ov004_020adb1c(data_ov004_020beb68 != 0
-            ? ((struct B *)data_ov004_020beb68)->b4 : 0);
+        Mg_SubmitScore(gMgScene != 0
+            ? ((struct B *)gMgScene)->b4 : 0);
         func_ov006_020c0c80(&mShared);
         return;
     }
 
-    func_ov004_020b0a54(5);
-    p = (struct B *)data_ov004_020beb68;
+    Mg_SetSharedState(5);
+    p = (struct B *)gMgScene;
     if (p != 0) {
         if (p->b4 > 0)
             p->b4 -= 1;
@@ -1210,7 +1210,7 @@ void dScMgMemory2_c::StartRound(int /* arg */)
     int v;
     ResetGame();
     mState = 0;
-    o = (char *)data_ov004_020beb68;
+    o = (char *)gMgScene;
     v = 0;
     if (o != 0) v = *(int *)(o + 0xa8);
     if (v >= 5) v = 5;
@@ -1226,7 +1226,7 @@ s32 dScMgMemory2_c::Render()
 {
     /* pad_4660 is the minigame camera, in dScMgSingle3DBase_c's padding. */
     func_ov006_020c0aa8((char *)pad_4660);
-    func_ov004_020b1bc8((char *)this, 0xc, 0xc, 0);
+    Mg_DrawLives((char *)this, 0xc, 0xc, 0);
     func_ov004_020b6430();
     DrawMessage();
     DrawCursor();
@@ -1272,13 +1272,13 @@ s32 dScMgMemory2_c::InitResources()
     /* 0x4660..0x471c is dScMgSingle3DBase_c's minigame camera. */
     func_ov006_020c0aa8((char *)this + 0x4660);
     if (func_ov006_020c1a88(&mShared) == 0) return 0;
-    unk_0a8 = func_ov004_020ad8b8();
+    unk_0a8 = Mg_GetSavedRecord0();
     unk_0ac = unk_0a8;
-    mHudScore = func_ov004_020ad878();
+    mHudScore = Mg_GetSavedRecord1();
     func_ov004_020b66d4();
     data_ov004_020bc7d4 = 1;
     mMaxMisses = 5;
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov004_020b682c();
     return 1;
 }

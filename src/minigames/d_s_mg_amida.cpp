@@ -80,9 +80,9 @@ enum dScMgAmida_c_AssetId {
 
 extern "C" {
 /* --- shared ov004 and main helpers --- */
-extern void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4);
-extern void func_ov004_020b1e34(void *a0, int a1, int a2, int a3);
-extern int  func_ov004_020ae5c4(void *a, int b, int c, int d, int e, int f, int g);
+extern void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4);
+extern void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
+extern int  Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern void MultiCopyHalf(void *dst, void *src, int nbytes);
 extern void *_ZN2G212GetBG3ScrPtrEv(void);  /* decl_common.h declares a data array named G2 */
 extern void MultiStore16(u16 val, void *dst, int nbytes);
@@ -622,7 +622,7 @@ void dScMgAmida_c::HandlePen()
             this->mPenTapped = 1;
             return;
         }
-        func_ov004_020ae5c4(this, oldX, oldY, this->mPen.x, this->mPen.y, this->unk_53e4, 1);
+        Mg_DrawLine(this, oldX, oldY, this->mPen.x, this->mPen.y, this->unk_53e4, 1);
         if (this->mPenTapped == 1) {
             this->mPenSoundHandle = func_02012468(this->mPenSoundHandle, 2, 0xde, 4, 0, 0, func_020126e8(this->mPen.x << 12), 0);
             return;
@@ -793,13 +793,13 @@ void dScMgAmida_c::HandlePen()
                 if (hit == 0) {
                     ClearStroke();
                     this->mLineCommit = 1;
-                    func_ov004_020ae5c4(this, a.x, a.y, b.x, b.y, this->unk_53e4, 1);
+                    Mg_DrawLine(this, a.x, a.y, b.x, b.y, this->unk_53e4, 1);
                     if (a.x < b.x) {
-                        func_ov004_020ae5c4(this, a.x - 1, a.y, a.x - 1, a.y, this->unk_53e4, 1);
-                        func_ov004_020ae5c4(this, b.x + 1, b.y, b.x + 1, b.y, this->unk_53e4, 1);
+                        Mg_DrawLine(this, a.x - 1, a.y, a.x - 1, a.y, this->unk_53e4, 1);
+                        Mg_DrawLine(this, b.x + 1, b.y, b.x + 1, b.y, this->unk_53e4, 1);
                     } else {
-                        func_ov004_020ae5c4(this, a.x + 1, a.y, a.x + 1, a.y, this->unk_53e4, 1);
-                        func_ov004_020ae5c4(this, b.x - 1, b.y, b.x - 1, b.y, this->unk_53e4, 1);
+                        Mg_DrawLine(this, a.x + 1, a.y, a.x + 1, a.y, this->unk_53e4, 1);
+                        Mg_DrawLine(this, b.x - 1, b.y, b.x - 1, b.y, this->unk_53e4, 1);
                     }
                     this->mLineCommit = 0;
                     func_ov006_020d3668(this);
@@ -838,7 +838,7 @@ int dScMgAmida_c::ProbeRung(Point p1, Point p2)
     lo = p1.x;
     this->mPrev.x = lo;
     this->mPrev.y = hi;
-    func_ov004_020ae5c4(this, p1.x, p1.y, p2.x, p2.y, this->unk_53e4, 1);
+    Mg_DrawLine(this, p1.x, p1.y, p2.x, p2.y, this->unk_53e4, 1);
     this->mProbeMode = 0;
     return this->mProbeHit;
 }
@@ -1545,7 +1545,7 @@ void dScMgAmida_c::SetupRound()
     mRoundCount = 0;
     InitWalkers();
     ShuffleGoals( *(int *)(data_ov006_0212e1ac + mPatternIndex * 0x1c));
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     mSetupInk = 1;
     mLineCount = 1;
@@ -1562,15 +1562,15 @@ void dScMgAmida_c::SetupRound()
     }
 
     if (Unk36() != 0) {
-        func_ov004_020ae5c4(this, 0x20, -0xb4, 0x20, mLineEndY, unk_53e4, 1);
-        func_ov004_020ae5c4(this, 0x60, -0xb4, 0x60, mLineEndY, unk_53e4, 1);
-        func_ov004_020ae5c4(this, 0xa0, -0xb4, 0xa0, mLineEndY, unk_53e4, 1);
-        func_ov004_020ae5c4(this, 0xe0, -0xb4, 0xe0, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0x20, -0xb4, 0x20, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0x60, -0xb4, 0x60, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0xa0, -0xb4, 0xa0, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0xe0, -0xb4, 0xe0, mLineEndY, unk_53e4, 1);
     } else {
-        func_ov004_020ae5c4(this, 0x20, -0xd4, 0x20, mLineEndY, unk_53e4, 1);
-        func_ov004_020ae5c4(this, 0x60, -0xd4, 0x60, mLineEndY, unk_53e4, 1);
-        func_ov004_020ae5c4(this, 0xa0, -0xd4, 0xa0, mLineEndY, unk_53e4, 1);
-        func_ov004_020ae5c4(this, 0xe0, -0xd4, 0xe0, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0x20, -0xd4, 0x20, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0x60, -0xd4, 0x60, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0xa0, -0xd4, 0xa0, mLineEndY, unk_53e4, 1);
+        Mg_DrawLine(this, 0xe0, -0xd4, 0xe0, mLineEndY, unk_53e4, 1);
     }
 
     mLineCount++;
@@ -1653,7 +1653,7 @@ void dScMgAmida_c::SetupRound()
                 if (skip[i] == 0) {
                     int x = rungs[i].a;
                     int y = rungs[i].b - 0x20;
-                    func_ov004_020ae5c4(this, x, y, x + 0x40, y, unk_53e4, 1);
+                    Mg_DrawLine(this, x, y, x + 0x40, y, unk_53e4, 1);
                 }
             }
             break;
@@ -1665,7 +1665,7 @@ void dScMgAmida_c::SetupRound()
                 if (skip[i] == 0) {
                     int x = rungs[i].a;
                     int y = rungs[i].b - 0x20;
-                    func_ov004_020ae5c4(this, x, y, x + 0x40, y, unk_53e4, 1);
+                    Mg_DrawLine(this, x, y, x + 0x40, y, unk_53e4, 1);
                 }
             }
             break;
@@ -1679,9 +1679,9 @@ void dScMgAmida_c::SetupRound()
     if (Unk36() == 0) {
         int v = *(int *)(data_ov006_0212e1b8 + mPatternIndex * 0x1c);
         if (v != 0 && v == 1) {
-            func_ov004_020ae5c4(this, 0x60, 0x2d, 0xa0, 0x2d, unk_53e4, 1);
-            func_ov004_020ae5c4(this, 0x20, 0x5a, 0x60, 0x5a, unk_53e4, 1);
-            func_ov004_020ae5c4(this, 0xa0, 0x5a, 0xe0, 0x5a, unk_53e4, 1);
+            Mg_DrawLine(this, 0x60, 0x2d, 0xa0, 0x2d, unk_53e4, 1);
+            Mg_DrawLine(this, 0x20, 0x5a, 0x60, 0x5a, unk_53e4, 1);
+            Mg_DrawLine(this, 0xa0, 0x5a, 0xe0, 0x5a, unk_53e4, 1);
         }
     }
 
@@ -1700,7 +1700,7 @@ void dScMgAmida_c::SetupRound()
     *(s32 *)(raw + 0x5370) = 1;
     *(volatile u16 *)0x04000050 = 0;
     _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x04001050, 4, 8, 6, 0x10);
-    func_ov004_020b0cac(0xd, 0x80, 0x60, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
 
     mStartBannerTimer = 0x3c;
     mState = 1;
@@ -1772,7 +1772,7 @@ void dScMgAmida_c::RenderBoard()
                 if (*animFrame >= 14)
                     *animFrame = 0;
             }
-            func_ov004_020afdd0(data_ov006_0213a458[mLaneAnimFrame[i]],
+            Mg_RenderSpriteBoth(data_ov006_0213a458[mLaneAnimFrame[i]],
                                 mLanePos[i][0] >> 12,
                                 (mLanePos[i][1] >> 12) - 4,
                                 noPalette, 0);
@@ -1808,21 +1808,21 @@ void dScMgAmida_c::RenderBoard()
                 }
             }
             *(T13 *)frames = *(T13 *)data_ov006_0213b84c;
-            func_ov004_020afdd0(data_ov006_0213a390[frames[*frame]],
+            Mg_RenderSpriteBoth(data_ov006_0213a390[frames[*frame]],
                                 y, 0xb8, noPalette, 0);
         }
     }
     {
         int j;
         for (j = 0; j < mWalkerCount; j++) {
-            func_ov004_020afdd0(data_ov006_0213a32c,
+            Mg_RenderSpriteBoth(data_ov006_0213a32c,
                                 mWalkerCell[j][0],
                                 mWalkerCell[j][1],
                                 -1, 0);
         }
     }
-    func_ov004_020afdd0(data_ov006_0213a35c, 8, 0x60, -1, 0);
-    func_ov004_020afdd0(data_ov006_0213a35c, 0xf8, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(data_ov006_0213a35c, 8, 0x60, -1, 0);
+    Mg_RenderSpriteBoth(data_ov006_0213a35c, 0xf8, 0x60, -1, 0);
 }
 #pragma pop
 
@@ -1836,10 +1836,10 @@ void dScMgAmida_c::RenderBoardAlt(){
   int j;
   int x;
   if(mHurry==0){
-    func_ov004_020afdd0((void*)data_ov006_0213a338[0],0x80,0xb0,noPalette,0);
+    Mg_RenderSpriteBoth((void*)data_ov006_0213a338[0],0x80,0xb0,noPalette,0);
   }
   for(i=0;i<4;i++){
-    func_ov004_020afdd0((void*)data_ov006_0213a568[mLaneWants[i]],
+    Mg_RenderSpriteBoth((void*)data_ov006_0213a568[mLaneWants[i]],
                         mWalkerCell[i][0],
                         mWalkerCell[i][1],
                         noPalette,0);
@@ -1847,7 +1847,7 @@ void dScMgAmida_c::RenderBoardAlt(){
   j = 0;
   x = 0x20;
   for(; j < 4; x += 0x40, j++){
-    func_ov004_020afdd0((void*)data_ov006_0213a4c0[mLaneResult[j]],
+    Mg_RenderSpriteBoth((void*)data_ov006_0213a4c0[mLaneResult[j]],
                         x,0x78,noPalette,0);
   }
 }
@@ -1870,7 +1870,7 @@ s32 dScMgAmida_c::Render()
         int off = (sine + (int)((unsigned)(sine >> 7) >> 24)) >> 8;
         SetSubBg2Offset(off, 0);
     }
-    func_ov004_020b1e34(raw, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
 
     if (mState == 3 && mEndDelayTimer == 0) {
         data_0209d45c &= ~1;
@@ -1890,7 +1890,7 @@ s32 dScMgAmida_c::Render()
                         if (*counterB >= 0xe)
                             *counterB = 0;
                     }
-                    func_ov004_020afdd0(
+                    Mg_RenderSpriteBoth(
                         data_ov006_0213a458[mLaneAnimFrame[i]],
                         mLanePos[i][0] >> 12,
                         (mLanePos[i][1] >> 12) - 4,
@@ -1908,7 +1908,7 @@ s32 dScMgAmida_c::Render()
                     int x = *(int*)(raw + 0x4768);
                     int idx = age / 4;
                     int y = *(int*)(raw + 0x476c);
-                    func_ov004_020afdd0(data_ov006_0213a4b0[idx], x >> 12, y >> 12, noPalette, zero);
+                    Mg_RenderSpriteBoth(data_ov006_0213a4b0[idx], x >> 12, y >> 12, noPalette, zero);
                 }
             }
 
@@ -2015,7 +2015,7 @@ s32 dScMgAmida_c::Behavior()
                 }
             }
         }
-        func_ov004_020adb1c(mScore);
+        Mg_SubmitScore(mScore);
         mHudScore = mScore;
         break;
     case 2:
@@ -2032,10 +2032,10 @@ s32 dScMgAmida_c::Behavior()
         mPromptEnabled = 0;
         if (mFinished == 1) {
             mState = 3;
-            func_ov004_020b0a54(0);
+            Mg_SetSharedState(0);
         } else {
             mState = 3;
-            func_ov004_020b0a54(0x12);
+            Mg_SetSharedState(0x12);
             mEndDelayTimer = 0xb4;
             mFinaleTimer = 0;
         }
@@ -2137,7 +2137,7 @@ void dScMgAmida_c::StartRound(int arg)
         unk_0bc = 0;
         if (unk_0bc > 0x270e)
             unk_0bc = 0x270e;
-        func_ov004_020adb1c(mScore);
+        Mg_SubmitScore(mScore);
         mHudScore = mScore;
     }
 final:
@@ -2181,7 +2181,7 @@ s32 dScMgAmida_c::InitResources()
     zeroSub = 0;
     MultiStore16((u16)zeroSub, file, 0x6000);
 
-    func_ov004_020af2f8((char *)this, 1, 0, 2);
+    Mg_InitBrush((char *)this, 1, 0, 2);
 
     *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x140c;
     *(volatile u16 *)0x400000e &= ~0x40;

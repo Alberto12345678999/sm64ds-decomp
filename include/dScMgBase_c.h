@@ -9,7 +9,7 @@
 #include "dMgState_c.h"
 #include "dMgPsOpt_c.h"
 
-extern "C" void *data_ov004_020beb68;
+extern "C" void *gMgScene;
 
 struct dScMgBase_c : dScene_c {
 
@@ -85,7 +85,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            ending `return 0;`.  That reasoning does not survive the bytes.
            Coin's tail is
 
-               bl <func_ov004_020adc1c>      ; result lands in r0
+               bl <Mg_GetTopRecord>      ; result lands in r0
                add r1, r4, #0x5000           ; r0 is LIVE, so the address is r1
                str r0, [r1, #0x1d4]
                mov r0, #0                    ; r0 now free -- the constant 0
@@ -334,7 +334,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            left.  Neither is a deliberate result.  Nor does any caller settle
            it.  ov004 and ov006 hold exactly three
            `ldr rN,[rM,#0x70]; blx rN` dispatch sites: 0x020aedec and
-           0x020aee90 inside func_ov004_020aeb24, and 0x020b06cc inside
+           0x020aee90 inside Mg_UpdateMenu, and 0x020b06cc inside
            dScMgBase_c::BeforeBehavior.  The first two are tail calls --
            `blx r1; add sp,sp,#0x10; pop {r4,lr}; bx lr` -- which hand r0 back
            to their own caller without ever reading it, and the third branches
@@ -724,7 +724,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            a language-indexed compressed character file is decompressed into BG
            character VRAM, OBJ palette file 0xc3 is loaded into both engines, and
            the scene object is published into the global registry at
-           data_ov004_020beb74[1] / data_0209d4a8.  The three bodies differ
+           sMgGraphCallback[1] / data_0209d4a8.  The three bodies differ
            exactly where the classes differ: the base is 2D (GX mode (1,0,0),
            GXS mode 0, BG bank 3), dScMgD3DBase_c is 3D (DisableAllBanks first,
            texture and texture-palette banks, GX mode (1,0,1), GXS mode 5, BG
@@ -766,7 +766,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
          without drawing, which is what -1 buys -- and `obj+0x68` gates the
          wrapped region above the touch screen, where the main engine's
          G2::GetBG*CharPtr are used instead and y is folded by
-         `+ data_ov004_020beb6c + 0xc0`.  So slot 33 leaves the brush disabled
+         `+ sMgTopScreenYOffset + 0xc0`.  So slot 33 leaves the brush disabled
          and a minigame arms it by picking a layer.  Two slots, one mechanism.
        WHO CALLS IT: ov004:0x020ae5c4, a line rasteriser sitting immediately
          after the brush in the image, which dispatches through +0x88 at seven
@@ -884,7 +884,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s32 mHudScore;          /* 0x0b4 -- zeroed by BeforeInitResources. Leaves
                                 count into it or copy their own tally here, and
                                 the value leaves submit through
-                                func_ov004_020adb1c, which stores it at
+                                Mg_SubmitScore, which stores it at
                                 unk_464c */
     s32 unk_0b8;            /* 0x0b8 */
     u32 unk_0bc;            /* 0x0bc */

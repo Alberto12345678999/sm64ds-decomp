@@ -34,7 +34,7 @@
  * are inferred from the dMg* minigame family; see include/dMgState_c.h.
  *
  * Many states share one shape. The enter handler sets mTimer, shows a
- * graphic through func_ov004_020b0cac (file index, x, y; the x/y words at
+ * graphic through Mg_ShowBanner (file index, x, y; the x/y words at
  * data_ov004_020bc850..0x020bc8b8, except 0x020bc8a0, the file-index
  * override, are set by func_ov004_020b8a8c and patched by
  * func_ov004_020b6808 and func_ov004_020b682c) and installs a
@@ -43,7 +43,7 @@
  * and for the scene's CanEndState(mState) to return nonzero, in several
  * states around a screen fade (SetForwardTime out, then SetBackwardTime
  * once the fader IsAtEnd). It then frees every graphics slot
- * (FreeGfxSlotsById(0x1d)), passes mState to func_ov004_020b29a0 and
+ * (FreeGfxSlotsById(0x1d)), passes mState to Mg_CallStartRound and
  * returns the machine to idle (mState -1).
  *
  * Notes:
@@ -55,7 +55,7 @@
  *     of data_02086b58, are the spellings config/decl-agreement-baseline.json
  *     records for those externs.
  *   - mState doubles as the id passed to the scene's CanEndState and,
- *     through func_ov004_020b29a0, to its StartRound. The `(void *)mState`
+ *     through Mg_CallStartRound, to its StartRound. The `(void *)mState`
  *     spelling follows that helper's declaration.
  *
  * Retired one-function sources (ROM address order):
@@ -118,7 +118,7 @@ extern int ApproachLinear(s32 &value, s32 target, s32 step);
 /* local extern: including Sound.h renumbers SetState's local static. */
 namespace Sound { u32 PlayBank2_2D(u32); }
 
-/* The minigame scene at data_ov004_020beb68, seen through the two virtuals
+/* The minigame scene at gMgScene, seen through the two virtuals
    this unit calls and the one field it reads, under dScMgBase_c.h's names.
    Including dScMgBase_c.h instead renumbers SetState's local static
    (sEnterTable$184 becomes $208), and the manifest pins $184. Named
@@ -130,7 +130,7 @@ struct Base {
     virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
     virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
     virtual void v16(); virtual void v17();
-    virtual void StartRound(int);      /* slot 18, reached via func_ov004_020b29a0 */
+    virtual void StartRound(int);      /* slot 18, reached via Mg_CallStartRound */
     virtual int CanEndState(int mode);  /* slot 19 */
     virtual void OnNewRecord();             /* slot 20 */
     char pad[0xa4];
@@ -155,20 +155,20 @@ extern void FreeGfxSlotsById(int arg);
 extern int GetGameLanguage(void);
 extern unsigned int func_02012790(unsigned int x);
 extern void func_02012dd0(void* c);
-extern void func_ov004_020ad90c(void);
-extern int func_ov004_020adbc0(void);
-extern int func_ov004_020adbe0(void);
-extern void func_ov004_020ae20c(void);
-extern void func_ov004_020ae274(void* c);
-extern void func_ov004_020ae2c8(void);
-extern void func_ov004_020af948(void *a, int b, int c, void *d);
-extern int func_ov004_020b04c0(void);
-extern int func_ov004_020b0b1c(int arg);
-extern void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6);
-extern void func_ov004_020b0d8c(void *, int, int);
-extern void func_ov004_020b14f0(void *);
-extern void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
-extern void func_ov004_020b29a0(void* c, void* arg);
+extern void Mg_CommitRecords(void);
+extern int Mg_GetSubmittedScore(void);
+extern int Mg_IsNewRecord(void);
+extern void Mg_RestoreMusic(void);
+extern void Mg_PlayJingle(void* c);
+extern void Mg_StartMusic(void);
+extern void Mg_RenderSubSpriteMtx(void *a, int b, int c, void *d);
+extern int Mg_GetTopScreenYOffset(void);
+extern int Mg_CheckBannerButton(int arg);
+extern void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
+extern void Mg_DrawBlinkSprite(void *, int, int);
+extern void Mg_DrawRecordTable(void *);
+extern void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
+extern void Mg_CallStartRound(void* c, void* arg);
 extern void func_ov004_020b67e8(int);
 }
 
@@ -176,8 +176,8 @@ struct W2 { int w[2]; };
 extern W2 data_02086b58;  /* __ptmf_null's address: the null member pointer */
 extern Obj* data_0209f5bc;
 extern dWipe_c data_0209f61c;
-extern Base* data_ov004_020beb68;
-extern int data_ov004_020beb6c;
+extern Base* gMgScene;  /* local extern: seen through the TU-local Base view (see Base above) */
+extern int sMgTopScreenYOffset;
 extern int data_ov004_020bc150;
 extern int data_ov004_020bc7d4;
 extern int data_ov004_020bfa24;
@@ -366,20 +366,20 @@ void dMgState_c::func_ov004_020b8688() {
   prevId = data_ov004_020bc8a0;
   id = 3;
   if (prevId != 0x1d) { data_ov004_020bc8a0 = 0x1d; id = prevId; }
-  func_ov004_020b0cac(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
-  func_ov004_020ae274((void*)4);
+  Mg_ShowBanner(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
+  Mg_PlayJingle((void*)4);
   mBehavior = data_ov004_020bca1c;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b8560Ev
 void dMgState_c::func_ov004_020b8560() {
-  Base* scene = data_ov004_020beb68;
+  Base* scene = gMgScene;
   if (data_0209f5bc->IsAtEnd()) {
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
-    func_ov004_020ae20c();
-    func_ov004_020ae2c8();
-    func_ov004_020b29a0(scene, (void *)mState);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(scene, (void *)mState);
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
@@ -403,12 +403,12 @@ void dMgState_c::func_ov004_020b853c() { mTimer = 15; mBehavior = data_ov004_020
 // @symbol _ZN10dMgState_c19func_ov004_020b841cEv
 void dMgState_c::func_ov004_020b841c() {
   if (data_0209f5bc->IsAtEnd() != 0) {
-    Base* scene = data_ov004_020beb68;
+    Base* scene = gMgScene;
     if (scene == 0) return;
     if (scene->CanEndState(mState) == 0) return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
-    func_ov004_020b29a0(scene, (void *)mState);
+    Mg_CallStartRound(scene, (void *)mState);
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
@@ -423,24 +423,24 @@ void dMgState_c::func_ov004_020b841c() {
 // @symbol _ZN10dMgState_c19func_ov004_020b83acEv
 void dMgState_c::func_ov004_020b83ac() {
   mTimer = 0xb4;
-  func_ov004_020b0cac(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
-  func_ov004_020ae274((void*)1);
+  Mg_ShowBanner(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
+  Mg_PlayJingle((void*)1);
   mBehavior = data_ov004_020bc8c4;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b8284Ev
 void dMgState_c::func_ov004_020b8284() {
   if (data_0209f5bc->IsAtEnd()) {
-    Base* scene = data_ov004_020beb68;
+    Base* scene = gMgScene;
     if (scene == 0)
       return;
     if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
-    func_ov004_020ae20c();
-    func_ov004_020ae2c8();
-    func_ov004_020b29a0(scene, (void *)mState);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(scene, (void *)mState);
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
@@ -460,21 +460,21 @@ void dMgState_c::func_ov004_020b81f8() {
   prevId = data_ov004_020bc8a0;
   id = 8;
   if (prevId != 0x1d) { data_ov004_020bc8a0 = 0x1d; id = prevId; }
-  func_ov004_020b0cac(id, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
-  func_ov004_020ae274((void*)3);
+  Mg_ShowBanner(id, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+  Mg_PlayJingle((void*)3);
   mBehavior = data_ov004_020bc8d4;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b8098Ev
 void dMgState_c::func_ov004_020b8098() {
   Obj* obj;
-  if (func_ov004_020b0b1c(0)) {
+  if (Mg_CheckBannerButton(0)) {
     obj = data_0209f5bc;
     obj->SetForwardTime(0x1e, 0);
     mBehavior = data_ov004_020bc8dc;
     return;
   }
-  if (func_ov004_020b0b1c(2) || func_ov004_020b0b1c(1)) {
+  if (Mg_CheckBannerButton(2) || Mg_CheckBannerButton(1)) {
     obj = data_0209f5bc;
     if (obj->IsBetweenStartAndEnd())
       return;
@@ -486,22 +486,22 @@ void dMgState_c::func_ov004_020b8098() {
   }
   if (mTimer != 0)
     return;
-  func_ov004_020b0cac(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
-  func_ov004_020b0cac(2, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
+  Mg_ShowBanner(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
+  Mg_ShowBanner(2, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b7fecEv
 void dMgState_c::func_ov004_020b7fec() {
   if (data_0209f5bc->IsAtEnd() == 0)
     return;
-  void* scene = data_ov004_020beb68;
+  void* scene = gMgScene;
   if (scene == 0)
     return;
   data_0209f5bc->SetBackwardTime(0x1e, 0);
   FreeGfxSlotsById(0x1d);
-  func_ov004_020ae20c();
-  func_ov004_020ae2c8();
-  func_ov004_020b29a0(scene, (void *)mState);
+  Mg_RestoreMusic();
+  Mg_StartMusic();
+  Mg_CallStartRound(scene, (void *)mState);
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
@@ -515,7 +515,7 @@ void dMgState_c::func_ov004_020b7f5c() {
   prevId = data_ov004_020bc8a0;
   id = 9;
   if (prevId != 0x1d) { data_ov004_020bc8a0 = 0x1d; id = prevId; }
-  func_ov004_020b0cac(id, data_ov004_020bc88c, data_ov004_020bc860, -1, -1, 0xd);
+  Mg_ShowBanner(id, data_ov004_020bc88c, data_ov004_020bc860, -1, -1, 0xd);
   Sound::PlayBank2_2D(0x136);
   mBehavior = data_ov004_020bc8ec;
 }
@@ -526,15 +526,15 @@ void dMgState_c::func_ov004_020b7eac() {
     return;
   if (mTimer != 0)
     return;
-  Base* scene = data_ov004_020beb68;
+  Base* scene = gMgScene;
   if (scene == 0)
     return;
   if (scene->CanEndState(mState) == 0)
     return;
   FreeGfxSlotsById(0x1d);
-  func_ov004_020ae20c();
-  func_ov004_020ae2c8();
-  func_ov004_020b29a0(scene, (void *)mState);
+  Mg_RestoreMusic();
+  Mg_StartMusic();
+  Mg_CallStartRound(scene, (void *)mState);
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
@@ -544,7 +544,7 @@ void dMgState_c::func_ov004_020b7eac() {
 // @symbol _ZN10dMgState_c19func_ov004_020b7e38Ev
 void dMgState_c::func_ov004_020b7e38() {
     mTimer = 0x78;
-    func_ov004_020b0cac(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
+    Mg_ShowBanner(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
     Sound::PlayBank2_2D(0x137);
     mBehavior = data_ov004_020bc8f4;
 }
@@ -554,34 +554,34 @@ void dMgState_c::func_ov004_020b7cd0() {
   int state = mTimer;
   if (state > 0x64)
     return;
-  Base* p = data_ov004_020beb68;
+  Base* p = gMgScene;
   int a8 = (p != 0) ? p->unk_0a8 : 0;
   if (a8 == 0) {
     if (state != 0)
       return;
-    Base* q = data_ov004_020beb68;
+    Base* q = gMgScene;
     if (q == 0)
       return;
     if (q->CanEndState(mState) == 0)
       return;
     data_ov004_020bc7d4 = 0;
     data_ov004_020bfa24 = 0;
-    func_ov004_020ae20c();
+    Mg_RestoreMusic();
     FreeGfxSlotsById(0x1d);
     mTimer = 0xb4;
     mBehavior = data_ov004_020bc904;
   } else {
     if (state != 0)
       return;
-    Base* scene = data_ov004_020beb68;
+    Base* scene = gMgScene;
     if (scene == 0)
       return;
     if (scene->CanEndState(mState) == 0)
       return;
     FreeGfxSlotsById(0x1d);
-    func_ov004_020ae20c();
-    func_ov004_020ae2c8();
-    func_ov004_020b29a0(scene, (void *)mState);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(scene, (void *)mState);
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
@@ -594,8 +594,8 @@ void dMgState_c::func_ov004_020b7c04() {
     Obj* obj;
     int v = mTimer;
     if (v == 0xb3) {
-        func_ov004_020b0cac(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
-        func_ov004_020ae274((void*)3);
+        Mg_ShowBanner(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+        Mg_PlayJingle((void*)3);
         return;
     }
     if (v != 0) return;
@@ -610,7 +610,7 @@ void dMgState_c::func_ov004_020b7c04() {
 // @symbol _ZN10dMgState_c19func_ov004_020b7b90Ev
 void dMgState_c::func_ov004_020b7b90() {
     mTimer = 0x78;
-    func_ov004_020b0cac(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
+    Mg_ShowBanner(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
     Sound::PlayBank2_2D(0x137);
     mBehavior = data_ov004_020bc90c;
 }
@@ -629,23 +629,23 @@ void dMgState_c::func_ov004_020b7b20() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b7a18Ev
 void dMgState_c::func_ov004_020b7a18() {
-    Base *g = data_ov004_020beb68;
+    Base *g = gMgScene;
     int cond = g ? g->unk_0a8 : 0;
     if (cond == 0) {
-        g = data_ov004_020beb68;
+        g = gMgScene;
         if (!g) return;
         if (!g->CanEndState(mState)) return;
-        func_ov004_020ae20c();
+        Mg_RestoreMusic();
         mTimer = 0xb4;
         mBehavior = data_ov004_020bc98c;
         return;
     }
-    g = data_ov004_020beb68;
+    g = gMgScene;
     if (!g) return;
     if (!g->CanEndState(mState)) return;
-    func_ov004_020ae20c();
-    func_ov004_020ae2c8();
-    func_ov004_020b29a0(g, (void *)mState);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(g, (void *)mState);
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
@@ -655,7 +655,7 @@ void dMgState_c::func_ov004_020b7a18() {
 // @symbol _ZN10dMgState_c19func_ov004_020b79b0Ev
 void dMgState_c::func_ov004_020b79b0() {
     mTimer = 0x78;
-    func_ov004_020b0cac(0xb, data_ov004_020bc868, data_ov004_020bc858, -1, -1, 0xd);
+    Mg_ShowBanner(0xb, data_ov004_020bc868, data_ov004_020bc858, -1, -1, 0xd);
     mBehavior = data_ov004_020bc9ac;
 }
 
@@ -666,11 +666,11 @@ void dMgState_c::func_ov004_020b798c() { mTimer = 0; mBehavior = data_ov004_020b
 void dMgState_c::func_ov004_020b78f4() {
   Base* scene;
   if (mTimer != 0) return;
-  scene = data_ov004_020beb68;
+  scene = gMgScene;
   if (scene == 0) return;
   if (scene->CanEndState(mState) == 0) return;
   FreeGfxSlotsById(0x1d);
-  func_ov004_020b29a0(scene, (void *)mState);
+  Mg_CallStartRound(scene, (void *)mState);
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
@@ -681,10 +681,10 @@ void dMgState_c::func_ov004_020b78f4() {
 void dMgState_c::func_ov004_020b7854() {
     int id;
     mTimer = 0xb4;
-    func_ov004_020ae274((void*)4);
+    Mg_PlayJingle((void*)4);
     id = 3;
     if (data_ov004_020bc8a0 != 0x1d) { id = data_ov004_020bc8a0; data_ov004_020bc8a0 = 0x1d; }
-    func_ov004_020b0cac(id, data_ov004_020bc8b0, data_ov004_020bc8ac - (data_ov004_020beb6c + 0xc0), -1, -1, 0xa);
+    Mg_ShowBanner(id, data_ov004_020bc8b0, data_ov004_020bc8ac - (sMgTopScreenYOffset + 0xc0), -1, -1, 0xa);
     mBehavior = data_ov004_020bc9e4;
 }
 
@@ -692,15 +692,15 @@ void dMgState_c::func_ov004_020b7854() {
 void dMgState_c::func_ov004_020b77b4() {
   if (mTimer != 0)
     return;
-  Base* scene = data_ov004_020beb68;
+  Base* scene = gMgScene;
   if (scene == 0)
     return;
   if (scene->CanEndState(mState) == 0)
     return;
   FreeGfxSlotsById(0x1d);
-  func_ov004_020ae20c();
-  func_ov004_020ae2c8();
-  func_ov004_020b29a0(scene, (void *)mState);
+  Mg_RestoreMusic();
+  Mg_StartMusic();
+  Mg_CallStartRound(scene, (void *)mState);
   mTimer = 0;
   mState = -1;
   unk_020 = 0;
@@ -710,21 +710,21 @@ void dMgState_c::func_ov004_020b77b4() {
 // @symbol _ZN10dMgState_c19func_ov004_020b7744Ev
 void dMgState_c::func_ov004_020b7744() {
   mTimer = 0xb4;
-  func_ov004_020ae274((void*)3);
-  func_ov004_020b0cac(8, data_ov004_020bc894, data_ov004_020bc874, -1, -1, 0xb);
+  Mg_PlayJingle((void*)3);
+  Mg_ShowBanner(8, data_ov004_020bc894, data_ov004_020bc874, -1, -1, 0xb);
   mBehavior = data_ov004_020bc9fc;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b75e4Ev
 void dMgState_c::func_ov004_020b75e4() {
   Obj* obj;
-  if (func_ov004_020b0b1c(0)) {
+  if (Mg_CheckBannerButton(0)) {
     obj = data_0209f5bc;
     obj->SetForwardTime(0x1e, 0);
     mBehavior = data_ov004_020bca14;
     return;
   }
-  if (func_ov004_020b0b1c(2) || func_ov004_020b0b1c(1)) {
+  if (Mg_CheckBannerButton(2) || Mg_CheckBannerButton(1)) {
     obj = data_0209f5bc;
     if (obj->IsBetweenStartAndEnd())
       return;
@@ -736,14 +736,14 @@ void dMgState_c::func_ov004_020b75e4() {
   }
   if (mTimer != 0)
     return;
-  func_ov004_020b0cac(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
-  func_ov004_020b0cac(1, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
+  Mg_ShowBanner(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
+  Mg_ShowBanner(1, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b7594Ev
 void dMgState_c::func_ov004_020b7594() {
   mTimer=0xb4;
-  func_ov004_020ae274((void*)1);
+  Mg_PlayJingle((void*)1);
   mBehavior = data_ov004_020bca24;
   mRender = data_ov004_020bc8cc;
 }
@@ -751,16 +751,16 @@ void dMgState_c::func_ov004_020b7594() {
 // @symbol _ZN10dMgState_c19func_ov004_020b746cEv
 void dMgState_c::func_ov004_020b746c() {
   if (data_0209f5bc->IsAtEnd()) {
-    Base* scene = data_ov004_020beb68;
+    Base* scene = gMgScene;
     if (scene == 0)
       return;
     if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
     FreeGfxSlotsById(0x1d);
-    func_ov004_020ae20c();
-    func_ov004_020ae2c8();
-    func_ov004_020b29a0(scene, (void *)mState);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(scene, (void *)mState);
     mTimer = 0;
     mState = -1;
     unk_020 = 0;
@@ -784,13 +784,13 @@ void dMgState_c::func_ov004_020b743c() { mTimer = 10; mBehavior = data_ov004_020
 // @symbol _ZN10dMgState_c19func_ov004_020b72d4Ev
 void dMgState_c::func_ov004_020b72d4() {
   if (mTimer == 0) {
-    if (func_ov004_020b0b1c(0) != 0) {
+    if (Mg_CheckBannerButton(0) != 0) {
       data_0209f5bc->SetForwardTime(0x1e, 0);
       mBehavior = data_ov004_020bc914;
       return;
     }
-    if (func_ov004_020b0b1c(2) == 0) {
-      if (func_ov004_020b0b1c(1) == 0)
+    if (Mg_CheckBannerButton(2) == 0) {
+      if (Mg_CheckBannerButton(1) == 0)
         return;
     }
     if (data_0209f5bc->IsBetweenStartAndEnd() != 0)
@@ -801,16 +801,16 @@ void dMgState_c::func_ov004_020b72d4() {
     func_02012dd0((void*)0x3c);
     return;
   }
-  func_ov004_020b0cac(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
-  func_ov004_020b0cac(2, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
+  Mg_ShowBanner(0, data_ov004_020bc8a8, data_ov004_020bc898, -1, -1, 0xd);
+  Mg_ShowBanner(2, data_ov004_020bc86c, data_ov004_020bc8a4, -1, -1, 0xd);
   mTimer = 0;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b724cEv
 void dMgState_c::func_ov004_020b724c() {
   mTimer = 0xb4;
-  func_ov004_020b0cac(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
-  func_ov004_020ae274((void*)1);
+  Mg_ShowBanner(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
+  Mg_PlayJingle((void*)1);
   mBehavior = data_ov004_020bc994;
   mRender = data_ov004_020bc9c4;
 }
@@ -818,15 +818,15 @@ void dMgState_c::func_ov004_020b724c() {
 // @symbol _ZN10dMgState_c19func_ov004_020b7124Ev
 void dMgState_c::func_ov004_020b7124() {
   if (data_0209f5bc->IsAtEnd()) {
-    Base* scene = data_ov004_020beb68;
+    Base* scene = gMgScene;
     if (scene == 0)
       return;
     if (scene->CanEndState(mState) == 0)
       return;
     data_0209f5bc->SetBackwardTime(0x1e, 0);
-    func_ov004_020ae20c();
-    func_ov004_020ae2c8();
-    func_ov004_020b29a0(scene, (void *)mState);
+    Mg_RestoreMusic();
+    Mg_StartMusic();
+    Mg_CallStartRound(scene, (void *)mState);
     FreeGfxSlotsById(0x1d);
     mTimer = 0;
     mState = -1;
@@ -843,22 +843,22 @@ void dMgState_c::func_ov004_020b7124() {
 // @symbol _ZN10dMgState_c19func_ov004_020b70b4Ev
 void dMgState_c::func_ov004_020b70b4() {
   mTimer = 0x3c;
-  func_ov004_020b0cac(0xe, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
-  func_ov004_020ae274((void*)3);
+  Mg_ShowBanner(0xe, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+  Mg_PlayJingle((void*)3);
   mBehavior = data_ov004_020bca04;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b7020Ev
 void dMgState_c::func_ov004_020b7020() {
-  if (func_ov004_020adbe0()) {
+  if (Mg_IsNewRecord()) {
     func_ov004_020b6f14();
     return;
   }
-  func_ov004_020b0cac(7, 0x80, 0x14, -1, -1, 0xd);
+  Mg_ShowBanner(7, 0x80, 0x14, -1, -1, 0xd);
   mTimer = 0x78;
   mBehavior = data_ov004_020bc8e4;
   mRender = data_ov004_020bc91c;
-  func_ov004_020ad90c();
+  Mg_CommitRecords();
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6f88Ev
@@ -882,11 +882,11 @@ void dMgState_c::func_ov004_020b6f88() {
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6f14Ev
 void dMgState_c::func_ov004_020b6f14() {
-  func_ov004_020b0cac(7, 0x80, 0x14, -1, -1, 0xd);
+  Mg_ShowBanner(7, 0x80, 0x14, -1, -1, 0xd);
   mTimer = 0x12c;
   mBehavior = data_ov004_020bc9cc;
   mRender = data_ov004_020bca2c;
-  func_ov004_020ad90c();
+  Mg_CommitRecords();
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6ddcEv
@@ -916,7 +916,7 @@ void dMgState_c::func_ov004_020b6ddc() {
     if (mTimer != 0xb4)
         return;
 
-    scene = data_ov004_020beb68;
+    scene = gMgScene;
     if (scene) {
         scene->OnNewRecord();
     }
@@ -930,24 +930,24 @@ void dMgState_c::func_ov004_020b6ddc() {
 
     s = data_ov004_020bc864;
     if (s < 0)
-        s -= func_ov004_020b04c0();
+        s -= Mg_GetTopScreenYOffset();
 
-    func_ov004_020b0cac(id, data_ov004_020bc888, s, -1, -1, 0xd);
-    func_ov004_020ae274((void*)1);
+    Mg_ShowBanner(id, data_ov004_020bc888, s, -1, -1, 0xd);
+    Mg_PlayJingle((void*)1);
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6d6cEv
 void dMgState_c::func_ov004_020b6d6c() {
   mTimer = 0xb4;
-  func_ov004_020b0cac(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
-  func_ov004_020ae274((void*)3);
+  Mg_ShowBanner(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
+  Mg_PlayJingle((void*)3);
   mBehavior = data_ov004_020bc924;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6c9cEv
 void dMgState_c::func_ov004_020b6c9c() {
     int x = mTimer;
-    Base *g = data_ov004_020beb68;
+    Base *g = gMgScene;
     if (x != 0) {
         unsigned char idx = gActivePlayerSlot;
         int off = idx * 4;
@@ -962,7 +962,7 @@ void dMgState_c::func_ov004_020b6c9c() {
         return;
     *(W2 *)&mRender = data_02086b58;
     FreeGfxSlotsById(0x1d);
-    if (func_ov004_020adbe0() != 0) {
+    if (Mg_IsNewRecord() != 0) {
         func_ov004_020b6f14();
         return;
     }
@@ -976,15 +976,15 @@ void dMgState_c::func_ov004_020b6c10() {
   prevId = data_ov004_020bc8a0;
   id = 3;
   if (prevId != 0x1d) { data_ov004_020bc8a0 = 0x1d; id = prevId; }
-  func_ov004_020b0cac(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
-  func_ov004_020ae274((void*)4);
+  Mg_ShowBanner(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
+  Mg_PlayJingle((void*)4);
   mBehavior = data_ov004_020bca34;
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6b40Ev
 void dMgState_c::func_ov004_020b6b40() {
     int x = mTimer;
-    Base *g = data_ov004_020beb68;
+    Base *g = gMgScene;
     if (x != 0) {
         unsigned char idx = gActivePlayerSlot;
         int off = idx * 4;
@@ -999,7 +999,7 @@ void dMgState_c::func_ov004_020b6b40() {
         return;
     *(W2 *)&mRender = data_02086b58;
     FreeGfxSlotsById(0x1d);
-    if (func_ov004_020adbe0() != 0) {
+    if (Mg_IsNewRecord() != 0) {
         func_ov004_020b6f14();
         return;
     }
@@ -1009,9 +1009,9 @@ void dMgState_c::func_ov004_020b6b40() {
 // @symbol _ZN10dMgState_c19func_ov004_020b6ad8Ev
 void dMgState_c::func_ov004_020b6ad8() {
     int r;
-    if (data_ov004_020beb68 == 0) return;
-    r = func_ov004_020adbc0();
-    func_ov004_020b2444(data_ov004_020bc850, data_ov004_020bc89c, r, -1, -1, 0, 0);
+    if (gMgScene == 0) return;
+    r = Mg_GetSubmittedScore();
+    Mg_DrawBigNumber(data_ov004_020bc850, data_ov004_020bc89c, r, -1, -1, 0, 0);
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b6948Ev
@@ -1019,46 +1019,46 @@ void dMgState_c::func_ov004_020b6948() {
     unsigned int r;
     int idx;
 
-    if (data_ov004_020beb68 == 0) return;
+    if (gMgScene == 0) return;
 
-    r = func_ov004_020adbc0();
-    func_ov004_020b2444(data_ov004_020bc85c + 4, data_ov004_020bc870, r / 100, -1, -1, 1, 0);
+    r = Mg_GetSubmittedScore();
+    Mg_DrawBigNumber(data_ov004_020bc85c + 4, data_ov004_020bc870, r / 100, -1, -1, 1, 0);
 
-    r = func_ov004_020adbc0();
-    func_ov004_020b2444(data_ov004_020bc85c + 0x1c, data_ov004_020bc870, r % 100 / 10, -1, -1, 1, 0);
+    r = Mg_GetSubmittedScore();
+    Mg_DrawBigNumber(data_ov004_020bc85c + 0x1c, data_ov004_020bc870, r % 100 / 10, -1, -1, 1, 0);
 
-    r = func_ov004_020adbc0();
-    func_ov004_020b2444(data_ov004_020bc85c + 0x2c, data_ov004_020bc870, r % 10, -1, -1, 1, 0);
-
-    idx = GetGameLanguage();
-    func_ov004_020af948((void *)*(int *)(data_ov004_020bca44[idx] + 0xc), data_ov004_020bc85c - 0x24, data_ov004_020bc870, 0);
+    r = Mg_GetSubmittedScore();
+    Mg_DrawBigNumber(data_ov004_020bc85c + 0x2c, data_ov004_020bc870, r % 10, -1, -1, 1, 0);
 
     idx = GetGameLanguage();
-    func_ov004_020af948((void *)*(int *)(data_ov004_020bca44[idx] + 0x1c), data_ov004_020bc85c + 0x10, data_ov004_020bc870, 0);
+    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0xc), data_ov004_020bc85c - 0x24, data_ov004_020bc870, 0);
+
+    idx = GetGameLanguage();
+    Mg_RenderSubSpriteMtx((void *)*(int *)(data_ov004_020bca44[idx] + 0x1c), data_ov004_020bc85c + 0x10, data_ov004_020bc870, 0);
 }
 
 // @symbol _ZN10dMgState_c19func_ov004_020b68e8Ev
 void dMgState_c::func_ov004_020b68e8() {
-    void *g = data_ov004_020beb68;
+    void *g = gMgScene;
     if (g == 0) return;
-    func_ov004_020b14f0(g);
+    Mg_DrawRecordTable(g);
     if (mTimer > 0) return;
-    func_ov004_020b0d8c(g, 0xe0, 0xa0);
+    Mg_DrawBlinkSprite(g, 0xe0, 0xa0);
 }
 
 // @symbol func_ov004_020b682c
 extern "C" void func_ov004_020b682c(void)
 {
-    int v1 = -0x1c - func_ov004_020b04c0();
+    int v1 = -0x1c - Mg_GetTopScreenYOffset();
     data_ov004_020bc88c = 0x80;
     data_ov004_020bc860 = v1;
     {
-        int v2 = -0x1c - func_ov004_020b04c0();
+        int v2 = -0x1c - Mg_GetTopScreenYOffset();
         data_ov004_020bc878 = 0x80;
         data_ov004_020bc890 = v2;
     }
     {
-        int v3 = -0x1c - func_ov004_020b04c0();
+        int v3 = -0x1c - Mg_GetTopScreenYOffset();
         data_ov004_020bc868 = 0x80;
         data_ov004_020bc858 = v3;
         data_ov004_020bc888 = 0x80;

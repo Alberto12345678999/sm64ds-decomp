@@ -85,8 +85,8 @@ enum {
 enum { kSubBgBit = 2 };
 
 extern "C" {
-extern void func_ov004_020aea78(void *sprite, int x, int y, struct M *matrix);
-/* 8-byte OAM records. func_ov004_020aea78 copies one and draws it. */
+extern void Mg_DrawSpriteListEntry(void *sprite, int x, int y, struct M *matrix);
+/* 8-byte OAM records. Mg_DrawSpriteListEntry copies one and draws it. */
 extern u16 data_ov004_020bca58[];
 extern u16 data_ov004_020bca60[];
 extern int GetGameLanguage(void);
@@ -158,7 +158,7 @@ dMgPsOpt_c::TouchIcon_c::~TouchIcon_c()
 
 // @symbol func_ov004_020b9220
 /* Open. Lights the current sound and backlight choices and sets sub BG
-   value 2. Called from the pause menu (func_ov004_020aeb24). */
+   value 2. Called from the pause menu (Mg_UpdateMenu). */
 extern "C" void func_ov004_020b9220(char *raw)
 {
     dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
@@ -191,7 +191,7 @@ extern "C" void func_ov004_020b91fc(char *raw)
 
 // @symbol func_ov004_020b8f78
 /* One frame of input. Returns mActive; the pause menu
-   (func_ov004_020aeb24) yields the frame while that is nonzero. */
+   (Mg_UpdateMenu) yields the frame while that is nonzero. */
 extern "C" u8 func_ov004_020b8f78(char *raw)
 {
     dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
@@ -297,7 +297,7 @@ extern "C" u8 func_ov004_020b8f78(char *raw)
 
 // @symbol func_ov004_020b8f18
 /* Draw every live icon. Returns 1 while the panel is up, which makes
-   func_ov004_020ae858 skip the rest of the touch-screen UI. */
+   Mg_DrawMenu skip the rest of the touch-screen UI. */
 extern "C" int func_ov004_020b8f18(void *raw)
 {
     dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
@@ -439,5 +439,5 @@ void dMgPsOpt_c::TouchIcon_c::Render()
         return;
     }
 
-    func_ov004_020aea78(sprites, xy[0], xy[1], 0);
+    Mg_DrawSpriteListEntry(sprites, xy[0], xy[1], 0);
 }

@@ -99,10 +99,10 @@ void* func_02054ea8(void);
 unsigned int LoadCompressedFileAt(int fileID, void* target);
 extern unsigned char data_0209d45c;
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-void func_ov004_020b1ba0(void* c, int delta);
-void func_ov004_020b1b78(void* c, int val);
+void Mg_AddLives(void* c, int delta);
+void Mg_SubLives(void* c, int val);
 extern unsigned int func_02012790(unsigned int arg);
-extern void func_ov004_020adb1c(int self);
+extern void Mg_SubmitScore(int self);
 extern int data_ov006_0213e948[];
 extern void func_ov006_0210ab08(char *c, int i);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
@@ -111,8 +111,8 @@ extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);
 void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
-void func_ov004_020b1bc8(char *a0, int a1, int a2, int a3);
-void func_ov004_020b1e34(char *a0, int a1, int a2, int a3);
+void Mg_DrawLives(char *a0, int a1, int a2, int a3);
+void Mg_DrawScoreTally(char *a0, int a1, int a2, int a3);
 extern void **data_ov006_0213e5ec[];
 extern SlotState data_ov006_02142bdc[];
 /* The ROM PMF constants the Slot3 state table copies from (unlicensed
@@ -144,23 +144,23 @@ extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void*, int, int, int, int);
 extern void* data_ov006_0213e6a8;
-extern void func_ov004_020b1b08(void *c);
+extern void Mg_LoseLives(void *c);
 extern void func_ov001_020ab3f0(void *c);
-void func_ov004_020af948(void* a, int b, int c, void* m);
+void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 extern void* data_ov006_0213e528[];
 int TouchArea_Update(void *c, int x);
 void func_ov006_0210c2d4(void *c);
-void func_ov004_020b1b40(int x);
+void Mg_GainLives(int x);
 extern void func_ov001_020ab5b0(char* r0, int r1, short r2, short r3, short s4, short s5);
-extern int func_ov004_020ad8b8(void);
+extern int Mg_GetSavedRecord0(void);
 extern int data_ov006_0213e63c[][2];
 extern void* data_ov006_0213e96c[];
 extern unsigned char data_ov006_0213e4d8[];
-extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
-extern void func_ov004_020af868(void* a0, int a1, int a2, int a3, int a4, void* a5);
+extern void Mg_DrawBigNumber(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5);
 extern void func_ov006_0210c234(unsigned char* o);
-extern void func_ov004_020ad79c(int a, int b);
-extern void func_ov004_020ae274(void *c);
+extern void Mg_SaveRecordPair(int a, int b);
+extern void Mg_PlayJingle(void *c);
 extern void func_ov006_0210c180(void *o);
 extern void func_ov006_0210c1a8(void *o);
 extern void func_ov006_0210c218(void *o, s16 x, s16 y);
@@ -183,7 +183,7 @@ extern char *_ZN3G2S13GetBG0CharPtrEv(void);
 extern char *_ZN3G2S12GetBG0ScrPtrEv(void);
 extern char *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
-extern void func_ov004_020af770(void* a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
+extern void Mg_RenderSubSpriteScaled(void* a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 }
 
@@ -299,7 +299,7 @@ void func_ov006_0210ab94(char* c){
     dScMgSlot3_c *self = (dScMgSlot3_c *)c;
     if (DecIfAbove0_Byte((unsigned char*)(c + 0x503e)) == 0) {
         self->mState = 7;
-        func_ov004_020b0a54(0x12);
+        Mg_SetSharedState(0x12);
         self->unk_5004 = 0;
     }
     if (self->unk_503e >= 0x3c) return;
@@ -347,7 +347,7 @@ extern "C" void func_ov006_0210ac3c(char* c)
         if (*(int*)(c + 0x5014) <= 0)
             return;
         *(int*)(((int)c + 0x5014)) -= 1;
-        func_ov004_020b1ba0(c, 1);
+        Mg_AddLives(c, 1);
         Sound::PlayBank2_2D(0x149);
         *(unsigned char*)(((int)c + 0x503e)) += 5;
         return;
@@ -362,7 +362,7 @@ extern "C" void func_ov006_0210ac3c(char* c)
             return;
     }
 
-    func_ov004_020b1b78(c, 1);
+    Mg_SubLives(c, 1);
     Sound::PlayBank2_2D(0x14a);
 }
 
@@ -424,7 +424,7 @@ void func_ov006_0210adac(char *c)
         func_02012790(0xe);
         *(unsigned char *)(c + 0x503e) = 0x50;
     }
-    func_ov004_020adb1c(arg);
+    Mg_SubmitScore(arg);
 
     *(unsigned char *)(c + 0xc3) = 0;
 }
@@ -552,7 +552,7 @@ void func_ov006_0210af64(char *c)
 // @symbol func_ov006_0210b1fc
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020c1f04(char *c, int *src);
-void func_ov004_020b0cac(int c, int a1, int a2, int a3, int arg5, short arg6);
+void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
 void func_ov006_020c1ef8(int *p);
 void FreeGfxSlotsById(int arg);
 
@@ -560,7 +560,7 @@ void func_ov006_0210b1fc(char *p)
 {
     if (*(int *)(p + 0x500c) == 0x50) {
         func_ov006_020c1f04(p + 0x4f38, 0);
-        func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+        Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
     if (*(int *)(p + 0x500c) > 0) {
@@ -607,8 +607,8 @@ void dScMgSlot3_c::StartRound(int mode)
             unk_0bc = 0x270e;
         }
         mHudScore = 0;
-        func_ov004_020adb1c(mHudScore);
-        func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+        Mg_SubmitScore(mHudScore);
+        Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     } else if (mode == 4) {
         if (unk_5004 < 5) {
             *(int *)(int)(c + 0x5004) += 1;
@@ -820,25 +820,25 @@ s32 dScMgSlot3_c::Render()
         }
     }
 
-    func_ov004_020b1bc8(c, 0xc, 0xc, 0);
-    func_ov004_020b1e34(c, 0xe0, 0x14, 1);
+    Mg_DrawLives(c, 0xc, 0xc, 0);
+    Mg_DrawScoreTally(c, 0xe0, 0x14, 1);
 
     if (self->mState == 3 && self->mWinColumn >= 0) {
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][2], self->mWinColumn * 0x50 + 0x20, 0x28, 0);
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][13], self->mWinColumn * 0x50 + 0x30, 0x28, 0);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], self->mWinColumn * 0x50 + 0x20, 0x28, 0);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][13], self->mWinColumn * 0x50 + 0x30, 0x28, 0);
         if (self->mWinColumn == 1) {
-            func_ov004_020b2444(self->mWinColumn * 0x50 + 0x40, 0x28, 6, 0, 0, 0, 0x14);
+            Mg_DrawBigNumber(self->mWinColumn * 0x50 + 0x40, 0x28, 6, 0, 0, 0, 0x14);
         } else {
-            func_ov004_020b2444(self->mWinColumn * 0x50 + 0x40, 0x28, 3, 0, 0, 0, 0x14);
+            Mg_DrawBigNumber(self->mWinColumn * 0x50 + 0x40, 0x28, 3, 0, 0, 0, 0x14);
         }
     } else if (self->mState == 4 && self->mWinColumn < 0) {
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][2], 0x70, 0x28, 0);
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][14], 0x80, 0x28, 0);
-        func_ov004_020b2444(0x90, 0x28, 3, 0, 0, 0, 0x28);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], 0x70, 0x28, 0);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][14], 0x80, 0x28, 0);
+        Mg_DrawBigNumber(0x90, 0x28, 3, 0, 0, 0, 0x28);
     }
 
-    func_ov004_020afb20(data_ov006_0213ac30, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
-    func_ov004_020afb20(data_ov006_0213ac3c, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
+    Mg_RenderMainSpriteScaled(data_ov006_0213ac30, 0x18, 0x30, -1, 0, 0x1000, self->mLamp1Angle);
+    Mg_RenderMainSpriteScaled(data_ov006_0213ac3c, 0x40, 0x10, -1, 0, 0x1000, self->mLamp2Angle);
 
     return 1;
 }
@@ -978,7 +978,7 @@ s32 dScMgSlot3_c::InitResources()
     data_ov004_020bc888 = 0x80;
     data_ov004_020bc864 = ~0x1b;
 
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
 
     data_0208ee44 = 1;
 
@@ -1123,13 +1123,13 @@ void func_ov006_0210c2d4(void *c_)
     if (icon->unk_010 != 0) {
         return;
     }
-    scene = data_ov004_020beb68;
+    scene = gMgScene;
     count = (scene != 0) ? *(int *)((char *)scene + 0xa8) : 0;
     if (count <= 0) {
         return;
     }
     icon->unk_01c += 1;
-    func_ov004_020b1b08((void *)1);
+    Mg_LoseLives((void *)1);
     func_ov001_020ab3f0(icon);
     sid = 0x163;
     Sound::PlayBank2_2D(sid);
@@ -1156,7 +1156,7 @@ void dScMgSlot1_c::betIcon_c::Render()
     int y = 0xb0;
     int zero = 0;
     for (i = 0; i < unk_01c; i++) {
-        func_ov004_020af948(data_ov006_0213e5ec[GetGameLanguage()][2], 0xb0 + i * 0x10, y, (void *)zero);
+        Mg_RenderSubSpriteMtx(data_ov006_0213e5ec[GetGameLanguage()][2], 0xb0 + i * 0x10, y, (void *)zero);
     }
 }
 
@@ -1169,7 +1169,7 @@ void dScMgSlot1_c::betIcon_c::Behavior()
     val = unk_020;
     if (val != 0) {
         if ((val & 3) == 0) {
-            func_ov004_020b1b40(1);
+            Mg_GainLives(1);
             Sound::PlayBank2_2D(0x149);
         }
         unk_020 -= 1;
@@ -1253,7 +1253,7 @@ void func_ov006_0210c638(void *self)
     *(u8 *)(raw + 0x4707) = 1;
     *(u8 *)(raw + 0x4708) = 0;
     dScMgSlot1_c *scene = (dScMgSlot1_c *)self;
-    scene->unk_0a8 = func_ov004_020ad8b8();
+    scene->unk_0a8 = Mg_GetSavedRecord0();
     scene->unk_0ac = scene->unk_0a8;
 }
 }
@@ -1302,7 +1302,7 @@ s32 dScMgSlot1_c::Render()
         cur += 0x15;
     }
     mBetIcon.Render();
-    func_ov004_020b2444(0x70, 0xb0, unk_0a8, 0, 1, 1, 0x14);
+    Mg_DrawBigNumber(0x70, 0xb0, unk_0a8, 0, 1, 1, 0x14);
     if (unk_46b4 >= 5 && (*(t + 0x470a) != 0 || (*(t + 0x470b) != 0 && *(t + 0x470b) < 3))) {
         b = *(t + 0x470b);
         if (b != 0 && b < 3) {
@@ -1310,23 +1310,23 @@ s32 dScMgSlot1_c::Render()
             if ((int)b > 0) {
                 pos = 0x18;
                 do {
-                    func_ov004_020af770(data_ov006_0213e96c[0xb], pos, 0x30, -1, 2, 0x1000, 0);
+                    Mg_RenderSubSpriteScaled(data_ov006_0213e96c[0xb], pos, 0x30, -1, 2, 0x1000, 0);
                     pos += 0x10;
                     i++;
                 } while (i < *(t + 0x470b));
             }
-            func_ov004_020af868(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
-            func_ov004_020b2444(0x60, 0x30, *(t + 0x470b) * 2, 0, 2, 2, 0x14);
+            Mg_RenderSubSpritePalMtx(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x30, -1, 2, 0);
+            Mg_DrawBigNumber(0x60, 0x30, *(t + 0x470b) * 2, 0, 2, 2, 0x14);
         }
         if (*(t + 0x470a) != 0) {
             i = 0;
             pos = 0x18;
             for (; i < 3; i++) {
-                func_ov004_020af770(data_ov006_0213e96c[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000, 0);
+                Mg_RenderSubSpriteScaled(data_ov006_0213e96c[*(t + 0x4709) + 6], pos, 0x40, -1, 2, 0x1000, 0);
                 pos += 0x10;
             }
-            func_ov004_020af868(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
-            func_ov004_020b2444(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
+            Mg_RenderSubSpritePalMtx(data_ov006_0213e5ec[GetGameLanguage()][1], 0x50, 0x40, -1, 2, 0);
+            Mg_DrawBigNumber(0x60, 0x40, data_ov006_0213e4d8[*(t + 0x4709)], 0, 2, 2, 0x14);
         }
     }
     func_ov006_0210c234(t + 0x4684);
@@ -1419,7 +1419,7 @@ s32 dScMgSlot1_c::Behavior()
                             unk_4705++;
                             if (mBetIcon.unk_011 != 0) {
                                 mBetIcon.unk_011 = 0;
-                                func_ov004_020ad79c(unk_0a8, mHudScore);
+                                Mg_SaveRecordPair(unk_0a8, mHudScore);
                             }
                             func_02012718(0x162, data_ov006_0213e63c[i][0] << 12);
                             break;
@@ -1444,7 +1444,7 @@ s32 dScMgSlot1_c::Behavior()
                 if (unk_470b != 0 && unk_470b < 3) {
                     unk_46b8 += unk_470b << 1;
                 }
-                func_ov004_020ad79c(unk_0a8 + unk_46b8 * mBetIcon.unk_01c, mHudScore);
+                Mg_SaveRecordPair(unk_0a8 + unk_46b8 * mBetIcon.unk_01c, mHudScore);
                 unk_46b4 = 4;
                 unk_470c = 0x3c;
             }
@@ -1482,7 +1482,7 @@ s32 dScMgSlot1_c::Behavior()
     case 6: {
         int done = (mBetIcon.unk_020 == 0) ? 1 : 0;
         if (done != 0) {
-            func_ov004_020adb1c(unk_0a8);
+            Mg_SubmitScore(unk_0a8);
             if (DecIfAbove0_Byte(&unk_470c) == 0) {
                 StartRound(4);
             }
@@ -1517,7 +1517,7 @@ s32 dScMgSlot1_c::Behavior()
             unk_46b4++;
             func_02012718(0x164, data_ov006_0213e63c[idx][0] << 12);
             if (idx == 0) {
-                func_ov004_020ae274((void *) 2);
+                Mg_PlayJingle((void *) 2);
             }
         }
         break;
@@ -1665,10 +1665,10 @@ s32 dScMgSlot1_c::InitResources()
 
     unk_4709 = 5;
     unk_46bc = 0xa;
-    func_ov004_020adb1c(unk_46bc);
+    Mg_SubmitScore(unk_46bc);
     func_ov006_0210c478((char *)&mBetIcon);
     StartRound(3);
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     data_0208ee44 = 1;
     return 1;
 }

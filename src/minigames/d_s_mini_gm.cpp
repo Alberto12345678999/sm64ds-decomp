@@ -104,7 +104,7 @@ extern "C" {
 /* ---- arm9 globals ---- */
 extern u8 data_0209b300;
 extern u8 data_0209b304;
-extern MgEntry data_0209b308;
+extern MgEntry gMgMenuRow;
 extern MgMid data_0209b31c;
 extern MinigameSaveData data_0209cae4;
 extern u32 data_0209caa0[];
@@ -1040,21 +1040,21 @@ void dScMiniGm_c::func_ov005_020c0378()
     {
         const MgEntry *src = &data_ov005_020c24d8[sel];
         data_0208a174[0] = sel;
-        data_0209b308.id = src->id;
-        data_0209b308.unk4 = src->unk4;
-        data_0209b308.unk8 = src->unk8;
-        data_0209b308.unkc = src->unkc;
-        data_0209b308.unk10 = src->unk10;
+        gMgMenuRow.id = src->id;
+        gMgMenuRow.unk4 = src->unk4;
+        gMgMenuRow.unk8 = src->unk8;
+        gMgMenuRow.unkc = src->unkc;
+        gMgMenuRow.unk10 = src->unk10;
         data_0209b31c = src->mid;
-        data_0209b308.unk28 = src->unk28;
-        data_0209b308.unk2c = src->unk2c;
-        data_0209b308.unk30 = src->unk30;
+        gMgMenuRow.unk28 = src->unk28;
+        gMgMenuRow.unk2c = src->unk2c;
+        gMgMenuRow.unk30 = src->unk30;
     }
     func_ov005_020c1688((char *)this, sel);
     func_02012790(0x1e);
     _ZN8dScene_c9SetFadersEP15dFdBrightness_c(&data_0209f61c);
     data_0209f61c.func_0202ec9c(0);
-    data_0209b308.unk30 = unk_05c;
+    gMgMenuRow.unk30 = unk_05c;
     dScene_c::StartSceneFade(data_ov005_020c24d8[data_0208a174[0]].id, data_ov005_020c24d8[data_0208a174[0]].unk4, 0);
     _ZN5Sound22StopLoadedMusic_Layer1Ej(0x1e);
     mExiting = 1;

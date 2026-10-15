@@ -1853,7 +1853,7 @@ extern void _Z14ApproachLinearRiii(int *, int, int);
 extern void _Z15ApproachLinear2Rsss(short *, short, short);
 extern void func_02012718(int, int);
 extern void func_ov006_020bfff8(char *, void *, int *, int *);
-extern int func_ov004_020b04c0(void);
+extern int Mg_GetTopScreenYOffset(void);
 extern void func_ov006_02120d0c(int, int);
 extern void func_ov006_020ccd78(char *);
 
@@ -1901,7 +1901,7 @@ void func_ov006_020cb2b4(void *self)
 
     if (*(int *)(c + 0x20) > 0) {
         func_ov006_020bfff8(data_ov006_02141a50, c + 0x1c, &va, &vb);
-        vb = vb - (func_ov004_020b04c0() + 0xc0);
+        vb = vb - (Mg_GetTopScreenYOffset() + 0xc0);
     } else {
         func_ov006_020bfff8(data_ov006_02141a40, c + 0x1c, &va, &vb);
     }

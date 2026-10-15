@@ -52,7 +52,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 31 | `Virtual7C` (was `Kill`) | `InitSubScreenBg` | high | It sets up sub-engine BG1 and loads the language's character file plus screen map 0x5b. |
 | 32 | `Virtual80` (was `AfterClsn`) | `InitMainScreenBg` | high | It does the same for main-engine BG1 with screen map 0x67. |
 | 33 | `Virtual84` | `InitEngines` | high | It sets graphics modes, VRAM banks, the BG/OBJ character files and palettes, and registers the graph callback. (`InitDisplay` was already taken by Trampoline's own method.) |
-| 34 | `Virtual88(int,int,int,int)` | `PaintSquare` | high | It paints a size x size square of one 4bpp palette index into the brush's BG layer. The line rasteriser `func_ov004_020ae5c4` calls it once per point. |
+| 34 | `Virtual88(int,int,int,int)` | `PaintSquare` | high | It paints a size x size square of one 4bpp palette index into the brush's BG layer. The line rasteriser `Mg_DrawLine` calls it once per point. |
 | 35 | `Virtual8C` | `IsAltVariant` | medium | It returns `(param1 & 0xff) != 0`, and Amida asks `== 1`. Coin, Panel, Sound and Snowball branch on it to pick their second variant's assets. Which menu rows set that byte has not been checked against the menu table. |
 
 Still open for the graph callbacks: what the engine's four `dGraph_c::callback_c`
@@ -60,3 +60,40 @@ slots are for. The arm9 dispatchers are `func_02019390` (slot 0),
 `func_02019404` (slot 1), `func_02019144` (slot 2) and `func_02019100` (slot 3).
 They are named from their call order by the frame loop once the dispatchers are
 named, and not before.
+
+## ov004 runtime helpers and globals (renamed 2026-10-14)
+
+These are free functions and data of the shared ov004 runtime
+(`src/minigames/d_s_mg_base.cpp`). Each was named from its body, and its body's
+comment in that file carries the detail. The `Mg_` prefix marks the minigame
+runtime. `Ov004_` marks a thunk that only forwards to an arm9 routine.
+
+**High confidence.** The body says exactly this, and the callers agree.
+
+| Area | Names (old address) |
+|---|---|
+| Scene singleton | `gMgScene` (data_ov004_020beb68): set by the `dScMgBase_c` constructor, cleared by its destructor. `gMgMenuRow` (arm9 data_0209b308): the 0x34-byte menu row the select menu copies in. Word 2 is the scoring mode, words 5/6 the record defaults, word 11 the music mode. |
+| Scores and records | `Mg_SubmitScore` (020adb1c), `Mg_GetSubmittedScore` (020adbc0), `Mg_SetSessionBest` (020ada40), `Mg_GetSessionBest` (020adafc), `Mg_IsNewRecord` (020adbe0), `Mg_ClearNewRecordFlag` (020ada20), `Mg_SetTopRecord`/`Mg_GetTopRecord` (020adc00/020adc1c), `Mg_GetSaveTable` (020adc3c), `Mg_FindRecordRank` (020ad6fc), `Mg_GetLastRecordRank` (020ad6f4), `Mg_RankSessionBest` (020ad940), `Mg_CommitRecords` (020ad90c), `Mg_SaveRecordPair` (020ad79c), `Mg_GetSavedRecord0/1` (020ad8b8/020ad878), `Mg_GetScoringMode` (020ae1a8) |
+| Shared state machine | `Mg_SetSharedState` (020b0a54), `Mg_CallStartRound` (020b29a0) |
+| Banners | `Mg_ShowBanner` (020b0cac), `gMgBanners` (data_ov004_020bf648, three 0x134-byte records) |
+| Effect pool | `sMgFxPool` (0x40 records), `sMgFxUpdateTable`/`sMgFxDrawTable`, `Mg_SpawnFx`, `Mg_InitFx`, `Mg_UpdateFx`, `Mg_DrawFx` |
+| Pause menu | `Mg_UpdateMenu` (020aeb24), `Mg_DrawMenu` (020ae858) |
+| Drawing | `Mg_DrawSpriteList`, `Mg_DrawSpriteListEntry`, `Mg_CopySpriteList`, `Mg_DrawNumber` (8 px digits), `Mg_DrawBigNumber` (16 px digits), `Mg_DrawNumberRotated`, `Mg_DrawTally`, `Mg_DrawScoreTally`, `Mg_DrawRecordTable`, `Mg_DrawRecordRow`, `Mg_DrawPrompt`, `Mg_DrawLine`, `Mg_InitBrush`, `sMgSpriteTables` (per-language sprite lists) |
+| Display | `Mg_ResetBgOffsets`, `Mg_DisableAllBanks`, `Mg_GetTopScreenYOffset`/`Mg_SetTopScreenYOffset` with `sMgTopScreenYOffset`, `Mg_ResetOverlays` |
+| Music | `Mg_GetMusicMode`, `Mg_GetMusicTrack`, `Mg_StartMusic`, `Mg_InitMusic`, `Mg_RestoreMusic` |
+| Files and memory | `Ov004_LoadFile`, `Ov004_LoadFileByPath`, `sMgWorkBuffer`/`Mg_GetWorkBuffer` (the 0x4000-byte buffer `BeforeInitResources` allocates) |
+
+**Medium confidence.** The mechanics are certain, but the game-facing meaning is not observed yet.
+
+| Name (old) | Why it is not high |
+|---|---|
+| `Mg_PlayJingle` (020ae274) | It starts sequence `id` on `Sound::PlaySub`'s player and sets the music volume target to 0x40. The callers pass 1, 3 and 4 when a banner goes up. "Jingle" is inferred; the IDs are not mapped to sounds. |
+| `Mg_LoseLives`, `Mg_GainLives`, `Mg_SubLives`, `Mg_AddLives`, `Mg_DrawLives`, `Mg_DrawLivesIcon` | They work on `unk_0a8`, clamped to 0..9999, which `BeforeBehavior` eases `unk_0ac` toward for display. Cup gives 2 and loses one per wrong pick before game over; Memory caps the value at 3. A wider "credits" reading is possible in the gambling games. |
+| `Mg_ResumeSharedState` (020b0a38) | It clears `mStateController.unk_024`, which lets `BeforeBehavior`/`BeforeRender` step and draw the controller again. What sets the flag (state 6's behaviour) reads as "hand control back to the game". |
+| `Mg_CheckBannerButton` (020b0b1c) | It hit-tests a touch against a shown banner whose graphic id is `arg` (0x40 x 0x13 box), or reports the banner's finish. States use ids 0, 1 and 2 as retry/quit buttons. |
+| `Mg_DrawBlinkSprite` (020b0d8c) | It alternates sprite words 0x11/0x12 on the 40-frame counter. Which graphic that is has not been seen. |
+| `Mg_DrawTopLeftCounter`, `Mg_DrawTopRightCounter`, `Mg_DrawTopCenterCounter`, `Mg_DrawStockCounter` | HUD numbers with a label sprite, named by screen position. The label graphics (sprite words 8, 4, 3 and 0/1) are not identified. |
+| `Mg_RenderSub*`, `Mg_RenderMain*`, `Mg_RenderSpriteBoth*`, `Mg_RenderSpriteOn*` | OAM wrappers named by screen and arguments. `OAM::Render`'s first argument is read as main=0 / sub=1 from `RenderOamMainScreen` and `Hud_RenderSprite`; that reading has not been checked on hardware. |
+
+**Low confidence.**
+- `Mg_GetRowWord12` (020b1aec) returns `unk_0bc`, which the constructor copies from menu-row word 12. The name only describes where the value lives. Jump reads it `% 5`.

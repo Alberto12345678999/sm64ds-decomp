@@ -95,7 +95,7 @@ typedef char Boo_size_must_be_0x1c[sizeof(struct Boo) == 0x1c ? 1 : -1];
 #define BOO_FIELD(p, member) ((p) + (0x4bcc + (int)&((struct Boo *)0)->member))
 
 
-/* func_ov006_0211fd44's view of the ov004 score block at data_ov004_020beb68
+/* func_ov006_0211fd44's view of the ov004 score block at gMgScene
    (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
    at +0xb8. */
 struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
@@ -165,10 +165,10 @@ extern void  FreeGfxSlotsById(int arg);
 extern int   GetGameLanguage(void);
 extern void  DrawOamSprite(int, int, int, int);
 extern void  Hud_RenderSprite(void *fn, int a, int b, int c, int d);
-extern void  func_ov004_020b2220(int, int, int, int, int, int, int);
-extern void  func_ov004_020b1e34(void *, int, int, int);
-extern int   func_ov004_020ae5c4(void *a, int b, int c, int d, int e, int f, int g);
-extern int   func_ov004_020adbe0(void);
+extern void  Mg_DrawNumberRotated(int, int, int, int, int, int, int);
+extern void  Mg_DrawScoreTally(void *, int, int, int);
+extern int   Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
+extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void  MultiStore16(u16 val, void *dst, int nbytes);
@@ -208,7 +208,7 @@ extern int            data_ov006_0212f050[];
 extern int            data_ov006_0212f08c[];
 extern int            data_ov006_0213f9e4[];
 extern short          data_02082214[];
-extern int            data_ov004_020beb6c;
+extern int            sMgTopScreenYOffset;
 
 /* The four pointer-to-member state tables. Pmf handlers take the Boo/slot
    index; the scene table in data_ov006_02142eb0 takes none. */
@@ -592,7 +592,7 @@ void dScMgTeresa_c::func_ov006_0211d4e8(int i)
     *(int *)((char *)yVel + off) = 0;
     w->boo[i].state = 1;
     w->boo[i].wait = 0x30;
-    func_ov004_020b0cac(0xc, 0x80, 0x40, 1, -1, 0xd);
+    Mg_ShowBanner(0xc, 0x80, 0x40, 1, -1, 0xd);
 }
 
 
@@ -903,7 +903,7 @@ void dScMgTeresa_c::func_ov006_0211ddb8()
 
 // @symbol _ZN13dScMgTeresa_c19func_ov006_0211ddccEv
 /* decl_common.h declares this one with a `void *` parameter, and
-   func_ov004_020af948 as `(void *, int, int, void *)`. */
+   Mg_RenderSubSpriteMtx as `(void *, int, int, void *)`. */
 void dScMgTeresa_c::func_ov006_0211ddcc()
 {
     void *c_ = this;
@@ -915,7 +915,7 @@ void dScMgTeresa_c::func_ov006_0211ddcc()
             int a = (*(int*)(c + 0x4a60)) >> 12;
             if (b <= 8) b = 8;
             if (b >= 0xb8) b = 0xb8;
-            func_ov004_020af948((void*)data_ov006_02137cd8[*(unsigned char*)(c + 0x4a72) + 1], a, b, (void*)0);
+            Mg_RenderSubSpriteMtx((void*)data_ov006_02137cd8[*(unsigned char*)(c + 0x4a72) + 1], a, b, (void*)0);
         }
         c += 0x14;
     }
@@ -1120,7 +1120,7 @@ void dScMgTeresa_c::func_ov006_0211e29c()
     void *arg = this;
   unsigned char* raw = (unsigned char*)arg;
   if(*(unsigned char*)(raw+0x4c1b)==0) return;
-  func_ov004_020b2220(0x80,0x60,*(unsigned short*)(raw+0x4c14),1,0,0x800,0);
+  Mg_DrawNumberRotated(0x80,0x60,*(unsigned short*)(raw+0x4c14),1,0,0x800,0);
   DrawOamSprite(data_ov006_0213f9d0[GetGameLanguage()][3],0x80,0x48,0);
 }
 
@@ -1950,7 +1950,7 @@ void dScMgTeresa_c::func_ov006_0211f9fc()
         if (close == 0) {
             int snd;
             int cur;
-            func_ov004_020ae5c4(
+            Mg_DrawLine(
                 (void *)self,
                 *(int *)((char *)self + 0x4000 + 0xBF4),
                 *(int *)((char *)self + 0x4000 + 0xBF8),
@@ -2100,8 +2100,8 @@ void dScMgTeresa_c::func_ov006_0211fd44()
     *(unsigned short *)(c + 0x4c0c) = 0;
     if (*(unsigned char *)(c + 0x4000 + 0xc1f) != 0) {
         struct ScoreView *p;
-        func_ov004_020b0a54(0);
-        p = (struct ScoreView *)data_ov004_020beb68;
+        Mg_SetSharedState(0);
+        p = (struct ScoreView *)gMgScene;
         if (p != 0) {
             if (p->b4 < 0x270f) {
                 *(int *)(((int)p + 0xb4)) += 1;
@@ -2110,13 +2110,13 @@ void dScMgTeresa_c::func_ov006_0211fd44()
                 p->b8 = p->b4;
             }
         }
-        func_ov004_020adb1c(data_ov004_020beb68 ? ((struct ScoreView *)data_ov004_020beb68)->b4 : 0);
+        Mg_SubmitScore(gMgScene ? ((struct ScoreView *)gMgScene)->b4 : 0);
     } else {
-        if (func_ov004_020adbe0() != 0) {
+        if (Mg_IsNewRecord() != 0) {
             *(unsigned char *)(c + 0x4000 + 0xc1b) = 0;
         }
-        func_ov004_020b0cac(8, 0x80, 0x60, 1, -1, 0xd);
-        func_ov004_020b0a54(0x12);
+        Mg_ShowBanner(8, 0x80, 0x60, 1, -1, 0xd);
+        Mg_SetSharedState(0x12);
     }
     *(unsigned char *)(c + 0xc3) = 0;
 }
@@ -2255,7 +2255,7 @@ void dScMgTeresa_c::PaintSquare(int cx, int cy, int val, int n)
                 if (data_ov006_0213f9e4[j] & (1 << (i * 4))) {
                     x = i + x0;
                     if (x >= 0 && x < 0x100) {
-                        if (y >= -0xc0 - data_ov004_020beb6c && y >= 0 && y < 0xc0) {
+                        if (y >= -0xc0 - sMgTopScreenYOffset && y >= 0 && y < 0xc0) {
                             addr = (int *)((char *)G2S::GetBG0CharPtr() + ((x / 8) + (y / 8) * 32) * 32 + (y & 7) * 4);
                             MultiCopy_Int(addr, &buf, 4);
                             buf = (buf & (-1 ^ (0xf << ((x & 7) * 4)))) | (val << ((x & 7) * 4));
@@ -2314,7 +2314,7 @@ void dScMgTeresa_c::StartRound(int reset)
     unk_4be8 = 0;
     FreeGfxSlotsById(0x1d);
     unk_4c16 = 0x20;
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     void *h = LoadFile(0x101);
     DecompressLZ16(h, (void *)0x6400000);
     Deallocate(h);
@@ -2325,7 +2325,7 @@ void dScMgTeresa_c::StartRound(int reset)
 /* Vtable slot 9. */
 s32 dScMgTeresa_c::Render()
 {
-    func_ov004_020b1e34(this, 0xe0, 0x14, 1);
+    Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
     func_ov006_0211ddcc();
     func_ov006_0211e29c();
     func_ov006_0211e460();
@@ -2399,7 +2399,7 @@ s32 dScMgTeresa_c::InitResources()
         fb = 0;
         MultiStore16(fb, p, 0x800);
     }
-    func_ov004_020af2f8(self, 0, 0, 0);
+    Mg_InitBrush(self, 0, 0, 0);
     {
         void *p = G2S::GetBG0CharPtr();
         fc = 0x1111;
@@ -2423,7 +2423,7 @@ s32 dScMgTeresa_c::InitResources()
     GXS::LoadOBJPltt(f2, 0, 0x100);
     Deallocate(f1);
     Deallocate(f2);
-    func_ov004_020b04d0(0x20);
+    Mg_SetTopScreenYOffset(0x20);
     func_ov006_0211fbf8();
     *((u8 *) (self + 0x4c23)) = 0xff;
     func_ov006_0211d7b4();
@@ -2431,7 +2431,7 @@ s32 dScMgTeresa_c::InitResources()
     func_ov006_0211f77c();
     unk_4be8 = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
-    func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
+    Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     data_ov004_020bc880 = 0x80;
     data_ov004_020bc884 = -128;
     mHudScore = 0;

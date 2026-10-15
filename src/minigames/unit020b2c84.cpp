@@ -8,7 +8,7 @@
  * frees them, func_ov004_020b2cb8 loads them by language, func_ov004_020b3278
  * decompresses one into a graphics slot and sets up an Elem to show it), and
  * the rest are the behavior and render handlers of Elem, the 0x134-byte record
- * of which data_ov004_020bf648 holds three. An Elem draws its graphic as a
+ * of which gMgBanners holds three. An Elem draws its graphic as a
  * list of OAM records; its behavior moves it toward mTargetX/mTargetY or
  * animates it against mTimer.
  *
@@ -19,7 +19,7 @@
  * _ZN4ElemD1Ev, the last of the three destructor helpers
  * (_ZN4ElemC1Ev, __arraydtor$954, _ZN4ElemD1Ev) that
  * __sinit_ov004_020b955c registers for this unit's static array at
- * data_ov004_020bf648; __arraydtor$954 runs __cxa_vec_cleanup over it.
+ * gMgBanners; __arraydtor$954 runs __cxa_vec_cleanup over it.
  * The unit emits one data object of its own, the anonymous initializer template
  * of func_ov004_020b2cb8's local array at 0x020bc6e8 (0xe8 bytes), which this
  * file's .data claim covers. Everything else it touches is reached by extern.
@@ -34,7 +34,7 @@
  *
  * Numbered names. mwccarm numbers its generated names from one counter that
  * every named parameter (prototypes included), local and temporary before a
- * definition advances. The array data_ov004_020bf648 at the end of the file
+ * definition advances. The array gMgBanners at the end of the file
  * gets __arraydtor$954 (and @955), and symbols.txt and the manifest name
  * __arraydtor$954, so an edit here has to keep that count. The named
  * parameters on the ApproachLinear2 and __cxa_vec_cleanup prototypes stand
@@ -104,7 +104,7 @@ struct S3 { int v[3]; };
 struct Entry { int id; int ptr; };
 struct EntryTable { Entry e[29]; };
 
-/* The minigame scene at data_ov004_020beb68, seen through the one virtual
+/* The minigame scene at gMgScene, seen through the one virtual
    used here. Slot 26 is dScMgBase_c.h's GetDisplayMode; its scene
    bodies return 0 (dScMgBase_c), 1 (dScMgSingle3DBase_c) or 2
    (dScMgD3DBase_c), and this file only compares the result with 2. The
@@ -121,7 +121,7 @@ struct Obj {
     virtual int GetDisplayMode();  /* slot 26 */
 };
 
-/* One of the three 0x134-byte records at data_ov004_020bf648: a graphic
+/* One of the three 0x134-byte records at gMgBanners: a graphic
    loaded from the file table and drawn as a list of OAM records. The class
    name Elem is the one its constructor and destructor symbols carry; the
    real class is not recovered. */
@@ -134,12 +134,12 @@ struct Elem {
     s16 mTargetX;        /* 0x14 where the slide-in handlers stop */
     s16 mTargetY;        /* 0x16 */
     int mPriority;       /* 0x18 passed right after mScreen to every draw call */
-    int mScreen;         /* 0x1c -1 draws on both screens (func_ov004_020b1cf0) */
+    int mScreen;         /* 0x1c -1 draws on both screens (Mg_RenderSpriteOn) */
     int mFileIndex;      /* 0x20 index into the file table; 29 when free */
     int mTimer;          /* 0x24 mostly stepped 0x1000 (1.0) per frame toward
                             mTimerEnd; func_ov004_020b3834 counts it by 1 */
     int mTimerEnd;       /* 0x28 */
-    s16 mOamCount;       /* 0x2c records func_ov004_020af5e0 copied */
+    s16 mOamCount;       /* 0x2c records Mg_CopySpriteList copied */
     s16 mStyle;          /* 0x2e index into the three handler tables */
     s16 mGfxSlot;        /* 0x30 0..2, see data_ov004_020bf3e8 */
     s16 mArrived;        /* 0x32 set when mX reaches mTargetX
@@ -157,7 +157,7 @@ void Deallocate(void *ptr);
 int GetGameLanguage(void);
 int LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
-int func_ov004_020af5e0(int a, void *b, int c, int d);
+int Mg_CopySpriteList(int a, void *b, int c, int d);
 int _ZN4cstd4fdivEii(int a, int b);
 int func_02053200(int x);
 unsigned int func_02012790(unsigned int x);
@@ -165,13 +165,13 @@ void __register_global_object(void *object, void *destructor, void **node);
 void func_0203d704(int *o, int *a, int *b);
 void func_0203d388(int *p, int angle);
 int RandomIntInternal(int *seed);
-void func_ov004_020adfc4(int c, short a1, int *a2, int *r3, int *sp0);
+void Mg_SpawnFx(int c, short a1, int *a2, int *r3, int *sp0);
 void NullDestructor_0203d47c(void);
 void __cxa_vec_cleanup(void *array, unsigned int count, unsigned int size, void (*dtor)(void *));
-void func_ov004_020b1c68(void *a0, int a1, int a2, int a3, int a4, M *a5);
-void func_ov004_020b1cf0(int a, int b, int c, int d, int e);
-int func_ov004_020b1aec(void);
-void func_ov004_020b2444(int a, int b, int c, int d, int e, int f, int g);
+void Mg_RenderSpriteOnMtx(void *a0, int a1, int a2, int a3, int a4, M *a5);
+void Mg_RenderSpriteOn(int a, int b, int c, int d, int e);
+int Mg_GetRowWord12(void);
+void Mg_DrawBigNumber(int a, int b, int c, int d, int e, int f, int g);
 void func_ov004_020b42c0(Elem *e);
 void func_ov004_020b37f0(Elem *e);
 void func_ov004_020b39a4(Elem *e);
@@ -179,12 +179,12 @@ void func_ov004_020b39a4(Elem *e);
 
 extern s16 data_02082214[];
 extern int data_0209e650;
-extern Obj *data_ov004_020beb68;
+extern Obj *gMgScene;  /* local extern: through the Obj view above, the spelling the decl-agreement baseline records */
 extern S3 data_ov004_020bc27c;
 extern int data_ov004_020b9f54;
 static EntryTable data_ov004_020bc6e8 = { { { 0, 0 }, { 0x140, (int)&data_ov004_020b9f54 } } };
 extern int data_ov006_021346bc;
-extern int data_ov004_020beb6c;
+extern int sMgTopScreenYOffset;
 extern int data_ov004_020bc150;
 extern Pair data_ov004_020bc17c;
 extern Pair data_ov004_020bc1ec;
@@ -388,7 +388,7 @@ extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int scr
 {
     int a, b;
 
-    if (data_ov004_020beb68->GetDisplayMode() == 2) {
+    if (gMgScene->GetDisplayMode() == 2) {
         a = 0x6400000;
         b = 0;
     } else {
@@ -467,7 +467,7 @@ extern "C" void func_ov004_020b3278(Elem *e, int file, short x, short y, int scr
 
     {
         S3 tmp = data_ov004_020bc27c;
-        e->mOamCount = (short)func_ov004_020af5e0(
+        e->mOamCount = (short)Mg_CopySpriteList(
             data_ov004_020bf5d4[e->mFileIndex],
             e->mOam,
             tmp.v[e->mGfxSlot],
@@ -509,7 +509,7 @@ extern "C" void func_ov004_020b35d8(Elem *e)
   int oamX = (int) (((unsigned int) (*(int *)e->mOam << 7)) >> 0x17);
   int w;
   unsigned long left;
-  n = func_ov004_020b1aec() + 1;
+  n = Mg_GetRowWord12() + 1;
   if (oamX > 0x100)
   {
     oamX -= 0x200;
@@ -533,9 +533,9 @@ extern "C" void func_ov004_020b35d8(Elem *e)
   x = x - (w >> 1);
   left = w >> 1;
   left = originX - left;
-  func_ov004_020b1cf0((int) e->mOam, left, e->mY, e->mScreen, e->mPriority);
+  Mg_RenderSpriteOn((int) e->mOam, left, e->mY, e->mScreen, e->mPriority);
   drawY = e->mY;
-  func_ov004_020b2444(x, drawY, n, e->mScreen, e->mPriority, 2, 0);
+  Mg_DrawBigNumber(x, drawY, n, e->mScreen, e->mPriority, 2, 0);
 }
 
 // @symbol func_ov004_020b3698
@@ -561,7 +561,7 @@ extern "C" void func_ov004_020b369c(Elem *e) {
         m._11 = fc;
         m._01 = fs;
         m._10 = -fs;
-        func_ov004_020b1c68(el, e->mX, e->mY,
+        Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                             e->mScreen, e->mPriority, &m);
         angle = (u16)(angle + 0x4000);
         flag = *(u16*)(el + 6);
@@ -598,7 +598,7 @@ extern "C" void func_ov004_020b3834(Elem *e){
 // @symbol func_ov004_020b3888
 extern "C" void func_ov004_020b3888(Elem *e) {
     e->mTimer = 0;
-    e->mY = -(data_ov004_020beb6c + 0x60);
+    e->mY = -(sMgTopScreenYOffset + 0x60);
 }
 
 // @symbol func_ov004_020b38ac
@@ -619,7 +619,7 @@ extern "C" void func_ov004_020b38ac(Elem *e) {
             M m = {0};
             m._00 = v;
             m._11 = v;
-            func_ov004_020b1c68(el, e->mX, e->mY,
+            Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                 e->mScreen, e->mPriority, &m);
         }
         t += 0x1000;
@@ -695,7 +695,7 @@ extern "C" void func_ov004_020b39a4(Elem* e) {
         ang = ang + 0x5a;
         spawnAngle = (s16)ang;
 
-        func_ov004_020adfc4(0, spawnAngle, outA, outB, data_ov004_020bf3f4);
+        Mg_SpawnFx(0, spawnAngle, outA, outB, data_ov004_020bf3f4);
     }
 }
 
@@ -721,7 +721,7 @@ extern "C" void func_ov004_020b3b38(Elem* e) {
                 int off;
                 if (f > 0x100) f -= 0x200;
                 off = f * t;
-                func_ov004_020b1c68(el,
+                Mg_RenderSpriteOnMtx(el,
                     e->mX - ((off << 4) >> 16),
                     e->mY, e->mScreen,
                     e->mPriority, &buf);
@@ -770,7 +770,7 @@ extern "C" void func_ov004_020b3cb8(Elem *e) {
                 m._00 = v;
                 m._11 = v;
                 do {
-                    func_ov004_020b1c68(el, e->mX, e->mY,
+                    Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                         e->mScreen, e->mPriority, &m);
                     flag = *(u16*)(el + 6);
                     el += 8;
@@ -791,7 +791,7 @@ extern "C" void func_ov004_020b3cb8(Elem *e) {
                 m2._11 = fc;
                 m2._01 = fs;
                 m2._10 = -fs;
-                func_ov004_020b1c68(el, e->mX, e->mY,
+                Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                     e->mScreen, e->mPriority, &m2);
                 angle = (u16)(angle + 0x4000);
                 flag = *(u16*)(el + 6);
@@ -821,7 +821,7 @@ extern "C" void func_ov004_020b3e9c(Elem *e) {
                 m._00 = v;
                 m._11 = v;
                 do {
-                    func_ov004_020b1c68(el, e->mX, e->mY,
+                    Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                         e->mScreen, e->mPriority, &m);
                     flag = *(u16*)(el + 6);
                     el += 8;
@@ -842,7 +842,7 @@ extern "C" void func_ov004_020b3e9c(Elem *e) {
                 m2._11 = fc;
                 m2._01 = fs;
                 m2._10 = -fs;
-                func_ov004_020b1c68(el, e->mX, e->mY,
+                Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                     e->mScreen, e->mPriority, &m2);
                 angle = (u16)(angle + 0x4000);
                 flag = *(u16*)(el + 6);
@@ -889,7 +889,7 @@ extern "C" void func_ov004_020b410c(Elem *e)
     m._00 = v;
     m._11 = v;
     do {
-        func_ov004_020b1c68(el,
+        Mg_RenderSpriteOnMtx(el,
             e->mX, e->mY,
             e->mScreen, e->mPriority, &m);
         flag = *(u16*)(el + 6);
@@ -899,7 +899,7 @@ extern "C" void func_ov004_020b410c(Elem *e)
     x = e->mFileIndex;
     if (x != 0 && x != 1 && x != 2)
         return;
-    func_ov004_020b1cf0(data_ov006_021346bc,
+    Mg_RenderSpriteOn(data_ov006_021346bc,
         e->mX, e->mY,
         e->mScreen, e->mPriority);
 }
@@ -929,10 +929,10 @@ extern "C" void func_ov004_020b422c(Elem* e){
 
 // @symbol func_ov004_020b42c0
 extern "C" void func_ov004_020b42c0(Elem *e) {
-    func_ov004_020b1cf0((int)e->mOam, e->mX, e->mY, e->mScreen, e->mPriority);
+    Mg_RenderSpriteOn((int)e->mOam, e->mX, e->mY, e->mScreen, e->mPriority);
     if (e->mFileIndex != 0 && e->mFileIndex != 1 && e->mFileIndex != 2)
         return;
-    func_ov004_020b1cf0(data_ov006_021346bc, e->mX, e->mY, e->mScreen, e->mPriority);
+    Mg_RenderSpriteOn(data_ov006_021346bc, e->mX, e->mY, e->mScreen, e->mPriority);
 }
 
 // @symbol func_ov004_020b433c
@@ -975,7 +975,7 @@ extern "C" void func_ov004_020b4360(Elem *e) {
                     int off;
                     if (f > 0x100) f -= 0x200;
                     off = f * scale;
-                    func_ov004_020b1c68(el,
+                    Mg_RenderSpriteOnMtx(el,
                                         e->mX - ((off << 4) >> 16),
                                         e->mY, e->mScreen,
                                         e->mPriority, &m);
@@ -998,7 +998,7 @@ extern "C" void func_ov004_020b4360(Elem *e) {
                     M m2 = {0};
                     m2._00 = r;
                     m2._11 = r;
-                    func_ov004_020b1c68(el, e->mX, e->mY,
+                    Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                         e->mScreen, e->mPriority, &m2);
                 }
                 i += 0x1000;
@@ -1044,7 +1044,7 @@ extern "C" void func_ov004_020b45c0(Elem *e) {
                     int off;
                     if (f > 0x100) f -= 0x200;
                     off = f * scale;
-                    func_ov004_020b1c68(el,
+                    Mg_RenderSpriteOnMtx(el,
                                         e->mX - ((off << 4) >> 16),
                                         e->mY, e->mScreen,
                                         e->mPriority, &m);
@@ -1067,7 +1067,7 @@ extern "C" void func_ov004_020b45c0(Elem *e) {
                     M m2 = {0};
                     m2._00 = r;
                     m2._11 = r;
-                    func_ov004_020b1c68(el, e->mX, e->mY,
+                    Mg_RenderSpriteOnMtx(el, e->mX, e->mY,
                                         e->mScreen, e->mPriority, &m2);
                 }
                 i += 0x1000;
@@ -1140,7 +1140,7 @@ extern "C" void func_ov004_020b484c(Elem* e)
         ang = ang + 0x5a;
         spawnAngle = (s16)ang;
 
-        func_ov004_020adfc4(0, spawnAngle, outA, outB, data_ov004_020bf3fc);
+        Mg_SpawnFx(0, spawnAngle, outA, outB, data_ov004_020bf3fc);
     }
 }
 
@@ -1221,7 +1221,7 @@ extern int data_ov004_020b9ee8;
 
 namespace s20b955c {
 extern "C" {
-Elem data_ov004_020bf648[3];
+Elem gMgBanners[3];
 }
 }
 

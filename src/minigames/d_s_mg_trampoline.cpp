@@ -51,7 +51,7 @@ struct Node { struct Node* next; };
 
 /* One floating score. Five of these are mArray3. Spawned when a Mario
    lands: x starts at the right edge and drifts left, y eases toward
-   targetY, and number is the score drawn by func_ov004_020b2444.
+   targetY, and number is the score drawn by Mg_DrawBigNumber.
    Same 0x24 shape as dScMgJump2_c's Elem. targetX is written and not
    read by this TU's step. */
 struct Desc {
@@ -147,11 +147,11 @@ struct Obj {
 */
 
 extern "C" {
-extern void func_ov004_020afdd0(void *a, int b, int c, int d, int e);
+extern void Mg_RenderSpriteBoth(void *a, int b, int c, int d, int e);
 extern int data_ov006_0212f0c8[];
 extern int data_ov006_02134f24;
 extern int _Z15ApproachLinear2Rsss(s16 *dst, s16 a, s16 b);
-extern void func_ov004_020b2444(int,int,int,int,int,int,int);
+extern void Mg_DrawBigNumber(int,int,int,int,int,int,int);
 extern void func_ov006_02120bc8(int *self);
 extern struct Node* data_ov006_02142f64;
 extern int data_ov006_02142f70;
@@ -170,13 +170,13 @@ unsigned int func_02012790(unsigned int a);
 int func_ov006_020d0c38(Vec2s* a, Vec2s* b);
 
 void SetBg2Offset(int a, int b);
-int func_ov004_020b04c0(void);
+int Mg_GetTopScreenYOffset(void);
 extern "C" unsigned char data_0209d45c;
-extern "C" void func_ov004_020ad90c(void *scene);
+extern "C" void Mg_CommitRecords(void *scene);
 int  GetGameLanguage(void);
 void DrawOamSprite(void *a0, void *a1, int a2, void *a3);
 int  RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
-extern void func_ov004_020ae5c4(void *a, int b, int c, int d, int e, int f, int g);
+extern void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern short data_ov006_02140538;
@@ -184,7 +184,7 @@ extern short data_ov006_02140538;
 extern void func_ov006_020cd39c(...);
 extern int _Z14ApproachLinearRiii(int*,int,int);
 extern int func_ov006_020cd158(void);
-extern void func_ov004_020b0a54(int);
+extern void Mg_SetSharedState(int);
 extern void func_ov006_020cd1e0(void *c);
 extern int data_ov006_02140588;
 extern int data_ov006_0213b0ec;
@@ -211,18 +211,18 @@ extern s16 data_02082414;
 extern int func_ov006_020cd658(unsigned char *, int);
 extern void func_ov006_02120d8c(void *, int);
 extern void func_ov006_020d0b2c(void);
-extern void func_ov004_020b04d0(int);
+extern void Mg_SetTopScreenYOffset(int);
 extern void func_ov006_020cd424(unsigned int, int);
 extern void func_ov006_02120ca0(void);
 extern int data_ov006_0213fb18[];
 extern void func_ov006_020c8a9c(int, int);
 extern void func_02012718(int, int);
 extern void func_ov006_02120c40(void);
-extern void func_ov004_020adb1c(int);
+extern void Mg_SubmitScore(int);
 extern void func_ov006_02120c08(void);
 extern int *data_ov006_0213fb04[];
 extern int data_ov006_02134ecc;
-extern void func_ov004_020b1a5c(int, int);
+extern void Mg_DrawTopRightCounter(int, int);
 extern void *data_ov006_02134f00[];
 extern void *data_ov006_02134f08;
 extern void func_ov006_020cd270(void);
@@ -291,7 +291,7 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for func_ov006_02120f18, NOT applied: extern char *func_02054d88(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for _ZN17dScMgTrampoline_c16OnGraphCallback0Ev, NOT applied: int func_02054d88(void); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for _ZN17dScMgTrampoline_c16OnGraphCallback0Ev, NOT applied: void MultiStore16(u16 val, void* dst, int nbytes); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov004_020afdd0, from the legacy file for _ZN17dScMgTrampoline_c6RenderEv, NOT applied: void func_ov004_020afdd0(void *a0, int a1, int a2, int a3, int a4); */
+/* TUBUILD CONFLICT -- alternate declaration of Mg_RenderSpriteBoth, from the legacy file for _ZN17dScMgTrampoline_c6RenderEv, NOT applied: void Mg_RenderSpriteBoth(void *a0, int a1, int a2, int a3, int a4); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02121778, NOT applied: extern void MultiStore16(unsigned short a, int b, int c); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_020cd39c, from the legacy file for func_ov006_021218fc, NOT applied: extern void func_ov006_020cd39c(...); */
 /* TUBUILD CONFLICT -- alternate declaration of _Z14ApproachLinearRiii, from the legacy file for func_ov006_021218fc, NOT applied: extern int _Z14ApproachLinearRiii(int *v, int step, int rate); */
@@ -305,7 +305,7 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02121d64, NOT applied: void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02121d64, NOT applied: void func_02012718(void *a, int b); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov006_02121d64, NOT applied: int RandomIntInternal(int *seed); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov004_020ae5c4, from the legacy file for func_ov006_02121d64, NOT applied: void func_ov004_020ae5c4(void *a, int b, int c, int d, int e, int f, int g); */
+/* TUBUILD CONFLICT -- alternate declaration of Mg_DrawLine, from the legacy file for func_ov006_02121d64, NOT applied: void Mg_DrawLine(void *a, int b, int c, int d, int e, int f, int g); */
 /* TUBUILD CONFLICT -- alternate declaration of func_020126e8, from the legacy file for func_ov006_02121d64, NOT applied: int func_020126e8(int a); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012468, from the legacy file for func_ov006_02121d64, NOT applied: int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_0212e044, from the legacy file for func_ov006_02121f04, NOT applied: extern short data_ov006_0212e044; */
@@ -436,7 +436,7 @@ s32 dScMgTrampoline_c::InitResources()
         return 0;
     func_ov006_02120d8c(base + 0x5cd0, 5);
     func_ov006_020d0b2c();
-    func_ov004_020b04d0(0x10);
+    Mg_SetTopScreenYOffset(0x10);
     StartRound(-1);
     return 1;
 }
@@ -572,7 +572,7 @@ void dScMgTrampoline_c::StateIntro()
                               ~0x80000000) >> 19) -
                0x800) << 2) >> 12);
 
-        func_ov004_020ae5c4(c, oldY, oldZ,
+        Mg_DrawLine(c, oldY, oldZ,
                             mTouchX,
                             mTouchY, 2, 0xc);
 
@@ -719,7 +719,7 @@ void dScMgTrampoline_c::StateResults()
   func_ov006_020cd39c(c);
   if(_Z14ApproachLinearRiii(&mTimer,0,1)==0) return;
   if(func_ov006_020cd158()==0) return;
-  func_ov004_020b0a54(0x12);
+  Mg_SetSharedState(0x12);
   mPromptEnabled = 0;
   mTimer = 0xb4;
   *(P2Words *)mState = *(P2Words *)&data_ov006_0213faa0;
@@ -800,7 +800,7 @@ void dScMgTrampoline_c::UpdateTouchInput()
 
     i = ACTIVE_SLOT;
     if (TOUCH_REC(gTouchHeld)[i][0] != 0) {
-        func_ov004_020ae5c4(this, mTouchX, mTouchY,
+        Mg_DrawLine(this, mTouchX, mTouchY,
                             TOUCH_REC(gTouchX)[i][0], TOUCH_REC(gTouchY)[i][0], 2, 4);
         i = ACTIVE_SLOT;
         mTouchX = TOUCH_REC(gTouchX)[i][0];
@@ -825,7 +825,7 @@ s32 dScMgTrampoline_c::Behavior()
     UpdateTouchInput();
     mDoorMark.Update();
     if (saved != data_ov006_02140588)
-        func_ov004_020adb1c(data_ov006_02140588);
+        Mg_SubmitScore(data_ov006_02140588);
     return 1;
 }
 
@@ -859,7 +859,7 @@ s32 dScMgTrampoline_c::Render()
         }
     }
 
-    func_ov004_020b1a5c(data_ov006_02140588, 4);
+    Mg_DrawTopRightCounter(data_ov006_02140588, 4);
 
     aa = mDoorSide;
     r6 = 1;
@@ -872,12 +872,12 @@ s32 dScMgTrampoline_c::Render()
     }
 
     t = data_ov006_0212f0c8[0] - (mScrollY + mScrollOffsetY);
-    func_ov004_020afdd0(data_ov006_02134f08, mArrow1X + 0xf0, t, -1, 2);
-    func_ov004_020afdd0(data_ov006_02134f00[r6], 0xf0, t - 0x20, -1, 2);
+    Mg_RenderSpriteBoth(data_ov006_02134f08, mArrow1X + 0xf0, t, -1, 2);
+    Mg_RenderSpriteBoth(data_ov006_02134f00[r6], 0xf0, t - 0x20, -1, 2);
 
     t = data_ov006_0212f0c8[1] - (mScrollY + mScrollOffsetY);
-    func_ov004_020afdd0(data_ov006_02134f08, mArrow2X + 0xf0, t, -1, 2);
-    func_ov004_020afdd0(data_ov006_02134f00[r5], 0xf0, t - 0x20, -1, 2);
+    Mg_RenderSpriteBoth(data_ov006_02134f08, mArrow2X + 0xf0, t, -1, 2);
+    Mg_RenderSpriteBoth(data_ov006_02134f00[r5], 0xf0, t - 0x20, -1, 2);
 
     if (mRoundOver == 0) {
         func_ov006_020cd270();
@@ -890,7 +890,7 @@ s32 dScMgTrampoline_c::Render()
 /* Slot 3. */
 s32 dScMgTrampoline_c::CleanupResources()
 {
-    func_ov004_020ad90c(this);
+    Mg_CommitRecords(this);
     return 1;
 }
 
@@ -907,8 +907,8 @@ int dScMgTrampoline_c::OnGraphCallback2()
             *(volatile int*)0x4000018 = (mScrollY + mScrollOffsetY) << 16 & 0x1ff0000;
         } else {
             data_0209d45c |= 8;
-            SetBg2Offset(0, mScrollY + 0xc0 + mScrollOffsetY + func_ov004_020b04c0());
-            *(volatile int*)0x4000018 = (mScrollY + 0xc0 + mScrollOffsetY + func_ov004_020b04c0()) << 16 & 0x1ff0000;
+            SetBg2Offset(0, mScrollY + 0xc0 + mScrollOffsetY + Mg_GetTopScreenYOffset());
+            *(volatile int*)0x4000018 = (mScrollY + 0xc0 + mScrollOffsetY + Mg_GetTopScreenYOffset()) << 16 & 0x1ff0000;
         }
     }
     return 1;
@@ -1232,7 +1232,7 @@ void Desc::Update()
 void Desc::Render(){
   char *desc = (char *)this;
   if(*(short*)(desc+0x20)==0) return;
-  func_ov004_020b2444(*(int*)(desc+4)>>12,*(int*)(desc+8)>>12,*(short*)(desc+0x1e),-1,-1,0,0);
+  Mg_DrawBigNumber(*(int*)(desc+4)>>12,*(int*)(desc+8)>>12,*(short*)(desc+0x1e),-1,-1,0,0);
 }
 
 // @symbol _ZN24dScMgTrampoline_DoorMark4InitEv
@@ -1277,7 +1277,7 @@ void dScMgTrampoline_DoorMark::Update()
 void dScMgTrampoline_DoorMark::Render(int scrollY) {
     if (active == 0) return;
     if (shown == 0) return;
-    func_ov004_020afdd0(
+    Mg_RenderSpriteBoth(
         (void *)data_ov006_02134f24,
         0xd0,
         data_ov006_0212f0c8[row] - scrollY - 8,
