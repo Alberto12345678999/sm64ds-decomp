@@ -154,7 +154,7 @@ s32 dScMgMCarlo_c::InitResources()
     mCreditsShown = mCredits;
     {
         int score = Mg_GetSavedRecord1();
-        if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = score;
+        if (gMgScene != 0) gMgScene->mHudScore = score;
     }
     StartRound(-1);
     this->unk_60aa = 0;

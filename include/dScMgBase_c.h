@@ -9,7 +9,9 @@
 #include "dMgState_c.h"
 #include "dMgPsOpt_c.h"
 
-extern "C" void *gMgScene;
+/* The live minigame scene: the dScMgBase_c constructor sets it, the destructor clears it. */
+struct dScMgBase_c;
+extern "C" dScMgBase_c *gMgScene;
 
 struct dScMgBase_c : dScene_c {
 
@@ -920,7 +922,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
     s16 mMenuCursor;        /* 0x4646 -- highlighted item, -1 for none */
     s32 mQuitFadeStarted;           /* 0x4648 */
     s32 mSubmittedScore;           /* 0x464c */
-    u8  pad_4650[0x4];
+    s32 mTopRecord;         /* 0x4650 -- saved best, seeded from the save table */
     s32 mSessionBest;           /* 0x4654 */
     s32 mRankedScore;           /* 0x4658 */
     u8  mNewRecord;           /* 0x465c */

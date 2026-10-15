@@ -153,7 +153,7 @@ typedef struct Obj9 {
 /* The active minigame scene's bonus count, or 0 with no scene.
    gMgScene is declared `void *` by dScMgBase_c.h. */
 #define SCENE_BONUS ((gMgScene != 0) \
-                        ? ((dScMgBase_c *)gMgScene)->mCredits : 0)
+                        ? gMgScene->mCredits : 0)
 
 namespace Sound {
     void PlayBank2_2D(unsigned int id);

@@ -271,16 +271,16 @@ s32 dScMgSound_c::Behavior()
                         Mg_SetPerfectBanner();
                     Mg_SetSharedState(0);
                     {
-                        char *active = (char *)gMgScene;
+                        dScMgBase_c *active = gMgScene;
                         if (active != 0) {
-                            if (*(int *)(active + 0xb4) < 9999)
-                                (*(int *)(int)(active + 0xb4))++;
-                            if (*(int *)(active + 0xb4) > *(int *)(active + 0xb8))
-                                *(int *)(active + 0xb8) = *(int *)(active + 0xb4);
+                            if (active->mHudScore < 9999)
+                                (active->mHudScore)++;
+                            if (active->mHudScore > active->mBestHudScore)
+                                active->mBestHudScore = active->mHudScore;
                         }
                     }
                     Mg_SubmitScore(gMgScene != 0
-                                            ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
+                                            ? gMgScene->mHudScore : 0);
                     StartWinSpriteA();
                     StartWinSpriteB();
                     mPromptEnabled = 0;

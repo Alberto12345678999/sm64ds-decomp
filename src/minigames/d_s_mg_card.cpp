@@ -233,7 +233,7 @@ s32 dScMgCard_c::InitResources()
     {
         int r = Mg_GetSavedRecord1();
         if (gMgScene != 0)
-            ((dScMgBase_c *)gMgScene)->mHudScore = r;
+            gMgScene->mHudScore = r;
     }
     self->mScore = 0;
     Mg_PlaceBannersOnTopScreen();

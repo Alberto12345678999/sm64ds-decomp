@@ -153,12 +153,12 @@ void dScMgJump_c::StartRound(int arg)
         mLevel = 0;
         if (mLevel > 0x270e) mLevel = 0x270e;
         if (gMgScene != 0)
-            ((dScMgBase_c *)gMgScene)->mHudScore = 0;
+            gMgScene->mHudScore = 0;
         Mg_SubmitScore(mHudScore);
     } else {
         u32 count = mLevel;
         if (gMgScene != 0)
-            ((dScMgBase_c *)gMgScene)->mHudScore = count;
+            gMgScene->mHudScore = count;
     }
 
     if (mLevel != 0)
@@ -404,13 +404,13 @@ void dScMgJump_c::State_Final()
   Jump3D_UpdateAll();
   int same = (int)(data_ov006_02140434 == data_ov006_02140418);
   if(same == 0) return;
-  char* shared = (char *)gMgScene;
+  dScMgBase_c *shared = gMgScene;
   if(shared != 0){
-    if(*(int*)(shared+0xb4) < 0x270f){
-      *(int *)(shared + 0xb4) += 1;
+    if(shared->mHudScore < 0x270f){
+      shared->mHudScore += 1;
     }
-    if(*(int*)(shared+0xb4) > *(int*)(shared+0xb8)){
-      *(int*)(shared+0xb8) = *(int*)(shared+0xb4);
+    if(shared->mHudScore > shared->mBestHudScore){
+      shared->mBestHudScore = shared->mHudScore;
     }
   }
   Mg_SubmitScore(mHudScore);

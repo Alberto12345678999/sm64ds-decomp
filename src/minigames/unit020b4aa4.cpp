@@ -84,6 +84,7 @@
 
 #include "types.h"
 #include "PlayerInput.h"
+#include "dScMgBase_c.h"
 
 struct Vec2i { int x, y; };
 
@@ -188,7 +189,6 @@ extern struct Sprite sMgCoins[];
 /* The address of sMgCoins[0].mVisible; the ROM indexes the
    array's visible bytes from it. */
 extern unsigned char sMgCoinsVisible[];
-extern char* gMgScene;  /* local extern: a char * base keeps the ROM's add #0x4000 splits; +0xa8 is dScMgBase_c::mCredits */
 extern int data_020a0db0;
 }
 
@@ -316,11 +316,11 @@ extern "C" void MgCoins_Draw(void) {
 /* Once: add up to n sprites, capped by the scene's mCredits, and start
    launching them (MgCoins_StepLaunch). */
 extern "C" void MgCoins_PlaceBet(int n){
-  char* p;
+  dScMgBase_c *p;
   int v;
   if (sMgCoinsBetPlaced != 0) return;
   p = gMgScene;
-  v = p ? *(int*)(p + 0xa8) : 0;
+  v = p ? p->mCredits : 0;
   if (n <= v) v = n;
   gMgCoinsInPlay += v;
   sMgCoinsStep = MgCoins_StepLaunch;
@@ -347,7 +347,7 @@ extern "C" void MgCoins_RaiseBet(int c) {
 extern "C" void MgCoins_AddBetCoin(void) {
     int x;
     if (gMgScene != 0) {
-        x = *(int *)(gMgScene + 0xa8);
+        x = gMgScene->mCredits;
     } else {
         x = 0;
     }
@@ -506,7 +506,7 @@ extern "C" void MgCoins_StepLose(void)
             return;
         Coin_SendOff(&sMgCoins[sMgCoinsIndex]);
         if (sMgCoinsSoundPending != 0) {
-            int t = gMgScene ? *(int*)(gMgScene + 0xa8) : 0;
+            int t = gMgScene ? gMgScene->mCredits : 0;
             if (t != 0)
                 Sound::PlayBank2_2D(0x14b);
             else
@@ -534,7 +534,7 @@ extern "C" void MgCoins_StepLoseOneMore(void)
             return;
         Coin_SendOff(&sMgCoins[sMgCoinsIndex]);
         if (sMgCoinsSoundPending != 0) {
-            int t = gMgScene ? *(int*)(gMgScene + 0xa8) : 0;
+            int t = gMgScene ? gMgScene->mCredits : 0;
             if (t == 0 && sMgCoinsIndex == 0)
                 Sound::PlayBank2_2D(0x14c);
             else
@@ -569,11 +569,11 @@ extern "C" void MgCoins_StepHoldThenFinish(void) {
    0x3c frames (MgCoins_StepSpendHold). */
 extern "C" void MgCoins_StepSpend(void)
 {
-    if (sMgCoinsToStep > 0 && (gMgScene ? *(int*)(gMgScene + 0xa8) : 0) != 0) {
+    if (sMgCoinsToStep > 0 && (gMgScene ? gMgScene->mCredits : 0) != 0) {
         if (ApproachLinear(sMgCoinsWait, 0, 1) == 0)
             return;
         if (sMgCoinsSoundPending != 0) {
-            int t = gMgScene ? *(int*)(gMgScene + 0xa8) : 0;
+            int t = gMgScene ? gMgScene->mCredits : 0;
             if (t <= sMgCoinsToStep)
                 Sound::PlayBank2_2D(0x14c);
             else
@@ -766,8 +766,8 @@ extern "C" void MgCoins_StepPayoutNext(void)
 extern "C" void MgCoins_StepPayoutFinish(void){
   if(ApproachLinear(sMgCoinsWait, 0, 1)==0) return;
   if(Mg_GetScoringMode()==2){
-    char* p = gMgScene;
-    Mg_SubmitScore(p ? *(int*)(p+0xa8) : 0);
+    dScMgBase_c *p = gMgScene;
+    Mg_SubmitScore(p ? p->mCredits : 0);
   }
   sMgCoinsWait = 0;
   gMgCoinsStatus = 1;

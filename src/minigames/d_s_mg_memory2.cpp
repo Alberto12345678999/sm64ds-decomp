@@ -254,7 +254,7 @@ void dScMgMemory2_c::InitPlayers()
     char *entry;
 
     if (gMgScene != 0)
-        count = ((dScMgBase_c *)gMgScene)->mCredits;
+        count = gMgScene->mCredits;
     else
         count = 0;
     if (count >= 5)
@@ -1206,13 +1206,13 @@ int dScMgMemory2_c::CanEndState(int /* mode */)
 /* Clear the board, go back to StateSetup and reload the miss limit. */
 void dScMgMemory2_c::StartRound(int /* arg */)
 {
-    char *o;
+    dScMgBase_c *o;
     int v;
     ResetGame();
     mState = 0;
-    o = (char *)gMgScene;
+    o = gMgScene;
     v = 0;
-    if (o != 0) v = *(int *)(o + 0xa8);
+    if (o != 0) v = o->mCredits;
     if (v >= 5) v = 5;
     MgCoins_Reset();
     gMgCoinsShowDelta = 1;

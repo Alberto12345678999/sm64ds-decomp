@@ -928,7 +928,7 @@ void dScMgCoin_c::Coin_State0(int idx)
     Sound::PlayBank2_2D(0xf2);
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
-    stars = (gMgScene != 0) ? ((dScMgBase_c *)gMgScene)->mCredits : 0;
+    stars = (gMgScene != 0) ? gMgScene->mCredits : 0;
     need = mPlayerScore;
     if (stars > need)
         mWonLast = 1;
@@ -1505,8 +1505,8 @@ void dScMgCoin_c::Phase_State4()
         return;
     }
     {
-        char *o = (char *)gMgScene;
-        int v = o != 0 ? *(int *)(o + 0xa8) : 0;
+        dScMgBase_c *o = gMgScene;
+        int v = o != 0 ? o->mCredits : 0;
         if (v != 0) {
             mCaptionLatch = 0;
             this->Caption_Trigger();
@@ -1526,7 +1526,7 @@ void dScMgCoin_c::Phase_State3()
     int count;
     int i;
     int j;
-    char *g;
+    dScMgBase_c *g;
 
     count = 0;
     for (i = 0; i < 0x28; i++) {
@@ -1556,8 +1556,8 @@ void dScMgCoin_c::Phase_State3()
         if ((&mSparkles[31].y)[0x73] <= 0) (&mSparkles[31].y)[0x73] = 0;
         return;
     }
-    g = (char *)gMgScene;
-    Mg_SubmitScore(g != 0 ? *(int *)(g + 0xa8) : 0);
+    g = gMgScene;
+    Mg_SubmitScore(g != 0 ? g->mCredits : 0);
     (&mSparkles[31].y)[0x73] = 0x70;
     (&mSparkles[31].y)[0x72] = 4;
 }

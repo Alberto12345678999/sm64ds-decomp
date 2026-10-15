@@ -235,7 +235,7 @@ void dScMgMemory_c::InitPlayers()
     int stagger;
 
     if (gMgScene != 0)
-        count = ((dScMgBase_c *)gMgScene)->mCredits;
+        count = gMgScene->mCredits;
     else
         count = 0;
     if (count >= 3)
@@ -678,7 +678,7 @@ void dScMgMemory_c::ResultWait()
                 }
                 if (mHudScore > mBestHudScore)
                     mBestHudScore = mHudScore;
-                Mg_SubmitScore(gMgScene ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
+                Mg_SubmitScore(gMgScene ? gMgScene->mHudScore : 0);
                 Dealer_PlayWin(&mShared);
             } else {
                 Mg_SetSharedState(5);

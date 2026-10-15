@@ -472,7 +472,7 @@ extern "C" void StarPopup_Update(char *arg)
                         *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
                 }
             }
-            Mg_SubmitScore(gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
+            Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
         } else {
             if (*(u8 *)(f + 0xf) != 0) {
                 *(u8 *)(((int)f + 0xc)) += 1;
@@ -2340,12 +2340,12 @@ void dScMgHanachan_c::StartRound(int state)
     } else if (state == 0x12) {
         mLevel = 0;
         if (mLevel > 0x270e) mLevel = 0x270e;
-        if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = 0;
+        if (gMgScene != 0) gMgScene->mHudScore = 0;
         Mg_SubmitScore(mHudScore);
         mTimeLeft = 0x14;
     } else {
         int v = mLevel;
-        if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = v;
+        if (gMgScene != 0) gMgScene->mHudScore = v;
         mTimeLeft = 0x14;
     }
     HanaPopup_ClearAll();

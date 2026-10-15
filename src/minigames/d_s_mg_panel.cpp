@@ -2064,7 +2064,7 @@ void dScMgPanel_c::StartRound(int flag)
     extern u8 data_0209d454;
     char *self = (char *)this;
 
-    char *p;
+    dScMgBase_c *p;
 
     if (flag == 0) {
         int *q = (int *)(self + 0xbc);
@@ -2078,10 +2078,10 @@ void dScMgPanel_c::StartRound(int flag)
             mLevel = 0x270e;
 
         if (gMgScene != 0)
-            ((dScMgBase_c *)gMgScene)->mHudScore = 0;
+            gMgScene->mHudScore = 0;
 
-        p = (char *)gMgScene;
-        Mg_SubmitScore(p != 0 ? *(int *)(p + 0xb4) : 0);
+        p = gMgScene;
+        Mg_SubmitScore(p != 0 ? p->mHudScore : 0);
     }
 
     FreeGfxSlotsById(0x1d);

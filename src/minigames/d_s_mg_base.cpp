@@ -291,7 +291,7 @@ extern "C" {
 extern void Mg_RankSessionBest(dScMgBase_c *scene);
 
 void Mg_CommitRecords(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     Mg_RankSessionBest(scene);
 }
@@ -348,7 +348,7 @@ namespace s20ada20 {
 extern "C" {
 /* Clears the new-record flag mNewRecord. */
 void Mg_ClearNewRecordFlag(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) {
         scene->mNewRecord = 0;
     }
@@ -362,13 +362,13 @@ extern "C" {
 extern int gMgMenuRow[];
 extern int Mg_GetTopRecord(void);
 
-/* Stores `score` as the session best (mSessionBest). If it beats the record
-   copy at +0x4650, it becomes the new copy and mNewRecord is set. Beating
-   it means, compared unsigned: in scoring mode 5, nonzero and either lower
-   or the copy is 0; otherwise higher. */
+/* Stores `score` as the session best (mSessionBest). If it beats the saved
+   top record (mTopRecord), it becomes the new record and mNewRecord is set.
+   Beating it means, compared unsigned: in scoring mode 5, nonzero and either
+   lower or no record yet (0); otherwise higher. */
 void Mg_SetSessionBest(int score)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     scene->mSessionBest = score;
     if (gMgMenuRow[2] == 5) {
@@ -377,12 +377,12 @@ void Mg_SetSessionBest(int score)
             if ((unsigned)score >= (unsigned)Mg_GetTopRecord()) return;
         }
         Mg_SetTopRecord(score);
-        ((dScMgBase_c *)gMgScene)->mNewRecord = 1;
+        gMgScene->mNewRecord = 1;
         return;
     }
     if ((unsigned)score <= (unsigned)Mg_GetTopRecord()) return;
     Mg_SetTopRecord(score);
-    ((dScMgBase_c *)gMgScene)->mNewRecord = 1;
+    gMgScene->mNewRecord = 1;
 }
 }
 }
@@ -392,7 +392,7 @@ namespace s20adafc {
 extern "C" {
 /* The session best, mSessionBest; 0 with no scene. */
 int Mg_GetSessionBest(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) {
         return scene->mSessionBest;
     }
@@ -411,7 +411,7 @@ extern int gMgMenuRow[];
    at the menu row's word 3 when that is nonzero) and passes it to
    Mg_SetSessionBest when it beats the session best. */
 void Mg_SubmitScore(int score) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     if (gMgMenuRow[2] == 5) {
         scene->mSubmittedScore = score;
@@ -437,7 +437,7 @@ namespace s20adbc0 {
 extern "C" {
 /* The submitted score, mSubmittedScore; 0 with no scene. */
 int Mg_GetSubmittedScore(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) {
         return scene->mSubmittedScore;
     }
@@ -451,7 +451,7 @@ namespace s20adbe0 {
 extern "C" {
 /* The new-record flag, mNewRecord; 0 with no scene. */
 int Mg_IsNewRecord(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) {
         return scene->mNewRecord;
     }
@@ -463,20 +463,11 @@ int Mg_IsNewRecord(void) {
 // @symbol Mg_SetTopRecord
 namespace s20adc00 {
 extern "C" {
-/* Spelled char * here and in Mg_GetTopRecord, as unit020b4aa4.cpp
-   spells it: with no char * copy in this file the declaration-agreement
-   count ties 1-1 with the header's void *, the tie goes to the header and
-   unit020b4aa4.cpp goes red. local extern: see above. */
-extern char *gMgScene;
-/* Sets the record copy at +0x4650 (unnamed padding in the header). Here
-   and in Mg_GetTopRecord the base is a char *: with an int-typed base
-   mwcc materializes the +0x46xx offset from the literal pool instead of
-   splitting it as add r0,r0,#0x4000 / ldr r0,[r0,#0x6xx] the way the
-   cartridge does. */
+/* Sets the saved top record (mTopRecord); no-op with no scene. */
 void Mg_SetTopRecord(int v) {
-    char *scene = gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) {
-        *(int*)(scene + 0x4650) = v;
+        scene->mTopRecord = v;
     }
 }
 }
@@ -485,12 +476,11 @@ void Mg_SetTopRecord(int v) {
 // @symbol Mg_GetTopRecord
 namespace s20adc1c {
 extern "C" {
-extern char *gMgScene;  /* local extern: as in Mg_SetTopRecord */
-/* The record copy at +0x4650; 0 with no scene. */
+/* The saved top record (mTopRecord); 0 with no scene. */
 int Mg_GetTopRecord(void) {
-    char *scene = gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) {
-        return *(int*)(scene + 0x4650);
+        return scene->mTopRecord;
     }
     return 0;
 }
@@ -896,7 +886,7 @@ namespace s20ae1f0 {
 extern "C" {
 /* The scene's music track, mMusicTrack; 5 with no scene. */
 int Mg_GetMusicTrack(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) return scene->mMusicTrack;
     return 5;
 }
@@ -1345,7 +1335,7 @@ struct S { int x; BF y; };
 extern "C" void Mg_DrawSpriteListEntry(S* self, int a1, int a2, struct M* a3)
 {
     S v = *self;
-    if (((dScMgBase_c *)gMgScene)->GetDisplayMode() == 2) {
+    if (gMgScene->GetDisplayMode() == 2) {
         v.y.lo = (self->y.lo - 0x200) & 0x3ff;
     }
     Mg_RenderSpriteOnMtx(&v, a1, a2, 0, -1, a3);
@@ -1917,7 +1907,7 @@ extern "C" {
 extern "C" {
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, s32, s32, int, int, int, int, int, int);
 void Hud_RenderSprite(void* attr, int x, int y, int palette, int priority){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -1944,7 +1934,7 @@ extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
 
 extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
@@ -1961,7 +1951,7 @@ extern "C" int Mg_RenderSubSpriteScaled(int a0, int a1, int a2, int a3, int a4, 
 namespace s20af868 {
 extern "C" {
 void Mg_RenderSubSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -1980,7 +1970,7 @@ namespace s20af948 {
 extern "C" {
 void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
@@ -2002,7 +1992,7 @@ void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, OamAttr*, s32, s32, int, i
 
 extern "C" void RenderOamMainScreen(int oam, int x, int y, int palette, int priority)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
@@ -2029,7 +2019,7 @@ extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
 
 extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0) {
         if (scene->GetDisplayMode() == 2) {
@@ -2046,7 +2036,7 @@ extern "C" int Mg_RenderMainSpriteScaled(int a0, int a1, int a2, int a3, int a4,
 namespace s20afc18 {
 extern "C" {
 void Mg_RenderMainSpritePalMtx(void* a0, int a1, int a2, int a3, int a4, void* a5){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -2065,7 +2055,7 @@ namespace s20afcf8 {
 extern "C" {
 extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
         if (*(unsigned short*)((char*)gMgScene + 0x4664) != 1) return;
@@ -2084,7 +2074,7 @@ extern "C" {
 extern int sMgTopScreenYOffset;
 int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
 void Mg_RenderSpriteBoth(void* a0, int a1, int a2, int a3, int a4){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -2116,7 +2106,7 @@ extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
 
 extern "C" int Mg_RenderSpriteBothScaled(struct OamAttr* a0, int a1, int a2, int a3, int a4, Fix12i a5, int a6)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return 0;
     if (scene->mMenuOpen == 0 && scene->GetDisplayMode() == 2) {
         if (*(unsigned short*)((char*)gMgScene + 0x4664) == 1) {
@@ -2148,7 +2138,7 @@ extern "C" {
 extern "C" {
 extern int sMgTopScreenYOffset;
 void RenderOamBothScreens(void* attr, int x, int y, int palette, int priority, void* mtx){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -2173,7 +2163,7 @@ extern "C" {
 extern "C" {
 extern int sMgTopScreenYOffset;
 void Mg_RenderSpriteBothPalMtx(void* a0, int a1, int a2, int a3, void* a4){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -2198,7 +2188,7 @@ extern "C" {
 extern "C" {
 extern int sMgTopScreenYOffset;
 void Mg_RenderSpriteBothMtx(void* a0, int a1, int a2, void* a3){
-  dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+  dScMgBase_c *scene = gMgScene;
   if(scene == 0) return;
   if(scene->mMenuOpen == 0){
     if(scene->GetDisplayMode() == 2){
@@ -2452,7 +2442,7 @@ extern "C" {
    step and draw the UI state controller again. */
 void Mg_ResumeSharedState(void)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene == 0) return;
     scene->mStateController.unk_024 = 0;
 }
@@ -2466,11 +2456,11 @@ extern "C" {
    is read again after SetState, as the ROM does. */
 extern "C" void Mg_SetSharedState(s32 state)
 {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (!scene)
         return;
     scene->mStateController.SetState(state);
-    ((dScMgBase_c *)gMgScene)->mRecordRevealTimer = 0;
+    gMgScene->mRecordRevealTimer = 0;
 }
 }
 }
@@ -2578,7 +2568,7 @@ int Mg_CheckBannerButton(int arg) {
                     if (sMgBannerButtonsArmed != 0) {
                         Banner_Press(o);
                         if ((unsigned int)(arg - 1) <= 1) {
-                            ((dScMgBase_c *)gMgScene)->mMenuDisabled = 1;
+                            gMgScene->mMenuDisabled = 1;
                         }
                     }
                 }
@@ -3094,7 +3084,7 @@ namespace s20b1aec {
 extern "C" {
 /* The scene's mLevel; 0 with no scene. */
 int Mg_GetLevel(void) {
-    dScMgBase_c *scene = (dScMgBase_c *)gMgScene;
+    dScMgBase_c *scene = gMgScene;
     if (scene != 0) return scene->mLevel;
     return 0;
 }

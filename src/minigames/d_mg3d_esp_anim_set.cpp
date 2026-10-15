@@ -1458,7 +1458,7 @@ void dScMg3DEsp_c::Results()
         (*(u16 *)(int)(((long long)(int)(c + 0x5548))))--;
         if (*(u16 *)(c + 0x5548) == 0x40) {
             if (*(u8 *)(c + 0x5550) != 0) {
-                int idx = gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0;
+                int idx = gMgScene != 0 ? gMgScene->mHudScore : 0;
                 while (idx >= 5)
                     idx -= 5;
                 if (gMgScene != 0) {
@@ -1481,8 +1481,8 @@ void dScMg3DEsp_c::Results()
             return;
         if (*(u8 *)(c + 0x5550) != 0) {
             int rem, quot;
-            Mg_SubmitScore(gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
-            rem = gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0;
+            Mg_SubmitScore(gMgScene != 0 ? gMgScene->mHudScore : 0);
+            rem = gMgScene != 0 ? gMgScene->mHudScore : 0;
             quot = 0;
             while (rem >= 5) {
                 rem -= 5;
@@ -1575,7 +1575,7 @@ void dScMg3DEsp_c::StartRound(int a)
         mLevel++;
         if (mLevel > 9998) mLevel = 9998;
     } else if (a == 0x12) {
-        if (gMgScene != 0) ((dScMgBase_c*)gMgScene)->mHudScore = 0;
+        if (gMgScene != 0) gMgScene->mHudScore = 0;
         mLevel = 0;
         if (mLevel > 9998) mLevel = 9998; /* the ROM keeps this clamp; 16 bytes */
     }
