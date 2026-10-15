@@ -517,7 +517,7 @@
     },
     {
       "name": "Native ModelAnim SetAnim",
-      "function": "_ZN7daMky_c11EnterState10Ev",
+      "function": "_ZN7daMky_c12EnterState10Ev",
       "alternative": "Fix12<int> speed = {0x1000}; mModelAnim.SetAnim(file, flags, speed, 0).",
       "retail_size": "0x5c",
       "candidate_size": "0x64",
