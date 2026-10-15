@@ -208,9 +208,9 @@ void Mg_LoseCredits(int c);
 void Mg_GainCredits(int c);
 void Mg_DrawCredits(char *, int, int, int);
 void Mg_DrawNumberRotated(int, int, int, int, int, int, int);
-void func_ov004_020b56c8(void);
-void func_ov004_020b65e4(void);
-void func_ov004_020b66d4(void);
+void MgCoins_StartPayout(void);
+void MgCoins_Update(void);
+void MgCoins_Reset(void);
 void func_ov006_020c0aa8(char *c);
 int  func_ov006_020c0efc(char *a);
 int  func_ov006_020c1718(char *c);
@@ -245,8 +245,8 @@ extern short data_ov006_0212ed8e[];
 extern int   data_ov006_021428cc;
 extern int   data_ov006_021428d4[];
 extern void *data_ov006_02142948;
-extern s32   data_ov004_020b9488;
-extern u16   data_ov004_020bf9e4;
+extern s32   sMgCoinRiseFrames;
+extern u16   gMgCoinsStatus;
 extern u8    data_0209d45c;
 extern u8    data_0209d454;
 
@@ -560,7 +560,7 @@ s32 dScMgRoulette_c::Behavior()
     }
     func_ov006_02107db8((C *)(c + 0x530c));
     func_ov006_020c19d0((char *)mTable);
-    func_ov004_020b65e4();
+    MgCoins_Update();
     return 1;
 }
 
@@ -580,7 +580,7 @@ s32 dScMgRoulette_c::Render()
 {
     char *raw = (char *)this;
     Mg_DrawCredits(raw, 0xc, 0xc, 0);
-    func_ov004_020b6430();
+    MgCoins_Draw();
 
     {
         int i = mRacerCount - 1;
@@ -683,7 +683,7 @@ int dScMgRoulette_c::CanEndState(int /* mode */)
         (mPhaseTimer)--;
         if (mPhaseTimer == 0) {
             if (mScore != 0)
-                func_ov004_020b56c8();
+                MgCoins_StartPayout();
             (mPhase)++;
         }
         break;
@@ -692,7 +692,7 @@ int dScMgRoulette_c::CanEndState(int /* mode */)
         /* fall through */
     case 9:
     default:
-        if (data_ov004_020bf9e4 <= 1)
+        if (gMgCoinsStatus <= 1)
             return 1;
         break;
     }
@@ -742,8 +742,8 @@ void dScMgRoulette_c::StartRound(int /* arg */)
     unk_53f0 = 0;
     mPhase = 1;
 
-    func_ov004_020b66d4();
-    data_ov004_020bc7d4 = 1;
+    MgCoins_Reset();
+    gMgCoinsShowDelta = 1;
 }
 
 // @symbol func_ov006_021095ac
@@ -945,7 +945,7 @@ void func_ov006_02108f2c(Thing* racer)
         s32 d;
         s32* p;
         s32 q;
-        d = data_ov004_020b9488;
+        d = sMgCoinRiseFrames;
         p = (s32*)(((s32)racer + 4));
         q = -((racer->hop - (d >> 1)) << 12) / d - 0x600;
         *p += (s32)((((s64)q << 14) + 0x800) >> 12);

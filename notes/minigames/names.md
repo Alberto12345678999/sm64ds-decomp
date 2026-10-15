@@ -178,3 +178,31 @@ Medium-confidence helpers:
 - `Mg_PlaceBannersOnTopScreen` (020b682c) moves several of them by the top-screen offset.
 - `Mg_ResetRecordBannerPos` (020b6808).
 - `sMgBannerButtonsArmed` is set by the layout reset and cleared by `Banner_Press`; button touches are ignored while it is 0.
+
+## The credit coins (unit020b4aa4) and the options panel (renamed 2026-10-14)
+
+**The coins, medium confidence.** `unit020b4aa4` animates up to twenty coin icons, drawn
+with the credits icon (`Mg_DrawCreditsIcon`), between the credits counter at
+(12, 12) and the top screen. Each sequence moves `mCredits` one coin at a time:
+- `Coin_Launch` and `Coin_Spend` take a credit.
+- `Coin_MoveThenBank`, `Coin_MoveThenRefund` and `Coin_FlyToCounter` give one back.
+
+The entry points are:
+- `MgCoins_Reset`, `MgCoins_Update` and `MgCoins_Draw`.
+- **Bets.** `MgCoins_AddBetCoin` runs on a touch in the top-left box, which `MgCoins_Draw` marks with a button. `MgCoins_PlaceBet`, `MgCoins_RaiseBet`.
+- **Losses.** `MgCoins_StartLose` and `MgCoins_StartLoseOneMore` send coins away, up from x 128.
+- **Spending.** `MgCoins_StartSpend`.
+- **Refunds.** `MgCoins_StartRefund` returns coins to the counter.
+- **Payouts.** `MgCoins_StartPayout` lays coins out five wide and flies them to the counter, then submits `mCredits` as the score in scoring mode 2.
+
+Games watch `gMgCoinsStatus`: 1 when a sequence is done, 2-4 while one runs.
+`gMgCoinsShowDelta` makes the sequences draw their signed count.
+
+What is not settled is the word "bet". The touch button and the sounds (0x149-0x14e)
+fit Card, BSC and MCarlo, but Memory and Memory2 also call `MgCoins_PlaceBet`
+with their remaining misses.
+
+**The options panel, high confidence.** These are the `dMgPsOpt_c` helpers, still free
+functions on a `char *` view: `PsOpt_Open`, `PsOpt_Close`, `PsOpt_Update`,
+`PsOpt_Draw`, `PsOpt_IsIdle` and `PsOpt_PlaceIcon`. Pass 2 should make them
+members.

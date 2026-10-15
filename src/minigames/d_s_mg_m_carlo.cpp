@@ -66,7 +66,7 @@ extern int data_ov006_02133810[];
 extern int data_ov006_0214250c[];
 extern void Vec2_Sub(int* o, int* a, int* b);
 extern void func_0203d630(int *p, int m);
-extern int data_ov004_020bf9ec;
+extern int sMgCoinsBetPlaced;
 extern unsigned int func_02012790(unsigned int a);
 extern int func_0203d5dc(void *a, void *b);
 extern int data_ov006_02133f18;
@@ -74,17 +74,17 @@ extern void Mg_DrawNumber(int a, int b, int c, int d, int e, int f, int g);
 extern void Hud_RenderSprite(void* a0, int a1, int a2, int a3, int a4);
 void func_ov006_020c0aa8(void* p);
 void Mg_DrawCredits(char* a0, int a1, int a2, int a3);
-void func_ov004_020b6430(void);
+void MgCoins_Draw(void);
 void Mg_DrawScoreTally(char* a0, int a1, int a2, int a3);
 void func_ov006_020c1804(void* p);
 int func_ov006_020c1718(void* p);
-void func_ov004_020b65e4(void);
+void MgCoins_Update(void);
 void func_ov006_020c19d0(void* c);
 void func_ov006_020c1604(char* c, int unused, short a2, int a3);
-void func_ov004_020b66d4(char* p);
+void MgCoins_Reset(char* p);
 void FreeGfxSlotsById(int arg);
-void func_ov004_020b56c8(char* p);
-extern unsigned short data_ov004_020bf9e4;
+void MgCoins_StartPayout(char* p);
+extern unsigned short gMgCoinsStatus;
 extern void func_ov006_0210a534(void *c);
 extern int GetGameLanguage(void);
 extern int LoadFile(int handle);
@@ -166,7 +166,7 @@ s32 dScMgMCarlo_c::InitResources()
  * layout, the round state re-arms (unk_60a8 = 1), and the shared prompt
  * window re-opens watching unk_60ae.
  *
- * func_ov004_020b66d4 never reads its argument, but the ROM still computes
+ * MgCoins_Reset never reads its argument, but the ROM still computes
  * this + 0x6000 for it, which is mArray[76].mTargetY. */
 void dScMgMCarlo_c::StartRound(int arg)
 {
@@ -178,8 +178,8 @@ void dScMgMCarlo_c::StartRound(int arg)
     mShared.unk_01a = 1;
     unk_60aa = 0;
     unk_60a8 = 1;
-    func_ov004_020b66d4((char *)&mArray[76].mTargetY);
-    data_ov004_020bc7d4 = 1;
+    MgCoins_Reset((char *)&mArray[76].mTargetY);
+    gMgCoinsShowDelta = 1;
 }
 
 // @symbol _ZN13dScMgMCarlo_c11CanEndStateEi
@@ -200,10 +200,10 @@ int dScMgMCarlo_c::CanEndState(int mode)
         if (func_ov006_020c1718(&mShared) != 0) {
             int dealt = data_ov006_0213d570;
             if (dealt != 0) {
-                func_ov004_020b5e40(dealt);
+                MgCoins_StartSpend(dealt);
                 unk_60aa = -1;
             } else {
-                func_ov004_020b56c8((char*)data_ov006_0213d568);
+                MgCoins_StartPayout((char*)data_ov006_0213d568);
             }
             unk_60ae = 0;
             unk_60a8 += 1;
@@ -227,7 +227,7 @@ int dScMgMCarlo_c::CanEndState(int mode)
                 unk_60ae += 1;
             }
         } else {
-            if (data_ov004_020bf9e4 <= 1)
+            if (gMgCoinsStatus <= 1)
                 unk_60a8 += 1;
         }
         break;
@@ -352,7 +352,7 @@ s32 dScMgMCarlo_c::Behavior()
         break;
     }
 
-    func_ov004_020b65e4();
+    MgCoins_Update();
     func_ov006_020c19d0(&mShared);
     dScMgMCarlo_c::UpdateBoard();
     return 1;
@@ -365,7 +365,7 @@ s32 dScMgMCarlo_c::Render()
 {
     func_ov006_020c0aa8(pad_4660);
     Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
-    func_ov004_020b6430();
+    MgCoins_Draw();
     Mg_DrawScoreTally((char *)this, 0xe0, 0x14, 1);
 
     {
@@ -576,8 +576,8 @@ void dMgMCarloCardObj_c::Update(int slot)
             data_ov006_021424ec = 0x20;
             mState = CARD_SELECTED;
             Sound::PlayBank2_2D(0x154);
-            if (data_ov004_020bf9ec == 0)
-                data_ov004_020bf9ec = 1;
+            if (sMgCoinsBetPlaced == 0)
+                sMgCoinsBetPlaced = 1;
             return;
         }
         func_02012790(0xe);

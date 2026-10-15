@@ -90,7 +90,7 @@ namespace cstd { int fdiv(int num, int den); }
 extern "C" {
 extern void *sMgWorkBuffer;
 extern void **data_0209d4a8;
-int func_ov004_020b8ee0(char *p);
+int PsOpt_IsIdle(char *p);
 void Mg_UpdateMenu(char *c);
 void Banner_Update(char *c);
 void Mg_UpdateFx(char *c);
@@ -1216,7 +1216,7 @@ extern "C" void Mg_DrawLine(dScMgBase_c *thiz, int x0, int y0, int x1, int y1, i
 namespace s20ae858 {
 extern "C" {
 extern "C" {
-int func_ov004_020b8f18(void *c);
+int PsOpt_Draw(void *c);
 int GetGameLanguage(void);
 void Mg_DrawSpriteList(void *self, int a1, int a2, int a3);
 }
@@ -1232,7 +1232,7 @@ extern int data_ov006_021346bc;
    The highlighted item (mMenuCursor) goes through a matrix whose diagonal
    is func_02053200 of a pulse that mMenuCursorPhase drives through the
    sin/cos table data_02082214. Nothing is drawn while
-   func_ov004_020b8f18 returns nonzero for mTouchOptions. */
+   PsOpt_Draw returns nonzero for mTouchOptions. */
 extern "C" void Mg_DrawMenu(dScMgBase_c *scene)
 {
     int extra[3];
@@ -1243,7 +1243,7 @@ extern "C" void Mg_DrawMenu(dScMgBase_c *scene)
     int zero0;
     int i;
 
-    if (func_ov004_020b8f18((void *)&scene->mTouchOptions) != 0)
+    if (PsOpt_Draw((void *)&scene->mTouchOptions) != 0)
         return;
 
     extra[0] = *data_ov004_020bc020[GetGameLanguage()];
@@ -1358,10 +1358,10 @@ namespace s20aeb24 {
 extern "C" {
 extern "C" {
 extern void func_02012790(int a);
-extern int func_ov004_020b8f78(char* p);
+extern int PsOpt_Update(char* p);
 extern void func_0203b958(short* o, short* a, short* b);
 extern void func_02012dd0(int a);
-extern void func_ov004_020b9220(char* p);
+extern void PsOpt_Open(char* p);
 
 extern unsigned short data_020a0e5a[];
 extern dWipe_c data_0209f61c;
@@ -1373,7 +1373,7 @@ extern dWipe_c data_0209f61c;
    item 0, else 0). Once mMenuCursorPhase reaches 0x10000 and that timer
    reaches 0, item 0 (and any other value) calls CloseMenu
    (slot 28), item 1 starts a scene fade, and item 2 calls
-   func_ov004_020b9220 on the touch options and clears the highlight. */
+   PsOpt_Open on the touch options and clears the highlight. */
 void Mg_UpdateMenu(char* c)
 {
     dScMgBase_c *self = (dScMgBase_c *)c;
@@ -1389,7 +1389,7 @@ void Mg_UpdateMenu(char* c)
     if ((flags & 0x40) || (flags & 0x80) || (flags & 0x20) || (flags & 0x10)) {
         func_02012790(0xe);
     }
-    if (func_ov004_020b8f78((char *)&self->mTouchOptions) != 0) return;
+    if (PsOpt_Update((char *)&self->mTouchOptions) != 0) return;
 
     ApproachLinear2(self->mMenuItem0X, 0x80, 0x10);
     ApproachLinear2(self->mMenuItem1X, 0x80, 0x10);
@@ -1455,7 +1455,7 @@ after:
         self->mQuitFadeStarted = 1;
         return;
     case 2:
-        func_ov004_020b9220((char *)&self->mTouchOptions);
+        PsOpt_Open((char *)&self->mTouchOptions);
         self->mMenuCursor = -1;
         self->mMenuCursorPhase = 0;
         return;
@@ -1573,7 +1573,7 @@ int dScMgBase_c::CloseMenu()
 { using s20af04c::Enable3dEngines; using s20af04c::func_02012e1c;
     func_02012e1c((char *)this);
     mMenuOpen = 0;
-    func_ov004_020b91fc((char *)&mTouchOptions);
+    PsOpt_Close((char *)&mTouchOptions);
     int r = GetDisplayMode();
     if (r != 0) Enable3dEngines();
 }
@@ -2329,7 +2329,7 @@ int dScMgBase_c::BeforeBehavior()
         if ((flags & 8) || (flags & 4) || (flags & 1) || (flags & 2)) {
             if (mMenuOpen != 0) {
                 if (mMenuCursor < 0) {
-                    if (func_ov004_020b8ee0((char *)&mTouchOptions))
+                    if (PsOpt_IsIdle((char *)&mTouchOptions))
                         CloseMenu();
                 }
             } else {

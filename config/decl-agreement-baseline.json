@@ -15655,7 +15655,7 @@
         "return:void * []"
       ]
     },
-    "data_ov004_020b9488": {
+    "sMgCoinRiseFrames": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "return:int"
       ]
@@ -15730,7 +15730,7 @@
         "return:void *"
       ]
     },
-    "data_ov004_020bf9e4": {
+    "gMgCoinsStatus": {
       "src/minigames/d_s_mg_m_carlo.cpp": [
         "return:unsigned short"
       ],
@@ -27662,7 +27662,7 @@
         "kind:data"
       ]
     },
-    "func_ov004_020b56c8": {
+    "MgCoins_StartPayout": {
       "src/minigames/d_s_mg_bsc.cpp": [
         "param:#1 int"
       ],
@@ -27677,7 +27677,7 @@
         "arity:0"
       ]
     },
-    "func_ov004_020b66d4": {
+    "MgCoins_Reset": {
       "src/minigames/d_s_mg_m_carlo.cpp": [
         "arity:1"
       ]
@@ -27687,7 +27687,7 @@
         "arity:1"
       ]
     },
-    "func_ov004_020b8f78": {
+    "PsOpt_Update": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ]

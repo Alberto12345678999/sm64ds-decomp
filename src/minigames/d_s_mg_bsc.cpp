@@ -48,13 +48,13 @@ extern StateHandler data_ov006_0213fd1c;
 extern StateHandler data_ov006_0213fd2c;
 
 extern "C" {
-extern short data_ov004_020bf9e4;
+extern short gMgCoinsStatus;
 extern int Math_Function_0203b14c(int *ptr, int target, int rate, int limit, int step);
 extern void Mg_ResumeSharedState(void);
 extern int func_ov006_020c1718(int* r0);
-extern void func_ov004_020b56c8(int x);
-extern void func_ov004_020b5ed0(void);
-extern int data_ov004_020bfa18;
+extern void MgCoins_StartPayout(int x);
+extern void MgCoins_StartLose(void);
+extern int gMgCoinsInPlay;
 extern void func_ov006_020c0c80(void* c);
 /* decl_common.h already declares this with a void pointer, so the
  * definition's char pointer cannot be repeated here. */
@@ -63,18 +63,18 @@ extern void Mg_SubmitScore(int self);
 extern void Mg_SetSharedState(int v);
 extern void Mg_SaveRecordPair(int a, int b);
 extern int data_ov006_0213fd44[];
-extern int data_ov004_020bf9ec;
+extern int sMgCoinsBetPlaced;
 extern int RandomIntInternal(int* seed);
 extern void func_ov006_020c1604(char* c, int unused, short a2, int a3);
 extern int data_0209e650;
 extern "C" void FreeGfxSlotsById(int arg);
-extern "C" void func_ov004_020b66d4(void);
+extern "C" void MgCoins_Reset(void);
 void func_ov006_020c0aa8(void *camera);
 void Hud_RenderSprite(void *sprite, int x, int y, int a3, int a4);
 void Mg_DrawCredits(void *scene, int a1, int a2, int a3);
 void Mg_DrawScoreTally(void *scene, int a1, int a2, int a3);
 void func_ov006_020c1804(void *table);
-void func_ov004_020b65e4(void);
+void MgCoins_Update(void);
 void func_ov006_020c19d0(char *c);
 extern unsigned char data_0209d45c[];
 extern int data_0208ee44[];
@@ -153,7 +153,7 @@ s32 dScMgBSC_c::InitResources()
 s32 dScMgBSC_c::Behavior()
 {
     (this->*data_ov006_02142f94[mState])();
-    func_ov004_020b65e4();
+    MgCoins_Update();
     func_ov006_020c19d0((char *)&mShared);
     return 1;
 }
@@ -180,7 +180,7 @@ s32 dScMgBSC_c::Render()
             }
         }
     }
-    func_ov004_020b6430();
+    MgCoins_Draw();
     Mg_DrawCredits(this, 0xc, 0xc, 0);
     Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
     func_ov006_020c1804(&mShared);
@@ -197,15 +197,15 @@ void dScMgBSC_c::StartRound(int mode)
         mHudScore = Mg_GetSavedRecord1();
         Mg_SubmitScore(mHudScore);
     }
-    func_ov004_020b66d4();
-    data_ov004_020bc7d4 = 1;
+    MgCoins_Reset();
+    gMgCoinsShowDelta = 1;
     mState = 0;
 }
 
 // @symbol _ZN10dScMgBSC_c11CanEndStateEi
 /* Slot 19. In state 13, once the table's reaction has finished, mode 4
    moves to state 9 and mode 5 to state 10. When the round has settled
-   (state 12, with data_ov004_020bf9e4 set) the final scores go to the
+   (state 12, with gMgCoinsStatus set) the final scores go to the
    meter. */
 s32 dScMgBSC_c::CanEndState(int mode)
 {
@@ -226,7 +226,7 @@ s32 dScMgBSC_c::CanEndState(int mode)
     }
     state = mState;
     if (state >= 0xc) {
-        gate = data_ov004_020bf9e4;
+        gate = gMgCoinsStatus;
         if (gate == 1) goto settle;
     }
     return 0;
@@ -247,7 +247,7 @@ void dScMgBSC_c::OnHostAnimCue()
     if ((unsigned int)tier > 3) {
         tier = 3;
     }
-    func_ov004_020b6324(tier + 1);
+    MgCoins_RaiseBet(tier + 1);
 }
 
 // @symbol _ZN10dScMgBSC_c14StateDealCardsEv
@@ -366,7 +366,7 @@ void dScMgBSC_c::StateChooseCard()
         mOtherCard = lane ^ 1;
         mRevealStep = 0;
         mState += 1;
-        data_ov004_020bf9ec = 1;
+        sMgCoinsBetPlaced = 1;
         Sound::PlayBank2_2D(0x153);
     }
 }
@@ -400,7 +400,7 @@ void dScMgBSC_c::StateWaitMove()
 // @symbol _ZN10dScMgBSC_c16StateRevealCardsEv
 /* State 5: flips both cards, one frame every four ticks, until the other
  * card is face up. Then settles the stakes: the higher card wins, which
- * adds twice data_ov004_020bfa18 to mCredits and one to the score; a loss
+ * adds twice gMgCoinsInPlay to mCredits and one to the score; a loss
  * takes one away. */
 void dScMgBSC_c::StateRevealCards()
 {
@@ -422,7 +422,7 @@ void dScMgBSC_c::StateRevealCards()
         int base = mCredits;
         int score = mHudScore;
         if (chosen > other) {
-            base += data_ov004_020bfa18 * 2;
+            base += gMgCoinsInPlay * 2;
             score = score + 1;
         } else {
             score = score - 1;
@@ -493,16 +493,16 @@ void dScMgBSC_c::StateWaitTable()
     if (func_ov006_020c1718((int *)&mShared) == 0)
         return;
     if (mState == 9) {
-        func_ov004_020b56c8(data_ov004_020bfa18 << 1);
+        MgCoins_StartPayout(gMgCoinsInPlay << 1);
         mState = 0xc;
     } else {
-        func_ov004_020b5ed0();
+        MgCoins_StartLose();
         mState = 0xb;
     }
 }
 
 // @symbol _ZN10dScMgBSC_c16StateReturnCardsEv
-/* State 11, while data_ov004_020bf9e4 is set: if the base score is spent,
+/* State 11, while gMgCoinsStatus is set: if the base score is spent,
  * first walks both cards back to the deck (mDealCount re-read every pass,
  * as in StateWaitDeal). Then refreshes the meter and settles in state 12. */
 void dScMgBSC_c::StateReturnCards()
@@ -511,7 +511,7 @@ void dScMgBSC_c::StateReturnCards()
     int i;
     CardPos *pos;
 
-    if (data_ov004_020bf9e4 != 1)
+    if (gMgCoinsStatus != 1)
     {
         return;
     }

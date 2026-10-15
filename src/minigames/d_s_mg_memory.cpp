@@ -68,7 +68,7 @@ extern void Mg_DrawBlinkSprite(void *c, int arg1, int arg2);
 extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern short data_02082214[];
 void func_02012790(int a);
-void func_ov004_020b5dd4(void);
+void MgCoins_StartLoseOneMore(void);
 extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern u16 data_ov006_0213d168[];
 extern void *data_ov006_0214236c[];
@@ -76,8 +76,8 @@ extern unsigned short data_ov006_0213d0a8[];
 extern void Mg_SaveRecordPair(int a, int b);
 extern s16 data_02082214[];
 extern u16* data_ov006_0213d09c[];
-extern int func_ov004_020b56c8(int);
-extern short data_ov004_020bf9e4;
+extern int MgCoins_StartPayout(int);
+extern short gMgCoinsStatus;
 extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int c);
 extern void Mg_SubmitScore(int self);
@@ -89,7 +89,7 @@ extern void FreeGfxSlotsById(int x);
 void func_ov006_020c0aa8(char *p);
 void Mg_DrawCredits(char *c, int a, int b, int d);
 void func_ov006_020c1804(char *p);
-void func_ov004_020b65e4(void);
+void MgCoins_Update(void);
 int func_ov006_020c19d0(void *p);
 void func_ov006_0210a534(void);
 s32 GetGameLanguage(void);
@@ -99,7 +99,7 @@ void Deallocate(void *ptr);
 int func_ov006_020c1a88(void *c);
 int Mg_GetSavedRecord0(void);
 int Mg_GetSavedRecord1(void);
-void func_ov004_020b66d4(void);
+void MgCoins_Reset(void);
 int func_ov006_020c1718(int *p);
 void Mg_SetTopScreenYOffset(int v);
 void Mg_PlaceBannersOnTopScreen(void);
@@ -304,7 +304,7 @@ void dScMgMemory_c::JudgePair()
     } else {
         func_02012790(0xe);
         mMisses++;
-        func_ov004_020b5dd4();
+        MgCoins_StartLoseOneMore();
         Sound::PlayBank2_2D(0x13e);
         if (mMisses < mMaxMisses) {
             *firstState = CARD_FLIPPING_DOWN;
@@ -653,10 +653,10 @@ void dScMgMemory_c::ResultReward()
             return;
         if (mPairsFound < mTargetPairs)
             return;
-        func_ov004_020b56c8(6 * (3 - mMisses));
+        MgCoins_StartPayout(6 * (3 - mMisses));
         return;
     }
-    if (data_ov004_020bf9e4 == 1) {
+    if (gMgCoinsStatus == 1) {
         mCardTimer = 0;
         mSubstate = 2;
     }
@@ -1006,7 +1006,7 @@ void dScMgMemory_c::SetupDifficulty() {
 // @symbol _ZN13dScMgMemory_c13OnHostAnimCueEv
 void dScMgMemory_c::OnHostAnimCue()
 {
-    func_ov004_020b63a0(mMaxMisses);
+    MgCoins_PlaceBet(mMaxMisses);
 }
 
 // @symbol _ZN13dScMgMemory_c11CanEndStateEi
@@ -1033,8 +1033,8 @@ void dScMgMemory_c::StartRound(int /* arg */)
     lives = 0;
     if (meter != 0) lives = *(int *)(meter + 0xa8);
     if (lives >= 3) lives = 3;
-    ((void (*)(void *))func_ov004_020b66d4)(meter);
-    data_ov004_020bc7d4 = 1;
+    ((void (*)(void *))MgCoins_Reset)(meter);
+    gMgCoinsShowDelta = 1;
     mMaxMisses = (unsigned char)lives;
 }
 
@@ -1044,7 +1044,7 @@ s32 dScMgMemory_c::Render()
 {
     func_ov006_020c0aa8((char *)pad_4660);
     Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
-    func_ov004_020b6430();
+    MgCoins_Draw();
     DrawMessage();
     DrawCursor();
     DrawCards();
@@ -1057,7 +1057,7 @@ s32 dScMgMemory_c::Render()
 s32 dScMgMemory_c::Behavior()
 {
     (this->*data_ov006_021422dc[mState])();
-    func_ov004_020b65e4();
+    MgCoins_Update();
     func_ov006_020c19d0(&mShared);
     return 1;
 }
@@ -1087,8 +1087,8 @@ s32 dScMgMemory_c::InitResources()
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
     mHudScore = Mg_GetSavedRecord1();
-    func_ov004_020b66d4();
-    data_ov004_020bc7d4 = 1;
+    MgCoins_Reset();
+    gMgCoinsShowDelta = 1;
     mMaxMisses = 3;
     Mg_SetTopScreenYOffset(0x20);
     Mg_PlaceBannersOnTopScreen();

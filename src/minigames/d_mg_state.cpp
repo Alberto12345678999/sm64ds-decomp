@@ -19,10 +19,10 @@
  *
  * Edges. 0x020b67e8 is the first function after func_ov004_020b67e4, the last
  * destructor helper __sinit_ov004_020b9ad0 registers for the preceding unit
- * (the 0x14-entry array at data_ov004_020bfa34). 0x020b8c18 is the start of
+ * (the 0x14-entry array at sMgCoins). 0x020b8c18 is the start of
  * dMgPsOpt_c. The unit's .data window, 0x020bc850..0x020bca44, is read only
  * by this unit's functions and ends before dMgPsOpt_c's at 0x020bca58; the
- * words at data_ov004_020bc7d4 and data_ov004_020bfa24 belong to the preceding
+ * words at gMgCoinsShowDelta and sMgCoinsDeltaShown belong to the preceding
  * unit, which this unit only writes. The unit emits no static initializer of
  * its own, so none of the four __sinit_ov004_* records belongs to it.
  *
@@ -179,8 +179,8 @@ extern dWipe_c data_0209f61c;
 extern Base* gMgScene;  /* local extern: seen through the TU-local Base view (see Base above) */
 extern int sMgTopScreenYOffset;
 extern int sMgBannerButtonsArmed;
-extern int data_ov004_020bc7d4;
-extern int data_ov004_020bfa24;
+extern int gMgCoinsShowDelta;
+extern int sMgCoinsDeltaShown;
 
 extern int data_ov004_020bc850;
 extern int data_ov004_020bc854;
@@ -564,8 +564,8 @@ void dMgState_c::State05_Update() {
       return;
     if (q->CanEndState(mState) == 0)
       return;
-    data_ov004_020bc7d4 = 0;
-    data_ov004_020bfa24 = 0;
+    gMgCoinsShowDelta = 0;
+    sMgCoinsDeltaShown = 0;
     Mg_RestoreMusic();
     FreeGfxSlotsById(0x1d);
     mTimer = 0xb4;
@@ -623,8 +623,8 @@ void dMgState_c::State06_Update() {
   FreeGfxSlotsById(0x1d);
   mBehavior = data_ov004_020bc93c;
   unk_024 = 1;
-  data_ov004_020bc7d4 = 0;
-  data_ov004_020bfa24 = 0;
+  gMgCoinsShowDelta = 0;
+  sMgCoinsDeltaShown = 0;
 }
 
 // @symbol _ZN10dMgState_c17UpdateAfterHiddenEv

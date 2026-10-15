@@ -73,7 +73,7 @@ extern "C" void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
 extern "C" void func_ov006_020c1804(void *c);
 extern int data_ov006_02134028;
 void func_ov006_020c19d0(void *table);
-void func_ov004_020b65e4(void);
+void MgCoins_Update(void);
 extern int func_ov006_020c0f0c(void *p);
 extern int func_ov006_020c1718(void *p);
 extern void func_ov006_020c1420(void *c, s16 arg1, void *arg2);
@@ -83,15 +83,15 @@ extern void Mg_SaveRecordPair(int a0, int a1);
 extern void Mg_ShowBanner(int a0, int a1, int a2, int a3, int a4, s16 a5);
 extern void Mg_SubmitScore(int v);
 extern void Mg_SetSharedState(int v);
-extern int data_ov004_020bf9ec;
+extern int sMgCoinsBetPlaced;
 extern int data_ov006_0213bc44;
-extern int data_ov004_020bfa18;
+extern int gMgCoinsInPlay;
 extern int data_ov006_0213bd48[];
 extern void FreeGfxSlotsById(int arg);
-extern void func_ov004_020b56c8(int a);
-extern s16 data_ov004_020bf9e4;
+extern void MgCoins_StartPayout(int a);
+extern s16 gMgCoinsStatus;
 extern "C" void func_ov006_020c1604(char *c, int unused, short a2, int a3);
-extern "C" void func_ov004_020b66d4(void);
+extern "C" void MgCoins_Reset(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern void func_ov006_0210a534(char *);
@@ -271,9 +271,9 @@ void dScMgCard_c::StartRound(int mode)
         p2 += 0x30;
     }
 
-    func_ov004_020b66d4();
+    MgCoins_Reset();
 
-    data_ov004_020bc7d4 = 1;
+    gMgCoinsShowDelta = 1;
     data_ov006_0214176c = 0;
     data_ov006_02141768 = 0;
     data_ov006_02141770 = 0;
@@ -304,21 +304,21 @@ int dScMgCard_c::CanEndState(int mode)
         if (func_ov006_020c1718(&mShared) != 0) {
             int r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
-                func_ov004_020b5ed0();
+                MgCoins_StartLose();
                 mStateTimer = 0;
             } else if (r == 1) {
                 int v = data_ov006_0213bd48[dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, 0)];
-                func_ov004_020b56c8(v * data_ov004_020bfa18);
+                MgCoins_StartPayout(v * gMgCoinsInPlay);
                 mStateTimer = 0;
             } else {
-                func_ov004_020b5d74();
+                MgCoins_StartRefund();
                 mStateTimer = 0x1e;
             }
             mState += 1;
         }
         break;
     case 0x10:
-        if (data_ov004_020bf9e4 == 1) {
+        if (gMgCoinsStatus == 1) {
             int r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             dScMgCard_c::EvaluateHand((const dMgCardObj_c *)mArray1, 0);
             if (r == -1) {
@@ -360,7 +360,7 @@ int dScMgCard_c::CanEndState(int mode)
 
 // @symbol _ZN11dScMgCard_c13OnHostAnimCueEv
 /* Slot 21 selects a tier from 1 to 4 according to mHudScore and passes it
- * to func_ov004_020b6324. The inherited name does not establish an actor
+ * to MgCoins_RaiseBet. The inherited name does not establish an actor
  * ground-pound event or the original name of this scene callback. */
 void dScMgCard_c::OnHostAnimCue() {
     int x = mHudScore;
@@ -374,7 +374,7 @@ void dScMgCard_c::OnHostAnimCue() {
     } else {
         v = 4;
     }
-    func_ov004_020b6324(v);
+    MgCoins_RaiseBet(v);
 }
 
 // @symbol _ZN11dScMgCard_c11UpdateStateEv
@@ -470,7 +470,7 @@ void dScMgCard_c::UpdateState()
                         data_ov006_0214176c = 1;
                         data_ov006_02141768 = 1;
                         mState++;
-                        data_ov004_020bf9ec = 1;
+                        sMgCoinsBetPlaced = 1;
                         Sound::PlayBank2_2D(0x151);
                         g = gMgScene;
                         a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
@@ -490,7 +490,7 @@ void dScMgCard_c::UpdateState()
                         data_ov006_0214176c = 1;
                         data_ov006_02141768 = 1;
                         mState++;
-                        data_ov004_020bf9ec = 1;
+                        sMgCoinsBetPlaced = 1;
                         Sound::PlayBank2_2D(0x151);
                         g = gMgScene;
                         a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
@@ -635,7 +635,7 @@ void dScMgCard_c::UpdateState()
                     int prod;
                     a0 = g ? ((dScMgBase_c *)g)->mCredits : 0;
                     r = tbl[t5];
-                    scale = data_ov004_020bfa18;
+                    scale = gMgCoinsInPlay;
                     prod = r * scale + a0;
                     r = g ? ((dScMgBase_c *)g)->mHudScore : 0;
                     Mg_SaveRecordPair(prod, r + 1);
@@ -707,7 +707,7 @@ s32 dScMgCard_c::Behavior()
     mFrameCounter += 1;
     func_ov006_020c19d0(&mShared);
     UpdateState();
-    func_ov004_020b65e4();
+    MgCoins_Update();
     return 1;
 }
 
@@ -755,7 +755,7 @@ s32 dScMgCard_c::Render()
         this->mScore = this->mHudScore;
     Mg_SubmitScore(this->mScore);
 
-    func_ov004_020b6430();
+    MgCoins_Draw();
 
     RenderHud();
 

@@ -19603,171 +19603,171 @@
     },
     "ov004:0x020b4aa4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4aa4"
+      "name": "Coin_FlyToCounter"
     },
     "ov004:0x020b4b84": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4b84"
+      "name": "Coin_PlacePayout"
     },
     "ov004:0x020b4c30": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4c30"
+      "name": "Coin_MoveThenRefund"
     },
     "ov004:0x020b4cc4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4cc4"
+      "name": "Coin_Return"
     },
     "ov004:0x020b4d50": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4d50"
+      "name": "Coin_RiseSpent"
     },
     "ov004:0x020b4dfc": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4dfc"
+      "name": "Coin_MoveThenRiseSpent"
     },
     "ov004:0x020b4e78": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b4e78"
+      "name": "Coin_Spend"
     },
     "ov004:0x020b4f44": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4f44"
+      "name": "Coin_Rise"
     },
     "ov004:0x020b4ff0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b4ff0"
+      "name": "Coin_MoveThenRise"
     },
     "ov004:0x020b506c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b506c"
+      "name": "Coin_SendOff"
     },
     "ov004:0x020b5108": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5108"
+      "name": "Coin_Launch"
     },
     "ov004:0x020b51e4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b51e4"
+      "name": "Coin_Hide"
     },
     "ov004:0x020b51f0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b51f0"
+      "name": "Coin_MoveThenBank"
     },
     "ov004:0x020b5288": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5288"
+      "name": "Coin_Move"
     },
     "ov004:0x020b52b8": {
       "author": "tangosdev",
-      "name": "func_ov004_020b52b8"
+      "name": "Coin_Draw"
     },
     "ov004:0x020b52fc": {
       "author": "tangosdev",
-      "name": "func_ov004_020b52fc"
+      "name": "Coin_Update"
     },
     "ov004:0x020b5334": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5334"
+      "name": "Coin_Reset"
     },
     "ov004:0x020b5368": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5368"
+      "name": "MgCoins_StepPayoutFinish"
     },
     "ov004:0x020b53f0": {
       "author": "lunavyqo",
-      "name": "func_ov004_020b53f0"
+      "name": "MgCoins_StepPayoutNext"
     },
     "ov004:0x020b556c": {
       "author": "lunavyqo",
-      "name": "func_ov004_020b556c"
+      "name": "MgCoins_StepPayoutLayout"
     },
     "ov004:0x020b56c8": {
       "author": "tangosdev",
-      "name": "func_ov004_020b56c8"
+      "name": "MgCoins_StartPayout"
     },
     "ov004:0x020b5768": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5768"
+      "name": "MgCoins_StepRefund"
     },
     "ov004:0x020b586c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b586c"
+      "name": "MgCoins_StepSpendHold"
     },
     "ov004:0x020b58c4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b58c4"
+      "name": "MgCoins_StepSpend"
     },
     "ov004:0x020b5a54": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5a54"
+      "name": "MgCoins_StepHoldThenFinish"
     },
     "ov004:0x020b5aac": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5aac"
+      "name": "MgCoins_StepLoseOneMore"
     },
     "ov004:0x020b5c18": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5c18"
+      "name": "MgCoins_StepLose"
     },
     "ov004:0x020b5d74": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5d74"
+      "name": "MgCoins_StartRefund"
     },
     "ov004:0x020b5dd4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5dd4"
+      "name": "MgCoins_StartLoseOneMore"
     },
     "ov004:0x020b5e40": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5e40"
+      "name": "MgCoins_StartSpend"
     },
     "ov004:0x020b5ed0": {
       "author": "ruspecial",
-      "name": "func_ov004_020b5ed0"
+      "name": "MgCoins_StartLose"
     },
     "ov004:0x020b5f6c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b5f6c"
+      "name": "MgCoins_StepLaunchQuick"
     },
     "ov004:0x020b612c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b612c"
+      "name": "MgCoins_StepLaunch"
     },
     "ov004:0x020b6234": {
       "author": "tangosdev",
-      "name": "func_ov004_020b6234"
+      "name": "MgCoins_AddBetCoin"
     },
     "ov004:0x020b6324": {
       "author": "tangosdev",
-      "name": "func_ov004_020b6324"
+      "name": "MgCoins_RaiseBet"
     },
     "ov004:0x020b63a0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b63a0"
+      "name": "MgCoins_PlaceBet"
     },
     "ov004:0x020b6430": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b6430"
+      "name": "MgCoins_Draw"
     },
     "ov004:0x020b653c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b653c"
+      "name": "MgCoins_DrawDelta"
     },
     "ov004:0x020b65e4": {
       "author": "andrewboudreau",
-      "name": "func_ov004_020b65e4"
+      "name": "MgCoins_Update"
     },
     "ov004:0x020b66d4": {
       "author": "tangosdev",
-      "name": "func_ov004_020b66d4"
+      "name": "MgCoins_Reset"
     },
     "ov004:0x020b67bc": {
       "author": "ruspecial",
-      "name": "func_ov004_020b67bc"
+      "name": "MgCoins_Cleanup"
     },
     "ov004:0x020b67e0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b67e0"
+      "name": "Coin_Destroy"
     },
     "ov004:0x020b67e4": {
       "author": "tangosdev",
@@ -19987,27 +19987,27 @@
     },
     "ov004:0x020b8dc0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b8dc0"
+      "name": "PsOpt_PlaceIcon"
     },
     "ov004:0x020b8ee0": {
       "author": "tangosdev",
-      "name": "func_ov004_020b8ee0"
+      "name": "PsOpt_IsIdle"
     },
     "ov004:0x020b8f18": {
       "author": "tangosdev",
-      "name": "func_ov004_020b8f18"
+      "name": "PsOpt_Draw"
     },
     "ov004:0x020b8f78": {
       "author": "tangosdev",
-      "name": "func_ov004_020b8f78"
+      "name": "PsOpt_Update"
     },
     "ov004:0x020b91fc": {
       "author": "tangosdev",
-      "name": "func_ov004_020b91fc"
+      "name": "PsOpt_Close"
     },
     "ov004:0x020b9220": {
       "author": "tangosdev",
-      "name": "func_ov004_020b9220"
+      "name": "PsOpt_Open"
     },
     "ov004:0x020b9280": {
       "author": "tangosdev",

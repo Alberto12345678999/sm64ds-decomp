@@ -55,7 +55,7 @@ A pass must not change a single emitted byte or relocation target.
    - `dScMg3DEsp_c::Behavior` matches with either receiver.
    - Measured to need an incomplete receiver in Curling and Curling2. Teresa keeps its receiver incomplete too.
    - Jump needs a non-polymorphic receiver instead.
-   - Proven as typed member-pointer records assigned directly: `dMgState_c` (its 29 behavior/render records and the enter table) and `unit020b4aa4`'s `SpriteFn` records, including the `!=` compare in `func_ov004_020b5108`.
+   - Proven as typed member-pointer records assigned directly: `dMgState_c` (its 29 behavior/render records and the enter table) and `unit020b4aa4`'s `SpriteFn` records, including the `!=` compare in `Coin_Launch`.
    - Measured negative in `unit020b2c84`: a plain record copy in `Banner_Init` changes 12 words, so its `b ? a : a` copies stay. Typed copies in `Banner_StartSpin`, `020b39a4` and `020b422c` give identical text but move the name counter (theme 16), so the `W2` copies stay.
    - Test the receiver per file.
 6. **Shared ov004 functions called by address**, such as `Mg_SubmitScore` (submit score) and `Mg_SetSharedState` (enter a shared state).
