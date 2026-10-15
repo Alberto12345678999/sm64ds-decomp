@@ -348,3 +348,16 @@ Six tables, named by index:
 High confidence: `FlipAt` (a panel and its neighbours), `DealPuzzle`, `CheckSolved`, `CountMatches`, `UpdateTouch`, `DrawPanels`, `Particle_*`, `Scroll_*`, `ResetRound`.
 
 Medium confidence: `ScramblePanels`, `HasDuplicateRows`, `UpdateMoves`, `StartSolveCheck`, `EnableOverlayLayer`, `DrawCursor`, the slide-delay helpers, `CountFlipping`.
+
+**Coin (`dScMgCoin_c`, Coincentration).**
+
+Five tables, named by index:
+- `Phase_State0..5`
+- `Block_State0..5`
+- `Coin_State0..2`
+- `Caption_State0..4`
+- `Bag_State0..3`: the moneybag.
+
+High confidence: `LayOutCoins`, `SpawnBlocks`, `KickBlockUnderCoin`, `Block_ClampToWalls`, `Sparkle_*`, `Popup_*`, `ResetRound`.
+
+Medium confidence: `DrawScorePlayer` and `DrawScoreRival` (the two result scores), `Caption_*`, `Bag_Release`.
