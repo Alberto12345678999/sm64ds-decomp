@@ -19,7 +19,7 @@ enum MgSharedState {
     MG_STATE_LOSE = 5,                 /* [high, seen] game over at 0 credits, else StartRound(5); Memory, Card */
     MG_STATE_LOSE_RESUME = 6,          /* [low] banner 0xa, then hands back to the game */
     MG_STATE_DRAW = 7,                 /* [high, seen] banner 0xb; Card's equal hands, bet refunded */
-    MG_STATE_TIE = 8,                  /* [medium] silent, StartRound(8) at once; Roulette's tie */
+    MG_STATE_TIE = 8,                  /* [high, seen] silent, StartRound(8) at once; Roulette payout == stake */
     MG_STATE_ROUND_CLEAR_TOP = 9,      /* [low] state 0 on the top screen; no caller found */
     MG_STATE_RETRY_PROMPT_B = 10,      /* [low] retry / quit with banner style 0xb */
     MG_STATE_SCORE_THEN_ROUND = 11,    /* [low] draws the score, then StartRound(11) */

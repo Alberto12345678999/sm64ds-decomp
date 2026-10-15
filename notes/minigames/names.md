@@ -159,7 +159,7 @@ and a guess (unconfirmed):
 | 5 | 0xa, s0x137, 120 | game over at 0 credits, else `StartRound(5)` | a loss in the same games | you lose. **Seen** in Memory (bet gone) and Card (Luigi's hand higher), each then `StartRound(5)` |
 | 6 | 0xa, s0x137, 120 | hides the controller and hands back to the game | none found | |
 | 7 | 0xb, none, 120 | `StartRound(7)` | Card | draw. **Seen:** `CompareHands` = 0 refunds the bet coin, then `StartRound(7)` |
-| 8 | none, none, 0 | `StartRound(8)` at once | Roulette's tie | silent tie |
+| 8 | none, none, 0 | `StartRound(8)` at once | Roulette's tie | silent tie. **Seen:** a spin with no chip staked (payout 0 = stake 0) returns the rack chips and spins again |
 | 9 | 3\* on the top screen, 4, 180 | `StartRound(9)` | none found | |
 | 10 | 8 (style 0xb), 3, 180 | retry / quit buttons | none found | |
 | 11 | none, 1, 180, draws the score | fade, `StartRound(11)` | none found | |
@@ -175,9 +175,12 @@ and a guess (unconfirmed):
 `Mg_SetSharedState(n)` call now passes a name. Each name describes the state's
 mechanics from the table above, and the enum marks the confidence of its
 meaning word per entry:
-- **high:** `RETRY_PROMPT`, `LOSE`, `RESULTS`, `RESULTS_NEW_RECORD`.
-- **medium:** `ROUND_CLEAR`, `NEXT_ROUND`, `WIN`, `TIE`, `CONTINUE_PROMPT`,
-  `GAME_OVER`, `FINISHED`.
+- **high, all seen at runtime** (2026-10-15):
+  - `NEXT_ROUND` and `RETRY_PROMPT`;
+  - `WIN`, `LOSE`, `DRAW` and `TIE`;
+  - `RETRY_PROMPT_WIDE`;
+  - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`.
+- **medium:** `ROUND_CLEAR` and `FINISHED`. Cup and Snowball would settle them.
 - **low:** the rest, which no caller enters or one game enters.
 
 The runtime check on `Mg_SetSharedState` settles the medium and low words. A

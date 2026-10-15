@@ -79,7 +79,10 @@ screenshots, over two games of Wanted! (Luigi):
 - **Picture Poker** (`dScMgCard_c`, Luigi's page, top-right card, menu row 9) also opens with `OnDealDone`. It stakes one coin itself, without `PlaceBet`, and the BET! button runs `MgCoins_AddBetCoin` for one more coin. The banners 0x18..0x1a carry the hand names.
   - **Luigi's full house against the player's two pair:** `Mg_SetSharedState(5)`, then `StartRound(5)`.
   - **Equal hands:** `Mg_SetSharedState(7)` and banner 0xb. One `Mg_GainCredits(1)` + `Mg_AddCredits(1)` refunds the bet, then `StartRound(7)`.
-- So shared states 4, 5 and 7 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE` and `MG_STATE_DRAW` all hold. Memory and Card never called a `Presenter_PlayAnim*`; their dealer has its own `Dealer_PlayWin/Lose`.
+- **Roulette** (`dScMgRoulette_c`, Luigi's page, bottom-left card, menu row 0xd). Each spin, five coins go to the chip rack (`Mg_LoseCredits(1)` ×5). Chips not staked come back with `Mg_GainCredits(1)`.
+  - **No chip staked:** payout 0 = stake 0, so `Mg_SetSharedState(8)`, silent, then `StartRound(8)` at once.
+  - **One chip on black, and black came up:** `Mg_SetSharedState(4)` and banner 9, two coins paid, then `StartRound(4)`.
+- So shared states 4, 5, 7 and 8 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE`, `MG_STATE_DRAW` and `MG_STATE_TIE` all hold. Memory and Card never called a `Presenter_PlayAnim*`; their dealer has its own `Dealer_PlayWin/Lose`.
 
 ## Recording the answer
 
