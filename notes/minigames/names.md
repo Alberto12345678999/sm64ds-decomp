@@ -519,5 +519,5 @@ compare (all 45 TUs identical).
 - **`mFlyer[1]` and `mBg[1]`:**
   - **medium:** the fields. `vy` is high: `Flyer_State0` seeds it and `State1` adds it to y.
   - **low:** the one-element arrays, inferred the same way as Teresa's `mReveal`.
-  - **medium:** "flyer" and "background" themselves are role words. Watching the board would confirm them; this is now a row in runtime-checks.md.
+  - **seen:** the flyer is Lakitu and the targets are the four flowers (runtime-checks.md, 2026-10-15). "background" is still medium.
 - **0x5418..0x5958:** no reconstructed function touches it.

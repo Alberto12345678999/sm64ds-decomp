@@ -136,8 +136,9 @@ struct dScMgPachinko_fx {
     u8  pad11[0x3];
 };
 
-/* The flyer that crosses the top of the board. Its state handlers dispatch
-   on `state`, guarded by `active` (PachinkoFlyer_State0..). */
+/* The flyer that crosses the top of the board: Lakitu on his cloud (seen in
+   melonDS). Its state handlers dispatch on `state`, guarded by `active`
+   (PachinkoFlyer_State0..). */
 struct dScMgPachinko_flyer {
     s32 x;          /* 0x00 -- 20.12 */
     s32 y;          /* 0x04 -- 20.12 */
@@ -153,7 +154,8 @@ struct dScMgPachinko_flyer {
     u8  pad1b;
 };
 
-/* One of the four targets (PachinkoTarget_ShowAll / HideAll). */
+/* One of the four targets (PachinkoTarget_ShowAll / HideAll): the four
+   flowers along the bottom (seen in melonDS; y 0xa0000, x from a table). */
 struct dScMgPachinko_target {
     s32 x;          /* 0x00 -- 20.12 */
     s32 y;          /* 0x04 -- 20.12 */

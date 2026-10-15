@@ -60,6 +60,7 @@ screenshots, over two games of Wanted! (Luigi):
 - `Mg_CallStartRound` passed the finished state's number (1). This confirms `StartRound(state)`.
 - Banners 0 and 2, at (0x80, 0x6c) and (0x80, 0x9c) after the record table, are the PLAY AGAIN and QUIT buttons.
 - Mario's page: the ladder game (Amida, menu row 0) and the propeller Shy Guy game (row 4) both open with banner 0xd "LEVEL 1" and end in state 0x12, then state 16. Banner 0xd is the shared level banner; each game places it (y 0xa8 in Wanted!, 0x60 in these two).
+- Wario's slingshot game is Pachinko (`dScMgPachinko_c`, menu row 2). The flyer is Lakitu on his cloud crossing the top; `PachinkoFlyer_State0` runs every frame while its delay counts down. The four targets are the four flowers along the bottom: at game end `PachinkoFx_Spawn` fires at y 0xa0000 and x 0x38000/0x68000/0x98000/0xc8000, and the flowers are gone. It ends straight in state 16, then state 17 on a new record. Banner 5 is the big rainbow "HIGH SCORE".
 - Open: state 1 fired once per game, beside a LEVEL banner, but most level changes skip it. What separates that level is not yet known.
 
 ## Recording the answer
