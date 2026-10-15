@@ -584,7 +584,7 @@
       "to": "0x020ada40",
       "relocs_says": "overlays(2,4)",
       "resolved": "ov002 _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE (size 0x100)",
-      "why": "ov002/symbols.txt names that exact address as a dEnemyBase_c method and daBmb_c derives from dEnemyBase_c; ov004's row for the same address is a bare func_ov004_020ada40 of a different size (0xbc). ov002 and ov004 are alternates in one overlay slot."
+      "why": "ov002/symbols.txt names that exact address as a dEnemyBase_c method and daBmb_c derives from dEnemyBase_c; ov004's row for the same address is a bare Mg_SetSessionBest of a different size (0xbc). ov002 and ov004 are alternates in one overlay slot."
     },
     {
       "from": "0x0214c70c",

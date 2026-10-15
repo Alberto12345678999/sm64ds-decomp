@@ -553,16 +553,21 @@
       "reason": "Vague-linkage Vector3 destructor. Vector3 carries a user-declared ~Vector3() (include/types.h) and this TU odr-uses several as function locals -- three in func_ov030_02111734 alone. One row however many objects: the emitted symbol is the single vague copy. arm9 owns the kept copy at 0x020072c0, four bytes of bx lr."
     },
     {
-      "symbol": "_ZN7daMky_c21Bundle$903d_a_mky_cppD1Ev",
+      "symbol": "_ZN7daMky_c21Bundle$950d_a_mky_cppD1Ev",
       "disposition": "deadstrip",
-      "reason": "The implicit destructor of the file-local `struct Bundle` that func_ov030_02112094 declares in its own body -- it holds a Vector3_16 and a Vector3, so the aggregate gets a destructor of its own, and mwccarm names it after the file. The name is file-scoped by construction and exists nowhere in the cartridge, so it is genuinely homeless: a plain deadstrip, not a duplicate of anything. The $724 in the name is a POSITION-DEPENDENT uniquifier, not a stable identity, and not a line number either: this row read _ZN21Bundle$701daMky_c_cppD1Ev until stage 3b added the file-scope declaration region and converted eleven members, at which point the same struct came back as $724 -- and a later 25-line comment edit above it moved nothing. The struct itself is declared inside func_ov030_02112094's body and has not moved in the source at all. Including Player.h, SurfaceInfo.h and dBgCh_Lin.h ahead of it moved the uniquifier from $743 to $805, and hoisting the func_ov030_* methods' block-scope externs to file scope moved it to $816. Including dCamera_c.h ahead of the struct moved it to $828. Any future edit to this TU may renumber it, and the promotion then refuses with `unlicensed function ... has no compiler_only_output policy` until this row is updated. Adding the eight method declarations to include/dBgPi.h moved it to $840. The batch/maint4 extern normalization moved it to $845, batch/maint5 (folded dBgCh_Lin Set port) moved it to $846, and merging those with the six PathPtr member/static declarations in include/PathPtr.h moved it to $850. The dCamera_c member declarations on include/dCamera_c.h moved it to $851; re-read the symbol from verify's output rather than assuming it held Adding the Vector3 ctors to include/types.h moved it to $902. The native collision-normal cleanup moves this function-local type from $902 to $903. The complete ordinary object is identical after that one symbol-name correspondence, including every allocated payload, symbol attribute and typed relocation; this changes no helper admission or ROM ownership."
+      "reason": "The implicit destructor of the file-local `struct Bundle` that func_ov030_02112094 declares in its own body -- it holds a Vector3_16 and a Vector3, so the aggregate gets a destructor of its own, and mwccarm names it after the file. The name is file-scoped by construction and exists nowhere in the cartridge, so it is genuinely homeless: a plain deadstrip, not a duplicate of anything. The $724 in the name is a POSITION-DEPENDENT uniquifier, not a stable identity, and not a line number either: this row read _ZN21Bundle$701daMky_c_cppD1Ev until stage 3b added the file-scope declaration region and converted eleven members, at which point the same struct came back as $724 -- and a later 25-line comment edit above it moved nothing. The struct itself is declared inside func_ov030_02112094's body and has not moved in the source at all. Including Player.h, SurfaceInfo.h and dBgCh_Lin.h ahead of it moved the uniquifier from $743 to $805, and hoisting the func_ov030_* methods' block-scope externs to file scope moved it to $816. Including dCamera_c.h ahead of the struct moved it to $828. Any future edit to this TU may renumber it, and the promotion then refuses with `unlicensed function ... has no compiler_only_output policy` until this row is updated. Adding the eight method declarations to include/dBgPi.h moved it to $840. The batch/maint4 extern normalization moved it to $845, batch/maint5 (folded dBgCh_Lin Set port) moved it to $846, and merging those with the six PathPtr member/static declarations in include/PathPtr.h moved it to $850. The dCamera_c member declarations on include/dCamera_c.h moved it to $851; re-read the symbol from verify's output rather than assuming it held Adding the Vector3 ctors to include/types.h moved it to $902. The native collision-normal cleanup moves this function-local type from $902 to $903. The complete ordinary object is identical after that one symbol-name correspondence, including every allocated payload, symbol attribute and typed relocation; this changes no helper admission or ROM ownership. The issue2410-reconstruction1015 typed cap-header inclusion moves the same four-byte, unreferenced function-local destructor from _ZN7daMky_c21Bundle$903d_a_mky_cppD1Ev to _ZN7daMky_c21Bundle$954d_a_mky_cppD1Ev; code, symbol attributes and section ownership are unchanged. Final cleanup removes unused declarations; the measured emitted symbol is _ZN7daMky_c21Bundle$950d_a_mky_cppD1Ev."
+    },
+    {
+      "symbol": "_ZN11SurfaceInfoD1Ev",
+      "disposition": "deadstrip",
+      "reason": "Implicit four-byte bx-lr SurfaceInfo destructor emitted by genuine dBgPi copy construction in the two state handlers. No ROM home or surviving relocation; the exact-symbol compiler-only policy verifies it is unreferenced before removal. This does not suppress any licensed function or data."
     }
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov030-daMky_c/daMky_c.o (gitignored)",
+    "object": "build/tu/ov030-daMky_c/d_a_mky.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 46,
     "functions_declared": 46,
@@ -570,11 +575,13 @@
       "requested": [
         "_ZN7daMky_cD2Ev",
         "_ZN7Vector3D1Ev",
-        "_ZN7daMky_c21Bundle$902daMky_c_cppD1Ev"
+        "_ZN7daMky_c21Bundle$950d_a_mky_cppD1Ev",
+        "_ZN11SurfaceInfoD1Ev"
       ],
       "deadstripped": [
+        "_ZN11SurfaceInfoD1Ev",
         "_ZN7Vector3D1Ev",
-        "_ZN7daMky_c21Bundle$902daMky_c_cppD1Ev",
+        "_ZN7daMky_c21Bundle$950d_a_mky_cppD1Ev",
         "_ZN7daMky_cD2Ev"
       ],
       "droppedSections": [
@@ -582,7 +589,7 @@
         10,
         14,
         33,
-        94,
+        40,
         95,
         96,
         97,
@@ -595,7 +602,8 @@
         104,
         105,
         106,
-        107
+        107,
+        108
       ],
       "data": [
         "_ZTV7daMky_c",
@@ -618,7 +626,8 @@
         "_ZTS7fBase_c",
         "_ZTS8dActor_c",
         "_ZTV7daMky_c"
-      ]
+      ],
+      "canonicalDuplicates": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",

@@ -1199,7 +1199,7 @@ void dMeter_c::RenderTimeTimer()
  *
  * What the cartridge's 0x44 bytes do: the same two vptr stores and the same
  * fBase_c chain call as D1 below, then `ldr r1, =GAME_HEAP_PTR; ldr r1, [r1]`
- * and `bl _ZN6Memory10DeallocateEPvP4Heap` (arm9 0x0203c1e8) before returning
+ * and `bl _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE` (arm9 0x0203c1e8) before returning
  * the object in r0. So the deallocation is fBase_c's operator delete inlined
  * here, and it does name a heap -- the global game heap, loaded from
  * arm9 0x020a0eac.

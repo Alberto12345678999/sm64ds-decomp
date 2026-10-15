@@ -23,8 +23,8 @@ extern int _ZTV14dScMgD3DBase_c[];
 extern int _ZTV11dScMgJump_c[];
 extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
 extern dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
-extern int func_ov006_020c6f70(char *object);
-extern int func_ov006_020c6f3c(int *object);
+extern int Heyho_Construct(char *object);  /* local extern: this factory includes no scene header */
+extern int Heyho_Destruct(int *object);  /* local extern: see above */
 }
 
 /* Reconstructed source-style name: SM64DS proves dScMgJump_c through RTTI,
@@ -54,8 +54,8 @@ extern "C" void *dScMgJump_c_classInit(void)
                       (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev,
                       (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
         __cxa_vec_ctor(p + 0x5294, 6, 0xf0,
-                      (void (*)(void *))func_ov006_020c6f70,
-                      (void (*)(void *))func_ov006_020c6f3c);
+                      (void (*)(void *))Heyho_Construct,
+                      (void (*)(void *))Heyho_Destruct);
     }
     return p;
 }

@@ -10,9 +10,11 @@
  *   grows by 0x10 bytes.
  * - common.h stays before dScStarSel_c.h. The other order grows
  *   Render by 0x18 bytes.
- * - Behavior sits in the middle of the class run and does not match,
- *   so this file stops at 0x020af038. CleanupResources,
- *   InitResources and the factory stay in their own files.
+ * - opt_loop_invariants off binds InitResources alone, between a
+ *   push and a pop. Without it the star-row loop hoists its +0x23 step.
+ * - The factory keeps its hand-built construction: `new dScStarSel_c'
+ *   would store the vtable at _ZTV12dScStarSel_c+8, and the cartridge
+ *   label is already the address point.
  * - The seven helpers stay func_ov003_*. Every caller is in this
  *   class, and the bodies only touch this object's fields.
  * - data_020a0e5a stays u16[][2]. The flat u16[i*2] form costs
@@ -23,7 +25,7 @@
  *   still holds that tail as opaque storage.
  *
  * dScStarSel_c, the star-select screen. ov003 .text
- * 0x020addfc..0x020af038. Base is dScene_c.
+ * 0x020addfc..0x020b0580. Base is dScene_c.
  */
 #pragma defer_codegen off
 #pragma opt_strength_reduction off
@@ -32,11 +34,46 @@
 #include "decl_common.h"
 #include "OAM.h"
 #include "SaveData.h"
+#include "Message.h"
+#include "Sound.h"
+#include "G3X.h"
+
+/* The Nitro SDK's GX (main engine) and GXS (sub engine) VRAM helpers that
+ * InitResources calls. No header in the tree declares either namespace
+ * yet, so the declarations live here, spelt as src/engine/gx/ and the
+ * per-function GX shards define them. G2 cannot be declared the same way:
+ * decl_common.h declares the ROM data symbol `extern int G2[];`, which
+ * hides a `namespace G2` (see d_s_title.cpp), so G2's two calls keep their
+ * final mangled names. */
+namespace GX {
+void DisableAllBanks();
+void SetBankForTex(u16);
+void SetBankForTexPltt(u16);
+void SetBankForBG(u16);
+void SetBankForOBJ(u16);
+void SetBankForSubBG(u16);
+void SetBankForSubOBJ(u16);
+void SetBankForSubOBJExtPltt(u16);
+void SetGraphicsMode(int, int, int);
+void DispOn();
+void LoadBGPltt(const void *, unsigned int, unsigned int);
+void LoadOBJPltt(const void *, unsigned int, unsigned int);
+}
+
+namespace GXS {
+void SetGraphicsMode(int);
+void LoadBGPltt(const void *, unsigned int, unsigned int);
+void LoadOBJPltt(const void *, unsigned int, unsigned int);
+void BeginLoadOBJExtPltt();
+void LoadOBJExtPltt(const void *, u32, u32);
+void EndLoadOBJExtPltt();
+}
 
 /* Raw this-relative accessors, and the cosine table lookup used by Render. */
 #define FB(p, o) (*(u8 *)((u8 *)(p) + (o)))
 #define FH(p, o) (*(s16 *)((u8 *)(p) + (o)))
 #define FW(p, o) (*(s32 *)((u8 *)(p) + (o)))
+#define FU(p, o) (*(u16 *)((u8 *)(p) + (o)))
 #define COS(a) data_02082214[((u16)(a) >> 4) * 2 + 1]
 
 /* Named views onto the storage between the Model pair and the end of the
@@ -607,4 +644,730 @@ s32 dScStarSel_c::Render()
         }
     }
     return 1;
+}
+
+// @symbol _ZN12dScStarSel_c8BehaviorEv
+// ROM 0x020af038, size 0x834; vtable slot 6.
+//
+// The stylus-hit loop reads the touch record as one 4-byte row of gTouchHeld (the
+// gTouchHeld/gTouchEdge/gTouchX/gTouchY layout PlayerInput.h describes). The
+// record's y byte is not a named local: it is read in the loop condition straight off
+// the row, and the compiler hoists that invariant read into the preheader itself,
+// which is what gives it a fresh register. The slot index is a byte; a 32-bit index
+// CSEs idx * 4 instead of refolding it for the edge read.
+//
+// Two scratch locals are shared between the character-pick branch and the stylus
+// branch: `val` carries the cursor mode (c+0x133) in the first and the stylus-held
+// flag in the second, `num` the picked character and then the plate count. The
+// register allocator orders webs by where their variable is first assigned, so the
+// sharing is what puts the plate count in r0 and the slot index in r2 at the loop;
+// as four fresh locals they colour the other way round. The file's
+// opt_strength_reduction off keeps the frame at 0x834 (with it on, r8 is pushed).
+struct VObj {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual int v5();
+};
+
+extern "C" {
+u8 DecIfAbove0_Byte(u8 *p);
+u16 DecIfAbove0_Short(u16 *p);
+
+extern VObj *data_0209f5bc;
+extern u16 data_0209f5e8[];
+}
+
+s32 dScStarSel_c::Behavior() {
+    u8 *rec;
+    u8 hit;
+    int pressed;
+    s32 cur;
+    u32 found;
+    s32 i;
+    long tx;
+    s32 num;
+    u8 val;
+    unsigned char idx;
+
+    if (data_0209f5bc->v5() != 0) {
+        DecIfAbove0_Byte(&FB(this, 0x117));
+        DecIfAbove0_Byte(&FB(this, 0x118));
+        if (FB(this, 0x119) != 0 ||
+            (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
+            if (FB(this, 0x119) != 0) {
+                FB(this, 0x119) -= data_0208ee44;
+            }
+            if (FB(this, 0x119) == 0 ||
+                (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
+                StartSceneFade(3, 0, 0);
+                data_0209f5e8[6] = 0x7fff;
+                if (SublevelToLevel(data_02092110) <= 0xe) {
+                    data_0209f1f0 = FB(this, 0x115) + 1;
+                } else {
+                    data_0209f1f0 = 1;
+                }
+            }
+        } else if (FB(this, 0x135) != 0 && IsButtonInputValid() != 0) {
+            val = FB(this, 0x133);
+            if (val == 0 && FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
+                FB(this, 0x133) = 2;
+                func_02012790(0x12e);
+            } else if (FB(this, 0x139) == 0) {
+                if (val == 1) {
+                    num = func_ov003_020adf50();
+                    data_02092128 = num;
+                    data_02092114 = num;
+                    FB(this, 0x132) = num;
+                    FB(this, 0x118) = data_0208ee44 * 3;
+                    FB(this, 0x139) = 2;
+                } else {
+                    FB(this, 0x133) = 2;
+                    FB(this, 0x132) = 3;
+                    FB(this, 0x118) = data_0208ee44 * 6;
+                    FB(this, 0x139) = 1;
+                }
+                FB(this, 0x119) = 0x10;
+                func_02012790(data_0209caa0[0x41] + 0x3c);
+            }
+        } else if (SublevelToLevel(data_02092110) <= 0xe) {
+            idx = gActivePlayerSlot;
+            cur = FB(this, 0x115);
+            found = 0;
+            val = gTouchHeld[idx][0];
+            if (val != 0) {
+                num = FB(this, 0x114);
+                i = 0;
+                if (num > 0) {
+                    rec = gTouchHeld[idx];
+                    tx = rec[2];
+                    do {
+                        if ((u8)(tx - FB((u8 *)this + i, 0x11a) + 8) < 0x10 &&
+                            gTouchHeld[idx][3] < 0x28 && ((FB(this, 0x131) >> i) & 1)) {
+                            hit = (val != 0 && gTouchEdge[idx][0] != 0);
+                            if (hit != 0 || cur != i) {
+                                FB(this, 0x117) = data_0208ee44 * 3;
+                            }
+                            if (cur != i) {
+                                cur = i;
+                                func_02012790(0x12e);
+                            }
+                            FB(this, 0x133) = 0;
+                            found = 1;
+                            break;
+                        }
+                        i++;
+                    } while (i < num);
+                }
+            }
+            if (found == 0 && FB(this, 0x135) == 2 && FB(this, 0x133) == 0 &&
+                data_0209caa0[0x42] == 0) {
+                if (data_020a0e58[0] & 0x20) {
+                    pressed = data_020a0e58[1] & 0x20;
+                    if (pressed != 0 || FU(this, 0x104) == 0) {
+                        FU(this, 0x104) = pressed ? 0x10 : 8;
+                        if (cur != 0) {
+                            u8 mask = FB(this, 0x131);
+                            cur--;
+                            while (!((mask >> cur) & 1)) {
+                                cur--;
+                            }
+                            func_02012790(0x12e);
+                        }
+                    }
+                } else if (data_020a0e58[0] & 0x10) {
+                    pressed = data_020a0e58[1] & 0x10;
+                    if (pressed != 0 || FU(this, 0x104) == 0) {
+                        FU(this, 0x104) = pressed ? 0x10 : 8;
+                        if (cur < FB(this, 0x114) - 1) {
+                            u8 mask = FB(this, 0x131);
+                            cur++;
+                            while (!((mask >> cur) & 1)) {
+                                cur++;
+                            }
+                            func_02012790(0x12e);
+                        }
+                    }
+                }
+            }
+            if (FB(this, 0x115) != cur) {
+                FB(this, 0x115) = cur;
+                Message::DisplayStarNameForStarSelect((s16)cur);
+                FB(this, 0x117) = data_0208ee44 * 3;
+            }
+            if (FB(this, 0x139) == 0) {
+                func_ov003_020ae358();
+            }
+        }
+
+        if (SublevelToLevel(data_02092110) <= 0xe) {
+            if (FB(this, 0x135) == 0) {
+                if (IsButtonInputValid() != 0 ||
+                    (data_0209caa0[0x42] == 0 && (data_020a0e5a[gActivePlayerSlot][0] & 0xf0))) {
+                    func_02012790(0x12e);
+                    if (data_0209caa0[0x42] == 0 && (data_020a0e58[1] & 0x30)) {
+                        FB(this, 0x135) = 1;
+                    } else {
+                        FB(this, 0x135) = 2;
+                    }
+                    if (SublevelToLevel(data_02092110) <= 0xe) {
+                        FB(this, 0x133) = 0;
+                    } else if (FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
+                        FB(this, 0x133) = 1;
+                        if (FB(this, 0x130) != 4) {
+                            FB(this, 0x134) = 0;
+                        } else {
+                            FB(this, 0x134) = 1;
+                        }
+                    } else {
+                        FB(this, 0x133) = 2;
+                    }
+                }
+            } else if (FB(this, 0x135) == 1) {
+                if (data_020a0e58[1] != 0) {
+                    FB(this, 0x135) = 2;
+                }
+            } else if (data_0209caa0[0x42] == 0 && (data_020a0e58[0] & 0xc0)) {
+                u16 keys = data_020a0e58[1];
+                if (keys & 0x40) {
+                    if (FB(this, 0x133) != 0) {
+                        FB(this, 0x133) -= 1;
+                        if (FB(this, 0x133) == 1) {
+                            if (FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
+                                if (FB(this, 0x130) != 4) {
+                                    FB(this, 0x134) = 0;
+                                } else {
+                                    FB(this, 0x134) = 1;
+                                }
+                            } else {
+                                FB(this, 0x133) = 0;
+                            }
+                        }
+                        func_02012790(0x12e);
+                    }
+                } else if (keys & 0x80) {
+                    if (FB(this, 0x133) != 2) {
+                        FB(this, 0x133) += 1;
+                        if (FB(this, 0x133) == 1) {
+                            if (FB(this, 0x130) > 1 && data_0209caa0[0x41] == 3) {
+                                if (FB(this, 0x130) != 4) {
+                                    FB(this, 0x134) = 0;
+                                } else {
+                                    FB(this, 0x134) = 1;
+                                }
+                            } else {
+                                FB(this, 0x133) = 2;
+                            }
+                        }
+                        func_02012790(0x12e);
+                    }
+                }
+            }
+
+            if (FB(this, 0x130) <= 1 || data_0209caa0[0x41] != 3) {
+                if (FU(this, 0x108) != 0) {
+                    FU(this, 0x108) -= 1;
+                    if (FU(this, 0x108) == 0) {
+                        FH(this, 0x10a) = 0;
+                        FH(this, 0x10e) = -0x400;
+                        FH(this, 0x10c) = FH(this, 0x10e);
+                        FB(this, 0x136) = 1;
+                    }
+                } else {
+                    if (!(FB(this, 0x136) & 2)) {
+                        FH(this, 0x10c) += 0x100;
+                        if (FH(this, 0x10c) >= 0) {
+                            FB(this, 0x136) = 1;
+                        }
+                    } else {
+                        FH(this, 0x10c) -= 0x100;
+                        if (FH(this, 0x10c) >= 0) {
+                            FB(this, 0x136) = 3;
+                        }
+                    }
+                    FH(this, 0x10a) += FH(this, 0x10c);
+                    if (FB(this, 0x136) == 1 && FH(this, 0x10a) >= 0) {
+                        FB(this, 0x136) = 2;
+                    } else if (FB(this, 0x136) == 3 && FH(this, 0x10a) <= 0) {
+                        FH(this, 0x10e) += 0x80;
+                        if (FH(this, 0x10e) >= -0x180) {
+                            FU(this, 0x108) = 0x78;
+                            FH(this, 0x10a) = 0;
+                        } else {
+                            FH(this, 0x10c) = FH(this, 0x10e);
+                            FB(this, 0x136) = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    DecIfAbove0_Short(&FU(this, 0x104));
+    return 1;
+}
+
+// @symbol _ZN12dScStarSel_c16CleanupResourcesEv
+// ROM 0x020af86c, size 0x34; vtable slot 3.
+s32 dScStarSel_c::CleanupResources() {
+    CleanCommonModelDataArr();
+    Sound::UnsetPlayerVoiceGroup();
+    unsigned short *p = (unsigned short *)0x4000304;
+    *p = *p | 0x8000;
+    return 1;
+}
+
+/* Runtime asset handles resolved through the overlay 0 file table. */
+enum ZN12dScStarSel_c13InitResourcesEv_AssetId {
+    ASSET_D_2D_BTM_ICON_NCG_BIN = 0x0229,
+    ASSET_D_2D_BTM_ICON_NCL_BIN = 0x022a,
+    ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCG_BIN = 0x023f,
+    ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCL_BIN = 0x0240,
+    ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NSC_BIN = 0x0241,
+    ASSET_D_2D_PLAYER_SELECT_LUIGI_8BIT_NCG_BIN = 0x0242,
+    ASSET_D_2D_PLAYER_SELECT_LUIGI_8BIT_NCL_BIN = 0x0243,
+    ASSET_D_2D_PLAYER_SELECT_MARIO_8BIT_NCG_BIN = 0x0244,
+    ASSET_D_2D_PLAYER_SELECT_MARIO_8BIT_NCL_BIN = 0x0245,
+    ASSET_D_2D_PLAYER_SELECT_WARIO_8BIT_NCG_BIN = 0x0246,
+    ASSET_D_2D_PLAYER_SELECT_WARIO_8BIT_NCL_BIN = 0x0247,
+    ASSET_D_2D_PLAYER_SELECT_YOSHI_8BIT_NCG_BIN = 0x0248,
+    ASSET_D_2D_PLAYER_SELECT_YOSHI_8BIT_NCL_BIN = 0x0249,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCG_BIN = 0x024a,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCL_BIN = 0x024b,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NSC_BIN = 0x024c,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCG_BIN = 0x024d,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCL_BIN = 0x024e,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_F_NCG_BIN = 0x025f,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_G_NCG_BIN = 0x0260,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_I_NCG_BIN = 0x0261,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_S_NCG_BIN = 0x0262,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_F_NCG_BIN = 0x0263,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_G_NCG_BIN = 0x0264,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_I_NCG_BIN = 0x0265,
+    ASSET_D_2D_SCENARIO_PLAYER_SELECT_S_NCG_BIN = 0x0266,
+    ASSET_D_2D_CMN_ICON_E_NCG_BIN = 0x0269,
+    ASSET_D_2D_CMN_ICON_F_NCG_BIN = 0x026a,
+    ASSET_D_2D_CMN_ICON_G_NCG_BIN = 0x026c,
+    ASSET_D_2D_CMN_ICON_I_NCG_BIN = 0x026e,
+    ASSET_D_2D_CMN_ICON_S_NCG_BIN = 0x0270
+};
+
+// @symbol _ZN12dScStarSel_c13InitResourcesEv
+/* recovered: real C++ method over include/dScStarSel_c.h -- vtable slot 0.
+ *
+ * Loads the star-select screen: sound group, VRAM banks, the two Model members
+ * (models[0]/models[1]), the per-language BG/OBJ graphics, the per-character
+ * palette set, then derives the star row (collected bitmask at +0x131, first
+ * uncollected slot at +0x115, count at +0x114, per-star x positions at +0x11A)
+ * and the character row (+0x124/+0x128/+0x12C, count at +0x130). Those offsets
+ * fall inside dScStarSel_c::unk_104, which the header still holds as opaque
+ * storage, so they stay raw; the Model pair is named.
+ *
+ * The star x positions are a u8 running value: the row is centred, so it starts
+ * at 0x80 (odd count) or 0x92 (even count) minus half the count times the 0x23
+ * pitch, and each star adds one pitch. Written as one u8 with if/else constant
+ * arms, which is what keeps the value in the register the ternary lands in (r3)
+ * and lets the loop's +0x23 temp take a fresh r1. */
+#pragma push
+#pragma opt_loop_invariants off
+
+extern "C" {
+void Enable3dEngines(void);
+void *LoadFile(int);
+void *_ZN2G213GetBG2CharPtrEv(void);
+void *_ZN2G212GetBG2ScrPtrEv(void);
+void DecompressLZ16(void *, u32);
+int IsStarCollected(int, int);
+
+extern u8 data_0209d45c;
+extern u8 data_0209d454;
+}
+
+#define REG16(a) (*(vu16 *)(a))
+#define REG32(a) (*(vu32 *)(a))
+
+s32 dScStarSel_c::InitResources() {
+    void *file;
+    s32 loopI;
+    u8 accB;
+    s32 anyUnfilled;
+    u8 bitPos;
+    u32 totalStars;
+    u8 level;
+    s32 sp8;
+    s32 spC;
+    s32 varOne;
+    u8 *bitsPtr;
+    u8 tmpU8;
+    u8 colorVal;
+    s32 idx2;
+    s32 charIdx;
+    u8 charCount;
+    s32 charCountM1;
+    u8 tabSL;
+    u8 tabSB;
+    s32 varFp;
+    s32 idx8;
+    s8 *tablePtr;
+    s32 varR6;
+    u8 tabR5;
+
+    LoadTextNarcs();
+    LoadArchive(0);
+    Enable3dEngines();
+    Sound::LoadInitialGroup(3);
+    if (data_02092110 == 0x24 || data_02092110 == 0x26 || data_02092110 == 0x28) {
+        Sound::LoadAndSetMusic_Layer1(0x24);
+        func_0201277c(0xB8);
+    } else {
+        Sound::LoadAndSetMusic_Layer1(0x16);
+    }
+    REG16(0x4000304) |= 0x8000;
+    ::Initialise3dGraphics(0);
+    G3X::SetClearColor(0x7FFF, 0x1F, 0x7FFF, 0x3F, false);
+    GX::DisableAllBanks();
+    GX::SetBankForTex(3);
+    GX::SetBankForTexPltt(0x30);
+    GX::SetBankForBG(4);
+    GX::SetBankForOBJ(0x40);
+    GX::SetBankForSubBG(0x80);
+    GX::SetBankForSubOBJ(8);
+    GX::SetBankForSubOBJExtPltt(0x100);
+    REG32(0x4000000) &= 0xFFCFFFEF;
+    REG32(0x4001000) &= 0xFFCFFFEF;
+    GX::SetGraphicsMode(1, 0, 1);
+    GXS::SetGraphicsMode(0);
+    REG32(0x4000000) = (REG32(0x4000000) & ~0x38000000) | 0x08000000;
+    REG16(0x4000304) = (REG16(0x4000304) & 0xFFFFFDF1) | 0x20E;
+    GX::DispOn();
+    REG32(0x4001000) |= 0x10000;
+    G3X::SetFog(false, 0, 2, 0x1000);
+    InitialiseVramGlobals();
+    models[0].LoadAndSetFile(0x8015, 1, -1);
+    models[1].LoadAndSetFile(0x8017, 1, -1);
+    REG16(0x4000008) = (REG16(0x4000008) & ~3) | 2;
+    data_0209d45c = 0x19;
+    REG16(0x400000E) &= ~3;
+    REG16(0x400000E) = (REG16(0x400000E) & 0x43) | 0x1700;
+    REG16(0x400000E) &= ~0x40;
+    LoadFont(0);
+    if (SublevelToLevel(data_02092110) >= 0xF) {
+        REG16(0x400000C) = (REG16(0x400000C) & ~3) | 1;
+        REG16(0x400000C) = (REG16(0x400000C) & 0x43) | 0x1610;
+        REG16(0x400000C) &= ~0x40;
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCG_BIN);
+        DecompressLZ16(file, (u32)_ZN2G213GetBG2CharPtrEv());
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCL_BIN);
+        GX::LoadBGPltt(file, 0, 0x1A0);
+        GXS::LoadBGPltt(file, 0, 2);
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NSC_BIN);
+        DecompressLZ16(file, (u32)_ZN2G212GetBG2ScrPtrEv());
+        Deallocate(file);
+        SetBg2Offset(0, 0);
+        data_0209d45c |= 4;
+        data_0209d45c &= ~1;
+    } else {
+        REG16(0x400000C) = (REG16(0x400000C) & ~3) | 1;
+        REG16(0x400000C) = (REG16(0x400000C) & 0x43) | 0x1610;
+        REG16(0x400000C) &= ~0x40;
+        if (GetOwnerLanguage() == 5) {
+            file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_S_NCG_BIN);
+        } else if (GetOwnerLanguage() == 4) {
+            file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_I_NCG_BIN);
+        } else if (GetOwnerLanguage() == 3) {
+            file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_G_NCG_BIN);
+        } else if (GetOwnerLanguage() == 2) {
+            file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_F_NCG_BIN);
+        } else {
+            file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCG_BIN);
+        }
+        DecompressLZ16(file, (u32)_ZN2G213GetBG2CharPtrEv());
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCL_BIN);
+        GX::LoadBGPltt(file, 0, 0x1A0);
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NSC_BIN);
+        DecompressLZ16(file, (u32)_ZN2G212GetBG2ScrPtrEv());
+        Deallocate(file);
+        SetBg2Offset(0, -4);
+        data_0209d45c |= 4;
+        GXS::LoadBGPltt(&data_ov003_020b1698, 0, 2);
+    }
+    if (GetOwnerLanguage() == 5) {
+        file = LoadFile(ASSET_D_2D_CMN_ICON_S_NCG_BIN);
+    } else if (GetOwnerLanguage() == 4) {
+        file = LoadFile(ASSET_D_2D_CMN_ICON_I_NCG_BIN);
+    } else if (GetOwnerLanguage() == 3) {
+        file = LoadFile(ASSET_D_2D_CMN_ICON_G_NCG_BIN);
+    } else if (GetOwnerLanguage() == 2) {
+        file = LoadFile(ASSET_D_2D_CMN_ICON_F_NCG_BIN);
+    } else {
+        file = LoadFile(ASSET_D_2D_CMN_ICON_E_NCG_BIN);
+    }
+    DecompressLZ16(file, 0x06400000);
+    Deallocate(file);
+    file = LoadFile(ASSET_D_2D_BTM_ICON_NCG_BIN);
+    {
+        char *a5 = (char *)0x06400000;
+        a5 += 0x2000;
+        DecompressLZ16(file, (u32)a5);
+    }
+    Deallocate(file);
+    if (GetOwnerLanguage() == 5) {
+        file = LoadFile(0xB00A);
+    } else if (GetOwnerLanguage() == 4) {
+        file = LoadFile(0xAC0A);
+    } else if (GetOwnerLanguage() == 3) {
+        file = LoadFile(0xA80A);
+    } else if (GetOwnerLanguage() == 2) {
+        file = LoadFile(0xA40A);
+    } else {
+        file = LoadFile(0xA00A);
+    }
+    GX::LoadOBJPltt(file, 0, 0x120);
+    Deallocate(file);
+    file = LoadFile(ASSET_D_2D_BTM_ICON_NCL_BIN);
+    GX::LoadOBJPltt(file, 0x120, 0xE0);
+    Deallocate(file);
+    if (GetOwnerLanguage() == 5) {
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_S_NCG_BIN);
+    } else if (GetOwnerLanguage() == 4) {
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_I_NCG_BIN);
+    } else if (GetOwnerLanguage() == 3) {
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_G_NCG_BIN);
+    } else if (GetOwnerLanguage() == 2) {
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_F_NCG_BIN);
+    } else {
+        file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCG_BIN);
+    }
+    DecompressLZ16(file, 0x06600000);
+    Deallocate(file);
+    file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCL_BIN);
+    GXS::LoadOBJPltt(file, 0, 0x200);
+    Deallocate(file);
+    data_02092128 = data_0209caa0[0x41];
+    switch (data_0209caa0[0x41]) {
+    case 0:
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_MARIO_8BIT_NCG_BIN);
+        {
+            char *a6 = (char *)0x06600000;
+            a6 += 0x4000;
+            DecompressLZ16(file, (u32)a6);
+        }
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_MARIO_8BIT_NCL_BIN);
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
+        Deallocate(file);
+        break;
+    case 1:
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_LUIGI_8BIT_NCG_BIN);
+        {
+            char *a6 = (char *)0x06600000;
+            a6 += 0x4000;
+            DecompressLZ16(file, (u32)a6);
+        }
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_LUIGI_8BIT_NCL_BIN);
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
+        Deallocate(file);
+        break;
+    case 2:
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_WARIO_8BIT_NCG_BIN);
+        {
+            char *a6 = (char *)0x06600000;
+            a6 += 0x4000;
+            DecompressLZ16(file, (u32)a6);
+        }
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_WARIO_8BIT_NCL_BIN);
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
+        Deallocate(file);
+        break;
+    case 3:
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_YOSHI_8BIT_NCG_BIN);
+        {
+            char *a6 = (char *)0x06600000;
+            a6 += 0x4000;
+            DecompressLZ16(file, (u32)a6);
+        }
+        Deallocate(file);
+        file = LoadFile(ASSET_D_2D_PLAYER_SELECT_YOSHI_8BIT_NCL_BIN);
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
+        Deallocate(file);
+        break;
+    }
+
+    level = (u8)SublevelToLevel(data_02092110);
+    if ((u32)level <= 0xE) {
+        accB = 0;
+        anyUnfilled = 0;
+        bitPos = 0;
+        totalStars = CountStarsCollectedInLevelToDisplay(level);
+        if (IsStarCollected(level, 0) != 0) {
+            totalStars = (u32)(u8)(totalStars - 1);
+        }
+        FB(this, 0x115) = 0xFF;
+        FB(this, 0x131) = 0;
+        loopI = 1;
+        if ((u32)accB < totalStars) {
+            sp8 = 1;
+            spC = 1;
+            varOne = 1;
+            bitsPtr = (u8 *)this;
+            bitsPtr += 0x131;
+            do {
+                if (IsStarCollected(level, loopI) != 0) {
+                    FB(this, 0x131) |= (u8)(varOne << bitPos);
+                    accB += 1;
+                } else {
+                    if (FB(this, 0x115) == 0xFF) {
+                        FB(this, 0x115) = bitPos;
+                        *bitsPtr |= (u8)(sp8 << bitPos);
+                    }
+                    anyUnfilled = spC;
+                }
+                bitPos += 1;
+                loopI += 1;
+            } while ((u32)accB < totalStars);
+        }
+        FB(this, 0x114) = bitPos;
+        if ((anyUnfilled == 0) && (totalStars != 7)) {
+            FB(this, 0x114) += 1;
+            if (FB(this, 0x115) == 0xFF) {
+                FB(this, 0x115) = bitPos;
+                FB(this, 0x131) |= (u8)(1 << bitPos);
+            }
+        }
+        if (FB(this, 0x115) == 0xFF) {
+            FB(this, 0x115) = 0;
+        }
+        tmpU8 = FB(this, 0x114);
+        if (tmpU8 & 1)
+            colorVal = 0x80;
+        else
+            colorVal = 0x92;
+        colorVal -= ((s32)tmpU8 >> 1) * 0x23;
+        for (idx2 = 0; idx2 < (s32)FB(this, 0x114); idx2++) {
+            FB((u8 *)this + idx2, 0x11A) = colorVal;
+            colorVal += 0x23;
+        }
+    }
+
+    if (SublevelToLevel(data_02092110) <= 0x14) {
+        Message::DisplayCourseNameForStarSelect((u32)(s16)SublevelToLevel(data_02092110));
+        if (SublevelToLevel(data_02092110) <= 0xE) {
+            Message::DisplayStarNameForStarSelect(FB(this, 0x115));
+        }
+        SetBg3Offset(0, -4);
+    } else {
+        data_0209d45c &= ~8;
+    }
+
+    charIdx = 0;
+    FB(this, 0x130) = 0;
+    do {
+        if (SaveData::IsCharacterUnlocked(charIdx) != 0) {
+            FB(this, 0x130)++;
+        }
+        charIdx += 1;
+    } while (charIdx < 4);
+
+    if (SublevelToLevel(data_02092110) <= 0xE) {
+        if ((FB(this, 0x130) != 1) && (data_0209caa0[0x41] == 3)) {
+            FB(this, 0x12B) = 0x88;
+            FU(this, 0x108) = 0;
+        } else {
+            FB(this, 0x12B) = 0x60;
+            FU(this, 0x108) = 0;
+        }
+        charCount = FB(this, 0x130);
+        charCountM1 = charCount - 1;
+        tabR5 = data_ov003_020b16a8[charCountM1];
+        tabSL = data_ov003_020b16a0[charCountM1];
+        if ((u32)charCount > 1U) {
+            varFp = 0;
+            varR6 = 0;
+            tabSB = data_ov003_020b16a4[charCountM1];
+            idx8 = (charCount - 2) * 4;
+            if (charCountM1 > 0) {
+                tablePtr = &data_ov003_020b16c8[idx8];
+                do {
+                    if (SaveData::IsCharacterUnlocked(varR6) != 0) {
+                        FB((u8 *)this + varR6, 0x124) = tabR5;
+                        FB((u8 *)this + varR6, 0x128) = tabSL;
+                        FB((u8 *)this + varR6, 0x12C) = tabSB;
+                        varFp += 1;
+                        tabR5 = (u8)(tabR5 + data_ov003_020b16e4[idx8]);
+                        tabSL = (u8)(tabSL + *tablePtr);
+                        tabSB = (u8)(tabSB + 1);
+                        tablePtr += 1;
+                        idx8 += 1;
+                    }
+                    varR6 += 1;
+                } while (varFp < (s32)(FB(this, 0x130) - 1));
+            }
+        }
+    }
+
+    FB(this, 0x132) = 0xFF;
+    FB(this, 0x135) = 0;
+    FB(this, 0x133) = 0;
+    FW(this, 0x50) = 0x1000;
+    FW(this, 0x54) = 0x1000;
+    FW(this, 0x60) = 0x1000;
+    FU(this, 0x110) = 0;
+    FB(this, 0x139) = 0;
+    FB(this, 0x137) = 0;
+    FU(this, 0x110) = 0;
+    FU(this, 0x108) = 0x78;
+    FB(this, 0x13A) = 0;
+    data_0209d454 = 0x10;
+    REG32(0x4000000) = (REG32(0x4000000) & ~0x1F00) | (data_0209d45c << 8);
+    REG32(0x4001000) = (REG32(0x4001000) & ~0x1F00) | 0x1000;
+    FB(this, 0x116) = data_0209caa0[0x41];
+    data_0208ee44 = 1;
+    return 1;
+}
+#pragma pop
+
+// @symbol dScStarSel_c_classInit
+extern "C" {
+extern void *_ZN7fBase_cnwEj(unsigned int);
+extern void *_ZN7fBase_cC2Ev(void *);
+extern void _ZN5ModelD1Ev(void *);
+extern void *_ZN5ModelC1Ev(void *);
+/* The array runtime discards the constructor's receiver result. */
+extern void __cxa_vec_ctor(void *arr, int count, int size, void (*ctor)(void *),
+                           void (*dtor)(void *));
+extern void *data_0208e4b8[];
+
+/* Reconstructed source-style name: SM64DS proves dScStarSel_c through RTTI,
+ * allocation size, vtable identity, and the STAR_SELECT registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: StarSelect_Spawn. */
+void *dScStarSel_c_classInit(void) {
+    char *p = (char *)_ZN7fBase_cnwEj(0x13c);
+    if (p) {
+        _ZN7fBase_cC2Ev(p);
+        *(void ***)p = (void **)data_0208e4b8;
+        *(void ***)p = (void **)_ZTV8dScene_c;
+        unsigned char *fl = (unsigned char *)(((int)p + 0x13));
+        *fl |= 1;
+        *fl |= 4;
+        *(void ***)p = (void **)data_ov003_020b1704;
+        __cxa_vec_ctor(p + 0x64, 2, 0x50, (void (*)(void *))_ZN5ModelC1Ev, _ZN5ModelD1Ev);
+    }
+    return p;
+}
 }

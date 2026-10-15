@@ -42,7 +42,7 @@
    exactly as include/decl_common.h and include/dActor_c.h spell them -- the
    honest Heap* second parameter would put two incompatible extern "C"
    declarations of one name in a single TU, which mwcc rejects. */
-extern "C" void _ZN6Memory10DeallocateEPvP4Heap(void *, void *);
+extern "C" void _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(void *, void *);
 extern "C" void *data_020a0eac;
 /* ROM body of fBase_c::operator new(unsigned) — mangled _ZN7fBase_cnwEj.
    CW will not accept that signature as an in-class operator new (first
@@ -173,7 +173,7 @@ struct fBase_c {
        This inline overload reaches only fBase_c and dBase_c --
        CW inlines it from the class itself or its IMMEDIATE base -- which is why
        include/dActor_c.h carries its own copy. */
-    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvP4Heap(ptr, data_020a0eac); }
+    void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(ptr, data_020a0eac); }
 };
 
 #else

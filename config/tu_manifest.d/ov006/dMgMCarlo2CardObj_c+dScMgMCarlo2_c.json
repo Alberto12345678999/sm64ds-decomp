@@ -178,14 +178,14 @@
       "ordinal": 19
     },
     {
-      "symbol": "_ZN14dScMgMCarlo2_c13OnTurnIntoEggEi",
+      "symbol": "_ZN14dScMgMCarlo2_c11CanEndStateEi",
       "address": "0x020fa3d0",
       "size": "0x00000104",
       "legacy_source": "src/minigames/d_s_mg_m_carlo2.cpp",
       "ordinal": 20
     },
     {
-      "symbol": "_ZN14dScMgMCarlo2_c13OnYoshiTryEatEi",
+      "symbol": "_ZN14dScMgMCarlo2_c10StartRoundEi",
       "address": "0x020fa4d4",
       "size": "0x00000098",
       "legacy_source": "src/minigames/d_s_mg_m_carlo2.cpp",

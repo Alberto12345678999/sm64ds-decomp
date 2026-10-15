@@ -89,11 +89,6 @@ struct CLPS_Block;
    other member. */
 #pragma opt_strength_reduction off
 
-/* A plain x/y/z triple. The helpers that came from C files build their
-   scratch vectors in this, not in Vector3: Vector3's inline destructor
-   gives a local its own stack home and moves the frame. */
-struct BtnVec { s32 x, y, z; };
-
 /* One 0x30-byte block copy. Matrix4x3's own assignment goes member by
    member through Vector3 and comes out longer. */
 struct MatrixWords { s32 w[12]; };
@@ -644,15 +639,15 @@ void daBtn_c::func_ov079_021258fc()
     u8 idx;
     unsigned int q;
     void *walk;
-    unsigned int cur;
-    unsigned int want;
+    BCA_File *cur;
+    void *want;
     int lim;
 
     idx = mIsKing;
     q = mModelAnim.currFrame;
     walk = data_ov079_021275ec[((int)idx * 5) + 3];
-    cur = (unsigned int)mModelAnim.file;
-    want = (unsigned int)((BtnFileRef *)walk)->file;
+    cur = mModelAnim.file;
+    want = ((BtnFileRef *)walk)->file;
     frame = (unsigned short)(q >> 12);
 
     if (cur != want) {
@@ -690,7 +685,7 @@ void daBtn_c::func_ov079_021258fc()
             mHorzSpeed = 0x9000;
             mModelAnim.speed = data_ov079_021275dc[mIsKing];
         }
-        if ((int)mModelAnim.file == (int)((BtnFileRef *)data_ov079_021275ec[mIsKing * 5 + 3])->file) {
+        if (mModelAnim.file == ((BtnFileRef *)data_ov079_021275ec[mIsKing * 5 + 3])->file) {
             if (mFrontDist < 0xc8000) {
                 mState = 3;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
@@ -701,7 +696,7 @@ void daBtn_c::func_ov079_021258fc()
         }
     }
 
-    if ((int)mModelAnim.file == (int)((BtnFileRef *)data_ov079_021275ec[mIsKing * 5 + 3])->file) {
+    if (mModelAnim.file == ((BtnFileRef *)data_ov079_021275ec[mIsKing * 5 + 3])->file) {
         if (frame <= 7 || (frame >= 0x1e && frame <= 0x26)) {
             mHorzSpeed = 0;
             if (mStepPlayed == 0) {
@@ -726,7 +721,7 @@ void daBtn_c::func_ov079_021256d4()
 {
     Player *r;
 
-    if ((int)mModelAnim.file != (int)((BtnFileRef *)data_ov079_021275ec[mIsKing * 5 + 3])->file) {
+    if (mModelAnim.file != ((BtnFileRef *)data_ov079_021275ec[mIsKing * 5 + 3])->file) {
         if (mModelAnim.Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
                 &mModelAnim,
@@ -811,7 +806,7 @@ void daBtn_c::func_ov079_021256d4()
 void daBtn_c::func_ov079_02125504()
 {
     unsigned int frame;
-    BtnVec v[2];
+    Vector3 v[2];
     s16 t;
     s32 px, pz;
 
@@ -819,13 +814,13 @@ void daBtn_c::func_ov079_02125504()
         unsigned int q;
         u8 i;
         BtnFileRef *e;
-        unsigned int cur;
-        unsigned int want;
+        BCA_File *cur;
+        void *want;
         i = mIsKing;
         q = mModelAnim.currFrame;
         e = (BtnFileRef *)data_ov079_021275ec[(int)i * 5 + 3];
-        cur = (unsigned int)mModelAnim.file;
-        want = (unsigned int)e->file;
+        cur = mModelAnim.file;
+        want = e->file;
         frame = (unsigned short)(q >> 12);
         if (cur != want)
             return;
@@ -983,8 +978,8 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
     /* v1/v2 are second copies of the player's position that the ROM stores
        too, and v2 is read back into w2. volatile is what keeps those stores
        and v2's reloads: without it the function shrinks 0x1d4 -> 0x1b0. */
-    volatile BtnVec v1, v2;
-    BtnVec w1, w2;
+    volatile Vector3 v1, v2;
+    Vector3 w1, w2;
     int eq = (int)(other->actorID == 0xbf);
     if (!eq) return;
     mTouched = 1;
@@ -998,10 +993,10 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
     }
     if (mCoinGiven != 0) return;
     if (mIsKing == 0) {
-        BtnVec* p;
+        const Vector3 *p;
         s32 x, y, z;
         if (DecIfAbove0_Byte(&mCoinsLeft) == 0) return;
-        p = (BtnVec*)&other->mPosX;
+        p = (const Vector3 *)&other->mPosX;
         x = p->x; v1.x = x;
         y = p->y; v1.y = y;
         z = p->z; v1.z = z;
@@ -1011,11 +1006,11 @@ void daBtn_c::func_ov079_02125058(dActor_c *other)
         return;
     }
     {
-        BtnVec* p;
+        const Vector3 *p;
         s32 x, y, z;
         u32 t = mState;
         if (t - 1 > 1) return;
-        p = (BtnVec*)&other->mPosX;
+        p = (const Vector3 *)&other->mPosX;
         x = p->x; v2.x = x;
         y = p->y; v2.y = y;
         z = p->z; v2.z = z;
@@ -1262,12 +1257,12 @@ void daBtn_c::func_ov079_021249f0()
    burst, spawn its star (star mStarID, from 0x64000 above it) and go. */
 void daBtn_c::func_ov079_021246dc()
 {
-    BtnVec pos;
-    BtnVec starPos;
-    BtnVec v;
-    BtnVec v2;
-    BtnVec dp;
-    BtnVec dp2;
+    Vector3 pos;
+    Vector3 starPos;
+    Vector3 v;
+    Vector3 v2;
+    Vector3 dp;
+    Vector3 dp2;
 
     if (mIsKing != 0) {
         switch (mSubState) {
@@ -1282,7 +1277,7 @@ void daBtn_c::func_ov079_021246dc()
             {
                 int idx = mNearestPlayer;
                 Player *other = mPlayers[idx];
-                BtnVec *op = (BtnVec *)&other->mPosX;
+                Vector3 *op = (Vector3 *)&other->mPosX;
                 unsigned short ang;
                 int i;
                 short mag = 0x10e;
@@ -1412,7 +1407,7 @@ void daBtn_c::func_ov079_02124530()
    from the clip centre). Returns 1 when the collider was left off. */
 int daBtn_c::func_ov079_021243e0(int range)
 {
-    BtnVec v;
+    Vector3 v;
     Player *player;
     int dist;
     int y;
@@ -1461,8 +1456,8 @@ int daBtn_c::func_ov079_021243e0(int range)
    to the body's heading. */
 void daBtn_c::func_ov079_02124188()
 {
-    BtnVec pos;
-    BtnVec asr;
+    Vector3 pos;
+    Vector3 asr;
     int shadowRad;
     int cosv;
     int sinComp;
@@ -1569,7 +1564,7 @@ void daBtn_c::func_ov079_02123f34()
     int dist;
     int i;
     s16 angle;
-    BtnVec v;
+    Vector3 v;
 
     mTargetAngle = mPrevAngleY;
     minAngle = mPrevAngleY;
@@ -1577,10 +1572,10 @@ void daBtn_c::func_ov079_02123f34()
     minDist = 0x7fffffff;
     for (i = 0; i < 4; i++) {
         Player *player = mPlayers[i];
-        BtnVec* p;
+        const Vector3 *p;
         if (player == 0)
             continue;
-        p = (BtnVec*)&player->mPosX;
+        p = (const Vector3 *)&player->mPosX;
         v.x = p->x;
         v.y = p->y;
         v.z = p->z;
@@ -1647,10 +1642,8 @@ extern "C" void func_ov079_02123d4c(int* out, daBtn_c *self){
         out[0] = out[0] + (int)(((s64)m * data_02082214[((unsigned short)self->mAngleY >> 4) * 2] + 0x800) >> 12);
         d = self->OnAimedAtWithEgg();
         {
-            int* p1 = (int*)(((int)out + 4));
-            int* p2 = (int*)(((int)out + 8));
-            *p1 = *p1 + d;
-            *p2 = *p2 + (int)(((s64)m * data_02082214[((unsigned short)self->mAngleY >> 4) * 2 + 1] + 0x800) >> 12);
+            out[1] += d;
+            out[2] = out[2] + (int)(((s64)m * data_02082214[((unsigned short)self->mAngleY >> 4) * 2 + 1] + 0x800) >> 12);
         }
     }
 }
@@ -1752,7 +1745,7 @@ int daBtn_c::func_ov079_02123a8c()
    for resuming. Nothing in the cartridge's relocations calls this. */
 void daBtn_c::func_ov079_02123804(dActor_c *other)
 {
-    BtnVec v;
+    Vector3 v;
     int idx;
     s16 cosv, sinv;
     int ang;
@@ -1812,7 +1805,7 @@ void daBtn_c::func_ov079_02123804(dActor_c *other)
             mSavedSubState = mSubState;
         }
         {
-            BtnVec pos;
+            Vector3 pos;
             int* q = &other->mPosX;
             pos.x = q[0];
             pos.y = q[1];

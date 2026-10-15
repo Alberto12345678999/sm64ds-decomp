@@ -67,7 +67,7 @@ int daMugenBGM_c::InitResources()
     /* The param1 mask reads through a const view of `this`: `param1 &= 0xf`
        makes mwcc CSE the +8 field address into r1 (add r1,r4,#8 / ldr r0,[r1] /
        str r0,[r1]) and the function grows a word; the cartridge re-issues
-       ldr/str [r4,#8]. Same lever as dScMgPachinko2_c::OnYoshiTryEat. */
+       ldr/str [r4,#8]. Same lever as dScMgPachinko2_c::StartRound. */
     const daMugenBGM_c* ro = this;
     param1 = ro->param1 & 0xf;
     if (param1 != 1) {
