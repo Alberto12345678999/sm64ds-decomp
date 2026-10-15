@@ -473,3 +473,39 @@ relocates to: `pmf_<Class>_<Method>`, or `pmf_<Function>` for a free one. A
 `_2`/`_3` suffix marks a second record pointing at the same function. This is certain:
 the name is read off the relocation. So `mState = pmf_dScMgJump_c_State_Play;` says
 which state is installed.
+
+## Pass 2 names: types and record fields (2026-10-15)
+
+These come from the shape pass. Each field is named from the functions that
+read and write it, and every header change was checked against the object
+compare (all 45 TUs identical).
+
+**Scene base.**
+
+| Name | Where | Confidence | Evidence |
+|---|---|---|---|
+| `gMgScene` typed `dScMgBase_c *` | `dScMgBase_c.h` | high | The `dScMgBase_c` constructor stores `this` and the destructor clears it. |
+| `mTopRecord` | `dScMgBase_c` +0x4650 | high | `Mg_SetSessionBest` compares scores against it, and the constructor seeds it from the save table. |
+| `dMgPsOpt_c::Open/Close/Update/Draw/IsIdle` | ov004 | high | The former `PsOpt_*`; each casts its argument back to `dMgPsOpt_c`. |
+
+**Teresa (`dScMgTeresa_c`), confidence by field.**
+
+- **`SmallBoo mBoos[16]`** (0x4660):
+  - **high:** `mX`/`mY`, `mHeading` (indexes the sine table; its sign picks `mAnim`), `mFrame`/`mAnimTimer`, `mFade` (nonzero draws semi-transparent), `mVisible`, `mPriority` (passed as the OAM priority), `mState`.
+  - **medium:** `mSpeed` (0xc00 adjusted by `mKind`), `mInPlay`, `mKind`, `mFound` (set by the touch test), `mFoundOrder`.
+  - **unknown:** `unk_12`, `unk_19`, `unk_21`.
+- **`mExclaims`, `mFoundMarks`, `mRisingIcons`** (16 each): **medium**. The record names come from their Spawn/Update/Draw functions. What each sprite looks like on screen is not observed.
+- **`mReveal[1]`, `mMarker`** (0x4ba0, 0x4bc0):
+  - **medium:** the field mechanics, including the bounce `phase` and `angle` (the `OAM::Render` rotation).
+  - **low:** the one-element array. It is inferred from handlers that take an index while the dispatcher passes 0.
+- **`mFoundCount`, `mLastSettledBoo`, `mBooCount`, `mFirstFoundBoo`** (0x4c21..0x4c26): **medium**, named from their writers.
+
+**Pachinko (`dScMgPachinko_c`).**
+
+- **`mFx[30]`:** **medium**. The hit bursts; `kind` 2 is the long animation.
+- **`mTarget[4]`:** **medium**. `sprite` is high: it indexes the target sprite table.
+- **`mFlyer[1]` and `mBg[1]`:**
+  - **medium:** the fields. `vy` is high: `Flyer_State0` seeds it and `State1` adds it to y.
+  - **low:** the one-element arrays, inferred the same way as Teresa's `mReveal`.
+  - **medium:** "flyer" and "background" themselves are role words. Watching the board would confirm them; this is now a row in runtime-checks.md.
+- **0x5418..0x5958:** no reconstructed function touches it.
