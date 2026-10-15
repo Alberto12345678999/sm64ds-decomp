@@ -166,9 +166,9 @@ and a guess (unconfirmed):
 | 12, 13 | none, none, 10 | retry / quit buttons | Flower (12) | continue? |
 | 14 | 5, 1, 180, draws score digits | fade, `StartRound(14)` | none found | |
 | 15 | 0xe, 3, 60 | fade, `StartRound(15)` | none found | |
-| 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball) | results |
-| 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record |
-| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over |
+| 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball); Wanted! after game over | results. **Seen:** banner 7 is "HIGH SCORE" |
+| 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record. **Seen** on a new Wanted! high score |
+| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 |
 | 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
 
 **The `MgSharedState` enum** (`include/dMgState_c.h`, 2026-10-15). Every

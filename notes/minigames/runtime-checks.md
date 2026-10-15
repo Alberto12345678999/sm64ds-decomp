@@ -48,6 +48,18 @@ one is meaningless while the other is loaded.
 | Teresa's exclaim, found mark, rising icon and reveal sprites | `dScMgTeresa_c::Exclaim_Spawn`, `FoundMark_Spawn`, `RisingIcon_Spawn`, `Reveal_State0` (see ov006 symbols.txt) | hit timing | Teresa: find a Boo and note each sprite as it appears. |
 | The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | Any game. Name the callbacks by frame phase: before draw, after the OAM flush, and so on. |
 
+## Observed so far (melonDS 1.1, EU ROM, 2026-10-15)
+
+Logged with `build/melonds/mgwatch.py` (local, not in the repo) plus window
+screenshots, over two games of Wanted! (Luigi):
+- `MiniGm_IsNew` polls menu rows 0-3 and 7 every frame; picking Wanted! ran `MiniGm_ClearNew(3)` once. The badge names are confirmed, and Wanted! is row 3.
+- Banner 0xd, shown at (0x80, 0xa8) at each new level, is the "LEVEL n" text.
+- State 0x12 shows banner 8, the "GAME OVER" text, with jingle 3.
+- State 16's banner 7 at (0x80, 0x14) is the "HIGH SCORE" header over the record table.
+- A new high score went through state 17. `OnNewRecord` fired 120 frames in, then banner 5 and jingle 1 played. A tied score went to state 16 with no `OnNewRecord`.
+- `Mg_CallStartRound` passed the finished state's number (1). This confirms `StartRound(state)`.
+- Open: state 1 fired once per game, beside a LEVEL banner, but most level changes skip it. What separates that level is not yet known.
+
 ## Recording the answer
 
 For each row, put the observed meaning in names.md's row and raise or lower the
