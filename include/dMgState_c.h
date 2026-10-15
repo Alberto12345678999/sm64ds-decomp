@@ -14,7 +14,7 @@ enum MgSharedState {
     MG_STATE_ROUND_CLEAR = 0,          /* [medium] banner 3, jingle 4; wins in Cup, Amida, ... */
     MG_STATE_NEXT_ROUND = 1,           /* [medium] silent fade, then StartRound(1) */
     MG_STATE_ROUND_BANNER5 = 2,        /* [low] banner 5, jingle 1; no caller found */
-    MG_STATE_RETRY_PROMPT = 3,         /* [high] retry / quit buttons */
+    MG_STATE_RETRY_PROMPT = 3,         /* [high, seen] PLAY AGAIN / QUIT under the banner ("TIME IS UP" in Snowball) */
     MG_STATE_WIN = 4,                  /* [medium] banner 9; wins in the card games */
     MG_STATE_LOSE = 5,                 /* [high] game over at 0 credits, else StartRound(5) */
     MG_STATE_LOSE_RESUME = 6,          /* [low] banner 0xa, then hands back to the game */
@@ -23,8 +23,8 @@ enum MgSharedState {
     MG_STATE_ROUND_CLEAR_TOP = 9,      /* [low] state 0 on the top screen; no caller found */
     MG_STATE_RETRY_PROMPT_B = 10,      /* [low] retry / quit with banner style 0xb */
     MG_STATE_SCORE_THEN_ROUND = 11,    /* [low] draws the score, then StartRound(11) */
-    MG_STATE_CONTINUE_PROMPT = 12,     /* [medium] retry / quit buttons 0 and 2; Flower */
-    MG_STATE_CONTINUE_PROMPT_B = 13,   /* [low] as 12 */
+    MG_STATE_RETRY_PROMPT_WIDE = 12,   /* [high, seen] PLAY AGAIN / QUIT side by side; Flower */
+    MG_STATE_RETRY_PROMPT_WIDE_B = 13, /* [low] as 12 */
     MG_STATE_DIGITS_THEN_ROUND = 14,   /* [low] draws score digits, then StartRound(14) */
     MG_STATE_BANNER_E_THEN_ROUND = 15, /* [low] banner 0xe, jingle 3 */
     MG_STATE_RESULTS = 16,             /* [high, seen] banner 7 "HIGH SCORE" over the record table */

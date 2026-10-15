@@ -490,7 +490,7 @@ s32 dScMgFlower_c::Behavior()
                 *(int *)LA(c + 0x5fd4) -= 1;
                 if (self->mResultTimer <= 0) {
                     self->mState = 1;
-                    Mg_SetSharedState(MG_STATE_CONTINUE_PROMPT);
+                    Mg_SetSharedState(MG_STATE_RETRY_PROMPT_WIDE);
                 }
                 if (FlowerFace_IsIdle(c + 0x51f8) != 0) {
                     if (self->mPetalToggle == 1)
