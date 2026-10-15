@@ -22,8 +22,9 @@ A pass must not change a single emitted byte or relocation target.
    - After: `mPromptEnabled = 1`.
    - Proven: `dScMgCard_c`'s prompt handling in `src/minigames/d_s_mg_card.cpp`, `dScMgPachinko2_c`'s `Behavior` and `InitResources`, and `dScMg3DEsp_c::InitResources`.
    - Exception: when the singleton `gMgScene` is declared `int`, mwcc loads a `+0x46xx` offset from the literal pool instead of splitting it as `add #0x4000`. A `char *` or `dScMgBase_c *` base splits like the cartridge.
-   - Proven through the singleton cast to `dScMgBase_c *`: the score and record helpers `Mg_GetSessionBest`, `020adbc0`, `020adbe0`, `020ada40`, `020ad940` and `020b0b1c` in `src/minigames/d_s_mg_base.cpp`. Offsets that fall in the header's padding (for example `+0x4650` in `Mg_SetTopRecord`/`020adc1c`) stay raw.
+   - Proven through the singleton cast to `dScMgBase_c *`: the score and record helpers `Mg_GetSessionBest`, `020adbc0`, `020adbe0`, `020ada40`, `020ad940` and `020b0b1c` in `src/minigames/d_s_mg_base.cpp`. `+0x4650` is now `mTopRecord`, read by name in `Mg_SetTopRecord` and `Mg_GetTopRecord`.
    - Access to the same block through `this` or a `dScMgBase_c *` matches: `dScMgBase_c::BeforeInitResources`, `BeforeBehavior` and `OpenMenu` all use the names.
+   - Proven through an unreassigned `char *c = (char *)this` alias, 27 reads across Bomroom, Panel, Teresa, Trampoline2 and `dMg3DEspAnimSet_c` (pass 2, 2026-10-15). The `char *` exception above was disproved for a `dScMgBase_c *` base: `Mg_SetTopRecord` emits the same split.
 2. **`char *c = (char *)this` inside a real member.**
    - Readable form: plain member access.
    - Proven: in `dScMgBase_c`, `dScMgPachinko2_c`'s `Behavior` and `InitResources`, and `dScMg3DEsp_c`'s `InitResources`, `StartRound` and `Render`.
@@ -63,9 +64,10 @@ A pass must not change a single emitted byte or relocation target.
    - A rename is byte-neutral by construction, but the declaration gate re-checks every caller.
    - Status: untested. Batch 1 (2026-10-11) collected evidence-backed proposals for the ov004 helpers; they are applied as their own pass because every caller must be re-checked.
 7. **The scene singleton `gMgScene`, retyped in each file** (`int`, `char *[]`, `struct Obj *`).
-   - Readable form: the one `extern` in `dScMgBase_c.h`, plus member access. Theme 1's `char *` exception applies.
-   - Status: partly proven (`Mg_SetSharedState`, the `d_s_mg_base.cpp` helpers under theme 1, and through `dScMgBase_c *` in `dScMg3DEsp_c::StartRound`).
-   - Held by the declaration gate: `d_s_mg_base.cpp` keeps two local `char *` copies (`Mg_SetTopRecord`, `020adc1c`). Without them, `char *` and the header's `void *` tie, the tie goes to the header, and `unit020b4aa4.cpp`'s `char *` becomes a new disagreement. A typed view in `unit020b4aa4` was refused for the same reason. Retyping the symbol is a cross-file sweep.
+   - Readable form: the one `extern` in `dScMgBase_c.h`, plus member access.
+   - Proven (pass 2, 2026-10-15): the header declares `extern "C" dScMgBase_c *gMgScene`. 25 `((dScMgBase_c *)gMgScene)->` casts are gone, and so are the three `char *` local copies in `d_s_mg_base.cpp` and `unit020b4aa4.cpp`. `char *g = (char *)gMgScene` aliases became `dScMgBase_c *` in Coin, Jump, Memory2 and Sound.
+   - Measured negative (theme 16): the same alias retype in the `StartRound` of Luigi and Panel renumbers their pinned `@N` PMF records (Luigi `@2188` to `@2234`, Panel `@2234` to `@2288`), so those two keep `char *p`.
+   - Still local: `d_mg_state.cpp` (`Base *`), `unit020b2c84.cpp` (`Obj *`) and `unit020bfec0.cpp` (`V *`), each through a TU-local view.
 8. **Local redeclarations that disagree with a header**, including the manifests' `CONFLICT` notes.
    - Readable form: one prototype in one header.
    - Every change here is matching work: rebuild and compare.
@@ -99,4 +101,5 @@ A pass must not change a single emitted byte or relocation target.
     - Registers the header does not name yet (the light and sub-BG3 registers there) stay raw.
 16. **The compiler's name counter.** mwccarm numbers generated names (`$N`, `@N`) from one counter per TU. Every named parameter (prototypes included), local, temporary and included declaration advances it, and several of these names are pinned in `symbols.txt` and the manifests.
     - Measured: including `dScMgBase_c.h` in `dMgState_c` renumbers the pinned `sEnterTable$184` to `$208` (`Sound.h` gives `$199`). Including `dScMgD3DBase_c.h` in `d_s_mg_base.cpp` renumbers its `@329` temps to `@529`. In `unit020b2c84`, named prototype parameters balance the count that keeps `__arraydtor$954`.
-    - A pass that adds or removes a name must re-check the pins. A header that gains declarations shifts every consumer's temps (#3725's `types.h` constructors moved two minigame TUs' PMF records by 14).
+    - Measured (pass 2): an inline `dScMgBase_c::AddHudPoint` plus free `Mg_AddHudPoint`/`Mg_GetHudScore` in `dScMgBase_c.h`, with no call site using them yet, renumbers `__arraydtor$328` in `d_s_mg_base.cpp` to `$345` and the pinned temps of Jump, Jump2, Luigi and `dMg3DEspAnimSet_c`. The 13 copies of the capped score bump ("one point, capped at 9999, carried into the best") therefore stay spelled out.
+    - A pass that adds or removes a name must re-check the pins. A plain object compare that matches the `@N`/`$N` names exactly is the check; normalizing them away hides exactly this failure. A header that gains declarations shifts every consumer's temps (#3725's `types.h` constructors moved two minigame TUs' PMF records by 14).

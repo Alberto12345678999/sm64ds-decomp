@@ -1744,7 +1744,7 @@ extern int data_ov004_020bc864;
    mLevel is re-read through an int* so the compare is not folded away. */
 void dScMgLuigi_c::StartRound(int arg1)
 {
-    dScMgBase_c *p;
+    char *p;
     int *q;
 
     if (mFound != 0) {
@@ -1764,8 +1764,8 @@ void dScMgLuigi_c::StartRound(int arg1)
         if (gMgScene != 0)
             gMgScene->mHudScore = 0;
 
-        p = gMgScene;
-        Mg_SubmitScore(p != 0 ? p->mHudScore : 0);
+        p = (char *)gMgScene;
+        Mg_SubmitScore(p != 0 ? *(int *)(p + 0xb4) : 0);
     }
 
     FreeGfxSlotsById(0x1d);
