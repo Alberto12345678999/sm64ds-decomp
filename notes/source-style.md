@@ -74,7 +74,7 @@ run. `--patterns-only` explicitly omits formatting and is not a full style pass.
 
 For a new file, run `clang-format -i path.cpp` and inspect the diff. For an existing
 file, use the reported line numbers with `--lines=LINE:LINE` rather than reformatting
-its whole TU. The configuration disables include/using sorting and token-changing cleanup
+its whole TU. The configuration disables sorting of includes or using declarations and token-changing cleanup
 options; evidence comments are not reflowed. Check markers and pragmas afterwards.
 Source edits still require the relevant ROM/relocation and consumer gates.
 
@@ -105,18 +105,8 @@ When a newly introduced recognized pattern is required, add a reviewed entry to
 positive total-occurrence cap `count`, `reason`, and `evidence`. Old occurrences
 consume that cap even when already banked in the base, so it cannot authorize an
 extra occurrence on every PR. No path globs or rule-wide suppression.
-Example record shape (not an active exception):
-
-```json
-{
-  "path": "src/example.cpp",
-  "rule": "handspelled-member",
-  "match": "_ZN7ExampleD2Ev",
-  "count": 1,
-  "reason": "Measured ABI bridge retained pending genuine lifecycle reconstruction",
-  "evidence": "Link to exact compiler experiment and independent finding"
-}
-```
+Use the actual repo-relative path and normalized spelling from the diagnostic,
+with evidence for the specific retained source form.
 
 This records a review decision; arbitrary prose does not prove a compiler wall.
 An exception authorizes only that pattern/count, never byte mismatches or a source

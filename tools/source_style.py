@@ -3,7 +3,7 @@
 
 This is not a C++ parser or a byte/relocation validator. No files are rewritten.
 With --base, compare its merge base with HEAD to the working tree (including new
-untracked src/include files). Renames retain their original pattern debt.
+untracked source and header files). Renames retain their original pattern debt.
 Without --base, explicit --files are checked in full, useful for fixtures.
 """
 import argparse
