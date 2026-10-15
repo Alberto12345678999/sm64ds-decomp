@@ -1,6 +1,6 @@
 //cpp
 /* dExtFrameCtrl_c, the animation-playback root and arm9 .text
- * 0x02015a7c..0x02015cb4: a frame cursor the model and animation classes
+ * 0x02015a7c..0x02015d38: a frame cursor the model and animation classes
  * drive. Layout is 0x10 bytes -- vptr, frame count in the low 30 bits of
  * +0x4 with the loop flags in the top two, current frame at +0x8 as
  * 20.12, playback speed at +0xc -- pinned by C2 and read the same way by
@@ -8,10 +8,12 @@
  * (0x0208e7e4) is the destructor pair alone; notes/model-rtti-names.md
  * recovers the family from the ROM's own typeinfo records.
  *
- * The destructor/constructor ABI cluster at 0x02015cb4..0x02015d38 keeps
- * its per-function shards: the legacy dtor shard emits and deadstrips the
- * class's _ZTV/_ZTI/_ZTS into the cartridge's .data, so those records do
- * not move here.
+ * The destructor and constructor close the run at 0x02015cb4..0x02015d38:
+ * D2, D0, D1, then C1, C2. One definition of each emits every variant.
+ * ~dExtFrameCtrl_c() is the key function, so this file also emits the
+ * class's _ZTV/_ZTI/_ZTS; the cartridge keeps those among the model
+ * family's records in .data 0x0208e744..0x0208e858, which this text-only
+ * TU does not claim.
  *
  * mwccarm emits .text in reverse source order, so the definitions below
  * run ROM-descending.
@@ -21,10 +23,6 @@
  * own files.
  *
  * leftovers:
- * - The destructor pair stays in its shard: ~dExtFrameCtrl_c() is the
- *   key function, a TU that defines it emits _ZTV/_ZTI/_ZTS, and the
- *   legacy shard already emits and deadstrips those records into the
- *   cartridge .data at 0x0208e744..0x0208e858.
  * - SetAnimation's definition stays a mangled extern-C free function:
  *   its declared signature takes Fix12<int> by value and wall 6az
  *   (notes/mwccarm-codegen.md) homes class-typed by-value parameters,
@@ -43,6 +41,45 @@ int __aeabi_idivmod(int n, int d);
 void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, unsigned short numFrames, int flags, int speed, unsigned short startFrame);
 }
 
+#ifdef _MSC_VER
+/* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
+ * folds the Itanium destructor variants into the one ~dExtFrameCtrl_c() it
+ * emits, so this arm spells out, in terms of the destructor defined
+ * below, what the deleting destructor does: the D1 body, called
+ * qualified so it is a direct call, then the class-specific operator
+ * delete. It sits ahead of the class's definitions so no ROM symbol's
+ * region claims it. Nothing here reaches mwccarm. */
+extern "C" dExtFrameCtrl_c *_ZN15dExtFrameCtrl_cD0Ev(dExtFrameCtrl_c *thiz) {
+    thiz->dExtFrameCtrl_c::~dExtFrameCtrl_c();
+    dExtFrameCtrl_c::operator delete(thiz);
+    return thiz;
+}
+#endif
+
+// @symbol _ZN15dExtFrameCtrl_cC1Ev
+// @symbol _ZN15dExtFrameCtrl_cC2Ev
+/* The vptr store is synthesized, then the body zeroes currFrame (+0x8) and
+ * sets speed (+0xc) to 0x1000 = 1.0, in that order. C1 and C2 are the same
+ * code (root class, nothing to chain); every ROM caller of C2 is a derived
+ * base step -- MaterialChanger, TextureTransformer, TextureSequence and
+ * ModelAnim construct their dExtFrameCtrl_c at its base offset. */
+dExtFrameCtrl_c::dExtFrameCtrl_c() {
+    currFrame = 0;
+    speed = 0x1000;
+}
+
+// @symbol _ZN15dExtFrameCtrl_cD2Ev
+// @symbol _ZN15dExtFrameCtrl_cD0Ev
+// @symbol _ZN15dExtFrameCtrl_cD1Ev
+/* The destructor, first among the class's virtuals and so its key function.
+ * The body is empty; D0 adds the call to the class operator delete the
+ * header defines, which is what lands its tail call on
+ * Memory::operator_delete2. dExtFrameCtrl_c has no virtual bases, so D1 and
+ * D2 are the same code: a vtable slot reaches D1, a derived destructor's
+ * base step reaches D2. */
+dExtFrameCtrl_c::~dExtFrameCtrl_c() {}
+
+// @symbol _ZN15dExtFrameCtrl_c7AdvanceEv
 void dExtFrameCtrl_c::Advance()
 {
     u32 f = numFramesAndFlags;
@@ -64,6 +101,7 @@ void dExtFrameCtrl_c::Advance()
     }
 }
 
+// @symbol _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt
 extern "C"
 void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, unsigned short numFrames, int flags, int speed, unsigned short startFrame) {
   *(int*)((char*)&self->numFramesAndFlags) = flags | (numFrames << 12);
@@ -71,22 +109,26 @@ void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, unsi
   *(int*)((char*)&self->speed) = speed;
 }
 
+// @symbol _ZNK15dExtFrameCtrl_c13GetFrameCountEv
 u32 dExtFrameCtrl_c::GetFrameCount() const
 {
     u32 v = numFramesAndFlags;
     return ((v & 0x3fffffff) << 4) >> 16;
 }
 
+// @symbol _ZN15dExtFrameCtrl_c8SetFlagsEi
 void dExtFrameCtrl_c::SetFlags(int flags)
 {
     numFramesAndFlags = (numFramesAndFlags & 0x3fffffff) | flags;
 }
 
+// @symbol _ZN15dExtFrameCtrl_c8GetFlagsEv
 int dExtFrameCtrl_c::GetFlags()
 {
     return numFramesAndFlags & 0xC0000000;
 }
 
+// @symbol _ZN15dExtFrameCtrl_c8FinishedEv
 int dExtFrameCtrl_c::Finished()
 {
     u32 f = numFramesAndFlags;
@@ -94,6 +136,7 @@ int dExtFrameCtrl_c::Finished()
     return cur >= (int)((f & 0x3fffffff) - 1);
 }
 
+// @symbol _ZNK15dExtFrameCtrl_c12WillHitFrameEi
 bool dExtFrameCtrl_c::WillHitFrame(int frame) const
 {
     s32 f = frame << 12;
@@ -144,6 +187,7 @@ bool dExtFrameCtrl_c::WillHitFrame(int frame) const
     return false;
 }
 
+// @symbol _ZN15dExtFrameCtrl_c4CopyERKS_
 /* Copies the three members and leaves the vptr alone. */
 void dExtFrameCtrl_c::Copy(const dExtFrameCtrl_c &anim)
 {

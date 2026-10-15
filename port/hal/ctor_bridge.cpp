@@ -4,8 +4,9 @@
 // class -- C1 for a complete object and C2 for a base subobject -- and this
 // decomp enrolls each variant in its own file, objisolate stripping the
 // sibling the file does not own. That is correct for the cartridge and it is
-// why src/_ZN15dExtFrameCtrl_cC1Ev.cpp and src/_ZN15dExtFrameCtrl_cC2Ev.cpp both exist with
-// the same body.
+// why src/_ZN9ModelAnimC1Ev.cpp and src/_ZN9ModelAnimC2Ev.cpp both exist.
+// A class whose TU is whole emits both variants from one constructor
+// instead; the host still gets only one.
 //
 // MSVC has ONE constructor symbol. Compile both files for the host and the
 // pair lands on the same decorated name -- LNK2005, a duplicate definition
