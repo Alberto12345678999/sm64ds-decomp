@@ -4459,8 +4459,28 @@ src/unnamed/arm9/0205/func_02058b9c.c:
     .text start:0x02058b9c end:0x02058bb0
 
 src/engine/cp15/CP15.cpp:
+    .text start:0x02058bb0 end:0x02058c84
     complete
-    .text start:0x02058bb0 end:0x02058df4
+
+src/unnamed/arm9/0205/func_02058c84.cpp:
+    .text start:0x02058c84 end:0x02058cd0
+    complete
+
+src/unnamed/arm9/0205/func_02058cd0.cpp:
+    .text start:0x02058cd0 end:0x02058d58
+    complete
+
+src/unnamed/arm9/0205/func_02058d58.cpp:
+    .text start:0x02058d58 end:0x02058d6c
+    complete
+
+src/unnamed/arm9/0205/func_02058d6c.cpp:
+    .text start:0x02058d6c end:0x02058d80
+    complete
+
+src/OS_GetInitArenaLo.cpp:
+    .text start:0x02058d80 end:0x02058df4
+    complete
 
 src/unnamed/arm9/0205/func_02058df4.c:
     complete
@@ -4598,9 +4618,13 @@ src/unnamed/arm9/0205/func_02059c18.c:
     complete
     .text start:0x02059c18 end:0x02059cb4
 
-src/IRQ3.cpp:
+src/unnamed/arm9/0205/func_02059cb4.cpp:
+    .text start:0x02059cb4 end:0x02059d08
     complete
-    .text start:0x02059cb4 end:0x02059d74
+
+src/IRQ3.cpp:
+    .text start:0x02059d08 end:0x02059d74
+    complete
 
 src/ARMProcessorMode.c:
     complete
