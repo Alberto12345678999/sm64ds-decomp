@@ -65,14 +65,12 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int id
 short Vec3_HorzAngle(const void *a, const void *b);
 int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
-int   _ZN4cstd4fdivEii(int a, int b);
 void  func_020383f0(void *p);
 bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
 unsigned char DecIfAbove0_Byte(unsigned char *p);
 void  Vec3_Asr(void *d, void *s, int sh);
 int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-void  _Z11UpdateAngleRssis(short *p, short a, int b, short c);
 void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_02038ea4(void *self);
@@ -89,6 +87,8 @@ unsigned int func_02012790(unsigned int arg);
 }
 
 bool ApproachLinear(short &value, short target, short step);
+void UpdateAngle(short &angle, short target, int divisor, short maxStep);
+namespace cstd { int fdiv(int numerator, int denominator); }
 
 /* ~daMky_c is the first virtual DECLARED in include/daMky_c.h and it is
  * defined here, out of line, so it is this class's key function: this TU owns
@@ -253,7 +253,7 @@ int daMky_c::func_ov030_02111b20()
   mPathPtr.GetNode(v, mPathNode);
   d = Vec3_HorzDist((struct Vector3*)&this->mPosX, &v);
   ang = Vec3_HorzAngle((struct Vector3*)&this->mPosX, &v);
-  _Z11UpdateAngleRssis(&this->mAngleY, ang, 2, 0x400);
+  UpdateAngle(this->mAngleY, ang, 2, 0x400);
   this->mPrevAngleY = this->mAngleY;
   if (d < this->mHorzSpeed) {
       n = mPathPtr.NumNodes();
@@ -394,7 +394,7 @@ void daMky_c::func_ov030_02111f6c(dBgCh_Actr* w)
     if (n.y != 0) {
       int s = (int)(((long long)n.x * this->unk_0a4 + 0x800) >> 0xc)
             + (int)(((long long)n.z * this->unk_0ac + 0x800) >> 0xc);
-      this->mVertSpeed = -(_ZN4cstd4fdivEii(s, n.y) + 0x8000);
+      this->mVertSpeed = -(cstd::fdiv(s, n.y) + 0x8000);
     }
   }
   if (w->IsOnWall() != 0) {
