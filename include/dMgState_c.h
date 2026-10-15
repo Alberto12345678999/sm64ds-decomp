@@ -11,18 +11,15 @@
  * word: [high] where the mechanics leave no doubt, [medium] from who
  * enters it, [low] where no caller was found. */
 enum MgSharedState {
-    MG_STATE_ROUND_CLEAR =
-        0, /* [high, seen] banner 3 "CLEAR" (6 "PERFECT"), jingle 4; Sound, Cup, ... */
-    MG_STATE_NEXT_ROUND =
-        1, /* [high, seen] silent fade, then StartRound(1); Wanted! after every 5th level */
-    MG_STATE_ROUND_BANNER5 = 2, /* [low] banner 5, jingle 1; no caller found */
-    MG_STATE_RETRY_PROMPT =
-        3, /* [high, seen] PLAY AGAIN / QUIT under the banner ("TIME IS UP" in Snowball) */
-    MG_STATE_WIN = 4,  /* [high, seen] banner 9; Memory's cleared board pays out, deals again */
-    MG_STATE_LOSE = 5, /* [high, seen] game over at 0 credits, else StartRound(5); Memory, Card */
-    MG_STATE_LOSE_RESUME = 6, /* [low] banner 0xa, then hands back to the game */
-    MG_STATE_DRAW = 7,        /* [high, seen] banner 0xb; Card's equal hands, bet refunded */
-    MG_STATE_TIE = 8, /* [high, seen] silent, StartRound(8) at once; Roulette payout == stake */
+    MG_STATE_ROUND_CLEAR = 0,          /* [high, seen] banner 3 "CLEAR" (6 "PERFECT"), jingle 4 */
+    MG_STATE_NEXT_ROUND = 1,           /* [high, seen] silent fade, then StartRound(1) */
+    MG_STATE_ROUND_BANNER5 = 2,        /* [low] banner 5, jingle 1; no caller found */
+    MG_STATE_RETRY_PROMPT = 3,         /* [high, seen] PLAY AGAIN / QUIT under the banner */
+    MG_STATE_WIN = 4,                  /* [high, seen] banner 9; Memory's cleared board pays */
+    MG_STATE_LOSE = 5,                 /* [high, seen] lost bet; game over at 0 credits */
+    MG_STATE_LOSE_RESUME = 6,          /* [low] banner 0xa, then hands back to the game */
+    MG_STATE_DRAW = 7,                 /* [high, seen] banner 0xb; Card's equal hands, refund */
+    MG_STATE_TIE = 8,                  /* [high, seen] silent; Roulette payout == stake */
     MG_STATE_ROUND_CLEAR_TOP = 9,      /* [low] state 0 on the top screen; no caller found */
     MG_STATE_RETRY_PROMPT_B = 10,      /* [low] retry / quit with banner style 0xb */
     MG_STATE_SCORE_THEN_ROUND = 11,    /* [low] draws the score, then StartRound(11) */
@@ -30,10 +27,10 @@ enum MgSharedState {
     MG_STATE_RETRY_PROMPT_WIDE_B = 13, /* [low] as 12 */
     MG_STATE_DIGITS_THEN_ROUND = 14,   /* [low] draws score digits, then StartRound(14) */
     MG_STATE_BANNER_E_THEN_ROUND = 15, /* [low] banner 0xe, jingle 3 */
-    MG_STATE_RESULTS = 16,            /* [high, seen] banner 7 "HIGH SCORE" over the record table */
-    MG_STATE_RESULTS_NEW_RECORD = 17, /* [high, seen] 16 plus OnNewRecord, banner 5, jingle 1 */
-    MG_STATE_GAME_OVER = 18, /* [high, seen] banner 8 "GAME OVER", jingle 3, then 16 or 17 */
-    MG_STATE_FINISHED = 19   /* [medium] banner 3, then 16 or 17; Snowball */
+    MG_STATE_RESULTS = 16,             /* [high, seen] banner 7 "HIGH SCORE", record table */
+    MG_STATE_RESULTS_NEW_RECORD = 17,  /* [high, seen] 16 + OnNewRecord, banner 5, jingle 1 */
+    MG_STATE_GAME_OVER = 18,           /* [high, seen] banner 8 "GAME OVER", jingle 3 */
+    MG_STATE_FINISHED = 19             /* [medium] banner 3, then 16 or 17; Snowball */
 };
 
 /* The shared minigame state machine, embedded in dScMgBase_c at 0xcc. It
