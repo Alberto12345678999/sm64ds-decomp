@@ -18,7 +18,7 @@
 
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void *func_ov006_020ca604(void);
-extern "C" void func_ov006_020d1008(void);
+extern "C" void TrmpLine_Destroy(void);
 extern "C" void func_ov006_020eed64(void *object);
 struct Model;
 extern "C" int func_ov006_021227c8(char *object);
@@ -33,7 +33,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
         __cxa_vec_cleanup(mArray5, 0x14, 0x78, (void *)func_ov006_02122c68);
         __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)func_ov006_020eed64);
         __cxa_vec_cleanup(mArray3, 0xa, 0x1d0, (void *)func_ov006_021227c8);
-        __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)func_ov006_020d1008);
+        __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)TrmpLine_Destroy);
         __cxa_vec_cleanup(mArray1, 5, 0xdc, (void *)func_ov006_020ca604);
     }
     virtual void StartRound(int arg);               /* slot 18 */
@@ -66,7 +66,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
        global initializer emits a __sinit this ROM does not have. */
     u32 mState[2];            /* 0x5004 */
     u8  mArray1[0x44c];       /* 0x500c -- 5 * 0xdc,    elem dtor func_ov006_020ca604 */
-    u8  mArray2[0x984];       /* 0x5458 -- 3 * 0x32c,   elem dtor func_ov006_020d1008 */
+    u8  mArray2[0x984];       /* 0x5458 -- 3 * 0x32c,   elem dtor TrmpLine_Destroy */
     u8  mArray3[0x1220];      /* 0x5ddc -- 0xa * 0x1d0, elem dtor func_ov006_021227c8 */
     u8  mArray4[0x168];       /* 0x6ffc -- 0xa * 0x24,  elem dtor func_ov006_020eed64 */
     u8  mArray5[0x960];       /* 0x7164 -- 0x14 * 0x78, elem dtor func_ov006_02122c68 */

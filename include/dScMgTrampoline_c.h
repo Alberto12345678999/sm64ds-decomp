@@ -25,7 +25,7 @@
 
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void *func_ov006_020ccfc8(void);
-extern "C" void func_ov006_020d1008(void);
+extern "C" void TrmpLine_Destroy(void);
 extern "C" void func_ov006_02120938(void);
 
 /* The flashing mark on the lit door, 0xc bytes at 0x5d84. */
@@ -51,7 +51,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
        into callers. */
     virtual ~dScMgTrampoline_c() {
         __cxa_vec_cleanup(mArray3, 5, 0x24, (void *)func_ov006_02120938);
-        __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)func_ov006_020d1008);
+        __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)TrmpLine_Destroy);
         __cxa_vec_cleanup(mArray1, 4, 0xd0, (void *)func_ov006_020ccfc8);
     }
 
@@ -91,7 +91,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
     u32 mState[2];          /* 0x5004 -- raw eight-byte State encoding; a
                                typed global PMF emits a non-ROM __sinit */
     u8  mArray1[0x340];     /* 0x500c -- 4 * 0xd0; StatePlay launches one */
-    u8  mArray2[0x984];     /* 0x534c -- 3 * 0x32c, elem dtor func_ov006_020d1008 */
+    u8  mArray2[0x984];     /* 0x534c -- 3 * 0x32c, elem dtor TrmpLine_Destroy */
     u8  mArray3[0xb4];      /* 0x5cd0 -- 5 * 0x24 floating scores (Desc) */
     dScMgTrampoline_DoorMark mDoorMark; /* 0x5d84 */
     int mTimer;             /* 0x5d90 -- countdown gating state transitions */

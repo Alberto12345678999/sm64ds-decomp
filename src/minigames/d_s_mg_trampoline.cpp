@@ -167,7 +167,7 @@ extern const unsigned char data_ov006_0212f0d0[];
 extern UnkObj* data_0209f5bc;
 extern int data_ov006_0213fa9c;
 unsigned int func_02012790(unsigned int a);
-int func_ov006_020d0c38(Vec2s* a, Vec2s* b);
+int TrmpLine_Create(Vec2s* a, Vec2s* b);
 
 void SetBg2Offset(int a, int b);
 int Mg_GetTopScreenYOffset(void);
@@ -191,13 +191,13 @@ extern int data_ov006_0213b0ec;
 extern int data_ov006_0214058c;
 extern int data_ov006_02142f60;
 extern int data_0209e650;
-extern void func_ov006_020d0ac0(void);
+extern void TrmpLine_UpdateAll(void);
 extern int func_ov006_020ccd04(int *r0);
 extern void func_ov006_020cc9fc(char *c);
 extern int RandomIntInternal(int *seed);
 extern "C" void func_ov006_020cd62c(int n);
 extern "C" void func_ov006_020cd510(int a);
-void func_ov006_020d0bd8(void);
+void TrmpLine_CreateStartLineT1(void);
 extern s16 data_ov006_0212e04c;
 extern s16 data_ov006_0212e044;
 extern s16 data_ov006_0212e048;
@@ -210,7 +210,7 @@ extern void InitialiseVramGlobals(void);
 extern s16 data_02082414;
 extern int func_ov006_020cd658(unsigned char *, int);
 extern void func_ov006_02120d8c(void *, int);
-extern void func_ov006_020d0b2c(void);
+extern void TrmpLine_LoadTextures(void);
 extern void Mg_SetTopScreenYOffset(int);
 extern void func_ov006_020cd424(unsigned int, int);
 extern void func_ov006_02120ca0(void);
@@ -226,14 +226,14 @@ extern void Mg_DrawTopRightCounter(int, int);
 extern void *data_ov006_02134f00[];
 extern void *data_ov006_02134f08;
 extern void func_ov006_020cd270(void);
-extern void func_ov006_020d09e0(void);
+extern void TrmpLine_DrawAll(void);
 extern void *_ZN11dScMgBase_cC2Ev(void *self);
 extern void _ZN8Particle10SysTrackerC1Ev(void *self);
 extern void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
 extern int _ZTV14dScMgD3DBase_c[];
 extern int _ZTV17dScMgTrampoline_c[];
 extern void func_ov006_020cd12c(void);
-extern void func_ov006_020d100c(void);
+extern void TrmpLine_Reset(void);
 extern void func_ov006_021225a8(void);
 
 void *dScMgTrampoline_c_classInit(void);
@@ -300,7 +300,7 @@ int data_ov006_0213fb18[] = {
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_02140588, from the legacy file for func_ov006_02121bc8, NOT applied: extern "C" int data_ov006_02140588; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_02120a18, from the legacy file for func_ov006_02121cf4, NOT applied: extern void func_ov006_02120a18(char* p, int v); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound12PlayBank2_2DEj, from the legacy file for func_ov006_02121cf4, NOT applied: extern void _ZN5Sound12PlayBank2_2DEj(unsigned int n); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020d0ac0, from the legacy file for func_ov006_02121d64, NOT applied: void func_ov006_020d0ac0(void); */
+/* TUBUILD CONFLICT -- alternate declaration of TrmpLine_UpdateAll, from the legacy file for func_ov006_02121d64, NOT applied: void TrmpLine_UpdateAll(void); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02054d88, from the legacy file for func_ov006_02121d64, NOT applied: int func_02054d88(void); */
 /* TUBUILD CONFLICT -- alternate declaration of MultiStore16, from the legacy file for func_ov006_02121d64, NOT applied: void MultiStore16(u16 val, char *dst, int nbytes); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012718, from the legacy file for func_ov006_02121d64, NOT applied: void func_02012718(void *a, int b); */
@@ -348,8 +348,8 @@ extern "C" void *dScMgTrampoline_c_classInit(void)
                       (void *)func_ov006_020cd12c,
                       (void *)func_ov006_020ccfc8);
         __cxa_vec_ctor(scene + 0x534c, 3, 0x32c,
-                      (void *)func_ov006_020d100c,
-                      (void *)func_ov006_020d1008);
+                      (void *)TrmpLine_Reset,
+                      (void *)TrmpLine_Destroy);
         __cxa_vec_ctor(scene + 0x5cd0, 5, 0x24,
                       (void *)func_ov006_021225a8,
                       (void *)func_ov006_02120938);
@@ -435,14 +435,14 @@ s32 dScMgTrampoline_c::InitResources()
     if (func_ov006_020cd658((unsigned char *)(base + 0x500c), 4) == 0)
         return 0;
     func_ov006_02120d8c(base + 0x5cd0, 5);
-    func_ov006_020d0b2c();
+    TrmpLine_LoadTextures();
     Mg_SetTopScreenYOffset(0x10);
     StartRound(-1);
     return 1;
 }
 
 // @symbol _ZN17dScMgTrampoline_c10StartRoundEi
-extern "C" void func_ov006_020d0b04(int);
+extern "C" void TrmpLine_ClearAll(int);
 extern volatile s16 data_020a0dbc[];
 
 void dScMgTrampoline_c::StartRound(int /* arg */)
@@ -476,7 +476,7 @@ void dScMgTrampoline_c::StartRound(int /* arg */)
     self->mScrollHoldTimer = 0;
     func_ov006_020cd424(self->mLevel, self->mScrollY);
 
-    func_ov006_020d0b04(self->mLevel);
+    TrmpLine_ClearAll(self->mLevel);
     func_ov006_02120ca0();
     func_ov006_020c8a9c(0, data_ov006_0213fb18[GetGameLanguage()]);
 
@@ -534,7 +534,7 @@ void dScMgTrampoline_c::StateIntro()
     char *c = (char *)this;
     int counter;
 
-    func_ov006_020d0ac0();
+    TrmpLine_UpdateAll();
     mTimer -= 1;
     counter = mTimer;
 
@@ -551,7 +551,7 @@ void dScMgTrampoline_c::StateIntro()
             MultiStore16(tmp, (char *)dst, 0x6000);
         }
 
-        func_ov006_020d0bd8();
+        TrmpLine_CreateStartLineT1();
         func_02012718(0x1af, 0x8000);
         BeginPlay();
         return;
@@ -631,7 +631,7 @@ void dScMgTrampoline_c::UpdateScroll()
 void dScMgTrampoline_c::StatePlay()
 {
     int old = data_ov006_02140588;
-    func_ov006_020d0ac0();
+    TrmpLine_UpdateAll();
     func_ov006_020cd39c();
     if (data_ov006_02140588 > old) {
         if (data_ov006_02140588 == 3)
@@ -881,7 +881,7 @@ s32 dScMgTrampoline_c::Render()
 
     if (mRoundOver == 0) {
         func_ov006_020cd270();
-        func_ov006_020d09e0();
+        TrmpLine_DrawAll();
     }
     return 1;
 }
@@ -956,7 +956,7 @@ int dScMgTrampoline_c::OnGraphCallback0()
             v1.y = mTouchStartY;
             v2.x = mTouchX;
             v2.y = mTouchY;
-            if (func_ov006_020d0c38(&v1, &v2)) {
+            if (TrmpLine_Create(&v1, &v2)) {
                 func_02012718(0x1af, (mTouchStartX + mTouchX) << 11);
             } else {
                 func_02012790(0xe);

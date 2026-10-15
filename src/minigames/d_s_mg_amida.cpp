@@ -5,7 +5,7 @@
  * This file is the class's whole ov006 unit, in ROM order, lowest address
  * first, under `#pragma defer_codegen off`: from the destructor pair at
  * 0x020d1018 to func_ov006_020d5a50, the piece array's element constructor.
- * The previous unit ends at 0x020d1018 with func_ov006_020d100c, and
+ * The previous unit ends at 0x020d1018 with TrmpLine_Reset, and
  * dScMgBomroom_c's D1 starts the next at 0x020d5a54. tu_map stops this unit
  * at 0x020d5974; the relocation census in the manifest shows that the
  * factory and func_ov006_020d5a50 above it belong to it too. The destructor

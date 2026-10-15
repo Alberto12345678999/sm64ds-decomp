@@ -373,3 +373,14 @@ Medium confidence:
 - The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
 - `Wiggler_DrawPassA/B`: two draw passes; which part of the wiggler each draws is not observed.
 - `Wiggler_IsStarVisible`.
+
+**unit020cd744: the stylus-drawn trampolines.**
+
+- **`TrmpLine_*`, high confidence.** The four line slots at `data_ov006_02140990`, each a 4x4 vertex patch, used by Trampoline and Trampoline2.
+  - **Building:** `TrmpLine_Create` (from a stylus start and end point), `TrmpLine_Build`, `TrmpLine_ComputeNormals`.
+  - **Drawing:** `TrmpLine_Draw`/`DrawAll`.
+  - **Behaviour:** the three states `StateFade`, `StateSettle` and `StateFlex`, each with its setter; `TrmpLine_PushJumper` applies the line's spring to the jumper.
+  - **Setup:** `TrmpLine_CreateStartLineT1/T2`, the line each game starts with.
+- **`TrmpItem_*`, medium confidence.** The bouncing items of Trampoline2.
+  - `TrmpItem_SetMotionN` / `TrmpItem_MotionN` are indexed by the item's kind byte (+0x98), which is certain.
+  - What each kind looks like is not observed.

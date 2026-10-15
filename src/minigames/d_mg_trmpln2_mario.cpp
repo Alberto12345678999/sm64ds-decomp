@@ -1498,7 +1498,7 @@ extern "C" {
 extern int data_ov006_021405bc;
 extern char* data_ov006_02140554;
 void func_ov006_020c8f20(void*);
-void func_ov006_020ce46c(void*,int);
+void TrmpItem_UpdateWithJumper(void*,int);
 void func_ov006_020c8a64(void);
 // @symbol func_ov006_020cac30
 void func_ov006_020cac30(void){
@@ -1507,7 +1507,7 @@ void func_ov006_020cac30(void){
     int off=0;
     do{
       func_ov006_020c8f20(data_ov006_02140554+off);
-      func_ov006_020ce46c(data_ov006_02140554+off,i);
+      TrmpItem_UpdateWithJumper(data_ov006_02140554+off,i);
       i++;
       off+=0xdc;
     }while(i<data_ov006_021405bc);
