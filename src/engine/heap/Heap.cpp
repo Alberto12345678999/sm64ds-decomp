@@ -117,9 +117,10 @@ extern "C" {
 /* operator new(unsigned int) at 0x0203cbe4 -- a three-word tail-call veneer
  * to func_0203cc0c (`ldr ip,[pc] / bx ip / .word 0x0203cc0c').
  *
- * The name stays hand-spelled under extern "C": mwccarm 2004/b56 rejects
- * `void* operator new(u32)' with "illegal 'operator' declaration", the same
- * restriction documented on fBase_c::operator new in include/fBase_c.h. */
+ * The name stays hand-spelled under extern "C". mwccarm's size_t is
+ * unsigned long, so a real `operator new(size_t)' emits _Znwm, and
+ * `operator new(unsigned int)' is rejected as an illegal 'operator'
+ * declaration. Renaming the symbol to _Znwm is a claim of its own. */
 void *_Znwj(u32 size) {
     return func_0203cc0c(size);
 }
