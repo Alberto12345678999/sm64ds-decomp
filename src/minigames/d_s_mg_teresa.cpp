@@ -27,7 +27,7 @@
  *
  * The four PMF state tables dispatch on this class: the big Boo's flight
  * at data_ov006_02142f18 (9 states by Boo::state), the reveal pair at
- * data_ov006_02142e88 (5 states by SlotElem::state), the 16-Boo rows at
+ * data_ov006_02142e88 (5 states by mReveal[0].state), the 16-Boo rows at
  * data_ov006_02142ed8 (8 states), and the scene table data_ov006_02142eb0
  * (5 no-argument states by unk_4be8). __sinit_ov006_02132f68 fills them
  * from the .data descriptor records at data_ov006_0213f8xx.
@@ -42,9 +42,13 @@
 //   offset forms (the typed forms change code).
 // - mExclaims (0x48a0), mFoundMarks (0x4960) and mRisingIcons (0x4a60) are
 //   typed; their Spawn/UpdateAll/DrawAll handlers read them by field.
-//   ResetRound still clears them by offset. 0x4ba0..0x4be8 (the 0x20-stride
-//   pair at 0x4bac) and the bytes at 0x4c1b and 0x4c1f are still padding
-//   reached by offset.
+//   ResetRound still clears them by offset.
+// - mReveal[1] (0x4ba0) and mMarker (0x4bc0) are typed. The old 0x4bac
+//   "element pair" view started 0xc bytes into the reveal record, which is
+//   why its second element seemed to overlap the big Boo. Reveal_State1/4
+//   keep their offset forms (typed forms change code). The big Boo at
+//   0x4bcc is typed through the local `struct Boo` below; the bytes at
+//   0x4c1b and 0x4c1f are still reached by offset.
 
 #pragma defer_codegen off
 
@@ -55,9 +59,7 @@
 #include "G2x.h"
 #include "PlayerInput.h"
 
-/* Local views of object ranges the header does not type yet. The layouts
- * disagree offset for offset (the second 0x20-stride element at 0x4bcc
- * overlaps the big Boo record), so they are kept apart. */
+/* Local views of object ranges the header does not type yet. */
 
 /* One Boo, 0x1c bytes, at 0x4bcc. The flight functions are called with an
  * index and step one record. x/y are the sprite's screen position (20.12).
@@ -104,26 +106,6 @@ struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
 struct Row { char pad[0x24]; };
 struct RowArray { struct Row rows[1]; };
 
-/* The 0x20-stride element pair at +0x4bac; element 0 also drives the
-   data_ov006_02142e88 PMF table via its `state`/`active` bytes. */
-typedef struct SlotElem {
-    int word0;
-    short pad04;
-    unsigned short cnt;
-    unsigned short h08;
-    short pad0a;
-    unsigned char b0c;
-    unsigned char pad0d;
-    unsigned char state;   /* +0x0e -- PMF index into data_ov006_02142e88 */
-    unsigned char pad0f;
-    unsigned char active;  /* +0x10 -- dispatch runs only while set */
-    unsigned char b11;
-    unsigned char pad12[0xe];
-} SlotElem;
-typedef struct S {
-    char pad[0x4bac];
-    SlotElem arr[2];
-} S;
 
 
 /* CheckRevealDone's two windows onto the same object. */
@@ -200,7 +182,7 @@ typedef void (dScMgTeresa_c::*Pmf0)();
 struct PmfEntry { Pmf0 pmf; };
 
 extern Pmf data_ov006_02142f18[];   /* big Boo flight states, by Boo::state */
-extern Pmf data_ov006_02142e88[];   /* reveal-pair states, by SlotElem::state */
+extern Pmf data_ov006_02142e88[];   /* reveal states, by mReveal[0].state */
 extern Pmf data_ov006_02142ed8[];   /* per-Boo states, one call per live row */
 extern PmfEntry data_ov006_02142eb0[]; /* scene states, by unk_4be8 */
 /* The ROM PMF constants the four state tables copy from (unlicensed .data),
@@ -649,12 +631,10 @@ void dScMgTeresa_c::StepBg3Scroll()
 /* decl_common.h declares this one with a `void *` parameter. */
 void dScMgTeresa_c::Marker_Draw()
 {
-    void *arg = this;
-  char* raw = (char*)arg;
-  if(*(unsigned char*)(raw + 0x4bc9)==0) return;
+  if(mMarker.visible==0) return;
   RenderOamMainScreen(data_ov006_0213a5f4,
-                      *(int*)(raw + 0x4bc0)>>0xc,
-                      *(int*)(raw + 0x4bc4)>>0xc,
+                      mMarker.x>>0xc,
+                      mMarker.y>>0xc,
                       -1, -1);
 }
 
@@ -669,20 +649,18 @@ void dScMgTeresa_c::Marker_Update()
 // @symbol _ZN13dScMgTeresa_c11Marker_ShowEv
 void dScMgTeresa_c::Marker_Show()
 {
-    char *raw = (char *)this;
-    *(int *)(raw + 0x4bc0) = 327680;
-    *(int *)(raw + 0x4bc4) = 262144;
-    *(char *)(raw + 0x4bc8) = 1;
-    *(char *)(raw + 0x4bc9) = 1;
+    mMarker.x = 0x50000;
+    mMarker.y = 0x40000;
+    mMarker.active = 1;
+    mMarker.visible = 1;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c11Marker_HideEv
 void dScMgTeresa_c::Marker_Hide()
 {
-    char *raw = (char *)this;
-    *(char *)(raw + 0x4bc8) = 0;
-    *(char *)(raw + 0x4bc9) = 0;
+    mMarker.active = 0;
+    mMarker.visible = 0;
 }
 
 
@@ -690,17 +668,15 @@ void dScMgTeresa_c::Marker_Hide()
 /* decl_common.h declares this one with a `void *` parameter. */
 void dScMgTeresa_c::Reveal_Draw()
 {
-    void *arg = this;
-    char *raw = (char *)arg;
-    if (*(unsigned char *)(raw + 0x4bb9) == 0) return;
+    if (mReveal[0].visible == 0) return;
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
         0,
-        data_ov006_0213a628[*(unsigned char *)(raw + 0x4bb8)],
-        *(int *)(raw + 0x4ba0) >> 12,
-        *(int *)(raw + 0x4ba4) >> 12,
+        data_ov006_0213a628[mReveal[0].sprite],
+        mReveal[0].x >> 12,
+        mReveal[0].y >> 12,
         -1, 0,
         0x1000, 0x1000,
-        *(unsigned short *)(raw + 0x4bb0), -1);
+        mReveal[0].angle, -1);
 }
 
 
@@ -733,34 +709,33 @@ void dScMgTeresa_c::Reveal_State4(int idx)
 // @symbol _ZN13dScMgTeresa_c13Reveal_State3Ei
 void dScMgTeresa_c::Reveal_State3(int i)
 {
-    char *raw = (char *)this;
     u8 flag;
 
-    flag = *(u8*)(raw + 0x4000 + (i << 5) + 0xbbe);
+    flag = mReveal[i].phase;
 
     if (flag == 0) {
-        *(u16*)(raw + 0x4bb4 + (i << 5)) += 1;
-        *(int*)(raw + 0x4ba4 + (i << 5)) += *(int*)(raw + 0x4000 + (i << 5) + 0xbac);
-        *(int*)AT(raw, 0x4bc4) += *(int*)(raw + 0x4000 + (i << 5) + 0xbac);
-        if (*(int*)(raw + 0x4000 + (i << 5) + 0xbac) >= 0x800)
-            *(int*)(raw + 0x4bac + (i << 5)) -= 0x20;
-        if (*(u16*)(raw + 0x4b00 + (i << 5) + 0xb4) >= 0x10) {
-            *(u16*)(raw + 0x4b00 + (i << 5) + 0xb4) = 0;
-            *(u8*)(raw + 0x4bbe + (i << 5)) += 1;
-            *(int*)(raw + 0x4000 + (i << 5) + 0xbac) = 0;
+        mReveal[i].timer += 1;
+        mReveal[i].y += mReveal[i].vy;
+        mMarker.y += mReveal[i].vy;
+        if (mReveal[i].vy >= 0x800)
+            mReveal[i].vy -= 0x20;
+        if (mReveal[i].timer >= 0x10) {
+            mReveal[i].timer = 0;
+            mReveal[i].phase += 1;
+            mReveal[i].vy = 0;
         }
     } else if (flag == 1) {
-        *(u16*)(raw + 0x4bb4 + (i << 5)) += 1;
-        if (*(u16*)(raw + 0x4b00 + (i << 5) + 0xb4) == 0x10)
-            *(int*)(raw + 0x4000 + (i << 5) + 0xbac) = -0x1000;
-        *(int*)(raw + 0x4ba4 + (i << 5)) += *(int*)(raw + 0x4000 + (i << 5) + 0xbac);
-        *(int*)AT(raw, 0x4bc4) += *(int*)(raw + 0x4000 + (i << 5) + 0xbac);
-        if (*(int*)(raw + 0x4000 + (i << 5) + 0xbac) <= -0x800)
-            *(int*)(raw + 0x4bac + (i << 5)) += 0x20;
-        if (*(u16*)(raw + 0x4b00 + (i << 5) + 0xb4) >= 0x20) {
-            *(u16*)(raw + 0x4b00 + (i << 5) + 0xb4) = 0x20;
-            *(u8*)(raw + 0x4000 + (i << 5) + 0xbbe) = 0;
-            *(u8*)(raw + 0x4000 + (i << 5) + 0xbba) = 4;
+        mReveal[i].timer += 1;
+        if (mReveal[i].timer == 0x10)
+            mReveal[i].vy = -0x1000;
+        mReveal[i].y += mReveal[i].vy;
+        mMarker.y += mReveal[i].vy;
+        if (mReveal[i].vy <= -0x800)
+            mReveal[i].vy += 0x20;
+        if (mReveal[i].timer >= 0x20) {
+            mReveal[i].timer = 0x20;
+            mReveal[i].phase = 0;
+            mReveal[i].state = 4;
         }
     }
 }
@@ -771,20 +746,19 @@ void dScMgTeresa_c::Reveal_State3(int i)
 // @symbol _ZN13dScMgTeresa_c13Reveal_State2Ei
 void dScMgTeresa_c::Reveal_State2(int i)
 {
-    S *s = (S *)this;
-    s->arr[i].cnt++;
-    if (s->arr[i].cnt < 8) return;
-    s->arr[i].cnt = 0;
-    s->arr[i].b11++;
-    if (s->arr[i].b11 >= 8) {
-        s->arr[i].b11 = 0;
-        s->arr[i].b0c = 0;
-        s->arr[i].state = 3;
-        s->arr[i].h08 = 0;
-        s->arr[i].word0 = 0x1000;
+    mReveal[i].frameTimer++;
+    if (mReveal[i].frameTimer < 8) return;
+    mReveal[i].frameTimer = 0;
+    mReveal[i].frame++;
+    if (mReveal[i].frame >= 8) {
+        mReveal[i].frame = 0;
+        mReveal[i].sprite = 0;
+        mReveal[i].state = 3;
+        mReveal[i].timer = 0;
+        mReveal[i].vy = 0x1000;
         Sound::PlayBank2_2D(0x1f9);
     } else {
-        s->arr[i].b0c = data_ov006_0212efd4[s->arr[i].b11];
+        mReveal[i].sprite = data_ov006_0212efd4[mReveal[i].frame];
     }
 }
 
@@ -839,20 +813,17 @@ void dScMgTeresa_c::Reveal_State1(int i)
 // @symbol _ZN13dScMgTeresa_c13Reveal_State0Ei
 void dScMgTeresa_c::Reveal_State0(int i)
 {
-    char *raw = (char *)this;
-  char *p = raw + (i << 5);
-  *((raw + (i << 5)) + 0x4bba) = 1;
-  *((short *) ((raw + (i << 5)) + 0x4bb4)) = 0x40;
-  *((int *) (p + 0x4ba8)) = -0xb00;
+    mReveal[i].state = 1;
+    mReveal[i].timer = 0x40;
+    mReveal[i].vx = -0xb00;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c13Reveal_UpdateEv
 void dScMgTeresa_c::Reveal_Update()
 {
-    S *s = (S *)this;
-    if (s->arr[0].active == 0) return;
-    (this->*data_ov006_02142e88[s->arr[0].state])(0);
+    if (mReveal[0].active == 0) return;
+    (this->*data_ov006_02142e88[mReveal[0].state])(0);
 }
 
 

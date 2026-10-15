@@ -91,6 +91,36 @@ struct dScMgTeresa_c : dScMgBase_c {
         u8  state;       /* 0x13 */
     };
 
+    /* The reveal sprite (Reveal_Draw, Reveal_State0..4). Its handlers take
+       an index and dispatch on `state` through data_ov006_02142e88. */
+    struct Reveal {
+        s32 x;           /* 0x00 -- 20.12 */
+        s32 y;           /* 0x04 -- 20.12 */
+        s32 vx;          /* 0x08 -- 20.12; Reveal_State1 slides x by it */
+        s32 vy;          /* 0x0c -- also moves mMarker */
+        u16 angle;       /* 0x10 -- OAM::Render rotation */
+        u16 frameTimer;  /* 0x12 -- the frame steps every 8 */
+        u16 timer;       /* 0x14 */
+        u16 pad16;
+        u8  sprite;      /* 0x18 */
+        u8  visible;     /* 0x19 */
+        u8  state;       /* 0x1a */
+        u8  unk_1b;      /* 0x1b */
+        u8  active;      /* 0x1c -- dispatch runs only while set */
+        u8  frame;       /* 0x1d */
+        u8  phase;       /* 0x1e -- Reveal_State3: 0 rising, 1 falling */
+        u8  pad1f;
+    };
+
+    /* The marker drawn with the reveal (Marker_Draw/Show/Hide). */
+    struct Marker {
+        s32 x;           /* 0x00 -- 20.12 */
+        s32 y;           /* 0x04 -- 20.12 */
+        u8  active;      /* 0x08 */
+        u8  visible;     /* 0x09 */
+        u8  pad0a[0x2];
+    };
+
     virtual ~dScMgTeresa_c();
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
@@ -178,9 +208,13 @@ struct dScMgTeresa_c : dScMgBase_c {
     Exclaim    mExclaims[16];    /* 0x48a0 */
     FoundMark  mFoundMarks[16];  /* 0x4960 */
     RisingIcon mRisingIcons[16]; /* 0x4a60 */
-    /* 0x4ba0..0x4be8: a 0x20-stride pair at 0x4bac whose views overlap the
-       big Boo record at 0x4bcc; kept as padding until they are reconciled. */
-    u8  pad_4ba0[0x48];
+    /* A one-element array: the Reveal_State handlers take an index and
+       step it by 0x20, and the dispatcher passes 0. [inference from codegen] */
+    Reveal     mReveal[1];       /* 0x4ba0 */
+    Marker     mMarker;          /* 0x4bc0 */
+    /* The big Boo, 0x1c bytes; d_s_mg_teresa.cpp's `struct Boo` (BOO()) is
+       its typed view. */
+    u8  pad_4bcc[0x1c];
     s32 unk_4be8;            /* 0x4be8 -- state index for Behavior's pmf dispatch */
     u8  pad_4bec[0x2a];
     s16 unk_4c16;            /* 0x4c16 */
@@ -197,6 +231,8 @@ struct dScMgTeresa_c : dScMgBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char dScMgTeresa_c_Reveal_size_must_be_0x20[sizeof(dScMgTeresa_c::Reveal) == 0x20 ? 1 : -1];
+typedef char dScMgTeresa_c_Marker_size_must_be_0xc[sizeof(dScMgTeresa_c::Marker) == 0xc ? 1 : -1];
 typedef char dScMgTeresa_c_Exclaim_size_must_be_0xc[sizeof(dScMgTeresa_c::Exclaim) == 0xc ? 1 : -1];
 typedef char dScMgTeresa_c_FoundMark_size_must_be_0x10[sizeof(dScMgTeresa_c::FoundMark) == 0x10 ? 1 : -1];
 typedef char dScMgTeresa_c_RisingIcon_size_must_be_0x14[sizeof(dScMgTeresa_c::RisingIcon) == 0x14 ? 1 : -1];
