@@ -334,3 +334,17 @@ High confidence:
 
 Medium confidence: `Popup_*`, `Spark_*`, `CupSlot_*` and `ChooseLaneConfig`, named from the
 record they touch; their looks are not observed.
+
+**Panel (`dScMgPanel_c`, Puzzle Panic).**
+
+Six tables, named by index:
+- `Scene_State0..7`
+- `Shake_State0..2`: the sub-BG0 shake.
+- `Banner_State0..2`
+- `IntroCard_State0..4`: the slide-in card on `mSlide`.
+- `Input_State0..3`
+- `Panel_State0..3`: one per panel.
+
+High confidence: `FlipAt` (a panel and its neighbours), `DealPuzzle`, `CheckSolved`, `CountMatches`, `UpdateTouch`, `DrawPanels`, `Particle_*`, `Scroll_*`, `ResetRound`.
+
+Medium confidence: `ScramblePanels`, `HasDuplicateRows`, `UpdateMoves`, `StartSolveCheck`, `EnableOverlayLayer`, `DrawCursor`, the slide-delay helpers, `CountFlipping`.

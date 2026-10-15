@@ -30,7 +30,7 @@ struct dScMgPanel_Banner {
     u8  pad_0f;
 };
 
-/* Sub-screen BG0 shake after a miss (func_ov006_02104920/02104a10);
+/* Sub-screen BG0 shake after a miss (Shake_State2/02104a10);
    state indexes data_ov006_021427bc. */
 struct dScMgPanel_Shake {
     s32 unk_00;
@@ -40,10 +40,10 @@ struct dScMgPanel_Shake {
     u8  state;        /* +0x0b */
 };
 
-/* BG2 offset on both screens. func_ov006_02104580 runs it: phase 0 shakes
-   x by +-2.0 for 0x3c frames and drops particles (func_ov006_0210446c) at
-   both side edges, then y accelerates up to 512.0. func_ov006_02104870 arms
-   it; func_ov006_021048b0 clears `on` and the offsets. */
+/* BG2 offset on both screens. Scroll_Update runs it: phase 0 shakes
+   x by +-2.0 for 0x3c frames and drops particles (Particle_Spawn) at
+   both side edges, then y accelerates up to 512.0. Scroll_Start arms
+   it; Scroll_Stop clears `on` and the offsets. */
 struct dScMgPanel_Scroll {
     s32 x;            /* +0x00 */
     s32 y;            /* +0x04 */
@@ -55,7 +55,7 @@ struct dScMgPanel_Scroll {
     u8  pad_13;
 };
 
-/* One of the 64 debris particles (func_ov006_02104354 steps them). */
+/* One of the 64 debris particles (Particle_UpdateAll steps them). */
 struct dScMgPanel_Particle {
     s32 x;            /* +0x00 -- Fix12 */
     s32 y;            /* +0x04 */
@@ -130,71 +130,71 @@ struct dScMgPanel_c : dScMgBase_c {
 
     /* Helpers the state tables and the vtable bodies call. The address is the
        method name; no ROM spelling survives. */
-    void func_ov006_021042e8();
-    void func_ov006_02104354();
-    void func_ov006_0210446c(int x, int y, int mode);
-    void func_ov006_02104558();
-    void func_ov006_02104580();
-    void func_ov006_02104870();
-    void func_ov006_021048b0();
-    void func_ov006_021048e4();
-    void func_ov006_02104920(int index);
-    void func_ov006_02104a10(int index);
-    void func_ov006_02104ac0(int index);
-    void func_ov006_02104ac4();
-    void func_ov006_02104b24();
-    void func_ov006_02104b4c();
-    void func_ov006_02104b5c();
-    void func_ov006_02104bac();
-    void func_ov006_02104bb0();
-    void func_ov006_02104c08();
-    void func_ov006_02104c60();
-    void func_ov006_02104cfc(int i);
-    void func_ov006_02104d44();
-    void func_ov006_02104d94();
-    void func_ov006_02104e70();
-    void func_ov006_02104e80();
-    void func_ov006_02104ea8();
-    void func_ov006_02104eb8();
-    void func_ov006_02104ec8();
-    void func_ov006_02104ecc();
-    void func_ov006_02104fb4();
-    void func_ov006_0210500c();
-    void func_ov006_0210508c();
-    void func_ov006_021050bc();
-    void func_ov006_02105118();
-    void func_ov006_02105134();
-    void func_ov006_021051dc();
-    void func_ov006_021053a8();
-    void func_ov006_02105670();
-    void func_ov006_02105730();
-    void func_ov006_021057f0();
-    void func_ov006_02105854();
-    void func_ov006_02105ab4();
-    void func_ov006_02105c1c();
-    void func_ov006_02105c88();
-    void func_ov006_02105d20();
-    void func_ov006_02105de4();
-    void func_ov006_02106048();
-    void func_ov006_02106080(int index);
-    void func_ov006_02106168();
-    void func_ov006_021063a0();
-    int func_ov006_02106664();
-    void func_ov006_02106758();
-    void func_ov006_021067a4();
-    void func_ov006_021068d8();
-    void func_ov006_02106910(int index);
-    void func_ov006_02106a08(int idx);
-    void func_ov006_02106aa8(int index);
-    void func_ov006_02106bac(int index);
-    void func_ov006_02106bc0();
-    void func_ov006_02106ca4();
-    void func_ov006_02106eb8();
-    void func_ov006_02106f44();
-    void func_ov006_02106fdc();
-    void func_ov006_0210709c();
-    void func_ov006_0210713c();
-    void func_ov006_021071d4();
+    void Particle_DrawAll();
+    void Particle_UpdateAll();
+    void Particle_Spawn(int x, int y, int mode);
+    void Particle_ClearAll();
+    void Scroll_Update();
+    void Scroll_Start();
+    void Scroll_Stop();
+    void EnableOverlayLayer();
+    void Shake_State2(int index);
+    void Shake_State1(int index);
+    void Shake_State0(int index);
+    void Shake_Update();
+    void Shake_Start();
+    void Shake_Stop();
+    void Banner_Draw();
+    void Banner_State2();
+    void Banner_State1();
+    void Banner_State0();
+    void Banner_Update();
+    void Banner_Show(int i);
+    void DrawCursor();
+    void DrawHud();
+    void ReloadSlideDelay();
+    void TickSlideDelay();
+    void ClearSlideFlag();
+    void SetSlideFlag();
+    void IntroCard_State4();
+    void IntroCard_State3();
+    void IntroCard_State2();
+    void IntroCard_State1();
+    void IntroCard_State0();
+    void IntroCard_Update();
+    void IntroCard_Start();
+    void StartSolveCheck();
+    void Input_State3();
+    void Input_State2();
+    void Input_State1();
+    void Input_State0();
+    void Input_Update();
+    void UpdateMoves();
+    void DrawPanels();
+    void CountMatches();
+    void CountFlipping();
+    void CheckSolved();
+    void UpdateTouch();
+    void ShowAllPanels();
+    void FlipAt(int index);
+    void DealPuzzle();
+    void ScramblePanels();
+    int HasDuplicateRows();
+    void ClearGrid();
+    void ResetRound();
+    void Panel_StartAll();
+    void Panel_State3(int index);
+    void Panel_State2(int idx);
+    void Panel_State1(int index);
+    void Panel_State0(int index);
+    void Scene_State7();
+    void Scene_State6();
+    void Scene_State5();
+    void Scene_State4();
+    void Scene_State3();
+    void Scene_State2();
+    void Scene_State1();
+    void Scene_State0();
 };
 
 #ifndef SM64DS_PLATFORM_PC
