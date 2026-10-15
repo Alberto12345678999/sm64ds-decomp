@@ -30,9 +30,9 @@
  *   the reloc becomes data_ov030_02115ddc; (char *)transforms + 0xf0
  *   is bone 5.
  * - The carrier and the cap's word at +0xc8 sit in dActor_c::pad_0c5.
- *   The cap's word at +0xd0 is past dActor_c. GetFloorResult and
- *   GetWallResult are declared; this TU still reads SurfaceInfo at
- *   result + 4. PathPtr::GetNode stays mangled: the member form
+ *   The cap's word at +0xd0 is past dActor_c. The normal helper uses
+ *   the existing polygon results and their SurfaceInfo member.
+ *   PathPtr::GetNode stays mangled: the member form
  *   costs 02111b20 four words. mPathNode's compare stays a signed
  *   word; the field is unsigned.
  * - data_ov030_* handles stay address labels. decl_common.h types
@@ -69,8 +69,6 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int id
 short Vec3_HorzAngle(const void *a, const void *b);
 int   Vec3_Dist(const void *a, const void *b);
 void  func_0201267c(unsigned int id, const Vector3 *pos);
-void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
-void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
 int   _ZN4cstd4fdivEii(int a, int b);
 void  func_020383f0(void *p);
 bool  _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int speed, int e);
@@ -397,9 +395,6 @@ int daMky_c::func_ov030_02111ea4()
 // @symbol _ZN7daMky_c19func_ov030_02111f6cEP10dBgCh_Actr
 void daMky_c::func_ov030_02111f6c(dBgCh_Actr* w)
 {
-    typedef struct { int x, y, z; } Vector3;
-    typedef struct dBgCh_Actr dBgCh_Actr;
-    typedef struct SurfaceInfo SurfaceInfo;
   int b = (int)((this->mFlags & 0x4000) != 0);
   if (b != 0) return;
   int bb = (int)(this->actorID == 0x10b);
@@ -407,7 +402,7 @@ void daMky_c::func_ov030_02111f6c(dBgCh_Actr* w)
   else dBgCh_Actr_UpdateContinuous_Veneer(&this->mWithMeshClsn);
   if (w->IsOnGround() != 0) {
     Vector3 n;
-    ((SurfaceInfo*)((char*)_ZNK10dBgCh_Actr14GetFloorResultEv(w) + 4))->CopyNormalTo((::Vector3 &)n);
+    static_cast<const dBgPi *>(w->GetFloorResult())->surface.CopyNormalTo(n);
     if (n.y != 0) {
       int s = (int)(((long long)n.x * this->unk_0a4 + 0x800) >> 0xc)
             + (int)(((long long)n.z * this->unk_0ac + 0x800) >> 0xc);
@@ -416,7 +411,7 @@ void daMky_c::func_ov030_02111f6c(dBgCh_Actr* w)
   }
   if (w->IsOnWall() != 0) {
     Vector3 wn;
-    ((SurfaceInfo*)((char*)_ZNK10dBgCh_Actr13GetWallResultEv(w) + 4))->CopyNormalTo((::Vector3 &)wn);
+    static_cast<const dBgPi *>(w->GetWallResult())->surface.CopyNormalTo(wn);
   }
 }
 // @symbol _ZN7daMky_c19func_ov030_02112094Ev
