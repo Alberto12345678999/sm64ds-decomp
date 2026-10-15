@@ -255,3 +255,25 @@ pitch, two matching notes clear, and a mismatch closes them again.
 - **Note states 0-4:** `Note_StateWait`, `Note_StateOpening`, `Note_StateOpen`, `Note_StateClosing`, `Note_StateScroll`.
 - **Pops:** `SpawnPops` launches the burst sprites, and each of the 13 pop kinds has `PopNN_Update`, `PopNN_Start`, `PopNN_Fly` and `PopNN_Finish`. The kind number is the index in the dispatch table; the look of each kind is not observed.
 - **Win and loss:** the win plays `Presenter_PlayAnim7` (a cheer, medium) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayAnim4` (disappointment, medium).
+
+**Teresa (`dScMgTeresa_c`, Hide and Boo Seek).**
+
+The four state tables are named by index, which is certain:
+- `BigBoo_State0..8`: the big Boo's flight.
+- `Reveal_State0..4`: the reveal pair.
+- `Boo_State0..7`: each of the 16 hiding Boos.
+- `Scene_State0..4`: the scene.
+
+Descriptive names, high confidence:
+- **Boos:** `SpawnBoos`, `UpdateBoos`, `StepBoo`, `BounceBooOffWalls`, `MoveBoo`, `DrawBoos`.
+- **The rub mechanic:** `UpdateRubbing` / `ReadRubTouch` (stylus lines drawn into BG0), `TouchTestBoo`, `CountRubbedTiles`.
+- **The clock:** `StartCountdown` (3 seconds, or 2 from level 15), `UpdateCountdown`, `DrawCountdown`.
+- **Round flow:** `CheckRoundEnd`, `CheckRevealDone`, `ResetRound`.
+
+Medium confidence: the three popup pools above found Boos, whose looks are not observed.
+- `RisingIcon_*` (+0x4a60): a delayed icon that rises, with sound 0x1bc.
+- `FoundMark_*` (+0x4960).
+- `Exclaim_*` (+0x48a0): spawned by the rub test, 0x18 px above the Boo.
+- Also `Marker_*` (one sprite) and `StepBg3Scroll`.
+
+Left unnamed: `func_ov006_0211cc90`. Both round endings call it, and it sets +0x4be5 when +0x4be0 is set; its role is unknown.

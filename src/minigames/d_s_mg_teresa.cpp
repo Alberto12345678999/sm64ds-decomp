@@ -89,18 +89,18 @@ typedef char Boo_size_must_be_0x1c[sizeof(struct Boo) == 0x1c ? 1 : -1];
 /* Each access is a fresh cast. A saved Boo* makes mwcc address every field
  * from 0x4bcc, and that is not the code in the ROM. */
 #define BOO(p) ((struct Boo *)((p) + 0x4bcc))
-/* func_ov006_0211d018's wait and func_ov006_0211d4e8's y/yVel are a raw
+/* BigBoo_State4's wait and BigBoo_State0's y/yVel are a raw
  * base plus the field. Taking `&BOO(p)->member` shares one base and does
  * not match. */
 #define BOO_FIELD(p, member) ((p) + (0x4bcc + (int)&((struct Boo *)0)->member))
 
 
-/* func_ov006_0211fd44's view of the ov004 score block at gMgScene
+/* Scene_State4's view of the ov004 score block at gMgScene
    (dScMgBase_c.h declares it void *): the current score at +0xb4 and the best
    at +0xb8. */
 struct ScoreView { unsigned char pad[0xb4]; int b4; int b8; };
 
-/* func_ov006_0211e0c8's `struct C`: a 0x24-stride row walk, no fields named. */
+/* RisingIcon_SpawnForFound's `struct C`: a 0x24-stride row walk, no fields named. */
 struct Row { char pad[0x24]; };
 struct RowArray { struct Row rows[1]; };
 
@@ -125,7 +125,7 @@ typedef struct S {
     SlotElem arr[2];
 } S;
 
-/* func_ov006_0211e118's view of the 0x10-stride dMeter_c sprite array at +0x4960. */
+/* FoundMark_DrawAll's view of the 0x10-stride dMeter_c sprite array at +0x4960. */
 struct HudElem {
     int x;
     int y;
@@ -140,10 +140,10 @@ struct HudArray {
     struct HudElem arr[16];
 };
 
-/* func_ov006_0211e220's 0x10-stride step over the same array. */
+/* FoundMark_Spawn's 0x10-stride step over the same array. */
 struct E29 { unsigned char b[0x10]; };
 
-/* func_ov006_0211e5cc's two windows onto the same object. */
+/* CheckRevealDone's two windows onto the same object. */
 typedef struct {
     char _pad0[0x4677];
     u8 active;   /* +0x4677 */
@@ -172,7 +172,7 @@ extern int   Mg_IsNewRecord(void);
 extern int   func_020126e8(int a);
 extern int   func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern void  MultiStore16(u16 val, void *dst, int nbytes);
-/* func_ov006_0211ebdc and 0211f224 pass `0x10 - alpha` as computed: the
+/* Boo_State7 and 0211f224 pass `0x10 - alpha` as computed: the
    cartridge does not narrow it to 16 bits at either call, which G2x.h's
    unsigned short parameters would. So those two call the mangled name. */
 extern void  _ZN3G2x13SetBlendAlphaEPVttttj(volatile unsigned short *reg, int a, int b,
@@ -277,8 +277,8 @@ dScMgTeresa_c::~dScMgTeresa_c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cc2cEv
-void dScMgTeresa_c::func_ov006_0211cc2c()
+// @symbol _ZN13dScMgTeresa_c17BigBoo_ShowResultEv
+void dScMgTeresa_c::BigBoo_ShowResult()
 {
     unsigned char *raw = (unsigned char *)this;
     if (raw[0x4c1f]) {
@@ -308,9 +308,9 @@ void dScMgTeresa_c::func_ov006_0211cc90()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cca8Ev
+// @symbol _ZN13dScMgTeresa_c11BigBoo_DrawEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211cca8()
+void dScMgTeresa_c::BigBoo_Draw()
 {
     void *arg = this;
   unsigned char *raw = (unsigned char *)arg;
@@ -327,8 +327,8 @@ void dScMgTeresa_c::func_ov006_0211cca8()
 
 
 #define FLAG  (*(u8*)((char*)raw + 0x4c1f))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cd24Ei
-void dScMgTeresa_c::func_ov006_0211cd24(int idx)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State8Ei
+void dScMgTeresa_c::BigBoo_State8(int idx)
 {
     void *raw = this;
     struct BooWalk *w = (struct BooWalk *)raw;
@@ -360,14 +360,14 @@ void dScMgTeresa_c::func_ov006_0211cd24(int idx)
 #undef FLAG
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ce90Ev
-void dScMgTeresa_c::func_ov006_0211ce90()
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State7Ev
+void dScMgTeresa_c::BigBoo_State7()
 {
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ce94Ei
-void dScMgTeresa_c::func_ov006_0211ce94(int index)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State6Ei
+void dScMgTeresa_c::BigBoo_State6(int index)
 {
     struct BooWalk *base = (struct BooWalk *)this;
     void *data;
@@ -381,8 +381,8 @@ void dScMgTeresa_c::func_ov006_0211ce94(int index)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211cef4Ei
-void dScMgTeresa_c::func_ov006_0211cef4(int i)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State5Ei
+void dScMgTeresa_c::BigBoo_State5(int i)
 {
     char *c = (char *)this;
     struct BooWalk *w = (struct BooWalk *)c;
@@ -419,8 +419,8 @@ void dScMgTeresa_c::func_ov006_0211cef4(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d018Ei
-void dScMgTeresa_c::func_ov006_0211d018(int idx)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State4Ei
+void dScMgTeresa_c::BigBoo_State4(int idx)
 {
     char *raw = (char *)this;
   struct BooWalk *w = (struct BooWalk *)raw;
@@ -452,8 +452,8 @@ void dScMgTeresa_c::func_ov006_0211d018(int idx)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d0f8Ei
-void dScMgTeresa_c::func_ov006_0211d0f8(int i)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State3Ei
+void dScMgTeresa_c::BigBoo_State3(int i)
 {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
@@ -486,8 +486,8 @@ void dScMgTeresa_c::func_ov006_0211d0f8(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d224Ei
-void dScMgTeresa_c::func_ov006_0211d224(int i)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State2Ei
+void dScMgTeresa_c::BigBoo_State2(int i)
 {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
@@ -527,8 +527,8 @@ void dScMgTeresa_c::func_ov006_0211d224(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d368Ei
-void dScMgTeresa_c::func_ov006_0211d368(int i)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State1Ei
+void dScMgTeresa_c::BigBoo_State1(int i)
 {
     char *raw = (char *)this;
     struct BooWalk *w = (struct BooWalk *)raw;
@@ -575,8 +575,8 @@ void dScMgTeresa_c::func_ov006_0211d368(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d4e8Ei
-void dScMgTeresa_c::func_ov006_0211d4e8(int i)
+// @symbol _ZN13dScMgTeresa_c13BigBoo_State0Ei
+void dScMgTeresa_c::BigBoo_State0(int i)
 {
     char *raw = (char *)this;
     int off = i * 0x1c;
@@ -596,8 +596,8 @@ void dScMgTeresa_c::func_ov006_0211d4e8(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d5a8Ev
-void dScMgTeresa_c::func_ov006_0211d5a8()
+// @symbol _ZN13dScMgTeresa_c13BigBoo_UpdateEv
+void dScMgTeresa_c::BigBoo_Update()
 {
     unsigned char *raw = (unsigned char *)this;
     if (BOO(raw)->active == 0) return;
@@ -605,8 +605,8 @@ void dScMgTeresa_c::func_ov006_0211d5a8()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d608Ev
-void dScMgTeresa_c::func_ov006_0211d608()
+// @symbol _ZN13dScMgTeresa_c12BigBoo_StartEv
+void dScMgTeresa_c::BigBoo_Start()
 {
     char *raw = (char *)this;
     BOO(raw)->active = 1;
@@ -624,8 +624,8 @@ void dScMgTeresa_c::func_ov006_0211d608()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d688Ev
-void dScMgTeresa_c::func_ov006_0211d688()
+// @symbol _ZN13dScMgTeresa_c11BigBoo_HideEv
+void dScMgTeresa_c::BigBoo_Hide()
 {
     char *raw = (char *)this;
     BOO(raw)->active = 0;
@@ -633,8 +633,8 @@ void dScMgTeresa_c::func_ov006_0211d688()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d69cEv
-void dScMgTeresa_c::func_ov006_0211d69c()
+// @symbol _ZN13dScMgTeresa_c13StepBg3ScrollEv
+void dScMgTeresa_c::StepBg3Scroll()
 {
     char *raw = (char *)this;
     if (*(unsigned char *)(raw + 0x4c24) >= 8)
@@ -662,9 +662,9 @@ void dScMgTeresa_c::func_ov006_0211d69c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d75cEv
+// @symbol _ZN13dScMgTeresa_c11Marker_DrawEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211d75c()
+void dScMgTeresa_c::Marker_Draw()
 {
     void *arg = this;
   char* raw = (char*)arg;
@@ -676,15 +676,15 @@ void dScMgTeresa_c::func_ov006_0211d75c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d7b0Ev
-/* Empty. func_ov006_021200a8 calls it with the object. */
-void dScMgTeresa_c::func_ov006_0211d7b0()
+// @symbol _ZN13dScMgTeresa_c13Marker_UpdateEv
+/* Empty. Scene_State1 calls it with the object. */
+void dScMgTeresa_c::Marker_Update()
 {
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d7b4Ev
-void dScMgTeresa_c::func_ov006_0211d7b4()
+// @symbol _ZN13dScMgTeresa_c11Marker_ShowEv
+void dScMgTeresa_c::Marker_Show()
 {
     char *raw = (char *)this;
     *(int *)(raw + 0x4bc0) = 327680;
@@ -694,8 +694,8 @@ void dScMgTeresa_c::func_ov006_0211d7b4()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d7d8Ev
-void dScMgTeresa_c::func_ov006_0211d7d8()
+// @symbol _ZN13dScMgTeresa_c11Marker_HideEv
+void dScMgTeresa_c::Marker_Hide()
 {
     char *raw = (char *)this;
     *(char *)(raw + 0x4bc8) = 0;
@@ -703,9 +703,9 @@ void dScMgTeresa_c::func_ov006_0211d7d8()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d7ecEv
+// @symbol _ZN13dScMgTeresa_c11Reveal_DrawEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211d7ec()
+void dScMgTeresa_c::Reveal_Draw()
 {
     void *arg = this;
     char *raw = (char *)arg;
@@ -721,8 +721,8 @@ void dScMgTeresa_c::func_ov006_0211d7ec()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d86cEi
-void dScMgTeresa_c::func_ov006_0211d86c(int idx)
+// @symbol _ZN13dScMgTeresa_c13Reveal_State4Ei
+void dScMgTeresa_c::Reveal_State4(int idx)
 {
     char *raw = (char *)this;
     char *base = raw + (idx << 5);
@@ -733,13 +733,13 @@ void dScMgTeresa_c::func_ov006_0211d86c(int idx)
     }
     *(unsigned char*)(base + 0x4bb9) = 0;
     *(unsigned char*)(base + 0x4bbc) = 0;
-    func_ov006_0211d7d8();
+    Marker_Hide();
     data_0209d45c |= 4;
     data_0209d454 |= 1;
     Sound::PlayBank2_2D(0x1f6);
     unk_4be8 = 2;
-    func_ov006_0211f51c();
-    func_ov006_0211d608();
+    StartBoosHiding();
+    BigBoo_Start();
     Sound::PlayBank2_2D(0x1f5);
 }
 
@@ -747,8 +747,8 @@ void dScMgTeresa_c::func_ov006_0211d86c(int idx)
 #pragma push
 #pragma opt_common_subs off
 #define AT(p,off) ((void*)(int)((char*)(p)+(off)))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211d924Ei
-void dScMgTeresa_c::func_ov006_0211d924(int i)
+// @symbol _ZN13dScMgTeresa_c13Reveal_State3Ei
+void dScMgTeresa_c::Reveal_State3(int i)
 {
     char *raw = (char *)this;
     u8 flag;
@@ -785,8 +785,8 @@ void dScMgTeresa_c::func_ov006_0211d924(int i)
 #pragma pop
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211dad0Ei
-void dScMgTeresa_c::func_ov006_0211dad0(int i)
+// @symbol _ZN13dScMgTeresa_c13Reveal_State2Ei
+void dScMgTeresa_c::Reveal_State2(int i)
 {
     S *s = (S *)this;
     s->arr[i].cnt++;
@@ -814,8 +814,8 @@ void dScMgTeresa_c::func_ov006_0211dad0(int i)
 #define B16(off) (*(unsigned short *)(raw + i * 32 + (off)))
 #define B8(off)  (*(unsigned char  *)(raw + i * 32 + (off)))
 #define B32(off) (*(int            *)(raw + i * 32 + (off)))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211db7cEi
-void dScMgTeresa_c::func_ov006_0211db7c(int i)
+// @symbol _ZN13dScMgTeresa_c13Reveal_State1Ei
+void dScMgTeresa_c::Reveal_State1(int i)
 {
     char *raw = (char *)this;
     A16(0x4bb2) += 1;
@@ -853,8 +853,8 @@ void dScMgTeresa_c::func_ov006_0211db7c(int i)
 #pragma pop
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211dce0Ei
-void dScMgTeresa_c::func_ov006_0211dce0(int i)
+// @symbol _ZN13dScMgTeresa_c13Reveal_State0Ei
+void dScMgTeresa_c::Reveal_State0(int i)
 {
     char *raw = (char *)this;
   char *p = raw + (i << 5);
@@ -864,8 +864,8 @@ void dScMgTeresa_c::func_ov006_0211dce0(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211dd0cEv
-void dScMgTeresa_c::func_ov006_0211dd0c()
+// @symbol _ZN13dScMgTeresa_c13Reveal_UpdateEv
+void dScMgTeresa_c::Reveal_Update()
 {
     S *s = (S *)this;
     if (s->arr[0].active == 0) return;
@@ -873,8 +873,8 @@ void dScMgTeresa_c::func_ov006_0211dd0c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211dd6cEv
-void dScMgTeresa_c::func_ov006_0211dd6c()
+// @symbol _ZN13dScMgTeresa_c12Reveal_StartEv
+void dScMgTeresa_c::Reveal_Start()
 {
     char *raw = (char *)this;
     *(int *)(raw + 0x4ba0) = 655360;
@@ -892,8 +892,8 @@ void dScMgTeresa_c::func_ov006_0211dd6c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ddb8Ev
-void dScMgTeresa_c::func_ov006_0211ddb8()
+// @symbol _ZN13dScMgTeresa_c11Reveal_HideEv
+void dScMgTeresa_c::Reveal_Hide()
 {
     char *raw = (char *)this;
     *(char *)(raw + 0x4bb9) = 0;
@@ -901,10 +901,10 @@ void dScMgTeresa_c::func_ov006_0211ddb8()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ddccEv
+// @symbol _ZN13dScMgTeresa_c18RisingIcon_DrawAllEv
 /* decl_common.h declares this one with a `void *` parameter, and
    Mg_RenderSubSpriteMtx as `(void *, int, int, void *)`. */
-void dScMgTeresa_c::func_ov006_0211ddcc()
+void dScMgTeresa_c::RisingIcon_DrawAll()
 {
     void *c_ = this;
     char *c = (char *)c_;
@@ -922,8 +922,8 @@ void dScMgTeresa_c::func_ov006_0211ddcc()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211de54Ev
-void dScMgTeresa_c::func_ov006_0211de54()
+// @symbol _ZN13dScMgTeresa_c19RisingIcon_ClearAllEv
+void dScMgTeresa_c::RisingIcon_ClearAll()
 {
     char *p = (char *)this;
     int i;
@@ -935,8 +935,8 @@ void dScMgTeresa_c::func_ov006_0211de54()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211de7cEv
-int dScMgTeresa_c::func_ov006_0211de7c()
+// @symbol _ZN13dScMgTeresa_c20RisingIcon_CountBusyEv
+int dScMgTeresa_c::RisingIcon_CountBusy()
 {
     char *c = (char *)this;
     int cnt = 0;
@@ -951,8 +951,8 @@ int dScMgTeresa_c::func_ov006_0211de7c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211dec0Ev
-void dScMgTeresa_c::func_ov006_0211dec0()
+// @symbol _ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv
+void dScMgTeresa_c::RisingIcon_UpdateAll()
 {
     void *arg = this;
     int i;
@@ -993,8 +993,8 @@ void dScMgTeresa_c::func_ov006_0211dec0()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e020Ei
-void dScMgTeresa_c::func_ov006_0211e020(int i)
+// @symbol _ZN13dScMgTeresa_c16RisingIcon_SpawnEi
+void dScMgTeresa_c::RisingIcon_Spawn(int i)
 {
     char *raw = (char *)this;
   int n;
@@ -1021,25 +1021,25 @@ void dScMgTeresa_c::func_ov006_0211e020(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e0c8Ev
-/* The call to func_ov006_0211e020 is cast because that function takes
+// @symbol _ZN13dScMgTeresa_c24RisingIcon_SpawnForFoundEv
+/* The call to RisingIcon_Spawn is cast because that function takes
    `char *`. */
-void dScMgTeresa_c::func_ov006_0211e0c8()
+void dScMgTeresa_c::RisingIcon_SpawnForFound()
 {
     RowArray *c = (RowArray *)this;
     int i;
     struct Row* r = c->rows;
     for (i = 0; i < 0x10; i++) {
         if (((unsigned char*)r + 0x4000)[0x677] != 0 && ((unsigned char*)r + 0x4000)[0x678] == 5)
-            func_ov006_0211e020(i);
+            RisingIcon_Spawn(i);
         r++;
     }
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e118Ev
+// @symbol _ZN13dScMgTeresa_c17FoundMark_DrawAllEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211e118()
+void dScMgTeresa_c::FoundMark_DrawAll()
 {
     void *a0_ = this;
     struct HudArray* a0 = (struct HudArray*)a0_;
@@ -1054,8 +1054,8 @@ void dScMgTeresa_c::func_ov006_0211e118()
 
 #define LI(i) ((int)((long long)(i)) * 0x10)
 #define A(p) ((int)(p))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e184Ev
-void dScMgTeresa_c::func_ov006_0211e184()
+// @symbol _ZN13dScMgTeresa_c19FoundMark_UpdateAllEv
+void dScMgTeresa_c::FoundMark_UpdateAll()
 {
     char *raw = (char *)this;
     int i;
@@ -1084,8 +1084,8 @@ void dScMgTeresa_c::func_ov006_0211e184()
 
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e220Ei
-void dScMgTeresa_c::func_ov006_0211e220(int param)
+// @symbol _ZN13dScMgTeresa_c15FoundMark_SpawnEi
+void dScMgTeresa_c::FoundMark_Spawn(int param)
 {
     unsigned char *raw = (unsigned char *)this;
   struct E29* a=(struct E29*)raw;
@@ -1113,9 +1113,9 @@ void dScMgTeresa_c::func_ov006_0211e220(int param)
 #pragma pop
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e29cEv
+// @symbol _ZN13dScMgTeresa_c13DrawCountdownEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211e29c()
+void dScMgTeresa_c::DrawCountdown()
 {
     void *arg = this;
   unsigned char* raw = (unsigned char*)arg;
@@ -1125,8 +1125,8 @@ void dScMgTeresa_c::func_ov006_0211e29c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e318Ev
-void dScMgTeresa_c::func_ov006_0211e318()
+// @symbol _ZN13dScMgTeresa_c15UpdateCountdownEv
+void dScMgTeresa_c::UpdateCountdown()
 {
     char *raw = (char *)this;
   if (*(unsigned char*)(raw + 0x4c1c) == 0) return;
@@ -1148,8 +1148,8 @@ void dScMgTeresa_c::func_ov006_0211e318()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e3e0Ev
-void dScMgTeresa_c::func_ov006_0211e3e0()
+// @symbol _ZN13dScMgTeresa_c14StartCountdownEv
+void dScMgTeresa_c::StartCountdown()
 {
     char *raw = (char *)this;
     if (*(unsigned char *)(raw + 0x4c20) == 0) return;
@@ -1165,9 +1165,9 @@ void dScMgTeresa_c::func_ov006_0211e3e0()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e460Ev
+// @symbol _ZN13dScMgTeresa_c15Exclaim_DrawAllEv
 /* decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211e460()
+void dScMgTeresa_c::Exclaim_DrawAll()
 {
     void *c_ = this;
     char *c = (char *)c_;
@@ -1186,8 +1186,8 @@ void dScMgTeresa_c::func_ov006_0211e460()
 
 
 #define A(p) ((unsigned char *)(int)(p))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e4e0Ev
-void dScMgTeresa_c::func_ov006_0211e4e0()
+// @symbol _ZN13dScMgTeresa_c17Exclaim_UpdateAllEv
+void dScMgTeresa_c::Exclaim_UpdateAll()
 {
     char *base = (char *)this;
     int i;
@@ -1212,8 +1212,8 @@ void dScMgTeresa_c::func_ov006_0211e4e0()
 #undef A
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e55cEi
-void dScMgTeresa_c::func_ov006_0211e55c(int idx)
+// @symbol _ZN13dScMgTeresa_c13Exclaim_SpawnEi
+void dScMgTeresa_c::Exclaim_Spawn(int idx)
 {
     char *raw = (char *)this;
     int i;
@@ -1232,8 +1232,8 @@ void dScMgTeresa_c::func_ov006_0211e55c(int idx)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e5ccEv
-void dScMgTeresa_c::func_ov006_0211e5cc()
+// @symbol _ZN13dScMgTeresa_c15CheckRevealDoneEv
+void dScMgTeresa_c::CheckRevealDone()
 {
     char *raw = (char *)this;
     int found;
@@ -1257,8 +1257,8 @@ void dScMgTeresa_c::func_ov006_0211e5cc()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e658Ev
-void dScMgTeresa_c::func_ov006_0211e658()
+// @symbol _ZN13dScMgTeresa_c13CheckRoundEndEv
+void dScMgTeresa_c::CheckRoundEnd()
 {
     unsigned char *raw = (unsigned char *)this;
     if (*(unsigned short*)(raw + 0x4c14) == 0 && *(unsigned char*)(raw + 0x4c20) != 0) {
@@ -1293,7 +1293,7 @@ void dScMgTeresa_c::func_ov006_0211e658()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e72cEv
+// @symbol _ZN13dScMgTeresa_c8DrawBoosEv
 /* Draws the 16 Boo sprites. Each 0x24-byte slot at +0x4660 holds a position
  * (x, y in 20.12), a translucency flag, a visible flag, an OAM priority and an
  * animation/frame pair that picks the sprite's attribute block from a table of
@@ -1302,7 +1302,7 @@ void dScMgTeresa_c::func_ov006_0211e658()
  * attribute's own mode (-1) otherwise. The mode is declared between the frame
  * index and the y read on purpose: that is what puts the -1 where the ROM
  * keeps it. decl_common.h declares this one with a `void *` parameter. */
-void dScMgTeresa_c::func_ov006_0211e72c()
+void dScMgTeresa_c::DrawBoos()
 {
     void *arg = this;
     char *row = (char *)arg;
@@ -1330,8 +1330,8 @@ void dScMgTeresa_c::func_ov006_0211e72c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e7d8Ev
-void dScMgTeresa_c::func_ov006_0211e7d8()
+// @symbol _ZN13dScMgTeresa_c14AreBoosSettledEv
+void dScMgTeresa_c::AreBoosSettled()
 {
     char *self = (char *)this;
     int found = 0;
@@ -1365,8 +1365,8 @@ void dScMgTeresa_c::func_ov006_0211e7d8()
 
 
 #define A(a) (*(u8*)(a))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211e8a8Ei
-void dScMgTeresa_c::func_ov006_0211e8a8(int idx)
+// @symbol _ZN13dScMgTeresa_c12TouchTestBooEi
+void dScMgTeresa_c::TouchTestBoo(int idx)
 {
     char *c = (char *)this;
     int x;
@@ -1407,7 +1407,7 @@ void dScMgTeresa_c::func_ov006_0211e8a8(int idx)
     *(u8*)&((char (*)[0x24])c)[idx][0x4680] = *(u8*)(c + 0x4c21);
     *(s16*)&((char (*)[0x24])c)[idx][0x466e] = 0x40;
     A(c + 0x4c21)++;
-    func_ov006_0211e55c(idx);
+    Exclaim_Spawn(idx);
     func_02012718(0x1f0, *(int*)(c + off + 0x4660));
     if (*(u8*)(c + 0x4c26) == 0xff)
         *(u8*)(c + 0x4c26) = (u8)idx;
@@ -1417,8 +1417,8 @@ void dScMgTeresa_c::func_ov006_0211e8a8(int idx)
 
 #pragma push
 #pragma opt_common_subs off
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ea70Ei
-void dScMgTeresa_c::func_ov006_0211ea70(int idx)
+// @symbol _ZN13dScMgTeresa_c16CountRubbedTilesEi
+void dScMgTeresa_c::CountRubbedTiles(int idx)
 {
     char *self = (char *)this;
     int gx, gy;
@@ -1460,20 +1460,20 @@ void dScMgTeresa_c::func_ov006_0211ea70(int idx)
 #pragma pop
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211eb90Ei
-void dScMgTeresa_c::func_ov006_0211eb90(int i)
+// @symbol _ZN13dScMgTeresa_c7MoveBooEi
+void dScMgTeresa_c::MoveBoo(int i)
 {
     char *c = (char *)this;
     if (*(unsigned char *)(c + i * 0x24 + 0x467f) == 0) {
         return;
     }
-    func_ov006_0211f454(i);
-    func_ov006_0211f34c(i);
+    StepBoo(i);
+    BounceBooOffWalls(i);
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ebdcEi
-void dScMgTeresa_c::func_ov006_0211ebdc(int i)
+// @symbol _ZN13dScMgTeresa_c10Boo_State7Ei
+void dScMgTeresa_c::Boo_State7(int i)
 {
     char *c = (char *)this;
     u8 *s;
@@ -1498,8 +1498,8 @@ void dScMgTeresa_c::func_ov006_0211ebdc(int i)
         }
     }
 
-    func_ov006_0211f454(i);
-    func_ov006_0211f34c(i);
+    StepBoo(i);
+    BounceBooOffWalls(i);
 
     {
         char *row = c + o;
@@ -1541,8 +1541,8 @@ void dScMgTeresa_c::func_ov006_0211ebdc(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211ee34Ei
-void dScMgTeresa_c::func_ov006_0211ee34(int i)
+// @symbol _ZN13dScMgTeresa_c10Boo_State6Ei
+void dScMgTeresa_c::Boo_State6(int i)
 {
     char *c = (char *)this;
     int k = i * 0x24;
@@ -1563,8 +1563,8 @@ void dScMgTeresa_c::func_ov006_0211ee34(int i)
             *(u8 *)(c + 0x467d + k) = 3;
     }
 
-    func_ov006_0211f454(i);
-    func_ov006_0211f34c(i);
+    StepBoo(i);
+    BounceBooOffWalls(i);
 
     if (data_02082214[2 * (*(u16 *)(c + 0x466c + k) >> 4) + 1] >= 0)
         *(u8 *)(c + 0x467e + k) = 1;
@@ -1597,8 +1597,8 @@ void dScMgTeresa_c::func_ov006_0211ee34(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f040Ei
-void dScMgTeresa_c::func_ov006_0211f040(int idx)
+// @symbol _ZN13dScMgTeresa_c10Boo_State5Ei
+void dScMgTeresa_c::Boo_State5(int idx)
 {
     char *c = (char *)this;
     int off;
@@ -1609,7 +1609,7 @@ void dScMgTeresa_c::func_ov006_0211f040(int idx)
         *(unsigned short *)(c + 0x466e + off) = *(unsigned short *)(c + 0x466e + off) - 1;
         return;
     }
-    func_ov006_0211e220(idx);
+    FoundMark_Spawn(idx);
     *(unsigned char *)(c + off + 0x4000 + 0x67a) = 0;
     *(unsigned char *)(c + off + 0x4000 + 0x677) = 0;
     if (*(unsigned char *)(c + 0x4000 + 0xc26) != idx)
@@ -1618,8 +1618,8 @@ void dScMgTeresa_c::func_ov006_0211f040(int idx)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f0d0Ei
-void dScMgTeresa_c::func_ov006_0211f0d0(int idx)
+// @symbol _ZN13dScMgTeresa_c10Boo_State4Ei
+void dScMgTeresa_c::Boo_State4(int idx)
 {
     unsigned char *base = (unsigned char *)this;
     int off = idx * 0x24;
@@ -1632,8 +1632,8 @@ void dScMgTeresa_c::func_ov006_0211f0d0(int idx)
             return;
         }
     }
-    func_ov006_0211f454(idx);
-    func_ov006_0211f34c(idx);
+    StepBoo(idx);
+    BounceBooOffWalls(idx);
     {
         int v = *(unsigned short*)((unsigned char*)(base + 0x466c) + off);
         short look = data_02082214[(v >> 4) * 2 + 1];
@@ -1642,19 +1642,19 @@ void dScMgTeresa_c::func_ov006_0211f0d0(int idx)
         else
             *(unsigned char*)((unsigned char*)(base + 0x467e) + off) = 0;
     }
-    func_ov006_0211e8a8(idx);
+    TouchTestBoo(idx);
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f1a4Ei
-void dScMgTeresa_c::func_ov006_0211f1a4(int i)
+// @symbol _ZN13dScMgTeresa_c10Boo_State3Ei
+void dScMgTeresa_c::Boo_State3(int i)
 {
     char *c = (char *)this;
     char *e;
     int v;
-    func_ov006_0211eb90(i);
-    func_ov006_0211ea70(i);
-    func_ov006_0211e8a8(i);
+    MoveBoo(i);
+    CountRubbedTiles(i);
+    TouchTestBoo(i);
     e = c + i * 0x24;
     v = data_02082214[(*(unsigned short *)(e + 0x466c) >> 4) * 2 + 1];
     if (v >= 0)
@@ -1664,13 +1664,13 @@ void dScMgTeresa_c::func_ov006_0211f1a4(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f224Ei
-void dScMgTeresa_c::func_ov006_0211f224(int i)
+// @symbol _ZN13dScMgTeresa_c10Boo_State2Ei
+void dScMgTeresa_c::Boo_State2(int i)
 {
     char *c = (char *)this;
     int k;
-    func_ov006_0211f454(i);
-    func_ov006_0211f34c(i);
+    StepBoo(i);
+    BounceBooOffWalls(i);
     k = i * 0x24;
     if (data_02082214[2 * (*(unsigned short *)(c + 0x466c + k) >> 4) + 1] >= 0)
         *(unsigned char *)(c + 0x467e + k) = 1;
@@ -1692,8 +1692,8 @@ void dScMgTeresa_c::func_ov006_0211f224(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f34cEi
-void dScMgTeresa_c::func_ov006_0211f34c(int i)
+// @symbol _ZN13dScMgTeresa_c17BounceBooOffWallsEi
+void dScMgTeresa_c::BounceBooOffWalls(int i)
 {
     char *o = (char *)this;
     int m = i * 0x24;
@@ -1720,8 +1720,8 @@ void dScMgTeresa_c::func_ov006_0211f34c(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f454Ei
-void dScMgTeresa_c::func_ov006_0211f454(int i)
+// @symbol _ZN13dScMgTeresa_c7StepBooEi
+void dScMgTeresa_c::StepBoo(int i)
 {
     char *c = (char *)this;
   int n = i * 0x24;
@@ -1744,8 +1744,8 @@ void dScMgTeresa_c::func_ov006_0211f454(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f51cEv
-void dScMgTeresa_c::func_ov006_0211f51c()
+// @symbol _ZN13dScMgTeresa_c15StartBoosHidingEv
+void dScMgTeresa_c::StartBoosHiding()
 {
     char *c = (char *)this;
     int i;
@@ -1758,8 +1758,8 @@ void dScMgTeresa_c::func_ov006_0211f51c()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f554Ei
-void dScMgTeresa_c::func_ov006_0211f554(int i)
+// @symbol _ZN13dScMgTeresa_c10Boo_State1Ei
+void dScMgTeresa_c::Boo_State1(int i)
 {
     char *c = (char *)this;
     int off;
@@ -1773,8 +1773,8 @@ void dScMgTeresa_c::func_ov006_0211f554(int i)
     e = c;
     e += off;
     *(unsigned short *)(e + 0x466e) = 0;
-    func_ov006_0211f454(i);
-    func_ov006_0211f34c(i);
+    StepBoo(i);
+    BounceBooOffWalls(i);
     e = c;
     e += off;
     h = *(unsigned short *)(e + 0x466c);
@@ -1788,8 +1788,8 @@ void dScMgTeresa_c::func_ov006_0211f554(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f5d4Ei
-void dScMgTeresa_c::func_ov006_0211f5d4(int idx)
+// @symbol _ZN13dScMgTeresa_c10Boo_State0Ei
+void dScMgTeresa_c::Boo_State0(int idx)
 {
     char *c = (char *)this;
     int off = idx * 0x24;
@@ -1810,8 +1810,8 @@ void dScMgTeresa_c::func_ov006_0211f5d4(int idx)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f664Ei
-void dScMgTeresa_c::func_ov006_0211f664(int i)
+// @symbol _ZN13dScMgTeresa_c10AnimateBooEi
+void dScMgTeresa_c::AnimateBoo(int i)
 {
     char *c = (char *)this;
   int idx = i * 0x24;
@@ -1825,22 +1825,22 @@ void dScMgTeresa_c::func_ov006_0211f664(int i)
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f6fcEv
-void dScMgTeresa_c::func_ov006_0211f6fc()
+// @symbol _ZN13dScMgTeresa_c10UpdateBoosEv
+void dScMgTeresa_c::UpdateBoos()
 {
     int i;
     char *e = (char*)this;
     for (i = 0; i < 0x10; i++, e += 0x24) {
         if (*(unsigned char*)(e + 0x4677)) {
             (this->*data_ov006_02142ed8[*(unsigned char*)(e + 0x4678)])(i);
-            func_ov006_0211f664(i);
+            AnimateBoo(i);
         }
     }
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f77cEv
-void dScMgTeresa_c::func_ov006_0211f77c()
+// @symbol _ZN13dScMgTeresa_c9SpawnBoosEv
+void dScMgTeresa_c::SpawnBoos()
 {
     char *c = (char *)this;
     int sel;
@@ -1924,8 +1924,8 @@ void dScMgTeresa_c::func_ov006_0211f77c()
 
 #pragma push
 #pragma opt_common_subs off
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211f9fcEv
-void dScMgTeresa_c::func_ov006_0211f9fc()
+// @symbol _ZN13dScMgTeresa_c13UpdateRubbingEv
+void dScMgTeresa_c::UpdateRubbing()
 {
     int self = (int)this;
     int close;
@@ -1936,7 +1936,7 @@ void dScMgTeresa_c::func_ov006_0211f9fc()
         return;
 
     close = 0;
-    func_ov006_0211fb1c();
+    ReadRubTouch();
 
     if (((u8 *)self + 0x4000)[0xC1D] != 0) {
         /* Not Vector3: its C++ destructor changes this frame. */
@@ -1980,8 +1980,8 @@ void dScMgTeresa_c::func_ov006_0211f9fc()
 
 
 #define AT(p, off) ((void*)(int)((char*)(p) + (off)))
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211fb1cEv
-void dScMgTeresa_c::func_ov006_0211fb1c()
+// @symbol _ZN13dScMgTeresa_c12ReadRubTouchEv
+void dScMgTeresa_c::ReadRubTouch()
 {
     char *c = (char *)this;
     int i = gActivePlayerSlot;
@@ -2004,8 +2004,8 @@ void dScMgTeresa_c::func_ov006_0211fb1c()
 
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211fbf8Ev
-void dScMgTeresa_c::func_ov006_0211fbf8()
+// @symbol _ZN13dScMgTeresa_c10ResetRoundEv
+void dScMgTeresa_c::ResetRound()
 {
     char *p = (char *)this;
   int v;
@@ -2075,11 +2075,11 @@ void dScMgTeresa_c::func_ov006_0211fbf8()
   *((char *) (p + 0x4c1b)) = i;
   *((char *) (p + 0x4c1c)) = i;
   *((char *) (p + 0x4c21)) = i;
-  func_ov006_0211ddb8();
-  func_ov006_0211d7d8();
+  Reveal_Hide();
+  Marker_Hide();
   *((short *) (p + 0x4c18)) = i;
   *((char *) (p + 0x4c24)) = i;
-  func_ov006_0211d688();
+  BigBoo_Hide();
   *((int *) (p + 0x4c08)) = i;
   *((unsigned char *) (p + 0x4c26)) = 0xff;
   *((char *) (p + 0x4c27)) = i;
@@ -2087,13 +2087,13 @@ void dScMgTeresa_c::func_ov006_0211fbf8()
 #pragma pop
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211fd44Ev
-void dScMgTeresa_c::func_ov006_0211fd44()
+// @symbol _ZN13dScMgTeresa_c12Scene_State4Ev
+void dScMgTeresa_c::Scene_State4()
 {
     char *c = (char *)this;
-    func_ov006_0211d5a8();
-    func_ov006_0211f6fc();
-    func_ov006_0211e184();
+    BigBoo_Update();
+    UpdateBoos();
+    FoundMark_UpdateAll();
     if (*(unsigned short *)(c + 0x4c0c) == 0) return;
     *(unsigned short *)(((int)c + 0x4c0c)) -= 1;
     if (*(short *)(c + 0x4c0c) > 0) return;
@@ -2122,12 +2122,12 @@ void dScMgTeresa_c::func_ov006_0211fd44()
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_0211fe78Ev
-void dScMgTeresa_c::func_ov006_0211fe78()
+// @symbol _ZN13dScMgTeresa_c12Scene_State3Ev
+void dScMgTeresa_c::Scene_State3()
 {
     char *c = (char *)this;
-    func_ov006_0211d5a8();
-    func_ov006_0211f9fc();
+    BigBoo_Update();
+    UpdateRubbing();
     if (*(u16 *)(c + 0x4c0c) != 0) {
         {
             u16 *p = (u16 *)((int)c + 0x4c0c);
@@ -2136,21 +2136,21 @@ void dScMgTeresa_c::func_ov006_0211fe78()
         if (*(s16 *)(c + 0x4c0c) > 0)
             return;
         if (*(u8 *)(c + 0x4c1f) != 0) {
-            func_ov006_0211e0c8();
+            RisingIcon_SpawnForFound();
             *(s16 *)(c + 0x4c0e) = 0x60;
             return;
         }
-        func_ov006_0211e0c8();
-        func_ov006_0211e7d8();
+        RisingIcon_SpawnForFound();
+        AreBoosSettled();
         *(s16 *)(c + 0x4c0e) = 0x60;
         return;
     }
-    func_ov006_0211dec0();
-    func_ov006_0211f6fc();
-    if (func_ov006_0211de7c() != 0)
+    RisingIcon_UpdateAll();
+    UpdateBoos();
+    if (RisingIcon_CountBusy() != 0)
         return;
     if (*(u16 *)(c + 0x4c0e) != 0) {
-        func_ov006_0211d69c();
+        StepBg3Scroll();
         {
             u16 *q = (u16 *)((int)c + 0x4c0e);
             *q = *q - 1;
@@ -2159,21 +2159,21 @@ void dScMgTeresa_c::func_ov006_0211fe78()
             *(s16 *)(c + 0x4c0e) = 0;
         return;
     }
-    func_ov006_0211de54();
+    RisingIcon_ClearAll();
     unk_4be8 = 4;
     *(s16 *)(c + 0x4c0c) = 0x60;
     *(int *)0x4001000 = *(int *)0x4001000 & ~0xe000;
     data_0209d454 = data_0209d454 & ~1;
     Sound::PlayBank2_2D(0x1f7);
-    func_ov006_0211cc2c();
+    BigBoo_ShowResult();
     if (*(u8 *)(c + 0x4c1f) == 0)
         return;
     Sound::PlayBank2_2D(0x1f2);
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_02120008Ev
-void dScMgTeresa_c::func_ov006_02120008()
+// @symbol _ZN13dScMgTeresa_c12Scene_State2Ev
+void dScMgTeresa_c::Scene_State2()
 {
     char *c = (char *)this;
   unsigned short *g = (unsigned short *) (c + 0x4c00);
@@ -2193,27 +2193,27 @@ void dScMgTeresa_c::func_ov006_02120008()
       }
     }
   }
-  func_ov006_0211e318();
-  func_ov006_0211f9fc();
-  func_ov006_0211f6fc();
-  func_ov006_0211e5cc();
-  func_ov006_0211e3e0();
-  func_ov006_0211d5a8();
-  func_ov006_0211e658();
+  UpdateCountdown();
+  UpdateRubbing();
+  UpdateBoos();
+  CheckRevealDone();
+  StartCountdown();
+  BigBoo_Update();
+  CheckRoundEnd();
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_021200a8Ev
-void dScMgTeresa_c::func_ov006_021200a8()
+// @symbol _ZN13dScMgTeresa_c12Scene_State1Ev
+void dScMgTeresa_c::Scene_State1()
 {
-    func_ov006_0211dd0c();
-    func_ov006_0211d7b0();
-    func_ov006_0211f6fc();
+    Reveal_Update();
+    Marker_Update();
+    UpdateBoos();
 }
 
 
-// @symbol _ZN13dScMgTeresa_c19func_ov006_021200ccEv
-void dScMgTeresa_c::func_ov006_021200cc()
+// @symbol _ZN13dScMgTeresa_c12Scene_State0Ev
+void dScMgTeresa_c::Scene_State0()
 {
     char *p = (char *)this;
     *(int *)(p + 0x4be8) = 1;
@@ -2304,10 +2304,10 @@ void dScMgTeresa_c::StartRound(int reset)
         if (*(unsigned int*)(self + 0xbc) > 0x270e)
             *(unsigned int*)(self + 0xbc) = 0x270e;
     }
-    func_ov006_0211fbf8();
-    func_ov006_0211dd6c();
-    func_ov006_0211d7b4();
-    func_ov006_0211f77c();
+    ResetRound();
+    Reveal_Start();
+    Marker_Show();
+    SpawnBoos();
     char* dst = (char *)G2S::GetBG0CharPtr();
     val = 0x1111;
     MultiStore16(val, dst, 0x6000);
@@ -2326,14 +2326,14 @@ void dScMgTeresa_c::StartRound(int reset)
 s32 dScMgTeresa_c::Render()
 {
     Mg_DrawScoreTally(this, 0xe0, 0x14, 1);
-    func_ov006_0211ddcc();
-    func_ov006_0211e29c();
-    func_ov006_0211e460();
-    func_ov006_0211e118();
-    func_ov006_0211e72c();
-    func_ov006_0211d7ec();
-    func_ov006_0211d75c();
-    func_ov006_0211cca8();
+    RisingIcon_DrawAll();
+    DrawCountdown();
+    Exclaim_DrawAll();
+    FoundMark_DrawAll();
+    DrawBoos();
+    Reveal_Draw();
+    Marker_Draw();
+    BigBoo_Draw();
     return 1;
 }
 
@@ -2344,7 +2344,7 @@ s32 dScMgTeresa_c::Render()
 s32 dScMgTeresa_c::Behavior()
 {
     (this->*data_ov006_02142eb0[unk_4be8].pmf)();
-    func_ov006_0211e4e0();
+    Exclaim_UpdateAll();
     return 1;
 }
 
@@ -2424,11 +2424,11 @@ s32 dScMgTeresa_c::InitResources()
     Deallocate(f1);
     Deallocate(f2);
     Mg_SetTopScreenYOffset(0x20);
-    func_ov006_0211fbf8();
+    ResetRound();
     *((u8 *) (self + 0x4c23)) = 0xff;
-    func_ov006_0211d7b4();
-    func_ov006_0211dd6c();
-    func_ov006_0211f77c();
+    Marker_Show();
+    Reveal_Start();
+    SpawnBoos();
     unk_4be8 = 1;
     *((u16 *) (self + 0x4c16)) = 0x20;
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);

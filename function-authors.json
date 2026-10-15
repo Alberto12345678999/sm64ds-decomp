@@ -26647,7 +26647,7 @@
     },
     "ov006:0x0211cc2c": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211cc2cEv"
+      "name": "_ZN13dScMgTeresa_c17BigBoo_ShowResultEv"
     },
     "ov006:0x0211cc90": {
       "author": "tangosdev",
@@ -26655,287 +26655,287 @@
     },
     "ov006:0x0211cca8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211cca8Ev"
+      "name": "_ZN13dScMgTeresa_c11BigBoo_DrawEv"
     },
     "ov006:0x0211cd24": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211cd24Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State8Ei"
     },
     "ov006:0x0211ce90": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ce90Ev"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State7Ev"
     },
     "ov006:0x0211ce94": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ce94Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State6Ei"
     },
     "ov006:0x0211cef4": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211cef4Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State5Ei"
     },
     "ov006:0x0211d018": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d018Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State4Ei"
     },
     "ov006:0x0211d0f8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d0f8Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State3Ei"
     },
     "ov006:0x0211d224": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d224Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State2Ei"
     },
     "ov006:0x0211d368": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d368Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State1Ei"
     },
     "ov006:0x0211d4e8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d4e8Ei"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_State0Ei"
     },
     "ov006:0x0211d5a8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d5a8Ev"
+      "name": "_ZN13dScMgTeresa_c13BigBoo_UpdateEv"
     },
     "ov006:0x0211d608": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d608Ev"
+      "name": "_ZN13dScMgTeresa_c12BigBoo_StartEv"
     },
     "ov006:0x0211d688": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d688Ev"
+      "name": "_ZN13dScMgTeresa_c11BigBoo_HideEv"
     },
     "ov006:0x0211d69c": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d69cEv"
+      "name": "_ZN13dScMgTeresa_c13StepBg3ScrollEv"
     },
     "ov006:0x0211d75c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d75cEv"
+      "name": "_ZN13dScMgTeresa_c11Marker_DrawEv"
     },
     "ov006:0x0211d7b0": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d7b0Ev"
+      "name": "_ZN13dScMgTeresa_c13Marker_UpdateEv"
     },
     "ov006:0x0211d7b4": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d7b4Ev"
+      "name": "_ZN13dScMgTeresa_c11Marker_ShowEv"
     },
     "ov006:0x0211d7d8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d7d8Ev"
+      "name": "_ZN13dScMgTeresa_c11Marker_HideEv"
     },
     "ov006:0x0211d7ec": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d7ecEv"
+      "name": "_ZN13dScMgTeresa_c11Reveal_DrawEv"
     },
     "ov006:0x0211d86c": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d86cEi"
+      "name": "_ZN13dScMgTeresa_c13Reveal_State4Ei"
     },
     "ov006:0x0211d924": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211d924Ei"
+      "name": "_ZN13dScMgTeresa_c13Reveal_State3Ei"
     },
     "ov006:0x0211dad0": {
       "author": "lunavyqo",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211dad0Ei"
+      "name": "_ZN13dScMgTeresa_c13Reveal_State2Ei"
     },
     "ov006:0x0211db7c": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211db7cEi"
+      "name": "_ZN13dScMgTeresa_c13Reveal_State1Ei"
     },
     "ov006:0x0211dce0": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211dce0Ei"
+      "name": "_ZN13dScMgTeresa_c13Reveal_State0Ei"
     },
     "ov006:0x0211dd0c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211dd0cEv"
+      "name": "_ZN13dScMgTeresa_c13Reveal_UpdateEv"
     },
     "ov006:0x0211dd6c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211dd6cEv"
+      "name": "_ZN13dScMgTeresa_c12Reveal_StartEv"
     },
     "ov006:0x0211ddb8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ddb8Ev"
+      "name": "_ZN13dScMgTeresa_c11Reveal_HideEv"
     },
     "ov006:0x0211ddcc": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ddccEv"
+      "name": "_ZN13dScMgTeresa_c18RisingIcon_DrawAllEv"
     },
     "ov006:0x0211de54": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211de54Ev"
+      "name": "_ZN13dScMgTeresa_c19RisingIcon_ClearAllEv"
     },
     "ov006:0x0211de7c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211de7cEv"
+      "name": "_ZN13dScMgTeresa_c20RisingIcon_CountBusyEv"
     },
     "ov006:0x0211dec0": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211dec0Ev"
+      "name": "_ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv"
     },
     "ov006:0x0211e020": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e020Ei"
+      "name": "_ZN13dScMgTeresa_c16RisingIcon_SpawnEi"
     },
     "ov006:0x0211e0c8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e0c8Ev"
+      "name": "_ZN13dScMgTeresa_c24RisingIcon_SpawnForFoundEv"
     },
     "ov006:0x0211e118": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e118Ev"
+      "name": "_ZN13dScMgTeresa_c17FoundMark_DrawAllEv"
     },
     "ov006:0x0211e184": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e184Ev"
+      "name": "_ZN13dScMgTeresa_c19FoundMark_UpdateAllEv"
     },
     "ov006:0x0211e220": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e220Ei"
+      "name": "_ZN13dScMgTeresa_c15FoundMark_SpawnEi"
     },
     "ov006:0x0211e29c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e29cEv"
+      "name": "_ZN13dScMgTeresa_c13DrawCountdownEv"
     },
     "ov006:0x0211e318": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e318Ev"
+      "name": "_ZN13dScMgTeresa_c15UpdateCountdownEv"
     },
     "ov006:0x0211e3e0": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e3e0Ev"
+      "name": "_ZN13dScMgTeresa_c14StartCountdownEv"
     },
     "ov006:0x0211e460": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e460Ev"
+      "name": "_ZN13dScMgTeresa_c15Exclaim_DrawAllEv"
     },
     "ov006:0x0211e4e0": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e4e0Ev"
+      "name": "_ZN13dScMgTeresa_c17Exclaim_UpdateAllEv"
     },
     "ov006:0x0211e55c": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e55cEi"
+      "name": "_ZN13dScMgTeresa_c13Exclaim_SpawnEi"
     },
     "ov006:0x0211e5cc": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e5ccEv"
+      "name": "_ZN13dScMgTeresa_c15CheckRevealDoneEv"
     },
     "ov006:0x0211e658": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e658Ev"
+      "name": "_ZN13dScMgTeresa_c13CheckRoundEndEv"
     },
     "ov006:0x0211e72c": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e72cEv"
+      "name": "_ZN13dScMgTeresa_c8DrawBoosEv"
     },
     "ov006:0x0211e7d8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e7d8Ev"
+      "name": "_ZN13dScMgTeresa_c14AreBoosSettledEv"
     },
     "ov006:0x0211e8a8": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211e8a8Ei"
+      "name": "_ZN13dScMgTeresa_c12TouchTestBooEi"
     },
     "ov006:0x0211ea70": {
       "author": "lunavyqo",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ea70Ei"
+      "name": "_ZN13dScMgTeresa_c16CountRubbedTilesEi"
     },
     "ov006:0x0211eb90": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211eb90Ei"
+      "name": "_ZN13dScMgTeresa_c7MoveBooEi"
     },
     "ov006:0x0211ebdc": {
       "author": "lunavyqo",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ebdcEi"
+      "name": "_ZN13dScMgTeresa_c10Boo_State7Ei"
     },
     "ov006:0x0211ee34": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211ee34Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State6Ei"
     },
     "ov006:0x0211f040": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f040Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State5Ei"
     },
     "ov006:0x0211f0d0": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f0d0Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State4Ei"
     },
     "ov006:0x0211f1a4": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f1a4Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State3Ei"
     },
     "ov006:0x0211f224": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f224Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State2Ei"
     },
     "ov006:0x0211f34c": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f34cEi"
+      "name": "_ZN13dScMgTeresa_c17BounceBooOffWallsEi"
     },
     "ov006:0x0211f454": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f454Ei"
+      "name": "_ZN13dScMgTeresa_c7StepBooEi"
     },
     "ov006:0x0211f51c": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f51cEv"
+      "name": "_ZN13dScMgTeresa_c15StartBoosHidingEv"
     },
     "ov006:0x0211f554": {
       "author": "lunavyqo",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f554Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State1Ei"
     },
     "ov006:0x0211f5d4": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f5d4Ei"
+      "name": "_ZN13dScMgTeresa_c10Boo_State0Ei"
     },
     "ov006:0x0211f664": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f664Ei"
+      "name": "_ZN13dScMgTeresa_c10AnimateBooEi"
     },
     "ov006:0x0211f6fc": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f6fcEv"
+      "name": "_ZN13dScMgTeresa_c10UpdateBoosEv"
     },
     "ov006:0x0211f77c": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f77cEv"
+      "name": "_ZN13dScMgTeresa_c9SpawnBoosEv"
     },
     "ov006:0x0211f9fc": {
       "author": "lunavyqo",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211f9fcEv"
+      "name": "_ZN13dScMgTeresa_c13UpdateRubbingEv"
     },
     "ov006:0x0211fb1c": {
       "author": "ruspecial",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211fb1cEv"
+      "name": "_ZN13dScMgTeresa_c12ReadRubTouchEv"
     },
     "ov006:0x0211fbf8": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211fbf8Ev"
+      "name": "_ZN13dScMgTeresa_c10ResetRoundEv"
     },
     "ov006:0x0211fd44": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211fd44Ev"
+      "name": "_ZN13dScMgTeresa_c12Scene_State4Ev"
     },
     "ov006:0x0211fe78": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_0211fe78Ev"
+      "name": "_ZN13dScMgTeresa_c12Scene_State3Ev"
     },
     "ov006:0x02120008": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_02120008Ev"
+      "name": "_ZN13dScMgTeresa_c12Scene_State2Ev"
     },
     "ov006:0x021200a8": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_021200a8Ev"
+      "name": "_ZN13dScMgTeresa_c12Scene_State1Ev"
     },
     "ov006:0x021200cc": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgTeresa_c19func_ov006_021200ccEv"
+      "name": "_ZN13dScMgTeresa_c12Scene_State0Ev"
     },
     "ov006:0x021200dc": {
       "author": "tangosdev",
