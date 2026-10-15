@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "task_id": "issue2410-finish1015",
+  "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/2410",
+  "completion": "partial - shared source dependencies and ownership recovery pending",
+  "original_input": "df618e80271212106c9f1e225756f691abaa498b",
+  "tested_base": "e209dacfaaa95cb5490637ff053d62182689bebe",
+  "compiler": "2004/b56",
+  "production_inputs": {
+    "src/game/actors/d_a_mky.cpp": "45685a522262b5743e0ccf8345fe6bff5eb2e78198925b1333c9f8c408991f39",
+    "include/daMky_c.h": "a0aec09dcd810e0621dcdacc6f2bade833460fe804cedf1a2e239c3f23ccd301",
+    "include/dActor_c.h": "81356503076794ba1796732848f6d9713798bd5e6713a17079b7f0cc02dd5584",
+    "config/tu_manifest.d/ov030/daMky_c.json": "1465ddb0395e5fd8127ffdf9707dcc719489c07f29674ce59a6e949b62774752"
+  },
+  "reports": {
+    "build/native-final-tu-verify.log": "fe7dbcb05d00f7627e05fd4f307e6cbdd0f4bd1e4755f4b71d277a76d9eaf196",
+    "build/native-checkpoint-full-rom.json": "630c443d28cb390ccc2c68bb6a7e8eedc286708be0cfcceb3ac0b19bd7148c97",
+    "build/native-checkpoint-declarations.log": "c05d916e729aed68430e46cc4a7c4ef3e7f1dd40520e24ee677a84da8338b15e",
+    "build/native-checkpoint-style.json": "07d120cc0d2789c380df075da71f0b96f65800a6c17b09f0eacb77abcfda49fb",
+    "build/actor-header-equivalence.json": "0c3796c069b9023148e96e171112ebbe785219a6713f50c5f1dd9567488a9233",
+    "build/format-proof/equivalence.json": "3bb177e626a0e6b9c0dc48d2bdc3ee6e209fbefd3544d7c38180e20953a2d553"
+  },
+  "actual_checks": {
+    "monkey_functions": 46,
+    "strict_isolation_destinations_order": "PASS",
+    "other_shared_actor_consumers_raw_identical": 306,
+    "full_rom_modules_exact": 106,
+    "source_functions_reproduced": 11334,
+    "source_functions_mismatched": 0,
+    "source_data_claims_reproduced": 332,
+    "declaration_ratchet": "no new disagreements or local redeclarations",
+    "style_findings": 0,
+    "style_deferrals": 0,
+    "formatting": "same lexical tokens; complete Monkey raw object identical"
+  },
+  "limits": [
+    "No private CI or final independent exact-commit Source acceptance of this checkpoint.",
+    "Current class metadata remains externalized. Global ROM-data advisory verdicts include974verified/1521partial/1differ/15unnamed and are separate from exact module/source gates.",
+    "Native globals/initializer and genuine shared lifecycle/API bodies remain scratch-only conditional experiments; do not treat them as production enrollment.",
+    "Four-file queue recovery explicitly awaits user authorization; all other current owners retain their resources.",
+    "Shared Matrix4x3 definitions remain incompatible C++ types selected byincludeorder."
+  ],
+  "remaining": [
+    "production shared handle layout/lifecycle plus264-source closure (391 duplicated local storage declarations in199 affected sources)",
+    "seven scalar API canonical migrations plus360-source header closure and preservation of declaration debt/attribution",
+    "semantic method helper names and desired collision accessors",
+    "native initializer/global/profile/data ownership with exact metadata extents and genuine interior array labels",
+    "separate explicit-size terminal BSS tooling change",
+    "independent Source acceptance and private exact-head/base validation"
+  ]
+}

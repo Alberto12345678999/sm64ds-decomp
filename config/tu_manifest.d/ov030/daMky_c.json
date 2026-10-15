@@ -575,13 +575,13 @@
       "requested": [
         "_ZN7daMky_cD2Ev",
         "_ZN7Vector3D1Ev",
-        "_ZN7daMky_c21Bundle$950d_a_mky_cppD1Ev",
+        "_ZN7daMky_c21Bundle$945d_a_mky_cppD1Ev",
         "_ZN11SurfaceInfoD1Ev"
       ],
       "deadstripped": [
         "_ZN11SurfaceInfoD1Ev",
         "_ZN7Vector3D1Ev",
-        "_ZN7daMky_c21Bundle$950d_a_mky_cppD1Ev",
+        "_ZN7daMky_c21Bundle$945d_a_mky_cppD1Ev",
         "_ZN7daMky_cD2Ev"
       ],
       "droppedSections": [

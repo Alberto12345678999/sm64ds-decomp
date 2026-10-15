@@ -88,7 +88,9 @@ unsigned int func_02012790(unsigned int arg);
 
 bool ApproachLinear(short &value, short target, short step);
 void UpdateAngle(short &angle, short target, int divisor, short maxStep);
-namespace cstd { int fdiv(int numerator, int denominator); }
+namespace cstd {
+int fdiv(int numerator, int denominator);
+}
 
 /* ~daMky_c is the first virtual DECLARED in include/daMky_c.h and it is
  * defined here, out of line, so it is this class's key function: this TU owns
@@ -407,8 +409,6 @@ void daMky_c::func_ov030_02112094()
 {
     /* from include/decl_common.h:255, which this TU does not include. */
     extern char data_ov030_02115ddc[];
-
-
 
     struct Bundle { Vector3_16 rot; short _p; Vector3 trans; int _tail[2]; };
 
