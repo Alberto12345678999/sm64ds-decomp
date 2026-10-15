@@ -930,39 +930,37 @@ int dScMgTeresa_c::RisingIcon_CountBusy()
 // @symbol _ZN13dScMgTeresa_c20RisingIcon_UpdateAllEv
 void dScMgTeresa_c::RisingIcon_UpdateAll()
 {
-    void *arg = this;
     int i;
-    char *p = (char *)arg;
-    for (i = 0; i < 16; i++, p += 0x14) {
+    for (i = 0; i < 16; i++) {
         unsigned char v;
-        if (*(unsigned char *)(p + 0x4a70) == 0) {
+        if (mRisingIcons[i].active == 0) {
             continue;
         }
-        v = *(unsigned char *)(p + 0x4a73);
+        v = mRisingIcons[i].state;
         if (v == 0) {
-            if (*(int *)(p + 0x4a6c) != 0) {
-                *(int *)(p + 0x4a6c) -= 1;
-                if ((short)*(int *)(p + 0x4a6c) < 0) {
-                    *(int *)(p + 0x4a6c) = 0;
+            if (mRisingIcons[i].timer != 0) {
+                mRisingIcons[i].timer -= 1;
+                if ((short)mRisingIcons[i].timer < 0) {
+                    mRisingIcons[i].timer = 0;
                 }
             } else {
                 Sound::PlayBank2_2D(0x1bc);
-                *(int *)(p + 0x4a68) = -0x400;
-                *(int *)(p + 0x4a6c) = 0x10;
-                *(unsigned char *)(p + 0x4a73) += 1;
-                *(unsigned char *)(p + 0x4a71) = 1;
+                mRisingIcons[i].vy = -0x400;
+                mRisingIcons[i].timer = 0x10;
+                mRisingIcons[i].state += 1;
+                mRisingIcons[i].visible = 1;
             }
         } else if (v == 1) {
-            *(int *)(p + 0x4a64) += *(int *)(p + 0x4a68);
-            *(int *)(p + 0x4a68) -= 0x80;
-            if (*(int *)(p + 0x4a6c) != 0) {
-                *(int *)(p + 0x4a6c) -= 1;
-                if ((short)*(int *)(p + 0x4a6c) < 0) {
-                    *(int *)(p + 0x4a6c) = 0;
+            mRisingIcons[i].y += mRisingIcons[i].vy;
+            mRisingIcons[i].vy -= 0x80;
+            if (mRisingIcons[i].timer != 0) {
+                mRisingIcons[i].timer -= 1;
+                if ((short)mRisingIcons[i].timer < 0) {
+                    mRisingIcons[i].timer = 0;
                 }
             } else {
-                *(int *)(p + 0x4a6c) = 0x18;
-                *(unsigned char *)(p + 0x4a73) += 1;
+                mRisingIcons[i].timer = 0x18;
+                mRisingIcons[i].state += 1;
             }
         }
     }
@@ -972,26 +970,20 @@ void dScMgTeresa_c::RisingIcon_UpdateAll()
 // @symbol _ZN13dScMgTeresa_c16RisingIcon_SpawnEi
 void dScMgTeresa_c::RisingIcon_Spawn(int i)
 {
-    char *raw = (char *)this;
   int n;
-  char *p = raw;
   for (n = 0; n < 0x10; n++)
   {
-    if (((*((unsigned char *) (p + 0x4a70))) == 0) != 0)
+    if (mRisingIcons[n].active == 0)
     {
-      char *d = (raw + (n * 0x14)) + 0x4000;
-      char *s = raw + (i * 0x24);
-      unsigned char *tbl = (unsigned char *) (raw + 0x4680);
-      *((unsigned char *) (((raw + (n * 0x14)) + 0x4000) + 0xa70)) = 1;
-      *((unsigned char *) (d + 0xa71)) = 0;
-      *((int *) (((raw + (n * 0x14)) + 0x4000) + 0xa60)) = *((int *) ((raw + (i * 0x24)) + 0x4660));
-      *((int *) (((raw + (n * 0x14)) + 0x4000) + 0xa64)) = (*((int *) (s + 0x4664))) - 0x10000;
-      *((int *) (((raw + (n * 0x14)) + 0x4000) + 0xa6c)) = (tbl[i * 0x24] * 0x3c) + 0x10;
-      *((unsigned char *) (((raw + (n * 0x14)) + 0x4000) + 0xa73)) = 0;
-      *((unsigned char *) (((raw + (n * 0x14)) + 0x4000) + 0xa72)) = ((unsigned char *) (raw + 0x4680))[i * 0x24];
+      mRisingIcons[n].active = 1;
+      mRisingIcons[n].visible = 0;
+      mRisingIcons[n].x = mBoos[i].mX;
+      mRisingIcons[n].y = mBoos[i].mY - 0x10000;
+      mRisingIcons[n].timer = (mBoos[i].mFoundOrder * 0x3c) + 0x10;
+      mRisingIcons[n].state = 0;
+      mRisingIcons[n].sprite = mBoos[i].mFoundOrder;
       return;
     }
-    p += 0x14;
   }
 
 }
