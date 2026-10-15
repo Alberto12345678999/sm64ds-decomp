@@ -1244,7 +1244,7 @@ int daMky_c::func_ov030_021136b0()
                     act->mPosY = src[1];
                     act->mPosZ = src[2];
                 }
-                this->mCapUniqueID = (u32)z;
+                this->mCapUniqueID = 0;
                 func_ov030_021141a8(0xa);
             }
             this->mPlayer = 0;
