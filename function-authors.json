@@ -35147,15 +35147,15 @@
     },
     "ov060:0x021172c8": {
       "author": "tangosdev",
-      "name": "func_ov060_021172c8"
+      "name": "_ZN11daKpaFire_c19func_ov060_021172c8Ej"
     },
     "ov060:0x021172e0": {
       "author": "tangosdev",
-      "name": "func_ov060_021172e0"
+      "name": "_ZN11daKpaFire_c19func_ov060_021172e0Ev"
     },
     "ov060:0x0211747c": {
       "author": "andrewboudreau",
-      "name": "func_ov060_0211747c"
+      "name": "_ZN11daKpaFire_c19func_ov060_0211747cEv"
     },
     "ov060:0x02117624": {
       "author": "tangosdev",

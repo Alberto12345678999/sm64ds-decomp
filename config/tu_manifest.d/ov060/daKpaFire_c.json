@@ -161,21 +161,21 @@
       "ordinal": 17
     },
     {
-      "symbol": "func_ov060_021172c8",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021172c8Ej",
       "address": "0x021172c8",
       "size": "0x00000018",
       "legacy_source": "src/func_ov060_021172c8.c",
       "ordinal": 18
     },
     {
-      "symbol": "func_ov060_021172e0",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_021172e0Ev",
       "address": "0x021172e0",
       "size": "0x0000019c",
       "legacy_source": "src/func_ov060_021172e0.cpp",
       "ordinal": 19
     },
     {
-      "symbol": "func_ov060_0211747c",
+      "symbol": "_ZN11daKpaFire_c19func_ov060_0211747cEv",
       "address": "0x0211747c",
       "size": "0x000001a8",
       "legacy_source": "src/func_ov060_0211747c.c",
