@@ -38,7 +38,7 @@ one is meaningless while the other is loaded.
 | `OnNewRecord` fires as the record banner goes up | `dScMgBase_c::OnNewRecord` 0x020b2990, plus the Cup/Sound/Teresa/3DEsp overrides | hit or not | Beat a saved record in Cup or Sound. |
 | `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | Memory or Card: watch the dealer deal. |
 | What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayAnim1/2/4/7` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | Sound: a match (2), a mismatch (1), a loss (4), a win (7). Cup: a win. |
-| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | Cup (lives), Card (coins). |
+| `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | Cup (lives), Card (coins). Coins confirmed in Slot3; see below. |
 | Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | Card, BSC and MCarlo: tap the top-left box. Memory: start of round. |
 | The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | Open a never-played game's page, play it once, and come back. |
 | `IsAltVariant` = the second menu row of a game | `dScMgBase_c::IsAltVariant` 0x020ad660 (Amida overrides) | r0 on return | Play both menu entries of a duplicated game (Coin, Panel, Sound, Snowball). |
@@ -66,6 +66,10 @@ screenshots, over two games of Wanted! (Luigi):
 - The stub accepts one client per melonDS launch. A second attach after `D` timed out and left the game halted. Restart melonDS (and re-enable `[Instance0.Gdb]`, which melonDS can rewrite to false) before reattaching.
 - State 1, explained: Luigi enters it only when `mLevel % 5 == 4`, so after every fifth level, and otherwise restarts the round directly. A four-level game never entered it. On screen it is the fade into level 6, with the poster halves split aside. `MG_STATE_NEXT_ROUND` is confirmed. A nine-level game showed it exactly once, between level 5's and level 6's banners.
 - PLAY AGAIN after game over calls `Mg_CallStartRound` with 0x12, the finished state's number. Retry also goes through `StartRound(state)`.
+- Toad's face slot game (`dScMgSlot3_c`, Mario's page 2, middle card) was played with taps timed by a colour tracker (`build/melonds/slotbot.py`, local). Toad projects a target face, and three strips of caps, eyes and mouths scroll. A touch in DS y 0x40/0x58/0x70 stops that row on the next slot (`Slot3_State1`). The run starts at 12 coins (`StartRound(3)`).
+  - A miss gave three `Mg_SubCredits(1)` (`Slot3_State3and4`, local state 4) and the counter went 12 → 9 → 6.
+  - A Wario column on the right gave three `Mg_AddCredits(1)` (local state 3; the middle column pays 6) and the counter went 6 → 9. A star appeared by Toad (`mHudScore`, rounds won). Then `StartRound(4)`: banner 0xd, Yoshi as the new target, and a fourth face in each strip (`mStripLength` 3 → 4).
+  - **`mCredits` is coins here**, moved one coin per tick. Slot3 settles a round in its own state machine and never calls `Mg_SetSharedState` for a win or a loss. Only an empty purse reaches `MG_STATE_GAME_OVER` (`Slot3_State6`).
 
 ## Recording the answer
 
