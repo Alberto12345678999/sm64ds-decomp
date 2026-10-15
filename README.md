@@ -118,6 +118,8 @@ LINKED     ███████████████████████
 
 For an interactive version where you can hover any function for its name, address,
 size, and status, see the [progress treemap on GitHub Pages](https://tangosdev.github.io/sm64ds-decomp/).
+The [recovered TU treemap](https://tangosdev.github.io/sm64ds-decomp/tu-treemap.html)
+groups code by reconstructed translation unit, with links to each source file and TU manifest.
 
 The three bars measure different things:
 
