@@ -149,7 +149,7 @@ and the `0x50` / `0xd0` size assertions still hold.
 
 ### 6a. Why the deallocator is declared with a `void *` second parameter
 
-`_ZN6Memory10DeallocateEPvP4Heap` is spelt in `dActor_c.h` and `fBase_c.h`
+`_ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE` is spelt in `dActor_c.h` and `fBase_c.h`
 EXACTLY as `include/decl_common.h` spells it, deliberately. The mangled name says
 the second parameter is a `Heap*`, and `decl_common.h` says `void*`; declaring the
 honest type in the actor headers instead makes two incompatible `extern "C"`
