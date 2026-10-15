@@ -75,9 +75,9 @@ EntPMF sMgFxDrawTable[2] = { &Ent::func_ov004_020adcc8, &Ent::func_ov004_020adc8
 int data_ov004_020beba8[16];
 }
 
-/* Local view of the stylus owner at data_0209f5bc, also used by
- * dScMiniGm_c. Only slot 5 is known: it says whether input is live. The
- * owner's real class is not recovered. */
+/* Local view of the installed screen fader at data_0209f5bc (a dFader_c,
+ * see dMgState_c's view): slot 5 is IsAtStart, true while no fade runs.
+ * This file calls it IsActive and uses it to gate input. */
 struct SceneVCall6 {
     virtual int v0(); virtual int v1(); virtual int v2();
     virtual int v3(); virtual int v4(); virtual int IsActive();
@@ -225,13 +225,13 @@ int Mg_FindRecordRank(void *scene, int value)
 namespace s20ad79c {
 extern "C" {
 extern int gMgMenuRow[];
-extern int data_0209b300[];
+extern int gMgSaveDirty[];
 
 /* Saves a two-value result into saved records 0 and 1 of the current scene.
    A first value <= 0 replaces both with the menu row's defaults (words 5
    and 6); a second value <= 0 alone falls back to word 6. A positive value
    is capped at 9999. Nothing is written when both already match;
-   otherwise data_0209b300 is set to 1. */
+   otherwise gMgSaveDirty is set to 1. */
 void Mg_SaveRecordPair(int first, int second) {
     int v0 = first, v1 = second;
     if (gMgScene == 0) return;
@@ -251,7 +251,7 @@ void Mg_SaveRecordPair(int first, int second) {
     }
     func_02013568(Mg_GetSaveTable(gMgScene), 0, v0);
     func_02013568(Mg_GetSaveTable(gMgScene), 1, v1);
-    *(unsigned char*)data_0209b300 = 1;
+    *(unsigned char*)gMgSaveDirty = 1;
 }
 }
 }
@@ -306,13 +306,13 @@ int Mg_FindRecordRank(void *scene, int value);
 void Mg_ClearNewRecordFlag(void);
 void Mg_SetSessionBest(int score);
 int Mg_GetSubmittedScore(void);
-extern unsigned char data_0209b300[];
+extern unsigned char gMgSaveDirty[];
 
 /* Ranks the session best (mSessionBest, from Mg_GetSessionBest) among the
    five saved records with Mg_FindRecordRank and keeps that rank in
    mLastRecordRank (-1 when it placed nowhere). If it placed, the lower rows shift
    down and the submitted score mSubmittedScore (Mg_GetSubmittedScore) -- not the
-   ranked value -- is written into that row, and data_0209b300 is set to 1.
+   ranked value -- is written into that row, and gMgSaveDirty is set to 1.
    Either way the new-record flag is cleared, the session best moves to
    mRankedScore and is then reset to 0. */
 void Mg_RankSessionBest(dScMgBase_c *scene)
@@ -335,7 +335,7 @@ void Mg_RankSessionBest(dScMgBase_c *scene)
     int a = Mg_GetSaveTable(scene);
     int v = Mg_GetSubmittedScore();
     func_02013568(a, scene->mLastRecordRank, v);
-    data_0209b300[0] = 1;
+    gMgSaveDirty[0] = 1;
     Mg_ClearNewRecordFlag();
     scene->mRankedScore = Mg_GetSessionBest();
     Mg_SetSessionBest(0);

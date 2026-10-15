@@ -206,3 +206,16 @@ with their remaining misses.
 functions on a `char *` view: `PsOpt_Open`, `PsOpt_Close`, `PsOpt_Update`,
 `PsOpt_Draw`, `PsOpt_IsIdle` and `PsOpt_PlaceIcon`. Pass 2 should make them
 members.
+
+## dScMiniGm_c, the select menu (ov005, renamed 2026-10-14)
+
+High confidence, from the bodies:
+- **Drawing and loading:** `MiniGm_LoadGroupIcons` (the nine icons of the current group), `MiniGm_LoadIconPalette`, `MiniGm_DrawRecords` (the record under each icon, by scoring type), `MiniGm_DrawNumber`, `MiniGm_DrawNewBadges`.
+- **Input:** `MiniGm_UpdateGroupTabs` (the four tabs down the left), `MiniGm_UpdatePageArrows`, `MiniGm_UpdateExitButton`, `MiniGm_UpdatePageScroll`, `dScMiniGm_c::UpdateGameSelect` (a touch on an icon copies its row into `gMgMenuRow` and fades to its scene).
+- **Records and saving:** `MiniGm_HasSecondPage`, `MiniGm_IsUnlocked`, `MiniGm_GetSaveTable`, `MiniGm_GetRecord`/`MiniGm_SetRecord`, `MiniGm_SaveIfDirty`.
+- **Tables:** `sMiniGmRows` (the 36-row menu table), `sMiniGmGroupBases`, and the icon, badge, digit and arrow tables.
+- **arm9 globals:** `gMgGroupBase`, `gMgLastSelected`, `gMgMenuPage`, and `gMgSaveDirty` (set whenever a record changes; the menu saves while it is set).
+
+Medium confidence:
+- `MiniGm_IsNew` and `MiniGm_ClearNew` wrap a save flag. The menu draws a blinking badge over an unlocked game while it is set, and leaving a game clears it.
+- "New" is the reading; a "played" or "cleared" flag would look the same. Check by watching a never-played game's icon.

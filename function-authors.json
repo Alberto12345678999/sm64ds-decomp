@@ -20051,55 +20051,55 @@
     },
     "ov005:0x020bff4c": {
       "author": "tangosdev",
-      "name": "func_ov005_020bff4c"
+      "name": "MiniGm_SaveIfDirty"
     },
     "ov005:0x020bffc8": {
       "author": "tangosdev",
-      "name": "func_ov005_020bffc8"
+      "name": "MiniGm_SetRecord"
     },
     "ov005:0x020bfff4": {
       "author": "tangosdev",
-      "name": "func_ov005_020bfff4"
+      "name": "MiniGm_GetRecord"
     },
     "ov005:0x020c0010": {
       "author": "tangosdev",
-      "name": "func_ov005_020c0010"
+      "name": "MiniGm_GetSaveTable"
     },
     "ov005:0x020c0030": {
       "author": "tangosdev",
-      "name": "func_ov005_020c0030"
+      "name": "MiniGm_ClearNew"
     },
     "ov005:0x020c007c": {
       "author": "tangosdev",
-      "name": "func_ov005_020c007c"
+      "name": "MiniGm_IsNew"
     },
     "ov005:0x020c00b4": {
       "author": "tangosdev",
-      "name": "func_ov005_020c00b4"
+      "name": "MiniGm_IsUnlocked"
     },
     "ov005:0x020c00e4": {
       "author": "tangosdev",
-      "name": "func_ov005_020c00e4"
+      "name": "MiniGm_HasSecondPage"
     },
     "ov005:0x020c0140": {
       "author": "lunavyqo",
-      "name": "func_ov005_020c0140"
+      "name": "MiniGm_UpdatePageScroll"
     },
     "ov005:0x020c0250": {
       "author": "tangosdev",
-      "name": "func_ov005_020c0250"
+      "name": "MiniGm_UpdateExitButton"
     },
     "ov005:0x020c0378": {
       "author": "tangosdev",
-      "name": "_ZN11dScMiniGm_c19func_ov005_020c0378Ev"
+      "name": "_ZN11dScMiniGm_c16UpdateGameSelectEv"
     },
     "ov005:0x020c06cc": {
       "author": "tangosdev",
-      "name": "func_ov005_020c06cc"
+      "name": "MiniGm_UpdatePageArrows"
     },
     "ov005:0x020c0878": {
       "author": "lunavyqo",
-      "name": "func_ov005_020c0878"
+      "name": "MiniGm_UpdateGroupTabs"
     },
     "ov005:0x020c0b00": {
       "author": "tangosdev",
@@ -20111,15 +20111,15 @@
     },
     "ov005:0x020c0f38": {
       "author": "tangosdev",
-      "name": "func_ov005_020c0f38"
+      "name": "MiniGm_DrawNewBadges"
     },
     "ov005:0x020c1030": {
       "author": "tangosdev",
-      "name": "func_ov005_020c1030"
+      "name": "MiniGm_DrawNumber"
     },
     "ov005:0x020c1130": {
       "author": "lunavyqo",
-      "name": "func_ov005_020c1130"
+      "name": "MiniGm_DrawRecords"
     },
     "ov005:0x020c14a0": {
       "author": "lunavyqo",
@@ -20131,11 +20131,11 @@
     },
     "ov005:0x020c1688": {
       "author": "tangosdev",
-      "name": "func_ov005_020c1688"
+      "name": "MiniGm_LoadIconPalette"
     },
     "ov005:0x020c16e4": {
       "author": "lunavyqo",
-      "name": "func_ov005_020c16e4"
+      "name": "MiniGm_LoadGroupIcons"
     },
     "ov005:0x020c1a20": {
       "author": "tangosdev",

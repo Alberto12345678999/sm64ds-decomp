@@ -170,5 +170,4 @@ fBase_c > dBase_c > dScene_c
 - **Scoring modes:** what separate modes 0, 1 and 3? Mode 5 is Snowball's lower-is-better time.
 - **Duplicate rows:** are the six duplicated menu rows one game offered in two variants?
 - **Pause gate:** why does `BeforeBehavior` stop a game while `mMenuScreenSaved` is set, or while `mRunDuringFade` is 0 and the fader is not at its start?
-- **Local mislabels:** `d_s_mg_base.cpp` and `d_s_mini_gm.cpp` still call the fader the "stylus owner", and `d_s_mini_gm.cpp` names the touch bytes `{pressed, held}`. A later pass should fix these comments.
 - **Slot 18:** what does it really do? Callers pass -1, 3, 4 and 5.

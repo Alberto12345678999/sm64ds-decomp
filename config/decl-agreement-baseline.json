@@ -12033,7 +12033,7 @@
         "return:int"
       ]
     },
-    "data_0209b300": {
+    "gMgSaveDirty": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int []",
         "return:unsigned char []"

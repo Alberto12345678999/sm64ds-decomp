@@ -3524,8 +3524,8 @@ data_0208a120 kind:data(any) addr:0x0208a120
 data_0208a134 kind:data(any) addr:0x0208a134
 data_0208a148 kind:data(any) addr:0x0208a148
 data_0208a15c kind:data(any) addr:0x0208a15c
-data_0208a170 kind:data(any) addr:0x0208a170
-data_0208a174 kind:data(any) addr:0x0208a174
+gMgGroupBase kind:data(any) addr:0x0208a170
+gMgLastSelected kind:data(any) addr:0x0208a174
 data_0208a178 kind:data(any) addr:0x0208a178
 data_0208c178 kind:data(any) addr:0x0208c178
 data_0208c378 kind:data(any) addr:0x0208c378
@@ -4532,10 +4532,10 @@ data_0209b2f0 kind:bss addr:0x0209b2f0
 data_0209b2f4 kind:bss addr:0x0209b2f4
 data_0209b2f8 kind:bss addr:0x0209b2f8
 data_0209b2fc kind:bss addr:0x0209b2fc
-data_0209b300 kind:bss addr:0x0209b300
-data_0209b304 kind:bss addr:0x0209b304
+gMgSaveDirty kind:bss addr:0x0209b300
+gMgMenuPage kind:bss addr:0x0209b304
 gMgMenuRow kind:bss addr:0x0209b308
-data_0209b31c kind:bss addr:0x0209b31c
+gMgMenuRowMid kind:bss addr:0x0209b31c
 data_0209b33c kind:bss addr:0x0209b33c
 data_0209b340 kind:bss addr:0x0209b340
 data_0209b34b kind:bss addr:0x0209b34b
