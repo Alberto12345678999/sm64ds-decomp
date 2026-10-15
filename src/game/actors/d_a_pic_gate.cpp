@@ -632,11 +632,9 @@ extern int data_ov080_0212771c[];
     G3_VTX_16 = vx | ((u16)s1 << 16); \
     G3_VTX_16 = (u16)s2
 
-static inline void G3_TexImageParam(u32 addr, u32 texFmt, u32 sizeS,
-                                   u32 sizeT, u32 pltt0)
-{
-    G3_TEXIMAGE_PARAM = (addr >> 3) | (texFmt << 26) | 0x80000000 |
-                       (sizeS << 20) | (sizeT << 23) | (pltt0 << 29);
+static inline void G3_TexImageParam(u32 addr, u32 texFmt, u32 sizeS, u32 sizeT, u32 pltt0) {
+    G3_TEXIMAGE_PARAM =
+        (addr >> 3) | (texFmt << 26) | 0x80000000 | (sizeS << 20) | (sizeT << 23) | (pltt0 << 29);
 }
 
 // @symbol _ZN11daPicGate_c19func_ov080_021261f4Ev
@@ -644,8 +642,7 @@ static inline void G3_TexImageParam(u32 addr, u32 texFmt, u32 sizeS,
  * the same plain way, and its texture-parameter helper takes the five
  * fields it varies. */
 #pragma opt_propagation off
-void daPicGate_c::func_ov080_021261f4()
-{
+void daPicGate_c::func_ov080_021261f4() {
     int tmp[12];
     int i, j, n;
 
@@ -665,9 +662,8 @@ void daPicGate_c::func_ov080_021261f4()
     G3_SPE_EMI = ((struct Ov080Mat *)mTexRecord)->speEmi;
     {
         Ov080Mat *m2 = (Ov080Mat *)mTexRecord;
-        G3_TexImageParam(m2->texAddr, (m2->param >> 26) & 7,
-                         (m2->param >> 20) & 7, (m2->param >> 23) & 7,
-                         (m2->param >> 29) & 1);
+        G3_TexImageParam(m2->texAddr, (m2->param >> 26) & 7, (m2->param >> 20) & 7,
+                         (m2->param >> 23) & 7, (m2->param >> 29) & 1);
     }
     {
         struct Ov080Mat *m3 = (struct Ov080Mat *)mTexRecord;

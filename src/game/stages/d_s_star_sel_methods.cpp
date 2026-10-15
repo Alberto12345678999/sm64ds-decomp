@@ -36,6 +36,38 @@
 #include "SaveData.h"
 #include "Message.h"
 #include "Sound.h"
+#include "G3X.h"
+
+/* The Nitro SDK's GX (main engine) and GXS (sub engine) VRAM helpers that
+ * InitResources calls. No header in the tree declares either namespace
+ * yet, so the declarations live here, spelt as src/engine/gx/ and the
+ * per-function GX shards define them. G2 cannot be declared the same way:
+ * decl_common.h declares the ROM data symbol `extern int G2[];`, which
+ * hides a `namespace G2` (see d_s_title.cpp), so G2's two calls keep their
+ * final mangled names. */
+namespace GX {
+void DisableAllBanks();
+void SetBankForTex(u16);
+void SetBankForTexPltt(u16);
+void SetBankForBG(u16);
+void SetBankForOBJ(u16);
+void SetBankForSubBG(u16);
+void SetBankForSubOBJ(u16);
+void SetBankForSubOBJExtPltt(u16);
+void SetGraphicsMode(int, int, int);
+void DispOn();
+void LoadBGPltt(const void *, unsigned int, unsigned int);
+void LoadOBJPltt(const void *, unsigned int, unsigned int);
+}
+
+namespace GXS {
+void SetGraphicsMode(int);
+void LoadBGPltt(const void *, unsigned int, unsigned int);
+void LoadOBJPltt(const void *, unsigned int, unsigned int);
+void BeginLoadOBJExtPltt();
+void LoadOBJExtPltt(const void *, u32, u32);
+void EndLoadOBJExtPltt();
+}
 
 /* Raw this-relative accessors, and the cosine table lookup used by Render. */
 #define FB(p, o) (*(u8 *)((u8 *)(p) + (o)))
@@ -648,8 +680,7 @@ extern VObj *data_0209f5bc;
 extern u16 data_0209f5e8[];
 }
 
-s32 dScStarSel_c::Behavior()
-{
+s32 dScStarSel_c::Behavior() {
     u8 *rec;
     u8 hit;
     int pressed;
@@ -664,11 +695,13 @@ s32 dScStarSel_c::Behavior()
     if (data_0209f5bc->v5() != 0) {
         DecIfAbove0_Byte(&FB(this, 0x117));
         DecIfAbove0_Byte(&FB(this, 0x118));
-        if (FB(this, 0x119) != 0 || (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
+        if (FB(this, 0x119) != 0 ||
+            (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
             if (FB(this, 0x119) != 0) {
                 FB(this, 0x119) -= data_0208ee44;
             }
-            if (FB(this, 0x119) == 0 || (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
+            if (FB(this, 0x119) == 0 ||
+                (SublevelToLevel(data_02092110) > 0xe && IsButtonInputValid() != 0)) {
                 StartSceneFade(3, 0, 0);
                 data_0209f5e8[6] = 0x7fff;
                 if (SublevelToLevel(data_02092110) <= 0xe) {
@@ -711,24 +744,26 @@ s32 dScStarSel_c::Behavior()
                     rec = gTouchHeld[idx];
                     tx = rec[2];
                     do {
-                    if ((u8)(tx - FB((u8 *)this + i, 0x11a) + 8) < 0x10 && gTouchHeld[idx][3] < 0x28 && ((FB(this, 0x131) >> i) & 1)) {
-                        hit = (val != 0 && gTouchEdge[idx][0] != 0);
-                        if (hit != 0 || cur != i) {
-                            FB(this, 0x117) = data_0208ee44 * 3;
+                        if ((u8)(tx - FB((u8 *)this + i, 0x11a) + 8) < 0x10 &&
+                            gTouchHeld[idx][3] < 0x28 && ((FB(this, 0x131) >> i) & 1)) {
+                            hit = (val != 0 && gTouchEdge[idx][0] != 0);
+                            if (hit != 0 || cur != i) {
+                                FB(this, 0x117) = data_0208ee44 * 3;
+                            }
+                            if (cur != i) {
+                                cur = i;
+                                func_02012790(0x12e);
+                            }
+                            FB(this, 0x133) = 0;
+                            found = 1;
+                            break;
                         }
-                        if (cur != i) {
-                            cur = i;
-                            func_02012790(0x12e);
-                        }
-                        FB(this, 0x133) = 0;
-                        found = 1;
-                        break;
-                    }
-                    i++;
+                        i++;
                     } while (i < num);
                 }
             }
-            if (found == 0 && FB(this, 0x135) == 2 && FB(this, 0x133) == 0 && data_0209caa0[0x42] == 0) {
+            if (found == 0 && FB(this, 0x135) == 2 && FB(this, 0x133) == 0 &&
+                data_0209caa0[0x42] == 0) {
                 if (data_020a0e58[0] & 0x20) {
                     pressed = data_020a0e58[1] & 0x20;
                     if (pressed != 0 || FU(this, 0x104) == 0) {
@@ -769,7 +804,8 @@ s32 dScStarSel_c::Behavior()
 
         if (SublevelToLevel(data_02092110) <= 0xe) {
             if (FB(this, 0x135) == 0) {
-                if (IsButtonInputValid() != 0 || (data_0209caa0[0x42] == 0 && (data_020a0e5a[gActivePlayerSlot][0] & 0xf0))) {
+                if (IsButtonInputValid() != 0 ||
+                    (data_0209caa0[0x42] == 0 && (data_020a0e5a[gActivePlayerSlot][0] & 0xf0))) {
                     func_02012790(0x12e);
                     if (data_0209caa0[0x42] == 0 && (data_020a0e58[1] & 0x30)) {
                         FB(this, 0x135) = 1;
@@ -917,7 +953,6 @@ enum ZN12dScStarSel_c13InitResourcesEv_AssetId {
     ASSET_D_2D_CMN_ICON_S_NCG_BIN = 0x0270
 };
 
-
 // @symbol _ZN12dScStarSel_c13InitResourcesEv
 /* recovered: real C++ method over include/dScStarSel_c.h -- vtable slot 0.
  *
@@ -939,18 +974,10 @@ enum ZN12dScStarSel_c13InitResourcesEv_AssetId {
 
 extern "C" {
 void Enable3dEngines(void);
-void _ZN2GX12SetBankForBGEt(u16);
-void _ZN2GX13SetBankForOBJEt(u16);
-void _ZN2GX15SetBankForSubBGEt(u16);
-void _ZN2GX16SetBankForSubOBJEt(u16);
 void *LoadFile(int);
 void *_ZN2G213GetBG2CharPtrEv(void);
 void *_ZN2G212GetBG2ScrPtrEv(void);
 void DecompressLZ16(void *, u32);
-void _ZN2GX10LoadBGPlttEPKvjj(const void *, u32, u32);
-void _ZN3GXS10LoadBGPlttEPKvjj(const void *, u32, u32);
-void _ZN2GX11LoadOBJPlttEPKvjj(const void *, u32, u32);
-void _ZN3GXS11LoadOBJPlttEPKvjj(const void *, u32, u32);
 int IsStarCollected(int, int);
 
 extern u8 data_0209d45c;
@@ -960,8 +987,7 @@ extern u8 data_0209d454;
 #define REG16(a) (*(vu16 *)(a))
 #define REG32(a) (*(vu32 *)(a))
 
-s32 dScStarSel_c::InitResources()
-{
+s32 dScStarSel_c::InitResources() {
     void *file;
     s32 loopI;
     u8 accB;
@@ -999,24 +1025,24 @@ s32 dScStarSel_c::InitResources()
     }
     REG16(0x4000304) |= 0x8000;
     ::Initialise3dGraphics(0);
-    _ZN3G3X13SetClearColorEtiiib(0x7FFF, 0x1F, 0x7FFF, 0x3F, 0);
-    _ZN2GX15DisableAllBanksEv();
-    _ZN2GX13SetBankForTexEt(3);
-    _ZN2GX17SetBankForTexPlttEt(0x30);
-    _ZN2GX12SetBankForBGEt(4);
-    _ZN2GX13SetBankForOBJEt(0x40);
-    _ZN2GX15SetBankForSubBGEt(0x80);
-    _ZN2GX16SetBankForSubOBJEt(8);
-    _ZN2GX23SetBankForSubOBJExtPlttEt(0x100);
+    G3X::SetClearColor(0x7FFF, 0x1F, 0x7FFF, 0x3F, false);
+    GX::DisableAllBanks();
+    GX::SetBankForTex(3);
+    GX::SetBankForTexPltt(0x30);
+    GX::SetBankForBG(4);
+    GX::SetBankForOBJ(0x40);
+    GX::SetBankForSubBG(0x80);
+    GX::SetBankForSubOBJ(8);
+    GX::SetBankForSubOBJExtPltt(0x100);
     REG32(0x4000000) &= 0xFFCFFFEF;
     REG32(0x4001000) &= 0xFFCFFFEF;
-    _ZN2GX15SetGraphicsModeEiii(1, 0, 1);
-    _ZN3GXS15SetGraphicsModeEi(0);
+    GX::SetGraphicsMode(1, 0, 1);
+    GXS::SetGraphicsMode(0);
     REG32(0x4000000) = (REG32(0x4000000) & ~0x38000000) | 0x08000000;
     REG16(0x4000304) = (REG16(0x4000304) & 0xFFFFFDF1) | 0x20E;
-    _ZN2GX6DispOnEv();
+    GX::DispOn();
     REG32(0x4001000) |= 0x10000;
-    _ZN3G3X6SetFogEbiii(0, 0, 2, 0x1000);
+    G3X::SetFog(false, 0, 2, 0x1000);
     InitialiseVramGlobals();
     models[0].LoadAndSetFile(0x8015, 1, -1);
     models[1].LoadAndSetFile(0x8017, 1, -1);
@@ -1034,8 +1060,8 @@ s32 dScStarSel_c::InitResources()
         DecompressLZ16(file, (u32)_ZN2G213GetBG2CharPtrEv());
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NCL_BIN);
-        _ZN2GX10LoadBGPlttEPKvjj(file, 0, 0x1A0);
-        _ZN3GXS10LoadBGPlttEPKvjj(file, 0, 2);
+        GX::LoadBGPltt(file, 0, 0x1A0);
+        GXS::LoadBGPltt(file, 0, 2);
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_KOOPA_BG_NSC_BIN);
         DecompressLZ16(file, (u32)_ZN2G212GetBG2ScrPtrEv());
@@ -1061,14 +1087,14 @@ s32 dScStarSel_c::InitResources()
         DecompressLZ16(file, (u32)_ZN2G213GetBG2CharPtrEv());
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NCL_BIN);
-        _ZN2GX10LoadBGPlttEPKvjj(file, 0, 0x1A0);
+        GX::LoadBGPltt(file, 0, 0x1A0);
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_COURSE_NUMBER_BG_NSC_BIN);
         DecompressLZ16(file, (u32)_ZN2G212GetBG2ScrPtrEv());
         Deallocate(file);
         SetBg2Offset(0, -4);
         data_0209d45c |= 4;
-        _ZN3GXS10LoadBGPlttEPKvjj(&data_ov003_020b1698, 0, 2);
+        GXS::LoadBGPltt(&data_ov003_020b1698, 0, 2);
     }
     if (GetOwnerLanguage() == 5) {
         file = LoadFile(ASSET_D_2D_CMN_ICON_S_NCG_BIN);
@@ -1101,10 +1127,10 @@ s32 dScStarSel_c::InitResources()
     } else {
         file = LoadFile(0xA00A);
     }
-    _ZN2GX11LoadOBJPlttEPKvjj(file, 0, 0x120);
+    GX::LoadOBJPltt(file, 0, 0x120);
     Deallocate(file);
     file = LoadFile(ASSET_D_2D_BTM_ICON_NCL_BIN);
-    _ZN2GX11LoadOBJPlttEPKvjj(file, 0x120, 0xE0);
+    GX::LoadOBJPltt(file, 0x120, 0xE0);
     Deallocate(file);
     if (GetOwnerLanguage() == 5) {
         file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_S_NCG_BIN);
@@ -1120,7 +1146,7 @@ s32 dScStarSel_c::InitResources()
     DecompressLZ16(file, 0x06600000);
     Deallocate(file);
     file = LoadFile(ASSET_D_2D_SCENARIO_PLAYER_SELECT_NCL_BIN);
-    _ZN3GXS11LoadOBJPlttEPKvjj(file, 0, 0x200);
+    GXS::LoadOBJPltt(file, 0, 0x200);
     Deallocate(file);
     data_02092128 = data_0209caa0[0x41];
     switch (data_0209caa0[0x41]) {
@@ -1133,9 +1159,9 @@ s32 dScStarSel_c::InitResources()
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_MARIO_8BIT_NCL_BIN);
-        _ZN3GXS19BeginLoadOBJExtPlttEv();
-        _ZN3GXS14LoadOBJExtPlttEPKvjj(file, 0, 0x200);
-        _ZN3GXS17EndLoadOBJExtPlttEv();
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
         Deallocate(file);
         break;
     case 1:
@@ -1147,9 +1173,9 @@ s32 dScStarSel_c::InitResources()
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_LUIGI_8BIT_NCL_BIN);
-        _ZN3GXS19BeginLoadOBJExtPlttEv();
-        _ZN3GXS14LoadOBJExtPlttEPKvjj(file, 0, 0x200);
-        _ZN3GXS17EndLoadOBJExtPlttEv();
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
         Deallocate(file);
         break;
     case 2:
@@ -1161,9 +1187,9 @@ s32 dScStarSel_c::InitResources()
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_WARIO_8BIT_NCL_BIN);
-        _ZN3GXS19BeginLoadOBJExtPlttEv();
-        _ZN3GXS14LoadOBJExtPlttEPKvjj(file, 0, 0x200);
-        _ZN3GXS17EndLoadOBJExtPlttEv();
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
         Deallocate(file);
         break;
     case 3:
@@ -1175,9 +1201,9 @@ s32 dScStarSel_c::InitResources()
         }
         Deallocate(file);
         file = LoadFile(ASSET_D_2D_PLAYER_SELECT_YOSHI_8BIT_NCL_BIN);
-        _ZN3GXS19BeginLoadOBJExtPlttEv();
-        _ZN3GXS14LoadOBJExtPlttEPKvjj(file, 0, 0x200);
-        _ZN3GXS17EndLoadOBJExtPlttEv();
+        GXS::BeginLoadOBJExtPltt();
+        GXS::LoadOBJExtPltt(file, 0, 0x200);
+        GXS::EndLoadOBJExtPltt();
         Deallocate(file);
         break;
     }
@@ -1227,7 +1253,10 @@ s32 dScStarSel_c::InitResources()
             FB(this, 0x115) = 0;
         }
         tmpU8 = FB(this, 0x114);
-        if (tmpU8 & 1) colorVal = 0x80; else colorVal = 0x92;
+        if (tmpU8 & 1)
+            colorVal = 0x80;
+        else
+            colorVal = 0x92;
         colorVal -= ((s32)tmpU8 >> 1) * 0x23;
         for (idx2 = 0; idx2 < (s32)FB(this, 0x114); idx2++) {
             FB((u8 *)this + idx2, 0x11A) = colorVal;
@@ -1314,30 +1343,31 @@ s32 dScStarSel_c::InitResources()
 
 // @symbol dScStarSel_c_classInit
 extern "C" {
-extern void* _ZN7fBase_cnwEj(unsigned int);
-extern void *_ZN7fBase_cC2Ev(void*);
-extern void _ZN5ModelD1Ev(void*);
-extern void *_ZN5ModelC1Ev(void*);
+extern void *_ZN7fBase_cnwEj(unsigned int);
+extern void *_ZN7fBase_cC2Ev(void *);
+extern void _ZN5ModelD1Ev(void *);
+extern void *_ZN5ModelC1Ev(void *);
 /* The array runtime discards the constructor's receiver result. */
-extern void __cxa_vec_ctor(void* arr, int count, int size, void(*ctor)(void*), void(*dtor)(void*));
-extern void* data_0208e4b8[];
+extern void __cxa_vec_ctor(void *arr, int count, int size, void (*ctor)(void *),
+                           void (*dtor)(void *));
+extern void *data_0208e4b8[];
 
 /* Reconstructed source-style name: SM64DS proves dScStarSel_c through RTTI,
  * allocation size, vtable identity, and the STAR_SELECT registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: StarSelect_Spawn. */
-void* dScStarSel_c_classInit(void){
-  char* p = (char*)_ZN7fBase_cnwEj(0x13c);
-  if(p){
-    _ZN7fBase_cC2Ev(p);
-    *(void***)p = (void**)data_0208e4b8;
-    *(void***)p = (void**)_ZTV8dScene_c;
-    unsigned char* fl = (unsigned char*)(((int)p + 0x13));
-    *fl |= 1;
-    *fl |= 4;
-    *(void***)p = (void**)data_ov003_020b1704;
-    __cxa_vec_ctor(p+0x64, 2, 0x50, (void (*)(void *))_ZN5ModelC1Ev, _ZN5ModelD1Ev);
-  }
-  return p;
+void *dScStarSel_c_classInit(void) {
+    char *p = (char *)_ZN7fBase_cnwEj(0x13c);
+    if (p) {
+        _ZN7fBase_cC2Ev(p);
+        *(void ***)p = (void **)data_0208e4b8;
+        *(void ***)p = (void **)_ZTV8dScene_c;
+        unsigned char *fl = (unsigned char *)(((int)p + 0x13));
+        *fl |= 1;
+        *fl |= 4;
+        *(void ***)p = (void **)data_ov003_020b1704;
+        __cxa_vec_ctor(p + 0x64, 2, 0x50, (void (*)(void *))_ZN5ModelC1Ev, _ZN5ModelD1Ev);
+    }
+    return p;
 }
 }

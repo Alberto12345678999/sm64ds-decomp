@@ -49,8 +49,7 @@ void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, unsi
  * qualified so it is a direct call, then the class-specific operator
  * delete. It sits ahead of the class's definitions so no ROM symbol's
  * region claims it. Nothing here reaches mwccarm. */
-extern "C" dExtFrameCtrl_c *_ZN15dExtFrameCtrl_cD0Ev(dExtFrameCtrl_c *thiz)
-{
+extern "C" dExtFrameCtrl_c *_ZN15dExtFrameCtrl_cD0Ev(dExtFrameCtrl_c *thiz) {
     thiz->dExtFrameCtrl_c::~dExtFrameCtrl_c();
     dExtFrameCtrl_c::operator delete(thiz);
     return thiz;
@@ -64,8 +63,7 @@ extern "C" dExtFrameCtrl_c *_ZN15dExtFrameCtrl_cD0Ev(dExtFrameCtrl_c *thiz)
  * code (root class, nothing to chain); every ROM caller of C2 is a derived
  * base step -- MaterialChanger, TextureTransformer, TextureSequence and
  * ModelAnim construct their dExtFrameCtrl_c at its base offset. */
-dExtFrameCtrl_c::dExtFrameCtrl_c()
-{
+dExtFrameCtrl_c::dExtFrameCtrl_c() {
     currFrame = 0;
     speed = 0x1000;
 }
@@ -79,9 +77,7 @@ dExtFrameCtrl_c::dExtFrameCtrl_c()
  * Memory::operator_delete2. dExtFrameCtrl_c has no virtual bases, so D1 and
  * D2 are the same code: a vtable slot reaches D1, a derived destructor's
  * base step reaches D2. */
-dExtFrameCtrl_c::~dExtFrameCtrl_c()
-{
-}
+dExtFrameCtrl_c::~dExtFrameCtrl_c() {}
 
 // @symbol _ZN15dExtFrameCtrl_c7AdvanceEv
 void dExtFrameCtrl_c::Advance()
