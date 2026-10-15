@@ -22479,163 +22479,163 @@
     },
     "ov006:0x020e0694": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0694Ev"
+      "name": "_ZN14dScMgCurling_c11Bit_DrawAllEv"
     },
     "ov006:0x020e071c": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e071cEi"
+      "name": "_ZN14dScMgCurling_c10Bit_State2Ei"
     },
     "ov006:0x020e07b0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e07b0Ei"
+      "name": "_ZN14dScMgCurling_c10Bit_State1Ei"
     },
     "ov006:0x020e0884": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0884Ei"
+      "name": "_ZN14dScMgCurling_c10Bit_State0Ei"
     },
     "ov006:0x020e091c": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e091cEi"
+      "name": "_ZN14dScMgCurling_c11BitA_State3Ei"
     },
     "ov006:0x020e0a24": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0a24Ei"
+      "name": "_ZN14dScMgCurling_c11BitA_State2Ei"
     },
     "ov006:0x020e0b64": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0b64Ei"
+      "name": "_ZN14dScMgCurling_c11BitA_State1Ei"
     },
     "ov006:0x020e0ca0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0ca0Ei"
+      "name": "_ZN14dScMgCurling_c11BitA_State0Ei"
     },
     "ov006:0x020e0d84": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0d84Ei"
+      "name": "_ZN14dScMgCurling_c12Bit_RunKindAEi"
     },
     "ov006:0x020e0e18": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0e18Ei"
+      "name": "_ZN14dScMgCurling_c11BitB_State3Ei"
     },
     "ov006:0x020e0edc": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0edcEi"
+      "name": "_ZN14dScMgCurling_c11BitB_State2Ei"
     },
     "ov006:0x020e0ff0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e0ff0Ei"
+      "name": "_ZN14dScMgCurling_c11BitB_State1Ei"
     },
     "ov006:0x020e1100": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1100Ei"
+      "name": "_ZN14dScMgCurling_c11BitB_State0Ei"
     },
     "ov006:0x020e1214": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1214Ei"
+      "name": "_ZN14dScMgCurling_c12Bit_RunKindBEi"
     },
     "ov006:0x020e1264": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1264Ei"
+      "name": "_ZN14dScMgCurling_c12Bit_PickKindEi"
     },
     "ov006:0x020e12d0": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e12d0Ev"
+      "name": "_ZN14dScMgCurling_c13Bit_UpdateAllEv"
     },
     "ov006:0x020e13a4": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e13a4Ev"
+      "name": "_ZN14dScMgCurling_c11Bit_InitAllEv"
     },
     "ov006:0x020e1554": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1554Ev"
+      "name": "_ZN14dScMgCurling_c13Popup_DrawAllEv"
     },
     "ov006:0x020e1608": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1608Ev"
+      "name": "_ZN14dScMgCurling_c15Popup_UpdateAllEv"
     },
     "ov006:0x020e1680": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1680Ev"
+      "name": "_ZN14dScMgCurling_c11ScoreStonesEv"
     },
     "ov006:0x020e17f8": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e17f8Ev"
+      "name": "_ZN14dScMgCurling_c13DrawAimMarkerEv"
     },
     "ov006:0x020e1854": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1854Ev"
+      "name": "_ZN14dScMgCurling_c9Aim_SwingEv"
     },
     "ov006:0x020e1b54": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1b54Ev"
+      "name": "_ZN14dScMgCurling_c13Aim_WaitTouchEv"
     },
     "ov006:0x020e1c68": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1c68Ev"
+      "name": "_ZN14dScMgCurling_c14DrawStonesLeftEv"
     },
     "ov006:0x020e1dc8": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e1dc8Ei"
+      "name": "_ZN14dScMgCurling_c14SeparateStonesEi"
     },
     "ov006:0x020e20bc": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e20bcEi"
+      "name": "_ZN14dScMgCurling_c21ResolveStoneCollisionEi"
     },
     "ov006:0x020e269c": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e269cEi"
+      "name": "_ZN14dScMgCurling_c12SetStoneSpinEi"
     },
     "ov006:0x020e26f8": {
       "author": "andrewboudreau",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e26f8Ei"
+      "name": "_ZN14dScMgCurling_c10Stone_DragEi"
     },
     "ov006:0x020e285c": {
       "author": "ruspecial",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e285cEi"
+      "name": "_ZN14dScMgCurling_c13Stone_CollideEi"
     },
     "ov006:0x020e2868": {
       "author": "ruspecial",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e2868Ei"
+      "name": "_ZN14dScMgCurling_c11Stone_SlideEi"
     },
     "ov006:0x020e2c08": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e2c08Ei"
+      "name": "_ZN14dScMgCurling_c17Stone_WaitReleaseEi"
     },
     "ov006:0x020e2dbc": {
       "author": "lunavyqo",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e2dbcEv"
+      "name": "_ZN14dScMgCurling_c17BringOutNextStoneEv"
     },
     "ov006:0x020e2eb8": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e2eb8Ev"
+      "name": "_ZN14dScMgCurling_c10Scene_IdleEv"
     },
     "ov006:0x020e2ebc": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e2ebcEv"
+      "name": "_ZN14dScMgCurling_c9Scene_EndEv"
     },
     "ov006:0x020e2f78": {
       "author": "lunavyqo",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e2f78Ev"
+      "name": "_ZN14dScMgCurling_c11Scene_ScoreEv"
     },
     "ov006:0x020e3078": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e3078Ev"
+      "name": "_ZN14dScMgCurling_c10Scene_PlayEv"
     },
     "ov006:0x020e3210": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e3210Ev"
+      "name": "_ZN14dScMgCurling_c16Scene_StartRoundEv"
     },
     "ov006:0x020e3250": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e3250Ev"
+      "name": "_ZN14dScMgCurling_c9PickHouseEv"
     },
     "ov006:0x020e3378": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e3378Ev"
+      "name": "_ZN14dScMgCurling_c10ResetHouseEv"
     },
     "ov006:0x020e3388": {
       "author": "tangosdev",
-      "name": "_ZN14dScMgCurling_c19func_ov006_020e3388Ev"
+      "name": "_ZN14dScMgCurling_c11ClearStonesEv"
     },
     "ov006:0x020e3470": {
       "author": "tangosdev",

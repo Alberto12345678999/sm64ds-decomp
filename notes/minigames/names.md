@@ -384,3 +384,10 @@ Medium confidence:
 - **`TrmpItem_*`, medium confidence.** The bouncing items of Trampoline2.
   - `TrmpItem_SetMotionN` / `TrmpItem_MotionN` are indexed by the item's kind byte (+0x98), which is certain.
   - What each kind looks like is not observed.
+
+**Curling (`dScMgCurling_c`).** Named mostly from the bodies' own comments, high confidence.
+- **Scene:** `Scene_StartRound`, `Scene_Play`, `Scene_Score`, `Scene_End`, `Scene_Idle`.
+- **Stones:** `Stone_WaitRelease`, `Stone_Slide`, `Stone_Collide`, `Stone_Drag`, `SeparateStones`, `ResolveStoneCollision`, `SetStoneSpin`, `BringOutNextStone`, `ClearStones`, `ScoreStones`.
+- **Aim:** `Aim_WaitTouch` and `Aim_Swing`.
+- **Houses:** `PickHouse` and `ResetHouse`.
+- **The falling bits (50 records):** `Bit_PickKind`, `Bit_RunKindA/B`, `Bit_State0..2`, `BitA_State0..3`, `BitB_State0..3`. These are named by index; what the bits are (snow?) is not observed.

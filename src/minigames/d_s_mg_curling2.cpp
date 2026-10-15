@@ -818,7 +818,7 @@ void dScMgCurling2_c::DrawCursor()
  * local here (i4, bx/by, dy2, j-free ax/ay). opt_propagation off keeps the
  * stylus byte loads above the first store (the ROM loads both before it)
  * and puts i4 in r4. Loading by before bx, and ay before ax, colours the
- * two scratch pairs the ROM's way; the twin func_ov006_020e1854 in
+ * two scratch pairs the ROM's way; the twin Aim_Swing in
  * dScMgCurling_c reads the same. */
 #pragma push
 #pragma opt_common_subs off
@@ -1000,7 +1000,7 @@ void dScMgCurling2_c::DrawStones()
 
 
 // @symbol _ZN15dScMgCurling2_c14SeparateStonesEi
-/* Stone separation. The two-player rink's twin of func_ov006_020e1dc8 in
+/* Stone separation. The two-player rink's twin of SeparateStones in
  * dScMgCurling_c: eleven stones at a 0x30 stride instead of five at 0x2c,
  * and after the bump sound the pushed pair gets a SpawnValue. Keep vx and
  * vy named and the inner scan's locals declared in the loop body; both
