@@ -37,7 +37,7 @@ one is meaningless while the other is loaded.
 | `StartRound(state)` is really "start or restart a round" | `Mg_CallStartRound` (see symbols.txt) | r1 = finished state | Cup: lose a life (the game calls slot 18 with -1 itself) versus clear a round. |
 | `OnNewRecord` fires as the record banner goes up | `dScMgBase_c::OnNewRecord` 0x020b2990, plus the Cup/Sound/Teresa/3DEsp overrides | hit or not | Beat a saved record in Cup or Sound. |
 | `OnDealDone` fires when the dealer finishes dealing | `dScMgBase_c::OnDealDone` 0x020b298c, plus the BSC/Card/Memory/Memory2 overrides | hit timing | Memory or Card: watch the dealer deal. |
-| What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayAnim1/2/4/7` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | Sound: a match (2), a mismatch (1), a loss (4), a win (7). Cup: a win. |
+| What Presenter animations 1, 2, 4 and 7 look like | `Presenter_PlayMiss` / `PlayMatch` / `PlayLose` / `PlayCheer` 0x020c2664 / 0x020c271c / 0x020c2440 / 0x020c2594 | hit | **Done:** seen in Sound and renamed (names.md). |
 | `mCredits` really means lives or coins | `Mg_LoseCredits` / `Mg_GainCredits` (symbols.txt) | r0 = amount | Cup (lives), Card (coins). Coins confirmed in Slot3; see below. |
 | Is "bet" the right word for the coin animator | `MgCoins_PlaceBet` 0x020b63a0, `MgCoins_AddBetCoin` 0x020b6234 | r0 = count | Card, BSC and MCarlo: tap the top-left box. Memory: start of round. |
 | The menu's "new" badge | `MiniGm_IsNew` 0x020c007c, `MiniGm_ClearNew` 0x020c0030 | r1 = row | Open a never-played game's page, play it once, and come back. |
@@ -82,7 +82,12 @@ screenshots, over two games of Wanted! (Luigi):
 - **Roulette** (`dScMgRoulette_c`, Luigi's page, bottom-left card, menu row 0xd). Each spin, five coins go to the chip rack (`Mg_LoseCredits(1)` ×5). Chips not staked come back with `Mg_GainCredits(1)`.
   - **No chip staked:** payout 0 = stake 0, so `Mg_SetSharedState(8)`, silent, then `StartRound(8)` at once.
   - **One chip on black, and black came up:** `Mg_SetSharedState(4)` and banner 9, two coins paid, then `StartRound(4)`.
-- So shared states 4, 5, 7 and 8 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE`, `MG_STATE_DRAW` and `MG_STATE_TIE` all hold. Memory and Card never called a `Presenter_PlayAnim*`; their dealer has its own `Dealer_PlayWin/Lose`.
+- **Sound** (`dScMgSound_c`, Yoshi's page, bottom-middle card, menu row 0x13) is six chests, three note pairs and three hearts (`mTries`, no credits). The pairs were read from `mNotes[].note` with the watcher's PEEK.
+  - Each match plays `Presenter_PlayMatch`, and each miss `Presenter_PlayMiss` and a heart.
+  - **Third miss:** `Presenter_PlayLose`, then `MG_STATE_GAME_OVER` (banner 8, jingle 3), then the record table (banner 7).
+  - **Round cleared:** `Presenter_PlayCheer`, then `Mg_SetSharedState(0)` with banner 3 "CLEAR" and jingle 4, then `StartRound(0)` and banner 0xd. A round with no miss first calls `Mg_SetNextBanner(6)`, and banner 6 is the rainbow "PERFECT".
+- **The menu table.** A game's menu row is its tab + 4 × its position on the page, with Mario 0, Luigi 1, Wario 2 and Yoshi 3. Rows 24..35 are each tab's second page. `MiniGm_ClearNew(row)` agrees for Memory 1, Card 9, Roulette 0xd, Sound 0x13 and Slot3 0x1f.
+- So shared states 4, 5, 7 and 8 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE`, `MG_STATE_DRAW` and `MG_STATE_TIE` all hold. Memory and Card never called a `Presenter_Play*`; their dealer has its own `Dealer_PlayWin/Lose`.
 
 ## Recording the answer
 

@@ -11,7 +11,7 @@
  * word: [high] where the mechanics leave no doubt, [medium] from who
  * enters it, [low] where no caller was found. */
 enum MgSharedState {
-    MG_STATE_ROUND_CLEAR = 0,          /* [medium] banner 3, jingle 4; wins in Cup, Amida, ... */
+    MG_STATE_ROUND_CLEAR = 0,          /* [high, seen] banner 3 "CLEAR" (6 "PERFECT"), jingle 4; Sound, Cup, ... */
     MG_STATE_NEXT_ROUND = 1,           /* [high, seen] silent fade, then StartRound(1); Wanted! after every 5th level */
     MG_STATE_ROUND_BANNER5 = 2,        /* [low] banner 5, jingle 1; no caller found */
     MG_STATE_RETRY_PROMPT = 3,         /* [high, seen] PLAY AGAIN / QUIT under the banner ("TIME IS UP" in Snowball) */

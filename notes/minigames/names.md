@@ -151,7 +151,7 @@ and a guess (unconfirmed):
 
 | State | Enter: banner, jingle, timer | Then | Entered by | Guess |
 |---|---|---|---|---|
-| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on |
+| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on. **Seen** in Sound: banner 3 is "CLEAR". A no-miss round first calls `Mg_SetNextBanner(6)`, and banner 6 is "PERFECT" |
 | 1 | none, none, 15 | fade, `StartRound(1)` | Hanachan, Luigi | silent next round |
 | 2 | 5, 1, 180 | fade, restore music, `StartRound(2)` | none found | |
 | 3 | 8\*, 3, 60 | retry (button 0) / quit (1, 2) buttons | Snowball, with banner 0xe | game over, retry? |
@@ -176,11 +176,11 @@ and a guess (unconfirmed):
 mechanics from the table above, and the enum marks the confidence of its
 meaning word per entry:
 - **high, all seen at runtime** (2026-10-15):
-  - `NEXT_ROUND` and `RETRY_PROMPT`;
+  - `ROUND_CLEAR`, `NEXT_ROUND` and `RETRY_PROMPT`;
   - `WIN`, `LOSE`, `DRAW` and `TIE`;
   - `RETRY_PROMPT_WIDE`;
   - `RESULTS`, `RESULTS_NEW_RECORD` and `GAME_OVER`.
-- **medium:** `ROUND_CLEAR` and `FINISHED`. Cup and Snowball would settle them.
+- **medium:** `FINISHED`. Snowball would settle it.
 - **low:** the rest, which no caller enters or one game enters.
 
 The runtime check on `Mg_SetSharedState` settles the medium and low words. A
@@ -249,11 +249,18 @@ each one is named after the games that construct it and what it draws:
 | `Dealer_` | Card, BSC, MCarlo/2, Memory/2, Roulette | The card dealer: deal, collect, reveal, swap, win and lose animations, plus the table lamps that cycle colours. | medium |
 | `Mascot_`, `MascotWalker_` | Slots; inside `Dealer_` | One small character model (files 0x205/0x206). Slots shows it turning its head toward a target. Behind the dealer it walks a waypoint path and pauses at random. | medium |
 
-The `Presenter_PlayAnimN` / `Presenter_StateAnimN` names give the animation slot
-index (N = 0..7), which is certain. What each animation looks like is not
-observed yet:
-- Cup's `OnNewRecord` comment calls slot 7 the win animation.
-- Slot 7 plays with sound 3 and slot 2 with sound 0x1c.
+The `Presenter_StateAnimN` names give the animation slot index (N = 0..7), which
+is certain. **The four `Presenter_Play*` entry points were renamed by what they
+show (2026-10-15, seen in Sound; high):**
+
+| Slot | Old name | New name | What it shows | Cup calls it for |
+|---|---|---|---|---|
+| 1 | `Presenter_PlayAnim1` | `Presenter_PlayMiss` | Mario puzzled, one eye squinting | a wrong pick with lives left |
+| 2 | `Presenter_PlayAnim2` | `Presenter_PlayMatch` | plays on each matched pair, with sound 0x1c (its frame was not captured) | (not used) |
+| 4 | `Presenter_PlayAnim4` | `Presenter_PlayLose` | Mario laughing and winking | the wrong pick that ends the game |
+| 7 | `Presenter_PlayAnim7`, `...7Loop` | `Presenter_PlayCheer`, `Presenter_PlayCheerLoop` | Mario laughing, eyes shut, with sound 3 | a right pick and `OnNewRecord` |
+
+All 45 minigame objects stayed identical modulo the renamed symbols.
 
 The dealer's deal, collect, reveal and swap names follow the animation order
 and the sounds (0x139-0x142) and are medium confidence.
@@ -270,7 +277,7 @@ pitch, two matching notes clear, and a mismatch closes them again.
 - **Notes:** `DealNotes`, `ResetRound`, `UpdateNotes`, `CheckPair`, `CheckRoundOver`, and `RevealUnmatched` on a loss.
 - **Note states 0-4:** `Note_StateWait`, `Note_StateOpening`, `Note_StateOpen`, `Note_StateClosing`, `Note_StateScroll`.
 - **Pops:** `SpawnPops` launches the burst sprites, and each of the 13 pop kinds has `PopNN_Update`, `PopNN_Start`, `PopNN_Fly` and `PopNN_Finish`. The kind number is the index in the dispatch table; the look of each kind is not observed.
-- **Win and loss:** the win plays `Presenter_PlayAnim7` (a cheer, medium) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayAnim4` (disappointment, medium).
+- **Win and loss:** the win plays `Presenter_PlayCheer` (seen) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayLose` (seen). Each match plays `Presenter_PlayMatch` and each miss `Presenter_PlayMiss`. Sound's three hearts are `mTries` and move no credits.
 
 **Teresa (`dScMgTeresa_c`, Hide and Boo Seek).**
 
