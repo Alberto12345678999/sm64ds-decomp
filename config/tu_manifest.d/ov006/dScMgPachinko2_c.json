@@ -937,7 +937,7 @@
       "source": "0x02131f28",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da84",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da84"
@@ -947,7 +947,7 @@
       "source": "0x02131f2c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213daf4",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213daf4"
@@ -967,7 +967,7 @@
       "source": "0x02131f34",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da74",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da74"
@@ -977,7 +977,7 @@
       "source": "0x02131f38",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da94",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da94"
@@ -987,7 +987,7 @@
       "source": "0x02131f3c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da9c",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da9c"
@@ -997,7 +997,7 @@
       "source": "0x02131f40",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da7c",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da7c"
@@ -1007,7 +1007,7 @@
       "source": "0x02131f44",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dadc",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State6",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dadc"
@@ -1017,7 +1017,7 @@
       "source": "0x02131f48",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dad4",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State7",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dad4"
@@ -1027,7 +1027,7 @@
       "source": "0x02131f4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dafc",
+      "symbol": "pmf_dScMgPachinko2_c_Ball_State7",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dafc"
@@ -1037,7 +1037,7 @@
       "source": "0x02131f50",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db04",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db04"
@@ -1047,7 +1047,7 @@
       "source": "0x02131f54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dae4",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dae4"
@@ -1057,7 +1057,7 @@
       "source": "0x02131f58",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db0c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db0c"
@@ -1077,7 +1077,7 @@
       "source": "0x02131f60",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db14",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State8",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db14"
@@ -1087,7 +1087,7 @@
       "source": "0x02131f64",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da8c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da8c"
@@ -1097,7 +1097,7 @@
       "source": "0x02131f68",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da5c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da5c"
@@ -1107,7 +1107,7 @@
       "source": "0x02131f6c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213da6c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State6",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213da6c"
@@ -1117,7 +1117,7 @@
       "source": "0x02131f70",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213daec",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213daec"
@@ -1127,7 +1127,7 @@
       "source": "0x02131f74",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db44",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State9",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db44"
@@ -1137,7 +1137,7 @@
       "source": "0x02131f78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db3c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State10",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db3c"
@@ -1147,7 +1147,7 @@
       "source": "0x02131f7c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db34",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State11",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db34"
@@ -1157,7 +1157,7 @@
       "source": "0x02131f80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db2c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State12",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db2c"
@@ -1167,7 +1167,7 @@
       "source": "0x02131f84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db24",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State13",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db24"
@@ -1177,7 +1177,7 @@
       "source": "0x02131f88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213db1c",
+      "symbol": "pmf_dScMgPachinko2_c_Paddle_State14",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213db1c"
@@ -1187,7 +1187,7 @@
       "source": "0x02131f8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dacc",
+      "symbol": "pmf_dScMgPachinko2_c_Cup_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dacc"
@@ -1197,7 +1197,7 @@
       "source": "0x02131f90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dac4",
+      "symbol": "pmf_dScMgPachinko2_c_Cup_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dac4"
@@ -1207,7 +1207,7 @@
       "source": "0x02131f94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dabc",
+      "symbol": "pmf_dScMgPachinko2_c_Cup_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dabc"
@@ -1217,7 +1217,7 @@
       "source": "0x02131f98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213dab4",
+      "symbol": "pmf_dScMgPachinko2_c_Cup_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213dab4"
@@ -1227,7 +1227,7 @@
       "source": "0x02131f9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213daac",
+      "symbol": "pmf_dScMgPachinko2_c_Cup_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213daac"

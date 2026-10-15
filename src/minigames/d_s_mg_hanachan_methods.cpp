@@ -255,58 +255,58 @@ extern void Hana_LoadBackground(void);
 extern short data_02082214[];
 extern void* data_ov006_02142018[];
 extern void* data_ov006_021375c0[];
-extern int data_ov006_0213c97c[];
+extern int pmf_Wiggler_StateWait_2[];
 extern void* data_ov006_021375a0[];
 extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int b, void* attr, int x, int y, int a, int c, int f, int g);
-extern int data_ov006_0213c984[];
-extern int data_ov006_0213ca44[];
-extern int data_ov006_0213ca1c;
+extern int pmf_Wiggler_TurnTowardAim_2[];
+extern int pmf_Wiggler_TurnTowardAim_8[];
+extern int pmf_Wiggler_TurnTowardAim_7;
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, int h);
-extern P data_ov006_0213c9b4;
-extern P data_ov006_0213c9a4;
-extern P data_ov006_0213c99c;
-extern P data_ov006_0213c9fc;
-extern Pair data_ov006_0213c96c;
-extern Pair data_ov006_0213c9c4;
-extern Pair data_ov006_0213c9bc;
-extern struct P2 data_ov006_0213c9f4;
-extern struct P2 data_ov006_0213c9ec;
-extern struct P2 data_ov006_0213c9e4;
-extern struct P2 data_ov006_0213c974;
-extern struct P2 data_ov006_0213c95c;
-extern int data_ov006_0213ca04[];
-extern int data_ov006_0213c9d4[];
+extern P pmf_Wiggler_TurnTowardAim_3;
+extern P pmf_Wiggler_StateWait_3;
+extern P pmf_Wiggler_StateMoveA;
+extern P pmf_Wiggler_StateHold_2;
+extern Pair pmf_Wiggler_TurnTowardAim;
+extern Pair pmf_Wiggler_StateMoveA_2;
+extern Pair pmf_Wiggler_Update;
+extern struct P2 pmf_Wiggler_TurnTowardAim_6;
+extern struct P2 pmf_Wiggler_TurnTowardAim_5;
+extern struct P2 pmf_Wiggler_MoveBounce;
+extern struct P2 pmf_Wiggler_StateMoveB;
+extern struct P2 pmf_Wiggler_StateWait;
+extern int pmf_Wiggler_StateWait_4[];
+extern int pmf_Wiggler_StateHold[];
 extern short data_ov006_02141fd0;
 extern unsigned short data_ov006_02141fdc[];
 extern unsigned short data_ov006_02141ff8[];
 extern s16 _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-extern Vec2i data_ov006_0213ca24;
-extern struct Words2 data_ov006_0213ca14;
-extern int data_ov006_0213ca0c[];
-extern V2 data_ov006_0213c9dc;
+extern Vec2i pmf_Wiggler_CheckOffLeftA;
+extern struct Words2 pmf_Wiggler_MoveBounce_2;
+extern int pmf_Wiggler_CheckOffLeftB[];
+extern V2 pmf_Wiggler_TurnTowardAim_4;
 extern void Mg_CommitRecords(void *);
 extern void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern int GetGameLanguage(void);
 extern void DrawOamSprite(void *a, int b, int c, int d);
 extern void Mg_DrawNumberRotated(int a, int b, void *c, int d, int e, int f, int g);
-extern Pair data_ov006_0213c9ac;
-extern Pair data_ov006_0213c994;
-extern Pair data_ov006_0213ca3c;
-extern Pair data_ov006_0213ca34;
-extern Pair data_ov006_0213ca2c;
-extern int data_ov006_0213ca54[];
-extern struct Pair data_ov006_0213ca5c;
-extern struct Pair data_ov006_0213ca64;
-extern int data_ov006_0213ca6c[];
-extern int data_ov006_0213ca4c[];
-extern int data_ov006_0213ca74[];
+extern Pair pmf_dScMgHanachan_c_Phase_Play;
+extern Pair pmf_dScMgHanachan_c_Phase_Result;
+extern Pair pmf_Hana_StateNoneB;
+extern Pair pmf_dScMgHanachan_c_Phase_WaitTouch;
+extern Pair pmf_dScMgHanachan_c_Phase_WaitIntro_2;
+extern int pmf_Hana_StateNoneA[];
+extern struct Pair pmf_dScMgHanachan_c_Phase_WaitTouch_2;
+extern struct Pair pmf_Hana_StateNoneB_2;
+extern int pmf_dScMgHanachan_c_Phase_Result_2[];
+extern int pmf_Wiggler_TurnTowardAim_9[];
+extern int pmf_Wiggler_TurnTowardAim_10[];
 extern void func_02012790(int a);
 extern void StarPopup_Start(int x, int y);
 extern void HanaPopup_Spawn(int x, int y);
-extern struct Pair data_ov006_0213c9cc;
+extern struct Pair pmf_dScMgHanachan_c_Phase_Play_2;
 extern s16 data_ov006_0212e80c[];
 extern volatile int data_ov006_0212e820[];
-extern Pair data_ov006_0213c964;
+extern Pair pmf_dScMgHanachan_c_Phase_WaitIntro;
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 
@@ -472,7 +472,7 @@ extern "C" void StarPopup_Update(char *arg)
                         *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
                 }
             }
-            Mg_SubmitScore(gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0);
+            Mg_SubmitScore(gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
         } else {
             if (*(u8 *)(f + 0xf) != 0) {
                 *(u8 *)(((int)f + 0xc)) += 1;
@@ -796,8 +796,8 @@ void Wiggler_DrawPassB(void* arg)
                     1, data_ov006_021375c0[fp2],
                     s.vb.x >> 12, s.vb.y >> 12,
                     -1, -1, scale, t.urot);
-            } else if (*(int*)raw == data_ov006_0213c97c[0]) {
-                if ((*(int*)(raw + 4) == data_ov006_0213c97c[1] || *(int*)raw == 0) &&
+            } else if (*(int*)raw == pmf_Wiggler_StateWait_2[0]) {
+                if ((*(int*)(raw + 4) == pmf_Wiggler_StateWait_2[1] || *(int*)raw == 0) &&
                     *(short*)(raw + 0x90) > 0x1a && *(short*)(raw + 0x90) < 0x30) {
                     int idx = s3.vc0.x;
                     s.vc.x = s3.vc0.x;
@@ -898,7 +898,7 @@ void Wiggler_StateMoveA(char *raw)
     ApproachLinear(*(int *)(raw + 0x48), 0, 0x200);
     if (ApproachLinear2(*(short *)(raw + 0x78), 0, 1) != 0) {
         int *p10 = (int *)(((int)raw + 0x10));
-        int *pd = (int *)(((int)data_ov006_0213c984));
+        int *pd = (int *)(((int)pmf_Wiggler_TurnTowardAim_2));
         if (p10[0] == pd[0] &&
             (p10[1] == pd[1] || *(int *)(raw + 0x10) == 0)) {
             *(unsigned char *)(raw + 0x94) = 1;
@@ -973,7 +973,7 @@ void Wiggler_StateMoveB(char *c)
     *(short *)(((int)c + 0x78)) -= 1;
     if (*(short *)(c + 0x78) == 0) {
         int *p10 = (int *)(((int)c + 0x10));
-        int *pd = (int *)(((int)data_ov006_0213ca44));
+        int *pd = (int *)(((int)pmf_Wiggler_TurnTowardAim_8));
         if (p10[0] == pd[0] &&
             (p10[1] == pd[1] || *(int *)(c + 0x10) == 0)) {
             *(unsigned char *)(c + 0x94) = 1;
@@ -1018,7 +1018,7 @@ extern "C" /* char* parameter to agree with include/decl_common.h -- see Wiggler
 void Wiggler_UpdateSway(char *raw)
 {
     int *thiz = (int *)raw;
-    int *g = &data_ov006_0213ca1c;
+    int *g = &pmf_Wiggler_TurnTowardAim_7;
     int v0 = thiz[0];
     if (v0 == g[0] && (thiz[1] == g[1] || v0 == 0) && thiz[0x70/4] == 0) {
         short h = *(short*)((char*)thiz + 0x84);
@@ -1110,7 +1110,7 @@ int Wiggler_IsStarVisible(char* raw)
 // @symbol Wiggler_StopIfIdle
 extern "C" {
 void Wiggler_StopIfIdle(char* c){
-  P* d = &data_ov006_0213c9b4;
+  P* d = &pmf_Wiggler_TurnTowardAim_3;
   int c0 = *(int*)c;
   if(c0 == d->v[0] && (*(int*)(c+4) == d->v[1] || c0 == 0)){
     *(unsigned char*)(c+0x93) = 0;
@@ -1118,16 +1118,16 @@ void Wiggler_StopIfIdle(char* c){
     if(*(int*)(c+0x70) == 0){
       Sound::PlayBank2_2D(0x1e9);
     }
-    *(P*)c = data_ov006_0213c99c;
+    *(P*)c = pmf_Wiggler_StateMoveA;
   }else{
-    P* d2 = &data_ov006_0213c9a4;
+    P* d2 = &pmf_Wiggler_StateWait_3;
     if(c0 != d2->v[0] || (*(int*)(c+4) != d2->v[1] && c0 != 0)){
       *(short*)(c+0x90) = 0x31;
       *(P*)(c+0x10) = *(P*)(c+8);
       Sound::PlayBank2_2D(0x1ed);
     }
     *(int*)(c+0x60) = 0;
-    *(P*)c = data_ov006_0213c9fc;
+    *(P*)c = pmf_Wiggler_StateHold_2;
   }
 }
 }
@@ -1135,19 +1135,19 @@ void Wiggler_StopIfIdle(char* c){
 // @symbol Wiggler_OnTouched
 extern "C" void Wiggler_OnTouched(char *c)
 {
-    Pair *g = &data_ov006_0213c96c;
+    Pair *g = &pmf_Wiggler_TurnTowardAim;
     Pair *p = (Pair *)c;
     if (p->v[0] == g->v[0] && (p->v[1] == g->v[1] || p->v[0] == 0)) {
         *(unsigned char *)(c + 0x93) = 0;
         *(unsigned short *)(c + 0x78) = 0x60;
         if (*(int *)(c + 0x70) == 0)
             Sound::PlayBank2_2D(0x1e9);
-        *p = data_ov006_0213c9c4;
+        *p = pmf_Wiggler_StateMoveA_2;
     } else {
         *(unsigned char *)(c + 0x95) = 5;
         *(int *)(c + 0x60) = 0;
         *(Pair *)(c + 0x10) = *(Pair *)(c + 8);
-        *p = data_ov006_0213c9bc;
+        *p = pmf_Wiggler_Update;
     }
 }
 
@@ -1171,7 +1171,7 @@ void Wiggler_Retarget(struct ObjB* c, int v)
 {
     short* h = (short*)(int)(&c->tries);
     struct P2* p = (struct P2*)(int)(&c->saved);
-    struct P2* g = (struct P2*)(int)(&data_ov006_0213c9f4);
+    struct P2* g = (struct P2*)(int)(&pmf_Wiggler_TurnTowardAim_6);
 
     (*h)++;
     if (p->v[0] == g->v[0] &&
@@ -1180,21 +1180,21 @@ void Wiggler_Retarget(struct ObjB* c, int v)
         c->busy = 0;
         c->timer = (RandomIntInternal(&data_0209e650) & 0x20) + 0x60;
         if (c->tries == 1) {
-            c->sub = data_ov006_0213c9ec;
+            c->sub = pmf_Wiggler_TurnTowardAim_5;
             c->saved = c->sub;
         } else {
-            c->sub = data_ov006_0213c9e4;
+            c->sub = pmf_Wiggler_MoveBounce;
             c->saved = c->sub;
         }
         if (c->decoy == 0) {
             Sound::PlayBank2_2D(0x1e9);
         }
-        c->state = data_ov006_0213c974;
+        c->state = pmf_Wiggler_StateMoveB;
     } else {
         c->speed = 0;
         c->hold = (v >> 12) / 4 + 0x31;
         c->sub = c->saved;
-        c->state = data_ov006_0213c95c;
+        c->state = pmf_Wiggler_StateWait;
     }
 }
 }
@@ -1213,13 +1213,13 @@ int Wiggler_GetFrame(char *raw, int){
     goto end;
   }
   {
-    int *ref = data_ov006_0213ca04;
+    int *ref = pmf_Wiggler_StateWait_4;
     int ip = *(int*)raw;
     if (ip == ref[0]){
       if (*(int*)(raw + 4) == ref[1]) goto C;
       if (ip == 0) goto C;
     }
-    ref = data_ov006_0213c9d4;
+    ref = pmf_Wiggler_StateHold;
     if (ip != ref[0]) goto end0;
     if (*(int*)(raw + 4) == ref[1]) goto C;
     if (ip != 0) goto end0;
@@ -1588,7 +1588,7 @@ void Wiggler_StartPathA(Obj *self, int n)
     Wiggler_StepSegmentsC((struct C *)self);
     self->voice = 0;
     self->voiceId = 0x1ec;
-    *(struct Words2 *)&self->state = *(struct Words2 *)&data_ov006_0213ca24;
+    *(struct Words2 *)&self->state = *(struct Words2 *)&pmf_Wiggler_CheckOffLeftA;
     *(struct Words2 *)&self->saved = *(struct Words2 *)&self->state;
 }
 }
@@ -1659,7 +1659,7 @@ void Wiggler_StartBounce(char *raw, int)
     *(short *)(raw + 0x78) = 0x1e;
     *(int *)(raw + 0x68) = 0;
     *(int *)(raw + 0x6c) = 0x1ec;
-    *(struct Words2 *)(raw + 0) = data_ov006_0213ca14;
+    *(struct Words2 *)(raw + 0) = pmf_Wiggler_MoveBounce_2;
     *(struct Words2 *)(raw + 8) = *(struct Words2 *)(raw + 0);
 }
 }
@@ -1739,7 +1739,7 @@ void Wiggler_StartPathB(char* raw, int idx)
     Wiggler_StepSegmentsC((struct C *)raw);
     *(int*)(raw + 0x68) = 0;
     *(int*)(raw + 0x6c) = 0x1ec;
-    *(struct Words2 *)(raw + 0) = *(struct Words2 *)data_ov006_0213ca0c;
+    *(struct Words2 *)(raw + 0) = *(struct Words2 *)pmf_Wiggler_CheckOffLeftB;
     *(struct Words2 *)(raw + 8) = *(struct Words2 *)(raw + 0);
 }
 #pragma pop
@@ -1814,7 +1814,7 @@ void Wiggler_StartPathC(struct C* c, int param)
     c->seg[0].x = vec4.x;
     c->seg[0].y = vec4.y;
 
-    *(struct Words2 *)&c->state = *(struct Words2 *)&data_ov006_0213c9dc;
+    *(struct Words2 *)&c->state = *(struct Words2 *)&pmf_Wiggler_TurnTowardAim_4;
     *(struct Words2 *)&c->saved = *(struct Words2 *)&c->state;
 }
 }
@@ -1887,7 +1887,7 @@ s32 dScMgHanachan_c::Render()
 
     {
         Pair *p = PAIR0(raw);
-        Pair *g = &data_ov006_0213c9ac;
+        Pair *g = &pmf_dScMgHanachan_c_Phase_Play;
         if (p->v[0] == g->v[0]) {
             if (p->v[1] == g->v[1] || mPhaseFn == 0) {
                 i = 0;
@@ -1906,7 +1906,7 @@ s32 dScMgHanachan_c::Render()
 
     {
         Pair *p = PAIR0(raw);
-        Pair *g = &data_ov006_0213c994;
+        Pair *g = &pmf_dScMgHanachan_c_Phase_Result;
         if (p->v[0] == g->v[0]) {
             if (p->v[1] == g->v[1] || mPhaseFn == 0) {
                 int flag = mHit;
@@ -1936,9 +1936,9 @@ s32 dScMgHanachan_c::Render()
 
     {
         Pair *p = PAIR0(raw);
-        Pair *g = &data_ov006_0213ca3c;
+        Pair *g = &pmf_Hana_StateNoneB;
         if ((p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0))
-            || (p = PAIR0(raw), g = &data_ov006_0213ca34, (p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0)))) {
+            || (p = PAIR0(raw), g = &pmf_dScMgHanachan_c_Phase_WaitTouch, (p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0)))) {
             Wiggler_DrawPassB(mTarget);
         }
     }
@@ -1948,7 +1948,7 @@ tail:
 
     {
         Pair *p = PAIR0(raw);
-        Pair *g = &data_ov006_0213ca2c;
+        Pair *g = &pmf_dScMgHanachan_c_Phase_WaitIntro_2;
         if (!(p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0))) {
             int idx = GetGameLanguage();
             void *e = data_ov006_0213ca9c[idx];
@@ -2017,8 +2017,8 @@ void dScMgHanachan_c::Phase_WaitTouch()
         if (b == 0)
             return;
     }
-    w0 = data_ov006_0213ca54[0];
-    w1 = data_ov006_0213ca54[1];
+    w0 = pmf_Hana_StateNoneA[0];
+    w1 = pmf_Hana_StateNoneA[1];
     w0 = w1 ? w0 : w0;
     s->mPhaseFn = w0;
     s->mPhaseAdj = w1;
@@ -2031,7 +2031,7 @@ void dScMgHanachan_c::BeginResultWait()
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
     s->mPhaseTimer = 0xb4;
-    *(Pair *)&s->mPhaseFn = data_ov006_0213ca5c;
+    *(Pair *)&s->mPhaseFn = pmf_dScMgHanachan_c_Phase_WaitTouch_2;
 }
 
 
@@ -2047,7 +2047,7 @@ void Hana_StateNoneB(void)
 void dScMgHanachan_c::SetPhaseIdle()
 {
     char *raw = (char *)this;
-    *(Pair *)&((dScMgHanachan_c *)raw)->mPhaseFn = data_ov006_0213ca64;
+    *(Pair *)&((dScMgHanachan_c *)raw)->mPhaseFn = pmf_Hana_StateNoneB_2;
 }
 
 
@@ -2108,7 +2108,7 @@ void dScMgHanachan_c::BeginResult()
         *(int *)(raw + 0x4000 + 0x66c) = 0xb4;
     else
         *(int *)(raw + 0x4000 + 0x66c) = 0xe4;
-    *(struct Words2 *)(raw + 0x4000 + 0x660) = *(struct Words2 *)data_ov006_0213ca6c;
+    *(struct Words2 *)(raw + 0x4000 + 0x660) = *(struct Words2 *)pmf_dScMgHanachan_c_Phase_Result_2;
 }
 
 
@@ -2143,7 +2143,7 @@ void dScMgHanachan_c::Phase_Play()
             func_02012790(0x26);
             p = (Thing *)s->mTarget;
             {
-            int *g = data_ov006_0213ca4c;
+            int *g = pmf_Wiggler_TurnTowardAim_9;
             if (p->a == g[0] &&
                 (p->b == g[1] || p->a == 0))
                 Sound::PlayBank2_2D(0x1ef);
@@ -2185,7 +2185,7 @@ void dScMgHanachan_c::Phase_Play()
                 Thing *ptr2;
                 Thing *sel = (Thing *)s->mWiggler + found;
                 {
-                int *g2 = data_ov006_0213ca74;
+                int *g2 = pmf_Wiggler_TurnTowardAim_10;
                 if (sel->a == g2[0] &&
                     (sel->b == g2[1] || sel->a == 0))
                     Sound::PlayBank2_2D(0x1eb);
@@ -2254,7 +2254,7 @@ void dScMgHanachan_c::BeginPlay()
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
     s->mPhaseTimer = 0x4b0;
-    *(Pair *)&s->mPhaseFn = data_ov006_0213c9cc;
+    *(Pair *)&s->mPhaseFn = pmf_dScMgHanachan_c_Phase_Play_2;
 }
 
 
@@ -2321,7 +2321,7 @@ void dScMgHanachan_c::Phase_SetupRound()
         Mg_ShowBanner(0xd, 0x80, 0x50, 1, -1, 0xd);
         s->mTimeTick = 0x3c;
         s->mHit = 0;
-        *(Pair *)&s->mPhaseFn = data_ov006_0213c964;
+        *(Pair *)&s->mPhaseFn = pmf_dScMgHanachan_c_Phase_WaitIntro;
     }
 }
 
@@ -2340,12 +2340,12 @@ void dScMgHanachan_c::StartRound(int state)
     } else if (state == 0x12) {
         mLevel = 0;
         if (mLevel > 0x270e) mLevel = 0x270e;
-        if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = 0;
+        if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = 0;
         Mg_SubmitScore(mHudScore);
         mTimeLeft = 0x14;
     } else {
         int v = mLevel;
-        if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = v;
+        if (gMgScene != 0) ((dScMgBase_c *)gMgScene)->mHudScore = v;
         mTimeLeft = 0x14;
     }
     HanaPopup_ClearAll();

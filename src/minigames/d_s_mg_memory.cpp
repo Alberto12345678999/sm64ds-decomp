@@ -235,7 +235,7 @@ void dScMgMemory_c::InitPlayers()
     int stagger;
 
     if (gMgScene != 0)
-        count = *(int *)((char *)gMgScene + 0xa8);
+        count = ((dScMgBase_c *)gMgScene)->mCredits;
     else
         count = 0;
     if (count >= 3)
@@ -678,7 +678,7 @@ void dScMgMemory_c::ResultWait()
                 }
                 if (mHudScore > mBestHudScore)
                     mBestHudScore = mHudScore;
-                Mg_SubmitScore(gMgScene ? *(int *)((char *)gMgScene + 0xb4) : 0);
+                Mg_SubmitScore(gMgScene ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
                 Dealer_PlayWin(&mShared);
             } else {
                 Mg_SetSharedState(5);
@@ -1117,31 +1117,31 @@ extern "C" void *dScMgMemory_c_classInit()
  * pointers, the five main states, the six round states, the four result
  * states, the seven card states, then the three player states. */
 extern "C" int data_ov006_02133810[];
-extern "C" dScMgMemory_cState data_ov006_0213cfd0;
-extern "C" dScMgMemory_cState data_ov006_0213cfc0;
-extern "C" dScMgMemory_cState data_ov006_0213d088;
-extern "C" dScMgMemory_cState data_ov006_0213d080;
-extern "C" dScMgMemory_cState data_ov006_0213d078;
-extern "C" dScMgMemory_cState data_ov006_0213d068;
-extern "C" dScMgMemory_cState data_ov006_0213d060;
-extern "C" dScMgMemory_cState data_ov006_0213d058;
-extern "C" dScMgMemory_cState data_ov006_0213d050;
-extern "C" dScMgMemory_cState data_ov006_0213d000;
-extern "C" dScMgMemory_cState data_ov006_0213cfe0;
-extern "C" dScMgMemory_cState data_ov006_0213d038;
-extern "C" dScMgMemory_cState data_ov006_0213d020;
-extern "C" dScMgMemory_cState data_ov006_0213d030;
-extern "C" dScMgMemory_cState data_ov006_0213d028;
-extern "C" dScMgMemory_cCardState data_ov006_0213d018;
-extern "C" dScMgMemory_cCardState data_ov006_0213cff0;
-extern "C" dScMgMemory_cCardState data_ov006_0213cfe8;
-extern "C" dScMgMemory_cCardState data_ov006_0213cfc8;
-extern "C" dScMgMemory_cCardState data_ov006_0213d010;
-extern "C" dScMgMemory_cCardState data_ov006_0213d008;
-extern "C" dScMgMemory_cCardState data_ov006_0213d070;
-extern "C" dScMgMemory_cState data_ov006_0213cff8;
-extern "C" dScMgMemory_cState data_ov006_0213d048;
-extern "C" dScMgMemory_cState data_ov006_0213d040;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StateSetup;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StatePlay;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StateJudge;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StateResult;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_StateExit;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_RoundStart;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_RoundDealEasy;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_RoundDealNormal;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_RoundDealHard;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_RoundWaitDeal;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_RoundReveal;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_ResultWait;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_ResultReward;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_ResultTurnCards;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_ResultFinish;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardMove;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardIdle;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardSelect;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardFlipUp;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardWait;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardFlipDown;
+extern "C" dScMgMemory_cCardState pmf_dScMgMemory_c_CardFlyAway;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerDrop;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerMove;
+extern "C" dScMgMemory_cState pmf_dScMgMemory_c_PlayerWait;
 
 void *data_ov006_0214236c[15] = {
     (void *)data_ov006_02133810[0],
@@ -1161,38 +1161,38 @@ void *data_ov006_0214236c[15] = {
     (void *)data_ov006_02133810[8],
 };
 dScMgMemory_cState data_ov006_021422dc[5] = {
-    data_ov006_0213cfd0,
-    data_ov006_0213cfc0,
-    data_ov006_0213d088,
-    data_ov006_0213d080,
-    data_ov006_0213d078,
+    pmf_dScMgMemory_c_StateSetup,
+    pmf_dScMgMemory_c_StatePlay,
+    pmf_dScMgMemory_c_StateJudge,
+    pmf_dScMgMemory_c_StateResult,
+    pmf_dScMgMemory_c_StateExit,
 };
 dScMgMemory_cState data_ov006_02142304[6] = {
-    data_ov006_0213d068,
-    data_ov006_0213d060,
-    data_ov006_0213d058,
-    data_ov006_0213d050,
-    data_ov006_0213d000,
-    data_ov006_0213cfe0,
+    pmf_dScMgMemory_c_RoundStart,
+    pmf_dScMgMemory_c_RoundDealEasy,
+    pmf_dScMgMemory_c_RoundDealNormal,
+    pmf_dScMgMemory_c_RoundDealHard,
+    pmf_dScMgMemory_c_RoundWaitDeal,
+    pmf_dScMgMemory_c_RoundReveal,
 };
 dScMgMemory_cState data_ov006_021422bc[4] = {
-    data_ov006_0213d038,
-    data_ov006_0213d020,
-    data_ov006_0213d030,
-    data_ov006_0213d028,
+    pmf_dScMgMemory_c_ResultWait,
+    pmf_dScMgMemory_c_ResultReward,
+    pmf_dScMgMemory_c_ResultTurnCards,
+    pmf_dScMgMemory_c_ResultFinish,
 };
 dScMgMemory_cCardState data_ov006_02142334[7] = {
-    data_ov006_0213d018,
-    data_ov006_0213cff0,
-    data_ov006_0213cfe8,
-    data_ov006_0213cfc8,
-    data_ov006_0213d010,
-    data_ov006_0213d008,
-    data_ov006_0213d070,
+    pmf_dScMgMemory_c_CardMove,
+    pmf_dScMgMemory_c_CardIdle,
+    pmf_dScMgMemory_c_CardSelect,
+    pmf_dScMgMemory_c_CardFlipUp,
+    pmf_dScMgMemory_c_CardWait,
+    pmf_dScMgMemory_c_CardFlipDown,
+    pmf_dScMgMemory_c_CardFlyAway,
 };
 dScMgMemory_cState data_ov006_021422a4[3] = {
-    data_ov006_0213cff8,
-    data_ov006_0213d048,
-    data_ov006_0213d040,
+    pmf_dScMgMemory_c_PlayerDrop,
+    pmf_dScMgMemory_c_PlayerMove,
+    pmf_dScMgMemory_c_PlayerWait,
 };
 

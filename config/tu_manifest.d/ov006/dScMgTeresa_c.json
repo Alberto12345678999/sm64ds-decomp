@@ -1013,7 +1013,7 @@
       "source": "0x021331b0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f904",
+      "symbol": "pmf_dScMgTeresa_c_Scene_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f904"
@@ -1023,7 +1023,7 @@
       "source": "0x021331b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f92c",
+      "symbol": "pmf_dScMgTeresa_c_Scene_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f92c"
@@ -1043,7 +1043,7 @@
       "source": "0x021331bc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f954",
+      "symbol": "pmf_dScMgTeresa_c_Scene_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f954"
@@ -1053,7 +1053,7 @@
       "source": "0x021331c0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f964",
+      "symbol": "pmf_dScMgTeresa_c_Scene_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f964"
@@ -1063,7 +1063,7 @@
       "source": "0x021331c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f914",
+      "symbol": "pmf_dScMgTeresa_c_Scene_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f914"
@@ -1073,7 +1073,7 @@
       "source": "0x021331c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f934",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f934"
@@ -1083,7 +1083,7 @@
       "source": "0x021331cc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f8dc",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8dc"
@@ -1103,7 +1103,7 @@
       "source": "0x021331d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f94c",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f94c"
@@ -1113,7 +1113,7 @@
       "source": "0x021331d8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f8ec",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8ec"
@@ -1123,7 +1123,7 @@
       "source": "0x021331dc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f99c",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f99c"
@@ -1133,7 +1133,7 @@
       "source": "0x021331e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f8e4",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8e4"
@@ -1143,7 +1143,7 @@
       "source": "0x021331e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f8d4",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8d4"
@@ -1153,7 +1153,7 @@
       "source": "0x021331e8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f93c",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State6",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f93c"
@@ -1163,7 +1163,7 @@
       "source": "0x021331ec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f96c",
+      "symbol": "pmf_dScMgTeresa_c_Boo_State7",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f96c"
@@ -1173,7 +1173,7 @@
       "source": "0x021331f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f994",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f994"
@@ -1193,7 +1193,7 @@
       "source": "0x021331f8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f984",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f984"
@@ -1203,7 +1203,7 @@
       "source": "0x021331fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f98c",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f98c"
@@ -1213,7 +1213,7 @@
       "source": "0x02133200",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f97c",
+      "symbol": "pmf_dScMgTeresa_c_Reveal_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f97c"
@@ -1223,7 +1223,7 @@
       "source": "0x02133204",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f90c",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f90c"
@@ -1243,7 +1243,7 @@
       "source": "0x0213320c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f95c",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f95c"
@@ -1253,7 +1253,7 @@
       "source": "0x02133210",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f91c",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f91c"
@@ -1263,7 +1263,7 @@
       "source": "0x02133214",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f8fc",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8fc"
@@ -1273,7 +1273,7 @@
       "source": "0x02133218",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f944",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f944"
@@ -1283,7 +1283,7 @@
       "source": "0x0213321c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f8f4",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f8f4"
@@ -1293,7 +1293,7 @@
       "source": "0x02133220",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f9ac",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State6",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f9ac"
@@ -1303,7 +1303,7 @@
       "source": "0x02133224",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f9a4",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State7",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f9a4"
@@ -1313,7 +1313,7 @@
       "source": "0x02133228",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213f924",
+      "symbol": "pmf_dScMgTeresa_c_BigBoo_State8",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213f924"

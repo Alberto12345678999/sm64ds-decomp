@@ -175,12 +175,12 @@ extern char *TrmpItem_Spawn(int resource, int *up, int variant, int face);
 extern int Mg_DrawLine(int a, int b, int c, int d, int e, int f, int g);
 extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
-extern int data_ov006_0213fbd0[];
+extern int pmf_dScMgTrampoline2_c_StateDone[];
 extern void TrmpItem_UpdateAll(void);
 extern int Trmp2Mario_Hide(void);
-extern union StateValue data_ov006_0213fbe0;
+extern union StateValue pmf_dScMgTrampoline2_c_StateWaitExit;
 extern void func_ov006_020ca840(void *c);
-extern struct P2 data_ov006_0213fbf0;
+extern struct P2 pmf_dScMgTrampoline2_c_StateResults;
 extern int data_ov006_02140818;
 extern int data_ov006_0213b0f0;
 extern int data_ov006_02140830;
@@ -193,13 +193,13 @@ extern void Trmp2Mario_UpdateAll(void);
 extern void Trmp2Mario_SetTuning(int a);
 extern void Trmp2Mario_MoveToStart(void);
 extern void Trmp2Mario_PlaceAtStart(void* a);
-extern struct S2 data_ov006_0213fbe8;
+extern struct S2 pmf_dScMgTrampoline2_c_StatePlay;
 extern void TrmpLine_CreateStartLineT2(void);
 extern s16 data_ov006_0212e058;
 extern s16 data_ov006_0212e050;
 extern s16 data_ov006_0212e048;
 extern short data_ov006_0212e044;
-extern struct P2 data_ov006_0213fbd8;
+extern struct P2 pmf_dScMgTrampoline2_c_StateIntro;
 extern "C" void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *p, u16 a, u16 b, u16 c, u16 d);
 extern "C" void TrmpLine_ClearAll(u32 a);
 extern volatile s16 data_020a0dbc[];
@@ -283,11 +283,11 @@ int data_ov006_0213fbc4 = 1;
 TrampolineTerrorProfile g_profile_MG_TRAMPOLINE2 = {
     dScMgTrampoline2_c_classInit, 0x181, 0x181
 };
-int data_ov006_0213fbd0[] = { (int)_ZN18dScMgTrampoline2_c9StateDoneEv, 0 };
-P2 data_ov006_0213fbd8 = {{ (int)_ZN18dScMgTrampoline2_c10StateIntroEv, 0 }};
-StateValue data_ov006_0213fbe0 = {{ (int)_ZN18dScMgTrampoline2_c13StateWaitExitEv, 0 }};
-S2 data_ov006_0213fbe8 = {{ (int)_ZN18dScMgTrampoline2_c9StatePlayEv, 0 }};
-P2 data_ov006_0213fbf0 = {{ (int)_ZN18dScMgTrampoline2_c12StateResultsEv, 0 }};
+int pmf_dScMgTrampoline2_c_StateDone[] = { (int)_ZN18dScMgTrampoline2_c9StateDoneEv, 0 };
+P2 pmf_dScMgTrampoline2_c_StateIntro = {{ (int)_ZN18dScMgTrampoline2_c10StateIntroEv, 0 }};
+StateValue pmf_dScMgTrampoline2_c_StateWaitExit = {{ (int)_ZN18dScMgTrampoline2_c13StateWaitExitEv, 0 }};
+S2 pmf_dScMgTrampoline2_c_StatePlay = {{ (int)_ZN18dScMgTrampoline2_c9StatePlayEv, 0 }};
+P2 pmf_dScMgTrampoline2_c_StateResults = {{ (int)_ZN18dScMgTrampoline2_c12StateResultsEv, 0 }};
 Tbl data_ov006_0213fbf8 = { 0x600, 0xc00, 0xe00 };
 int data_ov006_0213fc10[] = { 1000, 5000, 10000, 20000 };
 int data_ov006_0213fc20[] = {
@@ -517,7 +517,7 @@ void dScMgTrampoline2_c::BeginIntro() {
     mTouchY = b;
     mDragSoundHandle = 0;
     mScoreGate = 0x3e8;
-    *(struct P2*)mState = data_ov006_0213fbd8;
+    *(struct P2*)mState = pmf_dScMgTrampoline2_c_StateIntro;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c10StateIntroEv
@@ -571,7 +571,7 @@ void dScMgTrampoline2_c::BeginPlay(){
   mTimer = 0xb4;
   mInputEnabled = 1;
   Trmp2Mario_PlaceAtStart((char *)this + 0x7b00);
-  *(struct S2*)mState = data_ov006_0213fbe8;
+  *(struct S2*)mState = pmf_dScMgTrampoline2_c_StatePlay;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c9StatePlayEv
@@ -660,7 +660,7 @@ void dScMgTrampoline2_c::StatePlay()
 void dScMgTrampoline2_c::BeginResults() {
     func_ov006_020ca840((char *)this);
     mTimer = 0x5a;
-    *(struct P2*)mState = data_ov006_0213fbf0;
+    *(struct P2*)mState = pmf_dScMgTrampoline2_c_StateResults;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c12StateResultsEv
@@ -675,7 +675,7 @@ void dScMgTrampoline2_c::StateResults()
     Mg_SetSharedState(0x12);
     mPromptEnabled = 0;
     mTimer = 0xb4;
-    *(double *)mState = data_ov006_0213fbe0.asDouble;
+    *(double *)mState = pmf_dScMgTrampoline2_c_StateWaitExit.asDouble;
 }
 
 // @symbol _ZN18dScMgTrampoline2_c13StateWaitExitEv
@@ -702,8 +702,8 @@ void dScMgTrampoline2_c::StateWaitExit()
     }
     mRoundOver = 1;
     {
-        int w0 = data_ov006_0213fbd0[0];
-        int w1 = data_ov006_0213fbd0[1];
+        int w0 = pmf_dScMgTrampoline2_c_StateDone[0];
+        int w1 = pmf_dScMgTrampoline2_c_StateDone[1];
         w0 = w1 ? w0 : w0;
         mState[0] = w0;
         mState[1] = w1;

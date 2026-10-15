@@ -45,8 +45,8 @@ typedef struct OamAttrTmpl {
 } OamAttrTmpl;
 
 extern "C" {
-extern int data_ov006_0213acb0[2];
-extern int data_ov006_0213aca8[2];
+extern int pmf_Dealer_StateCollect_2[2];
+extern int pmf_Dealer_StateReveal[2];
 /* The two element vtables are emitted here by their key functions. The four
    measured array-construction ABI callbacks reference the ROM address points;
    these names are already mangled, so C linkage means "use literally". */

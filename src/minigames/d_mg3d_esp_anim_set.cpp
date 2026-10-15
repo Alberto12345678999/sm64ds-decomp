@@ -144,12 +144,12 @@ void _ZN3GXS11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 void func_02056374(const void*, u32, u32);
 
 extern int data_ov006_0213c7f4;
-extern int data_ov006_0213c744[];
-extern dMg3DEspModel_c::State data_ov006_0213c704;
-extern dMg3DEspModel_c::State data_ov006_0213c754;
-extern dMg3DEspModel_c::State data_ov006_0213c764;
-extern dMg3DEspModel_c::State data_ov006_0213c76c;
-extern dMg3DEspModel_c::State data_ov006_0213c774;
+extern int pmf_dMg3DEspModel_c_Idle_2[];
+extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Idle;
+extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Hit;
+extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Intro;
+extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Wait;
+extern dMg3DEspModel_c::State pmf_dMg3DEspModel_c_Idle_3;
 extern void *data_ov006_0213c844;
 extern s16 data_02082214[];
 extern unsigned char data_0209d45c;
@@ -344,7 +344,7 @@ void dMg3DEspModel_c::Render()
 {
     char* c = (char*)this;
     int* p = (int*)(((int)c + 0x210));
-    int* d = data_ov006_0213c744;
+    int* d = pmf_dMg3DEspModel_c_Idle_2;
     if (p[0] == d[0]) {
         if (p[1] == d[1]) return;
         if (*(int*)(c + 0x210) == 0) return;
@@ -370,7 +370,7 @@ void dMg3DEspModel_c::Behavior()
      * to preserve the original early-return shape. */
     char* c = (char*)this;
     s32* state = (s32*)((int)c + 0x210);
-    s32* idleState = (s32*)&data_ov006_0213c704;
+    s32* idleState = (s32*)&pmf_dMg3DEspModel_c_Idle;
     if (state[0] == idleState[0]) {
         if (state[1] == idleState[1]) return;
         if (*(s32*)(c + 0x210) == 0) return;
@@ -410,7 +410,7 @@ void dMg3DEspModel_c::StartHit()
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File**)((char*)&data_ov006_02141e8c + 4), 0x40000000, 0x800, 0);
     if (mMuted == 0)
         Sound::PlayBank2_2D(0x191);
-    mState = data_ov006_0213c754;
+    mState = pmf_dMg3DEspModel_c_Hit;
 }
 
 // @symbol _ZN15dMg3DEspModel_c5IntroEv
@@ -440,7 +440,7 @@ void dMg3DEspModel_c::StartIntro()
     mAnimSet.SetRepeats(3);
     if (mMuted == 0)
         Sound::PlayBank2_2D(0x18e);
-    mState = data_ov006_0213c764;
+    mState = pmf_dMg3DEspModel_c_Intro;
 }
 
 // @symbol _ZN15dMg3DEspModel_c4WaitEv
@@ -463,7 +463,7 @@ void dMg3DEspModel_c::StartWait()
 {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim,
         ((BCA_File**)&data_ov006_02141e7c)[1], 0, 0x800, 0);
-    mState = data_ov006_0213c76c;
+    mState = pmf_dMg3DEspModel_c_Wait;
 }
 
 // @symbol _ZN15dMg3DEspModel_c4IdleEv
@@ -476,7 +476,7 @@ void dMg3DEspModel_c::Reset()
 {
     mAnimSet.Reset();
     mShowSparks = 0;
-    mState = data_ov006_0213c774;
+    mState = pmf_dMg3DEspModel_c_Idle_3;
 }
 
 // @symbol _ZN15dMg3DEspModel_c13InitResourcesEv
@@ -541,28 +541,28 @@ extern "C" dScMg3DEsp_cObjState data_ov006_02141f8c[];
 
 /* The ROM PMF constants the seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
-extern "C" dScMg3DEsp_cState data_ov006_0213c6cc;
-extern "C" dScMg3DEsp_cState data_ov006_0213c6fc;
-extern "C" dScMg3DEsp_cState data_ov006_0213c7b4;
-extern "C" dScMg3DEsp_cState data_ov006_0213c7ac;
-extern "C" dScMg3DEsp_cState data_ov006_0213c72c;
-extern "C" dScMg3DEsp_cState data_ov006_0213c79c;
-extern "C" dScMg3DEsp_cState data_ov006_0213c794;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c734;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c77c;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c714;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c6e4;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c71c;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c73c;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c7a4;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c70c;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c6f4;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c74c;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c6ec;
-extern "C" dScMg3DEsp_cObjState data_ov006_0213c6c4;
-extern "C" dScMg3DEsp_cState data_ov006_0213c6dc;
-extern "C" dScMg3DEsp_cState data_ov006_0213c724;
-extern "C" dScMg3DEsp_cState data_ov006_0213c784;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Wait;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Play;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Results;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Deal;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Fade;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Await;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_Resolve;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_CardExit;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_CardTouch;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_CardSeek;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_RowWait;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_RowDecay;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_RowFade;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_SlotWait;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_SlotFall;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_SlotSetup;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_SlotRise;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_SlotKick;
+extern "C" dScMg3DEsp_cObjState pmf_dScMg3DEsp_c_SlotDampen;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_FlashOnce;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_FlashSync;
+extern "C" dScMg3DEsp_cState pmf_dScMg3DEsp_c_FlashQuick;
 
 // @symbol _ZN12dScMg3DEsp_c10DrawBannerEv
 void dScMg3DEsp_c::DrawBanner()
@@ -1458,7 +1458,7 @@ void dScMg3DEsp_c::Results()
         (*(u16 *)(int)(((long long)(int)(c + 0x5548))))--;
         if (*(u16 *)(c + 0x5548) == 0x40) {
             if (*(u8 *)(c + 0x5550) != 0) {
-                int idx = gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0;
+                int idx = gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0;
                 while (idx >= 5)
                     idx -= 5;
                 if (gMgScene != 0) {
@@ -1481,8 +1481,8 @@ void dScMg3DEsp_c::Results()
             return;
         if (*(u8 *)(c + 0x5550) != 0) {
             int rem, quot;
-            Mg_SubmitScore(gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0);
-            rem = gMgScene != 0 ? *(int *)((char *)gMgScene + 0xb4) : 0;
+            Mg_SubmitScore(gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
+            rem = gMgScene != 0 ? ((dScMgBase_c *)gMgScene)->mHudScore : 0;
             quot = 0;
             while (rem >= 5) {
                 rem -= 5;
@@ -1771,38 +1771,38 @@ EspAnimSetAnimationFileHandle data_ov006_02141e6c(0x1ed);
 EspAnimSetTexSequenceFilePtr data_ov006_02141e64(0x1e8);
 
 dScMg3DEsp_cState data_ov006_02141f2c[3] = {
-    data_ov006_0213c6cc,
-    data_ov006_0213c6fc,
-    data_ov006_0213c7b4,
+    pmf_dScMg3DEsp_c_Wait,
+    pmf_dScMg3DEsp_c_Play,
+    pmf_dScMg3DEsp_c_Results,
 };
 dScMg3DEsp_cState data_ov006_02141fac[4] = {
-    data_ov006_0213c7ac,
-    data_ov006_0213c72c,
-    data_ov006_0213c79c,
-    data_ov006_0213c794,
+    pmf_dScMg3DEsp_c_Deal,
+    pmf_dScMg3DEsp_c_Fade,
+    pmf_dScMg3DEsp_c_Await,
+    pmf_dScMg3DEsp_c_Resolve,
 };
 dScMg3DEsp_cObjState data_ov006_02141f5c[3] = {
-    data_ov006_0213c734,
-    data_ov006_0213c77c,
-    data_ov006_0213c714,
+    pmf_dScMg3DEsp_c_CardExit,
+    pmf_dScMg3DEsp_c_CardTouch,
+    pmf_dScMg3DEsp_c_CardSeek,
 };
 dScMg3DEsp_cObjState data_ov006_02141f74[3] = {
-    data_ov006_0213c6e4,
-    data_ov006_0213c71c,
-    data_ov006_0213c73c,
+    pmf_dScMg3DEsp_c_RowWait,
+    pmf_dScMg3DEsp_c_RowDecay,
+    pmf_dScMg3DEsp_c_RowFade,
 };
 dScMg3DEsp_cObjState data_ov006_02141f1c[2] = {
-    data_ov006_0213c7a4,
-    data_ov006_0213c70c,
+    pmf_dScMg3DEsp_c_SlotWait,
+    pmf_dScMg3DEsp_c_SlotFall,
 };
 dScMg3DEsp_cObjState data_ov006_02141f8c[4] = {
-    data_ov006_0213c6f4,
-    data_ov006_0213c74c,
-    data_ov006_0213c6ec,
-    data_ov006_0213c6c4,
+    pmf_dScMg3DEsp_c_SlotSetup,
+    pmf_dScMg3DEsp_c_SlotRise,
+    pmf_dScMg3DEsp_c_SlotKick,
+    pmf_dScMg3DEsp_c_SlotDampen,
 };
 dScMg3DEsp_cState data_ov006_02141f44[3] = {
-    data_ov006_0213c6dc,
-    data_ov006_0213c724,
-    data_ov006_0213c784,
+    pmf_dScMg3DEsp_c_FlashOnce,
+    pmf_dScMg3DEsp_c_FlashSync,
+    pmf_dScMg3DEsp_c_FlashQuick,
 };

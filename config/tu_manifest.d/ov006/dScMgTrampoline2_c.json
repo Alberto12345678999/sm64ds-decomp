@@ -368,31 +368,31 @@
       "evidence": "typed minigame profile with a relocation to dScMgTrampoline2_c_classInit and matching 0x181 behavior/render priorities"
     },
     {
-      "symbol": "data_ov006_0213fbd0",
+      "symbol": "pmf_dScMgTrampoline2_c_StateDone",
       "address": "0x0213fbd0",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateDone member"
     },
     {
-      "symbol": "data_ov006_0213fbd8",
+      "symbol": "pmf_dScMgTrampoline2_c_StateIntro",
       "address": "0x0213fbd8",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateIntro member"
     },
     {
-      "symbol": "data_ov006_0213fbe0",
+      "symbol": "pmf_dScMgTrampoline2_c_StateWaitExit",
       "address": "0x0213fbe0",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateWaitExit member"
     },
     {
-      "symbol": "data_ov006_0213fbe8",
+      "symbol": "pmf_dScMgTrampoline2_c_StatePlay",
       "address": "0x0213fbe8",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StatePlay member"
     },
     {
-      "symbol": "data_ov006_0213fbf0",
+      "symbol": "pmf_dScMgTrampoline2_c_StateResults",
       "address": "0x0213fbf0",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline2_c PMF descriptor targeting the byte-verified StateResults member"
@@ -1561,35 +1561,35 @@
               ],
               "8": [
                 {
-                  "symbol": "data_ov006_0213fbf0",
+                  "symbol": "pmf_dScMgTrampoline2_c_StateResults",
                   "address": 34864112,
                   "sectionBase": 34864112
                 }
               ],
               "10": [
                 {
-                  "symbol": "data_ov006_0213fbd0",
+                  "symbol": "pmf_dScMgTrampoline2_c_StateDone",
                   "address": 34864080,
                   "sectionBase": 34864080
                 }
               ],
               "13": [
                 {
-                  "symbol": "data_ov006_0213fbe0",
+                  "symbol": "pmf_dScMgTrampoline2_c_StateWaitExit",
                   "address": 34864096,
                   "sectionBase": 34864096
                 }
               ],
               "17": [
                 {
-                  "symbol": "data_ov006_0213fbe8",
+                  "symbol": "pmf_dScMgTrampoline2_c_StatePlay",
                   "address": 34864104,
                   "sectionBase": 34864104
                 }
               ],
               "19": [
                 {
-                  "symbol": "data_ov006_0213fbd8",
+                  "symbol": "pmf_dScMgTrampoline2_c_StateIntro",
                   "address": 34864088,
                   "sectionBase": 34864088
                 }

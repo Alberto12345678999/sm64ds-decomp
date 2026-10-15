@@ -133,7 +133,7 @@ extern int data_ov006_02140318;
 extern Vec3 data_ov006_0214037c;
 extern int data_ov006_02140370;
 typedef struct { int w[2]; } Pair;
-extern Pair data_ov006_0213af38;
+extern Pair pmf_Heyho_Motion3;
 
 void Heyho_StartMotion3(char* dst, char* src)
 {
@@ -179,7 +179,7 @@ void Heyho_StartMotion3(char* dst, char* src)
     *(short*)(dst + 0xe6) = 0;
     *(short*)(dst + 0xec) = 8;
     *(int*)(dst + 0xe0) = 0;
-    *(Pair*)(dst + 0x30) = data_ov006_0213af38;
+    *(Pair*)(dst + 0x30) = pmf_Heyho_Motion3;
 }
 
 }
@@ -253,7 +253,7 @@ extern int data_ov006_02140320;
 extern Vec3 data_ov006_021403ac;
 extern int data_ov006_021403a0;
 typedef struct { int w[2]; } Pair;
-extern Pair data_ov006_0213af60;
+extern Pair pmf_Heyho_Motion8;
 
 void Heyho_StartMotion8(char* dst, char* src)
 {
@@ -299,7 +299,7 @@ void Heyho_StartMotion8(char* dst, char* src)
     *(int*)(dst + 0xd8) = *(int*)dst;
     *(short*)(dst + 0xe6) = 0;
     *(int*)(dst + 0xe0) = 0;
-    *(Pair*)(dst + 0x30) = data_ov006_0213af60;
+    *(Pair*)(dst + 0x30) = pmf_Heyho_Motion8;
 }
 
 }
@@ -401,9 +401,9 @@ extern void __register_global_object(void *object, void *destructor, void **node
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void *_ZN7Vector3D1Ev(void *object);
 
-extern int data_ov006_0213af70[2];
-extern int data_ov006_0213afc0[2];
-extern W2 data_ov006_0213afb8;
+extern int pmf_Heyho_StateIdle[2];
+extern int pmf_Heyho_Motion11_2[2];
+extern W2 pmf_Heyho_Motion13_2;
 extern int data_ov006_02140300;
 extern int data_ov006_0214030c;
 extern Vec3 data_ov006_021403d0;
@@ -419,15 +419,15 @@ void Heyho_React(char *c)
     unsigned base;
 
     v = (int *)(c + 0x30);
-    q = (volatile int *)data_ov006_0213af70;
-    if (v[0] == data_ov006_0213af70[0]
+    q = (volatile int *)pmf_Heyho_StateIdle;
+    if (v[0] == pmf_Heyho_StateIdle[0]
         && (v[1] == q[1] || *(int *)(c + 0x30) == 0))
         return;
 
     base = (unsigned)(int)c;
     v = (int *)(base + 0x30);
-    q = (volatile int *)data_ov006_0213afc0;
-    if (v[0] == data_ov006_0213afc0[0]
+    q = (volatile int *)pmf_Heyho_Motion11_2;
+    if (v[0] == pmf_Heyho_Motion11_2[0]
         && (v[1] == q[1] || *(int *)(c + 0x30) == 0))
         return;
 
@@ -461,7 +461,7 @@ void Heyho_React(char *c)
     *(int *)(c + 0xcc) = 0x1400;
     *(int *)(c + 0xd0) = 0x1400;
     *(int *)(c + 0xd4) = 0x1400;
-    *(W2 *)(c + 0x30) = data_ov006_0213afb8;
+    *(W2 *)(c + 0x30) = pmf_Heyho_Motion13_2;
 }
 
 }
@@ -512,8 +512,8 @@ void Heyho_Motion13(char *self)
 namespace n020c63dc {
 extern "C" {
 struct S { int w[2]; };
-extern struct S data_ov006_0213af88;
-void Heyho_StartMotion12(char *p) { *(short *)(p + 0xe6) = 0; *(struct S *)(p + 0x30) = data_ov006_0213af88; }
+extern struct S pmf_Heyho_Motion12;
+void Heyho_StartMotion12(char *p) { *(short *)(p + 0xe6) = 0; *(struct S *)(p + 0x30) = pmf_Heyho_Motion12; }
 
 }
 }
@@ -544,8 +544,8 @@ void Heyho_Motion12(int this_)
 /* ---- Heyho_StartMotion14 ---- */
 namespace n020c6348 {
 extern "C" {
-struct S{int w[2];}; extern struct S data_ov006_0213af18;
-void Heyho_StartMotion14(int* c){ *(int*)((char*)c+0xa8)=0x800; *(int*)((char*)c+0xac)=0; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=data_ov006_0213af18; }
+struct S{int w[2];}; extern struct S pmf_Heyho_Motion14;
+void Heyho_StartMotion14(int* c){ *(int*)((char*)c+0xa8)=0x800; *(int*)((char*)c+0xac)=0; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion14; }
 
 }
 }
@@ -593,8 +593,8 @@ skip_else_if:
 /* ---- Heyho_StartMotion10 ---- */
 namespace n020c6248 {
 extern "C" {
-struct S{int w[2];}; extern struct S data_ov006_0213af78;
-void Heyho_StartMotion10(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xac)=0x800; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=data_ov006_0213af78; *(short*)((char*)c+0xe6)=0; }
+struct S{int w[2];}; extern struct S pmf_Heyho_Motion10;
+void Heyho_StartMotion10(int* c){ *(int*)((char*)c+0xa8)=0; *(int*)((char*)c+0xac)=0x800; *(int*)((char*)c+0xb0)=0; *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion10; *(short*)((char*)c+0xe6)=0; }
 
 }
 }
@@ -625,13 +625,13 @@ void Heyho_Motion10(int this_) {
 namespace n020c6188 {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af20;
+extern struct S pmf_Heyho_Motion0;
 void Heyho_StartMotion0(void *c){
   *(short*)((char*)c+0xe6)=0;
   *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
   *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
   *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af20;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion0;
 }
 
 }
@@ -706,7 +706,7 @@ extern void Vec3_Sub(Vec3* out, Vec3* a, Vec3* b);
 extern int NormalizeVec3IfNonZero(Vec3* v);
 extern void Vec3_MulScalarInPlace(int* v, int s);
 typedef struct { int w[2]; } S2;
-extern S2 data_ov006_0213af68;
+extern S2 pmf_Heyho_Motion9;
 
 void Heyho_StartMotion9(char* self)
 {
@@ -775,7 +775,7 @@ void Heyho_StartMotion9(char* self)
         Vec3_MulScalarInPlace((int*)(self + 0xa8), *(int*)(self + 0xdc));
     }
 
-    *(S2*)(self + 0x30) = data_ov006_0213af68;
+    *(S2*)(self + 0x30) = pmf_Heyho_Motion9;
 }
 
 }
@@ -845,8 +845,8 @@ void Heyho_Motion9(char* c)
 /* ---- Heyho_StartMotion7 ---- */
 namespace n020c5cf4 {
 extern "C" {
-struct S{int w[2];}; extern struct S data_ov006_0213af58;
-void Heyho_StartMotion7(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(int*)((char*)c+0xac)=*(int*)((char*)c+8); *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc); *(struct S*)((char*)c+0x30)=data_ov006_0213af58; }
+struct S{int w[2];}; extern struct S pmf_Heyho_Motion7;
+void Heyho_StartMotion7(int* c){ *(int*)((char*)c+0xa8)=*(int*)((char*)c+4); *(int*)((char*)c+0xac)=*(int*)((char*)c+8); *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc); *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion7; }
 
 }
 }
@@ -907,7 +907,7 @@ struct Obj {
     short fe6;
 };
 
-extern W2 data_ov006_0213af40;
+extern W2 pmf_Heyho_Motion4;
 
 void Heyho_StartMotion4(struct Obj *o)
 {
@@ -952,7 +952,7 @@ void Heyho_StartMotion4(struct Obj *o)
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = data_ov006_0213af40;
+    *(W2 *)((char *)o + 0x30) = pmf_Heyho_Motion4;
 }
 
 }
@@ -1037,7 +1037,7 @@ struct Obj {
     short fe6;
 };
 
-extern W2 data_ov006_0213af50;
+extern W2 pmf_Heyho_Motion6;
 
 void Heyho_StartMotion6(struct Obj *o)
 {
@@ -1082,7 +1082,7 @@ void Heyho_StartMotion6(struct Obj *o)
     } else {
         Vec3_MulScalarInPlace((int *)&o->fa8, o->fdc);
     }
-    *(W2 *)((char *)o + 0x30) = data_ov006_0213af50;
+    *(W2 *)((char *)o + 0x30) = pmf_Heyho_Motion6;
 }
 
 }
@@ -1147,13 +1147,13 @@ void Heyho_Motion6(char* c)
 namespace n020c561c {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af30;
+extern struct S pmf_Heyho_Motion2;
 void Heyho_StartMotion2(void *c){
   *(short*)((char*)c+0xe6)=0;
   *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
   *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
   *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af30;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion2;
 }
 
 }
@@ -1199,13 +1199,13 @@ void Heyho_Motion2(char *c)
 namespace n020c54f4 {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af48;
+extern struct S pmf_Heyho_Motion5;
 void Heyho_StartMotion5(void *c){
   *(short*)((char*)c+0xe6)=0;
   *(int*)((char*)c+0xa8)=*(int*)((char*)c+4);
   *(int*)((char*)c+0xac)=*(int*)((char*)c+8);
   *(int*)((char*)c+0xb0)=*(int*)((char*)c+0xc);
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af48;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion5;
 }
 
 }
@@ -1252,7 +1252,7 @@ namespace n020c5370 {
 extern "C" {
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
-extern int data_ov006_0213af28[];
+extern int pmf_Heyho_Motion1[];
 
 struct W2 { int w[2]; };
 
@@ -1269,7 +1269,7 @@ void Heyho_StartMotion1(char *c)
     *(int *)(c + 0xa8) = *(int *)(c + 0x4);
     *(int *)(c + 0xac) = *(int *)(c + 0x8);
     *(int *)(c + 0xb0) = *(int *)(c + 0xc);
-    *(struct W2 *)(c + 0x30) = *(struct W2 *)data_ov006_0213af28;
+    *(struct W2 *)(c + 0x30) = *(struct W2 *)pmf_Heyho_Motion1;
 }
 
 }
@@ -1423,12 +1423,12 @@ extern "C" void Heyho_Motion1(char *c)
 namespace n020c4f68 {
 extern "C" {
 struct S{int w[2];};
-extern struct S data_ov006_0213af80;
+extern struct S pmf_Heyho_Motion11;
 extern void D3D_PlaySeAtX(int a, int b);
 void Heyho_StartMotion11(int *c){
   *(short*)((char*)c+0xea)=0;
   D3D_PlaySeAtX(0x1c8, *(int*)((char*)c+0x9c));
-  *(struct S*)((char*)c+0x30)=data_ov006_0213af80;
+  *(struct S*)((char*)c+0x30)=pmf_Heyho_Motion11;
 }
 
 }
@@ -1520,8 +1520,8 @@ void Heyho_Settle(char* c)
 namespace n020c4d20 {
 extern "C" {
 struct S { int w[2]; };
-extern struct S data_ov006_0213af90;
-void Heyho_SetIdle(char *p) { *(struct S *)(p + 0x30) = data_ov006_0213af90; }
+extern struct S pmf_Heyho_StateIdle_2;
+void Heyho_SetIdle(char *p) { *(struct S *)(p + 0x30) = pmf_Heyho_StateIdle_2; }
 
 }
 }
@@ -1571,7 +1571,7 @@ struct Sub {
 extern "C" void Heyho_Draw(int this_) {
     Vector3 v;
     int *p = (int*)(((int)this_ + 0x30));
-    Vector3 *d = &data_ov006_0213af98;
+    Vector3 *d = &pmf_Heyho_StateIdle_3;
     if (p[0] == d->x) {
         if (p[1] == d->y)
             return;
@@ -1800,14 +1800,14 @@ typedef struct dActor_c {
     short fE6;                          /* 0xe6 */
 } dActor_c;
 
-extern UID data_ov006_0213afa0;
-extern UID data_ov006_0213afb0;
+extern UID pmf_Heyho_Motion13;
+extern UID pmf_Heyho_Motion1_2;
 
 int Heyho_IsChasing(dActor_c *a)
 {
     int result = 0;
     UID *p = (UID *)(int)(&a->id);
-    UID *c = (UID *)(int)(&data_ov006_0213afa0);
+    UID *c = (UID *)(int)(&pmf_Heyho_Motion13);
     int neq = 1;
     if (p->low == c->low) {
         if (p->high == c->high || a->id.low == 0)
@@ -1817,7 +1817,7 @@ int Heyho_IsChasing(dActor_c *a)
         int flag = 1;
         int neq2 = flag;
         UID *q = (UID *)(int)((long long)(unsigned int)&a->id);
-        UID *c2 = (UID *)(int)(&data_ov006_0213afb0);
+        UID *c2 = (UID *)(int)(&pmf_Heyho_Motion1_2);
         if (q->low == c2->low) {
             if (q->high == c2->high || a->id.low == 0)
                 neq2 = 0;
@@ -2132,7 +2132,7 @@ void Heyho_ReactAll(void){
 namespace n020c4060 {
 extern "C" {
 // Scans data_ov006_02140328 entries (stride 0xf0) from data_ov006_02140324:
-// returns 0 if any entry's pair at +0x30 mismatches data_ov006_0213afa8
+// returns 0 if any entry's pair at +0x30 mismatches pmf_Heyho_StateIdle_4
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
     char _pad0[0x30];  // 0x00
@@ -2143,14 +2143,14 @@ typedef struct Ent {
 
 extern int data_ov006_02140328;
 extern Ent* data_ov006_02140324;
-extern int data_ov006_0213afa8[2];
+extern int pmf_Heyho_StateIdle_4[2];
 
 int Heyho_AllIdle(void) {
     int i;
     for (i = 0; i < data_ov006_02140328; i++) {
         int* v = (int*)(&data_ov006_02140324[i].x);
-        volatile int* q = (volatile int*)data_ov006_0213afa8;
-        if (v[0] != data_ov006_0213afa8[0]
+        volatile int* q = (volatile int*)pmf_Heyho_StateIdle_4;
+        if (v[0] != pmf_Heyho_StateIdle_4[0]
             || (v[1] != q[1] && data_ov006_02140324[i].x != 0))
             return 0;
     }

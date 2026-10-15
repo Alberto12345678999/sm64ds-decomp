@@ -117,14 +117,14 @@ void Mg_DrawScoreTally(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
 extern PMF data_ov006_02141870[];
 /* The ROM PMF constants the table copies from (unlicensed .data). */
-extern PMF data_ov006_0213c030;
-extern PMF data_ov006_0213c000;
-extern PMF data_ov006_0213c028;
-extern PMF data_ov006_0213bff8;
-extern PMF data_ov006_0213c010;
-extern PMF data_ov006_0213c040;
-extern PMF data_ov006_0213c008;
-extern PMF data_ov006_0213bfe8;
+extern PMF pmf_dScMgCup_c_StateSetup;
+extern PMF pmf_dScMgCup_c_StatePrepareShuffle;
+extern PMF pmf_dScMgCup_c_StateShuffle;
+extern PMF pmf_dScMgCup_c_StateWaitForInput;
+extern PMF pmf_dScMgCup_c_StateSelect;
+extern PMF pmf_dScMgCup_c_StateResult;
+extern PMF pmf_dScMgCup_c_StateFinish;
+extern PMF pmf_dScMgCup_c_StateIdle;
 extern AnimStep *data_ov006_0213c0d8[];
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
@@ -1069,12 +1069,12 @@ extern "C" void Cup_Nothing()
  * Behavior indexes this table by mState. Definition order is the retail
  * initializer's copy order. */
 PMF data_ov006_02141870[8] = {
-    data_ov006_0213c030,
-    data_ov006_0213c000,
-    data_ov006_0213c028,
-    data_ov006_0213bff8,
-    data_ov006_0213c010,
-    data_ov006_0213c040,
-    data_ov006_0213c008,
-    data_ov006_0213bfe8,
+    pmf_dScMgCup_c_StateSetup,
+    pmf_dScMgCup_c_StatePrepareShuffle,
+    pmf_dScMgCup_c_StateShuffle,
+    pmf_dScMgCup_c_StateWaitForInput,
+    pmf_dScMgCup_c_StateSelect,
+    pmf_dScMgCup_c_StateResult,
+    pmf_dScMgCup_c_StateFinish,
+    pmf_dScMgCup_c_StateIdle,
 };

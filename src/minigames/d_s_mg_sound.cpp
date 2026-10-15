@@ -280,7 +280,7 @@ s32 dScMgSound_c::Behavior()
                         }
                     }
                     Mg_SubmitScore(gMgScene != 0
-                                            ? *(int *)((char *)gMgScene + 0xb4) : 0);
+                                            ? ((dScMgBase_c *)gMgScene)->mHudScore : 0);
                     StartWinSpriteA();
                     StartWinSpriteB();
                     mPromptEnabled = 0;

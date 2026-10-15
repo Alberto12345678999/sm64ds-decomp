@@ -139,31 +139,31 @@ extern PMF  data_ov006_021419f8[];
 extern PMF0 data_ov006_02141a18[];
 /* The ROM PMF constants all seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
-extern PMF0 data_ov006_0213c47c;
-extern PMF0 data_ov006_0213c414;
-extern PMF0 data_ov006_0213c404;
-extern PMF0 data_ov006_0213c424;
-extern PMF0 data_ov006_0213c3f4;
-extern PMF1 data_ov006_0213c3e4;
-extern PMF1 data_ov006_0213c3dc;
-extern PMF1 data_ov006_0213c3d4;
-extern PMF1 data_ov006_0213c3ec;
-extern PMF0 data_ov006_0213c4b4;
-extern PMF0 data_ov006_0213c4ac;
-extern PMF data_ov006_0213c42c;
-extern PMF data_ov006_0213c494;
-extern PMF data_ov006_0213c48c;
-extern PMF data_ov006_0213c474;
-extern PMF data_ov006_0213c40c;
-extern PMF data_ov006_0213c464;
-extern PMF data_ov006_0213c45c;
-extern PMF data_ov006_0213c49c;
-extern PMF data_ov006_0213c444;
-extern PMF data_ov006_0213c43c;
-extern PMF data_ov006_0213c4a4;
-extern PMF data_ov006_0213c41c;
-extern PMF data_ov006_0213c484;
-extern PMF data_ov006_0213c46c;
+extern PMF0 pmf_dScMgCurling2_c_BeginRound;
+extern PMF0 pmf_dScMgCurling2_c_Play;
+extern PMF0 pmf_dScMgCurling2_c_NextThrow;
+extern PMF0 pmf_dScMgCurling2_c_EndRound;
+extern PMF0 pmf_dScMgCurling2_c_Idle;
+extern PMF1 pmf_dScMgCurling2_c_StoneWait;
+extern PMF1 pmf_dScMgCurling2_c_StoneSlide;
+extern PMF1 pmf_dScMgCurling2_c_StoneRest;
+extern PMF1 pmf_dScMgCurling2_c_StoneSteer;
+extern PMF0 pmf_dScMgCurling2_c_DragBegin;
+extern PMF0 pmf_dScMgCurling2_c_DragUpdate;
+extern PMF pmf_dScMgCurling2_c_PickStepMode;
+extern PMF pmf_dScMgCurling2_c_StepXOnly;
+extern PMF pmf_dScMgCurling2_c_StepXAndY;
+extern PMF pmf_dScMgCurling2_c_StepXPickFast;
+extern PMF pmf_dScMgCurling2_c_StepXPushPosFast;
+extern PMF pmf_dScMgCurling2_c_StepXPushNegFast;
+extern PMF pmf_dScMgCurling2_c_StepXSettleFast;
+extern PMF pmf_dScMgCurling2_c_StepXPick;
+extern PMF pmf_dScMgCurling2_c_StepXPushPos;
+extern PMF pmf_dScMgCurling2_c_StepXPushNeg;
+extern PMF pmf_dScMgCurling2_c_StepXSettle;
+extern PMF pmf_dScMgCurling2_c_StepYRestart;
+extern PMF pmf_dScMgCurling2_c_StepYRampUp;
+extern PMF pmf_dScMgCurling2_c_StepYRampDown;
 
 }  /* extern "C" */
 
@@ -1876,41 +1876,41 @@ extern "C" void *dScMgCurling2_c_classInit()
  * All seven PMF state tables plain-copied from the ROM PMF constants, in
  * retail copy order. */
 PMF0 data_ov006_02141a18[5] = {
-    data_ov006_0213c47c,
-    data_ov006_0213c414,
-    data_ov006_0213c404,
-    data_ov006_0213c424,
-    data_ov006_0213c3f4,
+    pmf_dScMgCurling2_c_BeginRound,
+    pmf_dScMgCurling2_c_Play,
+    pmf_dScMgCurling2_c_NextThrow,
+    pmf_dScMgCurling2_c_EndRound,
+    pmf_dScMgCurling2_c_Idle,
 };
 PMF1 data_ov006_021419d8[4] = {
-    data_ov006_0213c3e4,
-    data_ov006_0213c3dc,
-    data_ov006_0213c3d4,
-    data_ov006_0213c3ec,
+    pmf_dScMgCurling2_c_StoneWait,
+    pmf_dScMgCurling2_c_StoneSlide,
+    pmf_dScMgCurling2_c_StoneRest,
+    pmf_dScMgCurling2_c_StoneSteer,
 };
 PMF0 data_ov006_02141978[2] = {
-    data_ov006_0213c4b4,
-    data_ov006_0213c4ac,
+    pmf_dScMgCurling2_c_DragBegin,
+    pmf_dScMgCurling2_c_DragUpdate,
 };
 PMF data_ov006_02141988[3] = {
-    data_ov006_0213c42c,
-    data_ov006_0213c494,
-    data_ov006_0213c48c,
+    pmf_dScMgCurling2_c_PickStepMode,
+    pmf_dScMgCurling2_c_StepXOnly,
+    pmf_dScMgCurling2_c_StepXAndY,
 };
 PMF data_ov006_021419b8[4] = {
-    data_ov006_0213c474,
-    data_ov006_0213c40c,
-    data_ov006_0213c464,
-    data_ov006_0213c45c,
+    pmf_dScMgCurling2_c_StepXPickFast,
+    pmf_dScMgCurling2_c_StepXPushPosFast,
+    pmf_dScMgCurling2_c_StepXPushNegFast,
+    pmf_dScMgCurling2_c_StepXSettleFast,
 };
 PMF data_ov006_021419f8[4] = {
-    data_ov006_0213c49c,
-    data_ov006_0213c444,
-    data_ov006_0213c43c,
-    data_ov006_0213c4a4,
+    pmf_dScMgCurling2_c_StepXPick,
+    pmf_dScMgCurling2_c_StepXPushPos,
+    pmf_dScMgCurling2_c_StepXPushNeg,
+    pmf_dScMgCurling2_c_StepXSettle,
 };
 PMF data_ov006_021419a0[3] = {
-    data_ov006_0213c41c,
-    data_ov006_0213c484,
-    data_ov006_0213c46c,
+    pmf_dScMgCurling2_c_StepYRestart,
+    pmf_dScMgCurling2_c_StepYRampUp,
+    pmf_dScMgCurling2_c_StepYRampDown,
 };

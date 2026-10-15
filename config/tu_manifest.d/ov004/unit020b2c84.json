@@ -803,7 +803,7 @@
       "source": "0x20b99d4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc234",
+      "symbol": "pmf_Banner_SetupSlideFromTop",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc234"
@@ -813,7 +813,7 @@
       "source": "0x20b99d8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc23c",
+      "symbol": "pmf_Banner_SetupSlideFromBottom",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc23c"
@@ -823,7 +823,7 @@
       "source": "0x20b99dc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc244",
+      "symbol": "pmf_Banner_SetupSlideFromLeft",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc244"
@@ -833,7 +833,7 @@
       "source": "0x20b99e0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc16c",
+      "symbol": "pmf_Banner_SetupSlideFromRight",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc16c"
@@ -843,7 +843,7 @@
       "source": "0x20b99e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1bc",
+      "symbol": "pmf_Banner_SetupZoomBurst",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1bc"
@@ -853,7 +853,7 @@
       "source": "0x20b99e8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1ac",
+      "symbol": "pmf_Banner_SetupPopSpin",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1ac"
@@ -863,7 +863,7 @@
       "source": "0x20b99ec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc25c",
+      "symbol": "pmf_Banner_SetupZoom",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc25c"
@@ -873,7 +873,7 @@
       "source": "0x20b99f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc264",
+      "symbol": "pmf_Banner_SetupZoomBurst_2",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc264"
@@ -883,7 +883,7 @@
       "source": "0x20b99f4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1c4",
+      "symbol": "pmf_Banner_SetupPopSpin_2",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1c4"
@@ -893,7 +893,7 @@
       "source": "0x20b99f8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc164",
+      "symbol": "pmf_Banner_SetupFall",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc164"
@@ -1233,7 +1233,7 @@
       "source": "0x20b9a80",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc15c",
+      "symbol": "pmf_Banner_SetupDrop",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc15c"
@@ -1243,7 +1243,7 @@
       "source": "0x20b9a84",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1d4",
+      "symbol": "pmf_Banner_SetupNone",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1d4"
@@ -1253,7 +1253,7 @@
       "source": "0x20b9a88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc22c",
+      "symbol": "pmf_Banner_UpdateSlideFromTop",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc22c"
@@ -1263,7 +1263,7 @@
       "source": "0x20b9a8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc19c",
+      "symbol": "pmf_Banner_UpdateSlideFromBottom",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc19c"
@@ -1273,7 +1273,7 @@
       "source": "0x20b9a90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc184",
+      "symbol": "pmf_Banner_UpdateSlideFromLeft",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc184"
@@ -1283,7 +1283,7 @@
       "source": "0x20b9a94",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc204",
+      "symbol": "pmf_Banner_UpdateSlideFromRight",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc204"
@@ -1293,7 +1293,7 @@
       "source": "0x20b9a98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc18c",
+      "symbol": "pmf_Banner_UpdateZoom_2",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc18c"
@@ -1303,7 +1303,7 @@
       "source": "0x20b9a9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1fc",
+      "symbol": "pmf_Banner_UpdatePopSpin_2",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1fc"
@@ -1313,7 +1313,7 @@
       "source": "0x20b9aa0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1f4",
+      "symbol": "pmf_Banner_UpdateZoom_3",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1f4"
@@ -1323,7 +1323,7 @@
       "source": "0x20b9aa4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc154",
+      "symbol": "pmf_Banner_UpdateZoom",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc154"
@@ -1333,7 +1333,7 @@
       "source": "0x20b9aa8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1dc",
+      "symbol": "pmf_Banner_UpdatePopSpin",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1dc"
@@ -1343,7 +1343,7 @@
       "source": "0x20b9aac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1e4",
+      "symbol": "pmf_Banner_UpdateFall",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1e4"
@@ -1353,7 +1353,7 @@
       "source": "0x20b9ab0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc214",
+      "symbol": "pmf_Banner_UpdateDrop",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc214"
@@ -1363,7 +1363,7 @@
       "source": "0x20b9ab4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1a4",
+      "symbol": "pmf_Banner_DrawZoomB",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1a4"
@@ -1373,7 +1373,7 @@
       "source": "0x20b9ab8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc24c",
+      "symbol": "pmf_Banner_DrawPopSpinB",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc24c"
@@ -1383,7 +1383,7 @@
       "source": "0x20b9abc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc21c",
+      "symbol": "pmf_Banner_DrawZoomB_2",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc21c"
@@ -1393,7 +1393,7 @@
       "source": "0x20b9ac0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc26c",
+      "symbol": "pmf_Banner_DrawZoomA",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc26c"
@@ -1403,7 +1403,7 @@
       "source": "0x20b9ac4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc1cc",
+      "symbol": "pmf_Banner_DrawPopSpinA",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc1cc"
@@ -1413,7 +1413,7 @@
       "source": "0x20b9ac8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc174",
+      "symbol": "pmf_Banner_DrawSqueeze",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc174"
@@ -1423,7 +1423,7 @@
       "source": "0x20b9acc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov004_020bc194",
+      "symbol": "pmf_Banner_DrawLevelNumber",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x20bc194"

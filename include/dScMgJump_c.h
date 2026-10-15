@@ -85,7 +85,7 @@ struct dScMgJump_c : dScMgD3DBase_c {
     s32 Render();           /* slot  9 -- src/minigames/d_s_mg_jump_methods.cpp */
 
     /* The minigame's state functions. Unnamed in the cartridge; stored as
-       {fn, 0} pairs in the data_ov006_0213cb4c table rows, dispatched through
+       {fn, 0} pairs in the pmf_dScMgJump_c_State_Result table rows, dispatched through
        mState by Behavior. The mangled spellings are what the table relocs
        resolve by. */
     void State_Idle();

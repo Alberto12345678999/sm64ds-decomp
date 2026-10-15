@@ -1762,7 +1762,7 @@ void dScMgLuigi_c::StartRound(int arg1)
             *(int *)&mLevel = 0x270e;
 
         if (gMgScene != 0)
-            *(int *)((char *)gMgScene + 0xb4) = 0;
+            ((dScMgBase_c *)gMgScene)->mHudScore = 0;
 
         p = (char *)gMgScene;
         Mg_SubmitScore(p != 0 ? *(int *)(p + 0xb4) : 0);

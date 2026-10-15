@@ -213,59 +213,59 @@ extern unsigned char *data_ov004_020bca44[];
 
 /* Behavior and render records. Each comment names the member the record
    points at (ov004 relocs.txt). */
-extern dMgState_c::Callback data_ov004_020bc8bc;  /* State01_Update */
-extern dMgState_c::Callback data_ov004_020bc8c4;  /* State02_Update */
-extern dMgState_c::Callback data_ov004_020bc8cc;  /* DrawScore */
-extern dMgState_c::Callback data_ov004_020bc8d4;  /* State03_Update */
-extern dMgState_c::Callback data_ov004_020bc8dc;  /* UpdateRetryFadeOut */
-extern dMgState_c::Callback data_ov004_020bc8e4;  /* State16_Update */
-extern dMgState_c::Callback data_ov004_020bc8ec;  /* State04_Update */
-extern dMgState_c::Callback data_ov004_020bc8f4;  /* State05_Update */
-extern dMgState_c::Callback data_ov004_020bc8fc;  /* UpdateRetryPrompt */
-extern dMgState_c::Callback data_ov004_020bc904;  /* UpdateGameOverToMenu */
-extern dMgState_c::Callback data_ov004_020bc90c;  /* State06_Update */
-extern dMgState_c::Callback data_ov004_020bc914;  /* UpdateRetryFadeOut */
-extern dMgState_c::Callback data_ov004_020bc91c;  /* DrawRecordTable */
-extern dMgState_c::Callback data_ov004_020bc924;  /* State18_Update */
-extern dMgState_c::Callback data_ov004_020bc93c;  /* UpdateAfterHidden */
-extern dMgState_c::Callback data_ov004_020bc98c;  /* UpdateGameOverToMenu */
-extern dMgState_c::Callback data_ov004_020bc994;  /* UpdateFadeThenResume */
-extern dMgState_c::Callback data_ov004_020bc9ac;  /* UpdateWaitThenResume */
-extern dMgState_c::Callback data_ov004_020bc9b4;  /* UpdateWaitThenResume */
-extern dMgState_c::Callback data_ov004_020bc9c4;  /* DrawScoreDigits */
-extern dMgState_c::Callback data_ov004_020bc9cc;  /* State17_Update */
-extern dMgState_c::Callback data_ov004_020bc9e4;  /* State09_Update */
-extern dMgState_c::Callback data_ov004_020bc9fc;  /* State10_Update */
-extern dMgState_c::Callback data_ov004_020bca04;  /* UpdateFadeThenResume */
-extern dMgState_c::Callback data_ov004_020bca14;  /* UpdateRetryFadeOut */
-extern dMgState_c::Callback data_ov004_020bca1c;  /* State00_Update */
-extern dMgState_c::Callback data_ov004_020bca24;  /* State11_Update */
-extern dMgState_c::Callback data_ov004_020bca2c;  /* DrawRecordTable */
-extern dMgState_c::Callback data_ov004_020bca34;  /* State19_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State01_Update;  /* State01_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State02_Update;  /* State02_Update */
+extern dMgState_c::Callback pmf_dMgState_c_DrawScore;  /* DrawScore */
+extern dMgState_c::Callback pmf_dMgState_c_State03_Update;  /* State03_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut;  /* UpdateRetryFadeOut */
+extern dMgState_c::Callback pmf_dMgState_c_State16_Update;  /* State16_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State04_Update;  /* State04_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State05_Update;  /* State05_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryPrompt;  /* UpdateRetryPrompt */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateGameOverToMenu;  /* UpdateGameOverToMenu */
+extern dMgState_c::Callback pmf_dMgState_c_State06_Update;  /* State06_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut_2;  /* UpdateRetryFadeOut */
+extern dMgState_c::Callback pmf_dMgState_c_DrawRecordTable;  /* DrawRecordTable */
+extern dMgState_c::Callback pmf_dMgState_c_State18_Update;  /* State18_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateAfterHidden;  /* UpdateAfterHidden */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateGameOverToMenu_2;  /* UpdateGameOverToMenu */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateFadeThenResume;  /* UpdateFadeThenResume */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateWaitThenResume;  /* UpdateWaitThenResume */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateWaitThenResume_2;  /* UpdateWaitThenResume */
+extern dMgState_c::Callback pmf_dMgState_c_DrawScoreDigits;  /* DrawScoreDigits */
+extern dMgState_c::Callback pmf_dMgState_c_State17_Update;  /* State17_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State09_Update;  /* State09_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State10_Update;  /* State10_Update */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateFadeThenResume_2;  /* UpdateFadeThenResume */
+extern dMgState_c::Callback pmf_dMgState_c_UpdateRetryFadeOut_3;  /* UpdateRetryFadeOut */
+extern dMgState_c::Callback pmf_dMgState_c_State00_Update;  /* State00_Update */
+extern dMgState_c::Callback pmf_dMgState_c_State11_Update;  /* State11_Update */
+extern dMgState_c::Callback pmf_dMgState_c_DrawRecordTable_2;  /* DrawRecordTable */
+extern dMgState_c::Callback pmf_dMgState_c_State19_Update;  /* State19_Update */
 
 /* The per-state enter handlers, in state order. These are pointer-to-member
  * constants that mwccarm laid down in ov004's .data; the states they belong to
  * are not yet named, so they are still carried by address. */
-extern dMgState_c::Callback data_ov004_020bc974;
-extern dMgState_c::Callback data_ov004_020bc96c;
-extern dMgState_c::Callback data_ov004_020bc964;
-extern dMgState_c::Callback data_ov004_020bc95c;
-extern dMgState_c::Callback data_ov004_020bc954;
-extern dMgState_c::Callback data_ov004_020bc94c;
-extern dMgState_c::Callback data_ov004_020bc944;
-extern dMgState_c::Callback data_ov004_020bc92c;
-extern dMgState_c::Callback data_ov004_020bc934;
-extern dMgState_c::Callback data_ov004_020bc97c;
-extern dMgState_c::Callback data_ov004_020bc984;
-extern dMgState_c::Callback data_ov004_020bc99c;
-extern dMgState_c::Callback data_ov004_020bc9a4;
-extern dMgState_c::Callback data_ov004_020bca3c;
-extern dMgState_c::Callback data_ov004_020bc9bc;
-extern dMgState_c::Callback data_ov004_020bc9d4;
-extern dMgState_c::Callback data_ov004_020bc9dc;
-extern dMgState_c::Callback data_ov004_020bc9ec;
-extern dMgState_c::Callback data_ov004_020bc9f4;
-extern dMgState_c::Callback data_ov004_020bca0c;
+extern dMgState_c::Callback pmf_dMgState_c_State00_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State01_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State02_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State03_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State04_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State05_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State06_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State07_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State08_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State09_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State10_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State11_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State12_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State13_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State14_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State15_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State16_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State17_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State18_Enter;
+extern dMgState_c::Callback pmf_dMgState_c_State19_Enter;
 
 // @symbol Mg_ResetBannerLayout
 extern "C" void Mg_ResetBannerLayout(void) {
@@ -309,26 +309,26 @@ dMgState_c::dMgState_c()
 void dMgState_c::SetState(s32 state)
 {
     static Callback sEnterTable[20] = {
-        data_ov004_020bc974,  /*  0: State00_Enter */
-        data_ov004_020bc96c,  /*  1: State01_Enter */
-        data_ov004_020bc964,  /*  2: State02_Enter */
-        data_ov004_020bc95c,  /*  3: State03_Enter */
-        data_ov004_020bc954,  /*  4: State04_Enter */
-        data_ov004_020bc94c,  /*  5: State05_Enter */
-        data_ov004_020bc944,  /*  6: State06_Enter */
-        data_ov004_020bc92c,  /*  7: State07_Enter */
-        data_ov004_020bc934,  /*  8: State08_Enter */
-        data_ov004_020bc97c,  /*  9: State09_Enter */
-        data_ov004_020bc984,  /* 10: State10_Enter */
-        data_ov004_020bc99c,  /* 11: State11_Enter */
-        data_ov004_020bc9a4,  /* 12: State12_Enter */
-        data_ov004_020bca3c,  /* 13: State13_Enter */
-        data_ov004_020bc9bc,  /* 14: State14_Enter */
-        data_ov004_020bc9d4,  /* 15: State15_Enter */
-        data_ov004_020bc9dc,  /* 16: State16_Enter */
-        data_ov004_020bc9ec,  /* 17: State17_Enter */
-        data_ov004_020bc9f4,  /* 18: State18_Enter */
-        data_ov004_020bca0c,  /* 19: State19_Enter */
+        pmf_dMgState_c_State00_Enter,  /*  0: State00_Enter */
+        pmf_dMgState_c_State01_Enter,  /*  1: State01_Enter */
+        pmf_dMgState_c_State02_Enter,  /*  2: State02_Enter */
+        pmf_dMgState_c_State03_Enter,  /*  3: State03_Enter */
+        pmf_dMgState_c_State04_Enter,  /*  4: State04_Enter */
+        pmf_dMgState_c_State05_Enter,  /*  5: State05_Enter */
+        pmf_dMgState_c_State06_Enter,  /*  6: State06_Enter */
+        pmf_dMgState_c_State07_Enter,  /*  7: State07_Enter */
+        pmf_dMgState_c_State08_Enter,  /*  8: State08_Enter */
+        pmf_dMgState_c_State09_Enter,  /*  9: State09_Enter */
+        pmf_dMgState_c_State10_Enter,  /* 10: State10_Enter */
+        pmf_dMgState_c_State11_Enter,  /* 11: State11_Enter */
+        pmf_dMgState_c_State12_Enter,  /* 12: State12_Enter */
+        pmf_dMgState_c_State13_Enter,  /* 13: State13_Enter */
+        pmf_dMgState_c_State14_Enter,  /* 14: State14_Enter */
+        pmf_dMgState_c_State15_Enter,  /* 15: State15_Enter */
+        pmf_dMgState_c_State16_Enter,  /* 16: State16_Enter */
+        pmf_dMgState_c_State17_Enter,  /* 17: State17_Enter */
+        pmf_dMgState_c_State18_Enter,  /* 18: State18_Enter */
+        pmf_dMgState_c_State19_Enter,  /* 19: State19_Enter */
     };
 
     mState = state;
@@ -368,7 +368,7 @@ void dMgState_c::State00_Enter() {
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
   Mg_ShowBanner(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
   Mg_PlayJingle((void*)4);
-  mBehavior = data_ov004_020bca1c;
+  mBehavior = pmf_dMgState_c_State00_Update;
 }
 
 // @symbol _ZN10dMgState_c14State00_UpdateEv
@@ -398,7 +398,7 @@ void dMgState_c::State00_Update() {
 }
 
 // @symbol _ZN10dMgState_c13State01_EnterEv
-void dMgState_c::State01_Enter() { mTimer = 15; mBehavior = data_ov004_020bc8bc; }
+void dMgState_c::State01_Enter() { mTimer = 15; mBehavior = pmf_dMgState_c_State01_Update; }
 
 // @symbol _ZN10dMgState_c14State01_UpdateEv
 void dMgState_c::State01_Update() {
@@ -425,7 +425,7 @@ void dMgState_c::State02_Enter() {
   mTimer = 0xb4;
   Mg_ShowBanner(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
   Mg_PlayJingle((void*)1);
-  mBehavior = data_ov004_020bc8c4;
+  mBehavior = pmf_dMgState_c_State02_Update;
 }
 
 // @symbol _ZN10dMgState_c14State02_UpdateEv
@@ -462,7 +462,7 @@ void dMgState_c::State03_Enter() {
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
   Mg_ShowBanner(id, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
   Mg_PlayJingle((void*)3);
-  mBehavior = data_ov004_020bc8d4;
+  mBehavior = pmf_dMgState_c_State03_Update;
 }
 
 // @symbol _ZN10dMgState_c14State03_UpdateEv
@@ -471,7 +471,7 @@ void dMgState_c::State03_Update() {
   if (Mg_CheckBannerButton(0)) {
     obj = data_0209f5bc;
     obj->SetForwardTime(0x1e, 0);
-    mBehavior = data_ov004_020bc8dc;
+    mBehavior = pmf_dMgState_c_UpdateRetryFadeOut;
     return;
   }
   if (Mg_CheckBannerButton(2) || Mg_CheckBannerButton(1)) {
@@ -517,7 +517,7 @@ void dMgState_c::State04_Enter() {
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
   Mg_ShowBanner(id, data_ov004_020bc88c, data_ov004_020bc860, -1, -1, 0xd);
   Sound::PlayBank2_2D(0x136);
-  mBehavior = data_ov004_020bc8ec;
+  mBehavior = pmf_dMgState_c_State04_Update;
 }
 
 // @symbol _ZN10dMgState_c14State04_UpdateEv
@@ -546,7 +546,7 @@ void dMgState_c::State05_Enter() {
     mTimer = 0x78;
     Mg_ShowBanner(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
     Sound::PlayBank2_2D(0x137);
-    mBehavior = data_ov004_020bc8f4;
+    mBehavior = pmf_dMgState_c_State05_Update;
 }
 
 // @symbol _ZN10dMgState_c14State05_UpdateEv
@@ -569,7 +569,7 @@ void dMgState_c::State05_Update() {
     Mg_RestoreMusic();
     FreeGfxSlotsById(0x1d);
     mTimer = 0xb4;
-    mBehavior = data_ov004_020bc904;
+    mBehavior = pmf_dMgState_c_UpdateGameOverToMenu;
   } else {
     if (state != 0)
       return;
@@ -612,7 +612,7 @@ void dMgState_c::State06_Enter() {
     mTimer = 0x78;
     Mg_ShowBanner(0xa, data_ov004_020bc878, data_ov004_020bc890, -1, -1, 0xd);
     Sound::PlayBank2_2D(0x137);
-    mBehavior = data_ov004_020bc90c;
+    mBehavior = pmf_dMgState_c_State06_Update;
 }
 
 // @symbol _ZN10dMgState_c14State06_UpdateEv
@@ -621,7 +621,7 @@ void dMgState_c::State06_Update() {
   if(v > 0x64) return;
   if(v != 0) return;
   FreeGfxSlotsById(0x1d);
-  mBehavior = data_ov004_020bc93c;
+  mBehavior = pmf_dMgState_c_UpdateAfterHidden;
   unk_024 = 1;
   gMgCoinsShowDelta = 0;
   sMgCoinsDeltaShown = 0;
@@ -637,7 +637,7 @@ void dMgState_c::UpdateAfterHidden() {
         if (!g->CanEndState(mState)) return;
         Mg_RestoreMusic();
         mTimer = 0xb4;
-        mBehavior = data_ov004_020bc98c;
+        mBehavior = pmf_dMgState_c_UpdateGameOverToMenu_2;
         return;
     }
     g = gMgScene;
@@ -656,11 +656,11 @@ void dMgState_c::UpdateAfterHidden() {
 void dMgState_c::State07_Enter() {
     mTimer = 0x78;
     Mg_ShowBanner(0xb, data_ov004_020bc868, data_ov004_020bc858, -1, -1, 0xd);
-    mBehavior = data_ov004_020bc9ac;
+    mBehavior = pmf_dMgState_c_UpdateWaitThenResume;
 }
 
 // @symbol _ZN10dMgState_c13State08_EnterEv
-void dMgState_c::State08_Enter() { mTimer = 0; mBehavior = data_ov004_020bc9b4; }
+void dMgState_c::State08_Enter() { mTimer = 0; mBehavior = pmf_dMgState_c_UpdateWaitThenResume_2; }
 
 // @symbol _ZN10dMgState_c20UpdateWaitThenResumeEv
 void dMgState_c::UpdateWaitThenResume() {
@@ -685,7 +685,7 @@ void dMgState_c::State09_Enter() {
     id = 3;
     if (sMgNextBanner != 0x1d) { id = sMgNextBanner; sMgNextBanner = 0x1d; }
     Mg_ShowBanner(id, data_ov004_020bc8b0, data_ov004_020bc8ac - (sMgTopScreenYOffset + 0xc0), -1, -1, 0xa);
-    mBehavior = data_ov004_020bc9e4;
+    mBehavior = pmf_dMgState_c_State09_Update;
 }
 
 // @symbol _ZN10dMgState_c14State09_UpdateEv
@@ -712,7 +712,7 @@ void dMgState_c::State10_Enter() {
   mTimer = 0xb4;
   Mg_PlayJingle((void*)3);
   Mg_ShowBanner(8, data_ov004_020bc894, data_ov004_020bc874, -1, -1, 0xb);
-  mBehavior = data_ov004_020bc9fc;
+  mBehavior = pmf_dMgState_c_State10_Update;
 }
 
 // @symbol _ZN10dMgState_c14State10_UpdateEv
@@ -721,7 +721,7 @@ void dMgState_c::State10_Update() {
   if (Mg_CheckBannerButton(0)) {
     obj = data_0209f5bc;
     obj->SetForwardTime(0x1e, 0);
-    mBehavior = data_ov004_020bca14;
+    mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_3;
     return;
   }
   if (Mg_CheckBannerButton(2) || Mg_CheckBannerButton(1)) {
@@ -744,8 +744,8 @@ void dMgState_c::State10_Update() {
 void dMgState_c::State11_Enter() {
   mTimer=0xb4;
   Mg_PlayJingle((void*)1);
-  mBehavior = data_ov004_020bca24;
-  mRender = data_ov004_020bc8cc;
+  mBehavior = pmf_dMgState_c_State11_Update;
+  mRender = pmf_dMgState_c_DrawScore;
 }
 
 // @symbol _ZN10dMgState_c14State11_UpdateEv
@@ -779,14 +779,14 @@ void dMgState_c::State12_Enter() {
 }
 
 // @symbol _ZN10dMgState_c13State13_EnterEv
-void dMgState_c::State13_Enter() { mTimer = 10; mBehavior = data_ov004_020bc8fc; }
+void dMgState_c::State13_Enter() { mTimer = 10; mBehavior = pmf_dMgState_c_UpdateRetryPrompt; }
 
 // @symbol _ZN10dMgState_c17UpdateRetryPromptEv
 void dMgState_c::UpdateRetryPrompt() {
   if (mTimer == 0) {
     if (Mg_CheckBannerButton(0) != 0) {
       data_0209f5bc->SetForwardTime(0x1e, 0);
-      mBehavior = data_ov004_020bc914;
+      mBehavior = pmf_dMgState_c_UpdateRetryFadeOut_2;
       return;
     }
     if (Mg_CheckBannerButton(2) == 0) {
@@ -811,8 +811,8 @@ void dMgState_c::State14_Enter() {
   mTimer = 0xb4;
   Mg_ShowBanner(5, data_ov004_020bc854, data_ov004_020bc87c, -1, -1, 0xd);
   Mg_PlayJingle((void*)1);
-  mBehavior = data_ov004_020bc994;
-  mRender = data_ov004_020bc9c4;
+  mBehavior = pmf_dMgState_c_UpdateFadeThenResume;
+  mRender = pmf_dMgState_c_DrawScoreDigits;
 }
 
 // @symbol _ZN10dMgState_c20UpdateFadeThenResumeEv
@@ -845,7 +845,7 @@ void dMgState_c::State15_Enter() {
   mTimer = 0x3c;
   Mg_ShowBanner(0xe, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
   Mg_PlayJingle((void*)3);
-  mBehavior = data_ov004_020bca04;
+  mBehavior = pmf_dMgState_c_UpdateFadeThenResume_2;
 }
 
 // @symbol _ZN10dMgState_c13State16_EnterEv
@@ -856,8 +856,8 @@ void dMgState_c::State16_Enter() {
   }
   Mg_ShowBanner(7, 0x80, 0x14, -1, -1, 0xd);
   mTimer = 0x78;
-  mBehavior = data_ov004_020bc8e4;
-  mRender = data_ov004_020bc91c;
+  mBehavior = pmf_dMgState_c_State16_Update;
+  mRender = pmf_dMgState_c_DrawRecordTable;
   Mg_CommitRecords();
 }
 
@@ -884,8 +884,8 @@ void dMgState_c::State16_Update() {
 void dMgState_c::State17_Enter() {
   Mg_ShowBanner(7, 0x80, 0x14, -1, -1, 0xd);
   mTimer = 0x12c;
-  mBehavior = data_ov004_020bc9cc;
-  mRender = data_ov004_020bca2c;
+  mBehavior = pmf_dMgState_c_State17_Update;
+  mRender = pmf_dMgState_c_DrawRecordTable_2;
   Mg_CommitRecords();
 }
 
@@ -941,7 +941,7 @@ void dMgState_c::State18_Enter() {
   mTimer = 0xb4;
   Mg_ShowBanner(8, data_ov004_020bc8b8, data_ov004_020bc8b4, -1, -1, 0xd);
   Mg_PlayJingle((void*)3);
-  mBehavior = data_ov004_020bc924;
+  mBehavior = pmf_dMgState_c_State18_Update;
 }
 
 // @symbol _ZN10dMgState_c14State18_UpdateEv
@@ -978,7 +978,7 @@ void dMgState_c::State19_Enter() {
   if (prevId != 0x1d) { sMgNextBanner = 0x1d; id = prevId; }
   Mg_ShowBanner(id, data_ov004_020bc880, data_ov004_020bc884, -1, -1, 0xd);
   Mg_PlayJingle((void*)4);
-  mBehavior = data_ov004_020bca34;
+  mBehavior = pmf_dMgState_c_State19_Update;
 }
 
 // @symbol _ZN10dMgState_c14State19_UpdateEv

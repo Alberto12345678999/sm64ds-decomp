@@ -433,7 +433,7 @@
     "The incomplete struct C and the PMF/Entry typedefs above the member blocks are load-bearing: they are the representation the pointer-to-member tables at 0x0213c1e4..0x0213c2bc are filled with by __sinit_ov006_*, and completing struct C changes the pointer-to-member representation mwcc emits.",
     "Popup_UpdateAll took its parameter as `this` in its .c shard; `this` is a keyword once the shard is compiled as C++, so the parameter and its one body use are spelled `self` here. The emitted bytes are unchanged.",
     "FOLD RECONCILIATION, upper 19 + the hole, each settled by measurement with tools/tubuild.py verify (46/46). (1) cstd::atan2 keeps the int return the lower half needed; ResolveStoneCollision matches with it too. (2) Mg_GetTopRecord is declared (void); the Render shard declared it with one argument and passed Mg_GetTopRecord() nothing, and the bytes are the same. (3) LoadFile returns void * (its shard's spelling); PickHouse assigns it to a void * local. (4) ClearStones takes the scene as char * rather than the int its shard used; its opt_strength_reduction off is now a push/pop bracket. (5) Stone_Drag reads data_020a0de8 through the same 4-byte-record cast the lower half uses for data_020a0dea/data_020a0deb; indexing the TU's u8[] directly swaps two registers and costs 26 words. (6) Stone_Collide is the one-instruction tail veneer onto ResolveStoneCollision and is written as a plain call; mwcc emits the ldr ip / bx ip pair itself. (7) The state tables data_ov006_021418b0 and data_ov006_02141950 read by Scene_Play and Behavior are typed through the same incomplete receiver C as the four lower tables, as PMF0 (no argument); Behavior reads its state index through PopupView, which already names the word at 0x4eac.",
-    "Static initializer folded: the seven PMF state tables (0x021418b0..0x02141978) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_curling.cpp, defined through the existing PMF/PMF0/Entry typedefs and plain-copied from the ROM PMF constants at data_ov006_0213c1e4..0x0213c2bc. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order."
+    "Static initializer folded: the seven PMF state tables (0x021418b0..0x02141978) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_curling.cpp, defined through the existing PMF/PMF0/Entry typedefs and plain-copied from the ROM PMF constants at pmf_dScMgCurling_c_BitA_State2..0x0213c2bc. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -809,7 +809,7 @@
       "source": "0x021306d8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c21c",
+      "symbol": "pmf_dScMgCurling_c_Scene_StartRound",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c21c"
@@ -819,7 +819,7 @@
       "source": "0x021306dc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c20c",
+      "symbol": "pmf_dScMgCurling_c_Scene_Play",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c20c"
@@ -839,7 +839,7 @@
       "source": "0x021306e4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c2b4",
+      "symbol": "pmf_dScMgCurling_c_Scene_Score",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c2b4"
@@ -849,7 +849,7 @@
       "source": "0x021306e8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c1fc",
+      "symbol": "pmf_dScMgCurling_c_Scene_End",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c1fc"
@@ -859,7 +859,7 @@
       "source": "0x021306ec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c254",
+      "symbol": "pmf_dScMgCurling_c_Scene_Idle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c254"
@@ -869,7 +869,7 @@
       "source": "0x021306f0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c204",
+      "symbol": "pmf_dScMgCurling_c_Stone_WaitRelease",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c204"
@@ -879,7 +879,7 @@
       "source": "0x021306f4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c244",
+      "symbol": "pmf_dScMgCurling_c_Stone_Slide",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c244"
@@ -899,7 +899,7 @@
       "source": "0x021306fc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c22c",
+      "symbol": "pmf_dScMgCurling_c_Stone_Collide",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c22c"
@@ -909,7 +909,7 @@
       "source": "0x02130700",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c25c",
+      "symbol": "pmf_dScMgCurling_c_Stone_Drag",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c25c"
@@ -919,7 +919,7 @@
       "source": "0x02130704",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c23c",
+      "symbol": "pmf_dScMgCurling_c_Aim_WaitTouch",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c23c"
@@ -939,7 +939,7 @@
       "source": "0x0213070c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c2bc",
+      "symbol": "pmf_dScMgCurling_c_Aim_Swing",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c2bc"
@@ -949,7 +949,7 @@
       "source": "0x02130710",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c234",
+      "symbol": "pmf_dScMgCurling_c_Bit_PickKind",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c234"
@@ -969,7 +969,7 @@
       "source": "0x02130718",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c29c",
+      "symbol": "pmf_dScMgCurling_c_Bit_RunKindB",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c29c"
@@ -979,7 +979,7 @@
       "source": "0x0213071c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c294",
+      "symbol": "pmf_dScMgCurling_c_Bit_RunKindA",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c294"
@@ -989,7 +989,7 @@
       "source": "0x02130720",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c28c",
+      "symbol": "pmf_dScMgCurling_c_BitB_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c28c"
@@ -999,7 +999,7 @@
       "source": "0x02130724",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c274",
+      "symbol": "pmf_dScMgCurling_c_BitB_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c274"
@@ -1009,7 +1009,7 @@
       "source": "0x02130728",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c26c",
+      "symbol": "pmf_dScMgCurling_c_BitB_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c26c"
@@ -1029,7 +1029,7 @@
       "source": "0x02130730",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c24c",
+      "symbol": "pmf_dScMgCurling_c_BitB_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c24c"
@@ -1039,7 +1039,7 @@
       "source": "0x02130734",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c2a4",
+      "symbol": "pmf_dScMgCurling_c_BitA_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c2a4"
@@ -1049,7 +1049,7 @@
       "source": "0x02130738",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c1ec",
+      "symbol": "pmf_dScMgCurling_c_BitA_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c1ec"
@@ -1059,7 +1059,7 @@
       "source": "0x0213073c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c1e4",
+      "symbol": "pmf_dScMgCurling_c_BitA_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c1e4"
@@ -1079,7 +1079,7 @@
       "source": "0x02130744",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c1f4",
+      "symbol": "pmf_dScMgCurling_c_BitA_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c1f4"
@@ -1089,7 +1089,7 @@
       "source": "0x02130748",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c224",
+      "symbol": "pmf_dScMgCurling_c_Bit_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c224"
@@ -1099,7 +1099,7 @@
       "source": "0x0213074c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c284",
+      "symbol": "pmf_dScMgCurling_c_Bit_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c284"
@@ -1109,7 +1109,7 @@
       "source": "0x02130750",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c27c",
+      "symbol": "pmf_dScMgCurling_c_Bit_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c27c"

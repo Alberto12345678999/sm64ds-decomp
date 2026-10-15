@@ -10,7 +10,7 @@
  * (MgCoins_Update through Coin_Update) and, while visible, is
  * drawn at its position by MgCoins_Draw. The Sprite states slide a
  * sprite from its position to a target by a fixed step, then hand it the
- * next state; the records at data_ov004_020bc7d8..0x020bc820 hold those
+ * next state; the records at pmf_Coin_MoveThenRise..0x020bc820 hold those
  * states, and the comment on each extern names its target. Over the array
  * runs a second machine, one plain function pointer at sMgCoinsStep
  * that MgCoins_Update calls once a frame and that each step replaces
@@ -155,16 +155,16 @@ extern int sMgCoinsBetCap;   /* cap MgCoins_AddBetCoin raises the count to */
 extern int gMgCoinsShowDelta;   /* nonzero: sequences also show their count */
 /* Sprite states: member-pointer records (ov004 relocs.txt names each
    target). */
-extern SpriteFn data_ov004_020bc7d8; /* Coin_MoveThenRise */
-extern SpriteFn data_ov004_020bc7e0; /* Coin_RiseSpent */
-extern SpriteFn data_ov004_020bc7e8; /* Coin_Move */
-extern SpriteFn data_ov004_020bc7f0; /* Coin_Move */
-extern SpriteFn data_ov004_020bc7f8; /* Coin_Rise */
-extern SpriteFn data_ov004_020bc800; /* Coin_MoveThenBank */
-extern SpriteFn data_ov004_020bc808; /* Coin_FlyToCounter */
-extern SpriteFn data_ov004_020bc810; /* Coin_MoveThenRiseSpent */
-extern SpriteFn data_ov004_020bc818; /* Coin_MoveThenRefund */
-extern SpriteFn data_ov004_020bc820; /* Coin_Move */
+extern SpriteFn pmf_Coin_MoveThenRise; /* Coin_MoveThenRise */
+extern SpriteFn pmf_Coin_RiseSpent; /* Coin_RiseSpent */
+extern SpriteFn pmf_Coin_Move; /* Coin_Move */
+extern SpriteFn pmf_Coin_Move_2; /* Coin_Move */
+extern SpriteFn pmf_Coin_Rise; /* Coin_Rise */
+extern SpriteFn pmf_Coin_MoveThenBank; /* Coin_MoveThenBank */
+extern SpriteFn pmf_Coin_FlyToCounter; /* Coin_FlyToCounter */
+extern SpriteFn pmf_Coin_MoveThenRiseSpent; /* Coin_MoveThenRiseSpent */
+extern SpriteFn pmf_Coin_MoveThenRefund; /* Coin_MoveThenRefund */
+extern SpriteFn pmf_Coin_Move_3; /* Coin_Move */
 extern int *sMgCoinsButtonSprites[];
 extern unsigned char *sMgCoinsDeltaSprites[];
 extern short gMgCoinsStatus; /* 1 when a sequence finishes; 2, 3, 4 while one runs */
@@ -779,7 +779,7 @@ extern "C" void MgCoins_StepPayoutFinish(void){
 extern "C" void Coin_Reset(Sprite *s) {
     Coin_Hide(s);
     s->mDelay = 0;
-    s->mState = data_ov004_020bc7e8;
+    s->mState = pmf_Coin_Move;
 }
 
 // @symbol Coin_Update
@@ -814,7 +814,7 @@ extern "C" void Coin_MoveThenBank(Sprite* s) {
   if (out[1] != 0) return;
   Mg_GainCredits((void*)1);
   Coin_Hide(s);
-  s->mState = data_ov004_020bc7f0;
+  s->mState = pmf_Coin_Move_2;
 }
 
 // @symbol Coin_Hide
@@ -850,9 +850,9 @@ extern "C" void Coin_Launch(Sprite* s, int* in)
         if (v < 0) v = -v;
         s->mStep.y = v;
     }
-    if (s->mState != data_ov004_020bc800)
+    if (s->mState != pmf_Coin_MoveThenBank)
         Mg_LoseCredits((void*)1);
-    s->mState = data_ov004_020bc820;
+    s->mState = pmf_Coin_Move_3;
 }
 
 // @symbol Coin_SendOff
@@ -879,7 +879,7 @@ extern "C" void Coin_SendOff(Sprite *s)
     }
     s->mDelay = 0x14;
     Sound::PlayBank2_2D(0x14a);
-    s->mState = data_ov004_020bc7d8;
+    s->mState = pmf_Coin_MoveThenRise;
 }
 
 // @symbol Coin_MoveThenRise
@@ -890,7 +890,7 @@ extern "C" void Coin_MoveThenRise(Sprite *s) {
     ApproachLinear(s->mPos.y, s->mTarget.y, s->mStep.y);
     Vec2_Sub(v, &s->mTarget, &s->mPos);
     if (v[0] != 0) return;
-    if (v[1] == 0) s->mState = data_ov004_020bc7f8;
+    if (v[1] == 0) s->mState = pmf_Coin_Rise;
 }
 
 // @symbol Coin_Rise
@@ -944,7 +944,7 @@ extern "C" void Coin_Spend(Sprite *s)
     }
     s->mDelay = 0x14;
     Sound::PlayBank2_2D(0x14a);
-    s->mState = data_ov004_020bc810;
+    s->mState = pmf_Coin_MoveThenRiseSpent;
 }
 
 // @symbol Coin_MoveThenRiseSpent
@@ -955,7 +955,7 @@ extern "C" void Coin_MoveThenRiseSpent(Sprite *s) {
     ApproachLinear(s->mPos.y, s->mTarget.y, s->mStep.y);
     Vec2_Sub(v, &s->mTarget, &s->mPos);
     if (v[0] != 0) return;
-    if (v[1] == 0) s->mState = data_ov004_020bc7e0;
+    if (v[1] == 0) s->mState = pmf_Coin_RiseSpent;
 }
 
 // @symbol Coin_RiseSpent
@@ -992,7 +992,7 @@ extern "C" void Coin_Return(Sprite* s){
   b = s->mStep.y;
   if (b < 0) b = -b;
   s->mStep.y = b;
-  s->mState = data_ov004_020bc818;
+  s->mState = pmf_Coin_MoveThenRefund;
 }
 
 // @symbol Coin_MoveThenRefund
@@ -1035,7 +1035,7 @@ extern "C" void Coin_PlacePayout(Sprite* s, int* in){
     if (y < 0) y = -y;
     s->mStep.y = y;
   }
-  s->mState = data_ov004_020bc808;
+  s->mState = pmf_Coin_FlyToCounter;
 }
 
 // @symbol Coin_FlyToCounter

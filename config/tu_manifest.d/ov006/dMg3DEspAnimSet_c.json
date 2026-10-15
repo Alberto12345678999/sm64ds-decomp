@@ -1785,7 +1785,7 @@
       "source": "0x02130d88",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6cc",
+      "symbol": "pmf_dScMg3DEsp_c_Wait",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6cc"
@@ -1795,7 +1795,7 @@
       "source": "0x02130d8c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6fc",
+      "symbol": "pmf_dScMg3DEsp_c_Play",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6fc"
@@ -1805,7 +1805,7 @@
       "source": "0x02130d90",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c7b4",
+      "symbol": "pmf_dScMg3DEsp_c_Results",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c7b4"
@@ -1825,7 +1825,7 @@
       "source": "0x02130d98",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c7ac",
+      "symbol": "pmf_dScMg3DEsp_c_Deal",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c7ac"
@@ -1835,7 +1835,7 @@
       "source": "0x02130d9c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c72c",
+      "symbol": "pmf_dScMg3DEsp_c_Fade",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c72c"
@@ -1845,7 +1845,7 @@
       "source": "0x02130da0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c79c",
+      "symbol": "pmf_dScMg3DEsp_c_Await",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c79c"
@@ -1855,7 +1855,7 @@
       "source": "0x02130da4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c794",
+      "symbol": "pmf_dScMg3DEsp_c_Resolve",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c794"
@@ -1875,7 +1875,7 @@
       "source": "0x02130dac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c734",
+      "symbol": "pmf_dScMg3DEsp_c_CardExit",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c734"
@@ -1885,7 +1885,7 @@
       "source": "0x02130db0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c77c",
+      "symbol": "pmf_dScMg3DEsp_c_CardTouch",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c77c"
@@ -1895,7 +1895,7 @@
       "source": "0x02130db4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c714",
+      "symbol": "pmf_dScMg3DEsp_c_CardSeek",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c714"
@@ -1915,7 +1915,7 @@
       "source": "0x02130dbc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6e4",
+      "symbol": "pmf_dScMg3DEsp_c_RowWait",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6e4"
@@ -1925,7 +1925,7 @@
       "source": "0x02130dc0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c71c",
+      "symbol": "pmf_dScMg3DEsp_c_RowDecay",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c71c"
@@ -1935,7 +1935,7 @@
       "source": "0x02130dc4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c73c",
+      "symbol": "pmf_dScMg3DEsp_c_RowFade",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c73c"
@@ -1955,7 +1955,7 @@
       "source": "0x02130dcc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c7a4",
+      "symbol": "pmf_dScMg3DEsp_c_SlotWait",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c7a4"
@@ -1965,7 +1965,7 @@
       "source": "0x02130dd0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c70c",
+      "symbol": "pmf_dScMg3DEsp_c_SlotFall",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c70c"
@@ -1985,7 +1985,7 @@
       "source": "0x02130dd8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6f4",
+      "symbol": "pmf_dScMg3DEsp_c_SlotSetup",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6f4"
@@ -1995,7 +1995,7 @@
       "source": "0x02130ddc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c74c",
+      "symbol": "pmf_dScMg3DEsp_c_SlotRise",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c74c"
@@ -2005,7 +2005,7 @@
       "source": "0x02130de0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6ec",
+      "symbol": "pmf_dScMg3DEsp_c_SlotKick",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6ec"
@@ -2015,7 +2015,7 @@
       "source": "0x02130de4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6c4",
+      "symbol": "pmf_dScMg3DEsp_c_SlotDampen",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6c4"
@@ -2035,7 +2035,7 @@
       "source": "0x02130dec",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c6dc",
+      "symbol": "pmf_dScMg3DEsp_c_FlashOnce",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c6dc"
@@ -2045,7 +2045,7 @@
       "source": "0x02130df0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c724",
+      "symbol": "pmf_dScMg3DEsp_c_FlashSync",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c724"
@@ -2055,7 +2055,7 @@
       "source": "0x02130df4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c784",
+      "symbol": "pmf_dScMg3DEsp_c_FlashQuick",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c784"

@@ -186,13 +186,13 @@ static EntryTable data_ov004_020bc6e8 = { { { 0, 0 }, { 0x140, (int)&data_ov004_
 extern int data_ov006_021346bc;
 extern int sMgTopScreenYOffset;
 extern int sMgBannerButtonsArmed;
-extern Pair data_ov004_020bc17c;
-extern Pair data_ov004_020bc1ec;
-extern Pair data_ov004_020bc224;
-extern Pair data_ov004_020bc274;
-extern int data_ov004_020bc1b4[];
-extern int data_ov004_020bc20c[];
-extern int data_ov004_020bc254[];
+extern Pair pmf_Banner_UpdateWave;
+extern Pair pmf_Banner_DrawWave;
+extern Pair pmf_Banner_UpdatePressed;
+extern Pair pmf_Banner_DrawPressed;
+extern int pmf_Banner_DrawSpin[];
+extern int pmf_Banner_UpdateSpin[];
+extern int pmf_Banner_UpdatePressed_2[];
 extern unsigned char sMgBannerGfxSlotUsed[];
 extern int data_ov004_020bf3ec;
 extern int data_ov004_020bf3f0;
@@ -580,8 +580,8 @@ extern "C" void Banner_UpdateSpin(Elem *e) {
 extern "C" void Banner_StartSpin(Elem *e){
   e->mTimer=0;
   e->mTimerEnd=0x27000;
-  *(W2*)&e->mBehavior=*(W2*)data_ov004_020bc20c;
-  *(W2*)&e->mRender=*(W2*)data_ov004_020bc1b4;
+  *(W2*)&e->mBehavior=*(W2*)pmf_Banner_UpdateSpin;
+  *(W2*)&e->mRender=*(W2*)pmf_Banner_DrawSpin;
 }
 
 // @symbol Banner_UpdateDrop
@@ -652,8 +652,8 @@ extern "C" void Banner_StartWaveBurst(Elem* e) {
     shifted = angle << 14;
     e->mTimerEnd = shifted;
 
-    *(W2*)&e->mBehavior = *(W2*)&data_ov004_020bc17c;
-    *(W2*)&e->mRender   = *(W2*)&data_ov004_020bc1ec;
+    *(W2*)&e->mBehavior = *(W2*)&pmf_Banner_UpdateWave;
+    *(W2*)&e->mRender   = *(W2*)&pmf_Banner_DrawWave;
 
     boxA[0] = 0; boxA[1] = -0x2000;
     boxB[0] = 0; boxB[1] = -0x1800;
@@ -868,7 +868,7 @@ extern "C" void Banner_SetupPopSpin(Elem *e)
 
 // @symbol Banner_IsPressFinished
 extern "C" int Banner_IsPressFinished(Elem* e){
-  int* d = data_ov004_020bc254;
+  int* d = pmf_Banner_UpdatePressed_2;
   int* o = (int*)&e->mBehavior;
   if(o[0] == d[0] && (o[1] == d[1] || o[0] == 0) && e->mTimer == e->mTimerEnd)
     return 1;
@@ -923,8 +923,8 @@ extern "C" void Banner_Press(Elem* e){
   }
   e->mTimer = 0;
   e->mTimerEnd = 0x10000;
-  *(W2*)&e->mBehavior = *(W2*)&data_ov004_020bc224;
-  *(W2*)&e->mRender = *(W2*)&data_ov004_020bc274;
+  *(W2*)&e->mBehavior = *(W2*)&pmf_Banner_UpdatePressed;
+  *(W2*)&e->mRender = *(W2*)&pmf_Banner_DrawPressed;
 }
 
 // @symbol Banner_DrawPlain
@@ -1201,14 +1201,14 @@ Elem::Elem()
    29-entry file-id table copies. */
 extern "C" {
 extern PairW data_02086b58;  /* __ptmf_null's address: the null member pointer */
-extern PairW data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244, data_ov004_020bc16c;
-extern PairW data_ov004_020bc1bc, data_ov004_020bc1ac, data_ov004_020bc25c, data_ov004_020bc264;
-extern PairW data_ov004_020bc1c4, data_ov004_020bc164, data_ov004_020bc15c, data_ov004_020bc1d4;
-extern PairW data_ov004_020bc22c, data_ov004_020bc19c, data_ov004_020bc184, data_ov004_020bc204;
-extern PairW data_ov004_020bc18c, data_ov004_020bc1fc, data_ov004_020bc1f4, data_ov004_020bc154;
-extern PairW data_ov004_020bc1dc, data_ov004_020bc1e4, data_ov004_020bc214;
-extern PairW data_ov004_020bc1a4, data_ov004_020bc24c, data_ov004_020bc21c, data_ov004_020bc26c;
-extern PairW data_ov004_020bc1cc, data_ov004_020bc174, data_ov004_020bc194;
+extern PairW pmf_Banner_SetupSlideFromTop, pmf_Banner_SetupSlideFromBottom, pmf_Banner_SetupSlideFromLeft, pmf_Banner_SetupSlideFromRight;
+extern PairW pmf_Banner_SetupZoomBurst, pmf_Banner_SetupPopSpin, pmf_Banner_SetupZoom, pmf_Banner_SetupZoomBurst_2;
+extern PairW pmf_Banner_SetupPopSpin_2, pmf_Banner_SetupFall, pmf_Banner_SetupDrop, pmf_Banner_SetupNone;
+extern PairW pmf_Banner_UpdateSlideFromTop, pmf_Banner_UpdateSlideFromBottom, pmf_Banner_UpdateSlideFromLeft, pmf_Banner_UpdateSlideFromRight;
+extern PairW pmf_Banner_UpdateZoom_2, pmf_Banner_UpdatePopSpin_2, pmf_Banner_UpdateZoom_3, pmf_Banner_UpdateZoom;
+extern PairW pmf_Banner_UpdatePopSpin, pmf_Banner_UpdateFall, pmf_Banner_UpdateDrop;
+extern PairW pmf_Banner_DrawZoomB, pmf_Banner_DrawPopSpinB, pmf_Banner_DrawZoomB_2, pmf_Banner_DrawZoomA;
+extern PairW pmf_Banner_DrawPopSpinA, pmf_Banner_DrawSqueeze, pmf_Banner_DrawLevelNumber;
 extern int data_ov004_020b9e98, data_ov004_020b9e8c, data_ov004_020b9f2c;
 extern int data_ov004_020b9ea4, data_ov004_020b9fd8, data_ov004_020b9eb8, data_ov004_020b9f5c;
 extern int data_ov004_020ba010, data_ov004_020b9e90, data_ov004_020b9ed4, data_ov004_020b9ffc;
@@ -1237,21 +1237,21 @@ int sMgBannerSprites[29] = {
     data_ov004_020b9ee8
 };
 PairW sBannerSetupTable[13] = {
-    data_02086b58, data_ov004_020bc234, data_ov004_020bc23c, data_ov004_020bc244,
-    data_ov004_020bc16c, data_ov004_020bc1bc, data_ov004_020bc1ac, data_ov004_020bc25c,
-    data_ov004_020bc264, data_ov004_020bc1c4, data_ov004_020bc164, data_ov004_020bc15c,
-    data_ov004_020bc1d4
+    data_02086b58, pmf_Banner_SetupSlideFromTop, pmf_Banner_SetupSlideFromBottom, pmf_Banner_SetupSlideFromLeft,
+    pmf_Banner_SetupSlideFromRight, pmf_Banner_SetupZoomBurst, pmf_Banner_SetupPopSpin, pmf_Banner_SetupZoom,
+    pmf_Banner_SetupZoomBurst_2, pmf_Banner_SetupPopSpin_2, pmf_Banner_SetupFall, pmf_Banner_SetupDrop,
+    pmf_Banner_SetupNone
 };
 PairW sBannerUpdateTable[13] = {
-    data_02086b58, data_ov004_020bc22c, data_ov004_020bc19c, data_ov004_020bc184,
-    data_ov004_020bc204, data_ov004_020bc18c, data_ov004_020bc1fc, data_ov004_020bc1f4,
-    data_ov004_020bc154, data_ov004_020bc1dc, data_ov004_020bc1e4, data_ov004_020bc214,
+    data_02086b58, pmf_Banner_UpdateSlideFromTop, pmf_Banner_UpdateSlideFromBottom, pmf_Banner_UpdateSlideFromLeft,
+    pmf_Banner_UpdateSlideFromRight, pmf_Banner_UpdateZoom_2, pmf_Banner_UpdatePopSpin_2, pmf_Banner_UpdateZoom_3,
+    pmf_Banner_UpdateZoom, pmf_Banner_UpdatePopSpin, pmf_Banner_UpdateFall, pmf_Banner_UpdateDrop,
     data_02086b58
 };
 PairW sBannerDrawTable[13] = {
     data_02086b58, data_02086b58, data_02086b58, data_02086b58, data_02086b58,
-    data_ov004_020bc1a4, data_ov004_020bc24c, data_ov004_020bc21c, data_ov004_020bc26c,
-    data_ov004_020bc1cc, data_ov004_020bc174, data_02086b58, data_ov004_020bc194
+    pmf_Banner_DrawZoomB, pmf_Banner_DrawPopSpinB, pmf_Banner_DrawZoomB_2, pmf_Banner_DrawZoomA,
+    pmf_Banner_DrawPopSpinA, pmf_Banner_DrawSqueeze, data_02086b58, pmf_Banner_DrawLevelNumber
 };
 int sMgBannerFiles[29];
 }

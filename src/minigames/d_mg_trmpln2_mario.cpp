@@ -55,8 +55,8 @@ int Trmp2Mario_GetVelocity(int p)
 // ---- Trmp2Mario_Reset
 namespace ns_020c8ddc {
 extern "C" {
-extern "C" int data_ov006_0213b13c[2];
-extern "C" int data_ov006_0213b144[2];
+extern "C" int pmf_Trmp2Mario_State4[2];
+extern "C" int pmf_Trmp2Mario_State7_4[2];
 
 // @symbol Trmp2Mario_Reset
 int Trmp2Mario_Reset(char *c)
@@ -67,7 +67,7 @@ int Trmp2Mario_Reset(char *c)
     int flag;
 
     p = (int *)(c + 0x70);
-    d = data_ov006_0213b13c;
+    d = pmf_Trmp2Mario_State4;
     result = 0;
     flag = 1;
     if (p[0] == d[0]) {
@@ -80,7 +80,7 @@ int Trmp2Mario_Reset(char *c)
 after1:
     if (flag != 0) {
         p = (int *)(c + 0x70);
-        d = data_ov006_0213b144;
+        d = pmf_Trmp2Mario_State7_4;
         flag = 1;
         if (p[0] == d[0]) {
             if (p[1] != d[1]) {
@@ -236,10 +236,10 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f,
 
 
 extern "C" {
-extern int data_ov006_0213b214[2];
-extern int data_ov006_0213b0fc[2];
+extern int pmf_Trmp2Mario_State7_5[2];
+extern int pmf_Trmp2Mario_State3[2];
 extern int data_ov006_02140540[];
-extern int data_ov006_0213b114[2];
+extern int pmf_Trmp2Mario_State0[2];
 extern void Trmp2Mario_EnterState7(char *c);
 extern void D3D_PlaySeAtX(int a, int b);
 }
@@ -251,7 +251,7 @@ extern "C" void Trmp2Mario_EnterByKind(char *c)
     int *d;
 
     p = (int *)(c + 0x70);
-    d = data_ov006_0213b214;
+    d = pmf_Trmp2Mario_State7_5;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (*(int *)(c + 0x70) != 0)
@@ -261,7 +261,7 @@ extern "C" void Trmp2Mario_EnterByKind(char *c)
     }
 check2:
     p = (int *)(c + 0x70);
-    d = data_ov006_0213b0fc;
+    d = pmf_Trmp2Mario_State3;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (*(int *)(c + 0x70) != 0)
@@ -278,8 +278,8 @@ body:
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), (BCA_File *)data_ov006_02140540[0], 0, 0x800, 0);
     *(int *)(c + 0xd0) = 0;
     {
-        int a = data_ov006_0213b114[0];
-        int b = data_ov006_0213b114[1];
+        int a = pmf_Trmp2Mario_State0[0];
+        int b = pmf_Trmp2Mario_State0[1];
         *(int *)(c + 0x70) = b ? a : a;
         *(int *)(c + 0x74) = b;
     }
@@ -443,9 +443,9 @@ void Trmp2Mario_State1(char *c);
 
 extern "C" int data_ov006_021405a8;
 extern "C" int data_ov006_021405b0;
-extern "C" int data_ov006_0213b1d4[2];
+extern "C" int pmf_Trmp2Mario_State6_2[2];
 extern "C" void *data_ov006_0214059c;
-extern "C" int data_ov006_0213b1ec[2];
+extern "C" int pmf_Trmp2Mario_State1_2[2];
 
 struct VtObj {
     virtual void d0();
@@ -504,7 +504,7 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c)
         int *s = (int *)(bp);
         vec16.z = (s16)(z + (int)((unsigned)bp - (unsigned)bp));
 
-        int *q = data_ov006_0213b1d4;
+        int *q = pmf_Trmp2Mario_State6_2;
         if (s[0] != q[0] || (s[1] != q[1] && *(int *)(c + 0x70) != 0)) {
 
             _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -529,8 +529,8 @@ extern "C" void Trmp2Mario_BounceOffLineA(char *c)
     D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x24));
     *(int *)(c + 0x68) = 0;
     {
-        int a = data_ov006_0213b1ec[0];
-        int b = data_ov006_0213b1ec[1];
+        int a = pmf_Trmp2Mario_State1_2[0];
+        int b = pmf_Trmp2Mario_State1_2[1];
         a = b ? a : a;
         *(int *)(c + 0x70) = a;
         *(int *)(c + 0x74) = b;
@@ -753,8 +753,8 @@ extern "C" void Trmp2Mario_BounceOffLineB(char *c)
     Sound_PlayBank1Panned(0, *(int *)(c + 0x60), *(int *)(c + 0x24));
 
     {
-        int a = data_ov006_0213b1b4[0];
-        int b = data_ov006_0213b1b4[1];
+        int a = pmf_Trmp2Mario_State2_2[0];
+        int b = pmf_Trmp2Mario_State2_2[1];
         a = b ? a : a;
         *(int *)(c + 0x70) = a;
         *(int *)(c + 0x74) = b;
@@ -789,7 +789,7 @@ extern "C" {
 extern int data_ov006_021405b0;
 extern int data_ov006_02140574;
 extern BCA_File *data_ov006_0214059c;
-extern Pair data_ov006_0213b194;
+extern Pair pmf_Trmp2Mario_State1;
 extern void D3D_PlaySeAtX(int a, int b);
 extern void Trmp2Mario_State1(char *c);
 }
@@ -810,8 +810,8 @@ extern "C" void Trmp2Mario_EnterState1(char *c)
     D3D_PlaySeAtX(0x110, *(int *)(c + 0x24));
     D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x24));
     *(int *)(c + 0x68) = 0;
-    a = data_ov006_0213b194.a;
-    b = data_ov006_0213b194.b;
+    a = pmf_Trmp2Mario_State1.a;
+    b = pmf_Trmp2Mario_State1.b;
     *(int *)(c + 0x70) = b ? a : a;
     *(int *)(c + 0x74) = b;
     Trmp2Mario_State1(c);
@@ -861,7 +861,7 @@ extern "C" {
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, unsigned int, int);
 extern "C" void *data_ov006_02140580;
 struct Vec2i { int x; int y; };
-extern "C" struct Vec2i data_ov006_0213b16c;
+extern "C" struct Vec2i pmf_Trmp2Mario_State3_2;
 // @symbol Trmp2Mario_EnterState3
 void Trmp2Mario_EnterState3(unsigned char *c)
 {
@@ -872,7 +872,7 @@ void Trmp2Mario_EnterState3(unsigned char *c)
   *((int *) (c + 0x38)) = *((int *) (c + 0x2c));
   *((int *) (c + 0x40)) = 0;
   _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, data_ov006_02140580, 0x40000000, 0x800, 0);
-  *(W2 *)(c + 0x70) = *(W2 *)&data_ov006_0213b16c;
+  *(W2 *)(c + 0x70) = *(W2 *)&pmf_Trmp2Mario_State3_2;
 }
 }
 }
@@ -924,7 +924,7 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0f0[];
 extern void *data_ov006_02140540;
-extern double data_ov006_0213b154;
+extern double pmf_Trmp2Mario_State4_2;
 void Trmp2Mario_EnterState4(char *c);
 // @symbol Trmp2Mario_EnterState4
 void Trmp2Mario_EnterState4(char *c) {
@@ -934,7 +934,7 @@ void Trmp2Mario_EnterState4(char *c) {
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, *(void**)&data_ov006_02140540, 0, 0x800, 0);
     *(short*)(c + 0x6c) = 0x28;
-    *(double*)(c + 0x70) = data_ov006_0213b154;
+    *(double*)(c + 0x70) = pmf_Trmp2Mario_State4_2;
 }
 }
 }
@@ -955,7 +955,7 @@ extern "C" void *data_ov006_02141a40;
 extern "C" void *data_ov006_0213b22c[];
 
 struct S8 { int a, b; };
-extern "C" S8 data_ov006_0213b14c;
+extern "C" S8 pmf_Trmp2Mario_State2;
 
 struct VtObj {
     virtual void d0();
@@ -1014,7 +1014,7 @@ L70:
         Sound_PlayBank1Panned(0, *(int *)(c + 0x60), *(int *)(c + 0x24));
 
         {
-            long long ll = *(long long *)&data_ov006_0213b14c;
+            long long ll = *(long long *)&pmf_Trmp2Mario_State2;
             *(int *)(c + 0x70) = (int)ll;
             *(int *)(c + 0x74) = (int)((unsigned long long)ll >> 32);
         }
@@ -1062,12 +1062,12 @@ L260:
 namespace ns_020ca2ec {
 extern "C" {
 typedef struct { int a, b; } S8;
-extern "C" S8 data_ov006_0213b134;
+extern "C" S8 pmf_Trmp2Mario_State5;
 extern void Trmp2Mario_State5(void *self);
 
 // @symbol Trmp2Mario_EnterState5
 void Trmp2Mario_EnterState5(void *self) {
-    *(W2 *)((char *)self + 0x70) = *(W2 *)&data_ov006_0213b134;
+    *(W2 *)((char *)self + 0x70) = *(W2 *)&pmf_Trmp2Mario_State5;
     Trmp2Mario_State5(self);
 }
 }
@@ -1094,12 +1094,12 @@ extern "C" void Trmp2Mario_State6(char* c){
 namespace ns_020ca374 {
 extern "C" {
 struct S2{int w[2];};
-extern "C" struct S2 data_ov006_0213b124;
+extern "C" struct S2 pmf_Trmp2Mario_State6;
 // @symbol Trmp2Mario_EnterState6
 void Trmp2Mario_EnterState6(char *o, short v){
   *(short*)(o+0x6c)=v;
   *(int*)(o+0x48)=0;
-  *(struct S2*)(o+0x70)=data_ov006_0213b124;
+  *(struct S2*)(o+0x70)=pmf_Trmp2Mario_State6;
 }
 }
 }
@@ -1127,7 +1127,7 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f,
 extern "C" {
 extern int data_020a0ebc[];
 extern int data_ov006_02140564[];
-extern double data_ov006_0213b11c;
+extern double pmf_Trmp2Mario_State7_3;
 }
 
 // @symbol Trmp2Mario_EnterState7
@@ -1143,7 +1143,7 @@ extern "C" void Trmp2Mario_EnterState7(char *c)
     *(int *)(c + 0x48) = 0;
     *(int *)(c + 0x64) = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), (BCA_File *)data_ov006_02140564[0], 0, 0x800, 0);
-    *(double *)(c + 0x70) = data_ov006_0213b11c;
+    *(double *)(c + 0x70) = pmf_Trmp2Mario_State7_3;
 }
 }
 // ---- Trmp2Mario_Load
@@ -1308,7 +1308,7 @@ extern "C" int *_ZN6Player29TryExitCharacterDoorWithIntroEv(int *self)
 namespace ns_020ca7b8 {
 extern "C" {
 // Scans data_ov006_021405bc entries (stride 0xdc) from data_ov006_02140554:
-// returns 0 if any entry's pair at +0x70 mismatches data_ov006_0213b10c
+// returns 0 if any entry's pair at +0x70 mismatches pmf_Trmp2Mario_State7_2
 // (y-mismatch tolerated when x is 0), else 1. Leaf, no callees.
 typedef struct Ent {
     char _pad0[0x70];  // 0x00
@@ -1319,15 +1319,15 @@ typedef struct Ent {
 
 extern "C" int data_ov006_021405bc;
 extern "C" Ent* data_ov006_02140554;
-extern "C" int data_ov006_0213b10c[2];
+extern "C" int pmf_Trmp2Mario_State7_2[2];
 
 // @symbol Trmp2Mario_Hide
 int Trmp2Mario_Hide(void) {
     int i;
     for (i = 0; i < data_ov006_021405bc; i++) {
         int* v = (int*)(&data_ov006_02140554[i].x);
-        volatile int* q = (volatile int*)data_ov006_0213b10c;
-        if (v[0] != data_ov006_0213b10c[0]
+        volatile int* q = (volatile int*)pmf_Trmp2Mario_State7_2;
+        if (v[0] != pmf_Trmp2Mario_State7_2[0]
             || (v[1] != q[1] && data_ov006_02140554[i].x != 0))
             return 0;
     }
@@ -1373,7 +1373,7 @@ namespace ns_020ca8e0 {
 extern "C" int data_ov006_021405b8;
 extern "C" int data_ov006_021405bc;
 extern "C" char* data_ov006_02140554;
-extern "C" int data_ov006_0213b104[2];
+extern "C" int pmf_Trmp2Mario_State7[2];
 extern "C" int data_ov006_021405a4;
 extern "C" void _Z14ApproachLinearRiii(int& ref, int to, int step);
 extern "C" void Trmp2Mario_EnterState6(char* o, short v);
@@ -1395,11 +1395,11 @@ extern "C" void Trmp2Mario_MoveToStart(void) {
 
   base = data_ov006_02140554;
   e = base;
-  q0 = data_ov006_0213b104[0];
+  q0 = pmf_Trmp2Mario_State7[0];
   for (;;) {
 
     int* v = (int*)(e + 0x70);
-    volatile int* q = (volatile int*)data_ov006_0213b104;
+    volatile int* q = (volatile int*)pmf_Trmp2Mario_State7;
     if (v[0] == q0 && (v[1] == q[1] || *(int*)(e + 0x70) == 0)) {
 
       Trmp2Mario_EnterState6(base + i * 0xdc, (short)(i * 0x14));
@@ -1628,11 +1628,11 @@ int Trmp3DMario_GetVelocity(int p)
 // ---- Trmp3DMario_IsInState6
 namespace ns_020caf4c {
 extern "C" {
-extern "C" int data_ov006_0213b0f4[];
+extern "C" int pmf_Trmp3DMario_State6[];
 // @symbol Trmp3DMario_IsInState6
 int Trmp3DMario_IsInState6(int* r0) {
     int* p = (int*)(((int)r0 + 0x64));
-    int* g = data_ov006_0213b0f4;
+    int* g = pmf_Trmp3DMario_State6;
     int lr = 1;
     if (p[0] == g[0]) {
         if (p[1] == g[1] || r0[0x19] == 0) lr = 0;
@@ -1782,10 +1782,10 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f,
 
 
 extern "C" {
-extern int data_ov006_0213b1a4[2];
-extern int data_ov006_0213b1fc[2];
+extern int pmf_Trmp3DMario_State12_4[2];
+extern int pmf_Trmp3DMario_State1_2[2];
 extern int data_ov006_02140540[];
-extern int data_ov006_0213b20c[2];
+extern int pmf_Trmp3DMario_State0[2];
 }
 
 // @symbol Trmp3DMario_EnterByKind
@@ -1795,7 +1795,7 @@ extern "C" void Trmp3DMario_EnterByKind(char *c)
     int *d;
 
     p = (int *)(c + 0x64);
-    d = data_ov006_0213b1a4;
+    d = pmf_Trmp3DMario_State12_4;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (*(int *)(c + 0x64) != 0)
@@ -1805,7 +1805,7 @@ extern "C" void Trmp3DMario_EnterByKind(char *c)
     }
 check2:
     p = (int *)(c + 0x64);
-    d = data_ov006_0213b1fc;
+    d = pmf_Trmp3DMario_State1_2;
     if (p[0] == d[0]) {
         if (p[1] != d[1]) {
             if (*(int *)(c + 0x64) != 0)
@@ -1821,8 +1821,8 @@ body:
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x6c), (BCA_File *)data_ov006_02140540[0], 0, 0x800, 0);
     *(int *)(c + 0xc4) = 0;
     {
-        int a = data_ov006_0213b20c[0];
-        int b = data_ov006_0213b20c[1];
+        int a = pmf_Trmp3DMario_State0[0];
+        int b = pmf_Trmp3DMario_State0[1];
         *(int *)(c + 0x64) = b ? a : a;
         *(int *)(c + 0x68) = b;
     }
@@ -1943,7 +1943,7 @@ void Sound_PlayBank1Panned(int a0, char* a1, void* a2);
 void Trmp3DMario_State1(char* c);
 extern int data_ov006_021405c8[];
 extern void *data_ov006_0214054c;
-extern int data_ov006_0213b15c[];
+extern int pmf_Trmp3DMario_State1[];
 extern int data_ov006_0214055c[];
 }
 // @symbol Trmp3DMario_EnterState1
@@ -1956,8 +1956,8 @@ extern "C" void Trmp3DMario_EnterState1(char* c)
     Sound_PlayBank1Panned(0, (char*)0x10, *(void**)(c+0x1c));
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim*)(c+0x6c), data_ov006_0214054c, 0x40000000, 0x800, 0);
     data_ov006_0214055c[0] = data_ov006_0214055c[0] + 1;
-    a = data_ov006_0213b15c[0];
-    b = data_ov006_0213b15c[1];
+    a = pmf_Trmp3DMario_State1[0];
+    b = pmf_Trmp3DMario_State1[1];
     *(int*)(c+0x64) = b ? a : a;
     *(int*)(c+0x68) = b;
     Trmp3DMario_State1(c);
@@ -2010,7 +2010,7 @@ void Trmp3DMario_State2(char* c);
 extern int data_020a0ebc[];
 extern int *data_ov006_021405c0;
 struct W2 { int a, b; };
-extern struct W2 data_ov006_0213b224;
+extern struct W2 pmf_Trmp3DMario_State2;
 void Trmp3DMario_EnterState2(char* c);
 }
 // @symbol Trmp3DMario_EnterState2
@@ -2022,8 +2022,8 @@ void Trmp3DMario_EnterState2(char* c)
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim*)(c+0x6c), (void*)data_ov006_021405c0, 0x40000000, 0x800, 0);
     Sound_PlayBank1Panned(0, (char*)0x17, *(void**)(c+0x1c));
     {
-        int a = data_ov006_0213b224.a;
-        int b = data_ov006_0213b224.b;
+        int a = pmf_Trmp3DMario_State2.a;
+        int b = pmf_Trmp3DMario_State2.b;
         *(int*)(c+0x64) = b ? a : a;
         *(int*)(c+0x68) = b;
     }
@@ -2102,12 +2102,12 @@ void Trmp3DMario_State3(char *c)
 namespace ns_020cb814 {
 extern "C" {
 typedef struct { int a, b; } Pair2;
-extern "C" Pair2 data_ov006_0213b1c4;
+extern "C" Pair2 pmf_Trmp3DMario_State3;
 extern void Trmp3DMario_State3(char* c);
 
 // @symbol Trmp3DMario_EnterState3
 void Trmp3DMario_EnterState3(char* c){
-    *(W2 *)(c + 0x64) = *(W2 *)&data_ov006_0213b1c4;
+    *(W2 *)(c + 0x64) = *(W2 *)&pmf_Trmp3DMario_State3;
     Trmp3DMario_State3(c);
 }
 }
@@ -2354,8 +2354,8 @@ extern "C" void Trmp3DMario_BounceOffLineA(char *c)
 
     *(int *)(c + 0x5c) = 0;
     {
-        int a = data_ov006_0213b1ac[0];
-        int b = data_ov006_0213b1ac[1];
+        int a = pmf_Trmp3DMario_State4[0];
+        int b = pmf_Trmp3DMario_State4[1];
         a = b ? a : a;
         *(int *)(c + 0x64) = a;
         *(int *)(c + 0x68) = b;
@@ -2574,8 +2574,8 @@ extern "C" void Trmp3DMario_BounceOffLineB(char *c)
         0, *(int *)(c + 0x58), *(int *)(c + 0x1c));
 
     {
-        int a = data_ov006_0213b1bc[0];
-        int b = data_ov006_0213b1bc[1];
+        int a = pmf_Trmp3DMario_State5[0];
+        int b = pmf_Trmp3DMario_State5[1];
         a = b ? a : a;
         *(int *)(c + 0x64) = a;
         *(int *)(c + 0x68) = b;
@@ -2599,7 +2599,7 @@ extern "C" int data_0209e650;
 extern "C" int data_ov006_02140558;
 extern "C" int data_ov006_02140578;
 extern "C" void *data_ov006_0213b22c[];
-extern "C" int data_ov006_0213b1dc[2];
+extern "C" int pmf_Trmp3DMario_State5_2[2];
 
 struct VtObj {
     virtual void d0();
@@ -2639,8 +2639,8 @@ extern "C" void Trmp3DMario_PickIdleAnim(char *c)
     Sound_PlayBank1Panned(0, *(int *)(c + 0x58), *(int *)(c + 0x1c));
 
     {
-        int a = data_ov006_0213b1dc[0];
-        int b2 = data_ov006_0213b1dc[1];
+        int a = pmf_Trmp3DMario_State5_2[0];
+        int b2 = pmf_Trmp3DMario_State5_2[1];
         a = b2 ? a : a;
         *(int *)(c + 0x64) = a;
         *(int *)(c + 0x68) = b2;
@@ -2694,7 +2694,7 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0ec[];
 extern void *data_ov006_02140540;
-extern double data_ov006_0213b1cc;
+extern double pmf_Trmp3DMario_State6_2;
 void Trmp3DMario_EnterState6(char *c);
 // @symbol Trmp3DMario_EnterState6
 void Trmp3DMario_EnterState6(char *c) {
@@ -2704,7 +2704,7 @@ void Trmp3DMario_EnterState6(char *c) {
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void**)&data_ov006_02140540, 0, 0x800, 0);
     *(short*)(c + 0x60) = 0x28;
-    *(double*)(c + 0x64) = data_ov006_0213b1cc;
+    *(double*)(c + 0x64) = pmf_Trmp3DMario_State6_2;
 }
 }
 }
@@ -2830,12 +2830,12 @@ namespace ns_020cc618 {
 extern "C" {
 typedef struct { u32 a, b; } Pair;
 
-extern "C" Pair data_ov006_0213b1f4;
+extern "C" Pair pmf_Trmp3DMario_State7;
 extern void Trmp3DMario_State7(void *self);
 
 // @symbol Trmp3DMario_EnterState7
 void Trmp3DMario_EnterState7(void *self) {
-    *(W2 *)((char *)self + 0x64) = *(W2 *)&data_ov006_0213b1f4;
+    *(W2 *)((char *)self + 0x64) = *(W2 *)&pmf_Trmp3DMario_State7;
     Trmp3DMario_State7(self);
 }
 }
@@ -2862,7 +2862,7 @@ extern "C" {
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_021405c8[];
 extern void *data_ov006_02140564;
-extern double data_ov006_0213b1e4;
+extern double pmf_Trmp3DMario_State8;
 void Trmp3DMario_EnterState8(char *c);
 // @symbol Trmp3DMario_EnterState8
 void Trmp3DMario_EnterState8(char *c) {
@@ -2874,7 +2874,7 @@ void Trmp3DMario_EnterState8(char *c) {
     *(int*)(c + 0x3c) = 0;
     *(short*)(c + 0x4a) = -0x4000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void**)&data_ov006_02140564, 0, 0x800, 0);
-    *(double*)(c + 0x64) = data_ov006_0213b1e4;
+    *(double*)(c + 0x64) = pmf_Trmp3DMario_State8;
 }
 }
 }
@@ -2940,8 +2940,8 @@ extern "C" {
 typedef short s16;
 typedef struct { int x, y; } G2;
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int a, int b, unsigned int u);
-extern "C" int data_ov006_0213b204[2];
-extern "C" G2 data_ov006_0213b21c;
+extern "C" int pmf_Trmp3DMario_State3_2[2];
+extern "C" G2 pmf_Trmp3DMario_State9;
 extern "C" void *data_ov006_021405c8[];
 extern "C" void *data_ov006_0214057c;
 extern "C" void *data_ov006_02140564;
@@ -2959,7 +2959,7 @@ void Trmp3DMario_EnterState9(char *p) {
     *(int *)(p + 0x38) = z;
     *(int *)(p + 0x3c) = z;
     cur = (int *)(p + 0x64);
-    want = data_ov006_0213b204;
+    want = pmf_Trmp3DMario_State3_2;
     if (cur[0] == want[0] && (cur[1] == want[1] || *(int *)(p + 0x64) == 0)) {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0x6c, data_ov006_0214057c, 0x40000000, 0x800, 0);
     } else {
@@ -2969,7 +2969,7 @@ void Trmp3DMario_EnterState9(char *p) {
         int *ctr = &data_ov006_0214055c;
         int c = *ctr;
         *ctr = c + 1;
-        *(W2 *)(p + 0x64) = *(W2 *)&data_ov006_0213b21c;
+        *(W2 *)(p + 0x64) = *(W2 *)&pmf_Trmp3DMario_State9;
     }
 }
 }
@@ -2997,9 +2997,9 @@ extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *anim, void *file, i
 struct G2 { int w[2]; };
 extern "C" int data_ov006_021405c8;
 extern "C" struct G2 data_ov006_02140564;
-extern "C" struct G2 data_ov006_0213b184;
+extern "C" struct G2 pmf_Trmp3DMario_State11;
 extern "C" int data_ov006_0214058c;
-extern "C" struct G2 data_ov006_0213b12c;
+extern "C" struct G2 pmf_Trmp3DMario_State10;
 
 // @symbol Trmp3DMario_EnterState10
 extern "C" void Trmp3DMario_EnterState10(char *c)
@@ -3016,11 +3016,11 @@ extern "C" void Trmp3DMario_EnterState10(char *c)
     *(short *)(c + 0x4a) = 0x4000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, (void *)data_ov006_02140564.w[0], 0, 0x800, 0);
     int *s = (int *)((unsigned int)(unsigned long long)(c + 0x64) & 0xffffffffu);
-    struct G2 *d = &data_ov006_0213b184;
+    struct G2 *d = &pmf_Trmp3DMario_State11;
     if (s[0] != d->w[0] || (s[1] != d->w[1] && *(int *)(c + 0x64) != 0)) {
         data_ov006_0214058c += 1;
     }
-    *(struct G2 *)(c + 0x64) = data_ov006_0213b12c;
+    *(struct G2 *)(c + 0x64) = pmf_Trmp3DMario_State10;
 }
 }
 #pragma pop
@@ -3085,7 +3085,7 @@ extern "C" {
 struct BCA_File;
 extern int data_ov006_021405c8;
 extern struct BCA_File* data_ov006_0214057c;
-extern double data_ov006_0213b18c;
+extern double pmf_Trmp3DMario_State11_2;
 }
 extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, struct BCA_File* f, int frame, int speed, unsigned mode);
 // @symbol Trmp3DMario_EnterState11
@@ -3098,17 +3098,17 @@ extern "C" void Trmp3DMario_EnterState11(char* c)
     *(int*)(c + 0x38) = 0;
     *(int*)(c + 0x3c) = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_0214057c, 0x40000000, 0x800, 0);
-    *(double*)(c + 0x64) = data_ov006_0213b18c;
+    *(double*)(c + 0x64) = pmf_Trmp3DMario_State11_2;
 }
 }
 // ---- Trmp3DMario_IsInState12
 namespace ns_020ccd04 {
 extern "C" {
-extern "C" int data_ov006_0213b17c[];
+extern "C" int pmf_Trmp3DMario_State12_3[];
 // @symbol Trmp3DMario_IsInState12
 int Trmp3DMario_IsInState12(int* r0) {
     int* p = (int *)(((int)r0 + 0x64));
-    int* g = data_ov006_0213b17c;
+    int* g = pmf_Trmp3DMario_State12_3;
     int ret = 1;
     if (p[0] == g[0]) {
         if (p[1] == g[1]) goto zero;
@@ -3138,7 +3138,7 @@ struct V3 { int a, b, c; };
 extern struct V3 data_020a0ebc;
 extern void *data_ov006_02140564;
 struct G2 { int w[2]; };
-extern struct G2 data_ov006_0213b174;
+extern struct G2 pmf_Trmp3DMario_State12_2;
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int frame, int speed, unsigned int flags);
 // @symbol Trmp3DMario_EnterState12
 void Trmp3DMario_EnterState12(char *c)
@@ -3151,7 +3151,7 @@ void Trmp3DMario_EnterState12(char *c)
     *(int *)(c + 0x3c) = data_020a0ebc.c;
     *(int *)(c + 0x40) = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, data_ov006_02140564, 0, 0x800, 0);
-    *(struct G2 *)(c + 0x64) = data_ov006_0213b174;
+    *(struct G2 *)(c + 0x64) = pmf_Trmp3DMario_State12_2;
 }
 }
 }
@@ -3300,7 +3300,7 @@ namespace ns_020cd158 {
 extern "C" {
 extern "C" int data_ov006_02140594;
 extern "C" char *data_ov006_02140550;
-extern "C" int data_ov006_0213b164[];
+extern "C" int pmf_Trmp3DMario_State12[];
 
 // @symbol Trmp3DMario_CountFinished
 int Trmp3DMario_CountFinished(void)
@@ -3313,7 +3313,7 @@ int Trmp3DMario_CountFinished(void)
     n = data_ov006_02140594;
     if (n > 0) {
         e = data_ov006_02140550;
-        b = data_ov006_0213b164;
+        b = pmf_Trmp3DMario_State12;
         first = b[0];
         do {
             int *p = (int *)((unsigned int)e + 0x64);

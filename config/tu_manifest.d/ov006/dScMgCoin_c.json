@@ -524,7 +524,7 @@
     "Declaration conflicts between the folded shards are resolved the same way throughout: one extern \"C\" declaration per symbol at file scope, and a cast at the call where a shard had spelled the parameter differently. Local struct tags (C, E, Entry, Obj, Pair, PMF, Self, Work) are renamed per function rather than merged, because merging changes mwccarm pointer-to-member and struct-copy codegen; each function keeps the shape its shard matched under.",
     "_ZN11dScMgCoin_c12Block_State2Ei and _ZN11dScMgCoin_c11SpawnBlocksEv called vtable slot 35 through a 36-slot stand-in struct. They now call dScMgBase_c::IsAltVariant (slot 35) on dScMgCoin_c; the bytes are unchanged.",
     "_ZN11dScMgCoin_c13Popup_DrawAllEv now takes the dScMgCoin_c * that Render passes in r0; it does not read it. _ZN11dScMgCoin_c8Bag_DrawEv keeps its shard's #pragma opt_propagation off inside a push/pop bracket.",
-    "Static-initializer fold: __sinit_ov006_0213014c retired. The five pointer-to-member state tables are file-scope definitions initialised from the extern pointer-to-member constants data_ov006_0213be44..0213bf04, so mwcc emits the initializer itself. The constants stay outside this TU's claim and are reached by extern, as in the ov004 unit020b2c84 fold. The tables are defined in the order the initializer fills them (phases, blocks, coins, caption, moneybag). mwcc lays each object in its own .bss section and orders them by size, which puts them at 0x021417b0, 0x021417c8, 0x021417e8, 0x02141810 and 0x02141840 as in retail. The run's .bss (0x021417b0..0x02141870) starts where d_s_mg_card's ends and ends where dScMgCup_c's starts. Its .init and .ctor slots sit between those two TUs' slots as well."
+    "Static-initializer fold: __sinit_ov006_0213014c retired. The five pointer-to-member state tables are file-scope definitions initialised from the extern pointer-to-member constants pmf_dScMgCoin_c_Bag_State0..0213bf04, so mwcc emits the initializer itself. The constants stay outside this TU's claim and are reached by extern, as in the ov004 unit020b2c84 fold. The tables are defined in the order the initializer fills them (phases, blocks, coins, caption, moneybag). mwcc lays each object in its own .bss section and orders them by size, which puts them at 0x021417b0, 0x021417c8, 0x021417e8, 0x02141810 and 0x02141840 as in retail. The run's .bss (0x021417b0..0x02141870) starts where d_s_mg_card's ends and ends where dScMgCup_c's starts. Its .init and .ctor slots sit between those two TUs' slots as well."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -860,7 +860,7 @@
       "source": "0x0213035c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bee4",
+      "symbol": "pmf_dScMgCoin_c_Phase_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bee4"
@@ -870,7 +870,7 @@
       "source": "0x02130360",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be6c",
+      "symbol": "pmf_dScMgCoin_c_Phase_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be6c"
@@ -890,7 +890,7 @@
       "source": "0x02130368",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be7c",
+      "symbol": "pmf_dScMgCoin_c_Phase_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be7c"
@@ -900,7 +900,7 @@
       "source": "0x0213036c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bea4",
+      "symbol": "pmf_dScMgCoin_c_Phase_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bea4"
@@ -910,7 +910,7 @@
       "source": "0x02130370",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be54",
+      "symbol": "pmf_dScMgCoin_c_Phase_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be54"
@@ -920,7 +920,7 @@
       "source": "0x02130374",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be5c",
+      "symbol": "pmf_dScMgCoin_c_Phase_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be5c"
@@ -930,7 +930,7 @@
       "source": "0x02130378",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213beec",
+      "symbol": "pmf_dScMgCoin_c_Block_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213beec"
@@ -950,7 +950,7 @@
       "source": "0x02130380",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be74",
+      "symbol": "pmf_dScMgCoin_c_Block_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be74"
@@ -960,7 +960,7 @@
       "source": "0x02130384",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be64",
+      "symbol": "pmf_dScMgCoin_c_Block_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be64"
@@ -970,7 +970,7 @@
       "source": "0x02130388",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be84",
+      "symbol": "pmf_dScMgCoin_c_Block_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be84"
@@ -980,7 +980,7 @@
       "source": "0x0213038c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213beb4",
+      "symbol": "pmf_dScMgCoin_c_Block_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213beb4"
@@ -990,7 +990,7 @@
       "source": "0x02130390",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be9c",
+      "symbol": "pmf_dScMgCoin_c_Block_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be9c"
@@ -1000,7 +1000,7 @@
       "source": "0x02130394",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213befc",
+      "symbol": "pmf_dScMgCoin_c_Coin_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213befc"
@@ -1020,7 +1020,7 @@
       "source": "0x0213039c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bf04",
+      "symbol": "pmf_dScMgCoin_c_Coin_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bf04"
@@ -1030,7 +1030,7 @@
       "source": "0x021303a0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be94",
+      "symbol": "pmf_dScMgCoin_c_Coin_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be94"
@@ -1040,7 +1040,7 @@
       "source": "0x021303a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bec4",
+      "symbol": "pmf_dScMgCoin_c_Caption_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bec4"
@@ -1050,7 +1050,7 @@
       "source": "0x021303a8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bed4",
+      "symbol": "pmf_dScMgCoin_c_Caption_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bed4"
@@ -1060,7 +1060,7 @@
       "source": "0x021303ac",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213becc",
+      "symbol": "pmf_dScMgCoin_c_Caption_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213becc"
@@ -1080,7 +1080,7 @@
       "source": "0x021303b4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213beac",
+      "symbol": "pmf_dScMgCoin_c_Caption_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213beac"
@@ -1090,7 +1090,7 @@
       "source": "0x021303b8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bebc",
+      "symbol": "pmf_dScMgCoin_c_Caption_State4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bebc"
@@ -1100,7 +1100,7 @@
       "source": "0x021303bc",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be44",
+      "symbol": "pmf_dScMgCoin_c_Bag_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be44"
@@ -1110,7 +1110,7 @@
       "source": "0x021303c0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be4c",
+      "symbol": "pmf_dScMgCoin_c_Bag_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be4c"
@@ -1120,7 +1120,7 @@
       "source": "0x021303c4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bef4",
+      "symbol": "pmf_dScMgCoin_c_Bag_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bef4"
@@ -1130,7 +1130,7 @@
       "source": "0x021303c8",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213be8c",
+      "symbol": "pmf_dScMgCoin_c_Bag_State3",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213be8c"

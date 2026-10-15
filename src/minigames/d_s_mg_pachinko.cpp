@@ -223,31 +223,31 @@ extern Ent7d0 data_ov006_02142694[];
 
 /* The ROM {code pointer, adjustment} records the five tables copy from
    (unlicensed .data), grouped by destination table in retail copy order. */
-extern Ent7d0 data_ov006_0213d8a8;
-extern Ent7d0 data_ov006_0213d8f0;
-extern Ent7d0 data_ov006_0213d8f8;
-extern Ent7d0 data_ov006_0213d8b8;
-extern Ent7d0 data_ov006_0213d908;
-extern Ent7d0 data_ov006_0213d8c0;
-extern Ent7d0 data_ov006_0213d8c8;
-extern Ent7d0 data_ov006_0213d898;
-extern Ent7d0 data_ov006_0213d920;
-extern Ent7d0 data_ov006_0213d8b0;
-extern Ent7d0 data_ov006_0213d880;
-extern Ent7d0 data_ov006_0213d8d8;
-extern Ent7d0 data_ov006_0213d930;
-extern Ent7d0 data_ov006_0213d940;
-extern Ent7d0 data_ov006_0213d938;
-extern Ent7d0 data_ov006_0213d8d0;
-extern PMF2   data_ov006_0213d878;
-extern PMF2   data_ov006_0213d8e8;
-extern PMF2   data_ov006_0213d8e0;
-extern PMF2   data_ov006_0213d890;
-extern PMF2   data_ov006_0213d888;
-extern PMF    data_ov006_0213d928;
-extern PMF    data_ov006_0213d918;
-extern PMF    data_ov006_0213d8a0;
-extern PMF    data_ov006_0213d900;
+extern Ent7d0 pmf_PachinkoBobOmb_State0;
+extern Ent7d0 pmf_PachinkoBobOmb_State1;
+extern Ent7d0 pmf_PachinkoBobOmb_State2;
+extern Ent7d0 pmf_PachinkoBobOmb_State3;
+extern Ent7d0 pmf_PachinkoBobOmb_State4;
+extern Ent7d0 pmf_PachinkoBall_State0;
+extern Ent7d0 pmf_PachinkoBall_State1;
+extern Ent7d0 pmf_PachinkoBall_State2;
+extern Ent7d0 pmf_PachinkoBall_State3;
+extern Ent7d0 pmf_PachinkoBall_State4;
+extern Ent7d0 pmf_PachinkoBall_State5;
+extern Ent7d0 pmf_PachinkoBall_State6;
+extern Ent7d0 pmf_PachinkoPipe_State0;
+extern Ent7d0 pmf_PachinkoPipe_State1;
+extern Ent7d0 pmf_PachinkoPipe_State2;
+extern Ent7d0 pmf_PachinkoPipe_State3;
+extern PMF2   pmf_PachinkoFlyer_State0;
+extern PMF2   pmf_PachinkoFlyer_State1;
+extern PMF2   pmf_PachinkoFlyer_State2;
+extern PMF2   pmf_PachinkoFlyer_State3;
+extern PMF2   pmf_PachinkoFlyer_State4;
+extern PMF    pmf_PachinkoBg_State0;
+extern PMF    pmf_PachinkoBg_State1;
+extern PMF    pmf_PachinkoBg_State2;
+extern PMF    pmf_PachinkoBg_State3;
 
 /* This TU's own members, forward-declared for the callers below them. */
 extern void PachinkoDeco_DrawAll(char *thiz);
@@ -2868,37 +2868,37 @@ extern "C" void *dScMgPachinko_c_classInit()
    then the 4-row Entry table. mwcc emits __sinit_d_s_mg_pachinko.cpp from
    these definitions, copying the ROM .data records. */
 Ent7d0 data_ov006_02142644[5] = {
-    data_ov006_0213d8a8,
-    data_ov006_0213d8f0,
-    data_ov006_0213d8f8,
-    data_ov006_0213d8b8,
-    data_ov006_0213d908,
+    pmf_PachinkoBobOmb_State0,
+    pmf_PachinkoBobOmb_State1,
+    pmf_PachinkoBobOmb_State2,
+    pmf_PachinkoBobOmb_State3,
+    pmf_PachinkoBobOmb_State4,
 };
 Ent7d0 data_ov006_02142694[7] = {
-    data_ov006_0213d8c0,
-    data_ov006_0213d8c8,
-    data_ov006_0213d898,
-    data_ov006_0213d920,
-    data_ov006_0213d8b0,
-    data_ov006_0213d880,
-    data_ov006_0213d8d8,
+    pmf_PachinkoBall_State0,
+    pmf_PachinkoBall_State1,
+    pmf_PachinkoBall_State2,
+    pmf_PachinkoBall_State3,
+    pmf_PachinkoBall_State4,
+    pmf_PachinkoBall_State5,
+    pmf_PachinkoBall_State6,
 };
 Ent7d0 data_ov006_02142624[4] = {
-    data_ov006_0213d930,
-    data_ov006_0213d940,
-    data_ov006_0213d938,
-    data_ov006_0213d8d0,
+    pmf_PachinkoPipe_State0,
+    pmf_PachinkoPipe_State1,
+    pmf_PachinkoPipe_State2,
+    pmf_PachinkoPipe_State3,
 };
 PMF2 data_ov006_0214266c[5] = {
-    data_ov006_0213d878,
-    data_ov006_0213d8e8,
-    data_ov006_0213d8e0,
-    data_ov006_0213d890,
-    data_ov006_0213d888,
+    pmf_PachinkoFlyer_State0,
+    pmf_PachinkoFlyer_State1,
+    pmf_PachinkoFlyer_State2,
+    pmf_PachinkoFlyer_State3,
+    pmf_PachinkoFlyer_State4,
 };
 Entry data_ov006_02142604[4] = {
-    {data_ov006_0213d928},
-    {data_ov006_0213d918},
-    {data_ov006_0213d8a0},
-    {data_ov006_0213d900},
+    {pmf_PachinkoBg_State0},
+    {pmf_PachinkoBg_State1},
+    {pmf_PachinkoBg_State2},
+    {pmf_PachinkoBg_State3},
 };

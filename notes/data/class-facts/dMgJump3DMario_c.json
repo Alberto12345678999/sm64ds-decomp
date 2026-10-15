@@ -194,7 +194,7 @@
     "record_count": 15,
     "distinct_targets": 9,
     "record_span": "0x0213b020..0x0213b098",
-    "shape": "8-byte pointer-to-member-function constants: {code pointer, 0x00000000}. Each is its own symbol (data_ov006_0213b020, _0213b028, ... _0213b090) and each is loaded individually from one literal-pool site -- they are 15 separate constants, NOT an array.",
+    "shape": "8-byte pointer-to-member-function constants: {code pointer, 0x00000000}. Each is its own symbol (pmf_dMgJump3DMario_c_StateMove, _0213b028, ... _0213b090) and each is loaded individually from one literal-pool site -- they are 15 separate constants, NOT an array.",
     "proof_they_are_PMFs": "func_ov006_020c802c copies the record at 0x0213b020 word-for-word into this+0x3c and this+0x40, and vtable slot 2 (0x020c762c) compares this+0x3c/this+0x40 against the records at 0x0213b058 and 0x0213b070 using the mwccarm pointer-to-member equality shape (pointer compare, adjustment compare, null short-circuit).",
     "no_sinit": "Unlike dScMgCurling2_c these constants are NOT filled by a static initializer. They sit in initialized .data (ov006 .data is 0x02133600..0x021402e0) with the pointers already baked in, and no entry in ov006's 31-entry .ctor table at 0x0213356c..0x021335ec points anywhere inside the run. There is no sinit to simulate for this class, so the phantom-index hazard does not arise here.",
     "ownership": "config/arm9/overlays/ov006/delinks.txt claims only two .data blocks in the whole module (0x0213faa0..0x0213fbc4 and 0x0213fbc4..0x0213fd0c). 0x0213b020..0x0213b098 is unowned, so dsd delinks it straight from the cartridge and resolves each code word by looking up the NAME symbols.txt gives at the target address.",

@@ -570,7 +570,7 @@
   "TWELVE MEMBERS REFUSED CONVERSION, AND THE REASON IS MEASURED AND IS NOT BYTES. With all 29 converted the TU still reports 31/31 MATCH / objisolate clean / ROM-ascending, but `python tools/rombuild.py -j 6 --no-rom` fails with exactly twelve `mwldarm.exe: Undefined` lines: func_ov006_020e38b0, _020e3948, _020e3bc4, _020e4a84, _020e4b78, _020e4fe8, _020e507c (referenced from dScMgCurling2_c::Render()), _020e4800 and _020e3948 (Behavior()), _020e48d4 (InitResources()), _020e3b9c (func_ov006_020e668c), _020e4b00 (func_ov006_020e628c) and _020e513c (func_ov006_020e5e3c). Those callers are still one-function shards above the sourceless hole, and they -- and include/decl_common.h -- spell the target by its C name. The twelve convert byte-neutrally the day segment B is promoted; nothing else blocks them.",
   "THE SEVENTEEN NAMES ARE COINED. The ROM proves member-ness (a zero-adjustment pointer-to-member record) and each handler's index in its own table, both read out of __sinit_ov006_02130758 and quoted in include/dScMgCurling2_c.h. It does not carry the original identifiers, and the gameplay semantics of the 0x48c0 and 0x4fe0 record arrays remain on the scout's `unproven` list; no name asserts them.",
   "UPPER SIDE PROMOTED (segment B, fold/ov006-curling2-1005). The 20-member run above the Curling2_ResolveStoneCollision hole is src/actors/dScMgCurling2_c_upper.cpp under config/tu_manifest.d/ov006/dScMgCurling2_c_upper.json -- the second half of this same linker run, licensed as its own TU because no manifest shape expresses a .text claim with a hole in it. With every C-name caller folded, the twelve members this manifest's earlier notes marked byte-neutrally convertible all took their real dScMgCurling2_c:: names in the same edit (DrawValues, AgeValues, ClearValues, DrawPieces, StepPieces, SeedPieces, DrawMarks, AgeMarks, DrawCursor, DrawCounter, DrawStones, SeparateStones), 31/31 MATCH unchanged. The decl_common.h decls note 101 enumerates are gone with them; note 105's migration is complete. The eight new names are coined the same way note 106 records for the first seventeen: .data pointer-to-member records prove member-ness, the ROM preserves no identifiers.",
-  "Static initializer folded: all seven PMF state tables (0x02141978..0x02141a40) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_curling2.cpp, defined through the existing PMF typedef (plus a TU-local PMF0 for the two no-arg tables) and plain-copied from the ROM PMF constants at data_ov006_0213c3d4..0x0213c4b4. The block is one contiguous .bss run shared with the upper half of this class, so every table is defined here and the upper TU externs resolve to these definitions. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order.",
+  "Static initializer folded: all seven PMF state tables (0x02141978..0x02141a40) move out of the handwritten src/unnamed shard into src/minigames/d_s_mg_curling2.cpp, defined through the existing PMF typedef (plus a TU-local PMF0 for the two no-arg tables) and plain-copied from the ROM PMF constants at pmf_dScMgCurling2_c_StoneRest..0x0213c4b4. The block is one contiguous .bss run shared with the upper half of this class, so every table is defined here and the upper TU externs resolve to these definitions. The emitted .init, .ctor and .bss are byte-identical to retail; no handles, no compiler temporaries, no renames. Table definition order is the retail initializer copy order.",
   "FULL-RUN FOLD (U01, 2026-10-11): src/actors/dScMgCurling2_c_upper.cpp (the 20-member upper half) and src/d_s_mg_curling2.cpp (the registry factory) merged into this file -- one contiguous .text block 0x020e3854..0x020e6c28, 53 functions. Their delinks entries merged into this TU's single entry; the upper manifest was retired. The fold is the step the upper manifest already prescribed: classInit's _ZTV15dScMgCurling2_c reference now resolves against this object's own emitted (deadstrip-data) vtable. verify: 53/53 MATCH, emission order clean; linkcheck SCRATCH-DATA-VERIFIED, all four licensed ranges IDENTICAL.",
   "LOCAL WORKER NOTE: this machine's stock dump is the EU image (gamecode ASMP), so the scratch link built ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40 -- byte-identical to this tree's stock build -- while the recorded rom.sha256 carries the fleet-canonical stock SHA-256 that every other intact entry on main shares (d1506e90...c478e8). The divergent bytes are NDS container/packaging fields outside every module range; the content proof is identical either way (moduleSetSha256 f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b, symbol inventory and tuRanges all equal the canonical records)."
  ],
@@ -863,7 +863,7 @@
    "source": "0x02130984",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c47c",
+   "symbol": "pmf_dScMgCurling2_c_BeginRound",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c47c"
@@ -873,7 +873,7 @@
    "source": "0x02130988",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c414",
+   "symbol": "pmf_dScMgCurling2_c_Play",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c414"
@@ -893,7 +893,7 @@
    "source": "0x02130990",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c404",
+   "symbol": "pmf_dScMgCurling2_c_NextThrow",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c404"
@@ -903,7 +903,7 @@
    "source": "0x02130994",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c424",
+   "symbol": "pmf_dScMgCurling2_c_EndRound",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c424"
@@ -913,7 +913,7 @@
    "source": "0x02130998",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c3f4",
+   "symbol": "pmf_dScMgCurling2_c_Idle",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c3f4"
@@ -923,7 +923,7 @@
    "source": "0x0213099c",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c3e4",
+   "symbol": "pmf_dScMgCurling2_c_StoneWait",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c3e4"
@@ -933,7 +933,7 @@
    "source": "0x021309a0",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c3dc",
+   "symbol": "pmf_dScMgCurling2_c_StoneSlide",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c3dc"
@@ -953,7 +953,7 @@
    "source": "0x021309a8",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c3d4",
+   "symbol": "pmf_dScMgCurling2_c_StoneRest",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c3d4"
@@ -963,7 +963,7 @@
    "source": "0x021309ac",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c3ec",
+   "symbol": "pmf_dScMgCurling2_c_StoneSteer",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c3ec"
@@ -973,7 +973,7 @@
    "source": "0x021309b0",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c4b4",
+   "symbol": "pmf_dScMgCurling2_c_DragBegin",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c4b4"
@@ -993,7 +993,7 @@
    "source": "0x021309b8",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c4ac",
+   "symbol": "pmf_dScMgCurling2_c_DragUpdate",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c4ac"
@@ -1003,7 +1003,7 @@
    "source": "0x021309bc",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c42c",
+   "symbol": "pmf_dScMgCurling2_c_PickStepMode",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c42c"
@@ -1023,7 +1023,7 @@
    "source": "0x021309c4",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c494",
+   "symbol": "pmf_dScMgCurling2_c_StepXOnly",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c494"
@@ -1033,7 +1033,7 @@
    "source": "0x021309c8",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c48c",
+   "symbol": "pmf_dScMgCurling2_c_StepXAndY",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c48c"
@@ -1043,7 +1043,7 @@
    "source": "0x021309cc",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c474",
+   "symbol": "pmf_dScMgCurling2_c_StepXPickFast",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c474"
@@ -1053,7 +1053,7 @@
    "source": "0x021309d0",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c40c",
+   "symbol": "pmf_dScMgCurling2_c_StepXPushPosFast",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c40c"
@@ -1063,7 +1063,7 @@
    "source": "0x021309d4",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c464",
+   "symbol": "pmf_dScMgCurling2_c_StepXPushNegFast",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c464"
@@ -1083,7 +1083,7 @@
    "source": "0x021309dc",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c45c",
+   "symbol": "pmf_dScMgCurling2_c_StepXSettleFast",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c45c"
@@ -1093,7 +1093,7 @@
    "source": "0x021309e0",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c49c",
+   "symbol": "pmf_dScMgCurling2_c_StepXPick",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c49c"
@@ -1103,7 +1103,7 @@
    "source": "0x021309e4",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c444",
+   "symbol": "pmf_dScMgCurling2_c_StepXPushPos",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c444"
@@ -1113,7 +1113,7 @@
    "source": "0x021309e8",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c43c",
+   "symbol": "pmf_dScMgCurling2_c_StepXPushNeg",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c43c"
@@ -1133,7 +1133,7 @@
    "source": "0x021309f0",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c4a4",
+   "symbol": "pmf_dScMgCurling2_c_StepXSettle",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c4a4"
@@ -1143,7 +1143,7 @@
    "source": "0x021309f4",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c41c",
+   "symbol": "pmf_dScMgCurling2_c_StepYRestart",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c41c"
@@ -1153,7 +1153,7 @@
    "source": "0x021309f8",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c484",
+   "symbol": "pmf_dScMgCurling2_c_StepYRampUp",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c484"
@@ -1163,7 +1163,7 @@
    "source": "0x021309fc",
    "type": "R_ARM_ABS32",
    "kind": "load",
-   "symbol": "data_ov006_0213c46c",
+   "symbol": "pmf_dScMgCurling2_c_StepYRampDown",
    "addend": 0,
    "target_module": "ov006",
    "target_address": "0x0213c46c"

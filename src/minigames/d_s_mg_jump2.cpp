@@ -141,17 +141,17 @@ extern void Mg_SetSharedState(int);
 extern void Heyho_SeparateAll(void);
 extern void Jump3D_UpdateAll(void);
 extern int data_ov006_02140308;
-extern struct G2 data_ov006_0213cc74;
-extern struct G2 data_ov006_0213cc9c;
+extern struct G2 pmf_dScMgJump2_c_State_Idle;
+extern struct G2 pmf_dScMgJump2_c_State_End;
 extern void Heyho_SettleAll(void);
 extern void Jump3D_SetTuning(int a);
 extern int data_ov006_02140304;
 extern int data_ov006_02140328;
 extern int data_ov006_02140428;
-extern struct G2 data_ov006_0213cc84;
+extern struct G2 pmf_dScMgJump2_c_State_Play;
 extern void Jump3D_StartRoundLayout(void);
-extern struct G2 data_ov006_0213cc8c;
-extern struct G2 data_ov006_0213cc94;
+extern struct G2 pmf_dScMgJump2_c_State_Result;
+extern struct G2 pmf_dScMgJump2_c_State_Intro;
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, int dst);
 extern void Camera_UpdateMatrices(void *cam);
@@ -309,7 +309,7 @@ s32 dScMgJump2_c::InitResources()
 }
 
 /* The state functions: five are the exec targets the PMF records at
- * data_ov006_0213cc74..9c point into (see the header's state-machine note);
+ * pmf_dScMgJump2_c_State_Idle..9c point into (see the header's state-machine note);
  * the other three are the transitions that install a record and arm
  * unk_5a74. unk_5a64 accumulates unk_5a68 >> 12 each tick and wraps at
  * 0x1000.
@@ -320,7 +320,7 @@ void dScMgJump2_c::BeginIntro(){
   unk_5a74 = 0x78;
   unk_5a64 = 0;
   unk_5a68 = 0x4000;
-  *(struct G2*)pad_5004 = data_ov006_0213cc94;
+  *(struct G2*)pad_5004 = pmf_dScMgJump2_c_State_Intro;
 }
 
 // @symbol _ZN12dScMgJump2_c11State_IntroEv
@@ -344,7 +344,7 @@ void dScMgJump2_c::State_Intro()
 void dScMgJump2_c::BeginPlay()
 {
     unk_5a74 = 0xf0;
-    *(struct G2 *)pad_5004 = data_ov006_0213cc84;
+    *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Play;
 }
 
 // @symbol _ZN12dScMgJump2_c10State_PlayEv
@@ -424,7 +424,7 @@ void dScMgJump2_c::State_Play()
 void dScMgJump2_c::BeginEnd()
 {
     unk_5a74 = 0x20;
-    *(struct G2 *)pad_5004 = data_ov006_0213cc9c;
+    *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_End;
 }
 
 // @symbol _ZN12dScMgJump2_c9State_EndEv
@@ -444,7 +444,7 @@ void dScMgJump2_c::State_End()
   }
   Jump3D_SetLowGravity();
   Heyho_ReactAll();
-  *(struct G2 *)pad_5004 = data_ov006_0213cc8c;
+  *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Result;
 }
 
 // @symbol _ZN12dScMgJump2_c12State_ResultEv
@@ -456,7 +456,7 @@ void dScMgJump2_c::State_Result(){
             Mg_SubmitScore(data_ov006_02140308);
             Mg_SetSharedState(0x12);
             mPromptEnabled = 0;
-            *(struct G2 *)pad_5004 = data_ov006_0213cc74;
+            *(struct G2 *)pad_5004 = pmf_dScMgJump2_c_State_Idle;
         }
     }
     Heyho_SeparateAll();

@@ -796,7 +796,7 @@
       "source": "0x0213294c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e520",
+      "symbol": "pmf_Slot3_State0",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e520"
@@ -806,7 +806,7 @@
       "source": "0x02132950",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e530",
+      "symbol": "pmf_Slot3_State1",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e530"
@@ -816,7 +816,7 @@
       "source": "0x02132954",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e4e0",
+      "symbol": "pmf_Slot3_State2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e4e0"
@@ -826,7 +826,7 @@
       "source": "0x02132958",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e538",
+      "symbol": "pmf_Slot3_State3and4",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e538"
@@ -836,7 +836,7 @@
       "source": "0x0213295c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e550",
+      "symbol": "pmf_Slot3_State3and4_2",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e550"
@@ -846,7 +846,7 @@
       "source": "0x02132960",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e548",
+      "symbol": "pmf_Slot3_State5",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e548"
@@ -856,7 +856,7 @@
       "source": "0x02132964",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e580",
+      "symbol": "pmf_Slot3_State6",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e580"
@@ -866,7 +866,7 @@
       "source": "0x02132968",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213e578",
+      "symbol": "pmf_Slot3_State7",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213e578"

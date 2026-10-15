@@ -633,7 +633,7 @@
       "source": "0x02130488",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c030",
+      "symbol": "pmf_dScMgCup_c_StateSetup",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c030"
@@ -643,7 +643,7 @@
       "source": "0x0213048c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c000",
+      "symbol": "pmf_dScMgCup_c_StatePrepareShuffle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c000"
@@ -653,7 +653,7 @@
       "source": "0x02130490",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c028",
+      "symbol": "pmf_dScMgCup_c_StateShuffle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c028"
@@ -663,7 +663,7 @@
       "source": "0x02130494",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bff8",
+      "symbol": "pmf_dScMgCup_c_StateWaitForInput",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bff8"
@@ -673,7 +673,7 @@
       "source": "0x02130498",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c010",
+      "symbol": "pmf_dScMgCup_c_StateSelect",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c010"
@@ -683,7 +683,7 @@
       "source": "0x0213049c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c040",
+      "symbol": "pmf_dScMgCup_c_StateResult",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c040"
@@ -693,7 +693,7 @@
       "source": "0x021304a0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213c008",
+      "symbol": "pmf_dScMgCup_c_StateFinish",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213c008"
@@ -703,7 +703,7 @@
       "source": "0x021304a4",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "data_ov006_0213bfe8",
+      "symbol": "pmf_dScMgCup_c_StateIdle",
       "addend": 0,
       "target_module": "ov006",
       "target_address": "0x0213bfe8"

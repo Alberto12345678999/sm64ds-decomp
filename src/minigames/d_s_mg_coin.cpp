@@ -178,57 +178,57 @@ struct CoinPmfEntry { CoinPmf pmf; };
 typedef void (dScMgCoin_c::*PMF_Behavior)();
 struct Entry_Behavior { PMF_Behavior pmf; };
 extern "C" {
-extern const Entry_Behavior data_ov006_0213bee4, data_ov006_0213be6c,
-    data_ov006_0213be7c, data_ov006_0213bea4, data_ov006_0213be54,
-    data_ov006_0213be5c;
-extern const CoinPmfEntry data_ov006_0213beec, data_ov006_0213be74,
-    data_ov006_0213be64, data_ov006_0213be84, data_ov006_0213beb4,
-    data_ov006_0213be9c;
-extern const CoinPmfEntry data_ov006_0213befc, data_ov006_0213bf04,
-    data_ov006_0213be94;
-extern const CoinPmfEntry data_ov006_0213bec4, data_ov006_0213bed4,
-    data_ov006_0213becc, data_ov006_0213beac, data_ov006_0213bebc;
-extern const CoinPmfEntry data_ov006_0213be44, data_ov006_0213be4c,
-    data_ov006_0213bef4, data_ov006_0213be8c;
+extern const Entry_Behavior pmf_dScMgCoin_c_Phase_State0, pmf_dScMgCoin_c_Phase_State1,
+    pmf_dScMgCoin_c_Phase_State2, pmf_dScMgCoin_c_Phase_State3, pmf_dScMgCoin_c_Phase_State4,
+    pmf_dScMgCoin_c_Phase_State5;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Block_State0, pmf_dScMgCoin_c_Block_State1,
+    pmf_dScMgCoin_c_Block_State2, pmf_dScMgCoin_c_Block_State3, pmf_dScMgCoin_c_Block_State4,
+    pmf_dScMgCoin_c_Block_State5;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Coin_State0, pmf_dScMgCoin_c_Coin_State1,
+    pmf_dScMgCoin_c_Coin_State2;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Caption_State0, pmf_dScMgCoin_c_Caption_State1,
+    pmf_dScMgCoin_c_Caption_State2, pmf_dScMgCoin_c_Caption_State3, pmf_dScMgCoin_c_Caption_State4;
+extern const CoinPmfEntry pmf_dScMgCoin_c_Bag_State0, pmf_dScMgCoin_c_Bag_State1,
+    pmf_dScMgCoin_c_Bag_State2, pmf_dScMgCoin_c_Bag_State3;
 
 /* the phases (Behavior) */
 Entry_Behavior data_ov006_02141810[6] = {
-    { data_ov006_0213bee4 },
-    { data_ov006_0213be6c },
-    { data_ov006_0213be7c },
-    { data_ov006_0213bea4 },
-    { data_ov006_0213be54 },
-    { data_ov006_0213be5c }
+    { pmf_dScMgCoin_c_Phase_State0 },
+    { pmf_dScMgCoin_c_Phase_State1 },
+    { pmf_dScMgCoin_c_Phase_State2 },
+    { pmf_dScMgCoin_c_Phase_State3 },
+    { pmf_dScMgCoin_c_Phase_State4 },
+    { pmf_dScMgCoin_c_Phase_State5 }
 };
 /* the blocks */
 CoinPmfEntry data_ov006_02141840[6] = {
-    { data_ov006_0213beec },
-    { data_ov006_0213be74 },
-    { data_ov006_0213be64 },
-    { data_ov006_0213be84 },
-    { data_ov006_0213beb4 },
-    { data_ov006_0213be9c }
+    { pmf_dScMgCoin_c_Block_State0 },
+    { pmf_dScMgCoin_c_Block_State1 },
+    { pmf_dScMgCoin_c_Block_State2 },
+    { pmf_dScMgCoin_c_Block_State3 },
+    { pmf_dScMgCoin_c_Block_State4 },
+    { pmf_dScMgCoin_c_Block_State5 }
 };
 /* the coins */
 CoinPmfEntry data_ov006_021417b0[3] = {
-    { data_ov006_0213befc },
-    { data_ov006_0213bf04 },
-    { data_ov006_0213be94 }
+    { pmf_dScMgCoin_c_Coin_State0 },
+    { pmf_dScMgCoin_c_Coin_State1 },
+    { pmf_dScMgCoin_c_Coin_State2 }
 };
 /* the caption */
 CoinPmfEntry data_ov006_021417e8[5] = {
-    { data_ov006_0213bec4 },
-    { data_ov006_0213bed4 },
-    { data_ov006_0213becc },
-    { data_ov006_0213beac },
-    { data_ov006_0213bebc }
+    { pmf_dScMgCoin_c_Caption_State0 },
+    { pmf_dScMgCoin_c_Caption_State1 },
+    { pmf_dScMgCoin_c_Caption_State2 },
+    { pmf_dScMgCoin_c_Caption_State3 },
+    { pmf_dScMgCoin_c_Caption_State4 }
 };
 /* the moneybag */
 CoinPmfEntry data_ov006_021417c8[4] = {
-    { data_ov006_0213be44 },
-    { data_ov006_0213be4c },
-    { data_ov006_0213bef4 },
-    { data_ov006_0213be8c }
+    { pmf_dScMgCoin_c_Bag_State0 },
+    { pmf_dScMgCoin_c_Bag_State1 },
+    { pmf_dScMgCoin_c_Bag_State2 },
+    { pmf_dScMgCoin_c_Bag_State3 }
 };
 }
 
@@ -928,7 +928,7 @@ void dScMgCoin_c::Coin_State0(int idx)
     Sound::PlayBank2_2D(0xf2);
 
     *(u8 *)(self + 0x4000 + idx * 0x18 + 0xad0) = 2;
-    stars = (gMgScene != 0) ? *(int *)((char *)gMgScene + 0xa8) : 0;
+    stars = (gMgScene != 0) ? ((dScMgBase_c *)gMgScene)->mCredits : 0;
     need = mPlayerScore;
     if (stars > need)
         mWonLast = 1;

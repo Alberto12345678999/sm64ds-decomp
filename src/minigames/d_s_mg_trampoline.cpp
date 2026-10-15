@@ -258,14 +258,14 @@ extern int data_ov006_021372f4[];
 extern int data_ov006_02137454[];
 
 /* Data owned by the same original TU. */
-P2 data_ov006_0213faa0 = { (int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0 };
-P2 data_ov006_0213faa8 = { (int)_ZN17dScMgTrampoline_c9StateDoneEv, 0 };
-P2 data_ov006_0213fab0 = { (int)_ZN17dScMgTrampoline_c10StateIntroEv, 0 };
+P2 pmf_dScMgTrampoline_c_StateWaitExit = { (int)_ZN17dScMgTrampoline_c13StateWaitExitEv, 0 };
+P2 pmf_dScMgTrampoline_c_StateDone = { (int)_ZN17dScMgTrampoline_c9StateDoneEv, 0 };
+P2 pmf_dScMgTrampoline_c_StateIntro = { (int)_ZN17dScMgTrampoline_c10StateIntroEv, 0 };
 TrampolineTimeProfile g_profile_MG_TRAMPOLINE = {
     dScMgTrampoline_c_classInit, 0x180, 0x180
 };
-P2 data_ov006_0213fac0 = { (int)_ZN17dScMgTrampoline_c9StatePlayEv, 0 };
-P2 data_ov006_0213fac8 = { (int)_ZN17dScMgTrampoline_c12StateResultsEv, 0 };
+P2 pmf_dScMgTrampoline_c_StatePlay = { (int)_ZN17dScMgTrampoline_c9StatePlayEv, 0 };
+P2 pmf_dScMgTrampoline_c_StateResults = { (int)_ZN17dScMgTrampoline_c12StateResultsEv, 0 };
 int data_ov006_0213fadc[] = { 0x107, 0x109, 0x104, 0x105, 0x106 };
 int *data_ov006_0213fb04[] = {
     data_ov006_021373a4,
@@ -525,7 +525,7 @@ void dScMgTrampoline_c::BeginIntro()
     mTouchX = a;
     mTouchY = b;
     mDragSoundHandle = 0;
-    *(P2Words *)mState = *(P2Words *)&data_ov006_0213fab0;
+    *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateIntro;
 }
 
 // @symbol _ZN17dScMgTrampoline_c10StateIntroEv
@@ -590,7 +590,7 @@ void dScMgTrampoline_c::BeginPlay()
     mDoorMark.Show(mDoorSide);
     mDragSoundHandle = 0;
     Sound::PlayBank2_2D(0x1b6);
-    *(P2Words *)mState = *(P2Words *)&data_ov006_0213fac0;
+    *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StatePlay;
 }
 
 // @symbol _ZN17dScMgTrampoline_c12UpdateScrollEv
@@ -709,7 +709,7 @@ void dScMgTrampoline_c::BeginResults()
     char *c = (char *)this;
     Trmp3DMario_StartAll(c);
     mTimer = 0x5a;
-    *(P2Words *)mState = *(P2Words *)&data_ov006_0213fac8;
+    *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateResults;
 }
 
 // @symbol _ZN17dScMgTrampoline_c12StateResultsEv
@@ -722,7 +722,7 @@ void dScMgTrampoline_c::StateResults()
   Mg_SetSharedState(0x12);
   mPromptEnabled = 0;
   mTimer = 0xb4;
-  *(P2Words *)mState = *(P2Words *)&data_ov006_0213faa0;
+  *(P2Words *)mState = *(P2Words *)&pmf_dScMgTrampoline_c_StateWaitExit;
 }
 
 // @symbol _ZN17dScMgTrampoline_c13StateWaitExitEv
@@ -748,8 +748,8 @@ void dScMgTrampoline_c::StateWaitExit()
     }
     mRoundOver = 1;
     {
-        int w0 = ((int *)&data_ov006_0213faa8)[0];
-        int w1 = ((int *)&data_ov006_0213faa8)[1];
+        int w0 = ((int *)&pmf_dScMgTrampoline_c_StateDone)[0];
+        int w1 = ((int *)&pmf_dScMgTrampoline_c_StateDone)[1];
         w0 = w1 ? w0 : w0;
         mState[0] = w0;
         mState[1] = w1;

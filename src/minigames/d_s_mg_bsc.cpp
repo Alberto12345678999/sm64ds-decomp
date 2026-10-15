@@ -32,20 +32,20 @@ typedef void (dScMgBSC_c::*StateHandler)();
 extern StateHandler data_ov006_02142f94[];
 /* The ROM PMF constants the state table copies from (unlicensed .data),
  * in retail copy order. */
-extern StateHandler data_ov006_0213fd7c;
-extern StateHandler data_ov006_0213fd5c;
-extern StateHandler data_ov006_0213fd4c;
-extern StateHandler data_ov006_0213fd24;
-extern StateHandler data_ov006_0213fd3c;
-extern StateHandler data_ov006_0213fd34;
-extern StateHandler data_ov006_0213fd64;
-extern StateHandler data_ov006_0213fd54;
-extern StateHandler data_ov006_0213fd84;
-extern StateHandler data_ov006_0213fd14;
-extern StateHandler data_ov006_0213fd0c;
-extern StateHandler data_ov006_0213fd74;
-extern StateHandler data_ov006_0213fd1c;
-extern StateHandler data_ov006_0213fd2c;
+extern StateHandler pmf_dScMgBSC_c_StateDealCards;
+extern StateHandler pmf_dScMgBSC_c_StateWaitDeal;
+extern StateHandler pmf_dScMgBSC_c_StateChooseCard;
+extern StateHandler pmf_dScMgBSC_c_StateMoveCards;
+extern StateHandler pmf_dScMgBSC_c_StateWaitMove;
+extern StateHandler pmf_dScMgBSC_c_StateRevealCards;
+extern StateHandler pmf_dScMgBSC_c_StateJudgeCards;
+extern StateHandler pmf_dScMgBSC_c_StateTableReaction;
+extern StateHandler pmf_dScMgBSC_c_StateTableReaction_2;
+extern StateHandler pmf_dScMgBSC_c_StateWaitTable_2;
+extern StateHandler pmf_dScMgBSC_c_StateWaitTable;
+extern StateHandler pmf_dScMgBSC_c_StateReturnCards;
+extern StateHandler pmf_dScMgBSC_c_StateDone;
+extern StateHandler pmf_dScMgBSC_c_StateDone_2;
 
 extern "C" {
 extern short gMgCoinsStatus;
@@ -554,18 +554,18 @@ void dScMgBSC_c::StateDone()
  * The state table plain-copied from the ROM PMF constants, in retail
  * copy order. */
 StateHandler data_ov006_02142f94[14] = {
-    data_ov006_0213fd7c,
-    data_ov006_0213fd5c,
-    data_ov006_0213fd4c,
-    data_ov006_0213fd24,
-    data_ov006_0213fd3c,
-    data_ov006_0213fd34,
-    data_ov006_0213fd64,
-    data_ov006_0213fd54,
-    data_ov006_0213fd84,
-    data_ov006_0213fd14,
-    data_ov006_0213fd0c,
-    data_ov006_0213fd74,
-    data_ov006_0213fd1c,
-    data_ov006_0213fd2c,
+    pmf_dScMgBSC_c_StateDealCards,
+    pmf_dScMgBSC_c_StateWaitDeal,
+    pmf_dScMgBSC_c_StateChooseCard,
+    pmf_dScMgBSC_c_StateMoveCards,
+    pmf_dScMgBSC_c_StateWaitMove,
+    pmf_dScMgBSC_c_StateRevealCards,
+    pmf_dScMgBSC_c_StateJudgeCards,
+    pmf_dScMgBSC_c_StateTableReaction,
+    pmf_dScMgBSC_c_StateTableReaction_2,
+    pmf_dScMgBSC_c_StateWaitTable_2,
+    pmf_dScMgBSC_c_StateWaitTable,
+    pmf_dScMgBSC_c_StateReturnCards,
+    pmf_dScMgBSC_c_StateDone,
+    pmf_dScMgBSC_c_StateDone_2,
 };

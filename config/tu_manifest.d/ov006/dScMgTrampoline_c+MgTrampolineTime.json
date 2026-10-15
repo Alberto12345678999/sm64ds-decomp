@@ -336,19 +336,19 @@
   ],
   "data": [
     {
-      "symbol": "data_ov006_0213faa0",
+      "symbol": "pmf_dScMgTrampoline_c_StateWaitExit",
       "address": "0x0213faa0",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline_c PMF descriptor targeting the byte-verified StateWaitExit member"
     },
     {
-      "symbol": "data_ov006_0213faa8",
+      "symbol": "pmf_dScMgTrampoline_c_StateDone",
       "address": "0x0213faa8",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline_c PMF descriptor targeting the byte-verified StateDone member"
     },
     {
-      "symbol": "data_ov006_0213fab0",
+      "symbol": "pmf_dScMgTrampoline_c_StateIntro",
       "address": "0x0213fab0",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline_c PMF descriptor targeting the byte-verified StateIntro member"
@@ -360,13 +360,13 @@
       "evidence": "typed minigame profile with a relocation to dScMgTrampoline_c_classInit and matching 0x180 behavior/render priorities"
     },
     {
-      "symbol": "data_ov006_0213fac0",
+      "symbol": "pmf_dScMgTrampoline_c_StatePlay",
       "address": "0x0213fac0",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline_c PMF descriptor targeting the byte-verified StatePlay member"
     },
     {
-      "symbol": "data_ov006_0213fac8",
+      "symbol": "pmf_dScMgTrampoline_c_StateResults",
       "address": "0x0213fac8",
       "size": "0x8",
       "evidence": "eight-byte dScMgTrampoline_c PMF descriptor targeting the byte-verified StateResults member"

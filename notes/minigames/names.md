@@ -464,3 +464,12 @@ High confidence:
 Medium confidence: `BounceOffLineA/B` (the reflection off the drawn line), `EnterByKind`, `PickIdleAnim`, `MoveToStart`, `PlaceAtStart`, `CountFinished`, `SetSpawnHeight`.
 
 Left unnamed: `func_ov006_020ca840`.
+
+## Member-pointer records (`pmf_*`, renamed 2026-10-15)
+
+630 8-byte `{function, adjustment}` records in ov004/ov006 `.data` were address
+names (`data_ov006_0213cb84`). Each is now named for the function its first word
+relocates to: `pmf_<Class>_<Method>`, or `pmf_<Function>` for a free one. A
+`_2`/`_3` suffix marks a second record pointing at the same function. This is certain:
+the name is read off the relocation. So `mState = pmf_dScMgJump_c_State_Play;` says
+which state is installed.

@@ -48,8 +48,8 @@ struct Vec3 { int x, y, z; };
 /* One row of the 12-entry angle table at data_ov006_0213e334, copied whole. */
 typedef struct { short v[12]; } ShortTbl12;
 
-/* Two Fix12 words copied as a unit out of data_ov006_0213e2f8 and
-   data_ov006_0213e2e8. Both keep the array member: a whole-struct copy of
+/* Two Fix12 words copied as a unit out of pmf_RouletteBoard_StateSlow and
+   pmf_RouletteBoard_StateSpin. Both keep the array member: a whole-struct copy of
    `{int a, b;}` is split into load, store, load, store, where the ROM does
    both loads first. */
 struct Pair   { int w[2]; };
@@ -153,7 +153,7 @@ typedef struct Obj9 {
 /* The active minigame scene's bonus count, or 0 with no scene.
    gMgScene is declared `void *` by dScMgBase_c.h. */
 #define SCENE_BONUS ((gMgScene != 0) \
-                        ? *(int *)((char *)gMgScene + 0xa8) : 0)
+                        ? ((dScMgBase_c *)gMgScene)->mCredits : 0)
 
 namespace Sound {
     void PlayBank2_2D(unsigned int id);
@@ -231,8 +231,8 @@ extern Matrix4x3 data_020a0e68;
 extern short data_02082214[];
 extern short data_ov006_0213e334[];
 extern short data_ov006_0212ed34[];
-extern struct Pair   data_ov006_0213e2f8;
-extern struct Pair2W data_ov006_0213e2e8;
+extern struct Pair   pmf_RouletteBoard_StateSlow;
+extern struct Pair2W pmf_RouletteBoard_StateSpin;
 extern int   data_0209e650[];
 extern int   data_ov006_0212ed4c[];
 extern int   data_ov006_0212ed68[];
@@ -1281,7 +1281,7 @@ void RouletteBoard_StartSpin(char *slider) {
 
 // @symbol RouletteBoard_SetStateSpin
 extern "C" {
-void RouletteBoard_SetStateSpin(char *slider) { *(Pair2W *)(slider + 0x0) = data_ov006_0213e2e8; }
+void RouletteBoard_SetStateSpin(char *slider) { *(Pair2W *)(slider + 0x0) = pmf_RouletteBoard_StateSpin; }
 }
 
 // @symbol RouletteBoard_StateSpin
@@ -1347,7 +1347,7 @@ void RouletteBoard_StartSlowdown(char *slider)
 {
     *(int *)(slider + 0xb8) += 0x140;
     *(short *)(slider + 0xc4) = -*(short *)(slider + 0xc2);
-    *(struct Pair *)slider = data_ov006_0213e2f8;
+    *(struct Pair *)slider = pmf_RouletteBoard_StateSlow;
 }
 }
 

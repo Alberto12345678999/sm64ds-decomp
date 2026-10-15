@@ -254,7 +254,7 @@ void dScMgMemory2_c::InitPlayers()
     char *entry;
 
     if (gMgScene != 0)
-        count = *(int *)((char *)gMgScene + 0xa8);
+        count = ((dScMgBase_c *)gMgScene)->mCredits;
     else
         count = 0;
     if (count >= 5)
@@ -1295,35 +1295,35 @@ extern "C" void *dScMgMemory2_c_classInit()
  * pointers, the five main states, the ten round states, the four result
  * states, the seven card states, then the three player states. */
 extern "C" int data_ov006_02133810[];
-extern "C" dScMgMemory2_cState data_ov006_0213d268;
-extern "C" dScMgMemory2_cState data_ov006_0213d250;
-extern "C" dScMgMemory2_cState data_ov006_0213d2c0;
-extern "C" dScMgMemory2_cState data_ov006_0213d300;
-extern "C" dScMgMemory2_cState data_ov006_0213d278;
-extern "C" dScMgMemory2_cState data_ov006_0213d2c8;
-extern "C" dScMgMemory2_cState data_ov006_0213d2d0;
-extern "C" dScMgMemory2_cState data_ov006_0213d290;
-extern "C" dScMgMemory2_cState data_ov006_0213d260;
-extern "C" dScMgMemory2_cState data_ov006_0213d280;
-extern "C" dScMgMemory2_cState data_ov006_0213d298;
-extern "C" dScMgMemory2_cState data_ov006_0213d310;
-extern "C" dScMgMemory2_cState data_ov006_0213d2a0;
-extern "C" dScMgMemory2_cState data_ov006_0213d318;
-extern "C" dScMgMemory2_cState data_ov006_0213d2a8;
-extern "C" dScMgMemory2_cState data_ov006_0213d248;
-extern "C" dScMgMemory2_cState data_ov006_0213d320;
-extern "C" dScMgMemory2_cState data_ov006_0213d328;
-extern "C" dScMgMemory2_cState data_ov006_0213d2f8;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d308;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d270;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d2b0;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d2f0;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d2e8;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d2e0;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d2d8;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d258;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d330;
-extern "C" dScMgMemory2_cCardState data_ov006_0213d2b8;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateSetup;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StatePlay;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateJudge;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateResult;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_StateExit;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundStart;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundDealEasy;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundDealNormal;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundDealHard;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundDealFourth;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundShowCards;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundHideCards;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundReadyCards;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundWaitDeal;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_RoundReveal;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_ResultWait;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_ResultReward;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_ResultTurnCards;
+extern "C" dScMgMemory2_cState pmf_dScMgMemory2_c_ResultFinish;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardMove;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardIdle;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardSelect;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardFlipUp;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardWait;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardFlipDown;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_CardFlyAway;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerDrop;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerMove;
+extern "C" dScMgMemory2_cCardState pmf_dScMgMemory2_c_PlayerWait;
 
 void *data_ov006_02142490[23] = {
     (void *)data_ov006_02133810[0],
@@ -1351,41 +1351,41 @@ void *data_ov006_02142490[23] = {
     (void *)data_ov006_02133810[22],
 };
 dScMgMemory2_cState data_ov006_021423e0[5] = {
-    data_ov006_0213d268,
-    data_ov006_0213d250,
-    data_ov006_0213d2c0,
-    data_ov006_0213d300,
-    data_ov006_0213d278,
+    pmf_dScMgMemory2_c_StateSetup,
+    pmf_dScMgMemory2_c_StatePlay,
+    pmf_dScMgMemory2_c_StateJudge,
+    pmf_dScMgMemory2_c_StateResult,
+    pmf_dScMgMemory2_c_StateExit,
 };
 dScMgMemory2_cState data_ov006_02142440[10] = {
-    data_ov006_0213d2c8,
-    data_ov006_0213d2d0,
-    data_ov006_0213d290,
-    data_ov006_0213d260,
-    data_ov006_0213d280,
-    data_ov006_0213d298,
-    data_ov006_0213d310,
-    data_ov006_0213d2a0,
-    data_ov006_0213d318,
-    data_ov006_0213d2a8,
+    pmf_dScMgMemory2_c_RoundStart,
+    pmf_dScMgMemory2_c_RoundDealEasy,
+    pmf_dScMgMemory2_c_RoundDealNormal,
+    pmf_dScMgMemory2_c_RoundDealHard,
+    pmf_dScMgMemory2_c_RoundDealFourth,
+    pmf_dScMgMemory2_c_RoundShowCards,
+    pmf_dScMgMemory2_c_RoundHideCards,
+    pmf_dScMgMemory2_c_RoundReadyCards,
+    pmf_dScMgMemory2_c_RoundWaitDeal,
+    pmf_dScMgMemory2_c_RoundReveal,
 };
 dScMgMemory2_cState data_ov006_021423c0[4] = {
-    data_ov006_0213d248,
-    data_ov006_0213d320,
-    data_ov006_0213d328,
-    data_ov006_0213d2f8,
+    pmf_dScMgMemory2_c_ResultWait,
+    pmf_dScMgMemory2_c_ResultReward,
+    pmf_dScMgMemory2_c_ResultTurnCards,
+    pmf_dScMgMemory2_c_ResultFinish,
 };
 dScMgMemory2_cCardState data_ov006_02142408[7] = {
-    data_ov006_0213d308,
-    data_ov006_0213d270,
-    data_ov006_0213d2b0,
-    data_ov006_0213d2f0,
-    data_ov006_0213d2e8,
-    data_ov006_0213d2e0,
-    data_ov006_0213d2d8,
+    pmf_dScMgMemory2_c_CardMove,
+    pmf_dScMgMemory2_c_CardIdle,
+    pmf_dScMgMemory2_c_CardSelect,
+    pmf_dScMgMemory2_c_CardFlipUp,
+    pmf_dScMgMemory2_c_CardWait,
+    pmf_dScMgMemory2_c_CardFlipDown,
+    pmf_dScMgMemory2_c_CardFlyAway,
 };
 dScMgMemory2_cCardState data_ov006_021423a8[3] = {
-    data_ov006_0213d258,
-    data_ov006_0213d330,
-    data_ov006_0213d2b8,
+    pmf_dScMgMemory2_c_PlayerDrop,
+    pmf_dScMgMemory2_c_PlayerMove,
+    pmf_dScMgMemory2_c_PlayerWait,
 };

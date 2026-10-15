@@ -53,7 +53,7 @@ extern "C" extern void Jump2Popup_Spawn(int a, int b, int c);
 extern "C" {extern void* data_ov006_02141a50;}
 extern "C" {extern void* data_ov006_02141a40;}
 struct P2 { int w[2]; };
-extern "C" {extern struct P2 data_ov006_0213b32c;}
+extern "C" {extern struct P2 pmf_TrmpItem_GrowScale;}
 
 extern "C" void TrmpItem_ProjectToScreen(char* c, int arg1)
 {
@@ -65,7 +65,7 @@ extern "C" void TrmpItem_ProjectToScreen(char* c, int arg1)
         Camera_ProjectToScreen(data_ov006_02141a40, (void*)(c + 8), &v0, &v1);
     }
     Jump2Popup_Spawn(v0 << 0xc, v1 << 0xc, (short)arg1);
-    *(struct P2*)c = data_ov006_0213b32c;
+    *(struct P2*)c = pmf_TrmpItem_GrowScale;
 }
 }
 
@@ -108,10 +108,10 @@ extern "C" void TrmpItem_Motion7(char* arg) {
 
 namespace s020cd98c {
 struct S{int w[2];};
-extern "C" {extern struct S data_ov006_0213b36c;}
+extern "C" {extern struct S pmf_TrmpItem_Motion7;}
 extern "C" void TrmpItem_SetMotion7(int *c){
   *(short*)((char*)c+0x9a)=0;
-  *(struct S*)c=data_ov006_0213b36c;
+  *(struct S*)c=pmf_TrmpItem_Motion7;
 }
 }
 
@@ -164,8 +164,8 @@ extern "C" void TrmpItem_Motion8(char* self)
 
 namespace s020cdad0 {
 struct S { int w[2]; };
-extern "C" {extern struct S data_ov006_0213b31c;}
-extern "C" void TrmpItem_SetMotion8(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b31c; }
+extern "C" {extern struct S pmf_TrmpItem_Motion8;}
+extern "C" void TrmpItem_SetMotion8(char *p) { *(struct S *)(p + 0x0) = pmf_TrmpItem_Motion8; }
 }
 
 namespace s020cdaec {
@@ -206,8 +206,8 @@ extern "C" void TrmpItem_Motion5(char* arg) {
 }
 
 namespace s020cdc14 {
-struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b394;}
-extern "C" void TrmpItem_SetMotion5(char*c){*(short*)(c+0x9a)=0x2000;*(struct S*)c=data_ov006_0213b394;}
+struct S{int w[2];}; extern "C" {extern struct S pmf_TrmpItem_Motion5;}
+extern "C" void TrmpItem_SetMotion5(char*c){*(short*)(c+0x9a)=0x2000;*(struct S*)c=pmf_TrmpItem_Motion5;}
 }
 
 namespace s020cdc38 {
@@ -223,8 +223,8 @@ extern "C" void TrmpItem_Motion6(void *arg0)
 }
 
 namespace s020cdc68 {
-struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b38c;}
-extern "C" void TrmpItem_SetMotion6(char*c){*(short*)(c+0x9a)=0;*(struct S*)c=data_ov006_0213b38c;}
+struct S{int w[2];}; extern "C" {extern struct S pmf_TrmpItem_Motion6;}
+extern "C" void TrmpItem_SetMotion6(char*c){*(short*)(c+0x9a)=0;*(struct S*)c=pmf_TrmpItem_Motion6;}
 }
 
 namespace s020cdc8c {
@@ -255,8 +255,8 @@ extern "C" void TrmpItem_Motion4(char *self)
 }
 
 namespace s020cdce4 {
-struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b384;}
-extern "C" void TrmpItem_SetMotion4(char*c){*(short*)(c+0x9a)=0x2000;*(struct S*)c=data_ov006_0213b384;}
+struct S{int w[2];}; extern "C" {extern struct S pmf_TrmpItem_Motion4;}
+extern "C" void TrmpItem_SetMotion4(char*c){*(short*)(c+0x9a)=0x2000;*(struct S*)c=pmf_TrmpItem_Motion4;}
 }
 
 namespace s020cdd08 {
@@ -307,8 +307,8 @@ extern "C" void TrmpItem_Motion3(char* self)
 }
 
 namespace s020cde28 {
-struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b39c;}
-extern "C" void TrmpItem_SetMotion3(char*c){*(int*)(c+0x30)=0;*(struct S*)c=data_ov006_0213b39c;}
+struct S{int w[2];}; extern "C" {extern struct S pmf_TrmpItem_Motion3;}
+extern "C" void TrmpItem_SetMotion3(char*c){*(int*)(c+0x30)=0;*(struct S*)c=pmf_TrmpItem_Motion3;}
 }
 
 namespace s020cde4c {
@@ -320,8 +320,8 @@ if(v<-0x60000)*(int*)(c+0x30)=0x1000;
 }
 
 namespace s020cde7c {
-struct S{int w[2];}; extern "C" {extern struct S data_ov006_0213b35c;}
-extern "C" void TrmpItem_SetMotion2(char*c){*(int*)(c+0x30)=0x1000;*(struct S*)c=data_ov006_0213b35c;}
+struct S{int w[2];}; extern "C" {extern struct S pmf_TrmpItem_Motion2;}
+extern "C" void TrmpItem_SetMotion2(char*c){*(int*)(c+0x30)=0x1000;*(struct S*)c=pmf_TrmpItem_Motion2;}
 }
 
 namespace s020cdea0 {
@@ -342,11 +342,11 @@ extern "C" void TrmpItem_Motion1(char *c) {
 namespace s020cdeec {
 extern "C" {extern int data_ov006_0212e088[];}
 struct S2 { int w[2]; };
-extern "C" {extern struct S2 data_ov006_0213b354;}
+extern "C" {extern struct S2 pmf_TrmpItem_Motion1;}
 extern "C" void TrmpItem_SetMotion1(char *c) {
   int idx = *(short *)(c + 0x96);
   *(int *)(c + 0x2c) = data_ov006_0212e088[idx];
-  *(struct S2 *)c = data_ov006_0213b354;
+  *(struct S2 *)c = pmf_TrmpItem_Motion1;
 }
 }
 
@@ -358,8 +358,8 @@ extern "C" void TrmpItem_Motion0(void)
 
 namespace s020cdf20 {
 struct S { int w[2]; };
-extern "C" {extern struct S data_ov006_0213b34c;}
-extern "C" void TrmpItem_SetMotion0(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b34c; }
+extern "C" {extern struct S pmf_TrmpItem_Motion0;}
+extern "C" void TrmpItem_SetMotion0(char *p) { *(struct S *)(p + 0x0) = pmf_TrmpItem_Motion0; }
 }
 
 namespace s020cdf3c {
@@ -405,14 +405,14 @@ namespace s020ce0ac {
 extern "C" {extern int data_ov006_02140838;}
 extern "C" {extern int data_ov006_02140828;}
 struct S2 { int w[2]; };
-extern "C" {extern struct S2 data_ov006_0213b344;}
+extern "C" {extern struct S2 pmf_TrmpItem_StateAppear_2;}
 extern "C" void TrmpItem_StartAppear(char *c) {
   ApproachLinear(data_ov006_02140828, data_ov006_02140838, 1);
   *(char *)(c + 0x9c) = 0x1f;
   *(int *)(c + 0x2c) = 0;
   *(int *)(c + 0x30) = 0;
   *(int *)(c + 0x34) = 0;
-  *(struct S2 *)c = data_ov006_0213b344;
+  *(struct S2 *)c = pmf_TrmpItem_StateAppear_2;
 }
 }
 
@@ -459,7 +459,7 @@ extern "C" void TrmpItem_ReflectOffLine(char *a, Obj *o)
     int dot38;
 
     {
-        int *g = data_ov006_0213b33c;
+        int *g = pmf_TrmpItem_GrowScale_3;
         int f0 = *(int *)a;
         if (f0 == g[0]) {
             if (*(int *)(a + 4) == g[1])
@@ -629,8 +629,8 @@ extern "C" extern void TrmpItem_ProjectOnLine(char* self, void* other, struct V2
 extern "C" extern void Vec2_Sub(struct V2* o, struct V2* a, struct V2* b);
 extern "C" extern int func_0203d524(struct V2* a, struct V2* b);
 extern "C" {extern int data_ov006_0212e070[];}
-extern "C" {extern int data_ov006_0213b324[2];}
-extern "C" {extern int data_ov006_0213b334[2];}
+extern "C" {extern int pmf_TrmpItem_StateAppear[2];}
+extern "C" {extern int pmf_TrmpItem_GrowScale_2[2];}
 
 extern "C" int TrmpItem_HitTest2D(char* self, void* other) {
     struct V2 a, b, n, t0, d, e, f, g, h, i;
@@ -639,10 +639,10 @@ extern "C" int TrmpItem_HitTest2D(char* self, void* other) {
     int result;
 
     {
-        int *p324 = (int *)AT(data_ov006_0213b324, 0);
+        int *p324 = (int *)AT(pmf_TrmpItem_StateAppear, 0);
         int *p334;
         if ((f0 == p324[0] && (*(int*)(self + 4) == p324[1] || f0 == 0)) ||
-            (p334 = (int *)AT(data_ov006_0213b334, 0),
+            (p334 = (int *)AT(pmf_TrmpItem_GrowScale_2, 0),
              f0 == p334[0] && (*(int*)(self + 4) == p334[1] || f0 == 0)))
             return 0;
     }
@@ -1314,9 +1314,9 @@ extern "C" void TrmpLine_StateFade(char* c) {
 
 namespace s020cf804 {
 struct S { int w[2]; };
-extern "C" {extern struct S data_ov006_0213b37c;}
+extern "C" {extern struct S pmf_TrmpLine_StateFade;}
 // @symbol TrmpLine_SetStateFade
-extern "C" void TrmpLine_SetStateFade(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b37c; }
+extern "C" void TrmpLine_SetStateFade(char *p) { *(struct S *)(p + 0x0) = pmf_TrmpLine_StateFade; }
 }
 
 namespace s020cf820 {
@@ -1386,9 +1386,9 @@ extern "C" void TrmpLine_StateSettle(char *c)
 
 namespace s020cfa28 {
 struct S { int w[2]; };
-extern "C" {extern struct S data_ov006_0213b374;}
+extern "C" {extern struct S pmf_TrmpLine_StateSettle;}
 // @symbol TrmpLine_SetStateSettle
-extern "C" void TrmpLine_SetStateSettle(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b374; }
+extern "C" void TrmpLine_SetStateSettle(char *p) { *(struct S *)(p + 0x0) = pmf_TrmpLine_StateSettle; }
 }
 
 namespace s020cfa44 {
@@ -1471,9 +1471,9 @@ extern "C" void TrmpLine_StateFlex(char *o)
 
 namespace s020cfc58 {
 struct S { int w[2]; };
-extern "C" {extern struct S data_ov006_0213b364;}
+extern "C" {extern struct S pmf_TrmpLine_StateFlex;}
 // @symbol TrmpLine_SetStateFlex
-extern "C" void TrmpLine_SetStateFlex(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b364; }
+extern "C" void TrmpLine_SetStateFlex(char *p) { *(struct S *)(p + 0x0) = pmf_TrmpLine_StateFlex; }
 }
 
 namespace s020cfc74 {

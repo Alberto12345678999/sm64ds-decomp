@@ -17,8 +17,9 @@
  * - struct C must stay a non-polymorphic stand-in for the state PMF at
  *   0x5004: mwccarm lays out a pointer-to-member of a polymorphic class
  *   differently, so Behavior cannot dispatch through dScMgJump_c itself.
- * - data_ov006_0213cb4c..0213cb84 are ROM-owned {fn, 0} table rows kept as
- *   address-named StatePmf externs; gMgScene is the ov004 shared
+ * - The pmf_dScMgJump_c_* records (0x0213cb54..0x0213cb84) are ROM-owned
+ *   {fn, 0} table rows, declared as StatePmf externs and named for the
+ *   state each one points at; gMgScene is the ov004 shared
  *   scene data, read raw at +0xb4/+0xb8 because its type is not recovered.
  * - the func_ov006_020c and func_ov004 externs are other TUs' workers; they
  *   keep address names until their owners name them.
@@ -114,13 +115,13 @@ extern s16  data_02082614;
 extern int  data_ov006_02140418;
 extern int  data_ov006_02140304;
 extern int  data_ov006_02140434;
-extern dScMgJump_c::StatePmf data_ov006_0213cb4c;
-extern dScMgJump_c::StatePmf data_ov006_0213cb54;
-extern dScMgJump_c::StatePmf data_ov006_0213cb5c;
-extern dScMgJump_c::StatePmf data_ov006_0213cb6c;
-extern dScMgJump_c::StatePmf data_ov006_0213cb74;
-extern dScMgJump_c::StatePmf data_ov006_0213cb7c;
-extern dScMgJump_c::StatePmf data_ov006_0213cb84;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Result;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Intro;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_End;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Final;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Idle;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Idle_2;
+extern dScMgJump_c::StatePmf pmf_dScMgJump_c_State_Play;
 }
 
 namespace GX   { void LoadOBJPltt(const void *src, unsigned int offset, unsigned int size); }
@@ -152,12 +153,12 @@ void dScMgJump_c::StartRound(int arg)
         mLevel = 0;
         if (mLevel > 0x270e) mLevel = 0x270e;
         if (gMgScene != 0)
-            *(int *)((char *)gMgScene + 0xb4) = 0;
+            ((dScMgBase_c *)gMgScene)->mHudScore = 0;
         Mg_SubmitScore(mHudScore);
     } else {
         u32 count = mLevel;
         if (gMgScene != 0)
-            *(int *)((char *)gMgScene + 0xb4) = count;
+            ((dScMgBase_c *)gMgScene)->mHudScore = count;
     }
 
     if (mLevel != 0)
@@ -289,7 +290,7 @@ void dScMgJump_c::BeginIntro()
     mStateTimer = 0x78;
     mAccum = 0;
     mAccumStep = 0x4000;
-    mState = data_ov006_0213cb54;
+    mState = pmf_dScMgJump_c_State_Intro;
 }
 
 // @symbol _ZN11dScMgJump_c11State_IntroEv
@@ -320,7 +321,7 @@ void dScMgJump_c::State_Intro()
 // @symbol _ZN11dScMgJump_c9BeginPlayEv
 void dScMgJump_c::BeginPlay()
 {
-    mState = data_ov006_0213cb84;
+    mState = pmf_dScMgJump_c_State_Play;
 }
 
 // @symbol _ZN11dScMgJump_c10State_PlayEv
@@ -346,7 +347,7 @@ void dScMgJump_c::State_Play()
 void dScMgJump_c::BeginEnd()
 {
     mStateTimer = 0x20;
-    mState = data_ov006_0213cb5c;
+    mState = pmf_dScMgJump_c_State_End;
 }
 
 // @symbol _ZN11dScMgJump_c9State_EndEv
@@ -366,7 +367,7 @@ void dScMgJump_c::State_End()
   }
   Jump3D_SetLowGravity();
   Heyho_ReactAll();
-  mState = data_ov006_0213cb4c;
+  mState = pmf_dScMgJump_c_State_Result;
 }
 
 // @symbol _ZN11dScMgJump_c12State_ResultEv
@@ -379,7 +380,7 @@ void dScMgJump_c::State_Result()
             Mg_SetSharedState(0x12);
             mPromptEnabled = 0;
             mStateTimer = 0;
-            mState = data_ov006_0213cb74;
+            mState = pmf_dScMgJump_c_State_Idle;
         }
     }
     Heyho_SeparateAll();
@@ -390,7 +391,7 @@ void dScMgJump_c::State_Result()
 void dScMgJump_c::BeginFinal()
 {
     Jump3D_StopGravity();
-    mState = data_ov006_0213cb6c;
+    mState = pmf_dScMgJump_c_State_Final;
 }
 
 // @symbol _ZN11dScMgJump_c11State_FinalEv
@@ -416,7 +417,7 @@ void dScMgJump_c::State_Final()
   Mg_SetSharedState(0);
   mPromptEnabled = 0;
   mStateTimer = 0;
-  mState = data_ov006_0213cb7c;
+  mState = pmf_dScMgJump_c_State_Idle_2;
 }
 
 // @symbol _ZN11dScMgJump_c10State_IdleEv

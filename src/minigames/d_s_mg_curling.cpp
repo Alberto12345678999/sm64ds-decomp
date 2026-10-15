@@ -151,31 +151,31 @@ extern PMF   data_ov006_02141930[];
 extern PMF0  data_ov006_02141950[];
 /* The ROM PMF constants the seven state tables copy from (unlicensed
  * .data), grouped by destination table in retail copy order. */
-extern PMF0 data_ov006_0213c21c;
-extern PMF0 data_ov006_0213c20c;
-extern PMF0 data_ov006_0213c2b4;
-extern PMF0 data_ov006_0213c1fc;
-extern PMF0 data_ov006_0213c254;
-extern PMF data_ov006_0213c204;
-extern PMF data_ov006_0213c244;
-extern PMF data_ov006_0213c22c;
-extern PMF data_ov006_0213c25c;
-extern PMF0 data_ov006_0213c23c;
-extern PMF0 data_ov006_0213c2bc;
-extern PMF data_ov006_0213c234;
-extern PMF data_ov006_0213c29c;
-extern PMF data_ov006_0213c294;
-extern PMF data_ov006_0213c28c;
-extern PMF data_ov006_0213c274;
-extern PMF data_ov006_0213c26c;
-extern PMF data_ov006_0213c24c;
-extern PMF data_ov006_0213c2a4;
-extern PMF data_ov006_0213c1ec;
-extern PMF data_ov006_0213c1e4;
-extern PMF data_ov006_0213c1f4;
-extern PMF data_ov006_0213c224;
-extern PMF data_ov006_0213c284;
-extern PMF data_ov006_0213c27c;
+extern PMF0 pmf_dScMgCurling_c_Scene_StartRound;
+extern PMF0 pmf_dScMgCurling_c_Scene_Play;
+extern PMF0 pmf_dScMgCurling_c_Scene_Score;
+extern PMF0 pmf_dScMgCurling_c_Scene_End;
+extern PMF0 pmf_dScMgCurling_c_Scene_Idle;
+extern PMF pmf_dScMgCurling_c_Stone_WaitRelease;
+extern PMF pmf_dScMgCurling_c_Stone_Slide;
+extern PMF pmf_dScMgCurling_c_Stone_Collide;
+extern PMF pmf_dScMgCurling_c_Stone_Drag;
+extern PMF0 pmf_dScMgCurling_c_Aim_WaitTouch;
+extern PMF0 pmf_dScMgCurling_c_Aim_Swing;
+extern PMF pmf_dScMgCurling_c_Bit_PickKind;
+extern PMF pmf_dScMgCurling_c_Bit_RunKindB;
+extern PMF pmf_dScMgCurling_c_Bit_RunKindA;
+extern PMF pmf_dScMgCurling_c_BitB_State0;
+extern PMF pmf_dScMgCurling_c_BitB_State1;
+extern PMF pmf_dScMgCurling_c_BitB_State2;
+extern PMF pmf_dScMgCurling_c_BitB_State3;
+extern PMF pmf_dScMgCurling_c_BitA_State0;
+extern PMF pmf_dScMgCurling_c_BitA_State1;
+extern PMF pmf_dScMgCurling_c_BitA_State2;
+extern PMF pmf_dScMgCurling_c_BitA_State3;
+extern PMF pmf_dScMgCurling_c_Bit_State0;
+extern PMF pmf_dScMgCurling_c_Bit_State1;
+extern PMF pmf_dScMgCurling_c_Bit_State2;
 
 }  /* extern "C" */
 
@@ -1715,41 +1715,41 @@ extern "C" void *dScMgCurling_c_classInit()
  * tables, the two stylus states, the three kind states, the four Entry
  * states, the four reveal states, then the three state2 states. */
 PMF0 data_ov006_02141950[5] = {
-    data_ov006_0213c21c,
-    data_ov006_0213c20c,
-    data_ov006_0213c2b4,
-    data_ov006_0213c1fc,
-    data_ov006_0213c254,
+    pmf_dScMgCurling_c_Scene_StartRound,
+    pmf_dScMgCurling_c_Scene_Play,
+    pmf_dScMgCurling_c_Scene_Score,
+    pmf_dScMgCurling_c_Scene_End,
+    pmf_dScMgCurling_c_Scene_Idle,
 };
 PMF data_ov006_02141910[4] = {
-    data_ov006_0213c204,
-    data_ov006_0213c244,
-    data_ov006_0213c22c,
-    data_ov006_0213c25c,
+    pmf_dScMgCurling_c_Stone_WaitRelease,
+    pmf_dScMgCurling_c_Stone_Slide,
+    pmf_dScMgCurling_c_Stone_Collide,
+    pmf_dScMgCurling_c_Stone_Drag,
 };
 PMF0 data_ov006_021418b0[2] = {
-    data_ov006_0213c23c,
-    data_ov006_0213c2bc,
+    pmf_dScMgCurling_c_Aim_WaitTouch,
+    pmf_dScMgCurling_c_Aim_Swing,
 };
 PMF data_ov006_021418c0[3] = {
-    data_ov006_0213c234,
-    data_ov006_0213c29c,
-    data_ov006_0213c294,
+    pmf_dScMgCurling_c_Bit_PickKind,
+    pmf_dScMgCurling_c_Bit_RunKindB,
+    pmf_dScMgCurling_c_Bit_RunKindA,
 };
 Entry data_ov006_021418f0[4] = {
-    {data_ov006_0213c28c},
-    {data_ov006_0213c274},
-    {data_ov006_0213c26c},
-    {data_ov006_0213c24c},
+    {pmf_dScMgCurling_c_BitB_State0},
+    {pmf_dScMgCurling_c_BitB_State1},
+    {pmf_dScMgCurling_c_BitB_State2},
+    {pmf_dScMgCurling_c_BitB_State3},
 };
 PMF data_ov006_02141930[4] = {
-    data_ov006_0213c2a4,
-    data_ov006_0213c1ec,
-    data_ov006_0213c1e4,
-    data_ov006_0213c1f4,
+    pmf_dScMgCurling_c_BitA_State0,
+    pmf_dScMgCurling_c_BitA_State1,
+    pmf_dScMgCurling_c_BitA_State2,
+    pmf_dScMgCurling_c_BitA_State3,
 };
 PMF data_ov006_021418d8[3] = {
-    data_ov006_0213c224,
-    data_ov006_0213c284,
-    data_ov006_0213c27c,
+    pmf_dScMgCurling_c_Bit_State0,
+    pmf_dScMgCurling_c_Bit_State1,
+    pmf_dScMgCurling_c_Bit_State2,
 };
