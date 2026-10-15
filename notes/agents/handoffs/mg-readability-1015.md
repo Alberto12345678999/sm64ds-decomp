@@ -31,7 +31,7 @@ became `((dScMgBase_c *)gMgScene)->mHudScore` / `->mCredits`.
 ## Proof (every commit)
 
 **Per commit:**
-- All 45 minigame TUs (`config/tu_manifest.d/ov00[456]/*` with `src/minigames/` sources) were compiled with `tools/tubuild.py compile`.
+- All 45 minigame TUs (`config/tu_manifest.d/ov004/`, `config/tu_manifest.d/ov005/` and `config/tu_manifest.d/ov006/` with `src/minigames/` sources) were compiled with `tools/tubuild.py compile`.
 - Each object was compared to the pre-pass baseline, either byte for byte or by a semantic ELF compare: every section's bytes, every relocation's offset/type/target and the symbol table, with the recorded rename map applied. Every commit came out identical.
 
 **Gates:** `tools/port_refcheck.py`, `tools/check_decl_agreement.py --changed origin/main`
