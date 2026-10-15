@@ -298,7 +298,7 @@
       {
         "source": "src/engine/heap/Heap.cpp",
         "result": {
-          "name": "_ZN6Memory10DeallocateEPvP4Heap",
+          "name": "_ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE",
           "module": "arm9",
           "addr": "0x0203c1e8",
           "verdict": "VERIFIED",
