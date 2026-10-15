@@ -185,7 +185,7 @@ extern int data_ov004_020b9f54;
 static EntryTable data_ov004_020bc6e8 = { { { 0, 0 }, { 0x140, (int)&data_ov004_020b9f54 } } };
 extern int data_ov006_021346bc;
 extern int sMgTopScreenYOffset;
-extern int data_ov004_020bc150;
+extern int sMgBannerButtonsArmed;
 extern Pair data_ov004_020bc17c;
 extern Pair data_ov004_020bc1ec;
 extern Pair data_ov004_020bc224;
@@ -911,7 +911,7 @@ extern "C" void Banner_UpdatePressed(Elem *e) {
 
 // @symbol Banner_Press
 extern "C" void Banner_Press(Elem* e){
-  data_ov004_020bc150 = 0;
+  sMgBannerButtonsArmed = 0;
   switch (e->mFileIndex) {
   case 0:
     func_02012790(0x62);

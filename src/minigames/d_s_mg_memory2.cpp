@@ -108,7 +108,7 @@ extern int data_ov006_0212e8e8[];
 extern int data_ov006_0212e8f4[];
 extern void func_ov004_020b56c8(char* p);
 extern short data_ov004_020bf9e4;
-extern void func_ov004_020b67f8(void);
+extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int);
 extern void Mg_SubmitScore(int self);
 extern void func_ov006_020c0c80(void *c);
@@ -140,7 +140,7 @@ int func_ov006_020c1a88(void *c);
 int Mg_GetSavedRecord0(void);
 int Mg_GetSavedRecord1(void);
 void Mg_SetTopScreenYOffset(int v);
-void func_ov004_020b682c(void);
+void Mg_PlaceBannersOnTopScreen(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 }
@@ -662,7 +662,7 @@ void dScMgMemory2_c::ResultWait()
 
     if (mPairsFound >= mTargetPairs) {
         if (mMisses == 0)
-            func_ov004_020b67f8();
+            Mg_SetPerfectBanner();
         Mg_SetSharedState(4);
         p = (struct B *)gMgScene;
         if (p != 0) {
@@ -1279,7 +1279,7 @@ s32 dScMgMemory2_c::InitResources()
     data_ov004_020bc7d4 = 1;
     mMaxMisses = 5;
     Mg_SetTopScreenYOffset(0x20);
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     return 1;
 }
 

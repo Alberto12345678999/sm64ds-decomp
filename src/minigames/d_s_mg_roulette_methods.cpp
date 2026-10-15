@@ -335,7 +335,7 @@ s32 dScMgRoulette_c::InitResources()
 
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     func_ov006_02107b70((char *)mMeter);
     StartRound(-1);
     return 1;

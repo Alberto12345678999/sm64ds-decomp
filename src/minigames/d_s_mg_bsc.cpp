@@ -140,7 +140,7 @@ s32 dScMgBSC_c::InitResources()
     if (func_ov006_020c1a88((char *)&mShared) == 0)
         return 0;
     Mg_SetTopScreenYOffset(0x20);
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     data_0208ee44[0] = 1;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;

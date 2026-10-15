@@ -220,7 +220,7 @@ s32 dScMgSound_c::InitResources()
     mTries = 3;
     mState = 1;
     mIntroTimer = 0x20;
-    func_ov004_020b6808();
+    Mg_ResetRecordBannerPos();
     Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     mHudScore = 0;
     return 1;
@@ -268,7 +268,7 @@ s32 dScMgSound_c::Behavior()
                     mTable.mSuppressSound = 0;
                     func_ov006_020c2594((char *)&mTable);
                     if (mTries == 3)
-                        func_ov004_020b67f8();
+                        Mg_SetPerfectBanner();
                     Mg_SetSharedState(0);
                     {
                         char *active = (char *)gMgScene;

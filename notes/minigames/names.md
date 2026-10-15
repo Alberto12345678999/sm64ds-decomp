@@ -127,3 +127,54 @@ and only the lines the compiler then rejected were changed.
 Left unnamed:
 - `unk_0c2`: only the constructor writes it (1).
 - The top record at +0x4650: still header padding, read raw (see themes.md, theme 1).
+
+## dMgState_c: the shared banner states (renamed 2026-10-14)
+
+Handlers that serve one state are named by state number (`State05_Enter`,
+`State05_Update`). That much is certain from the enter table in `SetState` and
+from which behaviour each enter handler installs. Shared handlers are named by
+what they do:
+- `UpdateRetryFadeOut`: the retry button's fade-out.
+- `UpdateGameOverToMenu`: the Game Over banner, then a fade to the menu (scene 5).
+- `UpdateWaitThenResume`
+- `UpdateFadeThenResume`
+- `UpdateAfterHidden`
+- `UpdateRetryPrompt`: states 12/13, which show buttons 0 and 2.
+- `DrawRecordTable`, `DrawScore`, `DrawScoreDigits`
+
+What a state means to the player depends on which banner graphic its file index
+shows, and that has not been observed. The table records the mechanics (certain)
+and a guess (unconfirmed):
+- **Banner** is the file index passed to `Mg_ShowBanner`. `*` means a game can
+  override it once through `Mg_SetNextBanner`.
+- **Jingle** is the `Mg_PlayJingle` id, or an `s` + `Sound::PlayBank2_2D` id.
+
+| State | Enter: banner, jingle, timer | Then | Entered by | Guess |
+|---|---|---|---|---|
+| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on |
+| 1 | none, none, 15 | fade, `StartRound(1)` | Hanachan, Luigi | silent next round |
+| 2 | 5, 1, 180 | fade, restore music, `StartRound(2)` | none found | |
+| 3 | 8\*, 3, 60 | retry (button 0) / quit (1, 2) buttons | Snowball, with banner 0xe | game over, retry? |
+| 4 | 9\*, s0x136, 120 | `StartRound(4)` | a win in Memory, Card, BSC, MCarlo, Roulette | you win |
+| 5 | 0xa, s0x137, 120 | game over at 0 credits, else `StartRound(5)` | a loss in the same games | you lose |
+| 6 | 0xa, s0x137, 120 | hides the controller and hands back to the game | none found | |
+| 7 | 0xb, none, 120 | `StartRound(7)` | Card | draw? |
+| 8 | none, none, 0 | `StartRound(8)` at once | Roulette's tie | silent tie |
+| 9 | 3\* on the top screen, 4, 180 | `StartRound(9)` | none found | |
+| 10 | 8 (style 0xb), 3, 180 | retry / quit buttons | none found | |
+| 11 | none, 1, 180, draws the score | fade, `StartRound(11)` | none found | |
+| 12, 13 | none, none, 10 | retry / quit buttons | Flower (12) | continue? |
+| 14 | 5, 1, 180, draws score digits | fade, `StartRound(14)` | none found | |
+| 15 | 0xe, 3, 60 | fade, `StartRound(15)` | none found | |
+| 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball) | results |
+| 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record |
+| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over |
+| 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
+
+Medium-confidence helpers:
+- `Mg_SetNextBanner` (020b67e8) sets the one-shot override `sMgNextBanner` (0x1d means none).
+- `Mg_SetPerfectBanner` (020b67f8) is `Mg_SetNextBanner(6)`. Memory calls it before state 4 when there were no misses.
+- `Mg_ResetBannerLayout` (020b8a8c) seeds every state's banner x/y.
+- `Mg_PlaceBannersOnTopScreen` (020b682c) moves several of them by the top-screen offset.
+- `Mg_ResetRecordBannerPos` (020b6808).
+- `sMgBannerButtonsArmed` is set by the layout reset and cleared by `Banner_Press`; button touches are ignored while it is 0.

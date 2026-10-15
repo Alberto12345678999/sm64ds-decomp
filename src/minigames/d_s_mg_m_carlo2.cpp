@@ -138,7 +138,7 @@ s32 dScMgMCarlo2_c::InitResources()
     *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~3;
     func_ov006_020c0aa8((void *)(raw + 0x4660));
     if (func_ov006_020c1a88((void *)(raw + 0x4f38)) == 0) return 0;
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     StartRound(-1);
     this->unk_592a = 0;
     this->mCredits = 0xa;

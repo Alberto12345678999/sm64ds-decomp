@@ -78,7 +78,7 @@ extern s16 data_02082214[];
 extern u16* data_ov006_0213d09c[];
 extern int func_ov004_020b56c8(int);
 extern short data_ov004_020bf9e4;
-extern void func_ov004_020b67f8(void);
+extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int c);
 extern void Mg_SubmitScore(int self);
 extern void func_ov006_020c0c80(void *c);
@@ -102,7 +102,7 @@ int Mg_GetSavedRecord1(void);
 void func_ov004_020b66d4(void);
 int func_ov006_020c1718(int *p);
 void Mg_SetTopScreenYOffset(int v);
-void func_ov004_020b682c(void);
+void Mg_PlaceBannersOnTopScreen(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 void *_ZN11dScMgBase_cC2Ev(void *scene);
@@ -670,7 +670,7 @@ void dScMgMemory_c::ResultWait()
             mResultTimer = 0;
             if (mPairsFound >= mTargetPairs) {
                 if (mMisses == 0)
-                    func_ov004_020b67f8();
+                    Mg_SetPerfectBanner();
                 Mg_SetSharedState(4);
                 if (mHudScore < 0x270f) {
                     int *score = &mHudScore;
@@ -1091,7 +1091,7 @@ s32 dScMgMemory_c::InitResources()
     data_ov004_020bc7d4 = 1;
     mMaxMisses = 3;
     Mg_SetTopScreenYOffset(0x20);
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     return 1;
 }
 

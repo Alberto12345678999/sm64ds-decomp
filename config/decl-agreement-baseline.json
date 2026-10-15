@@ -27682,7 +27682,7 @@
         "arity:1"
       ]
     },
-    "func_ov004_020b8a8c": {
+    "Mg_ResetBannerLayout": {
       "include/decl_common.h": [
         "arity:1"
       ]

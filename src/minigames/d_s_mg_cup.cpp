@@ -1013,7 +1013,7 @@ s32 dScMgCup_c::InitResources()
     Deallocate(file);
 
     data_0208ee44 = 1;
-    func_ov004_020b6808();
+    Mg_ResetRecordBannerPos();
     data_ov004_020bc880 = 0x80;
     data_ov004_020bc884 = 0x88;
     data_ov004_020bc8a8 = 0x40;

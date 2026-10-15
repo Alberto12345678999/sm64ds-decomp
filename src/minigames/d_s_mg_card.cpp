@@ -236,7 +236,7 @@ s32 dScMgCard_c::InitResources()
             ((dScMgBase_c *)gMgScene)->mHudScore = r;
     }
     self->mScore = 0;
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     StartRound(-1);
     return 1;
 }

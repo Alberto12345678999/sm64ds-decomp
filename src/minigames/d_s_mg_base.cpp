@@ -2434,7 +2434,7 @@ bool dScMgBase_c::BeforeInitResources()
     mHudScore = 0;
     mBestHudScore = 0;
     mNewRecord = 0;
-    func_ov004_020b8a8c((char *)this + 0x4000);
+    Mg_ResetBannerLayout((char *)this + 0x4000);
     InitEngines();
     Mg_LoadBannerFiles();
     dScene_c::SetFaders(&data_0209f61c);
@@ -2544,7 +2544,7 @@ struct Obj004 {
 };
 
 extern struct Obj004 gMgBanners[3];
-extern int data_ov004_020bc150;
+extern int sMgBannerButtonsArmed;
 
 extern void Banner_Press(struct Obj004 *o);
 extern int Banner_IsPressFinished(struct Obj004 *o);
@@ -2575,7 +2575,7 @@ int Mg_CheckBannerButton(int arg) {
                 pos.y = ty;
                 dy = pos.y - cy;
                 if (dx <= 0x40 && dx >= -0x40 && dy <= 0x13 && dy >= -0x13) {
-                    if (data_ov004_020bc150 != 0) {
+                    if (sMgBannerButtonsArmed != 0) {
                         Banner_Press(o);
                         if ((unsigned int)(arg - 1) <= 1) {
                             ((dScMgBase_c *)gMgScene)->mMenuDisabled = 1;
@@ -2593,7 +2593,7 @@ int Mg_CheckBannerButton(int arg) {
                     if (arg == 1) {
                     } else if (arg == 2) {
                     } else {
-                        data_ov004_020bc150 = 1;
+                        sMgBannerButtonsArmed = 1;
                     }
                     return 1;
                 }

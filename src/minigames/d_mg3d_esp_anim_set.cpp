@@ -129,7 +129,7 @@ void Mg_RenderSubSpriteMtx(void* a, int b, int c, void* m);
 void Mg_DrawScoreTally(void *c, int a, int b, int d);
 unsigned int func_02012790(unsigned int);
 void Mg_SubmitScore(int);
-void func_ov004_020b67e8(int);
+void Mg_SetNextBanner(int);
 void Mg_SetSharedState(int);
 void Mg_ShowBanner(int, int, int, int, int, short);
 void Mg_SetTopScreenYOffset(int);
@@ -1490,9 +1490,9 @@ void dScMg3DEsp_c::Results()
             }
             if (rem == 0 && quot != 0) {
                 if (quot <= 2)
-                    func_ov004_020b67e8(0x14);
+                    Mg_SetNextBanner(0x14);
                 else
-                    func_ov004_020b67e8(0x15);
+                    Mg_SetNextBanner(0x15);
                 Mg_SetSharedState(0);
             } else {
                 (*(int *)(int)(((long long)(int)(c + 0xbc))))++;

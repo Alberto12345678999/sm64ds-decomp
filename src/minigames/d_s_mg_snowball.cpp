@@ -1709,7 +1709,7 @@ s32 dScMgSnowball_c::Behavior()
     case 2:
         IA(0xba0c) += 1;
         if (I(0xba0c) >= 0x3c) {
-            func_ov004_020b67e8(4);
+            Mg_SetNextBanner(4);
             Mg_SetSharedState(0x13);
             I(0xba10) = 0xb4;
             I(0xb9f4) = 3;
@@ -1809,7 +1809,7 @@ s32 dScMgSnowball_c::Behavior()
         } else {
             IA(0xba0c) += 1;
             if (I(0xba0c) >= 0x5a) {
-                func_ov004_020b67e8(0xe);
+                Mg_SetNextBanner(0xe);
                 Mg_SetSharedState(3);
                 I(0xb9f4) = 5;
             }

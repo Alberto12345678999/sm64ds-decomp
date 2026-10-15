@@ -149,7 +149,7 @@ s32 dScMgMCarlo_c::InitResources()
     func_ov006_020c0aa8(pad_4660);
     if (func_ov006_020c1a88((char *)&mShared) == 0) return 0;
 
-    func_ov004_020b682c();
+    Mg_PlaceBannersOnTopScreen();
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
     {

@@ -19775,191 +19775,191 @@
     },
     "ov004:0x020b67e8": {
       "author": "tangosdev",
-      "name": "func_ov004_020b67e8"
+      "name": "Mg_SetNextBanner"
     },
     "ov004:0x020b67f8": {
       "author": "ruspecial",
-      "name": "func_ov004_020b67f8"
+      "name": "Mg_SetPerfectBanner"
     },
     "ov004:0x020b6808": {
       "author": "tangosdev",
-      "name": "func_ov004_020b6808"
+      "name": "Mg_ResetRecordBannerPos"
     },
     "ov004:0x020b682c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b682c"
+      "name": "Mg_PlaceBannersOnTopScreen"
     },
     "ov004:0x020b68e8": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b68e8Ev"
+      "name": "_ZN10dMgState_c15DrawRecordTableEv"
     },
     "ov004:0x020b6948": {
       "author": "andrewboudreau",
-      "name": "_ZN10dMgState_c19func_ov004_020b6948Ev"
+      "name": "_ZN10dMgState_c15DrawScoreDigitsEv"
     },
     "ov004:0x020b6ad8": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b6ad8Ev"
+      "name": "_ZN10dMgState_c9DrawScoreEv"
     },
     "ov004:0x020b6b40": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b6b40Ev"
+      "name": "_ZN10dMgState_c14State19_UpdateEv"
     },
     "ov004:0x020b6c10": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b6c10Ev"
+      "name": "_ZN10dMgState_c13State19_EnterEv"
     },
     "ov004:0x020b6c9c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b6c9cEv"
+      "name": "_ZN10dMgState_c14State18_UpdateEv"
     },
     "ov004:0x020b6d6c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b6d6cEv"
+      "name": "_ZN10dMgState_c13State18_EnterEv"
     },
     "ov004:0x020b6ddc": {
       "author": "lunavyqo",
-      "name": "_ZN10dMgState_c19func_ov004_020b6ddcEv"
+      "name": "_ZN10dMgState_c14State17_UpdateEv"
     },
     "ov004:0x020b6f14": {
       "author": "andrewboudreau",
-      "name": "_ZN10dMgState_c19func_ov004_020b6f14Ev"
+      "name": "_ZN10dMgState_c13State17_EnterEv"
     },
     "ov004:0x020b6f88": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b6f88Ev"
+      "name": "_ZN10dMgState_c14State16_UpdateEv"
     },
     "ov004:0x020b7020": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7020Ev"
+      "name": "_ZN10dMgState_c13State16_EnterEv"
     },
     "ov004:0x020b70b4": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b70b4Ev"
+      "name": "_ZN10dMgState_c13State15_EnterEv"
     },
     "ov004:0x020b7124": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7124Ev"
+      "name": "_ZN10dMgState_c20UpdateFadeThenResumeEv"
     },
     "ov004:0x020b724c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b724cEv"
+      "name": "_ZN10dMgState_c13State14_EnterEv"
     },
     "ov004:0x020b72d4": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b72d4Ev"
+      "name": "_ZN10dMgState_c17UpdateRetryPromptEv"
     },
     "ov004:0x020b743c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b743cEv"
+      "name": "_ZN10dMgState_c13State13_EnterEv"
     },
     "ov004:0x020b7460": {
       "author": "ruspecial",
-      "name": "_ZN10dMgState_c19func_ov004_020b7460Ev"
+      "name": "_ZN10dMgState_c13State12_EnterEv"
     },
     "ov004:0x020b746c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b746cEv"
+      "name": "_ZN10dMgState_c14State11_UpdateEv"
     },
     "ov004:0x020b7594": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7594Ev"
+      "name": "_ZN10dMgState_c13State11_EnterEv"
     },
     "ov004:0x020b75e4": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b75e4Ev"
+      "name": "_ZN10dMgState_c14State10_UpdateEv"
     },
     "ov004:0x020b7744": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7744Ev"
+      "name": "_ZN10dMgState_c13State10_EnterEv"
     },
     "ov004:0x020b77b4": {
       "author": "andrewboudreau",
-      "name": "_ZN10dMgState_c19func_ov004_020b77b4Ev"
+      "name": "_ZN10dMgState_c14State09_UpdateEv"
     },
     "ov004:0x020b7854": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7854Ev"
+      "name": "_ZN10dMgState_c13State09_EnterEv"
     },
     "ov004:0x020b78f4": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b78f4Ev"
+      "name": "_ZN10dMgState_c20UpdateWaitThenResumeEv"
     },
     "ov004:0x020b798c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b798cEv"
+      "name": "_ZN10dMgState_c13State08_EnterEv"
     },
     "ov004:0x020b79b0": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b79b0Ev"
+      "name": "_ZN10dMgState_c13State07_EnterEv"
     },
     "ov004:0x020b7a18": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7a18Ev"
+      "name": "_ZN10dMgState_c17UpdateAfterHiddenEv"
     },
     "ov004:0x020b7b20": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7b20Ev"
+      "name": "_ZN10dMgState_c14State06_UpdateEv"
     },
     "ov004:0x020b7b90": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7b90Ev"
+      "name": "_ZN10dMgState_c13State06_EnterEv"
     },
     "ov004:0x020b7c04": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7c04Ev"
+      "name": "_ZN10dMgState_c20UpdateGameOverToMenuEv"
     },
     "ov004:0x020b7cd0": {
       "author": "ruspecial",
-      "name": "_ZN10dMgState_c19func_ov004_020b7cd0Ev"
+      "name": "_ZN10dMgState_c14State05_UpdateEv"
     },
     "ov004:0x020b7e38": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7e38Ev"
+      "name": "_ZN10dMgState_c13State05_EnterEv"
     },
     "ov004:0x020b7eac": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7eacEv"
+      "name": "_ZN10dMgState_c14State04_UpdateEv"
     },
     "ov004:0x020b7f5c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7f5cEv"
+      "name": "_ZN10dMgState_c13State04_EnterEv"
     },
     "ov004:0x020b7fec": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b7fecEv"
+      "name": "_ZN10dMgState_c18UpdateRetryFadeOutEv"
     },
     "ov004:0x020b8098": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b8098Ev"
+      "name": "_ZN10dMgState_c14State03_UpdateEv"
     },
     "ov004:0x020b81f8": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b81f8Ev"
+      "name": "_ZN10dMgState_c13State03_EnterEv"
     },
     "ov004:0x020b8284": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b8284Ev"
+      "name": "_ZN10dMgState_c14State02_UpdateEv"
     },
     "ov004:0x020b83ac": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b83acEv"
+      "name": "_ZN10dMgState_c13State02_EnterEv"
     },
     "ov004:0x020b841c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b841cEv"
+      "name": "_ZN10dMgState_c14State01_UpdateEv"
     },
     "ov004:0x020b853c": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b853cEv"
+      "name": "_ZN10dMgState_c13State01_EnterEv"
     },
     "ov004:0x020b8560": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b8560Ev"
+      "name": "_ZN10dMgState_c14State00_UpdateEv"
     },
     "ov004:0x020b8688": {
       "author": "tangosdev",
-      "name": "_ZN10dMgState_c19func_ov004_020b8688Ev"
+      "name": "_ZN10dMgState_c13State00_EnterEv"
     },
     "ov004:0x020b8714": {
       "author": "tangosdev",
@@ -19979,7 +19979,7 @@
     },
     "ov004:0x020b8a8c": {
       "author": "tangosdev",
-      "name": "func_ov004_020b8a8c"
+      "name": "Mg_ResetBannerLayout"
     },
     "ov004:0x020b8c18": {
       "author": "andrewboudreau",
