@@ -139,8 +139,7 @@ void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
 /* local extern: native Hurt takes Fix12<int> by value; retain the current
  * definition's scalar ABI while that call reconstruction remains pending. */
-int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-    Player *p, void *v, u32 a, int f, u8 c, u8 d, u8 e);
+int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, u32 a, int f, u8 c, u8 d, u8 e);
 /* Sets Player::mStateStep to 6 and stores this fish in mAttachedActor. */
 int func_ov002_020c5cd8(void *a, void *self);
 /* Sound::Play with bank 3. */
@@ -508,9 +507,8 @@ int daBakubaku_c::func_ov032_02111830()
             splashPosition.x += rotatedOffset.x;
             splashPosition.z += rotatedOffset.z;
             func_02022c80(0, 0x55, splashPosition.x, splashPosition.y, splashPosition.z, 0);
-            mSplashParticle = func_02022d00(
-                mSplashParticle, 0x56, splashPosition.x, data_0209f32c,
-                splashPosition.z, 0);
+            mSplashParticle = func_02022d00(mSplashParticle, 0x56, splashPosition.x, data_0209f32c,
+                                            splashPosition.z, 0);
             splashPosition.y += 0x4b000;
             func_02022c80(0, 0x54, splashPosition.x, splashPosition.y, splashPosition.z, 0);
         }
@@ -529,19 +527,19 @@ stop:
     goto pitched;
 thrust:
     {
-        Vector3 in2;
-        Vector3 out2;
-        in2.z = 0;
-        in2.z = 0x14000;
-        in2.x = 0;
-        in2.y = 0;
-        out2.x = 0;
-        out2.y = 0;
-        out2.z = 0;
-        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-        MulVec3Mat4x3(&in2, &data_020a0e68, &out2);
-        mVertSpeed = out2.y;
+    Vector3 in2;
+    Vector3 out2;
+    in2.z = 0;
+    in2.z = 0x14000;
+    in2.x = 0;
+    in2.y = 0;
+    out2.x = 0;
+    out2.y = 0;
+    out2.z = 0;
+    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
+    MulVec3Mat4x3(&in2, &data_020a0e68, &out2);
+    mVertSpeed = out2.y;
     }
 pitched: ;
     ApproachLinear(mAngTarget, speed, 0x200);
@@ -605,19 +603,19 @@ stop:
     goto pitched;
 thrust:
     {
-        Vector3 in;
-        Vector3 out;
-        in.z = 0;
-        in.z = 0x14000;
-        in.x = 0;
-        in.y = 0;
-        out.x = 0;
-        out.y = 0;
-        out.z = 0;
-        Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
-        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
-        MulVec3Mat4x3(&in, &data_020a0e68, &out);
-        mVertSpeed = out.y;
+    Vector3 in;
+    Vector3 out;
+    in.z = 0;
+    in.z = 0x14000;
+    in.x = 0;
+    in.y = 0;
+    out.x = 0;
+    out.y = 0;
+    out.z = 0;
+    Matrix4x3_FromRotationY(&data_020a0e68, mAngleY);
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mAngleX);
+    MulVec3Mat4x3(&in, &data_020a0e68, &out);
+    mVertSpeed = out.y;
     }
 pitched: ;
 
@@ -643,23 +641,20 @@ pitched: ;
 
 at_player:
     {
-        Vector3 vec;
-        unsigned int n;
-        /* Scalar bridge within the actual Player object: mPosX/Y/Z occupy
+    Vector3 vec;
+    unsigned int n;
+    /* Scalar bridge within the actual Player object: mPosX/Y/Z occupy
          * +0x5c/+0x60/+0x64. This does not claim a Vector3 member there. */
-        const char *playerBytes = reinterpret_cast<const char *>(r5);
-        const char *positionBytes = playerBytes + 0x5c;
-        vec.x = *reinterpret_cast<const s32 *>(positionBytes);
-        vec.y = *reinterpret_cast<const s32 *>(positionBytes + 4);
-        vec.z = *reinterpret_cast<const s32 *>(positionBytes + 8);
-        if (data_0209f32c > mPosY) {
-            ApproachLinear(mPrevAngleX, 0, 0x200);
-        } else {
-            ApproachLinear(
-                mPrevAngleX,
-                Vec3_VertAngle((const Vector3 *)&mPosX, &vec),
-                0x200);
-        }
+    const char *playerBytes = reinterpret_cast<const char *>(r5);
+    const char *positionBytes = playerBytes + 0x5c;
+    vec.x = *reinterpret_cast<const s32 *>(positionBytes);
+    vec.y = *reinterpret_cast<const s32 *>(positionBytes + 4);
+    vec.z = *reinterpret_cast<const s32 *>(positionBytes + 8);
+    if (data_0209f32c > mPosY) {
+        ApproachLinear(mPrevAngleX, 0, 0x200);
+    } else {
+        ApproachLinear(mPrevAngleX, Vec3_VertAngle((const Vector3 *)&mPosX, &vec), 0x200);
+    }
         n = (unsigned int)(mModelAnim.currFrame << 4) >> 0x10;
         if (n > 0x14 && n < 0x3c)
             mMouthOpen = 1;
