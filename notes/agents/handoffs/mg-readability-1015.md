@@ -11,7 +11,7 @@ plan to confirm it by playing under melonDS and the GDB stub.
 | Pass | Scope | State |
 |---|---|---|
 | 1 Names | every unnamed function, virtual, base field and global in ov004/ov005/ov006 | **done** |
-| 2 Shape | structural rewrites, each proven by object compare | **base-field and PsOpt sweeps done**; padding typing and the SharedState enum left |
+| 2 Shape | structural rewrites, each proven by object compare | **done** except the SharedState enum (needs pass 3) |
 | 3 Review and runtime | top-to-bottom read; runtime confirmation of the medium/low names | **plan written, not run** |
 
 **Pass 1, as committed:**
@@ -25,7 +25,7 @@ plan to confirm it by playing under melonDS and the GDB stub.
 - **`gMgScene`.** It is declared `dScMgBase_c *`, its casts are dropped, and its `char *` aliases and local externs are retired where the code stays identical.
 - **Base fields.** Raw base-field reads through `this` aliases and the scene pointer became members. `+0x4650` is named `mTopRecord`.
 - **`dMgPsOpt_c`.** `Open`/`Close`/`Update`/`Draw`/`IsIdle` are real members.
-- **Teresa.** `SmallBoo mBoos[16]` is typed at 0x4660 and 13 Boo handlers read it by field. Pachinko's mFx/mFlyer/mTarget/mBg are typed (0x5958..0x5c10), with four readers converted. Teresa's mExclaims/mFoundMarks/mRisingIcons (0x48a0..0x4ba0) and the round counters at 0x4c21..0x4c26 are typed too. Still padding: Teresa 0x4ba0..0x4be8 (views overlap the big Boo) and Pachinko 0x5418..0x5958.
+- **Teresa.** `SmallBoo mBoos[16]` is typed at 0x4660 and 13 Boo handlers read it by field. Pachinko's mFx/mFlyer/mTarget/mBg are typed (0x5958..0x5c10), with four readers converted. Teresa's mExclaims/mFoundMarks/mRisingIcons (0x48a0..0x4ba0) and the round counters at 0x4c21..0x4c26 are typed too. Teresa 0x4ba0..0x4be8 is now mReveal[1] + mMarker + the big Boo; the supposed overlap was a view starting 0xc bytes into the reveal record. Pachinko 0x5418..0x5958 is never accessed by any reconstructed function, so it stays padding with a note.
 - **Not done.** The 13 capped score bumps stay spelled out, because a header inline renumbers the pinned labels.
 - **Compare.** The object compare must match the compiler-local `@N`/`$N` names exactly. The manifests pin them.
 
@@ -66,7 +66,7 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
 
 1. **Pass 2 (shape), suggested order.** Each step is measured with `trykeep.py`, and anything that changes bytes goes into themes.md as a measured negative.
    - A `SharedState` enum for `Mg_SetSharedState` arguments, once runtime-checks.md has named the states.
-   - Type the rest of the padding that code reaches by offset (Teresa 0x4ba0..0x4be8; Pachinko 0x5418..0x5958), and convert the remaining Boo/Pachinko handlers to the typed records, one function at a time with `tryrepl.py`.
+   - The handlers left on offsets (Teresa StepBoo, CountRubbedTiles, Boo_State7, Reveal_State1/4, ResetRound; Pachinko Fx_Spawn, Bg_State0/1/3, Bg_Start, Flyer_State0/2/3/4) measured different typed; retry only with a new spelling idea, one function at a time with `tryrepl.py`.
 2. **Pass 3.** Run runtime-checks.md in melonDS and fold the answers into names.md as renames. Then do the read-through for comment drift.
 
 There is also one unrelated defect, found while investigating the transplanted
