@@ -1,7 +1,7 @@
 //cpp
 /* ov080/daPicGate_c -- picture-gate helpers: the mesh machinery under the
  * promoted TU (src/game/actors/d_a_pic_gate_methods.cpp, .text 0x021264ec..0x02126fbc).
- * .text 0x02125404..0x021261f4: the destructor pair, then the fifteen
+ * .text 0x02125404..0x021264ec: the destructor pair, then the sixteen
  * func_ov080_* helpers that fill the range up to the class TU.
  *
  *   ~daPicGate_c         D1 0x02125404, D0 0x02125428 -- the key function, so
@@ -32,10 +32,8 @@
  *                        flat quad states; the texCoord pattern differs.
  *   func_ov080_02125fd0  DrawFlat -- emit the flat quad.
  *   func_ov080_02126120 -- the empty state slot.
- *
- * The wave-mesh renderer at 0x021261f4 is matched and enrolled separately in
- * src/_ZN11daPicGate_c19func_ov080_021261f4Ev.cpp, covering the interval
- * through 0x021264ec between this file and the class TU.
+ *   func_ov080_021261f4  DrawWave -- the wave-mesh renderer: one triangle
+ *                        strip per pair of adjacent cell columns.
  *
  * deslop leftovers:
  * - Vertex.texCoord/colour reach the GX ports through literal
@@ -609,3 +607,104 @@ void daPicGate_c::func_ov080_02126124()
     mCorners[3].color = 0x20000000;
     mCorners[3].texCoord = 0;
 }
+
+#define G3_POLYGON_ATTR    (*(int *)0x040004a4)
+#define G3_TEXIMAGE_PARAM  (*(int *)0x040004a8)
+#define G3_TEXPLTT_BASE    (*(int *)0x040004ac)
+#define G3_DIF_AMB         (*(int *)0x040004c0)
+#define G3_SPE_EMI         (*(int *)0x040004c4)
+enum { kMtxPosVec = 2, kMtxPos = 1, kScale = 0x20000, kTriStrip = 2 };
+extern "C" {
+extern void func_02055388(void *m);
+extern void func_02055998(void *m);
+extern int data_ov080_0212771c[];
+}
+/* texgen=NORMAL variant: no per-vertex TEXCOORD, positions at >>7. */
+#define EMIT_VTX7(v) \
+    G3_NORMAL = (v)->color; \
+    vz = (v)->z; \
+    s2 = (s16)(vz >> 7); \
+    vx = (v)->x; \
+    s0 = (s16)(vx >> 7); \
+    vx = (u16)s0; \
+    vy = (v)->y; \
+    s1 = (s16)(vy >> 7); \
+    G3_VTX_16 = vx | ((u16)s1 << 16); \
+    G3_VTX_16 = (u16)s2
+
+static inline void G3_TexImageParam(u32 addr, u32 texFmt, u32 sizeS,
+                                   u32 sizeT, u32 pltt0)
+{
+    G3_TEXIMAGE_PARAM = (addr >> 3) | (texFmt << 26) | 0x80000000 |
+                       (sizeS << 20) | (sizeT << 23) | (pltt0 << 29);
+}
+
+// @symbol _ZN11daPicGate_c19func_ov080_021261f4Ev
+/* DrawWave. The ports this one needs beyond the file's set are spelled
+ * the same plain way, and its texture-parameter helper takes the five
+ * fields it varies. */
+#pragma opt_propagation off
+void daPicGate_c::func_ov080_021261f4()
+{
+    int tmp[12];
+    int i, j, n;
+
+    MulMat4x3Mat4x3(mMtx, data_0209b3ec.m, tmp);
+    G3_MTX_PUSH = 0;
+    func_02055998(data_ov080_0212771c);
+    func_02055388(tmp);
+    G3_MTX_MODE = kMtxPosVec;
+    func_020553a4(tmp);
+    G3_TEXCOORD = 0x04000400;
+    G3_LIGHT_VECTOR = 0xe0000000;
+    G3_LIGHT_COLOR = 0xc0007fff;
+    {
+        struct Ov080Mat *m2 = (struct Ov080Mat *)mTexRecord;
+        G3_DIF_AMB = m2->difAmb | 0x7fff0000;
+    }
+    G3_SPE_EMI = ((struct Ov080Mat *)mTexRecord)->speEmi;
+    {
+        Ov080Mat *m2 = (Ov080Mat *)mTexRecord;
+        G3_TexImageParam(m2->texAddr, (m2->param >> 26) & 7,
+                         (m2->param >> 20) & 7, (m2->param >> 23) & 7,
+                         (m2->param >> 29) & 1);
+    }
+    {
+        struct Ov080Mat *m3 = (struct Ov080Mat *)mTexRecord;
+        G3_TEXPLTT_BASE = m3->pltAddr >> (4 - (((m3->param >> 0x1a) & 7) == 2 ? 1 : 0));
+    }
+    G3_POLYGON_ATTR = 0x01000088 | ((((u8)((param1 >> 8) & 0x1f)) == 7) ? 0x14 : 0x1f) << 16;
+    G3_MTX_SCALE = 0x10000;
+    G3_MTX_SCALE = 0x10000;
+    G3_MTX_SCALE = 0x10000;
+
+    n = (int)mCols;
+    i = 0;
+    n = n - 1;
+    if (n > 0) {
+        do {
+            G3_BEGIN = kTriStrip;
+            j = 0;
+            if ((int)mRows > 0) {
+                do {
+                    Vertex *base = mCells;
+                    int rows = (int)mRows;
+                    Vertex *v1 = &base[i + j * rows];
+                    Vertex *v2 = &base[(i + 1) + j * rows];
+                    int vx, vy, vz;
+                    s16 s0, s1, s2;
+
+                    EMIT_VTX7(v1);
+                    EMIT_VTX7(v2);
+
+                    j++;
+                } while (j < (int)mRows);
+            }
+            G3_END = 0;
+            i++;
+        } while (i < (int)mCols - 1);
+    }
+    G3_MTX_POP = 1;
+}
+
+#pragma opt_propagation on
