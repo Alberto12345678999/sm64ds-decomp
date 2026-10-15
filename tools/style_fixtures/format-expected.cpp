@@ -8,3 +8,14 @@ void FixtureActor::Tick() {
         --timer;
     }
 }
+
+class AccessProbe {
+public:
+    void Tick();
+
+protected:
+    int timer;
+
+private:
+    int state;
+};
