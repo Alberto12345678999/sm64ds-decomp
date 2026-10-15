@@ -3,14 +3,14 @@
   "task": "ibl-native-object-boundaries1015",
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3812",
   "candidate": "This commit; immutable output is recorded by the coordination queue.",
-  "status": "Producer proof complete; independent exact Source and byte acceptance is pending.",
+  "status": "Current-base producer composition proof complete; fresh independent exact acceptance pending.",
   "completion": "partial",
-  "source_checkpoint": "0967dd2a0f86285826bd3a139ef35ab49df05b66",
+  "source_checkpoint": "e44c8dd2f7de0a01c30d21db6e93211b5e9aa42f",
   "registered_input_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
-  "base_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
+  "base_commit": "bf93062f25a1be2679890e559667b85ba4973649",
   "tooling_workflow_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
   "source_review_policy_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
-  "producer_session": "codex-ibl-native-object-boundaries-astra-producer1015",
+  "producer_session": "codex-ibl-currentbf930-astra-producer1015",
   "source_author": {
     "session": "codex-ibl-native-object-boundaries-astra-producer1015",
     "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
@@ -375,8 +375,8 @@
   },
   "gates": {
     "rom": {
-      "base": "40dfd83ba134be0600730b58f3261f04441632d8",
-      "source_checkpoint": "0967dd2a0f86285826bd3a139ef35ab49df05b66",
+      "base": "bf93062f25a1be2679890e559667b85ba4973649",
+      "source_checkpoint": "e44c8dd2f7de0a01c30d21db6e93211b5e9aa42f",
       "gates": [
         {
           "name": "rombuild",
@@ -386,20 +386,20 @@
             "-j16",
             "--no-rom",
             "--report-json",
-            "build\\ibl-native-object-boundaries1015\\rombuild.json",
+            "build\\ibl-native-object-boundaries1015\\currentbf930\\rombuild.json",
             "--data-json",
-            "build\\ibl-native-object-boundaries1015\\romdata-full.json"
+            "build\\ibl-native-object-boundaries1015\\currentbf930\\romdata-full.json"
           ],
           "exit_code": 0,
-          "seconds": 371.1,
-          "log": "build\\ibl-native-object-boundaries1015\\rombuild.log",
-          "log_sha256": "2cf02df5710c68504b21e917c93429d1801e86779ca78c187f5d28b0955dbf1b"
+          "seconds": 311.9,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\rombuild.log",
+          "log_sha256": "a5e05a9aa5ade0544111947c9b2e724167e7fe7b2d6a1fb1cb3aa7e4a7b960cb"
         }
       ]
     },
     "static": {
-      "base": "40dfd83ba134be0600730b58f3261f04441632d8",
-      "source_checkpoint": "0967dd2a0f86285826bd3a139ef35ab49df05b66",
+      "base": "bf93062f25a1be2679890e559667b85ba4973649",
+      "source_checkpoint": "e44c8dd2f7de0a01c30d21db6e93211b5e9aa42f",
       "gates": [
         {
           "name": "header-offsets",
@@ -409,8 +409,8 @@
             "include/daIbl_c.h"
           ],
           "exit_code": 0,
-          "seconds": 0.34,
-          "log": "build\\ibl-native-object-boundaries1015\\header-offsets.log",
+          "seconds": 2.23,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\header-offsets.log",
           "log_sha256": "16ba1e1e9d04eb1dbc6bbe84319a1e4dc6bf1cca27a260ff82edde02b5b09f67"
         },
         {
@@ -421,8 +421,8 @@
             "include/daIbl_c.h"
           ],
           "exit_code": 0,
-          "seconds": 1.52,
-          "log": "build\\ibl-native-object-boundaries1015\\affected-src.log",
+          "seconds": 10.79,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\affected-src.log",
           "log_sha256": "a1a475881e9337a1893353bca7a2c15e624247b410e08bbe998054bf37085b28"
         },
         {
@@ -431,13 +431,13 @@
             "python",
             "tools/prepush_linkcheck.py",
             "--range",
-            "40dfd83ba134be0600730b58f3261f04441632d8..HEAD",
+            "bf93062f25a1be2679890e559667b85ba4973649..HEAD",
             "--json",
-            "build\\ibl-native-object-boundaries1015\\prepush.json"
+            "build\\ibl-native-object-boundaries1015\\currentbf930\\prepush.json"
           ],
           "exit_code": 0,
-          "seconds": 25.19,
-          "log": "build\\ibl-native-object-boundaries1015\\prepush.log",
+          "seconds": 28.32,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\prepush.log",
           "log_sha256": "fad255f8106551f8e0fd13a4fdffedf3e8bcc9e399c3a994412f1cad8a26f28d"
         },
         {
@@ -446,12 +446,12 @@
             "python",
             "tools/check_decl_agreement.py",
             "--changed",
-            "40dfd83ba134be0600730b58f3261f04441632d8"
+            "bf93062f25a1be2679890e559667b85ba4973649"
           ],
           "exit_code": 0,
-          "seconds": 14.14,
-          "log": "build\\ibl-native-object-boundaries1015\\decl-scoped.log",
-          "log_sha256": "8e3f44bc2caf32a1990e8820fa69e07d15d2d47467dc272991f085465ce35d6f"
+          "seconds": 13.33,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\decl-scoped.log",
+          "log_sha256": "1068efb403a3bfbd199045d4eee295d6fd6544d4409081f9979290420a6936ab"
         },
         {
           "name": "decl-global",
@@ -461,9 +461,9 @@
             "--check"
           ],
           "exit_code": 0,
-          "seconds": 9.37,
-          "log": "build\\ibl-native-object-boundaries1015\\decl-global.log",
-          "log_sha256": "7d333f8e189537862aa916a6e08209947aa2849f14a2027e9e234070411f4b67"
+          "seconds": 9.62,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\decl-global.log",
+          "log_sha256": "d21f300ae0024c18db82aed3708e61ba7d244e7684b49ce9d229684392f54098"
         },
         {
           "name": "port",
@@ -472,8 +472,8 @@
             "tools/port_refcheck.py"
           ],
           "exit_code": 0,
-          "seconds": 1.7,
-          "log": "build\\ibl-native-object-boundaries1015\\port.log",
+          "seconds": 1.77,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\port.log",
           "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
         },
         {
@@ -482,11 +482,11 @@
             "python",
             "tools/langmode_audit.py",
             "--check",
-            "build\\ibl-native-object-boundaries1015\\langmode-baseline.json"
+            "build\\ibl-native-object-boundaries1015\\currentbf930\\langmode-baseline.json"
           ],
           "exit_code": 0,
-          "seconds": 11.85,
-          "log": "build\\ibl-native-object-boundaries1015\\langmode.log",
+          "seconds": 14.26,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\langmode.log",
           "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
         },
         {
@@ -496,8 +496,8 @@
             "tools/check_tubuild_conflicts.py"
           ],
           "exit_code": 0,
-          "seconds": 0.32,
-          "log": "build\\ibl-native-object-boundaries1015\\tu-conflicts.log",
+          "seconds": 0.33,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\tu-conflicts.log",
           "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521"
         },
         {
@@ -507,8 +507,8 @@
             "tools/check_duplicate_sources.py"
           ],
           "exit_code": 0,
-          "seconds": 0.35,
-          "log": "build\\ibl-native-object-boundaries1015\\duplicates.log",
+          "seconds": 0.43,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\duplicates.log",
           "log_sha256": "3c7d30e74da563c3759d899256bc6d497413d6fac97b5d50dde941fb71d9727d"
         },
         {
@@ -520,7 +520,7 @@
           ],
           "exit_code": 0,
           "seconds": 0.95,
-          "log": "build\\ibl-native-object-boundaries1015\\drafts.log",
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\drafts.log",
           "log_sha256": "4eaa535d055ed5087222e0edd0bd5b993d5867d936e408203180cd0e578d5f99"
         },
         {
@@ -529,21 +529,16 @@
             "git",
             "diff",
             "--check",
-            "40dfd83ba134be0600730b58f3261f04441632d8..HEAD"
+            "bf93062f25a1be2679890e559667b85ba4973649..HEAD"
           ],
           "exit_code": 0,
-          "seconds": 0.06,
-          "log": "build\\ibl-native-object-boundaries1015\\diff-check.log",
+          "seconds": 0.05,
+          "log": "build\\ibl-native-object-boundaries1015\\currentbf930\\diff-check.log",
           "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
       ]
     },
     "full_build_summary": [
-      "source-built functions: 5,888  (1,190,448 / 2,238,108 code bytes, 53.19%)",
-      "reproducing: 5,888",
-      "mismatching: 0",
-      "module fidelity: 106/106 exact, 100.000000% of compared bytes",
-      "ROM-build analysis: PASS",
       "intact TU gates: dsd modules PASS, zero new symbol errors, storage aliases exact",
       "source-built functions: 11,334  (2,225,480 / 2,238,108 code bytes, 99.44%)",
       "reproducing: 11,334",
@@ -560,10 +555,10 @@
       "unnamed": 21
     },
     "qualifications": [
-      "Actual current full106 run at committed0967 checkpoint; not a historical transfer.",
-      "Generic header-aware prepush35checked:34verified, initializer BLIND18 warning, zero blocking. Actual ordinary intact ownership and complete linked initializer/ctor/data proof positively resolve every private destination; the warning is preserved rather than called a generic strict pass.",
-      "Baseline dsd symbol control has9 inherited errors; modules pass and no new symbol errors. --no-rom skips a candidate ROM file; stock control ROM hashd1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 retained.",
-      "Declaration checks report no new disagreements, not universal interface agreement. Global partial/differ/unnamed data entries remain."
+      "Actual current full106 run at committed two-parent composition e44c8dd2f7de0a01c30d21db6e93211b5e9aa42f; earlier0967/40df run preserved separately.",
+      "Generic header-aware prepush35checked:34verified, initializerBLIND18warning,0blocking. Fresh complete Koopa init496+ctor4+data48=548B/48typedrefs matches retail0blind; BSS208 exact ownership.",
+      "Baseline dsd symbol control retains9 pre-existing errors; modules pass. --no-rom skips candidate ROM file; stock control hash retained in logs.",
+      "Declaration checks pass the ratchet, not universal interface agreement. Global partial/differ/unnamed data advisories remain."
     ]
   },
   "historical_provenance": {
@@ -818,11 +813,32 @@
     "native-complete/koopa/intact-evidence.json": "176dc07af9febe6ecdbf5590bf06cb85b3f0f156c3b0ce70810536b920cef50d",
     "native-group/ibl/proof.json": "ac7a82d4b006b0481346ad096cffae2e8893d3da290b0631c987610deb16cdf7",
     "probes/scalar-references/result.json": "35898bce68e39f8c2c6c62e05eefa99e92073d0f08aa87eda5e0ab38b630a3b0",
-    "probes/object-representation/result.json": "6602e91020444bfd1f349dd2198f8857441c20b559d5291043cb9b94ed33a1dc"
+    "probes/object-representation/result.json": "6602e91020444bfd1f349dd2198f8857441c20b559d5291043cb9b94ed33a1dc",
+    "currentbf930/composition-bindings.json": "95b9b2b718d2dca84ed832cff1f9c9fb0f74ef261dd8576f9b78d5b6ddb14f72",
+    "currentbf930/focused-binding.json": "6cb61dcd4621b1fb8c9804f7151fcd3cbbf1ea5278f6ff06982530734f39ac53",
+    "currentbf930/koopa-complete-nontext.json": "1369841b340df0592b7d729e2148b121f10d0ebc51a5ee693169f74a86c40355",
+    "currentbf930/gate-results-rom.json": "205b210303266328e33fe65c1abf719973fe643937925bf8a6250948650a5495",
+    "currentbf930/gate-results-static.json": "1b6541083b28818e65e4d83650874a0ee69a0ffffb8cf280769624a28f766d27",
+    "currentbf930/rombuild.json": "a7a2746aed91b9ab3cb9925d43b1744c0364746adf717b9f2f96ad04c0b5b461",
+    "currentbf930/romdata-full.json": "9994800ba90aa8caddda675dc49d7e0f440ce30220529b0a82d2612b068857c4",
+    "currentbf930/prepush.json": "47bb080959902c7eb69ef689afdc40d344b6a98b1d7f2daedd0e9f9dbc6b4dac",
+    "currentbf930/ibl/proof.json": "84dd9c2c94eb6ae9d0a115693d835bd198bb88dfcb314d5ee6f293f4c09f8dec",
+    "currentbf930/koopa/proof.json": "3ff3feb347b547ef972bc0b17635f46f248143a2f3284c1bf759992826164c9a"
   },
   "current_main_check": {
-    "head": "40dfd83ba134be0600730b58f3261f04441632d8",
-    "checked_at_utc": "2026-10-15T05:29:20.423421+00:00"
+    "head": "ea91964403017ecbc9482492397b11bc90d7d785",
+    "tested_source_base": "bf93062f25a1be2679890e559667b85ba4973649",
+    "progress_only_delta": [
+      "contributions.json"
+    ],
+    "five_production_trees_literal": {
+      "src": "d1f93fcbbd2d1df1ca6fc613ffbdccb3975ea720",
+      "include": "bbf6e0ac629c5caa508e068e86cc18dbafadbb59",
+      "config": "0a0f34e5cd4da49562ac27e02576fbfaab30ac55",
+      "tools": "55122625b2b352a5f15ea21d3d9baf1fdd6859b4",
+      "port": "c6bd95e7eb59d61c892c4eb233e85115eb4bc28c"
+    },
+    "checked_at_utc": "2026-10-15T06:28:39.862011+00:00"
   },
   "future_composition": "Retained full144 includes Koopa MF; preserve its current literal accepted state and compose future changes, never overwrite with the older snapshot.",
   "not_claimed": [
@@ -830,5 +846,271 @@
     "Complete original class/layout/signature recovery",
     "Completion of full144/nativeYegg3/shared308/Heap/Chomp20/ARM7 remaining scopes",
     "Public push/PR/validation/merge"
-  ]
+  ],
+  "report_author": {
+    "session": "codex-ibl-currentbf930-astra-producer1015",
+    "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
+    "label": "codex-enemy-frontier-astra1014"
+  },
+  "composition": {
+    "rework_input": "e1befc8c875d5088c2c37c96d037b474657524a4",
+    "registered_input": "40dfd83ba134be0600730b58f3261f04441632d8",
+    "current_source_base": "bf93062f25a1be2679890e559667b85ba4973649",
+    "parents": [
+      "e1befc8c875d5088c2c37c96d037b474657524a4",
+      "bf93062f25a1be2679890e559667b85ba4973649"
+    ],
+    "all66_required_inputs_literal": true,
+    "all21_finding_dictionaries_literal": true,
+    "source_header_both_manifests_and_koopa_source_literal": true,
+    "fresh_focused_proof": {
+      "ibl": {
+        "checks": {
+          "owned": true,
+          "metadata": true,
+          "callbacks": true,
+          "homeless_helpers": true,
+          "raw_graph": true,
+          "prepared_graph": true,
+          "raw_literal": true,
+          "prepared_literal": true
+        },
+        "raw_sha256": "34b085d2cc8152dde43cc901bbe11918ab4ff84e4b7c986e2497ba6bfade76b7",
+        "prepared_sha256": "d40c3b765c8f5e425cdd69f938128fbfec257e43d5c84be7a140feac071ee7df",
+        "strict_functions": 16,
+        "raw_refs": 192,
+        "prepared_refs": 140,
+        "helper_inbound_proof": [
+          {
+            "helper": "_ZN7Vector3D1Ev",
+            "all_incoming_name_and_section_target_edges": []
+          },
+          {
+            "helper": "_ZN7daIbl_cD2Ev",
+            "all_incoming_name_and_section_target_edges": []
+          }
+        ],
+        "proof_sha256": "84dd9c2c94eb6ae9d0a115693d835bd198bb88dfcb314d5ee6f293f4c09f8dec"
+      },
+      "koopa": {
+        "checks": {
+          "owned": true,
+          "metadata": true,
+          "callbacks": true,
+          "homeless_helpers": true,
+          "raw_graph": true,
+          "prepared_graph": true,
+          "raw_literal": true,
+          "prepared_literal": true
+        },
+        "raw_sha256": "7c0c18d9574843b5043aa859c488de6badc928689722ba55a544311c84141699",
+        "prepared_sha256": "0b3b6789232f632275b380ffa4a1661b6efa1ae379e740087080684d9238e225",
+        "strict_functions": 18,
+        "raw_refs": 283,
+        "prepared_refs": 237,
+        "helper_inbound_proof": [
+          {
+            "helper": "_ZN7Vector3D1Ev",
+            "all_incoming_name_and_section_target_edges": []
+          }
+        ],
+        "proof_sha256": "3ff3feb347b547ef972bc0b17635f46f248143a2f3284c1bf759992826164c9a"
+      }
+    },
+    "historical_old_full_build": {
+      "rom": {
+        "base": "40dfd83ba134be0600730b58f3261f04441632d8",
+        "source_checkpoint": "0967dd2a0f86285826bd3a139ef35ab49df05b66",
+        "gates": [
+          {
+            "name": "rombuild",
+            "command": [
+              "python",
+              "tools/rombuild.py",
+              "-j16",
+              "--no-rom",
+              "--report-json",
+              "build\\ibl-native-object-boundaries1015\\rombuild.json",
+              "--data-json",
+              "build\\ibl-native-object-boundaries1015\\romdata-full.json"
+            ],
+            "exit_code": 0,
+            "seconds": 371.1,
+            "log": "build\\ibl-native-object-boundaries1015\\rombuild.log",
+            "log_sha256": "2cf02df5710c68504b21e917c93429d1801e86779ca78c187f5d28b0955dbf1b"
+          }
+        ]
+      },
+      "static": {
+        "base": "40dfd83ba134be0600730b58f3261f04441632d8",
+        "source_checkpoint": "0967dd2a0f86285826bd3a139ef35ab49df05b66",
+        "gates": [
+          {
+            "name": "header-offsets",
+            "command": [
+              "python",
+              "tools/check_header_offsets.py",
+              "include/daIbl_c.h"
+            ],
+            "exit_code": 0,
+            "seconds": 0.34,
+            "log": "build\\ibl-native-object-boundaries1015\\header-offsets.log",
+            "log_sha256": "16ba1e1e9d04eb1dbc6bbe84319a1e4dc6bf1cca27a260ff82edde02b5b09f67"
+          },
+          {
+            "name": "affected-src",
+            "command": [
+              "python",
+              "tools/affected_src.py",
+              "include/daIbl_c.h"
+            ],
+            "exit_code": 0,
+            "seconds": 1.52,
+            "log": "build\\ibl-native-object-boundaries1015\\affected-src.log",
+            "log_sha256": "a1a475881e9337a1893353bca7a2c15e624247b410e08bbe998054bf37085b28"
+          },
+          {
+            "name": "prepush",
+            "command": [
+              "python",
+              "tools/prepush_linkcheck.py",
+              "--range",
+              "40dfd83ba134be0600730b58f3261f04441632d8..HEAD",
+              "--json",
+              "build\\ibl-native-object-boundaries1015\\prepush.json"
+            ],
+            "exit_code": 0,
+            "seconds": 25.19,
+            "log": "build\\ibl-native-object-boundaries1015\\prepush.log",
+            "log_sha256": "fad255f8106551f8e0fd13a4fdffedf3e8bcc9e399c3a994412f1cad8a26f28d"
+          },
+          {
+            "name": "decl-scoped",
+            "command": [
+              "python",
+              "tools/check_decl_agreement.py",
+              "--changed",
+              "40dfd83ba134be0600730b58f3261f04441632d8"
+            ],
+            "exit_code": 0,
+            "seconds": 14.14,
+            "log": "build\\ibl-native-object-boundaries1015\\decl-scoped.log",
+            "log_sha256": "8e3f44bc2caf32a1990e8820fa69e07d15d2d47467dc272991f085465ce35d6f"
+          },
+          {
+            "name": "decl-global",
+            "command": [
+              "python",
+              "tools/check_decl_agreement.py",
+              "--check"
+            ],
+            "exit_code": 0,
+            "seconds": 9.37,
+            "log": "build\\ibl-native-object-boundaries1015\\decl-global.log",
+            "log_sha256": "7d333f8e189537862aa916a6e08209947aa2849f14a2027e9e234070411f4b67"
+          },
+          {
+            "name": "port",
+            "command": [
+              "python",
+              "tools/port_refcheck.py"
+            ],
+            "exit_code": 0,
+            "seconds": 1.7,
+            "log": "build\\ibl-native-object-boundaries1015\\port.log",
+            "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
+          },
+          {
+            "name": "langmode",
+            "command": [
+              "python",
+              "tools/langmode_audit.py",
+              "--check",
+              "build\\ibl-native-object-boundaries1015\\langmode-baseline.json"
+            ],
+            "exit_code": 0,
+            "seconds": 11.85,
+            "log": "build\\ibl-native-object-boundaries1015\\langmode.log",
+            "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
+          },
+          {
+            "name": "tu-conflicts",
+            "command": [
+              "python",
+              "tools/check_tubuild_conflicts.py"
+            ],
+            "exit_code": 0,
+            "seconds": 0.32,
+            "log": "build\\ibl-native-object-boundaries1015\\tu-conflicts.log",
+            "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521"
+          },
+          {
+            "name": "duplicates",
+            "command": [
+              "python",
+              "tools/check_duplicate_sources.py"
+            ],
+            "exit_code": 0,
+            "seconds": 0.35,
+            "log": "build\\ibl-native-object-boundaries1015\\duplicates.log",
+            "log_sha256": "3c7d30e74da563c3759d899256bc6d497413d6fac97b5d50dde941fb71d9727d"
+          },
+          {
+            "name": "drafts",
+            "command": [
+              "python",
+              "tools/check_drafts_compile.py",
+              "--quiet"
+            ],
+            "exit_code": 0,
+            "seconds": 0.95,
+            "log": "build\\ibl-native-object-boundaries1015\\drafts.log",
+            "log_sha256": "4eaa535d055ed5087222e0edd0bd5b993d5867d936e408203180cd0e578d5f99"
+          },
+          {
+            "name": "diff-check",
+            "command": [
+              "git",
+              "diff",
+              "--check",
+              "40dfd83ba134be0600730b58f3261f04441632d8..HEAD"
+            ],
+            "exit_code": 0,
+            "seconds": 0.06,
+            "log": "build\\ibl-native-object-boundaries1015\\diff-check.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "full_build_summary": [
+        "source-built functions: 5,888  (1,190,448 / 2,238,108 code bytes, 53.19%)",
+        "reproducing: 5,888",
+        "mismatching: 0",
+        "module fidelity: 106/106 exact, 100.000000% of compared bytes",
+        "ROM-build analysis: PASS",
+        "intact TU gates: dsd modules PASS, zero new symbol errors, storage aliases exact",
+        "source-built functions: 11,334  (2,225,480 / 2,238,108 code bytes, 99.44%)",
+        "reproducing: 11,334",
+        "mismatching: 0",
+        "source-owned data claims: 331  (reproducing 331, mismatching 0)",
+        "source-owned BSS claims: 239  (30,164 NOBITS bytes; object/symbol gates)",
+        "module fidelity: 106/106 exact, 100.000000% of compared bytes",
+        "ROM-build analysis: PASS"
+      ],
+      "global_data_advisory": {
+        "verified": 970,
+        "partial": 1519,
+        "differs": 1,
+        "unnamed": 21
+      },
+      "qualifications": [
+        "Actual current full106 run at committed0967 checkpoint; not a historical transfer.",
+        "Generic header-aware prepush35checked:34verified, initializer BLIND18 warning, zero blocking. Actual ordinary intact ownership and complete linked initializer/ctor/data proof positively resolve every private destination; the warning is preserved rather than called a generic strict pass.",
+        "Baseline dsd symbol control has9 inherited errors; modules pass and no new symbol errors. --no-rom skips a candidate ROM file; stock control ROM hashd1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8 retained.",
+        "Declaration checks report no new disagreements, not universal interface agreement. Global partial/differ/unnamed data entries remain."
+      ]
+    },
+    "fresh_current_full_build": true,
+    "limits": "Earlier positive Source/byte proof is retained as historical; this actual current composition and new full build need fresh independent review."
+  }
 }
