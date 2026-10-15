@@ -80,7 +80,7 @@ struct dScMgPachinko_shot {
 typedef char dScMgPachinko_shot_size_must_be_0x38[sizeof(struct dScMgPachinko_shot) == 0x38 ? 1 : -1];
 #endif
 
-/* A score popup: 30 of them at 0x4cf0 (func_ov006_020fbb2c). */
+/* A score popup: 30 of them at 0x4cf0 (PachinkoPopup_SpawnScore). */
 struct dScMgPachinko_popup {
     s32 x;              /* 0x00 */
     s32 y;              /* 0x04 */
@@ -88,7 +88,7 @@ struct dScMgPachinko_popup {
     u16 value;          /* 0x0a */
 };
 
-/* One of the three swinging rows at 0x4e58 (func_ov006_020fa844 swings
+/* One of the three swinging rows at 0x4e58 (PachinkoDeco_UpdateAll swings
    angle between -0x1000 and 0x1000; dir picks the way). */
 struct dScMgPachinko_row {
     s32 x;              /* 0x00 */

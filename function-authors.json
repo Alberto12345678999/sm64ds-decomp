@@ -24531,271 +24531,271 @@
     },
     "ov006:0x020fa7b8": {
       "author": "tangosdev",
-      "name": "func_ov006_020fa7b8"
+      "name": "PachinkoDeco_DrawAll"
     },
     "ov006:0x020fa844": {
       "author": "ruspecial",
-      "name": "func_ov006_020fa844"
+      "name": "PachinkoDeco_UpdateAll"
     },
     "ov006:0x020fa924": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fa924"
+      "name": "PachinkoDeco_ShowAll"
     },
     "ov006:0x020fa9a0": {
       "author": "tangosdev",
-      "name": "func_ov006_020fa9a0"
+      "name": "PachinkoDeco_HideAll"
     },
     "ov006:0x020fa9c8": {
       "author": "tangosdev",
-      "name": "func_ov006_020fa9c8"
+      "name": "PachinkoBg_State3"
     },
     "ov006:0x020faac8": {
       "author": "tangosdev",
-      "name": "func_ov006_020faac8"
+      "name": "PachinkoBg_State2"
     },
     "ov006:0x020fab70": {
       "author": "ruspecial",
-      "name": "func_ov006_020fab70"
+      "name": "PachinkoBg_State1"
     },
     "ov006:0x020fac48": {
       "author": "lunavyqo",
-      "name": "func_ov006_020fac48"
+      "name": "PachinkoBg_State0"
     },
     "ov006:0x020fad34": {
       "author": "tangosdev",
-      "name": "func_ov006_020fad34"
+      "name": "PachinkoBg_Update"
     },
     "ov006:0x020fad90": {
       "author": "tangosdev",
-      "name": "func_ov006_020fad90"
+      "name": "PachinkoBg_Start"
     },
     "ov006:0x020fadfc": {
       "author": "tangosdev",
-      "name": "func_ov006_020fadfc"
+      "name": "PachinkoBg_Stop"
     },
     "ov006:0x020fae20": {
       "author": "tangosdev",
-      "name": "func_ov006_020fae20"
+      "name": "PachinkoTarget_DrawAll"
     },
     "ov006:0x020fae90": {
       "author": "tangosdev",
-      "name": "func_ov006_020fae90"
+      "name": "PachinkoTarget_ShowAll"
     },
     "ov006:0x020faeec": {
       "author": "tangosdev",
-      "name": "func_ov006_020faeec"
+      "name": "PachinkoTarget_HideAll"
     },
     "ov006:0x020faf14": {
       "author": "tangosdev",
-      "name": "func_ov006_020faf14"
+      "name": "PachinkoFlyer_Draw"
     },
     "ov006:0x020faf6c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020faf6c"
+      "name": "PachinkoFlyer_CheckHits"
     },
     "ov006:0x020fb0fc": {
       "author": "tangosdev",
-      "name": "func_ov006_020fb0fc"
+      "name": "PachinkoFlyer_State4"
     },
     "ov006:0x020fb1c4": {
       "author": "tangosdev",
-      "name": "func_ov006_020fb1c4"
+      "name": "PachinkoFlyer_State3"
     },
     "ov006:0x020fb230": {
       "author": "lunavyqo",
-      "name": "func_ov006_020fb230"
+      "name": "PachinkoFlyer_State2"
     },
     "ov006:0x020fb45c": {
       "author": "ruspecial",
-      "name": "func_ov006_020fb45c"
+      "name": "PachinkoFlyer_State1"
     },
     "ov006:0x020fb4e0": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fb4e0"
+      "name": "PachinkoFlyer_State0"
     },
     "ov006:0x020fb60c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fb60c"
+      "name": "PachinkoFlyer_Update"
     },
     "ov006:0x020fb670": {
       "author": "tangosdev",
-      "name": "func_ov006_020fb670"
+      "name": "PachinkoTarget_Choose"
     },
     "ov006:0x020fb74c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fb74c"
+      "name": "PachinkoFx_DrawAll"
     },
     "ov006:0x020fb7e0": {
       "author": "lunavyqo",
-      "name": "func_ov006_020fb7e0"
+      "name": "PachinkoFx_UpdateAll"
     },
     "ov006:0x020fb8fc": {
       "author": "tangosdev",
-      "name": "func_ov006_020fb8fc"
+      "name": "PachinkoFx_Spawn"
     },
     "ov006:0x020fb97c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fb97c"
+      "name": "Pachinko_CheckTargetsLeft"
     },
     "ov006:0x020fba28": {
       "author": "tangosdev",
-      "name": "func_ov006_020fba28"
+      "name": "Pachinko_DrawScore"
     },
     "ov006:0x020fba48": {
       "author": "tangosdev",
-      "name": "func_ov006_020fba48"
+      "name": "Pachinko_DrawTopRecord"
     },
     "ov006:0x020fba64": {
       "author": "tangosdev",
-      "name": "func_ov006_020fba64"
+      "name": "PachinkoPopup_DrawAll"
     },
     "ov006:0x020fbad4": {
       "author": "tangosdev",
-      "name": "func_ov006_020fbad4"
+      "name": "PachinkoPopup_UpdateAll"
     },
     "ov006:0x020fbb2c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fbb2c"
+      "name": "PachinkoPopup_SpawnScore"
     },
     "ov006:0x020fbbe8": {
       "author": "ruspecial",
-      "name": "func_ov006_020fbbe8"
+      "name": "Pachinko_ClearAimLine"
     },
     "ov006:0x020fbcb8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fbcb8"
+      "name": "Pachinko_PlotSubBg2Pixels"
     },
     "ov006:0x020fbd38": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fbd38"
+      "name": "Pachinko_DrawAimLine"
     },
     "ov006:0x020fc144": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc144"
+      "name": "PachinkoPipe_DrawAll"
     },
     "ov006:0x020fc1b4": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc1b4"
+      "name": "PachinkoPipe_SetAll"
     },
     "ov006:0x020fc1f8": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc1f8"
+      "name": "PachinkoPipe_State3"
     },
     "ov006:0x020fc2ec": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc2ec"
+      "name": "PachinkoPipe_State2"
     },
     "ov006:0x020fc500": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc500"
+      "name": "PachinkoPipe_State1"
     },
     "ov006:0x020fc718": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_020fc718"
+      "name": "PachinkoPipe_State0"
     },
     "ov006:0x020fc7d0": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc7d0"
+      "name": "PachinkoPipe_UpdateAll"
     },
     "ov006:0x020fc844": {
       "author": "tangosdev",
-      "name": "func_ov006_020fc844"
+      "name": "PachinkoPipe_ResetAll"
     },
     "ov006:0x020fc8c0": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fc8c0"
+      "name": "PachinkoBall_DrawAll"
     },
     "ov006:0x020fc9b0": {
       "author": "ruspecial",
-      "name": "func_ov006_020fc9b0"
+      "name": "PachinkoBall_CountNearby"
     },
     "ov006:0x020fca1c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fca1c"
+      "name": "PachinkoBall_CheckPipes"
     },
     "ov006:0x020fcb4c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fcb4c"
+      "name": "PachinkoBall_AimAtTarget"
     },
     "ov006:0x020fcd8c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fcd8c"
+      "name": "PachinkoBall_CheckFall"
     },
     "ov006:0x020fce04": {
       "author": "tangosdev",
-      "name": "func_ov006_020fce04"
+      "name": "PachinkoBall_State6"
     },
     "ov006:0x020fcec4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fcec4"
+      "name": "PachinkoBall_State5"
     },
     "ov006:0x020fd088": {
       "author": "tangosdev",
-      "name": "func_ov006_020fd088"
+      "name": "PachinkoBall_State4"
     },
     "ov006:0x020fd17c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fd17c"
+      "name": "PachinkoBall_State3"
     },
     "ov006:0x020fd2d8": {
       "author": "lunavyqo",
-      "name": "func_ov006_020fd2d8"
+      "name": "PachinkoBall_State2"
     },
     "ov006:0x020fd894": {
       "author": "tangosdev",
-      "name": "func_ov006_020fd894"
+      "name": "PachinkoBall_State1"
     },
     "ov006:0x020fd9cc": {
       "author": "tangosdev",
-      "name": "func_ov006_020fd9cc"
+      "name": "PachinkoBall_State0"
     },
     "ov006:0x020fda7c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fda7c"
+      "name": "PachinkoBall_UpdateAll"
     },
     "ov006:0x020fdaf0": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fdaf0"
+      "name": "PachinkoBall_CheckHitByBobOmb"
     },
     "ov006:0x020fdd40": {
       "author": "tangosdev",
-      "name": "func_ov006_020fdd40"
+      "name": "Pachinko_SpawnWave"
     },
     "ov006:0x020fe1a8": {
       "author": "tangosdev",
-      "name": "func_ov006_020fe1a8"
+      "name": "PachinkoBobOmb_ClearAll"
     },
     "ov006:0x020fe1d0": {
       "author": "tangosdev",
-      "name": "func_ov006_020fe1d0"
+      "name": "PachinkoBobOmb_DrawAll"
     },
     "ov006:0x020fe248": {
       "author": "tangosdev",
-      "name": "func_ov006_020fe248"
+      "name": "PachinkoBobOmb_UpdateAll"
     },
     "ov006:0x020fe2bc": {
       "author": "ruspecial",
-      "name": "func_ov006_020fe2bc"
+      "name": "Pachinko_CountLaunch"
     },
     "ov006:0x020fe2e4": {
       "author": "tangosdev",
-      "name": "func_ov006_020fe2e4"
+      "name": "PachinkoBobOmb_State0"
     },
     "ov006:0x020fe394": {
       "author": "tangosdev",
-      "name": "func_ov006_020fe394"
+      "name": "PachinkoBobOmb_State1"
     },
     "ov006:0x020fe750": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020fe750"
+      "name": "PachinkoBobOmb_State2"
     },
     "ov006:0x020fe90c": {
       "author": "tangosdev",
-      "name": "func_ov006_020fe90c"
+      "name": "PachinkoBobOmb_State3"
     },
     "ov006:0x020fea54": {
       "author": "tangosdev",
-      "name": "func_ov006_020fea54"
+      "name": "PachinkoBobOmb_State4"
     },
     "ov006:0x020fea70": {
       "author": "lunavyqo",
@@ -24803,7 +24803,7 @@
     },
     "ov006:0x020feba8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020feba8"
+      "name": "Pachinko_ResetRound"
     },
     "ov006:0x020fed58": {
       "author": "tangosdev",

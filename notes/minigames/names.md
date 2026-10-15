@@ -294,3 +294,26 @@ Medium confidence:
 - `DrawRemaining`.
 
 Left unnamed: `func_ov006_020d8c88`.
+
+**Pachinko (`dScMgPachinko_c`, Bob-omb Squad).** These helpers are C-linkage free
+functions on a `char *` view of the scene, so each name carries the `Pachinko`
+prefix.
+
+Six tables, named by index:
+- `PachinkoBg_State0..3`: the board scroll.
+- `PachinkoFlyer_State0..4`: a crossing flyer that plays looped sound 0x189.
+- `PachinkoPipe_State0..3`
+- `PachinkoBall_State0..6`: the enemies that aim at a live target.
+- `PachinkoBobOmb_State0..4`: grab, aim, fly, hit, remove.
+
+The other subsystems are named by what they draw and update:
+- `PachinkoTarget_*` (4 targets)
+- `PachinkoFx_*` (30 effects)
+- `PachinkoPopup_*` (score numbers)
+- `PachinkoDeco_*` (3 records that scroll with the board)
+- the aim line on sub BG2 (`Pachinko_DrawAimLine`, `Pachinko_ClearAimLine`, `Pachinko_PlotSubBg2Pixels`)
+
+Medium confidence: "Flyer", "Deco" and "Ball" are role words from code alone; the
+actors' looks are not observed.
+
+Left unnamed: `func_ov006_020fea70`.
