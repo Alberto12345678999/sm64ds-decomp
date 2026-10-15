@@ -19003,11 +19003,11 @@
     },
     "ov004:0x020adc80": {
       "author": "tangosdev",
-      "name": "func_ov004_020adc80"
+      "name": "DrawFlyTo"
     },
     "ov004:0x020adcc8": {
       "author": "tangosdev",
-      "name": "func_ov004_020adcc8"
+      "name": "DrawSparkle"
     },
     "ov004:0x020add88": {
       "author": "tangosdev",
@@ -19015,11 +19015,11 @@
     },
     "ov004:0x020addcc": {
       "author": "tangosdev",
-      "name": "func_ov004_020addcc"
+      "name": "UpdateFlyTo"
     },
     "ov004:0x020adeb0": {
       "author": "tangosdev",
-      "name": "func_ov004_020adeb0"
+      "name": "UpdateDrift"
     },
     "ov004:0x020adf2c": {
       "author": "tangosdev",

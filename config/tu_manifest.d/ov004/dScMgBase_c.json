@@ -199,14 +199,14 @@
       "ordinal": 21
     },
     {
-      "symbol": "_ZN3Ent19func_ov004_020adc80Ev",
+      "symbol": "_ZN3Ent9DrawFlyToEv",
       "address": "0x020adc80",
       "size": "0x00000048",
       "legacy_source": "src/func_ov004_020adc80.c",
       "ordinal": 22
     },
     {
-      "symbol": "_ZN3Ent19func_ov004_020adcc8Ev",
+      "symbol": "_ZN3Ent11DrawSparkleEv",
       "address": "0x020adcc8",
       "size": "0x000000c0",
       "legacy_source": "src/func_ov004_020adcc8.cpp",
@@ -220,14 +220,14 @@
       "ordinal": 24
     },
     {
-      "symbol": "_ZN3Ent19func_ov004_020addccEv",
+      "symbol": "_ZN3Ent11UpdateFlyToEv",
       "address": "0x020addcc",
       "size": "0x000000e4",
       "legacy_source": "src/func_ov004_020addcc.c",
       "ordinal": 25
     },
     {
-      "symbol": "_ZN3Ent19func_ov004_020adeb0Ev",
+      "symbol": "_ZN3Ent11UpdateDriftEv",
       "address": "0x020adeb0",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov004_020adeb0.c",
@@ -947,28 +947,28 @@
       "address": "0x020bbf4c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent19func_ov004_020adeb0Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent11UpdateDriftEv"
     },
     {
       "symbol": "@321",
       "address": "0x020bbf54",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent19func_ov004_020adcc8Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent11DrawSparkleEv"
     },
     {
       "symbol": "@319",
       "address": "0x020bbf5c",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent19func_ov004_020addccEv"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent11UpdateFlyToEv"
     },
     {
       "symbol": "@323",
       "address": "0x020bbf64",
       "size": "0x8",
       "binding": "STB_GLOBAL",
-      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent19func_ov004_020adc80Ev"
+      "evidence": "compiler temporary pointer-to-member descriptor; its first word relocates to _ZN3Ent9DrawFlyToEv"
     }
   ],
   "bss": [
@@ -1005,7 +1005,7 @@
       "address": "0x020beba8",
       "size": "0x40",
       "binding": "STB_GLOBAL",
-      "evidence": "sixteen-entry palette/int table filled by Ent::func_ov004_020adcc8 and dispatched to Mg_RenderSpriteOnNoMtx"
+      "evidence": "sixteen-entry palette/int table filled by Ent::DrawSparkle and dispatched to Mg_RenderSpriteOnNoMtx"
     },
     {
       "symbol": "sMgFxPool",
@@ -1665,7 +1665,7 @@
       "source": "0x020bbf4c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN3Ent19func_ov004_020adeb0Ev",
+      "symbol": "_ZN3Ent11UpdateDriftEv",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020adeb0"
@@ -1675,7 +1675,7 @@
       "source": "0x020bbf54",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN3Ent19func_ov004_020adcc8Ev",
+      "symbol": "_ZN3Ent11DrawSparkleEv",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020adcc8"
@@ -1685,7 +1685,7 @@
       "source": "0x020bbf5c",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN3Ent19func_ov004_020addccEv",
+      "symbol": "_ZN3Ent11UpdateFlyToEv",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020addcc"
@@ -1695,7 +1695,7 @@
       "source": "0x020bbf64",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN3Ent19func_ov004_020adc80Ev",
+      "symbol": "_ZN3Ent9DrawFlyToEv",
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020adc80"

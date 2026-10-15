@@ -42,9 +42,9 @@
 
 /* The 0x40 records at sMgFxPool are 0x20 bytes each. Mg_InitFx
    fills one: a Fix12 position, two optional vectors, a frame timer and a state.
-   State 0 (func_ov004_020adeb0 / func_ov004_020adcc8) adds mVecB into mVecA and
-   mVecA into mPos each frame; state 1 (func_ov004_020addcc /
-   func_ov004_020adc80) interpolates mPos between the two vectors as the timer
+   State 0 (UpdateDrift / DrawSparkle) adds mVecB into mVecA and
+   mVecA into mPos each frame; state 1 (UpdateFlyTo /
+   DrawFlyTo) interpolates mPos between the two vectors as the timer
    runs down. The class is not recovered, so the type stays a local view.
    The three s32 pairs stay raw offsets: declaring them as s32 members makes
    the struct 4-aligned, and the pool's .bss section goes from 2-byte to
@@ -56,10 +56,10 @@ struct Ent {
     s16 mState;                         /* 0x1e -- index into both PMF tables */
     Ent() {}
     ~Ent() {}
-    void func_ov004_020adc80();
-    void func_ov004_020adcc8();
-    void func_ov004_020addcc();
-    void func_ov004_020adeb0();
+    void DrawFlyTo();
+    void DrawSparkle();
+    void UpdateFlyTo();
+    void UpdateDrift();
 };
 
 typedef void (Ent::*EntPMF)();
@@ -70,8 +70,8 @@ extern "C" {
    through. Declaration order is the ROM's __sinit order. */
 dScMgBase_c::graphCallback_c sMgGraphCallback;
 Ent sMgFxPool[0x40];
-EntPMF sMgFxUpdateTable[2] = { &Ent::func_ov004_020adeb0, &Ent::func_ov004_020addcc };
-EntPMF sMgFxDrawTable[2] = { &Ent::func_ov004_020adcc8, &Ent::func_ov004_020adc80 };
+EntPMF sMgFxUpdateTable[2] = { &Ent::UpdateDrift, &Ent::UpdateFlyTo };
+EntPMF sMgFxDrawTable[2] = { &Ent::DrawSparkle, &Ent::DrawFlyTo };
 int data_ov004_020beba8[16];
 }
 
@@ -545,7 +545,7 @@ void *Ov004_LoadFileByPath(const char *path)
 }
 }
 
-// @symbol _ZN3Ent19func_ov004_020adc80Ev
+// @symbol _ZN3Ent9DrawFlyToEv
 namespace s20adc80 {
 extern "C" {
 extern int GetGameLanguage(void);
@@ -554,13 +554,13 @@ extern int Mg_RenderSpriteOnNoMtx(int,int,int,long long);
 }
 /* State 1's draw: word 2 of the current language's entry in
    sMgSpriteTables, at mPos >> 12. */
-void Ent::func_ov004_020adc80(){
+void Ent::DrawFlyTo(){
     int idx=s20adc80::GetGameLanguage();
     int *t=sMgSpriteTables[idx];
     s20adc80::Mg_RenderSpriteOnNoMtx(t[2], ((int*)this)[0]>>0xc, ((int*)this)[1]>>0xc, -1);
 }
 
-// @symbol _ZN3Ent19func_ov004_020adcc8Ev
+// @symbol _ZN3Ent11DrawSparkleEv
 namespace s20adcc8 {
 extern "C" {
 extern void Mg_RenderSpriteOnNoMtx(int a0,int a1,int a2,int a3,int a4);
@@ -573,7 +573,7 @@ extern int data_ov004_020beba8[];
    data_ov004_020beba8 from five words at data_ov004_020bea14 (bit 0 of
    data_ov004_020beb70 marks it built); the frame is picked by the low four
    bits of mTimer. */
-void Ent::func_ov004_020adcc8(){
+void Ent::DrawSparkle(){
   if((s20adcc8::data_ov004_020beb70 & 1) == 0){
     int* s = s20adcc8::data_ov004_020bea14;
     int* d = s20adcc8::data_ov004_020beba8;
@@ -600,7 +600,7 @@ extern "C" void Mg_DrawFx(Ent *c) {
 }
 }
 
-// @symbol _ZN3Ent19func_ov004_020addccEv
+// @symbol _ZN3Ent11UpdateFlyToEv
 namespace s20addcc {
 extern "C" {
 void Mg_GainCredits(void *c);
@@ -614,7 +614,7 @@ inline long long inline_fn(int arg0)
    the frame it reaches 0, then places mPos between the two vectors by the
    remaining fraction s = mTimer / mDuration: x = mVecA.x * s + mVecB.x * (1 - s),
    y = mVecB.y + s * s * (mVecA.y - mVecB.y), all Fix12. */
-void Ent::func_ov004_020addcc()
+void Ent::UpdateFlyTo()
 {
   char *r5 = (char *)this;
   using namespace s20addcc;
@@ -640,10 +640,10 @@ void Ent::func_ov004_020addcc()
   }
 }
 
-// @symbol _ZN3Ent19func_ov004_020adeb0Ev
+// @symbol _ZN3Ent11UpdateDriftEv
 /* State 0's update: counts mTimer down, passes mVecA to func_0203d630 with
    0xff8, then adds mVecB into mVecA and mVecA into mPos. */
-void Ent::func_ov004_020adeb0()
+void Ent::UpdateDrift()
 {
     char* c = (char*)this;
     ApproachLinear2(mTimer, 0, 1);
