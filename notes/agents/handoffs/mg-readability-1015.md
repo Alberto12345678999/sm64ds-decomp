@@ -11,7 +11,7 @@ plan to confirm it by playing under melonDS and the GDB stub.
 | Pass | Scope | State |
 |---|---|---|
 | 1 Names | every unnamed function, virtual, base field and global in ov004/ov005/ov006 | **done** |
-| 2 Shape | structural rewrites, each proven by object compare | **done** except the SharedState enum (needs pass 3) |
+| 2 Shape | structural rewrites, each proven by object compare | **done**; `MgSharedState` names carry confidence tags that pass 3 confirms |
 | 3 Review and runtime | top-to-bottom read; runtime confirmation of the medium/low names | **plan written, not run** |
 
 **Pass 1, as committed:**
@@ -65,7 +65,6 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
 ## Next steps
 
 1. **Pass 2 (shape), suggested order.** Each step is measured with `trykeep.py`, and anything that changes bytes goes into themes.md as a measured negative.
-   - A `SharedState` enum for `Mg_SetSharedState` arguments, once runtime-checks.md has named the states.
    - The handlers left on offsets (Teresa StepBoo, CountRubbedTiles, Boo_State7, Reveal_State1/4, ResetRound; Pachinko Fx_Spawn, Bg_State0/1/3, Bg_Start, Flyer_State0/2/3/4) measured different typed; retry only with a new spelling idea, one function at a time with `tryrepl.py`.
 2. **Pass 3.** Run runtime-checks.md in melonDS and fold the answers into names.md as renames. Then do the read-through for comment drift.
 
