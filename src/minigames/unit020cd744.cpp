@@ -2300,7 +2300,7 @@ extern "C" int TrmpLine_Create(s16* sl, s16* sb) {
 namespace s020d0fe4 {
 extern "C" extern int __cxa_vec_cleanup(void *dest, int a, int size, void (*func)(void));
 extern "C" {extern char data_ov006_02140990;}
-extern "C" extern void TrmpLine_Destroy(void);
+extern "C" extern void TrmpLine_Destroy(void);  /* local extern: only the two Trampoline scene headers declare it; this unit includes neither */
 
 // @symbol TrmpLine_CleanupAll
 extern "C" void TrmpLine_CleanupAll(void)
