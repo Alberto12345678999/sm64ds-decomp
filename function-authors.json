@@ -6243,99 +6243,99 @@
     },
     "arm9:0x0203c1e8": {
       "author": "ruspecial",
-      "name": "_ZN6Memory10DeallocateEPvP4Heap"
+      "name": "_ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE"
     },
     "arm9:0x0203c210": {
       "author": "tangosdev",
-      "name": "_ZN6Memory8AllocateEjiP4Heap"
+      "name": "_ZN6Memory8AllocateEjiPN5mHeap6Heap_tE"
     },
     "arm9:0x0203c24c": {
       "author": "tangosdev",
-      "name": "_ZN4Heap18InitializeGameHeapEjPS_"
+      "name": "_ZN5mHeap6Heap_t18InitializeGameHeapEjPS0_"
     },
     "arm9:0x0203c274": {
       "author": "ruspecial",
-      "name": "_ZN4Heap7_SizeofEPv"
+      "name": "_ZN5mHeap6Heap_t7_SizeofEPv"
     },
     "arm9:0x0203c280": {
       "author": "ruspecial",
-      "name": "_ZN4Heap11_DeallocateEPv"
+      "name": "_ZN5mHeap6Heap_t11_DeallocateEPv"
     },
     "arm9:0x0203c28c": {
       "author": "ruspecial",
-      "name": "_ZN4Heap8AllocateEj"
+      "name": "_ZN5mHeap6Heap_t8AllocateEj"
     },
     "arm9:0x0203c29c": {
       "author": "ruspecial",
-      "name": "_ZN4Heap9_AllocateEji"
+      "name": "_ZN5mHeap6Heap_t9_AllocateEji"
     },
     "arm9:0x0203c2a8": {
       "author": "tangosdev",
-      "name": "_ZN4Heap20RestoreFromTemporaryEv"
+      "name": "_ZN5mHeap6Heap_t20RestoreFromTemporaryEv"
     },
     "arm9:0x0203c2d8": {
       "author": "ruspecial",
-      "name": "_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i"
+      "name": "_ZN5mHeap6Heap_t28InitializeSolidHeapAsDefaultEjPS0_i"
     },
     "arm9:0x0203c2e4": {
       "author": "tangosdev",
-      "name": "_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i"
+      "name": "_ZN5mHeap6Heap_t23SetupSolidHeapAsDefaultEjPS0_i"
     },
     "arm9:0x0203c324": {
       "author": "tangosdev",
-      "name": "_ZN4Heap10SetDefaultEv"
+      "name": "_ZN5mHeap6Heap_t10SetDefaultEv"
     },
     "arm9:0x0203c33c": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap12VResizeToFitEv"
+      "name": "_ZN5mHeap11SolidHeap_t12VResizeToFitEv"
     },
     "arm9:0x0203c388": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeap12VResizeToFitEv"
+      "name": "_ZN5mHeap9ExpHeap_t12VResizeToFitEv"
     },
     "arm9:0x0203c390": {
       "author": "tangosdev",
-      "name": "_ZN4Heap11ResizeToFitEv"
+      "name": "_ZN5mHeap6Heap_t11ResizeToFitEv"
     },
     "arm9:0x0203c3d8": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap10VGetNodeIDEv"
+      "name": "_ZN5mHeap11SolidHeap_t10VGetNodeIDEv"
     },
     "arm9:0x0203c3e0": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap10VGetNodeIDEv"
+      "name": "_ZN5mHeap9ExpHeap_t10VGetNodeIDEv"
     },
     "arm9:0x0203c3f0": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap10VSetNodeIDEj"
+      "name": "_ZN5mHeap11SolidHeap_t10VSetNodeIDEj"
     },
     "arm9:0x0203c3f8": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap10VSetNodeIDEj"
+      "name": "_ZN5mHeap9ExpHeap_t10VSetNodeIDEj"
     },
     "arm9:0x0203c408": {
       "author": "tangosdev",
-      "name": "_ZN4Heap9SetNodeIDEj"
+      "name": "_ZN5mHeap6Heap_t9SetNodeIDEj"
     },
     "arm9:0x0203c428": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap7VSizeofEPv"
+      "name": "_ZN5mHeap11SolidHeap_t7VSizeofEPv"
     },
     "arm9:0x0203c444": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap7VSizeofEPv"
+      "name": "_ZN5mHeap9ExpHeap_t7VSizeofEPv"
     },
     "arm9:0x0203c454": {
       "author": "tangosdev",
-      "name": "_ZN4Heap6SizeofEPv"
+      "name": "_ZN5mHeap6Heap_t6SizeofEPv"
     },
     "arm9:0x0203c49c": {
       "author": "ruspecial",
-      "name": "_ZN9SolidHeap14VDeallocateAllEv"
+      "name": "_ZN5mHeap11SolidHeap_t14VDeallocateAllEv"
     },
     "arm9:0x0203c4b0": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap14VDeallocateAllEv"
+      "name": "_ZN5mHeap9ExpHeap_t14VDeallocateAllEv"
     },
     "arm9:0x0203c4cc": {
       "author": "ruspecial",
@@ -6343,167 +6343,167 @@
     },
     "arm9:0x0203c4e4": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap11VDeallocateEPv"
+      "name": "_ZN5mHeap11SolidHeap_t11VDeallocateEPv"
     },
     "arm9:0x0203c50c": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeap11VDeallocateEPv"
+      "name": "_ZN5mHeap9ExpHeap_t11VDeallocateEPv"
     },
     "arm9:0x0203c538": {
       "author": "tangosdev",
-      "name": "_ZN4Heap10DeallocateEPv"
+      "name": "_ZN5mHeap6Heap_t10DeallocateEPv"
     },
     "arm9:0x0203c558": {
       "author": "ruspecial",
-      "name": "_ZN9SolidHeap11VReallocateEPvj"
+      "name": "_ZN5mHeap11SolidHeap_t11VReallocateEPvj"
     },
     "arm9:0x0203c568": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap11VReallocateEPvj"
+      "name": "_ZN5mHeap9ExpHeap_t11VReallocateEPvj"
     },
     "arm9:0x0203c578": {
       "author": "tangosdev",
-      "name": "_ZN4Heap10ReallocateEPvj"
+      "name": "_ZN5mHeap6Heap_t10ReallocateEPvj"
     },
     "arm9:0x0203c598": {
       "author": "ruspecial",
-      "name": "_ZN9SolidHeap11VMemoryLeftEv"
+      "name": "_ZN5mHeap11SolidHeap_t11VMemoryLeftEv"
     },
     "arm9:0x0203c5ac": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap11VMemoryLeftEv"
+      "name": "_ZN5mHeap9ExpHeap_t11VMemoryLeftEv"
     },
     "arm9:0x0203c5bc": {
       "author": "ruspecial",
-      "name": "_ZN9SolidHeap19VMaxAllocatableSizeEv"
+      "name": "_ZN5mHeap11SolidHeap_t19VMaxAllocatableSizeEv"
     },
     "arm9:0x0203c5d0": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap19VMaxAllocatableSizeEv"
+      "name": "_ZN5mHeap9ExpHeap_t19VMaxAllocatableSizeEv"
     },
     "arm9:0x0203c5e4": {
       "author": "ruspecial",
-      "name": "_ZN9SolidHeap22VMaxAllocationUnitSizeEv"
+      "name": "_ZN5mHeap11SolidHeap_t22VMaxAllocationUnitSizeEv"
     },
     "arm9:0x0203c5f8": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap22VMaxAllocationUnitSizeEv"
+      "name": "_ZN5mHeap9ExpHeap_t22VMaxAllocationUnitSizeEv"
     },
     "arm9:0x0203c60c": {
       "author": "tangosdev",
-      "name": "_ZN4Heap21MaxAllocationUnitSizeEv"
+      "name": "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv"
     },
     "arm9:0x0203c62c": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap7VRescueEv"
+      "name": "_ZN5mHeap11SolidHeap_t7VRescueEv"
     },
     "arm9:0x0203c630": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeap7VRescueEv"
+      "name": "_ZN5mHeap9ExpHeap_t7VRescueEv"
     },
     "arm9:0x0203c634": {
       "author": "tangosdev",
-      "name": "_ZN4Heap6RescueEv"
+      "name": "_ZN5mHeap6Heap_t6RescueEv"
     },
     "arm9:0x0203c654": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap7VIntactEv"
+      "name": "_ZN5mHeap11SolidHeap_t7VIntactEv"
     },
     "arm9:0x0203c65c": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeap7VIntactEv"
+      "name": "_ZN5mHeap9ExpHeap_t7VIntactEv"
     },
     "arm9:0x0203c664": {
       "author": "tangosdev",
-      "name": "_ZN4Heap6IntactEv"
+      "name": "_ZN5mHeap6Heap_t6IntactEv"
     },
     "arm9:0x0203c6ac": {
       "author": "ruspecial",
-      "name": "_ZN9SolidHeap9VAllocateEji"
+      "name": "_ZN5mHeap11SolidHeap_t9VAllocateEji"
     },
     "arm9:0x0203c6bc": {
       "author": "ruspecial",
-      "name": "_ZN13ExpandingHeap9VAllocateEji"
+      "name": "_ZN5mHeap9ExpHeap_t9VAllocateEji"
     },
     "arm9:0x0203c6cc": {
       "author": "tangosdev",
-      "name": "_ZN4Heap8AllocateEji"
+      "name": "_ZN5mHeap6Heap_t8AllocateEji"
     },
     "arm9:0x0203c70c": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeap8VDestroyEv"
+      "name": "_ZN5mHeap11SolidHeap_t8VDestroyEv"
     },
     "arm9:0x0203c72c": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeap8VDestroyEv"
+      "name": "_ZN5mHeap9ExpHeap_t8VDestroyEv"
     },
     "arm9:0x0203c74c": {
       "author": "ruspecial",
-      "name": "_ZN4Heap8_DestroyEv"
+      "name": "_ZN5mHeap6Heap_t8_DestroyEv"
     },
     "arm9:0x0203c758": {
       "author": "tangosdev",
-      "name": "_ZN4Heap7DestroyEv"
+      "name": "_ZN5mHeap6Heap_t7DestroyEv"
     },
     "arm9:0x0203c7a0": {
       "author": "tangosdev",
-      "name": "_ZN4Heap15CreateSolidHeapEjPS_i"
+      "name": "_ZN5mHeap6Heap_t15CreateSolidHeapEjPS0_i"
     },
     "arm9:0x0203c844": {
       "author": "tangosdev",
-      "name": "_ZN4Heap19CreateExpandingHeapEjPS_i"
+      "name": "_ZN5mHeap6Heap_t19CreateExpandingHeapEjPS0_i"
     },
     "arm9:0x0203c8e8": {
       "author": "tangosdev",
-      "name": "_ZN4Heap14CreateRootHeapEPvj"
+      "name": "_ZN5mHeap6Heap_t14CreateRootHeapEPvj"
     },
     "arm9:0x0203c970": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeapD0Ev"
+      "name": "_ZN5mHeap11SolidHeap_tD0Ev"
     },
     "arm9:0x0203c99c": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeapD1Ev"
+      "name": "_ZN5mHeap11SolidHeap_tD1Ev"
     },
     "arm9:0x0203c9c0": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeapD0Ev"
+      "name": "_ZN5mHeap9ExpHeap_tD0Ev"
     },
     "arm9:0x0203c9ec": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeapD1Ev"
+      "name": "_ZN5mHeap9ExpHeap_tD1Ev"
     },
     "arm9:0x0203ca10": {
       "author": "tangosdev",
-      "name": "_ZN4HeapD2Ev"
+      "name": "_ZN5mHeap6Heap_tD2Ev"
     },
     "arm9:0x0203ca20": {
       "author": "tangosdev",
-      "name": "_ZN4HeapD0Ev"
+      "name": "_ZN5mHeap6Heap_tD0Ev"
     },
     "arm9:0x0203ca44": {
       "author": "tangosdev",
-      "name": "_ZN4HeapD1Ev"
+      "name": "_ZN5mHeap6Heap_tD1Ev"
     },
     "arm9:0x0203ca54": {
       "author": "tangosdev",
-      "name": "_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator"
+      "name": "_ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator"
     },
     "arm9:0x0203ca80": {
       "author": "tangosdev",
-      "name": "_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator"
+      "name": "_ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator"
     },
     "arm9:0x0203caac": {
       "author": "andrewboudreau",
-      "name": "_ZN4HeapC2EPvjPS_"
+      "name": "_ZN5mHeap6Heap_tC2EPvjPS0_"
     },
     "arm9:0x0203cae8": {
       "author": "ruspecial",
-      "name": "_ZN4Heap18InitializeRootHeapEv"
+      "name": "_ZN5mHeap6Heap_t18InitializeRootHeapEv"
     },
     "arm9:0x0203cb04": {
       "author": "tangosdev",
-      "name": "_ZN4Heap13SetupRootHeapEv"
+      "name": "_ZN5mHeap6Heap_t13SetupRootHeapEv"
     },
     "arm9:0x0203cbc0": {
       "author": "ruspecial",
@@ -8063,7 +8063,7 @@
     },
     "arm9:0x0204e3c0": {
       "author": "tangosdev",
-      "name": "_ZN4Heap28CreateExpandingHeapAllocatorEPvjj"
+      "name": "_ZN5mHeap6Heap_t28CreateExpandingHeapAllocatorEPvjj"
     },
     "arm9:0x0204e40c": {
       "author": "andrewboudreau",
@@ -8135,7 +8135,7 @@
     },
     "arm9:0x0204ebc4": {
       "author": "tangosdev",
-      "name": "_ZN4Heap24CreateSolidHeapAllocatorEPvjj"
+      "name": "_ZN5mHeap6Heap_t24CreateSolidHeapAllocatorEPvjj"
     },
     "arm9:0x0204ec10": {
       "author": "tangosdev",

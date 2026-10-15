@@ -140,7 +140,7 @@ struct daGmch_c : dActor_c {
     void CheckPlayerContact();       /* 0x02126758 */
     /* void* (EPv) is a reconstruction choice; the original parameter type
        and pointer/reference spelling are not recovered from the body. */
-    int  ApplySlopeToVertSpeed(void *clsn); /* 0x02126950 */
+    void ApplySlopeToVertSpeed(void *clsn); /* 0x02126950 */
     void UpdateDrawMatrices();       /* 0x02126a20 */
 
     int Behavior();

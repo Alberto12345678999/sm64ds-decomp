@@ -43,7 +43,7 @@ extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD0Ev(dCapEnemy_c *self)
     _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
     _ZN5ModelD1Ev(&self->mModel);
     _ZN12dEnemyBase_cD2Ev(self);
-    _ZN6Memory10DeallocateEPvP4Heap(self, data_020a0eac);
+    _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(self, data_020a0eac);
     return self;
 }
 

@@ -8,11 +8,11 @@
  * overlays(62,65) and overlays(6,100)), and the names dsd invents for them
  * (data_ov062_0211d9c0, data_ov006_02140d80) are `ambiguous` placeholders.
  * local extern: linker-defined symbols; no header declares them. */
-extern void *_ZN4Heap14CreateRootHeapEPvj(void *start, unsigned int size);
+extern void *_ZN5mHeap6Heap_t14CreateRootHeapEPvj(void *start, unsigned int size);
 extern char OV075_BSS_END;
 extern char OV100_TEXT_START;
 extern void *data_0209d524;
 
 void func_0201a458(void) {
-    data_0209d524 = _ZN4Heap14CreateRootHeapEPvj(&OV075_BSS_END, (unsigned int)(&OV100_TEXT_START - &OV075_BSS_END));
+    data_0209d524 = _ZN5mHeap6Heap_t14CreateRootHeapEPvj(&OV075_BSS_END, (unsigned int)(&OV100_TEXT_START - &OV075_BSS_END));
 }
