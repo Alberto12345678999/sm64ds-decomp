@@ -64,7 +64,8 @@ screenshots, over two games of Wanted! (Luigi):
 - Snowball (Wario's page, menu row 6): banner 0xc is the red "START". At time up the game calls `Mg_SetNextBanner(0xe)` and then enters state 3: banner 0xe is "TIME IS UP" over PLAY AGAIN / QUIT. `IsAltVariant` is polled at start.
 - The flower game "loves me, loves me not" (Yoshi's page, menu row 7): banners 0x10 and 0x13 alternate per petal and are "LOVES ME" (red) and "LOVES ME NOT" (purple). It ends in state 0xc, which shows PLAY AGAIN / QUIT side by side (banners 0 and 2 at x 0x40 and 0xc0) under the result. That state is now named `MG_STATE_RETRY_PROMPT_WIDE`; it was `CONTINUE_PROMPT`.
 - The stub accepts one client per melonDS launch. A second attach after `D` timed out and left the game halted. Restart melonDS (and re-enable `[Instance0.Gdb]`, which melonDS can rewrite to false) before reattaching.
-- State 1, explained: Luigi enters it only when `mLevel % 5 == 4`, so after every fifth level, and otherwise restarts the round directly. A four-level game never entered it. On screen it is the fade into level 6, with the poster halves split aside. `MG_STATE_NEXT_ROUND` is confirmed.
+- State 1, explained: Luigi enters it only when `mLevel % 5 == 4`, so after every fifth level, and otherwise restarts the round directly. A four-level game never entered it. On screen it is the fade into level 6, with the poster halves split aside. `MG_STATE_NEXT_ROUND` is confirmed. A nine-level game showed it exactly once, between level 5's and level 6's banners.
+- PLAY AGAIN after game over calls `Mg_CallStartRound` with 0x12, the finished state's number. Retry also goes through `StartRound(state)`.
 
 ## Recording the answer
 

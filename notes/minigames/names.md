@@ -36,7 +36,7 @@ which declares no virtual, so a slot number means nothing between them.
 
 | Slot | Old name | New name | Confidence | Evidence |
 |---|---|---|---|---|
-| 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | medium | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
+| 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | high (seen) | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
 | 20 | `Virtual50` | `OnNewRecord` | medium | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
 | 21 | `OnGroundPounded` | `OnDealDone` | medium | Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
