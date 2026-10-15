@@ -25,8 +25,11 @@
 // - The func_ and data_ helpers are unnamed in symbols.txt.
 // - The effects (mFx, 0x5958), the flyer (mFlyer, 0x5bb0), the targets
 //   (mTarget, 0x5bcc) and the background scroller (mBg, 0x5bfc) are typed
-//   in the header. PachinkoFlyer_Draw, PachinkoFx_DrawAll and
-//   PachinkoTarget_ShowAll/HideAll read them by field; the other handlers
+//   in the header. PachinkoFlyer_Draw, PachinkoFx_DrawAll, PachinkoBg_Stop,
+//   PachinkoTarget_ShowAll/HideAll/DrawAll and the target count read them by
+//   field (PachinkoFx_Spawn's typed forms change code). The flyer and
+//   background handlers take an index into a one-element record, so they
+//   stay on offsets; the other handlers
 //   keep the offset forms their launder macros and saved row cursors tune,
 //   and convert one function at a time. 0x5418..0x5958 is still unexplained
 //   padding. The pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset
@@ -548,23 +551,21 @@ void PachinkoBg_Start(char *raw){
 void PachinkoBg_Stop(char *raw)
 {
     data_0209d45c &= ~4;
-    *(unsigned char *)(raw + 0x5c0e) = 0;
+    PACHINKO(raw)->mBg.active = 0;
 }
 
 // @symbol PachinkoTarget_DrawAll
 void PachinkoTarget_DrawAll(char *raw)
 {
     int i;
-    char *row = raw;
     for (i = 0; i < 4; i++) {
-        if (*(unsigned char *)(row + 0x5000 + 0xbd5) != 0) {
+        if (PACHINKO(raw)->mTarget[i].visible != 0) {
             Mg_RenderSpriteBoth(
-                (void *)data_ov006_02136e0c[*(unsigned char *)(row + 0x5000 + 0xbd6)],
-                *(int *)(row + 0x5000 + 0xbcc) >> 0xc,
-                *(int *)(row + 0x5000 + 0xbd0) >> 0xc,
+                (void *)data_ov006_02136e0c[PACHINKO(raw)->mTarget[i].sprite],
+                PACHINKO(raw)->mTarget[i].x >> 0xc,
+                PACHINKO(raw)->mTarget[i].y >> 0xc,
                 -1, 1);
         }
-        row += 0xc;
     }
 }
 
@@ -577,7 +578,7 @@ void PachinkoTarget_ShowAll(u8 *raw)
         PACHINKO(raw)->mTarget[i].visible = 1;
         PACHINKO(raw)->mTarget[i].x = data_ov006_0212eb70[i] << 12;
         PACHINKO(raw)->mTarget[i].y = 0xa0000;
-        PACHINKO(raw)->mTarget[i].unk_0a = 0;
+        PACHINKO(raw)->mTarget[i].sprite = 0;
     }
 }
 
@@ -812,13 +813,12 @@ void PachinkoTarget_Choose(char *raw)
   rand = (((unsigned int) RandomIntInternal(&data_0209d4b8)) >> 16) & 0x7fff;
   *((short *) ((raw + 0x5b00) + 0xc4)) = (short) ((((rand << 5) >> 15) << 3) + 0x200);
   targets = 0;
-  for (i = 0, target = raw; i < 4; i++)
+  for (i = 0; i < 4; i++)
   {
-    if ((*((unsigned char *) ((target + 0x5000) + 0xbd4))) != 0)
+    if (PACHINKO(raw)->mTarget[i].active != 0)
     {
       targets++;
     }
-    target += 0xc;
   }
 
   if (targets == 1)

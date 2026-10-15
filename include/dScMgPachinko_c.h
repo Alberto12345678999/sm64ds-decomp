@@ -159,7 +159,7 @@ struct dScMgPachinko_target {
     s32 y;          /* 0x04 -- 20.12 */
     u8  active;     /* 0x08 */
     u8  visible;    /* 0x09 */
-    u8  unk_0a;     /* 0x0a */
+    u8  sprite;     /* 0x0a -- index into the target sprite table */
     u8  pad0b;
 };
 
