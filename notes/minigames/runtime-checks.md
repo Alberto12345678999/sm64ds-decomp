@@ -45,7 +45,7 @@ one is meaningless while the other is loaded.
 | Wiggler draw passes A and B | `Wiggler_DrawPassA` 0x020ea914, `Wiggler_DrawPassB` 0x020eac38 | which runs for which part | **Done:** A is the reference wiggler on the top screen, B the three on the bottom screen. |
 | Trampoline2 item kinds 0..8 | `TrmpItem_SetMotion0..8` (0x020cdf20 is kind 0) | hit and kind | **Done:** all nine kinds were forced and tracked (see below). |
 | Pachinko's flyer, background scroller and hit bursts | `PachinkoFlyer_State0`, `PachinkoBg_Start`, `PachinkoFx_Spawn` (see ov006 symbols.txt) | hit timing | **Done:** the background is the airship that drops the Para-Bombs. |
-| Teresa's exclaim, found mark, rising icon and reveal sprites | `dScMgTeresa_c::Exclaim_Spawn`, `FoundMark_Spawn`, `RisingIcon_Spawn`, `Reveal_State0` (see ov006 symbols.txt) | hit timing | **Order seen:** exclaim, rising icon, found mark, then CLEAR (see below). |
+| Teresa's exclaim, found mark, rising icon and reveal sprites | `dScMgTeresa_c::Exclaim_Spawn`, `FoundMark_Spawn`, `RisingIcon_Spawn`, `Reveal_State0` (see ov006 symbols.txt) | hit timing | **Seen, by timing:** the exclaim is a red "!" over the Boo and the rising icon a yellow "1". The found mark is not the star that counts finds; its look is still unidentified (see below). |
 | The graph-callback hooks (slots 22-25) | `dScMgBase_c::OnGraphCallback0..3`, or the arm9 dispatchers `func_02019390` / `func_02019404` / `func_02019144` / `func_02019100` | call order within a frame | **Done:** 0, the scene update, 1, then 2 and 3 in the VBlank IRQ (see below). |
 
 ## Observed so far (melonDS 1.1, EU ROM, 2026-10-15)
@@ -118,7 +118,12 @@ through the watcher's command queue.
   - **A find:** `Exclaim_Spawn` (r1 0, r2 1, lr 0x0211ea20), then `RisingIcon_Spawn` (lr 0x0211e100), then `FoundMark_Spawn` (lr 0x0211f090). Then `Mg_SetSharedState(0, 1)` (r1 is the score), banner 3 "CLEAR" at (0x80, −0x80) and jingle 4.
   - **Next level:** `StartRound(0)`, banner 0xd "LEVEL 2", `Reveal_State0` and START again. Level 2 has two Boos flying, and a star at the top right counts finds.
   - **A missed clock:** banner 8 from Teresa itself (lr 0x0211fe50), state 0x12 (GAME OVER, jingle 3), banner 7, then `dScMgTeresa_c::OnNewRecord` (lr 0x020b6e88), and banner 5, the rainbow "HIGH SCORE", across the top screen (y −0x80), with jingle 1.
-  - The three sprites' looks were not captured, only their order.
+  - **The sprites, from a screenshot burst on a second find.** The gaps are wall-clock times, slowed by the breakpoints.
+    - `Exclaim_Spawn` fired as a red "!" appeared over the Boo on the dark bottom screen.
+    - `RisingIcon_Spawn` came 1.6 s later, as a yellow "1", the find count, took the "!"'s place over the Boo. The room then lit up, the Boo faded to sparkles, and Luigi pointed on the top screen.
+    - `FoundMark_Spawn` came 3.3 s after that, 0.5 s before CLEAR. A small yellow star then appeared at the right edge of the top screen and stayed through the record table. A play with no find has no star, so the star counts finds.
+    - **The star is not the found mark.** With a `bx lr` written over `FoundMark_Spawn`'s first word, a find still showed the star, the bottom-screen sparkles and CLEAR. The word was then restored to the ROM's `00402de9`. What the found mark draws is still unidentified.
+    - The "!" and the "1" are matched to their calls by timing only.
 - **Pachinko's background** is the airship. `PachinkoBg_*` scrolls main-engine BG1 (0x04000018), and `PachinkoDeco_ShowAll`/`HideAll` bracket each pass:
   - It starts at x 0x100, y 0x40. State 1 moves it left and up to y 0, and state 2 carries it on left to x ≤ −0x90.
   - State 3 drops it to y ≥ 0x40, hides it, and waits 0x258 frames (10 s) before the next pass.
@@ -157,6 +162,7 @@ through the watcher's command queue.
   - **With the purse empty,** losing the round sends `State05_Update` to `dMgState_c::UpdateGameOverToMenu`: banner 8 and jingle 3, then straight back to the menu with no record table.
   - **The NEW! badge:** the card had it before this one play and not after.
 - **MCarlo2** (`dScMgMCarlo2_c`, Luigi's page 2, left card, row 0x19) keeps the base `OnDealDone` and stakes nothing; its card shows no coin count. Luigi deals a 5 × 4 grid face up. Tapping two adjacent matching faces removes them, and the deck refills the gaps; the counter at the top right counts the cards taken (2 after one pair).
+  - **The end:** a brute-force tap sweep played it to 110. Then came `Mg_SetSharedState(0x12)` (lr 0x020fa364), banner 8 "GAME OVER" and jingle 3. After it, banner 7, the base `dScMgBase_c::OnNewRecord` (no override), banner 5 and jingle 1 over the record table, and PLAY AGAIN / QUIT. The card then showed 110.
 
 ## Recording the answer
 

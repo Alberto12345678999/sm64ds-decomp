@@ -318,7 +318,7 @@ Descriptive names, high confidence:
 - **The clock:** `StartCountdown` (3 seconds, or 2 from level 15), `UpdateCountdown`, `DrawCountdown`.
 - **Round flow:** `CheckRoundEnd`, `CheckRevealDone`, `ResetRound`.
 
-Medium confidence: the three popup pools above found Boos, whose looks are not observed. Their order on a find is seen: `Exclaim_Spawn`, then `RisingIcon_Spawn`, then `FoundMark_Spawn`, then state 0 (runtime-checks.md).
+Medium confidence: the three popup pools above found Boos. Their order on a find is seen: `Exclaim_Spawn`, then `RisingIcon_Spawn`, then `FoundMark_Spawn`, then state 0 (runtime-checks.md). By timing, the exclaim is a red "!" over the Boo and the rising icon a yellow "1". The found mark is not the star that counts finds, since stubbing its spawn left the star, and its look is still unknown.
 - `RisingIcon_*` (+0x4a60): a delayed icon that rises, with sound 0x1bc.
 - `FoundMark_*` (+0x4960).
 - `Exclaim_*` (+0x48a0): spawned by the rub test, 0x18 px above the Boo.
@@ -544,7 +544,7 @@ compare (all 45 TUs identical).
   - **high:** `mX`/`mY`, `mHeading` (indexes the sine table; its sign picks `mAnim`), `mFrame`/`mAnimTimer`, `mFade` (nonzero draws semi-transparent), `mVisible`, `mPriority` (passed as the OAM priority), `mState`.
   - **medium:** `mSpeed` (0xc00 adjusted by `mKind`), `mInPlay`, `mKind`, `mFound` (set by the touch test), `mFoundOrder`.
   - **unknown:** `unk_12`, `unk_19`, `unk_21`.
-- **`mExclaims`, `mFoundMarks`, `mRisingIcons`** (16 each): **medium**. The record names come from their Spawn/Update/Draw functions. What each sprite looks like on screen is not observed.
+- **`mExclaims`, `mFoundMarks`, `mRisingIcons`** (16 each): **medium**. The record names come from their Spawn/Update/Draw functions. Seen by timing: the exclaim is a red "!" and the rising icon a yellow "1". The found mark's look is unidentified.
 - **`mReveal[1]`, `mMarker`** (0x4ba0, 0x4bc0):
   - **medium:** the field mechanics, including the bounce `phase` and `angle` (the `OAM::Render` rotation).
   - **low:** the one-element array. It is inferred from handlers that take an index while the dispatcher passes 0.
