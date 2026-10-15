@@ -142,7 +142,7 @@ struct dScMgPachinko_flyer {
     s32 x;          /* 0x00 -- 20.12 */
     s32 y;          /* 0x04 -- 20.12 */
     s32 vx;         /* 0x08 -- 20.12 */
-    s32 unk_0c;     /* 0x0c */
+    s32 vy;         /* 0x0c -- 20.12; Flyer_State0 seeds 0x2000, State1 adds it to y */
     s32 sound;      /* 0x10 -- looping sound handle */
     u16 delay;      /* 0x14 */
     u8  active;     /* 0x16 */
@@ -198,11 +198,15 @@ struct dScMgPachinko_c : dScMgBase_c {
     dScMgPachinko_shot mShot[24];    /* 0x4ed8, stride 0x38; 24 puts the
                                         siblings' own 0x5418 field exactly
                                         one record past the end */
+    /* 0x5418..0x5958: no reconstructed function reads or writes it. */
     u8  pad_5418[0x540];
     dScMgPachinko_fx     mFx[30];     /* 0x5958 */
-    dScMgPachinko_flyer  mFlyer;      /* 0x5bb0 */
+    /* mFlyer and mBg are one-element arrays: their state handlers take an
+       index and step it (i * 0x1c, i * 0x14) the way the array handlers do,
+       and both dispatchers pass 0. [inference from codegen] */
+    dScMgPachinko_flyer  mFlyer[1];   /* 0x5bb0 */
     dScMgPachinko_target mTarget[4];  /* 0x5bcc */
-    dScMgPachinko_bg     mBg;         /* 0x5bfc */
+    dScMgPachinko_bg     mBg[1];      /* 0x5bfc */
     s32 unk_5c10;            /* 0x5c10 */
     u8  pad_5c14[0x4];
     u16 unk_5c18;            /* 0x5c18 */

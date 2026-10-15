@@ -27,12 +27,14 @@
 //   (mTarget, 0x5bcc) and the background scroller (mBg, 0x5bfc) are typed
 //   in the header. PachinkoFlyer_Draw, PachinkoFx_DrawAll, PachinkoBg_Stop,
 //   PachinkoTarget_ShowAll/HideAll/DrawAll and the target count read them by
-//   field (PachinkoFx_Spawn's typed forms change code). The flyer and
-//   background handlers take an index into a one-element record, so they
-//   stay on offsets; the other handlers
+//   field (PachinkoFx_Spawn's typed forms change code). mFlyer and mBg are
+//   one-element arrays because their handlers take an index; PachinkoBg_State2
+//   and PachinkoFlyer_CheckHits' head use them, while Bg_State0/1/3,
+//   Bg_Start and Flyer_State0/2/3/4 measured different typed and stay on
+//   offsets; the other handlers
 //   keep the offset forms their launder macros and saved row cursors tune,
-//   and convert one function at a time. 0x5418..0x5958 is still unexplained
-//   padding. The pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset
+//   and convert one function at a time. 0x5418..0x5958 is never
+//   accessed by this class's code, so it stays padding. The pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset
 //   macros take a pre-scaled offset rather than an index.
 // - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
 //   is one word different, so the multiply forms stay; the r5 cursor locals
@@ -433,8 +435,8 @@ void PachinkoBg_State3(char *raw, int i)
 // @symbol PachinkoBg_State2
 void PachinkoBg_State2(char* raw, int i)
 {
-    int* vel = (int*)(raw + 0x5c04 + i * 0x14);
-    int* pos = (int*)(raw + 0x5bfc + i * 0x14);
+    int* vel = &PACHINKO(raw)->mBg[i].vx;
+    int* pos = &PACHINKO(raw)->mBg[i].x;
     int x;
 
     *pos = *pos + *vel;
@@ -444,12 +446,12 @@ void PachinkoBg_State2(char* raw, int i)
     }
 
     x = *pos >> 12;
-    SetBg2Offset(x, *(int*)(raw + i * 0x14 + 0x5c00) >> 12);
+    SetBg2Offset(x, PACHINKO(raw)->mBg[i].y >> 12);
 
     if (x > -0x90) return;
 
-    *(int*)(raw + i * 0x14 + 0x5c08) = 0x800;
-    *(unsigned char*)(raw + i * 0x14 + 0x5c0f) = 3;
+    PACHINKO(raw)->mBg[i].vy = 0x800;
+    PACHINKO(raw)->mBg[i].state = 3;
 }
 
 // @symbol PachinkoBg_State1
@@ -551,7 +553,7 @@ void PachinkoBg_Start(char *raw){
 void PachinkoBg_Stop(char *raw)
 {
     data_0209d45c &= ~4;
-    PACHINKO(raw)->mBg.active = 0;
+    PACHINKO(raw)->mBg[0].active = 0;
 }
 
 // @symbol PachinkoTarget_DrawAll
@@ -594,10 +596,10 @@ void PachinkoTarget_HideAll(char *raw)
 
 // @symbol PachinkoFlyer_Draw
 void PachinkoFlyer_Draw(char* raw){
-  if (PACHINKO(raw)->mFlyer.visible == 0) return;
-  int x = PACHINKO(raw)->mFlyer.x;
-  int y = PACHINKO(raw)->mFlyer.y;
-  Mg_RenderSpriteBoth((void *)data_ov006_021375f4[PACHINKO(raw)->mFlyer.facing],
+  if (PACHINKO(raw)->mFlyer[0].visible == 0) return;
+  int x = PACHINKO(raw)->mFlyer[0].x;
+  int y = PACHINKO(raw)->mFlyer[0].y;
+  Mg_RenderSpriteBoth((void *)data_ov006_021375f4[PACHINKO(raw)->mFlyer[0].facing],
     x>>0xc, y>>0xc, -1, -1);
 }
 
@@ -615,7 +617,7 @@ void PachinkoFlyer_CheckHits(char *raw, int idx)
     u8 state;
     int n;
 
-    if (*(u8 *)(raw + idx * 0x1c + 0x5bc8) == 0)
+    if (PACHINKO(raw)->mFlyer[idx].state == 0)
         return;
 
     shot = raw;
@@ -624,11 +626,13 @@ void PachinkoFlyer_CheckHits(char *raw, int idx)
             continue;
         if (SHOT(shot)->state < 2)
             continue;
-        dx = (*(int *)(raw + idx * 0x1c + 0x5bb0) - SHOT(shot)->x) >> 12;
-        dy = (*(int *)(raw + idx * 0x1c + 0x5bb4) - SHOT(shot)->y) >> 12;
+        dx = (PACHINKO(raw)->mFlyer[idx].x - SHOT(shot)->x) >> 12;
+        dy = (PACHINKO(raw)->mFlyer[idx].y - SHOT(shot)->y) >> 12;
         if (cstd::sqrt(dx * dx + dy * dy) > 0x18)
             continue;
 
+        /* The tail re-derives the flyer through n: spelling these as
+           mFlyer[idx] changes the code. */
         n = idx * 0x1c;
         PACHINKO(raw)->unk_5c2a = 0x20;
         SHOT(raw + i * 0x38)->active = 0;
