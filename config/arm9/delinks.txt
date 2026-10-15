@@ -2594,55 +2594,8 @@ src/Matrix4x3_ApplyInPlaceToTranslation.c:
 
 src/engine/heap/Heap.cpp:
     complete
-    .text start:0x0203c1b4 end:0x0203c970
-
-src/_ZN5mHeap11SolidHeap_tD0Ev.cpp:
-    complete
-    .text start:0x0203c970 end:0x0203c99c
-
-src/_ZN5mHeap11SolidHeap_tD1Ev.cpp:
-    complete
-    .text start:0x0203c99c end:0x0203c9c0
-
-src/_ZN5mHeap9ExpHeap_tD0Ev.cpp:
-    complete
-    .text start:0x0203c9c0 end:0x0203c9ec
-
-src/_ZN5mHeap9ExpHeap_tD1Ev.cpp:
-    complete
-    .text start:0x0203c9ec end:0x0203ca10
-
-src/_ZN5mHeap6Heap_tD2Ev.cpp:
-    complete
-    .text start:0x0203ca10 end:0x0203ca20
-
-src/_ZN5mHeap6Heap_tD0Ev.cpp:
-    complete
-    .text start:0x0203ca20 end:0x0203ca44
-
-src/_ZN5mHeap6Heap_tD1Ev.cpp:
-    complete
-    .text start:0x0203ca44 end:0x0203ca54
-
-src/_ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator.cpp:
-    complete
-    .text start:0x0203ca54 end:0x0203ca80
-
-src/_ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator.cpp:
-    complete
-    .text start:0x0203ca80 end:0x0203caac
-
-src/_ZN5mHeap6Heap_tC2EPvjPS0_.cpp:
-    complete
-    .text start:0x0203caac end:0x0203cae8
-
-src/_ZN5mHeap6Heap_t18InitializeRootHeapEv.cpp:
-    complete
-    .text start:0x0203cae8 end:0x0203cb04
-
-src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp:
-    complete
-    .text start:0x0203cb04 end:0x0203cbc0
+    .text start:0x0203c1b4 end:0x0203cbc0
+    .data start:0x02099d28 end:0x02099e18
 
 src/func_0203cbc0.c:
     complete

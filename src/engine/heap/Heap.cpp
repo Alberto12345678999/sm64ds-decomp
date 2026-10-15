@@ -1,25 +1,45 @@
 //cpp
 /* Heap -- abstract base of the ROM's mHeap::Heap_t family (RTTI at
    0x02099ce4 spells the cartridge name; SolidHeap and ExpandingHeap derive
-   from it). TU claims 0x0203c1b4..0x0203c970. Memory's five wrappers sit at the low end; the class's own contiguous run
-   in delinks order: the game-heap bootstrap, the four tail-call veneers, the
-   scratch-heap push/pop pair and the default-heap setter; then the dispatch
-   run, where each public Heap forwarder follows the SolidHeap and
-   ExpandingHeap overrides of the slot it calls (ResizeToFit through Destroy);
-   then the three factories, CreateSolidHeap, CreateExpandingHeap and
-   CreateRootHeap. Written back-to-front: mwccarm emits .text in reverse
-   source order under default deferred codegen.
+   from it). TU claims .text 0x0203c1b4..0x0203cbc0, and .data
+   0x02099d28..0x02099e18 -- SolidHeap_t's type-name string and the three
+   vtables; the rest of the family's type_info, below it, is emitted here too
+   and checked against the ROM's copy. Memory's five wrappers sit at the
+   low end; the class's own contiguous run in delinks order: the game-heap
+   bootstrap, the four tail-call veneers, the scratch-heap push/pop pair and
+   the default-heap setter; then the dispatch run, where each public Heap
+   forwarder follows the SolidHeap and ExpandingHeap overrides of the slot it
+   calls (ResizeToFit through Destroy); then the three factories,
+   CreateSolidHeap, CreateExpandingHeap and CreateRootHeap; then the three
+   classes' destructors and constructors; and last the root-heap bootstrap,
+   InitializeRootHeap and SetupRootHeap. Written back-to-front: mwccarm emits
+   .text in reverse source order under default deferred codegen.
  *
  * leftovers:
  * - The Heap* forms are defined first. Deferred codegen emits definitions in
  *   reverse source order, and the convenience overloads call those forms.
- *   A null heap selects defaultHeapPtr. */
+ *   A null heap selects defaultHeapPtr.
+ * - Only the structors the cartridge kept have a ROM home. One empty
+ *   destructor per class makes mwccarm emit D0, D1 and D2, and one constructor
+ *   emits C1 and C2; nothing derives from SolidHeap_t or ExpHeap_t, so their D2
+ *   and C2 never reached the cartridge, and Heap_t is only ever constructed as
+ *   a base, so its C1 did not either. The manifest deadstrips those five.
+ * - ~Heap_t is the family's key function, so this TU emits all three vtables
+ *   and their type_info. That is only correct under the cartridge's mHeap
+ *   names: the strings are the ROM's own `N5mHeap6Heap_tE' and siblings. */
 #include "Heap.h"
 #include "decl_common.h"
 #include "SolidHeap.h"
 #include "SolidHeapAllocator.h"
 #include "ExpandingHeap.h"
 #include "ExpandingHeapAllocator.h"
+
+/* Placement new, as <new> declares it. The factories construct each heap
+   in a block they have already carved out, and the null test the ROM
+   makes before every one of those constructor calls is this operator's:
+   a non-throwing allocation function may return null, so the compiler
+   checks before it constructs. Spelled out, that test emitted twice. */
+inline void* operator new(size_t, void* p) { return p; }
 
 /* 0x020a0eac, already named in config/arm9/symbols.txt. */
 extern "C" Heap* GAME_HEAP_PTR;
@@ -29,7 +49,168 @@ namespace Memory { extern Heap* defaultHeapPtr; }   /* 0x020a0ea0 */
    minted here, since naming it is a claim of its own. */
 extern "C" Heap* data_020a0ea8;
 
+extern "C" {
+    /* `extern' is load-bearing on both of these, and specifically because they
+       sit inside a BRACED linkage block. Written `extern "C" u32 X;' on its own
+       line the extern specifier is implied and the line is a declaration.
+       Written `extern "C" { u32 X; }' mwccarm emits a DEFINITION, which
+       collides with the ROM's own bss:
+
+         mwldarm.exe: Multiply-defined: "data_020a0e9c" in ...SetupRootHeapEv.o
+         mwldarm.exe: Previously defined in _dsd_gap@main_40.o
+
+       build_pin.verify compiles a single file and never links, so it returned
+       (True, '2004/b56') on the broken spelling. Only rombuild.py caught it. */
+    extern u32   ROOT_HEAP_ARENA_ID;            /* 0x020a0ea4 */
+    extern Heap* data_020a0e9c;                 /* the root heap; unnamed */
+
+    int   func_02058ea0(u32 arena);             /* arena lo */
+    int   func_02058eb4(u32 arena);             /* arena hi */
+    int   func_02059040(u32 arena, int lo, int hi, int align);
+    int   func_02058d58(u32 arena, int lo);     /* publish the new lo */
+    void* func_02058cd0(u32 arena, int size, int align);
+}
+
 namespace mHeap {
+
+// @symbol _ZN5mHeap6Heap_t13SetupRootHeapEv
+/* Heap::SetupRootHeap() at 0x0203cb04 -- take the whole of the NitroSDK arena
+ * selected by ROOT_HEAP_ARENA_ID and turn it into the root heap.
+ *
+ * The sequence is the standard OS_*Arena dance: read lo and hi, round lo up to
+ * a 32-byte boundary and publish it back so nothing else claims the space, then
+ * allocate everything from there to hi. `sz' is deliberately computed from the
+ * RE-READ hi rather than from the one captured earlier.
+ *
+ * ROOT_HEAP_ARENA_ID is an arena id, not a pointer: InitializeRootHeap stores 0
+ * into it to select OS_ARENA_MAIN, and it is passed by value as the first
+ * argument to each OS entry point.
+ *
+ * The five OS entry points are still func_* . They live outside this class and
+ * naming them is not this file's claim to make. */
+Heap_t* Heap_t::SetupRootHeap()
+{
+    int lo = func_02058ea0(ROOT_HEAP_ARENA_ID);
+    int hi = func_02058eb4(ROOT_HEAP_ARENA_ID);
+
+    lo = func_02059040(ROOT_HEAP_ARENA_ID, lo, hi, 4);
+    func_02058d58(ROOT_HEAP_ARENA_ID, lo);
+
+    int top = func_02058eb4(ROOT_HEAP_ARENA_ID);
+    int sz = top - ((lo + 0x1f) & ~0x1f);
+
+    void* mem = func_02058cd0(ROOT_HEAP_ARENA_ID, sz, 0x20);
+    if (mem == 0)
+        goto fail;
+
+    {
+        Heap* heap = CreateRootHeap(mem, sz);
+        if (heap != 0)
+        {
+            data_020a0e9c = heap;
+            Memory::defaultHeapPtr = heap;
+        }
+        return heap;
+    }
+
+    /* The failure return sits at the END of the function, and that placement is
+       load-bearing rather than stylistic: the ROM emits `beq' to a tail block
+       holding its own `mov r0,#0 / pop / bx'. Written as a plain early
+       `return 0;' the compiler predicates it in place instead --
+       `moveq/popeq/bxeq' -- which is correct code and four bytes short of the
+       ROM. */
+fail:
+    return 0;
+}
+
+// @symbol _ZN5mHeap6Heap_t18InitializeRootHeapEv
+/* Heap::InitializeRootHeap() at 0x0203cae8 -- clears ROOT_HEAP_ARENA_ID then
+ * tail-calls SetupRootHeap(). The word at 0x020a0ea4 is the NitroSDK arena id
+ * the root heap is carved from; zeroing it selects OS_ARENA_MAIN. */
+void Heap_t::InitializeRootHeap()
+{
+    ROOT_HEAP_ARENA_ID = 0;
+    SetupRootHeap();
+}
+
+/* The three constructors. Each initializer list is the ROM body: Heap_t's sets
+   the four fields and then raises the fail-fast bit; the derived two construct
+   Heap_t, let CodeWarrior install their own vptr, then store the allocator. */
+// @symbol _ZN5mHeap6Heap_tC2EPvjPS0_
+Heap_t::Heap_t(void* start, u32 size, Heap_t* root)
+    : heapStart(start), heapSize(size), parentHeap(root), flags(0)
+{
+    flags = 0x4000;
+}
+
+// @symbol _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator
+ExpHeap_t::ExpHeap_t(void* start, u32 size, Heap_t* root,
+                     ExpandingHeapAllocator* allocator_)
+    : Heap_t(start, size, root), allocator(allocator_)
+{
+}
+
+// @symbol _ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator
+SolidHeap_t::SolidHeap_t(void* start, u32 size, Heap_t* root,
+                         SolidHeapAllocator* allocator_)
+    : Heap_t(start, size, root), allocator(allocator_)
+{
+}
+
+#ifdef _MSC_VER
+} /* namespace mHeap */
+
+/* THE HOST NEEDS THE ROM'S FLAT D0 NAMES, AND MSVC NEVER EMITS THEM. MSVC folds
+ * the Itanium destructor variants into the one ~X() it emits, so each deleting
+ * destructor is spelled out in terms of it: the complete-object body, called
+ * qualified so it is a direct call, then the class-specific operator delete.
+ * Nothing here reaches mwccarm, which emits D0 from the definitions below. */
+extern "C" Heap *_ZN5mHeap6Heap_tD0Ev(Heap *thiz)
+{
+    thiz->mHeap::Heap_t::~Heap_t();
+    Heap::operator delete(thiz);
+    return thiz;
+}
+
+extern "C" ExpandingHeap *_ZN5mHeap9ExpHeap_tD0Ev(ExpandingHeap *thiz)
+{
+    thiz->mHeap::ExpHeap_t::~ExpHeap_t();
+    ExpandingHeap::operator delete(thiz);
+    return thiz;
+}
+
+extern "C" SolidHeap *_ZN5mHeap11SolidHeap_tD0Ev(SolidHeap *thiz)
+{
+    thiz->mHeap::SolidHeap_t::~SolidHeap_t();
+    SolidHeap::operator delete(thiz);
+    return thiz;
+}
+
+namespace mHeap {
+#endif
+
+/* The destructors are empty: CodeWarrior supplies each vptr transition, the
+   base teardown and, in D0, the inline operator delete. ~Heap_t is the
+   family's key function -- the first virtual not defined inline -- so these
+   three definitions are what make this TU emit the vtables and type_info. */
+// @symbol _ZN5mHeap6Heap_tD2Ev
+// @symbol _ZN5mHeap6Heap_tD0Ev
+// @symbol _ZN5mHeap6Heap_tD1Ev
+Heap_t::~Heap_t()
+{
+}
+
+// @symbol _ZN5mHeap9ExpHeap_tD0Ev
+// @symbol _ZN5mHeap9ExpHeap_tD1Ev
+ExpHeap_t::~ExpHeap_t()
+{
+}
+
+// @symbol _ZN5mHeap11SolidHeap_tD0Ev
+// @symbol _ZN5mHeap11SolidHeap_tD1Ev
+SolidHeap_t::~SolidHeap_t()
+{
+}
 
 // @symbol _ZN5mHeap6Heap_t14CreateRootHeapEPvj
 /* Heap::CreateRootHeap(void*, u32) at 0x0203c8e8 -- build the one heap that has
@@ -53,9 +234,6 @@ namespace mHeap {
  * 0x08 `heapEnd'. The mangled name says `j' -- a u32 -- and both values are
  * sizes. */
 
-extern "C" ExpandingHeap* _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator(
-    ExpandingHeap* heap, void* start, u32 size, Heap* root, ExpandingHeapAllocator* allocator);
-
 Heap_t* Heap_t::CreateRootHeap(void* mem, u32 size)
 {
     ExpandingHeap* heap = (ExpandingHeap*)mem;
@@ -65,9 +243,7 @@ Heap_t* Heap_t::CreateRootHeap(void* mem, u32 size)
     if (heap->allocator != 0)
     {
         heap->heapSize = size - 0x18;
-        if (heap != 0)
-            _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator(
-                heap, heap->heapStart, heap->heapSize, 0, heap->allocator);
+        new (heap) ExpHeap_t(heap->heapStart, heap->heapSize, 0, heap->allocator);
         return heap;
     }
 
@@ -103,9 +279,7 @@ Heap_t* Heap_t::CreateExpandingHeap(u32 size, Heap_t* root, int align)
         else
         {
             heap->heapSize = size;
-            if (heap != 0)
-                _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator(
-                    heap, heap->heapStart, heap->heapSize, parent, heap->allocator);
+            new (heap) ExpHeap_t(heap->heapStart, heap->heapSize, parent, heap->allocator);
         }
     }
     return heap;
@@ -131,12 +305,9 @@ Heap_t* Heap_t::CreateExpandingHeap(u32 size, Heap_t* root, int align)
  * `(void*)size' into it, then read it back and cast it to u32 to pass on. The
  * field is `heapSize' and the value was a size the whole way through.
  *
- * The `if (heap != 0)' before the constructor is redundant -- the enclosing
- * branch already established it -- but the ROM emits the second test, so it
- * stays. */
-
-extern "C" SolidHeap* _ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator(
-    SolidHeap* heap, void* start, u32 size, Heap* root, SolidHeapAllocator* allocator);
+ * The ROM tests `heap' a second time just before the constructor, inside a
+ * branch that already established it. That second test is placement new's
+ * own; see the operator at the top of this file. */
 
 Heap_t* Heap_t::CreateSolidHeap(u32 size, Heap_t* root, int align)
 {
@@ -157,9 +328,7 @@ Heap_t* Heap_t::CreateSolidHeap(u32 size, Heap_t* root, int align)
         else
         {
             heap->heapSize = size;
-            if (heap != 0)
-                _ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator(
-                    heap, heap->heapStart, heap->heapSize, parent, heap->allocator);
+            new (heap) SolidHeap_t(heap->heapStart, heap->heapSize, parent, heap->allocator);
         }
     }
     return heap;

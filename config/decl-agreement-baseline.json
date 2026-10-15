@@ -13551,7 +13551,7 @@
       ]
     },
     "data_020a0e9c": {
-      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
+      "src/engine/heap/Heap.cpp": [
         "return:Heap *"
       ],
       "src/main.c": [
@@ -25078,7 +25078,7 @@
       ]
     },
     "func_02058cd0": {
-      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
+      "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "param:#3 int",
@@ -25086,7 +25086,7 @@
       ]
     },
     "func_02058d58": {
-      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
+      "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "return:int"
@@ -25099,19 +25099,19 @@
       ]
     },
     "func_02058ea0": {
-      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
+      "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "return:int"
       ]
     },
     "func_02058eb4": {
-      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
+      "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "return:int"
       ]
     },
     "func_02059040": {
-      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
+      "src/engine/heap/Heap.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "param:#3 int"

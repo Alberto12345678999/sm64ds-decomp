@@ -4359,7 +4359,6 @@ _ZTSN5mHeap6Heap_tE kind:data(any) addr:0x02099d04
 _ZTSN5mHeap9ExpHeap_tE kind:data(any) addr:0x02099d14
 _ZTSN5mHeap11SolidHeap_tE kind:data(any) addr:0x02099d28
 _ZTVN5mHeap11SolidHeap_tE kind:data(any) addr:0x02099d48
-data_02099d90 kind:data(any) addr:0x02099d90
 _ZTVN5mHeap6Heap_tE kind:data(any) addr:0x02099d90
 _ZTVN5mHeap9ExpHeap_tE kind:data(any) addr:0x02099dd8
 data_02099e18 kind:data(any) addr:0x02099e18
