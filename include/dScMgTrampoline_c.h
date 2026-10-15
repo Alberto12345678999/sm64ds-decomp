@@ -26,7 +26,7 @@
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void *func_ov006_020ccfc8(void);
 extern "C" void TrmpLine_Destroy(void);
-extern "C" void func_ov006_02120938(void);
+extern "C" void Trmp_Nothing(void);
 
 /* The flashing mark on the lit door, 0xc bytes at 0x5d84. */
 struct dScMgTrampoline_DoorMark {
@@ -50,7 +50,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
        A virtual destructor is still reached through the vtable, not inlined
        into callers. */
     virtual ~dScMgTrampoline_c() {
-        __cxa_vec_cleanup(mArray3, 5, 0x24, (void *)func_ov006_02120938);
+        __cxa_vec_cleanup(mArray3, 5, 0x24, (void *)Trmp_Nothing);
         __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)TrmpLine_Destroy);
         __cxa_vec_cleanup(mArray1, 4, 0xd0, (void *)func_ov006_020ccfc8);
     }

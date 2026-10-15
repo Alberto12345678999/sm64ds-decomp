@@ -78,7 +78,7 @@ void MgCoins_Update(void);
 void Dealer_Update(char *c);
 extern unsigned char data_0209d45c[];
 extern int data_0208ee44[];
-extern void func_ov006_0210a534(void);
+extern void LoadCard2SubBg3(void);
 extern s32 GetGameLanguage(void);
 extern u32 LoadCompressedFileAt(int fileID, void *target);
 extern int LoadFile(int handle);
@@ -131,7 +131,7 @@ s32 dScMgBSC_c::InitResources()
 {
     int fh;
     data_0209d45c[0] = 0x11;
-    func_ov006_0210a534();
+    LoadCard2SubBg3();
     LoadCompressedFileAt(data_ov006_0213fe78[GetGameLanguage()], (void *)0x6600000);
     fh = LoadFile(ASSET_D_2D_MG_BIG_SMALL_NCL_BIN);
     GXS::LoadOBJPltt((void *)fh, 0, 0x100);

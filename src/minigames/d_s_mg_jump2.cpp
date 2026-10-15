@@ -240,7 +240,7 @@ void dScMgJump2_c::StartRound(int /* arg */)
 /* Slot 19. */
 int dScMgJump2_c::CanEndState(int /* mode */)
 {
-    func_ov006_020c8a9c(0, 0);
+    Puff_ClearAll(0, 0);
     return 1;
 }
 

@@ -33,7 +33,7 @@
  * only member it has past mSysTracker and the reason this file does not
  * stop at 0x5000 (the first draft of it did; the write is what caught it).
  *
- * From above, the bound is dScMgJump_c's: a Jump helper (func_ov006_020ee2c4,
+ * From above, the bound is dScMgJump_c's: a Jump helper (State_Final,
  * once a one-function source directly under src/ that no longer exists --
  * it is now a member of src/minigames/d_s_mg_jump_methods.cpp, whose manifest entry
  * config/tu_manifest.d/ov006/dScMgJump_c.json keeps the old full path in its

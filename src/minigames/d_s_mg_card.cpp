@@ -94,7 +94,7 @@ extern "C" void Dealer_StartDeal(char *c, int unused, short a2, int a3);
 extern "C" void MgCoins_Reset(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
-extern void func_ov006_0210a534(char *);
+extern void LoadCard2SubBg3(char *);
 extern void *LoadFile(int);
 extern int GetGameLanguage(void);
 extern void DecompressLZ16(void *, void *);
@@ -172,7 +172,7 @@ s32 dScMgCard_c::InitResources()
     int pos[2];
 
     Mg_SetTopScreenYOffset(0x20);
-    func_ov006_0210a534(c);
+    LoadCard2SubBg3(c);
     data_0209d45c = 0x11;
     data_0209d454 = 0x18;
     mainTiles = LoadFile(0xbd);

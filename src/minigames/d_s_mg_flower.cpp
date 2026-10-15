@@ -21,7 +21,7 @@
  * spellings are codegen levers, noted where they occur.
  *
  * comment leftovers:
- *  - func_ov006_0212a650 and func_ov006_0212b88c stay free functions: they
+ *  - Petal_ElemDtor and Petal_ElemCtor stay free functions: they
  *    are the empty element destructor and constructor handed to
  *    __cxa_vec_cleanup and __cxa_vec_ctor for the petal records, not scene
  *    methods.
@@ -114,21 +114,21 @@ namespace CP15 { void FlushAndInvalidateDataCache(u32 address, u32 length); }
 dScMgFlower_c::~dScMgFlower_c()
 {
     FlowerFace_Destruct((char *)this + 0x51f8);
-    __cxa_vec_cleanup(mArray, 0x16, 0x20, (void *)func_ov006_0212a650);
+    __cxa_vec_cleanup(mArray, 0x16, 0x20, (void *)Petal_ElemDtor);
 }
 
-// @symbol func_ov006_0212a650
+// @symbol Petal_ElemDtor
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0212a650(void)
+void Petal_ElemDtor(void)
 {
 }
 }
 
-// @symbol _ZN13dScMgFlower_c19func_ov006_0212a654Ev
+// @symbol _ZN13dScMgFlower_c12UpdatePetalsEv
 /* Per-frame petal update: released petals drift and fall, speeding up to
  * 0x4000, and go inactive once below the screen. `settled` stays 1 only if
  * no petal is still on the flower, held, or falling. */
-void dScMgFlower_c::func_ov006_0212a654()
+void dScMgFlower_c::UpdatePetals()
 {
     PetalView *self = (PetalView *)this;
     int i;
@@ -148,7 +148,7 @@ void dScMgFlower_c::func_ov006_0212a654()
     }
 }
 
-// @symbol _ZN13dScMgFlower_c19func_ov006_0212a764Ev
+// @symbol _ZN13dScMgFlower_c10DealPetalsEv
 /* Round setup, called by InitResources and by StartRound when a round
  * restarts. Clears the cursor, wipes all 0x16 petal records and rolls the
  * petal count (1-2 when the hold counter reads exactly 0x14, else a 1-in-10
@@ -163,7 +163,7 @@ void dScMgFlower_c::func_ov006_0212a654()
  * change the loop. pAngle and pX must stay block locals with pX declared
  * after the angle store, and the swap temp must be a Vec2 (its empty
  * destructor keeps its stack slot). */
-void dScMgFlower_c::func_ov006_0212a764()
+void dScMgFlower_c::DealPetals()
 {
     dScMgFlower_c *self = this;
     char *c = (char *)self;
@@ -279,7 +279,7 @@ void dScMgFlower_c::StartRound(int /* arg */)
         mHoldTimer = 0;
     }
     FlowerFace_Reset(raw + 0x51f8);
-    func_ov006_0212a764();
+    DealPetals();
 }
 
 // @symbol _ZN13dScMgFlower_c6RenderEv
@@ -540,7 +540,7 @@ s32 dScMgFlower_c::Behavior()
                 }
             }
         }
-        func_ov006_0212a654();
+        UpdatePetals();
         break;
     case 1:
         if (FlowerFace_IsIdle(c + 0x51f8) != 0) {
@@ -550,7 +550,7 @@ s32 dScMgFlower_c::Behavior()
                 FlowerFace_PlayReactB(c + 0x51f8);
         }
         self->mPromptEnabled = 0;
-        func_ov006_0212a654();
+        UpdatePetals();
         break;
     default:
         break;
@@ -641,7 +641,7 @@ s32 dScMgFlower_c::InitResources()
     mWinStreak = 0;
     mLoseStreak = 0;
     mHoldTimer = 0;
-    func_ov006_0212a764();
+    DealPetals();
 
     data_0209d45c |= 1;
     *(volatile u16 *)0x4000008 = (*(volatile u16 *)0x4000008 & ~3) | 1;
@@ -657,7 +657,7 @@ extern "C" {
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                     void (*ctor)(void *), void (*dtor)(void *));
 void *FlowerFace_Construct(char *p);
-void func_ov006_0212b88c(void);
+void Petal_ElemCtor(void);
 }
 
 /* Builds the petal table, then the 0x51f8 object; ~dScMgFlower_c() above
@@ -666,8 +666,8 @@ void func_ov006_0212b88c(void);
  * class's own vptr) is the compiler's inlining of the base constructors. */
 inline dScMgFlower_c::dScMgFlower_c()
 {
-    __cxa_vec_ctor(mArray, 0x16, 0x20, (void (*)(void *))func_ov006_0212b88c,
-                   (void (*)(void *))func_ov006_0212a650);
+    __cxa_vec_ctor(mArray, 0x16, 0x20, (void (*)(void *))Petal_ElemCtor,
+                   (void (*)(void *))Petal_ElemDtor);
     FlowerFace_Construct((char *)this + 0x51f8);
 }
 
@@ -681,9 +681,9 @@ extern "C" void *dScMgFlower_c_classInit()
     return new dScMgFlower_c;
 }
 
-// @symbol func_ov006_0212b88c
+// @symbol Petal_ElemCtor
 /* The petal record's constructor, handed to __cxa_vec_ctor above. Empty, like
- * its destructor func_ov006_0212a650. */
-extern "C" void func_ov006_0212b88c(void)
+ * its destructor Petal_ElemDtor. */
+extern "C" void Petal_ElemCtor(void)
 {
 }

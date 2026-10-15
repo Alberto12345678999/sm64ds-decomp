@@ -650,7 +650,7 @@
     "problem": "0x0213cfa0 is dScMgLuigi_c's data, not dScMgMemory_c's. It holds the string \"/MG/d_2d_mg_bg_luigi1_ncg.bin\" and the only reference to it is from:0x020f37c0, inside _ZN12dScMgLuigi_c13InitResourcesEv. dScMgMemory_c's data cluster actually begins at 0x0213cfc0. The error is 0x20 bytes and is confined to a prose evidence string - no section range, no byte and no gate is affected - but a writer copying that manifest as an oracle would inherit it."
   },
   "irq_callback": {
-    "symbol": "func_ov006_020efcf8",
+    "symbol": "Luigi_PrepareScanlines",
     "address": "0x020efcf8",
     "size": "0xb4",
     "constraint": "Installed as IRQ 2's handler by arm9 _ZN3IRQ13SetIRQHandlerEjPFvvE, whose second parameter mangles as PFvvE = void(*)(). This function is taken as a PLAIN function pointer and cannot become a non-static dScMgLuigi_c member. Leave it a free function, or make it a static member. This is the one member of the 50 whose form the ROM constrains outright."
@@ -658,7 +658,7 @@
   "non_virtual_note": "The 50 functions below are every function in the span that is neither a vtable target nor the factory. Measured on base 41afd900: 23 are reached only through the class's own PMF records with a zero this-adjustment, 26 are called directly and only from inside this class, and 1 is the IRQ handler above. Every caller address was confirmed twice - once from module-filtered relocations and once by decoding every BL in ov006 .text - and the two sets are identical. This proves TU membership and dispatch shape. It does NOT prove original identifiers, nor member-versus-file-local linkage.",
   "non_virtual": [
     {
-      "symbol": "func_ov006_020efcf8",
+      "symbol": "Luigi_PrepareScanlines",
       "address": "0x020efcf8",
       "size": "0xb4",
       "shard": "src/func_ov006_020efcf8.c",
@@ -671,7 +671,7 @@
       }
     },
     {
-      "symbol": "func_ov006_020efdac",
+      "symbol": "Luigi_PushScanlineRecord",
       "address": "0x020efdac",
       "size": "0x44",
       "shard": "src/func_ov006_020efdac.c",

@@ -21,7 +21,7 @@
  * 0x47c8. Nothing is left over either way. Three of the four share an
  * element ctor/dtor pair (func_0203d738 / NullDestructor_0203d47c) so they
  * are the same element type as each other; mArray4's is its own
- * (func_ov006_02119900 / func_ov006_0210d894).
+ * (SmartballObj_ElemCtor / SmartballObj_ElemDtor).
  *
  * THE PADS HERE ARE NOT UNREAD SPACE, AND THIS FILE WILL NOT PRETEND THEY
  * ARE. A scan of this class's own seven recovered methods -- checked for
@@ -52,7 +52,7 @@
 
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void NullDestructor_0203d47c(void);
-extern "C" void func_ov006_0210d894(void);
+extern "C" void SmartballObj_ElemDtor(void);
 
 struct dScMgSmartball_c : dScMgBase_c {
     virtual ~dScMgSmartball_c();
@@ -121,7 +121,7 @@ struct dScMgSmartball_c : dScMgBase_c {
     u8 mArray2[0x80];     /* 0x4854 -- 0x10 * 8,   elem dtor NullDestructor_0203d47c */
     u8 mArray3[0x80];     /* 0x48d4 -- 0x10 * 8,   elem dtor NullDestructor_0203d47c */
     u8 pad_4954[0x1048];  /* 0x4954 -- real matched access (13 offsets), see banner */
-    u8 mArray4[0x900];    /* 0x599c -- 0x40 * 0x24, elem dtor func_ov006_0210d894 */
+    u8 mArray4[0x900];    /* 0x599c -- 0x40 * 0x24, elem dtor SmartballObj_ElemDtor */
 };
 
 #ifndef SM64DS_PLATFORM_PC

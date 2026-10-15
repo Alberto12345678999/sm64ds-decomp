@@ -186,7 +186,7 @@ void dScMgJump_c::StartRound(int arg)
         data_ov006_02140328 = 6;
 
     func_ov006_020c44b4((void *)mLevel, idx);
-    func_ov006_020ee658();
+    BeginIntro();
 }
 
 // @symbol _ZN11dScMgJump_c11CanEndStateEi
@@ -207,7 +207,7 @@ int dScMgJump_c::CanEndState(int sel)
             }
         }
     }
-    func_ov006_020c8a9c(0, 0);
+    Puff_ClearAll(0, 0);
     return 1;
 }
 
@@ -278,13 +278,13 @@ s32 dScMgJump_c::InitResources()
     return 1;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee658Ev
+// @symbol _ZN11dScMgJump_c10BeginIntroEv
 /* The state functions below are unnamed in the ROM. mState is the current
  * state (see Behavior), mAccum gains mAccumStep >> 12 each tick and
  * mStateTimer counts down to the change.
  *
  * This one arms the countdown; its only caller is StartRound. */
-void dScMgJump_c::func_ov006_020ee658()
+void dScMgJump_c::BeginIntro()
 {
     mStateTimer = 0x78;
     mAccum = 0;
@@ -292,11 +292,11 @@ void dScMgJump_c::func_ov006_020ee658()
     mState = data_ov006_0213cb54;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee5b8Ev
+// @symbol _ZN11dScMgJump_c11State_IntroEv
 /* Counts down mStateTimer, then shows the prompt and moves to the next state.
  * The legacy file's `#pragma optimize_for_size on` is not needed here and
  * would leak into every function in this file if carried. */
-void dScMgJump_c::func_ov006_020ee5b8()
+void dScMgJump_c::State_Intro()
 {
     int left;
     short *countdown = &mStateTimer;
@@ -310,21 +310,21 @@ void dScMgJump_c::func_ov006_020ee5b8()
             mPromptBlinkTimer = 0;
         }
         func_ov006_020c7490();
-        func_ov006_020ee598();
+        BeginPlay();
     } else if (left == 0x77) {
         Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
     }
     func_ov006_020c42bc();
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee598Ev
-void dScMgJump_c::func_ov006_020ee598()
+// @symbol _ZN11dScMgJump_c9BeginPlayEv
+void dScMgJump_c::BeginPlay()
 {
     mState = data_ov006_0213cb84;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee508Ev
-void dScMgJump_c::func_ov006_020ee508()
+// @symbol _ZN11dScMgJump_c10State_PlayEv
+void dScMgJump_c::State_Play()
 {
     int *acc = &mAccum;
     *acc += mAccumStep >> 12;
@@ -334,23 +334,23 @@ void dScMgJump_c::func_ov006_020ee508()
     func_ov006_020c42bc();
     func_ov006_020c712c();
     if(data_ov006_02140428 == 0){
-        func_ov006_020ee4e0();
+        BeginEnd();
         return;
     }
     if(data_ov006_02140304 != 0)
         return;
-    func_ov006_020ee3bc();
+    BeginFinal();
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee4e0Ev
-void dScMgJump_c::func_ov006_020ee4e0()
+// @symbol _ZN11dScMgJump_c8BeginEndEv
+void dScMgJump_c::BeginEnd()
 {
     mStateTimer = 0x20;
     mState = data_ov006_0213cb5c;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee44cEv
-void dScMgJump_c::func_ov006_020ee44c()
+// @symbol _ZN11dScMgJump_c9State_EndEv
+void dScMgJump_c::State_End()
 {
   int *acc = &mAccum;
   *acc += mAccumStep >> 12;
@@ -369,8 +369,8 @@ void dScMgJump_c::func_ov006_020ee44c()
   mState = data_ov006_0213cb4c;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee3ecEv
-void dScMgJump_c::func_ov006_020ee3ec()
+// @symbol _ZN11dScMgJump_c12State_ResultEv
+void dScMgJump_c::State_Result()
 {
     int ready = func_ov006_020c7300();
     if (ready) {
@@ -386,17 +386,17 @@ void dScMgJump_c::func_ov006_020ee3ec()
     func_ov006_020c712c();
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee3bcEv
-void dScMgJump_c::func_ov006_020ee3bc()
+// @symbol _ZN11dScMgJump_c10BeginFinalEv
+void dScMgJump_c::BeginFinal()
 {
     func_ov006_020c7418();
     mState = data_ov006_0213cb6c;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee2c4Ev
+// @symbol _ZN11dScMgJump_c11State_FinalEv
 /* Its writes to 0x5004 and 0x5014 are what bound dScMgD3DBase_c's size
  * from above. `shared` is the ov004 scene data; its type is not recovered. */
-void dScMgJump_c::func_ov006_020ee2c4()
+void dScMgJump_c::State_Final()
 {
   mAccum += mAccumStep >> 12;
   mAccumStep += 0x600;
@@ -419,9 +419,9 @@ void dScMgJump_c::func_ov006_020ee2c4()
   mState = data_ov006_0213cb7c;
 }
 
-// @symbol _ZN11dScMgJump_c19func_ov006_020ee2c0Ev
+// @symbol _ZN11dScMgJump_c10State_IdleEv
 /* An empty state. */
-void dScMgJump_c::func_ov006_020ee2c0()
+void dScMgJump_c::State_Idle()
 {
 }
 

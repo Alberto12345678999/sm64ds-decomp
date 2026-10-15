@@ -23,13 +23,13 @@ extern "C" void Jump2Popup_ElemDtor(void *object);
 struct Model;
 extern "C" int Trmp2_DestructJumperModels(char *object);
 extern "C" Model *Trmp2Spinner_Destruct(Model *model);
-extern "C" void func_ov006_02120938(void);
+extern "C" void Trmp_Nothing(void);
 
 struct dScMgTrampoline2_c : dScMgD3DBase_c {
     typedef void (dScMgTrampoline2_c::*State)();
 
     virtual ~dScMgTrampoline2_c() {
-        __cxa_vec_cleanup(mArray6, 5, 0x24, (void *)func_ov006_02120938);
+        __cxa_vec_cleanup(mArray6, 5, 0x24, (void *)Trmp_Nothing);
         __cxa_vec_cleanup(mArray5, 0x14, 0x78, (void *)Trmp2Spinner_Destruct);
         __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)Jump2Popup_ElemDtor);
         __cxa_vec_cleanup(mArray3, 0xa, 0x1d0, (void *)Trmp2_DestructJumperModels);
@@ -74,7 +74,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     int mRamp;                /* 0x7ac8 -- fixed point; rests at 0x14000, eased
                                  toward 0x7000 as misses come in */
     u8  pad_7acc[0x4];        /* 0x7acc -- no matched read */
-    u8  mArray6[0xb4];        /* 0x7ad0 -- 5 * 0x24,    elem dtor func_ov006_02120938 */
+    u8  mArray6[0xb4];        /* 0x7ad0 -- 5 * 0x24,    elem dtor Trmp_Nothing */
     int mTimer;               /* 0x7b84 -- countdown between waves and states */
     int mPattern;             /* 0x7b88 -- scripted spawn-table index, toward 6 */
     int mDragSoundHandle;     /* 0x7b8c -- positional drag sound, fed back */

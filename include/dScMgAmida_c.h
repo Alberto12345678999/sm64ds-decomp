@@ -5,7 +5,7 @@
 /* The destructor tears down four arrays with __cxa_vec_cleanup; both
    per-element destructors are no-ops. */
 extern "C" void __cxa_vec_cleanup(void *arr, int count, int elemSize, void *dtor);
-extern "C" void func_ov006_020d116c(void);
+extern "C" void AmidaPiece_ElemDtor(void);
 extern "C" void NullDestructor_0203d47c(void);
 
 /* One of the 0x80 falling pieces. Behavior adds vel into pos once a tick

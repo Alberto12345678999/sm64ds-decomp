@@ -423,3 +423,24 @@ Medium confidence:
   - `Trmp2_ColumnForKind`, `Trmp2_OccupancyBits` and `Trmp2_PickFaceA/B`: the face-row dealer.
   - `Trmp2Spinner_*`: a spinning decoration pool.
   - `TrmpItem_Construct`, `Trmp2_DestructJumperModels`.
+
+**Small leftovers (one batch).**
+
+High confidence:
+- **Smartball:** the hand-written constructors of the twelve RTTI-named object classes (`cMgSmartball_wing_c_Construct` ... `cMgSmartball_object_c_Construct`), and `SmartballBall_UpdatePhysics`.
+- **Jump:** the phases (`BeginIntro`, `State_Intro`, `BeginPlay`, `State_Play`, `BeginEnd`, `State_End`, `BeginFinal`, `State_Final`, `State_Result`, `State_Idle`). Each `Begin*` stores the record of the state named after it.
+- **D3DBase:** the dual-3D display helpers (`D3D_InitDualScreen`, `D3D_CaptureToSub`, `D3D_CaptureToMain`, which write DISPCAPCNT) and the panned-sound thunks.
+- **Elsewhere:**
+  - Trampoline: `TrmpFx_*`, a linked effect list.
+  - Amida: `Amida_Save/RestoreBgChars`.
+  - Flower: `UpdatePetals`, `DealPetals`.
+  - Hanachan: `Wiggler_Construct`.
+  - Curling2: `Curling2_ResolveStoneCollision`.
+  - Single3DBase: `LoadCard2SubBg3`.
+  - The empty element constructors and destructors.
+
+Medium confidence:
+- `Puff_*` (unit020c8a30): three rising, growing sprites spawned at a jumper's x.
+- `Luigi_PrepareScanlines` / `Luigi_PushScanlineRecord`.
+
+Left unnamed (role unknown): `func_ov006_020d8c88` (Bomroom), `func_ov006_0211cc90` (Teresa), `func_ov006_020fea70` (Pachinko).

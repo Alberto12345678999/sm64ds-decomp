@@ -28032,7 +28032,7 @@
         "return:int"
       ]
     },
-    "func_ov006_020e6e3c": {
+    "D3D_PlaySeAtX": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "return:void"
       ],
@@ -28046,7 +28046,7 @@
         "return:void"
       ]
     },
-    "func_ov006_0210a534": {
+    "LoadCard2SubBg3": {
       "src/minigames/d_s_mg_card.cpp": [
         "arity:1"
       ],

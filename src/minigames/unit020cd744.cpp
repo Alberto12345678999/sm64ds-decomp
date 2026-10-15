@@ -563,7 +563,7 @@ extern "C" {extern int data_ov006_02140830;}
 extern "C" extern void TrmpItem_ReflectOffLine(char *a, void *o);
 extern "C" extern int TrmpItem_HitTest2D(char *a, void *o, int arg1);
 extern "C" extern void _Z14ApproachLinearRiii(int *p, int target, int step);
-extern "C" extern void func_ov006_020e6e3c(int a, int b);
+extern "C" extern void D3D_PlaySeAtX(int a, int b);
 extern "C" extern void Trmp2Spinner_InitAll(int c);
 extern "C" extern void TrmpItem_ProjectToScreen(char *c, unsigned short arg1);
 
@@ -596,20 +596,20 @@ extern "C" void TrmpItem_UpdateWithJumper(void *thiz, int arg1)
             step <<= 1;
         switch (v) {
         case 0:
-            func_ov006_020e6e3c(0x131, *(int *)(ELEM + 8));
+            D3D_PlaySeAtX(0x131, *(int *)(ELEM + 8));
             break;
         case 1:
-            func_ov006_020e6e3c(0x132, *(int *)(ELEM + 8));
+            D3D_PlaySeAtX(0x132, *(int *)(ELEM + 8));
             break;
         case 2:
-            func_ov006_020e6e3c(0x133, *(int *)(ELEM + 8));
+            D3D_PlaySeAtX(0x133, *(int *)(ELEM + 8));
             break;
         case 3:
-            func_ov006_020e6e3c(0x134, *(int *)(ELEM + 8));
+            D3D_PlaySeAtX(0x134, *(int *)(ELEM + 8));
             break;
         case 4:
         default:
-            func_ov006_020e6e3c(0x135, *(int *)(ELEM + 8));
+            D3D_PlaySeAtX(0x135, *(int *)(ELEM + 8));
             break;
         }
         _Z14ApproachLinearRiii(&data_ov006_02140830, 0xf423f, step);
@@ -1518,7 +1518,7 @@ extern "C" extern int DotVec3(Vector3 *a, Vector3 *b);
 extern "C" extern void Vec2_Sub(int *o, int *a, int *b);
 extern "C" extern int func_0203d524(int *a, int *b);
 extern "C" extern int _ZN4cstd4fdivEii(int a, int b);
-extern "C" extern void func_ov006_020e6db4(int a0, int a1, int a2);
+extern "C" extern void D3D_PlaySePannedLoop(int a0, int a1, int a2);
 extern "C" extern void TrmpLine_PointDistance(char *sl, void *arg1, Vector3 *r2);
 extern "C" extern void TrmpLine_SetStateSettle(char *p);
 extern "C" extern void Vec3_MulScalar(Vector3 *out, Vector3 *in, int scale);
@@ -1634,11 +1634,11 @@ extern "C" int TrmpLine_PushJumper(char *c)
 
             if (mag < 0x400000) {
                 arr[i]->f18 = 2;
-                func_ov006_020e6db4(0x1b1, *(int *)(c + 8),
+                D3D_PlaySePannedLoop(0x1b1, *(int *)(c + 8),
                     (data_ov006_0213b310 * t + data_ov006_0213b30c * (0x1000 - t)) >> 12);
             } else {
                 arr[i]->f18 = 1;
-                func_ov006_020e6db4(0x1ae, *(int *)(c + 8),
+                D3D_PlaySePannedLoop(0x1ae, *(int *)(c + 8),
                     (data_ov006_0213b308 * t + data_ov006_0213b2f4 * (0x1000 - t)) >> 12);
             }
 
@@ -1724,7 +1724,7 @@ extern Fix12i DotVec3(const Vector3 *a, const Vector3 *b);
 extern int _ZN4cstd4fdivEii(int a, int b);
 extern void TrmpLine_PointDistance(void *a, void *b, void *c);
 extern void TrmpLine_ComputeNormals(void *a);
-extern void func_ov006_020e6db4(int a0, int a1, int a2);
+extern void D3D_PlaySePannedLoop(int a0, int a1, int a2);
 extern void TrmpLine_SetStateSettle(char *p);
 extern void TrmpLine_SetStateFlex(char *p);
 
@@ -1958,11 +1958,11 @@ extern "C" void TrmpLine_Build(char *c, short *p1, short *p2)
         blendVal = (s32)(((s64)absOff * halfLen + 0x800) >> 12);
         if (blendVal < 0x400000) {
             *(s16 *)((char *)bestObj + 0x18) = 2;
-            func_ov006_020e6db4(0x1B1, *(s32 *)(c + 8),
+            D3D_PlaySePannedLoop(0x1B1, *(s32 *)(c + 8),
                 (s32)(data_ov006_0213b2fc * ratio + data_ov006_0213b300 * (0x1000 - ratio)) >> 0xC);
         } else {
             *(s16 *)((char *)bestObj + 0x18) = 1;
-            func_ov006_020e6db4(0x1AE, *(s32 *)(c + 8),
+            D3D_PlaySePannedLoop(0x1AE, *(s32 *)(c + 8),
                 (s32)(data_ov006_0213b2f8 * ratio + data_ov006_0213b304 * (0x1000 - ratio)) >> 0xC);
         }
         *(s32 *)((char *)bestObj + 0x4) = *(s32 *)(c + 0x14);

@@ -88,18 +88,18 @@ struct dScMgJump_c : dScMgD3DBase_c {
        {fn, 0} pairs in the data_ov006_0213cb4c table rows, dispatched through
        mState by Behavior. The mangled spellings are what the table relocs
        resolve by. */
-    void func_ov006_020ee2c0();
-    void func_ov006_020ee2c4();
-    void func_ov006_020ee3bc();
-    void func_ov006_020ee3ec();
-    void func_ov006_020ee44c();
-    void func_ov006_020ee4e0();
-    void func_ov006_020ee508();
-    void func_ov006_020ee598();
-    void func_ov006_020ee5b8();
-    void func_ov006_020ee658();
+    void State_Idle();
+    void State_Final();
+    void BeginFinal();
+    void State_Result();
+    void State_End();
+    void BeginEnd();
+    void State_Play();
+    void BeginPlay();
+    void State_Intro();
+    void BeginIntro();
 
-    /* 0x5004 IS A PAIR OF s32, not padding: func_ov006_020ee2c4 and the other
+    /* 0x5004 IS A PAIR OF s32, not padding: State_Final and the other
        state functions assign the next table row into it whole, and that write
        plus the s16 at 0x5014 are what bound dScMgD3DBase_c at 0x5004 from
        above. The sole member must stay an ARRAY: with two named scalars

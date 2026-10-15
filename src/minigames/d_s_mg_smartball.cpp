@@ -20,18 +20,18 @@ enum dScMgSmartball_c_AssetId {
  */
 
 // leftovers:
-// - func_ov006_02112ad8 (the ball per-frame physics) stays a free extern "C"
+// - SmartballBall_UpdatePhysics (the ball per-frame physics) stays a free extern "C"
 //   function. Compiled as C++ -- as a cMgSmartball_ball_c member or a plain
 //   free function -- mwccarm folds `angle / 0x20` into a `+= 0x800` induction
 //   accumulator in the two fan-response loops (53 words differ); the C front
 //   end keeps the divide sequence. Its callers call it by name.
-// - The twelve constructor-shaped helpers (func_ov006_0210e0d0,
-//   func_ov006_0210e480, func_ov006_0210f9f8, func_ov006_021101bc,
-//   func_ov006_02110874, func_ov006_02110bc0, func_ov006_02111220,
-//   func_ov006_0211157c, func_ov006_02111774, func_ov006_02111b40,
-//   func_ov006_02114548, func_ov006_0211474c) stay free: they placement-
-//   construct objects they do not own. func_ov006_0210d894 and
-//   func_ov006_02119900 are the manager array element destructor and the
+// - The twelve constructor-shaped helpers (cMgSmartball_wing_c_Construct,
+//   cMgSmartball_pushswitch_c_Construct, cMgSmartball_board_c_Construct, cMgSmartball_slot_c_Construct,
+//   cMgSmartball_pakkun_c_Construct, cMgSmartball_dokan_c_Construct, cMgSmartball_propeller_c_Construct,
+//   cMgSmartball_spring_c_Construct, cMgSmartball_ana_c_Construct, cMgSmartball_kinoko_c_Construct,
+//   cMgSmartball_ball_c_Construct, cMgSmartball_object_c_Construct) stay free: they placement-
+//   construct objects they do not own. SmartballObj_ElemDtor and
+//   SmartballObj_ElemCtor are the manager array element destructor and the
 //   empty final hook.
 // - The shadow structs below (Obj, Mgr, State2, S, A, Owl, C, SBoard,
 //   SArrays, ...) remain TU-local reconstructions; none has a proven
@@ -161,7 +161,7 @@ struct A { int f0; int f4; };
 typedef unsigned char u8;
 
 /* shadow 'Mgr2' (was 'Mgr') -- 1 member(s).
-   func_ov006_02113c14.c's coarser model of what func_ov006_02112ad8.c calls Mgr. */
+   func_ov006_02113c14.c's coarser model of what SmartballBall_UpdatePhysics.c calls Mgr. */
 struct Mgr2 {
     char pad0[8];
     int flags;                 /* 0x8 */
@@ -198,7 +198,7 @@ struct TVec2 { int x; int y; ~TVec2() {} };
 typedef void (*VFunc)(void*);
 
 /* shadow 'State2' (was 'State') -- 1 member(s).
-   func_ov006_02112ad8.c's search state. */
+   SmartballBall_UpdatePhysics.c's search state. */
 typedef struct State2 {
     int flags[7];
     int iteration;
@@ -469,20 +469,20 @@ extern int _ZTV19cMgSmartball_wing_c[];
 /* Local helper declarations. */
 /* These declarations also cover helpers called before their ROM-ordered definition. */
 extern "C" {
-char *func_ov006_0210e0d0(char *self, int x, int y, struct V2ab *src);
-char *func_ov006_02111b40(char *self, int x, int y, struct V2ab *src);
-int func_ov006_0210e480(char* c, int b, int d, int* s);
-int func_ov006_0210f9f8(char* c, int b, int d, int* s);
-int func_ov006_02110874(char* c, int b, int d, int* s);
-int func_ov006_02110bc0(char* c, int b, int d, int* s);
-int func_ov006_02111220(char* c, int b, int d, int* s);
-int func_ov006_0211157c(char* c, int b, int d, int* s);
-int func_ov006_02111774(char* c, int b, int d, int* s);
-int func_ov006_02114548(char* c, int b, int d, int* s);
+char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src);
+char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src);
+int cMgSmartball_pushswitch_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_board_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_pakkun_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_dokan_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_propeller_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_spring_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_ana_c_Construct(char* c, int b, int d, int* s);
+int cMgSmartball_ball_c_Construct(char* c, int b, int d, int* s);
 void CopyObjectVel(int *a, int *b);
 void CopyObjectPos(int *a, int *b);
-void func_ov006_02112ad8(Obj *self);
-void* func_ov006_021101bc(char* c, int a1, int a2, int* src);
+void SmartballBall_UpdatePhysics(Obj *self);
+void* cMgSmartball_slot_c_Construct(char* c, int a1, int a2, int* src);
 }
 
 /* Declarations this TU still needs from the shared common header, which is
@@ -503,7 +503,7 @@ extern void Mg_SetSharedState(int);
 
 extern "C" {
 void GetObjectDelta(void* a, char* b);
-void func_ov006_0211474c(char* c, int a1, int a2, int* a3);
+void cMgSmartball_object_c_Construct(char* c, int a1, int a2, int* a3);
 }
 
 #define LN(base, off) (*(int *)((((int)(base)) + (off))))
@@ -544,14 +544,14 @@ extern "C" {
    D0; declaring the destructor is enough. */
 dScMgSmartball_c::~dScMgSmartball_c()
 {
-    __cxa_vec_cleanup(mArray4, 0x40, 0x24, (void *)func_ov006_0210d894);
+    __cxa_vec_cleanup(mArray4, 0x40, 0x24, (void *)SmartballObj_ElemDtor);
     __cxa_vec_cleanup(mArray3, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray2, 0x10, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mArray1, 5, 8, (void *)NullDestructor_0203d47c);
 }
-// @symbol func_ov006_0210d894
+// @symbol SmartballObj_ElemDtor
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0210d894(void)
+void SmartballObj_ElemDtor(void)
 {
 }
 }
@@ -750,13 +750,13 @@ void cMgSmartball_wing_c::RestoreInitial()
     RebuildVerts();
 }
 
-// @symbol func_ov006_0210e0d0
+// @symbol cMgSmartball_wing_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-char *func_ov006_0210e0d0(char *self, int x, int y, struct V2ab *src) {
+char *cMgSmartball_wing_c_Construct(char *self, int x, int y, struct V2ab *src) {
     struct V2ab v;
     v.a = src->a;
     v.b = src->b;
-    func_ov006_0211474c(self, x, y, (int *)&v);
+    cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
     *(void**)(self) = (void *)&_ZTV19cMgSmartball_wing_c[2];
     *(int*)(self + 0x28) = 0x18000;
     *(short*)(self + 0x32) = 0;
@@ -862,13 +862,13 @@ void cMgSmartball_pushswitch_c::RestoreInitial()
     mReleaseDelay = 0;
 }
 
-// @symbol func_ov006_0210e480
+// @symbol cMgSmartball_pushswitch_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210e480(char* c, int b, int d, int* s){
+int cMgSmartball_pushswitch_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV25cMgSmartball_pushswitch_c[2];
   *(int*)(c+0x28) = 0x8000;
   return (int)c;
@@ -1475,13 +1475,13 @@ void cMgSmartball_board_c::ShuffleCells(){
   }
 }
 
-// @symbol func_ov006_0210f9f8
+// @symbol cMgSmartball_board_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210f9f8(char* c, int b, int d, int* s){
+int cMgSmartball_board_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV20cMgSmartball_board_c[2];
   *(int*)(c+0x28) = 0x18000;
   return (int)c;
@@ -1759,13 +1759,13 @@ void cMgSmartball_slot_c::RestoreInitial()
     mSoundHandle = 0;
 }
 
-// @symbol func_ov006_021101bc
+// @symbol cMgSmartball_slot_c_Construct
 extern "C" {
-void* func_ov006_021101bc(char* c, int a1, int a2, int* src){
+void* cMgSmartball_slot_c_Construct(char* c, int a1, int a2, int* src){
     int tmp[2];
     tmp[0] = src[0];
     tmp[1] = src[1];
-    func_ov006_0211474c(c, a1, a2, tmp);
+    cMgSmartball_object_c_Construct(c, a1, a2, tmp);
     *(void***)c = (void**)&_ZTV19cMgSmartball_slot_c[2];
     __cxa_vec_ctor(c + 0x34, 3, 8, func_0203d738, NullDestructor_0203d47c);
     __cxa_vec_ctor(c + 0x4c, 3, 8, func_0203d738, NullDestructor_0203d47c);
@@ -1964,13 +1964,13 @@ void cMgSmartball_pakkun_c::RestoreInitial()
     mActionTimer = 0;
 }
 
-// @symbol func_ov006_02110874
+// @symbol cMgSmartball_pakkun_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02110874(char* c, int b, int d, int* s){
+int cMgSmartball_pakkun_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV21cMgSmartball_pakkun_c[2];
   *(int*)(c+0x28) = 0x14000;
   return (int)c;
@@ -2071,13 +2071,13 @@ void cMgSmartball_dokan_c::RestoreInitial()
     cMgSmartball_object_c::RestoreInitial();
 }
 
-// @symbol func_ov006_02110bc0
+// @symbol cMgSmartball_dokan_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02110bc0(char* c, int b, int d, int* s){
+int cMgSmartball_dokan_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV20cMgSmartball_dokan_c[2];
   *(int*)(c+0x28) = 0x20000;
   return (int)c;
@@ -2258,13 +2258,13 @@ void cMgSmartball_propeller_c::RestoreInitial()
     RebuildVerts();
 }
 
-// @symbol func_ov006_02111220
+// @symbol cMgSmartball_propeller_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02111220(char* c, int b, int d, int* s){
+int cMgSmartball_propeller_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV24cMgSmartball_propeller_c[2];
   *(int*)(c+0x28) = 0x20000;
   return (int)c;
@@ -2383,13 +2383,13 @@ void cMgSmartball_spring_c::RestoreInitial()
     mSoundHandle = 0;
 }
 
-// @symbol func_ov006_0211157c
+// @symbol cMgSmartball_spring_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0211157c(char* c, int b, int d, int* s){
+int cMgSmartball_spring_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV21cMgSmartball_spring_c[2];
   *(int*)(c+0x28) = 0x20000;
   return (int)c;
@@ -2480,13 +2480,13 @@ void cMgSmartball_ana_c::RestoreInitial()
     mRespawnTimer = 0;
 }
 
-// @symbol func_ov006_02111774
+// @symbol cMgSmartball_ana_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02111774(char* c, int b, int d, int* s){
+int cMgSmartball_ana_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV18cMgSmartball_ana_c[2];
   *(int*)(c+0x28) = 0x10000;
   return (int)c;
@@ -2616,13 +2616,13 @@ void cMgSmartball_kinoko_c::RestoreInitial()
     mHitTimer = 0;
 }
 
-// @symbol func_ov006_02111b40
+// @symbol cMgSmartball_kinoko_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-char *func_ov006_02111b40(char *self, int x, int y, struct V2ab *src) {
+char *cMgSmartball_kinoko_c_Construct(char *self, int x, int y, struct V2ab *src) {
     struct V2ab v;
     v.a = src->a;
     v.b = src->b;
-    func_ov006_0211474c(self, x, y, (int *)&v);
+    cMgSmartball_object_c_Construct(self, x, y, (int *)&v);
     *(void**)(self) = (void *)&_ZTV21cMgSmartball_kinoko_c[2];
     *(int*)(self + 0x28) = 0x7000;
     *(int*)(self + 0x34) = 2;
@@ -3069,7 +3069,7 @@ void cMgSmartball_ball_c::QueueBehind()
 
     if (val == cur) {
         if (*(u8 *)(c + 0x121) != 0) {
-            func_ov006_02112ad8((Obj *)c);
+            SmartballBall_UpdatePhysics((Obj *)c);
             return;
         }
     }
@@ -3121,13 +3121,13 @@ block2:
     }
 }
 
-// @symbol func_ov006_02112ad8
+// @symbol SmartballBall_UpdatePhysics
 #pragma push
 #pragma opt_strength_reduction off
 /* The equal-arm owner selection below preserves mwccarm's address rematerialization. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 
-void func_ov006_02112ad8(Obj *self)
+void SmartballBall_UpdatePhysics(Obj *self)
 {
     State2 state;
     V2xz work;
@@ -3880,7 +3880,7 @@ bounce:
     if (mIsWaiting == 1) {
         QueueBehind();
     } else {
-        func_ov006_02112ad8((Obj *)(char *)this);
+        SmartballBall_UpdatePhysics((Obj *)(char *)this);
         if (mExitGateOpen == 0) {
             vc.x = 0x20000;
             vc.z = -0x8000;
@@ -3959,13 +3959,13 @@ void cMgSmartball_ball_c::RestoreInitial()
     mExitGateOpen = 0;
 }
 
-// @symbol func_ov006_02114548
+// @symbol cMgSmartball_ball_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_02114548(char* c, int b, int d, int* s){
+int cMgSmartball_ball_c_Construct(char* c, int b, int d, int* s){
   int tmp[2];
   tmp[0] = s[0];
   tmp[1] = s[1];
-  func_ov006_0211474c(c, b, d, tmp);
+  cMgSmartball_object_c_Construct(c, b, d, tmp);
   *(int*)c = (int)&_ZTV19cMgSmartball_ball_c[2];
   *(int*)(c+0x28) = 0x8000;
   return (int)c;
@@ -4060,9 +4060,9 @@ void cMgSmartball_object_c::RestoreInitial()
     mCurrent1 = hi;
 }
 
-// @symbol func_ov006_0211474c
+// @symbol cMgSmartball_object_c_Construct
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_0211474c(char* c, int a1, int a2, int* a3){
+void cMgSmartball_object_c_Construct(char* c, int a1, int a2, int* a3){
   int lo, hi;
   *(int*)(c) = (int)&_ZTV21cMgSmartball_object_c[2];
   *(int*)(c+4) = a1;
@@ -5027,7 +5027,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x40);
             if (p != 0) {
                 V2 tmp = pos[j];
-                p = func_ov006_02111b40((char *)p, (int)c, (int)j, (struct V2ab *)&tmp);
+                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, (int)j, (struct V2ab *)&tmp);
             }
             {
                 void **slot = (void **)(((long long)(int)(c + j * 4 + 0x46bc)));
@@ -5069,7 +5069,7 @@ void dScMgSmartball_c::SpawnObjects()
                 int tx = pos[n].x;
                 tmp.x = tx;
                 tmp.y = ty;
-                p = func_ov006_02111b40((char *)p, (int)c, n, (V2ab *)&tmp);
+                p = cMgSmartball_kinoko_c_Construct((char *)p, (int)c, n, (V2ab *)&tmp);
             }
             {
                 void **slot = (void **)(((long long)(int)(c + n * 4 + 0x46bc)));
@@ -5112,7 +5112,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x38);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02111774((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_ana_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x720) = p;
                 n = *(int *)(c + 0x4000 + 0x66c);
@@ -5134,7 +5134,7 @@ void dScMgSmartball_c::SpawnObjects()
             p = _Znwj(0x12c);
             if (p != 0) {
                 V2 tmp = pos[j];
-                p = (void *)func_ov006_02114548((char *)p, (int)c, j, (int *)&tmp);
+                p = (void *)cMgSmartball_ball_c_Construct((char *)p, (int)c, j, (int *)&tmp);
             }
             *(void **)(c + j * 4 + 0x4000 + 0x688) = p;
         }
@@ -5177,7 +5177,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x34);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02110bc0((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_dokan_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x74c) = p;
                 n = *(int *)(c + 0x4000 + 0x678);
@@ -5217,7 +5217,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x3c);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02110874((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_pakkun_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x764) = p;
                 n = *(int *)(c + 0x4000 + 0x67c);
@@ -5256,7 +5256,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x78);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_02111220((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_propeller_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x740) = p;
                 n = *(int *)(c + 0x4000 + 0x674);
@@ -5295,7 +5295,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
-                p = func_ov006_021101bc((char*)p, (int)c, (int)0, (int*)&tmp);
+                p = cMgSmartball_slot_c_Construct((char*)p, (int)c, (int)0, (int*)&tmp);
             }
             *(void **)(c + 0x4000 + 0x778) = p;
         }
@@ -5332,7 +5332,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x9c);
             if (p != 0) {
                 V2 tmp = pos[4];
-                p = (void *)func_ov006_0210f9f8((char *)p, (int)c, 0, (int *)&tmp);
+                p = (void *)cMgSmartball_board_c_Construct((char *)p, (int)c, 0, (int *)&tmp);
             }
             *(void **)(c + 0x4000 + 0x77c) = p;
         }
@@ -5369,7 +5369,7 @@ void dScMgSmartball_c::SpawnObjects()
                 void *p = _Znwj(0x38);
                 if (p != 0) {
                     V2 tmp = pos[j];
-                    p = (void *)func_ov006_0210e480((char *)p, (int)c, j, (int *)&tmp);
+                    p = (void *)cMgSmartball_pushswitch_c_Construct((char *)p, (int)c, j, (int *)&tmp);
                 }
                 *(void **)(c + j * 4 + 0x4000 + 0x770) = p;
                 n = *(int *)(c + 0x4000 + 0x680);
@@ -5408,7 +5408,7 @@ void dScMgSmartball_c::SpawnObjects()
             void *p = _Znwj(0x88);
             if (p != 0) {
                 V2 tmp = pos[0];
-                p = func_ov006_0210e0d0((char *)p, (int)c, (int)0, (struct V2ab *)&tmp);
+                p = cMgSmartball_wing_c_Construct((char *)p, (int)c, (int)0, (struct V2ab *)&tmp);
             }
             *(void **)(c + 0x4000 + 0x780) = p;
         }
@@ -6315,7 +6315,7 @@ s32 dScMgSmartball_c::InitResources()
     if (o != 0)
     {
       cMgSmartballPair r2 = r1;
-      o = (void *) func_ov006_0211157c((char *) o, (int) c, 0, &r2.v0);
+      o = (void *) cMgSmartball_spring_c_Construct((char *) o, (int) c, 0, &r2.v0);
     }
     *((void **) (c + 0x4684)) = o;
   }
@@ -6635,7 +6635,7 @@ void dScMgSmartball_c::AfterCleanupResources(u32 vfSuccess)
 /* The scene factory and its empty particle-element constructor share this unit. */
 extern int _ZTV16dScMgSmartball_c[];
 extern "C" void *_ZN11dScMgBase_cC2Ev(void *p);
-extern "C" void func_ov006_02119900(void);
+extern "C" void SmartballObj_ElemCtor(void);
 
 // @symbol dScMgSmartball_c_classInit
 /* Allocates and constructs the scene; returns null if allocation fails.
@@ -6648,12 +6648,12 @@ extern "C" void *dScMgSmartball_c_classInit(void) {
         __cxa_vec_ctor(scene->mArray1, 5, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene->mArray2, 0x10, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene->mArray3, 0x10, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene->mArray4, 0x40, 0x24, (void *)func_ov006_02119900, (void *)func_ov006_0210d894);
+        __cxa_vec_ctor(scene->mArray4, 0x40, 0x24, (void *)SmartballObj_ElemCtor, (void *)SmartballObj_ElemDtor);
     }
     return scene;
 }
 
-// @symbol func_ov006_02119900
-extern "C" void func_ov006_02119900(void)
+// @symbol SmartballObj_ElemCtor
+extern "C" void SmartballObj_ElemCtor(void)
 {
 }

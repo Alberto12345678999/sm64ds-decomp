@@ -20879,43 +20879,43 @@
     },
     "ov006:0x020c8a30": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8a30"
+      "name": "Puff_DrawAll"
     },
     "ov006:0x020c8a64": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8a64"
+      "name": "Puff_UpdateAll"
     },
     "ov006:0x020c8a9c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8a9c"
+      "name": "Puff_ClearAll"
     },
     "ov006:0x020c8af4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8af4"
+      "name": "Puff_Draw"
     },
     "ov006:0x020c8ba8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8ba8"
+      "name": "Puff_Update"
     },
     "ov006:0x020c8c6c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8c6c"
+      "name": "Puff_Clear"
     },
     "ov006:0x020c8c78": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020c8c78"
+      "name": "Puff_Spawn"
     },
     "ov006:0x020c8da8": {
       "author": "ruspecial",
-      "name": "func_ov006_020c8da8"
+      "name": "Puff_CleanupAll"
     },
     "ov006:0x020c8dcc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8dcc"
+      "name": "Puff_ElemDtor"
     },
     "ov006:0x020c8dd0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8dd0"
+      "name": "Puff_Nothing"
     },
     "ov006:0x020c8dd4": {
       "author": "tangosdev",
@@ -21515,7 +21515,7 @@
     },
     "ov006:0x020d116c": {
       "author": "tangosdev",
-      "name": "func_ov006_020d116c"
+      "name": "AmidaPiece_ElemDtor"
     },
     "ov006:0x020d1170": {
       "author": "andrewboudreau",
@@ -21567,11 +21567,11 @@
     },
     "ov006:0x020d3624": {
       "author": "tangosdev",
-      "name": "func_ov006_020d3624"
+      "name": "Amida_RestoreBgChars"
     },
     "ov006:0x020d3668": {
       "author": "tangosdev",
-      "name": "func_ov006_020d3668"
+      "name": "Amida_SaveBgChars"
     },
     "ov006:0x020d36a4": {
       "author": "tangosdev",
@@ -21615,7 +21615,7 @@
     },
     "ov006:0x020d5a50": {
       "author": "tangosdev",
-      "name": "func_ov006_020d5a50"
+      "name": "AmidaPiece_ElemCtor"
     },
     "ov006:0x020d5a54": {
       "author": "andrewboudreau",
@@ -22891,11 +22891,11 @@
     },
     "ov006:0x020e6da4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e6da4"
+      "name": "D3D_PanForX"
     },
     "ov006:0x020e6db4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e6db4"
+      "name": "D3D_PlaySePannedLoop"
     },
     "ov006:0x020e6df0": {
       "author": "andrewboudreau",
@@ -22903,7 +22903,7 @@
     },
     "ov006:0x020e6e3c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e6e3c"
+      "name": "D3D_PlaySeAtX"
     },
     "ov006:0x020e6e4c": {
       "author": "andrewboudreau",
@@ -22943,7 +22943,7 @@
     },
     "ov006:0x020e7110": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e7110"
+      "name": "D3D_ReleaseSubBg1"
     },
     "ov006:0x020e7124": {
       "author": "andrewboudreau",
@@ -22955,23 +22955,23 @@
     },
     "ov006:0x020e73c4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e73c4"
+      "name": "D3D_InitDualScreen"
     },
     "ov006:0x020e740c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e740c"
+      "name": "D3D_ClearCaptureTable"
     },
     "ov006:0x020e7428": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e7428"
+      "name": "D3D_DrawSpriteTable"
     },
     "ov006:0x020e7508": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e7508"
+      "name": "D3D_CaptureToSub"
     },
     "ov006:0x020e759c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020e759c"
+      "name": "D3D_CaptureToMain"
     },
     "ov006:0x020e7660": {
       "author": "tangosdev",
@@ -23495,7 +23495,7 @@
     },
     "ov006:0x020ede80": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_020ede80"
+      "name": "Wiggler_Construct"
     },
     "ov006:0x020edec0": {
       "author": "tangosdev",
@@ -23519,43 +23519,43 @@
     },
     "ov006:0x020ee2c0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee2c0"
+      "name": "State_Idle"
     },
     "ov006:0x020ee2c4": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee2c4"
+      "name": "State_Final"
     },
     "ov006:0x020ee3bc": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee3bc"
+      "name": "BeginFinal"
     },
     "ov006:0x020ee3ec": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee3ec"
+      "name": "State_Result"
     },
     "ov006:0x020ee44c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee44c"
+      "name": "State_End"
     },
     "ov006:0x020ee4e0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee4e0"
+      "name": "BeginEnd"
     },
     "ov006:0x020ee508": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee508"
+      "name": "State_Play"
     },
     "ov006:0x020ee598": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee598"
+      "name": "BeginPlay"
     },
     "ov006:0x020ee5b8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ee5b8"
+      "name": "State_Intro"
     },
     "ov006:0x020ee658": {
       "author": "tangosdev",
-      "name": "func_ov006_020ee658"
+      "name": "BeginIntro"
     },
     "ov006:0x020ee690": {
       "author": "andrewboudreau",
@@ -23707,11 +23707,11 @@
     },
     "ov006:0x020efcf8": {
       "author": "ruspecial",
-      "name": "func_ov006_020efcf8"
+      "name": "Luigi_PrepareScanlines"
     },
     "ov006:0x020efdac": {
       "author": "ruspecial",
-      "name": "func_ov006_020efdac"
+      "name": "Luigi_PushScanlineRecord"
     },
     "ov006:0x020efdf0": {
       "author": "andrewboudreau",
@@ -25587,7 +25587,7 @@
     },
     "ov006:0x0210a534": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_0210a534"
+      "name": "LoadCard2SubBg3"
     },
     "ov006:0x0210a600": {
       "author": "andrewboudreau",
@@ -25791,7 +25791,7 @@
     },
     "ov006:0x0210d894": {
       "author": "tangosdev",
-      "name": "func_ov006_0210d894"
+      "name": "SmartballObj_ElemDtor"
     },
     "ov006:0x0210d898": {
       "author": "tangosdev",
@@ -25823,7 +25823,7 @@
     },
     "ov006:0x0210e0d0": {
       "author": "tangosdev",
-      "name": "func_ov006_0210e0d0"
+      "name": "cMgSmartball_wing_c_Construct"
     },
     "ov006:0x0210e120": {
       "author": "andrewboudreau",
@@ -25847,7 +25847,7 @@
     },
     "ov006:0x0210e480": {
       "author": "tangosdev",
-      "name": "func_ov006_0210e480"
+      "name": "cMgSmartball_pushswitch_c_Construct"
     },
     "ov006:0x0210e4c8": {
       "author": "tangosdev",
@@ -25879,7 +25879,7 @@
     },
     "ov006:0x0210f9f8": {
       "author": "tangosdev",
-      "name": "func_ov006_0210f9f8"
+      "name": "cMgSmartball_board_c_Construct"
     },
     "ov006:0x0210fa40": {
       "author": "tangosdev",
@@ -25911,7 +25911,7 @@
     },
     "ov006:0x021101bc": {
       "author": "tangosdev",
-      "name": "func_ov006_021101bc"
+      "name": "cMgSmartball_slot_c_Construct"
     },
     "ov006:0x02110244": {
       "author": "ruspecial",
@@ -25931,7 +25931,7 @@
     },
     "ov006:0x02110874": {
       "author": "tangosdev",
-      "name": "func_ov006_02110874"
+      "name": "cMgSmartball_pakkun_c_Construct"
     },
     "ov006:0x021108bc": {
       "author": "tangosdev",
@@ -25951,7 +25951,7 @@
     },
     "ov006:0x02110bc0": {
       "author": "tangosdev",
-      "name": "func_ov006_02110bc0"
+      "name": "cMgSmartball_dokan_c_Construct"
     },
     "ov006:0x02110c08": {
       "author": "andrewboudreau",
@@ -25975,7 +25975,7 @@
     },
     "ov006:0x02111220": {
       "author": "tangosdev",
-      "name": "func_ov006_02111220"
+      "name": "cMgSmartball_propeller_c_Construct"
     },
     "ov006:0x02111268": {
       "author": "tangosdev",
@@ -25991,7 +25991,7 @@
     },
     "ov006:0x0211157c": {
       "author": "tangosdev",
-      "name": "func_ov006_0211157c"
+      "name": "cMgSmartball_spring_c_Construct"
     },
     "ov006:0x021115c4": {
       "author": "tangosdev",
@@ -26015,7 +26015,7 @@
     },
     "ov006:0x02111774": {
       "author": "tangosdev",
-      "name": "func_ov006_02111774"
+      "name": "cMgSmartball_ana_c_Construct"
     },
     "ov006:0x021117bc": {
       "author": "andrewboudreau",
@@ -26031,7 +26031,7 @@
     },
     "ov006:0x02111b40": {
       "author": "tangosdev",
-      "name": "func_ov006_02111b40"
+      "name": "cMgSmartball_kinoko_c_Construct"
     },
     "ov006:0x02111b90": {
       "author": "tangosdev",
@@ -26111,7 +26111,7 @@
     },
     "ov006:0x02112ad8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_02112ad8"
+      "name": "SmartballBall_UpdatePhysics"
     },
     "ov006:0x02113c14": {
       "author": "andrewboudreau",
@@ -26131,7 +26131,7 @@
     },
     "ov006:0x02114548": {
       "author": "tangosdev",
-      "name": "func_ov006_02114548"
+      "name": "cMgSmartball_ball_c_Construct"
     },
     "ov006:0x02114590": {
       "author": "andrewboudreau",
@@ -26171,7 +26171,7 @@
     },
     "ov006:0x0211474c": {
       "author": "tangosdev",
-      "name": "func_ov006_0211474c"
+      "name": "cMgSmartball_object_c_Construct"
     },
     "ov006:0x021147ac": {
       "author": "tangosdev",
@@ -26307,7 +26307,7 @@
     },
     "ov006:0x02119900": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02119900"
+      "name": "SmartballObj_ElemCtor"
     },
     "ov006:0x02119904": {
       "author": "andrewboudreau",
@@ -26975,7 +26975,7 @@
     },
     "ov006:0x02120938": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120938"
+      "name": "Trmp_Nothing"
     },
     "ov006:0x0212093c": {
       "author": "github-actions[bot]",
@@ -27011,31 +27011,31 @@
     },
     "ov006:0x02120b7c": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120b7c"
+      "name": "TrmpFx_Unlink"
     },
     "ov006:0x02120bc8": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120bc8"
+      "name": "TrmpFx_Link"
     },
     "ov006:0x02120c08": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120c08"
+      "name": "TrmpFx_DrawAll"
     },
     "ov006:0x02120c40": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120c40"
+      "name": "TrmpFx_UpdateAll"
     },
     "ov006:0x02120ca0": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120ca0"
+      "name": "TrmpFx_ClearAll"
     },
     "ov006:0x02120d0c": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120d0c"
+      "name": "TrmpFx_Spawn"
     },
     "ov006:0x02120d8c": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_02120d8c"
+      "name": "TrmpFx_InitPool"
     },
     "ov006:0x02120da8": {
       "author": "github-actions[bot]",
@@ -27139,7 +27139,7 @@
     },
     "ov006:0x021225a8": {
       "author": "github-actions[bot]",
-      "name": "func_ov006_021225a8"
+      "name": "Trmp_Nothing2"
     },
     "ov006:0x021225ac": {
       "author": "tangosdev",
@@ -27571,15 +27571,15 @@
     },
     "ov006:0x0212a650": {
       "author": "tangosdev",
-      "name": "func_ov006_0212a650"
+      "name": "Petal_ElemDtor"
     },
     "ov006:0x0212a654": {
       "author": "andrewboudreau",
-      "name": "_ZN13dScMgFlower_c19func_ov006_0212a654Ev"
+      "name": "_ZN13dScMgFlower_c12UpdatePetalsEv"
     },
     "ov006:0x0212a764": {
       "author": "tangosdev",
-      "name": "_ZN13dScMgFlower_c19func_ov006_0212a764Ev"
+      "name": "_ZN13dScMgFlower_c10DealPetalsEv"
     },
     "ov006:0x0212aa74": {
       "author": "ruspecial",
@@ -27603,7 +27603,7 @@
     },
     "ov006:0x0212b88c": {
       "author": "tangosdev",
-      "name": "func_ov006_0212b88c"
+      "name": "Petal_ElemCtor"
     },
     "ov006:0x0212f4c4": {
       "author": "tangosdev",

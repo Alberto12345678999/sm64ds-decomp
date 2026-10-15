@@ -226,7 +226,7 @@ extern int _ZTV14dScMgD3DBase_c[];
 extern void _ZN6Player29TryExitCharacterDoorWithIntroEv(void);
 extern void TrmpLine_Reset(void);
 extern void Jump2Popup_ElemCtor(void *object);
-extern void func_ov006_021225a8(void);
+extern void Trmp_Nothing2(void);
 extern void *_ZN18TextureTransformerC1Ev(void *transformer);
 /* local extern: only sibling minigame headers (dScMgAmida_c.h and four
    others) declare it; this TU includes none of them */
@@ -364,8 +364,8 @@ extern "C" void *dScMgTrampoline2_c_classInit(void)
                       (void *)Trmp2Spinner_Construct,
                       (void *)Trmp2Spinner_Destruct);
         __cxa_vec_ctor(scene + 0x7ad0, 5, 0x24,
-                      (void *)func_ov006_021225a8,
-                      (void *)func_ov006_02120938);
+                      (void *)Trmp_Nothing2,
+                      (void *)Trmp_Nothing);
     }
     return scene;
 }
@@ -444,7 +444,7 @@ s32 dScMgTrampoline2_c::InitResources()
     Camera_UpdateMatrices(raw + 0x4728);
     if (func_ov006_020cae9c(raw + 0x500c, 5) == 0)
         return 0;
-    func_ov006_02120d8c(raw + 0x7ad0, 5);
+    TrmpFx_InitPool(raw + 0x7ad0, 5);
     TrmpLine_LoadTextures();
     TrmpItem_LoadAll((char *)(raw + 0x5ddc), 10);
     Jump2Popup_InitPool((int)(raw + 0x6ffc), 10);
@@ -477,8 +477,8 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
     TrmpItem_HideAll(mLevel);
     Jump2Popup_ClearAll();
     Trmp2Spinner_HideAll();
-    func_ov006_02120ca0();
-    func_ov006_020c8a9c(0, data_ov006_0213fc20[GetGameLanguage()]);
+    TrmpFx_ClearAll();
+    Puff_ClearAll(0, data_ov006_0213fc20[GetGameLanguage()]);
 
     mInputEnabled = 0;
     mRoundOver = 0;
@@ -501,7 +501,7 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
 /* CanEndState: the vtable slot is this class's own; the name is inferred. */
 int dScMgTrampoline2_c::CanEndState(int /* mode */)
 {
-    func_ov006_020c8a9c(0, data_ov006_0213fc20[GetGameLanguage()]);
+    Puff_ClearAll(0, data_ov006_0213fc20[GetGameLanguage()]);
     return 1;
 }
 
@@ -944,7 +944,7 @@ s32 dScMgTrampoline2_c::Behavior()
 {
     int saved = data_ov006_02140830;
 
-    func_ov006_02120c40();
+    TrmpFx_UpdateAll();
     Jump2Popup_UpdateAll();
     Trmp2Spinner_UpdateAll();
     mParticleID =
@@ -988,7 +988,7 @@ s32 dScMgTrampoline2_c::Render()
     *(volatile int *)0x40004cc = 0x7fff;
     *(volatile int *)0x40004cc = 0x40007fff;
 
-    func_ov006_02120c08();
+    TrmpFx_DrawAll();
     Jump2Popup_DrawAll();
 
     if (unk_4664 == 1) {

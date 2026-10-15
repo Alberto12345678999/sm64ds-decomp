@@ -66,7 +66,7 @@ unsigned int func_02012790(unsigned int id);
 int  func_0203d5dc(void* a, void* b);
 void Mg_CommitRecords(void* t);
 void Mg_SubmitScore(int score);
-void func_ov006_0210a534(void* c);
+void LoadCard2SubBg3(void* c);
 void Camera_InitDealerView(void* c);
 void Dealer_StartDeal(char* t, int unused, short a2, void* a3);
 int  Dealer_IsIdle(void* t);
@@ -122,7 +122,7 @@ s32 dScMgMCarlo2_c::InitResources()
     int lang;
     int tiles, palette;
     Mg_SetTopScreenYOffset(0x20);
-    func_ov006_0210a534(raw);
+    LoadCard2SubBg3(raw);
     lang = GetGameLanguage();
     tiles = LoadFile(data_ov006_0213d744[lang]);
     palette = LoadFile(0xbb);

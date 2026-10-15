@@ -77,8 +77,8 @@ extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
 extern void FreeGfxSlotsById(int arg);
 extern void Mg_SetSharedState(int c);
 
-extern void func_ov006_020efcf8(void);
-extern void func_ov006_020efdac(void);
+extern void Luigi_PrepareScanlines(void);
+extern void Luigi_PushScanlineRecord(void);
 extern int *dScMgLuigi_c_classInit(void);
 }
 namespace GXS {
@@ -114,7 +114,7 @@ dScMgLuigi_c::~dScMgLuigi_c()
 /* The base cleanup returns void; call it, don't return it. */
 void dScMgLuigi_c::AfterCleanupResources(u32 vfSuccess)
 {
-    if (vfSuccess == 2 && IRQ::GetIRQHandler(2) == func_ov006_020efcf8) {
+    if (vfSuccess == 2 && IRQ::GetIRQHandler(2) == Luigi_PrepareScanlines) {
         u16 ime;
         do {
             ime = IME;
@@ -129,11 +129,11 @@ void dScMgLuigi_c::AfterCleanupResources(u32 vfSuccess)
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
 
-// @symbol func_ov006_020efcf8
+// @symbol Luigi_PrepareScanlines
 /* IRQ 2's handler uses the void(*)() callback installed by StartIris.
  * It accesses shared scanline state and remains a free function. */
 extern "C" {
-void func_ov006_020efcf8(void)
+void Luigi_PrepareScanlines(void)
 {
     extern char data_023c0000[];
     extern int data_0209f608;
@@ -146,7 +146,7 @@ void func_ov006_020efcf8(void)
     *(int *)(((int)data_023c0000 + 0x3ff8)) |= 2;
     line = REG_VCOUNT + 1;
     if (line >= 0xc0) {
-        func_ov006_020efdac();
+        Luigi_PushScanlineRecord();
     } else if (line <= 0xc0) {
         if (*(volatile u16 *)0x04000004 & 2) {
             MultiCopy_Int(&data_0209f648[data_0209f608][line], (int *)0x04000040, 4);
@@ -155,11 +155,11 @@ void func_ov006_020efcf8(void)
 }
 }
 
-// @symbol func_ov006_020efdac
+// @symbol Luigi_PushScanlineRecord
 extern "C" {
 /* Latches the pending scanline-table index and pushes that 0x300-byte record
    at 0x04000040. */
-void func_ov006_020efdac(void)
+void Luigi_PushScanlineRecord(void)
 {
     extern u32 data_0209f60c;
     extern volatile u32 data_0209f608;
@@ -283,7 +283,7 @@ void dScMgLuigi_c::StartIris()
     data_0209f608 = 0;
     saved = IME;
     IME = 0;
-    IRQ::SetIRQHandler(2, func_ov006_020efcf8);
+    IRQ::SetIRQHandler(2, Luigi_PrepareScanlines);
 
     REG_DISPCNT = (REG_DISPCNT & ~0xe000) | 0x2000;
     data_0209d460 = 1;

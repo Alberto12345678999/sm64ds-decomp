@@ -125,7 +125,7 @@
     "factory_count": 0,
     "boundary_confidence": "medium",
     "evidence": "build/tu_map.json ov006 unit 3 is exactly 0x020c762c..0x020c8a30 with 28 functions and the single class label dMgJump3DMario_c. queue_audit.py adds nothing: there is no <Class>_classInit / <Class>_Spawn neighbour to absorb (this class is not a profile actor; it is an array member of dScMgJump_c and dScMgJump2_c). shard_count 28 and total_lines 820 in notes/data/tu-promotion-queue.tsv both reproduce exactly on this base.",
-    "boundary_caveat": "tu_map cuts on symbol NAME, and only five of the 28 symbols carry the class name (the three virtuals plus D1/C1). Everything between them is swept in because it lies between two labelled symbols; the neighbours are excluded only because nothing labels THEM. Both neighbours abut with ZERO gap: func_ov006_020c7574 ends exactly at 0x020c762c and func_ov006_020c8a30 starts exactly at 0x020c8a30. See `original_tu_extent_unproven` in `unproven`."
+    "boundary_caveat": "tu_map cuts on symbol NAME, and only five of the 28 symbols carry the class name (the three virtuals plus D1/C1). Everything between them is swept in because it lies between two labelled symbols; the neighbours are excluded only because nothing labels THEM. Both neighbours abut with ZERO gap: func_ov006_020c7574 ends exactly at 0x020c762c and Puff_DrawAll starts exactly at 0x020c8a30. See `original_tu_extent_unproven` in `unproven`."
   },
 
   "run_segments": {

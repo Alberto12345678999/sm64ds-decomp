@@ -9,9 +9,9 @@
  *
  * FACTORY AND DESTRUCTOR AGREE MEMBER FOR MEMBER. The factory builds
  * mArray at 0x4f38 (0x16 elements of 0x20, element ctor
- * func_ov006_0212b88c) and then an object at 0x51f8
+ * Petal_ElemCtor) and then an object at 0x51f8
  * (FlowerFace_Construct); the destructor destroys the 0x51f8 object first
- * (FlowerFace_Destruct), then mArray (element dtor func_ov006_0212a650).
+ * (FlowerFace_Destruct), then mArray (element dtor Petal_ElemDtor).
  * Nothing is left over either way.
  *
  * THE 0x51f8 OBJECT is opaque: nothing reads inside it, so its size is
@@ -87,14 +87,14 @@
 
 extern "C" void *FlowerFace_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
-extern "C" void func_ov006_0212a650(void);
+extern "C" void Petal_ElemDtor(void);
 
 struct dScMgFlower_c : dScMgSingle3DBase_c {
     /* The 2-vector value type the petal setup swaps through (Fix12 x, y --
        the same pair func_0203d388 rotates in place). THE EMPTY DESTRUCTOR IS
        LOAD-BEARING, for the reason types.h gives Vector3 one: a local of this
        type keeps an 8-byte stack home even though every copy through it goes
-       register to register, and func_ov006_0212a764's frame is 0x1c only with
+       register to register, and DealPetals's frame is 0x1c only with
        that home (0x14 without it; a plain POD pair, a ctor-only pair, an int[2]
        and two scalar temps all lose the slot -- measured, 2004/b56). Nested so
        the coined name cannot collide with anything global. */
@@ -138,11 +138,11 @@ struct dScMgFlower_c : dScMgSingle3DBase_c {
     s32 Render();          /* slot  9 */
 
     /* scene helpers */
-    void func_ov006_0212a654();           /* per-frame petal update */
-    void func_ov006_0212a764();           /* round setup / restart */
+    void UpdatePetals();           /* per-frame petal update */
+    void DealPetals();           /* round setup / restart */
 
-    u8  mArray[0x2c0];     /* 0x4f38 -- 0x16 * 0x20, elem dtor func_ov006_0212a650.
-                              One 0x20-byte petal record, as func_ov006_0212a764
+    u8  mArray[0x2c0];     /* 0x4f38 -- 0x16 * 0x20, elem dtor Petal_ElemDtor.
+                              One 0x20-byte petal record, as DealPetals
                               (the round setup) and Behavior read it:
                                 +0x00 u8   active        +0x04 Vec2 pos (Fix12 x, y)
                                 +0x01 u8   unk1          +0x0c s32  unk0c

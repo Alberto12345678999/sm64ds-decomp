@@ -131,7 +131,7 @@ void Mg_DrawCredits(char *, int, int, int);
 void Dealer_Draw(char *);
 extern "C" void MgCoins_Update(void);
 extern "C" void Dealer_Update(char *p);
-void func_ov006_0210a534(void);
+void LoadCard2SubBg3(void);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
@@ -1250,7 +1250,7 @@ s32 dScMgMemory2_c::Behavior()
 // @symbol _ZN14dScMgMemory2_c13InitResourcesEv
 /* Vtable slot 0: load the language's card art into both OBJ banks with the
  * shared palette, reset the board, then set up the timer and the dMeter_c.
- * func_ov006_0210a534 is dScMgSingle3DBase_c's unnamed slot 26, so it stays a
+ * LoadCard2SubBg3 is dScMgSingle3DBase_c's unnamed slot 26, so it stays a
  * plain call. */
 s32 dScMgMemory2_c::InitResources()
 {
@@ -1258,7 +1258,7 @@ s32 dScMgMemory2_c::InitResources()
     void *palette;
 
     data_0209d45c = 0x11;
-    func_ov006_0210a534();
+    LoadCard2SubBg3();
     art = LoadFile(data_ov006_0213d370[GetGameLanguage()]);
     palette = LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
     DecompressLZ16(art, (void *)0x6400000);

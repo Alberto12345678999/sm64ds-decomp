@@ -4,14 +4,14 @@
  *
  * This file is the class's whole ov006 unit, in ROM order, lowest address
  * first, under `#pragma defer_codegen off`: from the destructor pair at
- * 0x020d1018 to func_ov006_020d5a50, the piece array's element constructor.
+ * 0x020d1018 to AmidaPiece_ElemCtor, the piece array's element constructor.
  * The previous unit ends at 0x020d1018 with TrmpLine_Reset, and
  * dScMgBomroom_c's D1 starts the next at 0x020d5a54. tu_map stops this unit
  * at 0x020d5974; the relocation census in the manifest shows that the
- * factory and func_ov006_020d5a50 above it belong to it too. The destructor
+ * factory and AmidaPiece_ElemCtor above it belong to it too. The destructor
  * is the key function, so this file also emits the vtable and RTTI.
  *
- * The fifteen functions below func_ov006_020d3624 came from one-function
+ * The fifteen functions below Amida_RestoreBgChars came from one-function
  * files. Their bodies are kept as they matched there, with these changes:
  *   - ShuffleGoals, CheckHurryButton, CheckEdgeBoost and StepWalkers
  *     called slot 36 through stand-in vtable structs; they now call
@@ -34,10 +34,10 @@
  *   on reusing the computed `ent` address, RenderBoard/Render on the lane
  *   pointer forms). Member calls into them are fine; only loads/stores are
  *   pinned.
- * - func_ov006_020d3624 and func_ov006_020d3668 stay free helpers: the
+ * - Amida_RestoreBgChars and Amida_SaveBgChars stay free helpers: the
  *   object pointer they take is never read -- both only copy BG char VRAM --
  *   so membership cannot be proven from the bodies.
- * - func_ov006_020d116c / func_ov006_020d5a50 stay free: they are the piece
+ * - AmidaPiece_ElemDtor / AmidaPiece_ElemCtor stay free: they are the piece
  *   array's element dtor/ctor callbacks for __cxa_vec_cleanup / vec_ctor;
  *   declaring them on dScMgAmida_c_Piece would make the class destructor
  *   emit a second vector cleanup.
@@ -105,9 +105,9 @@ extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
 extern void *_ZN3G2S12GetBG1ScrPtrEv(void);
 
 /* --- the class's own functions defined below --- */
-extern void func_ov006_020d3624(void *);
-extern void func_ov006_020d3668(void *sb);
-extern void func_ov006_020d5a50(void);
+extern void Amida_RestoreBgChars(void *);
+extern void Amida_SaveBgChars(void *sb);
+extern void AmidaPiece_ElemCtor(void);
 extern void *dScMgAmida_c_classInit(void);
 
 /* --- data --- */
@@ -200,7 +200,7 @@ extern Buf14 data_ov006_0213b880;
    D0 repeats the same body and adds the delete. */
 dScMgAmida_c::~dScMgAmida_c()
 {
-    __cxa_vec_cleanup((char *)this + 0x4768, 0x80, 0x18, (void *)func_ov006_020d116c);
+    __cxa_vec_cleanup((char *)this + 0x4768, 0x80, 0x18, (void *)AmidaPiece_ElemDtor);
     __cxa_vec_cleanup((char *)this + 0x4744, 4, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup((char *)this + 0x4724, 4, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup((char *)this + 0x4660, 4, 8, (void *)NullDestructor_0203d47c);
@@ -221,9 +221,9 @@ extern "C" dScMgAmida_c *_ZN12dScMgAmida_cD0Ev(dScMgAmida_c *thiz)
 }
 #endif
 
-// @symbol func_ov006_020d116c
+// @symbol AmidaPiece_ElemDtor
 /* Element destructor for the 0x80 falling pieces: nothing to undo. */
-extern "C" void func_ov006_020d116c(void)
+extern "C" void AmidaPiece_ElemDtor(void)
 {
 }
 
@@ -379,7 +379,7 @@ void dScMgAmida_c::ClearStroke()
         }
         rowoff += 0x158;
     }
-    func_ov006_020d3624(this);
+    Amida_RestoreBgChars(this);
     mLineStartSet = 0;
 }
 
@@ -743,7 +743,7 @@ void dScMgAmida_c::HandlePen()
                 return;
             }
             if (this->mLineEnd.x == this->mLineStart.x) {
-                func_ov006_020d3624(this);
+                Amida_RestoreBgChars(this);
                 int row = 0;
                 int col;
                 int rowoff = 0;
@@ -802,7 +802,7 @@ void dScMgAmida_c::HandlePen()
                         Mg_DrawLine(this, b.x - 1, b.y, b.x - 1, b.y, this->unk_53e4, 1);
                     }
                     this->mLineCommit = 0;
-                    func_ov006_020d3668(this);
+                    Amida_SaveBgChars(this);
                     this->mLineCount++;
                     Sound::PlayBank2_2D(0xdf);
                 } else {
@@ -1300,17 +1300,17 @@ void dScMgAmida_c::StepWalkers()
 }
 #pragma pop
 
-// @symbol func_ov006_020d3624
-extern "C" void func_ov006_020d3624(void *) {
+// @symbol Amida_RestoreBgChars
+extern "C" void Amida_RestoreBgChars(void *) {
   char *mainChars = (char *)func_02054efc();
   MultiCopyHalf((char *)func_02054efc() + 0xc000, mainChars, 0x6000);
   char *subChars = G2S::GetBG0CharPtr();
   MultiCopyHalf(G2S::GetBG0CharPtr() + 0x6000, subChars, 0x6000);
 }
 
-// @symbol func_ov006_020d3668
+// @symbol Amida_SaveBgChars
 /* The scene pointer its caller passes is never read. */
-extern "C" void func_ov006_020d3668(void *) {
+extern "C" void Amida_SaveBgChars(void *) {
   char *mainChars = (char *)func_02054efc() + 0xc000;
   MultiCopyHalf((char *)func_02054efc(), mainChars, 0x6000);
   char *subChars = G2S::GetBG0CharPtr() + 0x6000;
@@ -1696,7 +1696,7 @@ void dScMgAmida_c::SetupRound()
         }
     }
 
-    func_ov006_020d3668(this);
+    Amida_SaveBgChars(this);
     *(s32 *)(raw + 0x5370) = 1;
     *(volatile u16 *)0x04000050 = 0;
     _ZN3G2x13SetBlendAlphaEPVttttj((void *)0x04001050, 4, 8, 6, 0x10);
@@ -2296,13 +2296,13 @@ extern "C" void *dScMgAmida_c_classInit(void) {
         __cxa_vec_ctor(scene + 0x4660, 4, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene + 0x4724, 4, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
         __cxa_vec_ctor(scene + 0x4744, 4, 8, (void *)func_0203d738, (void *)NullDestructor_0203d47c);
-        __cxa_vec_ctor(scene + 0x4768, 0x80, 0x18, (void *)func_ov006_020d5a50, (void *)func_ov006_020d116c);
+        __cxa_vec_ctor(scene + 0x4768, 0x80, 0x18, (void *)AmidaPiece_ElemCtor, (void *)AmidaPiece_ElemDtor);
     }
     return scene;
 }
 
-// @symbol func_ov006_020d5a50
+// @symbol AmidaPiece_ElemCtor
 /* Element constructor for the 0x80 falling pieces. */
-extern "C" void func_ov006_020d5a50(void)
+extern "C" void AmidaPiece_ElemCtor(void)
 {
 }

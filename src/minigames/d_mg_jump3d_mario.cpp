@@ -75,14 +75,14 @@ void func_02016a14(void *self, int a);
 void func_02016a04(void *self, int a);
 int  func_020179b4(SharedFilePtr *f, ModelBase *m, int extra);
 void Camera_ProjectToScreen16(void *cam, Jump3DVec *pos, short *out);
-void func_ov006_020e6e3c(int a, int b);
-void func_ov006_020c8c78(int a, int b);
+void D3D_PlaySeAtX(int a, int b);
+void Puff_Spawn(int a, int b);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
 int  func_020531a4(int a);
-void func_ov006_020c8a30(void);
-void func_ov006_020c8a64(void);
-void func_ov006_020c8a9c(int a, int b);
+void Puff_DrawAll(void);
+void Puff_UpdateAll(void);
+void Puff_ClearAll(int a, int b);
 
 /* The mState records this file installs or compares. */
 extern Jump3DState data_ov006_0213b020;
@@ -207,7 +207,7 @@ extern "C" void func_ov006_020c70d0(void)
     for (i = 0; i < data_ov006_02140418; i++) {
         ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->func_ov006_020c7734();
     }
-    func_ov006_020c8a30();
+    Puff_DrawAll();
 }
 
 // @symbol func_ov006_020c712c
@@ -218,7 +218,7 @@ extern "C" void func_ov006_020c712c(void)
     for (i = 0; i < data_ov006_02140418; i++) {
         ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->func_ov006_020c7860();
     }
-    func_ov006_020c8a64();
+    Puff_UpdateAll();
 }
 
 // @symbol func_ov006_020c719c
@@ -240,7 +240,7 @@ extern "C" void func_ov006_020c719c(u32 a0, u32 a1)
     for (i = 0; i < data_ov006_02140418; i++) {
         ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->func_ov006_020c8658();
     }
-    func_ov006_020c8a9c(data_ov006_02140418 - data_ov006_02140428, 0);
+    Puff_ClearAll(data_ov006_02140418 - data_ov006_02140428, 0);
     data_ov006_02140434 = 0;
 }
 
@@ -479,7 +479,7 @@ void dMgJump3DMario_c::StateDamp()
     if (mTimer == 0) {
         ApproachLinear(data_ov006_02140428, 0, 1);
         Sound::PlayBank2_2D(0x130);
-        func_ov006_020c8c78(mScreenX, 0xc0);
+        Puff_Spawn(mScreenX, 0xc0);
         EnterRespawn();
         return;
     }
@@ -735,7 +735,7 @@ void dMgJump3DMario_c::StateRiseOut()
     {
         if (mModelAnim.dExtFrameCtrl_c::WillHitFrame(0xc) ||
             mModelAnim.dExtFrameCtrl_c::WillHitFrame(0x18))
-            func_ov006_020e6e3c(0x1b5, mPos.x);
+            D3D_PlaySeAtX(0x1b5, mPos.x);
     }
     if (mPos.y <= 0x180000)
         return;
@@ -784,7 +784,7 @@ void dMgJump3DMario_c::StateBounce()
     if (mModelAnim.file == data_ov006_0214041c) {
         if (mModelAnim.dExtFrameCtrl_c::WillHitFrame(0xc) != 0 ||
             mModelAnim.dExtFrameCtrl_c::WillHitFrame(0x18) != 0)
-            func_ov006_020e6e3c(0x1b5, mPos.x);
+            D3D_PlaySeAtX(0x1b5, mPos.x);
     }
 
     if (mPos.x < -kWallX && mVel.x < 0) {

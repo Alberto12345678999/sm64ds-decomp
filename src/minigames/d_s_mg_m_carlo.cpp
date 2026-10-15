@@ -85,7 +85,7 @@ void MgCoins_Reset(char* p);
 void FreeGfxSlotsById(int arg);
 void MgCoins_StartPayout(char* p);
 extern unsigned short gMgCoinsStatus;
-extern void func_ov006_0210a534(void *c);
+extern void LoadCard2SubBg3(void *c);
 extern int GetGameLanguage(void);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
@@ -134,7 +134,7 @@ s32 dScMgMCarlo_c::InitResources()
     void *pal;
 
     Mg_SetTopScreenYOffset(0x20);
-    func_ov006_0210a534(this);
+    LoadCard2SubBg3(this);
     chr = (void *)LoadFile(data_ov006_0213d5b4[GetGameLanguage()]);
     pal = (void *)LoadFile(ASSET_D_2D_MG_CARD_NCL_BIN);
     DecompressLZ16(chr, (void *)0x6600000);

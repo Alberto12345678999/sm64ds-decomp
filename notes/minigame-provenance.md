@@ -207,7 +207,7 @@ RestoreInitial, which is exhaustive -- every array length and every scalar width
 below comes from that function's loop bounds and store widths. SaveSnapshot and
 Update corroborate roughly half of the same offsets.
 
-**Several names are borrowed, not invented.** [func_ov006_02112ad8](../src/minigames/d_s_mg_smartball.cpp) and
+**Several names are borrowed, not invented.** [SmartballBall_UpdatePhysics](../src/minigames/d_s_mg_smartball.cpp) and
 [func_ov006_021128fc](../src/minigames/d_s_mg_smartball.cpp) -- two out-of-scope helpers `SaveSnapshot` calls with `this` -- each reinterpret the pointer through their own local Obj-style struct cast
 and name a number of these exact offsets (hit/hitA/hitB/hitC, anyHit,
 specialHit, nearby, targetIndex, soundTimer, soundPlayed, state3a, state3b).
@@ -215,16 +215,16 @@ Every one of those offsets is also independently touched by RestoreInitial, so
 the width and existence of each field is evidenced in-scope; only the spelling
 is borrowed. Anything without that corroboration keeps an `unk_` name.
 
-0x44-0x4b are hitX/hitZ in [func_ov006_02112ad8](../src/minigames/d_s_mg_smartball.cpp)'s naming, but none of this
+0x44-0x4b are hitX/hitZ in [SmartballBall_UpdatePhysics](../src/minigames/d_s_mg_smartball.cpp)'s naming, but none of this
 class's own four functions touches them, so per the wing_c precedent they stay
 an explicit pad -- unmodelled, not unread. pad_0e7[0x11] (0xe7-0xf7) is a
 genuine gap: RestoreInitial's exhaustive zero pass skips straight over it
-(nearby[] ends at 0xe6, targetIndex starts at 0xf8) and [func_ov006_02112ad8](../src/minigames/d_s_mg_smartball.cpp)'s
+(nearby[] ends at 0xe6, targetIndex starts at 0xf8) and [SmartballBall_UpdatePhysics](../src/minigames/d_s_mg_smartball.cpp)'s
 Obj cast also treats it as padding. pad_101 / pad_111 / pad_122 / pad_12a are
 pure alignment gaps between adjacent int fields (house style: explicit pads over
 implicit compiler-inserted ones).
 
-Constructed by [func_ov006_02114548](../src/minigames/d_s_mg_smartball.cpp), left a free function per the recipe. It
+Constructed by [cMgSmartball_ball_c_Construct](../src/minigames/d_s_mg_smartball.cpp), left a free function per the recipe. It
 calls the base constructor and writes only this vtable and the base's
 `unk_028 = 0x8000`; it touches nothing at or past 0x34, so it adds no evidence
 to the field list.
@@ -315,7 +315,7 @@ destroys FOUR arrays via __destroy_arr, in this exact order, in BOTH D1
 and D0 (both emitted from the one ~dScMgAmida_c() in
 src/minigames/d_s_mg_amida.cpp, with an identical body, same shape dScMgHanachan_c's own D1/D0 pair uses): the 0x80x0x18
 dScMgAmida_c_Piece array at 0x4768 (own per-element dtor
-func_ov006_020d116c in [src/minigames/d_s_mg_amida.cpp](../src/minigames/d_s_mg_amida.cpp), a no-op -- the element type needs no real cleanup),
+AmidaPiece_ElemDtor in [src/minigames/d_s_mg_amida.cpp](../src/minigames/d_s_mg_amida.cpp), a no-op -- the element type needs no real cleanup),
 then the three NullDestructor_0203d47c-based 4x8-byte arrays at 0x4744,
 0x4724, and 0x4660 in that order (their own per-element dtor is also a
 no-op). The base-D2 call and own-vtable-write are compiler generated;
@@ -387,7 +387,7 @@ ever reads or writes them, so they are not modelled as a field.
 
 ### The __destroy_arr declarations
 
-__destroy_arr / func_ov006_020d116c / NullDestructor_0203d47c: the same
+__destroy_arr / AmidaPiece_ElemDtor / NullDestructor_0203d47c: the same
 __destroy_arr(p, count, elemSize, dtor) idiom dScMgBase_c's own D1/D0 use
 for touchIcon_0f4 (see dScMgBase_c.h's file banner and
 _ZN11dScMgBase_cD1Ev in src/minigames/d_s_mg_base.cpp) -- declared here, not per-destructor-file,

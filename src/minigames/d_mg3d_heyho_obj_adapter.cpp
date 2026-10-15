@@ -228,7 +228,7 @@ void func_ov006_020c6a9c(char *c)
     _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1);
     if (*(s16 *)(c + 0xec) != 1)
         return;
-    func_ov006_020e6e3c(0x1c5, *(int *)(c + 0x9c));
+    D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
 }
 
 }
@@ -315,7 +315,7 @@ struct Obj;
 extern void AddVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern int LenVec3(Vec3 *v);
 extern void _Z15ApproachLinear2Rsss(short *v, short t, short s);
-extern int func_ov006_020e6e3c(int a, int b);
+extern int D3D_PlaySeAtX(int a, int b);
 extern void func_ov006_020c63dc(char *p);
 extern void func_ov006_020c6348(int *c);
 extern void func_ov006_020c6248(int *c);
@@ -371,14 +371,14 @@ void func_ov006_020c66bc(char *c)
             default: func_ov006_020c63dc(c); break;
             }
 
-            func_ov006_020e6e3c(0x1c5, *(int *)(c + 0x9c));
+            D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
         }
     }
 
     _Z15ApproachLinear2Rsss((short *)(c + 0xec), 0, 1);
 
     if (*(short *)(c + 0xec) == 1) {
-        func_ov006_020e6e3c(0x1c5, *(int *)(c + 0x9c));
+        D3D_PlaySeAtX(0x1c5, *(int *)(c + 0x9c));
     }
 
     if (LenVec3((Vec3 *)(c + 0xa8)) < 0x1000) {
@@ -1424,10 +1424,10 @@ namespace n020c4f68 {
 extern "C" {
 struct S{int w[2];};
 extern struct S data_ov006_0213af80;
-extern void func_ov006_020e6e3c(int a, int b);
+extern void D3D_PlaySeAtX(int a, int b);
 void func_ov006_020c4f68(int *c){
   *(short*)((char*)c+0xea)=0;
-  func_ov006_020e6e3c(0x1c8, *(int*)((char*)c+0x9c));
+  D3D_PlaySeAtX(0x1c8, *(int*)((char*)c+0x9c));
   *(struct S*)((char*)c+0x30)=data_ov006_0213af80;
 }
 
@@ -1438,7 +1438,7 @@ void func_ov006_020c4f68(int *c){
 namespace n020c4e8c {
 extern "C" {
 #define AT(p, off) ((void*)(int)((char*)(p) + (off)))
-int func_ov006_020e6e3c(int a, int b);
+int D3D_PlaySeAtX(int a, int b);
 void func_ov006_020c4d3c(char* c);
 extern short data_02082214[];
 
@@ -1457,7 +1457,7 @@ void func_ov006_020c4e8c(char* c) {
         *(int*)(c + 0xd4) = r0;
         return;
     }
-    func_ov006_020e6e3c(0x1c7, *(int*)(c + 0x9c));
+    D3D_PlaySeAtX(0x1c7, *(int*)(c + 0x9c));
     func_ov006_020c4d3c(c);
 }
 

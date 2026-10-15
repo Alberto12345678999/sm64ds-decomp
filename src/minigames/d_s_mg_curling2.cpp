@@ -80,7 +80,7 @@ extern void func_02012718(int id, int v);
 extern int  func_020126e8(int a);
 extern int  func_02012468(int a, int b, int c, int d, int e, int f, int g, s16 h);
 extern void func_020126ac(int a0, int a1, int a2, int a3, int s0);
-extern void func_ov006_020e5450(dScMgCurling2_c *self, int idx);
+extern void Curling2_ResolveStoneCollision(dScMgCurling2_c *self, int idx);
 extern void DrawOamSprite(int a, int b, int c, int d);
 extern void RenderOamBothScreens(void *a0, int a1, int a2, int a3, int a4, void *a5);
 extern int  RandomIntInternal(int *seed);
@@ -1074,7 +1074,7 @@ void dScMgCurling2_c::SeparateStones(int idx)
 
 #define FMUL(a, b) ((int)(((long long)(a) * (b) + 0x800) >> 12))
 
-// @symbol func_ov006_020e5450
+// @symbol Curling2_ResolveStoneCollision
 /* Stone collision: the first live, moving stone within 0x18 of stone idx
  * takes the hit. Both velocities are rotated into the contact frame, the
  * along-contact parts swapped, and the results become each stone's new
@@ -1091,7 +1091,7 @@ void dScMgCurling2_c::SeparateStones(int idx)
  * stone's chain. The rest (one rel/k/c/s set for both stones, pointer
  * locals for the fields written after a call, the hitAngle reference) are
  * described in notes/mwccarm-codegen.md 6cz. */
-extern "C" void func_ov006_020e5450(dScMgCurling2_c *self, int idx)
+extern "C" void Curling2_ResolveStoneCollision(dScMgCurling2_c *self, int idx)
 {
     long long sw;
     long long cw;
@@ -1248,10 +1248,10 @@ void dScMgCurling2_c::StoneSteer(int idx)
 
 // @symbol _ZN15dScMgCurling2_c9StoneRestEi
 /* Stone state 2: the resting handler veneers to the sourceless collision
- * step. See the file-top leftover for func_ov006_020e5450. */
+ * step. See the file-top leftover for Curling2_ResolveStoneCollision. */
 void dScMgCurling2_c::StoneRest(int i)
 {
-    func_ov006_020e5450(this, i);
+    Curling2_ResolveStoneCollision(this, i);
 }
 
 
@@ -1329,7 +1329,7 @@ void dScMgCurling2_c::StoneSlide(int idx)
         *(u8 *)(c + idx * 0x30 + 0x4688) = 2;
     }
 
-    func_ov006_020e5450((dScMgCurling2_c *)c, idx);
+    Curling2_ResolveStoneCollision((dScMgCurling2_c *)c, idx);
     StoneSpin(idx);
 
     v = *pd;

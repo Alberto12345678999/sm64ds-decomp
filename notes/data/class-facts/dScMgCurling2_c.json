@@ -583,7 +583,7 @@
       "kind": "direct-call helper; member-vs-free unproven"
     },
     {
-      "symbol": "func_ov006_020e5450",
+      "symbol": "Curling2_ResolveStoneCollision",
       "address": "0x020e5450",
       "size": "0x560",
       "direct_callers": [
@@ -817,7 +817,7 @@
     }
   ],
   "unproven": [
-    "Whether func_ov006_020e5450 can be matched. The honest measurement is 191 divergent words of 344 at the exact size 0x560, which is what nearmiss/db.jsonl banks, with a byte-clean prologue; no matched source exists. An older config/match_attempts.jsonl row read 29, but it was scored over a 0x52c candidate against the 0x560 target and was a truncated verdict, not a divergence count; that field has been cleared.",
+    "Whether Curling2_ResolveStoneCollision can be matched. The honest measurement is 191 divergent words of 344 at the exact size 0x560, which is what nearmiss/db.jsonl banks, with a byte-clean prologue; no matched source exists. An older config/match_attempts.jsonl row read 29, but it was scored over a 0x52c candidate against the 0x560 target and was a truncated verdict, not a divergence count; that field has been cleared.",
     "Whether any of the five pragma directives is load-bearing. That is a delete-outright control the writer runs; nothing here measures it.",
     "The original identifiers and member-versus-file-local form of the 21 direct-call-only helpers. Direct calls preserve targets and arguments, not source-level linkage.",
     "The original names of the 25 nonvirtual member callbacks reached through the pointer-to-member records, and the gameplay semantics of the seven BSS destination arrays.",
@@ -923,7 +923,7 @@
       "start": "0x020e5450",
       "end": "0x020e59b0",
       "size": "0x560",
-      "symbol": "func_ov006_020e5450",
+      "symbol": "Curling2_ResolveStoneCollision",
       "reason": "no-legacy-source: no delinks.txt entry and no src/func_ov006_020e5450.c[pp]. The cartridge's own bytes cover it."
     }
   },
@@ -941,7 +941,7 @@
       "count": 1,
       "queue_says": 1,
       "verdict": "REAL and unchanged",
-      "function": "func_ov006_020e5450",
+      "function": "Curling2_ResolveStoneCollision",
       "address": "0x020e5450",
       "size": "0x560",
       "evidence": "Absent from config/arm9/overlays/ov006/delinks.txt (a 0x560 gap sits between src/func_ov006_020e513c.cpp ending at 0x020e5450 and src/func_ov006_020e59b0.c starting at 0x020e59b0) and there is no src/func_ov006_020e5450.c or .cpp."
@@ -1022,7 +1022,7 @@
   },
   "near_miss_bank": {
     "hole_function": {
-      "name": "func_ov006_020e5450",
+      "name": "Curling2_ResolveStoneCollision",
       "address": "0x020e5450",
       "size": "0x560",
       "attempts": 1,

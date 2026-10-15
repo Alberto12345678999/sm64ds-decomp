@@ -74,13 +74,13 @@ void  _ZN2GX15SetBankForSubBGEt(unsigned int x);
 void  _ZN2GX16SetBankForSubOBJEt(unsigned int x);
 
 /* Defined below. */
-void func_ov006_020e73c4(void);
-void func_ov006_020e740c(void);
-void func_ov006_020e7428(void);
-void func_ov006_020e7508(void);
-void func_ov006_020e759c(void);
-void func_ov006_020e7110(void *self);
-int  func_ov006_020e6da4(int a);
+void D3D_InitDualScreen(void);
+void D3D_ClearCaptureTable(void);
+void D3D_DrawSpriteTable(void);
+void D3D_CaptureToSub(void);
+void D3D_CaptureToMain(void);
+void D3D_ReleaseSubBg1(void *self);
+int  D3D_PanForX(int a);
 
 }
 
@@ -100,8 +100,8 @@ namespace G2S { u32 GetBG1CharPtr(); u32 GetBG1ScrPtr(); }
 namespace CP15 { void FlushAndInvalidateDataCache(u32, u32); }
 namespace Particle { void RenderAll(); }
 
-// @symbol func_ov006_020e759c
-extern "C" void func_ov006_020e759c(void) {
+// @symbol D3D_CaptureToMain
+extern "C" void D3D_CaptureToMain(void) {
     *(volatile unsigned short *)0x4000304 |= 0x8000;
     func_02054140();
     GX::SetBankForSubBG(4);
@@ -117,8 +117,8 @@ extern "C" void func_ov006_020e759c(void) {
     *(volatile unsigned short *)0x400100c &= ~0x40;
 }
 
-// @symbol func_ov006_020e7508
-extern "C" void func_ov006_020e7508(void)
+// @symbol D3D_CaptureToSub
+extern "C" void D3D_CaptureToSub(void)
 {
     *(volatile unsigned short *)0x4000304 &= ~0x8000;
     func_02054154();
@@ -131,8 +131,8 @@ extern "C" void func_ov006_020e7508(void)
     *(volatile int *)0x4001000 = (*(volatile int *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
 }
 
-// @symbol func_ov006_020e7428
-extern "C" void func_ov006_020e7428(void)
+// @symbol D3D_DrawSpriteTable
+extern "C" void D3D_DrawSpriteTable(void)
 {
     int entry;
     int x;
@@ -171,14 +171,14 @@ extern "C" void func_ov006_020e7428(void)
     func_02056674(data_ov006_02141a54, 0, 0x400);
 }
 
-// @symbol func_ov006_020e740c
-extern "C" void func_ov006_020e740c(void)
+// @symbol D3D_ClearCaptureTable
+extern "C" void D3D_ClearCaptureTable(void)
 {
     func_02056674(data_ov006_02141a54, 0, 0x400u);
 }
 
-// @symbol func_ov006_020e73c4
-extern "C" void func_ov006_020e73c4(void)
+// @symbol D3D_InitDualScreen
+extern "C" void D3D_InitDualScreen(void)
 {
     func_02054154();
     func_02054140();
@@ -256,7 +256,7 @@ void dScMgD3DBase_c::InitEngines()
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100u, 0x100u);
     InitialiseVramGlobals();
     Mg_ResetOverlays();
-    func_ov006_020e7428();
+    D3D_DrawSpriteTable();
     data_0208ee44 = 1;
     GX::SetGraphicsMode(1, 0, 1);
     GXS::SetGraphicsMode(5);
@@ -268,10 +268,10 @@ void dScMgD3DBase_c::InitEngines()
     data_0209d4a8 = (void *)sMgGraphCallback;
 }
 
-// @symbol func_ov006_020e7110
+// @symbol D3D_ReleaseSubBg1
 /* Clears the sub-screen BG1 claim. The caller passes this, which is
  * unused. */
-extern "C" void func_ov006_020e7110(void *) { data_0209e660 = 0; }
+extern "C" void D3D_ReleaseSubBg1(void *) { data_0209e660 = 0; }
 
 // @symbol _ZN14dScMgD3DBase_c19BeforeInitResourcesEv
 /* The key function: the first virtual declared but not defined inline, so
@@ -333,7 +333,7 @@ void dScMgD3DBase_c::AfterCleanupResources(unsigned int vfSuccess)
         *(int*)0x40004cc = 0x7fff;
         *(int*)0x40004c8 = 0x696a5800;
         *(int*)0x40004cc = 0x40007fff;
-        func_ov006_020e7110(this);
+        D3D_ReleaseSubBg1(this);
         Ov004_Deallocate(data_ov006_02141a4c);
         Ov004_Deallocate(data_ov006_02141a48);
     }
@@ -360,9 +360,9 @@ int dScMgD3DBase_c::OnGraphCallback2()
         data_ov006_02141a44 = cameraAddress;
         Camera_UpdateMatrices((dCamera_c *)cameraAddress);
         if (unk_4664 == 1) {
-            func_ov006_020e7508();
+            D3D_CaptureToSub();
         } else {
-            func_ov006_020e759c();
+            D3D_CaptureToMain();
             if (data_0209f5f8 == 0) {
                 *(int*)0x4001000 &= ~0xe000;
                 data_0209f5f8 = 1;
@@ -386,10 +386,10 @@ int dScMgD3DBase_c::GetDisplayMode()
     return 2;
 }
 
-// @symbol func_ov006_020e6e3c
+// @symbol D3D_PlaySeAtX
 /* Returns whatever func_02012718 leaves in r0; decl_common.h declares it
    void, so there is no return statement. */
-extern "C" int func_ov006_020e6e3c(int a, int b)
+extern "C" int D3D_PlaySeAtX(int a, int b)
 {
     func_02012718(a, b + 0x80000);
 }
@@ -397,19 +397,19 @@ extern "C" int func_ov006_020e6e3c(int a, int b)
 // @symbol Sound_PlayBank1Panned
 extern "C" void Sound_PlayBank1Panned(int a0, char *a1, void *a2) {
     a1 += data_ov006_0212e574[a0];
-    int pan = func_ov006_020e6da4((int)a2);
+    int pan = D3D_PanForX((int)a2);
     func_020127ec(1, (int)a1, 4, 0, 0, pan);
 }
 
-// @symbol func_ov006_020e6db4
-extern "C" void func_ov006_020e6db4(int a0, int a1, int a2) {
+// @symbol D3D_PlaySePannedLoop
+extern "C" void D3D_PlaySePannedLoop(int a0, int a1, int a2) {
     int pan = func_020126e8(a1 + 0x80000);
     func_020126ac(a0, 6, 0, a2, pan);
 }
 
-// @symbol func_ov006_020e6da4
+// @symbol D3D_PanForX
 /* Thunk: func_020126e8(a + 0x80000). */
-extern "C" int func_ov006_020e6da4(int a)
+extern "C" int D3D_PanForX(int a)
 {
     return func_020126e8(a + 0x80000);
 }
@@ -432,7 +432,7 @@ int dScMgD3DBase_c::CloseMenu()
 /* Slot 29: claims the sub-screen banks before the base opens the menu. */
 int dScMgD3DBase_c::SaveScreenForMenu()
 {
-    func_ov006_020e73c4();
+    D3D_InitDualScreen();
     GXS::LoadOBJPltt(data_ov006_02141a48, 0x100, 0x100);
     data_0209e660 = 0;
     mSubBgBank = func_02053eb0();
@@ -449,12 +449,12 @@ void dScMgD3DBase_c::RestoreScreenFromMenu()
     _ZN2GX15SetBankForSubBGEt(mSubBgBank);
     _ZN2GX16SetBankForSubOBJEt(unk_4660);
     data_0209e660 = 1;
-    func_ov006_020e740c();
+    D3D_ClearCaptureTable();
     dScMgBase_c::RestoreScreenFromMenu();
     if (unk_4664 == 1) {
-        func_ov006_020e7508();
+        D3D_CaptureToSub();
     } else {
-        func_ov006_020e759c();
+        D3D_CaptureToMain();
         if (data_0209f5f8 == 0) data_0209f5f8 = 1;
     }
 }

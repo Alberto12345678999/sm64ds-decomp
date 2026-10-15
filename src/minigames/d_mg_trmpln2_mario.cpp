@@ -241,7 +241,7 @@ extern int data_ov006_0213b0fc[2];
 extern int data_ov006_02140540[];
 extern int data_ov006_0213b114[2];
 extern void func_ov006_020ca3a8(char *c);
-extern void func_ov006_020e6e3c(int a, int b);
+extern void D3D_PlaySeAtX(int a, int b);
 }
 
 // @symbol func_ov006_020c9098
@@ -274,7 +274,7 @@ body:
     *(int *)(c + 0x48) = 0x100;
     *(int *)(c + 0x3c) = 0;
     *(int *)(c + 0x40) = 0x2000;
-    func_ov006_020e6e3c(0x1c9, *(int *)(c + 0x24));
+    D3D_PlaySeAtX(0x1c9, *(int *)(c + 0x24));
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), (BCA_File *)data_ov006_02140540[0], 0, 0x800, 0);
     *(int *)(c + 0xd0) = 0;
     {
@@ -292,7 +292,7 @@ extern "C" {
 void func_ov006_020ca2ec(void *c);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thisPtr, int frame);
-void func_ov006_020e6e3c(int a0, int a1);
+void D3D_PlaySeAtX(int a0, int a1);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
@@ -327,7 +327,7 @@ extern "C" void func_ov006_020c91ac(char *c)
     if (*(int *)(c + 0xd8) == data_ov006_0214059c) {
         if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)(c + 0xc8), 0xc) != 0 ||
             _ZNK15dExtFrameCtrl_c12WillHitFrameEi((void *)(c + 0xc8), 0x18) != 0) {
-            func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x24));
+            D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x24));
         }
     }
 
@@ -437,7 +437,7 @@ void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int fx1, int fx2, int fx3, const void *vec, void *cb);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
-int func_ov006_020e6e3c(int a, int b);
+int D3D_PlaySeAtX(int a, int b);
 void func_ov006_020c91ac(char *c);
 }
 
@@ -526,7 +526,7 @@ extern "C" void func_ov006_020c94e0(char *c)
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x78), data_ov006_0214059c, 0x40000000, 0x800, 0);
     *(int *)(c + 0xd0) = 0;
     Sound_PlayBank1Panned(0, 4, *(int *)(c + 0x24));
-    func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x24));
+    D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x24));
     *(int *)(c + 0x68) = 0;
     {
         int a = data_ov006_0213b1ec[0];
@@ -790,7 +790,7 @@ extern int data_ov006_021405b0;
 extern int data_ov006_02140574;
 extern BCA_File *data_ov006_0214059c;
 extern Pair data_ov006_0213b194;
-extern void func_ov006_020e6e3c(int a, int b);
+extern void D3D_PlaySeAtX(int a, int b);
 extern void func_ov006_020c91ac(char *c);
 }
 
@@ -807,8 +807,8 @@ extern "C" void func_ov006_020c9c8c(char *c)
     *(int *)(c + 0x60) = 0;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim *)(c + 0x78), data_ov006_0214059c, 0x40000000, 0x800, 0);
     *(int *)(c + 0xd0) = 0;
-    func_ov006_020e6e3c(0x110, *(int *)(c + 0x24));
-    func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x24));
+    D3D_PlaySeAtX(0x110, *(int *)(c + 0x24));
+    D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x24));
     *(int *)(c + 0x68) = 0;
     a = data_ov006_0213b194.a;
     b = data_ov006_0213b194.b;
@@ -880,7 +880,7 @@ void func_ov006_020c9e7c(unsigned char *c)
 namespace ns_020c9efc {
 typedef long long s64;
 extern "C" {
-extern void func_ov006_020c8c78(int a, int b);
+extern void Puff_Spawn(int a, int b);
 }
 extern "C" {
 extern void func_ov006_020c9e7c(void* p);
@@ -900,7 +900,7 @@ struct Obj {
 extern "C" void func_ov006_020c9efc(char* c){
   *(short*)(((int)c+0x6c)) = *(short*)(((int)c+0x6c)) - 1;
   if(*(short*)(c+0x6c)==0){
-    func_ov006_020c8c78(*(short*)(c+0x56),0xc0);
+    Puff_Spawn(*(short*)(c+0x56),0xc0);
     data_ov006_02140598=data_ov006_02140598-1;
     ApproachLinear(data_ov006_0213b0f0,0,1);
     Sound::PlayBank2_2D(0x130);
@@ -919,7 +919,7 @@ extern "C" void func_ov006_020c9efc(char* c){
 // ---- func_ov006_020c9fe4
 namespace ns_020c9fe4 {
 extern "C" {
-extern void func_ov006_020e6e3c(int a, int b);
+extern void D3D_PlaySeAtX(int a, int b);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0f0[];
@@ -929,7 +929,7 @@ void func_ov006_020c9fe4(char *c);
 // @symbol func_ov006_020c9fe4
 void func_ov006_020c9fe4(char *c) {
     if (data_ov006_0213b0f0[0] > 1)
-        func_ov006_020e6e3c(0x1ca, *(int*)(c + 0x24));
+        D3D_PlaySeAtX(0x1ca, *(int*)(c + 0x24));
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x78, *(void**)&data_ov006_02140540, 0, 0x800, 0);
@@ -1452,7 +1452,7 @@ typedef struct { int x, y, z; } Vec3;
 extern void func_0203cd80(Vec3* m, short angle);
 extern void func_0203ccd4(Vec3* m, short angle);
 extern void func_ov006_020c8e90(char* o);
-extern void func_ov006_020c8a30(void);
+extern void Puff_DrawAll(void);
 extern "C" int data_ov006_021405bc;
 extern "C" char* data_ov006_02140554;
 
@@ -1480,7 +1480,7 @@ void func_ov006_020caadc(void) {
       off += 0xdc;
     } while (i < n);
   }
-  func_ov006_020c8a30();
+  Puff_DrawAll();
 }
 }
 }
@@ -1499,7 +1499,7 @@ extern int data_ov006_021405bc;
 extern char* data_ov006_02140554;
 void func_ov006_020c8f20(void*);
 void TrmpItem_UpdateWithJumper(void*,int);
-void func_ov006_020c8a64(void);
+void Puff_UpdateAll(void);
 // @symbol func_ov006_020cac30
 void func_ov006_020cac30(void){
   int i=0;
@@ -1512,7 +1512,7 @@ void func_ov006_020cac30(void){
       off+=0xdc;
     }while(i<data_ov006_021405bc);
   }
-  func_ov006_020c8a64();
+  Puff_UpdateAll();
 }
 }
 }
@@ -1522,7 +1522,7 @@ extern "C" {
 void func_ov006_020cad3c(int sz);
 void func_ov006_020ca3a8(char* c);
 void func_ov006_020c8ecc(char* o);
-void func_ov006_020c8a9c(int a0, int a1);
+void Puff_ClearAll(int a0, int a1);
 extern "C" int data_ov006_021405b8;
 extern "C" int data_ov006_0213b0f0;
 extern "C" int data_ov006_02140598;
@@ -1547,7 +1547,7 @@ void func_ov006_020cac9c(void){
             off += 0xdc;
         } while (i < data_ov006_021405b8);
     }
-    func_ov006_020c8a9c(0, 0);
+    Puff_ClearAll(0, 0);
 }
 }
 }
@@ -1854,7 +1854,7 @@ extern void _Z15ApproachLinear2Rsss(short *, short, short);
 extern void func_02012718(int, int);
 extern void Camera_ProjectToScreen(char *, void *, int *, int *);
 extern int Mg_GetTopScreenYOffset(void);
-extern void func_ov006_02120d0c(int, int);
+extern void TrmpFx_Spawn(int, int);
 extern void func_ov006_020ccd78(char *);
 
 // @symbol func_ov006_020cb2b4
@@ -1906,7 +1906,7 @@ void func_ov006_020cb2b4(void *self)
         Camera_ProjectToScreen(data_ov006_02141a40, c + 0x1c, &va, &vb);
     }
     vb -= 0x20;
-    func_ov006_02120d0c(vb << 12, (short)data_ov006_02140588);
+    TrmpFx_Spawn(vb << 12, (short)data_ov006_02140588);
 
     data_ov006_02140584 += 1;
     if (data_ov006_02140584 >= 6)
@@ -2038,7 +2038,7 @@ extern "C" {
 
 extern void func_ov006_020cb528(char *c);
 extern void func_ov006_020cc8c8(char *c);
-extern int func_ov006_020e6e3c(int a, int b);
+extern int D3D_PlaySeAtX(int a, int b);
 extern void func_ov006_020ccc8c(char *c);
 extern "C" int data_ov006_021405c8[];
 extern "C" short data_ov006_02140538;
@@ -2061,7 +2061,7 @@ void func_ov006_020cb72c(char *c)
       {
         func_ov006_020cc8c8(c);
       }
-      func_ov006_020e6e3c(0x1b4, *((int *) (c + 0x1c)));
+      D3D_PlaySeAtX(0x1b4, *((int *) (c + 0x1c)));
     }
     else
     {
@@ -2076,7 +2076,7 @@ void func_ov006_020cb72c(char *c)
   {
     if ((*((int *) (c + 0x20))) <= data_ov006_021405c8[0])
     {
-      func_ov006_020e6e3c(0x1b4, v);
+      D3D_PlaySeAtX(0x1b4, v);
       func_ov006_020ccc8c(c);
       return;
     }
@@ -2123,7 +2123,7 @@ void func_ov006_020cb690(void *c);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
 void func_02012718(int a, int b);
-int func_ov006_020e6e3c(int a, int b);
+int D3D_PlaySeAtX(int a, int b);
 }
 
 extern "C" void *data_ov006_02141a40;
@@ -2153,7 +2153,7 @@ extern "C" void func_ov006_020cb838(char *c)
     if (*(int *)(c + 0xcc) == data_ov006_0214059c) {
         if (((dExtFrameCtrl_c *)(c + 0xbc))->WillHitFrame(0xc) ||
             ((dExtFrameCtrl_c *)(c + 0xbc))->WillHitFrame(0x18)) {
-            func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x1c));
+            D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x1c));
         }
     }
 
@@ -2267,7 +2267,7 @@ void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *g);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
-int func_ov006_020e6e3c(int a, int b);
+int D3D_PlaySeAtX(int a, int b);
 void func_ov006_020cb838(char *c);
 }
 
@@ -2350,7 +2350,7 @@ extern "C" void func_ov006_020cbaec(char *c)
     *(int *)(c + 0xc4) = 0;
     Sound_PlayBank1Panned(0, 4, *(int *)(c + 0x1c));
 
-    func_ov006_020e6e3c(0x1b5, *(int *)(c + 0x1c));
+    D3D_PlaySeAtX(0x1b5, *(int *)(c + 0x1c));
 
     *(int *)(c + 0x5c) = 0;
     {
@@ -2653,7 +2653,7 @@ extern "C" void func_ov006_020cc198(char *c)
 namespace ns_020cc2ac {
 extern "C" {
 typedef short s16;
-extern void func_ov006_020c8c78(int a, int b);
+extern void Puff_Spawn(int a, int b);
 extern void _Z14ApproachLinearRiii(int *ref, int target, int step);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int x);
 extern void func_ov006_020ccd78(char *c);
@@ -2666,7 +2666,7 @@ void func_ov006_020cc2ac(char *c)
     s16 *p = (s16 *)((int)c + 0x60);
     *p = *p - 1;
     if (*(s16 *)(c + 0x60) == 0) {
-        func_ov006_020c8c78(*(s16 *)(c + 0x4e), 0xc0);
+        Puff_Spawn(*(s16 *)(c + 0x4e), 0xc0);
         data_ov006_0214058c -= 1;
         _Z14ApproachLinearRiii(&data_ov006_0213b0ec, 0, 1);
         _ZN5Sound12PlayBank2_2DEj(0x130);
@@ -2689,7 +2689,7 @@ void func_ov006_020cc2ac(char *c)
 // ---- func_ov006_020cc37c
 namespace ns_020cc37c {
 extern "C" {
-extern void func_ov006_020e6e3c(int a, int b);
+extern void D3D_PlaySeAtX(int a, int b);
 extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0ec[];
@@ -2699,7 +2699,7 @@ void func_ov006_020cc37c(char *c);
 // @symbol func_ov006_020cc37c
 void func_ov006_020cc37c(char *c) {
     if (data_ov006_0213b0ec[0] > 1)
-        func_ov006_020e6e3c(0x1ca, *(int*)(c + 0x1c));
+        D3D_PlaySeAtX(0x1ca, *(int*)(c + 0x1c));
     else
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x6c, *(void**)&data_ov006_02140540, 0, 0x800, 0);
@@ -2717,7 +2717,7 @@ void func_ov006_020cbaec(void *c);
 void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void func_ov006_020cb814(void *c);
 void func_ov006_020cb690(void *c);
-int func_ov006_020e6e3c(int a, int b);
+int D3D_PlaySeAtX(int a, int b);
 void func_ov006_020cc37c(void *c);
 }
 
@@ -2798,7 +2798,7 @@ L70:
     }
 
 L130:
-    func_ov006_020e6e3c(0x1b3, v);
+    D3D_PlaySeAtX(0x1b3, v);
     *(int *)(((int)c + 0x34)) *= -1;
     goto L180;
 
@@ -3372,7 +3372,7 @@ extern void func_0203ccd4(int *v, int a);
 extern "C" int data_ov006_02140594;
 extern "C" char *data_ov006_02140550;
 extern void func_ov006_020cafb4(char *p);
-extern void func_ov006_020c8a30(void);
+extern void Puff_DrawAll(void);
 
 // @symbol func_ov006_020cd270
 void func_ov006_020cd270(void)
@@ -3405,7 +3405,7 @@ void func_ov006_020cd270(void)
             func_ov006_020cafb4(data_ov006_02140550 + i * 0xd0);
     }
 
-    func_ov006_020c8a30();
+    Puff_DrawAll();
 }
 }
 }
@@ -3414,7 +3414,7 @@ void func_ov006_020cd270(void)
 namespace ns_020cd39c {
 extern "C" {
 extern void func_ov006_020cb030(char *p);
-extern void func_ov006_020c8a64(void);
+extern void Puff_UpdateAll(void);
 extern "C" int data_ov006_02140594;
 extern "C" char *data_ov006_02140550;
 extern "C" int data_ov006_0214055c;
@@ -3430,7 +3430,7 @@ void func_ov006_020cd39c(void)
         data_ov006_02142f60 = 1;
     else
         data_ov006_02142f60 = 0;
-    func_ov006_020c8a64();
+    Puff_UpdateAll();
 }
 }
 }
@@ -3441,7 +3441,7 @@ extern int func_ov006_020cd510(int sz);
 extern void func_ov006_020cd62c(int n);
 extern void func_ov006_020ccd78(char *c);
 extern void func_ov006_020cafdc(char *o);
-extern void func_ov006_020c8a9c(int a0, int a1);
+extern void Puff_ClearAll(int a0, int a1);
 
 extern "C" int data_ov006_02140594;
 extern "C" int data_ov006_0213b0ec;
@@ -3464,7 +3464,7 @@ void func_ov006_020cd424(unsigned int n, int arg1)
         func_ov006_020ccd78(data_ov006_02140550 + i * 0xd0);
         func_ov006_020cafdc(data_ov006_02140550 + i * 0xd0);
     }
-    func_ov006_020c8a9c(0, 0);
+    Puff_ClearAll(0, 0);
 }
 }
 }
