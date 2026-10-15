@@ -38,7 +38,7 @@ extern "C" void *dScMgHanachan_c_classInit(void) {
     if (scene != 0) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(int *)scene = (int)data_ov006_0213cab8;
-        __cxa_vec_ctor(scene + 0x4678, 0xf, 0x98, (void *)func_ov006_020ede80, (void *)func_ov006_020ea324);
+        __cxa_vec_ctor(scene + 0x4678, 0xf, 0x98, (void *)func_ov006_020ede80, (void *)Wiggler_Destroy);
     }
     return scene;
 }

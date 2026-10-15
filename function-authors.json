@@ -23255,171 +23255,171 @@
     },
     "ov006:0x020ea324": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea324"
+      "name": "Wiggler_Destroy"
     },
     "ov006:0x020ea350": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea350"
+      "name": "StarPopup_Draw"
     },
     "ov006:0x020ea3d0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea3d0"
+      "name": "StarPopup_Update"
     },
     "ov006:0x020ea5f0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea5f0"
+      "name": "StarPopup_Start"
     },
     "ov006:0x020ea658": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea658"
+      "name": "StarPopup_Clear"
     },
     "ov006:0x020ea670": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ea670"
+      "name": "HanaPopup_DrawAll"
     },
     "ov006:0x020ea71c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ea71c"
+      "name": "HanaPopup_UpdateAll"
     },
     "ov006:0x020ea81c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea81c"
+      "name": "HanaPopup_Spawn"
     },
     "ov006:0x020ea8e0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea8e0"
+      "name": "HanaPopup_ClearAll"
     },
     "ov006:0x020ea914": {
       "author": "tangosdev",
-      "name": "func_ov006_020ea914"
+      "name": "Wiggler_DrawPassA"
     },
     "ov006:0x020eac38": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020eac38"
+      "name": "Wiggler_DrawPassB"
     },
     "ov006:0x020eb018": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb018"
+      "name": "Wiggler_Update"
     },
     "ov006:0x020eb0c8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020eb0c8"
+      "name": "Wiggler_StateHold"
     },
     "ov006:0x020eb1e0": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020eb1e0"
+      "name": "Wiggler_StateMoveA"
     },
     "ov006:0x020eb31c": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb31c"
+      "name": "Wiggler_StateWait"
     },
     "ov006:0x020eb3e4": {
       "author": "aitddlabs",
-      "name": "func_ov006_020eb3e4"
+      "name": "Wiggler_StateMoveB"
     },
     "ov006:0x020eb558": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb558"
+      "name": "Wiggler_UpdateSway"
     },
     "ov006:0x020eb610": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020eb610"
+      "name": "Wiggler_Move"
     },
     "ov006:0x020eb768": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb768"
+      "name": "Wiggler_HitTest"
     },
     "ov006:0x020eb7b0": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb7b0"
+      "name": "Wiggler_IsStarVisible"
     },
     "ov006:0x020eb7f8": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb7f8"
+      "name": "Wiggler_StopIfIdle"
     },
     "ov006:0x020eb8f0": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb8f0"
+      "name": "Wiggler_OnTouched"
     },
     "ov006:0x020eb9b0": {
       "author": "tangosdev",
-      "name": "func_ov006_020eb9b0"
+      "name": "Wiggler_SetCruiseSpeed"
     },
     "ov006:0x020eb9dc": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020eb9dc"
+      "name": "Wiggler_Retarget"
     },
     "ov006:0x020ebb40": {
       "author": "tangosdev",
-      "name": "func_ov006_020ebb40"
+      "name": "Wiggler_GetFrame"
     },
     "ov006:0x020ebc08": {
       "author": "tangosdev",
-      "name": "func_ov006_020ebc08"
+      "name": "Wiggler_GetFlag"
     },
     "ov006:0x020ebc7c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ebc7c"
+      "name": "Hana_PickUnused"
     },
     "ov006:0x020ebd7c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ebd7c"
+      "name": "Hana_ChooseStarWiggler"
     },
     "ov006:0x020ebe6c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ebe6c"
+      "name": "Hana_PickMoveKind"
     },
     "ov006:0x020ebeb4": {
       "author": "tangosdev",
-      "name": "func_ov006_020ebeb4"
+      "name": "Wiggler_ClampToScreen"
     },
     "ov006:0x020ebf20": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ebf20"
+      "name": "Wiggler_StepSegmentsA"
     },
     "ov006:0x020ec134": {
       "author": "tangosdev",
-      "name": "func_ov006_020ec134"
+      "name": "Wiggler_StepSegmentsB"
     },
     "ov006:0x020ec2bc": {
       "author": "tangosdev",
-      "name": "func_ov006_020ec2bc"
+      "name": "Wiggler_StepSegmentsC"
     },
     "ov006:0x020ec458": {
       "author": "tangosdev",
-      "name": "func_ov006_020ec458"
+      "name": "Wiggler_CheckOffLeftA"
     },
     "ov006:0x020ec4dc": {
       "author": "lunavyqo",
-      "name": "func_ov006_020ec4dc"
+      "name": "Wiggler_StartPathA"
     },
     "ov006:0x020ec6e8": {
       "author": "ruspecial",
-      "name": "func_ov006_020ec6e8"
+      "name": "Wiggler_MoveBounce"
     },
     "ov006:0x020ec84c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ec84c"
+      "name": "Wiggler_StartBounce"
     },
     "ov006:0x020ec93c": {
       "author": "ruspecial",
-      "name": "func_ov006_020ec93c"
+      "name": "Wiggler_CheckOffLeftB"
     },
     "ov006:0x020ec9c0": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ec9c0"
+      "name": "Wiggler_StartPathB"
     },
     "ov006:0x020ecb80": {
       "author": "ruspecial",
-      "name": "func_ov006_020ecb80"
+      "name": "Wiggler_TurnTowardAim"
     },
     "ov006:0x020ecba4": {
       "author": "tangosdev",
-      "name": "func_ov006_020ecba4"
+      "name": "Wiggler_StartPathC"
     },
     "ov006:0x020ecdb8": {
       "author": "NitroShellMKDS",
-      "name": "func_ov006_020ecdb8"
+      "name": "Hana_SpawnWigglers"
     },
     "ov006:0x020ecec8": {
       "author": "andrewboudreau",
@@ -23435,47 +23435,47 @@
     },
     "ov006:0x020ed270": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed270"
+      "name": "Hana_StateNoneA"
     },
     "ov006:0x020ed274": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed274"
+      "name": "Phase_WaitTouch"
     },
     "ov006:0x020ed300": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed300"
+      "name": "BeginResultWait"
     },
     "ov006:0x020ed328": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed328"
+      "name": "Hana_StateNoneB"
     },
     "ov006:0x020ed32c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed32c"
+      "name": "SetPhaseIdle"
     },
     "ov006:0x020ed34c": {
       "author": "ruspecial",
-      "name": "func_ov006_020ed34c"
+      "name": "Phase_Result"
     },
     "ov006:0x020ed40c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed40c"
+      "name": "BeginResult"
     },
     "ov006:0x020ed494": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed494"
+      "name": "Phase_Play"
     },
     "ov006:0x020ed81c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed81c"
+      "name": "BeginPlay"
     },
     "ov006:0x020ed844": {
       "author": "tangosdev",
-      "name": "func_ov006_020ed844"
+      "name": "Phase_WaitIntro"
     },
     "ov006:0x020ed8a4": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ed8a4"
+      "name": "Phase_SetupRound"
     },
     "ov006:0x020eda48": {
       "author": "tangosdev",
@@ -23487,7 +23487,7 @@
     },
     "ov006:0x020edcb0": {
       "author": "tangosdev",
-      "name": "func_ov006_020edcb0"
+      "name": "Hana_LoadBackground"
     },
     "ov006:0x020ede18": {
       "author": "andrewboudreau",

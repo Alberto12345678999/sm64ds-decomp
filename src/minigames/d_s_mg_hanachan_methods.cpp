@@ -3,53 +3,53 @@
  * Touch it before mTimeLeft runs out.
  *
  * This file is the whole ov006 unit 0x020ea280..0x020ede18: 61
- * functions in ROM order, from the destructor to func_ov006_020edcb0.
+ * functions in ROM order, from the destructor to Hana_LoadBackground.
  * The destructor is the key function, so the vtable and RTTI are emitted
  * here too. dScMgHanachan_c_classInit, just above at 0x020ede18, is still
  * its own file (src/minigames/d_s_mg_hanachan.cpp).
  *
- * The destructor pair and the ten functions from func_ov006_020ea324 to
- * func_ov006_020ea914 came from one-function files. Their bodies are kept
+ * The destructor pair and the ten functions from Wiggler_Destroy to
+ * Wiggler_DrawPassA came from one-function files. Their bodies are kept
  * as they matched there. The two popup arrays are declared once; where a
  * function spelled a record differently, its tag is renamed per function
- * and the access casts. func_ov006_020ea324 is the wiggler array's element
+ * and the access casts. Wiggler_Destroy is the wiggler array's element
  * destructor and takes the element, so its declaration now says so.
  *
  * The nine helpers that take the scene as their first argument
- * (func_ov006_020ed274 .. func_ov006_020ed8a4, the phase and tap handlers) are
+ * (Phase_WaitTouch .. Phase_SetupRound, the phase and tap handlers) are
  * dScMgHanachan_c members, declared in dScMgHanachan_c.h; the address is the
  * method name, since no ROM spelling survives. Each body opens by re-viewing
  * `this` as the char * it used to take. The other func_ov006 helpers stay
- * free: the ones from func_ov006_020ea914 to func_ov006_020ecdb8 take one
+ * free: the ones from Wiggler_DrawPassA to Hana_SpawnWigglers take one
  * 0x98-byte wiggler record (an element of mWiggler) or no object at all, the
- * popup helpers before them take no object, and func_ov006_020ed270,
- * func_ov006_020ed328 and func_ov006_020edcb0 take nothing.
+ * popup helpers before them take no object, and Hana_StateNoneA,
+ * Hana_StateNoneB and Hana_LoadBackground take nothing.
  *
  * leftovers:
  * - the sixteen popups at data_ov006_02142044 are read through
- *   four record spellings (func_ov006_020ea670, func_ov006_020ea71c,
- *   func_ov006_020ea81c, func_ov006_020ea8e0).
+ *   four record spellings (HanaPopup_DrawAll, HanaPopup_UpdateAll,
+ *   HanaPopup_Spawn, HanaPopup_ClearAll).
  * - the popup at data_ov006_02141fe4 is read through raw byte
- *   offsets, and func_ov006_020ea3d0 reaches its +0xc byte through a
+ *   offsets, and StarPopup_Update reaches its +0xc byte through a
  *   separate symbol, data_ov006_02141ff0.
- * - func_ov006_020ea914 repeats func_ov006_020eac38's segment
+ * - Wiggler_DrawPassA repeats Wiggler_DrawPassB's segment
  *   walk with its own point type, Vec2_ea914, whose trivial destructor
  *   is part of the match.
  * - dScMgHanachan_c::Render, `Thing *base; &base[i]` and `slot++`
  *   on the 0x98 array, DIFF, 6 words. `char *arr += 0x98` stays.
  *   Behavior's `&base[i]` matches.
- * - func_ov006_020ed40c, `C *p = (C *)mWiggler; p->alive = 0; p++`
+ * - BeginResult, `C *p = (C *)mWiggler; p->alive = 0; p++`
  *   and mHit / mPhaseTimer / mPhaseFn, DIFF. The 0x4000 splits stay.
- * - func_ov006_020eb1e0, func_ov006_020eb31c, func_ov006_020eb3e4,
- *   func_ov006_020eb558, member access on C (flower, sub, seg, hold, state,
+ * - Wiggler_StateMoveA, Wiggler_StateWait, Wiggler_StateMoveB,
+ *   Wiggler_UpdateSway, member access on C (flower, sub, seg, hold, state,
  *   bob), DIFF. The byte offsets stay.
- * - func_ov006_020ebf20, func_ov006_020ec134, func_ov006_020ec2bc,
- *   func_ov006_020ec6e8, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
+ * - Wiggler_StepSegmentsA, Wiggler_StepSegmentsB, Wiggler_StepSegmentsC,
+ *   Wiggler_MoveBounce, cstd::atan2(Fix12<int>, Fix12<int>), does not link.
  *   cstd::atan2(int, int) mangles Eii, not E5Fix12IiES1_.
- * - func_ov006_020eac38, OAM::Render(int, OamAttr*, int, int, int,
+ * - Wiggler_DrawPassB, OAM::Render(int, OamAttr*, int, int, int,
  *   int, int, int), does not typecheck (the sprite table is void*). The
  *   ROM symbol's scale parameter is Fix12<int>, which this tree cannot spell.
- * - func_ov006_020eb9dc and func_ov006_020ec4dc, a state copy of two
+ * - Wiggler_Retarget and Wiggler_StartPathA, a state copy of two
  *   named ints, DIFF (ldr/str/ldr/str). int[2] block-moves, so ObjB and Obj stay.
  */
 
@@ -139,7 +139,7 @@ struct C {
 };
 typedef char C_size_must_be_0x98[sizeof(struct C) == 0x98 ? 1 : -1];
 
-/* Same wiggler, the fields func_ov006_020eb9dc writes. P2 is an int[2]
+/* Same wiggler, the fields Wiggler_Retarget writes. P2 is an int[2]
    so the state copies block-move; a two-named-int copy does not. */
 struct ObjB {
     P2 state;                       /* 0x00 */
@@ -160,7 +160,7 @@ struct ObjB {
 };
 
 /* The pointer-to-member-function view of the element used by
-   func_ov006_020eb018, func_ov006_020eb31c and dScMgHanachan_c::Behavior: the
+   Wiggler_Update, Wiggler_StateWait and dScMgHanachan_c::Behavior: the
    word at 0x10 (Behavior reaches the one at +0x4660 instead) is called through
    as a PMF, which is the only reason these need a class type at all. */
 struct CB {
@@ -169,7 +169,7 @@ struct CB {
 };
 typedef void (CB::*PMF)();
 
-/* func_ov006_020eb0c8's own spelling of the same idiom, kept separate because
+/* Wiggler_StateHold's own spelling of the same idiom, kept separate because
    it names the member `cb`. */
 struct Self;
 typedef void (Self::*Pmf)();
@@ -216,41 +216,41 @@ namespace cstd { int fdiv(int numerator, int denominator); }
 
 extern "C" {
 /* This TU's own functions. */
-extern void func_ov006_020eac38(void* o_);
-extern void func_ov006_020eb018(char *c);
-extern void func_ov006_020eb0c8(char *self);
-extern void func_ov006_020eb1e0(char *c);
-extern void func_ov006_020eb31c(char* c);
-extern void func_ov006_020eb3e4(char *c);
-extern void func_ov006_020eb558(char *thiz_);
-extern void func_ov006_020eb610(char *c);
-extern int func_ov006_020eb768(char* a, const V2* b);
-extern int func_ov006_020eb7b0(char* p);
-extern void func_ov006_020eb7f8(char* c);
-extern void func_ov006_020eb8f0(char *c);
-extern void func_ov006_020eb9b0(char *p);
-extern void func_ov006_020eb9dc(struct ObjB* c, int v);
-extern int func_ov006_020ebb40(char *o, int);
-extern int func_ov006_020ebc08(char* c, int n);
-extern int func_ov006_020ebc7c(int n, int mask);
-extern void func_ov006_020ebd7c(int count);
-extern int func_ov006_020ebe6c(void);
-extern int func_ov006_020ebeb4(char *c);
-extern void func_ov006_020ebf20(struct C* c);
-extern void func_ov006_020ec134(struct C* c);
-extern void func_ov006_020ec2bc(struct C* c);
-extern void func_ov006_020ec458(C* self);
-extern void func_ov006_020ec4dc(Obj *self, int n);
-extern void func_ov006_020ec6e8(char *c);
-extern void func_ov006_020ec84c(char *c, int);
-extern void func_ov006_020ec93c(C* self);
-extern void func_ov006_020ec9c0(char* self, int idx);
-extern void func_ov006_020ecb80(void *a);
-extern void func_ov006_020ecba4(struct C* c, int param);
-extern void func_ov006_020ecdb8(char *self, int arg1, int arg2);
-extern void func_ov006_020ed270(void);
-extern void func_ov006_020ed328(void);
-extern void func_ov006_020edcb0(void);
+extern void Wiggler_DrawPassB(void* o_);
+extern void Wiggler_Update(char *c);
+extern void Wiggler_StateHold(char *self);
+extern void Wiggler_StateMoveA(char *c);
+extern void Wiggler_StateWait(char* c);
+extern void Wiggler_StateMoveB(char *c);
+extern void Wiggler_UpdateSway(char *thiz_);
+extern void Wiggler_Move(char *c);
+extern int Wiggler_HitTest(char* a, const V2* b);
+extern int Wiggler_IsStarVisible(char* p);
+extern void Wiggler_StopIfIdle(char* c);
+extern void Wiggler_OnTouched(char *c);
+extern void Wiggler_SetCruiseSpeed(char *p);
+extern void Wiggler_Retarget(struct ObjB* c, int v);
+extern int Wiggler_GetFrame(char *o, int);
+extern int Wiggler_GetFlag(char* c, int n);
+extern int Hana_PickUnused(int n, int mask);
+extern void Hana_ChooseStarWiggler(int count);
+extern int Hana_PickMoveKind(void);
+extern int Wiggler_ClampToScreen(char *c);
+extern void Wiggler_StepSegmentsA(struct C* c);
+extern void Wiggler_StepSegmentsB(struct C* c);
+extern void Wiggler_StepSegmentsC(struct C* c);
+extern void Wiggler_CheckOffLeftA(C* self);
+extern void Wiggler_StartPathA(Obj *self, int n);
+extern void Wiggler_MoveBounce(char *c);
+extern void Wiggler_StartBounce(char *c, int);
+extern void Wiggler_CheckOffLeftB(C* self);
+extern void Wiggler_StartPathB(char* self, int idx);
+extern void Wiggler_TurnTowardAim(void *a);
+extern void Wiggler_StartPathC(struct C* c, int param);
+extern void Hana_SpawnWigglers(char *self, int arg1, int arg2);
+extern void Hana_StateNoneA(void);
+extern void Hana_StateNoneB(void);
+extern void Hana_LoadBackground(void);
 
 extern short data_02082214[];
 extern void* data_ov006_02142018[];
@@ -301,8 +301,8 @@ extern int data_ov006_0213ca6c[];
 extern int data_ov006_0213ca4c[];
 extern int data_ov006_0213ca74[];
 extern void func_02012790(int a);
-extern void func_ov006_020ea5f0(int x, int y);
-extern void func_ov006_020ea81c(int x, int y);
+extern void StarPopup_Start(int x, int y);
+extern void HanaPopup_Spawn(int x, int y);
 extern struct Pair data_ov006_0213c9cc;
 extern s16 data_ov006_0212e80c[];
 extern volatile int data_ov006_0212e820[];
@@ -310,8 +310,8 @@ extern Pair data_ov006_0213c964;
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 
-/* func_0203d5dc: func_ov006_020eb768 typed both arguments `const Vector3*` and
-   then stepped one of them by 8 bytes, so they are V2s; func_ov006_020ed494
+/* func_0203d5dc: Wiggler_HitTest typed both arguments `const Vector3*` and
+   then stepped one of them by 8 bytes, so they are V2s; Phase_Play
    typed the first `int*`.  Pointer either way -- one spelling, a cast at the
    odd call site. */
 extern int func_0203d5dc(const V2 *a, const V2 *b);
@@ -327,7 +327,7 @@ extern int data_0209e650;
 /* data_ov006_02141fd4 is only read where it is unsigned and only written as a
    halfword, so the unsigned spelling costs the writer nothing. */
 extern unsigned short data_ov006_02141fd4;
-/* data_ov006_02141fd8: func_ov006_020ed8a4 spelled it volatile and only ever
+/* data_ov006_02141fd8: Phase_SetupRound spelled it volatile and only ever
    stores to it (never re-reads), so the plain spelling emits the same strh. */
 extern s16 data_ov006_02141fd8;
 /* LoadFile returns the buffer; one file typed it int and casts at each use. */
@@ -350,7 +350,7 @@ struct S_ea81c {
 
 /* The popup records: one at data_ov006_02141fe4 and sixteen at
    data_ov006_02142044, 0x14 bytes each. The sixteen are declared with
-   func_ov006_020ea81c's layout, which it needs to match; the other
+   HanaPopup_Spawn's layout, which it needs to match; the other
    functions keep the spelling their own match used, through a cast. */
 extern "C" {
 extern void NullDestructor_0203d47c(void);
@@ -367,7 +367,7 @@ extern char data_ov006_02137cd8[];
    compiler's. */
 dScMgHanachan_c::~dScMgHanachan_c()
 {
-    __cxa_vec_cleanup((char *)this + 0x4678, 0xf, 0x98, (void *)func_ov006_020ea324);
+    __cxa_vec_cleanup((char *)this + 0x4678, 0xf, 0x98, (void *)Wiggler_Destroy);
 }
 
 #ifdef _MSC_VER
@@ -385,20 +385,20 @@ extern "C" dScMgHanachan_c *_ZN15dScMgHanachan_cD0Ev(dScMgHanachan_c *thiz)
 }
 #endif
 
-// @symbol func_ov006_020ea324
+// @symbol Wiggler_Destroy
 /* The element destructor for one wiggler: its five segment points at
    +0x18 go through __cxa_vec_cleanup. */
-extern "C" void *func_ov006_020ea324(void *self)
+extern "C" void *Wiggler_Destroy(void *self)
 {
     __cxa_vec_cleanup((char *)self + 0x18, 5, 8, (void *)NullDestructor_0203d47c);
     return self;
 }
 
-// @symbol func_ov006_020ea350
+// @symbol StarPopup_Draw
 /* Draws the single popup while its +0x10 flag is 1: a sprite from the
    language's table 8 pixels left of it and one from data_ov006_02137cd8
    8 pixels right. */
-extern "C" void func_ov006_020ea350(void)
+extern "C" void StarPopup_Draw(void)
 {
     int x;
     int y;
@@ -416,7 +416,7 @@ extern "C" void func_ov006_020ea350(void)
     Mg_RenderSubSpriteMtx(*((void **)(data_ov006_02137cd8 + 0x64)), x + 8, y, 0);
 }
 
-// @symbol func_ov006_020ea3d0
+// @symbol StarPopup_Update
 /* Steps the single popup through three phases. Phase 0 moves it by its
    velocity until its timer runs out, phase 1 holds for 0x40 frames and then
    adds one to the counter at +0xb4 of gMgScene (capped at 9999,
@@ -428,7 +428,7 @@ typedef struct {
 } Timer20;
 extern "C" Timer20 data_ov006_02141ff0[];
 
-extern "C" void func_ov006_020ea3d0(char *arg)
+extern "C" void StarPopup_Update(char *arg)
 {
     int i;
     char *f = data_ov006_02141fe4;
@@ -489,10 +489,10 @@ extern "C" void func_ov006_020ea3d0(char *arg)
     }
 }
 
-// @symbol func_ov006_020ea5f0
+// @symbol StarPopup_Start
 /* Starts the single popup at (x, y), x kept between 0x10000 and 0xf4000,
    unless it is already active. */
-extern "C" void func_ov006_020ea5f0(int x, int y)
+extern "C" void StarPopup_Start(int x, int y)
 {
     char *g = data_ov006_02141fe4;
     if (*(unsigned char *)(g + 0xd) != 0) return;
@@ -508,16 +508,16 @@ extern "C" void func_ov006_020ea5f0(int x, int y)
     *(int *)(g + 8) = -0x800;
 }
 
-// @symbol func_ov006_020ea658
+// @symbol StarPopup_Clear
 /* Clears the single popup's active and draw flags. */
-extern "C" unsigned char func_ov006_020ea658(void)
+extern "C" unsigned char StarPopup_Clear(void)
 {
     ((unsigned char *)data_ov006_02141fe4)[0xd] = 0;
     ((unsigned char *)data_ov006_02141fe4)[0x10] = 0;
     return 0;
 }
 
-// @symbol func_ov006_020ea670
+// @symbol HanaPopup_DrawAll
 /* Draws each of the sixteen popups whose +0xb flag is set, as three
    sprites 0x10 pixels apart. */
 typedef struct {
@@ -528,7 +528,7 @@ typedef struct {
     int pad1;
 } Ent_ea670;
 
-extern "C" void func_ov006_020ea670(void)
+extern "C" void HanaPopup_DrawAll(void)
 {
     void *a = 0, *b = 0, *c = 0;
     int i;
@@ -546,7 +546,7 @@ extern "C" void func_ov006_020ea670(void)
     }
 }
 
-// @symbol func_ov006_020ea71c
+// @symbol HanaPopup_UpdateAll
 /* Steps the sixteen popups: y is kept at or below 0xb8000, phase 0 moves
    each by its velocity until its timer runs out, and phase 1 holds for 0x40
    frames and then clears it. */
@@ -561,7 +561,7 @@ typedef struct Ent71c {
     u8 pad[3];
 } Ent71c;
 
-extern "C" void func_ov006_020ea71c(void)
+extern "C" void HanaPopup_UpdateAll(void)
 {
     int i;
     for (i = 0; i < 16; i++) {
@@ -595,11 +595,11 @@ extern "C" void func_ov006_020ea71c(void)
     }
 }
 
-// @symbol func_ov006_020ea81c
+// @symbol HanaPopup_Spawn
 /* Starts a popup in the first free one of the sixteen slots at (r0, r1),
    r0 kept between 0x14000 and 0xf0000. */
 
-extern "C" void func_ov006_020ea81c(int r0, int r1)
+extern "C" void HanaPopup_Spawn(int r0, int r1)
 {
     int i;
     for (i = 0; i < 0x10; i++) {
@@ -618,12 +618,12 @@ extern "C" void func_ov006_020ea81c(int r0, int r1)
     }
 }
 
-// @symbol func_ov006_020ea8e0
+// @symbol HanaPopup_ClearAll
 /* Clears the +0xe and +0xf flags of every one of the sixteen popups whose
    +0xe flag is already clear. */
 struct E6_ea8e0 { unsigned char pad[0xe]; unsigned char e; unsigned char f; unsigned char pad2[4]; };
 
-extern "C" void func_ov006_020ea8e0(void)
+extern "C" void HanaPopup_ClearAll(void)
 {
     int i;
     for (i = 0; i < 0x10; i++) {
@@ -634,16 +634,16 @@ extern "C" void func_ov006_020ea8e0(void)
     }
 }
 
-// @symbol func_ov006_020ea914
+// @symbol Wiggler_DrawPassA
 /* Draws a wiggler's five segments from the tail forward, then one more
-   sprite by the head when +0x94 is set and func_ov006_020eb7b0 agrees. The
+   sprite by the head when +0x94 is set and Wiggler_IsStarVisible agrees. The
    trivial ~Vec2_ea914 and the strength-reduction bracket are both part of
    the match. */
 struct Vec2_ea914 { s32 x; s32 y; ~Vec2_ea914() {} };
 
 #pragma push
 #pragma opt_strength_reduction off
-extern "C" void func_ov006_020ea914(void *self_)
+extern "C" void Wiggler_DrawPassA(void *self_)
 {
     char *self = (char *)self_;
     s32 i;
@@ -693,15 +693,15 @@ extern "C" void func_ov006_020ea914(void *self_)
         func_0203d680((Vec2 *)&vout, (const Vec2 *)&va, data_02082214[((u16)(ang * 2) >> 4) * 2]);
         pos.x = pos.x + vout.x;
         pos.y = pos.y + vout.y;
-        res = func_ov006_020ebb40(self, i);
+        res = Wiggler_GetFrame(self, i);
         px = pos.y >> 12;
         py = pos.x >> 12;
-        a2i = func_ov006_020ebc08(self, i);
+        a2i = Wiggler_GetFlag(self, i);
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(0, data_ov006_02142018[a2i],
             py, px, res, -1, 0x1000, (u16)rot);
         if (i == 0) {
             if (*(u8 *)(self + 0x94) != 0) {
-                if (func_ov006_020eb7b0(self) != 0) {
+                if (Wiggler_IsStarVisible(self) != 0) {
                     vb.x = 0x2000;
                     vb.y = -0x18000;
                     func_0203d388((int *)&vb, rot);
@@ -719,11 +719,11 @@ extern "C" void func_ov006_020ea914(void *self_)
 }
 #pragma pop
 
-// @symbol func_ov006_020eac38
+// @symbol Wiggler_DrawPassB
 extern "C" {
 #pragma push
 #pragma opt_strength_reduction off
-void func_ov006_020eac38(void* arg)
+void Wiggler_DrawPassB(void* arg)
 {
     char* raw = (char*)arg;
     struct { int A, B, urot, va0x, res; } t;
@@ -768,12 +768,12 @@ void func_ov006_020eac38(void* arg)
         s.pos.x += s.vout.x;
         s.pos.y += s.vout.y;
 
-        t.res = func_ov006_020ebb40(raw, i);
+        t.res = Wiggler_GetFrame(raw, i);
         px = s.pos.y >> 12;
         py = s.pos.x >> 12;
         _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
             1,
-            data_ov006_02142018[(a2i = func_ov006_020ebc08(raw, i), (t.urot = (unsigned short)rot), a2i)],
+            data_ov006_02142018[(a2i = Wiggler_GetFlag(raw, i), (t.urot = (unsigned short)rot), a2i)],
             py, px,
             t.res, -1, 0x1000,
             t.urot);
@@ -826,10 +826,10 @@ void func_ov006_020eac38(void* arg)
 }
 
 
-// @symbol func_ov006_020eb018
+// @symbol Wiggler_Update
 #pragma push
 #pragma O3 /* the default schedule misses */
-extern "C" void func_ov006_020eb018(char *c)
+extern "C" void Wiggler_Update(char *c)
 {
     C *w = (C *)c;
     CB *o = (CB *)c;
@@ -848,11 +848,11 @@ extern "C" void func_ov006_020eb018(char *c)
             p++;
         } while (i < 5);
     }
-    func_ov006_020ec134(w);
+    Wiggler_StepSegmentsB(w);
 }
 #pragma pop
-// @symbol func_ov006_020eb0c8
-extern "C" void func_ov006_020eb0c8(char *self) {
+// @symbol Wiggler_StateHold
+extern "C" void Wiggler_StateHold(char *self) {
     C *w = (C *)self;
     if (ApproachLinear2(w->hold, 0, 1)) {
         w->bloom = 0;
@@ -884,12 +884,12 @@ extern "C" void func_ov006_020eb0c8(char *self) {
         i++;
     } while (i < 5);
 
-    func_ov006_020ec134(w);
+    Wiggler_StepSegmentsB(w);
 }
 
-// @symbol func_ov006_020eb1e0
+// @symbol Wiggler_StateMoveA
 extern "C" {
-void func_ov006_020eb1e0(char *raw)
+void Wiggler_StateMoveA(char *raw)
 {
     int va[2];
     int vb[2];
@@ -931,8 +931,8 @@ void func_ov006_020eb1e0(char *raw)
 }
 }
 
-// @symbol func_ov006_020eb31c
-extern "C" void func_ov006_020eb31c(char* c)
+// @symbol Wiggler_StateWait
+extern "C" void Wiggler_StateWait(char* c)
 {
     short* t = (short*)(((int)c + 0x90));
     short v = (short)(*t - 1);
@@ -960,9 +960,9 @@ extern "C" void func_ov006_020eb31c(char* c)
     *(unsigned char*)(c+0x95) = 3;
 }
 
-// @symbol func_ov006_020eb3e4
+// @symbol Wiggler_StateMoveB
 extern "C" {
-void func_ov006_020eb3e4(char *c)
+void Wiggler_StateMoveB(char *c)
 {
     int va[2];
     int vb[2];
@@ -1013,9 +1013,9 @@ void func_ov006_020eb3e4(char *c)
 }
 }
 
-// @symbol func_ov006_020eb558
-extern "C" /* char* parameter to agree with include/decl_common.h -- see func_ov006_020eac38. */
-void func_ov006_020eb558(char *raw)
+// @symbol Wiggler_UpdateSway
+extern "C" /* char* parameter to agree with include/decl_common.h -- see Wiggler_DrawPassB. */
+void Wiggler_UpdateSway(char *raw)
 {
     int *thiz = (int *)raw;
     int *g = &data_ov006_0213ca1c;
@@ -1034,8 +1034,8 @@ void func_ov006_020eb558(char *raw)
     }
 }
 
-// @symbol func_ov006_020eb610
-extern "C" void func_ov006_020eb610(char *c)
+// @symbol Wiggler_Move
+extern "C" void Wiggler_Move(char *c)
 {
     C *w = (C *)c;
     int v[2];
@@ -1055,7 +1055,7 @@ extern "C" void func_ov006_020eb610(char *c)
             /* long long cast: a plain w->flash -= 1 reloads the field. */
             *(short *)(long long)(int)&w->flash = *(short *)(long long)(int)&w->flash - 1;
             if (w->flash == 0) {
-                func_ov006_020eb9b0(c);
+                Wiggler_SetCruiseSpeed(c);
             }
         }
     }
@@ -1078,12 +1078,12 @@ extern "C" void func_ov006_020eb610(char *c)
         fn(base);
     }
     if (w->alive == 0) return;
-    func_ov006_020ebf20(w);
+    Wiggler_StepSegmentsA(w);
 }
 
-// @symbol func_ov006_020eb768
+// @symbol Wiggler_HitTest
 extern "C" {
-int func_ov006_020eb768(char* raw, const V2* b){
+int Wiggler_HitTest(char* raw, const V2* b){
   C *w = (C *)raw;
   int i;
   for (i = 0; i < 5; i++){
@@ -1093,9 +1093,9 @@ int func_ov006_020eb768(char* raw, const V2* b){
 }
 }
 
-// @symbol func_ov006_020eb7b0
+// @symbol Wiggler_IsStarVisible
 extern "C" {
-int func_ov006_020eb7b0(char* raw)
+int Wiggler_IsStarVisible(char* raw)
 {
     if (*(unsigned char*)(raw + 0x93) == 0) {
         S* q = (S*)(long long)(raw + 8);
@@ -1107,9 +1107,9 @@ int func_ov006_020eb7b0(char* raw)
 }
 }
 
-// @symbol func_ov006_020eb7f8
+// @symbol Wiggler_StopIfIdle
 extern "C" {
-void func_ov006_020eb7f8(char* c){
+void Wiggler_StopIfIdle(char* c){
   P* d = &data_ov006_0213c9b4;
   int c0 = *(int*)c;
   if(c0 == d->v[0] && (*(int*)(c+4) == d->v[1] || c0 == 0)){
@@ -1132,8 +1132,8 @@ void func_ov006_020eb7f8(char* c){
 }
 }
 
-// @symbol func_ov006_020eb8f0
-extern "C" void func_ov006_020eb8f0(char *c)
+// @symbol Wiggler_OnTouched
+extern "C" void Wiggler_OnTouched(char *c)
 {
     Pair *g = &data_ov006_0213c96c;
     Pair *p = (Pair *)c;
@@ -1151,9 +1151,9 @@ extern "C" void func_ov006_020eb8f0(char *c)
     }
 }
 
-// @symbol func_ov006_020eb9b0
+// @symbol Wiggler_SetCruiseSpeed
 extern "C" {
-void func_ov006_020eb9b0(char *raw)
+void Wiggler_SetCruiseSpeed(char *raw)
 {
     C *w = (C *)raw;
     w->speedTarget = 0xa00;
@@ -1165,9 +1165,9 @@ void func_ov006_020eb9b0(char *raw)
 }
 }
 
-// @symbol func_ov006_020eb9dc
+// @symbol Wiggler_Retarget
 extern "C" {
-void func_ov006_020eb9dc(struct ObjB* c, int v)
+void Wiggler_Retarget(struct ObjB* c, int v)
 {
     short* h = (short*)(int)(&c->tries);
     struct P2* p = (struct P2*)(int)(&c->saved);
@@ -1199,11 +1199,11 @@ void func_ov006_020eb9dc(struct ObjB* c, int v)
 }
 }
 
-// @symbol func_ov006_020ebb40
+// @symbol Wiggler_GetFrame
 extern "C" {
-/* Second parameter unused by the body -- func_ov006_020eac38 passes an index
+/* Second parameter unused by the body -- Wiggler_DrawPassB passes an index
    this callee ignores; declaring it keeps the caller's argument setup. */
-int func_ov006_020ebb40(char *raw, int){
+int Wiggler_GetFrame(char *raw, int){
   int r2 = 0;
   if (*(unsigned char*)(raw + 0x93) != 0){
     int r1 = *(short*)(raw + 0x8e);
@@ -1239,9 +1239,9 @@ end:
 }
 }
 
-// @symbol func_ov006_020ebc08
+// @symbol Wiggler_GetFlag
 extern "C" {
-int func_ov006_020ebc08(char* raw, int n) {
+int Wiggler_GetFlag(char* raw, int n) {
     switch (n) {
     case 0:
         return *(unsigned char*)(raw + 0x95);
@@ -1257,9 +1257,9 @@ int func_ov006_020ebc08(char* raw, int n) {
 }
 }
 
-// @symbol func_ov006_020ebc7c
+// @symbol Hana_PickUnused
 extern "C" {
-int func_ov006_020ebc7c(int n, int mask)
+int Hana_PickUnused(int n, int mask)
 {
     int v;
     int i;
@@ -1288,9 +1288,9 @@ int func_ov006_020ebc7c(int n, int mask)
 }
 }
 
-// @symbol func_ov006_020ebd7c
+// @symbol Hana_ChooseStarWiggler
 extern "C" {
-void func_ov006_020ebd7c(int count)
+void Hana_ChooseStarWiggler(int count)
 {
     int i, j;
     data_ov006_02141fd4 = (short)(RandomIntInternal(&data_0209e650) & 0xf);
@@ -1312,9 +1312,9 @@ void func_ov006_020ebd7c(int count)
 }
 }
 
-// @symbol func_ov006_020ebe6c
+// @symbol Hana_PickMoveKind
 extern "C" {
-int func_ov006_020ebe6c(void){
+int Hana_PickMoveKind(void){
   int v = 3;
   int r = (int)(((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13);
   if (r < 0x400) v = 0;
@@ -1324,9 +1324,9 @@ int func_ov006_020ebe6c(void){
 }
 }
 
-// @symbol func_ov006_020ebeb4
+// @symbol Wiggler_ClampToScreen
 extern "C" {
-int func_ov006_020ebeb4(char *raw){
+int Wiggler_ClampToScreen(char *raw){
     C *w = (C *)raw;
     int r=0;
     int v=w->seg[1].x;
@@ -1339,9 +1339,9 @@ int func_ov006_020ebeb4(char *raw){
 }
 }
 
-// @symbol func_ov006_020ebf20
+// @symbol Wiggler_StepSegmentsA
 extern "C" {
-void func_ov006_020ebf20(struct C* c)
+void Wiggler_StepSegmentsA(struct C* c)
 {
     V2 d;
     V2 g;
@@ -1411,9 +1411,9 @@ void func_ov006_020ebf20(struct C* c)
 }
 }
 
-// @symbol func_ov006_020ec134
+// @symbol Wiggler_StepSegmentsB
 extern "C" {
-void func_ov006_020ec134(struct C* c)
+void Wiggler_StepSegmentsB(struct C* c)
 {
     V2 d;
     V2 g;
@@ -1461,9 +1461,9 @@ void func_ov006_020ec134(struct C* c)
 }
 }
 
-// @symbol func_ov006_020ec2bc
+// @symbol Wiggler_StepSegmentsC
 extern "C" {
-void func_ov006_020ec2bc(struct C* c)
+void Wiggler_StepSegmentsC(struct C* c)
 {
     V2 d;
     V2 g;
@@ -1510,11 +1510,11 @@ void func_ov006_020ec2bc(struct C* c)
 }
 }
 
-// @symbol func_ov006_020ec458
+// @symbol Wiggler_CheckOffLeftA
 extern "C" {
 #pragma push
 #pragma opt_strength_reduction off
-void func_ov006_020ec458(C* self) {
+void Wiggler_CheckOffLeftA(C* self) {
     int i;
     s16 v = self->aim;
     if (v < 0 && self->seg[0].x < -0x60000) {
@@ -1530,9 +1530,9 @@ void func_ov006_020ec458(C* self) {
 #pragma pop
 }
 
-// @symbol func_ov006_020ec4dc
+// @symbol Wiggler_StartPathA
 extern "C" {
-void func_ov006_020ec4dc(Obj *self, int n)
+void Wiggler_StartPathA(Obj *self, int n)
 {
     int b = n % 3;
     int a = n / 3;
@@ -1585,7 +1585,7 @@ void func_ov006_020ec4dc(Obj *self, int n)
         }
     }
 
-    func_ov006_020ec2bc((struct C *)self);
+    Wiggler_StepSegmentsC((struct C *)self);
     self->voice = 0;
     self->voiceId = 0x1ec;
     *(struct Words2 *)&self->state = *(struct Words2 *)&data_ov006_0213ca24;
@@ -1594,11 +1594,11 @@ void func_ov006_020ec4dc(Obj *self, int n)
 }
 
 
-// @symbol func_ov006_020ec6e8
+// @symbol Wiggler_MoveBounce
 extern "C" {
-void func_ov006_020ec6e8(char *raw)
+void Wiggler_MoveBounce(char *raw)
 {
-    int res = func_ov006_020ebeb4(raw);
+    int res = Wiggler_ClampToScreen(raw);
     if (res != 0) {
         int tx;
         int ty;
@@ -1641,9 +1641,9 @@ void func_ov006_020ec6e8(char *raw)
 }
 
 
-// @symbol func_ov006_020ec84c
+// @symbol Wiggler_StartBounce
 extern "C" {
-void func_ov006_020ec84c(char *raw, int)
+void Wiggler_StartBounce(char *raw, int)
 {
     int i;
     *(int *)(raw + 0x40) = 0xa00;
@@ -1654,8 +1654,8 @@ void func_ov006_020ec84c(char *raw, int)
         ((short *)(raw + 0x7a))[i] = (short)((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10);
     }
     *(short *)(raw + 0x76) = (short)((*(short *)(raw + 0x7a) + *(short *)(raw + 0x7c)) >> 1);
-    func_ov006_020ebeb4(raw);
-    func_ov006_020ec2bc((struct C *)raw);
+    Wiggler_ClampToScreen(raw);
+    Wiggler_StepSegmentsC((struct C *)raw);
     *(short *)(raw + 0x78) = 0x1e;
     *(int *)(raw + 0x68) = 0;
     *(int *)(raw + 0x6c) = 0x1ec;
@@ -1665,11 +1665,11 @@ void func_ov006_020ec84c(char *raw, int)
 }
 
 
-// @symbol func_ov006_020ec93c
+// @symbol Wiggler_CheckOffLeftB
 extern "C" {
 #pragma push
 #pragma opt_strength_reduction off
-void func_ov006_020ec93c(C* self) {
+void Wiggler_CheckOffLeftB(C* self) {
     int i;
     s16 v = self->aim;
     if (v < 0 && self->seg[0].x < -0x60000) {
@@ -1686,11 +1686,11 @@ void func_ov006_020ec93c(C* self) {
 }
 
 
-// @symbol func_ov006_020ec9c0
+// @symbol Wiggler_StartPathB
 extern "C" {
 #pragma push
 #pragma opt_strength_reduction off
-void func_ov006_020ec9c0(char* raw, int idx)
+void Wiggler_StartPathB(char* raw, int idx)
 {
     int n1;
     int A, B;
@@ -1736,7 +1736,7 @@ void func_ov006_020ec9c0(char* raw, int idx)
         off += 0x20000;
     }
 
-    func_ov006_020ec2bc((struct C *)raw);
+    Wiggler_StepSegmentsC((struct C *)raw);
     *(int*)(raw + 0x68) = 0;
     *(int*)(raw + 0x6c) = 0x1ec;
     *(struct Words2 *)(raw + 0) = *(struct Words2 *)data_ov006_0213ca0c;
@@ -1746,9 +1746,9 @@ void func_ov006_020ec9c0(char* raw, int idx)
 }
 
 
-// @symbol func_ov006_020ecb80
+// @symbol Wiggler_TurnTowardAim
 extern "C" {
-void func_ov006_020ecb80(void *arg)
+void Wiggler_TurnTowardAim(void *arg)
 {
   C *w = (C *) arg;
   ApproachLinear(w->ang[0], (short)(w->aim - 0x2000), 0x100);
@@ -1756,9 +1756,9 @@ void func_ov006_020ecb80(void *arg)
 }
 
 
-// @symbol func_ov006_020ecba4
+// @symbol Wiggler_StartPathC
 extern "C" {
-void func_ov006_020ecba4(struct C* c, int param)
+void Wiggler_StartPathC(struct C* c, int param)
 {
     V2 vec0;
     V2 vec1;
@@ -1804,7 +1804,7 @@ void func_ov006_020ecba4(struct C* c, int param)
         c->seg[i].y = vec2.y;
     }
 
-    func_ov006_020ec2bc(c);
+    Wiggler_StepSegmentsC(c);
 
     vec3.x = 0;
     vec3.y = -0x10000;
@@ -1820,9 +1820,9 @@ void func_ov006_020ecba4(struct C* c, int param)
 }
 
 
-// @symbol func_ov006_020ecdb8
+// @symbol Hana_SpawnWigglers
 extern "C" {
-void func_ov006_020ecdb8(char *raw, int arg1, int arg2)
+void Hana_SpawnWigglers(char *raw, int arg1, int arg2)
 {
     int i;
     struct C *o = (struct C *)raw;
@@ -1843,21 +1843,21 @@ void func_ov006_020ecdb8(char *raw, int arg1, int arg2)
     for (i = 0; i < 5; i++)
         o->stretch[i] = 0x10000;
 
-    o->color = (short)func_ov006_020ebc7c(arg1, 0xff);
+    o->color = (short)Hana_PickUnused(arg1, 0xff);
 
     switch (data_ov006_02141fd8) {
     case 0:
-        func_ov006_020ecba4((struct C *)raw, arg1);
+        Wiggler_StartPathC((struct C *)raw, arg1);
         return;
     case 1:
-        func_ov006_020ec9c0(raw, arg1);
+        Wiggler_StartPathB(raw, arg1);
         return;
     case 2:
-        func_ov006_020ec84c(raw, arg1);
+        Wiggler_StartBounce(raw, arg1);
         return;
     case 3:
     default:
-        func_ov006_020ec4dc((Obj *)raw, arg1);
+        Wiggler_StartPathA((Obj *)raw, arg1);
         return;
     }
 }
@@ -1882,8 +1882,8 @@ s32 dScMgHanachan_c::Render()
     char *arr;
 
     Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
-    func_ov006_020ea670();
-    func_ov006_020ea350();
+    HanaPopup_DrawAll();
+    StarPopup_Draw();
 
     {
         Pair *p = PAIR0(raw);
@@ -1894,7 +1894,7 @@ s32 dScMgHanachan_c::Render()
                 if (data_ov006_0213c958 > 0) {
                     arr = raw + 0x4678;
                     do {
-                        func_ov006_020eac38(arr);
+                        Wiggler_DrawPassB(arr);
                         i++;
                         arr += 0x98;
                     } while (i < data_ov006_0213c958);
@@ -1917,14 +1917,14 @@ s32 dScMgHanachan_c::Render()
                 if (mPhaseTimer < 0x8a) goto do_eac;
                 goto count_loop;
             do_eac:
-                func_ov006_020eac38(mTarget);
+                Wiggler_DrawPassB(mTarget);
                 goto tail;
             count_loop:
                 i = 0;
                 if (data_ov006_0213c958 > 0) {
                     arr = raw + 0x4678;
                     do {
-                        func_ov006_020eac38(arr);
+                        Wiggler_DrawPassB(arr);
                         i++;
                         arr += 0x98;
                     } while (i < data_ov006_0213c958);
@@ -1939,12 +1939,12 @@ s32 dScMgHanachan_c::Render()
         Pair *g = &data_ov006_0213ca3c;
         if ((p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0))
             || (p = PAIR0(raw), g = &data_ov006_0213ca34, (p->v[0] == g->v[0] && (p->v[1] == g->v[1] || mPhaseFn == 0)))) {
-            func_ov006_020eac38(mTarget);
+            Wiggler_DrawPassB(mTarget);
         }
     }
 
 tail:
-    func_ov006_020ea914(mTarget);
+    Wiggler_DrawPassA(mTarget);
 
     {
         Pair *p = PAIR0(raw);
@@ -1973,7 +1973,7 @@ s32 dScMgHanachan_c::Behavior()
     if (data_ov006_0213c958 > 0) {
         Thing *base = (Thing *)mWiggler;
         do {
-            func_ov006_020eb610((char *)&base[i]);
+            Wiggler_Move((char *)&base[i]);
             i++;
         } while (i < data_ov006_0213c958);
     }
@@ -1981,26 +1981,26 @@ s32 dScMgHanachan_c::Behavior()
     if (data_ov006_0213c958 > 0) {
         Thing *base = (Thing *)mWiggler;
         do {
-            func_ov006_020eb558((char *)&base[j]);
+            Wiggler_UpdateSway((char *)&base[j]);
             j++;
         } while (j < data_ov006_0213c958);
     }
-    func_ov006_020ea71c();
-    func_ov006_020ea3d0((char *)&mTimeLeft);
+    HanaPopup_UpdateAll();
+    StarPopup_Update((char *)&mTimeLeft);
     return 1;
 }
 
 
-// @symbol func_ov006_020ed270
+// @symbol Hana_StateNoneA
 extern "C" {
-void func_ov006_020ed270(void)
+void Hana_StateNoneA(void)
 {
 }
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed274Ev
-void dScMgHanachan_c::func_ov006_020ed274()
+// @symbol _ZN15dScMgHanachan_c15Phase_WaitTouchEv
+void dScMgHanachan_c::Phase_WaitTouch()
 {
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
@@ -2025,8 +2025,8 @@ void dScMgHanachan_c::func_ov006_020ed274()
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed300Ev
-void dScMgHanachan_c::func_ov006_020ed300()
+// @symbol _ZN15dScMgHanachan_c15BeginResultWaitEv
+void dScMgHanachan_c::BeginResultWait()
 {
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
@@ -2035,24 +2035,24 @@ void dScMgHanachan_c::func_ov006_020ed300()
 }
 
 
-// @symbol func_ov006_020ed328
+// @symbol Hana_StateNoneB
 extern "C" {
-void func_ov006_020ed328(void)
+void Hana_StateNoneB(void)
 {
 }
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed32cEv
-void dScMgHanachan_c::func_ov006_020ed32c()
+// @symbol _ZN15dScMgHanachan_c12SetPhaseIdleEv
+void dScMgHanachan_c::SetPhaseIdle()
 {
     char *raw = (char *)this;
     *(Pair *)&((dScMgHanachan_c *)raw)->mPhaseFn = data_ov006_0213ca64;
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed34cEv
-void dScMgHanachan_c::func_ov006_020ed34c()
+// @symbol _ZN15dScMgHanachan_c12Phase_ResultEv
+void dScMgHanachan_c::Phase_Result()
 {
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
@@ -2064,13 +2064,13 @@ void dScMgHanachan_c::func_ov006_020ed34c()
         if (s->mHit != 0)
         {
             Mg_SetSharedState(1);
-            func_ov006_020ed32c();
+            SetPhaseIdle();
         }
         else
         {
             ((C *)s->mTarget)->decoy = 1;
             Mg_SetSharedState(0x12);
-            func_ov006_020ed300();
+            BeginResultWait();
         }
         s->mPromptEnabled = 0;
     }
@@ -2078,21 +2078,21 @@ void dScMgHanachan_c::func_ov006_020ed34c()
     {
         if (v == 0x5a)
         {
-            func_ov006_020eb8f0((char *)s->mTarget);
+            Wiggler_OnTouched((char *)s->mTarget);
         }
     }
     else
     {
         if (v == 0x8a)
         {
-            func_ov006_020eb7f8((char *)s->mTarget);
+            Wiggler_StopIfIdle((char *)s->mTarget);
         }
     }
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed40cEv
-void dScMgHanachan_c::func_ov006_020ed40c()
+// @symbol _ZN15dScMgHanachan_c11BeginResultEv
+void dScMgHanachan_c::BeginResult()
 {
     char *raw = (char *)this;
     int i = 0;
@@ -2112,8 +2112,8 @@ void dScMgHanachan_c::func_ov006_020ed40c()
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed494Ev
-void dScMgHanachan_c::func_ov006_020ed494()
+// @symbol _ZN15dScMgHanachan_c10Phase_PlayEv
+void dScMgHanachan_c::Phase_Play()
 {
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
@@ -2136,8 +2136,8 @@ void dScMgHanachan_c::func_ov006_020ed494()
         vec[0] = src->x;
         vec[1] = src->y;
 
-        if (func_ov006_020eb7b0((char *)s->mTarget) != 0 &&
-            func_ov006_020eb768((char *)s->mTarget, &a) != 0)
+        if (Wiggler_IsStarVisible((char *)s->mTarget) != 0 &&
+            Wiggler_HitTest((char *)s->mTarget, &a) != 0)
         {
             s->mHit = 1;
             func_02012790(0x26);
@@ -2151,8 +2151,8 @@ void dScMgHanachan_c::func_ov006_020ed494()
                 Sound::PlayBank2_2D(0x1ee);
             if (data_ov006_02141fd8 == 0)
                 vec[0] -= 0x28000;
-            func_ov006_020ea5f0(vec[0], vec[1]);
-            func_ov006_020ed40c();
+            StarPopup_Start(vec[0], vec[1]);
+            BeginResult();
             return;
             }
         }
@@ -2167,8 +2167,8 @@ void dScMgHanachan_c::func_ov006_020ed494()
                 ptr = (Thing *)s->mWiggler;
                 do
                 {
-                    if (func_ov006_020eb7b0((char *)ptr) != 0 &&
-                        func_ov006_020eb768((char *)ptr, &a) != 0)
+                    if (Wiggler_IsStarVisible((char *)ptr) != 0 &&
+                        Wiggler_HitTest((char *)ptr, &a) != 0)
                     {
                         found = i;
                         break;
@@ -2203,7 +2203,7 @@ void dScMgHanachan_c::func_ov006_020ed494()
                             V2 *s2 = (V2 *)(int)((char *)ptr2 + 0x18);
                             vec[0] = s2->x;
                             vec[1] = s2->y;
-                            func_ov006_020eb9dc((struct ObjB *)ptr2, func_0203d5dc((const V2 *)vec, &a));
+                            Wiggler_Retarget((struct ObjB *)ptr2, func_0203d5dc((const V2 *)vec, &a));
                             j++;
                             ptr2++;
                         }
@@ -2219,7 +2219,7 @@ void dScMgHanachan_c::func_ov006_020ed494()
                 }
                 if (data_ov006_02141fd8 == 0)
                     vec[2] -= 0x28000;
-                func_ov006_020ea81c(vec[2], vec[3]);
+                HanaPopup_Spawn(vec[2], vec[3]);
 
                 {
                     int t = s->mTimeLeft - 10;
@@ -2238,7 +2238,7 @@ void dScMgHanachan_c::func_ov006_020ed494()
     if (ApproachLinear(s->mTimeLeft, 0, 1) != 0)
     {
         func_02012790(0xe);
-        func_ov006_020ed40c();
+        BeginResult();
     }
 
     if (s->mTimeLeft > 2)
@@ -2248,8 +2248,8 @@ void dScMgHanachan_c::func_ov006_020ed494()
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed81cEv
-void dScMgHanachan_c::func_ov006_020ed81c()
+// @symbol _ZN15dScMgHanachan_c9BeginPlayEv
+void dScMgHanachan_c::BeginPlay()
 {
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
@@ -2258,8 +2258,8 @@ void dScMgHanachan_c::func_ov006_020ed81c()
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed844Ev
-void dScMgHanachan_c::func_ov006_020ed844()
+// @symbol _ZN15dScMgHanachan_c15Phase_WaitIntroEv
+void dScMgHanachan_c::Phase_WaitIntro()
 {
     char *raw = (char *)this;
     dScMgHanachan_c *s = (dScMgHanachan_c *)raw;
@@ -2270,12 +2270,12 @@ void dScMgHanachan_c::func_ov006_020ed844()
         s->mPromptBlinkCount = 1;
         s->mPromptBlinkTimer = 0;
     }
-    func_ov006_020ed81c();
+    BeginPlay();
 }
 
 
-// @symbol _ZN15dScMgHanachan_c19func_ov006_020ed8a4Ev
-void dScMgHanachan_c::func_ov006_020ed8a4()
+// @symbol _ZN15dScMgHanachan_c16Phase_SetupRoundEv
+void dScMgHanachan_c::Phase_SetupRound()
 {
     dScMgHanachan_c *self = this;
     char *raw = (char *)this;
@@ -2284,7 +2284,7 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
         data_ov006_02141fd8 = data_ov006_0212e80c[bc];
         data_ov006_0213c958 = data_ov006_0212e820[bc];
     } else {
-        int ret = func_ov006_020ebe6c();
+        int ret = Hana_PickMoveKind();
         data_ov006_02141fd8 = ret;
         if (ret == 3) {
             data_ov006_0213c958 = 0xf;
@@ -2295,16 +2295,16 @@ void dScMgHanachan_c::func_ov006_020ed8a4()
     }
 
     if (self->mLevel < 0xa)
-        func_ov006_020ebd7c(2);
+        Hana_ChooseStarWiggler(2);
     else
-        func_ov006_020ebd7c(3);
+        Hana_ChooseStarWiggler(3);
 
     {
         int i = 0;
         if (data_ov006_0213c958 > 0) {
             Thing *p = (Thing *)((dScMgHanachan_c *)raw)->mWiggler;
             do {
-                func_ov006_020ecdb8((char *)p, i, (s32)self->mLevel);
+                Hana_SpawnWigglers((char *)p, i, (s32)self->mLevel);
                 i++;
                 p++;
             } while (i < data_ov006_0213c958);
@@ -2348,9 +2348,9 @@ void dScMgHanachan_c::StartRound(int state)
         if (gMgScene != 0) *(int*)((char *)gMgScene + 0xb4) = v;
         mTimeLeft = 0x14;
     }
-    func_ov006_020ea8e0();
-    func_ov006_020ea658();
-    func_ov006_020ed8a4();
+    HanaPopup_ClearAll();
+    StarPopup_Clear();
+    Phase_SetupRound();
 }
 
 
@@ -2361,7 +2361,7 @@ s32 dScMgHanachan_c::InitResources()
     void *b;
     SelfV *obj = (SelfV *)this;
 
-    func_ov006_020edcb0();
+    Hana_LoadBackground();
     a = LoadFile(ASSET_D_2D_MG_HANA_SAGASE_NCG_BIN);
     b = LoadFile(ASSET_D_2D_MG_HANA_SAGASE_NCL_BIN);
     DecompressLZ16(a, (void *)0x6400000);
@@ -2390,9 +2390,9 @@ s32 dScMgHanachan_c::InitResources()
 }
 
 
-// @symbol func_ov006_020edcb0
+// @symbol Hana_LoadBackground
 extern "C" {
-void func_ov006_020edcb0(void){
+void Hana_LoadBackground(void){
   void *r6 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE1_NCG_BIN);
   void *r5 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE1_NSC_BIN);
   void *r4 = LoadFile(ASSET_D_2D_MG_BG_HANA_SAGASE1_NCL_BIN);

@@ -361,3 +361,15 @@ Five tables, named by index:
 High confidence: `LayOutCoins`, `SpawnBlocks`, `KickBlockUnderCoin`, `Block_ClampToWalls`, `Sparkle_*`, `Popup_*`, `ResetRound`.
 
 Medium confidence: `DrawScorePlayer` and `DrawScoreRival` (the two result scores), `Caption_*`, `Bag_Release`.
+
+**Hanachan (`dScMgHanachan_c`, Which Wiggler?).**
+
+High confidence:
+- **Phases:** `Phase_SetupRound`, `Phase_WaitIntro`, `Phase_Play`, `Phase_Result`, `Phase_WaitTouch`, `BeginPlay` (a 1200-frame clock), `BeginResult`.
+- **Wigglers:** `Hana_SpawnWigglers`, `Hana_ChooseStarWiggler`, `Wiggler_HitTest` (any segment within 0x14 px), `Wiggler_ClampToScreen`, `Wiggler_Move`.
+- **Popups:** the single star popup (`StarPopup_*`) and the sixteen `HanaPopup_*`.
+
+Medium confidence:
+- The movement modes: `Wiggler_StartPathA/B/C`, `Wiggler_StepSegmentsA/B/C`, `Wiggler_StartBounce`/`Wiggler_MoveBounce`, `Wiggler_StateMoveA/B`, `Wiggler_StateHold`, `Wiggler_StateWait`, `Wiggler_Retarget`, `Wiggler_OnTouched`, `Wiggler_StopIfIdle`, `Wiggler_UpdateSway` (sounds 0x1e7/0x1e8 as the sway crosses zero).
+- `Wiggler_DrawPassA/B`: two draw passes; which part of the wiggler each draws is not observed.
+- `Wiggler_IsStarVisible`.
