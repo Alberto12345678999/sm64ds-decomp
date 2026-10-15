@@ -6181,6 +6181,11 @@
         "param:#1 void *"
       ]
     },
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
+      "include/decl_Animation.h": [
+        "param:#2 const void *"
+      ]
+    },
     "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/game/actors/d_a_demo.cpp": [
         "return:int"
@@ -11265,6 +11270,28 @@
       ],
       "src/unnamed/ov002/func_ov002_020d8a50.c": [
         "param:#2 Vector3 *"
+      ]
+    },
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
+      "include/decl_Animation.h": [
+        "return:int"
+      ],
+      "src/minigames/d_mg3d_esp_anim_set.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int"
+      ],
+      "src/minigames/unit020bfec0.cpp": [
+        "return:int"
+      ]
+    },
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
+      "include/decl_Animation.h": [
+        "return:int"
+      ],
+      "src/game/actors/d_a_kpa_fire.cpp": [
+        "return:int"
       ]
     },
     "_ZNK5dBgPi9GetClsnIDEv": {
