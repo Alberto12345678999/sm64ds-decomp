@@ -13,10 +13,10 @@
  *   pointer-to-member records at 0x02115ac8, EnterState0..10 store
  *   mState. The other eleven are the ticks. Helpers those ticks call
  *   take the same Ukiki, so they are methods too.
- * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, IsTooFarAwayFromPlayer,
- *   dClipper::Func_02015560 and Sound::PlaySub pass Fix12<int> by
- *   value. dBgCh_Actr::Init's header is Fix12i, which mangles as int.
+ * - Shared animation/collision/scalar declarations retain their current
+ *   reconstructed Fix12<int> spellings. Genuine scalar definitions and
+ *   callers match in separate experiments; canonical shared migration
+ *   remains pending, rather than an inherent compiler limitation.
  * - func_0201267c and PlayBank3 are the bank-3 wrappers.
  *   func_02012790 is Sound::Play2D(2, id). func_020383f0 and
  *   dBgCh_Actr_UpdateContinuous_Veneer are the tail-call veneers the
@@ -1237,7 +1237,6 @@ int daMky_c::func_ov030_021136b0()
                 func_ov030_021141a8(2);
             } else {
                 dActor_c *act = dActor_c::FindWithID(this->mCapUniqueID);
-                int z = 0;
                 act->mCarryMatrix = 0;
                 {
                     int *src = &this->mPlayer->mPosX;
