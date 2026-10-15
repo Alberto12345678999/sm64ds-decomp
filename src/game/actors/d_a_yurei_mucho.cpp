@@ -10,7 +10,7 @@
  * The address is kept as the method name. symbols.txt records the mangled
  * spelling, which is what the unowned PMF .data records resolve by name.
  *
- * leftovers: each one is load-bearing.
+ * Remaining reconstruction under issue #2478:
  * - The integer-cast field forms, `(int)this + 0x3d8` in Behavior and
  *   `(int)this + 0x3c0` in func_ov065_0211696c. Writing `&mBobAngle`, or
  *   `mShotPosX <<= 3`, DIFFs.
@@ -23,10 +23,9 @@
  *   unrecovered.
  * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
  *   DropShadowRadHeight, KillByInvincibleChar, SpawnCoins, Player::Hurt
- *   and Player::Bounce stay spelled as mangled symbols: Fix12 by value,
- *   wall 6az. dBgCh_Actr::Init is the same wall from the other side --
- *   the header's Fix12i mangles as int, which is what InitResources
- *   calls here.
+ *   and Player::Bounce retain scalar ABI declarations. Native fixed-point
+ *   call reconstruction remains separate work; the handoff records the
+ *   measured Init alternatives. Hurt follows its current scalar definition.
  * - The data_ov065_* SharedFilePtr handles (Init LoadFile, Cleanup
  *   Release) and the state records (func_ov065_0211691c) are not owned
  *   by this TU. g_profile_YUREI_MUCHO is defined outside. pad_3e2 is
@@ -62,19 +61,19 @@ struct V3Quint {
     Vector3 tgt;
 };
 
-/* ABI declarations still used by the unreconstructed helpers. */
+/* Scalar ABI declarations retained by this TU. */
 extern "C" {
 
-/* arm9 -- 6az / unnamed helpers. Method forms of the Fix12-by-value
-   group size-DIFF; see leftovers. */
+/* arm9 scalar ABI and unnamed helpers; see the remaining work above. */
 extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const Vector3 *pos,
                                                           unsigned int n, int f, short s);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int rad, int height, unsigned int flags);
 extern void _ZN6Player6BounceE5Fix12IiE(void *p, int f);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *p, const void *v, unsigned int a,
-                                                    int b, unsigned int d, unsigned int e,
-                                                    unsigned int f);
+/* local extern: retain the current scalar definition; native Fix12<int>
+   call reconstruction remains separate work. The return value is discarded. */
+extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player *p, void *v, unsigned int a,
+                                                   int b, u8 d, u8 e, u8 f);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fix,
                                                         unsigned int j);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *a, int r, int h,
@@ -313,10 +312,10 @@ int daYurei_Mucho_c::CleanupResources()
    drops the shadow. Called three times from Behavior. */
 void daYurei_Mucho_c::func_ov065_0211696c()
 {
-    int v[3];
+    Vector3 v;
 
-    Vec3_Asr(v, &mPosX, 3);
-    Matrix4x3_FromTranslation(data_020a0e68, v[0], v[1], v[2]);
+    Vec3_Asr(&v, &mPosX, 3);
+    Matrix4x3_FromTranslation(data_020a0e68, v.x, v.y, v.z);
     Matrix4x3_ApplyInPlaceToRotationXYZExt(data_020a0e68,
         mAngleX, mAngleY, mAngleZ);
 
@@ -393,14 +392,14 @@ int daYurei_Mucho_c::func_ov065_021168a8()
    when a player comes close enough. */
 int daYurei_Mucho_c::func_ov065_02116744()
 {
-    int in[3];
-    int dp[3];
+    Vector3 in;
+    Vector3 dp;
     Player *pl;
     int *pos;
 
-    in[0] = 0;
-    in[1] = 0;
-    in[2] = 0;
+    in.x = 0;
+    in.y = 0;
+    in.z = 0;
 
     if (Vec3_Dist(&mPosX, &mHomePosX) > 0x1f4000 ||
         mWithMeshClsn.IsOnWall() != 0) {
@@ -412,9 +411,9 @@ int daYurei_Mucho_c::func_ov065_02116744()
     ApproachAngle(&mPrevAngleY, mTargetAngle, 0xa, 0x200, 0x100);
     ApproachAngle(&mPrevAngleX, 0, 1, 0x500, 0x500);
 
-    in[2] = 0xa000;
+    in.z = 0xa000;
     Matrix4x3_FromRotationY(data_020a0e68, mAngleY);
-    MulVec3Mat4x3(in, data_020a0e68, &unk_0a4);
+    MulVec3Mat4x3(&in, data_020a0e68, &unk_0a4);
 
     if (*(unsigned short *)((char *)this + 0x100) == 0) {
         func_ov065_0211691c((State *)data_ov065_0211d670);
@@ -424,11 +423,11 @@ int daYurei_Mucho_c::func_ov065_02116744()
     pl = ClosestNonVanishPlayer();
     if (pl != 0) {
         pos = (int *)(((int)pl + 0x5c));
-        dp[0] = pos[0];
-        dp[1] = pos[1];
-        dp[2] = pos[2];
+        dp.x = pos[0];
+        dp.y = pos[1];
+        dp.z = pos[2];
 
-        if (Vec3_Dist(&mPosX, dp) < 0x3e8000) {
+        if (Vec3_Dist(&mPosX, &dp) < 0x3e8000) {
             *(unsigned short *)((char *)this + 0x100) = 0x14;
             func_ov065_0211691c((State *)&data_ov065_0211d680);
         }
@@ -610,8 +609,8 @@ int daYurei_Mucho_c::func_ov065_021162c0()
 /* The collision response, called once from Behavior. */
 void daYurei_Mucho_c::func_ov065_02115ff0()
 {
-    short v[3];
-    int hv[3];
+    Vector3_16 v;
+    Vector3 hv;
     Player *p;
     int flags;
     unsigned int id;
@@ -646,10 +645,10 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         return;
     }
     if (flags & 0x10) {
-        v[0] = -0x2000;
-        v[1] = 0;
-        v[2] = 0;
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, v, p, 0);
+        v.x = -0x2000;
+        v.y = 0;
+        v.z = 0;
+        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &v, p, 0);
         func_02012694(0x11e, &mCamSpacePosX);
         return;
     }
@@ -680,10 +679,10 @@ void daYurei_Mucho_c::func_ov065_02115ff0()
         func_02012694(0x11e, &mCamSpacePosX);
         return;
     }
-    hv[0] = mPosX;
-    hv[1] = mPosY;
-    hv[2] = mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, hv, 2, 0xc000, 1, 0, 1);
+    hv.x = mPosX;
+    hv.y = mPosY;
+    hv.z = mPosZ;
+    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 2, 0xc000, 1, 0, 1);
 }
 
 /* -------------------------------------------------------------------------- */
