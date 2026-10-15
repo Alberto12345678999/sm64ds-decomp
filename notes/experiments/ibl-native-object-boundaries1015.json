@@ -10,7 +10,7 @@
   "base_commit": "e209dacfaaa95cb5490637ff053d62182689bebe",
   "tooling_workflow_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
   "source_review_policy_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
-  "producer_session": "codex-ibl-currentf6-astra-producer1015",
+  "producer_session": "codex-ibl-e209-coverage-astra-producer1015",
   "source_author": {
     "session": "codex-ibl-native-object-boundaries-astra-producer1015",
     "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
@@ -627,10 +627,10 @@
           "limit": "NOBITS: exact owned size/symbol addresses and full normal policy, no ROM payload comparison."
         }
       ],
-      "prepush_warning_resolution": "Generic text-linkcheck cannot resolve18 private initializer symbols. All are independently placed by actual unchanged manifest-owned full section layout and positively tied to configured relocation destinations by ordinary intact production; this supplemental exact relocation fills every byte without masking."
+      "prepush_warning_resolution": "The historical header-fanout generic initializer BLIND18 diagnostic is retained in old epochs. This independent complete owned-section supplement positively verifies all548bytes and48typedreferences plus208B NOBITS. Current generic e209..HEAD checks16 Ibl functions with0warnings and does not include the unchanged r_nk initializer."
     },
     "historical_original_full_three_function_proof_commit": "ea5f99972f30eaec5d02b446fc9cddf14305c6cf",
-    "limits": "Complete RAW and ordinary objects are literal to freshly compiled e209 controls, not to old f6 objects. All34 text functions,22 full metadata records480B,canonical callbacks and helper dispositions are positively verified. Generic initializer BLIND18 is covered separately by complete548B/48-reference storage proof; BSS208 is exact owned NOBITS."
+    "limits": "Complete RAW and ordinary objects are literal to freshly compiled e209 controls, not to old f6 objects. Additional focused proof verifies all34 text functions,22 full metadata records480B,canonical callbacks and helper dispositions. Current generic prepush itself checks16 Ibl functions with0warnings; the additional18 r_nk functions and complete548B/48-reference storage plus208B BSS are separately positive. Historical header-fanout35-check BLIND18 is not current generic coverage."
   },
   "gates": {
     "rom": {
@@ -830,10 +830,17 @@
     },
     "qualifications": [
       "Actual fresh combined full build at 40a6bf3cd981e702287be91c0184380979a32c18 against e209dacfaaa95cb5490637ff053d62182689bebe; census comes from this invocation, not historical hardcoded totals.",
-      "Generic prepush initializer BLIND18 warning remains; complete owned storage supplement positively verifies all548B and48 references without masking.",
+      "Current generic prepush checks16 Ibl functions:16 VERIFIED,0warnings,0blocking. Separate fresh r_nk proof covers18 text functions plus complete init496+ctor4+data48=548B/48references0blind and208B/17-record BSS. The historical35-check/header-fanout BLIND18 warning is retained only as a historical epoch; it is not a warning from the current generic run.",
       "Baseline dsd symbol errors, if present, remain separately recorded in the full build log. --no-rom does not emit a candidate ROM file.",
       "Declaration ratchet pass is not universal agreement; existing partial reconstruction and all22 findings remain unchanged."
-    ]
+    ],
+    "actual_generic_prepush": {
+      "checked": 16,
+      "verified": 16,
+      "warnings": 0,
+      "blocking": 0,
+      "scope": "Ibl changed Source only; unchanged shared header does not expand generic coverage to r_nk."
+    }
   },
   "historical_provenance": {
     "accepted_findings_preserved_exact": 16,
@@ -1067,6 +1074,15 @@
       "location": "src/game/actors/d_a_ibl.cpp:945",
       "summary": "Factory prose now describes construction without an obsolete five-member count.",
       "reason": "The comment now says return new constructs the ball and its members. The current class has six class-type member subobjects: dBgCh_Actr, Model, dExtShadowModel_c, dCcAc_c, Vector3 mDrawScale and PathPtr. The empty inline Vector3 constructor still begins a real subobject lifetime; five out-of-line constructor calls are not the member count. The sole comment replacement preserves its physical line and all executable Source. Fresh complete RAW and ordinary prepared objects for both consumers remain literal, with all34 strict functions and complete metadata/storage checked. Earlier fixed lifecycle provenance and all21 prior finding dictionaries remain verbatim as historical accepted epochs."
+    },
+    {
+      "id": "IBL-CURRENT-GENERIC-COVERAGE-1015",
+      "kind": "provenance",
+      "disposition": "fixed",
+      "location": "notes/experiments/ibl-native-object-boundaries1015.json:/gates/qualifications/1 and /whole_object_proof/limits; producer currente209/HANDOFF.json:/limits/2",
+      "summary": "The current packet incorrectly carries a generic initializer BLIND18 warning into the current comment-only follow-up.",
+      "reason": "Corrected the rejected report-only epoch: actual current producer and independent e209 ranged prepush checks16 Ibl functions, all16 VERIFIED,0warnings,0blocking. The current unchanged header does not cause generic r_nk coverage. Separate current focused proof positively checks18 r_nk functions,22 full metadata records480B across both units and complete548B/48-reference storage plus208B/17-record BSS. Historical35-check/header-fanout BLIND18 remains explicitly historical. All22 previous finding dictionaries and allfiveproductiontrees remain literal; the actual342.87s combined full build and focused objects are reused with exact positive binding, not described as new invocations.",
+      "next_action": "Independent reviewer verifies this report-only provenance correction and exact23 findings; no further Source or full-build change is claimed."
     }
   ],
   "preserved_failed_probes": [
@@ -1133,7 +1149,8 @@
     "currente209/romdata-full.json": "7da028c304329cf2ccc65053ac251be4f6be7a72ed04d74710ae97a45be97f5c",
     "currente209/prepush.json": "ad514f5f55361aae29ffe37f24df49f02867c0b832192a76a3fcc8f7d3459ad6",
     "currente209/ibl/proof.json": "c553c029bc5cd5c487bb00178b47a829c38fe0793ef6ee9acbaf4c8028af8260",
-    "currente209/koopa/proof.json": "658e0fcd3099b13b10c00b8b8f27ee19149d97b0636f700edcc3c9f436e17700"
+    "currente209/koopa/proof.json": "658e0fcd3099b13b10c00b8b8f27ee19149d97b0636f700edcc3c9f436e17700",
+    "currente209-coverage/original-verifier-finding.json": "b297be8ea0e56f055f53895904c621f19af8659b311ce42a5f9a814c447911d6"
   },
   "current_main_check": {
     "head": "e209dacfaaa95cb5490637ff053d62182689bebe",
@@ -1156,7 +1173,7 @@
     "Public push/PR/validation/merge"
   ],
   "report_author": {
-    "session": "codex-ibl-currentf6-astra-producer1015",
+    "session": "codex-ibl-e209-coverage-astra-producer1015",
     "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
     "label": "codex-enemy-frontier-astra1014"
   },
@@ -1217,5 +1234,21 @@
     "historical_50bf_report_commit": "ea5f99972f30eaec5d02b446fc9cddf14305c6cf",
     "historical_f6_packet_sha256": "02a76fe20f5b720f662e65a41035a57efb15859c7ae3fa0286aac8bcaefa0eea",
     "limits": "The former f6 transfer remains historical. Current main changed shared headers, names, credits and tools; this composition preserves those changes and uses a fresh current full build and both freshly compiled current-main controls. The Source-only factory comment does not alter object lifetime or runtime behavior."
+  },
+  "report_provenance_repair": {
+    "rejected_report_commit": "1fbd1ac05e5fc46099806c624cdda3621fb31b9f",
+    "finding_id": "IBL-CURRENT-GENERIC-COVERAGE-1015",
+    "original_verifier_hold_sha256": "0f4462410bfc6d02f931403d3f93f0a577a93b4614e5712fa0155438eee96b86",
+    "all22_previous_dictionaries_literal": true,
+    "code_or_header_change": false,
+    "new_full_build_invocation": false,
+    "new_focused_compile": false,
+    "current_generic_prepush": {
+      "checked": 16,
+      "verified": 16,
+      "warnings": 0,
+      "blocking": 0,
+      "scope": "Ibl changed Source only; unchanged shared header does not expand generic coverage to r_nk."
+    }
   }
 }
