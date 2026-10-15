@@ -24835,271 +24835,271 @@
     },
     "ov006:0x020ff47c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ff47cEv"
+      "name": "_ZN16dScMgPachinko2_c15CupSlot_DrawAllEv"
     },
     "ov006:0x020ff4ec": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ff4ecEv"
+      "name": "_ZN16dScMgPachinko2_c16CupSlot_ResetAllEv"
     },
     "ov006:0x020ff534": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ff534Ei"
+      "name": "_ZN16dScMgPachinko2_c14Cup_PickTargetEi"
     },
     "ov006:0x020ff690": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ff690Ei"
+      "name": "_ZN16dScMgPachinko2_c10Cup_State4Ei"
     },
     "ov006:0x020ff8c8": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ff8c8Ei"
+      "name": "_ZN16dScMgPachinko2_c10Cup_State3Ei"
     },
     "ov006:0x020ffb54": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ffb54Ei"
+      "name": "_ZN16dScMgPachinko2_c10Cup_State2Ei"
     },
     "ov006:0x020ffde4": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020ffde4Ei"
+      "name": "_ZN16dScMgPachinko2_c10Cup_State1Ei"
     },
     "ov006:0x020fff54": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020fff54Ei"
+      "name": "_ZN16dScMgPachinko2_c10Cup_State0Ei"
     },
     "ov006:0x020fff84": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020fff84Ev"
+      "name": "_ZN16dScMgPachinko2_c11Cup_DrawAllEv"
     },
     "ov006:0x020fffec": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_020fffecEv"
+      "name": "_ZN16dScMgPachinko2_c11Cup_ShowAllEv"
     },
     "ov006:0x02100058": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100058Ev"
+      "name": "_ZN16dScMgPachinko2_c11Cup_HideAllEv"
     },
     "ov006:0x02100084": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100084Ev"
+      "name": "_ZN16dScMgPachinko2_c16ChooseLaneConfigEv"
     },
     "ov006:0x02100140": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100140Ev"
+      "name": "_ZN16dScMgPachinko2_c13Popup_DrawAllEv"
     },
     "ov006:0x021001ac": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021001acEv"
+      "name": "_ZN16dScMgPachinko2_c15Popup_UpdateAllEv"
     },
     "ov006:0x02100278": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100278Eiii"
+      "name": "_ZN16dScMgPachinko2_c11Popup_SpawnEiii"
     },
     "ov006:0x02100314": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100314Ev"
+      "name": "_ZN16dScMgPachinko2_c13Spark_DrawAllEv"
     },
     "ov006:0x02100380": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100380Ev"
+      "name": "_ZN16dScMgPachinko2_c15Spark_UpdateAllEv"
     },
     "ov006:0x02100408": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100408Eii"
+      "name": "_ZN16dScMgPachinko2_c11Spark_SpawnEii"
     },
     "ov006:0x02100488": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100488Ev"
+      "name": "_ZN16dScMgPachinko2_c9DrawScoreEv"
     },
     "ov006:0x021004c0": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021004c0Ev"
+      "name": "_ZN16dScMgPachinko2_c13DrawTopRecordEv"
     },
     "ov006:0x021004f4": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021004f4Ei"
+      "name": "_ZN16dScMgPachinko2_c13StartRoundEndEi"
     },
     "ov006:0x02100554": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100554Ev"
+      "name": "_ZN16dScMgPachinko2_c14CheckRoundOverEv"
     },
     "ov006:0x0210068c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210068cEv"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_DrawAllEv"
     },
     "ov006:0x021006f4": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021006f4Ev"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_HideAllEv"
     },
     "ov006:0x02100734": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100734Ei"
+      "name": "_ZN16dScMgPachinko2_c11Paddle_StopEi"
     },
     "ov006:0x0210076c": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210076cEi"
+      "name": "_ZN16dScMgPachinko2_c20Paddle_CheckBallHitsEi"
     },
     "ov006:0x021009b8": {
       "author": "aitddlabs",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021009b8Ei"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_State14Ei"
     },
     "ov006:0x02100b08": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100b08Ei"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_State13Ei"
     },
     "ov006:0x02100bac": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100bacEi"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_State12Ei"
     },
     "ov006:0x02100d90": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100d90Ei"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_State11Ei"
     },
     "ov006:0x02100e3c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100e3cEi"
+      "name": "_ZN16dScMgPachinko2_c14Paddle_State10Ei"
     },
     "ov006:0x02100f7c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02100f7cEi"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State9Ei"
     },
     "ov006:0x02101088": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02101088Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State8Ei"
     },
     "ov006:0x02101148": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02101148Ei"
+      "name": "_ZN16dScMgPachinko2_c10Paddle_HitEi"
     },
     "ov006:0x02101224": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02101224Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State7Ei"
     },
     "ov006:0x021012cc": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021012ccEi"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State6Ei"
     },
     "ov006:0x021016ec": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021016ecEi"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State5Ei"
     },
     "ov006:0x021019e0": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021019e0Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State4Ei"
     },
     "ov006:0x02101af0": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02101af0Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State3Ei"
     },
     "ov006:0x02101e88": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02101e88Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State2Ei"
     },
     "ov006:0x021020c4": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021020c4Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State1Ei"
     },
     "ov006:0x02102274": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102274Ei"
+      "name": "_ZN16dScMgPachinko2_c13Paddle_State0Ei"
     },
     "ov006:0x0210246c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210246cEv"
+      "name": "_ZN16dScMgPachinko2_c16Paddle_UpdateAllEv"
     },
     "ov006:0x021024e0": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021024e0Ev"
+      "name": "_ZN16dScMgPachinko2_c20Paddle_SpawnForLanesEv"
     },
     "ov006:0x02102564": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102564Ev"
+      "name": "_ZN16dScMgPachinko2_c15Paddle_ClearAllEv"
     },
     "ov006:0x0210258c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210258cEv"
+      "name": "_ZN16dScMgPachinko2_c17CheckCountdownEndEv"
     },
     "ov006:0x02102624": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102624Ev"
+      "name": "_ZN16dScMgPachinko2_c13DrawCountdownEv"
     },
     "ov006:0x0210265c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210265cEv"
+      "name": "_ZN16dScMgPachinko2_c15UpdateCountdownEv"
     },
     "ov006:0x02102718": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102718Ev"
+      "name": "_ZN16dScMgPachinko2_c12ClearAimLineEv"
     },
     "ov006:0x021027e4": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_021027e4Eiii"
+      "name": "_ZN16dScMgPachinko2_c16PlotSubBg2PixelsEiii"
     },
     "ov006:0x02102864": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102864Ev"
+      "name": "_ZN16dScMgPachinko2_c11DrawAimLineEv"
     },
     "ov006:0x02102c3c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102c3cEiii"
+      "name": "_ZN16dScMgPachinko2_c10Ball_HitAtEiii"
     },
     "ov006:0x02102d6c": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102d6cEi"
+      "name": "_ZN16dScMgPachinko2_c11Ball_BounceEi"
     },
     "ov006:0x02102dbc": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102dbcEv"
+      "name": "_ZN16dScMgPachinko2_c13Ball_ClearAllEv"
     },
     "ov006:0x02102de4": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102de4Ev"
+      "name": "_ZN16dScMgPachinko2_c12Ball_DrawAllEv"
     },
     "ov006:0x02102e8c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102e8cEv"
+      "name": "_ZN16dScMgPachinko2_c14Ball_UpdateAllEv"
     },
     "ov006:0x02102ef4": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102ef4Ev"
+      "name": "_ZN16dScMgPachinko2_c14StartCountdownEv"
     },
     "ov006:0x02102f3c": {
       "author": "ruspecial",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102f3cEi"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State0Ei"
     },
     "ov006:0x02102fe8": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02102fe8Ei"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State1Ei"
     },
     "ov006:0x02103360": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02103360Ei"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State2Ei"
     },
     "ov006:0x02103608": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02103608Ei"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State3Ei"
     },
     "ov006:0x0210371c": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210371cEi"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State4Ei"
     },
     "ov006:0x02103870": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02103870Ei"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State5Ei"
     },
     "ov006:0x0210397c": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_0210397cEi"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State6Ei"
     },
     "ov006:0x02103994": {
       "author": "andrewboudreau",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02103994Ei"
+      "name": "_ZN16dScMgPachinko2_c11Ball_State7Ei"
     },
     "ov006:0x02103ac0": {
       "author": "lunavyqo",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02103ac0Ev"
+      "name": "_ZN16dScMgPachinko2_c14UpdateRoundEndEv"
     },
     "ov006:0x02103bfc": {
       "author": "tangosdev",
-      "name": "_ZN16dScMgPachinko2_c19func_ov006_02103bfcEv"
+      "name": "_ZN16dScMgPachinko2_c10ResetRoundEv"
     },
     "ov006:0x02103cbc": {
       "author": "tangosdev",

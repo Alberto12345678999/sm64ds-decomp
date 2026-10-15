@@ -28,7 +28,7 @@
  *   members needs a union or punned views and is deferred; receivers stay as
  *   `char *c = (char *)this` locals because the offset arithmetic is what
  *   the matching bytes already prove.
- * - func_ov006_021027e4 keeps an unused receiver: every call passes the
+ * - PlotSubBg2Pixels keeps an unused receiver: every call passes the
  *   scene in r0 and the body only uses (a1, a2, a3). Memberized with the
  *   others for the uniform call shape.
  */
@@ -60,7 +60,7 @@ namespace Sound {
 typedef void (dScMgPachinko2_c::*PMF)(int);
 struct Entry { PMF pmf; };
 
-/* func_ov006_020ff47c's view of the two 0x20-byte entries at 0x5620. */
+/* CupSlot_DrawAll's view of the two 0x20-byte entries at 0x5620. */
 struct E {
     int x;                  /* 0x00 */
     int y;                  /* 0x04 */
@@ -76,7 +76,7 @@ struct Obj {
     struct E arr[2];
 };
 
-/* func_ov006_020ff4ec's two slot entries at 0x563b. */
+/* CupSlot_ResetAll's two slot entries at 0x563b. */
 struct Slot {
     u8 active;   /* +0x00 (this+0x563b) */
     u8 count;    /* +0x01 */
@@ -90,7 +90,7 @@ struct Obj4ec {
     struct Slot slots[2];  /* 0x563b */
 };
 
-/* func_ov006_02100380's view of the 16 entries at 0x5330. */
+/* Spark_UpdateAll's view of the 16 entries at 0x5330. */
 typedef struct {
     char _pad0[0x5330];
     u16 timer;   /* +0x5330 */
@@ -100,10 +100,10 @@ typedef struct {
     u8 active;   /* +0x5336 */
 } View;
 
-/* func_ov006_021004c0's view: the state word at 0x5660. */
+/* DrawTopRecord's view: the state word at 0x5660. */
 struct Obj4c0 { char pad[0x5660]; int f; /* 0x5660 */ };
 
-/* func_ov006_0210068c's three 0x40-byte records at 0x5260. */
+/* Paddle_DrawAll's three 0x40-byte records at 0x5260. */
 struct E68c {
     int x;                          /* +0x00 (abs 0x5260) */
     int y;                          /* +0x04 (abs 0x5264) */
@@ -117,7 +117,7 @@ struct Obj68c {
     struct E68c arr[3];
 };
 
-/* func_ov006_02100e3c's view of the same records. */
+/* Paddle_State10's view of the same records. */
 struct Sub {
     /* 0x00 */ s32 unk00;
     /* 0x04 */ s32 unk04;
@@ -148,10 +148,10 @@ struct Obje3c {
     /* 0x5260 */ struct Sub sub[2];
 };
 
-/* func_ov006_0210246c's stride-only view of the records at 0x5260. */
+/* Paddle_UpdateAll's stride-only view of the records at 0x5260. */
 struct Row { u8 d[0x40]; };
 
-/* func_ov006_02102d6c's view of the 0x40-byte balls at 0x4660. */
+/* Ball_Bounce's view of the 0x40-byte balls at 0x4660. */
 struct Entryd6c {
     u32 handle;    /* +0x00 (this+0x4660) */
     int a;         /* +0x04 = 0xa8000 */
@@ -288,8 +288,8 @@ dScMgPachinko2_c::~dScMgPachinko2_c()
 {
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ff47cEv
-void dScMgPachinko2_c::func_ov006_020ff47c()
+// @symbol _ZN16dScMgPachinko2_c15CupSlot_DrawAllEv
+void dScMgPachinko2_c::CupSlot_DrawAll()
 {
     struct Obj *o = (struct Obj *)this;
     int i;
@@ -301,9 +301,9 @@ void dScMgPachinko2_c::func_ov006_020ff47c()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ff4ecEv
+// @symbol _ZN16dScMgPachinko2_c16CupSlot_ResetAllEv
 /* Resets two 0x20-byte slot entries: flag=1, id=0xff, two counters=0. */
-void dScMgPachinko2_c::func_ov006_020ff4ec()
+void dScMgPachinko2_c::CupSlot_ResetAll()
 {
     struct Obj4ec *self = (struct Obj4ec *)this;
     int i;
@@ -316,11 +316,11 @@ void dScMgPachinko2_c::func_ov006_020ff4ec()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ff534Ei
+// @symbol _ZN16dScMgPachinko2_c14Cup_PickTargetEi
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_020ff534(int k)
+void dScMgPachinko2_c::Cup_PickTarget(int k)
 {
     char *c = (char *)this;
     int found = 0;
@@ -359,10 +359,10 @@ void dScMgPachinko2_c::func_ov006_020ff534(int k)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ff690Ei
+// @symbol _ZN16dScMgPachinko2_c10Cup_State4Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_020ff690(int n)
+void dScMgPachinko2_c::Cup_State4(int n)
 {
     unsigned int r;
     int flag;
@@ -444,10 +444,10 @@ void dScMgPachinko2_c::func_ov006_020ff690(int n)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ff8c8Ei
+// @symbol _ZN16dScMgPachinko2_c10Cup_State3Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_020ff8c8(int i)
+void dScMgPachinko2_c::Cup_State3(int i)
 {
     int v;
 
@@ -517,10 +517,10 @@ void dScMgPachinko2_c::func_ov006_020ff8c8(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ffb54Ei
+// @symbol _ZN16dScMgPachinko2_c10Cup_State2Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_020ffb54(int i)
+void dScMgPachinko2_c::Cup_State2(int i)
 {
     int v;
 
@@ -590,10 +590,10 @@ void dScMgPachinko2_c::func_ov006_020ffb54(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020ffde4Ei
+// @symbol _ZN16dScMgPachinko2_c10Cup_State1Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_020ffde4(int k)
+void dScMgPachinko2_c::Cup_State1(int k)
 {
     if (mCups[k].armed != 0) {
         mCups[k].timer++;
@@ -621,13 +621,13 @@ void dScMgPachinko2_c::func_ov006_020ffde4(int k)
             }
             mCups[k].frame = data_ov006_0213daa4[k][mCups[k].animStep];
         }
-        func_ov006_020ff534(k);
+        Cup_PickTarget(k);
     }
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020fff54Ei
-void dScMgPachinko2_c::func_ov006_020fff54(int i)
+// @symbol _ZN16dScMgPachinko2_c10Cup_State0Ei
+void dScMgPachinko2_c::Cup_State0(int i)
 {
     char *base = (char *)this;
   char *p;
@@ -638,10 +638,10 @@ void dScMgPachinko2_c::func_ov006_020fff54(int i)
   *((unsigned char *) ((base + (i << 5)) + 0x5635)) = 1;
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020fff84Ev
+// @symbol _ZN16dScMgPachinko2_c11Cup_DrawAllEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_020fff84()
+void dScMgPachinko2_c::Cup_DrawAll()
 {
     int i;
     for (i = 0; i < 2; i++) {
@@ -653,10 +653,10 @@ void dScMgPachinko2_c::func_ov006_020fff84()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_020fffecEv
+// @symbol _ZN16dScMgPachinko2_c11Cup_ShowAllEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_020fffec()
+void dScMgPachinko2_c::Cup_ShowAll()
 {
     int i;
     for(i=0;i<2;i++){
@@ -673,8 +673,8 @@ void dScMgPachinko2_c::func_ov006_020fffec()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100058Ev
-void dScMgPachinko2_c::func_ov006_02100058()
+// @symbol _ZN16dScMgPachinko2_c11Cup_HideAllEv
+void dScMgPachinko2_c::Cup_HideAll()
 {
     unsigned char (*c)[0x20] = (unsigned char (*)[0x20])this;
     int i;
@@ -685,8 +685,8 @@ void dScMgPachinko2_c::func_ov006_02100058()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100084Ev
-void dScMgPachinko2_c::func_ov006_02100084()
+// @symbol _ZN16dScMgPachinko2_c16ChooseLaneConfigEv
+void dScMgPachinko2_c::ChooseLaneConfig()
 {
     unsigned int a, b;
     if ((int)mLevel != 0) {
@@ -702,8 +702,8 @@ void dScMgPachinko2_c::func_ov006_02100084()
     mLaneConfig = ((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 6) >> 0xf;
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100140Ev
-void dScMgPachinko2_c::func_ov006_02100140()
+// @symbol _ZN16dScMgPachinko2_c13Popup_DrawAllEv
+void dScMgPachinko2_c::Popup_DrawAll()
 {
     char *c = (char *)this;
     int i;
@@ -719,8 +719,8 @@ void dScMgPachinko2_c::func_ov006_02100140()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021001acEv
-void dScMgPachinko2_c::func_ov006_021001ac()
+// @symbol _ZN16dScMgPachinko2_c15Popup_UpdateAllEv
+void dScMgPachinko2_c::Popup_UpdateAll()
 {
     char *p = (char *)this;
     int i;
@@ -744,8 +744,8 @@ void dScMgPachinko2_c::func_ov006_021001ac()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100278Eiii
-void dScMgPachinko2_c::func_ov006_02100278(int r1, int r2, int r3)
+// @symbol _ZN16dScMgPachinko2_c11Popup_SpawnEiii
+void dScMgPachinko2_c::Popup_Spawn(int r1, int r2, int r3)
 {
     char *c = (char *)this;
     int i;
@@ -773,8 +773,8 @@ void dScMgPachinko2_c::func_ov006_02100278(int r1, int r2, int r3)
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100314Ev
-void dScMgPachinko2_c::func_ov006_02100314()
+// @symbol _ZN16dScMgPachinko2_c13Spark_DrawAllEv
+void dScMgPachinko2_c::Spark_DrawAll()
 {
     char *c = (char *)this;
     int i;
@@ -790,10 +790,10 @@ void dScMgPachinko2_c::func_ov006_02100314()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100380Ev
+// @symbol _ZN16dScMgPachinko2_c15Spark_UpdateAllEv
 /* For each of 16 active entries (stride 0x18 array at 0x5330): every 8
  * ticks bump a stage byte; after 4 stages clear the entry. */
-void dScMgPachinko2_c::func_ov006_02100380()
+void dScMgPachinko2_c::Spark_UpdateAll()
 {
     char *c = (char *)this;
     int i;
@@ -813,8 +813,8 @@ void dScMgPachinko2_c::func_ov006_02100380()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100408Eii
-void dScMgPachinko2_c::func_ov006_02100408(int a2, int a3)
+// @symbol _ZN16dScMgPachinko2_c11Spark_SpawnEii
+void dScMgPachinko2_c::Spark_Spawn(int a2, int a3)
 {
     char *c = (char *)this;
     int i = 0;
@@ -836,15 +836,15 @@ void dScMgPachinko2_c::func_ov006_02100408(int a2, int a3)
     } while (i < 0x10);
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100488Ev
-void dScMgPachinko2_c::func_ov006_02100488()
+// @symbol _ZN16dScMgPachinko2_c9DrawScoreEv
+void dScMgPachinko2_c::DrawScore()
 {
   if (unk_5660 < 2) return;
   Mg_DrawTopRightCounter(Mg_GetSubmittedScore(), 6);
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021004c0Ev
-void dScMgPachinko2_c::func_ov006_021004c0()
+// @symbol _ZN16dScMgPachinko2_c13DrawTopRecordEv
+void dScMgPachinko2_c::DrawTopRecord()
 {
     struct Obj4c0 *o = (struct Obj4c0 *)this;
     if (o->f < 2)
@@ -853,8 +853,8 @@ void dScMgPachinko2_c::func_ov006_021004c0()
     Mg_DrawTopLeftCounter();
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021004f4Ei
-void dScMgPachinko2_c::func_ov006_021004f4(int a)
+// @symbol _ZN16dScMgPachinko2_c13StartRoundEndEi
+void dScMgPachinko2_c::StartRoundEnd(int a)
 {
     char *dst;
     volatile unsigned short v;
@@ -864,11 +864,11 @@ void dScMgPachinko2_c::func_ov006_021004f4(int a)
     v = 0;
     MultiStore16(v, dst, 0x6000);
     mResult = (unsigned char)a;
-    func_ov006_02102dbc();
+    Ball_ClearAll();
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100554Ev
-void dScMgPachinko2_c::func_ov006_02100554()
+// @symbol _ZN16dScMgPachinko2_c14CheckRoundOverEv
+void dScMgPachinko2_c::CheckRoundOver()
 {
     char *s = (char *)this;
     int count;
@@ -891,14 +891,14 @@ void dScMgPachinko2_c::func_ov006_02100554()
     if (count) return;
 
     if (Mg_IsNewRecord())
-        func_ov006_021004f4(1);
+        StartRoundEnd(1);
     else
-        func_ov006_021004f4(0);
-    func_ov006_021006f4();
+        StartRoundEnd(0);
+    Paddle_HideAll();
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210068cEv
-void dScMgPachinko2_c::func_ov006_0210068c()
+// @symbol _ZN16dScMgPachinko2_c14Paddle_DrawAllEv
+void dScMgPachinko2_c::Paddle_DrawAll()
 {
     struct Obj68c *o = (struct Obj68c *)this;
     int i;
@@ -913,10 +913,10 @@ void dScMgPachinko2_c::func_ov006_0210068c()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021006f4Ev
+// @symbol _ZN16dScMgPachinko2_c14Paddle_HideAllEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_021006f4()
+void dScMgPachinko2_c::Paddle_HideAll()
 {
     unsigned char *o = (unsigned char *)this;
   int i;
@@ -930,8 +930,8 @@ void dScMgPachinko2_c::func_ov006_021006f4()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100734Ei
-void dScMgPachinko2_c::func_ov006_02100734(int idx)
+// @symbol _ZN16dScMgPachinko2_c11Paddle_StopEi
+void dScMgPachinko2_c::Paddle_Stop(int idx)
 {
     if (mPaddles[idx].active == 0) return;
     mPaddles[idx].angle = 0;
@@ -940,11 +940,11 @@ void dScMgPachinko2_c::func_ov006_02100734(int idx)
     mPaddles[idx].state = 0xc;
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210076cEi
+// @symbol _ZN16dScMgPachinko2_c20Paddle_CheckBallHitsEi
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_0210076c(int idx)
+void dScMgPachinko2_c::Paddle_CheckBallHits(int idx)
 {
     char *c = (char *)this;
     int i;
@@ -1009,9 +1009,9 @@ void dScMgPachinko2_c::func_ov006_0210076c(int idx)
                             row[0x469a] = (u8)z;
                             pxrow = (int *)(row + 0x4660);
                             *pflag = (u8)z;
-                            func_ov006_02100408(*pxrow, *p4664);
+                            Spark_Spawn(*pxrow, *p4664);
                             func_02012718(0x19a, *pxrow);
-                            func_ov006_02101148(idx);
+                            Paddle_Hit(idx);
                         } else if (dx >= -0x20 && dx <= 0x20) {
                             if (dx < 0)
                                 *(int *)(arr[i] + 0x4668) = *pvx - 0x1800;
@@ -1036,10 +1036,10 @@ void dScMgPachinko2_c::func_ov006_0210076c(int idx)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021009b8Ei
+// @symbol _ZN16dScMgPachinko2_c14Paddle_State14Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_021009b8(int i)
+void dScMgPachinko2_c::Paddle_State14(int i)
 {
     int v;
     u8 state;
@@ -1074,8 +1074,8 @@ void dScMgPachinko2_c::func_ov006_021009b8(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100b08Ei
-void dScMgPachinko2_c::func_ov006_02100b08(int idx)
+// @symbol _ZN16dScMgPachinko2_c14Paddle_State13Ei
+void dScMgPachinko2_c::Paddle_State13(int idx)
 {
 
     if (mPaddles[idx].timer != 0) {
@@ -1093,14 +1093,14 @@ void dScMgPachinko2_c::func_ov006_02100b08(int idx)
         mPaddles[idx].timer = 0x30;
         x = mPaddles[idx].x >> 12;
         z = mPaddles[idx].y >> 12;
-        func_ov006_02102c3c(x, z, mPaddles[idx].ballsHeld & 1);
+        Ball_HitAt(x, z, mPaddles[idx].ballsHeld & 1);
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100bacEi
+// @symbol _ZN16dScMgPachinko2_c14Paddle_State12Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02100bac(int i)
+void dScMgPachinko2_c::Paddle_State12(int i)
 {
     int b = i << 6;
 
@@ -1150,7 +1150,7 @@ void dScMgPachinko2_c::func_ov006_02100bac(int i)
         mPaddles[i].x = 0x80000;
         mPaddles[i].y = r4 << 12;
         mPaddles[i].state = 0xd;
-        func_ov006_020ff4ec();
+        CupSlot_ResetAll();
         mPaddles[i].timer = 0x40;
         if (i & 1) {
             mPaddles[i].timer += 0x20;
@@ -1159,8 +1159,8 @@ void dScMgPachinko2_c::func_ov006_02100bac(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100d90Ei
-void dScMgPachinko2_c::func_ov006_02100d90(int idx)
+// @symbol _ZN16dScMgPachinko2_c14Paddle_State11Ei
+void dScMgPachinko2_c::Paddle_State11(int idx)
 {
     char *base = (char *)this;
   char *r3 = base + (idx * 0x40);
@@ -1185,8 +1185,8 @@ void dScMgPachinko2_c::func_ov006_02100d90(int idx)
   *((int *) ((r3 + 0x5000) + 0x26c)) = *((int *) ((r3 + 0x5000) + 0x288));
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100e3cEi
-void dScMgPachinko2_c::func_ov006_02100e3c(int idx)
+// @symbol _ZN16dScMgPachinko2_c14Paddle_State10Ei
+void dScMgPachinko2_c::Paddle_State10(int idx)
 {
     struct Obje3c *obj = (struct Obje3c *)this;
     obj->sub[idx].unk00 += obj->sub[idx].unk08;
@@ -1222,10 +1222,10 @@ void dScMgPachinko2_c::func_ov006_02100e3c(int idx)
     obj->sub[idx].unk08 = 0;
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02100f7cEi
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State9Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02100f7c(int i)
+void dScMgPachinko2_c::Paddle_State9(int i)
 {
     int d;
     mPaddles[i].y += mPaddles[i].vy;
@@ -1248,10 +1248,10 @@ void dScMgPachinko2_c::func_ov006_02100f7c(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02101088Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State8Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02101088(int i)
+void dScMgPachinko2_c::Paddle_State8(int i)
 {
     int d;
     mPaddles[i].y += mPaddles[i].vy;
@@ -1269,10 +1269,10 @@ void dScMgPachinko2_c::func_ov006_02101088(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02101148Ei
+// @symbol _ZN16dScMgPachinko2_c10Paddle_HitEi
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02101148(int i)
+void dScMgPachinko2_c::Paddle_Hit(int i)
 {
     if ((int)mPaddles[i].state >= 8) return;
 
@@ -1300,10 +1300,10 @@ void dScMgPachinko2_c::func_ov006_02101148(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02101224Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State7Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02101224(int i)
+void dScMgPachinko2_c::Paddle_State7(int i)
 {
     mPaddles[i].sound = Sound_PlayIfNotActive(mPaddles[i].sound, 2, 0x198, 0);
 
@@ -1321,10 +1321,10 @@ void dScMgPachinko2_c::func_ov006_02101224(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021012ccEi
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State6Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_021012cc(int i)
+void dScMgPachinko2_c::Paddle_State6(int i)
 {
     int v1;
     int v2;
@@ -1421,10 +1421,10 @@ void dScMgPachinko2_c::func_ov006_021012cc(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021016ecEi
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State5Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_021016ec(int i)
+void dScMgPachinko2_c::Paddle_State5(int i)
 {
     int v;
     u8 flag;
@@ -1491,10 +1491,10 @@ void dScMgPachinko2_c::func_ov006_021016ec(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021019e0Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State4Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_021019e0(int i)
+void dScMgPachinko2_c::Paddle_State4(int i)
 {
     char *c = (char *)this;
     {
@@ -1519,10 +1519,10 @@ void dScMgPachinko2_c::func_ov006_021019e0(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02101af0Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State3Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02101af0(int i)
+void dScMgPachinko2_c::Paddle_State3(int i)
 {
     int v;
     u8 state;
@@ -1610,10 +1610,10 @@ void dScMgPachinko2_c::func_ov006_02101af0(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02101e88Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State2Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02101e88(int i)
+void dScMgPachinko2_c::Paddle_State2(int i)
 {
     int v;
     u8 flag;
@@ -1664,10 +1664,10 @@ void dScMgPachinko2_c::func_ov006_02101e88(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021020c4Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State1Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_021020c4(int i)
+void dScMgPachinko2_c::Paddle_State1(int i)
 {
     char *p = (char *)this;
     int limit;
@@ -1727,14 +1727,14 @@ void dScMgPachinko2_c::func_ov006_021020c4(int i)
         mPaddles[i].vy -= 0x20;
     }
 
-    func_ov006_02101e88(i);
+    Paddle_State2(i);
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102274Ei
+// @symbol _ZN16dScMgPachinko2_c13Paddle_State0Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02102274(int idx)
+void dScMgPachinko2_c::Paddle_State0(int idx)
 {
     char *c = (char *)this;
     char *slot;
@@ -1824,22 +1824,22 @@ void dScMgPachinko2_c::func_ov006_02102274(int idx)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210246cEv
-void dScMgPachinko2_c::func_ov006_0210246c()
+// @symbol _ZN16dScMgPachinko2_c16Paddle_UpdateAllEv
+void dScMgPachinko2_c::Paddle_UpdateAll()
 {
     Row *rows = (Row *)this;
     for (int i = 0; i < 3; i++) {
         if (rows[i].d[0x5294]) {
             (this->*data_ov006_02142734[rows[i].d[0x5296]])(i);
-            func_ov006_0210076c(i);
+            Paddle_CheckBallHits(i);
         }
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021024e0Ev
+// @symbol _ZN16dScMgPachinko2_c20Paddle_SpawnForLanesEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_021024e0()
+void dScMgPachinko2_c::Paddle_SpawnForLanes()
 {
     char *c = (char *)this;
     int n = data_ov006_0212ebb8[mLaneConfig];
@@ -1861,41 +1861,41 @@ void dScMgPachinko2_c::func_ov006_021024e0()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102564Ev
-void dScMgPachinko2_c::func_ov006_02102564()
+// @symbol _ZN16dScMgPachinko2_c15Paddle_ClearAllEv
+void dScMgPachinko2_c::Paddle_ClearAll()
 {
     char (*c)[64] = (char (*)[64])this;
   int i;
   for(i=0;i<3;i++){ c[i][0x5294]=0; c[i][0x5295]=0; }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210258cEv
-void dScMgPachinko2_c::func_ov006_0210258c()
+// @symbol _ZN16dScMgPachinko2_c17CheckCountdownEndEv
+void dScMgPachinko2_c::CheckCountdownEnd()
 {
   volatile unsigned short v;
   char* dst;
   if (mCountdown != 0) return;
-  func_ov006_02100734(0);
-  func_ov006_02100734(1);
-  func_ov006_02100734(2);
+  Paddle_Stop(0);
+  Paddle_Stop(1);
+  Paddle_Stop(2);
   unk_5660 = 2;
   unk_566e = 0x40;
   dst = (char*)_ZN3G2S13GetBG2CharPtrEv();
   v = 0;
   MultiStore16(v, dst, 0x6000);
   mResult = 0;
-  func_ov006_02102dbc();
+  Ball_ClearAll();
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102624Ev
-void dScMgPachinko2_c::func_ov006_02102624()
+// @symbol _ZN16dScMgPachinko2_c13DrawCountdownEv
+void dScMgPachinko2_c::DrawCountdown()
 {
     if (mCountdownShown == 0) return;
     Mg_DrawTopCenterCounter(mCountdown);
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210265cEv
-void dScMgPachinko2_c::func_ov006_0210265c()
+// @symbol _ZN16dScMgPachinko2_c15UpdateCountdownEv
+void dScMgPachinko2_c::UpdateCountdown()
 {
     char *c = (char *)this;
     unsigned char *q;
@@ -1919,8 +1919,8 @@ void dScMgPachinko2_c::func_ov006_0210265c()
         mCountdownShown = 0;
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102718Ev
-void dScMgPachinko2_c::func_ov006_02102718()
+// @symbol _ZN16dScMgPachinko2_c12ClearAimLineEv
+void dScMgPachinko2_c::ClearAimLine()
 {
     char *c = (char *)this;
     volatile unsigned short tmp;
@@ -1948,10 +1948,10 @@ void dScMgPachinko2_c::func_ov006_02102718()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_021027e4Eiii
+// @symbol _ZN16dScMgPachinko2_c16PlotSubBg2PixelsEiii
 #pragma push
 #pragma opt_loop_invariants off
-void dScMgPachinko2_c::func_ov006_021027e4(int a1, int a2, int a3)
+void dScMgPachinko2_c::PlotSubBg2Pixels(int a1, int a2, int a3)
 {
     int i, j, x, lo, hi, col, row, yb, s;
     u32 *bp;
@@ -1974,7 +1974,7 @@ void dScMgPachinko2_c::func_ov006_021027e4(int a1, int a2, int a3)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102864Ev
+// @symbol _ZN16dScMgPachinko2_c11DrawAimLineEv
 #define LA(p) (*(int *)((((int)(p)) + 0x5664)))
 #define LB(p) (*(int *)((((unsigned int)(p)) + 0x5664)))
 #define LC(p) (*(int *)(((int)((p) + 0x5664))))
@@ -1986,7 +1986,7 @@ void dScMgPachinko2_c::func_ov006_021027e4(int a1, int a2, int a3)
 #pragma push
 #pragma opt_loop_invariants off
 #pragma opt_dead_assignments off
-void dScMgPachinko2_c::func_ov006_02102864()
+void dScMgPachinko2_c::DrawAimLine()
 {
     char *c = (char *)this;
     int k;                       /* sp+0x00 */
@@ -2054,7 +2054,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                 mGuideStep = adx / 2;
             LX:
                 if (dx == 0) {
-                    func_ov006_021027e4(cx, cy, layer);
+                    PlotSubBg2Pixels(cx, cy, layer);
                 } else if (dx > 0) {
                     cx++;
                     LA(c) += ady;
@@ -2062,7 +2062,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                         if (dy >= 0) cy++; else cy--;
                         LB(c) -= adx;
                     }
-                    func_ov006_021027e4(cx, cy, layer);
+                    PlotSubBg2Pixels(cx, cy, layer);
                     if (cx == tx) goto DONEK;
                     goto LX;
                 } else {
@@ -2072,7 +2072,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                         if (dy >= 0) cy++; else cy--;
                         LD(c) -= adx;
                     }
-                    func_ov006_021027e4(cx, cy, layer);
+                    PlotSubBg2Pixels(cx, cy, layer);
                     if (cx == tx) goto DONEK;
                     goto LX;
                 }
@@ -2080,7 +2080,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                 mGuideStep = ady / 2;
             LY:
                 if (dy == 0) {
-                    func_ov006_021027e4(cx, cy, layer);
+                    PlotSubBg2Pixels(cx, cy, layer);
                 } else if (dy > 0) {
                     cy++;
                     LE(c) += adx;
@@ -2088,7 +2088,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                         if (dx >= 0) cx++; else cx--;
                         LF(c) -= ady;
                     }
-                    func_ov006_021027e4(cx, cy, layer);
+                    PlotSubBg2Pixels(cx, cy, layer);
                     if (cy == ty) goto DONEK;
                     goto LY;
                 } else {
@@ -2098,7 +2098,7 @@ void dScMgPachinko2_c::func_ov006_02102864()
                         if (dx >= 0) cx++; else cx--;
                         LH(c) -= ady;
                     }
-                    func_ov006_021027e4(cx, cy, layer);
+                    PlotSubBg2Pixels(cx, cy, layer);
                     if (cy != ty) goto LY;
                 }
             }
@@ -2114,11 +2114,11 @@ void dScMgPachinko2_c::func_ov006_02102864()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102c3cEiii
+// @symbol _ZN16dScMgPachinko2_c10Ball_HitAtEiii
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02102c3c(int x, int z, int d)
+void dScMgPachinko2_c::Ball_HitAt(int x, int z, int d)
 {
     char *o = (char *)this;
     int i;
@@ -2146,11 +2146,11 @@ void dScMgPachinko2_c::func_ov006_02102c3c(int x, int z, int d)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102d6cEi
+// @symbol _ZN16dScMgPachinko2_c11Ball_BounceEi
 /* Resets entry i of a 0x40-stride array at this+0x4660: reverses and
  * quarters its velocity, clears counters, and tail-calls func_02012718
  * (sound: id 0x19c) with the entry's handle. */
-void dScMgPachinko2_c::func_ov006_02102d6c(int i)
+void dScMgPachinko2_c::Ball_Bounce(int i)
 {
     struct Objd6c *self = (struct Objd6c *)this;
     self->entries[i].state = 4;
@@ -2162,18 +2162,18 @@ void dScMgPachinko2_c::func_ov006_02102d6c(int i)
     func_02012718(0x19c, self->entries[i].handle);
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102dbcEv
-void dScMgPachinko2_c::func_ov006_02102dbc()
+// @symbol _ZN16dScMgPachinko2_c13Ball_ClearAllEv
+void dScMgPachinko2_c::Ball_ClearAll()
 {
     char (*c)[64] = (char (*)[64])this;
   int i;
   for(i=0;i<0x30;i++){ c[i][0x469a]=0; c[i][0x4698]=0; }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102de4Ev
+// @symbol _ZN16dScMgPachinko2_c12Ball_DrawAllEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_02102de4()
+void dScMgPachinko2_c::Ball_DrawAll()
 {
     char *p = (char *)this;
     int i;
@@ -2193,10 +2193,10 @@ void dScMgPachinko2_c::func_ov006_02102de4()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102e8cEv
+// @symbol _ZN16dScMgPachinko2_c14Ball_UpdateAllEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_02102e8c()
+void dScMgPachinko2_c::Ball_UpdateAll()
 {
     int i;
     for (i = 0; i < 0x30; i++) {
@@ -2208,8 +2208,8 @@ void dScMgPachinko2_c::func_ov006_02102e8c()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102ef4Ev
-void dScMgPachinko2_c::func_ov006_02102ef4()
+// @symbol _ZN16dScMgPachinko2_c14StartCountdownEv
+void dScMgPachinko2_c::StartCountdown()
 {
     unsigned char *r0 = (unsigned char *)this;
     if (mCountdownArmed != 0) return;
@@ -2222,8 +2222,8 @@ void dScMgPachinko2_c::func_ov006_02102ef4()
     }
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102f3cEi
-void dScMgPachinko2_c::func_ov006_02102f3c(int arg1)
+// @symbol _ZN16dScMgPachinko2_c11Ball_State0Ei
+void dScMgPachinko2_c::Ball_State0(int arg1)
 {
     char *base = (char *)this;
     u8 idx;
@@ -2250,10 +2250,10 @@ void dScMgPachinko2_c::func_ov006_02102f3c(int arg1)
         *(int *)(e + 0x674) = b << 12;
         *(u8 *)(e + 0x69b) = 0;
     }
-    func_ov006_02102864();
+    DrawAimLine();
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02102fe8Ei
+// @symbol _ZN16dScMgPachinko2_c11Ball_State1Ei
 /* dScMgPachinko2_c ball i under a live pen record: while the pen is down the
    ball follows the pen (x/y = pen + held offset, clamped to the field, offset
    re-derived); on release it aims the ball at (0x80, 0x20) and launches it.
@@ -2263,7 +2263,7 @@ void dScMgPachinko2_c::func_ov006_02102f3c(int arg1)
    arrays 18 div (the y read sinks past the x store), both pointer reads 7 div
    (r3/r6 colouring); only this pairing reproduces the ROM's literal hoisting
    and load order at both sites. */
-void dScMgPachinko2_c::func_ov006_02102fe8(int i)
+void dScMgPachinko2_c::Ball_State1(int i)
 {
     int idx = gActivePlayerSlot;
     int off = idx * 4;
@@ -2360,13 +2360,13 @@ void dScMgPachinko2_c::func_ov006_02102fe8(int i)
             this->mBalls[i].state = 0;
         }
     }
-    func_ov006_02102864();
+    DrawAimLine();
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02103360Ei
+// @symbol _ZN16dScMgPachinko2_c11Ball_State2Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02103360(int i)
+void dScMgPachinko2_c::Ball_State2(int i)
 {
     char *c = (char *)this;
     int idx;
@@ -2445,17 +2445,17 @@ void dScMgPachinko2_c::func_ov006_02103360(int i)
         mBalls[i].state = 6;
     }
 
-    func_ov006_02102718();
+    ClearAimLine();
     if (mHeldBall != 0) {
-        func_ov006_02102864();
+        DrawAimLine();
     }
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02103608Ei
+// @symbol _ZN16dScMgPachinko2_c11Ball_State3Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02103608(int i)
+void dScMgPachinko2_c::Ball_State3(int i)
 {
     char *o = (char *)this;
     int v660, v664, t660;
@@ -2474,14 +2474,14 @@ void dScMgPachinko2_c::func_ov006_02103608(int i)
     if (v660 >= 0x140 || v660 <= -0x40)
         mBalls[i].state = 6;
     if (v664 >= 0xa8)
-        func_ov006_02102d6c(i);
+        Ball_Bounce(i);
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210371cEi
+// @symbol _ZN16dScMgPachinko2_c11Ball_State4Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_0210371c(int i)
+void dScMgPachinko2_c::Ball_State4(int i)
 {
     char *c = (char *)this;
     int old;
@@ -2525,10 +2525,10 @@ void dScMgPachinko2_c::func_ov006_0210371c(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02103870Ei
+// @symbol _ZN16dScMgPachinko2_c11Ball_State5Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02103870(int i)
+void dScMgPachinko2_c::Ball_State5(int i)
 {
     char *c = (char *)this;
     *(unsigned short *)(c + 0x4696 + (i << 6)) += 1;
@@ -2559,17 +2559,17 @@ void dScMgPachinko2_c::func_ov006_02103870(int i)
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_0210397cEi
-void dScMgPachinko2_c::func_ov006_0210397c(int idx)
+// @symbol _ZN16dScMgPachinko2_c11Ball_State6Ei
+void dScMgPachinko2_c::Ball_State6(int idx)
 {
     mBalls[idx].unk_38 = 0;
     mBalls[idx].unk_3a = 0;
 }
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02103994Ei
+// @symbol _ZN16dScMgPachinko2_c11Ball_State7Ei
 #pragma push
 #pragma opt_common_subs off
-void dScMgPachinko2_c::func_ov006_02103994(int i)
+void dScMgPachinko2_c::Ball_State7(int i)
 {
     char *c = (char *)this;
     mBalls[i].x += mBalls[i].vx;
@@ -2589,21 +2589,21 @@ void dScMgPachinko2_c::func_ov006_02103994(int i)
             int r3 = Mg_GetSubmittedScore();
             int f660 = mBalls[i].x;
             int f664 = mBalls[i].y;
-            func_ov006_02100278(f660, f664, r3 + 1);
+            Popup_Spawn(f660, f664, r3 + 1);
             Mg_SubmitScore(Mg_GetSubmittedScore() + 1);
         }
     }
 
     if ((mBalls[i].y >> 12) < 0xa8) return;
 
-    func_ov006_02102d6c(i);
+    Ball_Bounce(i);
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02103ac0Ev
+// @symbol _ZN16dScMgPachinko2_c14UpdateRoundEndEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_02103ac0()
+void dScMgPachinko2_c::UpdateRoundEnd()
 {
     char *c = (char *)this;
     int i;
@@ -2647,10 +2647,10 @@ void dScMgPachinko2_c::func_ov006_02103ac0()
 }
 #pragma pop
 
-// @symbol _ZN16dScMgPachinko2_c19func_ov006_02103bfcEv
+// @symbol _ZN16dScMgPachinko2_c10ResetRoundEv
 #pragma push
 #pragma opt_strength_reduction off
-void dScMgPachinko2_c::func_ov006_02103bfc()
+void dScMgPachinko2_c::ResetRound()
 {
     char *c = (char *)this;
     int i;
@@ -2685,8 +2685,8 @@ void dScMgPachinko2_c::func_ov006_02103bfc()
     mCountdownShown = 0;
     unk_5670 = 0;
     Mg_SubmitScore(0);
-    func_ov006_02102564();
-    func_ov006_02100058();
+    Paddle_ClearAll();
+    Cup_HideAll();
 }
 #pragma pop
 
@@ -2709,21 +2709,21 @@ void dScMgPachinko2_c::StartRound(int n)
         if (mLevel > 0x270e) mLevel = 0x270e;
     }
     FreeGfxSlotsById(0x1d);
-    func_ov006_02103bfc();
+    ResetRound();
 }
 
 // @symbol _ZN16dScMgPachinko2_c6RenderEv
 /* Slot 9. */
 s32 dScMgPachinko2_c::Render()
 {
-    func_ov006_021004c0();
-    func_ov006_02100488();
-    func_ov006_02102624();
-    func_ov006_02100314();
-    func_ov006_02100140();
-    func_ov006_02102de4();
-    func_ov006_0210068c();
-    func_ov006_020ff47c();
+    DrawTopRecord();
+    DrawScore();
+    DrawCountdown();
+    Spark_DrawAll();
+    Popup_DrawAll();
+    Ball_DrawAll();
+    Paddle_DrawAll();
+    CupSlot_DrawAll();
     return 1;
 }
 
@@ -2733,9 +2733,9 @@ s32 dScMgPachinko2_c::Behavior()
 {
     switch (unk_5660) {
     case 0:
-        func_ov006_02100084();
-        func_ov006_021024e0();
-        func_ov006_020fffec();
+        ChooseLaneConfig();
+        Paddle_SpawnForLanes();
+        Cup_ShowAll();
         unk_566c = 0x10;
         unk_5660 = 1;
         break;
@@ -2745,28 +2745,28 @@ s32 dScMgPachinko2_c::Behavior()
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        func_ov006_0210265c();
-        func_ov006_02102ef4();
-        func_ov006_02103ac0();
-        func_ov006_02102e8c();
-        func_ov006_0210246c();
-        func_ov006_020fff84();
-        func_ov006_02100380();
-        func_ov006_0210258c();
+        UpdateCountdown();
+        StartCountdown();
+        UpdateRoundEnd();
+        Ball_UpdateAll();
+        Paddle_UpdateAll();
+        Cup_DrawAll();
+        Spark_UpdateAll();
+        CheckCountdownEnd();
         break;
     case 2:
-        func_ov006_02102e8c();
-        func_ov006_0210246c();
-        func_ov006_020fff84();
-        func_ov006_02100380();
-        func_ov006_02100554();
-        func_ov006_021001ac();
+        Ball_UpdateAll();
+        Paddle_UpdateAll();
+        Cup_DrawAll();
+        Spark_UpdateAll();
+        CheckRoundOver();
+        Popup_UpdateAll();
         break;
     case 3:
-        func_ov006_02102e8c();
-        func_ov006_0210246c();
-        func_ov006_020fff84();
-        func_ov006_021001ac();
+        Ball_UpdateAll();
+        Paddle_UpdateAll();
+        Cup_DrawAll();
+        Popup_UpdateAll();
         if (unk_566e != 0) {
             unk_566e--;
             if ((s16)unk_566e <= 0) {
@@ -2872,10 +2872,10 @@ s32 dScMgPachinko2_c::InitResources()
     Deallocate((void *)sp4);
     Deallocate((void *)sp8);
 
-    func_ov006_02103bfc();
-    func_ov006_02100084();
-    func_ov006_021024e0();
-    func_ov006_020fffec();
+    ResetRound();
+    ChooseLaneConfig();
+    Paddle_SpawnForLanes();
+    Cup_ShowAll();
     Mg_SetTopScreenYOffset(0x20);
 
     mRunDuringFade = 1;

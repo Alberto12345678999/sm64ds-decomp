@@ -317,3 +317,20 @@ Medium confidence: "Flyer", "Deco" and "Ball" are role words from code alone; th
 actors' looks are not observed.
 
 Left unnamed: `func_ov006_020fea70`.
+
+**Pachinko2 (`dScMgPachinko2_c`, Tamaire).** These are members, named after the
+header's own `mCups` / `mBalls` / `mPaddles`.
+
+Three tables, named by index:
+- `Cup_State0..4`
+- `Ball_State0..7`
+- `Paddle_State0..14`
+
+High confidence:
+- **The aim line:** `DrawAimLine`, `ClearAimLine`, `PlotSubBg2Pixels`.
+- **The clock:** `StartCountdown`, `UpdateCountdown`, `DrawCountdown`, `CheckCountdownEnd`.
+- **The round:** `CheckRoundOver`, `StartRoundEnd`, `UpdateRoundEnd`, `ResetRound`.
+- **Ball hits:** `Ball_HitAt`, `Ball_Bounce`.
+
+Medium confidence: `Popup_*`, `Spark_*`, `CupSlot_*` and `ChooseLaneConfig`, named from the
+record they touch; their looks are not observed.
