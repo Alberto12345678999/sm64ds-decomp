@@ -39,8 +39,7 @@ extern "C" void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c*
                                                                 u16 startFrame);
 
 // @symbol _ZN15TextureSequenceC1Ev
-TextureSequence::TextureSequence()
-{
+TextureSequence::TextureSequence() {
     file = 0;
 }
 
@@ -50,15 +49,11 @@ TextureSequence::~TextureSequence() {}
 // @symbol _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj
 extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequence* self,
                                                                    BTP_File* file, s32 flags,
-                                                                   s32 speed, u16 startFrame)
-{
-    if (file == self->file)
-    {
+                                                                   s32 speed, u16 startFrame) {
+    if (file == self->file) {
         self->SetFlags(flags);
         self->speed = speed;
-    }
-    else
-    {
+    } else {
         self->file = file;
         _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(self, file->unk_00, flags, speed,
                                                         startFrame);
@@ -66,8 +61,7 @@ extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequen
 }
 
 // @symbol _ZN15TextureSequence6UpdateER15ModelComponents
-void TextureSequence::Update(ModelComponents& model)
-{
+void TextureSequence::Update(ModelComponents& model) {
     func_02046bbc(&model, file, (u16)((u32)currFrame >> 12));
 }
 
@@ -76,7 +70,6 @@ void TextureSequence::Update(ModelComponents& model)
    own two-argument signature is the call surface. Prepare is static:
    no this. */
 // @symbol _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File
-void TextureSequence::Prepare(BMD_File& model, BTP_File& animFile)
-{
+void TextureSequence::Prepare(BMD_File& model, BTP_File& animFile) {
     func_02046d50(&model, &animFile);
 }
