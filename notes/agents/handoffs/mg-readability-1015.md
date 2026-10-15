@@ -12,7 +12,7 @@ plan to confirm it by playing under melonDS and the GDB stub.
 |---|---|---|
 | 1 Names | every unnamed function, virtual, base field and global in ov004/ov005/ov006 | **done** |
 | 2 Shape | structural rewrites, each proven by object compare | **done**; `MgSharedState` names carry confidence tags that pass 3 confirms |
-| 3 Review and runtime | top-to-bottom read; runtime confirmation of the medium/low names | **plan written, not run** |
+| 3 Review and runtime | top-to-bottom read; runtime confirmation of the medium/low names | **first session done** (6 games); win/lose/tie and credits still to observe |
 
 **Pass 1, as committed:**
 - **Scene virtuals.** `dScMgBase_c` slots 18-35 carried `dActor_c` names copied by slot index (`OnAimedAtWithEgg` and the rest). All 18 are renamed from their bodies on the base and every override in the 33-class family. The investigation into where those names came from is recorded in names.md.
@@ -21,13 +21,20 @@ plan to confirm it by playing under melonDS and the GDB stub.
 - **Globals.** The minigame globals are renamed: `gMgScene`, `gMgMenuRow`, `gMgSaveDirty`, the banner, coin and fx pools.
 - **Member-pointer records.** The 630 `{fn, adj}` records are now `pmf_<target>`.
 
-**Pass 2 so far** (details and measured negatives in themes.md, themes 1, 7 and 16):
+**Pass 2** (details and measured negatives in themes.md, themes 1, 7 and 16):
 - **`gMgScene`.** It is declared `dScMgBase_c *`, its casts are dropped, and its `char *` aliases and local externs are retired where the code stays identical.
 - **Base fields.** Raw base-field reads through `this` aliases and the scene pointer became members. `+0x4650` is named `mTopRecord`.
 - **`dMgPsOpt_c`.** `Open`/`Close`/`Update`/`Draw`/`IsIdle` are real members.
 - **Teresa.** `SmallBoo mBoos[16]` is typed at 0x4660 and 13 Boo handlers read it by field. Pachinko's mFx/mFlyer/mTarget/mBg are typed (0x5958..0x5c10), with four readers converted. Teresa's mExclaims/mFoundMarks/mRisingIcons (0x48a0..0x4ba0) and the round counters at 0x4c21..0x4c26 are typed too. Teresa 0x4ba0..0x4be8 is now mReveal[1] + mMarker + the big Boo; the supposed overlap was a view starting 0xc bytes into the reveal record. Pachinko 0x5418..0x5958 is never accessed by any reconstructed function, so it stays padding with a note.
 - **Not done.** The 13 capped score bumps stay spelled out, because a header inline renumbers the pinned labels.
 - **Compare.** The object compare must match the compiler-local `@N`/`$N` names exactly. The manifests pin them.
+
+**Pass 3, first session (2026-10-15):**
+- **Setup.** melonDS 1.1 ran the EU ROM with the GDB stub. The watcher armed 47 breakpoints from runtime-checks.md and logged 267 hits, each checked against the overlay's bytes. A screenshot of the window every 1.5 s let the banner text be read off the frames.
+- **Games played.** Six, in the user's menu order: Wanted! (four times), the ladder game, the propeller Shy Guy game, Pachinko (the slingshot), Snowball, and Loves Me Not.
+- **Seen and recorded.** `MgSharedState` 1, 3, 12, 16, 17 and 18; banners 0, 2, 5, 7, 8, 0xc, 0xd, 0xe, 0x10 and 0x13. Also `StartRound(state)`, `OnNewRecord`, the "new" badge, and Pachinko's Lakitu flyer and flower targets.
+- **Rename.** `MG_STATE_CONTINUE_PROMPT` became `MG_STATE_RETRY_PROMPT_WIDE`; the rest of the findings are notes and tags.
+- **Where the findings are.** runtime-checks.md "Observed so far" holds them all. names.md and the enum carry the confidence changes.
 
 **Evidence:**
 - [notes/minigames/names.md](../../minigames/names.md): every renamed name with its evidence and confidence.
@@ -64,9 +71,16 @@ the baseline objects, is in `build/mgnames-tools/` (gitignored):
 
 ## Next steps
 
-1. **Pass 2 (shape), suggested order.** Each step is measured with `trykeep.py`, and anything that changes bytes goes into themes.md as a measured negative.
-   - The handlers left on offsets (Teresa StepBoo, CountRubbedTiles, Boo_State7, Reveal_State1/4, ResetRound; Pachinko Fx_Spawn, Bg_State0/1/3, Bg_Start, Flyer_State0/2/3/4) measured different typed; retry only with a new spelling idea, one function at a time with `tryrepl.py`.
-2. **Pass 3.** Run runtime-checks.md in melonDS and fold the answers into names.md as renames. Then do the read-through for comment drift.
+1. **Pass 3, next play session.**
+   - Play the two unplayed menu entries (rows 1 and 5), and Card, Memory or Cup once unlocked. They settle the win/lose/draw/tie states (4, 5, 7, 8), `mCredits` (lives or coins), "bet", `OnDealDone` and the presenter animations.
+   - Setup:
+     1. Start `build/melonds/melonDS.exe build/melonds/sm64_eu.nds`. Check that `[Instance0.Gdb] Enabled = true`, because melonDS can rewrite it to false.
+     2. Attach `python build/melonds/mgwatch.py`.
+     3. Run the screenshot loop with `build/melonds/shot.ps1`.
+   - The stub takes one client per launch. A second attach halts the game, so restart melonDS instead of reattaching.
+   - Copies of `mgwatch.py` and `shot.ps1` are in `build/mgnames-tools/`. Both are gitignored, because tooling goes in its own PR.
+2. **Pass 2 leftovers.** These handlers measured different in the typed form, so they keep their offsets: Teresa StepBoo, CountRubbedTiles, Boo_State7, Reveal_State1/4, ResetRound; Pachinko Fx_Spawn, Bg_State0/1/3, Bg_Start, Flyer_State0/2/3/4. Retry one only with a new spelling idea, one function at a time, with `tryrepl.py`.
+3. **Baseline after main merges.** Main's `Heap` → `mHeap::Heap_t` rename changes the minigame objects' `Memory::Deallocate` reference. The local `renames.json` maps it, so compares against the pre-pass baseline stay exact.
 
 There is also one unrelated defect, found while investigating the transplanted
 names: ov064 `symbols.txt:111-112` files two `daObjFl_Puzzle_c` vtable slots (32 and
