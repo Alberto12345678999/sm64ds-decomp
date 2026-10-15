@@ -47,5 +47,7 @@
     "native initializer/global/profile/data ownership with exact metadata extents and genuine interior array labels",
     "separate explicit-size terminal BSS tooling change",
     "independent Source acceptance and private exact-head/base validation"
-  ]
+  ],
+  "full_rom_tested_source_commit": "a24cdcbf48348bd1ce9bca8f8ffea4a9ef1d462f",
+  "full_rom_bridge_to_this_commit": "Subsequent changes are pinned formatting with identical lexical tokens and complete raw Monkey object, scoped generated verification metadata, and documentation. The production policy, addresses, enrolled source set and all other consumer tokens are unchanged."
 }
