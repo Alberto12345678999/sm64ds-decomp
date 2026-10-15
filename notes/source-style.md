@@ -71,7 +71,9 @@ run. `--patterns-only` explicitly omits formatting and is not a full style pass.
 
 The checker protects matching-sensitive contexts before requesting formatting.
 Assembly, line-sensitive preprocessing, stringifying or token-pasting macros, and unresolved
-includes produce **FORMAT DEFERRED**, retaining the original spelling. Shared
+includes produce **FORMAT DEFERRED**, retaining the original spelling. Existing
+`clang-format off` comments also defer explicitly, so suppressed regions cannot
+be mistaken for full formatting coverage; source-pattern checks still run. Shared
 headers inspect both their includes and reverse consumers; an unresolved computed
 include is conservatively a possible consumer of every header. Host-only include
 arms use the repository's existing mwccarm arm helper. This lexical analysis does

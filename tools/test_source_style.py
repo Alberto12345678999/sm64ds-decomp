@@ -282,6 +282,31 @@ class FormatSafety(unittest.TestCase):
         self.assertEqual([], S.direct_format_risks('// asm and __LINE__ are discussed\nconst char* p="asm";'))
         self.assertTrue(S.direct_format_risks('#define JOIN(a,b) a##b\n'))
 
+    def test_formatter_off_comments_are_explicit_deferrals(self):
+        for directive in ('// clang-format off', '/* clang-format off */',
+                          '// clang-format off: preserve measured layout'):
+            text = directive + '\nvoid f(){return;}\n// clang-format on\n'
+            with self.subTest(directive=directive):
+                self.assertIn('clang-format off suppresses formatting coverage',
+                              S.direct_format_risks(text))
+        self.assertEqual([], S.direct_format_risks(
+            'const char *s = "// clang-format off";\n'
+            '// do not use clang-format off\n'))
+
+    def test_formatter_off_retains_pattern_checks(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td)
+            (root / 'src').mkdir()
+            (root / 'config').mkdir()
+            (root / 'config/source-style-exceptions.json').write_text(
+                '{"schema":1,"exceptions":[]}')
+            (root / 'src/a.cpp').write_text(
+                '// clang-format off\nvoid f(){nullptr;}\n')
+            with patch.object(S, 'format_findings', side_effect=AssertionError('suppressed formatter call')):
+                report = S.check(root, None, ['src/a.cpp'], FORMAT)
+            self.assertEqual(1, len(report['format_deferred']))
+            self.assertEqual(['modern-nullptr'], [f['rule'] for f in report['findings']])
+
     def test_token_spelling_order_and_literal_boundaries(self):
         self.assertEqual(S.tokens('int /* note */ x = 0x1p-2;'), S.tokens('int x=0x1p-2;'))
         self.assertNotEqual(S.tokens('double x=1e-5;'), S.tokens('double x=1e -5;'))

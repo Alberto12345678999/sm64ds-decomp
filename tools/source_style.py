@@ -64,6 +64,9 @@ def direct_format_risks(text):
     mask = delaunder.code_mask(logical)
     code = ''.join(c if mask[i] or c == '\n' else ' ' for i, c in enumerate(logical))
     reasons = []
+    if any(re.match(r'^(?://|/\*)\s*clang-format\s+off\b', m.group())
+           for m in TOKEN.finditer(logical) if m.group().startswith(('//', '/*'))):
+        reasons.append('clang-format off suppresses formatting coverage')
     if '%:' in code or re.search(r'\?\?[=()/\'<>!-]', code):
         reasons.append('alternate preprocessing spelling requires compiler proof')
     if re.search(r'\b(?:asm|__asm|__asm__)\b', code):

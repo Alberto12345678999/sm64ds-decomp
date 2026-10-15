@@ -842,5 +842,15 @@
         "Type*p": 5
       }
     }
+  },
+  "post_audit_suppression_review": {
+    "baseline_tooling_commit": "eaa1f0026df103c59e71a17e0347558751dee2e2",
+    "change": "Report clang-format off comment suppressions as explicit deferrals; pattern checks continue.",
+    "validation": "57 regression tests pass. Direct-format-risk outputs are unchanged for every tracked source/header and resolved include dependency. All recorded audit input hashes remain unchanged. No compiler audit was rerun.",
+    "risk_inputs_compared": 3286,
+    "risk_results_changed": [],
+    "recorded_audit_input_hashes_checked": 3234,
+    "source_style_sha256": "4089a8074858c4e7ec6dc09e7b7e68d5e993b542cb8944648c9c6a3a4d936b66",
+    "audit_provenance": "Existing guarded_final_config compiler results and implementation hashes remain the original measured snapshot; this post-audit guard-only check does not relabel those measurements."
   }
 }
