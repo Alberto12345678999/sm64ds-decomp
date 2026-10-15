@@ -54,7 +54,7 @@ use raw offsets or compiler tricks as the default source form.
 ## Local check and formatter
 
 ```sh
-python -m pip install -r tools/requirements-style.txt
+python -m pip install -r tools/requirements-style.txt -r tools/requirements.txt
 python tools/source_style.py --base origin/main
 python -m unittest tools.test_source_style tools.test_audit_source_format -v
 ```
