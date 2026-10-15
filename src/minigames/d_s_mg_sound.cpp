@@ -801,7 +801,8 @@ void dScMgSound_c::Note_StateOpening(int idx)
         }
     }
 
-    if (this->mTouchCount == 1) Presenter_PlayCheerLoop((char *)&this->mTable);
+    if (this->mTouchCount == 1)
+        Presenter_PlayCheerLoop((char *)&this->mTable);
 }
 
 // @symbol _ZN12dScMgSound_c14Note_StateOpenEi

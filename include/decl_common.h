@@ -1825,7 +1825,7 @@ extern void Mascot_Draw(char*);
 extern void Mascot_Update(void*);
 extern void Mascot_Load(char*);
 extern void Presenter_UpdateMatrix(char*);
-extern void Presenter_PlayLose(char*);
+extern void Presenter_PlayLose(char *);
 extern void Presenter_PlayIdle(char*);
 extern void Presenter_Draw(void*);
 extern void Presenter_Update(char*);
