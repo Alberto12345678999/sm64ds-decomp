@@ -264,6 +264,119 @@ class Formatter(unittest.TestCase):
                       (ROOT / 'tools/requirements-style.txt').read_text().splitlines())
 
 
+class FormatSafety(unittest.TestCase):
+    def test_sensitive_contexts_are_explicit(self):
+        examples = [
+            'asm void Copy() { mov r0,r1\n bx lr\n}',
+            'int line() { return __LINE__; }',
+            '#define WHERE() __LINE__\nint f(){return WHERE();}',
+            '%:define SPELL(x) %:x\n',
+            '??=define SPELL(x) ??=x\n',
+            '#line 40 "source"\nint x;',
+            '#define SPELL(x) #x\nconst char* s=SPELL(a+b);',
+            '#define SPELL(x) \\\n #x\n',
+        ]
+        for text in examples:
+            with self.subTest(text=text):
+                self.assertTrue(S.direct_format_risks(text))
+        self.assertEqual([], S.direct_format_risks('// asm and __LINE__ are discussed\nconst char* p="asm";'))
+        self.assertTrue(S.direct_format_risks('#define JOIN(a,b) a##b\n'))
+
+    def test_token_spelling_order_and_literal_boundaries(self):
+        self.assertEqual(S.tokens('int /* note */ x = 0x1p-2;'), S.tokens('int x=0x1p-2;'))
+        self.assertNotEqual(S.tokens('double x=1e-5;'), S.tokens('double x=1e -5;'))
+        self.assertNotEqual(S.tokens('"abcdef"'), S.tokens('"abc" "def"'))
+        self.assertNotEqual(S.tokens('int z; int a;'), S.tokens('int a; int z;'))
+
+    def test_header_macro_and_reverse_consumer_protection(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td)
+            (root / 'src').mkdir(); (root / 'include').mkdir()
+            (root / 'include/macros.h').write_text('#define SPELL(x) #x\n')
+            (root / 'include/shared.h').write_text('const char* s=SPELL(a+b);\n')
+            (root / 'src/use.cpp').write_text('#include "macros.h"\n#include "shared.h"\n')
+            guard = S.FormatSafety(root)
+            self.assertTrue(any('stringifying' in r for r in guard.reasons(
+                'src/use.cpp', (root / 'src/use.cpp').read_text())))
+            self.assertTrue(any('stringifying' in r for r in guard.reasons(
+                'include/shared.h', (root / 'include/shared.h').read_text())))
+
+    def test_computed_and_external_includes_defer(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td); (root / 'src').mkdir()
+            for text in ('#include HEADER\n', '#include <missing.h>\n'):
+                self.assertTrue(S.FormatSafety(root).reasons('src/use.cpp', text))
+
+    def test_header_defers_for_unknown_computed_reverse_consumer(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td); (root / 'src').mkdir(); (root / 'include').mkdir()
+            (root / 'src/use.cpp').write_text('#define SPELL(x) #x\n#define H "shared.h"\n#include H\n')
+            (root / 'include/shared.h').write_text('const char* s=SPELL(a+b);\n')
+            reasons = S.FormatSafety(root).reasons('include/shared.h', (root / 'include/shared.h').read_text())
+            self.assertTrue(any('unresolved computed include' in r for r in reasons))
+            self.assertTrue(any('stringifying' in r for r in reasons))
+
+    def test_reverse_graph_walks_nonstandard_include_suffix(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td); (root / 'src').mkdir(); (root / 'include').mkdir()
+            (root / 'src/use.cpp').write_text('#define SPELL(x) #x\n#include "bridge.inc"\n')
+            (root / 'include/bridge.inc').write_text('#include "shared.h"\n')
+            (root / 'include/shared.h').write_text('const char* s=SPELL(a+b);\n')
+            reasons = S.FormatSafety(root).reasons('include/shared.h', (root / 'include/shared.h').read_text())
+            self.assertTrue(any('stringifying' in r for r in reasons))
+
+    def test_include_comments_splicing_and_angle_search_order(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td); (root / 'src').mkdir(); (root / 'include').mkdir()
+            (root / 'src/macros.h').write_text('int innocent;\n')
+            (root / 'include/macros.h').write_text('#define SPELL(x) #x\n')
+            for text in ('#include"macros.h"\n', '#/**/include/**/<macros.h>\n',
+                         '#inc' + '\\' + '\n' + 'lude <macros.h>\n'):
+                # Quoted includes search beside the source before the shared directory.
+                reasons = S.FormatSafety(root).reasons('src/use.cpp', text)
+                self.assertEqual(not text.startswith('#include"'), bool(reasons), text)
+
+    def test_mwcc_include_graph_ignores_host_only_standard_header(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td); (root / 'src').mkdir()
+            text = '#ifdef _MSC_VER\n#include <missing-host.h>\n#endif\nint x;\n'
+            self.assertEqual([], S.FormatSafety(root).reasons('src/use.cpp', text))
+
+    def test_assembly_deferred_without_calling_formatter(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td); (root / 'src').mkdir(); (root / 'config').mkdir()
+            (root / 'config/source-style-exceptions.json').write_text('{"schema":1,"exceptions":[]}')
+            (root / 'src/a.c').write_text('asm void f() { mov r0,r1\n bx lr\n}\n')
+            with patch.object(S, 'formatter_version'), patch.object(S, 'format_findings', side_effect=AssertionError('unsafe formatter call')):
+                r = S.check(root, None, ['src/a.c'], 'formatter')
+            self.assertEqual([], r['findings'])
+            self.assertEqual(1, len(r['format_deferred']))
+
+    def test_xml_token_rewrite_is_not_a_formatting_requirement(self):
+        xml = b'<replacements><replacement offset="4" length="1">z</replacement></replacements>'
+        result = subprocess.CompletedProcess([], 0, stdout=xml, stderr=b'')
+        with patch.object(S.subprocess, 'run', return_value=result):
+            with self.assertRaises(S.UnsafeFormat):
+                S.format_findings('formatter', ROOT / '.clang-format', 'x.cpp', 'int x;', [(1, 1)])
+
+    def test_real_formatter_preserves_class_and_header_order(self):
+        for filename in ('order.cpp', 'order.h'):
+            text = (FIXTURES / filename).read_text()
+            formatted = subprocess.check_output([FORMAT, '--style=file:' + str(ROOT / '.clang-format'),
+                                                 '--assume-filename=' + filename], input=text.encode()).decode()
+            self.assertEqual(S.tokens(text), S.tokens(formatted))
+        header = (FIXTURES / 'order.h').read_text()
+        self.assertLess(header.index('Zeta'), header.index('Alpha'))
+        self.assertLess(header.index('int mSecond'), header.index('short mFirst'))
+
+    def test_long_string_and_macro_body_are_preserved(self):
+        text = '#define TIGHT(x) ((x)+1)\nconst char* s="' + 'a' * 160 + '";\n'
+        formatted = subprocess.check_output([FORMAT, '--style=file:' + str(ROOT / '.clang-format'),
+                                             '--assume-filename=probe.cpp'], input=text.encode()).decode()
+        self.assertEqual(S.tokens(text), S.tokens(formatted))
+        self.assertIn('#define TIGHT(x) ((x)+1)', formatted)
+
+
 class AdvisoryTidy(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

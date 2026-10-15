@@ -21,3 +21,7 @@ QualifierAlignment: Leave
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
+
+# Macro spelling and literal boundaries can affect mwccarm output.
+SkipMacroDefinitionBody: true
+BreakStringLiterals: false

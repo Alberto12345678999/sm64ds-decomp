@@ -56,7 +56,7 @@ use raw offsets or compiler tricks as the default source form.
 ```sh
 python -m pip install -r tools/requirements-style.txt
 python tools/source_style.py --base origin/main
-python -m unittest tools.test_source_style -v
+python -m unittest tools.test_source_style tools.test_audit_source_format -v
 ```
 
 The tool pins clang-format **19.1.7**, validates its executable version, and never
@@ -72,11 +72,66 @@ formatting is not a new error. Explicit `--files path.cpp ...` without `--base`
 checks those files in full. Exit 1 means findings; exit 2 means the check could not
 run. `--patterns-only` explicitly omits formatting and is not a full style pass.
 
-For a new file, run `clang-format -i path.cpp` and inspect the diff. For an existing
-file, use the reported line numbers with `--lines=LINE:LINE` rather than reformatting
-its whole TU. The configuration disables sorting of includes or using declarations and token-changing cleanup
-options; evidence comments are not reflowed. Check markers and pragmas afterwards.
-Source edits still require the relevant ROM/relocation and consumer gates.
+The checker protects matching-sensitive contexts before requesting formatting.
+Assembly, line-sensitive preprocessing, stringifying or token-pasting macros, and unresolved
+includes produce **FORMAT DEFERRED**, retaining the original spelling. Shared
+headers inspect both their includes and reverse consumers; an unresolved computed
+include is conservatively a possible consumer of every header. Host-only include
+arms use the repository's existing mwccarm arm helper. This lexical analysis does
+not implement a complete preprocessor.
+
+The checker also rejects proposed replacements that change preprocessing token
+spelling or order, including literal boundaries. Include/using sorting and
+cleanup transforms are disabled; macro definition bodies and long string literals
+are preserved. This protects declaration/member/function order as well as header
+include order. It does not prove the generated output of arbitrary future code.
+
+A deferral is visible in the CLI and JSON `format_deferred` field and does not fail
+the style job: pattern checks still run, while formatting coverage is explicitly
+incomplete. Do not mechanically apply the formatter to a deferred file. Any manual
+formatting there requires pinned-compiler comparison of the complete affected
+objects and the normal ROM/relocation gates, including header consumers. The tool
+never authorizes a byte mismatch.
+
+For files with formatting findings and no deferral, use the pinned formatter on
+the reported lines, inspect the diff, then rerun this checker and the relevant
+compiler gates. Keep markers and pragmas intact. Do not apply a repository-wide
+`clang-format -i`: the production audit found real failures in multiline ARM
+assembly when formatting was forced.
+
+### Measured production coverage
+
+The [format-safety experiment](experiments/issue1407-format-safety.json) records
+whole raw ELF comparisons at the production pin/flags, with the exact same source
+and include paths in each phase. Copies live under an ignored build directory;
+production source is never edited. The control compiled all **2,752** enrolled
+sources. Forced formatting with the initial configuration preserved **2,715**
+complete objects and broke compilation for **37** assembly sources. Formatting
+all **494** tracked headers added no further differences. No normalized include,
+pragma, symbol-marker, or language-marker order changes were found.
+
+The final guarded audit preserved all **2,752** complete objects in both phases.
+It changed **2,559** source texts and **489** header texts; **46** sources and **2**
+headers were explicitly deferred and retained verbatim. Remaining unchanged files
+already matched the configuration. The report lists every deferred path and reason. Identical
+whole objects include symbol tables, relocations, generated data, vtables and
+emission order; no symbol isolation or relocation masks are used. Equality proves
+formatting invariance for those exact inputs, not a new ROM/destination verdict
+or universal safety guarantee. Separate pinned-compiler probes demonstrate real
+`__LINE__` and macro-stringification byte changes, alongside preserved class,
+virtual-member, initializer, static-local and global-constructor order controls.
+
+With the wired private compiler inputs available, reproduce the guarded audit:
+
+```sh
+python tools/audit_source_format.py --output build/format-safety --clang-format clang-format --mode guarded -j16
+```
+
+The output directory must be new and below this worktree's ignored build directory.
+`--mode raw` deliberately bypasses guards and is an experiment only; it still
+writes exclusively to copies. The report retains per-source hashes, compiler
+versions/flags, errors, input/config/runner hashes and explicit deferrals. A failed
+control cannot establish invariance.
 
 ## Pattern regression gate and exceptions
 

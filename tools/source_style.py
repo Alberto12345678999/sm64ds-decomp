@@ -41,6 +41,139 @@ class StyleError(Exception):
     """Missing inputs or unsupported configuration: never a passing check."""
 
 
+class UnsafeFormat(StyleError):
+    """Formatting is unsupported for these matching-sensitive inputs."""
+
+
+# Preserve preprocessing token spelling/order, including literal boundaries.
+# This is a C/C++03 lexer guard, not a parser or a substitute for compiler proof.
+TOKEN = re.compile(
+    r'//[^\n]*|/\*.*?\*/|(?:L)?"(?:\\.|[^"\\])*"|(?:L)?\'(?:\\.|[^\'\\])*\''
+    r'|[A-Za-z_]\w*|(?:[0-9]|\.[0-9])(?:[eEpP][+-]|[0-9A-Za-z_.])*'
+    r'|>>=|<<=|->\*|\.\*|\.\.\.|##|::|->|\+\+|--|<<|>>|<=|>=|==|!=|&&|\|\|'
+    r'|[+*/%&|^!=<>-]=|\S', re.S)
+
+
+def tokens(text):
+    return [m.group() for m in TOKEN.finditer(text)
+            if not m.group().startswith(('//', '/*'))]
+
+
+def direct_format_risks(text):
+    logical = text.replace('\\\r\n', '').replace('\\\n', '')
+    mask = delaunder.code_mask(logical)
+    code = ''.join(c if mask[i] or c == '\n' else ' ' for i, c in enumerate(logical))
+    reasons = []
+    if '%:' in code or re.search(r'\?\?[=()/\'<>!-]', code):
+        reasons.append('alternate preprocessing spelling requires compiler proof')
+    if re.search(r'\b(?:asm|__asm|__asm__)\b', code):
+        reasons.append('assembly requires original instruction line boundaries')
+    if re.search(r'\b__(?:LINE|COUNTER|DATE|TIME|TIMESTAMP|BASE_FILE|INCLUDE_LEVEL)__\b', code):
+        reasons.append('line/context-sensitive preprocessing builtin')
+    if re.search(r'^\s*#\s*line\b', code, re.M):
+        reasons.append('line directive')
+    for m in re.finditer(r'^\s*#\s*define\s+(\w+)([^\n]*)', code, re.M):
+        if '##' in m.group(2):
+            reasons.append('token-pasting macro ' + m.group(1))
+        elif re.search(r'(?<!#)#(?!#)', m.group(2)):
+            reasons.append('stringifying macro ' + m.group(1))
+    return reasons
+
+
+class FormatSafety:
+    """Conservative local/include-context protection; unresolved includes defer.
+
+    Headers also inspect reverse consumers, since a consumer may define a
+    stringifying macro before including an otherwise innocent header.
+    """
+    def __init__(self, root):
+        self.root = root.resolve()
+        self.cache = {}
+        self.reverse = None
+        self.uncertain_consumers = set()
+
+    def node(self, path, text=None):
+        if text is None and path in self.cache:
+            return self.cache[path]
+        if text is None:
+            text = (self.root / path).read_text(encoding='utf-8')
+        risks = direct_format_risks(text)
+        targets = []
+        # Do not mistake commented-out includes for dependencies.
+        view = msvc_arms.mwcc_side(text)
+        view = view.replace('\\\r\n', '').replace('\\\n', '')
+        view = TOKEN.sub(lambda m: re.sub(r'[^\n]', ' ', m.group())
+                         if m.group().startswith(('//', '/*')) else m.group(), view)
+        mask = delaunder.code_mask(view)
+        for m in re.finditer(r'^[ \t]*#[ \t]*include\b[ \t]*([^\n]+)', view, re.M):
+            hash_at = view.index('#', m.start(), m.end())
+            if not mask[hash_at]:
+                continue
+            spelling = re.match(r'["<]([^">]+)[">]', m.group(1).strip())
+            if spelling is None:
+                risks.append('unresolved computed include')
+                continue
+            name = spelling.group(1)
+            candidates = [self.root / 'include' / name]
+            if m.group(1).lstrip().startswith('"'):
+                candidates.insert(0, (self.root / path).parent / name)
+            target = next((p.resolve() for p in candidates if p.is_file()), None)
+            if target is None or not target.is_relative_to(self.root):
+                risks.append('unresolved/external include ' + name)
+            else:
+                targets.append(target.relative_to(self.root).as_posix())
+        self.cache[path] = (risks, targets)
+        return self.cache[path]
+
+    def build_reverse(self):
+        self.reverse = {}
+        pending = []
+        for directory in ('src', 'include'):
+            folder = self.root / directory
+            if folder.exists():
+                pending.extend(p.relative_to(self.root).as_posix()
+                               for p in folder.rglob('*') if p.is_file() and p.suffix in SUFFIXES)
+        seen = set()
+        while pending:
+            path = pending.pop()
+            if path in seen:
+                continue
+            seen.add(path)
+            risks, targets = self.node(path)
+            if any(r.startswith('unresolved') for r in risks):
+                self.uncertain_consumers.add(path)
+            for target in targets:
+                self.reverse.setdefault(target, set()).add(path)
+                # Literal includes can be .inc or other nonstandard suffixes.
+                pending.append(target)
+
+    def reasons(self, path, text):
+        # Standalone tool fixtures have no production include-context claim.
+        if not in_scope(path):
+            return direct_format_risks(text)
+        self.node(path, text)
+        queue, seen, reasons = [path], set(), []
+        if pathlib.Path(path).suffix in {'.h', '.hpp'}:
+            if self.reverse is None:
+                self.build_reverse()
+            pending, consumers = [path], set()
+            while pending:
+                for consumer in self.reverse.get(pending.pop(), ()):
+                    if consumer not in consumers:
+                        consumers.add(consumer)
+                        pending.append(consumer)
+            queue.extend(consumers | self.uncertain_consumers)
+        while queue:
+            current = queue.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            risks, includes = self.node(current)
+            reasons.extend(current + ': ' + r for r in risks)
+            queue.extend(includes)
+        return sorted(set(reasons))
+
+
 @dataclass(frozen=True)
 class Finding:
     rule: str
@@ -193,6 +326,17 @@ def format_findings(executable, config, path, text, ranges):
         tree = ET.fromstring(p.stdout)
         if tree.tag != "replacements" or tree.get("incomplete_format") == "true":
             raise ValueError("formatter did not fully parse the requested source")
+        replacements = [(int(row.attrib["offset"]), int(row.attrib["length"]),
+                         (row.text or "").encode("utf-8")) for row in tree.findall("replacement")]
+        changed = raw
+        previous = len(raw) + 1
+        for offset, length, replacement in sorted(replacements, reverse=True):
+            if offset < 0 or length < 0 or offset + length > len(raw) or offset + length > previous:
+                raise ValueError("formatter replacement is out of range or overlapping")
+            changed = changed[:offset] + replacement + changed[offset + length:]
+            previous = offset
+        if tokens(text) != tokens(changed.decode("utf-8")):
+            raise UnsafeFormat("formatter would change preprocessing token spelling/order")
         out = []
         for row in tree.findall("replacement"):
             offset, length = int(row.attrib["offset"]), int(row.attrib["length"])
@@ -228,7 +372,8 @@ def check(root, base, files, executable, patterns_only=False):
         if not executable:
             raise StyleError("clang-format missing; install tools/requirements-style.txt")
         formatter_version(executable)
-    results = []
+    results, deferred = [], []
+    safety = FormatSafety(root)
     for path, old in pairs:
         full = (root / path).resolve()
         if not full.is_relative_to(root.resolve()) or full.suffix not in SUFFIXES:
@@ -237,12 +382,19 @@ def check(root, base, files, executable, patterns_only=False):
         before = read_before(root, base, old)
         findings = apply_exceptions(path, new_findings(before, after), exceptions, before)
         ranges = added_ranges(before, after)
-        if not patterns_only:
-            findings += format_findings(executable, root / ".clang-format", path, after, ranges)
+        if not patterns_only and ranges:
+            risks = safety.reasons(path, after)
+            if risks:
+                deferred.append({"path": path, "reasons": risks})
+            else:
+                try:
+                    findings += format_findings(executable, root / ".clang-format", path, after, ranges)
+                except UnsafeFormat as exc:
+                    deferred.append({"path": path, "reasons": [str(exc)]})
         results.extend({"path": path, "line": f.line, "rule": f.rule, "match": f.match}
                        for f in findings)
     return {"base": base, "files_checked": len(pairs), "patterns_only": patterns_only,
-            "findings": results}
+            "findings": results, "format_deferred": deferred}
 
 
 def main(argv=None):
@@ -258,9 +410,14 @@ def main(argv=None):
                        args.files, args.clang_format, args.patterns_only)
         if args.json:
             args.json.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        for row in report["format_deferred"]:
+            print(f"{row['path']}: FORMAT DEFERRED; retain original spelling and require compiler proof")
+            for reason in row["reasons"]:
+                print("  " + reason)
         for f in report["findings"]:
             print(f"{f['path']}:{f['line']}: {f['rule']}: {f['match']}")
-        print(f"source-style: {report['files_checked']} file(s), {len(report['findings'])} finding(s)"
+        print(f"source-style: {report['files_checked']} file(s), {len(report['findings'])} finding(s), "
+              f"{len(report['format_deferred'])} formatting deferral(s)"
               + ("; PATTERNS ONLY, formatting not checked" if args.patterns_only else ""))
         return int(bool(report["findings"]))
     except (StyleError, OSError, UnicodeError) as exc:
