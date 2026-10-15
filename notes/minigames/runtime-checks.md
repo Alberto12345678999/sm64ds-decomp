@@ -70,6 +70,16 @@ screenshots, over two games of Wanted! (Luigi):
   - A miss gave three `Mg_SubCredits(1)` (`Slot3_State3and4`, local state 4) and the counter went 12 → 9 → 6.
   - A Wario column on the right gave three `Mg_AddCredits(1)` (local state 3; the middle column pays 6) and the counter went 6 → 9. A star appeared by Toad (`mHudScore`, rounds won). Then `StartRound(4)`: banner 0xd, Yoshi as the new target, and a fourth face in each strip (`mStripLength` 3 → 4).
   - **`mCredits` is coins here**, moved one coin per tick. Slot3 settles a round in its own state machine and never calls `Mg_SetSharedState` for a win or a loss. Only an empty purse reaches `MG_STATE_GAME_OVER` (`Slot3_State6`).
+- **Memory** (`dScMgMemory_c`, Luigi's page, top-left card, menu row 1) has eight cards and starts with 12 coins. Luigi deals, then:
+  - `Dealer_StateDeal` calls `OnDealDone`, whose override is `MgCoins_PlaceBet(3)`. Three coins go onto the table, each via `Coin_Launch` → `Mg_LoseCredits(1)` → `Mg_SubCredits(1)`.
+  - A miss slides one table coin over to Luigi and calls nothing watched.
+  - **Clearing the board** with 2 coins left: `Mg_SetSharedState(4)` and banner 9, then twelve `Mg_GainCredits(1)` + `Mg_AddCredits(1)` pairs (the "+12" on screen), then `StartRound(4)` and a new deal and bet.
+  - **Three misses:** `Mg_SetSharedState(5)` and banner 0xa. The board is revealed until touched, then `StartRound(5)` deals and bets again.
+  - Memory passes banners 9 and 0xa at y −0x3c, and neither was visible on screen.
+- **Picture Poker** (`dScMgCard_c`, Luigi's page, top-right card, menu row 9) also opens with `OnDealDone`. It stakes one coin itself, without `PlaceBet`, and the BET! button runs `MgCoins_AddBetCoin` for one more coin. The banners 0x18..0x1a carry the hand names.
+  - **Luigi's full house against the player's two pair:** `Mg_SetSharedState(5)`, then `StartRound(5)`.
+  - **Equal hands:** `Mg_SetSharedState(7)` and banner 0xb. One `Mg_GainCredits(1)` + `Mg_AddCredits(1)` refunds the bet, then `StartRound(7)`.
+- So shared states 4, 5 and 7 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE` and `MG_STATE_DRAW` all hold. Memory and Card never called a `Presenter_PlayAnim*`; their dealer has its own `Dealer_PlayWin/Lose`.
 
 ## Recording the answer
 

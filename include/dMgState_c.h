@@ -15,10 +15,10 @@ enum MgSharedState {
     MG_STATE_NEXT_ROUND = 1,           /* [high, seen] silent fade, then StartRound(1); Wanted! after every 5th level */
     MG_STATE_ROUND_BANNER5 = 2,        /* [low] banner 5, jingle 1; no caller found */
     MG_STATE_RETRY_PROMPT = 3,         /* [high, seen] PLAY AGAIN / QUIT under the banner ("TIME IS UP" in Snowball) */
-    MG_STATE_WIN = 4,                  /* [medium] banner 9; wins in the card games */
-    MG_STATE_LOSE = 5,                 /* [high] game over at 0 credits, else StartRound(5) */
+    MG_STATE_WIN = 4,                  /* [high, seen] banner 9; Memory's cleared board pays out, deals again */
+    MG_STATE_LOSE = 5,                 /* [high, seen] game over at 0 credits, else StartRound(5); Memory, Card */
     MG_STATE_LOSE_RESUME = 6,          /* [low] banner 0xa, then hands back to the game */
-    MG_STATE_DRAW = 7,                 /* [low] banner 0xb; Card only */
+    MG_STATE_DRAW = 7,                 /* [high, seen] banner 0xb; Card's equal hands, bet refunded */
     MG_STATE_TIE = 8,                  /* [medium] silent, StartRound(8) at once; Roulette's tie */
     MG_STATE_ROUND_CLEAR_TOP = 9,      /* [low] state 0 on the top screen; no caller found */
     MG_STATE_RETRY_PROMPT_B = 10,      /* [low] retry / quit with banner style 0xb */

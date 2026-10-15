@@ -39,7 +39,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | high (seen) | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
 | 20 | `Virtual50` | `OnNewRecord` | medium | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
-| 21 | `OnGroundPounded` | `OnDealDone` | medium | Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
+| 21 | `OnGroundPounded` | `OnDealDone` | high (seen) | Seen in Memory and Card: it fires once Luigi finishes dealing, from `Dealer_StateDeal`. Memory's override goes straight to `MgCoins_PlaceBet(3)`. Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
 | 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. What the engine's callback 1 is for is not known. |
 | 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. The arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
 | 24 | `OnKicked` | `OnGraphCallback2` | high (mapping) | `GraphCallback2` returns its result. The base body saves or restores the screen on an edge of `mMenuOpen`. |
@@ -155,10 +155,10 @@ and a guess (unconfirmed):
 | 1 | none, none, 15 | fade, `StartRound(1)` | Hanachan, Luigi | silent next round |
 | 2 | 5, 1, 180 | fade, restore music, `StartRound(2)` | none found | |
 | 3 | 8\*, 3, 60 | retry (button 0) / quit (1, 2) buttons | Snowball, with banner 0xe | game over, retry? |
-| 4 | 9\*, s0x136, 120 | `StartRound(4)` | a win in Memory, Card, BSC, MCarlo, Roulette | you win |
-| 5 | 0xa, s0x137, 120 | game over at 0 credits, else `StartRound(5)` | a loss in the same games | you lose |
+| 4 | 9\*, s0x136, 120 | `StartRound(4)` | a win in Memory, Card, BSC, MCarlo, Roulette | you win. **Seen:** clearing Memory's board pays out and deals again |
+| 5 | 0xa, s0x137, 120 | game over at 0 credits, else `StartRound(5)` | a loss in the same games | you lose. **Seen** in Memory (bet gone) and Card (Luigi's hand higher), each then `StartRound(5)` |
 | 6 | 0xa, s0x137, 120 | hides the controller and hands back to the game | none found | |
-| 7 | 0xb, none, 120 | `StartRound(7)` | Card | draw? |
+| 7 | 0xb, none, 120 | `StartRound(7)` | Card | draw. **Seen:** `CompareHands` = 0 refunds the bet coin, then `StartRound(7)` |
 | 8 | none, none, 0 | `StartRound(8)` at once | Roulette's tie | silent tie |
 | 9 | 3\* on the top screen, 4, 180 | `StartRound(9)` | none found | |
 | 10 | 8 (style 0xb), 3, 180 | retry / quit buttons | none found | |
@@ -210,9 +210,10 @@ The entry points are:
 Games watch `gMgCoinsStatus`: 1 when a sequence is done, 2-4 while one runs.
 `gMgCoinsShowDelta` makes the sequences draw their signed count.
 
-What is not settled is the word "bet". The touch button and the sounds (0x149-0x14e)
-fit Card, BSC and MCarlo, but Memory and Memory2 also call `MgCoins_PlaceBet`
-with their remaining misses.
+**"Bet" is right; seen 2026-10-15.**
+- **Memory.** `MgCoins_PlaceBet(3)` stakes three coins on the table. Each miss slides one coin over to Luigi, and clearing the board pays the coins still on the table ×6. The misses allowed are the stake.
+- **Card (Picture Poker).** The BET! button runs `MgCoins_AddBetCoin` and adds one coin to the stake.
+- **Coin moves.** Each staked coin is one `Coin_Launch` → `Mg_LoseCredits(1)` → `Mg_SubCredits(1)`. Each paid or refunded coin is one `Mg_GainCredits(1)` → `Mg_AddCredits(1)`.
 
 **The options panel, high confidence.** Pass 2 (2026-10-15) made the
 `dMgPsOpt_c` helpers real members: `dMgPsOpt_c::Open`, `Close`, `Update`, `Draw`
