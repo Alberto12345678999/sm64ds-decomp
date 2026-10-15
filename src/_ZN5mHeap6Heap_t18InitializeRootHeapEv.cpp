@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN4Heap18InitializeRootHeapEv
+// @symbol _ZN5mHeap6Heap_t18InitializeRootHeapEv
 /* Heap::InitializeRootHeap() at 0x0203cae8 -- clears ROOT_HEAP_ARENA_ID then
  * tail-calls Heap::SetupRootHeap().
  *
@@ -16,8 +16,12 @@
 
 extern "C" u32 ROOT_HEAP_ARENA_ID;
 
-void Heap::InitializeRootHeap()
+namespace mHeap {
+
+void Heap_t::InitializeRootHeap()
 {
     ROOT_HEAP_ARENA_ID = 0;
     SetupRootHeap();
 }
+
+} /* namespace mHeap */

@@ -1,21 +1,21 @@
 //cpp
-// @symbol _ZN9SolidHeapD0Ev
+// @symbol _ZN5mHeap9ExpHeap_tD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
  * D0 is the DELETING destructor: destroy through this class and its bases --
  * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~SolidHeap()` is enough, because mwcc
+ * its heap. Nobody writes that; declaring `~ExpandingHeap()` is enough, because mwcc
  * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
  * to.
  *
  * The deallocation is an inline operator delete, which is why nothing below
  * mentions a heap.
  */
-#include "SolidHeap.h"
+#include "ExpandingHeap.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~SolidHeap() it
+ * folds the Itanium destructor variants into the one ~ExpandingHeap() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -24,14 +24,18 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" SolidHeap *_ZN9SolidHeapD0Ev(SolidHeap *thiz)
+extern "C" ExpandingHeap *_ZN5mHeap9ExpHeap_tD0Ev(ExpandingHeap *thiz)
 {
-    thiz->SolidHeap::~SolidHeap();     /* the D1 body, through the one host symbol */
-    SolidHeap::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->mHeap::ExpHeap_t::~ExpHeap_t();  /* the D1 body, through the one host symbol */
+    ExpandingHeap::operator delete(thiz);   /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-SolidHeap::~SolidHeap()
+namespace mHeap {
+
+ExpHeap_t::~ExpHeap_t()
 {
 }
+
+} /* namespace mHeap */
 #endif

@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN4Heap13SetupRootHeapEv
+// @symbol _ZN5mHeap6Heap_t13SetupRootHeapEv
 /* Heap::SetupRootHeap() at 0x0203cb04 -- take the whole of the NitroSDK arena
  * selected by ROOT_HEAP_ARENA_ID and turn it into the root heap.
  *
@@ -22,12 +22,12 @@ extern "C" {
     /* `extern' is load-bearing on both of these, and specifically because they
        sit inside a BRACED linkage block. Written `extern "C" u32 X;' on its own
        line the extern specifier is implied and the line is a declaration --
-       _ZN4Heap18InitializeRootHeapEv.cpp spells ROOT_HEAP_ARENA_ID that way and
+       _ZN5mHeap6Heap_t18InitializeRootHeapEv.cpp spells ROOT_HEAP_ARENA_ID that way and
        links. Written `extern "C" { u32 X; }' mwccarm emits a DEFINITION, which
        collides with the ROM's own bss:
 
          mwldarm.exe: Multiply-defined: "data_020a0e9c" in
-                      _ZN4Heap13SetupRootHeapEv.o
+                      _ZN5mHeap6Heap_t13SetupRootHeapEv.o
          mwldarm.exe: Previously defined in _dsd_gap@main_40.o
 
        build_pin.verify compiles a single file and never links, so it returned
@@ -44,7 +44,9 @@ extern "C" {
 
 namespace Memory { extern Heap* defaultHeapPtr; }   /* 0x020a0ea0 */
 
-Heap* Heap::SetupRootHeap()
+namespace mHeap {
+
+Heap_t* Heap_t::SetupRootHeap()
 {
     int lo = func_02058ea0(ROOT_HEAP_ARENA_ID);
     int hi = func_02058eb4(ROOT_HEAP_ARENA_ID);
@@ -78,3 +80,5 @@ Heap* Heap::SetupRootHeap()
 fail:
     return 0;
 }
+
+} /* namespace mHeap */

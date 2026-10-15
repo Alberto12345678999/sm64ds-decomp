@@ -1529,7 +1529,7 @@ extern void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern void _ZN5Sound6Play2DEjj(unsigned int, unsigned int);
 extern void _ZN5Sound6Player19SetPlayableSeqCountEii(int, int);
 extern void _ZN6Memory10DeallocateEPv(void*);
-extern void _ZN6Memory10DeallocateEPvP4Heap(void*, void*);
+extern void _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE(void*, void*);
 extern void _ZN6Memory16operator_delete2EPv(void*);
 extern void dScMgAmida_c_Kill(void);
 extern void data_ov007_020cd72c(void*);

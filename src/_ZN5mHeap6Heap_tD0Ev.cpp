@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN4HeapD0Ev
+// @symbol _ZN5mHeap6Heap_tD0Ev
 #include "Heap.h"
 
 #ifdef _MSC_VER
@@ -13,14 +13,18 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" Heap *_ZN4HeapD0Ev(Heap *thiz)
+extern "C" Heap *_ZN5mHeap6Heap_tD0Ev(Heap *thiz)
 {
-    thiz->Heap::~Heap();          /* the D1 body, through the one host symbol */
+    thiz->mHeap::Heap_t::~Heap_t();          /* the D1 body, through the one host symbol */
     Heap::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-Heap::~Heap()
+namespace mHeap {
+
+Heap_t::~Heap_t()
 {
 }
+
+} /* namespace mHeap */
 #endif

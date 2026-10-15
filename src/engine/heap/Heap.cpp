@@ -29,7 +29,9 @@ namespace Memory { extern Heap* defaultHeapPtr; }   /* 0x020a0ea0 */
    minted here, since naming it is a claim of its own. */
 extern "C" Heap* data_020a0ea8;
 
-// @symbol _ZN4Heap14CreateRootHeapEPvj
+namespace mHeap {
+
+// @symbol _ZN5mHeap6Heap_t14CreateRootHeapEPvj
 /* Heap::CreateRootHeap(void*, u32) at 0x0203c8e8 -- build the one heap that has
  * no parent, directly on a block the caller already owns.
  *
@@ -51,10 +53,10 @@ extern "C" Heap* data_020a0ea8;
  * 0x08 `heapEnd'. The mangled name says `j' -- a u32 -- and both values are
  * sizes. */
 
-extern "C" ExpandingHeap* _ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator(
+extern "C" ExpandingHeap* _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator(
     ExpandingHeap* heap, void* start, u32 size, Heap* root, ExpandingHeapAllocator* allocator);
 
-Heap* Heap::CreateRootHeap(void* mem, u32 size)
+Heap_t* Heap_t::CreateRootHeap(void* mem, u32 size)
 {
     ExpandingHeap* heap = (ExpandingHeap*)mem;
 
@@ -64,7 +66,7 @@ Heap* Heap::CreateRootHeap(void* mem, u32 size)
     {
         heap->heapSize = size - 0x18;
         if (heap != 0)
-            _ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator(
+            _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator(
                 heap, heap->heapStart, heap->heapSize, 0, heap->allocator);
         return heap;
     }
@@ -73,7 +75,7 @@ Heap* Heap::CreateRootHeap(void* mem, u32 size)
     return 0;
 }
 
-// @symbol _ZN4Heap19CreateExpandingHeapEjPS_i
+// @symbol _ZN5mHeap6Heap_t19CreateExpandingHeapEjPS0_i
 /* Heap::CreateExpandingHeap(u32, Heap*, int) at 0x0203c844 -- the expanding twin
  * of Heap::CreateSolidHeap, instruction for instruction bar the allocator it
  * builds and the constructor it calls. See CreateSolidHeap for the 0x18 and for why
@@ -82,7 +84,7 @@ Heap* Heap::CreateRootHeap(void* mem, u32 size)
  * Same correction: 0x08 is `heapSize' and always held a size, not an end
  * address. */
 
-Heap* Heap::CreateExpandingHeap(u32 size, Heap* root, int align)
+Heap_t* Heap_t::CreateExpandingHeap(u32 size, Heap_t* root, int align)
 {
     Heap* parent = root;
     if (root == 0)
@@ -102,14 +104,14 @@ Heap* Heap::CreateExpandingHeap(u32 size, Heap* root, int align)
         {
             heap->heapSize = size;
             if (heap != 0)
-                _ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator(
+                _ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator(
                     heap, heap->heapStart, heap->heapSize, parent, heap->allocator);
         }
     }
     return heap;
 }
 
-// @symbol _ZN4Heap15CreateSolidHeapEjPS_i
+// @symbol _ZN5mHeap6Heap_t15CreateSolidHeapEjPS0_i
 /* Heap::CreateSolidHeap(u32, Heap*, int) at 0x0203c7a0 -- allocate a block out
  * of `root' and build a SolidHeap in the first 0x18 bytes of it, with the
  * remaining `size' bytes as the new heap's arena.
@@ -133,10 +135,10 @@ Heap* Heap::CreateExpandingHeap(u32 size, Heap* root, int align)
  * branch already established it -- but the ROM emits the second test, so it
  * stays. */
 
-extern "C" SolidHeap* _ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator(
+extern "C" SolidHeap* _ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator(
     SolidHeap* heap, void* start, u32 size, Heap* root, SolidHeapAllocator* allocator);
 
-Heap* Heap::CreateSolidHeap(u32 size, Heap* root, int align)
+Heap_t* Heap_t::CreateSolidHeap(u32 size, Heap_t* root, int align)
 {
     Heap* parent = root;
     if (root == 0)
@@ -156,14 +158,14 @@ Heap* Heap::CreateSolidHeap(u32 size, Heap* root, int align)
         {
             heap->heapSize = size;
             if (heap != 0)
-                _ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator(
+                _ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator(
                     heap, heap->heapStart, heap->heapSize, parent, heap->allocator);
         }
     }
     return heap;
 }
 
-// @symbol _ZN4Heap7DestroyEv
+// @symbol _ZN5mHeap6Heap_t7DestroyEv
 /* Heap::Destroy() at 0x0203c758 -- tears the heap down: let the concrete heap
  * release its own bookkeeping (slot 2), forget the arena, then hand the block
  * back to the heap this one was carved out of.
@@ -173,7 +175,7 @@ Heap* Heap::CreateSolidHeap(u32 size, Heap* root, int align)
  * casts existed because the header declared those fields but nothing would
  * admit what they were. They are named now, so the writes are plain. */
 
-void Heap::Destroy()
+void Heap_t::Destroy()
 {
     VDestroy();
 
@@ -189,7 +191,7 @@ void Heap::Destroy()
     parentHeap = 0;
 }
 
-// @symbol _ZN4Heap8_DestroyEv
+// @symbol _ZN5mHeap6Heap_t8_DestroyEv
 /* Heap::_Destroy() at 0x0203c74c -- a three-word tail-call veneer to
  * Heap::Destroy (0x0203c758): `ldr ip,[pc] / bx ip / .word 0x0203c758'.
  *
@@ -200,12 +202,12 @@ void Heap::Destroy()
  * unexamined. Written as a real member forwarding real arguments it should emit
  * the same three words. */
 
-void Heap::_Destroy()
+void Heap_t::_Destroy()
 {
     Destroy();
 }
 
-// @symbol _ZN13ExpandingHeap8VDestroyEv
+// @symbol _ZN5mHeap9ExpHeap_t8VDestroyEv
 /* ExpandingHeap::VDestroy() at 0x0203c72c -- Heap vtable slot 2. Tear the
  * allocator down and forget it; Heap::Destroy calls this before returning the
  * block to the parent heap.
@@ -214,13 +216,13 @@ void Heap::_Destroy()
  * ExpandingHeapAllocator inheritance records that base relationship directly;
  * SolidHeap::VDestroy's parallel but still-unnamed target remains raw. */
 
-void ExpandingHeap::VDestroy()
+void ExpHeap_t::VDestroy()
 {
     allocator->Destroy();
     allocator = 0;
 }
 
-// @symbol _ZN9SolidHeap8VDestroyEv
+// @symbol _ZN5mHeap11SolidHeap_t8VDestroyEv
 /* SolidHeap::VDestroy() at 0x0203c70c -- Heap vtable slot 2. Tear the allocator
  * down and forget it; Heap::Destroy calls this before returning the block to
  * the parent heap.
@@ -239,13 +241,13 @@ void ExpandingHeap::VDestroy()
    migration is per-reference, not only per-function. */
 extern "C" void func_0204ebb8(SolidHeapAllocator* allocator);
 
-void SolidHeap::VDestroy()
+void SolidHeap_t::VDestroy()
 {
     func_0204ebb8(allocator);
     allocator = 0;
 }
 
-// @symbol _ZN4Heap8AllocateEji
+// @symbol _ZN5mHeap6Heap_t8AllocateEji
 /* Heap::Allocate(u32, int) at 0x0203c6cc -- the allocation entry point: call
  * slot 3, and if it comes back empty on a fail-fast heap, do not return the
  * NULL to the caller, Crash() instead.
@@ -260,7 +262,7 @@ void SolidHeap::VDestroy()
  * Was a cast of `this' to a local `struct Base' with three anonymous virtuals
  * padding `m' out to index 3, plus an address-cast read of `&unk_010'. */
 
-void* Heap::Allocate(u32 size, int align)
+void* Heap_t::Allocate(u32 size, int align)
 {
     void* block = VAllocate(size, align);
     if (block == 0 && (flags & 0x4000))
@@ -268,7 +270,7 @@ void* Heap::Allocate(u32 size, int align)
     return block;
 }
 
-// @symbol _ZN13ExpandingHeap9VAllocateEji
+// @symbol _ZN5mHeap9ExpHeap_t9VAllocateEji
 /* ExpandingHeap::VAllocate(u32, int) at 0x0203c6bc -- Heap vtable slot 3. Four
  * instructions: load the allocator from this+0x14 and tail-call it, passing
  * r1/r2 through untouched.
@@ -277,19 +279,19 @@ void* Heap::Allocate(u32 size, int align)
  * claimed `Ejj' for the same slot, and the ROM agreed with this one; see
  * include/SolidHeap.h for the signed `blt' that settles it. */
 
-void* ExpandingHeap::VAllocate(u32 size, int align)
+void* ExpHeap_t::VAllocate(u32 size, int align)
 {
     return allocator->Allocate(size, align);
 }
 
-// @symbol _ZN9SolidHeap9VAllocateEji
+// @symbol _ZN5mHeap11SolidHeap_t9VAllocateEji
 /* SolidHeap::VAllocate(u32, int) at 0x0203c6ac -- Heap vtable slot 3. Four
  * instructions: load the allocator from this+0x14 and tail-call it, passing
  * r1 and r2 through untouched.
  *
  * THE SYMBOL WAS _ZN9SolidHeap9VAllocateEjj AND THAT WAS WRONG. `Ejj' claims
  * (u32, u32); ExpandingHeap's override of the SAME SLOT is
- * _ZN13ExpandingHeap9VAllocateEji, which claims (u32, int). Two overrides of
+ * _ZN5mHeap9ExpHeap_t9VAllocateEji, which claims (u32, int). Two overrides of
  * one slot cannot have different parameter types, so one import was wrong, and
  * nothing in the tree could tell which -- a caller cannot observe a parameter's
  * signedness through a virtual call, and until SolidHeap actually derived from
@@ -314,12 +316,12 @@ void* ExpandingHeap::VAllocate(u32 size, int align)
  * It also carried a local `class SolidHeap { u32 unk00; ... }' rather than
  * including the header. */
 
-void* SolidHeap::VAllocate(u32 size, int align)
+void* SolidHeap_t::VAllocate(u32 size, int align)
 {
     return allocator->Allocate(size, align);
 }
 
-// @symbol _ZN4Heap6IntactEv
+// @symbol _ZN5mHeap6Heap_t6IntactEv
 /* Heap::Intact() at 0x0203c664. Asks the concrete heap whether its bookkeeping
  * is still consistent (slot 6), and latches a global the first time one says no.
  *
@@ -329,7 +331,7 @@ void* SolidHeap::VAllocate(u32 size, int align)
  * declares VIntact as its own slot-6 pure virtual, so this is an ordinary
  * virtual call and the slot index is the header's business, not this file's. */
 
-bool Heap::Intact()
+bool Heap_t::Intact()
 {
     bool intact = VIntact();
     if (intact)
@@ -342,7 +344,7 @@ bool Heap::Intact()
     return intact;
 }
 
-// @symbol _ZN13ExpandingHeap7VIntactEv
+// @symbol _ZN5mHeap9ExpHeap_t7VIntactEv
 /* ExpandingHeap::VIntact() at 0x0203c65c -- Heap vtable slot 6. Eight bytes:
  * `mov r0,#1 / bx lr'.
  *
@@ -351,12 +353,12 @@ bool Heap::Intact()
  * global the first time any heap reports damage; nothing in this family can
  * ever trip it. */
 
-bool ExpandingHeap::VIntact()
+bool ExpHeap_t::VIntact()
 {
     return 1;
 }
 
-// @symbol _ZN9SolidHeap7VIntactEv
+// @symbol _ZN5mHeap11SolidHeap_t7VIntactEv
 /* SolidHeap::VIntact() at 0x0203c654 -- Heap vtable slot 6. Eight bytes:
  * `mov r0,#1 / bx lr'.
  *
@@ -365,12 +367,12 @@ bool ExpandingHeap::VIntact()
  * what that costs the caller: Heap::Intact latches a global the first time any
  * heap reports damage, and a solid heap can never trip it. */
 
-bool SolidHeap::VIntact()
+bool SolidHeap_t::VIntact()
 {
     return 1;
 }
 
-// @symbol _ZN4Heap6RescueEv
+// @symbol _ZN5mHeap6Heap_t6RescueEv
 /* Heap::Rescue() at 0x0203c634 -- plain forward to slot 7, the concrete heap's
  * last-ditch recovery. Called from Heap::ResizeToFit just before Crash().
  *
@@ -381,12 +383,12 @@ bool SolidHeap::VIntact()
  * (ExpandingHeap::VRescue, SolidHeap::VRescue), and the reconstruction that was
  * already written for Heap::ResizeToFit said `void Rescue()' too. */
 
-void Heap::Rescue()
+void Heap_t::Rescue()
 {
     VRescue();
 }
 
-// @symbol _ZN13ExpandingHeap7VRescueEv
+// @symbol _ZN5mHeap9ExpHeap_t7VRescueEv
 /* ExpandingHeap::VRescue() at 0x0203c630 -- Heap vtable slot 7. Four bytes:
  * `bx lr'. No recovery is attempted.
  *
@@ -397,49 +399,49 @@ void Heap::Rescue()
  * right and the direction wrong: Rescue runs before Crash because Crash is what
  * follows a failure, not because Crash calls it. */
 
-void ExpandingHeap::VRescue()
+void ExpHeap_t::VRescue()
 {
 }
 
-// @symbol _ZN9SolidHeap7VRescueEv
+// @symbol _ZN5mHeap11SolidHeap_t7VRescueEv
 /* SolidHeap::VRescue() at 0x0203c62c -- Heap vtable slot 7. Four bytes: `bx lr'.
  * There is no recovery to attempt on a linear allocator. */
 
-void SolidHeap::VRescue()
+void SolidHeap_t::VRescue()
 {
 }
 
-// @symbol _ZN4Heap21MaxAllocationUnitSizeEv
+// @symbol _ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv
 /* Heap::MaxAllocationUnitSize() at 0x0203c60c -- plain forward to slot 10.
  *
  * Was a cast of `this' to a local `struct Base' with ten anonymous virtuals
  * padding `m' out to index 10. */
 
-u32 Heap::MaxAllocationUnitSize()
+u32 Heap_t::MaxAllocationUnitSize()
 {
     return VMaxAllocationUnitSize();
 }
 
-// @symbol _ZN13ExpandingHeap22VMaxAllocationUnitSizeEv
+// @symbol _ZN5mHeap9ExpHeap_t22VMaxAllocationUnitSizeEv
 /* ExpandingHeap::VMaxAllocationUnitSize() at 0x0203c5f8 -- Heap vtable slot 10.
  * Same call as slot 11 on this heap: the largest allocatable block and the
  * largest allocation unit are both "the biggest free node". */
 
-u32 ExpandingHeap::VMaxAllocationUnitSize()
+u32 ExpHeap_t::VMaxAllocationUnitSize()
 {
     return allocator->MaxAllocatableSize(4);
 }
 
-// @symbol _ZN9SolidHeap22VMaxAllocationUnitSizeEv
+// @symbol _ZN5mHeap11SolidHeap_t22VMaxAllocationUnitSizeEv
 /* SolidHeap::VMaxAllocationUnitSize() at 0x0203c5e4 -- Heap vtable slot 10.
  * Identical to slots 11 and 12 on a linear allocator; see VMemoryLeft. */
 
-u32 SolidHeap::VMaxAllocationUnitSize()
+u32 SolidHeap_t::VMaxAllocationUnitSize()
 {
     return allocator->MemoryLeft(4);
 }
 
-// @symbol _ZN13ExpandingHeap19VMaxAllocatableSizeEv
+// @symbol _ZN5mHeap9ExpHeap_t19VMaxAllocatableSizeEv
 /* ExpandingHeap::VMaxAllocatableSize() at 0x0203c5d0 -- Heap vtable slot 11.
  * The LARGEST SINGLE free node at 4-byte alignment, not the total; see
  * VMemoryLeft for why the distinction matters here and not on a solid heap.
@@ -447,21 +449,21 @@ u32 SolidHeap::VMaxAllocationUnitSize()
  * Reached `*(void**)((char*)&unk_014)' through an address cast before the
  * allocator was a named, typed member. */
 
-u32 ExpandingHeap::VMaxAllocatableSize()
+u32 ExpHeap_t::VMaxAllocatableSize()
 {
     return allocator->MaxAllocatableSize(4);
 }
 
-// @symbol _ZN9SolidHeap19VMaxAllocatableSizeEv
+// @symbol _ZN5mHeap11SolidHeap_t19VMaxAllocatableSizeEv
 /* SolidHeap::VMaxAllocatableSize() at 0x0203c5bc -- Heap vtable slot 11.
  * Identical to slots 10 and 12 on a linear allocator; see VMemoryLeft. */
 
-u32 SolidHeap::VMaxAllocatableSize()
+u32 SolidHeap_t::VMaxAllocatableSize()
 {
     return allocator->MemoryLeft(4);
 }
 
-// @symbol _ZN13ExpandingHeap11VMemoryLeftEv
+// @symbol _ZN5mHeap9ExpHeap_t11VMemoryLeftEv
 /* ExpandingHeap::VMemoryLeft() at 0x0203c5ac -- Heap vtable slot 12. The SUM of
  * every free node's size.
  *
@@ -470,12 +472,12 @@ u32 SolidHeap::VMaxAllocatableSize()
  * largest single node -- so a fragmented heap can report plenty of memory left
  * and still refuse an allocation. */
 
-u32 ExpandingHeap::VMemoryLeft()
+u32 ExpHeap_t::VMemoryLeft()
 {
     return allocator->MemoryLeft();
 }
 
-// @symbol _ZN9SolidHeap11VMemoryLeftEv
+// @symbol _ZN5mHeap11SolidHeap_t11VMemoryLeftEv
 /* SolidHeap::VMemoryLeft() at 0x0203c598 -- Heap vtable slot 12.
  *
  * Slots 10, 11 and 12 all forward to the same MemoryLeft(4) on a solid heap:
@@ -483,12 +485,12 @@ u32 ExpandingHeap::VMemoryLeft()
  * and the largest single unit are all the same number. On an expanding heap
  * they differ, which is why the three slots exist at all. */
 
-u32 SolidHeap::VMemoryLeft()
+u32 SolidHeap_t::VMemoryLeft()
 {
     return allocator->MemoryLeft(4);
 }
 
-// @symbol _ZN4Heap10ReallocateEPvj
+// @symbol _ZN5mHeap6Heap_t10ReallocateEPvj
 /* Heap::Reallocate(void*, u32) at 0x0203c578 -- forwards to slot 8 and hands
  * back the resulting SIZE, or 0 if the block could not be resized.
  *
@@ -512,12 +514,12 @@ u32 SolidHeap::VMemoryLeft()
  * Was a cast of `this' to a local `struct Base' with eight anonymous virtuals
  * padding `m' out to index 8. */
 
-u32 Heap::Reallocate(void* ptr, u32 size)
+u32 Heap_t::Reallocate(void* ptr, u32 size)
 {
     return VReallocate(ptr, size);
 }
 
-// @symbol _ZN13ExpandingHeap11VReallocateEPvj
+// @symbol _ZN5mHeap9ExpHeap_t11VReallocateEPvj
 /* ExpandingHeap::VReallocate(void*, u32) at 0x0203c568 -- Heap vtable slot 8.
  * Four instructions: load the allocator from this+0x14 and tail-call it.
  *
@@ -529,12 +531,12 @@ u32 Heap::Reallocate(void* ptr, u32 size)
  * because a tail-call forwarder cannot disagree with its callee about a value it
  * merely passes on. */
 
-u32 ExpandingHeap::VReallocate(void* ptr, u32 size)
+u32 ExpHeap_t::VReallocate(void* ptr, u32 size)
 {
     return allocator->Reallocate(ptr, size);
 }
 
-// @symbol _ZN9SolidHeap11VReallocateEPvj
+// @symbol _ZN5mHeap11SolidHeap_t11VReallocateEPvj
 /* SolidHeap::VReallocate(void*, u32) at 0x0203c558 -- Heap vtable slot 8.
  * Four instructions: load the allocator from this+0x14 and tail-call it.
  *
@@ -544,12 +546,12 @@ u32 ExpandingHeap::VReallocate(void* ptr, u32 size)
  * SolidHeapAllocator' whose Reallocate it declared pointer-returning, which is
  * where the tree's `void*' for this slot came from. */
 
-u32 SolidHeap::VReallocate(void* ptr, u32 size)
+u32 SolidHeap_t::VReallocate(void* ptr, u32 size)
 {
     return allocator->Reallocate(ptr, size);
 }
 
-// @symbol _ZN4Heap10DeallocateEPv
+// @symbol _ZN5mHeap6Heap_t10DeallocateEPv
 /* Heap::Deallocate(void*) at 0x0203c538 -- forwards to the concrete heap's
  * slot 4. No guard: freeing is the one operation with nothing to fail at.
  *
@@ -557,12 +559,12 @@ u32 SolidHeap::VReallocate(void* ptr, u32 size)
  * padding `m' out to index 4; VDeallocate is now Heap's own slot-4 pure
  * virtual. */
 
-void Heap::Deallocate(void* ptr)
+void Heap_t::Deallocate(void* ptr)
 {
     VDeallocate(ptr);
 }
 
-// @symbol _ZN13ExpandingHeap11VDeallocateEPv
+// @symbol _ZN5mHeap9ExpHeap_t11VDeallocateEPv
 /* ExpandingHeap::VDeallocate(void*) at 0x0203c50c -- Heap vtable slot 4. Free
  * one block back to the node list.
  *
@@ -571,7 +573,7 @@ void Heap::Deallocate(void* ptr)
  * SolidHeap's override crashes on any non-null pointer, because a linear
  * allocator cannot return a single block. */
 
-void ExpandingHeap::VDeallocate(void* ptr)
+void ExpHeap_t::VDeallocate(void* ptr)
 {
     if (!ptr)
         return;
@@ -579,7 +581,7 @@ void ExpandingHeap::VDeallocate(void* ptr)
     allocator->Deallocate(ptr);
 }
 
-// @symbol _ZN9SolidHeap11VDeallocateEPv
+// @symbol _ZN5mHeap11SolidHeap_t11VDeallocateEPv
 /* SolidHeap::VDeallocate(void*) at 0x0203c4e4 -- Heap vtable slot 4.
  *
  * Freeing a single block from a linear allocator is not supported, so a
@@ -587,12 +589,14 @@ void ExpandingHeap::VDeallocate(void* ptr)
  * tolerated silently, which is what lets callers deallocate unconditionally.
  * VDeallocateAll is the only real free a solid heap has. */
 
-void SolidHeap::VDeallocate(void* ptr)
+void SolidHeap_t::VDeallocate(void* ptr)
 {
     if (ptr == 0)
         return;
     Crash();
 }
+
+} /* namespace mHeap */
 
 // @symbol _ZN22ExpandingHeapAllocator16InvokeDeallocateEPvPS_j
 
@@ -618,7 +622,9 @@ void ExpandingHeapAllocator::InvokeDeallocate(void* p, ExpandingHeapAllocator* a
     alloc->Deallocate(p);
 }
 
-// @symbol _ZN13ExpandingHeap14VDeallocateAllEv
+namespace mHeap {
+
+// @symbol _ZN5mHeap9ExpHeap_t14VDeallocateAllEv
 /* ExpandingHeap::VDeallocateAll() at 0x0203c4b0 -- Heap vtable slot 5. Forwards
  * to the allocator, passing the InvokeDeallocate trampoline as the visitor.
  *
@@ -643,24 +649,24 @@ void ExpandingHeapAllocator::InvokeDeallocate(void* p, ExpandingHeapAllocator* a
  * not been reconstructed. It has now, so the allocator comes from the header
  * like everything else. */
 
-void ExpandingHeap::VDeallocateAll()
+void ExpHeap_t::VDeallocateAll()
 {
     allocator->DeallocateAll(&ExpandingHeapAllocator::InvokeDeallocate, 0);
 }
 
-// @symbol _ZN9SolidHeap14VDeallocateAllEv
+// @symbol _ZN5mHeap11SolidHeap_t14VDeallocateAllEv
 /* SolidHeap::VDeallocateAll() at 0x0203c49c -- Heap vtable slot 5. Throws the
  * whole arena away at once, which for a linear allocator is the only kind of
  * free that works: individual blocks cannot be returned (VDeallocate calls
  * Crash), so everything goes together or nothing does. */
 
-void SolidHeap::VDeallocateAll()
+void SolidHeap_t::VDeallocateAll()
 {
     /* 3 = both bits -- ResetStart and ResetEnd. */
     allocator->Reset(3);
 }
 
-// @symbol _ZN4Heap6SizeofEPv
+// @symbol _ZN5mHeap6Heap_t6SizeofEPv
 /* Heap::Sizeof(void*) at 0x0203c454 -- asks slot 9 how large an allocated block
  * is, and treats -1 as the failure report.
  *
@@ -678,7 +684,7 @@ void SolidHeap::VDeallocateAll()
  * Was a cast of `this' to a local `struct Base' with nine anonymous virtuals
  * padding `m' out to index 9. */
 
-int Heap::Sizeof(void* ptr)
+int Heap_t::Sizeof(void* ptr)
 {
     int size = VSizeof(ptr);
     if (size == -1 && (flags & 0x4000))
@@ -686,7 +692,7 @@ int Heap::Sizeof(void* ptr)
     return size;
 }
 
-// @symbol _ZN13ExpandingHeap7VSizeofEPv
+// @symbol _ZN5mHeap9ExpHeap_t7VSizeofEPv
 /* ExpandingHeap::VSizeof(void*) at 0x0203c444 -- Heap vtable slot 9. Node
  * headers carry their own size, so this ignores `this' entirely and forwards to
  * the STATIC ExpandingHeapAllocator::SizeofInternal -- which is why the ROM body
@@ -696,12 +702,12 @@ int Heap::Sizeof(void* ptr)
  * SolidHeap's override crashes instead, because a linear allocator records no
  * sizes to look up. */
 
-u32 ExpandingHeap::VSizeof(void* ptr)
+u32 ExpHeap_t::VSizeof(void* ptr)
 {
     return ExpandingHeapAllocator::SizeofInternal(ptr);
 }
 
-// @symbol _ZN9SolidHeap7VSizeofEPv
+// @symbol _ZN5mHeap11SolidHeap_t7VSizeofEPv
 /* SolidHeap::VSizeof(void*) at 0x0203c428 -- Heap vtable slot 9.
  *
  * A linear allocator does not record block sizes, so asking is a programming
@@ -712,13 +718,13 @@ u32 ExpandingHeap::VSizeof(void* ptr)
  * both spellings lower the -1 to `mvn r0,#0'. It is a consistency change, not
  * evidence of a width. */
 
-u32 SolidHeap::VSizeof(void* ptr)
+u32 SolidHeap_t::VSizeof(void* ptr)
 {
     Crash();
     return (u32)-1;
 }
 
-// @symbol _ZN4Heap9SetNodeIDEj
+// @symbol _ZN5mHeap6Heap_t9SetNodeIDEj
 /* Heap::SetNodeID(u32) at 0x0203c408 -- plain forward to slot 13. The node id
  * is the tag the allocator stamps on blocks it hands out, so a later sweep can
  * free everything belonging to one id (see
@@ -732,12 +738,12 @@ u32 SolidHeap::VSizeof(void* ptr)
  * incoming id to a pointer to call it -- an invented cast that existed only to
  * satisfy the invented declaration. */
 
-void Heap::SetNodeID(u32 id)
+void Heap_t::SetNodeID(u32 id)
 {
     VSetNodeID(id);
 }
 
-// @symbol _ZN13ExpandingHeap10VSetNodeIDEj
+// @symbol _ZN5mHeap9ExpHeap_t10VSetNodeIDEj
 /* ExpandingHeap::VSetNodeID(u32) at 0x0203c3f8 -- Heap vtable slot 13. Four
  * instructions: load the allocator from this+0x14 and tail-call it.
  *
@@ -747,12 +753,12 @@ void Heap::SetNodeID(u32 id)
  * cannot emit. This one is a pure tail call, so it byte-matches either way and
  * could never have settled the question itself; it just has to agree. */
 
-u32 ExpandingHeap::VSetNodeID(u32 id)
+u32 ExpHeap_t::VSetNodeID(u32 id)
 {
     return allocator->SetNodeID(id);
 }
 
-// @symbol _ZN9SolidHeap10VSetNodeIDEj
+// @symbol _ZN5mHeap11SolidHeap_t10VSetNodeIDEj
 /* SolidHeap::VSetNodeID(u32) at 0x0203c3f0 -- Heap vtable slot 13. Eight bytes:
  * `mov r0,#0 / bx lr'. The id is accepted and dropped; a linear allocator has
  * nothing to stamp it on.
@@ -766,34 +772,34 @@ u32 ExpandingHeap::VSetNodeID(u32 id)
  * The previous text opened with `u32 id = (u32)id_;', converting the parameter
  * to its own type and then never using it. */
 
-u32 SolidHeap::VSetNodeID(u32 id)
+u32 SolidHeap_t::VSetNodeID(u32 id)
 {
     return 0;
 }
 
-// @symbol _ZN13ExpandingHeap10VGetNodeIDEv
+// @symbol _ZN5mHeap9ExpHeap_t10VGetNodeIDEv
 /* ExpandingHeap::VGetNodeID() at 0x0203c3e0 -- Heap vtable slot 14. Forwards to
  * the allocator, which really does keep an id: it stamps every node it hands
  * out, so DeallocateAll can later free just one id's worth. SolidHeap's
  * override returns a constant 0 because a linear allocator has nothing to
  * stamp. */
 
-u32 ExpandingHeap::VGetNodeID()
+u32 ExpHeap_t::VGetNodeID()
 {
     return allocator->GetNodeID();
 }
 
-// @symbol _ZN9SolidHeap10VGetNodeIDEv
+// @symbol _ZN5mHeap11SolidHeap_t10VGetNodeIDEv
 /* SolidHeap::VGetNodeID() at 0x0203c3d8 -- Heap vtable slot 14. Eight bytes:
  * `mov r0,#0 / bx lr'. A linear allocator does not tag blocks, so there is no
  * node id to report. */
 
-u32 SolidHeap::VGetNodeID()
+u32 SolidHeap_t::VGetNodeID()
 {
     return 0;
 }
 
-// @symbol _ZN4Heap11ResizeToFitEv
+// @symbol _ZN5mHeap6Heap_t11ResizeToFitEv
 /* Heap::ResizeToFit() at 0x0203c390 -- hand the arena's unused tail back (slot
  * 15) and, on a fail-fast heap, treat a refusal as fatal.
  *
@@ -808,7 +814,7 @@ u32 SolidHeap::VGetNodeID()
  * VSetNodeID', where both overrides return void. Neither error was reachable
  * from this file, so nothing could ever have caught them. */
 
-u32 Heap::ResizeToFit()
+u32 Heap_t::ResizeToFit()
 {
     u32 shrunk = VResizeToFit();
     if (!shrunk)
@@ -822,7 +828,7 @@ u32 Heap::ResizeToFit()
     return shrunk;
 }
 
-// @symbol _ZN13ExpandingHeap12VResizeToFitEv
+// @symbol _ZN5mHeap9ExpHeap_t12VResizeToFitEv
 /* ExpandingHeap::VResizeToFit() at 0x0203c388 -- Heap vtable slot 15. Eight
  * bytes: `mov r0,#0 / bx lr'.
  *
@@ -831,12 +837,12 @@ u32 Heap::ResizeToFit()
  * back to the parent, while an expanding heap's free space is scattered across a
  * node list and there is no tail to give. */
 
-u32 ExpandingHeap::VResizeToFit()
+u32 ExpHeap_t::VResizeToFit()
 {
     return 0;
 }
 
-// @symbol _ZN9SolidHeap12VResizeToFitEv
+// @symbol _ZN5mHeap11SolidHeap_t12VResizeToFitEv
 /* SolidHeap::VResizeToFit() at 0x0203c33c -- Heap vtable slot 15. Give back the
  * arena's unused tail.
  *
@@ -853,7 +859,7 @@ u32 ExpandingHeap::VResizeToFit()
  * once. Its call to Heap::Reallocate is also what proved that method returns a
  * value at all -- see Heap::Reallocate. */
 
-u32 SolidHeap::VResizeToFit()
+u32 SolidHeap_t::VResizeToFit()
 {
     u32 used = allocator->TryResizeToFit();
     if (!used)
@@ -867,17 +873,17 @@ u32 SolidHeap::VResizeToFit()
     return total;
 }
 
-// @symbol _ZN4Heap10SetDefaultEv
+// @symbol _ZN5mHeap6Heap_t10SetDefaultEv
 /* Install this heap as the process-wide default and hand back the one it
    replaced, so a caller can put it back. */
-Heap* Heap::SetDefault()
+Heap_t* Heap_t::SetDefault()
 {
     Heap* previous = Memory::defaultHeapPtr;
     Memory::defaultHeapPtr = this;
     return previous;
 }
 
-// @symbol _ZN4Heap23SetupSolidHeapAsDefaultEjPS_i
+// @symbol _ZN5mHeap6Heap_t23SetupSolidHeapAsDefaultEjPS0_i
 /* Push a solid scratch heap in front of the current default, remembering the
    old one so RestoreFromTemporary can put it back. One level deep only: a
    second call overwrites the saved pointer and the first default is lost.
@@ -885,7 +891,7 @@ Heap* Heap::SetDefault()
    Note the order. The outgoing default is read straight out of the global
    rather than from SetDefault's return value, even though SetDefault returns
    exactly that -- so the save happens before the swap, not after it. */
-void* Heap::SetupSolidHeapAsDefault(u32 size, Heap* root, int align)
+void* Heap_t::SetupSolidHeapAsDefault(u32 size, Heap_t* root, int align)
 {
     Heap* heap = CreateSolidHeap(size, root, align);
     if (!heap)
@@ -896,60 +902,60 @@ void* Heap::SetupSolidHeapAsDefault(u32 size, Heap* root, int align)
     return heap;
 }
 
-// @symbol _ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i
+// @symbol _ZN5mHeap6Heap_t28InitializeSolidHeapAsDefaultEjPS0_i
 /* Three-word tail-call veneer to SetupSolidHeapAsDefault above:
    `ldr ip,[pc] / bx ip / .word 0x0203c2e4'. Static, by the same argument-count
    test as its target: three declared parameters, three arguments in the body,
    no room for a `this'. The veneer sits twelve bytes BEFORE what it jumps to
    -- the pair is adjacent and the thunk is still a long-form ldr/bx, which is
    what these veneers look like throughout: they are not distance-driven. */
-void* Heap::InitializeSolidHeapAsDefault(u32 size, Heap* root, int align)
+void* Heap_t::InitializeSolidHeapAsDefault(u32 size, Heap_t* root, int align)
 {
     return SetupSolidHeapAsDefault(size, root, align);
 }
 
-// @symbol _ZN4Heap20RestoreFromTemporaryEv
+// @symbol _ZN5mHeap6Heap_t20RestoreFromTemporaryEv
 /* Undoes SetupSolidHeapAsDefault: reinstate the heap that was default before
    the scratch heap was pushed, and drop the saved pointer. */
-void Heap::RestoreFromTemporary()
+void Heap_t::RestoreFromTemporary()
 {
     data_020a0ea8->SetDefault();
     data_020a0ea8 = 0;
 }
 
-// @symbol _ZN4Heap9_AllocateEji
+// @symbol _ZN5mHeap6Heap_t9_AllocateEji
 /* Three-word tail-call veneer to Allocate(u32, int) (0x0203c6cc). */
-void* Heap::_Allocate(u32 size, int align)
+void* Heap_t::_Allocate(u32 size, int align)
 {
     return Allocate(size, align);
 }
 
-// @symbol _ZN4Heap8AllocateEj
+// @symbol _ZN5mHeap6Heap_t8AllocateEj
 /* Convenience overload that forwards to Allocate(u32, int) with the default
    alignment of 4. */
-void* Heap::Allocate(u32 size)
+void* Heap_t::Allocate(u32 size)
 {
     return Allocate(size, 4);
 }
 
-// @symbol _ZN4Heap11_DeallocateEPv
+// @symbol _ZN5mHeap6Heap_t11_DeallocateEPv
 /* Three-word tail-call veneer to Deallocate (0x0203c538). */
-void Heap::_Deallocate(void* ptr)
+void Heap_t::_Deallocate(void* ptr)
 {
     Deallocate(ptr);
 }
 
-// @symbol _ZN4Heap7_SizeofEPv
+// @symbol _ZN5mHeap6Heap_t7_SizeofEPv
 /* Three-word tail-call veneer to Sizeof (0x0203c454). */
-int Heap::_Sizeof(void* ptr)
+int Heap_t::_Sizeof(void* ptr)
 {
     return Sizeof(ptr);
 }
 
-// @symbol _ZN4Heap18InitializeGameHeapEjPS_
+// @symbol _ZN5mHeap6Heap_t18InitializeGameHeapEjPS0_
 /* Carve the game heap out of `root' and publish it. Alignment 4 is hard-coded
    here; callers do not get a say. */
-void Heap::InitializeGameHeap(u32 size, Heap* root)
+void Heap_t::InitializeGameHeap(u32 size, Heap_t* root)
 {
     GAME_HEAP_PTR = CreateExpandingHeap(size, root, 4);
 }
@@ -957,9 +963,11 @@ void Heap::InitializeGameHeap(u32 size, Heap* root)
 /* Memory::Allocate / Deallocate, 0x0203c1b4..0x0203c24c.
  * The Heap*-taking forms come first so reverse emission puts them
  * above the one-argument wrappers, which call them. */
+} /* namespace mHeap */
+
 namespace Memory {
 
-// @symbol _ZN6Memory8AllocateEjiP4Heap
+// @symbol _ZN6Memory8AllocateEjiPN5mHeap6Heap_tE
 void *Allocate(u32 size, int align, Heap *heap)
 {
     if (!heap)
@@ -967,7 +975,7 @@ void *Allocate(u32 size, int align, Heap *heap)
     return heap->Allocate(size, align);
 }
 
-// @symbol _ZN6Memory10DeallocateEPvP4Heap
+// @symbol _ZN6Memory10DeallocateEPvPN5mHeap6Heap_tE
 void Deallocate(void *ptr, Heap *heap)
 {
     if (!heap)

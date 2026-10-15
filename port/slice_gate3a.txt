@@ -2,13 +2,13 @@
 # gate 2's allocator family (the smoke links slice_gate2.txt as well).
 # The OS arena underneath is port/hal/os_arena.cpp.
 
-src/_ZN4Heap13SetupRootHeapEv.cpp
+src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp
 src/engine/heap/Heap.cpp
 src/engine/heap/SolidHeapAllocator.cpp
-src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.cpp
+src/_ZN5mHeap11SolidHeap_tC1EPvjPNS_6Heap_tEP18SolidHeapAllocator.cpp
 src/engine/heap/ExpandingHeapAllocator.cpp
-src/_ZN4HeapC2EPvjPS_.cpp
-src/_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator.cpp
+src/_ZN5mHeap6Heap_tC2EPvjPS0_.cpp
+src/_ZN5mHeap9ExpHeap_tC1EPvjPNS_6Heap_tEP22ExpandingHeapAllocator.cpp
 
 # The ExpandingHeap overrides (VAllocate, VDeallocate, VSizeof, VMemoryLeft,
 # VDestroy, VDeallocateAll, VIntact, VRescue, VReallocate,
@@ -23,14 +23,14 @@ src/_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator.cpp
 # so nothing forced the question there. This is the whole class: Heap declares
 # fourteen pure virtuals and ExpandingHeap overrides all fourteen.
 
-# ONE destructor file per class, not the pair. src/_ZN4HeapD0Ev.cpp,
-# _ZN4HeapD1Ev.cpp and _ZN4HeapD2Ev.cpp each carry the SAME `Heap::~Heap() {}'
+# ONE destructor file per class, not the pair. src/_ZN5mHeap6Heap_tD0Ev.cpp,
+# _ZN5mHeap6Heap_tD1Ev.cpp and _ZN5mHeap6Heap_tD2Ev.cpp each carry the SAME `Heap::~Heap() {}'
 # body -- that is the point of the D0/D1/D2 split, one definition delinked into
 # three ROM addresses -- and MSVC folds the variants into a single
 # ??1Heap@@UAE@XZ, so linking two of them is a duplicate-symbol error. D1 is
 # picked because it is the complete-object variant the host's own deleting
 # destructor calls. Same for ExpandingHeap. Same for SolidHeap: its C1 shard
 # (line 8) needs ??1SolidHeap@@UAE@XZ, which Heap.cpp does not define.
-src/_ZN4HeapD1Ev.cpp
-src/_ZN13ExpandingHeapD1Ev.cpp
-src/_ZN9SolidHeapD1Ev.cpp
+src/_ZN5mHeap6Heap_tD1Ev.cpp
+src/_ZN5mHeap9ExpHeap_tD1Ev.cpp
+src/_ZN5mHeap11SolidHeap_tD1Ev.cpp

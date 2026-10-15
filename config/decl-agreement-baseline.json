@@ -7534,12 +7534,12 @@
         "return:void"
       ]
     },
-    "_ZN4Heap10ReallocateEPvj": {
+    "_ZN5mHeap6Heap_t10ReallocateEPvj": {
       "include/decl_Heap.h": [
         "return:void"
       ]
     },
-    "_ZN4Heap10SetDefaultEv": {
+    "_ZN5mHeap6Heap_t10SetDefaultEv": {
       "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
@@ -7550,7 +7550,7 @@
         "return:int"
       ]
     },
-    "_ZN4Heap14CreateRootHeapEPvj": {
+    "_ZN5mHeap6Heap_t14CreateRootHeapEPvj": {
       "src/unnamed/arm9/0201/func_0201a3e4.c": [
         "return:void *"
       ],
@@ -7558,22 +7558,22 @@
         "return:void *"
       ]
     },
-    "_ZN4Heap21MaxAllocationUnitSizeEv": {
+    "_ZN5mHeap6Heap_t21MaxAllocationUnitSizeEv": {
       "src/ShowCrashScreen.c": [
         "return:int"
       ]
     },
-    "_ZN4Heap6IntactEv": {
+    "_ZN5mHeap6Heap_t6IntactEv": {
       "src/ShowCrashScreen.c": [
         "return:int"
       ]
     },
-    "_ZN4Heap6RescueEv": {
+    "_ZN5mHeap6Heap_t6RescueEv": {
       "include/decl_Heap.h": [
         "param:#1 int"
       ]
     },
-    "_ZN4Heap7_SizeofEPv": {
+    "_ZN5mHeap6Heap_t7_SizeofEPv": {
       "include/decl_Heap.h": [
         "return:unsigned int"
       ],
@@ -7581,7 +7581,7 @@
         "return:unsigned int"
       ]
     },
-    "_ZN4Heap9SetNodeIDEj": {
+    "_ZN5mHeap6Heap_t9SetNodeIDEj": {
       "src/main.c": [
         "param:#1 unsigned int"
       ]
@@ -13551,7 +13551,7 @@
       ]
     },
     "data_020a0e9c": {
-      "src/_ZN4Heap13SetupRootHeapEv.cpp": [
+      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
         "return:Heap *"
       ],
       "src/main.c": [
@@ -25078,7 +25078,7 @@
       ]
     },
     "func_02058cd0": {
-      "src/_ZN4Heap13SetupRootHeapEv.cpp": [
+      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "param:#3 int",
@@ -25086,7 +25086,7 @@
       ]
     },
     "func_02058d58": {
-      "src/_ZN4Heap13SetupRootHeapEv.cpp": [
+      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "return:int"
@@ -25099,19 +25099,19 @@
       ]
     },
     "func_02058ea0": {
-      "src/_ZN4Heap13SetupRootHeapEv.cpp": [
+      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
         "param:#1 unsigned int",
         "return:int"
       ]
     },
     "func_02058eb4": {
-      "src/_ZN4Heap13SetupRootHeapEv.cpp": [
+      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
         "param:#1 unsigned int",
         "return:int"
       ]
     },
     "func_02059040": {
-      "src/_ZN4Heap13SetupRootHeapEv.cpp": [
+      "src/_ZN5mHeap6Heap_t13SetupRootHeapEv.cpp": [
         "param:#1 unsigned int",
         "param:#2 int",
         "param:#3 int"
