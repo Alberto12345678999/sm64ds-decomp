@@ -27687,7 +27687,7 @@
         "arity:1"
       ]
     },
-    "PsOpt_Update": {
+    "_ZN10dMgPsOpt_c6UpdateEv": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:int"
       ]

@@ -98,7 +98,6 @@ extern short data_ov004_020bfe88[];
 extern short data_ov004_020bfe8a[];
 extern short data_ov004_020bfe9c[];
 extern short data_ov004_020bfe9e[];
-int PsOpt_Draw(void *panel);
 int TouchArea_Update(void *icon, int touch);
 /* Toggles mOn, drops mReady, and reloads mBlink from the icon's +0x18. */
 void func_ov001_020ab3f0(void *icon);
@@ -111,7 +110,6 @@ void func_ov001_020ab41c(void *icon);
 void TurnBacklightOn(void);
 void TurnBacklightOff(void);
 u8 DecIfAbove0_Byte(u8 *p);
-void PsOpt_Close(char *panel);
 /* Sub BG enable bits. dScMgBase_c saves them in mSavedSubBgBits. */
 extern unsigned char data_0209d454;
 /* 1 while the backlight is on. TurnBacklightOn / Off write it. */
@@ -156,173 +154,168 @@ dMgPsOpt_c::TouchIcon_c::~TouchIcon_c()
 {
 }
 
-// @symbol PsOpt_Open
+// @symbol _ZN10dMgPsOpt_c4OpenEv
 /* Open. Lights the current sound and backlight choices and sets sub BG
    value 2. Called from the pause menu (Mg_UpdateMenu). */
-extern "C" void PsOpt_Open(char *raw)
+void dMgPsOpt_c::Open()
 {
-    dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
 
-    self->mIcons[kIconSoundMode].mOn = 1;
+    mIcons[kIconSoundMode].mOn = 1;
     if (data_0208ee3c != 0) {
-        self->mIcons[kIconLightOn].mOn = 1;
-        self->mIcons[kIconLightOff].mOn = 0;
+        mIcons[kIconLightOn].mOn = 1;
+        mIcons[kIconLightOff].mOn = 0;
     } else {
-        self->mIcons[kIconLightOn].mOn = 0;
-        self->mIcons[kIconLightOff].mOn = 1;
+        mIcons[kIconLightOn].mOn = 0;
+        mIcons[kIconLightOff].mOn = 1;
     }
-    self->mIcons[kIconBack].mOn = 0;
+    mIcons[kIconBack].mOn = 0;
     data_0209d454 |= kSubBgBit;
-    self->mIconCount = kIconCount;
-    self->mActive = kPanelOpen;
+    mIconCount = kIconCount;
+    mActive = kPanelOpen;
 }
 
-// @symbol PsOpt_Close
+// @symbol _ZN10dMgPsOpt_c5CloseEv
 /* Shut. Clears sub BG value 2. The close delay calls this, and so does
    dScMgBase_c::CloseMenu. */
-extern "C" void PsOpt_Close(char *raw)
+void dMgPsOpt_c::Close()
 {
-    dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
 
     data_0209d454 &= ~kSubBgBit;
-    self->mIconCount = 0;
-    self->mActive = kPanelShut;
+    mIconCount = 0;
+    mActive = kPanelShut;
 }
 
-// @symbol PsOpt_Update
+// @symbol _ZN10dMgPsOpt_c6UpdateEv
 /* One frame of input. Returns mActive; the pause menu
    (Mg_UpdateMenu) yields the frame while that is nonzero. */
-extern "C" u8 PsOpt_Update(char *raw)
+u8 dMgPsOpt_c::Update()
 {
-    dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
-    u8 state = self->mActive;
+    u8 state = mActive;
 
     switch (state) {
     case kPanelOpen:
-        if (TouchArea_Update(&self->mIcons[kIconBack], -1)) {
+        if (TouchArea_Update(&mIcons[kIconBack], -1)) {
             /* Back: pulse the button, then let state 2 run the delay down. */
-            func_ov001_020ab3f0(&self->mIcons[kIconBack]);
-            self->mCloseTimer = 0x14;
-            self->mActive = kPanelClosing;
+            func_ov001_020ab3f0(&mIcons[kIconBack]);
+            mCloseTimer = 0x14;
+            mActive = kPanelClosing;
             func_02012790(kSndBack);
         } else {
-            if (self->mIcons[kIconSoundMode].mReady != 0) {
+            if (mIcons[kIconSoundMode].mReady != 0) {
                 /* Sound mode wraps 0, 1, 2. Next, the mode graphic, and the
                    caption step forward; previous steps back. */
                 int changed = 0;
                 int mode = GetSoundMode();
 
-                if (TouchArea_Update(&self->mIcons[kIconSoundMode], -1)
-                    || TouchArea_Update(&self->mIcons[kIconSoundNext], -1)
-                    || TouchArea_Update(&self->mIcons[kIconSoundLabel], -1)) {
+                if (TouchArea_Update(&mIcons[kIconSoundMode], -1)
+                    || TouchArea_Update(&mIcons[kIconSoundNext], -1)
+                    || TouchArea_Update(&mIcons[kIconSoundLabel], -1)) {
                     if (mode == 2) mode = 0;
                     else mode = (mode + 1) & 0xff;
-                    self->mIcons[kIconSoundNext].mOn = 0;
-                    func_ov001_020ab3f0(&self->mIcons[kIconSoundNext]);
+                    mIcons[kIconSoundNext].mOn = 0;
+                    func_ov001_020ab3f0(&mIcons[kIconSoundNext]);
                     changed = 1;
-                } else if (TouchArea_Update(&self->mIcons[kIconSoundPrev], -1)) {
+                } else if (TouchArea_Update(&mIcons[kIconSoundPrev], -1)) {
                     if (mode == 0) mode = 2;
                     else mode = (mode - 1) & 0xff;
-                    self->mIcons[kIconSoundPrev].mOn = 0;
-                    func_ov001_020ab3f0(&self->mIcons[kIconSoundPrev]);
+                    mIcons[kIconSoundPrev].mOn = 0;
+                    func_ov001_020ab3f0(&mIcons[kIconSoundPrev]);
                     changed = 1;
                 }
 
                 if (changed != 0) {
                     SetSoundMode(mode);
-                    self->mIcons[kIconSoundMode].mVariant = mode;
-                    func_ov001_020ab41c(&self->mIcons[kIconSoundMode]);
+                    mIcons[kIconSoundMode].mVariant = mode;
+                    func_ov001_020ab41c(&mIcons[kIconSoundMode]);
                     func_02012790(kSndMode);
                 }
             }
 
-            if (self->mIcons[kIconLightOn].mReady != 0
-                && self->mIcons[kIconLightOff].mReady != 0) {
+            if (mIcons[kIconLightOn].mReady != 0
+                && mIcons[kIconLightOff].mReady != 0) {
                 /* On turns the backlight on, off turns it off, the caption toggles. */
                 int dir = 0;
 
-                if (TouchArea_Update(&self->mIcons[kIconLightOn], -1)) {
+                if (TouchArea_Update(&mIcons[kIconLightOn], -1)) {
                     dir = -1;
-                } else if (TouchArea_Update(&self->mIcons[kIconLightOff], -1)) {
+                } else if (TouchArea_Update(&mIcons[kIconLightOff], -1)) {
                     dir = 1;
-                } else if (TouchArea_Update(&self->mIcons[kIconLightLabel], -1)) {
-                    dir = (self->mIcons[kIconLightOn].mOn != 0) ? 1 : -1;
+                } else if (TouchArea_Update(&mIcons[kIconLightLabel], -1)) {
+                    dir = (mIcons[kIconLightOn].mOn != 0) ? 1 : -1;
                 }
 
                 if (dir < 0) {
-                    if (self->mIcons[kIconLightOn].mOn != 0) {
+                    if (mIcons[kIconLightOn].mOn != 0) {
                         func_02012790(kSndReject);
                     } else {
                         TurnBacklightOn();
                         func_02012790(kSndLight);
                     }
-                    func_ov001_020ab41c(&self->mIcons[kIconLightOn]);
-                    self->mIcons[kIconLightOff].mOn = 0;
+                    func_ov001_020ab41c(&mIcons[kIconLightOn]);
+                    mIcons[kIconLightOff].mOn = 0;
                 } else if (dir > 0) {
-                    if (self->mIcons[kIconLightOff].mOn != 0) {
+                    if (mIcons[kIconLightOff].mOn != 0) {
                         func_02012790(kSndReject);
                     } else {
                         TurnBacklightOff();
                         func_02012790(kSndLight);
                     }
-                    self->mIcons[kIconLightOn].mOn = 0;
-                    func_ov001_020ab41c(&self->mIcons[kIconLightOff]);
+                    mIcons[kIconLightOn].mOn = 0;
+                    func_ov001_020ab41c(&mIcons[kIconLightOff]);
                 }
             }
         }
         break;
 
     case kPanelClosing:
-        if (DecIfAbove0_Byte(&self->mCloseTimer) == 0)
-            PsOpt_Close((char *)self);
+        if (DecIfAbove0_Byte(&mCloseTimer) == 0)
+            Close();
         break;
     }
 
     {
-        int count = self->mIconCount;
+        int count = mIconCount;
         int i = 0;
 
         if (count > 0) {
-            dMgPsOpt_c::TouchIcon_c *icon = self->mIcons;
+            TouchIcon_c *icon = mIcons;
             do {
                 icon->Behavior();
                 i++;
                 icon++;
-            } while (i < self->mIconCount);
+            } while (i < mIconCount);
         }
     }
 
-    return self->mActive;
+    return mActive;
 }
 
-// @symbol PsOpt_Draw
+// @symbol _ZN10dMgPsOpt_c4DrawEv
 /* Draw every live icon. Returns 1 while the panel is up, which makes
    Mg_DrawMenu skip the rest of the touch-screen UI. */
-extern "C" int PsOpt_Draw(void *raw)
+int dMgPsOpt_c::Draw()
 {
-    dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
     int i;
 
-    if (self->mActive == kPanelShut)
+    if (mActive == kPanelShut)
         return 0;
 
-    for (i = 0; i < self->mIconCount; i++) {
-        self->mIcons[i].Render();
+    for (i = 0; i < mIconCount; i++) {
+        mIcons[i].Render();
     }
 
     return 1;
 }
 
-// @symbol PsOpt_IsIdle
+// @symbol _ZN10dMgPsOpt_c6IsIdleEv
 /* 1 when no live icon is still counting down a press. BeforeBehavior uses
    that as the gate before CloseMenu closes the panel. */
-extern "C" int PsOpt_IsIdle(char *raw)
+int dMgPsOpt_c::IsIdle()
 {
-    dMgPsOpt_c *self = (dMgPsOpt_c *)raw;
-    dMgPsOpt_c::TouchIcon_c *icon = self->mIcons;
+    TouchIcon_c *icon = mIcons;
     int i;
 
-    for (i = 0; i < self->mIconCount; i++) {
+    for (i = 0; i < mIconCount; i++) {
         if (icon->mBlink != 0)
             return 0;
         icon++;

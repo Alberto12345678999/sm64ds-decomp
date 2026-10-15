@@ -202,10 +202,10 @@ What is not settled is the word "bet". The touch button and the sounds (0x149-0x
 fit Card, BSC and MCarlo, but Memory and Memory2 also call `MgCoins_PlaceBet`
 with their remaining misses.
 
-**The options panel, high confidence.** These are the `dMgPsOpt_c` helpers, still free
-functions on a `char *` view: `PsOpt_Open`, `PsOpt_Close`, `PsOpt_Update`,
-`PsOpt_Draw`, `PsOpt_IsIdle` and `PsOpt_PlaceIcon`. Pass 2 should make them
-members.
+**The options panel, high confidence.** Pass 2 (2026-10-15) made the
+`dMgPsOpt_c` helpers real members: `dMgPsOpt_c::Open`, `Close`, `Update`, `Draw`
+and `IsIdle` (formerly `PsOpt_*` on a `char *` view). `PsOpt_PlaceIcon` stays a
+free function that takes the icon.
 
 ## dScMiniGm_c, the select menu (ov005, renamed 2026-10-14)
 

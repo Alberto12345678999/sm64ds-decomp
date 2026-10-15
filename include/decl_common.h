@@ -1801,7 +1801,6 @@ extern void Mg_ResetRecordBannerPos(void);
 extern void Mg_PlaceBannersOnTopScreen(void);
 extern void func_ov004_020b8714(void*);
 extern void Mg_ResetBannerLayout(char*);
-extern void PsOpt_Close(char*);
 extern void MiniGm_SetRecord(void*, int, int, int);
 extern void MiniGm_ClearNew(void*, int);
 extern void MiniGm_UpdatePageScroll(char*);

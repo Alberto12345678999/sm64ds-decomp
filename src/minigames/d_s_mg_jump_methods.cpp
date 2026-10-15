@@ -19,8 +19,8 @@
  *   differently, so Behavior cannot dispatch through dScMgJump_c itself.
  * - The pmf_dScMgJump_c_* records (0x0213cb54..0x0213cb84) are ROM-owned
  *   {fn, 0} table rows, declared as StatePmf externs and named for the
- *   state each one points at; gMgScene is the ov004 shared
- *   scene data, read raw at +0xb4/+0xb8 because its type is not recovered.
+ *   state each one points at; gMgScene is the live dScMgBase_c (its
+ *   mHudScore and mBestHudScore are read by name).
  * - the func_ov006_020c and func_ov004 externs are other TUs' workers; they
  *   keep address names until their owners name them.
  */

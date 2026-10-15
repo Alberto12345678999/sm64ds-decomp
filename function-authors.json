@@ -19991,23 +19991,23 @@
     },
     "ov004:0x020b8ee0": {
       "author": "tangosdev",
-      "name": "PsOpt_IsIdle"
+      "name": "_ZN10dMgPsOpt_c6IsIdleEv"
     },
     "ov004:0x020b8f18": {
       "author": "tangosdev",
-      "name": "PsOpt_Draw"
+      "name": "_ZN10dMgPsOpt_c4DrawEv"
     },
     "ov004:0x020b8f78": {
       "author": "tangosdev",
-      "name": "PsOpt_Update"
+      "name": "_ZN10dMgPsOpt_c6UpdateEv"
     },
     "ov004:0x020b91fc": {
       "author": "tangosdev",
-      "name": "PsOpt_Close"
+      "name": "_ZN10dMgPsOpt_c5CloseEv"
     },
     "ov004:0x020b9220": {
       "author": "tangosdev",
-      "name": "PsOpt_Open"
+      "name": "_ZN10dMgPsOpt_c4OpenEv"
     },
     "ov004:0x020b9280": {
       "author": "tangosdev",
