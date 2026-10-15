@@ -11428,6 +11428,9 @@
       ],
       "src/game/stages/d_s_entry_result.cpp": [
         "return:char []"
+      ],
+      "src/game/stages/d_s_stage.cpp": [
+        "return:void * []"
       ]
     },
     "__aeabi_uidiv": {
