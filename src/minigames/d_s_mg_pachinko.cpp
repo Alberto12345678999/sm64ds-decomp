@@ -23,11 +23,14 @@
 
 // leftovers:
 // - The func_ and data_ helpers are unnamed in symbols.txt.
-// - The targets at 0x5bcc, the effects at 0x5958 and the scrolling
-//   background at 0x5bfc are padding in the header, so they are reached by
-//   offset (callers: the target/effect updaters and the background scroller
-//   in this TU); so are the pipe fields behind the ST/CTA/FB/ACC/VEL
-//   byte-offset macros, which take a pre-scaled offset rather than an index.
+// - The effects (mFx, 0x5958), the flyer (mFlyer, 0x5bb0), the targets
+//   (mTarget, 0x5bcc) and the background scroller (mBg, 0x5bfc) are typed
+//   in the header. PachinkoFlyer_Draw, PachinkoFx_DrawAll and
+//   PachinkoTarget_ShowAll/HideAll read them by field; the other handlers
+//   keep the offset forms their launder macros and saved row cursors tune,
+//   and convert one function at a time. 0x5418..0x5958 is still unexplained
+//   padding. The pipe fields behind the ST/CTA/FB/ACC/VEL byte-offset
+//   macros take a pre-scaled offset rather than an index.
 // - Shot and ball fields go through `p + i * 0x38`: indexing mShot[i]/mBall[i]
 //   is one word different, so the multiply forms stay; the r5 cursor locals
 //   in the two table walkers are named for the register they color.
@@ -566,35 +569,34 @@ void PachinkoTarget_DrawAll(char *raw)
 }
 
 // @symbol PachinkoTarget_ShowAll
-void PachinkoTarget_ShowAll(u8 *row)
+void PachinkoTarget_ShowAll(u8 *raw)
 {
     int i;
-    for (i = 0; i < 4; i++, row += 0xc) {
-        *(u8 *)(row + 0x5bd4) = 1;
-        *(u8 *)(row + 0x5bd5) = 1;
-        *(int *)(row + 0x5bcc) = data_ov006_0212eb70[i] << 12;
-        *(int *)(row + 0x5bd0) = 0xa0000;
-        *(u8 *)(row + 0x5bd6) = 0;
+    for (i = 0; i < 4; i++) {
+        PACHINKO(raw)->mTarget[i].active = 1;
+        PACHINKO(raw)->mTarget[i].visible = 1;
+        PACHINKO(raw)->mTarget[i].x = data_ov006_0212eb70[i] << 12;
+        PACHINKO(raw)->mTarget[i].y = 0xa0000;
+        PACHINKO(raw)->mTarget[i].unk_0a = 0;
     }
 }
 
 // @symbol PachinkoTarget_HideAll
-void PachinkoTarget_HideAll(char *row)
+void PachinkoTarget_HideAll(char *raw)
 {
     int i;
     for (i = 0; i < 4; i++) {
-        *(unsigned char *)(row + 0x5bd4) = 0;
-        *(unsigned char *)(row + 0x5bd5) = 0;
-        row += 0xc;
+        PACHINKO(raw)->mTarget[i].active = 0;
+        PACHINKO(raw)->mTarget[i].visible = 0;
     }
 }
 
 // @symbol PachinkoFlyer_Draw
 void PachinkoFlyer_Draw(char* raw){
-  if(*(unsigned char*)(raw+0x5000+0xbc7)==0) return;
-  int x=*(int*)(raw+0x5000+0xbb0);
-  int y=*(int*)(raw+0x5000+0xbb4);
-  Mg_RenderSpriteBoth((void *)data_ov006_021375f4[*(unsigned char*)(raw+0x5000+0xbc9)],
+  if (PACHINKO(raw)->mFlyer.visible == 0) return;
+  int x = PACHINKO(raw)->mFlyer.x;
+  int y = PACHINKO(raw)->mFlyer.y;
+  Mg_RenderSpriteBoth((void *)data_ov006_021375f4[PACHINKO(raw)->mFlyer.facing],
     x>>0xc, y>>0xc, -1, -1);
 }
 
@@ -831,13 +833,12 @@ void PachinkoTarget_Choose(char *raw)
 // @symbol PachinkoFx_DrawAll
 void PachinkoFx_DrawAll(void* raw) {
     int i;
-    char* fx = (char*)raw;
-    for (i = 0; i < 30; i++, fx += 0x14) {
-        if (*(unsigned char*)(fx + 0x5966)) {
-            int type = *(unsigned char*)(fx + 0x5967);
-            int x = *(int*)(fx + 0x5958) >> 12;
-            int y = *(int*)(fx + 0x595c) >> 12;
-            int idx = *(unsigned char*)(fx + 0x5965);
+    for (i = 0; i < 30; i++) {
+        if (PACHINKO(raw)->mFx[i].visible) {
+            int type = PACHINKO(raw)->mFx[i].kind;
+            int x = PACHINKO(raw)->mFx[i].x >> 12;
+            int y = PACHINKO(raw)->mFx[i].y >> 12;
+            int idx = PACHINKO(raw)->mFx[i].frame;
             if (type != 2) {
                 Mg_RenderSpriteBoth((void*)data_ov006_02133e10[idx], x, y, -1, -1);
             } else {

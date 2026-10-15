@@ -121,10 +121,67 @@ struct dScMgPachinko_pipe {
     u8  pad1b;
 };
 
+/* A hit effect: the burst sprite PachinkoFx_Spawn starts at a hit, worth
+   `points` once its animation ends. */
+struct dScMgPachinko_fx {
+    s32 x;          /* 0x00 -- 20.12 */
+    s32 y;          /* 0x04 -- 20.12 */
+    u16 timer;      /* 0x08 -- frames on the current frame; steps at 6 */
+    u16 points;     /* 0x0a -- popup score spawned when it ends; 0 for none */
+    u8  active;     /* 0x0c */
+    u8  frame;      /* 0x0d */
+    u8  visible;    /* 0x0e */
+    u8  kind;       /* 0x0f -- 2 uses the long (six-frame) animation */
+    u8  target;     /* 0x10 */
+    u8  pad11[0x3];
+};
+
+/* The flyer that crosses the top of the board. Its state handlers dispatch
+   on `state`, guarded by `active` (PachinkoFlyer_State0..). */
+struct dScMgPachinko_flyer {
+    s32 x;          /* 0x00 -- 20.12 */
+    s32 y;          /* 0x04 -- 20.12 */
+    s32 vx;         /* 0x08 -- 20.12 */
+    s32 unk_0c;     /* 0x0c */
+    s32 sound;      /* 0x10 -- looping sound handle */
+    u16 delay;      /* 0x14 */
+    u8  active;     /* 0x16 */
+    u8  visible;    /* 0x17 */
+    u8  state;      /* 0x18 */
+    u8  facing;     /* 0x19 -- flips at each edge; picks the sprite */
+    u8  passes;     /* 0x1a -- crossings left */
+    u8  pad1b;
+};
+
+/* One of the four targets (PachinkoTarget_ShowAll / HideAll). */
+struct dScMgPachinko_target {
+    s32 x;          /* 0x00 -- 20.12 */
+    s32 y;          /* 0x04 -- 20.12 */
+    u8  active;     /* 0x08 */
+    u8  visible;    /* 0x09 */
+    u8  unk_0a;     /* 0x0a */
+    u8  pad0b;
+};
+
+/* The scrolling background (PachinkoBg_State0..), dispatched on `state`. */
+struct dScMgPachinko_bg {
+    s32 x;          /* 0x00 -- 20.12 */
+    s32 y;          /* 0x04 -- 20.12 */
+    s32 vx;         /* 0x08 */
+    s32 vy;         /* 0x0c */
+    s16 timer;      /* 0x10 */
+    u8  active;     /* 0x12 */
+    u8  state;      /* 0x13 */
+};
+
 #ifndef SM64DS_PLATFORM_PC
 typedef char dScMgPachinko_popup_size_must_be_0xc[sizeof(dScMgPachinko_popup) == 0xc ? 1 : -1];
 typedef char dScMgPachinko_row_size_must_be_0x18[sizeof(dScMgPachinko_row) == 0x18 ? 1 : -1];
 typedef char dScMgPachinko_pipe_size_must_be_0x1c[sizeof(dScMgPachinko_pipe) == 0x1c ? 1 : -1];
+typedef char dScMgPachinko_fx_size_must_be_0x14[sizeof(dScMgPachinko_fx) == 0x14 ? 1 : -1];
+typedef char dScMgPachinko_flyer_size_must_be_0x1c[sizeof(dScMgPachinko_flyer) == 0x1c ? 1 : -1];
+typedef char dScMgPachinko_target_size_must_be_0xc[sizeof(dScMgPachinko_target) == 0xc ? 1 : -1];
+typedef char dScMgPachinko_bg_size_must_be_0x14[sizeof(dScMgPachinko_bg) == 0x14 ? 1 : -1];
 #endif
 
 struct dScMgPachinko_c : dScMgBase_c {
@@ -141,7 +198,11 @@ struct dScMgPachinko_c : dScMgBase_c {
     dScMgPachinko_shot mShot[24];    /* 0x4ed8, stride 0x38; 24 puts the
                                         siblings' own 0x5418 field exactly
                                         one record past the end */
-    u8  pad_5418[0x7f8];
+    u8  pad_5418[0x540];
+    dScMgPachinko_fx     mFx[30];     /* 0x5958 */
+    dScMgPachinko_flyer  mFlyer;      /* 0x5bb0 */
+    dScMgPachinko_target mTarget[4];  /* 0x5bcc */
+    dScMgPachinko_bg     mBg;         /* 0x5bfc */
     s32 unk_5c10;            /* 0x5c10 */
     u8  pad_5c14[0x4];
     u16 unk_5c18;            /* 0x5c18 */
