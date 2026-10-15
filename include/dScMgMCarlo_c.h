@@ -7,8 +7,8 @@
  * SIZE 0x60b0, from the factory's own `_ZN7fBase_cnwEj(0x60b0)`
  * (the classInit factory in src/minigames/d_s_mg_m_carlo.cpp).
  *
- * SHARED TABLE at 0x4f38, size 0x270, constructed by func_ov006_020c1d80
- * and destroyed by func_ov006_020c1c64 -- the same pair dScMgCard_c and
+ * SHARED TABLE at 0x4f38, size 0x270, constructed by Dealer_Construct
+ * and destroyed by Dealer_Destruct -- the same pair dScMgCard_c and
  * dScMgMCarlo2_c use at this same offset; see include/dScMgCard_c.h's own
  * note. The SAME two fields fall within it here as in both of those
  * siblings, mShared.unk_01a and mShared.unk_1e6, and they are the same thing there too:
@@ -47,13 +47,13 @@
 #define DSCMGMCARLO_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int  func_ov006_020c1c64(char *t); /* decl_common.h's own signature */
+extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void _ZN18dMgMCarloCardObj_cD1Ev(void *elem);
 
 /* The shared state name is reconstructed; its 0x270 layout and destructor
    behavior are measured. A real member lets C++ spell the scene teardown. */
 struct dMgMCarloSharedState_c {
-    ~dMgMCarloSharedState_c() { func_ov006_020c1c64((char *)this); }
+    ~dMgMCarloSharedState_c() { Dealer_Destruct((char *)this); }
 
     u8  pad_000[0x1a];
     s16 unk_01a;

@@ -39,7 +39,7 @@ which declares no virtual, so a slot number means nothing between them.
 | 18 | `OnYoshiTryEat(int)` | `StartRound(int)` | medium | `dMgState_c` calls it with the finished state's number when a banner ends. Games call it with -1 to retry after a lost life (Cup's `StateFinish`). The overrides reset their round, and Memory's calls `ResetGame`. |
 | 19 | `OnTurnIntoEgg(int)` | `CanEndState(int)` | high | Every `dMgState_c` behaviour handler polls it with `mState` and waits for nonzero. The overrides return 0 while their own reaction animation plays. |
 | 20 | `Virtual50` | `OnNewRecord` | medium | Its one caller is state 17's behaviour, the results path taken when the new-record flag is set, 120 frames in. Cup and Sound play a win animation; 3DEsp and Teresa free banner slot 8. |
-| 21 | `OnGroundPounded` | `OnHostAnimCue` | low | Its one caller is `func_ov006_020c14bc` (the presenter model's reaction animation, unit020bfec0), on that animation's last repeat. BSC picks a reaction tier from the score; Memory and Memory2 pass `mMaxMisses` to an ov004 helper. |
+| 21 | `OnGroundPounded` | `OnDealDone` | medium | Its one caller is `Dealer_StateDeal` (unit020bfec0): the dealer's deal animation calls it on its last repeat. Memory and Memory2 then place their bet coins (`MgCoins_PlaceBet(mMaxMisses)`); BSC raises its bet from the score tier. |
 | 22 | `OnAttacked1` | `OnGraphCallback1` | high (mapping) | `graphCallback_c::GraphCallback1` forwards to it. What the engine's callback 1 is for is not known. |
 | 23 | `OnAttacked2` | `OnGraphCallback0` | high (mapping) | `GraphCallback0` forwards to it. The arm9 caller `func_02019390` skips its OAM reset and 3D flush when the callback returns 0. |
 | 24 | `OnKicked` | `OnGraphCallback2` | high (mapping) | `GraphCallback2` returns its result. The base body saves or restores the screen on an edge of `mMenuOpen`. |
@@ -219,3 +219,25 @@ High confidence, from the bodies:
 Medium confidence:
 - `MiniGm_IsNew` and `MiniGm_ClearNew` wrap a save flag. The menu draws a blinking badge over an unlocked game while it is set, and leaving a game clears it.
 - "New" is the reading; a "played" or "cleared" flag would look the same. Check by watching a never-played game's icon.
+
+## unit020bfec0: shared 3D components (renamed 2026-10-14)
+
+This unit holds the 3D helper objects the Single3D games embed. None has RTTI, so
+each one is named after the games that construct it and what it draws:
+
+| Prefix | Built by | What it is | Confidence |
+|---|---|---|---|
+| `Camera_` | all | `Camera_UpdateMatrices` (already named), screen projection, and four eye/target presets: `Camera_InitFlowerView`, `Camera_InitPresenterView`, `Camera_InitSlotsView`, `Camera_InitDealerView` | high |
+| `FlowerFace_`, `FallingPetal_` | Flower | The face that watches the player pull petals. It has idle and two reaction animations, and up to 22 falling petals with gravity and spin. | high |
+| `Presenter_` | Cup, Sound | A character with 8 body, 8 texture-sequence and 8 texture-transform animations, whose head follows the stylus (`Presenter_TrackStylus`). | high (structure) |
+| `Dealer_` | Card, BSC, MCarlo/2, Memory/2, Roulette | The card dealer: deal, collect, reveal, swap, win and lose animations, plus the table lamps that cycle colours. | medium |
+| `Mascot_`, `MascotWalker_` | Slots; inside `Dealer_` | One small character model (files 0x205/0x206). Slots shows it turning its head toward a target. Behind the dealer it walks a waypoint path and pauses at random. | medium |
+
+The `Presenter_PlayAnimN` / `Presenter_StateAnimN` names give the animation slot
+index (N = 0..7), which is certain. What each animation looks like is not
+observed yet:
+- Cup's `OnNewRecord` comment calls slot 7 the win animation.
+- Slot 7 plays with sound 3 and slot 2 with sound 0x1c.
+
+The dealer's deal, collect, reveal and swap names follow the animation order
+and the sounds (0x139-0x142) and are medium confidence.

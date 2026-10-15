@@ -116,103 +116,103 @@ void func_0202ffec(void *, void *, void *);
 void func_0203ccd4(void *, short);
 void func_0203cd80(void *, short);
 void func_020731dc(void *, void *, void **);
-void func_ov006_020bfec0(char* r4, void* r1, short* r5);
-void func_ov006_020bfff8(char* r4, void* r1, int* r6, int* r5);
+void Camera_ProjectToScreen16(char* r4, void* r1, short* r5);
+void Camera_ProjectToScreen(char* r4, void* r1, int* r6, int* r5);
 void Camera_UpdateMatrices(void *self);
-void func_ov006_020c0264(char *c);
-void func_ov006_020c0304(int *t);
-void func_ov006_020c0364(char *c);
-void func_ov006_020c057c(char* c);
-void func_ov006_020c06dc(char* thiz);
-void func_ov006_020c07a0(char *t);
-void func_ov006_020c07e8(void * c);
-void func_ov006_020c092c(char* thiz);
-int func_ov006_020c09f8(char *t);
-int func_ov006_020c0a48(char *t);
-void func_ov006_020c0aa8(void *self);
-void func_ov006_020c0af8(char* c);
-void func_ov006_020c0b74(char *p);
-void func_ov006_020c0c80(void *c);
-void func_ov006_020c0ce8(char *c);
-void func_ov006_020c0d68(char *c);
-void func_ov006_020c0df0(char *c);
-void func_ov006_020c0e8c(int *t);
-int func_ov006_020c0efc(void* a);
-int func_ov006_020c0f0c(int *c);
-void func_ov006_020c0f9c(void *cc);
-void func_ov006_020c1164(int *t, int a1, int a2);
-void func_ov006_020c11c0(char *c);
-void func_ov006_020c1420(char *c, short arg1, int arg2);
-void func_ov006_020c14bc(char* c);
-void func_ov006_020c1604(char* c, int unused, short a2, int a3);
-int func_ov006_020c16b4(char *c);
-int func_ov006_020c1718(int* r0);
-void func_ov006_020c1760(void);
-void func_ov006_020c1764(char *c);
-void func_ov006_020c1804(void *self);
-void func_ov006_020c19d0(char* thiz);
-int func_ov006_020c1a88(char *c);
-int func_ov006_020c1c64(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-int func_ov006_020c1d80(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-void func_ov006_020c1eb4(void *self);
-void func_ov006_020c1ef8(int *p);
-void func_ov006_020c1f04(char* c, int* src);
-void func_ov006_020c1f4c(char* c);
-void func_ov006_020c201c(void *c);
-void func_ov006_020c2144(void* a);
-void func_ov006_020c2154(char *c);
-int func_ov006_020c21e4(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-int func_ov006_020c221c(char *t);
-void func_ov006_020c225c(void *self);
-void func_ov006_020c2290(char* c);
-void func_ov006_020c22d8(char *t);
-void func_ov006_020c2300(void *c);
-void func_ov006_020c23a8(void* c);
-void func_ov006_020c2440(char* c);
-void func_ov006_020c24e4(void* c);
-void func_ov006_020c2594(void *c);
-void func_ov006_020c263c(char *t);
-void func_ov006_020c2664(char *c);
-void func_ov006_020c26f4(char *t);
-void func_ov006_020c271c(void *c);
-void func_ov006_020c27c4(char* c);
-void func_ov006_020c2848(char* c);
-void func_ov006_020c2924(char* c);
-int func_ov006_020c2984(void* a);
-int func_ov006_020c2994(void * c);
-void func_ov006_020c29dc(char *c);
-void func_ov006_020c2b8c(void * c);
-void func_ov006_020c2be8(char* c);
-int func_ov006_020c3050(char *c);
-int func_ov006_020c3288(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-int func_ov006_020c33dc(char *t);
-void func_ov006_020c3528(char* c);
-void func_ov006_020c35a8(char* c);
-void func_ov006_020c35e8(char* self);
-void func_ov006_020c3754(int *r6, int *r5, int *r4);
-void func_ov006_020c3884(char *t, int a1);
-void func_ov006_020c38ac(void);
-void func_ov006_020c38b0(char *p);
-void func_ov006_020c3904(void);
-void func_ov006_020c3908(char *p);
-void func_ov006_020c395c(int* c);
-void func_ov006_020c3990(char *c);
-void func_ov006_020c3ad8(void);
-void func_ov006_020c3adc(char *p);
-void func_ov006_020c3b2c(void *self);
-int func_ov006_020c3b80(int* c);
-void func_ov006_020c3bc8(void *a);
-void func_ov006_020c3bf4(void *self);
-void func_ov006_020c3d18(char *c);
-int func_ov006_020c3d88(char *c);
-int func_ov006_020c3e54(char *t);
-void* func_ov006_020c3e70(char* c); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
-void* func_ov006_020c3f54(char* c);
-int func_ov006_020c402c(char *t);}
+void MascotWalker_StatePause(char *c);
+void MascotWalker_StartPause(int *t);
+void MascotWalker_StateWalk(char *c);
+void MascotWalker_StartNextPath(char* c);
+void MascotWalker_UpdateMatrix(char* thiz);
+void MascotWalker_Draw(char *t);
+void MascotWalker_Update(void * c);
+void MascotWalker_Load(char* thiz);
+int MascotWalker_Destruct(char *t);
+int MascotWalker_Construct(char *t);
+void Camera_InitDealerView(void *self);
+void Dealer_ResetMatrices(char* c);
+void Dealer_StateWin(char *p);
+void Dealer_PlayWin(void *c);
+void Dealer_StateLose(char *c);
+void Dealer_PlayLose(char *c);
+void Dealer_StateSwap(char *c);
+void Dealer_StartSwap(int *t);
+int Dealer_IsAnimDone(void* a);
+int Dealer_IsBusy(int *c);
+void Dealer_StateReveal(void *cc);
+void Dealer_StartReveal(int *t, int a1, int a2);
+void Dealer_StateCollect(char *c);
+void Dealer_StartCollect(char *c, short arg1, int arg2);
+void Dealer_StateDeal(char* c);
+void Dealer_StartDeal(char* c, int unused, short a2, int a3);
+int Dealer_IsIdleAtRest(char *c);
+int Dealer_IsIdle(int* r0);
+void Dealer_StateIdle(void);
+void Dealer_PlayIdle(char *c);
+void Dealer_Draw(void *self);
+void Dealer_Update(char* thiz);
+int Dealer_Load(char *c);
+int Dealer_Destruct(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
+int Dealer_Construct(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
+void Camera_InitSlotsView(void *self);
+void Mascot_StopLooking(int *p);
+void Mascot_LookAt(char* c, int* src);
+void Mascot_UpdateMatrix(char* c);
+void Mascot_Draw(void *c);
+void Mascot_Update(void* a);
+void Mascot_Load(char *c);
+int Mascot_Destruct(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
+int Mascot_Construct(char *t);
+void Camera_InitPresenterView(void *self);
+void Presenter_UpdateMatrix(char* c);
+void Presenter_StateAnim7Loop(char *t);
+void Presenter_PlayAnim7Loop(void *c);
+void Presenter_StateAnim4(void* c);
+void Presenter_PlayAnim4(char* c);
+void Presenter_StateAnim7(void* c);
+void Presenter_PlayAnim7(void *c);
+void Presenter_StateAnim1(char *t);
+void Presenter_PlayAnim1(char *c);
+void Presenter_StateAnim2(char *t);
+void Presenter_PlayAnim2(void *c);
+void Presenter_StateIdle(char* c);
+void Presenter_PlayIdle(char* c);
+void Presenter_ResetPose(char* c);
+int Presenter_IsAnimDone(void* a);
+int Presenter_IsIdle(void * c);
+void Presenter_Draw(char *c);
+void Presenter_Update(void * c);
+void Presenter_TrackStylus(char* c);
+int Presenter_Load(char *c);
+int Presenter_Destruct(char *t); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
+int Presenter_Construct(char *t);
+void FallingPetal_UpdateMatrix(char* c);
+void FallingPetal_Draw(char* c);
+void FallingPetal_Update(char* self);
+void FallingPetal_Spawn(int *r6, int *r5, int *r4);
+void FallingPetal_SetModel(char *t, int a1);
+void FlowerFace_StateReactB(void);
+void FlowerFace_PlayReactB(char *p);
+void FlowerFace_StateReactA(void);
+void FlowerFace_PlayReactA(char *p);
+void FlowerFace_StateReact(int* c);
+void FlowerFace_PlayPetalPulled(char *c);
+void FlowerFace_StateIdle(void);
+void FlowerFace_PlayIdle(char *p);
+void Camera_InitFlowerView(void *self);
+int FlowerFace_IsIdle(int* c);
+void FlowerFace_Reset(void *a);
+void FlowerFace_Draw(void *self);
+void FlowerFace_Update(char *c);
+int FlowerFace_Load(char *c);
+int FallingPetal_Destruct(char *t);
+void* FlowerFace_Destruct(char* c); // local extern: raw char*/void* view of the actor memory; the class header declares the typed form and would change call-site codegen
+void* FlowerFace_Construct(char* c);
+int FallingPetal_Construct(char *t);}
 
 namespace s020c402c {
 extern "C" {
-int func_ov006_020c402c(char *t)
+int FallingPetal_Construct(char *t)
 {
     _ZN5ModelC1Ev(t + 0x44);
     return (int)t;
@@ -224,9 +224,9 @@ namespace s020c3f54 {
 extern "C" {
 }
 
-extern "C" void* func_ov006_020c3f54(char* c)
+extern "C" void* FlowerFace_Construct(char* c)
 {
-    __cxa_vec_ctor(c + 8, 0x16, 0x98, (void*)func_ov006_020c402c, (void*)func_ov006_020c3e54);
+    __cxa_vec_ctor(c + 8, 0x16, 0x98, (void*)FallingPetal_Construct, (void*)FallingPetal_Destruct);
     _ZN9ModelAnimC1Ev(c + 0xd18);
     func_02017acc(c + 0xd7c, 0x222);
     func_02017acc(c + 0xd84, 0x201);
@@ -241,7 +241,7 @@ extern "C" void* func_ov006_020c3f54(char* c)
 namespace s020c3e70 {
 extern "C" {
 }
-extern "C" void* func_ov006_020c3e70(char* c){
+extern "C" void* FlowerFace_Destruct(char* c){
   ((SharedFilePtr *)(c + 0xd7c))->Release();
   ((SharedFilePtr *)(c + 0xd84))->Release();
   ((SharedFilePtr *)(c + 0xd8c))->Release();
@@ -255,14 +255,14 @@ extern "C" void* func_ov006_020c3e70(char* c){
   func_02017ab4((c + 0xd84));
   func_02017ab4((c + 0xd7c));
   _ZN9ModelAnimD1Ev(c + 0xd18);
-  __cxa_vec_cleanup(c + 8, 0x16, 0x98, (void *)func_ov006_020c3e54);
+  __cxa_vec_cleanup(c + 8, 0x16, 0x98, (void *)FallingPetal_Destruct);
   return c;
 }
 }
 
 namespace s020c3e54 {
 extern "C" {
-int func_ov006_020c3e54(char *t)
+int FallingPetal_Destruct(char *t)
 {
     _ZN5ModelD1Ev(t + 0x44);
     return (int)t;
@@ -273,7 +273,7 @@ int func_ov006_020c3e54(char *t)
 namespace s020c3d88 {
 struct SharedFilePtr; struct BMD_File;
 struct ModelBase { int d; };
-extern "C" int func_ov006_020c3d88(char *c)
+extern "C" int FlowerFace_Load(char *c)
 {
     {
         void* bmd = _ZN5Model8LoadFileER13SharedFilePtr((c + 0xd7c));
@@ -283,13 +283,13 @@ extern "C" int func_ov006_020c3d88(char *c)
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xd94));
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xd9c));
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((c + 0xda4));
-    func_ov006_020c3adc(c);
+    FlowerFace_PlayIdle(c);
     int m = (int)_ZN5Model8LoadFileER13SharedFilePtr((c + 0xd84));
     int i = 0;
     int z = i;
     char *p = c + 8;
     for (; i < 0x16; i++) {
-        func_ov006_020c3884(p, m);
+        FallingPetal_SetModel(p, m);
         *(int *)(c + 0x48) = z;
         p += 0x98;
         c += 0x98;
@@ -300,7 +300,7 @@ extern "C" int func_ov006_020c3d88(char *c)
 
 namespace s020c3d18 {
 extern "C" {
-void func_ov006_020c3d18(char *c)
+void FlowerFace_Update(char *c)
 {
     int v = *(int*)(c+4);
     void *p = c + (v >> 1);
@@ -318,7 +318,7 @@ void func_ov006_020c3d18(char *c)
     char *e = c + 8;
     do {
         if (*(int*)(c+0x48) != 0)
-            func_ov006_020c35e8(e);
+            FallingPetal_Update(e);
         i++;
         c += 0x98;
         e += 0x98;
@@ -328,7 +328,7 @@ void func_ov006_020c3d18(char *c)
 }
 
 namespace s020c3bf4 {
-// @symbol func_ov006_020c3bf4
+// @symbol FlowerFace_Draw
 
 extern "C" {
 extern "C" { extern int data_ov006_0213aee8[12]; }
@@ -345,7 +345,7 @@ struct Obj {
     virtual void f5(int a) = 0;
 };
 
-extern "C" void func_ov006_020c3bf4(void *self)
+extern "C" void FlowerFace_Draw(void *self)
 {
     char *c = (char*)self;
     struct Vector3 v;
@@ -375,7 +375,7 @@ extern "C" void func_ov006_020c3bf4(void *self)
         char *p = c + 8;
         for (; i < 0x16; i++) {
             if (*(int*)(c + 0x48) != 0)
-                func_ov006_020c35a8(p);
+                FallingPetal_Draw(p);
             c += 0x98;
             p += 0x98;
         }
@@ -385,7 +385,7 @@ extern "C" void func_ov006_020c3bf4(void *self)
 
 namespace s020c3bc8 {
 extern "C" {
-void func_ov006_020c3bc8(void *a)
+void FlowerFace_Reset(void *a)
 {
   int i = 0;
   char *p = (char *) a;
@@ -394,7 +394,7 @@ void func_ov006_020c3bc8(void *a)
     *((int *) (p + 0x48)) = 0;
     p += 0x98;
   }
-  func_ov006_020c3adc((char *)a);
+  FlowerFace_PlayIdle((char *)a);
 }
 }
 }
@@ -402,7 +402,7 @@ void func_ov006_020c3bc8(void *a)
 namespace s020c3b80 {
 extern "C" {
 extern int data_ov006_0213aee0[];
-int func_ov006_020c3b80(int* c){
+int FlowerFace_IsIdle(int* c){
   int* g=data_ov006_0213aee0;
   int r2=c[0];
   int ip=1;
@@ -416,11 +416,11 @@ int func_ov006_020c3b80(int* c){
 
 namespace s020c3b2c {
 extern "C" {
-// @symbol func_ov006_020c3b2c
-/* func_ov006_020c3b2c at 0x020c3b2c
+// @symbol Camera_InitFlowerView
+/* Camera_InitFlowerView at 0x020c3b2c
  *
  * dCamera_c preset init: sets eye/target vectors and angle, then
- * tail-calls Camera_UpdateMatrices. Sibling of func_ov006_020c225c.
+ * tail-calls Camera_UpdateMatrices. Sibling of Camera_InitPresenterView.
  */
 
 struct Matrix4x3_local { int data[12]; };
@@ -436,7 +436,7 @@ struct dCamera_c {
 };
 
 
-void func_ov006_020c3b2c(struct dCamera_c *self)
+void Camera_InitFlowerView(struct dCamera_c *self)
 {
     self->eye.x = 0x1b000;
     self->eye.y = 0x17600;
@@ -454,7 +454,7 @@ namespace s020c3adc {
 extern "C" {
 struct S { int w[2]; };
 extern "C" { extern struct S data_ov006_0213aec0; }
-void func_ov006_020c3adc(char *p) {
+void FlowerFace_PlayIdle(char *p) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p+0xd18, *(void**)(p+0xd90), 0, 0x800, 0);
     *(struct S *)(p + 0x0) = data_ov006_0213aec0;
 }
@@ -463,7 +463,7 @@ void func_ov006_020c3adc(char *p) {
 
 namespace s020c3ad8 {
 extern "C" {
-void func_ov006_020c3ad8(void)
+void FlowerFace_StateIdle(void)
 {
 }
 }
@@ -478,7 +478,7 @@ struct S8 { int w[2]; };
 extern "C" { extern int data_0209e650; }
 extern "C" { extern int data_ov006_0213aec8[2]; }
 
-void func_ov006_020c3990(char *c)
+void FlowerFace_PlayPetalPulled(char *c)
 {
     int i;
     char *p;
@@ -506,7 +506,7 @@ void func_ov006_020c3990(char *c)
             b.vel2.x = b.vel.x;
             b.vel2.y = b.vel.y;
             b.vel2.z = b.vel.z;
-            func_ov006_020c3754((int *)(c + 8 + i * 0x98), (int *)&b.pos2, (int *)&b.vel2);
+            FallingPetal_Spawn((int *)(c + 8 + i * 0x98), (int *)&b.pos2, (int *)&b.vel2);
             break;
         }
     }
@@ -518,7 +518,7 @@ void func_ov006_020c3990(char *c)
 
 namespace s020c395c {
 extern "C" {
-void func_ov006_020c395c(int* c){ if(_ZN15dExtFrameCtrl_c8FinishedEv((char*)c+0xd68)==0) return; func_ov006_020c3adc((char *)c); }
+void FlowerFace_StateReact(int* c){ if(_ZN15dExtFrameCtrl_c8FinishedEv((char*)c+0xd68)==0) return; FlowerFace_PlayIdle((char *)c); }
 }
 }
 
@@ -526,7 +526,7 @@ namespace s020c3908 {
 extern "C" {
 struct S { int w[2]; };
 extern "C" { extern struct S data_ov006_0213aed8; }
-void func_ov006_020c3908(char *p) {
+void FlowerFace_PlayReactA(char *p) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p+0xd18, *(void**)(p+0xda0), 0x40000000, 0x800, 0);
     *(struct S *)(p + 0x0) = data_ov006_0213aed8;
 }
@@ -535,7 +535,7 @@ void func_ov006_020c3908(char *p) {
 
 namespace s020c3904 {
 extern "C" {
-void func_ov006_020c3904(void)
+void FlowerFace_StateReactA(void)
 {
 }
 }
@@ -545,7 +545,7 @@ namespace s020c38b0 {
 extern "C" {
 struct S { int w[2]; };
 extern "C" { extern struct S data_ov006_0213aed0; }
-void func_ov006_020c38b0(char *p) {
+void FlowerFace_PlayReactB(char *p) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p+0xd18, *(void**)(p+0xda8), 0x40000000, 0x800, 0);
     *(struct S *)(p + 0x0) = data_ov006_0213aed0;
 }
@@ -554,7 +554,7 @@ void func_ov006_020c38b0(char *p) {
 
 namespace s020c38ac {
 extern "C" {
-void func_ov006_020c38ac(void)
+void FlowerFace_StateReactB(void)
 {
 }
 }
@@ -562,7 +562,7 @@ void func_ov006_020c38ac(void)
 
 namespace s020c3884 {
 extern "C" {
-void func_ov006_020c3884(char *t, int a1)
+void FallingPetal_SetModel(char *t, int a1)
 {
     _ZN9ModelBase7SetFileEP8BMD_Fileii(t + 0x44, (void *)a1, 1, -1);
     *(int *)(t + 0x40) = 0;
@@ -578,7 +578,7 @@ extern "C" { extern int data_ov006_021402f0[3]; }
 extern "C" { extern int data_0209e650; }
 extern "C" { extern int data_02092768[4]; }
 
-void func_ov006_020c3754(int *r6, int *r5, int *r4)
+void FallingPetal_Spawn(int *r6, int *r5, int *r4)
 {
     int *n;
     if (!(data_ov006_021402e0 & 1)) {
@@ -622,7 +622,7 @@ struct Quat { int w[4]; };
 extern "C" { extern Quat data_02092768; }
 extern int data_02082214[];
 
-void func_ov006_020c35e8(char* self)
+void FallingPetal_Update(char* self)
 {
     Vec3 v0;
     Vec3 v1;
@@ -666,7 +666,7 @@ void func_ov006_020c35e8(char* self)
 }
 
 namespace s020c35a8 {
-// @symbol func_ov006_020c35a8
+// @symbol FallingPetal_Draw
 extern "C" {
 }
 
@@ -678,22 +678,22 @@ struct Obj {
     virtual void m4();
     virtual void m5(Vector3* v);
 };
-extern "C" void func_ov006_020c35a8(char* c) {
-    func_ov006_020c3528(c);
+extern "C" void FallingPetal_Draw(char* c) {
+    FallingPetal_UpdateMatrix(c);
     Vector3 v; v.z=0x1000; v.y=0x1000; v.x=0x1000;
     ((Obj*)(c + 0x44))->m5(&v);
 }
 }
 
 namespace s020c3528 {
-// @symbol func_ov006_020c3528
+// @symbol FallingPetal_UpdateMatrix
 extern "C" {
 struct Q{int a,b,c,d;};
 
 
 extern "C" { extern struct Vector3 data_ov006_0212c9e4; }
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
-void func_ov006_020c3528(char* c){
+void FallingPetal_UpdateMatrix(char* c){
   struct Matrix4x3 sp;
   Matrix4x3_FromQuaternion((char*)c+0x30, &sp);
   MulVec3Mat3x3(&data_ov006_0212c9e4, &sp, (char*)c+0x24);
@@ -706,7 +706,7 @@ void func_ov006_020c3528(char* c){
 
 namespace s020c33dc {
 extern "C" {
-int func_ov006_020c33dc(char *t)
+int Presenter_Construct(char *t)
 {
     _ZN14BlendModelAnimC1Ev(t + 0x8);
     _ZN5ModelC1Ev(t + 0x78);
@@ -739,7 +739,7 @@ int func_ov006_020c33dc(char *t)
 
 namespace s020c3288 {
 extern "C" {
-int func_ov006_020c3288(char *t)
+int Presenter_Destruct(char *t)
 {
     _ZN13SharedFilePtr7ReleaseEv(t + 0xf0);
     _ZN13SharedFilePtr7ReleaseEv(t + 0xf8);
@@ -789,12 +789,12 @@ int func_ov006_020c3288(char *t)
 namespace s020c3050 {
 extern "C" {
 extern "C" { extern char data_ov006_0213ae00[]; extern char data_ov006_0213ae18[]; extern char data_ov006_0213ae30[]; extern char data_ov006_0213ae48[]; extern char data_ov006_0213ae60[]; extern char data_ov006_0213ae78[]; extern char data_ov006_0213ae90[]; extern char data_ov006_0213aea8[]; }
-// @symbol func_ov006_020c3050
+// @symbol Presenter_Load
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
 
 
 
-int func_ov006_020c3050(char *c)
+int Presenter_Load(char *c)
 {
     void *r5;
     void *r4;
@@ -841,11 +841,11 @@ int func_ov006_020c3050(char *c)
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, data_ov006_0213ae90);
     _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(r5, data_ov006_0213ae18);
 
-    func_ov006_020c2848(c);
+    Presenter_PlayIdle(c);
     *(int *)(c + 0x180) = 0;
     *(int *)(c + 0x184) = 0;
     *(int *)(c + 0x188) = 0;
-    func_ov006_020c2290(c);
+    Presenter_UpdateMatrix(c);
 
     if (!_ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x78, r4, 1, -1))
         return 0;
@@ -892,7 +892,7 @@ extern "C" {
         } \
     }
 
-void func_ov006_020c2be8(char* c)
+void Presenter_TrackStylus(char* c)
 {
     if (*(int*)(c + 0x1a4) != 0) {
         int s = *(int*)(c + 0x19c);
@@ -900,7 +900,7 @@ void func_ov006_020c2be8(char* c)
         COMPUTE(c, s, t);
         return;
     }
-    if (func_ov006_020c2994(c) != 0) {
+    if (Presenter_IsIdle(c) != 0) {
         int i = gActivePlayerSlot;
         if (gTouchHeld[i * 4] != 0) {
             int s = gTouchX[i * 4];
@@ -922,13 +922,13 @@ extern "C" {
 struct C;
 typedef void (C::*PMF)();
 struct C { PMF pmf; };
-void func_ov006_020c2b8c(C* c) {
-    func_ov006_020c2be8((char *)c);
+void Presenter_Update(C* c) {
+    Presenter_TrackStylus((char *)c);
     if (c->pmf) (c->*(c->pmf))();
     _ZN15dExtFrameCtrl_c7AdvanceEv((char*)c + 0xc8);
     _ZN15dExtFrameCtrl_c7AdvanceEv((char*)c + 0xdc);
     _ZN14BlendModelAnim7AdvanceEv((char*)c + 8);
-    func_ov006_020c2290((char *)c);
+    Presenter_UpdateMatrix((char *)c);
 }
 }
 }
@@ -943,7 +943,7 @@ struct Obj {
     virtual void v3(); virtual void v4();
     virtual void m(void* arg);
 };
-extern "C" void func_ov006_020c29dc(char *c)
+extern "C" void Presenter_Draw(char *c)
 {
     int v0[3];
     int v1[3];
@@ -986,7 +986,7 @@ namespace s020c2994 {
 extern "C" {
 struct P{int x,y;};
 extern "C" { extern struct P data_ov006_0213adb8; }
-int func_ov006_020c2994(struct P* c){
+int Presenter_IsIdle(struct P* c){
   int ip=1;
   struct P* g=&data_ov006_0213adb8;
   if(c->x==g->x){
@@ -1000,9 +1000,9 @@ int func_ov006_020c2994(struct P* c){
 
 namespace s020c2984 {
 extern "C" {
-/* func_ov006_020c2984 @ 0x20c2984 (ov006) -- veneer: add r0,r0,#0x58; b dExtFrameCtrl_c::Finished(). */
+/* Presenter_IsAnimDone @ 0x20c2984 (ov006) -- veneer: add r0,r0,#0x58; b dExtFrameCtrl_c::Finished(). */
 
-int func_ov006_020c2984(void* a) {
+int Presenter_IsAnimDone(void* a) {
     return _ZN15dExtFrameCtrl_c8FinishedEv((char*)a + 0x58);
 }
 }
@@ -1011,8 +1011,8 @@ int func_ov006_020c2984(void* a) {
 namespace s020c2924 {
 extern "C" {
 extern "C" { extern void* data_0209f5bc; }
-void func_ov006_020c2924(char* c){
-  func_ov006_020c2848(c);
+void Presenter_ResetPose(char* c){
+  Presenter_PlayIdle(c);
   void* obj=data_0209f5bc;
   int (**vt)(void*)=*(int(***)(void*))obj;
   if(vt[6](obj)==0) return;
@@ -1045,7 +1045,7 @@ struct VObj {
     virtual int v6();
 };
 
-extern "C" void func_ov006_020c2848(char* c)
+extern "C" void Presenter_PlayIdle(char* c)
 {
     if (*(int*)(c + 0x68) != *(int*)(c + 0x104)) {
         int r5 = 0;
@@ -1070,7 +1070,7 @@ extern "C" void func_ov006_020c2848(char* c)
 namespace s020c27c4 {
 extern "C" {
 extern "C" { extern void* data_ov006_0213ae48; }
-void func_ov006_020c27c4(char* c){
+void Presenter_StateIdle(char* c){
   if (!_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x58)) return;
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void**)(c + 0x104), 0, 0, 0x800, 0);
   _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void**)(c + 0x144), 0, 0x800, 0);
@@ -1088,7 +1088,7 @@ inline char *inline_fn(char *arg0)
   return arg0 + 8;
 }
 
-void func_ov006_020c271c(void *c)
+void Presenter_PlayAnim2(void *c)
 {
   char *r4 = (char *) c;
   unsigned long long new_var;
@@ -1109,11 +1109,11 @@ void func_ov006_020c271c(void *c)
 
 namespace s020c26f4 {
 extern "C" {
-void func_ov006_020c26f4(char *t)
+void Presenter_StateAnim2(char *t)
 {
-    int r = func_ov006_020c2984(t);
+    int r = Presenter_IsAnimDone(t);
     if (r == 0) return;
-    func_ov006_020c2848(t);
+    Presenter_PlayIdle(t);
 }
 }
 }
@@ -1125,7 +1125,7 @@ extern int data_ov006_0213adf0[];
 
 struct W2 { int w[2]; };
 
-void func_ov006_020c2664(char *c)
+void Presenter_PlayAnim1(char *c)
 {
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void **)(c + 0x10c), 4, 0x40000000, 0x800, 0);
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void **)(c + 0x14c), 0x40000000, 0x800, 0);
@@ -1137,11 +1137,11 @@ void func_ov006_020c2664(char *c)
 
 namespace s020c263c {
 extern "C" {
-void func_ov006_020c263c(char *t)
+void Presenter_StateAnim1(char *t)
 {
-    int r = func_ov006_020c2984(t);
+    int r = Presenter_IsAnimDone(t);
     if (r == 0) return;
-    func_ov006_020c2848(t);
+    Presenter_PlayIdle(t);
 }
 }
 }
@@ -1150,7 +1150,7 @@ namespace s020c2594 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae90; }
 extern "C" { extern volatile long long data_ov006_0213adc0; }
-void func_ov006_020c2594(void *c)
+void Presenter_PlayAnim7(void *c)
 {
   char *r4 = (char *) c;
   if ((*((int *) (r4 + 0x1a8))) == 0)
@@ -1168,9 +1168,9 @@ void func_ov006_020c2594(void *c)
 namespace s020c24e4 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae18; }
-void func_ov006_020c24e4(void* c){
+void Presenter_StateAnim7(void* c){
   char* r4 = (char*)c;
-  if (!func_ov006_020c2984(r4)) return;
+  if (!Presenter_IsAnimDone(r4)) return;
   if (*(int*)(r4 + 0x68) != *(int*)(r4 + 0x13c)) return;
   if (*(int*)(r4 + 0x1a8) == 0) _ZN5Sound12PlayBank2_2DEj(0x1d1);
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *(void**)(r4 + 0x134), 8, 0, 0x800, 0);
@@ -1185,7 +1185,7 @@ extern "C" {
 struct G2 { int w[2]; };
 extern "C" { extern struct G2 data_ov006_0213adf8; }
 extern "C" { extern void* data_ov006_0213ae30; }
-void func_ov006_020c2440(char* c){
+void Presenter_PlayAnim4(char* c){
   if (*(int*)(c + 0x1a8) == 0) _ZN5Sound12PlayBank2_2DEj(0x1c9);
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 8, *(void**)(c + 0x124), 0, 0x40000000, 0x800, 0);
   _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0xc8, *(void**)(c + 0x164), 0x40000000, 0x800, 0);
@@ -1198,9 +1198,9 @@ void func_ov006_020c2440(char* c){
 namespace s020c23a8 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae00; }
-void func_ov006_020c23a8(void* c){
+void Presenter_StateAnim4(void* c){
   char* r4 = (char*)c;
-  if (!func_ov006_020c2984(r4)) return;
+  if (!Presenter_IsAnimDone(r4)) return;
   if (*(int*)(r4 + 0x68) != *(int*)(r4 + 0x124)) return;
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(r4 + 8, *(void**)(r4 + 0x11c), 0, 0, 0x800, 0);
   _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(r4 + 0xc8, *(void**)(r4 + 0x15c), 0, 0x800, 0);
@@ -1213,7 +1213,7 @@ namespace s020c2300 {
 extern "C" {
 extern "C" { extern int data_ov006_0213ae90; }
 extern "C" { extern long long data_ov006_0213add0; }
-void func_ov006_020c2300(void *c)
+void Presenter_PlayAnim7Loop(void *c)
 {
   long long new_var;
   char *r4 = (char *) c;
@@ -1231,20 +1231,20 @@ void func_ov006_020c2300(void *c)
 
 namespace s020c22d8 {
 extern "C" {
-void func_ov006_020c22d8(char *t)
+void Presenter_StateAnim7Loop(char *t)
 {
-    int r = func_ov006_020c2984(t);
+    int r = Presenter_IsAnimDone(t);
     if (r == 0) return;
-    func_ov006_020c2848(t);
+    Presenter_PlayIdle(t);
 }
 }
 }
 
 namespace s020c2290 {
 extern "C" {
-// @symbol func_ov006_020c2290
+// @symbol Presenter_UpdateMatrix
 extern "C" { extern struct Matrix4x3 data_020a0e68; }
-void func_ov006_020c2290(char* c) {
+void Presenter_UpdateMatrix(char* c) {
     Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x180), *(int*)(c+0x184), *(int*)(c+0x188));
     *(struct Matrix4x3*)(c+0x24) = data_020a0e68;
 }
@@ -1253,8 +1253,8 @@ void func_ov006_020c2290(char* c) {
 
 namespace s020c225c {
 extern "C" {
-// @symbol func_ov006_020c225c
-/* func_ov006_020c225c at 0x020c225c
+// @symbol Camera_InitPresenterView
+/* Camera_InitPresenterView at 0x020c225c
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov006).
  */
@@ -1272,7 +1272,7 @@ struct dCamera_c {
 };
 
 
-void func_ov006_020c225c(struct dCamera_c *self)
+void Camera_InitPresenterView(struct dCamera_c *self)
 {
     self->eye.x = 0;
     self->eye.y = 0;
@@ -1288,7 +1288,7 @@ void func_ov006_020c225c(struct dCamera_c *self)
 
 namespace s020c221c {
 extern "C" {
-int func_ov006_020c221c(char *t)
+int Mascot_Construct(char *t)
 {
     func_02017acc(t, 0x205);
     _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
@@ -1301,7 +1301,7 @@ int func_ov006_020c221c(char *t)
 
 namespace s020c21e4 {
 extern "C" {
-int func_ov006_020c21e4(char *t)
+int Mascot_Destruct(char *t)
 {
     _ZN13SharedFilePtr7ReleaseEv(t);
     _ZN13SharedFilePtr7ReleaseEv(t + 8);
@@ -1315,7 +1315,7 @@ int func_ov006_020c21e4(char *t)
 
 namespace s020c2154 {
 extern "C" {
-void func_ov006_020c2154(char *c)
+void Mascot_Load(char *c)
 {
     void *f;
     f = _ZN5Model8LoadFileER13SharedFilePtr(c);
@@ -1335,9 +1335,9 @@ void func_ov006_020c2154(char *c)
 
 namespace s020c2144 {
 extern "C" {
-/* func_ov006_020c2144 @ 0x20c2144 (ov006) -- veneer: add r0,r0,#0x10; b BlendModelAnim::Advance(). */
+/* Mascot_Update @ 0x20c2144 (ov006) -- veneer: add r0,r0,#0x10; b BlendModelAnim::Advance(). */
 
-void func_ov006_020c2144(void* a) {
+void Mascot_Update(void* a) {
     _ZN14BlendModelAnim7AdvanceEv((char*)a + 0x10);
 }
 }
@@ -1364,7 +1364,7 @@ struct C {
 };
 
 
-extern "C" void func_ov006_020c201c(C *c)
+extern "C" void Mascot_Draw(C *c)
 {
     if (c->va8 != 0) {
         s16 h = Vec3_HorzAngle((const Vector3 *)&c->v8c, (const Vector3 *)&c->v80);
@@ -1383,13 +1383,13 @@ extern "C" void func_ov006_020c201c(C *c)
         UpdateAngle(c->va4, 0x800, 8, 0x200);
         UpdateAngle(c->v9a, -0x1400, 8, 0x200);
     }
-    func_ov006_020c1f4c((char *)c);
+    Mascot_UpdateMatrix((char *)c);
     c->model.Render(0);
 }
 }
 
 namespace s020c1f4c {
-// @symbol func_ov006_020c1f4c
+// @symbol Mascot_UpdateMatrix
 typedef short s16;
 
 extern "C" {
@@ -1405,7 +1405,7 @@ struct Vtbl {
 
 struct Sub { char pad[0x120]; Matrix4x3 m; };
 
-extern "C" void func_ov006_020c1f4c(char* c){
+extern "C" void Mascot_UpdateMatrix(char* c){
   Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x8c), *(int*)(c+0x90), *(int*)(c+0x94));
   Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(s16*)(c+0x9a));
   *(Matrix4x3*)(c+0x2c) = data_020a0e68;
@@ -1419,7 +1419,7 @@ extern "C" void func_ov006_020c1f4c(char* c){
 
 namespace s020c1f04 {
 extern "C" {
-void func_ov006_020c1f04(char* c, int* src) {
+void Mascot_LookAt(char* c, int* src) {
     if (src != 0) {
         *(int*)(c+0x80) = src[0];
         *(int*)(c+0x84) = src[1];
@@ -1436,7 +1436,7 @@ void func_ov006_020c1f04(char* c, int* src) {
 
 namespace s020c1ef8 {
 extern "C" {
-void func_ov006_020c1ef8(int *p)
+void Mascot_StopLooking(int *p)
 {
     p[42] = 0;
 }
@@ -1445,11 +1445,11 @@ void func_ov006_020c1ef8(int *p)
 
 namespace s020c1eb4 {
 extern "C" {
-// @symbol func_ov006_020c1eb4
-/* func_ov006_020c1eb4 at 0x020c1eb4
+// @symbol Camera_InitSlotsView
+/* Camera_InitSlotsView at 0x020c1eb4
  *
  * dCamera_c preset init: sets eye/target vectors and angle, then
- * tail-calls Camera_UpdateMatrices. Sibling of func_ov006_020c225c.
+ * tail-calls Camera_UpdateMatrices. Sibling of Camera_InitPresenterView.
  */
 
 struct Matrix4x3_local { int data[12]; };
@@ -1465,7 +1465,7 @@ struct dCamera_c {
 };
 
 
-void func_ov006_020c1eb4(struct dCamera_c *self)
+void Camera_InitSlotsView(struct dCamera_c *self)
 {
     self->eye.x = 0;
     self->eye.y = 0xe000;
@@ -1481,12 +1481,12 @@ void func_ov006_020c1eb4(struct dCamera_c *self)
 
 namespace s020c1d80 {
 extern "C" {
-int func_ov006_020c1d80(char *t)
+int Dealer_Construct(char *t)
 {
     *(short *)(t + 0x1a) = 0;
     _ZN14BlendModelAnimC1Ev(t + 0x1c);
     _ZN5ModelC1Ev(t + 0x8c);
-    func_ov006_020c0a48(t + 0xdc);
+    MascotWalker_Construct(t + 0xdc);
     *(short *)(t + 0x1dc) = 0;
     *(short *)(t + 0x1e6) = 0;
     func_02017acc(t + 0x1e8, 0x208);
@@ -1515,7 +1515,7 @@ int func_ov006_020c1d80(char *t)
 
 namespace s020c1c64 {
 extern "C" {
-int func_ov006_020c1c64(char *t)
+int Dealer_Destruct(char *t)
 {
     _ZN13SharedFilePtr7ReleaseEv(t + 0x1e8);
     _ZN13SharedFilePtr7ReleaseEv(t + 0x1f0);
@@ -1547,7 +1547,7 @@ int func_ov006_020c1c64(char *t)
     SharedFilePtr_Destruct_Anim(t + 0x1f8);
     func_02017ab4(t + 0x1f0);
     func_02017ab4(t + 0x1e8);
-    func_ov006_020c09f8(t + 0xdc);
+    MascotWalker_Destruct(t + 0xdc);
     _ZN5ModelD1Ev(t + 0x8c);
     _ZN14BlendModelAnimD1Ev(t + 0x1c);
     return (int)t;
@@ -1557,12 +1557,12 @@ int func_ov006_020c1c64(char *t)
 
 namespace s020c1a88 {
 extern "C" {
-// @symbol func_ov006_020c1a88
+// @symbol Dealer_Load
 extern "C" { extern struct Vector3 data_020a0ebc; }
 extern "C" { extern struct Vector3_16 data_020a0edc; }
 
 
-int func_ov006_020c1a88(char *c)
+int Dealer_Load(char *c)
 {
     void *f;
     void *ip;
@@ -1588,7 +1588,7 @@ int func_ov006_020c1a88(char *c)
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 0x250);
     _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(c + 0x258);
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c + 0x1c, *(void **)(c + 0x1fc), 0, 0, 0x800, 0);
-    func_ov006_020c0af8(c);
+    Dealer_ResetMatrices(c);
     *(int *)(c + 8) = data_020a0ebc.x;
     *(int *)(c + 0xc) = data_020a0ebc.y;
     *(int *)(c + 0x10) = data_020a0ebc.z;
@@ -1597,7 +1597,7 @@ int func_ov006_020c1a88(char *c)
     *(short *)(c + 0x18) = data_020a0edc.z;
     *(int *)(c + 0x1d4) = 0;
     _ZN5Model12HideMaterialEii(c + 0x1c, 1, 0);
-    func_ov006_020c1764(c);
+    Dealer_PlayIdle(c);
     f = *(void **)(c + 0x264);
     if (f == 0 || _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x8c, f, 1, -1) == 0) {
         return 0;
@@ -1606,7 +1606,7 @@ int func_ov006_020c1a88(char *c)
     *(int *)((char *)ip + 0x24) &= ~1;
     *(int *)((char *)ip + 0x114) &= ~1;
     *(int *)((char *)ip + 0xe4) |= 2;
-    func_ov006_020c092c(c + 0xdc);
+    MascotWalker_Load(c + 0xdc);
     *(short *)(c + 0x1e0) = 0;
     *(short *)(c + 0x1e2) = 1;
     *(short *)(c + 0x1e4) = 0;
@@ -1623,7 +1623,7 @@ struct C {
 };
 extern "C" { extern short data_ov006_0212b89c[]; }
 
-extern "C" void func_ov006_020c19d0(char* thiz)
+extern "C" void Dealer_Update(char* thiz)
 {
     char* c = thiz;
     C* o = (C*)c;
@@ -1640,12 +1640,12 @@ extern "C" void func_ov006_020c19d0(char* thiz)
     }
     short* q = (short*)(((int)c + 0x1e4));
     *q = *q + 0x400;
-    func_ov006_020c07e8(c + 0xdc);
+    MascotWalker_Update(c + 0xdc);
 }
 }
 
 namespace s020c1804 {
-// @symbol func_ov006_020c1804
+// @symbol Dealer_Draw
 
 extern "C" {
 }
@@ -1660,7 +1660,7 @@ struct Obj {
     virtual void f5(int a) = 0;
 };
 
-extern "C" void func_ov006_020c1804(void *self)
+extern "C" void Dealer_Draw(void *self)
 {
     char *c = (char*)self;
     struct Vector3 v1, v2;
@@ -1711,7 +1711,7 @@ extern "C" void func_ov006_020c1804(void *self)
     func_020169d8(c + 0x8c, 5, (unsigned short)(b[1] | (b[2] << 5) | (b[0] << 10)));
 
     ((Obj*)(c + 0x1c))->f5(0);
-    func_ov006_020c07a0(c + 0xdc);
+    MascotWalker_Draw(c + 0xdc);
     ((Obj*)(c + 0x8c))->f5(0);
 
     dExtShadowModel_c::RenderAll();
@@ -1732,7 +1732,7 @@ struct P2 { int w[2]; };
 
 extern "C" { extern P2 data_ov006_0213ac50; }
 
-extern "C" void func_ov006_020c1764(char *c)
+extern "C" void Dealer_PlayIdle(char *c)
 {
     if (*(short *)(c + 0x1a) == 1) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x234), 0, 0, 0x800, 0);
@@ -1749,7 +1749,7 @@ extern "C" void func_ov006_020c1764(char *c)
 
 namespace s020c1760 {
 extern "C" {
-void func_ov006_020c1760(void)
+void Dealer_StateIdle(void)
 {
 }
 }
@@ -1758,7 +1758,7 @@ void func_ov006_020c1760(void)
 namespace s020c1718 {
 extern "C" {
 extern int data_ov006_0213ac58[];
-int func_ov006_020c1718(int* r0) {
+int Dealer_IsIdle(int* r0) {
     int* g = data_ov006_0213ac58;
     int w0 = r0[0];
     int ip = 1;
@@ -1773,7 +1773,7 @@ int func_ov006_020c1718(int* r0) {
 namespace s020c16b4 {
 extern "C" {
 extern int data_ov006_0213ac90[];
-int func_ov006_020c16b4(char *c)
+int Dealer_IsIdleAtRest(char *c)
 {
     int *G = data_ov006_0213ac90;
     int r3 = *(int *)c;
@@ -1795,7 +1795,7 @@ typedef short s16;
 struct M8 { int w[2]; };
 extern char data_ov006_0213ac60[];
 
-void func_ov006_020c1604(char* c, int unused, short a2, int a3) {
+void Dealer_StartDeal(char* c, int unused, short a2, int a3) {
   if (*(s16*)(c+0x1dc) == 0) {
     *(s16*)(c+0x1d8) = 4;
     *(s16*)(c+0x1da) = 3;
@@ -1829,7 +1829,7 @@ struct V {
 /* local extern: only slot 21 is called, through the view V above. */
 extern "C" { extern V* gMgScene; }
 
-extern "C" void func_ov006_020c14bc(char* c)
+extern "C" void Dealer_StateDeal(char* c)
 {
     if (*(int*)(c + 0x268) == 0) {
         _ZN5Sound12PlayBank2_2DEj(0x139);
@@ -1848,7 +1848,7 @@ extern "C" void func_ov006_020c14bc(char* c)
         short old = *p;
         *p = old - 1;
         if (cv <= 0) {
-            func_ov006_020c1420(c, *(short*)(c + 0x1de), *(int*)(c + 0x1d4));
+            Dealer_StartCollect(c, *(short*)(c + 0x1de), *(int*)(c + 0x1d4));
             return;
         }
     }
@@ -1879,11 +1879,11 @@ struct P2 { int w[2]; };
 
 extern "C" { extern P2 data_ov006_0213ac48; }
 
-extern "C" void func_ov006_020c1420(char *c, short arg1, int arg2)
+extern "C" void Dealer_StartCollect(char *c, short arg1, int arg2)
 {
     *(short *)(c + 0x1de) = arg1;
     *(int *)(c + 0x1d4) = arg2;
-    if (func_ov006_020c1718((int *)c) && *(int *)(c + 0x7c) != *(int *)(c + 0x234)) {
+    if (Dealer_IsIdle((int *)c) && *(int *)(c + 0x7c) != *(int *)(c + 0x234)) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x204), 0, 0x40000000, 0x800, 0);
     } else {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), *(void **)(c + 0x214), 0, 0x40000000, 0x800, 0);
@@ -1895,7 +1895,7 @@ extern "C" void func_ov006_020c1420(char *c, short arg1, int arg2)
 namespace s020c11c0 {
 extern "C" {
 
-void func_ov006_020c11c0(char *c)
+void Dealer_StateCollect(char *c)
 {
     void *f7c = *(void **)(c + 0x7c);
 
@@ -1909,7 +1909,7 @@ void func_ov006_020c11c0(char *c)
     if (f7c == *(void **)(c + 0x224) || f7c == *(void **)(c + 0x22c)) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c)) {
             *(int *)(c + 0x1d4) = 0;
-            func_ov006_020c1764(c);
+            Dealer_PlayIdle(c);
         }
         return;
     }
@@ -1937,7 +1937,7 @@ void func_ov006_020c11c0(char *c)
                     *(int *)(c + 0x26c) = 1;
                     return;
                 } else {
-                    func_ov006_020c1764(c);
+                    Dealer_PlayIdle(c);
                     return;
                 }
             }
@@ -1967,7 +1967,7 @@ extern "C" {
 struct P2 { int w[2]; };
 extern "C" { extern P2 data_ov006_0213acb8; }
 
-void func_ov006_020c1164(int *t, int a1, int a2)
+void Dealer_StartReveal(int *t, int a1, int a2)
 {
     *(short *)((char *)t + 0x1de) = a1;
     t[0x75] = a2;
@@ -1981,7 +1981,7 @@ namespace s020c0f9c {
 extern "C" {
 }
 
-extern "C" void func_ov006_020c0f9c(void *cc)
+extern "C" void Dealer_StateReveal(void *cc)
 {
     char *c = (char*)cc;
 
@@ -2012,7 +2012,7 @@ extern "C" void func_ov006_020c0f9c(void *cc)
                 *(int*)(c + 0x26c) = 1;
                 return;
             } else {
-                func_ov006_020c1764(c);
+                Dealer_PlayIdle(c);
                 return;
             }
         }
@@ -2029,7 +2029,7 @@ extern "C" void func_ov006_020c0f9c(void *cc)
 other:
     if (*(int*)(c + 0x7c) == *(int*)(c + 0x224) || *(int*)(c + 0x7c) == *(int*)(c + 0x22c)) {
         if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x6c))
-            func_ov006_020c1764(c);
+            Dealer_PlayIdle(c);
     }
 }
 }
@@ -2039,7 +2039,7 @@ extern "C" {
 extern "C" { extern int data_ov006_0213acb0[2]; }
 extern "C" { extern int data_ov006_0213aca8[2]; }
 
-int func_ov006_020c0f0c(int *c)
+int Dealer_IsBusy(int *c)
 {
     int *p = data_ov006_0213acb0;
     int r = 1;
@@ -2066,9 +2066,9 @@ int func_ov006_020c0f0c(int *c)
 
 namespace s020c0efc {
 extern "C" {
-/* func_ov006_020c0efc @ 0x20c0efc (ov006) -- veneer: add r0,r0,#0x6c; b dExtFrameCtrl_c::Finished(). */
+/* Dealer_IsAnimDone @ 0x20c0efc (ov006) -- veneer: add r0,r0,#0x6c; b dExtFrameCtrl_c::Finished(). */
 
-int func_ov006_020c0efc(void* a) {
+int Dealer_IsAnimDone(void* a) {
     return _ZN15dExtFrameCtrl_c8FinishedEv((char*)a + 0x6c);
 }
 }
@@ -2079,7 +2079,7 @@ extern "C" {
 struct P2 { int w[2]; };
 extern "C" { extern P2 data_ov006_0213aca0; }
 
-void func_ov006_020c0e8c(int *t)
+void Dealer_StartSwap(int *t)
 {
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((char *)t + 0x1c, (void *)t[0x8f], 0, 0x40000000, 0x800, 0);
     _ZN5Model12HideMaterialEii((char *)t + 0x1c, 2, 0);
@@ -2091,7 +2091,7 @@ void func_ov006_020c0e8c(int *t)
 
 namespace s020c0df0 {
 
-extern "C" void func_ov006_020c0df0(char *c)
+extern "C" void Dealer_StateSwap(char *c)
 {
     if (*(int *)(c + 0x268) == 0) {
         Sound::PlayBank2_2D(0x139);
@@ -2118,7 +2118,7 @@ struct BlendModelAnim { int pad; void SetAnim(BCA_File &f, int a, int b, Fix12 d
 
 extern "C" { extern double data_ov006_0213ac98; }
 
-extern "C" void func_ov006_020c0d68(char *c)
+extern "C" void Dealer_PlayLose(char *c)
 {
     if (*(short *)(c + 0x1a) == 1) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((BlendModelAnim *)(c + 0x1c), (void *)*(int *)(c + 0x224), 0, 0x40000000, 0x800, 0);
@@ -2133,10 +2133,10 @@ extern "C" void func_ov006_020c0d68(char *c)
 namespace s020c0ce8 {
 extern "C" {
 typedef int Fix12;
-void func_ov006_020c0ce8(char *c){
+void Dealer_StateLose(char *c){
     if(!_ZN15dExtFrameCtrl_c8FinishedEv(c+0x6c)) return;
     if(*(int*)(c+0x7c)==*(int*)(c+0x25c)){
-        func_ov006_020c1764(c);
+        Dealer_PlayIdle(c);
         return;
     }
     _ZN5Sound12PlayBank2_2DEj(0x13c);
@@ -2150,7 +2150,7 @@ namespace s020c0c80 {
 extern "C" {
 struct G2 { int w[2]; };
 extern "C" { extern struct G2 data_ov006_0213ac80; }
-void func_ov006_020c0c80(void *c)
+void Dealer_PlayWin(void *c)
 {
     char *r4 = (char *)c;
     _ZN5Sound12PlayBank2_2DEj(0x13b);
@@ -2168,7 +2168,7 @@ typedef struct {
     short field_1d8;
 } Obj;
 
-void func_ov006_020c0b74(char *p) {
+void Dealer_StateWin(char *p) {
     if (*(void **)(p + 0x7c) == *(void **)(p + 0x244) && _ZN15dExtFrameCtrl_c8FinishedEv(p + 0x6c)) {
         _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(p + 0x1c, *(void **)(p + 0x24c), 0, 0, 0x800, 0);
         return;
@@ -2181,7 +2181,7 @@ void func_ov006_020c0b74(char *p) {
         }
     }
     if (*(void **)(p + 0x7c) == *(void **)(p + 0x254) && _ZN15dExtFrameCtrl_c8FinishedEv(p + 0x6c)) {
-        func_ov006_020c1764(p);
+        Dealer_PlayIdle(p);
     }
 }
 }
@@ -2190,8 +2190,8 @@ void func_ov006_020c0b74(char *p) {
 namespace s020c0af8 {
 extern "C" {
 extern "C" { extern volatile struct Matrix4x3 data_ov006_0213ad28; }
-// @symbol func_ov006_020c0af8
-void func_ov006_020c0af8(char* c)
+// @symbol Dealer_ResetMatrices
+void Dealer_ResetMatrices(char* c)
 {
     struct Matrix4x3 tmp;
     tmp = *(struct Matrix4x3*)&data_ov006_0213ad28;
@@ -2203,11 +2203,11 @@ void func_ov006_020c0af8(char* c)
 
 namespace s020c0aa8 {
 extern "C" {
-// @symbol func_ov006_020c0aa8
-/* func_ov006_020c0aa8 at 0x020c0aa8
+// @symbol Camera_InitDealerView
+/* Camera_InitDealerView at 0x020c0aa8
  *
  * dCamera_c preset init: sets eye/target vectors and angle, then
- * tail-calls Camera_UpdateMatrices. Sibling of func_ov006_020c225c.
+ * tail-calls Camera_UpdateMatrices. Sibling of Camera_InitPresenterView.
  */
 
 struct Matrix4x3_local { int data[12]; };
@@ -2223,7 +2223,7 @@ struct dCamera_c {
 };
 
 
-void func_ov006_020c0aa8(struct dCamera_c *self)
+void Camera_InitDealerView(struct dCamera_c *self)
 {
     self->eye.x = 0x200;
     self->eye.y = 0x9600;
@@ -2239,7 +2239,7 @@ void func_ov006_020c0aa8(struct dCamera_c *self)
 
 namespace s020c0a48 {
 extern "C" {
-int func_ov006_020c0a48(char *t)
+int MascotWalker_Construct(char *t)
 {
     func_02017acc(t, 0x205);
     _ZN13SharedFilePtr9ConstructEj(t + 8, 0x206);
@@ -2256,7 +2256,7 @@ int func_ov006_020c0a48(char *t)
 
 namespace s020c09f8 {
 extern "C" {
-int func_ov006_020c09f8(char *t)
+int MascotWalker_Destruct(char *t)
 {
     _ZN13SharedFilePtr7ReleaseEv(t);
     _ZN13SharedFilePtr7ReleaseEv(t + 0x10);
@@ -2272,7 +2272,7 @@ int func_ov006_020c09f8(char *t)
 }
 
 namespace s020c092c {
-// @symbol func_ov006_020c092c
+// @symbol MascotWalker_Load
 typedef int Fix12i;
 struct SharedFilePtr; struct BMD_File; struct BCA_File;
 struct ModelBase { int d; };
@@ -2286,7 +2286,7 @@ extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
 extern "C" { extern Vector3 data_020a0ebc; }
 extern "C" { extern Vector3_16 data_020a0edc; }
 
-extern "C" void func_ov006_020c092c(char* thiz)
+extern "C" void MascotWalker_Load(char* thiz)
 {
     char* c = thiz;
     {
@@ -2308,7 +2308,7 @@ extern "C" void func_ov006_020c092c(char* thiz)
     *(short*)(c + 0xe8) = data_020a0edc.x;
     *(short*)(c + 0xea) = data_020a0edc.y;
     *(short*)(c + 0xec) = data_020a0edc.z;
-    func_ov006_020c057c(c);
+    MascotWalker_StartNextPath(c);
 }
 }
 
@@ -2336,7 +2336,7 @@ struct C {
 extern "C" { extern Vector3 data_ov006_0212b890; }
 extern "C" { extern "C" int data_ov006_0213ac78[2]; }
 
-extern "C" void func_ov006_020c07e8(C* c)
+extern "C" void MascotWalker_Update(C* c)
 {
     (c->*(c->pmf))();
 
@@ -2375,9 +2375,9 @@ extern "C" void func_ov006_020c07e8(C* c)
 
 namespace s020c07a0 {
 extern "C" {
-void func_ov006_020c07a0(char *t)
+void MascotWalker_Draw(char *t)
 {
-    func_ov006_020c06dc(t);
+    MascotWalker_UpdateMatrix(t);
     _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(t + 0x88, t + 0x34, 0x3c000, 0x14000, 0x3c000, 0xc);
     _ZN5Model6RenderEPK7Vector3(t + 0x18, 0);
 }
@@ -2385,7 +2385,7 @@ void func_ov006_020c07a0(char *t)
 }
 
 namespace s020c06dc {
-// @symbol func_ov006_020c06dc
+// @symbol MascotWalker_UpdateMatrix
 typedef short s16;
 
 
@@ -2400,7 +2400,7 @@ struct Base {
     virtual void m();  // slot 3 -> offset 0xc
 };
 
-extern "C" void func_ov006_020c06dc(char* thiz)
+extern "C" void MascotWalker_UpdateMatrix(char* thiz)
 {
     char* c = thiz;
     ((Base*)(c + 0x18))->m();
@@ -2424,7 +2424,7 @@ typedef struct Pair { int a, b; } Pair;
 extern "C" {
 extern int data_ov006_0213acc0[];
 extern int data_ov006_0213ac68[];
-void func_ov006_020c057c(char* c) {
+void MascotWalker_StartNextPath(char* c) {
     int sp8[3];
     int sp14[3];
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(c+0x18, (void*)*(int*)(c+0x14), 0, 0, 0x800, 0);
@@ -2480,7 +2480,7 @@ typedef long long s64;
 typedef struct { int x, y, z; } Vector3;
 
 
-void func_ov006_020c0364(char *c)
+void MascotWalker_StateWalk(char *c)
 {
     char *path;
     char *arr;
@@ -2547,7 +2547,7 @@ void func_ov006_020c0364(char *c)
             return;
         }
 
-        func_ov006_020c057c(c);
+        MascotWalker_StartNextPath(c);
         return;
     }
 
@@ -2557,7 +2557,7 @@ void func_ov006_020c0364(char *c)
     if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x68, 0) == 0)
         return;
 
-    func_ov006_020c0304((int *)c);
+    MascotWalker_StartPause((int *)c);
 }
 }
 }
@@ -2567,7 +2567,7 @@ extern "C" {
 struct P2 { int w[2]; };
 extern "C" { extern P2 data_ov006_0213ac70; }
 
-void func_ov006_020c0304(int *t)
+void MascotWalker_StartPause(int *t)
 {
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt((char *)t + 0x18, (void *)t[3], 8, 0, 0x800, 0);
     *(short *)((char *)t + 0xf2) = 0x78;
@@ -2592,7 +2592,7 @@ struct P2 { int w[2]; };
 extern "C" { extern int data_0209e650; }
 extern "C" { extern P2 data_ov006_0213ac88; }
 
-extern "C" void func_ov006_020c0264(char *c)
+extern "C" void MascotWalker_StatePause(char *c)
 {
     if (ApproachLinear2(*(short *)(c + 0xf2), 0, 1) == 0)
         return;
@@ -2676,7 +2676,7 @@ namespace s020bfff8 {
 extern "C" {
 extern short data_02082214[];
 
-void func_ov006_020bfff8(char* r4, void* r1, int* r6, int* r5) {
+void Camera_ProjectToScreen(char* r4, void* r1, int* r6, int* r5) {
     int out[3];
     MulVec3Mat4x3(r1, r4, out);
     int ang = *(short*)(r4 + 0xb8) >> 4;
@@ -2700,7 +2700,7 @@ namespace s020bfec0 {
 extern "C" {
 extern short data_02082214[];
 
-void func_ov006_020bfec0(char* r4, void* r1, short* r5) {
+void Camera_ProjectToScreen16(char* r4, void* r1, short* r5) {
     int out[3];
     MulVec3Mat4x3(r1, r4, out);
     int ang = *(short*)(r4 + 0xb8) >> 4;

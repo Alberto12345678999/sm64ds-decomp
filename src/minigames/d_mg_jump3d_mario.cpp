@@ -74,7 +74,7 @@ int  func_02053200(int x);
 void func_02016a14(void *self, int a);
 void func_02016a04(void *self, int a);
 int  func_020179b4(SharedFilePtr *f, ModelBase *m, int extra);
-void func_ov006_020bfec0(void *cam, Jump3DVec *pos, short *out);
+void Camera_ProjectToScreen16(void *cam, Jump3DVec *pos, short *out);
 void func_ov006_020e6e3c(int a, int b);
 void func_ov006_020c8c78(int a, int b);
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
@@ -438,7 +438,7 @@ void dMgJump3DMario_c::func_ov006_020c7734()
         return;
 
     if (data_ov006_02140400 != 0) {
-        func_ov006_020bfec0(data_ov006_02141a44, &mPos, screen);
+        Camera_ProjectToScreen16(data_ov006_02141a44, &mPos, screen);
 
         angle = data_ov006_02140404;
         wave = data_02082214[(angle >> 4) * 2];
@@ -467,7 +467,7 @@ void dMgJump3DMario_c::func_ov006_020c7860()
     ApproachLinear(mVel.y, data_ov006_0213b010, data_ov006_0213b018);
     AddVec3(&mPos, &mVel, &mPos);
     (this->*mState)();
-    func_ov006_020bfec0(data_ov006_02141a40, &mPos, &mScreenX);
+    Camera_ProjectToScreen16(data_ov006_02141a40, &mPos, &mScreenX);
     func_ov006_020c76e0();
     mModelAnim.dExtFrameCtrl_c::Advance();
 }
@@ -926,7 +926,7 @@ int dMgJump3DMario_c::func_ov006_020c87d0()
 
     mAnimIdx = 0;
     if (data_ov006_02141a40 != 0)
-        func_ov006_020bfec0(data_ov006_02141a40, &mPos, &mScreenX);
+        Camera_ProjectToScreen16(data_ov006_02141a40, &mPos, &mScreenX);
 
     t = data_0209f5c0->actorID == 0x175;
     if (t != 0) {

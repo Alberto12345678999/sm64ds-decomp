@@ -6,7 +6,7 @@
  *
  * SIZE 0x51d0, from dScMgBSC_c_classInit's `_ZN7fBase_cnwEj(0x51d0)`.
  *
- * ONE SHARED MEMBER at 0x4f38, size 0x270 (func_ov006_020c1d80/020c1c64),
+ * ONE SHARED MEMBER at 0x4f38, size 0x270 (Dealer_Construct/020c1c64),
  * shared verbatim by five other classes in this family. Its interior is
  * opaque here, but its extent and destructor are measured, so it has a real
  * member type rather than being folded into the scene's padding.
@@ -56,14 +56,14 @@
 #define DSCMGBSC_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int  func_ov006_020c1c64(char *t); /* decl_common.h's own signature */
+extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void NullDestructor_0203d47c(void);
 
 /* The type name is reconstructed; the 0x270-byte extent and teardown are
    measured. A real member lets C++ own this part of the scene lifecycle. */
 struct dMgBSCSharedState_c {
-    ~dMgBSCSharedState_c() { func_ov006_020c1c64((char *)this); }
+    ~dMgBSCSharedState_c() { Dealer_Destruct((char *)this); }
 
     u8 data[0x270];
 };
@@ -98,11 +98,11 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
        the same evidence, Coin's `return 0;` proving to be a
        transcription artifact. CanEndState is s32, matching the
        base's measured int (its ov004 base body ends `return 1;`).
-       Slot 21 is also declared by dScMgBase_c, so OnHostAnimCue is a
+       Slot 21 is also declared by dScMgBase_c, so OnDealDone is a
        void override. */
     virtual void StartRound(int mode);  /* slot 18 -- ov006 0x02125364 */
     virtual s32 CanEndState(int mode);  /* slot 19 -- ov006 0x0212527c */
-    virtual void OnHostAnimCue(); /* slot 21 -- ov006 0x02125248 */
+    virtual void OnDealDone(); /* slot 21 -- ov006 0x02125248 */
 
     /* --- the state machine ---
        Fourteen entries of the member-pointer table data_ov006_02142f94,

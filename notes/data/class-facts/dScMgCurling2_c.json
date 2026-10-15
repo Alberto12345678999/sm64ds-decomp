@@ -190,7 +190,7 @@
       {
         "slot": 21,
         "target": "0x020b298c",
-        "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
+        "symbol": "_ZN11dScMgBase_c10OnDealDoneEv",
         "own_override": false,
         "base_target": "0x020b298c"
       },

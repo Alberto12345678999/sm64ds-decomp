@@ -359,7 +359,7 @@ precondition for `production_mode: "intact-object"` ownership of the minigame fa
 Two independent sources agree on 19 and 21. This table was built by walking
 `_ZTV11dScMgBase_c`; the override addresses come from walking `_ZTV10dScMgBSC_c`. The
 promoted source carries `// recovered name: dScMgBSC_c_CanEndState` and
-`dScMgBSC_c_OnHostAnimCue` comments that were recovered *before* either walk and
+`dScMgBSC_c_OnDealDone` comments that were recovered *before* either walk and
 land on exactly those two addresses. Slot 18 carried no recovered name on either
 side, which read as consistency at the time; the section above shows it was simply
 absent from both, and the name is `OnYoshiTryEat`.

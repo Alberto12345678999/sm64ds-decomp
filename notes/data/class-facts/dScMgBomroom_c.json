@@ -205,7 +205,7 @@
         "slot_address": "0x0213bc08",
         "target": "0x020b298c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c13OnHostAnimCueEv"
+        "name": "_ZN11dScMgBase_c10OnDealDoneEv"
       },
       {
         "slot": 22,

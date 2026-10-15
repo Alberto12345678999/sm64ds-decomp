@@ -313,7 +313,7 @@
         "slot": 21,
         "target": "0x020b298c",
         "module": "ov004",
-        "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
+        "symbol": "_ZN11dScMgBase_c10OnDealDoneEv",
         "ownership": "inherited"
       },
       {

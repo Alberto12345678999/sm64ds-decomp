@@ -10,8 +10,8 @@
  * FACTORY AND DESTRUCTOR AGREE MEMBER FOR MEMBER. The factory builds
  * mArray at 0x4f38 (0x16 elements of 0x20, element ctor
  * func_ov006_0212b88c) and then an object at 0x51f8
- * (func_ov006_020c3f54); the destructor destroys the 0x51f8 object first
- * (func_ov006_020c3e70), then mArray (element dtor func_ov006_0212a650).
+ * (FlowerFace_Construct); the destructor destroys the 0x51f8 object first
+ * (FlowerFace_Destruct), then mArray (element dtor func_ov006_0212a650).
  * Nothing is left over either way.
  *
  * THE 0x51f8 OBJECT is opaque: nothing reads inside it, so its size is
@@ -85,7 +85,7 @@
 #define DSCMGFLOWER_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" void *func_ov006_020c3e70(char *t); /* decl_common.h's own signature */
+extern "C" void *FlowerFace_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void func_ov006_0212a650(void);
 

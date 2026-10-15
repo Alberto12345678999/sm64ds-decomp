@@ -139,7 +139,7 @@ extern u8 data_0209d454;
 extern int data_0208ee44;
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern int func_ov006_020c221c(char *t);
+extern int Mascot_Construct(char *t);
 extern int _ZTV19dScMgSingle3DBase_c[];
 extern int _ZTV12dScMgSlot3_c[];
 extern void RenderOamMainScreen(void*, int, int, int, int);
@@ -202,7 +202,7 @@ dScMgSlot1_c::~dScMgSlot1_c()
 // @symbol _ZN12dScMgSlot3_cD1Ev
 dScMgSlot3_c::~dScMgSlot3_c()
 {
-    func_ov006_020c21e4((char *)this + 0x4f38);
+    Mascot_Destruct((char *)this + 0x4f38);
 }
 
 // @symbol _ZN12dScMgSlot3_cD0Ev
@@ -551,15 +551,15 @@ void func_ov006_0210af64(char *c)
 
 // @symbol func_ov006_0210b1fc
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov006_020c1f04(char *c, int *src);
+void Mascot_LookAt(char *c, int *src);
 void Mg_ShowBanner(int c, int a1, int a2, int a3, int arg5, short arg6);
-void func_ov006_020c1ef8(int *p);
+void Mascot_StopLooking(int *p);
 void FreeGfxSlotsById(int arg);
 
 void func_ov006_0210b1fc(char *p)
 {
     if (*(int *)(p + 0x500c) == 0x50) {
-        func_ov006_020c1f04(p + 0x4f38, 0);
+        Mascot_LookAt(p + 0x4f38, 0);
         Mg_ShowBanner(0xd, 0x80, 0xa8, 1, -1, 0xd);
     }
 
@@ -568,7 +568,7 @@ void func_ov006_0210b1fc(char *p)
         if (*(int *)(p + 0x500c) != 0)
             return;
         *(unsigned char *)(p + 0x503b) = *(unsigned char *)(p + 0x503c);
-        func_ov006_020c1ef8((int *)(p + 0x4f38));
+        Mascot_StopLooking((int *)(p + 0x4f38));
         return;
     }
 
@@ -728,8 +728,8 @@ s32 dScMgSlot3_c::Render()
     struct dScMgSlot3_c *self = this;
     int i, j;
 
-    func_ov006_020c1eb4(c + 0x4660);
-    func_ov006_020c201c(c + 0x4f38);
+    Camera_InitSlotsView(c + 0x4660);
+    Mascot_Draw(c + 0x4f38);
 
     if (self->mReelDrawY > 0) {
         for (i = 0; i < 3; i++) {
@@ -873,7 +873,7 @@ s32 dScMgSlot3_c::Behavior()
 
     pc = (unsigned char *)((char *)self + 0x503f);
     *pc = *pc + 1;
-    func_ov006_020c2144((char *)self + 0x4f38);
+    Mascot_Update((char *)self + 0x4f38);
 
     for (i = 0; i < 3; i++) {
         if (self->mState == 1) {
@@ -952,8 +952,8 @@ s32 dScMgSlot3_c::InitResources()
     data_0209d454 = 0x14;
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile u16 *)0x4000050, 0, 0xc, 0xc, 4);
 
-    func_ov006_020c2154(c + 0x4f38);
-    func_ov006_020c1eb4(c + 0x4660);
+    Mascot_Load(c + 0x4f38);
+    Camera_InitSlotsView(c + 0x4660);
 
     unk_5004 = (int)mLevel;
 
@@ -1009,7 +1009,7 @@ int *dScMgSlot3_c_classInit(void)
         _ZN8Particle10SysTrackerC1Ev((char *)p + 0x471c);
 
         p[0] = (int)&_ZTV12dScMgSlot3_c[2];
-        func_ov006_020c221c((char *)p + 0x4f38);
+        Mascot_Construct((char *)p + 0x4f38);
     }
     return p;
 }

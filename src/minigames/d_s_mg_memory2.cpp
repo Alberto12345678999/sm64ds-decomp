@@ -13,9 +13,9 @@
  * - CheckFinished calls inline_fn(this+0xa8) and this+0xb4.
  *   mCredits and mHudScore directly miss. unk_5407 is only cleared.
  * - ResultWait decrements mResultTimer as (int)this+0x53e4.
- * - func_ov006_020c0aa8 sets the camera at this+0x4660 and tail-calls
+ * - Camera_InitDealerView sets the camera at this+0x4660 and tail-calls
  *   Camera_UpdateMatrices. Render and InitResources call that wrapper.
- * - Mg_DrawScoreTally, Mg_SaveRecordPair and func_ov006_020c1a88
+ * - Mg_DrawScoreTally, Mg_SaveRecordPair and Dealer_Load
  *   stay the linker names. Their bodies are not in this file.
  */
 
@@ -111,9 +111,9 @@ extern short gMgCoinsStatus;
 extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int);
 extern void Mg_SubmitScore(int self);
-extern void func_ov006_020c0c80(void *c);
-extern void func_ov006_020c0d68(void *c);
-extern void func_ov006_020c1604(char *c, int unused, short count, int ready);
+extern void Dealer_PlayWin(void *c);
+extern void Dealer_PlayLose(void *c);
+extern void Dealer_StartDeal(char *c, int unused, short count, int ready);
 extern int data_ov006_0212e948[];
 extern int data_ov006_0212e93c[];
 extern int data_ov006_0212e924[];
@@ -123,20 +123,20 @@ extern int data_0209d4b8;
 extern int data_ov006_0212e900[];
 extern int data_ov006_0212e90c[];
 extern void FreeGfxSlotsById(int x);
-extern void func_ov006_020c1764(char *p);
-extern int func_ov006_020c1718(int* p);
+extern void Dealer_PlayIdle(char *p);
+extern int Dealer_IsIdle(int* p);
 extern void MgCoins_Reset(void);
-void func_ov006_020c0aa8(char *);
+void Camera_InitDealerView(char *);
 void Mg_DrawCredits(char *, int, int, int);
-void func_ov006_020c1804(char *);
+void Dealer_Draw(char *);
 extern "C" void MgCoins_Update(void);
-extern "C" void func_ov006_020c19d0(char *p);
+extern "C" void Dealer_Update(char *p);
 void func_ov006_0210a534(void);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *ptr);
-int func_ov006_020c1a88(void *c);
+int Dealer_Load(void *c);
 int Mg_GetSavedRecord0(void);
 int Mg_GetSavedRecord1(void);
 void Mg_SetTopScreenYOffset(int v);
@@ -673,7 +673,7 @@ void dScMgMemory2_c::ResultWait()
         }
         Mg_SubmitScore(gMgScene != 0
             ? ((struct B *)gMgScene)->b4 : 0);
-        func_ov006_020c0c80(&mShared);
+        Dealer_PlayWin(&mShared);
         return;
     }
 
@@ -683,7 +683,7 @@ void dScMgMemory2_c::ResultWait()
         if (p->b4 > 0)
             p->b4 -= 1;
     }
-    func_ov006_020c0d68(&mShared);
+    Dealer_PlayLose(&mShared);
     return;
 
 zero:
@@ -937,9 +937,9 @@ void dScMgMemory2_c::RoundStart(){
     mReadyCount = 0;
     mDealCount = 0;
     if (mDifficulty == 1)
-        func_ov006_020c1604((char *)&mShared, 4, 3, (int)&mReadyCount);
+        Dealer_StartDeal((char *)&mShared, 4, 3, (int)&mReadyCount);
     else
-        func_ov006_020c1604((char *)&mShared, 4, 4, (int)&mReadyCount);
+        Dealer_StartDeal((char *)&mShared, 4, 4, (int)&mReadyCount);
     mShared.ready = 1;
     mSubstate = 1;
     if (mPromptBlinkCount == 0) {
@@ -1166,7 +1166,7 @@ void dScMgMemory2_c::StateSetup(){
     SetupDifficulty();
     ShuffleCards();
     FreeGfxSlotsById(0x1d);
-    func_ov006_020c1764((char *)&mShared);
+    Dealer_PlayIdle((char *)&mShared);
     mState = 1;
 }
 
@@ -1185,8 +1185,8 @@ void dScMgMemory2_c::SetupDifficulty() {
     }
 }
 
-// @symbol _ZN14dScMgMemory2_c13OnHostAnimCueEv
-void dScMgMemory2_c::OnHostAnimCue()
+// @symbol _ZN14dScMgMemory2_c10OnDealDoneEv
+void dScMgMemory2_c::OnDealDone()
 {
     MgCoins_PlaceBet(mMaxMisses);
 }
@@ -1195,7 +1195,7 @@ void dScMgMemory2_c::OnHostAnimCue()
 int dScMgMemory2_c::CanEndState(int /* mode */)
 {
     if (mState == 3 && mSubstate == 0) {
-        if (func_ov006_020c1718((int *)&mShared) == 0) return 0;
+        if (Dealer_IsIdle((int *)&mShared) == 0) return 0;
         mSubstate = 1;
         FreeGfxSlotsById(0x1d);
     }
@@ -1225,13 +1225,13 @@ void dScMgMemory2_c::StartRound(int /* arg */)
 s32 dScMgMemory2_c::Render()
 {
     /* pad_4660 is the minigame camera, in dScMgSingle3DBase_c's padding. */
-    func_ov006_020c0aa8((char *)pad_4660);
+    Camera_InitDealerView((char *)pad_4660);
     Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
     MgCoins_Draw();
     DrawMessage();
     DrawCursor();
     DrawCards();
-    func_ov006_020c1804((char *)&mShared);
+    Dealer_Draw((char *)&mShared);
     return 1;
 }
 
@@ -1243,7 +1243,7 @@ s32 dScMgMemory2_c::Behavior()
 {
     (this->*data_ov006_021423e0[mState])();
     MgCoins_Update();
-    func_ov006_020c19d0((char *)&mShared);
+    Dealer_Update((char *)&mShared);
     return 1;
 }
 
@@ -1270,8 +1270,8 @@ s32 dScMgMemory2_c::InitResources()
     data_0209d454 = 0x18;
     ResetGame();
     /* 0x4660..0x471c is dScMgSingle3DBase_c's minigame camera. */
-    func_ov006_020c0aa8((char *)this + 0x4660);
-    if (func_ov006_020c1a88(&mShared) == 0) return 0;
+    Camera_InitDealerView((char *)this + 0x4660);
+    if (Dealer_Load(&mShared) == 0) return 0;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
     mHudScore = Mg_GetSavedRecord1();

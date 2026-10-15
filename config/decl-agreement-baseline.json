@@ -27692,7 +27692,7 @@
         "return:int"
       ]
     },
-    "func_ov006_020c0aa8": {
+    "Camera_InitDealerView": {
       "src/minigames/d_s_mg_memory.cpp": [
         "param:#1 char *"
       ],
@@ -27703,32 +27703,32 @@
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c1164": {
+    "Dealer_StartReveal": {
       "include/decl_common.h": [
         "param:#3 void *"
       ]
     },
-    "func_ov006_020c1420": {
+    "Dealer_StartCollect": {
       "src/minigames/d_s_mg_card.cpp": [
         "param:#3 void *"
       ]
     },
-    "func_ov006_020c1604": {
+    "Dealer_StartDeal": {
       "src/minigames/d_s_mg_m_carlo2.cpp": [
         "param:#4 void *"
       ]
     },
-    "func_ov006_020c1718": {
+    "Dealer_IsIdle": {
       "src/minigames/d_s_mg_roulette_methods.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c19d0": {
+    "Dealer_Update": {
       "src/minigames/d_s_mg_memory.cpp": [
         "return:int"
       ]
     },
-    "func_ov006_020c1d80": {
+    "Dealer_Construct": {
       "include/dScMgCard_c.h": [
         "return:void"
       ],
@@ -27736,27 +27736,27 @@
         "return:void"
       ]
     },
-    "func_ov006_020c1eb4": {
+    "Camera_InitSlotsView": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c201c": {
+    "Mascot_Draw": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c225c": {
+    "Camera_InitPresenterView": {
       "src/minigames/d_s_mg_cup.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c2b8c": {
+    "Presenter_Update": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c33dc": {
+    "Presenter_Construct": {
       "src/minigames/d_s_mg_cup.cpp": [
         "return:void"
       ],
@@ -27764,12 +27764,12 @@
         "return:void"
       ]
     },
-    "func_ov006_020c3b80": {
+    "FlowerFace_IsIdle": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c3f54": {
+    "FlowerFace_Construct": {
       "src/d_s_mg_flower.cpp": [
         "return:void"
       ]

@@ -113,7 +113,7 @@ namespace CP15 { void FlushAndInvalidateDataCache(u32 address, u32 length); }
  * rest of the teardown is the inlined base destructors. */
 dScMgFlower_c::~dScMgFlower_c()
 {
-    func_ov006_020c3e70((char *)this + 0x51f8);
+    FlowerFace_Destruct((char *)this + 0x51f8);
     __cxa_vec_cleanup(mArray, 0x16, 0x20, (void *)func_ov006_0212a650);
 }
 
@@ -278,7 +278,7 @@ void dScMgFlower_c::StartRound(int /* arg */)
     } else {
         mHoldTimer = 0;
     }
-    func_ov006_020c3bc8(raw + 0x51f8);
+    FlowerFace_Reset(raw + 0x51f8);
     func_ov006_0212a764();
 }
 
@@ -328,8 +328,8 @@ s32 dScMgFlower_c::Render()
         }
     }
 
-    func_ov006_020c3b2c(self + 0x4660);
-    func_ov006_020c3bf4(self + 0x51f8);
+    Camera_InitFlowerView(self + 0x4660);
+    FlowerFace_Draw(self + 0x51f8);
     return 1;
 }
 
@@ -457,7 +457,7 @@ s32 dScMgFlower_c::Behavior()
                     if (*(u8 *)(c + self->mHeldPetal * 0x20 + 0x4f3b) == 0) {
                         t = 1;
                         *(u8 *)(c + self->mHeldPetal * 0x20 + 0x4f3b) = 1;
-                        func_ov006_020c3990(c + 0x51f8);
+                        FlowerFace_PlayPetalPulled(c + 0x51f8);
                     }
                 }
                 *(u8 *)(c + self->mHeldPetal * 0x20 + 0x4f3a) = 0;
@@ -492,11 +492,11 @@ s32 dScMgFlower_c::Behavior()
                     self->mState = 1;
                     Mg_SetSharedState(0xc);
                 }
-                if (func_ov006_020c3b80(c + 0x51f8) != 0) {
+                if (FlowerFace_IsIdle(c + 0x51f8) != 0) {
                     if (self->mPetalToggle == 1)
-                        func_ov006_020c3908(c + 0x51f8);
+                        FlowerFace_PlayReactA(c + 0x51f8);
                     else
-                        func_ov006_020c38b0(c + 0x51f8);
+                        FlowerFace_PlayReactB(c + 0x51f8);
                 }
             } else {
                 FreeGfxSlotsById(0x1d);
@@ -543,11 +543,11 @@ s32 dScMgFlower_c::Behavior()
         func_ov006_0212a654();
         break;
     case 1:
-        if (func_ov006_020c3b80(c + 0x51f8) != 0) {
+        if (FlowerFace_IsIdle(c + 0x51f8) != 0) {
             if (self->mPetalToggle == 1)
-                func_ov006_020c3908(c + 0x51f8);
+                FlowerFace_PlayReactA(c + 0x51f8);
             else
-                func_ov006_020c38b0(c + 0x51f8);
+                FlowerFace_PlayReactB(c + 0x51f8);
         }
         self->mPromptEnabled = 0;
         func_ov006_0212a654();
@@ -555,7 +555,7 @@ s32 dScMgFlower_c::Behavior()
     default:
         break;
     }
-    func_ov006_020c3d18(c + 0x51f8);
+    FlowerFace_Update(c + 0x51f8);
     return 1;
 }
 #pragma opt_common_subs on
@@ -645,8 +645,8 @@ s32 dScMgFlower_c::InitResources()
 
     data_0209d45c |= 1;
     *(volatile u16 *)0x4000008 = (*(volatile u16 *)0x4000008 & ~3) | 1;
-    func_ov006_020c3d88(raw + 0x51f8);
-    func_ov006_020c3b2c(raw + 0x4660);
+    FlowerFace_Load(raw + 0x51f8);
+    Camera_InitFlowerView(raw + 0x4660);
 
     return 1;
 }
@@ -656,7 +656,7 @@ s32 dScMgFlower_c::InitResources()
 extern "C" {
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
                     void (*ctor)(void *), void (*dtor)(void *));
-void *func_ov006_020c3f54(char *p);
+void *FlowerFace_Construct(char *p);
 void func_ov006_0212b88c(void);
 }
 
@@ -668,7 +668,7 @@ inline dScMgFlower_c::dScMgFlower_c()
 {
     __cxa_vec_ctor(mArray, 0x16, 0x20, (void (*)(void *))func_ov006_0212b88c,
                    (void (*)(void *))func_ov006_0212a650);
-    func_ov006_020c3f54((char *)this + 0x51f8);
+    FlowerFace_Construct((char *)this + 0x51f8);
 }
 
 // @symbol dScMgFlower_c_classInit

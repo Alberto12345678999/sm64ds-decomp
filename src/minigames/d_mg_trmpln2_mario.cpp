@@ -293,7 +293,7 @@ void func_ov006_020ca2ec(void *c);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void *thisPtr, int frame);
 void func_ov006_020e6e3c(int a0, int a1);
-void func_ov006_020bfec0(void *a0, void *a1, short *a2);
+void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
@@ -331,7 +331,7 @@ extern "C" void func_ov006_020c91ac(char *c)
         }
     }
 
-    func_ov006_020bfec0(data_ov006_02141a40, (void *)(c + 0x24), (short *)(c + 0x56));
+    Camera_ProjectToScreen16(data_ov006_02141a40, (void *)(c + 0x24), (short *)(c + 0x56));
 
     v24 = *(int *)(c + 0x24);
 
@@ -543,7 +543,7 @@ namespace ns_020c97bc {
 
 extern "C" {
 void func_ov006_020ca2ec(void *c);
-void func_ov006_020bfec0(void *a0, void *a1, short *a2);
+void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
@@ -573,7 +573,7 @@ extern "C" void func_ov006_020c97bc(char *c)
         return;
     }
 
-    func_ov006_020bfec0(data_ov006_02141a40, (void *)(c + 0x24), (short *)(c + 0x56));
+    Camera_ProjectToScreen16(data_ov006_02141a40, (void *)(c + 0x24), (short *)(c + 0x56));
 
     v24 = *(int *)(c + 0x24);
 
@@ -944,7 +944,7 @@ namespace ns_020ca070 {
 extern "C" {
 void func_ov006_020c9aa0(char *c);
 void func_ov006_020c94e0(char *c);
-void func_ov006_020bfec0(void *a0, void *a1, short *a2);
+void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 int _Z14ApproachLinearRiii(int *v, int step, int rate);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
 void Sound_PlayBank1Panned(int a0, int a1, int a2);
@@ -980,7 +980,7 @@ extern "C" void func_ov006_020ca070(char *c)
         return;
     }
 
-    func_ov006_020bfec0(data_ov006_02141a40, (void *)(c + 0x24), (short *)(c + 0x56));
+    Camera_ProjectToScreen16(data_ov006_02141a40, (void *)(c + 0x24), (short *)(c + 0x56));
 
     v24 = *(int *)(c + 0x24);
 
@@ -1187,7 +1187,7 @@ extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
-extern void func_ov006_020bfec0(char* p, void* q, short* s);
+extern void Camera_ProjectToScreen16(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a, int b);
 extern void func_02016a04(void* self, int a);
 extern void func_ov006_020ca3a8(char* c);
@@ -1215,7 +1215,7 @@ int func_ov006_020ca430(char* c)
     ret = _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x78, f, 1, -1);
     *(int*)(c + 0x60) = 0;
     if (data_ov006_02141a40 != 0)
-        func_ov006_020bfec0(data_ov006_02141a40, c + 0x24, (short*)(c + 0x56));
+        Camera_ProjectToScreen16(data_ov006_02141a40, c + 0x24, (short*)(c + 0x56));
     *(int*)(c + 0x48) = 0;
     func_02016a14(c + 0x78, 0x73ff, 0);
     func_02016a04(c + 0x78, 0x3e52);
@@ -1852,7 +1852,7 @@ extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int
 extern void _Z14ApproachLinearRiii(int *, int, int);
 extern void _Z15ApproachLinear2Rsss(short *, short, short);
 extern void func_02012718(int, int);
-extern void func_ov006_020bfff8(char *, void *, int *, int *);
+extern void Camera_ProjectToScreen(char *, void *, int *, int *);
 extern int Mg_GetTopScreenYOffset(void);
 extern void func_ov006_02120d0c(int, int);
 extern void func_ov006_020ccd78(char *);
@@ -1900,10 +1900,10 @@ void func_ov006_020cb2b4(void *self)
     data_ov006_0214055c -= 1;
 
     if (*(int *)(c + 0x20) > 0) {
-        func_ov006_020bfff8(data_ov006_02141a50, c + 0x1c, &va, &vb);
+        Camera_ProjectToScreen(data_ov006_02141a50, c + 0x1c, &va, &vb);
         vb = vb - (Mg_GetTopScreenYOffset() + 0xc0);
     } else {
-        func_ov006_020bfff8(data_ov006_02141a40, c + 0x1c, &va, &vb);
+        Camera_ProjectToScreen(data_ov006_02141a40, c + 0x1c, &va, &vb);
     }
     vb -= 0x20;
     func_ov006_02120d0c(vb << 12, (short)data_ov006_02140588);
@@ -2117,7 +2117,7 @@ namespace ns_020cb838 {
 
 extern "C" {
 void func_ov006_020cc618(void *c);
-void func_ov006_020bfec0(void *a0, void *a1, short *a2);
+void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void func_ov006_020cb814(void *c);
 void func_ov006_020cb690(void *c);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
@@ -2157,7 +2157,7 @@ extern "C" void func_ov006_020cb838(char *c)
         }
     }
 
-    func_ov006_020bfec0(data_ov006_02141a40, (void *)(c + 0x1c), (short *)(c + 0x4e));
+    Camera_ProjectToScreen16(data_ov006_02141a40, (void *)(c + 0x1c), (short *)(c + 0x4e));
 
     v = *(int *)(c + 0x1c);
 
@@ -2368,7 +2368,7 @@ namespace ns_020cbd7c {
 
 extern "C" {
 void func_ov006_020cc618(void *c);
-void func_ov006_020bfec0(void *a0, void *a1, short *a2);
+void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void func_ov006_020cb814(void *c);
 void func_ov006_020cb690(void *c);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, void *file, int i, int fix, unsigned int flags);
@@ -2398,7 +2398,7 @@ extern "C" void func_ov006_020cbd7c(char *c)
         return;
     }
 
-    func_ov006_020bfec0(data_ov006_02141a40, (void *)(c + 0x1c), (short *)(c + 0x4e));
+    Camera_ProjectToScreen16(data_ov006_02141a40, (void *)(c + 0x1c), (short *)(c + 0x4e));
 
     v = *(int *)(c + 0x1c);
 
@@ -2714,7 +2714,7 @@ namespace ns_020cc408 {
 extern "C" {
 void func_ov006_020cbfd8(void *c);
 void func_ov006_020cbaec(void *c);
-void func_ov006_020bfec0(void *a0, void *a1, short *a2);
+void Camera_ProjectToScreen16(void *a0, void *a1, short *a2);
 void func_ov006_020cb814(void *c);
 void func_ov006_020cb690(void *c);
 int func_ov006_020e6e3c(int a, int b);
@@ -2747,7 +2747,7 @@ extern "C" void func_ov006_020cc408(char *c)
         return;
     }
 
-    func_ov006_020bfec0(data_ov006_02141a40, (void *)(c + 0x1c), (short *)(c + 0x4e));
+    Camera_ProjectToScreen16(data_ov006_02141a40, (void *)(c + 0x1c), (short *)(c + 0x4e));
 
     v = *(int *)(c + 0x1c);
 
@@ -3194,7 +3194,7 @@ extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 /* local extern: the call passes an untyped this, so it cannot use the header method. */
 extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
-extern void func_ov006_020bfec0(char* p, void* q, short* s);
+extern void Camera_ProjectToScreen16(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a, int b);
 extern void func_02016a04(void* self, int a);
 extern void func_ov006_020ccd78(char* c);
@@ -3221,7 +3221,7 @@ int func_ov006_020cce0c(char* c)
     ret = _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x6c, f, 1, -1);
     *(int*)(c + 0x58) = 0;
     if (data_ov006_02141a40 != 0)
-        func_ov006_020bfec0(data_ov006_02141a40, c + 0x1c, (short*)(c + 0x4e));
+        Camera_ProjectToScreen16(data_ov006_02141a40, c + 0x1c, (short*)(c + 0x4e));
     *(int*)(c + 0x40) = 0;
     func_02016a14(c + 0x6c, 0x6bff, 0);
     func_02016a04(c + 0x6c, 0x21d);

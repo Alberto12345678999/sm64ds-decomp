@@ -19379,7 +19379,7 @@
     },
     "ov004:0x020b298c": {
       "author": "tangosdev",
-      "name": "_ZN11dScMgBase_c13OnHostAnimCueEv"
+      "name": "_ZN11dScMgBase_c10OnDealDoneEv"
     },
     "ov004:0x020b2990": {
       "author": "andrewboudreau",
@@ -20147,11 +20147,11 @@
     },
     "ov006:0x020bfec0": {
       "author": "tangosdev",
-      "name": "func_ov006_020bfec0"
+      "name": "Camera_ProjectToScreen16"
     },
     "ov006:0x020bfff8": {
       "author": "tangosdev",
-      "name": "func_ov006_020bfff8"
+      "name": "Camera_ProjectToScreen"
     },
     "ov006:0x020c0134": {
       "author": "andrewboudreau",
@@ -20159,363 +20159,363 @@
     },
     "ov006:0x020c0264": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0264"
+      "name": "MascotWalker_StatePause"
     },
     "ov006:0x020c0304": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0304"
+      "name": "MascotWalker_StartPause"
     },
     "ov006:0x020c0364": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0364"
+      "name": "MascotWalker_StateWalk"
     },
     "ov006:0x020c057c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c057c"
+      "name": "MascotWalker_StartNextPath"
     },
     "ov006:0x020c06dc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c06dc"
+      "name": "MascotWalker_UpdateMatrix"
     },
     "ov006:0x020c07a0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c07a0"
+      "name": "MascotWalker_Draw"
     },
     "ov006:0x020c07e8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c07e8"
+      "name": "MascotWalker_Update"
     },
     "ov006:0x020c092c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c092c"
+      "name": "MascotWalker_Load"
     },
     "ov006:0x020c09f8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c09f8"
+      "name": "MascotWalker_Destruct"
     },
     "ov006:0x020c0a48": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0a48"
+      "name": "MascotWalker_Construct"
     },
     "ov006:0x020c0aa8": {
       "author": "ruspecial",
-      "name": "func_ov006_020c0aa8"
+      "name": "Camera_InitDealerView"
     },
     "ov006:0x020c0af8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0af8"
+      "name": "Dealer_ResetMatrices"
     },
     "ov006:0x020c0b74": {
       "author": "ruspecial",
-      "name": "func_ov006_020c0b74"
+      "name": "Dealer_StateWin"
     },
     "ov006:0x020c0c80": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0c80"
+      "name": "Dealer_PlayWin"
     },
     "ov006:0x020c0ce8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0ce8"
+      "name": "Dealer_StateLose"
     },
     "ov006:0x020c0d68": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0d68"
+      "name": "Dealer_PlayLose"
     },
     "ov006:0x020c0df0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0df0"
+      "name": "Dealer_StateSwap"
     },
     "ov006:0x020c0e8c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c0e8c"
+      "name": "Dealer_StartSwap"
     },
     "ov006:0x020c0efc": {
       "author": "ruspecial",
-      "name": "func_ov006_020c0efc"
+      "name": "Dealer_IsAnimDone"
     },
     "ov006:0x020c0f0c": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c0f0c"
+      "name": "Dealer_IsBusy"
     },
     "ov006:0x020c0f9c": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c0f9c"
+      "name": "Dealer_StateReveal"
     },
     "ov006:0x020c1164": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1164"
+      "name": "Dealer_StartReveal"
     },
     "ov006:0x020c11c0": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c11c0"
+      "name": "Dealer_StateCollect"
     },
     "ov006:0x020c1420": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1420"
+      "name": "Dealer_StartCollect"
     },
     "ov006:0x020c14bc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c14bc"
+      "name": "Dealer_StateDeal"
     },
     "ov006:0x020c1604": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1604"
+      "name": "Dealer_StartDeal"
     },
     "ov006:0x020c16b4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c16b4"
+      "name": "Dealer_IsIdleAtRest"
     },
     "ov006:0x020c1718": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1718"
+      "name": "Dealer_IsIdle"
     },
     "ov006:0x020c1760": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1760"
+      "name": "Dealer_StateIdle"
     },
     "ov006:0x020c1764": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1764"
+      "name": "Dealer_PlayIdle"
     },
     "ov006:0x020c1804": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1804"
+      "name": "Dealer_Draw"
     },
     "ov006:0x020c19d0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c19d0"
+      "name": "Dealer_Update"
     },
     "ov006:0x020c1a88": {
       "author": "ruspecial",
-      "name": "func_ov006_020c1a88"
+      "name": "Dealer_Load"
     },
     "ov006:0x020c1c64": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1c64"
+      "name": "Dealer_Destruct"
     },
     "ov006:0x020c1d80": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1d80"
+      "name": "Dealer_Construct"
     },
     "ov006:0x020c1eb4": {
       "author": "ruspecial",
-      "name": "func_ov006_020c1eb4"
+      "name": "Camera_InitSlotsView"
     },
     "ov006:0x020c1ef8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1ef8"
+      "name": "Mascot_StopLooking"
     },
     "ov006:0x020c1f04": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1f04"
+      "name": "Mascot_LookAt"
     },
     "ov006:0x020c1f4c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c1f4c"
+      "name": "Mascot_UpdateMatrix"
     },
     "ov006:0x020c201c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c201c"
+      "name": "Mascot_Draw"
     },
     "ov006:0x020c2144": {
       "author": "ruspecial",
-      "name": "func_ov006_020c2144"
+      "name": "Mascot_Update"
     },
     "ov006:0x020c2154": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2154"
+      "name": "Mascot_Load"
     },
     "ov006:0x020c21e4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c21e4"
+      "name": "Mascot_Destruct"
     },
     "ov006:0x020c221c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c221c"
+      "name": "Mascot_Construct"
     },
     "ov006:0x020c225c": {
       "author": "ruspecial",
-      "name": "func_ov006_020c225c"
+      "name": "Camera_InitPresenterView"
     },
     "ov006:0x020c2290": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2290"
+      "name": "Presenter_UpdateMatrix"
     },
     "ov006:0x020c22d8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c22d8"
+      "name": "Presenter_StateAnim7Loop"
     },
     "ov006:0x020c2300": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2300"
+      "name": "Presenter_PlayAnim7Loop"
     },
     "ov006:0x020c23a8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c23a8"
+      "name": "Presenter_StateAnim4"
     },
     "ov006:0x020c2440": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2440"
+      "name": "Presenter_PlayAnim4"
     },
     "ov006:0x020c24e4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c24e4"
+      "name": "Presenter_StateAnim7"
     },
     "ov006:0x020c2594": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2594"
+      "name": "Presenter_PlayAnim7"
     },
     "ov006:0x020c263c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c263c"
+      "name": "Presenter_StateAnim1"
     },
     "ov006:0x020c2664": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2664"
+      "name": "Presenter_PlayAnim1"
     },
     "ov006:0x020c26f4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c26f4"
+      "name": "Presenter_StateAnim2"
     },
     "ov006:0x020c271c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c271c"
+      "name": "Presenter_PlayAnim2"
     },
     "ov006:0x020c27c4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c27c4"
+      "name": "Presenter_StateIdle"
     },
     "ov006:0x020c2848": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2848"
+      "name": "Presenter_PlayIdle"
     },
     "ov006:0x020c2924": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2924"
+      "name": "Presenter_ResetPose"
     },
     "ov006:0x020c2984": {
       "author": "ruspecial",
-      "name": "func_ov006_020c2984"
+      "name": "Presenter_IsAnimDone"
     },
     "ov006:0x020c2994": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2994"
+      "name": "Presenter_IsIdle"
     },
     "ov006:0x020c29dc": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c29dc"
+      "name": "Presenter_Draw"
     },
     "ov006:0x020c2b8c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c2b8c"
+      "name": "Presenter_Update"
     },
     "ov006:0x020c2be8": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020c2be8"
+      "name": "Presenter_TrackStylus"
     },
     "ov006:0x020c3050": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3050"
+      "name": "Presenter_Load"
     },
     "ov006:0x020c3288": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3288"
+      "name": "Presenter_Destruct"
     },
     "ov006:0x020c33dc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c33dc"
+      "name": "Presenter_Construct"
     },
     "ov006:0x020c3528": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3528"
+      "name": "FallingPetal_UpdateMatrix"
     },
     "ov006:0x020c35a8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c35a8"
+      "name": "FallingPetal_Draw"
     },
     "ov006:0x020c35e8": {
       "author": "ruspecial",
-      "name": "func_ov006_020c35e8"
+      "name": "FallingPetal_Update"
     },
     "ov006:0x020c3754": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c3754"
+      "name": "FallingPetal_Spawn"
     },
     "ov006:0x020c3884": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3884"
+      "name": "FallingPetal_SetModel"
     },
     "ov006:0x020c38ac": {
       "author": "tangosdev",
-      "name": "func_ov006_020c38ac"
+      "name": "FlowerFace_StateReactB"
     },
     "ov006:0x020c38b0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c38b0"
+      "name": "FlowerFace_PlayReactB"
     },
     "ov006:0x020c3904": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3904"
+      "name": "FlowerFace_StateReactA"
     },
     "ov006:0x020c3908": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3908"
+      "name": "FlowerFace_PlayReactA"
     },
     "ov006:0x020c395c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c395c"
+      "name": "FlowerFace_StateReact"
     },
     "ov006:0x020c3990": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020c3990"
+      "name": "FlowerFace_PlayPetalPulled"
     },
     "ov006:0x020c3ad8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3ad8"
+      "name": "FlowerFace_StateIdle"
     },
     "ov006:0x020c3adc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3adc"
+      "name": "FlowerFace_PlayIdle"
     },
     "ov006:0x020c3b2c": {
       "author": "ruspecial",
-      "name": "func_ov006_020c3b2c"
+      "name": "Camera_InitFlowerView"
     },
     "ov006:0x020c3b80": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3b80"
+      "name": "FlowerFace_IsIdle"
     },
     "ov006:0x020c3bc8": {
       "author": "ruspecial",
-      "name": "func_ov006_020c3bc8"
+      "name": "FlowerFace_Reset"
     },
     "ov006:0x020c3bf4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3bf4"
+      "name": "FlowerFace_Draw"
     },
     "ov006:0x020c3d18": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3d18"
+      "name": "FlowerFace_Update"
     },
     "ov006:0x020c3d88": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3d88"
+      "name": "FlowerFace_Load"
     },
     "ov006:0x020c3e54": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3e54"
+      "name": "FallingPetal_Destruct"
     },
     "ov006:0x020c3e70": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3e70"
+      "name": "FlowerFace_Destruct"
     },
     "ov006:0x020c3f54": {
       "author": "tangosdev",
-      "name": "func_ov006_020c3f54"
+      "name": "FlowerFace_Construct"
     },
     "ov006:0x020c402c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c402c"
+      "name": "FallingPetal_Construct"
     },
     "ov006:0x020c4048": {
       "author": "tangosdev",
@@ -22063,7 +22063,7 @@
     },
     "ov006:0x020db6ec": {
       "author": "github-actions[bot]",
-      "name": "_ZN11dScMgCard_c13OnHostAnimCueEv"
+      "name": "_ZN11dScMgCard_c10OnDealDoneEv"
     },
     "ov006:0x020db720": {
       "author": "github-actions[bot]",
@@ -24087,7 +24087,7 @@
     },
     "ov006:0x020f523c": {
       "author": "github-actions[bot]",
-      "name": "_ZN13dScMgMemory_c13OnHostAnimCueEv"
+      "name": "_ZN13dScMgMemory_c10OnDealDoneEv"
     },
     "ov006:0x020f5250": {
       "author": "github-actions[bot]",
@@ -24295,7 +24295,7 @@
     },
     "ov006:0x020f730c": {
       "author": "ruspecial",
-      "name": "_ZN14dScMgMemory2_c13OnHostAnimCueEv"
+      "name": "_ZN14dScMgMemory2_c10OnDealDoneEv"
     },
     "ov006:0x020f7320": {
       "author": "tangosdev",
@@ -27363,7 +27363,7 @@
     },
     "ov006:0x02125248": {
       "author": "github-actions[bot]",
-      "name": "_ZN10dScMgBSC_c13OnHostAnimCueEv"
+      "name": "_ZN10dScMgBSC_c10OnDealDoneEv"
     },
     "ov006:0x0212527c": {
       "author": "github-actions[bot]",

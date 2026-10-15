@@ -43,8 +43,8 @@ A pass must not change a single emitted byte or relocation target.
    - Measured negative where the factory constructs a member that the header keeps as raw bytes, so the implicit constructor never calls it. Sizes are the `new` form against the ROM:
      - Coin: 0x34 against 0x48, without `func_0203b9b4(this + 0x51c4, 1)`. An inline class constructor making that call, tried in a scratch copy of the header, matches.
      - 3DEsp: 0x50 against 0x90, without the two `Model`, the `dMg3DEspModel_c` and the `TextureTransformer` constructors.
-     - Flower: 0x50 against 0x94, without the `__cxa_vec_ctor` for `mArray` and without `func_ov006_020c3f54`.
-     - Slot3: 0x50 against 0x60, without `func_ov006_020c221c`.
+     - Flower: 0x50 against 0x94, without the `__cxa_vec_ctor` for `mArray` and without `FlowerFace_Construct`.
+     - Slot3: 0x50 against 0x60, without `Mascot_Construct`.
      - Roulette: 0x4c against 0xac, without the table, racer-array and two `Model` constructors.
      - Slot1: 0x58 against 0x88, without `func_ov006_0210c2b0` (twice) and `func_ov006_0210c208`.
    - Measured negative for Snowball: 0x60 against 0x34. The ROM calls the out-of-line constructor `func_ov006_021295ac`; with none declared, `new` inlines one. Declaring `dScMgSnowball_c();` out of line matches the bytes, but the link then needs that address named as the C1.

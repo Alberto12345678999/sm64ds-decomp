@@ -204,7 +204,7 @@
         "slot_address": "0x0213e3f0",
         "target": "0x020b298c",
         "module": "ov004",
-        "name": "_ZN11dScMgBase_c13OnHostAnimCueEv"
+        "name": "_ZN11dScMgBase_c10OnDealDoneEv"
       },
       {
         "slot": 22,
@@ -387,7 +387,7 @@
   },
   "unproven": [
     "Element type of the 5 x 0x34 array at 0x51a8: __destroy_arr is called with func_ov006_021079c8 as the element destructor and that body is empty, so the elements have no ROM RTTI identity. The header keeps them as raw bytes.",
-    "Identity of the 0x270-byte subobject at 0x4f38: it is constructed by func_ov006_020c1d80 and destroyed by func_ov006_020c1c64, both shared with five sibling minigame scenes, but neither carries a class name.",
+    "Identity of the 0x270-byte subobject at 0x4f38: it is constructed by Dealer_Construct and destroyed by Dealer_Destruct, both shared with five sibling minigame scenes, but neither carries a class name.",
     "The two 0x50-byte spans at 0x531c and 0x536c are Models by construction (_ZN5ModelC1Ev in the factory) and destruction (_ZN5ModelD1Ev in the destructor), but they are still spelled as raw bytes because the ROM destructor interleaves the array and table teardown between them, which Itanium auto-destruction of typed members cannot reproduce.",
     "0x52ac..0x531c (0x70 bytes) is reached only through raw-offset helper calls (func_ov006_02107b70, func_ov006_02108524, func_ov006_02107d80, func_ov006_021085c0) and has no named field.",
     "Whether any of the 32 non-virtual functions in this run had external linkage in the original source: none is referenced from outside 0x0210788c..0x0210a400, and func_ov006_0210858c and func_ov006_02109aa0 were referenced ONLY by their sibling shards, but adjacency does not prove static versus external linkage.",

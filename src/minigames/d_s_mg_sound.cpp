@@ -115,14 +115,14 @@ extern PmfEntry data_ov006_02142df8[];
 extern PmfEntry data_ov006_02142e20[];
 extern u8 data_ov006_0212ee30[];
 extern void func_02012790(int);
-extern void func_ov006_020c271c(void *c);
-extern void func_ov006_020c2664(char *c);
+extern void Presenter_PlayAnim2(void *c);
+extern void Presenter_PlayAnim1(char *c);
 extern int data_ov006_0212ef7c[];
 extern int data_ov006_0212ef8c[];
 extern int data_ov006_0212ef5c[];
 extern int data_ov006_0212ef6c[];
 extern unsigned short data_ov006_0212ef4c[];
-void func_ov006_020c2300(char *p);
+void Presenter_PlayAnim7Loop(char *p);
 void func_02012174(u32 bank, u32 id);
 extern u16 data_ov006_0212ef3c[];
 extern u16 data_ov006_0213f794[];
@@ -135,14 +135,14 @@ extern u8 data_ov006_0212ee20[];
 extern int data_ov006_0212ef9c[];
 extern int data_ov006_0212efb0[];
 extern u16 *data_ov006_0213f6fc[];
-extern void func_ov006_020c2924(char *c);
-extern void func_ov006_020c2594(void *c);
+extern void Presenter_ResetPose(char *c);
+extern void Presenter_PlayAnim7(void *c);
 extern "C" void Mg_DrawScoreTally(void *c, int a, int b, int d);
 void FreeGfxSlotsById(int id);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
-void func_ov006_020c225c(void *p);
-int func_ov006_020c3050(void *p);
+void Camera_InitPresenterView(void *p);
+int Presenter_Load(void *p);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 }
@@ -157,7 +157,7 @@ extern u8 data_0209d454;
    emitted here, where the symbol sits two words lower, hence the `+ 2`. */
 extern "C" void *_ZN11dScMgBase_cC2Ev(void *);
 extern "C" void _ZN8Particle10SysTrackerC1Ev(void *);
-extern "C" void func_ov006_020c33dc(void *);
+extern "C" void Presenter_Construct(void *);
 extern void *_ZTV19dScMgSingle3DBase_c[];
 extern void *_ZTV12dScMgSound_c[];
 
@@ -169,7 +169,7 @@ extern "C" void *dScMgSound_c_classInit(void)
         *(void **)p = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
         *(void **)p = _ZTV12dScMgSound_c + 2;
-        func_ov006_020c33dc(p + 0x4f38);
+        Presenter_Construct(p + 0x4f38);
     }
     return p;
 }
@@ -210,8 +210,8 @@ s32 dScMgSound_c::InitResources()
     Deallocate((void *)objChars);
     Deallocate((void *)objPltt);
 
-    func_ov006_020c225c((void *)(raw + 0x4660));
-    if (func_ov006_020c3050((void *)&mTable) == 0)
+    Camera_InitPresenterView((void *)(raw + 0x4660));
+    if (Presenter_Load((void *)&mTable) == 0)
         return 0;
 
     mTable.mSuppressSound = 1;
@@ -266,7 +266,7 @@ s32 dScMgSound_c::Behavior()
             if (mResultTimer == 0) {
                 if (mTries != 0) {
                     mTable.mSuppressSound = 0;
-                    func_ov006_020c2594((char *)&mTable);
+                    Presenter_PlayAnim7((char *)&mTable);
                     if (mTries == 3)
                         Mg_SetPerfectBanner();
                     Mg_SetSharedState(0);
@@ -302,7 +302,7 @@ s32 dScMgSound_c::Behavior()
             (*(u16 *)(int)&mResultTimer)--;
             if (*(s16 *)&mResultTimer <= 0) {
                 mTable.mSuppressSound = 0;
-                func_ov006_020c2440((char *)&mTable);
+                Presenter_PlayAnim4((char *)&mTable);
                 Mg_SetSharedState(0x12);
                 mPromptEnabled = 0;
                 mResultTimer = 0;
@@ -311,7 +311,7 @@ s32 dScMgSound_c::Behavior()
         break;
     }
 
-    func_ov006_020c2b8c((char *)&mTable);
+    Presenter_Update((char *)&mTable);
     return 1;
 }
 
@@ -327,7 +327,7 @@ s32 dScMgSound_c::Render()
     func_ov006_02119bc4();
     func_ov006_021199c0();
     func_ov006_02119aa8();
-    func_ov006_020c29dc(&mTable);
+    Presenter_Draw(&mTable);
     return 1;
 }
 
@@ -382,7 +382,7 @@ void dScMgSound_c::StartRound(int mode)
 /* Slot 20, OnNewRecord: plays the table model's win animation. */
 void dScMgSound_c::OnNewRecord()
 {
-    func_ov006_020c2594((char *)&mTable);
+    Presenter_PlayAnim7((char *)&mTable);
 }
 
 // @symbol _ZN12dScMgSound_c19func_ov006_0211c478Ev
@@ -450,7 +450,7 @@ void dScMgSound_c::func_ov006_0211c478()
     this->mTouchCount = 0;
     this->mResultTimer = 0;
 
-    func_ov006_020c2924((char *)&this->mTable);
+    Presenter_ResetPose((char *)&this->mTable);
 }
 
 // @symbol _ZN12dScMgSound_c19func_ov006_0211c080Ev
@@ -674,7 +674,7 @@ void dScMgSound_c::func_ov006_0211bc8c(int idx)
         }
     }
 
-    if (this->mTouchCount == 1) func_ov006_020c2300((char *)&this->mTable);
+    if (this->mTouchCount == 1) Presenter_PlayAnim7Loop((char *)&this->mTable);
 }
 
 // @symbol _ZN12dScMgSound_c19func_ov006_0211bc68Ei
@@ -794,14 +794,14 @@ void dScMgSound_c::func_ov006_0211b80c(){
     this->mNotes[this->mQueue[0] >> 8].alive = 0;
     this->mNotes[this->mQueue[1] >> 8].alive = 0;
     func_02012790(0x26);
-    func_ov006_020c271c(&this->mTable);
+    Presenter_PlayAnim2(&this->mTable);
   } else {
     this->mNotes[this->mQueue[0] >> 8].state = 3;
     this->mNotes[this->mQueue[1] >> 8].state = 3;
     func_02012790(0xe);
     this->mTries--;
     func_02012790(0x12f);
-    func_ov006_020c2664((char *)&this->mTable);
+    Presenter_PlayAnim1((char *)&this->mTable);
   }
   this->mQueue[1] = 0;
   this->mQueue[0] = this->mQueue[1];

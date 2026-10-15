@@ -350,7 +350,7 @@
       "ordinal": 44
     },
     {
-      "symbol": "_ZN14dScMgMemory2_c13OnHostAnimCueEv",
+      "symbol": "_ZN14dScMgMemory2_c10OnDealDoneEv",
       "address": "0x020f730c",
       "size": "0x00000014",
       "legacy_source": "src/_ZN14dScMgMemory2_c15OnGroundPoundedEv.cpp",

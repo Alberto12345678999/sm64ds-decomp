@@ -71,7 +71,7 @@
       {"slot": 18, "slot_address": "0x0213c674", "target": "0x020b299c", "module": "ov004", "name": "dScMgBase_c::StartRound"},
       {"slot": 19, "slot_address": "0x0213c678", "target": "0x020b2994", "module": "ov004", "name": "dScMgBase_c::CanEndState"},
       {"slot": 20, "slot_address": "0x0213c67c", "target": "0x020b2990", "module": "ov004", "name": "dScMgBase_c::OnNewRecord"},
-      {"slot": 21, "slot_address": "0x0213c680", "target": "0x020b298c", "module": "ov004", "name": "dScMgBase_c::OnHostAnimCue"},
+      {"slot": 21, "slot_address": "0x0213c680", "target": "0x020b298c", "module": "ov004", "name": "dScMgBase_c::OnDealDone"},
       {"slot": 22, "slot_address": "0x0213c684", "target": "0x020ae198", "module": "ov004", "name": "dScMgBase_c::OnGraphCallback1"},
       {"slot": 23, "slot_address": "0x0213c688", "target": "0x020ae1a0", "module": "ov004", "name": "dScMgBase_c::OnGraphCallback0"},
       {"slot": 24, "slot_address": "0x0213c68c", "target": "0x020e6e78", "module": "ov006", "name": "dScMgD3DBase_c::OnGraphCallback2"},

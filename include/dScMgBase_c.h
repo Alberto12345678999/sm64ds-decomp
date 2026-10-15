@@ -147,8 +147,8 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        the original return-type spelling. The separate dActor_c slot 20
        remains int. See issue #2492 for caller coverage and proof limits. */
     virtual void OnNewRecord();                          /* slot 20 */
-    /* Slot 21 -- OnHostAnimCue, a low-confidence name. Its one caller is
-       func_ov006_020c14bc in unit020bfec0.cpp, the presenter model's
+    /* Slot 21 -- OnDealDone, a low-confidence name. Its one caller is
+       Dealer_StateDeal in unit020bfec0.cpp, the presenter model's
        reaction animation, which calls it on the last repeat of that
        animation. The base is empty; BSC/Card branch on mHudScore, and the two Memory
        overrides forward a component of this scene. These bodies alone do
@@ -156,7 +156,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        the slot-20 caller audit does not establish this slot's signature.
        Prior int/void experiments and separate slot-27/28 observations are
        retained in the original source history cited by issue #2492's handoff. */
-    virtual void OnHostAnimCue();                    /* slot 21 */
+    virtual void OnDealDone();                    /* slot 21 */
 /* Slot 22 -- OnGraphCallback1: graphCallback_c::GraphCallback1 forwards
    to it (slot 23 is GraphCallback0's, 24 GraphCallback2's, 25
    GraphCallback3's). What dGraph_c's four callbacks are for is not named

@@ -1068,7 +1068,7 @@
       "source": "0x0213fcd0",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
+      "symbol": "_ZN11dScMgBase_c10OnDealDoneEv",
       "addend": 0,
       "target_module": "overlays(0,4)",
       "target_address": "0x020b298c"

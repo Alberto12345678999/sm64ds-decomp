@@ -211,12 +211,12 @@ void Mg_DrawNumberRotated(int, int, int, int, int, int, int);
 void MgCoins_StartPayout(void);
 void MgCoins_Update(void);
 void MgCoins_Reset(void);
-void func_ov006_020c0aa8(char *c);
-int  func_ov006_020c0efc(char *a);
-int  func_ov006_020c1718(char *c);
-void func_ov006_020c1804(char *c);
-void func_ov006_020c19d0(char *thiz);
-int  func_ov006_020c1a88(char *c);
+void Camera_InitDealerView(char *c);
+int  Dealer_IsAnimDone(char *a);
+int  Dealer_IsIdle(char *c);
+void Dealer_Draw(char *c);
+void Dealer_Update(char *thiz);
+int  Dealer_Load(char *c);
 
 extern int   data_ov006_021428d0;
 extern int   data_ov006_0213e2dc;
@@ -327,8 +327,8 @@ s32 dScMgRoulette_c::InitResources()
     data_0209d454 = 0x15;
     *(volatile u16 *)0x04000008 = (*(volatile u16 *)0x04000008 & ~3) | 1;
 
-    func_ov006_020c0aa8(raw + 0x4660);
-    if (func_ov006_020c1a88((char *)mTable) == 0)
+    Camera_InitDealerView(raw + 0x4660);
+    if (Dealer_Load((char *)mTable) == 0)
         return 0;
     if (func_ov006_021085c0((char *)mSlider) == 0)
         return 0;
@@ -353,7 +353,7 @@ s32 dScMgRoulette_c::Behavior()
     case 0:
         break;
     case 1:
-        if (func_ov006_020c0efc((char *)mTable) != 0) {
+        if (Dealer_IsAnimDone((char *)mTable) != 0) {
             if (H(0x53d8) == 0) {
                 H(0x53d8) = 1;
             }
@@ -363,7 +363,7 @@ s32 dScMgRoulette_c::Behavior()
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        if (func_ov006_020c0efc((char *)mTable) != 0) {
+        if (Dealer_IsAnimDone((char *)mTable) != 0) {
             mPhaseTimer -= 1;
             if (H(0x53e8) == 0) {
                 mCameraPreset = 1;
@@ -389,7 +389,7 @@ s32 dScMgRoulette_c::Behavior()
                         } while (i < mRacerCount);
                     }
                     H(0x53e8) = 0x258;
-                    func_ov006_020c1764((char *)mTable);
+                    Dealer_PlayIdle((char *)mTable);
                     HA(0x53e6) += 1;
                     I(0x53f8) = 0;
                     Sound::PlayBank2_2D(0x15b);
@@ -521,10 +521,10 @@ s32 dScMgRoulette_c::Behavior()
             short target = mTargetScore;
             short score = mScore;
             if (score > target) {
-                func_ov006_020c0c80(mTable);
+                Dealer_PlayWin(mTable);
                 Mg_SetSharedState(4);
             } else if (score < target) {
-                func_ov006_020c0d68(mTable);
+                Dealer_PlayLose(mTable);
                 Mg_SetSharedState(5);
             } else {
                 Mg_SetSharedState(8);
@@ -559,7 +559,7 @@ s32 dScMgRoulette_c::Behavior()
         }
     }
     func_ov006_02107db8((C *)(c + 0x530c));
-    func_ov006_020c19d0((char *)mTable);
+    Dealer_Update((char *)mTable);
     MgCoins_Update();
     return 1;
 }
@@ -642,12 +642,12 @@ s32 dScMgRoulette_c::Render()
             mCameraAngle = angle;
             Camera_UpdateMatrices(raw + 0x4660);
         } else {
-            func_ov006_020c0aa8(raw + 0x4660);
+            Camera_InitDealerView(raw + 0x4660);
         }
         if (preset != 0)
             func_ov006_02107d80((char *)mSlider);
         else
-            func_ov006_020c1804((char *)mTable);
+            Dealer_Draw((char *)mTable);
     }
 
     return 1;
@@ -673,7 +673,7 @@ int dScMgRoulette_c::CanEndState(int /* mode */)
             (mPhase)++;
         break;
     case 6:
-        if (func_ov006_020c1718((char *)mTable) != 0) {
+        if (Dealer_IsIdle((char *)mTable) != 0) {
             mPhaseTimer = 0x3c;
             mDealIndex = 0;
             (mPhase)++;
@@ -711,7 +711,7 @@ void dScMgRoulette_c::StartRound(int /* arg */)
     int count;
 
     func_ov006_02107b14();
-    func_ov006_020c0e8c((int *)mTable);
+    Dealer_StartSwap((int *)mTable);
 
     mScore = 0;
     mPhaseTimer = 0xa;

@@ -3716,9 +3716,9 @@ void Mg_DisableAllBanks(void) { _ZN2GX15DisableAllBanksEv(); }
 }
 }
 
-// @symbol _ZN11dScMgBase_c13OnHostAnimCueEv
-/* dScMgBase_c::OnHostAnimCue - slot 21. */
-void dScMgBase_c::OnHostAnimCue()
+// @symbol _ZN11dScMgBase_c10OnDealDoneEv
+/* dScMgBase_c::OnDealDone - slot 21. */
+void dScMgBase_c::OnDealDone()
 {
 }
 

@@ -66,19 +66,19 @@ extern const Five data_ov006_0213bcd8;
 extern int RandomIntInternal(int *seed);
 extern int data_ov006_0213bd18[];
 extern int data_0209e650;
-extern "C" void func_ov006_020c0aa8(void *c);
+extern "C" void Camera_InitDealerView(void *c);
 extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern "C" void Mg_DrawCredits(char *a0, int a1, int a2, int a3);
 extern "C" void Mg_DrawScoreTally(void *a0, int a1, int a2, int a3);
-extern "C" void func_ov006_020c1804(void *c);
+extern "C" void Dealer_Draw(void *c);
 extern int data_ov006_02134028;
-void func_ov006_020c19d0(void *table);
+void Dealer_Update(void *table);
 void MgCoins_Update(void);
-extern int func_ov006_020c0f0c(void *p);
-extern int func_ov006_020c1718(void *p);
-extern void func_ov006_020c1420(void *c, s16 arg1, void *arg2);
-extern void func_ov006_020c0d68(void *c);
-extern void func_ov006_020c0c80(void *c);
+extern int Dealer_IsBusy(void *p);
+extern int Dealer_IsIdle(void *p);
+extern void Dealer_StartCollect(void *c, s16 arg1, void *arg2);
+extern void Dealer_PlayLose(void *c);
+extern void Dealer_PlayWin(void *c);
 extern void Mg_SaveRecordPair(int a0, int a1);
 extern void Mg_ShowBanner(int a0, int a1, int a2, int a3, int a4, s16 a5);
 extern void Mg_SubmitScore(int v);
@@ -90,7 +90,7 @@ extern int data_ov006_0213bd48[];
 extern void FreeGfxSlotsById(int arg);
 extern void MgCoins_StartPayout(int a);
 extern s16 gMgCoinsStatus;
-extern "C" void func_ov006_020c1604(char *c, int unused, short a2, int a3);
+extern "C" void Dealer_StartDeal(char *c, int unused, short a2, int a3);
 extern "C" void MgCoins_Reset(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
@@ -98,7 +98,7 @@ extern void func_ov006_0210a534(char *);
 extern void *LoadFile(int);
 extern int GetGameLanguage(void);
 extern void DecompressLZ16(void *, void *);
-extern int func_ov006_020c1a88(char *);
+extern int Dealer_Load(char *);
 void *_ZN11dScMgBase_cC2Ev(void*);
 void _ZN8Particle10SysTrackerC1Ev(void*);
 typedef void (*CardElementCallback)(void *);
@@ -134,7 +134,7 @@ extern "C" void* dScMgCard_c_classInit()
         *(int*)p = (int)&_ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(p + 0x471c);
         *(int*)p = (int)&_ZTV11dScMgCard_c[2];
-        func_ov006_020c1d80(p + 0x4f38);
+        Dealer_Construct(p + 0x4f38);
         __cxa_vec_ctor(p + 0x51a8, 5, 0x30,
                      _ZN12dMgCardObj_cC1Ev,
                      _ZN12dMgCardObj_cD1Ev);
@@ -209,8 +209,8 @@ s32 dScMgCard_c::InitResources()
 
     *(volatile u16 *)0x04000008 = (*(volatile u16 *)0x04000008 & ~3) | 1;
 
-    func_ov006_020c0aa8(pad_4660);
-    if (func_ov006_020c1a88((char *)&mShared) == 0)
+    Camera_InitDealerView(pad_4660);
+    if (Dealer_Load((char *)&mShared) == 0)
         return 0;
 
     {
@@ -256,7 +256,7 @@ void dScMgCard_c::StartRound(int mode)
     unk_5390 = 6;
     unk_5392 = 6;
     unk_5394 = 6;
-    func_ov006_020c1604((char *)&mShared, 4, 5, (int)&unk_538c);
+    Dealer_StartDeal((char *)&mShared, 4, 5, (int)&unk_538c);
 
     mShared.unk_1e6 = 1;
     mShared.unk_01a = 2;
@@ -301,7 +301,7 @@ int dScMgCard_c::CanEndState(int mode)
         break;
     }
     case 0xf:
-        if (func_ov006_020c1718(&mShared) != 0) {
+        if (Dealer_IsIdle(&mShared) != 0) {
             int r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
                 MgCoins_StartLose();
@@ -358,11 +358,11 @@ int dScMgCard_c::CanEndState(int mode)
     return 0;
 }
 
-// @symbol _ZN11dScMgCard_c13OnHostAnimCueEv
+// @symbol _ZN11dScMgCard_c10OnDealDoneEv
 /* Slot 21 selects a tier from 1 to 4 according to mHudScore and passes it
  * to MgCoins_RaiseBet. The inherited name does not establish an actor
  * ground-pound event or the original name of this scene callback. */
-void dScMgCard_c::OnHostAnimCue() {
+void dScMgCard_c::OnDealDone() {
     int x = mHudScore;
     int v;
     if (x < 5) {
@@ -423,11 +423,11 @@ void dScMgCard_c::UpdateState()
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        if (func_ov006_020c0f0c(&mShared) != 0)
+        if (Dealer_IsBusy(&mShared) != 0)
             mState++;
         break;
     case 2:
-        if (func_ov006_020c1718(&mShared) != 0) {
+        if (Dealer_IsIdle(&mShared) != 0) {
             mStateTimer = 0x10;
             mState++;
         } else {
@@ -515,14 +515,14 @@ void dScMgCard_c::UpdateState()
         break;
     case 5:
         if (data_ov006_02141768 != 0 && dScMgCard_c::AllInState((const dMgCardObj_c *)mArray1, 2) != 0
-            && func_ov006_020c1718(&mShared) != 0) {
+            && Dealer_IsIdle(&mShared) != 0) {
             mState++;
-        } else if (func_ov006_020c1718(&mShared) != 0) {
+        } else if (Dealer_IsIdle(&mShared) != 0) {
             r = dScMgCard_c::CountInState((const dMgCardObj_c *)mArray1, 6);
             if (r != 0) {
                 unk_538c = 0;
                 mShared.unk_1e6 = 0;
-                func_ov006_020c1420(&mShared, (s16)r, &unk_538c);
+                Dealer_StartCollect(&mShared, (s16)r, &unk_538c);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray1, 6);
@@ -537,7 +537,7 @@ void dScMgCard_c::UpdateState()
         mState++;
         break;
     case 7:
-        if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 && func_ov006_020c1718(&mShared) != 0) {
+        if (dScMgCard_c::AllInState((const dMgCardObj_c *)mArray2, 1) != 0 && Dealer_IsIdle(&mShared) != 0) {
             r = data_ov006_0213bc44 - 1;
             data_ov006_0213bc44 = r;
             if (r == 0) {
@@ -548,12 +548,12 @@ void dScMgCard_c::UpdateState()
                 data_ov006_02141768 = 0;
                 data_ov006_02141770 = 0;
             }
-        } else if (func_ov006_020c1718(&mShared) != 0) {
+        } else if (Dealer_IsIdle(&mShared) != 0) {
             r = dScMgCard_c::CountInState((const dMgCardObj_c *)mArray2, 6);
             if (r != 0) {
                 unk_538c = 0;
                 mShared.unk_1e6 = 0;
-                func_ov006_020c1420(&mShared, (s16)r, &unk_538c);
+                Dealer_StartCollect(&mShared, (s16)r, &unk_538c);
             }
         } else {
             r = dScMgCard_c::FindInState((const dMgCardObj_c *)mArray2, 6);
@@ -652,7 +652,7 @@ void dScMgCard_c::UpdateState()
         if (mStateTimer == 0) {
             r = dScMgCard_c::CompareHands((const dMgCardObj_c *)mArray1, (const dMgCardObj_c *)mArray2);
             if (r == -1) {
-                func_ov006_020c0d68(&mShared);
+                Dealer_PlayLose(&mShared);
                 g = gMgScene;
                 if (g != 0) {
                     if (((dScMgBase_c *)g)->mHudScore > 0) {
@@ -661,7 +661,7 @@ void dScMgCard_c::UpdateState()
                 }
                 Mg_SetSharedState(5);
             } else if (r == 1) {
-                func_ov006_020c0c80(&mShared);
+                Dealer_PlayWin(&mShared);
                 g = gMgScene;
                 if (g != 0) {
                     if (((dScMgBase_c *)g)->mHudScore < 0x270f) {
@@ -701,11 +701,11 @@ void dScMgCard_c::UpdateState()
 
 // @symbol _ZN11dScMgCard_c8BehaviorEv
 /* Slot 6. mShared is the 0x270-byte table this family of scenes shares;
- * func_ov006_020c19d0 steps it. */
+ * Dealer_Update steps it. */
 s32 dScMgCard_c::Behavior()
 {
     mFrameCounter += 1;
-    func_ov006_020c19d0(&mShared);
+    Dealer_Update(&mShared);
     UpdateState();
     MgCoins_Update();
     return 1;
@@ -724,7 +724,7 @@ s32 dScMgCard_c::Render()
     int i;
     int y;
 
-    func_ov006_020c0aa8(pad_4660);
+    Camera_InitDealerView(pad_4660);
 
     state = this->mState;
     if (state > 3 && state < 0x11) {
@@ -802,7 +802,7 @@ s32 dScMgCard_c::Render()
         }
     }
 
-    func_ov006_020c1804(&mShared);
+    Dealer_Draw(&mShared);
     return 1;
 }
 

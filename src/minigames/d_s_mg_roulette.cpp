@@ -12,7 +12,7 @@
  *   dScMgRoulette_c C1, so a native `new` expression cannot link.
  * - mModel1/mModel2 stay addressed off the mSlider base: naming them
  *   directly costs bytes (measured).
- * - The table constructor func_ov006_020c1d80 is still unnamed in
+ * - The table constructor Dealer_Construct is still unnamed in
  *   symbols.txt; dScMgCard_c.h declares it.
  */
 
@@ -20,7 +20,7 @@
 #include "dScMgCard_c.h"
 
 /* The constructors run on raw bytes of the new scene, so they are called by
- * their mangled names. func_ov006_020c1d80 (the mTable constructor) is still
+ * their mangled names. Dealer_Construct (the mTable constructor) is still
  * unnamed in symbols.txt. */
 extern "C" {
 void *_ZN11dScMgBase_cC2Ev(void *scene);
@@ -52,7 +52,7 @@ extern "C" void* dScMgRoulette_c_classInit(void){
     *(int*)raw = (int)_ZTV19dScMgSingle3DBase_c;
     _ZN8Particle10SysTrackerC1Ev((char *)&scene->mSysTracker);
     *(int*)raw = (int)_ZTV15dScMgRoulette_c;
-    func_ov006_020c1d80((char *)scene->mTable);
+    Dealer_Construct((char *)scene->mTable);
     __cxa_vec_ctor(scene->mArray, 5, 0x34, func_ov006_0210a4ac, func_ov006_021079c8);
     char *models = (char *)scene->mSlider;
     _ZN5ModelC1Ev(models + 0x10);   /* mModel1 */

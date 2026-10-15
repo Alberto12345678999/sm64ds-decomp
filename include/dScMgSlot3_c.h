@@ -9,8 +9,8 @@
  * (dScMgSlot3_c_classInit in src/minigames/d_s_mg_slots.cpp). The evidenced field span stops at 0x5043,
  * so the trailing byte is alignment, not unclaimed space.
  *
- * TABLE at 0x4f38, constructed by func_ov006_020c221c and destroyed by
- * func_ov006_020c21e4 -- the same construct/destroy pair shape five
+ * TABLE at 0x4f38, constructed by Mascot_Construct and destroyed by
+ * Mascot_Destruct -- the same construct/destroy pair shape five
  * siblings use at this same offset (see include/dScMgCard_c.h's own note).
  * Nothing reads inside the table itself, so its size is bounded only by
  * what follows it, and that bound is 0xac, not the 0xb8 the first draft of
@@ -43,7 +43,7 @@
 #define DSCMGSLOT3_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int func_ov006_020c21e4(char *t); /* decl_common.h's own signature */
+extern "C" int Mascot_Destruct(char *t); /* decl_common.h's own signature */
 
 struct dScMgSlot3_c : dScMgSingle3DBase_c {
     virtual ~dScMgSlot3_c();

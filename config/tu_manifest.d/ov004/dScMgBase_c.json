@@ -857,7 +857,7 @@
       "ordinal": 115
     },
     {
-      "symbol": "_ZN11dScMgBase_c13OnHostAnimCueEv",
+      "symbol": "_ZN11dScMgBase_c10OnDealDoneEv",
       "address": "0x020b298c",
       "size": "0x00000004",
       "legacy_source": "src/_ZN11dScMgBase_c15OnGroundPoundedEv.cpp",

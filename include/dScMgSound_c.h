@@ -15,7 +15,7 @@
 #define DSCMGSOUND_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int func_ov006_020c3288(char *t);
+extern "C" int Presenter_Destruct(char *t);
 
 /* One HUD sprite. Two of them, not an array: nothing indexes between them. */
 struct dMgSoundSprite_c {
@@ -82,7 +82,7 @@ typedef char dMgSoundComponentStorage_size_must_be_0x1ac[
 #endif
 
 struct dScMgSound_c : dScMgSingle3DBase_c {
-    virtual ~dScMgSound_c() { func_ov006_020c3288((char *)&mTable); }
+    virtual ~dScMgSound_c() { Presenter_Destruct((char *)&mTable); }
     virtual void StartRound(int arg);               /* slot 18 */
     virtual void OnNewRecord();                          /* slot 20 */
 

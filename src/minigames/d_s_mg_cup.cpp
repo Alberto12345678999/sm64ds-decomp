@@ -92,10 +92,10 @@ extern RestPos data_ov006_0213c0ac[];
 extern int RandomIntInternal(int *seed);
 extern void Mg_SetSharedState(int c);
 extern void func_ov006_020def80(char *self, int i);
-extern void func_ov006_020c2594(void *c);
+extern void Presenter_PlayAnim7(void *c);
 extern void Mg_SubCredits(void *c, int val);
-extern void func_ov006_020c2664(char *c);
-extern void func_ov006_020c2440(char *c);
+extern void Presenter_PlayAnim1(char *c);
+extern void Presenter_PlayAnim4(char *c);
 extern void func_02012790(int x);
 extern void Mg_SubmitScore(int self);
 extern void FreeGfxSlotsById(int arg);
@@ -106,7 +106,7 @@ extern short data_02082214[];
 extern signed char data_ov006_0213c084[];
 extern signed char data_ov006_0213c085[];
 extern void func_ov006_020df024(char *o);
-extern void func_ov006_020c2924(char *c);
+extern void Presenter_ResetPose(char *c);
 /* Render spells cup y as this view. mCup[cup].y changes that call. */
 struct P8 { int a; int b; };
 void func_ov006_020debb4(char *a, int b);
@@ -129,12 +129,12 @@ extern AnimStep *data_ov006_0213c0d8[];
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern int data_0208ee44;
-extern void func_ov006_020c225c(char *);
-extern int func_ov006_020c3050(char *);
+extern void Camera_InitPresenterView(char *);
+extern int Presenter_Load(char *);
 extern void LoadCompressedFileAt(int, int);
 extern void *LoadFile(int);
 void _ZN8Particle10SysTrackerC1Ev(void *tracker);
-void func_ov006_020c33dc(void *table);
+void Presenter_Construct(void *table);
 void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
 void func_ov006_020e0634(void);
 void func_0203d738(void);
@@ -152,7 +152,7 @@ dScMgCup_c::~dScMgCup_c()
 {
     __cxa_vec_cleanup(mCup, 3, 8, (void *)NullDestructor_0203d47c);
     __cxa_vec_cleanup(mFx, 0x20, 0x18, (void *)func_ov006_020deac4);
-    func_ov006_020c3288((char *)&mModel);
+    Presenter_Destruct((char *)&mModel);
 }
 
 extern "C" void func_ov006_020deac4(void)
@@ -493,16 +493,16 @@ void dScMgCup_c::StateResult()
     score = mHudScore;
     if (mCorrect != 0) {
         mTimer = 0x3c;
-        func_ov006_020c2594(&mModel);
+        Presenter_PlayAnim7(&mModel);
         score++;
     } else {
         Mg_SubCredits(this, 1);
         if (mCredits > 0) {
             mTimer = 0x96;
-            func_ov006_020c2664((char *)&mModel);
+            Presenter_PlayAnim1((char *)&mModel);
         } else {
             mTimer = 0x1e;
-            func_ov006_020c2440((char *)&mModel);
+            Presenter_PlayAnim4((char *)&mModel);
         }
         func_02012790(0x12f);
     }
@@ -830,7 +830,7 @@ void dScMgCup_c::StateSetup()
 /* Slot 20: the win animation on mModel. */
 void dScMgCup_c::OnNewRecord()
 {
-    func_ov006_020c2594(&mModel);
+    Presenter_PlayAnim7(&mModel);
 }
 
 #pragma push
@@ -880,7 +880,7 @@ void dScMgCup_c::StartRound(int msg)
     mTimer = 0x3c;
     mState = 0;
     mTouchLock = 0;
-    func_ov006_020c2924((char *)&mModel);
+    Presenter_ResetPose((char *)&mModel);
 
     mLevel = mHudScore;
     if (mLevel > 0x270e) {
@@ -937,7 +937,7 @@ s32 dScMgCup_c::Render()
 
     Mg_DrawStockCounter(mCredits, 1);
     Mg_DrawScoreTally(raw, 0xe0, 0x14, 1);
-    func_ov006_020c29dc((char *)&mModel);
+    Presenter_Draw((char *)&mModel);
     return 1;
 }
 
@@ -965,7 +965,7 @@ s32 dScMgCup_c::Behavior()
         }
     }
     func_ov006_020debfc((char *)mFx);
-    func_ov006_020c2b8c((char *)&mModel);
+    Presenter_Update((char *)&mModel);
     return 1;
 }
 #pragma pop
@@ -978,8 +978,8 @@ s32 dScMgCup_c::InitResources()
     void *file;
 
     data_0209d45c = 0x11;
-    func_ov006_020c225c((char *)pad_4660);
-    if (func_ov006_020c3050((char *)&mModel) == 0)
+    Camera_InitPresenterView((char *)pad_4660);
+    if (Presenter_Load((char *)&mModel) == 0)
         return 0;
 
     {
@@ -1048,7 +1048,7 @@ extern "C" void *dScMgCup_c_classInit()
         *(void **)scene = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(&scene->mSysTracker);
         *(void **)scene = _ZTV10dScMgCup_c + 2;
-        func_ov006_020c33dc(&scene->mModel);
+        Presenter_Construct(&scene->mModel);
         __cxa_vec_ctor(scene->mFx, 0x20, 0x18,
                       (void *)func_ov006_020e0634,
                       (void *)func_ov006_020deac4);

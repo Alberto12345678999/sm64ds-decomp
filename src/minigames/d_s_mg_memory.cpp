@@ -81,35 +81,35 @@ extern short gMgCoinsStatus;
 extern void Mg_SetPerfectBanner(void);
 extern void Mg_SetSharedState(int c);
 extern void Mg_SubmitScore(int self);
-extern void func_ov006_020c0c80(void *c);
-extern void func_ov006_020c1604(char *c, int unused, short count, int ready);
+extern void Dealer_PlayWin(void *c);
+extern void Dealer_StartDeal(char *c, int unused, short count, int ready);
 extern int data_0209d4b8;
 extern int RandomIntInternal(int *seed);
 extern void FreeGfxSlotsById(int x);
-void func_ov006_020c0aa8(char *p);
+void Camera_InitDealerView(char *p);
 void Mg_DrawCredits(char *c, int a, int b, int d);
-void func_ov006_020c1804(char *p);
+void Dealer_Draw(char *p);
 void MgCoins_Update(void);
-int func_ov006_020c19d0(void *p);
+int Dealer_Update(void *p);
 void func_ov006_0210a534(void);
 s32 GetGameLanguage(void);
 void *LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 void Deallocate(void *ptr);
-int func_ov006_020c1a88(void *c);
+int Dealer_Load(void *c);
 int Mg_GetSavedRecord0(void);
 int Mg_GetSavedRecord1(void);
 void MgCoins_Reset(void);
-int func_ov006_020c1718(int *p);
+int Dealer_IsIdle(int *p);
 void Mg_SetTopScreenYOffset(int v);
 void Mg_PlaceBannersOnTopScreen(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 void *_ZN11dScMgBase_cC2Ev(void *scene);
 void _ZN8Particle10SysTrackerC1Ev(void *tracker);
-/* local extern: only sibling scene headers (dScMgCard_c.h, dScMgMemory2_c.h)
-   declare it; this TU includes neither */
-void func_ov006_020c1d80(void *sharedState);
+/* Only the sibling scene headers (dScMgCard_c.h, dScMgMemory2_c.h) declare
+   it, and this TU includes neither. */
+void Dealer_Construct(void *sharedState);  /* local extern: see above */
 extern void *_ZTV19dScMgSingle3DBase_c[];
 }
 
@@ -679,14 +679,14 @@ void dScMgMemory_c::ResultWait()
                 if (mHudScore > mBestHudScore)
                     mBestHudScore = mHudScore;
                 Mg_SubmitScore(gMgScene ? *(int *)((char *)gMgScene + 0xb4) : 0);
-                func_ov006_020c0c80(&mShared);
+                Dealer_PlayWin(&mShared);
             } else {
                 Mg_SetSharedState(5);
                 if (mHudScore > 0) {
                     int *score = &mHudScore;
                     *score -= 1;
                 }
-                func_ov006_020c0d68(&mShared);
+                Dealer_PlayLose(&mShared);
             }
         }
     } else {
@@ -799,9 +799,9 @@ void dScMgMemory_c::RoundStart(){
     mReadyCount = 0;
     mDealCount = 0;
     if (mDifficulty >= 2)
-        func_ov006_020c1604((char *)&mShared, 4, 3, (int)&mReadyCount);
+        Dealer_StartDeal((char *)&mShared, 4, 3, (int)&mReadyCount);
     else
-        func_ov006_020c1604((char *)&mShared, 4, 2, (int)&mReadyCount);
+        Dealer_StartDeal((char *)&mShared, 4, 2, (int)&mReadyCount);
     mShared.ready = 1;
     mSubstate = 1;
     if (mPromptBlinkCount == 0) {
@@ -984,7 +984,7 @@ void dScMgMemory_c::StateSetup(){
     SetupDifficulty();
     ShuffleCards();
     FreeGfxSlotsById(0x1d);
-    func_ov006_020c1764((char *)&mShared);
+    Dealer_PlayIdle((char *)&mShared);
     mState = 1;
 }
 
@@ -1003,8 +1003,8 @@ void dScMgMemory_c::SetupDifficulty() {
     }
 }
 
-// @symbol _ZN13dScMgMemory_c13OnHostAnimCueEv
-void dScMgMemory_c::OnHostAnimCue()
+// @symbol _ZN13dScMgMemory_c10OnDealDoneEv
+void dScMgMemory_c::OnDealDone()
 {
     MgCoins_PlaceBet(mMaxMisses);
 }
@@ -1013,7 +1013,7 @@ void dScMgMemory_c::OnHostAnimCue()
 int dScMgMemory_c::CanEndState(int /* mode */)
 {
     if (mState == 3 && mSubstate == 0) {
-        if (func_ov006_020c1718((int*)&mShared) == 0) return 0;
+        if (Dealer_IsIdle((int*)&mShared) == 0) return 0;
         mSubstate = 1;
         FreeGfxSlotsById(0x1d);
     }
@@ -1042,13 +1042,13 @@ void dScMgMemory_c::StartRound(int /* arg */)
 /* Slot 9. */
 s32 dScMgMemory_c::Render()
 {
-    func_ov006_020c0aa8((char *)pad_4660);
+    Camera_InitDealerView((char *)pad_4660);
     Mg_DrawCredits((char *)this, 0xc, 0xc, 0);
     MgCoins_Draw();
     DrawMessage();
     DrawCursor();
     DrawCards();
-    func_ov006_020c1804((char *)&mShared);
+    Dealer_Draw((char *)&mShared);
     return 1;
 }
 
@@ -1058,7 +1058,7 @@ s32 dScMgMemory_c::Behavior()
 {
     (this->*data_ov006_021422dc[mState])();
     MgCoins_Update();
-    func_ov006_020c19d0(&mShared);
+    Dealer_Update(&mShared);
     return 1;
 }
 
@@ -1081,8 +1081,8 @@ s32 dScMgMemory_c::InitResources()
     Deallocate(palette);
     data_0209d454 = 0x18;
     ResetGame();
-    func_ov006_020c0aa8((char *)pad_4660);
-    if (func_ov006_020c1a88(&mShared) == 0)
+    Camera_InitDealerView((char *)pad_4660);
+    if (Dealer_Load(&mShared) == 0)
         return 0;
     mCredits = Mg_GetSavedRecord0();
     mCreditsShown = mCredits;
@@ -1106,7 +1106,7 @@ extern "C" void *dScMgMemory_c_classInit()
         *(void **)scene = _ZTV19dScMgSingle3DBase_c;
         _ZN8Particle10SysTrackerC1Ev(scene + 0x471c);
         *(void **)scene = &_ZTV13dScMgMemory_c[2];
-        func_ov006_020c1d80(scene + 0x4f38);
+        Dealer_Construct(scene + 0x4f38);
     }
     return scene;
 }

@@ -202,7 +202,7 @@
         "slot_address": "0x0213d528",
         "target": "0x020f730c",
         "module": "ov006",
-        "name": "dScMgMemory2_c::OnHostAnimCue"
+        "name": "dScMgMemory2_c::OnDealDone"
       },
       {
         "slot": 22,
@@ -332,7 +332,7 @@
       "address": "0x020f5564",
       "end": "0x020f55b8",
       "name": "D1 destructor",
-      "body": "Destroys the 0x270-byte shared table at this+0x4f38 through func_ov006_020c1c64, stores vptr (int)&_ZTV14dScMgMemory2_c[2], destroys the inherited Particle::SysTracker, then calls _ZN11dScMgBase_cD2Ev at 0x020b29c0."
+      "body": "Destroys the 0x270-byte shared table at this+0x4f38 through Dealer_Destruct, stores vptr (int)&_ZTV14dScMgMemory2_c[2], destroys the inherited Particle::SysTracker, then calls _ZN11dScMgBase_cD2Ev at 0x020b29c0."
     },
     {
       "slot": 17,
@@ -392,7 +392,7 @@
       "offset": "0x4f38",
       "width": "0x0270",
       "name": "mShared",
-      "evidence": "Both destructors call func_ov006_020c1c64 with this+0x4f38, and four sibling dScMgSingle3DBase_c scenes carry the same 0x270 table. NEITHER dScMgMemory_c NOR dScMgMemory2_c reads inside it, so no field of it is named."
+      "evidence": "Both destructors call Dealer_Destruct with this+0x4f38, and four sibling dScMgSingle3DBase_c scenes carry the same 0x270 table. NEITHER dScMgMemory_c NOR dScMgMemory2_c reads inside it, so no field of it is named."
     },
     {
       "offset": "0x51a8",

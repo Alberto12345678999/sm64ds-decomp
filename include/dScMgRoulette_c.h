@@ -19,7 +19,7 @@
 #define DSCMGROULETTE_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int  func_ov006_020c1c64(char *t); /* decl_common.h's own signature */
+extern "C" int  Dealer_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void func_ov006_021079c8(void);
 extern "C" void _ZN5ModelD1Ev(void *);
@@ -32,7 +32,7 @@ struct dScMgRoulette_c : dScMgSingle3DBase_c {
         _ZN5ModelD1Ev(mModel2);
         _ZN5ModelD1Ev(mModel1);
         __cxa_vec_cleanup(mArray, 5, 0x34, (void *)func_ov006_021079c8);
-        func_ov006_020c1c64((char *)mTable);
+        Dealer_Destruct((char *)mTable);
     }
 
     /* --- this class's own vtable slots, named from the table ---

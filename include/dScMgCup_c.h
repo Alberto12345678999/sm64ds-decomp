@@ -1,7 +1,7 @@
 /* Shell game (MG_CUP). Three cups shuffle on the sub screen; the player
  * touches the cup containing the requested item.
  *
- * mModel is the object func_ov006_020c33dc builds and func_ov006_020c3288
+ * mModel is the object Presenter_Construct builds and Presenter_Destruct
  * tears down. mFx is the 0x20 effects under the cups. mCup is the three
  * positions (element ctor func_0203d738, empty).
  */
@@ -9,23 +9,23 @@
 #define DSCMGCUP_C_H
 #include "dScMgSingle3DBase_c.h"
 
-extern "C" int  func_ov006_020c3288(char *t); /* decl_common.h's own signature */
+extern "C" int  Presenter_Destruct(char *t); /* decl_common.h's own signature */
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
 extern "C" void func_ov006_020deac4(void);
 extern "C" void NullDestructor_0203d47c(void);
 
-/* func_ov006_020c33dc's own offsets. Byte arrays, not the real classes:
+/* Presenter_Construct's own offsets. Byte arrays, not the real classes:
  * a BlendModelAnim member would make ~dScMgCup_c destroy it twice. */
 struct CupModelParts {
-    u8  pmf[8];                  /* +0x00 -- func_ov006_020c2b8c calls this */
+    u8  pmf[8];                  /* +0x00 -- Presenter_Update calls this */
     u8  blendModelAnim[0x70];    /* +0x08 -- BlendModelAnim */
     u8  model[0x50];             /* +0x78 -- Model */
     u8  textureSequence[0x14];   /* +0xc8 -- TextureSequence */
     u8  textureTransformer[0x14];/* +0xdc -- TextureTransformer */
     u8  filePtr[0x90];           /* +0xf0 -- 18 SharedFilePtr, through +0x178 */
-    s32 pos[3];                  /* +0x180 -- func_ov006_020c2290's translation; func_ov006_020c3050 zeroes it */
-    s32 lean[4];                 /* +0x18c -- func_ov006_020c2be8 eases these toward the touch;
-                                    func_ov006_020c29dc adds them into the model */
+    s32 pos[3];                  /* +0x180 -- Presenter_UpdateMatrix's translation; Presenter_Load zeroes it */
+    s32 lean[4];                 /* +0x18c -- Presenter_TrackStylus eases these toward the touch;
+                                    Presenter_Draw adds them into the model */
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -82,12 +82,12 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
     s32 Render();
 
     CupModelParts mModel; /* 0x4f38 */
-    /* func_ov006_020c2be8: while mTouchLock != 0, divide these by 255 and 192
+    /* Presenter_TrackStylus: while mTouchLock != 0, divide these by 255 and 192
        instead of the live gTouchX / gTouchY touch. */
     s32 mTouchX;          /* 0x50d4 */
     s32 mTouchY;          /* 0x50d8 */
     s32 mTouchLock;       /* 0x50dc -- component +0x1a4; the ctor zeroes it */
-    /* func_ov006_020c2594 and func_ov006_020c2440 play a sound only when this is 0. */
+    /* Presenter_PlayAnim7 and Presenter_PlayAnim4 play a sound only when this is 0. */
     s32 mSuppressSound;   /* 0x50e0 -- component +0x1a8 */
     u8  pad_50e4[4];      /* 0x50e4 */
     CupFx mFx[0x20];      /* 0x50e8 -- elem dtor func_ov006_020deac4 */

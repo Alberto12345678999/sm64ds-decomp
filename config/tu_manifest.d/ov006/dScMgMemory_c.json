@@ -323,7 +323,7 @@
       "ordinal": 39
     },
     {
-      "symbol": "_ZN13dScMgMemory_c13OnHostAnimCueEv",
+      "symbol": "_ZN13dScMgMemory_c10OnDealDoneEv",
       "address": "0x020f523c",
       "size": "0x00000014",
       "legacy_source": "src/_ZN13dScMgMemory_c15OnGroundPoundedEv.cpp",
@@ -420,7 +420,7 @@
   "notes": [
     "2026-09-03 real-member reconstruction: all 38 address-only scene functions are genuine dScMgMemory_c members with descriptive names. Five PMF tables built by __sinit_ov006_021311c8 independently fix their groupings and order: main StateSetup/StatePlay/StateJudge/StateResult/StateExit; round RoundStart/RoundDealEasy/RoundDealNormal/RoundDealHard/RoundWaitDeal/RoundReveal; result ResultWait/ResultReward/ResultTurnCards/ResultFinish; card CardMove/CardIdle/CardSelect/CardFlipUp/CardWait/CardFlipDown/CardFlyAway; player PlayerDrop/PlayerMove/PlayerWait.",
     "COINED NAMES, the one thing not provable: the 38 handler/helper ROM symbols were address-only, so no recovered spelling exists to confirm or contradict the descriptive names in functions[]. The ROM proves their dScMgMemory_c ownership and the PMF tables prove state-group identities; exact original source spellings are disclosed as unknown here and in symbols/actor_renames.tsv.",
-    "ROM-PROVEN LAYOUT: the unique MG_MEMORY factory allocates 0x5340 bytes. Matched access patterns prove twelve 0x18-byte cards, three 0x14-byte player markers, a 0x10-byte cursor, signed ready/deal counters, and the scene-state tail. The shared 0x270 object at 0x4f38 has its measured func_ov006_020c1c64 destructor, so C++ owns reverse-order scene teardown.",
+    "ROM-PROVEN LAYOUT: the unique MG_MEMORY factory allocates 0x5340 bytes. Matched access patterns prove twelve 0x18-byte cards, three 0x14-byte player markers, a 0x10-byte cursor, signed ready/deal counters, and the scene-state tail. The shared 0x270 object at 0x4f38 has its measured Dealer_Destruct destructor, so C++ owns reverse-order scene teardown.",
     "MEASURED CODEWARRIOR EMISSION BOUNDARY: the default deferred code generator makes the last optimization state win across an apparent pragma push/pop. Global defer_codegen off makes definitions emit eagerly in ROM-ascending source order, allowing DrawCards' opt_propagation off and CardFlyAway's opt_lifetimes off to be scoped with push/pop. The resulting single object emits all 47 text sections byte-exact and in cartridge order.",
     "MEASURED ITERATOR-SPELLING BOUNDARY: direct typed mCards/mPlayers expressions were tested in the remaining 17 offset-view methods. They changed strength reduction, base-address formation, register allocation, or section size despite identical semantics. The public class layout remains typed; those localized implementation views preserve demonstrated mwccarm 1.2 code generation rather than substituting prettier non-matching code.",
     "MEASURED CW 1.2 FACTORY WALL: dScMgMemory_c_classInit is allocation plus a fully folded scene construction sequence. Semantic placement construction is unavailable in this compiler setup, so the literal classInit bridge preserves allocation size, base construction, vptr transitions, Particle::SysTracker construction and shared-state construction explicitly and byte-exact.",
