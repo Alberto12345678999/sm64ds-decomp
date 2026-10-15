@@ -145,10 +145,15 @@ struct dScMgTeresa_c : dScMgBase_c {
     s32 unk_4be8;            /* 0x4be8 -- state index for Behavior's pmf dispatch */
     u8  pad_4bec[0x2a];
     s16 unk_4c16;            /* 0x4c16 */
-    u8  pad_4c18[0xb];
+    u8  pad_4c18[0x9];
+    u8  mFoundCount;         /* 0x4c21 -- Boos found this round; stamped into mFoundOrder */
+    u8  mLastSettledBoo;     /* 0x4c22 -- the Boo AreBoosSettled settled last */
     u8  unk_4c23;            /* 0x4c23 */
     /* trailing extent the ROM's `new dScMgTeresa_c` literal proves; see tools/opnew_sizes.py */
-    u8 pad_4c24[0x4];
+    u8  unk_4c24;            /* 0x4c24 */
+    u8  mBooCount;           /* 0x4c25 -- Boos SpawnBoos placed */
+    u8  mFirstFoundBoo;      /* 0x4c26 -- 0xff until the first find */
+    u8  unk_4c27;            /* 0x4c27 */
 };
 
 #ifndef SM64DS_PLATFORM_PC

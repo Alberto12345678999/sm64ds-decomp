@@ -38,8 +38,8 @@
 // leftovers:
 // - The 16 small Boos at 0x4660 are typed (dScMgTeresa_c::SmallBoo mBoos[16]).
 //   Their handlers use mBoos[i] where that measured identical; StepBoo,
-//   CountRubbedTiles, Boo_State7, TouchTestBoo, SpawnBoos and ResetRound
-//   keep their tuned offset forms. 0x48a0..0x4be8 (the 0x20-stride pair at
+//   CountRubbedTiles, Boo_State7 and ResetRound's first loop keep their tuned
+//   offset forms (the typed forms change code). 0x48a0..0x4be8 (the 0x20-stride pair at
 //   0x4bac, the HUD sprites at 0x4960) and the bytes at 0x4c1b and 0x4c1f
 //   are still padding reached by offset; convert one function at a time.
 
@@ -1327,7 +1327,6 @@ void dScMgTeresa_c::DrawBoos()
 // @symbol _ZN13dScMgTeresa_c14AreBoosSettledEv
 void dScMgTeresa_c::AreBoosSettled()
 {
-    char *self = (char *)this;
     int found = 0;
     int i = 0;
     for (; i < 0x10; i++) {
@@ -1340,17 +1339,17 @@ void dScMgTeresa_c::AreBoosSettled()
                 mBoos[i].unk_19 = 1;
                 mBoos[i].mFrame = 3;
                 mBoos[i].unk_21 = 0;
-                *(unsigned char*)(self + 0x4c22) = (unsigned char)i;
+                mLastSettledBoo = (unsigned char)i;
                 mBoos[i].mDelay = 1;
                 found++;
             }
         }
     }
     if (found != 0) {
-        unsigned char idx = *(unsigned char*)(self + 0x4c22);
+        unsigned char idx = mLastSettledBoo;
         mBoos[idx].unk_21 = 1;
     } else {
-        unsigned char idx = *(unsigned char*)(self + 0x4c22);
+        unsigned char idx = mLastSettledBoo;
         mBoos[idx].unk_21 = 0;
     }
 }
@@ -1360,7 +1359,6 @@ void dScMgTeresa_c::AreBoosSettled()
 // @symbol _ZN13dScMgTeresa_c12TouchTestBooEi
 void dScMgTeresa_c::TouchTestBoo(int idx)
 {
-    char *c = (char *)this;
     int x;
     int y;
     int count;
@@ -1368,16 +1366,15 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     int i;
     int* r;
     int word;
-    int off;
 
-    if (*(u8*)(c + 0x467c + idx * 0x24) != 0)
+    if (mBoos[idx].mFound != 0)
         return;
 
     count = 0;
     firstOk = 0;
     for (i = 0; i < 5; i++) {
-        x = (*(int*)(c + idx * 0x24 + 0x4660) >> 12) - data_ov006_0212efec[i * 2];
-        y = (*(int*)(c + idx * 0x24 + 0x4664) >> 12) - data_ov006_0212efec[i * 2 + 1];
+        x = (mBoos[idx].mX >> 12) - data_ov006_0212efec[i * 2];
+        y = (mBoos[idx].mY >> 12) - data_ov006_0212efec[i * 2 + 1];
         r = ((int (*)[8])G2S::GetBG0CharPtr())[(x >> 3) + ((y >> 3) << 5)];
         word = r[y & 7];
         if (((word >> ((x & 7) << 2)) & 0xf) == 0) {
@@ -1392,17 +1389,16 @@ void dScMgTeresa_c::TouchTestBoo(int idx)
     if (firstOk == 0)
         return;
 
-    *(u8*)(c + 0x467c + idx * 0x24) = 1;
-    off = ((char (*)[0x24])0)[idx] - (char*)0;
-    *(u8*)&((char (*)[0x24])c)[idx][0x467b] = 0;
-    *(u8*)&((char (*)[0x24])c)[idx][0x4678] = 5;
-    *(u8*)&((char (*)[0x24])c)[idx][0x4680] = *(u8*)(c + 0x4c21);
-    *(s16*)&((char (*)[0x24])c)[idx][0x466e] = 0x40;
-    A(c + 0x4c21)++;
+    mBoos[idx].mFound = 1;
+    mBoos[idx].mPriority = 0;
+    mBoos[idx].mState = 5;
+    mBoos[idx].mFoundOrder = mFoundCount;
+    mBoos[idx].mTimer = 0x40;
+    mFoundCount++;
     Exclaim_Spawn(idx);
-    func_02012718(0x1f0, *(int*)(c + off + 0x4660));
-    if (*(u8*)(c + 0x4c26) == 0xff)
-        *(u8*)(c + 0x4c26) = (u8)idx;
+    func_02012718(0x1f0, mBoos[idx].mX);
+    if (mFirstFoundBoo == 0xff)
+        mFirstFoundBoo = (u8)idx;
 }
 #undef A
 
@@ -1520,7 +1516,7 @@ void dScMgTeresa_c::Boo_State7(int i)
         fade = (u8 *)((c + 0x4676) + o);
         *fade = *fade + 1;
         *p6e = 0;
-        if (i == *(u8 *)(c + 0x4c22)) {
+        if (i == mLastSettledBoo) {
             _ZN3G2x13SetBlendAlphaEPVttttj((volatile unsigned short *)0x4001050, 0, 4,
                 0x10 - *fade, 0x10);
         }
@@ -1535,7 +1531,6 @@ void dScMgTeresa_c::Boo_State7(int i)
 // @symbol _ZN13dScMgTeresa_c10Boo_State6Ei
 void dScMgTeresa_c::Boo_State6(int i)
 {
-    char *c = (char *)this;
 
     if (mBoos[i].mDelay != 0) {
         mBoos[i].mDelay--;
@@ -1572,7 +1567,7 @@ void dScMgTeresa_c::Boo_State6(int i)
     mBoos[i].mPriority = 0;
     mBoos[i].mTimer = 0;
 
-    if (i == *(u8 *)(c + 0x4c22)) {
+    if (i == mLastSettledBoo) {
         G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 1,
             mBoos[i].mFade, 0x10);
     }
@@ -1599,7 +1594,7 @@ void dScMgTeresa_c::Boo_State5(int idx)
     FoundMark_Spawn(idx);
     mBoos[idx].mVisible = 0;
     mBoos[idx].mInPlay = 0;
-    if (*(unsigned char *)((char *)this + 0x4000 + 0xc26) != idx)
+    if (mFirstFoundBoo != idx)
         return;
     Sound::PlayBank2_2D(0x1c7);
 }
@@ -1807,7 +1802,7 @@ void dScMgTeresa_c::SpawnBoos()
     }
     *(unsigned char *)(c + 0x4c23) = sel;
     count = data_ov006_0212f014[sel];
-    *(unsigned char *)(c + 0x4c25) = count;
+    mBooCount = count;
 
     r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
     phase = ((r << 4) >> 15) << 12;
@@ -1826,38 +1821,37 @@ void dScMgTeresa_c::SpawnBoos()
     do {
         if (flagA == 0) {
             r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-            *(int *)(c + 0x4660) = ((((r * 0xf) >> 15) << 4) + 0x10) << 12;
+            mBoos[i].mX = ((((r * 0xf) >> 15) << 4) + 0x10) << 12;
             r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-            *(int *)(c + 0x4664) = ((((r * 0xb) >> 15) << 4) + 0x10) << 12;
+            mBoos[i].mY = ((((r * 0xb) >> 15) << 4) + 0x10) << 12;
             r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-            *(unsigned short *)(c + 0x466c) = ((r << 5) >> 15) << 11;
+            mBoos[i].mHeading = ((r << 5) >> 15) << 11;
         } else {
-            *(int *)(c + 0x4660) = valA;
-            *(int *)(c + 0x4664) = valB;
+            mBoos[i].mX = valA;
+            mBoos[i].mY = valB;
             int q = full / count;
-            *(unsigned short *)(c + 0x466c) = q * i + phase;
+            mBoos[i].mHeading = q * i + phase;
         }
-        *(unsigned char *)(c + 0x467f) = cval;
-        *(unsigned short *)(c + 0x466e) = 0;
-        *(unsigned short *)(c + 0x4670) = 0;
-        *(unsigned short *)(c + 0x4672) = 0;
-        *(unsigned short *)(c + 0x4674) = 0;
-        *(unsigned char *)(c + 0x4677) = 1;
-        *(unsigned char *)(c + 0x4678) = 0;
-        *(unsigned char *)(c + 0x4679) = 0;
-        *(unsigned char *)(c + 0x467b) = 0;
-        *(unsigned char *)(c + 0x467c) = 0;
-        *(unsigned char *)(c + 0x467d) = 0;
+        mBoos[i].mKind = cval;
+        mBoos[i].mTimer = 0;
+        mBoos[i].mAnimTimer = 0;
+        mBoos[i].unk_12 = 0;
+        mBoos[i].mDelay = 0;
+        mBoos[i].mInPlay = 1;
+        mBoos[i].mState = 0;
+        mBoos[i].unk_19 = 0;
+        mBoos[i].mPriority = 0;
+        mBoos[i].mFound = 0;
+        mBoos[i].mFrame = 0;
         {
-            int ang = *(unsigned short *)(c + 0x466c);
+            int ang = mBoos[i].mHeading;
             if (data_02082214[(ang >> 4) * 2 + 1] >= 0) {
-                *(unsigned char *)(c + 0x467e) = 1;
+                mBoos[i].mAnim = 1;
             } else {
-                *(unsigned char *)(c + 0x467e) = 0;
+                mBoos[i].mAnim = 0;
             }
         }
         i++;
-        c += 0x24;
     } while (i < count);
 }
 
@@ -2014,14 +2008,14 @@ void dScMgTeresa_c::ResetRound()
   *((char *) (p + 0x4c1a)) = i;
   *((char *) (p + 0x4c1b)) = i;
   *((char *) (p + 0x4c1c)) = i;
-  *((char *) (p + 0x4c21)) = i;
+  mFoundCount = i;
   Reveal_Hide();
   Marker_Hide();
   *((short *) (p + 0x4c18)) = i;
   *((char *) (p + 0x4c24)) = i;
   BigBoo_Hide();
   *((int *) (p + 0x4c08)) = i;
-  *((unsigned char *) (p + 0x4c26)) = 0xff;
+  mFirstFoundBoo = 0xff;
   *((char *) (p + 0x4c27)) = i;
 }
 #pragma pop
