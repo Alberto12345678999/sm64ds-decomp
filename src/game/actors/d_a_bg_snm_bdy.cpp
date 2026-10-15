@@ -46,8 +46,8 @@
  *   actorID == 0xbf is what the ROM materializes.
  * - dBgCh_Actr_UpdateContinuous_Veneer (UpdateGroundCollision): retail
  *   bl is 0x020383fc, the veneer, not UpdateContinuous at 0x020366b4.
- * - GetFloorResult (UpdateGroundCollision): defined, not declared on
- *   dBgCh_Actr.h. SurfaceInfo starts at +4 of the returned record.
+ * - GetFloorResult returns an existing polygon through void *. The local
+ *   cast names that borrowed dBgPi and accesses its real surface member.
  * - func_0203568c / func_02035684 (InitState0, State2): store mRadius /
  *   mHeight (p[6] / p[7]). Direct stores on State2 are 0x1a8 -> 0x1a0
  *   (2 words) and drop those bls. Their C definitions take int *, so
@@ -60,9 +60,9 @@
  * - State1 mSubstate = mSubstate + 1 is 0xe8 -> 0xcc (7 words). State3,
  *   both increments, is 0x1a8 -> 0x194 (5 words). The switch already
  *   reads the field; only the increment is this+0x3a2 via a pool word.
- * - AdvancePath named &mPath / &mPosX / mRadius / mAngleY: 14 words
- *   differ, size stays 0xa4. The node is int[3]; the ROM epilogue has
- *   no ~Vector3. IsPlayerNearCenter without the gotos is 0xb4 -> 0xb0
+ * - Earlier AdvancePath named-field experiments differed by 14 words
+ *   at size 0xa4. Its node is now a real Vector3; the raw field views
+ *   remain. IsPlayerNearCenter without the gotos was 0xb4 -> 0xb0
  *   (1 word). State5 without the 0/1 clip flag is 0xec -> 0xe0 (3 words).
  */
 
@@ -72,7 +72,7 @@
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 #include "Player.h"
-#include "SurfaceInfo.h"
+#include "dBgPi.h"
 
 /* Real C++ names. Declared here, not via decl_common.h: that header's
  * other spellings of these symbols collide with this TU. */
@@ -113,11 +113,11 @@ void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix1
               void *self, void *shadow, void *matrix, int radius, int height,
               u32 flags);
 
-void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(dActor_c *player,
-                                             const Vector3 *pos, u32 kind,
-                                             int damage, u32 a, u32 b, u32 c);
+/* local extern: Player.h does not declare this Fix12<int> by-value method.
+ * This scalar bridge agrees with the current definition at 0x020d8e70. */
+int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
+    Player *player, void *pos, u32 kind, int damage, u8 a, u8 b, u8 c);
 
-char *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
           void *self, void *actor, int radius, int height, void *v, int c);
 void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
@@ -323,16 +323,16 @@ int daBgSnmBdy_c::InitState1()
 // @symbol _ZN12daBgSnmBdy_c6State1Ev
 int daBgSnmBdy_c::State1()
 {
-    int messagePos[3];
+    Vector3 messagePos;
     unsigned char *state;
-    messagePos[0] = mPosX;
+    messagePos.x = mPosX;
     int y = mPosY;
-    messagePos[1] = y;
-    messagePos[2] = mPosZ;
-    messagePos[1] = y + 0x96000;
+    messagePos.y = y;
+    messagePos.z = mPosZ;
+    messagePos.y = y + 0x96000;
     switch (mSubstate) {
     case 0:
-        if (mTalkPlayer->ShowMessage(*this, 0xb0, (const Vector3 *)messagePos, 0, 0) == 0)
+        if (mTalkPlayer->ShowMessage(*this, 0xb0, &messagePos, 0, 0) == 0)
             break;
         state = (unsigned char *)((int)this + 0x3a2);
         *state = *state + 1;
@@ -506,11 +506,11 @@ int daBgSnmBdy_c::State5()
 {
     int inClip = (int)((mFlags & 8) != 0);
     if (inClip == 0) return 1;
-    int clipResult[3];
-    int homePos[3];
-    Vec3_Asr(homePos, &mHomePosX, 3);
+    Vector3 clipResult;
+    Vector3 homePos;
+    Vec3_Asr(&homePos, &mHomePosX, 3);
     if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-            data_0209f43c, data_0209b3ec, homePos, 0x1f400, clipResult) < 0x1194000)
+            data_0209f43c, data_0209b3ec, &homePos, 0x1f400, &clipResult) < 0x1194000)
         return 1;
     mPosX = mHomePosX;
     mPosY = mHomePosY;
@@ -547,11 +547,11 @@ void daBgSnmBdy_c::UpdateModel()
 void daBgSnmBdy_c::UpdateGroundCollision(dBgCh_Actr *mc)
 {
     Vector3 normal;
-    char *floorResult;
+    const dBgPi *floorResult;
     dBgCh_Actr_UpdateContinuous_Veneer(mc);
     if (mc->IsOnGround() == 0) return;
-    floorResult = _ZNK10dBgCh_Actr14GetFloorResultEv(mc);
-    ((SurfaceInfo *)(floorResult + 4))->CopyNormalTo(normal);
+    floorResult = static_cast<const dBgPi *>(mc->GetFloorResult());
+    floorResult->surface.CopyNormalTo(normal);
     if (normal.y == 0) return;
     {
         int alongX = (int)(((long long)normal.x * unk_0a4 + 0x800) >> 12);
@@ -582,7 +582,7 @@ body:
         pos.y = mPosY;
         pos.z = mPosZ;
         _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
-            actor, &pos, 2, 0xc000, 1, 0, 1);
+            static_cast<Player *>(actor), &pos, 2, 0xc000, 1, 0, 1);
     }
     return 1;
 }
@@ -591,13 +591,13 @@ body:
 int daBgSnmBdy_c::AdvancePath()
 {
     char *c = (char *)this;
-    int node[3];
+    Vector3 node;
     int numNodes;
     /* Named &mPath / &mPosX / mRadius / mAngleY size-DIFF (14 words). */
-    ((PathPtr *)(c + 0x380))->GetNode(*(Vector3 *)node, *(int *)(c + 0x388));
-    int dist = Vec3_HorzDist(c + 0x5c, node);
+    ((PathPtr *)(c + 0x380))->GetNode(node, *(int *)(c + 0x388));
+    int dist = Vec3_HorzDist(c + 0x5c, &node);
     UpdateAngle(*(short *)(c + 0x8e),
-                Vec3_HorzAngle(c + 0x5c, node), 2, 0x600);
+                Vec3_HorzAngle(c + 0x5c, &node), 2, 0x600);
     *(short *)(c + 0x94) = *(short *)(c + 0x8e);
     if (dist < *(int *)(c + 0x398)) {
         numNodes = ((PathPtr *)(c + 0x380))->NumNodes();
