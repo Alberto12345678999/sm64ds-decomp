@@ -829,3 +829,4 @@
 {"path": "src/unnamed/ov006/__sinit_ov006_02131fa4.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
 {"path": "src/unnamed/ov006/__sinit_ov006_02130f64.c", "reason": "shard folded into its owning TU (fold/mg-sinits-1011)"}
 {"path": "src/unnamed/ov098/__sinit_ov098_0213bf9c.c", "reason": "Compiler-generated native file-handle initializer in src/game/actors/d_a_obj_yajirusi.cpp replaces this handwritten shard; strict ROM and relocation gates cover the intact TU."}
+{"path": "src/unnamed/ov015/__sinit_ov015_02113048.c", "reason": "Native C++ file handles and dispatch tables in src/game/actors/d_a_obj_bk_dossunbar.cpp generate the original static initializer; strict ROM and relocation gates cover the intact TU."}
