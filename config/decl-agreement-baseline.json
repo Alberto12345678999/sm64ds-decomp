@@ -633,7 +633,7 @@
       ]
     },
     "DecompressLZ16": {
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#2 unsigned int"
       ],
       "src/game/actors/d_a_demo.cpp": [
@@ -1019,7 +1019,7 @@
       ]
     },
     "IsStarCollected": {
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#1 int"
       ],
       "src/ui/hud/d_map.cpp": [
@@ -1208,7 +1208,7 @@
       ]
     },
     "LoadFile": {
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void *"
       ],
       "src/_ZN5Model14LoadAndSetFileEtii.cpp": [
@@ -6181,6 +6181,11 @@
         "param:#1 void *"
       ]
     },
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
+      "include/decl_Animation.h": [
+        "param:#2 const void *"
+      ]
+    },
     "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/game/actors/d_a_demo.cpp": [
         "return:int"
@@ -7804,7 +7809,7 @@
       "src/game/actors/d_a_obj_rc_carpet.cpp": [
         "return:void"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
@@ -11267,6 +11272,28 @@
         "param:#2 Vector3 *"
       ]
     },
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
+      "include/decl_Animation.h": [
+        "return:int"
+      ],
+      "src/minigames/d_mg3d_esp_anim_set.cpp": [
+        "return:int"
+      ],
+      "src/minigames/d_mg_trmpln2_mario.cpp": [
+        "return:int"
+      ],
+      "src/minigames/unit020bfec0.cpp": [
+        "return:int"
+      ]
+    },
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
+      "include/decl_Animation.h": [
+        "return:int"
+      ],
+      "src/game/actors/d_a_kpa_fire.cpp": [
+        "return:int"
+      ]
+    },
     "_ZNK5dBgPi9GetClsnIDEv": {
       "include/decl_dBgPi.h": [
         "return:int"
@@ -11401,6 +11428,9 @@
       ],
       "src/game/stages/d_s_entry_result.cpp": [
         "return:char []"
+      ],
+      "src/game/stages/d_s_stage.cpp": [
+        "return:void * []"
       ]
     },
     "__aeabi_uidiv": {
@@ -11551,7 +11581,7 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
@@ -11804,7 +11834,7 @@
       "src/game/stages/d_s_mb.cpp": [
         "return:int []"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ],
       "src/game/stages/d_s_entry_entry.cpp": [
@@ -11896,12 +11926,6 @@
     "data_02092128": {
       "src/StartFile.c": [
         "return:unsigned char []"
-      ],
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
-        "return:unsigned char"
-      ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
-        "return:unsigned char"
       ],
       "src/game/stages/LevelObjects.cpp": [
         "return:unsigned char []"
@@ -12135,12 +12159,6 @@
         "return:unsigned char []"
       ],
       "src/StartFile.c": [
-        "return:unsigned char []"
-      ],
-      "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
       "src/_ZN6Player13InitResourcesEv.cpp": [
@@ -13247,7 +13265,7 @@
       "src/LoadLevel.c": [
         "return:unsigned short"
       ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:unsigned short []"
       ],
       "src/game/stages/d_s_title.cpp": [
@@ -15651,7 +15669,7 @@
       "include/decl_common.h": [
         "return:int []"
       ],
-      "src/game/stages/d_s_star_sel.cpp": [
+      "src/game/stages/d_s_star_sel_methods.cpp": [
         "return:void * []"
       ]
     },
@@ -20740,10 +20758,6 @@
         "return:void"
       ],
       "src/_ZN10dScStage_c8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "param:#1 int",
         "return:void"
       ],

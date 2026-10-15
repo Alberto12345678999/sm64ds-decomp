@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "exceptions": [
+    {
+      "path": "src/game/stages/d_s_star_sel_methods.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN2G212GetBG2ScrPtrEv",
+      "count": 3,
+      "reason": "G2 cannot be declared as a namespace in this TU: it includes decl_common.h, whose `extern int G2[];` (a real ROM data symbol) hides `namespace G2` and turns G2:: into an undefined identifier, the same wall d_s_title.cpp records. The GX/GXS/G3X calls beside it are real namespace calls. Follow-up: give G2's functions a header once the G2 data symbol is renamed or moved out of decl_common.h.",
+      "evidence": "include/decl_common.h:290 `extern int G2[];`; src/game/stages/d_s_title.cpp G2 note; carried verbatim from src/_ZN12dScStarSel_c13InitResourcesEv.cpp on main (6 occurrences), which this PR folds; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/stages/d_s_star_sel_methods.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN2G213GetBG2CharPtrEv",
+      "count": 3,
+      "reason": "G2 cannot be declared as a namespace in this TU: it includes decl_common.h, whose `extern int G2[];` (a real ROM data symbol) hides `namespace G2` and turns G2:: into an undefined identifier, the same wall d_s_title.cpp records. The GX/GXS/G3X calls beside it are real namespace calls. Follow-up: give G2's functions a header once the G2 data symbol is renamed or moved out of decl_common.h.",
+      "evidence": "include/decl_common.h:290 `extern int G2[];`; src/game/stages/d_s_title.cpp G2 note; carried verbatim from src/_ZN12dScStarSel_c13InitResourcesEv.cpp on main (6 occurrences), which this PR folds; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/stages/d_s_star_sel_methods.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN5ModelC1Ev",
+      "count": 2,
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/stages/d_s_star_sel_methods.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN5ModelD1Ev",
+      "count": 2,
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/stages/d_s_star_sel_methods.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN7fBase_cC2Ev",
+      "count": 2,
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
+    },
+    {
+      "path": "src/game/stages/d_s_star_sel_methods.cpp",
+      "rule": "handspelled-member",
+      "match": "_ZN7fBase_cnwEj",
+      "count": 2,
+      "reason": "dScStarSel_c_classInit is the profile factory, moved verbatim from the retired src/game/stages/d_s_star_sel.cpp, which spells these names on main. Model's C1/D1 are passed by address to __cxa_vec_ctor, and C++ cannot take a constructor's or destructor's address. fBase_c's operator new and C2 are the inlined steps of a `new dScStarSel_c` expression. Follow-up: rewrite the factory as `new dScStarSel_c` once dScStarSel_c's constructor is reconstructed, which retires all four.",
+      "evidence": "src/game/stages/d_s_star_sel.cpp on main (7 occurrences of these four names); ROM ov003 0x020b04f0 size 0x90; ov003/dScStarSel_c 15/15 TEXT-VERIFIED"
+    }
+  ]
+}

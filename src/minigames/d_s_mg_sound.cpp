@@ -67,6 +67,65 @@ namespace GXS {
 #define RND (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)
 #define LAUNDER(p) ((int)(p))
 
+/* ROM PMF descriptor constants; the runtime tables below use native C++ PMFs. */
+extern Pmf pmf_dScMgSound_c_Note_StateWait;
+extern Pmf pmf_dScMgSound_c_Note_StateOpening;
+extern Pmf pmf_dScMgSound_c_Note_StateOpen;
+extern Pmf pmf_dScMgSound_c_Note_StateClosing;
+extern Pmf pmf_dScMgSound_c_Note_StateScroll;
+extern Pmf pmf_dScMgSound_c_Pop00_Update;
+extern Pmf pmf_dScMgSound_c_Pop01_Update;
+extern Pmf pmf_dScMgSound_c_Pop02_Update;
+extern Pmf pmf_dScMgSound_c_Pop03_Update;
+extern Pmf pmf_dScMgSound_c_Pop04_Update;
+extern Pmf pmf_dScMgSound_c_Pop05_Update;
+extern Pmf pmf_dScMgSound_c_Pop06_Update;
+extern Pmf pmf_dScMgSound_c_Pop07_Update;
+extern Pmf pmf_dScMgSound_c_Pop08_Update;
+extern Pmf pmf_dScMgSound_c_Pop09_Update;
+extern Pmf pmf_dScMgSound_c_Pop10_Update;
+extern Pmf pmf_dScMgSound_c_Pop11_Update;
+extern Pmf pmf_dScMgSound_c_Pop12_Update;
+extern Pmf pmf_dScMgSound_c_Pop00_Start;
+extern Pmf pmf_dScMgSound_c_Pop00_Fly;
+extern Pmf pmf_dScMgSound_c_Pop00_Finish;
+extern Pmf pmf_dScMgSound_c_Pop01_Start;
+extern Pmf pmf_dScMgSound_c_Pop01_Fly;
+extern Pmf pmf_dScMgSound_c_Pop01_Finish;
+extern Pmf pmf_dScMgSound_c_Pop02_Start;
+extern Pmf pmf_dScMgSound_c_Pop02_Fly;
+extern Pmf pmf_dScMgSound_c_Pop02_Finish;
+extern Pmf pmf_dScMgSound_c_Pop03_Start;
+extern Pmf pmf_dScMgSound_c_Pop03_Fly;
+extern Pmf pmf_dScMgSound_c_Pop03_Finish;
+extern Pmf pmf_dScMgSound_c_Pop04_Start;
+extern Pmf pmf_dScMgSound_c_Pop04_Fly;
+extern Pmf pmf_dScMgSound_c_Pop04_Finish;
+extern Pmf pmf_dScMgSound_c_Pop05_Start;
+extern Pmf pmf_dScMgSound_c_Pop05_Fly;
+extern Pmf pmf_dScMgSound_c_Pop05_Finish;
+extern Pmf pmf_dScMgSound_c_Pop06_Start;
+extern Pmf pmf_dScMgSound_c_Pop06_Fly;
+extern Pmf pmf_dScMgSound_c_Pop06_Finish;
+extern Pmf pmf_dScMgSound_c_Pop07_Start;
+extern Pmf pmf_dScMgSound_c_Pop07_Fly;
+extern Pmf pmf_dScMgSound_c_Pop07_Finish;
+extern Pmf pmf_dScMgSound_c_Pop08_Start;
+extern Pmf pmf_dScMgSound_c_Pop08_Fly;
+extern Pmf pmf_dScMgSound_c_Pop08_Finish;
+extern Pmf pmf_dScMgSound_c_Pop09_Start;
+extern Pmf pmf_dScMgSound_c_Pop09_Fly;
+extern Pmf pmf_dScMgSound_c_Pop09_Finish;
+extern Pmf pmf_dScMgSound_c_Pop10_Start;
+extern Pmf pmf_dScMgSound_c_Pop10_Fly;
+extern Pmf pmf_dScMgSound_c_Pop10_Finish;
+extern Pmf pmf_dScMgSound_c_Pop11_Start;
+extern Pmf pmf_dScMgSound_c_Pop11_Fly;
+extern Pmf pmf_dScMgSound_c_Pop11_Finish;
+extern Pmf pmf_dScMgSound_c_Pop12_Start;
+extern Pmf pmf_dScMgSound_c_Pop12_Fly;
+extern Pmf pmf_dScMgSound_c_Pop12_Finish;
+
 extern "C" {
 extern int Hud_RenderSprite(int a,int b,int c,int d,int e);
 extern int data_ov006_02137ae8[];
@@ -78,41 +137,26 @@ extern const short data_02082214[];
 extern void* data_ov006_0213f6f0[];
 extern int data_ov006_0212ef30[];
 extern int data_ov006_0212ef0c[];
-extern PmfEntry data_ov006_02142db0[];
 extern int data_ov006_0212eeac[];
 extern int data_ov006_0212ee88[];
-extern PmfEntry data_ov006_02142d08[];
 extern int data_ov006_0212ee58[];
 extern int data_ov006_0212ee4c[];
-extern Pmf data_ov006_02142cc0[];
 extern int data_ov006_0212ee64[];
 extern int data_ov006_0212ef00[];
-extern Pmf data_ov006_02142d98[];
 extern int data_ov006_0212eedc[];
-extern PmfEntry data_ov006_02142d68[];
 extern int data_ov006_0212ee94[];
-extern PmfEntry data_ov006_02142d20[];
 extern u32 data_ov006_0212ee70[];
-extern PmfEntry data_ov006_02142cf0[];
 extern int data_ov006_0212ee7c[];
-extern PmfEntry data_ov006_02142cd8[];
 extern int data_ov006_0212ee40[];
-extern PmfEntry data_ov006_02142de0[];
 extern int data_ov006_0212ef18[];
 extern int data_ov006_0212ef24[];
-extern PmfEntry data_ov006_02142dc8[];
 extern int data_ov006_0212eef4[];
 extern int data_ov006_0212eee8[];
-extern PmfEntry data_ov006_02142d80[];
 extern int data_ov006_0212eed0[];
 extern int data_ov006_0212eec4[];
-extern PmfEntry data_ov006_02142d50[];
 extern int data_ov006_0212eeb8[];
 extern int data_ov006_0212eea0[];
 extern unsigned char data_ov006_0212ee0c[];
-extern Pmf data_ov006_02142d38[];
-extern PmfEntry data_ov006_02142df8[];
-extern PmfEntry data_ov006_02142e20[];
 extern u8 data_ov006_0212ee30[];
 extern void func_02012790(int);
 extern void Presenter_PlayMatch(void *c);
@@ -146,6 +190,89 @@ int Presenter_Load(void *p);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 }
+
+/* The note and pop dispatch tables belong to this scene. Declaration
+ * order preserves the cartridge static-initialization sequence. */
+
+PmfEntry data_ov006_02142df8[5] = {
+    {pmf_dScMgSound_c_Note_StateWait},   {pmf_dScMgSound_c_Note_StateOpening},
+    {pmf_dScMgSound_c_Note_StateOpen},   {pmf_dScMgSound_c_Note_StateClosing},
+    {pmf_dScMgSound_c_Note_StateScroll},
+};
+PmfEntry data_ov006_02142e20[13] = {
+    {pmf_dScMgSound_c_Pop00_Update}, {pmf_dScMgSound_c_Pop01_Update},
+    {pmf_dScMgSound_c_Pop02_Update}, {pmf_dScMgSound_c_Pop03_Update},
+    {pmf_dScMgSound_c_Pop04_Update}, {pmf_dScMgSound_c_Pop05_Update},
+    {pmf_dScMgSound_c_Pop06_Update}, {pmf_dScMgSound_c_Pop07_Update},
+    {pmf_dScMgSound_c_Pop08_Update}, {pmf_dScMgSound_c_Pop09_Update},
+    {pmf_dScMgSound_c_Pop10_Update}, {pmf_dScMgSound_c_Pop11_Update},
+    {pmf_dScMgSound_c_Pop12_Update},
+};
+Pmf data_ov006_02142d38[3] = {
+    pmf_dScMgSound_c_Pop00_Start,
+    pmf_dScMgSound_c_Pop00_Fly,
+    pmf_dScMgSound_c_Pop00_Finish,
+};
+PmfEntry data_ov006_02142d50[3] = {
+    {pmf_dScMgSound_c_Pop01_Start},
+    {pmf_dScMgSound_c_Pop01_Fly},
+    {pmf_dScMgSound_c_Pop01_Finish},
+};
+PmfEntry data_ov006_02142d80[3] = {
+    {pmf_dScMgSound_c_Pop02_Start},
+    {pmf_dScMgSound_c_Pop02_Fly},
+    {pmf_dScMgSound_c_Pop02_Finish},
+};
+PmfEntry data_ov006_02142dc8[3] = {
+    {pmf_dScMgSound_c_Pop03_Start},
+    {pmf_dScMgSound_c_Pop03_Fly},
+    {pmf_dScMgSound_c_Pop03_Finish},
+};
+PmfEntry data_ov006_02142de0[3] = {
+    {pmf_dScMgSound_c_Pop04_Start},
+    {pmf_dScMgSound_c_Pop04_Fly},
+    {pmf_dScMgSound_c_Pop04_Finish},
+};
+PmfEntry data_ov006_02142cd8[3] = {
+    {pmf_dScMgSound_c_Pop05_Start},
+    {pmf_dScMgSound_c_Pop05_Fly},
+    {pmf_dScMgSound_c_Pop05_Finish},
+};
+PmfEntry data_ov006_02142cf0[3] = {
+    {pmf_dScMgSound_c_Pop06_Start},
+    {pmf_dScMgSound_c_Pop06_Fly},
+    {pmf_dScMgSound_c_Pop06_Finish},
+};
+PmfEntry data_ov006_02142d20[3] = {
+    {pmf_dScMgSound_c_Pop07_Start},
+    {pmf_dScMgSound_c_Pop07_Fly},
+    {pmf_dScMgSound_c_Pop07_Finish},
+};
+PmfEntry data_ov006_02142d68[3] = {
+    {pmf_dScMgSound_c_Pop08_Start},
+    {pmf_dScMgSound_c_Pop08_Fly},
+    {pmf_dScMgSound_c_Pop08_Finish},
+};
+Pmf data_ov006_02142d98[3] = {
+    pmf_dScMgSound_c_Pop09_Start,
+    pmf_dScMgSound_c_Pop09_Fly,
+    pmf_dScMgSound_c_Pop09_Finish,
+};
+Pmf data_ov006_02142cc0[3] = {
+    pmf_dScMgSound_c_Pop10_Start,
+    pmf_dScMgSound_c_Pop10_Fly,
+    pmf_dScMgSound_c_Pop10_Finish,
+};
+PmfEntry data_ov006_02142d08[3] = {
+    {pmf_dScMgSound_c_Pop11_Start},
+    {pmf_dScMgSound_c_Pop11_Fly},
+    {pmf_dScMgSound_c_Pop11_Finish},
+};
+PmfEntry data_ov006_02142db0[3] = {
+    {pmf_dScMgSound_c_Pop12_Start},
+    {pmf_dScMgSound_c_Pop12_Fly},
+    {pmf_dScMgSound_c_Pop12_Finish},
+};
 
 // @symbol dScMgSound_c_classInit
 /* The MG_SOUND registry factory. It sits directly after InitResources and

@@ -2190,7 +2190,7 @@ __sinit_d_s_mg_pachinko2.cpp kind:function(arm,size=0x2d4) addr:0x02131cd0
 __sinit_d_s_mg_panel.cpp kind:function(arm,size=0x318) addr:0x02131fa4
 __sinit_ov006_021322bc kind:function(arm,size=0x5d8) addr:0x021322bc
 __sinit_d_s_mg_slots.cpp kind:function(arm,size=0xdc) addr:0x02132894
-__sinit_ov006_02132970 kind:function(arm,size=0x5f8) addr:0x02132970
+__sinit_d_s_mg_sound.cpp kind:function(arm,size=0x5f8) addr:0x02132970
 __sinit_d_s_mg_teresa.cpp kind:function(arm,size=0x2c4) addr:0x02132f68
 __sinit_d_s_mg_trampoline2.cpp kind:function(arm,size=0x40) addr:0x0213322c
 __sinit_d_s_mg_bsc.cpp kind:function(arm,size=0x174) addr:0x0213326c
@@ -2221,7 +2221,7 @@ __sinit_d_s_mg_snowball.cpp kind:function(arm,size=0x18c) addr:0x021333e0
 .p__sinit_d_s_mg_panel.cpp kind:data(word) addr:0x021335c8
 .p__sinit_ov006_021322bc kind:data(word) addr:0x021335cc
 .p__sinit_d_s_mg_slots.cpp kind:data(word) addr:0x021335d0
-.p__sinit_ov006_02132970 kind:data(word) addr:0x021335d4
+.p__sinit_d_s_mg_sound.cpp kind:data(word) addr:0x021335d4
 .p__sinit_d_s_mg_teresa.cpp kind:data(word) addr:0x021335d8
 .p__sinit_d_s_mg_trampoline2.cpp kind:data(word) addr:0x021335dc
 .p__sinit_d_s_mg_bsc.cpp kind:data(word) addr:0x021335e0
