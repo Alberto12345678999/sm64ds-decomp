@@ -177,7 +177,7 @@ extern int func_020126e8(int a);
 extern int func_02012468(int a, int b, int c, int d, int e, int f, int g, short h);
 extern int data_ov006_0213fbd0[];
 extern void TrmpItem_UpdateAll(void);
-extern int func_ov006_020ca7b8(void);
+extern int Trmp2Mario_Hide(void);
 extern union StateValue data_ov006_0213fbe0;
 extern void func_ov006_020ca840(void *c);
 extern struct P2 data_ov006_0213fbf0;
@@ -189,10 +189,10 @@ extern int data_ov006_02140828;
 extern int data_ov006_0213fc10[];
 extern SpawnDef data_ov006_0212f2b0[];
 extern void TrmpLine_UpdateAll(void);
-extern void func_ov006_020cac30(void);
-extern void func_ov006_020cad3c(int a);
-extern void func_ov006_020ca8e0(void);
-extern void func_ov006_020caa08(void* a);
+extern void Trmp2Mario_UpdateAll(void);
+extern void Trmp2Mario_SetTuning(int a);
+extern void Trmp2Mario_MoveToStart(void);
+extern void Trmp2Mario_PlaceAtStart(void* a);
 extern struct S2 data_ov006_0213fbe8;
 extern void TrmpLine_CreateStartLineT2(void);
 extern s16 data_ov006_0212e058;
@@ -350,7 +350,7 @@ extern "C" void *dScMgTrampoline2_c_classInit(void)
         *(int *)scene = (int)&_ZTV18dScMgTrampoline2_c[2];
         __cxa_vec_ctor(scene + 0x500c, 5, 0xdc,
                       (void *)_ZN6Player29TryExitCharacterDoorWithIntroEv,
-                      (void *)func_ov006_020ca604);
+                      (void *)Trmp2Mario_Destruct);
         __cxa_vec_ctor(scene + 0x5458, 3, 0x32c,
                       (void *)TrmpLine_Reset,
                       (void *)TrmpLine_Destroy);
@@ -442,7 +442,7 @@ s32 dScMgTrampoline2_c::InitResources()
     this->mCamera1TargetZ = fov;
     this->mCamera1Angle = 0x400;
     Camera_UpdateMatrices(raw + 0x4728);
-    if (func_ov006_020cae9c(raw + 0x500c, 5) == 0)
+    if (Trmp2Mario_InitPool(raw + 0x500c, 5) == 0)
         return 0;
     TrmpFx_InitPool(raw + 0x7ad0, 5);
     TrmpLine_LoadTextures();
@@ -470,8 +470,8 @@ void dScMgTrampoline2_c::StartRound(int /* arg */)
     if (mLevel > 0x270e)
         mLevel = 0x270e;
 
-    func_ov006_020cad3c(0x1000);
-    func_ov006_020cac9c(mLevel);
+    Trmp2Mario_SetTuning(0x1000);
+    Trmp2Mario_ResetAll(mLevel);
     data_ov006_021405bc = 1;
     TrmpLine_ClearAll(mLevel);
     TrmpItem_HideAll(mLevel);
@@ -570,7 +570,7 @@ void dScMgTrampoline2_c::StateIntro()
 void dScMgTrampoline2_c::BeginPlay(){
   mTimer = 0xb4;
   mInputEnabled = 1;
-  func_ov006_020caa08((char *)this + 0x7b00);
+  Trmp2Mario_PlaceAtStart((char *)this + 0x7b00);
   *(struct S2*)mState = data_ov006_0213fbe8;
 }
 
@@ -583,7 +583,7 @@ void dScMgTrampoline2_c::StatePlay()
     old = data_ov006_02140818;
     TrmpLine_UpdateAll();
     TrmpItem_UpdateAll();
-    func_ov006_020cac30();
+    Trmp2Mario_UpdateAll();
     if (old < data_ov006_02140818) {
         int n = data_ov006_02140818 - old;
         int i;
@@ -592,7 +592,7 @@ void dScMgTrampoline2_c::StatePlay()
         if (data_ov006_02140818 == 3)
             *(u8 *)(raw + 0xc3) = 0;
     }
-    func_ov006_020cad3c((data_ov006_02140818 / 10) * 64 + 0x1000);
+    Trmp2Mario_SetTuning((data_ov006_02140818 / 10) * 64 + 0x1000);
     if (data_ov006_0213b0f0 == 0) {
         mInputEnabled = 0;
         BeginResults();
@@ -600,7 +600,7 @@ void dScMgTrampoline2_c::StatePlay()
     }
     if (data_ov006_02140830 >= *(int *)(raw + 0x7b90) && data_ov006_021405bc < 5) {
         unsigned int v;
-        func_ov006_020ca8e0();
+        Trmp2Mario_MoveToStart();
         {
             int *p = (int *)((int)raw + 0xbc);
             *p = *p + 1;
@@ -667,10 +667,10 @@ void dScMgTrampoline2_c::BeginResults() {
 void dScMgTrampoline2_c::StateResults()
 {
     TrmpItem_UpdateAll();
-    func_ov006_020cac30();
+    Trmp2Mario_UpdateAll();
     if (ApproachLinear(mTimer, 0, 1) == 0)
         return;
-    if (func_ov006_020ca7b8() == 0)
+    if (Trmp2Mario_Hide() == 0)
         return;
     Mg_SetSharedState(0x12);
     mPromptEnabled = 0;
@@ -1010,7 +1010,7 @@ s32 dScMgTrampoline2_c::Render()
     Mg_DrawTopRightCounter(data_ov006_02140830, 6);
 
     if (mRoundOver == 0) {
-        func_ov006_020caadc();
+        Trmp2Mario_DrawAll();
         TrmpLine_DrawAll();
         TrmpItem_UpdateMatricesAll();
     }

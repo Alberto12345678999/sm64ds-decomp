@@ -20919,111 +20919,111 @@
     },
     "ov006:0x020c8dd4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8dd4"
+      "name": "Trmp2Mario_GetVelocity"
     },
     "ov006:0x020c8ddc": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c8ddc"
+      "name": "Trmp2Mario_Reset"
     },
     "ov006:0x020c8e80": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8e80"
+      "name": "Trmp2Mario_GetPrevPos"
     },
     "ov006:0x020c8e88": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8e88"
+      "name": "Trmp2Mario_GetPos"
     },
     "ov006:0x020c8e90": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8e90"
+      "name": "Trmp2Mario_Render"
     },
     "ov006:0x020c8ecc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8ecc"
+      "name": "Trmp2Mario_UpdateMatrix"
     },
     "ov006:0x020c8f20": {
       "author": "tangosdev",
-      "name": "func_ov006_020c8f20"
+      "name": "Trmp2Mario_Update"
     },
     "ov006:0x020c9024": {
       "author": "tangosdev",
-      "name": "func_ov006_020c9024"
+      "name": "Trmp2Mario_ApplyGravity"
     },
     "ov006:0x020c905c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c905c"
+      "name": "Trmp2Mario_State0"
     },
     "ov006:0x020c9098": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c9098"
+      "name": "Trmp2Mario_EnterByKind"
     },
     "ov006:0x020c91ac": {
       "author": "tangosdev",
-      "name": "func_ov006_020c91ac"
+      "name": "Trmp2Mario_State1"
     },
     "ov006:0x020c94e0": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c94e0"
+      "name": "Trmp2Mario_BounceOffLineA"
     },
     "ov006:0x020c97bc": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020c97bc"
+      "name": "Trmp2Mario_State2"
     },
     "ov006:0x020c9aa0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c9aa0"
+      "name": "Trmp2Mario_BounceOffLineB"
     },
     "ov006:0x020c9c8c": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c9c8c"
+      "name": "Trmp2Mario_EnterState1"
     },
     "ov006:0x020c9d7c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020c9d7c"
+      "name": "Trmp2Mario_State3"
     },
     "ov006:0x020c9e7c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c9e7c"
+      "name": "Trmp2Mario_EnterState3"
     },
     "ov006:0x020c9efc": {
       "author": "tangosdev",
-      "name": "func_ov006_020c9efc"
+      "name": "Trmp2Mario_State4"
     },
     "ov006:0x020c9fe4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c9fe4"
+      "name": "Trmp2Mario_EnterState4"
     },
     "ov006:0x020ca070": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020ca070"
+      "name": "Trmp2Mario_State5"
     },
     "ov006:0x020ca2ec": {
       "author": "ruspecial",
-      "name": "func_ov006_020ca2ec"
+      "name": "Trmp2Mario_EnterState5"
     },
     "ov006:0x020ca310": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca310"
+      "name": "Trmp2Mario_State6"
     },
     "ov006:0x020ca374": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca374"
+      "name": "Trmp2Mario_EnterState6"
     },
     "ov006:0x020ca39c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca39c"
+      "name": "Trmp2Mario_State7"
     },
     "ov006:0x020ca3a8": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca3a8"
+      "name": "Trmp2Mario_EnterState7"
     },
     "ov006:0x020ca430": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca430"
+      "name": "Trmp2Mario_Load"
     },
     "ov006:0x020ca604": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca604"
+      "name": "Trmp2Mario_Destruct"
     },
     "ov006:0x020ca78c": {
       "author": "tangosdev",
@@ -21031,7 +21031,7 @@
     },
     "ov006:0x020ca7b8": {
       "author": "ruspecial",
-      "name": "func_ov006_020ca7b8"
+      "name": "Trmp2Mario_Hide"
     },
     "ov006:0x020ca840": {
       "author": "lunavyqo",
@@ -21039,235 +21039,235 @@
     },
     "ov006:0x020ca8e0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ca8e0"
+      "name": "Trmp2Mario_MoveToStart"
     },
     "ov006:0x020caa08": {
       "author": "tangosdev",
-      "name": "func_ov006_020caa08"
+      "name": "Trmp2Mario_PlaceAtStart"
     },
     "ov006:0x020caadc": {
       "author": "lunavyqo",
-      "name": "func_ov006_020caadc"
+      "name": "Trmp2Mario_DrawAll"
     },
     "ov006:0x020cac30": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020cac30"
+      "name": "Trmp2Mario_UpdateAll"
     },
     "ov006:0x020cac9c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cac9c"
+      "name": "Trmp2Mario_ResetAll"
     },
     "ov006:0x020cad3c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cad3c"
+      "name": "Trmp2Mario_SetTuning"
     },
     "ov006:0x020cae9c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cae9c"
+      "name": "Trmp2Mario_InitPool"
     },
     "ov006:0x020caf44": {
       "author": "tangosdev",
-      "name": "func_ov006_020caf44"
+      "name": "Trmp3DMario_GetVelocity"
     },
     "ov006:0x020caf4c": {
       "author": "tangosdev",
-      "name": "func_ov006_020caf4c"
+      "name": "Trmp3DMario_IsInState6"
     },
     "ov006:0x020cafa4": {
       "author": "tangosdev",
-      "name": "func_ov006_020cafa4"
+      "name": "Trmp3DMario_GetPrevPos"
     },
     "ov006:0x020cafac": {
       "author": "tangosdev",
-      "name": "func_ov006_020cafac"
+      "name": "Trmp3DMario_GetPos"
     },
     "ov006:0x020cafb4": {
       "author": "tangosdev",
-      "name": "func_ov006_020cafb4"
+      "name": "Trmp3DMario_Render"
     },
     "ov006:0x020cafdc": {
       "author": "tangosdev",
-      "name": "func_ov006_020cafdc"
+      "name": "Trmp3DMario_UpdateMatrix"
     },
     "ov006:0x020cb030": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb030"
+      "name": "Trmp3DMario_Update"
     },
     "ov006:0x020cb134": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb134"
+      "name": "Trmp3DMario_ApplyGravity"
     },
     "ov006:0x020cb16c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb16c"
+      "name": "Trmp3DMario_State0"
     },
     "ov006:0x020cb1a8": {
       "author": "lunavyqo",
-      "name": "func_ov006_020cb1a8"
+      "name": "Trmp3DMario_EnterByKind"
     },
     "ov006:0x020cb2b4": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb2b4"
+      "name": "Trmp3DMario_State1"
     },
     "ov006:0x020cb528": {
       "author": "lunavyqo",
-      "name": "func_ov006_020cb528"
+      "name": "Trmp3DMario_EnterState1"
     },
     "ov006:0x020cb5c4": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb5c4"
+      "name": "Trmp3DMario_State2"
     },
     "ov006:0x020cb690": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb690"
+      "name": "Trmp3DMario_EnterState2"
     },
     "ov006:0x020cb72c": {
       "author": "lunavyqo",
-      "name": "func_ov006_020cb72c"
+      "name": "Trmp3DMario_State3"
     },
     "ov006:0x020cb814": {
       "author": "ruspecial",
-      "name": "func_ov006_020cb814"
+      "name": "Trmp3DMario_EnterState3"
     },
     "ov006:0x020cb838": {
       "author": "tangosdev",
-      "name": "func_ov006_020cb838"
+      "name": "Trmp3DMario_State4"
     },
     "ov006:0x020cbaec": {
       "author": "tangosdev",
-      "name": "func_ov006_020cbaec"
+      "name": "Trmp3DMario_BounceOffLineA"
     },
     "ov006:0x020cbd7c": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020cbd7c"
+      "name": "Trmp3DMario_State5"
     },
     "ov006:0x020cbfd8": {
       "author": "tangosdev",
-      "name": "func_ov006_020cbfd8"
+      "name": "Trmp3DMario_BounceOffLineB"
     },
     "ov006:0x020cc198": {
       "author": "lunavyqo",
-      "name": "func_ov006_020cc198"
+      "name": "Trmp3DMario_PickIdleAnim"
     },
     "ov006:0x020cc2ac": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc2ac"
+      "name": "Trmp3DMario_State6"
     },
     "ov006:0x020cc37c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc37c"
+      "name": "Trmp3DMario_EnterState6"
     },
     "ov006:0x020cc408": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc408"
+      "name": "Trmp3DMario_State7"
     },
     "ov006:0x020cc618": {
       "author": "ruspecial",
-      "name": "func_ov006_020cc618"
+      "name": "Trmp3DMario_EnterState7"
     },
     "ov006:0x020cc63c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc63c"
+      "name": "Trmp3DMario_State8"
     },
     "ov006:0x020cc698": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc698"
+      "name": "Trmp3DMario_EnterState8"
     },
     "ov006:0x020cc724": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc724"
+      "name": "Trmp3DMario_State9"
     },
     "ov006:0x020cc8c8": {
       "author": "lunavyqo",
-      "name": "func_ov006_020cc8c8"
+      "name": "Trmp3DMario_EnterState9"
     },
     "ov006:0x020cc9b8": {
       "author": "tangosdev",
-      "name": "func_ov006_020cc9b8"
+      "name": "Trmp3DMario_State10"
     },
     "ov006:0x020cc9fc": {
       "author": "ruspecial",
-      "name": "func_ov006_020cc9fc"
+      "name": "Trmp3DMario_EnterState10"
     },
     "ov006:0x020ccae0": {
       "author": "tangosdev",
-      "name": "func_ov006_020ccae0"
+      "name": "Trmp3DMario_State11"
     },
     "ov006:0x020ccc8c": {
       "author": "tangosdev",
-      "name": "func_ov006_020ccc8c"
+      "name": "Trmp3DMario_EnterState11"
     },
     "ov006:0x020ccd04": {
       "author": "tangosdev",
-      "name": "func_ov006_020ccd04"
+      "name": "Trmp3DMario_IsInState12"
     },
     "ov006:0x020ccd64": {
       "author": "tangosdev",
-      "name": "func_ov006_020ccd64"
+      "name": "Trmp3DMario_State12"
     },
     "ov006:0x020ccd78": {
       "author": "tangosdev",
-      "name": "func_ov006_020ccd78"
+      "name": "Trmp3DMario_EnterState12"
     },
     "ov006:0x020cce0c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cce0c"
+      "name": "Trmp3DMario_Load"
     },
     "ov006:0x020ccfc8": {
       "author": "tangosdev",
-      "name": "func_ov006_020ccfc8"
+      "name": "Trmp3DMario_Destruct"
     },
     "ov006:0x020cd12c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd12c"
+      "name": "Trmp3DMario_Construct"
     },
     "ov006:0x020cd158": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020cd158"
+      "name": "Trmp3DMario_CountFinished"
     },
     "ov006:0x020cd1e0": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd1e0"
+      "name": "Trmp3DMario_StartAll"
     },
     "ov006:0x020cd270": {
       "author": "andrewboudreau",
-      "name": "func_ov006_020cd270"
+      "name": "Trmp3DMario_DrawAll"
     },
     "ov006:0x020cd39c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd39c"
+      "name": "Trmp3DMario_UpdateAll"
     },
     "ov006:0x020cd424": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd424"
+      "name": "Trmp3DMario_ResetAll"
     },
     "ov006:0x020cd510": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd510"
+      "name": "Trmp3DMario_SetTuning"
     },
     "ov006:0x020cd62c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd62c"
+      "name": "Trmp3DMario_SetSpawnHeight"
     },
     "ov006:0x020cd658": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd658"
+      "name": "Trmp3DMario_InitPool"
     },
     "ov006:0x020cd6d8": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd6d8"
+      "name": "TrmpRingObjAdapter_Clear"
     },
     "ov006:0x020cd6f4": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd6f4"
+      "name": "TrmpRingObjAdapter_Construct"
     },
     "ov006:0x020cd720": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd720"
+      "name": "TrmpObjAdapter_Clear"
     },
     "ov006:0x020cd72c": {
       "author": "tangosdev",
-      "name": "func_ov006_020cd72c"
+      "name": "TrmpObjAdapter_Construct"
     },
     "ov006:0x020cd744": {
       "author": "tangosdev",

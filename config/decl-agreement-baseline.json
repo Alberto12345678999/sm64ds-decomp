@@ -27842,17 +27842,17 @@
         "return:void *"
       ]
     },
-    "func_ov006_020c9c8c": {
+    "Trmp2Mario_EnterState1": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "arity:2"
       ]
     },
-    "func_ov006_020ca430": {
+    "Trmp2Mario_Load": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int"
       ]
     },
-    "func_ov006_020ca604": {
+    "Trmp2Mario_Destruct": {
       "include/dScMgTrampoline2_c.h": [
         "arity:0"
       ]
@@ -27862,58 +27862,58 @@
         "arity:1"
       ]
     },
-    "func_ov006_020caa08": {
+    "Trmp2Mario_PlaceAtStart": {
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "arity:1"
       ]
     },
-    "func_ov006_020cac9c": {
+    "Trmp2Mario_ResetAll": {
       "include/decl_common.h": [
         "arity:1"
       ]
     },
-    "func_ov006_020cae9c": {
+    "Trmp2Mario_InitPool": {
       "include/decl_common.h": [
         "param:#1 void *"
       ]
     },
-    "func_ov006_020cc198": {
+    "Trmp3DMario_PickIdleAnim": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 int *"
       ]
     },
-    "func_ov006_020ccd78": {
+    "Trmp3DMario_EnterState12": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]
     },
-    "func_ov006_020cce0c": {
+    "Trmp3DMario_Load": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "param:#1 unsigned char *"
       ]
     },
-    "func_ov006_020ccfc8": {
+    "Trmp3DMario_Destruct": {
       "include/dScMgTrampoline_c.h": [
         "arity:0"
       ]
     },
-    "func_ov006_020cd12c": {
+    "Trmp3DMario_Construct": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:0",
         "return:void"
       ]
     },
-    "func_ov006_020cd1e0": {
+    "Trmp3DMario_StartAll": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:1"
       ]
     },
-    "func_ov006_020cd39c": {
+    "Trmp3DMario_UpdateAll": {
       "src/minigames/d_s_mg_trampoline.cpp": [
         "arity:1"
       ]
     },
-    "func_ov006_020cd510": {
+    "Trmp3DMario_SetTuning": {
       "src/minigames/d_mg_trmpln2_mario.cpp": [
         "return:int"
       ]

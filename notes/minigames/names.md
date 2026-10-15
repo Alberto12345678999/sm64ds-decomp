@@ -451,3 +451,16 @@ Left unnamed (role unknown): `func_ov006_020d8c88` (Bomroom), `func_ov006_0211cc
 - `Heyho_MotionN` / `Heyho_StartMotionN` (N = 0..14) pair each motion handler with the setter that stores its state record. The pairing is certain; what each motion looks like (walk, hop, bob, path, spin) is only partly read, and Motion11 is the spin taken when a jumper hits one (sound 0x1c8).
 - Pool and object helpers: `Heyho_InitPool`, `Heyho_SpawnAll`, `Heyho_ReactAll`/`Heyho_React`, `Heyho_SeparateAll`, `Heyho_CheckHitA/B`, `Heyho_Update`, `Heyho_Draw`, `Heyho_Construct`/`Heyho_Destruct`, `Heyho_LoadResources`.
 - Medium confidence: `Heyho_Settle`, `Heyho_SettleAll`, `Heyho_AllIdle`, `Heyho_IsChasing`.
+
+**dMgTrmpln2Mario_c / dMgTrmpln3DMario_c (the trampoline Marios).** The two classes mirror each other, so their helpers carry parallel names.
+
+High confidence:
+- **States:** `Trmp2Mario_State0..7` and `Trmp3DMario_State0..12`, named in address order.
+- **Setters:** each `EnterStateN` stores the record of its state, checked through ov006 relocs.
+- **Getters:** `GetPos`, `GetPrevPos` and `GetVelocity` return the +0x24/+0x30/+0x3c (2Mario) and +0x1c/+0x28/+0x34 (3DMario) vectors, which the Update/Matrix bodies read as position, previous position and velocity.
+- **Lifecycle:** the destructors and constructors the file banner identifies.
+- **Object adapters:** the `TrmpObjAdapter_*` and `TrmpRingObjAdapter_*` constructors, which store those classes' vtables.
+
+Medium confidence: `BounceOffLineA/B` (the reflection off the drawn line), `EnterByKind`, `PickIdleAnim`, `MoveToStart`, `PlaceAtStart`, `CountFinished`, `SetSpawnHeight`.
+
+Left unnamed: `func_ov006_020ca840`.

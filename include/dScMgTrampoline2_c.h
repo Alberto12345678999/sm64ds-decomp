@@ -17,7 +17,7 @@
 #include "dScMgD3DBase_c.h"
 
 extern "C" void __cxa_vec_cleanup(void *base, int count, int stride, void *dtor);
-extern "C" void *func_ov006_020ca604(void);
+extern "C" void *Trmp2Mario_Destruct(void);
 extern "C" void TrmpLine_Destroy(void);
 extern "C" void Jump2Popup_ElemDtor(void *object);
 struct Model;
@@ -34,7 +34,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
         __cxa_vec_cleanup(mArray4, 0xa, 0x24, (void *)Jump2Popup_ElemDtor);
         __cxa_vec_cleanup(mArray3, 0xa, 0x1d0, (void *)Trmp2_DestructJumperModels);
         __cxa_vec_cleanup(mArray2, 3, 0x32c, (void *)TrmpLine_Destroy);
-        __cxa_vec_cleanup(mArray1, 5, 0xdc, (void *)func_ov006_020ca604);
+        __cxa_vec_cleanup(mArray1, 5, 0xdc, (void *)Trmp2Mario_Destruct);
     }
     virtual void StartRound(int arg);               /* slot 18 */
     virtual int  CanEndState(int mode);              /* slot 19 */
@@ -65,7 +65,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     /* Raw eight-byte state PMF. Behavior calls through it. A typed
        global initializer emits a __sinit this ROM does not have. */
     u32 mState[2];            /* 0x5004 */
-    u8  mArray1[0x44c];       /* 0x500c -- 5 * 0xdc,    elem dtor func_ov006_020ca604 */
+    u8  mArray1[0x44c];       /* 0x500c -- 5 * 0xdc,    elem dtor Trmp2Mario_Destruct */
     u8  mArray2[0x984];       /* 0x5458 -- 3 * 0x32c,   elem dtor TrmpLine_Destroy */
     u8  mArray3[0x1220];      /* 0x5ddc -- 0xa * 0x1d0, elem dtor Trmp2_DestructJumperModels */
     u8  mArray4[0x168];       /* 0x6ffc -- 0xa * 0x24,  elem dtor Jump2Popup_ElemDtor */
