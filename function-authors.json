@@ -20719,51 +20719,51 @@
     },
     "ov006:0x020c6f8c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c6f8c"
+      "name": "Jump3D_SetTuning"
     },
     "ov006:0x020c70d0": {
       "author": "tangosdev",
-      "name": "func_ov006_020c70d0"
+      "name": "Jump3D_DrawAll"
     },
     "ov006:0x020c712c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c712c"
+      "name": "Jump3D_UpdateAll"
     },
     "ov006:0x020c719c": {
       "author": "tangosdev",
-      "name": "func_ov006_020c719c"
+      "name": "Jump3D_Arrange"
     },
     "ov006:0x020c72b4": {
       "author": "tangosdev",
-      "name": "func_ov006_020c72b4"
+      "name": "Jump3D_DisableInput"
     },
     "ov006:0x020c72c8": {
       "author": "tangosdev",
-      "name": "func_ov006_020c72c8"
+      "name": "Jump3D_EnableInput"
     },
     "ov006:0x020c72dc": {
       "author": "ruspecial",
-      "name": "func_ov006_020c72dc"
+      "name": "Jump3D_RestoreCount"
     },
     "ov006:0x020c7300": {
       "author": "ruspecial",
-      "name": "func_ov006_020c7300"
+      "name": "Jump3D_AllIdle"
     },
     "ov006:0x020c7388": {
       "author": "tangosdev",
-      "name": "func_ov006_020c7388"
+      "name": "Jump3D_SetLowGravity"
     },
     "ov006:0x020c7418": {
       "author": "tangosdev",
-      "name": "func_ov006_020c7418"
+      "name": "Jump3D_StopGravity"
     },
     "ov006:0x020c7490": {
       "author": "lunavyqo",
-      "name": "func_ov006_020c7490"
+      "name": "Jump3D_StartRoundLayout"
     },
     "ov006:0x020c7574": {
       "author": "tangosdev",
-      "name": "func_ov006_020c7574"
+      "name": "Jump3D_InitPool"
     },
     "ov006:0x020c762c": {
       "author": "andrewboudreau",
@@ -20779,15 +20779,15 @@
     },
     "ov006:0x020c76e0": {
       "author": "tangosdev",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c76e0Ev"
+      "name": "_ZN16dMgJump3DMario_c17UpdateModelMatrixEv"
     },
     "ov006:0x020c7734": {
       "author": "andrewboudreau",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c7734Ev"
+      "name": "_ZN16dMgJump3DMario_c4DrawEv"
     },
     "ov006:0x020c7860": {
       "author": "tangosdev",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c7860Ev"
+      "name": "_ZN16dMgJump3DMario_c6UpdateEv"
     },
     "ov006:0x020c78ec": {
       "author": "andrewboudreau",
@@ -20819,7 +20819,7 @@
     },
     "ov006:0x020c8084": {
       "author": "ruspecial",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c8084Ev"
+      "name": "_ZN16dMgJump3DMario_c12StartFallOutEv"
     },
     "ov006:0x020c814c": {
       "author": "tangosdev",
@@ -20827,7 +20827,7 @@
     },
     "ov006:0x020c81e0": {
       "author": "tangosdev",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c81e0Ev"
+      "name": "_ZN16dMgJump3DMario_c12StartRiseOutEv"
     },
     "ov006:0x020c8270": {
       "author": "andrewboudreau",
@@ -20847,7 +20847,7 @@
     },
     "ov006:0x020c862c": {
       "author": "tangosdev",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c862cEi"
+      "name": "_ZN16dMgJump3DMario_c11StartWindUpEi"
     },
     "ov006:0x020c864c": {
       "author": "tangosdev",
@@ -20855,7 +20855,7 @@
     },
     "ov006:0x020c8658": {
       "author": "tangosdev",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c8658Ev"
+      "name": "_ZN16dMgJump3DMario_c11HideAndIdleEv"
     },
     "ov006:0x020c8680": {
       "author": "andrewboudreau",
@@ -20867,7 +20867,7 @@
     },
     "ov006:0x020c87d0": {
       "author": "ruspecial",
-      "name": "_ZN16dMgJump3DMario_c19func_ov006_020c87d0Ev"
+      "name": "_ZN16dMgJump3DMario_c13LoadResourcesEv"
     },
     "ov006:0x020c893c": {
       "author": "andrewboudreau",

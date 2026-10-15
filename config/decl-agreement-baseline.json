@@ -27830,13 +27830,13 @@
         "param:#1 int"
       ]
     },
-    "func_ov006_020c719c": {
+    "Jump3D_Arrange": {
       "include/decl_common.h": [
         "param:#1 int",
         "param:#2 int"
       ]
     },
-    "func_ov006_020c7300": {
+    "Jump3D_AllIdle": {
       "src/minigames/d_s_mg_jump2.cpp": [
         "arity:1",
         "return:void *"

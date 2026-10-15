@@ -95,15 +95,15 @@ void Camera_UpdateMatrices(void *cam);
 
 void func_ov006_020c40e8(void);
 void func_ov006_020c42bc(void);
-void func_ov006_020c712c(void);
-void func_ov006_020c7388(void);
-void func_ov006_020c7418(void);
-void func_ov006_020c7490(void);
-int  func_ov006_020c7300(void);
+void Jump3D_UpdateAll(void);
+void Jump3D_SetLowGravity(void);
+void Jump3D_StopGravity(void);
+void Jump3D_StartRoundLayout(void);
+int  Jump3D_AllIdle(void);
 int  func_ov006_020c4060(void);
 int  func_ov006_020c4684(char *ptr, int n);
-int  func_ov006_020c7574(char *base, int count);
-void func_ov006_020c72c8(void);
+int  Jump3D_InitPool(char *base, int count);
+void Jump3D_EnableInput(void);
 int  RandomIntInternal(int *seed);
 
 extern int  data_020a0e68;
@@ -161,9 +161,9 @@ void dScMgJump_c::StartRound(int arg)
     }
 
     if (mLevel != 0)
-        func_ov006_020c72b4();
+        Jump3D_DisableInput();
     else
-        func_ov006_020c72c8();
+        Jump3D_EnableInput();
 
     if (mLevel < 0xf) {
         idx = mLevel;
@@ -174,7 +174,7 @@ void dScMgJump_c::StartRound(int arg)
         data_ov006_0213cb48 = idx;
     }
 
-    func_ov006_020c719c(mLevel, idx);
+    Jump3D_Arrange(mLevel, idx);
 
     if (mLevel < 0xf)
         data_ov006_02140328 = 3;
@@ -197,7 +197,7 @@ int dScMgJump_c::CanEndState(int sel)
         if (mLevel % 5 == 4) {
             if (ApproachLinear2(mStateTimer, 0, 1) != 0) {
                 if (data_ov006_02140428 < 3) {
-                    func_ov006_020c72dc();
+                    Jump3D_RestoreCount();
                     func_02012790(0x26);
                     mStateTimer = 0x3c;
                     return 0;
@@ -258,7 +258,7 @@ s32 dScMgJump_c::InitResources()
 
     if (func_ov006_020c4684((char *)mArray2, 6) == 0)
         return 0;
-    if (func_ov006_020c7574((char *)mPlayers, 3) == 0)
+    if (Jump3D_InitPool((char *)mPlayers, 3) == 0)
         return 0;
 
     if (param1 & 1) {
@@ -309,7 +309,7 @@ void dScMgJump_c::State_Intro()
             mPromptBlinkCount = 1;
             mPromptBlinkTimer = 0;
         }
-        func_ov006_020c7490();
+        Jump3D_StartRoundLayout();
         BeginPlay();
     } else if (left == 0x77) {
         Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
@@ -332,7 +332,7 @@ void dScMgJump_c::State_Play()
         *acc -= 0x1000;
     }
     func_ov006_020c42bc();
-    func_ov006_020c712c();
+    Jump3D_UpdateAll();
     if(data_ov006_02140428 == 0){
         BeginEnd();
         return;
@@ -359,12 +359,12 @@ void dScMgJump_c::State_End()
     *acc -= 0x1000;
   }
   func_ov006_020c42bc();
-  func_ov006_020c712c();
+  Jump3D_UpdateAll();
   if (ApproachLinear2(mStateTimer, 0, 1) == 0)
   {
     return;
   }
-  func_ov006_020c7388();
+  Jump3D_SetLowGravity();
   func_ov006_020c40e8();
   mState = data_ov006_0213cb4c;
 }
@@ -372,7 +372,7 @@ void dScMgJump_c::State_End()
 // @symbol _ZN11dScMgJump_c12State_ResultEv
 void dScMgJump_c::State_Result()
 {
-    int ready = func_ov006_020c7300();
+    int ready = Jump3D_AllIdle();
     if (ready) {
         ready = func_ov006_020c4060();
         if (ready) {
@@ -383,13 +383,13 @@ void dScMgJump_c::State_Result()
         }
     }
     func_ov006_020c42bc();
-    func_ov006_020c712c();
+    Jump3D_UpdateAll();
 }
 
 // @symbol _ZN11dScMgJump_c10BeginFinalEv
 void dScMgJump_c::BeginFinal()
 {
-    func_ov006_020c7418();
+    Jump3D_StopGravity();
     mState = data_ov006_0213cb6c;
 }
 
@@ -400,7 +400,7 @@ void dScMgJump_c::State_Final()
 {
   mAccum += mAccumStep >> 12;
   mAccumStep += 0x600;
-  func_ov006_020c712c();
+  Jump3D_UpdateAll();
   int same = (int)(data_ov006_02140434 == data_ov006_02140418);
   if(same == 0) return;
   char* shared = (char *)gMgScene;
@@ -508,7 +508,7 @@ s32 dScMgJump_c::Render()
         }
     }
 
-    func_ov006_020c70d0();
+    Jump3D_DrawAll();
     func_ov006_020c425c();
 
     return 1;

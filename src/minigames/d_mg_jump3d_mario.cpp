@@ -12,18 +12,18 @@
  * reorder. The destructor is not virtual, so the first declared virtual
  * (Unk_020c76d8) is the key function and this file emits the vtable.
  *
- * Include common.h first: the mat4x3 copy in func_ov006_020c76e0 needs its
+ * Include common.h first: the mat4x3 copy in UpdateModelMatrix needs its
  * flat s32 m[12]; math/Matrix.h's nested form scalarizes the copy.
  * decl_common.h is left out because four of the data symbols here collide
  * with its spellings.
  *
  * ov006 0x020c6f8c..0x020c8a30 (.text), 40 functions. The first twelve are
  * the helpers the owning scenes call: a tuning-word rescale
- * (func_ov006_020c6f8c), the draw/update/reset/init loops over the
+ * (Jump3D_SetTuning), the draw/update/reset/init loops over the
  * three-Mario array and its small state accessors (0x020c70d0..0x020c7574).
  * They share the .data tuning words at 0213b008..0213b01c and the bss
  * window at 02140400.. with the members below, which is what puts them in
- * this TU. They were one-function shards, one per function; func_ov006_020c7490 keeps its
+ * this TU. They were one-function shards, one per function; Jump3D_StartRoundLayout keeps its
  * `opt_common_subs off` as a push/pop bracket.
  *
  * leftovers:
@@ -36,7 +36,7 @@
  *   addressing mode, which conflicts with PlayerInput.h's declarations;
  *   that header stays unincluded and the sites are marked `local extern`.
  * - The *(volatile int *)&v[2] store in StateMove, the int* zeroing of
- *   Mtx in func_ov006_020c7734, and the `int t` temp in func_ov006_020c87d0
+ *   Mtx in Draw, and the `int t` temp in LoadResources
  *   are codegen-pinned; each site carries its measured note.
  */
 
@@ -113,7 +113,7 @@ extern int data_ov006_0213b01c;
 extern int data_ov006_02140428;
 extern int data_ov006_02140434;
 
-/* The six anim files func_ov006_020c87d0 loads. The destructor clears only
+/* The six anim files LoadResources loads. The destructor clears only
  * five of them; 0214041c survives in the ROM too. */
 extern BCA_File *data_ov006_02140408;
 extern BCA_File *data_ov006_0214040c;
@@ -184,10 +184,10 @@ short ApproachLinear2(short &value, short target, short step);
 void  ApproachLinear(int &value, int target, int step);
 
 
-// @symbol func_ov006_020c6f8c
+// @symbol Jump3D_SetTuning
 /* Rescales the six tuning words at 0213b008..0213b01c from one input,
  * clamped to 0x3000. */
-extern "C" void func_ov006_020c6f8c(int a)
+extern "C" void Jump3D_SetTuning(int a)
 {
     int b;
     if (a > 0x3000) a = 0x3000;
@@ -200,29 +200,29 @@ extern "C" void func_ov006_020c6f8c(int a)
     data_ov006_0213b008 = (int)(((long long)b * 0x5000 + 0x800) >> 12);
 }
 
-// @symbol func_ov006_020c70d0
-extern "C" void func_ov006_020c70d0(void)
+// @symbol Jump3D_DrawAll
+extern "C" void Jump3D_DrawAll(void)
 {
     int i;
     for (i = 0; i < data_ov006_02140418; i++) {
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->func_ov006_020c7734();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->Draw();
     }
     Puff_DrawAll();
 }
 
-// @symbol func_ov006_020c712c
-extern "C" void func_ov006_020c712c(void)
+// @symbol Jump3D_UpdateAll
+extern "C" void Jump3D_UpdateAll(void)
 {
     int i;
     data_ov006_02140404 = data_ov006_02140404 + 0x800;
     for (i = 0; i < data_ov006_02140418; i++) {
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->func_ov006_020c7860();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->Update();
     }
     Puff_UpdateAll();
 }
 
-// @symbol func_ov006_020c719c
-extern "C" void func_ov006_020c719c(u32 a0, u32 a1)
+// @symbol Jump3D_Arrange
+extern "C" void Jump3D_Arrange(u32 a0, u32 a1)
 {
     int i;
     int x;
@@ -233,30 +233,30 @@ extern "C" void func_ov006_020c719c(u32 a0, u32 a1)
     } else {
         x = (a0 % 5 + a0 / 5) * 0x280 + 0x1000;
     }
-    func_ov006_020c6f8c(x);
+    Jump3D_SetTuning(x);
     if ((u32)data_ov006_02140410 % 5 == 0) {
         data_ov006_02140428 = data_ov006_02140418;
     }
     for (i = 0; i < data_ov006_02140418; i++) {
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->func_ov006_020c8658();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + i * 0xb8))->HideAndIdle();
     }
     Puff_ClearAll(data_ov006_02140418 - data_ov006_02140428, 0);
     data_ov006_02140434 = 0;
 }
 
-// @symbol func_ov006_020c72b4
-extern "C" void func_ov006_020c72b4(void) { data_ov006_02140400 = 0; }
+// @symbol Jump3D_DisableInput
+extern "C" void Jump3D_DisableInput(void) { data_ov006_02140400 = 0; }
 
-// @symbol func_ov006_020c72c8
-extern "C" void func_ov006_020c72c8(void) { data_ov006_02140400 = 1; }
+// @symbol Jump3D_EnableInput
+extern "C" void Jump3D_EnableInput(void) { data_ov006_02140400 = 1; }
 
-// @symbol func_ov006_020c72dc
-extern "C" void func_ov006_020c72dc(void)
+// @symbol Jump3D_RestoreCount
+extern "C" void Jump3D_RestoreCount(void)
 {
     ApproachLinear(data_ov006_02140428, data_ov006_02140418, 1);
 }
 
-// @symbol func_ov006_020c7300
+// @symbol Jump3D_AllIdle
 /* Returns 0 if any entry's pair at +0x3c disagrees with the record at
  * 0213b040 (a y mismatch is tolerated when x is 0), else 1. */
 struct Jump3DEnt {
@@ -265,7 +265,7 @@ struct Jump3DEnt {
     int y;
     char _pad44[0x74];
 };
-extern "C" int func_ov006_020c7300(void)
+extern "C" int Jump3D_AllIdle(void)
 {
     int i;
     for (i = 0; i < data_ov006_02140418; i++) {
@@ -278,8 +278,8 @@ extern "C" int func_ov006_020c7300(void)
     return 1;
 }
 
-// @symbol func_ov006_020c7388
-extern "C" void func_ov006_020c7388(void)
+// @symbol Jump3D_SetLowGravity
+extern "C" void Jump3D_SetLowGravity(void)
 {
     int i;
     int off;
@@ -290,15 +290,15 @@ extern "C" void func_ov006_020c7388(void)
         return;
     off = 0;
     do {
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c8084();
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c76e0();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->StartFallOut();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->UpdateModelMatrix();
         i++;
         off += 0xb8;
     } while (i < data_ov006_02140418);
 }
 
-// @symbol func_ov006_020c7418
-extern "C" void func_ov006_020c7418(void)
+// @symbol Jump3D_StopGravity
+extern "C" void Jump3D_StopGravity(void)
 {
     int n = data_ov006_02140418;
     int i = 0;
@@ -311,18 +311,18 @@ extern "C" void func_ov006_020c7418(void)
     off = 0;
     do
     {
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c81e0();
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c76e0();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->StartRiseOut();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->UpdateModelMatrix();
         i++;
         off += 0xb8;
     }
     while (i < data_ov006_02140418);
 }
 
-// @symbol func_ov006_020c7490
+// @symbol Jump3D_StartRoundLayout
 #pragma push
 #pragma opt_common_subs off
-extern "C" void func_ov006_020c7490(void)
+extern "C" void Jump3D_StartRoundLayout(void)
 {
     int i;
     int eoff;
@@ -336,7 +336,7 @@ extern "C" void func_ov006_020c7490(void)
     do {
         char *e = data_ov006_0212dddc + data_ov006_02140414 * 0x24 + eoff;
         int word = *(int *)e;
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + ooff))->func_ov006_020c862c((short)word);
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + ooff))->StartWindUp((short)word);
         *(int *)(data_ov006_02140420 + ooff + 0x14) = *(int *)(e + 4);
         {
             int s = data_ov006_0213b014;
@@ -344,7 +344,7 @@ extern "C" void func_ov006_020c7490(void)
             *(int *)(data_ov006_02140420 + ooff + 0x20) =
                 (int)(((long long)s * c + 0x800) >> 12);
         }
-        ((dMgJump3DMario_c *)(data_ov006_02140420 + ooff))->func_ov006_020c76e0();
+        ((dMgJump3DMario_c *)(data_ov006_02140420 + ooff))->UpdateModelMatrix();
         i++;
         eoff += 0xc;
         ooff += 0xb8;
@@ -352,8 +352,8 @@ extern "C" void func_ov006_020c7490(void)
 }
 #pragma pop
 
-// @symbol func_ov006_020c7574
-extern "C" int func_ov006_020c7574(char *base, int count)
+// @symbol Jump3D_InitPool
+extern "C" int Jump3D_InitPool(char *base, int count)
 {
     int i;
     int off;
@@ -365,9 +365,9 @@ extern "C" int func_ov006_020c7574(char *base, int count)
         off = i;
         do {
             char *q;
-            if (!((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c87d0()) return 0;
-            ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c8658();
-            ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->func_ov006_020c76e0();
+            if (!((dMgJump3DMario_c *)(data_ov006_02140420 + off))->LoadResources()) return 0;
+            ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->HideAndIdle();
+            ((dMgJump3DMario_c *)(data_ov006_02140420 + off))->UpdateModelMatrix();
             q = data_ov006_02140420 + off;
             if (i < 3) data_ov006_021403f4[i] = q;
             i++;
@@ -414,18 +414,18 @@ void *dMgJump3DMario_c::Unk_020c76d8()
 }
 
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c76e0Ev
+// @symbol _ZN16dMgJump3DMario_c17UpdateModelMatrixEv
 /* Rebuilds the model matrix from mPos and mAngleY. */
-void dMgJump3DMario_c::func_ov006_020c76e0()
+void dMgJump3DMario_c::UpdateModelMatrix()
 {
     Matrix4x3_FromTranslation(&data_020a0e68, mPos.x, mPos.y, mPos.z);
     Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
     mModelAnim.mat4x3 = data_020a0e68;
 }
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c7734Ev
+// @symbol _ZN16dMgJump3DMario_c4DrawEv
 /* OAM shadow sprite plus the model render. */
-void dMgJump3DMario_c::func_ov006_020c7734()
+void dMgJump3DMario_c::Draw()
 {
     short screen[2];
     int scaleX;
@@ -460,15 +460,15 @@ void dMgJump3DMario_c::func_ov006_020c7734()
     mModelAnim.Render(&data_ov006_0212ddd0);
 }
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c7860Ev
+// @symbol _ZN16dMgJump3DMario_c6UpdateEv
 /* The per-frame update: gravity, integrate, dispatch mState. */
-void dMgJump3DMario_c::func_ov006_020c7860()
+void dMgJump3DMario_c::Update()
 {
     ApproachLinear(mVel.y, data_ov006_0213b010, data_ov006_0213b018);
     AddVec3(&mPos, &mVel, &mPos);
     (this->*mState)();
     Camera_ProjectToScreen16(data_ov006_02141a40, &mPos, &mScreenX);
-    func_ov006_020c76e0();
+    UpdateModelMatrix();
     mModelAnim.dExtFrameCtrl_c::Advance();
 }
 
@@ -708,16 +708,16 @@ void dMgJump3DMario_c::StateFallOut()
     if (mPos.y >= -0x120000)
         return;
     mVel.y = 0;
-    func_ov006_020c8658();
+    HideAndIdle();
 }
 
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c8084Ev
-void dMgJump3DMario_c::func_ov006_020c8084()
+// @symbol _ZN16dMgJump3DMario_c12StartFallOutEv
+void dMgJump3DMario_c::StartFallOut()
 {
     if (mState == data_ov006_0213b088) {
         mVel.y = 0;
-        func_ov006_020c8658();
+        HideAndIdle();
     } else {
         mVel.x = 0;
         mVel.y = 0x2000;
@@ -741,12 +741,12 @@ void dMgJump3DMario_c::StateRiseOut()
         return;
     mVel.y = 0;
     data_ov006_02140434++;
-    func_ov006_020c8658();
+    HideAndIdle();
 }
 
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c81e0Ev
-void dMgJump3DMario_c::func_ov006_020c81e0()
+// @symbol _ZN16dMgJump3DMario_c12StartRiseOutEv
+void dMgJump3DMario_c::StartRiseOut()
 {
     mVel.x = 0;
     mVel.y = data_ov006_0213b00c;
@@ -848,8 +848,8 @@ void dMgJump3DMario_c::StateWindUp()
 }
 
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c862cEi
-void dMgJump3DMario_c::func_ov006_020c862c(int timer)
+// @symbol _ZN16dMgJump3DMario_c11StartWindUpEi
+void dMgJump3DMario_c::StartWindUp(int timer)
 {
     mTimer = (s16)timer;
     mState = data_ov006_0213b050;
@@ -862,8 +862,8 @@ void dMgJump3DMario_c::StateIdle()
 }
 
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c8658Ev
-void dMgJump3DMario_c::func_ov006_020c8658()
+// @symbol _ZN16dMgJump3DMario_c11HideAndIdleEv
+void dMgJump3DMario_c::HideAndIdle()
 {
     mVisible = 0;
     mPos.y = 0;
@@ -905,9 +905,9 @@ void dMgJump3DMario_c::EnterRespawn()
 }
 
 
-// @symbol _ZN16dMgJump3DMario_c19func_ov006_020c87d0Ev
+// @symbol _ZN16dMgJump3DMario_c13LoadResourcesEv
 /* Loads the model and the six anims. */
-int dMgJump3DMario_c::func_ov006_020c87d0()
+int dMgJump3DMario_c::LoadResources()
 {
     /* Keep `t`: folding the comparison into the `if` below shrinks
        the function to 0x160 bytes against the ROM's 0x16c
@@ -936,7 +936,7 @@ int dMgJump3DMario_c::func_ov006_020c87d0()
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, data_ov006_02140430, 0x40000000, kAnimSpeed, 0);
 
-    func_ov006_020c8658();
+    HideAndIdle();
     return 1;
 }
 
