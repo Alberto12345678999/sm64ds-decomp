@@ -6,7 +6,7 @@ ContinuationIndentWidth: 4
 UseTab: Never
 ColumnLimit: 100
 BreakBeforeBraces: Attach
-PointerAlignment: Left
+PointerAlignment: Right
 DerivePointerAlignment: false
 SortIncludes: Never
 IncludeBlocks: Preserve

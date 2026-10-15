@@ -15,5 +15,5 @@ void FixtureActor::Tick() {
 }
 
 void SetFixtureRegister() {
-    *reinterpret_cast<volatile u32*>(0x04000208) = 0;
+    *reinterpret_cast<volatile u32 *>(0x04000208) = 0;
 }

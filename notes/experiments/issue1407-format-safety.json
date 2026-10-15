@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "status": "complete: guarded policy preserves all selected complete objects; deferrals remain unsupported formatting coverage",
-  "production_base_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
-  "experiment_input_head": "f7f7decd485849d31aabd132b075ea6bd05a2bc8",
+  "production_base_commit": "af21ea68d359d1aee18f3ff5a6ac51f7dfadc921",
+  "experiment_input_head": "41b3bd79fe93f3f74035dcf6ebfcebf4f39f992c",
   "method": "same paths, production compiler/flags, shadow include only, whole raw ELF comparison",
   "formatter_version": "19.1.7",
   "raw_initial_config": {
@@ -65,7 +65,8 @@
     ],
     "full_report_sha256": "202338b5a984b6f3164a3c82e4e672c38c0a681a06c40b25fffb6a0fd36f3748",
     "signature_note": "Include-order signatures compare header spellings, excluding trailing comments and line-ending bytes.",
-    "execution_note": "Executed original runner before --mode was added; mode and normalized include-order signatures recorded afterwards without changing compiler results. Original runner retained and hashed."
+    "execution_note": "Executed original runner before --mode was added; mode and normalized include-order signatures recorded afterwards without changing compiler results. Original runner retained and hashed.",
+    "production_base_commit": "40dfd83ba134be0600730b58f3261f04441632d8"
   },
   "limitations": [
     "Whole raw ELF equality is input-specific formatting invariance, not new ROM/destination validation or universal formatter safety.",
@@ -73,28 +74,28 @@
     "Deferrals retain the complete original file and remain explicit unsupported formatting coverage."
   ],
   "production_tree_ids": {
-    "src": "95d1ad9b41c5e7bf477b12c003e7a15c783e52c4",
-    "include": "bbf6e0ac629c5caa508e068e86cc18dbafadbb59",
-    "config": "e323e2c354729c23f4b15c49252552af63f58bec"
+    "src": "4e78aae72857c9dc3d924d7aadc275fce0d391cf",
+    "include": "df3065d453c694691b711f940c8345d74e70afd6",
+    "config": "3359b5e2ec1b23640888648710f8e6d270a22e27"
   },
-  "source_selection": "All 2752 rombuild.enrolled() complete production sources; all 494 tracked src/include .h/.hpp headers. All tracked src/include files copied for dependency resolution.",
+  "source_selection": "All 2740 rombuild.enrolled() complete production sources at af21ea68; all 494 tracked src/include .h/.hpp headers. All tracked src/include files copied for dependency resolution.",
   "commands": [
-    "python tools/audit_source_format.py --output build/format-audit-same-line --clang-format build/style-venv/Scripts/clang-format.exe --mode guarded -j16",
+    "python tools/audit_source_format.py --output build/format-audit-pointer-right --clang-format build/style-venv/Scripts/clang-format.exe --mode guarded -j16",
     "python -m unittest tools.test_source_style tools.test_audit_source_format -v"
   ],
   "guarded_final_config": {
     "summary": {
       "control": {
-        "compiled": 2752
+        "compiled": 2740
       },
       "formatted_sources": {
-        "identical": 2752
+        "identical": 2740
       },
       "formatted_sources_and_headers": {
-        "identical": 2752
+        "identical": 2740
       }
     },
-    "config_sha256": "68e481ff075253d2a069a9845dbf55734ad3b7316fee4cc2f2f8f5df86abb1ef",
+    "config_sha256": "f83f7d449b509d100285c9ee9d5e9135da4e6f63df9f8d995302ea5767ea78e0",
     "runner_sha256": "0612359fd877ce428b374a15dfbce10b18b9714608a49076c0fc9e48530dc3d9",
     "implementation_sha256": {
       "source_style.py": "235bf70f210e11d4bf76554e7d8255ddd7fd87c253273da96a934593c37d2640",
@@ -103,12 +104,14 @@
       "build_pin.py": "69955d90432c34c6933d2dc9e75154eb154d87c90de21af0b4221e343d03b4f2",
       "rombuild.py": "e4f83caf2cd245e4a706a11bfb038059fc9de95537e11e5a25868c3504e6148a"
     },
-    "source_changed_count": 2574,
-    "header_changed_count": 478,
+    "source_changed_count": 2519,
+    "header_changed_count": 476,
     "order_signature_changes": [],
     "brace_style": "Attach: opening braces on the same line",
-    "input_head": "fed454cbc4d2215f9369a4758bfd3842ce81d0ec",
-    "source_count": 2752,
+    "pointer_alignment": "Right: Type *ptr, Type &ref",
+    "input_head": "41b3bd79fe93f3f74035dcf6ebfcebf4f39f992c",
+    "production_base_commit": "af21ea68d359d1aee18f3ff5a6ac51f7dfadc921",
+    "source_count": 2740,
     "header_count": 494,
     "source_format_deferred_count": 46,
     "header_format_deferred_count": 2,
@@ -262,7 +265,7 @@
         "src/unnamed/arm9/0205/func_0205950c.c: assembly requires original instruction line boundaries"
       ]
     },
-    "full_report_sha256": "3d3129c3dbd02b5dd766a9f97aeaabb893de6acc80d42053d0cca1bbb308b956"
+    "full_report_sha256": "256f0272a6be975cda9f18b56680628ace9bec411987e0ce66c6b0586eb84f7e"
   },
   "compiler_population": [
     "2004/b56"
@@ -617,7 +620,227 @@
         "src/unnamed/arm9/0205/func_0205950c.c: assembly requires original instruction line boundaries"
       ]
     },
-    "full_report_sha256": "cf23c0da5dee4e1410c7f70309f729cb0c3ae2e737db000a40a5799e20adb378"
+    "full_report_sha256": "cf23c0da5dee4e1410c7f70309f729cb0c3ae2e737db000a40a5799e20adb378",
+    "production_base_commit": "40dfd83ba134be0600730b58f3261f04441632d8"
   },
-  "style_change": "User requested same-line opening braces; original guarded Allman results retained as historical evidence, final guarded configuration is Attach."
+  "style_change": "User requested same-line opening braces and then alignment with dominant existing Type *p spelling. Final configuration is Attach plus Right; earlier Allman and Attach+Left snapshots remain historical.",
+  "guarded_attach_left_config": {
+    "summary": {
+      "control": {
+        "compiled": 2752
+      },
+      "formatted_sources": {
+        "identical": 2752
+      },
+      "formatted_sources_and_headers": {
+        "identical": 2752
+      }
+    },
+    "config_sha256": "68e481ff075253d2a069a9845dbf55734ad3b7316fee4cc2f2f8f5df86abb1ef",
+    "runner_sha256": "0612359fd877ce428b374a15dfbce10b18b9714608a49076c0fc9e48530dc3d9",
+    "implementation_sha256": {
+      "source_style.py": "235bf70f210e11d4bf76554e7d8255ddd7fd87c253273da96a934593c37d2640",
+      "delaunder.py": "5f498dfbc0e955053dd7fe4476c7e2b25059a083e5ed2be72d57615fbfa0a940",
+      "msvc_arms.py": "cef8b4fc9c2e05ec4023d0a37ef0deb4d228acb842a76fa4a02dacd9250c0eda",
+      "build_pin.py": "69955d90432c34c6933d2dc9e75154eb154d87c90de21af0b4221e343d03b4f2",
+      "rombuild.py": "e4f83caf2cd245e4a706a11bfb038059fc9de95537e11e5a25868c3504e6148a"
+    },
+    "source_changed_count": 2574,
+    "header_changed_count": 478,
+    "order_signature_changes": [],
+    "brace_style": "Attach: opening braces on the same line",
+    "input_head": "fed454cbc4d2215f9369a4758bfd3842ce81d0ec",
+    "source_count": 2752,
+    "header_count": 494,
+    "source_format_deferred_count": 46,
+    "header_format_deferred_count": 2,
+    "deferred": {
+      "src/ARMProcessorMode.c": [
+        "src/ARMProcessorMode.c: assembly requires original instruction line boundaries"
+      ],
+      "src/ARMRestoreContext.c": [
+        "src/ARMRestoreContext.c: assembly requires original instruction line boundaries"
+      ],
+      "src/ARMSaveContext.c": [
+        "src/ARMSaveContext.c: assembly requires original instruction line boundaries"
+      ],
+      "src/Copy32Bytes.c": [
+        "src/Copy32Bytes.c: assembly requires original instruction line boundaries"
+      ],
+      "src/Copy36Bytes.c": [
+        "src/Copy36Bytes.c: assembly requires original instruction line boundaries"
+      ],
+      "src/Copy48Bytes.c": [
+        "src/Copy48Bytes.c: assembly requires original instruction line boundaries"
+      ],
+      "src/Copy48BytesFixed.c": [
+        "src/Copy48BytesFixed.c: assembly requires original instruction line boundaries"
+      ],
+      "src/DecompressLZ16.c": [
+        "src/DecompressLZ16.c: assembly requires original instruction line boundaries"
+      ],
+      "src/Entry.c": [
+        "src/Entry.c: assembly requires original instruction line boundaries"
+      ],
+      "src/IRQ3.cpp": [
+        "src/IRQ3.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/Matrix3x3_LoadIdentity.c": [
+        "src/Matrix3x3_LoadIdentity.c: assembly requires original instruction line boundaries"
+      ],
+      "src/Matrix4x3_LoadIdentity.c": [
+        "src/Matrix4x3_LoadIdentity.c: assembly requires original instruction line boundaries"
+      ],
+      "src/MultiCopy32Bytes.c": [
+        "src/MultiCopy32Bytes.c: assembly requires original instruction line boundaries"
+      ],
+      "src/MultiCopy_Int.c": [
+        "src/MultiCopy_Int.c: assembly requires original instruction line boundaries"
+      ],
+      "src/MultiStore32Bytes.c": [
+        "src/MultiStore32Bytes.c: assembly requires original instruction line boundaries"
+      ],
+      "src/MultiStore_Int.c": [
+        "src/MultiStore_Int.c: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN3IRQ20UserInterruptHandlerEv.cpp": [
+        "src/_ZN3IRQ20UserInterruptHandlerEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP1510DisableMPUEv.cpp": [
+        "src/_ZN4CP1510DisableMPUEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP1510EnableDTCMEv.cpp": [
+        "src/_ZN4CP1510EnableDTCMEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP1511SystemSetupEv.cpp": [
+        "src/_ZN4CP1511SystemSetupEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP1514MPUDataRegion1Ej.cpp": [
+        "src/_ZN4CP1514MPUDataRegion1Ej.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP1516WaitForInterruptEv.cpp": [
+        "src/_ZN4CP1516WaitForInterruptEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP1518GetDTCMBaseAddressEv.cpp": [
+        "src/_ZN4CP1518GetDTCMBaseAddressEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/_ZN4CP159EnableMPUEv.cpp": [
+        "src/_ZN4CP159EnableMPUEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/cstd4.cpp": [
+        "src/cstd4.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/engine/cp15/CP15.cpp": [
+        "src/engine/cp15/CP15.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/engine/cp15/CP154.cpp": [
+        "src/engine/cp15/CP154.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ff859c.c": [
+        "src/unnamed/arm9/01ff/func_01ff859c.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ff97d8.c": [
+        "src/unnamed/arm9/01ff/func_01ff97d8.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffa344.c": [
+        "src/unnamed/arm9/01ff/func_01ffa344.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffa4bc.c": [
+        "src/unnamed/arm9/01ff/func_01ffa4bc.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffafd4.c": [
+        "src/unnamed/arm9/01ff/func_01ffafd4.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffb008.c": [
+        "src/unnamed/arm9/01ff/func_01ffb008.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffb030.c": [
+        "src/unnamed/arm9/01ff/func_01ffb030.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffd9d4.c": [
+        "src/unnamed/arm9/01ff/func_01ffd9d4.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/01ff/func_01ffdb28.c": [
+        "src/unnamed/arm9/01ff/func_01ffdb28.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0200/func_020048d8.c": [
+        "src/unnamed/arm9/0200/func_020048d8.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0205/func_020593f4.c": [
+        "src/unnamed/arm9/0205/func_020593f4.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0205/func_0205947c.c": [
+        "src/unnamed/arm9/0205/func_0205947c.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0205/func_0205950c.c": [
+        "src/unnamed/arm9/0205/func_0205950c.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0205/func_0205a74c.c": [
+        "src/unnamed/arm9/0205/func_0205a74c.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0206/func_0206d9cc.cpp": [
+        "src/unnamed/arm9/0206/func_0206d9cc.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0206/func_0206da18.cpp": [
+        "src/unnamed/arm9/0206/func_0206da18.cpp: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0207/func_02071974.c": [
+        "src/unnamed/arm9/0207/func_02071974.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0207/func_02071988.c": [
+        "src/unnamed/arm9/0207/func_02071988.c: assembly requires original instruction line boundaries"
+      ],
+      "src/unnamed/arm9/0207/func_0207199c.c": [
+        "src/unnamed/arm9/0207/func_0207199c.c: assembly requires original instruction line boundaries"
+      ],
+      "include/IRQ.h": [
+        "src/_ZN3IRQ20UserInterruptHandlerEv.cpp: assembly requires original instruction line boundaries"
+      ],
+      "include/types.h": [
+        "src/IRQ3.cpp: assembly requires original instruction line boundaries",
+        "src/_ZN3IRQ20UserInterruptHandlerEv.cpp: assembly requires original instruction line boundaries",
+        "src/cstd4.cpp: assembly requires original instruction line boundaries",
+        "src/engine/cp15/CP154.cpp: assembly requires original instruction line boundaries",
+        "src/unnamed/arm9/0205/func_0205950c.c: assembly requires original instruction line boundaries"
+      ]
+    },
+    "full_report_sha256": "3d3129c3dbd02b5dd766a9f97aeaabb893de6acc80d42053d0cca1bbb308b956",
+    "production_base_commit": "40dfd83ba134be0600730b58f3261f04441632d8"
+  },
+  "incumbent_pointer_style": {
+    "base": "af21ea68d359d1aee18f3ff5a6ac51f7dfadc921",
+    "method": "Known primitive/scalar typedef single-pointer declarations, returns and parameters; comments/literals and host-only arms masked. A bounded lexical sample, not a full declarator parser.",
+    "occurrences": {
+      "src": {
+        "Type *p": 13326,
+        "Type* p": 4563,
+        "Type * p": 59,
+        "Type*p": 15
+      },
+      "include": {
+        "Type *p": 543,
+        "Type* p": 103,
+        "Type * p": 4,
+        "Type*p": 190
+      }
+    },
+    "file_counts": {
+      "src": {
+        "one_style": 1678,
+        "Type *p": 1394,
+        "Type* p": 433,
+        "mixed": 159,
+        "tied": 10
+      },
+      "include": {
+        "one_style": 244,
+        "Type *p": 221,
+        "Type* p": 21,
+        "mixed": 9,
+        "Type * p": 2,
+        "tied": 4,
+        "Type*p": 5
+      }
+    }
+  }
 }
