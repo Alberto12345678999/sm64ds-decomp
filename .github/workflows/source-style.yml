@@ -26,6 +26,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # A merge ref may include main commits newer than the event base.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
