@@ -144,7 +144,7 @@
     "src/NumRedCoins.c",
     "src/NumVsStarsObtained.c",
     "src/OSReadROMArea.c",
-    "src/engine/cp15/CP15.cpp#OS_GetInitArenaLo",
+    "src/OS_GetInitArenaLo.cpp",
     "src/OpenCannonInCurLevel.c",
     "src/ProcessKuppaScript.cpp",
     "src/Quaternion_Normalize.c",
