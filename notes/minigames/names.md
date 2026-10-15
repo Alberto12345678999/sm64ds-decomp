@@ -446,3 +446,8 @@ Medium confidence:
 Left unnamed (role unknown): `func_ov006_020d8c88` (Bomroom), `func_ov006_0211cc90` (Teresa), `func_ov006_020fea70` (Pachinko).
 
 **dMgJump3DMario_c (Jump, Jump2).** The member names are checked against the state records each setter stores: `StartWindUp` → `StateWindUp`, `StartRiseOut` → `StateRiseOut`, `StartFallOut` → `StateFallOut`, `HideAndIdle` → `StateIdle`. The pool helpers are `Jump3D_*`. Medium confidence: `Jump3D_DisableInput`/`EnableInput` (a flag the scenes toggle) and `Jump3D_SetLowGravity`/`StopGravity` (tuning words).
+
+**dMg3DHeyhoObjAdapter_c (the Shy Guys of the Jump games).**
+- `Heyho_MotionN` / `Heyho_StartMotionN` (N = 0..14) pair each motion handler with the setter that stores its state record. The pairing is certain; what each motion looks like (walk, hop, bob, path, spin) is only partly read, and Motion11 is the spin taken when a jumper hits one (sound 0x1c8).
+- Pool and object helpers: `Heyho_InitPool`, `Heyho_SpawnAll`, `Heyho_ReactAll`/`Heyho_React`, `Heyho_SeparateAll`, `Heyho_CheckHitA/B`, `Heyho_Update`, `Heyho_Draw`, `Heyho_Construct`/`Heyho_Destruct`, `Heyho_LoadResources`.
+- Medium confidence: `Heyho_Settle`, `Heyho_SettleAll`, `Heyho_AllIdle`, `Heyho_IsChasing`.

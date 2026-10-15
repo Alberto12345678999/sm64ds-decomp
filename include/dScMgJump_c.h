@@ -49,7 +49,7 @@
  * The casts below adapt the existing lifecycle entries at that ABI boundary. */
 extern "C" void __cxa_vec_cleanup(void *base, unsigned int count, unsigned int stride,
                        void (*dtor)(void *));
-extern "C" int func_ov006_020c6f3c(int *object);
+extern "C" int Heyho_Destruct(int *object);
 
 struct dScMgJump_c : dScMgD3DBase_c {
     /* DEFINED IN THE CLASS BODY, DELIBERATELY -- not a style choice.
@@ -68,7 +68,7 @@ struct dScMgJump_c : dScMgD3DBase_c {
        src/minigames/d_s_mg_jump_methods.cpp, so _ZTV11dScMgJump_c is emitted by that one
        translation unit and by no other. */
     virtual ~dScMgJump_c() {
-        __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))func_ov006_020c6f3c);
+        __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))Heyho_Destruct);
     }
 
     /* This class's own overrides, read off the ROM's vtable: the slots where the
@@ -113,7 +113,7 @@ struct dScMgJump_c : dScMgD3DBase_c {
     u8    pad_5016[0x6];   /* 0x5016 */
     Model mModel;          /* 0x501c -- 0x50, destroyed last, see banner */
     dMgJump3DMario_c mPlayers[3]; /* 0x506c -- RTTI-proven element type */
-    u8    mArray2[0x5a0];  /* 0x5294 -- 6 * 0xf0, elem dtor func_ov006_020c6f3c */
+    u8    mArray2[0x5a0];  /* 0x5294 -- 6 * 0xf0, elem dtor Heyho_Destruct */
 };
 
 #ifndef SM64DS_PLATFORM_PC

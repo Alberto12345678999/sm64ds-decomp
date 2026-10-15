@@ -135,15 +135,15 @@ unsigned int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3
 unsigned int a, unsigned int b, int c, int d, int e, const Vector3_16f *f);
 void Jump2Popup_UpdateAll(void);
 extern void* Jump3D_AllIdle(void*);
-extern void* func_ov006_020c4060(void*);
+extern void* Heyho_AllIdle(void*);
 extern void Mg_SubmitScore(int);
 extern void Mg_SetSharedState(int);
-extern void func_ov006_020c42bc(void);
+extern void Heyho_SeparateAll(void);
 extern void Jump3D_UpdateAll(void);
 extern int data_ov006_02140308;
 extern struct G2 data_ov006_0213cc74;
 extern struct G2 data_ov006_0213cc9c;
-extern void func_ov006_020c4148(void);
+extern void Heyho_SettleAll(void);
 extern void Jump3D_SetTuning(int a);
 extern int data_ov006_02140304;
 extern int data_ov006_02140328;
@@ -156,9 +156,9 @@ extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, int dst);
 extern void Camera_UpdateMatrices(void *cam);
 extern void Jump3D_SetLowGravity(void);
-extern void func_ov006_020c40e8(void);
+extern void Heyho_ReactAll(void);
 extern int Mg_GetTopScreenYOffset(void);
-extern int func_ov006_020c4684(void *ptr, int n);
+extern int Heyho_InitPool(void *ptr, int n);
 extern int Jump3D_InitPool(void *base, int count);
 extern u8 data_0209d45c;
 extern s16 data_02082614;
@@ -179,7 +179,7 @@ void *_ZN5ModelC1Ev(void *p);
 extern char _ZTV14dScMgD3DBase_c[];
 dMgJump3DMario_c *_ZN16dMgJump3DMario_cD1Ev(dMgJump3DMario_c *object);
 dMgJump3DMario_c *_ZN16dMgJump3DMario_cC1Ev(dMgJump3DMario_c *object);
-int func_ov006_020c6f70(char *object);
+int Heyho_Construct(char *object);
 
 // @symbol Jump2Popup_ElemCtor
 /* The empty constructor of mArray3's 0x24-byte elements, the partner of
@@ -216,7 +216,7 @@ void *dScMgJump2_c_classInit()
         _ZN8Particle10SysTrackerC1Ev(raw + 0x47e4);
         *(char **)raw = (char *)&_ZTV12dScMgJump2_c[2];
         __cxa_vec_ctor(raw + 0x500c, 3, 0xb8, (void (*)(void *))_ZN16dMgJump3DMario_cC1Ev, (void (*)(void *))_ZN16dMgJump3DMario_cD1Ev);
-        __cxa_vec_ctor(raw + 0x5234, 6, 0xf0, (void (*)(void *))func_ov006_020c6f70, (void (*)(void *))func_ov006_020c6f3c);
+        __cxa_vec_ctor(raw + 0x5234, 6, 0xf0, (void (*)(void *))Heyho_Construct, (void (*)(void *))Heyho_Destruct);
         __cxa_vec_ctor(raw + 0x57d4, 0x10, 0x24, Jump2Popup_ElemCtor, Jump2Popup_ElemDtor);
         _ZN5ModelC1Ev(raw + 0x5a14);
     }
@@ -231,7 +231,7 @@ void dScMgJump2_c::StartRound(int /* arg */)
   Jump3D_DisableInput();
   Jump3D_Arrange(0, 0);
   data_ov006_02140328 = 3;
-  func_ov006_020c44b4(0, 0);
+  Heyho_SpawnAll(0, 0);
   Jump2Popup_ClearAll();
   BeginIntro();
 }
@@ -285,7 +285,7 @@ s32 dScMgJump2_c::InitResources()
     this->mCamera1Angle = 0x800;
     Camera_UpdateMatrices(base + 0x4728);
 
-    if (func_ov006_020c4684(mArray2, 6) == 0)
+    if (Heyho_InitPool(mArray2, 6) == 0)
         return 0;
 
     Jump2Popup_InitPool((int)mArray3, 0x10);
@@ -337,7 +337,7 @@ void dScMgJump2_c::State_Intro()
         Jump3D_StartRoundLayout();
         BeginPlay();
     }
-    func_ov006_020c42bc();
+    Heyho_SeparateAll();
 }
 
 // @symbol _ZN12dScMgJump2_c9BeginPlayEv
@@ -384,7 +384,7 @@ void dScMgJump2_c::State_Play()
     if (done != 0 && data_ov006_02140304 < data_ov006_02140328) {
         int value;
         s16 countdown;
-        func_ov006_020c4148();
+        Heyho_SettleAll();
         unk_5a74 = 0xf0 - data_ov006_02140308 * 6;
         countdown = unk_5a74;
         if (countdown < 0x3c)
@@ -396,7 +396,7 @@ void dScMgJump2_c::State_Play()
         Jump3D_SetTuning(value);
     }
 
-    func_ov006_020c42bc();
+    Heyho_SeparateAll();
     Jump3D_UpdateAll();
 
     if (prevScore != data_ov006_02140308) {
@@ -436,14 +436,14 @@ void dScMgJump2_c::State_End()
   {
     *acc -= 0x1000;
   }
-  func_ov006_020c42bc();
+  Heyho_SeparateAll();
   Jump3D_UpdateAll();
   if (ApproachLinear2(unk_5a74, 0, 1) == 0)
   {
     return;
   }
   Jump3D_SetLowGravity();
-  func_ov006_020c40e8();
+  Heyho_ReactAll();
   *(struct G2 *)pad_5004 = data_ov006_0213cc8c;
 }
 
@@ -451,7 +451,7 @@ void dScMgJump2_c::State_End()
 void dScMgJump2_c::State_Result(){
     void *obj = Jump3D_AllIdle(this);
     if(obj){
-        obj = func_ov006_020c4060(obj);
+        obj = Heyho_AllIdle(obj);
         if(obj){
             Mg_SubmitScore(data_ov006_02140308);
             Mg_SetSharedState(0x12);
@@ -459,7 +459,7 @@ void dScMgJump2_c::State_Result(){
             *(struct G2 *)pad_5004 = data_ov006_0213cc74;
         }
     }
-    func_ov006_020c42bc();
+    Heyho_SeparateAll();
     Jump3D_UpdateAll();
 }
 
@@ -555,7 +555,7 @@ s32 dScMgJump2_c::Render()
     }
 
     Jump3D_DrawAll();
-    func_ov006_020c425c();
+    Heyho_DrawAll();
 
     if (unk_4664 == 1) {
         x = 0x6e;

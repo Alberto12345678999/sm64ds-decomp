@@ -93,15 +93,15 @@ int  LoadFile(int handle);
 void DecompressLZ16(void *src, void *dst);
 void Camera_UpdateMatrices(void *cam);
 
-void func_ov006_020c40e8(void);
-void func_ov006_020c42bc(void);
+void Heyho_ReactAll(void);
+void Heyho_SeparateAll(void);
 void Jump3D_UpdateAll(void);
 void Jump3D_SetLowGravity(void);
 void Jump3D_StopGravity(void);
 void Jump3D_StartRoundLayout(void);
 int  Jump3D_AllIdle(void);
-int  func_ov006_020c4060(void);
-int  func_ov006_020c4684(char *ptr, int n);
+int  Heyho_AllIdle(void);
+int  Heyho_InitPool(char *ptr, int n);
 int  Jump3D_InitPool(char *base, int count);
 void Jump3D_EnableInput(void);
 int  RandomIntInternal(int *seed);
@@ -185,7 +185,7 @@ void dScMgJump_c::StartRound(int arg)
     else
         data_ov006_02140328 = 6;
 
-    func_ov006_020c44b4((void *)mLevel, idx);
+    Heyho_SpawnAll((void *)mLevel, idx);
     BeginIntro();
 }
 
@@ -256,7 +256,7 @@ s32 dScMgJump_c::InitResources()
     this->mCamera1Angle = 0x800;
     Camera_UpdateMatrices(base + 0x4728);
 
-    if (func_ov006_020c4684((char *)mArray2, 6) == 0)
+    if (Heyho_InitPool((char *)mArray2, 6) == 0)
         return 0;
     if (Jump3D_InitPool((char *)mPlayers, 3) == 0)
         return 0;
@@ -314,7 +314,7 @@ void dScMgJump_c::State_Intro()
     } else if (left == 0x77) {
         Mg_ShowBanner(0xd, 0x80, 0x60, 1, -1, 0xd);
     }
-    func_ov006_020c42bc();
+    Heyho_SeparateAll();
 }
 
 // @symbol _ZN11dScMgJump_c9BeginPlayEv
@@ -331,7 +331,7 @@ void dScMgJump_c::State_Play()
     if (mAccum > 0x1000) {
         *acc -= 0x1000;
     }
-    func_ov006_020c42bc();
+    Heyho_SeparateAll();
     Jump3D_UpdateAll();
     if(data_ov006_02140428 == 0){
         BeginEnd();
@@ -358,14 +358,14 @@ void dScMgJump_c::State_End()
   {
     *acc -= 0x1000;
   }
-  func_ov006_020c42bc();
+  Heyho_SeparateAll();
   Jump3D_UpdateAll();
   if (ApproachLinear2(mStateTimer, 0, 1) == 0)
   {
     return;
   }
   Jump3D_SetLowGravity();
-  func_ov006_020c40e8();
+  Heyho_ReactAll();
   mState = data_ov006_0213cb4c;
 }
 
@@ -374,7 +374,7 @@ void dScMgJump_c::State_Result()
 {
     int ready = Jump3D_AllIdle();
     if (ready) {
-        ready = func_ov006_020c4060();
+        ready = Heyho_AllIdle();
         if (ready) {
             Mg_SetSharedState(0x12);
             mPromptEnabled = 0;
@@ -382,7 +382,7 @@ void dScMgJump_c::State_Result()
             mState = data_ov006_0213cb74;
         }
     }
-    func_ov006_020c42bc();
+    Heyho_SeparateAll();
     Jump3D_UpdateAll();
 }
 
@@ -509,7 +509,7 @@ s32 dScMgJump_c::Render()
     }
 
     Jump3D_DrawAll();
-    func_ov006_020c425c();
+    Heyho_DrawAll();
 
     return 1;
 }

@@ -27774,58 +27774,58 @@
         "return:void"
       ]
     },
-    "func_ov006_020c4060": {
+    "Heyho_AllIdle": {
       "src/minigames/d_s_mg_jump2.cpp": [
         "arity:1",
         "return:void *"
       ]
     },
-    "func_ov006_020c4710": {
+    "Heyho_IsChasing": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 struct Obj *"
       ]
     },
-    "func_ov006_020c49d8": {
+    "Heyho_CheckHitB": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c4cd8": {
+    "Heyho_Update": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 struct Obj *"
       ]
     },
-    "func_ov006_020c4f68": {
+    "Heyho_StartMotion11": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 Self *"
       ]
     },
-    "func_ov006_020c57d4": {
+    "Heyho_StartMotion6": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c5aa4": {
+    "Heyho_StartMotion4": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c5cf4": {
+    "Heyho_StartMotion7": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c6248": {
+    "Heyho_StartMotion10": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c6348": {
+    "Heyho_StartMotion14": {
       "include/decl_common.h": [
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c64e4": {
+    "Heyho_React": {
       "src/minigames/d_mg3d_heyho_obj_adapter.cpp": [
         "param:#1 int"
       ]

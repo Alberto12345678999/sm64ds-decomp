@@ -42,7 +42,7 @@
 extern "C" void __cxa_vec_cleanup(void *base, unsigned int count, unsigned int stride,
                        void (*dtor)(void *));
 extern "C" void _ZN5ModelD1Ev(void *p);
-extern "C" int func_ov006_020c6f3c(int *object);
+extern "C" int Heyho_Destruct(int *object);
 extern "C" void Jump2Popup_ElemDtor(void *object);
 
 struct dScMgJump2_c : dScMgD3DBase_c {
@@ -62,7 +62,7 @@ struct dScMgJump2_c : dScMgD3DBase_c {
     virtual ~dScMgJump2_c() {
         _ZN5ModelD1Ev((char *)this + 0x5a14);
         __cxa_vec_cleanup(mArray3, 0x10, 0x24, Jump2Popup_ElemDtor);
-        __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))func_ov006_020c6f3c);
+        __cxa_vec_cleanup(mArray2, 6, 0xf0, (void (*)(void *))Heyho_Destruct);
     }
     virtual void StartRound(int arg);               /* slot 18 */
     virtual int  CanEndState(int mode);              /* slot 19 */
@@ -77,7 +77,7 @@ struct dScMgJump2_c : dScMgD3DBase_c {
        function in the table, and none of them is recovered. */
     u8  pad_5004[0x8];   /* 0x5004 -- the state callback; see the block above */
     dMgJump3DMario_c mPlayers[3]; /* 0x500c -- RTTI-proven element type */
-    u8  mArray2[0x5a0];   /* 0x5234 -- 6 * 0xf0,  elem dtor func_ov006_020c6f3c */
+    u8  mArray2[0x5a0];   /* 0x5234 -- 6 * 0xf0,  elem dtor Heyho_Destruct */
     u8  mArray3[0x240];   /* 0x57d4 -- 0x10 * 0x24, elem dtor Jump2Popup_ElemDtor */
     u8  mModel[0x50];     /* 0x5a14 -- a real Model, raw bytes; see banner */
     s32 unk_5a64;         /* 0x5a64 -- scroll phase; feeds the model's anim clock */
