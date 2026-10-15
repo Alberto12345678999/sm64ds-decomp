@@ -1,6 +1,6 @@
 # Sound native static initialization (2026-10-15)
 
-Producer: `codex-sound-producer1015`. Queue reservation: `sound-sinit1015-checkpoint` (continuation of `sound-sinit1015`).
+Producer: `codex-sound-producer1015`. Queue reservation: `sound-sinit1015-pr3886` (continuation of `sound-sinit1015-checkpoint`).
 Original input: PR #3868 head `38a444c1bed4838b38d5be53979e185c10ee2602`.
 Publication base: main `a8983e9409027873b0461eaf2bab3e191f179864`.
 Branch: `cpp/sound-native-sinit-1015`. Worktree: `C:/tmp/sm64ds-sound-sinit1015`.
@@ -13,7 +13,7 @@ No merge is performed or claimed.
 
 The fifteen PMF dispatch tables are ordinary C++ definitions in
 `src/minigames/d_s_mg_sound.cpp`. The compiler generates the original static
-initializer from them; `src/unnamed/ov006/__sinit_ov006_02132970.c` is retired.
+initializer from them; the handwritten C initializer `__sinit_ov006_02132970.c` is retired.
 Five note handlers, thirteen pop-update handlers, and thirteen three-phase pop
 arrays account for all 57 copied records. The owned tables and all 57 descriptor
 imports use ordinary C++ linkage. Fifteen duplicate table imports are gone.
@@ -170,3 +170,10 @@ Reports retained in ignored `build/sound-publication-baseline.txt`,
 `build/sound-publication-production.txt` and
 `build/sound-publication-production.json`. Independent source acceptance and
 private CI validation remain pending on the publication commit.
+
+Publication: source PR [#3886](https://github.com/tangosdev/sm64ds-decomp/pull/3886),
+stacked on tooling PR [#3885](https://github.com/tangosdev/sm64ds-decomp/pull/3885).
+The documentation-only successor corrects the historical retired-file reference
+flagged by the dead-reference gate. Source/config/tooling blobs remain identical
+to tested commit `0343ee5e92bfd66a5c7f3fbe6de0103228c4b2b1`; the continuation
+retains that offered checkpoint and its predecessor history for independent review.
