@@ -29,6 +29,34 @@
  * cartridge vtable for the MG_TERESA registry profile.
  */
 struct dScMgTeresa_c : dScMgBase_c {
+    /* One of the 16 small Boos (0x24 bytes; the big Boo is a separate
+       record at 0x4bcc). Meanings come from DrawBoos,
+       SpawnBoos, AnimateBoo and the Boo_State handlers; unk_ bytes are
+       written but not yet understood. */
+    struct SmallBoo {
+        s32 mX;          /* 0x00 -- 20.12 screen x */
+        s32 mY;          /* 0x04 -- 20.12 screen y */
+        s32 mSpeed;      /* 0x08 -- 0xc00, adjusted by mKind */
+        u16 mHeading;    /* 0x0c -- angle; the sine table's sign picks mAnim */
+        u16 mTimer;      /* 0x0e */
+        u16 mAnimTimer;  /* 0x10 -- counts to 0xf, then advances mFrame */
+        u16 unk_12;      /* 0x12 */
+        u16 mDelay;      /* 0x14 */
+        u8  mFade;       /* 0x16 -- nonzero draws semi-transparent */
+        u8  mInPlay;     /* 0x17 */
+        u8  mState;      /* 0x18 */
+        u8  unk_19;      /* 0x19 */
+        u8  mVisible;    /* 0x1a */
+        u8  mPriority;   /* 0x1b -- OAM priority */
+        u8  mFound;      /* 0x1c -- set when a touch test finds this Boo */
+        u8  mFrame;      /* 0x1d */
+        u8  mAnim;       /* 0x1e -- facing: 1 when the heading's sine is >= 0 */
+        u8  mKind;       /* 0x1f -- per-level table value; 8 is the slow kind */
+        u8  mFoundOrder; /* 0x20 -- the found counter (+0x4c21) when found */
+        u8  unk_21;      /* 0x21 */
+        u8  pad_22[0x2];
+    };
+
     virtual ~dScMgTeresa_c();
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
@@ -112,7 +140,8 @@ struct dScMgTeresa_c : dScMgBase_c {
     void Scene_State1();
     void Scene_State0();
 
-    u8  pad_4660[0x588];
+    SmallBoo mBoos[16];          /* 0x4660 */
+    u8  pad_48a0[0x348];
     s32 unk_4be8;            /* 0x4be8 -- state index for Behavior's pmf dispatch */
     u8  pad_4bec[0x2a];
     s16 unk_4c16;            /* 0x4c16 */
@@ -124,6 +153,7 @@ struct dScMgTeresa_c : dScMgBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char dScMgTeresa_c_SmallBoo_size_must_be_0x24[sizeof(dScMgTeresa_c::SmallBoo) == 0x24 ? 1 : -1];
 typedef char dScMgTeresa_c_size_must_be_0x4c28[sizeof(struct dScMgTeresa_c) == 0x4c28 ? 1 : -1];
 #endif
 

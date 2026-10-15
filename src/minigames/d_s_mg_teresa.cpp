@@ -36,15 +36,12 @@
  */
 
 // leftovers:
-// - dScMgTeresa_c.h leaves 0x4660..0x4be8 as padding, so the 16 0x24-byte
-//   Boo rows at 0x4660, the 0x20-stride pair at 0x4bac, the HUD sprites at
-//   0x4960, and the bytes at 0x4c1b and 0x4c1f are still reached through the
-//   local views below or raw offsets on `this` (callers: the Boo flight,
-//   reveal and 16-Boo row handlers dispatching through the PMF tables).
-//   Naming them in the header would unblock typed access, but each
-//   function's base choice (fresh cast per access vs one saved pointer) is
-//   what the addressing follows, so the conversion has to be measured one
-//   function at a time.
+// - The 16 small Boos at 0x4660 are typed (dScMgTeresa_c::SmallBoo mBoos[16]).
+//   Their handlers use mBoos[i] where that measured identical; StepBoo,
+//   CountRubbedTiles, Boo_State7, TouchTestBoo, SpawnBoos and ResetRound
+//   keep their tuned offset forms. 0x48a0..0x4be8 (the 0x20-stride pair at
+//   0x4bac, the HUD sprites at 0x4960) and the bytes at 0x4c1b and 0x4c1f
+//   are still padding reached by offset; convert one function at a time.
 
 #pragma defer_codegen off
 
@@ -1304,28 +1301,25 @@ void dScMgTeresa_c::CheckRoundEnd()
  * keeps it. decl_common.h declares this one with a `void *` parameter. */
 void dScMgTeresa_c::DrawBoos()
 {
-    void *arg = this;
-    char *row = (char *)arg;
     int i;
 
     for (i = 0; i < 16; i++) {
-        if (*(u8 *)(row + 0x4000 + 0x67a) != 0) {
+        if (mBoos[i].mVisible != 0) {
             void **frames = data_ov006_0213a964;
-            int translucent = *(u8 *)(row + 0x4000 + 0x676);
-            int x = *(int *)(row + 0x4000 + 0x660) >> 12;
-            int frame = *(u8 *)(row + 0x4000 + 0x67d);
-            int anim = *(u8 *)(row + 0x4000 + 0x67e);
+            int translucent = mBoos[i].mFade;
+            int x = mBoos[i].mX >> 12;
+            int frame = mBoos[i].mFrame;
+            int anim = mBoos[i].mAnim;
             int idx = anim * 7 + frame;
             int mode = -1;
-            int y = *(int *)(row + 0x4000 + 0x664) >> 12;
-            int priority = *(u8 *)(row + 0x4000 + 0x67b);
+            int y = mBoos[i].mY >> 12;
+            int priority = mBoos[i].mPriority;
 
             if (translucent != 0)
                 mode = 1;
             _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
                 1, (struct OamAttr *)frames[idx], x, y, -1, priority, 0x1000, 0x1000, 0, mode);
         }
-        row += 0x24;
     }
 }
 
@@ -1336,30 +1330,28 @@ void dScMgTeresa_c::AreBoosSettled()
     char *self = (char *)this;
     int found = 0;
     int i = 0;
-    char *p = self;
     for (; i < 0x10; i++) {
-        if (*(unsigned char*)(p + 0x4677) != 0) {
-            unsigned int t = (*(unsigned char*)(p + 0x4678) + 0xfd) & 0xff;
+        if (mBoos[i].mInPlay != 0) {
+            unsigned int t = (mBoos[i].mState + 0xfd) & 0xff;
             if (t <= 1) {
-                *(unsigned char*)(p + 0x4678) = 6;
-                *(unsigned short*)(p + 0x466e) = 0;
-                *(unsigned char*)(p + 0x4676) = 0;
-                *(unsigned char*)(p + 0x4679) = 1;
-                *(unsigned char*)(p + 0x467d) = 3;
-                *(unsigned char*)(p + 0x4681) = 0;
+                mBoos[i].mState = 6;
+                mBoos[i].mTimer = 0;
+                mBoos[i].mFade = 0;
+                mBoos[i].unk_19 = 1;
+                mBoos[i].mFrame = 3;
+                mBoos[i].unk_21 = 0;
                 *(unsigned char*)(self + 0x4c22) = (unsigned char)i;
-                *(unsigned short*)(p + 0x4674) = 1;
+                mBoos[i].mDelay = 1;
                 found++;
             }
         }
-        p += 0x24;
     }
     if (found != 0) {
         unsigned char idx = *(unsigned char*)(self + 0x4c22);
-        *(unsigned char*)(self + idx * 0x24 + 0x4681) = 1;
+        mBoos[idx].unk_21 = 1;
     } else {
         unsigned char idx = *(unsigned char*)(self + 0x4c22);
-        *(unsigned char*)(self + idx * 0x24 + 0x4681) = 0;
+        mBoos[idx].unk_21 = 0;
     }
 }
 
@@ -1463,8 +1455,7 @@ void dScMgTeresa_c::CountRubbedTiles(int idx)
 // @symbol _ZN13dScMgTeresa_c7MoveBooEi
 void dScMgTeresa_c::MoveBoo(int i)
 {
-    char *c = (char *)this;
-    if (*(unsigned char *)(c + i * 0x24 + 0x467f) == 0) {
+    if (mBoos[i].mKind == 0) {
         return;
     }
     StepBoo(i);
@@ -1545,74 +1536,70 @@ void dScMgTeresa_c::Boo_State7(int i)
 void dScMgTeresa_c::Boo_State6(int i)
 {
     char *c = (char *)this;
-    int k = i * 0x24;
 
-    if (*(u16 *)(c + 0x4674 + k) != 0) {
-        (*(u16 *)(c + 0x4674 + k))--;
-        if (*(u16 *)(c + 0x4674 + k) == 0) {
-            if (*(u8 *)(c + 0x4681 + k) != 0)
+    if (mBoos[i].mDelay != 0) {
+        mBoos[i].mDelay--;
+        if (mBoos[i].mDelay == 0) {
+            if (mBoos[i].unk_21 != 0)
                 Sound::PlayBank2_2D(0x1f1);
         }
     }
 
-    (*(u16 *)(c + 0x4670 + k))++;
-    if (*(u16 *)(c + 0x4670 + k) >= 0xf) {
-        *(u16 *)(c + 0x4670 + k) = 0;
-        (*(u8 *)(c + 0x467d + k))++;
-        if (*(u8 *)(c + 0x467d + k) >= 6)
-            *(u8 *)(c + 0x467d + k) = 3;
+    mBoos[i].mAnimTimer++;
+    if (mBoos[i].mAnimTimer >= 0xf) {
+        mBoos[i].mAnimTimer = 0;
+        mBoos[i].mFrame++;
+        if (mBoos[i].mFrame >= 6)
+            mBoos[i].mFrame = 3;
     }
 
     StepBoo(i);
     BounceBooOffWalls(i);
 
-    if (data_02082214[2 * (*(u16 *)(c + 0x466c + k) >> 4) + 1] >= 0)
-        *(u8 *)(c + 0x467e + k) = 1;
+    if (data_02082214[2 * (mBoos[i].mHeading >> 4) + 1] >= 0)
+        mBoos[i].mAnim = 1;
     else
-        *(u8 *)(c + 0x467e + k) = 0;
+        mBoos[i].mAnim = 0;
 
-    if (*(u8 *)(c + 0x4676 + k) >= 0x10)
+    if (mBoos[i].mFade >= 0x10)
         return;
 
-    (*(u16 *)(c + 0x466e + k))++;
-    if (*(u16 *)(c + 0x466e + k) < 4)
+    mBoos[i].mTimer++;
+    if (mBoos[i].mTimer < 4)
         return;
 
-    (*(u8 *)(c + 0x4676 + k))++;
-    *(u8 *)(c + 0x467b + k) = 0;
-    *(u16 *)(c + 0x466e + k) = 0;
+    mBoos[i].mFade++;
+    mBoos[i].mPriority = 0;
+    mBoos[i].mTimer = 0;
 
     if (i == *(u8 *)(c + 0x4c22)) {
         G2x::SetBlendAlpha((volatile unsigned short *)0x4001050, 0, 1,
-            *(u8 *)(c + 0x4676 + k), 0x10);
+            mBoos[i].mFade, 0x10);
     }
 
-    if (*(u8 *)(c + 0x4676 + k) < 0x10)
+    if (mBoos[i].mFade < 0x10)
         return;
 
-    *(u16 *)(c + 0x4672 + k) = 0x80;
-    *(u16 *)(c + 0x466e + k) = 0;
-    *(u8 *)(c + 0x4676 + k) = 0;
-    *(u8 *)(c + 0x4678 + k) = 7;
+    mBoos[i].unk_12 = 0x80;
+    mBoos[i].mTimer = 0;
+    mBoos[i].mFade = 0;
+    mBoos[i].mState = 7;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c10Boo_State5Ei
 void dScMgTeresa_c::Boo_State5(int idx)
 {
-    char *c = (char *)this;
-    int off;
     if (unk_4be8 != 4)
         return;
-    off = idx * 0x24;
-    if (*(unsigned short *)(c + 0x466e + off) != 0) {
-        *(unsigned short *)(c + 0x466e + off) = *(unsigned short *)(c + 0x466e + off) - 1;
+    if (mBoos[idx].mTimer != 0) {
+        mBoos[idx].mTimer--;
         return;
     }
     FoundMark_Spawn(idx);
-    *(unsigned char *)(c + off + 0x4000 + 0x67a) = 0;
-    *(unsigned char *)(c + off + 0x4000 + 0x677) = 0;
-    if (*(unsigned char *)(c + 0x4000 + 0xc26) != idx)
+    mBoos[idx].mVisible = 0;
+    mBoos[idx].mInPlay = 0;
+    if (*(unsigned char *)((char *)this + 0x4000 + 0xc26) != idx)
         return;
     Sound::PlayBank2_2D(0x1c7);
 }
@@ -1621,27 +1608,20 @@ void dScMgTeresa_c::Boo_State5(int idx)
 // @symbol _ZN13dScMgTeresa_c10Boo_State4Ei
 void dScMgTeresa_c::Boo_State4(int idx)
 {
-    unsigned char *base = (unsigned char *)this;
-    int off = idx * 0x24;
-    unsigned short* cnt = (unsigned short*)((unsigned char*)(base + 0x466e) + off);
-    if (*cnt != 0) {
-        *cnt = *cnt - 1;
-        if (*(short*)cnt <= 0) {
-            *cnt = 0;
-            *(unsigned char*)((unsigned char*)(base + 0x4678) + off) = 3;
+    if (mBoos[idx].mTimer != 0) {
+        mBoos[idx].mTimer--;
+        if ((s16)mBoos[idx].mTimer <= 0) {
+            mBoos[idx].mTimer = 0;
+            mBoos[idx].mState = 3;
             return;
         }
     }
     StepBoo(idx);
     BounceBooOffWalls(idx);
-    {
-        int v = *(unsigned short*)((unsigned char*)(base + 0x466c) + off);
-        short look = data_02082214[(v >> 4) * 2 + 1];
-        if (look >= 0)
-            *(unsigned char*)((unsigned char*)(base + 0x467e) + off) = 1;
-        else
-            *(unsigned char*)((unsigned char*)(base + 0x467e) + off) = 0;
-    }
+    if (data_02082214[(mBoos[idx].mHeading >> 4) * 2 + 1] >= 0)
+        mBoos[idx].mAnim = 1;
+    else
+        mBoos[idx].mAnim = 0;
     TouchTestBoo(idx);
 }
 
@@ -1649,73 +1629,59 @@ void dScMgTeresa_c::Boo_State4(int idx)
 // @symbol _ZN13dScMgTeresa_c10Boo_State3Ei
 void dScMgTeresa_c::Boo_State3(int i)
 {
-    char *c = (char *)this;
-    char *e;
-    int v;
     MoveBoo(i);
     CountRubbedTiles(i);
     TouchTestBoo(i);
-    e = c + i * 0x24;
-    v = data_02082214[(*(unsigned short *)(e + 0x466c) >> 4) * 2 + 1];
-    if (v >= 0)
-        *(unsigned char *)(e + 0x467e) = 1;
+    if (data_02082214[(mBoos[i].mHeading >> 4) * 2 + 1] >= 0)
+        mBoos[i].mAnim = 1;
     else
-        *(unsigned char *)(e + 0x467e) = 0;
+        mBoos[i].mAnim = 0;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c10Boo_State2Ei
 void dScMgTeresa_c::Boo_State2(int i)
 {
-    char *c = (char *)this;
-    int k;
     StepBoo(i);
     BounceBooOffWalls(i);
-    k = i * 0x24;
-    if (data_02082214[2 * (*(unsigned short *)(c + 0x466c + k) >> 4) + 1] >= 0)
-        *(unsigned char *)(c + 0x467e + k) = 1;
+    if (data_02082214[2 * (mBoos[i].mHeading >> 4) + 1] >= 0)
+        mBoos[i].mAnim = 1;
     else
-        *(unsigned char *)(c + 0x467e + k) = 0;
-    (*(unsigned short *)(c + 0x466e + k))++;
-    if (*(unsigned short *)(c + 0x466e + k) < 4)
+        mBoos[i].mAnim = 0;
+    mBoos[i].mTimer++;
+    if (mBoos[i].mTimer < 4)
         return;
-    (*(unsigned char *)(c + 0x4676 + k))++;
-    *(unsigned short *)(c + 0x466e + k) = 0;
+    mBoos[i].mFade++;
+    mBoos[i].mTimer = 0;
     if (i == 0)
         _ZN3G2x13SetBlendAlphaEPVttttj((volatile unsigned short *)0x4001050, 0, 1,
-            0x10 - *(unsigned char *)(c + 0x4676 + k), 0x10);
-    if (*(unsigned char *)(c + 0x4676 + k) < 0x10)
+            0x10 - mBoos[i].mFade, 0x10);
+    if (mBoos[i].mFade < 0x10)
         return;
-    *(unsigned char *)(c + 0x4676 + k) = 0;
-    *(unsigned char *)(c + 0x4678 + k) = 3;
-    *(unsigned char *)(c + 0x467b + k) = 1;
+    mBoos[i].mFade = 0;
+    mBoos[i].mState = 3;
+    mBoos[i].mPriority = 1;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c17BounceBooOffWallsEi
 void dScMgTeresa_c::BounceBooOffWalls(int i)
 {
-    char *o = (char *)this;
-    int m = i * 0x24;
-    int xt = *(int *)((char *)(((int)o + 0x4660)) + m) >> 12;
-    int yt = *(int *)((char *)(((int)o + 0x4664)) + m) >> 12;
+    int xt = mBoos[i].mX >> 12;
+    int yt = mBoos[i].mY >> 12;
     if (xt + 8 > 0xfe) {
-        u16 *pa = (u16 *)((char *)(((int)o + 0x466c)) + m);
-        *pa = 0x8000 - *pa;
-        *(int *)((char *)(((int)o + 0x4660)) + m) = 0xf6000;
+        mBoos[i].mHeading = 0x8000 - mBoos[i].mHeading;
+        mBoos[i].mX = 0xf6000;
     } else if (xt - 8 < 2) {
-        u16 *pa = (u16 *)((char *)(((int)o + 0x466c)) + m);
-        *pa = 0x8000 - *pa;
-        *(int *)((char *)(((int)o + 0x4660)) + m) = 0xa000;
+        mBoos[i].mHeading = 0x8000 - mBoos[i].mHeading;
+        mBoos[i].mX = 0xa000;
     }
     if (yt + 8 > 0xbe) {
-        u16 *pa = (u16 *)((char *)(((int)o + 0x466c)) + m);
-        *pa = -*pa;
-        *(int *)((char *)(((int)o + 0x4664)) + m) = 0xb6000;
+        mBoos[i].mHeading = -mBoos[i].mHeading;
+        mBoos[i].mY = 0xb6000;
     } else if (yt - 8 < 2) {
-        u16 *pa = (u16 *)((char *)(((int)o + 0x466c)) + m);
-        *pa = -*pa;
-        *(int *)((char *)(((int)o + 0x4664)) + m) = 0xa000;
+        mBoos[i].mHeading = -mBoos[i].mHeading;
+        mBoos[i].mY = 0xa000;
     }
 }
 
@@ -1747,13 +1713,10 @@ void dScMgTeresa_c::StepBoo(int i)
 // @symbol _ZN13dScMgTeresa_c15StartBoosHidingEv
 void dScMgTeresa_c::StartBoosHiding()
 {
-    char *c = (char *)this;
     int i;
     for (i = 0; i < 0x10; i++) {
-        if (*(unsigned char*)(c + 0x4677) != 0 && *(unsigned char*)(c + 0x4678) == 1) {
-            *(unsigned char*)(c + 0x4678) = 2;
-        }
-        c += 0x24;
+        if (mBoos[i].mInPlay != 0 && mBoos[i].mState == 1)
+            mBoos[i].mState = 2;
     }
 }
 
@@ -1761,67 +1724,45 @@ void dScMgTeresa_c::StartBoosHiding()
 // @symbol _ZN13dScMgTeresa_c10Boo_State1Ei
 void dScMgTeresa_c::Boo_State1(int i)
 {
-    char *c = (char *)this;
-    int off;
-    char *e;
-    int v;
-    unsigned short h;
-    int t;
-
-    off = i;
-    off *= 0x24;
-    e = c;
-    e += off;
-    *(unsigned short *)(e + 0x466e) = 0;
+    mBoos[i].mTimer = 0;
     StepBoo(i);
     BounceBooOffWalls(i);
-    e = c;
-    e += off;
-    h = *(unsigned short *)(e + 0x466c);
-    t = (int)(h >> 4);
-    t = t * 2 + 1;
-    v = data_02082214[t];
-    if (v >= 0)
-        *(unsigned char *)(e + 0x467e) = 1;
+    if (data_02082214[(mBoos[i].mHeading >> 4) * 2 + 1] >= 0)
+        mBoos[i].mAnim = 1;
     else
-        *(unsigned char *)(e + 0x467e) = 0;
+        mBoos[i].mAnim = 0;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c10Boo_State0Ei
 void dScMgTeresa_c::Boo_State0(int idx)
 {
-    char *c = (char *)this;
-    int off = idx * 0x24;
-    char *e = c + off;
     unsigned char t;
-    *(unsigned char *)(e + 0x4000 + 0x67a) = 1;
-    *(short *)(e + 0x4600 + 0x6e) = 0x60;
-    *(unsigned char *)(e + 0x4000 + 0x679) = 0;
-    *(unsigned char *)(e + 0x4000 + 0x678) = 1;
-    *(int *)(c + 0x4668 + off) = 0xc00;
-    t = *(unsigned char *)(e + 0x4000 + 0x67f);
+    mBoos[idx].mVisible = 1;
+    mBoos[idx].mTimer = 0x60;
+    mBoos[idx].unk_19 = 0;
+    mBoos[idx].mState = 1;
+    mBoos[idx].mSpeed = 0xc00;
+    t = mBoos[idx].mKind;
     if (t == 0)
         return;
     if (t == 8)
-        *(int *)(c + 0x4668 + off) = *(int *)(c + 0x4668 + off) - 0x200;
+        mBoos[idx].mSpeed -= 0x200;
     else
-        *(int *)(c + 0x4668 + off) = *(int *)(c + 0x4668 + off) + ((t - 1) << 9);
+        mBoos[idx].mSpeed += (t - 1) << 9;
 }
 
 
 // @symbol _ZN13dScMgTeresa_c10AnimateBooEi
 void dScMgTeresa_c::AnimateBoo(int i)
 {
-    char *c = (char *)this;
-  int idx = i * 0x24;
-  if (*(unsigned char*)(c + 0x4678 + idx) >= 6) return;
-  *(short*)(c + 0x4670 + idx) = *(unsigned short*)(c + 0x4670 + idx) + 1;
-  if (*(unsigned short*)(c + 0x4670 + idx) < 0xf) return;
-  *(short*)(c + 0x4670 + idx) = 0;
-  *(unsigned char*)(c + 0x467d + idx) = *(unsigned char*)(c + 0x467d + idx) + 1;
-  if (*(unsigned char*)(c + 0x467d + idx) >= 3)
-    *(unsigned char*)(c + 0x467d + idx) = 0;
+    if (mBoos[i].mState >= 6) return;
+    mBoos[i].mAnimTimer++;
+    if (mBoos[i].mAnimTimer < 0xf) return;
+    mBoos[i].mAnimTimer = 0;
+    mBoos[i].mFrame++;
+    if (mBoos[i].mFrame >= 3)
+        mBoos[i].mFrame = 0;
 }
 
 
@@ -1829,10 +1770,9 @@ void dScMgTeresa_c::AnimateBoo(int i)
 void dScMgTeresa_c::UpdateBoos()
 {
     int i;
-    char *e = (char*)this;
-    for (i = 0; i < 0x10; i++, e += 0x24) {
-        if (*(unsigned char*)(e + 0x4677)) {
-            (this->*data_ov006_02142ed8[*(unsigned char*)(e + 0x4678)])(i);
+    for (i = 0; i < 0x10; i++) {
+        if (mBoos[i].mInPlay) {
+            (this->*data_ov006_02142ed8[mBoos[i].mState])(i);
             AnimateBoo(i);
         }
     }
