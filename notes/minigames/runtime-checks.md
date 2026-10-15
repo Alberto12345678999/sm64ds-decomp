@@ -88,6 +88,18 @@ screenshots, over two games of Wanted! (Luigi):
   - **Round cleared:** `Presenter_PlayCheer`, then `Mg_SetSharedState(0)` with banner 3 "CLEAR" and jingle 4, then `StartRound(0)` and banner 0xd. A round with no miss first calls `Mg_SetNextBanner(6)`, and banner 6 is the rainbow "PERFECT".
 - **The menu table.** A game's menu row is its tab + 4 × its position on the page, with Mario 0, Luigi 1, Wario 2 and Yoshi 3. Rows 24..35 are each tab's second page. `MiniGm_ClearNew(row)` agrees for Memory 1, Card 9, Roulette 0xd, Sound 0x13 and Slot3 0x1f.
 - So shared states 4, 5, 7 and 8 are seen: `MG_STATE_WIN`, `MG_STATE_LOSE`, `MG_STATE_DRAW` and `MG_STATE_TIE` all hold. Memory and Card never called a `Presenter_Play*`; their dealer has its own `Dealer_PlayWin/Lose`.
+- **Sound, a second watch** (menu row 19). The beach has Mario's head as the presenter on the top screen; the hearts are drawn as `mTries + 1`, and stars count rounds cleared.
+  - The first chest of a pair: `SpawnPops(slot)` (r1 = the chest), `Presenter_PlayCheerLoop` (r2 varies per note: 0x48, 0x49, 0x4f, 0xfa) and three `Pop00_Start`. Mario sings with his eyes shut while ♪ sprites rise. `IsAltVariant` is polled on every `SpawnPops`.
+  - A mismatch: `Presenter_PlayMiss` (r2 0x12f) half a second after the second chest; one heart goes. A match: `Presenter_PlayMatch` (r2 0x26), and the pair disappears.
+  - Round clear: `StartWinSpriteA`/`B` are the sparkle ring round "CLEAR" and a star at the top right. About 3.6 s later `Mg_CallStartRound(0)` runs `StartRound`, `ResetRound` and `DealNotes`.
+  - The final miss: `Presenter_PlayMiss`, `RevealUnmatched`, then `Presenter_PlayLose`. On a new record, `dScMgSound_c::OnNewRecord` runs 2 s after banner 7 and plays `Presenter_PlayCheer` before banner 5 and jingle 1.
+- **Cup (`dScMgCup_c`, "Where's Yoshi?", Yoshi's page, menu row 23)** is a shell game: three Thwomp-faced boxes, Yoshi hidden in one, 2 hearts. Banner 0xf is the "WHERE'S YOSHI?" prompt, shown as `StateWaitForInput` ends.
+  - A right pick: `Presenter_PlayCheer` (r2 0x3c), then `Mg_SetSharedState(0, score)`: r1 is the score (1, 2, 3, ...). Banner 3 "CLEAR" goes up at y 0x88 with jingle 4, then `Mg_CallStartRound(0)` and banner 0xd "LEVEL n". The hearts are back to 2 at the next level.
+  - A wrong pick with lives left: `Mg_SubCredits(1)`, then `Presenter_PlayMiss` (r2 0x96). **Cup never calls `Mg_CallStartRound` for a lost life**: it restarts the level itself (banner 0xd from `StartRound`, lr 0x020e0054). Nothing passed -1 or slot 18. `mCredits` is lives here.
+  - The last wrong pick: `Mg_SubCredits(1)` and `Presenter_PlayLose` (r2 0x1e), then the same game-over path as Sound: state 0x12 (banner 8, jingle 3), banner 7, `dScMgCup_c::OnNewRecord`, `Presenter_PlayCheer`, banner 5 and jingle 1. The results end on the wide prompt (banners 0 and 2 at x 0x40 and 0xc0, y 0xa0).
+  - From memory reads: `mIds` stayed 0, 1, 2 across shuffles, since the shuffle moves `mCup[mIds[i]]` and swaps them back. Yoshi sat in the left cup with `mCupContents` = {1, 0, 0}, `mTargetContent` = 1 and `mRevealCup` = 0 after a miss. Later levels hide a blue Yoshi as a decoy in another box, so `mCupContents` is the Yoshi colour in each cup and `mTargetContent` is the one asked for.
+- Jingles by context: 4 = round CLEAR (state 0); 3 = GAME OVER (state 0x12); 1 = new HIGH SCORE (state 17). The audio itself was not heard.
+- The GDB stub on the second CPU (ARM7, port 3346) can read main RAM while `mgwatch.py` holds the ARM9 port, but only once per launch, the same limit as the ARM9 stub.
 
 ## Recording the answer
 

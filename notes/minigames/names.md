@@ -87,7 +87,7 @@ runtime. `Ov004_` marks a thunk that only forwards to an arm9 routine.
 
 | Name (old) | Why it is not high |
 |---|---|
-| `Mg_PlayJingle` (020ae274) | It starts sequence `id` on `Sound::PlaySub`'s player and sets the music volume target to 0x40. The callers pass 1, 3 and 4 when a banner goes up. "Jingle" is inferred; the IDs are not mapped to sounds. |
+| `Mg_PlayJingle` (020ae274) | It starts sequence `id` on `Sound::PlaySub`'s player and sets the music volume target to 0x40. The callers pass 1, 3 and 4 when a banner goes up. **Seen:** 4 with the round-clear banner (state 0), 3 with GAME OVER (state 18) and 1 with the new HIGH SCORE (state 17). The audio was not heard. |
 | `Mg_LoseCredits`, `Mg_GainCredits`, `Mg_SubCredits`, `Mg_AddCredits`, `Mg_DrawCredits`, `Mg_DrawCreditsIcon` | They work on `mCredits`, clamped to 0..9999, which `BeforeBehavior` eases `mCreditsShown` toward for display. Cup gives 2 and loses one per wrong pick before game over; Memory caps the value at 3. A wider "credits" reading is possible in the gambling games. |
 | `Mg_ResumeSharedState` (020b0a38) | It clears `mStateController.unk_024`, which lets `BeforeBehavior`/`BeforeRender` step and draw the controller again. What sets the flag (state 6's behaviour) reads as "hand control back to the game". |
 | `Mg_CheckBannerButton` (020b0b1c) | It hit-tests a touch against a shown banner whose graphic id is `arg` (0x40 x 0x13 box), or reports the banner's finish. States use ids 0, 1 and 2 as retry/quit buttons. |
@@ -151,7 +151,7 @@ and a guess (unconfirmed):
 
 | State | Enter: banner, jingle, timer | Then | Entered by | Guess |
 |---|---|---|---|---|
-| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on. **Seen** in Sound: banner 3 is "CLEAR". A no-miss round first calls `Mg_SetNextBanner(6)`, and banner 6 is "PERFECT" |
+| 0 | 3\*, 4, 180 | fade, restore music, `StartRound(0)` | a win in Cup, Amida, Teresa, Panel, Sound, Jump | round cleared, play on. **Seen** in Sound, Cup and Teresa: banner 3 is the rainbow "CLEAR" and r1 is the score. A no-miss round first calls `Mg_SetNextBanner(6)`, and banner 6 is "PERFECT" |
 | 1 | none, none, 15 | fade, `StartRound(1)` | Hanachan, Luigi | silent next round |
 | 2 | 5, 1, 180 | fade, restore music, `StartRound(2)` | none found | |
 | 3 | 8\*, 3, 60 | retry (button 0) / quit (1, 2) buttons | Snowball, with banner 0xe | game over, retry? |
@@ -168,7 +168,7 @@ and a guess (unconfirmed):
 | 15 | 0xe, 3, 60 | fade, `StartRound(15)` | none found | |
 | 16 | 7 at (0x80, 0x14), none, 120 | record table, touch to go on; `Mg_CommitRecords` | the timed games (Bomroom, Coin, Curling, Pachinko, Smartball); Wanted! after game over | results. **Seen:** banner 7 is "HIGH SCORE" |
 | 17 | as 16, 300 frames | record table; banner 5, jingle 1 and `OnNewRecord` 120 frames in | 16 or 18/19, when `Mg_IsNewRecord` | results, new record. **Seen** on a new Wanted! high score |
-| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 |
+| 18 | 8, 3, 180 | touch or timeout, then 16 or 17 | game over in Cup, Panel, Luigi, Teresa, Sound, Jump, Jump2, Slots, Trampoline/2, Hanachan | game over. **Seen:** banner 8 is "GAME OVER", jingle 3 (Wanted!, Sound, Cup) |
 | 19 | 3\*, 4, 180 | touch or timeout, then 16 or 17 | Snowball (banner 4 override) | finished, goal |
 
 **Banner ids seen on screen** (`Mg_ShowBanner` r0, melonDS 2026-10-15):
@@ -273,11 +273,16 @@ show (2026-10-15, seen in Sound; high):**
 | Slot | Old name | New name | What it shows | Cup calls it for |
 |---|---|---|---|---|
 | 1 | `Presenter_PlayAnim1` | `Presenter_PlayMiss` | Mario puzzled, one eye squinting | a wrong pick with lives left |
-| 2 | `Presenter_PlayAnim2` | `Presenter_PlayMatch` | plays on each matched pair, with sound 0x1c (its frame was not captured) | (not used) |
+| 2 | `Presenter_PlayAnim2` | `Presenter_PlayMatch` | an open-mouthed grin and a nod, on each matched pair, with sound 0x1c | (not used) |
 | 4 | `Presenter_PlayAnim4` | `Presenter_PlayLose` | Mario laughing and winking | the wrong pick that ends the game |
 | 7 | `Presenter_PlayAnim7`, `...7Loop` | `Presenter_PlayCheer`, `Presenter_PlayCheerLoop` | Mario laughing, eyes shut, with sound 3 | a right pick and `OnNewRecord` |
 
 All 45 minigame objects stayed identical modulo the renamed symbols.
+
+A second watch of Sound and Cup saw the same four calls at the same moments. It
+caught slot 1 as a wince, with the head flipping up off the screen and dropping
+back, and slot 4 as a tilted head with one eye shut and a lopsided grin. The two
+watches caught different frames; the names hold.
 
 The dealer's deal, collect, reveal and swap names follow the animation order
 and the sounds (0x139-0x142) and are medium confidence.
@@ -294,7 +299,7 @@ pitch, two matching notes clear, and a mismatch closes them again.
 - **Notes:** `DealNotes`, `ResetRound`, `UpdateNotes`, `CheckPair`, `CheckRoundOver`, and `RevealUnmatched` on a loss.
 - **Note states 0-4:** `Note_StateWait`, `Note_StateOpening`, `Note_StateOpen`, `Note_StateClosing`, `Note_StateScroll`.
 - **Pops:** `SpawnPops` launches the burst sprites, and each of the 13 pop kinds has `PopNN_Update`, `PopNN_Start`, `PopNN_Fly` and `PopNN_Finish`. The kind number is the index in the dispatch table; the look of each kind is not observed.
-- **Win and loss:** the win plays `Presenter_PlayCheer` (seen) and the two win sprites (`Start/Update/DrawWinSpriteA/B`); the loss plays `Presenter_PlayLose` (seen). Each match plays `Presenter_PlayMatch` and each miss `Presenter_PlayMiss`. Sound's three hearts are `mTries` and move no credits.
+- **Win and loss:** the win plays `Presenter_PlayCheer` (seen) and the two win sprites (`Start/Update/DrawWinSpriteA/B`: the sparkle ring round "CLEAR" and the star at the top right, seen); the loss plays `Presenter_PlayLose` (seen). Each match plays `Presenter_PlayMatch` and each miss `Presenter_PlayMiss`. Sound's three hearts are `mTries` and move no credits.
 
 **Teresa (`dScMgTeresa_c`, Hide and Boo Seek).**
 
