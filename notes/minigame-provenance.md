@@ -438,23 +438,23 @@ the previous header held as four pads, and a run/dMeter_c block at 0xb9d8.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0xab38 | `mPosX` / `mPosY` (0xab3c) | [func_ov006_021279b0](../src/minigames/d_s_mg_snowball.cpp) seeds `mPosX = 0x80000` and `mPosY = mStartY << 12`; Behavior adds the velocity into both; Render's progress bar reads `mPosY >> 12`. |
+| 0xab38 | `mPosX` / `mPosY` (0xab3c) | [ResetScene](../src/minigames/d_s_mg_snowball.cpp) seeds `mPosX = 0x80000` and `mPosY = mStartY << 12`; Behavior adds the velocity into both; Render's progress bar reads `mPosY >> 12`. |
 | 0xab40 | `mPrevPosX` / `mPrevPosY` (0xab44) | Behavior's first act each tick is to copy 0xab38/0xab3c here, and the climb term is `mPosY - mPrevPosY`. |
 | 0xab48 | `mDrawPosX` / `mDrawPosY` (0xab4c) | Render draws the ball sprite [data_ov006_02139c38](../config/arm9/overlays/ov006/symbols.txt) at `(n - mScrollX) >> 12`, the same transform every world object gets. |
 | 0xab50 | `mSoundPosX` / `mSoundPosY` (0xab54) | Behavior fires a rolling sound whenever the position has moved 0x30000 from these two, then copies the position in. |
 | 0xab60 | `mVelX` / `mVelY` (0xab64) | `Vec2_Len` of the pair is the speed, `atan2` of it is the heading, and it is added into `mPos` each tick. Capped at 0x8000. |
-| 0xab68 | `mScrollX` | Subtracted from every world X before drawing; [func_ov006_021279b0](../src/minigames/d_s_mg_snowball.cpp) zeroes it. |
+| 0xab68 | `mScrollX` | Subtracted from every world X before drawing; [ResetScene](../src/minigames/d_s_mg_snowball.cpp) zeroes it. |
 | 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in [_ZN15dScMgSnowball_c16OnGraphCallback2Ev](../src/minigames/d_s_mg_snowball.cpp). |
 | 0xab70 | `mTouchX` / `mTouchY` (0xab74) | Behavior stores the raw touch sample ([gTouchX](../config/arm9/symbols.txt) / [gTouchY](../config/arm9/symbols.txt)) here and steers off the difference from the previous one. |
 | 0xab78 | `mRollAngle` | u16. `+= speed * 0x2710 / mBallSize` -- an angle that advances faster the smaller the ball. |
 | 0xab7c | `mHeadingAngle` | u16. `atan2(mVelX, mVelY)`, approached linearly while rolling and set outright while crashing. |
 | 0xab7e | `mPrevRollAngle` / `mPrevHeadingAngle` (0xab82) | Behavior's prologue copies 0xab78..0xab7c into 0xab7e..0xab82 verbatim. |
-| 0xab84 | `mSpinAxis[3]` | [func_ov006_021279b0](../src/minigames/d_s_mg_snowball.cpp) seeds it from a `(0, 0x1000, 0)` Vector3 and passes it to `Quaternion_FromVector3`. |
+| 0xab84 | `mSpinAxis[3]` | [ResetScene](../src/minigames/d_s_mg_snowball.cpp) seeds it from a `(0, 0x1000, 0)` Vector3 and passes it to `Quaternion_FromVector3`. |
 | 0xab90 | `mSpinQuat[4]` | The destination of that same `Quaternion_FromVector3`, then `Quaternion_Normalize`. Four words. |
 | 0xaba0 | `mBallSize` | Seeded 0x4000; grows by the uphill distance, capped at 0x37000; Render scales mModel by `n/2 + n*4`; the melt state subtracts 0x1000 a tick until it reaches 0. |
 | 0xac58 | `mArray1Active[0x80]` | Render skips an mArray1 slot unless this byte is 1. |
 | 0xb0d8 | `mArray1Kind[0x80]` | 1 picks the eight-frame animated sprite table, anything else the single static sprite. |
-| 0xb2d8 | `mArray1Hit[0x80]` | [func_ov006_02125bbc](../src/minigames/d_s_mg_snowball.cpp) sets it to 1 on contact; Render then adds 8 to the sprite frame. |
+| 0xb2d8 | `mArray1Hit[0x80]` | [HitsBreakable](../src/minigames/d_s_mg_snowball.cpp) sets it to 1 on contact; Render then adds 8 to the sprite frame. |
 | 0xb358 | `mArray2Active[0x80]` | The same gate for mArray2. |
 | 0xb3d8 | `mArray2Kind[0x80]` | Render's `switch`: 0..2 draw one sprite, 3 picks between two by X. |
 | 0xb9d8 | `mAnimCounter` | Render bumps it and wraps it at 0x20; the obstacle frame is `(n / 4) & 7`. |

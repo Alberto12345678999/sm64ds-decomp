@@ -396,3 +396,15 @@ Medium confidence:
 - **`RouletteRacer_*`, high confidence:** the racers dealt onto the board, how they move to a tile, and the payout.
 - **`RouletteBoard_*`, high confidence:** the spinning board. Its two states are confirmed by the records their setters store (`RouletteBoard_StateSpin`, `RouletteBoard_StateSlow`).
 - **`RouletteStrip_*`, `RouletteResults_*`, medium confidence:** the per-player result strips.
+
+**Snowball (`dScMgSnowball_c`).**
+
+High confidence:
+- **The ball:** `UpdateSnowball`, which runs 32 probes per frame through `HitsWall`, `HitsBreakable` and `IsInWater`.
+- **The course:** `BuildCourse`, `DrawCourseColumn`, `RedrawCourse`.
+- **Camera and reset:** `Snowball_UpdateCamera`, `ResetScene`.
+- `dScMgSnowball_c_Construct`: the out-of-line constructor themes.md describes (it is not yet a real C1).
+
+Medium confidence:
+- `SnowSpray_*`: the 32 moving records at +0xba14.
+- The falling-bit machine, which has the same shape as Curling's and the same names (`Bit_*`, `BitA/B_State*`).

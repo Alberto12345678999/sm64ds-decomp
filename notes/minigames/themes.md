@@ -47,7 +47,7 @@ A pass must not change a single emitted byte or relocation target.
      - Slot3: 0x50 against 0x60, without `Mascot_Construct`.
      - Roulette: 0x4c against 0xac, without the table, racer-array and two `Model` constructors.
      - Slot1: 0x58 against 0x88, without `func_ov006_0210c2b0` (twice) and `func_ov006_0210c208`.
-   - Measured negative for Snowball: 0x60 against 0x34. The ROM calls the out-of-line constructor `func_ov006_021295ac`; with none declared, `new` inlines one. Declaring `dScMgSnowball_c();` out of line matches the bytes, but the link then needs that address named as the C1.
+   - Measured negative for Snowball: 0x60 against 0x34. The ROM calls the out-of-line constructor `dScMgSnowball_c_Construct`; with none declared, `new` inlines one. Declaring `dScMgSnowball_c();` out of line matches the bytes, but the link then needs that address named as the C1.
    - Unresolved for `dScMgSlot1_c`: its [class header](../../include/dScMgSlot1_c.h) records allocation/code-generation constraints. The absence of a standalone C1 alone does not rule out an inlined constructor.
 5. **Pointer-to-member state tables.**
    - Readable form: a typedef over named state members.
