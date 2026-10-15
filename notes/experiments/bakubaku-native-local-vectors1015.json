@@ -3,14 +3,14 @@
   "task": "bakubaku-native-local-vectors1015",
   "issue": "https://github.com/tangosdev/sm64ds-decomp/issues/3806",
   "candidate": "This commit; immutable output is recorded by the coordination queue.",
-  "status": "Producer proof complete; independent exact Source and byte acceptance pending.",
+  "status": "Current-main producer composition proved; fresh independent exact acceptance pending.",
   "completion": "partial",
-  "source_checkpoint": "aa43a452543177745f009c500a64a5f2c1787313",
+  "source_checkpoint": "d97193a50af477cab9e048c55d44fb2e7271ee29",
   "registered_input_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
-  "base_commit": "bf93062f25a1be2679890e559667b85ba4973649",
+  "base_commit": "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf",
   "tooling_workflow_commit": "40dfd83ba134be0600730b58f3261f04441632d8",
   "source_review_policy_commit": "18af52b49b9fb5663d417bdfa86109b7b157aaa3",
-  "producer_session": "codex-bakubaku-native-vectors-astra-producer1015",
+  "producer_session": "codex-bakubaku-current50bf-astra-producer1015",
   "source_author": {
     "session": "codex-bakubaku-native-vectors-astra-producer1015",
     "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
@@ -270,8 +270,8 @@
   },
   "gates": {
     "rom": {
-      "base": "bf93062f25a1be2679890e559667b85ba4973649",
-      "source_checkpoint": "aa43a452543177745f009c500a64a5f2c1787313",
+      "base": "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf",
+      "source_checkpoint": "d97193a50af477cab9e048c55d44fb2e7271ee29",
       "gates": [
         {
           "name": "rombuild",
@@ -281,20 +281,20 @@
             "-j16",
             "--no-rom",
             "--report-json",
-            "build\\bakubaku-native-local-vectors1015\\current-main\\rombuild.json",
+            "build\\bakubaku-native-local-vectors1015\\current50bf\\rombuild.json",
             "--data-json",
-            "build\\bakubaku-native-local-vectors1015\\current-main\\romdata-full.json"
+            "build\\bakubaku-native-local-vectors1015\\current50bf\\romdata-full.json"
           ],
           "exit_code": 0,
-          "seconds": 334.26,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\rombuild.log",
+          "seconds": 320.06,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\rombuild.log",
           "log_sha256": "a5e05a9aa5ade0544111947c9b2e724167e7fe7b2d6a1fb1cb3aa7e4a7b960cb"
         }
       ]
     },
     "static": {
-      "base": "bf93062f25a1be2679890e559667b85ba4973649",
-      "source_checkpoint": "aa43a452543177745f009c500a64a5f2c1787313",
+      "base": "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf",
+      "source_checkpoint": "d97193a50af477cab9e048c55d44fb2e7271ee29",
       "gates": [
         {
           "name": "prepush",
@@ -302,13 +302,13 @@
             "python",
             "tools/prepush_linkcheck.py",
             "--range",
-            "bf93062f25a1be2679890e559667b85ba4973649..HEAD",
+            "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf..HEAD",
             "--json",
-            "build\\bakubaku-native-local-vectors1015\\current-main\\prepush.json"
+            "build\\bakubaku-native-local-vectors1015\\current50bf\\prepush.json"
           ],
           "exit_code": 0,
-          "seconds": 26.73,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\prepush.log",
+          "seconds": 64.86,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\prepush.log",
           "log_sha256": "87c631b7c95dd5461f64edcf81bd6e12c633ba93b4465066c90a7cedd58a8d9e"
         },
         {
@@ -317,12 +317,12 @@
             "python",
             "tools/check_decl_agreement.py",
             "--changed",
-            "bf93062f25a1be2679890e559667b85ba4973649"
+            "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf"
           ],
           "exit_code": 0,
-          "seconds": 13.27,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\decl-scoped.log",
-          "log_sha256": "06ee9fffc6b11c7c9e0c80ebe4fc685aa4e0cb17713c340f5843cd2ddaa2a39e"
+          "seconds": 13.15,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\decl-scoped.log",
+          "log_sha256": "eab5f67a58267dec2ee46909a90f2bc018c99b8404e71b426c9d9ab6f1ed703c"
         },
         {
           "name": "decl-global",
@@ -332,8 +332,8 @@
             "--check"
           ],
           "exit_code": 0,
-          "seconds": 11.63,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\decl-global.log",
+          "seconds": 10.58,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\decl-global.log",
           "log_sha256": "d21f300ae0024c18db82aed3708e61ba7d244e7684b49ce9d229684392f54098"
         },
         {
@@ -343,8 +343,8 @@
             "tools/port_refcheck.py"
           ],
           "exit_code": 0,
-          "seconds": 1.79,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\port.log",
+          "seconds": 2.31,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\port.log",
           "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
         },
         {
@@ -353,11 +353,11 @@
             "python",
             "tools/langmode_audit.py",
             "--check",
-            "build\\bakubaku-native-local-vectors1015\\current-main\\langmode-baseline.json"
+            "build\\bakubaku-native-local-vectors1015\\current50bf\\langmode-baseline.json"
           ],
           "exit_code": 0,
-          "seconds": 15.02,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\langmode.log",
+          "seconds": 15.2,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\langmode.log",
           "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
         },
         {
@@ -367,8 +367,8 @@
             "tools/check_tubuild_conflicts.py"
           ],
           "exit_code": 0,
-          "seconds": 0.37,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\tu-conflicts.log",
+          "seconds": 0.31,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\tu-conflicts.log",
           "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521"
         },
         {
@@ -378,8 +378,8 @@
             "tools/check_duplicate_sources.py"
           ],
           "exit_code": 0,
-          "seconds": 0.41,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\duplicates.log",
+          "seconds": 1.95,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\duplicates.log",
           "log_sha256": "3c7d30e74da563c3759d899256bc6d497413d6fac97b5d50dde941fb71d9727d"
         },
         {
@@ -390,9 +390,9 @@
             "--quiet"
           ],
           "exit_code": 0,
-          "seconds": 1.24,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\drafts.log",
-          "log_sha256": "032d4a79a183866789efb9ba9a7e244469a2bd2d75c3f4c85a73cbf86e71ef62"
+          "seconds": 2.34,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\drafts.log",
+          "log_sha256": "66f8c3ba018de72d1c7f4a1b9321b57959b2865723679fdfb9926ebc07711b83"
         },
         {
           "name": "diff-check",
@@ -400,11 +400,11 @@
             "git",
             "diff",
             "--check",
-            "bf93062f25a1be2679890e559667b85ba4973649..HEAD"
+            "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf..HEAD"
           ],
           "exit_code": 0,
-          "seconds": 0.06,
-          "log": "build\\bakubaku-native-local-vectors1015\\current-main\\diff-check.log",
+          "seconds": 0.05,
+          "log": "build\\bakubaku-native-local-vectors1015\\current50bf\\diff-check.log",
           "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
       ]
@@ -688,60 +688,261 @@
     "current-main-final/bakubaku/preparation.json": "35b0e514a180541e944a6a3a463c9691b357ce81ec6d217872998da8125ea3b6",
     "native-named/body-comparison.json": "6c9a53052881a8ca1c6cac5dde60551a4dcaa21e831bc88d219c2c23c8bac9aa",
     "native-named/surface.dis": "81872134e740dd1f1c3d3341c94f899ef22511bf38e8e17e0828ac68a6e232da",
-    "native-scalar-boundary/raw-correspondence-v2.json": "f7caa73749bb392f54a7afba9e94a407c4d99e2b9e2de755a12b127033091dfe"
+    "native-scalar-boundary/raw-correspondence-v2.json": "f7caa73749bb392f54a7afba9e94a407c4d99e2b9e2de755a12b127033091dfe",
+    "current50bf/composition-bindings.json": "48d6e71a8af4d346c77c3112177110168951d326350e585e51e3fb48f8048040",
+    "current50bf/focused-binding.json": "877b6fb1d5c1e69273b8d2c8896921fa2b4bfd9fea70a5ab81aecb0470b8f010",
+    "current50bf/gate-results-rom.json": "cc2950deddc7898ae9f0531fabb301d102e8b894e49d91136877990492083192",
+    "current50bf/gate-results-static.json": "a1918f3a6fd3a24864ffe4b21d10ce198f1287767d7a7d32df0de82e414fdc18",
+    "current50bf/rombuild.json": "784fc02e0fb301f698937a66f2aeec61a86ff9d44e8d4bd09e6e7f43ebb38d35",
+    "current50bf/romdata-full.json": "ed487c78806bba5db6f7e8c57a3684ed62f9a991b96434780620c1d92e9a5abb",
+    "current50bf/prepush.json": "487c529f65bcf08bc50d5c7689cf2aa446aef5651e00cccd76778e2539616d03",
+    "current50bf/bakubaku/proof.json": "25a5aa16d5474d739850a76c062185928dd92b7dd3cbf48d7be7422c3d5ba4e2"
   },
   "current_main_check": {
-    "head": "ea91964403017ecbc9482492397b11bc90d7d785",
-    "tested_source_base": "bf93062f25a1be2679890e559667b85ba4973649",
-    "progress_only_delta": [
+    "head": "25d7dfde561f9e3ab12cba5b0b719cc4cc251220",
+    "tested_source_base": "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf",
+    "docs_and_progress_only_delta": [
+      "README.md",
       "contributions.json"
     ],
+    "official_stable_target": "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf",
+    "official_accepted_window": [
+      "25d7dfde561f9e3ab12cba5b0b719cc4cc251220",
+      "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf"
+    ],
     "five_production_trees_literal": {
-      "src": "d1f93fcbbd2d1df1ca6fc613ffbdccb3975ea720",
+      "src": "4b649ec91547fe1d90bdf5becc049d80459ed571",
       "include": "bbf6e0ac629c5caa508e068e86cc18dbafadbb59",
       "config": "0a0f34e5cd4da49562ac27e02576fbfaab30ac55",
       "tools": "55122625b2b352a5f15ea21d3d9baf1fdd6859b4",
       "port": "c6bd95e7eb59d61c892c4eb233e85115eb4bc28c"
     },
-    "checked_at_utc": "2026-10-15T06:24:11.452266+00:00"
+    "checked_at_utc": "2026-10-15T07:08:44.460212+00:00"
   },
   "future_composition": "The retained full144 packet includes this manifest. Future composition must preserve these accepted from-name changes and rederive any later emission counters, not overwrite with the older manifest snapshot.",
   "composition": {
+    "rework_input": "b3da82daf8d027d50568e1a1307b1f5b43819f0e",
     "parents": [
-      "db91e0bb6e6aa5b3d75ddc02fc7998bea44721a1",
-      "bf93062f25a1be2679890e559667b85ba4973649"
+      "b3da82daf8d027d50568e1a1307b1f5b43819f0e",
+      "50bfcd2d6af2ad888194b52153b9d757ac7b3fbf"
     ],
-    "all_56_requires_literal": true,
-    "historical_full_build": {
-      "base": "40dfd83ba134be0600730b58f3261f04441632d8",
-      "source_checkpoint": "db91e0bb6e6aa5b3d75ddc02fc7998bea44721a1",
-      "gates": [
-        {
-          "name": "rombuild",
-          "command": [
-            "python",
-            "tools/rombuild.py",
-            "-j16",
-            "--no-rom",
-            "--report-json",
-            "build\\bakubaku-native-local-vectors1015\\rombuild.json",
-            "--data-json",
-            "build\\bakubaku-native-local-vectors1015\\romdata-full.json"
-          ],
-          "exit_code": 0,
-          "seconds": 446.26,
-          "log": "build\\bakubaku-native-local-vectors1015\\rombuild.log",
-          "log_sha256": "0d91877fefe2da203919d740316d39c90a3ebddfbb4ba93641888123b284a41f"
-        }
+    "required_inputs": {
+      "total": 56,
+      "unchanged": 55,
+      "changed": [
+        "src/game/player/Player.cpp"
       ]
     },
+    "owned_source_manifest_and_all9_finding_dictionaries_literal": true,
     "fresh_current_full_build": true,
-    "fresh_current_objects_literal_to_prior_proved_candidate": true
+    "fresh_current_objects_literal_to_prior_proved_candidate": true,
+    "historical_bf930_gates": {
+      "rom": {
+        "base": "bf93062f25a1be2679890e559667b85ba4973649",
+        "source_checkpoint": "aa43a452543177745f009c500a64a5f2c1787313",
+        "gates": [
+          {
+            "name": "rombuild",
+            "command": [
+              "python",
+              "tools/rombuild.py",
+              "-j16",
+              "--no-rom",
+              "--report-json",
+              "build\\bakubaku-native-local-vectors1015\\current-main\\rombuild.json",
+              "--data-json",
+              "build\\bakubaku-native-local-vectors1015\\current-main\\romdata-full.json"
+            ],
+            "exit_code": 0,
+            "seconds": 334.26,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\rombuild.log",
+            "log_sha256": "a5e05a9aa5ade0544111947c9b2e724167e7fe7b2d6a1fb1cb3aa7e4a7b960cb"
+          }
+        ]
+      },
+      "static": {
+        "base": "bf93062f25a1be2679890e559667b85ba4973649",
+        "source_checkpoint": "aa43a452543177745f009c500a64a5f2c1787313",
+        "gates": [
+          {
+            "name": "prepush",
+            "command": [
+              "python",
+              "tools/prepush_linkcheck.py",
+              "--range",
+              "bf93062f25a1be2679890e559667b85ba4973649..HEAD",
+              "--json",
+              "build\\bakubaku-native-local-vectors1015\\current-main\\prepush.json"
+            ],
+            "exit_code": 0,
+            "seconds": 26.73,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\prepush.log",
+            "log_sha256": "87c631b7c95dd5461f64edcf81bd6e12c633ba93b4465066c90a7cedd58a8d9e"
+          },
+          {
+            "name": "decl-scoped",
+            "command": [
+              "python",
+              "tools/check_decl_agreement.py",
+              "--changed",
+              "bf93062f25a1be2679890e559667b85ba4973649"
+            ],
+            "exit_code": 0,
+            "seconds": 13.27,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\decl-scoped.log",
+            "log_sha256": "06ee9fffc6b11c7c9e0c80ebe4fc685aa4e0cb17713c340f5843cd2ddaa2a39e"
+          },
+          {
+            "name": "decl-global",
+            "command": [
+              "python",
+              "tools/check_decl_agreement.py",
+              "--check"
+            ],
+            "exit_code": 0,
+            "seconds": 11.63,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\decl-global.log",
+            "log_sha256": "d21f300ae0024c18db82aed3708e61ba7d244e7684b49ce9d229684392f54098"
+          },
+          {
+            "name": "port",
+            "command": [
+              "python",
+              "tools/port_refcheck.py"
+            ],
+            "exit_code": 0,
+            "seconds": 1.79,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\port.log",
+            "log_sha256": "b010cd028d86799a0ca3fef6d8a50d00786d7610b9d12dc8e7eee993a7c1b86e"
+          },
+          {
+            "name": "langmode",
+            "command": [
+              "python",
+              "tools/langmode_audit.py",
+              "--check",
+              "build\\bakubaku-native-local-vectors1015\\current-main\\langmode-baseline.json"
+            ],
+            "exit_code": 0,
+            "seconds": 15.02,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\langmode.log",
+            "log_sha256": "6fb3a5b4f4c82b75ed399e871dfa753b7d4f76724245f0472484ba0cb6245765"
+          },
+          {
+            "name": "tu-conflicts",
+            "command": [
+              "python",
+              "tools/check_tubuild_conflicts.py"
+            ],
+            "exit_code": 0,
+            "seconds": 0.37,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\tu-conflicts.log",
+            "log_sha256": "50db35b67c8218ccbef6ff33901dea83968467ed21cf7af518414a45000bc521"
+          },
+          {
+            "name": "duplicates",
+            "command": [
+              "python",
+              "tools/check_duplicate_sources.py"
+            ],
+            "exit_code": 0,
+            "seconds": 0.41,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\duplicates.log",
+            "log_sha256": "3c7d30e74da563c3759d899256bc6d497413d6fac97b5d50dde941fb71d9727d"
+          },
+          {
+            "name": "drafts",
+            "command": [
+              "python",
+              "tools/check_drafts_compile.py",
+              "--quiet"
+            ],
+            "exit_code": 0,
+            "seconds": 1.24,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\drafts.log",
+            "log_sha256": "032d4a79a183866789efb9ba9a7e244469a2bd2d75c3f4c85a73cbf86e71ef62"
+          },
+          {
+            "name": "diff-check",
+            "command": [
+              "git",
+              "diff",
+              "--check",
+              "bf93062f25a1be2679890e559667b85ba4973649..HEAD"
+            ],
+            "exit_code": 0,
+            "seconds": 0.06,
+            "log": "build\\bakubaku-native-local-vectors1015\\current-main\\diff-check.log",
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "full_build_summary": [
+        "intact TU gates: dsd modules PASS, zero new symbol errors, storage aliases exact",
+        "source-built functions: 11,334  (2,225,480 / 2,238,108 code bytes, 99.44%)",
+        "reproducing: 11,334",
+        "mismatching: 0",
+        "source-owned data claims: 331  (reproducing 331, mismatching 0)",
+        "source-owned BSS claims: 239  (30,164 NOBITS bytes; object/symbol gates)",
+        "module fidelity: 106/106 exact, 100.000000% of compared bytes",
+        "ROM-build analysis: PASS"
+      ],
+      "global_data_advisory": {
+        "verified": 970,
+        "partial": 1519,
+        "differs": 1,
+        "unnamed": 21
+      },
+      "qualifications": [
+        "Actual current full build at the committed Source checkpoint; no inherited global-run claim.",
+        "Generic prepush25checked:24verified, initializerBLIND8 warning, zero blocking. Complete ordinary owned init428B/29refs, ctor4B/1ref and data292B/46refs separately match all724retailbytes with0blind; BSS140B is exact allocated NOBITS ownership, not a ROM payload.",
+        "Baseline dsd symbol control retains9 pre-existing errors; module proof passes. --no-rom skips a candidate ROM file; stock baseline control ROM hash is preserved in the log.",
+        "Declaration checks pass their ratchet; they do not establish universal interface agreement. Global data partial/differ/unnamed advisories remain."
+      ]
+    },
+    "historical_bf930_composition": {
+      "parents": [
+        "db91e0bb6e6aa5b3d75ddc02fc7998bea44721a1",
+        "bf93062f25a1be2679890e559667b85ba4973649"
+      ],
+      "all_56_requires_literal": true,
+      "historical_full_build": {
+        "base": "40dfd83ba134be0600730b58f3261f04441632d8",
+        "source_checkpoint": "db91e0bb6e6aa5b3d75ddc02fc7998bea44721a1",
+        "gates": [
+          {
+            "name": "rombuild",
+            "command": [
+              "python",
+              "tools/rombuild.py",
+              "-j16",
+              "--no-rom",
+              "--report-json",
+              "build\\bakubaku-native-local-vectors1015\\rombuild.json",
+              "--data-json",
+              "build\\bakubaku-native-local-vectors1015\\romdata-full.json"
+            ],
+            "exit_code": 0,
+            "seconds": 446.26,
+            "log": "build\\bakubaku-native-local-vectors1015\\rombuild.log",
+            "log_sha256": "0d91877fefe2da203919d740316d39c90a3ebddfbb4ba93641888123b284a41f"
+          }
+        ]
+      },
+      "fresh_current_full_build": true,
+      "fresh_current_objects_literal_to_prior_proved_candidate": true
+    },
+    "limits": "The Player Source-bearing main advance required this normal two-parent merge and actual new combined full106 run; old positive producer/verifier bf930 proofs remain historical."
   },
   "not_claimed": [
     "Independent Source/byte acceptance",
     "Complete original class/layout/signature reconstruction",
     "Completion of full144, nativeYegg3/shared308, Heap, Chomp20 or remaining ARM7 work",
     "Public push/PR/validation/merge"
-  ]
+  ],
+  "report_author": {
+    "session": "codex-bakubaku-current50bf-astra-producer1015",
+    "agent_uuid": "01a13996-b2f1-7d93-8bdd-510e5c78a79e",
+    "label": "codex-enemy-frontier-astra1014"
+  }
 }
